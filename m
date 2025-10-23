@@ -4,101 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33D5CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 22:53:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 934D4CCD1BF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 23:13:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 93B488E0017; Thu, 23 Oct 2025 18:53:47 -0400 (EDT)
+	id CC30B8E0018; Thu, 23 Oct 2025 19:13:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 913368E0002; Thu, 23 Oct 2025 18:53:47 -0400 (EDT)
+	id C74768E0002; Thu, 23 Oct 2025 19:13:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8502E8E0017; Thu, 23 Oct 2025 18:53:47 -0400 (EDT)
+	id B89B68E0018; Thu, 23 Oct 2025 19:13:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 745238E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:53:47 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 31C081A0C7B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 22:53:47 +0000 (UTC)
-X-FDA: 84030882894.22.1F11D5E
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 08AF040008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 22:53:44 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WXFV0Ol5;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761260025; a=rsa-sha256;
-	cv=none;
-	b=Ci9scV+T8fpJvpfjcM0MRKlSdDwbYlwRXApYrSV+1fXc4yhn8Kb4Zth/jS6datVB5oULMh
-	+DiK09Uzt7DHrsROUOD/NMnyrJii2FYEIP6DvWE8lF/JWRvgULbM0ICkE5J3NkxafvbiHS
-	05poAp40o0g8r4r9Jjl5Vl+udKheRGM=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=WXFV0Ol5;
-	spf=pass (imf01.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id A742A8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:13:52 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 56EC488FDE
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 23:13:52 +0000 (UTC)
+X-FDA: 84030933504.04.E1A1AA8
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6E39B180003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 23:13:50 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IiqRH7tV;
+	spf=pass (imf24.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761260025;
+	s=arc-20220608; t=1761261230;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=xcrIGzLg24yPp188N6lihIn9VjYgTF/T/RrwHAmM87I=;
-	b=O3wym+h5b43dObuEj/CqXMtoHjIUeaMkoLI0wmXpFbnMya07xahlr+iqYi1Qqw6uOsDfGm
-	MS+KKbeMCDELbAag4yAtOjgN7L6icsqFRui4RAi3CfznWUJNsHbgJ1nmfsm3YUYhgOBcGh
-	qVxzqIxVJ5DXL4bmae2bNySWu6743tg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761260025; x=1792796025;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=0QE8HvEHK4lycLqYEDfV2CS/pvTBWa9mkZGA2KfSSHQ=;
-  b=WXFV0Ol5+7SUO/kZ460wrMrd4qWGQgHlUPaE7B6I5itHHn0/oAGhhFZ/
-   9CZ3QwuYxZVxbnERZRVCIlVQBk+l9zAuihi0IfQWgM53XUXV9b2F6qi0l
-   gm5UsQzOlZayq23cDH3xnbtA5ebfMdDvcTFEd6/Z8r6LT4Xj0MFrqFWnX
-   Wyu59P3RLf4n03TjGSN8T7E/c205F3kgNiD1EsVuf/ZRPQeQybcoD1lIf
-   LV4KWiHX+yXJR7RPJvkVmqPkqgvhMp4PXgRSD79H0Bbz1DRaT4gvo8RN9
-   ggfDiP3ax5St7l+0Yy+aBjff7POkprb1RP8jf8yU75PkFbEYX1WzlTkfN
-   g==;
-X-CSE-ConnectionGUID: HnASVDWoROaoqYGMW6HPEw==
-X-CSE-MsgGUID: UBWh4dFWRr6NDoJDyBYu1g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62472965"
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="62472965"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Oct 2025 15:53:44 -0700
-X-CSE-ConnectionGUID: PvghajoCTBme/3cRVLlAdA==
-X-CSE-MsgGUID: a9FEE0ZmSkSLJubWCsYzsA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,250,1754982000"; 
-   d="scan'208";a="185055696"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 23 Oct 2025 15:53:42 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vC4Bf-000DxJ-22;
-	Thu, 23 Oct 2025 22:53:39 +0000
-Date: Fri, 24 Oct 2025 06:52:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sabyrzhan Tasbolatov <snovitoll@gmail.com>
-Cc: oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: arch/um/include/asm/kasan.h:29:2: error: UML does not work in
- KASAN_INLINE mode with STATIC_LINK enabled!
-Message-ID: <202510240649.RjPY0lml-lkp@intel.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6Y/mL/4eaultc1EWojfIyo8PsJnaNID3tRHJJgL28LY=;
+	b=TZAlZu78QQ9dOnPIsG2bBT2PlKADAZu354ICrWNPN2tvT2mScOzX1Q6kpOsehvCETXT5GX
+	1AtTQZoQm2Nhgr1zGo423fWq7TvKKbmLAEYPzJY0UIs/pDj/TNWi2Lg51VFgkHZvmjc0Ky
+	qsH/ZhJwCnLp4NWdIIrlITfOuNysxMs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=IiqRH7tV;
+	spf=pass (imf24.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761261230; a=rsa-sha256;
+	cv=none;
+	b=Lh5kXEgDxX1iFWiopEnoAocbAjfrDTqPnjqlacb3SQ8vdKTj8gW3I4DPlbVVPW36r7Yn3z
+	DQHNe420wcerju3dfYwWjT//ONpZ/VYkw+oteoz/2fKnvJ03B1YzregAt9zdRgbre23msH
+	VCMjBXyKSbDpYP/uuBmi2ysdzs2kMAM=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-42966ce6dbdso909902f8f.0
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:13:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761261229; x=1761866029; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6Y/mL/4eaultc1EWojfIyo8PsJnaNID3tRHJJgL28LY=;
+        b=IiqRH7tVWAdiNygKffGYXDGJ0+MR3rJ2bBY1yQPwcDiQA8zbcS6c7olXa0NC+zH/+y
+         Q1zc8jkTyGS7Z3A57IZ6FEe1Wy7uOyjUkzqxvX6nSurqBC7xvD41tFRRyJTbz9WRl6nt
+         BRpwMZxgkoNpjmSMlIlEe4cIlhKNYzkedtwAwFA3/U2raKK515kGSOs7xV6LASr8Io5Q
+         p+JjTAEBr+6wOLqtlZH2GRrLTfLoEuMuH74EYG2UZ1VEXO3G8TF9Hjj5KRPVuLeY6/BE
+         AzBDLgG1T1yWvUe8rJ72P+x2noSg5517mRkCP/QhlXyraWWeQbxmdcR58PWdQCLfXBA/
+         TH+g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761261229; x=1761866029;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6Y/mL/4eaultc1EWojfIyo8PsJnaNID3tRHJJgL28LY=;
+        b=uao+LbiZ9GB2aoQQq5KFZCpb68OwgJrfla6AOqgSIZSZgA6XdcBHonMBtJPMonSsmv
+         cxlb6sfCre+bC7gQeSFTu4LwJP5kiNmAwCN2YKh/5gEtWj8kI47NL4lSrVN3J6ogeeho
+         +D0gBaKUBHVuudrXSIUMKGjRmMuWNtojUZR4i+e9dsJQ+qMT1aTh5Qwo5ZW+hcSSn+DQ
+         3ORj2mrAIFjNjM6REnPZ9CUkdtORxdi/POdxNgwEs2Z5NXgKEvBVpBnlg/E3uVZYvNWm
+         vCb8zXg/AWefccNVys/cMsKuuP3tOjfpM93/W2WrV1ortYJrXVBYHl/+rE7N5rurMNbu
+         UWeA==
+X-Forwarded-Encrypted: i=1; AJvYcCVC1BixpdEnLiAhdh63CYDiTDFKObKpK/tz2PkHzDsYesHibSNsBHFWOpiYqxdO4WV1Ag4KzYFo+w==@kvack.org
+X-Gm-Message-State: AOJu0Yw1/zHbK17Dak3lhWPbZBeJE4iPlykP+Tj7O245uA0tA9FsKwj4
+	RdUup0BDlRiOkV/H4B5waYhR/6JLW8tp9Jy3/pQKk9Irg9iJz4GEHL7G993qvP4OweEGIa61dle
+	/KAIniBA6/+I3mMtuG6nJaJVmmsme+Qg=
+X-Gm-Gg: ASbGncsGUvF/S56DMUxQ7+7RcIcW/4jN4g9/tTqMgvBTsR9qmno31uJHOxzoS/MQRu0
+	bU3npXoahTn51XCz11cGOPu5ddoRA41vrDHNzwDh5ORiQIQtAHgZVcYrJILLhOpEouNtRU7RvHf
+	MD/Grah+bY1BekoR1t7RVYTp+1wyo9cqCzXdnj4i2Bcq3q0drnP/sZhuMcj/fwmdGp4jc8KYf/c
+	mI2rTK5ZR949goN/Lgx6B+Sz2/3TEIzoY5Aq/0M7SZ1XY88yHhMa8gNG8M1NaGrPIxzLksOFqNP
+	k/w3V5Ban2u/m/GNSzF7A3ktALE8RaKnjQR07P0=
+X-Google-Smtp-Source: AGHT+IHcYKGRd4bWLykcRsWt3JGipu6QnZXYSUEvMKhBqZJGUVrkpfb+xY9h71be1NTcAIdFAFFeu9yDKWG6eVaN6Yo=
+X-Received: by 2002:a5d:5d05:0:b0:428:3ea7:4473 with SMTP id
+ ffacd0b85a97d-4283eb68979mr14692632f8f.39.1761261228527; Thu, 23 Oct 2025
+ 16:13:48 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20251023-fix-slab-accounting-v2-1-0e62d50986ea@suse.cz>
+In-Reply-To: <20251023-fix-slab-accounting-v2-1-0e62d50986ea@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 23 Oct 2025 16:13:37 -0700
+X-Gm-Features: AWmQ_bmwCHOVy3eNr0hpo0ixT1MxbquvOBvpoyqeHClPdJfhgqBzqfF_YadwU_o
+Message-ID: <CAADnVQJS_RUTnpCX5etS_qGD=jgHjtY_Mtc5GQqPwvyyTfghdg@mail.gmail.com>
+Subject: Re: [PATCH v2] slab: fix slab accounting imbalance due to defer_deactivate_slab()
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: 7u1so4d617inhkbhu97cgbkxckn1f36z
+X-Rspamd-Queue-Id: 6E39B180003
 X-Rspam-User: 
-X-Stat-Signature: irwj7axwyaisqwobdiu6hb1fdpdcisye
-X-Rspamd-Queue-Id: 08AF040008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761260024-29857
-X-HE-Meta: U2FsdGVkX1/IKOUe9GhcOcjiWPY6CIYmfcGlWB6VRrVyIhEZs/ahV7P64mPVCYPfE2Gp+3GV+5I4dvrD9k0Nl3oCkJufqIvdfiRGu8Pqq27AKIqP6U/X8I5J1qtC7PFjsvXyFvQdDF1K0RVbbLuQyDHXU/zu5+6z8n93P/uL7VMqwkcDmNSUykxHejGQ86exyWar2uf4qMdQ8p3ILMfetQU1fuwJATrT3GSkEvrsaAXAThMt6MrQmBv3HtZkEZrjeax3V8u2Ejz9OYyXC2rWYcHfFyBlVcYbksQwGb8XLN0q7pYFuLb/M3UzgBdqszcy3Ukj6qUxmfXQWt0nNqlSLJs8Q5GD6raD34sNVqkDcENzr2uu7aJc08JOMELD9QoakH9x+J6NOyCpngpiJSvJnhK7i9fmdpdTUnv6pqzAzcUJoVYUBTMC55sfAYSYZZahQiY9uR5dLmvERKj2KxTbuFfaPvqMQbyiOBoqmf7FbxjGMXlo3Rn2b1sCDGo9AIPuU6kyrDT6RN1nyDV+scdIq57CA05rMSMn91R9IK3LfusaxtzA95EOSTVWIfemLF71GMjaygfMY/XXDW5ndC4wWugbOQ1Xa0tNCbpbuCcUNeXSfBpK8QRev5nx5Wgi6pPZNuHOJBjcPxvqo95LWWCI8wB+sT10+gGnRw3zGF8JTuWiQM4nh7ZMZKP6/c0/28uWAoIGte1EO5xJwA9mv/CdxmxArrI4ejde2RUtAO1lhVo9ncRyhmRunUnU7qzlS3Rk8FU1gzSLzkFgK8abCr21kZZp1Pz9AvdrN1B+O+izkKLXiOiYM7bOwQMcYvutzeIfCnvMtnDvYnv1ZLYmD4WlLZ1iH5qIIDfjaZGpsMHxxE4JzOtqsKxOCGyYyhvrW8uqVSYqivNxgK4lhM5s6hsLSY2/n/J3Zuz4gvLpTVAWP63Ji8R/PbSxXFU7IKVKv6GyIoa2/9SYXyh7ejXb+RQ
- ooCobo0B
- umLF9oj4jtLPBh7xDnWdpPb27q4T0AfZ8FUJHrEFoPRyhT28EUO7CQHHc/E7TL5C9KIq+DFgEwMgR2zcON1qAST7Z+2tOvpXWgyhSV3ng7wqj1cNs8WFqjGiUrGqbV3CtgiOfHQoBdR/dVvu4Pw5Tuqzn3VfB9S6PgE+j0hvlAQQ3tD4L+vMbQALro/H/hzUDXRSyWVIAPCFIBaWyGVv4CraGytgdVKlw+MXtxmN+aZCosGa+X38Ab7PLvUB55HxytfCj4rjSNIuL0vctaoSgu66Ma4EZY8By2KF2Z+BSgolCbdHJl349Z1pW+jqk76xWdCwhVWlChpieap9Gt7oNqY6SprXo/9Ja1B3SYoqjUxiOLrl+uTzXmHr90GwU+4R+my9xvc4P+bSr0zvcPVMxN+e1nMY6OS1uQQeDarm4l+p5QEZbfpaTDZnW6WVebesCrEqVQMsocAo1Obl9E9CyLQBSd7fEO5zwcKo8eoDa6BFSKL7SlcV7hd4SlBH6y0AAAAzWVbBwnsHPR+Y=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761261230-54675
+X-HE-Meta: U2FsdGVkX182PxCKjQ0nuEDaFSlwMWCAKhX5OCQjUvRlkOSWPWn2eZwDdEK3ipJG+xEe0wQHLj1Sck1mYQ5ozfqTUG3NVUfryxuH0KqhQ9YOsVXY5vry8MKQI/VQREwjZ8Lto1OWM6AViyfasIhbWzbpJZu4Yn2OQCnw8vANU/xovg4vy0mdl0ypG1ZQU8JYAI6vwFGKNwB5u1/17mt3+QTTZR4iCvj962GjRfhdH3BMnVO2MNcoJuQPrQEiGYBZr53p1D+pOzqDvHYmUsFZzDZU3BooJ2HU3AuwqrOP7MTVxCye/cuMea2S9R+hb8Z5nkapxKyhyMnWttRpy3eRuZziCfgiUdugSGbmTsmZeKbMQ+Ldbny0gezomuSjqv6F9kRylPNEhUl4Fi6bq3OxtHqxPd01/b7DJhfDvqXj24VOnzbT4/NZNZneMBtStCH1/Isq71R9ydJpeGa2OrhAZuXL08/igjYSGdS/Q3ulWQlk2g99ws29FAOSBz0KNcoMR8act/LdlFHEfOgROx/rTMTHJYUwdkbH1sjftEh2dfVlKB3elrf7AlA7GcDCMzQS6vTfwLhT7Ujhj2pZ4FoUu+BCKGQ1Ov973mvo7+theevojXksO3FXTKNIXSUxiDiaDlszMnbLqVCAtBAqiKgdsauRWXDZV6rlGlBPdvaf9rSOwVn6t3d9RlX0WIj93RVkMh8y6pOTNV/iJ43s4ecS69RyZilcpngK36HTcsIe57Cf3XewmQ9egZvgqkT/z7f/RDD26p59OvCrHPYD3l8wLuwYQ9C37r2Y2LtLC8V5/xCM23OwvGBx937c8JLLI9N4O15YWfnXv+zciSiNMAJabrUKYq1NYjpFxgOa4PseD+oAkdv2+8HNJkan18Q6xKjwqtYz5nL37ApjLn3L+Y1WSQGPksRKwHQRPtg/jej7hoNhRGHXFo2EpPPJu2amQMhRQTFz98X/o7ctpucTE6g
+ w2wnCf58
+ NAPagOSzLZuLhtxjQV6h2M9hB6b7EAneH6SaqC4zuecRYhCaQ9zoLbQLD1NG09FDLrMr60Y3ac3FvQWe3TQDhC7iHPXuPu4e63weeimeQDeyeHM/IVNYxrYKFHGsW5zaSnUcFFk9y45yupWSEEHUb8aMYzPRTVoNCZjMdSOttrneS90DZhGq80WBcGKWhzgtF6rk3fb5FPAgcvub0fUhSJ0F1qy/q0qEEV9KQA3S8rq6AsGRTPgh5ctkoAWBD8ovF411Kq8456ibWmGMcVuel+AfosQaHyYUEHyL6t2bCV5Hm6PXF9vsAWZgKM3hzVJOx3YOCf9RcNlZluw9zsR7KOKxQ3AKeindodl0YM4zZX0UCvRCb0Emo2P69t1XhNvnr2I0Xq048bs9/qMybKCTck3BfyGOzYiwRYUT1SC+ymngMTU+ptD8l0a5Np8ZEAtM5FPmLs8VmYEE1c6EBfDLdHhJkJ422Eboi3MZxH50bI3i0wYtV0kjl4RK2oMI8I7czxkz0ixBsP4Rq2ug=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,141 +119,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
-head:   266ee584e55eed108583ab4f45b5de734522502d
-commit: 1e338f4d99e6814ede16bad1db1cc463aad8032c kasan: introduce ARCH_DEFER_KASAN and unify static key across modes
-date:   5 weeks ago
-config: um-randconfig-r064-20251024 (https://download.01.org/0day-ci/archive/20251024/202510240649.RjPY0lml-lkp@intel.com/config)
-compiler: clang version 22.0.0git (https://github.com/llvm/llvm-project e1ae12640102fd2b05bc567243580f90acb1135f)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510240649.RjPY0lml-lkp@intel.com/reproduce)
+On Thu, Oct 23, 2025 at 5:01=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> Since commit af92793e52c3 ("slab: Introduce kmalloc_nolock() and
+> kfree_nolock().") there's a possibility in alloc_single_from_new_slab()
+> that we discard the newly allocated slab if we can't spin and we fail to
+> trylock. As a result we don't perform inc_slabs_node() later in the
+> function. Instead we perform a deferred deactivate_slab() which can
+> either put the unacounted slab on partial list, or discard it
+> immediately while performing dec_slabs_node(). Either way will cause an
+> accounting imbalance.
+>
+> Fix this by not marking the slab as frozen, and using free_slab()
+> instead of deactivate_slab() for non-frozen slabs in
+> free_deferred_objects(). For CONFIG_SLUB_TINY, that's the only possible
+> case. By not using discard_slab() we avoid dec_slabs_node().
+>
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock()=
+.")
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+> Changes in v2:
+> - Fix the problem differently. Harry pointed out that we can't move
+>   inc_slabs_node() outside of list_lock protected regions as that would
+>   reintroduce issues fixed by commit c7323a5ad078
+> - Link to v1: https://patch.msgid.link/20251022-fix-slab-accounting-v1-1-=
+27870ec363ce@suse.cz
+> ---
+>  mm/slub.c | 8 +++++---
+>  1 file changed, 5 insertions(+), 3 deletions(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 23d8f54e9486..87a1d2f9de0d 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -3422,7 +3422,6 @@ static void *alloc_single_from_new_slab(struct kmem=
+_cache *s, struct slab *slab,
+>
+>         if (!allow_spin && !spin_trylock_irqsave(&n->list_lock, flags)) {
+>                 /* Unlucky, discard newly allocated slab */
+> -               slab->frozen =3D 1;
+>                 defer_deactivate_slab(slab, NULL);
+>                 return NULL;
+>         }
+> @@ -6471,9 +6470,12 @@ static void free_deferred_objects(struct irq_work =
+*work)
+>                 struct slab *slab =3D container_of(pos, struct slab, llno=
+de);
+>
+>  #ifdef CONFIG_SLUB_TINY
+> -               discard_slab(slab->slab_cache, slab);
+> +               free_slab(slab->slab_cache, slab);
+>  #else
+> -               deactivate_slab(slab->slab_cache, slab, slab->flush_freel=
+ist);
+> +               if (slab->frozen)
+> +                       deactivate_slab(slab->slab_cache, slab, slab->flu=
+sh_freelist);
+> +               else
+> +                       free_slab(slab->slab_cache, slab);
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510240649.RjPY0lml-lkp@intel.com/
+A bit odd to use 'frozen' flag as such a signal.
+I guess I'm worried that truly !frozen slab can come here
+via ___slab_alloc() -> retry_load_slab: -> defer_deactivate_slab().
+And things will be much worse than just accounting.
 
-All errors (new ones prefixed by >>):
+Maybe add
+  inc_slabs_node(s, nid, slab->objects);
+right before
+  defer_deactivate_slab(slab, NULL);
+  return NULL;
 
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:5:
-   In file included from include/linux/crypto.h:18:
-   In file included from include/linux/slab.h:260:
-   In file included from include/linux/kasan.h:21:
->> arch/um/include/asm/kasan.h:29:2: error: UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-      29 | #error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-         |  ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      98 |                 return (set->sig[3] | set->sig[2] |
-         |                                       ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:99:4: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-      99 |                         set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:101:11: warning: array index 1 is past the end of the array (that has type 'unsigned long[1]') [-Warray-bounds]
-     101 |                 return (set->sig[1] | set->sig[0]) == 0;
-         |                         ^        ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     115 |                         (set1->sig[2] == set2->sig[2]) &&
-         |                                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-         |         ^
-   In file included from arch/um/kernel/asm-offsets.c:1:
-   In file included from arch/x86/um/shared/sysdep/kernel-offsets.h:7:
-   In file included from include/linux/audit.h:13:
-   In file included from include/linux/ptrace.h:7:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:116:5: warning: array index 1 is past the end of the array (that has type 'const unsigned long[1]') [-Warray-bounds]
-     116 |                         (set1->sig[1] == set2->sig[1]) &&
-         |                          ^         ~
-   arch/x86/include/asm/signal.h:24:2: note: array 'sig' declared here
-      24 |         unsigned long sig[_NSIG_WORDS];
-
-
-vim +29 arch/um/include/asm/kasan.h
-
-    27	
-    28	#if defined(CONFIG_STATIC_LINK) && defined(CONFIG_KASAN_INLINE)
-  > 29	#error UML does not work in KASAN_INLINE mode with STATIC_LINK enabled!
-    30	#endif
-    31	#else
-    32	static inline void kasan_init(void) { }
-    33	#endif /* CONFIG_KASAN */
-    34	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+I don't quite get why c7323a5ad078 is doing everything under n->list_lock.
+It's been 3 years since.
+We have an empty slab here that is going to be freed soon.
+It's effectively frozen, so inc_slabs_node() on it seems like a safe fix.
 
