@@ -4,91 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6857CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:09:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 54725CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:12:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D30368E000B; Wed, 22 Oct 2025 21:09:58 -0400 (EDT)
+	id AC4A08E000D; Wed, 22 Oct 2025 21:12:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CE0978E0002; Wed, 22 Oct 2025 21:09:58 -0400 (EDT)
+	id A75448E0002; Wed, 22 Oct 2025 21:12:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1DE38E000B; Wed, 22 Oct 2025 21:09:58 -0400 (EDT)
+	id 969AE8E000D; Wed, 22 Oct 2025 21:12:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B2CF88E0002
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:09:58 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C31BBC608
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:09:58 +0000 (UTC)
-X-FDA: 84027597276.11.F368CEC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 2CDB91C000F
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:09:55 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZEou8pA;
-	spf=pass (imf18.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 82E708E0002
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:12:30 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 26FC7B652B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:12:30 +0000 (UTC)
+X-FDA: 84027603660.20.A2ABDB0
+Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 0607D140003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:12:26 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JBwZ97GJ;
+	spf=pass (imf09.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761181796;
+	s=arc-20220608; t=1761181948;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=XTrSUTbF6VxwZUeGxjrCRBqv9qiyO6S3UPSZQsaoyy4=;
-	b=Ljak3xPg+qFgQVaOlcRWQXY4CfiC9M1Yp32GvwJ+YmZ/wc02QYk6A/MNAQv2qhGWnTAMqT
-	gkaEzBMWmreiPHddJ8+cDo9rwoKe5CqjA/yBnn2r53LVEeXT8csnZWtg8NjCnMZ6sIpmNQ
-	l+pdkrfEDxq8fjuX3DDkjHMLrnP0fHg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XZEou8pA;
-	spf=pass (imf18.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761181796; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=OY0FCj556fptPozBFxGp5get5cRe/MRUmiOCM9ncjw4=;
+	b=2wvL3auYbphIGXQQLDQAdhNpviW3nYhyKRItRJWLmPrbSRGyTxlDK14qigJnZhfu94Vbts
+	uENFH2Fh3qtQjwePgYnicYi6NHq0iyO/joBA8IKy8DKlIzeHSuew63yTldKq4fzMqp0t92
+	TCYf8PfUK+VArGP3V9YMmUJ9ThGVz2Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761181948; a=rsa-sha256;
 	cv=none;
-	b=y75sDjPRTceA8Lc5+Y3fLsdtu2TFPlsyou1NHlLCq4gbmPSDhyr2nxCwam/YKbpbcYzLqe
-	yVfkxH+Gw0pexOar/R8Gxo3SPoQK7nqRdNQg6AY1LRLrFd11pxJt/kXQOu2KwK2ikNycug
-	/weMsX0ApoPookUh+V3ykNPBO9+b//0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A36D943754;
-	Thu, 23 Oct 2025 01:09:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81531C4CEE7;
-	Thu, 23 Oct 2025 01:09:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761181794;
-	bh=G0zO/gc9MN6KlY2clwE0hRQpkFOp+B6rix9cfRycwNw=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=XZEou8pAzZph6RaP/px9DGaj9wzQQc7PRiwczqZxTJB/LCw8fpxiylSf4ejqXI4br
-	 xiycTQOUNmMLB9zR/boxz8raYOnd9CbfSoWK4nuxknmjkxME7j5HrOSiNRejJJ8Ahk
-	 CmU4dTDke+RL58d43bNFLo6mxbtlFzf4qHpQYjoF4JWcykYwRN2eF3+dudSCZ5DlEo
-	 JCNwHqcoxMsTHMgB/CrSXQ0RIwRHRSwvlQkMuIb9dNA7VWRXYaDNp2eidYCGA8H2bt
-	 5DGHDe5cMy+9dWObcwiFxLnqHpUT3DZFWJVwOGpjTIVHHIonRlASXJBaQ1cU2pJMRP
-	 KgdfaPQ8yQswg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 7134A3809A00;
-	Thu, 23 Oct 2025 01:09:36 +0000 (UTC)
-Subject: Re: [GIT PULL]  hotfixes for 6.18-rc3
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20251022124548.a2bd1335de33d5d2b7b2fcb2@linux-foundation.org>
-References: <20251022124548.a2bd1335de33d5d2b7b2fcb2@linux-foundation.org>
-X-PR-Tracked-List-Id: <linux-mm.kvack.org>
-X-PR-Tracked-Message-Id: <20251022124548.a2bd1335de33d5d2b7b2fcb2@linux-foundation.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-10-22-12-43
-X-PR-Tracked-Commit-Id: 9aa12167ef1149d9980713b120ddcb31cf17222d
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 0f3ad9c6105f32d1755c0bd54a7f98c892f3ceb7
-Message-Id: <176118177496.2361762.8429864278657439386.pr-tracker-bot@kernel.org>
-Date: Thu, 23 Oct 2025 01:09:34 +0000
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, linux-mm@kvack.org, mm-commits@vger.kernel.org, linux-kernel@vger.kernel.org
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2CDB91C000F
-X-Stat-Signature: bt7mytxz6bpxia4sueiej365pqnnt8na
+	b=cVCXjVAkBculPUJ10c4poGZUW4BEys6iQPhtTnnG/U/FyklWo3qE+eeizFOcFWN9P+ccsP
+	uYf7MmqWyzyETCHZou83jyLdJcXvQxVFNOX6JbO4y4kfVf0vHX8qJzEkS4HaMdEfZVoBdh
+	vyBhcPaFwcRL7Cx9Nyp3Px+EvyYb4aU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=JBwZ97GJ;
+	spf=pass (imf09.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.97 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761181943; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=OY0FCj556fptPozBFxGp5get5cRe/MRUmiOCM9ncjw4=;
+	b=JBwZ97GJil+RYkKKjOPaN2dV/zNwZXYWDUnhGtFHeAL1hv4ZProHR6+KWnAGX7D5HQ597VWmlMmsoXXLBr1J5Jcaujy/BmeKfhrYMmNshKZqeTFSh7FrBsChH1aerBdrG4BWcDR62LLsiSRZi6sjBsHN/eSLMW3wzJhG8ywLUOY=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WqogLW1_1761181942 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Thu, 23 Oct 2025 09:12:22 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: David Hildenbrand <david@redhat.com>, Anshuman Khandual
+ <anshuman.khandual@arm.com>
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,  linux-mm@kvack.org,
+  Andrew Morton <akpm@linux-foundation.org>,  linux-kernel@vger.kernel.org,
+  Catalin Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH V2] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
+ tests
+In-Reply-To: <0a121e1b-e238-4a75-b431-7c5a23c70f45@redhat.com> (David
+	Hildenbrand's message of "Wed, 22 Oct 2025 22:24:06 +0200")
+References: <20251022032951.3498553-1-anshuman.khandual@arm.com>
+	<87ecqve6gg.fsf@DESKTOP-5N7EMDA>
+	<b5a1b52c-75ef-4915-a254-a502b9f78eeb@arm.com>
+	<87o6pzbbks.fsf@DESKTOP-5N7EMDA>
+	<0a121e1b-e238-4a75-b431-7c5a23c70f45@redhat.com>
+Date: Thu, 23 Oct 2025 09:12:21 +0800
+Message-ID: <87qzuu2zgq.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam05
+X-Stat-Signature: wijd8pyxx39qga9ojwq5gsdncatjdna1
 X-Rspam-User: 
-X-HE-Tag: 1761181795-963882
-X-HE-Meta: U2FsdGVkX18EE0bW2XL9tfwsqZNXv5X+SSQSnvZm6pokVL+4BJKZbqf4zuMMVk4ye6fFylDQDETLP0LZQBQkyuAwRdNCkLUzVGyCq+OBP8jExplva921zqv6Qz89+IL7ciln2Ijj1u3WVFszYGPlY98L9WtqhCnfYN5Gcm/UinmyU8HnpIe8qqaiF1WTnACvsRVRRCct5jPEuy4TtRB3EUu6cssRMGfApXGjXGBR1cv6bf41o8AieAw7sT3GtgbrMvF4H9X0XJ89R2BMk+EGdbbI42c2LAmPRJC16YT4n8++HgbYMnAFusaxXW38oY53yJLkaZRN5ieDB8fmHAkerGT1RKMyR/HB63D5U0EP0GAD6/CWezZJ3TILoIyUgc6c044KEY44CRpmhQwQe2gLKfhJnKcXmMZYKsvndWkioMvzagYJh49cjE3y1RexDthX4tLqAYgkMBkj2WjWHK9LN19tV0L6VXp/2XC4mh97if4g/UvXC09Y+bRx0xUaFZytXKaXNSddTm5AeSbVRqSsB2EATz132OAqRU2DDCz4wRZNl/gehViRgPrXSTaS3H+TwlyTRX6TJxt9ab1zNKbFHcnVRa5LdR8ZEK2IVoiXrwDPvrn+PcyAdgZXxyaShv7z652R6gyD8VS5tlkiuY0CWCZE68+oI2GZFmqGeuazIji1lzxAQUs4pGe3a1Fcdj/6nOuXW4jb9KwyECp1WCq4C77Uic16v4g6VI5CZJzXOvExsDR3kdS2j0gd3nGgnziSvFO/dLc4mxtkmEBQoxvf8Rp/S7NjhjcCY+/93yXCjY2jed8jSwxHEZBeK+Sy4AQasGl/gzzsQeXenfpf18BA+ISy4h24Dz+uHuvaZbMDH/5cNNziDhFm5mkzj6D8h6KZurf2JnypuRrey51ngrBjfML3YcmLgv/nDCOnVmb7631ssxGHfI4Hx23hh29tdQoy0VKpWu4yII6XnSN8ED8
- QOapKVIn
- zImM0iQOXc8+Buczz2KajH9kb3HUQgA0BR1S80pIoExm14neBWjrYCmPP3s7cIjbZs+kR+15CkQXynGBWJddMkn88dWBwsXzahAkCS29wL/nPPRLaR+iKsFDDyHxaG7QdufJlHFsQzi2XaaY3YqjNuzB39wlPi0l1+pzCGSLvCDOGqMABNwzyapaAyjl1n+wT3XqFC3NboyzQeRn6QDecAWHLrbuGladncJiT7SXNdBC3OmCpjdIo7g8jp6DISfcdAhoo3WUs3pck8zn4awUG0F4BWA==
+X-Rspamd-Queue-Id: 0607D140003
+X-HE-Tag: 1761181946-139913
+X-HE-Meta: U2FsdGVkX19QnK2mHOOZA46GFVpeJrJ4b5h5hObIo+g2+Vbje+JzhF8dMSwWIitbycUm/LIOtTcIGKkldieWk1ZOSh94cvruvAOY7eAAvk6PDiqXIMVwG4he5x7TRD84l8kf3orCgkBywvjSLmAXT54x6jLsCx6ORETXavkRWzwdlrmfx2F8IOpQfPN+DK2Wlym73uwf4OlaFL3T4CcLIBuk3ZIbRxpnCXl4JZ85NxFZTL1aUBHlYqHXUNEpKlSeAf2kYqbh+H7kF28ssh1+c1B3aak8pwThZgqIh0gKKy81SUpFmpT1mdil2Abu1imVCZeyrjYz965eWCLudcWfjd01d5tZpY9/J20h7uvqxrVnG8iZhwvhhXMp6RqCnzkOv8aH/4Du8RJG7UX1PGqBys4qu/mg6WRDzqTpPKo74DPSNgja1TND9T5YzPyl4KDVYNTZENZYxAAvYDjyS76i+KD0S1z9tHMlxhJQtttqPGnjY/JQDo2aw0DkUwKvYlHM8SV7ZpY5qvRQi/uqJVl8LiPiQ2ik2bB9amWDJqwatCjYpUEtwrlc43nrT8KHhNlP+T/y4vyQ7qjvsbkBlMNvu8NBbeemypbWK9TQhdeuv64NBNppXaXZQITXxo/sGLXV6mgcP9vl0/E6wjWAQFT5URvglXvKnD5czABf/zxr7Tskr9Cpj8acXOMYm8FqiJJvjuvLs9jbZp0u23EtS4WexEg13qBYUGKg30l4NQrQF3JUNe/7f5ScMcrZrxuNBnpm84cK4UV2ed8Iw7owc60J6UrnSuuDUWul2KCqaRbBxWTxRb7Hh9mm96tINEZiHmVbPdAHXm6d9lHlN11/4VGu9+Kwldtf8g8jS71RhWL4nuib5ezGhD/+hoRHs2KxYabzhkyoo2gnz3WlB83gMZN4+KABYT1gGp8dz8rjwRrtAulN7uYm/UDQT/y9V/x1YJ703cFqu/D3PG5Kh7X7kAS
+ P/k6O5yR
+ haZbgFbCWxQ/T+sreFvecXsweHVlNXPd/7UXFufv9tVGbiFqSg75aYYqyqDEIMrBO3+diQWBVTlK7xkVyb9BgeYWjZKEnJFiyfQzeRwxJLR5rGzx5sz28uipl5xzMJX/7GAjQPku0kKpF6FqhgxmWMI22J5z1C1wGAj9Gb1CYsl4gfbANJB80QUh81W2t41mVQ+KM8FWnRH1/F7Hq6TBKfaWCm/nZHwlski2eoyg8iUkmh4AJ7iMAEyvkH3zBgDZ9Q1WxvJt2b6F2dTJe1G0Umy3SilEG6i0IShg2Ya6Tk9KVM8uDHuBNUHmDp8BNZCsKHxiiwd7YJWvr+TvaaCn9g9TsX1jzyGaF7qsnPy5N5d/taYq2zJBNdbK+YNaYeSQG5ZOseRuBTCkquYwsIG2NbmUjT1rw59YDXg5F/7/ACYORC1G8szIosJLe86/BRF09rYHQcv+YvI0oXwbnEUaF+CDwA+qIO25ck/6v/AoN1O6p5kjnp1ofcEEQ6NkqRzrRl4A1vAdDa5glOblk8cvA1OjcFA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +92,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Wed, 22 Oct 2025 12:45:48 -0700:
+David Hildenbrand <david@redhat.com> writes:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm tags/mm-hotfixes-stable-2025-10-22-12-43
+> On 22.10.25 10:11, Huang, Ying wrote:
+>> Anshuman Khandual <anshuman.khandual@arm.com> writes:
+>> 
+>>> On 22/10/25 1:03 PM, Huang, Ying wrote:
+>>>> Anshuman Khandual <anshuman.khandual@arm.com> writes:
+>>>>
+>>>>> Add some [pte|pmd]_mkwrite_novma() relevant tests.
+>>>>>
+>>>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>>>> Cc: David Hildenbrand <david@redhat.com>
+>>>>> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+>>>>> Cc: linux-mm@kvack.org
+>>>>> Cc: linux-kernel@vger.kernel.org
+>>>>> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+>>>>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>>>>> ---
+>>>>> These tests clear on arm64 platform after the following recent patch.
+>>>>>
+>>>>> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+>>>>>
+>>>>> Changes in V2:
+>>>>>
+>>>>> - Added a new test combination per Huang
+>>>>>
+>>>>> Changes in V1:
+>>>>>
+>>>>> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
+>>>>>
+>>>>>   mm/debug_vm_pgtable.c | 12 ++++++++++++
+>>>>>   1 file changed, 12 insertions(+)
+>>>>>
+>>>>> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+>>>>> index 830107b6dd08..def344bb4a32 100644
+>>>>> --- a/mm/debug_vm_pgtable.c
+>>>>> +++ b/mm/debug_vm_pgtable.c
+>>>>> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>>>>>   	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>>>>>   	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>>>>>   	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+>>>>> +
+>>>>> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
+>>>>> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+>>>>> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+>>>>
+>>>> Why do you use
+>>>>
+>>>> pte_mkwrite_novma(pte)
+>>>>
+>>>> instead of
+>>>>
+>>>> pte_mkwrite(pte, args->vma)
+>>> Just wanted to have more coverage for pte_mkwrite_novma() helper which was missing
+>>> till now in this test. But just wondering is there a specific reason for replacing
+>>> this with pte_mkwrite() helper instead here ? Also we could probably add tests for
+>>> both these helper variations if that is preferred.
+>> IIUC, pte_mkwrite() is a more formal interface.  pte_mkwrite_novma()
+>> is
+>> used to implement pte_mkwrite().  So, IMHO, we should use the more
+>> formal pte_mkwrite() interface if possible.
+>
+> pte_mkwrite() does different things based on VMA flags on some archs
+> (e.g., x86). So to test the "interesting" stuff one would have to
+> craft a special VMA.
+>
+> Without any special flags pte_mkwrite() really is just pte_mkwrite_novma().
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/0f3ad9c6105f32d1755c0bd54a7f98c892f3ceb7
+Thanks for explanation.  If so, I'm fine to use pte_mkwrite_novma() in
+the tests.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+---
+Best Regards,
+Huang, Ying
 
