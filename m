@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF67CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:08:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C863CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:10:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F3FE18E0005; Thu, 23 Oct 2025 03:08:13 -0400 (EDT)
+	id CF6598E0006; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F13EA8E0002; Thu, 23 Oct 2025 03:08:13 -0400 (EDT)
+	id CCE838E0002; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E29928E0005; Thu, 23 Oct 2025 03:08:13 -0400 (EDT)
+	id BE42D8E0006; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CD8D18E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:08:13 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6C149888D6
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:08:13 +0000 (UTC)
-X-FDA: 84028500066.24.5880F9B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id B5E6614000D
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:08:11 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rs6Ym6T7;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A94D68E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 510FB129A13
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:10:17 +0000 (UTC)
+X-FDA: 84028505274.07.17BE1FD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B0885180003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:10:15 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcJFhi8t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761203291;
+	s=arc-20220608; t=1761203415;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KmJUYlrdR2KsT/jAXRLSsmSbn72o9kY2NCWvqvyI438=;
-	b=TD6SYHbZ2wo5d/9/qC/aEQQ/hFK+ej1vAdnsT9nrZ5XTBWGMpUMDQkHwLB4r5KKK2sPmah
-	d6lp7+CBP/vf5MCse79rj+nl8sBgwEJD5cFHtqC4yw++eghAaOjEYlwYxSoV2maFdZ0qQ/
-	BLwPIE0ndGKxN+mFGW75Vn//v6sS7xM=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rs6Ym6T7;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203291; a=rsa-sha256;
+	bh=AMqGJMYRfFxAYf5IaOH6KgByKQxfpp/XiiVrOhM/trU=;
+	b=lEh6EUbigf0M1L9Drmoglk0rW7CmTRHqJscJx+TQMs8YUwo43o1L5GZcIoGK7sYdbEyIXM
+	LdIgHgCmmISzLO5uSBMUJ9ZgaHuoJx8AQca7HiRb2uiCNmOA8qVLVI+0zeVTqj6slanFJI
+	6oTVrgyy84SQgkSyF0kHkydWPN93nq8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203415; a=rsa-sha256;
 	cv=none;
-	b=o4MkUOXSyGfltgDjOh0JYBlSU5Z7o9FUsbjWSqKFknp3k72tjhZse6grq6m/4bIinopAov
-	1dTSrk8z+CIYr4efTIMXWt1N/YYr9cZsbWJS3OiLMA9nP/XoAPAGG+MB5cca5+plFIm3QA
-	W7xBUpaO20M4dy2/CYB6AQfRcBciASY=
+	b=RJ22BHcdhCsWCFNxr7GUS1B1cAup0iE9vZob1rgERA0o2sz1aR/89qBgXoMQ2aC/wMLNrH
+	DjXP01VXvjuTg5DOv6pBfwoxhrkBu38P0ju5cEhUbQ5je3djWKqfz+WfbXfZSqWj+DYDsC
+	NfebyEOyxwglALVzqDVkS/3pnW/pUso=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcJFhi8t;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 639B1436EA;
-	Thu, 23 Oct 2025 07:08:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5E66C4CEE7;
-	Thu, 23 Oct 2025 07:08:00 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id C6363605F3;
+	Thu, 23 Oct 2025 07:10:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49433C4CEE7;
+	Thu, 23 Oct 2025 07:10:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761203290;
-	bh=/EbgptFjltHpGE9hJH8u5LNNSpy34GESNrMM1A23qrE=;
+	s=k20201202; t=1761203414;
+	bh=3eigXBLiimevcUcf8KdhhD/v0+6ZZjko+MbkPytVjq0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Rs6Ym6T7BbcLd2KezItSx+fYibGUohW2Oc/YROMvNUgniEYdltGFzwokK/M4/FMV/
-	 FBB1t3/NKq91hyVRGvn7THYbYlRWMw1fT1ww2KiqLAPobMlwXaLN1xK6xNT5sccFlp
-	 6Dmm+2s9jDQ6rAfygOUGJh2JtgSg6iEq0duU/jfdNb5+oKnkftxztWtbzoTDoQ0l92
-	 ZsByAGWMX0IcXKLN2h+2i4Xhj+bXBVd/GwhHruCuVhF3KF4TfBlYYtP0HFZzZoL4so
-	 ++JATIn7/Ez/asIWL0x1QTXGBThusMEMem1VF5Fud9HZCgQLB39GcfgWwqhJMJoC4B
-	 MAQEfT4m+nAyw==
-Date: Thu, 23 Oct 2025 10:07:57 +0300
+	b=WcJFhi8tSHC6qd0/sKDdW4POrtY8pODQNVNADd8AbwXFN47Qw7Av6RR1wEc8y4kIg
+	 JriUhZcFP08MpUvg7WoV5KC/BLx+T15pEJUTAZL4YKbdd0QUPaMUqNe6eKQei9BIPt
+	 iZD6Lzb1MPz+qfvA9FiR+0j5SDrjIUzzy36JQEVxXKzf8CYmxDuEhZgEq0imUVzddw
+	 FJQ6UC2tuwX6mBhwn7+8RGIo714r6Xcq43rmXGtlGUfLOhwwKygTbmAvh1S+7Y81rB
+	 UNChcCRiu/B5WjBWPYRF0OnYurR8gHb34HJqm738Db4V7qykDKpHPE+nJCi3XDtEMS
+	 a7N2hWzjZKP2Q==
+Date: Thu, 23 Oct 2025 10:10:01 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Lu Baolu <baolu.lu@linux.intel.com>
 Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
@@ -88,22 +88,23 @@ Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
 	iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
 	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
 	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v7 2/8] mm: Add a ptdesc flag to mark kernel page tables
-Message-ID: <aPnUTfMXD7qReWUl@kernel.org>
+Subject: Re: [PATCH v7 7/8] mm: Introduce deferred freeing for kernel page
+ tables
+Message-ID: <aPnUyYS8N9Lp59vS@kernel.org>
 References: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
- <20251022082635.2462433-3-baolu.lu@linux.intel.com>
+ <20251022082635.2462433-8-baolu.lu@linux.intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022082635.2462433-3-baolu.lu@linux.intel.com>
-X-Stat-Signature: rhd841afq3mgq5ycpsb85gu334aufaoz
-X-Rspamd-Queue-Id: B5E6614000D
+In-Reply-To: <20251022082635.2462433-8-baolu.lu@linux.intel.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ram4nxdtc9rz8c996sjfoktwd58n1k1x
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761203291-836357
-X-HE-Meta: U2FsdGVkX1+uVWoGlA1ktTs8Q+2tPFBtZ7tewEbOeBwHlCmnJ9qRoUngha/IaF1bC632nl4JPeQ+L1oP8jq76v9q7ueOSNIOwy7U14aUJUiEup32JulB2PQYycqhXAWXbyRObvh/9NAWD0Trs3CzvWpWLN4JxFmC01Iwn5CDLsdIdblomp58+gcgOler69qcLYY239kcjpNOCTjEDUqZa9v1WmUFBbsTfEaMCFBl3JDVib/q+kW8NahK3IhIF48do4EroHvxWf1XXzkbK18xHplvRLjQqcHtlACk9EQGYqK8GNHSjWhT0byvdUWRbatWzdj0TEv6SLUSCDeD9uy7wHLDxuLsVtkmr7EuTTRCoFpAVeOunHFFMbCxbASLQgxLjNfmhcmV1AB6OQ1iFFLxw+zMiCXtO2KZyqxz7PqvbfGUN4qkndleVYkOof98YIoZesvMa1MV2h0BQUP74/ftkGbpNFSTur4w0hVLpXyPrvwqKZSG44U6MbJFWJW+DioT4xa7nPdehYg3IkHjSPIohSslyFneoHc2dlrtJG8SiKZm+Y3rS85OLOYOg53Mo1x5KmUnlTBzRQbqAiBVNKLW//JO45/75gBSVM3P/0HLp5rkcDpKtvanpXnCM48SmPfvcMSEkiHbe8kO0UM+sf6lEQcqXdsRIg2wllKR3qIruLA1mXk2jkDgNeARfnSadATK+mxu8cPQlITY9aka6JzU8g2BhovjoBXZpsfyK0Jvd8wgPRFcNS5V6DP/G2Zf23Uae7OwtGphaVtUQMdTV+eS4tlPP7TNWc/2YYDXNDsoAGX844rg+Oh3H2iQ+oYJiNE8Mt9rVl9NPcN2wUXw4lsJzNwKguBTqOPeIWMnotOgugEcQPIgX9RIno3BQLHrIUIfA2K/gjBLuURnYs87UbPupq1epDPdfTYgTMy0BHDP1VFRrTR3cY7eukxINey4FUMbLMG2VnCOD2u1pAQJRMI
- vbuOFP9q
- kQi6WxD7FQG7A2z1uboDqwzC4bmhgvXYPVWdIAPb+nKdi7xwKYjOiHJ6zviwpCdNRPw+WlD+QLyDTzjENUiY5E3d1PjUMgeH5+sKSAe6Jvt7kiSuS1tEkn8zT6BeLpcnzUSfZrSntoyo7jPW5Oq1pe/aUvV7CeqjlFGJmAvtib65FQKXyopN8Wyh8UiJmKzMiLH2mt6DJ+cceAgYjTGbmCQvndq51rQBIe1sC47YIUM/ZVRyEwRDleQER+Z1jLnwOI5g9mmM+Rxif0wgZOzvkdOrtKAcEAQ8KtyL6zMeNJgleK85l4tg05QaUbIjX/BxeBko/8fzzHB97vDMZqX9onEXDKLmhylnjVMiJ96arCdIsJeBZBtDBV1VhRuWUrOrf+Uxx
+X-Rspamd-Queue-Id: B0885180003
+X-HE-Tag: 1761203415-974578
+X-HE-Meta: U2FsdGVkX1+eZyR7+pegQBu8KUlBUSVV4rvgYaDVBGwBfSVRDjU9Wdu4XkUj+CUSVDn+j7R+Ha/26bciLlQsw24vIG72frtSTBMFeixXflSHDH5q+jeHnAoNXORdRfYM0it7zz/HyVhDiVaG9x5ucbLY+aYd+Ko4p/g5qKyMAkk1OJgnhVY+f/Aa1kXmv5cApAiOEmUtsVU6UeSdqbqn+xdwvoa083BE71oMPCjPdo09OVOLlreqeR4wVox0E/GqlXjJgZk1wk5hVrW8ggz+B3QKnp19SQBms0invzjBVV6mMz2E2dtFRypAPJZcbwrHRFa2RV3MUGKPlKwvujGck0vwUgXayZT5in2NrEdlo1QJ7gXDSWtFDtT5Ps/mZ2+VALz3o24Plzx6HPjeMEMLq/jPT2Su+5+VrDfW03xNFKjtof5EZdoEktBa0AZHWEKVbnS/FiOV9wf1Sq2UWm7HVb3chleSXFcg9m3XPPYJOHaHwndWI7+1IpNQWxfTzTqw+uCl5QrpaN6ldjpJ1o/9xGs/k5n4HQouppueZM97UE07ELUzZ63K8pHctCY1zJsWDc5NNQk93EAZGo/dIhOetfnnuMNQzTteVXaKgSBsUeTe/wpiXnTU36ytWtqvCuaJuUkpyQCPKNDGJC7ABHn4HmAqGPjChszSUEexfCd3c+UX5ht/e4x7rEE7fBDrAUCEwEGMe27X/AI/mlYFpYHT94uuXdFO5XnGAuXAskU7YZreY0r3a4W1B2PGy1JGTQEq7JtTiTOLCvJs/v1E35oeRH9h/v/KC4JIdiyz9Z4EQx9seD82Flq2oWhAiOCud7C9s90tjiVY/5O6kMsdPfIAcWUUQSfpbiVvO2bFG7R+2JSOMLSrFA6l7BrfBXybbXJ493pUOZO4zsC6TowG2P/RF1YZv5Lv826Cq9epkmJo1TRn0w7px7h8cE5jvy76gufL2HHg/akgDjBxh8w5Zin
+ rqdA12uK
+ d890Wc66ZIvsTtyefOWRKCM3qCwEbnhLvF4GcfuphOqqBPfx7hG6YdhNnYhpZa3+g+RHvo3GryKvuvxVUTBshTcZi0KAIGQ5tZiamXTsR0hesPnLfGccyFfSr83gvlO6iaw0pTKglbRJWDgd1B/CAvZQl38BXziWMR7ssqMHt1bq/SXjvjKtCuhppr9QlOCATzzy8oQDueTjAikBWCdHKUJbnQ4LuHocjM3aYpwVpp13aBTiMhlr81mdYAkbRxhZSJLjj7gSl30LVNh8+Sb9y8O3KcUkLbgURdvMwdSPU1f45V3RMpdoZJqD29nXQLbgjL6pMNntCKkoDX1aVaVNS23OA3GUzwoeNK33AnVtP1ISB8F4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,102 +113,127 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 04:26:28PM +0800, Lu Baolu wrote:
+On Wed, Oct 22, 2025 at 04:26:33PM +0800, Lu Baolu wrote:
 > From: Dave Hansen <dave.hansen@linux.intel.com>
 > 
-> The page tables used to map the kernel and userspace often have very
-> different handling rules. There are frequently *_kernel() variants of
-> functions just for kernel page tables. That's not great and has lead
-> to code duplication.
+> This introduces a conditional asynchronous mechanism, enabled by
+> CONFIG_ASYNC_KERNEL_PGTABLE_FREE. When enabled, this mechanism defers the
+> freeing of pages that are used as page tables for kernel address mappings.
+> These pages are now queued to a work struct instead of being freed
+> immediately.
 > 
-> Instead of having completely separate call paths, allow a 'ptdesc' to
-> be marked as being for kernel mappings. Introduce helpers to set and
-> clear this status.
-> 
-> Note: this uses the PG_referenced bit. Page flags are a great fit for
-> this since it is truly a single bit of information.  Use PG_referenced
-> itself because it's a fairly benign flag (as opposed to things like
-> PG_lock). It's also (according to Willy) unlikely to go away any time
-> soon.
-> 
-> PG_referenced is not in PAGE_FLAGS_CHECK_AT_FREE. It does not need to
-> be cleared before freeing the page, and pages coming out of the
-> allocator should have it cleared. Regardless, introduce an API to
-> clear it anyway. Having symmetry in the API makes it easier to change
-> the underlying implementation later, like if there was a need to move
-> to a PAGE_FLAGS_CHECK_AT_FREE bit.
+> This deferred freeing allows for batch-freeing of page tables, providing
+> a safe context for performing a single expensive operation (TLB flush)
+> for a batch of kernel page tables instead of performing that expensive
+> operation for each page table.
 > 
 > Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
 > Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
 > Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 > Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
 
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/mm.h | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
+>  mm/Kconfig           |  3 +++
+>  include/linux/mm.h   | 16 +++++++++++++---
+>  mm/pgtable-generic.c | 37 +++++++++++++++++++++++++++++++++++++
+>  3 files changed, 53 insertions(+), 3 deletions(-)
 > 
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 0e26f4fc8717..a83df9934acd 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -908,6 +908,9 @@ config PAGE_MAPCOUNT
+>  config PGTABLE_HAS_HUGE_LEAVES
+>  	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+>  
+> +config ASYNC_KERNEL_PGTABLE_FREE
+> +	def_bool n
+> +
+>  # TODO: Allow to be enabled without THP
+>  config ARCH_SUPPORTS_HUGE_PFNMAP
+>  	def_bool n
 > diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index d16b33bacc32..354d7925bf77 100644
+> index 52ae551d0eb4..d521abd33164 100644
 > --- a/include/linux/mm.h
 > +++ b/include/linux/mm.h
-> @@ -2940,6 +2940,7 @@ static inline pmd_t *pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long a
->  #endif /* CONFIG_MMU */
->  
->  enum pt_flags {
-> +	PT_kernel = PG_referenced,
->  	PT_reserved = PG_reserved,
->  	/* High bits are used for zone/node/section */
->  };
-> @@ -2965,6 +2966,46 @@ static inline bool pagetable_is_reserved(struct ptdesc *pt)
->  	return test_bit(PT_reserved, &pt->pt_flags.f);
+> @@ -3031,6 +3031,14 @@ static inline void __pagetable_free(struct ptdesc *pt)
+>  	__free_pages(page, compound_order(page));
 >  }
 >  
-> +/**
-> + * ptdesc_set_kernel - Mark a ptdesc used to map the kernel
-> + * @ptdesc: The ptdesc to be marked
-> + *
-> + * Kernel page tables often need special handling. Set a flag so that
-> + * the handling code knows this ptdesc will not be used for userspace.
-> + */
-> +static inline void ptdesc_set_kernel(struct ptdesc *ptdesc)
+> +#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+> +void pagetable_free_kernel(struct ptdesc *pt);
+> +#else
+> +static inline void pagetable_free_kernel(struct ptdesc *pt)
 > +{
-> +	set_bit(PT_kernel, &ptdesc->pt_flags.f);
+> +	__pagetable_free(pt);
 > +}
-> +
-> +/**
-> + * ptdesc_clear_kernel - Mark a ptdesc as no longer used to map the kernel
-> + * @ptdesc: The ptdesc to be unmarked
-> + *
-> + * Use when the ptdesc is no longer used to map the kernel and no longer
-> + * needs special handling.
-> + */
-> +static inline void ptdesc_clear_kernel(struct ptdesc *ptdesc)
-> +{
-> +	/*
-> +	 * Note: the 'PG_referenced' bit does not strictly need to be
-> +	 * cleared before freeing the page. But this is nice for
-> +	 * symmetry.
-> +	 */
-> +	clear_bit(PT_kernel, &ptdesc->pt_flags.f);
-> +}
-> +
-> +/**
-> + * ptdesc_test_kernel - Check if a ptdesc is used to map the kernel
-> + * @ptdesc: The ptdesc being tested
-> + *
-> + * Call to tell if the ptdesc used to map the kernel.
-> + */
-> +static inline bool ptdesc_test_kernel(const struct ptdesc *ptdesc)
-> +{
-> +	return test_bit(PT_kernel, &ptdesc->pt_flags.f);
-> +}
-> +
+> +#endif
 >  /**
->   * pagetable_alloc - Allocate pagetables
->   * @gfp:    GFP flags
+>   * pagetable_free - Free pagetables
+>   * @pt:	The page table descriptor
+> @@ -3040,10 +3048,12 @@ static inline void __pagetable_free(struct ptdesc *pt)
+>   */
+>  static inline void pagetable_free(struct ptdesc *pt)
+>  {
+> -	if (ptdesc_test_kernel(pt))
+> +	if (ptdesc_test_kernel(pt)) {
+>  		ptdesc_clear_kernel(pt);
+> -
+> -	__pagetable_free(pt);
+> +		pagetable_free_kernel(pt);
+> +	} else {
+> +		__pagetable_free(pt);
+> +	}
+>  }
+>  
+>  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
+> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
+> index 567e2d084071..1c7caa8ef164 100644
+> --- a/mm/pgtable-generic.c
+> +++ b/mm/pgtable-generic.c
+> @@ -406,3 +406,40 @@ pte_t *__pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
+>  	pte_unmap_unlock(pte, ptl);
+>  	goto again;
+>  }
+> +
+> +#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
+> +static void kernel_pgtable_work_func(struct work_struct *work);
+> +
+> +static struct {
+> +	struct list_head list;
+> +	/* protect above ptdesc lists */
+> +	spinlock_t lock;
+> +	struct work_struct work;
+> +} kernel_pgtable_work = {
+> +	.list = LIST_HEAD_INIT(kernel_pgtable_work.list),
+> +	.lock = __SPIN_LOCK_UNLOCKED(kernel_pgtable_work.lock),
+> +	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, kernel_pgtable_work_func),
+> +};
+> +
+> +static void kernel_pgtable_work_func(struct work_struct *work)
+> +{
+> +	struct ptdesc *pt, *next;
+> +	LIST_HEAD(page_list);
+> +
+> +	spin_lock(&kernel_pgtable_work.lock);
+> +	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
+> +	spin_unlock(&kernel_pgtable_work.lock);
+> +
+> +	list_for_each_entry_safe(pt, next, &page_list, pt_list)
+> +		__pagetable_free(pt);
+> +}
+> +
+> +void pagetable_free_kernel(struct ptdesc *pt)
+> +{
+> +	spin_lock(&kernel_pgtable_work.lock);
+> +	list_add(&pt->pt_list, &kernel_pgtable_work.list);
+> +	spin_unlock(&kernel_pgtable_work.lock);
+> +
+> +	schedule_work(&kernel_pgtable_work.work);
+> +}
+> +#endif
 > -- 
 > 2.43.0
 > 
