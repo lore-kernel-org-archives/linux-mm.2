@@ -4,107 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8C863CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:10:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36D15CCF9E0
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF6598E0006; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
+	id 6BE0D8E0009; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCE838E0002; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
+	id 695398E0002; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE42D8E0006; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
+	id 5D2008E0009; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A94D68E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:10:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 510FB129A13
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:10:17 +0000 (UTC)
-X-FDA: 84028505274.07.17BE1FD
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 484478E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:14:01 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AFAC55C336
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:14:00 +0000 (UTC)
+X-FDA: 84028514640.25.D6A84E2
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id B0885180003
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:10:15 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcJFhi8t;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by imf09.hostedemail.com (Postfix) with ESMTP id 2377E140007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:13:58 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OODg5w6E;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761203415;
+	s=arc-20220608; t=1761203639;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AMqGJMYRfFxAYf5IaOH6KgByKQxfpp/XiiVrOhM/trU=;
-	b=lEh6EUbigf0M1L9Drmoglk0rW7CmTRHqJscJx+TQMs8YUwo43o1L5GZcIoGK7sYdbEyIXM
-	LdIgHgCmmISzLO5uSBMUJ9ZgaHuoJx8AQca7HiRb2uiCNmOA8qVLVI+0zeVTqj6slanFJI
-	6oTVrgyy84SQgkSyF0kHkydWPN93nq8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203415; a=rsa-sha256;
-	cv=none;
-	b=RJ22BHcdhCsWCFNxr7GUS1B1cAup0iE9vZob1rgERA0o2sz1aR/89qBgXoMQ2aC/wMLNrH
-	DjXP01VXvjuTg5DOv6pBfwoxhrkBu38P0ju5cEhUbQ5je3djWKqfz+WfbXfZSqWj+DYDsC
-	NfebyEOyxwglALVzqDVkS/3pnW/pUso=
+	bh=liZBE+jq2bIDFokfeq3Cv57vjgsPhqKmbYOJ1XMUPpg=;
+	b=rr7jzVosk/YlOmpuXE+X6O4DNc5mZSAKN7dG2e7R0nZpZC1ErH+aN2DJd0eEgVjcSVSaPD
+	JxDXV0tj0V/2+LgH+MT1HSmjW0Cg5J3/1MFuQZR69OEWC5Nq/oxv1LOlbgYJKaxoTQjYzV
+	Nd56AdLswVttjmSx2UggHrADCk3ACak=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WcJFhi8t;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OODg5w6E;
+	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203639; a=rsa-sha256;
+	cv=none;
+	b=vr9PYAstkq3b5XEQgYWwBEorlf+aeRfHI4lR+js5oDvGn5mknfEZrFwdt9k4awmHaU7gJr
+	pko061B0/hH9HpYmZapSQdpEaI7x9wUUCyuUcBfdRoG5X557eJTauvWwLog3dXFCw4sbF1
+	gsyf4KLFEq7LBzXbxFKWB6uTnYpHl8w=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C6363605F3;
-	Thu, 23 Oct 2025 07:10:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49433C4CEE7;
-	Thu, 23 Oct 2025 07:10:05 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 3C9DB605F3;
+	Thu, 23 Oct 2025 07:13:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24502C4CEE7;
+	Thu, 23 Oct 2025 07:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761203414;
-	bh=3eigXBLiimevcUcf8KdhhD/v0+6ZZjko+MbkPytVjq0=;
+	s=k20201202; t=1761203637;
+	bh=2Z6faUlpxxg8NJ99mOXDv3nxN6IIqbuwazngqBJ2agg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WcJFhi8tSHC6qd0/sKDdW4POrtY8pODQNVNADd8AbwXFN47Qw7Av6RR1wEc8y4kIg
-	 JriUhZcFP08MpUvg7WoV5KC/BLx+T15pEJUTAZL4YKbdd0QUPaMUqNe6eKQei9BIPt
-	 iZD6Lzb1MPz+qfvA9FiR+0j5SDrjIUzzy36JQEVxXKzf8CYmxDuEhZgEq0imUVzddw
-	 FJQ6UC2tuwX6mBhwn7+8RGIo714r6Xcq43rmXGtlGUfLOhwwKygTbmAvh1S+7Y81rB
-	 UNChcCRiu/B5WjBWPYRF0OnYurR8gHb34HJqm738Db4V7qykDKpHPE+nJCi3XDtEMS
-	 a7N2hWzjZKP2Q==
-Date: Thu, 23 Oct 2025 10:10:01 +0300
+	b=OODg5w6EFB/hjsGbHVp2Vq9m7F+hBZgNtIuU5LNZe2mYTpdNyCVCbIXUA3Vdvyk52
+	 ErhoZo9K7Z89GKXdanMvWKrAWUrbXY67tNn6zxtWL+7BzQSgaPo52fDLmUpan2VWdD
+	 rE2qNVF+7AsYdvGZDRWtc/a8+uxAsg54+3aw866XKzV9gBQuY2ujGksVFsgziH3ktL
+	 opVRerWZOfIvj8VhNQRP2iKDKInrAtXVwvVYm96tdy08q1RKVcXFwAqP524kuC2LgX
+	 DtWdWbTC1YhHlmVgdTf6JFxr4NPdwQYSVh2DnnrfeRw81pRGpc9vwOUINW3WpTOZVf
+	 BlAC0rtfGtWXA==
+Date: Thu, 23 Oct 2025 10:13:49 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Lu Baolu <baolu.lu@linux.intel.com>
-Cc: Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@nvidia.com>,
-	Jann Horn <jannh@google.com>, Vasant Hegde <vasant.hegde@amd.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@intel.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Jean-Philippe Brucker <jean-philippe@linaro.org>,
-	Andy Lutomirski <luto@kernel.org>, Yi Lai <yi1.lai@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	iommu@lists.linux.dev, security@kernel.org, x86@kernel.org,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [PATCH v7 7/8] mm: Introduce deferred freeing for kernel page
- tables
-Message-ID: <aPnUyYS8N9Lp59vS@kernel.org>
-References: <20251022082635.2462433-1-baolu.lu@linux.intel.com>
- <20251022082635.2462433-8-baolu.lu@linux.intel.com>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org
+Subject: Re: [PATCHv7 1/7] kho: allow to drive kho from within kernel
+Message-ID: <aPnVrZC4Fz273lLn@kernel.org>
+References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
+ <20251022005719.3670224-2-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022082635.2462433-8-baolu.lu@linux.intel.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: ram4nxdtc9rz8c996sjfoktwd58n1k1x
+In-Reply-To: <20251022005719.3670224-2-pasha.tatashin@soleen.com>
+X-Stat-Signature: e3z9xeo8ip7haar6w6wquwoachampkcm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B0885180003
-X-HE-Tag: 1761203415-974578
-X-HE-Meta: U2FsdGVkX1+eZyR7+pegQBu8KUlBUSVV4rvgYaDVBGwBfSVRDjU9Wdu4XkUj+CUSVDn+j7R+Ha/26bciLlQsw24vIG72frtSTBMFeixXflSHDH5q+jeHnAoNXORdRfYM0it7zz/HyVhDiVaG9x5ucbLY+aYd+Ko4p/g5qKyMAkk1OJgnhVY+f/Aa1kXmv5cApAiOEmUtsVU6UeSdqbqn+xdwvoa083BE71oMPCjPdo09OVOLlreqeR4wVox0E/GqlXjJgZk1wk5hVrW8ggz+B3QKnp19SQBms0invzjBVV6mMz2E2dtFRypAPJZcbwrHRFa2RV3MUGKPlKwvujGck0vwUgXayZT5in2NrEdlo1QJ7gXDSWtFDtT5Ps/mZ2+VALz3o24Plzx6HPjeMEMLq/jPT2Su+5+VrDfW03xNFKjtof5EZdoEktBa0AZHWEKVbnS/FiOV9wf1Sq2UWm7HVb3chleSXFcg9m3XPPYJOHaHwndWI7+1IpNQWxfTzTqw+uCl5QrpaN6ldjpJ1o/9xGs/k5n4HQouppueZM97UE07ELUzZ63K8pHctCY1zJsWDc5NNQk93EAZGo/dIhOetfnnuMNQzTteVXaKgSBsUeTe/wpiXnTU36ytWtqvCuaJuUkpyQCPKNDGJC7ABHn4HmAqGPjChszSUEexfCd3c+UX5ht/e4x7rEE7fBDrAUCEwEGMe27X/AI/mlYFpYHT94uuXdFO5XnGAuXAskU7YZreY0r3a4W1B2PGy1JGTQEq7JtTiTOLCvJs/v1E35oeRH9h/v/KC4JIdiyz9Z4EQx9seD82Flq2oWhAiOCud7C9s90tjiVY/5O6kMsdPfIAcWUUQSfpbiVvO2bFG7R+2JSOMLSrFA6l7BrfBXybbXJ493pUOZO4zsC6TowG2P/RF1YZv5Lv826Cq9epkmJo1TRn0w7px7h8cE5jvy76gufL2HHg/akgDjBxh8w5Zin
- rqdA12uK
- d890Wc66ZIvsTtyefOWRKCM3qCwEbnhLvF4GcfuphOqqBPfx7hG6YdhNnYhpZa3+g+RHvo3GryKvuvxVUTBshTcZi0KAIGQ5tZiamXTsR0hesPnLfGccyFfSr83gvlO6iaw0pTKglbRJWDgd1B/CAvZQl38BXziWMR7ssqMHt1bq/SXjvjKtCuhppr9QlOCATzzy8oQDueTjAikBWCdHKUJbnQ4LuHocjM3aYpwVpp13aBTiMhlr81mdYAkbRxhZSJLjj7gSl30LVNh8+Sb9y8O3KcUkLbgURdvMwdSPU1f45V3RMpdoZJqD29nXQLbgjL6pMNntCKkoDX1aVaVNS23OA3GUzwoeNK33AnVtP1ISB8F4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 2377E140007
+X-HE-Tag: 1761203638-628561
+X-HE-Meta: U2FsdGVkX1+jI853Ru5olMNQ6hgL0hDHC/vHeuQ83GGdD+aWFylqlKLhrIQhtTQwBTJBl1bynDDEYVMmEk8oBq1bj37mBhmSYk6SWadLXOYDsEFVhTXvjLJEc4goL1pNOaGF6xLpZb3z0VF70QDyL0kvR8FXDOWWGEHRn1BelV5eLdvmTHLgdV4FihTUUnsmx5wT8J2XCZAK11ysb06n0OzvpbSqet8Bv5a2hasP4OQKL8kwZK+Kozczaekib8GxnE8NuG1dJlOzIFfWDDtLC3lqm/kqkLcvDWvmjQfyDja/h7ZYii8MMWutoD01tKKF/q0Is/l/OpIc0/8kN8ItmXObGnMPrIRfE+1a18BXfphNkjUWxS+KrIBIUWHx3/O723GyXy8qkdDlo1EFeyaVXc6PEZzcnY/PhNR5nb7rwSoE251i0EMeUrSkBfh8SkUU1smRFj9sXryly8UX5dynWmNvjfTC8ZPPcWD6EHOn8AL072w+xijRssFWGqeF3zNZibM7EvmwOsUHF591EvjgAFfJQhvpkdTQUk5gtGAGjGYEpQsMYcnc7eVXcDz7udBvoAJ3ByKtNaup/Y9K7M3BLQaL9tlqDXiRK54M7KTbgWPn6VZWNf1wlGS8yB3a4brCdyWJVuBlHhxsUR0eSmD3uuMqcW2r8Q+oG+qSGH1w7Dr+JwrnLfTJlNQjnq+ZL2DscnmXrw+ASoF5KMu15lX1p/5p54+vPv5yQrqjKWENKuzv+xtT7nELms129YXEkRLA+AVl6Q8xlcDoE/x3hW60YGTj0si1uV+XGZ0EFgyQ1Hc0KDcU41dACEWewoa5q2CtkzyITxVBgse+isaQyWXg8N+9J31dNgXllCNdBMFo+2bD/N6jMVu3qflXBydEmsTDC3YEUTdga3QjFzWYWaRgEhOWs6iH1p9atX9Cv42F0OfWLx0eBca5Z6vDCKZV0szmbcQdgz7wiUq9aXP6F73
+ MiI+OaM9
+ Quv64FRA4PhD+NCdFFDVdgLnkbtBB+seWnesqvv8UZiZCOyhWAtcHZ+hTF29zTgjjMotAZb9TJV0pG3qM1jewCHTg7Y8N29xlHTiVilinNFDN87oo/bXZiVewE8cPZ2acyXOmXQ4/eochFUScWGIfi+nnxx7sp0My281Wv/QzSJVz3r5UOgk6U0jt+PaeotyoaGOdXX+s2fetuSY6ZeL4tv89tUMiiuWllW/Sr4B0nJ+Q3IVWy05eIMvnwK0FaXuH57025g+9iZIrxYOiHvsIR2ES5T+flyqk3bnsBBZittGBQd+pILia3BZDwjeTfoNxp2M1ZolGjl94s96WA8f/CHCYD7IvAEHrwvNlTaDSy0NlsTnyLAcT5MrJaw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,129 +95,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 04:26:33PM +0800, Lu Baolu wrote:
-> From: Dave Hansen <dave.hansen@linux.intel.com>
+On Tue, Oct 21, 2025 at 08:57:13PM -0400, Pasha Tatashin wrote:
+> Allow kernel to drive finalize and abort without requiring triggers
+> from the userspace.
 > 
-> This introduces a conditional asynchronous mechanism, enabled by
-> CONFIG_ASYNC_KERNEL_PGTABLE_FREE. When enabled, this mechanism defers the
-> freeing of pages that are used as page tables for kernel address mappings.
-> These pages are now queued to a work struct instead of being freed
-> immediately.
-> 
-> This deferred freeing allows for batch-freeing of page tables, providing
-> a safe context for performing a single expensive operation (TLB flush)
-> for a batch of kernel page tables instead of performing that expensive
-> operation for each page table.
-> 
-> Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  mm/Kconfig           |  3 +++
->  include/linux/mm.h   | 16 +++++++++++++---
->  mm/pgtable-generic.c | 37 +++++++++++++++++++++++++++++++++++++
->  3 files changed, 53 insertions(+), 3 deletions(-)
+>  include/linux/kexec_handover.h | 15 +++++++
+>  kernel/kexec_handover.c        | 75 +++++++++++++++++++++-------------
+>  2 files changed, 61 insertions(+), 29 deletions(-)
 > 
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 0e26f4fc8717..a83df9934acd 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -908,6 +908,9 @@ config PAGE_MAPCOUNT
->  config PGTABLE_HAS_HUGE_LEAVES
->  	def_bool TRANSPARENT_HUGEPAGE || HUGETLB_PAGE
+> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
+> index 25042c1d8d54..04d0108db98e 100644
+> --- a/include/linux/kexec_handover.h
+> +++ b/include/linux/kexec_handover.h
+> @@ -67,6 +67,10 @@ void kho_memory_init(void);
 >  
-> +config ASYNC_KERNEL_PGTABLE_FREE
-> +	def_bool n
+>  void kho_populate(phys_addr_t fdt_phys, u64 fdt_len, phys_addr_t scratch_phys,
+>  		  u64 scratch_len);
 > +
->  # TODO: Allow to be enabled without THP
->  config ARCH_SUPPORTS_HUGE_PFNMAP
->  	def_bool n
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 52ae551d0eb4..d521abd33164 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
-> @@ -3031,6 +3031,14 @@ static inline void __pagetable_free(struct ptdesc *pt)
->  	__free_pages(page, compound_order(page));
->  }
->  
-> +#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
-> +void pagetable_free_kernel(struct ptdesc *pt);
-> +#else
-> +static inline void pagetable_free_kernel(struct ptdesc *pt)
-> +{
-> +	__pagetable_free(pt);
-> +}
-> +#endif
->  /**
->   * pagetable_free - Free pagetables
->   * @pt:	The page table descriptor
-> @@ -3040,10 +3048,12 @@ static inline void __pagetable_free(struct ptdesc *pt)
->   */
->  static inline void pagetable_free(struct ptdesc *pt)
+> +int kho_finalize(void);
+> +int kho_abort(void);
+> +
+>  #else
+>  static inline bool kho_is_enabled(void)
 >  {
-> -	if (ptdesc_test_kernel(pt))
-> +	if (ptdesc_test_kernel(pt)) {
->  		ptdesc_clear_kernel(pt);
-> -
-> -	__pagetable_free(pt);
-> +		pagetable_free_kernel(pt);
-> +	} else {
-> +		__pagetable_free(pt);
-> +	}
+> @@ -139,6 +143,17 @@ static inline void kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>  				phys_addr_t scratch_phys, u64 scratch_len)
+>  {
+>  }
+> +
+> +static inline int kho_finalize(void)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+> +static inline int kho_abort(void)
+> +{
+> +	return -EOPNOTSUPP;
+> +}
+> +
+>  #endif /* CONFIG_KEXEC_HANDOVER */
+>  
+>  #endif /* LINUX_KEXEC_HANDOVER_H */
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index de4466b47455..6458f369a346 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -1087,7 +1087,7 @@ static int kho_out_update_debugfs_fdt(void)
+>  	return err;
 >  }
 >  
->  #if defined(CONFIG_SPLIT_PTE_PTLOCKS)
-> diff --git a/mm/pgtable-generic.c b/mm/pgtable-generic.c
-> index 567e2d084071..1c7caa8ef164 100644
-> --- a/mm/pgtable-generic.c
-> +++ b/mm/pgtable-generic.c
-> @@ -406,3 +406,40 @@ pte_t *__pte_offset_map_lock(struct mm_struct *mm, pmd_t *pmd,
->  	pte_unmap_unlock(pte, ptl);
->  	goto again;
+> -static int kho_abort(void)
+> +static int __kho_abort(void)
+>  {
+>  	int err;
+>  	unsigned long order;
+> @@ -1120,7 +1120,27 @@ static int kho_abort(void)
+>  	return err;
 >  }
-> +
-> +#ifdef CONFIG_ASYNC_KERNEL_PGTABLE_FREE
-> +static void kernel_pgtable_work_func(struct work_struct *work);
-> +
-> +static struct {
-> +	struct list_head list;
-> +	/* protect above ptdesc lists */
-> +	spinlock_t lock;
-> +	struct work_struct work;
-> +} kernel_pgtable_work = {
-> +	.list = LIST_HEAD_INIT(kernel_pgtable_work.list),
-> +	.lock = __SPIN_LOCK_UNLOCKED(kernel_pgtable_work.lock),
-> +	.work = __WORK_INITIALIZER(kernel_pgtable_work.work, kernel_pgtable_work_func),
-> +};
-> +
-> +static void kernel_pgtable_work_func(struct work_struct *work)
+>  
+> -static int kho_finalize(void)
+> +int kho_abort(void)
 > +{
-> +	struct ptdesc *pt, *next;
-> +	LIST_HEAD(page_list);
+> +	int ret = 0;
 > +
-> +	spin_lock(&kernel_pgtable_work.lock);
-> +	list_splice_tail_init(&kernel_pgtable_work.list, &page_list);
-> +	spin_unlock(&kernel_pgtable_work.lock);
+> +	if (!kho_enable)
+> +		return -EOPNOTSUPP;
 > +
-> +	list_for_each_entry_safe(pt, next, &page_list, pt_list)
-> +		__pagetable_free(pt);
+> +	guard(mutex)(&kho_out.lock);
+> +	if (!kho_out.finalized)
+> +		return -ENOENT;
+> +
+> +	ret = __kho_abort();
+> +	if (ret)
+> +		return ret;
+> +
+> +	kho_out.finalized = false;
+> +
+> +	return kho_out_update_debugfs_fdt();
 > +}
 > +
-> +void pagetable_free_kernel(struct ptdesc *pt)
+> +static int __kho_finalize(void)
+>  {
+>  	int err = 0;
+>  	u64 *preserved_mem_map;
+> @@ -1163,12 +1183,32 @@ static int kho_finalize(void)
+>  abort:
+>  	if (err) {
+>  		pr_err("Failed to convert KHO state tree: %d\n", err);
+> -		kho_abort();
+> +		__kho_abort();
+>  	}
+>  
+>  	return err;
+>  }
+>  
+> +int kho_finalize(void)
 > +{
-> +	spin_lock(&kernel_pgtable_work.lock);
-> +	list_add(&pt->pt_list, &kernel_pgtable_work.list);
-> +	spin_unlock(&kernel_pgtable_work.lock);
+> +	int ret;
 > +
-> +	schedule_work(&kernel_pgtable_work.work);
+> +	if (!kho_enable)
+> +		return -EOPNOTSUPP;
+> +
+> +	guard(mutex)(&kho_out.lock);
+> +	if (kho_out.finalized)
+> +		return -EEXIST;
+> +
+> +	ret = __kho_finalize();
+> +	if (ret)
+> +		return ret;
+> +
+> +	kho_out.finalized = true;
+> +
+> +	return kho_out_update_debugfs_fdt();
 > +}
-> +#endif
+> +
+>  static int kho_out_finalize_get(void *data, u64 *val)
+>  {
+>  	mutex_lock(&kho_out.lock);
+> @@ -1178,35 +1218,12 @@ static int kho_out_finalize_get(void *data, u64 *val)
+>  	return 0;
+>  }
+>  
+> -static int kho_out_finalize_set(void *data, u64 _val)
+> +static int kho_out_finalize_set(void *data, u64 val)
+>  {
+> -	int ret = 0;
+> -	bool val = !!_val;
+> -
+> -	mutex_lock(&kho_out.lock);
+> -
+> -	if (val == kho_out.finalized) {
+> -		if (kho_out.finalized)
+> -			ret = -EEXIST;
+> -		else
+> -			ret = -ENOENT;
+> -		goto unlock;
+> -	}
+> -
+>  	if (val)
+> -		ret = kho_finalize();
+> +		return kho_finalize();
+>  	else
+> -		ret = kho_abort();
+> -
+> -	if (ret)
+> -		goto unlock;
+> -
+> -	kho_out.finalized = val;
+> -	ret = kho_out_update_debugfs_fdt();
+> -
+> -unlock:
+> -	mutex_unlock(&kho_out.lock);
+> -	return ret;
+> +		return kho_abort();
+>  }
+>  
+>  DEFINE_DEBUGFS_ATTRIBUTE(fops_kho_out_finalize, kho_out_finalize_get,
 > -- 
-> 2.43.0
+> 2.51.0.915.g61a8936c21-goog
 > 
 
 -- 
