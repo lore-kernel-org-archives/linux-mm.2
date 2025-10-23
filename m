@@ -4,117 +4,144 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E948CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:18:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBF2CCD1BF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:25:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 83F488E001B; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
+	id 4ABCC8E001D; Thu, 23 Oct 2025 09:25:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 816F08E0002; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
+	id 483788E0002; Thu, 23 Oct 2025 09:25:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72CCE8E001B; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
+	id 2D5AF8E001D; Thu, 23 Oct 2025 09:25:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 5AA088E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5DFB140B04
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:18:19 +0000 (UTC)
-X-FDA: 84029432718.25.DB473AB
-Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
-	by imf24.hostedemail.com (Postfix) with ESMTP id C6D9C180008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:18:17 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SU1tA276;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761225498; a=rsa-sha256;
-	cv=none;
-	b=Dcb+YmDoyfPvRO1aa+lkhRfIPV/0VS8s/LplogxRVyF4+hIT35E2i344BgSrLdJ7bIBO7R
-	QE0Ky69u7ifj77dymhlpmVrzce7Z/JHDrSTXRyRur3d/RbEilK3o0FHtgHMvuM/eeqUSnF
-	54y7O4R2mpl+RGgIXDLeG7VnX75U7OM=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=SU1tA276;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BF338E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:25:42 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4E32140B04
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:25:41 +0000 (UTC)
+X-FDA: 84029451282.17.590DDFE
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	by imf19.hostedemail.com (Postfix) with ESMTP id ECEFD1A000A
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:25:39 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=fS6nH2Py;
+	spf=pass (imf19.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761225498;
+	s=arc-20220608; t=1761225940;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
-	b=SlDbbbfiLCkuhPY3/e26pMtmLNPDX91T4/FttwI8Jq35e1SEYBB/2dTLbMDnx74nfyRk9p
-	O6rxkjlpGqdhbM/CMnuEfySMWa6QA1lk4+WyC9vSFraXRCWGcu7df68uFu6vzxVA4gwK8h
-	WZllk4zfUJfsOT1hUIV/YxTMwEDzTnA=
-Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-46fcf9f63b6so4723215e9.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:18:17 -0700 (PDT)
+	bh=RuPJu5G7SzSWQtkc01838lduYo70q11KgqBzT6e6NXg=;
+	b=igVgJmRQCvkfrxBwqobvsBzF8Bc6Vhfl5tDCvSfrd33kbV79sJkbLWJVFbW4sYySY9Vwwm
+	9i+BFimxejq7hoD67Ki8VExcopztqkQIEv1sWq/cdtCVx1VinYKrLoT+CtzRr8WuW8eYbC
+	CU65umJUGrrV+wdoVV6wSQ1XDpffwZc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=rivosinc.com header.s=google header.b=fS6nH2Py;
+	spf=pass (imf19.hostedemail.com: domain of debug@rivosinc.com designates 209.85.215.173 as permitted sender) smtp.mailfrom=debug@rivosinc.com;
+	dmarc=pass (policy=none) header.from=rivosinc.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761225940; a=rsa-sha256;
+	cv=none;
+	b=TO4f3ND36nxjtLM4Lv9qxt+vXl3/PUVxdWQiUPHocOSuqZmYBStZHIkTMwp83ATDjF0VUV
+	zVwcDw8z55totBHo+Ae7RIo4pcaAAM8vFREHPS2N82+Me5XJvDAhlwrAAmhgbntxd6T9He
+	pcCnfgEiq8L1tkIUSigDwx3oE47jXEY=
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-b6cee846998so513455a12.1
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:25:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761225496; x=1761830296; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
-        b=SU1tA276CjJpWIgM/kOOUhNWrVkExuzujE+UpkSQjzVhFw3ZlDJwuFm/gxfp3NQSD+
-         2Wf8cEoE5HGIpBOG4QujHgf841XdfZdQ3RBMQn5qyWEcZMmU7knoV6XWK9lSo8nER65I
-         9yVwZ9KBUSeVgI8A52G0RywNcrU85hoEwGStVcltWAFJF7Wl6uq/M+dznrGvP8gmYyTw
-         3aAh7BmM/2+GRkiccW5EfRUiY/kOmGSIkSzDCn0Rj4EtFTHkBVAVED9FhkGPvRJ5J45c
-         OvtTV3cbeuNzQSzfyrzMMdzkYEBtuyQMMyAn+Xs2/sIsg0sPgJ8d/tKLU9wbNnbE8Atk
-         ZaWw==
+        d=rivosinc.com; s=google; t=1761225939; x=1761830739; darn=kvack.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RuPJu5G7SzSWQtkc01838lduYo70q11KgqBzT6e6NXg=;
+        b=fS6nH2PyePXmviPPBK9vCUC+JnQ1ZiFaYul/4DRiHv/zkmc8V776wMXX3m0TaND+wY
+         35NCVpGLRJikPbYJXVw3XLKrUZJENQ9x8hsFQBFJsgMhgmUqPvmm/l9I6F5qRSouFrS+
+         CRMWF4GC6aVDIGGsrzF2FbDnrVfAbdZ4aURwypdu6Lom+Pt6CAqlSipxLgQzzt1dfhIQ
+         0Gj2ELVGTWDW/EPdq/KTflniLj4lnnQLinYEV+lxboAiqP7XQaPiBBUC8f6SYzap/wMv
+         kBdjdb4c2Cd5F7foYO9WmtF5gY/+IFr32Kh81IiY3CGrnS3AMlQB9FR0fCBx1uz3TTjT
+         JHzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761225496; x=1761830296;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
-        b=VLhcjA9cCnMj4io0WBOrk1CxRY3qu2NdjI98UsgHHsvma3sph+pOEZh7ZCd43hrW/P
-         WL0oAGb4QOc08hXi8QTfV7EZ8H+38kEtgczRqB5U9x1o8zqNJ+b2WKuDOtaFVH5mNHvg
-         WCCojqKWvVCMi4udeLBOXuWkYdl0Uo5A+tCViuDgOdKJ4WZ9trv8iU/jPOOF0a2OKXDy
-         4nenjbs2v0r4VainKJhnDQGUo3yt5Kml2dkQAvVVgtAWEr6Ci/Ei4y0bg/nS9ep1qnqg
-         sb9gFxMfc3uVhXLRaEdBfIaaBmlHvEchK3EV/b1cNsYgpyO9lB7F5TOveyeA1uy7pRWk
-         AkJA==
-X-Forwarded-Encrypted: i=1; AJvYcCWTVXDFhOiBD0FvhZ3FJ5ddTcsoE3gLWZj3Oy6AlXOKWcJOEvbZHedwwC+yZ+Ncg2pxe23Z+ee45Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx7B4q1GFHF4F4VhVhyGYUCc0ZVnCQGr854eA+glCI5z8cDdziI
-	V7rU69wY65iiWkBHRQQ9yTz8XBvREtdeKpX9lqHl5sSDobAVyQVDmbMrpyL2IRRFM/ruJQakIou
-	gVVnR9LkUSHn+
-X-Gm-Gg: ASbGncubPfAvXch3VRUHi+Ec2SR2RF3LCaoSGOklQzTbRhbDPbmwBw4bT12y4m5/4ii
-	D5oPQ9dNMHqHKRuTkY//Y1vTrbasQhK9N2UL2u8Lwu5dM8xnIJZlkyqfeM9izjlErTY/kai4UcM
-	UQQDgRA5TVuCrf3q851eSgEj6RcFEOXEe6DLl9L7vddYFSAFLLfPiuZy30fVJjk1XvJtCY5owLE
-	bjuOtwyxLjRWS90MTH6N88yqrfY6klr54lzpKyKhi6hw9AtTZkOeWeS8zAeDL6t0H22CMA8iGwX
-	GKH8M1KEbbxmNGM4Dqge79S1/YH/hy+y1T+Y1wkoTH2+1yKZiZlq4rZBywxFiaYIw15mvPsVcC1
-	ZTGL0Z2LLNo5NZtnL5PVNmd+ihQxmGdYYGwTSWQnUzL7pkQXeglrVS9kjttsX3b0x0wYJNSToFT
-	fBJwNOnz47NE/0D38fkByHKMjK3705Mt9EalpJ
-X-Google-Smtp-Source: AGHT+IFI7d4omhBXbweB66gvKZIb/3KhXaNp52twT+N2y9aaJX7j7EPXuCFbvF4eTwXcj+1QGz7jOQ==
-X-Received: by 2002:a05:600c:3512:b0:471:12c2:201f with SMTP id 5b1f17b1804b1-471179134f0mr209161265e9.32.1761225496200;
-        Thu, 23 Oct 2025 06:18:16 -0700 (PDT)
-Received: from localhost (134.pool62-36-43.static.orange.es. [62.36.43.134])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c428f709sm98414875e9.8.2025.10.23.06.18.15
+        d=1e100.net; s=20230601; t=1761225939; x=1761830739;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=RuPJu5G7SzSWQtkc01838lduYo70q11KgqBzT6e6NXg=;
+        b=CQ5+hIt1h7LQq7asoUwLaxMz6i/UrbWgG3zzeW4eWoaPnttaT1lCoaXCQqCyY9ptEG
+         padXz1Jxd1KEFRK+RcyqNtg/ymydMgMphIEYGCrhdVMe6jtihh7oH03xPgfOnhnnx0VL
+         NqQOoqQiKz0wUfO5eXHpIwe2yOVxljiM/Q1ZEZeCMjFlT7GnrtwV9DwOXMAkzhTV+fV0
+         u+UB3UV4GbHYIFOjMkxbRE80fsdgvyf28YgvsvjiEgw/+/nvZuvriStPW3QSyJD/Z44t
+         O8iRshIYfTnW2h5ySQSr0cfKzbyrVlWQCg1q3e8IZuusFDnsLIyjhjjYREx5C4f9xAJK
+         SotA==
+X-Forwarded-Encrypted: i=1; AJvYcCWVIeLT534ElVZ71TRAuRZHJNcLfYvIXDJ38KsMgunSgEfI+M9TQKMgRs8GFirEUH8Vy/pr1XXRiA==@kvack.org
+X-Gm-Message-State: AOJu0YwfEjRNdDdy2JBARFmEsZ6xkMYgqJV7YVkEPLTJ1NmcM6HY77Tk
+	5wKun75Kc3SlYTa0gmn4q/KZiyhZONqpj2Yyli+wtP9hSsaXhLB72dqgHtFnmxD4Vo0=
+X-Gm-Gg: ASbGncvACxVjsflDacilY7HEVMKTX1p7Fg1160DZRJVyJQGrg3iL9n8QazO/8sHZ2tL
+	MwR5UxfH8GvzD9Bzy+nt0hs1gxRjl7sdZufQGNDtsaOwj0IqVDUQGf6yZmjm9M0xHNppPn0f0/f
+	vr8oaTF1Pcp9oOAgerDfkwlVr1vi0tYGSWG03aRcYqOvVo3bodx2FtRpN5fGKug+yLM9yE3UdcY
+	AJFgYyKxX0uiyyWdvWT1Cp256gfAEYkS/HVgD04c6boRAO088ZUr1cvM+lRqA61GaQN75S8p5EN
+	LwUAu5pHaN4g2gxZpgbZo0ynvhASqA6eG2KZEV95CJbZZxDbjx2In3vKsIPM3dg5K1KEpvtpDUV
+	CUAHhJS1QkQLVK1hQrVXNhciQAwUArnR+jdHvVLburloORtz8MsbCd8b9EnJnp+VpRuen17rP6h
+	i+63FEY4QcV/2GqciyOenw
+X-Google-Smtp-Source: AGHT+IHiowaMdQQMukarKWR4DwE59dag2M41jW8yOYSmyuKRWbrYlIpW80BNasPiFne9iuxrtQYkag==
+X-Received: by 2002:a17:902:e889:b0:27e:f1d1:74e0 with SMTP id d9443c01a7336-290c9ca3304mr315130655ad.17.1761225938726;
+        Thu, 23 Oct 2025 06:25:38 -0700 (PDT)
+Received: from debug.ba.rivosinc.com ([64.71.180.162])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946e23e4b3sm23432035ad.103.2025.10.23.06.25.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 06:18:15 -0700 (PDT)
-Date: Thu, 23 Oct 2025 15:18:14 +0200
-From: Michal Hocko <mhocko@suse.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
-Message-ID: <aPorFhxQc7K5iLZc@tiehlicka>
-References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
+        Thu, 23 Oct 2025 06:25:38 -0700 (PDT)
+From: Deepak Gupta <debug@rivosinc.com>
+Date: Thu, 23 Oct 2025 06:25:30 -0700
+Subject: [PATCH v22 01/28] mm: VM_SHADOW_STACK definition for riscv
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251021234425.1885471-1-shakeel.butt@linux.dev>
-X-Stat-Signature: b9senzryik75az5k3qcsbz67pxmoz5qn
-X-Rspamd-Queue-Id: C6D9C180008
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251023-v5_user_cfi_series-v22-1-1d53ce35d8fd@rivosinc.com>
+References: <20251023-v5_user_cfi_series-v22-0-1d53ce35d8fd@rivosinc.com>
+In-Reply-To: <20251023-v5_user_cfi_series-v22-0-1d53ce35d8fd@rivosinc.com>
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Vlastimil Babka <vbabka@suse.cz>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+ Christian Brauner <brauner@kernel.org>, 
+ Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+ Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+ Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Benno Lossin <lossin@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ linux-mm@kvack.org, linux-riscv@lists.infradead.org, 
+ devicetree@vger.kernel.org, linux-arch@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ alistair.francis@wdc.com, richard.henderson@linaro.org, jim.shu@sifive.com, 
+ andybnac@gmail.com, kito.cheng@sifive.com, charlie@rivosinc.com, 
+ atishp@rivosinc.com, evan@rivosinc.com, cleger@rivosinc.com, 
+ alexghiti@rivosinc.com, samitolvanen@google.com, broonie@kernel.org, 
+ rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
+ Zong Li <zong.li@sifive.com>, David Hildenbrand <david@redhat.com>, 
+ Deepak Gupta <debug@rivosinc.com>
+X-Mailer: b4 0.13.0
+X-Rspamd-Queue-Id: ECEFD1A000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761225497-908644
-X-HE-Meta: U2FsdGVkX1+7iHmzENodujVXGaRpCfd2aKPIOsYSim9gfppGdTMHzhyum3aM7v57AxjTd4X2QPaW8PaYbAegMeTnkVHMBizp9dmY+24iPJiIgcCfEGH7xszL324aZfj7lq9zNDvxk835eWxGI5EWiswbMkMaPUIN43MmUDUDublD0siRn6tOcLBYCsmRfbaZ/Aq+zGis5usfyTBhL5HXRXQd5zZAAQ92WhjszAPUsilvwpeXf0KdWah2ayIJv0C7V6EoSQBR9vMYTWX5/MBoXOf5r+qjPqJUX1X3fvXNPUO4M+7gRudoQTk56+QqGy4KqoU3fuKtrOoyVn/sBtfwCZQPViwn+zTeZJjhGyoxkM59hzPaTx8Qea5NiwZHD55LplnFXGiCBj5fKYtzbBPfWxyqyGsqImMSaOJo38vgy265+dmZjS7QZsYe478GkBWQS+NOEvB9mZ2KOVZwY2R7o/F230476jg/rQdDXYZ8jg/qDGEUnE6d68bTYd0w96B8/H42nZD1n7GO5Ug1JtRUXcsLhcwW8vXCa4OZ5h9LYoufFxK0nXg6razAAXcEBKmjiruTfCKef2lbpjLVmsDZdW2e4AKaAbjnn6VjOCSlpOIk+xhBlnD93lzFzDRBgmMx7qJ3K13WfugkLudh+9ZwxEuDGz9DGZRGuHmEvsa8Zs7aT+18lEqTkeumAgkbdC76coq/2lQfOpXquuFkClidJCdegMe0hJDS+mw8Ic0doN0EzOIf/3RSfzqH4G58FQTmyQ4BSUa4hgE9G9k8QCXMcw117ku3s912h2DpwgxZCps6B3Br9XKu5I+3g+Yir4VIxxzv/h1acEzAJSell8e1NztCWVeh2zIY23S+SHu3F+PDEAz/zHVTdiBRBF+JRkAmwc51mOsnrjGlG2QxmZYxn3rSr+NUfg7N8m7uHXrYgmRf0jCInfek4g3Otv+PxWb3As0vpVHal1jfdWd//7g
- HAcUEHhq
- LTg8xcXnuIYV5gETplb0SuEGNVp6m2ZGix30xqn3uH9vgtlVDQWnVykvw1WuWV/hwkTk7C9mefjz4taXW9nyk5c4kJyb8YWV2GkVsvRfqRVYX6Yc3gL8OQqfX3pZMq0OkLB3YhkD8AftYlJbvhFJ4uTWUvoM9Qm129kYHfJZPoOPbUMJrR4Gqwc/lA2b2FZk7LKwQzoleQ6ptwva+K4AGEkom+YSEcFdvNfbrJkorg2uXdpslbtTSr1XPkFFonnHGJH/+UWVuZrvIg9Tz2kzzgm4pvWrJAQ/urxqFtXxVFHXAaLtlvOehhM2wocwyVSSj0FUePcGqC4uWmtN8XBnMzW9YsjZBUfRn3nXmI6b9/OobHWx6EjYSi77+hNGJMHjAbYMWpW2l7qNWVW29/KAgIdxelGkxu94jwhqTfIl7k6nXau6TGXUJ+JS2ePAg23uyovcjyY8koossNsk=
+X-Stat-Signature: rqb4nrjdbjfg11jt4r84r99sxtkfgqcd
+X-HE-Tag: 1761225939-435185
+X-HE-Meta: U2FsdGVkX19tyLijckBzYocrVh+0tAbkT54MuhDP7z6YHi1FiT7V0/rqgLdJBWX8rh31KeQSglGQAeNbf6yCHWicqoYhueftYf3B3hmCWAAkohOZWW+BE0J3+y1WPNAFbj5NPv3QkYZUUoNqCboPzK4qw75OOdXlDLWHOsR8X/ojg/0VVh9nY7uCBr6Vaq/WLwGtWd97eSdUuKpBWeBCB45QRO8NcvuQrBlwV79gOqtlKK/mk1Wb+nR4YxSGcjfRXQIj7dphkMR57OG29HqoEIf79gCuXPQa/Jbs9665VXTwbSI7IoCsXprtOrBtzSVvk3KJkIakBeu5emFNm5csUgNqg1IixM907b/+lgvyKTpE5/cN34AJ9RcQfpYAC4YyoQaLmYQ6jdPh7IKZs4cU3Gy7CGT3kix2Z6U86I9KxkRAV0suTM+uX948ohVde+kLOuSdl8S0ZwKvdEvFvk794QTTW7kOZhqw8EFusjiXw6DCWCdV60xw3DA7WboaXkcX0fPeQv55yydfRclXcoDOSRLjhTHZnYabonGkN15DFNP46RHnQENb4eB3R+FRCerx5T4Es/pK9WoHx1KuO7A08JaC0JR//AAq2M8Z4HZBMLR7zdCWaRDgZK8yyh7h2P2DRVFkEixA4G/yypHBGH8w8dab5BgXYd3FqT/UnzyePZwqSY7qO93A43PFNpd2VIplTrU0guQ0yadxb4qV4B9/bbIB5jkZrSGs67v8a+xmT35PLKebhsZf+VGum6wWoODEQ6sTLFx1x5zzorUvxiiENKSjUdbZjSFNW4EEreW6bekw7N/p/g3Jh9seOeZxi+JpGthfKIfk1Y1XwT4Z5/VShb3aPYMoUAdzds35P8nR42PWHz/w6tPDKI9S02G9973/jgO9QX/V+FsPamvXSLgaSQUaU2DaiDs+qj9bSSd8Je2GRFcrnLOCFGLhVT4RMmXAYhfKZCFTxjNuvHe19m8
+ M7ANze/Q
+ 1Ev+OjOntv+AJ0ySbNrx35mqngNOsx/dSpIC76rI3X1Yt5v8v64aHLbCA2nUFog8aFAh/4w1LnXhjbzXcELdTHgaHhtApSTmB7KmQXEJZ9yk15vNT9o5FUUW6e4/v/MrZQbRC+NGey8R3ki4FZl7IIRQvYnoMYhCWvlBByttGbx1fLFQtq3oZwEAnPwbR+erSA6VpNZw17s+wSNuahI9WYt+SOqmlEg9sGNR6mGq0MUxVTTvEQ9aKqqufgEoA/1m/WYdKMb04h6x3apyMbuJqynzV8XX0o9ZTHOe1C3fZbIq0czLPVd2gf6lmDXg8qsf1YtKHYxPccRby3K+KucFIvb5d2+wgGYrzX7F+xXZLnZyx+sEXakstFPqhdhMeFONMMl0oJmy0JyAFW49DACXR2Ig7H6vix6FCyqZNmd2QVT6QWQVc2pRsN/1Acy9QhQFt0UjMFz41EVpuBHa+snlulBp/pnFgsPRkM/GBzVu3jLR/oFeLUnQUyM4l2sEofYwx3S+WJzHbF9JMwNF9GQpY3y+Jpk8rUXn01eZ2SpSjnaRwjpt6LVELsQiwbj4yzQDJ0TqLzMJT1rWFs8M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,34 +150,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 21-10-25 16:44:25, Shakeel Butt wrote:
-> The function __memcg_memory_event has been unnecessarily marked inline
-> even when it is not really performance critical. It is usually called
-> to track extreme conditions. Over the time, it has evolved to include
-> more functionality and inlining it is causing more harm.
-> 
-> Before the patch:
-> $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
->    text    data     bss     dec     hex filename
->   35645   10574    4192   50411    c4eb mm/memcontrol.o
->   54738    1658       0   56396    dc4c net/ipv4/tcp_input.o
->   34644    1065       0   35709    8b7d net/ipv4/tcp_output.o
-> 
-> After the patch:
-> $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
->    text    data     bss     dec     hex filename
->   35137   10446    4192   49775    c26f mm/memcontrol.o
->   54322    1562       0   55884    da4c net/ipv4/tcp_input.o
->   34492    1017       0   35509    8ab5 net/ipv4/tcp_output.o
-> 
-> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+VM_HIGH_ARCH_5 is used for riscv
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+Reviewed-by: Zong Li <zong.li@sifive.com>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Deepak Gupta <debug@rivosinc.com>
+---
+ include/linux/mm.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-As the only user is in tree should we make that EXPORT_SYMBOL_GPL
-instead?
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..2032d3f195f1 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -380,6 +380,13 @@ extern unsigned int kobjsize(const void *objp);
+ # define VM_SHADOW_STACK	VM_HIGH_ARCH_6
+ #endif
+ 
++#if defined(CONFIG_RISCV_USER_CFI)
++/*
++ * Following x86 and picking up the same bitpos.
++ */
++# define VM_SHADOW_STACK	VM_HIGH_ARCH_5
++#endif
++
+ #ifndef VM_SHADOW_STACK
+ # define VM_SHADOW_STACK	VM_NONE
+ #endif
 
 -- 
-Michal Hocko
-SUSE Labs
+2.43.0
+
 
