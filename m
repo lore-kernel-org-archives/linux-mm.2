@@ -4,90 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E4D9CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:42:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77158CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:49:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E79B98E001A; Thu, 23 Oct 2025 07:42:47 -0400 (EDT)
+	id CB46E8E0010; Thu, 23 Oct 2025 07:49:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D8D558E0002; Thu, 23 Oct 2025 07:42:47 -0400 (EDT)
+	id C62D48E0002; Thu, 23 Oct 2025 07:49:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE0388E0019; Thu, 23 Oct 2025 07:42:47 -0400 (EDT)
+	id A8F358E0002; Thu, 23 Oct 2025 07:49:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A2368E0019
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:42:47 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 56B5A1A0AFA
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:47 +0000 (UTC)
-X-FDA: 84029191974.04.7505E2D
-Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
-	by imf09.hostedemail.com (Postfix) with ESMTP id A43FA140011
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:44 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 908958E0016
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:49:23 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3609913C07B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:49:23 +0000 (UTC)
+X-FDA: 84029208606.12.7F8CD35
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf09.hostedemail.com (Postfix) with ESMTP id EF300140007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:49:20 +0000 (UTC)
 Authentication-Results: imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761219765;
+	s=arc-20220608; t=1761220161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RIurXfUJfV6435wKRcX4TA0Lnr5XdEl2aKx/+Ksphrs=;
-	b=sB0hWQHBNbsxKiLlScnj38t0t/qio+zqrPRXYxSCPGSwe66yKuG+xAQR35blg588SKN/0T
-	R4/9pQg5iNYWISoWVZ7iMJWicaK7Rr3OS9s/jPiW4IVymBVKcB4EXrBLdZkW6DCtYSwRnG
-	04lo+7cfAa5J+nyNGi0AlLvNpjqqDgw=
+	bh=Bi64k3qXHXjDfrFSp4LnIwYgP+CHK7JhrlotvMo7IYE=;
+	b=BngHmwGYONxU5jFn17tfEAw/P4JdDbDrjFaK2fXxw0xzUIyv2jkXnRHTa/h72Kz9XjsVBp
+	b+VoUUSfy4Iw06fI5Xpq/dxlSf4pQIRX+Uhtu0z6fGSQDQxFZmLc3WXbBQNpFJRAvwXXjK
+	iPfaxsGG7w9jcOY91wXTaiZPSSexwzw=
 ARC-Authentication-Results: i=1;
 	imf09.hostedemail.com;
 	dkim=none;
-	spf=pass (imf09.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.32 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	spf=pass (imf09.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219765; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761220161; a=rsa-sha256;
 	cv=none;
-	b=0W6j+SNKi6+ZqH3EZdoHorzLH3z7YbUQOm9M/pdg83L6RGG6GAukUnCDAogZEN2QpQRAvC
-	vVxljpz740lOZIKF/o2ui3MrsgBHHYF74VgaTT9T0aP7pkUaFBnnhBuJ1CyJRzq8tQqsZu
-	ny5empsodqf3AFtDfln/sqeKv3QJplQ=
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4cskhB4Tsfz11SYw;
-	Thu, 23 Oct 2025 19:43:54 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 650141401F1;
-	Thu, 23 Oct 2025 19:42:38 +0800 (CST)
-Received: from localhost.localdomain (10.50.87.83) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 19:42:37 +0800
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
-	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	<linux-mm@kvack.org>
-CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
- Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
-	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: [PATCH v5 4/4] mm: huge_memory: use folio_can_map_prot_numa() for pmd folio
-Date: Thu, 23 Oct 2025 19:37:37 +0800
-Message-ID: <20251023113737.3572790-5-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.27.0
-In-Reply-To: <20251023113737.3572790-1-wangkefeng.wang@huawei.com>
-References: <20251023113737.3572790-1-wangkefeng.wang@huawei.com>
+	b=nbLEzsG7r7dE3ElVOZ0tDcQh3gJtywMFlGYMGAXjjbh735EIoNWxDx8/csQKyzPQLC80Af
+	SaPNf7IEexN37dJ14rZt09jlFh8/SGp/MKbkvJh/tKyFVfHR4ztL9VnY5m1rM40Oo6ZUXs
+	hzrnNtP/iRFUTfUkVf8R5qprfp1PFNE=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cskkf1VNJz6HJgq;
+	Thu, 23 Oct 2025 19:46:02 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 876941402F3;
+	Thu, 23 Oct 2025 19:49:17 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
+ 2025 12:49:16 +0100
+Date: Thu, 23 Oct 2025 12:49:14 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Conor Dooley <conor@kernel.org>
+CC: Catalin Marinas <catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
+ Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <james.morse@arm.com>, Will Deacon
+	<will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, "Lorenzo
+ Pieralisi" <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	<x86@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Dave Jiang"
+	<dave.jiang@intel.com>
+Subject: Re: [PATCH v4 6/6] cache: Support cache maintenance for HiSilicon
+ SoC Hydra Home Agent
+Message-ID: <20251023124914.00001005@huawei.com>
+In-Reply-To: <20251022-kite-revert-2c2684054d05@spud>
+References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+	<20251022113349.1711388-7-Jonathan.Cameron@huawei.com>
+	<20251022-kite-revert-2c2684054d05@spud>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.87.83]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf100008.china.huawei.com (7.185.36.138)
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100012.china.huawei.com (7.191.174.184) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: A43FA140011
-X-Stat-Signature: fc47g7qdf57ssi8r4cnq49jzyfexpwhw
+X-Rspamd-Queue-Id: EF300140007
+X-Stat-Signature: s4gef1r7f3xi5147kdawxrhipd7zqamx
 X-Rspam-User: 
-X-HE-Tag: 1761219764-614005
-X-HE-Meta: U2FsdGVkX19N49WarkbePUlXO5Vvs/MhDkTIIE9CtOWXYt90QxO2RcpDAh8oauKsqh4v+NzFx67FykgsaainGl87NZQRZs10Do95A7cAQ6bbws6I/otNzkCa9SlCptKOdoSVQya4N3IgIcJa7Ohc08hmucriDXWwxNGbvQr1h7shG6gpMkWe2u4UwFv5UKnNmJGaaDgsXxJA/O4PzU3thkDAbzXv1noUFTN0SoBJMB+KZcErEocP6UxCrSrcyP1x/Re7GTtuPPooCTMjTKIxnyLt9skeAgxUCyJC0wPHd7qq5XTPj0N8dQgvnseMlI3Gj0ov9/Rr28Vd1YcqvPpd4N6c2fulynmI3R8J4g1kGU1R3T1EVeqs2RjAW1s732zHyOg7VPCATvdhi5EpqYMY30kmKDQAy1fmVuw1DGJw0fZj2M6GAlNf2UmLPGs3sek91xUlcNcxI5DQuUGOaabVUckY49MjaH1hme8fO4U5/rODP10lS+/UAFTV1BY/0ZglHo8sAGGAPPISYFVoSvdUEWOXILm9fxgYUju8r8IcSr5QmPHs1TPDCOyYPfB6NmhcuU7pS9Tpza7RsnN/AjsyiyT84l/pKf28Wqu3hUBCntCtwewCCeMtMuuONDO0WM6Osx2AbYU6LGf+1eSezO07FvRk23AK5mOb0dBMhdgNd/WKA8hqO1ATRoXXUJsja1mg0iUUgzS3eyV8mmO9GKrUN2MEyUx6y6NzK1XwyccCsZL3ZwEi1VCj8rpb7pOv+vKJDL+GHMizwXbDLJlnaD/nXKJhUdwd8UcYka2sUXhvIklkDnKU9gnnGOJ0pR3U0HhJHMrYF0FukTFVoUAhPDgIbVVpnVuc4Z8c/lHjLc517AixQ297rbcjq03qkW4r04qX2mtZ6fpdxWWjzSiko0wzYUD4+7ATFcYJz6wLvuPyo7KPt+7xVVgAD09+YFx4E8P+bOzIBR6aZDBqiPBb8Po
- NABwOIaa
- AfiPUaSH1at6NZ0P/t/SfHa2Twe6N+O+rGYmvKx/lEYk70xdks/hg1O3kyZLj9HA7O8wfRzGFoikY60jkPXuKdhvEpyrvSXuQwIvw+LOHLKedwG/nJwu1sSCnfOLRwLwnMs6DuHyKUfsvwIzaj8Dkmvne6H7JM0fzbHHnSQOloynBGFPpzeXhDTAaolyNc4ckB0ZkCwwhd+EMvtCZ72BPsQ3UTJwwDgqaflBLzpp6LHfQXAKi61+WxFQ36A==
+X-HE-Tag: 1761220160-750467
+X-HE-Meta: U2FsdGVkX1/FD7VTGP3djGH92/1HaucABcNAjV66VB/1Lx4CtSvEiAUiKVgurMTu/3zqzPaD5U74GwhLpHIVgY9gZ86UL2LPeG/khhMZRq7rZeERIKapiPI1iXz8Sy0HRZ8ZW1e/sX0rqyEDzh4lwO7Y86PQB6Gycona+ZIV35YZm8CgH6EqPPTIolnFMA3RsvINlcCdX8jFU6yGI+SNZxRviAUrgaJfUCVEfI+OHUUr54kYR0fKTkSH4GwIUdhlXMmn+CA7ot0K0XII5rZ9LhZ7A1l0mIJ3RG9py80ZALTMYWvNjCqoC5c+Ez+9lsScEIATJjKYt4Qzz93kgTlKT7cq6qkEEmyMZgodcjqNYTLn9Pigxhk/8TD9DedUPDkOtnQcaIl5MQ2eejXslkCez3bcdg74jLtkCHdYk48a6OifznCMkycUZduG0msLC131dT8ExN7lJK/pup5jbIV5HZWR1arckwSWA0DU9NfoXzKVGdFbymM0Ktds6/v5OLv+z40fwLoNOyi7vPzZyq1X+2dUTrvvQcKcvgCbB7ksnEufOT7HSlrCcZQBu9DLrsxY1tR3lD0yJZHaCnFRneKfv8fakdAyOWJNuCSvlwPYmRgiXgPjyPdbSjVDjOxhIMRJNjvCSybaz0wpnJn1Nk/aqCLOk5NrBTsCzOKQwEL7KrS+zfplFrJIkf8WJSeycmR/acuHgIK2OR/l5BTigINq6VufDwJwrH3OeS2/evIX+TqqwydzQ/DoCdSZfbMnQ19U9ps9xq5bUWo8Bvzzukc79ZSIbDMRZuvHtwj01/hVslZtSwuzenl6gp5Aa3W0weOJpq9YOrvDBFf1tg7XQ48K8oMQMUhTtqAY6m9aWpJlx58nPV71PBUXYFRT647RJaP2PNymq6xdk/3zrLjc6OBniCaz+ZFhpBYfKlqkVbM2yGzEcWnKHlHFC6hfcf9TFVqHssaFymYjwlaKj1WA4es
+ n/sVnVM0
+ 1fcDrBPRVM6gE4jmpk1lk3+p2fMA79Uf1v6wHNgg1FxeFz/5HLhtBntphxim+wIYuZkCW7q5CiNh5WzDUAHsBlzE1qrGhio37by13X6RZm8XGyOry2jqBughyiiaAWjBs3HAh60DfJio7yxf6U+rkeKmQAScX8A+QnrqeFpnmD7NdmVmc5P59xy8CS86sTbEkzXCUF8/w1txMAuMiljOSvepRCj33S0ZAARRC4ODeppqEiFEP4L/qFq9rNw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,59 +104,203 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The folio_can_map_prot_numa() checks whether the folio can map prot
-numa, which skips unsuitable folio, i.e. zone device, shared folios
-(KSM, CoW), non-movable dma pinned, dirty file folio and folios that
-already have the expected node affinity. Although the ksm only applies
-to small folios, an extra test was added for large folios, but the
-other policies should be applied to pmd folio, which helps to avoid
-unnecessary pmd change and folio migration attempts.
+On Wed, 22 Oct 2025 22:39:28 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
- mm/huge_memory.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Hi Conor,
 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2764613a9b3d..eda9316f71b3 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2477,8 +2477,7 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- #endif
+> On Wed, Oct 22, 2025 at 12:33:49PM +0100, Jonathan Cameron wrote:
+> 
+> > +static int hisi_soc_hha_wbinv(struct cache_coherency_ops_inst *cci,
+> > +			struct cc_inval_params *invp)
+> > +{
+> > +	struct hisi_soc_hha *soc_hha =
+> > +		container_of(cci, struct hisi_soc_hha, cci);
+> > +	phys_addr_t top, addr = invp->addr;
+> > +	size_t size = invp->size;
+> > +	u32 reg;
+> > +
+> > +	if (!size)
+> > +		return -EINVAL;
+> > +
+> > +	addr = ALIGN_DOWN(addr, HISI_HHA_MAINT_ALIGN);
+> > +	top = ALIGN(addr + size, HISI_HHA_MAINT_ALIGN);
+> > +	size = top - addr;
+> > +
+> > +	guard(mutex)(&soc_hha->lock);
+> > +
+> > +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
+> > +		return -EBUSY;
+> > +
+> > +	/*
+> > +	 * Hardware will search for addresses ranging [addr, addr + size - 1],
+> > +	 * last byte included, and perform maintain in 128 byte granule
+> > +	 * on those cachelines which contain the addresses.
+> > +	 */  
+> 
+> Hmm, does this mean that the IP has some built-in handling for there
+> being more than one "agent" in a system? IOW, if the address is not in
+> its range, then the search will just fail into a NOP?
+
+Exactly that. NOP if nothing to do. The hardware is only tracking
+a subset of what it might contain (depending on which cachelines are
+actually in caches) so it's very much a 'clear this if you happen to
+have it' command.  Even if it is in the subset of PA being covered by
+an instance, many cases will be a 'miss' and hence a NOP.
+
+> If that's not the case, is this particular "agent" by design not suitable
+> for a system like that? Or will a dual hydra home agent system come with
+> a new ACPI ID that we can use to deal with that kind of situation?
+
+Existing systems have multiple instances of this hardware block.
+
+Simplifying things over reality just to make this explanation less
+messy.  (ignoring other levels of interleaving beyond the Point of
+Coherency etc).
+
+In servers the DRAM access are pretty much always interleaved 
+(usually at cache line granularity). That interleaving may go very
+different physical locations on a die or across multiple dies.
+
+Similarly the agent responsible for tracking the coherency state
+(easy to think of this as a complete directory but it's never that
+simple) is distributed so that it is on the path to the DRAM. Hence
+if we have N way interleave there maybe N separate agents responsible for
+different parts of the range 0..(64*N-1) (taking smallest possible
+flush that would have to go to all those agents).
  
- 	if (prot_numa) {
--		struct folio *folio;
--		bool toptier;
-+
- 		/*
- 		 * Avoid trapping faults against the zero page. The read-only
- 		 * data is likely to be read-cached on the local CPU and
-@@ -2490,19 +2489,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
- 		if (pmd_protnone(*pmd))
- 			goto unlock;
- 
--		folio = pmd_folio(*pmd);
--		toptier = node_is_toptier(folio_nid(folio));
--		/*
--		 * Skip scanning top tier node if normal numa
--		 * balancing is disabled
--		 */
--		if (!(sysctl_numa_balancing_mode & NUMA_BALANCING_NORMAL) &&
--		    toptier)
-+		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
-+					     vma_is_single_threaded_private(vma)))
- 			goto unlock;
--
--		if (folio_use_access_time(folio))
--			folio_xchg_access_time(folio,
--					       jiffies_to_msecs(jiffies));
- 	}
- 	/*
- 	 * In case prot_numa, we are under mmap_read_lock(mm). It's critical
--- 
-2.27.0
+> (Although I don't know enough about ACPI to know where you'd even get
+> the information about what instance handles what range from...)
+
+We don't today. It would be easy to encode that information
+as a resource and it may make sense for larger systems depending
+on exactly how the coherency fabric in a system works. I'd definitely
+expect to see some drivers doing this. Those drivers could then prefilter.
+
+Interleaving gets really complex so any description is likely to only
+provide a conservative superset of what is actually handled by a given
+agent.
+
+> 
+> > +	size -= 1;
+> > +
+> > +	writel(lower_32_bits(addr), soc_hha->base + HISI_HHA_START_L);
+> > +	writel(upper_32_bits(addr), soc_hha->base + HISI_HHA_START_H);
+> > +	writel(lower_32_bits(size), soc_hha->base + HISI_HHA_LEN_L);
+> > +	writel(upper_32_bits(size), soc_hha->base + HISI_HHA_LEN_H);
+> > +
+> > +	reg = FIELD_PREP(HISI_HHA_CTRL_TYPE, 1); /* Clean Invalid */
+> > +	reg |= HISI_HHA_CTRL_RANGE | HISI_HHA_CTRL_EN;
+> > +	writel(reg, soc_hha->base + HISI_HHA_CTRL);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int hisi_soc_hha_done(struct cache_coherency_ops_inst *cci)
+> > +{
+> > +	struct hisi_soc_hha *soc_hha =
+> > +		container_of(cci, struct hisi_soc_hha, cci);
+> > +
+> > +	guard(mutex)(&soc_hha->lock);
+> > +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
+> > +		return -ETIMEDOUT;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static const struct cache_coherency_ops hha_ops = {
+> > +	.wbinv = hisi_soc_hha_wbinv,
+> > +	.done = hisi_soc_hha_done,
+> > +};
+> > +
+> > +static int hisi_soc_hha_probe(struct platform_device *pdev)
+> > +{
+> > +	struct hisi_soc_hha *soc_hha;
+> > +	struct resource *mem;
+> > +	int ret;
+> > +
+> > +	soc_hha = cache_coherency_ops_instance_alloc(&hha_ops,
+> > +						     struct hisi_soc_hha, cci);
+> > +	if (!soc_hha)
+> > +		return -ENOMEM;
+> > +
+> > +	platform_set_drvdata(pdev, soc_hha);
+> > +
+> > +	mutex_init(&soc_hha->lock);
+> > +
+> > +	mem = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+> > +	if (!mem) {
+> > +		ret = -ENOMEM;
+> > +		goto err_free_cci;
+> > +	}
+> > +
+> > +	/*
+> > +	 * HHA cache driver share the same register region with HHA uncore PMU
+> > +	 * driver in hardware's perspective, none of them should reserve the
+> > +	 * resource to itself only.  Here exclusive access verification is
+> > +	 * avoided by calling devm_ioremap instead of devm_ioremap_resource to  
+> 
+> The comment here doesn't exactly match the code, dunno if you went away
+> from devm some reason and just forgot to to make the change or the other
+> way around? Not a big deal obviously, but maybe you forgot to do
+> something you intended doing. It's mentioned in the commit message too.
+
+Ah. Indeed stale comment, I'll drop that.
+
+Going away from devm was mostly a hang over from similar discussions in fwctl
+where I copied the pattern of embedded device(there)/kref(here) and reluctance
+to hide way the final put().
+
+> 
+> Other than the question I have about the multi-"agent" stuff, this
+> looks fine to me. I assume it's been thought about and is fine for w/e
+> reason, but I'd like to know what that is.
+
+I'll see if I can craft a short intro bit of documentation for the
+top of this driver file to state clearly that there are lots of instances
+of this in a system and that a requests to clear something that isn't 'theirs'
+results in a NOP.  Better to have that available so anyone writing
+a similar driver thinks about whether that applies to what they have or
+if they need to do in driver filtering.
+
+> 
+> Cheers,
+> Conor.
+
+Thanks!
+
+Jonathan
+> 
+> > +	 * allow both drivers to exist at the same time.
+> > +	 */
+> > +	soc_hha->base = ioremap(mem->start, resource_size(mem));
+> > +	if (!soc_hha->base) {
+> > +		ret = dev_err_probe(&pdev->dev, -ENOMEM,
+> > +				    "failed to remap io memory");
+> > +		goto err_free_cci;
+> > +	}
+> > +
+> > +	ret = cache_coherency_ops_instance_register(&soc_hha->cci);
+> > +	if (ret)
+> > +		goto err_iounmap;
+> > +
+> > +	return 0;
+> > +
+> > +err_iounmap:
+> > +	iounmap(soc_hha->base);
+> > +err_free_cci:
+> > +	cache_coherency_ops_instance_put(&soc_hha->cci);
+> > +	return ret;
+> > +}
+> > +
+> > +static void hisi_soc_hha_remove(struct platform_device *pdev)
+> > +{
+> > +	struct hisi_soc_hha *soc_hha = platform_get_drvdata(pdev);
+> > +
+> > +	cache_coherency_ops_instance_unregister(&soc_hha->cci);
+> > +	iounmap(soc_hha->base);
+> > +	cache_coherency_ops_instance_put(&soc_hha->cci);
+> > +}  
+> 
 
 
