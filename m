@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E644CCCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24508CCD1AB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2AC7B8E001C; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
+	id 788F88E0012; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1E0F28E0012; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
+	id 6EA7B8E001D; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0F7788E001C; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
+	id 58AD08E0012; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id EB0BD8E0012
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:47 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A84F413BFA3
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:47 +0000 (UTC)
-X-FDA: 84027637134.30.0987783
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0C7DF40004
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:45 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OntKqQFK;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 406A78E001D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:48 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 12DF01A094F
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:48 +0000 (UTC)
+X-FDA: 84027637176.12.EF3EFF2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 87A12180003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:46 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9w7oAey;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182746; a=rsa-sha256;
+	cv=none;
+	b=YY0KpGurEq9GCGhppabRyczWex2BvlaA+8l9OdEyGaTDCW5TYqz1Oy7d8x0YN2sNBTAAbK
+	6LJYKqVyJYK87G8GsKDclrN8R1PPqCoWjI+h7Fcekq1OIf4b2loWXqCjfH4DexNvfoFEaW
+	7IkD2nVEAosk/aOQy4cejsZSpswkbPE=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=T9w7oAey;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf24.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761182746;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZpwJZOd7yqtxYdsg9OdSwCybxkWwGHM+qLZxcmnkpg=;
-	b=OxHFGg61VM8uzT5GSgnjo/ZQtrqbGictj65z7o+BosRSxEne3DgK6rCWlmO42PWpMMYJnz
-	w9Qmzb5NwyiK2WKj+YzCscyRwcMubzUf2D4WKFQcvS/huyMnvvxjmBbeE1xraovH9v3YMN
-	M804AqY3qCuMXE5hq4KlJuzWlxPjzhM=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OntKqQFK;
-	spf=pass (imf27.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182746; a=rsa-sha256;
-	cv=none;
-	b=tweGYB4j/Gk9UfBd3g50BwdUzyHWWT60++/zh9Cn+Pfkwn60aY9vT3kLTqRGz8pvA/Qkri
-	XgVT69lAncn03AwfZPo9mqUecu7srwzTU1uuwRa07mQHMqr3w3fdnLS+UJFFZqBiAk7PTP
-	XOsYQlxfqRwoHw7+oW+IHdgZqWX6gO8=
+	bh=sYXhWmooJF0TFXJ49nwhDqvKNAi67Rjpwk+zlrT9McI=;
+	b=1OSnCpUvJBhBkCC6pYh7VWjpFI/7dRnuMbt5OOZRMHPS6m0tl615/vV8rrUH4HwdBYzO3B
+	GBv6WhWJVGL71ooyF47vG6viUx3HOcw1pSqJvSvKN3u0xy/GSdFRtWOcUGBmdwY8FGpAJ2
+	hY6eo0AGjgTcs9txmNGkrU+YR4s57wQ=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 440DE4A8F0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 1804860577;
+	Thu, 23 Oct 2025 01:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC3FC19423;
 	Thu, 23 Oct 2025 01:25:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9905AC116C6;
-	Thu, 23 Oct 2025 01:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761182745;
-	bh=P5iwpdgt+gTVzJnYLVnDYTD/06YxCQbWf1lq1vcjQO8=;
+	bh=/16NLG9ELNo7TPBr96lQkGZnNgiuxdJz+m68NvFaNcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OntKqQFKQ90pkuMEJ/uMDhG0j6Z4ILHt3/h9jCwhJn2XcLvEVzlucWwTQpii3YZa8
-	 5OfOQMYEDdnpuEP4tcfbtcnasRYknDfI+5i6KPvinOCIHztJQHZmJJCLZYjDFh7PgD
-	 S6AkvF6lUdeJnjfMSm7ou4zLMZ406faHMxVfXLGrGwkY68iVu+8RQK0m0gAndhZvXQ
-	 1iWvSs0961w0nv43EfNMFsQWSY/gF/6yOUR33+Xs7daJcDK5EdK5xPzEarQI7Schyn
-	 HGrgGHA9Beb8bSqZkRsUHbYL73Oe2C8h2jj7E8H5DYBGKVZC9Lf9Kv1W/l2kI3UBx1
-	 WzP6VWC66XNIg==
+	b=T9w7oAeykIWaG2b8dcXHBbWDStlzXq/7msaN2BG0ZoTNk7bKVgmTlNnXZQ90CV8k8
+	 7+GsyqdsSIllGEvFwu70cYKwoYfNHtLJR/qy9lgrU14MfprVr+3k2c2f+eJwdRKIIR
+	 gHKpkNAISrjsytHVyrHbpxKZc6vA8NpNYhEKHjQzkGTUINgV4oqjiukQxz40jlh71s
+	 Lc0Fvw3UOoKn+IOT2GNcApT86fGUo9yw50N1NRsrG5YBVpbAvP0ZaKAAcW9s1XHrhy
+	 f8r8gElXIgE4GaDALfZ+5CvIn7vZZ7tM9RwwbLmeKdJ/CulqW5I4eMcd0bU0DRzZns
+	 j/TZzqWjTXPwA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -72,22 +72,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 7/9] drgn_dump_damon_status: dump damon_target->obsolete
-Date: Wed, 22 Oct 2025 18:25:31 -0700
-Message-ID: <20251023012535.69625-8-sj@kernel.org>
+Subject: [PATCH 8/9] sysfs.py: extend assert_ctx_committed() for monitoring targets
+Date: Wed, 22 Oct 2025 18:25:32 -0700
+Message-ID: <20251023012535.69625-9-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251023012535.69625-1-sj@kernel.org>
 References: <20251023012535.69625-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 0C7DF40004
-X-Stat-Signature: ops1bfft5kf5ysxaewrpjf4kugfth6mc
 X-Rspam-User: 
-X-HE-Tag: 1761182745-420662
-X-HE-Meta: U2FsdGVkX18KHLH3Qa6H0krL2ZbIFk+sh4puBHAZTcFuqKJUgK7+XIoLioNzE+4cdDzvVF3A6/PyjhXAuGzaAsyUoIbYB15YXJk++7j/DWKkpKioaGWayRuPjYG4Jm+amyqdAvF+P0gi374wsiqg5Ystg0dXTqnkO0RaEVPS9HGUxgmguxhU+QqfLMJA2fwfvjMOtKyKbxpN4ZbaeeT4UCKRiAUcrHKGCE+2Y5ygpBj9hffoSBs4ykC1AcJCx8eFaHVhLCVogjK8swTR+XMIbvYDMOY7tI+0BQVbe1tWz6ghMWLFG8EEIkeWouZBBAW2+GjTmuulo3RUCsILaI9Xu5wyPK8XT/oJ9fn7PIZTjTiD7wpXveF6yjsTgy491GIPE8HJ0aHQjXdwVoD0ifL20A3I/WsxS9qgC2eu3penAc1IZeGNLw+eQChitDW7sfrYnudR/BG66y6VSumo4JC4Vuwl9mnuLEtsURcfPX/vdC9L/bZDPuYYG/VsXejDSmTO4dEGno8l9K4nxSLL6g4YaoGXtUp1H7GjWsZs8ErmcJByDjCOjxzcOy2x3eU8YknnqV22qT0N+Tirh6ijlM3wNcfjliyFfxjfRrYsgNXxtxAcCTt5fSnx5qAagL9TABUgn/L/Ngfa082/cpmVZG2U69H42NwbcbvqLdryN6aGcogUnCSoLACPkXRKyw0HaaqpqFPCV/8VMgElC4Ha9LwdKet/AA9D7adzz/8V1xaV6LgIWb6z45629tyHo2dFy+Y0VZi0I8CxmaNCHw2q+VFk4JZjkYeWBkcCTbtx09lDYG/E1HQlUsvQVDNV8vChqRgoWo4x5+UHQmsClpk2FxdzZZlvdu89GH3veqVfWbLpFBtaFKtVLUfUDkh5iQ45wyNwcYQ8NBGAfD6QTWV49KT+VeyetdXHJ8R3UfNGBZF83esh4KVzGY7E5WFd6iLwZHCtDpgvwq14Y4/+1BPsdn9
- wgZuyVSw
- s6W0iEGktbTWg4MyCCUPqOJ+vK0+g9+ueBRSgrl6B5BgotlbgiXNmFpeXTKqJQzC+Op7eNZPMzX0CPKQNdVX+27sdkgVGSkkEB/YcMZK+OTT0MSe7DQqY+FGN+4sv5LnoGqlKxtcTVfRzDm72zS8v/yEjMR/S6WxoCWfSiquV++gRCdmrNlcCg7VdgvstpocckN4Sz9jru0Y74LvTmeBJ1FrrJutNjDAXyQrwnxEvObu2157Jy8QAPyGFyoqTFgQJoYSbWcLPiR4JxuBy2OpBOpS2hA==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 87A12180003
+X-Stat-Signature: uxzm4wos5b19pt8cnsh3ny34h5tpbfqk
+X-HE-Tag: 1761182746-51709
+X-HE-Meta: U2FsdGVkX1+5fWz4f7ouJKntagK6k4ScYik/cRdCn5oUnbgS6bVEhiDMNyQFWh5X2IzbdHqJCbbB7QXmkL/gtRjf7fjq3iacOxMhBvCvSJHWhblYHG0pF/oWt0BXLZr5BBDB8892PWQvHoYEv4V3xKd4uxGj/puTqrPk3iWAsARyDuo1Vjwona9zx9NYawYlW6I8wYCYZG0N2TMhYN54KeY1X+5qnASSsfJyD3S5Q6iBi4AHuaxYNa4QS5YKwCzVrnhE1Em8oNnVm3JP4lqB0pDw/yxDu9Szw7BxPTXXa9HztkDLelq8YYnd9HSxw8wkDyLHsssrCCsa7aVkFRgKQWmbso8mNXaYWvUcVIMPlj5OV+SGKushqNQZ+zpBQrC3GN0OUqwGn8/bG6e3CnABcTsmVNoeqEjRwxTewOiaeKtOlXcFJxxaexTPDzgu2zW4aRg8QLoIY1HcRff6ARSxe7oZ3PtfGZfft58vEGwKHRGaLFRroO6X0n1nBptUuYxRdPJ0+uvRhvuyxhsW/kKwsvfcnIKTxCD6fKmHv5619qqILyifvEKQ4+KckQ2nAdapD6VMnn7+Y1iw9nvNmb0avHfuc2Dl1rs0S0kl1F8I/HRhc/Lob1ruUOJRw8MbDqn+mXSdHhavCOceALTFy+HZZaOuBcu6SA46ozmrg5BbU9JYPmemEzzrQmCfAirqYF12TRSeHetJHdm3kghn1p7s5yeICsU77fzl3blyE/YxpkEG5kChOECk1p7jffWJ0yuNUsjaHsqJBnFbV6l2Rwn40n/TzpTuGtjwm6p83067WnLVyXQW2UH8FqN7tP+Vpns6wqXFj8u21w+bb5dGTHAy+ek62UHnzjRvgYdDHHgS/bnaf+KFvwV3Z9o8oXg6DTviSY8/X34R/wQKmjHWHuCCVTgLneuCsOYEZncSyJH6QuOFqdX5jqhH8LaXc6Vz9kRJMiK7EuProGWgycNdXo4
+ TlFeo0KX
+ eok8gMYX9XVHENPwuv+DrcH+dH+5s3nKxd7n8+u6fyTLvs02Xbu8zfhb+gms2uK0ezuVMHPdUU57PTVzIUWGXhFpJWtUsVI7mB4RaHguucqvldcrSgfSOwMQRSxXaj7IQkQkyV29aLDGzlcCH2TUBuQTw6PL8UDYKP+9e+sdaG/zjzBnEk789T25kYCjFm585nPS09VxET5RumyWe8pyRrQyZmISlEjRF7Hh1MRpFX1wn8OWDihv+vbBoKofrkF6nbYtM/Od8kCVGcXd+611jYNwWsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,27 +96,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A new field of damon_target for pin-point target removal, namely
-obsolete, has newly been added.  Extend drgn_dump_damon_status.py to
-dump it, for easily writing a future DAMON selftests of it.
+assert_ctx_committed() is not asserting monitoring targets commitment,
+since all existing callers of the function assume no target changes.
+Extend it for future usage.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- tools/testing/selftests/damon/drgn_dump_damon_status.py | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/damon/sysfs.py | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/damon/drgn_dump_damon_status.py b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-index 7233369a3a44..cb4fdbe68acb 100755
---- a/tools/testing/selftests/damon/drgn_dump_damon_status.py
-+++ b/tools/testing/selftests/damon/drgn_dump_damon_status.py
-@@ -73,6 +73,7 @@ def target_to_dict(target):
-         ['pid', int],
-         ['nr_regions', int],
-         ['regions_list', regions_to_list],
-+        ['obsolete', bool],
-         ])
+diff --git a/tools/testing/selftests/damon/sysfs.py b/tools/testing/selftests/damon/sysfs.py
+index 2666c6f0f1a5..fd8d3698326e 100755
+--- a/tools/testing/selftests/damon/sysfs.py
++++ b/tools/testing/selftests/damon/sysfs.py
+@@ -164,6 +164,16 @@ def assert_monitoring_attrs_committed(attrs, dump):
+     assert_true(dump['max_nr_regions'] == attrs.max_nr_regions,
+                 'max_nr_regions', dump)
  
- def targets_to_list(targets):
++def assert_monitoring_target_committed(target, dump):
++    # target.pid is the pid "number", while dump['pid'] is 'struct pid'
++    # pointer, and hence cannot be compared.
++    assert_true(dump['obsolete'] == target.obsolete, 'target obsolete', dump)
++
++def assert_monitoring_targets_committed(targets, dump):
++    assert_true(len(targets) == len(dump), 'len_targets', dump)
++    for idx, target in enumerate(targets):
++        assert_monitoring_target_committed(target, dump[idx])
++
+ def assert_ctx_committed(ctx, dump):
+     ops_val = {
+             'vaddr': 0,
+@@ -172,6 +182,7 @@ def assert_ctx_committed(ctx, dump):
+             }
+     assert_true(dump['ops']['id'] == ops_val[ctx.ops], 'ops_id', dump)
+     assert_monitoring_attrs_committed(ctx.monitoring_attrs, dump['attrs'])
++    assert_monitoring_targets_committed(ctx.targets, dump['adaptive_targets'])
+     assert_schemes_committed(ctx.schemes, dump['schemes'])
+ 
+ def assert_ctxs_committed(ctxs, dump):
 -- 
 2.47.3
 
