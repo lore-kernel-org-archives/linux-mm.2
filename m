@@ -4,116 +4,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A84BFCCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:53:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA1B0CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:53:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 145BF8E0039; Thu, 23 Oct 2025 09:53:42 -0400 (EDT)
+	id 369708E003A; Thu, 23 Oct 2025 09:53:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11DEA8E0002; Thu, 23 Oct 2025 09:53:42 -0400 (EDT)
+	id 319418E0002; Thu, 23 Oct 2025 09:53:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 033B08E0039; Thu, 23 Oct 2025 09:53:41 -0400 (EDT)
+	id 2080B8E003A; Thu, 23 Oct 2025 09:53:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E10CE8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:53:41 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id ADD10B652B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:53:41 +0000 (UTC)
-X-FDA: 84029521842.07.F722C2E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 84A592000B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:53:39 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YQw5bU+Z;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I+wC7SNH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="N03/pxcX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9wE2UIBD;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0E9208E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:53:45 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id CFB8813C12D
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:53:44 +0000 (UTC)
+X-FDA: 84029521968.21.72C5DE1
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 9C44C40011
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:53:42 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761227622; a=rsa-sha256;
+	cv=none;
+	b=hI2zNM92Id1TMeXHYsKkgCyBTjtLp8v0tV+0ZziXBRZE+1k/bRQznCnXda/oMIBqMCMZss
+	aHYja/s0CPm1kGn0NkTB6GmAZ0cOpHMKSgNYg0qUf4MhXTEoCZ5JsZLeN41i3pHefscoyT
+	jbfmY8Qi58shftEcOslKN+HSFo84G4Q=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761227619;
+	s=arc-20220608; t=1761227622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nBqIeAt8PqOShiWRW8bX5+U1W1IZCUvUQH43Nd+h/zE=;
-	b=YX4ItMP99Ktikmai1nUe96Qj3cvcJlcYOsKbKuif1bftTbZdOAsRLTc/mlqVSJcO87xppo
-	DbxI+3hGXK00twiy+mH0Dtq9mAOSSDA6IL+oAaXsvsfSIcmHIVamG+FczBi9FAY62289eT
-	0UVvoNljIo9B+iKHiBKFUT+lT7upMQQ=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=YQw5bU+Z;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=I+wC7SNH;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="N03/pxcX";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9wE2UIBD;
-	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761227619; a=rsa-sha256;
-	cv=none;
-	b=gcWnlRACyaWNq66HtiFitIRNhsS2veDK3euk1c5ip9pKTx6FxIMYdU3HfTZTPkf/zHbufI
-	pBFSZ6MQDVCQ+430/DeYIVOsX1ppXXlwClJXFoHj5HhXvXObtu5TY59h+FQ/4IX7MGxYTH
-	dEHyo7Gu+KjM1AgSdkf2j2R8nTOn0Xw=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	 in-reply-to:in-reply-to:references:references;
+	bh=FdsfcgWiQTdjWc+591nyXqsvmY3zD37UPWy6kdzpGKM=;
+	b=d94lo2BQsL8uV0s6gmJeWlMsT2OTyhdtVFyMyr5+BAt3iXfRqPrxQs7hX8qv9aSOYGrcGD
+	ArQh9Rd4XceFT8xvt1gCS07CwW1wqsfRr4GkN/jYy3ThhX6VHSvv4Z/aAs0723TEVn7yG4
+	K6IsxWwxzrpRzwh79kB9ipQgKJvMLzM=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A4D8F211F6;
-	Thu, 23 Oct 2025 13:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761227581; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nBqIeAt8PqOShiWRW8bX5+U1W1IZCUvUQH43Nd+h/zE=;
-	b=YQw5bU+ZNX5ArHuJFtj22KbWxbjoaF0CKRjypRfZTCM0XFntJFxSGFmx1CztrJCF2YIi17
-	GDqp/T6anLFn5e25sBOES95RxZyscnwk1V6XQuJ4uniGMUrAME67SCyX4sAu2ULT8AuGM4
-	7gDKO3+AoYpKmBtprrWfETFmsmLKA8c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761227581;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nBqIeAt8PqOShiWRW8bX5+U1W1IZCUvUQH43Nd+h/zE=;
-	b=I+wC7SNHC0vPp33Sa3nrdxFGEgcy6EB0zVvmoZ8B398WB3YBKw6YoV2zheE8y3vwnEHsv+
-	GVWn+J1+RhkKklBg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761227577; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nBqIeAt8PqOShiWRW8bX5+U1W1IZCUvUQH43Nd+h/zE=;
-	b=N03/pxcXs0OuyClaX98QPEtfzweWUNNSSj8Y1uRNunwDY2YnplKEe13w6EzcIpcv0Oi/pP
-	aQWRuSyqsIyOKVMtM0jW8Ilo6BlCAy1qaJMvyEaF4a4LCRyVGXozxhfq3sNZwIqzZN9R0y
-	lJ2b6pBX9s5FMKbjtbOuJysYwYCUW84=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761227577;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=nBqIeAt8PqOShiWRW8bX5+U1W1IZCUvUQH43Nd+h/zE=;
-	b=9wE2UIBDUOLcLk8TyuN1BryTkaGT0OC69IhTaPZulmTPiFRe2/CAmhW3b9dq+KR6clt5XU
-	vr8G6DEkrg2M22BA==
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AFC0F1F7CE;
+	Thu, 23 Oct 2025 13:53:01 +0000 (UTC)
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 79A9413AEB;
-	Thu, 23 Oct 2025 13:52:53 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BF88613B0F;
+	Thu, 23 Oct 2025 13:52:54 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id AMNqHTUz+mjvQQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 23 Oct 2025 13:52:53 +0000
+	id oPB8LjYz+mjvQQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 23 Oct 2025 13:52:54 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Thu, 23 Oct 2025 15:52:27 +0200
-Subject: [PATCH RFC 05/19] slab: add sheaves to most caches
+Date: Thu, 23 Oct 2025 15:52:39 +0200
+Subject: [PATCH RFC 17/19] slab: refill sheaves from all nodes
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-sheaves-for-all-v1-5-6ffa2c9941c0@suse.cz>
+Message-Id: <20251023-sheaves-for-all-v1-17-6ffa2c9941c0@suse.cz>
 References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
 In-Reply-To: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -128,14 +84,21 @@ Cc: Uladzislau Rezki <urezki@gmail.com>,
  bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
  Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Stat-Signature: kqyppiq6w6kztdtk4oqbafzijzfqj1q4
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 84A592000B
-X-HE-Tag: 1761227619-479387
-X-HE-Meta: U2FsdGVkX19AXZaE9O8pryUNKU8oLDsGhehuSSdWExcwBZBuETnVAYiurnj7axZT4UFd6EtpSJaQ4WL9gtthbuW3f6ZEc5j1PuwBlyGmdmncIgc+GSNNn4eREJ/JOx3PJMKxx5e2P1ACwFtcYA8IRu87zJbxY3kzeDPhThjcSgXBQg3EBHyHrDFrbpj0imd8kFk4XAfxitBI1M4qL4hcnsYkYy7M+/rGVIp0XSfVqpiiwOkmka3pjHmhRWdg9uNkfqQiVR+6eBZpUoFgDeCaDO44mib7G3Eh1Z2lEQv/GYmJZWvYQUFOUbBss1b22UBPDV1NN/WKB+gVAktyWTINdUZKZ64YiYnpgipecrY9RzFF2cxkZg4HpwExPp+4oJtBqYXQcHT25fGz765bx1fsv2rajKq5HGTnynd5qMJeedytDJDotqrZrmXTtHSSOTyN6w2molXfvCFs9ldEcetK72ygMqb70jw+s8v9vBgd6yxGfKaYqFYjF+Ufsl+vd7hnzTa72otv/zZPPbS2to8IrtPCFKs8/phCjfVrIN3C4ccb34wYQQdFZZI8KrQV2ZElUGULkrsBpl+TxOGw3APrVYDrySYq7GqZIu0g/99XroWgRtjmz0Xx+iEvwZtL91eo4TIONbCxvt2i/i8YXgkFnEkgdQjCcDutonjeDI+a12FFOF/mFpg/NvhfHJMeeHI4eNWU+3FBaVfooqxHNH3w7GiQGL8/aZEXnpJTGxMP4OejBEh/E+7yZN3iu1Xhachye/+rR6JYMUHMOeQ1SHZg+LmNBPmJk/1H9iaKj/dbpogS183bW9WTbr6Ia3jqA39RbsI3Jel2QLCnagUDz7ORkkucIlGz1SKM/9Hbqw3Zj0e35pujafOVGiN4y/MO9groSdNDLl4F4ZSo+dPWaDS/Me8qHab5ojgNnZK9rEf/vqhuKLhQiOaYj7SLobNnRTSulj1lR2PglHV5lZhB2wb
- k5i6a8Gd
- EQ8O39vNhfNVzrS6R+jNFVQD/HLaUuWlT6x1gjpnhMGR0V9T6mLiAtGowPWhPAx+pa8lt0By+r4ogAHQ+mc22bTIeOlbKl5PUse7yA2lJ737jdKIMwjHceyU43+yp3fmBRG9gjBuYQa6Pg6wb8R0PfNMpNReDmghkav9Zhatky4KULuepclZeF6RQq5E7YzpvIC4mpwmE27qCPo3Aw9g0M2+bcgOJz8PEMS0szuj3tGZBbz8sgNvwcqONDTW7wS5llQQN83392qE3CpyvfbwnJJaz5ZMlb2fOACIb
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9C44C40011
+X-Stat-Signature: uo916rrt96qmekc7te4j5g5bxyq3g9n3
+X-HE-Tag: 1761227622-219673
+X-HE-Meta: U2FsdGVkX1+ix05Q5bPDWhjMPz9xcP7X8onGsirK6msqPE98xT3xfvdVql/Aog8UZ7DASV6xojv0/X8NQ2v6Uh+iH2uVh169NHWN42gqno5hSHW0AODtJ9suNXACzELcfNeJORC/Q9iX8Z3mOpUvUUdNETQSuzdeXH5aXpNjbZA8mYI9ZYj1GmXkQRU5Ko9ZVPdOT4kMoVVqn4vb17g7pUUsqeNZxgDnkIAD5c2HcZIoIZwxmxdAHO2xArte++oFXY8Y8ipUWMLhyrstb7N93oGpNgLkJ6G1Kz/Az8OomD90sl4PGWIWq4s8VHiivKPBIClwq0S+ddRE7CUPJWZtOUV5deGcbwcKlLw33uNtryWj2dnfkCJYZlr0UzIm0MSYWi+KbYLSWVgHC1cc4MA86ltAwzI19lKJXtF9ArDDPAwyuhCSCArmA09pVGw245guz0kjdEd4TItKWyLK/xsV++/26tDYLycmlMWVd2x9qO61K5NQOQcnqLvGeIIuewv7IdwS2+bpPOyc5BllycSyLaG2geB88fg7eDJJ/ByZhw3bj5umMBbN2CmP0Yx8So9M09WWo3GBFhqc9zw2YZLkM7Dn3j+ZgOVgKG5aZNqaSc3AZxUnTeScLvdu4hUXe3zOZj5G3t73Ldd8+D4dS68A+fWInDh+Cs+sVzvaq+NO5poUL3BK4vLJjnK5oE1Sh8k48fPtVGuG5y8MhgwfZB6c92+HRTrWvofFgzb8Oay6JVl6a0itXpNS63ZthTAdCENhzfMZwtZBlz60F0GghK7GhG6kM18iBNk/aTPPCB6S8jDRaBspbTp4q4jLllaZdycfUSZvzXhfppTdGVj9+z4irl6od9rs3O4RetGn6v8dRG+ueEHVN2TZb1KoAZyaOC1CbzGAwvb39B8K745Ps7CXqw1klczQmvUlo0p8GVaj58VWvHZdUlK3mObJeViLapH3ggcafOH676LxHzoEjep
+ Jkw8yiHh
+ T+5AqgdXaRwOV5wWIg//Rhz68DsKsSC2RCt/Y5SzIXQ0oIYfAFZZ/gWRgXskfyizfJKjIcx78Gwt2Wl6Yg+N64WzO2w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,131 +107,232 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the first step to replace cpu (partial) slabs with sheaves, enable
-sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
-and calculate sheaf capacity with a formula that roughly follows the
-formula for number of objects in cpu partial slabs in set_cpu_partial().
+__refill_objects() currently only attempts to get partial slabs from the
+local node and then allocates new slab(s). Expand it to trying also
+other nodes while observing the remote node defrag ratio, similarly to
+get_any_partial().
 
-This should achieve roughly similar contention on the barn spin lock as
-there's currently for node list_lock without sheaves, to make
-benchmarking results comparable. It can be further tuned later.
+This will prevent allocating new slabs on a node while other nodes have
+many free slabs. It does mean sheaves will contain non-local objects in
+that case. Allocations that care about specific node will still be
+served appropriately, but might get a slowpath allocation.
 
-Don't enable sheaves for kmalloc caches yet, as that needs further
-changes to bootstraping.
+Like get_any_partial() we do observe cpuset_zone_allowed(), although we
+might be refilling a sheaf that will be then used from a different
+allocation context.
+
+We can also use the resulting refill_objects() in
+__kmem_cache_alloc_bulk() for non-debug caches. This means
+kmem_cache_alloc_bulk() will get better performance when sheaves are
+exhausted. kmem_cache_alloc_bulk() cannot indicate a preferred node so
+it's compatible with sheaves refill in preferring the local node.
 
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- include/linux/slab.h |  6 ------
- mm/slub.c            | 51 +++++++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 47 insertions(+), 10 deletions(-)
+ mm/slub.c | 130 ++++++++++++++++++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 102 insertions(+), 28 deletions(-)
 
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index cf443f064a66..e42aa6a3d202 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -57,9 +57,7 @@ enum _slab_flag_bits {
- #endif
- 	_SLAB_OBJECT_POISON,
- 	_SLAB_CMPXCHG_DOUBLE,
--#ifdef CONFIG_SLAB_OBJ_EXT
- 	_SLAB_NO_OBJ_EXT,
--#endif
- 	_SLAB_FLAGS_LAST_BIT
- };
- 
-@@ -238,11 +236,7 @@ enum _slab_flag_bits {
- #define SLAB_TEMPORARY		SLAB_RECLAIM_ACCOUNT	/* Objects are short-lived */
- 
- /* Slab created using create_boot_cache */
--#ifdef CONFIG_SLAB_OBJ_EXT
- #define SLAB_NO_OBJ_EXT		__SLAB_FLAG_BIT(_SLAB_NO_OBJ_EXT)
--#else
--#define SLAB_NO_OBJ_EXT		__SLAB_FLAG_UNUSED
--#endif
- 
- /*
-  * ZERO_SIZE_PTR will be returned for zero sized kmalloc requests.
 diff --git a/mm/slub.c b/mm/slub.c
-index f2b2a6180759..a6e58d3708f4 100644
+index d55afa9b277f..4e003493ba60 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -7810,6 +7810,48 @@ static void set_cpu_partial(struct kmem_cache *s)
- #endif
+@@ -2505,8 +2505,8 @@ static void free_empty_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf)
  }
  
-+static unsigned int calculate_sheaf_capacity(struct kmem_cache *s,
-+					     struct kmem_cache_args *args)
-+
-+{
-+	unsigned int capacity;
-+	size_t size;
-+
-+
-+	if (IS_ENABLED(CONFIG_SLUB_TINY) || s->flags & SLAB_DEBUG_FLAGS)
+ static unsigned int
+-__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+-		 unsigned int max);
++refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++	       unsigned int max);
+ 
+ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 			 gfp_t gfp)
+@@ -2517,8 +2517,8 @@ static int refill_sheaf(struct kmem_cache *s, struct slab_sheaf *sheaf,
+ 	if (!to_fill)
+ 		return 0;
+ 
+-	filled = __refill_objects(s, &sheaf->objects[sheaf->size], gfp,
+-			to_fill, to_fill);
++	filled = refill_objects(s, &sheaf->objects[sheaf->size], gfp, to_fill,
++				to_fill);
+ 
+ 	sheaf->size += filled;
+ 
+@@ -6423,25 +6423,21 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
+ EXPORT_SYMBOL(kmem_cache_free_bulk);
+ 
+ static unsigned int
+-__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+-		 unsigned int max)
++__refill_objects_node(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		      unsigned int max, struct kmem_cache_node *n)
+ {
+ 	struct slab *slab, *slab2;
+ 	struct partial_context pc;
+ 	unsigned int refilled = 0;
+ 	unsigned long flags;
+ 	void *object;
+-	int node;
+ 
+ 	pc.flags = gfp;
+ 	pc.min_objects = min;
+ 	pc.max_objects = max;
+ 
+-	node = numa_mem_id();
+-
+-	/* TODO: consider also other nodes? */
+-	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
+-		goto new_slab;
++	if (!get_partial_node_bulk(s, n, &pc))
 +		return 0;
-+
-+	/* bootstrap caches can't have sheaves for now */
-+	if (s->flags & SLAB_NO_OBJ_EXT)
-+		return 0;
-+
-+	/*
-+	 * For now we use roughly similar formula (divided by two as there are
-+	 * two percpu sheaves) as what was used for percpu partial slabs, which
-+	 * should result in similar lock contention (barn or list_lock)
-+	 */
-+	if (s->size >= PAGE_SIZE)
-+		capacity = 4;
-+	else if (s->size >= 1024)
-+		capacity = 12;
-+	else if (s->size >= 256)
-+		capacity = 26;
-+	else
-+		capacity = 60;
-+
-+	/* Increment capacity to make sheaf exactly a kmalloc size bucket */
-+	size = struct_size_t(struct slab_sheaf, objects, capacity);
-+	size = kmalloc_size_roundup(size);
-+	capacity = (size - struct_size_t(struct slab_sheaf, objects, 0)) / sizeof(void *);
-+
-+	/*
-+	 * Respect an explicit request for capacity that's typically motivated by
-+	 * expected maximum size of kmem_cache_prefill_sheaf() to not end up
-+	 * using low-performance oversize sheaves
-+	 */
-+	return max(capacity, args->sheaf_capacity);
-+}
-+
- /*
-  * calculate_sizes() determines the order and the distribution of data within
-  * a slab object.
-@@ -7944,6 +7986,10 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 	if (s->flags & SLAB_RECLAIM_ACCOUNT)
- 		s->allocflags |= __GFP_RECLAIMABLE;
  
-+	/* kmalloc caches need extra care to support sheaves */
-+	if (!is_kmalloc_cache(s))
-+		s->sheaf_capacity = calculate_sheaf_capacity(s, args);
-+
- 	/*
- 	 * Determine the number of objects per slab
- 	 */
-@@ -8562,15 +8608,12 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
+ 	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
  
- 	set_cpu_partial(s);
- 
--	if (args->sheaf_capacity && !IS_ENABLED(CONFIG_SLUB_TINY)
--					&& !(s->flags & SLAB_DEBUG_FLAGS)) {
-+	if (s->sheaf_capacity) {
- 		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
- 		if (!s->cpu_sheaves) {
- 			err = -ENOMEM;
- 			goto out;
- 		}
--		// TODO: increase capacity to grow slab_sheaf up to next kmalloc size?
--		s->sheaf_capacity = args->sheaf_capacity;
+@@ -6480,8 +6476,6 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
  	}
  
- #ifdef CONFIG_NUMA
+ 	if (unlikely(!list_empty(&pc.slabs))) {
+-		struct kmem_cache_node *n = get_node(s, node);
+-
+ 		spin_lock_irqsave(&n->list_lock, flags);
+ 
+ 		list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+@@ -6503,13 +6497,91 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 		}
+ 	}
+ 
++	return refilled;
++}
+ 
+-	if (likely(refilled >= min))
+-		goto out;
++#ifdef CONFIG_NUMA
++static unsigned int
++__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		     unsigned int max, int local_node)
++{
++	struct zonelist *zonelist;
++	struct zoneref *z;
++	struct zone *zone;
++	enum zone_type highest_zoneidx = gfp_zone(gfp);
++	unsigned int cpuset_mems_cookie;
++	unsigned int refilled = 0;
++
++	/* see get_any_partial() for the defrag ratio description */
++	if (!s->remote_node_defrag_ratio ||
++			get_cycles() % 1024 > s->remote_node_defrag_ratio)
++		return 0;
++
++	do {
++		cpuset_mems_cookie = read_mems_allowed_begin();
++		zonelist = node_zonelist(mempolicy_slab_node(), gfp);
++		for_each_zone_zonelist(zone, z, zonelist, highest_zoneidx) {
++			struct kmem_cache_node *n;
++			unsigned int r;
++
++			n = get_node(s, zone_to_nid(zone));
++
++			if (!n || !cpuset_zone_allowed(zone, gfp) ||
++					n->nr_partial <= s->min_partial)
++				continue;
++
++			r = __refill_objects_node(s, p, gfp, min, max, n);
++			refilled += r;
++
++			if (r >= min) {
++				/*
++				 * Don't check read_mems_allowed_retry() here -
++				 * if mems_allowed was updated in parallel, that
++				 * was a harmless race between allocation and
++				 * the cpuset update
++				 */
++				return refilled;
++			}
++			p += r;
++			min -= r;
++			max -= r;
++		}
++	} while (read_mems_allowed_retry(cpuset_mems_cookie));
++
++	return refilled;
++}
++#else
++static inline unsigned int
++__refill_objects_any(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++		     unsigned int max, int local_node)
++{
++	return 0;
++}
++#endif
++
++static unsigned int
++refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
++	       unsigned int max)
++{
++	int local_node = numa_mem_id();
++	unsigned int refilled;
++	unsigned long flags;
++	struct slab *slab;
++	void *object;
++
++	refilled = __refill_objects_node(s, p, gfp, min, max,
++					 get_node(s, local_node));
++	if (refilled >= min)
++		return refilled;
++
++	refilled += __refill_objects_any(s, p + refilled, gfp, min - refilled,
++					 max - refilled, local_node);
++	if (refilled >= min)
++		return refilled;
+ 
+ new_slab:
+ 
+-	slab = new_slab(s, pc.flags, node);
++	slab = new_slab(s, gfp, local_node);
+ 	if (!slab)
+ 		goto out;
+ 
+@@ -6541,8 +6613,8 @@ __refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+ 
+ 	if (refilled < min)
+ 		goto new_slab;
+-out:
+ 
++out:
+ 	return refilled;
+ }
+ 
+@@ -6552,18 +6624,20 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
+ {
+ 	int i;
+ 
+-	/*
+-	 * TODO: this might be more efficient (if necessary) by reusing
+-	 * __refill_objects()
+-	 */
+-	for (i = 0; i < size; i++) {
++	if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
++		for (i = 0; i < size; i++) {
+ 
+-		p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
+-				     s->object_size);
+-		if (unlikely(!p[i]))
+-			goto error;
++			p[i] = ___slab_alloc(s, flags, NUMA_NO_NODE, _RET_IP_,
++					     s->object_size);
++			if (unlikely(!p[i]))
++				goto error;
+ 
+-		maybe_wipe_obj_freeptr(s, p[i]);
++			maybe_wipe_obj_freeptr(s, p[i]);
++		}
++	} else {
++		i = refill_objects(s, p, flags, size, size);
++		if (i < size)
++			goto error;
+ 	}
+ 
+ 	return i;
 
 -- 
 2.51.1
