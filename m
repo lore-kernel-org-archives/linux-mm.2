@@ -4,85 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10868CCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 206A1CCD1AB
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:49:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3E6E28E0022; Wed, 22 Oct 2025 21:47:50 -0400 (EDT)
+	id 7B9D38E0023; Wed, 22 Oct 2025 21:49:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 396D88E001D; Wed, 22 Oct 2025 21:47:50 -0400 (EDT)
+	id 76A548E001D; Wed, 22 Oct 2025 21:49:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 285E58E0022; Wed, 22 Oct 2025 21:47:50 -0400 (EDT)
+	id 680508E0023; Wed, 22 Oct 2025 21:49:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 139358E001D
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:47:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C1B061298DB
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:47:49 +0000 (UTC)
-X-FDA: 84027692658.12.48B62C9
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 2C7C4A000A
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:47:47 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X4jImpxd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761184068; a=rsa-sha256;
-	cv=none;
-	b=i11ELxgjQEzu3q1m0tinFYmy/P5btSorxVdIwKFlWeeB5TpOMFoFcKBYNiI+iU2JiclJXZ
-	8rg+edu2/GPEoOhEhl04HlaENXmXJS0MTfHJ61Vd5VGXivgIkih/N7bRaApTib66xp+B1F
-	+C2fGJP4F29I1JVxf5hA1agGVEgXrpc=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=X4jImpxd;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf15.hostedemail.com: domain of leon.hwang@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=leon.hwang@linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 548A28E001D
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:49:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 2130B12978E
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:49:00 +0000 (UTC)
+X-FDA: 84027695640.14.D3A608B
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 02448C0005
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:48:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BEGHT3sl;
+	spf=pass (imf28.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761184068;
+	s=arc-20220608; t=1761184138;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=jPBHSIhisQYB9BOAqxE6p2j3YHbxjnfcV2vPoexza38=;
-	b=bzfpZqfGZN6xx9I1rCIiu0pMOApEsty4gOBtYq25jTPmSptyO7lQNeVynTptTb+XxGqZQu
-	1/tGty1+4djCWlsHPpbDTzt0MOGZmDLN/XgoDiOFY3NSimego6ylITuvKfMajNYfEJlx9V
-	3aIMHAcpmo6gVuilnHa+lOphmk4Ek78=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761184065;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=jPBHSIhisQYB9BOAqxE6p2j3YHbxjnfcV2vPoexza38=;
-	b=X4jImpxdfP/eaQ4Vt75iKwYNUOphmJJbwKZUq/CsVqk0mC6J0eOj/pMI6m6uC95+qqIiO5
-	G6NsT5+LdFGxSXv6W1AQkZCOkBhuQEmxirpnQ95l+4Xkn3I9LX3y9IuevZzzvbXZLEnvLC
-	rJGGWYtiCctl98tlz5TCW8mT0+neias=
-From: Leon Hwang <leon.hwang@linux.dev>
-To: stable@vger.kernel.org,
-	greg@kroah.com
-Cc: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	lance.yang@linux.dev,
-	shuah@kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Leon Hwang <leon.hwang@linux.dev>
-Subject: [PATCH 6.1.y v2] Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"
-Date: Thu, 23 Oct 2025 09:47:32 +0800
-Message-ID: <20251023014732.73721-1-leon.hwang@linux.dev>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3bZE4UA1L0yD1IVoPp18bgdwWZBwc3tJKIS5Era+DNY=;
+	b=wNP/SVvA2XqycybCxEda4RdFuBqTGkETWZyKFdAG1HFWtuOleu6wRmpeBYbIJE09B2NGRk
+	ukB6EhXHQhGA98fSF4L8eH4G+zylq61j+TMi04v/hpLHpVJqARA65moyZGs67gIeFpdTxP
+	eeUPnCBP9sFmty2HXE+KV2inMhla8Uw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761184138; a=rsa-sha256;
+	cv=none;
+	b=gEnsoNrt2+T+gCe942UD+mgRK2+af6Fqc2geII2pvXqXLo477FNfrPdlk65BVDooIf9usu
+	W9JmJ9N7GbuGcaZQoOH0TNRbqKhALOXpZmpAbANyrdYcQJH3yK4GP4+sEzUCiUboDdZBgp
+	hDgAqGbiPn3DaC4F0E+RO+uW6jJTMAU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BEGHT3sl;
+	spf=pass (imf28.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6a225b7e9eso169806a12.0
+        for <linux-mm@kvack.org>; Wed, 22 Oct 2025 18:48:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761184137; x=1761788937; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3bZE4UA1L0yD1IVoPp18bgdwWZBwc3tJKIS5Era+DNY=;
+        b=BEGHT3slpDI0wXhnhxETFHOnxQ5iK46HL5sj7tmyc3elnFrwZIxoVlk+DwaSdsL2iv
+         471GFRudtUoiZGsI+/C1QHUXt4rLSzrYsUs+UWJr0X4XB3bPpbpeU2qGgYeLdNqDEiEw
+         INBhlfw48ZZePXlc4+SAMjB+rDQoaZJ6zxKeWQroWFBVq9FjP+poQgroASXhuW0RZmWU
+         KZZ8GYe6gWOyefr+vF19wtfAVN9DwEWPR/a/5C15INWXlyqrn8kwDH0+k2rdKIGVfxXT
+         19qXfzsPWUyL5wMaDZefBVfJ8lIIyt9UE1e7FsGDX7zhu1zYb4D5SXJvTq4FKU+Z7yYE
+         ++ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761184137; x=1761788937;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3bZE4UA1L0yD1IVoPp18bgdwWZBwc3tJKIS5Era+DNY=;
+        b=pZdvmAGT+2WzBh482RI9c6HTQR0j5hyNZSb3NhWSMUwzVfNM12q2Xi2yL3eWWk1K3t
+         VyZKUr1qnmEc04bj/W2X3skYtkTk/betfTEiiDt8kOhPF2OlabDqfboXBPK/nheV3aeV
+         EYwVIuwQgVH/4/77urYprWrE+4YEcIqcsTC/vFhhvB37IB1d1opuJQMmIdiFIfYFRbSM
+         QRTXcIBvp8uiU1noReOe7+gk2pyVzGl8kdAQ9g0bIrBooArwzb5VZCNgLWZm2fvxP18U
+         Bv7WkVWI7RjkTK3mg4xgWgbkz6OKVOrfJ9AaeozOcvlKI8gTXJ1XliC9hzmo5K/4r9RN
+         1isw==
+X-Forwarded-Encrypted: i=1; AJvYcCWIyCCxgYQoeTAKOlr0j45fsHT4s2ATOMdeqx3dr/4OOmGintGlGxoyy+FeVMhlkam44xdnoJQJOA==@kvack.org
+X-Gm-Message-State: AOJu0YzcRVvOerbHcQAFW4LRhUm6SS0pQGVwqTBn8frVvwJ4poBbATHG
+	6XlZlMgln3+VvfA7J8EdclNyBPB6QJHrXfNjpySOTgxuJBnepr4TVqAS
+X-Gm-Gg: ASbGncunCkJ7m99lyPpCVuDfC+0mpcVdAqz/Vil/+MldxsGscO26fNHB5WpCNSEfHyX
+	zdR1BUpG3x68ZtwaZ1Vx8tmhL6D8zWdFymEglcQm4GXqb4L/vcHpdVWU4xRloXh8Hfg5tdT4QQg
+	zWAVc1w8dqqZaLCFFdB8Mfi0T/Vn4jxKdfqEeqCigvTQqfk5/uSgxNsKv2TkExtzFXS7K/JDrPY
+	YsBww4fDxHostBri4xFXuCmJ1DrkucPrK+5C9k1cw5xpUsbtNpIczL316680rcJE+Pe7VMKqp/t
+	QBiC2w0A5EXz5AlycCrzK0MjBXxfPRmwWnDBf2pC4FSQGmpc8ugR16ayGBH89flysdTn8ffgNoH
+	3Qly6EGAKJUl8vJ/+JHBKj9M00RKcpgW6LTuhkZFsc+fHi6fX5SrvkTFWUw84SYFBdU4D16ARhW
+	aKOGTD0JXmG54A6Y17juSETRvbDUdZCXLGD2qttbeSiCbnuCbIrVjDqXJEVwhaV9w=
+X-Google-Smtp-Source: AGHT+IEKcWqMd+Ibu+5o3ItMIQKDF2MZdBQkD0wrpJAHT7sKfd2+s1DFgDv6i1HEiqvV30MRG2j1Hw==
+X-Received: by 2002:a17:902:f605:b0:26e:62c9:1cc4 with SMTP id d9443c01a7336-290c9c89da2mr253507475ad.4.1761184136681;
+        Wed, 22 Oct 2025 18:48:56 -0700 (PDT)
+Received: from ?IPV6:2804:14c:5fc8:8033:f287:781:fdff:28fd? ([2804:14c:5fc8:8033:f287:781:fdff:28fd])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946e0f419csm5126715ad.89.2025.10.22.18.48.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 22 Oct 2025 18:48:56 -0700 (PDT)
+Message-ID: <07cd9c09-2a4f-48d5-845f-0c958b7b45d0@gmail.com>
+Date: Wed, 22 Oct 2025 22:48:52 -0300
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] ksm: use range-walk function to jump over holes in
+ scan_get_next_rmap_item
+To: David Hildenbrand <david@redhat.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ craftfever <craftfever@airmail.cc>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251022153059.22763-1-pedrodemargomes@gmail.com>
+ <20251022133118.f13f924348e8cdc6d49ef268@linux-foundation.org>
+ <f42b7b67-7de4-4a7b-8074-25ca87a952a6@redhat.com>
+Content-Language: en-US
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+In-Reply-To: <f42b7b67-7de4-4a7b-8074-25ca87a952a6@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: 56e4ofrxrabay1b3in31wu7q5zemsu9u
-X-Rspamd-Queue-Id: 2C7C4A000A
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 85b9abxzsxtkmifho1189hazh89o59ia
 X-Rspam-User: 
-X-HE-Tag: 1761184067-407442
-X-HE-Meta: U2FsdGVkX19Yc3TyoXvANVdNGYrZ2YkUye6n0dWmriEMgMghF58J3zVm1yoa1+Ob9tHVF78r5/Uwl46L4H8HZzelIFzejST1a8x6AkwY/7yVO1UZfWig9/GV5wZ1T+afRpeG0bWcH8VT3bsnqIql00+ZNkNDRxoce2K6zXcIezWsjCcIaByR8n0gMbTW7tX3sMXW919noB35TkBybDFgfmHOYyC2KA3euypQkWi6RPPY/lxKZtKZS+uQqx9JfGWp5P9TKfXHtpsCOI0WGtu/1ocB0zoXIz9n8J1M+SAb2SLumSXORmA8jj2Cute7VKSUvm37jtnkfcbdAlhpdOlIg+XQqE8N6+zeUVz1FE4ZyXK1JYN1mx3FIjKkipftywDYmRu0Ajt9Ww6ZFZKWnXIYhV5gl0JkhdnVsT9Jocz/ZX5j/bRLhM45P/gz0wqUwzd+/OXGT43MxhAKKrjyitZUppuL3fNxwe9DEnjWBTwOLi4OVs2SBBVN7C1NKDdHwDEcRjJTgjm8SePjAJx/M4MlxbLwMuJXG7Nf24REOvEgTMlRX791eZZymvmVGfd1QDze9sNm+3fYw8d6cvUaZF/5J6gCPAunh5ezwoUC2zKaKf3/sy+dVNMG7HgVerPGPeYDPEDMUvpl8bxUexROnxy4EAl6l+L1tzwY7rkSS1eb1rbQJXdDXRzjtM6w0GmZZOnPdRLp//IyifZldhMKfMXh5K3X24HHGGtxGPR6o1AsFBNMn/2NmQsu8hnF6w7uJzqP7r9jrhdBWWQ+oXLErmx0hV36XeQkON4LmlRh6IhE/Rr2qhcq0y8ec3bwFRTUSbAUcMyPFVkA/1ob3VUSuDGYtNMiNy5U8OymkdKy+exCOJ6Fn6Ayn4kveomV+AniC0jbf2XhSYt04qE8Ti8hX/QSngtLEIp+bOpqUQ/NqrWjuUYcmq5KloQA3WbTKIdAY6pJsir84x1HlC+K4x1OK+Q
- xfapEP7C
- KcV3wOozpiVR0Cq0jF/fTBSACO4kunyeeJe8xqbtMNVp+y0r0ffLLkhVVNJoWPYMfmWJYwW+QWb2zAvzbxHhnabDMSkTyZsdDkJoGi/58xXsC4QZO2uVCrjQgzseS7IlRN8KYcsA+iqcoE3FMLVTCC+gbrmJ6wJhg1Kcib4XL1nVijDYzEiZp7iW91/bFNtKgIHXseLIGhiiJ6u2C4qzuh2dQvuLx3pFTB0xU3z7CG3XYiVxig27CX4ggTSmQ1TEbyakfmzNy0A8clvo=
+X-Rspamd-Queue-Id: 02448C0005
+X-HE-Tag: 1761184137-479430
+X-HE-Meta: U2FsdGVkX1/PO09C/ToDFv6ayDH9bDbC9PGoSQA7W8+cO8qLSqdoNMkssqoWNlZ7I+ubdFEEUG68xTlpFLDNjT4caF2AdCB7VRZC5lnEU0MaQhBHc6wZ0wZUirL6DHAoi2QrCA854OW36nDS5kN60KtygK6nM5IUbYg5I6Q7osCjiC14nNQCjrslm50DUNgonseGlowuVg6+gxzY2s/+7AVHnYLOMSsqKkH3YBfaREcryd1BszRo+1krrzH2gdefBZszJqR+cbpDCpS6FTV1vHp+FozsuDOAILWOPS5WR5EIGGyqsfXrysD+I0Hfeasx/8lz6Nr3lxU60pu/lOnjRNRQk1QiU3K9WuLgHq6d+5qW3QSO8gKlzZ1j7hy5Np6T7I1CPm+LmQemrGXhg/Con//dUuVfr0y9ECN3qBPwv5LswmpGvSUN5UpN/BPl4uTf9nOfGVRTu5UbTsMAjwXKvJBnoOn+HoFhWiW3TDFEciWDWel7g2CzgIw8HUc5n/WssKxynYz0q27lMiSMVz4/CRQ/c/gFTyH+OzgvOehESG3ZNmDGCYsaULGrJpB/P1mBhmikOOB3XKzoq92InxOKBTSE9ePAqYBdYcqjR/rZe8mtKDhK8MM3t/SACACDpkFmNj4jzTdlTIoiMUhQ9oEj6umRpXOUzLpY1ZbyV8yvQZ+BlNPjd5cVDSIhAXBpNYYEZ8P3CwhxBCM78V79zda3HdxnbARm4d4DGCUomimcG+1d2nzvUcOQg/KAnufh70f1kY5RviUllOcTQpxQJvJ4Ags9KA8Skd88BdXbuJl4YGkzBqvpfdGrQVfbPhgVxxzLNgjDm98aQHlPsQU4nFoAVo9ruoe43TvXCZJhWHaomWjstGgv0nQeK2khN95djSbdBTV3ciuJgUWl9T3jISJ3M1YqlnlsbBzzOo/jrZz4u18Y8T9jF1FRGqLM757YbV/DqC9q9O6XXEgi2tm9hyM
+ 28lttuTJ
+ F8OPbk2Y5D7DbEmSlbOe6eb3k0lvCMqcpg4Ft5PY1ZUcWZFM0AVgYDNKzw2UrbiUAP9ZqchuS/G4pbJUF/pnjua01HlkLlNxOOgfhImIG9TiJDmJ+titj7kR+5x7QZrYR0CXA0QVh0bTvRZKIMxmUjj2ylqpijZrvWasC/d/3+i+G5Y5dkAGB/9GAogF+UpKMxEjnX9TW/E745q1i7gVnQE2IF7QsK3zmTgxgl2SJ1uOvIXP/uPENtlfsqwlnGib9bZ5ahlGSGsG5xy+x4Pj0QqaPdz7xS7a82yToodGs9nQQr3HTJh/bYPKpc7Eeh26PWewMhCLr8T9TN34tNcUfRF+1Fk0gs9FmIqHI8QmOqJ2m98WlGAiv7x/o/HFIBNKSk1ce1j/iJtNI4HtaIre0/qYpgQQ9Ux0UuPB30cTdJzgSBb08cvQ+okAImFPtIgXJFx/WTPIR5SWzWaJX+rB0/I3s/MnypkYsp94klmMAc6DB8nEhEv08NE4AM7Qus6gRoca2IIGukhb0weGtItdjj3x0Yl7lYZtl8w4DprhjdU2bLJw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,51 +127,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This reverts commit a584c7734a4dd050451fcdd65c66317e15660e81 to avoid
-the build error:
+On 10/22/25 17:52, David Hildenbrand wrote:
 
-map_hugetlb.c: In function 'main':
-map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
-79 |         hugepage_size = default_huge_page_size();
+> On 22.10.25 22:31, Andrew Morton wrote:
+>> On Wed, 22 Oct 2025 12:30:59 -0300 Pedro Demarchi Gomes <pedrodemargomes@gmail.com> wrote:
+>>
+>>> Currently, scan_get_next_rmap_item() walks every page address in a VMA
+>>> to locate mergeable pages. This becomes highly inefficient when scanning
+>>> large virtual memory areas that contain mostly unmapped regions.
+>>>
+>>> This patch replaces the per-address lookup with a range walk using
+>>> walk_page_range(). The range walker allows KSM to skip over entire
+>>> unmapped holes in a VMA, avoiding unnecessary lookups.
+>>> This problem was previously discussed in [1].
+>>>
+>>> [1] https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/
+>>>
+>>
+>> Thanks.  It would be helpful of the changelog were to tell people how
+>> significant this change is for our users.
+>>
+>>> Reported-by: craftfever <craftfever@airmail.cc>
+>>> Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
+>>
+>> Buried in here is a claim that large amount of CPU are being used, but
+>> nothing quantitative.
+>>
+>> So is there something we can tell people who are looking at this patch
+>> in Feb 2026 and wondering "hm, should I add that to our kernel"?
+>>
+>>> Suggested-by: David Hildenbrand <david@redhat.com>
+>>> Co-developed-by: David Hildenbrand <david@redhat.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> Fixes: 31dbd01f3143 ("ksm: Kernel SamePage Merging")
+>>
+>> If the observed runtime problem is bad enough then a cc:stable might be
+>> justified.  But a description of that observed runtime behavior would
+>> be needed for that, please.
+>
+> Agreed.
+>
+> With the following simple program
+>
+> #include <unistd.h>
+> #include <stdio.h>
+> #include <sys/mman.h>
+>
+> /* 32 TiB */
+> const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
+>
+> int main() {
+>         char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
+>                           MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
+>
+>         if (area == MAP_FAILED) {
+>                 perror("mmap() failed\n");
+>                 return -1;
+>         }
+>
+>         /* Populate a single page such that we get an anon_vma. */
+>         *area = 0;
+>
+>         /* Enable KSM. */
+>         madvise(area, size, MADV_MERGEABLE);
+>         pause();
+>         return 0;
+> }
+>
+> $ ./ksm-sparse  &
+> $ echo 1 > /sys/kernel/mm/ksm/run
+>
+> ksmd goes to 100% for quite a long time.
+>
+> Now imagine if a cloud user spins up a couple of these programs.
+>
+> KSM in the system is essentially deadlocked not able to deduplicate
+> anything of value.
+>
+> @Pedro, can you incorporate all that in the patch description? 
 
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
----
-v1 -> v2:
-  - Revert the commit instead of fixing the build error.
-  - https://lore.kernel.org/linux-mm/20251022055138.375042-1-leon.hwang@linux.dev/
-
- tools/testing/selftests/vm/map_hugetlb.c | 7 -------
- 1 file changed, 7 deletions(-)
-
-diff --git a/tools/testing/selftests/vm/map_hugetlb.c b/tools/testing/selftests/vm/map_hugetlb.c
-index c65c55b7a789..312889edb84a 100644
---- a/tools/testing/selftests/vm/map_hugetlb.c
-+++ b/tools/testing/selftests/vm/map_hugetlb.c
-@@ -15,7 +15,6 @@
- #include <unistd.h>
- #include <sys/mman.h>
- #include <fcntl.h>
--#include "vm_util.h"
-
- #define LENGTH (256UL*1024*1024)
- #define PROTECTION (PROT_READ | PROT_WRITE)
-@@ -71,16 +70,10 @@ int main(int argc, char **argv)
- {
- 	void *addr;
- 	int ret;
--	size_t hugepage_size;
- 	size_t length = LENGTH;
- 	int flags = FLAGS;
- 	int shift = 0;
-
--	hugepage_size = default_huge_page_size();
--	/* munmap with fail if the length is not page aligned */
--	if (hugepage_size > length)
--		length = hugepage_size;
--
- 	if (argc > 1)
- 		length = atol(argv[1]) << 20;
- 	if (argc > 2) {
---
-2.51.0
+Ok, I will send a v5 with a better changelog and patch description.
+Thanks!
 
