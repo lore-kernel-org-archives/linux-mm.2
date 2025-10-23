@@ -4,109 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 401C9CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 19:38:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E7B23CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 19:53:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9CD868E0009; Thu, 23 Oct 2025 15:38:19 -0400 (EDT)
+	id 2750E8E0003; Thu, 23 Oct 2025 15:53:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A55B8E0003; Thu, 23 Oct 2025 15:38:19 -0400 (EDT)
+	id 2259E8E0002; Thu, 23 Oct 2025 15:53:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 894578E0009; Thu, 23 Oct 2025 15:38:19 -0400 (EDT)
+	id 0EE348E0003; Thu, 23 Oct 2025 15:53:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 77B2E8E0003
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:38:19 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4300F1A0C48
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:38:19 +0000 (UTC)
-X-FDA: 84030390318.16.2A1FFE0
+	by kanga.kvack.org (Postfix) with ESMTP id EBD858E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:53:00 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 91F19C0A1F
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:53:00 +0000 (UTC)
+X-FDA: 84030427320.23.3F66CAA
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BF95340003
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:38:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QkjyFc65;
+	by imf25.hostedemail.com (Postfix) with ESMTP id 13B37A000C
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:52:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OrsR79zP;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761248297; a=rsa-sha256;
-	cv=none;
-	b=OHYfY9mK+tvRajbrFQMy0SeNTzdczuX/D7EVuANswGa9darPkKIRutGelgww2wXHom+GDv
-	tEdQFnZkUVritVBTkG5QAoisQH0GwwQYLCyPFU1KHekNBt0JDUrQn7y48+dc9x6rz3M60u
-	/LYIuoFNGG+4bJl6iW6KBn7jMVm83po=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QkjyFc65;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761248297;
+	s=arc-20220608; t=1761249178;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-	b=7qofaPF+50f/KkpdrtKlpUrv1JG0xWS8bnhR2DP0wH9SZl2DMDed11qdX0liaCDdM5VLt3
-	x7T6nXWYiVg5Gxb3HxNJa3ygTR9YeNL1aVXqJTiTYUQdG8xwxen79FXtR0C08RNH01VqNv
-	wYfnrLWRHg5XfFSFcdz2HdCc9yUvorM=
+	bh=lu8DXyr9e+174zCCLKyjaz62dq3PQM0ss4FpqXHktAg=;
+	b=UpUWFDSTVdXRLSJKmGDnIcPpLQpNO0rFGbhOgWxStv0fbsKHfaCiod4LDN0w0uZhMe75+j
+	B+F32noJ3lGJ+KC5Y6uEQFD8u0hNKJvZX/X0P462H6zhTylaQAeEKWo9TtGBgvE97P40SI
+	0UQALoH8GZALCy2GnH3Jtee3kF/iVpY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761249178; a=rsa-sha256;
+	cv=none;
+	b=eI8J6ILSaZFjx6S3njo0V4QYYWe1RQkypHbuyYGk+xB2Kn/bL69XfzpM0c+wGCCLonbxv4
+	eY6DbqFxr8iotjmQYkNkJ/+rz1TLbzabrL0Jutj0fRRHO4R42Gq66eddunqvf+zTmPAwDt
+	wA5CseDGQVnXmnVaRA3tv57bKK50OtU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=OrsR79zP;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf25.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248296;
+	s=mimecast20190719; t=1761249177;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-	b=QkjyFc65kpdNxryx1WPWWOCWXMaD8niycaI+HCyTEaWYS+WBVJK3umLwMSadZUCfgMs9io
-	crQIyv+ql1Q/DuslTukWBpiW5wAGnrp8sRgPgXtQ55o6DsXZrP1ND1M1GawZj+EduKunDT
-	wyGaaejFx1UlazlvjbKSOmYxDXdYuB0=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=lu8DXyr9e+174zCCLKyjaz62dq3PQM0ss4FpqXHktAg=;
+	b=OrsR79zPxDTTcYjCpvym0L/LCuSjCZ19rXRX5x8xIg/IjiFD0Z+U1rgYVoQ52wuAFh3i5I
+	YkUuNoQ6KaveSHE0yExl6xi8FkrL/HMGvz6wRae/OZlTy3CdzMGbVEa5aAh/ukn/KOI3R2
+	71Fado/B76mpKrT7Vp34fQ9JgHCU1lQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-326-2lZVgonsNYG1uVumv0BQmw-1; Thu, 23 Oct 2025 15:38:14 -0400
-X-MC-Unique: 2lZVgonsNYG1uVumv0BQmw-1
-X-Mimecast-MFC-AGG-ID: 2lZVgonsNYG1uVumv0BQmw_1761248293
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47111dc7c35so9582875e9.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:38:14 -0700 (PDT)
+ us-mta-164-WZ-yEHAUNtW3_ZCNXR8SrQ-1; Thu, 23 Oct 2025 15:52:56 -0400
+X-MC-Unique: WZ-yEHAUNtW3_ZCNXR8SrQ-1
+X-Mimecast-MFC-AGG-ID: WZ-yEHAUNtW3_ZCNXR8SrQ_1761249175
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3ef9218daf5so556154f8f.1
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:52:56 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761248293; x=1761853093;
+        d=1e100.net; s=20230601; t=1761249175; x=1761853975;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VQ7IyiPkbQDl/6FlpFFPP3SSIBn2cmNYnYEr3eJHlB0=;
-        b=GWGfnTeU0wmhUruqPDGJMiCeO2EK6m3ndURN4/UuurzsHSDTW6cW6BbM/SN8ZGZ1WJ
-         zRP+pola6S0poS+EJuJ73h84bhP6UWcUPThnr5YaovwXQF1T10Jdgx/0vCq9+UW3HZTx
-         tCUaVf+fnaEtR0l7jKAOeHJmmiy2vE04fp5YB1y8HWfNfAg69vNezgs/TN2Jyi/EMvTP
-         MFF1jyXbbgCWVs9bnY+TX5y3qLIGsEfZZj0wL1cy+n9xsIaee3XHBEG48Xh40w6etfrp
-         we8xj+A2ZM5LV3RyCacebXt1agJU1IyZVemjOAERJcbIJKXJUc5x+3sYNkDltkJ0k8G6
-         Rf1g==
-X-Gm-Message-State: AOJu0YyLvrfkA8H/AxPv7SqKzZ8FLFMT0vitKMlfyFJ7JB+k5rvEn+iF
-	Zcz6g8/lVuuRHvmBkkSXbNhIW9PPkq82QZ0x0bYJ0Yje/iy2JBwtxc/Q425qfZIGFTpWS5Ut82Q
-	FMgqxvw7kb6yBiQ7ff0f9gfZpz8qiRJiqm64JYC/6XgM1atTyXfyx
-X-Gm-Gg: ASbGnctFRAq+5ZLlpKBnbovM+8b7mUUropCgWlN9k51P/myTbKP6C2yqbryxWEnUvBZ
-	P8sOzg/i/a/qMLZPZWKOgYkyzvoGoTzfcapUgXWCxnrR/BPwA05bzOrQAdrfbYG7mkY6lIK24jW
-	JZNeDVbjqlgbXAzTdPQYJu5e08ZDLdDhMUxtjWRut6Rn01CqfKSx3zBeSvfuJW+M4f6vPHixQM7
-	hSC2nM98fGBCfE/FCxA68Q69lyBC5GLWZgZ8btCUSN8qABDsq9OJ+WJNcqeXD0KnlrBsJHhnOPV
-	GmjqfdJ+I5YP2H7yoTe4T8lYh72qj0H5f4cwUrPuqj5mXC/dblIvBXR8U1UIwkVhWOn3/hxvR21
-	7k/h6romSaJyKhJYLhvxuEyUZSroyAmFmCRwQHIJGvuA29GnTVTmci5qCiganY1+aL9t2dMWuIa
-	fOmrJJb3hJQDPuu3f3X1HzeqpoM5A=
-X-Received: by 2002:a05:600c:3145:b0:45d:e6b6:55fe with SMTP id 5b1f17b1804b1-4711791e7a4mr225365345e9.34.1761248293291;
-        Thu, 23 Oct 2025 12:38:13 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFK4kvb9VXDfRke79DTEDXEtAKVHmaVqzR/ZxHwP2FSjJo/KXXf7lv5KID4JKHr2iZrwUPcWA==
-X-Received: by 2002:a05:600c:3145:b0:45d:e6b6:55fe with SMTP id 5b1f17b1804b1-4711791e7a4mr225365155e9.34.1761248292920;
-        Thu, 23 Oct 2025 12:38:12 -0700 (PDT)
+        bh=lu8DXyr9e+174zCCLKyjaz62dq3PQM0ss4FpqXHktAg=;
+        b=IUu+iqHwVvQm6FoVJoDHAFpVBZAyuwo6oyTzAZv4/1nhuXpW/6WAazsWQEoWHvASEE
+         EJ+jpodHw5kKgAcO3XWPEpX0p1VOJ9fSyFW4ViyrHMwWt6h6m+whYKiYC67VW9l1TZk/
+         4yN7B2LlL7AAGR+/OJtAKayghWEWJJlro/BUYMQ/eNZgV7DK9Gau3DUOqu6e80NQDmty
+         7zq/9jSoki4zhz6MVjU++8meEAzjYIFOp+8cjclJds09xDzwPQOjtqbOJo/ZMT5udLGf
+         iPZzUCxPXeSrtN+XDgZu7fRVyFFJehRbbpRJXvP2LQ5HyBl7fWZLrnBvKjJaUR9vEaMi
+         56iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUbJu22m4QiWTM9c7fzZPw5GE00Gtr4/+9FX9jzB/DgNfo5/3mam9F61FKVqftIPGY/GesXNqsU4g==@kvack.org
+X-Gm-Message-State: AOJu0Yy1chYuyfqoJCcTnlg9Er9K8jkwkEgiG2MlPuLO50ua7ExFgdue
+	9JZvRTcbEr5+kLqILKmEfc7zsX9VudBg92HHB+tCmqNm1k56rCLsgkhYvRSbWP+753sF9iRUQf8
+	Dd8x4+c/Y269YSEZX1hE/08fGO/5SLhXqg8ghTo43ZvLj6gnwI2Fc
+X-Gm-Gg: ASbGncv9RRTTOHvXv5C536/+H//9ADPsSxHWFUzhmAdxIxiVXzQaK1ydFg/XPwk4T9A
+	EKk5F7f0/CB9lFw2IvVfHZafNGrVI7yGumS3ZYzM6P0lDCaNgPjFh8o0qMeeVuUhZGcD8vONUIh
+	mdbrjMBu13fenkQ49aD0aYd7ZQ0IUA3Z8X/DpHapY0KoksKSfS9dcFtldv1ebBIBbOTDIdYOopz
+	nghWuwjS69VkUTR4X0dFx7eRvlQJIkj2eSMzhi0k/heLl3g9ZIux6EWBvCvlhzxw7bvvP58OB4w
+	7MPDxMv5lPUhPTE7WbebsNGBXLkA+wDaRxvOS4lEVRBDGguOdRMmK/hKwe2+HLy8VpZef3xz+Uk
+	sYaLkTg8O365w03sIjsRS4u81B7hJEaNA/bV6JVKto84tBmnqhohzgS+LfCLKRWO/vO9I7egq4i
+	NKjj0vGnhwGGnh1MS+ncTJnjmS/u0=
+X-Received: by 2002:a05:6000:2911:b0:3eb:df84:62e with SMTP id ffacd0b85a97d-42704d7e9f9mr18404390f8f.3.1761249174875;
+        Thu, 23 Oct 2025 12:52:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF7U9VemhLNzul4GpnpOHuDDlV+F0CKxszXYKlJ5dnYJh0XFPFjlnxCdm5Nc2+v3zIM+vRJGA==
+X-Received: by 2002:a05:6000:2911:b0:3eb:df84:62e with SMTP id ffacd0b85a97d-42704d7e9f9mr18404377f8f.3.1761249174285;
+        Thu, 23 Oct 2025 12:52:54 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898eb549sm5405252f8f.41.2025.10.23.12.38.11
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429897ff3f5sm5656361f8f.22.2025.10.23.12.52.50
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 12:38:12 -0700 (PDT)
-Message-ID: <dd3011ec-23cc-4431-95a3-a0c2965e7062@redhat.com>
-Date: Thu, 23 Oct 2025 21:38:10 +0200
+        Thu, 23 Oct 2025 12:52:51 -0700 (PDT)
+Message-ID: <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+Date: Thu, 23 Oct 2025 21:52:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 05/13] mm: introduce CONFIG_ARCH_LAZY_MMU
-To: Kevin Brodsky <kevin.brodsky@arm.com>, Mike Rapoport <rppt@kernel.org>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- Alexander Gordeev <agordeev@linux.ibm.com>,
+Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
  Andrew Morton <akpm@linux-foundation.org>,
  Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
@@ -119,15 +119,15 @@ Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
  <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>,
- Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>,
- Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
  Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-6-kevin.brodsky@arm.com>
- <aPNjd2dg3YN-TZKH@kernel.org> <3836a43f-809e-419d-a85d-74606d9daa0f@arm.com>
+ <20251015082727.2395128-7-kevin.brodsky@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -173,21 +173,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <3836a43f-809e-419d-a85d-74606d9daa0f@arm.com>
+In-Reply-To: <20251015082727.2395128-7-kevin.brodsky@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: v-HLICtvR6IoH1tVe9uZBRW-PyKcjUpskUXazwtUJCU_1761248293
+X-Mimecast-MFC-PROC-ID: rZBl_VSJgXDLpfzGRh1GmTAjjICAChCNM7bfg8wXuoQ_1761249175
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: d1iuimarai84ut9k36tfrk5odiyhzyqj
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BF95340003
-X-Stat-Signature: 1ig644pz3rz3sbi6364jwx6xksktbpjh
-X-HE-Tag: 1761248296-731232
-X-HE-Meta: U2FsdGVkX19ZzoZRGsraoNBu9iCkbLf1k4AY8fXPh6CD+iMa2QNpFIITShNiGXTdZEQ4ovjdstSy7glzYcFIeL2MqeCNDTzB6jEGxwTWbymLsA/wSClVlPQq88MysUxe02Nxjgm4VypT0ziHVZkHqy5lbAkcphUEmxzKLJ2AAe3wJiFl/Y3RM5/jqyrk54MTxeQLIONAum4mpTViUSc0jJkStGFu0zfZzkwPB9mSYlluI6mlxAG6wGkTTIlBqsCJraPFLMMbIDRVcaY3FHG+RoCHkFb+9lw8MafLzNE7o8iRgtu2ozzea8txATbPydXgL7IWPP/xjO7LtG7A+DSocn0jINTH8wJJJyP8XBcN0w2YO32SLKWMHHRjIQ43T3h0saB+0uzOEdl5Is5EgcPTVuwATjGJRfRzYj5rZp0vdHTKTIfE3Odf4ObdBj+eQ5ywWc5mK7KfpzgXIPmcVkrG3+VfBTH2elmkOcfGm9cbQ8YcZtikXIMitLZWKZdIgfTwF9Qxf4uNRjj5fyYvmEL/TOeaHO4tO6PoJDf91DGyrAnTjlX6CAInImamdWiQVsgh7Jv/jl/LGk+2kODPDbZ48oPR8Oi/vST5tzpy/BeoFj2ug2wV5hrmQhFcZi2fn2jRviQSlLE30/TqDp5CpC6fkwb8+djI+KgR5bntz9nf/5zYn3oJIMiAj9vT2FK12+m4dhx0ifmS3AZ2TK7mUAr8cOxfEAqzZ7t/mcS6hIxlwI97j5t+Aa5bpj837qm1wgFEXz5qJTewp8A3gTnE6FWj4BeOuQoK3JOemGuENFZPGtiTyk0+/DvMjxLZZyh8d7VebT/ypZ07VIEeogxESiiA4Uo7pjIn0e5T5POkednKsLPM7qOmsGH2Y7+bhGOd3faBQ3m5VJ89BsWdQyeoDuIWbSlj5jopqXAvUwDTJ0LrAxxXIUEqlMVwCmT9Xb2sjvy3WG+2WFTXYVaxv3wGz1H
- 4u5ln2LS
- T4p95E6SIkbEFQ+RoSHCDI09sFsU99aSoPb4Id8BHPAQsfcfl2Rx76N3lMEriBTjUAOUpbOLWFaRxtOZmYxa11Ab73fnzvYLfHXSo0RmyBzeer1o8kFlfuS+Zn/HuE5g/H3XY2vchDeRiKtBsVM+08qz/K7rfZPD+sF/eE1Os8OUEO79YgNSElSZl2k+fhZWsmPJVKOLsBJS519fK1d8gSH3FQV1k5bR+SHqrkCl7KEUcWZpUPVDcBts/0vqHqnjPkf53h+a60woVtbTq1XMGguxoPvyPz3Bs8ryhauKWOZCgNsFNvgC3SSmfj/d7SxTetqFdzf2CHLG3KjGXkBWGkCa/8G5PyGWq55D306O7yJYYhYYChCuoUDs9uDCuyMxojPN3hjFgf3uGuGXXuqJZRqY+YTcOOMBMnC6JrEmr+NAwgGMQW7p7WKPSWncjvp5IdVvuYsZSG9cxF0Vj3P2yh3PrxIgmxIUE0J08PTCD4m1UwnWgGi95Gc8ddM+1pFg5I4fQ
+X-Rspamd-Queue-Id: 13B37A000C
+X-HE-Tag: 1761249177-145578
+X-HE-Meta: U2FsdGVkX19c7DhUsi38qTZldkICpy1T3SgdRxV+PfyKd6yJ+GcIHRRSpbl+iwl/PYzIzSdZStligUxrelx4mB2xzfxciQabmRg5qROxPJUU5FDvR41QDFMgCCJmyhzi1EHysUGCOFW+dzcnRYoE+wV3G3tWO3xmh++cwEAhKaDcEfux4Xf55WrNmbVpDJWQ6M3llFYh8pfb2CTby33ROihCvy0Kjo2H2QQVjHGJL76m+A2ZhydjGsDjTIpfiUhRn8Pddyi3wOgl0fBINat7gBFJz6LY2TR71dN6MB8/dUoBp+aDOUjtcQ4BomvwyTC0I9pMVgNaLEF/Hfbd/6Nzk2hVAlOzJtEoXM4F2YFx+H4uk694QMiZX6md4liB2oSW/7s5O+A9DQKUwyaypJDb0/opeGaGhAlcX+p4UvvzmMB2sm9lrQLQh+0J6IxXm8TfuvIqiafI2bQVfa+ia4Op8rd0DfATU9QHf+OcJ91t09LjbVS0Piw+qRjATwfvhZ8Tkye5a+PN3Fum+F+WtVHJA79o5E3dS72LaQO4DbORvVsJgngJVr8poaMdo9y/crs1Mfe1hs129F+LlP24XXaGoFkHuBHkq7paNK6jqdt0zAPsyuo1RTbidoHxbmuNZubjeGVCINd10DnpSjHaaUtcQOg0MMTX9EwAXtx3fV6BgWl+IyceyR8gDCoCiPHOCMhe/T0OP+GTLKauTiB2PNN/CvnBb1MVWI/qA+YRJKh2KbRUvmo+nTs0MQBv3vRIMjlFJoFRuIhviRVSvF1Dr8dYT0dorARPjT4KhPekU/TGnIzlc8o9MK18JZe1elMIe6t7/W9Qjv+ZD0Xiig4hb74vzATj0YUbGSH/pFRFKMFGUBbGFNOaoA3fz0btwM/taF210gRVNtPZ1j1cJ4OYTpxtnyCc1I+fjU0N3GZKnuWfseQ06sme2eC0LykzYEP4VtPWRREgp5N8/R9b+f/dFYk
+ fHD7UlMd
+ 1aVd3M2UnwiKHU9Mgd3UjiGnm4ztj/vUdDvs+ssbrLHsM5cdjo05gFTkPTKrOv3QQjOy4oxvS5fH4UPkaqnh1QhP8HQKB1ebshA1Xy9Zi1R5mvARVLktm8TFG/yaanPgSwLH99jva5ojVcNaEOUxNS8UwU/8kEqueSwA4/1CgYNPw2u7Wy/G5Y5QZnXBplyWhFbpGpBt1wRoonKgin40yghd9vL3mS+uNd3tLVfVCPTViJlxLBGFXkaTMR+u3jVanTe+1iad0vpSRHVjQ2M/xmqxdd2mcueadO7oaMlRX9o6m2FpdF4PgwlGteWGK1Di93RuxCkqPc1YZkMxXyng7Adbkzr6jd7GOtf5dxHoGJR7kA9JX+2ZJ3VWv6fPrAlakinHGFmL01ItMLbQ8QEYPT1JzDXsMNTcvnFUOVH2KoD7JcLaUEar7ILlQOEQfMxKmvBztTkKEs9vm3ypOP2uJq45HpPhFDmdwGkX6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,36 +196,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 20.10.25 12:37, Kevin Brodsky wrote:
-> On 18/10/2025 11:52, Mike Rapoport wrote:
->>> @@ -231,7 +231,7 @@ static inline int pmd_dirty(pmd_t pmd)
->>>    * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
->>>    * and the mode cannot be used in interrupt context.
->>>    */
->>> -#ifndef __HAVE_ARCH_ENTER_LAZY_MMU_MODE
->>> +#ifndef CONFIG_ARCH_LAZY_MMU
->>>   static inline void arch_enter_lazy_mmu_mode(void) {}
->>>   static inline void arch_leave_lazy_mmu_mode(void) {}
->>>   static inline void arch_flush_lazy_mmu_mode(void) {}
->>> diff --git a/mm/Kconfig b/mm/Kconfig
->>> index 0e26f4fc8717..2fdcb42ca1a1 100644
->>> --- a/mm/Kconfig
->>> +++ b/mm/Kconfig
->>> @@ -1372,6 +1372,9 @@ config PT_RECLAIM
->>>   config FIND_NORMAL_PAGE
->>>   	def_bool n
->>>   
->>> +config ARCH_LAZY_MMU
->>> +	bool
->>> +
->> I think a better name would be ARCH_HAS_LAZY_MMU and the config option fits
->> better to arch/Kconfig.
+On 15.10.25 10:27, Kevin Brodsky wrote:
+> The implementation of the lazy MMU mode is currently entirely
+> arch-specific; core code directly calls arch helpers:
+> arch_{enter,leave}_lazy_mmu_mode().
 > 
-> Sounds fine by me - I'm inclined to make it slightly longer still,
-> ARCH_HAS_LAZY_MMU_MODE, to avoid making "LAZY_MMU" sound like some HW
-> feature.
+> We are about to introduce support for nested lazy MMU sections.
+> As things stand we'd have to duplicate that logic in every arch
+> implementing lazy_mmu - adding to a fair amount of logic
+> already duplicated across lazy_mmu implementations.
+> 
+> This patch therefore introduces a new generic layer that calls the
+> existing arch_* helpers. Two pair of calls are introduced:
+> 
+> * lazy_mmu_mode_enable() ... lazy_mmu_mode_disable()
+>      This is the standard case where the mode is enabled for a given
+>      block of code by surrounding it with enable() and disable()
+>      calls.
+> 
+> * lazy_mmu_mode_pause() ... lazy_mmu_mode_resume()
+>      This is for situations where the mode is temporarily disabled
+>      by first calling pause() and then resume() (e.g. to prevent any
+>      batching from occurring in a critical section).
+> 
+> The documentation in <linux/pgtable.h> will be updated in a
+> subsequent patch.
+> 
+> No functional change should be introduced at this stage.
+> The implementation of enable()/resume() and disable()/pause() is
+> currently identical, but nesting support will change that.
+> 
+> Most of the call sites have been updated using the following
+> Coccinelle script:
+> 
+> @@
+> @@
+> {
+> ...
+> - arch_enter_lazy_mmu_mode();
+> + lazy_mmu_mode_enable();
+> ...
+> - arch_leave_lazy_mmu_mode();
+> + lazy_mmu_mode_disable();
+> ...
+> }
+> 
+> @@
+> @@
+> {
+> ...
+> - arch_leave_lazy_mmu_mode();
+> + lazy_mmu_mode_pause();
+> ...
+> - arch_enter_lazy_mmu_mode();
+> + lazy_mmu_mode_resume();
+> ...
+> }
+> 
+> A couple of cases are noteworthy:
+> 
+> * madvise_*_pte_range() call arch_leave() in multiple paths, some
+>    followed by an immediate exit/rescheduling and some followed by a
+>    conditional exit. These functions assume that they are called
+>    with lazy MMU disabled and we cannot simply use pause()/resume()
+>    to address that. This patch leaves the situation unchanged by
+>    calling enable()/disable() in all cases.
 
-LGTM.
+I'm confused, the function simply does
+
+(a) enables lazy mmu
+(b) does something on the page table
+(c) disables lazy mmu
+(d) does something expensive (split folio -> take sleepable locks,
+     flushes tlb)
+(e) go to (a)
+
+Why would we use enable/disable instead?
+
+> 
+> * x86/Xen is currently the only case where explicit handling is
+>    required for lazy MMU when context-switching. This is purely an
+>    implementation detail and using the generic lazy_mmu_mode_*
+>    functions would cause trouble when nesting support is introduced,
+>    because the generic functions must be called from the current task.
+>    For that reason we still use arch_leave() and arch_enter() there.
+
+How does this interact with patch #11?
+
+> 
+> Note: x86 calls arch_flush_lazy_mmu_mode() unconditionally in a few
+> places, but only defines it if PARAVIRT_XXL is selected, and we are
+> removing the fallback in <linux/pgtable.h>. Add a new fallback
+> definition to <asm/pgtable.h> to keep things building.
+
+I can see a call in __kernel_map_pages() and 
+arch_kmap_local_post_map()/arch_kmap_local_post_unmap().
+
+I guess that is ... harmless/irrelevant in the context of this series?
+
+[...]
+
 
 -- 
 Cheers
