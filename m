@@ -4,86 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10AF8CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 14:34:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3C246CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 15:05:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4897D8E0003; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
+	id 212468E0005; Thu, 23 Oct 2025 11:05:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43B658E0002; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
+	id 1EA4D8E0002; Thu, 23 Oct 2025 11:05:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3289C8E0003; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
+	id 1006A8E0005; Thu, 23 Oct 2025 11:05:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BE198E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2C3113C128
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:34:12 +0000 (UTC)
-X-FDA: 84029623944.05.F6374B1
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 05C6A180015
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:34:10 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=omPdSohL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761230051; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id EE8DE8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:05:11 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AD3341A0B58
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:05:11 +0000 (UTC)
+X-FDA: 84029702022.11.F1E3CBA
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9CA06140020
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:05:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="JXQ/NKh/";
+	spf=pass (imf09.hostedemail.com: domain of sidharthseela@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=sidharthseela@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761231909; a=rsa-sha256;
 	cv=none;
-	b=a/BkMBgYQVEAPVTQllHcYlys0FZPkNVBjm0qaFkH8opbFAK3V03uc0hoBZ6G6EoRHXx+Nw
-	gDt/4JXkM5LEo6hCoJyW+dRMki8piuE8jbAGheGl4vKgrKgFWLuse6L1wrCK+4bpXWm4I0
-	Z7yL/YmRFbS47PeB0Gm7c4A65lnyazc=
+	b=KwNWjI89DXg+v1fwfR7WInWxKl8OlE39mdajdEemo0srhQBkBslZiBG3SlDVxfiGJLkuso
+	6Dwh1rNLosMXcGu3bXv9QicO9vrtM/ZDdrF97s1Ekwmt6vM2/gHmWlHiexL5in5RcevjTd
+	0GhwBW8m3Ys/tYNU8+ITDQ65379k+8M=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=omPdSohL;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="JXQ/NKh/";
+	spf=pass (imf09.hostedemail.com: domain of sidharthseela@gmail.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=sidharthseela@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761230051;
+	s=arc-20220608; t=1761231909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=6+PDu1BKpeekQuNXNoUHSooGzAkk2JG8H4zonFnyfOo=;
-	b=vnbI5NA4W9KgIZRsNRiigGF43fSyLGLmnREyEIyysdvk7JSIOdrWZgOW7YSuw2Rgu3KI6E
-	2SoZDZF+oWdduZgwTajNfUXietw0/+76e3k5mZyKDpcn9G12LuOAR+QF22AfclCdt015Wk
-	l48PM4YxKskAS5fESr4CjopCTx7vD/c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761230048;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=6+PDu1BKpeekQuNXNoUHSooGzAkk2JG8H4zonFnyfOo=;
-	b=omPdSohLRvyzB0wgHZjOYuoN/Sn8Xiq4qDJvMpEU6zK2LjG1wybI/5t1+xPCS0Uge4TRN6
-	+Hiu659NVfrHAcTfx+amzmScXnMpSYNZIbbVW5FTgOc8AoUK42k2vD9LcouSEIAaigp+a0
-	uU8yjl8J5d+neUeFd0EBsbi2qzma0m0=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>
-Subject: [PATCH v2] slab: Fix obj_ext is mistakenly considered NULL due to race condition
-Date: Thu, 23 Oct 2025 22:33:13 +0800
-Message-Id: <20251023143313.1327968-1-hao.ge@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=0g9O1UAQmliCyOFgls7R54UMarfOxqkSzanB1NMWGZc=;
+	b=k1Ei99pSN0ZJ4DktAz5tFxhmh9xTAEQcccVpqLsY5aWuidbtKZtdJWFBmlIW5rJTAsgMaU
+	0xFrbhpqPiTz8v2cYzF1pzZCiM8qEQS76ZGntrUZD13dRFtOHKE2nRGt8cckR1fr48VYiw
+	qmCf5RyAnR2JbfoIMlpJuEWi9bISP1w=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63e076e24f2so1973012a12.3
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 08:05:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761231908; x=1761836708; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=0g9O1UAQmliCyOFgls7R54UMarfOxqkSzanB1NMWGZc=;
+        b=JXQ/NKh/ByWmnBG9X0ywN91PmtDUObGplUITo3xZz1Ekt9MjWVfPTDIDnXuW/Q7NXl
+         /aQhvmWLvPoneZXcLEW8vCW7atz7/sossx4fAwv9xCoUhYsT2g6DILkaMehbuim4dTeV
+         /u95EVhPibpX2F+onJqZTuIvhJKUmd1agaT/mhb7W8h4wSOymi/cDkKcr9/XIkE5kI33
+         +Hd/fHfyTRwCzKtuRDiIUx2OMsu2NoNTnRn6LNpZ9zomUrShjxAk+mXlfNDO4RivgfDo
+         mCVkQYI2ZeRDUKGjHCRhzPR+YmEmefAYhfxLMzTHR+49QR8Gxx4xG212z1BSA76et9yu
+         wtEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761231908; x=1761836708;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0g9O1UAQmliCyOFgls7R54UMarfOxqkSzanB1NMWGZc=;
+        b=Q+9Q2TqWzgxTO1LGp5LEkYkJerB3xSFGOdmagmxSpjZ/0y2U6Ose+KZuWJ8lOE1tGq
+         j/C8DQhPjfS2TbLMihnk0FVTI0EUhsaXSuLNX3jhUMFdz2kY3h45c/Q2X03YWNO7f6wh
+         j8WHhl6EkQNCI1mTF/xjc+WhOLiJJYdQ179aA7gNPmd4ztSOkOootZ5K5/tS1WE0JMhD
+         LT5FPxTpvqEDR7eW3Vh5nAbqT9Unm5kWaC+uKE22dOacX7Op1FICE8TYo1GJKEvMU89K
+         8FzY72amuqIfz5lxwnAIGzrMbTzIJmgqDcjqCFN9jQea5mYy3zyarXO/dIBgm+WXDaku
+         Kfcw==
+X-Forwarded-Encrypted: i=1; AJvYcCUNUEE5OW75LaNyqiVt/FcAt3Rws1hy5sCVChuBtVRi9kmVPOJelqCFRCGYRgATC/7dBKLyzEbW9g==@kvack.org
+X-Gm-Message-State: AOJu0YxZoD+ZNzAgNMM0NQjWeyhgFoC88PCAv3/6uEMVJs3ZiAsfmmul
+	mXhsmCX0UXbYwZSK4lB/xKwqj56q77/UhwVMBGhc3SuRFqWE4LIZ/ImRbLuQCohlLKi1wZ9UtJD
+	+ZWCQSyVtmw0yFhPLvn+ZkxHiI1cPK/o=
+X-Gm-Gg: ASbGncuxFlidvzIEbYj+KvtWnGbqFNHYczNPhXr/d1PYtV0bj1E99khDnWBDgkv1pk0
+	DiuOWYhrp9eNlJf17liuwPOohPLsOIwNbuLg+S7c8M8a9/FgjxUoWdnjw5TOVMTbBzRBFgKu/qf
+	X5p5NbILvEVnl6qRIdRq9ZiexbioONw/gtmf23RnRoG+RAsj+mDRK1h9oAuvgu8HIcW95ITGpPV
+	+Dq6is4ZVCeSV77GiF5OeAyLdIEb1JkhqyXvMTUhoGgNB42T+zQYyXoRBLlb9P1pkL5PHe0s1Xp
+	GUJN6kleLgay0tFp4Z5zu18jhV0Izw==
+X-Google-Smtp-Source: AGHT+IHB8B5L3u8WbMDNbmjmms33DeNsuKSJCMufZx22juNs/gndSdpSi8DIUT2dxhoELBY0BdEhQ4H+/Q41jUC1tb8=
+X-Received: by 2002:a05:6402:1810:b0:634:4d7a:4d94 with SMTP id
+ 4fb4d7f45d1cf-63c1f6d9335mr18957800a12.34.1761231907807; Thu, 23 Oct 2025
+ 08:05:07 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: ac39s3y6twkonquon59gyggnoon7sayk
-X-Rspamd-Queue-Id: 05C6A180015
-X-Rspamd-Server: rspam06
+References: <20250929115405.25695-2-sidharthseela@gmail.com>
+ <486e0d6b-799e-4fec-9e6d-3ddfdd64418c@arm.com> <cb30af9e-c22b-485a-a83c-f395880cd799@linuxfoundation.org>
+In-Reply-To: <cb30af9e-c22b-485a-a83c-f395880cd799@linuxfoundation.org>
+From: Sidharth Seela <sidharthseela@gmail.com>
+Date: Thu, 23 Oct 2025 20:34:55 +0530
+X-Gm-Features: AS18NWA765vw_3LiOpRHjjahBitbX6N7WFYKyQWJzAW1GbNsAm0JUy1d7Tv4rWQ
+Message-ID: <CAJE-K+D6ODXnMtS+pbQ-GpyTy8PLyycqK19P_EgnZzKbKwoOog@mail.gmail.com>
+Subject: Re: [PATCH v1] selftests: cachestat: Fix warning on declaration under label
+To: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Dev Jain <dev.jain@arm.com>, nphamcs@gmail.com, hannes@cmpxchg.org, 
+	nathan@kernel.org, shuah@kernel.org, morbo@google.com, justinstitt@google.com, 
+	nick.desaulniers+lkml@gmail.com, linux-mm@kvack.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	llvm@lists.linux.dev, david.hunter.linux@gmail.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1761230050-168620
-X-HE-Meta: U2FsdGVkX1+lrjsaGwsiPTGlq+zkozlo89sl251/vfVRiyDAsvMHQQAtKEnugqyNKBI0o3lNa0itixbCt2XlJVaFcJ3lrd1FdFfU4agdHZkJLyInwjp8EnlJZma5a1/nf/0TX5VBSIMZzt2CXHaom6PXwVPmgFFdB5Rqm8lAaa0/6XruEBlXjuE52QPMH8StMTPJre5vxV+g851OZIPZVGvJ58NK0B11HXfrmcPcaZ4GDJDeUxnvvNMFxwIFUZUr0ZAcEq0Sb6RCBnFBfiPtCvPMK8w9mXfM4red2o7+G+wEoDjADRfztBtwHZFW0PJixcnxw3v9tCMQjE+XxwoSVw7SWE11r8Q1pguA/+pKoUBk2uz2+W6KfsMpFJWkSRlVUvTOlvhspcsr+izjrx6PK9EnLYONIzn2pIlkabCAJPoYr31vL3K4JIQgQZKzrGYuCN0S7J4P6eTX0Z9K6Pv9cb5EFEFJCMGnXN1l7PwXQbTjH73FBwxE8PWtIuK6ADfASykbrCd6d4ar/NiKCqqXMY1frLSPUjnEOhkueyDJiOi0TVkD8lhcWtnarNYx2yMHq4bSliJGRGYgQNAwyi31017mQ3wIhihWiQM1k3HL/fPjowXj8BbGQAzRm0nU5ZH18bzpxu3GmRK0t1YIiDs8rvp2etvaSDaWmYWYUvKWZr2Mmfx9TjhhFFUvlQPdMaNQgiJvX7fnjOVU1IaRl7d9EGl5esc7gdJM8XhYvCf5/9rV8Iot7Org5m+RkGkfnCFATWU1w3cqZkaIuqeKk3S3mZzjFyMHD6PRarMihAdos8uh79xY5K3R4iXbrfDtteI9zCBcI+JFfjeQ20Qy5Cs/KfgvYmmT8IUsN72dbBbayzfuI+IbC6oafLFCtrlYcoPC2LDCLzl9wgIM9zkFxJzmA9FnyD7H5oVxsZ55tKhiM6ImRn3zuPdPN32HIPNiV+IGtBZKX2USyqfOfC/h79b
- j338q4M7
- xFzLsryn0K3S37MA=
+X-Stat-Signature: 1y7bbd1jpgmjwcuc5im71xn3omj54spp
+X-Rspamd-Queue-Id: 9CA06140020
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761231909-699481
+X-HE-Meta: U2FsdGVkX1+vdH6BgA23jkOkn7N/kont8TwWqi3fMbyqntqGv18EN6aCLFWDSSEkSnLncR7XGYhWKs6u4kU8RNqZwr6BHJDH9WxQSqWyGZiKGzwA39IO1128V17u2vy9jGXOWKxn/j8F1z6bN20Rb+upLIAC46H+MwJomUjkz2a0qWlgI5cLI5zC0HONyTuZruETenWBcSPwgKUKgUxmHRNDDJPLanQf4M1TVY77gn3KV6DbjEggFMe1CP50/mOVDcXQXA4HP8dL+0ilf7U8NhzOKCGg3xp10psEEazLD6cQBBtDGHSfP4x2N7JIgV4g7Sd+pwgyTHvg2ryNPOAWj3ZUyis8sZZlK24MXeHwBzj1JN/rBXML4/kYOeIEbwRqP1LQbZ+JuvM3atbBfWB3G1jz6s91Cuq36/DsNNrtZ94RyWYBx6vdhb0yYssN9MphBuRvYo7rIAMDKvyZGTB175OlfcakC8WsMbVYQIbst6F3nB2hYtF2UCnU7acjv06SinmLeRShCP6vka8t57ElvnGO/YhBwyjLit6PGXVEWZGCcJS9rMQhOquTjfQyEyyF2SWC5whWtRBmbUAGg/uOyNnDci6hcTsWq2Q+0Qg3HvPANGwA1jkF93seLLkYsdiKY+r4Ey6n3av6fdyxqnRSWTuTXKbtgR1olfUuSMzstH5G3lpTpGnaR3j8dR9vJ7Sml+O26lLpNK1V0BrvH3W8DjOyhaJomgb1+DYegKJQgHCtnFaz8LiEJtuYQhHUvaRqMC8U/ytaQ4nDP+wYCWDPDHp0UTRxmgKjCxbOmNiG2qXgM3aUuGnu66Stu0gOWk5qxAEF1Ta39BgI22RUiMPNSHiClqSj4n9B+NhGUt+CGSQ9Janm4czYWB9YRHAFTTHAwjQoKD6vpP03F+CNZmxQaTZbIp75DL1Bwf7/sJ5mKsvtT0tmLG3O6QixfrAQ+YZgWWfgMGDvkVMGzVl4gRV
+ zr+wdx+t
+ XZfR4MUKWMQnlh+SFMSL1kuNImKI8/NJfLY/ZbAokvWTnn0AuVFpGnYLBU2+CrjVPNGt3mvg1HmGuXaIQar/czGnJjRwu+nti4LYN+96y30+IJWSS15p2DKzDHxStCM7Zndh/p6DbEyFc7Gvh4EbKU7B53qzOZjHUS+fgoTmVh+3f9Js9Tt5fki868oJcuW7+tBk4jzvB0JFJm1KcErrI0wmzpIS7E8xBcZFnxwEb6MXxq30GtDZ4E1orQch2iwRolfbazD+PEM8vXjEpetIFijuDUf5dcHTaAip9/1nCW/X3q1k3Ew12SDGEt3QtX2MpK5w9ZxPsNmWeMK6IC0WufNmNOjG9ilOoWvJJNnfqm/H4m0xU8hRmLvR0GPn9bIzR9f64NLkLgaT1N6iQntkLcGl26yU6uHPjFwpOLuQRwMzyNYNs7BxSRN12nGiwMEVIg+vWqTxArY4V2To=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,69 +118,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Ge <gehao@kylinos.cn>
+> Make sure to not use "---" in your commit logs. Everything after
+> this line gets thrown away. I had to go fix it manually.
+Sorry, I will make sure that doesn't happen again.
 
-If two competing threads enter alloc_slab_obj_exts(), if the process
-that allocates the vector wins cmpxchg(), and the other thread mistakenly
-assume slab->obj_ext is still empty due to its own allocation failure. This
-will then trigger warnings enforced by CONFIG_MEM_ALLOC_PROFILING_DEBUG
-checks in the subsequent free path.
-
-Therefore, let's add an additional check when the process that allocates
-the vector loses the cmpxchg()
-
-Suggested-by: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
----
-v2: Revise the solution according to Harry's suggestion.
-    Add Suggested-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/slub.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index d4403341c9df..d7bfec6c0171 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2052,9 +2052,9 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
- 	}
- }
- 
--static inline void mark_failed_objexts_alloc(struct slab *slab)
-+static inline bool mark_failed_objexts_alloc(struct slab *slab)
- {
--	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
-+	return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) == 0;
- }
- 
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
-@@ -2076,7 +2076,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
- 
- static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
--static inline void mark_failed_objexts_alloc(struct slab *slab) {}
-+static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
- static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
- 			struct slabobj_ext *vec, unsigned int objects) {}
- 
-@@ -2124,8 +2124,14 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
- 				   slab_nid(slab));
- 	}
- 	if (!vec) {
--		/* Mark vectors which failed to allocate */
--		mark_failed_objexts_alloc(slab);
-+		/*
-+		 * Try to mark vectors which failed to allocate
-+		 * If this operation fails, there may be a racing process
-+		 * that has already completed the allocation.
-+		 */
-+		if (!mark_failed_objexts_alloc(slab) &&
-+		    slab_obj_exts(slab))
-+			return 0;
- 
- 		return -ENOMEM;
- 	}
 -- 
-2.25.1
-
+Thanks,
+Sidharth Seela
 
