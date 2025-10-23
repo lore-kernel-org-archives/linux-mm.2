@@ -4,123 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31560CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 18:02:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B933CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 18:12:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91C038E0018; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
+	id 3DB3A8E0008; Thu, 23 Oct 2025 14:12:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CCA98E0007; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
+	id 3B2CF8E0007; Thu, 23 Oct 2025 14:12:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 809618E0018; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
+	id 2C84F8E0008; Thu, 23 Oct 2025 14:12:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7373A8E0007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:02:07 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 38D4912988E
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:07 +0000 (UTC)
-X-FDA: 84030147894.08.F2FA27A
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2C73EC0021
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:02:05 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F706njO3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761242525; a=rsa-sha256;
-	cv=none;
-	b=yDDs8AruEFpMLGpbNwek9dLz2MpKUHgv89QK0bzmsqT4rKdSMOxm9mdhj1nAN+elyZULAQ
-	0cGpJT19DyuKg4kkqSQB9pFAdyrQDuw9W0B2V1rGLtflAhVX5AFpl1fxvlFedLvi9F53X5
-	79fgvsraXelvqlP6/0v7ESr7lahXdD0=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=F706njO3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 18CE18E0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:12:10 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id AE5CA5CFC2
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:12:09 +0000 (UTC)
+X-FDA: 84030173178.20.9A6CEBE
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf09.hostedemail.com (Postfix) with ESMTP id CD680140014
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:12:07 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=uoEujvRB;
+	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761242525;
+	s=arc-20220608; t=1761243128;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
-	b=4Bl10KI09GRsmE/w5oHb9sFUzpsjY431SjokE6piIRcGRaTpygtLPLYrxdAeafudRF0Jrk
-	xm9XVcX0Vfmwri5MisN5p8zCcC+E+crL13oHqSciQW4K+g4jvmM9CkDa9x4bD3bhL3Makw
-	bsFk0mrbOJNKuWo4MxayVWDsU4SiaGI=
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7a26b9a936aso741870b3a.0
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:02:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761242524; x=1761847324; darn=kvack.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
-        b=F706njO3CTj+EgwTJOvNmmEP/KekqJOa+w3g5bepZxo8LMlsjP7k1W4oW5lubeWQ77
-         j4aldEbl/76B4e3j/yw9ZyGqT5GNWLIqF357p2lHv40DuUJLypaQXXJ6ErByC8fiMaFc
-         ksoeCAUwvVk6hoQvYChr2ioBxtzblNxTafmcS2coonyz7FfnoUOCq0YyoDBzz66HIDgD
-         WCGwkFArTP4aUY7BWdSGIZSXvjUQxcoWqqIN2PU7BeX9TgIo+tls4Q1XNL9IPGq4fNhR
-         KrFje6/75NEsOE0dRDVMbHjbBs59FkFQI/C+N4cgfxg4/O0D06cvYpbMMCwMnsQabMGD
-         rCCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761242524; x=1761847324;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lk62vnASvkBxJgkC6Qb/LY2NePGcYntSkBsPsS8b6vw=;
-        b=g9cy8wNf8uGr6beuJz7vHDRxb5DUYczKxfLBaR/IMdW5MgcsRtR03sv0z45E+BNwpX
-         sClwSnVrVLCSbKuTgYO7s0O/qaGRXHcpeV0SPPABLQ+pnLCa1F7Q2+ZTh5iEUv1EGQcw
-         rfFHDMntQ7VvoG9UDhCyp9COy14wI7AoXTKF0p9qOSEv5kehJ4nDKojqHSi+huClAOtr
-         DvwuptVRUm5zPokBJ8sQAZZk8mbGLOKNFCgZwz1+ztW7HVmZKKobS3ZO7bQxOsT5e4JZ
-         G+Gt+FBgtg94yz6C3AFPPY7ihfo16oCfnoDQHMl3knd5wyYVZ4pKDxujtQ4r2Gz+99rD
-         gwzg==
-X-Gm-Message-State: AOJu0YwQNWKCwDLLTV9Iywb73qSYvDlC7qR9uL38Z1aJqCn9VY/RHRI5
-	UGe4uL/+DxiTTZdrNXecdE6nuRBcNqueNATpadH8G2XDN5i83+O+yJq8
-X-Gm-Gg: ASbGncuVtNuvuLfXxs6Or2zLTDGZOtHpkFsTllbXgvoNQUxGgt3IuEZ1bxjrdbXu3S7
-	VlQy2QRoFRHf2Z64upcWGTfqI9RuuDRVM1sZM6Vg/GERn7t/06j30OAcbIE+144LKfHQzPkg8NV
-	/fvAATP9Rf+UmfFHUlVfzwSycS90oImErvmXGHxXXcfPNgAdyD4ZmxruM9IKI7KNv75eD8earB4
-	gc5K4YW2u7LfX4enKdEkTJX7jryxENPYDXzce8xx9MROeVhTfBFNvVS3daswveKPsq6shjLrhqE
-	Xsp3wJEilXPCjYbVec9Hn8QIqw9KvU7Frf9fT3CAcb1rOTJXaf3/wepHYmVtoQ7orzzWIRJlwQh
-	ooycBDu2MahZO5uLe/pN8ovdbnIStt4XdpdxdDjYushn5d4wuYpoibWnLHOywBKXSRUgUa/28SI
-	7TgRx8Cw==
-X-Google-Smtp-Source: AGHT+IFPUrlbvn8DuW25skZvpIHzGvxrGeq0n5tQxV88E3xMkZ9FaMz7plJmoiS9eWwPcZAFgSQvBw==
-X-Received: by 2002:a05:6a21:4613:b0:334:adbe:752a with SMTP id adf61e73a8af0-334adbe757emr30117578637.31.1761242523824;
-        Thu, 23 Oct 2025 11:02:03 -0700 (PDT)
-Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6cf4c4d83dsm2734532a12.18.2025.10.23.11.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 11:02:02 -0700 (PDT)
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Oct 2025 02:00:43 +0800
-Subject: [PATCH v2 5/5] mm, swap: remove redundant argument for isolating a
- cluster
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=5AD43heSxDjkMJBae7Mjv+mqYMFtNUo5qUGqikj6aF0=;
+	b=lACP8vm78XJL3U5N70ffUvnv+dslQrfeIx+H3AYptEcKkCNuFlIXj3D7xl8NAICCY+3B21
+	+FZbbkWG0lCqS0ecE+IsncuOn/M4TvD5udct/d99iYN+tjg+cmUOEs4CWAtQUfy9w6Hu4e
+	FDAELIjXKueznzNXlIkpGPGKUetTA7Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761243128; a=rsa-sha256;
+	cv=none;
+	b=xiNbkesgYLhKT6L+NMFcSI1f4r2L11D9LNZUJceO8NqmW4M/UZPrnYDB4AsyhWFXKhlRxw
+	eSK3+GgaXSLj7ZZxUdEUUCq//kKFix9iRi4Kz/9x2V1xMJlvElp7jnloXCVNxWPyODF74k
+	UpXqYebuqoDNtjB8hNrfW7Lx1/F6If0=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=uoEujvRB;
+	spf=pass (imf09.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 408F09AE3B;
+	Thu, 23 Oct 2025 18:12:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1761243126;
+	bh=5AD43heSxDjkMJBae7Mjv+mqYMFtNUo5qUGqikj6aF0=;
+	h=Date:From:To:Cc:Subject;
+	b=uoEujvRBgupb2RFCiqFr716ZQ851q/QBQ4vK17vtvfbtB1B1/8V0JdA7PBK0IK+aC
+	 xkobpBnCvgYOwDasFsVuzpkOoiF4fXb0ZgB8YUFzX9NslctvZ9E6dtWzfatnj74Swq
+	 m72+mprT08dznyBPzBTtPPUi16dRH3/r0257ssKg=
+Date: Thu, 23 Oct 2025 18:12:02 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+Message-ID: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20251024-swap-clean-after-swap-table-p1-v2-5-a709469052e7@tencent.com>
-References: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
-In-Reply-To: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
-To: linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
- Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
- Baolin Wang <baolin.wang@linux.alibaba.com>, 
- David Hildenbrand <david@redhat.com>, 
- "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
- Ying Huang <ying.huang@linux.alibaba.com>, 
- YoungJun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, 
- linux-kernel@vger.kernel.org
-X-Mailer: b4 0.14.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Rspamd-Server: rspam05
+X-Stat-Signature: zup8xe65zyrgshg61jgq4rqz6ztsrp31
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 2C73EC0021
-X-Stat-Signature: 5jkp4x8ezao7g96zaj5k7tye9biozwoi
-X-HE-Tag: 1761242524-383220
-X-HE-Meta: U2FsdGVkX19aciVbIaYIeGryjktuhX8QAW3zPy5TDpK8sXR4xbL16QqF1UtjjDvZ7pfaZhcVyVRhW9049LRrS7FeFr7lp/uye+n6wZ5TUyJtyni5wLaU6en3YUTUDpyfHJvQt1oIYGiyC0GDuBxrRz5gF8pgf8/BRsj9NCkAqd+SHk3H6+Igqy4vguPqRWCS1Zq224JGswSC5zzgysD1S/5tZOMs2sSpi4fdckMeHYRcbmrFI2VwxuxwMZBndQCopViBij4WFOyHPj6AF899pktOUxO59riyk9CO+tIsBtCuO91WDUkgjfiSgUDWfRpZPrVaSgg6iZpFwMM0kW+YHqUJB8FT8oTPKCULOsuZA9UKt+/RZjxtHPJP9oeejLILNvxxburn9DNST3HBC5t6d7Uq7a2f6heMPELEnFy/48eE5H7dCLwd6dyZnMiFTWFBD0+bt75Z8uX7oVqjp7US6elsUy8iX5UHtZsLVDiJljaK2rjYQjek2DXGATTxDJhA/WDZ8lMM0nEgxCXilSJAFq+ogV7WMWNT7USBeK60mikoycegYbkG6H1gWwkt7EXIxG+rM9Qc0TPStwMTDS380ELmBD5S5G5H/pVOOqKfdR51638sXv8DGT52UAIt2GLQMsFJt3WxGIOd+BrwoUBuKv2TCCERBK6+cH312yphc8CaziwEa8xmHldRIuEV520/0N4YIPkDWWQIzPKyZGbbm7S97YbkVPRZ2NemZLvRMuWTqFLL1aH4sfKKatk2IOwsbkKzbCVKQYXj5nXWT02DP1n0cdzfnIoVWoHAB/TL83baML1EQJWdc44t31ZPm/xqeEfkKlRUKSRcC1nyKniUNa2p3B9mrC3WYz6T/640efqCUDH5jzIOOTHS3ziY0Ns1WFwLlhf+Dpy/ZpzrnX5QrTMWPhHTdSW0exBgAtglmlzQbqrLq9dNd8Ki3Zq0JcrZFhJFQxkefx3MiiS2UHn
- 9djP8DI3
- GbQwpWWPPIND02TvRYg9/d/FEmsqxpxVMWGakkrduHnUX60BrZC/Zs2KKAjdNE4FUkmId/QBs36OnidJH+RpJlWkPkh+aPkrAlhzyF8tN9IbCpCE8rV1be2pOUTZvlTsOElwySSl+ggZdPT4JI8D6Wrl35oOXG28lNssvb0RvY45cQYEsoSuMKhE5nMH+qRhJ70M2wI5f+0XrXLOCUwD8myfzHB35orI5oDDrJFyPmY5j/YaOl+m4x9YoeyTF7ts55D85NMQo+0jFQvzUDZJxCFkszWl6ComvIK+8t9Bi/SMrMfzW5oYX8IwjvbJEEgpsXU1tn/HSZf3LZ+W0JeNuKtkjUJJL410tb6bBDa8cBy6EQgtyJgjzhtx13vGkRisuC9vz74qgX13xjoHlD8Qn2EaIYvr31grYrn011xzX4qbXdBY=
+X-Rspamd-Queue-Id: CD680140014
+X-HE-Tag: 1761243127-670819
+X-HE-Meta: U2FsdGVkX19jSOC2ypkrNbUR3SUZQlEd9lgK5uoPHfCAuNRLRTrjCi3ZM3yf8BZbNAEGsf/cDoFExr2UiHsKHdGB4bqFfG3Nozr8OuIuXwmxrduMg66gfT9xwl3PObdke/DM0M+Q2ZrLQRS8To12HQgOfZDfGkf48NNYujz8UySle/gQNbqltND1EZ0jHdxIb6LhUK5gpQ9RzrWEiyre5Osow0YgyXDi4V1ECHuHOhsgbrMRuBuqvbHL1RjWMYLfEFvYhNQWPT7qPMUfMFXcSOO9BqBKrfl0SGjO6w4Dn4zeI5epGJHjnfY9qUmqXLQAQFiW5Hbvglf8n30Znzq2qIiIUrf7BlNA+tZzUc9IJnheWDb9wrGehz4gV6Lcrf1DBSp5TUzYHA42S27OpjBgCaMtGt/C8O/rmT53wsR6TobRkX/Sb+vkDGwSeJVaLLNnl+xp2jiO/9ha1MPcA/SuLrDXz0QZj6RyqjH5xW7O725uEZzArT6LFDfW0D+rrpLoLHiiGQSAmeNakW1o53NcfooW1nEBnON82hN8x9muo4oY7d5fGbjsf9c//LsI2jEj8NLfYkjwqWfVafG2TFUiEY2SMuCmQedcKJAGoQNvgCqer6sBvFw8bjCJiHRTpCYsYugJaap5KVjFAJ8DxZ6HKN0DXjmjl0SHe1FPiFSt3lbxRQP3zbqCGenqBR37qYP2PUcJaIsuAum4p9pH/tvDQTlWkgr+N8zYFe+PmSBw5ojYAFkLU4IyM/bGGjtnVrwSsnBVn4N4vbw20qJs6tdIiz5/ybAOrstX84SFhcLPfBOHOcDtsH38i1f5d9dPfLCJ62nsLYvKhOn+Lk7E0KtnIXeVzrKr49vmSmK3Zpln8U2hvDZkzkiP1jkT8PeYt1mJJNeHwUZHmi57hdyHAZssrqLedJ2D3UwEQLYnze1HRQucXejQDINLfdloNr8kKtgOWggskNB+kgjc9BWqxRm
+ 4b7BiWum
+ hN8TFZPDCXhAJmGStCrjcnvpIR3mM0h9f2zcr/cnaQU3Sx+klSK8lgPC+xi+aVyA0EXwntc1AkjweLsGgNjh6+RV+ApdI9o80SdUmsgfTOWW2f52o8CpJi0p2aRKyiJO3ZWOpWw63iQOWGlGVTDQha/OcxS0pBlswB8QuZaUsTEN9gO2bGGFrmtcVfO+fZWkh6otJtleCrOK/Xr35nppL4npEON8+Qz9lROONpHYszSSzofq0WypsgucYhHv8Gyd8a9il6KrkUp6TamYK9kMVtL/hDP+jXe/QirSv
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,49 +91,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+Allow to override defaults for shemem and tmpfs at config time. This is
+consistent with how transparent hugepages can be configured.
 
-The order argument was introduced by an intermediate commit and was then
-never used, just remove it.
+Same results can be achieved with the existing
+'transparent_hugepage_shmem' and 'transparent_hugepage_tmpfs' settings
+in the kernel command line, but it is more convenient to define basic
+settings at config time instead of changing kernel command line later.
 
-Signed-off-by: Kairui Song <kasong@tencent.com>
+Defaults for shmem and tmpfs were not changed. They are remained the
+same as before: 'never' for both cases. Options 'deny' and 'force' are
+omitted intentionally since these are special values and supposed to be
+used for emergencies or testing and are not expected to be permanent
+ones.
+
+Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 ---
- mm/swapfile.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/Kconfig | 91 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ mm/shmem.c | 33 ++++++++++++++++++--
+ 2 files changed, 122 insertions(+), 2 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 42e2b2759240..214ccd1f69cd 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -594,7 +594,7 @@ static void __free_cluster(struct swap_info_struct *si, struct swap_cluster_info
-  * this returns NULL for an non-empty list.
-  */
- static struct swap_cluster_info *isolate_lock_cluster(
--		struct swap_info_struct *si, struct list_head *list, int order)
-+		struct swap_info_struct *si, struct list_head *list)
- {
- 	struct swap_cluster_info *ci, *found = NULL;
+diff --git a/mm/Kconfig b/mm/Kconfig
+index e47321051d76..5ceea38edbe1 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -853,6 +853,97 @@ choice
+ 	  enabled at runtime via sysfs.
+ endchoice
  
-@@ -957,7 +957,7 @@ static unsigned int alloc_swap_scan_list(struct swap_info_struct *si,
- 	unsigned int found = SWAP_ENTRY_INVALID;
++choice
++	prompt "Shmem hugepage allocation defaults"
++	depends on TRANSPARENT_HUGEPAGE
++	default TRANSPARENT_HUGEPAGE_SHMEM_HUGE_NEVER
++	help
++	  Selects the hugepage allocation policy defaults for
++	  the internal shmem mount.
++
++	  The selection made here can be overridden by using the kernel
++	  command line 'transparent_hugepage_shmem=' option.
++
++	config TRANSPARENT_HUGEPAGE_SHMEM_HUGE_NEVER
++		bool "never"
++	help
++	  Disable hugepage allocation for shmem mount by default. It can
++	  still be enabled with the kernel command line
++	  'transparent_hugepage_shmem=' option or at runtime via sysfs
++	  knob. Note that madvise(MADV_COLLAPSE) can still cause
++	  transparent huge pages to be obtained even if this mode is
++	  specified.
++
++	config TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS
++		bool "always"
++	help
++	  Always attempt to allocate hugepage for shmem mount, can
++	  increase the memory footprint of applications without a
++	  guaranteed benefit but it will work automatically for all
++	  applications.
++
++	config TRANSPARENT_HUGEPAGE_SHMEM_HUGE_WITHIN_SIZE
++		bool "within_size"
++	help
++	  Enable hugepage allocation for shmem mount if the allocation
++	  will be fully within the i_size. This configuration also takes
++	  into account any madvise(MADV_HUGEPAGE) hints that may be
++	  provided by the applications.
++
++	config TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ADVISE
++		bool "advise"
++	help
++	  Enable hugepage allocation for the shmem mount exclusively when
++	  applications supply the madvise(MADV_HUGEPAGE) hint.
++	  This ensures that hugepages are used only in response to explicit
++	  requests from applications.
++endchoice
++
++choice
++	prompt "Tmpfs hugepage allocation defaults"
++	depends on TRANSPARENT_HUGEPAGE
++	default TRANSPARENT_HUGEPAGE_TMPFS_HUGE_NEVER
++	help
++	  Selects the hugepage allocation policy defaults for
++	  the tmpfs mount.
++
++	  The selection made here can be overridden by using the kernel
++	  command line 'transparent_hugepage_tmpfs=' option.
++
++	config TRANSPARENT_HUGEPAGE_TMPFS_HUGE_NEVER
++		bool "never"
++	help
++	  Disable hugepage allocation for tmpfs mount by default. It can
++	  still be enabled with the kernel command line
++	  'transparent_hugepage_tmpfs=' option. Note that
++	  madvise(MADV_COLLAPSE) can still cause transparent huge pages
++	  to be obtained even if this mode is specified.
++
++	config TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS
++		bool "always"
++	help
++	  Always attempt to allocate hugepage for tmpfs mount, can
++	  increase the memory footprint of applications without a
++	  guaranteed benefit but it will work automatically for all
++	  applications.
++
++	config TRANSPARENT_HUGEPAGE_TMPFS_HUGE_WITHIN_SIZE
++		bool "within_size"
++	help
++	  Enable hugepage allocation for tmpfs mount if the allocation
++	  will be fully within the i_size. This configuration also takes
++	  into account any madvise(MADV_HUGEPAGE) hints that may be
++	  provided by the applications.
++
++	config TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ADVISE
++		bool "advise"
++	help
++	  Enable hugepage allocation for the tmpfs mount exclusively when
++	  applications supply the madvise(MADV_HUGEPAGE) hint.
++	  This ensures that hugepages are used only in response to explicit
++	  requests from applications.
++endchoice
++
+ config THP_SWAP
+ 	def_bool y
+ 	depends on TRANSPARENT_HUGEPAGE && ARCH_WANTS_THP_SWAP && SWAP && 64BIT
+diff --git a/mm/shmem.c b/mm/shmem.c
+index eb8161136a7f..a411d7fb6e5a 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -570,8 +570,37 @@ static int shmem_confirm_swap(struct address_space *mapping, pgoff_t index,
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ /* ifdef here to avoid bloating shmem.o when not necessary */
  
- 	do {
--		struct swap_cluster_info *ci = isolate_lock_cluster(si, list, order);
-+		struct swap_cluster_info *ci = isolate_lock_cluster(si, list);
- 		unsigned long offset;
+-static int shmem_huge __read_mostly = SHMEM_HUGE_NEVER;
+-static int tmpfs_huge __read_mostly = SHMEM_HUGE_NEVER;
++#if defined(CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_NEVER)
++#define SHMEM_HUGE_DEFAULT SHMEM_HUGE_NEVER
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ALWAYS)
++#define SHMEM_HUGE_DEFAULT SHMEM_HUGE_ALWAYS
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_WITHIN_SIZE)
++#define SHMEM_HUGE_DEFAULT SHMEM_HUGE_WITHIN_SIZE
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_SHMEM_HUGE_ADVISE)
++#define SHMEM_HUGE_DEFAULT SHMEM_HUGE_ADVISE
++#else
++#define SHMEM_HUGE_DEFAULT SHMEM_HUGE_NEVER
++#endif
++
++static int shmem_huge __read_mostly = SHMEM_HUGE_DEFAULT;
++
++#undef SHMEM_HUGE_DEFAULT
++
++#if defined(CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_NEVER)
++#define TMPFS_HUGE_DEFAULT SHMEM_HUGE_NEVER
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ALWAYS)
++#define TMPFS_HUGE_DEFAULT SHMEM_HUGE_ALWAYS
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_WITHIN_SIZE)
++#define TMPFS_HUGE_DEFAULT SHMEM_HUGE_WITHIN_SIZE
++#elif defined(CONFIG_TRANSPARENT_HUGEPAGE_TMPFS_HUGE_ADVISE)
++#define TMPFS_HUGE_DEFAULT SHMEM_HUGE_ADVISE
++#else
++#define TMPFS_HUGE_DEFAULT SHMEM_HUGE_NEVER
++#endif
++
++static int tmpfs_huge __read_mostly = TMPFS_HUGE_DEFAULT;
++
++#undef TMPFS_HUGE_DEFAULT
  
- 		if (!ci)
-@@ -982,7 +982,7 @@ static void swap_reclaim_full_clusters(struct swap_info_struct *si, bool force)
- 	if (force)
- 		to_scan = swap_usage_in_pages(si) / SWAPFILE_CLUSTER;
- 
--	while ((ci = isolate_lock_cluster(si, &si->full_clusters, 0))) {
-+	while ((ci = isolate_lock_cluster(si, &si->full_clusters))) {
- 		offset = cluster_offset(si, ci);
- 		end = min(si->max, offset + SWAPFILE_CLUSTER);
- 		to_scan--;
-
+ static unsigned int shmem_get_orders_within_size(struct inode *inode,
+ 		unsigned long within_size_orders, pgoff_t index,
 -- 
-2.51.0
+2.47.3
 
 
