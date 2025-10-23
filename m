@@ -4,77 +4,76 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E972CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:51:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF57CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 16:51:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F60C8E0015; Thu, 23 Oct 2025 12:51:19 -0400 (EDT)
+	id 285288E001A; Thu, 23 Oct 2025 12:51:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47F688E0019; Thu, 23 Oct 2025 12:51:19 -0400 (EDT)
+	id 210478E0019; Thu, 23 Oct 2025 12:51:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2D0358E0015; Thu, 23 Oct 2025 12:51:19 -0400 (EDT)
+	id 060BA8E001A; Thu, 23 Oct 2025 12:51:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 071A08E0019
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id DB7668E0019
 	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:51:19 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C5558140BAC
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:18 +0000 (UTC)
-X-FDA: 84029969436.25.3965C62
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A9B49C0BEA
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:19 +0000 (UTC)
+X-FDA: 84029969478.27.BF93E0E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id B9C2314000B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q8ECC6CS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id A630120003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:51:17 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KvdK1IcY;
+	spf=pass (imf03.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761238276;
+	s=arc-20220608; t=1761238277;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dj4t8oHJHFGYvecueYgyOSzNzLpZ1TIb7xPt4GibhSI=;
-	b=T19Z3M3G8AX4Qcf2cDgBBeydYhdhL6O/UIgdSGsDAYb54ldc94UrrMwTpAz7XeWDAsHJgh
-	NtGXZL433l7zcIfrwu69gw4dYfNaepGI+WyW/APl3TZy2HbSn0W48Gqy/1VEeymHN8cug3
-	a11xgBKkqlTo2i0Iy8OwgkHO/lLU1uM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761238276; a=rsa-sha256;
-	cv=none;
-	b=YOQPiqhInx/BkG6l2ZDpC1TAjDM7wK+PHIAO6jyd6jRp8DawWxutIM6tnXiD6afB8jlchc
-	sMXwTweSUivNsiR2eKvrdmIp31ZHCqvmwGcvQQY1XZgpL+3bHbQe7+Ghs6ZxbnyJ8okenr
-	7E1g7mpWSW8wAXI8XNCGiN/HjONdDP8=
+	bh=QSwMSFItp0GRSIrlrBaZhZ/0a7IDeIygTJl5gQVVmxU=;
+	b=VjveqSbsVpwjMQs8XL+oGd5nUIwRLk0ViysmpOtkg/DPEE6cym6X5IEjyFyg58Dp0KAsIU
+	oHgm8UnxmIl6nnwJLTUAr6EhT3dlt1BpXZPmW/xSAGO7F0JsP995X5geSShzdCuZqFyh3J
+	taivJ/uv0VhEQWZ2MpRwgWBA8YRaGTc=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=q8ECC6CS;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KvdK1IcY;
+	spf=pass (imf03.hostedemail.com: domain of devnull+debug.rivosinc.com@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=devnull+debug.rivosinc.com@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761238277; a=rsa-sha256;
+	cv=none;
+	b=m0Ff8fPFlR+1wP2WSKozqqE/zhOQ2rKijiek4EpeBx4zP4gk4Jxiag9ieBwGbeEW3j2kJw
+	U0ECqs+B9VLB13eh2oQM1uGnTD8zXNmLqK8QbiVJNKFgQfvMuXGR/R8QkDtc6yQiBzkGLh
+	P9Pi14pCT0Tls7J2usDlqjeS7o83haM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 177294B069;
+	by sea.source.kernel.org (Postfix) with ESMTP id 208744B076;
 	Thu, 23 Oct 2025 16:51:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id C9D1EC2BCB8;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 98222C113D0;
 	Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761238270;
-	bh=Nt2zLD8Sdg7vBJGX6xA427HFGzcGQt9fZjSPUHt4WCk=;
+	bh=DSZOcvWZFN0rHYCNWpvA9TGjDlKItx92qqP4c9rzaOM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=q8ECC6CS9VGDVXaL8WrOz84y8tbF/74RAQP7lrImrX9zuHaBeN+kPDWC9HgaZ/WgC
-	 nOYJ5+NU5XCYOddMWXT3kqYRNsM+4RVEmDnaQ8WbwOl5NnEXuPTIZCrzIFJ8YZ4UpS
-	 C/VS0lEZShhf9KLJ2DD4XoiYaDAEXc77hxCAhWi2MLYd+NttKVu3Aniq6VXF3r2UXW
-	 6+7fRBBsTITYi25gBqtH69t1h1zEHVVefDAkHHTcUuWQi790ECEaRnf5LE5puuURh2
-	 igl4MQckAtRi6el8Jz+EUtBAYfYFGkSI7/5V8vzRcXpvWIfrJxBilG47JHCfsIMoTT
-	 VWBkrPrllQM7w==
+	b=KvdK1IcYGXSlgjlbB9MiK86CO4touQjy+9RO+UK/jwaNnBK0lPakAMHFbJ3c4lr1m
+	 6rtQvBJtdaMMQ0ALsdYSmILqMEGfQokePG0Kt/fNAn+vtQFCb8S267HjJobao3/BrQ
+	 g3khV9BJhPTthbH8NOQwIJxM+4BK4by+C+XrpjyvTcyMQYkxcEauOIlc+uau+jIhtb
+	 TzB52WRMqBI1rVr7nAjN2AeE9vX36IT+1I0BbnAcUy1+RCQYZ+G7eJFvQoe3D298vu
+	 JPFLR9hshTSLL3jcjXv/KspjIHLsKUSJBfAET8/UDhUF0rUcmccnJrQ6yDUzXj6Xca
+	 qGk00mSxucacA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B7CB1CCD193;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 86605CCF9E5;
 	Thu, 23 Oct 2025 16:51:10 +0000 (UTC)
 From: Deepak Gupta via B4 Relay <devnull+debug.rivosinc.com@kernel.org>
-Date: Thu, 23 Oct 2025 09:51:17 -0700
-Subject: [PATCH v22 12/28] riscv: Implements arch agnostic shadow stack
- prctls
+Date: Thu, 23 Oct 2025 09:51:15 -0700
+Subject: [PATCH v22 10/28] riscv/mm: Implement map_shadow_stack() syscall
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251023-v5_user_cfi_series-v22-12-1935270f7636@rivosinc.com>
+Message-Id: <20251023-v5_user_cfi_series-v22-10-1935270f7636@rivosinc.com>
 References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 In-Reply-To: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
@@ -109,25 +108,25 @@ Cc: linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  rick.p.edgecombe@intel.com, rust-for-linux@vger.kernel.org, 
  Zong Li <zong.li@sifive.com>, Deepak Gupta <debug@rivosinc.com>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=7429;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761238267; l=5864;
  i=debug@rivosinc.com; s=20251023; h=from:subject:message-id;
- bh=z5xdZaKwg2qUwtrY22O4fobOm82lvR70DFtbPBo8Rjw=;
- b=7ohyxhZdXPWWRljekiJ/o0UFgCd1w47jPDlYBJz6qBlD1T6GKgX0GI7yeEo4Z4BuMICU/ONif
- bN0W19fqYsOAadBjibdA1WX+unF/OP9BlXvXWWDaV48bWhlDU+Armho
+ bh=HpHI2zP/MHNPN2ZG0jq8qy7AdU5skeePc4YpaV5sqak=;
+ b=LdZW8MX5X0gTuYgNZo+qz9v/7r3fspm5JhkJqUggQmQ+DtllbW/zuOG45fkr9bpQ/G8n4U+wl
+ eEKWzSzcUPSBRnwWWMGMD6x+dEFdI8sefcErAEyd0GY8vXW/B9q0E14
 X-Developer-Key: i=debug@rivosinc.com; a=ed25519;
  pk=O37GQv1thBhZToXyQKdecPDhtWVbEDRQ0RIndijvpjk=
 X-Endpoint-Received: by B4 Relay for debug@rivosinc.com/20251023 with
  auth_id=553
 X-Original-From: Deepak Gupta <debug@rivosinc.com>
 Reply-To: debug@rivosinc.com
+X-Stat-Signature: 6xqde36h4sa3bn1me1pp73gna1haxb4f
+X-Rspamd-Queue-Id: A630120003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B9C2314000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: zqgq4p9m768jsyx5tq53gteamw5uxxwq
-X-HE-Tag: 1761238276-527251
-X-HE-Meta: U2FsdGVkX1+dHoUkZTO9xliVeGi70a6E1HrHaMw3gYNhV04vn2JCHc0BV8mk0NwOy9kvIflZ2JC/WnRXo+KqOqJMcSYTXn01dzryWpMt6m+JIGB9elT4v+J3g/GNLzndVCwaMwOJ8qlHf1NhZQcIrSHp+lucBwnD+BCKd83rYLq+VannnEntKl4upBqk57LfJK61YlwNabTFcR43H13Vok3pw2+CZJDf2NKUn4xWztPsc5nfXetpsK6Crs5iSjJKxX2PCtRFhufQ3MYhkBDzPTf2Q7aJjBxS5grBxsiWuprfICMvPW4KjplknQ1AO87adNWgsptONfiGU5txTYSDHzi0T+dWcx6Y77fNHXR9yqQUsiNpgMgph3/riar5KxbgjlCurECxxZ9y8Wx7Oj6vCSei9Q+qm5seGyOeTUePA0j+uGaHg0nIw6fTEaRXFL1xXh4JHob8lYIO7/QJuHo6btJzBIW+60OIDtVBiahDufkQs3dTPFr4IN8O+2EqS96d+/hq2PFAjUQi1jPRBDXhuWfAK275sNun79KC50PzowGrAvPVc1qnFfaQnLWa/z52Z3SgvKmQqKaVQSwLah79ND7wt/mpaOG+j6pPM9enAwJHpaI6Bpbt6swNKz9mtWWFlgcobVxygHigkBeUrWd8fi+QY/0ol1vE3qzkr+niKCJ3eMaioo80IpF3pSk85ilf+JJqgV4SBZKU09658TJUufn0nGjo8PrSh/ZJxgPsRqcFAXCOBw2NnNuRjU1ke1+x+Br0VmKR0qGjYka2JGPxgGMj/tQjUGfMpgE+vhRzePpeUmw5xg1I9lr6bxu9TWHZKv/hXJJaCNZwxQgDyqtOZRYLo2uniT6q5IrvZSEQol6eAUwUsIZIIZkQX+EaNi8YoQ/3UN3z55DDOnfRJPaSb1xxsaAO2kU3I3Irc0N+ANeJ23pUqrE89/Z0uLlMVgorCmCyb3oUvtzwfWW1hkt
- VYvZSh2R
- x20qD1MGXovt1izz4aBF0geRZLd6gNqgovrcdx2WtGOLRJQ/3woLJOC83BQueGG9h8cGeS3M2Lp9PsKmYm1ac0xCsWzKJFT6+zDAUq7nH0meColMn231E21vkNcxOPCSfwY63eZGYZoclSDK1v686J27g4XM97qdqf+0pa4/O3E2iDy95PWxi7rpyaSzP/Mo97t3REPj2opFeUiQ6n4pwGCJ7vVimK55ixi/gfD0h8oF1MjSZSLzxJksHHyx/+X5pLH9OJrhhZwmvwXskX+me2z+HRxN+MH/RiwSrKMwMteA2KGu61BmMLWBtGsFjBYHqR/NZxaGUTBJLUgxtDgCd9OrFEWmxrQVS7nu4QolOyy7Ro2/u9XGoMCx4wyI4GmpazebkzD13/qJTMFEQNToelYaEhxICm+8C4GLjoIy0u73mGFvRSvGjucTAMlffOyurieJGv+rzriV66ay06h4jT6ygWJhD+3y8MmHlMGqwYUc6sClH52BGN3MSxA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761238277-103409
+X-HE-Meta: U2FsdGVkX1+PCALDshG9bJPAA4f26c73zoAC6Fr7GuV1docHQzqf+iKs5dEbEc8P6rZlD+bWwrPJyMZTVKb4gxGKLfbteMobNjBIlkH2wJ0i9TKNU/GMMoSp/YTfmnIaKRaw8yD07TNqrMYOiSNHToxiOj86VC9t9IacT1asqcDqqBDPgLUANSjfaW6VH/fthZNNin0PuA2ZoQwwQAi8qGasj0mtqDLihf8zZ2lX7HtXQPEcY3gJdXSfeC1yobMvRPsN5WV6tQxgMibIzt1QiWjCAmrz3NwsesIhSVZ3bDsZ9dXhkxevRpL2lX6pa1Dx/Ow0fRlPZrFFyHT55Z8VybGHLcpGEdEeWBqpbYbyQlBpYbVhimPAWhfEaWwK939ZDP/2uqE2X2i49s9GWGcewb6tfJ27Bon/zOpin+toWGeTeoCjwJ/mXenrcVbr7AgyWeoDXcJZMyjuogrXD715G4wPC4iZSN/+bI3AaXRyHJXPnWxdAT6iDCiyDZDZqYGl6qIr/dWrAo2IgDj5vAbvwnBcBWOFISEwT79nc+gw43QRI5sSoXYWVqweXk3ntngbZsAPh5Y2By40PAsDFuyvQoYYnkXw9o1qb5iilp3VoG/6+HX0zYc3Gl3Lhzh4JWd7o5hdAhZWqjrXMT89otOL2UMXioiMwhf8pwsnfhRbII6URMRJs1TSvpFeqyypTveY9PywptTwm28+7/0DkC4OeqmfYNCVZaQ67Yn7MwOh9KX7WZRMOskpA5KR3Nxu2g0VNtqgYiG36eTo++sMpFLhSURB1KQPYBgBXVcGAr28VpxVAFXALybW6T+eJTQj/aZ0C96qbYW/8V4dd0toGTkF2T2orq6UKCTMtnA918pVyx7g7MDL9AuXmWZA56rPJbqfItrXr1+mcHA73yblVPaFqlUanq2GxNhZIm5vI7GaROZSGZj1IoxdPOit+TnFMVloeT/a87R94s6Ew4vizLQ
+ Z0gFXpxV
+ beA2UBhf1BeFOgZ6HwovpMijtAO4ihmxNJElFJW8tbQmPmu64rN8B0q3JZrnMnDU71zZR8FEVp3zepHy1zzSi8YAB0+AB7y0nVIIKoQMFvnXyEKbN+vnbrMzY2kXczIjnvSrvUNThWRLxIMPl4aA0fcHFlcqfBvVBlItG6wctt6wyccuw4sThemB9985iwGw3kTpdF22ywYKhgB2x0PIgqYwa4fmLsrRmlt2DlgJ4cknhmEB04fxsP2DQobA/SxUTIVnMkVM4b0u2wuGmiVdqP4OrbHxsLXcLJWPgbWePq8IqMi+YcMjyKj/YDDg/gk//XJTeoQEcVr9gFxDSkUuNFaszIwL8L8LKL1HqEevnmqCZpH+lye8HhnUIVrBpodUltJbm/pyC1nDvgJBWnFJ37UI9+fmzwSvRiSL3jdkpp5/b4KMH4HGoxU7pmlKvfZEZmf00Erwk52GJXY2QFYsxth8QorHSYI83kCrK0btnYp/cz0DLkJWXO62QcOmH6W/1Kt3KSOrtkhMOBk1Ap5mT8YJxtBZ3L2mwXiNhmHWqMd3AVhuQNY5pSMmXUy6cK32T36Ptj9AzfWMprlTsJC8qK9VR1A7caTqqta07sf3RW161aJjsPZqsfjvVHw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,225 +137,183 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Deepak Gupta <debug@rivosinc.com>
 
-Implement architecture agnostic prctls() interface for setting and getting
-shadow stack status.
+As discussed extensively in the changelog for the addition of this
+syscall on x86 ("x86/shstk: Introduce map_shadow_stack syscall") the
+existing mmap() and madvise() syscalls do not map entirely well onto the
+security requirements for shadow stack memory since they lead to windows
+where memory is allocated but not yet protected or stacks which are not
+properly and safely initialised. Instead a new syscall map_shadow_stack()
+has been defined which allocates and initialises a shadow stack page.
 
-prctls implemented are PR_GET_SHADOW_STACK_STATUS,
-PR_SET_SHADOW_STACK_STATUS and PR_LOCK_SHADOW_STACK_STATUS.
-
-As part of PR_SET_SHADOW_STACK_STATUS/PR_GET_SHADOW_STACK_STATUS, only
-PR_SHADOW_STACK_ENABLE is implemented because RISCV allows each mode to
-write to their own shadow stack using `sspush` or `ssamoswap`.
-
-PR_LOCK_SHADOW_STACK_STATUS locks current configuration of shadow stack
-enabling.
+This patch implements this syscall for riscv. riscv doesn't require token
+to be setup by kernel because user mode can do that by itself. However to
+provide compatibility and portability with other architectues, user mode
+can specify token set flag.
 
 Reviewed-by: Zong Li <zong.li@sifive.com>
 Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 ---
- arch/riscv/include/asm/usercfi.h |  16 ++++++
- arch/riscv/kernel/process.c      |   8 +++
- arch/riscv/kernel/usercfi.c      | 110 +++++++++++++++++++++++++++++++++++++++
- 3 files changed, 134 insertions(+)
+ arch/riscv/kernel/Makefile  |   1 +
+ arch/riscv/kernel/usercfi.c | 143 ++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 144 insertions(+)
 
-diff --git a/arch/riscv/include/asm/usercfi.h b/arch/riscv/include/asm/usercfi.h
-index a16a5dff8b0e..d71093f414df 100644
---- a/arch/riscv/include/asm/usercfi.h
-+++ b/arch/riscv/include/asm/usercfi.h
-@@ -7,6 +7,7 @@
+diff --git a/arch/riscv/kernel/Makefile b/arch/riscv/kernel/Makefile
+index f60fce69b725..2d0e0dcedbd3 100644
+--- a/arch/riscv/kernel/Makefile
++++ b/arch/riscv/kernel/Makefile
+@@ -125,3 +125,4 @@ obj-$(CONFIG_ACPI)		+= acpi.o
+ obj-$(CONFIG_ACPI_NUMA)	+= acpi_numa.o
  
- #ifndef __ASSEMBLER__
- #include <linux/types.h>
-+#include <linux/prctl.h>
- 
- struct task_struct;
- struct kernel_clone_args;
-@@ -14,6 +15,7 @@ struct kernel_clone_args;
- #ifdef CONFIG_RISCV_USER_CFI
- struct cfi_state {
- 	unsigned long ubcfi_en : 1; /* Enable for backward cfi. */
-+	unsigned long ubcfi_locked : 1;
- 	unsigned long user_shdw_stk; /* Current user shadow stack pointer */
- 	unsigned long shdw_stk_base; /* Base address of shadow stack */
- 	unsigned long shdw_stk_size; /* size of shadow stack */
-@@ -26,6 +28,12 @@ void set_shstk_base(struct task_struct *task, unsigned long shstk_addr, unsigned
- unsigned long get_shstk_base(struct task_struct *task, unsigned long *size);
- void set_active_shstk(struct task_struct *task, unsigned long shstk_addr);
- bool is_shstk_enabled(struct task_struct *task);
-+bool is_shstk_locked(struct task_struct *task);
-+bool is_shstk_allocated(struct task_struct *task);
-+void set_shstk_lock(struct task_struct *task);
-+void set_shstk_status(struct task_struct *task, bool enable);
-+
-+#define PR_SHADOW_STACK_SUPPORTED_STATUS_MASK (PR_SHADOW_STACK_ENABLE)
- 
- #else
- 
-@@ -41,6 +49,14 @@ bool is_shstk_enabled(struct task_struct *task);
- 
- #define is_shstk_enabled(task) false
- 
-+#define is_shstk_locked(task) false
-+
-+#define is_shstk_allocated(task) false
-+
-+#define set_shstk_lock(task) do {} while (0)
-+
-+#define set_shstk_status(task, enable) do {} while (0)
-+
- #endif /* CONFIG_RISCV_USER_CFI */
- 
- #endif /* __ASSEMBLER__ */
-diff --git a/arch/riscv/kernel/process.c b/arch/riscv/kernel/process.c
-index 72d35adc6e0e..a137d3483646 100644
---- a/arch/riscv/kernel/process.c
-+++ b/arch/riscv/kernel/process.c
-@@ -156,6 +156,14 @@ void start_thread(struct pt_regs *regs, unsigned long pc,
- 	regs->epc = pc;
- 	regs->sp = sp;
- 
-+	/*
-+	 * clear shadow stack state on exec.
-+	 * libc will set it later via prctl.
-+	 */
-+	set_shstk_status(current, false);
-+	set_shstk_base(current, 0, 0);
-+	set_active_shstk(current, 0);
-+
- #ifdef CONFIG_64BIT
- 	regs->status &= ~SR_UXL;
- 
+ obj-$(CONFIG_GENERIC_CPU_VULNERABILITIES) += bugs.o
++obj-$(CONFIG_RISCV_USER_CFI) += usercfi.o
 diff --git a/arch/riscv/kernel/usercfi.c b/arch/riscv/kernel/usercfi.c
-index ec3d78efd6f3..08620bdae696 100644
---- a/arch/riscv/kernel/usercfi.c
+new file mode 100644
+index 000000000000..0b3bbb41490a
+--- /dev/null
 +++ b/arch/riscv/kernel/usercfi.c
-@@ -24,6 +24,16 @@ bool is_shstk_enabled(struct task_struct *task)
- 	return task->thread_info.user_cfi_state.ubcfi_en;
- }
- 
-+bool is_shstk_allocated(struct task_struct *task)
+@@ -0,0 +1,143 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2024 Rivos, Inc.
++ * Deepak Gupta <debug@rivosinc.com>
++ */
++
++#include <linux/sched.h>
++#include <linux/bitops.h>
++#include <linux/types.h>
++#include <linux/mm.h>
++#include <linux/mman.h>
++#include <linux/uaccess.h>
++#include <linux/sizes.h>
++#include <linux/user.h>
++#include <linux/syscalls.h>
++#include <linux/prctl.h>
++#include <asm/csr.h>
++#include <asm/usercfi.h>
++
++#define SHSTK_ENTRY_SIZE sizeof(void *)
++
++/*
++ * Writes on shadow stack can either be `sspush` or `ssamoswap`. `sspush` can happen
++ * implicitly on current shadow stack pointed to by CSR_SSP. `ssamoswap` takes pointer to
++ * shadow stack. To keep it simple, we plan to use `ssamoswap` to perform writes on shadow
++ * stack.
++ */
++static noinline unsigned long amo_user_shstk(unsigned long *addr, unsigned long val)
 +{
-+	return task->thread_info.user_cfi_state.shdw_stk_base;
++	/*
++	 * Never expect -1 on shadow stack. Expect return addresses and zero
++	 */
++	unsigned long swap = -1;
++
++	__enable_user_access();
++	asm goto(
++		".option push\n"
++		".option arch, +zicfiss\n"
++		"1: ssamoswap.d %[swap], %[val], %[addr]\n"
++		_ASM_EXTABLE(1b, %l[fault])
++		".option pop\n"
++		: [swap] "=r" (swap), [addr] "+A" (*addr)
++		: [val] "r" (val)
++		: "memory"
++		: fault
++		);
++	__disable_user_access();
++	return swap;
++fault:
++	__disable_user_access();
++	return -1;
 +}
 +
-+bool is_shstk_locked(struct task_struct *task)
++/*
++ * Create a restore token on the shadow stack.  A token is always XLEN wide
++ * and aligned to XLEN.
++ */
++static int create_rstor_token(unsigned long ssp, unsigned long *token_addr)
 +{
-+	return task->thread_info.user_cfi_state.ubcfi_locked;
-+}
++	unsigned long addr;
 +
- void set_shstk_base(struct task_struct *task, unsigned long shstk_addr, unsigned long size)
- {
- 	task->thread_info.user_cfi_state.shdw_stk_base = shstk_addr;
-@@ -42,6 +52,26 @@ void set_active_shstk(struct task_struct *task, unsigned long shstk_addr)
- 	task->thread_info.user_cfi_state.user_shdw_stk = shstk_addr;
- }
- 
-+void set_shstk_status(struct task_struct *task, bool enable)
-+{
-+	if (!cpu_supports_shadow_stack())
-+		return;
-+
-+	task->thread_info.user_cfi_state.ubcfi_en = enable ? 1 : 0;
-+
-+	if (enable)
-+		task->thread.envcfg |= ENVCFG_SSE;
-+	else
-+		task->thread.envcfg &= ~ENVCFG_SSE;
-+
-+	csr_write(CSR_ENVCFG, task->thread.envcfg);
-+}
-+
-+void set_shstk_lock(struct task_struct *task)
-+{
-+	task->thread_info.user_cfi_state.ubcfi_locked = 1;
-+}
-+
- /*
-  * If size is 0, then to be compatible with regular stack we want it to be as big as
-  * regular stack. Else PAGE_ALIGN it and return back
-@@ -261,3 +291,83 @@ void shstk_release(struct task_struct *tsk)
- 	vm_munmap(base, size);
- 	set_shstk_base(tsk, 0, 0);
- }
-+
-+int arch_get_shadow_stack_status(struct task_struct *t, unsigned long __user *status)
-+{
-+	unsigned long bcfi_status = 0;
-+
-+	if (!cpu_supports_shadow_stack())
++	/* Token must be aligned */
++	if (!IS_ALIGNED(ssp, SHSTK_ENTRY_SIZE))
 +		return -EINVAL;
 +
-+	/* this means shadow stack is enabled on the task */
-+	bcfi_status |= (is_shstk_enabled(t) ? PR_SHADOW_STACK_ENABLE : 0);
++	/* On RISC-V we're constructing token to be function of address itself */
++	addr = ssp - SHSTK_ENTRY_SIZE;
 +
-+	return copy_to_user(status, &bcfi_status, sizeof(bcfi_status)) ? -EFAULT : 0;
++	if (amo_user_shstk((unsigned long __user *)addr, (unsigned long)ssp) == -1)
++		return -EFAULT;
++
++	if (token_addr)
++		*token_addr = addr;
++
++	return 0;
 +}
 +
-+int arch_set_shadow_stack_status(struct task_struct *t, unsigned long status)
++static unsigned long allocate_shadow_stack(unsigned long addr, unsigned long size,
++					   unsigned long token_offset, bool set_tok)
 +{
-+	unsigned long size = 0, addr = 0;
-+	bool enable_shstk = false;
++	int flags = MAP_ANONYMOUS | MAP_PRIVATE;
++	struct mm_struct *mm = current->mm;
++	unsigned long populate, tok_loc = 0;
 +
-+	if (!cpu_supports_shadow_stack())
++	if (addr)
++		flags |= MAP_FIXED_NOREPLACE;
++
++	mmap_write_lock(mm);
++	addr = do_mmap(NULL, addr, size, PROT_READ, flags,
++		       VM_SHADOW_STACK | VM_WRITE, 0, &populate, NULL);
++	mmap_write_unlock(mm);
++
++	if (!set_tok || IS_ERR_VALUE(addr))
++		goto out;
++
++	if (create_rstor_token(addr + token_offset, &tok_loc)) {
++		vm_munmap(addr, size);
 +		return -EINVAL;
-+
-+	/* Reject unknown flags */
-+	if (status & ~PR_SHADOW_STACK_SUPPORTED_STATUS_MASK)
-+		return -EINVAL;
-+
-+	/* bcfi status is locked and further can't be modified by user */
-+	if (is_shstk_locked(t))
-+		return -EINVAL;
-+
-+	enable_shstk = status & PR_SHADOW_STACK_ENABLE;
-+	/* Request is to enable shadow stack and shadow stack is not enabled already */
-+	if (enable_shstk && !is_shstk_enabled(t)) {
-+		/* shadow stack was allocated and enable request again
-+		 * no need to support such usecase and return EINVAL.
-+		 */
-+		if (is_shstk_allocated(t))
-+			return -EINVAL;
-+
-+		size = calc_shstk_size(0);
-+		addr = allocate_shadow_stack(0, size, 0, false);
-+		if (IS_ERR_VALUE(addr))
-+			return -ENOMEM;
-+		set_shstk_base(t, addr, size);
-+		set_active_shstk(t, addr + size);
 +	}
 +
-+	/*
-+	 * If a request to disable shadow stack happens, let's go ahead and release it
-+	 * Although, if CLONE_VFORKed child did this, then in that case we will end up
-+	 * not releasing the shadow stack (because it might be needed in parent). Although
-+	 * we will disable it for VFORKed child. And if VFORKed child tries to enable again
-+	 * then in that case, it'll get entirely new shadow stack because following condition
-+	 * are true
-+	 *  - shadow stack was not enabled for vforked child
-+	 *  - shadow stack base was anyways pointing to 0
-+	 * This shouldn't be a big issue because we want parent to have availability of shadow
-+	 * stack whenever VFORKed child releases resources via exit or exec but at the same
-+	 * time we want VFORKed child to break away and establish new shadow stack if it desires
-+	 *
-+	 */
-+	if (!enable_shstk)
-+		shstk_release(t);
++	addr = tok_loc;
 +
-+	set_shstk_status(t, enable_shstk);
-+	return 0;
++out:
++	return addr;
 +}
 +
-+int arch_lock_shadow_stack_status(struct task_struct *task,
-+				  unsigned long arg)
++SYSCALL_DEFINE3(map_shadow_stack, unsigned long, addr, unsigned long, size, unsigned int, flags)
 +{
-+	/* If shtstk not supported or not enabled on task, nothing to lock here */
-+	if (!cpu_supports_shadow_stack() ||
-+	    !is_shstk_enabled(task) || arg != 0)
++	bool set_tok = flags & SHADOW_STACK_SET_TOKEN;
++	unsigned long aligned_size = 0;
++
++	if (!cpu_supports_shadow_stack())
++		return -EOPNOTSUPP;
++
++	/* Anything other than set token should result in invalid param */
++	if (flags & ~SHADOW_STACK_SET_TOKEN)
 +		return -EINVAL;
 +
-+	set_shstk_lock(task);
++	/*
++	 * Unlike other architectures, on RISC-V, SSP pointer is held in CSR_SSP and is available
++	 * CSR in all modes. CSR accesses are performed using 12bit index programmed in instruction
++	 * itself. This provides static property on register programming and writes to CSR can't
++	 * be unintentional from programmer's perspective. As long as programmer has guarded areas
++	 * which perform writes to CSR_SSP properly, shadow stack pivoting is not possible. Since
++	 * CSR_SSP is writeable by user mode, it itself can setup a shadow stack token subsequent
++	 * to allocation. Although in order to provide portablity with other architecture (because
++	 * `map_shadow_stack` is arch agnostic syscall), RISC-V will follow expectation of a token
++	 * flag in flags and if provided in flags, setup a token at the base.
++	 */
 +
-+	return 0;
++	/* If there isn't space for a token */
++	if (set_tok && size < SHSTK_ENTRY_SIZE)
++		return -ENOSPC;
++
++	if (addr && (addr & (PAGE_SIZE - 1)))
++		return -EINVAL;
++
++	aligned_size = PAGE_ALIGN(size);
++	if (aligned_size < size)
++		return -EOVERFLOW;
++
++	return allocate_shadow_stack(addr, aligned_size, size, set_tok);
 +}
 
 -- 
