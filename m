@@ -4,97 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAD6DCCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10CB7CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4C7F88E0014; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
+	id BA64A8E0015; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 49F8E8E0012; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
+	id B081F8E0012; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3DC648E0014; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
+	id 9F6908E0015; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 272D18E0012
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8B9858E0012
 	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:43 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id CBB0B5C0AD
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:42 +0000 (UTC)
-X-FDA: 84027636924.18.735A4AA
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 604CD48EFB
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:43 +0000 (UTC)
+X-FDA: 84027636966.25.B61967D
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 2E91F1C0005
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:40 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p5VsN2Tb;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	by imf21.hostedemail.com (Postfix) with ESMTP id A74981C000C
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egoIfw7I;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182741; a=rsa-sha256;
+	cv=none;
+	b=zO0HVpGln94983mtrw72e/fHNHSnhstB4brgC4NPcXkUH7z0ThY9jis6+o2Yk3S+2aoZ5T
+	18FeofCkeeX2xf6IcNCd2GaN1ZA6H0LNJFMRSHDbsIsdrolet30642gEco/DzIHsNtNcp5
+	sEmXnO9dGl07AL9NH0wSJ50mrYgQjd8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=egoIfw7I;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761182741;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=0SO7KgzgL/BYsuGtwTPwUid1ZNGVqo7C9LFXVfx7RvM=;
-	b=XUBQCuy1ycv2YxNvDdD5Z7IiHXZQdf6Q0bG+ImsbwLiSBdDuP2PFGRp2smyhTajUo9/MuQ
-	hh3k+pwiE6OO/7ID1oav/+S23CfvUqBfdAN6GGnWq1mOxRPmKNX+QT6+CkvIZiuJL6bGow
-	ZJYRVjn6Iy4J/0hvgJEVxzK1K/PfkM8=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p5VsN2Tb;
-	spf=pass (imf20.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182741; a=rsa-sha256;
-	cv=none;
-	b=Bm79gvWv7GvgR9jjIYddYDNja2PjbDM3q82sqtbAaF87FZZLVwVSaz+Vbo2bXx4aMDjbQc
-	js+bKJTvYjUiSCVNyg2Tl7ZgIN4zq9UXRUlh3kr2Lx/3WoK+RgtkNtwqME3BwvhVmZWK1L
-	M6NBz/WpKj149A0mtC9lrnJlLyNdEJo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EAMYY2NIKVreySkrIfAWRuDQQA5KdMgTe1hGu0pPYpo=;
+	b=7kjAHJhSFRj9WZm1IoUUWNl5kG9mQihR0bYq8ommkljWlJ2SEu0sBl7QHjNFeFM9yDpmmD
+	kj5XMKsNIgSuK47bOBR7lKgvakBajSqHmWiBx/pmHVTs51VpSUjZcw3AokXtK6LRBw2yZZ
+	feMY3LuYt/CiXJMdOkQynnCp8weRPiU=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1A56942D55;
+	by sea.source.kernel.org (Postfix) with ESMTP id B965444229;
 	Thu, 23 Oct 2025 01:25:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D3AC4CEE7;
-	Thu, 23 Oct 2025 01:25:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A71FC4CEFF;
+	Thu, 23 Oct 2025 01:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1761182740;
-	bh=5dAZqb/8nKzWGonIOSbPc0VMsx+iKGKnuvKbkmMuljY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=p5VsN2TbC2z+vM835LYYIWswWOiEQ6xdRmtG1t7XCvXQBthUHQD9ldMl2vCRCmGR+
-	 FtOBnSJ1Uasrb35cEOosHVnRg1HeG22t8Q7NquQzTBlqF3eoLDcQ7P+hOlXAgoosfP
-	 vbc6jEIZ9llkw5ia3cgAfZa2vMWWmy11FXlagHmY7EwXKYkKAm8UAyZZw+ZgIiVRmy
-	 uiAqXUIecH4ayO+G397CA7tMAUsbWgGf1E8wuK4OwAUOBJG5I5412ud2ShTiiqhOTG
-	 J3wCFqYtDdsHsjIKmKfbo+2jiBMSTuHroHZGzJvwXzPF4La1o37djH9LFvovvuDM+2
-	 pDOY7sCbE04TA==
+	bh=v9vH7Jep/EeX2FXur/wyq53jucsgYHdF++0q2V0OArg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=egoIfw7IZ8X9uk3E6nENP2Hxh1zKENq+lziGRTOzPFZbi3sbe9zR5TsESdtjvfcrM
+	 d/8w8phWaEcF5VWGB3gEYPbpOKK0lf63OCfUL0fDToEzHF/t22Zy+fwyBCjd+XQsvI
+	 ZFV2Y3SmLXer1AcW1/wCaeb+2YqnO73ULSCr2ot4Iw96ESygPYDrRcU3TzQUL2gDlw
+	 uPH6h9AcWtUyyOAkN+RUa/bOU1aPkQN0R8WCuoxkpB4P9+lS2aKDMrr1YmG0Buf3Sy
+	 AgnKgHP6xWOpLet86JU8wtwqUQytwHNZZ6e3A6HZvKIx53rq7GtIbLRPSaB+yv+VXM
+	 sAUNpIPwVIi2A==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Bijan Tabatabai <bijan311@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
 	damon@lists.linux.dev,
-	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 0/9] mm/damon: support pin-point targets removal
-Date: Wed, 22 Oct 2025 18:25:24 -0700
-Message-ID: <20251023012535.69625-1-sj@kernel.org>
+Subject: [PATCH 1/9] mm/damon/core: add damon_target->obsolete for pin-point removal
+Date: Wed, 22 Oct 2025 18:25:25 -0700
+Message-ID: <20251023012535.69625-2-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251023012535.69625-1-sj@kernel.org>
+References: <20251023012535.69625-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2E91F1C0005
-X-Stat-Signature: 7z3sdo4tfc73ij7ui5no35mjm66qzh6x
 X-Rspam-User: 
-X-HE-Tag: 1761182740-293643
-X-HE-Meta: U2FsdGVkX18evAr1G37FYdHZqwC0bZWOD6tkvnMZUYqXulXBl/AixLG7RwIQNOa80uhoL1ksRp7XMx+xdtwFLtcH+BfeGj0CrNoQfDp4/jUEPsjKfC/9ldcUEY+Tycr2r3tgGK+QyTlDMOLNn+T1sJ8P242UzBcLA6JTpdKtc+oOdsG12gQb0bhjCqsmwTxZQnBXqGHhn+IYWLN2g5bBcCxdDFd9IlKrcF/ncU5LuPOhqKD4ak4QTKy6ctaTS0skI6CcmOrPNXEz/wjQwLhYkWivgIPxnwoyF/JGR4uOUm3SAJ/ROJYwDr+2EitWo/bYD0QjdfdM91foKo2j+c6DckuBgPT29sEdbS78aeR/e7w4VS4OlXIH1qHgGwdqJU/Btf4/cKp2bzwO6PTeGmqPES1UbL69tQyhSYBlMCnTSxGTy7mhgVs99GbYpW5y+IyR5qZOPQzs0nU4g+O5wVpXQ8qwOZKQWcBR9pwIzdFJbG/a1//Gbpoi3Tc7lwZ9LCEdla3a/wwYpDG4bMHlhYP2bmfSV1TR7c0Vhf/WiRitTb8gTkeshkESyiozBMALrDASVRd3EBIQCYdPaBjc/2SXFYVW1bbibZ441edNSMhkn0DUHe3T8fdFz1DKctdBbpNaVQtEor9/h22Z/s6+v//bDX90b3cD5a0ZVkkJf9ma0+VjTVWnpvXEUDfO3Prldplx0VoaZ9bBoz3hhbb0QLHD4j/B1jUYp7FuNbBfvwxqwt2DpQqttv7zBq/L+C9VaRjUlm6ZFSCUgvEmK050Uy3zg8caZBdPHXM1lhnRjDuU1we2g0oWoSkEZU3T3ovgJ0X0c4JqmLQqIuPO+3yuCz+jdVFbxB2uxJnruTKAKjTT5U6ZoQpv7B9HeK3hjAEKVLp2kvDpGux8xS4EmjtLvN9d4/dysijLMl0WMw89537PCjSGEA7hB66cu7VlFWpBcd4o5inPJcjXXOOD/7icsb6
- 3y9ZD2X/
- /hNVXKmaRcHY19p9F9vbqBOXwP+4fDGL7o8BFObbPQpXlDbpq1OoCnx58qDcpt/RSRJKTAZ9xvaPN20O9nU1HAwg328IFzcpyYhDG14y9tkX3e1DhlMG75bSi67aMMq41PSIW+/qrwUz/E83cndqh0ZrIqTDrqe8zs1FSHDlZDU7N+4iLUxZv6E0YsfT7OWELySNfCG3Bp4+29NM7E0tWZMCyXf2Jn8ANbWpHYZXqt/eY4atqXND4mOJk+I0CZ8o4JpvZaMnGdZsJ93PFf/IYGiEMTA==
+X-Stat-Signature: ow8wpu9rfm3ayp3o3eg7sh4xzh7oz8a4
+X-Rspamd-Queue-Id: A74981C000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761182741-419250
+X-HE-Meta: U2FsdGVkX1/SrF0vzhhsDH0U3IEHe35lPcHogDd1v5b1rtu1ZmUJ20qbOd4GQ/yXwrMjD0Eo9KABBwtt4SWEybIOPPotXrnYv+qQP1ioyOJup/pxg7NgOkdEEguyNks7fqFCYhOXR3RRdbz58ZSK5poYe7Y//V8bpbiq+1IR/oY7B5k6HbO2cwEC03z22H6r6VUeEh18JZkNPInMZ03KoetNAMT5ICOs7vo86PZed66xZR+8gPOygsOq5G6d1nCc4bD+yAEs3M5K1LbVOw2Kqp2banLz8HiDi+aeerKmDgnPN7IRHD7+tWgw2kNuYtTo31DRfza5gUCcu5WaZ554QzC9ssNPw7wWpa+najIXXNb4cKmrR86xZxeijPlG0sqPbmPje4yhc0/vMNryZ/6QYycUpDhXDpt6kxnauVJwaMNpx4Ad6Vt/Sljx4JMNrppomgnd5YOaCqusiseoGxdiXJ/pK0tXlo/W3YFx7qeQPdIug7/A2Pj5ssheB85Chtpz6N+VX6d4JD9ELg4il8Wn1aIynXf1YD3lrGXt0j8RLakREgMTBjTwB+wuEJlGBSoEBsM239GjnCuJeZgpYcHw+amirZj90vlU7j562HNGaex5gEMRlU6Z9jn8B3kJ6CHGj8Mb5wk4ttqKnBvaCC68yqQq9G36CN4n3ifsNhl0YS/202HQoRApQzsgTs0/C+Jk7vsXv5CcdGujlbAxchndbdIxn85gN617hbP2luXIGbHSDTtYZfYvuWijm1Y5xfHYht5nR8XYFV8ViwZHWL5pg+QeGuP1uktszSj0QSB1480wlNCOsY0nCK8jNcTvA1oTC9xy3tn/X5R1AwbXBdfK7F19bWe29525aDOSdmJryqJsSsbb9fnykFhlQYK4mVCNJsm40fPLm+8Bzw0NvC5WCN5ktm+P+zf8Ghdi8Qk3T+Klx6fTDC9XWXLeJC7clzvLqv16kTkogsaoA8mHAu4
+ 6I+IJErG
+ NWWTyxNz60/fbs+o3+U7nThM4/WTRzQci1Q2/SWTptE6WFqkeYPNJejW8vx5DukTtck/jD7czPXuXkJ0EHZX72kn6y+k9vrhMF37zJDs/RsPYSm95Fq4hE+rI4VdkGc673gdrALxCw+ENLaEVQEvE+MrJ4iL9294HYtwGKgZ7tBs5PmrlPq3KUgeUuSUWViivBfrbRu+0lc6jtAFI3fKSkNlIAu/vaZ7p4qCcgnToTeeQL84meSajzd0Gr6NDfGTiVzhCZUk8vHdOZmaQNUM7M+Nv9D/ip0e+9Tj4WUi0MCHNDLo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,73 +94,85 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-DAMON maintains the targets in a list, and allows committing only an
-entire list of targets having the new parameters.  Targets having same
-index on the lists are treated as matching source and destination
-targets.  If an existing target cannot find a matching one in the
-sources list, the target is removed.  This means that there is no way to
-remove only a specific monitoring target in the middle of the current
-targets list.
+DAMON's monitoring targets parameters update function,
+damon_commit_targets(), is not providing a way to remove a target in the
+middle of the existing targets list.  Extend the API by adding a field
+to struct damon_target.  If the field of a damon_commit_targets() source
+target is set, it indicates the matching target on the existing targets
+list is obsolete.  damon_commit_targets() understands that and removes
+those from the list, while respecting the index based matching for other
+non-obsolete targets.
 
-Such pin-point target removal is really needed in some use cases,
-though.  Monitoring access patterns on virtual address spaces of
-processes that spawned from the same ancestor is one example.  If a
-process of the group is terminated, the user may want to remove the
-matching DAMON target as soon as possible, to save in-kernel memory
-usage for the unnecessary target data.  The user may also want to do
-that without turning DAMON off or removing unnecessary targets, to keep
-the current monitoring results for other active processes.
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Reviewed-by: Bijan Tabatabai <bijan311@gmail.com>
+---
+ include/linux/damon.h |  6 ++++++
+ mm/damon/core.c       | 10 +++++++++-
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-Extend DAMON kernel API and sysfs ABI to support the pin-point removal
-in the following way.  For API, add a new damon_target field, namely
-'obsolete'.  If the field on parameters commit source target is set, it
-means the matching destination target is obsolete.  Then the parameters
-commit logic removes the destination target from the existing targets
-list.  For sysfs ABI, add a new file under the target directory, namely
-'obsolete_target'.  It is connected with the 'obsolete' field of the
-commit source targets, so internally using the new API.
-
-Also add a selftest for the new feature.  The related helper scripts for
-manipulating the sysfs interface and dumping in-kernel DAMON status are
-also extended for this.  Note that the selftest part was initially
-posted as an individual RFC series [1], but now merged into this one.
-
-Bijan Tabatabai (bijan311@gmail.com) has originally reported this issue,
-and participated in this solution design on a GitHub issue [1] for DAMON
-user-space tool.
-
-Changes from RFC
-(https://lore.kernel.org/20251016214736.84286-1-sj@kernel.org)
-- Wordsmith commit messages
-- Add Reviewed-by: tags from Bijan
-- Add a kselftest for the functionality of the new feature
-  (https://lore.kernel.org/20251018204448.8906-1-sj@kernel.org)
-
-[1] https://github.com/damonitor/damo/issues/36
-
-SeongJae Park (9):
-  mm/damon/core: add damon_target->obsolete for pin-point removal
-  mm/damon/sysfs: test commit input against realistic destination
-  mm/damon/sysfs: implement obsolete_target file
-  Docs/admin-guide/mm/damon/usage: document obsolete_target file
-  Docs/ABI/damon: document obsolete_target sysfs file
-  selftests/damon/_damon_sysfs: support obsolete_target file
-  drgn_dump_damon_status: dump damon_target->obsolete
-  sysfs.py: extend assert_ctx_committed() for monitoring targets
-  selftests/damon/sysfs: add obsolete_target test
-
- .../ABI/testing/sysfs-kernel-mm-damon         |  7 +++
- Documentation/admin-guide/mm/damon/usage.rst  | 13 +++--
- include/linux/damon.h                         |  6 +++
- mm/damon/core.c                               | 10 +++-
- mm/damon/sysfs.c                              | 51 ++++++++++++++++++-
- tools/testing/selftests/damon/_damon_sysfs.py | 11 +++-
- .../selftests/damon/drgn_dump_damon_status.py |  1 +
- tools/testing/selftests/damon/sysfs.py        | 48 +++++++++++++++++
- 8 files changed, 140 insertions(+), 7 deletions(-)
-
-
-base-commit: a3e008fdd7964bc3e6d876491c202d476406ed59
+diff --git a/include/linux/damon.h b/include/linux/damon.h
+index 9ee026c2db53..f3566b978cdf 100644
+--- a/include/linux/damon.h
++++ b/include/linux/damon.h
+@@ -91,17 +91,23 @@ struct damon_region {
+  * @nr_regions:		Number of monitoring target regions of this target.
+  * @regions_list:	Head of the monitoring target regions of this target.
+  * @list:		List head for siblings.
++ * @obsolete:		Whether the commit destination target is obsolete.
+  *
+  * Each monitoring context could have multiple targets.  For example, a context
+  * for virtual memory address spaces could have multiple target processes.  The
+  * @pid should be set for appropriate &struct damon_operations including the
+  * virtual address spaces monitoring operations.
++ *
++ * @obsolete is used only for damon_commit_targets() source targets, to specify
++ * the matching destination targets are obsolete.  Read damon_commit_targets()
++ * to see how it is handled.
+  */
+ struct damon_target {
+ 	struct pid *pid;
+ 	unsigned int nr_regions;
+ 	struct list_head regions_list;
+ 	struct list_head list;
++	bool obsolete;
+ };
+ 
+ /**
+diff --git a/mm/damon/core.c b/mm/damon/core.c
+index 82546d138a5a..d78f4452e536 100644
+--- a/mm/damon/core.c
++++ b/mm/damon/core.c
+@@ -479,6 +479,7 @@ struct damon_target *damon_new_target(void)
+ 	t->nr_regions = 0;
+ 	INIT_LIST_HEAD(&t->regions_list);
+ 	INIT_LIST_HEAD(&t->list);
++	t->obsolete = false;
+ 
+ 	return t;
+ }
+@@ -1187,7 +1188,11 @@ static int damon_commit_targets(
+ 
+ 	damon_for_each_target_safe(dst_target, next, dst) {
+ 		src_target = damon_nth_target(i++, src);
+-		if (src_target) {
++		/*
++		 * If src target is obsolete, do not commit the parameters to
++		 * the dst target, and further remove the dst target.
++		 */
++		if (src_target && !src_target->obsolete) {
+ 			err = damon_commit_target(
+ 					dst_target, damon_target_has_pid(dst),
+ 					src_target, damon_target_has_pid(src),
+@@ -1210,6 +1215,9 @@ static int damon_commit_targets(
+ 	damon_for_each_target_safe(src_target, next, src) {
+ 		if (j++ < i)
+ 			continue;
++		/* target to remove has no matching dst */
++		if (src_target->obsolete)
++			return -EINVAL;
+ 		new_target = damon_new_target();
+ 		if (!new_target)
+ 			return -ENOMEM;
 -- 
 2.47.3
 
