@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF48CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 19:37:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88653CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 19:37:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97C3C8E0007; Thu, 23 Oct 2025 15:37:01 -0400 (EDT)
+	id E39E18E0008; Thu, 23 Oct 2025 15:37:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92D408E0003; Thu, 23 Oct 2025 15:37:01 -0400 (EDT)
+	id E11838E0003; Thu, 23 Oct 2025 15:37:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F4EC8E0007; Thu, 23 Oct 2025 15:37:01 -0400 (EDT)
+	id CD9A68E0008; Thu, 23 Oct 2025 15:37:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6ED478E0003
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:37:01 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 09BD188F5C
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:37:01 +0000 (UTC)
-X-FDA: 84030387042.22.46530B5
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6D4A6C0008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:36:58 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YYr/t9f8";
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BBA028E0003
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:37:52 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E7322140C17
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:37:50 +0000 (UTC)
+X-FDA: 84030389100.09.600683A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8E1BF1A000D
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 19:37:48 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="fB/vulMy";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761248218;
+	s=arc-20220608; t=1761248268;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-	b=gn2BNBXmO/ewkmbBVvHeN9ahjtf3dQ7eta1Rsi7TeNglvCuHZ4tfldCwcZIlxZAzZAaiLx
-	7g00zHBG9sykcX8j+CsL9YYwKpND3WqI95P+WOG75xaPYnU0ItULoa2+WArHLJEPyVQAKp
-	xkHB8LYo5/65iUeKu42k9UCfKrSHzTo=
+	bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+	b=dadbvaGi3fHPCdiUF+ZR5WsBxyWeZIcp1TovPjcAlXOnD4t6/Mub4cUzd2FzNO+M28RaJw
+	FXK90fbqk7nnuNoaUFPGpw4K6qxvfkGWNQtmtvsKxh9W4sYp8Ml2fwR+vE4Ij8zAOSz/7Y
+	g5aAbAlePaMCuuRr4qomAuVeoYLH8ow=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="YYr/t9f8";
-	spf=pass (imf28.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761248218; a=rsa-sha256;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="fB/vulMy";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761248268; a=rsa-sha256;
 	cv=none;
-	b=g4LZdGfLNF3n9DhVT7UOjAjXpwf3A/VZEbE3PPGwIpc1oga05ieQeqDRYejKF0Rj/MMFq7
-	WLEqCR7XxGkGcnPKvDWq0hGPvEwYorSqhB4c4TajItXqlXYQcf8otPBD2DqtgtoWOwYET/
-	gRbXXuPzh6BOq/OeksQVoaSTKuX06Cg=
+	b=pwdcTCYOSFf3aJPMJMjvd/vYAMf4pqUiHloXAm/LgBD1mVdtDo0sNivNsKNVP7+jK010fC
+	w/kaZD5jA69b9xZvRvOcVrvd6Jo8XhpcYmGAP4r1cRL1wqluiM50rdgyR2k4rQhJfbd+NU
+	UZHduuX5JmqR9FhUkhR+JL3xgvzpkLI=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761248217;
+	s=mimecast20190719; t=1761248267;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-	b=YYr/t9f88DnfRGtalD5RRA3EJOwyBFx2tqF4AsdZj2aulW97W4kocfQxs8R+UFqKUQFgxK
-	xOIwzVhEuE+Bs/SPO/21gWS4GzYciF1a9N/18FHLBpd0VNi+zxRtq0sYa/0dns5B4MWzaU
-	a7dh0ggzzpPG8UUbwMpNevka400Js0s=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+	b=fB/vulMybcS1QvpLuxNhE1RCX5M3nl9ysjs96MCObN/xoQbaYeLGQCY5Ld3Nqxbc+Ozq/Q
+	I3eclPd0loHQkMesuGaOLY+GLLHLKjg+zCE1brxZaAj6BkCHWRm39mNz9XtXEPDhd0Rn5M
+	J4t/i7rKdPNp23BcDNbzuPNFl6t9Gr0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-45-WlzipXl5OPijr0uBB3KBJA-1; Thu, 23 Oct 2025 15:36:56 -0400
-X-MC-Unique: WlzipXl5OPijr0uBB3KBJA-1
-X-Mimecast-MFC-AGG-ID: WlzipXl5OPijr0uBB3KBJA_1761248215
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-42814749a6fso619568f8f.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:36:55 -0700 (PDT)
+ us-mta-296-uzS-0V1POReVe2Q2fnRcCQ-1; Thu, 23 Oct 2025 15:37:46 -0400
+X-MC-Unique: uzS-0V1POReVe2Q2fnRcCQ-1
+X-Mimecast-MFC-AGG-ID: uzS-0V1POReVe2Q2fnRcCQ_1761248265
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471125c8bc1so16183665e9.3
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 12:37:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761248215; x=1761853015;
+        d=1e100.net; s=20230601; t=1761248265; x=1761853065;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GAR+zcyIiLP0EmlRcHQPsRsm2ZVMdnZLABW6LHegPGk=;
-        b=gnNpK436eS2U+K5zH1trl9jyM/bppJhJMWAA0LESU4Mw9L/8mBJuSYZTsqtT+x1Dqk
-         aRQyuCMh8Gun3vCu8e0B3z/V0KYhDSvynIWs46TrQMSYdW9Hm03iJMZ8vS5IqGk/XHzj
-         GOBeeMgpWocUgKKP777wn6A0hhwYvL8804syNwRC7gCgmNDZaH6KNtvGUk857xc+X84L
-         Ph3NSjlq6fM58Cf0DBS0hcL+TdrADmV5D9OYQ5RMv8ANwuhvGmQ3OMFy+hKD+eDG2YXM
-         WNwjCc7JiOxTisRfRKFtNABP3xfDcmdJXfTgCpMl9XmOTHVWeYImYfuAq64KS2nSfYuc
-         PGGA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIdP0Haw8Fg3H2aKoLRC1mPxAy9+qbdY9wH8rmzKiW0pDB/GBX+8buz+aRjeKUu1yL7Kdz3Qo13g==@kvack.org
-X-Gm-Message-State: AOJu0Yzys2Vm0ONKdoelXH+z2MrMXfis297Z0mtATWQ7Cd+CERp4vTu2
-	TWn8bkvCSorfhC37Ub3xOpW6DrDHJ0ySGdJw36y+yCMgQ1jv/KM0NBSXqb7RNmWhLKGzY9xgY3E
-	6QObRtvoEKG0ugZhWOFXXALDYBesy5kKTShBUfrUrnjnlnN2o5sedi/gbSJGZ
-X-Gm-Gg: ASbGncvHVGcT/DhDTI31F+L2eD1J0vX/jce/z9v00GnbdX29tFFO0hp1VY7rBS4RlyD
-	+AjPwCrade1WKGStASIzLL5SGPlohGsuSINYrS96+iiZSPkVZeZ7vNRIyWeHF6OzpSJHnuZGX1b
-	bE1IPIWMwViGT6GvmSnMWaNhtt1hqvc8qH0M4sEdkF6DRoaa2ayNzi5eKnwEzeAeGVdpP4Z0PxC
-	6s5I/vUPU4WN5hnLwxZwlXT8XenYKPSpQF+oeRcX/jaV7eFBawbHH0Q5BdxGDHhw4YiYLjFhPlO
-	xFEUeTdkTBgRV1w1KjPqpvVgwDaG0FmOzEtKAlhcmBwaiDvZtD+L0ghFEb2MuXhEZM1V2wo2AHW
-	OX4765aALZHwWwLQJeszZlke4YYI2H8TivJXMp56vxego6IbpxOsz6kNzXwWKWswb3JiLI1oqX3
-	iikkNA1cjxq/5FnfvjkXvQka8J744=
-X-Received: by 2002:a05:6000:2910:b0:426:d60f:746f with SMTP id ffacd0b85a97d-42704d94458mr15755889f8f.30.1761248214806;
-        Thu, 23 Oct 2025 12:36:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFLONoaoN3j9k7k2WPBjhOeKfFc12IEn3iCcAu7lFYqr51oTxzPTHNLcPx+/xVbrYtjrgs6YQ==
-X-Received: by 2002:a05:6000:2910:b0:426:d60f:746f with SMTP id ffacd0b85a97d-42704d94458mr15755849f8f.30.1761248214388;
-        Thu, 23 Oct 2025 12:36:54 -0700 (PDT)
+        bh=mPouUhrqRxgjcMBstonzlhFIxQsnreNI+UXdXwtR76k=;
+        b=RaLFqP7/Zkaf1dvVsvBXJfYq309hHd6CLCOS1BdWn+AUujhLto9ANemcfoeLQ35B8p
+         UkbUAW0s1je5HuqMRv+BWhEXq5KtSUnluhmAme9T6aHUkg906BAxjj5amJKVC0httv1H
+         rdID5ieY1nP7H4aGqMnGQZWFvU4hYTjzL4IxXuySJcWknhGoh+MPyZe9zB0p2hyoe8Ao
+         YFBEeMg8Kqqn6lHIZoROS7YlWx09OwtfE9tixuGi0dzpbSXctjKsuN0eRzV3ieV1XiaU
+         XIj3gOSk10w9gWDKa0cO4YmA3nV5/ZsriFKNRg/2hV7k1tfczFa7fV0R3TpqYJvdxNKx
+         0yzQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvC5ydUtFk3qpPc1IoCSzqJahPO5onoj6YITMpKdoueOcIGdWACe2WReMiUcMOfxhgmpYdKux9VA==@kvack.org
+X-Gm-Message-State: AOJu0YyKrsD8SAcWVS+QuuioZqrm4jWYzU4UkgaqinaEZVwFwpp6rTKF
+	pSXLSSpnm7SY1Rml7qL0BmI21xVV2D74q7pIp/Zq9IHbTySBqz9zWSzL9zRyd1VuEfhQNMjy5V9
+	1h8t/Wax7Q1GAM1FRkAq8r5UL902azmjgrNEoHvOACOghYT/vjRyT
+X-Gm-Gg: ASbGncs1iYJ76aNl0fP7CNYyrvA8RfMn5NC0nsioIc6KBfHRt7YB5tVAp1G88csS2F1
+	1S7GiZzIKJztwWe+KkEOljBHWuJlAZS4JpDkAw8Bu75dt/bl9G54ZhrSQJzKI9TjGykknm1ddV1
+	RPV+l6np7hDOOOVgkORqFmGBXSakvVcinItZdc6WtACeXMRIiH+PSIFsdn8HQtd964u42nzQpNu
+	aGezlpVlV7pz1C/TIw3P4hudWj0VzpHQGVu0TBWr5Air0Coqmy7nemx4M7EPATsdmo9SAOdSuIJ
+	28athdRs9eae8gvByN8Ix6A/M3is1OGqqZFsVuBXdpnuYaBKmoIxls3vE17BUDVtbH2+N7z2byz
+	pZVqouANsvHga5nTGwTAvUoyvdNlW7feSz2DOA250JOWnEiEq3w7EV3f4esi5DMpjzvMd+0ocw2
+	/mOgT3fFHQjouqauoG56f6mDL7wa4=
+X-Received: by 2002:a05:600c:3149:b0:46e:4b8b:75f2 with SMTP id 5b1f17b1804b1-471178a7ea5mr175792315e9.16.1761248265277;
+        Thu, 23 Oct 2025 12:37:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEZq8ETk/dxv6lw5okKbvprrCeAKa5W7ysoK9CYeQHAr2H0Pl+EqcgQ1cUF8EEIwcu7bpKOCw==
+X-Received: by 2002:a05:600c:3149:b0:46e:4b8b:75f2 with SMTP id 5b1f17b1804b1-471178a7ea5mr175791855e9.16.1761248264842;
+        Thu, 23 Oct 2025 12:37:44 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898ecadbsm5715926f8f.45.2025.10.23.12.36.49
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c4369b5esm130845595e9.15.2025.10.23.12.37.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 12:36:52 -0700 (PDT)
-Message-ID: <60c55686-87dd-46d0-884e-80f7d423663b@redhat.com>
-Date: Thu, 23 Oct 2025 21:36:48 +0200
+        Thu, 23 Oct 2025 12:37:44 -0700 (PDT)
+Message-ID: <b0373792-a7fa-41c4-9bf8-979c10be49a0@redhat.com>
+Date: Thu, 23 Oct 2025 21:37:42 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] powerpc/mm: implement arch_flush_lazy_mmu_mode()
+Subject: Re: [PATCH v3 04/13] sparc/mm: implement arch_flush_lazy_mmu_mode()
 To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
@@ -127,7 +127,7 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
  sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-4-kevin.brodsky@arm.com>
+ <20251015082727.2395128-5-kevin.brodsky@arm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -173,21 +173,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251015082727.2395128-4-kevin.brodsky@arm.com>
+In-Reply-To: <20251015082727.2395128-5-kevin.brodsky@arm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 614m66ko4CrRgAtw6NGf5CyslQfeyh_glYhen-19si0_1761248215
+X-Mimecast-MFC-PROC-ID: qPvrW_osctg9sxli0rQM1pTedp627BnwpzhUQDrkDzs_1761248265
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: j9bpbntmnccy6ko7o9r48zbmarttkr93
-X-Rspamd-Queue-Id: 6D4A6C0008
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761248218-838931
-X-HE-Meta: U2FsdGVkX18BN+dwXDH1Pi2IpWqG6jbQ+bj6im/h1zXRS6orNle/hdE5oFGmFzPspPJA6QY/w7VQr/xRiFKEHb3w9iQ4WgP2pdt+Buh3C5Ff2iRf4PX9V43vFFiwx6rCSu4sfGq/K8jaBdt2FiAyDrMsEPOeLUHQWMfzTFEQc7Ky95VQauUfKHKTHeJiNi4zLJyML2xUtNxlMuofm7RtYRhyDVKKJ2lYq5+kpu5Y2lg4YjvhamN1keOFfA4PXKXVYcI8MiNx1zibJgsrV4MqqVLyEqpKdvLqwgxO+MSpTtwvLfoATYgZQPizSOdkKfLUYayCDPoktt28Q11ifw6s6cnnX6vu9th7dFPaVqZwKJnl4XS/Wpk02oUuEALrGQK1Z7dPNTB9e/G09POOWRl7qWPbMFhyUN40lT5SUS8AObHNJKu08MSQM4vPorjY8OOF595iztLw80ZCYkQDSKq8Iibt+CmNj/reXCt+ExxjJAeQfFiwLvUKF6Y7tDOsSojlENMygXHgD5pzJW66wi2jnOWSlsBpkoTlH4jHi1nIAIbzcEG5s24nnDQVj+v816V9/4fouk5uJAdEgR64Be1eVe9xacpruKuUzxprrwp6hQn0yIpkr122Hjuw8tFsDxHU+F1qw9AE5cwyh52vRNmooMpJRGCZc+gFMBpUxObDCAh2w8J1KR2Qm8qiu7Cp0IcNaGmEv3LUjMql4noXzAORbKZAE5w8Qqyvzx5lMKRjs+4gfK2+1FjI5G0h2RFt85z2BtUqPzpv9jj9Eg+Xjen0RXESzkHgzIvSb3rdLCBuxDYF2RaBgpcgsRkQADLKMZtB9vrVWFVGAl6nVryxihNJKEPLqFR67ReGEiyXuBmsNh+6bYptDJ8Zqg/CNTSYUqlfLZrDMxQlD0QqGBoyQhxmi/Tc22ekpyETvxE9y98Q5BtPl9nT4hJH7/3202enX0EYbYQnvAFjJtjaMcw+CM5
- dSm+d5XZ
- +a2NTX1cVgYcj+yOvd8rQc6e1C2w0K/FmPbcNnp2EUxPEV/71TDm/RjIetgC0PxtF+PHzfOMMyth4oddTHc29nZe17AsttjeFIh7zQzDUtHs2yA2C8VW7xB49dbWEd9dwevCJW3QUfPxiVN8jB19XEbwpr0A4EhTosAaqdPi8gO2VfoOqB7i1+nt1pgNV0GpSxkk5lOT6ENLHy05/DaLRQzJTc0DZoUQI/CX5Kw5e13NqJL+XRypDQz9TA3fBPLomT923wgnK9FlSwC5+zUTLnk+ON6oS7IwBLLZo4dqtkM3s1pbH6FtJ1xQjUPm0aRRyVjzqENeXBAr2WqEnIDMblyUdo0CGAvCrXBMEJR/se8yEnkpTezaknqADsC6bJQ8TOc5T+yI8hfeMThKypRn9drUeo5n4qoTjHYie7fHoRKcUgnAhTFiSt8YWTcj3AhqTsy1oezZZmUuEZzqtNRtenKKETtrMOyUnyoacVBW8J+N0C8b38Y9FkcZ+ZvSSPuOpeC5+OUoBp5iI9cO/9aO9KFn5Nw==
+X-Rspamd-Queue-Id: 8E1BF1A000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: n4mk9azzrwefywkdjboz757oywfjy4yp
+X-HE-Tag: 1761248268-443157
+X-HE-Meta: U2FsdGVkX1/RxTxGj7dC9MO3Punrf4W2fP5Js6L3w3s/U0CiKuhBcgXYc0RoMd2KOkCrhLHKBeMy4mHOwqLr4azNrak5s9Jveso2GvYJ9LU2zKnK7vuGi7/hypQKzqdrAojbB8UdJ/uhnAByZB0a3C0wRUyxdaDM+IDNtHgXWMxnlmIYRKyDkKuKt6cVG+0h4D8lt3HFtmmdrecFW0Cd52qB7Gb+QijbvBffac5D16HwXqGcfpV/X9PLFy0bZMAT6cqt4xiaBAtClhtLpF731vUlgVkdHDDN6DhXO7OzdrWNeDETlHoRdrAfdmAnHXyP9qPc/C/SK1S42Tdl/Q/dlsvm/3anyABzu9EDTxfinIUonvuxFIlRZetWbcHiBZZUpShf1fFG4kYTwKiARHtwb3yp0RvOONUXcpjNLGccw0yrzSaUBDC/yjy/v+WmYCDBKNV1ZdINFJMDR6RYUla2Dd+ygGXWalPwkWPG8Gn1EsHUASXgpT7kOyHfF4MqGooCkX+aDqsPr1EHa7IWV1Yp7dzV1j7+B7Llio88wqeuhIlgxYO4HDENlwr9939nr6wwTSJE4vq4paaoBRQI/hKRRKlZwVdqi/iMwnWk32jKa+c8PgUUUa5G6ocygGE2L5freeg4+Rq6+VWEid3Ec1mwDrwD6LbsqUAxbeAB3H5hScdJ8JsjyONh9VyYBU8x8cH27Z/rWkCZEH0WkCTk9ZnWScffgxYE+tbdjmT5NFinxXFs3NE5r5fC8fJ0nco1DzJXIeyErXbfB/x4rH7X+EnDLXIRVva5SEZfRz2l8+VkCmek6usFWt9FLXh9WZ1qaaE9zw1ckYkapoTpzb0y3ocP0sdykJpmzbntRTWt6tN+vHPPiwtUbwmNcKlFZSHyIAuNS/vWO3MHuAhrx/aopl3hJUvW3zTm9x6Yb+JSUGOvqWMrKFXJ6xAZK2c7Y4VU0R37Gyhf2+8uwLORY/Sn1xW
+ VFMqx7WS
+ 5R7dqxIQQ1APCDs+zjvz8+VmuNXnhgd371BGRoufXfDVm2pfupwvOjx53LTdviPVvGmHH2yswRFMhTXa/VtdgRikwPyF61yB3Yp8TBQ5fMxtSAginf8PPaJ/X3l0v8O3t6K9RSEt6gYx/45LHfgFZHB56hxK5BiocZ8y2jLJo7qfSvhG+acdICqiHLlp5dvK6cR9wXdkxnNS5UWW7/RUcAT3Gp2jZtNXx1DeMZUC8VCVzYXpCkmrscfYAT7ep1LXne4K9roUPKBYTIeRVCN5z4RHy/AAcQmhQh6kQC5ErXWITWbGzYN35dYzlZGsEiqmlY70IgUd1FoXHShJU+geprA3DELMK1EwBjYMj8UtBTtwAprB64OBDcIq0zERlTev8UH4UzttQUKgbAlx1Od90n/F1ufYyG2lmIW7cRpD6axDqqwGvrbiXwK3Vc36LWfU2DJc5COo15hON52Hdszb2O08dtN8KbzUteOvv3nJrQPMsiCNCMUCHDy0x4mx0iTjVaLVdLriznrHCI1F7XkYDzHFDng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -206,31 +206,54 @@ On 15.10.25 10:27, Kevin Brodsky wrote:
 > 
 > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > ---
->   .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
->   1 file changed, 11 insertions(+), 4 deletions(-)
+>   arch/sparc/include/asm/tlbflush_64.h | 2 +-
+>   arch/sparc/mm/tlb.c                  | 9 ++++++++-
+>   2 files changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> index 146287d9580f..7704dbe8e88d 100644
-> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-> @@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
->   	batch->active = 1;
+> diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+> index 8b8cdaa69272..925bb5d7a4e1 100644
+> --- a/arch/sparc/include/asm/tlbflush_64.h
+> +++ b/arch/sparc/include/asm/tlbflush_64.h
+> @@ -43,8 +43,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+>   
+>   void flush_tlb_pending(void);
+>   void arch_enter_lazy_mmu_mode(void);
+> +void arch_flush_lazy_mmu_mode(void);
+>   void arch_leave_lazy_mmu_mode(void);
+> -#define arch_flush_lazy_mmu_mode()      do {} while (0)
+>   
+>   /* Local cpu only.  */
+>   void __flush_tlb_all(void);
+> diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+> index a35ddcca5e76..7b5dfcdb1243 100644
+> --- a/arch/sparc/mm/tlb.c
+> +++ b/arch/sparc/mm/tlb.c
+> @@ -59,12 +59,19 @@ void arch_enter_lazy_mmu_mode(void)
+>   	tb->active = 1;
 >   }
 >   
-> +static inline void arch_flush_lazy_mmu_mode(void)
-> +{
-> +	struct ppc64_tlb_batch *batch;
+> -void arch_leave_lazy_mmu_mode(void)
+> +void arch_flush_lazy_mmu_mode(void)
+>   {
+>   	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+>   
+>   	if (tb->tlb_nr)
+>   		flush_tlb_pending();
+> +}
 > +
-> +	batch = this_cpu_ptr(&ppc64_tlb_batch);
+> +void arch_leave_lazy_mmu_mode(void)
+> +{
+> +	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+> +
 
-The downside is the double this_cpu_ptr() now on the 
-arch_leave_lazy_mmu_mode() path.
+Just like for ppc now a double this_cpu_ptr(). I'd similarly just 
+replicate the two statements.
 
-You could just have a helper function that is called by either or just 
-... leave arch_leave_lazy_mmu_mode() alone and just replicate the two 
-statements here in arch_flush_lazy_mmu_mode().
+> +	arch_flush_lazy_mmu_mode();
+>   	tb->active = 0;
+>   	preempt_enable();
+>   }
 
-I would do just that :)
 
 -- 
 Cheers
