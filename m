@@ -4,180 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 532A2CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C95A7CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8C9D8E0008; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
+	id 1DE698E0002; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A14518E0015; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
+	id 1B4C08E0013; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8B4BF8E0008; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
+	id 0A52D8E0002; Thu, 23 Oct 2025 07:13:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FD308E0008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:11:53 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F66E490FD
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:11:53 +0000 (UTC)
-X-FDA: 84029114106.24.B7A1F1C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B0A461C0007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:11:50 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pj4iGvGB;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761217910; a=rsa-sha256;
-	cv=none;
-	b=192guCmhYWA+WGaLmsi5JHgEIx9aUeeTS/87eycfrCl9jbSH5zhTPZdJhCzuo8tHdySRsf
-	FwnKueiGMK+88MDOTVDSC+UrWvOgt99r8C5aobze87lMBUVt/d26ivvAPGoUkvZCcNauz6
-	8QPJsrUK9Hh/0mkDFs8oot44SUwKaP8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pj4iGvGB;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf21.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id E82CD8E0012
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:13:50 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D20E1A0AFB
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:13:50 +0000 (UTC)
+X-FDA: 84029119020.22.BB64ACC
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 4A63D4000F
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:13:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761217910;
+	s=arc-20220608; t=1761218028;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
-	b=pprJMwN/x/Q4tLo1gNhC+GE6CK8vkpwVy8HP/IHyKt3AhlxW/Af+EuTBh/ZPit5zRHrf5C
-	1hVvEFUv3aKUx4qPxan4rzlcXeSezIRu+D58yew0d/xX1C4aBK8mWM38DHeXAQyYS5Nawm
-	KwLLz0UTAf2MtrGZnjRxIvwSH/iIEXI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761217910;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
-	b=Pj4iGvGBNgRzCw260I8RILBaitSRBQEVNhJzLOuPNzVMKUSGaHYl/Xm4e3EOswMHFCjhtL
-	fEHgqeHIpNCO+j9AgKp8Qqv6AHWEs4zTYNOPsI+OcWD7cHkSsR6TaY5lriIFg+4Oo4NtIQ
-	J1qGDQWYgT0srIWBsLBleY3HOERRIrs=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-682-VuirbT6gMQWoSNOJmDGYDg-1; Thu, 23 Oct 2025 07:11:46 -0400
-X-MC-Unique: VuirbT6gMQWoSNOJmDGYDg-1
-X-Mimecast-MFC-AGG-ID: VuirbT6gMQWoSNOJmDGYDg_1761217905
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-472ce95ed1dso4207655e9.3
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:11:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761217905; x=1761822705;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:from:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6bhJ9D9puoNFe1MUqX6TKFTSvBgiw0Qt1Ir2FpXvY+U=;
-        b=P8BDMZ/mC8Jtn9LgqqMrmCUOMnhte3LrEhjgWnK4Pp6dhNtTsGzh7lsvZf2XSxbW6c
-         RoZrp0UQiN547mCUv96nmI4VmiUDoQzyL7GpOtal0ThQ5gPMygfKihGrtW7DfC8geH7R
-         XqLn6Yief8HdoNJZ7X7qiMxC4Ttwcm2iDB4LgnLoHcJwabDf1szKIcIuF2tKj7eg/GjL
-         tkzoRkje9Axz+4xELllheeCy7psiGg37a1Oun8GBmG1VridWVqhdJD+669N0+0d/Wa+h
-         DZjR8bKUd2cL9u0bcIbb9nD7C7WtrJJBM4jSMtMjVz5VIZzEgQq90/NE//oA7bT/TGpf
-         FVvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXzw2LcOUqJQUHdSVmGdvRj6c2Vwqzv3YCLBfdB6Xy++xUKYXDkA4K4yZloTw4R27dTjpaNWWG2w==@kvack.org
-X-Gm-Message-State: AOJu0YxxylWTJzdTi2pAfZPMIUqzhqNrH3Y3USSAHwhO7SSrkLT2v4H4
-	YPIDrSCTQ3ulTvukqQAYEWtQ/0tzh/pi5QbjqJdsr3JuuYVtVZJKUOwlCxr7ixpSJS9gKIvVvhF
-	6iwxZWZj9G6d7JI5dh/OhZF3V9BfejcWflOSIDDhyAc/pVgDEA/ho
-X-Gm-Gg: ASbGncsYBoQSU62APBDGo6b3X3QjoHLjhPkdTHsmGxRBXg2LUFwDn0mKB9Py/qB2/1J
-	ddNrc9qqlqDObJOLMiVC1QRMLnN26ejRLsdbomJ5W0ht5mH8UuO4m+uQUXEIl0jqlvR5xIC80ZG
-	QnGfNFgTJdwTgZLDphD4U+rMM0Udhaxg/Q3ZvSJwx7ScV2Ue99e2yn+vH6ZEG3SvCpj6BZWJRUg
-	3U8a8WyI80rI6UT/N4qIx5J41ukrR3ZF9q2r65n/54UHa/hurpn5/s+4MZc/Xunb1FLy/REQD1/
-	PlgIaqusWiRdgo+i0lg8DT0ja7PUAquQr+YvBsmDXPd5MWcBkcrUFcmLlILZn2foT72h5vSe+DL
-	u4jvzhiCq/tuGNVKFEbYKjDn88Rh0PAui1VuI9hGf6OhcdT9gx6Uf55rUCHP/aeb12CF5Q+UCSB
-	Xx5+7cNM4BGdwcErGPzpQdliO5+7U=
-X-Received: by 2002:a05:600c:a02:b0:46e:477a:f3dd with SMTP id 5b1f17b1804b1-475cb064926mr13576485e9.36.1761217905503;
-        Thu, 23 Oct 2025 04:11:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEjOTIGLdchiCXBCt7631vjjgeG9GW8BcZLSQPY9hw9ONCdFryCE3QwKhyQwOYvrWIr0Y7WWQ==
-X-Received: by 2002:a05:600c:a02:b0:46e:477a:f3dd with SMTP id 5b1f17b1804b1-475cb064926mr13576225e9.36.1761217905063;
-        Thu, 23 Oct 2025 04:11:45 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-474949e0a3csm60171795e9.0.2025.10.23.04.11.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 04:11:44 -0700 (PDT)
-Message-ID: <5b33b587-ffd1-4a25-95e5-5f803a935a57@redhat.com>
-Date: Thu, 23 Oct 2025 13:11:43 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=4BOW5hxTfLOmIVdIDox+jTV1yxmuQmFgSZvwUrdXBZ0=;
+	b=7+uhSq/bAWhU1yjVAy/xoPU6g1QRpvCXsPHSUBXHOsr3V68984j6IAweRTLZp/0qU1ceGf
+	1AbtCXSsza1esA6eUUdcu5k5Li6gsJBHj8xLB2FZMWxja3R7AkeFwArKWPR6fF2v0yTNOU
+	s6OAARNCbVeqRi+LF08sMZTLDfHPM6w=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761218028; a=rsa-sha256;
+	cv=none;
+	b=kVgvxnP4C9iCOE6NZ0Ikw895+zbx2eL+502WjJebP7et5ruhzRaiIGzN+X30ONlceORlDO
+	gQ1gmTWK7O2y1JlJ48r7Ry/Ue9+XmJgsdFYGGLX1V37AJDKiGM2O7k7Jrab7FUSlRZSG+q
+	hMShcZ0BHcBn7i9yC049wNmGXP0GRc0=
+Received: from mail.maildlp.com (unknown [172.18.186.231])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4csjx65rM2z6M4gf;
+	Thu, 23 Oct 2025 19:10:02 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 42B8B140279;
+	Thu, 23 Oct 2025 19:13:44 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
+ 2025 12:13:43 +0100
+Date: Thu, 23 Oct 2025 12:13:41 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Conor Dooley <conor@kernel.org>
+CC: Catalin Marinas <catalin.marinas@arm.com>, <linux-cxl@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-arch@vger.kernel.org>,
+	<linux-mm@kvack.org>, Dan Williams <dan.j.williams@intel.com>, "H . Peter
+ Anvin" <hpa@zytor.com>, Peter Zijlstra <peterz@infradead.org>, "Andrew
+ Morton" <akpm@linux-foundation.org>, <james.morse@arm.com>, Will Deacon
+	<will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
+	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, "Lorenzo
+ Pieralisi" <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Dave
+ Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	<x86@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Dave Jiang"
+	<dave.jiang@intel.com>
+Subject: Re: [PATCH v4 3/6] lib: Support
+ ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION
+Message-ID: <20251023121341.0000765c@huawei.com>
+In-Reply-To: <20251022-tried-alright-752fa98ff086@spud>
+References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
+	<20251022113349.1711388-4-Jonathan.Cameron@huawei.com>
+	<20251022-tried-alright-752fa98ff086@spud>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/filemap: Implement fast short reads
-From: David Hildenbrand <david@redhat.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>,
- Linus Torvalds <torvalds@linux-foundation.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251017141536.577466-1-kirill@shutemov.name>
- <dcdfb58c-5ba7-4015-9446-09d98449f022@redhat.com>
- <hb54gc3iezwzpe2j6ssgqtwcnba4pnnffzlh3eb46preujhnoa@272dqbjakaiy>
- <06333766-fb79-4deb-9b53-5d1230b9d88d@redhat.com>
- <56d9f1d9-fc20-4be8-b64a-07beac3c64d0@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <56d9f1d9-fc20-4be8-b64a-07beac3c64d0@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 20jfsZ5oo4unnbYihv1qSIMfcPuWWE3VWUJ-oSHWOKA_1761217905
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="US-ASCII"
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: iiu45cye83pgaf15xuzm6qodaiqcmwy3
-X-Rspamd-Queue-Id: B0A461C0007
-X-Rspamd-Server: rspam06
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100009.china.huawei.com (7.191.174.83) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
+X-Rspamd-Queue-Id: 4A63D4000F
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761217910-102944
-X-HE-Meta: U2FsdGVkX1+i9rfc4XQNiYNXIF/Y4/KqTgmzmGhoCOHXBWtfT3ezsLL3VEYp0vxsKYeqdiiOwPLi022Aud1Brp3IdBmMc8Nq2IlQJ6nIw7TaO/wgLPccYQkOiT3bJBbOj0ii4EkSXBm83NKG971lmQoFepJlaiCcY8l2ClDBZuYMnmq3Myya2axXsnOmdfEeUtQaGgaOIm80owmN4J1NaHyp6Nr2bi2l2/VyHvd0CFjRlbQMqtfeNN0girsivYClj5Qqxb35rWK2KdcGJfOGJrjTKiifYOqwMD0p3z9CHBL9E++yzd+k7eMpCnesJi7TYivmfMZFdqtWTkEI9EjnCZhAaFsPnemiiy3o7FWk3REksoXHIgPU3GRY/lgxRXfk/rbUN/0sMfo80baAr0MXWKwe/yINdoCLnBLl7B0x6V6KwIrrR9IsEEKBoWMJF3V8GKeoCvba+V2mF1Gy0I6s2Mk8KegA4oBIbrG7OJYoEO6gbwo4F9cl0P70TDzIJGD7F1xhKSzxAR3hbk3Q0YcboN/dlrkyPXINVzqejc6q+7ulA5O6Zx2X3q1TOJu0wfjMzjwLxO0evgTzDXvqrwR0pL2xq1ZnL2rsCzYp1N9NVTT8cD+g2+a8FE93kUWmXMqTgwcOcNxYnuahCdnZP7+NdLo/iqQIgUQ+ioOCNVm+ZTcwXI7lDkQQtaMU7ApYuGd/Z0qVbuQO9RvaWM+sGp7CQW625f/WCmQbm75BrGRfOVq9wJSs9Pdz6bqw86fBuAzFpEPjbuKk++2jc6wh9Y1EDJejymzpjCAWHCCEREbz93rfgIbB4xxz/fE/eVImKxU5LelVSLhlV/+6Gk//4ydl0/okI5D5WFtXPNvnbOo1sQFveCJh7/qqLbr1WhdDUAPTYpMkglYVTth8XRqJHdrCI9oYkhPOItYYwsYBUg4asRg3dKJO01+pEcEsizIT/8vUULTE0AR6kwhcVxjM1cW
- PQveJxlg
- jDNJIM2Pj9Nm7XN/FB9lswBu43d2QTYAcwlHG8B7jQNQOcQnN/lGYFkgBoHlhtpr+czaPHNjuG9VMNFhMa5EhjgxBc3bz2ngplkycK2fXC8phm1ld7JAOg0EAt7E7O6AhhaW4zMpa6XkyEbV7RJg0SFOgdceRpxc4IdgCNPBhsug8NzYF2IsQfgAbsiKAsrjo8c9SHrhA0VNCWlb6gEmxJVEoH522RLpIligv2deTqt9gETZUXx6WFE4H12RjKaXHRwPnyFWRwXRJnKaYhHBIWVnlUih6lcH++3RyhFfJU+KqcKCZLdxqnp+jsZZG9fR3pSNRF0Sseb3z4F7CFemzB9t0EvqjCTzSCEV9He3ORc6HKi1wWfwu9wXJffJxjqrr+PrH7hE3fGcG9ERP+vNhBF0V+14jxRvSoWOBiZXsHGdkMQErZ6RRIqV5bc01OJ7lToS5843/PPy5mK/YOZK8MguzBvMhsyDwJXOVDjDDRfb1C5zqYuOdRP7o+E3Yf27uFsSrZwIVjPu2zDA=
+X-Stat-Signature: ogau9ubec9be41ed6recof1rppc6w8rx
+X-HE-Tag: 1761218028-133563
+X-HE-Meta: U2FsdGVkX1+WwNwLbf1txJDjJL6QyNL8aS27AFBNO+wOLJTIDs0uQIFmlV8up+l9ddhatp1vjOKg4K3yDTVbuF3YZ0ftM30YnHsWunD/2VvkQVIcEA+Ewap27BQavqEjZhwPH0Wros6R/Erq3wXchOv3ByPUwyj5zWToI4II0UOk5+OEpqHrVQ72jj1/1ttfzqyDqDZxL7BX8POyCUSlVsNqtL6OTM4b0sroQkfLNJSIc2spLr7XFtBrHI+vtL0a+a+06u8vK1RzJZYrpCz4o95RvkJ+bT5OvyPwlLmY2bkxMklXq6KbeoctNIEwn+7/AhygdRX4IhwAs4+CMK7JioPsLdBj5uE0HIQeUbfDj5aZ0+cR2nPr3YaBZH+7G7mEnAypdfjdoIxdYM8tW9QYQIajw65c56sS47JEUN4qkLYDBqR4JvBV8XwVNvc0p/n4zrz8V4JW5pDG4RjPe6Wt4yr0oBNMzVCVTPIb6jV1Gs9vcerrh040rKLwnjx0FfXvl6NLMht8xbCyKKBOwX1GTsunU1E+SfmcaHFu659vS9tuxa1JnhbYIDZGb1UrPK53anH+He4dWRBfaSPEz4GxuQyEW12bOxxm7BA3PZJlVI3eoq/VPmBxHiguNgMyNunxLPf3ck2O1V2vf/utWIa4jYoVie0nXQ0YHL1LJDg9YXj+QlehLPy4ResyjjzGURA3ymSyPBY7DoSYGPWHvz7Q0geKGt3bx2kNbQ5LZl/kIK7930u8ZZTMzzBSp/rMsVtB2uqa0pb4mO5rwA1JkHDiwRovdZdkeUnB2ZTfOU69TMw5wI+8X0Y3iV4d9hkv/iwkwiW6ZePfZ/e144S3iugp7eoEgUyUYSdtwDVK4qTfr/09TYE6i68nZP0Hiw7tmTJYmMaC85VFH0Ore0RR37OgOja0+EsVWNYjw00l8D640PjxG8GZtShzSbEkM6n+2Lmjn/D0ZA2gx8VZ/4jIAWA
+ Q2AOXVVv
+ IS1rZdROwJZjQlRMUfaiBw/Y5wyXVKDHMm608RaGUoX4lByfuV8x/jaJC0pveQ3SNG3YyrWiWg8XAHBYQ2S7GbHTwG4x58dRu2pB3FNgklzF1zGL/ZMowcqWBfXldfmw7ZtpbjukdM+zbz2fDej+GGH91Ee4QbboVhBprhVajGZEPMFhtrMuw+sVvo4VdSw3iRY28pCBCkcZfkOPzc511K60olbGhZzkW28YmbOBXZ4RPhN7wtGrlD4iaGuHq1wbVHhnOM8UDio++8RbC5v9xjzlrcYv0lDMAH8AENb/poXe+IGRwIaZyB9fRI2AG1gJu3J7YHGS+C7ZswD4C1HuyErWwF+R0ew7y68nIQusK30iwpCAV18Icp/VfRBuUse+6OkGlm3+0q056ZeK1ljyeHwLEHg8fIdvu7te4k4b87eIqVrH0r0FARJHddg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,62 +104,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23.10.25 13:10, David Hildenbrand wrote:
-> On 23.10.25 12:54, David Hildenbrand wrote:
->> On 23.10.25 12:31, Kiryl Shutsemau wrote:
->>> On Wed, Oct 22, 2025 at 07:28:27PM +0200, David Hildenbrand wrote:
->>>> "garbage" as in pointing at something without a direct map, something that's
->>>> protected differently (MTE? weird CoCo protection?) or even worse MMIO with
->>>> undesired read-effects.
->>>
->>> Pedro already points to the problem with missing direct mapping.
->>> _nofault() copy should help with this.
->>
->> Yeah, we do something similar when reading the kcore for that reason.
->>
->>>
->>> Can direct mapping ever be converted to MMIO? It can be converted to DMA
->>> buffer (which is fine), but MMIO? I have not seen it even in virtualized
->>> environments.
->>
->> I recall discussions in the context of PAT and the adjustment of caching
->> attributes of the direct map for MMIO purposes: so I suspect there are
->> ways that can happen, but I am not 100% sure.
->>
->>
->> Thinking about it, in VMs we have the direct map set on balloon inflated
->> pages that should not be touched, not even read, otherwise your
->> hypervisor might get very angry. That case we could likely handle by
->> checking whether the source page actually exists and doesn't have
->> PageOffline() set, before accessing it. A bit nasty.
->>
->> A more obscure cases would probably be reading a page that was poisoned
->> by hardware and is not expected to be used anymore. Could also be
->> checked by checking the page.
->>
->> Essentially all cases where we try to avoid reading ordinary memory
->> already when creating memory dumps that might have a direct map.
->>
->>
->> Regarding MTE and load_unaligned_zeropad(): I don't know unfortunately.
-> 
-> Looking into this, I'd assume the exception handler will take care of it.
-> 
-> load_unaligned_zeropad() is interesting if there is a direct map but the
-> memory should not be touched (especially regarding PageOffline and
-> memory errors).
-> 
-> I read drivers/firmware/efi/unaccepted_memory.c where we there is a
-> lengthy discussion about guard pages and how that works for unaccepted
-> memory.
-> 
-> While it works for unaccepted memory, it wouldn't work for other random
+On Wed, 22 Oct 2025 22:11:12 +0100
+Conor Dooley <conor@kernel.org> wrote:
 
-Sorry I meant here "while that works for load_unaligned_zeropad()".
+> On Wed, Oct 22, 2025 at 12:33:46PM +0100, Jonathan Cameron wrote:
+> > From: Yicong Yang <yangyicong@hisilicon.com>
+> > 
+> > ARCH_HAS_CPU_CACHE_INVALIDATE_MEMREGION provides the mechanism for
+> > invalidating certain memory regions in a cache-incoherent manner. Currently
+> > this is used by NVDIMM and CXL memory drivers in cases where it is
+> > necessary to flush all data from caches by physical address range.
+> > 
+> > In some architectures these operations are supported by system components
+> > that may become available only later in boot as they are either present
+> > on a discoverable bus, or via a firmware description of an MMIO interface
+> > (e.g. ACPI DSDT). Provide a framework to handle this case.
+> > 
+> > Architectures can opt in for this support via
+> > CONFIG_GENERIC_CPU_CACHE_MAINTENANCE
+> > 
+> > Add a registration framework. Each driver provides an ops structure and
+> > the first op is Write Back and Invalidate by PA Range. The driver may
+> > over invalidate.
+> > 
+> > An optional completion check operation is also provided. If present
+> > that should be called to ensure that the action has finished.
+> > 
+> > When multiple agents are present in the system each should register with
+> > this framework and the core code will issue the invalidate to all of them
+> > before checking for completion on each. This is done to avoid need for
+> > filtering in the core code which can become complex when interleave,
+> > potentially across different cache coherency hardware is going on, so it
+> > is easier to tell everyone and let those who don't care do nothing.
+> > 
+> > Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> > Co-developed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> > Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>  
+> 
+> Acked-by: Conor Dooley <conor.dooley@microchip.com>
+> 
+> I'm fine with this stuff. I do wonder though, have you actually
+> encountered systems with the multiple "agents" or is that something
+> theoretical?
 
--- 
-Cheers
+Yes to multiple agents. There are a multiple instances in the HiSi platform.
+The multiple heterogeneous agents case is more theoretical today.  Similar
+components for other purposes are heterogeneous so I'd be surprised if it
+doesn't surface at some point. Our initial internal driver for the
+hisi_hha wrapped up the multiple instances in a fake front end, but it
+meant we ended up with multiple levels of registration and it was just
+simpler to relax assumption that they were all handled by one driver.
 
-David / dhildenb
+Jonathan
+
 
 
