@@ -4,48 +4,48 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0565BCCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E410CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:44:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534128E0003; Thu, 23 Oct 2025 03:44:26 -0400 (EDT)
+	id CADDE8E0005; Thu, 23 Oct 2025 03:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50C168E0002; Thu, 23 Oct 2025 03:44:26 -0400 (EDT)
+	id C85858E0002; Thu, 23 Oct 2025 03:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 421668E0003; Thu, 23 Oct 2025 03:44:26 -0400 (EDT)
+	id B9BF38E0005; Thu, 23 Oct 2025 03:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 317238E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:44:26 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D26B9BCBA1
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:44:25 +0000 (UTC)
-X-FDA: 84028591290.01.43F44F5
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A8E028E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:44:28 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 5C82313C04B
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:44:28 +0000 (UTC)
+X-FDA: 84028591416.12.98FBFCD
 Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 6F7DA80010
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:44:23 +0000 (UTC)
+	by imf02.hostedemail.com (Postfix) with ESMTP id 6DF3F80002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:44:26 +0000 (UTC)
 Authentication-Results: imf02.hostedemail.com;
 	spf=pass (imf02.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761205464;
+	s=arc-20220608; t=1761205466;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=NrvZYHR8Tbs8XB19+gRKgeuNI4QtTnB0BKJl+xcKKCU=;
-	b=BH/ChlI8/HI42HYjJUuvU//il49PbvEOZ4dBKdnRIvFDikQWymvhGWiJIa9gJN2Mdnt8VA
-	U7cU2NrJb77FF83smIS2TgsIRHG7aXellFsDUiXAHyZ0pMK0HUal13bw/eh8rHKdgg4X2+
-	izEYzcIvDC4QKhb9f7K3tmMP67vSPmI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761205464; a=rsa-sha256;
+	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+	bh=DhsDGEcJlnIM2loUQDP52Q83EiEbbdZT6r2iEDZkHqk=;
+	b=5ViDJ0Sot3nMmyili+k3QgQDi+hIxERs4XIlr7mNW+wNte3Opl9bbxCX4eUuJw9mWXvFyf
+	xM5n5+zzWGkk/V/7LAGnJtKPcwhyEBKDFxOKjQuUl3z5WLZAe3yywjw0BeNvPi4iE9o6ab
+	vaYkdmeXPxc9lNHaW+czbnn2jXYH+uo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761205466; a=rsa-sha256;
 	cv=none;
-	b=C2cKUQf8X5TxqWrEdjg4crnOIyDt1oQKzE2bWFR5Vqz7aEu8ExlRI0nuojem063n63m6xv
-	cj1mSLrpOlFkCLWpYs+sN7V3BG1QgGvoEq52rqrBk7bLQx/4exCun1IlMKrdzg2RKctQVn
-	Z3p+4hazBHg8/Fm04g9094yHWRFmsYE=
+	b=BqCw2Mpkd7JMk5lS3sbNh8fIgu3CAZLu+u3KLuTm39CvMN8fgzDKemw96np6LvSPDLquil
+	3M2qDJnAiam/oYmOg+vs7BqjjA1n9iKKfckmKs/yvVkXPRx8TcXsCU8IXHWWDrSvjzJ70F
+	IedARvguHnQzF5Sn4HRoi7v3sOXPAeI=
 ARC-Authentication-Results: i=1;
 	imf02.hostedemail.com;
 	dkim=none;
 	dmarc=none;
 	spf=pass (imf02.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-X-AuditID: a67dfc5b-c2dff70000001609-4f-68f9dcd425f0
+X-AuditID: a67dfc5b-c2dff70000001609-5a-68f9dcd4f823
 From: Byungchul Park <byungchul@sk.com>
 To: linux-mm@kvack.org,
 	netdev@vger.kernel.org
@@ -94,48 +94,51 @@ Cc: linux-kernel@vger.kernel.org,
 	dw@davidwei.uk,
 	ap420073@gmail.com,
 	dtatulea@nvidia.com
-Subject: [RFC mm v4 0/2] mm, page_pool: introduce a new page type for page pool in page type
-Date: Thu, 23 Oct 2025 16:44:08 +0900
-Message-Id: <20251023074410.78650-1-byungchul@sk.com>
+Subject: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to confirm its usage as pp for net_iov
+Date: Thu, 23 Oct 2025 16:44:09 +0900
+Message-Id: <20251023074410.78650-2-byungchul@sk.com>
 X-Mailer: git-send-email 2.17.1
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTYRjHe885e8/ZanBYVif7kAy6UGkXujxdKIM+vB8qivxgJdTIkxs5
-	J9NsBoKWoGmuq2S6aBXqdAtz5mXizLybUGoZJzI1IwVvxTJzTlzT6NuP/4/n9+nhaNUEE8zp
-	4hJFY5wmVo0VjGJi2ZPQD31e7TbXdQBLmQODfcYExYM1MvA6RiiwlFYhmPJ+ZsHvbkXwq7kN
-	w1iTB8GzJ9M0WN6lM/C7bJYGV+0IgtG85xi+tw6xYHceg4GiYQbqMqppGLrVjiEn3UeD2zvJ
-	wrUaWyBckcpCV5VZBvdnC2moTh1k4X2tBUO/wy+D4cYcBjrySxj4mdtMw4A5HFqtK2G6cxxB
-	c1k1BdM3H2HofVhLQaW7l4V7PVYM39IHEPQ0DTGQO5eJoSDNjMA3E0hO3p6SQUFLPxseRtIk
-	CZOm8R80eVnyiSIf8+4wRKp/QxFX/heWWJ2XSYVtE8mSemjiLL2BidNzlyV9H+swac/zMcT1
-	dS9x1fyiSM71SXxixRnFgWgxVpckGrcePK/QTtzz4/hRpSnb0cmmIq88C8k5gd8pvPK/o/9z
-	RuY4XmDMbxAkybu4B/HbBFvuVIAVHM1nc8Ln+vJFsZyPEp6P/EELzPDrhOwO8yIr+V1CZamP
-	/RddK9hfNCweC3whJ3zrzqL+idXCa5vE3EZLrWhJKVLp4pL0Gl3szjBtcpzOFHbBoHeiwBMU
-	pcydrUGerlONiOeQepkyvG1Gq5JpkhKS9Y1I4Gh1kDLpdGBSRmuSr4pGwznj5VgxoRGt4Rj1
-	KuWO6SvRKj5GkyheEsV40fjfUpw8OBWtnj2kuhgif7vbt8Xa4G9Wt+Nr3ZMW3fyVkBNRVP5M
-	yRgf+iDNVGHpUllM68tP1od0S4Z0d4N/4tlTdcz8Rv3NKb9hT1b1fsNhm+3H41tHT0YeOx62
-	r7cvYly/OeJTYjn9eLjAnFHVmniJjKXUP/IeaYnMkRe7rSbPnxFPvD1YzSRoNds30cYEzV9l
-	YPpMAAMAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXRa0hTcRjH8f47Z/9zHC0OKnXoQjCLyEi7CY8V4RvpX1FEEFFpNurUhjpl
-	s6FJZbrQNNfFFt5ZROY1a6Vuplabl2lBNbUWVtqiJFtWauacYtPo3YfnB983D0v5v6AXs0pV
-	kqBWyeNkWEJL9mzJWNvzzqNYV9a3AoprqzFUTSTDnQGzGDzVgyIorqxHMObpY2CmuR3BaGsH
-	hm+2EQS3bo5TUPxCR8Pv2kkKLI2DCIbyazB8bncxUGXaDf1lX2hoymygwHXZjiFX56Wg2TPM
-	QLq53Bd+kMaAraRTDC/r9WK4Pnmbgoa0AQa6G4sxfKieEcMXay4NnYUVNPw0tFLQr4+AduNC
-	GH/mRtBa2yCC8UslGHoLGkVQ19zLQJ7DiOGTrh+Bw+aiwTCVhaHovB6Bd8KXHL4yJoaitg9M
-	RCg573RiYnP/oMjDirci8jr/Kk2cLV0iYil8zxCj6RR5UB5Msp0OipgqL2JiGrnGkHevmzCx
-	53tpYvkYTizmURHJzRjGexcekmw9LsQptYI6dNtRieJ73gxOHJIm51Q/Y9KQxy8b+bE8t4nP
-	zHLjWWNuFe90eqhZB3Lr+HLDmM8SluJyWL6v5f7cEMBF8TWDf9CsaW4ln9Opn7OUC+PrKr3M
-	v+hyvureE+oKYo1oXiUKVKq08XJlXFiIJlaRolImhxxLiDch35vLzkxdNaOx7u1WxLFINl8a
-	0TGh8BfLtZqUeCviWUoWKNUe9J2kx+UppwV1Qoz6VJygsaIlLC1bJN15QDjqz52UJwmxgpAo
-	qP+vItZvcRqy17xafTc8svSRMSy6p+rIhjXTwdFB94beT5fq9925kHQ4ypso/bq5pzldPRCC
-	cd2njarURetR0cdf7mVdAU+GYu93fF4w89Qy2huWYGhIfBuZai+tP3fAaD/rutVN+FXcROqu
-	tsmH5oSCG4+fh+7YH6QrP/gm/NzSmJwTngDiyGRltEYhXx9MqTXyv50GY8HiAgAA
+In-Reply-To: <20251023074410.78650-1-byungchul@sk.com>
+References: <20251023074410.78650-1-byungchul@sk.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWSa0hTcRjG+59zds5xODgts5NFxaICKbMweYNIoYITYQQSdPlQSw9utqlt
+	uTQIpo0uM2/VaM2Jq0iXWtZM3SRXzmWaUWJoC0vNKFsXi2nLqWTbpG8/nvd5fp9eGhcXCmJo
+	edZJXpUlVUhIISH8EXljQ/+7gCy+qZ0Cc0M9CXVTeVAzYhdAoH4MA3NtM4LJwCAFc22dCCbc
+	z0j41uFDcOuGHwfzKx0BvxumcXC0jiH4arxLwqfOUQrqbCkwXP2ZgEfnW3AYLe0ioVg3g0Nb
+	YJyCQrs1KG7UUtDbXCKAq9O3cWjRjlDwutVMwlD9nAA+u4oJ6DbdIeCXwY3DcEkydFqiwd/z
+	HYG7oQUD/6VKEvqvt2LQ1NZPwZU+CwkfdcMI+jpGCTDMXiChoqAEwcxUUDleNimAiqdDVHIc
+	V+DxkFzH95849/DOW4wbMJYTnMf5HOMcpvcUZ7Hlco3WWE7v6cM5W+1FkrP5LlPcu4FHJNdl
+	nCE4x4etnMM+gXHFZ8fJfYsPCbel8wq5hldt3H5UKJvx1lA51pg8r+umQIvci/UogmaZBPaL
+	uRjTIzrMBaV7QjHJrGM9ngAe4igmnrUaJoMspHGmiGYHnQ/Ch0VMBjv36RoV2hLMGvaNJYwi
+	Zgt79aVi3r6Srbv/JNyOYBLZ7r9PqRCLg5Xe8mkqpGQZN8369Oeo+cFStt3qIcqQyIIW1CKx
+	PEujlMoVCXGy/Cx5XlxattKGgp9RfWb2sB35elNdiKGRJFKU/GxKJhZINep8pQuxNC6JEmkO
+	BiNRujT/NK/KPqLKVfBqF1pGE5Ilos3+U+liJkN6kj/O8zm86v8VoyNitGiVlV+/d5RfuEg8
+	UJq04JTR27Ti+OHlurH7E97EQHsV7wxUpuQOKoW743K7iMdVKzOEmWlNS9+mRL/WFja8+qHP
+	7Ks5scOZeuB9oC7ekJjg9aQ0V6qidBWZop6iZhX2h1h7zLT19+rt92L3SU/vX+2Yit5joo1D
+	OyVJIy92bUwSSAi1TLopFleppf8AUtMB3BUDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAAzWRbUhTYRiGe3fOzjkOF4eldjCiWGRWpPb99EEZBL0VWlQo9SeHnrbhnLWp
+	qKHMFCzLr1JaqbSSbKmhzspN1GSb5goqrNXKcsvSssQiTZ1GNoX+XTz3dd9/HoaQfCaDGaU6
+	hdeoZSopJSJF0Tty171671VEOG6shcqGegrqptLhjscsBG/9FwFU1j5EMO7to2G2vRvBmP0x
+	Bd9tvxBU35wgoPJ5Hgm/G6YJsLR+QfBNf4+Cwe4BGupMUeCuGSKhLb+FgIHiHgoK82YIaPeO
+	0nDObPQNN+tosFU5hPDiYZEQyqZvE9Ci89DwsrWSgv76WSEMWQtJcFy/S8LPcjsB7qJI6DYE
+	wcTTEQT2hhYBTFyqosB5rVUAD9qdNFzpNVDwKc+NoNc2QEL5n/MUVOQUIZiZ8k2OlowLoaKr
+	n44MxzkuF4VtIz8IfP/uWwF+rS8lsavjiQBbrn+gscGUipuNa3CBq5fAptoLFDb9ukzj96/b
+	KNyjnyGx5eM2bDGPCXBh7ih1OOiEaGcCr1Km8ZrwXXEixczwHfq0MTh92HpLqEP2wALEMBy7
+	icspPliA/BiKXcW5XF5ijgPYCM5YPu5jEUOwFxmur6NpPljEyrnZwav0XJdkV3JvDPMoZjdz
+	Zc9UcwbHLuPqGjvnbT92C+f420XPscSnvCidpkuQyIAW1KIApTotSaZUbQ7TJioy1Mr0sPjk
+	JBPy/b4m60+pGY2/3GdFLIOk/uLIx1MKiVCWps1IsiKOIaQB4rTjvpM4QZaRyWuST2pSVbzW
+	ipYwpHSx+EAsHydh5bIUPpHnT/Oa/6mA8QvWIb4/2vnqTMjW0OYFuz8sXBG7NzA/tKEuwe5M
+	9pzqvFZyIjEl+6xn+5Ri2eTepT9Ln8jHxD3Zi1KP1Jg9bnX0HpzZv0MQIg9ambVcrs92NDYP
+	DW70L9PF921wboiKvfB8tTnma1FMNf9On1U8GWXLb696BL8PHU3dH3DM/bTJIonxSkmtQrZ+
+	DaHRyv4B18DwC/cCAAA=
 X-CFilter-Loop: Reflected
 X-Rspamd-Server: rspam01
-X-Stat-Signature: ss1ad1ujbwh8jj3sjt6muyadjyeer1bg
+X-Stat-Signature: uxzwu6kyc3t94p3zu4mbykac6zpsps8n
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F7DA80010
-X-HE-Tag: 1761205463-327169
-X-HE-Meta: U2FsdGVkX1+nD6rEf2eUhE2oN9WtmkzheT76xk51/FkgqM8TkDmsbk7n4rtsSEDRNebip+X8GIJQXUYfrFdhI/8DrO5GqIFSjzW+2aMndPymK9NawSTgHKLWWOVEgj+kKCdwb6VhNNsdyXOxSfRRxwLr9L/OPFVmEfVxg+m07SAlKUFDqZW1bUWSDBEQHETAgpIAl9S6zEGNFGTgblLCAF7Oj7a03i4T//HzYR6SQdfS4ZmmlIo0QPJQGFS3vJJxzi1435ERl0EhNQzaf6dgnQwct/zeRHuPzEU+/XfDE9Un89ZUowOiywkEiTF5PEdOyFuoBlZeXvuqx60v3pcBjxODR//po+KN/m0rxS+7ceJfcnDE72R/dCUtrtPFU/l9gyQzcueLzkchzbxs/NqxVVswtjuuZish0HVQQtgrUmge8bwtfxVR92kLHBStJ/iGFxo28LQ8EHqaVhis/FmrjD8fi3FZE7KSpWXXfOhSHeq1k0vFr2BB17GAj1ABVXmpR9HV3poD5PXOj8eqWjH9SuQja6zys59Y5pMKIDWjghyHllUBz08k6X+BZ71JX32EE6itvRmyHulyxe4/1secvyhY7vigq6Bn47c33nvJvxGlv/QDEWeEAj/DnHyoAu9546gxRl8ctWcvmtcwt5ncz73m93QbXF7oClIOY91txx5xA3ch3wpiUlTgvfs8T3TrJeqa8V/mHNqSavpMk5s6dX7j5MX7hNIhlYV35cu2MO1scG012TWRwisD6rDqsUMvrFLaR534yxASyCuKrsG3RFEJAYRc+Gbo6lvU7ksGNXipQDx2Xx73QE3bKQBLeOmx4C2tuegFAgzPnz/b8l6cNGq6tZ40HYNL+pJE3TdWhkHgFk/hFHJH2KrPncTQSz2AF2XCSBU3M820SyF7u6YdvRuRL+JFGh8pDda8JksuSMx8Xw9lj+l9or29hooGaBeu+z9Fo+OyCnABjOnSEyd
- IcfAkI73
- l/Yy+Q2rhl9QwdzQdsKXOBOh9/J3Xv3DmWDqSVOD+QNY56z1BU8EO8cYOy0NdU9jOZ5hpiJiY7e5oQTwf6eZ/qVQ8cg==
+X-Rspamd-Queue-Id: 6DF3F80002
+X-HE-Tag: 1761205466-55207
+X-HE-Meta: U2FsdGVkX19u3n/b6QYG/vywc4mcJETnKYmHhlUnpCGIKAgi/v7rKFwMWFsxe8cCPMay91fQo5vx2Pqi7c5nZ6cypvUDyWo7lVq/08yCz4+RpJSbEb27N3XcrvGnlhbttc66PGLhnY0KxH22284EiU2xgWNWGIA/h3M6Sp/BCB47fniZpPLmtpDAbmY/uv9Ohl6TBabEWp23pV4MIFoa3EI0sZ7YfFOSFpMO7LmqangFEO6vljLh0RcENyN8jyKsFHDZ3c94AjW1ribL0TnIyBQ7chcWDxoErTFJjkV2l1xSbGXIdfDgFt+qenXUAMzHZUzojZ78qZUyuGpsdU4E6cU+GCOM7obRJfMZp1MHnnWkSrdQXLL07eeaaWg7EhAhJcPExk6bcTNlu5cK7JyB9fpnp6uIvBU8uK/681ou/4nLGb16ruugLLDEPuVye8P4lmAw+64nbcK1Tr08Q1CxeH0srHplYHGSM5EgDczi5/cyNHaX9Mehr8m3zXZey9D8FZLsgLMpEl09wRXGkelxYdbEc/7zJucRMmA9BRTidcrDBkvs9gOfIgzPNJVErVdyFdLQWuX6t+iAAeMtxRqzxXn3Cc00MpWwkdt6lyDHSnOdwA1/HGMHpQY7juvLj6ZQyDS6ZrRDrnTYkY59OG5g5cd4O4NxdjE9qB1CDORCYhwdXmL1GqYkCDhIlI437UFZoD8sKnpMaP9B48gVbneBDc3mS+DIpgGil8EIRBgXcEJQzCKrn3Lzt//6RPNz1Dfg255xbwQY+9vtq+0trbvuAX9kdEOj/lcpcuyOV8roRBmybOz/v+ByQ1zC0Py/Jt3HQEtdIJJ/OhNvkZd0G/mgK3dbRmctwgKfhteMqiTgJIvAtxrfJluoDgA2mKNLbGjlImca2QFu9KiTqMKzKyJVrpfzQ0zSnEZcvT85rytjvw/LwkERTfE4mZYUU9iiUmn6Uj/FhC8S+QE2x+njQkv
+ fzscwsLd
+ z4WSnnDkXTnX53k0bRyQkj6wWP0bWYjdF2fzTTu/M5B3VrfPRA0AqLidbx1p9BjQ91yfTz95cNn81t/HOnO3r+FVtfBoYZH1tunU4S/iuHuBbkNMwv4sHCgVybtdNVs7n2ixQQOX5m18TM5GBxahnujvrPubd3EqQHLBs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,48 +147,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This patch is supposed to go via the mm tree, but it currently also
-depends on patches in the net-next tree.  For now, this patch is based
-on linux-next, but will apply cleanly (or get rebased) after mm tree was
-rebased.
+->pp_magic field in struct page is current used to identify if a page
+belongs to a page pool.  However, ->pp_magic will be removed and page
+type bit in struct page e.g. PGTY_netpp should be used for that purpose.
 
-Changes from v3:
-	1. Rebase on next-20251023 of linux-next.
-	2. Split into two, mm changes and network changes.
-	3. Improve the comments (feedbacked by Jakub)
+As a preparation, the check for net_iov, that is not page-backed, should
+avoid using ->pp_magic since net_iov doens't have to do with page type.
+Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
+page pool, by making sure nmdesc->pp is NULL otherwise.
 
-Changes from v2:
-	1. Rebase on linux-next as of Jul 29.
-	2. Skip 'niov->pp = NULL' when it's allocated using __GFP_ZERO.
-	3. Change trivial coding style. (feedbacked by Mina)
-	4. Add Co-developed-by, Acked-by, and Reviewed-by properly.
-	   Thanks to all.
+For page-backed netmem, just leave unchanged as is, while for net_iov,
+make sure nmdesc->pp is initialized to NULL and use nmdesc->pp for the
+check.
 
-Changes from v1:
-	1. Rebase on linux-next.
-	2. Initialize net_iov->pp = NULL when allocating net_iov in
-	   net_devmem_bind_dmabuf() and io_zcrx_create_area().
-	3. Use ->pp for net_iov to identify if it's pp rather than
-	   always consider net_iov as pp.
-	4. Add Suggested-by: David Hildenbrand <david@redhat.com>.
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+---
+ net/core/devmem.c      |  1 +
+ net/core/netmem_priv.h |  8 ++++++++
+ net/core/page_pool.c   | 16 ++++++++++++++--
+ 3 files changed, 23 insertions(+), 2 deletions(-)
 
-Byungchul Park (2):
-  page_pool: check if nmdesc->pp is !NULL to confirm its usage as pp for
-    net_iov
-  mm: introduce a new page type for page pool in page type
-
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
- include/linux/mm.h                            | 27 +++----------------
- include/linux/page-flags.h                    |  6 +++++
- include/net/netmem.h                          |  2 +-
- mm/page_alloc.c                               |  8 +++---
- net/core/devmem.c                             |  1 +
- net/core/netmem_priv.h                        | 25 +++++++++--------
- net/core/page_pool.c                          | 14 ++++++++--
- 8 files changed, 40 insertions(+), 45 deletions(-)
-
-
-base-commit: efb26a23ed5f5dc3554886ab398f559dcb1de96b
+diff --git a/net/core/devmem.c b/net/core/devmem.c
+index d9de31a6cc7f..f81b700f1fd1 100644
+--- a/net/core/devmem.c
++++ b/net/core/devmem.c
+@@ -291,6 +291,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+ 			niov = &owner->area.niovs[i];
+ 			niov->type = NET_IOV_DMABUF;
+ 			niov->owner = &owner->area;
++			niov->desc.pp = NULL;
+ 			page_pool_set_dma_addr_netmem(net_iov_to_netmem(niov),
+ 						      net_devmem_get_dma_addr(niov));
+ 			if (direction == DMA_TO_DEVICE)
+diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
+index 23175cb2bd86..5561fd556bc5 100644
+--- a/net/core/netmem_priv.h
++++ b/net/core/netmem_priv.h
+@@ -22,6 +22,14 @@ static inline void netmem_clear_pp_magic(netmem_ref netmem)
+ 
+ static inline bool netmem_is_pp(netmem_ref netmem)
+ {
++	/* net_iov may be part of a page pool.  For net_iov, ->pp in
++	 * net_iov.desc can be used to determine if the pages belong to
++	 * a page pool.  Ensure that the ->pp either points to its page
++	 * pool or is set to NULL if it does not.
++	 */
++	if (netmem_is_net_iov(netmem))
++		return !!netmem_to_nmdesc(netmem)->pp;
++
+ 	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
+ }
+ 
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 1a5edec485f1..2756b78754b0 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -699,7 +699,13 @@ s32 page_pool_inflight(const struct page_pool *pool, bool strict)
+ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ {
+ 	netmem_set_pp(netmem, pool);
+-	netmem_or_pp_magic(netmem, PP_SIGNATURE);
++
++	/* For page-backed, pp_magic is used to identify if it's pp.
++	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
++	 * and nmdesc->pp is NULL if it's not.
++	 */
++	if (!netmem_is_net_iov(netmem))
++		netmem_or_pp_magic(netmem, PP_SIGNATURE);
+ 
+ 	/* Ensuring all pages have been split into one fragment initially:
+ 	 * page_pool_set_pp_info() is only called once for every page when it
+@@ -714,7 +720,13 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
+ 
+ void page_pool_clear_pp_info(netmem_ref netmem)
+ {
+-	netmem_clear_pp_magic(netmem);
++	/* For page-backed, pp_magic is used to identify if it's pp.
++	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
++	 * and nmdesc->pp is NULL if it's not.
++	 */
++	if (!netmem_is_net_iov(netmem))
++		netmem_clear_pp_magic(netmem);
++
+ 	netmem_set_pp(netmem, NULL);
+ }
+ 
 -- 
 2.17.1
 
