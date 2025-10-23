@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9F537CCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:17:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5F65CCCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 07:21:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00F288E0006; Thu, 23 Oct 2025 03:17:16 -0400 (EDT)
+	id B89148E000A; Thu, 23 Oct 2025 03:21:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F28B18E0002; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
+	id B60D08E0002; Thu, 23 Oct 2025 03:21:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3EE48E0006; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
+	id A9DBB8E000A; Thu, 23 Oct 2025 03:21:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D24618E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:17:15 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 54688C0A7B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:17:15 +0000 (UTC)
-X-FDA: 84028522830.17.2BBB0D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 91C8BA0008
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:17:13 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+22Ya4t;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 992A48E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 03:21:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 317DE88EA8
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:21:06 +0000 (UTC)
+X-FDA: 84028532532.28.6A97FF5
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9A8481C0005
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:21:04 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJfjDTDO;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761204064; a=rsa-sha256;
+	cv=none;
+	b=AsBP9Gfqhevi6eEnoWXFDui82akGaAIfgy6UcyPk/SQgwcCTn5r1BKTRRvX9qSNmlWOZ4X
+	xngFk58bWuAd/22sfTEQjh5MKA7uXvFRdIbZEH6xE8ulwoR3yyOboKrOTWaVzycYd10fx1
+	S7M0CC5yP4xxu3Y7YwP1Jf4uDoZ2i4Q=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XJfjDTDO;
+	spf=pass (imf21.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761203833;
+	s=arc-20220608; t=1761204064;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=kWmnBT5ngvr9njtbSftjLam5zRLuE1USc4qEDs4FVqE=;
-	b=2y04SNpT+fo77cd5IGVx9+0jDqh9CFMoHKi3uKORZ94oFT8ZAjwSVngkQEHvBPtwyqcF+e
-	vag6ayoK2lqUgchN2ahh23SRx0kOzA2Qu7ePqrzLorYBUnFcFaAApvDrSygP3BQy9+lgV2
-	cZ9mEyAuAuoHVoYMRO5XusXFRJLlTK8=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X+22Ya4t;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761203833; a=rsa-sha256;
-	cv=none;
-	b=N0v6+TVm+Dl6jcQTFFDAHxTus7X4yH7ddrx+TV5DJY3sAbrYrK99+sxaimMdUUGCp8BfrB
-	0x9gxfx/mxz/OLvvWb0AiBQda9WVAgc2Ron4JWfyT1PXo9TjSOTxNyKLl1Qx/FVir5Es9R
-	2vQ15Hit9A3nCyAKYvjNszvr1gskQ38=
+	bh=FYBYpakV/oHXlqK7vYeuZr2C2laeQWeSXuhMhDH9eok=;
+	b=vMIpPLe+GtCMmMqger2/qsV7+LcnwQhkMTUtwyLABK2fPXsDdQ3Zlb7yCLatMY/wlRKWCC
+	gaViGw708QHedFB/UpWDdvUyzaBljoXKgQ2Qm7pUwWOrCwSjVsR3Wxtwdnn/SmLCf1nmUo
+	jTjQJSa68e4bTIYI3nyzrisKy3OAbxw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 54784404F2;
-	Thu, 23 Oct 2025 07:17:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0099C4CEE7;
-	Thu, 23 Oct 2025 07:17:07 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 08E4063EB6;
+	Thu, 23 Oct 2025 07:21:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9CF4C4CEE7;
+	Thu, 23 Oct 2025 07:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761203832;
-	bh=aJYcehfYwCvCUDaOKLROIKDPOq2/3yfyKeSUDbsb094=;
+	s=k20201202; t=1761204063;
+	bh=GEunqVYG6q61dM4benmxjxOVFq+a4931xrkxsYdnZ+Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X+22Ya4tF4cs0PyG5qMCz9ZDJ5xI4RUMHO2k5YjnMwo/ncjwP3h8Lelvmdag4gBJx
-	 0qlqSyk4jej73GsN0F96Jenh90MjO8BJReLdJ9j65POtT/4LB8Ve/s4vVumK3pXaCb
-	 red9qoBGMqbSmvv/PfsJT2KkzkbDrlF7CNAn22IGKhrVAsVLz6cUWJgUbfcu865P+V
-	 WDt6cdkd+Tl9nArdND+mKUCLV6eHE1sGb/tizDO69lcG00W1d6O08UtPJhJlaqsapL
-	 jJWxp/LTkIKLfmArPg4Og52A9sEGFygDdVEdFqQ7oNxc5nTLALOh/GQ3UGdkPRFH0N
-	 ZQnAgxyiGHL3g==
-Date: Thu, 23 Oct 2025 10:17:03 +0300
+	b=XJfjDTDOyC/FjwMNQylaD5MrDantTgYxOhKCCP5U3juDPgS14qRbG2gc9z1//5vld
+	 U5qStXNYcvSwPpKgLhqJRC2eTZZPrGY8vYdl08nF14ofhNRa45ZtQD2z52X3pXJxEH
+	 jv0Nj2iq+tgTWN1+Xt30cECOfbsxtLCkXQ9EGo3wN2q6lvANrqmRuHbkjjqvwJ5cA1
+	 Suq++GZGLNfjSz91IkxN0TVeO+Y7npqe0mB+o0RP8Hqwf1b6KIlMLPvFoxVQ+Avj4K
+	 BjL4vzqg4vlgpK4F7uhQrPR8BYEnEKBuMU2gZu2D/YwId8MtYUZGBwx06E7gHtYVoZ
+	 p+cqXQjQvXWAQ==
+Date: Thu, 23 Oct 2025 10:20:54 +0300
 From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
 	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCHv7 4/7] kho: add interfaces to unpreserve folios and page
- ranges
-Message-ID: <aPnWbzytZ3I0heDb@kernel.org>
+Subject: Re: [PATCHv7 5/7] kho: don't unpreserve memory during abort
+Message-ID: <aPnXVmD3cNmYNRF_@kernel.org>
 References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
- <20251022005719.3670224-5-pasha.tatashin@soleen.com>
+ <20251022005719.3670224-6-pasha.tatashin@soleen.com>
+ <mafs0a51jfar1.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022005719.3670224-5-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 91C8BA0008
-X-Stat-Signature: gjxudxnstwfe75ghhsey5gcits1hdyim
+In-Reply-To: <mafs0a51jfar1.fsf@kernel.org>
 X-Rspam-User: 
-X-HE-Tag: 1761203833-786101
-X-HE-Meta: U2FsdGVkX19LPzglWXOKeWSMSuWRZ7Z3h92qmDA3Jv03qtFHe9s2PzqWBF29/ltUo797qtwIpeRH179QLiPxzPE0ageeg7JjEjbCI8H8QrFeFKxy0lfgrlt9J9nv66csP43iwzs51yt5mLvDFn1g6tvsMV0JqaNGRwz4CAYjyMOOeN2sgQ+2QUTj2d2/0t6oUUXbE0Qa8GeuxR0+Sr05Np3vC7WqByhq3qaqSOFL2E5OtBgF+BD8qxpNi1jDm/TB/zBGRjnkA4RDrdIFve3ywzP2QuJqB0lrPU3uZoGmcD83opPg24EQrkpGBKamjhhk1klm8Os7bzRjTg5fPl43JvCmA96eSN/7ksEvgsOvHxvAckMvMo+ml2gA/9sUFs9U3DQkXXB4yCnaZWfLhm2VzVolmAOexN7c+L5ls0Hc9oHbIGwxv4VZlSc4itPHPhw8JhplY9OneclLx+EunKf69dGsCoTOWN1w7ABhQiskeMutW2nZ3pqQzSVd3hBjyjTw9c2i0hP6d6uBU/2svoNqocw34au44v+C+VZbuHxRU8j7JElEn5tBd7D2J/Q0xh/Bt/f6yqrZsztfqUVwSCviwrhDVC5+0m/CBXAosB4geWUkE0tBHLfVT/4GHn6XC4V/luH8/xYdC00ped9+mLtOpgFoaG4VvgGDPhEg/CyUh9TfRai+U0Kmg6N/LYhhctepASfHumeP9TJRhdg1rvzHNfPRkzYKmFlmIA0+UB50ACDacDrSWhQuYBPhS3nGgTGUmHVxsSbTGRD/9u5UbkyfAIY0sQkUTbflbuc1TeUeAVuUsYdEkLu/ko2cpE3j/350HKfH7V6faHzqvCdAuCSFV01WFaFFG/5AtCZtInIGhO8Gy8jHV82/8BUUg59U30KhLY0uxFldx6p33VJ0wqUsQgYujSNdaxbwUFsZiW5LnlP5BUrBaUHv+oYEuZOwX36glKto55vgrTu8mEXhBdE
- 7PIq3jbi
- Zk2Qu9Wt49bigC3NVKomcZANonR3bT3ztJ3V24sOixtYd77H9L8KZ/ibJb+0jl/7Ito/r7KK9YLtXIjqh/HOTxvZDvR0mqGNBKO370UGUH1gP3sAXnOntcsxoao1ga9r+yr24YiXpP35Ud0uNi7ii1ybCNzq753ep6rIOy4LmgJNLnVeStNxvAFUwSxdbuTFBDVMNgEOn9VqgRpQNV92sDbHkqOxRY6wOuUpBO3PNin0N2mGLqCEd5Ozh+i1A9xaICkWHQtm1MIReaSKK99e9cMNPepN+Bzj4CXFzNgI6rcFfqrE=
+X-Stat-Signature: mnn9hnehxj9ystnwf457ia9yk4qhqbw3
+X-Rspamd-Queue-Id: 9A8481C0005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761204064-393784
+X-HE-Meta: U2FsdGVkX18eWBhcnyAFgzSkhIIQ+R15LsByfmsV1YDQzfLGYJIk8VKtotjzyyBNWO4YpXOEIP9Fa/X7zF4OXqYDgWU961t2R2J+QkuZ1eV2JMouOWVh332pq2ZhKugHiObIDEykHe9ZY75V6DkuegktXcLZUpNZCkQhEyQShvG+ieD6Q7Qi/UayP3uGlJ/QbizGylLKgfN19x9yYmIBSuSU0FtMHZeP1eKgahz6DQ6jYVh8NdxLls3O64BVhI7wF/sMCPlbU6ebLzR6voaJP8+F22GvW6tJORiMBKmDubaRwLVx/HYYJIfPa+HIllbrx3H6kUxwGZoVUUqrkaDvm/ZFbB76cJbhnruo9jRoANBWX97CLMmAdxl/OV5cgxjuvmUih5lOCwNcbUd5YNaB+EuiXEeDyt7MgaQP64BDS21gQ7x96jA2Jr3rOPixbgWbuX8GMAvJMDQfSb8UlD1KszZRpkN3KhTNeDnasQm37u09TDhiKAFcj+uw3GkwRTHPPdHQHTGNjrH+Voc+bTuKm+MlSlWggq0256DRguuI5h4pnqQEVU5YGcnFXL5sb+3oRc/+TdiMlh+z+rMwc1UXQd7XKoZPqARAKupy1sTYSLo8H/4ZrNg2ys1FBtYfR3PGFSc0U6LYC9BBg2S8vqGtR5258W3od5hRa9arHxIQcgwDxg/EPZhZ4dC0q1McFbpZ3Fs9Hq7TZk0ZLmJlP8KyMgmI8CJYK3eHdZD0Ml24qpb1aegEEyww1Qg6sjJX6/R1NHak9gMm/GvTdGUKKig85nzYLpLUQZOdazeR+qc7PqyynZYZLZ5GKgzPS0Hpt3BgQBvf8WbLce+LSkmD6wjK0cWotz9AuP8xly01QoYfV4Jiujji3gbCUuKmQ1GY1iMga4wdMwIVNeZuv4PjvgQOk4HRh1R1F2ozEtV2N18h2Go7t2uBd7lx1k6ovbnLKdT7LMvrAUqyBBuSA2wMtnJ
+ bc9i8GxJ
+ CJfijrVUb0zdNWCNkFdKcbMKe6IAfKnKbLEjFduP4fRhY3EsHOHBi8M1r6bD3C1TZMZVZbe8GGLW+F0hcpFJrAzkdost/Z5/Wvzk12k31B9+GsFnEmHTx7YcLKwfJl+2e5wwF4WziSTaTwM/qLcc27g8tqXbC9dN/+VZV/2sVhXmVL/k6FBlVg8ZFtSQkm9mg0mTwfXe2X6jFqqsZgSf6617g6abIl95FUNxiY2Dj30M0D6m8ThjtV6b3K3F9PetgKDFq+GBuggYxNVZ3SJj1IuxcHOUUvsqhnNcYe+H5OqQvNn0qsz8862gb8w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,175 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 08:57:16PM -0400, Pasha Tatashin wrote:
-> Allow users of KHO to cancel the previous preservation by adding the
-> necessary interfaces to unpreserve folio and pages.
+On Wed, Oct 22, 2025 at 01:15:30PM +0200, Pratyush Yadav wrote:
+> On Tue, Oct 21 2025, Pasha Tatashin wrote:
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  include/linux/kexec_handover.h | 12 +++++
->  kernel/kexec_handover.c        | 85 ++++++++++++++++++++++++++++------
->  2 files changed, 84 insertions(+), 13 deletions(-)
+> > KHO allows clients to preserve memory regions at any point before the
+> > KHO state is finalized. The finalization process itself involves KHO
+> > performing its own actions, such as serializing the overall
+> > preserved memory map.
+> >
+> > If this finalization process is aborted, the current implementation
+> > destroys KHO's internal memory tracking structures
+> > (`kho_out.ser.track.orders`). This behavior effectively unpreserves
+> > all memory from KHO's perspective, regardless of whether those
+> > preservations were made by clients before the finalization attempt
+> > or by KHO itself during finalization.
+> >
+> > This premature unpreservation is incorrect. An abort of the
+> > finalization process should only undo actions taken by KHO as part of
+> > that specific finalization attempt. Individual memory regions
+> > preserved by clients prior to finalization should remain preserved,
+> > as their lifecycle is managed by the clients themselves. These
+> > clients might still need to call kho_unpreserve_folio() or
+> > kho_unpreserve_phys() based on their own logic, even after a KHO
+> > finalization attempt is aborted.
 > 
-> diff --git a/include/linux/kexec_handover.h b/include/linux/kexec_handover.h
-> index 2faf290803ce..4ba145713838 100644
-> --- a/include/linux/kexec_handover.h
-> +++ b/include/linux/kexec_handover.h
-> @@ -43,7 +43,9 @@ bool kho_is_enabled(void);
->  bool is_kho_boot(void);
->  
->  int kho_preserve_folio(struct folio *folio);
-> +int kho_unpreserve_folio(struct folio *folio);
->  int kho_preserve_pages(struct page *page, unsigned int nr_pages);
-> +int kho_unpreserve_pages(struct page *page, unsigned int nr_pages);
->  int kho_preserve_vmalloc(void *ptr, struct kho_vmalloc *preservation);
->  struct folio *kho_restore_folio(phys_addr_t phys);
->  struct page *kho_restore_pages(phys_addr_t phys, unsigned int nr_pages);
-> @@ -76,11 +78,21 @@ static inline int kho_preserve_folio(struct folio *folio)
->  	return -EOPNOTSUPP;
->  }
->  
-> +static inline int kho_unpreserve_folio(struct folio *folio)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
->  static inline int kho_preserve_pages(struct page *page, unsigned int nr_pages)
->  {
->  	return -EOPNOTSUPP;
->  }
->  
-> +static inline int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
->  static inline int kho_preserve_vmalloc(void *ptr,
->  				       struct kho_vmalloc *preservation)
->  {
-> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-> index 0a4234269fe5..8412897385ad 100644
-> --- a/kernel/kexec_handover.c
-> +++ b/kernel/kexec_handover.c
-> @@ -157,26 +157,33 @@ static void *xa_load_or_alloc(struct xarray *xa, unsigned long index)
->  	return no_free_ptr(elm);
->  }
->  
-> -static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
-> -			     unsigned long end_pfn)
-> +static void __kho_unpreserve_order(struct kho_mem_track *track, unsigned long pfn,
-> +				   unsigned int order)
->  {
->  	struct kho_mem_phys_bits *bits;
->  	struct kho_mem_phys *physxa;
-> +	const unsigned long pfn_high = pfn >> order;
->  
-> -	while (pfn < end_pfn) {
-> -		const unsigned int order =
-> -			min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
-> -		const unsigned long pfn_high = pfn >> order;
-> +	physxa = xa_load(&track->orders, order);
-> +	if (!physxa)
-> +		return;
-> +
-> +	bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
-> +	if (!bits)
-> +		return;
->  
-> -		physxa = xa_load(&track->orders, order);
-> -		if (!physxa)
-> -			continue;
-> +	clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
-> +}
-> +
-> +static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
-> +			     unsigned long end_pfn)
-> +{
-> +	unsigned int order;
->  
-> -		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
-> -		if (!bits)
-> -			continue;
-> +	while (pfn < end_pfn) {
-> +		order = min(count_trailing_zeros(pfn), ilog2(end_pfn - pfn));
->  
-> -		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
-> +		__kho_unpreserve_order(track, pfn, order);
->  
->  		pfn += 1 << order;
->  	}
-> @@ -749,6 +756,30 @@ int kho_preserve_folio(struct folio *folio)
->  }
->  EXPORT_SYMBOL_GPL(kho_preserve_folio);
->  
-> +/**
-> + * kho_unpreserve_folio - unpreserve a folio.
-> + * @folio: folio to unpreserve.
-> + *
-> + * Instructs KHO to unpreserve a folio that was preserved by
-> + * kho_preserve_folio() before. The provided @folio (pfn and order)
-> + * must exactly match a previously preserved folio.
-> + *
-> + * Return: 0 on success, error code on failure
-> + */
-> +int kho_unpreserve_folio(struct folio *folio)
-> +{
-> +	const unsigned long pfn = folio_pfn(folio);
-> +	const unsigned int order = folio_order(folio);
-> +	struct kho_mem_track *track = &kho_out.track;
-> +
-> +	if (kho_out.finalized)
-> +		return -EBUSY;
-> +
-> +	__kho_unpreserve_order(track, pfn, order);
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(kho_unpreserve_folio);
-> +
->  /**
->   * kho_preserve_pages - preserve contiguous pages across kexec
->   * @page: first page in the list.
-> @@ -793,6 +824,34 @@ int kho_preserve_pages(struct page *page, unsigned int nr_pages)
->  }
->  EXPORT_SYMBOL_GPL(kho_preserve_pages);
->  
-> +/**
-> + * kho_unpreserve_pages - unpreserve contiguous pages.
-> + * @page: first page in the list.
-> + * @nr_pages: number of pages.
-> + *
-> + * Instructs KHO to unpreserve @nr_pages contigious  pages starting from @page.
-> + * This call must exactly match a granularity at which memory was originally
-> + * preserved by kho_preserve_pages, call with the same @page and
-> + * @nr_pages). Unpreserving arbitrary sub-ranges of larger preserved blocks is
-> + * not supported.
-> + *
-> + * Return: 0 on success, error code on failure
-> + */
-> +int kho_unpreserve_pages(struct page *page, unsigned int nr_pages)
-> +{
-> +	struct kho_mem_track *track = &kho_out.track;
-> +	const unsigned long start_pfn = page_to_pfn(page);
-> +	const unsigned long end_pfn = start_pfn + nr_pages;
-> +
-> +	if (kho_out.finalized)
-> +		return -EBUSY;
-> +
-> +	__kho_unpreserve(track, start_pfn, end_pfn);
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(kho_unpreserve_pages);
-> +
->  struct kho_vmalloc_hdr {
->  	DECLARE_KHOSER_PTR(next, struct kho_vmalloc_chunk *);
->  };
+> I think you also need to update test_kho and reserve_mem to do this
+> since right now they assume all memory gets unpreserved on failure.
+
+I agree. 
+
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > ---
+> [...]
+> 
 > -- 
-> 2.51.0.915.g61a8936c21-goog
-> 
+> Regards,
+> Pratyush Yadav
 
 -- 
 Sincerely yours,
