@@ -4,82 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 530CECCD193
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 21:35:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F18A7CCD193
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 21:36:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99C768E0014; Thu, 23 Oct 2025 17:35:18 -0400 (EDT)
+	id 3F9858E0015; Thu, 23 Oct 2025 17:36:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 973EE8E0002; Thu, 23 Oct 2025 17:35:18 -0400 (EDT)
+	id 3AA178E0002; Thu, 23 Oct 2025 17:36:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D7A78E0014; Thu, 23 Oct 2025 17:35:18 -0400 (EDT)
+	id 299798E0015; Thu, 23 Oct 2025 17:36:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FDD48E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 17:35:18 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 270D149410
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:35:18 +0000 (UTC)
-X-FDA: 84030685116.21.A64447E
-Received: from out-176.mta1.migadu.com (out-176.mta1.migadu.com [95.215.58.176])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 628E816000A
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:35:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=js3riS21;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 148418E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 17:36:29 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8E249140C60
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:36:28 +0000 (UTC)
+X-FDA: 84030688056.29.03B5ED3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C980E140007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:36:26 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D5dLSV7c;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761255316;
+	s=arc-20220608; t=1761255386;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ErOQJZYuBYGdBpUlkz7xxYDD/7HNDrO9In4Qqb0EuxE=;
-	b=JP+/Ow71fJodhjVYgcZ9eUPz8phW58UisthF4tpoX/P/jeGbeA7vqY4EUvUXCUmxmh8vG/
-	maTR8VH88L/QAfP061VUlo4/TROSfx41gkFtDbQsu45Hd/LGH8ubfqeKINXrPDqkVec8y1
-	OQ071wFhzT9Ohpgf0/HsbTdYSLkvKXM=
+	bh=3fFdeJUZlXDm3+8DEFwlzG6MrGAMPRepgp1+juzRzM8=;
+	b=G6PtU4Be+6l5fFNFqZXajK6DAZDsbD7FsBKEDZFZ6tTDdh3q6uyLjsCio3+L5tLX6Csl5Z
+	fKlqa2Uy/w9/cdTsacDg5bBc6znXCe2IuMraB5G5Oyggu1jSQtxFyViiwSwvt8txtTLkbr
+	uoz582Ph8wGIPAB3zzRH0t3cIdxoZrY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=js3riS21;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.176 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761255316; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=D5dLSV7c;
+	spf=pass (imf23.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761255387; a=rsa-sha256;
 	cv=none;
-	b=WqGaqHwFLQu6rc7PWneHwxgAIq/jDZkxXbws42ikZ75gh4rlLfUEV2TtIsMJNOXaaZOr1p
-	+zsSRz0iQE2/EG9LXFvhHsjmN4k6OjkuqNU6Au/+nk+5bMCDwY86PzWUzTbeN+MSNResuT
-	HXd1rCnN8MYEsFqHEalGE9Jdyg1b9CE=
-Date: Thu, 23 Oct 2025 14:35:05 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761255314;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ErOQJZYuBYGdBpUlkz7xxYDD/7HNDrO9In4Qqb0EuxE=;
-	b=js3riS21e66az6Tr38Wp8ZB1PttEvYubbxImrS9U11/r3WOoOSUygYo+4HZmx20Bia1XmG
-	vY2PhoZc1GDaXnexuFX7GVOQy1zV1Cf8mfxBbuf7LWncUCkny89N7J8htGD88NU1E/0i8r
-	qzsKb/PlZx3RailoFTTtJ6clPPEAe0w=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org, cgroups@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Meta kernel team <kernel-team@meta.com>
-Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
-Message-ID: <jnzfiyojjwvrj3eemqmpigfyjxucdqe44fjy36nxkly6urtn7u@a6pfcppla3r6>
-References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
- <aPorFhxQc7K5iLZc@tiehlicka>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPorFhxQc7K5iLZc@tiehlicka>
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: i9teps7jxq5yt3scekukbc3pn3dbk1ng
-X-Rspamd-Queue-Id: 628E816000A
+	b=hsiZcuzlG18NuTZ1/4/YH5YosVhma+riR4XiLWn3sTJy5xr8hKMzNEWN5kUghfN7HktsGg
+	+ZG1foOTPPDtgF+Jz+RBI8U+/D1WxAZ9wIYzXY4a/SAS01OMpyBhqcEWwcYJu54kmgoumz
+	MGxHcb5b+dcJh4H0SZkIGkAo3uU1+f8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BBF7F4169B;
+	Thu, 23 Oct 2025 21:36:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC59C4CEE7;
+	Thu, 23 Oct 2025 21:36:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761255385;
+	bh=PeQvjl8tTHsyJLNIyC0D1J39XRcadQROmtv7uZK7IMo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=D5dLSV7cClMTLlP1vvO/xSsofDIiz6K30iXsothe1O5uqNMocMhnArlWU6WugZ4F0
+	 3+FNIq71QSLCs4QBTqUENXpZukkHfHAH0AfcMkDFKPnu26S55DMAgZ2SklkCX8+WQN
+	 i7Jhbbi2Hu3iBHnpF4AsyZl96QUiJpmL4TBeKlLA=
+Date: Thu, 23 Oct 2025 14:36:24 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: David Hildenbrand <david@redhat.com>
+Cc: Kiryl Shutsemau <kirill@shutemov.name>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+Message-Id: <20251023143624.1732f958020254baff0a4bee@linux-foundation.org>
+In-Reply-To: <3ad31422-81c7-47f2-ae3e-e6bc1df402ee@redhat.com>
+References: <20251023093251.54146-1-kirill@shutemov.name>
+	<20251023093251.54146-2-kirill@shutemov.name>
+	<20251023134929.b72ab75a8c132a17ae68a582@linux-foundation.org>
+	<3ad31422-81c7-47f2-ae3e-e6bc1df402ee@redhat.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: C980E140007
+X-Stat-Signature: tt3pkktkr3cqahfgx9hn5neyzobc4go9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761255316-237524
-X-HE-Meta: U2FsdGVkX185ENx9l8A6ETSnERcmvNWjwe/NQfyGvRSnBZQkVCeOByOPBs1mB9GxLKQgwGE2gD0TdU/XTKpGgVnZY0u9NhwQwO2Ep9SCERpkURx0L62B4u6mPGGEPmu8uY6BO6CJwMLz+7eJTRLgiCsLQOeVO4bsgAlErj8R1wcfyJR0iwLn+EX0Js7wGJlMJqsi27ypGUDIqjs9VWfSkJyz+czW4hXz/3mvgCjRT3UPP6bO5KMytJx0mtv+xLVdF72UsLbfgcD8NKqLoXeFwsrTBHnoU0z282uU4O0lcf8Hqta9qfPE0zFGHe/bQpGAVzvofeIxuZjqO1lW4WO4gcJSq8JjA7zv7OSXZ2JXgdf0+H7EmWiHxml68SnRmmkZs2cCEOfJzI/5a8RRwHiDE1HTfbPdfCAMHeGzhGjvLKupykM0rDlt8p9VX4G09dQ3d86iC9gojGXLdobSENHy09ksMUbI4Fuz1MN9T2hU8z4nff8Clf9kQyXlWy3AMRSV/ZVF7+19GlnGWBIpNX4rOloTGU+Gc0Lj8sbrNzwJQJFP8qVzwhhi8UcIWtoc2l+JfQOil8ISsnStNkx9PYBv8tG8TyAHWvpPa8h+blmWnism+VPvijpNGNdc/mRc0W+ti9UQood5FkV3J/2mFdX5vWrve5uejgAzYwAZ+MTvz2huP9kvHtpmxKM1UI1c4POLkVd4wzI+J0N3GjTy1COozOQFqC5ka8KDeMkbCQgi4eXoYGcj59o6nopxR/l5G8fxDEHlDHRyh47Ab8N4Wy1HzU1bdI6mflRi0PsnRrQY/Rvedj+WfYpciqRIj+H2x6RroDjAn3bqymLj/33+Acf7dFftpaeu/+gchRrD6qZai4xwPVgdCTScOIyeLtfR4Iy4gXn/WHmNig9mFGDk2s6Ewex3tKEAI+wx
+X-HE-Tag: 1761255386-66592
+X-HE-Meta: U2FsdGVkX19qy0mVySqshMgXNKS02hgN77icR6uVV3yE0c8elF6raL226tbT+Ttxsa9j5CYfRmOLNGaCUf0VgiAQ4AZEsEbqOghQE6SKQT2MkhErz/NHqg0+HG6N2B6XhIMR/oMeX5vIaPTNHXDC1x7oG/VwZQzKi0dy4Numr8fIDYURqYjA6Z8l7y31Vwdgh+Uw3wo/HgcOkmT5RrJS7w9kUhpMuKJsX7cTn/UWqG2P6aknkKLCFyCnAqHgHJnq6soYjS/0LCcCAWaPfHOD8AgQBJJkAXOm81JRa9BGjpA0DbNpPGaFWx90dodyOHCXfTvGyXyEyM14Px5RjSXKJcZJpCA3E0RhdgTJns/7RH1NPeCweGUu27vJP6L58YySimGCIGs8xmmgJtFhz9vIk1zpOOXdlX78OzRnZZDdVyBWqWZpfEwOHtmcu7F8zq76MYB9J9mIQw54l2kZgIrrjQoibbMawsGBnXgQ6vOsvpU35sGiiiCmtXCdlx+gr4GH0jrpDrTfR4q/plNVNq9H7m/PESixnsiACKHMMwyIuL+CMUYDdJ09LkGSCUJzpm7AU3JT4sUT4m+UC/5J790ARS5Msw9D2TQSFWStb77hA59op1TzkWHEALhRzZoqjgPyNFYU9F9tStYz7evv4EVh8bz3tjjz+sa/QlFv/RQe8twsBrLiK2bdIPRFRTp1XU+KXk2w6yrbzFdGxRozOMuUC1e3n6+FXTwq+QNsVwyQWWw/1wNJGAVS7bGbZext3SpgaRao6zxGzDi1OP9lQ3HSYo7u2rUM0C68I90PSe/QKWHA4vE2JKtfPZ1ckVYQbpw3Z1sYAoTQC0978+hx32drOiuNVNhqy7Sbu1pOizcaeweDJg8IzUSnrLzf2lNM/W1GWpm/ihEcVqNSYjAi1TIG/1y+kKFaNMQOoFcd9rq/qDArKHViY8dlt0GkhRIFB4kCrO9bSEbX48titVV5As6
+ CAkzRspY
+ MmZgy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -88,38 +104,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 03:18:14PM +0200, Michal Hocko wrote:
-> On Tue 21-10-25 16:44:25, Shakeel Butt wrote:
-> > The function __memcg_memory_event has been unnecessarily marked inline
-> > even when it is not really performance critical. It is usually called
-> > to track extreme conditions. Over the time, it has evolved to include
-> > more functionality and inlining it is causing more harm.
+On Thu, 23 Oct 2025 22:54:49 +0200 David Hildenbrand <david@redhat.com> wrote:
+
+> >> Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
 > > 
-> > Before the patch:
-> > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
-> >    text    data     bss     dec     hex filename
-> >   35645   10574    4192   50411    c4eb mm/memcontrol.o
-> >   54738    1658       0   56396    dc4c net/ipv4/tcp_input.o
-> >   34644    1065       0   35709    8b7d net/ipv4/tcp_output.o
+> > Sep 28 2025
 > > 
-> > After the patch:
-> > $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
-> >    text    data     bss     dec     hex filename
-> >   35137   10446    4192   49775    c26f mm/memcontrol.o
-> >   54322    1562       0   55884    da4c net/ipv4/tcp_input.o
-> >   34492    1017       0   35509    8ab5 net/ipv4/tcp_output.o
+> >> Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
 > > 
-> > Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+> > Sep 28 2025
+> > 
+> >> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> > 
+> > Jul 26 2016
+> > 
+> > eek, what's this one doing here?  Are we asking -stable maintainers
+> > to backport this patch into nine years worth of kernels?
+> > 
+> > I'll remove this Fixes: line for now...
 > 
-> Acked-by: Michal Hocko <mhocko@suse.com>
+> Ehm, why?
 
-Thanks.
+Because the Sep 28 2025 Fixes: totally fooled me and because this
+doesn't apply to 6.17, let alone to 6.ancient.
 
+> It sure is a fix for that. We can indicate to which stable 
+> versions we want to have ti backported.
 > 
-> As the only user is in tree should we make that EXPORT_SYMBOL_GPL
-> instead?
+> And yes, it might be all stable kernels.
 
-I just followed the file convention i.e. all other exports in
-memcontrol.c are like that. I would keep this as is unless you have
-strong opinion otherwise.
+No probs, thanks for clarifying.  I'll restore the
+
+	Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+	Cc; <stable@vger.kernel.org>
+
+and shall let others sort out the backporting issues.
 
