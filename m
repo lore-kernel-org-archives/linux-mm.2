@@ -4,114 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BC60CCCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 15:21:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5343BCCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 15:29:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AEA78E000A; Thu, 23 Oct 2025 11:21:32 -0400 (EDT)
+	id 8B8838E000C; Thu, 23 Oct 2025 11:29:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 086D38E0002; Thu, 23 Oct 2025 11:21:32 -0400 (EDT)
+	id 862A38E0002; Thu, 23 Oct 2025 11:29:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F05408E000A; Thu, 23 Oct 2025 11:21:31 -0400 (EDT)
+	id 729E58E000C; Thu, 23 Oct 2025 11:29:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E122C8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:21:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A1F75129C8D
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:21:31 +0000 (UTC)
-X-FDA: 84029743182.13.BA18814
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	by imf27.hostedemail.com (Postfix) with ESMTP id C1A3C4000D
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:21:29 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sJ5wzkwk;
-	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0E48E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:29:58 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0F7A14929C
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:29:58 +0000 (UTC)
+X-FDA: 84029764476.14.B544871
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2537B80007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 15:29:54 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761233395; a=rsa-sha256;
+	cv=none;
+	b=ZiwWeMHIU97w1T0XUIKwCSH9GKWWDw8h9uhG7W/Y7vhfz6caXZ8TLy0AwwYTUvLO2nV1wi
+	ZUMAqk2gYHqF5881blnGBpdVKsEFCVXswqVhsIvnq9otLuGJWFYRmN4Xy+xRO5KSSOqJBb
+	EKs55TXe8ObTVXG0oV7V4Qfw2cTCvgc=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761232889;
+	s=arc-20220608; t=1761233395;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G2jwrgWQY1h1RtIcpPrpzP6Qz2BnEli8aRyjgsdjGiM=;
-	b=JqIxuCZqrXnw8ZaEqfOC2M41aggcV5MwNPOSw7mtq6c8A/0fXVM84pXlEe+aHkvUAZmVJq
-	E7yZ4JQ/GimZjut3CgQ/cQ5BImyTwmmwNLUsOG554ozaWrcLUUraCXRIUN5rwVdb1csvmK
-	pJ10c2RMGh6ZNX0gvSPylZpdqcmj3ok=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sJ5wzkwk;
-	spf=pass (imf27.hostedemail.com: domain of elver@google.com designates 209.85.214.181 as permitted sender) smtp.mailfrom=elver@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761232889; a=rsa-sha256;
-	cv=none;
-	b=fLXg48j80VWar10gubRJdXPP9q7bsYnOMOkwFk5Eb8dQF9OH1jPwbYRAO6u+VfPpiDrvEH
-	U7jGTnI1gQhK/gh/whdX9U6pwgpcSSctpT6EGli4v2UTcGWYbZ0teKWiRfKOBpARc/ZHpS
-	iObfrqnZzpXLFjQVixImC3D+LmXpHwc=
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-26d0fbe238bso6796795ad.3
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 08:21:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761232888; x=1761837688; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=G2jwrgWQY1h1RtIcpPrpzP6Qz2BnEli8aRyjgsdjGiM=;
-        b=sJ5wzkwk1wbUi7C9uM/y1I/SMJIpG1ugJbucwbuX9kjpZXYHRmPFqdAq7/bPa3zwHV
-         jrhULmZJXcc8mFzPlWyx3XPeOvlDcSgLAtb+NKAhkOhO/dOm4Y3b945z4drr3xKqcNfS
-         8BF71rQKoVRX7qEL5ETi+EWoCxeDMDmyikaonmyNk4dZgPCnScRJJ4R5nObtZrKdhESn
-         IfozcrlFenKSGNZ5nuR5F6yGk7xL1VW6ToUctsaJ4ndchXry+wkut0iiMcRHuZFRxvzU
-         ZgDIZaHoUuKrDxZXw0mY2Yz1Oa/4Wde12Kd4sEH+H2y6YfrrUNW6KM+a9MSiZghna0c0
-         PJ3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761232888; x=1761837688;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=G2jwrgWQY1h1RtIcpPrpzP6Qz2BnEli8aRyjgsdjGiM=;
-        b=XvNTohcnW+D4eUcpJSP2i3MENPhKiUIKkwJtiLEkhT9DoloqdvgRl8xrq83ll85Ih8
-         WPDddat1mnoDNyeQsYfM33WyVZHz70lqxDcyWPYLhLTpxI5VtRU2r6yD3IPJ0NND1+j8
-         3nIEkRIgsC1bUL/2VYVy27jOt7SJNK8xVzDtYH8p5iaLK+4a8QI6y/JwEEuR2ypQN4pa
-         0teQGcUSOL9KJ6ht+2uOChMbrKeYUZdUp1p5KaHsc0uT8zRgfCD2xZ1IuVY3S5Qx2FQD
-         Zz0xKYuG8iUDP8YPAQ0s+0EGjn+wOiGnYtpDZUqtooSAl50OdoWuTiq3YWO+BaG6jFYH
-         r+Eg==
-X-Forwarded-Encrypted: i=1; AJvYcCUrihXfNFc/DY7FEBNxS/Hi/5RHDzBLDHIdUHHNG6EBu5byelhfcm55Isx/I+XzQq6rlssiZzd9yw==@kvack.org
-X-Gm-Message-State: AOJu0YwyHy/sU3R1arzTA4CO/oLyTfuhJlD5vfVWD35tzxFheuhtkQKT
-	wBkovbQGUUJMS6yXH/3t65aCpGjx1MWiiuQ2ZR+LhEkQdwUoocbPAH+AAMIjVTv8NX/8SyWBkCn
-	WakJzSEetPYVwFXihg6S6S7+JyiqOGzEFQxO9fZ3E
-X-Gm-Gg: ASbGncsJzD7cs94bsGnZ0W1qnoYkO1IUQ3qGX1Iqp/guLUGnjW3NESlogAwnlkXWsrQ
-	X/PmHIYQGnvmLorILbYGOu6ElYa18UIVAylwZUJijg6IkqBZQx+VK+yGcgpZ5XvTimWPHvMIfFq
-	TYfk20JDL1ZpdY6fupsHW++qipXaXglut1BtB/suMhhysXI0aeyFAQNDTlG+pZPxFpxvD991f9O
-	UVypMK16penUzoP0cRg3cp5SF7dlYVRT2i6BHuNnaOK43fUU9eC7gPnztf/77agRsS/lAWZ0o5G
-	bRn3GUJVNqZ7hKIklE7t82IgTQ5x+LQ+5T2u
-X-Google-Smtp-Source: AGHT+IEWgZ7UzgS2PohV24hBKhF9JtPcksvlA1uoFSx8c8CFEwNgsBYtAGAlA8K3H24IvkOMh8whAfHS8cAKsM7wQww=
-X-Received: by 2002:a17:902:e746:b0:28d:195a:7d79 with SMTP id
- d9443c01a7336-290c9c897cemr312219295ad.5.1761232888223; Thu, 23 Oct 2025
- 08:21:28 -0700 (PDT)
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Xzg87PImVl0TcxwxqG35NSwDrsxUgNXKDg5WjAFakYA=;
+	b=J2fKNcrtl7F733xIY+Zf8pQQ8l/QYzkyIBzCtMzLhH8UgspOtIsY2N395lv0YlddZAHh3E
+	T5kKBVPDtiJensAlfWhv9fbXQ93sXHiL/PuowURHajEmRvMRyRtDqMuMLxJcsKyRz0gzPi
+	qLnuERwgl0qjEsGo4AYz9IcLG2OF1nM=
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4csqgB1897z6L50b;
+	Thu, 23 Oct 2025 23:28:22 +0800 (CST)
+Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1AD071402F5;
+	Thu, 23 Oct 2025 23:29:50 +0800 (CST)
+Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
+ (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 23 Oct
+ 2025 16:29:48 +0100
+Date: Thu, 23 Oct 2025 16:29:44 +0100
+From: Jonathan Cameron <jonathan.cameron@huawei.com>
+To: Gregory Price <gourry@gourry.net>
+CC: <hannes@cmpxchg.org>, Yiannis Nikolakopoulos
+	<yiannis.nikolakop@gmail.com>, Wei Xu <weixugc@google.com>, David Rientjes
+	<rientjes@google.com>, Matthew Wilcox <willy@infradead.org>, Bharata B Rao
+	<bharata@amd.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<dave.hansen@intel.com>, <mgorman@techsingularity.net>, <mingo@redhat.com>,
+	<peterz@infradead.org>, <raghavendra.kt@amd.com>, <riel@surriel.com>,
+	<sj@kernel.org>, <ying.huang@linux.alibaba.com>, <ziy@nvidia.com>,
+	<dave@stgolabs.net>, <nifan.cxl@gmail.com>, <xuezhengchu@huawei.com>,
+	<akpm@linux-foundation.org>, <david@redhat.com>, <byungchul@sk.com>,
+	<kinseyho@google.com>, <joshua.hahnjy@gmail.com>, <yuanchu@google.com>,
+	<balbirs@nvidia.com>, <alok.rathore@samsung.com>, <yiannis@zptcorp.com>,
+	"Adam Manzanares" <a.manzanares@samsung.com>
+Subject: Re: [RFC PATCH v2 0/8] mm: Hot page tracking and promotion
+ infrastructure
+Message-ID: <20251023162944.000074dd@huawei.com>
+In-Reply-To: <aPjyrAo5LdC5pAqv@gourry-fedora-PF4VCD3F>
+References: <aNWRuKGurAntxhxG@gourry-fedora-PF4VCD3F>
+	<aNzWwz5OYLOjwjLv@gourry-fedora-PF4VCD3F>
+	<CAOi6=wTsY=EWt=yQ_7QJONsJpTM_3HKp0c42FKaJ8iJ2q8-n+w@mail.gmail.com>
+	<aPJPnZ01Gzi533v4@gourry-fedora-PF4VCD3F>
+	<20251017153613.00004940@huawei.com>
+	<aPJZtQS4wJ1fkJq-@gourry-fedora-PF4VCD3F>
+	<20251020150526.000078b6@huawei.com>
+	<aPfWePBq8d3v979f@gourry-fedora-PF4VCD3F>
+	<aPfXloRQgplusnce@gourry-fedora-PF4VCD3F>
+	<20251022100950.00002785@huawei.com>
+	<aPjyrAo5LdC5pAqv@gourry-fedora-PF4VCD3F>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 MIME-Version: 1.0
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz> <20251023-sheaves-for-all-v1-1-6ffa2c9941c0@suse.cz>
-In-Reply-To: <20251023-sheaves-for-all-v1-1-6ffa2c9941c0@suse.cz>
-From: Marco Elver <elver@google.com>
-Date: Thu, 23 Oct 2025 17:20:51 +0200
-X-Gm-Features: AS18NWBMguvD9NqZ0MBG1ww1DA9Wez_eaadFg_kTQ6tj-ZGocLoyPMGw450Hbw4
-Message-ID: <CANpmjNM06dVYKrraAb-XfF02u8+Jnh-rA5rhCEws4XLqVxdfWg@mail.gmail.com>
-Subject: Re: [PATCH RFC 01/19] slab: move kfence_alloc() out of internal bulk alloc
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
-	bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C1A3C4000D
-X-Stat-Signature: 16j9haia6i3q9dcmhsg7zr5mdcji14w3
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.15]
+X-ClientProxiedBy: lhrpeml100010.china.huawei.com (7.191.174.197) To
+ dubpeml100005.china.huawei.com (7.214.146.113)
 X-Rspam-User: 
-X-HE-Tag: 1761232889-681082
-X-HE-Meta: U2FsdGVkX1/gqODmgLK407VCUJ6fjtb67nDDCI0D40UJMdyB2P1N+LXQSyBTeI13CvtYp4Ag3K5lnXFqDDca35IP7j+mJA19siHBBBMCmPYXKN5z96obtQ4vhmtq6roDWPTE34HgFZLSTubxF0hJwCNLakNahELjMEBIoB6T840fv/2WfWwVZnpJJuX6V9V4/WXQPSK/vVurwF2yQ0WQRMS/i73F5GgOSVL/swQhWnUv+2uSLX6lu4HHmcM19LFU6vFu5TzDKR3VojF7N9RHnlzFay/cRR5gtoUD6cfQ5GXH2631f24G84qKe3ePYR5H1B4Zl4fprN/XcfMzi1D0qGLYO+R4TC3fHzMlioaBtd8ds1vOL2ifsZz/iJTBUDRf88zBpR8gnEw7qtbdRIlKFrrYWFLFLXfD+64lgiTFJHqP9nmgoj6adMbgF3d/IhTqKI7bOglpF44atDkUBTy7YevBp+oqjpdDAiFrYxqNhts460iVCA8ZJbt332mzqxkaXs9EY+l2d2KUCU7fAnUZ6kVSafqb8148paImuZXdQNFLKgDMfxB5UX5O8pPieONq4khCxRWFPLO5U92UKQa2jP9Vu2txOX5lHuIgBY+kkp+T5W0DftEnV7F2Qc7CFiAlm9L9Kz8cY1TD07WlsLGbD7POnTDAs8GhQLSW/E47m7n0zNPD+5AvtU2dikTFm9A/HwxDGHZY0rrE8Ld1C3ICljWTz3LQA8tynaVg2NYT3+bb51W6PIdqY0p0zOeNcPpra4Ql77pNey5zc6i0tl3LN2RTAxjKXSn0vacqQDRpxxmRHBKTvCTx5xMmLdF65gGDswdQfgCiHqbl1a97QQxEWw18vS/zw8eMJ8DpTEGc2LC4t8ZLHu9ZpYZQf5a96wUwzpG477ixkfaeg9Vk8uQMNKdsVaB18mIi2SDIzkVIR6+VQablsAGS9zw6q7htNkuIpwuBL3wb+IXZxih79pA
- HOnJP77z
- /hy6LPXH5900x2hFCvKYrywf61a5cz71Qx0tSwcTNaGDNrUnW5jlx/CcRpLpJHf+ibYfgRBwZ08BZBKuRFkpbTumvlYCAHEZF6582BRmknGfJedHT3Ch2nd7l8VNKHYSKMFL9vu/MmH67jfzFQRr+VWgNgmR3t0wCT4KcZy5A4ikZRo0p27ezS5enrscl7wNfQgU/RDfiY5l8yq8t+FHfK0FRWCRX3hlbx3ak5Z5/uq+1m/pH78olKjz6KI+GuItJvBulQJ2FFOC4OF8=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2537B80007
+X-Stat-Signature: z6utsooddwphjb943ht7ora1rsse3ime
+X-HE-Tag: 1761233394-777936
+X-HE-Meta: U2FsdGVkX19rBWGJJCdhCPQ4GqW6w63MswIv7I5uIJO4LogNeLP9Adw/nnLRXM/Qjq7R6fFraso3kVKqg7OcC7QJ7RkHva0ItWx4GUZSv6VkjTBfrQaia7D31UaTHquLVHmCPOyElbjU9sIPd8pAc3FP8e9ykXqT0F5ROpESDKOt1Y76qHXrSW09G+0Odk5g1xZgdbMg2jG1XiBQttM1cPu5MjjGp2/GkDPC0+SnkG1AYTGjfKhW5G8HB1ZRCVBi5mpp3mgf7UcfCPo4Us8V6yIKR/J+GysbnaqI+EJdANjyXhxaxanoaXUQop6Mw6H3WqvQxAb115l1kQIDRioiz0LANJ80l7ERfqSkvs1Cik8Zaj4Hb9G3LiGpeh5tw7nPVT+Mwway8hslgs6FwB5VlwMpAKPoRXQAuvYTb5VY7UBkE/8UUBbnk0Dt1p/uIriRAOtIUgSoSFFtkwPDO2x26i4cfX7kiFbKkFepwQLLIu9lFltNCJtNDydhXvn034roDA4K+Uyt7siuUvLEEnSBaOageejMd4wmxTa9sMy0Zb1abDC8UK44OdIHfw+C/JjE4B9hHZItL4SBgUOBTbu65ZSEFFXGaqhC54FCHhsExYNKrLPxhUo8rAXj/Cm4/jWOBJXotWkKOLcFM/SJCYwmSwIekG5SoR46a6JohVpP3GhVcoFgpog7EctNtIX1wI0jY48pl1uBdtlJiMz9VY63rw48n/gPAJhUtcdJ44c9elnzpXjf3jKm4+y2VJ7GOk5KlYw4okNB8fUVXgJJ0OTBELoJS9wzGskFJEyI923mOJTBSuCa3nYUFtv2WruIIG8kvEobh9KOmsnSvl4Xe03plw/L4HxSISw4dAoELaqQl9B4V4Pjy++72JUBY3j51U6j2YezW+Zx9hqhfR/jy2xVMxI5HXsLA71NiRFqWqPsxzRoLO3SyVykN4GTus/TEtWPW5ZjXyP38DGhZiQAGJG
+ 1F5l68VA
+ 8c+m15WPLyGnDxMSPcRRULnEjTVNPY4UlFcxdz5lbwiRpXmpIPkUpLcOXJ/omRSZKwNKoRyZANrrq2ngiYwpt4DgH+b82/PK42NPdFRhyMszzHa7kkwQ3XEZMsiJRdOmes/mUGEuG2NMdq0HW6FlMoseu+LM4GTW+7qe5Z1dtCpQnddGlVoO8N0jGjk72NlV76czcVoNatfsqyTY5VDkat/mcsXdlZN0z6/7uOg7kVHhjWysEwltTdqegMr52uUkvfNgMT+bbgU1UGRhYUyOjiqRr1CMcO9tksKt+olKn42eJTU6kvUnmYWz3qSuH5mvtzEULpMKbPbKFfpSs0jvz5aF5wSLdEpGOT7n3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,141 +112,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 at 15:53, Vlastimil Babka <vbabka@suse.cz> wrote:
->
-> SLUB's internal bulk allocation __kmem_cache_alloc_bulk() can currently
-> allocate some objects from KFENCE, i.e. when refilling a sheaf. It works
-> but it's conceptually the wrong layer, as KFENCE allocations should only
-> happen when objects are actually handed out from slab to its users.
->
-> Currently for sheaf-enabled caches, slab_alloc_node() can return KFENCE
-> object via kfence_alloc(), but also via alloc_from_pcs() when a sheaf
-> was refilled with KFENCE objects. Continuing like this would also
-> complicate the upcoming sheaf refill changes.
->
-> Thus remove KFENCE allocation from __kmem_cache_alloc_bulk() and move it
-> to the places that return slab objects to users. slab_alloc_node() is
-> already covered (see above). Add kfence_alloc() to
-> kmem_cache_alloc_from_sheaf() to handle KFENCE allocations from
-> prefilled sheafs, with a comment that the caller should not expect the
-> sheaf size to decrease after every allocation because of this
-> possibility.
->
-> For kmem_cache_alloc_bulk() implement a different strategy to handle
-> KFENCE upfront and rely on internal batched operations afterwards.
-> Assume there will be at most once KFENCE allocation per bulk allocation
-> and then assign its index in the array of objects randomly.
->
-> Cc: Alexander Potapenko <glider@google.com>
-> Cc: Marco Elver <elver@google.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 44 ++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 36 insertions(+), 8 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 87a1d2f9de0d..4731b9e461c2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5530,6 +5530,9 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
->   *
->   * The gfp parameter is meant only to specify __GFP_ZERO or __GFP_ACCOUNT
->   * memcg charging is forced over limit if necessary, to avoid failure.
-> + *
-> + * It is possible that the allocation comes from kfence and then the sheaf
-> + * size is not decreased.
->   */
->  void *
->  kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
-> @@ -5541,7 +5544,10 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
->         if (sheaf->size == 0)
->                 goto out;
->
-> -       ret = sheaf->objects[--sheaf->size];
-> +       ret = kfence_alloc(s, s->object_size, gfp);
-> +
-> +       if (likely(!ret))
-> +               ret = sheaf->objects[--sheaf->size];
->
->         init = slab_want_init_on_alloc(gfp, s);
->
-> @@ -7361,14 +7367,8 @@ int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags, size_t size,
->         local_lock_irqsave(&s->cpu_slab->lock, irqflags);
->
->         for (i = 0; i < size; i++) {
-> -               void *object = kfence_alloc(s, s->object_size, flags);
-> -
-> -               if (unlikely(object)) {
-> -                       p[i] = object;
-> -                       continue;
-> -               }
-> +               void *object = c->freelist;
->
-> -               object = c->freelist;
->                 if (unlikely(!object)) {
->                         /*
->                          * We may have removed an object from c->freelist using
-> @@ -7449,6 +7449,7 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
->                                  void **p)
->  {
->         unsigned int i = 0;
-> +       void *kfence_obj;
->
->         if (!size)
->                 return 0;
-> @@ -7457,6 +7458,20 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
->         if (unlikely(!s))
->                 return 0;
->
-> +       /*
-> +        * to make things simpler, only assume at most once kfence allocated
-> +        * object per bulk allocation and choose its index randomly
-> +        */
-> +       kfence_obj = kfence_alloc(s, s->object_size, flags);
-> +
-> +       if (unlikely(kfence_obj)) {
-> +               if (unlikely(size == 1)) {
-> +                       p[0] = kfence_obj;
-> +                       goto out;
-> +               }
-> +               size--;
-> +       }
-> +
->         if (s->cpu_sheaves)
->                 i = alloc_from_pcs_bulk(s, size, p);
->
-> @@ -7468,10 +7483,23 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
->                 if (unlikely(__kmem_cache_alloc_bulk(s, flags, size - i, p + i) == 0)) {
->                         if (i > 0)
->                                 __kmem_cache_free_bulk(s, i, p);
-> +                       if (kfence_obj)
-> +                               __kfence_free(kfence_obj);
->                         return 0;
->                 }
->         }
->
-> +       if (unlikely(kfence_obj)) {
+On Wed, 22 Oct 2025 11:05:16 -0400
+Gregory Price <gourry@gourry.net> wrote:
 
-Might be nice to briefly write a comment here in code as well instead
-of having to dig through the commit logs.
+> On Wed, Oct 22, 2025 at 10:09:50AM +0100, Jonathan Cameron wrote:
+> > 
+> > My gut feeling is the need to do dynamic NUMA nodes will not be driven
+> > but this but more by large scale fabrics (if that ever happens)
+> > and trade offs of host PA space vs QoS in the hardware.  Those
+> > trade offs might put memory with very different performance
+> > characteristics behind one window.
+> >   
+> 
+> I can't believe we live in a world where "We have to think about the
+> scenario where we actually need all 256 TB of 48-bit phys-addressing"
+> is not a tongue in cheek joke o_o
 
-The tests still pass? (CONFIG_KFENCE_KUNIT_TEST=y)
+You think everyone wires all the 48 bits?  Certainly not everyone does.
 
-> +               int idx = get_random_u32_below(size + 1);
-> +
-> +               if (idx != size)
-> +                       p[size] = p[idx];
-> +               p[idx] = kfence_obj;
-> +
-> +               size++;
-> +       }
-> +
-> +out:
->         /*
->          * memcg and kmem_cache debug support and memory initialization.
->          * Done outside of the IRQ disabled fastpath loop.
->
-> --
-> 2.51.1
+> 
+> That's a paltry 2048 128GB DIMMs... and whatever monstrosity you have to
+> build to host it all but that's at least a fun engineering problem :V
+> 
+> Bring on the 128-bit CPUs!
+> 
+> What do we name those x86 registers though? Slap the E back on for ERAX?
+> 
+> > Meh. Let's suggest people burn host PA space for now.  If anyone hits
+> > that limit they can solve it (crosses fingers it's not my lot :)
+> >   
+> 
+> +1
+> 
+> ~Gregory
+
 
