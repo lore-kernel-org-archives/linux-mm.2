@@ -4,88 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02F4CCCD1AB
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79BCDCCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 01:25:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A1FA68E001A; Wed, 22 Oct 2025 21:25:46 -0400 (EDT)
+	id 7FFA38E001B; Wed, 22 Oct 2025 21:25:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 981FB8E0012; Wed, 22 Oct 2025 21:25:46 -0400 (EDT)
+	id 69D0D8E0012; Wed, 22 Oct 2025 21:25:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8BEB78E001A; Wed, 22 Oct 2025 21:25:46 -0400 (EDT)
+	id 5D8EC8E001B; Wed, 22 Oct 2025 21:25:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 75DC28E0012
-	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:46 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3D9E71298EA
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:46 +0000 (UTC)
-X-FDA: 84027637092.28.16F74C1
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4E2308E0012
+	for <linux-mm@kvack.org>; Wed, 22 Oct 2025 21:25:47 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 05CF91298DE
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:47 +0000 (UTC)
+X-FDA: 84027637134.12.22C638E
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 9188D140007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:44 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XViU0NHr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182744; a=rsa-sha256;
+	by imf13.hostedemail.com (Postfix) with ESMTP id 5F52520007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 01:25:45 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uezsR/zJ";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761182745; a=rsa-sha256;
 	cv=none;
-	b=U59VjulHPRRpdVcfOkYieLtJAudnjnrs2gKKeI89k3ed5eWZspfqJKeYK74vWxjA0nni/f
-	Wv3ZJptOAiu7zN0RgKrcjrEWY8W2RopVl3RF8RDJqKO+VGp0NuJP3kKtI4sKtaha/W0N1n
-	b/PturaRkPawIeZQrdUQp09huLmGbsA=
+	b=FqwpZUt+Q6Y3sUHMegA3xthG/PibQxgLexjNfkIU0wTSLdwla/CeBZoph64ZXrdKYPO/e8
+	Rni8ooUOVgYujIuv1hJ+IAu7HamOUeoxz5mk87rQXpIebtDtA31ejmddazT6iptl3WK0Z8
+	lnb1UFqwN/h8gH97c/TeFdrdlF+j1e0=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XViU0NHr;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="uezsR/zJ";
+	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761182744;
+	s=arc-20220608; t=1761182745;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R93wTuvZkP02f+1vLf7zNGg1h2fKEX74m+Z4+PMTfQ0=;
-	b=tjbYoBHidCO79A1oJG8/k3EuJdEyY6ln5AmLw2Jfs4hNkhQgrp4Tr3GTrrGkc4Zj3lm2z0
-	YnW2lxpILIMiGckmAUubNBK9KCZNMHtgCdOovXgDxJeGywiyi7/J3YWXc+0aHqmVCBjWCP
-	tFsARVF2MqYbQqmYYiiwbBUN3p8bCOc=
+	bh=kZFOW9XUwP4OzBoZNat7aRlaC0c7e0/AoO/NYRzv07w=;
+	b=yh0u9+mXM6DHu/6o8Zv3Wz+plxAMAMD919JUjAZ4HvDP4PG2DA890vrA4+/VoUkwUVVX5w
+	Ptoudx7HQptTovepYR8gznOM0LFFIzX0SnZbD0xwpYhrZBQ89cdMkrONb8qRvByRh5+elL
+	FRjpljb9jugS9NUAaQN9EU23iFxkhuk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B98924A8DF;
-	Thu, 23 Oct 2025 01:25:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A72EC4CEFF;
+	by sea.source.kernel.org (Postfix) with ESMTP id 852264A8D9;
+	Thu, 23 Oct 2025 01:25:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D239CC116B1;
 	Thu, 23 Oct 2025 01:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761182743;
-	bh=K6zRg1CjAedGEmFhj0IW60penVdcjigiHWIj6JeYghw=;
+	s=k20201202; t=1761182744;
+	bh=RKBfxsBzDKUrYjFTiKbvh8ntTnFoyVwTsTEd+4eRipY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XViU0NHrDt1Steby8mcv0Nh3QRh9omfLt4bf6GvlSEMKV5UcVHBT2foqct9/AcxvT
-	 Ck6F1pBnNSFDTpzjJ6YINcSmcKkvEMe4e43/HzQjx0DwQC19vmHy+fAy9g2wDOWxck
-	 nVDrdD38tmZC6VAOzMBbsKnyeDpr5Xk8D9dbTD2UOAjREwax8jKfzOYfviPS9rwGTi
-	 us3tYf9kvHaw1VqFSDvkQVIWeD+l+Ns6+RMyN/RVUUPqKYDBNUyJKQK1bRu2RviOWl
-	 sCoJPmKw8icGDTEJnk7cMD2/aimYoPIXOryOwYIjs1YaEJ/wuqoqdSQJaALNgu28i4
-	 LP37n2Omj8F/Q==
+	b=uezsR/zJxoo+BgYu1GbfDfbFJOX02+pWxKCRXgxjhRtIgWFIdTDzahq7STAK6a6Ex
+	 rCrmY3omr5ZoSoytdOgy+5pemZYlaOTn9TYlJ5MWCInC6i9a+iSEW5FmDweM4cWmq8
+	 eF8lAvypVFdPAQWzr0Fgjoy3uFf4NAHp9k31Z59kaD9CO1/gsAyXVTGUAPkNLGmnAV
+	 9U+xiEEjvBqaUy9fYV/hQ7NC/EoqYvW/WUPbHBgMtDU7duCDO3vofznEhm8GBQG8CS
+	 ZdhiWEbkBx6au3ai7F53rC3/3HkKNyC7AfU0zLLBoZ0jBZviOiu/Q/5SrWGXHWyllF
+	 obXd6bIItSOKQ==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
 	Bijan Tabatabai <bijan311@gmail.com>,
+	Shuah Khan <shuah@kernel.org>,
 	damon@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 5/9] Docs/ABI/damon: document obsolete_target sysfs file
-Date: Wed, 22 Oct 2025 18:25:29 -0700
-Message-ID: <20251023012535.69625-6-sj@kernel.org>
+Subject: [PATCH 6/9] selftests/damon/_damon_sysfs: support obsolete_target file
+Date: Wed, 22 Oct 2025 18:25:30 -0700
+Message-ID: <20251023012535.69625-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251023012535.69625-1-sj@kernel.org>
 References: <20251023012535.69625-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9188D140007
-X-Stat-Signature: wxa74fnoex8sdtyzgnu4rinat7nws87p
-X-HE-Tag: 1761182744-36539
-X-HE-Meta: U2FsdGVkX1/2SEgviNB3IvFQuzlOY7uwVpjXluD9ycv34v6J0nvpO0gm57gXM20mlY81WAl88LQZU4qY6xu3u4rpkKRfKJHeX8IaHHbROSd/tXX0G/Wt0gKsRq73bP7BvsU0C8r0ai8cINy5cL6e6xpNn8vIgJqPB1YtCLwnthGGGNLoS4+tCzuTlNQgftYL6tDkie0h3P70Ge/jXclNY0x80nbk8tt7YN0PlM5Ku9U6LNIUqefHhFXjWi8UPT8f3Kjsv/HuvveTvTqPESi0xUDBoR4XHKU+eAlkiWWGt4Q3I+6dG5h/TqfJ8AYonNf0uVGAaQlVKW8YIflOAq8VXENE+eGcGEjLXxJjUXe+BAM2KKFDL/YZf6iXY9XBf+fVAKMVEmXpX0OijcC6PcH+o2520CGv5+tiV+TMhCfXW0lAuuIMixtkKzdUTIJ4p83/Srw/h0x5oDW/kg6XCdGc29BswMaPvVfvhZ62UN0ElcTelqQP6+bAfniFi0bjgWUBlQAkNO2Sq1707m3paKXZJa4Svs6ZXCQwxyoytYX/f31gSWywz6oHMI/Vu/hETIBmfsae87zLIQLIr4JlkVFlek/cXqJyBQFScNpYqDXjKImPoaQCdaBHblKJBJS1SrCmIYCnWepCYGBvInxq5dON34JDSUbCiqJtAw/0yOFL7nnV4uUkK/Oeafr254ytfsTmjnR09fVmA2cy4bSIvP4vHQ1Xsd6wGMVSm0akL1LtBjtL6D0Xl7GZwr4IO5x5uU79hOpSB+sJojD4Lg15XUOIHFYYn9TtIshpqe+dgz5RMcipFWCl0haQLDVfo0udTDamysMmls9LV6crfRWHRpJHodumJ5XYcv9H4UUwit1uFNlTzU0MvFoJmeaZAX9Bkd5WfeRW7fotHEQcwB/IU8AbCbC3JL0RxDrB7QorW2RL87P5PH6uxOwzykotheCzh5CpRb9EywJnnI1zLGWnAff
- eM7f2pjb
- D7VuRLIPNEB9r8nuN3/n/oStse9hI3dSdsSajiwhdx1HK11ztakTzfwCb4AnSnUzaO9aJ5qb9IO1WWCurH/W/OGFTcJX+BzinneUWLrrGXtfNyyuW0iL2qGYmNDifAuAYNVNJz0xlGcmaBIH7hEAdLG0rO/8jr5iNcudHQlnKvNTbrZTdvO3xa2KhMPFW4emZ5QwdWK5qapvXP9hm9NNhoswCwesMAR+OqmB5/D9YnRC6sRmb9BRUDjug88mLs7Sswwe1v4bggFtnMPRAP+HEm6nha+kM90A1JpOkfJfwQ9j4WZqp0ytVlp4moiWnx+J/EJsS9xE+ozA5GMKd+hyhqoFuug==
+X-Stat-Signature: zrpxhpzybk5dnj4ru5ni4dqfonskpfq7
+X-Rspamd-Queue-Id: 5F52520007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761182745-8758
+X-HE-Meta: U2FsdGVkX18T5oAutNC03mNgKnoDT4Qt8NcNXSM1f8BvIPkboXsn5b4U500gvVXnL4nxMpDIJYuHG/mSRnBxdLTNFnrR/a3+DAaLGl3yIZJt4BNjqqSjA9vIbuahb2akXh8ATc/IFLIZj0VmSMrXFo6yNZgJoPq1Xqvp5qLxL0RKO1hKh321EwSiYvLFcBvtbWNBDuJvEmBoO7CYr0Di4CLE1/YwKR/EdmSvKAQRiMAo895g1+2Z9cn++Paq6sEab2LSLWIzXzcYFiWUJbpb584RQzBtNPdjiassrS2a1bu5z7o3kiG+ZDDkYpFrdN3Hn/ZT34PEm6x7Ry2u37f6CgFz5f4GvsuvwM+COzvZJSjJCdVjR1Q70uo9O1tU3LcnQYcBHi17mPO96Hf9HB6nqUS6/8Fuf3n0T5xoKYRWPdPdfgUl8qKONx2WHwi1BwbRL+4WsNwlFEMHY2emwks+6q88loyHY3GN1GwW+ruT1oVfNs2qBW+YalpX8p8/oC/CRVZyk+4OZ0+OQ6plWuxTfZTdVbul0sFKW2RpkrWgacip4rVmG7RWnmXEwb2lwOen0BUxQZEhiCl/vTWaH77KYvrQ+w3ejigj0SaZaKzJN1kt/QQWFlzBElzgjIYG0OvqLC/VgAP5NIB86Rb9K5LQlvEQNHGUxd6Q+9saQOiooXehmON9hEjr26AnT1PXsLk4fICUBI4NpgXUGgAaPC28BN2pcdKq2td9nGISCDMoFmt3kpeI4IGA4KY24Bb5vFJdS+Xo5nA4AWM/InLKACRWBTWd0DonPKb8ap2QnXqfckaRrRvkfyqINsysl8Is0UaV/aTTsZaoTr+P83oAlGSIDuqKkFUZI3gADkNcoq/ofCIDN9GiM5cYM8wc9JgMlE1vbjb4UejP2fnAkh9wbjgDgbFA42JskDgBKfXlLCwtyf2NsQ380xsKOTdaJmoSrCVmNnw2WVLXOS8qDN8ROEY
+ 7auR/sQR
+ 9pelNvHvqP0M25T9c9eE5SXNQcVpWhPkKhYEJhyatxmWQgNqYsKwISdyzs+Mi6TQ/wLnBwxdz4he5iU/yhZEba6SBV7loD8Am9NNoy2/h/Mls2zt+n/kjeCmdz4G2JwBAtCR6oW9FCBKARvV3TAFEZp83Z/iD07M+CPDlo6uxVUTwriLrxF6uHQ0DGjkgcVtJpaexVkrghmfqqAfgU2lwVxVt9bbg+8CW0qjDcERRIdMhIMVef8QZA6CtlVRb97gdkBhzDZ8GBGZetePOofCKkME8cQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,33 +96,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Update DAMON ABI document for the newly added obsolete_target DAMON
-sysfs file.
+A DAMON sysfs file, namely obsolete_target, has been newly introduced.
+Add a support of that file to _damon_sysfs.py so that DAMON selftests
+for the file can be easily written.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: Bijan Tabatabai <bijan311@gmail.com>
 ---
- Documentation/ABI/testing/sysfs-kernel-mm-damon | 7 +++++++
- 1 file changed, 7 insertions(+)
+ tools/testing/selftests/damon/_damon_sysfs.py | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/ABI/testing/sysfs-kernel-mm-damon b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-index dce6c2cda4e8..4fb8b7a6d625 100644
---- a/Documentation/ABI/testing/sysfs-kernel-mm-damon
-+++ b/Documentation/ABI/testing/sysfs-kernel-mm-damon
-@@ -164,6 +164,13 @@ Description:	Writing to and reading from this file sets and gets the pid of
- 		the target process if the context is for virtual address spaces
- 		monitoring, respectively.
+diff --git a/tools/testing/selftests/damon/_damon_sysfs.py b/tools/testing/selftests/damon/_damon_sysfs.py
+index a0e6290833fb..748778b563cd 100644
+--- a/tools/testing/selftests/damon/_damon_sysfs.py
++++ b/tools/testing/selftests/damon/_damon_sysfs.py
+@@ -475,12 +475,14 @@ class Damos:
  
-+What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/obsolete_target
-+Date:		Oct 2025
-+Contact:	SeongJae Park <sj@kernel.org>
-+Description:	Writing to and reading from this file sets and gets the
-+		obsoleteness of the matching parameters commit destination
-+		target.
-+
- What:		/sys/kernel/mm/damon/admin/kdamonds/<K>/contexts/<C>/targets/<T>/regions/nr_regions
- Date:		Mar 2022
- Contact:	SeongJae Park <sj@kernel.org>
+ class DamonTarget:
+     pid = None
++    obsolete = None
+     # todo: Support target regions if test is made
+     idx = None
+     context = None
+ 
+-    def __init__(self, pid):
++    def __init__(self, pid, obsolete=False):
+         self.pid = pid
++        self.obsolete = obsolete
+ 
+     def sysfs_dir(self):
+         return os.path.join(
+@@ -491,8 +493,13 @@ class DamonTarget:
+                 os.path.join(self.sysfs_dir(), 'regions', 'nr_regions'), '0')
+         if err is not None:
+             return err
+-        return write_file(
++        err = write_file(
+                 os.path.join(self.sysfs_dir(), 'pid_target'), self.pid)
++        if err is not None:
++            return err
++        return write_file(
++                os.path.join(self.sysfs_dir(), 'obsolete_target'),
++                'Y' if self.obsolete else 'N')
+ 
+ class IntervalsGoal:
+     access_bp = None
 -- 
 2.47.3
 
