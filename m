@@ -4,96 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6465CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 14:23:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10AF8CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 14:34:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D72128E0003; Thu, 23 Oct 2025 10:23:26 -0400 (EDT)
+	id 4897D8E0003; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D4F0A8E0002; Thu, 23 Oct 2025 10:23:26 -0400 (EDT)
+	id 43B658E0002; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C86638E0003; Thu, 23 Oct 2025 10:23:26 -0400 (EDT)
+	id 3289C8E0003; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B67F58E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:23:26 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6372487BFA
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:23:26 +0000 (UTC)
-X-FDA: 84029596812.11.39D3B69
-Received: from relay.hostedemail.com (unirelay06 [10.200.18.69])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 7671514000B
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:23:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BE198E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 10:34:13 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B2C3113C128
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:34:12 +0000 (UTC)
+X-FDA: 84029623944.05.F6374B1
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 05C6A180015
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:34:10 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=omPdSohL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761230051; a=rsa-sha256;
+	cv=none;
+	b=a/BkMBgYQVEAPVTQllHcYlys0FZPkNVBjm0qaFkH8opbFAK3V03uc0hoBZ6G6EoRHXx+Nw
+	gDt/4JXkM5LEo6hCoJyW+dRMki8piuE8jbAGheGl4vKgrKgFWLuse6L1wrCK+4bpXWm4I0
+	Z7yL/YmRFbS47PeB0Gm7c4A65lnyazc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=omPdSohL;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf24.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=hao.ge@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761229403;
+	s=arc-20220608; t=1761230051;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9XPfcex3hX8Yq51hvEdZq8mkmLnOVqxEUgFWlRSCmx0=;
-	b=EcJuMXnXKoe/1MsZbVBToRAohYErDNmx+8UIgHyNPQryjMp3gxql0SdR4WPjGrz7X2cUJJ
-	OrRQbAAvtExbkMrnooBz23H4qbwljLaa4h30mmhDPPsMZNotnPg5cXEdG6hMQC2+3n6v8e
-	NZiJSomOhJkn7EoVvhRuJIQUXSrUFv8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761229403; a=rsa-sha256;
-	cv=none;
-	b=1/LSSq1k1Ol0cO+EivPJdxv1RvOOa8g180BUbfEkqYgKh0nYE/gWnyrKF9L51W0HN3BVfN
-	QPjVT1mxAS4NzN74E3xWXI7cQwfw6Hz+CIUAhKoumkff8ZYh/ngRnWB8dtUEDQLehM6fta
-	uIJZkUP3Vc0BIolWycu21BfY/PWoEHw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	none
-Received: from omf03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8138129BC6;
-	Thu, 23 Oct 2025 14:23:17 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf03.hostedemail.com (Postfix) with ESMTPA id 5E7336000B;
-	Thu, 23 Oct 2025 14:23:06 +0000 (UTC)
-Date: Thu, 23 Oct 2025 10:23:32 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Fangrui Song <maskray@sourceware.org>
-Cc: Jens Remus <jremus@linux.ibm.com>, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, bpf@vger.kernel.org, x86@kernel.org,
- linux-mm@kvack.org, Steven Rostedt <rostedt@kernel.org>, Josh Poimboeuf
- <jpoimboe@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu
- Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra
- <peterz@infradead.org>, Ingo Molnar <mingo@kernel.org>, Jiri Olsa
- <jolsa@kernel.org>, Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung
- Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Andrii
- Nakryiko <andrii@kernel.org>, Indu Bhagat <indu.bhagat@oracle.com>, "Jose
- E. Marchesi" <jemarch@gnu.org>, Beau Belgrave <beaub@linux.microsoft.com>,
- Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton
- <akpm@linux-foundation.org>, Florian Weimer <fweimer@redhat.com>, Kees Cook
- <kees@kernel.org>, Carlos O'Donell <codonell@redhat.com>, Sam James
- <sam@gentoo.org>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, "H.
- Peter Anvin" <hpa@zytor.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
-Subject: Re: [PATCH v11 00/15] unwind_deferred: Implement sframe handling
-Message-ID: <20251023102332.7b7f1241@gandalf.local.home>
-In-Reply-To: <mzqhpduikzpeczmmxh5uyfzjpvdeae3ityqyp2rno4myujzb6y@ey346eksvoyf>
-References: <20251022144326.4082059-1-jremus@linux.ibm.com>
-	<mzqhpduikzpeczmmxh5uyfzjpvdeae3ityqyp2rno4myujzb6y@ey346eksvoyf>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=6+PDu1BKpeekQuNXNoUHSooGzAkk2JG8H4zonFnyfOo=;
+	b=vnbI5NA4W9KgIZRsNRiigGF43fSyLGLmnREyEIyysdvk7JSIOdrWZgOW7YSuw2Rgu3KI6E
+	2SoZDZF+oWdduZgwTajNfUXietw0/+76e3k5mZyKDpcn9G12LuOAR+QF22AfclCdt015Wk
+	l48PM4YxKskAS5fESr4CjopCTx7vD/c=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761230048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=6+PDu1BKpeekQuNXNoUHSooGzAkk2JG8H4zonFnyfOo=;
+	b=omPdSohLRvyzB0wgHZjOYuoN/Sn8Xiq4qDJvMpEU6zK2LjG1wybI/5t1+xPCS0Uge4TRN6
+	+Hiu659NVfrHAcTfx+amzmScXnMpSYNZIbbVW5FTgOc8AoUK42k2vD9LcouSEIAaigp+a0
+	uU8yjl8J5d+neUeFd0EBsbi2qzma0m0=
+From: Hao Ge <hao.ge@linux.dev>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Hao Ge <gehao@kylinos.cn>
+Subject: [PATCH v2] slab: Fix obj_ext is mistakenly considered NULL due to race condition
+Date: Thu, 23 Oct 2025 22:33:13 +0800
+Message-Id: <20251023143313.1327968-1-hao.ge@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX1/B9JQTNbR4QP1SUw0zmZnqU0dFZXkG9bs=
-X-HE-Meta: U2FsdGVkX18AsgT3wUjnPBgCWRK1PjrNucH0m2er7H8Y7F02PT+qJ2ECLo7Ib0sBuZv2V/AmogulDS/KBAtvdQqooEV2x+ikzFX8qozMGkU5h5Gbl6z6BdLKTPXIEyrlcddrSO0JS/kivrcu3ukW3wJCaBEJM4Eo7yrui2JrnbZKctgvKboz+o96sHa1VryuzA5CUCC/TZnERfu3DVdozVgG05orV2OIYN67RfaDv8zGwXhTK7WLAc3E9+eN30bv/znwWjVdTYHX6md1vdHUhP/iIRhBaotU4mG1COOyBpbdua7yyMUz0Qc0ArxE4BKxPX4foEDDQHm/Mng95sJXPt6Z4Tqf/bJDVTm4YcVvPsJ2Xb3G36C9IxxdWR9N5lOkbC398iuadGedSQUziFjuEasHxohtdqk6Rd7+m49RUfHPGb10X4nAqG4b9GaSpwiC7KBsfXAHBWyaQHTGd9xMIw==
-X-HE-Tag-Orig: 1761229386-657495
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ywywgk4jin8a8ru9j8rnqecapusdnye7
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: ac39s3y6twkonquon59gyggnoon7sayk
+X-Rspamd-Queue-Id: 05C6A180015
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7671514000B
-X-HE-Tag: 1761229403-642003
-X-HE-Meta: U2FsdGVkX19gkwBjSxzvvoKC3iUKKdXLSrfvfb5O/2Nrc9vPN4npSfenM8376ZbHKdTX8v0ldS0FBl3opIBYRyGZMi9jLFfuCQc+Nh2n/oI7MTwV7dMuQlHmK2im+kkmYyg1GmBKG0DBONWRmIU61qa5KD9pY/2/1UczI/iSwkTxYv4I1mQCMWe9fsSycjQe6cSmezx8ptktl3uWmjnbvoj8yu2+WnVz1P5h1o8gxYScGuqqgoPfm69LGGJr0o7L5Bmx1DSaFVxlZGI9mVEEppYW1sMJgMcRclPU8RDna817zOaD2Z37Y73gS2OXKjpUqjS2mNzBXyLutUq3aDr7i8lslw9EN3Jtp28W9XOgYHjwQd9aCa3dn0rZhWIhFdHnp0R/1/llSnuf325alTGUmAnvDhG1JUZdNXNnuSQMmwOE5nfB3b1hP3zNEhnJvbOv1hXSI62wHiktK/4m1OSPqL4/DVP260B5u0gPNaBFmHf2cSnIt/OG0YMFcJs45B7Nz6jpi930N671vMt9k3p09spkwQmCvfrch51xyeAb1BOIMKMRBykWWUBF4YMwdnGhHAqIWCYR1Yd7elm5qo1j4aM82jJzKKeBgFJ9zNu0xKMT49Geybe7CNqyTcOoRcBzhdaJZ0UrKjFUYTAVqbrtxaL8K0aVSvTMHYZaShr9EzknhcI6FRJbsqUjhYw5Wku+nbPtHoQnHUIlgYLyx1VWG1ZyEww4pWoQZFoGw5DJDHUMQeNcxqga+0YWzPuTverY/n14HzXXK5n10jDeZ14PTIZxI/PcJFEV8LktDivwsRjPm7s2WQ38o9+mbf3EczvV6mVVDZh1nAoMuMMNL3eCdpVZ1GCIgqE9x/TzfW3anGEmQm6BHs8jUf6lTg/7PWzyMtanL/yZ0yRoXE+EsWfL2B7lIoGutcvWk7sRCVMgDT8pnFsw1NOvHXZS14dbqsNjByhPB/z9Psyk7y4aSo9
- 2KbDj/tP
- vExQr0elP8dK50OAl8BV7V8CE+XibBVmX7pI9yvsEkoe1mg8twFcEq7oBS26WYC1i/hwdOoaevNUF9iw4kS8S+9od7w==
+X-HE-Tag: 1761230050-168620
+X-HE-Meta: U2FsdGVkX1+lrjsaGwsiPTGlq+zkozlo89sl251/vfVRiyDAsvMHQQAtKEnugqyNKBI0o3lNa0itixbCt2XlJVaFcJ3lrd1FdFfU4agdHZkJLyInwjp8EnlJZma5a1/nf/0TX5VBSIMZzt2CXHaom6PXwVPmgFFdB5Rqm8lAaa0/6XruEBlXjuE52QPMH8StMTPJre5vxV+g851OZIPZVGvJ58NK0B11HXfrmcPcaZ4GDJDeUxnvvNMFxwIFUZUr0ZAcEq0Sb6RCBnFBfiPtCvPMK8w9mXfM4red2o7+G+wEoDjADRfztBtwHZFW0PJixcnxw3v9tCMQjE+XxwoSVw7SWE11r8Q1pguA/+pKoUBk2uz2+W6KfsMpFJWkSRlVUvTOlvhspcsr+izjrx6PK9EnLYONIzn2pIlkabCAJPoYr31vL3K4JIQgQZKzrGYuCN0S7J4P6eTX0Z9K6Pv9cb5EFEFJCMGnXN1l7PwXQbTjH73FBwxE8PWtIuK6ADfASykbrCd6d4ar/NiKCqqXMY1frLSPUjnEOhkueyDJiOi0TVkD8lhcWtnarNYx2yMHq4bSliJGRGYgQNAwyi31017mQ3wIhihWiQM1k3HL/fPjowXj8BbGQAzRm0nU5ZH18bzpxu3GmRK0t1YIiDs8rvp2etvaSDaWmYWYUvKWZr2Mmfx9TjhhFFUvlQPdMaNQgiJvX7fnjOVU1IaRl7d9EGl5esc7gdJM8XhYvCf5/9rV8Iot7Org5m+RkGkfnCFATWU1w3cqZkaIuqeKk3S3mZzjFyMHD6PRarMihAdos8uh79xY5K3R4iXbrfDtteI9zCBcI+JFfjeQ20Qy5Cs/KfgvYmmT8IUsN72dbBbayzfuI+IbC6oafLFCtrlYcoPC2LDCLzl9wgIM9zkFxJzmA9FnyD7H5oVxsZ55tKhiM6ImRn3zuPdPN32HIPNiV+IGtBZKX2USyqfOfC/h79b
+ j338q4M7
+ xFzLsryn0K3S37MA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,29 +92,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 01:09:02 -0700
-Fangrui Song <maskray@sourceware.org> wrote:
+From: Hao Ge <gehao@kylinos.cn>
 
-> Please consider dropping the statement, "soon will also be supported by LLVM."
-> Speaking as LLVM's MC, lld/ELF, and binary utilities maintainer, I have
-> significant concerns about the v2 format, specifically its apparent
-> disregard for standard ELF and linker conventions
-> (https://maskray.me/blog/2025-09-28-remarks-on-sframe#linking-and-execution-views)
+If two competing threads enter alloc_slab_obj_exts(), if the process
+that allocates the vector wins cmpxchg(), and the other thread mistakenly
+assume slab->obj_ext is still empty due to its own allocation failure. This
+will then trigger warnings enforced by CONFIG_MEM_ALLOC_PROFILING_DEBUG
+checks in the subsequent free path.
 
-Please note, v2 can be dropped entirely. There's no plans to have the Linux
-kernel ship with v2. The patches for v2 for the Linux kernel are for
-testing purposes only (which was what help find the issues with v2).
+Therefore, let's add an additional check when the process that allocates
+the vector loses the cmpxchg()
 
-The plan is to have v3 be the first versions supported by an official
-release of the Linux kernel with the assumptions that changes after v3 will
-be minimal.
+Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+---
+v2: Revise the solution according to Harry's suggestion.
+    Add Suggested-by: Harry Yoo <harry.yoo@oracle.com>
+---
+ mm/slub.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-The reason there was such a big difference between v2 and v3 is because v2
-was the first version to have a consumer try to use it in a more production
-like environment. This found several corner cases that needed to be
-addressed, and that the current layout of v2 was not acceptable.
+diff --git a/mm/slub.c b/mm/slub.c
+index d4403341c9df..d7bfec6c0171 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2052,9 +2052,9 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
+ 	}
+ }
+ 
+-static inline void mark_failed_objexts_alloc(struct slab *slab)
++static inline bool mark_failed_objexts_alloc(struct slab *slab)
+ {
+-	cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL);
++	return cmpxchg(&slab->obj_exts, 0, OBJEXTS_ALLOC_FAIL) == 0;
+ }
+ 
+ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+@@ -2076,7 +2076,7 @@ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+ #else /* CONFIG_MEM_ALLOC_PROFILING_DEBUG */
+ 
+ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts) {}
+-static inline void mark_failed_objexts_alloc(struct slab *slab) {}
++static inline bool mark_failed_objexts_alloc(struct slab *slab) { return false; }
+ static inline void handle_failed_objexts_alloc(unsigned long obj_exts,
+ 			struct slabobj_ext *vec, unsigned int objects) {}
+ 
+@@ -2124,8 +2124,14 @@ int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
+ 				   slab_nid(slab));
+ 	}
+ 	if (!vec) {
+-		/* Mark vectors which failed to allocate */
+-		mark_failed_objexts_alloc(slab);
++		/*
++		 * Try to mark vectors which failed to allocate
++		 * If this operation fails, there may be a racing process
++		 * that has already completed the allocation.
++		 */
++		if (!mark_failed_objexts_alloc(slab) &&
++		    slab_obj_exts(slab))
++			return 0;
+ 
+ 		return -ENOMEM;
+ 	}
+-- 
+2.25.1
 
-No linker needs to support v2 as there will be no consumers of it.
-
--- Steve
 
