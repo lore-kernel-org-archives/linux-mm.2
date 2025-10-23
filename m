@@ -4,125 +4,133 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AE0ECCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:29:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62B1DCCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:38:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 906A88E0012; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
+	id A799F8E0010; Thu, 23 Oct 2025 07:38:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 88F0A8E0015; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
+	id A28F88E0002; Thu, 23 Oct 2025 07:38:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72F988E000D; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
+	id 8F0138E0010; Thu, 23 Oct 2025 07:38:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A45C8E0014
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:29:28 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 02F34160B03
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:29:27 +0000 (UTC)
-X-FDA: 84029158416.19.7E4CE5E
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 3070F180006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:29:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kjwYAecU;
-	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F47C8E0013
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:38:50 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 13D71160B1A
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:38:50 +0000 (UTC)
+X-FDA: 84029182020.23.99B48E2
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1505E18000A
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:38:47 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=2A0hp4F3;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
+	spf=pass (imf24.hostedemail.com: domain of david@fromorbit.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=david@fromorbit.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219528; a=rsa-sha256;
+	cv=none;
+	b=ICmAjq4pozUvUx4W2fA9dptM3zPtmJj9bkgqEpOkjmz+IzIrsDao5LMsjFkGmxrWKiElE7
+	YcoNvauYuRcCN6LH4dYdtdkCNoegPObTphqd1lqcJuu0gemyJ8OYkKMw1lPh4APjerKKWE
+	sboA1VrqVdvkxYAT2FcIeUtu/tSW7Fk=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=2A0hp4F3;
+	dmarc=pass (policy=quarantine) header.from=fromorbit.com;
+	spf=pass (imf24.hostedemail.com: domain of david@fromorbit.com designates 209.85.210.182 as permitted sender) smtp.mailfrom=david@fromorbit.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761218966;
+	s=arc-20220608; t=1761219528;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
-	b=nH0Al7XvlpFfN2tCuW5XN6bsRDQN4ssnoVOcM8uimX/cMumPTqakDBHR46vawoELeEA5tB
-	V3gMMloQiekfmkOI3oGY3RNnEoTS9XSX4A4CJ0X3XCt+s74oJsfOhtcBD1ks1VwQaJICDI
-	/jgWUihjMuBfV7rqdZQhcbnaSqgX6cc=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=kjwYAecU;
-	spf=pass (imf16.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761218966; a=rsa-sha256;
-	cv=none;
-	b=4BjodfmTLrSkneZ1g6nRw/nKP1/tEv0eLZpMTY/LE6xmNodz4SzwaRo1yDIUU6SfkL1hH3
-	Nd1Ka5IZOMecXrW9aoqeU21CxDLS3X7o3ESu5olzTPI8/aNjjkpDeR1xO2/9Z6LWTv+GTQ
-	loZ4hiUUzn3fgXcFub9VN4e8wKhHsHU=
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b6d5c59f2b6so54699366b.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:29:25 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=7OfFvZSBGvefp2IlhmMNRYw7kz1hyuz0xjUoRSAHeZw=;
+	b=FBmxieMDxk+pUWBOxMBUWNLJVS3ZYha+lBmqdA88jHvl+eSgCG/pTKYXRBec6XySb+7L8g
+	lFLZj7S3trP21JmbqXwHQRQiDxyUomdjjRv1huPRQHki1cSRggZR1vxDSMZZVMnNtpCQFx
+	8zrGnM+5M40IbIAn/h9pFOr8xvdgAuk=
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-7835321bc98so610623b3a.2
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 04:38:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761218964; x=1761823764; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
-        b=kjwYAecUQcmN6elcmYOPK6AFbXDSn0Osn4nK94DHzA8amCX+7Z412zvdrhA724OLFA
-         EaS9p84WpQPx8F+y+/nPNXNpRhCjyIoCm47w/EOJ2Ib0GI0D5CYEIQ9SbJ04TYOhtKfM
-         lY5OU7PquTwYFO5IxqdYNmHQtxxM69cKV9Ntr8bA1YPOK0xeeJduBun/0IaIVZOUTOXf
-         iWmUFz4ICYslSynJP0Iqp2vy6AOkj8j9xF+YIQTKGShC87ki437SLjTtM/pO8yXiX3ra
-         Dfyz/c7x9qvTQ9MZMq+24GuF2Bd2ng9I1/yx8lcpnNoLOkSeuwsHWSg5otQlrsIdFCgz
-         yXmw==
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761219527; x=1761824327; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7OfFvZSBGvefp2IlhmMNRYw7kz1hyuz0xjUoRSAHeZw=;
+        b=2A0hp4F3koFTEJHntxXP6Yme7fL3AmQ6vNzrVl32llkjZvDGGDip/m9UO/vKrEwfwi
+         85edB6G3WYm4vW5wbavOl9arfxvRtjrx8h/SZa4hVbEBn01pfKQ6QXKGduGtsRYbLCsr
+         3IAANCR2SIxK2CO/k+A18s0DPyDfBMoJwuE8aPtmhcu5nC+HRQzBIFk1xOMTjnVMPlc2
+         tdVTchRapgGax4s4MKIkQeJLoTrUqepABYwRxgfoNSeS8PydurTapA70idh2TQem18uQ
+         MMp9e6/YiP4oEOAyOevRGtNbn0MkMRAT61R2uTc9NjfMy8xEmgyqvGZj3s8+X5u2Qis9
+         /sIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761218964; x=1761823764;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GOi8L/T/sc914HyVaQllPfco9t+JbsWkC8LrVlAzwL4=;
-        b=RJsHq68wc4Wtow5YQoGpjL4XZgjUv4KUf9mLtat/fU9DFL8G+4GlerWLr3GfGtel9w
-         tsx3Nk0LLWAm0uL+LyIBNwhyOMryYEFsotqRpTJO+2A0pPcugGo2UeN1ATtRm4r5XVis
-         peHSlAX7LKRpC6GZcP/nCYYsOyWrvLkTuSl8m4tiWE723y3qnLOVMQPQrA2mmbhMCbtY
-         NUyPNofg5vsAv5m8KyCVaXbZJmusdOoXuEDwI08/L4nf91Bdnd7pInRnvDmkviIEyezp
-         JzfO7nC7cZUc5caqOw9JzoLznOO3uMw6c6bczTIf2DuJIwrWaSyUOHHenuzO2nqfeZob
-         Fkdw==
-X-Gm-Message-State: AOJu0YxpS5rgBdMv9wdxDMcJw62WJ2mOjSuKnVbR90gGTFq2DXN/4olG
-	E6D3iNJDVixkEITUUNJiyWIVmurH0ZghWGiZXmeSBX6k60r08yNWUXsuubFrCsEB
-X-Gm-Gg: ASbGncsmi7UsjaAQifl4KDEK1PEoZ3jnWFDrj7CzFGkeQAYC0MpqD3nugFAA2eWtC5k
-	ci40xLzROyKLdxmx283AIBeyMBn9ASVtvEvHoEn1zNMzGbFnUXWy1eb0C5TcNxcL9fVk2hAoxJt
-	bO3OyKY0a6LNiWtb8+7+QzdjrzPh8T1Qc/f849gUFhzi0Pof5mApllRv/QTPyU3+6rila0/bX66
-	4Ni2rCp6Uaah3iYcwOs0bvUjsjeWCwygx9RWK3Oj+xqoej+r2eUveza+oHeDsPtpmmyAdIYZnhZ
-	Fj5fjbmoOgzy8BuuN/kWYpanrIVIPEORPCAwlhWo6MmCatoUBtOg+j4MgDdVy5cD8b7fxGiX6P+
-	F82HjsLcdzrQo4Jw7f4yJXvqmWIyhzrn3ph3MJ8jlQ7rOCthp7akm8ln05rPre9CnPdpxReduXF
-	3W
-X-Google-Smtp-Source: AGHT+IGVcD+OUFGiPRHpX8Zf9AyspMjR70F5rNVEqM4+m7vN8XE7B3HIHBPjz9kYyXDPcdhsgkufaQ==
-X-Received: by 2002:a17:907:1b06:b0:b6d:2f3f:3f98 with SMTP id a640c23a62f3a-b6d2f3f4014mr685674566b.41.1761218963986;
-        Thu, 23 Oct 2025 04:29:23 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6d51471ef6sm182393366b.72.2025.10.23.04.29.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 04:29:23 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-block@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	lvm-devel@lists.linux.dev,
-	linux-raid@vger.kernel.org,
-	"DellClientKernel" <Dell.Client.Kernel@dell.com>,
-	dm-devel@lists.linux.dev,
-	linux-btrfs@vger.kernel.org
-Cc: Nhat Pham <nphamcs@gmail.com>,
-	Kairui Song <ryncsn@gmail.com>,
-	Pavel Machek <pavel@ucw.cz>,
-	=?UTF-8?q?Rodolfo=20Garc=C3=ADa=20Pe=C3=B1as=20=28kix=29?= <kix@kix.es>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	"Lennart Poettering" <mzxreary@0pointer.de>,
+        d=1e100.net; s=20230601; t=1761219527; x=1761824327;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7OfFvZSBGvefp2IlhmMNRYw7kz1hyuz0xjUoRSAHeZw=;
+        b=BWvmmH7ETt+3aA6QyWSOxOn0oH+jbHr4CA3TGo6TQTwDMIcr6DkTz+omS/JG0xyeL3
+         hMYMsnJErg/5izSPtbov3mfkILyabZtNeNouLm/9cuiUBflz9LXzsWZxx80EUPOtcOxJ
+         1t9cMM8nBtw+LSM3iBdeEp1G4IDV7jCw7bTqWneC/VNu4IgnbrAXKDAbG/UtrGUmdk9B
+         3yeEpkDTjMQjsIEg0sy0xcRFU5zPBSy91ATjAwkM1gfasH/QMvg0qD3Fp4VJDKJZwSMl
+         1NtAL9DGNlE+Tpo8L0IqTlYkHVOyi+9PFzbZc+TOvvfp0nxZCXigwU+qYDRQBj3Fb8wc
+         xKyw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9Ae//vWe0F23KWg2psWJWcp2Pf98fhTCE4NZGWuL92ZDaZ3IrN/kvps3CiP2DK3g/BviCrg2AMQ==@kvack.org
+X-Gm-Message-State: AOJu0YwBUDBuNJtrJ/1qFB0Do/IdamLvaiP7flatZoU5xjkFt6dkb++H
+	8jSvEpXr7CAWJfHR3PeQt6MI+JdgeOD4bYQazo0V7qfiFgvsDs23iL+JOHH/H1Rs0tQ=
+X-Gm-Gg: ASbGnctqb7rAlDZBgv0Y6tXckSPMoF7ZtPIq7qO/tgQLV4Gg50b61rCYWuQEMTh/M10
+	+vCG3Il8yuh0uSNmbZqGzWumBj31kOrPVGq7SrukrfQrjOfTwUNJ3KGHchlMSoE7p7cfRunchhK
+	U+QlTPUaUNd8nSzYB7nzBMuW1eJZvQj9esdzf9idZ6H43ETyPmp14Wl2j0NqOURyMpzv8AOOjN8
+	vmSL9Cajh3+13vbNtNedPZZf2Z7UX8zTWJmCyyZT02OV6mlOTzoo/30xf4CgZc9unXqRaGK9Hh9
+	uf4Sgavc3GiQsErZRRJGpScinUSyfQmHwhNyDq0XQ/adWv50II0KQotiK/c4oTAqi+NVN0oUwmI
+	opqonSKkh3r+LJUcAq0mRAoWEHT1Om0/xqRqsUkQfrQNJ+710k+SsqIunYQ2tQY4IDrIDds3lJV
+	R8f20cw/WimQpSvmw1dwR3LtRncHiyNGCdXRIXRMxNNATdnTH6+q6CPp1TMyU1/w==
+X-Google-Smtp-Source: AGHT+IFGvY2Pdi6Kzm9/7JRxOvRXqUtuxuo/ixSX3c7klUnIdzpgEtIPhjSJGnNNJmvDxy7KykQvkA==
+X-Received: by 2002:a05:6a00:9509:b0:7a2:7256:ffb4 with SMTP id d2e1a72fcca58-7a272570178mr3763899b3a.26.1761219526650;
+        Thu, 23 Oct 2025 04:38:46 -0700 (PDT)
+Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a274dc12bdsm2225482b3a.72.2025.10.23.04.38.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 04:38:46 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.98.2)
+	(envelope-from <david@fromorbit.com>)
+	id 1vBteV-000000011nJ-0x06;
+	Thu, 23 Oct 2025 22:38:43 +1100
+Date: Thu, 23 Oct 2025 22:38:43 +1100
+From: Dave Chinner <david@fromorbit.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
 	Christian Brauner <brauner@kernel.org>,
-	"Linus Torvalds" <torvalds@linux-foundation.org>
-Subject: dm bug: hibernate to swap located on dm-integrity doesn't work (how to get data redundancy for swap?)
-Date: Thu, 23 Oct 2025 14:29:13 +0300
-Message-ID: <20251023112920.133897-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Darrick J. Wong" <djwong@kernel.org>, linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
+Message-ID: <aPoTw1qaEhU5CYmI@dread.disaster.area>
+References: <20251020163054.1063646-1-kirill@shutemov.name>
+ <aPbFgnW1ewPzpBGz@dread.disaster.area>
+ <d7s4dpxtfwf2kdp4zd7szy22lxrhdjilxrsrtpm7ckzsnosdmo@bq43jwx7omq3>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 3070F180006
-X-Stat-Signature: uiyxk7b9jiqa8qj7tbffoer3emmox1mw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d7s4dpxtfwf2kdp4zd7szy22lxrhdjilxrsrtpm7ckzsnosdmo@bq43jwx7omq3>
+X-Stat-Signature: pnxihmaj16khpgqyoptqx9cbbj7z61fp
+X-Rspamd-Queue-Id: 1505E18000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761218965-623395
-X-HE-Meta: U2FsdGVkX18QBaIaJl3WDGTcN0ti3i8cQwhn6CUVZhEJ7bUFvuQLgwY+j9wUnARfe/W82oNdXsMgVho4MDM1tEdZBVHGmnDPD/snybVd6xaMkBQWE3YKYsc93RAnJlmWNH4iW0x99wEYbuTzRJuEBdTSPTor0qYLgsKXT6/4XeWnR3rWZQXnHYqArDAvoliDdcsbu9RoTScDLU9VivAG/bMyBNw1801SoG9FLz1fcGFC3+q2qJdX7nq44oFMUmI5ZvaqmeQlTLhCY8KjHZf583L8Ln15I9ysa0qUb7za2dM9FXRQr+D0NmmF6+ilINfdsm/rmnkB4p3f9IenbaCXOyPJ6vYqw7j7RTzIi4NnmqsGAlNXMf0PV76ASbCyWACNNidJNKhjb3bm8vOAp3FphFfSL1cyDNryQsWx/5BuKPUImtMkvDOAk01Wxumt7QVixp+zYs5M2h4YydYYrMktnNJlC2yjMFgQEXIG1LN9iVf+/FiRJdmrkN29LF6eP29Ee23k16dw9LeiNcGWHjtLMXg55cBNLdtJiU8kpI0pXTYkOsmvHTlc7M40g5BotNrHybKJFGo3QiWBwLB2v4CBuzR8O/g5iWg/HJhSQVdsDTiX3QIxwals31GE8lIR8uY2U2pNC/e1tq0UNNER1uDyK76DUMqP6A6v0aFoY9iULfdbwRIwIOX1oWTc/FCdeEApB+Ib/7ZD8x7vrcAiB8QndiDawwwMvfu4Zz/BwmN9/2MHATG1fVH+EgOMgU8NMs7Cr1r4xTn/Cmy5fO81+bGuHZ7Qwnm9jPi0vxLMKg+wGjClmE4acdwLLeMG3TdL8epCOKCMbOHJtzBWG6cKC4eHVvM6lwVbz8fEgNVYeESjIhFXv7XKVH6pMJV+BddPzveazwlHgCDI63lWORxrls+y28ej2EmxDMwlFNItUx6L43mdzPNC2SKptjboNdGBHBpi0JTZr40sdLGVYqp/388
- Z3gjhv5+
- YzDryBeaKSD/nSaFPjqo0PNchv++dLxA1lZJOpXUDpMBNGq/hD59tHJP+gMnf+OpAYbApjzsHKT0v5ACV/2mbSbe5QdjR/MzOQrg0hoxs8SoHrVGGRfaoBc5CevRom6uAeOK8+jLY+4NpzS6BRWqVvjTVtlRdI8T44yLJnagH1vJ/9t79y9oq9MBRyUk6VrNMUaRkyeSLYO33Eq5QdV4G2Du10fOHX7BdAwszFekKmmsbREuz3x1Gbb+y2NYahVOEggfBTVGa6u0o7fQZuiEOg4/bsj8U1KRt1RU534H1AUyA6FMLx0d6pZ28zsU7T7sfLC1kaYE6gEdNRMCDoOS2FVTNG5EvKxvVFb7xgoTb3Jn61fxPUnp0FToK7u/G1ZXoO0ha8ElmoLw9JvPJzAg7P12aUPju7VfYURgFD0lXgXjjhPr+EUAcYKOLWQDMSPALJ4QbGQ4O6XP1HW27JYnCy2k2rMpl3mgjudJbIOqmsnULT99HPKH+5twUA9BRUrqyWM1meRYW8MIGzd8bCj6O6A2JYmo900Vw5GcN
+X-HE-Tag: 1761219527-508958
+X-HE-Meta: U2FsdGVkX1/yU7J8d/b5CDVJrLHAJO4BL6KHwpq9zXLg8YlvbJUL18wexjJWRgWe4/NAnc9Re5whr6yQGwdSJRRqtIlmA5feQkvF6WX8w2GjBC6egyskWXf94mtghGYdVStWFZebNue3rd70sD2gW5JGkLuTceBolAHsmnlQcQ+9hKFLm3IxmU8HhkuCXxuDVEXx8quCOCxQrnWetD9vjKNFi6ty7N2xQz7oZPkCs46pC2OKJvneQ3034BXZMjMmOrw39KdvN5voLhtoCc/t5jmbNz2Sn7OMt8obvQBs0jBHMPuQcWNKs9LXaKJts+BLlxxKegPrTI0mxlOXuP3+qNz2uNajA9AzkNH+fhPB73ml15fSF1v7JxGtgnRv0g1TukqsF+wfnGuuYu+POuFvvaZtll0Aoah6YO5dy6LUPpz+iFeccnLy90W/HQ09ZCzRWoG1bjFWMTN2s9usmY2DFEljtG7yP3l6XwJaZK5LrqiGvdhg3ktluyEafK30SX7UMJaCpNuRtZX9UYNwz5YkPu1nZlcHtcW1RBJ5lneVq5p+jIyoEFAdp5H7Ck37nmWNKoFS9PHuLCLZJ1cJcbt+aHzhMlRmjXU2vfyJnYdlWMEZqtU8x07su2MgJYz9rP8LbujsYBUoI+GmC/F5TEZbaHZDn+Br/fXAM7OH02NnjcvJITCeNYnlTnQ67AiAh54jurPKSyqsa4KMmbjLuydUSd+ir4cCrdqi1hOVS9O4//twHPkaX9y6riiDiW6PnPDIZVZLD+y7ibmOQ9a3wO06/m7Dw9AgUuQIxaLbesOdEcJRzwes15o6aMN/sUz/uLnjEp/Si2qcoFG3gWMg+HTcRYkwdf3/TljyafOkGWZ9sTweBFY013JiXFtiv97gwVHNBs7jvgGIwM0nb59JpIyFim1GWMjUZ2d7bzuRZUeP8n8rvzkfcx5uuiE2Gtx4PC8NEufpMQvl3tDZUV0EJq0
+ UlNmjlRO
+ As2kVU6NY0bBT31mSMFwrn8G9EO034PsvbaSY3IKaI+xkZkX9pilJ/ozpNOqTSUowa2uP/y22cAmwxpi2i3rDfIIjyYEN2PIRDIURtyIP+1ifgnEoj4W925ATJWacMZn7NV88bSQ9H4RmTw2qZINIcTs69gZAkgrK5sxTlDYnjNpZ2g5uYoMAbGNkMsPn8aWlOmx1ObqEtsm2N3pQIiLnqSlpZEL7Hom2ey0TEVcZgo4mNGmxvxXCsvXW2FvK1cFS3ui8k7ZPM88O5APTjCZ2fTywzGYnsyo5YPyDxaOMzTGIIfG7wUZ6kTgT+2/wOf/X/pIhbK2tmPWSySiHscSzAUvty+pWMFl/S4upS13k/iiM0FWXgflLjvhng/7Oqo6sT0B5g2aSvlPRq2zhVxn1ifePOP6KkFm2g0C7v11lmy4pt4DIQMYiZq+K2vtoNopsZ6xTf6MgnDQ3ySM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,156 +139,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi.
+On Tue, Oct 21, 2025 at 07:16:26AM +0100, Kiryl Shutsemau wrote:
+> On Tue, Oct 21, 2025 at 10:28:02AM +1100, Dave Chinner wrote:
+> > In critical paths like truncate, correctness and safety come first.
+> > Performance is only a secondary consideration.  The overlap of
+> > mmap() and truncate() is an area where we have had many, many bugs
+> > and, at minimum, the current POSIX behaviour largely shields us from
+> > serious stale data exposure events when those bugs (inevitably)
+> > occur.
+> 
+> How do you prevent writes via GUP racing with truncate()?
+> 
+> Something like this:
+> 
+> 	CPU0				CPU1
+> fd = open("file")
+> p = mmap(fd)
+> whatever_syscall(p)
+>   get_user_pages(p, &page)
+>   				truncate("file");
+>   <write to page>
+>   put_page(page);
 
-Hibernate to swap located on dm-integrity doesn't work.
-Let me first describe why I need this, then I will describe a bug with steps to reproduce
-(and some speculation on cause of the bug).
+Forget about truncate, go look at the comment above
+writable_file_mapping_allowed() about using GUP this way.
 
-I want a personal Linux laptop fully protected from data corruption (cosmic rays, etc).
-And even if data corruption does happen, I want reliable indication of that,
-so that I know that I need to restore from backups and replace faulty hardware.
+i.e. file-backed mmap/GUP is a known broken anti-pattern. We've
+spent the past 15+ years telling people that it is unfixably broken
+and they will crash their kernel or corrupt there data if they do
+this.
 
-So I did this:
-- I bought a laptop with ECC memory: Dell Precision 7780. It seems to be one of
-the few laptop models in the world with ECC memory. And probably the only model
-in the world, which DOES HAVE ECC memory, but DOES NOT HAVE nvidia card
-- I set up btrfs raid-1
+This is not supported functionality because real world production
+use ends up exposing problems with sync and background writeback
+races, truncate races, fallocate() races, writes into holes, writes
+into preallocated regions, writes over shared extents that require
+copy-on-write, etc, etc, ad nausiem.
 
-So far, so good. I'm protected from both memory errors and disk errors.
+If anyone is using filebacked mappings like this, then when it
+breaks they get to keep all the broken pieces to themselves.
 
-But my swap partition stays unprotected. And yes, I need swap. I have 64 GiB of RAM,
-but this still is not enough for zillions of Chromium tabs and vscode windows.
+> The GUP can pin a page in the middle of a large folio well beyond the
+> truncation point. The folio will not be split on truncation due to the
+> elevated pin.
+> 
+> I don't think this issue can be fundamentally fixed as long as we allow
+> GUP for file-backed memory.
 
-And, according to btrfs docs, if I put swapfile to btrfs, it will be exempt from raid-1 guarantees.
+Yup, but that's the least of the problems with GUP on file-backed
+pages...
 
-It seems that the only solution in this case is to put swap partition on top of dm-integrity.
+> If the filesystem side cannot handle a non-zeroed tail of a large folio,
+> this SIGBUS semantics only hides the issue instead of addressing it.
 
-Note: I don't need error correcting code for my swap. I don't need a self-healing swap.
-The only thing I need is reliable error detection.
+The objections raised have not related to whether a filesystem
+"cannot handle" this case or not. The concerns are about a change of
+behaviour in a well known, widely documented API, as well as the
+significant increase in surface area of potential data exposure it
+would enable should there be Yet Another Truncate Bug Again Once
+More.
 
-There is discussion on Stack Exchange on exactly the same problem:
-https://unix.stackexchange.com/questions/269098/silent-disk-errors-and-reliability-of-linux-swap .
-I think it reached the same conclusion: the only solution is dm-integrity.
-
-Also, as well as I understand, md raid is not a solution: when reading, it reads
-from one disk only, and thus doesn't detect all errors. It can detect remaining errors
-during scrub, which is too late (wrong data may be already consumed by some app).
-
-Also: I don't need encryption.
-
-(Also: there is other solution: "cryptsetup --integrity", but it uses dm-integrity anyway. We will
-get to it.)
-
-Okay, so I put swap partition to dm-integrity, and it worked!
-
-But then hibernation stopped to work.
-
-And here come steps to reproduce.
-
-Okay, so I have Dell Precision 7780. I bought it year ago, so I don't
-think my hardware is faulty. Also, I recently updated BIOS.
-
-My OS is Debian Trixie amd64. My kernel is Linux 6.12.48-1 from Debian.
-I created swap partition so:
-
-integritysetup format --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7
-integritysetup open --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
-mkswap /dev/mapper/swap
-swapon /dev/mapper/swap
-
-When I need to activate swap, I do this:
-
-integritysetup open --integrity xxhash64 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
-swapon /dev/mapper/swap
-
-When I need to hibernate, I do "systemctl hibernate".
-
-And hibernate appears to work.
-
-Then, when I need to resume, I boot to my hand-crafted initramfs.
-That initramfs does this (I slightly simplified this script):
-
-==
-busybox mount -t proc proc /proc
-busybox mount -t devtmpfs devtmpfs /dev
-busybox mount -t sysfs sysfs /sys
-modprobe nvme
-modprobe dm-integrity
-modprobe xxhash64
-sleep 1
-integritysetup open --integrity xxhash64 "$LOWER_SWAP_DEV" early-swap
-sleep 1
-# The following "blkid" command should detect what is present on /dev/mapper/early-swap
-TYPE="$(blkid --match-tag TYPE --output value /dev/mapper/early-swap)"
-if [ "$TYPE" = 'swsuspend' ]; then
-  echo "got hibernation image, trying to resume"
-  echo /dev/mapper/early-swap > /sys/power/resume
-elif [ "$TYPE" = 'swap' ]; then
-  echo 'got normal swap without hibernation image'
-  integritysetup close early-swap
-  # proceed with fresh boot here
-fi
-==
-
-And this doesn't work. Hibernate works, resume doesn't. :)
-"blkid" reports swap as "swap" as opposed to "swsuspend".
-
-I suspect this is because hibernation doesn't flush dm-integrity journal.
-
-Also I tried to add "--integrity-bitmap-mode" to "format" and "open".
-Resume started to work, but when I try to shutdown resumed system,
-I get errors about corrupted dm-integrity partition. (Of course, I
-did necessary edits to initramfs script above.)
-
-Also I tried to add "--integrity-no-journal" to "format" and "open".
-It didn't work, either. (I don't remember what exactly didn't work.
-I can do this experiment again, if needed.)
-
-Then I tried to do "cryptsetup" instead of "integritysetup". I created
-swap partition so:
-
-cryptsetup luksFormat --type luks2 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 /tmp/key
-cryptsetup open --type luks2 --key-file /tmp/key /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
-mkswap /dev/mapper/swap
-swapon /dev/mapper/swap
-
-And, of course, I did all necessary edits to initramfs.
-
-And this time everything worked. This proves that I didn't do any mistakes in my setup
-(i. e. I got initramfs right, etc), and this is actual bug in dm-integrity.
-
-Unfortunately, LUKS created such way doesn't have any redundancy. So this is not solution for me.
-
-So I did this:
-cryptsetup luksFormat --type luks2 --integrity hmac-sha256 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 /tmp/key
-cryptsetup open --type luks2 --key-file /tmp/key /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
-mkswap /dev/mapper/swap
-swapon /dev/mapper/swap
-
-And this time everything stopped to work, again. I don't remember what exactly went wrong.
-As well as I remember, that "blkid" again returned "swap" instead of "swsuspend".
-I can run experiment again, if needed.
-
-The commands above use dm-integrity internally. So we clearly see: if dm-integrity is involved, then hibernation
-doesn't work.
-
-Here is a user with exactly same problem:
-https://www.reddit.com/r/archlinux/comments/atg18t/hibernation_wipes_swap_and_my_system_hangs_on_boot/ .
-I. e. "hibernation doesn't work if swap is on LUKS with integrity protection".
-
-So, please, fix this bug. Or say me how to solve my original problem (i. e. achieving full reliable error
-reporting). I'm available for testing. Send me experimental patches. I can provide more info, if needed.
-
-There is yet another potential solution: uswsusp ( https://docs.kernel.org/power/userland-swsusp.html ).
-In short, this is hibernation driven from userspace. I. e. uswsusp allows for finer control of hibernation.
-Thus, I can write my own userspace util, which will do hibernation, and execute "integritysetup close"
-after writing image. Assuming that original problem is what I think (i. e. lack of journal flush after writing of image),
-this may work. The problem is... latest commit to userspace implementation is dated 2012-09-15
-( https://git.kernel.org/pub/scm/linux/kernel/git/rafael/suspend-utils.git/ ). Do I really need to use such ancient
-technology? I didn't test this yet, I will test it in coming days. Even if it works, this will still mean that dm-integrity
-is buggy with kernel-based hibernation.
-
+-Dave.
 -- 
-Askar Safin
+Dave Chinner
+david@fromorbit.com
 
