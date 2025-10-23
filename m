@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 669D4CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:42:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A87DCCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:42:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2EE38E0016; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
+	id 59EBB8E0018; Thu, 23 Oct 2025 07:42:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDF1A8E0019; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
+	id 54EFF8E001A; Thu, 23 Oct 2025 07:42:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AA64A8E000D; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
+	id 4167A8E0019; Thu, 23 Oct 2025 07:42:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 83BD08E0019
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:42:36 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 23F1F140A85
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:36 +0000 (UTC)
-X-FDA: 84029191512.28.28ED331
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0871C8E0018
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:42:38 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B514BBBD1A
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:37 +0000 (UTC)
+X-FDA: 84029191554.30.A465504
 Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 94AF5140005
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:33 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
+	by imf23.hostedemail.com (Postfix) with ESMTP id 436A3140009
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:42:34 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219754; a=rsa-sha256;
-	cv=none;
-	b=AlNxJeS5bwLYmiKrAq1jLVfJucvwcSUu2i+5HJGPxkmTfLjUaYxAmAGnmIaoWcFvJFOdVm
-	bmCAxdCkhg2Qb2ic53MUcqptynNqIX7Jyz3hqYEvyD++YW4FcaQeK/RWTeTvqs2huOwjN/
-	bfRWEmmmv8Eei+F9qpJPWepZHWDAhX4=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761219754;
+	s=arc-20220608; t=1761219756;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9A2nU4Q9CfFKJy1F+ZruVLZviyBvQeA/zb4zBF556iU=;
-	b=YZY8FUKIO5sI+09aDiU5vT6wiYhksm96M/omyQZuasOzwKyWTu4v/ikV4Ch+SLUy7hXUsR
-	FcwFi5OxUSzeTxWmzOrVLUHIp3IhdQkzRJIfvZxeDzMsFNknwNEpdHjycDjP6yfsT0uedD
-	zBhVa4jQtK5a+s1FbF72p7Qj2M01fDo=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cskY65YtpzRkKc;
-	Thu, 23 Oct 2025 19:37:46 +0800 (CST)
+	bh=dEh5Bqq3FTF368WNk1hTPIQnNG563K/dnGo4WinwWCY=;
+	b=jBKzc8BBU/jwfP9UHFFCZiY+kaMsdAJ1WhTv1pbd59Jdg8sYUW6LSrm+SsPmfYqFbfN/2t
+	ljxTWS9EN8+dnV9Yd7OPKlmYSXwo8rVpPWeBrbV0ELjBnnh0Ej3NYD0y/Mq+P0VV6wEdQk
+	SR8rMdzBeU+04KdErAi4I20brJYTKUs=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=none;
+	spf=pass (imf23.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.188 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761219756; a=rsa-sha256;
+	cv=none;
+	b=iQApG1kmr3EE3GZkbrjYQPIvLzlHJSi72dQKKmORmb9wxswIaYMHaf34Ay7EycW4PNwA1s
+	Twb01F5UswjtMKPIydnhdxk0u5d2XIypTcNTiaZqtS0/29dQUXNn0ElTXlXe16GCysmUAt
+	Ml2Kxo+QoRdOdaE5gXggRnppZloLuHY=
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4cskY73qvgzRkFJ;
+	Thu, 23 Oct 2025 19:37:47 +0800 (CST)
 Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id AC327180B63;
-	Thu, 23 Oct 2025 19:42:29 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 70635140121;
+	Thu, 23 Oct 2025 19:42:30 +0800 (CST)
 Received: from localhost.localdomain (10.50.87.83) by
  dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 19:42:28 +0800
+ 15.2.1544.11; Thu, 23 Oct 2025 19:42:29 +0800
 From: Kefeng Wang <wangkefeng.wang@huawei.com>
 To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
 	<david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
@@ -68,9 +68,9 @@ CC: Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan
 	<baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
 	<Liam.Howlett@oracle.com>, Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Subject: [PATCH v5 1/4] mm: mprotect: always skip dma pinned folio in prot_numa_skip()
-Date: Thu, 23 Oct 2025 19:37:34 +0800
-Message-ID: <20251023113737.3572790-2-wangkefeng.wang@huawei.com>
+Subject: [PATCH v5 2/4] mm: mprotect: avoid unnecessary struct page accessing if pte_protnone()
+Date: Thu, 23 Oct 2025 19:37:35 +0800
+Message-ID: <20251023113737.3572790-3-wangkefeng.wang@huawei.com>
 X-Mailer: git-send-email 2.27.0
 In-Reply-To: <20251023113737.3572790-1-wangkefeng.wang@huawei.com>
 References: <20251023113737.3572790-1-wangkefeng.wang@huawei.com>
@@ -81,13 +81,13 @@ X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  dggpemf100008.china.huawei.com (7.185.36.138)
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 94AF5140005
-X-Stat-Signature: iiy6w3zqijn53wfqpgd7an9no9kkn48h
-X-HE-Tag: 1761219753-630976
-X-HE-Meta: U2FsdGVkX19PPwUVd80ZPJGG/oagb8R0Rd19TmME0f/AuYQ3mzPrvE+bz60RM9lgtJM1sa4CMxN3HJQNu9SaDW8qjvzKHx1PbnSXTq6wt1VJaSIEu4onGmn1CzXRbFptfl0NaoClnO/CTi1hptmnDCUlTc4FqBi3vexYSphYjsy+/aE9H8UXOrb8yE7lqFn0rOkI9RYL82WCE7hD3X9gC2w7C5FWGJkLMNGvxk+qAw416dVIjWX6YNvgX7n64WKFcUaGGQ/4Qd8H8h49XGWKvC3+5ar2b8gfbaueB2h0Ob2tYRQmCjqJNCG6Rk23977Z6DzLtuyM1kteTIF9Rnu67Jl25G204IoD/dWmv8sj0zCz6hy7PKgNyqgca0aH3kwVPYOTj25pRAb6U0DI21Xe9Ki+qKlZkZ1LrZxi7pgiWj5w9XbLIzTEY3VchdW0BmbXMoFMytsslOuLuDJKyYyPoVwYM5ol4D9ZL8OZXkqzilIrBGfJf/v6ZFYUXaXUECVa70Zi5qTHtHG2tX9yVYIh/aCSSwFMkhKLCHcVa37JMA9ZXManC2wdqFE2pHXXOMwZNbtGIyNtiNnzItIzGEbAteQzhxyHT+YefUOLd4unAVvvlc1qK4r20Y3Gju6BoWGcsHv1E4yv+yAX0q46RQa/qR173i3EzUYJH2Ij4pCogti0ZqCqW3aAQabpxrnRKXljHIj+WWRA5vcNXO87VEjs7led3xMw7BXVVK70wrO9jCeCb2EQvEszD3opZNNCPB90LGp38Y9BrOggZC0PTbFaSFgRunOsT5UWrshX7mPUNiWmDjbtd+gOjEd5TpM4WSrIxI7Bp2/HW0hs/OvnG9mUrKHUlmKZSWqFiKXENdw0B4EUlcMe/NMrBI73KyqsQcooC5SVpxrcX/+9QhAHdJtob2dXi8Ahvp519Nh54tDFSqVKogtychH03OPWYvvMT2m178/79tIsA94DotQYLNf
- UZ1eMZOH
- QkqogxiHHsBUnVUz/aSZhLv2XZXxzydRwayN7AEAMPwKE4x8JEhBb1fvdUY48VWF8ZufXM/GWxMpFlVTOQBj31dwx+tr2bRKFX76FrZoxBzxUTcUg+V+KrlvOypMHXfqcbraiGLINwDfPbwVYUCYXGnyA/UFlOoJ0DvTe2GQMdbPOaFhknG7m/f7bAVM+aHARBKMeBGw6vjpEIHvt/jHGBJzvBVTzxhAEwELWHCO9LL6XkIXYvgLiMYioDL+ksAFoAmK9uBn9txZtl4Vbfxq3WUodWjcWbIZ7AyH2UlKbJ216m63LlZ558lD1PZl1kp6SNJKQEBT5EZQtoysVzrx66quuDxDOG4WRicmy2q2Y7CKC0NqpS7Jyy/g/Z5fOZrGiobAE9tKkSCFZ/rI=
+X-Rspamd-Queue-Id: 436A3140009
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 8frndqpoe3kw991b99ektarx4c46ppny
+X-HE-Tag: 1761219754-628291
+X-HE-Meta: U2FsdGVkX18PJlSONvzdLNo6cXSGKCvS07exJo/yT14ks8wD7Y0QlVV8+IoIFcHOBeAhOiI5/UZfpK/lzFuISPzjlsjE7tloSeVyY6lInK7dWSfX5c+i/TAn83OkM7VtI78G9QAlUse2QqqTHYPl46XwNCGRzFaoSEiJd3YNbp8SzJYzjUuJpc7LeI0jhHMtNPXHjWEKkJRzr8jmhE4wUzE9/qsDEnKfDxvNIWs6RF5kOiOY97bFuIVEbpU0mi/SnWokWkiAI8FNkcsSGkYOSBai84I/4IJQmoyFZVqtftxTc3IO6CIYPXz7MIr7kKWaITEk1LvPhVR6xM0mvDJ5W+cIADn/YLyE5k0188ezh5nWF9WWTI1dAQ14vPASdmORM9vbAQMyshMBX/zOtEjJZeLkWr7ok4kVLCtNRQP3CWTxbk7+5gJBKnBunFSJuHqnb5Ac4U0vCjZDhrq6BM+iR+MryXjbEJ6zCBXYIlKbhJPW/fwzfe+ZSzTUVAhPlWDcvflU3YyHMFivtBAFhjBCpc6OQWitc0FRY0hevorMwf+ltLKdwKWacDtOKl4KdBzDwzFwyasqZ9DLYxrxH52o1iG77wXsJqoM5LqnVsaH4uLs07NdiZJJ/i9LoEEo6rgmcRd3ECDGr21UjrpQMWjER+E03/Ipp4eP+CrB49etTv0oeijvP3oDKJ0li8FDeiqBUyNtstSB7V/U6HrA8RXuGEBP5t7xzWNhjISbvkoVHKrl01fxktjVQpwL8WKldYD1uSyvUR6AvWiHgYidYLKTMwLILiPmTSwMZeJHIb8uY1H8aqzrpTCSNuEduP4eIHf07AutwNK+8WKtmwbshXAQU/BUkJbt+vLhympuK5nKmKVW+pRYvQ+KTTvSn3I8psF4ed7+bQ4iP+BBdx/sHgQQ45uoqm7gJEIvwyiSohiMkeXDVhK/jfiSLR8Yu+U+8n6SEAo113/au7LDcS4wOYl
+ DHdBjxR4
+ ju46DT+mP+h6bjS76OSstZr4RpYBsQB27BgGGABLH94/+BH9saH+L0xp+LeMEci2XGUcmxd9S4WSzF8rDhxSZXww/rwgvfUcUhgcj9xnTXXSO7rKnsaquepYYl0wTgx79gImo/otb6QggfOmnXSWZNA3147r+UU3QKW4TNAuYu9Zg0rcf9G2qvcdUTcZxpN7Bf2EvOxIaCVMVZq/ExWQM3BcjkjBouSKuY1afyBfCkWeZDPSB0Y747iKNZMfvrtt0izEuPT9lQvna1B16BOob5Rk9sxionEm1YUxS8MmPdhoRMtw1n2PxShLXdP/mj91Z/iabE5Zncb5X+IKP/rgY0NHcX/Roza0LOTrVLNqWKBKSsHg25UX/wTRJRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,42 +96,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If the folio (even not CoW folio) is dma pinned, it can't be migrated
-due to the elevated reference count. So always skip a pinned folio
-to avoid wasting cycles when folios are migrated.
+If the pte_protnone() is true, we could avoid unnecessary struct page
+accessing and reduce cache footprint when scanning page tables for prot
+numa, there was a similar change before, see more commit a818f5363a0e
+("autonuma: reduce cache footprint when scanning page tables").
 
 Acked-by: Zi Yan <ziy@nvidia.com>
 Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
 Reviewed-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Lance Yang <lance.yang@linux.dev>
 Reviewed-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
 Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 ---
- mm/mprotect.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ mm/mprotect.c | 29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
 diff --git a/mm/mprotect.c b/mm/mprotect.c
-index 988c366137d5..056986d9076a 100644
+index 056986d9076a..6236d120c8e6 100644
 --- a/mm/mprotect.c
 +++ b/mm/mprotect.c
-@@ -136,9 +136,12 @@ static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
- 	if (folio_is_zone_device(folio) || folio_test_ksm(folio))
+@@ -118,18 +118,13 @@ static int mprotect_folio_pte_batch(struct folio *folio, pte_t *ptep,
+ 	return folio_pte_batch_flags(folio, NULL, ptep, &pte, max_nr_ptes, flags);
+ }
+ 
+-static bool prot_numa_skip(struct vm_area_struct *vma, unsigned long addr,
+-			   pte_t oldpte, pte_t *pte, int target_node,
+-			   struct folio *folio)
++static bool prot_numa_skip(struct vm_area_struct *vma, int target_node,
++		struct folio *folio)
+ {
+ 	bool ret = true;
+ 	bool toptier;
+ 	int nid;
+ 
+-	/* Avoid TLB flush if possible */
+-	if (pte_protnone(oldpte))
+-		goto skip;
+-
+ 	if (!folio)
  		goto skip;
  
--	/* Also skip shared copy-on-write pages */
--	if (is_cow_mapping(vma->vm_flags) &&
--	    (folio_maybe_dma_pinned(folio) || folio_maybe_mapped_shared(folio)))
-+	/* Also skip shared copy-on-write folios */
-+	if (is_cow_mapping(vma->vm_flags) && folio_maybe_mapped_shared(folio))
-+		goto skip;
+@@ -307,23 +302,25 @@ static long change_pte_range(struct mmu_gather *tlb,
+ 			struct page *page;
+ 			pte_t ptent;
+ 
++			/* Already in the desired state. */
++			if (prot_numa && pte_protnone(oldpte))
++				continue;
 +
-+	/* Folios are pinned and can't be migrated */
-+	if (folio_maybe_dma_pinned(folio))
- 		goto skip;
+ 			page = vm_normal_page(vma, addr, oldpte);
+ 			if (page)
+ 				folio = page_folio(page);
++
+ 			/*
+ 			 * Avoid trapping faults against the zero or KSM
+ 			 * pages. See similar comment in change_huge_pmd.
+ 			 */
+-			if (prot_numa) {
+-				int ret = prot_numa_skip(vma, addr, oldpte, pte,
+-							 target_node, folio);
+-				if (ret) {
++			if (prot_numa &&
++			    prot_numa_skip(vma, target_node, folio)) {
  
- 	/*
+-					/* determine batch to skip */
+-					nr_ptes = mprotect_folio_pte_batch(folio,
+-						  pte, oldpte, max_nr_ptes, /* flags = */ 0);
+-					continue;
+-				}
++				/* determine batch to skip */
++				nr_ptes = mprotect_folio_pte_batch(folio,
++					  pte, oldpte, max_nr_ptes, /* flags = */ 0);
++				continue;
+ 			}
+ 
+ 			nr_ptes = mprotect_folio_pte_batch(folio, pte, oldpte, max_nr_ptes, flags);
 -- 
 2.27.0
 
