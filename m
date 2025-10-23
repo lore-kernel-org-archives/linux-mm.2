@@ -4,190 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B888CCD1BF
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 20:10:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E844CCD1BF
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 20:42:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 842468E000E; Thu, 23 Oct 2025 16:10:49 -0400 (EDT)
+	id 618A58E000F; Thu, 23 Oct 2025 16:42:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81A3F8E0002; Thu, 23 Oct 2025 16:10:49 -0400 (EDT)
+	id 5F0688E0002; Thu, 23 Oct 2025 16:42:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 708F18E000E; Thu, 23 Oct 2025 16:10:49 -0400 (EDT)
+	id 506298E000F; Thu, 23 Oct 2025 16:42:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5F79D8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:10:49 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DF7EB5CEC9
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:10:48 +0000 (UTC)
-X-FDA: 84030472176.12.AB8B55E
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 65CB9140003
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:10:46 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="AGOZKy/r";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761250246; a=rsa-sha256;
-	cv=none;
-	b=fs4ho8MY+jgeQkYmm4O/eh64s4pfbKbQlmv4hzJJoy/LABs9pKc0Rg4u1xZpZFnWdCAntS
-	eCQyTJ/slKKjOEvHJIJwD6rMvvw7n8a9JpwMjh+ms2Onf9KSIq78i9QGoDnwLg/Bxg261O
-	ipSIf/y/60Ew1lZQnOFWfLJzi1gz14E=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="AGOZKy/r";
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf09.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 3F74D8E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 16:42:13 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id E4D5313C234
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:42:12 +0000 (UTC)
+X-FDA: 84030551304.21.8133720
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	by imf04.hostedemail.com (Postfix) with ESMTP id DB8E54000C
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 20:42:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lcj3j+ld;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of gmazyland@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=gmazyland@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761250246;
+	s=arc-20220608; t=1761252131;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vF8Hb3hnoXfLSdgr9uXEesJUum0OfpN/YlQIs62F7QU=;
-	b=OK053ClQgERna7D/K+JVUBshnZFYksvmbgHS6Pqoqd2kn0g/6RlIEsdN3UDfWFBaVlrbZN
-	PKWx7ljCB/01BFKKPVMS7HRLFQAe/yEfWVGtGkX1TIvNVi4t3NOMChqi+ywInXr75MlWwU
-	VdAXNuuy6duZ8zX35A83o1cZ6Ki72B8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761250245;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=vF8Hb3hnoXfLSdgr9uXEesJUum0OfpN/YlQIs62F7QU=;
-	b=AGOZKy/rvQIFLyM+d2Q/S+16ueuPcuHtUwWMAPkSvIqtncOeU9nFhoLc31MeKwLNrL5n/p
-	DWixNe/t6XlrfgkT9OKMsJ7TvLa7IC67d6099uVFm1GRa+Rdpsn7rO21cbrKnuQD2ENXAG
-	yEYllIPTUhnBN2AVKcGq3Fh9Y6+UhlI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-298-ThIY8oYAPMa8yir_VcVFHw-1; Thu, 23 Oct 2025 16:10:44 -0400
-X-MC-Unique: ThIY8oYAPMa8yir_VcVFHw-1
-X-Mimecast-MFC-AGG-ID: ThIY8oYAPMa8yir_VcVFHw_1761250243
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-47114d373d5so10072335e9.1
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:10:44 -0700 (PDT)
+	bh=zH23/gL2/USZLjj/JPdi7ffud5niCkNtnKaJxQ+IhR4=;
+	b=tD2P5Dl4UY+WGfMNn4fjgLpPdT6ou0kLNeLrkY6NgWrIREIhYeNBnH3zXDJ4Spml1jNDc4
+	USlhkO8B4itMQStbErrc1nKXAgflt+9YcYSmKpCAZZ3l8ZIuP9UYSyaYQDdaEqD3drVlt9
+	h8RIafY6m0RkCp9xHO3JDfLJauSZJzU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761252131; a=rsa-sha256;
+	cv=none;
+	b=1P8NyPlPi+QFgyqe5T66c2d/uGllocuYUxEUrQdgKL5e45BLa1DPE/rAISVl9inxrQ6K5Q
+	lLi0XrhX7GmCP+p64maUtNZlJil04JrH1m7wvDUMD06lpQ4cVnXc18wthBfwJFkCMnBWJL
+	7ZX9cuUWg0xM4R7ihihMidw3O+jdB9s=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lcj3j+ld;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf04.hostedemail.com: domain of gmazyland@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=gmazyland@gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4710665e7deso6415985e9.1
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:42:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761252129; x=1761856929; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=zH23/gL2/USZLjj/JPdi7ffud5niCkNtnKaJxQ+IhR4=;
+        b=lcj3j+ldh11yKzIk4nJhaJx7cz1TAnn4ESxi6hPfQOCVH/wwjFlpNSIlTJlsdW0p7F
+         Im+a2f9t6mUrNmRE/yifcv9niMSnLaI6lJ+zZKW/zdslr/iyQEesC4DQAJUkbTosEqXH
+         9auKN1VtDJA/iqLZqEZW9crzuhom9T7hSK8PC2eG73XDNbMc2EI5SHHZqCkv5VozBdh9
+         0mqFf+HinHibd+wKsHW7m9Ok4VjxQUByAwBs2GwCxrTX4S2KLB/iz9FibhgQwGPCI2SM
+         dus4/s9NPj1qdRHr8jhi434b1wLBY5F3WJZZADz5nHMgmR1Whsjer6MPraokrgGLvmtm
+         n1Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761250243; x=1761855043;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vF8Hb3hnoXfLSdgr9uXEesJUum0OfpN/YlQIs62F7QU=;
-        b=l8wk5z+cNkYBiJNJcZwKYPcLQkw5d9jK9fSZQxbWEq52uhEGberHjVkNN0p8uHed3Y
-         +TACPj/Dwt4f3b4auMbFJiWcjopNNcaDMF4NHk2ZE/i3Iok6EZ7iE1trfjXaCnQVhJiB
-         He0nfGKc4DNE3nZqvO5R2XZ+aW8UpYCa0B7vCTRVVE4GvqSXbVlkXtqkuv/m5Eh3ISZ3
-         090Qq7YM3Izt4VRHB2r02CSqDdhFH4Ayh6TGvGj0bEzWZKTBPxEKrFKUznSvHaKXOwVB
-         o/rTOjZGxtT6NKsHWJDSqEkyQ1++ayXmbXWPTi86rVcRstnz8hakl+daBTUXgTb40uvz
-         1r/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVAYl0yA3XbW3TzoSoiLIWvw/PfYVnZw1kJBwVX4wurM7hHsYyFN9QEaV5gTwyx8TH/6/vkAQSSZw==@kvack.org
-X-Gm-Message-State: AOJu0Yw9AbAmjs44WR7NrYuqMMMVvHffx6b9B5aJpieDtwgFJ12iO5C9
-	3SjtzDhfZtsa/U/Ps7dVr5JhRO2zA/l/Q6ua95G7/uI+nAs7V8KS7kAaHJkhLyVUWSgvAZyDjNm
-	AAa0FXZ4okdK2evTHomG2nGf0LIs7nMbvkM+N7ycAnEtWRqo9/tIo
-X-Gm-Gg: ASbGncsUrPl+e7oe42y8BAzUBN2NYvnuxTzp2u1gKabI7JTX7TNLoi9Dpj8pmOlMK+O
-	RKmjdmc+pCDQS9UIYVX4sUOazx58FlK1pfjYUpAgy0sTEGBkqjRp3S4b2RqhUp8f79nh97r/a08
-	7UExCij1cewxg/3EFKaIbY3GApMayJ3cWAKWrDS+TYbLsJTTNWGpnGc5Fi7Y9KSxaLSO8f2dnuy
-	jYrq0YH3IenrEyEqp6WCKKzkTxGwISL5ZRFAtAUWQwZlkcttupIY2LhPsbfpku4kS7rPVv/Z0JD
-	aNml0d4hsj6oAFee5V2k4XMo2ZwoNQ3XrA2awIl4FCG+UtPo5O3MPLKmUt7gKIKE9mb9ERiq4Eg
-	UF031f/CZxCyINWa56sDMBjsG5CNHFFkQAmRZKuwv5N8Nb4kRYUI5TmH2r2Wp6kGy6sT/9QVe47
-	22Odlncbrh083N1rNQG8y47bHbLEQ=
-X-Received: by 2002:a05:600c:6291:b0:471:a43:123f with SMTP id 5b1f17b1804b1-471178a6882mr200628565e9.9.1761250243302;
-        Thu, 23 Oct 2025 13:10:43 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEznsO/mZG7bXXGeVpf9lUsRK7DtoSEnI7rqyr8WVIAgGuBjLQ7Sb3p9c9Pj2m7/SEml5RHBQ==
-X-Received: by 2002:a05:600c:6291:b0:471:a43:123f with SMTP id 5b1f17b1804b1-471178a6882mr200628295e9.9.1761250242917;
-        Thu, 23 Oct 2025 13:10:42 -0700 (PDT)
-Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898cceebsm5532934f8f.37.2025.10.23.13.10.40
+        d=1e100.net; s=20230601; t=1761252129; x=1761856929;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zH23/gL2/USZLjj/JPdi7ffud5niCkNtnKaJxQ+IhR4=;
+        b=ZIWAzBKxD7gBScDtRJT/3II3d20vT9raPEVd+iHqZ1ZL1R1jEl/v31b6CuczM6ETCK
+         chgvUVJf3qiuPR92jusmPX/YD4qP6YYKgD20YPoq/dCkjMa6ap0Dq8qVXokXnyk6LRKV
+         k9cr68oHNE9ZqbviFUGD4DZUYW6T1mojezhwMGBAmSmXCCSbKSjLlrV2xHiHKyEUu/tz
+         TU4RNhhgYOE6F/2upYmZDoi4hE/qTrPbtoTt5kr1AWXupoNenwuMKzTRGh5Je9oHDl99
+         W8MKtVU4NosUyak7NYz7+G4m9QZFSRYa+7PKFT3fuiWl9EEojyIYJxvkZK/iMhCK40K2
+         TVQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWtbY7mzyNSX00qtrdmwLeLL0mQM+PnbVlui+qhIrmlCU2wYsR1bZ08tzS0YtsZCdFXWJOZb9yVcA==@kvack.org
+X-Gm-Message-State: AOJu0Yy1lXx9voujvuYHA0rW7FE319gDiqdNO0+ax6LfBYZrQe4nsCf2
+	9/wJxVs7OghrhFJ1KxfNUDD8KrOPhX21gDHMtGI4ds09DwV3uPxLbVZH
+X-Gm-Gg: ASbGncu7m0XN6ZcAxg6Z4wpwxWXsXNG1HY6F15S0Pf1urleijNGYBvb4AII+D3HV2Ur
+	enhh5AYPOhRNgzZp7X4Viy9x6jnJDUgeRO5E0EsevMr48Suk/yumpI7oAFms57Pl/R2+VMja+Pz
+	qbndXp9OG5IHyEL3D90aKd2JoSCMb9ac4z8pMCQxefvcCx5D/TZ8ODQWEcIqTqancipiT6ZrO9T
+	RrK0juRZdPBwgm+9u2pXt7ZE0qcmJyXtmh4RxrpSI6Ft9qENnwbiwXSC7UiTKT/EVnVwoKpYsJ7
+	1xTODV1mxqU/owjX3UNvOGW1shMmcSb+Qo6rqkRkZ/axWxB2UoPmTUsVqMxTogI3BqjiMlJZZS3
+	Z3IskHxyPfJjuFpS5jpvOi3xvF2sfBADYVlAQ61TvwZv3OIVM6o6Vh8pu7QQW82iRQATrI30lxs
+	HBnZUyEJxZjkRtp1LjVN58M55brA==
+X-Google-Smtp-Source: AGHT+IHCVB+Pybief1JnxZp/9KwSmKb9+DyZ4IikoY3sTAsLQTmu8dNdfCeK9ekGtKedPfaO6daR0Q==
+X-Received: by 2002:a05:600c:46c5:b0:46e:1cc6:25f7 with SMTP id 5b1f17b1804b1-475cafacc30mr25848925e9.9.1761252129022;
+        Thu, 23 Oct 2025 13:42:09 -0700 (PDT)
+Received: from [192.168.2.12] (85-70-151-113.rcd.o2.cz. [85.70.151.113])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caf2f142sm56851425e9.15.2025.10.23.13.42.07
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 23 Oct 2025 13:10:42 -0700 (PDT)
-Message-ID: <3d6bba2d-9739-41d0-8f3a-f8b11620c33f@redhat.com>
-Date: Thu, 23 Oct 2025 22:10:39 +0200
+        Thu, 23 Oct 2025 13:42:08 -0700 (PDT)
+Message-ID: <a48a37e3-2c22-44fb-97a4-0e57dc20421a@gmail.com>
+Date: Thu, 23 Oct 2025 22:42:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 13/13] mm: introduce arch_wants_lazy_mmu_mode()
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-14-kevin.brodsky@arm.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251015082727.2395128-14-kevin.brodsky@arm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Y0kTcX8flFDolsx82Aw8P0AL7o4Wecx7fB0C-1Y4VKA_1761250243
-X-Mimecast-Originator: redhat.com
+Subject: Re: dm bug: hibernate to swap located on dm-integrity doesn't work
+ (how to get data redundancy for swap?)
+To: Askar Safin <safinaskar@gmail.com>, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-block@vger.kernel.org,
+ linux-crypto@vger.kernel.org, linux-lvm@lists.linux.dev,
+ lvm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
+ DellClientKernel <Dell.Client.Kernel@dell.com>, dm-devel@lists.linux.dev,
+ linux-btrfs@vger.kernel.org
+Cc: Nhat Pham <nphamcs@gmail.com>, Kairui Song <ryncsn@gmail.com>,
+ Pavel Machek <pavel@ucw.cz>, =?UTF-8?B?Um9kb2xmbyBHYXJjw61hIFBlw7FhcyAoa2l4?=
+ =?UTF-8?Q?=29?= <kix@kix.es>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Eric Biggers <ebiggers@kernel.org>, Lennart Poettering
+ <mzxreary@0pointer.de>, Christian Brauner <brauner@kernel.org>,
+ Linus Torvalds <torvalds@linux-foundation.org>
+References: <20251023112920.133897-1-safinaskar@gmail.com>
 Content-Language: en-US
+From: Milan Broz <gmazyland@gmail.com>
+Autocrypt: addr=gmazyland@gmail.com; keydata=
+ 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
+In-Reply-To: <20251023112920.133897-1-safinaskar@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ipniorr6khkf1q9eky544pur3pow6cxo
-X-Rspamd-Queue-Id: 65CB9140003
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam01
+X-Stat-Signature: y9xxuffp6djgf9pkfecupiyqcc5byfor
 X-Rspam-User: 
-X-HE-Tag: 1761250246-495535
-X-HE-Meta: U2FsdGVkX19KXAKPCyN/YIBDNFjbE92bPkWeYBB/r9dNNMf2zxat3O0D/oC2yQLBfEXQUCSSxLkZm/Uev2k8zObQu4maqewYRUqWevGcSA02jqe/Ejmr+5IIbAiLpB/v7w1ZoLgoet0DozQb7Kbmo8h38z82g96omdy52Z1o5Zo6dSva4F12LY6dLmjdAz/UZTRXMhIF8q+9ItvJav8wOS+/UBYSr7LYbwFfRV12yLAYrykmaOBDr6E4D0S7hHPd3j5GTMYvYKr4BlfSVXB6t80Jvedfl1MFE4ftJJMmgdpPrR2XL3Fxpj7NFGXvF9f18E6qJ/IzBYCvtQSo826tlhTIy3E7cj1A7qNFUbSLTeArOduBjQ1KCbVG9LeSs1QL6fQFPFBBFQT0pRW67aBN7V4Af+wD39uqrEbAKuPd/p9YRXhxCen4IOG70wC15JBqwS6y+FUTgRqJQZAaUeH9340a/MTkqwsGu4BRd7TkGUPJWD/50gjptrsqXSWHW9p++XOmbhztq7EEp0us4dRxKGN9Rle09VV6es31s/M8qmpdGTwbEEZuTW1XcUll6PzhoC8JAtFLAVYp+FbrBoGu9ehYADy3hGGazNyw/SGMGBreKCBc71MzbtJ5VvPcsrTZFzdZfvpM5BlaolMuoBtzJaguA/Io6NsQBZ92K43m+fI2fQdjDyRDQGp5PVcsx4byJdP2uub6PGHudcKbWHQ7Ln+BErV8Ario/G6Aj5CA+bBJoUbFpN7x/xNwwGWBY5A7ibQbPGIPWRQSbfVHa9CMrh0YnEvIxZLjLGba9SgvMxKdww0TWhcyLInm/nKyhZu66bdlRvv583hbRhY3p4ROkg3+7gZh1f1zfUio0+wmewdHndXhVOqUFkQTTl1k42C2XuFyA87KarhTNfkNq8SrxzGb9FJwTsKXcJr6MGt8oPxkWAXPoqTRYFtmyYjXCrd5W5b0upiEwAjmG0hZZA2
- MO+ymsnA
- CrDPxpVpOwswBhn7yGT+gbcclftbZiJYDQq2cqFv6Hvtwvg3L/w5k8ZmXOuuKr4pnAX3+432pqtH1xStRn7SqWrOBUZ2rIOS5wp7f7s3m6IOXNFruS1OEZAiFc+y24DqwvfkEdsPOMlR2J+GFi2lHEiuZIyjZ3MXEssEDcSakti7WX2AbkkHvWyiP41n1SO4SoFm0SVX7m1dlr0CH5g+bN0it6Duze2pa1MXclvW1kKNBR1S717XrFJVxxqDBB+aSrktzqoMKiTGRWXWy2/W1C1DCCcKbstqbhgu9UV+ktfZxMI+nlGOoVXrBuav1tBXgj4NOee+JAf87zYHitUT8imLZe15hGiWAAbjwzMokpgcJYn5ZiPgDsl7QL+mHcVZ3xRf49c3hwGLOO6bIGsCDqP59BLW6theqMGdix8X5GTcrqIkAiY8BNLKO6qMGebLrLRk1M6X5y9KFXU1hAGa2IiemoskMEQpIq6xqCfiOrN4MAcI4+ZDJ95VBt+DjtyIbOmuQ0kMkAJT03Yr0RetILz13HL7bn1eb+51l2x+5DZPVY8P5BrnGnckALQ==
+X-Rspamd-Queue-Id: DB8E54000C
+X-HE-Tag: 1761252130-75469
+X-HE-Meta: U2FsdGVkX1/i016ZEYhkBmbsIt/S/7WeruoehQaxwMaGmAjFGXtM5GUNq4XyU/Qs2TX5+QDgxxD0wOnmLCveWi98VF4MdVPoQKDJEQR7Dxi2cJnORaEIk4LFwrhIkfBCYeeUEvFAW0kTTAmrKqWFiSGsJPm5G723MhILGRQnqKJSHghMqX96dGrijjhZs/Lk8KjgxnHxRVuk8dWWtfVZ28ms4MKbc8eR7Lr/OIfPro9Xg2Czd2XT2eZCvlnjjYDlAgv9F75TP7draS9xgFUzn18gAT8r2NcrDGhhHED6gkoja0Kol7ej9RsvzzpHwvvOmPbQLTpJgMLA9rty4ZFNPyYi9DzLpOSpUpMVVTiZMIuz7VTR1OGHqLg/9ZNyZ9OJ7ZbX//gcL7SxdO5wH0vZJTkHGiwEqE/8n0MPKpPUvW6KvhpKIHKna1gXRlRvmlatosuNIrufVJ7G1V52QhfQYQeWHXwciId8uFXL/iX+6KhTm/TskXNUjDqsjjLCGhhPJSPzRB54qajZ4B8D5r0GLZ2mrl8s1pgtU9odXoiA2ewxb5E88FwXSfw1zCGO6vESCwU7ux9Jqeesh3TdGf6fPDyT9HWYN0OyjmFEVnXTLr2abKUYiF/Ns7KhWsW89lU6LaJfzgU2oe/tV/mrSw6Gapf+icXrnjzLpKJqgxU0caJcvCdq5tQiegiQpIwaEVf+JXflMk7ayuyJ1ZoxmMsHFMIUt6DUloSNLXpgA5rj6zYyqxqo/EuUr3GOTYsvi1J8N+e0UPhP6pL4sxhLTdtV42KjnLZQeu1gGfnrxE1ICNgOxWpZDRnP2TmC1SEiX4f1d1nJJtPQlCYzj7B1iWXsVyJzctS7Z0XFBV5JyLcnTPMyg7ooTEvUWUeVYGVVuemyDUUODWWGFkuMM8EHLQtL7zHjMaF5fyUS7t/OwK2INPa+h3bhjn1+b9IVd0LO7ieu2F3Ojv7Dqd07f01WKF7
+ f8ZrTU/Y
+ pih+wFrVf3tPHE8ip7ZSvLgZPl5X5xYKG296x4FpyxY7kTNvy0bIMR+g3qEodo2+vJWZCZxYA+r4WLTjybhKsbIxmkKu6Rgup+55McHBfONBTQVAJen9nTuW4VTgp3/3FWOBsGQOKqh9lmmyGD2wGeQNr5nz7qIj1iGFAkxALi7hPkg1rRiKpjlTm+fr6KBsaQEurqskWrkVTrKx21vv8DLXoDte+6IEDhgZjayDKzbxLozwEW0oVpR13r2fDgZXFJhGmQFssh5shCmykC5MwZeKl5j/NvEDrevc8V5pQRfq8erMMcxA6l8jfjErMEkL6jMDNMeZNxjxMJSFqwVrz20da3LvkTzEVwCGU198w5JoiJt44xCwv/ikVqrnKrH8SIKOZYfgRxZ6rDoAllvbaDvcG4l2N040sKYrFZUvA1tTiAFqffTqUFahFS/H9wqpLocVutYGeqWh3DCeMXmTxlMLPSqItw6TVfFvOMGU7deuJDi4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -196,28 +176,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 15.10.25 10:27, Kevin Brodsky wrote:
-> powerpc decides at runtime whether the lazy MMU mode should be used.
+Hi,
+
+I am not sure why you cc so many people, most of lists are not relevant here.
+
+Anyway, could you please test one thing below so the problem is better isolated?
+
+On 10/23/25 1:29 PM, Askar Safin wrote:
+...
+> Also I tried to add "--integrity-no-journal" to "format" and "open".
+> It didn't work, either. (I don't remember what exactly didn't work.
+> I can do this experiment again, if needed.)
+
+Are you sure you used --integrity-no-journal both in activation before
+hibernation and also in resume? If not, please try it.
+This flag activates direct mode and and completely avoids dm-integrity journal.
+You can verify it with "integritysetup status <device>" - it should say "journal: not active".
+
+And if it does not work, could you try to use -integrity-recovery-mode the same
+way (both before hibernation and later in resume)? This will effectively ignore checksums
+providing no protection, but keeping dm-integrity device still in place.
+You can verify it with "integritysetup status <device>" - it should say "mode: read/write recovery".
+Is the problem still in place with this setting?
+
+You can also try to decrease journal commit time with --journal-commit-time option,
+but this is not a real solution.
+
+...> 
+> Then I tried to do "cryptsetup" instead of "integritysetup". I created
+> swap partition so:
 > 
-> To avoid the overhead associated with managing
-> task_struct::lazy_mmu_state if the mode isn't used, introduce
-> arch_wants_lazy_mmu_mode() and bail out of lazy_mmu_mode_* if it
-> returns false. Add a default definition returning true, and an
-> appropriate implementation for powerpc.
+> cryptsetup luksFormat --type luks2 /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 /tmp/key
+> cryptsetup open --type luks2 --key-file /tmp/key /dev/disk/by-partuuid/c4bbc73d-7909-42ea-8d96-eab82512cbe7 swap
+> mkswap /dev/mapper/swap
+> swapon /dev/mapper/swap
 > 
-> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> ---
-> This patch seemed like a good idea to start with, but now I'm not so
-> sure that the churn added to the generic layer is worth it.
+> And, of course, I did all necessary edits to initramfs.
+> 
+> And this time everything worked. This proves that I didn't do any mistakes in my setup
+> (i. e. I got initramfs right, etc), and this is actual bug in dm-integrity.
+> 
+> Unfortunately, LUKS created such way doesn't have any redundancy. So this is not solution for me.
 
-Exactly my thoughts :)
+Redundancy? You mean data integrity protection? There is no redundancy, only additional authentication tag
+(detecting integrity error but not correcting it).
 
-I think we need evidence that this is really worth it for optimizing out 
-basically a counter update on powerpc.
-
--- 
-Cheers
-
-David / dhildenb
+Thanks,
+Milan
 
 
