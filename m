@@ -4,96 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF300CCD1BE
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:54:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96D16CCD1BE
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 11:59:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1748C8E0018; Thu, 23 Oct 2025 07:54:56 -0400 (EDT)
+	id B1B008E0016; Thu, 23 Oct 2025 07:59:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FCE58E000D; Thu, 23 Oct 2025 07:54:55 -0400 (EDT)
+	id AF2518E000D; Thu, 23 Oct 2025 07:59:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DCDF98E0011; Thu, 23 Oct 2025 07:54:55 -0400 (EDT)
+	id 85A2C8E001A; Thu, 23 Oct 2025 07:59:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id AE6AD8E0011
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:54:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 622F1129B42
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:54:55 +0000 (UTC)
-X-FDA: 84029222550.18.D23F419
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
-	by imf23.hostedemail.com (Postfix) with ESMTP id C1817140010
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:54:51 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
+	by kanga.kvack.org (Postfix) with ESMTP id 675478E0011
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 07:59:56 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0C04B13C0A7
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:59:56 +0000 (UTC)
+X-FDA: 84029235192.20.E3D566A
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 7F49AC0008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:59:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
 	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761220493;
+	s=arc-20220608; t=1761220794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=K7Pui08ptZSq0nWsSYP3N10MY9UesZb5InUZ8xTSO70=;
-	b=JWBIkyYKAEDbmUTR6vT2eQU+/8eP/Njgr49EZXYPJ6g3E7VwN48AiPvOPhGptqmRqrmMf7
-	cUmmIpTXAYAgfIbn9Uc6t7/kXY0I56u5dbWX0BvkYN58bnME3ZZEC4oOjdoSWb2BwIwaXi
-	zTGJib+d8j03yioleOGuLQQD9UV62n0=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	spf=pass (imf23.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.190 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761220493; a=rsa-sha256;
+	bh=zCdNZSUyRTvri3nLQAMi7tiPgpd6UC23QsRf0XVikHs=;
+	b=oIlsck4E3koOc5ZVyauXJcHqdyZ/e802GIhXqkV5CLsWbjSuJYVjiN6I5hLZmE7z3LES3y
+	ieKejn26F+W5GhCm84AdlN94Dxt1uJVjRM/b3Z7KXask/k1t0OLni+TQQrTQp1QVMmEjbb
+	tjlarEeWOAbh44QLTw2FEKf9SDuB3cg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761220794; a=rsa-sha256;
 	cv=none;
-	b=RNq7ufOZOEqaSVgOrcPVZFke5l9wpxp3YfQKsbMZEre/A5/ql7oOyS9GPj74+Vf8osk8JJ
-	vOetRcdOQU6YU2lK20WPAUR/okQ9PNouQaSpc2OdCmTPOFowV54uMv3wGcaszGxAbsEYvQ
-	wExl9zJBr8VysIdByr5y1WUF6SNyDyw=
-Received: from mail.maildlp.com (unknown [172.19.162.112])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4cskq62wcKz2CgpS;
-	Thu, 23 Oct 2025 19:49:54 +0800 (CST)
-Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 31E2E14011B;
-	Thu, 23 Oct 2025 19:54:46 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
+	b=ZMEOTuPxV3Pgi3fw7OoAkOJxcRJfXIF8mDLarK0IcSvbbooUySwzimd1IIzIK1uuXoky+h
+	o7u8dkgKCHFuDCZ2NItWUHfOrnUZcgHB12SoczZaKzzA+9TVm5fv0Kpz8/kRkHlIXsddA+
+	iaZ5Iywb2tDw7ItyNdB00LvJvyP/D5E=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 45.249.212.189 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4cskwx2wdSzJsYj;
+	Thu, 23 Oct 2025 19:54:57 +0800 (CST)
+Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
+	by mail.maildlp.com (Postfix) with ESMTPS id 72C9118048F;
+	Thu, 23 Oct 2025 19:59:49 +0800 (CST)
+Received: from localhost.localdomain (10.50.87.83) by
+ dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 19:54:45 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 23 Oct 2025 19:54:45 +0800
-Subject: Re: [PATCH v2 1/1] mm/ksm: recover from memory failure on KSM page by
- migrating to healthy duplicate
-To: Longlong Xia <xialonglong2025@163.com>
-CC: <markus.elfring@web.de>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <wangkefeng.wang@huawei.com>,
-	<qiuxu.zhuo@intel.com>, <xu.xin16@zte.com.cn>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, Longlong Xia
-	<xialonglong@kylinos.cn>, <david@redhat.com>, <lance.yang@linux.dev>
-References: <20251016101813.484565-1-xialonglong2025@163.com>
- <20251016101813.484565-2-xialonglong2025@163.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <af769443-e855-81d0-a44a-d5890f5d1d2f@huawei.com>
-Date: Thu, 23 Oct 2025 19:54:44 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+ 15.2.1544.11; Thu, 23 Oct 2025 19:59:48 +0800
+From: Kefeng Wang <wangkefeng.wang@huawei.com>
+To: Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand
+	<david@redhat.com>, Oscar Salvador <osalvador@suse.de>, Muchun Song
+	<muchun.song@linux.dev>, <linux-mm@kvack.org>
+CC: <sidhartha.kumar@oracle.com>, <jane.chu@oracle.com>, Zi Yan
+	<ziy@nvidia.com>, Vlastimil Babka <vbabka@suse.cz>, Brendan Jackman
+	<jackmanb@google.com>, Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox
+	<willy@infradead.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
+Subject: [PATCH v4 1/6] mm: debug_vm_pgtable: add debug_vm_pgtable_free_huge_page()
+Date: Thu, 23 Oct 2025 19:59:35 +0800
+Message-ID: <20251023115940.3573158-2-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20251023115940.3573158-1-wangkefeng.wang@huawei.com>
+References: <20251023115940.3573158-1-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-In-Reply-To: <20251016101813.484565-2-xialonglong2025@163.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.37]
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.87.83]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+ dggpemf100008.china.huawei.com (7.185.36.138)
+X-Rspamd-Server: rspam05
+X-Stat-Signature: ar31rzrua4p9ih4wewyw8uzqy6gyf7nx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1817140010
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 96yuiosj1q9aw7n5ytm9o871qk1fz1ao
-X-HE-Tag: 1761220491-583959
-X-HE-Meta: U2FsdGVkX19j/awrFiWoWDj9viWJL/SvT4shZ0SgIYXT8BY5TDwHSpz6RwZPHDwpO+MQiayYtRGJ+qXeP6bRjxGSINi2qJl3jPdhFc9WPilH0eb2noFrmLn0JiKPsnVfy4STZpttecZpF5Go44454Wrl2U2YN4LjKc+FFXidUhhiHIQwPC4mf0+ZT1GflvO+yENOQfwoFDYSr4CeCjEPSdp4j4By/X+MpjsgMvpxg9w3d2yptYrPBre7XCr6rJwgVJ346HGKCgwhRCSpVlfYWw/S4YCCzUtTkUBIKusng5K929ART/b4kh63C1CQ0goTRW5CgqA9n/ld6WV/MHNavbGIXtrBFxOamGxoTyD5mL7VYoeqyV8ugcf0BSmEvJ3pn2+c20sO3VM38Th63Iu6MlKUGcDpg0l5cI2e+acU3e9k8AtXARtafW3RqghUCBvEz5y9qf0W5RFrg1BiH3pxSa6Kz9pe7flxAjDAbu4jMaebMjEGgegrFSDzpecgPj2C3smVbqxKffa0ZirpcDwhfaefc52Brrb51xTfRJE6XclvCqC/Ct0R0r//xYAVdlXp3swPDqG+eKg+XrYOSIHz9hQW1itRVVlPGZIzqyVp6FCW07UYNx5CLpyKA8wLxkal/oOjumK69sQXbWlDamqbwvYqIxYHScvse83rMLDLF7YckDaCdNeBZlN77gaN5Ltbg/gx01EuclcsLKT3//e12yCtWCDiKUz0lgTAyoPLbS6DrcrVCPP8E76E0KwC50yGPVTmYMZLgNyqwZTY75wZJHdx5G/OB953PWUSAk0zzTliAm75tsQEJKLAQwd/M5ew7uN2lKCkCIyoIrEo0MzcbhSDQnWYGqdu0hx3V67FwMZ/Zd1Tx2VABGCW8SAItaYNVvQjG/0S+Ie6DIp0ONPM+ANJl9aoZFkGzpQjEztAyRkh2AxMcFbl7lULjC38iCfT1l4KDeWu5dtsnP/pQ1C
- xt2z72qO
- R6s8mu185bBcu8ynvOfznczYRin2xH5UfkoqpnM1ROvGWONLibRAiAeBXZgxrtakSYiGS3r0nEFPczXqLPl0nVy+rGAt8lFQr3ORNl4KGggt4q2G5YJDy/wATGHqX79j9xMbo0SZSWtuWHwrqHdy/4ulvokZZBuTP+5FMlPUMJBoJnvAR5mQjRVOMEoZ6irXDQQ1Bk5VvP1+iKKkzCKqj5kJIeLIMk1qTp2ergsspZkIy7Bh3bWjql+QgxaXhZrKNbTToA801Izfn31xY9rPw/mNBjg==
+X-Rspamd-Queue-Id: 7F49AC0008
+X-HE-Tag: 1761220793-814297
+X-HE-Meta: U2FsdGVkX1+3gYuwK5Z4x/VhJqOQA2NzYN6jgAqZTRoc4l6Jq/yLzfz1ibzDEJS7B0GnSdkt01Os2TxEOKIiAM5X+p1YkTERM7kodswtxxw8RF9XnqNtV99IiwBWRnLH40zQ7SDfKCqMPUH/UdZ41E7W3Bi3IXZhcsAeM2uSiUo2wQ1VcLS+1WEB6xAQ6ZZRjVh1B2OG7mcRtUw9GOmc9wn83cBXYJAYCXP55n08pluijEs6GbYqJq+YeR64N1DU7A1TExECJZDkr1E0m4LO/ToqS9fyEGXiay1WWq/B/bntgayAOp4P5aMMpLdhO3B2+BUMVtPNRiRz5NGz2FKwZzYYTBwB5RBFjjg+37iawqqMcdCPCk41Jlndvl/fJ6XEbG+8FfOQCKsbA1Mlp43TzUCQ4hjSnjQNkM/DIowDBr+2qGTGdxb2ZiW8AxpeWm9d6NLBxPCtjKGrANaXoA5Pb80Z8p/bWwJFxWb8ed4g/bDFHI/60zcuV+SXkvMnFlGjVXdrD3AV7atUNThTpd8AuGd3Kd2jJshOEOSA576bikZahZL95z2VzSqnHYNTMuoyoOAxLnK1dUKMHgWKvNqjIHGY2enXDBlef6CYJcx0/JDRLFjk0M1FBq9abPw/gs3T0V2wSwrQTdqz7ye4ElR3DgRgrflw+GRaZEPyL4zVZe6QNz7sZxs7oD8xd5JCSVrjx6TqFfk5IRVHcXH6oCQQEiLn1tNXeMOk3NJcv3Ge94LsosW3XB3Etcbr7NOUWYdgeAmgyfiG7Ewk7sseZH3dS/RbMqUi22CWaxYOs9Evjtn8oZ14MiQOy6vRXzFWKCJsbw3GSF5s181sFhZ/VBY2p4y5cSalI9LTjHCw0OshEjJTQvNQ2DzqLuahqWHUfnmjCViLsgPcS8AL0Iehqv548s7BxhS68uCftvs/8Md5MxzRLVcUr5MScbj3q8R8Bix9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,227 +93,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/16 18:18, Longlong Xia wrote:
-> From: Longlong Xia <xialonglong@kylinos.cn>
-> 
-> When a hardware memory error occurs on a KSM page, the current
-> behavior is to kill all processes mapping that page. This can
-> be overly aggressive when KSM has multiple duplicate pages in
-> a chain where other duplicates are still healthy.
-> 
-> This patch introduces a recovery mechanism that attempts to
-> migrate mappings from the failing KSM page to a newly
-> allocated KSM page or another healthy duplicate already
-> present in the same chain, before falling back to the
-> process-killing procedure.
-> 
-> The recovery process works as follows:
-> 1. Identify if the failing KSM page belongs to a stable node chain.
-> 2. Locate a healthy duplicate KSM page within the same chain.
-> 3. For each process mapping the failing page:
->    a. Attempt to allocate a new KSM page copy from healthy duplicate
->       KSM page. If successful, migrate the mapping to this new KSM page.
->    b. If allocation fails, migrate the mapping to the existing healthy
->       duplicate KSM page.
-> 4. If all migrations succeed, remove the failing KSM page from the chain.
-> 5. Only if recovery fails (e.g., no healthy duplicate found or migration
->    error) does the kernel fall back to killing the affected processes.
-> 
-> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+Add a new helper to free huge page to be consistency to
+debug_vm_pgtable_alloc_huge_page(), and use HPAGE_PUD_ORDER
+instead of open-code.
 
-Thanks for your patch. Some comments below.
+Also move the free_contig_range() under CONFIG_ALLOC_CONTIG
+since all caller are built with CONFIG_ALLOC_CONTIG.
 
-> ---
->  mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 246 insertions(+)
-> 
-> diff --git a/mm/ksm.c b/mm/ksm.c
-> index 160787bb121c..9099bad1ab35 100644
-> --- a/mm/ksm.c
-> +++ b/mm/ksm.c
-> @@ -3084,6 +3084,246 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->  }
->  
->  #ifdef CONFIG_MEMORY_FAILURE
-> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
-> +{
-> +	struct ksm_stable_node *stable_node, *dup;
-> +	struct rb_node *node;
-> +	int nid;
-> +
-> +	if (!is_stable_node_dup(dup_node))
-> +		return NULL;
-> +
-> +	for (nid = 0; nid < ksm_nr_node_ids; nid++) {
-> +		node = rb_first(root_stable_tree + nid);
-> +		for (; node; node = rb_next(node)) {
-> +			stable_node = rb_entry(node,
-> +					struct ksm_stable_node,
-> +					node);
-> +
-> +			if (!is_stable_node_chain(stable_node))
-> +				continue;
-> +
-> +			hlist_for_each_entry(dup, &stable_node->hlist,
-> +					hlist_dup) {
-> +				if (dup == dup_node)
-> +					return stable_node;
-> +			}
-> +		}
-> +	}
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+---
+ include/linux/gfp.h   |  2 +-
+ mm/debug_vm_pgtable.c | 38 +++++++++++++++++---------------------
+ mm/page_alloc.c       |  2 +-
+ 3 files changed, 19 insertions(+), 23 deletions(-)
 
-Would above multiple loops take a long time in some corner cases?
+diff --git a/include/linux/gfp.h b/include/linux/gfp.h
+index f46b066c7661..92582a329d47 100644
+--- a/include/linux/gfp.h
++++ b/include/linux/gfp.h
+@@ -437,8 +437,8 @@ extern struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_
+ 					      int nid, nodemask_t *nodemask);
+ #define alloc_contig_pages(...)			alloc_hooks(alloc_contig_pages_noprof(__VA_ARGS__))
+ 
+-#endif
+ void free_contig_range(unsigned long pfn, unsigned long nr_pages);
++#endif
+ 
+ #ifdef CONFIG_CONTIG_ALLOC
+ static inline struct folio *folio_alloc_gigantic_noprof(int order, gfp_t gfp,
+diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+index 830107b6dd08..d7f82aa58711 100644
+--- a/mm/debug_vm_pgtable.c
++++ b/mm/debug_vm_pgtable.c
+@@ -946,22 +946,26 @@ static unsigned long __init get_random_vaddr(void)
+ 	return random_vaddr;
+ }
+ 
+-static void __init destroy_args(struct pgtable_debug_args *args)
++static void __init
++debug_vm_pgtable_free_huge_page(struct pgtable_debug_args *args,
++		unsigned long pfn, int order)
+ {
+-	struct page *page = NULL;
++#ifdef CONFIG_CONTIG_ALLOC
++	if (args->is_contiguous_page) {
++		free_contig_range(pfn, 1 << order);
++		return;
++	}
++#endif
++	__free_pages(pfn_to_page(pfn), order);
++}
+ 
++static void __init destroy_args(struct pgtable_debug_args *args)
++{
+ 	/* Free (huge) page */
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    has_transparent_pud_hugepage() &&
+ 	    args->pud_pfn != ULONG_MAX) {
+-		if (args->is_contiguous_page) {
+-			free_contig_range(args->pud_pfn,
+-					  (1 << (HPAGE_PUD_SHIFT - PAGE_SHIFT)));
+-		} else {
+-			page = pfn_to_page(args->pud_pfn);
+-			__free_pages(page, HPAGE_PUD_SHIFT - PAGE_SHIFT);
+-		}
+-
++		debug_vm_pgtable_free_huge_page(args, args->pud_pfn, HPAGE_PUD_ORDER);
+ 		args->pud_pfn = ULONG_MAX;
+ 		args->pmd_pfn = ULONG_MAX;
+ 		args->pte_pfn = ULONG_MAX;
+@@ -970,20 +974,13 @@ static void __init destroy_args(struct pgtable_debug_args *args)
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    has_transparent_hugepage() &&
+ 	    args->pmd_pfn != ULONG_MAX) {
+-		if (args->is_contiguous_page) {
+-			free_contig_range(args->pmd_pfn, (1 << HPAGE_PMD_ORDER));
+-		} else {
+-			page = pfn_to_page(args->pmd_pfn);
+-			__free_pages(page, HPAGE_PMD_ORDER);
+-		}
+-
++		debug_vm_pgtable_free_huge_page(args, args->pmd_pfn, HPAGE_PMD_ORDER);
+ 		args->pmd_pfn = ULONG_MAX;
+ 		args->pte_pfn = ULONG_MAX;
+ 	}
+ 
+ 	if (args->pte_pfn != ULONG_MAX) {
+-		page = pfn_to_page(args->pte_pfn);
+-		__free_page(page);
++		__free_page(pfn_to_page(args->pte_pfn));
+ 
+ 		args->pte_pfn = ULONG_MAX;
+ 	}
+@@ -1215,8 +1212,7 @@ static int __init init_args(struct pgtable_debug_args *args)
+ 	 */
+ 	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) &&
+ 	    has_transparent_pud_hugepage()) {
+-		page = debug_vm_pgtable_alloc_huge_page(args,
+-				HPAGE_PUD_SHIFT - PAGE_SHIFT);
++		page = debug_vm_pgtable_alloc_huge_page(args, HPAGE_PUD_ORDER);
+ 		if (page) {
+ 			args->pud_pfn = page_to_pfn(page);
+ 			args->pmd_pfn = args->pud_pfn;
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index fb91c566327c..aeb57ac45e22 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -7151,7 +7151,6 @@ struct page *alloc_contig_pages_noprof(unsigned long nr_pages, gfp_t gfp_mask,
+ 	}
+ 	return NULL;
+ }
+-#endif /* CONFIG_CONTIG_ALLOC */
+ 
+ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+ {
+@@ -7178,6 +7177,7 @@ void free_contig_range(unsigned long pfn, unsigned long nr_pages)
+ 	WARN(count != 0, "%lu pages are still in use!\n", count);
+ }
+ EXPORT_SYMBOL(free_contig_range);
++#endif /* CONFIG_CONTIG_ALLOC */
+ 
+ /*
+  * Effectively disable pcplists for the zone by setting the high limit to 0
+-- 
+2.27.0
 
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct folio *find_healthy_folio(struct ksm_stable_node *chain_head,
-> +		struct ksm_stable_node *failing_node,
-> +		struct ksm_stable_node **healthy_dupdup)
-> +{
-> +	struct ksm_stable_node *dup;
-> +	struct hlist_node *hlist_safe;
-> +	struct folio *healthy_folio;
-> +
-> +	if (!is_stable_node_chain(chain_head) || !is_stable_node_dup(failing_node))
-> +		return NULL;
-> +
-> +	hlist_for_each_entry_safe(dup, hlist_safe, &chain_head->hlist, hlist_dup) {
-> +		if (dup == failing_node)
-> +			continue;
-> +
-> +		healthy_folio = ksm_get_folio(dup, KSM_GET_FOLIO_TRYLOCK);
-> +		if (healthy_folio) {
-> +			*healthy_dupdup = dup;
-> +			return healthy_folio;
-> +		}
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
-> +static struct page *create_new_stable_node_dup(struct ksm_stable_node *chain_head,
-> +		struct folio *healthy_folio,
-> +		struct ksm_stable_node **new_stable_node)
-> +{
-> +	int nid;
-> +	unsigned long kpfn;
-> +	struct page *new_page = NULL;
-> +
-> +	if (!is_stable_node_chain(chain_head))
-> +		return NULL;
-> +
-> +	new_page = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_ZERO);
-
-Why __GFP_ZERO is needed?
-
-> +	if (!new_page)
-> +		return NULL;
-> +
-> +	copy_highpage(new_page, folio_page(healthy_folio, 0));
-> +
-> +	*new_stable_node = alloc_stable_node();
-> +	if (!*new_stable_node) {
-> +		__free_page(new_page);
-> +		return NULL;
-> +	}
-> +
-> +	INIT_HLIST_HEAD(&(*new_stable_node)->hlist);
-> +	kpfn = page_to_pfn(new_page);
-> +	(*new_stable_node)->kpfn = kpfn;
-> +	nid = get_kpfn_nid(kpfn);
-> +	DO_NUMA((*new_stable_node)->nid = nid);
-> +	(*new_stable_node)->rmap_hlist_len = 0;
-> +
-> +	(*new_stable_node)->head = STABLE_NODE_DUP_HEAD;
-> +	hlist_add_head(&(*new_stable_node)->hlist_dup, &chain_head->hlist);
-> +	ksm_stable_node_dups++;
-> +	folio_set_stable_node(page_folio(new_page), *new_stable_node);
-> +	folio_add_lru(page_folio(new_page));
-> +
-> +	return new_page;
-> +}
-> +
-
-...
-
-> +
-> +static void migrate_to_target_dup(struct ksm_stable_node *failing_node,
-> +		struct folio *failing_folio,
-> +		struct folio *target_folio,
-> +		struct ksm_stable_node *target_dup)
-> +{
-> +	struct ksm_rmap_item *rmap_item;
-> +	struct hlist_node *hlist_safe;
-> +	int err;
-> +
-> +	hlist_for_each_entry_safe(rmap_item, hlist_safe, &failing_node->hlist, hlist) {
-> +		struct mm_struct *mm = rmap_item->mm;
-> +		unsigned long addr = rmap_item->address & PAGE_MASK;
-> +		struct vm_area_struct *vma;
-> +
-> +		if (!mmap_read_trylock(mm))
-> +			continue;
-> +
-> +		if (ksm_test_exit(mm)) {
-> +			mmap_read_unlock(mm);
-> +			continue;
-> +		}
-> +
-> +		vma = vma_lookup(mm, addr);
-> +		if (!vma) {
-> +			mmap_read_unlock(mm);
-> +			continue;
-> +		}
-> +
-> +		if (!folio_trylock(target_folio)) {
-
-Should we try to get the folio refcnt first?
-
-> +			mmap_read_unlock(mm);
-> +			continue;
-> +		}
-> +
-> +		err = replace_failing_page(vma, &failing_folio->page,
-> +				folio_page(target_folio, 0), addr);
-> +		if (!err) {
-> +			hlist_del(&rmap_item->hlist);
-> +			rmap_item->head = target_dup;
-> +			hlist_add_head(&rmap_item->hlist, &target_dup->hlist);
-> +			target_dup->rmap_hlist_len++;
-> +			failing_node->rmap_hlist_len--;
-> +		}
-> +
-> +		folio_unlock(target_folio);
-> +		mmap_read_unlock(mm);
-> +	}
-> +
-> +}
-> +
-> +static bool ksm_recover_within_chain(struct ksm_stable_node *failing_node)
-> +{
-> +	struct folio *failing_folio = NULL;
-> +	struct ksm_stable_node *healthy_dupdup = NULL;
-> +	struct folio *healthy_folio = NULL;
-> +	struct ksm_stable_node *chain_head = NULL;
-> +	struct page *new_page = NULL;
-> +	struct ksm_stable_node *new_stable_node = NULL;
-> +
-> +	if (!is_stable_node_dup(failing_node))
-> +		return false;
-> +
-> +	guard(mutex)(&ksm_thread_mutex);
-> +	failing_folio = ksm_get_folio(failing_node, KSM_GET_FOLIO_NOLOCK);
-> +	if (!failing_folio)
-> +		return false;
-> +
-> +	chain_head = find_chain_head(failing_node);
-> +	if (!chain_head)
-> +		return NULL;
-
-Should we folio_put(failing_folio) before return?
-
-Thanks.
-.
 
