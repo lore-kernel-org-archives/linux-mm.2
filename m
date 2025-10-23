@@ -4,232 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 843C9CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:16:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E948CCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 13:18:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A370A8E001A; Thu, 23 Oct 2025 09:16:25 -0400 (EDT)
+	id 83F488E001B; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E6CD8E0002; Thu, 23 Oct 2025 09:16:25 -0400 (EDT)
+	id 816F08E0002; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 886EE8E001A; Thu, 23 Oct 2025 09:16:25 -0400 (EDT)
+	id 72CCE8E001B; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FFF38E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:16:25 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 272AE140999
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:16:25 +0000 (UTC)
-X-FDA: 84029427930.05.874F1EE
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf03.hostedemail.com (Postfix) with ESMTP id BCA152000C
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:16:21 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qhCtQU1G;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=DxVl6Ffx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761225381;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5AA088E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 09:18:20 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id E5DFB140B04
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:18:19 +0000 (UTC)
+X-FDA: 84029432718.25.DB473AB
+Received: from mail-wm1-f65.google.com (mail-wm1-f65.google.com [209.85.128.65])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C6D9C180008
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:18:17 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SU1tA276;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761225498; a=rsa-sha256;
+	cv=none;
+	b=Dcb+YmDoyfPvRO1aa+lkhRfIPV/0VS8s/LplogxRVyF4+hIT35E2i344BgSrLdJ7bIBO7R
+	QE0Ky69u7ifj77dymhlpmVrzce7Z/JHDrSTXRyRur3d/RbEilK3o0FHtgHMvuM/eeqUSnF
+	54y7O4R2mpl+RGgIXDLeG7VnX75U7OM=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=SU1tA276;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.65 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761225498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=bsQJuwD4CadX5nGc1HnQQSbObqQMv4ChtZaZKXVIvLY=;
-	b=w9lmuxzN8cbtd9YrtSdjtBaheRfwsAqpro2SVpacMs+vYH8HT+VFahZhxVtwKvVsOpM/ky
-	8i6NDGpcnL4pEpXIbQbiF4sLnzmTjU356NPxNFE8ibdJ4wQNSwapUGrD3oygDXTFywk5pO
-	QVzdSOBqQQSC7wfb3/8gVCxYK4fZjc8=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761225381; a=rsa-sha256;
-	cv=pass;
-	b=Y3nfdEfyzfR5zZs+t5X8/I9YQ3fCtLgeAqFcEkNg1EhkYGiItOjeg1dGCQBHjA1uI/Z5aW
-	hPeeI7lYZW8oteJjBOlhC2SD10N3betBoG107n5uhp0oD7BSg8PCKGDPSOG3CdIv5zgb0Y
-	Rb4uiy28VbDs/aiWY0LHmgFF5nS+gMQ=
-ARC-Authentication-Results: i=2;
-	imf03.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=qhCtQU1G;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=DxVl6Ffx;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf03.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59NAtmUj016338;
-	Thu, 23 Oct 2025 13:16:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=bsQJuwD4CadX5nGc
-	1HnQQSbObqQMv4ChtZaZKXVIvLY=; b=qhCtQU1GkOFBjWz6TWZJdyCVnpelVC1X
-	TkITx2LqjlbRXY+pERqy9kyEzVavBKG5Y729wIvs7uSvbr/6VoIH7GsYPV0i+VpY
-	c6DHCeGmotrSdUmSiHkB6urWRQy8+OfTjNrCL3dFdnb7S/IEjB9d3cMDS6IwA8Eg
-	NgX8x9zn2Aa7ds3XaptB9vqTs2qsPgNLRdzdNTgLjaClrDO24hU7ekdDuPKLTNla
-	bKbKOISYcI4WN1ol8HnFEns6OcPoUk3sNSOquxebi2qkNNuBKe/KIw0ca7Xyz396
-	R4IdH3iw0OHwK/KwnPD/o+LTEHaY/lRNiGDfrY4HbP0asi6y2FRxcw==
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 49v2vw1qqu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 13:16:14 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59NBlIpu035546;
-	Thu, 23 Oct 2025 13:16:13 GMT
-Received: from ch4pr04cu002.outbound.protection.outlook.com (mail-northcentralusazon11013019.outbound.protection.outlook.com [40.107.201.19])
-	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 49v1bfkgv5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Oct 2025 13:16:13 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FLjk5VHiN9eKD7kid6kjc2foV7jwFl/XJ/MveGvNnW9vu0AfwYgWR2B0OQ4FEMRleSAf7m0jbTeKLfwg7IfpMg2UDirZn4OwjvtWb5eE4/Ig3SjYTcwDMdqKEHeZPkyGumBpCgp/vXp0Hbc8/4WYPp+pFV2vMoLY4Ai5gUIa9pNNMmzF9abzDT3AIlHVA70g9ak/lUuT9hnxBeabAcYA8aXoJcmtYItOeKB5Qf1EWTX1Z3MVwUGYc44LQXoTBqtd1SyQCH0QtMkORBeVKK7ucxFpMcMsJ+p5rsuwYQGW2NTQtZ/P3U8eoO6ZDhhOnu/9Ey+L0ABkTztNEf4+LlOsCA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bsQJuwD4CadX5nGc1HnQQSbObqQMv4ChtZaZKXVIvLY=;
- b=fKeCt7He7qcCKQ6FhGcrZhi0qBh+Uk2fbbvFfuAGf9gt7Ba1XKXcK/qLw/jF7xF0sKvI3Vf+KfkOpIk9A9OQb+WQQta0hbuSZEzDzbfUz9ILd2ExJyEYs2GBf3dCbrfi+pe+DFR7avm9uax4ygFNugxW3jImptHsBXq3z/2iswl0fQRRNB0y7PUMLQU5iA4TwGh5yT7dubEIEx26x4s4q1alH036ZhJ3EI4TJd/w1fouaoLDzu/dvCs/ICaLZYf4D4pEV7HN6aJUpcJrsumujteUpWfmVo7Rdmizb5cWDyOr0ByFjvPosX0tk7stJ8S6d8QceyHvZwNnNCDVSVSvcQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
+	b=SlDbbbfiLCkuhPY3/e26pMtmLNPDX91T4/FttwI8Jq35e1SEYBB/2dTLbMDnx74nfyRk9p
+	O6rxkjlpGqdhbM/CMnuEfySMWa6QA1lk4+WyC9vSFraXRCWGcu7df68uFu6vzxVA4gwK8h
+	WZllk4zfUJfsOT1hUIV/YxTMwEDzTnA=
+Received: by mail-wm1-f65.google.com with SMTP id 5b1f17b1804b1-46fcf9f63b6so4723215e9.2
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 06:18:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bsQJuwD4CadX5nGc1HnQQSbObqQMv4ChtZaZKXVIvLY=;
- b=DxVl6Ffx+otZn5kcU1ILbJgBseSOTFASf1r/MH8nqJwWtGAokC9bTFTx2P2fnepqDsHVadAbUBtrigarVmAwJ6k682JlXPVSU/Y1yME6ngLYuVwXBCLwNoXHVZJ5wKL835zvv7HjC+aSBz+/7mZLIqbDJJaYxCCYXs0K7Htsa8w=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by CY8PR10MB7338.namprd10.prod.outlook.com (2603:10b6:930:7e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.13; Thu, 23 Oct
- 2025 13:16:10 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9253.011; Thu, 23 Oct 2025
- 13:16:10 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Rientjes <rientjes@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Feng Tang <feng.79.tang@gmail.com>, Christoph Lameter <cl@gentwo.org>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
-        stable@vger.kernel.org
-Subject: [PATCH] mm/slab: ensure all metadata in slab object are word-aligned
-Date: Thu, 23 Oct 2025 22:16:00 +0900
-Message-ID: <20251023131600.1103431-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0096.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2bf::12) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+        d=suse.com; s=google; t=1761225496; x=1761830296; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
+        b=SU1tA276CjJpWIgM/kOOUhNWrVkExuzujE+UpkSQjzVhFw3ZlDJwuFm/gxfp3NQSD+
+         2Wf8cEoE5HGIpBOG4QujHgf841XdfZdQ3RBMQn5qyWEcZMmU7knoV6XWK9lSo8nER65I
+         9yVwZ9KBUSeVgI8A52G0RywNcrU85hoEwGStVcltWAFJF7Wl6uq/M+dznrGvP8gmYyTw
+         3aAh7BmM/2+GRkiccW5EfRUiY/kOmGSIkSzDCn0Rj4EtFTHkBVAVED9FhkGPvRJ5J45c
+         OvtTV3cbeuNzQSzfyrzMMdzkYEBtuyQMMyAn+Xs2/sIsg0sPgJ8d/tKLU9wbNnbE8Atk
+         ZaWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761225496; x=1761830296;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3He/u9vFruVYiw+KrZIv2T9bBvLzWNfQ1++/hzzXmzs=;
+        b=VLhcjA9cCnMj4io0WBOrk1CxRY3qu2NdjI98UsgHHsvma3sph+pOEZh7ZCd43hrW/P
+         WL0oAGb4QOc08hXi8QTfV7EZ8H+38kEtgczRqB5U9x1o8zqNJ+b2WKuDOtaFVH5mNHvg
+         WCCojqKWvVCMi4udeLBOXuWkYdl0Uo5A+tCViuDgOdKJ4WZ9trv8iU/jPOOF0a2OKXDy
+         4nenjbs2v0r4VainKJhnDQGUo3yt5Kml2dkQAvVVgtAWEr6Ci/Ei4y0bg/nS9ep1qnqg
+         sb9gFxMfc3uVhXLRaEdBfIaaBmlHvEchK3EV/b1cNsYgpyO9lB7F5TOveyeA1uy7pRWk
+         AkJA==
+X-Forwarded-Encrypted: i=1; AJvYcCWTVXDFhOiBD0FvhZ3FJ5ddTcsoE3gLWZj3Oy6AlXOKWcJOEvbZHedwwC+yZ+Ncg2pxe23Z+ee45Q==@kvack.org
+X-Gm-Message-State: AOJu0Yx7B4q1GFHF4F4VhVhyGYUCc0ZVnCQGr854eA+glCI5z8cDdziI
+	V7rU69wY65iiWkBHRQQ9yTz8XBvREtdeKpX9lqHl5sSDobAVyQVDmbMrpyL2IRRFM/ruJQakIou
+	gVVnR9LkUSHn+
+X-Gm-Gg: ASbGncubPfAvXch3VRUHi+Ec2SR2RF3LCaoSGOklQzTbRhbDPbmwBw4bT12y4m5/4ii
+	D5oPQ9dNMHqHKRuTkY//Y1vTrbasQhK9N2UL2u8Lwu5dM8xnIJZlkyqfeM9izjlErTY/kai4UcM
+	UQQDgRA5TVuCrf3q851eSgEj6RcFEOXEe6DLl9L7vddYFSAFLLfPiuZy30fVJjk1XvJtCY5owLE
+	bjuOtwyxLjRWS90MTH6N88yqrfY6klr54lzpKyKhi6hw9AtTZkOeWeS8zAeDL6t0H22CMA8iGwX
+	GKH8M1KEbbxmNGM4Dqge79S1/YH/hy+y1T+Y1wkoTH2+1yKZiZlq4rZBywxFiaYIw15mvPsVcC1
+	ZTGL0Z2LLNo5NZtnL5PVNmd+ihQxmGdYYGwTSWQnUzL7pkQXeglrVS9kjttsX3b0x0wYJNSToFT
+	fBJwNOnz47NE/0D38fkByHKMjK3705Mt9EalpJ
+X-Google-Smtp-Source: AGHT+IFI7d4omhBXbweB66gvKZIb/3KhXaNp52twT+N2y9aaJX7j7EPXuCFbvF4eTwXcj+1QGz7jOQ==
+X-Received: by 2002:a05:600c:3512:b0:471:12c2:201f with SMTP id 5b1f17b1804b1-471179134f0mr209161265e9.32.1761225496200;
+        Thu, 23 Oct 2025 06:18:16 -0700 (PDT)
+Received: from localhost (134.pool62-36-43.static.orange.es. [62.36.43.134])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c428f709sm98414875e9.8.2025.10.23.06.18.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 06:18:15 -0700 (PDT)
+Date: Thu, 23 Oct 2025 15:18:14 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
+Message-ID: <aPorFhxQc7K5iLZc@tiehlicka>
+References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|CY8PR10MB7338:EE_
-X-MS-Office365-Filtering-Correlation-Id: 849c520d-f462-4997-d595-08de12365527
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dDn77kUyEIHxkowc+lLN4w0/X3fDtXIHR2164q9+sAHL0y17Ac/jkefM0brM?=
- =?us-ascii?Q?0Nal3PCrJ1XYmn+lmB5DBm9/baVxJvwYeaRP7WSIF2VpvUC2fMXK7gMRhVgS?=
- =?us-ascii?Q?Pcft0xod9pNHOHkIT0Jxa54+RHtV8uw3zX/y70P0/+plFZ0dDVJuasGOtH7O?=
- =?us-ascii?Q?erugiPDeqnNj3fRShb+t87Vj8gUxv7nnTjNRgC88gNYCOYPBJ//Ve6d3Khyp?=
- =?us-ascii?Q?oCAvH7l1Vh2Lxfgd6Te8j95tvtk2idYN+ai/wE8B5mg6iv+x2XRstjkV1WEc?=
- =?us-ascii?Q?Nh3apDAzw/pKvKLC0HW1tjNHDwZG+O1pD0fEyEcC6de4gnrNuyiJXxnriQ7r?=
- =?us-ascii?Q?ysRf8o4k4LMiAF/GnO5q851bHjT1g+1fdV0ZJouT8GnqLKq8s9r4gGDWimBu?=
- =?us-ascii?Q?c/9BCAfGRVxwyCMs6hSWfAt0qPRiF8i4tsMUrM/Ltj0XuVdMD7eH3J9woDi+?=
- =?us-ascii?Q?HyEok895PTE6W0WQMtzT5wwmSq4pVAtammzbPa7R8bzK08fk+8pWQ4M1ugX+?=
- =?us-ascii?Q?xZvQN0G3jrBOfsd1PvNza/7kKp7uCR8J7NygrCsDhflsaVQ6QLmoVux1acGC?=
- =?us-ascii?Q?+BynNfH1dy6MXF1zU4zx1Vk+XCdGGg4MEhWzwRwCm0I2iefwOjyWPrSO115O?=
- =?us-ascii?Q?q0SwsoHltKVyVBddHRl0D6+EiBLMcez/8Kzm7jAidIsPsisABIweWv3Z4Gn5?=
- =?us-ascii?Q?cS5WAGkqKU8tdNGbOK3FSr2ycJC3PkUz+WS6aW3IDKbO3qpVx4S7+1izHAtK?=
- =?us-ascii?Q?u+pK66Lfmc2dxD5rS+lar2cDKr5d75Mek+VpcXqZ+iJhqGVRdpbHcTdyBHdM?=
- =?us-ascii?Q?zSqHMDTjCFPROYJziA58hYyoZT5WTviLemCFk/W/rdPu1vD5LveUfen0rUIo?=
- =?us-ascii?Q?/hq4nAGWnlVcqkmLKkns24llTwzcpfH0fDFJ/RDQih+1CSyf9bhrH4QTSUdx?=
- =?us-ascii?Q?PActAVK6F4CtpMSckT8Is7rplCcG09AMa58AgsobXc3KsNTouyNIhbq2WONi?=
- =?us-ascii?Q?5fnFFWlidvjtQEH1V80kN+VcmBNVddKl3usVLx3+vXtLYS0xw9rR70Z9kvU2?=
- =?us-ascii?Q?SrevCKoLbzbAbnlAsYu3sKsC8YZ8Z2GDcM1DDoNiYdY8JK5M4kLqFLaUUmvl?=
- =?us-ascii?Q?QTkBYhNMuszhuIbyqPtS/5VWSdUR7yDk6HhiN5rccWZ9KMEOLiJkO0j6eUvI?=
- =?us-ascii?Q?kr0zaVenwLKKVq+uQZpI4eGUwLvTxq+526NX6rQZGNhORxra+ZcVqm5yMAj6?=
- =?us-ascii?Q?0Ou4iv6vzJaziE5Zriv1zYUVf5tKO5JymRI+3F51TG/MnFnW6T2eZRuUVMrb?=
- =?us-ascii?Q?mDRQjiu4ruWwd8i7TYqiBLvXa3yQMnEEyC545CDOSyy3SzKMZx9qflYlu4HO?=
- =?us-ascii?Q?G317LZhyqEVCdIh6+N20RP8cn2qPI76mBb8XerVnYl0HbDZs6WncVCKde272?=
- =?us-ascii?Q?FBSzW0gzMZ0/MpMyJ3HdNcdQGYkbfSzN?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?etakS2lHSCox4SVGlZeCb6nY70IndMITc98CQYjKbM81+AsehGLSM3FNBCav?=
- =?us-ascii?Q?+UVWYgacM7UuNu6HCwNzpwhEGWXFDEFdPi/ksDfho3If8m9FJaGfub7RPIqD?=
- =?us-ascii?Q?VBBoLAxZDo9kPXtRaSxKsvSr/HWeiaQpkWydYdry4M0fIYPwrhxGRYEUFzsd?=
- =?us-ascii?Q?DEo5E3bcNz3LZMEo5J/Xi5cXrqvBB5PnANPU4D9HMwElmkMScNjFTP2z/Z3J?=
- =?us-ascii?Q?hpjU5u386x9v8TrCQEpzf6VFV5aNBIKlYsc7evA9bs8HGOgJqg3ZqCY9v94u?=
- =?us-ascii?Q?7GGFJZFDmkLa2omK1NEUUOvCG4nnYIRcfFbx12GcOdfq1QB3lxDpq4Gg1Sj5?=
- =?us-ascii?Q?Qzdh8C17JXduyOHz78vA59uPNFksvkZM2zBSnw8oy2efW8yhrKx0zruwdSdU?=
- =?us-ascii?Q?rhPeSRUEVWlA6c1yqxNPiSFSOYO2NYckjqXoVJ7o6xTAL4gKgfu7PvoShNVC?=
- =?us-ascii?Q?4MWm2z2d0TwseHLw152Y+AcjLs3YNHBLJdcph14cA/sFX8WdYkldAX5BON7K?=
- =?us-ascii?Q?/fLG9EFhKL9LofhpULAKhpkQLrCD3pP42+KpeJ6gphE/+V0D1XZXNGOGGKaT?=
- =?us-ascii?Q?/rk8gb3eh6fqNlqBg3VW4xndMh1gwNyQGE3KZ+NKicb0NQHOv4Q9dhifWsm9?=
- =?us-ascii?Q?r9Ii/D1wQMfuV74I3LUSOW8Y/kpjeSIrwbHHtpBk0OueFO9/qd5f7QNBXRpo?=
- =?us-ascii?Q?a4k2jaDHnGrpouJp+uVe76Ys/IObeRiYLL0cO5ak+SCtA3AIhMgSOMN2LUNs?=
- =?us-ascii?Q?MsgQxIvEkrd9OV9aYapCrt0Bk4c2NdLzek/zqZS7c0Bu9JT1pXMA0wDtkE4N?=
- =?us-ascii?Q?yJqbh5U45iGTJjKKwqj62BQYw4o5H69jfRkKkoNi40fx/UDNwteVJD90fL25?=
- =?us-ascii?Q?HIhRxgee379nxeD0MqHyu6AKQ55a4i+gVQrWXcJGvLhHr5+bqld+d2F6nPRg?=
- =?us-ascii?Q?yeuerXNSZP1riDLNa4ESscEoPrIpdkcPGtAomyCnPBu4q85ZBBFaMLVzpuNV?=
- =?us-ascii?Q?sq1sLUoxqVyfCAzlu7kpvq5+qJIE0ZYXVT/Fh8e4VOUc/D5rt2uDfDFnc2j6?=
- =?us-ascii?Q?BtyESDKZYoPicmA7qGXXMqUvbXvxV3QHamNf970dx7fYzMvSapb0rgbmhyYO?=
- =?us-ascii?Q?++KRmwnfTiJnzShpi1e5twqUH6ZysGFeULAxhJv8ABl2R2xCknisaXA2Rn3E?=
- =?us-ascii?Q?PUkP7GGRpzkFmq0OXHuBO6m+1m43qdhNkxhvhIZSI/XBoAPSpzHKBdoyj3Vp?=
- =?us-ascii?Q?xAwizrMEIi9Lltf6KDAN4Do581wg2W1IkAT0WaJXhHQxlu5WcW23eLLnZTcx?=
- =?us-ascii?Q?f8v05hpfWhtmKCOF1awX2YxEtxx7rzoFXtc0/PZy0iCMHZhUw0iRuQl/hcJs?=
- =?us-ascii?Q?g2FUBZuKuMAxsv1DDlQtJj+EyEETsdoO49nVuaY2yfI6JrK2Uc7/ZeNlCKNt?=
- =?us-ascii?Q?7s8OhGPX2zAzry2q9iTy6MkXdpP5KiKr7rc9DDYEyYseYSY63lnZBOf8xRew?=
- =?us-ascii?Q?bbVtbtZV33G7l+fm6JGGQ7dPbWdRSc2QlIRiqW7jgfiby851qILXqjjVldyX?=
- =?us-ascii?Q?5rt+bGzivcCbcqkd1Ur1WjKMxd/INJu9glnSAGD4?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	A5qSIMgJj4BhO16dP1J8VzfmqJmXOEIt1lC7ywpWt+D3hpYn2rfVC4F1TwDuhqnzYlrVE1m8hrjE7rND3k39WUouBg2/qwBffdigk4kxeGShkBnzMIDZWIx6I2b0BoTtdh3ijujKJjiB68PwAtfd5w5HSSCzqM+wmBK7PUEOewuqsYpOAon4/ahQu8m2OLt1S4EaQkpIRviCNDYKXtb5G+7BVb6uTyD2+Gi+Xfs9sHWJ6CIKBVtOh7nn9mK6/LvH7QWSbU/7rXNy2d8eGp88PkbjS3jP4xsKMUnQ/RZKljA9C5qrpZYNqOWB/Z/CFWDhB4ULLrE7BiPzXgi27a39QouZsDEdIFUoV0DnfyhIP+C77yiLctGfxJqcu85+3geoanwap4ipznyD5+Obb5YtqR1yLRat02u0eyB69NVh277/a48cMxPVYmX8iH7FY06pQRwcpPFGRC8EqarCdN6yS2kM/vl3pboR4FOGeQqPGXu1B8RdfPWqH6uH4hfCkGc5HFysPvgYZRxGc+Ujj5hJzHLQFEOV2Ao61GywXfSC2L1BBcvLI/C1m94LlyqEff/FRMVkpwwv7Zd19X2kjQclq9dLq/QqIiNx0a8FDNzOil0=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 849c520d-f462-4997-d595-08de12365527
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Oct 2025 13:16:10.2882
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: VWWWKNQBXexuf9ohPUnsaSSgmPbF1vusWEmKrvWubEdueQq4zcyKJ/w82JrgbD0etxyPFJ4jVrCIDn5SdcsJ9g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR10MB7338
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-23_01,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
- adultscore=0 bulkscore=0 spamscore=0 suspectscore=0 mlxscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510020000 definitions=main-2510230121
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX/AkoSYxgUNXQ
- xwAF24cGB9axR9QtrIkC10sy+//+6z0AUPP9YXGbM6CSBFRrwRuqPQoDmM7sd6qHETNMgvWC0+6
- BixbWU26yv9Elo60rcy+P8IgcFmW/l34BKP5VQFLWS+63EAVJ7CX7ffA/ec7Kq2z8c0VS1sUYES
- ME3svANmR5VHaq/I8XdJF11qt7tL3CRysmOhTIveHhEA3jd6HT6+yVS2r8cj+A4mmtqnG2PvZJZ
- /eHt7iotuUPCDvfl66tVPlAlh2mwrtMSS8MiLIpoCbzagTPXgFsR5nd6lhsXPdQO/DR4tZKjl/1
- KQIU0HmztkVGEzfWQvUouqEmLm4VAoMZ/qQRUje4H7I0bNQo5BZVqPmAvCXrUsMgJ9jsEVkkBNR
- oOxGiBKAzLxpoWcOnKXJ8Fv7Q49yZ9L6doF2GNwf1FAThRdKnk8=
-X-Proofpoint-ORIG-GUID: EgyMXjmvwlQscQ3okzYNcY25jZPjN2P0
-X-Proofpoint-GUID: EgyMXjmvwlQscQ3okzYNcY25jZPjN2P0
-X-Authority-Analysis: v=2.4 cv=FuwIPmrq c=1 sm=1 tr=0 ts=68fa2a9e b=1 cx=c_pps
- a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=x6icFKpwvdMA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
- a=60bAUpEqyJ0hnt3RZ0MA:9 cc=ntf awl=host:12091
-X-Rspamd-Server: rspam05
-X-Stat-Signature: kx6tzdc1nyderfmue99hsmax46zsej7k
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251021234425.1885471-1-shakeel.butt@linux.dev>
+X-Stat-Signature: b9senzryik75az5k3qcsbz67pxmoz5qn
+X-Rspamd-Queue-Id: C6D9C180008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BCA152000C
-X-HE-Tag: 1761225381-93292
-X-HE-Meta: U2FsdGVkX1+9KUmZugWQpETqyyvHCyoY8iGkPz/Ih8CpDMjOh+s9JsygCUv12eUX0s+dLHBEwSVfRzBACe6GErZNIs55ymsx7Sn+fJEe52024wXYyItCOVw0EIDkfIj1ME8MFLw2wC//uI6fyPnaNoAf5Bt5eqFdYQAEsfTAv5n0/IPw2FmVcq3RJwSverKdHriqbEoqC4Lh291pY9G57NbMv/viM9WATktcng5ag5tosDdT7PyxcV5ZY9zgoAURSBk9/YhhQM/pTfDFPN+oGh94BhyuHJ+AcqHqabvLDEmyYAYawniSic+zUrC65VUvYEXGpiPpGfJCR8m8xBU9dn7GEI73yeHJ0Mxi6rUJYuVfjQgdSdaSCT8zZPcKNjfetb7+scpAzk+vWwN6gpkY3GU/v1XkUUbh0+JICuOPGNp2Ga2mnwuWrluguRaZg43FAy9Pkk0vNAdZrk4w59IiSjKUg9rE2bMWheqpLP959SqJXbRjWdDMj5eC5Eu15OaRlrWdoxr9d5mme3NTx177Slp+FPwEHu0PfM1FyTK3sLmmP07RtUpYu444Ar/KOVfhzCKgGbeHPbBTXF4m5FMjhDqDnYehd1GteDx6KTFOhgyCSNXo6vYCRG9PqbN7/UdFlPNzvtp03OIocCIomNGN34Tk3l9V5FA3JAfyCO4pF0b8U17LMNcRrDNGgB1cBrpZ9/N9Gb56ZOIPJpnchlmxtBYPjrYmAIkqtYCI/j11rwctplqIrTLwN9j2jpCVduExhUHXkqOl+ZiqlQIXDbpDpHMr+50IfaHaVcxytZoHeJ9WsokxyjPqvk/clsJZ/MSaLlOkeTm3xWQILOQTVuZ3G7ULeNG03rjAt2otQHxPHJbv6w7wxKErlsbs5a/b6LKffdgUs/htLwnGgQy0U8i/K3JLm9zi58HVc/++pC3afh5GGRIGk4uBnwhaUKrIYiSXdGhfkxO1pXXK9QsSgUF
- SOldiZDt
- MEgvl2Z82fUGshyfyYVRq10qW19XpsBYfWoOVWI7d7hHzZ/Ifz9l/Bzw8CgZGRNRBzcpwOfsUdSeO44IYRZMhpBUXFGWAwP7CTGn0uTFhDWAn8M60xc4mZuy3HIjYcjZb5Cq5uNUkGB1umlQyZ5jJ1eAid4z+yA6s6FaI5O/1boQRYNjKgrw2vMKB0apqJioqelv5CS13cd0jX2CWjFOzCnTA+Sa0+vNDh5pxcrkHB+1anT2aMQgUjgsFjpD3vWA1jNrmrdhalrZCE/hnqj2mFxDCKiiakhwrScM87lCTMR6eYQcgkCS7QbBqVgDDxmcLwoVFdl3rNp6wxWaCfJeLJ5yYo2XKjV4emGsbWVGSYz+d4+v6vAo6Vk+sPVccWl019U+XE/C/8BNwxJz05uGBqyJqHGrMuFIMbC7qcZ7Qn5YgZ64ymCoqepGaDll+SV9IxFOP6cJGjR7oZAJlKkqQC4zxpv3y4pKqopbEjEG9oATStqtVu2m0ul7D20CtLfBanGMQHzkGkBm+JYQpzZpi7b7FtX2mUXPgCePJ3pw1I88QcyDoZZMK7Inxoz8DuOHlkJdKYAY2tjJHTJajrySi+chN7tAL+6d5AZxVPIJkATpbPm/4bU0i4Oem3lXHq8JRi0ub+wJ8UPAcNHZq4Rn8E/Z5jlsDv6YZWDJBK76FDmQrYPSBnBKdiHAQJYNdrVBZJC0gIwo/dx9YRr706d18AyXAivBEeev63xSJm14FS6VfdXE=
+X-HE-Tag: 1761225497-908644
+X-HE-Meta: U2FsdGVkX1+7iHmzENodujVXGaRpCfd2aKPIOsYSim9gfppGdTMHzhyum3aM7v57AxjTd4X2QPaW8PaYbAegMeTnkVHMBizp9dmY+24iPJiIgcCfEGH7xszL324aZfj7lq9zNDvxk835eWxGI5EWiswbMkMaPUIN43MmUDUDublD0siRn6tOcLBYCsmRfbaZ/Aq+zGis5usfyTBhL5HXRXQd5zZAAQ92WhjszAPUsilvwpeXf0KdWah2ayIJv0C7V6EoSQBR9vMYTWX5/MBoXOf5r+qjPqJUX1X3fvXNPUO4M+7gRudoQTk56+QqGy4KqoU3fuKtrOoyVn/sBtfwCZQPViwn+zTeZJjhGyoxkM59hzPaTx8Qea5NiwZHD55LplnFXGiCBj5fKYtzbBPfWxyqyGsqImMSaOJo38vgy265+dmZjS7QZsYe478GkBWQS+NOEvB9mZ2KOVZwY2R7o/F230476jg/rQdDXYZ8jg/qDGEUnE6d68bTYd0w96B8/H42nZD1n7GO5Ug1JtRUXcsLhcwW8vXCa4OZ5h9LYoufFxK0nXg6razAAXcEBKmjiruTfCKef2lbpjLVmsDZdW2e4AKaAbjnn6VjOCSlpOIk+xhBlnD93lzFzDRBgmMx7qJ3K13WfugkLudh+9ZwxEuDGz9DGZRGuHmEvsa8Zs7aT+18lEqTkeumAgkbdC76coq/2lQfOpXquuFkClidJCdegMe0hJDS+mw8Ic0doN0EzOIf/3RSfzqH4G58FQTmyQ4BSUa4hgE9G9k8QCXMcw117ku3s912h2DpwgxZCps6B3Br9XKu5I+3g+Yir4VIxxzv/h1acEzAJSell8e1NztCWVeh2zIY23S+SHu3F+PDEAz/zHVTdiBRBF+JRkAmwc51mOsnrjGlG2QxmZYxn3rSr+NUfg7N8m7uHXrYgmRf0jCInfek4g3Otv+PxWb3As0vpVHal1jfdWd//7g
+ HAcUEHhq
+ LTg8xcXnuIYV5gETplb0SuEGNVp6m2ZGix30xqn3uH9vgtlVDQWnVykvw1WuWV/hwkTk7C9mefjz4taXW9nyk5c4kJyb8YWV2GkVsvRfqRVYX6Yc3gL8OQqfX3pZMq0OkLB3YhkD8AftYlJbvhFJ4uTWUvoM9Qm129kYHfJZPoOPbUMJrR4Gqwc/lA2b2FZk7LKwQzoleQ6ptwva+K4AGEkom+YSEcFdvNfbrJkorg2uXdpslbtTSr1XPkFFonnHGJH/+UWVuZrvIg9Tz2kzzgm4pvWrJAQ/urxqFtXxVFHXAaLtlvOehhM2wocwyVSSj0FUePcGqC4uWmtN8XBnMzW9YsjZBUfRn3nXmI6b9/OobHWx6EjYSi77+hNGJMHjAbYMWpW2l7qNWVW29/KAgIdxelGkxu94jwhqTfIl7k6nXau6TGXUJ+JS2ePAg23uyovcjyY8koossNsk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,102 +123,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the SLAB_STORE_USER debug flag is used, any metadata placed after
-the original kmalloc request size (orig_size) is not properly aligned
-on 64-bit architectures because its type is unsigned int. When both KASAN
-and SLAB_STORE_USER are enabled, kasan_alloc_meta is misaligned.
+On Tue 21-10-25 16:44:25, Shakeel Butt wrote:
+> The function __memcg_memory_event has been unnecessarily marked inline
+> even when it is not really performance critical. It is usually called
+> to track extreme conditions. Over the time, it has evolved to include
+> more functionality and inlining it is causing more harm.
+> 
+> Before the patch:
+> $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
+>    text    data     bss     dec     hex filename
+>   35645   10574    4192   50411    c4eb mm/memcontrol.o
+>   54738    1658       0   56396    dc4c net/ipv4/tcp_input.o
+>   34644    1065       0   35709    8b7d net/ipv4/tcp_output.o
+> 
+> After the patch:
+> $ size mm/memcontrol.o net/ipv4/tcp_input.o net/ipv4/tcp_output.o
+>    text    data     bss     dec     hex filename
+>   35137   10446    4192   49775    c26f mm/memcontrol.o
+>   54322    1562       0   55884    da4c net/ipv4/tcp_input.o
+>   34492    1017       0   35509    8ab5 net/ipv4/tcp_output.o
+> 
+> Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
 
-Because not all architectures support unaligned memory accesses,
-ensure that all metadata (track, orig_size, kasan_{alloc,free}_meta)
-in a slab object are word-aligned. struct track, kasan_{alloc,free}_meta
-are aligned by adding __aligned(sizeof(unsigned long)).
+Acked-by: Michal Hocko <mhocko@suse.com>
 
-For orig_size, use ALIGN(sizeof(unsigned int), sizeof(unsigned long)) to
-make clear that its size remains unsigned int but it must be aligned to
-a word boundary. On 64-bit architectures, this reserves 8 bytes for
-orig_size, which is acceptable since kmalloc's original request size
-tracking is intended for debugging rather than production use.
+As the only user is in tree should we make that EXPORT_SYMBOL_GPL
+instead?
 
-Cc: <stable@vger.kernel.org>
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
- mm/kasan/kasan.h |  4 ++--
- mm/slub.c        | 16 +++++++++++-----
- 2 files changed, 13 insertions(+), 7 deletions(-)
-
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 129178be5e64..d4ea7ecc20c3 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -265,7 +265,7 @@ struct kasan_alloc_meta {
- 	struct kasan_track alloc_track;
- 	/* Free track is stored in kasan_free_meta. */
- 	depot_stack_handle_t aux_stack[2];
--};
-+} __aligned(sizeof(unsigned long));
- 
- struct qlist_node {
- 	struct qlist_node *next;
-@@ -289,7 +289,7 @@ struct qlist_node {
- struct kasan_free_meta {
- 	struct qlist_node quarantine_link;
- 	struct kasan_track free_track;
--};
-+} __aligned(sizeof(unsigned long));
- 
- #endif /* CONFIG_KASAN_GENERIC */
- 
-diff --git a/mm/slub.c b/mm/slub.c
-index a585d0ac45d4..b921f91723c2 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -344,7 +344,7 @@ struct track {
- 	int cpu;		/* Was running on cpu */
- 	int pid;		/* Pid context */
- 	unsigned long when;	/* When did the operation occur */
--};
-+} __aligned(sizeof(unsigned long));
- 
- enum track_item { TRACK_ALLOC, TRACK_FREE };
- 
-@@ -1196,7 +1196,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += ALIGN(sizeof(unsigned int), sizeof(unsigned long));
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1392,7 +1392,8 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += ALIGN(sizeof(unsigned int),
-+				     sizeof(unsigned long));
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -7820,9 +7821,14 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 		 */
- 		size += 2 * sizeof(struct track);
- 
--		/* Save the original kmalloc request size */
-+		/*
-+		 * Save the original kmalloc request size.
-+		 * Although the request size is an unsigned int,
-+		 * make sure that is aligned to word boundary.
-+		 */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += ALIGN(sizeof(unsigned int),
-+				      sizeof(unsigned long));
- 	}
- #endif
- 
 -- 
-2.43.0
-
+Michal Hocko
+SUSE Labs
 
