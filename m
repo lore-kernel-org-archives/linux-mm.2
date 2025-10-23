@@ -4,103 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A16B5CCD1BC
-	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 17:58:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4045DCCD1BC
+	for <linux-mm@archiver.kernel.org>; Thu, 23 Oct 2025 18:01:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0AFAC8E0012; Thu, 23 Oct 2025 13:58:50 -0400 (EDT)
+	id 809858E000D; Thu, 23 Oct 2025 14:01:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 087F58E0007; Thu, 23 Oct 2025 13:58:50 -0400 (EDT)
+	id 7B9578E0007; Thu, 23 Oct 2025 14:01:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F06A78E0012; Thu, 23 Oct 2025 13:58:49 -0400 (EDT)
+	id 6A9098E000D; Thu, 23 Oct 2025 14:01:43 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DDB328E0007
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 13:58:49 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 85ABF890CB
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 17:58:49 +0000 (UTC)
-X-FDA: 84030139578.07.4CA0100
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id B81D6180006
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 17:58:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uDTdakLd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 54CDC8E0007
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 14:01:43 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 13131129DB1
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:01:43 +0000 (UTC)
+X-FDA: 84030146886.28.B394F43
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 165971C0019
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:01:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nXXrw51Y;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761242327;
+	s=arc-20220608; t=1761242501;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Om9jVeVFdyMuLOP4QsIv5RTSgj0lNSoXOFL0vvdZMWw=;
-	b=npBb1c9OYLPaZ2nHJtrbMMgQvHSjfC5Alf8dMeuX+ERWphxeHP+P4v9bqvqXgp/g0vwZbX
-	UNNXiGydyGAoEj+kjHViqqe9rTulvMK7xCJWUu7Bpw4V5D97t1ej8b3DGxqE8SzY2BYj+Y
-	xSKZhdKsyjrwT3NdjCLbCuE11fLgKsI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=uDTdakLd;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf16.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761242327; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=hOfpW2F0dLhMpb8zi4+tT7+zxDG4noiF/FBCYOCAu60=;
+	b=zVuCgsgvFM9fJlLA1pBNt94tFuf/qASr9Z0vooH39X/Llq4VLHWbG8pbclWHbaR+ehYbKH
+	/81xCuXRmSXG/iqQB7U3+5olrD//3UOb7dRjhLijjyJhakY4VZtlKOXPQSVoKb9xP9bj8H
+	7Osd0XBSflanQZoD5aDmv8ATp07U7Ck=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761242501; a=rsa-sha256;
 	cv=none;
-	b=L68rF93u6CK1yBdFqrGvYcbf7v84b8a75i7gMXr8NmvhY6/slKf6H9S0lzs/qRu3uE3V4f
-	P9Cj91MpIDJsTyvh1kR92DpSQ7zxj3bGW/yuicyd4JbkCAdlEYa4R6k6O1aaXDZ/nrZx0t
-	7dq50+7S6D4iDZRJ6uiZZwHGwIr3dS4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A98A48FE6;
-	Thu, 23 Oct 2025 17:58:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DA94C4CEE7;
-	Thu, 23 Oct 2025 17:58:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761242326;
-	bh=5hAOPFF31Br87tc4UVkXvHPCgDvT6CIduQTFGMHxSPw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uDTdakLd6r4OY/6r0TYwuTZhmdhNg2OhLQDP2C3uQ3XUgwySj+IJi+7+CmAL5hQ6w
-	 y6iUK4JWwKvEI2UdtHgJS0luBhA6IuKpfjvOWBV/FuZkVajJupWdcYmMuw5As5SXG4
-	 Br7la0e/j6E4l0QNp+6JsNe0yQj+pkGqBdGQwV1EqWmr40nMP/gRxeAGk7RaajnoOF
-	 PweXScgF8r5sbFjuDud1HRNrPLLDYY5oHcORI5tcULj793gfN9R9ApMEijRBQLkhHy
-	 2q9jr+HBXGRsm7/oSBXylk+xwb2ytkiIsneSJymDHwSgstU9gGPFylwtMl0Pq+oYtL
-	 qpEn5iNE7k9sA==
-Date: Thu, 23 Oct 2025 18:58:39 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <jonathan.cameron@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-cxl@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>, james.morse@arm.com,
-	Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v4 6/6] cache: Support cache maintenance for HiSilicon
- SoC Hydra Home Agent
-Message-ID: <20251023-deacon-freedom-91064dec93de@spud>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
- <20251022113349.1711388-7-Jonathan.Cameron@huawei.com>
- <20251022-kite-revert-2c2684054d05@spud>
- <20251023124914.00001005@huawei.com>
+	b=vsGa8ucs2lUuIXhKFEF2AB9JCBUpjD1HlSAxsOaApS3JqsvySirnzQ+p1iHI/tzhKHzhHT
+	fuPyLnM0/TzuhrwtGu1fs9Y0avvCtG3g0RORZ8htkba5y57BoKtBi5qLNRFQmmOl3ABd9j
+	xQ4zX7mnhjdBnl5kcYkvxgTHXAtsRyQ=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=nXXrw51Y;
+	spf=pass (imf21.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-7a213c3c3f5so1511146b3a.3
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 11:01:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761242500; x=1761847300; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hOfpW2F0dLhMpb8zi4+tT7+zxDG4noiF/FBCYOCAu60=;
+        b=nXXrw51YXdscm/x3s/z95oPI8UGxKaiSAxFpzLcR7pVsNdkQqqU4CgKVLzYObDTx2I
+         V3w7kRpCiWHy/eboke9WUUY8UT80guatVTx6AivMenCZKFvgLLpCGsgU301BJJJ1p+u8
+         cYh17CuYy9ymlUlHWCovbJmUsyOTKCEqMhlSGiMmZ9zOrH7fjai3r4G+6FzSy1AAnuFt
+         qCWX9TI5thNm9yQU6QBVOnkC7Zy/+MVv+lhlzOdU5fEBJV48stZQ2/w3Ocur795uSF8p
+         pKb0gZ6BFhGJZiFFE4vuIRxei+l9QrmSqQF+vmTwam8ZLH/DSnSFyN4rwgl8TcQRrwx5
+         9YwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761242500; x=1761847300;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hOfpW2F0dLhMpb8zi4+tT7+zxDG4noiF/FBCYOCAu60=;
+        b=sSO95I0FcA5Yu6y1G98JhTcQx0shnFmn/4QQNpaW36k+jR6Tn2MgVadr4hSTrjLbw2
+         Qf5KN+ziNkZy3IyGAZCQOZOp5PakYw6GkxJlYICrQqCAxt6fv6LMNEu0TdYJhYZsevRN
+         oh4WKbXlrbHqV6PBVPWWkFvZpJPSiOt2B/En1eK3T5pEjjywP8txg9JsoNJijtZ3s7N/
+         AdBt79X5y+iKjIN4vvipmn2/YknIhtI3TjEloL1GNQ4LXVREjS/PctN6IFZQ/eAesnR4
+         TD25lnwWejo2MaAR10ujVvH2n75mhBzYMlZcEtNYR9Bx00B0XjCfMzcNfDPnV8lPcI5V
+         vxmw==
+X-Gm-Message-State: AOJu0YwJFIOYueD4GJV/mbPNvs5n0E5tOX0wLpVIvpgT0BWBjSxqfT4a
+	6UuRPHzHYXhb8M+9wkexj9oFNU8DS9DxGgPgsLjRaHJuTbEWZBQmE+Qn
+X-Gm-Gg: ASbGnctSJ4Seu6uG8ZuBuWe9KLotUrXcU/rD2FR6BXQW2kBvNg4j3Naz4EsUPvjlY3R
+	KSmzvbE/Z32RuOS5pR5CVQwmYV3GRU2qYejyLZGhA11xL4e5WgRmaAtF7Vq+ON/bMYaLvikUaHw
+	9FQfFNa5JolzAVPP065XOQzYdPG5UmxJHQF3EIEnc44njnA7S2/ryFr0fYK+hRGof9vJYzi64iZ
+	oN1oPZrKLLHy5hQsWLy7WnF0AIf5HRMjz8EYyo4HwHQ8uMZZEVKRs2bcfm+n/MFbe+jkhxUCBqW
+	lBuG0x4W/QPLqvDUMk5mIVjShkzZCnepsECLbPtzBGBxJ4yd4O6/td/NGD0qILe2R5W1SQZ0V0z
+	81y7XFActEdLTCZXWiQHcjKH4ofXXTaQbKTvNa8w062MNdbo+X+XhXm/+RPEZOWnX2rT8wW1Fhg
+	riTrN06KGTYlHzxciO
+X-Google-Smtp-Source: AGHT+IHIZOFsj/SegFVrNbdOjeH3WRgln2EKfh0ASZUCKq0ad8fJDrSau2Rt6XTQaNzq2A7iutDbkA==
+X-Received: by 2002:a05:6a20:1611:b0:334:7e45:e69b with SMTP id adf61e73a8af0-334a85a552bmr30672459637.29.1761242499397;
+        Thu, 23 Oct 2025 11:01:39 -0700 (PDT)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b6cf4c4d83dsm2734532a12.18.2025.10.23.11.01.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 11:01:38 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+Subject: [PATCH v2 0/5] mm, swap: misc cleanup and bugfix
+Date: Fri, 24 Oct 2025 02:00:38 +0800
+Message-Id: <20251024-swap-clean-after-swap-table-p1-v2-0-a709469052e7@tencent.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="wGeFqUtAjCRVjVMX"
-Content-Disposition: inline
-In-Reply-To: <20251023124914.00001005@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAEZt+mgC/42NSw7CIBQAr9K8tc9Af1RX3sN08YoPS1JpA6RqG
+ u4u1gu4nFnMbBDYWw5wLjbwvNpgZ5ehPBSgR3J3RnvLDKUoGymEwvCkBfXE5JBMZP8TkYaJcZE
+ 4nEi1VcNcGYIcWTwb+9oH1z7zaEOc/Xv/rfJr/06vEgWqumsFm24gVV8iO80uHvX8gD6l9AGaQ
+ 0SPzgAAAA==
+X-Change-ID: 20251007-swap-clean-after-swap-table-p1-b9a7635ee3fa
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ David Hildenbrand <david@redhat.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ Ying Huang <ying.huang@linux.alibaba.com>, 
+ YoungJun Park <youngjun.park@lge.com>, Kairui Song <ryncsn@gmail.com>, 
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-Mailer: b4 0.14.3
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fnh5xpqmfnoxk1txix5jb6sxjqo4m7gm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B81D6180006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: cmg19876f4j4pwjbc53icqgjwwz9kqbi
-X-HE-Tag: 1761242327-253972
-X-HE-Meta: U2FsdGVkX18EVnljSdXQMM15uFhLUN4tMPy4F0nT7tl2YOim+ggB2sFesQ7Kn88KIGIb/vPuxZTprEgY948rwI9FNy4SsACYszHme/U38lv82hMX4Z+B49Rmxpnpr8JpRqC9kbftKE4mtS+BtNFKbti1SIzz4eC5CVdfydc0/46vUCqYgSwCoxsAMvkER5IVK9+2n/VPc1oelr2z+AJySngnc0KdqqO94QCWZ927As+7PkzPfIFOnvDpazMTwnuuXZZRiNQ4/dA/ueadmoFXFiGykB7d3PsfvfGh51WB3tMIel/oQSgVkR9Aargtd8BcPiwGUf59S9U/xBsce9cEqK0lVN3J2CWtFhq8ldEGYRC79hJx+OFLnf6ZsncYba0BmUpujH6eQoLM7k4c6mRjFBsMBWZvxmfbDZ1jRfvmazMBs5xd3EnEp4XrSVsjmBx7VOjaMezGUaZlvtOuwc52ZIS5+BJ3o/a9GWtCwqzOe3Olqw0aA+hNN0dJxeZTOVlcr5MHT0rAOkpknppmsZhRDmKrkbItZekuLMiX8X6GNCG2K51LBFfM1HDzWjDog0Hfl6bi1vfrg+K8XgO6OXCHp3+xIq6PFXuFQqtPFBy3bG3zTS1BUHM9jyPaZLD2pUUErXpZJoK/V0ViW77sJq0SRwZ1nmo1dZUiWGAQ9Z3P+mQncum5Xx8+hYG0BC+8U6YRilBH+asWWRjx46srQMg0TNP0oOGSAwDPFu668h6KQvCPQDRlzFN+1ximdC9cdtGQDY5Sa4YSj1QXKCyFTTFQOkXC6M8yMI30OBbIFOabgqkzEq7DzFeYZHPjzEtUHvFWVbQDjxrDkOp+F+FsSLEusB8/Lru9rrhQO7ULsqTEEp03NlKbMVfEgNDULKZf7u93zfUyICjOeKk5quZQyjEvajKq+zQkO17yRjImRecM8CqyaR9mVEVSZuLUei6vqgfzi+8taCtqDOn4ilcbCXo
- tn5zloBU
- N6r9dA0Z9hHAD15LOmrH6yT0/cPLd5G9QpvkFsBg7trwVYlaLqiQmyXu+a/zDInD0LT9vxxKIBx69UtgmgJHVuFykdi0UG3pb0ti49iHsg/LonZwE6dHQD4YwdHcW3bF92jhiRYLWK+Q1TIC4hTFJLAr8WcrY0zAFikAOyKdnL4FjLZU7d16E8W1rYq+kOqbe/FZC6cRnP9UBMv9nAi6Jh1vkDcKGYPczDi0kpuCIgx0fgbHIxCdNkgBtrQ7LHq/R3YYijzOloUjikBtm0q/AoPuOt3mfGKWAX2fCkH6xv+6tad6yGONuHeqeCwy1bbtJmD/tcyjpE9CgA3uNZyD7WV6gdNYA3fbU28U0k3BKdo85DwnGre1BtbZfdjczM/hqOZXF
+X-Rspamd-Queue-Id: 165971C0019
+X-HE-Tag: 1761242500-360723
+X-HE-Meta: U2FsdGVkX1+DamK0FABGLtwy40f/MuioxmHhvWlsrXb8XPIXv8F0Z/Gc5vOJhBo9phKlWOzcqG2Q6E4/C2vabfW0D1ZuQ77b0FuC8hyz6At0tcJPN1XYXTmLcUSnQKvlWg7NpN0ZDqAOXrvJMNAWllDw9TlcA0rd7Gczsv6VsmO190JEZUjOpd85u+ceJeKWMUjG0bpCVRPyFG/P20tX1+kOCiOen9+RvdXlTxhWeZnHuVVN30Wa25oV7K0M0JGpLoKEXM1j3eSXQR5w1g70qSMOLxLtVJXWbdU49u0D/BRFNwAKsrylGMzm9IWKL28P9w/RpOpYf4lOeD5YBtZl69bge4ufExBBjSSx8xGrrDJiM7ANv2PA0n9EknwqHR6fEiDgd1OGlr9sbaBquVocGAGwiZTShPmQyhKCwZ3vLmHqi8o4HgJGNUmq5BX3z9zzKCuRhe6x4ULiBAnGU9A6Od8zk1yEEjoYWTSvyuvdJHGIwumi/ldJUcuCrhEJayLFmjgrePMaLxR5BBTvuNHg1AOezJApy0o5q9Gx64XYTaf0pHCJIZWoOnT88IcUu7rIB/Vbs9qJ+KelrJvZAyBzU53lUBRInl4ffLfkF3/v+3nY5jGnAlb3k8Nf/6T+EfuvHhFjGygpSACm+V9SabLTgUU27Nq+ZrWILNxUuVy0sEF+8/VZEBq2CXv+IxcllWA5WOnm0xXKHCwvmoxbcOyfqx2yGc1X6SJt3WRY7GLTIkALJNOo4gUWDiJIKhCi4+o4JPaShEVsidrCHs6HQgpR/FMxWhjieveFDINzriiyigVyG9npe0RhdEsIsBxgb0MHR5RtM+S4dKab/vw4DQzrNE1I6KB/wg/2WNiuRng1IHJaK0MN/qI+DOr1q9is6fhFKEwsOAkElupX8AtsY6ci2OrmOTLSCIZFIL1dsu5dWcB1PvTAorzRFIP1GgG46jW5z1zib1mA8nDSvDZkYjF
+ gEPriRm+
+ m5sEtDNrzyX7+81nShil2FdXDsjvrGO29XS63Vgnp572HKoW1hJrNcZXm2thhWYgIO1v+AhqCAF7dmcg6VVeOuPC052oz145Rbt1g5ThupAwvDnjagJ+tKDfHnVYHzTGQheGb0TPxyZvj9MpXgiBfrYpkhRTWeIe22YiSHPeNrq96dv6ZFD+Ii1KwXP6JVsmsKtZrdZxrpnEfN4BWVgGWAsL2NeFfEvzokCeAoIA6/Rrw3rclGu1gX/fajVaYpOLb1HsmWnSEUqHO88scOu01L0CrVpw829n8wx5gVlVzFpNe5gjOqbuO2ESGh80cUlEcRFIKXlEdRHQjCwj6290Cl25tgm3AWxh1eb5+7EhcwuvnoK9HUa0dyU4ok5KlZ9+7tM/LEzM+wewqxwbNQjFSl8WbVZuWm0lZ8Ct44WYyeySFfl/LE6esoFtmIszrTWd+xIRy4o2mKUBvJi8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,202 +129,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+A few cleanups and a bugfix that are either suitable after the swap
+table phase I or found during code review.
 
---wGeFqUtAjCRVjVMX
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Patch 1 is a bugfix and needs to be included in the stable branch,
+the rest have no behavior change.
 
-On Thu, Oct 23, 2025 at 12:49:14PM +0100, Jonathan Cameron wrote:
-> On Wed, 22 Oct 2025 22:39:28 +0100
-> Conor Dooley <conor@kernel.org> wrote:
->=20
-> Hi Conor,
->=20
-> > On Wed, Oct 22, 2025 at 12:33:49PM +0100, Jonathan Cameron wrote:
-> >=20
-> > > +static int hisi_soc_hha_wbinv(struct cache_coherency_ops_inst *cci,
-> > > +			struct cc_inval_params *invp)
-> > > +{
-> > > +	struct hisi_soc_hha *soc_hha =3D
-> > > +		container_of(cci, struct hisi_soc_hha, cci);
-> > > +	phys_addr_t top, addr =3D invp->addr;
-> > > +	size_t size =3D invp->size;
-> > > +	u32 reg;
-> > > +
-> > > +	if (!size)
-> > > +		return -EINVAL;
-> > > +
-> > > +	addr =3D ALIGN_DOWN(addr, HISI_HHA_MAINT_ALIGN);
-> > > +	top =3D ALIGN(addr + size, HISI_HHA_MAINT_ALIGN);
-> > > +	size =3D top - addr;
-> > > +
-> > > +	guard(mutex)(&soc_hha->lock);
-> > > +
-> > > +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
-> > > +		return -EBUSY;
-> > > +
-> > > +	/*
-> > > +	 * Hardware will search for addresses ranging [addr, addr + size - =
-1],
-> > > +	 * last byte included, and perform maintain in 128 byte granule
-> > > +	 * on those cachelines which contain the addresses.
-> > > +	 */ =20
-> >=20
-> > Hmm, does this mean that the IP has some built-in handling for there
-> > being more than one "agent" in a system? IOW, if the address is not in
-> > its range, then the search will just fail into a NOP?
->=20
-> Exactly that. NOP if nothing to do. The hardware is only tracking
-> a subset of what it might contain (depending on which cachelines are
-> actually in caches) so it's very much a 'clear this if you happen to
-> have it' command.  Even if it is in the subset of PA being covered by
-> an instance, many cases will be a 'miss' and hence a NOP.
+---
+Changes in v2:
+- Update commit message for patch 1, it's a sub-optimal fix and a better
+  fix can be done later. [ Chris Li ]
+- Fix a lock balance issue in patch 1. [ YoungJun Park ]
+- Add a trivial cleanup patch to remove an unused argument,
+  no behavior change.
+- Update kernel doc.
+- Fix minor issue with commit message [ Nhat Pham ]
+- Link to v1: https://lore.kernel.org/r/20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com
 
-Okay, cool. I kinda figured this was the mostly outcome, when yous put
-"search" into the comment.
+---
+Kairui Song (5):
+      mm, swap: do not perform synchronous discard during allocation
+      mm, swap: rename helper for setup bad slots
+      mm, swap: cleanup swap entry allocation parameter
+      mm/migrate, swap: drop usage of folio_index
+      mm, swap: remove redundant argument for isolating a cluster
 
-> > If that's not the case, is this particular "agent" by design not suitab=
-le
-> > for a system like that? Or will a dual hydra home agent system come with
-> > a new ACPI ID that we can use to deal with that kind of situation?
->=20
-> Existing systems have multiple instances of this hardware block.
->=20
-> Simplifying things over reality just to make this explanation less
-> messy.  (ignoring other levels of interleaving beyond the Point of
-> Coherency etc).
->=20
-> In servers the DRAM access are pretty much always interleaved=20
-> (usually at cache line granularity). That interleaving may go very
-> different physical locations on a die or across multiple dies.
->=20
-> Similarly the agent responsible for tracking the coherency state
-> (easy to think of this as a complete directory but it's never that
-> simple) is distributed so that it is on the path to the DRAM. Hence
-> if we have N way interleave there maybe N separate agents responsible for
-> different parts of the range 0..(64*N-1) (taking smallest possible
-> flush that would have to go to all those agents).
+ include/linux/swap.h |  4 +--
+ mm/migrate.c         |  4 +--
+ mm/shmem.c           |  2 +-
+ mm/swap.h            | 21 ----------------
+ mm/swapfile.c        | 71 +++++++++++++++++++++++++++++++++++-----------------
+ mm/vmscan.c          |  4 +--
+ 6 files changed, 55 insertions(+), 51 deletions(-)
+---
+base-commit: 5b5c3e53c939318f6a0698c895c7ec40758bff6a
+change-id: 20251007-swap-clean-after-swap-table-p1-b9a7635ee3fa
 
-Well, thanks for the explanation.. I was only looking to know if there
-were multiple, since it wasn't clear, but the reason why you do is
-welcome.
+Best regards,
+-- 
+Kairui Song <kasong@tencent.com>
 
-> > (Although I don't know enough about ACPI to know where you'd even get
-> > the information about what instance handles what range from...)
->=20
-> We don't today. It would be easy to encode that information
-> as a resource and it may make sense for larger systems depending
-> on exactly how the coherency fabric in a system works. I'd definitely
-> expect to see some drivers doing this. Those drivers could then prefilter.
-
-Okay cool. I can clearly see how it'd be done in DT land, if required,
-but didn't know if it was possible on ACPI systems.
-
->=20
-> Interleaving gets really complex so any description is likely to only
-> provide a conservative superset of what is actually handled by a given
-> agent.
->=20
-> >=20
-> > > +	size -=3D 1;
-> > > +
-> > > +	writel(lower_32_bits(addr), soc_hha->base + HISI_HHA_START_L);
-> > > +	writel(upper_32_bits(addr), soc_hha->base + HISI_HHA_START_H);
-> > > +	writel(lower_32_bits(size), soc_hha->base + HISI_HHA_LEN_L);
-> > > +	writel(upper_32_bits(size), soc_hha->base + HISI_HHA_LEN_H);
-> > > +
-> > > +	reg =3D FIELD_PREP(HISI_HHA_CTRL_TYPE, 1); /* Clean Invalid */
-> > > +	reg |=3D HISI_HHA_CTRL_RANGE | HISI_HHA_CTRL_EN;
-> > > +	writel(reg, soc_hha->base + HISI_HHA_CTRL);
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static int hisi_soc_hha_done(struct cache_coherency_ops_inst *cci)
-> > > +{
-> > > +	struct hisi_soc_hha *soc_hha =3D
-> > > +		container_of(cci, struct hisi_soc_hha, cci);
-> > > +
-> > > +	guard(mutex)(&soc_hha->lock);
-> > > +	if (!hisi_hha_cache_maintain_wait_finished(soc_hha))
-> > > +		return -ETIMEDOUT;
-> > > +
-> > > +	return 0;
-> > > +}
-> > > +
-> > > +static const struct cache_coherency_ops hha_ops =3D {
-> > > +	.wbinv =3D hisi_soc_hha_wbinv,
-> > > +	.done =3D hisi_soc_hha_done,
-> > > +};
-> > > +
-> > > +static int hisi_soc_hha_probe(struct platform_device *pdev)
-> > > +{
-> > > +	struct hisi_soc_hha *soc_hha;
-> > > +	struct resource *mem;
-> > > +	int ret;
-> > > +
-> > > +	soc_hha =3D cache_coherency_ops_instance_alloc(&hha_ops,
-> > > +						     struct hisi_soc_hha, cci);
-> > > +	if (!soc_hha)
-> > > +		return -ENOMEM;
-> > > +
-> > > +	platform_set_drvdata(pdev, soc_hha);
-> > > +
-> > > +	mutex_init(&soc_hha->lock);
-> > > +
-> > > +	mem =3D platform_get_resource(pdev, IORESOURCE_MEM, 0);
-> > > +	if (!mem) {
-> > > +		ret =3D -ENOMEM;
-> > > +		goto err_free_cci;
-> > > +	}
-> > > +
-> > > +	/*
-> > > +	 * HHA cache driver share the same register region with HHA uncore =
-PMU
-> > > +	 * driver in hardware's perspective, none of them should reserve the
-> > > +	 * resource to itself only.  Here exclusive access verification is
-> > > +	 * avoided by calling devm_ioremap instead of devm_ioremap_resource=
- to =20
-> >=20
-> > The comment here doesn't exactly match the code, dunno if you went away
-> > from devm some reason and just forgot to to make the change or the other
-> > way around? Not a big deal obviously, but maybe you forgot to do
-> > something you intended doing. It's mentioned in the commit message too.
->=20
-> Ah. Indeed stale comment, I'll drop that.
->=20
-> Going away from devm was mostly a hang over from similar discussions in f=
-wctl
-> where I copied the pattern of embedded device(there)/kref(here) and reluc=
-tance
-> to hide way the final put().
->=20
-> >=20
-> > Other than the question I have about the multi-"agent" stuff, this
-> > looks fine to me. I assume it's been thought about and is fine for w/e
-> > reason, but I'd like to know what that is.
->=20
-> I'll see if I can craft a short intro bit of documentation for the
-> top of this driver file to state clearly that there are lots of instances
-> of this in a system and that a requests to clear something that isn't 'th=
-eirs'
-> results in a NOP.  Better to have that available so anyone writing
-> a similar driver thinks about whether that applies to what they have or
-> if they need to do in driver filtering.
-
-Yeah, adding a comment would be ideal, thanks.
-
---wGeFqUtAjCRVjVMX
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaPpszwAKCRB4tDGHoIJi
-0jkxAQDKgL4QVcRIzCo6G66R++ICwhllMamNHAZf8jmI/CO/EQEAmiVSOKVdfzt6
-NvldkccfoWmDymH3aGdE/6ZlJtdghQg=
-=K+jA
------END PGP SIGNATURE-----
-
---wGeFqUtAjCRVjVMX--
 
