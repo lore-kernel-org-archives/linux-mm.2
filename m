@@ -4,137 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78247CCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:51:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5903BCCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 07:39:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5F1F8E0039; Fri, 24 Oct 2025 02:50:59 -0400 (EDT)
+	id 554F38E003A; Fri, 24 Oct 2025 03:39:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C36AB8E0002; Fri, 24 Oct 2025 02:50:59 -0400 (EDT)
+	id 504FD8E0002; Fri, 24 Oct 2025 03:39:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B4CD48E0039; Fri, 24 Oct 2025 02:50:59 -0400 (EDT)
+	id 3F4048E003A; Fri, 24 Oct 2025 03:39:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id A592C8E0002
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:50:59 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3A31588F40
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:50:59 +0000 (UTC)
-X-FDA: 84032085438.12.54CE0E4
-Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 4551240009
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:50:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=M51apLZB;
-	spf=pass (imf04.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761288657; a=rsa-sha256;
-	cv=none;
-	b=ADoeMwc2ag5fjQSyvpwUZADlojrx2/rr316QQgettCBepoKDrcslhb+eNp5dq//xUSun4a
-	BaVPIBPsHRt0HywdFwPeOcVkqaNFaVcc1vopvxpuOoueRpqih7W+OpEwJWxmJWaLQdbAuB
-	n+TjuTCCv1gnyyeDZhArkW33X0LcOSs=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=fromorbit-com.20230601.gappssmtp.com header.s=20230601 header.b=M51apLZB;
-	spf=pass (imf04.hostedemail.com: domain of david@fromorbit.com designates 209.85.215.181 as permitted sender) smtp.mailfrom=david@fromorbit.com;
-	dmarc=pass (policy=quarantine) header.from=fromorbit.com
+	by kanga.kvack.org (Postfix) with ESMTP id 2B4428E0002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 03:39:00 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C7908160DB4
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:38:59 +0000 (UTC)
+X-FDA: 84032206398.30.59C5D9B
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 8771EC0006
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:38:57 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JjpMiswr;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761288657;
+	s=arc-20220608; t=1761291537;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DHCxcy5rr5LIi478WtCZse20PdH2a3ydVXLtPEk9x3Y=;
-	b=yEs2VVbCZe3eBDNBeULiNxmCQ+Ci7Ls14IMc+2sD1GP9KTK62OWhZBIdEGV6c7593X5dKx
-	Jd8U93tkjTspDp+1vPdzERJH7Z1SrEN24YbGPsqEWCIh3yC5pBOyNJeCnNURduQeiAHkzr
-	KPJXRh/Mt0zENsFNfjtuLof/huHYPrM=
-Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-b6cdba2663dso1236635a12.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 23:50:56 -0700 (PDT)
+	bh=eWjiXjrqyzK/iXD4R/873eykQlEHswHIXOchBtrT4ts=;
+	b=mnzMbVXP+CaCrR6NoHn43i0Fh3OeKuBnzS+Y88kIpARa4QXq7I363tkC5erlBdEi7oRyg9
+	3WJGgQOrRa117MbVCUQj0sbVhTMa6IQwJSf6lhI8QdSjDI3V7n/HytVe+vTX9bhYF/Qcn0
+	fc0D7Y02eN1TnG0osuw0dVdQLJgBZl0=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=JjpMiswr;
+	spf=pass (imf28.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761291537; a=rsa-sha256;
+	cv=none;
+	b=Hq5Pw8sgTshgf5lkVid4IV5IgxrKmqiVSGeSCrnFiJrKMjvFZLsnWAe5fr1ChH40nCUQd2
+	4TsAipA6IEh4pQy8ndC7QTYzj1B9oe13XDriI61132/2t9IzUUfrScJ0NFXX3zxYdKjyWj
+	dbqPBJFxCCcyDdyHBUi7B54lI5hp7MM=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-426fc536b5dso1225277f8f.3
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 00:38:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1761288656; x=1761893456; darn=kvack.org;
+        d=suse.com; s=google; t=1761291536; x=1761896336; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DHCxcy5rr5LIi478WtCZse20PdH2a3ydVXLtPEk9x3Y=;
-        b=M51apLZBQwCtFM2Xr+SQWQnk+xwF2K9oG7rO43IziUUE1cYU2WMYrnirl+dN0gLN0T
-         7ddP2jYX8tVXH19VvWD4MU/E4/7QRwGNDPQPBZClx46utk0GfY44uV/Qh+d4XlFxQOBe
-         PaCpE9XFMUQ+rFJkZIKs+5xV3nOsR22yqudXZxQer23lSdPQy/2RfVdG7dRICWHXh60l
-         jzz/+VV8Vgs3nf4QDa+roMOxBScHq1mW6TVNud4yHeRvSgrS+OgboJ03/pcjrmrd22lR
-         gU1tL4QYyx024k4GZOED5LFnaV3+OGlGRhiXoJOaaeC3v/Q+CNBwrJlx332uny6XvIgh
-         CBsQ==
+        bh=eWjiXjrqyzK/iXD4R/873eykQlEHswHIXOchBtrT4ts=;
+        b=JjpMiswrM0Wb71vmvKE+MeK50VH9w+/q1imv6oBWPvaYVF6t2MKD4o6nvrj8z+OkpP
+         tgAGkmDGpYS1znrn2KYhsU+ZjAKJK7osX6+IfyqxvAK5KZmrIWl4JlkovLX/4oPMEeNR
+         Whf2rtP7kFpVGodRmDUq5MRTO9wRCdDCXmLUNW9XjYezMkevGL99Ybw//TILO1ndcJv3
+         wDDF7+I9Ub7mJzG5/+mMLdOHWw2CUEpzrKASQe2bu4bwDkubHVmTrJYg7pSFsn/W0KAF
+         9OkJkyKa/nmrQKu8K5iCG7iPRI+tkJNyXqkzL4f1rWj+j5Ti1o7PjR+wtOG6IW/I1xBA
+         bO7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761288656; x=1761893456;
+        d=1e100.net; s=20230601; t=1761291536; x=1761896336;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DHCxcy5rr5LIi478WtCZse20PdH2a3ydVXLtPEk9x3Y=;
-        b=KehBD633n4Z9/l+HHTkfOroYu4d16GyTL4BRFnPFVGFHJc8orYm3jwasDA/BW7guDo
-         iFvd4kps8NJe1kG8BfumPQE7I2Q+vHvkSOhZyE9/Kj5bU9AiiTxPBSBwqd4qNVhRw5Nf
-         BMvhE/sopVlDaqmzbbikag6SxVySqyjZfyRlewPCFxAWcZpyD5Z0maxRRLwpAgY6iQ+6
-         CdfSFz29JCI6jsf4XBE6vXpwWwccuWBc366/rlTxhdhX1fZJskt5J9f3Nr8MfvyklUqd
-         ZKu2daQAAclxS4b7EsrpRreMfoSGxvqcU3j4mBTlr0FV5llKj4aae2kM9bF406y0fXse
-         Qw8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXgj0EuqdeVwmTdhmd+3gSIafuOfTTKgBwAMWF4oDm6l0b7U3q+Vyxk/zFwMt8YIcss6DSnTYetsA==@kvack.org
-X-Gm-Message-State: AOJu0Yx3okqCP6dYtWf5AQZgKhKsFTnVNuQGycNb/sMrOrE5z4ZQKGC3
-	+ilkdVRzhCZmrp3uhvVC9Qr8tFXlaGyljXxp5lJw90U4krT4tIrQrqXPJIKaCR01tvM=
-X-Gm-Gg: ASbGncuq7CqeJHfzHNc5Fqg094xHJQrrgt3A6049ojIIetaIWaY6hB9uW1TaViNntHV
-	jewXJr/YTDmhT8R8hLH4n2rHZ+2kGIyP33TjlTQq9GOfjRY9FQSdtY/fS/GDdHDr62QGKqm56VA
-	U9XVBRL3n10z975AQwM3Lnr+fOeK8vTbsi78zJu91tZ4xlvYx3kXt2VY2wfwyCdABhEiN6O3Bwg
-	kp8VVnfq29RNTJ4bmMBxE2BVnd4PKNBVDUlDXxCZ5haqTqWlIWb+bweLxZyiYWPGg6McJjjp7wi
-	jomTXJIf5GlPyXjHjFAcs2cU+9DnJVshiZBwYnaqgysfkaEuNsyAkF30bsDroMsqYkXonKukAJT
-	M0UkAbDTGf1s/TjycKMd5S4TDX263Dv14W5WEj6OHqQP5KR4s/Haay9sQehotRX/RHzYF7BNbZW
-	3KVoBWkf2ON8+hURqqOWcC856ZQykvMFtfrDo2GzHtgnpI08cnDXHFW05Hd9aiPg==
-X-Google-Smtp-Source: AGHT+IFom99rdUC4rqHBj2JdLSCZeZQXVVqQvty9JoHlT9qtIJ5LbSGWQ/CZd37bHNSPFzQXNSZTzg==
-X-Received: by 2002:a17:903:1a4c:b0:27e:ef09:4ab6 with SMTP id d9443c01a7336-290c99ad18bmr336153455ad.0.1761288655816;
-        Thu, 23 Oct 2025 23:50:55 -0700 (PDT)
-Received: from dread.disaster.area (pa49-180-91-142.pa.nsw.optusnet.com.au. [49.180.91.142])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946e2578desm44175585ad.106.2025.10.23.23.50.55
+        bh=eWjiXjrqyzK/iXD4R/873eykQlEHswHIXOchBtrT4ts=;
+        b=La4q3EVrqZtT/az5By5WKV2re9T+PxuscJQCTB5PY86yZsUYfw5HvunZGCEn4ABto/
+         HxQPFIYjvHy0BYUNNpVpgWCiOuP3E1hDnthx1kr26Kpytp5zpBwhe6qHHE15Gy4WnQPH
+         v9wYGvX+MVPIE4WeOET7fBhJcv3RU6lg/7y6GdO19ZmS7PhgJahPk9Pw4vbppmfHrD49
+         NxzTzOQJ3XqRLc4QIOlksduFaUlAhM0UrV4rcwOpl5+svXZFn34TDPotmBS1Os/gY/6w
+         YTlraZ8jaXDy8PUvF2SAsZR8Z+byIkeSZkzZg0/VEVe6dsGk9eTcOvWUlY/tgyxo2eV0
+         eTeg==
+X-Forwarded-Encrypted: i=1; AJvYcCUbTVqoMen//EiDHH0MPqtJxKEVY8/bbpOOHsNeDzdFlTdHjYvu1GSvblTPlYlhhDLRXZyhZBpmUQ==@kvack.org
+X-Gm-Message-State: AOJu0Yy9OxTHCYzhcboV2UovAHUbATi3Yg4Y2q3sPkAtC1tNjhMPrAHL
+	PZ6CtDz+RdWIL6xSkOplHHXU75/PM4Apm24B8IzMxhSwPxednCoq3wHLjkm07JaS8vk=
+X-Gm-Gg: ASbGncsjg1O0E0rbiiLRffwlHWyMoLbq02QJCSDFvFQncd13JZLryU4t9eORZKYNc92
+	XHTv5kjDmBMq21g4g1xWaNPGMrL4dnI8D2HG3SyGJyxzQdQyxnki3gkMhc+E/SAnACDpDhPXtIZ
+	YjWR5W6MmnlvpTVEKkWqypGXe3LZFn2cuV1OKTXQvyYxp0tHBzU3OS++NWhYuzBd9y+5vDSIEZJ
+	2cG29PJ5L0ltpIlGga6DaGVgO7H/z9e0fzuqdQAlypM7ON5+8z7YNjEMqfFoRGnPZTVG2XRWGPQ
+	Y2sqke5/vNpkcCTzpLiFfRYZZHt3tsdxCMAIG/A2pJlhQz5gRN/2Fa9UCglPmCPkSYQlEnBgBJN
+	LD+fJvwvtJJ6S5RKaaDm76e+y+djscsruO/bcURTCmkjphBVa3jFB+ZRFQpsyxF6tG+oNhJcJYi
+	erYjsO0ThK+fTThFRysuWBh7FpaATYCXA0
+X-Google-Smtp-Source: AGHT+IHMbLAdC/xuB+rLLbFga5DXcsyo5YyU6+vhemg24zckk0wkyGy5nZsG6GH1Suc+bZEQLCrrkQ==
+X-Received: by 2002:a05:6000:1861:b0:427:809:eff0 with SMTP id ffacd0b85a97d-4299074fef0mr918259f8f.36.1761291535892;
+        Fri, 24 Oct 2025 00:38:55 -0700 (PDT)
+Received: from localhost (109-81-19-73.rct.o2.cz. [109.81.19.73])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429898acc63sm7914006f8f.27.2025.10.24.00.38.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Oct 2025 23:50:55 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.98.2)
-	(envelope-from <david@fromorbit.com>)
-	id 1vCBdU-00000001NJi-0OGs;
-	Fri, 24 Oct 2025 17:50:52 +1100
-Date: Fri, 24 Oct 2025 17:50:52 +1100
-From: Dave Chinner <david@fromorbit.com>
-To: Andreas Dilger <adilger@dilger.ca>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>,
-	Andrew Morton <akpm@linux-foundation.org>,
+        Fri, 24 Oct 2025 00:38:55 -0700 (PDT)
+Date: Fri, 24 Oct 2025 09:38:53 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Dmitry Ilvokhin <d@ilvokhin.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
 	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
 	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
+	Hugh Dickins <hughd@google.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	linux-mm <linux-mm@kvack.org>, linux-fsdevel@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC, PATCH 0/2] Large folios vs. SIGBUS semantics
-Message-ID: <aPshzHsqp2Srau5T@dread.disaster.area>
-References: <20251020163054.1063646-1-kirill@shutemov.name>
- <aPbFgnW1ewPzpBGz@dread.disaster.area>
- <d7s4dpxtfwf2kdp4zd7szy22lxrhdjilxrsrtpm7ckzsnosdmo@bq43jwx7omq3>
- <aPoTw1qaEhU5CYmI@dread.disaster.area>
- <AF891D9F-C006-411C-BC4C-3787622AB189@dilger.ca>
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+Message-ID: <aPstDXRerYqi1O2X@tiehlicka>
+References: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <AF891D9F-C006-411C-BC4C-3787622AB189@dilger.ca>
+In-Reply-To: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 8771EC0006
+X-Stat-Signature: 8xfasufyco3xz16xqsexqr7kmswz6ouc
 X-Rspam-User: 
-X-Stat-Signature: efnm458zq3odq7b8x6afmubkdmwauiyr
-X-Rspamd-Queue-Id: 4551240009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761288657-287743
-X-HE-Meta: U2FsdGVkX19xyFiUzO1JqMRhLkD7DVGGR2uA7DkfPMe4oaULOVdahGxWTHBl4E5kFDP8w8PlTvxg7vWkYqUhCvbr4ziXH/7HtOylunh/V4Mu976oxYXvXBKhjFywJ1ah+gKI2EYn0SYxfclyuVdpvCYOAYwcigpMoN4tAm5a2w+iGmc43X4L3CD6IJB+j8bYZXQBZxqHS3lNyjNxe3JZXTcwvjY0zjGwakFpSuhhzTDUA96G1qeQ9BLwjYsUNLwaQTIFaauhWp17EPeo82LlfOIZumJF/Qei9OeTcWJl8QbRpseU/5RmC3L0yWCBpy21lx/726suou0621GBF1x04BRa58WU6v8h7wajLv5ol3t6/CXFfjFswv1bDR/sgYYi5FITThkTS7F71Rq1we+IbwxGV5DbnBROBGJ8tS37lADdnglAeu5q/bEnSCF3sTtSN5D16oX/MvSQM0Cbp4oFHJV20N14tNYHhOyS/jFrf0TbqwOOn/x1xm+qM0//UVp9UO80OKmBAYkLPI1nQ6zrG1HASE88ZldVVQ05/xxeeTE+bGdVVLoLBG9cTkWJlT+JaSnlcW7OEXVcUxDaVNXfQKfycmmPUWgz908yr8SvX7xHVPmbacvCr6BoHADIjR1mEMYWUeJWlRJOQEKQeIBuJXOiXv2t0OID6QDKdDzog0o58meS6SZ8GvV5r/dWJP5bDOuObNVwPBm8h4ONXpmd2fKaITPk+EEzYYzS9eeAhNxK1CNy+gXcdqrkBDKdiYbVcxsLRGk3srS3YTEj+7Gruin45GHcKP+/ZZ9Ej4GiB4mzBDX5+KZ3GrnDNC3zCps5FTRhs/LNkoRCLO7qe9+3zZfL2Gox7e0xXXMSK/wj4OJC1IUBKnyunOfiTW/BpJzrbQT1XXji56e+Pc8iEiWtcxFju+PXRz0WiSEEHsKvxRzrT+V9IOzDzPoLaWnWgqhfMh32xsEVA744JO0iWxv
- OCmCk5qg
- Pmw3iAk2MOmNSdUSIadHN73Qyg3URfdtVzzPFnAFG+tEzrPJ8zFgeXMsqEnuXFsr2Se5iHlBHfupuLYA9dHTCFfjgJwuvz0LgSElFuP4j98W/3HN+usUS99Cu0g9tEMfx1pfdQ5RG0ZvrWMU6yJqjbKy95EO43UEWxMwDVuh5GRZXB+guIDFbQT45JXbUceblW1UfWBbovt7r/v9KqV/NEHqRY8o6E1OryOslN/78Tz3s2dikZpz7HQJ5BwLAbj3S1jUH5kIid/rhTY6bIZLSxwlb58Zj3mtW5I+lewgEHageLnDaYPG13/+3ccQy45jXGLlhouyHN1/L4X2ou1voxoSFwsY9GtIO/2k9ceNFSXVzivCGZFWJdLvNk8dZSOUBtiGK+BcWEq9f9ogErNDtFg/HgagAKZPA13Z1jMAZM1QZYjCI6YyfVyTZ3ZSgFdZI6gLELuvWwpe40f4=
+X-HE-Tag: 1761291537-466551
+X-HE-Meta: U2FsdGVkX1/mFsI2dX4rzeJPYHSPwCsLd911yzh1ycmoNKHBat12bO508mZfD73cd5cxS42BdWGNIAQkYT0qzNiwKPzvrC4XHuIPuo7Cs+K0B2BMEkyBuATOf45Uvh65JS+mN0wLOaGQkO+pcUy87DPB9zO1x7jAOe1tNRhlJmSzD6JHS97qHdtuTMJt9D3LQfCBv6H/2JbL6E/lTP1pGdV7DpMz5TGH1fKyHalwkawEUdcr/slfhEJ/Nna0cBWoTmxqIYyOfO1AEkCqWQmXRPUytpBs1rHyeKj7oQ0VqwTTsWb2vwwz4IEihFQ2LopVQf7TnWMFP/yyxZjQzHvUwziUi0/NmiujqNILrF1y9Oq2AL04XPPHVGvzfJBEEVed90u4yKtPANzB5LM37PZ3/6bYcRQFTz4CI0ypkzleLU/DOEUuO9Tq+5yofe5Hj7gfek6gGz+tKXP9CW54yOO7dFFg9iB/x78lxANQalsj1vjUPHoOO9bgiVPUdojal4cxCSGK8MCki4VkamObu0fq5fkerpngZPekN53tIfBX7J//uT97AAYUpFSrTX6lwBNkUvjN/l6B3NsAXPp3m0dhEypgWW24I7wrt/o8T9uSgEDyxMnoLBDpETTqJHj0BBBeFhHBy46IXHCCq2KucILCMdFPOYNxKeGf+CfhMvJjmSzE5R6Pk+PibfL38KBI2uBBxDTOepLfA8yUvSpu8//z0othoArwwehMSzWwcyHNhq0/grWeGExXBY9SuIM3ILS883eARrbPGuaiNGXqP5yA1IOs/DuUj5KkgJy86Nhsm8NPmtYnm0fbeOF3rJDYCtcNWfKfpUl2euWXkDfv83BzWTX7FRxpDDByDwswM+kY0GgZM0qvBwinGxtji6fYfOSJBf/KkxjXYxGrF9CMDVTmVf9TxhLFR1y8O5wyHCMJbIjp9JLEkwS7Utzrkx/kQlgkZbtZNfJFAaz1Rfz1+Qt
+ EblvvkPM
+ bfNbFgE6LowQdSb75r8MaZQCM+jeRqwnkJfQwzv8/Ry5pvtjbjqKUAgyuHYcdouilj8GE6iNdBbLJzfTdnbCIu3MIMNXNK4B1ilWnF+7T4xwMD4Rzc/FbZEsKIyPkrtfKecCN0ilqan28NQYr1izk5QcIafjYt6jjIAJiqN4jHhAx/kokXoMxO1yxmXr9WoOScIHPqb5FrybmQwJRsZEU1ntFRt6rG8KcEq3DorncZwHW5LTL5n113sEnhtc5SeLgVakC6AzSTyH0ICj2Vjemm/dyzB1x18zGJk7IhiLZWzbFCGZv7oCintx6BiY9JxSxPoH0MFrnahuHnvmnTTAiYeVk0aORHGJsHdSjnS5IB+70Yzc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,105 +126,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 09:48:58AM -0600, Andreas Dilger wrote:
-> > On Oct 23, 2025, at 5:38 AM, Dave Chinner <david@fromorbit.com> wrote:
-> > On Tue, Oct 21, 2025 at 07:16:26AM +0100, Kiryl Shutsemau wrote:
-> >> On Tue, Oct 21, 2025 at 10:28:02AM +1100, Dave Chinner wrote:
-> >>> In critical paths like truncate, correctness and safety come first.
-> >>> Performance is only a secondary consideration.  The overlap of
-> >>> mmap() and truncate() is an area where we have had many, many bugs
-> >>> and, at minimum, the current POSIX behaviour largely shields us from
-> >>> serious stale data exposure events when those bugs (inevitably)
-> >>> occur.
-> >> 
-> >> How do you prevent writes via GUP racing with truncate()?
-> >> 
-> >> Something like this:
-> >> 
-> >> 	CPU0				CPU1
-> >> fd = open("file")
-> >> p = mmap(fd)
-> >> whatever_syscall(p)
-> >>  get_user_pages(p, &page)
-> >>  				truncate("file");
-> >>  <write to page>
-> >>  put_page(page);
-> > 
-> > Forget about truncate, go look at the comment above
-> > writable_file_mapping_allowed() about using GUP this way.
-> > 
-> > i.e. file-backed mmap/GUP is a known broken anti-pattern. We've
-> > spent the past 15+ years telling people that it is unfixably broken
-> > and they will crash their kernel or corrupt there data if they do
-> > this.
-> > 
-> > This is not supported functionality because real world production
-> > use ends up exposing problems with sync and background writeback
-> > races, truncate races, fallocate() races, writes into holes, writes
-> > into preallocated regions, writes over shared extents that require
-> > copy-on-write, etc, etc, ad nausiem.
-> > 
-> > If anyone is using filebacked mappings like this, then when it
-> > breaks they get to keep all the broken pieces to themselves.
+On Thu 23-10-25 18:12:02, Dmitry Ilvokhin wrote:
+> Allow to override defaults for shemem and tmpfs at config time. This is
+> consistent with how transparent hugepages can be configured.
 > 
-> Should ftruncate("file") return ETXTBUSY in this case, so that users
-> and applications know this doesn't work/isn't safe?
+> Same results can be achieved with the existing
+> 'transparent_hugepage_shmem' and 'transparent_hugepage_tmpfs' settings
+> in the kernel command line, but it is more convenient to define basic
+> settings at config time instead of changing kernel command line later.
 
-No, it is better to block waiting for the GUP to release the
-reference (see below), but the general problem is that we cannot
-reliably discriminate GUP references from other page cache based
-references just by looking at the folio resident in the page cache.
+Being consistent is usually nice but you are not telling us _who_ is
+going to benefit from this. Increasing the config space is not really
+free. So please focus on Why do we need it rather than it is consistent
+argument.
 
-However, when FSDAX is being used, trucate does, in fact, block
-waiting for GUP references to be release. fsdax does not use page
-references to track in use pages - the filesystem metadata tracks
-allocated and free pages, not the mm/ subsystem. There are no
-page cache references to the pages, because there is no page
-cache. Hence we can use the difference between the map count and the
-reference count to determine if there are any references we cannot
-forcibly unmap (e.g. GUP) just by looking at the backing store folio
-state.
-
-Hence we can block truncate on non mapcount references via the
-layout lease hooks like so: i.e.:
-
-->setattr
- xfs_vn_setattr
-   xfs_break_layouts(BREAK_UNMAP)
-      xfs_break_dax_layouts()
-        dax_break_layout_inode()
-	  dax_break_layout()
-	    page = dax_layout_busy_page_range()
-	      page = dax_busy_page()
-		 /* page returned if it is held by GUP */
-	    wait_page_idle(page)
-	         /* blocks until extra ref counts go away */
-
-and only when all the non-mapcount page references are gone across
-the truncate range is the truncate allowed to proceed.
-
-IIRC, we decided to block truncate and other operations that need
-backing store access exclusion rather than returned an error because
-nobody expects operations like truncate to randomly fail like this.
-Such behaviour would likely break applications in unexpected ways,
-so it was decided to play it safe and block until the ref goes away.
-
-This is one of the reasons for FOLL_LONGTERM  being added - we
-can't allow longterm pinning of file-backed fsadax pages (e.g. RDMA
-regions using filebacked mappings) because then operations like
-truncate can be blocked for hours/days/weeks. This situation is
-checked via vma_is_fsdax() in mm/gup.c::check_vma_flags()...
-
-> Unfortunately,
-> today's application developers barely even know how IO is done, so
-> there is little chance that they would understand subtleties like this.
-
-I think that even the experienced developers who know how to do IO
-struggle to understand this sort of thing. Most kernel developers
-run screaming from GUP before it drives them insane, too. :/
-
--Dave.
 -- 
-Dave Chinner
-david@fromorbit.com
+Michal Hocko
+SUSE Labs
 
