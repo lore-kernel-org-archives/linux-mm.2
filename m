@@ -4,113 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24894CCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 07:44:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 013C7CCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 07:47:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7D4CC8E004A; Fri, 24 Oct 2025 03:44:54 -0400 (EDT)
+	id 590288E004B; Fri, 24 Oct 2025 03:47:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 75D5B8E0042; Fri, 24 Oct 2025 03:44:54 -0400 (EDT)
+	id 540708E0042; Fri, 24 Oct 2025 03:47:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5FE818E004A; Fri, 24 Oct 2025 03:44:54 -0400 (EDT)
+	id 3E1518E004B; Fri, 24 Oct 2025 03:47:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 477648E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 03:44:54 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 34F35160DB5
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:44:53 +0000 (UTC)
-X-FDA: 84032221266.12.EB6FFC4
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2944F8E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 03:47:37 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CBB56140D89
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:47:36 +0000 (UTC)
+X-FDA: 84032228112.24.C65D4DB
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B55F18000D
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:44:50 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U1iQOodb;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	by imf16.hostedemail.com (Postfix) with ESMTP id 59984180002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:47:34 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RC4DlXk2;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761292054; a=rsa-sha256;
+	cv=none;
+	b=VgHd0giSrt5wCq9BLDlILt9C80lM2P80SD+4+Di8nB5j5VmqLeiq9k+B1K/yLpVhi8RqGy
+	AZMUEVdSRHjg8q+5jy5tY8PhJNNgrmdznf63ZZNuPQfaMOl7yzLlzn6VWJ1WvlsjAhbjEP
+	6ytp5YMXQ2XDTxQIT1an7efMwxsaeNU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=RC4DlXk2;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761291891;
+	s=arc-20220608; t=1761292054;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cLrJNSiKylR34j7iZUW55zszPqmRqUTKJERo78AyDog=;
-	b=ed0wQT566eeQ4DHZGiIdFUE7/QYujdrbt94Ip/9rsPfEnGUO/Zjm4NGHc5sKQe2BOG+jsL
-	1s83GTjI0/6ln4pjrRQG9K7rTOhIN4CYWnNbfMG7gePrz4sYYXaKtuPqlVwSEWyhQbJrPv
-	jtFdCcQgiNnaqCNShXnMkkMn5NqXM3E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761291891; a=rsa-sha256;
-	cv=none;
-	b=B8jmwHlTXE5QQYakUZCUrrtr87blvXnMiozfslD7pGOzZGRApDrzMLJrlIMRfI7w9gVPx0
-	v62DSA4+rl8hcVXSFTmpppCiX7BHu/AGBT9FoZA57O947JFm/TqHeg3pt/piFGOy+yIRaE
-	7KptX1ljIBx17ezbQCqPdCy8uAj20mE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U1iQOodb;
-	spf=pass (imf02.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	bh=5ecy7KW/4Q3PaNtjQEWD2FoEZh8uYi4fefNLgyAB9zU=;
+	b=tVSKM3ZBh2SQQV/m9MAN1PoLlb+aqVgV75Yfv/vE1PigGmjYeTWOb/0Jk2TL0uGck6MlE8
+	sXAAkCw3rs133SvEk2IY8BohW0qkDqLDiQikCaSoJGh7qYc+3d0bPdCvltIz7gEdB0JItb
+	ETvHs7SovcNZ0MucqcAEZKiovgnoLYM=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761291890;
+	s=mimecast20190719; t=1761292053;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=cLrJNSiKylR34j7iZUW55zszPqmRqUTKJERo78AyDog=;
-	b=U1iQOodblpcicRsYxwWVcsrQAfxGDmYwqrE6rQDZn064P+YpsiFumwvnbmixHkroNS4fjZ
-	ie2nHDxZtzxVRA8bxzRYMwxt+PomGdkTKVATyHUoJtDy6YYfByAfITMTyLQQzJs/7SCR3E
-	eGhhchJG0vOvv33XPx9nXdf3wnKeEuY=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=5ecy7KW/4Q3PaNtjQEWD2FoEZh8uYi4fefNLgyAB9zU=;
+	b=RC4DlXk2k7Lbf14KKlQLA/ugjtDrz4ZDcy0FwCiHVMXHDwX2GUwBn0BtmlZFyIRFb0ZCmv
+	NXqycpyxKkhVDxBkqTzjfQJgGiZ+Mk6W3ePDP0e/+UuGfCLORgXiQUoKLFU+WMxONlEQpy
+	Vn9g048wctHv9HzCxF3/MD8PVfepIxc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-444-YjbnLStyMKO-ycap9F1Urg-1; Fri, 24 Oct 2025 03:44:48 -0400
-X-MC-Unique: YjbnLStyMKO-ycap9F1Urg-1
-X-Mimecast-MFC-AGG-ID: YjbnLStyMKO-ycap9F1Urg_1761291887
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-471201dc0e9so10814125e9.2
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 00:44:48 -0700 (PDT)
+ us-mta-636-FUvzjfv4O6yeSvc9lioAtA-1; Fri, 24 Oct 2025 03:47:31 -0400
+X-MC-Unique: FUvzjfv4O6yeSvc9lioAtA-1
+X-Mimecast-MFC-AGG-ID: FUvzjfv4O6yeSvc9lioAtA_1761292051
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-471148ad64aso9933595e9.2
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 00:47:31 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761291887; x=1761896687;
+        d=1e100.net; s=20230601; t=1761292050; x=1761896850;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cLrJNSiKylR34j7iZUW55zszPqmRqUTKJERo78AyDog=;
-        b=mNiRRw2GlXEjtUSnm72/CceJ1J2VZI7/h5n8c2v5sLPwCt2MGjrVrm+BWztJV5akgZ
-         cz17bUmSadCBoNzOXh/1UWxINU5CO8xz9bk8osvL4FRyrXLpRy4K4+3NfOBNBcvasnRa
-         JzME3+QzxxTPbxzg+0Z55Y3FBVzGpK7/lXK+3SVp6Lv5bulnNKYf91PDS1Q2cQfBZ2U/
-         pR9/gRiQe0ae1NVlplIzfFYmpDiXNduQkSfBk21m2CfNx6tpWhHYviX2dZXqXKy2mQIh
-         Bq1IZPY+2EyP9rJ29jy2VKn7cRuV0U59OEyubEgONf6aUMoc7X2T9DIUf9piRCS/fFxn
-         4G6A==
-X-Forwarded-Encrypted: i=1; AJvYcCV0Clw1BIwHs8hqpEayo7o9af+X/Jk2bSTR+h3zmwPZVkKNvrXGPZq0NIEk7K/7KxLm1az2BWRUJA==@kvack.org
-X-Gm-Message-State: AOJu0Yyk8Gpp05Cu18OQalBqZTXm3gvl5HTLIT12114pSlmQFT0mUUcO
-	0t4e6lsJ+ZC3Sfnzc1evFACKGu3GWrPWbMRk41YjTVtx1XcgJVnP8V17dqrL7dRW3GeNIb/6RNG
-	WztymdKacn9An7niWzYK0NGCLeYqxxFFLdk+wrSmOA6JvJj9fD+4QMJ0TqCK7
-X-Gm-Gg: ASbGnctpTpGg6sumzsC44siqPL+/vjkKuZyv70bK721kjCjMFaf1nqdpxcAjpw6XvYy
-	L3ULWS+IGDqk2U0pQDHf7WoE6LkP6OpzH4Gk1inJZl6uiJ9E9sJc4T+UeFQAfiJlzp5/9cJF1OX
-	4/n3+4XT35y4oSeSEqZx0O6YLGHjL+DKqD3dpqEQfFrTiRbTLGLaG51fK/tXsMc9PPyqXos9dHG
-	rlfGyVX3i3QdKt6oUpM0k/7i4q+dby9SYbUsCbUGYwT1av4t3uHEvSdKGp7v/NMLp+Q5dG5d3Tf
-	8dOKqAxExEVOZXQqZyAhGF96jimZM7rM3pnfX1PTdr+YKXNiXLJUtLSAS9sX+W4PI99Z7HTWA27
-	HEn7ScyWISWTG2hghOhfu17B01CHtDC8TMD5dfSSau3OVp1qJN/Xwv5Fiwnaw+eMXvuw4C60qnQ
-	VjV9Z8DD+IurD8+UVOKTzgXNB1J6g=
-X-Received: by 2002:a05:600c:3512:b0:46e:5b74:4858 with SMTP id 5b1f17b1804b1-47117877122mr161139595e9.13.1761291887196;
-        Fri, 24 Oct 2025 00:44:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHwlvuk9VRwxu76UUh+uMXxcz7U8DQbC7bbY2MIM+6dZR2mZ+SIiDnqoou/qLDOKhlbcxHV9w==
-X-Received: by 2002:a05:600c:3512:b0:46e:5b74:4858 with SMTP id 5b1f17b1804b1-47117877122mr161139345e9.13.1761291886817;
-        Fri, 24 Oct 2025 00:44:46 -0700 (PDT)
+        bh=5ecy7KW/4Q3PaNtjQEWD2FoEZh8uYi4fefNLgyAB9zU=;
+        b=EiQG0w+ejiVZtAFSePa44PdqjWuldjzAM/LeNnKuqPyEDJ2BE7jXYK8NhCvOCfAXMT
+         pIQRRgXZ0eE/y869nfyibOJzQZKCMef1ykKx+aoPEo4TLuDLJJqRtF7DRYEaRpuJXTfn
+         mSgIT7zbKphecYnBEEnJkLKSKkVJltoDJt3v1uDF6EyEzUb4dhKNf+M5esqMXYE8Nwkm
+         WgR+Ly3fAkCl/bw2bl4oAVtlnf2Hi3osU9pl/duMTIsp+DAy/qw4Udq4s+dstO8rEVYg
+         DtedgJ2IfewwHA1LVNmRwitkfTN800k7ESXQ8MhpExyeMxTNPubvDDFs+THUJUhBwgwP
+         dEJA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQfMblDOerA12iHJknkGeGsgIKI4GrH5FrRrge4TBEnOgFYHmw+gyMVly+eeVlHi1rpRSkYFUsLA==@kvack.org
+X-Gm-Message-State: AOJu0YwytTJ7Gs5+5Gsv4DYeep017WVTRl7ZIi0BCNIJcDr0WF4sW36E
+	rBPjLBiHOPLIsktni1PfsrdLXfOBuvjbsMfOh42FyuIYmMYYyT/5QHJzRu3fgUq7jfEweNnEVT9
+	NU9t15MR6HCm5Dk5DPkprcz5wVtdbZQJ8BDhSl76fbTPzvPmXcRrG
+X-Gm-Gg: ASbGncsHQoDC4uMTVFJzQNmbR26XyaVvnjNtCz/f0bPh0gHOLfIDRXglWeLRG/thzHJ
+	vGSaEJ6GHny+a76wMYN0NcTkGPUbaB1kUNZ1gIpEL9j7WCFVALMQKIz+QuJ0Mn9tLRluKiB/pbA
+	nEB7/vF5U2RDtnFdiJxT0X8QtHLpdPyWK+K9gS+nwOz/kK9T0IG3x+v8MlepFaWlOwGX5i+7PeD
+	r9w2ajwfP6b0ck1yCt2kUG018PRcGb7HoZG6TqApRQK68B1P7dbEw7Hy+6m8JyYWJFrq0USWGBr
+	S0c8H1p0mWzBJJUh65WHxuE+KaweuuZNUxi+YEAf8I3j68Jsuyxt0UIE+8xZ+McoEIa7UaMsfze
+	WlHAcY0nN6VhocvDxoBsQVSFA2tUrz/dZKxEu5vPOmIg2niojZA3YJr1aHjdplW3fIb46LurJ1f
+	AO6XvD3HqfGXEY7g/1rDSVzOhi/yk=
+X-Received: by 2002:a05:600c:3b22:b0:471:989:9d85 with SMTP id 5b1f17b1804b1-471179122eemr199555085e9.19.1761292050463;
+        Fri, 24 Oct 2025 00:47:30 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFCk5knVvG9aEJVjQIGNEPj71HBH+RTp0yRPtlz2moXZyXlFUc8p92AbKQUvfwnx5Ns0MFGdw==
+X-Received: by 2002:a05:600c:3b22:b0:471:989:9d85 with SMTP id 5b1f17b1804b1-471179122eemr199554895e9.19.1761292050063;
+        Fri, 24 Oct 2025 00:47:30 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475cad4c81dsm78589885e9.0.2025.10.24.00.44.45
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475cae9253bsm74552055e9.1.2025.10.24.00.47.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Oct 2025 00:44:46 -0700 (PDT)
-Message-ID: <38195001-4d89-4bbc-a505-440b139b9608@redhat.com>
-Date: Fri, 24 Oct 2025 09:44:45 +0200
+        Fri, 24 Oct 2025 00:47:29 -0700 (PDT)
+Message-ID: <9bfd8972-4111-4afb-b8a2-f514ae67f67f@redhat.com>
+Date: Fri, 24 Oct 2025 09:47:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V3] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
- tests
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Huang Ying <ying.huang@linux.alibaba.com>, linux-kernel@vger.kernel.org,
- Catalin Marinas <catalin.marinas@arm.com>
-References: <20251024013137.136926-1-anshuman.khandual@arm.com>
+Subject: Re: [PATCH] mm: do not install PMD mappings when handling a COW fault
+To: Zhang Yi <yi.zhang@huaweicloud.com>, linux-mm@kvack.org
+Cc: linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org,
+ yi.zhang@huawei.com, karol.wachowski@linux.intel.com,
+ wangkefeng.wang@huawei.com, yangerkun@huawei.com
+References: <20251024015459.2824162-1-yi.zhang@huaweicloud.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +155,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251024013137.136926-1-anshuman.khandual@arm.com>
+In-Reply-To: <20251024015459.2824162-1-yi.zhang@huaweicloud.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: EPYOJd0dviBz4sXxYAB677XvhDhLRh63OKlgOXe7oSs_1761291887
+X-Mimecast-MFC-PROC-ID: Sx4PyofYwWQPLUQjo_Qb1yGPC1zQCAlzdLXBOgyx1Qo_1761292051
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: scn8rjr68s1gdzt76wjrjqmg9d35baoa
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B55F18000D
-X-HE-Tag: 1761291890-59343
-X-HE-Meta: U2FsdGVkX19Q12ddk8ESt0i3x7J/iskYQdIEFR+JqEJOLn5JrXgHn15SA9Y69oErYJLO8bfmx8ZtfpgNqxqkmI4g4LhOdU1t7JeDa/5d8VBex36znacluRjWtk42aGdektCtKa5//QY8JTDk7ZGIcQ+Z7y3jSUCxOsWdGE4trjxqTBFDG4sWdKY4YSPI4YqgyX6PVNogAg6+aJPzFk+Wix6kUEDawh279Qv0jc3TVg1WKxkWUoaCGWMe9hBIVLhSQpKh14zyf/rPPM3YHIHzSM31seVsj5y6K44dtZWJKiSf0kOkI5rqWBmkSytFTFIpAyfM6jN2yy7l6IO0zL5HWyAl4NJaSyKtiRjEoO0dMeiQQn6orywAH69FdJcIHP6934wfWwTlMqY+oY9dig+wfXdi0yN55tBdQW3JtMGFjUjT8/ugxI1APJNjx8Sa0u82znGISup7eHntEjt7crHD3Ns/eIT7JAAQMR2RP0MIQb7DreD/t8WrAh9qdYpLm5OjuCDjHX1oBCSy3ugay8t1Lk630d9JEn8m70iCZdP7ZxgjzwumoI1Txoar12mwg9drcjQ9RgZ5NMuTxgf9X8ZpOYdPuxmFuMu8DkSsyBe1EDUcISWrLfbKzXwFBnE7DNcrqrz8HNFM//J0itNZ/SfKRZq7o6CyPVpWjxyQX1yL+C0ADK/Jj8xSUzZsoV5OztgHYjZrk4UcBc6+fStC9StEivgP9QDs9CjOi5p1Rc4QV1h1UG+cg7aLyCff7iNzi4H7b1qNASO46ZoQOCNT09VJm1QQcd9frddsgNXES8WANleWaS2PfeCmpfvH9iDesDe5R390yJUMBxnfl9/DpIv46ty8U9PGl4QBwLpPaYgfppVcOexg9G/ZSfgMIJl9kiKkU5VxahctgfqUZEwZOcWBoCmpZxA19KHpxq4x6WMkVdOJu4A/T1z6d8GEoij/HqDkIGlzpGkH4eL5nIqzN6M
- SHQnajNV
- 8AdiV5Z8oZCbGEY99TDMgBpyBByL/hQ8EYCQ10EmG/YEl73gCTUr32sc+UWgaBdz5D0q+UvauznkTBReUm90Z8qtNrlMal25eptWfMi7T+Rzfd4aAiP69p9hb3TpyqrVVbTyDxlNZBWe5yH3uXMyBAO9xV7N3Fu3APr4xQ7ql8+zTm0nXqHth/IY3ZTWN1VXPqM0p8gi48ZkoIQWSRBQb4ckG6wWwuFsYng2DynzzcDc0AF5rd3kG3WckTMXOLAkE0Z7+2IKQ5ZgF7l/V2VKNybJGyBVdTdHdjTdyk7FAXAbXiBzposrvigaSau7IOP3nM1kbWG83GyexGxUYx5a2NImXOcYRmhojULOev4wP7ZzqPOHG97aaGRwPApvMVOlEXA/DJ3JtLKa2XDpP84uuboSzB5mMRfzWAtlwkNR9TbkR4/y5nIGZVFuoFCQobnjJ8t2cprUWOvwu60zL2XzA1TTrqgicz64srlpSMj/n6F32qcK3V7uUq5mLCEzpX488ZvE7nslmR/JiYSWVQuDdK6lOFNu9qLbjfXAPOj+tIp5hL3z1cJk4WxJYzDng6PrJtj9bdJaKAzFF+eFWvt6vBbEo7seXOMe+u/E4uV7LJKkIXXqjEfVBuVwVCUXfVfcaI5tttXDuIS2T5MKfcGgrk+pR9XRUE9f0p9hpuowzOR8Jt5NS0cU02bHONw==
+X-Stat-Signature: kcde6f9iyakcutpganmznebmuy8nizjw
+X-Rspamd-Queue-Id: 59984180002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761292054-60052
+X-HE-Meta: U2FsdGVkX18y/eFc0EkoV1cr4BuHJued0vboQmB2baMLZA6M3rbG+2AelbF/aHNavwpeLgdDs8S9y/eiCfDN5pd+1C50C3b8Auh1ePhKbYelC64n66Z0EXuvINpU2Km7LnhwlDv+HdyxlcfjfHpB0aDDweU83YA6a3BT3Uwa6IvCzi5q9sxSuptuwpO2L0EumngNIte9IQs2CwCfy9IwFwyWJu6FrMz8qUwqp8TbjBcZ5Ue+4OdtHizPL8kIdEkHCgW8H6Sz8CrpWhU3346lSzR1HpKVkzpZe82Szgc8FxyDb7Iae0dZ+Ds1DKHtxyXWd2hThbw5CF5k61CutBk1SeT0jGvngg2RDI6MDkj/Pte/ElNzY1yFaZ+CfLuiJGQIAivS90cb1cJGXW3JYvbwUPskNPHB1wxvk07icAiH2lRdz95ImnWDCxiQ9tTmHj9K0jmLsolQYCLM1TIifGmtdVuh/bF7Xmyycm8+nQlb+TIbjbzB2qXYo3qDUeCVS4mJYHYaMjhEumMv4KnvUMQyrcJ+0iJ7MCCYVHm7pYBxaqu8Urc7N9k6S999hgSVyir6VwXe2K3ZaFU8EUs/H+q3cb5BGZJ6khTZ3+lA4JxKAVf5Mxu5RHptIzmzz1G6zMYY+8o6CtXdiScktiaiG09vDnLuP/HmiF/0tCRDH+o4KjbLoycyPU/jxIMr9mkwUkRTodUpPa3j+3nuWj8GhBYQJHrQ3yltFscWZpY1PY7mwS/eqtGMRl8A5KniBN4RO/7r1lPo+9wyX2MKlPyz1JxAE0GQg1S0qhtqzArr/10u2ZcdBu+bFLA/PXkyLwgnwOnavmEMSY7b+eIzNKpYEHSRLJEuZ5Xz86T9AlwIuSPQf9mIvlta3+lgfLKr/0YFTykVUvnaNONclj4zgc6PvA/aDIqb4igHFoDdY/DUzG/Nfb2N17ztJRlxyzMcTedqlyD11szkQwMZa/njbhV18tW
+ tmLoIbXO
+ ujAZj9ISrCpSkNJFW9vJw+gF9w6lpuc1lL1fbBCQ8UFMdZnF+c9ym5McHe4hBiv4L3tu6x1pRptkcIOAi0eNsjvXfzkZZKmc4Ovsyco/PBXTMDwXjtX/4lzskjDQk2ttCEHV54Ik3VWzTUUw7WMNKwrMxA2l0rg+uM0Urf0LfyG0Eh7ptG8m3qvR8RugXIoSMo+aRj5fhmBBULpT6TxaJ1s2L7qF+iLxbmEqmru7dyXlsIVNqWOrAJkLXX16BRamZJLDmn5dj8NvF2uHaesHkqUY2+5N+kowfDy+6TGuwojfRsppNS9iaa9L3c8mnHqsd5DESrGoYqR0MhXlduAdtLPO5Xluv90t+ELnfH11Ey+oMTHlu/Jr9+1iJN/ufe/rYe5btjRZ6niA156/QODBNlXMNAYNW7BjzlmwOEJDKuZhE2W6yvl8Hs5fC7xn/SrOHhkxGOG6MzH0mFnCJWYR+ktYJCNJCYavpI7THzt5fW0CRLxE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,19 +178,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.10.25 03:31, Anshuman Khandual wrote:
-> Add some [pte|pmd]_mkwrite_novma() relevant tests.
+On 24.10.25 03:54, Zhang Yi wrote:
+> From: Zhang Yi <yi.zhang@huawei.com>
 > 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Huang Ying <ying.huang@linux.alibaba.com>
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> During the ping of user pages in FOLL_LONGTERM on a COW VMA and a
+
+s/ping/pin/ or better "When pinning a page with FOLL_LONGTERM in a CoW 
+VMA ..."
+
+> PMD-aligned (2MB on x86) large folio, follow_page_mask() failed to
+> obtain a valid anonymous page, resulting in an infinite loop issue.
+> The specific triggering process is as follows:
+> 
+> 1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
+>     has a 2MB large folio installed in the page cache.
+> 
+>     addr = mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
+> 
+> 2. The kernel driver pass this mapped address to pin_user_pages_fast()
+>     in FOLL_LONGTERM mode.
+> 
+>     pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
+> 
+>    ->  pin_user_pages_fast()
+>    |   gup_fast_fallback()
+>    |    __gup_longterm_locked()
+>    |     __get_user_pages_locked()
+>    |      __get_user_pages()
+>    |       follow_page_mask()
+>    |        follow_p4d_mask()
+>    |         follow_pud_mask()
+>    |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
+>    |                            //huge PMD is installed. This is normal
+>    |                            //in the first round, but it shouldn't
+>    |                            //happen in the second round.
+>    |           follow_huge_pmd() //require an anonymous page
+>    |            return -EMLINK;
+>    |   faultin_page()
+>    |    handle_mm_fault()
+>    |     wp_huge_pmd() //remove PMD and fall back to PTE
+>    |     handle_pte_fault()
+>    |      do_pte_missing()
+>    |       do_fault()
+>    |        do_read_fault() //FAULT_FLAG_WRITE is not set
+>    |         finish_fault()
+>    |          do_set_pmd() //install a huge PMD again, this is wrong!!!
+>    |      do_wp_page() //create private anonymous pages
+>    <-    goto retry;
+> 
+> Due to an incorrectly large PMD set in do_read_fault(),
+> follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
+> 
+> David pointed out that we can preallocate a page table and remap the PMD
+> to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
+> can avoid this issue by not installing PMD mappings when handling a COW
+> and unshare fault in do_set_pmd().
+> 
+> Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
+> Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
+> Closes: https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@linux.intel.com/
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 > ---
+>   mm/memory.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 0ba4f6b71847..0748a31367df 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -5212,6 +5212,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
+>   	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
+>   		return ret;
+>   
+> +	/* We're about to trigger CoW, so never map it through a PMD. */
+> +	if (is_cow_mapping(vma->vm_flags) &&
+> +	    (vmf->flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)))
+> +		return ret;
+> +
+>   	if (folio_order(folio) != HPAGE_PMD_ORDER)
+>   		return ret;
+>   	page = &folio->page;
 
 Acked-by: David Hildenbrand <david@redhat.com>
+
+Thanks!
 
 -- 
 Cheers
