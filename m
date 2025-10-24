@@ -4,85 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37F4CCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:08:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27D99CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0DECA8E00DF; Fri, 24 Oct 2025 13:08:36 -0400 (EDT)
+	id 5F8608E00E0; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B6398E00C9; Fri, 24 Oct 2025 13:08:36 -0400 (EDT)
+	id 5A87B8E00C9; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F35FB8E00DF; Fri, 24 Oct 2025 13:08:35 -0400 (EDT)
+	id 496E18E00E0; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id DEE948E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:08:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 857C0160F2B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:35 +0000 (UTC)
-X-FDA: 84033641790.09.12D0D7D
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 34F472000B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:32 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J5nIVsHm
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761325713; a=rsa-sha256;
-	cv=none;
-	b=6iHduAkZIxSvY28Q8S8VZbOoUcE7dkQYYnqnQiZQWuhgqm7dgzk+KvJBdF/hqyijDezYH4
-	BAQgk1FNeFBpOxRtg6Gr0eGvvzzLbCwotk6fwfpSWSxUUYa+rV54OY0eC/9w7GrVhBYBQc
-	pJlO9frLtfALNwmsZwR+g4vXIldVqes=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J5nIVsHm;
-	dmarc=none;
-	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 31B0C8E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6DD55DD1B
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:32:35 +0000 (UTC)
+X-FDA: 84033702270.05.5C01861
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A94DE4001B
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:32:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TwyPgzHx;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761325713;
+	s=arc-20220608; t=1761327153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ZW5olhctt8pQPRZxoAAJytfYIV9yoFEgRh2hZHi7Ks=;
-	b=VCDQ7rvTO1/Z5j/MQfXavpjDj1iXbeyuk29K/OtPvqxjHurMUV8LFCjWzNqjWqjyJBJ7U4
-	PYlnStRipmQXs9tdtpA8TNWzRExnAYusr1ziBf2vGoOKs+i42jwNtEo4e/jLZ1hBVdiBFR
-	zklln0CXs+SH11hAwQnPHJOUNcUNC8o=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=5ZW5olhctt8pQPRZxoAAJytfYIV9yoFEgRh2hZHi7Ks=; b=J5nIVsHm9KMzkVsz+UUroU00Fy
-	B0yX4QuYTnVGZWEppX1RPvG05Ya1Bnz51s1AJe65eYrxxzRwoCOA4RVt5gmygFvqRUDZFocbE3UQs
-	1HVy2IFtL80K6uonYWg1UpSb3rAC2wl6znxX6WucN+F6j43yVzrWRifH7yfcQIhGt5dTTxqUsagLp
-	H+n/MYBlKaa+IX6FesApAibC2STndf1Xj3+n7P9XsebBEDOLNFY0QvJiyjezRRCttPrk8YkCDHoYa
-	+Ppr0gm4egEcU8CT6D/qzgEWn3ZX+sbq0EEB+zCVXSg8VbPfZIFvepHZcej+Q3hMIN6WWPHB7qfMd
-	dA/t7aPA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCLH7-00000005zMA-2jPO;
-	Fri, 24 Oct 2025 17:08:25 +0000
-From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To: linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Hugh Dickins <hughd@google.com>,
+	bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
+	b=CvjFDqlpM7BHgx0PHvu1pM69JEt4hjovK75lk9/iixqGlurBYB+T79X9kXear+g7n06qnS
+	+58Q1vXuNkhNIutJqKAf0G2eFqMJjNRjeMGtQaMd7I27+UsMCsn5QeRTNt8Amb4ohxoGjg
+	W+Bc7NjfFrHRQYshmFTDYFnC28XD5a0=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=TwyPgzHx;
+	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761327153; a=rsa-sha256;
+	cv=none;
+	b=bWrsr6mCw7zuMVX1n44KvODxBvv+U+vqBLNy4Mx+RisKDn5Dns5d9WWJTuNR5hP/zAChcx
+	vEdeig9O5I9VK+1FB1oIhG6xIkpmdIFrcJHHb5uImCTUmq2JI/g1tnOArxcMtCBmPEs0He
+	B8MuGajV07BE2StglW0PZTJ9PzsZ034=
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-89ef0cec908so12655285a.1
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:32:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1761327152; x=1761931952; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
+        b=TwyPgzHx/Es254au6mpgV0MaoKQfZ7AUoPHnan/U/Q7l9lD9Pq788C5nLseArGbYOJ
+         65gqMu029BBnbZYFUhjpa2iPiCmR7hHxanI5ui3jxIbc5beChXmNmN0CisktgDYUHEYV
+         KrdasXSHtBoXFNJCI+cn6XfoXmu/Ki/uW2qUhfMiEtoFfpR3Ps9uS74PRPcUOLO0ov14
+         JpN0NypG/2FnLD4Wm1OQBHlWipwvKYnQGGFP3ImjAPsF7az4nkbF+7qEj1iwIBXCCr+T
+         cjrtgIAplUatikD2w05O3SSM8GiAjREt+9LkeWHzWw65/p2FOhL0ZoUdYjZ/kqEjx7ua
+         FjJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761327152; x=1761931952;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
+        b=MBtRAgVDRVvFR4Cqu6e+2xiQFkrejougsVNZOAOXRMd9mXb5nE5nhMrdo3xFM7Ab44
+         vyFlOgp1AVGrULBO811wZ/3lmg8oN1DNp4WHIwFlX9Y+JYmnNVQfx57/fxp3kFQmmugt
+         dK3L7ekjYb0o7Zxlvr3Kw5eoK40is6jA6fVCZVnRH9CJEdWTSWpVHU1KRhXMKKNd/5TX
+         MFJwpWarCYwldvEFjgRI0YUgGcjVJDob7qKzQ6B5ctPZ66Wyo70ibs2zkEFCZFaq48sn
+         SjHIbzMNRIVwuwzY9PhGNbkdKB1+OUK278U15fRZW4A6qPVziokxjwGRixL1y/IB5imK
+         3cJw==
+X-Forwarded-Encrypted: i=1; AJvYcCVbUotoUuGhGWKP9yyVwxaOpdcjx9DT8E2UiOhQmSqGtj/DPljKgGwZGXtLT0LiUPz4jYdHJOebbw==@kvack.org
+X-Gm-Message-State: AOJu0YwyiNgUJYdRsm/ehHYvHd/6ySMFdMqCshdvHy0TQ28SYh71BIqE
+	9GdCXDb5qyLUoQA1iXGhtko8Mtu0zlv4eyg6OBIvxntSvFgrxpIbif0M+OscD5V5wUc=
+X-Gm-Gg: ASbGncsKQ9XNhY9YypkRw7j7m5oiMU5DxE0OiBO+zoOmnKevIxkXAMtkEB3+xTYeNHk
+	nYJKSdvZPNje8XYjVgTBtPTF1bU8dWn6j/0bpltxH1C2hUhevL+ejusmX3QO7FJ/3fliyZYVzmG
+	KGUKf2gL8O5JwcOmDc2oOIod6qFUapqzkVFHmJuFnbTkwcRrtRs7dvZB+H1bgI4QUrUSxy7Zqlf
+	lnlxlpP7TrL0zEIt/1w2HryRK43U1Z1vF9s+kkwd+hddUH6Yf5PXOweMOhqPNIKh8HNUPSYFvQc
+	UBhazibGwyP0rfXURIrOCPUI9jRYfNhNQIHuqPVodhOFje4L/RZkeU3jX2E0XAIyaoZr/ofQcds
+	mk+D+vUbf0FWQSoBKpXLXJqf6gPZIxIGYcee4DGuPmgdQsaaI6ku5FiOWWqJIcre8TzCAPirjhh
+	SKhJv/Hnr9YHpa1D6biaRiwGj3DhrKczHoNxvg90Z9lmyJe+ofaFAIp1cBTuUMNdRhDrUUEw==
+X-Google-Smtp-Source: AGHT+IHmBN0+9+r5KY4AyoghUj0jEXWjqZKGqzuPjvXeVNzt6iAcmzIlgz93IE1ZHjH55zZ3g6T32Q==
+X-Received: by 2002:a05:620a:2950:b0:88e:aae4:9599 with SMTP id af79cd13be357-89dbfc9f46cmr377281085a.10.1761327152303;
+        Fri, 24 Oct 2025 10:32:32 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89eadc0ab82sm58312485a.53.2025.10.24.10.32.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 10:32:31 -0700 (PDT)
+Date: Fri, 24 Oct 2025 13:32:29 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
 	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 10/10] mm: Use folio_next_pos()
-Date: Fri, 24 Oct 2025 18:08:18 +0100
-Message-ID: <20251024170822.1427218-11-willy@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251024170822.1427218-1-willy@infradead.org>
-References: <20251024170822.1427218-1-willy@infradead.org>
+Subject: Re: [RFC PATCH 05/12] fs/proc/task_mmu: refactor pagemap_pmd_range()
+Message-ID: <aPu4LWGdGSQR_xY0@gourry-fedora-PF4VCD3F>
+References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
+ <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Queue-Id: A94DE4001B
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 34F472000B
-X-Stat-Signature: uzun14wsbbro9ft4i7889kb7oc73w56o
-X-HE-Tag: 1761325712-630878
-X-HE-Meta: U2FsdGVkX1/o9d2yLNDMPYUE+egFs3k76bBWgBr/jTa6NjJ5U5H83tGT/c9Q7yd0Jj17KkOjvXRUv/uGO3aqyox4aTV5CaLuduDcdTK380/szO8xF4EmH8U5LF3qJGlyoSF4G9wcHR3VBeKDyTJgFON8/xD1WvW4p/ERq1UBjNFhQPa2OzZwiyOvBM8mo4u2gW4dvwcmVB1jFq/fuzPUijQlisAbi5tGtNzyRQDO1VK2OWUqBOEjtA5vfawFLfe4fmST04Zz+Qd+2wXkY57j0SrwEkxyN77MZxia2gF1IER58EPhF3hs97vM8Urfh1flViAfgpS6VyY05EGSYjQyR7+ikm2wfCerusrSjHqH5TU1zELFxwNVw0IOkVdyFvXc+9EsCU7LknTidsbQCFHYDfB3HqjC2jhLpdmE9ztHVGx5ybpODpJWk+yBxpc7yBqc+TihJfKD5HETOthWRFjkH8L6h5LQKMLUU95d6LLp3e57RwKK1WWPyZeZx+Mqi2Y3IVGzoAhivStNbRG+FcCHxvyTwlaSxFS0Lb0ERC5wHpDFLKXML/woXhl124mrKf5Ur3+RArP8T23CtaV6yOfc2E/yfGonyLVtqxhZhvW0cytrP8FXZvgBrOJmI0uzAbZF7qVgWsttqnTOwIPBXYIdEuIMA5MROBetoaVVhfihlGdvNEoUAfRQcDp37NprA2F4sPzWmrkB+JLCp3KZO5VmXL+LalmjfdBLQFd6ddJtwTicZxCbouV7/omewqP585t728HkJW+9NOai9UcHanuuygWAnr0fievq+PXPtu0IpufgMrnIqyaz6J+J4Q/rNT5+4VJaWM3Dk+joMWksPwI4CTRbRRFnQ0hnSx/0S5YHdx5JJvfcf4wrrisMvj/RVYY0YNc2CipAn4W6rmbgkZbyCevNzF+UmtZn8dKNk6rRAeWOXBmVWpw479ntoNBMkF15tlFgweEW5gOhICbPZxu
- kJjaeRNo
- IpsP6iF2UITPEnlqD1uL0J2xWZzD0OzS1Gm3uqZc4HH+6mt8UzsjhUcDH8dstXEyNikrZmVW1nrEYSicORm1Ov2aa01MlK3b8t5F/ADMm6iS7RcsMlmCtwwcI8IaHjDnKK1BuFTVCAmlQcihlx6qKy63xZVFASMfyPhqG5etQABP11hk39ORTcEyuyu7gqdo7QpuPYABXjmE6fMnm0VeK7cor7plW1P3QaxvDIKlHWuvZQqd/J/pD4L0c1x3/5eJcq7IDuw0bEo+dbScxH0UqgGDZEdsdrTEeVvCfhaMYdttiDgSTSo+cwV8JT+saTgs4vdQMvf3jCf7vy91ofwb3SeeLk48YZ6UiDU9rDjmL4IZ1sDxX5NcxNikM/39q0Tx9q+QNoohmFwN7aSA0wIYRV36El1XcagN4OpJjr4AQnfspuuCunWg3vh4vQg==
+X-Stat-Signature: py3k5opok8t8cnkix33xmo7kyx3knmg9
+X-HE-Tag: 1761327153-747384
+X-HE-Meta: U2FsdGVkX1/M5ut15fb3UMAbaFA+3wVZDry3VZcNq3VTfSjl843q2nlGYcZukPekiKry6fDADwXYZ6wup/9GUMA+Y+pmEhUBN84M/DVolG2dCUhiIqovQte/3cXRDZchZBOgQT0elEVMeYYH2/EKAlvSgol1ZKr+WMl+tRSEx9WESPsEC3dPzx+tdd5HxEDEfJHrqwqbpUktxiwCbbYBRTs2rBL9IOnZ0IEHdsM3HDayQ2H3yQ7jTbOkBqtBeyUl48vWhiAutqIA1xQ+ZBPGr340hkQuGn9RcuzE8dUnpMdFoYQjaIiyhdAKwkZpMkPtMDKXpuo8CjmyKp/r682WXywJxhsrhNGWVREYgk9/QrLMZgj406StFY1m3tRPLX9OHo3fCvImmk29eu1bxJlvjPKg1pR7q1mS3qhlGJP5nBrkBBqXyrHVjlC3ep70irTMorzxzB8vK6x9j9NJDKwrCNlstcYu63PJ8D4pyt9H1whXaTK8OYgXmd+F4rcOITGJJwaq5o74/U2dI3Z6uF1WUf8O3MGrsGQRbCM/1ywI+NXxNWB2sGh9tKoTQp5RCzrf2BPZxBImiLeQWlWNjNXqHWRXMMVhBReH4oemrZMb1J0zG6tSbH83rHGugCEehxQkaVY9oBeU1C871FXwdqve64oQS9fLzjrmA9G5VF3e98gFAdUPq/ixPgCyec5DvVjrjZfHFX4ffbzJAjPqC2wqzn3fEaHBBDGSLOf6JfcVbBTpux/Z9oMEUruy0xSt3tSxlNTuXuE4G9F8itPnQ70JUBhWE6rVwvzNITEwovfcpUW/YkiSqb08Waih7in7YXvPq9IQBkVFtgr5GjaFQlIfNORnZDhpFJsu+m6nFsy6hcQt/mp7eg13DKB16HQgsL3NurVoBVedqj5WtinakMpPHDYKnRPyDWO9OHk596aVgWh1sLzeBfZu6ZrNE5wY7ekhzMcfQY7Qd0dSfK8xYjX
+ DMGAynBm
+ VvqH1sN+/9D409Up3kDoIgeh5mzxJMmtPKWJoEoC01ED65N8jex3gkMAtgwUyVqES3hNcvlN5io+/a4RPISKw8sSFrPz18iMtU8LjvXQ5mmXiQ4g48XP12r/VyF9IZX4s2yvJMNtWp5GdNdnryXrRj+Jcv7POMe9YrBFLgqnJu2Q3cd5MrZ+UBxoXS8i7rxWAiz2utrW5ANOd/p2N1GrP5ap9xI9TeO3I3/ivu3OiAB0x3xoef6ZXZExLrjyAhGFwteTl00X+G7BadV2TEynotDucQV5JI9SqHZvFwbr0MC8XSflI/okxQ9DksWQjxQyZaCnQ/b3f1AMcCUE0vCistoSB/E5Go+kDM5IwfHPLiIZlFnxuu8k/J4GYpUTq3wppWj7MsLT24g5WnUbqfdCZLNXMpwmgDT/9IdY+B7AE1wFiMBfr1f0Bl7qQ2vm8u66VROXFqoPjJfvwmj2m9Uv4qKMw8w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,47 +153,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This is one instruction more efficient than open-coding folio_pos() +
-folio_size().  It's the equivalent of (x + y) << z rather than
-x << z + y << z.
+On Fri, Oct 24, 2025 at 08:41:21AM +0100, Lorenzo Stoakes wrote:
+> Separate out THP logic so we can drop an indentation level and reduce the
+> amount of noise in this function.
+> 
+> We add pagemap_pmd_range_thp() for this purpose.
+> 
+> While we're here, convert the VM_BUG_ON() to a VM_WARN_ON_ONCE() at the
+> same time.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+... >8
+> +static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> +			     struct mm_walk *walk)
+> +{
+> +	struct vm_area_struct *vma = walk->vma;
+> +	struct pagemapread *pm = walk->private;
+> +	spinlock_t *ptl;
+> +	pte_t *pte, *orig_pte;
+> +	int err = 0;
+> +
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	ptl = pmd_trans_huge_lock(pmdp, vma);
+> +	if (ptl)
+> +		return pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
+> +#endif
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org
----
- mm/shmem.c    | 2 +-
- mm/truncate.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Maybe something like...
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index b9081b817d28..c819cecf1ed9 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -1133,7 +1133,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
- 	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
- 	folio = shmem_get_partial_folio(inode, lstart >> PAGE_SHIFT);
- 	if (folio) {
--		same_folio = lend < folio_pos(folio) + folio_size(folio);
-+		same_folio = lend < folio_next_pos(folio);
- 		folio_mark_dirty(folio);
- 		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
- 			start = folio_next_index(folio);
-diff --git a/mm/truncate.c b/mm/truncate.c
-index 91eb92a5ce4f..a3d673533e32 100644
---- a/mm/truncate.c
-+++ b/mm/truncate.c
-@@ -387,7 +387,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
- 	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
- 	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
- 	if (!IS_ERR(folio)) {
--		same_folio = lend < folio_pos(folio) + folio_size(folio);
-+		same_folio = lend < folio_next_pos(folio);
- 		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
- 			start = folio_next_index(folio);
- 			if (same_folio)
--- 
-2.47.2
+#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ptl = pmd_trans_huge_lock(pmdp, vma);
+if (ptl) {
+	err = pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
+	spin_unlock(ptl);
+	return err;
+}
+#endif
 
+and drop the spin_unlock(ptl) calls from pagemap_pmd_range_thp?
+
+Makes it easier to understand the locking semantics.
+
+Might be worth adding a comment to pagemap_pmd_range_thp that callers
+must hold the ptl lock.
+
+~Gregory
+
+P.S. This patch set made my day, the whole non-swap-swap thing has
+always broken my brain.  <3
 
