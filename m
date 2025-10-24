@@ -4,104 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC6D8CCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:34:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1670CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:50:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AB598E0037; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
+	id 02A398E0038; Fri, 24 Oct 2025 02:50:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 382908E0002; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
+	id F1D898E0002; Fri, 24 Oct 2025 02:50:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 299358E0037; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
+	id E5A3D8E0038; Fri, 24 Oct 2025 02:50:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 141408E0002
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7C2813C344
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:34:20 +0000 (UTC)
-X-FDA: 84032043480.18.C55FF35
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 7952C40005
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:34:16 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id D464A8E0002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:50:54 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 81083160D58
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:50:54 +0000 (UTC)
+X-FDA: 84032085228.11.B9ECADE
+Received: from mail-wm1-f66.google.com (mail-wm1-f66.google.com [209.85.128.66])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 64AC540003
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:50:52 +0000 (UTC)
 Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	dkim=pass header.d=suse.com header.s=google header.b=b+s+tCLw;
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761287659;
+	s=arc-20220608; t=1761288652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8stRqKVra8vW1T7mKX2XVqBaLprqqVaii3YoizrqAIk=;
-	b=JDKaSqU/BdqnNXCTcus0g4uXaQkfZW2EmPomIzLyAo23gc1Iqj1nXCb4stkNuZdsL/tFwo
-	aZSBMdcEB5goWKnj/f3BTvbKK9Bk2s/SEldCOIjxU8PDAAae4Ztkx/728InwlKsKm85nsI
-	Qpp0knoZoTKYblsETgxgX4L/f/PMHH4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761287659; a=rsa-sha256;
-	cv=none;
-	b=LlNNLrd5+TRQYKy1b4fDb8BSsl8cWLc5aDN/Xh0AY2erbnYXtRQvB499VBFsufkqogbbrr
-	UppDuY4RIWQNXnpWN7odsZ83Dqwi50PWYJOhFAUSorCIzogRsmPSsvZCEucS4k5OH9Siqo
-	JBkXKoKPMExnCSyUJTX9TOsc41ITvCc=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=cTVHW40Zh+ZcYW36HL4c/rT2R0nqusYCaOB5DUxW5hs=;
+	b=pWW+4JikOBOBP/jVZiUAixsNeaoF1VyETad+2ICfggPpd9dYZslOqvOgOOgyL5gbRUEgxv
+	ET1boeoVrS32zgvNocpNKtd2wxzM62vHa0PbwvsmEtI8oETMWRPtcWOGVhQCbgXSPceMqq
+	hjc3hTp56Gb2I0ysTemcWb8w7ZzDtS4=
 ARC-Authentication-Results: i=1;
 	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ctClk5glPzvXFZ;
-	Fri, 24 Oct 2025 14:33:38 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id F085C180B73;
-	Fri, 24 Oct 2025 14:34:11 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 24 Oct 2025 14:34:11 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 24 Oct 2025 14:34:09 +0800
-Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
-To: <ankita@nvidia.com>, <aniketa@nvidia.com>
-CC: <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
-	<zhiw@nvidia.com>, <dnigam@nvidia.com>, <kjaju@nvidia.com>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-edac@vger.kernel.org>, <Jonathan.Cameron@huawei.com>,
-	<ira.weiny@intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
-	<u.kleine-koenig@baylibre.com>, <peterz@infradead.org>,
-	<linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>, <vsethi@nvidia.com>,
-	<jgg@nvidia.com>, <mochs@nvidia.com>, <skolothumtho@nvidia.com>,
-	<nao.horiguchi@gmail.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
-	<guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
-	<kevin.tian@intel.com>, <alex@shazbot.org>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <20251021102327.199099-2-ankita@nvidia.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <421a271d-ef7b-7c00-830c-85f18a6a7afa@huawei.com>
-Date: Fri, 24 Oct 2025 14:34:09 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	dkim=pass header.d=suse.com header.s=google header.b=b+s+tCLw;
+	spf=pass (imf17.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761288652; a=rsa-sha256;
+	cv=none;
+	b=wUI1svDbkpO856IE26dXbAGAnaWgl8DaiMuieWZ37RPK5KJgi1xrJdLawebX17D6iXDtAY
+	WVllVW2D/teQW+/FLUcG/4s4x/boBrnGqwbzybKAig9d7lG7XAS/fa9vUV1+CJkib+K2qk
+	Slmu0kCwFU1Hm5iNB2LBTg9LjxPzvJI=
+Received: by mail-wm1-f66.google.com with SMTP id 5b1f17b1804b1-471075c0a18so18757845e9.1
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 23:50:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1761288651; x=1761893451; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cTVHW40Zh+ZcYW36HL4c/rT2R0nqusYCaOB5DUxW5hs=;
+        b=b+s+tCLwyB7pkVXBOvL9OVHGo/Zib4FUtSJmx34N/Ybu8ter1Jv4oCOCmTYJppe1ld
+         xkK585BzbKNfvJxEqarQpej/5oIH0i2nCgA5sr9geBvc9V4lnVZUnVuWdEE7lgKirLPr
+         gSgXlZKqa5zSNCtKDb2IHEU/yBzqHoWcSohcNfWnToB/t1BGnChoida7buTtovR0MBej
+         xYm+l9++tByN/YelOVVjK810WX7kPqhezdnZ6evxwOkIiwnaQ2LfJJB4Fzul/uREJZoM
+         t68K6zzmm/6obx5A9PbO5RPwte9vyPVQiyQtVt5dvo1o43Io0qqfkQ+0aaqhde2QJdQz
+         XOXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761288651; x=1761893451;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cTVHW40Zh+ZcYW36HL4c/rT2R0nqusYCaOB5DUxW5hs=;
+        b=rVOqhufkZG5xCcCrCjJrDz4AWUGuh6OolkuLnefkuUnVsowZmEsFF44RIbHxAv2Rfo
+         Z0QSVuILQmIk4JxUUp7Zdzc3fXtTx87DS6EdZ3vLsypUlYafor5LBHUAwsz4GZFtQbJh
+         1DIoJPAsNQNUD5zu7xRbaBCHFHlMCTJ4TQKOY1uhoxm4L3rtvJTjwETwOINv3b9vjqI8
+         0JdxZ2O76kkD+TUX0DXi7Z02T2VAIhfbo6Ruv2KA8jFoNvWd/iPiTG/+EOcRgjf2Tnmy
+         W3YGWQOxHJY/z9mQEuyv6zXKzWveaGXie5kbuyyNxvPaxDHON7/DKLJgETD6MODQhESC
+         fxCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXwpSoODBIoDWYhhK8cZMtJi/kj0mAtzo0zvx008LHWmZ6uowwrx7dOJPlx2KZEz3royOu/XDtG3Q==@kvack.org
+X-Gm-Message-State: AOJu0YweA1BfTnkKLyP4zWAKQsnbmdFwLwUfHnIfKKUUwbt0UkwMKDee
+	Q2LQXk6JRkNh/J0zNhqYCQ8Vr2kuNczgKMIsho1sNth3o8dhcf4iT5mY6vHOR+WCA2g=
+X-Gm-Gg: ASbGncsX0wKXb0EGJ5a/rVU+7Hpvri7K5UOL8r/SYVoJylILWdDBvY1H40i0UjBOgtz
+	sIwiI7ObRJTT2/YDCHGCtJ67diG/5GlhNk5YvJKu34mL0YeX33q2uo0OC9lwmLhEA5IzbCr5kp+
+	p5+Krhj2Xw9D+zqwmB15H57/1TU7pGZeQokJOnZmfDMvSUKL5alU38MsqUvVK04itP6IRCqf+JS
+	XrubP6HF/LEobFZzc1Jnb5iATxZXawjMNHsO3L4r6VgLg60YxQL7dW+EK+7ku+0U4Zo+BGmT5zh
+	WkzKAc2tyIemNgoNpRPHLQGqIEORCbw4s16EKw6Vcmf85XEuYWBOy6qNZ6901piMPdbZhKhUyfc
+	NmXtiIfjkVDm8ZK/ay9f774w9OgTpj+7QSuvP89TXwHzWQU1bT0zJrDVNF6+eJGQtD9oO4cGeDG
+	HRg/8GkNQdAx0=
+X-Google-Smtp-Source: AGHT+IG6AHY5dkgO0Q5DKGmqzwIVnALLho0wguGOP10IdFFJoATiZ5dycE/1wRVFF3VxetAiLmfC9Q==
+X-Received: by 2002:a05:600c:3b03:b0:471:6f4:602a with SMTP id 5b1f17b1804b1-471179068f6mr191913555e9.23.1761288650660;
+        Thu, 23 Oct 2025 23:50:50 -0700 (PDT)
+Received: from localhost (109-81-19-73.rct.o2.cz. [109.81.19.73])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475c427f685sm135434275e9.2.2025.10.23.23.50.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 Oct 2025 23:50:50 -0700 (PDT)
+Date: Fri, 24 Oct 2025 08:50:49 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
+Message-ID: <aPshyb6okUnRMZQL@tiehlicka>
+References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
+ <aPorFhxQc7K5iLZc@tiehlicka>
+ <jnzfiyojjwvrj3eemqmpigfyjxucdqe44fjy36nxkly6urtn7u@a6pfcppla3r6>
 MIME-Version: 1.0
-In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <jnzfiyojjwvrj3eemqmpigfyjxucdqe44fjy36nxkly6urtn7u@a6pfcppla3r6>
+X-Rspamd-Queue-Id: 64AC540003
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7952C40005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: bkqghp6p3af5cqxxz8f8mqxfh9gujrez
-X-HE-Tag: 1761287656-449266
-X-HE-Meta: U2FsdGVkX19Kw/xiUYw4yKTaZyn7SbtW5ESKS5hKkHZ8jyrQyXQTHOL9cf37Vl7U5ydiQXFc+JpG1e5Duo+3WtK5k6HrkmRrBc58k5/MmpZ0O/Gz8is7I70afmCNjlGDmSzVeoN7A1GHvilTm7VHWpynlNj1RLY+S/Ln0t2/JIkxEJppVqAogAAH3U8Oti6qFgd6+pMGcjzeouzNbpt4VXB2i/COkB/VEJTxa4dRSBds1C9Idceff1NqyLqa0yuiRipbK7ERCFmb4bOKi0TeySnBp8RBHjWyZuskYxUAM5HQuIzYhY0N27nQWORrGUwnamsV0sZuB8vLXZSg8cV0oeREyWZaCyw2HL6d8XW+EiH+rOPsG6L+p0F3xvnT9g4qXFEQJ0PQSCzcGN7X5WbJhs6h878zqE5Bb+To5wDP5EQxNhGhqVRDP0/DIg1U5GZK6m3c7ig9H5ti9bCF51vYB9NqtXNBKde7DwnQbw/TwU64uVmWBcGuno8DxEYJpHHhDFiiAl5F7ODF/1WDp10cZErml/0cvdaBXuTEgIjSrVyBaTcbAU5XCIIHohIseVMOCtJzc1o3GLj8ELk0s1TJDl+9ywZVtBt7N19uFscx90tQ3y78ngPZldcUed6c23lymNTanKzXn2u/MfYN/QRySJIlQ4kdmToEYEgQIQbnp4+eIQSBLIt2+1nGyavZY6QIdqigN0axP8w11SlLet+ORSKx0qeBQWYqMA4NRiHw5+fur1YTetJEjjVSTY15IJg4ShWMke6EBF3Wrpd81JoDQO1/WF8AsS0ARY7lpplk6zmbFLeEPcGhlWSdqUgr+hpbsFyYMfT49X70LmLneSS6RWpOv0HxeZFpdoWkQ9zKmX76idvR36RC0gWqGHQB11E6Fffc9+alIpkmpuEXzX+SpL0N+CcAAK1UW+3luA3F3ytT9dr5kp1l9pD28IWveDEjIiP8yR5Ay6EKzq2LEJO
- 63ZStmYV
- EzxQwkcqDs+7Fjstx2LN60ztMG9dXX7bNe03tyWfbk45GzFO/6F1XdGxcdfU0yA6wxNo6F8yO+8LPVaUIEDb9q+ApChvdslQCgDPUVeNcFgBKJlPPoLN3efC/Jzuc4KYqxx5aNuQhcW6kHfNKQ7ceYqNwhPd87xr75G5vUMWKRL0UcET8a5kB8IUkD3O1/TA2eSFIpNOgpuV3gam114u875DIfdizuhi1/IQT3Dogr/qv0Q6AT2fb3aub5zOYwYvSZDbpuxoUuvO9gSF2qDlu8q2PqM74ai11Oyy9dQ6b8J7dQ7LgkPb4OAkqose507vGBcDIq/Iat02M4TmQXPi0Vcfp3dNoLW06BF6LgTp9B5lBLu1Sg2MjYTy+67zjEejcYBJKaXg5izJl7U7rIkBdk9n17r4EhtucNeOWoAFbAkFDXKE=
+X-Stat-Signature: d8x6d4tt8ojgqfgtmyypwtdxjnkyekcp
+X-HE-Tag: 1761288652-630570
+X-HE-Meta: U2FsdGVkX1+IvkUVohMzl4EaBS9Risif8c7vxzBWSMTYIIDEMaNUjLkg1/zIsiWCtl9ZDvQwEvGjWHVk2QplaoITC4VWUzXwpfjGX8zrVD5bPZxaTcSLyZ/UmENRHR3Y6WpG1gcSPAYHg/vxV2Nbnf9dnpmyE/LpNvkP8JYh6NJmwkhyBol6sym/YN0SP4sf5Rn7lQkKKgN1KFVnCfss/feFggKsHSfTrARqWHnY4cA4SxE5Azg2K+5hBWPJfBEETns/M+lN+cmU5zF6+jIPk6csAvmaisU++OflLYmps1u06zEacRq8obdwlntYpiEoEut90fPzA6BceiVKIs9uzRl/dsCYEK9G7zkF6/EHegdgRFzSSV7xZd/wP8Ts6jZal0Sokbrju7S90HBOJLcJ+C2OzgJewvYrcnVWmjBQavHIar9FzdLzD5ZuP1hAXbzooTxrUCwjRodmUbp5Qawid692ZrP5JmhAFTieFlLfGZV7bysPMqmwfD1m4ejV7Q4tqRZrJ0IrTaGu3ZIDRDcCxZlE2K/6nW/c5ATCWUA+1KHxWueS66PKpYDkDLVdXw1WQ7DdF1aiIbRYg+n6hoeAQ9e8SwBqb3vA/NPGGsAmUC/y5TQPZlWbwXTx/Fg5dMWqx4F6jNq7GnAAINUNgGmE+nRmOjjbxu5LundrTdG6oCmC5AQJja4eVObQrCKPS/bOI8R4IqA0ATqguc6kcMTWoZ5AhjUMb2a2mIjy6d0sbhe6iuoPmOEY2F5BK3T5vwjuFTkJJjbk9Dg86lGcWQdhD83XCVH/B1yxZM6w/Nqa5V9ltNYfvPB7RLgqxkzRajuPoqqU4WWi2VnjqXVHQRVIwHkeeR6yoEi8i4oMjs8LM/znk2+N+7va3h+ouji1l9kEmxgv85S1QfCizGlREJjT5RYf7vSm6oM49t3o05D+ub/uWeGX6C427apXELvoS0AO1qzsH/PsZ4WP0muWs7N
+ Y8T5Hns0
+ 0+FtrKd1p1ke+CUHjWXNgJr2eXN++Hdy3OxJEsC60TX/bGud+o1PntgF9Ezpmlr+o58FmEEBySdg5V43vVYZn+xr0so2faWquUHrA7z0SOpW+JAHs5khIRW/xPu4fhq4WhtPoKYmJx+GP/gNk+p8uuRJUXGDpTfsMn5ROk+6P+LgexN5ndvJYmyiGuBkjEF+vqs0DpapkaFi+Wfd4Zz9eDlSRQ4jAFHSIK2j8SIqIL+4rRzjNnuew84k5zpCWzXntX5vCO1S4989NiXE6IKvqQ6W1YhgKG637QPsAbiXA29PeKDi17XRK8O7dlwDDCaOzu7THKpHldbyRU2HBRrkgAc/vTJBJEBx4IwANl8JNNO9frFOg+hcU8Y61T5Bas38zHBr5CmS8N8GOpZZecTiDix1ePg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,149 +124,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/21 18:23, ankita@nvidia.com wrote:
-> From: Ankit Agrawal <ankita@nvidia.com>
+On Thu 23-10-25 14:35:05, Shakeel Butt wrote:
+> On Thu, Oct 23, 2025 at 03:18:14PM +0200, Michal Hocko wrote:
+[...]
+> > As the only user is in tree should we make that EXPORT_SYMBOL_GPL
+> > instead?
 > 
-> The kernel MM currently does not handle ECC errors / poison on a memory
-> region that is not backed by struct pages. If a memory region mapped
-> using remap_pfn_range() for example, but not added to the kernel, MM
-> will not have associated struct pages. Add a new mechanism to handle
-> memory failure on such memory.
-> 
-> Make kernel MM expose a function to allow modules managing the device
-> memory to register the device memory SPA and the address space associated
-> it. MM maintains this information as an interval tree. On poison, MM can
-> search for the range that the poisoned PFN belong and use the address_space
-> to determine the mapping VMA.
-> 
-> In this implementation, kernel MM follows the following sequence that is
-> largely similar to the memory_failure() handler for struct page backed
-> memory:
-> 1. memory_failure() is triggered on reception of a poison error. An
-> absence of struct page is detected and consequently memory_failure_pfn()
-> is executed.
-> 2. memory_failure_pfn() collects the processes mapped to the PFN.
-> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
-> poisoned PFN using kill_procs().
-> 
-> Note that there is one primary difference versus the handling of the
-> poison on struct pages, which is to skip unmapping to the faulty PFN.
-> This is done to handle the huge PFNMAP support added recently [1] that
-> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
-> to a PFN would need breaking the PMD mapping into PTEs to unmap only
-> the poisoned PFN. This will have a major performance impact.
-> 
-> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.com/ [1]
-> 
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> I just followed the file convention i.e. all other exports in
+> memcontrol.c are like that. I would keep this as is unless you have
+> strong opinion otherwise.
 
-Thanks for your patch. Some comments below.
+OK
 
-> ---
->  MAINTAINERS                    |   1 +
->  include/linux/memory-failure.h |  17 +++++
->  include/linux/mm.h             |   1 +
->  include/ras/ras_event.h        |   1 +
->  mm/Kconfig                     |   1 +
->  mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
->  6 files changed, 148 insertions(+), 1 deletion(-)
->  create mode 100644 include/linux/memory-failure.h
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 520fb4e379a3..463d062d0386 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -11359,6 +11359,7 @@ M:	Miaohe Lin <linmiaohe@huawei.com>
->  R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> +F:	include/linux/memory-failure.h
->  F:	mm/hwpoison-inject.c
->  F:	mm/memory-failure.c
->  
-> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
-> new file mode 100644
-> index 000000000000..bc326503d2d2
-> --- /dev/null
-> +++ b/include/linux/memory-failure.h
-> @@ -0,0 +1,17 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_MEMORY_FAILURE_H
-> +#define _LINUX_MEMORY_FAILURE_H
-> +
-> +#include <linux/interval_tree.h>
-> +
-> +struct pfn_address_space;
-
-Do we need this declaration?
-
-> +
-> +struct pfn_address_space {
-> +	struct interval_tree_node node;
-> +	struct address_space *mapping;
-> +};
-> +
-
-<snip>
-
-> +static int memory_failure_pfn(unsigned long pfn, int flags)
-> +{
-> +	struct interval_tree_node *node;
-> +	LIST_HEAD(tokill);
-> +
-> +	mutex_lock(&pfn_space_lock);
-> +	/*
-> +	 * Modules registers with MM the address space mapping to the device memory they
-> +	 * manage. Iterate to identify exactly which address space has mapped to this
-> +	 * failing PFN.
-> +	 */
-> +	for (node = interval_tree_iter_first(&pfn_space_itree, pfn, pfn); node;
-> +	     node = interval_tree_iter_next(node, pfn, pfn)) {
-> +		struct pfn_address_space *pfn_space =
-> +			container_of(node, struct pfn_address_space, node);
-> +
-> +		collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
-> +	}
-> +	mutex_unlock(&pfn_space_lock);
-> +
-> +	/*
-> +	 * Unlike System-RAM there is no possibility to swap in a different
-> +	 * physical page at a given virtual address, so all userspace
-> +	 * consumption of direct PFN memory necessitates SIGBUS (i.e.
-> +	 * MF_MUST_KILL)
-> +	 */
-> +	flags |= MF_ACTION_REQUIRED | MF_MUST_KILL;
-> +
-> +	kill_procs(&tokill, true, pfn, flags);
-> +
-
-If pfn doesn't belong to any address space mapping, it's still counted as MF_RECOVERED?
-
-> +	return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
-> +}
-> +
->  /**
->   * memory_failure - Handle memory failure of a page.
->   * @pfn: Page Number of the corrupted page
-> @@ -2259,6 +2380,11 @@ int memory_failure(unsigned long pfn, int flags)
->  	if (!(flags & MF_SW_SIMULATED))
->  		hw_memory_failure = true;
->  
-> +	if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
-
-It's better to have some comments for this case.
-
-> +		res = memory_failure_pfn(pfn, flags);
-> +		goto unlock_mutex;
-> +	}
-> +
->  	p = pfn_to_online_page(pfn);
->  	if (!p) {
->  		res = arch_memory_failure(pfn, flags);
-
-Can we move above memory_failure_pfn block here? I'm worried that too many scenario branches might
-lead to confusion.
-
-Thanks.
-.
+-- 
+Michal Hocko
+SUSE Labs
 
