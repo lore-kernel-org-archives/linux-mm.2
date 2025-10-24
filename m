@@ -4,106 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 626F0CCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 15:17:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F1AC1CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 15:27:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C37C98E00B6; Fri, 24 Oct 2025 11:17:27 -0400 (EDT)
+	id 1C4268E00B7; Fri, 24 Oct 2025 11:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE8728E0042; Fri, 24 Oct 2025 11:17:27 -0400 (EDT)
+	id 19B408E0042; Fri, 24 Oct 2025 11:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AB03C8E00B6; Fri, 24 Oct 2025 11:17:27 -0400 (EDT)
+	id 0D8118E00B7; Fri, 24 Oct 2025 11:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 949B58E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:17:27 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 59BA349991
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:17:27 +0000 (UTC)
-X-FDA: 84033361734.08.A2EFF43
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 959401C000B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:17:25 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gDnU6DHI
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F03E18E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:27:07 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8CD8E89082
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:27:07 +0000 (UTC)
+X-FDA: 84033386094.14.C8252FB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf13.hostedemail.com (Postfix) with ESMTP id E82DD2000A
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:27:05 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXlFFD0e;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761319045;
+	s=arc-20220608; t=1761319625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vX6q5KsWvP/pqF1uXTr61P+nn+J2TSZ+8mTaeYcEPG8=;
-	b=siKzhHNd17sLEK9utn80gcJfoQ3ssBzJmz63/7PLJGGI8qXUhy3Mnmz6HqN3Yn3OmaFzFU
-	KMlCjt4LZ7gBkjD+czhAQiISHoMDQnMFOjf3qGV2SQBMLm2iY4cN7G/hM/vYyI/9x05aHC
-	ifFIL8wucE4WUTViwCh1PUjR4Zka1eY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gDnU6DHI;
-	spf=none (imf18.hostedemail.com: domain of BATV+b7f0eb53100f8146c054+8097+infradead.org+dwmw2@casper.srs.infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=BATV+b7f0eb53100f8146c054+8097+infradead.org+dwmw2@casper.srs.infradead.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761319045; a=rsa-sha256;
+	bh=2qm+rBI4LRp1TIWL08SkF7I/QizsgmOyrxDxZ000j5w=;
+	b=GKIwzA4rRmdc/FKIj8LuR7KGXX0HaeKZO2DWCX1ERUIgUo12YBypYTYJ6fbNzqxOVoEGuu
+	7dYObk02opu75TMte9lEYYzkJ2WPH6oYEsIS7Ix315d2j2ym9Vw73OcB95Y+dS9neWU1su
+	SYnA0c4WFIaW73jKq1MssNshWNyVkSU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761319625; a=rsa-sha256;
 	cv=none;
-	b=x9t/6LL8QpfaXSscuxm43RZkRzARKYj7dIU6W8oPuES8RBUtfnil54PwAqTCovHC5vt6ZF
-	4Cy5IOAdoCgFnVGVLTr0GM4l1c92I0RQzPBISpskIqYA0u6j1TCpzOzmo0fctG5o9xaytn
-	eMb12t2NsRmCZ4KFmLhQYY0098/Ezc4=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=vX6q5KsWvP/pqF1uXTr61P+nn+J2TSZ+8mTaeYcEPG8=; b=gDnU6DHIdceHt5TWtp/21TLKxG
-	bT1wzsEr2z4OfNLbuXGb/Ro4AFnwD3sE52NY83fR9ieUwW3++4Vbdlivr6tKMTxJKEgK7vSXaTk/6
-	FlOq0rg9uKxjcP2m0YoALKLYtt7MFUra347J67q3tsKaT18UHNM7bhlTlLmjdwroHsrgFzJJjHoaB
-	/bztisngf7nkDl05L64bo+nRvlesqYJqVBBJXJZsouTKNEOgZtZcUbdDTudf5IGr2MfNpyJQcDk5n
-	q4XHcqmpyDW/6JkaGWr9As1wex7kvmTF8YJfbtqj4IH8ksKLDblU1JkzzsVECbtAxPBhbGRvC5pB2
-	WJLEMgqw==;
-Received: from [2001:8b0:10b:5:d8ad:45c0:47cf:4bed] (helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCJXb-00000003dWb-3ylw;
-	Fri, 24 Oct 2025 15:17:21 +0000
-Message-ID: <7324616a8d2631aa8132f725f9f6551e3e6b21dd.camel@infradead.org>
-Subject: Re: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when
- context-switching
-From: David Woodhouse <dwmw2@infradead.org>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, David Hildenbrand
- <david@redhat.com>,  linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev
- <agordeev@linux.ibm.com>,  Andreas Larsson <andreas@gaisler.com>, Andrew
- Morton <akpm@linux-foundation.org>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>, Catalin
- Marinas <catalin.marinas@arm.com>, Christophe Leroy
- <christophe.leroy@csgroup.eu>,  Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,  Juergen
- Gross <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan
- <maddy@linux.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko
- <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, Nicholas Piggin
- <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, Ryan Roberts
- <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, Thomas
- Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Will
- Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-Date: Fri, 24 Oct 2025 16:17:20 +0100
-In-Reply-To: <6ed9f404-9939-4e9f-b5aa-4253bef46df1@arm.com>
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
-	 <20251015082727.2395128-12-kevin.brodsky@arm.com>
-	 <f0067f35-1048-4788-8401-f71d297f56f3@redhat.com>
-	 <348e5f1c5a90e4ab0f14b4d997baf7169745bf04.camel@infradead.org>
-	 <6ed9f404-9939-4e9f-b5aa-4253bef46df1@arm.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-YI9KzXTKaCZlBvC3KOA8"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	b=c1OY8fKY1cFL4WlbTVwrip+n8BSsIXamuXTGlVaDTvz/A3vqvpzEUj85APgHHr3D0ATudi
+	ezjJkPwdYgJ2bci9imTB+70kclGKO0uIGy826sJR4suvFB5L9lXzcLGRielmvgQKlJPhnJ
+	KzP0P/r9vf/xAwuqUcngOc0ntOjxWzY=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iXlFFD0e;
+	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 4A8ED60365;
+	Fri, 24 Oct 2025 15:27:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3851C4CEF1;
+	Fri, 24 Oct 2025 15:27:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761319625;
+	bh=K35xa85qxRDW/MqsnDVqFDx99T314O0XzeWHcoAYEJk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=iXlFFD0esb38BGOypXdbuN+zB460cx6lQVQFOcp9+fqpdgc8/BzklLxqU0tUV1aqy
+	 xL0aS899x16VLYZJfBFr2VEl7oKFu03ulyUpav6KPwvjZpIpFY5QHFecc734nfoVIp
+	 +a3Bsr/6OFS340EhY15i9rgeogQdPodkMZtl0tezVqIibjM5wXKFIswHM7L+GxX2TS
+	 /YrHZLhO7wsFMWhFiALPyUvgGb6ZvIpMHjdYsOoO4LmOhYpOZERLrDFmm7wFw5CfBd
+	 66c/kloCqTYt33leVGEgrhBe0oAa0en0zTrue6n5wWhhUcUaXoQhYabx/5qG9pa2DE
+	 Cu8VJX1e0vQqg==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Mike Rapoport <rppt@kernel.org>,  Pratyush Yadav <pratyush@kernel.org>,
+  akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
+  graf@amazon.com,  jgg@ziepe.ca,  linux-kernel@vger.kernel.org,
+  linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
+  masahiroy@kernel.org,  ojeda@kernel.org,  rdunlap@infradead.org,
+  tj@kernel.org
+Subject: Re: [PATCHv7 5/7] kho: don't unpreserve memory during abort
+In-Reply-To: <CA+CK2bAvKrfuOXTa-RWtcuSR8rkPMhurwCn41NcUm44_vT63rA@mail.gmail.com>
+	(Pasha Tatashin's message of "Fri, 24 Oct 2025 09:28:33 -0400")
+References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
+	<20251022005719.3670224-6-pasha.tatashin@soleen.com>
+	<mafs0a51jfar1.fsf@kernel.org> <aPnXVmD3cNmYNRF_@kernel.org>
+	<CA+CK2bAvKrfuOXTa-RWtcuSR8rkPMhurwCn41NcUm44_vT63rA@mail.gmail.com>
+Date: Fri, 24 Oct 2025 17:27:01 +0200
+Message-ID: <mafs0wm4ke2wq.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Queue-Id: 959401C000B
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1eokdfbwwpixoxihbf81ciod6j9o1crt
 X-Rspam-User: 
-X-Stat-Signature: gwpy7g4xjkfgkhigy9xpc4xpffn8hie1
-X-HE-Tag: 1761319045-516917
-X-HE-Meta: U2FsdGVkX19V98wUEWym0TdKGIyIyJsp7iMIaMVQL52gg4tBNWAUjrG286ri48qhnQMY3IZ+ETzXawAI0qBGcRKhgYX5gYVp9m6SHJQIXOnb78CA67N3Ytzqc+gMyL+a9BzHz9ZxpILhfx/uOH+eIk9tEGPGTh4DEnBqY/X9QM0KNBtAeppfIOpMjo3P81O2yeqTl1I/xUbicSX1H2leGL2RiSyqx4zaaxqxiUs5pW4BTR2mpogKR3jP6QSPsCNWXxrBv4J8SVkhhjTMRu2xjV4CMeof6k85RhY/J8Ed5Vwbu1y3toucsmeEWjvKtKkr+jZvCWv2PBThLbfWb+8Bsl1jb+Nh3W8uCY9FS6/IxjF1KNCQTEScNiYksxJpaZdmXjrncWrKpzaJft6DpyTtwCRMqAvoL9riupr5+GNoJRiDnxVFBL55MhmWpq6VJQwilnWNPy3+a1qS1s9t0KjmsL6icQx0A5EWQYW0ig6QjfPuuwNpnWbBBwDI263acUnhv0rAlv+10p2lhMU7BetP6KuD0cTo79L3/Bem41NyssBY7K+4PxtUXAlS4SbPflNPlfq6qGQW3Q6aY5Ewj4p/k9a9d9mBDJHjc/VuG4i7HxFtivaEs4Sm8Mrsi1uYUhXUaW/fT+Wc5Yu+p2V4lHV5vB8H4U1aPGWRKi2e5hfTG2hybgJjEJzdL2MO+F52WKfZSep0ML3CWLPgABWZ5PjQCuODqZ1Z6fgLur6yYVFZ63ySu4QkshvqY9U9iSzGclTcP68KpEi8kDqXj7twn/rJbsDDL5ZkewalJ+ooBZV0vtDlIY5y0/y4H3l/2aeZSN6NmNs38sjAp9Upk2tQ/T7QOxuWF4HfN9AyAKEiL+l5JYAmQw1IdciXjkBy+StRK/Yxiz/WB6mPYK2N4dUM0CGBsrzBZ1yxZZrqUMrPrKoRQXtrUNYLtWV50ScdLxR1kqhA8rMK03S4RebqeXXhfxQ
- iiVT3xy5
- o+alA0GZ7R3+HgFit82KCc3LD0QIzUBQjUfFiihmIVy4SslBSBWYatjvfDpr+/9IZrJldp12KCJZvdEeMDFV67dvZXQA1u/vvMn/p72cnqK94Gzuwp00Z29NEjyYC+N25sK/VvSkqke+mB7rA5yOASkwfI+3A1V2W9lrz+QGUNgqrerDYF/fsb0chH5SWF/0F3BMY32FH64TUmVNHkMt3KX2HrgaskmAWRfPVZg/U57nsmrwqcX3HY15xh1CV4c6obGebHznz22uGakGPTkbzoj2lVWQuncrFBj+fC5LIZ0NIVInuE+qP43PwTID1665Fumf7h60Z/2vj+xAvg4+z8bY1tB/lfPe8yOhycTbp7jKTSbV9cYyOwBRB/6rDRAK9WVp7adidcaLWWfd9onFVqtjgaOgoPdScJvBQ313kNAyv6DeZFndbuwLtrraT67UOiSzexmb06B4096q5h3WrzUOBR456UEUIcvf0htHkQUPcLS+02AjHJ/7dDLFCgORcHi5hrtvBhtK7Wm94y/CWuFbW/2vbmoV+4uErLAc2VzEXoCdlOc0VJrrQowGaHCEO8SjX5tcTUsdPhuGTnJw7t0sXMmLRmJuGcT6dlBWyzUuIfENdsOcleN+mvYLrFlnKBXb7K3ScG2YnGMTlTmoHs/TnufY6GeEIa4JMtnaNDrCS0cUlPQQnn4uRQmUlJnDTCnlTAneeaFn48yjrfqQdE70cI7Ecyj8NB+WsV/NpqV5LyKJRFVQLzEZkkBenqVa943QXL4yQAflU5byrkKxClJdpWavus9QQEr9s2qac16caIdPVyUbm4jLRfQ==
+X-Rspamd-Queue-Id: E82DD2000A
+X-HE-Tag: 1761319625-537766
+X-HE-Meta: U2FsdGVkX19qfhSO1c4HgCZ4AbcWyk1qGIZumriPYRVMDLVCof9x9RXPmJ0teRu7gFzYLKuPyaKwCGHQeEAvd20VGc6G4yzIkGrQ2qbKG2Uinp2MVw4XfCYo5GtFtcuEo2z1W/WPJBgAYYTFMXlHZZrZyXKzXVScPDK6teiQqp8Z1QxOuEx5Uky772Az6LeNAKRbEe8VWhy18BiFtTzM2xcuXsaguycImplpArz42ZY+YuWzEeIxOA3TzHIgpkbSfMFY0v4FT/Ps64WVQq3hWko6VI+0w5J2Mi65wcnDSqHPEA15g5uhM92n7Hz59Rz+eS3hcNq5Xqd00P7mZ16QtsjOaXUOay9xWkAUIwuA/nctCKM1n+QogI992YHpdCuxqMox+BGqHP58WpOgYeok3hd/JzDpyqVXLsTId/NabXotmWINs9EEFWECFzOKh+h0tl/FN9m1P0Ji0pa5jJ6nk7yWCCRP8mANFCr9IKQDQ+lXAXoKkSRxZenNVAIF1DT+wEqT/eKaFpj1GyN0srEtP7iaQ1Bj1Xdw6OBHfnMx2NhowCtJDIpPiW0m1UpVpx6rVzmWmLiQC1h0hZHTF9uUR2pcm4QVDvYkr3PNNEaEon5DQRU9Vd4rgAZRpPiewSvDpD68qDz4XSM8HXSQ126kl3wC5QarpoXcOA/NMmkxJZkDkEaJAZlFMfGMSh7fwbJDghwf4Z1NvGLPUu+LCq/taRjmh2zyLqD4wLMiwaLX/NCvF/CtDhscH8SbEe36FKW8c9G/hgyuZ/hNYw5RMahj9p4WlwXVSV7p4Uk5PTut6UlPEx47jSBV+9w1RyoyZgs+kOftm9ajZQ43l/2w1ylB/AFuTeciPs0DYU6TmY9XG8OXOYdhCvcrrmdenZQoIQXOMamR5EQ+cuUYgVgFn/SiKpY43vHgmSl+7z8N48+v3IYFneQDPcTanuvJAW3iE0nfCyMgQ9ewt9tTmDgfK4o
+ yo0htQ+k
+ YPhXJsdo8EaIamSyC++IwS+cAq41eJVc0dY4itPdTDXxN/8oQ/e64V9BsUuwPi8sQK+hh+Wd1FVsIAEm2+dZ3HYtL1nhK7tTJf9kBAs3P9wFOTcJJvb8zqHBWO2VbWzYlqDTP6FTWCfoe9sUtiHDZ1H86koEec3bFbZxBB5TAZNLKL8dr+ALD9xiGyURXNYacpy7MCn08Bru22ILlgzqqYMbZGGJVWo2pMRssWG7GfpQqIWsUfR3BiWb3jA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,146 +101,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Fri, Oct 24 2025, Pasha Tatashin wrote:
 
---=-YI9KzXTKaCZlBvC3KOA8
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+> On Thu, Oct 23, 2025 at 3:21=E2=80=AFAM Mike Rapoport <rppt@kernel.org> w=
+rote:
+>>
+>> On Wed, Oct 22, 2025 at 01:15:30PM +0200, Pratyush Yadav wrote:
+>> > On Tue, Oct 21 2025, Pasha Tatashin wrote:
+>> >
+>> > > KHO allows clients to preserve memory regions at any point before the
+>> > > KHO state is finalized. The finalization process itself involves KHO
+>> > > performing its own actions, such as serializing the overall
+>> > > preserved memory map.
+>> > >
+>> > > If this finalization process is aborted, the current implementation
+>> > > destroys KHO's internal memory tracking structures
+>> > > (`kho_out.ser.track.orders`). This behavior effectively unpreserves
+>> > > all memory from KHO's perspective, regardless of whether those
+>> > > preservations were made by clients before the finalization attempt
+>> > > or by KHO itself during finalization.
+>> > >
+>> > > This premature unpreservation is incorrect. An abort of the
+>> > > finalization process should only undo actions taken by KHO as part of
+>> > > that specific finalization attempt. Individual memory regions
+>> > > preserved by clients prior to finalization should remain preserved,
+>> > > as their lifecycle is managed by the clients themselves. These
+>> > > clients might still need to call kho_unpreserve_folio() or
+>> > > kho_unpreserve_phys() based on their own logic, even after a KHO
+>> > > finalization attempt is aborted.
+>> >
+>> > I think you also need to update test_kho and reserve_mem to do this
+>> > since right now they assume all memory gets unpreserved on failure.
+>>
+>> I agree.
+>
+> Hm, this makes no sense to me. So, KHO tried to finalize (i.e.,
+> convert xarray to sparse bitmap) and failed (e.g. due to OOM) or
+> aborted, so we aborted the finalization. But the preserved memory
+> stays preserved, and if user/caller retries finalization and it
+> succeeds, the preserved memory will still be passed to the next
+> kernel. Why would reserve_mem and test_kho depend on whether KHO
+> finalization succeeded or was canceled? It is possible that user
+> cancel only to add something else to preservation.
 
-On Fri, 2025-10-24 at 17:05 +0200, Kevin Brodsky wrote:
-> On 24/10/2025 16:47, David Woodhouse wrote:
-> > On Thu, 2025-10-23 at 22:06 +0200, David Hildenbrand wrote:
-> > > On 15.10.25 10:27, Kevin Brodsky wrote:
-> > > > We currently set a TIF flag when scheduling out a task that is in
-> > > > lazy MMU mode, in order to restore it when the task is scheduled
-> > > > again.
-> > > >=20
-> > > > The generic lazy_mmu layer now tracks whether a task is in lazy MMU
-> > > > mode in task_struct::lazy_mmu_state. We can therefore check that
-> > > > state when switching to the new task, instead of using a separate
-> > > > TIF flag.
-> > > >=20
-> > > > Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
-> > > > ---
-> > >=20
-> > > Looks ok to me, but I hope we get some confirmation from x86 / xen
-> > > folks.
-> >=20
-> > I know tglx has shouted at me in the past for precisely this reminder,
-> > but you know you can test Xen guests under QEMU/KVM now and don't need
-> > to actually run Xen? Has this been boot tested?
->=20
-> I considered boot-testing a Xen guest (considering the Xen-specific
-> changes in this series), but having no idea how to go about it I quickly
-> gave up... Happy to follow instructions :)
+On mainline, the reserve_mem kho_preserve_pages() calls come from the
+notifier chain. Any failure on the notifier chain causes an abort and
+thus automatically unpreserves all pages that were preserved.
 
-https://qemu-project.gitlab.io/qemu/system/i386/xen.html covers booting
-Xen HVM guests, and near the bottom PV guests too (for which you do
-need a copy of Xen to run in QEMU with '--kernel xen', and your
-distro's build should suffice for that).
+	static int reserve_mem_kho_finalize(struct kho_serialization *ser)
+	{
+		int err =3D 0, i;
+=09
+		for (i =3D 0; i < reserved_mem_count; i++) {
+                	[...]
+			err |=3D kho_preserve_pages(page, nr_pages);
+		}
+=09
+		err |=3D kho_preserve_folio(page_folio(kho_fdt));
+		err |=3D kho_add_subtree(ser, MEMBLOCK_KHO_FDT, page_to_virt(kho_fdt));
+=09
+		return notifier_from_errno(err);
+	}
 
-Let me know if you have any trouble. Here's a sample command line which
-works here...
+If any of the kho_preserve_pages() fails, the notifier block will fail,
+cause an abort, and eventually all memory will be unpreserved.
 
-qemu-system-x86_64 -display none --accel kvm,xen-version=3D0x40011,kernel-i=
-rqchip=3Dsplit -drive file=3D/var/lib/libvirt/images/fedora28.qcow2,if=3Dxe=
-n -kernel ~/git/linux-2.6/arch/x86/boot/bzImage -append "root=3D/dev/xvda1 =
-console=3DttyS0" -serial mon:stdio
+Now that there is no notifier, and thus no abort, the pages must be
+unpreserved explicitly before returning.
 
---=-YI9KzXTKaCZlBvC3KOA8
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Similarly, for test_kho, kho_test_notifier() calls kho_preserve_folio()
+and expects the abort to clean things up.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MTAyNDE1MTcy
-MFowLwYJKoZIhvcNAQkEMSIEIIUU83TFm9d5DeqzChjuYLSRaIbNzIAsod/MspuHnzkaMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAtCYQJZ65jySB
-ggxFo1IeuLM9/NpiFSWEHe6gqDHUdt1IPg1boHBROVnNBUdiWwfIMK5n1C3GTfokgSIa+07t5Lnt
-Vx/xCqFDvpJpvZaOHSIY0B1wh543U501BBOyGYRjHId8gPD/1q10+XuuAQ2Vxtl3qq8z76bbGYCs
-7pEYo5tyGGcpmX1RPTl9R6/k5Va8q41sud+qUPqDTu44AuionVzsRgYW3gr0Sj1Dh9zqlod0+eo1
-MawTB7qZxvGKb44374TDmwMFTb4WEf5vs9qRAqB51rrxHgyIk2Zbt6KR3RltCxpRV5BiPZF7t9Pa
-N6EAPLmbs3ArPHgUiAaLZEMEbjPN2ltxg+yNx6Y4lNPAQvHDbMtgbqWz+y03kWqED9qyOwD5C/PD
-pg/8KLQ0JMq8WGHib+FN+z/wS4MaJR6W+9tOUVkKpPiSB1vXJAUARaFa2E8niyFpzm+haTr452Xd
-LL0vO+kSiSv0QKBvKQB9KbL5cJzn06K2mgCt0snHOcRWUQHETSmvLsgGT0N4FrMnrr8LxUaBhv9A
-eTTl/gRgVni08bazozq9Ulwvk5PvnbUMSSQ6pbgqcp3X6R2IiCNOeqam+OoqbMr2viVk3g0BvtWw
-K1Q9zPY9RjSEYwP+GrtzxjDRh/rB8geb+8JvvdB1UPMFYiHbHwEeWgbIdtAIrWQAAAAAAAA=
+Side note: test_kho also preserves folios from kho_test_save_data() and
+doesn't clean them up on error, but that is a separate problem that this
+series doesn't have to solve.
 
+I think patch 3/7 is the one that actually causes this problem since it
+gets rid of the notifier. This is the wrong patch to complain about this
+but somehow I thought this is the one that triggers it.
 
---=-YI9KzXTKaCZlBvC3KOA8--
+--=20
+Regards,
+Pratyush Yadav
 
