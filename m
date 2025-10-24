@@ -4,84 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B200CCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:43:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3816ACCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:44:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9954B8E00E1; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
+	id 7E7298E00E2; Fri, 24 Oct 2025 13:44:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 96C738E00C9; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
+	id 7BF268E00C9; Fri, 24 Oct 2025 13:44:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8AA868E00E1; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
+	id 6FC678E00E2; Fri, 24 Oct 2025 13:44:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7AD7B8E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2D2448D93
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:43:49 +0000 (UTC)
-X-FDA: 84033730578.30.D983421
-Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 16632180002
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:43:47 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C9A38E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:44:10 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13F0A49310
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:44:10 +0000 (UTC)
+X-FDA: 84033731460.27.2D16EF7
+Received: from gentwo.org (gentwo.org [62.72.0.81])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 6ADADC0009
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:44:08 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b="r4M8rMa/";
+	spf=pass (imf28.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761327848; a=rsa-sha256;
+	cv=none;
+	b=LANZy8jz9C5ZMcQjJqPrhqJkewTCtPNoKFlUkqQj3orF0uJmfiORHrvw0H5G+nULmx9vED
+	z/w12dH4U2Mv+EiCAIn8C+9FswdspvmB8ijZeyBc7zHg4pO8CyUkGTjI6UuyfDtKVE5iZC
+	7sKjDeRGL5agge3RVIoSJ+nT33A9YnU=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gentwo.org header.s=default header.b="r4M8rMa/";
+	spf=pass (imf28.hostedemail.com: domain of cl@gentwo.org designates 62.72.0.81 as permitted sender) smtp.mailfrom=cl@gentwo.org;
+	dmarc=pass (policy=reject) header.from=gentwo.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761327828;
+	s=arc-20220608; t=1761327848;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EW1LjEPKCRY/etQyaioUw8y2wQlPfkhezOORMkuj/t4=;
-	b=LqIPbhii+wvQXkckgtyoWAgMJv0m1nP6aNyb4rOGjpusBxY9bM4UWp5ATM4dIiB1b205ED
-	vqh5QNkH9zogKmFkdJ8JnxuOPc3h2ww8MorxYcEAdIg+LVL0nDZMcVPl8WjiAqmNFVTyFp
-	dwqHPwhZley2VJdveE5xr3WH3wp5JPY=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761327828; a=rsa-sha256;
-	cv=none;
-	b=opGJKCFCvH625zra44/nZ0QI+x8pG05EiAV1skUJCEk2E+ufGmnKZkc0qjCi4nRRjktYJg
-	gyrEsZ11XRvjH5sV5ltymEbowLj72yglGQTDPCKW42imw4gWDGu5y9BKZKtP9t7Wc0N7wn
-	t9muyhpocwhLuTiYDHFpFQ0PsmiP7IM=
-Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C157ABE5AA;
-	Fri, 24 Oct 2025 17:43:45 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id E11351B;
-	Fri, 24 Oct 2025 17:43:40 +0000 (UTC)
-Date: Fri, 24 Oct 2025 13:44:09 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alex Markuze <amarkuze@redhat.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com,
- idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com,
- kees@kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de,
- mhocko@suse.com, rppt@kernel.org, peterz@infradead.org, surenb@google.com,
- vschneid@redhat.com, vincent.guittot@linaro.org, vbabka@suse.cz,
- xiubli@redhat.com, Slava.Dubeyko@ibm.com
-Subject: Re: [RFC PATCH 1/5] sched, fork: Wire BLOG contexts into task
- lifecycle
-Message-ID: <20251024134409.72275dd4@gandalf.local.home>
-In-Reply-To: <20251024084259.2359693-2-amarkuze@redhat.com>
-References: <20251024084259.2359693-1-amarkuze@redhat.com>
-	<20251024084259.2359693-2-amarkuze@redhat.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=oBvzLPA7qS0NNGTUVGyJaSQQ79eyzPTJm98CPlg56/8=;
+	b=HX/nOujCH5wLx+MQp9meZvnZfY3CNxuUSmP813EZV0YQhP3uIu0h4Q4AmfwvuiWRRZNwpb
+	NkGn4cesz/Y8kdq0uvaLYB1JnrQ+5A2vgeiU9YjpiZjUeW7uIg/J+u1adPBLFD4Co3rQ1p
+	Akqwt3y53EZ6IdmghNQkDncDV4byTCk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1761327847;
+	bh=oBvzLPA7qS0NNGTUVGyJaSQQ79eyzPTJm98CPlg56/8=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=r4M8rMa/xSgme1HbOwfTBgFhqkdZ922RMLZ2XiUJIgbljm5deCQ2Th8KD6J2nCihZ
+	 XR1vMaiu0XtZ/9NMrg90xrIGIPQhS+K12pys3IIKMhpiIdSQAYrKdkoHRIvxg3xCbK
+	 GHreh7zx7sdMtPS9UMi7WfItXnwQxkAxwWMOk1TE=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 27E52402BA; Fri, 24 Oct 2025 10:44:07 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 27331402B8;
+	Fri, 24 Oct 2025 10:44:07 -0700 (PDT)
+Date: Fri, 24 Oct 2025 10:44:07 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Petr Tesarik <ptesarik@suse.com>
+cc: Vlastimil Babka <vbabka@suse.cz>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    David Rientjes <rientjes@google.com>, 
+    Roman Gushchin <roman.gushchin@linux.dev>, 
+    Harry Yoo <harry.yoo@oracle.com>, linux-mm@kvack.org
+Subject: Re: [PATCH 1/3] slab: constify slab debug strings
+In-Reply-To: <819095b921f6ae03bb54fd69ee4020e2a3aef675.1761324765.git.ptesarik@suse.com>
+Message-ID: <bef91069-3435-6097-ec69-4d45cc707a81@gentwo.org>
+References: <cover.1761324765.git.ptesarik@suse.com> <819095b921f6ae03bb54fd69ee4020e2a3aef675.1761324765.git.ptesarik@suse.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX19CRueCw1nm5uT9RZSPlGEKzC/t+oG4hig=
-X-HE-Meta: U2FsdGVkX18hDnsr4TkruwiFojbQTdlVwxH+CtBQ+69mybQlxSP/NF57Bx/vKlv0n4Fh6saZcnBJAwvpzxaBEholvuYmbRZbFXHJuRuvVxt5K2/gBoYSDPi4S4hcpP3sVHxcMJYYWBxgUDYmOzgc2VUR/LCvcFlI8wHIMqM5LY4frd8vuPH+u+hYpku7Cxe+BWkUUCnfEjDdpXOYdB+Y/rVQjgiYxCbE4g8kGBpP9r9ASG1M0PVCWH8xefZLyQhz6L5nS/XjRorGJJKUIEIQjbhjnendjVQJBjh/E0NfJif17t0CtiMF/iDeok9mAbaGHOnFgNBhQ6h+Mnjpp73ixlJRBz7e1vDU4P++/gqlVS8lxCqmgP6fuw+4G2tJuLSN
 X-Rspam-User: 
-X-HE-Tag-Orig: 1761327820-638118
-X-Rspamd-Queue-Id: 16632180002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: ar6o6riuok1aty8pz3n5m6kata4mwf8q
-X-HE-Tag: 1761327827-45827
-X-HE-Meta: U2FsdGVkX1+TFmMfzLTIRcVukpTOsOQz3tWvqJpfg3ypQDBGcCZf0msuyESOR6UOa212WhSAI352O9MXYCWXoFJAZ33T5Lg48CHznWJ4Ql7/fi2NjboyoQsTFJLbTiJhcl+Dab2zK50dfkqx1RQY2OZ87Rmt2YWanVrnQoJTlXRSG+zXJQWSFvH6zDl9+/5Y4ppfBoswPFHgyhg5Yitc70vQJ8fQVqu0/Y53HbdvgWf+/lQIMSarGDnxjAPIXvOtvRu//FzhydsM8CT3DnaqHP7bGdlgGpv+Tfyr/EGEbc1raRpcRanx4EZiwtNH7C0p3cIWm/3kqpp2yeY+gmns00iNV3+ysdWXSveRpMYzBIiYirbL3YoBnx5cR74X7uad0vwYthORQKMNYq2HOemNRKTwSnHhtUjSOuJfeJjr0TgpWXPeZ1pxTzpIlSkKEBK9TvWSLFFLZkXroJtbV16zRDYDlOdWNc8HRIGkZB3Bfx5e7zobTg9JP61CimOTikPUNipOfXvnFdI1+8kQIVvNNkxpWV3uGCGbLrN2WbGgDitmDSC/HKHiz2r6BMj7nKsxyMwswr3jadD+N0vP6zzsHxAioRqDBQeD+Bljva0J5RfVxxbMhQWa1TWc2eyPtF/deYGHYI+o/DLAz+oBX8/OtYPgN8chA6+cgmXGRMBIa6xuA+XUbiKzDGzdVI1tGegfJ6KPKgBMyQhFTZd6GuMcwMY/cxFqFwsBTNkdcsxOEeSeMO7dnS1h/DkpjOyGnqREL9uYwhiWZOZXI5hCFckSG4ByT/mZPaugd9fw7gQbKTr7Wmh+EAzieh9UVKA5fgGXe1efDtpAao6H8EbbvYGeVDADsP1A716A81LPG+3FYzDfKNpt7RHi/AoVRlUrDt21H0N17t/sViEVABLH07wU0f9YU9ajmXpnbua/GwUupx5460Zoil4h4abk/LSf2w2dtdhL8xIZoozsJ54vo88
- 1mQ==
+X-Stat-Signature: hub8dhsnhhbkbazm7phxzbuhp3e7cikc
+X-Rspamd-Queue-Id: 6ADADC0009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761327848-740014
+X-HE-Meta: U2FsdGVkX182jfVfzpc8SsldRdSVZdO386M+WTnHsDZVrje1oAqMT3TUJUTu0wSFzOPbj2c0tQtOQzNg0b+8tg0AlY2tU5lc4Raes5GVlCPtbWnVi7jZ27YxRAfDOGKal+RJ9AkeHYJBPIbGhczIlh1oznApeNXvecT99vQ4hxbVqvNnwKwOQODrjeuaVvqa8LbFopUPmKcpyQT3WyH04jKjrj6cxsiIuckz+TfO0lLv9iJD/yeLRT6qJIusl99JRmsWvv3x50/xXPoWguqWdmBVNWsT5hKkdG6xs7PZFZ6hJKCHgAMmTfnxmqLlVZ+Vgn/2+UAX07dqXtfss5n8MaUSuuOzk1HWGNtJu+0ZIYVgUdzTf4UJzc+13lspUw8uKHYLaRi03/ZUoULrZ3xfmoLwtWDTG+kZjRuiTkK22+pB0RUpqEky4PxBW6qIQ4kYe5gpdLDnggnPDmOcrJUE1NVrF60t54bObkix2lBoL4sOx0SSc0G2d78U7xiEh5LC3Ud57RPJ20wm1XA28vfC9jcbPwOKcqqynPsF4UkJI/kKYDCIZpTXrfcvWYRbK3XHek1Kx2eb3yZ4PI3uMdnReUD2b/wgbX4dPEFp/E5HkODOLr2D0pOfwY/GdF9GYofFAMZWesWzjaT4QCXbkkFIwIvM/a5lSvhc7huIF3Rogpanb1Cg1oxxu9gc8yJuOn5JNcpJ/xiEVZHRJpX9mc91FOCwb3rMG8eBHDPb8EafixC9qC8MFgQWFpOfj9rACldv7z0oHU9FmnNT3WqaYAInNi3s5fgeOfoSITvsd+pTb7et9lES6mpZJ8HxoDwyEwoP+d1GNNhl3BSdiL9Qj/wHFHNKzUgWTpZ2hwi/1MtRMq5vh9QMOQNDFGp5KzBgrdn0oPF4500ZYR5PG37jEPDhOvzYX/VRA09AKoG3r6PpA/2A16m/ebDyFLMw4ycei8WJaIWkHxTsTpCeKYuEanH
+ Hk0a/IvZ
+ 0iaGsI+Eih2Gz5yNxuAFy7bLHi9f0L1WBzycZV1jQYVD88V2G9sG98wiECDovE3Er4aOUMTlEd1yT5iWlzeOnNmmTZfGCDKR2UcM3GwV/ijvjThYI1KxdlhhFBSVMaMarNYxDQKSd4Arv1ofhABYMTciL2tXD9piHO1+FCNgftCZf6+4NMZ/fYz0sHpzq3S25/6rlXUA2eV0SNeXfdCa+z+LY24BrfU4L9lAl2EsXz6c+cMMY5fHuxWTlMAdo7Hy//kMBSwahZZ5WcdybkEbCFYq4q6/hME+1BzzZV0wLdzjJxfcZH7wYljceYAZ2ir8ido0geJMBCV4MLhhgPkZHod695A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,117 +91,7 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
+Reviewed-by: Christoph Lameter <cl@gentwo.org>
 
-On Fri, 24 Oct 2025 08:42:55 +0000
-Alex Markuze <amarkuze@redhat.com> wrote:
-
-> diff --git a/include/linux/sched.h b/include/linux/sched.h
-> index 07576479c0ed..e381f8421a11 100644
-> --- a/include/linux/sched.h
-> +++ b/include/linux/sched.h
-> @@ -1278,6 +1278,13 @@ struct task_struct {
->  	/* Journalling filesystem info: */
->  	void				*journal_info;
->  
-> +/* BLOG support - max modules defined here for use by other headers */
-> +#define BLOG_MAX_MODULES 8
-> +
-> +#ifdef CONFIG_BLOG
-> +	struct blog_tls_ctx		*blog_contexts[BLOG_MAX_MODULES];
-> +#endif
-> +
->  	/* Stacked block device info: */
->  	struct bio_list			*bio_list;
->  
-> diff --git a/kernel/fork.c b/kernel/fork.c
-> index 3da0f08615a9..b06843af05a9 100644
-> --- a/kernel/fork.c
-> +++ b/kernel/fork.c
-> @@ -24,6 +24,9 @@
->  #include <linux/sched/cputime.h>
->  #include <linux/sched/ext.h>
->  #include <linux/seq_file.h>
-> +#ifdef CONFIG_BLOG
-> +#include <linux/blog/blog.h>
-> +#endif
-
-The proper way to do this is to have the #ifdef in the header file and not
-in the C file.
-
->  #include <linux/rtmutex.h>
->  #include <linux/init.h>
->  #include <linux/unistd.h>
-> @@ -186,6 +189,29 @@ static inline struct task_struct *alloc_task_struct_node(int node)
->  
->  static inline void free_task_struct(struct task_struct *tsk)
->  {
-> +#ifdef CONFIG_BLOG
-> +	/* Clean up any BLOG contexts */
-> +	{
-
-There should be a function that gets called here that frees up the context.
-This does not belong in the fork.c file.
-
-	blog_free(task);
-
-In the header file have:
-
-#ifdef CONFIG_BLOG
-[..]
-void blog_free(struct task_struct *task);
-#else
-static inline blog_free(struct task_struct *task)
-{
-}
-#endif /* CONFIG_BLOG */
-
-
-
-> +		struct blog_tls_ctx *contexts[BLOG_MAX_MODULES];
-> +		int i;
-> +
-> +		/* Step 1: Atomically detach all contexts while holding lock */
-> +		task_lock(tsk);
-> +		for (i = 0; i < BLOG_MAX_MODULES; i++) {
-> +			contexts[i] = tsk->blog_contexts[i];
-> +			tsk->blog_contexts[i] = NULL;
-> +		}
-> +		task_unlock(tsk);
-> +
-> +		/* Step 2: Release contexts outside the lock */
-> +		for (i = 0; i < BLOG_MAX_MODULES; i++) {
-> +			struct blog_tls_ctx *ctx = contexts[i];
-> +
-> +			if (ctx && ctx->release)
-> +				ctx->release(ctx);
-> +		}
-> +	}
-> +#endif
->  	kmem_cache_free(task_struct_cachep, tsk);
->  }
->  
-> @@ -2012,6 +2038,17 @@ __latent_entropy struct task_struct *copy_process(
->  	p = dup_task_struct(current, node);
->  	if (!p)
->  		goto fork_out;
-> +
-> +#ifdef CONFIG_BLOG
-> +	/* Initialize BLOG contexts */
-> +	{
-> +		int i;
-> +
-> +		for (i = 0; i < BLOG_MAX_MODULES; i++)
-> +			p->blog_contexts[i] = NULL;
-> +	}
-> +#endif
-
-Same here.
-
-> +
->  	p->flags &= ~PF_KTHREAD;
->  	if (args->kthread)
->  		p->flags |= PF_KTHREAD;
-
--- Steve
 
 
