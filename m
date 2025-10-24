@@ -4,121 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36E80CCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 04:01:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE42CCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:17:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AA138E0035; Fri, 24 Oct 2025 00:01:08 -0400 (EDT)
+	id 5F0238E0036; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 782198E0002; Fri, 24 Oct 2025 00:01:08 -0400 (EDT)
+	id 5C7F18E0002; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 696F58E0035; Fri, 24 Oct 2025 00:01:08 -0400 (EDT)
+	id 50C518E0036; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 558D28E0002
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 00:01:08 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id D835E13C2F6
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:01:07 +0000 (UTC)
-X-FDA: 84031657374.18.1801134
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	by imf09.hostedemail.com (Postfix) with ESMTP id D6AA8140007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:01:05 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PwAiR4fM;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761278465; a=rsa-sha256;
-	cv=none;
-	b=eNDCl4KD8CI4mnwQnI/MSAiqYo9TOrC1kr6O8UEE8QWiM9wp3fTUGWq38CWOmSIvI69YC/
-	CHAUe1BUNq2kjlB8Sjk65/+zRTRfUSFCJjMZhVV+YgiWT46NvjlbRGjj3cDHUTZQginQZJ
-	2eigu+AEk08CF1jAqDipw5tM/jVvCA4=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PwAiR4fM;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 405FC8E0002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4221128ED0
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:16:58 +0000 (UTC)
+X-FDA: 84031999716.09.C145076
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 509CF8000F
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:16:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kB1tTKiu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761278465;
+	s=arc-20220608; t=1761286617;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
-	b=4Za+4bWf4KH5O78T2qRwFOznJsvyJ0jHHXJ2TWEpHe4XH8TNpqwwGJTtM2NlXW5lYAVzGP
-	dSQaWbjLf5bQgASZU2XfOmGIWTAhe2fVIBRx9VYxncQ8X8uSFlW1MrwScoC25UGDr/CVx1
-	nhXttS7PqBqMWTjo5ofBdjys80aSKo4=
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-63c45c11be7so2783064a12.3
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:01:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761278464; x=1761883264; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
-        b=PwAiR4fMqFr3AzxB+C/OVYcb46Zy3cBtm2N9HlsKdsQzxLe2X1KF0QyHYNPVqU83td
-         5ev46x/9tdCO8QmrPQtdeklqJqB7rEiPdYw784EthWQ3AnpXs3ef+kDK6vI5t63jWI8w
-         fo3+Dk+ROJiptAvBGbDelNoG+wiUHJA3vXLtCtf4UsvrvBC1dgo4T2+24ZSWw7YpkpWG
-         MZujAdnR6KJLxPO3GadU3i/tQ6rmHw5E5lUi6k5oDGy1KA+a3qnl+m6Z2OWPg1kUxSuQ
-         fRfUIA59XU+LyGDr9DmZsAx/G6SnalDV13/P+gS6M+cRWvoOugXIfrcWfNfUoo03Hvsr
-         t90g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761278464; x=1761883264;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bX+AGT1PAEb2wRzHRL+8B92/Z4uxx2bE66SuwJSj7jg=;
-        b=gKzfMr7aeY7QhtOg3042bh8NtrxxxNIbyuQBrJr5c+YxAgwXDileyS3fVetsVQrAIX
-         AFvnj0IgIAP1LRWLvjWlt54TAz/hz+hiJ7jQTufCcaouon0lunm1J4q371nVNvuRT4ph
-         q/h5Zx/jbY3MX7aO2q1yyh6dRzVPya5DHsOA/ah4KhqZ8KsdBW87ZwpRmCGjdln2p964
-         RbxJLfh4Q82fQAsXmMrnPP1I9k0+3+klHSNYbYg++sCszOyYapP7fboJa+ahP2Wu0Hfj
-         KoEuzeYJEPnjNa1/H+vlxuEj7/VJS1Ws2yy0OTMSzcnDUTRC/80+x4xkDOf5FoAiBdvh
-         iX5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUMjobRIx/bj/UN6m3Vyqz4+1UHDPNd+6qzX77mWXPgHkNnHD3AkomOdTlzkk1EJ5R71u862fj5FQ==@kvack.org
-X-Gm-Message-State: AOJu0Yw2dfAXRjmRXJW+GtwaRBWufLuBUmssiFPEAphCRQ7e0ju0b7GH
-	+9Z/u6WYbnkZ77bjSd+K1+QpcFcNEfQh7ST2fCYZyexLNwbrl9czyurzNs1zIKom6tHIJ6YGp4k
-	O7xQ/WyFDyiJxG+a+k3btebLKl1Wj55s=
-X-Gm-Gg: ASbGncsMsIF2HQI19d0lInD1ah8s03rNu0j0XfXZeNQw6YLAz7bgpPwRCFBQY3DWvnj
-	IQKBSXGK5Eoyh8vHB+OgBPv3+jX22K44jMSeHqU0WDRWgRc29W5uDxHxHUHsSG67XDRWL7+mBBW
-	38BieI9zinwCWcRMV5W1B+kP+p+mLSqSphcf/nJux8OV5DplzrVRd2TN3WUseDnPYALOOQ8vri/
-	xm9o7DVYicqt53jbTFF5g9Yje2P/9RupmDmj4yAAZuZVME4uQ8sPuzoyAc=
-X-Google-Smtp-Source: AGHT+IHncX413Zw579qxe0Qf5NgqYwOEtK2z/nG3SfbdqAmW/ND46AejAhP+66pY1PNOOUa4grOi1M19bZwDtf3Z0pg=
-X-Received: by 2002:a05:6402:1449:b0:63c:2d72:56e3 with SMTP id
- 4fb4d7f45d1cf-63e6007c37cmr933871a12.23.1761278463985; Thu, 23 Oct 2025
- 21:01:03 -0700 (PDT)
+	bh=m0AcVAtlQf30OS10e7TvuivPvYIb9Yaf/5uhHu+5GdI=;
+	b=XUWmQvX1+h3g9LweaMuIGNu7ZTaPxM99WQADnefc/WARS9BhFglVgzy/1dLz3A+K8oGAMQ
+	2FuOPB0YxxGUGF0v0AY5cg7Bii1rn8q052+RNKut7ft/hgTErR6jqtFZ43x0HcaD+wvitM
+	nOtczW9mfCQzt/LBIUilk/x5OvP7xOE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761286617; a=rsa-sha256;
+	cv=none;
+	b=cRFQ90ELP4/xrHk9ofG8O2E2fzdEZ065njjhSDWN96tKAcW2mT2BlfDsxQnZjH6XqPNugL
+	Jg2Ib7ButqSe2BgWx+2Ny3s9IwAUW4lf/V0vCCCPfRS+Nr/cmbpZkpUlDX7uv8UO7dlNlx
+	o/JzOKXKaJAhonbFgmbqq58a6+bzxWM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kB1tTKiu;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 064BC452CB;
+	Fri, 24 Oct 2025 06:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D15C4CEFF;
+	Fri, 24 Oct 2025 06:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761286615;
+	bh=J6WIkfXnPdWT+D0UqznjgN5ZqG6M9x/P4cC88zuW9ms=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=kB1tTKiuaZ4sHGOEBDene7o2a9UDxqLw/HjLZkhLhd9Dy3QAwHrIDBNiFftVHcdJo
+	 gyuh9gdj92162HPyYBXCk8QciuYLejTYCOBQQlaVuMoiC8YPJ5RI9RKQPeUGwaaIgC
+	 dydI51f47MEcnCighnQ+DsimDY2nqtrL2Z05UphmwfViM4gCdzYZuz/grMedBMzhLt
+	 ErwD+OnIslmYeKISIEIWpjlV3VND5nxE7macxEFFju7EVaTllwmcYWt3VPlJkM6+ml
+	 gUgQRR02ohL5AmMghYoAEe4dPh1O8pIzyDGn5TLhR0LGUlUOTxqnZeWZhcNkdzXgnn
+	 J0TRiOAxRgm+A==
+Date: Fri, 24 Oct 2025 09:16:47 +0300
+From: Mike Rapoport <rppt@kernel.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+	brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org
+Subject: Re: [PATCHv7 3/7] kho: drop notifiers
+Message-ID: <aPsZzxmGjrJSzB4q@kernel.org>
+References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
+ <20251022005719.3670224-4-pasha.tatashin@soleen.com>
+ <mafs0ikg7fbez.fsf@kernel.org>
 MIME-Version: 1.0
-References: <20251007-swap-clean-after-swap-table-p1-v1-0-74860ef8ba74@tencent.com>
- <20251007-swap-clean-after-swap-table-p1-v1-1-74860ef8ba74@tencent.com>
- <CACePvbWs3hFWt0tZc4jbvFN1OXRR5wvNXiMjBBC4871wQjtqMw@mail.gmail.com>
- <CAMgjq7BD6SOgALj2jv2SVtNjWLJpT=1UhuaL=qxvDCMKUy68Hw@mail.gmail.com>
- <CACePvbVEGgtTqkMPqsf69C7qUD52yVcC56POed8Pdt674Pn68A@mail.gmail.com>
- <CACePvbWu0P+8Sv-sS7AnG+ESdnJdnFE_teC9NF9Rkn1HegQ9_Q@mail.gmail.com>
- <CAMgjq7BJcxGzrnr+EeO6_ZC7dAn0_WmWn8DX8gSPfyYiY4S3Ug@mail.gmail.com>
- <CAMgjq7CsYhEjvtN85XGkrONYAJxve7gG593TFeOGV-oax++kWA@mail.gmail.com> <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
-In-Reply-To: <aPc3lmbJEVTXoV6h@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 24 Oct 2025 12:00:27 +0800
-X-Gm-Features: AWmQ_bkc9YwuZtUhzw52MpHd91KHJZxGIdtGa9Ii8w-Tgx94sUw-dZLiUembJcI
-Message-ID: <CAMgjq7CELW_s5ok-2NHSFzK3SQKQKHB3VRLGnFaGGxe5c-eCvA@mail.gmail.com>
-Subject: Re: [PATCH 1/4] mm, swap: do not perform synchronous discard during allocation
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: Chris Li <chrisl@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <mafs0ikg7fbez.fsf@kernel.org>
 X-Rspam-User: 
-X-Stat-Signature: 6m8aws7bs6z7beygqpm3qfurg1aqrwza
-X-Rspamd-Queue-Id: D6AA8140007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761278465-960686
-X-HE-Meta: U2FsdGVkX1+B33aRwvOS+747hLzquHWYgcruapwmqWFEA7DoxnUN5wYlI0EHdzyzYY5VjTW0PvSNo3hNsmZoK6X/gjwPQp1yTh0vefQGeyAPosucycOZug7g0SwNsMq0yhm3TAV9iiepq2H/5d3bHmT7DWx+DS27PyV6MzBYrkqjpL2Rrz6R8KmrzrOGPp2mrBhXWPcy9Oauy6vomppigPKTJG5sbRexM8V8clsbcWWVUKZjU80yQJgKTwYmaJa0TJpJTa31/FEvXiMtSYHMl66nEPwHGPEIVdkaNRQx95uescVS4z9SWE54ttKPKjZKWFlveV/v7h/7oPbcPXwSOFev9tCBj73IBre4lu8T/Ow8ek1oZNgJjhu1/PWMe1Zj21u/+duyhEAHiO19N2JqCp9+64EsZWV+6hqZN6KTNCDxH/5XzShpZrRkNhKFzCAqp8vJdTZ4Ft9pfn8LMEeX4pFCrtDJStcxY3rI5pgKk9/GoG4sNB87wFkvF8b6aGPLNSa25qjGaYlGLK8CR0pCpx6uQZvg1W33jRNEph1zF2Gc5p5IeHjAI699k3LKX06XctokGgp29j0TP1jpSwdsoYwLfMY5zbE14eFkfaTjW26H/WIfOuWd0J2ILvpduitaQ/WPPDcGlgj+EK7XXvpW8aQygMpXPUJF9gRP4ryQjPtUO3NgbylkGWRqebr006pP+pAD014B3MOi0fIbJJ7d5FSJmPxx+mIi8hvWePjRG4DFFJzdwezCcEDF7PWFLZ3zA5EgR1QW/hLgBNJgnNMSqy3246s3vWtosucJ4338Sar9c++NZOTZFCLYUmCUsljJWnHrFmvjAT/VHu6pNql5KSnn/88S0RVuqVzHIQmr3KLWXHhyD7wN1iAkHjyQg3o6J/lsD9zcqBd6esvlSo+DZ73cPKh2BbHdGeSgEP6FGqTEbpi2t1FmGhBmETuDqaiL4kTM+MKgZsauU+Z8f5v
- a3IXvBui
- lQ5OsSNCpGdpHwKJgBpDABc3UUqnMFg5QAhJb72Y0wbSqAe08ddicxq9RIj3UPM0pU2yWzC/ZRZQCZ+X5ejJrSbHz5c8+AQAPRdCgakR6hFeiT0SM9xDeENc+0zwFWfr+cHsHkrFSkYbgLL8EadwB8BKbkU/jYiRmjRRnKXW/UzHbvZQPyhVLzsB6G6+HcW7aOfnXeF5tekJYRl1Iylksl7I6dMYdooxSCMvqzdGM/gPwb/R1cLIM4gOMYckJTF3rfxcyx2ZasiT8NMKWcO1LhmUTV+Tg3GjsLOKOIoFuF3hZ1YtGUW0HSXv4+Qb53JqDTMmzgVZsuVRCe+SOsoN7VPfKv8YidDxWmsm7Zkw12OuNFMavIiBZb77nLnyvnEQJB/Ek
+X-Rspamd-Queue-Id: 509CF8000F
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 5fwdmzzjeh5hjt1gp3pdgs6zespxot4r
+X-HE-Tag: 1761286617-772525
+X-HE-Meta: U2FsdGVkX1/61f1s93sgTbzE/EmIV7gFBA3j+4xgUCvRY9/bsZz6MN3wMLbKXKq+hG0Tr7q1B853PaARBk/hf67+kbkBSG1e0oax2sMAcg8Izair3qw0+UJdmfwEyJucs0jrQTHp4emo8UxG1fiUfQL9ybSy+PC2Gih6xpngqRkhwgb+03FLl7jctSKEzfpmbNdlkpwpfma4sCIytqG3DIecUmVUJouCj/QR/sFX60xnLjW/TH9Wkf6v/Aa5khb1DbApeRymTcEx+mtUR+vPbdTU6TUqHfyDF+dJ1qRQ4DDiJDAr4XMZWU3zsefBM6Kaehow2CZiNiStHjRi6eWWkYrJbdJOI9IjhL6tMjZDW7SiqbgvgG58mCPgaBKobyYlaXeHCJ6F58ZzbgyAQgXm5R2xqHIl8WvegH2QaI+2MEiEZcP5EmBzauJVX7Nw0MXcyE6KR9VzG2KKrd2UG6LjnWUcVp6dcnOevQcKbLFjzpV6CgC7cclJVB3I40l2gfV5g2+CEG21eKRtI98fKEwmy28wH3AlXZJiz1C3rl+zHigZWk8eSk1vQFNBI9v2+coNXKZHskDQkhhtxEqau1ZZif0Y3lvOg/FkKUvg9uTMqXN5FlrUlkKoYre+lURtQHH+UhMMkHPZDzTboLpNxP/ItKV8iJeDfLquW17qlEykCkreTvP0RUokA8VprFS1fCQcQMkaV/Y/dsgsBe7I+lV8yk6cy94HTIB1MC9egHHa5ECIBR711WGhjFaI/uk+Q8vEdDFv8ywrOvKwzZRqfVvu87IWLe1fNPF4JsISyODjoF5N99BVWWt0SmM4nbJiZ3FUWaywM/ocnfIhPFa6S1PaKmhUXPhQCAQPx7egl/2FJw1bwyCeZPKlp2LkTRxs+tnedr1IJOXRp+nRVo1BXvWFZhBMGR/PcctFmaf378IMRALRMIAe5cC9L5JnFr13KpFJUL2K63pLsC+Z4vulbrv
+ SqRWWjAo
+ ursEcLkmnlvmW8WTCXuZFq3h31KHNG6kRQy/xi9ZceI0rFsVETGTJNrciSck5fx7ItWtRWAXHxZ29kEAirP1p1fTkmInoUyTbfd9DnyN7PMnYxrXwXuHh2yn4AsHumV+lZIZAthbhMU8b8dLlzhoZWaizEEyHiXWoZq74n3uh9/vs6+yhoJgiE4mmI1+x7Sm+N2C2XMylcbudnl/sOn2m3lzuU54Kzk67JPo3RHD4aTM6i9vqjfbXPcU1KziW6U/vInjrqVVTPU93p6DijiH/LjINAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,88 +96,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 21, 2025 at 3:34=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> > > Thanks, I was composing a reply on this and just saw your new comment=
-.
-> > > I agree with this.
+On Wed, Oct 22, 2025 at 01:01:08PM +0200, Pratyush Yadav wrote:
+> Hi Pasha,
+> 
+> On Tue, Oct 21 2025, Pasha Tatashin wrote:
+> 
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > >
-> > Hmm, it turns out modifying V1 to handle non-order 0 allocation
-> > failure also has some minor issues. Every mTHP SWAP allocation failure
-> > will have a slight higher overhead due to the discard check. V1 is
-> > fine since it only checks discard for order 0, and order 0 alloc
-> > failure is uncommon and usually means OOM already.
->
-> Looking at the original proposed patch.
->
->  +      spin_lock(&swap_avail_lock);
->  +      plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
-_lists[nid]) {
->  +              spin_unlock(&swap_avail_lock);
->  +              if (get_swap_device_info(si)) {
->  +                      if (si->flags & SWP_PAGE_DISCARD)
->  +                              ret =3D swap_do_scheduled_discard(si);
->  +                      put_swap_device(si);
->  +              }
->  +              if (ret)
->  +                      break;
->
-> if ret is true and we break,
-> wouldn=E2=80=99t that cause spin_unlock to run without the lock being hel=
-d?
-
-Thanks for catching this! Right, I need to return directly instead of
-break. I've fixed that.
-
->
->  +              spin_lock(&swap_avail_lock);
->  +      }
->  +      spin_unlock(&swap_avail_lock); <- unlocked without lock grab.
->  +
->  +      return ret;
->  +}
->
-> > I'm not saying V1 is the final solution, but I think maybe we can just
-> > keep V1 as it is? That's easier for a stable backport too, and this is
-> > doing far better than what it was like. The sync discard was added in
-> > 2013 and the later added percpu cluster at the same year never treated
-> > it carefully. And the discard during allocation after recent swap
-> > allocator rework has been kind of broken for a while.
+> > The KHO framework uses a notifier chain as the mechanism for clients to
+> > participate in the finalization process. While this works for a single,
+> > central state machine, it is too restrictive for kernel-internal
+> > components like pstore/reserve_mem or IMA. These components need a
+> > simpler, direct way to register their state for preservation (e.g.,
+> > during their initcall) without being part of a complex,
+> > shutdown-time notifier sequence. The notifier model forces all
+> > participants into a single finalization flow and makes direct
+> > preservation from an arbitrary context difficult.
+> > This patch refactors the client participation model by removing the
+> > notifier chain and introducing a direct API for managing FDT subtrees.
 > >
-> > To optimize it further in a clean way, we have to reverse the
-> > allocator's handling order of the plist and fast / slow path. Current
-> > order is local_lock -> fast -> slow (plist).
-> > We can walk the plist first, then do the fast / slow path: plist (or
-> > maybe something faster than plist but handles the priority) ->
-> > local_lock -> fast -> slow (bonus: this is more friendly to RT kernels
->
-> I think the idea is good, but when approaching it that way,
-> I am curious about rotation handling.
->
-> In the current code, rotation is always done when traversing the plist in=
- the slow path.
-> If we traverse the plist first, how should rotation be handled?
+> > The core kho_finalize() and kho_abort() state machine remains, but
+> > clients now register their data with KHO beforehand.
+> >
 
-That's a very good question, things always get tricky when it comes to
-the details...
+...
 
-> 1. Do a naive rotation at plist traversal time.
-> (But then fast path might allocate from an si we didn=E2=80=99t select.)
-> 2. Rotate when allocating in the slow path.
-> (But between releasing swap_avail_lock, we might access an si that wasn=
-=E2=80=99t rotated.)
->
-> Both cases could break rotation behavior =E2=80=94 what do you think?
+> > @@ -1280,7 +1298,7 @@ static __init int kho_init(void)
+> >  	kho_enable = false;
+> >  	return err;
+> >  }
+> > -late_initcall(kho_init);
+> > +fs_initcall(kho_init);
+> 
+> Is this change related to this patch? Also, why fs_initcall?
 
-I think cluster level rotating is better, it prevents things from
-going too fragmented and spreads the workload between devices in a
-helpful way, but just my guess.
+memblock registers sub-fdt in late_initcall(), so we should have the root
+fdt ready by then. 
+  
+> -- 
+> Regards,
+> Pratyush Yadav
+> 
 
-We can change the rotation behavior if the test shows some other
-strategy is better.
-
-Maybe we'll need something with a better design, like a alloc counter
-for rotation. And if we look at the plist before the fast path we may
-need to do some optimization for the plist lock too...
+-- 
+Sincerely yours,
+Mike.
 
