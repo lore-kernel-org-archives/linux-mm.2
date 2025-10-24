@@ -4,94 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 76B4BCCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 16:10:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A156ACCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 16:10:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C41788E00CE; Fri, 24 Oct 2025 12:10:14 -0400 (EDT)
+	id 513CB8E00CF; Fri, 24 Oct 2025 12:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B52838E00C9; Fri, 24 Oct 2025 12:10:14 -0400 (EDT)
+	id 44C3E8E00C9; Fri, 24 Oct 2025 12:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 97DEE8E00CE; Fri, 24 Oct 2025 12:10:14 -0400 (EDT)
+	id 317068E00CF; Fri, 24 Oct 2025 12:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F0EB8E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:10:14 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 519A01A0F0B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 10A118E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:10:15 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B7767160ED0
 	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:10:14 +0000 (UTC)
-X-FDA: 84033494748.10.686FE87
-Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 83DA4100005
+X-FDA: 84033494748.21.17F3A80
+Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+	by imf14.hostedemail.com (Postfix) with ESMTP id D6EA810000A
 	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:10:12 +0000 (UTC)
 Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="kv/s0LHx";
+	dkim=pass header.d=soleen.com header.s=google header.b=E1V2tCu0;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761322212;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tqVXyF+IsYXkvSZaiTZ7JkU0PjsMFTNFd+jvNj7uHBc=;
-	b=agmxPcIAUUAKx3JvxkZatLwhcanomMzHcXjjCN5xAHZQTDV8m21d4rpDMWm1LOCuuVWhxi
-	itE/PtxmmPGHcWQNZwVFUd+epeuwtQnSqvVr+3vy5ApTDAjkHadxBuBiAhzWYYfHGBC4Xk
-	Ww3b8bRGpZcdrb+ESEnihHNeps+Ce0Y=
+	bh=J0Chij7I5YmPbNPLJtF290sPw75eaI56z9Bpyk1lLtA=;
+	b=al8+WnuOaO7rEX7n1OfLOPPXcB9NW8oQpHtNZSZ4kzdIBFaq0K3vE7/vCxhKTn8GFE2NvH
+	LRWhvAuZ1WjPQEINKIZX7sn1aQWD7CZ6bG+NjKZVduPur6UdK/DnQBeJsJOSobR0SrAUgd
+	PEGZtTN9RU/RPwQJ+8UKHh5gw3Riydw=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761322212; a=rsa-sha256;
 	cv=none;
-	b=06BE0qsHQVKiRlSRQd7QjGymyDrZBY+FpVfiUh9e3aa0I6uPAYTElnuwxdFaQCA9W17z+P
-	/fAlHHluUWSR26gt3yEZ4dFI0XvPyo9whmobERNHFs/A8/qd8JCCuzZNhvtO9fEnp8a/Hm
-	wrBYz+PGcpOFTlAu/WW4XLIGRv1V8g0=
+	b=if81QwvdWuY3R+VU8Kx6o6M2FTx5pBMUC9jeEgFzAA8pW/SSgzo/1AVXbO6iXxk50OJxmm
+	2dOsDIORrqUXE81ir7gcGQsJbhHtK9mvskRdTEz9cTm7eTo5p869Z1sCcqdQm2t54rxjvV
+	1HF+xcGYF2h2ZKRbJr23hDPd4vCLSFg=
 ARC-Authentication-Results: i=1;
 	imf14.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="kv/s0LHx";
+	dkim=pass header.d=soleen.com header.s=google header.b=E1V2tCu0;
 	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.44 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-63e3804362cso2178317d50.2
+	spf=pass (imf14.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.169 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-73b4e3d0756so23223907b3.3
         for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1761322211; x=1761927011; darn=kvack.org;
+        d=soleen.com; s=google; t=1761322212; x=1761927012; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tqVXyF+IsYXkvSZaiTZ7JkU0PjsMFTNFd+jvNj7uHBc=;
-        b=kv/s0LHxqKTYobxQsht9upcynQGtHbkUaWZO3YznjKGe/StG6leRwXowCQVofDmHCG
-         3JSWR194x4to3yEDuU7BzLvb+5UCOISTP58LD7giVue7n7xtmXN1Smi0gVp7DJYwbpg7
-         +bRzb6e/VQcP/iN1sVYYE9zkMKGsdbHzz2LmlTbbBPtdAj0h+J7KybNWgPwCCiJCtkIo
-         WEpxJda+GnH3GPMqX7nOZ3xCKfMIAFbnaL8NESgl34wnbyiXn5gHKJLdkuL5Z29mvHs2
-         gR1eWV0Gr0T9J856+LSfP1qb/xrP47aUZNffsAriWFsnzcmm5lQvYEDNB/l0CyrriNs1
-         2mgQ==
+        bh=J0Chij7I5YmPbNPLJtF290sPw75eaI56z9Bpyk1lLtA=;
+        b=E1V2tCu0SZR7B7SmKwWX5A1r+vbGnCLzmQmBCnKs3m24KWxqE9yYVUzY6kp/aZSOWW
+         PHNSqL7UGWM6U6NbQJiRTG6zNV2nGwHsMRBgocJmicIF4zCb0pyUKwnqG8HlRP3hR3w9
+         wA3kL7ApWhDbTdvCd45aP1HQMmbYc5XBRk88mWjO+pAGk4Oux+oNalmW8bFtUd76Jhnz
+         /wE807eaKSpOK2bgd07YR6VeJTMskVNHF/kTXLCYcdYFTj2ykbp14P23aH3yb3SolRPx
+         Ww/A913WomN02hxjLzxWn8I4Grst0UZWEOewaCWeplioswX85aLM9GSdMKEsIHQ7kFnQ
+         E8BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761322211; x=1761927011;
+        d=1e100.net; s=20230601; t=1761322212; x=1761927012;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tqVXyF+IsYXkvSZaiTZ7JkU0PjsMFTNFd+jvNj7uHBc=;
-        b=GXFHWQp+Lb/DpDm/YbfvtR7AVUyEWs6OkEVPGBtiytae1kQRet9bbciG9BOECYi8eh
-         MNus2+Ew1hLM6aZgy/wQwTJ1BkVcNLJfy1bxeXc7Hs7/y2hrExULPGk7i9bT0tvgB0DX
-         GYW7pHXSzNhAqL+aYSuJqmk/te0iq2Et39LP+7JW8ufDX9/TI5UTNHuVLWkqYcj3DbId
-         Vebut+JRvj37rbfZOwYh0LjAoztKf7l5sp8Qtg1iQXUpk5DN7Ba9hbw7uDevPZDntclg
-         OpUjHMIDxAHCCtMMJo7YRox2UJ59c0S2HdcHTbJWjaZWRzTSqG9H0m4tTWdxQUfReUck
-         fNQA==
-X-Forwarded-Encrypted: i=1; AJvYcCV/UWqLSBuMbxuG24WoGEG8wGlg9ezldAR+sKWijI9izOZIstHpQBt2kQv+zkrd107/IERg1cvjYQ==@kvack.org
-X-Gm-Message-State: AOJu0YyP20GXrF+SBmE6uMFE3zDDWFVIsOIbQgo1PQtX38gQwdKvSrPt
-	+sH86oTpmjjPDOcGCfc4cyG16mFBt+GpDnWEM6EJSJ6SFELwgHCFCKej4oWfGgceS3M=
-X-Gm-Gg: ASbGncuJ777N+mayjZPdgyOS4fnaFihzQE+YdYH/+84USJdzuz/OwpbawqoF88YQAPt
-	TQbfkN3s0kVw9brsS7v4NsWopP/xnytpTyHUe//CKvu9Lt2wFY5PYp9BDqOiW923jxmNzeoLgPm
-	0nGiHD6ltXoxoa163yb1JK2ayCEGh2Dx3MvJzjxxvpOhc7fMqufHt+moN3DR0ZtEyYCgNuGnkFl
-	uK4JnlxNbcmMYPF6qLh/9gVukLSH04aHKri2z2gk5naFYGeL8AjIGrQ8VWrMxRjMRuD1pwHQZkT
-	cJnzmCToXkYI22xc8xO6jPSkx5Zgnm0ctUUzJ53CtQHRwPPNIurgOR4jmo3+Wv3n6taY1BAIKYW
-	QrNMzX2lqq1iwqY3Nx0NtinVTThtm6+QLE5uTdMl+cmoubKjdDrbFHZ1JFJLbZYJI3aEwOSMh9J
-	BtPsXev9K3prgA5AT0w6Ux3tb080M6zCqxXJ1p+MRdFMozLxWxu29qL5FQDvX80Fr1Cf6NeeTdB
-	i9llDDeNBR1Yqbt2QTnH2WJC+SLJ2mO/g==
-X-Google-Smtp-Source: AGHT+IE1Y1ssC3vDPwXKD9Vohv1X1EAngxcUz/MZcTAaLZ2Xt65ito/oPm7FTBXTLQh5v9nY6sOF/g==
-X-Received: by 2002:a05:690c:4991:b0:784:8994:298c with SMTP id 00721157ae682-78489942dc2mr350965587b3.28.1761322209785;
-        Fri, 24 Oct 2025 09:10:09 -0700 (PDT)
+        bh=J0Chij7I5YmPbNPLJtF290sPw75eaI56z9Bpyk1lLtA=;
+        b=XnClWjiQXgw/VYCWdTN0IGpWhjQk2O9GBG6cNqjkEmH0IUERete8cTVypUl/6AkRYn
+         eJS1ufDUABEeoMmAMT8OamOH7LWeVyC2hks+pUd/nLPaK4fX3Th1mcBMHsN5e2q4/kC6
+         hX7JZcI8qURjGtOhApMA7QRgRe1TGjSfEjhj9El070rKHkMDKDpn7+1sXv76CiGbz2SV
+         F821PmrV9uA9dBkBHCXqkRWw92d7cbaMqhCi8ZBAR35bfJMG0PGahM5l/UkshUkGyGxU
+         6SFeqRxo1AvtDOORPgdMdd+joI6dGUNUHY/QD7KfNtBDCIpOKEurqJyLpnhPocdOl5Gz
+         HFPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhjEyRlBWBvDD1TBA/Ots+TAV9qmpoUFggenNjzD56WOz3aqEih+CqrpIL6NjCVelQELNAXCNKcw==@kvack.org
+X-Gm-Message-State: AOJu0YwyHp9qW8OpoTSUAz9lvnGsjw6E1Qe+WNXdvkFLW32zYEd70+On
+	l0F2FMNsm4R2ZiyFZR3AS/xyuG94QnBYdAI56U4rRfrmj6KH+HxWgerXGYY1cndy37FKwhXW/KF
+	ZQQlX
+X-Gm-Gg: ASbGncsHDnkZtGMML2GjHGaG1WUSFqErBXh1Km9drLXiKF/2oA2AvzB8LRJEXAitB6u
+	IKIfa4kM4FtvO9TdcD/t59xIOkhqxfTX438zMERf6wUKkQC0krxBSW1Jiqxx7I5oI4ybaMcmzRA
+	kOFZEPUc1GnoLRum9crBYEOXuHsC+BTZlHbR7Y8dV9+YOQIiJAxs83RXPHPYVki/1V6a3nDGWbs
+	O9IZdpoFVQ69gyJoBAIqZycnZvi5y1fjlkHw96GK6Gm9+3W2oHEyhqUwzyi1VE65PdNUHI8aPKh
+	zN0E50l4EWpz+/x8MgmC6NhE/0dI763YEJzJ8c/rcU8DUNBu12FDPRLoY5MgQtf3UZVvGxlzVeW
+	WwFHLa//Nd3H/V0f2/t4Ci5lrx9gvDeLqTr+e3SRCBhY4YLYS8qk/nle4b22zutzNG4Uigjk5BR
+	qWYhzCa/S+C9L7GMngS9yufm8tCHgHThclPnUnQzI/SpiuY5jpxODWgr/UqikZsbZeYzJ16Mla2
+	c3JlUGLKNLUGB3smPAsZao=
+X-Google-Smtp-Source: AGHT+IGrHktoB2+zSyNVNIoeQp5HcQOC7JtCZnm9h30tzfcmrjcwbTqgqHhgYQabiysiaKaamJl5yw==
+X-Received: by 2002:a05:690c:dd3:b0:780:fe72:934b with SMTP id 00721157ae682-785e0231474mr22622787b3.48.1761322211974;
+        Fri, 24 Oct 2025 09:10:11 -0700 (PDT)
 Received: from soleen.us-east4-b.c.cloudtop-prod-us-east.internal (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-785cd6edd87sm14099197b3.51.2025.10.24.09.10.08
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785cd6edd87sm14099197b3.51.2025.10.24.09.10.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 09:10:09 -0700 (PDT)
+        Fri, 24 Oct 2025 09:10:11 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	brauner@kernel.org,
@@ -108,22 +109,22 @@ To: akpm@linux-foundation.org,
 	rdunlap@infradead.org,
 	rppt@kernel.org,
 	tj@kernel.org
-Subject: [PATCH v8 5/8] kho: don't unpreserve memory during abort
-Date: Fri, 24 Oct 2025 12:09:59 -0400
-Message-ID: <20251024161002.747372-6-pasha.tatashin@soleen.com>
+Subject: [PATCH v8 7/8] liveupdate: kho: move kho debugfs directory to liveupdate
+Date: Fri, 24 Oct 2025 12:10:01 -0400
+Message-ID: <20251024161002.747372-8-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.1.821.gb6fe4d2222-goog
 In-Reply-To: <20251024161002.747372-1-pasha.tatashin@soleen.com>
 References: <20251024161002.747372-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: dz3qe1579c4o6tgdky5adkhe695pkhjo
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 83DA4100005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: rk8sfa86rgcu9zip9f6pyzobcd1wm81c
-X-HE-Tag: 1761322212-278595
-X-HE-Meta: U2FsdGVkX1+kUoOdN9Td4/6QNIPLgMm7WADIIi1nEeeSoKHge0WjugVubaZgISGTRG7Tr1zHSiiaTwOHo/krE8aDDSEv3eUiuBdrdkBdl8H6TMV0osTO5KbSvPX0qHElyTwQXQBJM/wN8yXokZ0pZgGuBevfEvATzFizXFBOSO1/9b7rPXEm9XdJYXzufvAKAsg92Qucc6eP0k3PSgmytzwxU+Kn4ZQE+fFHUvkpaXUdRLWD2CHsqHTnLF9H1EABJsrvklhEDT1x2d0yxftM6GSEUyGVywm8mW8rCsrGl6HHgGxLDlGEyGkTf0qloX5mLo0jridvZVNrrf3iqCnENKRc/mMe5Whfg1gIgQwucqQUwYvIgIbR7ft24kZj/nYWqSZr6FFcE4/yXpkighDWvL74C/pbcYA7AtlxdxnDVQru1z7AaWX2JIRrj1ta3R3rIJwavhzEF8lgf2aNw8ZrUzJERpfEG2jJQb4KQ1ba894tw69xbfu7uAFX1FzyWQuq8Mgh0LPoesylBj/f9rS6rRDMWT1NasMwuyBUHO9i28nX2104tBw2nuPRj5mxbz3w+N/XODaOx08svIDeG9nHCWEJHrYQVmwzQIMjFryl32x5rRpG7kVe88G8dsipZPfD7CKETO7yxrdgC9J2V6QHth5mtM2ykd2Zpj41aTfqPpxXx3YOk3npziIaHasK2YfrQ1El/Nl4dqqXL0JrGOtYzz+82pRfRgwDPrPoXCZNushWPXkQ9ajClGt8gtZwIW0q6ryYqRtOtxkq5Jf1mBJfjQu23VlxnSKxRBVgBSn1xc54B2D47wLLmEty4BWdB/VGNe+kZV+T4MdR55KVaLoZD5qVuTpqa1BJ0j11kw3eqA56IMD5XFvta9PMXHiT2NrWcgIv5OjKG/pK3Q8f6Bl1n8NMJJAosvYGK5TVMdxSSIiY1yczs+/8y9hXmHSH1GFyoFTf8A7smwDgh1TVost
- cq4sBP/U
- QSChoPuMiqnA5a0A/6Gu+Aa2JLRKZgHFnh4eb9hL/S+IvQxZhiGPcVTDo/k6zFxEm24p9XC/k571S5UJVnav+SemOVjYWVRVPyhKtcMAFZHtcAfKBp6kV/IZdopDvdLZ8t4z6GeAPoTObwPSnXajK5Pd8/h6LgXOLQ/JWe9x51ohHvQDP5+lQZt59D/9o4dWVf+KcH6vfQPdmlKyQML9/e3hvHx1G50CpcGqpYXFNqOO5apNtNsDQmCAO1tD4VFjnsqOP3xDwiiqZrQPcLXMXWYu+6MV48GVNbC8/
+X-Rspamd-Queue-Id: D6EA810000A
+X-HE-Tag: 1761322212-521566
+X-HE-Meta: U2FsdGVkX19sChEi1OVXl+wE4C0FsHYl0SFvXJMovzAS74QXx/B4dNCvRWZCLehoynncpRXC0OZIHdCrqwR7K5GP+cYthyBNPwc+VieOcpa/RQYESElVhv+pEVaxkL6olui1V/bG0YFXnuFBCvE1shTFrm+pfHGjvKimZfOFvpGF7qXMfzSVsWZWq+muoQy1Vmyon1PPVNVXYvVhVVbQptDnMsBkQxtQtNUXiHnJK8FYSFSp+GWbBXVGy1ijKWPb8EhF4Lz1ZwdNsCApLsZbHoU8kySelpTO4GFjPpToCNMgtujmg7LreCdMliNMbnh/flbzXHVfHFdXtW+Ou09MmA2v27FHNy2Drm/w/kpwS7022aLCIt/0ykDx8O0z1cvzbaBrGolWca1jzXAFqtqwHOU77+u1PhHBxwlIFzSaed8ElIkcAnzMVEVhnjjMusX+reYjez9xqx7HFrM6/uuzbZRa2V57uu9oOKGmyP/OVkQHzpIerqIbQXY5mKf6WqPFwZMmwrBKcdyfi9zQfIT7ZnWwf93JbKyud7IiuYISyZmlSURa+ZZHq70H4OreA5MLbusKv8K4XRZNdLaxBnWhubTOzXBQ9c3stfoGGrzgGpT5tv+fpshO7r1G91ZA83lAH3oON7TcA8kkL87CIT2aOiS81v8rjrqmH3js+oyKUfl2Q0APlbrFAWZGubjUhDqFE5HPcdM0sI6Hqdh7gZ/dMGpaRipEiR3c9SwN/AcdiEFsWhm1CQDrENfFuLlNj0LFwqhC/lPZHlu3Sg/9IyY50pEC/kovncu0aqZQ9v5OtDfaiJeiSUni6Wfj5SuSQfGO2IP43XFPCzGaOhJKdJINCKEiaRcdhIRwuiA6Sz1uyQx0n0XEKJmxUR1nXZ4XJ4ifUMt1ycG+CGE9vDzT8cg6/DFGAr/b6vV87hcQKoP2gVldVJ6sH2SRUhkCgwvYVos7kUVaqSGoBy8N+jZjn1G
+ dXjKTNnt
+ mbQWx186bC5/jGOEO8t1CLLEGdAGZddmR/7eDX5DHcWl74vEFElZSPZP5mzcwhsAXCugUWCHxnVSwHMXMfTQUQ6joTVmWjxj4VQUND/lFHWMhpbhsw8fnIv9caeve1sG2DfOHCmwLr4nSqKavEZgFVjR2qEtwbYfu6XiW7inWaHZmq8MC6h3zGPDMsgPoahXaC18GhhJBByPrYPnTyBKakcVpze3wQMGquENknpg3WQyGdLdBQyfAmtkqLMbaTBWpKKgSVF6Zn9AEMuPuTQO4xlSRVJJbHKZ9gbf85K0p7n6wbxVBYCpiQ3ELcbzsdC/cmfg8q/KXL5U7BLs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,69 +133,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-KHO allows clients to preserve memory regions at any point before the
-KHO state is finalized. The finalization process itself involves KHO
-performing its own actions, such as serializing the overall
-preserved memory map.
+Now, that LUO and KHO both live under kernel/liveupdate, it makes
+sense to also move the kho debugfs files to liveupdate/ in order to
+keep current and upcoming LUO/KHO features organized.
 
-If this finalization process is aborted, the current implementation
-destroys KHO's internal memory tracking structures
-(`kho_out.ser.track.orders`). This behavior effectively unpreserves
-all memory from KHO's perspective, regardless of whether those
-preservations were made by clients before the finalization attempt
-or by KHO itself during finalization.
+The old names:
+/sys/kernel/debug/kho/out/
+/sys/kernel/debug/kho/in/
 
-This premature unpreservation is incorrect. An abort of the
-finalization process should only undo actions taken by KHO as part of
-that specific finalization attempt. Individual memory regions
-preserved by clients prior to finalization should remain preserved,
-as their lifecycle is managed by the clients themselves. These
-clients might still need to call kho_unpreserve_folio() or
-kho_unpreserve_phys() based on their own logic, even after a KHO
-finalization attempt is aborted.
+The new names:
+/sys/kernel/debug/liveupdate/kho_out/
+/sys/kernel/debug/liveupdate/kho_in/
+
+Also, export the liveupdate_debufs_root, so future LUO selftests,
+kexec telemtry, and other users could use it as well.
 
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- kernel/kexec_handover.c | 21 +--------------------
- 1 file changed, 1 insertion(+), 20 deletions(-)
+ kernel/liveupdate/kexec_handover_debugfs.c  | 10 +++++-----
+ kernel/liveupdate/kexec_handover_internal.h |  2 ++
+ tools/testing/selftests/kho/init.c          |  2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index 994ee0b70757..6aa25d304bad 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -1098,31 +1098,12 @@ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
+diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
+index 46e9e6c0791f..454b7d34ddc3 100644
+--- a/kernel/liveupdate/kexec_handover_debugfs.c
++++ b/kernel/liveupdate/kexec_handover_debugfs.c
+@@ -15,7 +15,7 @@
+ #include <linux/mm.h>
+ #include "kexec_handover_internal.h"
  
- static int __kho_abort(void)
+-static struct dentry *debugfs_root;
++struct dentry *liveupdate_debugfs_root;
+ 
+ struct fdt_debugfs {
+ 	struct list_head list;
+@@ -118,7 +118,7 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+ 
+ 	INIT_LIST_HEAD(&dbg->fdt_list);
+ 
+-	dir = debugfs_create_dir("in", debugfs_root);
++	dir = debugfs_create_dir("kho_in", liveupdate_debugfs_root);
+ 	if (IS_ERR(dir)) {
+ 		err = PTR_ERR(dir);
+ 		goto err_out;
+@@ -178,7 +178,7 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
+ 
+ 	INIT_LIST_HEAD(&dbg->fdt_list);
+ 
+-	dir = debugfs_create_dir("out", debugfs_root);
++	dir = debugfs_create_dir("kho_out", liveupdate_debugfs_root);
+ 	if (IS_ERR(dir))
+ 		return -ENOMEM;
+ 
+@@ -212,8 +212,8 @@ __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
+ 
+ __init int kho_debugfs_init(void)
  {
--	int err = 0;
--	unsigned long order;
--	struct kho_mem_phys *physxa;
--
--	xa_for_each(&kho_out.track.orders, order, physxa) {
--		struct kho_mem_phys_bits *bits;
--		unsigned long phys;
--
--		xa_for_each(&physxa->phys_bits, phys, bits)
--			kfree(bits);
--
--		xa_destroy(&physxa->phys_bits);
--		kfree(physxa);
--	}
--	xa_destroy(&kho_out.track.orders);
--
- 	if (kho_out.preserved_mem_map) {
- 		kho_mem_ser_free(kho_out.preserved_mem_map);
- 		kho_out.preserved_mem_map = NULL;
- 	}
- 
--	if (err)
--		pr_err("Failed to abort KHO finalization: %d\n", err);
--
--	return err;
-+	return 0;
+-	debugfs_root = debugfs_create_dir("kho", NULL);
+-	if (IS_ERR(debugfs_root))
++	liveupdate_debugfs_root = debugfs_create_dir("liveupdate", NULL);
++	if (IS_ERR(liveupdate_debugfs_root))
+ 		return -ENOENT;
+ 	return 0;
  }
+diff --git a/kernel/liveupdate/kexec_handover_internal.h b/kernel/liveupdate/kexec_handover_internal.h
+index 17ae101dc6ae..92798346fa5a 100644
+--- a/kernel/liveupdate/kexec_handover_internal.h
++++ b/kernel/liveupdate/kexec_handover_internal.h
+@@ -15,6 +15,8 @@ struct kho_debugfs {
+ 	struct list_head fdt_list;
+ };
  
- int kho_abort(void)
++extern struct dentry *liveupdate_debugfs_root;
++
+ #else
+ struct kho_debugfs {};
+ #endif
+diff --git a/tools/testing/selftests/kho/init.c b/tools/testing/selftests/kho/init.c
+index 6d9e91d55d68..f0136a30ce8b 100644
+--- a/tools/testing/selftests/kho/init.c
++++ b/tools/testing/selftests/kho/init.c
+@@ -11,7 +11,7 @@
+ /* from arch/x86/include/asm/setup.h */
+ #define COMMAND_LINE_SIZE	2048
+ 
+-#define KHO_FINALIZE "/debugfs/kho/out/finalize"
++#define KHO_FINALIZE "/debugfs/liveupdate/kho_out/finalize"
+ #define KERNEL_IMAGE "/kernel"
+ 
+ static int mount_filesystems(void)
 -- 
 2.51.1.821.gb6fe4d2222-goog
 
