@@ -4,120 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C038BCCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 18:22:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06497CCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 18:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 189218E00EC; Fri, 24 Oct 2025 14:22:56 -0400 (EDT)
+	id 497168E00ED; Fri, 24 Oct 2025 14:41:09 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 139EC8E00C9; Fri, 24 Oct 2025 14:22:56 -0400 (EDT)
+	id 446D28E00C9; Fri, 24 Oct 2025 14:41:09 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0281D8E00EC; Fri, 24 Oct 2025 14:22:55 -0400 (EDT)
+	id 30EB68E00ED; Fri, 24 Oct 2025 14:41:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DF2488E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:22:55 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7A5B889529
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 18:22:55 +0000 (UTC)
-X-FDA: 84033829110.25.98187EB
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 88E9CA0007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 18:22:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Pnwy/JeP";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=jannh@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761330173; a=rsa-sha256;
-	cv=none;
-	b=lsf/QWciJXdWLvN0ByIviF3wKuMmse4BfyaE+VSH6Xrrd1SEHbauSQ2b9unCnX3BMIcqui
-	9JbL7U85yD2gFrTcFZ/nq+dCMDWntLHVwWCWnnTsuZ511pRLwPYatOkxSSwA4osAKvXKo6
-	+94Y/b0u8JqIp/I9+A3p6fes00djz5k=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="Pnwy/JeP";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf25.hostedemail.com: domain of jannh@google.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=jannh@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 1AE668E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:41:09 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A148B892D6
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 18:41:08 +0000 (UTC)
+X-FDA: 84033875016.16.620543B
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B9656180004
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 18:41:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RbrqiRtb;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761330173;
+	s=arc-20220608; t=1761331266;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=45Glqcg0Gem2buj0wbJpYwnV1KF+cWqGHfkH8qGnEIw=;
-	b=WjdabPo6Uliiue9T5eSXuZQVwHrmv5gH8t89UgYJ4r8pAtoAVEtxs/zijvyyag78VDEgun
-	11AH1Mq4BQY1kN7lyEWtnr9+ogrHymEuio3jZ5XXzHiJSV/bBS2YN8JMF+gdGP9yMuybWT
-	f9aSeSAZ5pZJUiszsec4s2f3zM4Xlik=
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c167b70f9so1310a12.0
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:22:53 -0700 (PDT)
+	bh=pKqOWG1gpzHwxwYl3SQC/dTHK3GeimTlZWo8wLiUVXY=;
+	b=Ukbp54+AL19JvYqnBZpQBaY2olkCISTGdDx1Mdx+8onA2uu7mLm+MKosjVksxetj9gdm2A
+	DKX6RKfJNuu6Kx6wl1qFRPL9zs6gLlhppf1yRf4ck5qGXUXmPHgUvkEM3t4d3yWoW5vsOi
+	mVrL+rVlmuPGzyZUuaJDY7FhLvefJ9E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761331266; a=rsa-sha256;
+	cv=none;
+	b=pvRtEbk8Gl8Lu2FWJT7VtFZchuh2Qc64gm8ier7CbCqIjBWl6/eC0jsvbKuZJY0nRA5G3W
+	99xOiePM0HfGO3/RKK9vTz93E6OJTxpHYDOtGKv0VcZPmDt6u6pA+1Q2YDEJks+gfC5Nhs
+	GIMHvMUbyuymIEjAnAq4Qv+RjiUgGLo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b=RbrqiRtb;
+	dmarc=none;
+	spf=pass (imf16.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.173 as permitted sender) smtp.mailfrom=gourry@gourry.net
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-88e51cf965dso315735285a.2
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:41:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761330172; x=1761934972; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=45Glqcg0Gem2buj0wbJpYwnV1KF+cWqGHfkH8qGnEIw=;
-        b=Pnwy/JePI3H4tttUtBdX03B//UPwzs53YnMszJh8YXwDC9k+daC11sMstiyrkgBvPj
-         pRrc6kbXcjyec/xr0cMXcRGPY43I6YA2WtURFFUr+kNnFH2u7/ncsCIsPYwpnMGBopGX
-         D2c0f0IyOYqzKS9nI9d0hhEwj3CECZLv0TaGOhY/UpeQh1/N3Dx4M4THNPrTFNCXFJW+
-         8unS3gciry8O1W+ZiTup1XYKwordFO+C68FsaHapOOEShUzD9MlrNyyx3IaT3fkTgqi0
-         LqCBVnzGAo4Vs4ytecsbO70eWVUq75M0snGadoTX8Bc0RHCHmh59njDeIcfq/95xK6pA
-         WOlA==
+        d=gourry.net; s=google; t=1761331266; x=1761936066; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pKqOWG1gpzHwxwYl3SQC/dTHK3GeimTlZWo8wLiUVXY=;
+        b=RbrqiRtb1jlQLqAryYM7s54xVPigcvgLQ1Hn5uaK3NVRf+RMm9aUsiH9RvPfCebhX6
+         h8YXZ//STzLkuUZPR9gOoj5LeuCzpXEE8rC6m25ompJCIY0KwYe87kRYne1AFpiI83fn
+         XCDYxfE8+FWeN5UrTDY6wIx8B3V6V/M7f/xxszDy5oJ++z5svDjcGnGop/vNEnNjx5ND
+         2YtFI6/BD0rXWBXUaV8DMRWqE8F1ftel3YmJnU3eUSPFBbRugsqUUXQtX14oTJi6pYlw
+         zYbDTNfk41FHowlsNrcITRdJqldOhv8epWg1b5sWayY2j/WbWquvLIba8OMVzHiFuAF/
+         Bp8w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761330172; x=1761934972;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=45Glqcg0Gem2buj0wbJpYwnV1KF+cWqGHfkH8qGnEIw=;
-        b=SuwtZri9Ut+ZywBXKAMXeblxj26o52iZ91Yy04EIk8wFIE4ek9xbXt8lQDLBqA4z57
-         XOFYNdPeI85TSrLN5m/jU2jPWDNuaIwEULlYe6AqH7KrFncZf0TglgWvNFko18m3UEU6
-         f6Xudi8XG6qLTOiOp8U1NtP+bjLXOasvfCvNLPnnGVoUtNLvmhYuoCdVJEUc/Umw9+hm
-         1wVOaxtwQ7KRDOfQQW5gjIsQ5WvygIr5j8IWoA5IsWYS8gzJDzUDalyQL+34Tmr2hAd1
-         3Y1h9J69OGrjlRcbdvuxF/tAo312PyAFHAwUho1xv7e8zwC5tjCYuVmYk8WE0tcg1sKg
-         JZ4g==
-X-Forwarded-Encrypted: i=1; AJvYcCVejlBYW41GdcAiE6EFYCfkDRehlcPH3Nv5QRVAd+vf6wS9acINMnNa69uCXIxvQ4aw8a6PgZldAw==@kvack.org
-X-Gm-Message-State: AOJu0YwXdDoPNLE/w5wYi4YFSJxdzaRCriFMR9ziXPWOTe1xUp9+MRRr
-	E0caUMVq5AxZUGAFHS7Ln6g85JNcLKmi7Lp1xwNOYBCYHrVymln4EBFfofJRCkE76u9seCjmhnC
-	xmYy5KwsYXUkaPhOek9MWhbb/cIJ+uHzNHlPPkyIL
-X-Gm-Gg: ASbGnctfeboltLTi9xfBi7BxNNpSoUGKXefX3xZbQ4YvXwZ7Viy4LVBtGQeiGd645hP
-	2s2oK0BIRBlb/vvQOiDWUcoXXryunRwh8U/zT1A6Vrugh+eTQRohjqidbbPnNDYszWo0g6LoYXY
-	BusvXI4m25J73G5MUEFW2Qa9VtEsW9UK5IQ5VpF9NIXX0TYbyxFOO2jdwy6Xceh2DLTG1AyaiHc
-	nA1IcWviqbUIePOdDGCoDIqIf7U72jwbHRuo8IANWmCkGb8HBmM6hzwdtENf87AQ1cdnd4RHl6q
-	aBaXkwZZ0mL2xVaOLA5CPnBR4yrZx3pbu7c=
-X-Google-Smtp-Source: AGHT+IF72XD6SS5uDBKsgbfB0n3K/IVSTeCBW002wjaTSguk72ryj0OlbZfGYhZoZqQsDkeyA4MwnU2ur7strGUV+P0=
-X-Received: by 2002:a05:6402:304d:10b0:62f:c78f:d0d4 with SMTP id
- 4fb4d7f45d1cf-63e7c419587mr8272a12.6.1761330171855; Fri, 24 Oct 2025 11:22:51
- -0700 (PDT)
-MIME-Version: 1.0
-References: <4d3878531c76479d9f8ca9789dc6485d@amazon.de> <CAG48ez2yrEtEUnG15nbK+hern0gL9W-9hTy3fVY+rdz8QBkSNA@mail.gmail.com>
- <c7fc5bd8-a738-4ad4-9c79-57e88e080b93@redhat.com> <CAG48ez2dqOF9mM2bAQv1uDGBPWndwOswB0VAkKG7LGkrTXzmzQ@mail.gmail.com>
- <81d096fb-f2c2-4b26-ab1b-486001ee2cac@lucifer.local> <CAG48ez3paQTctuAO1bXWarzvRK33kyLjHbQ6zsQLTWya8Y1=dQ@mail.gmail.com>
- <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
-In-Reply-To: <a317657d-5c4a-4291-9b53-4435012bd590@lucifer.local>
-From: Jann Horn <jannh@google.com>
-Date: Fri, 24 Oct 2025 20:22:15 +0200
-X-Gm-Features: AWmQ_bkmWlnCuKy5iWPqVB59F3jAKLbUke72jlVyJisSwjfh1b1sb1NWw36vd2g
-Message-ID: <CAG48ez0ubDysSygbKjUvjR2JU6_UmFJzzXtQfk0=zQeGMPwDEA@mail.gmail.com>
-Subject: Re: Bug: Performance regression in 1013af4f585f: mm/hugetlb: fix
- huge_pmd_unshare() vs GUP-fast race
+        d=1e100.net; s=20230601; t=1761331266; x=1761936066;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pKqOWG1gpzHwxwYl3SQC/dTHK3GeimTlZWo8wLiUVXY=;
+        b=AwDf9In0oHISUjIzOxIeG7LM6whOpaZ6Kz1QDFxyx+Vl2gZCkm9oNwM8Jj1dtlqyiM
+         C+FeaTv695cx5YmQgDaugI4t2i/+qvQqaJz98hD484jzZCveqebMYfwGysmzY5ZqCoIo
+         uIgg3wdcMFwrsbOOYOGAj5pBznFEcf+v56GKRjqjAT3lCvzpfV1/wF0qxF7QET54XXlR
+         T9vEukk9Y8yYGu7ZGRBdlcdmMnXIUjCF1+T73Cs5ENOVc6Kj7dV/+VKrM4uOhqI+CG1b
+         kVHFcV9lv+ScGGBYhnw4C9v7t5viVDgtFP5T9YT2eTkc5by61/8APnZ2dZiEQwtxwgiu
+         W6Hw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+crUcTwbzW9esReybbSlzs7l5eivkV3YaMZsR6y0y8JIg4eOTM5ZwJusKIvnv1kPcqTPyGAPQ+g==@kvack.org
+X-Gm-Message-State: AOJu0YxmAWUb948cuvhIDeKvkfevd2YF6xV6XE3egQdjNdmUG/GsRDhJ
+	ds5x0xIu6viw5n3LI8xIB0GaEX0zqgtHK87pesoACzE1FrKpC88tQIzFzWfLiNOs/60=
+X-Gm-Gg: ASbGncvhCSMt2nMUFwZjL3HNO83UnMF84zk+mv2bPoakAEnp3+pMnE2dpFOpNSemvZy
+	bFfIJqIlEE22KfiBO6HVdn9my92NtoznDMlq/wYZrEFimfnncIiwHlHarTGqr6PJOHzfaUsehrR
+	s3qG6tlz1PqixlN7uV4+2a9DDYGGIjYodjmH1pY41nwuzu56YaQbB/6quSaB7YUXIBqtLHhAYLF
+	pLLhMBWYcfNN0DYEJlux7eSeEzblel60W62TTOFtgX0yL6Wl5Xw3xa5TgnREjJTvUDRfARJfTA2
+	+ijg9JFAM0fpvvKLliqQWRZLB6H0d+lT7sMDYWfcxY+UqweFx2WFD3zkfGxISwMJYKuuu82Esoc
+	kHVyf8IOYgfxTW/JYIca5HTPuWFv80m2gQzSSNDHZYnVGyKqmRsZbyEGQfH8BtXWZ4Bd/qiFuon
+	Q2NuUVyYwEGVSczRbVTBq8iW1U15m03eNT7rjm035D6/awvfKlZ4TdIusKtUKib530cC/MzNVwx
+	cw185/Q
+X-Google-Smtp-Source: AGHT+IGnY4R12t5EHq14eSTeJNU2ADxULRmUNWe43hSkC8AnH74fLNRTNtzJmefk6NfxewScJ3xiIw==
+X-Received: by 2002:a05:620a:190e:b0:883:5640:b0da with SMTP id af79cd13be357-8906e2cf39dmr3403918985a.3.1761331265598;
+        Fri, 24 Oct 2025 11:41:05 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89c0dbcd225sm441582885a.12.2025.10.24.11.41.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 11:41:05 -0700 (PDT)
+Date: Fri, 24 Oct 2025 14:41:02 -0400
+From: Gregory Price <gourry@gourry.net>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>, "Uschakow, Stanislav" <suschako@amazon.de>, 
-	"linux-mm@kvack.org" <linux-mm@kvack.org>, "trix@redhat.com" <trix@redhat.com>, 
-	"ndesaulniers@google.com" <ndesaulniers@google.com>, "nathan@kernel.org" <nathan@kernel.org>, 
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "muchun.song@linux.dev" <muchun.song@linux.dev>, 
-	"mike.kravetz@oracle.com" <mike.kravetz@oracle.com>, 
-	"liam.howlett@oracle.com" <liam.howlett@oracle.com>, "osalvador@suse.de" <osalvador@suse.de>, 
-	"vbabka@suse.cz" <vbabka@suse.cz>, "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tet5p18wpqkuzoexrtwf499wjjyouprc
-X-Rspamd-Queue-Id: 88E9CA0007
-X-Rspamd-Server: rspam06
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 09/12] mm/huge_memory: refactor change_huge_pmd()
+ non-present logic
+Message-ID: <aPvIPqEfnxxQ7duJ@gourry-fedora-PF4VCD3F>
+References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
+ <282c5f993e61ca57a764a84d0abb96e355dee852.1761288179.git.lorenzo.stoakes@oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <282c5f993e61ca57a764a84d0abb96e355dee852.1761288179.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: dn88dwbf6m5nu3j3kbwe58ikfazsh6jx
 X-Rspam-User: 
-X-HE-Tag: 1761330173-737099
-X-HE-Meta: U2FsdGVkX19h7H5bU+HfQKzssDyQSRx2D4K1xBkoIoo/HkTvr02CF+FMaNgsEvQT2FgDR9w3Xvn17kAjv+2TSdTWF6U8nrpKWZKrHf6NOXJtAkkMh9sQv1ebxriePiBAzqrO0Br2L76/K4TMHIlI73Jg+Ve8201PPDNM3mrVaGqj8yO1xtc8x668xUDDGCRu3Hs3K0MxK3h7f52iRHFpEr3TlWbMh0CghI/xgL3RDoBMX2Rv9OrNp+LVYVV+1xZEWR+p0AoJ+0bpPVZ+kUhv1kI2b0NXfh7BuCuTmvVTh0/UxP+V3tbiEEjyMUFQ/FWTT1pbRz5sTJmPpfCWCtIbl5tmVDZe2cG4GYCnUM3W0D2oW/M3Ci7ghvJ2YZWTTsd8/j088b1q4ZukiIT0jw3DedgoMVTdBhyaeLndRc48/30FbGb4i6KkIeZDWeiVg4VFnqcDRziVwfNPoOwnYRpOE56WR2e/8mCsTRWcbLhgm3++pMUp+j0nz+oSnuUArZNiinQM1iMoBNfzXxXqxbl+6Kky8QnG2rwj1ePEymBfUTChhhVLgDo6sFPviKlXYgeMryPFrKO/TT+arLbw/65L8qW7zvWLjbZ62CnqzTDZcPnj9q9pik6WOwI3nMvblJzqn/qUNoYOdfsoDpa5Q+VNbOkwQy270rWF2EK4UbRgB+oWAp6Tpvf7Y2+4UozvEIHwR0iNh7Wsxei+XcB+n7WQ30uU0YItlQ9sl5X+qQEl5kHxbpZVX20oW5e0b1imScedF0yuPKTVzY8/xtY10Jt4Pgc32WYhQqEJasJ/KKSU2EaLOgQiQmcdDNj/cgS6X9K+QnDX4swzGiBf5q7qIinV2i7PjIDwiHrx93vK4G/Zd7tWZyXzeI5M+3Wtr7SNAUM9l7J9YCgsiKRU4ev2nVVFHpgmTbXsqIeNdxOPZCao26cOq+z8AgTWbgQdcfBGqu6JRcBuUEKEqE56w4RNc1G
- wyRA2eyT
- /pYK7GgKw/lOfkhCnoz6hSgv59zmHZ3Xh8wTBX/zfhB194XrOEQAOTCXdLkPrEwYxraQskLPxNfhchXygbOogYFB0nHEqYv+v2VvJi6EvnilR7561PIsFsvwhXvKAJ6miGukOg65VnNFc1lcsnUU+sDQVkL6hBW+2ydLtGpkVkqsh5vk/NGOOtGSHdVg+9klcIMBaOjEoGABLwyhczADJ+c+nlIrimuNcLAetIgUiTRgeBrAOWJg4BQXzpdXy8ZMyuDJ/59aG0sdhTcaPzWP3l8GEJUKtzMoT4XmPHfmpRChMzy9R8u+jq064bA==
+X-Rspamd-Queue-Id: B9656180004
+X-HE-Tag: 1761331266-990612
+X-HE-Meta: U2FsdGVkX19zhU5/JWv0lhRzt5B2vxTVz9p7VDkylfV8dMFaTqVIdytVrnJaYtGs2T+gIRykItQJEMBulY/iTdrHlR/GOBbfSrEy92lTg+gn6qxMCgk+MzP9zhAS0u1D9tv5B++Wxv5RLSgTCPbh9008RdOoRmC4aOt6M/MHxrR8as8/mxA6oO56JkfDZsqMR+4LENE7NwTIFxxHFertLuT0Sx7tsTu1HH3JmO3Doz2eeoZBS5Un38xPWQO+3a8jdu19iDtdjchwvU1p9IHuScUvFLVC7CQyXt1z/iXwscKQ2BTTlueTzq2E1FoRh8ZvmUrdujlGwvwFd3g1UpwkHvmvh/F5NHTkCaxHaqMZJNa4UTKk7waQ7LgcT6Uh6a/y9fb/yn+oaq1ppvDWIx8KGXteVL/LB+r4w5jCOYgyP5cVgfHe8sSLrpjYzU0PB5lSg0D31VN+fohBMJqoqvmjQaJ3aSfUS+UYIDW534HEGZl67TaTYgfeZOOhqOmfB0AS+rECvdunm1oB480+/MufvUC3Fno1RjnoupmW38vFzMwywuhcvDHecUd63TrBvw3tWjBjz1EplOAhrqLPEIEKFNhzVOzvIKzW7T6Q7kwPe6Tr7Rx7RfwUZoqeSeubdAKDeguYFjMmJW29ioCqFZxUxLHn+BtW8zCUKgTQCpR1JKE1bmQUEuRUp37dXRHzCMemT8Fk0kVLfzNNLcpwCOH4H5+zprc/Y2HUVZgVccbURxbObK/PQ68ZRhMrdEowTDtsKTNd31rcRUklTDHUz0DJlFdQT6hYEdx4sUy75ZWJuLwQMqZgsJoGyd0Oe7iZ++eE+k+JNY426jxPUjax7Ja15vVJ9QiZ9eeNoEX4sbida6XpM+1X3SwVwUiXb6O7/0CjrcJJaQLT2to5lN1AM1FCUcE318r7Htwcp0/ith+vJmOPdbUv/Bxt9oKuyw3zgiDZGrEyHsUsaxFRK978sX+
+ 3jImtq9p
+ TFHfQycEPzVTFLaMcYUEW5iYXxKG3JVyJqjmc7kwr0rOeT0ZA237ng9yh050Cp4dB1T+7uB599J7611CI2r+q+BLiLEPxZ/pv8cK4Aw8L6XqzZWzz+UKWy3Cg2dpcLJ1Z9tV6wa5NQS09ZtsmLVH4dFCFc0+pqZjeuzsYpN69j1Ib0jOHyJpD2aHrZoJb8v+5N0/Oek3MmqlKqp3INQKz/aEZo6i/BWLamgCEeriHPwwM9Bk7mYStdjPAHK92oSiIZmc4jML9xoLo8K/JlBfRT4JjGSPw282Xow+LeoPtBqXDBAQelVuRzDLkx7SQmk+aL5i9GflHkTFWQViE7AOqimIkNWNgoXdAPQZHgiFWZbciEmRdCmLGHII/ohXurmtLG9Ad2Tutket2clDT7bi08YrK+kpiYH5CVu7N3amWfdHfTJ99nJvDnDwga+vSn8nvKIWQgBDuXa1+2LxbUBs5V5C7Fg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,96 +155,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 2:25=E2=80=AFPM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Mon, Oct 20, 2025 at 05:33:22PM +0200, Jann Horn wrote:
-> > On Mon, Oct 20, 2025 at 5:01=E2=80=AFPM Lorenzo Stoakes
-> > <lorenzo.stoakes@oracle.com> wrote:
-> > > On Thu, Oct 16, 2025 at 08:44:57PM +0200, Jann Horn wrote:
-> > > > 4. Then P1 splits the hugetlb VMA in the middle (at a 2M boundary),
-> > > > leaving two VMAs VMA1 and VMA2.
-> > > > 5. P1 unmaps VMA1, and creates a new VMA (VMA3) in its place, for
-> > > > example an anonymous private VMA.
-> > >
-> > > Hmm, can it though?
-> > >
-> > > P1 mmap write lock will be held, and VMA lock will be held too for VM=
-A1,
-> > >
-> > > In vms_complete_munmap_vmas(), vms_clear_ptes() will stall on tlb_fin=
-ish_mmu()
-> > > for IPI-synced architectures, and in that case the unmap won't finish=
- and the
-> > > mmap write lock won't be released so nobody an map a new VMA yet can =
-they?
-> >
-> > Yeah, I think it can't happen on configurations that always use IPI
-> > for TLB synchronization. My patch also doesn't change anything on
-> > those architectures - tlb_remove_table_sync_one() is a no-op on
-> > architectures without CONFIG_MMU_GATHER_RCU_TABLE_FREE.
->
-> Hmm but in that case wouldn't:
->
-> tlb_finish_mmu()
-> -> tlb_flush_mmu()
-> -> tlb_flush_mmu_free()
-> -> tlb_table_flush()
+On Fri, Oct 24, 2025 at 08:41:25AM +0100, Lorenzo Stoakes wrote:
+> Similar to copy_huge_pmd(), there is a large mass of open-coded logic for
+> the CONFIG_ARCH_ENABLE_THP_MIGRATION non-present entry case that does not
+> use thp_migration_supported() consistently.
+> 
+> Resolve this by separating out this logic and introduce
+> change_non_present_huge_pmd().
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+--- >8
 
-And then from there we call tlb_remove_table_free(), which does a
-call_rcu() to tlb_remove_table_rcu(), which will asynchronously run
-later and do __tlb_remove_table_free(), which does
-__tlb_remove_table()?
+> +	if (thp_migration_supported() && is_swap_pmd(*pmd)) {
+> +		change_non_present_huge_pmd(mm, addr, pmd, uffd_wp,
+> +					    uffd_wp_resolve);
 
-> -> tlb_remove_table()
+You point out the original code doesn't have thp_migration_supported()
 
-I don't see any way we end up in tlb_remove_table() from here.
-tlb_remove_table() is a much higher-level function, we end up there
-from something like pte_free_tlb(). I think you mixed up
-tlb_remove_table_free and tlb_remove_table.
+is this a bug? or is it benign and just leads to it failing (nicely)
+deeper in the stack?
 
-> -> __tlb_remove_table_one()
+If it's a bug, maybe this patch should be pulled out ahead of the rest?
 
-Heh, I think you made the same mistake as Linus made years ago when he
-was looking at tlb_remove_table(). In that function, the call to
-tlb_remove_table_one() leading to __tlb_remove_table_one() **is a
-slowpath only taken when memory allocation fails** - it's a fallback
-from the normal path that queues up batch items in (*batch)->tables[]
-(and occasionally calls tlb_table_flush() when it runs out of space in
-there).
-
-> -> tlb_remove_table_sync_one()
->
-> prevent the unmapping on non-IPI architectures, thereby mitigating the
-> issue?
-
-> Also doesn't CONFIG_MMU_GATHER_RCU_TABLE_FREE imply that RCU is being use=
-d
-> for page table teardown whose grace period would be disallowed until
-> gup_fast() finishes and therefore that also mitigate?
-
-I'm not sure I understand your point. CONFIG_MMU_GATHER_RCU_TABLE_FREE
-implies that "Semi RCU" is used to protect page table *freeing*, but
-page table freeing is irrelevant to this bug, and there is no RCU
-delay involved in dropping a reference on a shared hugetlb page table.
-"Semi RCU" is not used to protect against page table *reuse* at a
-different address by THP. Also, as explained in the big comment block
-in m/mmu_gather.c, "Semi RCU" doesn't mean RCU is definitely used -
-when memory allocations fail, the __tlb_remove_table_one() fallback
-path, when used on !PT_RECLAIM, will fall back to an IPI broadcast
-followed by directly freeing the page table. RCU is just used as the
-more polite way to do something equivalent to an IPI broadcast (RCU
-will wait for other cores to go through regions where they _could_
-receive an IPI as part of RCU-sched).
-
-But also: At which point would you expect any page table to actually
-be freed, triggering any of this logic? When unmapping VMA1 in step 5,
-I think there might not be any page tables that exist and are fully
-covered by VMA1 (or its adjacent free space, if there is any) so that
-they are eligible to be freed.
-
-> Why is a tlb_remove_table_sync_one() needed in huge_pmd_unshare()?
-
-Because nothing else on that path is guaranteed to send any IPIs
-before the page table becomes reusable in another process.
+~Gregory
 
