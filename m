@@ -4,180 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2EA7CCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:38:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A4455CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:43:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F6848E005C; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
+	id E8D168E005D; Fri, 24 Oct 2025 04:43:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A7508E0042; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
+	id E3D8A8E0042; Fri, 24 Oct 2025 04:43:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 447B78E005C; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
+	id D04FD8E005D; Fri, 24 Oct 2025 04:43:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2BDA48E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D30601A0BB6
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:32 +0000 (UTC)
-X-FDA: 84032356464.03.8FE8C00
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 81CE520004
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:30 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EzzLbmuL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cL6N5RJ7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D2scbiqy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxHSC8d;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B651A8E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:43:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4BD58140DDD
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:43:16 +0000 (UTC)
+X-FDA: 84032368392.07.DD7A81A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E6116140004
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:43:13 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="CmeR/de2";
+	spf=pass (imf09.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761295111;
+	s=arc-20220608; t=1761295394;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
-	b=o32XW1ez/fwfVxe/wY90tK4g7Dha2l81u4ylRS4+5BQj/GBeTA2UAzb+PdUxluIg7GwsH4
-	PmXzQXzm2TqxNBIXHUkSOOEyQQ+w7OX9eHUQWlcWCOZ5jwzuSLZiwEDj+5hqaxMnTD3FqY
-	zgQWWJ5A+VCXm1CWpzmsonE4P73FhYM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761295111; a=rsa-sha256;
-	cv=none;
-	b=25D1b3Nx+jEuctpT+zzl3gCxz0QJ+F7fA/+DkzOIi1N1qhEbfpwbEdlacqFSX67qFhhQkM
-	jI+Gwux+I/WrRUja4h/7OYqIrNPOJk9pXyJ6e3jZ9a3fotoLMpXyQKweHNe/ioaFqlCKSu
-	jus8nI9hO6rnaVzpAuXPN1FADczznyg=
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=ihAbQbr27WsLP3ns7L6UlAE71u9nLb/VPSGVkAY4Vro=;
+	b=Q5YjKb9kKubqFVaSFqmOKlDJooefNqBygW2/32ddd/BwEmnolKkzZoJFHRzMXLNFmW9l95
+	cuBfUj9LFwHicT6s3G/1Wn5ngzcGN5HsBrl68NFPDIppSsPiMFxODAdoLVsEnH7ARSFTNl
+	2WwymCOphekqOcj+pGzKD8Gv6DtD/Fk=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EzzLbmuL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cL6N5RJ7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D2scbiqy;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxHSC8d;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A51AB1F45A;
-	Fri, 24 Oct 2025 08:38:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761295104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
-	b=EzzLbmuLEWH4PKQg60Vdyy8P4kf6OdbBLg5Iz5TBuTz6PjiYoeidyS+R0IS+KmGpDn9ky0
-	Z1y4WuVYjBRVCfVvU6/Awvp917MgXpGc6BbVjj3VCDDv/xtmLq07cFTgOpIj3qq2JpMB9/
-	Kimm8QUfVr6ekqqrCbmchWIlBhqm2fA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761295104;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
-	b=cL6N5RJ7j4WZhXDKn0ZgCkwcNJb1+QnjVwEZNqpoZxGcXcfJuYSMQmWMIUXfcx151ttnHj
-	HsU94XVR8u+MNLCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761295100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
-	b=D2scbiqy55+w0WwSNpr3xI0/oFAA6S+YpQj6pa59d3/tbL6KxBv04GNBcTx9klyELKuxJ7
-	BqC+e5CoEZTHifldgeZRcBbBkIOQifLssRGSJfQH9SC8Ki5TJwxmxWIhW9ygG5QIrebmgo
-	dNiL1auzcf08p+A8VoJ/LM3WNlrrXo4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761295100;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
-	b=YPxHSC8dVSCO7UNqkt5WIPb3RYWlKN0yxBup/i3v5bjQM2kglK0uBZOEMdbMqi1UzNMnZV
-	JKol9W/RrczOVkBg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A74713A8E;
-	Fri, 24 Oct 2025 08:38:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id uD6MHfw6+2jiXwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 24 Oct 2025 08:38:20 +0000
-Message-ID: <50e96fd8-114b-4de3-939e-9ba606e64b06@suse.cz>
-Date: Fri, 24 Oct 2025 10:38:20 +0200
+	imf09.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="CmeR/de2";
+	spf=pass (imf09.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761295394; a=rsa-sha256;
+	cv=none;
+	b=Y4LQ/ig9fJX+m13T9ogr5kj2aCqJf6DGGDsziVICt/JouLScTdjIKaQMdQ9RIJJwz4DIqj
+	pt5wAFvkZx9Qj6Aglq+sipuJnlLh5r3W8TUyRjcrCfs3tBklhOS0DfSY89SZAlfvFsblXS
+	B/zeFA8Gp23tIxK/gnpmpyf1vXVCCME=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761295393;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=ihAbQbr27WsLP3ns7L6UlAE71u9nLb/VPSGVkAY4Vro=;
+	b=CmeR/de2VWCGHccHwd7DD/Hdft6qWVfPSqLuepIdzamfgogpB7YLGrOCblDdYr+1FGQaQu
+	GcIQ2sM4YsUcQUOVnlnkitY3cVJkStMredjE7plrTmITUxxupirz/zF7UP8Xg3wiJS1yga
+	wrIKjkBd3bij4s2ZcIeOwlIzkyaoA2c=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-e49DzwWCPkm7rZT6lkscpw-1; Fri, 24 Oct 2025 04:43:11 -0400
+X-MC-Unique: e49DzwWCPkm7rZT6lkscpw-1
+X-Mimecast-MFC-AGG-ID: e49DzwWCPkm7rZT6lkscpw_1761295391
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b6d731278e2so41493266b.1
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:43:11 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761295391; x=1761900191;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ihAbQbr27WsLP3ns7L6UlAE71u9nLb/VPSGVkAY4Vro=;
+        b=Hg1TguZmf6ivFwhzv9A2lZIcKhOwBmMd5YwmRaEZWdKj5gPGrdfaYjzJ8OYNBQOMkR
+         YSOwMOxO35z6OdzzyoHZvM/eVo+6AbT89SS2owqx7RMURknqW6f+b8xGHgYSlFf98Twe
+         Rj85jiBivnM0T2HVIx7fIBqH5Mb12uEKeUnc6iiw7DSl3Aih09XzG9i70aTle+zEx2pE
+         94cyIUUfXjvPAx+8IUZzL9cAZP+STUh9992LDUFYYIBV99YvWYIso3IZd9zNUvFt32Zb
+         3vU5pFuQ9KaUS4DjGoyZzKFr/L7zIh33HQvxKPRr5NaLc36N5kNsTHNjZYEx/Wr4RPpe
+         Xo+w==
+X-Forwarded-Encrypted: i=1; AJvYcCW6NbHk8KTfMULtkMs2iXPrGL4+j97KA/1TBCTY7ZFSnqutlkBRNeSDGt0tuMGCJkE7k/jpQ6zdkw==@kvack.org
+X-Gm-Message-State: AOJu0YyGJtj7xKd1k0qN/Ud4Ba+R2nODVGPqJ+i0pUBsFMmd2D2P8Rcl
+	kXosHv+1NdcyUNTphEO17l3s7TW0Fgxy9DT1Zu/FjG4CYNGDdA2+4I/MN885jy/FLARFlIFhTJ4
+	Hm38KKlG5NEpIIueli+2FskZMnDrld99ExhWrZi0T0TVrwcwCZ6SC
+X-Gm-Gg: ASbGnctyybmVHYXPRqbj6J0ETOY3bcvE0gtclwIkzCIKhDf/f2uGt8jaOPsS3Z3D+Bi
+	qlEHxLWfZ34VrMOQZ0GvRmYdYiSBy9e+M+jWsx+ZEgjtgD2e/2YSNIuOOiIWlQ/5O3i8Y1jErra
+	eOu+wfzs8sRUTmzXC9PXE2HRDC6fRE5Dub64OLCHZHB0aDPgDtcsCHjh4bJGTry+LQESRhj2CHk
+	R8q77lX2yl5bMEysrSH4eCxq8rc8veu4o0SgkeFW33OHhP2/9LbhwRSBKMTkHI+XXPE/jt13qPD
+	VKaTzL/xZ+fC6Sn/obfqHLKdfdkzya5SDUANte71xj7ruQHAxO3V8UMON1T8fnuACL5+W0Bb6zg
+	jDZtOLBRoe/Zy+7MbWA4TWTKG/LfO61T0
+X-Received: by 2002:a17:906:9f8c:b0:b54:8670:7c2d with SMTP id a640c23a62f3a-b6475511a47mr3482249966b.55.1761295390567;
+        Fri, 24 Oct 2025 01:43:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFOHnkb1mB3ffZrYlSB2E6fBCurSJStxVjsCwJbw8nBPqLnI6mTwLJLcTU5DTEn063YP8uWQA==
+X-Received: by 2002:a17:906:9f8c:b0:b54:8670:7c2d with SMTP id a640c23a62f3a-b6475511a47mr3482245766b.55.1761295390126;
+        Fri, 24 Oct 2025 01:43:10 -0700 (PDT)
+Received: from cluster.. (4f.55.790d.ip4.static.sl-reverse.com. [13.121.85.79])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b6d511d010asm469226866b.11.2025.10.24.01.43.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 24 Oct 2025 01:43:09 -0700 (PDT)
+From: Alex Markuze <amarkuze@redhat.com>
+To: ceph-devel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Liam.Howlett@oracle.com,
+	amarkuze@redhat.com,
+	akpm@linux-foundation.org,
+	bsegall@google.com,
+	david@redhat.com,
+	dietmar.eggemann@arm.com,
+	idryomov@gmail.com,
+	mingo@redhat.com,
+	juri.lelli@redhat.com,
+	kees@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	mgorman@suse.de,
+	mhocko@suse.com,
+	rppt@kernel.org,
+	peterz@infradead.org,
+	rostedt@goodmis.org,
+	surenb@google.com,
+	vschneid@redhat.com,
+	vincent.guittot@linaro.org,
+	vbabka@suse.cz,
+	xiubli@redhat.com,
+	Slava.Dubeyko@ibm.com
+Subject: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph consumer
+Date: Fri, 24 Oct 2025 08:42:54 +0000
+Message-Id: <20251024084259.2359693-1-amarkuze@redhat.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] slab, block: generalize bvec_alloc_gfp
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>,
- linux-block@vger.kernel.org, linux-mm@kvack.org,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
-References: <20251023080919.9209-1-hch@lst.de>
- <20251023080919.9209-2-hch@lst.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251023080919.9209-2-hch@lst.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: jIMff8AEygjP440x0FLBQphdpRk827NQaxh-l82tHXo_1761295391
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 6mcf6hzh63ibe4f4g5huagpujrr49b8t
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 81CE520004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: eebrs5uc7akqb7rwipoj61ppipx3drqy
-X-HE-Tag: 1761295110-765427
-X-HE-Meta: U2FsdGVkX18if/abXkyK7EFZfJuxzuetpvP4OMa7z4TQMBBQlxOfijKG9iA1ffgvkIDoPm/bYR3FJ7fRFVWqLGbgSAtr62t+8Pf9gxSxt9Enlfun+FWv8UuYsCXa9mWKuiLTf11UUYeU8C13GNICOzcsbY911xvDjuCSNEzctCyLYgBuy3wTQDtz20zIWNCjFgM/yiVHoMsyeJQiaaCQp8Qf67kbYbqdoqvyoBRdSL/M5P02QkTV3dSfnRCtY8DgYftB8qWobrLSF06jmHnhVzPey0t86f+2I3ltuWgtScoH4l4dR1fJ/QyZgHn5g/Ezn61VNsO5skdNNhKvjjKtJCb8ueLDF5lz6QDkIwUHYrfBOzZ4BzcBw/0ODdCdqg/Z5fbpcV4Sl57wYd50rwxJxgpu4JbcPvEqpofDE3B36sb27ScwaS1iTLl6eIdUT6vMe9mDwD0tLg+MRquPMAOKahXva6sUeXhIrPKUqNQv9jpxqswkORnNLZFvjoq3dg9uZuNQj7jVf7d4kOu4WldNJfNdrBy2ZxH7KCVQ07YpGamsPYV8ir8NHIr3+1Vp/cV8czJ4dkmLg7sRTkmKeOtmhld6fMO+n0hijzjss3TKQ3/vYPg2VLEJtkL9QZNIYvgJ/grb3EnCweVsTFSyLMnsuXX8HYCfKNNAGWU05E1YLsZXNqc8l2EvTumDJJGaStb9teJ6nwLMigpEU0by/uWrRIQVLxH01+ggZzHnqMAVF4XneaMCyE/VtAKy+lDYAeScNKUPwpoO9qK9xliGUMxf5gl6+mIVm3Cr6J49pym1qhwb6hOhlQ2HvEUFyddVcRTAo6l5MBRDSn7KL8X1ecHP2bjyY2yRGLtzGHI3/jZH1oUjstKNgHiKPgBNtybK1iiAzPB/eSwPaIBJA119jA+GdOhwwe+eUG73zNt4ctq7Tbi7o76glR258I8VHcyfKiSoNimqO4jnltGTUs5AbKa
- Z0MjRdBB
- ZkxLuuTdRw8hT6CY=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E6116140004
+X-HE-Tag: 1761295393-936299
+X-HE-Meta: U2FsdGVkX1/oCmzXG5aI4kIFdw6gf58HkSeyF5MvkHdEtkTeeyl1bthJ3v/5wF4jpMkSDf4/rOjll3/vkzgDeEIom5REFNKeY52yOYc9JiIdXDvxmqB/lS+J4Eb3CjDxOeqb5XzUDoVw35sGh277gUXWh++jUIPXMP9vt6xm7nqElsyiZQZklfep4sTJeOgnH/35fjsfA8wfoa84UyTVlTZ5LFHGY0QKDNF63jac6MsvdZFgy351thzvWYDtbD/6WdneFs6wDel4mfgzqQK8cGVGbd2O1PVk1mdTHGi5x9F2IQMTGxBPOx+X2e4X29sauAs5sZq8bFDW17KILQRbxNuur9ZGBQzS6owxbiD6ubaW38PZ5cmZ3b2saxmfdne249fkL08/1Tl1aX9+oRFT7abTVRp0+Y75TnE6XOJAeDD8JhhIPdxaByBKmfP+gn55viJc6BQdwlREgE42KpRREzZh93OhZHVHLDe3Q+ZnEl1G0HpL02CF8lmvxy3mjH0QvVYcUl06pLheakK2PMo2zkWnwhHIdtCCpck4VNd3CFEuh3s/7J8FC8BJeRbnu84vNh+JxlplQfe7E+p6og/EAZQLlWhGelIIj4du152Lr2o+9XYz31Au+J3iJx8/dPof1IuNqmxGg1PAn8ul9cOMksA5I2V0uDslrvREHgpLphod7PF1JF1phkWk1Kqt8vwk6SZ4kcrKvPMb7L9FwhZK4Yn+YvGfmR1CrnS1X29imBYJRBsgBztEseaGcwPxq2jvPLSDUcBKz8GmD/CLXZWFWt8EpsQ2nzkwUHRuqR3Xf9iLI5Fm0eUypB5kPHJwGEf/LUQGsWyBawDk20Fjv4IeZxWhAQmvM0nAp6Bu8rn4vSjtNobo7hcStEVuDST+OI1T1SfUYhvitjk/D8VGRzhJeRJt7/BzKE18Ds3LFPUr8kRqaHTkGgPSC19P3OLYtT3RHXkqCMsHm8z5yJtjpOQ
+ YXWL47zR
+ 18O/Cn6imxYA0FaMmKyH1cZJ2UyMtgoHm56ssmBjqANxAeuV7KA4BUEDylqq3sERlJOc6AZO7ouaeIaD0q4NWn/P3t9uR7+fgApAWh6iy0JzIMmI7yANTfYc1UwT00rgKIU/HCZpUBebhWbEs61xp/w6kZx7e+qseRhf1zn8ydMFE4fnDOQcfVFm9pA30Wx+8a/cJVY2KPQQtYtYlvDVlyPYERQV35uTpe6DyI8yN9VopIIbBDimrb5Pf+rIYRY/ZcsyZuC/fHcmap5ZaldhNXNZrWv1CzJ4g41LwCb9avrz4NXwQPno3lbWrUk3A4Is8mADuX8aU9YbkS6lX+EIM4fN6xt7yvpJuIssVRXwFF/pEPuTMgJgf7O/YL0xmunFGp+MYt0lUrZdzSOjz5GP/sUbOy5XT+V8vhM4Rmf1k2x8tTnsaDqsxedeQnjDoujPGaUBBuBp4UQh9EC9NnqFmlmuYuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,88 +148,124 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/23/25 10:08, Christoph Hellwig wrote:
-> bvec_alloc_gfp is useful for any place that tries to kmalloc first and
-> then fall back to a mempool.  Rename it and move it to blk.h to prepare
+Motivation: improve observability in production by providing subsystemsawith 
+a logger that keeps up with their verbouse unstructured logs and aggregating
+logs at the process context level, akin to userspace TLS. 
 
-I wonder if such fall backs are necessary because IIRC mempools try to
-allocate from the underlying provider (i.e. kmalloc caches first), and only
-give out the reserves when that fails. Is it done for less overhead or
-something?
+Binary LOGging (BLOG) introduces a task-local logging context: each context
+owns a single 512 KiB fragment that cycles through “ready → in use → queued for
+readers → reset → ready” without re-entering the allocator. Writers copy the
+raw parameters they already have; readers format them later when the log is
+inspected.
 
-> for using it to allocate the default integrity buffer.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+BLOG borrows ideas from ftrace (captureabinary  data now, format later) but 
+unlike ftrace there is no global ring. Each module registers its own logger,
+manages its own buffers, and keeps the state small enough for production use.
 
-That says blk.h but you move it to slab.h? Assuming you intended slab.h.
-However gfp flags are not slab only so it should be rather
-include/linux/gfp.h - added maintainers of that to Cc.
+To host the per-module pointers we extend `struct task_struct` with one
+additional `void *`, in line with other task extensions already in the kernel.
+Each module keeps independent batches: `alloc_batch` for contexts with
+refcount 0 and `log_batch` for contexts that have been filled and are waiting
+for readers. The batching layer and buffer management were migrated from the
+existing Ceph SAN logging code, so the behaviour is battle-tested; we simply
+made the buffer inline so every composite stays within a single 512 KiB
+allocation.
 
-We do have gfp_nested_mask() there which is quite similar but not exactly.
-Maybe a canonical macro not for nested, but for opportunistic allocations
-(if a one size fits all solution can be found) would be useful too, as
-people indeed reinvent those manually in various places with subtle differences.
+The patch series lands the BLOG library first, then wires the task lifecycle,
+and finally switches Ceph’s `bout*` logging macros to BLOG so we exercise the
+new path.
 
-> ---
->  block/bio.c          | 13 ++-----------
->  include/linux/slab.h | 10 ++++++++++
->  2 files changed, 12 insertions(+), 11 deletions(-)
-> 
-> diff --git a/block/bio.c b/block/bio.c
-> index b3a79285c278..4ea5833a7637 100644
-> --- a/block/bio.c
-> +++ b/block/bio.c
-> @@ -169,16 +169,6 @@ void bvec_free(mempool_t *pool, struct bio_vec *bv, unsigned short nr_vecs)
->  		kmem_cache_free(biovec_slab(nr_vecs)->slab, bv);
->  }
->  
-> -/*
-> - * Make the first allocation restricted and don't dump info on allocation
-> - * failures, since we'll fall back to the mempool in case of failure.
-> - */
-> -static inline gfp_t bvec_alloc_gfp(gfp_t gfp)
-> -{
-> -	return (gfp & ~(__GFP_DIRECT_RECLAIM | __GFP_IO)) |
-> -		__GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
-> -}
-> -
->  struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
->  		gfp_t gfp_mask)
->  {
-> @@ -201,7 +191,8 @@ struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
->  	if (*nr_vecs < BIO_MAX_VECS) {
->  		struct bio_vec *bvl;
->  
-> -		bvl = kmem_cache_alloc(bvs->slab, bvec_alloc_gfp(gfp_mask));
-> +		bvl = kmem_cache_alloc(bvs->slab,
-> +				try_alloc_gfp(gfp_mask & ~__GFP_IO));
->  		if (likely(bvl) || !(gfp_mask & __GFP_DIRECT_RECLAIM))
->  			return bvl;
->  		*nr_vecs = BIO_MAX_VECS;
-> diff --git a/include/linux/slab.h b/include/linux/slab.h
-> index d5a8ab98035c..a6672cead03e 100644
-> --- a/include/linux/slab.h
-> +++ b/include/linux/slab.h
-> @@ -1113,6 +1113,16 @@ void kfree_rcu_scheduler_running(void);
->   */
->  size_t kmalloc_size_roundup(size_t size);
->  
-> +/*
-> + * Make the first allocation restricted and don't dump info on allocation
-> + * failures, for callers that will fall back to a mempool in case of failure.
-> + */
-> +static inline gfp_t try_alloc_gfp(gfp_t gfp)
-> +{
-> +	return (gfp & ~__GFP_DIRECT_RECLAIM) |
-> +		__GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
+Patch summary:
+  1. sched, fork: wire BLOG contexts into task lifecycle
+     - Adds `struct blog_tls_ctx *blog_contexts[BLOG_MAX_MODULES]` to
+       `struct task_struct`.
+     - Fork/exit paths initialise and recycle contexts automatically.
 
-Note without __GFP_DIRECT_RECLAIM the __GFP_NORETRY is most likely redundant
-(but doesn't hurt).
+  2. lib: introduce BLOG (Binary LOGging) subsystem
+     - Adds `lib/blog/` sources and headers under `include/linux/blog/`.
+     - Each composite (`struct blog_tls_pagefrag`) consists of the TLS
+       metadata, the pagefrag state, and an inline buffer sized at
+       `BLOG_PAGEFRAG_SIZE - sizeof(struct blog_tls_pagefrag)`.
 
-> +}
-> +
->  void __init kmem_cache_init_late(void);
->  void __init kvfree_rcu_init(void);
->  
+  3. ceph: add BLOG scaffolding
+     - Introduces `include/linux/ceph/ceph_blog.h` and `fs/ceph/blog_client.c`.
+     - Ceph registers a logger and maintains a client-ID map for the reader
+       callback.
+
+  4. ceph: add BLOG debugfs support
+     - Adds `fs/ceph/blog_debugfs.c` so filled contexts can be drained.
+
+  5. ceph: activate BLOG logging
+     - Switches `bout*` macros to BLOG, making Ceph the first consumer.
+
+With these patches, Ceph now writes its verbose logging to task-local buffers
+managed by BLOG, and the infrastructure is ready for other subsystems that need
+allocation-free, module-owned logging.
+
+Alex Markuze (5):
+  sched, fork: Wire BLOG contexts into task lifecycle
+  lib: Introduce BLOG (Binary LOGging) subsystem
+  ceph: Add BLOG scaffolding
+  ceph: Add BLOG debugfs support
+  ceph: Activate BLOG logging
+
+ fs/ceph/Makefile                   |   2 +
+ fs/ceph/addr.c                     | 130 ++---
+ fs/ceph/blog_client.c              | 244 +++++++++
+ fs/ceph/blog_debugfs.c             | 361 +++++++++++++
+ fs/ceph/caps.c                     | 242 ++++-----
+ fs/ceph/crypto.c                   |  18 +-
+ fs/ceph/debugfs.c                  |  33 +-
+ fs/ceph/dir.c                      |  88 ++--
+ fs/ceph/export.c                   |  20 +-
+ fs/ceph/file.c                     | 130 ++---
+ fs/ceph/inode.c                    | 182 +++----
+ fs/ceph/ioctl.c                    |   6 +-
+ fs/ceph/locks.c                    |  22 +-
+ fs/ceph/mds_client.c               | 278 +++++-----
+ fs/ceph/mdsmap.c                   |   8 +-
+ fs/ceph/quota.c                    |   2 +-
+ fs/ceph/snap.c                     |  66 +--
+ fs/ceph/super.c                    |  82 +--
+ fs/ceph/xattr.c                    |  42 +-
+ include/linux/blog/blog.h          | 515 +++++++++++++++++++
+ include/linux/blog/blog_batch.h    |  54 ++
+ include/linux/blog/blog_des.h      |  46 ++
+ include/linux/blog/blog_module.h   | 329 ++++++++++++
+ include/linux/blog/blog_pagefrag.h |  33 ++
+ include/linux/blog/blog_ser.h      | 275 ++++++++++
+ include/linux/ceph/ceph_blog.h     | 124 +++++
+ include/linux/ceph/ceph_debug.h    |   6 +-
+ include/linux/sched.h              |   7 +
+ kernel/fork.c                      |  37 ++
+ lib/Kconfig                        |   2 +
+ lib/Makefile                       |   2 +
+ lib/blog/Kconfig                   |  56 +++
+ lib/blog/Makefile                  |  15 +
+ lib/blog/blog_batch.c              | 311 ++++++++++++
+ lib/blog/blog_core.c               | 772 ++++++++++++++++++++++++++++
+ lib/blog/blog_des.c                | 385 ++++++++++++++
+ lib/blog/blog_module.c             | 781 +++++++++++++++++++++++++++++
+ lib/blog/blog_pagefrag.c           | 124 +++++
+ 38 files changed, 5163 insertions(+), 667 deletions(-)
+ create mode 100644 fs/ceph/blog_client.c
+ create mode 100644 fs/ceph/blog_debugfs.c
+ create mode 100644 include/linux/blog/blog.h
+ create mode 100644 include/linux/blog/blog_batch.h
+ create mode 100644 include/linux/blog/blog_des.h
+ create mode 100644 include/linux/blog/blog_module.h
+ create mode 100644 include/linux/blog/blog_pagefrag.h
+ create mode 100644 include/linux/blog/blog_ser.h
+ create mode 100644 include/linux/ceph/ceph_blog.h
+ create mode 100644 lib/blog/Kconfig
+ create mode 100644 lib/blog/Makefile
+ create mode 100644 lib/blog/blog_batch.c
+ create mode 100644 lib/blog/blog_core.c
+ create mode 100644 lib/blog/blog_des.c
+ create mode 100644 lib/blog/blog_module.c
+ create mode 100644 lib/blog/blog_pagefrag.c
+
+-- 
+2.34.1
 
 
