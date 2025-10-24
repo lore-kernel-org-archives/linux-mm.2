@@ -4,119 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 993A3CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:12:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 327F0CCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:17:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D07078E009C; Fri, 24 Oct 2025 10:12:06 -0400 (EDT)
+	id 684CB8E009D; Fri, 24 Oct 2025 10:17:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDE998E0042; Fri, 24 Oct 2025 10:12:06 -0400 (EDT)
+	id 65C948E0042; Fri, 24 Oct 2025 10:17:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF4EC8E009C; Fri, 24 Oct 2025 10:12:06 -0400 (EDT)
+	id 5992B8E009D; Fri, 24 Oct 2025 10:17:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACE8F8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:12:06 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 65ABB1A0EAD
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:12:06 +0000 (UTC)
-X-FDA: 84033197052.12.9A3FD73
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 6BC1BC000B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:12:04 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FmQIX+m3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 479868E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:17:57 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id E2BDB5DA5B
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:17:56 +0000 (UTC)
+X-FDA: 84033211752.23.9751B2E
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	by imf07.hostedemail.com (Postfix) with ESMTP id E8FE04001D
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:17:54 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jwh9uSV+;
+	spf=pass (imf07.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761315124;
+	s=arc-20220608; t=1761315475;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SxjAAwvJxcKyZkTF4DfQc6OYD277RCMtejBYyIJXDsE=;
-	b=IrDkN4uyt8fCTyOKY8Ar2YY2PcIsVSjO2Nxk8wFiNmPmCgZqnOyBY+8HK9dp1tNXeP6dEz
-	GwIG1WLooaZasr9V+0VXV17e+ytjXxnCll0HCS4Xo/MQm6uayK/11GaZQlVk2rV3FxYstY
-	9pm44Ovqx5o3OkGRfvm/EGmNZ81xIW4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761315124; a=rsa-sha256;
-	cv=none;
-	b=t3nm09Dr1+2UbMgusl2V7qnd/9Z8r3uxJm3TXoLC+mIAEdLKnjr/yJWAzQemr6wVoGBZOI
-	VpbIa5YobvUr1k/j1QPqDlmwBFSQ2AvauXSW6ZV1Ea4ws5F2hnYHBw4hvmdlD4elbBVZBl
-	gOb3yBbgeP1sQtWJqTd8V4OVVACPtDE=
+	bh=SNTn99TnA1JaXfaY3Rpqv497vvNlynqkAU5Ssl8CUuk=;
+	b=oDuMrPwn+940ubXbo96EIyXlPC/ErAziTAzqWzNTVB9mdp5Sw50qIki4o3Z+zoIdWK3FiM
+	9KinWEe3054eqEbW6Fcd+vRPCBtjBPaYtky3EChZTImMrQB3EB/Fxs4Jfefg4huFzCRZq9
+	creSD5Y/+egevlK5G9Vtg4QGQcFiRko=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FmQIX+m3;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf10.hostedemail.com: domain of nirjhar.roy.lists@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=nirjhar.roy.lists@gmail.com
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-2897522a1dfso20865995ad.1
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:12:04 -0700 (PDT)
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jwh9uSV+;
+	spf=pass (imf07.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.53 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761315475; a=rsa-sha256;
+	cv=none;
+	b=3qN/jpujzXcWVfxa2NdlW6jAg09QLY48gHjaGgAWPCY8cUcPrEbkjQSpvRq4VfcV7S0Y88
+	c7G+BOoQaHcyJuT6ZiFLoJRF1LSrG9JcBwu61GHIDruSgXCRLf5MDRI1BGov7Gr531U7U5
+	7rqYrTDZbM26Zz4ZO9xpJ4R3TqJc4o4=
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4711b95226dso24042405e9.0
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:17:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761315123; x=1761919923; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SxjAAwvJxcKyZkTF4DfQc6OYD277RCMtejBYyIJXDsE=;
-        b=FmQIX+m3aSY8RPFaoUsIm3P96V8/Yy3MXscJ62WTw0+9uPmkBcR+lX1xFtIFzng1/o
-         HybUT5EPWmtOhHECSqa+/i1dAXpdwLihVRiILoE6HbzK6OHgOuvudTF70GwXT44RJ5fj
-         ZF1DYRUm13C7lIUB+Wk4qIn44uWeZfXSneTt3AS6ahn6BW+uuyw3NTQcLk39tJC7b/pS
-         dZHrF6Zb8paMJ6qsrhnJJpp3DkAycudv4ufqo6kByNJG0HcKIc/0JW59vBM/juhsg17X
-         9Dw6jbc7GTJl+ovjqw3Ryxp+6mPkge2V2lqZbOZkicO9Uo14gHZNMnL8CcxawsAMG8P3
-         Utnw==
+        d=gmail.com; s=20230601; t=1761315473; x=1761920273; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SNTn99TnA1JaXfaY3Rpqv497vvNlynqkAU5Ssl8CUuk=;
+        b=Jwh9uSV+Dbhg8BAMH1cAgkeamQzMhB2uQDWSDKukO90OXX36tk4R2K5t/dC8w0kq/I
+         xTQUpGjnpipT8pSS6qHSwRYoISUAZIWodgveIb+rpwAvYcpuUt1j8Pc28rQvvmbgrQbb
+         Q5QI05dBFFZg9z7swUyUHF9dn8gOzAbGMcDqF9UUQLIL/soi4YCx6Suc762bAawS1IjB
+         wnY+beW9kjX3xZISXI0IGYFRzM9UQI6QqszvnmCaBdCyK3A5ygSVGtVZPlDC/dvUpuCJ
+         ENTLeVWVbp+O3cK7gE5bSgv4yVDfqUypH/0L7c5TYbdmGhXO2xa+9PdFgAQ05lZ0EXLD
+         KQig==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761315123; x=1761919923;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:date
-         :cc:to:from:subject:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SxjAAwvJxcKyZkTF4DfQc6OYD277RCMtejBYyIJXDsE=;
-        b=kmnHWAIrEw9cs1V4eF6Ea9AeoV9LduAIbaYWmtBuaEhDrU7D7JTpeBvpOprpNs/BCh
-         FvrRadSlrrwnQ3qrozr5laO03cHsBZTncXFakXBeEoWQ5XumylEPAfQ9RfK9JGwSIDuZ
-         LBwQYWQMZyeSt9aEED1BYUaxHxlxRCD5/j3QokxZ/kYQZxrIgbKnoRUrKfL+mbuPA+Ky
-         Uo1VAp+FK+6P1WySp+7VBOc89OJ4l08ZEDf4mV4r615OqItK1HisPMCwWEt+MUTfw45D
-         Pv5E8PPFAX5mLyebc4CwuQtx/72yAUy/8ln+Z5/5govhdIKo+RYhNFKG0OAn6/XGOSu2
-         OvMg==
-X-Forwarded-Encrypted: i=1; AJvYcCVL584zopsz1ScFB7zOCU93omYW2S/Nk8l+O4SPb55Ff3jCOGw6i94M1V3QU9manJ0MUbnk5OstIA==@kvack.org
-X-Gm-Message-State: AOJu0YzXZuEYJWZvrhd1E3aZSvPq1N4TutDQT7+hBOJxpwX9W46EGGR/
-	n338dSw3DZQtpfbNqDIFm9iDOOlgFu691ac8ihd4uqgOHxvnoUxTXS83
-X-Gm-Gg: ASbGncsotpD89VD0ZqZHBQVjyRfJYyhuCLYydpxPUCNrejHickJ5AkGe6AyUZqRF90H
-	xSsNigsgzH/W/3EW8fBRKD2gUCKFY1/V41IR6BEBXZwLXRptoGfdicYy33yBtqlOjTCXHvpMfdx
-	IVopSQqBBjKzFWKV7f7K5WeZaLq38l46gjS1F3uROTxyXQZsu2uX7wSHLTw7VRmGpJQg1IEXgJ9
-	TJpcBU1vu74V+2Umgg2L/cz94C2M/7uIWUgyKosQWiG19F1mBYIEt31/66c0VZFGxiWSVdSdObk
-	ulhznUpkwCtlPtslWtitAA7+cEs0ZXnoGNFtC4/dEUn06C/bGa5B3TuPW2P3wrsQ4fYR3fh9ZFq
-	3wdPB43rzmadWNCCok4i44M1qvAxTDq75++u3R4iRiQqPxeR1Nngzl1TDZbhILxCc6jP3iglGdN
-	L3KGv2FLl0+I0BRQLJiQSv/JBbN0IDh0v2VQxgz6UqZfEyECbMaRgNaBcMIuMBdT0=
-X-Google-Smtp-Source: AGHT+IHvWUViWUbcO4jFDmrP4XCETisDqYKqzRJMqbtZ69yGInyTHi+Yd9XnBN1TIdB68GJvKa9mEg==
-X-Received: by 2002:a17:902:e543:b0:282:ee0e:5991 with SMTP id d9443c01a7336-2946e0eb3cemr82154295ad.30.1761315123024;
-        Fri, 24 Oct 2025 07:12:03 -0700 (PDT)
-Received: from li-5d80d4cc-2782-11b2-a85c-bed59fe4c9e5.ibm.com ([49.207.202.82])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2946dfd05dbsm57178835ad.54.2025.10.24.07.11.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 07:12:02 -0700 (PDT)
-Message-ID: <c45c71ce0c3dcd321807debfe580c86cc185623a.camel@gmail.com>
-Subject: Re: [PATCH 1/3] writeback: cleanup writeback_chunk_size
-From: "Nirjhar Roy (IBM)" <nirjhar.roy.lists@gmail.com>
-To: Christoph Hellwig <hch@lst.de>, Christian Brauner <brauner@kernel.org>, 
-	Jan Kara <jack@suse.cz>, Carlos Maiolino <cem@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>, willy@infradead.org, 
-	dlemoal@kernel.org, hans.holmberg@wdc.com, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, "Darrick J. Wong"
-	 <djwong@kernel.org>
-Date: Fri, 24 Oct 2025 19:41:56 +0530
-In-Reply-To: <20251017034611.651385-2-hch@lst.de>
-References: <20251017034611.651385-1-hch@lst.de>
-	 <20251017034611.651385-2-hch@lst.de>
+        d=1e100.net; s=20230601; t=1761315473; x=1761920273;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SNTn99TnA1JaXfaY3Rpqv497vvNlynqkAU5Ssl8CUuk=;
+        b=UQPEJfNkJwkN+tNvdGuQRJTy+GqImPDcGnOga/WZ00Y+BTOdNvNQDl5m2DHe9JtNZL
+         5p/JQMsxwNqoimkjGfK7xDAutGHIMwca4hDRERJ4ujwgqIU8SWTWwkZZ13uHIt5uvSVR
+         ShCdbmLx058uTYSe5uH56/sO65nQVGFm9xb6TLYjUkIzUfpEICCFzK4t/XQqUGEfmITD
+         Pcm4L4tBHKT3z8s5pMaojpgbxGPXGJbZrrH8be1KKQweHPjD6o7yk4ShqNXTEqdtZvkP
+         Z6px+mB50qAcPPNY7fILc/3P332Sh1gYFZkWfiI5wdHg28Z6e1sULrRzbfwHm4W/3IMG
+         Y/uQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXYHCVvkH7gHdfqRwOnCgj99Tt2qWHTvZ4wuTAF9jEUQlxR3i0T2P1iiW/BUWQPcNFzEHi8nuNvyQ==@kvack.org
+X-Gm-Message-State: AOJu0Yyi2aH1SJvFdSSohkO4CnMObzuk9q1DUgk2kvayRr10hNczxSaO
+	AWocX3pkO5lYwo831qtcybo80UhI0D47Oz5wjuEG7lSs0cwXI6AEQMNSfwwMvkXC5hnmDiJIY6L
+	dgf01ZJ/s8p77asYBcN9nn14HnVk62jk=
+X-Gm-Gg: ASbGncub6hQ66yRwq81Dn/ggJd4vFu08Mzwwxdb6I3QJ+fyz8GyYn9NCBVq3xgcDsF0
+	1wh0isuG4IsXo7N1mAUofz/Y8K+nr1hBGS2JMndtpQTkyrEgyZE/Cb2to4Q1jF/xPE+QZyoTpIq
+	VzGrmDqRS+tRQ/LH16L75lLiU5mVNUNVBdq82fhi2tI/vHsouFiEoTv0E+SRKGR2Nww2+VJ66TB
+	+dF/CiMhohAXj6WUtGzG0ktUpMuHpYnTJNqRsNACifplF1uJxr35+CAsaEvbdBLFryq/YsYbuMz
+	/KrpgRYuU4GWutNz/UCF+oqifPKBR7UxixknAHRg
+X-Google-Smtp-Source: AGHT+IFX/G3bo8Uoav+A3W6y2COb3eJCl2p4q4v176xd43F6DF6xlmRapKd53ZZrE98dyTCCRF3vN4Q17nc/YbCzBW0=
+X-Received: by 2002:a05:600c:34d5:b0:46f:b42e:e394 with SMTP id
+ 5b1f17b1804b1-4711793473fmr217356125e9.41.1761315473041; Fri, 24 Oct 2025
+ 07:17:53 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251023131600.1103431-1-harry.yoo@oracle.com>
+ <aPrLF0OUK651M4dk@hyeyoo> <CA+fCnZezoWn40BaS3cgmCeLwjT+5AndzcQLc=wH3BjMCu6_YCw@mail.gmail.com>
+ <aPs6Na_GUhRzPW7v@hyeyoo>
+In-Reply-To: <aPs6Na_GUhRzPW7v@hyeyoo>
+From: Andrey Konovalov <andreyknvl@gmail.com>
+Date: Fri, 24 Oct 2025 16:17:41 +0200
+X-Gm-Features: AWmQ_bka8VrwR-Z0b8RrCs_zbS1hTWfVkUFTv-W6umfuWyIbEP-ZV0vS8gZH8jE
+Message-ID: <CA+fCnZeMwOE1EwuP-3Xrs2e0qp_A5eo2aiXB_q243GiLFZV-=Q@mail.gmail.com>
+Subject: Re: [PATCH] mm/slab: ensure all metadata in slab object are word-aligned
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>, 
+	Alexander Potapenko <glider@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Feng Tang <feng.79.tang@gmail.com>, 
+	Christoph Lameter <cl@gentwo.org>, Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: E8FE04001D
+X-Stat-Signature: sx8jdsfku38b51xfa3heq1kt5q1p7ctx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6BC1BC000B
-X-Rspamd-Server: rspam02
-X-Stat-Signature: bmwtf179k5jb8bukb89sp1i1zyotbmm4
-X-HE-Tag: 1761315124-211524
-X-HE-Meta: U2FsdGVkX189/IMMiApGChnsG2LVndlQOS+fh9LR7p487t7k/HwL30Zp2IcgCRxccW2Z5Mb+c+g81Tqd/TvehWRNi5svb/Ja+3pdVK69OLgDabDB6fitUyvUlUOWCZ0Zlbe9YvNWsggxVLrC2nGpbPU1kOZSC6CfbEMbWGr4jZTHZGqWGBkMSMWQtqvICiMyyS5FAGV/ljGFGnHmPYK4+v50nrNC8jE6etuDFa3dUpY8Poy8m39aG98QQArQl+XGqhBNYKh5/rVp2SftGREsd7zuXeR9t+LQEF9ugc/c2gvic+paQvWDO93hjMQpl/mH7AE98ZpTfQKft9o2ZS+YuwDCohoZtZWQU+aNOLV6h4FYt9e3NALH28Tv+CvPBKSI2sa796xJfLAIbNon8eG1ry1nQVzFoDfSCeLlSZGwyfIwuGqIdiOrkEQuU108dZ17Xf3XqbG0HAbyKooXaQPmH93i4rvAFFKnq/YVhpbIK7oFCtp28LXzSB9KWkEKwt+dYECjfk9ob6PK1F2fDAkopHdzq2fmiUlAt/QNlcyyv+7GX3DBcVCwZTROqflG5NMbX3kvB+RXVnBBTIzf12WKpzRkMN5mMQwq1Zr1i1pAup4P7oxD3RupgsWcbwbPFNQoM8hF/7FlUUwHiRiEvApYp0R4VU35/6LJoBHllXqUdJwL0LHn+NVAh+MAhmDxija7R3Y7R8aphXtenfXYIyH8z3+RPodlKWL/NcSSBg8xJ/pfOiyDg+B356HCHEr0+hBnKoBOiAwfWpPsd/RbSien9QmeNkORqP3A4Is1SGKf8nW215c6NAFG+EogWJ4D1Tl8g75qaDALzEqB0cOCQnS5vTiejZI4FhZQpISlfq3et0tnM4CWLaZhXeanPYk4TqwPSq4xYpEO3JK6NS6KE/slGu/YUnbx35DVKHnjl/R8y9oAXhhDLHMkzAS8jZH/pTODboAr8cbLR/IfN6qHuAl
- Ankc6fR4
- o+wL65ft29jpChlCtANsjzbH3fqckNx3/U/RavRwvo8wnSObttnX4L3SaddKCyBf6A6pPfcKa49ac/ivgHWWmukJ1/ph8o3KkpC9cdpZJVlniKMg6sUg8hJ359R3t35Nc7duMObDqvUqGzWN8WYS3YPU+3rY2/sIPNBZH9U1RvjO9ZuRRG0def4Bi7xxVPmeAXOsiIsttmTTwbuzR3wjpTxRGeCAb+3t1wBoJ9o0/3Y4tlHvuXCzDZZJ4VsYA30fUQNnB6W7zqh9yDFJ2+J1GmewFeAJ8jH81ypSg66VeIfKGkoJ56wfvlPgOy33PmF3axWZAo4EqT8YOp5iNBoJBPjfYc2wBQBoJScNxspyChdsOlWSu99gtpWlR09hJWaXbr9ujp8MuncaTC/7FASnE+9W4RZ5Zg7xRfa9/Fiv1i1lV35jFXEL5FQDO+zgK/+EjisAWPRtLPnm50/d/bYy0/z9OCCaF6SuQNwnOdHfNfQy+rlwoZq+Rd0DEMZA7irYtF/FgCYo3l//Wj/Uhnt+rzJJLsx5IJT6f49nrYO23VPNZdRs=
+X-HE-Tag: 1761315474-342625
+X-HE-Meta: U2FsdGVkX1/GqpzZgsb3JXhHDityHdr6HFb4kRKcqpy1BAAyyYd9bnuVFQdjPrkBqQiiANnhtlIUCF9ma98P2UqixI86CiCR1zzvkcezVnpPN9jJjstVErwkdGXgEaScf9a5GUQijL2sYjXE0MqkmbLOB1GLHLXyB9oukZjSH3XdZya/XIdnEgqxDVUDFH66heus3WvqTCS6RcDTqRnVApzoPZ9NmSdz585LOKJebdsobbI71pub04m2rsPAViKI3Dg8jY8dzvD1ddIFjyctRgAhUxIhjpM247h1qcXWvrIEfPw1q2PA/4GOYoKOif25E965DQaQP8G7RRo8tUi+BXMYKDrI0tRyT/H98UPeO2GH/kXZvTKkAy3L47Rcgrjg5pQAijnlGvNczcDmlkGIFIX2pCva/4veEdF6N9r1bQuL0vcKstufpGjKlRul7VF5scucpfCMVmxEjPTYft598GiO3UjevcAqMzoVjB8aoFjStis/M9ryWpdglh8HRtz3vOtczbZuEWNKUqFz7JId3i9MSPLlGOE49XZZWjhzAw1UmpjjxQFkg3aBntuX9BQb4tZVCbZ0fyvJzaZ27Xb+ieBEWSjrdp7AU+FcUGidGHcpV8Py0oyxJ846Hl077RPPK/SbyxuPQ1JBbJeg6Sjnunidtrywk9ksmEFxrbCpgJjtYp+bPFrDSXLDQ7A0Hbb5s/4ta8JiC+6gQsFDa9vgozT7urpDRrU83xFlDWkaBSaDFzlq8l5H8KWM5LX4hD7ApMxKyy35WvFw/U2S05sYvxPl21trFABkKH+sLHzhLFcxJSjOK16RZbTZagRcpJXqdxM8MuuJAoGm+5Aa+g+AdZzBAyz+Jjph9a9Dpjq9vHYKNrYr8XMceBhZAAYcOZGaFX7cPb2LqgF0xCZiRE5ZM6oHdDtLziufLZwanJPva/EjtePGOmQzYnBYwvSizQLcIs+YXIPM0ydNgMFpoic
+ nnCL6l4D
+ UOocGdcABZd/MwrAb51F1f1fTpPBFUYXgon5qcmWWDyu+UDc1eKJsS6oATEwwjwR1jVKCO7zpWwCvruiSwoWb/GoOBrcJPxFVBC404NpQIP4+y0UJrQrVDEc7fE7HZY2yPbW5cUxQmQK7RoOeIzF7MXLJHkxbDn3mCHE46XYgM2R3DpDVMHEpykZ/9Db99utvFWuwbWqx8ns0g1ood40GaYXFE7IvVrvojoXZaemsTpTKm3fwZddrGs/Yx5DjIF2t8cvXvaghKSx/l4QC7Gc33ShaEP4Lg8/azLlMQ9FZmL2NIilANzEIZkaSF6sY3ZFN9yHAKAQamhDN1GWrz2La9SNHZKthNahAiRKsmFjI3JNkpA27hTUlycJnaDU1Iv2+9QXw1bvziqo5F0Zx/s+HnxCqgeYd+CmJxSQOJJGPvbY7nfnVonyQ1kRyPGIet3bKioruqSpV9C5m1CLmBZ1ZD/oSebrdOUPeBD3c
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,47 +124,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 2025-10-17 at 05:45 +0200, Christoph Hellwig wrote:
-> Return the pages directly when calculated instead of first assigning
-> them back to a variable, and directly return for the data integrity /
-> tagged case instead of going through an else clause.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-> Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-> ---
->  fs/fs-writeback.c | 14 +++++---------
->  1 file changed, 5 insertions(+), 9 deletions(-)
-> 
-> diff --git a/fs/fs-writeback.c b/fs/fs-writeback.c
-> index 2b35e80037fe..11fd08a0efb8 100644
-> --- a/fs/fs-writeback.c
-> +++ b/fs/fs-writeback.c
-> @@ -1893,16 +1893,12 @@ static long writeback_chunk_size(struct bdi_writeback *wb,
->  	 *                   (maybe slowly) sync all tagged pages
->  	 */
->  	if (work->sync_mode == WB_SYNC_ALL || work->tagged_writepages)
-> -		pages = LONG_MAX;
-> -	else {
-> -		pages = min(wb->avg_write_bandwidth / 2,
-> -			    global_wb_domain.dirty_limit / DIRTY_SCOPE);
-> -		pages = min(pages, work->nr_pages);
-> -		pages = round_down(pages + MIN_WRITEBACK_PAGES,
-> -				   MIN_WRITEBACK_PAGES);
-> -	}
-> +		return LONG_MAX;
->  
-> -	return pages;
-> +	pages = min(wb->avg_write_bandwidth / 2,
-> +		    global_wb_domain.dirty_limit / DIRTY_SCOPE);
-> +	pages = min(pages, work->nr_pages);
-> +	return round_down(pages + MIN_WRITEBACK_PAGES, MIN_WRITEBACK_PAGES);
-This looks fine to me since this simplies the overall structure of the code. I don't think this
-introduces any functional change.
+On Fri, Oct 24, 2025 at 10:35=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> w=
+rote:
+>
+> > An alternative to unpoisoning or disabling KASAN could be to add
+> > helper functions annotated with __no_sanitize_address that do the
+> > required accesses. And make them inlined when KASAN is disabled to
+> > avoid the performance hit.
+>
+> This sounds reasonable, let me try this instead of unpoisoning
+> metadata. Thanks.
 
-Reviewed-by: Nirjhar Roy (IBM) <nirjhar.roy.lists@gmail.com>
->  }
->  
->  /*
+But note that you still need kasan_reset_tag() for HW_TAGS KASAN: this
+mode is not based on compiler instrumentation and thus
+__no_sanitize_address has no effect on it.
 
+(There's been some discussion on making __no_sanitize_address work for
+HW_TAGS: https://bugzilla.kernel.org/show_bug.cgi?id=3D212513#c2, but
+this was never attempted.)
+
+> > On a side note, you might also need to check whether SW_TAGS KASAN and
+> > KMSAN would be unhappy with your changes:
+> >
+> > - When we do kasan_disable_current() or metadata_access_enable(), we
+> > also do kasan_reset_tag();
+> > - In metadata_access_enable(), we disable KMSAN as well.
+>
+> Thanks for pointing this out!
+>
+> Just to clarify, by calling kasan_reset_tag() we clear tag from the addre=
+ss
+> so that SW or HW tag based KASAN won't report access violation? (because
+> there is no valid tag in the address?)
+
+Yeah, kind of: kasan_reset_tag() sets the pointer tag (the top byte)
+to 0xFF. With SW_TAGS KASAN, the compiler knows not to embed validity
+checks for accesses through pointers with 0xFF in the top byte. With
+HW_TAGS KASAN, the CPU is instructed to behave the same.
+
+(This is slightly different than kasan_disable_current(): with
+kasan_reset_tag(), validity checks do not happen at all. With
+kasan_disable_current(), the checks happen but the bug reports are
+ignored.)
+
+Thank you!
 
