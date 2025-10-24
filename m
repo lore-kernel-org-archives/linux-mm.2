@@ -4,98 +4,81 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4FA3CCD193
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 01:57:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CDE29CCD193
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 02:00:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 427238E0030; Thu, 23 Oct 2025 21:57:00 -0400 (EDT)
+	id 393178E0031; Thu, 23 Oct 2025 22:00:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D8208E0002; Thu, 23 Oct 2025 21:57:00 -0400 (EDT)
+	id 31D348E0002; Thu, 23 Oct 2025 22:00:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C7138E0030; Thu, 23 Oct 2025 21:57:00 -0400 (EDT)
+	id 233C28E0031; Thu, 23 Oct 2025 22:00:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B5E58E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:57:00 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A3104129055
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:56:59 +0000 (UTC)
-X-FDA: 84031344558.05.941CFAD
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4F10D1A000D
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:56:54 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	spf=pass (imf19.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A8058E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 22:00:33 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id B9E69C0D21
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:00:32 +0000 (UTC)
+X-FDA: 84031353504.09.58ADAC4
+Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+	by imf12.hostedemail.com (Postfix) with ESMTP id E7A3D40019
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:00:29 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=djn2EYtd;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761271018;
+	s=arc-20220608; t=1761271231;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=/KKLetrECdYQKdzbcND8BrfgBEfuh8lqcxAuoVyuyvw=;
-	b=qx43rj6i41mgIP+4UrPYSh/2KDJhc6ST1oyUAmUm583DOLi5ezr4h+VyUwShJ1YqjyqG0P
-	ckuTb11rtT7bbx6ceP6yGzWdsGwQwFi+9+V3/UAVkx4OK5hTeIOmvl1VrXc/ML3PZ51vwx
-	0rB7aJAp0MEXadkLWmQNpgFZsCZsM/8=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761271018; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=L8/7AoCHvUPhdFk/Qd1hWlG/hm2n0G0zQ46sK7h9NoY=;
+	b=rSUGdHoY8usey8Zg1JgZRRI6VJpF9bHkgohYG3CAPiKTU/FG7tmhiZg4OlMsehM+SlkNDw
+	ZchPNzKXyUc1yfv9I4Wf1elVer0hDx37JWWgRtP3QbWLjy11Dv9AEHm43ID3TRnYG8YRG6
+	o5aB/x0JhG02tnyTMeF6jN+J41aPjO4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761271231; a=rsa-sha256;
 	cv=none;
-	b=7hD+pLIyw/R4mNkVqhwAckvuNmPVqKthVI0cDwJ+MGuU4kMvB22aCfIorIYXHOBFRq4GVn
-	OOgDnTZMipNDwXdDKYIyZ0935nMflegwno+O+cWu1lqGiORNCptEBqhti3nAgZMHMONTDL
-	+/SkMb4NRB4RTJRmsCUnQtI0hu+xEQo=
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ct5bF54zCzYQtrp
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:55:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 937EA1A083D
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:56:50 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.85.155])
-	by APP2 (Coremail) with SMTP id Syh0CgCn_UXX3PposwChBQ--.8162S4;
-	Fri, 24 Oct 2025 09:56:48 +0800 (CST)
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-To: linux-mm@kvack.org
-Cc: linux-ext4@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	david@redhat.com,
-	yi.zhang@huawei.com,
-	yi.zhang@huaweicloud.com,
-	karol.wachowski@linux.intel.com,
-	wangkefeng.wang@huawei.com,
-	yangerkun@huawei.com
-Subject: [PATCH] mm: do not install PMD mappings when handling a COW fault
-Date: Fri, 24 Oct 2025 09:54:59 +0800
-Message-ID: <20251024015459.2824162-1-yi.zhang@huaweicloud.com>
-X-Mailer: git-send-email 2.46.1
+	b=lXNGKYaJfeHTui0BgIUsnBTeTZfOzZb6ap3MewyXCGWWqeeff1+x4OX/TUgS7UF9aqbox4
+	uniXJ2B6P9mit6no6RW/uPkG50AmmbQ1OnAagm9ym2NouMcYHd8ZFYi1nWIboK+lxCZpvU
+	8SkyqNPDH01xYitcvUX/3GKA+SvHAiQ=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=djn2EYtd;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf12.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.131 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761271226; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
+	bh=L8/7AoCHvUPhdFk/Qd1hWlG/hm2n0G0zQ46sK7h9NoY=;
+	b=djn2EYtd9gl7PrJfR0xTnvAKxvX83HmN8H4wizZMkoWRZ981eGtxZ68b86AHsDre2hkqs3G17mS4Qr+eJit/vYh+GW5tIJgGGUpONEuhgmqDxoN+JzgtmbXozazq7W9uAHEUqV6prSrzl1F5is9TIuxe7OLl2MvCwjNQqI7jlxw=
+Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WqsUhQ8_1761271225 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Oct 2025 10:00:26 +0800
+From: "Huang, Ying" <ying.huang@linux.alibaba.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org,  Andrew Morton <akpm@linux-foundation.org>,  David
+ Hildenbrand <david@redhat.com>,  linux-kernel@vger.kernel.org,  Catalin
+ Marinas <catalin.marinas@arm.com>
+Subject: Re: [PATCH V3] mm/debug_vm_pgtable: Add [pte|pmd]_mkwrite_novma()
+ tests
+In-Reply-To: <20251024013137.136926-1-anshuman.khandual@arm.com> (Anshuman
+	Khandual's message of "Fri, 24 Oct 2025 02:31:37 +0100")
+References: <20251024013137.136926-1-anshuman.khandual@arm.com>
+Date: Fri, 24 Oct 2025 10:00:25 +0800
+Message-ID: <87h5vpvz2e.fsf@DESKTOP-5N7EMDA>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgCn_UXX3PposwChBQ--.8162S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxGw4xury3AFyDZw4DJF4rGrg_yoW5WF4xpa
-	yxGa1ayFWfWrn2y3Wxuw4vkr45ZwsxGayUWFyxGryjyF15Gr1Y939Yga13A34UGr4UJFWr
-	Xr45Kr909FWq937anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkG14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
-	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
-	Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUL0edUUU
-	UU=
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: p8wgi9a6e89f5y5xme8ofaodoxfg7abm
+Content-Type: text/plain; charset=ascii
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 5fr7j67xdannioyujut11uiu1joure5i
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4F10D1A000D
-X-HE-Tag: 1761271014-187481
-X-HE-Meta: U2FsdGVkX1+mVIwzxe4ZBzzPZwqES6wgH7biflpNTJoXn05O6L95EhIR/TqnoC4cM/GBtBFlfVKoZUd5ipl9Af96ISNKeBBSAINodASLYXUtutIdMaVQ0qD9ufwbJk/t5ew9wm0uJyKConXK9O/Ghkqm36TOd5W/ykkQgyoP/FdUObHNtPWFwYyVzz7OzXndWl4ZAxzZ1OD6zMUV5aQ+c0RiCneq1yRzN5cgrqHTpuHgHUvmLGDh45mLtEZPEj6SVo0/wXXL4bVmDAIYS/XAWeNKeFFXAOKVIvuCR+4KER1Gj4e22gG4L16llHXqk3vF9PVQcVDeU3Rz+LJH4SoLoLfbiDMLyRxSs0TOyPdvsgJ6yUvikO3Wtcktsa8BKOZ3lbTRC4oNkuNIje14kj6cl7yvHnZSibks58YYhSAxvIPGEmRKgKPelAM9NMJQxLD+GCl7eZ6d6NGOdlveaPs3+FfVvE3WZi3U+eWxVj+bKj6RDWqlHVNNUBOUYsFsMkGX8HvIXO/3FBJtVGqNbPGF5HDe1JEqOEapuVUWen+vqVavqjDMaGYKT2Bxb+L7ZhDyoSsymlQaYZu4JQB/YFW9CFeKY96VJY96lQ3nt4BxmwXJGiHPn86LAsJGw1q6NXkO/9PeTPdRQAfu03pps2S6D248OhhcIDEw8ePfMEEsS/tjaeQhxUTMZ5oqNRm92vb3S+7i54TsMBsQVSmq8YTSYvPsW5DZQmX512U4BM1Hw1fQM7nYITmiU8o26PvtJiRomN4v7VcDfG5fZpfekdYRkUlaF8Sj0QtV5hu53R8raDFPCNG58GZlz66M9WmeY7X/YYzANihzCnhCmzCTSHJjYLjhFWVfRxtt61roZEIk+MPReiGxOMUEKcRLeIJvVVSZ3TQ6GUNg4FIII41xajBiTNpKOQ8VIz6RJI7GhBfc1TZmo8JSROVLfPZFEWyzOZVY0C72Vf3WVLm6JvvHjMU
- MiMk0rOH
- K8yQZpKVltlGnY3r87Wu0YANpBgDJzba9Em/4i7S4lVSDsXNGRrtYFbWqHRQiA+2x6f9JsmA16ID3f0de3rRRQoOohhHu/afxgjxLqjFLn2J7nLtDm1Q6C9gvbtIOlKQpge0ySfTQpEeC8oEJEbJWb21JHcMpEVfutDMi
+X-Rspamd-Queue-Id: E7A3D40019
+X-HE-Tag: 1761271229-680979
+X-HE-Meta: U2FsdGVkX1+b+dckVUtkNlpRhMLvE2BEfmO2Lvy5jcBZrYDDTFX5eyjauJmixBc7dq+HHSmjsz1bq8hHCnMD/QrqfBRcWJ31hyYziv+eZjsLZ7x+3y+ibBYQwm9C68i9IE4yaQDA2KXWgiNVN43kJwJq0ATD1gdXmHF6puF1qOCG4DkW9Zn8gvv3YTyKivQq2kYyTqlvpYqaLGWL6C6wiYhrNsWw928Rd/gaf+UV0ej1qt4xAMeA5g1EsmvPG6tv7owxMaNvS1qG0ypm+jjhE06xPIkkWnweOw6ADnXs9920AZSG9VoLUu91CdkZebZcP89RWI1rlyyWkP8To++4bwLSWmSGTkGPtViM0AYxAOhkhernU04O5t9tXoUnv98P6XKAVOtD/cE60haU3HN1r2EBtJFardS0j6etR5rVwL0zCbQhBgzjIuacWPZbHQ0LI5RIZVODWGWiVmeqk/7GHJHDeRYJrZ3YezlpjmefKMG9xNBv4YTVq1AOcvrgoOsM8+Ay5D7O1+yu9C2lzcVtJ6yhMGVOw962OVxLW/nGSspt/bUvkXZWtTFqhGaxfjYzCDmvnYYN0RotEUrX4q1061sIf4eZ8sTxeMla7GzdUHuyPcmtsZFmayc0yrzmqX1aYiJ4rMpzRlvT+yjYwAOQRNqwIDhcUedZsGqfXILFtZ/gI7Z6zQW2bj5e1NdSnh5dKChEssb46MzTDkSE3HsfmmQ/x9T/1oozDRnIcRpvFU7GJmcVrM+8TYeutpv+IuWuwf0bM3CWa72oiHV0DYlVJgG0nHPkhs7MlR5lUcGdJ5wYO2yWwCefqHNpGilhpqCBzQ96ZT/t3wQyIkIt60+0JQ0/VaJh7p5hmMCU63SAuaKQcs8n6qDZW6hgxWLlk3cgl6dTqrqkCRDz3BqPFXbcbteuY6uxt9hTqBObBCTs/3sh04fP18hB1m7CC15wIv6s6BA05hSheipeG0suyDr
+ QlETQFhY
+ ZtIIkFJvWVhr85EFXM/HljutBkSdGPVWXUbxpQLreRkfZxW759XFgPqlAaCf4NjU1n2XTc95DFOBer6OHIGjgFoFUxMgc8lb7fdpmblg+Ws44n3vrYB+Im7tdWMc2tg0q+MTCqKqG0ZUnK2gAa9Z7m48A24/2qUbjHJazh4JIRKbHn4zSlQbGH8FIrJiSsa7/B9PCp+BvnqYG6ED2rvHrajS5gYewi1U5VCo8ke7GpZGCbXWBVgYlW4T434xxmd95rN2BI6d3yCfKt3f7dzYK1xL3QlO9G5laV8kGVNJTGF3FfyUa9Nyhz2lycbQOKhVxUyZlyHygDlXu8jKvHNqOJDlCjYAx+00Gf4iban9DSeqLzVx32g3sjxo3RtsuJztju3Js8vAsLWf9KZdUkgtVFW2Udyd2vdFUhHHGlJCTiBC5XbmNxVoeYlRys111xGv7uSm+PM3wX+gZmEXpEg7pajXMtlDYjOXdQhi1sPoo/kn2oGlSUl1vtui8V3pQlD9dN3XEJ96D//c7FlDF0apPzMJQbA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,83 +87,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhang Yi <yi.zhang@huawei.com>
+Anshuman Khandual <anshuman.khandual@arm.com> writes:
 
-During the ping of user pages in FOLL_LONGTERM on a COW VMA and a
-PMD-aligned (2MB on x86) large folio, follow_page_mask() failed to
-obtain a valid anonymous page, resulting in an infinite loop issue.
-The specific triggering process is as follows:
+> Add some [pte|pmd]_mkwrite_novma() relevant tests.
+>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Huang Ying <ying.huang@linux.alibaba.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+> These tests clear on arm64 platform after the following recent patch.
+>
+> https://lore.kernel.org/all/20251015023712.46598-1-ying.huang@linux.alibaba.com/
+>
+> Changes in V3:
+>
+> - Added a new test combination per Huang
+>
+> Changes in V2:
+>
+> https://lore.kernel.org/all/20251022032951.3498553-1-anshuman.khandual@arm.com/
+>
+> - Added a new test combination per Huang
+>
+> Changes in V1:
+>
+> https://lore.kernel.org/all/20251021024424.2390325-1-anshuman.khandual@arm.com/
+>
+>  mm/debug_vm_pgtable.c | 13 +++++++++++++
+>  1 file changed, 13 insertions(+)
+>
+> diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
+> index 830107b6dd08..133543ca2821 100644
+> --- a/mm/debug_vm_pgtable.c
+> +++ b/mm/debug_vm_pgtable.c
+> @@ -102,6 +102,12 @@ static void __init pte_basic_tests(struct pgtable_debug_args *args, int idx)
+>  	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite(pte, args->vma))));
+>  	WARN_ON(pte_dirty(pte_wrprotect(pte_mkclean(pte))));
+>  	WARN_ON(!pte_dirty(pte_wrprotect(pte_mkdirty(pte))));
+> +
+> +	WARN_ON(!pte_dirty(pte_mkwrite_novma(pte_mkdirty(pte))));
+> +	WARN_ON(pte_dirty(pte_mkwrite_novma(pte_mkclean(pte))));
+> +	WARN_ON(!pte_write(pte_mkdirty(pte_mkwrite_novma(pte))));
+> +	WARN_ON(!pte_write(pte_mkwrite_novma(pte_wrprotect(pte))));
+> +	WARN_ON(pte_write(pte_wrprotect(pte_mkwrite_novma(pte))));
+>  }
+>  
+>  static void __init pte_advanced_tests(struct pgtable_debug_args *args)
+> @@ -195,6 +201,13 @@ static void __init pmd_basic_tests(struct pgtable_debug_args *args, int idx)
+>  	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite(pmd, args->vma))));
+>  	WARN_ON(pmd_dirty(pmd_wrprotect(pmd_mkclean(pmd))));
+>  	WARN_ON(!pmd_dirty(pmd_wrprotect(pmd_mkdirty(pmd))));
+> +
+> +	WARN_ON(!pmd_dirty(pmd_mkwrite_novma(pmd_mkdirty(pmd))));
+> +	WARN_ON(pmd_dirty(pmd_mkwrite_novma(pmd_mkclean(pmd))));
+> +	WARN_ON(!pmd_write(pmd_mkdirty(pmd_mkwrite_novma(pmd))));
+> +	WARN_ON(!pmd_write(pmd_mkwrite_novma(pmd_wrprotect(pmd))));
+> +	WARN_ON(pmd_write(pmd_wrprotect(pmd_mkwrite_novma(pmd))));
+> +
+>  	/*
+>  	 * A huge page does not point to next level page table
+>  	 * entry. Hence this must qualify as pmd_bad().
 
-1. User call mmap with a 2MB size in MAP_PRIVATE mode for a file that
-   has a 2MB large folio installed in the page cache.
+LGTM, feel free to add my
 
-   addr = mmap(NULL, 2*1024*1024, PROT_READ, MAP_PRIVATE, file_fd, 0);
+Reviewed-by: Huang Ying <ying.huang@linux.alibaba.com>
 
-2. The kernel driver pass this mapped address to pin_user_pages_fast()
-   in FOLL_LONGTERM mode.
+in the future versions.
 
-   pin_user_pages_fast(addr, 512, FOLL_LONGTERM, pages);
-
-  ->  pin_user_pages_fast()
-  |   gup_fast_fallback()
-  |    __gup_longterm_locked()
-  |     __get_user_pages_locked()
-  |      __get_user_pages()
-  |       follow_page_mask()
-  |        follow_p4d_mask()
-  |         follow_pud_mask()
-  |          follow_pmd_mask() //pmd_leaf(pmdval) is true because the
-  |                            //huge PMD is installed. This is normal
-  |                            //in the first round, but it shouldn't
-  |                            //happen in the second round.
-  |           follow_huge_pmd() //require an anonymous page
-  |            return -EMLINK;
-  |   faultin_page()
-  |    handle_mm_fault()
-  |     wp_huge_pmd() //remove PMD and fall back to PTE
-  |     handle_pte_fault()
-  |      do_pte_missing()
-  |       do_fault()
-  |        do_read_fault() //FAULT_FLAG_WRITE is not set
-  |         finish_fault()
-  |          do_set_pmd() //install a huge PMD again, this is wrong!!!
-  |      do_wp_page() //create private anonymous pages
-  <-    goto retry;
-
-Due to an incorrectly large PMD set in do_read_fault(),
-follow_pmd_mask() always returns -EMLINK, causing an infinite loop.
-
-David pointed out that we can preallocate a page table and remap the PMD
-to be mapped by a PTE table in wp_huge_pmd() in the future. But now we
-can avoid this issue by not installing PMD mappings when handling a COW
-and unshare fault in do_set_pmd().
-
-Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
-Reported-by: Karol Wachowski <karol.wachowski@linux.intel.com>
-Closes: https://lore.kernel.org/linux-ext4/844e5cd4-462e-4b88-b3b5-816465a3b7e3@linux.intel.com/
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 ---
- mm/memory.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/mm/memory.c b/mm/memory.c
-index 0ba4f6b71847..0748a31367df 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5212,6 +5212,11 @@ vm_fault_t do_set_pmd(struct vm_fault *vmf, struct folio *folio, struct page *pa
- 	if (!thp_vma_suitable_order(vma, haddr, PMD_ORDER))
- 		return ret;
- 
-+	/* We're about to trigger CoW, so never map it through a PMD. */
-+	if (is_cow_mapping(vma->vm_flags) &&
-+	    (vmf->flags & (FAULT_FLAG_WRITE|FAULT_FLAG_UNSHARE)))
-+		return ret;
-+
- 	if (folio_order(folio) != HPAGE_PMD_ORDER)
- 		return ret;
- 	page = &folio->page;
--- 
-2.46.1
-
+Best Regards,
+Huang, Ying
 
