@@ -4,116 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7268CCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 20:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CBEBFCCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 20:44:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C61A8E0103; Fri, 24 Oct 2025 16:44:08 -0400 (EDT)
+	id 3163A8E0104; Fri, 24 Oct 2025 16:44:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 276928E00C9; Fri, 24 Oct 2025 16:44:08 -0400 (EDT)
+	id 2C6378E00C9; Fri, 24 Oct 2025 16:44:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1664A8E0103; Fri, 24 Oct 2025 16:44:08 -0400 (EDT)
+	id 1B5798E0104; Fri, 24 Oct 2025 16:44:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 02ED88E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:44:08 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 867191A0F89
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 20:44:07 +0000 (UTC)
-X-FDA: 84034184934.05.DA506E1
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 94B8B20008
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 20:44:05 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vlal4+Mm;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761338645; a=rsa-sha256;
-	cv=none;
-	b=CeShuflb7b1uWJr8z+7k2yyFtpluX0kPFcowQZV/BTlZyuC/K5LtZB/Yif0RNiRTvuH5v0
-	tJIsZQWglMJTEzlcxf4AvbTbhgCNFRb8xQbyn1r0fgQFl05KVPngJijOiKuYuhJ+I6xXFh
-	8PDIe4gGLniPUqXSSp4wERe5IeXmTVY=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Vlal4+Mm;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 09EB28E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:44:45 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A9CAD140F68
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 20:44:44 +0000 (UTC)
+X-FDA: 84034186488.06.952D867
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 06D43180006
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 20:44:42 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dyyL4Ar+
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761338645;
+	s=arc-20220608; t=1761338683;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RxHcVaFJP8LSAUbqjjuozojLxS3r7R2EKYoJfzV0av8=;
-	b=yCr0arVn2hiNZKcLLB/vPgAMuLBosbW9zncw72IHgkq/l8qzXU0orWqlT7P7j6ZZ7+D0wK
-	YHgSfpzJjKtqHDUNvDiYMXV2wE9csPJmjXNDk9FqfqxE0ZG8O2aHjDYqqhvy1AHvyicFMZ
-	iDdprL0wfMe4Pia/v1YX+qV0UTf6lPc=
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3ed20bdfdffso2565206f8f.2
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:44:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761338644; x=1761943444; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RxHcVaFJP8LSAUbqjjuozojLxS3r7R2EKYoJfzV0av8=;
-        b=Vlal4+MmLDOBdva3a+oIx6M6Xunbfg/2O5LA3tyelZX9v7Y4FkhZWovnnY6psQxXdR
-         167Ci7HGPFaprmQJN+Drbue107q2C1vlfpnQOrE0fmKZHyMDNUC8sGxGbSzgJG80BQj8
-         rfj9HdLDHH2tve3Q4+TepIesXXA4TqLadHid5l3c6i1gN7N/9WnYV1AThFpPMT2NgYjN
-         5e7p5zGKHBKj2HR6VDIS0cPsYM/Zs/NnMBjwj7ff2NhxOVKc9uH9nVCkQAzvoAL5HX24
-         ENF2b3e06AVXP/WL4dFUX0BJwL6J45VjRd57bbPMCAGhQTR7weotYOd5KEklsOrVcM+U
-         QLTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761338644; x=1761943444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RxHcVaFJP8LSAUbqjjuozojLxS3r7R2EKYoJfzV0av8=;
-        b=OsiE6w4exfQ8tluDUU6oCOCercMam3mauO3v25hbpB17Sz0RHmkZPaviidBETR4Cxl
-         FT2pwIjTKm78G1rxqnkN08aH+Vs5mF+tHX7LcfyzbUuIUJnxQX5+3QRBl9Ag4INSVyqG
-         s0MOi0qj6+6HZ8EOA1/WSkodJnHOkLw/NcXaqj8mWlGCTAOZaxISBkY+tk+SfFCo5h3H
-         bt/SZA61lmEEc2CeqVjIv6vqROYuSSIkn/73gY8/hUgzXdIGgu2Dk6epPmbhxA+S5iix
-         +z0RxGks0jF6k7DRRX3mPtMkIV6Td6Omkj8YiuT/p0BaS0ij7BoDQfsHwdgB/ZJvot+G
-         OR/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXhq1kechM0xY3QIopRyd4JoCPMI6LxCMDW6GCkLrJ5drfXf6+PGDei3F3FhdQ32U7OS9cxeA3fDQ==@kvack.org
-X-Gm-Message-State: AOJu0Yxyw9fGR4Em+vsU7IgG9RluNvqLsaq1V6ZNpRIhZSMXRySUyjdR
-	EefLYXOWfh99rmEYMC1Iz4s0AVMaYsl54+P/ZRKDQkeciSbaCmf8kmPgd2++LdXQDUK3casYThA
-	OZFzaKNNPsjib/K2Yleo28xgfNz+T0tQ=
-X-Gm-Gg: ASbGncsQKlor0/eaXYXAd7/zIVCXkVVWdqPh0OzrP95dy1XTLcrxkLNuqh2f+Bn/Ar7
-	m+qoYRJ8tHeFALPC/Y1Q7lK0vOFgm2/FupH6JryDe+6nl7EhenUXdw9NJ2FpN2/5Y7gix/+X+Pl
-	XsY/BEr+8gpxCg6sLezpwar/ZbPI7xDwh7AGIvOFfluGWEZrEo8NiEUp+4mWq0iwCtVa6zK78rc
-	lnYKOAH7ns3EWc/5XW+CpQAJXhrRk0xbXWG5ny8up2zNJvJ6IXF4eucLbsYlj/qGdhWoBKd6nvF
-	6cF2fGB3EOD0EinHogCQiOYroK0X
-X-Google-Smtp-Source: AGHT+IGLFt1YCHWbNyJyaEpr+22LPb9d3Q1kWYq7cFolvy1jDcRdvp0v3rx52ay4vxC3D1vRjgD3rmqs6Qx2J3gTPG4=
-X-Received: by 2002:a05:6000:26d2:b0:429:8a81:3f4d with SMTP id
- ffacd0b85a97d-4299075ca93mr3213632f8f.63.1761338643874; Fri, 24 Oct 2025
- 13:44:03 -0700 (PDT)
+	bh=vRJpv1zm9hr0FTI5e2mY+1JJIHYqIOb+kDWc9i65Lh4=;
+	b=GwF7/Hghst4BoBdIX3XLdN8WD9vHfIqlx+hjaBcxp7HwqptrDOAYMPhxygaJ4YxZV07NbN
+	Wbqvr+FQzkfI+BuGUcR5iZpViV+WMPOZYmWBcEyZIVcS+xzsDRgp32I/75hgJPrmJfsj2W
+	axQ+xy9MXXnqDU8v2p68z4g+6fvjJX4=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=dyyL4Ar+;
+	dmarc=none;
+	spf=none (imf06.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761338683; a=rsa-sha256;
+	cv=none;
+	b=4MFkG5XqUHwhw1UK2w1Jm3mnf3SI6fovqqPknz3wFQTlDwZsV89/tbUrLo+CEepHMOu/rK
+	oG/OohtDn9KA+OWPVXXnkHenrRGUzi0cv3HUep5BsoyRG1EN85Qd3BKD1A3+39AGWsRH0r
+	eLqu9LM3aY5WkIeElIXXrdKcbPsolCg=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=vRJpv1zm9hr0FTI5e2mY+1JJIHYqIOb+kDWc9i65Lh4=; b=dyyL4Ar+jvoBHjoYmWeCIrVMRr
+	NDoVovLtwuRmOVUVHxA79dF4DkU2F4d/Gz4sWzcGsVYrJz7DWOYQA0EMT9HXswGR3yQz+7GyE4idr
+	FSzws+gKsMLbUmgMQsioU914hsvoYb7kGak5QmyiqgngxbaGKTgDQjAlJSkdr0LRKP1vX1f8EyDLM
+	LrYnR7cSPjBsaKgRqp27iCIBDVWzphmhCh96+3dsIcSScJkQcExNbyzCm4ds4Az0FXiq0SjtBZoUl
+	38Q7iRXvC/0BXfTu6QwU5lvzFow7ESIwYnTsKzQkCQUP/D0Cdkcuf0dCO6s7fhcjkhdbLx76QucN3
+	diHsFbOg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCOeN-0000000AKR2-2GQ3;
+	Fri, 24 Oct 2025 20:44:39 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Christoph Lameter <cl@gentwo.org>,
+	David Rientjes <rientjes@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	linux-mm@kvack.org
+Subject: [PATCH v3 03/17] slab: Remove folio references in memcg_slab_post_charge()
+Date: Fri, 24 Oct 2025 21:44:18 +0100
+Message-ID: <20251024204434.2461319-4-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251024204434.2461319-1-willy@infradead.org>
+References: <20251024204434.2461319-1-willy@infradead.org>
 MIME-Version: 1.0
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz> <20251023-sheaves-for-all-v1-11-6ffa2c9941c0@suse.cz>
-In-Reply-To: <20251023-sheaves-for-all-v1-11-6ffa2c9941c0@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 24 Oct 2025 13:43:52 -0700
-X-Gm-Features: AWmQ_bnqGo3VhvdnD4VDhLrtr6dWJQ16k-K7Ue44kfB0ODJ6fAEdUY4Nt58fKuE
-Message-ID: <CAADnVQKBPF8g3JgbCrcGFx35Bujmta2vnJGM9pgpcLq1-wqLHg@mail.gmail.com>
-Subject: Re: [PATCH RFC 11/19] slab: remove SLUB_CPU_PARTIAL
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev, 
-	bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: tk1o9m9949xupwmwp67459nh9pz1xj51
-X-Rspamd-Queue-Id: 94B8B20008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761338645-462221
-X-HE-Meta: U2FsdGVkX18HjOYWIpT89/+Jcaozg+Bl6xwnRwh6lwuPzmE/0sYQAPmTJMuGdi6u3+1iY9PIyuTIK1CaucF/KiRcJq8eXTGzdcPnN40ZxTyRXGfBQ1md9eK2c/y5Jophcv7oC20fKYHnKXRqfmNB8i3n7N/iwEbZSHsLK+X6JYqiY6DxjwdGqSc7XW9gz8hddURMnJXj4CAcG4JMOdJiEHo1KJ9+wTvis+5NpmVUImqmh2RarbiB5ZDahfnqKS0d0nBT+mfKxvIlgERQzYiGLjA71wfcQ85XVfBEe1QKO5ZJ0RfgALhFdWO6oMikB1iYcfGZMwEIkpl8OiHjH5tu3ex2DciXIqUwMq+JCBoWgy4DFLPNE1g0Ow7vTlJH7D7d/rqXtWmGR+/9qURRv6bjBhCRv2WqziZiUU9IqOJNEDU0U4AdBd+GXGs9OtzugFsmL2Sz3nkRoNRa+b4/2HNNtIk9sRKlqie7Zomq/Rg4cE3vyS/CmZFxouEoBVVU7GSrz/KmSZYdLWg9xwPibbOp03VTfyr+KWSzW3ybPG5AJ83Cu7g4lZyvIAhd0giv9rbaXKPBz1y8krS4IjWEBeXdaBNHKBGvbPqR9Y6/u3NGg1yn1+frWOb247lSqA1JJtheTkBEwp3Dlpr/ln2gEOlEk6He8mhWdXTuol2nMbfOIGzoPCXr1THiCscTyDCVgKyQq7pFJply+uvX0uUsKjjDusKjomw+PLqB6I2rm0ei0G/rLOy5ogy3pCbdPQyPbkVxNU0p57fS2Dnd0Q5tONnTkCTMcBhsnnPQABk2kNSxKyW31iMiV17Zh4VFpg+VDX4IaRLJhXfkddG9uY+gIPoSvgIvr/KOrMEusp0l73S1ViE0WfIiuaZUo+cs7A+p5TNx58eUwqjDdt+e5X4Waw2Hqz0+7yuFDLsm1Zw/tAXe6Eb5aXAXpQIWhOV2JjzF+C3cwSBUnDwfvuUB2lqJqo7
- cKnTc7SY
- 87cHVzQBXYJ1cJg7CTTrVljxwzS58+WyG7MwXTYLNPCxuNz7J+QGcjUXBP2+7ymoI+VTKUUg5cP+JE7Trc+4IYiIXvGd9GD+EBxR1qKftURFJLdu89q7Tu80GVU5toIgFGwyxjWt9px7qZkfLz0Y6ZfNA1PXEuikrIfiiamP1k3guJirsU3F+fxswCKMJWZuxfdVR9q53rx0x/TstUAE/dER7gAUOwR2PJ6RakxubBMf4Kbiv/AZHkw5FoVyH2bTxYOIqY7zQ5t8Sr/GGfoaMu/GgBE0qY6+JDNEB0J2D/j03VW7ALyxLB171mZBQwDcNo8LMqIPtzQAw1A5JrLAK9VFjkgyWi+W02gyU6hIhRep08zwbH7jou3weewEo5qZcXKXPABklw/tbIPD53elDPjN5DE7nPbm1ShwWi3LMOvHGgP4LiCFGqqsLxQ==
+X-Rspamd-Queue-Id: 06D43180006
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yfi3stw8exypxh6uzp8mbnzeseubjop5
+X-HE-Tag: 1761338682-776919
+X-HE-Meta: U2FsdGVkX1+ypMlwwvtTilK3cifjJiGY7LR6Yk/skrAgZ/Xgf04di0/erkbgVSGwxvwdiwly4vAjwcQla3UHMrzBL1u4Wy0LzWNB86qkEClsaNQApNamo+UcV0rtiYDJcafnNg24CXx4G813i7fCCbohdpr9QF40OP+8fRIRXSbt5CujFCJq4mw5Jy9DMZ8cFaU2fRMOYfrDSELFWn2l0Sau0EwuBSgur1o1oNDqjXvDXmRVUiq4L3JKVzsV4FkV8LX2fH8l88VXnS0qtHEU84EifpzJJiTC7a7BKdUQd7QDH9ThRE79p0pO3CM2ALDE67dwG1mFA4xh8x1kVz2jKSTPO63TSusPRKMokZpGH2Lu2RJmPeDlSljJ5+CAKiNlfoE92sgtaBIRQmcJh6Ej1QZ162vy18zo7l67T6HjsItqXIpYA/lCmNIpZjLFq/P1l6Ms0LXVx3UACDW9SbydFRX6ZvYl41jjqmOu3GVonQvc9OIrjjG1pmR4R/0mg9VxaJtwFfHRsv20o4kRZq9XHB8VXWJ3xxB3xiHvh7GhFpLV6UnEANYd1UAdFjXECVR8hPJkO2hsSEb5NlXgORkX9mpEpsMjXW8ngj7raLwphajZXyIL6kWzPFcUnqJ9CO+pdnSIwXKXrAaLnuX3UIKSvSni8osOajk5Mq4Vh0HO80bcnb+8rTz54C1KoRcQQlAB9AMkulICjt74BwCW+5IrwGiAGwGjEEuQVOoFUjftnCOtfDfrtDf4Yj8NrpLoNgi8DL2kb+M1darL/8foWURpe8W+VPoBNdsjYvieu5VTwvrN92uyZ1z0MC0EXSSybGSr255qb+nueHVbdQ+gXu8+HPjeDS17uQO0FA49sZcvOB4wFdR/h9E7L4WWWgWuKENcXbXVi0g3SzUUDx83q70cvwWC4nIUcpPOS8wvdS6uObUaNZR1p56gvm5tQK4ln4ZJgjLHyJXWancTR6EVVuU
+ lX3HcjM3
+ PeTxnvcGmh17Z2+D/6ruJjI7ib0W47YFHoCUmar+zAFlnJvW0fZ9H693ggXwzH+4u6wTfqsQw1qVlcA2SZCVY/1Xyp6B5hVmWPqTQBtyYBe1PqKyUctECl5BRKyIVaN+w13SKeXVZ1/hq3lF9JKsYj3fnD4kzikOKStT5Ddpwfj6VQyI9+jVap3Kz9BJZiz4rfM2KEFyQqBDD9I4yNwC8i4m8idSU0HAsvbZlTn3wDBR61No=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,36 +92,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 6:53=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
->  static bool has_pcs_used(int cpu, struct kmem_cache *s)
-> @@ -5599,21 +5429,18 @@ static void __slab_free(struct kmem_cache *s, str=
-uct slab *slab,
->                 new.inuse -=3D cnt;
->                 if ((!new.inuse || !prior) && !was_frozen) {
->                         /* Needs to be taken off a list */
-> -                       if (!kmem_cache_has_cpu_partial(s) || prior) {
+This allows us to skip the compound_head() call for large kmalloc
+objects as the virt_to_page() call will always give us the head page
+for the large kmalloc case.
 
-I'm struggling to convince myself that it's correct.
-Losing '|| prior' means that we will be grabbing
-this "speculative" spin_lock much more often.
-While before the change we need spin_lock only when
-slab was partially empty
-(assuming cpu_partial was on for caches where performance matters).
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+---
+ mm/slub.c | 23 ++++++++++++-----------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-Also what about later check:
-if (prior && !on_node_partial) {
-       spin_unlock_irqrestore(&n->list_lock, flags);
-       return;
-}
-and
-if (unlikely(!prior)) {
-                add_partial(n, slab, DEACTIVATE_TO_TAIL);
+diff --git a/mm/slub.c b/mm/slub.c
+index 90b94b418010..c72795f4f433 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -2363,33 +2363,34 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
+ {
+ 	struct slabobj_ext *slab_exts;
+ 	struct kmem_cache *s;
+-	struct folio *folio;
++	struct page *page;
+ 	struct slab *slab;
+ 	unsigned long off;
+ 
+-	folio = virt_to_folio(p);
+-	if (!folio_test_slab(folio)) {
++	page = virt_to_page(p);
++	if (PageLargeKmalloc(page)) {
++		unsigned int order;
+ 		int size;
+ 
+-		if (folio_memcg_kmem(folio))
++		if (PageMemcgKmem(page))
+ 			return true;
+ 
+-		if (__memcg_kmem_charge_page(folio_page(folio, 0), flags,
+-					     folio_order(folio)))
++		order = large_kmalloc_order(page);
++		if (__memcg_kmem_charge_page(page, flags, order))
+ 			return false;
+ 
+ 		/*
+-		 * This folio has already been accounted in the global stats but
++		 * This page has already been accounted in the global stats but
+ 		 * not in the memcg stats. So, subtract from the global and use
+ 		 * the interface which adds to both global and memcg stats.
+ 		 */
+-		size = folio_size(folio);
+-		node_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B, -size);
+-		lruvec_stat_mod_folio(folio, NR_SLAB_UNRECLAIMABLE_B, size);
++		size = PAGE_SIZE << order;
++		mod_node_page_state(page_pgdat(page), NR_SLAB_UNRECLAIMABLE_B, -size);
++		mod_lruvec_page_state(page, NR_SLAB_UNRECLAIMABLE_B, size);
+ 		return true;
+ 	}
+ 
+-	slab = folio_slab(folio);
++	slab = page_slab(page);
+ 	s = slab->slab_cache;
+ 
+ 	/*
+-- 
+2.47.2
 
-Say, new.inuse =3D=3D 0 then 'n' will be set,
-do we lose the slab?
-Because before the change it would be added to put_cpu_partial() ?
-
-but... since AI didn't find any bugs here, I must be wrong :)
 
