@@ -4,98 +4,180 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6DF0CCCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:38:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2EA7CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:38:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AFF148E005B; Fri, 24 Oct 2025 04:38:14 -0400 (EDT)
+	id 5F6848E005C; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AAEF98E0042; Fri, 24 Oct 2025 04:38:14 -0400 (EDT)
+	id 5A7508E0042; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 99DD28E005B; Fri, 24 Oct 2025 04:38:14 -0400 (EDT)
+	id 447B78E005C; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DA118E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:38:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2D1CEBE400
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:14 +0000 (UTC)
-X-FDA: 84032355708.02.365FDD7
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 559C0A0008
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:12 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=VKSdkmpv;
-	dmarc=pass (policy=none) header.from=sipsolutions.net;
-	spf=pass (imf15.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761295092; a=rsa-sha256;
-	cv=none;
-	b=056hTDA7mdmF6tpq2e2475EL6N8WXAGDpsbfqgLQvdEFijtu9/ReingAG0syyapwDyfuci
-	O7iUz7NWHZXsqGw2p00CcyGK7WXrkwl1KXI1c1Hd8D78QCejT0l8L9jQgic3pK5DeQoVfJ
-	eWvHgMMgtch5KbMQEtb1AMixDiTnBvY=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=sipsolutions.net header.s=mail header.b=VKSdkmpv;
-	dmarc=pass (policy=none) header.from=sipsolutions.net;
-	spf=pass (imf15.hostedemail.com: domain of johannes@sipsolutions.net designates 168.119.38.16 as permitted sender) smtp.mailfrom=johannes@sipsolutions.net
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BDA48E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:38:33 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D30601A0BB6
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:32 +0000 (UTC)
+X-FDA: 84032356464.03.8FE8C00
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 81CE520004
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:38:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EzzLbmuL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cL6N5RJ7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D2scbiqy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxHSC8d;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761295092;
+	s=arc-20220608; t=1761295111;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L7lT/wMZ1LMdwxMJTrMezCGdtazbt1qIWepTcDamS+o=;
-	b=mFmh2yc+ibAH4YDiz1XXHhh6lDZyh55zC3KrM8tehEO3fnp1UztoRwZ27oFsYjERl52Ovb
-	6UgzDJyNVPInbU9ZTfA4EK/hir/NVi1nknWKxA+m0xiHcio4hNnZ4VNnhnlsePowhzHpH4
-	s6W208P/vl527qXBhqcEoF/KagQSVs0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=L7lT/wMZ1LMdwxMJTrMezCGdtazbt1qIWepTcDamS+o=;
-	t=1761295092; x=1762504692; b=VKSdkmpv5EfIdBilNWIzXp2kgzoyhaZ+7ValX+xutz9yLol
-	VDRtKTDEhE9H0EqTSPu4k5y/nUB7XAMPEjH3MKX8Nc668pwHqUVeXArKa6BX+YofTyBrblKLvUvAu
-	zIDzITOPUg+K29nMGqTz4oAd3e+1NolFNtTsBvSvzZo45BcCpL07y0aI/jl4OhTAmKGUcTcp8ifVL
-	k89S31RZvk2GTWwwlFM+TIDmQ2W45U0oy6G/Ifobn7w6DSq99q418atNBbKrpOhfzN+8GKPZ5wPiO
-	NzPpzW+6bQ3LBK+o1liL1VhTr45M5QpVHYEeEMYSokKP3vWoFguElWTBu9T0sYEA==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.98.2)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1vCDJ9-00000002PD9-0Qfp;
-	Fri, 24 Oct 2025 10:37:59 +0200
-Message-ID: <438ff89e22a815c81406c3c8761a951b0c7e6916.camel@sipsolutions.net>
-Subject: Re: [PATCH v2 0/10] KFuzzTest: a new kernel fuzzing framework
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ethan Graham <ethan.w.s.graham@gmail.com>
-Cc: ethangraham@google.com, glider@google.com, andreyknvl@gmail.com, 
-	andy@kernel.org, brauner@kernel.org, brendan.higgins@linux.dev, 
-	davem@davemloft.net, davidgow@google.com, dhowells@redhat.com,
- dvyukov@google.com, 	elver@google.com, herbert@gondor.apana.org.au,
- ignat@cloudflare.com, jack@suse.cz, 	jannh@google.com,
- kasan-dev@googlegroups.com, kees@kernel.org, 	kunit-dev@googlegroups.com,
- linux-crypto@vger.kernel.org, 	linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lukas@wunner.de, 	rmoar@google.com, shuah@kernel.org,
- sj@kernel.org, tarasmadan@google.com
-Date: Fri, 24 Oct 2025 10:37:57 +0200
-In-Reply-To: <CANgxf6xOJgP6254S8EgSdiivrfE-aJDEQbDdXzWi7K4BCTdrXg@mail.gmail.com> (sfid-20250925_103550_253525_F09A62BB)
-References: <20250919145750.3448393-1-ethan.w.s.graham@gmail.com>
-	 <3562eeeb276dc9cc5f3b238a3f597baebfa56bad.camel@sipsolutions.net>
-	 <CANgxf6xOJgP6254S8EgSdiivrfE-aJDEQbDdXzWi7K4BCTdrXg@mail.gmail.com>
-	 (sfid-20250925_103550_253525_F09A62BB)
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.56.2 (3.56.2-2.fc42) 
+	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
+	b=o32XW1ez/fwfVxe/wY90tK4g7Dha2l81u4ylRS4+5BQj/GBeTA2UAzb+PdUxluIg7GwsH4
+	PmXzQXzm2TqxNBIXHUkSOOEyQQ+w7OX9eHUQWlcWCOZ5jwzuSLZiwEDj+5hqaxMnTD3FqY
+	zgQWWJ5A+VCXm1CWpzmsonE4P73FhYM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761295111; a=rsa-sha256;
+	cv=none;
+	b=25D1b3Nx+jEuctpT+zzl3gCxz0QJ+F7fA/+DkzOIi1N1qhEbfpwbEdlacqFSX67qFhhQkM
+	jI+Gwux+I/WrRUja4h/7OYqIrNPOJk9pXyJ6e3jZ9a3fotoLMpXyQKweHNe/ioaFqlCKSu
+	jus8nI9hO6rnaVzpAuXPN1FADczznyg=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=EzzLbmuL;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cL6N5RJ7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=D2scbiqy;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=YPxHSC8d;
+	dmarc=none;
+	spf=pass (imf03.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id A51AB1F45A;
+	Fri, 24 Oct 2025 08:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761295104; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
+	b=EzzLbmuLEWH4PKQg60Vdyy8P4kf6OdbBLg5Iz5TBuTz6PjiYoeidyS+R0IS+KmGpDn9ky0
+	Z1y4WuVYjBRVCfVvU6/Awvp917MgXpGc6BbVjj3VCDDv/xtmLq07cFTgOpIj3qq2JpMB9/
+	Kimm8QUfVr6ekqqrCbmchWIlBhqm2fA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761295104;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
+	b=cL6N5RJ7j4WZhXDKn0ZgCkwcNJb1+QnjVwEZNqpoZxGcXcfJuYSMQmWMIUXfcx151ttnHj
+	HsU94XVR8u+MNLCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761295100; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
+	b=D2scbiqy55+w0WwSNpr3xI0/oFAA6S+YpQj6pa59d3/tbL6KxBv04GNBcTx9klyELKuxJ7
+	BqC+e5CoEZTHifldgeZRcBbBkIOQifLssRGSJfQH9SC8Ki5TJwxmxWIhW9ygG5QIrebmgo
+	dNiL1auzcf08p+A8VoJ/LM3WNlrrXo4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761295100;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4ra0u6MQk+rzPvxHAFSyS/W2tCF/Nc+jXjLKRMZLIbU=;
+	b=YPxHSC8dVSCO7UNqkt5WIPb3RYWlKN0yxBup/i3v5bjQM2kglK0uBZOEMdbMqi1UzNMnZV
+	JKol9W/RrczOVkBg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7A74713A8E;
+	Fri, 24 Oct 2025 08:38:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uD6MHfw6+2jiXwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 24 Oct 2025 08:38:20 +0000
+Message-ID: <50e96fd8-114b-4de3-939e-9ba606e64b06@suse.cz>
+Date: Fri, 24 Oct 2025 10:38:20 +0200
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
-X-Stat-Signature: gn71gros55o456anc74ukj17ppu3mn6n
-X-Rspamd-Queue-Id: 559C0A0008
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] slab, block: generalize bvec_alloc_gfp
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>,
+ linux-block@vger.kernel.org, linux-mm@kvack.org,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Brendan Jackman <jackmanb@google.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>
+References: <20251023080919.9209-1-hch@lst.de>
+ <20251023080919.9209-2-hch@lst.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251023080919.9209-2-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1761295092-356704
-X-HE-Meta: U2FsdGVkX1+R7ZY6HrE3jzwsr45PE2k1OuwdE0z6QV2z/3eS+OskFKbNN1cHnBm3GdPnlzY9BunuRNHd+sRKdeYy3ALsClXB25q6CHMEJEAKNyZf1DbnIeKhHVr/1h+qeOZUb1r1ol6A9Cy/UZPCj+rcCTISL4SwOdWxddnJbTeux/UCyP1tczkYE9k3efDffw/dx+IJa+ylIEQ/qgUqeu6To3fHOaQV0pJwbTNpJdr82QunyzpRVS60Ik5l3Lg0i4ULjzK/nwndqfYkB2+gxNkbzSY3fX/mZihisk1EhjtDd2PShjOrjRHitrRvCuewir5ZvlnWeQalzKFeCb9nUuUT+z9Td07XvrbYnkOhTEzOiUbz0Xt/nP6ULkWewRz1iPVIg6i3A3VZfTw+aNQznSbw2cdBWWXaKZ6aca6W/M1lulLbD85cU1REWnAKvYjOdU+wkCZJFlXrCDcqFojQb8MX5Tmkr9hUNkdvm7fHvE2cIedhVKcfr7HAEf3aZN/w7TGCU6072PPbrFF0Tk9r3C1GTzMb1UWbXUlRrJRb2C0z4QkC+NBATdNBcN/p0v22zbtIFWWhtMfJzpdjdLAiWy7TRDMnI+YMlUB3xCaDHt9J5MiH1YC+jw3GQGjV0PeWROaeZlWzwmtilu/xnqwizYCMCxqMj8c7EDQR0BWWlxm4Ii6Zfm9iLs4v2XSYJZFglPYvsJDBYWQvoo88aqJvJ6r0YmcouFVYKlOCEr0iOKf8gD2RFJrW7eFMDBIv1dxPRKPGykEdZmWgB6YgXJbknKjvbMj+CBaetZO6LMcrjbVfukhru8fOeOGJ5ZWMB0I5xhyGGdngA3NRUrPBxNfAyy/7E7BBaHsCOh7P3oSTO6p6CWoWHaRXc2nLnreZsGx7c8A1rN1LN3OSgEqHx16vfvzkzHPHqWXtda96bPYfDBQCuws4rKybAgp5aQLnnLSCfTYHzVD+mndHaXBv51n
- EeelEDzo
- SiFrQ7lA1Z+kycNZuDiTGIj5MZ3sk45YEZS25IG6+y6+nm1GprssTdQnVmZWbOeVCclyF+wlhFVTbaauiFREsKe+1QPjFdKibsOldoyRwkjQHAgIBXfYWA2t8zdDAbVYWR9ceiO5shWA2XsOzNeE94xr0x2vLK/9gKXiakZgfDQg8dnyqVYYos8VVmyaHRuNoFPfb7OtDPVHp81buRx0zKreOyvVcsl6Zhv6AXu9rPKrDbUDVLk4YTyPbs6uxB7Mg6gSYSloBa7CvrOuB3AFcWM3NV2YEUlD6NpTjvuegDCHksNp2JwL6cJcjJw==
+X-Rspamd-Queue-Id: 81CE520004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: eebrs5uc7akqb7rwipoj61ppipx3drqy
+X-HE-Tag: 1761295110-765427
+X-HE-Meta: U2FsdGVkX18if/abXkyK7EFZfJuxzuetpvP4OMa7z4TQMBBQlxOfijKG9iA1ffgvkIDoPm/bYR3FJ7fRFVWqLGbgSAtr62t+8Pf9gxSxt9Enlfun+FWv8UuYsCXa9mWKuiLTf11UUYeU8C13GNICOzcsbY911xvDjuCSNEzctCyLYgBuy3wTQDtz20zIWNCjFgM/yiVHoMsyeJQiaaCQp8Qf67kbYbqdoqvyoBRdSL/M5P02QkTV3dSfnRCtY8DgYftB8qWobrLSF06jmHnhVzPey0t86f+2I3ltuWgtScoH4l4dR1fJ/QyZgHn5g/Ezn61VNsO5skdNNhKvjjKtJCb8ueLDF5lz6QDkIwUHYrfBOzZ4BzcBw/0ODdCdqg/Z5fbpcV4Sl57wYd50rwxJxgpu4JbcPvEqpofDE3B36sb27ScwaS1iTLl6eIdUT6vMe9mDwD0tLg+MRquPMAOKahXva6sUeXhIrPKUqNQv9jpxqswkORnNLZFvjoq3dg9uZuNQj7jVf7d4kOu4WldNJfNdrBy2ZxH7KCVQ07YpGamsPYV8ir8NHIr3+1Vp/cV8czJ4dkmLg7sRTkmKeOtmhld6fMO+n0hijzjss3TKQ3/vYPg2VLEJtkL9QZNIYvgJ/grb3EnCweVsTFSyLMnsuXX8HYCfKNNAGWU05E1YLsZXNqc8l2EvTumDJJGaStb9teJ6nwLMigpEU0by/uWrRIQVLxH01+ggZzHnqMAVF4XneaMCyE/VtAKy+lDYAeScNKUPwpoO9qK9xliGUMxf5gl6+mIVm3Cr6J49pym1qhwb6hOhlQ2HvEUFyddVcRTAo6l5MBRDSn7KL8X1ecHP2bjyY2yRGLtzGHI3/jZH1oUjstKNgHiKPgBNtybK1iiAzPB/eSwPaIBJA119jA+GdOhwwe+eUG73zNt4ctq7Tbi7o76glR258I8VHcyfKiSoNimqO4jnltGTUs5AbKa
+ Z0MjRdBB
+ ZkxLuuTdRw8hT6CY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,169 +186,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Ethan, all,
+On 10/23/25 10:08, Christoph Hellwig wrote:
+> bvec_alloc_gfp is useful for any place that tries to kmalloc first and
+> then fall back to a mempool.  Rename it and move it to blk.h to prepare
 
-Sorry, my=C2=A0current foray into fuzzing got preempted by other things ...
+I wonder if such fall backs are necessary because IIRC mempools try to
+allocate from the underlying provider (i.e. kmalloc caches first), and only
+give out the reserves when that fails. Is it done for less overhead or
+something?
 
-> > So ... I guess I understand the motivation to make this easy for
-> > developers, but I'm not sure I'm happy to have all of this effectively
-> > depend on syzkaller.
->=20
-> I would argue that it only depends on syzkaller because it is currently
-> the only fuzzer that implements support for KFuzzTest. The communication
-> interface itself is agnostic.
+> for using it to allocate the default integrity buffer.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
 
-Yeah I can see how you could argue that. However, syzkaller is also
-effectively the only fuzzer now that supports what you later call "smart
-input generation", and adding it to any other fuzzer is really not
-straight-forward, at least to me. No other fuzzer seems to really have
-felt a need to have this, and there are ... dozens?
+That says blk.h but you move it to slab.h? Assuming you intended slab.h.
+However gfp flags are not slab only so it should be rather
+include/linux/gfp.h - added maintainers of that to Cc.
 
-> > the record, and everyone else who might be reading, here's my
-> > understanding:
-> >=20
-> >  - the FUZZ_TEST() macro declares some magic in the Linux binary,
-> >    including the name of the struct that describes the necessary input
-> >=20
-> >  - there's a parser in syzkaller (and not really usable standalone) tha=
-t
-> >    can parse the vmlinux binary (and doesn't handle modules) and
-> >    generates descriptions for the input from it
-> >=20
-> >  - I _think_ that the bridge tool uses these descriptions, though the
-> >    example you have in the documentation just says "use this command fo=
-r
-> >    this test" and makes no representation as to how the first argument
-> >    to the bridge tool is created, it just appears out of thin air
->=20
-> syzkaller doesn't use the bridge tool at all.=C2=A0
+We do have gfp_nested_mask() there which is quite similar but not exactly.
+Maybe a canonical macro not for nested, but for opportunistic allocations
+(if a one size fits all solution can be found) would be useful too, as
+people indeed reinvent those manually in various places with subtle differences.
 
-Right.
+> ---
+>  block/bio.c          | 13 ++-----------
+>  include/linux/slab.h | 10 ++++++++++
+>  2 files changed, 12 insertions(+), 11 deletions(-)
+> 
+> diff --git a/block/bio.c b/block/bio.c
+> index b3a79285c278..4ea5833a7637 100644
+> --- a/block/bio.c
+> +++ b/block/bio.c
+> @@ -169,16 +169,6 @@ void bvec_free(mempool_t *pool, struct bio_vec *bv, unsigned short nr_vecs)
+>  		kmem_cache_free(biovec_slab(nr_vecs)->slab, bv);
+>  }
+>  
+> -/*
+> - * Make the first allocation restricted and don't dump info on allocation
+> - * failures, since we'll fall back to the mempool in case of failure.
+> - */
+> -static inline gfp_t bvec_alloc_gfp(gfp_t gfp)
+> -{
+> -	return (gfp & ~(__GFP_DIRECT_RECLAIM | __GFP_IO)) |
+> -		__GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
+> -}
+> -
+>  struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
+>  		gfp_t gfp_mask)
+>  {
+> @@ -201,7 +191,8 @@ struct bio_vec *bvec_alloc(mempool_t *pool, unsigned short *nr_vecs,
+>  	if (*nr_vecs < BIO_MAX_VECS) {
+>  		struct bio_vec *bvl;
+>  
+> -		bvl = kmem_cache_alloc(bvs->slab, bvec_alloc_gfp(gfp_mask));
+> +		bvl = kmem_cache_alloc(bvs->slab,
+> +				try_alloc_gfp(gfp_mask & ~__GFP_IO));
+>  		if (likely(bvl) || !(gfp_mask & __GFP_DIRECT_RECLAIM))
+>  			return bvl;
+>  		*nr_vecs = BIO_MAX_VECS;
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index d5a8ab98035c..a6672cead03e 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -1113,6 +1113,16 @@ void kfree_rcu_scheduler_running(void);
+>   */
+>  size_t kmalloc_size_roundup(size_t size);
+>  
+> +/*
+> + * Make the first allocation restricted and don't dump info on allocation
+> + * failures, for callers that will fall back to a mempool in case of failure.
+> + */
+> +static inline gfp_t try_alloc_gfp(gfp_t gfp)
+> +{
+> +	return (gfp & ~__GFP_DIRECT_RECLAIM) |
+> +		__GFP_NOMEMALLOC | __GFP_NORETRY | __GFP_NOWARN;
 
-> Since a KFuzzTest target is
-> invoked when you write encoded data into its debugfs input file, any
-> fuzzer that is able to do this is able to fuzz it - this is what syzkalle=
-r
-> does. The bridge tool was added to provide an out-of-the-box tool
-> for fuzzing KFuzzTest targets with arbitrary data that doesn't depend
-> on syzkaller at all.
+Note without __GFP_DIRECT_RECLAIM the __GFP_NORETRY is most likely redundant
+(but doesn't hurt).
 
-Yes, I understand, I guess it just feels a bit like a fig-leaf to me to
-paper over "you need syzkaller" because there's no way to really
-(efficiently) use it for fuzzing.
+> +}
+> +
+>  void __init kmem_cache_init_late(void);
+>  void __init kvfree_rcu_init(void);
+>  
 
-> In the provided examples, the kfuzztest-bridge descriptions were
-> hand-written, but it's also feasible to generate them with the ELF
-> metadata in vmlinux. It would be easy to implement support for
-> this in syzkaller, but then we would depend on an external tool
-> for autogenerating these descriptions which we wanted to avoid.
-
-Oh, I get that you wouldn't necessarily want to have a dependency on
-syzkaller in the kernel example code, but in a sense my argument is that
-there's no such tool at all since syzkaller cannot output anything, and
-then you need to write all the descriptions by hand. Which is fine for
-an _example_ but really doesn't scale to actually running fuzzing.
-
-So then we're mostly back to "you need syzkaller to run fuzzing against
-this", which at least to me isn't a great situation.
-
-> >  - the bridge tool will then parse the description and use some random
-> >    data to create the serialised data that's deserialized in the kernel
-> >    and then passed to the test
->=20
-> This is exactly right. It's not used by syzkaller, but this is how it's
-> intended to work when it's used as a standalone tool, or for bridging
-> between KFuzzTest targets and an arbitrary fuzzer that doesn't
-> implement the required encoding logic.
-
-Yeah I guess, but that still requires hand-coding the descriptions (or
-writing a separate parser), and notably doesn't work with a sort of in-
-process fuzzing I was envisioning for ARCH=3Dum. Which ought to be much
-faster, and even combinable with fork() as I alluded to in earlier
-emails.
-
-> > I was really hoping to integrate this with ARCH=3Dum and other fuzzers[=
-1],
-> > but ... I don't really think it's entirely feasible. I can basically
-> > only require hard-coding the input description like the bridge tool
-> > does, but that doesn't scale, or attempt to extract a few thousand line=
-s
-> > of code from syzkaller to extract the data...
->=20
-> I would argue that integrating with other fuzzers is feasible, but it doe=
-s
-> require some if not a lot of work depending on the level of support. syzk=
-aller
-> already did most of the heavy lifting with smart input generation and mut=
-ation
-> for kernel functions, so the changes needed for KFuzzTest were mainly:
->=20
-> - Dynamically discovering targets, but you could just as easily write a
->   syzkaller description for them.
-> - Encoding logic for the input format.
->=20
-> Assuming a fuzzer is able to generate C-struct inputs for a kernel functi=
-on,
-> the only further requirement is being able to encode the input and write
-> it into the debugfs input file. The ELF data extraction is a nice-to-have
-> for sure, but it's not a strict requirement.
-
-I mean, yeah, I guess but ... Is there a fuzzer that is able generate
-such input? I haven't seen one. And running the bridge tool separately
-is going to be rather expensive (vs. in-process like I'm thinking
-about), and some form of data extraction is needed to make this scale at
-all.
-
-Sure, I can do it all manually for a single test, but is it really a
-good idea that syzkaller is the only thing that could possibly run this
-at scale?
-
-> > I guess the biggest question to me is ultimately why all that is
-> > necessary? Right now, there's only the single example kfuzztest that
-> > even uses this infrastructure beyond a single linear buffer [2]. Where
-> > is all that complexity even worth it? It's expressly intended for
-> > simpler pieces of code that parse something ("data parsers, format
-> > converters").
->=20
-> You're right that the provided examples don't leverage the feature of
-> being able to pass more complex nested data into the kernel. Perhaps
-> for a future iteration, it might be worth adding a target for a function
-> that takes more complex input. What do you think?
-
-Well, I guess my thought is that there isn't actually going to be a good
-example that really _requires_ all this flexibility. We're going to want
-to test (mostly?) functions that consume untrusted data, but untrusted
-data tends to come in the form of a linear blob, via the network, from a
-file, from userspace, etc. Pretty much only the syscall boundary has
-highly structured untrusted data, but syzkaller already fuzzes that and
-we're not likely to write special kfuzztests for syscalls?
-
-> I'm not sure how much of the kernel complexity really could be reduced
-> if we decided to support only simpler inputs (e.g., linear buffers).
-> It would certainly simplify the fuzzer implementation, but the kernel
-> code would likely be similar if not the same.
-
-Well, you wouldn't need the whole custom serialization format and
-deserialization code for a start, nor the linker changes around
-KFUZZTEST_TABLE since run-time discovery would likely be sufficient,
-though of course those are trivial. And the deserialization is almost
-half of the overall infrastructure code?
-
-Anyway, I don't really know what to do. Maybe this has even landed by
-now ;-) I certainly would've preferred something that was easier to use
-with other fuzzers and in-process fuzzing in ARCH=3Dum, but then that'd
-now mean I need to plug it in at a completely different level, or write
-a DWARF parser and serializer if I don't want to have to hand-code each
-target.
-
-I really do want to do fuzz testing on wifi, but with kfuzztest it
-basically means I rely on syzbot to actually run it or have to run
-syzkaller myself, rather than being able to integrate it with other
-fuzzers say in ARCH=3Dum. Personally, I think it'd be worthwhile to have
-that, but I don't see how to integrate it well with this infrastructure.
-
-Also, more generally, it seems unlikely that _anyone_ would ever do
-this, and then it's basically only syzbot that will ever run it.
-
-johannes
 
