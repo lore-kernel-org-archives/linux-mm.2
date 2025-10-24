@@ -4,90 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBE42CCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:17:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC6D8CCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 06:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F0238E0036; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
+	id 3AB598E0037; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C7F18E0002; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
+	id 382908E0002; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 50C518E0036; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
+	id 299358E0037; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 405FC8E0002
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:17:01 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E4221128ED0
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:16:58 +0000 (UTC)
-X-FDA: 84031999716.09.C145076
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 509CF8000F
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:16:57 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kB1tTKiu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 141408E0002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 02:34:21 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C7C2813C344
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:34:20 +0000 (UTC)
+X-FDA: 84032043480.18.C55FF35
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 7952C40005
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:34:16 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761286617;
+	s=arc-20220608; t=1761287659;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=m0AcVAtlQf30OS10e7TvuivPvYIb9Yaf/5uhHu+5GdI=;
-	b=XUWmQvX1+h3g9LweaMuIGNu7ZTaPxM99WQADnefc/WARS9BhFglVgzy/1dLz3A+K8oGAMQ
-	2FuOPB0YxxGUGF0v0AY5cg7Bii1rn8q052+RNKut7ft/hgTErR6jqtFZ43x0HcaD+wvitM
-	nOtczW9mfCQzt/LBIUilk/x5OvP7xOE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761286617; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8stRqKVra8vW1T7mKX2XVqBaLprqqVaii3YoizrqAIk=;
+	b=JDKaSqU/BdqnNXCTcus0g4uXaQkfZW2EmPomIzLyAo23gc1Iqj1nXCb4stkNuZdsL/tFwo
+	aZSBMdcEB5goWKnj/f3BTvbKK9Bk2s/SEldCOIjxU8PDAAae4Ztkx/728InwlKsKm85nsI
+	Qpp0knoZoTKYblsETgxgX4L/f/PMHH4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761287659; a=rsa-sha256;
 	cv=none;
-	b=cRFQ90ELP4/xrHk9ofG8O2E2fzdEZ065njjhSDWN96tKAcW2mT2BlfDsxQnZjH6XqPNugL
-	Jg2Ib7ButqSe2BgWx+2Ny3s9IwAUW4lf/V0vCCCPfRS+Nr/cmbpZkpUlDX7uv8UO7dlNlx
-	o/JzOKXKaJAhonbFgmbqq58a6+bzxWM=
+	b=LlNNLrd5+TRQYKy1b4fDb8BSsl8cWLc5aDN/Xh0AY2erbnYXtRQvB499VBFsufkqogbbrr
+	UppDuY4RIWQNXnpWN7odsZ83Dqwi50PWYJOhFAUSorCIzogRsmPSsvZCEucS4k5OH9Siqo
+	JBkXKoKPMExnCSyUJTX9TOsc41ITvCc=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=kB1tTKiu;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 064BC452CB;
-	Fri, 24 Oct 2025 06:16:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D15C4CEFF;
-	Fri, 24 Oct 2025 06:16:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761286615;
-	bh=J6WIkfXnPdWT+D0UqznjgN5ZqG6M9x/P4cC88zuW9ms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kB1tTKiuaZ4sHGOEBDene7o2a9UDxqLw/HjLZkhLhd9Dy3QAwHrIDBNiFftVHcdJo
-	 gyuh9gdj92162HPyYBXCk8QciuYLejTYCOBQQlaVuMoiC8YPJ5RI9RKQPeUGwaaIgC
-	 dydI51f47MEcnCighnQ+DsimDY2nqtrL2Z05UphmwfViM4gCdzYZuz/grMedBMzhLt
-	 ErwD+OnIslmYeKISIEIWpjlV3VND5nxE7macxEFFju7EVaTllwmcYWt3VPlJkM6+ml
-	 gUgQRR02ohL5AmMghYoAEe4dPh1O8pIzyDGn5TLhR0LGUlUOTxqnZeWZhcNkdzXgnn
-	 J0TRiOAxRgm+A==
-Date: Fri, 24 Oct 2025 09:16:47 +0300
-From: Mike Rapoport <rppt@kernel.org>
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
-	brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCHv7 3/7] kho: drop notifiers
-Message-ID: <aPsZzxmGjrJSzB4q@kernel.org>
-References: <20251022005719.3670224-1-pasha.tatashin@soleen.com>
- <20251022005719.3670224-4-pasha.tatashin@soleen.com>
- <mafs0ikg7fbez.fsf@kernel.org>
+	imf17.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf17.hostedemail.com: domain of linmiaohe@huawei.com designates 45.249.212.187 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4ctClk5glPzvXFZ;
+	Fri, 24 Oct 2025 14:33:38 +0800 (CST)
+Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id F085C180B73;
+	Fri, 24 Oct 2025 14:34:11 +0800 (CST)
+Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
+ dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 14:34:11 +0800
+Received: from [10.173.125.37] (10.173.125.37) by
+ kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 24 Oct 2025 14:34:09 +0800
+Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
+To: <ankita@nvidia.com>, <aniketa@nvidia.com>
+CC: <cjia@nvidia.com>, <kwankhede@nvidia.com>, <targupta@nvidia.com>,
+	<zhiw@nvidia.com>, <dnigam@nvidia.com>, <kjaju@nvidia.com>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-edac@vger.kernel.org>, <Jonathan.Cameron@huawei.com>,
+	<ira.weiny@intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
+	<u.kleine-koenig@baylibre.com>, <peterz@infradead.org>,
+	<linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>, <vsethi@nvidia.com>,
+	<jgg@nvidia.com>, <mochs@nvidia.com>, <skolothumtho@nvidia.com>,
+	<nao.horiguchi@gmail.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
+	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+	<tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
+	<guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
+	<kevin.tian@intel.com>, <alex@shazbot.org>
+References: <20251021102327.199099-1-ankita@nvidia.com>
+ <20251021102327.199099-2-ankita@nvidia.com>
+From: Miaohe Lin <linmiaohe@huawei.com>
+Message-ID: <421a271d-ef7b-7c00-830c-85f18a6a7afa@huawei.com>
+Date: Fri, 24 Oct 2025 14:34:09 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <mafs0ikg7fbez.fsf@kernel.org>
+In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.173.125.37]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemq500010.china.huawei.com (7.202.194.235)
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 509CF8000F
+X-Rspamd-Queue-Id: 7952C40005
 X-Rspamd-Server: rspam02
-X-Stat-Signature: 5fwdmzzjeh5hjt1gp3pdgs6zespxot4r
-X-HE-Tag: 1761286617-772525
-X-HE-Meta: U2FsdGVkX1/61f1s93sgTbzE/EmIV7gFBA3j+4xgUCvRY9/bsZz6MN3wMLbKXKq+hG0Tr7q1B853PaARBk/hf67+kbkBSG1e0oax2sMAcg8Izair3qw0+UJdmfwEyJucs0jrQTHp4emo8UxG1fiUfQL9ybSy+PC2Gih6xpngqRkhwgb+03FLl7jctSKEzfpmbNdlkpwpfma4sCIytqG3DIecUmVUJouCj/QR/sFX60xnLjW/TH9Wkf6v/Aa5khb1DbApeRymTcEx+mtUR+vPbdTU6TUqHfyDF+dJ1qRQ4DDiJDAr4XMZWU3zsefBM6Kaehow2CZiNiStHjRi6eWWkYrJbdJOI9IjhL6tMjZDW7SiqbgvgG58mCPgaBKobyYlaXeHCJ6F58ZzbgyAQgXm5R2xqHIl8WvegH2QaI+2MEiEZcP5EmBzauJVX7Nw0MXcyE6KR9VzG2KKrd2UG6LjnWUcVp6dcnOevQcKbLFjzpV6CgC7cclJVB3I40l2gfV5g2+CEG21eKRtI98fKEwmy28wH3AlXZJiz1C3rl+zHigZWk8eSk1vQFNBI9v2+coNXKZHskDQkhhtxEqau1ZZif0Y3lvOg/FkKUvg9uTMqXN5FlrUlkKoYre+lURtQHH+UhMMkHPZDzTboLpNxP/ItKV8iJeDfLquW17qlEykCkreTvP0RUokA8VprFS1fCQcQMkaV/Y/dsgsBe7I+lV8yk6cy94HTIB1MC9egHHa5ECIBR711WGhjFaI/uk+Q8vEdDFv8ywrOvKwzZRqfVvu87IWLe1fNPF4JsISyODjoF5N99BVWWt0SmM4nbJiZ3FUWaywM/ocnfIhPFa6S1PaKmhUXPhQCAQPx7egl/2FJw1bwyCeZPKlp2LkTRxs+tnedr1IJOXRp+nRVo1BXvWFZhBMGR/PcctFmaf378IMRALRMIAe5cC9L5JnFr13KpFJUL2K63pLsC+Z4vulbrv
- SqRWWjAo
- ursEcLkmnlvmW8WTCXuZFq3h31KHNG6kRQy/xi9ZceI0rFsVETGTJNrciSck5fx7ItWtRWAXHxZ29kEAirP1p1fTkmInoUyTbfd9DnyN7PMnYxrXwXuHh2yn4AsHumV+lZIZAthbhMU8b8dLlzhoZWaizEEyHiXWoZq74n3uh9/vs6+yhoJgiE4mmI1+x7Sm+N2C2XMylcbudnl/sOn2m3lzuU54Kzk67JPo3RHD4aTM6i9vqjfbXPcU1KziW6U/vInjrqVVTPU93p6DijiH/LjINAw==
+X-Stat-Signature: bkqghp6p3af5cqxxz8f8mqxfh9gujrez
+X-HE-Tag: 1761287656-449266
+X-HE-Meta: U2FsdGVkX19Kw/xiUYw4yKTaZyn7SbtW5ESKS5hKkHZ8jyrQyXQTHOL9cf37Vl7U5ydiQXFc+JpG1e5Duo+3WtK5k6HrkmRrBc58k5/MmpZ0O/Gz8is7I70afmCNjlGDmSzVeoN7A1GHvilTm7VHWpynlNj1RLY+S/Ln0t2/JIkxEJppVqAogAAH3U8Oti6qFgd6+pMGcjzeouzNbpt4VXB2i/COkB/VEJTxa4dRSBds1C9Idceff1NqyLqa0yuiRipbK7ERCFmb4bOKi0TeySnBp8RBHjWyZuskYxUAM5HQuIzYhY0N27nQWORrGUwnamsV0sZuB8vLXZSg8cV0oeREyWZaCyw2HL6d8XW+EiH+rOPsG6L+p0F3xvnT9g4qXFEQJ0PQSCzcGN7X5WbJhs6h878zqE5Bb+To5wDP5EQxNhGhqVRDP0/DIg1U5GZK6m3c7ig9H5ti9bCF51vYB9NqtXNBKde7DwnQbw/TwU64uVmWBcGuno8DxEYJpHHhDFiiAl5F7ODF/1WDp10cZErml/0cvdaBXuTEgIjSrVyBaTcbAU5XCIIHohIseVMOCtJzc1o3GLj8ELk0s1TJDl+9ywZVtBt7N19uFscx90tQ3y78ngPZldcUed6c23lymNTanKzXn2u/MfYN/QRySJIlQ4kdmToEYEgQIQbnp4+eIQSBLIt2+1nGyavZY6QIdqigN0axP8w11SlLet+ORSKx0qeBQWYqMA4NRiHw5+fur1YTetJEjjVSTY15IJg4ShWMke6EBF3Wrpd81JoDQO1/WF8AsS0ARY7lpplk6zmbFLeEPcGhlWSdqUgr+hpbsFyYMfT49X70LmLneSS6RWpOv0HxeZFpdoWkQ9zKmX76idvR36RC0gWqGHQB11E6Fffc9+alIpkmpuEXzX+SpL0N+CcAAK1UW+3luA3F3ytT9dr5kp1l9pD28IWveDEjIiP8yR5Ay6EKzq2LEJO
+ 63ZStmYV
+ EzxQwkcqDs+7Fjstx2LN60ztMG9dXX7bNe03tyWfbk45GzFO/6F1XdGxcdfU0yA6wxNo6F8yO+8LPVaUIEDb9q+ApChvdslQCgDPUVeNcFgBKJlPPoLN3efC/Jzuc4KYqxx5aNuQhcW6kHfNKQ7ceYqNwhPd87xr75G5vUMWKRL0UcET8a5kB8IUkD3O1/TA2eSFIpNOgpuV3gam114u875DIfdizuhi1/IQT3Dogr/qv0Q6AT2fb3aub5zOYwYvSZDbpuxoUuvO9gSF2qDlu8q2PqM74ai11Oyy9dQ6b8J7dQ7LgkPb4OAkqose507vGBcDIq/Iat02M4TmQXPi0Vcfp3dNoLW06BF6LgTp9B5lBLu1Sg2MjYTy+67zjEejcYBJKaXg5izJl7U7rIkBdk9n17r4EhtucNeOWoAFbAkFDXKE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,49 +110,149 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 01:01:08PM +0200, Pratyush Yadav wrote:
-> Hi Pasha,
+On 2025/10/21 18:23, ankita@nvidia.com wrote:
+> From: Ankit Agrawal <ankita@nvidia.com>
 > 
-> On Tue, Oct 21 2025, Pasha Tatashin wrote:
+> The kernel MM currently does not handle ECC errors / poison on a memory
+> region that is not backed by struct pages. If a memory region mapped
+> using remap_pfn_range() for example, but not added to the kernel, MM
+> will not have associated struct pages. Add a new mechanism to handle
+> memory failure on such memory.
 > 
-> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
-> >
-> > The KHO framework uses a notifier chain as the mechanism for clients to
-> > participate in the finalization process. While this works for a single,
-> > central state machine, it is too restrictive for kernel-internal
-> > components like pstore/reserve_mem or IMA. These components need a
-> > simpler, direct way to register their state for preservation (e.g.,
-> > during their initcall) without being part of a complex,
-> > shutdown-time notifier sequence. The notifier model forces all
-> > participants into a single finalization flow and makes direct
-> > preservation from an arbitrary context difficult.
-> > This patch refactors the client participation model by removing the
-> > notifier chain and introducing a direct API for managing FDT subtrees.
-> >
-> > The core kho_finalize() and kho_abort() state machine remains, but
-> > clients now register their data with KHO beforehand.
-> >
-
-...
-
-> > @@ -1280,7 +1298,7 @@ static __init int kho_init(void)
-> >  	kho_enable = false;
-> >  	return err;
-> >  }
-> > -late_initcall(kho_init);
-> > +fs_initcall(kho_init);
+> Make kernel MM expose a function to allow modules managing the device
+> memory to register the device memory SPA and the address space associated
+> it. MM maintains this information as an interval tree. On poison, MM can
+> search for the range that the poisoned PFN belong and use the address_space
+> to determine the mapping VMA.
 > 
-> Is this change related to this patch? Also, why fs_initcall?
-
-memblock registers sub-fdt in late_initcall(), so we should have the root
-fdt ready by then. 
-  
-> -- 
-> Regards,
-> Pratyush Yadav
+> In this implementation, kernel MM follows the following sequence that is
+> largely similar to the memory_failure() handler for struct page backed
+> memory:
+> 1. memory_failure() is triggered on reception of a poison error. An
+> absence of struct page is detected and consequently memory_failure_pfn()
+> is executed.
+> 2. memory_failure_pfn() collects the processes mapped to the PFN.
+> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
+> poisoned PFN using kill_procs().
 > 
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
+> to a PFN would need breaking the PMD mapping into PTEs to unmap only
+> the poisoned PFN. This will have a major performance impact.
+> 
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.com/ [1]
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
 
--- 
-Sincerely yours,
-Mike.
+Thanks for your patch. Some comments below.
+
+> ---
+>  MAINTAINERS                    |   1 +
+>  include/linux/memory-failure.h |  17 +++++
+>  include/linux/mm.h             |   1 +
+>  include/ras/ras_event.h        |   1 +
+>  mm/Kconfig                     |   1 +
+>  mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
+>  6 files changed, 148 insertions(+), 1 deletion(-)
+>  create mode 100644 include/linux/memory-failure.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 520fb4e379a3..463d062d0386 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11359,6 +11359,7 @@ M:	Miaohe Lin <linmiaohe@huawei.com>
+>  R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
+>  L:	linux-mm@kvack.org
+>  S:	Maintained
+> +F:	include/linux/memory-failure.h
+>  F:	mm/hwpoison-inject.c
+>  F:	mm/memory-failure.c
+>  
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
+> new file mode 100644
+> index 000000000000..bc326503d2d2
+> --- /dev/null
+> +++ b/include/linux/memory-failure.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_FAILURE_H
+> +#define _LINUX_MEMORY_FAILURE_H
+> +
+> +#include <linux/interval_tree.h>
+> +
+> +struct pfn_address_space;
+
+Do we need this declaration?
+
+> +
+> +struct pfn_address_space {
+> +	struct interval_tree_node node;
+> +	struct address_space *mapping;
+> +};
+> +
+
+<snip>
+
+> +static int memory_failure_pfn(unsigned long pfn, int flags)
+> +{
+> +	struct interval_tree_node *node;
+> +	LIST_HEAD(tokill);
+> +
+> +	mutex_lock(&pfn_space_lock);
+> +	/*
+> +	 * Modules registers with MM the address space mapping to the device memory they
+> +	 * manage. Iterate to identify exactly which address space has mapped to this
+> +	 * failing PFN.
+> +	 */
+> +	for (node = interval_tree_iter_first(&pfn_space_itree, pfn, pfn); node;
+> +	     node = interval_tree_iter_next(node, pfn, pfn)) {
+> +		struct pfn_address_space *pfn_space =
+> +			container_of(node, struct pfn_address_space, node);
+> +
+> +		collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
+> +	}
+> +	mutex_unlock(&pfn_space_lock);
+> +
+> +	/*
+> +	 * Unlike System-RAM there is no possibility to swap in a different
+> +	 * physical page at a given virtual address, so all userspace
+> +	 * consumption of direct PFN memory necessitates SIGBUS (i.e.
+> +	 * MF_MUST_KILL)
+> +	 */
+> +	flags |= MF_ACTION_REQUIRED | MF_MUST_KILL;
+> +
+> +	kill_procs(&tokill, true, pfn, flags);
+> +
+
+If pfn doesn't belong to any address space mapping, it's still counted as MF_RECOVERED?
+
+> +	return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
+> +}
+> +
+>  /**
+>   * memory_failure - Handle memory failure of a page.
+>   * @pfn: Page Number of the corrupted page
+> @@ -2259,6 +2380,11 @@ int memory_failure(unsigned long pfn, int flags)
+>  	if (!(flags & MF_SW_SIMULATED))
+>  		hw_memory_failure = true;
+>  
+> +	if (!pfn_valid(pfn) && !arch_is_platform_page(PFN_PHYS(pfn))) {
+
+It's better to have some comments for this case.
+
+> +		res = memory_failure_pfn(pfn, flags);
+> +		goto unlock_mutex;
+> +	}
+> +
+>  	p = pfn_to_online_page(pfn);
+>  	if (!p) {
+>  		res = arch_memory_failure(pfn, flags);
+
+Can we move above memory_failure_pfn block here? I'm worried that too many scenario branches might
+lead to confusion.
+
+Thanks.
+.
 
