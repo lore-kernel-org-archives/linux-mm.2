@@ -4,64 +4,64 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AE61CCCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:06:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6107DCCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 08:06:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 142308E0056; Fri, 24 Oct 2025 04:06:21 -0400 (EDT)
+	id B7C338E0057; Fri, 24 Oct 2025 04:06:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 11A3D8E0042; Fri, 24 Oct 2025 04:06:21 -0400 (EDT)
+	id B53AA8E0042; Fri, 24 Oct 2025 04:06:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 056F18E0056; Fri, 24 Oct 2025 04:06:20 -0400 (EDT)
+	id A6BAF8E0057; Fri, 24 Oct 2025 04:06:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E41EA8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:06:20 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B12CD5D785
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:06:20 +0000 (UTC)
-X-FDA: 84032275320.23.9C684AA
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 92FD78E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 04:06:31 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F7AB12A126
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:06:31 +0000 (UTC)
+X-FDA: 84032275782.08.71A3237
 Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3A85220003
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:06:19 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hfAQJA3;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 99176A000D
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:06:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=D6AogjIs;
 	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf03.hostedemail.com: domain of BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761293179; a=rsa-sha256;
-	cv=none;
-	b=3G+cjK1YI8zZpDJfNy24jNmPQlRSiH0kUOj2fXdkRoubPcrSUcSNjNCptLDUzrda5Gfcs2
-	vBcofVap+LLA0aPPjhDJEGuD3rr5FVR+xbAs6q6LjbqrKPzei/DXmldFKslttgvW8V0cLt
-	Ilynk/oZd/SIwXqu0Mkae2aWJwhKMPs=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=4hfAQJA3;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf03.hostedemail.com: domain of BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org
+	spf=none (imf15.hostedemail.com: domain of BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761293179;
+	s=arc-20220608; t=1761293189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F5xkr4XmJjPQvb2MdEVftXia+X6i5Gwk5N6/ltFfj3A=;
-	b=B03dX0FtmuqOAOupSmvbbd5gfMz6FgcbKETVMP3XJ2xWVlKA7JzHyLEGBFWfLXkI8BbOTS
-	5l2/MH+NpdIJp86qB6/Y8pSTN490xI/7alJX7vUR5FHrqDC0D0XNP4wTLPepzfovnH1F9l
-	y+0541YNOqowaEyWQ1wOHUjCzb0A4/Y=
+	bh=CK4+A+XQ8xSWXf+Z9tTtAvh9OT31XsHF6kx6Btc5iA8=;
+	b=pNzpuYNbqAAVrQtCWej10T9WmWCARcNP/NKHgugaGZ5MBO4iCUEk68TSYJPwwJtd3R+tXk
+	7lrRyJ8MxK6dF3GNIto17QW3y2+OsedZ0S6KhZ1adqzbl9tbWWRjaO3G8nuTaEDRf/uwlR
+	yQo5or9QiqkfH4c0rFyNZIuJW2crXx4=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=D6AogjIs;
+	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
+	spf=none (imf15.hostedemail.com: domain of BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+aa390122061dbb70398c+8097+infradead.org+hch@bombadil.srs.infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761293189; a=rsa-sha256;
+	cv=none;
+	b=qTXYFlqXtaT2gAw2XwPvlOIqcr2YhR3C/OKJc1Y0MQROY9XwzJBOi9rLRpg7WA2dBV4KXE
+	Q2FcddNrWB5lUHicSjJAK0d3/RKqAumrP72aZa2FtapUFLLBMZ/dzlLyPvaRNa+2PUhDzq
+	QFWVRJsFzuGBKxHFXJQ1J3MD/xi/tuA=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
 	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=F5xkr4XmJjPQvb2MdEVftXia+X6i5Gwk5N6/ltFfj3A=; b=4hfAQJA34diibzRB9j6FpjgscA
-	j2GSpM9W9Piz8C/KKTKK9nFxs6QPJ4VNLHk14XNgb3ptHW3IEgOcHsAQ1ttCparGnefefzrLVu7yh
-	0aS9zBBClbDjUl72om/4U8UmjjTNstU+Li/IFwwucTfArM2fn6WZ5wgiyqoaNPVJ4AXbcghkrjxQV
-	H8SMv331u/xD+JCEkcqGqBlEXwkADHQP4jMevGF35dVqCjlyfQv5oEXtAmyhTjhxl5zsAbHUrTnhH
-	gUJwU/xWtwUn1DE3RIUdMBDINvpSbOLjQXaJqGl2QRdpICZM17BeHLnR/mu0jnxdb8LMTVu34rK/k
-	8KQzvgMw==;
+	bh=CK4+A+XQ8xSWXf+Z9tTtAvh9OT31XsHF6kx6Btc5iA8=; b=D6AogjIsaOXIaEKMP8+nYzb2S/
+	Oi9fBsDLQ/QDLj8zWUOszOIZUXoUGJEGD6oOe3/gwwa36ob+z5Y4jnXIMl/I47R2yybCHjHy9PVpp
+	u9rk8NVCJvRsT7wc5scuOjf+d0qjgiv7xQKVzrHmYhwZolySV+SEki+Hm9VEk4MYwcBCOKWh8kE/L
+	vlzlOWvLC6nPNVOCQn/9gA1eRi4wHGrw+7X1beFwTeRlaIDXxs6ij8o/wGIbY6gxmKmEmayQZ5noV
+	iBvVRW/cRH9N2cvm1YrB7NcZkATFE2g0crlK/d+n5Fpb75Kk12b+O+FG+yCLdiKH/xMwQRP6Ju0xM
+	N9qYV9hw==;
 Received: from 2a02-8389-2341-5b80-d601-7564-c2e0-491c.cable.dynamic.v6.surfer.at ([2a02:8389:2341:5b80:d601:7564:c2e0:491c] helo=localhost)
 	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCCoP-00000008cNL-2sV3;
-	Fri, 24 Oct 2025 08:06:14 +0000
+	id 1vCCoa-00000008cQn-37yb;
+	Fri, 24 Oct 2025 08:06:25 +0000
 From: Christoph Hellwig <hch@lst.de>
 To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Eric Van Hensbergen <ericvh@kernel.org>,
@@ -85,12 +85,10 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	jfs-discussion@lists.sourceforge.net,
 	ocfs2-devel@lists.linux.dev,
 	linux-xfs@vger.kernel.org,
-	linux-mm@kvack.org,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Subject: [PATCH 09/10] mm: remove __filemap_fdatawrite_range
-Date: Fri, 24 Oct 2025 10:04:20 +0200
-Message-ID: <20251024080431.324236-10-hch@lst.de>
+	linux-mm@kvack.org
+Subject: [PATCH 10/10] mm: rename filemap_fdatawrite_range_kick to filemap_flush_range
+Date: Fri, 24 Oct 2025 10:04:21 +0200
+Message-ID: <20251024080431.324236-11-hch@lst.de>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251024080431.324236-1-hch@lst.de>
 References: <20251024080431.324236-1-hch@lst.de>
@@ -98,13 +96,13 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 3A85220003
-X-Stat-Signature: xyhhkkebujt1zinxjubri9owokooxw6t
-X-HE-Tag: 1761293179-852985
-X-HE-Meta: U2FsdGVkX1+OWe6h4xKcI2NzvV6ib2fQFsNDJMq7Uz2z1isESELGp2tG4X6mL1Ep2eSjBmEWdFl7L4HHQJFnlHkHnMcJ9qFKSjJvrDaXd//TQqwH1yvx3s004y05oMiustg6eqQMrttVekeGj9FBRVmh5cSjqa3LwngY9bTtAZROI21xfBN9i9bUbJ8fmXDOcZ5NwF3khCbCizh9ITXsKux07lpG/tL8G0XTE/dqvCaXU3qtZTvIetmDjhjqFtSXE3Ho0cRnPkUx9/RBzjtChUiTIuniZKGY4HuXWXm1J6ws5psSKqlug2SEBA7mGcgQZYRIWNIMG8P3bCvoqPbDo3gOFCiCf5HnBUgsOFD4rz+rmmXctoYXaQ2IWL5ItjmqeADxlG5wK05XOOrhG5mw3ShNeHzlSSqBgpMxSjpgjx3IYmpYDk91KbDaIPVI/9h9gQehtYUPj4nb9I8mXQPy6HurmdFvtEGPqIPJAC9a1u0AEE6hcDGFTlKuLOAF/QbKLJrMW7HxUcmAtQFVLDobgHA/taYFugLSOIV2sHmFkducURIIsDPZodU8BNRUZrKzJjrhb3AXUDS4gVswc0qRzRE8ddRca21HOUXPo1odx74At9gTCevvQmCl7Rbm7M1lsiH2eFQAnF+kUbbWafE5crlntXa4p2iTATFAY3y7JuD4eE425aXzCsM5zdx38yygUVQH2SmDtDOjmGLNjh5H5nOlIrCF2rl6bDGmJupk5XlPsLZCZIBE1GE83emsT0X6ax0eeCJA/JJnSJNsjSdmDhYac4IyQdx37vSoKD9jIHkd42j2a5IvVo1XZJnNXwWq+4cc0pzYZhSxakPann1bfHDhxVbl4L3Wq9pjS5rE6YopNnmsnbwwvKfSDXo9sxhrYOzIlT7MOV80JlPBYcbYQJTWA1yQb2gw15a/9i7eW1KV/TST8WLJr9Y1Ppvm8CGyJ0IF7oclWmj0kZarelD
- TwEw84Es
- fmief0x7+f7QjvFs0JiDBUHCnrtbQHXPySr34eOs2er7TucDjui+Sl6NM/15V6LD/eU8azz48Vj2okOqxyDCGgon88Z7bA/JgLt2RFU34CX62CDpF48FMqP5P6p8keJsR285+iSPWAhb3tP5CB69r2goKvn51lGI1zKQmZ8Z1ryOxsOIARxcMtj/GogDwhz/O62dNTuFM+Zdse7aaQIEkZLdQRkNXc0HZxnlcRiuvz9yRgAVGjCF2awH2KOm/vd2IoTcVWGz9UXhAY9UWuqo1bi69tNA+FW8liLymG4vV6zIOBrV2sxREBOrOkZdmWHWr2+uxFUYwn2Bh0ScrqQrgQXur9iIurPQwJO+AZYvk+uD3a3VjtNVoQ2PpDg==
+X-Rspamd-Queue-Id: 99176A000D
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 68bbfmmtwpfar47oc3ubb5xgb68ydkwb
+X-HE-Tag: 1761293189-84447
+X-HE-Meta: U2FsdGVkX18mEg9M6K6LPmMYg3S5MOVp6Jk0nkvn1jJBFZ2LifjVLp+Jk5u4IMWcBgQ/LFOCtGqi5RGuIR61mfbJn4r8e/lAxCNskcDKLg9Be2zRVFyU8/U3wSzYyrq+eoWd5VahAA6PuOrQ7/qzfaMgW/bpA8zxbgRIxqYqjkcU9hTdTeLk1IoJ8AAOOcehtq0wWgMwi7dLEqBkqiO14t57IFOVL0ReXz6VqO3W6lOalOXQciVq7KyoZSWtclsSKhnlG4/FDchoT+O5w+trIh2IctuLqnVjvdPR6hUQOHNLcTu7hk0jLYeOqUGjV2O/tB2/OBlHvsO0KOMGwV6hEiFH2bm2ufivkEFQKxO45cP/fQc03AtXgin4scA19p1+Fd913Px0SPcVpbOUno42oNQ3Sh0l0ty5EeyFmVabOLUyqIhqLP96Gsls2iewgq5SJkeIXRuN7CX+piwbDbtz6kEV9kxXNUIUGoJBr9KEfbTiv2lbiNOm++Vua/n5rmVN40sgwzxbHNjpCKusVZw6Y3LMkIs4zakDg8fpdXJ/O6iVoqqUbpDOkg1XpTqXMrcR1gd+JLi8+x1dIBgxiITO+hrecI+kFZnFmUECcgcQ2WtXB9UYHXEbqQ1eZLR9JYsgY6dbjP8TRJNzZzybSmjJGpimYkCeoRvuSwPqrF5KLDhvCpGWAmR7dyj15/hCaVAtUKmpcr6jP0z57mWMNYNViTtOgTpl4SXMqV4ZDtfbuzdKPeLaHw/O1RCkfETGUKpnI8cggvPwHywpke3sRnabjlghdDceBU6q0kmQLG6xxdAmxElTz/J4SJDzTP8VajM+48w+Y/YCzet8GRkTVn360wFx8XS+t3niABIEl4Ru5YibUHurcGbh0XER/GX8splS0s6XYnMBauE+WWOuuU3aMpolyiMx1MIX0QJmIiY6x/xCT+u8J9A6S+eDI2iIAbbfkFlaCbqUce2fv8B29da
+ dwM6Mqsd
+ MkTbvpLpPtTgpHt8v/4KedD83cJktruWk8z9LvZKD1QmZdREYUzqDuZ00Em/sChw5WAA0532PvZpFeJ1k6el4StLKBLl5qrQq81TsOrdD4+OHhfTGIQHifCI6HqpsfOwCMs0kZON5GwJZmVBRUjBcOEc6bZMS8sqa2OqfiKR6yQAjaSXpS7Y7sS3XpyWs5OhoJFzhiL6NYonIZdcEZBBg39Fn8RIY0UvjAoXNahe/0zSjphVHYMJm//x2U7QcgQdvesNWCTXoVSKluKco2yKLiYvELfl6hGctWzfwLwnRTIgtXOzk3Ups/RSITHVzOg52pHwWZIbQe+lx1aKBYs2T3Ec8PIIpM/QnIFVHEBIkd5deOlPT/eX27w5HeDXIb7307iUEE0XNoHIRsuY3DvLeZ67yCvSu1C6QoV+qTyNx0S1PlhHbdQYevMQUh6QYAFNWOG0WrQ82XiYcpnNN5FhWeXeBfoOJd11CEXnKmLPvTdRsw+nfDQOhC66KO8d1XGO29W1xj/r9R2WhaoySSjLwgcV8w+ZW0qmVHF3lBiCLA9hFhGBZopQUUcnbtqi0EZlxMzcYE+6d5yRqMEUIt0Pw0zySEdi3u+DgstVNQIXar7G8HRa+D34y7kVxX+Wxld+XHIhWF5nZNBf1i1M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,144 +111,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use filemap_fdatawrite_range and filemap_fdatawrite_range_kick instead
-of the low-level __filemap_fdatawrite_range that requires the caller
-to know the internals of the writeback_control structure and remove
-__filemap_fdatawrite_range now that it is trivial and only two callers
-would be left.
+Rename filemap_fdatawrite_range_kick to filemap_flush_range because it
+is the ranged version of filemap_flush.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 ---
- fs/sync.c               | 11 +++++------
- include/linux/pagemap.h |  2 --
- mm/fadvise.c            |  3 +--
- mm/filemap.c            | 25 +++++++------------------
- 4 files changed, 13 insertions(+), 28 deletions(-)
+ fs/sync.c          | 3 +--
+ include/linux/fs.h | 6 +++---
+ mm/fadvise.c       | 2 +-
+ mm/filemap.c       | 8 ++++----
+ 4 files changed, 9 insertions(+), 10 deletions(-)
 
 diff --git a/fs/sync.c b/fs/sync.c
-index 2955cd4c77a3..6d8b04e04c3c 100644
+index 6d8b04e04c3c..1759f6ba36cd 100644
 --- a/fs/sync.c
 +++ b/fs/sync.c
-@@ -280,14 +280,13 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
- 	}
- 
- 	if (flags & SYNC_FILE_RANGE_WRITE) {
--		int sync_mode = WB_SYNC_NONE;
--
- 		if ((flags & SYNC_FILE_RANGE_WRITE_AND_WAIT) ==
- 			     SYNC_FILE_RANGE_WRITE_AND_WAIT)
--			sync_mode = WB_SYNC_ALL;
--
--		ret = __filemap_fdatawrite_range(mapping, offset, endbyte,
--						 sync_mode);
-+			ret = filemap_fdatawrite_range(mapping, offset,
-+					endbyte);
-+		else
-+			ret = filemap_fdatawrite_range_kick(mapping, offset,
-+					endbyte);
+@@ -285,8 +285,7 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
+ 			ret = filemap_fdatawrite_range(mapping, offset,
+ 					endbyte);
+ 		else
+-			ret = filemap_fdatawrite_range_kick(mapping, offset,
+-					endbyte);
++			ret = filemap_flush_range(mapping, offset, endbyte);
  		if (ret < 0)
  			goto out;
  	}
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 678d8ae23d01..d0a7dd43c835 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -54,8 +54,6 @@ static inline int filemap_fdatawait(struct address_space *mapping)
- bool filemap_range_has_page(struct address_space *, loff_t lstart, loff_t lend);
- int filemap_write_and_wait_range(struct address_space *mapping,
- 		loff_t lstart, loff_t lend);
--int __filemap_fdatawrite_range(struct address_space *mapping,
--		loff_t start, loff_t end, int sync_mode);
- int filemap_fdatawrite_range(struct address_space *mapping,
- 		loff_t start, loff_t end);
- int filemap_check_errors(struct address_space *mapping);
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index c895146c1444..a5dbfa20f8d7 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3014,7 +3014,7 @@ extern int __must_check file_fdatawait_range(struct file *file, loff_t lstart,
+ extern int __must_check file_check_and_advance_wb_err(struct file *file);
+ extern int __must_check file_write_and_wait_range(struct file *file,
+ 						loff_t start, loff_t end);
+-int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
++int filemap_flush_range(struct address_space *mapping, loff_t start,
+ 		loff_t end);
+ 
+ static inline int file_write_and_wait(struct file *file)
+@@ -3051,8 +3051,8 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
+ 	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
+ 		struct address_space *mapping = iocb->ki_filp->f_mapping;
+ 
+-		filemap_fdatawrite_range_kick(mapping, iocb->ki_pos - count,
+-					      iocb->ki_pos - 1);
++		filemap_flush_range(mapping, iocb->ki_pos - count,
++				iocb->ki_pos - 1);
+ 	}
+ 
+ 	return count;
 diff --git a/mm/fadvise.c b/mm/fadvise.c
-index 588fe76c5a14..f1be619f0e58 100644
+index f1be619f0e58..67028e30aa91 100644
 --- a/mm/fadvise.c
 +++ b/mm/fadvise.c
-@@ -111,8 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
+@@ -111,7 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
  		spin_unlock(&file->f_lock);
  		break;
  	case POSIX_FADV_DONTNEED:
--		__filemap_fdatawrite_range(mapping, offset, endbyte,
--					   WB_SYNC_NONE);
-+		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
+-		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
++		filemap_flush_range(mapping, offset, endbyte);
  
  		/*
  		 * First and last FULL page! Partial pages are deliberately
 diff --git a/mm/filemap.c b/mm/filemap.c
-index 7126d0587c94..f90f5bb2b825 100644
+index f90f5bb2b825..fa770768ea3a 100644
 --- a/mm/filemap.c
 +++ b/mm/filemap.c
-@@ -392,32 +392,23 @@ static int filemap_writeback(struct address_space *mapping, loff_t start,
- }
+@@ -419,7 +419,7 @@ int filemap_fdatawrite(struct address_space *mapping)
+ EXPORT_SYMBOL(filemap_fdatawrite);
  
  /**
-- * __filemap_fdatawrite_range - start writeback on mapping dirty pages in range
-+ * filemap_fdatawrite_range - start writeback on mapping dirty pages in range
-  * @mapping:	address space structure to write
-  * @start:	offset in bytes where the range starts
-  * @end:	offset in bytes where the range ends (inclusive)
-- * @sync_mode:	enable synchronous operation
-  *
-  * Start writeback against all of a mapping's dirty pages that lie
-  * within the byte offsets <start, end> inclusive.
-  *
-- * If sync_mode is WB_SYNC_ALL then this is a "data integrity" operation, as
-- * opposed to a regular memory cleansing writeback.  The difference between
-- * these two operations is that if a dirty page/buffer is encountered, it must
-- * be waited upon, and not just skipped over.
-+ * This is a data integrity operation that waits upon dirty or in writeback
-+ * pages.
+- * filemap_fdatawrite_range_kick - start writeback on a range
++ * filemap_flush_range - start writeback on a range
+  * @mapping:	target address_space
+  * @start:	index to start writeback on
+  * @end:	last (inclusive) index for writeback
+@@ -429,12 +429,12 @@ EXPORT_SYMBOL(filemap_fdatawrite);
   *
   * Return: %0 on success, negative error code otherwise.
   */
--int __filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
--				loff_t end, int sync_mode)
--{
--	return filemap_writeback(mapping, start, end, sync_mode, NULL);
--}
--
- int filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
- 		loff_t end)
- {
--	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_ALL);
-+	return filemap_writeback(mapping, start, end, WB_SYNC_ALL, NULL);
- }
- EXPORT_SYMBOL(filemap_fdatawrite_range);
- 
-@@ -441,7 +432,7 @@ EXPORT_SYMBOL(filemap_fdatawrite);
- int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
+-int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
++int filemap_flush_range(struct address_space *mapping, loff_t start,
  				  loff_t end)
  {
--	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_NONE);
-+	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, NULL);
+ 	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, NULL);
  }
- EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
+-EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
++EXPORT_SYMBOL_GPL(filemap_flush_range);
  
-@@ -689,8 +680,7 @@ int filemap_write_and_wait_range(struct address_space *mapping,
- 		return 0;
+ /**
+  * filemap_flush - mostly a non-blocking flush
+@@ -447,7 +447,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
+  */
+ int filemap_flush(struct address_space *mapping)
+ {
+-	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
++	return filemap_flush_range(mapping, 0, LLONG_MAX);
+ }
+ EXPORT_SYMBOL(filemap_flush);
  
- 	if (mapping_needs_writeback(mapping)) {
--		err = __filemap_fdatawrite_range(mapping, lstart, lend,
--						 WB_SYNC_ALL);
-+		err = filemap_fdatawrite_range(mapping, lstart, lend);
- 		/*
- 		 * Even if the above returned error, the pages may be
- 		 * written partially (e.g. -ENOSPC), so we wait for it.
-@@ -792,8 +782,7 @@ int file_write_and_wait_range(struct file *file, loff_t lstart, loff_t lend)
- 		return 0;
- 
- 	if (mapping_needs_writeback(mapping)) {
--		err = __filemap_fdatawrite_range(mapping, lstart, lend,
--						 WB_SYNC_ALL);
-+		err = filemap_fdatawrite_range(mapping, lstart, lend);
- 		/* See comment of filemap_write_and_wait() */
- 		if (err != -EIO)
- 			__filemap_fdatawait_range(mapping, lstart, lend);
 -- 
 2.47.3
 
