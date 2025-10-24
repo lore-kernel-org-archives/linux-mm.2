@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B542CCD193
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 01:35:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2647ACCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 01:41:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C5A818E002A; Thu, 23 Oct 2025 21:35:53 -0400 (EDT)
+	id 7FA528E002B; Thu, 23 Oct 2025 21:41:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C0B488E0002; Thu, 23 Oct 2025 21:35:53 -0400 (EDT)
+	id 7D15B8E0002; Thu, 23 Oct 2025 21:41:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AFA008E002A; Thu, 23 Oct 2025 21:35:53 -0400 (EDT)
+	id 6ED728E002B; Thu, 23 Oct 2025 21:41:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9868A8E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:35:53 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3F344160D00
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:35:53 +0000 (UTC)
-X-FDA: 84031291386.20.CE91A73
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4F39840008
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:35:51 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="F8I/hPC2";
-	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 589708E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:41:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 122BF5D4F7
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:41:08 +0000 (UTC)
+X-FDA: 84031304616.28.3B15D75
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 50473120005
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:41:03 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bPV3slhq;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761270066; a=rsa-sha256;
+	cv=none;
+	b=ScXoO2mFyzRyV1hFC4wbMzBUKAjCNT63Vw83ksAXEo7MnorZy0DxypZq+c3wwcMB2+gpRw
+	iBRsFu7575ldiBZYe9DVkEcRC93lH0hWcbuyLQwgwLNz2G8rJgKl9243O2HLLGfLD4VvRq
+	VFd2iiEYdZLAFcBhjRyOvAaCs5Bb0fA=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=bPV3slhq;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf29.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761269751;
+	s=arc-20220608; t=1761270066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Cq8gqqeYooxgW5KYKmBo5Rs/wh49wN/6rTY6x+8D8QA=;
-	b=AqYVsugen5iFqMXbtMs0CuWvRuNJMVR1i3dVETrtUbEYzkdIWBgysq+GcvYbxyjnGBBDHf
-	8oMlozwRvFbGVTkmQck7zf7G15LWCu7XLMh13FU4kKjeLIoIWHgAG5bY7h/Xh2CE1ARy4Q
-	PK0o2UVL9QHtLCYmunzPlB8DMy8fsPE=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="F8I/hPC2";
-	spf=pass (imf01.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.128.45 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761269751; a=rsa-sha256;
-	cv=none;
-	b=3oUbCC5QjsXBCdU0N8v81fouymzW2/GEGSrTXbo4ZBmMSFC+RipLq5lkrJMsTq0zYdgg5R
-	4VXIXb5pMcV4W0XuWfBEQ7sRbI1FqVWvbsSyhNcX/bWdVcQStwMKuJYvM6u9yMG+uYc8x+
-	NPTRZHNy5krbktQjtF6zFN77k5itPUM=
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-475c696ab23so8522835e9.1
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:35:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761269750; x=1761874550; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Cq8gqqeYooxgW5KYKmBo5Rs/wh49wN/6rTY6x+8D8QA=;
-        b=F8I/hPC2Pp7FHwgFcuFbcRa5Ycap3Zrolov2aoZ9MsQf6gkpVlExVjzpyHc0Pt3QoK
-         nIzH9XdokSeNfhJ7QtTS58U3ZqEKtV2eQjr+iTm89NewU71U2xZkvCgnErZ7c/nhBkLl
-         XH+vl4zbH3dHiLQh8aq0FveRk+onlQTS/Ty5btQXENhi/bqkH30ZDOAI+o1ripZCKH/U
-         rOnjvtXVp8qQEFzobQvXibBFFF3on22U1Q5RUBnWIXxa+HHNA4ruprY5H7q1uehwCeL3
-         /B5y/AQi1T1H365GWycE4O1JkFsnByMK0n0meGfaBpA0cLLJA+aOmzn27eBPzNXwzrGu
-         VL7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761269750; x=1761874550;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cq8gqqeYooxgW5KYKmBo5Rs/wh49wN/6rTY6x+8D8QA=;
-        b=rk8WsrySBlRgVg70wJuUu5LuvQ6kFKajYu7UyLNyw1eAWeTL+qrre7DpYnVR9EqaPc
-         voaG6KPtIaOxKCh97lVXGC3nPmyzK9i8PsfhIyXF2DqqQLPSrz8+K1kHOwSzmMebvr6P
-         K1qyfGEia9OtPmtrWs8N4SNOyqMhSCt2RgQBlPx7mNbg9wmCbbGt7nFbPNpN7gGUSbjO
-         iUCy3j1MrCA9beYVwDHVFxSeOMkOAGiNMNb9WkdSu/fhSt7jjyhof/JgVWbCyMpl0rR5
-         FUpANrD07BfEPRoR4VDmbIwf3jcz/HtK7iHoak364AfWMgDTNh2JD42tWOtEicDVEN0t
-         kzEA==
-X-Forwarded-Encrypted: i=1; AJvYcCWZzwf98528KBgGRZYaTc8HVjIY+E1DXegrmMUn3LtpD9vAnxqEO8PPO5zTe1MsaVAqIOtaNqMndA==@kvack.org
-X-Gm-Message-State: AOJu0Yzds231rOBDLTk+JEi7jN35vSrROFtn3EUDLqF0VfkGLiGzKF77
-	MwkX63hVPCVYJoEEtDIxQj3IR7XPyOKq2+HZgkFv7hEt7vF2HQC9Yc1/CnqMpY8xc4cSvwcFVly
-	AN7RiTmXJB3InjBWExFVoU1NIU9OdfH8=
-X-Gm-Gg: ASbGncuWiRD6u4WPAkiCSGmIuSUXFH3CfjlJltLc2WdcWoIhHHuzm2jBfJL8GRW7B51
-	NhAM2jMGKpXgVTlXCw6nIQfdnlwGzk90K9omObzRu+t4nKPtUVw2PLDe2FICLIzywRdn/k22HKp
-	UQZ3mOy2erfK0F33O2YFHrYD8jtOlGM3o6pX+JdH8D3edETnQQdSbwwiCcJ288SZ5ny2AiUhSNo
-	SzmUfhIDkw8qhIz4GHUlDKeFMiDcrI8/BnTM+rEtpfHsP9KVAuEQQLimdFixr/RBrNqi2Lk+J68
-	9gT6YYXMSb/IhQurJ+w=
-X-Google-Smtp-Source: AGHT+IGwrfelWdU2yhalAC0i9vt/hIf2/MMW3kPsGCKlhtSvPHBTMPWNKLBb8oATlrSieozyy7lk2jNHzMN+c5GsljA=
-X-Received: by 2002:a05:600d:4355:b0:46e:45f7:34f3 with SMTP id
- 5b1f17b1804b1-475d39b9552mr1422285e9.8.1761269749552; Thu, 23 Oct 2025
- 18:35:49 -0700 (PDT)
+	bh=+V8kOqNOsh8UaPdUFo5M/73e9x7UlGg1quQtezT5Kvg=;
+	b=VcVcTMnFyRDBah3a6RalCc2Gn2sWzjR/Iuiyluh7IcNq7nV2Lccl0/MPN2t3RJM5ZLkb6M
+	o6RFNZtsWQysuq1BeSXkSqn+oAEwjT0oiwhkkmpauENYvqQXHDtkDPyTL4DtUJm588Rr/b
+	RcJtcIHp0ibfwRL9CiW9esiUhsNf448=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761270061; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=+V8kOqNOsh8UaPdUFo5M/73e9x7UlGg1quQtezT5Kvg=;
+	b=bPV3slhqx1O0bfpsIc7jOmF+VWXenuQ2bgeUfzvwnOBiafNTGPtZds5A/sGwdD2NOh8fnR3v9bjBi02HPK/c8mrtVDduZlHImgEDFBr9X6qGFh4GCUGbb74f62j2IxOrnNPWA+uanJgNrpg8E5D9xMg3pAcxbwJ78oVc81LeGQY=
+Received: from 30.74.144.122(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WqsXDkv_1761270060 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Oct 2025 09:41:00 +0800
+Message-ID: <b746b524-af09-4ab5-858a-0a29f72a0ea7@linux.alibaba.com>
+Date: Fri, 24 Oct 2025 09:40:59 +0800
 MIME-Version: 1.0
-References: <20251023131600.1103431-1-harry.yoo@oracle.com>
- <aPrLF0OUK651M4dk@hyeyoo> <CA+fCnZezoWn40BaS3cgmCeLwjT+5AndzcQLc=wH3BjMCu6_YCw@mail.gmail.com>
-In-Reply-To: <CA+fCnZezoWn40BaS3cgmCeLwjT+5AndzcQLc=wH3BjMCu6_YCw@mail.gmail.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 24 Oct 2025 03:35:38 +0200
-X-Gm-Features: AWmQ_blTT_7WNBqDPFmuMJp8o4vQAMauOpamt3NvIm4L5ZNNRzy9gCKm7HE9f0E
-Message-ID: <CA+fCnZezciDNL4-Yto8d3bPOc3U07hY1Q_DMk926-1H17Ugx3Q@mail.gmail.com>
-Subject: Re: [PATCH] mm/slab: ensure all metadata in slab object are word-aligned
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>, 
-	Alexander Potapenko <glider@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Andrew Morton <akpm@linux-foundation.org>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Feng Tang <feng.79.tang@gmail.com>, 
-	Christoph Lameter <cl@gentwo.org>, Dmitry Vyukov <dvyukov@google.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: a1tiridqa9sqndqek9t9rfkhjc99k8fc
-X-Rspamd-Queue-Id: 4F39840008
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+To: Dmitry Ilvokhin <d@ilvokhin.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Hugh Dickins <hughd@google.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, kernel-team@meta.com
+References: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: n6t54r7twx8ns13qcu41eepy3zfi3tgg
+X-Rspamd-Queue-Id: 50473120005
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761269751-622787
-X-HE-Meta: U2FsdGVkX18nxHhsV/lSaJqxziiEeX1o+zLqHClgJJ43iDq7yobNo7OGeJWKd6mGjR0vSIAAP0opjUcc2FcrqzIJqkY8/8yj776bF+Bi1WTX8xSizoVf3Ypp/wH8D3L4EQWxCMkGIlVXCt9CKi8FH+RbjSqoGNuS4iCIF3XSc64zMvqFLMmjunD0eOdCiyKTFvkGjsOLiaNpdwWIpUBLwgTksK6Cwr1ICWxP5dIFsI0j1NJkw66Sgva9oplD1dG+HiepemKiXCSsowDtQgrIV1cEwU2eV0+sLHkn869Zh5BobDT0r7zS9DNFtkuM3GIoJesU2MC8V7yva4etTgiogZjfIaxVG6ZkJ8bxc5SuQsbv25QRddhBVJRwo6fmGxMDmY0azR8ogQdVmctEQC/ryy/UWdQyJNSaupAtzmQsY8m9IG9Tp93g6q6RxfgNH6P57PQk3r5LB1MZadRHt1qa2dveMvDgdowkk4H8MigCW3LgcU4gSzQVfbXrzAOW4Uw6rTq4SJ0O9uVKMApZfQlNFbkO57g+s+20L3h/QKpu6NCl8Wq/5T5z0AcATSLWOuaqbvnPX1Y72sYzVJMjtUdWAKYYkiQXV7I0SYEjV2lJH9pTqwnZVPapdLnA/iYC6f3FBKPpzJKvcAb2Q3D4xSZOcSwbRlrGis7IiMYuJGYPFCwIWtqihrr8o+bipzo8ZAuNG/IPjpNhoS3ObA8mHChB+t8zhfR052xlRkNi+W7gJ55jeOFb9kOEcNCFMOc88++Aw7ExvScv82gT+856cRQU8Xl+bhEr7/D7eiqj6M12Y9mhtUC8lW6h4Ko4WC1MZp4sKLMSEvjEnhuaBH9YXhwQVQfRon38EXdl/OzEDrG2573Vv7tuAJ5/YEA1js4sIVimXgVihPKTTpZ4lTiPtAUK3fHRRnrubhT2yr9bJsHmNaJyG8PYIgzaSamShDEz181MJDvDwXXDWpHCXF+61Cf
- oSjqHg32
- lfP/zw/ODRQvCsFwgXd8/XyCv1ZfxxgXex9JBnXYsMacJM1uediduz6h5wTzWCx+qrDQ2tVOpEoLQpmppcH2eKUjG+ABbo0JTakSUHN02JiRK1gZ2dmOUrZP4bIy66n62RySBZwzRx8xSK6a0aWL2IroNwXal0e8wo8zHIebpOeKPR+D1KuwY7ieuHVlPHv3jbEOV/qWON5FA435EW4Vo0G0PVdWhpoMuI7TYBQXQoM7TUecX/eBGguy84omZQzx+SJ1wWPIySXylze5MKcFb2yTRFOP5CByQQq7879rBFxWlNvRB+L64nRZuBCWqie6kgFUq110Qy1doitV3HpEZzsrJhGnhgVvrsClI4GyQY9SsMCIq0pIdohc5YoHbMAntVaT211c9UQMLcj1HWO6VJ1QgzLUarXmmQo6NXckWzITmwhjR51LwPKfRpVcW9p0yeebp3nhgfjDazVRaRG0Xd7aRUr7Hj+h7i4KO
+X-HE-Tag: 1761270063-397478
+X-HE-Meta: U2FsdGVkX1/xYUmHBGae/s8OorXiHRx9g9Fu7/zLPnbFbkkeVavnz6RhWA7EbdPLuFtg4H5LQJPDDatRumVyU/jm9YrI2j/uBiF0tkvhusRqA3tFo8+kel4R9Cj5pVcrUk3eAKGydkG80Ap4EWBBYdPRjDMHFzxsVHTwv4AwHMkdmS2qx/jPRPyK83Wf20gedcSBogWZgXJuc2X4+hd+EnniRqoUW3hNbHYGe6uHWYl62HkEnc/Rw3m5W2PsJUD7mSnzbgA5t6d2Ru1/P0jdFa2jrXJ1TcyRCgicOrXXgEeitC4ZkowpCZlu8ijy+gbl8I4kwoqdhodwOSXjfILmnPG6AMQwKOEDEoki4+FYKvi82PtV/VV8NWBkkSJHVwb6W1p18y2OP+kKArHpPkaUPkEkUbjB41tQBoUnL/UHWQiqhLCXMcDp58v8ilWmVNqfkBx6FCGciequxxJq7UFVK3g85yTju8dRtS9kvLxnahcTr1eeDFYrgsTJWByTEov3laBpbQJ538cbcWV68Ky21tA2HyYt/MC2LdmR2pW1IQnGrHiACyMQCxBX5NMDQa3M3vMiEX8nrxxgnWPaEbxlnVk0NmfdNH/2KFxSqAVnS2yAnAs0NZFJUoAK/4vl/lJQmE3b3DgRePEPxkYo8ImmMgCTq39xZWk/Wk4wLZ2AtnLKvdFVAg5DXENDZxlzRlDUVn38UUyI6BrpMWrkgX7jxZ6OGoW1MsUaoQd1hun4wEhZUvRPg8jVjHiim6GVy7emSREx2Jtrqi3n/rBvzTJvBknelpmycSiGoX5OsddQ505OWMkkSEA6Tl+6+koLEH5ypqb8iI/MfvGGzYHIphPTjfIPo/GJhxiqn8lC2uTiSSyr3JftWUWbYp00QmCXrymJQSgrldXC2vkZvI8ic9UXrCCNhlNkY2aX/9wa3KoMuWpJpEFNLgF9xYllmT8bV4Qaw42IAGpnUU12dQkA4Lf
+ 0Pqpc5Uv
+ YcS/lZZfF/WmCyQJHYH2PAEcv9jJhy7fPj1AwmxM0+y1uQ+ldieZIeQw0fsXiC7F5m9XGdhkDjjGythVUN+HfJ+iQAU8j+NHG7tNYyFwKXWWXDlk8rh84qt4O/Imp2eWUz1RnZEWfJ5zkuCbCzW0/lgyZd/DoG7ESjO63LNDexFhIrQhPUX+ffFZDhSUxW5HmM9iR3Tsh3/EfSkFIYnmDstBscG3ktmUhdIo5guIutUdH2BpE6Jnb0FEk2MMXNdg4w7iZafA/44Bid6hPGEd8U81ewTJz1Jgsd5ulNT+P4gIy8qxDbv5MeRvo3CkxxamN8m/+c69AaYoWHOZjbgeKdsIqY4RlO//wjeI8wA752RfjZYo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,73 +93,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 3:19=E2=80=AFAM Andrey Konovalov <andreyknvl@gmail.=
-com> wrote:
->
-> On Fri, Oct 24, 2025 at 2:41=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> =
-wrote:
-> >
-> > Adding more details on how I discovered this and why I care:
-> >
-> > I was developing a feature that uses unused bytes in s->size as the
-> > slabobj_ext metadata. Unlike other metadata where slab disables KASAN
-> > when accessing it, this should be unpoisoned to avoid adding complexity
-> > and overhead when accessing it.
->
-> Generally, unpoisoining parts of slabs that should not be accessed by
-> non-slab code is undesirable - this would prevent KASAN from detecting
-> OOB accesses into that memory.
->
-> An alternative to unpoisoning or disabling KASAN could be to add
-> helper functions annotated with __no_sanitize_address that do the
-> required accesses. And make them inlined when KASAN is disabled to
-> avoid the performance hit.
->
-> On a side note, you might also need to check whether SW_TAGS KASAN and
 
-*HW_TAGS KASAN
 
-SW_TAGS KASAN works with kasan_disable_current().
+On 2025/10/24 02:12, Dmitry Ilvokhin wrote:
+> Allow to override defaults for shemem and tmpfs at config time. This is
+> consistent with how transparent hugepages can be configured.
+> 
+> Same results can be achieved with the existing
+> 'transparent_hugepage_shmem' and 'transparent_hugepage_tmpfs' settings
+> in the kernel command line, but it is more convenient to define basic
+> settings at config time instead of changing kernel command line later.
+> 
+> Defaults for shmem and tmpfs were not changed. They are remained the
+> same as before: 'never' for both cases. Options 'deny' and 'force' are
+> omitted intentionally since these are special values and supposed to be
+> used for emergencies or testing and are not expected to be permanent
+> ones.
 
-HW_TAGS KASAN does not and instead relies on the pointer tag being
-reset for the access to be unchecked.
+Make sense to me.
 
-On another side note, unpoisoning slabobj_ext memory with either of
-the TAGS modes would require it to be aligned to 16 bytes, not just 8.
-(But those modes do not embed metadata after each object in a slab, so
-your patch seems fine to me.)
+> Signed-off-by: Dmitry Ilvokhin <d@ilvokhin.com>
 
-> KMSAN would be unhappy with your changes:
->
-> - When we do kasan_disable_current() or metadata_access_enable(), we
-> also do kasan_reset_tag();
-> - In metadata_access_enable(), we disable KMSAN as well.
->
-> > This warning is from kasan_unpoison():
-> >         if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
-> >                 return;
-> >
-> > on x86_64, the address passed to kasan_{poison,unpoison}() should be at
-> > least aligned with 8 bytes.
-> >
-> > After manual investigation it turns out when the SLAB_STORE_USER flag i=
-s
-> > specified, any metadata after the original kmalloc request size is
-> > misaligned.
-> >
-> > Questions:
-> > - Could it cause any issues other than the one described above?
-> > - Does KASAN even support architectures that have issues with unaligned
-> >   accesses?
->
-> Unaligned accesses are handled just fine. It's just that the start of
-> any unpoisoned/accessible memory region must be aligned to 8 (or 16
-> for SW_TAGS) bytes due to how KASAN encodes shadow memory values.
->
-> > - How come we haven't seen any issues regarding this so far? :/
->
-> As you pointed out, we don't unpoison the memory that stores KASAN
-> metadata and instead just disable KASAN error reporting. This is done
-> deliberately to allow KASAN catching accesses into that memory that
-> happen outside of the slab/KASAN code.
+With addressing Shakeel's comments:
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
 
