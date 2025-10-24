@@ -4,136 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0BFBCCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 12:13:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1ADA6CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 12:13:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 594D88E0084; Fri, 24 Oct 2025 08:13:24 -0400 (EDT)
+	id 7B96C8E0085; Fri, 24 Oct 2025 08:13:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 544148E0042; Fri, 24 Oct 2025 08:13:24 -0400 (EDT)
+	id 768EF8E0042; Fri, 24 Oct 2025 08:13:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40C9F8E0084; Fri, 24 Oct 2025 08:13:24 -0400 (EDT)
+	id 658588E0085; Fri, 24 Oct 2025 08:13:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F8778E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:13:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4059BE55B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:13:23 +0000 (UTC)
-X-FDA: 84032897886.02.794C10E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf19.hostedemail.com (Postfix) with ESMTP id AE7AE1A000A
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:13:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CjojHoYq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1acUFfy3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CjojHoYq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1acUFfy3;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 52A538E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:13:50 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2B94BBCBA1
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:13:50 +0000 (UTC)
+X-FDA: 84032899020.27.F371837
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 3DC12C0006
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:13:47 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761308002;
+	s=arc-20220608; t=1761308027;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=s6S9HPV4fQ5/+USpvijrFVjaiMR1X3zJogHqbPyYylDJyvca5za8obZpXefJO1nZ80dhUt
-	hM5YNerdTQ4YFngnRCyeLKucyJJ7P8jh302z47T23+66d/czabQ1p5AHXd4YGayUt0Holv
-	0z/WSdpYTo5FxSHCZ7+aW4gMPD700LM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761308002; a=rsa-sha256;
-	cv=none;
-	b=5VP1YObT+QnFr2fc2ZiDoDg726SErMnS+oDSjcOw572qhICmx3f4PpyJ1/BaAD5HyfK0MI
-	uq+wqql36cLlA298hlhtuHnYNoaPOaONH4AozKqGdU096yDTZq5JmZZlUjX8AsrV+vvpVw
-	NGPFkjqxGgAF0Ki43s3HKY7d7ltpkwY=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=X3sXu4j8MfMq52gqBAavsMTcndSosYtjB52S1c8LUjs=;
+	b=omWz2og+/r4UOdUjrgotYSiG5lVLurWZBFHLqjbmCIpQeQlVur5UaPeJr6qUodC4z0+r0k
+	SdcIgd4Qq0na/z0gjeg6j+Vzx2QK4y+OU6EvYJF+kDSHkmMbeVE50jgKeg5fSqRRdtjPBY
+	rM5egbnvju9tM4Drlp3XE8LMigS373Q=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CjojHoYq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1acUFfy3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CjojHoYq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1acUFfy3;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 46D6C2120A;
-	Fri, 24 Oct 2025 12:13:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761308000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=CjojHoYqaGMzfr5XqNusQqu1GyDxPy0hnR6Ldj+jMf2eYrTAdI2alMTnKoUSmrXoHvFzyY
-	UToaifYK+aQl8TtK32yOMGz7StJr1kY/XFCLmL8yl3rGsIxvYxpuaYXr9RvWQe45kcVwON
-	5/tuFmNtP0/OwY0IBwV80drSEDaabHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761308000;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=1acUFfy3hGwnqk5XZUYklOyZE7Yzi46EVBZ/g+PJSSiLxPnydp7ewriPn0sf5iaWyR9gF9
-	M2aK7AndCIkzA5Cg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761308000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=CjojHoYqaGMzfr5XqNusQqu1GyDxPy0hnR6Ldj+jMf2eYrTAdI2alMTnKoUSmrXoHvFzyY
-	UToaifYK+aQl8TtK32yOMGz7StJr1kY/XFCLmL8yl3rGsIxvYxpuaYXr9RvWQe45kcVwON
-	5/tuFmNtP0/OwY0IBwV80drSEDaabHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761308000;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=AkVO73khQEXexPsxQT0RVGnJrziAwGHpdDpx2ltyfZ0=;
-	b=1acUFfy3hGwnqk5XZUYklOyZE7Yzi46EVBZ/g+PJSSiLxPnydp7ewriPn0sf5iaWyR9gF9
-	M2aK7AndCIkzA5Cg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 301D713693;
-	Fri, 24 Oct 2025 12:13:20 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Mwu+C2Bt+2jXOQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Fri, 24 Oct 2025 12:13:20 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 3BF23A28AB; Fri, 24 Oct 2025 14:13:19 +0200 (CEST)
-Date: Fri, 24 Oct 2025 14:13:19 +0200
-From: Jan Kara <jack@suse.cz>
-To: Christoph Hellwig <hch@lst.de>
-Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
-	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
-	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
-	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
-	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
-	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 10/10] mm: rename filemap_fdatawrite_range_kick to
- filemap_flush_range
-Message-ID: <yybiur2jmv6s4n2sjlubwimmfbsrb3gx6tk67ki23jnqncaeba@wayirnpbaum3>
-References: <20251024080431.324236-1-hch@lst.de>
- <20251024080431.324236-11-hch@lst.de>
+	imf22.hostedemail.com;
+	dkim=none;
+	spf=pass (imf22.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761308027; a=rsa-sha256;
+	cv=none;
+	b=G0l/mNYH0y/IcMBSJUZB2jXWx7WjpKPyhX97A9qroQCRaKzgJsGniw+8wg3V31wGkJWclL
+	EA5yBYQ4NSI1FUnqWVBnqw24kDIY97QhuJ7p/tLkfT8UjBHe2vliK3ei7lOXm35pDPxktB
+	wkbRV9K1qNquGbqR8UL7bxvfVEJxDQc=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5EA231515;
+	Fri, 24 Oct 2025 05:13:38 -0700 (PDT)
+Received: from [10.44.160.74] (e126510-lin.lund.arm.com [10.44.160.74])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6C2833F66E;
+	Fri, 24 Oct 2025 05:13:38 -0700 (PDT)
+Message-ID: <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
+Date: Fri, 24 Oct 2025 14:13:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251024080431.324236-11-hch@lst.de>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: b6q9g3o77ryq83z1bskro1icatc3enup
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
+To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+ <20251015082727.2395128-7-kevin.brodsky@arm.com>
+ <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 3DC12C0006
+X-Stat-Signature: happu8ywa6ibzjo8wbkuerdd6rjdb6jq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AE7AE1A000A
-X-HE-Tag: 1761308001-18102
-X-HE-Meta: U2FsdGVkX19L3zJiNY1Np930LlcTzyp2gn0XMPdHg8DszX6YXx0YpmUTREtbHfibmgsVbgqX/3akmz4z3aNhtkbSegZVGQ649r/HsZPGIq7b3Ydxu+6sy5TSzqLKSf7dxiBRLoDe8/9rXU48cPi9T6+JYP1kjh60NvaVXh8Az4gX5IXTYfhFvSNHKjrDPISnT61HNr448xxpgmcZFU8AtE9vBD/CALLmEp0lh+02HQoiX0UA6LYYMmY8QLOOqPH3pNjsmxj7gWdPOMFb7kUcUonBbHTAOcJwNq3xmRPPlHHVyFsIf5GNCzB3X60PqqGMRqS0i6v0hUfMkt2SoWr9UGxSbWCy6l9lkfeocOpbWNeUBr7+nqVvyG6ZvutCUNuo+4W/ovaF4Io6PPFOc4O/uLenxrIV++Tk5jKSuVLpfs/rJNJL7EjJtTNA1y43QHacN0nQTOL9dNJgNpYSCTr9bQ8oxPt6UWwjNpet0ILEtAEVL6i+Pz2m4OKdjzM5mSlXvmXSwTY1Uh4kFUKaQWvZA7mu/QAUnBwRycLd9+G84BcARlEisJIsW2W0hQLrSt4H2hL+iH4pSaZkiH73lGWGUBjJvw7Syn0D+KtyQzflNf41ivIXyphI3GTFdsJyhhxkUJTtb/2QpNCS7MZMM05XJsxlLI2UOsMnEMgIwFz+EhjAekxqP5j5ZhlZcRa3qPbdTg9/Bou7v89p/eBOPpz5inNgNRf0+ov14pWA86MIANW+CS+h+PzGqr9q9EnbuYNhhYhKeu5sBKslJprnV0HLvaDAQSB/Lz9AnW5lDNaagJkuh+hNU1sCzLIcAsrBgjbUOpYOzcPNv781aJl0RxG4pWigw0R3RldEVLWrgoRNFpPQan6B8YvX9RzaL8BxoHe1Mtz1/uoYMT7oLCEMVOSPFYJJ5UFtKincWw9e5xSuOAwBQi8Z2UnK/XMLft9zmu4HXBbvbpjPdXHQpO28cE/
- UdgApRn8
- M/KOtPnurrv+5dltdPb50MOsvkQ11bYYTFYPzkqlsQTJZV/li+OVIotwrCVjw/NImXH5Wb5dcBagaQVkoUXTWdqWVH0Jdt0Osb2sGPNV/glxv9g83cmhxtz4Xhvmgjs7X6OdvC7o9xSRHLvVGPrsp/gjlNX66+mC5/I9YINlW2OtxZCoOr8Dx8nAhO77vKHNHOP+58eARRi6rtI53kr/2JwVtsoOUzpGLHou9rSM8YXKLMUrh0BJB8I7Uj3UG2XMAR1aKfcUZKIXS7ooClRNfsnpg5h7Hvti0B93ZqBfk5HwxSn8WXURw7blfSjK/d/l1sjHNIJhRmFWaaJk3UDzvk7qM+nVADX65TrzBq/Mn5cnxnuw1lZfSHG5bVUCfWYbtRQEA6KE68xkEmSzPCZn8QF/KYB9HS6NRV31dM8OXLcl5v/4=
+X-HE-Tag: 1761308027-183335
+X-HE-Meta: U2FsdGVkX18x1seQcb9fLKFcy2S1XDkEKXn4S3lcG1t0G5qnEyiwqrD7snHjk6brj6uzciEG1WsJgRKMzt7EoafxSYakLKlVbOVGznt0CEPU5WrAPkgNSOO9GBBirrTIydoAPx2n3JW9JAqy1ek5ykdQ5Gk8AGGhFkPPqjAY8bZjsRy7tLX9Fhe7dEPCNvbeYMPIBKTIZOlCm2NSgD0mGWE1ndm9sPkD1ypS4OItlnGrrI/bIi8Pf0QM6PH4laTMLgVHqlSfWQOxBmobs45EV9kgWFaU+uMpYjZ8ZeSeJNhzW2XoXbMFjvymsQ7YBn7Fu8c5322KgPt1zc0Cvm+nA7WNW18bUvcxoMwUAy1PuP+P8yV+idA10gof5fmZpT/EBAz7kJFgtHSi3AuBipdwv0sJR6orToU+sRDs7vrJ9fryGi9nR46BKsmE4IJga34W0a3c8iT/IZ6Sq7NFKTHO7gjpXSaagdlpWTc1fZlUfwoxSg2vbURNTfhJGgW8LZc3A+lMTKaRSl3o3zau4gRgraW/X2PRoOXHOm7SNsMKopmMX2vKARkDwUKAVcc+2sVpz4K12BqkIlc4bMAwkvoh8pg2sXU4X0HYRSHxyezkVSCSOqRsMnkkvX9VOCL1pSSneNGbX2+KwLRLiaxWaNEfARt5TbkhNrqQYUljrK3S0yAlY3+YbFqAh3UuDEYBqhDVPdfSmBlWBWWT4OuAX+Ipzq2Tmh7JgFq1b1+4Ld3PySwQt7XjuvtJxqBomp37TigYII4IWgo3GAWFLYbqy6mYOr8pVdIQdsGDwGhgxplICwMWzrUwA1jFudsCdjXuyy6b/KQ2VQjkv/CbKiL6+2nE8N59NSKAs9aRJdwYy983Pq0ycxkoKRjbBMvGal36rZkpYLf//63wOdACujQ8z5WLv5CyywIeowZdPE+YMJIbP5hroJmMVTsxaexlEKnekH2FaLNTw0i6ar7xVQ4tTko
+ VWTmdvWv
+ 82ARVZnflU7g9OgkoHaFrXxpXN1ivb++OWJVr4MFA6MBCnLAKgAbpQbzl33kxi2t0nJ1YdthzEIFktM9zhFYcLRi6CQBpiM+5h19IFrnpQBK1TDbJcetJECkCyS6GdN9Zzv126Z/3LCyA79vcrgLnYH4MjEBtBd+nTPDEEMxTTkuviqmBqSXy1IsrbpbvEY54PtKcCKev8Pgm0OaVm9TlcUqhHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,117 +105,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 24-10-25 10:04:21, Christoph Hellwig wrote:
-> Rename filemap_fdatawrite_range_kick to filemap_flush_range because it
-> is the ranged version of filemap_flush.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+On 23/10/2025 21:52, David Hildenbrand wrote:
+> On 15.10.25 10:27, Kevin Brodsky wrote:
+>> [...]
+>>
+>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
+>>    followed by an immediate exit/rescheduling and some followed by a
+>>    conditional exit. These functions assume that they are called
+>>    with lazy MMU disabled and we cannot simply use pause()/resume()
+>>    to address that. This patch leaves the situation unchanged by
+>>    calling enable()/disable() in all cases.
+>
+> I'm confused, the function simply does
+>
+> (a) enables lazy mmu
+> (b) does something on the page table
+> (c) disables lazy mmu
+> (d) does something expensive (split folio -> take sleepable locks,
+>     flushes tlb)
+> (e) go to (a)
 
-Looks good. Feel free to add:
+That step is conditional: we exit right away if pte_offset_map_lock()
+fails. The fundamental issue is that pause() must always be matched with
+resume(), but as those functions look today there is no situation where
+a pause() would always be matched with a resume().
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+Alternatively it should be possible to pause(), unconditionally resume()
+after the expensive operations are done and then leave() right away in
+case of failure. It requires restructuring and might look a bit strange,
+but can be done if you think it's justified.
 
-								Honza
+>
+> Why would we use enable/disable instead?
+>
+>>
+>> * x86/Xen is currently the only case where explicit handling is
+>>    required for lazy MMU when context-switching. This is purely an
+>>    implementation detail and using the generic lazy_mmu_mode_*
+>>    functions would cause trouble when nesting support is introduced,
+>>    because the generic functions must be called from the current task.
+>>    For that reason we still use arch_leave() and arch_enter() there.
+>
+> How does this interact with patch #11? 
 
-> ---
->  fs/sync.c          | 3 +--
->  include/linux/fs.h | 6 +++---
->  mm/fadvise.c       | 2 +-
->  mm/filemap.c       | 8 ++++----
->  4 files changed, 9 insertions(+), 10 deletions(-)
-> 
-> diff --git a/fs/sync.c b/fs/sync.c
-> index 6d8b04e04c3c..1759f6ba36cd 100644
-> --- a/fs/sync.c
-> +++ b/fs/sync.c
-> @@ -285,8 +285,7 @@ int sync_file_range(struct file *file, loff_t offset, loff_t nbytes,
->  			ret = filemap_fdatawrite_range(mapping, offset,
->  					endbyte);
->  		else
-> -			ret = filemap_fdatawrite_range_kick(mapping, offset,
-> -					endbyte);
-> +			ret = filemap_flush_range(mapping, offset, endbyte);
->  		if (ret < 0)
->  			goto out;
->  	}
-> diff --git a/include/linux/fs.h b/include/linux/fs.h
-> index c895146c1444..a5dbfa20f8d7 100644
-> --- a/include/linux/fs.h
-> +++ b/include/linux/fs.h
-> @@ -3014,7 +3014,7 @@ extern int __must_check file_fdatawait_range(struct file *file, loff_t lstart,
->  extern int __must_check file_check_and_advance_wb_err(struct file *file);
->  extern int __must_check file_write_and_wait_range(struct file *file,
->  						loff_t start, loff_t end);
-> -int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-> +int filemap_flush_range(struct address_space *mapping, loff_t start,
->  		loff_t end);
->  
->  static inline int file_write_and_wait(struct file *file)
-> @@ -3051,8 +3051,8 @@ static inline ssize_t generic_write_sync(struct kiocb *iocb, ssize_t count)
->  	} else if (iocb->ki_flags & IOCB_DONTCACHE) {
->  		struct address_space *mapping = iocb->ki_filp->f_mapping;
->  
-> -		filemap_fdatawrite_range_kick(mapping, iocb->ki_pos - count,
-> -					      iocb->ki_pos - 1);
-> +		filemap_flush_range(mapping, iocb->ki_pos - count,
-> +				iocb->ki_pos - 1);
->  	}
->  
->  	return count;
-> diff --git a/mm/fadvise.c b/mm/fadvise.c
-> index f1be619f0e58..67028e30aa91 100644
-> --- a/mm/fadvise.c
-> +++ b/mm/fadvise.c
-> @@ -111,7 +111,7 @@ int generic_fadvise(struct file *file, loff_t offset, loff_t len, int advice)
->  		spin_unlock(&file->f_lock);
->  		break;
->  	case POSIX_FADV_DONTNEED:
-> -		filemap_fdatawrite_range_kick(mapping, offset, endbyte);
-> +		filemap_flush_range(mapping, offset, endbyte);
->  
->  		/*
->  		 * First and last FULL page! Partial pages are deliberately
-> diff --git a/mm/filemap.c b/mm/filemap.c
-> index f90f5bb2b825..fa770768ea3a 100644
-> --- a/mm/filemap.c
-> +++ b/mm/filemap.c
-> @@ -419,7 +419,7 @@ int filemap_fdatawrite(struct address_space *mapping)
->  EXPORT_SYMBOL(filemap_fdatawrite);
->  
->  /**
-> - * filemap_fdatawrite_range_kick - start writeback on a range
-> + * filemap_flush_range - start writeback on a range
->   * @mapping:	target address_space
->   * @start:	index to start writeback on
->   * @end:	last (inclusive) index for writeback
-> @@ -429,12 +429,12 @@ EXPORT_SYMBOL(filemap_fdatawrite);
->   *
->   * Return: %0 on success, negative error code otherwise.
->   */
-> -int filemap_fdatawrite_range_kick(struct address_space *mapping, loff_t start,
-> +int filemap_flush_range(struct address_space *mapping, loff_t start,
->  				  loff_t end)
->  {
->  	return filemap_writeback(mapping, start, end, WB_SYNC_NONE, NULL);
->  }
-> -EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
-> +EXPORT_SYMBOL_GPL(filemap_flush_range);
->  
->  /**
->   * filemap_flush - mostly a non-blocking flush
-> @@ -447,7 +447,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
->   */
->  int filemap_flush(struct address_space *mapping)
->  {
-> -	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
-> +	return filemap_flush_range(mapping, 0, LLONG_MAX);
->  }
->  EXPORT_SYMBOL(filemap_flush);
->  
-> -- 
-> 2.47.3
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+It is a requirement for patch 11, in fact. If we called disable() when
+switching out a task, then lazy_mmu_state.enabled would (most likely) be
+false when scheduling it again.
+
+By calling the arch_* helpers when context-switching, we ensure
+lazy_mmu_state remains unchanged. This is consistent with what happens
+on all other architectures (which don't do anything about lazy_mmu when
+context-switching). lazy_mmu_state is the lazy MMU status *when the task
+is scheduled*, and should be preserved on a context-switch.
+
+>
+>>
+>> Note: x86 calls arch_flush_lazy_mmu_mode() unconditionally in a few
+>> places, but only defines it if PARAVIRT_XXL is selected, and we are
+>> removing the fallback in <linux/pgtable.h>. Add a new fallback
+>> definition to <asm/pgtable.h> to keep things building.
+>
+> I can see a call in __kernel_map_pages() and
+> arch_kmap_local_post_map()/arch_kmap_local_post_unmap().
+>
+> I guess that is ... harmless/irrelevant in the context of this series?
+
+It should be. arch_flush_lazy_mmu_mode() was only used by x86 before
+this series; we're adding new calls to it from the generic layer, but
+existing x86 calls shouldn't be affected.
+
+- Kevin
 
