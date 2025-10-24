@@ -4,118 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CEEBCCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 10:13:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 00927CCD1A5
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 10:23:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C4A6E8E0073; Fri, 24 Oct 2025 06:13:34 -0400 (EDT)
+	id 4750C8E0074; Fri, 24 Oct 2025 06:23:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C21B78E0042; Fri, 24 Oct 2025 06:13:34 -0400 (EDT)
+	id 426448E0042; Fri, 24 Oct 2025 06:23:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5E1F8E0073; Fri, 24 Oct 2025 06:13:34 -0400 (EDT)
+	id 315088E0074; Fri, 24 Oct 2025 06:23:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A30DC8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:13:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 60CCC1A0DFE
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:13:34 +0000 (UTC)
-X-FDA: 84032595948.28.B1D831A
-Received: from out199-16.us.a.mail.aliyun.com (out199-16.us.a.mail.aliyun.com [47.90.199.16])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 826F710000A
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:13:31 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 18A6C8E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 06:23:45 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BA789893B2
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:23:44 +0000 (UTC)
+X-FDA: 84032621568.23.4F01E2B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id D2F9410000F
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:23:42 +0000 (UTC)
 Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="TtWTR0/g";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761300812; a=rsa-sha256;
-	cv=none;
-	b=AesnQdFcDYhCNOH8TA6w+oQL8r/n0QUJeEhgW4sfX/yu/DuYBjN+eFXggxRSBNKza3gEWU
-	WZy5n9VXq7fd8+D2QQRaa6nvt4OTPLfYSUWAf0Z7RDv/7tCzzzpywpoJASNsviRo0DnBv+
-	3SXBlpJQ5dVI/5p3g3DmITmHPywD1eU=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b="TtWTR0/g";
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf05.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 47.90.199.16 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YKJpUttv;
+	spf=pass (imf05.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761300812;
+	s=arc-20220608; t=1761301423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n+A2uFbKQefkDojLPPcK70ocgcvIwvNmJfoecA4EhpE=;
-	b=YQQgFzUnr4bz8uFJhtaDnIyveTbHuTUe3gL4HNmRfe1xtOjLHE6haKl8KkfQSkslDVf9tq
-	7/oySwZU0gAa56tYU7cB4xNQV9QjCfwp+84dbIw9OzQo+qBtXSebhhiwnyT6RkfRJD1UiM
-	WGbXIs66bb2JIPcQcqM+jDz+wRblcWs=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761300206; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=n+A2uFbKQefkDojLPPcK70ocgcvIwvNmJfoecA4EhpE=;
-	b=TtWTR0/gomv86HpWrvXd6AXug+ACswu6NxbFi6pQB+ssw6+lfOd+NrANz7uB5pcA62aGDT8U3/kIG9/tan2S1W9+qoLDlBucbfVq72jvuirGumypVVj9O7LIFCTck7KIg89IlJJ5rIgDIimMSxUbO8WNHLo7z+N/rBbD7RaeWKQ=
-Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqu2Tm1_1761300202 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Oct 2025 18:03:24 +0800
-Message-ID: <134e43f7-583c-48c1-8ccc-dddc18700d3b@linux.alibaba.com>
-Date: Fri, 24 Oct 2025 18:03:22 +0800
+	bh=dTfuG7mkwdAcHRX5d7idU5PTbdJ+nPsDJiTr0D0zK8s=;
+	b=Y742I+s/hYIuIopIpwhXBeJ6AYZTErSH+XuMZ+juvitHylr+dxKE2maoh4oJSmmJw4cRBD
+	q/+4MjFT3XM7ZJhAgSlZk4Fdb1Bi00LNwh+gjlsezjpAUHRpCMMMVUZi9p7ulp+OHTmWvd
+	DWb4sXJIZr/zWhjywjFhWfnxiI7T6Lk=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YKJpUttv;
+	spf=pass (imf05.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761301423; a=rsa-sha256;
+	cv=none;
+	b=4ec8hFS7rI5MX/s1tw8JxpyZP0KfS4G9DNffYqJ2ORKMjHXyK4J1k+gdP3qErbi4JSYMbV
+	WjTaszBNj3zxcad/6m34pzhqxDxvoNswRLd218hVyPUBxn+9RScMB7rfpDQjyoDkv1lVII
+	4D0n70Q3pmblqpe7JD+wdnUHXil5mOs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761301422;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dTfuG7mkwdAcHRX5d7idU5PTbdJ+nPsDJiTr0D0zK8s=;
+	b=YKJpUttv9d0wFS/AYJnWIM1uppM2GKkw2YTtybKVSxJefvTRGrSd2t8usUaaUXfIBgVoO6
+	YT5NM4UpfKNgx8SfaXY20STyZvMiLGtg32gHBVZAo69a71HcabeYmlIUnhkJgNi9h2W6su
+	mLRgPvLteYaG//5cuFGrU1Ho1/Mwp10=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-435-xMjsaOJWPMeaC3MMh3OPgw-1; Fri,
+ 24 Oct 2025 06:23:40 -0400
+X-MC-Unique: xMjsaOJWPMeaC3MMh3OPgw-1
+X-Mimecast-MFC-AGG-ID: xMjsaOJWPMeaC3MMh3OPgw_1761301418
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0EB25196F742;
+	Fri, 24 Oct 2025 10:23:36 +0000 (UTC)
+Received: from [10.44.32.37] (unknown [10.44.32.37])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 57711195398C;
+	Fri, 24 Oct 2025 10:23:29 +0000 (UTC)
+Date: Fri, 24 Oct 2025 12:23:20 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Askar Safin <safinaskar@gmail.com>
+cc: linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-block@vger.kernel.org, 
+    linux-crypto@vger.kernel.org, linux-lvm@lists.linux.dev, 
+    lvm-devel@lists.linux.dev, linux-raid@vger.kernel.org, 
+    DellClientKernel <Dell.Client.Kernel@dell.com>, dm-devel@lists.linux.dev, 
+    linux-btrfs@vger.kernel.org, Nhat Pham <nphamcs@gmail.com>, 
+    Kairui Song <ryncsn@gmail.com>, Pavel Machek <pavel@ucw.cz>, 
+    =?ISO-8859-15?Q?Rodolfo_Garc=EDa_Pe=F1as?= <kix@kix.es>, 
+    "Rafael J. Wysocki" <rafael@kernel.org>, 
+    Eric Biggers <ebiggers@kernel.org>, 
+    Lennart Poettering <mzxreary@0pointer.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    Milan Broz <milan@mazyland.cz>
+Subject: [PATCH] pm-hibernate: flush block device cache when hibernating
+In-Reply-To: <4cd2d217-f97d-4923-b852-4f8746456704@mazyland.cz>
+Message-ID: <03e58462-5045-e12f-9af6-be2aaf19f32c@redhat.com>
+References: <20251023112920.133897-1-safinaskar@gmail.com> <4cd2d217-f97d-4923-b852-4f8746456704@mazyland.cz>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/3] mm: Change ghes code to allow poison of non-struct
- pfn
-To: Ira Weiny <ira.weiny@intel.com>, "Luck, Tony" <tony.luck@intel.com>,
- "ankita@nvidia.com" <ankita@nvidia.com>,
- "aniketa@nvidia.com" <aniketa@nvidia.com>, "Sethi, Vikram"
- <vsethi@nvidia.com>, "jgg@nvidia.com" <jgg@nvidia.com>,
- "mochs@nvidia.com" <mochs@nvidia.com>,
- "skolothumtho@nvidia.com" <skolothumtho@nvidia.com>,
- "linmiaohe@huawei.com" <linmiaohe@huawei.com>,
- "nao.horiguchi@gmail.com" <nao.horiguchi@gmail.com>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "david@redhat.com" <david@redhat.com>,
- "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
- "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
- "vbabka@suse.cz" <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>,
- "surenb@google.com" <surenb@google.com>, "mhocko@suse.com"
- <mhocko@suse.com>, "bp@alien8.de" <bp@alien8.de>,
- "rafael@kernel.org" <rafael@kernel.org>,
- "guohanjun@huawei.com" <guohanjun@huawei.com>,
- "mchehab@kernel.org" <mchehab@kernel.org>, "lenb@kernel.org"
- <lenb@kernel.org>, "Tian, Kevin" <kevin.tian@intel.com>,
- "alex@shazbot.org" <alex@shazbot.org>
-Cc: "cjia@nvidia.com" <cjia@nvidia.com>,
- "kwankhede@nvidia.com" <kwankhede@nvidia.com>,
- "targupta@nvidia.com" <targupta@nvidia.com>,
- "zhiw@nvidia.com" <zhiw@nvidia.com>, "dnigam@nvidia.com"
- <dnigam@nvidia.com>, "kjaju@nvidia.com" <kjaju@nvidia.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-mm@kvack.org" <linux-mm@kvack.org>,
- "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
- "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
- "Smita.KoralahalliChannabasappa@amd.com"
- <Smita.KoralahalliChannabasappa@amd.com>,
- "u.kleine-koenig@baylibre.com" <u.kleine-koenig@baylibre.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>
-References: <20251021102327.199099-1-ankita@nvidia.com>
- <20251021102327.199099-3-ankita@nvidia.com>
- <68f7bf2d6d591_1668f310061@iweiny-mobl.notmuch>
- <SJ1PR11MB6083BF0885BC19E715C1A96EFCF2A@SJ1PR11MB6083.namprd11.prod.outlook.com>
- <81b1f1c6-4308-41bb-9f65-f158d30f27bd@linux.alibaba.com>
- <68f8f254b53dc_17217e10069@iweiny-mobl.notmuch>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <68f8f254b53dc_17217e10069@iweiny-mobl.notmuch>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Stat-Signature: nh6ciyu56ant3ibj3f5hxzd6thz1ejmw
+X-Rspamd-Queue-Id: D2F9410000F
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 826F710000A
-X-Stat-Signature: fomkhdfm1uqihdfduun8dbncksdbkohq
-X-HE-Tag: 1761300811-215184
-X-HE-Meta: U2FsdGVkX18za1LEIcBZ90T+OneOMli9U1iyjWu1s3MFKhcophB8s0qZoNO/TTem7+ZTimaonBeI+K0c3SovboPozU7RbpzY/Cmi0y1m6f3UDpu6vTk7wFN1IgJDDUK7UlouXWPqIkOQ90n3CmIo1PeIjdI3UqRbidWaiapboUQpBMP9cz7PXuE81B2p00f9g6Z5eH9TlzkoWlk9yGQLhXzZAsIoSho+29q2WLCmDk/5upGQ+fkTdo+tuq/GQlS4RLhzMTa575RlIM74AaaUD8o3CIK1wH3eo418DufuCiZGA3YYJZTlMD7rL4z2PPxE8gQvfI5GZ5Ndnf+w2Izm55DG/3Yhs2rzhOoUVoWh8+VKI2ZBpkYBm7Zlg8/ZlgMx0uY0sMJW1gt4Ai0X8vQsMm8dSEwrjP960AehS8qeubVJF/3pBMiccSQcVb8MoN511k7ie58jf8sZ5VSteq6D2Ut51+R8aR5mcDIU35/KV+vab6Iv6GWUIe9bO7gdaVSa9C/wg2iA+Y+s9Qnzn4wz9UXSv4yYb3r2Rn8sfiSP16w3EPat8BI/6eaeBtQ90qcz2VvQSJFQlGweptlUQC8H79fLdM9eHRFSGufKf9lbUsqbwNrdyRJ6GmwC5Rlrbhml7iWMyeRC2mWg6lwlvyc31lnj03TzzIZhDZYmqISt8zEje46DWIxBR1w/Tsap4dHbxN5/oNmWqWyBphuhh0CBEZdyNBea3013iWggPT1Mi+LGY/zNpAFuxY+J2Vpj0Klo1jPVAFNaCaGQbdWjMdmUSmugKSESK0nLhkS4iKh+yStxOBaoXq+4COpcXNANl/mN0vLYv7YSTCmcfPGhfI5MDjmTJ15NiY7PB0CnxiNQJ9qwbV39FJRYH5N/7LsUMB6yxyVdY82wCptmFq3pIK1TqOEFpDkWM4gDZEM6rHtg04TLWMue/9DDFHnZ37ZUxbwVHD0+OW7+2v2DUgkGIrB
- 2gFXPi7T
- FCiF9pnscbOCZNv323rJN6E2bNretmV1j9rquwOcGnx0DAgDarnvoAPaYly1LWsFgoBxjqKEZCJRWGeKPfK/cPS2vmRWLwYwBC6Oydtz6Lk5USfz15FnNVxNyZB+UqD9vLbaaLmTGdOWHQYA=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761301422-938322
+X-HE-Meta: U2FsdGVkX18p0Oc65Llt6YMqEKv0Gh/1+7jSNUQIMBCCgz7oMNUoqznsFCroU+66MZPGviLFzuV3DJJs+g1bAJlrl/UlqX6W2stCacCcR5TPdHVpRZdg2tyiNbtSYfJew1oCK6fqjom/8DI09PWUqUIdyGGAQ8uYqdfhIr1txFYYkruTCkJfDgJJOw7J4445kq2Q8ekf9TbhGxM4ELzeKJZk3glH86EBY3SE4snVrcOTXxH2R8DQEnGNxvQtQe8FAqUszQqi0dB81hSIBbygbB9oaIYMDaB1YGeoNAqmC036QzFdmF2dnQGnztHpGZrEhIQt8bGBnx8Raa7Z4u37cIs4o57XheMkOAVk6EYe7U0Gp939ETIFqWYhRqfF29S72w+Tk+ixJ8MqJhPIRA/LHWYJCSDgRGqZdidf6APGvBuwmAaVzcv7kECWont2E/ZGCuOMSb83TbOjBp1JBE5QOHm9MwIZ44rplXhg75rE2hi+/W8KPxTgwaH+a9b0dLoYA3usEw1XluleCQHG+v99f+WTba09frLmfwIDqI7ozwUOqYiM70Chxigi3JLPxgZfEcK9CDYTZC4DPAxtJTh5mYZdLnz/lHVIjnKIyUDkUeDDJFo6LTePy7zghecZg3ojbnK6rrjFlG2iXopV3gnsIzEth0ze/po4W0sc6mPA+14G5Ve1ryLLzxkqg2YHaKqwVPj57jGcOXpK8BWaLV5UiEffh41tcEzTK9dOcGgGrnXXbfrrtW+oTYpfK5awXJVPYdI7Q6rka98n5k9GIIUJmyHKthQcT3koxs1jUq9QGTshWzAN+6TMYvq1vQZ7rI9g/TXAxnx1z5PC+fPkMkib2fCF1zFR41q3+57naxGsWcnZuQJV53yD/Mir1jZdvQq993HRpLC1SRzeh/1Bo89SBxVLnlylFESUxr3q93fSV8qdBafZTOEdhwoyKb68kbFVyOhwvVKyK+0gj+CgwbT
+ iJFfJ2Xg
+ 2WSDTSTXlEGsTvLcv9z8ewb0lz4Kd6rr2Z/fjVahKexcDy5S4KHGGr89OlBdJcUV31bES7cWNL05h4y0NhQHId1ltoYxk/DdBWkHuAUIZQB31y4gbgp+m2tCu5u484menQeT9xHspfV44JdQChJP7My/8wZXy5DITM4xjNqgh1K29VmDstfsmvO114neVA2iQ4z01FIORNf40/Qz61PciMRxCdMOp+KuXfTvtO17GxOOH6Ky+y7ad10UUWeybQJf9B5l9ZXb96p6LMbh9HIhjXpItadLSyiHqPS7bNB8O9IAI1KppZdXcxBBnfCxrPvVIOKceRKlzqbJ7LVQ8/63pi4HBcPcydGg/8LIK4GAn5HZQ5jGuDMZQwezrQwTBJ6XqzokQmhh5EpGJWnI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,67 +114,56 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-在 2025/10/22 23:03, Ira Weiny 写道:
-> Shuai Xue wrote:
->>
->>
->> 在 2025/10/22 01:19, Luck, Tony 写道:
->>>>>       pfn = PHYS_PFN(physical_addr);
->>>>> -   if (!pfn_valid(pfn) && !arch_is_platform_page(physical_addr)) {
->>>>
->>>> Tony,
->>>>
->>>> I'm not an SGX expert but does this break SGX by removing
->>>> arch_is_platform_page()?
->>>>
->>>> See:
->>>>
->>>> 40e0e7843e23 ("x86/sgx: Add infrastructure to identify SGX EPC pages")
->>>> Cc: Tony Luck <tony.luck@intel.com>
->>>>
->>> Ira,
->>>
->>> I think this deletion makes the GHES code always call memory_failure()
->>> instead of bailing out here on "bad" page frame numbers.
->>>
->>> That centralizes the checks for different types of memory into
->>> memory_failure().
->>>
->>> -Tony
->>
->> Hi, Tony, Ankit and Ira,
->>
->> Finally, we're seeing other use cases that need to handle errors for
->> non-struct page PFNs :)
->>
->> IMHO, non-struct page PFNs are common in production environments.
->> Besides NVIDIA Grace GPU device memory, we also use reserved DRAM memory
->> managed by a separate VMEM allocator.
+On Fri, 24 Oct 2025, Askar Safin wrote:
+
+> Hi.
 > 
-> Can you elaborate on this more?
+> Hibernate to swap located on dm-integrity doesn't work.
+> Let me first describe why I need this, then I will describe a bug with steps
+> to reproduce
+> (and some speculation on cause of the bug).
 
-We reserve a significant portion of DRAM memory at boot time using
-kernel command line parameters. This reserved memory is then managed by
-our internal VMEM allocator, which handles memory allocation and
-deallocation for virtual machines.
+Hi
 
-To minimize memory overhead, we intentionally avoid creating struct
-pages for this reserved memory region. Instead, we've implemented the
-following approach:
+Does this patch fix it?
 
-- Our VMEM allocator directly manages the physical memory without the
-   overhead of struct page metadata.
-- Error Handling: We register custom RAS operations (ras_ops) with the
-   memory failure infrastructure. When poisoned memory is accessed within
-   this region, our registered handler: Tags the affected memory area as
-   poisoned Isolates the memory to prevent further access Terminates any
-   tasks that were using the poisoned memory
+Mikulas
 
-This approach allows us to handle memory errors effectively while
-maintaining minimal memory overhead for large reserved regions. It's
-similar in concept to how device memory (like NVIDIA Grace GPU memory
-mentioned earlier) needs error handling without struct page backing.
 
-Thanks.
-Shuai
+From: Mikulas Patocka <mpatocka@redhat.com>
+
+There was reported failure that hibernation doesn't work with 
+dm-integrity. The reason for the failure is that the hibernation code 
+doesn't issue the FLUSH bio - the data still sits in the dm-integrity 
+cache and they are lost when poweroff happens.
+
+This commit fixes the suspend code so that it issues flushes before 
+writing the header and after writing the header.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Askar Safin <safinaskar@gmail.com>
+Link: https://lore.kernel.org/dm-devel/a48a37e3-2c22-44fb-97a4-0e57dc20421a@gmail.com/T/
+Cc: stable@vger.kernel.org
+
+---
+ kernel/power/swap.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+Index: linux-2.6/kernel/power/swap.c
+===================================================================
+--- linux-2.6.orig/kernel/power/swap.c	2025-10-13 21:42:48.000000000 +0200
++++ linux-2.6/kernel/power/swap.c	2025-10-24 12:01:32.000000000 +0200
+@@ -320,8 +320,10 @@ static int mark_swapfiles(struct swap_ma
+ 		swsusp_header->flags = flags;
+ 		if (flags & SF_CRC32_MODE)
+ 			swsusp_header->crc32 = handle->crc32;
+-		error = hib_submit_io_sync(REQ_OP_WRITE | REQ_SYNC,
++		error = hib_submit_io_sync(REQ_OP_WRITE | REQ_SYNC | REQ_PREFLUSH,
+ 				      swsusp_resume_block, swsusp_header);
++		if (!error)
++			error = blkdev_issue_flush(file_bdev(hib_resume_bdev_file));
+ 	} else {
+ 		pr_err("Swap header not found!\n");
+ 		error = -ENODEV;
+
 
