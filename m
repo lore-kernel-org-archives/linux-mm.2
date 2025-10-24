@@ -4,168 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28B5CCCD1A5
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 09:45:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50424CCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 09:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6FB038E006F; Fri, 24 Oct 2025 05:44:59 -0400 (EDT)
+	id 8F93E8E0070; Fri, 24 Oct 2025 05:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6AB638E0042; Fri, 24 Oct 2025 05:44:59 -0400 (EDT)
+	id 8A9018E0042; Fri, 24 Oct 2025 05:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 572C18E006F; Fri, 24 Oct 2025 05:44:59 -0400 (EDT)
+	id 7980C8E0070; Fri, 24 Oct 2025 05:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 422DE8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 05:44:59 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C89D28937D
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:44:58 +0000 (UTC)
-X-FDA: 84032523876.08.B598EBD
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011036.outbound.protection.outlook.com [52.101.62.36])
-	by imf21.hostedemail.com (Postfix) with ESMTP id CFD481C0007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:44:55 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YqvelhV8;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of skolothumtho@nvidia.com designates 52.101.62.36 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761299096; a=rsa-sha256;
-	cv=pass;
-	b=Ai5M4zVOs4eGz1saNLr3Wd2fjub1SPjc8bc6rhr2WokVaaCt4PfhV53fAH7OOQqwPOcZW0
-	qgCqa3bcsC3ek/tcxYXWzVe8cP6BT1B8vnTSSyb00b3VzCLxkT0+N9HVoExqVHf6/wYahv
-	loKk23UMfPfS3DHTME56qGk5C9pWqQo=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YqvelhV8;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf21.hostedemail.com: domain of skolothumtho@nvidia.com designates 52.101.62.36 as permitted sender) smtp.mailfrom=skolothumtho@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761299096;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 65A658E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 05:45:56 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 041CABE4AD
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:45:55 +0000 (UTC)
+X-FDA: 84032526312.17.51A0298
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 4A24B2000C
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 09:45:51 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aRz+AIt8;
+	spf=pass (imf03.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761299153;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=rA0wJ4kXict9x77V/zSDSfaP7Xdt2ODGuQteAEucV2M=;
-	b=hcgS7GbhPFJGI6O8okogwpIpY/o3w6U6dO544u9j2CmjxcBeiCiqrnS74IwCxrnZUmt430
-	KzFcozDik2W7fMIDI3e+w5BDTHNOQPCnOy2JbhhXjzolCOhllDyg5Kk8s1yHlOpyz/P353
-	4TxipcoTDckN9aPFIhfUPWY5kJy6GKk=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YOVP1FZ2VxmsNKxZRJtVfyqD4SlgDtI4fCRLut/Ac0W6goW9cTFzES/stowgMo6hDD1ZlidaTJo5Egn3SUlRJ0uQqGiIwpsy4hL0Wlk7nVs1ZuwxSN51kAURuF8mk7Lox6zamPbDvG+Lq7HG8jz5VtNbaYmzlmgRR4goUHOfMSBvO+NXuEkkhMPvEDxRAzIYTKgTdFUdUtKa57nscnGR1zXpxXxAB2BhfGdNw3dUG+UiRuJOune9W3WpFn7r+17cprodYswLST33sxeZ7RPWrDrBRrCets5WlNs+rRPJbGa0pvrk/9sOsa7iUaACz0KgfW7j21Y3UKno4zmK1EGQIg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rA0wJ4kXict9x77V/zSDSfaP7Xdt2ODGuQteAEucV2M=;
- b=GjD0uq5aTZcWlrK4bgS2ghw169Ob+QJx+m0nHynXcftKmj96yGi24OjP3u5xnEYHj95ZC03H7QWGuK+97+Q6ggPvg8WQJarRigBTKHvEHchbl56reN/25ntQP8+CaeahPY3UYwXRN5CEWpiUJ3kHgQ/60SsDI/XW9CFMnRPkGydtMfpdcw1dpC/oZoVunRtlwC0yj8mhNunv66ICEH2wIaRpxK92DuuVYRrcjdxbplf9Izjp63M446lrORIfMlYBfhTHZyc8T8P9z3E7MU95yGKLPzpvR9ROlCTeTCcDskRzXIgZTjAYivUuL3n1byMjSJu7DKefvZ2b0qR060HdSQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kvack.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rA0wJ4kXict9x77V/zSDSfaP7Xdt2ODGuQteAEucV2M=;
- b=YqvelhV8ksgSkxCjHh8Ij8/1V0rCTC6Wd4bKcz1ZkVRoUE8IAKggoyAxiciV8G7iJJ4NcBPpPZ4pA3r7YqdOYTAsEj7YbIBq1bgxxRNEY1bVNLpRcj+A7t+AC/7ptmM0R1Z+ysA3gjO8VZP4XzSiMbVyaNqP1orvjohixZPZw1WyqP40I+5Wn1kV1CLp0ScHiv8fbuc0yd6cj8bfHkjvm37I4nCndTYcnqcEeojFdZuX6l8quCTpTOaGU1rH108mX05h9X1lS9ChgMPmyYu+Y5KUu+n/JaOs5DIDx580NPCn/N1WBH52+1mZ8GBv0FOHaA+VHhuPf9C2i1c3X9LWfg==
-Received: from BL1PR13CA0248.namprd13.prod.outlook.com (2603:10b6:208:2ba::13)
- by PH7PR12MB6788.namprd12.prod.outlook.com (2603:10b6:510:1ae::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Fri, 24 Oct
- 2025 09:44:50 +0000
-Received: from BL6PEPF00022570.namprd02.prod.outlook.com
- (2603:10b6:208:2ba:cafe::b1) by BL1PR13CA0248.outlook.office365.com
- (2603:10b6:208:2ba::13) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9253.12 via Frontend Transport; Fri,
- 24 Oct 2025 09:44:50 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- BL6PEPF00022570.mail.protection.outlook.com (10.167.249.38) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9253.7 via Frontend Transport; Fri, 24 Oct 2025 09:44:49 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.34; Fri, 24 Oct
- 2025 02:44:31 -0700
-Received: from NV-2Y5XW94.nvidia.com (10.126.230.35) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 24 Oct
- 2025 02:44:28 -0700
-From: Shameer Kolothum <skolothumtho@nvidia.com>
-To: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>
-CC: <muchun.song@linux.dev>, <osalvador@suse.de>, <vivek.kasireddy@intel.com>,
-	<joshua.hahnjy@gmail.com>, <jgg@nvidia.com>, <nicolinc@nvidia.com>,
-	<nathanc@nvidia.com>, <mochs@nvidia.com>
-Subject: [PATCH v2] mm/hugetlb: Fix incorrect error return from hugetlb_reserve_pages()
-Date: Fri, 24 Oct 2025 10:42:40 +0100
-Message-ID: <20251024094240.337630-1-skolothumtho@nvidia.com>
-X-Mailer: git-send-email 2.43.0
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=8i7IvoUyLwZipphMmlbv7Bm0R6d4DUro9PNdCGClahw=;
+	b=5FCoATEMoLRS0ot29VGvOLTDKLzUSFK8BeiUXXYuwjLaXxyAJ/IX7o9lHN7cNnu24dTclQ
+	LD7Qwcw1J9ph5Pig0ZG35NZdpoLVyISsSFKkHN83/gM5HAhfMlABKxsiItYkzWmmwuPl2+
+	peSzv0wZf5XfpWIzYpPS4O7rPg6SHQE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=aRz+AIt8;
+	spf=pass (imf03.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.132 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761299153; a=rsa-sha256;
+	cv=none;
+	b=cO6/9WxAx4l6oGLF4wuA8a1YhLRQkvwYuSQoFO+TmIv2HXEAmQbs82t4VMJBavF31kTCuL
+	x0eCrPHPvTHrcKXGribBzeJN5bMbzx+6OcvQWyPMhcWpeadKWzCcSNMLIOjyeg5VYVgEz0
+	dqNn1NmbvKGo15ejyU0kOGKx02f3zoo=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761299149; h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type;
+	bh=8i7IvoUyLwZipphMmlbv7Bm0R6d4DUro9PNdCGClahw=;
+	b=aRz+AIt8JQnu0tLicYAm5LxSzSjux4OSWF+UAi5NZw1dem0rtNU6ik0Fuz9bu71+q6/cQrEH/E6lqnrtjvGBaMPVQQq4y25j9t43KwzHj35xqlwO9d9ZDR9f2/Ntx1RJEc33SF04i+7orFaufA2iE5Msqhc0FBucydVNwuTLdbs=
+Received: from 30.246.161.241(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqu0ajN_1761299145 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Oct 2025 17:45:47 +0800
+Message-ID: <d2550489-834c-4dcd-b41f-d22590880343@linux.alibaba.com>
+Date: Fri, 24 Oct 2025 17:45:45 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+Subject: Re: [PATCH v3 1/3] mm: handle poisoning of pfn without struct pages
+To: ankita@nvidia.com, aniketa@nvidia.com, vsethi@nvidia.com, jgg@nvidia.com,
+ mochs@nvidia.com, skolothumtho@nvidia.com, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, akpm@linux-foundation.org, david@redhat.com,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, tony.luck@intel.com,
+ bp@alien8.de, rafael@kernel.org, guohanjun@huawei.com, mchehab@kernel.org,
+ lenb@kernel.org, kevin.tian@intel.com, alex@shazbot.org
+Cc: cjia@nvidia.com, kwankhede@nvidia.com, targupta@nvidia.com,
+ zhiw@nvidia.com, dnigam@nvidia.com, kjaju@nvidia.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-edac@vger.kernel.org, Jonathan.Cameron@huawei.com,
+ ira.weiny@intel.com, Smita.KoralahalliChannabasappa@amd.com,
+ u.kleine-koenig@baylibre.com, peterz@infradead.org,
+ linux-acpi@vger.kernel.org, kvm@vger.kernel.org
+References: <20251021102327.199099-1-ankita@nvidia.com>
+ <20251021102327.199099-2-ankita@nvidia.com>
+In-Reply-To: <20251021102327.199099-2-ankita@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.126.230.35]
-X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
- rnnvmail201.nvidia.com (10.129.68.8)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL6PEPF00022570:EE_|PH7PR12MB6788:EE_
-X-MS-Office365-Filtering-Correlation-Id: b16330fb-16a4-48a5-4bba-08de12e1f9b0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?8IN1yS3TUTYbHxEIwZuv2kMDQg1h/f+PZ2PxQMcYn8Ia5vtw3SgAvZhdPn5f?=
- =?us-ascii?Q?Q+DdFh/esv8MXlGMIJ4MRyGTPt7Tds6kFI3jILjDXhaDurbKzM25E3qrsiLD?=
- =?us-ascii?Q?s3ghJmnNdrx07jPxzU0BI7v4I1Kk4GL+mn7GYrRD7bPKhpjGnLd840Ax0tvS?=
- =?us-ascii?Q?NiJMyt89rQjQTkPE/xpWrPcK7N0NPipaQ/uH0901fpvBAKDGva6rsfn/T3IN?=
- =?us-ascii?Q?oMS+vLfv4nvwuUOG4teM2a1mH8/k8ehs1HLGFqVRYFbBM9x6LbdiHE8LM5pH?=
- =?us-ascii?Q?h3mfjNQgNSMx4qStlBSciitob+u1knUMq1p+zG1pR30Qy3qPlRxKCS6eudmW?=
- =?us-ascii?Q?ReccAHQ67ZdZQKnEF1+HyWml1bZX6NCIBsXt67lEZJfdkOz0y5MrB3qLaTxw?=
- =?us-ascii?Q?UUz6nAJIPE7W+IMIqCbMZHRcmrn6+znzcKeYe/WOOqSbZlrVS+IFBkGeV7X1?=
- =?us-ascii?Q?oSp1qk1PzdkuiXoiv+o+nQmwnu9TQrJdyC4vmeHaJBsg182jewctdfmNMxRT?=
- =?us-ascii?Q?9lXp3JBaHUVQ1rCuNaeRPGCTbI8qJfEYz3Du7k42xh93H2fW5GZSLVod6vzg?=
- =?us-ascii?Q?bgyjLYpFIlPMXGCtqXNK4IiLp8heX0VNIyLnc78/xrVbJqTx6T/n1vDhRzRG?=
- =?us-ascii?Q?RioRGaOkU2d/I2EZSh6BxpEZklufUS97bTLfStE4Qdu5tm5pcPik2OvkVdue?=
- =?us-ascii?Q?XCZYiLbSeZ/+wWftI9e2k0mCwUh6/Smz9nTOKE99zQGblRFM40WZcPPUmNu7?=
- =?us-ascii?Q?qxKqMoTj5qZcY4HHPbE62+5X6gU9hzfcVRJltkrNjsIAmixkl6qaTHAoYytY?=
- =?us-ascii?Q?dFyjpuuWKHjQhFRQ3fECIe6iIXQckO6c+v0UxVWzd74ch8gQvprFKpUrQAdn?=
- =?us-ascii?Q?EEDC68WxW9Vzjr/ubEwG0SIAfqrBwrT+9JymxdzTjE6FhS+bbGEthbh+u8yC?=
- =?us-ascii?Q?LOn5bsK3+yA24acThIaD7Dl/CRfvge24WJ7yoPt28qiBZGnSCjYXuvIrzRb+?=
- =?us-ascii?Q?5xjA+RX04TSZynmRU2t7Oqp3OgVWmftb3Gev+pYzIzUoo8WUSp2SjeAgma03?=
- =?us-ascii?Q?i2WZg9rt31gc24qSnExQSSTy0j3MTGCaqxZyy5HYpWAx3nwGhv6RnEi3bYf8?=
- =?us-ascii?Q?+Z+ojfyuojVC6rOWdyI74Tamoc1QjO5KbNU8pJ22zAlxDKTdLPiFpB31mKnx?=
- =?us-ascii?Q?YAaUsLwFTGbDgEXtM8iHlf6QczY36higCvzDe1scy3DLX/JWkBpWOHUeQ5q2?=
- =?us-ascii?Q?uJBLMvPYeVSI2kfYHs7oqDwlck80P+tpIKVWnuEAdDjb2xeoLyvG0EfESl3o?=
- =?us-ascii?Q?5N7AZAifwUxBkLjrZvj/tZa2M8HUxwRQT7UOAZLea3vUgbMByMDLaNucKB3f?=
- =?us-ascii?Q?tcnXNyjwEY+65hoepTlF0yecClMim2rBrqBdjJ+Hm4GhRpIAV5UBVMHLDE6d?=
- =?us-ascii?Q?fmuwHzNgKYqE+8TYKheRq42qD0OPEC9Kgj5lASp5kK18qVymbHqlFrfRB+rD?=
- =?us-ascii?Q?mt69PAt8Hh/G+lTO+/SjkwOABSP7hMbZnElCjyLg7YcY8T60MfedlCJCqo5F?=
- =?us-ascii?Q?NcJVS08f94kKRuzzzRBGLVVbFunq+WQVt2yS+hBS?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Oct 2025 09:44:49.7344
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: b16330fb-16a4-48a5-4bba-08de12e1f9b0
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL6PEPF00022570.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6788
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4A24B2000C
+X-Stat-Signature: izdu7cj8rto41gfi8hrfyhr6kuh1wrb4
 X-Rspam-User: 
-X-Stat-Signature: 7her7n4shys44podgwu8n6ckhfsf68ym
-X-Rspamd-Queue-Id: CFD481C0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761299095-84960
-X-HE-Meta: U2FsdGVkX19rZgo04iNVz2Fjy/ZIOjgO2uoFWi1JNgDkrxe++i3uPwh4z6FOtrmIoI//fTuiQujy/zr2aWGUQbBOQlcc8KhzXtqSoSrt42Vn7M3p4GtZfutNUfwlVCE0XHDufYbJ2SP83cYVDqYOD5/Wj9xA6Zb7ognhgPBfUZpaHlcBEksGX6FeFekYyzNhVUPLy1RXYp3qDxxQ+VV9NUMqCOe5q1slC+wARt0Dpq6DTfEKgoLYVJNLUqxTuNCzrWWzCfB/+MQ8wEjg002+kIkalQOyZ13UBva5tHGxcUsOmnsMnlPq/PW8JUocJbjhhJQbNpsHk7dqj8zU+TYo2Kl5bV5HxO+RdoHr+q747D73Ww/vxSSt9SeIrDOt0CQTvdAsMFWWgMFV5fsb01R9gTQyHGit9fol5kWz4HNv7TWL5r0Gvsn1Y7WveA7QN9eK3DjjHFHGuxR4/gEx5/1BxcHLpfLCUoax+pSgS2jaqbTp9uoJwnNmhAKBbGS31MIHrL5Ip/aDQ3at1jsd2V9N1lmO9BPU1rmZehGvLKmw9fQC+RLaZ8rbxQ0ppZtFap9JM85IZfWWSGDzUeN2U+T5uKth/ovnB0tK2UC+jxHPuJxGSJ7UFfYy/c49TuBwoRl/Nl91/apHHbzjVv1q4VU4h67NzWUJ+R4KHPkc49zykOgEYfE6VKtI8HdtSre9t9RUreUmbyd19q/DHL/MX9/AUxOXvi1f4mIUo+Fs53XDD1B0zwGPaYAfxtlbrWczHaWOfoKU4idTcuNHcjO9glOOjNNAWgHK2/vchC2b5tNSKDx6Oei1XggbFc/XQ4Oiu3de2/JVK98MrOBySGLqasjD6afURy/TYLCJR4+Hgsj5UVyMbCZ6tUCjbBr0KxzKFCJrw43uCr0uSFy8kXdscjF7yDvA6XdQ4yNIvieLLuznY9ojJDrznTEPd3JI653RInfrokyEskvN+mLiTkZ/KSe
- 5IBDXOSl
- hwzy5KrW6e6svGv/oBWjrsa4iYKlzloPwecU6Vh4vNXIDahLDLDXmJVoedmVV0A5k+awWnuN2Li861MiCIw5iQwDaOxG05AAuYR5f/Bu900XomQkgQhvBRYHd6eiHdEy8/e54yRiPc63J435Uadx2OOCqr1weXDFZAxfvlTp32TIyV/gdJFjHHLZ6lCV+L5ntuRKTWYB4Z/IOU23cT30snBGcyVy/DD0vWaGHqOh/kngDjQ1ghO82CmWxc+Xi6XWD1orx31QFctm17sd9vAxoKpzO0V8INws1dHZphZw+yZ+ftcJn0IfsyzszkU2iQOri6xRc6J7mX7ZLtzr0KxTwOXZUuAdTgx/bcUpNcCY3Z9jFDwgUmbI97hDUpf06twag8qKwEme3023xgKNGTtlTc4atRvxU07amviJQpISUZAqTLvv1WXVdQKMYO9QQuLmtzoPWXxJ+BvZpAHXfT2yp64UKJkDqzY7ggfUnYFKUTFQjg2kzFSX60Rmh8cGKn10WTmVqcd7tu98rP8jNXzycgifDi+Ty5YFCr2yO
+X-HE-Tag: 1761299151-897442
+X-HE-Meta: U2FsdGVkX1/SwgklOm5lcTre88gyzyltwustFPkDOBx2EvW/MQGoNum0S0oMdT6yEqbDCFzkx7H7OzLCv5Wt5d6ogNpfcZ/MI5IFyChzDl3vrxP7gd70Qeht0UGO4kvFlC2hKsqaZRCFMwAmUQ4T+7dAdIlxvKS7NdFPPtFIM7hChm2TVKxklPYzsXNLNcdNOJByofdp001jJUOmhnwt4m/1syLjOONptAnq72mgZbm0b6oYeoPTDMng6a1NTpDocyonZsGdXTLZQ6wO7KBVnVNEBjOvkxlMTpBuOH38F3BqKa2w0EzKpOu5qt8feKYUqGedQ5kOWHf6LQI7FC8AuIl0o7Wxfbq6GUaGStPj2wDX/NuaSwkXuefZ0J6Cdu1XG32ThlWH6Y0wMHeWp4hG742Hf4p9nlp31/mjGy/KH15fZTFTbb5KUR5mpVj1+OIvBNo0d3wO8E8O9yeMTSnQ82tbdwp8jWMxsriNcln/hd1Ei7F1rF8J00mBI8oB71VIjGXUBm5Bv0DjQatnAeYRNp5e1yR4Kz7wISzx+Hg8Nhyzmu1tHrE+hEnV6dnBpNbtOPmz2DqCYR4aza6Fh7bnub9eJoJ7FP7Wb7+lcwONWwTuYZ+qozAWMOJLKPpiqk4mb3rlXJhOFKppZU5O0C8FOcg3ruqXgGpABtjz/qQT2+F7A29ldLtEFCIXqVjLPphhmzyaIG69xhJFX4vILsMlLpRs7KJ2vaWoN8VBSJliHtPSlhTnYvDTk9WiPkJa7lA4DQotZnoAL+AhhgZOnjKXiq6HOCBFgWTSxZzbY70X4MTQBPZoLMPcFUPlKAv1HPtX/+4ZbPxdsr8qG6jDtit5cb54G0vQlZptfKMujLDC6DnQuJ2z4Zg+nQ7x2dzfqNNR4SiCojnAoQ6qVhhv7AJBi0sSafjLaGhthg3Uwsp5u21AyksHS0TadO20YICsWwe1r6t71KR+KgWvzL9CjsH
+ jIKh4ubi
+ uyKns76ScUPVgcL4q62zR3jcYD3IOt9Tp+rtHFGDZJNxCWum39W3O6wm2Me31Df3MxakV3McRnhaobxhu3dI8fFLbNT5smYBvIlGdkIEUcV6jnLJDmJ67eh0fd2qcfZfa0IGrc52KFBCwtbuVS2x2evvaZeaCRMgGE9DMirI3daR6Jjk8sQ/+vhrf386ob+y/Wq4RG2e8I5hJuUteNnYGjzVOwJwl4PcKyEOPBmaK91ju5WiFEyvWcyR47rGinRvL4uQdCqieGbBQysB782flg4ctWZX2GgTRMeH5H6m35h/jv//zG4qCHyxEZvdOwlS4RoGC2wSyYqjnmDQ4mgIcZou91B68qOCkfQHf1CYq0DJcY9Nk8I0MXn3FXxR8UqNo8gbhvitauy2SVp2BAM/L1yqYY/5ZwqQJZopgM4STyQ6W4+fOPRZzfZlcxtqB2L7n39/oeRk0GrElhVuoEF9jQ3j94MPc/IYrgmDVropVm2gsV6LagS8qRCXPIVrqOuoJH3mNu5XRM/iSAfs327hhQJZx+3ZtO39/cLjXdz/nU1J/mwL9EnWA8zLHUlw/+YtNOa0aVM6ekxDkJ8SVENAIaI0snel2R9/1LyHeEeD4scIA9NStdJY+V4IX6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -174,112 +98,190 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The function hugetlb_reserve_pages() returns the number of pages added
-to the reservation map on success and a negative error code on failure
-(e.g. -EINVAL, -ENOMEM). However, in some error paths, it may return -1
-directly.
 
-For example, a failure at:
 
-    if (hugetlb_acct_memory(h, gbl_reserve) < 0)
-        goto out_put_pages;
+在 2025/10/21 18:23, ankita@nvidia.com 写道:
+> From: Ankit Agrawal <ankita@nvidia.com>
+> 
+> The kernel MM currently does not handle ECC errors / poison on a memory
+> region that is not backed by struct pages. If a memory region mapped
+> using remap_pfn_range() for example, but not added to the kernel, MM
+> will not have associated struct pages. Add a new mechanism to handle
+> memory failure on such memory.
+> 
+> Make kernel MM expose a function to allow modules managing the device
+> memory to register the device memory SPA and the address space associated
+> it. MM maintains this information as an interval tree. On poison, MM can
+> search for the range that the poisoned PFN belong and use the address_space
+> to determine the mapping VMA.
+> 
+> In this implementation, kernel MM follows the following sequence that is
+> largely similar to the memory_failure() handler for struct page backed
+> memory:
+> 1. memory_failure() is triggered on reception of a poison error. An
+> absence of struct page is detected and consequently memory_failure_pfn()
+> is executed. 
 
-results in returning -1 (since add = -1), which may be misinterpreted
-in userspace as -EPERM.
+This step depends on PATCH 2. I suggest reordering the patches so that
+PATCH 2 comes first, which would make the series easier to review and
+understand.
 
-Fix this by explicitly capturing and propagating the return values from
-helper functions, and using -EINVAL for all other failure cases.
+> 2. memory_failure_pfn() collects the processes mapped to the PFN.
+> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
+> poisoned PFN using kill_procs().
+> 
+> Note that there is one primary difference versus the handling of the
+> poison on struct pages, which is to skip unmapping to the faulty PFN.
+> This is done to handle the huge PFNMAP support added recently [1] that
+> enables VM_PFNMAP vmas to map in either PMD level. Otherwise, a poison
+> to a PFN would need breaking the PMD mapping into PTEs to unmap only
+> the poisoned PFN. This will have a major performance impact.
+> 
+> Link: https://lore.kernel.org/all/20240826204353.2228736-1-peterx@redhat.com/ [1]
+> 
+> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
+> ---
+>   MAINTAINERS                    |   1 +
+>   include/linux/memory-failure.h |  17 +++++
+>   include/linux/mm.h             |   1 +
+>   include/ras/ras_event.h        |   1 +
+>   mm/Kconfig                     |   1 +
+>   mm/memory-failure.c            | 128 ++++++++++++++++++++++++++++++++-
+>   6 files changed, 148 insertions(+), 1 deletion(-)
+>   create mode 100644 include/linux/memory-failure.h
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 520fb4e379a3..463d062d0386 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -11359,6 +11359,7 @@ M:	Miaohe Lin <linmiaohe@huawei.com>
+>   R:	Naoya Horiguchi <nao.horiguchi@gmail.com>
+>   L:	linux-mm@kvack.org
+>   S:	Maintained
+> +F:	include/linux/memory-failure.h
+>   F:	mm/hwpoison-inject.c
+>   F:	mm/memory-failure.c
+>   
+> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
+> new file mode 100644
+> index 000000000000..bc326503d2d2
+> --- /dev/null
+> +++ b/include/linux/memory-failure.h
+> @@ -0,0 +1,17 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_MEMORY_FAILURE_H
+> +#define _LINUX_MEMORY_FAILURE_H
+> +
+> +#include <linux/interval_tree.h>
+> +
+> +struct pfn_address_space;
+> +
+> +struct pfn_address_space {
+> +	struct interval_tree_node node;
+> +	struct address_space *mapping;
+> +};
+> +
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space);
+> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space);
+> +
+> +#endif /* _LINUX_MEMORY_FAILURE_H */
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..0ab4ea82ce9e 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -4006,6 +4006,7 @@ enum mf_action_page_type {
+>   	MF_MSG_DAX,
+>   	MF_MSG_UNSPLIT_THP,
+>   	MF_MSG_ALREADY_POISONED,
+> +	MF_MSG_PFN_MAP,
+>   	MF_MSG_UNKNOWN,
+>   };
+>   
+> diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
+> index c8cd0f00c845..fecfeb7c8be7 100644
+> --- a/include/ras/ras_event.h
+> +++ b/include/ras/ras_event.h
+> @@ -375,6 +375,7 @@ TRACE_EVENT(aer_event,
+>   	EM ( MF_MSG_DAX, "dax page" )					\
+>   	EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )			\
+>   	EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )		\
+> +	EM ( MF_MSG_PFN_MAP, "non struct page pfn" )                    \
+>   	EMe ( MF_MSG_UNKNOWN, "unknown page" )
+>   
+>   /*
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index e443fe8cd6cf..0b07219390b9 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -777,6 +777,7 @@ config MEMORY_FAILURE
+>   	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+>   	bool "Enable recovery from hardware memory errors"
+>   	select MEMORY_ISOLATION
+> +	select INTERVAL_TREE
+>   	select RAS
+>   	help
+>   	  Enables code to recover from some memory failures on systems
+> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+> index df6ee59527dd..acfe5a9bde1d 100644
+> --- a/mm/memory-failure.c
+> +++ b/mm/memory-failure.c
+> @@ -38,6 +38,7 @@
+>   
+>   #include <linux/kernel.h>
+>   #include <linux/mm.h>
+> +#include <linux/memory-failure.h>
+>   #include <linux/page-flags.h>
+>   #include <linux/sched/signal.h>
+>   #include <linux/sched/task.h>
+> @@ -154,6 +155,10 @@ static const struct ctl_table memory_failure_table[] = {
+>   	}
+>   };
+>   
+> +static struct rb_root_cached pfn_space_itree = RB_ROOT_CACHED;
+> +
+> +static DEFINE_MUTEX(pfn_space_lock);
+> +
+>   /*
+>    * Return values:
+>    *   1:   the page is dissolved (if needed) and taken off from buddy,
+> @@ -957,6 +962,7 @@ static const char * const action_page_types[] = {
+>   	[MF_MSG_DAX]			= "dax page",
+>   	[MF_MSG_UNSPLIT_THP]		= "unsplit thp",
+>   	[MF_MSG_ALREADY_POISONED]	= "already poisoned page",
+> +	[MF_MSG_PFN_MAP]                = "non struct page pfn",
+>   	[MF_MSG_UNKNOWN]		= "unknown page",
+>   };
+>   
+> @@ -1349,7 +1355,7 @@ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+>   {
+>   	trace_memory_failure_event(pfn, type, result);
+>   
+> -	if (type != MF_MSG_ALREADY_POISONED) {
+> +	if (type != MF_MSG_ALREADY_POISONED && type != MF_MSG_PFN_MAP) {
+>   		num_poisoned_pages_inc(pfn);
+>   		update_per_node_mf_stats(pfn, result);
+>   	}
+> @@ -2216,6 +2222,121 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
+>   	kill_procs(&tokill, true, pfn, flags);
+>   }
+>   
+> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
 
-Fixes: 986f5f2b4be3 ("mm/hugetlb: make hugetlb_reserve_pages() return nr of entries updated")
-Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
----
- Addressed commenst from v1. Thanks!
- https://lore.kernel.org/linux-mm/20251022102956.245736-1-skolothumtho@nvidia.com/
----
- mm/hugetlb.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+I have a design consideration here. Non-struct page PFNs typically
+represent device memory managed by device drivers through their own
+memory allocators. These drivers are responsible for allocation and
+deallocation of this memory.
 
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 795ee393eac0..b6c0024ff5a5 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7269,6 +7269,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	struct resv_map *resv_map;
- 	struct hugetlb_cgroup *h_cg = NULL;
- 	long gbl_reserve, regions_needed = 0;
-+	int err;
- 
- 	/* This should never happen */
- 	if (from > to) {
-@@ -7308,8 +7309,10 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	} else {
- 		/* Private mapping. */
- 		resv_map = resv_map_alloc();
--		if (!resv_map)
-+		if (!resv_map) {
-+			err = -EINVAL;
- 			goto out_err;
-+		}
- 
- 		chg = to - from;
- 
-@@ -7317,11 +7320,15 @@ long hugetlb_reserve_pages(struct inode *inode,
- 		set_vma_resv_flags(vma, HPAGE_RESV_OWNER);
- 	}
- 
--	if (chg < 0)
-+	if (chg < 0) {
-+		/* region_chg() above can return -ENOMEM */
-+		err = (chg == -ENOMEM) ? -ENOMEM : -EINVAL;
- 		goto out_err;
-+	}
- 
--	if (hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
--				chg * pages_per_huge_page(h), &h_cg) < 0)
-+	err = hugetlb_cgroup_charge_cgroup_rsvd(hstate_index(h),
-+				chg * pages_per_huge_page(h), &h_cg);
-+	if (err < 0)
- 		goto out_err;
- 
- 	if (vma && !(vma->vm_flags & VM_MAYSHARE) && h_cg) {
-@@ -7337,14 +7344,17 @@ long hugetlb_reserve_pages(struct inode *inode,
- 	 * reservations already in place (gbl_reserve).
- 	 */
- 	gbl_reserve = hugepage_subpool_get_pages(spool, chg);
--	if (gbl_reserve < 0)
-+	if (gbl_reserve < 0) {
-+		err = gbl_reserve;
- 		goto out_uncharge_cgroup;
-+	}
- 
- 	/*
- 	 * Check enough hugepages are available for the reservation.
- 	 * Hand the pages back to the subpool if there are not
- 	 */
--	if (hugetlb_acct_memory(h, gbl_reserve) < 0)
-+	err = hugetlb_acct_memory(h, gbl_reserve);
-+	if (err < 0)
- 		goto out_put_pages;
- 
- 	/*
-@@ -7363,6 +7373,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 
- 		if (unlikely(add < 0)) {
- 			hugetlb_acct_memory(h, -gbl_reserve);
-+			err = -EINVAL;
- 			goto out_put_pages;
- 		} else if (unlikely(chg > add)) {
- 			/*
-@@ -7423,7 +7434,7 @@ long hugetlb_reserve_pages(struct inode *inode,
- 		kref_put(&resv_map->refs, resv_map_release);
- 		set_vma_resv_map(vma, NULL);
- 	}
--	return chg < 0 ? chg : add < 0 ? add : -EINVAL;
-+	return err;
- }
- 
- long hugetlb_unreserve_pages(struct inode *inode, long start, long end,
--- 
-2.43.0
+Rather than having MM maintain metadata about these PFNs, have you
+considered adding an operation callback similar to
+dev_pagemap_ops->memory_failure? This would allow device memory
+allocators to:
 
+- Maintain their own metadata tracking poison status (similar to
+   TestSetPageHWPoison())
+- Handle device-specific requirements for memory failure
+- Provide more flexibility for different types of device memory
+
+Thanks.
+Shuai
 
