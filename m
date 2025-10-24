@@ -4,99 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 044CECCD1AB
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 12:09:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26226CCD1AB
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 12:11:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4062B8E0082; Fri, 24 Oct 2025 08:09:36 -0400 (EDT)
+	id 8291D8E0083; Fri, 24 Oct 2025 08:11:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 38F2D8E0042; Fri, 24 Oct 2025 08:09:36 -0400 (EDT)
+	id 7B1238E0042; Fri, 24 Oct 2025 08:11:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 256EC8E0082; Fri, 24 Oct 2025 08:09:36 -0400 (EDT)
+	id 6799D8E0083; Fri, 24 Oct 2025 08:11:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0CFA48E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:09:36 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9CDA1C0794
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:09:35 +0000 (UTC)
-X-FDA: 84032888310.18.949E68D
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 78E2116000A
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:09:33 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id 4DEDA8E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:11:16 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1567249881
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:11:16 +0000 (UTC)
+X-FDA: 84032892552.21.D950BAA
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id CC35F40011
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:11:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gw12pWJ4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="b2hgw/mR";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gw12pWJ4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="b2hgw/mR";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761307774;
+	s=arc-20220608; t=1761307874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vx0WzEGRG5T7hv6IU1TBe8wwTw3a6x50Kf2p0I05e9s=;
-	b=8UpChff8El6hzVw5N6zt6MWtHyA5ITdOgmcUPqVygu76z+TmBLHAJHeywrvKiWK9X4HYc2
-	2zjLnBveB67Y9BPZgVm2ewsDQevHUtnhAjhm0S/93UsUjcFgJdw8VJvanNfXY0EFgS4h4C
-	OL+FUTd/i/tNKychJcwgq7FJSesIPfE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761307774; a=rsa-sha256;
-	cv=none;
-	b=7htgcSCeyD0ZkPLmDA+6FNBl94ZlgoRbQDQW7XVlKzq4d7ickR0cqGH5JPv6S1MvkAy62i
-	F3XAFkLycZyA2MZPNfW5VS37HIXtR/sVMOkyTt21FUK6LGoHWzNgV8WxCCmqiweRE6Nfwo
-	Q5PmcyVy7DgkQp6eQtjZ9A4EOyHzUZA=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NenQ2Wom+07dIl2jW8BeU68cV0chgqY+KBmPwDVWLbw=;
+	b=YOLAOK7liDQ/E+SZNZ2ry9An2YWXh8EKaUT4RDmYILcXWkoHHoUB49BDPiDNm418R4/lyH
+	Ri+W4TqjKnaP3mBh3bKIk0CA0joEXWr/ppaBKdq3Z4Pepd3ZGWRffDOcGdNqx7cgIX62w0
+	32IJk0jSdZHFXsLfVRByppbJ5SFtifQ=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf08.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C614106F;
-	Fri, 24 Oct 2025 05:09:24 -0700 (PDT)
-Received: from [10.44.160.74] (e126510-lin.lund.arm.com [10.44.160.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BA303F66E;
-	Fri, 24 Oct 2025 05:09:24 -0700 (PDT)
-Message-ID: <604f26cb-46c6-4533-8110-0b174eed821d@arm.com>
-Date: Fri, 24 Oct 2025 14:09:21 +0200
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gw12pWJ4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="b2hgw/mR";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gw12pWJ4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="b2hgw/mR";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761307874; a=rsa-sha256;
+	cv=none;
+	b=ode2cQ/0QfGkgpj4tv71dkCyOL+eQfo1VoN2Y3hdUjcJbp4BDaF4LmRdhiQTnrI5n/FoxI
+	7/SZYxJyNsQ+aiICjUyE0KTlzPzDSHhTbz2SPlb+KFQOIq30Kki5iQVN9CgTa5lkgCKS/h
+	YOzbUfM+SRWi6ZzGOXYM2nitqRCj/nU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 47B581F38D;
+	Fri, 24 Oct 2025 12:11:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761307872; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NenQ2Wom+07dIl2jW8BeU68cV0chgqY+KBmPwDVWLbw=;
+	b=gw12pWJ4dBervOkm4c1wdpprEpUqlQeWPArxYlUpX+1wjQaYgBlWw9o1llMEE7NqtHZ00v
+	Xwu5paU0pUZgqU7j4Y44qNPMavuA+1pvb4L6prQKH89bIn60BpNivnCVRYVnb+NV/td2lB
+	+uPdROXqPLp7tKETWM5DKokgMabTyEE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761307872;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NenQ2Wom+07dIl2jW8BeU68cV0chgqY+KBmPwDVWLbw=;
+	b=b2hgw/mRbq2JF7vAhHufNUG/FiOVZulsx+5sZnxygRLE3d2wabKfCkXCLqn+k97//SK6wt
+	jbZRwwG/DEKPw0Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761307872; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NenQ2Wom+07dIl2jW8BeU68cV0chgqY+KBmPwDVWLbw=;
+	b=gw12pWJ4dBervOkm4c1wdpprEpUqlQeWPArxYlUpX+1wjQaYgBlWw9o1llMEE7NqtHZ00v
+	Xwu5paU0pUZgqU7j4Y44qNPMavuA+1pvb4L6prQKH89bIn60BpNivnCVRYVnb+NV/td2lB
+	+uPdROXqPLp7tKETWM5DKokgMabTyEE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761307872;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NenQ2Wom+07dIl2jW8BeU68cV0chgqY+KBmPwDVWLbw=;
+	b=b2hgw/mRbq2JF7vAhHufNUG/FiOVZulsx+5sZnxygRLE3d2wabKfCkXCLqn+k97//SK6wt
+	jbZRwwG/DEKPw0Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 207C413693;
+	Fri, 24 Oct 2025 12:11:12 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id S0znB+Bs+2iwNwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Fri, 24 Oct 2025 12:11:12 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 7DA6CA28AB; Fri, 24 Oct 2025 14:11:07 +0200 (CEST)
+Date: Fri, 24 Oct 2025 14:11:07 +0200
+From: Jan Kara <jack@suse.cz>
+To: Christoph Hellwig <hch@lst.de>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov <lucho@ionkov.net>, 
+	Dominique Martinet <asmadeus@codewreck.org>, Christian Schoenebeck <linux_oss@crudebyte.com>, 
+	Chris Mason <clm@fb.com>, David Sterba <dsterba@suse.com>, Mark Fasheh <mark@fasheh.com>, 
+	Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Josef Bacik <josef@toxicpanda.com>, Jan Kara <jack@suse.cz>, linux-block@vger.kernel.org, 
+	v9fs@lists.linux.dev, linux-btrfs@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, jfs-discussion@lists.sourceforge.net, 
+	ocfs2-devel@lists.linux.dev, linux-xfs@vger.kernel.org, linux-mm@kvack.org, 
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Subject: Re: [PATCH 07/10] mm: remove __filemap_fdatawrite
+Message-ID: <kxl45u4l5u6vrecxj4ib7uxmptv6x6heksachfymh3ffu7xl3d@bza4durxfmhp>
+References: <20251024080431.324236-1-hch@lst.de>
+ <20251024080431.324236-8-hch@lst.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 03/13] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-4-kevin.brodsky@arm.com>
- <60c55686-87dd-46d0-884e-80f7d423663b@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <60c55686-87dd-46d0-884e-80f7d423663b@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024080431.324236-8-hch@lst.de>
+X-Stat-Signature: hoebfrndifazna4fbhjaziu6owquw7ob
+X-Rspamd-Queue-Id: CC35F40011
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 78E2116000A
-X-Rspamd-Server: rspam02
-X-Stat-Signature: h5etc985e4h56w5noiqqcpkm1gr1efeq
-X-HE-Tag: 1761307773-979397
-X-HE-Meta: U2FsdGVkX19AOR2HQ852iEFKhQl/flmeHWE/vDoFJ7qNB60Vcghw+Fc3zv2fdW0RA9s6wBq/zGt+0mr5reqonI2hRwv+MVNX2N/DUsKoMUZw85jXjWKb1VV0mRkJ3L5wTb6th414rlmIDHtDg727lIg+4cxb5wYB0V1fcILTBxjZnfTHDPQ+hWysEzYAy7Xs/ZtU03nmZ4EYkhkylcMDieXc/UuCkHbmJWXZGBx2nymjrk25aRbpRNvBV03466+mOQ74TXHnFfIwrokBL4qxWIR/1B7J4m3ilH1HGclJjahSQBe8s07ycAM1+/Ha+zsV0WFSVj0tQ/0NzXX7oizKg2Hl1MYhwkqi2qAO972Ypa0utUCbcTi5feWL7ioFnzmd6qsLbGaC48lrmINyoiD8CWIo04kn22kHOayUAi2A0tFzhQawKW0scQYGDCVh030A9LQ2a1YNOeCW6UWA5TwZK1ls18xlXhlmf+6BCVPXFtdcOq0JsF7DtmbTnFqJX2L16SzZZs6s/2MgPQn27g9aq4x56QpqBC1YURGP9+O7OG0VtVfVz+IY2qaPwAcB3/tUXym5t8ocqJGOhavCZiDBbLM9OnDXKkZN6yGNQNJwdtjuQ4mYjUvfVXALifEX1liaEQ/ztmEi90g2iwMSKmi+qgGBSM+8SbMcWaDmQXW44oomLKkFckI1Tjn+LMpkbK4mhQJQpaCqu8f0LUqqjrZ0RtlemxSTWRJKlOlCgD4g79uLrrfGoP/OhpgYf5tBTPR3aHzt1luG6Qt2g2Ic6nwTyo1MztIel2XRbtiGOBAoh/dIF2PtLvzKYDwfd9Q2L7tvzorw9ml58nYS/geF5Ckzzog7//lJDc/1rUb1TgkSopSMBG+HHGrUrQRXqWKPad81jg+byjaLbgtaYcE9bMm0E8cl6B8mCjKLIZ0rbATkWoh49UOabFJi0G+pPczdAEhtJuoKXIHwLkW80Z+xERh
- al15x4TD
- lr82ukeXWRvrAseIz8gMzCwn5Gmj09fxKW80Mrw3DdhecpLegC9HIXvKQB8at/cNXVSgM9epNrPzI8DdU0qDepE2H6hoFR4z7oVcZ4N1vRbm9o8OsJU7ZbRxtYK6TsnluGa5n6qjisARn961kFAH4scfunPFD/6JbuFvxeBSI9TUe435fUHG5wnrznDmyrjvjEkH13Ph0wuwL7jK3ttesL7OfGw==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761307873-915807
+X-HE-Meta: U2FsdGVkX1/MAZZ/lJ01UHhcjPsRjeWB0K2X7MstLjNSuT7+AttUM74oLdW25/4gHflcIBFiqnSvPgWA/gVOlssl5/UtZNer+XY5YstEvPw/DuG03K0HeV1Qo+qRq8ETY8hA1o2GoXji2eUT+2sqOHrlfPLMWvjzUzWdGtp77H1a+CYl0eoecjseKz1t88CTnqbhaqX29zKBdIIUUOJodnjGlpHDwBNwTpodnca90sDDSmh/8mvS7VlYQ06fOH8L/BQS2CsNx53sBkZ2ugLlm7QBc4Ecf70oBKC1+yrMPHIxnOdYq4IyZkrSRWGWRmeg4PmsOy+23XLG96i3TXzB1QIpHeHlLT4blX6fJlvJCpjGh0GHc7v0UGdJ1ZYQ4PJ7PoNMoj510ab8Vrotr7Ya3SaICaAL/f+BAdBHgu+xcHat0HrZ5daMoX8USUmsKdekB8paNv2OqBfie/PsCCBCdWtv5goRwtcDvcGQjgElEsz7n5Tntqsmlkutye8JE667GvvomcegGwDQAJ/Kk0ZLuaKW6hJ0fweBOT49CuOkq1FzYSDrg47NWU5LaCFHpmCbYMYsqPQlN1tzm0sfptXYQZUps3V4v94rmxvD+TTBgp0rME3KMRRdJJBBg6xEJ8WU9ZGioK+YAJ1XO6fOrMGfcAyhtRYOtB7hLacXr/5O7zLE4MVOy7R2Sl6zKO7lICj6//AW0BHh3cSKHZs6nA7TowPkyaWVwF1nncOm8YD8f5cbXmZ6XaSj8hgrCCXdg/lc8eYgpf3gfuTSNIqw3aw5YyAJs+bD0jFmAZyE4NYTiHzgLBhRiMIa0eCAYQUnBkWCWqNNkfy8vsz9IW+c8my7N0D8EDLJ5Yph4k0ucwndbATunOjWJOETKjtB8jwEKmLT0Vz81ecrNhwPr2Af49lcecXAdELOF5TEGh2SyKFGY6sEghS0QGaYP826vvGZbDS+CLvFXsVkFzzA28eyaq2
+ QnSv5fUr
+ slJ8dPd9KKFTPxvSwkQ0JXDxWQP0hK+e/fx8dnfewi+KQu/KpZRtyZDeFqc+bkSdgD/9xIS7LiPhJ5SPr8Zl5OwC9gzOs2ylBpuLnd11jP5loYpOPaJ+zD+di95vTfQS4acU/Ztn7iC5Yw6xS+Ffg5u1JGBNDuSxLRL6dgSnGBYkbYU2pTSonJNm995SP0mO1lu7KmPh4fSzv8VUASwGdAjb4m2DIUalADJB+gDJwTWZXgn8jMWQrPmFLSWACzotDCsAEKXJ8sBlPBxWuTj2aRSZeEMhX8wa+vE/F7yvK5pBa2eI87YMIjCmgOEtURIEwGAlD/ss2httP1z5tHpj1bn+SdP9vakrk9FDDlj9jAdAhzVEhUBnlTETHjZNn+bpdwcQrvt6ZRLFe0eeGrrNfuTc4IQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,32 +142,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 23/10/2025 21:36, David Hildenbrand wrote:
-> On 15.10.25 10:27, Kevin Brodsky wrote:
->> [...]
->>
->> diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> index 146287d9580f..7704dbe8e88d 100644
->> --- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> +++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
->> @@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
->>       batch->active = 1;
->>   }
->>   +static inline void arch_flush_lazy_mmu_mode(void)
->> +{
->> +    struct ppc64_tlb_batch *batch;
->> +
->> +    batch = this_cpu_ptr(&ppc64_tlb_batch);
->
-> The downside is the double this_cpu_ptr() now on the
-> arch_leave_lazy_mmu_mode() path.
+On Fri 24-10-25 10:04:18, Christoph Hellwig wrote:
+> And rewrite filemap_fdatawrite to use filemap_fdatawrite_range instead
+> to have a simpler call chain.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
 
-This is only temporary, patch 9 removes it from arch_enter(). I don't
-think having a redundant this_cpu_ptr() for a few commits is really a
-concern?
+Looks good. Feel free to add:
 
-Same idea for patch 4/10.
+Reviewed-by: Jan Kara <jack@suse.cz>
 
-- Kevin
+								Honza
+
+> ---
+>  mm/filemap.c | 18 ++++++------------
+>  1 file changed, 6 insertions(+), 12 deletions(-)
+> 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index e344b79a012d..3d4c4a96c586 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -422,25 +422,19 @@ int __filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
+>  	return filemap_fdatawrite_wbc(mapping, &wbc);
+>  }
+>  
+> -static inline int __filemap_fdatawrite(struct address_space *mapping,
+> -	int sync_mode)
+> +int filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
+> +		loff_t end)
+>  {
+> -	return __filemap_fdatawrite_range(mapping, 0, LLONG_MAX, sync_mode);
+> +	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_ALL);
+>  }
+> +EXPORT_SYMBOL(filemap_fdatawrite_range);
+>  
+>  int filemap_fdatawrite(struct address_space *mapping)
+>  {
+> -	return __filemap_fdatawrite(mapping, WB_SYNC_ALL);
+> +	return filemap_fdatawrite_range(mapping, 0, LLONG_MAX);
+>  }
+>  EXPORT_SYMBOL(filemap_fdatawrite);
+>  
+> -int filemap_fdatawrite_range(struct address_space *mapping, loff_t start,
+> -				loff_t end)
+> -{
+> -	return __filemap_fdatawrite_range(mapping, start, end, WB_SYNC_ALL);
+> -}
+> -EXPORT_SYMBOL(filemap_fdatawrite_range);
+> -
+>  /**
+>   * filemap_fdatawrite_range_kick - start writeback on a range
+>   * @mapping:	target address_space
+> @@ -470,7 +464,7 @@ EXPORT_SYMBOL_GPL(filemap_fdatawrite_range_kick);
+>   */
+>  int filemap_flush(struct address_space *mapping)
+>  {
+> -	return __filemap_fdatawrite(mapping, WB_SYNC_NONE);
+> +	return filemap_fdatawrite_range_kick(mapping, 0, LLONG_MAX);
+>  }
+>  EXPORT_SYMBOL(filemap_flush);
+>  
+> -- 
+> 2.47.3
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
