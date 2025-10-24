@@ -4,95 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2FB39CCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:08:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B37F4CCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:08:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F33F8E00DE; Fri, 24 Oct 2025 13:08:08 -0400 (EDT)
+	id 0DECA8E00DF; Fri, 24 Oct 2025 13:08:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CAFF8E00C9; Fri, 24 Oct 2025 13:08:08 -0400 (EDT)
+	id 0B6398E00C9; Fri, 24 Oct 2025 13:08:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7E1998E00DE; Fri, 24 Oct 2025 13:08:08 -0400 (EDT)
+	id F35FB8E00DF; Fri, 24 Oct 2025 13:08:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6846A8E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:08:08 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 08F90160F1C
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:08 +0000 (UTC)
-X-FDA: 84033640656.21.6432B96
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 724B340007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="QELDE/ZC";
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761325686;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=VZAcH2AXEtG2U5Iheqq/WmefzweQEIuzetpMHbgaY3w=;
-	b=VD53jh/zcks9xV7hrJM4psSBpK1o3Kvu418FMxPxPzEgbJKoKN77uYFQ8o00L2ROgotAh5
-	rmYovQe622jbZqjy0nJ3IfJpTt+9eTPOBUQ7xc4eZE8b6Iw7KrDsa7Zm5M98uHPO/5SWz6
-	B1ksKRNAJ6Rc2R9r3eo77uVD77fY4iQ=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="QELDE/ZC";
-	spf=pass (imf12.hostedemail.com: domain of lkp@intel.com designates 192.198.163.8 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761325686; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DEE948E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:08:35 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 857C0160F2B
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:35 +0000 (UTC)
+X-FDA: 84033641790.09.12D0D7D
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 34F472000B
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:08:32 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J5nIVsHm
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761325713; a=rsa-sha256;
 	cv=none;
-	b=5l1f5D3/shJOp7dRott7bglc5acbzjvFMBiyVXzmtX4Bj7Z9qQPGOfEDBGLY4lv41KALhi
-	iGiRd3qIxVBCTMMztvxRZa7ahqDZp99Zokl9w44QCD8P7oe3MMq6/RR3Rs2gMtwMhEJFoz
-	zM9i+lfIZzxHlWGCpAFHhMGmYFcI3mA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761325686; x=1792861686;
-  h=date:from:to:cc:subject:message-id;
-  bh=SRlDA6FsKqeOjfaYL7Nv9b4OFKWFnxSCZBUnUN+vREU=;
-  b=QELDE/ZCmBjRuk8VE/DkELOjNHShnXUTGK01wZO8OxXlEuGZeATOBrML
-   HzcRqsqWH7CncxM5dB+FBTqLUQhWivczSKJAy8t0XPD3qR8Iwk68VPamD
-   dnxbx1YkahNVQ/ZvO1yr13Rwt9hDl/Nczxk5dG6bGhh2Uu+rBI/66oHT5
-   7qPZdkWwDws7OcCGkifYhxHDwtFz6qC1ZznMd6VHeTkts9kuGf/qKbOcW
-   BqmGdSlsjU0M3uSWpfqr5O95jS/KqVX6ykFbt1jUppJEq1Dzg2658Lkvn
-   713GZ2KG5Cw7BEUfWL2doSOIPkW8b0kVDkvOLv6wm89CbKzTjIN+FyDqY
-   A==;
-X-CSE-ConnectionGUID: r/5CHDUDTMqCt+2NWB39YA==
-X-CSE-MsgGUID: eWxlJvQVRqmF5EVm4oB1ug==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="81137563"
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
-   d="scan'208";a="81137563"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Oct 2025 10:08:04 -0700
-X-CSE-ConnectionGUID: nPuMrKkVRbiC9KDLeaRMEQ==
-X-CSE-MsgGUID: WXDFa2zwTvKJ+UvpUkigAw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,252,1754982000"; 
-   d="scan'208";a="208121461"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa002.fm.intel.com with ESMTP; 24 Oct 2025 10:08:02 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vCLGi-000Ei9-1m;
-	Fri, 24 Oct 2025 17:08:00 +0000
-Date: Sat, 25 Oct 2025 01:07:16 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master] BUILD REGRESSION
- 72fb0170ef1f45addf726319c52a0562b6913707
-Message-ID: <202510250105.SStKq3dO-lkp@intel.com>
-User-Agent: s-nail v14.9.25
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 724B340007
-X-Stat-Signature: kdidyfpaket9tgwsb43pz6coxxbpnhb7
+	b=6iHduAkZIxSvY28Q8S8VZbOoUcE7dkQYYnqnQiZQWuhgqm7dgzk+KvJBdF/hqyijDezYH4
+	BAQgk1FNeFBpOxRtg6Gr0eGvvzzLbCwotk6fwfpSWSxUUYa+rV54OY0eC/9w7GrVhBYBQc
+	pJlO9frLtfALNwmsZwR+g4vXIldVqes=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=J5nIVsHm;
+	dmarc=none;
+	spf=none (imf13.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761325713;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5ZW5olhctt8pQPRZxoAAJytfYIV9yoFEgRh2hZHi7Ks=;
+	b=VCDQ7rvTO1/Z5j/MQfXavpjDj1iXbeyuk29K/OtPvqxjHurMUV8LFCjWzNqjWqjyJBJ7U4
+	PYlnStRipmQXs9tdtpA8TNWzRExnAYusr1ziBf2vGoOKs+i42jwNtEo4e/jLZ1hBVdiBFR
+	zklln0CXs+SH11hAwQnPHJOUNcUNC8o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=5ZW5olhctt8pQPRZxoAAJytfYIV9yoFEgRh2hZHi7Ks=; b=J5nIVsHm9KMzkVsz+UUroU00Fy
+	B0yX4QuYTnVGZWEppX1RPvG05Ya1Bnz51s1AJe65eYrxxzRwoCOA4RVt5gmygFvqRUDZFocbE3UQs
+	1HVy2IFtL80K6uonYWg1UpSb3rAC2wl6znxX6WucN+F6j43yVzrWRifH7yfcQIhGt5dTTxqUsagLp
+	H+n/MYBlKaa+IX6FesApAibC2STndf1Xj3+n7P9XsebBEDOLNFY0QvJiyjezRRCttPrk8YkCDHoYa
+	+Ppr0gm4egEcU8CT6D/qzgEWn3ZX+sbq0EEB+zCVXSg8VbPfZIFvepHZcej+Q3hMIN6WWPHB7qfMd
+	dA/t7aPA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCLH7-00000005zMA-2jPO;
+	Fri, 24 Oct 2025 17:08:25 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-mm@kvack.org
+Subject: [PATCH 10/10] mm: Use folio_next_pos()
+Date: Fri, 24 Oct 2025 18:08:18 +0100
+Message-ID: <20251024170822.1427218-11-willy@infradead.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251024170822.1427218-1-willy@infradead.org>
+References: <20251024170822.1427218-1-willy@infradead.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1761325685-672466
-X-HE-Meta: U2FsdGVkX1/qnb1cSTD15TblKMvm2R2BGN7KkzkZ1NQheaiHiGT+98gAYWmlbmGZT2D4uWEXqfpT7hZcO2ogv7bMmxCRcCVJ2k8W5BzB+5A5hGLuswZnVsr2LqmadQqliWuF66w00wg5TyGGvrSrH9LJ8XIpySgORtwnGfdyslDnZWJ1DsMn5YWb7hi7tLCy+f+ALqxQ3ANfb9peCWxheUjLJ3mjx9Vz8+2RApETvaoCfR+UwW9O8uVetxfBSExpgd4i4W1C4IzG/cEc/v9W1DCJWYO2tWEs3SZ8wSQH4TkWDA9YmABPqtVOZrXGC0NBSgnUu0Lvdi1g/wGb3zuTRejUR6eywXCBuSiMtXYcajIdTQjwlFgGMy8WAyDlreC6svuEoCM0GSIwja/X8U0cU2CWl775DOSKXNE/tEFinBRKJkyG8Wbnhjo1fCzTGeqTXqkGg3LCtl3lmnk73chdXZYeNxxt/wV6J3wox1RPJKUs7GRVb5xzluMQ2sJ8GuLEqjvV6WSQsVTPs7W6NhmW0kSUlNbsv9qH/BaqA+C+842Aic6qqtfxHCdJt+xz104vt03kCJIfeLvHOkZaMFXy1haCRA0bmMW3QhV5V7V/jX1gzuNgZGt5pnDLTXuGnxc5bOa8xdqSQrxFCcWx0cOhUjENiNb7h7FJTel/7FFLa96KmgUQeYMbt2iRPKR/7sD3Nm0+c0DLrpqgwgmvHpA4BAqSIElQhNhNxIplhB+Dy4cvk5ING/9g1YvOBTnGtbMNQNOCfWKt0sRCCIreorj/Rm+KqA+0OGChE5bNQWibHygDTv7Nggv/MYXlvHE5OARW7/VloKB7V06AZsB7mWTcYIcj7d6qKl3jAQvvVK9g91Dr4x077RJm8gAkwW6/ASIrn7zpuSc2KL8q24DL2soDIVHVX9KRQvlvppX8Tjg5Dda1W3J/f5BxofRXIZZWhPCt5SMlwb2VNJCcO4ib2rn
- ARC3P7Ha
- IOZpmuHCaFhXrgh4McleNuqqPP4vDs91LmJ0FlRNSwE0OKjyyh9Dmx//Uvp+xjTXdzO80gRKG1L5MRw9Bb0k5w3XL3Cd47LsUV0hwDOnBo8D6bTVVAHxZIeeXupVvTGjBsOWDudIlDMf3UxTNr0+KS/1BqVeBUJz5MwqyJra4R4s0lXHSD8C1vei9gQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 34F472000B
+X-Stat-Signature: uzun14wsbbro9ft4i7889kb7oc73w56o
+X-HE-Tag: 1761325712-630878
+X-HE-Meta: U2FsdGVkX1/o9d2yLNDMPYUE+egFs3k76bBWgBr/jTa6NjJ5U5H83tGT/c9Q7yd0Jj17KkOjvXRUv/uGO3aqyox4aTV5CaLuduDcdTK380/szO8xF4EmH8U5LF3qJGlyoSF4G9wcHR3VBeKDyTJgFON8/xD1WvW4p/ERq1UBjNFhQPa2OzZwiyOvBM8mo4u2gW4dvwcmVB1jFq/fuzPUijQlisAbi5tGtNzyRQDO1VK2OWUqBOEjtA5vfawFLfe4fmST04Zz+Qd+2wXkY57j0SrwEkxyN77MZxia2gF1IER58EPhF3hs97vM8Urfh1flViAfgpS6VyY05EGSYjQyR7+ikm2wfCerusrSjHqH5TU1zELFxwNVw0IOkVdyFvXc+9EsCU7LknTidsbQCFHYDfB3HqjC2jhLpdmE9ztHVGx5ybpODpJWk+yBxpc7yBqc+TihJfKD5HETOthWRFjkH8L6h5LQKMLUU95d6LLp3e57RwKK1WWPyZeZx+Mqi2Y3IVGzoAhivStNbRG+FcCHxvyTwlaSxFS0Lb0ERC5wHpDFLKXML/woXhl124mrKf5Ur3+RArP8T23CtaV6yOfc2E/yfGonyLVtqxhZhvW0cytrP8FXZvgBrOJmI0uzAbZF7qVgWsttqnTOwIPBXYIdEuIMA5MROBetoaVVhfihlGdvNEoUAfRQcDp37NprA2F4sPzWmrkB+JLCp3KZO5VmXL+LalmjfdBLQFd6ddJtwTicZxCbouV7/omewqP585t728HkJW+9NOai9UcHanuuygWAnr0fievq+PXPtu0IpufgMrnIqyaz6J+J4Q/rNT5+4VJaWM3Dk+joMWksPwI4CTRbRRFnQ0hnSx/0S5YHdx5JJvfcf4wrrisMvj/RVYY0YNc2CipAn4W6rmbgkZbyCevNzF+UmtZn8dKNk6rRAeWOXBmVWpw479ntoNBMkF15tlFgweEW5gOhICbPZxu
+ kJjaeRNo
+ IpsP6iF2UITPEnlqD1uL0J2xWZzD0OzS1Gm3uqZc4HH+6mt8UzsjhUcDH8dstXEyNikrZmVW1nrEYSicORm1Ov2aa01MlK3b8t5F/ADMm6iS7RcsMlmCtwwcI8IaHjDnKK1BuFTVCAmlQcihlx6qKy63xZVFASMfyPhqG5etQABP11hk39ORTcEyuyu7gqdo7QpuPYABXjmE6fMnm0VeK7cor7plW1P3QaxvDIKlHWuvZQqd/J/pD4L0c1x3/5eJcq7IDuw0bEo+dbScxH0UqgGDZEdsdrTEeVvCfhaMYdttiDgSTSo+cwV8JT+saTgs4vdQMvf3jCf7vy91ofwb3SeeLk48YZ6UiDU9rDjmL4IZ1sDxX5NcxNikM/39q0Tx9q+QNoohmFwN7aSA0wIYRV36El1XcagN4OpJjr4AQnfspuuCunWg3vh4vQg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,273 +91,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-branch HEAD: 72fb0170ef1f45addf726319c52a0562b6913707  Add linux-next specific files for 20251024
+This is one instruction more efficient than open-coding folio_pos() +
+folio_size().  It's the equivalent of (x + y) << z rather than
+x << z + y << z.
 
-Error/Warning (recently discovered and may have been fixed):
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org
+---
+ mm/shmem.c    | 2 +-
+ mm/truncate.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-    https://lore.kernel.org/oe-kbuild-all/202509260906.O3Ra2nGg-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510110109.hIUbuESQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510211913.5a4SfQab-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510220954.lcvy1Yp7-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510230222.gjGA0A40-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510242255.O4cs8TXL-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild-all/202510242309.6p5FyVLQ-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202510222308.6LSfjKDk-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202510241912.s8uQLYlp-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202510242155.afchO66g-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202510242250.ZzaqW0pV-lkp@intel.com
-    https://lore.kernel.org/oe-kbuild/202510242322.aWclvr7e-lkp@intel.com
+diff --git a/mm/shmem.c b/mm/shmem.c
+index b9081b817d28..c819cecf1ed9 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1133,7 +1133,7 @@ static void shmem_undo_range(struct inode *inode, loff_t lstart, loff_t lend,
+ 	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
+ 	folio = shmem_get_partial_folio(inode, lstart >> PAGE_SHIFT);
+ 	if (folio) {
+-		same_folio = lend < folio_pos(folio) + folio_size(folio);
++		same_folio = lend < folio_next_pos(folio);
+ 		folio_mark_dirty(folio);
+ 		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+ 			start = folio_next_index(folio);
+diff --git a/mm/truncate.c b/mm/truncate.c
+index 91eb92a5ce4f..a3d673533e32 100644
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@ -387,7 +387,7 @@ void truncate_inode_pages_range(struct address_space *mapping,
+ 	same_folio = (lstart >> PAGE_SHIFT) == (lend >> PAGE_SHIFT);
+ 	folio = __filemap_get_folio(mapping, lstart >> PAGE_SHIFT, FGP_LOCK, 0);
+ 	if (!IS_ERR(folio)) {
+-		same_folio = lend < folio_pos(folio) + folio_size(folio);
++		same_folio = lend < folio_next_pos(folio);
+ 		if (!truncate_inode_partial_folio(folio, lstart, lend)) {
+ 			start = folio_next_index(folio);
+ 			if (same_folio)
+-- 
+2.47.2
 
-    ERROR: modpost: "__udivdi3" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
-    arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dtb: i2c@8b10000 (hisilicon,hix5hd2-i2c): Unevaluated properties are not allowed ('label' was unexpected)
-    arch/arm64/boot/dts/hisilicon/hi3798cv200-poplar.dtb: i2c@8b12000 (hisilicon,hix5hd2-i2c): Unevaluated properties are not allowed ('label' was unexpected)
-    arch/arm64/boot/dts/mediatek/mt8173-elm-hana-rev7.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
-    arch/arm64/boot/dts/mediatek/mt8173-elm-hana.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
-    arch/arm64/boot/dts/mediatek/mt8173-elm.dtb: pinctrl@1000b000 (mediatek,mt8173-pinctrl): 'aud_i2s2', 'i2c0', 'i2c1', 'i2c2', 'i2c3', 'i2c4', 'i2c6', 'mmc0', 'mmc0default', 'mmc1', 'mmc1default', 'mmc3', 'mmc3default', 'nor', 'rt5650_irq', 'spi1', 'trackpad_irq', 'usb', 'xxx' do not match any of the regexes: '^pinctrl-[0-9]+$', 'pins$'
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-x-panel-aa104xd12.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-x-panel-aa104xd12.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-x.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-x.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-xs-panel-aa104xd12.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-xs-panel-aa104xd12.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-xs.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-salvator-xs.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-    arch/arm64/boot/dts/renesas/r8a77960-ulcb-kf.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-ulcb-kf.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-    arch/arm64/boot/dts/renesas/r8a77960-ulcb.dtb: /soc/gpu@fd000000: failed to match any schema with compatible: ['renesas,r8a7796-gpu', 'img,img-gx6250', 'img,img-rogue']
-    arch/arm64/boot/dts/renesas/r8a77960-ulcb.dtb: gpu@fd000000 (renesas,r8a7796-gpu): compatible: 'oneOf' conditional failed, one must be fixed:
-
-Unverified Error/Warning (likely false positive, kindly check if interested):
-
-    drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c:512 ras_core_get_utc_second_timestamp() error: we previously assumed 'ras_core' could be null (see line 508)
-    drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_core.c:531 ras_core_ras_interrupt_detected() error: we previously assumed 'ras_core' could be null (see line 527)
-    drivers/gpu/drm/amd/amdgpu/../ras/rascore/ras_umc.c:210 ras_umc_log_pending_bad_bank() warn: variable dereferenced before check 'ecc_node' (see line 208)
-    drivers/gpu/drm/vkms/vkms_configfs.c:102 make_plane_group() error: dereferencing freed memory 'plane' (line 101)
-    drivers/gpu/drm/vkms/vkms_configfs.c:121 make_crtc_group() error: dereferencing freed memory 'crtc' (line 120)
-    drivers/gpu/drm/vkms/vkms_configfs.c:125 make_device_group() error: dereferencing freed memory 'dev' (line 124)
-    drivers/gpu/drm/vkms/vkms_configfs.c:411 make_encoder_group() error: dereferencing freed memory 'encoder' (line 410)
-
-Error/Warning ids grouped by kconfigs:
-
-recent_errors
-|-- arm64-randconfig-051-20251024
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
-|   `-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
-|-- arm64-randconfig-052-20251024
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-x-panel-aa104xd12.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-x-panel-aa104xd12.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-x.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-x.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-xs-panel-aa104xd12.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-xs-panel-aa104xd12.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-xs.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-salvator-xs.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-ulcb-kf.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-ulcb-kf.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|   |-- arch-arm64-boot-dts-renesas-r8a77960-ulcb.dtb:gpu-fd000000-(renesas-r8a7796-gpu):compatible:oneOf-conditional-failed-one-must-be-fixed:
-|   `-- arch-arm64-boot-dts-renesas-r8a77960-ulcb.dtb:soc-gpu-fd000000:failed-to-match-any-schema-with-compatible:renesas-r8a7796-gpu-img-img-gx6250-img-img-rogue
-|-- arm64-randconfig-053-20251024
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
-|   `-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
-|-- arm64-randconfig-054-20251024
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
-|   `-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
-|-- arm64-randconfig-055-20251024
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b10000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-hisilicon-hi3798cv200-poplar.dtb:i2c-8b12000-(hisilicon-hix5hd2-i2c):Unevaluated-properties-are-not-allowed-(-label-was-unexpected)
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana-rev7.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_ir
-|   |-- arch-arm64-boot-dts-mediatek-mt8173-elm-hana.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi
-|   `-- arch-arm64-boot-dts-mediatek-mt8173-elm.dtb:pinctrl-1000b000-(mediatek-mt8173-pinctrl):aud_i2s2-i2c0-i2c1-i2c2-i2c3-i2c4-i2c6-mmc0-mmc0default-mmc1-mmc1default-mmc3-mmc3default-nor-rt5650_irq-spi1-tra
-|-- csky-randconfig-001-20251024
-|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
-|-- csky-randconfig-r051-20251024
-|   `-- drivers-gpu-drm-solomon-ssd13.c:Unneeded-variable:ret-Return-on-line
-|-- i386-randconfig-063-20251024
-|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-hwss-dcn401-dcn401_hwseq.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
-|-- i386-randconfig-141-20251024
-|   |-- drivers-gpu-drm-vkms-vkms_configfs.c-make_crtc_group()-error:dereferencing-freed-memory-crtc-(line-)
-|   |-- drivers-gpu-drm-vkms-vkms_configfs.c-make_device_group()-error:dereferencing-freed-memory-dev-(line-)
-|   |-- drivers-gpu-drm-vkms-vkms_configfs.c-make_encoder_group()-error:dereferencing-freed-memory-encoder-(line-)
-|   `-- drivers-gpu-drm-vkms-vkms_configfs.c-make_plane_group()-error:dereferencing-freed-memory-plane-(line-)
-|-- microblaze-allmodconfig
-|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
-|-- parisc-allmodconfig
-|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
-|-- x86_64-randconfig-123-20251024
-|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-hwss-dcn401-dcn401_hwseq.c:sparse:sparse:Using-plain-integer-as-NULL-pointer
-`-- x86_64-randconfig-161-20251024
-    |-- drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_core.c-ras_core_get_utc_second_timestamp()-error:we-previously-assumed-ras_core-could-be-null-(see-line-)
-    |-- drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_core.c-ras_core_ras_interrupt_detected()-error:we-previously-assumed-ras_core-could-be-null-(see-line-)
-    |-- drivers-gpu-drm-amd-amdgpu-..-ras-rascore-ras_umc.c-ras_umc_log_pending_bad_bank()-warn:variable-dereferenced-before-check-ecc_node-(see-line-)
-    `-- drivers-gpu-drm-amd-amdgpu-amdgpu_virt.c-amdgpu_virt_init_critical_region()-warn:unsigned-init_hdr_offset-is-never-less-than-zero.
-
-elapsed time: 732m
-
-configs tested: 143
-configs skipped: 3
-
-tested configs:
-alpha                             allnoconfig    gcc-15.1.0
-alpha                            allyesconfig    gcc-15.1.0
-alpha                               defconfig    gcc-15.1.0
-arc                              allmodconfig    gcc-15.1.0
-arc                               allnoconfig    gcc-15.1.0
-arc                              allyesconfig    gcc-15.1.0
-arc                                 defconfig    gcc-15.1.0
-arc                   randconfig-001-20251024    gcc-8.5.0
-arc                   randconfig-002-20251024    gcc-14.3.0
-arm                              allmodconfig    gcc-15.1.0
-arm                               allnoconfig    clang-22
-arm                              allyesconfig    gcc-15.1.0
-arm                        clps711x_defconfig    clang-22
-arm                                 defconfig    clang-22
-arm                          pxa168_defconfig    clang-19
-arm                   randconfig-001-20251024    clang-20
-arm                   randconfig-002-20251024    gcc-15.1.0
-arm                   randconfig-003-20251024    clang-22
-arm                   randconfig-004-20251024    clang-22
-arm64                            allmodconfig    clang-19
-arm64                             allnoconfig    gcc-15.1.0
-arm64                               defconfig    gcc-15.1.0
-arm64                 randconfig-001-20251024    gcc-8.5.0
-arm64                 randconfig-002-20251024    clang-16
-arm64                 randconfig-003-20251024    gcc-13.4.0
-arm64                 randconfig-004-20251024    clang-17
-csky                              allnoconfig    gcc-15.1.0
-csky                                defconfig    gcc-15.1.0
-csky                  randconfig-001-20251024    gcc-14.3.0
-csky                  randconfig-002-20251024    gcc-11.5.0
-hexagon                          allmodconfig    clang-17
-hexagon                           allnoconfig    clang-22
-hexagon                          allyesconfig    clang-22
-hexagon                             defconfig    clang-22
-hexagon               randconfig-001-20251024    clang-22
-hexagon               randconfig-002-20251024    clang-22
-i386                             allmodconfig    gcc-14
-i386                              allnoconfig    gcc-14
-i386                             allyesconfig    gcc-14
-i386        buildonly-randconfig-001-20251024    clang-20
-i386        buildonly-randconfig-002-20251024    gcc-14
-i386        buildonly-randconfig-003-20251024    clang-20
-i386        buildonly-randconfig-004-20251024    gcc-14
-i386        buildonly-randconfig-005-20251024    gcc-14
-i386        buildonly-randconfig-006-20251024    gcc-14
-i386                                defconfig    clang-20
-loongarch                        allmodconfig    clang-19
-loongarch                         allnoconfig    clang-22
-loongarch                           defconfig    clang-19
-loongarch             randconfig-001-20251024    gcc-15.1.0
-loongarch             randconfig-002-20251024    gcc-15.1.0
-m68k                             allmodconfig    gcc-15.1.0
-m68k                              allnoconfig    gcc-15.1.0
-m68k                             allyesconfig    gcc-15.1.0
-m68k                                defconfig    gcc-15.1.0
-m68k                       m5208evb_defconfig    gcc-15.1.0
-m68k                            mac_defconfig    gcc-15.1.0
-microblaze                       allmodconfig    gcc-15.1.0
-microblaze                        allnoconfig    gcc-15.1.0
-microblaze                       allyesconfig    gcc-15.1.0
-microblaze                          defconfig    gcc-15.1.0
-mips                              allnoconfig    gcc-15.1.0
-mips                          rb532_defconfig    clang-18
-nios2                             allnoconfig    gcc-11.5.0
-nios2                               defconfig    gcc-11.5.0
-nios2                 randconfig-001-20251024    gcc-11.5.0
-nios2                 randconfig-002-20251024    gcc-11.5.0
-openrisc                          allnoconfig    gcc-15.1.0
-openrisc                         allyesconfig    gcc-15.1.0
-openrisc                            defconfig    gcc-15.1.0
-parisc                           allmodconfig    gcc-15.1.0
-parisc                            allnoconfig    gcc-15.1.0
-parisc                           allyesconfig    gcc-15.1.0
-parisc                              defconfig    gcc-15.1.0
-parisc                randconfig-001-20251024    gcc-9.5.0
-parisc                randconfig-002-20251024    gcc-13.4.0
-parisc64                            defconfig    gcc-15.1.0
-powerpc                          allmodconfig    gcc-15.1.0
-powerpc                           allnoconfig    gcc-15.1.0
-powerpc                          allyesconfig    clang-22
-powerpc                   bluestone_defconfig    clang-22
-powerpc               mpc834x_itxgp_defconfig    clang-22
-powerpc               randconfig-001-20251024    gcc-8.5.0
-powerpc               randconfig-002-20251024    clang-17
-powerpc               randconfig-003-20251024    clang-16
-powerpc64             randconfig-001-20251024    gcc-12.5.0
-powerpc64             randconfig-002-20251024    gcc-14.3.0
-powerpc64             randconfig-003-20251024    gcc-8.5.0
-riscv                            allmodconfig    clang-22
-riscv                             allnoconfig    gcc-15.1.0
-riscv                            allyesconfig    clang-16
-riscv                               defconfig    clang-22
-riscv                 randconfig-001-20251024    clang-22
-riscv                 randconfig-002-20251024    clang-22
-s390                             allmodconfig    clang-18
-s390                              allnoconfig    clang-22
-s390                             allyesconfig    gcc-15.1.0
-s390                                defconfig    clang-22
-s390                  randconfig-001-20251024    gcc-13.4.0
-s390                  randconfig-002-20251024    clang-22
-sh                               allmodconfig    gcc-15.1.0
-sh                                allnoconfig    gcc-15.1.0
-sh                               allyesconfig    gcc-15.1.0
-sh                                  defconfig    gcc-15.1.0
-sh                          r7785rp_defconfig    gcc-15.1.0
-sh                    randconfig-001-20251024    gcc-12.5.0
-sh                    randconfig-002-20251024    gcc-14.3.0
-sparc                            allmodconfig    gcc-15.1.0
-sparc                             allnoconfig    gcc-15.1.0
-sparc                               defconfig    gcc-15.1.0
-sparc                 randconfig-001-20251024    gcc-12.5.0
-sparc                 randconfig-002-20251024    gcc-8.5.0
-sparc64                             defconfig    clang-20
-sparc64               randconfig-001-20251024    clang-20
-sparc64               randconfig-002-20251024    clang-22
-um                               allmodconfig    clang-19
-um                                allnoconfig    clang-22
-um                               allyesconfig    gcc-14
-um                                  defconfig    clang-22
-um                             i386_defconfig    gcc-14
-um                    randconfig-001-20251024    gcc-14
-um                    randconfig-002-20251024    clang-22
-um                           x86_64_defconfig    clang-22
-x86_64                            allnoconfig    clang-20
-x86_64                           allyesconfig    clang-20
-x86_64      buildonly-randconfig-001-20251024    clang-20
-x86_64      buildonly-randconfig-002-20251024    clang-20
-x86_64      buildonly-randconfig-003-20251024    clang-20
-x86_64      buildonly-randconfig-004-20251024    gcc-14
-x86_64      buildonly-randconfig-005-20251024    gcc-14
-x86_64      buildonly-randconfig-006-20251024    clang-20
-x86_64                              defconfig    gcc-14
-x86_64                                  kexec    clang-20
-x86_64                               rhel-9.4    gcc-14
-x86_64                           rhel-9.4-bpf    gcc-14
-x86_64                          rhel-9.4-func    gcc-14
-x86_64                    rhel-9.4-kselftests    gcc-14
-x86_64                         rhel-9.4-kunit    gcc-14
-x86_64                           rhel-9.4-ltp    gcc-14
-x86_64                          rhel-9.4-rust    clang-20
-xtensa                            allnoconfig    gcc-15.1.0
-xtensa                randconfig-001-20251024    gcc-11.5.0
-xtensa                randconfig-002-20251024    gcc-13.4.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
