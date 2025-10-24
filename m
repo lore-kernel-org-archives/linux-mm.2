@@ -4,127 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E260ACCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0D6CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:22:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15BBD8E009E; Fri, 24 Oct 2025 10:20:19 -0400 (EDT)
+	id EF3FC8E009F; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 132838E0042; Fri, 24 Oct 2025 10:20:19 -0400 (EDT)
+	id E7D658E0042; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 06FDA8E009E; Fri, 24 Oct 2025 10:20:19 -0400 (EDT)
+	id D45A48E009F; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EA1548E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:20:18 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90955BE623
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:20:18 +0000 (UTC)
-X-FDA: 84033217716.12.9C80BCE
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 8AF5714000A
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:20:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=AYQMNY19;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.54 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BD12A8E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66D185DAE0
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:22:03 +0000 (UTC)
+X-FDA: 84033222126.11.341C7EE
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 609EA80015
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:22:01 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=ezQP+7u3;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761315721; a=rsa-sha256;
+	cv=none;
+	b=eVeqjOG3DzP7wG4FHULwl8XsZgyxmpZKdBO+oOSuhHzIvtv5snfRPF0sb9/OnxLeYDQE2I
+	XjxEpl2fPIhGEdHPBwi1cwmCvOnbS2lEUhH0V28GfoV6D2ZMYbOHFREeelpkAC+39uahWt
+	lO8SWU8euxsym3K88gQ5vGSBq3Y7oVw=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=ezQP+7u3;
+	dmarc=pass (policy=reject) header.from=meta.com;
+	spf=pass (imf30.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761315616;
+	s=arc-20220608; t=1761315721;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dMM6jx2qjRnMcPOV+lvbPLel1TW60YL6/vWevUW1Pqg=;
-	b=IQXVvA/F9tq6jLk9ZDHEHZhaEGcNaRWs+7ZQOawmlKEFNFEiTlsdbJYa0IaNDfrxf+vdas
-	7YKYfsRj8iS5u4A9MjTHhSiieQlgE5+CZ4G0zdsWKR7yNBtmw1QzWzj5Q4Pf5S0rEmkA/+
-	fgIqrgGhss6PXm78PrtNhuhL4HkS3Bg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761315616; a=rsa-sha256;
-	cv=none;
-	b=O8y6Mb5qlSvQf6k2YYmBm9FtSDROG30gZBkQSJOu8F8/CdYUyQTly93fsoz/88iCrTs0Np
-	eYg9jW5gwh+oXSzuAyKs8TPIW7irgYMD2TXy9qzgEfrhdVY9lipxyHR9t1cmcdvlYlYsbL
-	PtBR5zl7H/H+sVBb86/ekeyQQ5sLA3Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=AYQMNY19;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.54 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-79599d65f75so18710106d6.2
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 07:20:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1761315616; x=1761920416; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dMM6jx2qjRnMcPOV+lvbPLel1TW60YL6/vWevUW1Pqg=;
-        b=AYQMNY193xpIupVrDzfxp6AwEdow0is/Ouv2rqenyMcYmLVSRdP8rZGxGXmg1e/np5
-         MAt3CchnDiiOZ55UmucgyLyjXq0hmhZfwZGgrgQA3rMpOhMj3/99JUItOnmm711Hwfj8
-         MWg3Ng/CoSQLX7aC3noicuOfNwU3lFchrF2XepxmpVAioPQFo6ONEnwyZM/CUckWIfjb
-         5mo3RAa+c2tq9+GXaRAQzhmi/m7lX16jb+osrABRm8YTaiqbCmuvH3P4OFKhnLes5dSk
-         CncbdItn54+RqIZwjWrxvfGes/IuzyJsNbkdwKWacBkczef3LTxlkUXvcQDLSooNwRXm
-         Ad0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761315616; x=1761920416;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dMM6jx2qjRnMcPOV+lvbPLel1TW60YL6/vWevUW1Pqg=;
-        b=onPMA4j1yj/2BoTPxLQ3JF22N7P5Ioc0q7a037ggZ6/86rhRRJSZjK5riWmBS85m+i
-         eNfxZncBegzD9QlUTYoJo3cSsh669ldz1NasLM2qzLbHZNnoJiD5V3wV8Q/z1Xi5P4jP
-         nd3lLvY6Kxo5wZv82JBOvIQnDvFhSr2D8z7a78Sh3DBMHT0wqw/UN8nfmcp5eRVNFzY9
-         qLfZFgMa5oSNZpp2hU5jEzNmlxjHbPmVsN6xl+QN5BUQxlImy8OQuE4jna120QaYxjqv
-         Q0Wjwl2sDAQsemA73eIGSCayIIva6vAOU/SR6Vjq4mdgXK1CwiE5HhNV33hV3Jdr4Awa
-         cwlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVW+43eOG9DsHVEd0De0VqKMoetJ68TkQZ+uDWxjV6qPPk3xaW8DDqa17yPsaWPYhxb0qReigKkYA==@kvack.org
-X-Gm-Message-State: AOJu0Yz1CLnaffW6oKcLz4xVHuTAWZPOGLfIRSsJ59DjZ+2sqaFd/qX0
-	mKALc9N4nZRTp2MShxUfZLjoeGiDet9Lgm/AM1ZpTtfyL2hcv8WsuBlWr+8d1+UEUaI=
-X-Gm-Gg: ASbGnctjAuEIOHl+wtxI/+3+VYESmgg+4ISIBDxzl7dBAHXrfL223noGVDuXQpa2HhS
-	EXeZXZSXsJiaJAiQIh9J1IJBDhG5dX0FCO2pZKSY17/ZPobshyf+tmeo7sxWLDGRDQidG2bcD16
-	nAAbh83p7xMW+5RJ8sJLyQRdgcYUxZGB1kQATD5H+Ry2h89djfosfet3zN69muD/YlQlSG+3Cry
-	KLV5oJsDTovbWKm59mOGNzxuBup7OfCxq6bz2ZacsnaJjk1GsWvayBZccNKemFnWwoS+wTTRSEi
-	SXib+pOmcIH6gDQQtPSlWUep2NDKU/GsKJGBmLDB7v2V9AhpSVX4rcbb4PAGDAfmR+SZ/df1kLp
-	WsubEDXOZDjik9WBvL30KQW8JcVrav+xxmgG6cEC+6h6P51/c35UhDcnAJ+Lc4Z+yh2Wip/Bzhb
-	+zMrb6m4N8avfrKraUGZopQeDvZ3+qYyM3H3BKFuumRgJPQ0fUCouEQnfw
-X-Google-Smtp-Source: AGHT+IFeDksjp1ulZ1Jx2CLnCwxxUl6vBkLTwJZHNmUsnFK2qP03K8WdGRN+VgPtJR0tDr8FPMO6aw==
-X-Received: by 2002:a05:6214:2021:b0:87b:ca1c:1aa1 with SMTP id 6a1803df08f44-87fb6458d24mr22936406d6.46.1761315615589;
-        Fri, 24 Oct 2025 07:20:15 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87f9e8237cdsm36788926d6.56.2025.10.24.07.20.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 07:20:15 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vCIeM-00000003j94-10Nr;
-	Fri, 24 Oct 2025 11:20:14 -0300
-Date: Fri, 24 Oct 2025 11:20:14 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, akpm@linux-foundation.org,
-	brauner@kernel.org, corbet@lwn.net, graf@amazon.com,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
-	rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org,
-	jasonmiu@google.com, dmatlack@google.com, skhawaja@google.com,
-	glider@google.com, elver@google.com
-Subject: Re: [PATCH 2/2] liveupdate: kho: allocate metadata directly from the
- buddy allocator
-Message-ID: <20251024142014.GC760669@ziepe.ca>
-References: <20251015053121.3978358-1-pasha.tatashin@soleen.com>
- <20251015053121.3978358-3-pasha.tatashin@soleen.com>
- <mafs0v7kgjoxq.fsf@kernel.org>
- <CA+CK2bCG011xf7v9nGMq4WQAUta9wDt05+W8KmRuc-JE7ZTwqg@mail.gmail.com>
- <20251024132509.GB760669@ziepe.ca>
- <CA+CK2bA_Qb9csWvEQb-zpxgMg7vy+gw9eh0z88QBEdiFdtopMQ@mail.gmail.com>
+	bh=b/ol2wZmOZszG9k8vxf893BYtcntNjtXKAqt3ZVyZ6M=;
+	b=T5Ch/ra6IyiYp6DlnY0ZY2b1+mWeGjEJpaOLX6Nm9TYWhrF1VcZhhs4GsRFkWs6pm1245Y
+	T7jDtjLOQI77jXqQ6I4e5SFKuQZWmr5nNh+CMSqoHw/vgBJqNIVrOA+qcvh2mGPAaeT3ci
+	zx17TMtY7UTFlvkqk9lviRkj6K8hKyM=
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59OBwgYl419537;
+	Fri, 24 Oct 2025 07:21:55 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=b/ol2wZmOZszG9k8vxf893BYtcntNjtXKAqt3ZVyZ6M=; b=ezQP+7u3tFEf
+	zrYyaDhCkTMVQFov2O0qB6+PQ8nFCiz5xUxgfcMk2tR+A3R95RZzzaKIuV+0udnJ
+	CETmgt5bY2oOqy9mzXp4dlGP2sajgZMdyujqwW9Jd3+LwfTJJnmgMKee2hmQcqYr
+	WcE4brwFFiA3z7jYttDF5dcSZDq9hbl8VFDOJu5glQxQ96K+O8D1SKa4j6JalBSI
+	O5tzYojsleliqP7yWdADgof1zsQg4uANQ8T4e/jCWi4UAfCyP24qMqFgbZnB9oHV
+	Z2N/UdAhoSxb1Rht4AfWxZvy79778q+JYsFec/by5KkZgF6k0yclfpMdaDfD7DNN
+	vDn6vxt7NQ==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a09288x7k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Fri, 24 Oct 2025 07:21:55 -0700 (PDT)
+Received: from devbig091.ldc1.facebook.com (2620:10d:c085:108::4) by
+ mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Fri, 24 Oct 2025 14:21:52 +0000
+From: Chris Mason <clm@meta.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Lameter <cl@gentwo.org>,
+        David Rientjes <rientjes@google.com>,
+        Roman Gushchin <roman.gushchin@linux.dev>,
+        Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
+        "Liam R. Howlett"
+	<Liam.Howlett@oracle.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        "Sebastian
+ Andrzej Siewior" <bigeasy@linutronix.de>,
+        Alexei Starovoitov
+	<ast@kernel.org>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
+        <bpf@vger.kernel.org>, <kasan-dev@googlegroups.com>
+Subject: Re: [PATCH RFC 02/19] slab: handle pfmemalloc slabs properly with sheaves
+Date: Fri, 24 Oct 2025 07:21:35 -0700
+Message-ID: <20251024142137.739555-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251023-sheaves-for-all-v1-2-6ffa2c9941c0@suse.cz>
+References:
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CA+CK2bA_Qb9csWvEQb-zpxgMg7vy+gw9eh0z88QBEdiFdtopMQ@mail.gmail.com>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: gwzstucb59xdypio6ccg3xn114jc5d1k
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [2620:10d:c085:108::4]
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDEyOCBTYWx0ZWRfXwTD/VmjTrZA6
+ JRMZKrwqksV2xp1yhJWxwn6gzdqQ6FLs2fQ0eb7xBONuzcwgzrrSURnRmWBCizGKI+13LbnEIl4
+ ylNtvCoS+qc8ZaNrun/2WUn50FZBKyvgRCtxu011MC4I60o1A0gUQr7LQe1DnOC1f19Mw9W27VB
+ MlWsAS28QxLMenEBX7/purq6SIW3f2Ls4I6uC6IrLhRbaN7uAosLW6+sFcqB5q5bySPDl5GzzE5
+ R9gNXo0vhN4ZummzWu1+T3C/Fckz++HJCysc3xdveEplf4WxEoLA0JxvzvfFP6keHpZ+LjYmoHz
+ lUK8NtClWc9hhIyXgA6umSdgtc7sWHlWqXnnspAxBWh4MhmjJc8arJC6lHS0Uji0i8FsmPJ+NE1
+ uMZWCoJMv2b3asDyr7V0u3Kf1VWvBQ==
+X-Proofpoint-GUID: 1v7_B19uZD_UKIAK3zHZIbCsxtzfqkFk
+X-Authority-Analysis: v=2.4 cv=aK79aL9m c=1 sm=1 tr=0 ts=68fb8b83 cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=PCJbmnWxFXnHO1kFQDsA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: 1v7_B19uZD_UKIAK3zHZIbCsxtzfqkFk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-24_02,2025-10-22_01,2025-03-28_01
+X-Stat-Signature: qkxten4hhooo4oox8ae9cfqpse85muuz
+X-Rspamd-Queue-Id: 609EA80015
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8AF5714000A
-X-HE-Tag: 1761315616-500742
-X-HE-Meta: U2FsdGVkX1+84qfSU9n3kRDiv1bm2KYawrZfOEtaGRbsQR9TpUsNK2RdmBuUAgTG4gc+0vn98SHRDEKUOZuTR5Rwef8vL0H1A2az8CrT2e9w0CiBau3krnwNuH9js5rlVYKDgbeRSbG7GszLF/bnTTM1RPxKpYic7TTAzNq4gUf0Qxumlf4bxkfMhTTVAG2eFHZjk+LG/9om1LY45ceu1bz/BvQJU+ZtRRhPUDMumR5UTL5vKMPpJ4fRPh3Eg1kTvcEFKx+yKzssCsCyKunFCzmkexnQNLYqofwOTNlOqw2lttSlTHCE+bIXDQ1F8G4B6MWckNrAREz85GwDtc+KOEla6P6kzmq9YZ1LtjrUTVpNr7fZTl0WyxMWob2zyS6WpP7Y/SGjqppA0TG/7skyp57tZk1Kl8S2rxkBlK4iS2lMIvNCz6GNF4/2fnQ+05m4Ymp+uimj9MqlDWXSJPQI8sXIXGiueMXE8cL31Bwnq9XuN5BfdLomNWrdSu4TUlKEk9a0PyvnfU/3zMbhygMztkB09tsOyMbH7BlxkTG9cT1D1ik2f3UNnvo4CcxyBWCu5xSlPX2etacpoLTKIOeq0Fc8abHmzzKCDlssGkuVMwtW8XjGReGKeLQ9CN/kLivnLDgU6pdFZ5AOcdUN6rbuuvG2auP3PyzKIlbkOshMCwvILXZEsV8f1MDb1UybEqX7Dwv1iLZvvp+XdlJPP/HKi3YNXvMDOF2XPkKGUriadVzJvox5qnN7aBVkNS8p2HKl8W5coGS/k8tnGE2DBU8g/wfM2ooEf04zXLNuRed6UJA/Puae5LZ2l7zPGemOP+v3tzbqgPOmmJk3TXra8tgwqbD0yIDT/ppCEUsJh4sUUVYU0Hv69NoMCBsOz6UfY5A6W1ZiIWAgjbCTZP/S8zSaQXRwln6mZ+pAzDglkYtl7b2o7RO305DhMqCSct0J4Rj3t1GsDwHlQpeAi9ueHrB
- 74VyqyX8
- XHgnbF+2hy3Q/BJYDkR7SgYMH3zN4AZEUxAdh4zi1bfGGc4Nq8UkO3Rh0MhEXVF17zPGZa66pO0w2fz8jSgtD/gum/2bp3PaouQaS0n5aOgiFlZ9tuSA6h6GqSJ7G59CboNhpN+NQhnrC1OyjHc7uokHOzUnjCSGxj33UqQazvxIAakRTktLeOIsDGhwUUO4383Uh7Bk3/oAj1nE6VuKWNYBj0vI1GKFtL/396kMkg2gCLWYvaKi2nHa2SNGzAk9982XdtThgbZQNlBC/8u0AiL20eAY+Mk/qeCkb
+X-HE-Tag: 1761315721-249881
+X-HE-Meta: U2FsdGVkX18YRicynVJP/z0i5FRty/RPBM+mITVxyexrPP2QOUJWtePH/U3B70sNKWgZTrX15ZHmZrXmSe0VlBp/NbQjYHwjVk0o95Hy9/SI9ZLUlwKvyD+72CmSla76ukDUFvfShBLEx8xWzHsEA4kATbrZOCtFjcVxWgz0QZkkgqEbP0cAbseaDUnbjBt1aBwjgQtdjgZW6pgu8phuRrZtezr/VD112TlfH9I7LJ1tbhyg4SHSpYoLITcSlWntdunzSKL/LxQCl6y8bN/5dnkNZkaguabrwT5/IX5HuabLvKL3U+I4//4q8xo+kv1ERQBKHX5Rw34FQa1HtT3pEPteuSF19xmrVZxcJR+YQspvogiHhxNI5veYx9JQzEcsW/XUZDJFsDQ0qTSlhWqbN0EpcOhhc8zcPiDV36P4J+sn35e9IOfT/6Orz0+uGNfZjadF1+xtao5Ugj6YnzR+BKj5fJz/9MnXpWngPuJwbCRdzBWW5ZpOFfZmBC6w4wd7jJ8Q2yxVOfYHwWGjA2+UvOGVKy9LsKV/npabQQw1mS44SZi1qVwXsj0kpnVgQQtXcEQJizaji88IY7cvqiMXVn3VaXnH2QnJfiQjuh0TuTYCXJLMF0mrLI4TpF7EE7zhDIepicA398gNmnC8wt3l2DrMfIkxw5u4ksER3+r7lnDksRZPbwxprjsezEjhcZznGoxs2mPKEe0RR5LzNTYr66HsTgneDTtKJzRCP0w3VFydNFI2h3Xt18M+mke0QR1CFbN07KapdLZ9mL8JyU+1iIA8DChBS7nk/kBrPDzm/QANYdTiADf2CM4ReHZiZUGG/NcuQEtn1ExSMDnXmJB4kU8pBNh71p230bOElJJBX2k8KgnnYPhbgRlSjGYdYx7tXtiAQSTs6jWElHTUwyg6DKCP7UVXLWOVrP/+JiX+2NQaKQbuSprh9VPpmYH+UWQws42bQ5LmFpPbs5hkm3p
+ er0gAN2X
+ VD6iJgDSNt+WqV9rRTR0hUAX8OAQIjEPo2culMXtoIQXnVK8hhBr9DIbYYXH6gwwKSHgeXfPN8uOGYlMdzv+2zrKwpFHE/7MjODB30mHbTra0rZbqkZUyQiHZ/fjP06bZLVWIo1JO7zT0YOwjTZC+K2E34cyu3VYvx2cmy/qfmvWPvzRIJ3o5Gddq4EqA2cD4vv0QfIUMOFzaq0GKysf+Z9gVK1UVju+uByj39s6CWruIWEl1qRpdRwZlcWBwn3BsvR+kGrc5BOYvLyn2u6BEU6ds8tMt9CTVRu65qpKwcex3MQFu1V7wDtYRzgdTA5RbRxvj8mncgUih3ch+wqDi4uXSJz7so91+1SxYfp7OwhZ4KReca4yuRc1VpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,41 +128,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 09:57:24AM -0400, Pasha Tatashin wrote:
+On Thu, 23 Oct 2025 15:52:24 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 
-> You're right the new kernel will eventually zero memory, but KHO
-> preserves at page granularity. If we preserve a single slab object,
-> the entire page is handed off. When the new kernel maps that page
-> (e.g., to userspace) to access the preserved object, it also exposes
-> the unpreserved portions of that same page. Those portions contain
-> stale data from the old kernel and won't have been zeroed yet,
-> creating an easy-to-miss data leak vector. 
+> When a pfmemalloc allocation actually dips into reserves, the slab is
+> marked accordingly and non-pfmemalloc allocations should not be allowed
+> to allocate from it. The sheaves percpu caching currently doesn't follow
+> this rule, so implement it before we expand sheaves usage to all caches.
+> 
+> Make sure objects from pfmemalloc slabs don't end up in percpu sheaves.
+> When freeing, skip sheaves when freeing an object from pfmemalloc slab.
+> When refilling sheaves, use __GFP_NOMEMALLOC to override any pfmemalloc
+> context - the allocation will fallback to regular slab allocations when
+> sheaves are depleted and can't be refilled because of the override.
+> 
+> For kfree_rcu(), detect pfmemalloc slabs after processing the rcu_sheaf
+> after the grace period in __rcu_free_sheaf_prepare() and simply flush
+> it if any object is from pfmemalloc slabs.
+> 
+> For prefilled sheaves, try to refill them first with __GFP_NOMEMALLOC
+> and if it fails, retry without __GFP_NOMEMALLOC but then mark the sheaf
+> pfmemalloc, which makes it flushed back to slabs when returned.
+>
 
-Do we zero any of the memory on KHO? Honestly, I wouldn't worry about
-the point it zeros, slab guarentees it will be zero when it should be
-zero.
+Hi Vlastimil,
 
-> There's also the inefficiency. The unpreserved parts of that page are
-> unusable by the new kernel until the preserved object is freed.
+We're trying out the AI patch review automation on the BPF commits and it had
+some questions about a few of these.  Since the goal is to actually test the
+automation, I'm putting them in unedited, but I did try and make sure they
+were valid before sending.
 
-Thats not how I see slab preservation working. When the slab page
-is unpreserved all the free space in that page should be immediately
-available to the sucessor kernel.
+For this one, I'm not sure if the behavior AI is flagging is intentional or
+not, so it feels like a reasonable question to me at least:
 
-> As I see it, the only robust solution is to use a special GFP flag.
-> This would force these allocations to come from a dedicated pool of
-> pages that are fully preserved, with no partial/mixed-use pages and
-> also retrieved as slabs.
+> diff --git a/mm/slub.c b/mm/slub.c
+> index 4731b9e461c2..ab03f29dc3bf 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
 
-It is certainly more efficient to preserve fewer slab pages in total
-and pooling would help get there.
+[ ... ]
 
-> That said, I'm not sure preserving individual slab objects is a high
-> priority right now. It might be simpler to avoid it altogether.
+> @@ -5331,6 +5340,26 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
+>  }
+>  EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
+>
+> +static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
+> +				      struct slab_sheaf *sheaf, gfp_t gfp)
+> +{
+> +	int ret = 0;
+> +
+> +	ret = refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC);
+> +
+> +	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
+> +		return ret;
+> +
+> +	/*
+> +	 * if we are allowed to, refill sheaf with pfmemalloc but then remember
+> +	 * it for when it's returned
+> +	 */
+> +	ret = refill_sheaf(s, sheaf, gfp);
+> +	sheaf->pfmemalloc = true;
+> +
+> +	return ret;
+> +}
 
-I think we will need something, a lot of the structs I'm seeing in
-other patches are small and allocating a whole page is pretty wasteful
-too.
+[ ... ]
 
-Jason
+> @@ -5497,7 +5528,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
+>
+>  	if (likely(sheaf->capacity >= size)) {
+>  		if (likely(sheaf->capacity == s->sheaf_capacity))
+> -			return refill_sheaf(s, sheaf, gfp);
+> +			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
+>
+>  		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
+>  					     &sheaf->objects[sheaf->size])) {
+                                             ^^^
+
+In kmem_cache_refill_sheaf(), does the oversize sheaf path (when
+sheaf->capacity != s->sheaf_capacity) need __GFP_NOMEMALLOC too?
+
+The commit message says "When refilling sheaves, use __GFP_NOMEMALLOC
+to override any pfmemalloc context", and the normal capacity path now
+calls __prefill_sheaf_pfmemalloc() which adds __GFP_NOMEMALLOC.
+
+But this oversize path still calls __kmem_cache_alloc_bulk() with the
+raw gfp flags. If the calling context is pfmemalloc-enabled (e.g.,
+during swap or network operations), could pfmemalloc objects be
+allocated into the sheaf? Those objects would then be returned via
+kmem_cache_alloc_from_sheaf() to potentially non-pfmemalloc callers.
+
+Similar issue exists in kmem_cache_prefill_sheaf() for the oversize
+path at the function's start, though that code wasn't modified by this
+patch.
+
+>  			return -ENOMEM;
+>  		}
+>  		sheaf->size = sheaf->capacity;
+
+[ ... ]
+
+
 
