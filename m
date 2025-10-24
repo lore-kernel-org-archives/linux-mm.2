@@ -4,122 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F51BCCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 15:29:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 30D22CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 15:33:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 96B088E00B9; Fri, 24 Oct 2025 11:29:53 -0400 (EDT)
+	id 7EB168E00BA; Fri, 24 Oct 2025 11:33:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 91AD68E0042; Fri, 24 Oct 2025 11:29:53 -0400 (EDT)
+	id 7C3268E0042; Fri, 24 Oct 2025 11:33:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80A628E00B9; Fri, 24 Oct 2025 11:29:53 -0400 (EDT)
+	id 68BE18E00BA; Fri, 24 Oct 2025 11:33:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C6BB8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:29:53 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 11179C0EFA
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:29:53 +0000 (UTC)
-X-FDA: 84033393066.25.A3CAC9B
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf14.hostedemail.com (Postfix) with ESMTP id D85C0100010
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:29:50 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=u1H8joWQ;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 544A68E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 11:33:01 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED7305CBFC
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:33:00 +0000 (UTC)
+X-FDA: 84033400920.22.AEBAE94
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 5E884160016
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:32:58 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f+SzmS2h;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761319791;
+	s=arc-20220608; t=1761319978;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JYg1vP9W9v0SXXkTSNQM/3alSk45Op1+j7AlOwvEtcM=;
-	b=LrLDC3RfPz83dqdkov+i1x5rR5icAh2oS83KRDuIDrJi3EIgTkgjYGLS+D3TaOZEFWknOA
-	qTxGbQEhlw6ehqQD08D0KBCcmfS8CLtGpaJKL5QEFkWhR5qz2Xzg72NWHu9vIu41nUaANr
-	EtjueFbMV0gyzosbDmGA2Kdbo9Sh5vg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761319791; a=rsa-sha256;
-	cv=none;
-	b=Sk/htCLAYSEBumqTJIfvcy6/QYjGGKh8s8tRt0WcF8A6M839RHAPE9x4q3BtxjjOkotjaC
-	Xk9FhAlIjGJ2ngj0h43hnJ7mO5azIPUmaFeXCiKMPJLUyemfSDXN5G4T7rtnYpXPwy0cWT
-	vM0Q0ZlQZ1muJER7Z9g98NG14i0Utt4=
+	bh=qFb+WOeWRjNA4xYaoA738u6I2as3i8020Ro6oXjpffQ=;
+	b=A99FDMWEs3q+P9lk8iEcKtDR2pSkPH7wdSIyismaIcG+Tme6zNFGwZnVrsmhQv53Ai8og0
+	JIiwc1sJe5HCJ4aX7EEQT84J8953LXaCj6V46zMHDYoJ3364Z/O+So4Ge+WnWZT1/1y5ZS
+	HGO9eF7RxjhyYX81w89GbOobVy0XlTE=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=u1H8joWQ;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf14.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 59OE2RhP2211218;
-	Fri, 24 Oct 2025 08:29:42 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=JYg1vP9W9v0SXXkTSNQM/3alSk45Op1+j7AlOwvEtcM=; b=u1H8joWQSvKP
-	lsrsEERu6cI1x3A5mfYS1zL8z0TQ0khpcMO8oYoKKD8h7+McjWX/ktRh8T6OlVd7
-	YTYfYTTlFhlbaEQxQ089POCXDGW4O4ZiFd2+HPGFe8v+yA9+5tITFlTOMM2QswD0
-	VpUEdNRVGQdCV9aikoHsmDQz2VGUO5389kHXGxz0TnWP8qKuS0sG6TTGir/ES96V
-	H2xX4fayiv6t2blL54E3ElLvGNPYJyjqq481ODsOAu1/biqcHXXU3LECt5+qHjhO
-	SVER6vuEUb3vlKr76lyqRFBGrbkBT5ZmPfENEG/Igm50m98ee4vYpQFalDF+f+S/
-	E+f1ht3MRA==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 49yxkh4c3r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 24 Oct 2025 08:29:42 -0700 (PDT)
-Received: from devbig091.ldc1.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Fri, 24 Oct 2025 15:29:40 +0000
-From: Chris Mason <clm@meta.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
-        "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "Sebastian
- Andrzej Siewior" <bigeasy@linutronix.de>,
-        Alexei Starovoitov
-	<ast@kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
-        <bpf@vger.kernel.org>, <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH RFC 06/19] slab: introduce percpu sheaves bootstrap
-Date: Fri, 24 Oct 2025 08:29:09 -0700
-Message-ID: <20251024152913.1115220-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251023-sheaves-for-all-v1-6-6ffa2c9941c0@suse.cz>
-References:
+	imf08.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=f+SzmS2h;
+	spf=pass (imf08.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761319978; a=rsa-sha256;
+	cv=none;
+	b=Sg+2L38ixlJlilhdPwYwVfhQ5HMc/VLkILh4umA8Y7R5h0C/2xXQeBeegq2EGVf+zsg8FO
+	njRw+RmQNoAWYfNMl6ohmh/1iLVx6pymyVKiXuc9yjASOURyauaNLCLAcBzUx75cxIz0+I
+	dpW5iLWfmZxK0b50YjTf/5/fi/L2vXY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761319977;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qFb+WOeWRjNA4xYaoA738u6I2as3i8020Ro6oXjpffQ=;
+	b=f+SzmS2hLcsXi3DXKyXx17gLf1gchs0q4TA0LXGhve7/I/EgX2j5l/sxay1BbUyieq38ID
+	cqi5nw7uYi2J9RRm24CvDtHElNIvuojkqWO8JyWipOaABmgKD01ro9+yTDeqmqnRdP8R1m
+	T+PaIidl0l5tlfzpJbqaPnNeLtAyYe8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-342-5q0t_v1APCevzCPhFbZdZg-1; Fri, 24 Oct 2025 11:32:56 -0400
+X-MC-Unique: 5q0t_v1APCevzCPhFbZdZg-1
+X-Mimecast-MFC-AGG-ID: 5q0t_v1APCevzCPhFbZdZg_1761319975
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-470fd59d325so10094895e9.0
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 08:32:56 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761319975; x=1761924775;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=qFb+WOeWRjNA4xYaoA738u6I2as3i8020Ro6oXjpffQ=;
+        b=NPYLoQn7xNFvEdGSIq/j2L5pchHsAhdp+j7dqE6Jpm0F1bN6At9aIjAU3k9t9H0pSx
+         VcEfKvvRUtQupR468nvwP6v/Zz+RNYViTRqogYYC0pmKENQXSJ8DEh/r8h/oUksD9g6A
+         8pdqQaFlKaM4bsfxeWSxW1puJOOqXE/96D6lNL+kUdsc8F9U3OtwVXcywjpVjY5TilRY
+         +TDhgtK/OR8nuSnTxyrAEKj/dQkovfya0guue6L3mpi6X5q66HyKcJRUQoefU5MOvAxY
+         c2qSVDKgPlCMoRf5Bl5se14SGO5aeja5HTSKRVzQJuLQItabx4EGI82NyjAFWnGYyMq2
+         tpAA==
+X-Forwarded-Encrypted: i=1; AJvYcCXfEI24poJobirFcdGMDOF9XtHnGUauBkI2ZSf7sf3NvaKEuCUP9ArC768w1cdsSUisDFvzfmE7nw==@kvack.org
+X-Gm-Message-State: AOJu0Yzw/taevO8uLUIuUR8HwqrRcYeo1WQy/xjtDA0RUQ89rmHMJLVg
+	gaHLu8VlN7pahy7/iuzZWpwoa5Q9fNW7OT1WjoqySKGdRiUUHNgiYV8/hABzb7AdYE1QX+6abAX
+	teV/pTYJYkPSRgiTG6uTFfsX0pozBAauTXjY0Dw0Gt/thiqJdS1Jj
+X-Gm-Gg: ASbGncuvfrWcWxiiz3O491uTs6Q9UFa58QgYhs8m1j2AX49NDDRBWMLZs3VhSzZa246
+	hhNIHkTFrW4//61ntfb6X5ZpMIqqcpsD2l/wMmIZkfcg2nJSfQHLIgz6Ov/0K4DuhZwF0i9Br+V
+	3LksUtQBSvmFmnQB2HZER19f+ltvf2GeqGad4I2NEVcRxS2CkFVkfF76uSgwC+O4VnE8eVGHwel
+	/jlStN1tDhr9pN0Sn/+IMTWxyLXb5FcI4Nwfh+6llvSNUVe2Q+xUlD8JbayjlQDNxEmkge2TQtg
+	RWX5NuCwOzFFQLZpMJIlGmfEBcXTJfUbTucufcmWOx8VNxDGMLBSn0zKINAItr86gI6GVJKXKWw
+	bacjxyl9ublGB1abH/GsixEUp34pR0z8b83zoO/OEIP7kKt2sooiDPZJJXNrrfbCQ8fT8WfpOw8
+	jRQjlME6a2v1jBUj5sE8/53izLgbM=
+X-Received: by 2002:a05:600c:5026:b0:470:bcc4:b07c with SMTP id 5b1f17b1804b1-47117925d38mr228933365e9.37.1761319975217;
+        Fri, 24 Oct 2025 08:32:55 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEk3FLSarboUuhSt9mQ9AgqM+55zrUrrCCjoH7Es1EmB3qSUYkMO5a7UnFUEL85UmUL54f5qQ==
+X-Received: by 2002:a05:600c:5026:b0:470:bcc4:b07c with SMTP id 5b1f17b1804b1-47117925d38mr228932985e9.37.1761319974703;
+        Fri, 24 Oct 2025 08:32:54 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3? (p200300d82f4e3200c99da38b3f3ad4b3.dip0.t-ipconnect.de. [2003:d8:2f4e:3200:c99d:a38b:3f3a:d4b3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475caf2ef9fsm97056175e9.13.2025.10.24.08.32.52
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 24 Oct 2025 08:32:54 -0700 (PDT)
+Message-ID: <94d62ba4-e203-408e-9200-b153ce97555d@redhat.com>
+Date: Fri, 24 Oct 2025 17:32:52 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph
+ consumer
+To: Alex Markuze <amarkuze@redhat.com>, ceph-devel@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, bsegall@google.com,
+ dietmar.eggemann@arm.com, idryomov@gmail.com, mingo@redhat.com,
+ juri.lelli@redhat.com, kees@kernel.org, lorenzo.stoakes@oracle.com,
+ mgorman@suse.de, mhocko@suse.com, rppt@kernel.org, peterz@infradead.org,
+ rostedt@goodmis.org, surenb@google.com, vschneid@redhat.com,
+ vincent.guittot@linaro.org, vbabka@suse.cz, xiubli@redhat.com,
+ Slava.Dubeyko@ibm.com
+References: <20251024084259.2359693-1-amarkuze@redhat.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251024084259.2359693-1-amarkuze@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Sm_f65pV3itP-ZJXscYGLdoHYZnVM9Ps-S-4974RIkY_1761319975
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c085:208::7cb7]
-X-Proofpoint-GUID: kkk2s3qprms9Z7I2EC8CkdtQeZfZNQk7
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDEzOSBTYWx0ZWRfX7OIXVkMX9geX
- 7pzjGpPRSpFcTx7fX8n9LXsYKQ3g0QZRGy/YPxIO393qaVutmBVwI5lA7gFo2Q5Hwa8+P741e63
- xa6tJDDXt4JLNHQXxoIcH9J3r2OhtgnPlM4/Dr6jsPRXB1oEw/kPigXQ63CZR62E3oWIRwP92bI
- Uyw/Rir17bhjlbv9m3LRbTZKG10KB7hH/N6P1EqnkT0Cqw/05VrvLihNzZyUp7LDWbJDlLeGXcc
- H/V7buo1lPWg9avwKIjQpsh4ufOJ0RbDY3XF7efzaPcvEl+kxGuwx0N75gZk9lfpaNVUS9+08yq
- tCSqvOvqHCgRAFoEYuICfiy9uaKRTDvTQ2t2EAEZ5GLOUuAXhopMjOObCyRbGyHI7KdUgqT79Bs
- +PdwDPQk/r7OGlJSV6buVYTVGDTVHg==
-X-Authority-Analysis: v=2.4 cv=RqHI7SmK c=1 sm=1 tr=0 ts=68fb9b66 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7e5GxzTNbid4F3B1EgkA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: kkk2s3qprms9Z7I2EC8CkdtQeZfZNQk7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-24_02,2025-10-22_01,2025-03-28_01
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5E884160016
+X-Stat-Signature: 7rjnprf9pb77jpgfqee1iuikxmuzfdw5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D85C0100010
-X-Rspamd-Server: rspam02
-X-Stat-Signature: pk1s7jku8asndgpyfdkyfimjpdin4erx
-X-HE-Tag: 1761319790-82031
-X-HE-Meta: U2FsdGVkX18oDO+ZH6KhbAO9mfHg4ipNZNIZ9xmhqS9ZdE4iL330O5PrmPtk71L1jHhIsTBvFLQwp5USg8NUTbDsnl2/Jyl2BDtTak5xeT9XEnFb7J7Cmn70AB9sv2ETgOhUqlo0RbsoIhBoxhyInZ/oaPArIgZcxpvmRKaz5YLDAcDZdcNJPgJpUr2ZGJ6djxqzy6yyIUOPh+60K2EB3K9RO8ViJBjoUskig5R+jjo/nIsLo+CtkJpu7uO49rh+wdohTCGBILtvqZ4pP5MGDVWAxCUujYg3YSeEg41xY/mxA3Ej9A/NlyOveku2jVKLLW9QHIgqKCM+YJroYhxGz9dk1Hc5zk1N112NDeNRfWoFweLPRvtHYSQ/bTPcZophy+uFDCuYghQEB/IRWAls601ELdv/Km2UT5u+FwkJP2t+zDIPLhmboLMj7H7PlbSUqDAbgde9ymHDTgHhRFaMY9EA9ztHeQPh6dG2O5RyJkcEnkX6Bs+zU+fuBqk3Llp0RZnUoSjo2+5+4z6AQZpJBTwZjrYmH7KDGSp+0jY4FOeO7mMmRq3v1rJDanZ/bTX7rurAbuRiGxe3QMsl/aiz7xnTki/jpyznOKVJu+vzo5JHehyNg6gUXQqJ3vXS6Q77bzcqH8WFEMgTTie+YZnGtAg20OmBlep8+E9z4Ja7PGcJa7y3Rhmf9STMJAgevCTsKNdSSe/iCMx8+2MqlIe7TCP5ZVnczVWWPHM/4uN87vjlQYAi06h7f0AquWvadCJoCgdw/dIkBYBQKVTVmPuY933xSsEZ6Hz7kfpDSnbslCCPGjyw7HBj2SFByhZn9ZavIoDPbvzKHn1stgjctRZNAFDBAYOlHpUbGRDuL6+37yxNWJwodKLFokTK+NASh/JPfhjvZ/va319ZybB/RLeE3784ieJ8U/KfsOEi18HAtLxCn1fv+1xWDkiRHmBtwR+A86MT1sqnFmk6+9KPCZ9
- 5Z6AZxRg
- m5J8s/6dJ+cwnT0OJWpcsrU0v0v63W+zRR1AqTQrDWAlsCmuJJoFE8EM+MU39kJyinqZSBgI+KXKtMY7Gm5FQwLQGiZQBL8VT1bt+TCWJakykEZudGVew631k374FL2+wpxR4DcaDmZEDQqERcA75pje7sX3CK35UZsdASIo18EcSn9fHmltclbOA0NCvOMx5JxybCG3JcxJ3xx76zNi8RwWlQ74vHGh3sSSq4EACjIlBRDavA5Ge3i7yqXgsAlouQmSV2B8mhnaJ0bgPRcEaItWgsmVSH5DA71PGTHe3ejcp5rTRg4cbCVjxmisWpOupb8rqLN+JQSeF+91BgA/EeOCM9w==
+X-HE-Tag: 1761319978-165832
+X-HE-Meta: U2FsdGVkX19rVByl0654j4ivr2QAiBO2tUBJT0bYc54AwoDi6BDQTHU0HPPW7TzU5Zwb4q+Mq5+qgSVsQ9UeYHF8KaHlxoqbZEVZpTO12t9Svd/uYygyeqZKzSTobOLmufE51UscLaTZuc8Hzfl9lgY4me1xsZVGUXxQDTvMJ+n5warXIu4wKg5UUxeUtF9/krJVFWrtQsbnmn58OIddHrF9mlhiVDoputmTumJRN+orIynsptvK53QnLqFjq+kt74bkBJXY0iw/kBEN0tnUsTW4SAR5++5nnfztcfWplqj7ZUGxFd4j8meQsOG8hW6hSR6wcOvb1LpLstg81l1MIoO4rDxf7hlkjETwObEKKMVIgQjCFEHJprC9ZV40i3xQjvoMltL+WY/Oj4/g488NDA85p8pw8TQ6BN/j2yqs89qs9Jhlmt+RPBfiYhLmkFkG0lloWBwRXJJS5jCDAGeObFipFiWzHhnAKKTrr0AvKbK49ElSP2XPH7p3H5UtQlK/Ge4NrvJS+f2DaIX4nxcpPSUOhupRxKKs0Qnm499Eqje9QilpUAsLx6qhMnxrkA/0/BQjmmHc3bmc5F74YxA5NdzTP0stcStffYFulueE/ID6sxa2Ih/9btE1RbTE6kP0MhfC+hs9kuW3TyUa5leAvo3cGW9tgJ4mh7sNTjjVC7xNQpD7DhvZjUPwyoU/GYJVFn8kUYLixqfi05W4i192rTUGUnKqeWc8eZyhJTRlaEDMwGgL+ufcnG+fKbvxWBzRGZK78u/xFFG+deFyQO4/yJROTHGta25+zrZO/WNNfyRXOLwI1Mrd45aix5iZVJh23jcH53Plwc2t8yMvKsLYEtrfLPs80C0VAE343IJI3k6nQktLHsbVyOPq8bk0FJ/r4COZRtOP5sHn5wqR8c1Qkm2jStr6628d58tJNTqWqnRDEcsXfuOzwaquyWU+Uh3fRxeJejgIQI9NVqFYRdg
+ E4zoHTS0
+ w8xZRbUly6Dgm8pmTLloDp/q6mmXW6pcHplup7DI21FPnzYD669cBw+Scu2WN97TyZ4wdmqRidsxI/j8rLc6HT6Z9wu04pI5TUuSRdR90plNKIUzsZJHoUdo5fBvB91iK8qHOrLwY8AMiOZRPTmQNukzLTgK8JR/yRKxcHO1shREIArIlR1rqR3sSY75Qrl9AG15fdnAKVuI6NMqj18m/71DVYfwnrp0Z0fKGEgq7FOK3bIu1RUB2X2ypYmeRrB4rr/E+ZHqhq5sD6TXivfMDWpDF0vNF5Et2BNwdosp6MzFK0T56At+jkFHD2QPt2FpieAsqoV8i5kzJYiIIGlkAsLETR/JuCxDcmkfsQ2iS6IfVruO8jOBZKal9h++wd/3zxisSHPSX/eop7Q8gEn2QICbyu+JwhfeHDN0xATpXsO0XkQyquitvar9bEom1UHkl9PQajuK/EN3RyAE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,96 +184,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 15:52:28 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
-
-> Until now, kmem_cache->cpu_sheaves was !NULL only for caches with
-> sheaves enabled. Since we want to enable them for almost all caches,
-> it's suboptimal to test the pointer in the fast paths, so instead
-> allocate it for all caches in do_kmem_cache_create(). Instead of testing
-> the cpu_sheaves pointer to recognize caches (yet) without sheaves, test
-> kmem_cache->sheaf_capacity for being 0, where needed.
+On 24.10.25 10:42, Alex Markuze wrote:
+> Motivation: improve observability in production by providing subsystemsawith
+> a logger that keeps up with their verbouse unstructured logs and aggregating
+> logs at the process context level, akin to userspace TLS.
 > 
-> However, for the fast paths sake we also assume that the main sheaf
-> always exists (pcs->main is !NULL), and during bootstrap we cannot
-> allocate sheaves yet.
+> Binary LOGging (BLOG) introduces a task-local logging context: each context
+> owns a single 512 KiB fragment that cycles through “ready → in use → queued for
+> readers → reset → ready” without re-entering the allocator. Writers copy the
+> raw parameters they already have; readers format them later when the log is
+> inspected.
 > 
-> Solve this by introducing a single static bootstrap_sheaf that's
-> assigned as pcs->main during bootstrap. It has a size of 0, so during
-> allocations, the fast path will find it's empty. Since the size of 0
-> matches sheaf_capacity of 0, the freeing fast paths will find it's
-> "full". In the slow path handlers, we check sheaf_capacity to recognize
-> that the cache doesn't (yet) have real sheaves, and fall back. Thus
-> sharing the single bootstrap sheaf like this for multiple caches and
-> cpus is safe.
->
+> BLOG borrows ideas from ftrace (captureabinary  data now, format later) but
+> unlike ftrace there is no global ring. Each module registers its own logger,
+> manages its own buffers, and keeps the state small enough for production use.
+> 
+> To host the per-module pointers we extend `struct task_struct` with one
+> additional `void *`, in line with other task extensions already in the kernel.
+> Each module keeps independent batches: `alloc_batch` for contexts with
+> refcount 0 and `log_batch` for contexts that have been filled and are waiting
+> for readers. The batching layer and buffer management were migrated from the
+> existing Ceph SAN logging code, so the behaviour is battle-tested; we simply
+> made the buffer inline so every composite stays within a single 512 KiB
+> allocation.
+> 
+> The patch series lands the BLOG library first, then wires the task lifecycle,
+> and finally switches Ceph’s `bout*` logging macros to BLOG so we exercise the
+> new path.
+> 
+> Patch summary:
+>    1. sched, fork: wire BLOG contexts into task lifecycle
+>       - Adds `struct blog_tls_ctx *blog_contexts[BLOG_MAX_MODULES]` to
+>         `struct task_struct`.
+>       - Fork/exit paths initialise and recycle contexts automatically.
+> 
+>    2. lib: introduce BLOG (Binary LOGging) subsystem
+>       - Adds `lib/blog/` sources and headers under `include/linux/blog/`.
+>       - Each composite (`struct blog_tls_pagefrag`) consists of the TLS
+>         metadata, the pagefrag state, and an inline buffer sized at
+>         `BLOG_PAGEFRAG_SIZE - sizeof(struct blog_tls_pagefrag)`.
+> 
+>    3. ceph: add BLOG scaffolding
+>       - Introduces `include/linux/ceph/ceph_blog.h` and `fs/ceph/blog_client.c`.
+>       - Ceph registers a logger and maintains a client-ID map for the reader
+>         callback.
+> 
+>    4. ceph: add BLOG debugfs support
+>       - Adds `fs/ceph/blog_debugfs.c` so filled contexts can be drained.
+> 
+>    5. ceph: activate BLOG logging
+>       - Switches `bout*` macros to BLOG, making Ceph the first consumer.
 
-Hi Vlastimil,
+Hi!
 
-We're trying out the AI patch review automation on the BPF commits and it had
-some questions about a few of these.  Since the goal is to actually test the
-automation, I'm putting them in unedited, but I did try and make sure they
-were valid before sending.
+You CCed plenty of MM folks, and I am sure most of them observe "this 
+doesn't seem to touch any core-mm files" and wonder "what's hiding in 
+there that requires a pair of MM eyes".
 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index a6e58d3708f4..ecb10ed5acfe 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
+Is there anything specific we should be looking at (and if so, in which 
+patch)?
 
-[ ... ]
+-- 
+Cheers
 
-> @@ -7733,8 +7782,7 @@ static void free_kmem_cache_nodes(struct kmem_cache *s)
->  void __kmem_cache_release(struct kmem_cache *s)
->  {
->  	cache_random_seq_destroy(s);
-> -	if (s->cpu_sheaves)
-> -		pcs_destroy(s);
-> +	pcs_destroy(s);
-
-Can pcs_destroy() handle a NULL cpu_sheaves pointer? Looking at the
-error path in do_kmem_cache_create():
-
-    s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
-    if (!s->cpu_sheaves) {
-        err = -ENOMEM;
-        goto out;
-    }
-    ...
-    out:
-        if (err)
-            __kmem_cache_release(s);
-
-If alloc_percpu() fails, __kmem_cache_release() now calls pcs_destroy()
-unconditionally. In pcs_destroy(), the first operation is:
-
-    for_each_possible_cpu(cpu) {
-        pcs = per_cpu_ptr(s->cpu_sheaves, cpu);
-
-Does per_cpu_ptr() dereference s->cpu_sheaves when it's NULL?
-
->  #ifdef CONFIG_PREEMPT_RT
->  	if (s->cpu_slab)
->  		lockdep_unregister_key(&s->lock_key);
-
-[ ... ]
-
-> @@ -8608,12 +8656,10 @@ int do_kmem_cache_create(struct kmem_cache *s, const char *name,
->
->  	set_cpu_partial(s);
->
-> -	if (s->sheaf_capacity) {
-> -		s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
-> -		if (!s->cpu_sheaves) {
-> -			err = -ENOMEM;
-> -			goto out;
-> -		}
-> +	s->cpu_sheaves = alloc_percpu(struct slub_percpu_sheaves);
-> +	if (!s->cpu_sheaves) {
-> +		err = -ENOMEM;
-> +		goto out;
->  	}
-
-This error path triggers the call chain: do_kmem_cache_create() error
-path -> __kmem_cache_release() -> pcs_destroy() with NULL cpu_sheaves.
-
+David / dhildenb
 
 
