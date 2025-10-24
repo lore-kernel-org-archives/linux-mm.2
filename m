@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9052CCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 19:07:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA197CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 19:10:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1517F8E00F1; Fri, 24 Oct 2025 15:07:47 -0400 (EDT)
+	id 1086E8E00F2; Fri, 24 Oct 2025 15:10:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1014A8E00C9; Fri, 24 Oct 2025 15:07:47 -0400 (EDT)
+	id 0E0068E00C9; Fri, 24 Oct 2025 15:10:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBCE68E00F1; Fri, 24 Oct 2025 15:07:46 -0400 (EDT)
+	id F38538E00F2; Fri, 24 Oct 2025 15:10:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D51638E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:07:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A5AEA5DE06
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 19:07:46 +0000 (UTC)
-X-FDA: 84033942132.01.EFF9F61
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D20D780015
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 19:07:44 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=m1gP4MJt;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id E236A8E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 15:10:03 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5B7305DEF3
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 19:10:03 +0000 (UTC)
+X-FDA: 84033947886.12.48097B4
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 6C14B180007
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 19:10:01 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="dzl7/4YF";
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761332864; a=rsa-sha256;
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761333001; a=rsa-sha256;
 	cv=none;
-	b=vxU6jMs/PvgVBMaEPJCuR3lKq+6mD0kORRYDvEAW5QMW0nimg4Oxsgr6Y8eLIASGC994lM
-	1RON0EKdOtl2pfTBZywnbgrZ85tCpE/BU/UaerXFqR6y6vtaYwLNt1NMdEhrIkhv+T0XKQ
-	BV11aovPEVbfMDYALD93GxFo0D//NHw=
+	b=CM3sQag/FDR0LPx8kXFUUufHO4HjpNx+Hq1HgRSl2YQEhhiOj5fNl5gXMNiF8ZLncrEncU
+	1duLDIo+ZsSgq6wh3Jj8BH+D3obiXqRQ+1x8v1jNAHeqradco8oS3aErDngT/cOfA4kFyq
+	p0Tg7ApwxC7/gc4OfvBx2pZ38EePb5o=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=m1gP4MJt;
+	imf06.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="dzl7/4YF";
 	dmarc=none;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.172 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	spf=pass (imf06.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.176 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761332864;
+	s=arc-20220608; t=1761333001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=I5Dh5pou/PyGHQeCBr0c/6aApj2l3K41F6GbY+zS02k=;
-	b=3Q6oCtx21IOsLQ8pPJSoSJc4h5nhuJw8S1gGmt4SP7ObylYClfu7lAQCy9k69C8uJW9sqI
-	nYUcFQxWpjdq9zR9GQf5UnNY4PWICehBFw8k3ebubs87LzxxIVukGPqYdReaqtTM5ej4FL
-	i4WgoC6/20zl/7Br0slx8RKrZ/9SU1A=
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4e89183fe47so22824081cf.2
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:07:44 -0700 (PDT)
+	bh=r4YhT6UkULx0zY0BI31WYEg/XWXtKp76n8KPsV3vFlM=;
+	b=gENOQXkkW88ti5WOaBLriwUEvtCQ9j3tRady+qnGxXHfIWDD1tLZWB3Nots/vX1ao/Hng4
+	qa9hhBIHzIoDs6xoKQ+q7c4oROn6uq++FAdz8GB9CEGOPwBjPhk4UrVoqNnFOIrIY7EehK
+	IKOL/Vs0Y06CxKrteDuIs71SQUb02ZA=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8906eb94264so261911385a.0
+        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:10:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1761332864; x=1761937664; darn=kvack.org;
+        d=gourry.net; s=google; t=1761333000; x=1761937800; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=I5Dh5pou/PyGHQeCBr0c/6aApj2l3K41F6GbY+zS02k=;
-        b=m1gP4MJtjCmq9DfE6cb4x0a17fqfQyWoBMUGt6k9swFfimX6rTo+MVomjKkojAS/Zz
-         3Pj6ExOeeJxP2yOBt5AlDtQ+5uCmLNVX7cnm/DrskeFur4NhRmkJWHgX0YgIffEGqwG9
-         j0qGPHWXmpjjkuUJeUcahU1o9iZiAk2vPesQF5lt3RGFxmvnGEnypX5eQGGblOkzE3ru
-         SIdEBwPcyRsIq3AKUQU6cUZZRhNI1kh8aGuD4kQMznFY2mniHT0M5JJsZ+Q9Xbhv8CjA
-         KDT9B2fao3Nd3LV++RfjVKfphsb3WvnlG0tg8DBiiJC8dyL9HDl5T+yqt7i5//8e5I2a
-         FM8g==
+        bh=r4YhT6UkULx0zY0BI31WYEg/XWXtKp76n8KPsV3vFlM=;
+        b=dzl7/4YFJQ6zcQaeLwUrl7qrqWiW/z9SaoGF4QtO7OaJwhw4xW4uTnyLnih3c1YW5m
+         qmzRB0MxOuA/EQ6jhT1QWLd+tusMpufjIo7Hiw1Dy5u6QtZtgw5SVsdWV8sQPrgwu+jY
+         UvJhR09NlfM1HCf6HiiDUyByiVRUIVx8erQG0BFQTYdaKMaGk3glXLLuzQN7LlwlAcJi
+         yWsVhvmEMauZ+7EYSp+8cTaKM896BfJftfdxvq4QwHRpJT85ClcgRohBJEgQ4DewKouW
+         dqgtEbPCqUVMgmMMD+A7DPL/KTzTINeFt6/kilvBmpzHRTifnDPAuwbzQq/YeA0R07jl
+         drPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761332864; x=1761937664;
+        d=1e100.net; s=20230601; t=1761333000; x=1761937800;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=I5Dh5pou/PyGHQeCBr0c/6aApj2l3K41F6GbY+zS02k=;
-        b=tLENANic1fjgW9u6JJFz+g0KIM6AXTvj2e7kEhpRu0VumU9Rr6rKm+lJwnZ4TL6TT0
-         Sz3oULj5vs3ld6sxSOuYwxInJ6EwLWO2ZGZZoo42z9ATNvA3Dw/adNs/gdlvqEqIdCZ1
-         xuV+Rkh9dClGCUAUC6DMxRADcE2jT1nPuk9bmED5uJMsObaCBxGp6cs9VCqpc6lSGM7m
-         a8LLIla1EQ64vOtySUk6cwa2ncNrOY5NDF2YkfUjRN5PtPZs4yLj3fKnWaDy4HjQeE6l
-         xhvP5SeucmqD7aQ1QUM8c0WxexAJAjxAf5dvGvYevULjXvcAVZTMvmbB1c+utUuF7hv5
-         5COA==
-X-Forwarded-Encrypted: i=1; AJvYcCV8+e7JjWRsm6pNZu10CI7+QZ/8jF1ZSxxVRndQjLPx75zGVlH5ABYdHOp5pUBfxLL1L3ahRQjmVg==@kvack.org
-X-Gm-Message-State: AOJu0YzgbJ1NPMAGbKH6SHNOLyHeQFgNzVM0H5hAGPDucMVKrvWBPjHZ
-	agXam5moYXqrKi5DGkoKupFtOyB99LqxO1N5XuRG9XfY47FmpAslCc0XKmrAeKkO4Cs=
-X-Gm-Gg: ASbGncsNrHr1Qf8sb7h2+FciX0+G4HmVU8YGGYG2aKv3y9bFfP0nccnm19o5JyAbZOF
-	7NS3p3azzuVc2jlomGei3QBx0d82w0iiKms46k4COOY4FfG06mh+Z5kzYNI1MC5PqOhyINc1IxM
-	WQF3JEZkVNAhT5yEaRLWbJTQyyxvnMljsQ75lnOaqpMkCFRPv6pwbm9sFz4kcMmORpVtm44BDDA
-	LPRPV12Z0gxFcmjJkc8CG0zTifOQskrypUA+RFP8nS3aFNvAaVv1wZrQyexN5gYqpyELEyvZtNX
-	bfjUkJqk3alTvcjguX8Kg8cFmhCkw17ZcJD4AUwyxmwES7Vs7gGLFKUgH2zBaS9nfYhkWx/pRgA
-	x8WtlVyMjFkd6SgbkuZV2d6jSNdLSdeKeRvDSgzE4bt4nh1FfYySI35ybWn89E36lqG72n0LP68
-	q5iPfJSYcPYLJM5lOIEor2emkR+yrQxxPj5s8fxPuvzBetnQZobgNRCUXYjou9jFcZF9QMcCIbC
-	f1al7Kg
-X-Google-Smtp-Source: AGHT+IGJ10HVaocsCEydg4aVTizi/vMPamVub9HiazMH0e97AeDKtQcVhgmZnH66d5WlxZIy8Zx0/A==
-X-Received: by 2002:a05:622a:1453:b0:4e8:a967:953e with SMTP id d75a77b69052e-4eb940ecd89mr41100001cf.24.1761332863649;
-        Fri, 24 Oct 2025 12:07:43 -0700 (PDT)
+        bh=r4YhT6UkULx0zY0BI31WYEg/XWXtKp76n8KPsV3vFlM=;
+        b=FaRxac2wGb4QiKsTU6dV91UCxnUjU31zbqu35sk2X55yDoNmPphM0h/b1zGD9mL9Lq
+         WGbVpDDSe3J1I+wPTAevmHJwvLux9Vs78W6+s98YUfxgsmv37TY5eoPYz1xXLRkb2g91
+         XKQL0suzybJbf9R2ov/L9cjhZp1k0sHRzN9i0tl7tXSgVMcID5nNyNpgN+TiffK2rMu5
+         MerroN48ZOIudm3yYSXlpJ/tgU/0Yclgwc1MOU5MD8c4bUs6S69KJLSYKFFLoMeFZE+o
+         16jkYi8BKVIVWjisTudbGPHIyMNyeQK0XsUsjXgLAFEXPO9sedD+IgSyi4//lh7iwqkc
+         D81g==
+X-Forwarded-Encrypted: i=1; AJvYcCXpg88puQiz+ztJahgh7MrhsryguYI7HqlEjoo+rgp2zxfxhtWOajn0+XlONWKugu7T8f+UquZshQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzb4c2L2oc2l/eUh4HAThFKvJsXUen3Asz2iP0wzFn5UJv2KaAG
+	tQBh+RJfFeaOnuyr4z+RnmvTp813P9XQmTeoUivFUuXEHTm97S5cLgorP3Pcp7BZ3Hw=
+X-Gm-Gg: ASbGncu9H7wpFM0nlRXCuxSlm+CJotXH/i3AK5EFH1wUzdJKBVVL8LoT7GnyGukRrWN
+	w7k5CIYv2JvtzAbB8gHhnbWiTNT/64Mi2L3JEBfk1r5wu/18VpLKFRWo4vwcoWzuS2i9KwX3wXa
+	r0LnNFdvs2mDMwm9Ci6wXO7Q12w4gNGuqUWaf4Z3x+SPkoRvL6EY56PXjMdguL8jS3YoZPYHb/c
+	91pxrnNMmGtOwC66Cr56OnBekz5Jqp7asm5g1nqYv4bueJlPfX2UwElcXtgRQKNgTx55ojcfhcu
+	Oi3so3fjS2uAFfNhm2Vkdd4BBy8+zrUT22T/n5XbV7kzGBcCtnSzFCYa419oUZHDQxLdPRr5KDW
+	6MSophfSZJoGbQ+elgOujaOYM20u1Yu5bL0dxNjpPu5K5a5jVzBjYZgb7qkW05gXJnIhG5Sprsq
+	QNDV1oyl12zYr8VS4Dg7W37u0LkFZE/FCoJpjFUxzDBjMJ1b89zluoTiSbDxI=
+X-Google-Smtp-Source: AGHT+IHrkcPaJLyTM5pJbJ/XVcfel+4u6gv+3P752b0IEbbyKeVVUPlOZ4xL4VMnAte1FxD358/CqA==
+X-Received: by 2002:a05:620a:40c4:b0:85f:82c1:c8b1 with SMTP id af79cd13be357-8907011583dmr3539276185a.46.1761333000331;
+        Fri, 24 Oct 2025 12:10:00 -0700 (PDT)
 Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eb85e917c5sm35169951cf.24.2025.10.24.12.07.42
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89c11e631e4sm442634485a.44.2025.10.24.12.09.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 12:07:43 -0700 (PDT)
-Date: Fri, 24 Oct 2025 15:07:40 -0400
+        Fri, 24 Oct 2025 12:09:59 -0700 (PDT)
+Date: Fri, 24 Oct 2025 15:09:57 -0400
 From: Gregory Price <gourry@gourry.net>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -130,23 +129,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
 	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 11/12] mm: rename non_swap_entry() to
- is_non_present_entry()
-Message-ID: <aPvOfIfcRM0X_RaK@gourry-fedora-PF4VCD3F>
+Subject: Re: [RFC PATCH 09/12] mm/huge_memory: refactor change_huge_pmd()
+ non-present logic
+Message-ID: <aPvPBS5H0E9OXEo1@gourry-fedora-PF4VCD3F>
 References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
- <a4d5b41bd96d7a066962693fd2e29eb7db6e5c8d.1761288179.git.lorenzo.stoakes@oracle.com>
+ <282c5f993e61ca57a764a84d0abb96e355dee852.1761288179.git.lorenzo.stoakes@oracle.com>
+ <aPvIPqEfnxxQ7duJ@gourry-fedora-PF4VCD3F>
+ <2563f7e1-347c-4e62-9c03-98805c6aa446@lucifer.local>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a4d5b41bd96d7a066962693fd2e29eb7db6e5c8d.1761288179.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: p46eh3maa1srxnsx847c9wt6hw7s9zq9
-X-Rspamd-Queue-Id: D20D780015
+In-Reply-To: <2563f7e1-347c-4e62-9c03-98805c6aa446@lucifer.local>
+X-Stat-Signature: omtp9qcr36jybu8xxasnfnjy37oqtyag
+X-Rspamd-Queue-Id: 6C14B180007
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761332864-845297
-X-HE-Meta: U2FsdGVkX193R6GRA2aNMoQIykYr+PRn4rmxlCSF8tG6MUHwpYV81FMa6TEsxwIWT6xqcAhAX5Akie+IHwQOUJNRnMxpV2VjAVGGE99R/skKXJZZNubADuv182YK2ZeTV04dSN3ZU86Cu97OYMrlpfQwBiQSfyUJPlp+ne07riGo7UGJdzPo9k9DChQhHKnsoWWRBZX+xKYRmOHr4Uw0JgH5BWmqs2IqEqqT4rIYJpL423/Y4cV/PBqRPz2V21HHeViMGDRNGBMez2Hr9RL3aZcW7TIYHl6TPvliFZsC7v3ruUge8/LipwrWejqY/Ph6ungNzWTEWmNNYJUE1IaoMlVWhqci4Uf3czrPeXVB/RANcvmxV3vDTdNRxTYz6RNSP8DGLdCeo/er1VYN7tvFsFmi4Wqup+Z596via01ZB/GxIG43pMIIowZ54x6OnwSx/Rgxq4kyC7MfYOAUHk1itlQABwa+Q6miKYAhFRlhY7v1iC+7vcewDqUqfGrZLBjau3QS1iMzghv7g7tAcYxsWJU8tGzl40SHOOFACC+LVF3mBsM2/7KsDR9LJCV4SefCcDuq3KDgmFL6NKU2Tg8rA2FIGs7LEdes3LQCCRhI28Q2PoPKd+BaksuzcUQ/5+VM7xvmNfmbyQ+tS/fttlrYmKyvDON2ETFvRPuMhL7SUlIg9/Hs2RhkLxgv3Td3Wv6ClWX4iWuYn+QZA36zQ+Tn2Z/G3detdxmaqSKxPny2ZPjYw8jKk4WnemTM/Z5MrHvnFn7l9PEaTcmQqBavrW1AjfkrMTyG7f00bbOvC53jaV6yeDDXDwxjWWmqEivb+B+MNL+sdDdkbMyl3i1z2ttgb/70qOhy9obCQzX1cMp2e+75Q2IFYZlc9rs2QO3pIQlXQAsiIfbz/RukW0jjIBWr4XaZGWky7bNMm9Jigedoz3o+xrHgfNLXswlG9Jn6M8wj7uKd422TTOTQQao05KU
- wAuutOLh
- Ghn+1EKvaGhsvO9AEukdD4u6YnovI5d437c8+4pvOpHSlwx6RqbCSMITffZWuPaa0c/zL2/lXYzCTDeBJmEdxSX/PrBSYO1v1zHB6033WoLKAsJ06OTRBLFRN6yKb0ifU+j/wwamwk1bOInvpUDgg8ivz/ZRMTq/eweg8KKpX7pRfAA2+yucfcrPzIabnLJCsJ6ovfSe0ONvkjV75B3ZSCs6kChH+4HyEseFvIFXSr0r7ahg0W3aeEd0MT4//zYcvwuSeF09XlQOogE/yB7+FToz0Hy6ZpWkR7uVDYPFbsVgItWQ93CuQo2ydZAH3MCmLREiqmflAx+xQU2h8OmR9NdalAVaCFOr/oUGRkdNOKvCWZ7x/CPTYiVISRSDpfSs6jnykr0iRIKLb2g8WepxiVouqI+T/WUV1ackdUBEwMiGj19MwCno+VYOM2rKuIqW7iG1r
+X-HE-Tag: 1761333001-609678
+X-HE-Meta: U2FsdGVkX19iEGl6wVXgIU9rAq3Nvc4F+7idwJtiwiDsBljgbFHQh3eiZW8wLLPJyBnrSO7u4M+Yyk5CKSrstc3bvQt2OKSxJMw9y5B3eHjUr8CAx/XdTF8kDNkiifZjtGUzoHpWeGlCDf1RWKM6s4OSb0On/bBqHrC0b5XRsFJA4Iba53crIaMuzM305x4jisB6QdiMOKicFgF47Ryc70xwgHev3atf2dDExP1P4u0GGtXkJgRsSnuYlXmk/6J+CVvU5990QN9DOWmy7bP0PvX21RMazJs0slq6FHrewtQKCrr4AQcw/EHXB22oCj3iySb4b4uMMMeC01OHvJCHKUvRMgzp6w+tDaZmpWuRS454+D3VY473hvkpQ8sYrMnJKwRZnbJhK5C0qU1YNWSaf5uD3KimAGzd6iSlPGJatrT5bEy/3j9/7Jamj+OhO2jcMPvK/frM+oDXq/FAyqwK4JS8z3VrnhJiDto6U2jXtiBO2CmVUdu9c9huTqmmWEXBWb/HhkP2IPBVI8/aj5uOmU0y1q8yRHAqqLH9ZZ5RxP1Dnlt/ZMwpcJCEEk2BK8G04k8/WE7yfOOq6c9PBAs/vnWgTslymYFqv6cOPO5K2FX6O8G34OBnLmYrvkhBwg/Orjx5OrzBpQfUaHr4IEGbmsb2k1f3baD0qjOqBQfcToLtFFIGLI7mfumgPtFDSxhnM02R4Hhaxq9AcxTSnruB5zp/zsCNHfx79dMkSBZRn0chV6WYd93hClBumn5irb9HPjDG5gFTHMcZ8Y6QDbldcDDRd2NgXQvbnkyRANkb6B/UiiU/O5IIcG/miJ1mwm77I0W2pRUpFub9gkMOOuMBIKMr6Hbx3YCA4Hs09SrSMvc4jU5hxqWfBgJ40axF1qQtanSCmuYRGOPJoC3no+wM+ZeBGbiMMM3JXXNyvEmW2QPw6TTXLSqi8ZtEnkSnvlgkwgQNqLZYaHlcOPbr7Th
+ 2ZhTBpWo
+ r+87Lo/oaAA3aHIvhEAQnFnWqJxctIYPhoJ4s/uCnytPabdej49u2WgpzZKpYMu7kkM7Hg41hNcjprz4SGYf+AOzaIgoFSwrE4OMcVyFhGcvfR4U4cwX0I2mOMVW3FNYrRuld4QimzwkKFSi8vFO9skIHDIZLOQrNOsIcdpwCEpUx/8ckjiV8nCndayGxJBxZWAi24E0nh8baRPmWI7G90jNUuu502K0yyZcgcLeS+3VZkeT01IPHhkgrdypWMUgDXb4yqa/EUIskTg2Ag89cMZ0SBGjpBZQyJNXQtCYXvzSVBBt34KCttX4K+E8gLLMi3YVIjAkjJUfeaB4MUNas0h1hOKVSaSM/6KV41Rh1i7+BRcKACIiFzSq/K9YHBzhi/ygRZkwiOdP0hDz0s12hnFszpvK+uugPtJrN2+2E2aBBrX1CHyynL44oddsbKHzNaBm5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,36 +156,16 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 08:41:27AM +0100, Lorenzo Stoakes wrote:
-> Referring to non-swap swap entries is simply confusing. While we store
-> non-present entries unrelated to swap itself, in swp_entry_t fields, we can
-> avoid referring to them as 'non-swap' entries.
+On Fri, Oct 24, 2025 at 07:44:41PM +0100, Lorenzo Stoakes wrote:
+> On Fri, Oct 24, 2025 at 02:41:02PM -0400, Gregory Price wrote:
 > 
---- >8
->  static void ptep_zap_swap_entry(struct mm_struct *mm, swp_entry_t entry)
->  {
-> -	if (!non_swap_entry(entry))
-> +	if (!is_non_present_entry(entry))
->  		dec_mm_counter(mm, MM_SWAPENTS);
+> You can see it's equivalent except we rely on compiler removing dead code when
+> we use thp_migration_supported() obviously (which is fine)
+> 
 
-I guess the question I have here is whether it's feasible to invert the
-logic to avoid the double-negative not-logic.
+derp - disregard.  End of the day friday is probably not the time to
+be doing core patch reviews :P.
 
-Anyway, naming is hard. In general I appreciate the additional clarity,
-even if we still have some `!is_non_*` logic sprinkled about.
-
---- addt'l aside semi-unrelated to your patches
-
-I can see where this is going in the long run, but the name of this
-function (ptep_zap_swap_entry) is as frustrating as the check for
-non_swap_entry(entry).
-
-may as well call it `ptep_zap_leaf_thingy` if it's handling multiple
-special entry types.
-
-but renaming even more functions in strange places outside scope here.
-
----
-
+Cheers,
 ~Gregory
 
