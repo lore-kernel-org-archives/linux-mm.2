@@ -4,122 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F14ACCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:29:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 114B9CCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:32:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBD498E00A1; Fri, 24 Oct 2025 10:29:54 -0400 (EDT)
+	id 6CF8A8E00A2; Fri, 24 Oct 2025 10:32:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C45708E0042; Fri, 24 Oct 2025 10:29:54 -0400 (EDT)
+	id 6A7F18E0042; Fri, 24 Oct 2025 10:32:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ABFDF8E00A1; Fri, 24 Oct 2025 10:29:54 -0400 (EDT)
+	id 5E4E28E00A2; Fri, 24 Oct 2025 10:32:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9353A8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:29:54 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3F33FBE640
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:29:54 +0000 (UTC)
-X-FDA: 84033241908.29.33A770D
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 21C9EC0007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:29:51 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=lNiDEF6C;
-	spf=pass (imf28.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761316192; a=rsa-sha256;
-	cv=none;
-	b=mtn75pChvh9/1xRXq62RgFz8SRiBrqqnEABb3onKAju0pua955ehU+jAfv73DNV+i77AYS
-	uMxFr4yG0dVXgmme548B2JRktCw0+4K1xJu78VZ5N7Mbrts6IMWg74hzAOd8ZviKP05jhD
-	W5+vC7tr7pUY1dWaFJblwp2hm1a9aR8=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=lNiDEF6C;
-	spf=pass (imf28.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com";
-	dmarc=pass (policy=reject) header.from=meta.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D2188E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:32:53 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E003588D8A
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:32:52 +0000 (UTC)
+X-FDA: 84033249384.10.5C6EBB1
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C26382000A
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:32:50 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761316192;
+	s=arc-20220608; t=1761316371;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6/h0G3p+CogW+KUD4A3h3rSaunnYLJugMgdAj9+txKM=;
-	b=5v+AlVn9/RKwbxMrjjhVel92ruFMxAGKVQJWbun5Rz58iIo1F8NFBHIfe0yYMY2WU6t0F8
-	Y2FxBfu+5O+pJKKw+NPToBOM+WCNWnj6PoigsRS5okRl1jJI/6llK6bAtLjZO0zgqsik+I
-	C6ZNYzinCTgpVEAtAUuu01hVzJSo2cQ=
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59O2UEjG1836665;
-	Fri, 24 Oct 2025 07:29:45 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=6/h0G3p+CogW+KUD4A3h3rSaunnYLJugMgdAj9+txKM=; b=lNiDEF6CSP20
-	iTsKdShjwOWG080Ql4m0WuuhKTv/PnaxXYtx2oBXzSdEmmHN7jcBUwvLpsJ0l19i
-	2pN7xUXlwxalCx8zy3oAclMDLf2a059pw1umjoGUI1AgU+a0ybhiKuP4g6gRBzfB
-	L+k3vdZxzdnpzDjAMGaF8dQgxXkmg6C0sgUroTyp/7DXOvXQwxICSzLS6CXdk1XR
-	kgWoLESaE3lsZEq28cnhZibtC0cya778ashO/hCetb0FJPb2O0jFYSQKcKKDr0Fa
-	Yu0eoA8r6/MNE7kizbFCOCj9p1vhSMYZCMshku3Yz6hOLBoRoNX6W98joaTZs8QU
-	eq2VFCVJDQ==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a00qr3bp6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 24 Oct 2025 07:29:45 -0700 (PDT)
-Received: from devbig091.ldc1.facebook.com (2620:10d:c0a8:1b::8e35) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Fri, 24 Oct 2025 14:29:44 +0000
-From: Chris Mason <clm@meta.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
-        "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "Sebastian
- Andrzej Siewior" <bigeasy@linutronix.de>,
-        Alexei Starovoitov
-	<ast@kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
-        <bpf@vger.kernel.org>, <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH RFC 10/19] slab: remove cpu (partial) slabs usage from allocation paths
-Date: Fri, 24 Oct 2025 07:29:20 -0700
-Message-ID: <20251024142927.780367-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251023-sheaves-for-all-v1-10-6ffa2c9941c0@suse.cz>
-References:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fj3ap4gb/dH/jt4Kw1Iocq3iQjPpRmaLvXvbN2t9MVY=;
+	b=Ret3z+NjXeo684jvxZjJ+D9P1qtmb91uwZB1HJQruvqEVVoAV6Rmj0xfxGfQDtplhovN1a
+	2Fy8JSFT6sLHr+1qOob9OIHI9rv2+g4Nd6VevfVPZEv/ZjrWiVlt99uJtce1CFQcdcmV62
+	mQExtyHuNiLdP4pvRm9LUIJJI3QEaCs=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761316371; a=rsa-sha256;
+	cv=none;
+	b=wMR37vaFkNZ2hb4hFDRGVRijNaZQDXsSTac0/Oj+ZC36ZvlkcF4NmtUaBw7pTMUH1uaaam
+	WZE8W1xzxkZpjUsuXDV59doVN8TfY5Htrsy5+4SCDQjucqaxxyJ8OyI+00nOFfdRTkY51k
+	jiImiegfJ/Fe+YY4tFQwm40XmP/BWmY=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDD53175A;
+	Fri, 24 Oct 2025 07:32:41 -0700 (PDT)
+Received: from [10.44.160.74] (e126510-lin.lund.arm.com [10.44.160.74])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3F9233F66E;
+	Fri, 24 Oct 2025 07:32:42 -0700 (PDT)
+Message-ID: <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
+Date: Fri, 24 Oct 2025 16:32:39 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
+To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+ <20251015082727.2395128-7-kevin.brodsky@arm.com>
+ <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+ <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
+ <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c0a8:1b::8e35]
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDEyOSBTYWx0ZWRfXzo7mh/+QEEto
- lN48tJt90rZ0v9oBAvXPrAsfwe+CenqqyK68LR7o0BOfvJujTaqFIdwroPduE2PBMa7VnKqUE/B
- hR/lbf4iinufGfA1AoIc8lE3vKY7y4Hw5m21adIOtvFfDgLbh7c/rKrhMA+6RLDywjI9qT/AoPU
- QMz8k7g4r2r6F7d78Ky9USlLG/pqBLtW9jbItBaZRSJncw/ge9eg3eKLxO5qPcfnkt2yRAOGPDZ
- 0oDHjSRBppMO5yVVZV2peChq0H2i7zjAjvg8Sie6K49tWvOlXv5+AOIWEC9CFAuuk3C2lzCpqtT
- +WAgDcHMs2kxxD4qDJk65eXaVVatHMy1wdEZjZIXRWbu9DTaF8gSAizL8JMHUtenNSM7KaKQCvX
- uRzKVvQvjM8o8dsWfoKrJwWlFoOyMA==
-X-Authority-Analysis: v=2.4 cv=YfWwJgRf c=1 sm=1 tr=0 ts=68fb8d59 cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=Qud2Co-4zkO9aUnGrzwA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-GUID: whmAAHXeJ-9g96VK63zLv5mAQoKsaiQB
-X-Proofpoint-ORIG-GUID: whmAAHXeJ-9g96VK63zLv5mAQoKsaiQB
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-24_02,2025-10-22_01,2025-03-28_01
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C26382000A
+X-Stat-Signature: fpdpxiswse5ppgi8sja7oq83ahwib9dt
 X-Rspam-User: 
-X-Stat-Signature: fg61cksri4wtae6p8qfw1p4tr9rubgbc
-X-Rspamd-Queue-Id: 21C9EC0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761316191-724826
-X-HE-Meta: U2FsdGVkX19rNfQAZ962i6oMz9arlLY+yD5E9gHcKW6nGDJs7FIGNevNlQmMKm6bfiLe0Cg+Ok5heUxJ/iegAJU7mniPybZWcm6mF7a5F4b1qgurdTxDB5LFwyP5MujGhtibkwjGKQu2B0Wy1KCPhjtXgNYXP5UuSCni0OnCfrlpklreg3iMgufl+JXUcxA3+mmS/40OGkhbpgLYzqavdVjrXHcDsPwbPmEkdH9oKKsqWVY4yD2g2xgGcTvXxnn67m9yjMo4DyS7gTwsnNyEJsvvO79u2DBUJariuzxJ703KdD/EEasN0Zs6RlvHOI5HarePfFBMnlVGQAs8LK9Ke1Ikj1Xe0lST9bLk3VBvrMtdve/jmktUBQSUstvN6gUBm6xi75xglFyY8Hk9ZdB6xNTR/y+oDQtIKsDfCnS/D/P4i5ibLc5XjDKFfQSmh//MYmM1hRNsXYs67sSMwBZvoSWxkAxq7y3ejRjPafOQoR6AOQrXVxKm0ljmXgPrR+kUMKCTjCXsmnjh/pk6jAM8cJsWsytGCVfRN3AaOkWePTgriT8VtLmIL2ypy6pVRuH/OXRvTfFV9e6ECT84Z2saVxV3e2yvflCGJ5Q9eT6NMeUwtRuhai52LFy75KDbMKHVtS/YKx5RFWTRzPmzB7JZXLYmCDIwK62wPaZ/n+MWPyNUP+2cmVT0RvKrmmJfZmW0477eRqK6d1RXnmU0PzKvxSvfd7+KoTMDSNV9aXexvZjq0wsjD8T4wnaEVTsVX7/NAzrj7tFd6cQgEMa0c64C/duDZqT1Jibv4YbqXAIZ1PYBx4zsAEofuqR4P/ye/KyZkUT4XyQJKV5X4wK+p6KIerRXU4P4zUdbINE14HFWlmWxr0vMrLmIlLh/1fxzxORWOmwEcv//aBCV0qAT+ZR7BtBT4HWQWEHb0FnqYBjVV4eaZBJcxR3FIYi0BLZhw/G6gWuHP4IWepyOQT8vliE
- +tX1Q65S
- DrwlAu9uEIviS8LHFO1/jibJOuvQOuMwL9qtrkvwvDAiTlb1WoBq8r5XIykTH+Zzl6sEpNQ5qlkboRVfL3fbt5aCEBAvxUWJ4rXV1MyRvBV6UB3AzmTAhlwOUhN8D50lhdfdD2EH7rxE5ZbmT4v3cyniE3AdClVMXtSH8vynY0tFlkAbYO/3y4ujMPQLsp2DQhnHq1rYOq/tTq9AslMWESH+Msqz5XtUDfzVeaT7rd4Nvb6PQcxHw4Tvw3n1+4ZuiGTAZd68s5TiFKZtyx1jFVEwGuLVmSrU2KAAHgywBJuzEw5axtzmSh/pb7X2IfFRBCMYVx3DUd0dhbHCasm5x/Q8xjKG9ng9sr7EU2SK5KFJEO6VLfVua+Qihzw==
+X-HE-Tag: 1761316370-691706
+X-HE-Meta: U2FsdGVkX19kO3ayrgQbpPzo8/Utt0CkjokfV0ZEMltCcyfD1IVs+hU1pvrA4G/ioFsH8JPDfhuiDZweVj/qLTDaPIyn5Vca9tfBo+FQB9s1HegBK+gToK4GzENAauGoL2e6grFf+oIBo4c2ArJErcOQM3PNi1QFb2Ev6cU7UwpbwpLUH1rqaRGSlIyDehgllNMRvfnaT68xmlYFna0lQvIgKi+FBoeHbQP8kyT4u53jFFM8+F24Nsm+Ip1NhEM82iUdU1vbECo2xy7oOOk5hmwuHN/LpdeYspnNARrKivLwXBsZXu5/8nvHDIXc2iNs5d0VCvBisuQs0zzwOk6Q8YwONYfqC5vDm2CLiQ+jPsz87AwMBXUstv8gGgce/yid/aXplYt/LYYNwbCySDL/oOSkpsLoCdWyWIWEXjrqVYluCUa2ZxxpGjmm7at/7AOzN9kk6Dol2ljSGbqp8KLQjLVmgU8tS2Ihkq1TsZW4KvW+QxPT3hB/38BG/440OHw9kb4ZEB6390GybVAna11pZHP+ztCGvpb/riUBivIpOAPSkcCbtu2WPBC8Ls+CK0MUM8URx8HlOI+B2jmZkrp1kiOvLDbFV2FGRHtYrqJi+ioaZrRZ13GT4lEeXops3VNu8qXH/hsSnEgKyFfJaVufZPVk28/WCoXIuKZTmQ9ZkDHJ+sd9i611noMXAk1JCP+I9oDDCMJ2zDfCwQBRqa550tmtcz+aUVCmGWRJI90FTIeMqlW/dz6Iw1XbPyMW+04ksK9Z0RwWP9cdklkytPfCzdBa1sQt/RvK4BuRh+ro779WT+SqD/ACIiKCGXKG+3d1Kx4QcZ/KYAoIG+H5nhdOZPW8RYVbuekCOTf/5Wy0CvXzeTdf5P26bs4GVzqGM52Pj9fbvytW/3OysFtqbOa99Uiw16FjXStgw3/726jXaXB77ZHLG9Hv5VBYgAjdy8lJ1H2NFaEqUAEEPLnfjL0
+ 7QdBuA+1
+ fPEDXMeiutjxVQ2V3tXH+TlUYKtoN5Z5v84iJundJ2lYRxS4RSxVCtBVRpv2FZ9eW02RJ2i1dl73965syiVkPTpv7kgry8l7Bgr7zLOEP4HczkzlFLWmCOeTtyi+6cjOcbhCsjKmJUZkTeImBqS62O7pNabG7AO9TaR5YwBZ9m0hxJkCTc8yvn6vSjiLKSONH5B+WyurLHp+PYEUIrreJ2DpJgJ2WdzP65nxRypy0lfDWuyYwUR03ln5rLG6CRMRjocto
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,141 +107,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 15:52:32 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
-
-> We now rely on sheaves as the percpu caching layer and can refill them
-> directly from partial or newly allocated slabs. Start removing the cpu
-> (partial) slabs code, first from allocation paths.
-> 
-> This means that any allocation not satisfied from percpu sheaves will
-> end up in ___slab_alloc(), where we remove the usage of cpu (partial)
-> slabs, so it will only perform get_partial() or new_slab().
-> 
-> In get_partial_node() we used to return a slab for freezing as the cpu
-> slab and to refill the partial slab. Now we only want to return a single
-> object and leave the slab on the list (unless it became full). We can't
-> simply reuse alloc_single_from_partial() as that assumes freeing uses
-> free_to_partial_list(). Instead we need to use __slab_update_freelist()
-> to work properly against a racing __slab_free().
-> 
-> The rest of the changes is removing functions that no longer have any
-> callers.
+On 24/10/2025 15:27, David Hildenbrand wrote:
+> On 24.10.25 14:13, Kevin Brodsky wrote:
+>> On 23/10/2025 21:52, David Hildenbrand wrote:
+>>> On 15.10.25 10:27, Kevin Brodsky wrote:
+>>>> [...]
+>>>>
+>>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
+>>>>     followed by an immediate exit/rescheduling and some followed by a
+>>>>     conditional exit. These functions assume that they are called
+>>>>     with lazy MMU disabled and we cannot simply use pause()/resume()
+>>>>     to address that. This patch leaves the situation unchanged by
+>>>>     calling enable()/disable() in all cases.
+>>>
+>>> I'm confused, the function simply does
+>>>
+>>> (a) enables lazy mmu
+>>> (b) does something on the page table
+>>> (c) disables lazy mmu
+>>> (d) does something expensive (split folio -> take sleepable locks,
+>>>      flushes tlb)
+>>> (e) go to (a)
+>>
+>> That step is conditional: we exit right away if pte_offset_map_lock()
+>> fails. The fundamental issue is that pause() must always be matched with
+>> resume(), but as those functions look today there is no situation where
+>> a pause() would always be matched with a resume().
 >
-
-Hi Vlastimil,
-
-We're trying out the AI patch review automation on the BPF commits and it had
-some questions about a few of these.  Since the goal is to actually test the
-automation, I'm putting them in unedited, but I did try and make sure they
-were valid before sending.
-
-This one seems pretty unlikely but still worth fixing:
-
+> We have matches enable/disable, so my question is rather "why" you are
+> even thinking about using pause/resume?
 >
-> diff --git a/mm/slub.c b/mm/slub.c
-> index e2b052657d11..bd67336e7c1f 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
+> What would be the benefit of that? If there is no benefit then just
+> drop this from the patch description as it's more confusing than just
+> ... doing what the existing code does :)
 
-[ ... ]
+Ah sorry I misunderstood, I guess you originally meant: why would we use
+pause()/resume()?
 
-> @@ -3575,15 +3532,15 @@ static bool get_partial_node_bulk(struct kmem_cache *s,
->  }
->
->  /*
-> - * Try to allocate a partial slab from a specific node.
-> + * Try to allocate object from a partial slab on a specific node.
->   */
-> -static struct slab *get_partial_node(struct kmem_cache *s,
-> -				     struct kmem_cache_node *n,
-> -				     struct partial_context *pc)
-> +static void *get_partial_node(struct kmem_cache *s,
-> +			      struct kmem_cache_node *n,
-> +			      struct partial_context *pc)
->  {
-> -	struct slab *slab, *slab2, *partial = NULL;
-> +	struct slab *slab, *slab2;
->  	unsigned long flags;
-> -	unsigned int partial_slabs = 0;
-> +	void *object;
->
->  	/*
->  	 * Racy check. If we mistakenly see no partial slabs then we
-> @@ -3599,54 +3556,54 @@ static struct slab *get_partial_node(struct kmem_cache *s,
->  	else if (!spin_trylock_irqsave(&n->list_lock, flags))
->  		return NULL;
->  	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
-> +
-> +		unsigned long counters;
-> +		struct slab new;
-> +
->  		if (!pfmemalloc_match(slab, pc->flags))
->  			continue;
+The issue is the one I mentioned in the commit message: using
+enable()/disable(), we assume that the functions are called with lazy
+MMU mode is disabled. Consider:
 
-Can get_partial_node() return an uninitialized pointer? The variable
-'object' is declared but never initialized. If all slabs in the partial
-list fail the pfmemalloc_match() check, the loop completes without
-setting 'object', then returns it at the end of the function.
+  lazy_mmu_mode_enable()
+  madvise_cold_or_pageout_pte_range():
+    lazy_mmu_mode_enable()
+    ...
+    if (need_resched()) {
+      lazy_mmu_mode_disable()
+      cond_resched() // lazy MMU still enabled
+    }
 
-In the previous version, the equivalent 'partial' variable was explicitly
-initialized to NULL. When all slabs were skipped, NULL was returned.
+This will explode on architectures that do not allow sleeping while in
+lazy MMU mode. I'm not saying this is an actual problem - I don't see
+why those functions would be called with lazy MMU mode enabled. But it
+does go against the notion that nesting works everywhere.
 
 >
->  		if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-> -			void *object = alloc_single_from_partial(s, n, slab,
-> +			object = alloc_single_from_partial(s, n, slab,
->  							pc->orig_size);
-> -			if (object) {
-> -				partial = slab;
-> -				pc->object = object;
-> +			if (object)
->  				break;
-> -			}
->  			continue;
->  		}
+>>>
+>>> Why would we use enable/disable instead?
+>>>
+>>>>
+>>>> * x86/Xen is currently the only case where explicit handling is
+>>>>     required for lazy MMU when context-switching. This is purely an
+>>>>     implementation detail and using the generic lazy_mmu_mode_*
+>>>>     functions would cause trouble when nesting support is introduced,
+>>>>     because the generic functions must be called from the current
+>>>> task.
+>>>>     For that reason we still use arch_leave() and arch_enter() there.
+>>>
+>>> How does this interact with patch #11?
+>>
+>> It is a requirement for patch 11, in fact. If we called disable() when
+>> switching out a task, then lazy_mmu_state.enabled would (most likely) be
+>> false when scheduling it again.
+>>
+>> By calling the arch_* helpers when context-switching, we ensure
+>> lazy_mmu_state remains unchanged. This is consistent with what happens
+>> on all other architectures (which don't do anything about lazy_mmu when
+>> context-switching). lazy_mmu_state is the lazy MMU status *when the task
+>> is scheduled*, and should be preserved on a context-switch.
 >
-> -		remove_partial(n, slab);
-> -
-> -		if (!partial) {
-> -			partial = slab;
-> -			stat(s, ALLOC_FROM_PARTIAL);
-> -
-> -			if ((slub_get_cpu_partial(s) == 0)) {
-> -				break;
-> -			}
-> -		} else {
-> -			put_cpu_partial(s, slab, 0);
-> -			stat(s, CPU_PARTIAL_NODE);
-> -
-> -			if (++partial_slabs > slub_get_cpu_partial(s) / 2) {
-> -				break;
-> -			}
-> -		}
-> +		/*
-> +		 * get a single object from the slab. This might race against
-> +		 * __slab_free(), which however has to take the list_lock if
-> +		 * it's about to make the slab fully free.
-> +		 */
-> +		do {
-> +			object = slab->freelist;
-> +			counters = slab->counters;
-> +			new.freelist = get_freepointer(s, object);
-> +			new.counters = counters;
-> +			new.inuse++;
-> +		} while (!__slab_update_freelist(s, slab,
-> +			object, counters,
-> +			new.freelist, new.counters,
-> +			"get_partial_node"));
-> +
-> +		if (!new.freelist)
-> +			remove_partial(n, slab);
->  	}
->  	spin_unlock_irqrestore(&n->list_lock, flags);
-> -	return partial;
-> +	return object;
->  }
+> Okay, thanks for clarifying. That whole XEN stuff here is rather horrible.
 
-[ ... ]
+Can't say I disagree... I tried to simplify it further, but the
+Xen-specific "LAZY_CPU" mode makes it just too difficult.
 
+>
+>>
+>>>
+>>>>
+>>>> Note: x86 calls arch_flush_lazy_mmu_mode() unconditionally in a few
+>>>> places, but only defines it if PARAVIRT_XXL is selected, and we are
+>>>> removing the fallback in <linux/pgtable.h>. Add a new fallback
+>>>> definition to <asm/pgtable.h> to keep things building.
+>>>
+>>> I can see a call in __kernel_map_pages() and
+>>> arch_kmap_local_post_map()/arch_kmap_local_post_unmap().
+>>>
+>>> I guess that is ... harmless/irrelevant in the context of this series?
+>>
+>> It should be. arch_flush_lazy_mmu_mode() was only used by x86 before
+>> this series; we're adding new calls to it from the generic layer, but
+>> existing x86 calls shouldn't be affected.
+>
+> Okay, I'd like to understand the rules when arch_flush_lazy_mmu_mode()
+> would actually be required in such arch code, but that's outside of
+> the scope of your patch series. 
+
+Not too sure either. A little archaeology shows that the calls were
+added by [1][2]. Chances are [1] is no longer relevant since lazy_mmu
+isn't directly used in copy_page_range(). 
+
+I think [2] is still required - __kernel_map_pages() can be called while
+lazy MMU is already enabled, and AIUI the mapping changes should take
+effect by the time __kernel_map_pages() returns. On arm64 we shouldn't
+have this problem by virtue of __kernel_map_pages() using lazy_mmu
+itself, meaning that the nested call to disable() will trigger a flush.
+(This case is in fact the original motivation for supporting nesting.)
+
+- Kevin
+
+[1]
+https://lore.kernel.org/all/1319573279-13867-2-git-send-email-konrad.wilk@oracle.com/
+[2]
+https://lore.kernel.org/all/1365703192-2089-1-git-send-email-boris.ostrovsky@oracle.com/
 
 
