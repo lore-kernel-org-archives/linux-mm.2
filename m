@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 79147CCD1BF
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 01:20:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A8E2CCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 01:20:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D45308E0025; Thu, 23 Oct 2025 21:20:09 -0400 (EDT)
+	id A38338E0026; Thu, 23 Oct 2025 21:20:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1CD28E0002; Thu, 23 Oct 2025 21:20:09 -0400 (EDT)
+	id 9E9208E0002; Thu, 23 Oct 2025 21:20:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C0C288E0025; Thu, 23 Oct 2025 21:20:09 -0400 (EDT)
+	id 8D82F8E0026; Thu, 23 Oct 2025 21:20:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AD4188E0002
-	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:20:09 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 48FEF129E71
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:20:09 +0000 (UTC)
-X-FDA: 84031251738.23.E90D3F7
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 642FF20007
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:20:07 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lXzizmCO;
-	spf=pass (imf13.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9638E0002
+	for <linux-mm@kvack.org>; Thu, 23 Oct 2025 21:20:12 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 16F8A129E71
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:20:12 +0000 (UTC)
+X-FDA: 84031251864.07.5C154F8
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 3838680007
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 01:20:10 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d8UY38hK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761268810; a=rsa-sha256;
+	cv=none;
+	b=qsy0oHn6kAro3CZ5jTuRpnqu06xhp6Jif82PwrzoQ3toz3YQlVUbiQyCqNLeZpX8KOgT4c
+	cFMFj1vtMJzI6y3fUcS4dCiq8K0DIRybLuSuF6zk23v9Momp0km18GAkdLJ0yZd1mOo+yv
+	IdmZ5iQvJHYZg78YjQLQsMSCXGZH5OA=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=d8UY38hK;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf30.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.43 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761268807;
+	s=arc-20220608; t=1761268810;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YvyUZmMO8VPiZdlgVO/IJ2704hYsi6LPcWtQZ//HkFI=;
-	b=bH0c6IAq5/HD+w3yF8PXfMensehvE0PtIAtzv4ddLByeI3H5jvmixrHAFYxzjRSJT1x1pc
-	ECWczn0nRTj544S3Cl6fmLjtUYLuw6qiCdt/usoy84K0695k0m2NdUdOs3l+nJT5J8ZQGd
-	3cqQArqa1pY4w0JZHkdh1PSgoANnmRc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761268807; a=rsa-sha256;
-	cv=none;
-	b=19NXfFFTp1bSBOsY/u+Ls/YV5oH9RTRc4kgjtbLYSIllxyYRkO0cG6oNPebu66yMSV26Oo
-	hT2IF5L+QOdahjbtuGgu4Mw6rDHx+Jc45Mvsy12jPk8HZOqytqdMBpF601Eu10faHskFyL
-	at/k2p+7KZZzcA9e6cEQOLyy4Awa2Q8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=lXzizmCO;
-	spf=pass (imf13.hostedemail.com: domain of andreyknvl@gmail.com designates 209.85.221.51 as permitted sender) smtp.mailfrom=andreyknvl@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4298bada5bdso1071804f8f.2
-        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:20:07 -0700 (PDT)
+	bh=Cy50PIQ5NMkORVfUN5Id2ZgmraUO4+QWD/JL9v9VhXk=;
+	b=nUamW8QoyfdjboqO0ALWISbLYe18epTRNWkWTnOchOosKOmM/YkDZzxjVvQf0sm/7hSQfM
+	C/N7TL1OS6w4IRXHU8KszgneOemoyiZTnuEvwUt0iEwZ6zXzWgsXu79zqbRC+4h5MT4YTx
+	2yXJmbl9RQsxVl4rk+1938B1Rkp0S9o=
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3ece1102998so970049f8f.2
+        for <linux-mm@kvack.org>; Thu, 23 Oct 2025 18:20:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761268806; x=1761873606; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761268809; x=1761873609; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YvyUZmMO8VPiZdlgVO/IJ2704hYsi6LPcWtQZ//HkFI=;
-        b=lXzizmCOUGUhQC5p21p+plTwQs/Pd4TueYpJygBeHC99IeVbQhtJRMPejHAbvwh68W
-         k9sZ91Zp2khisfdRZwi/gqFjzzXQ/sgD8rn7v6bHXhqVuksJs5jfkdValF+vvDTxBa7n
-         aOAY+6WcHACKLvbJGz7q4fJJfCipxMAtk79otM1bh1tLQMdVimQWGHpRM/vpXh1CBN18
-         trAaVQbdzJRLv0Vonj5W8Jax/rcnvxRhzzwPTqBZpu7QrneBhWB4LK9UlZBFpWyCG9vt
-         iBmVj5F2FYZQRHtWtZVKs2yihf0XoKmpCg/Bax/UD5FHDXZ+g183uv3FDt7/hbM66lbe
-         jWnA==
+        bh=Cy50PIQ5NMkORVfUN5Id2ZgmraUO4+QWD/JL9v9VhXk=;
+        b=d8UY38hK4rgJKh90KZbWnRugp7Siz/sTaGknb6k6RywVNZQLOsjRW14Sn2yU/i4iIu
+         najN7d1KEj1qTgBzqp091TxrcC/w8ienROpji+GkeBjzyFqvl+oLnwf5n0bNQkDP6Gt8
+         CMkMeod1S/ovf6Zwst6osedJOk4isR2Op4IWFj1gLxIv/xbGRnUjg0h3AcB8vEUUfTLk
+         ag+iNZwJ9YKmvUFBX3ywh3g2dcNd/AQZAo+hGOAKafOMSnsw5tuQk7IGAJzFF+7F/k3H
+         4zxFpHMDOHDkNGeO5lohf6/9TSGSvoGMM8UEXi3t/eNYlqErUOOw3JVQTuz7G693cpTa
+         1FMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761268806; x=1761873606;
+        d=1e100.net; s=20230601; t=1761268809; x=1761873609;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YvyUZmMO8VPiZdlgVO/IJ2704hYsi6LPcWtQZ//HkFI=;
-        b=Z/mKhNIri8auILyKERGf4nzCdQ+29j2Uyxb3vJ+EKNK4ZAxf4KSCGNUAtVg5LAjgca
-         GkP6+GuL4k7J8XDy8fsxHw76wPCZZCRh6UOwK4mhTPs4LCa2QGIrWwPyK7/n/g94Katr
-         ijyxm0J/x+EbIjVmGyS7bKSKfcgju5cb1mAe+CPWjlIkBfOYU7gHSRRJPiGmS1VWrB+P
-         kV82L4oD9Nou8KbZTG+fRkFxoU91I7QT2jvxmjaDSmSxy0027dI6Cos9s0FLbm80MnkF
-         cjrT0Nb/ocQofOsa8aOSghDgo0gGLYasGMO1nJGOY2DmC1tnvhISQIs7xKi2cTEPC8+W
-         RMaA==
-X-Forwarded-Encrypted: i=1; AJvYcCVLAyuM6adF7rawKfQkohsLdOL01ML4ytdAoW6cz6loEme6apm4EBBTSFRrP8wFmW+gMXkUjgq8pw==@kvack.org
-X-Gm-Message-State: AOJu0Ywho3S1tfAOkxOIAyOzVfpyZE0DiQDN6v4JfVpT2L+wN6kKU7Uj
-	NMn+GycAyMBcAn1w+w5nj3UxNpxKwSSSQSontM3rXNiPLMk7t+h7wXHEampvUKoqyFgX00FtSPT
-	8D+8V/AVXWCHCLW6TVIIWcogkQPQueNQ=
-X-Gm-Gg: ASbGncuzPlH5ylMtmGfan1WlFqknk04mV49bCLb/xA1RW1erq9+0oSdFflwBcPtqZHb
-	ztLbPMRPIZpffrxg6swxTlB0+TpNP6pFQJTlTH/4kMwyxN02dgqIrtvZ/thDvBbEzKpvXgZF5q+
-	tAhMxG1PNHeIkAqWhbK/Y2UrivoXNT4r5EDXpxH2H1Gn3RsUlnxezvx1wcAOvcXJrHpULAv0s6k
-	/M1Q1lW+gzpmupsX6/dgbUq31IC+234k1kAOiQgYEVI41XaXMtg0NFb+CTWCE+K7egBzqfs6U19
-	Qb6TPPy+prJcTMmne6Z3Q/7vWJP8pQ==
-X-Google-Smtp-Source: AGHT+IFneXM0xr4BTxmFteom5iOTrMBRm3KDcNn8ea5ZwZKTXCozstAADZ8mhAUFw9RZH5CCePq+VFJYDG3ckmafY1o=
-X-Received: by 2002:a5d:5d0a:0:b0:426:ff46:93b8 with SMTP id
- ffacd0b85a97d-42704d8444amr14973841f8f.8.1761268805783; Thu, 23 Oct 2025
- 18:20:05 -0700 (PDT)
+        bh=Cy50PIQ5NMkORVfUN5Id2ZgmraUO4+QWD/JL9v9VhXk=;
+        b=QYbXzc9iCzFYqd/uqecvN6/DBO6TiJi2Ws0JG1ixY+LeW2elX79Opdp+DI5LMHZQnA
+         6HDMDQmQ6h4/wj+aT+86ZwhJtlBpVtQTQSkB9aF19PJqWABEIWvnxCJVXEQ4l7zVfMUX
+         MOf7Jp6oXwb2EYHeIrDHnb0eY++vvGCKpzMNRD6hj1Xo31XujXbFCQ5Drge00cEVjWds
+         6OYIx1CU2vQllb6BpoGqCZ6MCOQutbB/8Hxt23pKyL6fp705pSGopjsSejGfE6SIOm8f
+         Fiel25LAKM/oO23aCzfURRsAJG5gFwrDSYZ6sybq/4lCr/ogunxrykqLbHrU05cHsXVj
+         VvJg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpSWZbvtnO0yZ3cUiXF+qqKlOe0o+MEPNjAxhE1h8c0jiRMugsuM3FRhIjK427aiFMPPXb5CjPmg==@kvack.org
+X-Gm-Message-State: AOJu0Yz5tRKjStcmiwTDz0WNMrcEhnEFO2w2APcjpHFELYG31xXmoz3p
+	9nSehLwNFeAkBhdJX27BC275Womed7ABtBYkTOkJtAOee6OhXOKdrnIudZqsByVN8SnQrq6IqMz
+	A1WyPjwZMhfOJG5x2pKOAaNtjtY/tnGM=
+X-Gm-Gg: ASbGncv2ewQOxhNwsSBz7x+R/mn7F14t6T0cdJ1NHhiIZVU4NiVzbXqsZLZEJXwv4+c
+	rsEwgOWUJjyUQf3DoqhaSou01xp9F7uvUoKOI0Ml36Bu7nONMT8tdXa9XZylRburmx64vv756Fw
+	sP3AoHzadrnjPOOUQAzxQRSgYq49HH0jBIXxYPBESDPJYC4CMYUrOt25JkhDlQvtlvnnZO1cc2t
+	gQbvLIhKJ/G3sXPisVkL1naaWSCaT3p8HJe+zflyQv9rXVO5/8f2HYeiID3FpRMSdbjukADxrtE
+	AZMjuVUZoyHbQv0K7BSlfDMj0qTm2Q==
+X-Google-Smtp-Source: AGHT+IFcsv1if8cvL8kTlEejCx/FQgqyt5yCy0bJs0SYJkx4Iq5kMise7FkEaCwdtzjswF2CqR/fouTnY/43pxfDv9c=
+X-Received: by 2002:a05:6000:240f:b0:426:d582:14a3 with SMTP id
+ ffacd0b85a97d-4298a040705mr2343679f8f.9.1761268808604; Thu, 23 Oct 2025
+ 18:20:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251023131600.1103431-1-harry.yoo@oracle.com>
-In-Reply-To: <20251023131600.1103431-1-harry.yoo@oracle.com>
+References: <20251023131600.1103431-1-harry.yoo@oracle.com> <aPrLF0OUK651M4dk@hyeyoo>
+In-Reply-To: <aPrLF0OUK651M4dk@hyeyoo>
 From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Fri, 24 Oct 2025 03:19:54 +0200
-X-Gm-Features: AWmQ_bn7k-8N3nBX8QuM-JrNgQDPCvNlJAZ7mTQNODGDz59t7Iwz4Fszp2T7gmY
-Message-ID: <CA+fCnZfJjXez_bq-jnmPTP40tPuq9XUc3Z2MtSgU7TnPz0bWyQ@mail.gmail.com>
+Date: Fri, 24 Oct 2025 03:19:57 +0200
+X-Gm-Features: AWmQ_bm41GuiWsYtz5XuMNDIQQhr0EMvmp-bLNyUrjc6_dWg-wZ67Ora4xbHgfU
+Message-ID: <CA+fCnZezoWn40BaS3cgmCeLwjT+5AndzcQLc=wH3BjMCu6_YCw@mail.gmail.com>
 Subject: Re: [PATCH] mm/slab: ensure all metadata in slab object are word-aligned
 To: Harry Yoo <harry.yoo@oracle.com>
 Cc: Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>, 
@@ -106,14 +106,14 @@ Cc: Vlastimil Babka <vbabka@suse.cz>, David Rientjes <rientjes@google.com>,
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ybgnh9d8zxfwc9qc5ujcnzptui4r8uy7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 642FF20007
-X-HE-Tag: 1761268807-456795
-X-HE-Meta: U2FsdGVkX18EwyqpFunn+3sOtxP1btGANkgriXDO7x4Ux/nIWbijJmg477Z11HmBQ0Nq9ilnlGgBy04ZiHKw08C+1EAnmnKqQy7LYW7Bs7RJyDXDEJe2Tjc/H+7bJzw+ltrH13LkkG/uNjuUV049vew9tl/ba4DMfpsnUdAu0XMe1zBaAXEXuT97kyj0ZEC/TzvlF8o1et+4RtE/P4Epq9N/ejIQokI9qqsz7th5P2DzhKeaFcq11pcR2Ln0ZQHfnvknZXCD0W1unMmr1aJ/nyi9oOXm+B9hqxOGMpGwiV5v+fs2ZYZFkcMe5CUc+yTDUTHTfsnXe1H5mOlHklsrpYOfEcXpxa0doW4FBBPn4F6zstXptxQCxqACcXcmBAnmOuV8NZWqzweh++77XpyauTdJ5miwv7WVNeKiekMPYwd1zoxxvaqV2iIzwjnD25iefPL5lpi6/3PefFg2pEwcd8/erWprwKKC+6yab8Aq7CbCHPb3Myg9qrvJo/8TMIUyGhnAMfR5zs59eVho9UzvOxw5Et/Rprj1jycGnmuBvap4t9pUYS2UHGOsiIyGvRQL9+gucQdJbrkQxSFGV3Ww9Quvq+oadyvnx4aHl3bU18BjedHRNvxxN0cmfNZozLj2o0b//JRuNXsciqG+N9rgv0E66ajx103kQKKXrYxGscBHpTqY8BtKjbN2+wufTlmaNw8lPZK/DTNM8ltgP5mo4dBce74d3+vohgWJ0ySenSXKzZQ0bRjYu8oFE5/6bttJ8OAw9FvjroFKY7cTCZRthuHqf56tL1jOeP8Fpz4a4rcEWziVqMiy0CzQ22lwX9uszxxxtQexmqKGb4Yt38sB7a6ukImf5kEvBoVE9T4eMF7ILXmTJPdW+k/3fSCQJbp4HlqfcAeM40vds+fB5K8TmWoXsrJ4qnRx6Q8ay4JbKY7ihx3qrR/XdB5/boQ2Au9gmuLxpoOd2sXaNlrCXhN
- ZMOMgYtz
- ICx3RnKeVySPuKL3OZp+vvIBV4srBpOHoEqrTR4DWRVQCOiV/aaIfOf0Z00FeZoY2KZUR5ritFRMg3e5x8uPfu7brhvD57f5RuvGs/i5XspbPToCUKgFBtLFBjvW24XyatUNqA+x49wLGPFwdBgQh3BnXgjWfoBHpfOIdSnNsEV3U/ds4cWsTyz6b1Tp+hGKHTT5OMz9LEkRHT7Y3ZFkNapgiBvRCpPlj0Cfru7FV18GH6crQ36Wp8XQbO1JL+hou1ae4a5D+vuDA1nPUJmr2agweFNmSmFh1K6J/xMqAwgJb+WDDTOzUQsmWWNIVTdNYeo6rRgjX5eiwgvUI6FxqLHbE3zhog1k7goSmJL+ju+ht3hLdJadPuQBzxse9Kh8b++G8UolFhct2FKGcjvpgoxt8NHrr7UZ26vyRs0TPIfA0CN5+MpqvFuLWafyEMsSXGZvMTdB1DUtIj/OFj2WMbtcvFYnwUMRboXjpROGjNjXUy4JDA5k8G0LOPw==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3838680007
+X-Stat-Signature: skz9g3upyf1qhgowohx9brjsggz1gq6d
+X-HE-Tag: 1761268810-629338
+X-HE-Meta: U2FsdGVkX19mgHgzRbKF7d9wLEyPmmfiYjdjVgLbB3uKNbZKdvtfK1E6R+FbgCyOhQMDmv/SYeAHYr/5ziHQAHKc6VHNKclv429FfkwJbR86fCj4l1CyxwgP13qwaVpJ4XGOjBCarrgxg31zKC2ENr0MI5PPj3fJHsnHMgonDRp4prPlkHXL6f69E0JGjDxRIQG5hhIgRpaKSWKu82aGTbn/Tyy+0rEnIOjNu7ectFHwWSW54dfNcrgD8N5WHkP6IM5HtDs9s6AJ/shTzqokhzPGgWzZIdu56+yxQjSnUIcZifi/SR00OggmdzG/effYD2nGqm2yi5G25IHqzfo3bIU2brAovvvTBIdgqa6vUzeUe0kur3z5a3LtGlXSLH2KvKP9nn4jqqQrDcxzIX8sIaMVPaXjF3a2HRNZi0XXmPBwGeimSflRIQjqcBL7FquQDNUqtG8GlkH+XLFezXzdv5Hl4T+IP3sXcYkGLCjdlQyVIoKNFx+pWF4y/SN0m+VEVF/KoPGktjRg0pHiNam65qsNSK10Y+Z+3FTXcNvGkb8P+IPbT2M1IKEgVAvxvK+4VEL5TXVoQ4iqXH8xK252YliHRgfI9cW5zTEJKemFAF5JvhTplZ930P+C8CmaWK9AZiPeOSjCOho4oVqW2PkcImxj0enfls76qHaiAhuPaBPaBSyyN8MDKlIr3EIUimxfkmk0yRq97uLCo2XykeqATgYSvVxko8RAJDDQpKQD2uwr6oVl616tgTYa5D+ODtEokBHtA6XAEz3KijbK8V0dJdw8R73SuUAm6lB3vxe1V6y96DNxfBZkztqvQhInelxJAKF5rqf2V8QojW05lz5y8D1pjy0N+s/o6GZ1zQz9VQeFSa638L/xuj7N5pCZooVoRK1PYGlSJvBNwcq2/TlKg2eCXkDGTV3Lmdn2eRWSUGlIlneAw+UTdf2qD9HkDCWp8t0y7iNvPC4FgqGpXtB
+ 8F7UEsuW
+ PaDUnhlaiyIB7cy959Fqz9pvYLNwmeYhEo3LLLCxbx3oC97E6OB22pt8Wk97kcdDnv/thC2eR/hGUKNaNUwLScVQetSzdZSAdaWigx/dYzDnjM6QmOVVKFqXfjKSlO7Sn2Y1HlKUQnjTeFUFxipmAJ8JUWtxkGvpH3YDGQe57HwkeI0zJJNFLK2YZ5SVGFN/4mcI0XNyn6DXDVUZ1Zj2OnEl/D81mCQxlnFU31HVRGzPSPcCmSmNZkfmG14N2AMysnyt1PqY5xdL+WziZZ7GD0RLTUknGhBX5IDJ/WH+pRV049R91UxkBeR9SgtivJ0x2P1Pw9LELLSJ6JIZ0qHnBvXxTCd61n8Hunv6OLVrKahzpYikWhLU7C/Gam2cmBiTSETSEeG4yw0s382nVYsDn7O0BVDg6CGOA7b+31gOyIaRK+HbDYcAXHPw5o0l43OF+yy0j
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,112 +122,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 3:16=E2=80=AFPM Harry Yoo <harry.yoo@oracle.com> wr=
+On Fri, Oct 24, 2025 at 2:41=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
 ote:
 >
-> When the SLAB_STORE_USER debug flag is used, any metadata placed after
-> the original kmalloc request size (orig_size) is not properly aligned
-> on 64-bit architectures because its type is unsigned int. When both KASAN
-> and SLAB_STORE_USER are enabled, kasan_alloc_meta is misaligned.
+> Adding more details on how I discovered this and why I care:
 >
-> Because not all architectures support unaligned memory accesses,
-> ensure that all metadata (track, orig_size, kasan_{alloc,free}_meta)
-> in a slab object are word-aligned. struct track, kasan_{alloc,free}_meta
-> are aligned by adding __aligned(sizeof(unsigned long)).
->
-> For orig_size, use ALIGN(sizeof(unsigned int), sizeof(unsigned long)) to
-> make clear that its size remains unsigned int but it must be aligned to
-> a word boundary. On 64-bit architectures, this reserves 8 bytes for
-> orig_size, which is acceptable since kmalloc's original request size
-> tracking is intended for debugging rather than production use.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc=
-")
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  mm/kasan/kasan.h |  4 ++--
->  mm/slub.c        | 16 +++++++++++-----
->  2 files changed, 13 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-> index 129178be5e64..d4ea7ecc20c3 100644
-> --- a/mm/kasan/kasan.h
-> +++ b/mm/kasan/kasan.h
-> @@ -265,7 +265,7 @@ struct kasan_alloc_meta {
->         struct kasan_track alloc_track;
->         /* Free track is stored in kasan_free_meta. */
->         depot_stack_handle_t aux_stack[2];
-> -};
-> +} __aligned(sizeof(unsigned long));
->
->  struct qlist_node {
->         struct qlist_node *next;
-> @@ -289,7 +289,7 @@ struct qlist_node {
->  struct kasan_free_meta {
->         struct qlist_node quarantine_link;
->         struct kasan_track free_track;
-> -};
-> +} __aligned(sizeof(unsigned long));
->
->  #endif /* CONFIG_KASAN_GENERIC */
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index a585d0ac45d4..b921f91723c2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -344,7 +344,7 @@ struct track {
->         int cpu;                /* Was running on cpu */
->         int pid;                /* Pid context */
->         unsigned long when;     /* When did the operation occur */
-> -};
-> +} __aligned(sizeof(unsigned long));
->
->  enum track_item { TRACK_ALLOC, TRACK_FREE };
->
-> @@ -1196,7 +1196,7 @@ static void print_trailer(struct kmem_cache *s, str=
-uct slab *slab, u8 *p)
->                 off +=3D 2 * sizeof(struct track);
->
->         if (slub_debug_orig_size(s))
-> -               off +=3D sizeof(unsigned int);
-> +               off +=3D ALIGN(sizeof(unsigned int), sizeof(unsigned long=
-));
->
->         off +=3D kasan_metadata_size(s, false);
->
-> @@ -1392,7 +1392,8 @@ static int check_pad_bytes(struct kmem_cache *s, st=
-ruct slab *slab, u8 *p)
->                 off +=3D 2 * sizeof(struct track);
->
->                 if (s->flags & SLAB_KMALLOC)
-> -                       off +=3D sizeof(unsigned int);
-> +                       off +=3D ALIGN(sizeof(unsigned int),
-> +                                    sizeof(unsigned long));
->         }
->
->         off +=3D kasan_metadata_size(s, false);
-> @@ -7820,9 +7821,14 @@ static int calculate_sizes(struct kmem_cache_args =
-*args, struct kmem_cache *s)
->                  */
->                 size +=3D 2 * sizeof(struct track);
->
-> -               /* Save the original kmalloc request size */
-> +               /*
-> +                * Save the original kmalloc request size.
-> +                * Although the request size is an unsigned int,
-> +                * make sure that is aligned to word boundary.
-> +                */
->                 if (flags & SLAB_KMALLOC)
-> -                       size +=3D sizeof(unsigned int);
-> +                       size +=3D ALIGN(sizeof(unsigned int),
-> +                                     sizeof(unsigned long));
->         }
->  #endif
->
-> --
-> 2.43.0
->
+> I was developing a feature that uses unused bytes in s->size as the
+> slabobj_ext metadata. Unlike other metadata where slab disables KASAN
+> when accessing it, this should be unpoisoned to avoid adding complexity
+> and overhead when accessing it.
 
-Acked-by: Andrey Konovalov <andreyknvl@gmail.com>
+Generally, unpoisoining parts of slabs that should not be accessed by
+non-slab code is undesirable - this would prevent KASAN from detecting
+OOB accesses into that memory.
+
+An alternative to unpoisoning or disabling KASAN could be to add
+helper functions annotated with __no_sanitize_address that do the
+required accesses. And make them inlined when KASAN is disabled to
+avoid the performance hit.
+
+On a side note, you might also need to check whether SW_TAGS KASAN and
+KMSAN would be unhappy with your changes:
+
+- When we do kasan_disable_current() or metadata_access_enable(), we
+also do kasan_reset_tag();
+- In metadata_access_enable(), we disable KMSAN as well.
+
+> This warning is from kasan_unpoison():
+>         if (WARN_ON((unsigned long)addr & KASAN_GRANULE_MASK))
+>                 return;
+>
+> on x86_64, the address passed to kasan_{poison,unpoison}() should be at
+> least aligned with 8 bytes.
+>
+> After manual investigation it turns out when the SLAB_STORE_USER flag is
+> specified, any metadata after the original kmalloc request size is
+> misaligned.
+>
+> Questions:
+> - Could it cause any issues other than the one described above?
+> - Does KASAN even support architectures that have issues with unaligned
+>   accesses?
+
+Unaligned accesses are handled just fine. It's just that the start of
+any unpoisoned/accessible memory region must be aligned to 8 (or 16
+for SW_TAGS) bytes due to how KASAN encodes shadow memory values.
+
+> - How come we haven't seen any issues regarding this so far? :/
+
+As you pointed out, we don't unpoison the memory that stores KASAN
+metadata and instead just disable KASAN error reporting. This is done
+deliberately to allow KASAN catching accesses into that memory that
+happen outside of the slab/KASAN code.
 
