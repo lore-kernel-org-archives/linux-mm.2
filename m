@@ -4,147 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27D99CCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:32:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B200CCD1BF
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 17:43:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F8608E00E0; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
+	id 9954B8E00E1; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A87B8E00C9; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
+	id 96C738E00C9; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 496E18E00E0; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
+	id 8AA868E00E1; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 31B0C8E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:32:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A6DD55DD1B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:32:35 +0000 (UTC)
-X-FDA: 84033702270.05.5C01861
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A94DE4001B
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:32:33 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=TwyPgzHx;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7AD7B8E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 13:43:50 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id E2D2448D93
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:43:49 +0000 (UTC)
+X-FDA: 84033730578.30.D983421
+Received: from relay.hostedemail.com (unirelay03 [10.200.18.66])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 16632180002
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 17:43:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761327153;
+	s=arc-20220608; t=1761327828;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
-	b=CvjFDqlpM7BHgx0PHvu1pM69JEt4hjovK75lk9/iixqGlurBYB+T79X9kXear+g7n06qnS
-	+58Q1vXuNkhNIutJqKAf0G2eFqMJjNRjeMGtQaMd7I27+UsMCsn5QeRTNt8Amb4ohxoGjg
-	W+Bc7NjfFrHRQYshmFTDYFnC28XD5a0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EW1LjEPKCRY/etQyaioUw8y2wQlPfkhezOORMkuj/t4=;
+	b=LqIPbhii+wvQXkckgtyoWAgMJv0m1nP6aNyb4rOGjpusBxY9bM4UWp5ATM4dIiB1b205ED
+	vqh5QNkH9zogKmFkdJ8JnxuOPc3h2ww8MorxYcEAdIg+LVL0nDZMcVPl8WjiAqmNFVTyFp
+	dwqHPwhZley2VJdveE5xr3WH3wp5JPY=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=TwyPgzHx;
-	spf=pass (imf12.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761327153; a=rsa-sha256;
+	imf06.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761327828; a=rsa-sha256;
 	cv=none;
-	b=bWrsr6mCw7zuMVX1n44KvODxBvv+U+vqBLNy4Mx+RisKDn5Dns5d9WWJTuNR5hP/zAChcx
-	vEdeig9O5I9VK+1FB1oIhG6xIkpmdIFrcJHHb5uImCTUmq2JI/g1tnOArxcMtCBmPEs0He
-	B8MuGajV07BE2StglW0PZTJ9PzsZ034=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-89ef0cec908so12655285a.1
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:32:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1761327152; x=1761931952; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
-        b=TwyPgzHx/Es254au6mpgV0MaoKQfZ7AUoPHnan/U/Q7l9lD9Pq788C5nLseArGbYOJ
-         65gqMu029BBnbZYFUhjpa2iPiCmR7hHxanI5ui3jxIbc5beChXmNmN0CisktgDYUHEYV
-         KrdasXSHtBoXFNJCI+cn6XfoXmu/Ki/uW2qUhfMiEtoFfpR3Ps9uS74PRPcUOLO0ov14
-         JpN0NypG/2FnLD4Wm1OQBHlWipwvKYnQGGFP3ImjAPsF7az4nkbF+7qEj1iwIBXCCr+T
-         cjrtgIAplUatikD2w05O3SSM8GiAjREt+9LkeWHzWw65/p2FOhL0ZoUdYjZ/kqEjx7ua
-         FjJw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761327152; x=1761931952;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=68b/g5DOQEfyTkIlrk7BVq23q9O97J8PIirLY9E/558=;
-        b=MBtRAgVDRVvFR4Cqu6e+2xiQFkrejougsVNZOAOXRMd9mXb5nE5nhMrdo3xFM7Ab44
-         vyFlOgp1AVGrULBO811wZ/3lmg8oN1DNp4WHIwFlX9Y+JYmnNVQfx57/fxp3kFQmmugt
-         dK3L7ekjYb0o7Zxlvr3Kw5eoK40is6jA6fVCZVnRH9CJEdWTSWpVHU1KRhXMKKNd/5TX
-         MFJwpWarCYwldvEFjgRI0YUgGcjVJDob7qKzQ6B5ctPZ66Wyo70ibs2zkEFCZFaq48sn
-         SjHIbzMNRIVwuwzY9PhGNbkdKB1+OUK278U15fRZW4A6qPVziokxjwGRixL1y/IB5imK
-         3cJw==
-X-Forwarded-Encrypted: i=1; AJvYcCVbUotoUuGhGWKP9yyVwxaOpdcjx9DT8E2UiOhQmSqGtj/DPljKgGwZGXtLT0LiUPz4jYdHJOebbw==@kvack.org
-X-Gm-Message-State: AOJu0YwyiNgUJYdRsm/ehHYvHd/6ySMFdMqCshdvHy0TQ28SYh71BIqE
-	9GdCXDb5qyLUoQA1iXGhtko8Mtu0zlv4eyg6OBIvxntSvFgrxpIbif0M+OscD5V5wUc=
-X-Gm-Gg: ASbGncsKQ9XNhY9YypkRw7j7m5oiMU5DxE0OiBO+zoOmnKevIxkXAMtkEB3+xTYeNHk
-	nYJKSdvZPNje8XYjVgTBtPTF1bU8dWn6j/0bpltxH1C2hUhevL+ejusmX3QO7FJ/3fliyZYVzmG
-	KGUKf2gL8O5JwcOmDc2oOIod6qFUapqzkVFHmJuFnbTkwcRrtRs7dvZB+H1bgI4QUrUSxy7Zqlf
-	lnlxlpP7TrL0zEIt/1w2HryRK43U1Z1vF9s+kkwd+hddUH6Yf5PXOweMOhqPNIKh8HNUPSYFvQc
-	UBhazibGwyP0rfXURIrOCPUI9jRYfNhNQIHuqPVodhOFje4L/RZkeU3jX2E0XAIyaoZr/ofQcds
-	mk+D+vUbf0FWQSoBKpXLXJqf6gPZIxIGYcee4DGuPmgdQsaaI6ku5FiOWWqJIcre8TzCAPirjhh
-	SKhJv/Hnr9YHpa1D6biaRiwGj3DhrKczHoNxvg90Z9lmyJe+ofaFAIp1cBTuUMNdRhDrUUEw==
-X-Google-Smtp-Source: AGHT+IHmBN0+9+r5KY4AyoghUj0jEXWjqZKGqzuPjvXeVNzt6iAcmzIlgz93IE1ZHjH55zZ3g6T32Q==
-X-Received: by 2002:a05:620a:2950:b0:88e:aae4:9599 with SMTP id af79cd13be357-89dbfc9f46cmr377281085a.10.1761327152303;
-        Fri, 24 Oct 2025 10:32:32 -0700 (PDT)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-89eadc0ab82sm58312485a.53.2025.10.24.10.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Oct 2025 10:32:31 -0700 (PDT)
-Date: Fri, 24 Oct 2025 13:32:29 -0400
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [RFC PATCH 05/12] fs/proc/task_mmu: refactor pagemap_pmd_range()
-Message-ID: <aPu4LWGdGSQR_xY0@gourry-fedora-PF4VCD3F>
-References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
- <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
+	b=opGJKCFCvH625zra44/nZ0QI+x8pG05EiAV1skUJCEk2E+ufGmnKZkc0qjCi4nRRjktYJg
+	gyrEsZ11XRvjH5sV5ltymEbowLj72yglGQTDPCKW42imw4gWDGu5y9BKZKtP9t7Wc0N7wn
+	t9muyhpocwhLuTiYDHFpFQ0PsmiP7IM=
+Received: from omf15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C157ABE5AA;
+	Fri, 24 Oct 2025 17:43:45 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf15.hostedemail.com (Postfix) with ESMTPA id E11351B;
+	Fri, 24 Oct 2025 17:43:40 +0000 (UTC)
+Date: Fri, 24 Oct 2025 13:44:09 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Alex Markuze <amarkuze@redhat.com>
+Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com,
+ idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com,
+ kees@kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de,
+ mhocko@suse.com, rppt@kernel.org, peterz@infradead.org, surenb@google.com,
+ vschneid@redhat.com, vincent.guittot@linaro.org, vbabka@suse.cz,
+ xiubli@redhat.com, Slava.Dubeyko@ibm.com
+Subject: Re: [RFC PATCH 1/5] sched, fork: Wire BLOG contexts into task
+ lifecycle
+Message-ID: <20251024134409.72275dd4@gandalf.local.home>
+In-Reply-To: <20251024084259.2359693-2-amarkuze@redhat.com>
+References: <20251024084259.2359693-1-amarkuze@redhat.com>
+	<20251024084259.2359693-2-amarkuze@redhat.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2ce1da8c64bf2f831938d711b047b2eba0fa9f32.1761288179.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: A94DE4001B
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX19CRueCw1nm5uT9RZSPlGEKzC/t+oG4hig=
+X-HE-Meta: U2FsdGVkX18hDnsr4TkruwiFojbQTdlVwxH+CtBQ+69mybQlxSP/NF57Bx/vKlv0n4Fh6saZcnBJAwvpzxaBEholvuYmbRZbFXHJuRuvVxt5K2/gBoYSDPi4S4hcpP3sVHxcMJYYWBxgUDYmOzgc2VUR/LCvcFlI8wHIMqM5LY4frd8vuPH+u+hYpku7Cxe+BWkUUCnfEjDdpXOYdB+Y/rVQjgiYxCbE4g8kGBpP9r9ASG1M0PVCWH8xefZLyQhz6L5nS/XjRorGJJKUIEIQjbhjnendjVQJBjh/E0NfJif17t0CtiMF/iDeok9mAbaGHOnFgNBhQ6h+Mnjpp73ixlJRBz7e1vDU4P++/gqlVS8lxCqmgP6fuw+4G2tJuLSN
 X-Rspam-User: 
-X-Stat-Signature: py3k5opok8t8cnkix33xmo7kyx3knmg9
-X-HE-Tag: 1761327153-747384
-X-HE-Meta: U2FsdGVkX1/M5ut15fb3UMAbaFA+3wVZDry3VZcNq3VTfSjl843q2nlGYcZukPekiKry6fDADwXYZ6wup/9GUMA+Y+pmEhUBN84M/DVolG2dCUhiIqovQte/3cXRDZchZBOgQT0elEVMeYYH2/EKAlvSgol1ZKr+WMl+tRSEx9WESPsEC3dPzx+tdd5HxEDEfJHrqwqbpUktxiwCbbYBRTs2rBL9IOnZ0IEHdsM3HDayQ2H3yQ7jTbOkBqtBeyUl48vWhiAutqIA1xQ+ZBPGr340hkQuGn9RcuzE8dUnpMdFoYQjaIiyhdAKwkZpMkPtMDKXpuo8CjmyKp/r682WXywJxhsrhNGWVREYgk9/QrLMZgj406StFY1m3tRPLX9OHo3fCvImmk29eu1bxJlvjPKg1pR7q1mS3qhlGJP5nBrkBBqXyrHVjlC3ep70irTMorzxzB8vK6x9j9NJDKwrCNlstcYu63PJ8D4pyt9H1whXaTK8OYgXmd+F4rcOITGJJwaq5o74/U2dI3Z6uF1WUf8O3MGrsGQRbCM/1ywI+NXxNWB2sGh9tKoTQp5RCzrf2BPZxBImiLeQWlWNjNXqHWRXMMVhBReH4oemrZMb1J0zG6tSbH83rHGugCEehxQkaVY9oBeU1C871FXwdqve64oQS9fLzjrmA9G5VF3e98gFAdUPq/ixPgCyec5DvVjrjZfHFX4ffbzJAjPqC2wqzn3fEaHBBDGSLOf6JfcVbBTpux/Z9oMEUruy0xSt3tSxlNTuXuE4G9F8itPnQ70JUBhWE6rVwvzNITEwovfcpUW/YkiSqb08Waih7in7YXvPq9IQBkVFtgr5GjaFQlIfNORnZDhpFJsu+m6nFsy6hcQt/mp7eg13DKB16HQgsL3NurVoBVedqj5WtinakMpPHDYKnRPyDWO9OHk596aVgWh1sLzeBfZu6ZrNE5wY7ekhzMcfQY7Qd0dSfK8xYjX
- DMGAynBm
- VvqH1sN+/9D409Up3kDoIgeh5mzxJMmtPKWJoEoC01ED65N8jex3gkMAtgwUyVqES3hNcvlN5io+/a4RPISKw8sSFrPz18iMtU8LjvXQ5mmXiQ4g48XP12r/VyF9IZX4s2yvJMNtWp5GdNdnryXrRj+Jcv7POMe9YrBFLgqnJu2Q3cd5MrZ+UBxoXS8i7rxWAiz2utrW5ANOd/p2N1GrP5ap9xI9TeO3I3/ivu3OiAB0x3xoef6ZXZExLrjyAhGFwteTl00X+G7BadV2TEynotDucQV5JI9SqHZvFwbr0MC8XSflI/okxQ9DksWQjxQyZaCnQ/b3f1AMcCUE0vCistoSB/E5Go+kDM5IwfHPLiIZlFnxuu8k/J4GYpUTq3wppWj7MsLT24g5WnUbqfdCZLNXMpwmgDT/9IdY+B7AE1wFiMBfr1f0Bl7qQ2vm8u66VROXFqoPjJfvwmj2m9Uv4qKMw8w==
+X-HE-Tag-Orig: 1761327820-638118
+X-Rspamd-Queue-Id: 16632180002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ar6o6riuok1aty8pz3n5m6kata4mwf8q
+X-HE-Tag: 1761327827-45827
+X-HE-Meta: U2FsdGVkX1+TFmMfzLTIRcVukpTOsOQz3tWvqJpfg3ypQDBGcCZf0msuyESOR6UOa212WhSAI352O9MXYCWXoFJAZ33T5Lg48CHznWJ4Ql7/fi2NjboyoQsTFJLbTiJhcl+Dab2zK50dfkqx1RQY2OZ87Rmt2YWanVrnQoJTlXRSG+zXJQWSFvH6zDl9+/5Y4ppfBoswPFHgyhg5Yitc70vQJ8fQVqu0/Y53HbdvgWf+/lQIMSarGDnxjAPIXvOtvRu//FzhydsM8CT3DnaqHP7bGdlgGpv+Tfyr/EGEbc1raRpcRanx4EZiwtNH7C0p3cIWm/3kqpp2yeY+gmns00iNV3+ysdWXSveRpMYzBIiYirbL3YoBnx5cR74X7uad0vwYthORQKMNYq2HOemNRKTwSnHhtUjSOuJfeJjr0TgpWXPeZ1pxTzpIlSkKEBK9TvWSLFFLZkXroJtbV16zRDYDlOdWNc8HRIGkZB3Bfx5e7zobTg9JP61CimOTikPUNipOfXvnFdI1+8kQIVvNNkxpWV3uGCGbLrN2WbGgDitmDSC/HKHiz2r6BMj7nKsxyMwswr3jadD+N0vP6zzsHxAioRqDBQeD+Bljva0J5RfVxxbMhQWa1TWc2eyPtF/deYGHYI+o/DLAz+oBX8/OtYPgN8chA6+cgmXGRMBIa6xuA+XUbiKzDGzdVI1tGegfJ6KPKgBMyQhFTZd6GuMcwMY/cxFqFwsBTNkdcsxOEeSeMO7dnS1h/DkpjOyGnqREL9uYwhiWZOZXI5hCFckSG4ByT/mZPaugd9fw7gQbKTr7Wmh+EAzieh9UVKA5fgGXe1efDtpAao6H8EbbvYGeVDADsP1A716A81LPG+3FYzDfKNpt7RHi/AoVRlUrDt21H0N17t/sViEVABLH07wU0f9YU9ajmXpnbua/GwUupx5460Zoil4h4abk/LSf2w2dtdhL8xIZoozsJ54vo88
+ 1mQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -153,52 +90,118 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 08:41:21AM +0100, Lorenzo Stoakes wrote:
-> Separate out THP logic so we can drop an indentation level and reduce the
-> amount of noise in this function.
-> 
-> We add pagemap_pmd_range_thp() for this purpose.
-> 
-> While we're here, convert the VM_BUG_ON() to a VM_WARN_ON_ONCE() at the
-> same time.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-... >8
-> +static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
-> +			     struct mm_walk *walk)
-> +{
-> +	struct vm_area_struct *vma = walk->vma;
-> +	struct pagemapread *pm = walk->private;
-> +	spinlock_t *ptl;
-> +	pte_t *pte, *orig_pte;
-> +	int err = 0;
+
+
+On Fri, 24 Oct 2025 08:42:55 +0000
+Alex Markuze <amarkuze@redhat.com> wrote:
+
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index 07576479c0ed..e381f8421a11 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1278,6 +1278,13 @@ struct task_struct {
+>  	/* Journalling filesystem info: */
+>  	void				*journal_info;
+>  
+> +/* BLOG support - max modules defined here for use by other headers */
+> +#define BLOG_MAX_MODULES 8
 > +
-> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> +	ptl = pmd_trans_huge_lock(pmdp, vma);
-> +	if (ptl)
-> +		return pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
+> +#ifdef CONFIG_BLOG
+> +	struct blog_tls_ctx		*blog_contexts[BLOG_MAX_MODULES];
+> +#endif
+> +
+>  	/* Stacked block device info: */
+>  	struct bio_list			*bio_list;
+>  
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index 3da0f08615a9..b06843af05a9 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -24,6 +24,9 @@
+>  #include <linux/sched/cputime.h>
+>  #include <linux/sched/ext.h>
+>  #include <linux/seq_file.h>
+> +#ifdef CONFIG_BLOG
+> +#include <linux/blog/blog.h>
 > +#endif
 
-Maybe something like...
+The proper way to do this is to have the #ifdef in the header file and not
+in the C file.
 
-#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-ptl = pmd_trans_huge_lock(pmdp, vma);
-if (ptl) {
-	err = pagemap_pmd_range_thp(pmdp, addr, end, vma, pm, ptl);
-	spin_unlock(ptl);
-	return err;
+>  #include <linux/rtmutex.h>
+>  #include <linux/init.h>
+>  #include <linux/unistd.h>
+> @@ -186,6 +189,29 @@ static inline struct task_struct *alloc_task_struct_node(int node)
+>  
+>  static inline void free_task_struct(struct task_struct *tsk)
+>  {
+> +#ifdef CONFIG_BLOG
+> +	/* Clean up any BLOG contexts */
+> +	{
+
+There should be a function that gets called here that frees up the context.
+This does not belong in the fork.c file.
+
+	blog_free(task);
+
+In the header file have:
+
+#ifdef CONFIG_BLOG
+[..]
+void blog_free(struct task_struct *task);
+#else
+static inline blog_free(struct task_struct *task)
+{
 }
-#endif
+#endif /* CONFIG_BLOG */
 
-and drop the spin_unlock(ptl) calls from pagemap_pmd_range_thp?
 
-Makes it easier to understand the locking semantics.
 
-Might be worth adding a comment to pagemap_pmd_range_thp that callers
-must hold the ptl lock.
+> +		struct blog_tls_ctx *contexts[BLOG_MAX_MODULES];
+> +		int i;
+> +
+> +		/* Step 1: Atomically detach all contexts while holding lock */
+> +		task_lock(tsk);
+> +		for (i = 0; i < BLOG_MAX_MODULES; i++) {
+> +			contexts[i] = tsk->blog_contexts[i];
+> +			tsk->blog_contexts[i] = NULL;
+> +		}
+> +		task_unlock(tsk);
+> +
+> +		/* Step 2: Release contexts outside the lock */
+> +		for (i = 0; i < BLOG_MAX_MODULES; i++) {
+> +			struct blog_tls_ctx *ctx = contexts[i];
+> +
+> +			if (ctx && ctx->release)
+> +				ctx->release(ctx);
+> +		}
+> +	}
+> +#endif
+>  	kmem_cache_free(task_struct_cachep, tsk);
+>  }
+>  
+> @@ -2012,6 +2038,17 @@ __latent_entropy struct task_struct *copy_process(
+>  	p = dup_task_struct(current, node);
+>  	if (!p)
+>  		goto fork_out;
+> +
+> +#ifdef CONFIG_BLOG
+> +	/* Initialize BLOG contexts */
+> +	{
+> +		int i;
+> +
+> +		for (i = 0; i < BLOG_MAX_MODULES; i++)
+> +			p->blog_contexts[i] = NULL;
+> +	}
+> +#endif
 
-~Gregory
+Same here.
 
-P.S. This patch set made my day, the whole non-swap-swap thing has
-always broken my brain.  <3
+> +
+>  	p->flags &= ~PF_KTHREAD;
+>  	if (args->kthread)
+>  		p->flags |= PF_KTHREAD;
+
+-- Steve
+
 
