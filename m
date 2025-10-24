@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C32FFCCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 16:43:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DCE21CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 16:44:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2C7748E00D7; Fri, 24 Oct 2025 12:43:25 -0400 (EDT)
+	id 1DEF28E00D8; Fri, 24 Oct 2025 12:44:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29FA38E00C9; Fri, 24 Oct 2025 12:43:25 -0400 (EDT)
+	id 1B69A8E00C9; Fri, 24 Oct 2025 12:44:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B5308E00D7; Fri, 24 Oct 2025 12:43:25 -0400 (EDT)
+	id 0F3EC8E00D8; Fri, 24 Oct 2025 12:44:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A5348E00C9
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:43:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C283A140ECF
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:43:24 +0000 (UTC)
-X-FDA: 84033578328.22.BDC5F33
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2C05040006
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:43:23 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XMTdi6wi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F173E8E00C9
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 12:44:02 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 87572C0F44
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:44:02 +0000 (UTC)
+X-FDA: 84033579924.21.DC2839C
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D8C17180003
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 16:44:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sxh+zobt;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761324203;
+	s=arc-20220608; t=1761324241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wnm9HAm9Yq+THRRRr6dT3HSSsIo5cfR2FkdkZQ5RQXM=;
-	b=R6M1lbBGGIlGduA6ov2FNGf01PiCKF04OWH9sTg5HFElOZqomVWFkecGVIgzEzZQDILqz0
-	xS0qz8TZQK8rIcVnQhGcmIyp7Kb6wLCeSV2bKn3H46bdsMyu9c0wnyoCvlq7AHybybtFQE
-	VBGkKNjGOzOlxItx6f83n10t2h6ku6Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761324203; a=rsa-sha256;
-	cv=none;
-	b=fmOW9CEV181NbbrOti8S/TYFnCPtGZhWRrxjCKDYhFWlx7PuRPk9k/+D9+djOr501GVlj3
-	kspQaoPeK+UJ873kkH+0SpwIv1LqU1olWeb++qul/OZlWNFl3HokYcG7jEN3G5D6zmT1lP
-	h92KJOLiT7UUKGLdW0YvTdaBmkqunTY=
+	bh=Xgx3m3BUKEgvrqfTgwMq4kCUbClDlN+3bMLf2jmW9aA=;
+	b=L5jEluUz/kPncZmAISkbtuY9Tq7YIfwlMRrww/fTJHKyFysrf7FaJyA1rzqYq+mgVCbNXl
+	8MtdKG3bLL982MddmoF47AnVd/SvtLyheXrYzlQzSZEqgks0J52LYeltVjGLBgkyidJeLB
+	IUuIYFI5XdQMA1K8JCLI6vuR1rAWwcA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=XMTdi6wi;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf01.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=sxh+zobt;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761324241; a=rsa-sha256;
+	cv=none;
+	b=h7UH1/0+NpHxbmyV32RGRV31H2pSCqKlYg0WAo4mq1TY9xvi3NSTWk/XUKPjY6b0dSOgei
+	feF0zpdJDPrpmdMnyBrWAjbS4FD6/YrUvaoi5WI0y7fNgzYawauIc5qGwKc8M68E/lwKrB
+	eBTw9nMxCj0W86CZlATmHpjgGauzi24=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 748586027C;
-	Fri, 24 Oct 2025 16:43:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C9AC4CEF1;
-	Fri, 24 Oct 2025 16:43:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EB15B440A3;
+	Fri, 24 Oct 2025 16:43:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90494C4CEF1;
+	Fri, 24 Oct 2025 16:43:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761324202;
-	bh=YnthGUIKXztXO+a34kp8fF8ri6TxQZg51paSG28MCk8=;
+	s=k20201202; t=1761324239;
+	bh=6wsAeq8NmsFB5M1le8QxIbGbQvgkIjtIBo3EHQtqiNM=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=XMTdi6wimkywjFXY9hXcH5M2b/fBrCVF+7EhsdWkYDZ4qHMm1InoFTJtN2pDQetlo
-	 bNMzE8oQun7FpMpNCi1rBv6ws+/XV92fV8QrAJ8osvZoY2KBLXqpjqWJ3bG+ZVfO//
-	 E3O45AsxayedOGiBT4m5F19QjliZm26HRef1ekUTgVBWEfd9FBaducwx9Szxd5MVmr
-	 X0A/dQ7nZMK1TXUUsMyAQySumS0yMuZeXV3H++2j//MnTc9YgnxbVMYqPOl/8bmRcQ
-	 kZMCr17yt8i+zrf1P4160HG6IAW9Ve/0zWziU2z4WSrHcV/3Q5TBpIPlC6pwHP/toF
-	 yJoCGOCHFh1JA==
+	b=sxh+zobt1sZ6r7fdusWMcQ9a34ICY3fKF0DU9+8P3wIb8rWNDxg/X28leHLnzBOQn
+	 +D/SWhQvI+utyR86YTZ+cA6xhdwTatlc87cp24QQHM8eN7NaJWnT7PmISbSgxQVQM2
+	 EXShaWM5XGz6dCGUPk11QQcn99MbL5Lyefk+mxQk/5z+urV431jqq4WIrAuh+8VOTE
+	 lP3voBB1K13z8XVR5AhWJiTBwkRH8VhaB1/8ykSxsZSPPjnvt04B+E0wyZQ8MhvzlR
+	 BaTXE/B2imangiup6YxQsqtHq4gG0nv+500OwiyM692wrmfRf4Kxvay5WE9SJA2T3l
+	 kgJxTifEsBh1g==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
@@ -70,24 +70,24 @@ Cc: akpm@linux-foundation.org,  brauner@kernel.org,  corbet@lwn.net,
   linux-kselftest@vger.kernel.org,  linux-mm@kvack.org,
   masahiroy@kernel.org,  ojeda@kernel.org,  pratyush@kernel.org,
   rdunlap@infradead.org,  rppt@kernel.org,  tj@kernel.org
-Subject: Re: [PATCH v8 3/8] kho: drop notifiers
-In-Reply-To: <20251024161002.747372-4-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Fri, 24 Oct 2025 12:09:57 -0400")
+Subject: Re: [PATCH v8 8/8] memblock: Unpreserve memory in case of error
+In-Reply-To: <20251024161002.747372-9-pasha.tatashin@soleen.com> (Pasha
+	Tatashin's message of "Fri, 24 Oct 2025 12:10:02 -0400")
 References: <20251024161002.747372-1-pasha.tatashin@soleen.com>
-	<20251024161002.747372-4-pasha.tatashin@soleen.com>
-Date: Fri, 24 Oct 2025 18:43:18 +0200
-Message-ID: <mafs07bwkdzdl.fsf@kernel.org>
+	<20251024161002.747372-9-pasha.tatashin@soleen.com>
+Date: Fri, 24 Oct 2025 18:43:56 +0200
+Message-ID: <mafs03478dzcj.fsf@kernel.org>
 User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-Rspamd-Server: rspam01
-X-Stat-Signature: pjb5i6m5s636jr6tforjaodquq53u8ya
+X-Rspamd-Queue-Id: D8C17180003
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C05040006
-X-HE-Tag: 1761324203-748385
-X-HE-Meta: U2FsdGVkX18RmMPu2xRJzwS7exhYmanumXV3H3dUcGUGnfATog5IYC57L3T8IvXIPWB44e5mz+lD6haqf6ZcPiAcBza6uRYMMo4+n+o+JEz+/5sIdswxJZTjgara6GbLBWygH9ls21uV9tW9BXlnPYqHdUyIR1PM/wsK5Zoe8E0PQTHaBMziFHtga5d+UnfZ9+Ouw38B/R7q85v6NH8NbMApjzWzbA+IuK9AsS4aHfeY98w5J2xbptDAcAC9boVTzEBxzB6RVQlprDnPacmbmik9jLDV/HeIbxI3/OqR+rhiwJcx/YDh7UQjQQoia3oq1+Vox/O56fxE0QZoXl0zX4m/BiEaIhuyazehECuuNTXSaGv59+4b7MRWUBgMZswTeh/OyEYWXM3ON3TkMybc433SjUqDO100SV7glLXp98zjr8LxBnO8TxhLZF4FML3hLEiNy5FywxcjKxbTmCuFb387iknonjGPa5G0NqYgQU8aShorCBrPpuMLFhWQ9qMxN+BdzdUWx5lEXXF3Ey3YaaDWiaGphYM9OQgeHmEGghxPbjBfZKVVXNrMvvmeBhXmLOOGhZNHCpEl9t9vxLvabvx1GZbvBwjrwMs5BVkCice9efF20quWL01SfykPa6gyBahUoaHPjtrhE7prNzogw3KkvekaHKc0C9Z9GV3CWUhI5VErRqVp7TebTexr7kGqIvlXXnukI92I4PvsER5whVxbHH3I9hnTI4tSe8wk2aqrmsODKg1dao6LtviRcHqseTXIp8+SiNnTuH4VGFTnyF78/L4poWaQEdE2VLu6bNeZRdmxXeMknRqE1KO2UcCzODe5CKeILRu5Uq5nkDnSY35hKAMYS0/PFbvaiYjUcuXvROGXaXzBSmbrkw+Jrxa//E4CNNWiQYVh8536NV6p3pFpNGwQBxbM1ex4xWAYbEgcWg6zp9TxawwP7iQzxhJhDHkI6KPwF+deedAPsoM
- cUmwsilk
- g/VoT7m8BVEPhA8tpIvU9N/tiLnuSxqQu0AXuYI8cCSdM4rgFn36ea3kNoDjjSF7eY7I+LsKzHniSrfaUvYxp5MasIR4FTHM3MrzYop+HRmXH1BkYZtueCmuvUFQn2xbPXTWFxz4WlNgIUPasFQLCn5AoQQmRZJWq0JV8wQELsHVBGukkkwe96GDS1Rlf9OwOF9HaINY3mEhW6HGyuCAZklcofw2p4F3X0IQJZeA7Mq1edIf/xQIgv2dtVP1HxgIZLT+V
+X-Stat-Signature: mfbubs88f8fmdhm1nxbue514ikxy5fhq
+X-HE-Tag: 1761324240-36713
+X-HE-Meta: U2FsdGVkX1+8AiYNPq6G9nqOZXUDwh2ZxMALNkHYX6hF51lqNz3pu1I9OiSm5PA9q3EevQ++tAp/IfU7Imn9zvR/k3CkZmFXvwOB42dZoMmPiJQfVmOfBI2ilpHU0+PNNEqW80cQBMkjBEOLh4nEi3bOaYdlJIMnwzKbUD8A9axHbtlNZDiEsk2jke7y70p4NMi5TmXKY/DWp9xGOnbrK/wDUinWZ4kttrnP2/nSDFoon7sWm1ALB/O1sC5JO2Q0VSBpQJ33cQCdXMYWAaPtAxLxJ2Tov7o3Ezhp+ixWSZLrMtJi3gsW0RSPdVa3mnOqjX+pz1Rcx094SyfCUk0uCV4eRpG8Q08mk4Y2FbeQVKw/14seHkis/SB0pqp1foFk2HsqKsnhrxf0faCJoF/3GPJrFGYX2hl+rJLQerum3hnXTmeEK08Ey3Z5LaU1uPfSG4TBTb6t0XvV0HAElsQYLU+vTTbOWnxW53+VJxUxpXYwfrdaV0825V0hqBvlyZ5Q9l0gdU55cy1f2M9vXBX1nxfcWhziCvJtvA9Lbnu8KLUwltgO/IO5VgYTKvAJ31qK+bGAN71ZzREojwdiIIOhK/+LUhbsWh4tIGRKyDI1T0auehhHYyY8wsB2rLYPBL2wn3R9lM8vwCDNX7fuD+gZwYJ5YXBjKSa+SFIF/NIfs7rJm/HGPlMZjRTwWiOjj+PTNv1WY/jhkqRny8YX0u4MKFNem99cCbLt4LrNNRhq4oewosYf4tfFT/ug8hBFD4Eih51pvCdSmk22kDN6Kmaej7AYe33BwiStmlKXUoC9rUgdqvA0XZE/3RuMoZ0Qce8vwkVyTnusXQpsTgU54tmsYZVsoZa/zQYcNKbrDJJi2nDXkAJSPHRop+zYGFO9YQThKWM/mQrUYV8kYZtARYVSCRwD8PkuZ0UHbQJfWaLg/DgK6VyEugnv9JrzZ9//svdojc/oRybz0EWGyqjUeFm
+ TR7iApef
+ SeGZQ7ip1Xhb5D49CG9E9MRAZBJ9xFUi7fwNfLA+70dpAAh57zSbPZ9srsq3OjT0FzpYwM6IzrioBK3+yNkFIH0dvk8QKkOETfTOtiH1EW4VXu4+La5C9zJIYBcWKd5PfMpO+vC8AjcvSopqemTud2tksJKEmsn2CcXJ1uFFNFxXIxI9bsQQp0Vw10H0twMC5du+k2YVthWu5+oeUd8Bmx9Y0+F3He533VkR1z+yTAA07tb/ZvzMyxlXykVGgPMx9m8Tm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,26 +98,11 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On Fri, Oct 24 2025, Pasha Tatashin wrote:
 
-> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> If there is an error half way through KHO memory preservation, we should
+> rollback and unpreserve everything that is partially preserved.
 >
-> The KHO framework uses a notifier chain as the mechanism for clients to
-> participate in the finalization process. While this works for a single,
-> central state machine, it is too restrictive for kernel-internal
-> components like pstore/reserve_mem or IMA. These components need a
-> simpler, direct way to register their state for preservation (e.g.,
-> during their initcall) without being part of a complex,
-> shutdown-time notifier sequence. The notifier model forces all
-> participants into a single finalization flow and makes direct
-> preservation from an arbitrary context difficult.
-> This patch refactors the client participation model by removing the
-> notifier chain and introducing a direct API for managing FDT subtrees.
->
-> The core kho_finalize() and kho_abort() state machine remains, but
-> clients now register their data with KHO beforehand.
->
-> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
 
 Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
