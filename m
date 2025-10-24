@@ -4,122 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0D6CCF9E0
-	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:22:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EC79CCF9E0
+	for <linux-mm@archiver.kernel.org>; Fri, 24 Oct 2025 14:29:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EF3FC8E009F; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
+	id B84148E00A0; Fri, 24 Oct 2025 10:29:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7D658E0042; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
+	id B34378E0042; Fri, 24 Oct 2025 10:29:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D45A48E009F; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
+	id 9FBFC8E00A0; Fri, 24 Oct 2025 10:29:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BD12A8E0042
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:22:03 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 66D185DAE0
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:22:03 +0000 (UTC)
-X-FDA: 84033222126.11.341C7EE
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 609EA80015
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:22:01 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=ezQP+7u3;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761315721; a=rsa-sha256;
-	cv=none;
-	b=eVeqjOG3DzP7wG4FHULwl8XsZgyxmpZKdBO+oOSuhHzIvtv5snfRPF0sb9/OnxLeYDQE2I
-	XjxEpl2fPIhGEdHPBwi1cwmCvOnbS2lEUhH0V28GfoV6D2ZMYbOHFREeelpkAC+39uahWt
-	lO8SWU8euxsym3K88gQ5vGSBq3Y7oVw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=meta.com header.s=s2048-2025-q2 header.b=ezQP+7u3;
-	dmarc=pass (policy=reject) header.from=meta.com;
-	spf=pass (imf30.hostedemail.com: domain of "prvs=63920b99c4=clm@meta.com" designates 67.231.153.30 as permitted sender) smtp.mailfrom="prvs=63920b99c4=clm@meta.com"
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 897A58E0042
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 10:29:51 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 39076160EB1
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:29:51 +0000 (UTC)
+X-FDA: 84033241782.23.1AEBFFD
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B376C100003
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 14:29:48 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=V04MSyAs;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761315721;
+	s=arc-20220608; t=1761316188;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b/ol2wZmOZszG9k8vxf893BYtcntNjtXKAqt3ZVyZ6M=;
-	b=T5Ch/ra6IyiYp6DlnY0ZY2b1+mWeGjEJpaOLX6Nm9TYWhrF1VcZhhs4GsRFkWs6pm1245Y
-	T7jDtjLOQI77jXqQ6I4e5SFKuQZWmr5nNh+CMSqoHw/vgBJqNIVrOA+qcvh2mGPAaeT3ci
-	zx17TMtY7UTFlvkqk9lviRkj6K8hKyM=
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59OBwgYl419537;
-	Fri, 24 Oct 2025 07:21:55 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	bh=v4oMNta2EA5ONs6LrrVjbXVDCb8udFX3XWucqebTej8=;
+	b=PJoe8JrFTVAyXRrqV4CjBrRDStETyC/bz3MoMlHt77e/fA+kyRygzegiUgL06cGKyZntre
+	QQ9K5UQR4ZhOKhr4RN9gbNUjea3J+O5BCUZz3nv7H3MNNhgXPDd9n5ifX7ojyJ2GUGwz5m
+	eCpQ+j/Y94BhLyO1GgbNZPNVNAlsoUM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761316188; a=rsa-sha256;
+	cv=none;
+	b=DqtutBM3SL4d7AWgaZCc/PHg/app90wxOYuhdzAvOXUtoPToBJhWRvWT1cBforfpox9gJQ
+	g7JeaKW94M9zR18twpsmXxnqA/EaijRd+r6MhZZkwnRxWrVXdPUZ7ogMzwcZnbv8lZNAID
+	JSfNfMowU+mJYL22XgXXVDzHgPuRK/o=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=V04MSyAs;
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf14.hostedemail.com: domain of jremus@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=jremus@linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59O8VK8h010609;
+	Fri, 24 Oct 2025 14:29:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=b/ol2wZmOZszG9k8vxf893BYtcntNjtXKAqt3ZVyZ6M=; b=ezQP+7u3tFEf
-	zrYyaDhCkTMVQFov2O0qB6+PQ8nFCiz5xUxgfcMk2tR+A3R95RZzzaKIuV+0udnJ
-	CETmgt5bY2oOqy9mzXp4dlGP2sajgZMdyujqwW9Jd3+LwfTJJnmgMKee2hmQcqYr
-	WcE4brwFFiA3z7jYttDF5dcSZDq9hbl8VFDOJu5glQxQ96K+O8D1SKa4j6JalBSI
-	O5tzYojsleliqP7yWdADgof1zsQg4uANQ8T4e/jCWi4UAfCyP24qMqFgbZnB9oHV
-	Z2N/UdAhoSxb1Rht4AfWxZvy79778q+JYsFec/by5KkZgF6k0yclfpMdaDfD7DNN
-	vDn6vxt7NQ==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a09288x7k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 24 Oct 2025 07:21:55 -0700 (PDT)
-Received: from devbig091.ldc1.facebook.com (2620:10d:c085:108::4) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Fri, 24 Oct 2025 14:21:52 +0000
-From: Chris Mason <clm@meta.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-CC: Chris Mason <clm@meta.com>, Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Lameter <cl@gentwo.org>,
-        David Rientjes <rientjes@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>,
-        "Liam R. Howlett"
-	<Liam.Howlett@oracle.com>,
-        Suren Baghdasaryan <surenb@google.com>,
-        "Sebastian
- Andrzej Siewior" <bigeasy@linutronix.de>,
-        Alexei Starovoitov
-	<ast@kernel.org>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <linux-rt-devel@lists.linux.dev>,
-        <bpf@vger.kernel.org>, <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH RFC 02/19] slab: handle pfmemalloc slabs properly with sheaves
-Date: Fri, 24 Oct 2025 07:21:35 -0700
-Message-ID: <20251024142137.739555-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251023-sheaves-for-all-v1-2-6ffa2c9941c0@suse.cz>
-References:
+	:message-id:mime-version:references:subject:to; s=pp1; bh=v4oMNt
+	a2EA5ONs6LrrVjbXVDCb8udFX3XWucqebTej8=; b=V04MSyAstrmDLJINvm2cvh
+	VH4O7MmBLQ3A+6sq6zY+4LDsmeUvK2duNA0isw6qpilo4yeVMbE3+37QAxnkVVpJ
+	XfKdQkwZU3GHDE/jGuYXgNG3VM6Y8+guEtdgTgM4VkDzvUL82AEWk6fSmA+tmeLV
+	mxeoIz0imRO3xrMbRLyjVUGNYV67h4JOlzzG9PLz+5A/+Y95lj/J8MuX7Yuv4bCz
+	ZZA+L324/3yYOY7ZYODoWvAkpmtEHIxPpyvP5QPXKPFi2Omi7Ymcdih9YFKkShP/
+	RT9LDFDayJBr5zurxg+pCuU6j3FzCirFbY5/3XI7l0zM1paxidN/0/58y8GVDhLA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30w65vn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Oct 2025 14:29:16 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59OEPFuZ011350;
+	Fri, 24 Oct 2025 14:29:15 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 49v30w65vj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Oct 2025 14:29:15 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59OB8wi9002488;
+	Fri, 24 Oct 2025 14:29:14 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 49vqeju9tp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Oct 2025 14:29:14 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59OETADX38994314
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Oct 2025 14:29:10 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 82A4720043;
+	Fri, 24 Oct 2025 14:29:10 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8233F20040;
+	Fri, 24 Oct 2025 14:29:08 +0000 (GMT)
+Received: from [9.111.177.85] (unknown [9.111.177.85])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Oct 2025 14:29:08 +0000 (GMT)
+Message-ID: <6b5c0c64-c4da-416d-a103-8d6ec2f06a9b@linux.ibm.com>
+Date: Fri, 24 Oct 2025 16:29:07 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 08/15] unwind_user/sframe: Wire up unwind_user to
+ sframe
+To: Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, x86@kernel.org, linux-mm@kvack.org,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Masami Hiramatsu
+ <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Indu Bhagat <indu.bhagat@oracle.com>,
+        "Jose E. Marchesi" <jemarch@gnu.org>,
+        Beau Belgrave <beaub@linux.microsoft.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Florian Weimer <fweimer@redhat.com>, Kees Cook <kees@kernel.org>,
+        "Carlos O'Donell" <codonell@redhat.com>, Sam James <sam@gentoo.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>, "H. Peter Anvin" <hpa@zytor.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Michal Hocko
+ <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>
+References: <20251022144326.4082059-1-jremus@linux.ibm.com>
+ <20251022144326.4082059-9-jremus@linux.ibm.com>
+ <20251024134415.GD3245006@noisy.programming.kicks-ass.net>
+Content-Language: en-US
+From: Jens Remus <jremus@linux.ibm.com>
+Organization: IBM Deutschland Research & Development GmbH
+In-Reply-To: <20251024134415.GD3245006@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [2620:10d:c085:108::4]
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI0MDEyOCBTYWx0ZWRfXwTD/VmjTrZA6
- JRMZKrwqksV2xp1yhJWxwn6gzdqQ6FLs2fQ0eb7xBONuzcwgzrrSURnRmWBCizGKI+13LbnEIl4
- ylNtvCoS+qc8ZaNrun/2WUn50FZBKyvgRCtxu011MC4I60o1A0gUQr7LQe1DnOC1f19Mw9W27VB
- MlWsAS28QxLMenEBX7/purq6SIW3f2Ls4I6uC6IrLhRbaN7uAosLW6+sFcqB5q5bySPDl5GzzE5
- R9gNXo0vhN4ZummzWu1+T3C/Fckz++HJCysc3xdveEplf4WxEoLA0JxvzvfFP6keHpZ+LjYmoHz
- lUK8NtClWc9hhIyXgA6umSdgtc7sWHlWqXnnspAxBWh4MhmjJc8arJC6lHS0Uji0i8FsmPJ+NE1
- uMZWCoJMv2b3asDyr7V0u3Kf1VWvBQ==
-X-Proofpoint-GUID: 1v7_B19uZD_UKIAK3zHZIbCsxtzfqkFk
-X-Authority-Analysis: v=2.4 cv=aK79aL9m c=1 sm=1 tr=0 ts=68fb8b83 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22 a=PCJbmnWxFXnHO1kFQDsA:9
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: 1v7_B19uZD_UKIAK3zHZIbCsxtzfqkFk
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Ykpf61_8y0gZ-cwvoWdHTyYd4VO3jyTg
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDE4MDAyMiBTYWx0ZWRfX+6YJFqcIrYau
+ FfAiginkKWCbTRDMMfI4es5x0Gv2LrIgpMT7B1DW1SUwfXR+r8YvBgLHibQikeToBe9tDf9Su8i
+ SNe406UM1ZQHVDOOe7bQLmK3YmgyoFsKs3snpKHi1zjEdyPg/untiqR0sx8USLZ7DslJvwuVXtX
+ 7uov274LjKqmA7OxgZlmpdrURUk0CEr7LGSOd39WYdiUPx6BHVrf74M9u86J8W6h2C5teh/wZnT
+ LzpVbaclqQLW2t3ExBtkH2EeFZY8j3Kcro2vvFU8HWwqbKP+gaXumYanr19g8i8GnuKTvD5En7N
+ CxKPz3S4KFbu+pLcYBRBXfeJa+wunvpVdCfE3NPMCJ4iUwiLX6zytmxsVam68rJax8xxt/LSz2L
+ xwE2cVaqDY9a72MNQPfsV8L3ZSYvmg==
+X-Authority-Analysis: v=2.4 cv=MIJtWcZl c=1 sm=1 tr=0 ts=68fb8d3c cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=Z3Xqy3CnV3LH82Reu_wA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
+ a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: T5WOf74hicSV-YNKqrY5feRRWuekCWRm
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
  definitions=2025-10-24_02,2025-10-22_01,2025-03-28_01
-X-Stat-Signature: qkxten4hhooo4oox8ae9cfqpse85muuz
-X-Rspamd-Queue-Id: 609EA80015
-X-Rspamd-Server: rspam06
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 spamscore=0 phishscore=0 lowpriorityscore=0 adultscore=0
+ clxscore=1015 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510180022
 X-Rspam-User: 
-X-HE-Tag: 1761315721-249881
-X-HE-Meta: U2FsdGVkX18YRicynVJP/z0i5FRty/RPBM+mITVxyexrPP2QOUJWtePH/U3B70sNKWgZTrX15ZHmZrXmSe0VlBp/NbQjYHwjVk0o95Hy9/SI9ZLUlwKvyD+72CmSla76ukDUFvfShBLEx8xWzHsEA4kATbrZOCtFjcVxWgz0QZkkgqEbP0cAbseaDUnbjBt1aBwjgQtdjgZW6pgu8phuRrZtezr/VD112TlfH9I7LJ1tbhyg4SHSpYoLITcSlWntdunzSKL/LxQCl6y8bN/5dnkNZkaguabrwT5/IX5HuabLvKL3U+I4//4q8xo+kv1ERQBKHX5Rw34FQa1HtT3pEPteuSF19xmrVZxcJR+YQspvogiHhxNI5veYx9JQzEcsW/XUZDJFsDQ0qTSlhWqbN0EpcOhhc8zcPiDV36P4J+sn35e9IOfT/6Orz0+uGNfZjadF1+xtao5Ugj6YnzR+BKj5fJz/9MnXpWngPuJwbCRdzBWW5ZpOFfZmBC6w4wd7jJ8Q2yxVOfYHwWGjA2+UvOGVKy9LsKV/npabQQw1mS44SZi1qVwXsj0kpnVgQQtXcEQJizaji88IY7cvqiMXVn3VaXnH2QnJfiQjuh0TuTYCXJLMF0mrLI4TpF7EE7zhDIepicA398gNmnC8wt3l2DrMfIkxw5u4ksER3+r7lnDksRZPbwxprjsezEjhcZznGoxs2mPKEe0RR5LzNTYr66HsTgneDTtKJzRCP0w3VFydNFI2h3Xt18M+mke0QR1CFbN07KapdLZ9mL8JyU+1iIA8DChBS7nk/kBrPDzm/QANYdTiADf2CM4ReHZiZUGG/NcuQEtn1ExSMDnXmJB4kU8pBNh71p230bOElJJBX2k8KgnnYPhbgRlSjGYdYx7tXtiAQSTs6jWElHTUwyg6DKCP7UVXLWOVrP/+JiX+2NQaKQbuSprh9VPpmYH+UWQws42bQ5LmFpPbs5hkm3p
- er0gAN2X
- VD6iJgDSNt+WqV9rRTR0hUAX8OAQIjEPo2culMXtoIQXnVK8hhBr9DIbYYXH6gwwKSHgeXfPN8uOGYlMdzv+2zrKwpFHE/7MjODB30mHbTra0rZbqkZUyQiHZ/fjP06bZLVWIo1JO7zT0YOwjTZC+K2E34cyu3VYvx2cmy/qfmvWPvzRIJ3o5Gddq4EqA2cD4vv0QfIUMOFzaq0GKysf+Z9gVK1UVju+uByj39s6CWruIWEl1qRpdRwZlcWBwn3BsvR+kGrc5BOYvLyn2u6BEU6ds8tMt9CTVRu65qpKwcex3MQFu1V7wDtYRzgdTA5RbRxvj8mncgUih3ch+wqDi4uXSJz7so91+1SxYfp7OwhZ4KReca4yuRc1VpA==
+X-Rspamd-Queue-Id: B376C100003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: i9scz961j4q9xapp6dce97jnzobhr456
+X-HE-Tag: 1761316188-266342
+X-HE-Meta: U2FsdGVkX19aP3UbvjMVvLny5LietvRs+9UH7WigZ3ZS9C4Q5lgpBEWfEzy0RlU0St9YW/1U7w1UwFp2Y0KhomNUzoVHkI41MXu/Yf9S0w6wAfSgRfRg/k5taFOAAOMIl8m5aoF08Yupul+OMZNzuz2mygvKaS/vSV7MdqDV18D/+gI+aX7ky4SZiNCX3cgnwl/E/RhqydVDN+x+fF+cqGz+1jvWiVln54jtaDWt5l6ON2VXYE72UviS4AqRHBOao5HDH+eNtCE0l9VNG8KdTjEgPbirm1kJoioy1v6Wdg4FTgzb+REqlSpyIjFTpexVM4CPXnpLa6eiwPE+cFW6FfBK1QBxyqEjC/Hkew4psnX04jS3PbtmGz1bRKCb5q62RDaz9xBwUKniK0bsrnPKH+ZQi+VytzFPHDi/kEggrJo6aufzGgWhIV6VRxE6a1cBnHiOH5pDPR2bFvvMs7g8NGFCco6ruGXsazDJZMOBJU8EOzzr3WSKcwChWITAYTDK5YSLYrE5CfK/UQQBYd3llAcu3SPyvQ6c5UNPgoAFrrpU0ko9Qncx0/lApi2dj4LhPHJ0UqaLS3r6a0uDbDSUIEGwZRjcBvdoFnZYrBxuIBgNCcZ3XVcnuojiVb5FefJVaLUVGZejm7DsWAAXqumVreDMWtv/lpdWlqjMO0IupcMyu1Z9zcHbxtv5+ux356+G8VsMMJk9rzBvrDNCvX4psn1Hzm7TjJ1/HNkB7Q1scIocgAmKLWsq60eXV4LrPR+WOa3AXoJY0+kQ7KXS4qGMR0d+udbJ4t9zgcU2JkSuYD2gZbLmogVufLUpaCnUEaMUqIlcXdQRYqCU1VHDWrmlLTwcrS9BhcoxTSGD4i+mX7vXX+daeFAcijfxplsGKYXm/JILdG5W5sdUf0cr9Zh1QdrAjF6NZI10X+Fky0xZtGoqePTJdbEso4i1VgX2tKrrwOaJbLBDT/2WCDgryR2
+ zak4vv0u
+ YTaDUKpoAUApSiOcQt3F18wE9kDPJbhgSB6x8Ay9pLTVyw2tDv+7Mr653BmszI/54WVaI04Sv+zXukmLLK7rbr1NG80MAG1bdVbdXqE9Sqwh/cBEFTn9jm/3Z9PXz/7kGuUAaAB3LTp13z1M+fRGTUTQBzf95DBkrbK4TSqC7NW/g3s8GjfD6LNxX9BIEZw/sOLerGjntmfsJHG2NoqrFQ3rFo2dxMh6jCxxyay9lDtTILDIKmAxPYq3j0p4G6OhZOozbkJ9ed8kWo7uA4chO5YgXcrUBDJIqB4sDIdr/QKI15mWfHUSLBdxFuOZ/IAwCyEhbz2tQOOO1Bts8ZkBBsEy33DczQiovpFZr/aM6QOzA5mJ9fv7RX/dgm94J4FSgKgqDvIh0D9Z6G3Z3Tp77HB7ftoW3GjSOd7E2K7Op72lWb78x9CfXWW3zWft8L0Ip4zVGV+NgUbL0sOhRmm2bt/u61ghg0Jx30t90WXs+KO52UeMbOLzEcWpNdbeJQPJtAlVe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,104 +178,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 23 Oct 2025 15:52:24 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
-
-> When a pfmemalloc allocation actually dips into reserves, the slab is
-> marked accordingly and non-pfmemalloc allocations should not be allowed
-> to allocate from it. The sheaves percpu caching currently doesn't follow
-> this rule, so implement it before we expand sheaves usage to all caches.
+On 10/24/2025 3:44 PM, Peter Zijlstra wrote:
+> On Wed, Oct 22, 2025 at 04:43:19PM +0200, Jens Remus wrote:
 > 
-> Make sure objects from pfmemalloc slabs don't end up in percpu sheaves.
-> When freeing, skip sheaves when freeing an object from pfmemalloc slab.
-> When refilling sheaves, use __GFP_NOMEMALLOC to override any pfmemalloc
-> context - the allocation will fallback to regular slab allocations when
-> sheaves are depleted and can't be refilled because of the override.
+>> @@ -26,12 +27,10 @@ get_user_word(unsigned long *word, unsigned long base, int off, unsigned int ws)
+>>  	return get_user(*word, addr);
+>>  }
+>>  
+>> -static int unwind_user_next_fp(struct unwind_user_state *state)
+>> +static int unwind_user_next_common(struct unwind_user_state *state,
+>> +				   const struct unwind_user_frame *frame,
+>> +				   struct pt_regs *regs)
+>>  {
 > 
-> For kfree_rcu(), detect pfmemalloc slabs after processing the rcu_sheaf
-> after the grace period in __rcu_free_sheaf_prepare() and simply flush
-> it if any object is from pfmemalloc slabs.
+> What is pt_regs for? AFAICT it isn't actually used in any of the
+> following patches.
+
+Good catch!  No idea.  It started to appear in v9 of the series:
+
+[PATCH v8 06/12] unwind_user/sframe: Wire up unwind_user to sframe
+https://lore.kernel.org/all/20250708021159.386608979@kernel.org/
+
+[PATCH v9 06/11] unwind_user/sframe: Wire up unwind_user to sframe
+https://lore.kernel.org/all/20250717012936.619600891@kernel.org/
+
+My s390 support for unwind user sframe will make use of it, but it
+should better be introduced there then.
+
+@Steven: Any idea why you added pt_regs?  Your v9 even had this other
+instance of unused pt_regs:
+
++static struct unwind_user_frame *get_fp_frame(struct pt_regs *regs)
++{
++	return &fp_frame;
++}
+
+>> @@ -67,6 +66,26 @@ static int unwind_user_next_fp(struct unwind_user_state *state)
+>>  	return 0;
+>>  }
+>>  
+>> +static int unwind_user_next_sframe(struct unwind_user_state *state)
+>> +{
+>> +	struct unwind_user_frame _frame, *frame;
+>> +
+>> +	/* sframe expects the frame to be local storage */
+>> +	frame = &_frame;
+>> +	if (sframe_find(state->ip, frame))
+>> +		return -ENOENT;
+>> +	return unwind_user_next_common(state, frame, task_pt_regs(current));
+>> +}
 > 
-> For prefilled sheaves, try to refill them first with __GFP_NOMEMALLOC
-> and if it fails, retry without __GFP_NOMEMALLOC but then mark the sheaf
-> pfmemalloc, which makes it flushed back to slabs when returned.
->
+> Would it not be simpler to write:
+> 
+> static int unwind_user_next_sframe(struct unwind_user_state *state)
+> {
+> 	struct unwind_user_frame frame;
+> 
+> 	/* sframe expects the frame to be local storage */
+> 	if (sframe_find(state->ip, &frame))
+> 		return -ENOENT;
+> 	return unwind_user_next_common(state, &frame, task_pt_regs(current));
+> }
+> 
+> hmm?
 
-Hi Vlastimil,
+I agree.  Must have been a leftover from changes from v8 to v9.
 
-We're trying out the AI patch review automation on the BPF commits and it had
-some questions about a few of these.  Since the goal is to actually test the
-automation, I'm putting them in unedited, but I did try and make sure they
-were valid before sending.
+>> @@ -80,6 +99,16 @@ static int unwind_user_next(struct unwind_user_state *state)
+>>  
+>>  		state->current_type = type;
+>>  		switch (type) {
+>> +		case UNWIND_USER_TYPE_SFRAME:
+>> +			switch (unwind_user_next_sframe(state)) {
+>> +			case 0:
+>> +				return 0;
+>> +			case -ENOENT:
+>> +				continue;	/* Try next method. */
+>> +			default:
+>> +				state->done = true;
+>> +			}
+>> +			break;
+> 
+> Should it remove SFRAME from state->available_types at this point?
 
-For this one, I'm not sure if the behavior AI is flagging is intentional or
-not, so it feels like a reasonable question to me at least:
+In the -ENOENT case?  If the reason is that there was either no SFrame
+section or no SFrame information (SFrame FRE) for the IP, then SFRAME
+could potentially be successful with the next IP in the call chain.
+Provided the other unwind methods do correctly unwind both SP and FP.
 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 4731b9e461c2..ab03f29dc3bf 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
+@Steven: What is your opinion on this?
 
-[ ... ]
+Thanks and regards,
+Jens
+-- 
+Jens Remus
+Linux on Z Development (D3303)
++49-7031-16-1128 Office
+jremus@de.ibm.com
 
-> @@ -5331,6 +5340,26 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
->  }
->  EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
->
-> +static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
-> +				      struct slab_sheaf *sheaf, gfp_t gfp)
-> +{
-> +	int ret = 0;
-> +
-> +	ret = refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC);
-> +
-> +	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
-> +		return ret;
-> +
-> +	/*
-> +	 * if we are allowed to, refill sheaf with pfmemalloc but then remember
-> +	 * it for when it's returned
-> +	 */
-> +	ret = refill_sheaf(s, sheaf, gfp);
-> +	sheaf->pfmemalloc = true;
-> +
-> +	return ret;
-> +}
+IBM
 
-[ ... ]
-
-> @@ -5497,7 +5528,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
->
->  	if (likely(sheaf->capacity >= size)) {
->  		if (likely(sheaf->capacity == s->sheaf_capacity))
-> -			return refill_sheaf(s, sheaf, gfp);
-> +			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
->
->  		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
->  					     &sheaf->objects[sheaf->size])) {
-                                             ^^^
-
-In kmem_cache_refill_sheaf(), does the oversize sheaf path (when
-sheaf->capacity != s->sheaf_capacity) need __GFP_NOMEMALLOC too?
-
-The commit message says "When refilling sheaves, use __GFP_NOMEMALLOC
-to override any pfmemalloc context", and the normal capacity path now
-calls __prefill_sheaf_pfmemalloc() which adds __GFP_NOMEMALLOC.
-
-But this oversize path still calls __kmem_cache_alloc_bulk() with the
-raw gfp flags. If the calling context is pfmemalloc-enabled (e.g.,
-during swap or network operations), could pfmemalloc objects be
-allocated into the sheaf? Those objects would then be returned via
-kmem_cache_alloc_from_sheaf() to potentially non-pfmemalloc callers.
-
-Similar issue exists in kmem_cache_prefill_sheaf() for the oversize
-path at the function's start, though that code wasn't modified by this
-patch.
-
->  			return -ENOMEM;
->  		}
->  		sheaf->size = sheaf->capacity;
-
-[ ... ]
-
+IBM Deutschland Research & Development GmbH; Vorsitzender des Aufsichtsrats: Wolfgang Wendt; Geschäftsführung: David Faller; Sitz der Gesellschaft: Böblingen; Registergericht: Amtsgericht Stuttgart, HRB 243294
+IBM Data Privacy Statement: https://www.ibm.com/privacy/
 
 
