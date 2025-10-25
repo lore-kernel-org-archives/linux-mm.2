@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 152EDCCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 09:58:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAA70CCD1BF
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 10:07:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1CC108E0142; Sat, 25 Oct 2025 05:58:29 -0400 (EDT)
+	id 3FE198E0143; Sat, 25 Oct 2025 06:07:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17CA78E0135; Sat, 25 Oct 2025 05:58:29 -0400 (EDT)
+	id 3D5B38E0135; Sat, 25 Oct 2025 06:07:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B9ED8E0142; Sat, 25 Oct 2025 05:58:29 -0400 (EDT)
+	id 2EAE38E0143; Sat, 25 Oct 2025 06:07:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E6B708E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 05:58:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7926589717
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 09:58:28 +0000 (UTC)
-X-FDA: 84036186696.22.058A5C7
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 12F298E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 06:07:21 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BA91549D8E
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:07:20 +0000 (UTC)
+X-FDA: 84036209040.20.376E302
 Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 069FD40008
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 09:58:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Q08AOXNr;
+	by imf21.hostedemail.com (Postfix) with ESMTP id B6A571C000E
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:07:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=X+lXwJdZ;
 	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761386306; a=rsa-sha256;
-	cv=none;
-	b=hbmPgdkeghdwMHqfKZvmCZhh5JNK+hkYKMKydcMqjVMg+cYxGn1RUPTtxFDFryMlkf74Nc
-	wGomblXZZjyqDXKZh0H1PaEV/QnrE8NQTnBFj595w+qn1w5YqKIIMApDfi4wZw9iKNCfq8
-	UPhymEMQx/lPHhMe9IJtqEcqEJ0baGg=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=Q08AOXNr;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761386306;
+	s=arc-20220608; t=1761386839;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ms6OfP7fnnzpCwdbYToJLw7bxMeGDjNJVbU9DiQwtVI=;
-	b=PxRHuCLiDaOwKgkhPdgGYHKlUxZ/P3GFqxfZi0nhWiOPK7earXh8GuuLVMUOu7KWp4zPMD
-	CY3znFFeX5xh6tJ4EH49cDjoZfRDUF2BmYXjg4xDrYAudc27LhQmP/Hw6N8NfKoUDYs4AU
-	su1f7CrOnT9YAyf1IPQCpul37AxGjTQ=
+	bh=kMoOUP8YPuXv/puO8vDWRWdRTtB4oFAsNjhiFeQqdvc=;
+	b=W3rz9K+VgS2UCAXZNGhk2BATziyGfSkapa8/WTZ8QJO5m9v+8nSk/eF+/1YFI4y9+KwdEb
+	iS3xFrgFBED+oaHAWuKMObZdh6QedCbgbqy41V4qfGMTran/sqmOjjaRL1EtYDOkXg+asb
+	iD3RSXtto8o4eyUlDsVbRnUoV9RVylE=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=X+lXwJdZ;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf21.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761386839; a=rsa-sha256;
+	cv=none;
+	b=wERSyPZmoy60Pn0llFhsb+qyoaHzBlKnQcEd9KoS4WTRgeHGofzZRTGZhtg6PkPyS3M/w3
+	n4/pKjNQHru54Ofzyki+Lezs8F3QEpZUMyVMiYugg2D+ffW/EVGdzw41jYXsaARkKg7gbK
+	gYIWFYTMdUt+LsX1KyAPzTnnE9UCbUc=
 Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 4625140E01FA;
-	Sat, 25 Oct 2025 09:58:22 +0000 (UTC)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2669040E019F;
+	Sat, 25 Oct 2025 10:07:15 +0000 (UTC)
 X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
 Received: from mail.alien8.de ([127.0.0.1])
 	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id cg6j5_G3VMKG; Sat, 25 Oct 2025 09:58:17 +0000 (UTC)
+	with ESMTP id rKwqvsflQOVQ; Sat, 25 Oct 2025 10:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1761386297; bh=Ms6OfP7fnnzpCwdbYToJLw7bxMeGDjNJVbU9DiQwtVI=;
+	t=1761386831; bh=kMoOUP8YPuXv/puO8vDWRWdRTtB4oFAsNjhiFeQqdvc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q08AOXNrmI0dbWJn9pwr6BSQMn9Gj5/TVHljcN8YHbcvuD+VNTZRbqwL44BBvjVZr
-	 uDc6PfQq6NipuOghVTnlFaX/RAvaXT3VI5iGphL5efzfi3wLXXYUw7gYs2plxRXfZH
-	 In1Th1OjQzic6hFSn+qB6LuAl34Le0Q4Y0OLGxg4d/BikHHX6qTyq5byoBqvzTrMa3
-	 5vxEBRuWO6nrk+gHIRjVeq5ndEqJS4pE6TGqZsWqLEe1GE41FIRupxCEeoNR3d2HcW
-	 amMMjVwHAdUHhVeEnRjtTZbLdK6+PQWSz7WoI/AD5wC56JDv7O8C8EIykrnAEOaEMa
-	 jrROfIb9JsMAQlIZIQC/YLFpnyIqCaCkK27wDMjZKy7l1L7b9vf8Y9QP72TAcnbW0s
-	 uhDNewwmvUepZiPYFR7U/cypvdozm1R10BnRvPY3y1Fd1Julhawl8u5Tu6z3ziD9qu
-	 9aohJHRmSqRwyh7+YjOAQ13nY+l50ZIsUCjRgb/lIPVsoEDEa5PicRQI1Vl+QXmDUR
-	 IQeJnshJyT1d8x3bzTVz+jOP40CXW2NwqE2HeMDeQelEEr9dJtoPR3p9p39THROXFu
-	 3lwQkxeWpS6cwbdlzpJSkrYdyN6WBQK1HB+sHX8DcegOZIciQwJNq090RfR949JAV6
-	 eqKN1cBgm/zBdi36gQPiisQU=
+	b=X+lXwJdZ/8NGNTTEMe+Kyw8cOzXcrJyGOHMk7EJJ+QScYTrklQj0nJkj3D85/4nIR
+	 oUIY+B6d4uVEsmNF/WBMkld1X7lpFIPf1bhNCmDKzBOn7fZV8wzkjWIU0sXbtzOV66
+	 Z+0MsuSNojWn/lfiDIaKuyoERnBfelGSSxs1uSFFzriODc3bF+0LA4aISmyDdCv7NO
+	 KTu2W/cteIHMsPUrr4ZJltVcwZgBQ7UeLv9rmeiAX3FXLAMMSkCuQs4BmDZ1bjte4d
+	 pLzphIXf4j8+Mw0eM4JJPCrqwqcq8/zOISUAAzn5cayIkmQzD07RAUgZQlhG8Lj1kb
+	 4QkE1TtRuxeGsziudb5ANXzEnZxsCG3JuLbPkGzzBzaaAYHk3TllgZUqZsL2Fx6hwT
+	 c/6txnWJiVpoNcyhZgG1LH4WIqrYyF9Dwu3QUMPmEv6NeyJqmcIy6uD1/v+DOFSsAO
+	 HdkbaQ7e0U9x8tun8oF3IWrwHhfEyxCZDVtI74qZodVVfn4F/9f+JIOuPB5WwY9mBT
+	 n2KlCXlJZa4zRsRcGYA6GsWbXBqE8uLJE2ANZzxSf6XQfYcio3WMiyO5hOqddQHXHR
+	 8YMgG5eryRXm8zbQqHITvdxetr/Sc7B+Kwiw+zmIUYpLDTsnJrkOOjhUWyhT74CK1D
+	 jzJZM4inMOprSshv5SIaNbSE=
 Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id E78F140E019F;
-	Sat, 25 Oct 2025 09:57:49 +0000 (UTC)
-Date: Sat, 25 Oct 2025 11:57:43 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 046E340E019B;
+	Sat, 25 Oct 2025 10:06:44 +0000 (UTC)
+Date: Sat, 25 Oct 2025 12:06:42 +0200
 From: Borislav Petkov <bp@alien8.de>
 To: Brendan Jackman <jackmanb@google.com>
 Cc: Andy Lutomirski <luto@kernel.org>,
@@ -92,26 +92,23 @@ Cc: Andy Lutomirski <luto@kernel.org>,
 	junaids@google.com, linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
 	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH 01/21] x86/mm/asi: Add
- CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-Message-ID: <20251025095743.GUaPyfF5YRbZxTYu9s@fat_crate.local>
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: Re: [PATCH 02/21] x86/mm/asi: add X86_FEATURE_ASI and asi=
+Message-ID: <20251025100642.GVaPyhMp4CEmsYW3xy@fat_crate.local>
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-1-2d861768041f@google.com>
- <20251024223746.GTaPv_uiyc0wd1fPjV@fat_crate.local>
- <DDQY0TEKY4MU.2MMSAEB8QQZ4S@google.com>
+ <20250924-b4-asi-page-alloc-v1-2-2d861768041f@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <DDQY0TEKY4MU.2MMSAEB8QQZ4S@google.com>
-X-Stat-Signature: deozi64qp3n7inqgsrzwy1q69w53haqw
-X-Rspamd-Queue-Id: 069FD40008
-X-Rspamd-Server: rspam06
+In-Reply-To: <20250924-b4-asi-page-alloc-v1-2-2d861768041f@google.com>
 X-Rspam-User: 
-X-HE-Tag: 1761386305-526109
-X-HE-Meta: U2FsdGVkX1+S55tPN8jFzQVcOgzQhW73pb0NYPL46h6rqcj8eOIWsWh4YODdgede5J8K2NcjH4myO7Z75Hs8hr6lu9qJxElM/7nnafJItzM8PztE9aMm1N1zDRs4vN4A5H0erWILnqsRqJf4d6ZEM6E2J8PGZwGbKN+d+R62otYXiY2DaqcH8LvnbgT7uf3lmTsZX4QLKX+WBg18zj8wJIyHAkNZ3ki0m20TNlAxp2jD8uFEveY9tuCnt9XdRtVVZKzc6+uPqXhx/AczdFWvrlAI555xCLNB0iVuTclKsJzTLIwdM1n7aI7m14+oBb8dDy12y+05f8v0HPP6+iJl9u44FOsPuDoHBdGLTu/ThvmS4FSgEl79R1Ass+dBumfAH8vR7N3LlaZpjMQJX4viTjE/JEVlc8lRFZbLS1yjCh48Q70QMextNuRMKLHtaj0VzhnGTvHkNB7F4FdboJzTxF4voUWbluROrHPt04pe05WFURq4/kK1aqPmDbla/YXQvK/h0DDXqZM/fG60gPJMgznjf2nFvOmsl9NKVqiOyX31xoyYTth46+QZsV9i0ew6tZCr4MqG/wLXEQTeNTRNnzstHHC5WBIgSQkrKQiZuWnHH0KeP32DG4xynU2veHS/jK0LQV/DXdbavKDGy3GaEXrk9TEWVNjTpbTD+SrIZ07SaKuDvWt+qYaQjldq+cvLoYPlpwn3J+SjI0v27BUjq9DgANq98YvN3ALbvT0fKsOZes/6e9tkoZdQ+CtzSdFAZ0B4L34i+t5FguvmOzI3fmwutEE/qGTWoohZxgeeltntLmK0IJpksCPT+jnzl8QOZUQ0OawtnqhX3gTeb9jAXJ4Q/w4C8MPj4k0zVv3hvUWolawuTP1f6ItNQNGuYVhAPRFztep1JAAbm4tXkUch8eXCOUVGS0hywrbIUBLMOkcQKTPOX/VzxxZsrrXhmVoFPiqogVa4e5PLeL90qC2
- QJ3jgW2T
- NeDv5o09aYnTR5txXoW3VdUkrY5NN2Qmhe5bSmkU/+IfIfwnm/gPtx1r9Te8MhnkvVfb6hePzT6WeRIiCqUG5lVnZBTAtqGT/uNGDFTRiXS8CS0PKzajx9O+ZAP4+rWySHVnqxECcFnf3K89RbDzmIkNtsxQIJN3xx8/4QOK+0Q9zorD2J8kydYpNXzWNLAQMM89n2gE4Vb/PvAOmbUZ0H4dFv/OSlgyoaiSwVksjQXcqsU6O6JOUPRwsoyxjN7e+AfF8oY5OsxQLoxKOEPcXHm7MAg==
+X-Rspamd-Queue-Id: B6A571C000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: fjs4nimxb7z8j7yp7kgeki14ns3wyddp
+X-HE-Tag: 1761386838-749175
+X-HE-Meta: U2FsdGVkX19Hy4lafwRfsWw+kKH7bmfu5MOpuhypG6NgrR2wUN7ybfrru7xRIb4MrsCvwy5DBG6AJVZyITfWZM+QwOF7qNSfxttIS3D7oo8pgEaOJPDhap/67jAAi2kjaBcREolRYq0kgvqUkatLQFHnlH8aSsPNLTMtd8WhqT7p2MlxoORA1RNXkP4Hu8G4CcyYXAda1T4Z0blyuZeyvCt1J+fU7t6YJG5iV2DsrIEr3HvSeAKm3xLxt5Tmuv1/UwfluhCeEZFI++BgVJxPQCok/KDMn45Zsgy5izf2l+gMRMrM3+yXyMSGG1l/wYgRrcO3X/GfzeOD3lVDbw74za04w+L+8+EBtozrMjy+tcy+V4FGIfQ73SkSKb9yFoVUB1dV+OSjBVnXsevL6b84H7TL1YuKl1i2EWCnB1sRUq3u5Y6cw5VzoJmGhq3UIDhYoJ2ONkLUg4Bnne/fIgK/j2X8a2mdcZu1X8I0YIE+AzKS+BibNA3dqXIfTFW54fEEgQXnI1pCDkivqaw00/BiqHoGdyIC1JrKzZLwQsxMu+KG3D0BSRm2i6obKFi/PHJINhPfddqV8gHUSgSVpdjhcTRWOQRuKKrf3J3C9fW3Fd8R0YMggpsdSpd9t7pK+JdSDBE/E1w4LRNswskBQQi2chFTjzF5r4dDXPuN7dtHdYKiJ4mQyLHpMLAAdb7npn/MyklM001vAny8x/dtbzypsGONvx6+wRQ9Um71W0BZsrX8HS1it+MGvqg8E7m132+3Y5mttSrimgQ3arAf4cGCR52NXtTrCXdWLYO+xME6frNtqbxyhJdAytUO4d84SMR9OiX6Ui+wOUMsu2fr63Eo+ZtpvEM28QTQ7rn1hQQcHvgKNJxTeVbzdKyjiryE2g9O7iXjwt2K1zxTzEatnv5sQpmwbTzVoC8nSMkFBvLtjUdOSiJfeN5yyqj3FGnmdYlf/kqu6Li8IZcUCuBZUv2
+ 41co9FxD
+ vT1voqtVRb2FIuKbDbMAEuQ3KvfPjB6TQcURp3lsgjrLYxNr4Aufku8130lgDITNxvYEUim3dhYgOQWVLQ3AGZ9TezzHa+CCVHpDQP5nZaJ+RYp/H1wnVJtsS5aVyOWq6M7dghbMysOkAbdseSQwSH6MTgdJhJ/h2rjZCcv5cyE41YyBV3Hl5pxcQ2uLHmPYgzjQokAGEpoC5dLKOWpCjFVUyPkJr4NQ9QryGHHapjZ69gAK/v+NGKawG137RTg/uNZriXmumjGRMm9N25sonCWTpxYKoupEUQJuaiP+adS/2NA9srsepkOJItQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,16 +117,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 11:32:30PM +0000, Brendan Jackman wrote:
-> Sure, CONFIG_ASI sounds great to me, if it sounds good to you :)
+On Wed, Sep 24, 2025 at 02:59:37PM +0000, Brendan Jackman wrote:
+> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
+> index 6c42061ca20e581b5192b66c6f25aba38d4f8ff8..9b8330fc1fe31721af39b08b58b729ced78ba803 100644
+> --- a/Documentation/admin-guide/kernel-parameters.txt
+> +++ b/Documentation/admin-guide/kernel-parameters.txt
+> @@ -5324,6 +5324,14 @@
+>  
+>  			Not specifying this option is equivalent to pti=auto.
+>  
+> +	asi=		[X86-64] Control Address Space Isolation (ASI), a
+> +			technology for mitigating CPU vulnerabilities.
 
-Meh, I'm just being practical. :)
+> 			ASI is
+> +			not yet ready to provide security guarantees but can be
+> +			enabled for evaluation.
 
-> And yeah if someone doesn't know what ASI is, they probably don't know
-> what ADDRESS_SPACE_ISOLATION is either to be honest. The Kconfig file
-> has a nice place to document it.
+Yeah, no need for such "temporary" statements in the help text since you're
+going to have to touch it again once it becomes a full-fledged feature.
 
-Right.
+> +			on   - unconditionally enable
+> +			off  - unconditionally disable
+
+"unconditionally" as opposed to some other setting which is conditional?
+
+> +
+>  	pty.legacy_count=
+>  			[KNL] Number of legacy pty's. Overwrites compiled-in
+>  			default number.
+> diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
+> index 53acdf22fe33efc6ccedbae52b262a904868459a..32a4c04c4be0f6f425c7cbcff4c58f1827a4b4c4 100644
+> --- a/arch/x86/include/asm/asi.h
+> +++ b/arch/x86/include/asm/asi.h
+> @@ -2,4 +2,14 @@
+>  #ifndef _ASM_X86_ASI_H
+>  #define _ASM_X86_ASI_H
+>  
+> +#include <asm/cpufeature.h>
+> +
+> +void asi_check_boottime_disable(void);
+> +
+> +/* Helper for generic code. Arch code just uses cpu_feature_enabled(). */
+> +static inline bool asi_enabled_static(void)
+
+"static" because? There will be a dynamic one too?
+
+> +{
+> +	return cpu_feature_enabled(X86_FEATURE_ASI);
+> +}
+> +
+>  #endif /* _ASM_X86_ASI_H */
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 4091a776e37aaed67ca93b0a0cd23cc25dbc33d4..3eee24a4cabf3b2131c34596236d8bc8eec05b3b 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -499,6 +499,7 @@
+>  #define X86_FEATURE_IBPB_EXIT_TO_USER	(21*32+14) /* Use IBPB on exit-to-userspace, see VMSCAPE bug */
+>  #define X86_FEATURE_ABMC		(21*32+15) /* Assignable Bandwidth Monitoring Counters */
+>  #define X86_FEATURE_MSR_IMM		(21*32+16) /* MSR immediate form instructions */
+> +#define X86_FEATURE_ASI			(21*32+17) /* Kernel Address Space Isolation */
+
+I think we really will need to show this in /proc/cpuinfo as it is a real, big
+feature which gets proper kernel glue vs some silly CPUID bit.
+
+IOW,
+
+#define X86_FEATURE_ASI			(21*32+17) /* "asi" Kernel Address Space Isolation */
+						      ^^^^
+
+Not sure, though, when we should make it an ABI - perhaps once the whole pile
+has landed...
+
+>  /*
+>   * BUG word(s)
+> diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+> index 5b9908f13dcfd092897f3778ee56ea4d45bdb868..5ecbff70964f61a903ac96cec3736a7cec1221fd 100644
+> --- a/arch/x86/mm/Makefile
+> +++ b/arch/x86/mm/Makefile
+> @@ -52,6 +52,7 @@ obj-$(CONFIG_ACPI_NUMA)		+= srat.o
+>  obj-$(CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS)	+= pkeys.o
+>  obj-$(CONFIG_RANDOMIZE_MEMORY)			+= kaslr.o
+>  obj-$(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)	+= pti.o
+> +obj-$(CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION)	+= asi.o
+>  
+>  obj-$(CONFIG_X86_MEM_ENCRYPT)	+= mem_encrypt.o
+>  obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> new file mode 100644
+> index 0000000000000000000000000000000000000000..8c907f3c84f43f66e412ecbfa99e67390d31a66f
+> --- /dev/null
+> +++ b/arch/x86/mm/asi.c
+> @@ -0,0 +1,28 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +#include <linux/asi.h>
+> +#include <linux/init.h>
+> +#include <linux/string.h>
+> +
+> +#include <asm/cmdline.h>
+> +#include <asm/cpufeature.h>
+> +
+> +void __init asi_check_boottime_disable(void)
+> +{
+> +	bool enabled = false;
+> +	char arg[4];
+> +	int ret;
+> +
+> +	ret = cmdline_find_option(boot_command_line, "asi", arg, sizeof(arg));
+> +	if (ret == 3 && !strncmp(arg, "off", 3)) {
+> +		enabled = false;
+> +		pr_info("ASI explicitly disabled by kernel cmdline.\n");
+> +	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
+> +		enabled = true;
+> +		pr_info("ASI enabled.\n");
+
+I'm not sure about those pr_info()s. When it is disabled, you can clear
+X86_FEATURE_ASI so you won't see it in /proc/cpuinfo and then it is disabled.
+And the same when it is enabled.
+
+> +	} else if (ret) {
+> +		pr_err("Unknown asi= flag '%s', try 'off' or 'on'\n", arg);
+> +	}
+> +
+> +	if (enabled)
+> +		setup_force_cpu_cap(X86_FEATURE_ASI);
+> +}
+
+Not an early_param() ?
 
 -- 
 Regards/Gruss,
