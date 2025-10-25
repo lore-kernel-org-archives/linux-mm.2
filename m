@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36F47CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 75C22CCF9E0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 08B518E0122; Fri, 24 Oct 2025 23:30:13 -0400 (EDT)
+	id 287B08E0128; Fri, 24 Oct 2025 23:30:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F080C8E0129; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
+	id 0B0788E0126; Fri, 24 Oct 2025 23:30:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C9EC58E0126; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
+	id D32CE8E0128; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0208E0122
-	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 74C5B89667
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 371518E0127
+	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 53EC0141026
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:11 +0000 (UTC)
-X-FDA: 84035208222.10.CBD526D
+X-FDA: 84035208222.22.C59C04C
 Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BAFBCC0006
+	by imf16.hostedemail.com (Postfix) with ESMTP id E01B8180002
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:07 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+Authentication-Results: imf16.hostedemail.com;
+	spf=pass (imf16.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761363009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=dU4BDnqLNuiridBc2n5GQUGyyFkWf3dsN71XRaRHkXI=;
-	b=0wddCtM2zc0Gweq/CX4V01wEaD8hlVnEqe4Od1eXnXkuzWgQFJgSJXK8Sk/xJCY425aejW
-	DIzRw/ByQwLCrgsqUVY69DakZ2EOqXPVmbzKPbNK5wsyzl9//tdkDtNB7/BzefNJuywlpS
-	y8FNBKYrGWrHuhqAg83djHRtQRzJYeg=
+	bh=zo5mN3q3zgS1gBMPoolmggvUVrhMkXo0xpHgwlBbT3I=;
+	b=47h/mjWRzAM5+hGDLXiaxPXAErE1AlhIp26QNrfEKPtEiKY+C5csihccGXIr6gd+qUeYbp
+	bVSaUeutwx5ndrTRroQXGbH3meNGUYO9vPPqYc1fJyFtuXQqplwQdYtCTRpRupTqE+SZ2q
+	lDodobVV8ObbIE3V3vCNPd27qbAMmqo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	spf=pass (imf16.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761363009; a=rsa-sha256;
 	cv=none;
-	b=0XyLYoFWb4RIxPtm0FXufPQPgYmxgHMdWS2h0ca/iy5T8sRVJiRAX6tvuSwiNiR2b/SuAZ
-	Vrj9Xx9qn016FEC5lxYmCcyo6F6c1CppdVsq+syAdSIo/nuvMyM4O3o67oy20dWgdx/Wa5
-	7a0aHQZVeFlQvC9sgdgd+bMtqQ9HN7U=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcS1S2mzKHMNW
+	b=8YZ4ZagRylVTmpY7Dp6wxI4msK/aDG2H28U6GMQN/4T/apHdIBXiYjI03uiFtQy6Ksw3LO
+	S0fWbDfvaS0dBg1mbvjl5+q8tMuoqe2Cv/Vz6gvO1+7Ljan69EFMdP1Giu/HcVInHJKw4r
+	DioswV2yeNffy+DimnA0QftXXE9hiFQ=
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcS0kFszKHMNK
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:12 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id E2B821A17D5
+	by mail.maildlp.com (Postfix) with ESMTP id C72421A0D8F
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:03 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S11;
+	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S9;
 	Sat, 25 Oct 2025 11:30:03 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: linux-ext4@vger.kernel.org
@@ -70,41 +70,41 @@ Cc: tytso@mit.edu,
 	chengzhihao1@huawei.com,
 	libaokun1@huawei.com,
 	libaokun@huaweicloud.com
-Subject: [PATCH 07/25] ext4: support large block size in ext4_calculate_overhead()
-Date: Sat, 25 Oct 2025 11:22:03 +0800
-Message-Id: <20251025032221.2905818-8-libaokun@huaweicloud.com>
+Subject: [PATCH 05/25] ext4: enable DIOREAD_NOLOCK by default for BS > PS as well
+Date: Sat, 25 Oct 2025 11:22:01 +0800
+Message-Id: <20251025032221.2905818-6-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S11
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw4DZw45Zw13CF1kKFy7trb_yoW8WF1xp3
-	Z3GryxGrWruFy8uanrWa9rJF15K3yxGFyUKFWa9ry3urW7ta4S9ry3KFy5tr4xXFWxuryS
-	v3W5KrWfuF15Gw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUQa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
-	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
-	z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
-	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
-	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
-	IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_
-	Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8c
-	xan2IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
-	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
-	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
-	x2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw2
-	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
-	67AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdsqAUUUUU=
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBWj7Ua9I6gAEsA
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 1w1ztfswrzr973x7nur3k3tggdfhu7ws
+X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S9
+X-Coremail-Antispam: 1UD129KBjvdXoW7XF18GFWrWw1UZw4DGw4rKrg_yoWfAwbEva
+	yfJrWUGrs5tr1S93WruayUJFsYkw48ur18Gws5tr13XFn0qrWxX34qqr98uF15uF4FqrWf
+	Ars5XF13GFy2gjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbm8FF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUAVCq3wA2048vs2
+	IY020Ec7CjxVAFwI0_Xr0E3s1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28E
+	F7xvwVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr
+	1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0D
+	M2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjx
+	v20xvE14v26r1Y6r17McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8
+	JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2
+	ka0xkIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48J
+	MxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwV
+	AFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv2
+	0xvE14v26r1I6r4UMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1lIxAIcVCF04k26c
+	xKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAF
+	wI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdsqAUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAMBWj7UbRJGwAAss
+X-Stat-Signature: ntj5yhn84nh7ari5z6umag1ergq7wu1o
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BAFBCC0006
-X-HE-Tag: 1761363007-152385
-X-HE-Meta: U2FsdGVkX19WWEj11QC8d+EjP/WeO6mIi6vPnSShlHXMrcTXtIxvJ6A7MR5D6H1SQJUyJ2Ww+k29BjHTUzcC6iHX9ZZtX5ZjnUlHLNOOjgm3G8iWBPDeXOhr+bY+BlTaUO5IY0hkCYdlKnX44vQJCtYupv7WQ1dOVNWHrBh5pVsVrOAim47s07uiDXijpRWusuJXriM4k5i4DfHeLXNy91gL1ntA1tZU3aDaKgNoyfr/kjyN+Iv2kPtHTiDZuYzC7L7BGsAax/u30LEdORxgHo22550+eagKj+i9Vj/F3nY8UIZrUy2D8H70r6hP6AGMu5iVPFDZWxZdKZTGZzjkfByELnineYLxosz+uFGcEipQoM0UBBScroymO30fd7QntnB1hjtZKJF+JWKXQeme1bMAiBO5hogTZZZjpN2KifnlmdKv6PQsTz5ZvbTT6wQDTWlyXkI+PiAl44f4W6uEu3IKx8MyJjQLwsGBr2qr73rrx45aL7Isami6jerQgf7kj5KNvACSdfujNVv/UOugNFEx4DvKb8+E2dOsi6a1zfix+EJ7K8Ry+POOC5pf8HoyW2LGL+kK3ObRLfV41q6h+8cZgM1/AkMK6faqRAQJnewd4iMS8zM2QreArUutp0Jmenq/21beRJSZaVvvpRKg754CZwSq665U/YiO4MPX356Q+LH7cgNcTNycmCsFQqtC/Mey22T10SKMYF8lHYn5avFmd1ik2KFdZaclGQlAY3wIjMS0AdCqDmQOuCMl2ZDWVVP0UqC1vVSJesC3tbObkvdmIyy2lMr6nvGogaXeubbWOfsDzLZvBvOiaKXkGM/ex3ChDb4hQbx3iDi0JvMaGLSVNh75BQAEQLVxsOVY4A9AiOKeBxsrP/x4wMJUszEKr7PBUIfNy2CFGlcsMWUWc1GUAV2sJfqGYqmWcf2xMZxOZGDoMgAYMmQlI3JyyMHOxLlm+ywIpXUANJtXKw6
- FyC4h07h
- VlQp3Sg/Zza1ts0ZzboGIFwUBwlGSB7aIutpSPSMclF5IVFd/vPtujiGCA8alxD2la9KxJzMgcWF10c691hBvqMxk3QybAerjrRtghSb5Tx9SDl/zYr44fAeGDXLwKpX2MQNmuGs3Av0Cqx4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: E01B8180002
+X-HE-Tag: 1761363007-381306
+X-HE-Meta: U2FsdGVkX1+L64nYPz5AI6F+R55EJdHkbbw5ApN0TM+KeKcYN8zNmF66Cwnu1cYMV1U3ujH2zJGf9yEmZ8ctmHn/PcUOHIXJZTUaZP7jpbXfOLaJXfvnaFexWb3AwjpjUOcc07G4G3XthmQd7Lvtr1LQBsxvvEowfsd5ifH8PTG6fP7+GCqnff1lRDpYy1bj+pfDKYPTL2AE3mkrbxb/2aikhK9D1Frabvy61Rw/CUUXAiZFhp6D/lJyTlLDAzbJQVhtKUk0nbWa/nPnIoCUbSjDV8uLL1bC12X2GdMtwCAaoeL9AWNns6Zn73Vh2flN7rV9IWwGjKHDW/ROmYEvDfc6EhqMZOBy5xDOQChFsyjvDtKMhA/DHrO/1eNSaSwYFZGuvJL7sTOlRygCRIeliFiKS1hl+m7N2uoMdR9Ve5MAz3YDMDvgFcc4qUtwmDuoVuslldJEj5VMPfxAIYVHwcYlxxDPfhhbRUoGy5KNRVLmAdaQ32G2AzD6Rf0/SnlYTFfOEIM5rtP6CmKuThqvKVB/15wL9fql/zl7rrI4YFXM0yDzPztbdscTGjOss9oGCFMQg3Yt+BofI/YFV/J0ntNJrKMeE1bVQ7vO5fIm/p4wfg3DxJwdgF1cwP+3puEa01O9fWPvkAcZgJITdezEFQF+seVsA7b2KQ0xZcKrejuOC81PL3dW0qD1V0SOZmAFDFfs8z5etcoSp+S6oyJvJso5gxLEurZYICRydjlE+Yh0E1PtzUYF9V5KDK+heX5SSTsNrOx8Zs3Or/lBPDPviQkGnnYlnbpBRvDXShbyDQu029292cOKYyoPEEdiSsqGtCgDDeHHoK0ZJSoeclbRY+zE9hpb1h4Z8tXgwobeZiZ1ivAQla4dT0ZzWIfj3YZCMOVhX9Wxyw/eZd44oel1zTAEBgGFPvYew41W5p1foBaxTDN9z7QQNLNvvhZltqAD9ZxjfyzJXpU5CQzuSuX
+ ztBJk9V1
+ VP5ysUH47U5CoNyBN9v13dNGFKIKR5hFHM+0q/WiYH4kZhmhSXLjAlzNvbyZAa2XnSB+glCqhqdSRhX6Ajyhut7CaUOcnLTXoYXC5BDaxl4AS8SXKYGPRE/cniQBSBN4rJK2E2vigBKs9V8ap3XAneJWgtFlh3huXhfwOmtpVX5KetJ8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,51 +115,30 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Baokun Li <libaokun1@huawei.com>
 
-ext4_calculate_overhead() used a single page for its bitmap buffer, which
-worked fine when PAGE_SIZE >= block size. However, with block size greater
-than page size (BS > PS) support, the bitmap can exceed a single page.
-
-To address this, we now use __get_free_pages() to allocate multiple pages,
-sized to the block size, to properly support BS > PS.
+The dioread_nolock related processes already support large folio, so
+dioread_nolock is enabled by default regardless of whether the blocksize
+is less than, equal to, or greater than PAGE_SIZE.
 
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 ---
- fs/ext4/super.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/ext4/super.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index d353e25a5b92..7338c708ea1d 100644
+index 894529f9b0cc..aa5aee4d1b63 100644
 --- a/fs/ext4/super.c
 +++ b/fs/ext4/super.c
-@@ -4182,7 +4182,8 @@ int ext4_calculate_overhead(struct super_block *sb)
- 	unsigned int j_blocks, j_inum = le32_to_cpu(es->s_journal_inum);
- 	ext4_group_t i, ngroups = ext4_get_groups_count(sb);
- 	ext4_fsblk_t overhead = 0;
--	char *buf = (char *) get_zeroed_page(GFP_NOFS);
-+	gfp_t gfp = GFP_NOFS | __GFP_ZERO;
-+	char *buf = (char *)__get_free_pages(gfp, sbi->s_min_folio_order);
+@@ -4383,8 +4383,7 @@ static void ext4_set_def_opts(struct super_block *sb,
+ 	    ((def_mount_opts & EXT4_DEFM_NODELALLOC) == 0))
+ 		set_opt(sb, DELALLOC);
  
- 	if (!buf)
- 		return -ENOMEM;
-@@ -4207,7 +4208,7 @@ int ext4_calculate_overhead(struct super_block *sb)
- 		blks = count_overhead(sb, i, buf);
- 		overhead += blks;
- 		if (blks)
--			memset(buf, 0, PAGE_SIZE);
-+			memset(buf, 0, sb->s_blocksize);
- 		cond_resched();
- 	}
- 
-@@ -4230,7 +4231,7 @@ int ext4_calculate_overhead(struct super_block *sb)
- 	}
- 	sbi->s_overhead = overhead;
- 	smp_wmb();
--	free_page((unsigned long) buf);
-+	free_pages((unsigned long)buf, sbi->s_min_folio_order);
- 	return 0;
+-	if (sb->s_blocksize <= PAGE_SIZE)
+-		set_opt(sb, DIOREAD_NOLOCK);
++	set_opt(sb, DIOREAD_NOLOCK);
  }
  
+ static int ext4_handle_clustersize(struct super_block *sb)
 -- 
 2.46.1
 
