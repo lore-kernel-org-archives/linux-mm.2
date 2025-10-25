@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 213EBCCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBDC0CCF9E0
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E24738E0125; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
+	id 093BF8E0112; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DCF158E0112; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
+	id E6B5E8E0128; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CBDB38E0125; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
+	id D33E88E0127; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B960A8E0122
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B7A008E0112
 	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 472E414100D
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 51A91161080
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:11 +0000 (UTC)
-X-FDA: 84035208222.25.06F6D91
+X-FDA: 84035208222.17.B87C4F6
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 04F2540008
+	by imf19.hostedemail.com (Postfix) with ESMTP id F2D191A000A
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:07 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	spf=pass (imf07.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+Authentication-Results: imf19.hostedemail.com;
+	spf=pass (imf19.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761363009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=iBcOVcLweE0cI680hRQbpDdPdQ9nEiTGqgympd/Zp18=;
-	b=p5b66Lhv6J44me3kj89cLTgrlgQoqH4y6ZR2DQkI4kTpy5Jy2EXr0Ad+AK9C1qRljgMYdH
-	1NBKc6SUqC9Ctrnkc7rqXfEi1yiq4Xki922ZICx/gWcDT7bdpbkGV1W6imYkw4c9tXIppK
-	qej6n+4qPjoNZ+AzfFui3jzesP9qHcA=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c0ilK0plMrCpdmg66HDjLBDWh0ln1mw6fpv+A79gE34=;
+	b=KPMZPkHmZ6onHsvwTIanll9jaud9Oy1rIvL3lyPMtwtAxeT5CYqg2dGK7gi1oaMJmy+qvM
+	jkGrrf1cuINYw/vB49jezMHnMGbCmd/Gq4PN1bQLGiQfc5Mvgk0etZAGViAAeEZvplVbT4
+	51M90UUmY2tyleG/Qa65JBpjihuZk9o=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
+	imf19.hostedemail.com;
 	dkim=none;
-	spf=pass (imf07.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
-	dmarc=none
+	dmarc=none;
+	spf=pass (imf19.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761363009; a=rsa-sha256;
 	cv=none;
-	b=PPCXsZ7F/edFvWRU9OG6XIgNWwyrtAaYklcrr8PmxC2mHj0Swk6pb31YsDlJ4Fel98Pz+I
-	FRlVlqlLF1rOk+wkD5tKAlFSOhfMBoydwzwTERkyGzFPLnTFLdYsTzLa+efcHT9fEOtYoK
-	uWZXVfUCjkzEQY07SSO3mPVJtTQy22I=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcJ5Q5szYQtlQ
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:04 +0800 (CST)
+	b=4Hq5eVhxBKj5MfdYvbmeq2r7jV58zjbzpHy6fuPtfRBetuPnzKWOFakC2V386GbJYR8SbV
+	/vUlhjv7Mf1MRI8lPEbZ+d02rU6bi9Xa62cckb0vQfCjLVZ/gIiG87A2jq5e0X6iqHPZY2
+	F1yq4K69jna+7lCn9BZoD7pAPyC7YGE=
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcK2jFdzYQtml
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:05 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 67E971A13A2
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:03 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTP id 077131A101B
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:04 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S4;
+	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S12;
 	Sat, 25 Oct 2025 11:30:03 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: linux-ext4@vger.kernel.org
@@ -70,39 +70,41 @@ Cc: tytso@mit.edu,
 	chengzhihao1@huawei.com,
 	libaokun1@huawei.com,
 	libaokun@huaweicloud.com
-Subject: [PATCH 00/25] ext4: enable block size larger than page size
-Date: Sat, 25 Oct 2025 11:21:56 +0800
-Message-Id: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+Subject: [PATCH 08/25] ext4: support large block size in ext4_readdir()
+Date: Sat, 25 Oct 2025 11:22:04 +0800
+Message-Id: <20251025032221.2905818-9-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S4
-X-Coremail-Antispam: 1UD129KBjvJXoW3Xw47Jr43Gw1xuryfZw1xGrg_yoWxJr4Dpa
-	yfJF13Ar45G3yYk3ZxWw1ktr48Wa18Gr1UXry7t348ur1Iyr18trZFyFy8ZFWjkry7JFyj
-	qF1fJr4xG3Wjk3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB014x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoPEfDUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBWj7Ua9I5wAAsJ
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 04F2540008
-X-Stat-Signature: 4f3ji9dpuguhrtwf4fz84c37ojmqq1f7
+X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S12
+X-Coremail-Antispam: 1UD129KBjvJXoW7KF15KF1fWw1rZry8CrWktFb_yoW8Gr17pF
+	Zaga18Kry09r40939rtFy7ZryY9a97GFWUWrW5A345W3s3X34Skr9xtF1jvF1UWw4xAa4r
+	ZF12kFy3GF1UJrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
+	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
+	z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F
+	4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq
+	3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7
+	IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_
+	Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8c
+	xan2IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4
+	vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IY
+	x2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw2
+	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x02
+	67AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdsqAUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBWj7Ua9I6gAGsC
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: F2D191A000A
+X-Stat-Signature: y6omatmn43ay1y88nz5zqk1gp66ct1so
 X-Rspam-User: 
-X-HE-Tag: 1761363007-872119
-X-HE-Meta: U2FsdGVkX1+HaP7SA9PquF9WBchaX/buMxo+DwXjyw2MiuEj+aeLlABGjGAsiNK3zD/4He3MXj8jggqPqE/3px2OGufkgjOKYUDWswaWKTxDC9bYxgoah+LnVm7xiJmr2eublOjfomy2xm8H5b58tpAHOi9G20fK5jS6Vy8DI+Mktnq3KkFW+cERpZbOQNvIf5M82WCOr3JZvGzMiSI6iYoqwAtjSx1cjUHGNEY84x8mRm44GhsGb9CkV+vJh5dO06InJ/1GeRTwSh3S3p9Da7YIl7PNpZYcJ7Z66ISEvp0HltQSFZFYoR226r8kuyvWSvnst1Cn+usqTVK8lDdcDza7gkqAudGtsJ/xLIsGhMiFvANLL2HivZfmz5uoHPdqX1RRBmmOXVZq5ZlI3up1fFCiURyCmzxtpTfiWd8xc1lZomLQZ+f7yTr81WLLAS/E6Z1tCHJpUzyafd32KQo31HAMriWVZ5uxa2p0FzwYmiUli7jXxRfgD7A1UoIVeXWYjM7OcwHcJQoWrIe+gK860D2thmJza4TeXaWWqfB/lP76oMciPIhxAz29LJoy0qM6Ynl637CASBNdXRejI/O/nZPgwA+AIzpwBsx/v6VQsdMvm3/YnWjaC0uH1M/n54BRWJK0BgnapuxFs4NMQ1cz9r1UmqdmAkkhYsHpiT8anDowDPTfyY0WLllnol4jhiwIQS/OflbqxIiYNd6TnQ7lxYE8zJX0t06gz/1NA6WLfup6OtNydqX40UtVsdjpTlYrNEuvFEy0MhbRokybULvguWSaTZ5U4lCpXw6fHpjnDQgjBMNnRM150b08ktCNh7CIig3j3ofB80Kwzeo4Gi5186mifEuLOmtbXsIDRDlPq05ueNrzYgWLn5yA4Jp3kTfsQWZdl0ZJ8I6MeJLxyOnkVrrOjDTvMt5WsVkiM6r+rdQIyGmMpGnXDLDYABqmKFsUgCLQkJn4HE4aln9uQU2
- TibeuIJy
- 23yKzVrtx3jCUqM/opVE0+0HbfomB3hHtQj7nbKxzFLJcNRgmdIrOTa/dPmSAJNDJUck5izZqNkK0UXJkiFT0cb5/Y/EXf85uTGJeN6QIk7nREOg=
+X-HE-Tag: 1761363007-419502
+X-HE-Meta: U2FsdGVkX19Nq6G0wFi+ZH65pChfhr8hB0/jsPT6VpyctSCuSEmV5dY6R5m2g2wC6DKxRX+sDE99AyzEvTjs+d7/7TyM3swwFijPs4s0vtzMK5Nr0t4BwU0AAwX3qYp04MmCABqqdhUw8Mf6WkPtghXpRcTRnrfpXwX5hpumZI1oGlGvh7ZPYTP5eZw6BP5Qe4kZARKW32fvSCt9alQIM9cF5nSAOcs3hZS70QKYA9XZVWVdVNo/goYpdmLQBACHk/mxjp6gW6o3FYWv4XXWMo732mx6jc1HDBOgr/TnoYwkwzt2huiWWG6/kawJW6Am3WEy2fxX3U4pSrLs5jQ2ejRdeMkcHF06Ebwa3clbuxOZW9/8q022SvH+9f8lIZGBrdYwbObZJt/utUTbYYzUgOEwTvG21H4aHgJygW1FlNWobP9Fo2wL+R8uvxnLXiR3SqKheM4rrUaNZNMBTe9pd5OyKRCno8XFrVchJorxFu5Md87htOzrkSAj2bMMIqQCQwmDjkV28BeE1x39nRHBmjQtHwY6ubxql9zYcl9uRhLsPQRDbVlmxDhg/Rxg7zuS7jYzBIxoeTyg6beSb2P1K9eUSYtMjR/wOUsetijomCB1dVIh6bfx6nu+b6QxsOUmC35pIXfjwERMpd9KnAJZEF5S9eJjB2QLDNoNurmTSHXz4BvkjsCIEUS4pmuRXn0SvzOyUChIeQCcXhfGe8rQuJkFUVh4BykPmSX3d8dtmru9+R9rA+tAZ8IeciuyoSU87tuswywT43RzdIG5RrC+HdmFnU9Ru1ZGz9rR4aKaJlTb7Gana3ZWVRpe7zjdFIV2UqE8waH+59bcQKHGudjP/VY8QSET8WqzTd/BYskGEs6DdGbhQk1BmCdAgaZuN91AWjhaDVQysCCUD4lxmQlzcQ2jXESwfSaaLU0PLit0KLtoXf5ZDg5c3zdNKL8OPYt7HS7yLWGXGMy7pphVfgE
+ vb8XmFNu
+ 4e18RsDVDlYp39XN/SvR4dprYTPN/JnQ/IenMfWkUJsh1GSHPyUSpqCcAhrvJyel58vsvMnyRC++CTXzwcT2gWfA4CxahtZCuGUI6iCisEjS1LhLXeEaDr3S98zO1UWg0NE8ReZTTCPZcRZ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,137 +115,42 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Baokun Li <libaokun1@huawei.com>
 
-This series enables block size > page size (Large Block Size) in EXT4.
+In ext4_readdir(), page_cache_sync_readahead() is used to readahead mapped
+physical blocks. With LBS support, this can lead to a negative right shift.
 
-Since large folios are already supported for regular files, the required
-changes are not substantial, but they are scattered across the code.
-The changes primarily focus on cleaning up potential division-by-zero
-errors, resolving negative left/right shifts, and correctly handling
-mutually exclusive mount options.
+To fix this, the page index is now calculated by first converting the
+physical block number (pblk) to a file position (pos) before converting
+it to a page index. Also, the correct number of pages to readahead is now
+passed.
 
-One somewhat troublesome issue is that allocating page units greater than
-order-1 with __GFP_NOFAIL in __alloc_pages_slowpath() can trigger an
-unexpected WARN_ON. With LBS support, EXT4 and jbd2 may use __GFP_NOFAIL
-to allocate large folios when reading metadata.
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+---
+ fs/ext4/dir.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-To avoid this warning, when jbd2_alloc() and grow_dev_folio() attempt to
-allocate with order greater than 1, the __GFP_NOFAIL flag is not passed
-down; instead, the functions retry internally to satisfy the allocation.
-
-Patch series based on 6.18-rc2. `kvm-xfstests -c ext4/all -g auto` has
-been executed with no new failures. `kvm-xfstests -c ext4/64k -g auto`
-has been executed and no Oops was observed.
-
-Here are some performance test data for your reference:
-
-Testing EXT4 filesystems with different block sizes, measuring
-single-threaded dd bandwidth for BIO/DIO with varying bs values.
-
-Before(PAGE_SIZE=4096):
-
-      BIO     | bs=4k    | bs=8k    | bs=16k   | bs=32k   | bs=64k
---------------|----------|----------|----------|----------|------------
- 4k           | 1.5 GB/s | 2.1 GB/s | 2.8 GB/s | 3.4 GB/s | 3.8 GB/s
- 8k (bigalloc)| 1.4 GB/s | 2.0 GB/s | 2.6 GB/s | 3.1 GB/s | 3.4 GB/s
- 16k(bigalloc)| 1.5 GB/s | 2.0 GB/s | 2.6 GB/s | 3.2 GB/s | 3.6 GB/s
- 32k(bigalloc)| 1.5 GB/s | 2.1 GB/s | 2.7 GB/s | 3.3 GB/s | 3.7 GB/s
- 64k(bigalloc)| 1.5 GB/s | 2.1 GB/s | 2.8 GB/s | 3.4 GB/s | 3.8 GB/s
-              
-      DIO     | bs=4k    | bs=8k    | bs=16k   | bs=32k   | bs=64k
---------------|----------|----------|----------|----------|------------
- 4k           | 194 MB/s | 366 MB/s | 626 MB/s | 1.0 GB/s | 1.4 GB/s
- 8k (bigalloc)| 188 MB/s | 359 MB/s | 612 MB/s | 996 MB/s | 1.4 GB/s
- 16k(bigalloc)| 208 MB/s | 378 MB/s | 642 MB/s | 1.0 GB/s | 1.4 GB/s
- 32k(bigalloc)| 184 MB/s | 368 MB/s | 637 MB/s | 995 MB/s | 1.4 GB/s
- 64k(bigalloc)| 208 MB/s | 389 MB/s | 634 MB/s | 1.0 GB/s | 1.4 GB/s
-
-Patched(PAGE_SIZE=4096):
-
-   BIO   | bs=4k    | bs=8k    | bs=16k   | bs=32k   | bs=64k
----------|----------|----------|----------|----------|------------
- 4k      | 1.5 GB/s | 2.1 GB/s | 2.8 GB/s | 3.4 GB/s | 3.8 GB/s
- 8k (LBS)| 1.7 GB/s | 2.3 GB/s | 3.2 GB/s | 4.2 GB/s | 4.7 GB/s
- 16k(LBS)| 2.0 GB/s | 2.7 GB/s | 3.6 GB/s | 4.7 GB/s | 5.4 GB/s
- 32k(LBS)| 2.2 GB/s | 3.1 GB/s | 3.9 GB/s | 4.9 GB/s | 5.7 GB/s
- 64k(LBS)| 2.4 GB/s | 3.3 GB/s | 4.2 GB/s | 5.1 GB/s | 6.0 GB/s
-
-   DIO   | bs=4k    | bs=8k    | bs=16k   | bs=32k   | bs=64k
----------|----------|----------|----------|----------|------------
- 4k      | 204 MB/s | 355 MB/s | 627 MB/s | 1.0 GB/s | 1.4 GB/s
- 8k (LBS)| 210 MB/s | 356 MB/s | 602 MB/s | 997 MB/s | 1.4 GB/s
- 16k(LBS)| 191 MB/s | 361 MB/s | 589 MB/s | 981 MB/s | 1.4 GB/s
- 32k(LBS)| 181 MB/s | 330 MB/s | 581 MB/s | 951 MB/s | 1.3 GB/s
- 64k(LBS)| 148 MB/s | 272 MB/s | 499 MB/s | 840 MB/s | 1.3 GB/s
-
-
-The results show:
-
- * The code changes have almost no impact on the original 4k write
-   performance of ext4.
- * Compared with bigalloc, LBS improves BIO write performance by about 50%
-   on average.
- * Compared with bigalloc, LBS shows degradation in DIO write performance,
-   which increases as the filesystem block size grows and the test bs
-   decreases, with a maximum degradation of about 30%.
-
-The DIO regression is primarily due to the increased time spent in
-crc32c_arch() within ext4_block_bitmap_csum_set() during block allocation,
-as the block size grows larger. This indicates that larger filesystem block
-sizes are not always better; please choose an appropriate block size based
-on your I/O workload characteristics.
-
-We are also planning further optimizations for block allocation under LBS
-in the future.
-
-Comments and questions are, as always, welcome.
-
-Thanks,
-Baokun
-
-
-Baokun Li (21):
-  ext4: remove page offset calculation in ext4_block_truncate_page()
-  ext4: remove PAGE_SIZE checks for rec_len conversion
-  ext4: make ext4_punch_hole() support large block size
-  ext4: enable DIOREAD_NOLOCK by default for BS > PS as well
-  ext4: introduce s_min_folio_order for future BS > PS support
-  ext4: support large block size in ext4_calculate_overhead()
-  ext4: support large block size in ext4_readdir()
-  ext4: add EXT4_LBLK_TO_B macro for logical block to bytes conversion
-  ext4: add EXT4_LBLK_TO_P and EXT4_P_TO_LBLK for block/page conversion
-  ext4: support large block size in ext4_mb_load_buddy_gfp()
-  ext4: support large block size in ext4_mb_get_buddy_page_lock()
-  ext4: support large block size in ext4_mb_init_cache()
-  ext4: prepare buddy cache inode for BS > PS with large folios
-  ext4: support large block size in ext4_mpage_readpages()
-  ext4: support large block size in ext4_block_write_begin()
-  ext4: support large block size in mpage_map_and_submit_buffers()
-  ext4: support large block size in mpage_prepare_extent_to_map()
-  fs/buffer: prevent WARN_ON in __alloc_pages_slowpath() when BS > PS
-  jbd2: prevent WARN_ON in __alloc_pages_slowpath() when BS > PS
-  ext4: add checks for large folio incompatibilities when BS > PS
-  ext4: enable block size larger than page size
-
-Zhihao Cheng (4):
-  ext4: remove page offset calculation in ext4_block_zero_page_range()
-  ext4: rename 'page' references to 'folio' in multi-block allocator
-  ext4: support large block size in __ext4_block_zero_page_range()
-  ext4: make online defragmentation support large block size
-
- fs/buffer.c           |  33 +++++++++-
- fs/ext4/dir.c         |   8 +--
- fs/ext4/ext4.h        |  27 ++++-----
- fs/ext4/extents.c     |   2 +-
- fs/ext4/inode.c       |  69 ++++++++++-----------
- fs/ext4/mballoc.c     | 137 ++++++++++++++++++++++--------------------
- fs/ext4/move_extent.c |  20 +++---
- fs/ext4/namei.c       |   8 +--
- fs/ext4/readpage.c    |   7 +--
- fs/ext4/super.c       |  52 ++++++++++++----
- fs/ext4/verity.c      |   2 +-
- fs/jbd2/journal.c     |  28 ++++++++-
- 12 files changed, 234 insertions(+), 159 deletions(-)
-
+diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
+index d4164c507a90..256fe2c1d4c1 100644
+--- a/fs/ext4/dir.c
++++ b/fs/ext4/dir.c
+@@ -192,13 +192,13 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
+ 			continue;
+ 		}
+ 		if (err > 0) {
+-			pgoff_t index = map.m_pblk >>
+-					(PAGE_SHIFT - inode->i_blkbits);
++			pgoff_t index = map.m_pblk << inode->i_blkbits >>
++					PAGE_SHIFT;
+ 			if (!ra_has_index(&file->f_ra, index))
+ 				page_cache_sync_readahead(
+ 					sb->s_bdev->bd_mapping,
+-					&file->f_ra, file,
+-					index, 1);
++					&file->f_ra, file, index,
++					1 << EXT4_SB(sb)->s_min_folio_order);
+ 			file->f_ra.prev_pos = (loff_t)index << PAGE_SHIFT;
+ 			bh = ext4_bread(NULL, inode, map.m_lblk, 0);
+ 			if (IS_ERR(bh)) {
 -- 
 2.46.1
 
