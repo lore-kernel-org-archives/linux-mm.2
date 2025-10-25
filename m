@@ -4,95 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92CCCCCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 10:25:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6825FCCD1BF
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 10:50:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B4DBB8E0144; Sat, 25 Oct 2025 06:25:08 -0400 (EDT)
+	id 880728E0145; Sat, 25 Oct 2025 06:50:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFE488E0135; Sat, 25 Oct 2025 06:25:08 -0400 (EDT)
+	id 8583B8E0135; Sat, 25 Oct 2025 06:50:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A3B118E0144; Sat, 25 Oct 2025 06:25:08 -0400 (EDT)
+	id 76DAB8E0145; Sat, 25 Oct 2025 06:50:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9057D8E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 06:25:08 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E47A113C6A5
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:25:07 +0000 (UTC)
-X-FDA: 84036253854.19.626B389
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 3B0A740009
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:25:06 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of 3gaX8aAkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3gaX8aAkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D5DC8E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 06:50:56 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id EBAF11610FE
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:50:55 +0000 (UTC)
+X-FDA: 84036318870.24.593C76B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A83FC100006
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:50:53 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P+A+0tVq;
+	spf=pass (imf05.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761387906;
+	s=arc-20220608; t=1761389454;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=nl8a1J72AG7zM7SUSNXLORvo2oDk1kEO1fKLciPWKe4=;
-	b=xz/9YuPDDYcCR4Luu9wA+xF+kJSYwcmB6ENgkTEhpab3xwku8kuo0IPIiJhxzbc3FI3QyQ
-	ZYceZCfnKopAfY63uknmW+Erc5eYJ/d5mEfHWi3NyW4Slji1Xg63fbnNMpmCDBYdLAmG5S
-	PQKeWYHPHkt1wCzB7VRG/7ikYbNa2Sc=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=POkOiJXxYyVdXoybLfPGciVsCYLxYpIyRuwaeTZ4nlg=;
+	b=bUfoCvMA+sZSHmyC9Y/83iuhhAtD2B9rCxkLjzB9X+0/mdQVxCIUIiNV4JZwiVDQld2+ha
+	woSRKeGnVZoOzTh3cqFybxyFuRNr79YCsnoWf3PJT8Y3eAp+IPhCjA5HtWJKYu8DeGl29i
+	6QWpDHGdM/UHWi4yMRCIeXQUVQxV1+0=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of 3gaX8aAkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3gaX8aAkbAA46CDyozzs5o33wr.u22uzs86s5q217s17.q20@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761387906; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=P+A+0tVq;
+	spf=pass (imf05.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761389454; a=rsa-sha256;
 	cv=none;
-	b=7s8hu4GaXHM304cqrmv3Fl+oYfCare31bPaGZGbevPZ8O0kCFk35G0jpsglzB576jqkt7y
-	iPLKA5tYLEF2DI7D0eINYNnP71bbtWj+cNZvEENW+68Htb4x0zikKPzklQ1poQP/JlhnvS
-	hjG1xEPuP3KYhUmkJXGk77qIqeUPWLw=
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-430db5635d6so36978585ab.3
-        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:25:05 -0700 (PDT)
+	b=Gk/fZJV5za0H/g4GQ/gJzEG8eGKkH/RbcZGus94DyRdLBGrQiDU3dSMsooh84aST8SZ5wL
+	Yar3pcJMGcYK+xoLMcej1g+8Usr3ozv7Di9OaR4odjUp+XeDbI5EbmmYMPMi3NuvjvMF/0
+	MLZeI+MasWm4VBnFcf3CjfV38i4YNL8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761389453;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=POkOiJXxYyVdXoybLfPGciVsCYLxYpIyRuwaeTZ4nlg=;
+	b=P+A+0tVqsQ3NGrIbn3+ve7AX1Amncb4Tfn9DHKGWIoEzDpJmN8sVEcG8WsSe876ykcHokt
+	eQGkvCkZm698GQMrEeAubhaOQkPHM8ji5qSSvGYzI0zs95B3hevQ552gBcnAiSsrvYWUW2
+	iMe21Ki20FLUoKMDYbcnvuOZTU8lzo4=
+Received: from mail-vs1-f72.google.com (mail-vs1-f72.google.com
+ [209.85.217.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-691-MOMceMpnPxex_7c0Gl4a5g-1; Sat, 25 Oct 2025 06:50:50 -0400
+X-MC-Unique: MOMceMpnPxex_7c0Gl4a5g-1
+X-Mimecast-MFC-AGG-ID: MOMceMpnPxex_7c0Gl4a5g_1761389450
+Received: by mail-vs1-f72.google.com with SMTP id ada2fe7eead31-5d40dd41aa1so7174165137.0
+        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:50:50 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761387905; x=1761992705;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nl8a1J72AG7zM7SUSNXLORvo2oDk1kEO1fKLciPWKe4=;
-        b=NWvlMgvaiC2v6Yzb8Miqm8pRd6+K1N4ynC4Ors3yKS2XODbv920dYHGtStXUB8DnOW
-         oe5yRzp9U4/XmHK4BlEAcB3zElDAy5RkoUNlcNRF3lNp4wbLEmtDENOy1S32TWiaxQaL
-         LXhnzFzvCCp49n8rKC6UGKzA336LI6QVjGX4M5DgMiUygqh2kbMBRx2OzOKNoVkxQ7bc
-         CcpehruDqQisOAqIoYsBTzlf7gRmvDFJCTn/UfiiRUL9Jf+LgZPgGUCEA0eaMQJSmWyj
-         x3QcoqC1jcFbURR9dmoOjE47kXzikrkE6I80uyX5vV5/w06YFE3FlhWVdlUAIrLlRzsu
-         JZkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV8wX3ReE+gLvJ6kn245Z1aGdLENrgtrIBicrcdHzqEHW3RKM3qGdfNn0e0NDz1DtkCALIHhKr5xg==@kvack.org
-X-Gm-Message-State: AOJu0YwlT+4HuJ+EvB7Ee6hKCUG2uTkTQMPh6sTq9Ao7nvD0aaZRCxmo
-	S2f6jPYtdrox65FfDz3rG6Y/xj+x+QYe1TOVzBmcSnKNTQLLHDxIwvc7y+kyZ8sxBrMxZyMy79T
-	6LWxC4pHHmNvdnfQV8HW9o/xU3WAie2UmZwb5+IcewtK3yym0h89jUUlMroU=
-X-Google-Smtp-Source: AGHT+IGDk2wO2iwRRHP1v8mBXNK6zhyVZ7g0+egqwyL3QpsaqGQXCdh9ghikPo44h1jt7+B6NN48A8ZD1fq2YaU1xMVIaGXcX/o1
+        d=1e100.net; s=20230601; t=1761389450; x=1761994250;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=POkOiJXxYyVdXoybLfPGciVsCYLxYpIyRuwaeTZ4nlg=;
+        b=mGd1S4F62VTi6uxiC7gIHTOTrjAFxH5mGkvTUQKade6KjaamfV7cH2E4Aq27CcdCDx
+         na3ZQdU42qZl+AmpnutPe5HQ/+2+YwXcBG50B12LJovxSl0HjvJ28rvymEHuAh/zXFC2
+         ZAJ83TrBT/zjKKex/HsW2PnSJyG/vLyRSHaZxc0/bc+mLKKF6rkQl09KGaojiJsfdrvX
+         v3ctJugSKiC30t9eUjSgnrhnbk2uM3nel+gEMXH2QHVycKIJosj7AWrBK4NeVcntxcOu
+         pF3QkMF+jIFecRsYwtfZ9CONlDtJGhYU8k3HLV8RAmohsyVAnaYX3RlYdZ5GjXU30Zot
+         U5wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWIh0KzePDndf4ZcXzLIBh+aYTLFjjVaMM4A2n6Elqscz9kMNuQJtid8ieN7vhsgRYl4ENr79rWdA==@kvack.org
+X-Gm-Message-State: AOJu0YzFUEf4jKie8v6WuA/41Kx+ck1R4mcfDj0DztD6bM4PY9ks8VMO
+	q2z5n2kH3lF26+MuW6ex1yIsDZ/HZcnfxLyn/jlTDA7SMQ+exrdZlzJOy40+ETJrT3S4Xi6F7PP
+	M5gdEPUe93Nk3LwiOe3w8W+95Z0fjf0MXUJSP/+dj/uCiwwEIAZfpO2cJqq2o3/R/aYRdXakG/n
+	1AkcReIdPtHRU9utEtLCVYsW0ASMo=
+X-Gm-Gg: ASbGncs2S9vVBhvZvqxG1xLIO9ZX86/an9Dcm2QNpw1vIkmmZcycO1ThZNQPCmtgXgK
+	cY4lbbSQ32j6+vBSKT8YahTVsap+9Bxn9EY5v5eKDOgS4uJXE2cHbouLJsFXxzwuweK4RHElVYm
+	8/SQUpM+70idpgyqxTVMquQc2+ykswtEXRM7zLDTmOH4qsPEriqKkkLIitC7zorsH/CGWzPhA=
+X-Received: by 2002:a05:6102:32cb:b0:5d5:f6ae:3913 with SMTP id ada2fe7eead31-5db3e1ed199mr1939910137.21.1761389450360;
+        Sat, 25 Oct 2025 03:50:50 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFwsyffeJ+eI1nKhYc20dry/5VXueJq+gvTP2aaGjDy37dbuMYWFrmN6kkfCaw0QToy5vgyRxRXy6SQbOpVh7I=
+X-Received: by 2002:a05:6102:32cb:b0:5d5:f6ae:3913 with SMTP id
+ ada2fe7eead31-5db3e1ed199mr1939895137.21.1761389450000; Sat, 25 Oct 2025
+ 03:50:50 -0700 (PDT)
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:12e9:b0:430:9104:3894 with SMTP id
- e9e14a558f8ab-430c5318de7mr404688785ab.30.1761387905357; Sat, 25 Oct 2025
- 03:25:05 -0700 (PDT)
-Date: Sat, 25 Oct 2025 03:25:05 -0700
-In-Reply-To: <rdrijfoz5apghwj4zpymigdelzza4l3r5yzrwrpggd3nij3x7y@du4lgss3gexp>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68fca581.a00a0220.1c5a1.0000.GAE@google.com>
-Subject: Re: [syzbot] [mm?] WARNING in raw_ioctl
-From: syzbot <syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
-	krishnagopi487@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
+References: <20251024084259.2359693-1-amarkuze@redhat.com> <20251024135301.0ed4b57d@gandalf.local.home>
+In-Reply-To: <20251024135301.0ed4b57d@gandalf.local.home>
+From: Alex Markuze <amarkuze@redhat.com>
+Date: Sat, 25 Oct 2025 13:50:39 +0300
+X-Gm-Features: AWmQ_bmwcw8JGGEkkE3wWPKO0fCAY3lGT5ZQ4OURnSkGm9gSZBzLJvO3Udtlllo
+Message-ID: <CAO8a2ShRVUAFOc7HECWbuR7aZV0Va3eZs=zxSsxtu0cMvJmb5g@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph consumer
+To: Steven Rostedt <rostedt@goodmis.org>
+Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com, 
+	idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com, kees@kernel.org, 
+	lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, rppt@kernel.org, 
+	peterz@infradead.org, surenb@google.com, vschneid@redhat.com, 
+	vincent.guittot@linaro.org, vbabka@suse.cz, xiubli@redhat.com, 
+	Slava.Dubeyko@ibm.com
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: HRWLk2uocl51rn08wQTKT02RbqH_q6DbmI_v8C4aooY_1761389450
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: A83FC100006
+X-Stat-Signature: cgjbnpr5uup391q9h9u1edkd7eyt3njb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B0A740009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: b3irng9n4sdmsrurb79wxgnkhnieip8u
-X-HE-Tag: 1761387906-84240
-X-HE-Meta: U2FsdGVkX185orS4yh2MqLLcp9Z9S4BPlzptuYPduMUq2Dfdg5Y2zdpqG/x7hlJfWx3BogTBdvYlYlyvHXk5A5+7ZN0UTaecLinBZ7GrOAMpNkS/slrVPjY8xqDLuGxjcj5afwLyBaiAe7rS37KvhLo92vy2WWh43mz6UsAVAubOA0/PYdVWW22lhSOcrPBmZeDqZ7NlfElMUvYJ12gg5nTiZtNIaIO5S3FGzdnSVUUpxdjyWi7ykEbPzi7TBYMZ6Y4uU/JzlFKQrBWTN5PpZ6iTA2vhfTjYtDE2TE17hWJTK7rtTa8ofnfZ3bwsEpVbGW7kI7RufmTM55n48mCJ1hYW2x9AKIp6iyuj7wHlCrkYtB61v3tjHrawPZIDpoROOaHXzMnbDxRpMCQBxpZGtR4KihZ0/EK395oH+qE6Hi53Our/CLT7EVQepHEtP7z/eLZIlL34Pnq4iun/IfhshU7XmS3BXvLJMSsD1GOisAEb+6cEw6D1mNkT/jBHmJOesKLuesO7mSl2AdGtaCcG9Lu5URXLwE+WUTUjag0/ILy5nrSgt6UnF5EhLS4hM+NNO3O/zZWrbuzlQkOKpU9bgfOlbZwlzOJUlG1TnLQ3qDCAC9qSrybz8teZOyJG8BwAitku0Yb7/j3iw6/wUgATtI6nkHPyiSIi/YSPWJIbogt4zh0TgZs+PLwD5TvZJj7yJiG+IL4fnXbkgVKgPi4SgbSzYLj5LeJBovyXVEfYME5NFlpzXRqJozfjxceAnGfgGzgBBrSBVe42cEF7fqqilrUVRZHC7nCdUkDxvAa0LzIXEJMonPofVy59JBzZZhL91BmCZRwO3XHQlvsnawQ1mqh0UjZhCAYHZvKAGy5KRyDKZhknwxU8rqTO47C04kKBONlIjCoQk1GWbfHGJwoAbK20v2sDYXsRVWcBXubPjgprUUMm7aA49nOUklv0s07Dfw5lS5+3LomE1T3qYHX
- CzyQrSBS
- CVOyDkDXDk67sw7hUuWuNmP6A4JQ+9mepoxd0YrIH5ml5i2WpphRh6xIxPhCGFn5VLIIuJAaVJBNYa/mC7NguzafAPfmyd/jvRu0bACjPQIvq4FicVWkhckS+0+XAbGHUK5Gdc/ThwZmrm4wQvsjgsuLT07WI6S+cyHWklWLo+LWaegcDwt13gB7UavgjvvR8NA1BJ2SxhOL7t5obUTOY8Eo+pi5bsf80PJk6AOVCewu+iQ7M/blXBmMd80wtw6ykH6B7vzisXROytH5zO5wwZPMq6FOw5Yrf9b3gHKgHxrrVHwISFiIpuFKPZ8Ep9qE3JrjkdCOxyXtwawUcohb4utPPOQPFUVa4CZIZakx4BdHV7MGyEyO53eWEVHsHwSKIrCbT3WoFM/PvaOnBH7mYipZch+q8VjGzO758P9iddL4HsUcEezNaZRR+/MlJaERmHI/lEcrAkTSUD1qGUVQQ5QJYTeNAlcJW1yJ1ycyKcubjtYBizZvFnqw/FEAJ9Xr9+00+RWhwcIeGunAe/BTBmwNHNLyWs5c7h3/fMPXozHWGtBnaDg0j4VvbuIohDncYU7J4jtEtfB4Kyd+qPGTFE7Eg+kRtS5Q3AFgl5G9zMhOIW0d1S+xuLUubnlDEpk6fWzueMCef7wXB3RC7Xh4jGOSdkQp83/kOywhvSz0bxZpLVMKoU8AniI/BgA1arCD6STQsXsXvEg/dcrIGDCfbptIWkWjNVIxzStQOw5aiDmHomhgRAb0DbjlWmEeg6NUNPWtUFgxluk2riXdxg1NB54F/4Xx+/EOzV4YPucVrJXiDuzM1B0WLSgdrVGWzvFqVJuJpOhJAmKtfvv2soFBNvc0KcFccHBEDx0/tvHq6vvxi/z0fJEO4S2Uw+ZcYatuRtIBtCG/LiB+QcNy0/KSLRNwbHbud6DC5D+anqdwRxMyI9k/aB38sx9wgY7phILJohiyCxoUZNn/IMa0IvtUBZ3uJvyP1
- 67+OVATj
- hTV0zmqh+9ZMg51FggsF4eqf4V/0T7NNZN6dApk1CKM+Wp6bCRzX2eDuOxoarwQeGmpWy+LQDkx2mfq5aemV8m3foX8mKR4xhrDEeimiVneLZoQNhNvpk20de+7LPQCFjmHV0+TJS2aRM44KzdZxFAumAu8sT1hhF65oymP9GXC0ENgSuu9Glw==
+X-HE-Tag: 1761389453-498167
+X-HE-Meta: U2FsdGVkX19jq2nMgph/36Cd/HLlOROS4i+lqU5f6ypDESB+F3nWV7G3LEvN1w3+QDUDpuPABQsGX81fyRR58UQPoJ6ywU34fJ6AiNKMRl5NEPymvnICT42gOQcUoBH1B90OrCdOaOy7UhzGqYahvrzwRuM5UYUWqs70rUpeuMFHUo6SdQhnn4ZwDFBz2ATUCCMuqcu5As1Z/XJJlcWil8iCHEvwdKybM2phRieJKrxboW6WGYL/MBlbtjCTnfjbqfocx5KSGlDq889zqF40xTXLs0xLod30lAwB0rHS9H7Wt0EUQ1/f66NqGSNcBHjEqyMBMNoF63IDmbVxbY/5DPemzIM/h9S8A40iFFl1O6Ec3i6ffXe/T2eM4WBWxKSviQ8wYITT6oQ7aQ4GSWQBSPHIokZYIOABwgkQ74ZDB8KIfqaEkGyl1TBl+TSPSaUsjjywMT3/p3WzpN93bKgJmSuheH7xYPlgdHYeIIceDdY7lr6jGoKg2txwy4oPPxgzOfuKfHdLmxtki5Fdw3P4hJkOgwwz5XaoqbsMfRGvnMkVCLf4v0VFXLtpSfmk4jYLT7gHnPCGD3DjiGLy76hLnYD4gq8FUwDG8QlDmZRmmgtbml/UAYXVK1zkmh25+Ud3KPswDhCHaeZS6ksAZxR3Y4l8JjGrYOOHyQj4dQknQN4ScgN37oJG2o5fyY9lsR9Zihjs4mNXsznGf5lMPJvLMRj8oUBUSqGOZ9fjF0CFPaEJNYlOskoo+VRFB4aYju9vKbfm29yRVK2vKUZoV9xnhplnIE27QXByxIyuFbecK2zT04yQzeet8P6SKoEOIHIAnEkM/m6BjlykU2GV5tspalYSfCqlBb3cAWNVHliDqhnM08wKvDRJepkauXVzVNQjZWBjc9Ndz6TKePm1gZtweKg6OSYCbTKehD/oRhlXELdx9hLWHqfUwIg/2mCYkd5xs1j6X+4g15lk/RA0ZFs
+ ufkMh9QI
+ AVy0isN7egQr8sERdzsjMyP+dKZ62wfnkmszdOR1o50n1wps=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,22 +131,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+First of all, Ftrace is for debugging and development; you won't see
+components or kernel modules run in production with ftrace enabled.
+The main motivation is to have verbose logging that is usable for
+production systems.
+The second improvement is that the logs have a struct task hook which
+facilitates better logging association between the kernel log and the
+user process.
+It's especially handy when debugging FS systems.
 
-syzbot has tested the proposed patch and the reproducer did not trigger any issue:
+Specifically we had several bugs reported from the field that we could
+not make progress on without additional logs.
 
-Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Re: MM folks, apologies for including unrelated people, the only
+change is the addition of a field in struct task.
 
-Tested on:
+On Fri, Oct 24, 2025 at 8:52=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
+> wrote:
+>
+> On Fri, 24 Oct 2025 08:42:54 +0000
+> Alex Markuze <amarkuze@redhat.com> wrote:
+>
+> > Motivation: improve observability in production by providing subsystems=
+awith
+> > a logger that keeps up with their verbouse unstructured logs and aggreg=
+ating
+> > logs at the process context level, akin to userspace TLS.
+> >
+>
+> I still don't understand the motivation behind this.
+>
+> What exactly is this doing that the current tracing infrastructure can't =
+do?
+>
+> -- Steve
+>
 
-commit:         72fb0170 Add linux-next specific files for 20251024
-git tree:       linux-next
-console output: https://syzkaller.appspot.com/x/log.txt?x=125cc258580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e812d103f45aa955
-dashboard link: https://syzkaller.appspot.com/bug?extid=d8fd35fa6177afa8c92b
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-patch:          https://syzkaller.appspot.com/x/patch.diff?x=13036e7c580000
-
-Note: testing is done by a robot and is best-effort only.
 
