@@ -4,185 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A156CCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 15:30:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02BBBCCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 15:30:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5B658E014E; Sat, 25 Oct 2025 11:30:29 -0400 (EDT)
+	id 615788E014F; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0B1D8E0135; Sat, 25 Oct 2025 11:30:29 -0400 (EDT)
+	id 5C5FC8E0135; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8849C8E014E; Sat, 25 Oct 2025 11:30:29 -0400 (EDT)
+	id 4B56C8E014F; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 663AA8E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:29 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C36EE140190
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:28 +0000 (UTC)
-X-FDA: 84037023336.06.3D27CB9
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012030.outbound.protection.outlook.com [52.101.48.30])
-	by imf21.hostedemail.com (Postfix) with ESMTP id DD9871C000F
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:25 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nkgMfLde;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761406226;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2FABB8E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C31F9139077
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:34 +0000 (UTC)
+X-FDA: 84037023588.14.5302B7D
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3DB93A0003
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761406233;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jlDALx22rg5kBC5Yu6IHhE1BtpvxwKS4sxS7ws/CqTQ=;
-	b=iYvHb2OlOfqhh9j5FecyzpLSA7Nr7F/Xb/+wGUiNz553Q0lDc2E0warXt/kxdXckZR33pQ
-	7W5J9jhS2a4vpa6iDpGhA5qL3M+TUUTVNSYLcEybm1BegkdplJCI/CBXIKGrwOqmFffTwU
-	+FYsynSxwXZdBxdfzBfdxWpte+uvL/E=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761406226; a=rsa-sha256;
-	cv=pass;
-	b=RGD8FaCf+DcIY/y/5gO5f6kFJhrGQ5pOJk9u6uAPhTQFJTB8JVTVQXzG745h4atFHgXwXG
-	ct2PugSUSeH7ervOEHJghRhNMXXmfxwj11VoBiDb1Abj51OOdoITkXaCU9775mwLenDOHe
-	ANQ1lDoRXzbK5re6y6lqx1zjfvp7G7s=
-ARC-Authentication-Results: i=2;
-	imf21.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=nkgMfLde;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 52.101.48.30 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TFEZYWvtAupDN+/HpEVF0BwjNx/SnyVKm+yQQ4une8ogQ13zy6ReSeKmGAPY/HZ8sOXejM7iH6qKXsGLBYHec2z195c+N2AS6wnNyD05gyyEIaAR2YWF59ZvOITsioQZxCCZKOnFX3cNEgZals23zJKgWEhT/nW0hqg9B50a8xtHRbDlES+8cHc9czw5uqK3YcwpfveWl//0WXurlX0bB05dkO1x9bQD5z4JbsBuO1rPzPowxmySqm1Xo3vjafqOJ82j/0EawJJJCH+vo0iWBW8QeCtVt4Ag8Rr+9c7JMdlBAh4qCFV+spYTTDRZWEhG+B8QYKpz5E1ImPwgYb83yw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=jlDALx22rg5kBC5Yu6IHhE1BtpvxwKS4sxS7ws/CqTQ=;
- b=SMy1IYSjRQo8bnJtqtBZxBI14vtmCL2bLxeOkW7g0CukkdbAzLQo5hRNw7rgL0CN1cTybsiKrD+ASN+rQ4OEVQ76k+n/1KSgjFgg5lTF3VB8tA8Jbb5XHax9b+BPgkX8Af/JQfcB+V8R92mKG8v6M+Hjkg0M8KOPXwjBvXR67BmO4RI2IPYJfus7PGgynHPpH7YISgl/HIuLxNQpC0waVs33V+by2PHUGvMBu3a9m/NzsaF8g43zEcDLHsHGeYxw84o5gEpsW9gjcH5oqIutsNt8eswBzJgh3odmm2Q2wbYB7gaZHPdq2bqJxAV30jvj7DYQTxa2msbNMYhhv437cA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=jlDALx22rg5kBC5Yu6IHhE1BtpvxwKS4sxS7ws/CqTQ=;
- b=nkgMfLdetAnmeUNxS46kdlR5NpPrMfNZzEiIRhpaUY8a42cYrnx5wEpLVOG8bfLm/nU6cb9MW1FdeSI7nZO5/cabRPrkWLrdAsavrrq3AvYnoKtVzqBM5eGNMMTLjT2ffHnQ1AUk+KFRNs0M0f4a5TffhPKIw/To65B3uYQOie3uqeo2dUlmgPZL2LKlgI0moitVIryYxp1IJ6HgXbG08TgAewCq8lxToTDEytKIofufrPTU2+Yz7okNKUC8c643EwNdhfWJ1VGrd1gOYdxS9OFPIWxW5vHVy7Uo4Qk1K7C0igVLrXtRqx1ODSc7mnJqHHSaY5WP8hfKCAZxCKtO2Q==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- CH0PR12MB8485.namprd12.prod.outlook.com (2603:10b6:610:193::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.16; Sat, 25 Oct
- 2025 15:30:22 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9253.011; Sat, 25 Oct 2025
- 15:30:22 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
- kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org,
- nao.horiguchi@gmail.com, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
- is split to >0 order
-Date: Sat, 25 Oct 2025 11:30:19 -0400
-X-Mailer: MailMate (2.0r6272)
-Message-ID: <60D65915-5FF5-4ECA-A52F-8B9FE8F714F4@nvidia.com>
-In-Reply-To: <298f1a0c-a265-4b0c-a5a0-7f916878dcc7@lucifer.local>
-References: <20251023030521.473097-1-ziy@nvidia.com>
- <298f1a0c-a265-4b0c-a5a0-7f916878dcc7@lucifer.local>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: BL0PR01CA0012.prod.exchangelabs.com (2603:10b6:208:71::25)
- To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=H4PtvkKZFEBjpaVtmYMgaiUP0rE5WRgcuVuHYkk41Is=;
+	b=ZU7CwVeTqa7gJ3cQP9oyLwI8XMjYiZZkEsiHobyOH00luWwzl/nj0tzSy4r75T3R58QIfm
+	XFq4ogd5f+N4EOmakShMk4V/hJ1eehOQt51RIWVvNYB7YVDHVGhhiImwTGAys7ZfSq5jmL
+	FIVpDhRlM6iaEaC83zH+u6q0zhrdNJs=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf15.hostedemail.com: domain of 3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761406233; a=rsa-sha256;
+	cv=none;
+	b=5W3ITvgZwonJJ86oGPTxfh7ylB8N3ONRzeALYVQi3z7BXBv+xDFnNBDAD23oJMt3znncFW
+	YN42itGlE3hAvA+ILsGPxriY6TbvQ6i9ho7zc/8+mP4HX8F/Td13rPspW9QjSJ3naZx5D/
+	taEHI69pGI3r7GitYe5uZScPMfhVVnI=
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-430c8321bc1so41474265ab.0
+        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 08:30:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761406232; x=1762011032;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=H4PtvkKZFEBjpaVtmYMgaiUP0rE5WRgcuVuHYkk41Is=;
+        b=foYl4PbJhWrS256Nz068lD8jajpWkBbnElg8XnaqZQWTL+J/3A/eP6Grlo59gMN7Zc
+         oV1z/85krq68HN18a5nzrNEHDdpUDv6NkR1cwa4TTp4Sek9jQiVaHX9ZEXXmBFIrFmGc
+         0HnIQf69SJhMTsc+d8WQINbXUMgDUmtd2P7wIA3LUh90yV8vOMnP88ufyU1RYy5CX7KU
+         bolU9Pg1pXRgTgtZNatvxPFP5wQadWHS0t/uV1MHrU5bHTUwqtrFHF4z0dwQUBBw6pdf
+         JJwgAh5Rjh4k/sbVMPr0iJhWxow/OPDZrOlu+zq1itdpXst1oiGf8JhVfWJ1w3CA5XU/
+         xv9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUnhEWs6PYbc0SAM1yhnqErHUHYjNIJusc5NCfDxv9NMqMwu2X0B/csWMBmHXHQssvPVBOsexKkoA==@kvack.org
+X-Gm-Message-State: AOJu0YxZb6/CDslodsmN2826gjnW10OzpojiN93/+C1yObmY5pSU2C0M
+	8qZcQeqj2X2K667jcdn+nKduoGi3VjsO4gRQ2QKA+NG8b5sF71ZEVYJPiD1t8pNUeHQf8gPmv89
+	nbeLLsutqdrtgsRa93MTl+FnVegg2S/3nduEUEw1UjXmb/htpN8z1BL8bsqU=
+X-Google-Smtp-Source: AGHT+IE/mS5AInx/Fn2GfpldYfqwHT1aTDzL70mL7vQ4auUZniXaqCBaITtE4KGxBTh882iPv4MheVT5dy2uy9HDIpuf7K+7ITIw
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CH0PR12MB8485:EE_
-X-MS-Office365-Filtering-Correlation-Id: febccf0c-3965-4055-b31d-08de13db6971
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/v8C6rj9Xmh0X5XZZwmUQKRgbqbvjjD4J8mDJsb/r0fj23w55YqhBYa4n/Eq?=
- =?us-ascii?Q?36xXlo3QqmS3v+yGhH2l8N8EuoPWbdfpIeTPZr86SuRCdN/+h55pPzrQEYss?=
- =?us-ascii?Q?mfGzLSNo+ertUJ37OgZIbk0yF+eAI6dZ7h7VFaE1Dz8qYE3/q9MqLsBN+ulG?=
- =?us-ascii?Q?czRbfRW9WFKXLnJ3fG7/6bGyfhcflKz1i2I4OHZphgYU+gTH1HrCaqOkCjtv?=
- =?us-ascii?Q?3VzFEK17f8RSIKMD/s8IpQUZwT4cPA/xy1oKmdCvxF2tqL+8UCnd3oepAdpG?=
- =?us-ascii?Q?pAeN0NG5xL+tYR44yf2EKKQIsczhnfx25QaKqu+TiSR+I1knCNd19NlOJL87?=
- =?us-ascii?Q?jjZS2526xkYJMgh1W+t6ax3EUoHMLxNhUiRySb2zzn4gSZK8zzMfmHtmjh5i?=
- =?us-ascii?Q?2T3GD164oMO6Sg0RVs8u/DCGf7oDwSed+PTsfYFem+0ZMheUXUoXKvNlEwsS?=
- =?us-ascii?Q?HmnREgFVjpXyQgvGx5sawOVpF216KCYuNwY/NmT6Nyb48Jgv8kHdU/vaC2iX?=
- =?us-ascii?Q?JlKBL+4/jgld2gTCdgT5J9rruDAye9KKNx7egNjpPubXxw6ORxxLpX5j7rI5?=
- =?us-ascii?Q?UrbpsP2wmJ7ngKoVT+4bHKUtURWFhUsENMBbngh/3MmUVG76LnOKElI939VX?=
- =?us-ascii?Q?9TSefA3Ly8ETD9vIZH1qsm60yZ6K/uwPPlklWYI8z+cUce9k7uh/XOXV197T?=
- =?us-ascii?Q?u1hU1vutczz/n3h0hnVFZACehSPvoRJBVb1GBX3jQPK5GTTtXD/vTS00L6Qp?=
- =?us-ascii?Q?Rlha+Vqx2sQA2eCXRuLklR6P0E/fuFg68xPlQh1vc9S5tDbAiPVOdnmKHI71?=
- =?us-ascii?Q?ni4m3o+MecvU/IM8Iuzt8Ka5Wt6lslb2MA/7mEs63zWgS65bFvn4M0OO2PKy?=
- =?us-ascii?Q?+RsFGPTfVSRXTg9r325tIeXlW0s11q5O2zhyPcVCDcKzS8/2l68YSuu1PMJz?=
- =?us-ascii?Q?zf7GLf8rehgQLA4Sxc7w96mWb1l5/Fh3BiiC/3r2/RQ3r/EwF9twd8HGL+DX?=
- =?us-ascii?Q?JnQmV/DAx7kjoLv3HRPgxUbGR+7ojGBx0j1kanvlurE5vboCWJblYmJlI6wk?=
- =?us-ascii?Q?uCEVKffYhHfwGaqhz4y/3nmCnRkqfUsPEvmJMSbpOKKu3rbUYyX6Y4KDGP5w?=
- =?us-ascii?Q?LNWq/s77iPc5Ww/enjGPvVsWeY9psYqOh4WLDiHxuNg9bxmpbv3kIJ9IqnG6?=
- =?us-ascii?Q?NxRAmAw4GMzxAt6BH9vqfWZ8BOoyVBOm1Esy+kTqMwf3jcNQfaa+U7JVv0AJ?=
- =?us-ascii?Q?Vg6zZnUCqBuCUp7Znxk5bo80raV8N6rwlDCPiDYde2kqeGB0gm+DDrMeG19U?=
- =?us-ascii?Q?rjBd/3z3ajMJw/PgAuFzrpJJstIvY8peiDZFDA/l+jBUGCTJayTQlsho9KEG?=
- =?us-ascii?Q?JLDoAgXfs93NHaHxdpZ/js2vDz5YPK51FEWE8kGF56W+2LBZc62ZHoa3rFy6?=
- =?us-ascii?Q?D97Q6uPgNkXGCHiQYuR1uWSIaleWAzsI7qoU7V8gXoe63yaApA7axw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0hGPzmAUh8XSWOpn5tfBz7BVHojhVlOVCrhMeJCpUi2y1iQbwUzUNb+M1OCc?=
- =?us-ascii?Q?sVj1PUyjxclWSj+iL0ip3+b38qr4jtsY0J7qzmF+pI2I5bPr0PfimvVkDBbd?=
- =?us-ascii?Q?Z2dOCpQdomXAakD9/aw74to930mthn6iHKBiGEI4V56WUz/ECmg8sQXbbe47?=
- =?us-ascii?Q?xqEKADub5ZQq9mK1AMP66XLaeWA9OY/pFcx4Y99F3vCiQToZLCZWAWQIMJmP?=
- =?us-ascii?Q?FMd4aOprox8TaYotpHFiWs35rE4nX4l3Sid3bbP6sSjsLIQbBukPoEuhMXbH?=
- =?us-ascii?Q?B/E2B20LloQ7mwt5WBUVutQUyJRq5phvrgXxMgqUyMMz9NE93IChN4IgJFG9?=
- =?us-ascii?Q?/owtuERsDTySF8oQ6Dc6kHOve6lVhUjTkqz0m9Km9pZuhD+ZqoHDagtqKNku?=
- =?us-ascii?Q?m/T47XdUAc0WsFTab6Suem43v10+0ov9an2hK8PLZCc4XDhSnQojrIflm4jU?=
- =?us-ascii?Q?LELiCdoQ+WpPgk99IerxR3C+LTjFW+cLmyPOhGdGEoOFBARc7uARFbuexnBo?=
- =?us-ascii?Q?ssGx0rtfbEgi+uhSgYMyTEeUlKiWdAday6DRBUaTnYy4XuSN+Rx8uopN8xPN?=
- =?us-ascii?Q?9NfW5MSMuhThdFtyu101ZGv5WMmvbuWH+oODeczk8VCetEZ/isfc389TKKlO?=
- =?us-ascii?Q?k0NA28MQsUlOn0O/BlGcgpQPrs2U608vMINfYJDEY10fuJED/2wfzqnHYQKm?=
- =?us-ascii?Q?RJ1Y2PeLRcrVJwtG966O6PZwFA84h5ME8bN1aahOvIijyPlPj6UD8URmw5Cc?=
- =?us-ascii?Q?7U+kGF0e7wtVJbriP2G6tnlx0nU3DxnN5A8mkQLWnJYRT6+yHhQ3NZeRmRlO?=
- =?us-ascii?Q?5SUT5priYXOlgqj9sx3pxOHjE4D0LCv7v+yRLuBilNsjVtRPDRFAmCFszLaq?=
- =?us-ascii?Q?eLNoF6d/QBXm8edMFbbVF6XNU64APPxiX2QsLCpQagoP+kOpWhSHBeSdtUtB?=
- =?us-ascii?Q?3JmuDUZ7uOR3iUoE8yrBWK0Eb7300/Nt3P7v8mFFENf/ArB3KQqKHI6GPcQ6?=
- =?us-ascii?Q?yiXr0Er3Q7H7nq84lBwRnMAtmSsvEslxO/cNbPVAfdLfW8Nxajs+8ET00ARY?=
- =?us-ascii?Q?0bOdfz0xFSKjetzZ0w4PgSkz0Tl6MoCL04Ao/NSH2r+OMyyOboym5/SF/vpG?=
- =?us-ascii?Q?95AF2DAjPUYbpAT6cMEfhTfO8K9L8a/EgVI+d2MWRA3b0K0GnHTDxmQaj/VJ?=
- =?us-ascii?Q?exIi0VC/UgC1+gg2lWa1P1p07RU3/N7kLROwbMZCBFhhhjuN31QlFmS0jmLz?=
- =?us-ascii?Q?gJdVDs+2mKUyS3q42yu7NnKQB+O+2VKPHxGucO+MCEjv22GNzhEpoZP94h9q?=
- =?us-ascii?Q?f+29SDGb4gtQs+PK3J+8WrRq6qQ3C25QYQhxpIao7uMLhYlO0ijvB5WcdFQ4?=
- =?us-ascii?Q?qJUh20JuldeEjQR1mwCmd0cWID5SRgPsybRWJ+VBXqmFfJ9Qz6ws1LmqL54+?=
- =?us-ascii?Q?oUrYX+fI+lcMMPGwf1CX6k7TGZuTtydPzp+AyUOUfl78Mz4yY9QQulm8IKps?=
- =?us-ascii?Q?majK4mimcuFIfzJUk2MkypYOjaf09/7PaftZTu0Sgr3U7yGdKjZ3euAjOPRW?=
- =?us-ascii?Q?SM9fgzISU4glr2CgBJ1qTFzGcwL/k6JiL817pdBF?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: febccf0c-3965-4055-b31d-08de13db6971
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Oct 2025 15:30:22.2218
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: bs7F1wksT+mmDL//Wm7jOt/O0Em4xZIcpRt613N2rYccjVUjey0Rh4U4NSG66zb2
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR12MB8485
-X-Rspamd-Server: rspam01
-X-Stat-Signature: kdietrxboh7n1uz3wsk9z5fqnca31eax
+X-Received: by 2002:a92:ca4d:0:b0:430:b05a:ecc3 with SMTP id
+ e9e14a558f8ab-430c525f52amr239057035ab.9.1761406232302; Sat, 25 Oct 2025
+ 08:30:32 -0700 (PDT)
+Date: Sat, 25 Oct 2025 08:30:32 -0700
+In-Reply-To: <68087f2f.050a0220.dd94f.0177.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68fced18.050a0220.1e563d.00cd.GAE@google.com>
+Subject: Re: [syzbot] [mm?] BUG: soft lockup in sys_bpf
+From: syzbot <syzbot+9431dc0c0741cff46a99@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	da.gomez@samsung.com, david@redhat.com, gourry@gourry.net, 
+	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-modules@vger.kernel.org, matthew.brost@intel.com, mcgrof@kernel.org, 
+	netdev@vger.kernel.org, petr.pavlu@suse.com, rakie.kim@sk.com, 
+	samitolvanen@google.com, syzkaller-bugs@googlegroups.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+X-Stat-Signature: 7f1r94eqdywpiukdhskjzyfshmqfgjdp
+X-Rspamd-Queue-Id: 3DB93A0003
 X-Rspam-User: 
-X-Rspamd-Queue-Id: DD9871C000F
-X-HE-Tag: 1761406225-258852
-X-HE-Meta: U2FsdGVkX1+fTLKspnYdVDYSPwhrpm3+ijX9up+x6KQn1KAZj3k9/c5ZxWHDINwcy40OUhvl1g9MQAcRcdXMcf9VkG77RMogwOQ6HTlAAx2w6xti588Lk6OVuMioosbGD+Pv9uZBnf/64VfqD9zJk2AtdpQuWGgruBXcbGkwTk+tCh7BxU2zvyi7/54zJi6caAa0mhxxuJuEw/McE6UgMIl5Cgsw7sxK+Hb/0f247lh1IqNI1HvTdFMQTjyRvDnskfmJvUZTMLu1qnc/W2/yMrlYSvu7I2WL4IR2cmrmdbHL58PaF4BwD+c4UzQyCyC9d8HCb5/h2/pCC+80D0mG7XI0WaNQ/DzvcCe2IHNRPkheLi4LOW9VsmihTYPwUb4m541PnhlcyuNYtcDZmJ6FPtSPjc1bHOPUAcBgeXLxTiMUzXA+zAoRASQCpnlFZEr6fT6j2iip1tzlnZlbc8ivXYYFZFDCOTcC9eSUQfF5oxC2vrIkyYShiaUWRaOS3hnz4vyAvlf9ABmwHI487U0Pxj5NpLQ1gPTlInA8B0z1KE/1ESpbtsiXvrV2OgUpIcuuG+t+0VY/sPNUlYrQbAeAcUm7URpqXm+429FSJXIxhPOOVxw0jx/4wCCQT3lEX/1DRnexHuf/OiAfUqp7lp4lvpyb4emZABECI0MXz4RGO+NHJsqS5HgwK6TzHBsDRtz2KcfaBLKPzDEaYFN/isMeyU8gNvlPGKHBV8ZlJEepsYEJRxxWm5sWQq/X/dSwpprVObG5edEJnE+fDojJK9McBxs2OSTIPOQK2N7Og3rjYsjaWuDOh53tfTBsr6cVlId+t07UHfdCUhYzOG8reNDbmynEflVuQ/K/OUrihy/lahG7T6YSH8Ywvz8OSOKRY8di0AXcUFL76Vqfh/s2fnCbtYqWCJ6ON5+jXW4O/rEzIxoi4QhS7cCX9Y8h4AbpDUeD1oLCFbZPQCtTlpWEt94
- Pdq5biQ8
- AQ/iaxCMPjBNSRwdYj17Yil/q8SV55ksRWoMtCSQwDL0tOq0NtLCT3LnqiAT5mgafLNRARSbU81F9EEWaI+p/kGbGms5RGSm5Dw0S6Le7ZdulQLws5NjFMUls3SdNwJi684ShBgvGotCNnmqecHLzRjmB7xvYiaE2rqwwluEISP+PoP83Ot6Y+BuNlbOl/eWDWgd2HV7QsjCopStG4164GRubJf2wv3xy+CAr+EyzdurizR9i/1LkjgtqvjR5okrWSThh1JcsDDGLkBH+15uh+j+0e/v5HspiafPBJy8nGWMCaXe9gqNCR3jbJjHtCpyDzfzx6xlKeU0/R7RRL5MV1scedc8WKlk6p8lZwY+n0TWjKDNPMivIoU8yec71x+wqZGi6py5BnxU9rzex87F+yY1en0om20AMYaf1ocSdFhT7hFU255/wh+L06gmnjsA/xr0jHxdHJoWcc2uO7SZ0ZkcYZDM4Igdkvo2ylgxiMDHOQeeVt/JLa76kMtXJJW/dBaE7NXX53n4rp8uhyacwuA7jEqBgklydARAExDd88j+ethudQpNlnEgZ42/Nu0ob5val
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761406233-916307
+X-HE-Meta: U2FsdGVkX1/kYFsXlw3ZHoYjDaq1CERw73icxObfzP5R/npqwtGrb7gQtstQgfPTV+8TsdbToIFpvh2aSr0fvIw+9YR2KXofZ/XbVfFJS53ax9dy1LcXfScU0HH+hz5WSav5zKeiu+tSs0ubiTYep2sTJSQlCegZ/OpMKFri03ROk+/H9hAoJKiFH7sb0CuhftBrehYT51HXX3pBfqfAHCxefCcJA+bvbmDFfYDIzw2q5GyteLAbu0VzGYNabx5mi32ptdd1yK1MRzBHv8YgBivETev3dVFF9nUE1FE3lOnXJebXhauFurIyzfkpFmmGMxS4b3Qa9Eu9aH0RCphoHDXfnG7WpAONoBUpDfga/5gsyFstl3NH4+AsfMSjl2dh3OL28EgR3dzytkDL+cdN8Eno2fCuJnbzBGt5w0Dy8DkwlQbClyH+0ciiG+81sWn5dp5oZ7f+yih9GzGJ95JpLDTCyqKBX87KWt7Gfq53nXdzd+xqvv30CnusDCDhxrtv/JgKc/NJH7G/+udeDWGetQI1nkYj5E0Wgqk2pqzEUnWdL2RxZIbrcm6qhM6q/hh4SMnY7BeGDlUG6inZ7cijBwqh8ke4fzxb7nu/05dbFErWPywi9KwjZf28Pya+Iis9O6kFOmjVUCbylSV8ScbvoEw3RFv8r1t6QgEtai4MoNfGs1sr8ul1j9QrAhOWUDb9yZVrDHJz1v/hR/WXHv1+zR0VWFGDRc2RNv4lxpa//5k2R+aAHC9+BJ1EvpR4t9LEKraDd4wRHyHQTUAkBJmdAVYi7EHZ1Na65/eBm/16smoM/2zqhoz1p8k+pdMRAh18saIMPKQ1CHCUocQ92ivC0r2rOqChdQ9nH8nvgqwtOmzY+ABi26kWosKMyLaCJpzZ28ZLQWx0baIj1npjVWwbzB7p4XqUJtckpA0bFYSx6FAwaO7YucWNTlZ1BS9Y6GncnC7UoGCUg70bovvEbiy
+ C5Nk1XBZ
+ hxwBTOj2XtAb4xxnVmHVKGZYITcTthpH7A7gLIsQwowG1OYzSeSuihtZ2eXIuL5Oei28VbAdfueB8zsKxyAbayhFIWhB73c+iw5R1QlapUBnCXUL1UfSBc0kFOogvIOrPHQdPr5HnWB6Fv3EEMqI9aL7kI9yuIHGC4/juUmrOJpnvwQiKESnXpWexfalpUBYSyb2uROeDfw28BLOnoIjxxN4eHKKIWbTP4iFZDrCaP9bB1WEaHHVadRdpUx+sg9e2gXo3aEIPLG2Npw1GD36AdEO9/591L7QCf0dIzUOJoSoXhUtSDEoVD7gVGWfJX/3T3YlOsjQ7puZOKm3ppi6p5wiH110u/kWJ+gLfmAZF97enetwsYyM9Ev4nEiQX4sXRXyevnxsVSXPN/NisNHYzYDjgn4RcK+brVCujWLk84VvLeaOlNiG4wOW1VFH1/PKEtallRMIvkbowk2MXVpPNvN/JZBs5tMsb+XXRzcVLSBiiAHDxeC+R9Y/vveDr4CjWqyLDcR8qWbvRAaGfiYf/z3/W1JyUJVC7SlAJ948eWh81vUcubr8uhI7PHwhtSbwlBhRAnUWCtWrD75oH2BuhiCTQiAqqhIm78AwSiU0VNt3WsEbYazddSWecLBknQLyL37VvCcB4hbx6kqKK8jMgn0QORopIAs5RbkmV14IjBQOpzApHxR7+Apsxg7YIg8lbGEgUzA5BxH+5UqRRwBRFJeJ87GD6kFQmPAv2Jj+kk0etHhAmjawmbhBlEPIGyBfZb2NkXLlYGoZMeAY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,197 +101,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24 Oct 2025, at 11:44, Lorenzo Stoakes wrote:
+syzbot has found a reproducer for the following issue on:
 
-> On Wed, Oct 22, 2025 at 11:05:21PM -0400, Zi Yan wrote:
->> folio split clears PG_has_hwpoisoned, but the flag should be preserved=
- in
->> after-split folios containing pages with PG_hwpoisoned flag if the fol=
-io is
->> split to >0 order folios. Scan all pages in a to-be-split folio to
->> determine which after-split folios need the flag.
->>
->> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned =
-to
->> avoid the scan and set it on all after-split folios, but resulting fal=
-se
->> positive has undesirable negative impact. To remove false positive, ca=
-ller
->> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() nee=
-ds to
->> do the scan. That might be causing a hassle for current and future cal=
-lers
->> and more costly than doing the scan in the split code. More details ar=
-e
->> discussed in [1].
->>
->> This issue can be exposed via:
->> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface=
-;
->> 2. truncating part of a has_hwpoisoned folio in
->>    truncate_inode_partial_folio().
->>
->> And later accesses to a hwpoisoned page could be possible due to the
->> missing has_hwpoisoned folio flag. This will lead to MCE errors.
->>
->> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=3DcpRXrSrJ=
-9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
->> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order page=
-s")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Zi Yan <ziy@nvidia.com>
->
-> This seems reasonable to me and is a good spot (thanks!), so:
->
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->
->> ---
->> From V3[1]:
->>
->> 1. Separated from the original series;
->> 2. Added Fixes tag and cc'd stable;
->> 3. Simplified page_range_has_hwpoisoned();
->> 4. Renamed check_poisoned_pages to handle_hwpoison, made it const, and=
+HEAD commit:    566771afc7a8 Merge tag 'v6.18-rc2-smb-server-fixes' of git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=15c8ee7c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8345ce4ce316ca28
+dashboard link: https://syzkaller.appspot.com/bug?extid=9431dc0c0741cff46a99
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157013cd980000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=130cc7e2580000
 
->>    shorten the statement;
->> 5. Removed poisoned_new_folio variable and checked the condition
->>    directly.
->>
->> [1] https://lore.kernel.org/all/20251022033531.389351-2-ziy@nvidia.com=
-/
->>
->>  mm/huge_memory.c | 23 ++++++++++++++++++++---
->>  1 file changed, 20 insertions(+), 3 deletions(-)
->>
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index fc65ec3393d2..5215bb6aecfc 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3455,6 +3455,14 @@ bool can_split_folio(struct folio *folio, int c=
-aller_pins, int *pextra_pins)
->>  					caller_pins;
->>  }
->>
->> +static bool page_range_has_hwpoisoned(struct page *page, long nr_page=
-s)
->> +{
->> +	for (; nr_pages; page++, nr_pages--)
->> +		if (PageHWPoison(page))
->> +			return true;
->> +	return false;
->> +}
->> +
->>  /*
->>   * It splits @folio into @new_order folios and copies the @folio meta=
-data to
->>   * all the resulting folios.
->> @@ -3462,17 +3470,24 @@ bool can_split_folio(struct folio *folio, int =
-caller_pins, int *pextra_pins)
->>  static void __split_folio_to_order(struct folio *folio, int old_order=
-,
->>  		int new_order)
->>  {
->> +	/* Scan poisoned pages when split a poisoned folio to large folios *=
-/
->> +	const bool handle_hwpoison =3D folio_test_has_hwpoisoned(folio) && n=
-ew_order;
->
-> OK was going to mention has_hwpoisoned is FOLIO_SECOND_PAGE but looks l=
-ike you
-> already deal with that :)
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/52417ef1f782/disk-566771af.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/66730a263bf1/vmlinux-566771af.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1fe0762efb1f/bzImage-566771af.xz
 
-Right. And has_hwpoisoned is only set for large folios.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9431dc0c0741cff46a99@syzkaller.appspotmail.com
 
->
->>  	long new_nr_pages =3D 1 << new_order;
->>  	long nr_pages =3D 1 << old_order;
->>  	long i;
->>
->> +	folio_clear_has_hwpoisoned(folio);
->
-> OK so we start by clearing the HW poisoned flag for the folio as a whol=
-e, which
-> amounts to &folio->page[1] (which must be a tail page of course as new_=
-order
-> tested above).
->
-> No other pages in the range should have this flag set as is a folio thi=
-ng only.
->
-> But this, in practice, sets the has_hwpoisoned flag for the first split=
- folio...
-
-handle_hwpoison is only true when after-split folios are large (new_order=
- not 0).
-All folio has_hwpoisoned set code is guarded by handle_hwpoison.
-
->
->> +
->> +	/* Check first new_nr_pages since the loop below skips them */
->> +	if (handle_hwpoison &&
->> +	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
->> +		folio_set_has_hwpoisoned(folio);
->>  	/*
->>  	 * Skip the first new_nr_pages, since the new folio from them have a=
-ll
->>  	 * the flags from the original folio.
->>  	 */
->>  	for (i =3D new_nr_pages; i < nr_pages; i +=3D new_nr_pages) {
->>  		struct page *new_head =3D &folio->page + i;
->> -
->
-> NIT: Why are we removing this newline?
-
-It is a newline between two declarations.
-
->
->>  		/*
->>  		 * Careful: new_folio is not a "real" folio before we cleared PageT=
-ail.
->>  		 * Don't pass it around before clear_compound_head().
->> @@ -3514,6 +3529,10 @@ static void __split_folio_to_order(struct folio=
- *folio, int old_order,
->>  				 (1L << PG_dirty) |
->>  				 LRU_GEN_MASK | LRU_REFS_MASK));
->>
->> +		if (handle_hwpoison &&
->> +		    page_range_has_hwpoisoned(new_head, new_nr_pages))
->> +			folio_set_has_hwpoisoned(new_folio);
->> +
->
-> ...We then, for each folio which will be split, we check again and prop=
-agate to
-> each based on pages in range.
-
-Yes, but this loop only goes [new_nr_pages, nr_pages), so the code above =
-is
-needed for [0, new_nr_pages). The loop is done in this way to avoid redun=
-dant
-work, flag and compound head setting, for [0, new_nr_pages) pages and the=
-
-original folio, since there is no change between the original values and
-after-split values.
-
->
->>  		new_folio->mapping =3D folio->mapping;
->>  		new_folio->index =3D folio->index + i;
->>
->> @@ -3600,8 +3619,6 @@ static int __split_unmapped_folio(struct folio *=
-folio, int new_order,
->>  	int start_order =3D uniform_split ? new_order : old_order - 1;
->>  	int split_order;
->>
->> -	folio_clear_has_hwpoisoned(folio);
->> -
->>  	/*
->>  	 * split to new_order one order at a time. For uniform split,
->>  	 * folio is split to new_order directly.
->> --
->> 2.51.0
->>
+rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P5823
+rcu: 	(detected by 1, t=10502 jiffies, g=8989, q=37467 ncpus=2)
+task:syz-executor333 state:R  running task     stack:24744 pid:5823  tgid:5823  ppid:5816   task_flags:0x400140 flags:0x00080001
+Call Trace:
+ <IRQ>
+ sched_show_task+0x49d/0x630 kernel/sched/core.c:7901
+ rcu_print_detail_task_stall_rnp kernel/rcu/tree_stall.h:292 [inline]
+ print_other_cpu_stall+0xf78/0x1340 kernel/rcu/tree_stall.h:681
+ check_cpu_stall kernel/rcu/tree_stall.h:857 [inline]
+ rcu_pending kernel/rcu/tree.c:3671 [inline]
+ rcu_sched_clock_irq+0xa47/0x11b0 kernel/rcu/tree.c:2706
+ update_process_times+0x235/0x2d0 kernel/time/timer.c:2473
+ tick_sched_handle kernel/time/tick-sched.c:276 [inline]
+ tick_nohz_handler+0x39a/0x520 kernel/time/tick-sched.c:297
+ __run_hrtimer kernel/time/hrtimer.c:1777 [inline]
+ __hrtimer_run_queues+0x506/0xd40 kernel/time/hrtimer.c:1841
+ hrtimer_interrupt+0x45d/0xa90 kernel/time/hrtimer.c:1903
+ local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
+ __sysvec_apic_timer_interrupt+0x10b/0x410 arch/x86/kernel/apic/apic.c:1058
+ instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
+ sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
+RIP: 0010:instrument_atomic_read include/linux/instrumented.h:68 [inline]
+RIP: 0010:_test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
+RIP: 0010:get_page_from_freelist+0x459/0x2960 mm/page_alloc.c:3824
+Code: 8c 0d 00 48 8b 74 24 18 49 b8 00 00 00 00 00 fc ff df 48 8b 03 48 39 d8 0f 84 7e 07 00 00 48 8b 44 24 08 4c 8d a0 38 06 00 00 <4c> 89 e7 be 08 00 00 00 e8 ba 8e 0d 00 48 b9 00 00 00 00 00 fc ff
+RSP: 0018:ffffc90004c97158 EFLAGS: 00000206
+RAX: ffff88823fff8740 RBX: ffff88823fffc888 RCX: dffffc0000000000
+RDX: 0000000000000001 RSI: ffff88813fffdf70 RDI: ffff88813fffdf70
+RBP: 0000000000000000 R08: dffffc0000000000 R09: 1ffff11027fff7da
+R10: dffffc0000000000 R11: ffffed1027fff7db R12: ffff88823fff8d78
+R13: 0000000000000830 R14: ffffc90004c97448 R15: ffffc90004c9745c
+ __alloc_pages_slowpath+0x33b/0xe50 mm/page_alloc.c:4714
+ __alloc_frozen_pages_noprof+0x319/0x370 mm/page_alloc.c:5196
+ alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2416
+ alloc_slab_page mm/slub.c:3055 [inline]
+ allocate_slab+0x96/0x350 mm/slub.c:3228
+ new_slab mm/slub.c:3282 [inline]
+ ___slab_alloc+0xb12/0x13f0 mm/slub.c:4651
+ __slab_alloc+0xc6/0x1f0 mm/slub.c:4770
+ __slab_alloc_node mm/slub.c:4846 [inline]
+ slab_alloc_node mm/slub.c:5268 [inline]
+ kmem_cache_alloc_noprof+0xec/0x6b0 mm/slub.c:5287
+ skb_clone+0x212/0x3a0 net/core/skbuff.c:2050
+ ____bpf_clone_redirect net/core/filter.c:2465 [inline]
+ bpf_clone_redirect+0xad/0x3d0 net/core/filter.c:2450
+ bpf_prog_3e1cbbed0c4acd81+0x5f/0x68
+ bpf_dispatcher_nop_func include/linux/bpf.h:1350 [inline]
+ __bpf_prog_run include/linux/filter.h:721 [inline]
+ bpf_prog_run include/linux/filter.h:728 [inline]
+ bpf_test_run+0x313/0x7a0 net/bpf/test_run.c:423
+ bpf_prog_test_run_skb+0xb4e/0x1550 net/bpf/test_run.c:1091
+ bpf_prog_test_run+0x2cd/0x340 kernel/bpf/syscall.c:4688
+ __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6167
+ __do_sys_bpf kernel/bpf/syscall.c:6259 [inline]
+ __se_sys_bpf kernel/bpf/syscall.c:6257 [inline]
+ __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6257
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0d40505cb9
+Code: Unable to access opcode bytes at 0x7f0d40505c8f.
+RSP: 002b:00007fff9d9b3ed8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f0d40505cb9
+RDX: 0000000000000050 RSI: 00002000000000c0 RDI: 000000000000000a
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000006
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
+ </TASK>
 
 
---
-Best Regards,
-Yan, Zi
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
 
