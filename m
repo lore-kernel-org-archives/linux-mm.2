@@ -4,126 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66BADCCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 17:54:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35089CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 17:57:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F287680008; Sat, 25 Oct 2025 13:54:16 -0400 (EDT)
+	id 8C62C8E0154; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EFFF58E0150; Sat, 25 Oct 2025 13:54:16 -0400 (EDT)
+	id 877468E0150; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E15A780008; Sat, 25 Oct 2025 13:54:16 -0400 (EDT)
+	id 78C668E0154; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CE0B28E0150
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 13:54:16 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 89D1F1DCE42
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:54:16 +0000 (UTC)
-X-FDA: 84037385712.25.974A872
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 21016180002
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:54:13 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a1HUSyQO;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6317D8E0150
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0080D1A010F
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:57:14 +0000 (UTC)
+X-FDA: 84037393188.05.A0058B2
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 577A580004
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:57:12 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ECXAMnnY;
+	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761414854;
+	s=arc-20220608; t=1761415033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/dCnsJxwgqeFs7PKSg+Ud/3vJjVEQ1NvMAtuR/PgdkQ=;
-	b=rTkWmoRzMp9EVqEoLBHvYU2z4HrQHfOY1Hq7Z3EZprwsEXRRbOdkPny4a2xvxlvqIypJSw
-	5ju4SjJ+io+5PPy+7x0BPvz6TdnxjDaMYeLXXVsJBsniRI2eLrScH0uSShKqxKl6iSfP2P
-	8B39xwM51fcuNG4Mro0zZdHIdLBJ+N8=
+	bh=Z9vGoY+nbBaOsbKg03YXEdXl7WE0FeSV0k77hTLT5bU=;
+	b=M3MHxIi0IVUn1PwNIiQynfK1K6DMNteNOOHsSXUAIAGMF2FqZb2Z8ziyqqlwb1sWghiOaX
+	7bm+aeHWbPYBla3W19vtlSUvyc3Xk/ugorOr+VW6kbwuwYVaisVG9bHZiRmAUE/CK2jfCS
+	sNIHDKBNnuTZnqQF0tS/3clhmSzWGRw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=a1HUSyQO;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf16.hostedemail.com: domain of amarkuze@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=amarkuze@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761414854; a=rsa-sha256;
+	imf30.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ECXAMnnY;
+	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761415033; a=rsa-sha256;
 	cv=none;
-	b=108dtp8CKH/vC+fdfPEfrQjh3KDSiclas43ZoOdXorLUR6QZHxryNhWkQIDtnPFt29YiPl
-	iYjFwV7QnK73ebVNtFEqFwK4GYb2TI856FTfgJ4w2RTcEYglM6VS8Cl8oRmm5pAnbpJtf1
-	rwfJfgCNj8SfQ9LDUjEk95WbYEZEkUI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761414853;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/dCnsJxwgqeFs7PKSg+Ud/3vJjVEQ1NvMAtuR/PgdkQ=;
-	b=a1HUSyQO3OeEXPML4yQrxyZWqSEO1LoJqHzZ1SFDWzzW0DeJwHgzpqVEEc8ze1YvPMz5s2
-	9hby4VJeQbzTaaB3tCtDYTc/iECcyOEsZGeqLRV55O3onaskzEjy+U+RRDLOocWyDl8pgh
-	LIpxtI3B1SYL18yv6g+bInsR2xsj6BU=
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
- [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-141-UXDyqev6M1S9FgEUYAQafA-1; Sat, 25 Oct 2025 13:54:11 -0400
-X-MC-Unique: UXDyqev6M1S9FgEUYAQafA-1
-X-Mimecast-MFC-AGG-ID: UXDyqev6M1S9FgEUYAQafA_1761414851
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-5569ecd7afbso6596081e0c.0
-        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 10:54:11 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761414851; x=1762019651;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/dCnsJxwgqeFs7PKSg+Ud/3vJjVEQ1NvMAtuR/PgdkQ=;
-        b=tu5rFLLLBDrH/wj1+aS82/VNqmjjMyfxwZM7RciNkYqBJqx0+Sgf61lSyqLEC9ziZB
-         VY0W3eCmNINFh2yDPxixd04PRkpgL+LDxTnTDPHztCpCpPJvZw7uUN0Q+v2Z+FPUi1/8
-         df7YdH8rXiNb94OQOruxfW8rho9k7ZRU64NW7s10aolFhJNLbAoLPZo/lJqqzlulBWl1
-         7qkH+ZEmEidMjCYPrJiKaqd/qEIPOUt9PD3PuVSXYjz1qtbW5rBuHo4qnT9L+/umChqE
-         TCO5BiGpQfHsQ1OZHJYceMaSW9IxZiPng6gR+Bq+0uYu7jkvOP5m1HahjzpO7gwLs3HV
-         VzTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVbYaBrcz8d5wKAQ1f5/LKSakKmaom98Eih9dxtnWECr1tjWS3xENkguzM1Y+JfnIt2E7cqpUiVvQ==@kvack.org
-X-Gm-Message-State: AOJu0YwKYQOWBmZRgl/uBIphbFOgxj3C/Zm3nru26QvpalwBJeyO20Su
-	l76vQM0MLm7AvFyEpEQVoGo1Es0jdkmB5mBlJdAXHhRo/heZF5siLVm1+Z4Mx4AXPcHD3xSBfux
-	SkScdKDI0dBkfslCYwktKmVIxemPd1tia03fGFJus5iNoAEIhjUDChIPfSdLpcO5OW3VDnSa8ch
-	X4oxuJONYDZkT7EwOkQMuwDYYbouI=
-X-Gm-Gg: ASbGnctcUIZtuqp+rh4L2dViaTZ/CC6VfRHYnWAurDL0HZst3wbL4y/Uz7oSLFL4L/w
-	6+yTrGmton6VSELcjDOAhktSOCVmbgNBWhxEfBBjdyqUxr0X7qbTZ1ojw6o3u7+7pxieL4byR/R
-	huHAcRtKtJiwtXesWo8E39oIDob7wzd5A0F68d/1dNR2eZIxnHiSGLo759/IXik9MhSSmMB1g=
-X-Received: by 2002:a05:6122:3707:b0:537:3e57:6bdc with SMTP id 71dfb90a1353d-557cf0ca71amr1998856e0c.12.1761414851367;
-        Sat, 25 Oct 2025 10:54:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGgJOnM4bluQ6E9wHerRSTuFkaWRsBJjcnsXXzTai3J0SUYVYp4MA0v1jkm9r0t070IOxhPmLZo8Pqr0ynFtfU=
-X-Received: by 2002:a05:6122:3707:b0:537:3e57:6bdc with SMTP id
- 71dfb90a1353d-557cf0ca71amr1998840e0c.12.1761414851050; Sat, 25 Oct 2025
- 10:54:11 -0700 (PDT)
+	b=YwxgtHnr6UuLWHHDU4Bye2tbg+o8LUzyCRWcx6OyOXXERVu3cqAsR6YToNjaeeydf4o4N3
+	mY04j+BDL5vWmaL/fb4YcKu8eroT5g480xz93YLuuc4qGP4QnwrNqDm5rbVfGH0NNVaEso
+	I32UCvqzvhPj9mDKuH5022jYsQLTpbE=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Z9vGoY+nbBaOsbKg03YXEdXl7WE0FeSV0k77hTLT5bU=; b=ECXAMnnYzkobhQTzmNKTN+D2JT
+	LJwyNcLznU3digEnaytP90GukMfPxEKZNmmye4UGQ19jzCPM3wd8PiPgiIC7rzd+6qJXDIQYUGAyA
+	2UjXIykYnLNnFjQKG2y5vqoMwm4cV0lUhRAAqEJlVF3M3zZ38cWcedP3YCY3Zo3DJvEsndNjmucqF
+	tvLgUBTnHX9radZQYvZRG6yBwaTBX/qMTHGwJRZTD6p+bs9wPQvNqZ60kUFBpHzb8kJU1LZEJSGuJ
+	mUz2Mv1HnWqADDRfXGwQitYT2Rk39kHpK7WCBCsp+5eG/+hoxz7/sVJnLd6cN+Qp+3TFITzoZ/ST+
+	L/vzx7tQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vCiVd-00000001ILI-4AtI;
+	Sat, 25 Oct 2025 17:56:58 +0000
+Date: Sat, 25 Oct 2025 18:56:57 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Baokun Li <libaokun@huaweicloud.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-ext4@vger.kernel.org,
+	tytso@mit.edu, adilger.kernel@dilger.ca, jack@suse.cz,
+	linux-kernel@vger.kernel.org, kernel@pankajraghav.com,
+	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, yi.zhang@huawei.com, yangerkun@huawei.com,
+	chengzhihao1@huawei.com, libaokun1@huawei.com,
+	catherine.hoang@oracle.com
+Subject: Re: [PATCH 22/25] fs/buffer: prevent WARN_ON in
+ __alloc_pages_slowpath() when BS > PS
+Message-ID: <aP0PachXS8Qxjo9Q@casper.infradead.org>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-23-libaokun@huaweicloud.com>
+ <aPxV6QnXu-OufSDH@casper.infradead.org>
+ <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
 MIME-Version: 1.0
-References: <20251024084259.2359693-1-amarkuze@redhat.com> <20251024135301.0ed4b57d@gandalf.local.home>
- <CAO8a2ShRVUAFOc7HECWbuR7aZV0Va3eZs=zxSsxtu0cMvJmb5g@mail.gmail.com> <20251025105944.1a04e518@batman.local.home>
-In-Reply-To: <20251025105944.1a04e518@batman.local.home>
-From: Alex Markuze <amarkuze@redhat.com>
-Date: Sat, 25 Oct 2025 20:54:00 +0300
-X-Gm-Features: AWmQ_bn2KbQ7u7-I7QWQqLSntYdpaNFjyE6UUX-03Ig8JKgRbXdxkCbCcGhJeXw
-Message-ID: <CAO8a2SgZ8gZ0VdtBAeW8wLMDxa+Eq42ppr-99tUpiu3Tpwqz5w@mail.gmail.com>
-Subject: Re: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph consumer
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
-	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com, 
-	idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com, kees@kernel.org, 
-	lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, rppt@kernel.org, 
-	peterz@infradead.org, surenb@google.com, vschneid@redhat.com, 
-	vincent.guittot@linaro.org, vbabka@suse.cz, xiubli@redhat.com, 
-	Slava.Dubeyko@ibm.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: YukfsfHdUYxuok1VnRldC2rt8bK2wRq37afvVHtPOF4_1761414851
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
+X-Stat-Signature: bgci98gc1is7oq9ow839a5s3n4y47ybz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 21016180002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: admwrmbfuw6hgwiis1x7ji6om7xf3ybn
-X-HE-Tag: 1761414853-216123
-X-HE-Meta: U2FsdGVkX1+OuxYkPdbkP1vdjNyyEzSPEq29kX5wPs+iezHuh/n7r2gPaMsJclqqdLXw7n4Bh0jT+03xK546rIK5wRM26jfVJg4KfW1B/2lUQlzumzekvPna2X08pOXJKkMmsPlkNViQMOMtoltIePj7I8QRA8Pfk2Of93RmzUMN6S7aQO9v+Kidtr5rkbXRY7wO+cPMIvabnJNBzABpzHRf7yomTt1r3+TUFFNrIfwR5nwxt186E9gN7TIr3OiskIuxQPwp0Dn1ndexsdZI5sNm2miwDCgsHWOUueI5Yo3kU7thK8PrClX9YnUG+CUMzrknAQn27yGLbnCkAVfiywNPYD0Fc8m+FBL6jY9U7NaAJIqRm4PITpGRu7763YZ5D7KGbVne8IW9AFKsT0Ke152rfwagU0oKgj5wT21uswFWaHg/GIJcsFyx2tUHvUwf5HFENecOReKMw6Chm3XRFZZIJvuy46/BQ0Q0vxFrIPuKhKOwa1Po0X0vU15JyNSoHZW9LGfPUXa04AUG6BKFRbbS1k/ew/xcCTv37yG3LLnzDvNdbsogjD0TXiGoThpo5Wajk6XrEvhQnYthmSLpSg27Y5iBEvFsoWoHrXpJ8ozNB6CNkq5h2sjCoS35/oJpCsILibCMM/1gWbrZ7gp+XpRABet/4arJeuEgHWyv3fcvJ9AlU2+yqp+EuVUlMCkCwuBW+kAuYsgkR3ehVOFme2BS12tXHQHNfqaeeKfFW5WELJqV+ay3R1kYw5WHj2f7Nr+VfQVeR0DY97qkndTV7IbQ1YhcoQ4w5nVhLTaKNjApRnRtV1LCXBKrzdizCw4l6VyZY2QILx4Fp0F/zRk2gF5//y5lwf2Tom2bTtyO8b3E78n/cHFueZ7Ht4Fmmuid2xfKAI+BaPijYEF67LXqIlMMl+5ZdlGlvxHuQ+CsW2GG4wO94MU6y3OlBkYpi5ifH79PrgJhdRVCberxwwE
- sHok9ENy
- n3Wkny8HtOfVK/omBDSrgtupsWJzG/fs7WAf4Z3kc+GTJc9O3rKiVJrQkW70dOvztAxCt24qD7VL5NNJ4qjz+BGx0unt0tDiIc/NXVWuIRgQK5DDUwoAI1wLLVLpXD+U1KnmZb8JD/RLdj8pcVRBKt1RKVkKMtw+PIhW2BKsjctecpyHG6m2IFgaG/KYgrViQrl4Pxzf7+5xjmN9HPan1i9dmeJlHVBHSqruOUx0455o6DIW3QYjhQj3bmVyaOtHIcjqu00VmBxiucdiM52aQbLFf0q/pxMvfd9he+Ba86gkTWe7htmGBnnHi9mLf7liDtdTJL4SHcrCulbk/2uW1v56K1nD3ycEoBVZNly1woBxpcLUd2Gz00rC8EF+lOpDICH0LAtqx73JyglLMmbxFk+I+WPj31ztlQxZQHffLQDCnDhu9OX8jvR8e5g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 577A580004
+X-HE-Tag: 1761415032-604691
+X-HE-Meta: U2FsdGVkX1/llFkyad9iEWKkq2dDuELZBZVIXLpG10yEuErJGO1VG35O7H+csvnGJga8+QwtVp7+RB46O6ltB7ZNbQyIQf/9yzGm8d5KEZiFFDOGFAA+G300F8EDn9qNqq/IkjKE1+3nmSCf6TCz3034iIjdL1UVUYBP7J4eNmpshPQMyz6LcaGXRzbg5j/++du2Zl8Emgi6F+WcH6Pr4yLK0Dmct5BHnANSkDmlai7vk+GwklRjuztPMqdUF9mq7QU7A/kTDuWYgJ/02GlgD3Azee7jp3gHiELti6J7JOiteoexwqkuSJbsHMAD1Zngsaxco4GXeZUZoYiwyeYl5EIvKq1Cz8fHsMLE3/pH0eu+OYudrNUOFL/twdieRTOytwxyA246eDSFbbehHUETqoYWF3S7ijEDdE9syD9Mtt61V/PXqMMYEWpwAdMxU5tGRNwTbN4TuByaM3DAWkF0tFoZklnTmGklpHVed1baJtvenRpdxJdqOJ21s2waayqJg8+94ibhaqEP+c1HhM2sjQMLRQ8dur8lGkUXOqWarBSHSaUCX3UHZmrLgx4EbNT8V/sl95mjEe215p6UHpE7J3t2hol0hgaFZfI2xeRfdAqe6NthOabhpL/JhKZs8nPA53qlG8Mdk6ribz3lCUvgt789vuLlPG6IaEUpWtU2xjWZShdYCF8SXmrOtOXAk7yHnRnBUVkKdM64i3miLVSnX3GGLdCL167GMrcF3ks0qq6Ijyp4L1JMX2IzZ50W5jE7q7fGBNkN8h8NQ/XCa45T3muMgcnBilAKHnKl50XMRZZGDx0TRVE6LzvfqPFd2xzUfI4eVKILl/+vfGFopN8kfgfzupyI94q8dEYiHPulDlEG8SFq+lniHlrAZVvUtPcQvCBAftvFq6qca0wjoYlZhHtlofUlAhs7CNOez3qYqGQWUr5Yzvyt+HT7CDt9/JA9hXSgq6VfZU/wdlue175
+ gnYnAhcG
+ QzGLGwOLL4BSAhlvye0NzKOkHCMJ2yTKrlZTcNDKurvTxmv398U0fKInwwz5Q5laMPyI+4f9qDlIo94tmCTeBT//AHgBQGqGwFQ0Gp2olPS5GifaCrpyRDt2g4NmWDPWU2P2/nAPm0d1K4itfJcK6iMYtvzi7ClzVCyvV7IcDPEiatqeDbHXWv9xzpJ3O9QthuGdINvd3zIShnI8+gi62x8bKdyf2O5oTvPPYyQvGCc2GeWGv//kT/dMj/NXq1jnnrZIk6jsHevdYXs6IH0A/JjEzolsPO5M/Do4VbVs5jLb38qFWhsAviMaALkxaj23FS2ro
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,50 +98,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Please correct me if I am wrong, I was not aware that ftrace is used
-by any kernel component as the default unstructured logger.
-This is the point of BLog, having a low impact unstructured logger,
-it's not always possible or easy to provide a debug kernel where
-ftarce is both enabled and used for dumping logs.
-Having an always-on binary logger facilitates better debuggability.
-When anything happens, a client with BLog has the option to send a
-large log file with their report.
-An additional benefit is that each logging buffer is attached to the
-associated tasks and the whole module has its own separate cyclical
-log buffer.
+On Sat, Oct 25, 2025 at 02:32:45PM +0800, Baokun Li wrote:
+> On 2025-10-25 12:45, Matthew Wilcox wrote:
+> > On Sat, Oct 25, 2025 at 11:22:18AM +0800, libaokun@huaweicloud.com wrote:
+> >> +	while (1) {
+> >> +		folio = __filemap_get_folio(mapping, index, fgp_flags,
+> >> +					    gfp & ~__GFP_NOFAIL);
+> >> +		if (!IS_ERR(folio) || !(gfp & __GFP_NOFAIL))
+> >> +			return folio;
+> >> +
+> >> +		if (PTR_ERR(folio) != -ENOMEM && PTR_ERR(folio) != -EAGAIN)
+> >> +			return folio;
+> >> +
+> >> +		memalloc_retry_wait(gfp);
+> >> +	}
+> > No, absolutely not.  We're not having open-coded GFP_NOFAIL semantics.
+> > The right way forward is for ext4 to use iomap, not for buffer heads
+> > to support large block sizes.
+> 
+> ext4 only calls getblk_unmovable or __getblk when reading critical
+> metadata. Both of these functions set __GFP_NOFAIL to ensure that
+> metadata reads do not fail due to memory pressure.
 
-On Sat, Oct 25, 2025 at 5:59=E2=80=AFPM Steven Rostedt <rostedt@goodmis.org=
-> wrote:
->
-> On Sat, 25 Oct 2025 13:50:39 +0300
-> Alex Markuze <amarkuze@redhat.com> wrote:
->
-> > First of all, Ftrace is for debugging and development; you won't see
-> > components or kernel modules run in production with ftrace enabled.
-> > The main motivation is to have verbose logging that is usable for
-> > production systems.
->
-> That is totally untrue. Several production environments use ftrace. We
-> have it enabled and used in Chromebooks and in Android. Google servers
-> also have it enabled.
->
->
-> > The second improvement is that the logs have a struct task hook which
-> > facilitates better logging association between the kernel log and the
-> > user process.
-> > It's especially handy when debugging FS systems.
->
-> So this is for use with debugging too?
->
-> >
-> > Specifically we had several bugs reported from the field that we could
-> > not make progress on without additional logs.
->
-> This still doesn't answer my question about not using ftrace. Heck,
-> when I worked for Red Hat, we used ftrace to debug production
-> environments. Did that change?
->
-> -- Steve
->
+If filesystems actually require __GFP_NOFAIL for high-order allocations,
+then this is a new requirement that needs to be communicated to the MM
+developers, not hacked around in filesystems (or the VFS).  And that
+communication needs to be a separate thread with a clear subject line
+to attract the right attention, not buried in patch 26/28.
 
+For what it's worth, I think you have a good case.  This really is
+a new requirement (bs>PS) and in this scenario, we should be able to
+reclaim page cache memory of the appropriate order to satisfy the NOFAIL
+requirement.  There will be concerns that other users will now be able to
+use it without warning, but I think eventually this use case will prevail.
+
+> Both functions eventually call grow_dev_folio(), which is why we
+> handle the __GFP_NOFAIL logic there. xfs_buf_alloc_backing_mem()
+> has similar logic, but XFS manages its own metadata, allowing it
+> to use vmalloc for memory allocation.
+
+The other possibility is that we switch ext4 away from the buffer cache
+entirely.  This is a big job!  I know Catherine has been working on
+a generic replacement for the buffer cache, but I'm not sure if it's
+ready yet.
 
