@@ -4,105 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 331D2CCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 07:01:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DA25CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 07:14:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 87FC08E013F; Sat, 25 Oct 2025 03:01:34 -0400 (EDT)
+	id A6B1E8E0140; Sat, 25 Oct 2025 03:14:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 857C98E0135; Sat, 25 Oct 2025 03:01:34 -0400 (EDT)
+	id 9F62B8E0135; Sat, 25 Oct 2025 03:14:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 793F88E013F; Sat, 25 Oct 2025 03:01:34 -0400 (EDT)
+	id 9319F8E0140; Sat, 25 Oct 2025 03:14:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6C51D8E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:01:34 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BB3B8E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:14:33 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C4F5D141077
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 07:01:33 +0000 (UTC)
-X-FDA: 84035740866.04.547C3E6
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 4EA5C40012
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 07:01:28 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id CBA5EC10BF
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 07:14:32 +0000 (UTC)
+X-FDA: 84035773584.04.350DA65
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 37066C0006
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 07:14:29 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F56TUXoF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761376471; a=rsa-sha256;
+	cv=none;
+	b=bYlix3LI7wLZzf2HqxsYYn71S/iQFwlzdZ8TwYCbLKqgMZnsK+MHaZMy5b3rl3qwi4SaCT
+	ATbbU2tiuNE6vcGEwRE7bhKiI52R2+vykJT4lHv6gaK+8TpRD61WB/XBpIeo5xs4gNkApD
+	/3MHus2eiAUITzBbWBWUcEBv3oW69dE=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=F56TUXoF;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761375692;
+	s=arc-20220608; t=1761376471;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=txGEQDuwd3WJ/vax38ECHL1LoCT9mVqpWNzxrb/4EEM=;
-	b=FR9y9uxVMisK1weUOYupfP8EDzPF69NftDCFRDWR5H28k5DB3HJmj0M8JnYLgYKeuHW+DT
-	t3/4A7s7PgI7xhcB9Fuv60lrnLUvzsuYeGZyAvTfw2mFU72pihzUAszJWTcjj0UJFt7QbN
-	8knOmUUwKHQGDZaAPcDF4ODurf9jpyY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of yi.zhang@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=yi.zhang@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761375692; a=rsa-sha256;
-	cv=none;
-	b=2XDf7AlZBEsI78pjVLk069zOLEItPZXkDMGFSMG/oYGV7qL2gLxcFLaNmKMZ7g2c/aBknn
-	DM6nqMNif89n2AerbsLnckKiBwkYtp2zCKyCsy8Mxal0ikmuehAOtIwQALHuVwXBfq1375
-	R/w7TCyki/10u8BRVxmd0ya+NgFDLyY=
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctrJG5q0LzKHMWh
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:00:30 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id B56531A0AD3
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:01:22 +0800 (CST)
-Received: from [10.174.178.152] (unknown [10.174.178.152])
-	by APP2 (Coremail) with SMTP id Syh0CgBXrETAdfxomP4rBg--.46683S3;
-	Sat, 25 Oct 2025 15:01:22 +0800 (CST)
-Message-ID: <9e963efb-fe5b-477c-afaf-f0b0677648f8@huaweicloud.com>
-Date: Sat, 25 Oct 2025 15:01:20 +0800
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=uEY/Z88Sj8Imaji8CdvpUc6DCmAYQHjOX+G6ntboanE=;
+	b=n5piq7zp73Buv/tOWhLVQ6kf63ZfnzU7JQOQG2lbtwg90F+yxeJE/2bcS8BIG60CPlJ0Lr
+	v1klXFpCiTpxPA6NQJa7O2JSd7KotVfwtFSovsepFea2LFyL2xdfrnqzRnvwlQBnQaqor+
+	ZhRj/X/j46yb25VsZAyIP7r0XknklLs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761376471; x=1792912471;
+  h=date:from:to:cc:subject:message-id:mime-version;
+  bh=SxA2snzsuTpvs/SyvqN4o2OiF27KX3NrJq/pjhCTSqw=;
+  b=F56TUXoFWjzqXcoN5fQI+Tc/L8bjybFxdVYzx5XfY+1Jpg5NrwyUJP1L
+   6CUCtPsK7HbXCUTgh85pQWfGTwgAvpiIlqgorhiI+m8S7ZeqoqwMeXF0U
+   uXo0WeurSDwQagzx0kPIXBvBhm4JIp0vnw3biv+t9Z+VxWn9cXSyFGkFC
+   tmBCj65hku6I7EQU0u7VPQjiCzh7eSASbj5m2HtoEW5cCb9wzMM3BG2RR
+   DGXcuS8Gz2gQ0mj1DjtMs3ENMgDv2GiUqquxxv5aYnTMA3Ux3JSLyAY3l
+   vt+MQyboK54xVbcInviCAJjWqDpTP8eU+fxPn0G3u2xIKPHw5eaUgoWDT
+   w==;
+X-CSE-ConnectionGUID: LHWuVexBT8O7HCu+nJpQuA==
+X-CSE-MsgGUID: qp0sdErjT9yE88f8tZB0Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="74989515"
+X-IronPort-AV: E=Sophos;i="6.19,254,1754982000"; 
+   d="scan'208";a="74989515"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Oct 2025 00:14:29 -0700
+X-CSE-ConnectionGUID: KgzygAt1TWS8/xIgPGBnQA==
+X-CSE-MsgGUID: qFXrV+q2SHi6Z7HzV/lfqw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,254,1754982000"; 
+   d="scan'208";a="184968493"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa008.fm.intel.com with ESMTP; 25 Oct 2025 00:14:27 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vCYTp-000FAe-0M;
+	Sat, 25 Oct 2025 07:14:25 +0000
+Date: Sat, 25 Oct 2025 15:14:10 +0800
+From: kernel test robot <lkp@intel.com>
+To: Nico Pache <npache@redhat.com>
+Cc: oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: [akpm-mm:mm-new 173/182] mm/khugepaged.c:113:25: error: variably
+ modified 'mthp_bitmap' at file scope
+Message-ID: <202510251530.eJulmicR-lkp@intel.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 22/25] fs/buffer: prevent WARN_ON in
- __alloc_pages_slowpath() when BS > PS
-To: Baokun Li <libaokun@huaweicloud.com>, Matthew Wilcox
- <willy@infradead.org>, "Darrick J. Wong" <djwong@kernel.org>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
- jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com,
- mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
- yangerkun@huawei.com, chengzhihao1@huawei.com, libaokun1@huawei.com
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-23-libaokun@huaweicloud.com>
- <aPxV6QnXu-OufSDH@casper.infradead.org>
- <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
-Content-Language: en-US
-From: Zhang Yi <yi.zhang@huaweicloud.com>
-In-Reply-To: <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:Syh0CgBXrETAdfxomP4rBg--.46683S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7WFWkCFWDXrW8JrWfCr17Jrb_yoW8Xw4UpF
-	WkCF4xKFykJr1Du3W8Z3W5tFyaka1rWF4UCF4xt34fCF1qg343W39Fk3WFkFyayFW5A340
-	qrWxtFZru3ZxA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUF1
-	v3UUUUU
-X-CM-SenderInfo: d1lo6xhdqjqx5xdzvxpfor3voofrz/
-X-Stat-Signature: dmfpnphb8xyeosny6ffdu3wxuwd79rda
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Stat-Signature: rkwmsfz13h5ytya4a3bh1sj5j9ape6ez
+X-Rspamd-Queue-Id: 37066C0006
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 4EA5C40012
-X-HE-Tag: 1761375688-631814
-X-HE-Meta: U2FsdGVkX19sK4r9wnZl0+adhCNHU/G7N28lO1kGCBCBtU958dDaLACgnqHQVpZ2/enMqxsmzY38EbapFTShfdnRk/hfl7pXuJ/U0cmiyG97Bc45vSA5kIRO8fGKwNlhwuUCbsQxaNgY+HXhjz7aKNJOkVIpmYrnGKWoGqmB2kfgZEd+kLnpICzmm/7MYyAp7oWP3TCH8yTPH/KSOtlzsrd214S6yQwWpMQq+MSLeswkhkYg3z32ldJFvfpd8cMT3LUHsnS4Lsni/LO2LMMVQDIdMlxdgTO7mewB3cIXEQlJKqBv9yZtDPH6+ziuXAh7xRGPwkw/l1nDsH8xP/vtMzwAqNwHLWtg4eBOBiTsF6m/oeHub1As7XATgu1SkHKMhgdAPGb4/MCiqyHgTJVyZ4zQ8ECkNlIY/CvDpb+20rOmf9axbKHUEexMZ9g7jcuCw0ACKzxWnZWf1IFXFgazgthqLA5JaJiKM76UbqycA4rz9uGOpzuIsSvoPteezUWW9GeI5L9mDYoR8p4z5fXXm6k39W8PYbkXV+EYP+t6uYOr265kcvoSFyzloGtyjONV67ZI0HnFZeP2rG4sVyZTqPmzoHhwAFehQbuQlGNhRA9VrUHASQzm7sjFpKKgbdC/y5xwh1sYzstEgRPS2iVmb3jbToK3DgIyfs2PueduheIEIRl3YJu9/ESGFEcGgYtgtFU7QNqDdjImz9f5eZYom2hdfPtxR6tMOfbB5fgcW8b/IvcMpZmlCZBPxHDWwI5oLg+lN7t0qn7g8ccSyBk/2MCpg2H2eQjG+59BMzAkV8w5EmwrnWr7C52V4XdkaqSkFEmnKC3xqFWTOc9HTRSi++nFC/qdc4Hm8AhYYr+r5ET9n0JApLDzyJaiDH++1re1Aafw+dceF+SL9tzYt8BhRTSKXg4MX2BwUuY6sy80Ha7F3XZKjhpAx9QhdhgcUs5k1xh8xt4Pa+lq/1e2G0k
- sKG+4JOv
- RcqdUBNu9ZaOVXvqWHD4XLYR1BwNWPb+4nW84HAWaTMLIvLY728W3pevrbDtYoG92cAXZN2Tekvvb85/Im0wefr6aGtP3CQjjfVlpQcHFRzW9Cd2TWRBoceX5NJ7EyFxE3Crw45liV0qm7mpdtw7bttlRIbYKBumfo4Y2U7MmFxo1d9kqalvW3CVNyGlsoC3/LmSy
+X-HE-Tag: 1761376469-220996
+X-HE-Meta: U2FsdGVkX1+Tck4qSxWy6AvcDFnJfyvP+VcWLAqmzzXmqHneAiaVAlPcvYXSJERQjeae29MJa8IJ9m0XfsjL+eUkoAxKILpk5L+WfSt+d6KhW4Dy5k0lQd8Mssq+SEaUW8c10qdsgjWKATPGruq8tWfhhnaqIGI5t5z8OQoqJ/61UxHaBm0AIi+UP5asCPRuXlC8AA7rDxrsLpZQQU7qOE43qlVbVIKiyx6UEbYyomJCVw9JYlHXGEJ2VCN0sBdbdoKZT8UNekvxrfTf0j2BUPPNVP0+RD+p0WcJFQrDQNdPdfgxqhiV5ZzFTfHWWjRnUJXjKf96wvAUUU+ljZOLUFEEJTtGW+2YGawDdbJKaiZpb4chnRjNFcmPinro/uTy4LuUthUjiOcacusbsNxUlOJzVPewtE81Kxv6nZ6pz+vHbt+NvDP/zB0qAUOepIs2WM7wtMoEnY3TesD2A3LdX+xobx5wd4cHf8JSonSJO9xqRdxL6kV8FKH72znGbR295O5piQ1D7rTnfH0PrNgb1rA9LdX/plVgJViyUmQbRSTor4IJtlOBcrFODcK87egB7M5WcuoMns01rXKtVbxC0RskylqDN56BpW0efDvd4SkS9HfdDQYVmIUCZr1oiNdROrGXYjjb8AQbepI4Jpzs4lVfymnmDEES5wdbtSpsBzFBjEX0y27JSCDraQptCs9HfueAFChTjEUM8augL3m6elSXFnsj1KbIlG+QVgAg/4RvbaMiOxCzKzQQVFekT2pAADF8FPseTXJ6XdfGklIW4fEzUs6w5M6aETyurvwrexfDdAxrQ8wJdvycSU8WvsABH8YvrueuTjL04LzzTTtDeOHQTWI+pt9VR+xYNr5u8MIgynorNBUtDb6hTCDOlfuHFvRbGNv6RjXRuprCZM5c+vC1U5fYH/EoERfMlE2pxRPhSDDNdhwBl2Zgkkn4TvN+zZyPjYSrpt69GCPmnjN
+ jc+/fln7
+ 2667yYnGnjh6uk0xRfQpvQyieW/vbIpp1szHThBWyXXGYypF+uzEi5p95o0ajAYfYDUYRszmMu87Lr/1kYIFzEczCvpCKdfaKXSl/MZ0acfnS/uLR/2pDmdL85K1kzQPNKwSRHElCDteMomOCzK1EAgFSQfnPUcPTgFfUDBi91EYlvrZ3njs3zYeFbEzCaFYFoqwkDYkDAN8bCpWqR6zFqw0uwnd9qyt1+S8a+eyM08Ub2+YEdaYM+gMADpSaBKofZqJxxV9GVLjqic7UOw1CWeM9bnQpI+0bW4GyZptvDbOgCAgUj73Sd9c4FQLu+C1VPquR/aLu214xCTlgSxcTD1ht4DH2O4V0GUDcQOx3oBr2EmBtOd0WbcUE9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,47 +105,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/25/2025 2:32 PM, Baokun Li wrote:
-> On 2025-10-25 12:45, Matthew Wilcox wrote:
->> On Sat, Oct 25, 2025 at 11:22:18AM +0800, libaokun@huaweicloud.com wrote:
->>> +	while (1) {
->>> +		folio = __filemap_get_folio(mapping, index, fgp_flags,
->>> +					    gfp & ~__GFP_NOFAIL);
->>> +		if (!IS_ERR(folio) || !(gfp & __GFP_NOFAIL))
->>> +			return folio;
->>> +
->>> +		if (PTR_ERR(folio) != -ENOMEM && PTR_ERR(folio) != -EAGAIN)
->>> +			return folio;
->>> +
->>> +		memalloc_retry_wait(gfp);
->>> +	}
->> No, absolutely not.  We're not having open-coded GFP_NOFAIL semantics.
->> The right way forward is for ext4 to use iomap, not for buffer heads
->> to support large block sizes.
-> 
-> ext4 only calls getblk_unmovable or __getblk when reading critical
-> metadata. Both of these functions set __GFP_NOFAIL to ensure that
-> metadata reads do not fail due to memory pressure.
-> 
-> Both functions eventually call grow_dev_folio(), which is why we
-> handle the __GFP_NOFAIL logic there. xfs_buf_alloc_backing_mem()
-> has similar logic, but XFS manages its own metadata, allowing it
-> to use vmalloc for memory allocation.
-> 
-> ext4 Direct I/O has already switched to iomap, and patches to
-> support iomap for Buffered I/O are currently under iteration.
-> 
-> But as far as I know, iomap does not support metadata, and XFS does not
-> use iomap to read metadata either.
-> 
-> Am I missing something here?
-> 
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+head:   752c460b5865d87117095c915addcce7a68296f2
+commit: 8387af7962dd62a2a2cdb741e702b476da440ff0 [173/182] khugepaged: introduce mTHP collapse support
+config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 15.1.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/reproduce)
 
-AFAIK, Unless ext4 also manages metadata on its own, like XFS does,
-instead of using the bdev buffer head interface. However, this is
-currently difficult to achieve.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202510251530.eJulmicR-lkp@intel.com/
 
-Best Regards,
-Yi.
+All errors (new ones prefixed by >>):
 
+   In file included from include/linux/kasan-checks.h:5,
+                    from include/asm-generic/rwonce.h:26,
+                    from ./arch/powerpc/include/generated/asm/rwonce.h:1,
+                    from include/linux/compiler.h:382,
+                    from include/asm-generic/bug.h:5,
+                    from arch/powerpc/include/asm/bug.h:116,
+                    from include/linux/bug.h:5,
+                    from include/linux/mmdebug.h:5,
+                    from include/linux/mm.h:6,
+                    from mm/khugepaged.c:4:
+>> mm/khugepaged.c:113:25: error: variably modified 'mthp_bitmap' at file scope
+     113 |          DECLARE_BITMAP(mthp_bitmap, HPAGE_PMD_NR);
+         |                         ^~~~~~~~~~~
+   include/linux/types.h:11:23: note: in definition of macro 'DECLARE_BITMAP'
+      11 |         unsigned long name[BITS_TO_LONGS(bits)]
+         |                       ^~~~
+>> mm/khugepaged.c:114:25: error: variably modified 'mthp_bitmap_mask' at file scope
+     114 |          DECLARE_BITMAP(mthp_bitmap_mask, HPAGE_PMD_NR);
+         |                         ^~~~~~~~~~~~~~~~
+   include/linux/types.h:11:23: note: in definition of macro 'DECLARE_BITMAP'
+      11 |         unsigned long name[BITS_TO_LONGS(bits)]
+         |                       ^~~~
+
+
+vim +/mthp_bitmap +113 mm/khugepaged.c
+
+   100	
+   101	struct collapse_control {
+   102		bool is_khugepaged;
+   103	
+   104		/* Num pages scanned per node */
+   105		u32 node_load[MAX_NUMNODES];
+   106	
+   107		/* nodemask for allocation fallback */
+   108		nodemask_t alloc_nmask;
+   109	
+   110		/*
+   111		 * bitmap used to collapse mTHP sizes.
+   112		 */
+ > 113		 DECLARE_BITMAP(mthp_bitmap, HPAGE_PMD_NR);
+ > 114		 DECLARE_BITMAP(mthp_bitmap_mask, HPAGE_PMD_NR);
+   115		struct scan_bit_state mthp_bitmap_stack[MAX_MTHP_BITMAP_STACK];
+   116	};
+   117	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
