@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E87BCCF9E0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 951C1CCD1BF
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D5AE8E0124; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
+	id 4FFB48E0123; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 20FC18E0121; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
+	id 480558E0121; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 03A778E0127; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
+	id 25D518E0129; Fri, 24 Oct 2025 23:30:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B8F488E0121
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BA5AE8E0124
 	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 23:30:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4794816107F
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4780E5E8B7
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:11 +0000 (UTC)
-X-FDA: 84035208222.23.ADA91FE
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 0502010000A
+X-FDA: 84035208222.24.162715D
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	by imf20.hostedemail.com (Postfix) with ESMTP id B00A91C0005
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:07 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	spf=pass (imf05.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+Authentication-Results: imf20.hostedemail.com;
+	spf=pass (imf20.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761363009; a=rsa-sha256;
+	cv=none;
+	b=vuiN14u9/OprVO83qxcRluES8lQBCrL4Ktpnd/QMZRQhCVKgMQf6pAATDs9v/QwugE4Vms
+	zc2PMll6okNlIsIgMzLpRJve6mSWw72kNy/lGCu3Yu9Fl97fa2Hc57enUYjQUy9YJX0ZxO
+	Jkc3RX/j7chW/kCUvwx4exOCdjs+ivw=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.56 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761363009;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0vMwavuoVfuWFbN263bzf9ZlTRLN5G46LALqIXwR4g4=;
-	b=44fXarKIsUneQX35dVzbl60vzAbxDYkPvyWlEjhPF+5mstz6pxWvNRqeSwPEsEgfalP/Jd
-	Fx782nUavbYVG5GF5z+Q+PfkyPdbhNNulSywJat0Ju+cXEtAapG7sT8XnElmeMwA4eCjlo
-	R6LCuoElm6Oqms9Uk8xtSrQHGTtqCB4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761363009; a=rsa-sha256;
-	cv=none;
-	b=g2teMBBKBtQbZB7Q3HT2yJIQPnG60+J4X/OlUW4uxCXtRICHNKwjvY5qZ602bDOWweYYhv
-	ZGfMOQz/HiVznqaRZsh5YdvuE5QW61v05YDUu2AJUdqfrYJvS36bAV4lHp/BHfDmbvpGuU
-	Meuhq7ar7rR9JAa8gw4xpoI3szOsXOA=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcJ5pFYzYQtlQ
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:04 +0800 (CST)
+	bh=6VywKA5pOCN2HL99HPZHUfuE00ACEido1GVxDxaNedQ=;
+	b=PeNIhT+8F7Q6umcPxtFsamyVu1C4cKQpjyfNLM9FzR68V427hEt+NZpOxezXFLiYdVqIOa
+	PZEnH/bnUys8P60VFefMc62KBUJaVVXwIb9GMOXtHM8TxJ5WmK7TFRR96Eza3bZzXuAJCi
+	zax3aGWq83brxVk5pyPF+BRQtfwXMQ0=
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcR5mXxzKHMMf
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:11 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 741791A1444
+	by mail.maildlp.com (Postfix) with ESMTP id 7E6391A0C78
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:03 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S5;
+	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S6;
 	Sat, 25 Oct 2025 11:30:03 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: linux-ext4@vger.kernel.org
@@ -70,41 +70,41 @@ Cc: tytso@mit.edu,
 	chengzhihao1@huawei.com,
 	libaokun1@huawei.com,
 	libaokun@huaweicloud.com
-Subject: [PATCH 01/25] ext4: remove page offset calculation in ext4_block_zero_page_range()
-Date: Sat, 25 Oct 2025 11:21:57 +0800
-Message-Id: <20251025032221.2905818-2-libaokun@huaweicloud.com>
+Subject: [PATCH 02/25] ext4: remove page offset calculation in ext4_block_truncate_page()
+Date: Sat, 25 Oct 2025 11:21:58 +0800
+Message-Id: <20251025032221.2905818-3-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S5
-X-Coremail-Antispam: 1UD129KBjvdXoWrZFW5uw1fAr1rZr1UZF1UJrb_yoWkJFc_A3
-	yv9w48Ww1rJrnak3W5A3yYqFyvk3W8Crn8uFn8tryrXFWrZFs5X3WkKryY9rs8WF47urs8
-	A34kXF45KrnF9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbP8FF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28IrcIa0xkI8VA2jI8067AKxVWUGwA2048vs2IY02
-	0Ec7CjxVAFwI0_Gr0_Xr1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xv
-	wVC0I7IYx2IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVW8Jr0_Cr1UM2
-	8EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2AI
-	xVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20x
-	vE14v26r1Y6r17McIj6I8E87Iv67AKxVW8Jr0_Cr1UMcvjeVCFs4IE7xkEbVWUJVW8JwAC
-	jcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIEc7CjxVA2Y2ka0x
-	kIwI1lw4CEc2x0rVAKj4xxMxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC2
-	0s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI
-	0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE
-	14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20x
-	vaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8
-	JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjIztUUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBWj7Ua9I6AABsH
-X-Rspamd-Server: rspam01
-X-Stat-Signature: nberq7c1utehby9b1erk1pgmrieut3nh
+X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S6
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw1fJFy7WrWfAr1kJr48Xrb_yoW8Jw48pF
+	y5K3ykur17uFyjga1IvFn5Xryak3ZrGFWUXFWYq345WryIqF1fKr97K3ZYqFW0qrWxXayv
+	qFs0yrWxZa17A3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUQj14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
+	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
+	Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
+	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
+	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
+	IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr0_Gr1l
+	F7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2
+	IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCF
+	x2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14
+	v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY
+	67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2
+	IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdManUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAMBWj7UbRJGQABsv
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0502010000A
-X-HE-Tag: 1761363007-40051
-X-HE-Meta: U2FsdGVkX19h9KoFoQCZvGR9N6fSpRKO8Di04B1zHiBS5JhAYDz/6RIVW7fXJ3vRguTwHZBbEp9Am2xgkAExeyuAUlnDubXEv8vR+TmA2TJUJ+vsT2bfDQhXcEiS+AltgA38K/eseqrmoCVHw7JHPayynfR3R0/hYUxQj8IJ/JCD2dLCHfYaAavXrLh65lzYS0Z8kdHgtUzzSwJWe3gFXW1XGnshx8VKdamLzy86VQZ2rDKY6e87QOLLASNHS8InK0iBHDoMuMlxDGcLOPPxFBY6N0dRjzcevWfFcpnT093x0C8u2tOiUI4E/hK4VRxQ6ZJG19Y3ZD2skI4go4rMR6+5dM+j/CwtbLhd2Bzz+I8MKw2zQR4NQtT66e4nxazMU4daK80PYvqqJBQc3n/STL/wNafkMdNPfpKRLJVFp1mh5PmW8mudhJDl995pmLnofIm99YMDU+X2J7CtoydnydJ0j16T9hNA9Vqz7BbCGf0S2j4XETkje1bPtAsk1lrPNQF0AC9YPBpUFaLkrtvEXPN/PVdNxMtwQGKNZzMc9JswGRZ2jqeNMBb8fIfpcr7QlKV36zYcO4DVUWajuQEjFfHk2iBCB6IRE5tnMei3jr3IGwBynOzJU1Ny9sFNsf96gHX2OwUZt/opEYtJEZh9aA1tokh+VkTqeWHmbJ2dHZlfeVNRcooyKdQLfGOfVOsa2BHaN21b3Fl1j3/EBh8JHoAlkDkV3cnnwZdtHhZS5bwwul+gkCWSXRSqC/rzl2a+Ny3VH7K+tpjO7RSgo2JhSWEMqzn8zFIoQ1gmDNykKK6mzHkjVZhlmkJLq4vLnFHOvfkTFimXtfwFPlEFsXjuH5ZviciRXP7EaVkfAsJOXUSNhyvmPX+u4Wf+3NRedGOnOFR53E8eWNrHwhtJ1ZWmFUsBF3apkPeT1IzyUeKVOy1P+4bcOKejXpyvsj2rvWenhPeVNcmjbgGpISeGMhM
- Ls2jDWI6
- fxkgUGsFeHxPdQSDl/GbJNzQmxpozD5Uoarh55MEeeG7SKpfxXrs+fF4HCJQeU0i0Vd29XVuo8mpW5HS5dC6+pNEzFenERdj+sVd1FkNW68DaE/MQlWrbEJVtYxvWwvt4WlkS5sV1ze3zo1bxhPUY4FkOrJ67bS1CPIlFMqXcVcwKzLYG2e05uThYrg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: B00A91C0005
+X-Stat-Signature: 7qy3re6yamxxqfx7xzti6dn6s7igjggq
+X-HE-Tag: 1761363007-648367
+X-HE-Meta: U2FsdGVkX1+SCyTZrnxwPiwfTpRyuU2aeRf+rn1b8zr7zhvExKhyPWc+JJ6rXsylW/xukTdSrGOjIX1wis6e/QRLlidSsMB8bVZiOSt9VISRclRk+CwZoMtufwjNkPYbHQrXEIyYMqddWaL+nEMTzPvGe1sY0HECXoX3r6xOm0oIND3DZjXQWqO1kwfjx5nmKqtrPnriSo9I+Dl1MvlA8D660nhdOTDBIwruq83Rdw0N9pFd6FCCaSCs4aEmpHrNTIbBgDQnKW+sCVXTsyOQStUNO1KP2ZQzql1i4it5h3xlegWKJ/jdBtMrW1xdiAfGIZ4Cce6FW3kkpuw7WchJiQRCJuQCi2/aJzpJs/O+XOXeVuUeqUpabisZoxzpZxyTUXsYR6yhvbdfYE3DkMm6Bste+USyjlrzwzQXp3umc44OkfCAQL7yq0LHJ6amAMn74Te0ZMVrNDzdkEfGxMUnX1abGJhRnhI8Ut+xggNwWQMaiXbgv3kp/rx1vZb7MMVvRKf25OeIIllo38nyQhitwGyXT79GBZB6iqhl2zdXcg4YnISCgft0KihAUAs0XZBbwjD0/RKBtmTViuFRC5McQnMccrKcNr/x8pp3YSOCZJRe6RKJS1Oddsxl20sLFz698VS8ej94TiizHJI4Cu6cUcQdGNEfrx18/bj8+rCboPCwkv5RFqjpWGT6rG5SFHDiMfJ79NOYz1l4Lb5kZ2ADiVikKLIE1udonTPSa+wqquJcL0GsrJ6fSy4c0tzognlyA8YV/hQg7iEMuVVaPzVsgJHRW/ydIKhvx+dq8rb/1cqRQ4cV3Lv1mVVfuL368Y+PUH4jXtOvPF0tRxW1uC2Ikw+MvnitTYVPmW6tRwzSmsGlIMPMASirI2AMVRp2pWDLrwI0Vz5jXLxliy90ZnFYHNbkc5XOLdraVCsYg4Xh3c/DXoYJUMOPbkunl7+Yr0FwmfqFztYbWyGPFhEulz4
+ CwgX4SwY
+ sprXfmmYJB5h2NNA7FsDl4X04Nh16lNZqLcGmKKKdtykIlyVvaZN/k4HunS7TJUys3iLiSDFcfhcj/lUL/IGRsKRgf1GeIG1xkNZsThhurAJNBlfH6WZNeypCHxtxoXeA3tyderryPRyYZZPRsEUcA+941DT/E52BAfG15OHBp4tekYvIF85ZWNrTJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,34 +113,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Baokun Li <libaokun1@huawei.com>
 
 For bs <= ps scenarios, calculating the offset within the block is
 sufficient. For bs > ps, an initial page offset calculation can lead to
 incorrect behavior. Thus this redundant calculation has been removed.
 
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 ---
- fs/ext4/inode.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ext4/inode.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
 diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index e99306a8f47c..0742039c53a7 100644
+index 0742039c53a7..4c04af7e51c9 100644
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -4157,9 +4157,8 @@ static int ext4_block_zero_page_range(handle_t *handle,
- 		struct address_space *mapping, loff_t from, loff_t length)
+@@ -4183,7 +4183,6 @@ static int ext4_block_zero_page_range(handle_t *handle,
+ static int ext4_block_truncate_page(handle_t *handle,
+ 		struct address_space *mapping, loff_t from)
  {
- 	struct inode *inode = mapping->host;
 -	unsigned offset = from & (PAGE_SIZE-1);
- 	unsigned blocksize = inode->i_sb->s_blocksize;
--	unsigned max = blocksize - (offset & (blocksize - 1));
-+	unsigned int max = blocksize - (from & (blocksize - 1));
+ 	unsigned length;
+ 	unsigned blocksize;
+ 	struct inode *inode = mapping->host;
+@@ -4192,8 +4191,8 @@ static int ext4_block_truncate_page(handle_t *handle,
+ 	if (IS_ENCRYPTED(inode) && !fscrypt_has_encryption_key(inode))
+ 		return 0;
  
- 	/*
- 	 * correct length if it does not fall between
+-	blocksize = inode->i_sb->s_blocksize;
+-	length = blocksize - (offset & (blocksize - 1));
++	blocksize = i_blocksize(inode);
++	length = blocksize - (from & (blocksize - 1));
+ 
+ 	return ext4_block_zero_page_range(handle, mapping, from, length);
+ }
 -- 
 2.46.1
 
