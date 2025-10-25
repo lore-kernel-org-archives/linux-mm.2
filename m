@@ -4,132 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6467DCCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 05:26:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15982CCD1BF
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 06:33:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81F948E013C; Sat, 25 Oct 2025 01:26:49 -0400 (EDT)
+	id DE1488E013D; Sat, 25 Oct 2025 02:33:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D08A8E0135; Sat, 25 Oct 2025 01:26:49 -0400 (EDT)
+	id DB85C8E0135; Sat, 25 Oct 2025 02:33:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 698CB8E013C; Sat, 25 Oct 2025 01:26:49 -0400 (EDT)
+	id CF57E8E013D; Sat, 25 Oct 2025 02:33:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 5670A8E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 01:26:49 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F00A21A049F
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 05:26:48 +0000 (UTC)
-X-FDA: 84035502096.11.C7C0DDC
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0073440008
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 05:26:46 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CwrpUWGM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BFC408E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 02:33:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 60260C10A5
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 06:33:20 +0000 (UTC)
+X-FDA: 84035669760.08.C0D105D
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 0918B20005
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 06:33:13 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	spf=pass (imf03.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761370007;
+	s=arc-20220608; t=1761373998;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mV8buuSZQP0rHOq5S4b8K+cOmbjRvDVQwA71gPDHBAE=;
-	b=ayzGRNtGq/ngfR31IaJoS6iv7py5VPz2OWUmEKTuRotX3YHpcqv3brIGiA3jG8CmsL+fky
-	FMNGHiF2sqlPKx5mUYbbErJcri0EiNQLNezNebtbpf7nUzFQIsoRU2PtkR8zTZbfcBKH8P
-	wObF2fL/pWEL7wTBuZ/GV0sm0Iucf1w=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761370007; a=rsa-sha256;
-	cv=none;
-	b=OHkEi9bgRm889Jhd75LqRVssMiCDiRCtbPpK8jRcBeejYUir4iPeVVP3DSq/oTHyCvPsF6
-	YVXCbLd8UH5yulByI81bmtfZBQ6+57S2m+IHc+CTu9PsZ9eHlLUYHTAD134cZn3tr5f9HE
-	a88dYAU6Y+UAJ0BQHYOO/DateJGO+y0=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=sJPQP7o2P1zUzIFg5kKpIroyc7yHZ9f72lY2MSOC+a0=;
+	b=kFOGkXzEx/qor3md3rSNc49t5S4EnXD8d6JZlUOl+7dCh1x0TiQ6GOt1AbdH8Ji5RdeFuW
+	AiawLXumDSGfM0OuSnTRX0oMfVC2W60cJc1nyvQnbmuouqnvj5IzxxPs5KhgP33YKTciFU
+	10BHxAAviKuKoIemhuXXnzLRsjEy6Ps=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CwrpUWGM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=safinaskar@gmail.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-63c11011e01so4336954a12.2
-        for <linux-mm@kvack.org>; Fri, 24 Oct 2025 22:26:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761370005; x=1761974805; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mV8buuSZQP0rHOq5S4b8K+cOmbjRvDVQwA71gPDHBAE=;
-        b=CwrpUWGMBduY0KR8GlLn1rjQEpnGHVBxLRAf+27J3mP/klFqhOcCymDHWDRHYdtof9
-         hGCyEwKnAcdix7suo9FuVEBh10vyLLsAtpaVAsTBjjqW5lAn3iy5xJ3Jqkki8vA+huiN
-         BeXZ2lzKoa+ThwPvVK1Uo/vPZgvEHU7bM8abji2CF+Hz6t8k1/etuRaND+QbceAPf9ni
-         lYaMRBoN2udbNlzcM6ttkuRbWSvgo7H1S3NscRpBa7ZO7jpDRxScTweMf6ax5lWQUshS
-         R2RowiXguCJMU1IUGIF5PNmT5JtDbG9K4EQs3wt4TuWdU1JYfQA+cvmHLcBsPqPG4ncQ
-         GqeA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761370005; x=1761974805;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mV8buuSZQP0rHOq5S4b8K+cOmbjRvDVQwA71gPDHBAE=;
-        b=pn9ly5OzLJ+15Vbxv0tCkFWB0/zE8K5OeNNGeJTGYmACgw0v0Uxz/UYsHif7VRiXX3
-         3SOisT5+qE+Js8MH6jyA7/LrGWX6B8Q8xjyQvRbL6n8/o78QixSgFz/d+1EyF05EovK/
-         P94kWCHUrxawDNo3NE/Y761bYSmYi0Dfj1Zkj0DdZO1GIGXuQCteTe14WWml9TXjzR7b
-         5s2xTKCYVA6UTUP1U7/WharyYR4f9OCkManAEP2nZzkID1sx1VBXrvmgd304KYeAPfnQ
-         UPjSwN02NMmpCL+UwDotuXwB2r1wW+1alBBM0ckkGq3W+96pt0jbkEIygfkSkSKTvfYP
-         oR5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUlbno10tLbyayky5tA+IVh4CpuYayjrLe+FQBx+woFFZptqRi/fbJRrWftxBeSJ3GBGGJSNlVcKw==@kvack.org
-X-Gm-Message-State: AOJu0YyhgF8XcFRguFwZVH8V6KO86b8X1SKug7Gi4aMDKQXrzOryVsBa
-	aS/xVL2Ham2m6alBL+XnfI4DtQmZSgztUEu/+QXIQwUak3yJ5lFv105O
-X-Gm-Gg: ASbGncsJTLRgDcCdCTo0FYzxdiQrCDcBiR7aMUS4HE0io8CAMaXjgRF0ekgIVsgQvph
-	hZnJws7l0MenN7CNAukwTZ52krORK5+Y3o1mhmOC7EbmwVq5X9miBXBxj+Aa57EQtvtsXj6HfTk
-	I613H8p+uQRUoFTkN5pr60UoS4v98aFteuL7dNwv8R0mc75lPz6vK225vUWuNdlYhSsFALVHzuA
-	pzqdqTol42ntYG5VciYse9P8WEno02TADl09zul3IsyeareIfRg96vIZ0CDov0K7bPEQDKria4p
-	CMUjlx1coH4FuG9DEoaWc/76EQTH0dKs46CXkMN0vbAoKhkDxh2KEZ8a2hkDjE8e3zVya6+3qt3
-	RAQhJom/EI1+3UTMcVEOu5exkbkZRzkqqIrvgyaX+WAz56vYGUxUDkSjVkO/mpWF4elA0tIamFi
-	XJuJH5KSfVhEs=
-X-Google-Smtp-Source: AGHT+IHk4JGeekekahtUg2k/EhAC9kyrxVTGjCsIExfHrDtgIcN62P8FCtHZWZXypDamfyJkpyvf/Q==
-X-Received: by 2002:a05:6402:40d5:b0:628:5b8c:64b7 with SMTP id 4fb4d7f45d1cf-63c1f64ec00mr33191598a12.6.1761370005212;
-        Fri, 24 Oct 2025 22:26:45 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id 4fb4d7f45d1cf-63e7ef96105sm880960a12.19.2025.10.24.22.26.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 24 Oct 2025 22:26:44 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: safinaskar@gmail.com
-Cc: Dell.Client.Kernel@dell.com,
-	brauner@kernel.org,
-	dm-devel@lists.linux.dev,
-	ebiggers@kernel.org,
-	gmazyland@gmail.com,
-	kix@kix.es,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	mzxreary@0pointer.de,
-	nphamcs@gmail.com,
-	pavel@ucw.cz,
-	rafael@kernel.org,
-	ryncsn@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: dm bug: hibernate to swap located on dm-integrity doesn't work (how to get data redundancy for swap?)
-Date: Sat, 25 Oct 2025 08:26:37 +0300
-Message-ID: <20251025052637.422902-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251024163142.376903-1-safinaskar@gmail.com>
-References: <20251024163142.376903-1-safinaskar@gmail.com>
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761373998; a=rsa-sha256;
+	cv=none;
+	b=FPKoxnRA22MGvmdOJr4DyXJ9NpDOTR0HbQ5h8APs5FduiTpixRTaK/QF6axIgaIPzm1OW0
+	6qC6riEtPNRTj+2gMlKakmqrRL9xNkhUTVxMrdUTFPK2h53JakrPbzBnhz4TvbDkn7vCUC
+	qFxf5S1Ms4UkR4bfBcdV8YTc2+vhloU=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctqgY16ZZzYQtn7
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 14:32:09 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 079F81A0F86
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 14:33:08 +0800 (CST)
+Received: from [10.174.178.254] (unknown [10.174.178.254])
+	by APP2 (Coremail) with SMTP id Syh0CgBnvUUWb_xojropBg--.48200S3;
+	Sat, 25 Oct 2025 14:33:07 +0800 (CST)
+Message-ID: <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
+Date: Sat, 25 Oct 2025 14:32:45 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: i5r43rw9eix81tcn5yebrgaghcfyd8ei
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 22/25] fs/buffer: prevent WARN_ON in
+ __alloc_pages_slowpath() when BS > PS
+Content-Language: en-GB
+To: Matthew Wilcox <willy@infradead.org>, "Darrick J. Wong"
+ <djwong@kernel.org>
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
+ jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com,
+ mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com,
+ libaokun1@huawei.com
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-23-libaokun@huaweicloud.com>
+ <aPxV6QnXu-OufSDH@casper.infradead.org>
+From: Baokun Li <libaokun@huaweicloud.com>
+X-Mozilla-Draft-Info: internal/draft; vcard=0; receipt=0; DSN=0; uuencode=0;
+ attachmentreminder=0; deliveryformat=1
+X-Identity-Key: id2
+Fcc: imap://libaokun%40huaweicloud.com@cnp3.mail02.huawei.com/Sent
+In-Reply-To: <aPxV6QnXu-OufSDH@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:Syh0CgBnvUUWb_xojropBg--.48200S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Kw4ktw47Kw13CF47Zr43Wrg_yoW8Jw4xpF
+	WvkF1IqFykJr1kZF1kZw13JFyak3y8JF4UCay7t3sxuFn8Ja4agrsFk3WFkFySkryUAw10
+	qFWxtrZ7u3ZxA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	UG-eOUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAMBWj7UbRPggABsy
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0073440008
-X-HE-Tag: 1761370006-448942
-X-HE-Meta: U2FsdGVkX1+GO32AMeCSN7F1oqTuFB6b7x0j10YISxa8pywlVnAWUhZIvMMAnEKdxp6lofsHGUDwM98O0/Ji5WJeGXmMqYm7PYij4kx4rDyDAfxo2yggeVtwnnq5DniU2TLb5f4MMDiWWQOet6Y0C+hyEXWzGe5ifYzhQAC6RuR4wqDfSUeN1FaCf/KOiIhQVSYdoIYe3RIsSNPqkE98+jWKVNcHqPqZVJ8/e4t+OeJnCszNZksbAXH/2prRp7qeo59FU19lHpTS3ohvJ3gHYVVrbEubJ7cviN4AunFtZwn3jy0pvGB+mU/zYhZVRSt3kif0BOVPQ2/OAv1aKaK2xX5ULqrUKXIjJni3iQeaFvAUasVx2lp9EplLe8ZMpr3q/5ZLoUDBHsCNzoy0Ktk+/fnK47FJZC3QJAe/5fYVKh2AabYIeghZ1wDKeX0yRAkgWgEcC+Y6powH3ELrvL33iLr6JS9vEpyAbUaGQ65JBG78W4oqlXRb35/be5nsZ+3MNKlHCMGZm+2qJii/F4p8t11tzhw9/gCFCj0ozR2aoW0wz+1WiLsg/9JnTCWlOA8iB0E/RWPk3dSBvXXBv1VaNGjhLDpGO44obOg48ENxFYXR91KpvSMoO2C1dnXcbyWveHkkzOmX7Ql5ftFzhBwtsf/dVX0h4J89s9cYMxFhuQASr9BVypuml1UWoBCVXtMtpFPAHk2z9Q8h0MIXXENhnqMmgm0eFbmPG06Ev/VNJgioKnEgZgo6TR4Qa2Tz1+eKoAvhDnDcSxGVYC9qiDxbromwoNt1kJ9HLXmd34l2vqkI7niX6JpTVYp6iknyIxyAcImpCBajyFqc+vW/uVxA9ASc9cwsrQnNow6McOSpGpe7Yay7+0tDF1j7htoKy5G2Ql8KoL3FUOQCZSIpzMmJBoTLzrl7w8zBZlB/84fGQSVWFIITM/7YPsy4PPfRTvuOi8coLWiUiiyPqMQV+3D
- lbL3JBoN
- GK/2z72ztjQprZ7iDcX84IT2FouSIa8BVqsJge+E7IXG8oD9gyHnDqXD507efy7B7GREfXCd7Tujz3Ij32J2aDJ94sU+gyv8wRRUUdxkKMm+rMP6v/6JgjWZBF+Hn4oLbDIdwarK04EfvFzkjq8F/Vx4cVWJcU7FBL373oQ3iMx9i+VidMrZtJr3w5AuG2sFw7ieCbfXXUSzpEEgr5gDwvh49eLb3EecyPFbxM4w419m6vpY7czCYmj3rK29faExpRGR4AuBNfZqcT27SoHJtr5Qb6i7yULeqoXXtNA2J7CIDVcqLrkXXGFp9VtobSVvEkPNr5gjHTHuYVY9DqfP6UpNYcQp6Rci1Uy5z0fFaAWgyhXBFOqco8cdFYGcuenfbhCnp+WM+7UMdCnAlX+m4oE+aUCUAkFZzUwy0tE4oRj7YY4Ns5aeCV788DQcX4R/f3ViV0Nr7tVkNd/udegNvM9JeyXDIR4YLNCs+WRL7Diy+ecyBGbcQC1SBdemZSoNruzuW
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
+X-Rspamd-Queue-Id: 0918B20005
+X-Rspamd-Server: rspam03
+X-Stat-Signature: qby8r3gb3mezfqekygtqa57knfifc1cg
+X-HE-Tag: 1761373993-321075
+X-HE-Meta: U2FsdGVkX1938/2nmQ0xrehgO4oAx8ePLf06Jcc+PTvwI4/gi+A54mBIHJijC9xny3NEJ0daQLNSMxAdH9XCbxiZcxc4GaR5e1zB57rlOEHUovYfOVOuJ6tNFcp2pORSu4hkKDJfNxG/t0K2dvn9+OqpBRJckagAbIhbSTcwL0GcG7MfGJG+BXpjLwKsdEoxVjojwdNd2UiQtBwFNBjzlARvTtS/zJZ2lpWuZfgiiOFwDS3vrPKy8tQ8x5zz/6XZEePvXtucPGnVK8Ea4nLL7CBxdi89yH354YPVRfOIY2SlhACTRtkSoNRztFJvRpJJGZQ2V3kBMgt1VnEkla69rZLvQprZ1X5R6ypoN+sBK4bY7zJAF21xYeDGPSpFtwbm7PGD/31eWxWfFFf8GWra3DDGrUhJqxnApKYwTCWe168l6uI9u4huiydF8CaGjptAlUm7gHKWGB35/X4BkgILMM1BXkyQjp4Xh6GWFQu59KP+PVGcWS759WMq3gumwKlUk8PDWqigh7AstyWSw7mj7veEO87CS7NcnaMRRCVfiKQaQPRvyP7olfesrWoHtrsL8rqdFhzRhp6GV6HfdOhEFh5CM9uywbEl/zRpxY/fTgBPq3W2tIUwiKg6zevLeduJHogoJZ5vPRHbXfdKfUeBtVU7sCAI92VhkpjVb/GYF7foTwXqUGjfc5zUIV0qI80iIVzTjvEmpMPUCRmmZ5vbfRuxzAAqytA1ryoxXNHc32VWe00HOovLHWXVlBivQfRK/LwI+lTkYn6sY37Sjsq/SPzfPyZS3A8ouZr62WL0esUBQt86dwbVRxUIzv4dkzIayDVa+DF5tFK9+hFX5N/+pdnaYifk3YPmPcLAPy++OThSCBnA4gBhasrUPjEdrMBz67/bTNMvYEZUMDRvF5+UABBtErw3piyg/mfSfmAG1RCy6DIeJcTt/+ZJga8kcp5zjOny+eoakmDhCS4bB4D
+ Ga2Lobn8
+ cBG7gQTnIFAG6+F13nO9NIIoeB/OeAM9oaOnzJiyXPIt18brhgjuZF8lg7DXyx/Fv+gIr8m16B+td8tx05COsYSpTDc0P0y0rW7ht2mP4lFmiAoFfB8ngAYnc5suLM1rAKXVreQMT/dARs5GN+fr0MzISmX/CyVRcVko3oAksoi15g6Yc3//lbSQW6nFJXqucISyS
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -137,16 +115,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Askar Safin <safinaskar@gmail.com>:
-> Here is output of this script on master:
-> https://zerobin.net/?68ef6601ab203a11#7zBZ44AaVKmvRq161MJaOXIXY/5Hiv+hRUxWoqyZ7uE=
-[...]
-> Also, you will find backtrace in logs above. Disregard it. I think this
-> is just some master bug, which is unrelated to our dm-integrity bug.
+On 2025-10-25 12:45, Matthew Wilcox wrote:
+> On Sat, Oct 25, 2025 at 11:22:18AM +0800, libaokun@huaweicloud.com wrote:
+>> +	while (1) {
+>> +		folio = __filemap_get_folio(mapping, index, fgp_flags,
+>> +					    gfp & ~__GFP_NOFAIL);
+>> +		if (!IS_ERR(folio) || !(gfp & __GFP_NOFAIL))
+>> +			return folio;
+>> +
+>> +		if (PTR_ERR(folio) != -ENOMEM && PTR_ERR(folio) != -EAGAIN)
+>> +			return folio;
+>> +
+>> +		memalloc_retry_wait(gfp);
+>> +	}
+> No, absolutely not.  We're not having open-coded GFP_NOFAIL semantics.
+> The right way forward is for ext4 to use iomap, not for buffer heads
+> to support large block sizes.
 
-That WARNING in logs is unrelated bug, which happens always when I hibernate.
-I reported it here: https://lore.kernel.org/regressions/20251025050812.421905-1-safinaskar@gmail.com/
+ext4 only calls getblk_unmovable or __getblk when reading critical
+metadata. Both of these functions set __GFP_NOFAIL to ensure that
+metadata reads do not fail due to memory pressure.
+
+Both functions eventually call grow_dev_folio(), which is why we
+handle the __GFP_NOFAIL logic there. xfs_buf_alloc_backing_mem()
+has similar logic, but XFS manages its own metadata, allowing it
+to use vmalloc for memory allocation.
+
+ext4 Direct I/O has already switched to iomap, and patches to
+support iomap for Buffered I/O are currently under iteration.
+
+But as far as I know, iomap does not support metadata, and XFS does not
+use iomap to read metadata either.
+
+Am I missing something here?
+
 
 -- 
-Askar Safin
+With Best Regards,
+Baokun Li
+
 
