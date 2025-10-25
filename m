@@ -4,95 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 02BBBCCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 15:30:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA74CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 15:52:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 615788E014F; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
+	id BA0A08E0135; Sat, 25 Oct 2025 11:52:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C5FC8E0135; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
+	id B787D8E0150; Sat, 25 Oct 2025 11:52:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B56C8E014F; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
+	id A937C8E0135; Sat, 25 Oct 2025 11:52:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2FABB8E0135
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:35 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C31F9139077
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:34 +0000 (UTC)
-X-FDA: 84037023588.14.5302B7D
-Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3DB93A0003
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:30:33 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of 3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E02A8E0135
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:52:20 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 42EB649C94
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:52:20 +0000 (UTC)
+X-FDA: 84037078440.08.C960856
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4799718000A
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 15:52:18 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j3SWMhnr;
+	spf=pass (imf24.hostedemail.com: domain of krishnagopi487@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=krishnagopi487@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761406233;
+	s=arc-20220608; t=1761407538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=H4PtvkKZFEBjpaVtmYMgaiUP0rE5WRgcuVuHYkk41Is=;
-	b=ZU7CwVeTqa7gJ3cQP9oyLwI8XMjYiZZkEsiHobyOH00luWwzl/nj0tzSy4r75T3R58QIfm
-	XFq4ogd5f+N4EOmakShMk4V/hJ1eehOQt51RIWVvNYB7YVDHVGhhiImwTGAys7ZfSq5jmL
-	FIVpDhRlM6iaEaC83zH+u6q0zhrdNJs=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=S/G5OIygkBFviJhEHCwC7irT8X1Sky8Y9qSJRyc+oiA=;
+	b=W3SoDMWbNRpCs7zW86NnMeRGowJpwYXaAoNn/kv6TuZ1gSwezZ9IN0ChtjMFxJqwwDSy8S
+	BSeI3y46s7xBVbPNuP8pj40WItysIxKldkNdfDqVIM+/sqoVF4bnlw4di62IKKg/O5+AE2
+	JVtRDPXnx70qV0NMQUjcSiEJtGkW5j4=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf15.hostedemail.com: domain of 3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3GO38aAkbADUjpqbRccViRggZU.XffXcVljViTfekVek.Tfd@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761406233; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=j3SWMhnr;
+	spf=pass (imf24.hostedemail.com: domain of krishnagopi487@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=krishnagopi487@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761407538; a=rsa-sha256;
 	cv=none;
-	b=5W3ITvgZwonJJ86oGPTxfh7ylB8N3ONRzeALYVQi3z7BXBv+xDFnNBDAD23oJMt3znncFW
-	YN42itGlE3hAvA+ILsGPxriY6TbvQ6i9ho7zc/8+mP4HX8F/Td13rPspW9QjSJ3naZx5D/
-	taEHI69pGI3r7GitYe5uZScPMfhVVnI=
-Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-430c8321bc1so41474265ab.0
-        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 08:30:33 -0700 (PDT)
+	b=qRXTOo3YCPRxWC6Q9EvVAufJU7AvrBkOKA+rV43iWV77dEwQPwOBZJxrUEB5U9cprYWvQw
+	Pa12oIfkGahfaYMJfWLor07j7t45HKk7zJu2w9/pNWXE5OfRc3nd1DxgMBKy3bgLzWbEzH
+	NFK1zFYt5RgXNcSv7gXEUf1hBpnU8t8=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b6ce806af3eso2836101a12.0
+        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 08:52:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761407537; x=1762012337; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=S/G5OIygkBFviJhEHCwC7irT8X1Sky8Y9qSJRyc+oiA=;
+        b=j3SWMhnrV8npmM/Y/Wp7ln/PTFMVFZEYURSuJizORICwrsGE6jo70M0ANq6WckTtxq
+         sNAViaWBsoi10lnBecaEfX2CVnCj250V1zEEnjmOYT2ziQPWI7d/bEliKUJY0vHdtTUV
+         vmPZ1lDqrCKs+dIkAd5l5xocZoxtECxznrFc0ZsDi/CKin2o44ihI2pa84VEyIkh/crD
+         d5s8mK0P0CK24fJ78HXIyyPo1T+ACaOz91+wZJArekOXuBXW9HBUlAs++VIJEyQC+65N
+         3nLL3kuvvuZ2rKD05HOGs/N6e1zh0rjtsSp799BkUnfLCo5RyJG/iskmFGPVaZuWCUp3
+         fCQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761406232; x=1762011032;
-        h=to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H4PtvkKZFEBjpaVtmYMgaiUP0rE5WRgcuVuHYkk41Is=;
-        b=foYl4PbJhWrS256Nz068lD8jajpWkBbnElg8XnaqZQWTL+J/3A/eP6Grlo59gMN7Zc
-         oV1z/85krq68HN18a5nzrNEHDdpUDv6NkR1cwa4TTp4Sek9jQiVaHX9ZEXXmBFIrFmGc
-         0HnIQf69SJhMTsc+d8WQINbXUMgDUmtd2P7wIA3LUh90yV8vOMnP88ufyU1RYy5CX7KU
-         bolU9Pg1pXRgTgtZNatvxPFP5wQadWHS0t/uV1MHrU5bHTUwqtrFHF4z0dwQUBBw6pdf
-         JJwgAh5Rjh4k/sbVMPr0iJhWxow/OPDZrOlu+zq1itdpXst1oiGf8JhVfWJ1w3CA5XU/
-         xv9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUnhEWs6PYbc0SAM1yhnqErHUHYjNIJusc5NCfDxv9NMqMwu2X0B/csWMBmHXHQssvPVBOsexKkoA==@kvack.org
-X-Gm-Message-State: AOJu0YxZb6/CDslodsmN2826gjnW10OzpojiN93/+C1yObmY5pSU2C0M
-	8qZcQeqj2X2K667jcdn+nKduoGi3VjsO4gRQ2QKA+NG8b5sF71ZEVYJPiD1t8pNUeHQf8gPmv89
-	nbeLLsutqdrtgsRa93MTl+FnVegg2S/3nduEUEw1UjXmb/htpN8z1BL8bsqU=
-X-Google-Smtp-Source: AGHT+IE/mS5AInx/Fn2GfpldYfqwHT1aTDzL70mL7vQ4auUZniXaqCBaITtE4KGxBTh882iPv4MheVT5dy2uy9HDIpuf7K+7ITIw
+        d=1e100.net; s=20230601; t=1761407537; x=1762012337;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S/G5OIygkBFviJhEHCwC7irT8X1Sky8Y9qSJRyc+oiA=;
+        b=wsjvsq07TuFb61WT0YEATyaNWXrFaFQL0SzdnpJ4sAocNVQalm26eK3XZZjX16bzWR
+         rIY9D4/Ox4qK9EQAx8YaU4qGUXxcYBudH6rkMvLny90JKCmESVMJPfQFXYMiXWtKp2j0
+         XoIEUgVrJkO0vvtXaaGWWytsT9xnX8tTqqg9SW3D+3enZFyPB853e5vUixJmn+VbwuVz
+         haxCJZ9XE9CE6hueR7qNNCN0sQLbFBWfiv1qO9wQ6XiDdrVuvxRLeIVa4JvWezn9IY7M
+         4U5ijmHS9i1P4suKPLAIXLZ6UkR8nbBQ4mbWc6+hNtrv8N1WVkHInXwMiG+HFgAr3b5l
+         bzLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWQLD3pLAMKqTLKeClXaXNNRPhPOcY6OwEIVW/T3XqkWfqawfasLgRt709sB9qyREGBWOPN7gHnBg==@kvack.org
+X-Gm-Message-State: AOJu0Yx+9su0ITWWokjAo/0MG5BtFHszqivEwpT4BhllamCT2cxwnhyZ
+	HMmPXCx8JeDgMfgfPgPrPh7hArh8SmHYLls71s1u5EOjCMv0hsdyH3lT
+X-Gm-Gg: ASbGnctQGiGt8HG1FUmR22cJK4CnffpFmGifaiJWWdd/Gnwg5QGNrvfgIADlEOryij1
+	LQpjtNIouACN2hG+ZMHcsoKJFkVZNiZ6Ya9opASUMZjXsf6eeIo0tUmuO1Bc6w4CkQm+HN3Kz+T
+	xr1PBOA0nIpabaW1MCF50yLVsiaGtb6h+r3plZvqmoIUMCeokSd/IIbUMs7EYHJSp5s//k8x507
+	C9gX013Bsjf/p91Ydo5Sc6pjLHBfOE8WTFpmaFTblKikE1oy/FtVTf94OCPOujPmfBvHD1keL5j
+	R0CH3tZXv08mjbWKZgRCgnAGlgvpb1nEDV2b6zFp9FnVW3s7s4qqMfuLUenFIZT7eerFUqo/Yk8
+	Tlc4P6nkXb1qMpTdo3HD6H62mK+waXEHTEBl3tCupPJX40pnHhwHqt/U/kZGWD+GM/EZyjaE+1u
+	xreOmkKsJQ3VbIO/7ZWvOCwkj/
+X-Google-Smtp-Source: AGHT+IEhyK8NPE+GeBL8Nk7M6rEMwtjl7+2UMd2puyrSw7MC6zF3PkKy2fcSzfiXgmhFNVN3kLPSSA==
+X-Received: by 2002:a17:902:c94a:b0:25d:5b09:a201 with SMTP id d9443c01a7336-2948b9c00c5mr84166735ad.27.1761407536907;
+        Sat, 25 Oct 2025 08:52:16 -0700 (PDT)
+Received: from localhost ([103.70.166.143])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498cf3f4asm26661525ad.11.2025.10.25.08.52.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Oct 2025 08:52:16 -0700 (PDT)
+Date: Sat, 25 Oct 2025 21:22:12 +0530
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+To: syzbot <syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com, 
+	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com, ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] WARNING in raw_ioctl
+Message-ID: <hmzw6ng2gv6ctvgjhpttxuodpxriz63kpcnu7keywc2aioiw3v@x5xcenq5whr7>
+References: <68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com>
 MIME-Version: 1.0
-X-Received: by 2002:a92:ca4d:0:b0:430:b05a:ecc3 with SMTP id
- e9e14a558f8ab-430c525f52amr239057035ab.9.1761406232302; Sat, 25 Oct 2025
- 08:30:32 -0700 (PDT)
-Date: Sat, 25 Oct 2025 08:30:32 -0700
-In-Reply-To: <68087f2f.050a0220.dd94f.0177.GAE@google.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <68fced18.050a0220.1e563d.00cd.GAE@google.com>
-Subject: Re: [syzbot] [mm?] BUG: soft lockup in sys_bpf
-From: syzbot <syzbot+9431dc0c0741cff46a99@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
-	da.gomez@samsung.com, david@redhat.com, gourry@gourry.net, 
-	joshua.hahnjy@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-modules@vger.kernel.org, matthew.brost@intel.com, mcgrof@kernel.org, 
-	netdev@vger.kernel.org, petr.pavlu@suse.com, rakie.kim@sk.com, 
-	samitolvanen@google.com, syzkaller-bugs@googlegroups.com, 
-	ying.huang@linux.alibaba.com, ziy@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: 7f1r94eqdywpiukdhskjzyfshmqfgjdp
-X-Rspamd-Queue-Id: 3DB93A0003
+Content-Type: multipart/mixed; boundary="ovxwxiyonj66htjx"
+Content-Disposition: inline
+In-Reply-To: <68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com>
+X-Rspamd-Queue-Id: 4799718000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761406233-916307
-X-HE-Meta: U2FsdGVkX1/kYFsXlw3ZHoYjDaq1CERw73icxObfzP5R/npqwtGrb7gQtstQgfPTV+8TsdbToIFpvh2aSr0fvIw+9YR2KXofZ/XbVfFJS53ax9dy1LcXfScU0HH+hz5WSav5zKeiu+tSs0ubiTYep2sTJSQlCegZ/OpMKFri03ROk+/H9hAoJKiFH7sb0CuhftBrehYT51HXX3pBfqfAHCxefCcJA+bvbmDFfYDIzw2q5GyteLAbu0VzGYNabx5mi32ptdd1yK1MRzBHv8YgBivETev3dVFF9nUE1FE3lOnXJebXhauFurIyzfkpFmmGMxS4b3Qa9Eu9aH0RCphoHDXfnG7WpAONoBUpDfga/5gsyFstl3NH4+AsfMSjl2dh3OL28EgR3dzytkDL+cdN8Eno2fCuJnbzBGt5w0Dy8DkwlQbClyH+0ciiG+81sWn5dp5oZ7f+yih9GzGJ95JpLDTCyqKBX87KWt7Gfq53nXdzd+xqvv30CnusDCDhxrtv/JgKc/NJH7G/+udeDWGetQI1nkYj5E0Wgqk2pqzEUnWdL2RxZIbrcm6qhM6q/hh4SMnY7BeGDlUG6inZ7cijBwqh8ke4fzxb7nu/05dbFErWPywi9KwjZf28Pya+Iis9O6kFOmjVUCbylSV8ScbvoEw3RFv8r1t6QgEtai4MoNfGs1sr8ul1j9QrAhOWUDb9yZVrDHJz1v/hR/WXHv1+zR0VWFGDRc2RNv4lxpa//5k2R+aAHC9+BJ1EvpR4t9LEKraDd4wRHyHQTUAkBJmdAVYi7EHZ1Na65/eBm/16smoM/2zqhoz1p8k+pdMRAh18saIMPKQ1CHCUocQ92ivC0r2rOqChdQ9nH8nvgqwtOmzY+ABi26kWosKMyLaCJpzZ28ZLQWx0baIj1npjVWwbzB7p4XqUJtckpA0bFYSx6FAwaO7YucWNTlZ1BS9Y6GncnC7UoGCUg70bovvEbiy
- C5Nk1XBZ
- hxwBTOj2XtAb4xxnVmHVKGZYITcTthpH7A7gLIsQwowG1OYzSeSuihtZ2eXIuL5Oei28VbAdfueB8zsKxyAbayhFIWhB73c+iw5R1QlapUBnCXUL1UfSBc0kFOogvIOrPHQdPr5HnWB6Fv3EEMqI9aL7kI9yuIHGC4/juUmrOJpnvwQiKESnXpWexfalpUBYSyb2uROeDfw28BLOnoIjxxN4eHKKIWbTP4iFZDrCaP9bB1WEaHHVadRdpUx+sg9e2gXo3aEIPLG2Npw1GD36AdEO9/591L7QCf0dIzUOJoSoXhUtSDEoVD7gVGWfJX/3T3YlOsjQ7puZOKm3ppi6p5wiH110u/kWJ+gLfmAZF97enetwsYyM9Ev4nEiQX4sXRXyevnxsVSXPN/NisNHYzYDjgn4RcK+brVCujWLk84VvLeaOlNiG4wOW1VFH1/PKEtallRMIvkbowk2MXVpPNvN/JZBs5tMsb+XXRzcVLSBiiAHDxeC+R9Y/vveDr4CjWqyLDcR8qWbvRAaGfiYf/z3/W1JyUJVC7SlAJ948eWh81vUcubr8uhI7PHwhtSbwlBhRAnUWCtWrD75oH2BuhiCTQiAqqhIm78AwSiU0VNt3WsEbYazddSWecLBknQLyL37VvCcB4hbx6kqKK8jMgn0QORopIAs5RbkmV14IjBQOpzApHxR7+Apsxg7YIg8lbGEgUzA5BxH+5UqRRwBRFJeJ87GD6kFQmPAv2Jj+kk0etHhAmjawmbhBlEPIGyBfZb2NkXLlYGoZMeAY=
+X-Stat-Signature: e4qts5xghc3iutp6mbfg7jd7mc8k9srr
+X-HE-Tag: 1761407538-825903
+X-HE-Meta: U2FsdGVkX18MnL30hagqWNIqtekgSD8ydkwbXNojuqhTCN8ZjTpZZ2lt3mG6/ftUkoVXa/KMkIARrJY6F2BBdRAxpB32Rr/3XkvB/i219OYTpJUUUEGvgY4irDHiPHoIQnBzjNJWfK+Nx7vv/jy4z5APnJA9GauRKrEpWMD8nelafQG8OvCjgrxhsHJ6/Emid2ersKhxV6P8nGCCXS4mpJY6VEgWLYQ/H84qau/lKL4ipN8P2CFrQnFhFk2hhWXzkUdQxA3fcpzmHHkU/nTSIL1g7OPL0j/HK1vgSYCuFmM09vB6dMVC1GUgeQ+J7SiOfrLZmpB6+Ym1nlcscmo1sC8ULDKle5ylGXb4RBIpoCuCgESfhhgP2/E+DUSljRwgrVBWaHabb6xKPTwNiVsAJDuO/KXLJHz7Qz3Jgk5b3vD4sEwvh8kRMCYJzrqBnUJYZXo6aQAnjSh1XBReQJzr7CyLlA1x7bERRdX9snGjs4408kRXEyfb7Rass7kWWlMcZENHGD+QI7RO1FWwQrLW1vEHUliKpHju+WPYWbFO0JQckrRKaBmo8b0zKs+NVqdRq59hgbO6sGT2Qr7N2jmIdkkbN+9wBwj0G+WOeQkiLOlb4naLoM8ZgnNar/QD6UH2V8DH51mmimOPc9qYYdYr5AN4EQgWznrSbJhMfpL1xoX4B0/oSt9DANH8i1qwJBhz5j+OKxYFCiJc2fYt5xTq7qUOd9vTwtZrTxIJMKW/kd/O2NoAjjwWTr7bhbAsgVCId/w0/ToTKC9GfwUHOxc/+VDyuOhur8A7HCxMdnWmZPsxILccmimTrzX0WIqKUx2CU/XvHvVubmNSGLRUn+PHD7M2+8npitRO6VdXvD+bJKU0sFBMvW/4aSPvmT/ac3TYM5l0iI+PCA9ZTna96AHiF8iWot6gBV3nYUnDBrGLU99XwlWdJgH/lWcxMUGASTz7v3ch8GPuXKYCaY3Vm9J
+ BQh4v8p0
+ PwwA6YVE5CNKTG8xzFCvbUdPk3IEKP4QG2sc1zDzbotf1E84+35FaxiBz4FZSZn/wojCg2THQXEwTstpAi5sgYi4BSyUABu4CzerQ5ivfDW16qeVmE2dv88CaOVXkEKKnsxrIEBMpL/SJI4iJwDH2r/J0N/UmM0GZljIVGSpAYetqtDdN9c/lrF0qMqLUnPrxIWBDTI7wHUsiKJdPFslta71U4au4rQBQ4Z+oohMtrl7Yz42DZTmwqRF3+WNf4cfrs/5wPy0/B3lH0Ss2u/GXfh8vDht5IKhkjrJKmVQjqU/CIBJJMYFRJV22IiONBASF0vkPaqOockO4GUuKr89YK9morqKDk5P3803WevlaOp3fvo8qWG0SzkEbqeVw+h5jUUTFGbJv2f0Zy6uGdG0KeTwE9QuiEppjQSZeGNlwVYo9xTN1XtYvhxbysQ/LozsptF3RYWzsCTEbzm7EEZG8oczwxXGuMGV12s08fJuVAw3esA8XGskUjqeGEM3UAaoK47MGmvP0aaxMv0/ZO8YsLrzKe5H/cJIefN7vwSQWkb18l/We1Il+4BnDDXJR3iFbV7PGLMPT7jZZaRuI0OYippTDTPO7tUKWBWJu99Ybbc9B8W7rKRcC9WGrjbIAQjDhlDy+oZn3TljdRp5942S6FPU2nOI1nQQg8xgOdHq1GaoOHuHJXaiLrgmfkynKwr/LUossfb7KZO9+EY+I89FVXlAgr4A31lht7aBkO53ESfgrpkiN7LCLbLY1VDeA7l1ZiXulvsL5W6/tJbnv6FOb+4s2nr9rgKqg89XIEIeQtX1P2GD8jKAL07gvRp3mLwlajB0QPitRI/gOnhZD+BZ/uBpiMvvoQSSgvMLFV/7Iubu25PIrtbMHFwt00NEazaMV6zIVzFtD1dWEJFi+05djCY6AEPPSjrr5XRu8i2WXcbhXEU3iU1P22JYQjY9a34qnjBSNUDBzk9YEa28uQ5iWv6poWei6
+ vnm/4wrM
+ fF+fOUkJxvnjtAYLeeINHfXJpy3BVxMoFHLX/FLm6A+j3VVQNETgnT9SdS3qkf6mBL6KG+TVnaSHHNYchU6cinvBzQsUh55y+ERoZ7Brqre8F0gBjR61sYsm4jnquEKQXRmdngYv1/r4Lk4wYdv6nXFaYcAeSrnjdJbMU0dO02HXDk9V9FugGTdJrgUUj8ATd9KDtPqJBxSdxkm6V6asuTGLP/6AlUYk0KauHq0Eqbi3ZcF6MkqlkTL1vOs6v8diAYLGyLe+2nkufU7mJMYGdpv7Ao4V8edAY5wLtCsfPr1d5X3blyvyEH4RMPTpjKTNxqYwgps6M7gFS2LFWkh3To//AI87CaGR3w/uRYU1VWz+j5dpIP5ZBFRSTlbidejmsYz/pwq368PTStEOpSl5uBxhRBE1faQsksV+iiRZB+FdoxTYw5IQKiHX3/aKErsLGVT+mYvi06UfhZ9aA7Le6gxLEak5j16X10XTHC9NL7o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,101 +122,161 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot has found a reproducer for the following issue on:
 
-HEAD commit:    566771afc7a8 Merge tag 'v6.18-rc2-smb-server-fixes' of git..
-git tree:       upstream
-console output: https://syzkaller.appspot.com/x/log.txt?x=15c8ee7c580000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=8345ce4ce316ca28
-dashboard link: https://syzkaller.appspot.com/bug?extid=9431dc0c0741cff46a99
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=157013cd980000
-C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=130cc7e2580000
+--ovxwxiyonj66htjx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/52417ef1f782/disk-566771af.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/66730a263bf1/vmlinux-566771af.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/1fe0762efb1f/bzImage-566771af.xz
+On Fri, Oct 24, 2025 at 04:11:28PM -0700, syzbot wrote:
 
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+9431dc0c0741cff46a99@syzkaller.appspotmail.com
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    72fb0170ef1f Add linux-next specific files for 20251024
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=10fd0be2580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=e812d103f45aa955
+> dashboard link: https://syzkaller.appspot.com/bug?extid=d8fd35fa6177afa8c92b
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=119eae7c580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=140693e2580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/be1fa3d1f761/disk-72fb0170.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/57302bf7af40/vmlinux-72fb0170.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/91c806bb2a2b/bzImage-72fb0170.xz
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+> 
+> ------------[ cut here ]------------
+> WARNING: mm/page_alloc.c:5190 at __alloc_frozen_pages_noprof+0x2c8/0x370 mm/page_alloc.c:5190, CPU#1: syz.0.17/6001
+> Modules linked in:
+> CPU: 1 UID: 0 PID: 6001 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+> RIP: 0010:__alloc_frozen_pages_noprof+0x2c8/0x370 mm/page_alloc.c:5190
+> Code: 74 10 4c 89 e7 89 54 24 0c e8 64 b9 0d 00 8b 54 24 0c 49 83 3c 24 00 0f 85 a5 fe ff ff e9 a6 fe ff ff c6 05 b1 7d 70 0d 01 90 <0f> 0b 90 e9 18 ff ff ff a9 00 00 08 00 48 8b 4c 24 10 4c 8d 44 24
+> RSP: 0018:ffffc90003017920 EFLAGS: 00010246
+> RAX: ffffc90003017900 RBX: 0000000000000013 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: 0000000000000000 RDI: ffffc90003017988
+> RBP: ffffc90003017a18 R08: ffffc90003017987 R09: 0000000000000000
+> R10: ffffc90003017960 R11: fffff52000602f31 R12: 0000000000000000
+> R13: 1ffff92000602f28 R14: 0000000000040cc0 R15: dffffc0000000000
+> FS:  000055558dedb500(0000) GS:ffff888125ddc000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007ffef4504a80 CR3: 0000000072ffa000 CR4: 00000000003526f0
+> Call Trace:
+>  <TASK>
+>  alloc_pages_mpol+0x232/0x4a0 mm/mempolicy.c:2418
+>  ___kmalloc_large_node+0x5f/0x1b0 mm/slub.c:5583
+>  __kmalloc_large_node_noprof+0x18/0x90 mm/slub.c:5614
+>  __do_kmalloc_node mm/slub.c:5630 [inline]
+>  __kmalloc_noprof+0x4c9/0x800 mm/slub.c:5654
+>  kmalloc_noprof include/linux/slab.h:961 [inline]
+>  raw_alloc_io_data drivers/usb/gadget/legacy/raw_gadget.c:673 [inline]
+>  raw_ioctl_ep_read drivers/usb/gadget/legacy/raw_gadget.c:1162 [inline]
+>  raw_ioctl+0x18fb/0x3be0 drivers/usb/gadget/legacy/raw_gadget.c:1325
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7fccefd8efc9
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffef4505ad8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007fcceffe5fa0 RCX: 00007fccefd8efc9
+> RDX: 00002000000000c0 RSI: 00000000c0085508 RDI: 0000000000000004
+> RBP: 00007fccefe11f91 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007fcceffe5fa0 R14: 00007fcceffe5fa0 R15: 0000000000000003
+>  </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
 
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	Tasks blocked on level-0 rcu_node (CPUs 0-1): P5823
-rcu: 	(detected by 1, t=10502 jiffies, g=8989, q=37467 ncpus=2)
-task:syz-executor333 state:R  running task     stack:24744 pid:5823  tgid:5823  ppid:5816   task_flags:0x400140 flags:0x00080001
-Call Trace:
- <IRQ>
- sched_show_task+0x49d/0x630 kernel/sched/core.c:7901
- rcu_print_detail_task_stall_rnp kernel/rcu/tree_stall.h:292 [inline]
- print_other_cpu_stall+0xf78/0x1340 kernel/rcu/tree_stall.h:681
- check_cpu_stall kernel/rcu/tree_stall.h:857 [inline]
- rcu_pending kernel/rcu/tree.c:3671 [inline]
- rcu_sched_clock_irq+0xa47/0x11b0 kernel/rcu/tree.c:2706
- update_process_times+0x235/0x2d0 kernel/time/timer.c:2473
- tick_sched_handle kernel/time/tick-sched.c:276 [inline]
- tick_nohz_handler+0x39a/0x520 kernel/time/tick-sched.c:297
- __run_hrtimer kernel/time/hrtimer.c:1777 [inline]
- __hrtimer_run_queues+0x506/0xd40 kernel/time/hrtimer.c:1841
- hrtimer_interrupt+0x45d/0xa90 kernel/time/hrtimer.c:1903
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
- __sysvec_apic_timer_interrupt+0x10b/0x410 arch/x86/kernel/apic/apic.c:1058
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:instrument_atomic_read include/linux/instrumented.h:68 [inline]
-RIP: 0010:_test_bit include/asm-generic/bitops/instrumented-non-atomic.h:141 [inline]
-RIP: 0010:get_page_from_freelist+0x459/0x2960 mm/page_alloc.c:3824
-Code: 8c 0d 00 48 8b 74 24 18 49 b8 00 00 00 00 00 fc ff df 48 8b 03 48 39 d8 0f 84 7e 07 00 00 48 8b 44 24 08 4c 8d a0 38 06 00 00 <4c> 89 e7 be 08 00 00 00 e8 ba 8e 0d 00 48 b9 00 00 00 00 00 fc ff
-RSP: 0018:ffffc90004c97158 EFLAGS: 00000206
-RAX: ffff88823fff8740 RBX: ffff88823fffc888 RCX: dffffc0000000000
-RDX: 0000000000000001 RSI: ffff88813fffdf70 RDI: ffff88813fffdf70
-RBP: 0000000000000000 R08: dffffc0000000000 R09: 1ffff11027fff7da
-R10: dffffc0000000000 R11: ffffed1027fff7db R12: ffff88823fff8d78
-R13: 0000000000000830 R14: ffffc90004c97448 R15: ffffc90004c9745c
- __alloc_pages_slowpath+0x33b/0xe50 mm/page_alloc.c:4714
- __alloc_frozen_pages_noprof+0x319/0x370 mm/page_alloc.c:5196
- alloc_pages_mpol+0xd1/0x380 mm/mempolicy.c:2416
- alloc_slab_page mm/slub.c:3055 [inline]
- allocate_slab+0x96/0x350 mm/slub.c:3228
- new_slab mm/slub.c:3282 [inline]
- ___slab_alloc+0xb12/0x13f0 mm/slub.c:4651
- __slab_alloc+0xc6/0x1f0 mm/slub.c:4770
- __slab_alloc_node mm/slub.c:4846 [inline]
- slab_alloc_node mm/slub.c:5268 [inline]
- kmem_cache_alloc_noprof+0xec/0x6b0 mm/slub.c:5287
- skb_clone+0x212/0x3a0 net/core/skbuff.c:2050
- ____bpf_clone_redirect net/core/filter.c:2465 [inline]
- bpf_clone_redirect+0xad/0x3d0 net/core/filter.c:2450
- bpf_prog_3e1cbbed0c4acd81+0x5f/0x68
- bpf_dispatcher_nop_func include/linux/bpf.h:1350 [inline]
- __bpf_prog_run include/linux/filter.h:721 [inline]
- bpf_prog_run include/linux/filter.h:728 [inline]
- bpf_test_run+0x313/0x7a0 net/bpf/test_run.c:423
- bpf_prog_test_run_skb+0xb4e/0x1550 net/bpf/test_run.c:1091
- bpf_prog_test_run+0x2cd/0x340 kernel/bpf/syscall.c:4688
- __sys_bpf+0x562/0x860 kernel/bpf/syscall.c:6167
- __do_sys_bpf kernel/bpf/syscall.c:6259 [inline]
- __se_sys_bpf kernel/bpf/syscall.c:6257 [inline]
- __x64_sys_bpf+0x7c/0x90 kernel/bpf/syscall.c:6257
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0d40505cb9
-Code: Unable to access opcode bytes at 0x7f0d40505c8f.
-RSP: 002b:00007fff9d9b3ed8 EFLAGS: 00000246 ORIG_RAX: 0000000000000141
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f0d40505cb9
-RDX: 0000000000000050 RSI: 00002000000000c0 RDI: 000000000000000a
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000006
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000001
- </TASK>
+I misunderstood what io->data is and thought of it as a buffer for
+storing one packet which dosent make any sense. Since io->data is the
+raw data for the transfer itself in memory, it is possible that the
+transfer length is several kilo bytes in size. This is also
+documented by Andrey Konovalov in his patch [1], which dropped the
+transfer length checks because there can be problems with USB devices
+whose configuration descriptor exceeds PAGE_SIZE in length.
+
+But since this value comes from userspace, it is possible that the user
+passes a very large value (as in syzbot's case) which would be invalid
+and raise warnings in the allocator. Therefore I think we should
+validate the length in raw_alloc_io_data and prevent invalid values
+(values which is greater than KMALLOC_MAX_SIZE) to prevent warnings from
+the allocator. 
+
+[1] : https://lore.kernel.org/all/a6024e8eab679043e9b8a5defdb41c4bda62f02b.1761085528.git.andreyknvl@gmail.com/
+
+#syz test
 
 
+--ovxwxiyonj66htjx
+Content-Type: text/x-diff; charset=us-ascii
+Content-Disposition: attachment;
+	filename="0001-usb-raw_gadget-validate-io-length-in-raw_alloc_io_da.patch"
+
+From ec93e88de10f0c0b02645e9caedad75323cf767c Mon Sep 17 00:00:00 2001
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Date: Sat, 25 Oct 2025 20:48:56 +0530
+Subject: [PATCH] usb: raw_gadget: validate io length in raw_alloc_io_data()
+
+Not checking the io buffer length can  allow very large allocations
+which cannot be handled by the allocators and can result in warning by
+the allocators. Therefore for sizes larger than KMALLOC_MAX_SIZE we
+return -EINVAL.
+
+For testing
+
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
 ---
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
+ drivers/usb/gadget/legacy/raw_gadget.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index b71680c58de6..c922ab42b0ca 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -667,6 +667,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > KMALLOC_MAX_SIZE)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
+-- 
+2.43.0
+
+
+--ovxwxiyonj66htjx--
 
