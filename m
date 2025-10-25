@@ -4,118 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE0DDCCD1BF
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 16:41:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337A3CCD1BF
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 16:43:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E5BA98E0152; Sat, 25 Oct 2025 12:41:18 -0400 (EDT)
+	id 92F378E0153; Sat, 25 Oct 2025 12:43:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0C8D8E0150; Sat, 25 Oct 2025 12:41:18 -0400 (EDT)
+	id 906F88E0150; Sat, 25 Oct 2025 12:43:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D220E8E0152; Sat, 25 Oct 2025 12:41:18 -0400 (EDT)
+	id 81CA28E0153; Sat, 25 Oct 2025 12:43:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BC6248E0150
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 12:41:18 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4C9F81DB1D1
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 16:41:18 +0000 (UTC)
-X-FDA: 84037201836.23.9830373
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 762644000F
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 16:41:16 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FVxTWDIs;
-	spf=pass (imf04.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761410476; a=rsa-sha256;
-	cv=none;
-	b=ZsAjP3T4NvDgjQpo9vKxImpIIcuS8Nk4EWNfJCk/vBOD0OWo+vDkQrBhZnEnNgn1+kJSuv
-	//Fgh01Vc/JLlv0Si0cnK94pzQ9ow/R7bB08HacSfoDhFscDr+WcA1iSc69YWPTtZM5/sE
-	lEq1QGJC/cpITCbYi/OzJRUuW3q9mZA=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FVxTWDIs;
-	spf=pass (imf04.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6EBB48E0150
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 12:43:05 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 19295AFCF4
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 16:43:05 +0000 (UTC)
+X-FDA: 84037206330.08.4CA4FAB
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 3AF36160008
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 16:43:03 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3Fv78aAkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3Fv78aAkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761410476;
+	s=arc-20220608; t=1761410583;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0GldqH8fEtUrzkHne1rF5BgiofNp7hGD1Vw1w37mqgw=;
-	b=REeGjnZp0pSCUjH3YYjlwKaKBhkpFP+X3ss36SUIPKC8LYhnphjjHng2/mWLSaj9wc3ID6
-	WnMqf59Ja5intit8+/by6e+RTTONQUdpfjlS9xq7z7AtHLjmHGVszGpe09yHEG3FX9FBPE
-	hNi6BV3xNE7fiiTBLA/Tn9qc6+pvumg=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-89e81dff0d1so164302885a.3
-        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 09:41:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761410475; x=1762015275; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0GldqH8fEtUrzkHne1rF5BgiofNp7hGD1Vw1w37mqgw=;
-        b=FVxTWDIshbglheHBLF+nOxz3Vs8kIiJOpBmtu8pJRy9kIPDBxcOy5q3+VV1Di02Wjq
-         AchLPJ+dArVuAzVxWYH5R/hzXcYJjwdJn8xhuQLxAf1Y5ok0MG+8ZUsr60HhLrh7u6i8
-         4gRMtkrBWXSIZs8EFfws/GUGmbTO8MxoAcftPlEmSmrp32eUJ5zkalSxRR9tgPrcfpzx
-         JrNxH/dMce8+ebtVlv6v5ncZSNIqSbpbOROtMxY5ZxLTzEgqRhGKZhwUOJR4g9taPnBO
-         Ea1nsgohZBZ8mhKrVHDv7omJXfjVICZWZ3weo8YcyKwTKchebXaL/51gWka5US36F9+D
-         D4jQ==
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references;
+	bh=QXMpskhSaFH/uBSbU35Otfq6GuSaMBgqf17YrN3BtBw=;
+	b=7iPnsx1uKywbTAJeoez1lpxtd+cslSir26VduEyrD1/UXupO32oRyeutXciHM40h9P1QGE
+	DWUYaKQaRTyWPKWSsGAWSoMDI5x+xGPO8uROjoUk3ZiEZlQVTCu9qkQd5RwscoVVLNxNY8
+	/hW86+HFqePKSBYNoXBOon8UwlO7XpM=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of 3Fv78aAkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3Fv78aAkbAFUFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761410583; a=rsa-sha256;
+	cv=none;
+	b=i2VO0P8XezebRcENm6RcR63dzl4XWxiN9ZW05DcjVN/Zu1s7L6wZeWQtRyyGjjdyPbT72d
+	x5uoJJDsgFvXz79pZhA+Ycvwz0RXvBAIjvmzNkzUIy67xZuijhouN2WwhF1Vyx7a4AkwR+
+	gJ12/o1oxooFIEeeexsyzUO0wfO5g4E=
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-430e1a4a129so41512985ab.1
+        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 09:43:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761410475; x=1762015275;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0GldqH8fEtUrzkHne1rF5BgiofNp7hGD1Vw1w37mqgw=;
-        b=tlvZhyNhvY3ar3+Q/gBWA7VkD+lV5sMspvVePPCIfw/5liwBLGv79aCR+eYssWVfPu
-         LPCzkVPs6CsIGfNDJQET3UL5Nbi0jNB88iF885OXCklF/utbVIs8MLbQU4q9ulJ26Fcf
-         aIWOXJPNcV6i6QXUgHHiOtYAEtIJiAuKT4+E+92e5YvUs6wwLgLmatRDfTdcABJ9aRLc
-         FREMufJAaC114RR1LdqUVrIoOgrDHhjZ7mtvYY2PS4z4R4MqxjNbN0KiN27sRDkpZV4x
-         A+xeSJUUwOsXZfPNL1MwV+odImeefFRoBlvbMfOUHIilvYXJQWjMdM3xNX04bFKsV3Ah
-         Nn2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWoqsBI/3pvz4/kArD2gAf828Q80G5dIAjq/mbpyBTc9+wTC4fN1SvBnfujzqIjbz2Y7Dvz5ExIhA==@kvack.org
-X-Gm-Message-State: AOJu0Yw4oYI0Tg88EpLEjurTy1Tab275ltG9YoWsWx419qIBf2elpexa
-	EBR3R+TmtlW1140P7MIPYZiIhz6tSOBveKdis1c9+ot75TC02HLzwv6P
-X-Gm-Gg: ASbGncsfNVszEXvS/Bl4LqogCiMfnPPBE7lv5fnillSPJln1Crj7L4LjhOFb/zV3HLb
-	0Vzgt/TwcwaFAPm3eEs9elsZO1IU7hSaet/0AygbzQzZ7KYsli3c4o52Dq01BCfGzQQnfizYEU3
-	/1LB1PaNa56yQdxvhYvZw8wKObeyJggSih5aUxUt5MfC6bkW9McR64uscQQj3CD509emWwYE78U
-	CJQShyLCPp6Fm0RMi9AI62FxgvuW72PFKaAw8TPrWZhM9RKTQyagP1lxc0hRXjtID2xlbFWARQ6
-	OIm27EJxEQt8sCv0Jr3fCLzzV0Zy8RBuHNbo8IuLRrcZoe7CcooIApP6baGJG37rWOJf7WX2pu6
-	1J4xUxctp0u2f3AAn7LeROcBiuLhMQKV3UK50fP57jmlHWXNIU8lgVt9tPQ3g4rS4DJj9SHVqyX
-	BH1cB4FI4=
-X-Google-Smtp-Source: AGHT+IGJ5EoIFI83t52hIGo3M/2FHLwpmX4KGwa2Lw/NwuS3C1UYigsffJIqRTq4YJBeHeKmK7LHUw==
-X-Received: by 2002:a05:620a:1a0b:b0:88e:991e:cf2a with SMTP id af79cd13be357-89c11e631cemr1286912085a.44.1761410475508;
-        Sat, 25 Oct 2025 09:41:15 -0700 (PDT)
-Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f24cd5938sm173525585a.20.2025.10.25.09.41.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Oct 2025 09:41:14 -0700 (PDT)
-From: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Nicolas Frattaroli <nicolas.frattaroli@collabora.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Cc: "Yury Norov (NVIDIA)" <yury.norov@gmail.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH 17/21] mm: don't use GENMASK()
-Date: Sat, 25 Oct 2025 12:40:16 -0400
-Message-ID: <20251025164023.308884-18-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251025164023.308884-1-yury.norov@gmail.com>
-References: <20251025164023.308884-1-yury.norov@gmail.com>
+        d=1e100.net; s=20230601; t=1761410582; x=1762015382;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QXMpskhSaFH/uBSbU35Otfq6GuSaMBgqf17YrN3BtBw=;
+        b=Jb5DaEr6ChOhn8i+LncZYiK4xiPT/cspCjDLBOeC6eHMxmD8jzMM52rmZLu63SHU7G
+         ZqMe7+ZHA71FR54xp+bMIooQFKy1LnMGJml+NUXwO/bobCMz8h2BivIDhbc9BB1ILfpi
+         FYGN5gSAH/ASMYlEiVwko0vpCT1wR/NLXBvsKgT6ZiX6fs/FZOJnu4DXuzWIvTC2oa62
+         ulmh+9XOAdNNFmwawnwmvIFqIDjvHK95qLkNIdvHwQURIYEqxhTW0Xs5U9VhXVQ7X+j9
+         wy/G9n/CbIuNcprJGqnOZhOCEA2NmzFIwG74MXcjbVgx7ie+y7TR4WeqzZGuPn2r6M/8
+         fk5A==
+X-Forwarded-Encrypted: i=1; AJvYcCUewM0q1jx2+5bnWn8QYlwDJ7ELy0JyAwPhMGCP8vq9Mc5oRH18vAb9X4OVFrMnDZ2swrt5+gbsYw==@kvack.org
+X-Gm-Message-State: AOJu0Yz+EEGCRqid2gJzuxtgOXREzQNVFKcJ+h152QiD0pkPlva0CrtI
+	PAq4KJYcbqYMAcq6u7cKarQjqN+aq/1Hc9cAZGGfaM+NJkUDqPUKv5R75k5jvtA9TXAXfNKeSvd
+	5X9mD1D7sEl8z/P8XUOBPhwO7Q2p+cGOPulTXVnNBPOU5a+pYo86k53lPQf8=
+X-Google-Smtp-Source: AGHT+IEwu10woP+ou+FESnPo8XQtxARDMQxoVyJIbuOf4etKwABBGADZHwCBGVR7OpfXWyla77lkmFsq9fvbI9dCv93qYDTsPSUc
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6e02:16ca:b0:431:d83a:9c7 with SMTP id
+ e9e14a558f8ab-431ebed4198mr81811815ab.24.1761410582420; Sat, 25 Oct 2025
+ 09:43:02 -0700 (PDT)
+Date: Sat, 25 Oct 2025 09:43:02 -0700
+In-Reply-To: <hmzw6ng2gv6ctvgjhpttxuodpxriz63kpcnu7keywc2aioiw3v@x5xcenq5whr7>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <68fcfe16.a70a0220.12011.0002.GAE@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in raw_ioctl
+From: syzbot <syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
+	krishnagopi487@gmail.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	matthew.brost@intel.com, rakie.kim@sk.com, syzkaller-bugs@googlegroups.com, 
+	ying.huang@linux.alibaba.com, ziy@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-Stat-Signature: cr3gczj6msmz686mwrnkhnz39rkadir4
-X-Rspamd-Queue-Id: 762644000F
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761410476-444942
-X-HE-Meta: U2FsdGVkX1/b3RvWtDzwOhvsqQZ9BW6QRMUNC7Kkte3yJEqQuxznWJEp9QHZuwJGBSUA2/xe9ijrsAVicDRQLmUfUkmgKorbUq+3/0K6pNsojeYiHrr7BGWrZ3I+1Hf8YntDYZrims4huwbmCrGFR0/2C9m0xLNAY5HoqtWqOLZqsvIxFkUIiLKlZx5x44R5hOohcZhKp0h1DYNftJJDPrI0trIDOz4D7MsdJVWq7pgbuOIp0n7dzALcZis2Em7zSqubkkioFaObDkJLBAlVxkKmEHaizeH+dX92xUNMFUp//CjEaWFBjD56kspQOU3JBIjX4q2ppN1Q/0EJI4OFFwfHzrMsWe5bvADWSmkPx5BPrDHTq0cOSScXheIy94GYvafCsY5a8KMXbE37p3N76ucPHlJl3RCZ+KerfAP4Uv/+OqMBXMg7RULUQuYvaZKuIq9JRwaaBe2YQ/Hg7BJNLgIMGsvb4J5Vji9DMSks5TmJpWHAwq7yQFyzmpX9n44tR4Drkl57Io5G55NpJWz33Sc8qHQNTcH7v30zx8Xp8saDzhi0gFBDzgBaBQSq2IMlUmwftwufC43sn1ueg9kKA3cQc4d/kAtLc7Ob/IKirgf/ulCxRpnMAIRg7mHUNf7/QVwmrcvXrU+1jn7vDqVDtOt1ocjaU3cEyLoYH5cYkpzyjKtC017e3UJpgT+7V4/OtXuTA2MnpuYcBW3tcofCeb4ZRW8DIS3biZMdNRZH8pjUlJ/AK5xllO9yG9IXqsXGctK1csjwW21YL6sbrj1yhfLXzJRnvOYEVeAHcl0PbO00jJ7fgUVSMrvwIWen5zR+vXwQ+75YCDxdHv6jnI+G4HQsvIhaW6GJlNbhPO0Gb13OIubMNFX0aIgjamVHkCgTjnVb0CjTbDtt92Ra3bDU5aFYttgkWXTk3vHoia7VzAi+t6mWjRpqQU8rNXoXHnennMTXXtuByhxYPIzY8fE
- DbmvM7t9
- 8cWp9R+trbDGtKMM8eRU+ERWc0oXZXbNl0VjdWJWycYOeelXHCbihZZOHZ7yfZ7973B/zKjzB/kusKhw0Wo41bPrXLJEWOZt9q2kOP3KD2WMTSkvkQrW/9fmp4Nm2StL0fdegqkF5wRW4YYUMa4FwAJy5wUXHgCtuYYJm3oX008pWmByURuoqw+YltT9hQ+SQitbqSMEdYZWEIeFEGIj30VYnGMoCAM/gxbpmT7LfoukN69Pi5n3fWYUiYicDsZvnE3LSPK0AEsncZS32U51r4Oux7rWSPosHGPBHYrQ+emsILtCnoQKcbgYtVcX+vWMmcGIL+kS26x1+tsNMQ/eKP2d7jutnLvE7fQrJUEcc4OC8G83vrRLMbCxLMjl+X5eLkPjnDeUJiqVLR751AeXgrGJ/J1aluzlzbi7N1Zp8QH+2uKj8PvXUtyWeRuf+x31KIcHzmM+ZYnMkWVs+DE/E14IXlyZUd1hFcHHUwTVIUJOSR2GkNYbCe1+aSZxzz6ocfzBbgfLb1b6hxNTOp7z49kyJhAMu7Ie62RjbZYmB6RpRNE2PAr40tl4ZnpwJXp/K33c0+I6w18pvBP6B2RnzX67UQw==
+X-Rspamd-Queue-Id: 3AF36160008
+X-Rspamd-Server: rspam03
+X-Stat-Signature: ryipc1ww8fu5gx91qj75uups3nk5a18t
+X-HE-Tag: 1761410583-713536
+X-HE-Meta: U2FsdGVkX1+H1F2Vix8jxXiak4zocT2fXu4HExafcrI6vlfb/T/MxpXM2lMAw4iKEy0Yu6D/Uwzt4lHHJHsUaKUNVX1+8p3vzM11M2rmRe20FMfmia/gEwLm8zQSZ22MImTn4YhiW72mAVWV64ash7+TrzboW2AbGumjCmy62diN1fEo5UpKNzd0rUb57rYYmmC6yb0LxnTwE9W+wfFXSp+in1kSvCs0s8+nxq3ZeVDJo6YIaSIJa51ZSk7pnzpU1VrAMFPnlDL+genDVWnc0ybGnPOiGZGbcoknbmVwmOgnTY8WcByXNuvU+RookDhqRnQykejw3XwrOpX1N46ivAyHfdoF5E7KUAFzrJUHiXS1c+2Dy4wIYl6LDzlZrbDUe54nXOWBSxZ8KJveIVRYQ5dsNZUQXv51/0YiJeMGeF0XHb5YonGO9qJ/QBLy7B5ZpJHKUQybTsDUpWAATuv6jTVzVl5XU2B5244cg0g2eQnyQms3dFGtaYqO3r24caXMyVNUnyWN1L4xFVnde6tQkXpExGxSAfcD4lxpJZiY/mOXMPPqpNBXgQ0xVN2qCUkfvmYdGvNfImEa54uE9qbU5ZfiLZ/6pwGdexsJKDQZh9/lgzUutoDFkQe8q7FE2fOJQrYJTL+u3EQp4TqRAJL8IRvHsizWEtLYQ2xpm7uuxlaPmll1Xif6FLVx8JK1sGnWqSCbWY3m0zRjDLOAIPJ0maVJY7S1UkMn19iTAFmCnVrzML+4rNe/XFx95iCEkkeuiGS3V7AUFvHB6j4zXLQkXKgx2ad+1sflGzdJxQwLP2fycLkMiP4rRKPUbs7uEzKBBbXZRcn7i78CgCyMQaD/CVmpnbVRQP7LOKo9D/QzWMLLxXNuOa5vThc1bA3WsXSrTF22A3zMU8bDD/Hus76dnqkL24UnV6RD+PMJQdEZH/jOhU9BP1DCmUdPeXJU52TpTNmJJ5upCT9a0O+driB
+ 4W8DGJHx
+ Xtwc+PWg/qgggA1b1yyNLmHsCwsGMFgwHh2jBH5parAw8Oo5Cj5fyBvG1ApVlsLakAkAYMglRTdG6Kpzisv1zN0LpHaKcoThYC3d0S5/f20GJex7MwZywsMa36kzwKKRoD7toQjmpdEwagkIcJBZT8b/g/GWRDeuDqQWlM4tCpmhLND8SPA2BcuZ98PE0iKcyvL9iF1Xf4UltQR9wlxRsYoJY2OJMHpTHir5WKfoo7OYLlUTJOyUyP7kyp7/1GuSBqWDlo7lZSMX/Uv37N7IuzYpPLAKxBzheL88y77b8lmVKQGrowaynFJwEGTqSHWArCtVMH8qpuYAaXMTsEdVesRSJxBDMTETV/L4h2VcvJDff7FZajNfwEVmonC/Azw3FVeuBAo8oBbWCCgg2pQ+ZzS++CTC11b0cbpCdUPZOxKHIZ05kL7jxNkJDGue1RDMP6+FDAhBrxlmZdEnz258DWMugjcRzJzwb+yUrzOE7z+hqS07ABfevLMXCegnWe/OGdvqgtL0zpk3hSEhmMliOmzMaj9uaflIdK5YAV7WiAI+aj63LW6kxCkrxXaIVtDcCIiBbLBplt9ik3CUEMNikH912sNJ36BvSvtUHmyNyzChItIiQ1hROGFVGWLbsjWV7Ypsmtc5LA/7TQnJKTCTBLic3SAtIqCKztdUzLCHPoCjD9ClgEC99lTunRVGf9ogHwP0x9Sb2Ort/C4KUsoZk1sqYu0qOrjEKKY4j3YxZq2i5heU3eNff3EOhEZvItxh4wBnMgoKydRAte9ldDrlCy/jcEB4y+MOtnt4u/Q4TdGacef5iNAIaEEFRw+JwOibHiggPLbNAbRiHF3jDyUrS+r2Lkj+4va9G8N1pHpb94S8M+wjMTX97Plb6p6Bmj3iZLdv8nkRfFxIpr/gFjI/3AX03eUrqRfhwJ+99uEp/qdr3EO3XjzHgFyoOuMIHXROH4UYQshhPcOI5d2uxBMIiVfOVKcvh
+ gDaMAIhP
+ PGCpJYKEzoPoa2PhRM/23o200fYcJmAfxnUMP5mOPwugS4N2RqTLpz9nVWbI9MLcpSHa71x5xujKqepW/1CYDdPPVTgfvoQ5jajuDfuLpYhd83SRy7Rhv6dhIMi0+rwHkkKYn1QMXqY4JN0FyRrQB9b6JOubMtT8UlqhSWWoI5yzFGbD69TG8w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,28 +101,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-GENMASK(high, low) notation is confusing. FIRST_BITS() is more
-appropriate.
+Hello,
 
-Signed-off-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
----
- mm/debug_vm_pgtable.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+syzbot has tested the proposed patch and the reproducer did not trigger any issue:
 
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 830107b6dd08..b722dc3c091b 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -40,7 +40,7 @@
-  * expectations that are being validated here. All future changes in here
-  * or the documentation need to be in sync.
-  */
--#define RANDOM_NZVALUE	GENMASK(7, 0)
-+#define RANDOM_NZVALUE	FIRST_BITS(8)
- 
- struct pgtable_debug_args {
- 	struct mm_struct	*mm;
--- 
-2.43.0
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
 
+Tested on:
+
+commit:         72fb0170 Add linux-next specific files for 20251024
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=17d91d42580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=e812d103f45aa955
+dashboard link: https://syzkaller.appspot.com/bug?extid=d8fd35fa6177afa8c92b
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+patch:          https://syzkaller.appspot.com/x/patch.diff?x=10214be2580000
+
+Note: testing is done by a robot and is best-effort only.
 
