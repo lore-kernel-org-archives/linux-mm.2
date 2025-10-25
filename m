@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C843ECCF9E0
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE6B8CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 03:30:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E95C48E0133; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
+	id 373348E012E; Fri, 24 Oct 2025 23:30:17 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DD04B8E0132; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
+	id 323158E0130; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FE7B8E012A; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
+	id C49E28E012C; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8F16C8E0126
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 9489A8E012B
 	for <linux-mm@kvack.org>; Fri, 24 Oct 2025 23:30:16 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 581E416032E
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5E66B89636
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:16 +0000 (UTC)
-X-FDA: 84035208432.22.81BE6DC
+X-FDA: 84035208432.23.2A090B2
 Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F223B40010
+	by imf08.hostedemail.com (Postfix) with ESMTP id ED84316000F
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 03:30:13 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	spf=pass (imf01.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761363014;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=SdNbp7mtwYMwafD79sSb/Xjr7JW5xqgppcDMFg/WSJk=;
-	b=s6NmTEVpEdjSywOQ4vo9Qvs/kJibhSKwjtscf/tXAg3ojJBqd9Byx7nQQio11fTHO/MP4B
-	8t0OvcOn0tuBzyGv/2zQ2Hnsvbp6OtwV4DHjQ7BpJKIPqp8z281zqvj+xJ6FGGBMkld5uE
-	ng9RZkhllW9H9Vrx8BjJHMRqeYth5vM=
+	bh=jO+/Jf5G6vyv+qkTjOBhJdCQFuqZwRDug48JRmXr7zc=;
+	b=iaYIV3ghVr0sPmHwX53o5E3USyRIr/umF4ox70Bj2DPitCCV81LCXG62ofqOZhCJu3xkQC
+	fOPcf/Uqc2v2v3hzf2RLBSb6ziUAcdkGk2UBRHGsHffrzoqSuLzBi2b2Bz2Jir7TNRgc1H
+	ZkBwxeOXZcEg8J1qQnFSEXgH7BPB8kg=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=none;
+	spf=pass (imf08.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
+	dmarc=none
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761363014; a=rsa-sha256;
 	cv=none;
-	b=6V8HI8phjZNm5Hfa5FaBFtM/6vCVKMlYCR9ZbiepyEOGWrSRAEWBA22sV7egToUO5tTgj6
-	hNyXVVrPrT+NM/oPWiQSgbd5byHT+j8bmkXssiwtgcrz6r2LYsDlxRlTdYs3mNhSSC6MSs
-	dGfz65I+RK0RGGftUawutJjI98MLTVw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=none;
-	spf=pass (imf01.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcL12JHzYQtq0
+	b=o+IrVPdxutAarVHyVOVK1YzbZgfQBleJjjtVdds+vg4rEBKnXmH4M9mmA+utwexZoDVAzF
+	OukVq8W6vSv4IU+m4pwwrjm+TTy2vfZy5F8Dl+oRIEYCWzJhxo8m7wNQa2scwIeyv4Jpbq
+	X9IssL5ycbuqsnjY9DR/LzfdcFpAa5k=
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4ctlcL09XPzYQtpl
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:29:06 +0800 (CST)
 Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id C3BC41A0E6B
+	by mail.maildlp.com (Postfix) with ESMTP id A55EE1A0EBD
 	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 11:30:04 +0800 (CST)
 Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S23;
+	by APP2 (Coremail) with SMTP id Syh0CgBHnEQ6RPxox1YbBg--.45388S21;
 	Sat, 25 Oct 2025 11:30:04 +0800 (CST)
 From: libaokun@huaweicloud.com
 To: linux-ext4@vger.kernel.org
@@ -70,18 +70,18 @@ Cc: tytso@mit.edu,
 	chengzhihao1@huawei.com,
 	libaokun1@huawei.com,
 	libaokun@huaweicloud.com
-Subject: [PATCH 19/25] ext4: support large block size in mpage_prepare_extent_to_map()
-Date: Sat, 25 Oct 2025 11:22:15 +0800
-Message-Id: <20251025032221.2905818-20-libaokun@huaweicloud.com>
+Subject: [PATCH 17/25] ext4: support large block size in ext4_block_write_begin()
+Date: Sat, 25 Oct 2025 11:22:13 +0800
+Message-Id: <20251025032221.2905818-18-libaokun@huaweicloud.com>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S23
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cw48Wr18Ww47WF43Ar1DWrg_yoW8Wr1UpF
-	WrWrWkCr4fX34agFWSgF1qvwnrtas3GFWUJFW5tFyYqa45Kr95urWUtFn5ZF4vqFWxAryr
-	XF4Skry3Wa1xJFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+X-CM-TRANSID:Syh0CgBHnEQ6RPxox1YbBg--.45388S21
+X-Coremail-Antispam: 1UD129KBjvJXoW7ur4rJw4kWr43Jw1DCrW5Awb_yoW8Xryrpr
+	y3KrZ7Gr4S9r4j93W7WF13Xr18Ka4DWF4UCFW3Zry3Xa48twnagr4kt3s5XF4jqayxZFyk
+	ZFyrtryxW3W7ArJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
 	9KBjDU0xBIdaVrnRJUUUQa14x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
 	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_JF0E3s1l82xGYI
 	kIc2x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2
@@ -96,15 +96,15 @@ X-Coremail-Antispam: 1UD129KBjvJXoW7Cw48Wr18Ww47WF43Ar1DWrg_yoW8Wr1UpF
 	x2IY67AKxVW8JVW5JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJwCI42IY6xAIw2
 	0EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x02
 	67AKxVW8Jr0_Cr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdsqAUUUUU=
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgAMBWj7Ua9I7gACsC
-X-Rspamd-Server: rspam05
-X-Stat-Signature: jnkzsoccgirikcaa5nb7x85h6zhjdwij
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQAMBWj7UbRJHgAEst
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: ED84316000F
+X-Stat-Signature: r6zaqichxdkkkm9iw3f9h7ezq84oymnu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F223B40010
-X-HE-Tag: 1761363013-739812
-X-HE-Meta: U2FsdGVkX19TMyWuXTzWbuA63uih/3QyAszJNzwb7SRgjhKD0CcpgJDc4afctzO09n0t6N7EmytcvglCyNuScLF6ugMdCKNoH/ZN5gmWxfCOHmReNDIBdS9C7EUcmmMOzDmscG5vJQI4yA+is6cqo8gods+qS3/67w2Q6sNfbKjfnHM+2NoVUCvKAc5VQ6umZg4gn8ecozcxoWQFFRw6YZW0Fw2JexANyAUYM+q+NAmrYGpBUx8r97ZJ2k4Lt8kYxEt3U45BQLufnv/k9gP+Iv1R1STbXSFs41IJrUtTSUVXaPl5PsRFr5yoip+HFAFAlO8jqpg5vUM56KHgA9nigI24vqgiKkOTDIhbXYoBcC0z4Ouv5XybcIBp/v9k61InWekOl4M/73WtmmtCIgVBartcG/5Fpjp+pD/iuaws+JEAch08fG1yahZ/QKggXIQeKkRRbHYiEmJ6XzTJfK1PHwk2DZjm8icRLVSfRawtpeO3J9vliOceHXg49HM4y/NAx2u1L/JQh2o68a2ZIektWMEjPcVg8+aVeu4YdUKJozbWbpiwrM/y//kWPkNTqTmN4hg/GWzM5BHF3BKuidzhq17YxjEe9T0G3CrgKN8r0jhu6xCnqC2Z92BStrt++8/v7FmJBwWXE3zJ3NV7pk2K6oeJWD101MMFAuxiGV6CjN5JDN2Q5hM4WZmKjZ9NlYUwWRZBZAL3MjLMNfLYdehQ+rbfKAfSeNBEDVvhXzx+ppUaOc1SQ6DAFa55d+Fio6g5MskXOlrJDoK1e12sL7nzF0+b/rZwZccasRaxbTs2xocnZUrLn/cDLGRdBSzmYUtKg9cIVQFZXMx6MpbDhmEKM1YBojOceZ2PCS4CYDJodTLqoIM/0nFbUbOP1mwcg1TPVnXNRCRGxNo19bHynKQPBzFKj+xUppcV4xCN9SSwMV+kPdu+cjxitsfjcRD1+dK23srGchjUMZ9E5gUSthK
- eM/WacNN
- SUTjNEKNrBwWr95vDATR5p9aTjZgiLW9O90AFSv4RoVyH38iEZJOtF6nfQ3BKnsFTPMBYo+/T56nTIi1fD/sKjQJkL4h2rx+GyPxCVE4uTl2Ef99+m2WAVuvV1lhIh2mtPU7lT0Wv5WwWet8=
+X-HE-Tag: 1761363013-930719
+X-HE-Meta: U2FsdGVkX19V6jWA4UBXNOutH3zMsHl0QzChPI0FZ97F1vcFpzn1tZOhxFw3+7sSD1Tf/zwDx8mN9OGNTW4LKcoMOrT71bAFjTzKwtreI0ftFz1/GHBSGjoiSyTyteL1+kgGDGvlYA8TL+cPZ17kklzrhajq0say9fF1tfZxFbPkVwPjvyLRNtcxg3FjmX1d12hnECH4O6gAx8KAHNH5TKMVlte8gkSfyj5zzA0+9MGtU+xi340bIqQ6agbym7TWpyDw3SIuqJFOdAdS08OXz1llsnmYQ3UCEhPnspd6zcDwobZeZ6w2ZUZPzmsvIGCuonyof1beVxesk4KtudGYVWjfcZ4M/K9atcgpER1V6WtZYGZrfT8SsHDcz5ozk6kzoO3AKlyLh8MP2hONNz3BrJdC8+gzvQgP1bvUAh5TNeazJFkymIJeBZvMjgMYeammMM084JAIFrMrhCT/0sLPmPF36huff3qBLe3V9pW1jvPg+zSAzQt7AyAvxMk2zQ9vAUeIm8jEUhIylN0bwCW4ZUjkWLucljSzD4k6Br9Yiq4sCoEfBwi1BeMup6Al/cXZjre3SC8Fb/TFI8LuvhrwijJSabaXxhpBU99rLv7AzMjcg2D6Xmqnb8RvSfp7mvo6UOsPc1kyGR8YxL6l2anf2dkzxCiBa20lBsyKp97eKZbNe3K8zI2pv0GTlExdZz6EDH4OQbvk5N6xKsqZFyyf5vTJRfrEGkiQk6yAYhC7gW/nIyofr97pdETbPacDYUxkyAxc5A8nmgid6YA0aLmEiFFqmQGJd8Bc9uuU/ymgJTfvQdET8h4nXLEQ0Qu3vvnUp1kl5FLDSn5+uZzyPF9dAmX3yZkdnL7DK0D0n6+U+4vEbqaEVG5cvxd6ypo6nCAl2KIWczWlnd8Uc711IxiVrNJlrlPhdPAGfoyF9+A+eTeP7r9iGg8EV9k5ErAlg/9b1WrNWTS1jV5unupDY0J
+ caT4l6hL
+ mdbggqA2eOxJCWCVBHnCavE0B04ea+iIW1HUAxS1RPiRwHFolGOW9fjKvvR0fNU0CDWWM/B2827Emu9kACwrjN2dLL7Hj0T0bQjSVOEiPxep+dM4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,47 +115,44 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Baokun Li <libaokun1@huawei.com>
 
-Use the EXT4_P_TO_LBLK/EXT4_LBLK_TO_P macros to complete the conversion
-between folio indexes and blocks to avoid negative left/right shifts after
-supporting blocksize greater than PAGE_SIZE.
+Use the EXT4_P_TO_LBLK() macro to convert folio indexes to blocks to avoid
+negative left shifts after supporting blocksize greater than PAGE_SIZE.
 
 Signed-off-by: Baokun Li <libaokun1@huawei.com>
 Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 ---
- fs/ext4/inode.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/ext4/inode.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-index cbf04b473ae7..ce48cc6780a3 100644
+index 73c1da90b604..d97ce88d6e0a 100644
 --- a/fs/ext4/inode.c
 +++ b/fs/ext4/inode.c
-@@ -2610,7 +2610,6 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
- 	pgoff_t end = mpd->end_pos >> PAGE_SHIFT;
- 	xa_mark_t tag;
- 	int i, err = 0;
--	int blkbits = mpd->inode->i_blkbits;
- 	ext4_lblk_t lblk;
- 	struct buffer_head *head;
- 	handle_t *handle = NULL;
-@@ -2649,7 +2648,7 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
- 			 */
- 			if (mpd->wbc->sync_mode == WB_SYNC_NONE &&
- 			    mpd->wbc->nr_to_write <=
--			    mpd->map.m_len >> (PAGE_SHIFT - blkbits))
-+			    EXT4_LBLK_TO_P(mpd->inode, mpd->map.m_len))
- 				goto out;
+@@ -1162,8 +1162,7 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
+ 	unsigned block_start, block_end;
+ 	sector_t block;
+ 	int err = 0;
+-	unsigned blocksize = inode->i_sb->s_blocksize;
+-	unsigned bbits;
++	unsigned int blocksize = i_blocksize(inode);
+ 	struct buffer_head *bh, *head, *wait[2];
+ 	int nr_wait = 0;
+ 	int i;
+@@ -1172,12 +1171,12 @@ int ext4_block_write_begin(handle_t *handle, struct folio *folio,
+ 	BUG_ON(!folio_test_locked(folio));
+ 	BUG_ON(to > folio_size(folio));
+ 	BUG_ON(from > to);
++	WARN_ON_ONCE(blocksize > folio_size(folio));
  
- 			/* If we can't merge this page, we are done. */
-@@ -2727,8 +2726,7 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
- 				mpage_folio_done(mpd, folio);
- 			} else {
- 				/* Add all dirty buffers to mpd */
--				lblk = ((ext4_lblk_t)folio->index) <<
--					(PAGE_SHIFT - blkbits);
-+				lblk = EXT4_P_TO_LBLK(mpd->inode, folio->index);
- 				head = folio_buffers(folio);
- 				err = mpage_process_page_bufs(mpd, head, head,
- 						lblk);
+ 	head = folio_buffers(folio);
+ 	if (!head)
+ 		head = create_empty_buffers(folio, blocksize, 0);
+-	bbits = ilog2(blocksize);
+-	block = (sector_t)folio->index << (PAGE_SHIFT - bbits);
++	block = EXT4_P_TO_LBLK(inode, folio->index);
+ 
+ 	for (bh = head, block_start = 0; bh != head || !block_start;
+ 	    block++, block_start = block_end, bh = bh->b_this_page) {
 -- 
 2.46.1
 
