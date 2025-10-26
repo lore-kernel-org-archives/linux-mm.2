@@ -4,100 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27154CCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 04:54:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23253CCD193
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 07:55:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F0988E015E; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
+	id CE2088E015F; Sun, 26 Oct 2025 03:55:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A14B8E0150; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
+	id CBA138E0150; Sun, 26 Oct 2025 03:55:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DEB28E015E; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
+	id B86F58E015F; Sun, 26 Oct 2025 03:55:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5B0ED8E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEC5F577E8
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:54:20 +0000 (UTC)
-X-FDA: 84039049080.10.DB7D97B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3DB6A100003
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:54:19 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSa90mR0;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9CF168E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 03:55:18 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3C54116039E
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 07:55:18 +0000 (UTC)
+X-FDA: 84039505116.18.EC64118
+Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1DF3E140007
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 07:55:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uWaRGsje;
+	spf=pass (imf09.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761454459;
+	s=arc-20220608; t=1761465316;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=U1qWh9wQYmqqXjANQ9udrR+FHPUEdVxXolZRGRUJdBI=;
-	b=m9npZpXoCe37DsfnDPrlFm3Xfq6WAeP2G11poTe653f/AUIvrwA+SzS34FS+Fx+tgaI3LX
-	HCzdWbreX9JMFOaKlnDpsgRn6HDQA4Evy9GluRtZ5HWVx0jNV62hBNCC+fB0l4hECn3wnC
-	0yOBUJkWRP5RNeTL7NaGkdjmrjjg12o=
+	bh=gbW6lsAeQnITBSvhA7va7FPK1N1OCTuc7ZM09ubMnwE=;
+	b=siWmMONIlMs4Aqun6kFSTq0JdiakC/xI69q5x11rI5o5u7WmP/FSRL8B1fhs7K495RNSFJ
+	hZ6PEpgtQTBz8fXBDF5H3LYjvJzsY4kMwxGlsZ2u32ErbzCG3gzwwbL8vm7KSxszceFRKp
+	gFstm+IFyjouET77cauQTUDHut/qfq0=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSa90mR0;
-	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761454459; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=uWaRGsje;
+	spf=pass (imf09.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.124 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761465316; a=rsa-sha256;
 	cv=none;
-	b=Cvo4SVbS9SaQoT8t5YqHjyMDN+mFPo0voD6TeMV4ZbTru1Kz30Q4bSPthXv/bk4CUf8XNc
-	cXyzau3RWat5fi6DhG6i4Ai6zaWBErqEGZlcbkLyrtS8OBbQPDcFZGiJz8CeRaKT6if3DX
-	vPs06dtABX4q9qtwD4KOwTFmzEF8cyc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3181E4422E;
-	Sun, 26 Oct 2025 04:54:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A70C4CEE7;
-	Sun, 26 Oct 2025 04:54:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761454458;
-	bh=ucWJuWDs7R36b9/cO5QkJztWCLe4j4T2lRr4BgXYjkw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZSa90mR0ncqVcsn+MWBFbF6cTiS2j8rPQM93oADJ4MLoxpTvK0abfvEwrQdH4NyJY
-	 ZguZeHhHFg8HHhNpkr6fzPHh9FpaXSo2HREt9XkTep4zWROZeEfRc+H7PibHtUB9Bp
-	 QJnC0l/W4BkCdCKVO5dV4weZI0VCrwChmVfmIWGo=
-Date: Sat, 25 Oct 2025 21:54:16 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
- Matthew Wilcox <willy@infradead.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-Message-Id: <20251025215416.dbe01a36382fdd1a6d6a8e5b@linux-foundation.org>
-In-Reply-To: <xhpgje5pb5sxi5frjvje73v7oatablynl7ksyjnbrglwh5qx7h@fforsl3cwbl6>
-References: <20251023093251.54146-1-kirill@shutemov.name>
-	<20251023093251.54146-2-kirill@shutemov.name>
-	<20251023134929.b72ab75a8c132a17ae68a582@linux-foundation.org>
-	<3ad31422-81c7-47f2-ae3e-e6bc1df402ee@redhat.com>
-	<20251023143624.1732f958020254baff0a4bee@linux-foundation.org>
-	<xhpgje5pb5sxi5frjvje73v7oatablynl7ksyjnbrglwh5qx7h@fforsl3cwbl6>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: hy1dbnu6aj7eha4u9xumbmnh9fufi14q
+	b=BO+Qd3pOZ+w89VMs2Ckf0Ek3MxYo6CY9geAOGeZhTmeOoJYUbJwse/jdneZiZ4NQ0MG4e2
+	kBwW70IW+r6ebFrK6R1E8WSCFZzLZJQCq5Qf/afma4YQp2asNRI+z/vhyIjaxcXdteI3is
+	Q9OCzT5a5WNy9By2/Waw/wa3S48n3wY=
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761465309; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=gbW6lsAeQnITBSvhA7va7FPK1N1OCTuc7ZM09ubMnwE=;
+	b=uWaRGsjebUdzH2whT3j5S+i/fAtGVXCjOMCOlz2NN3eCmuwsKvKJ40zCwftesgr2ikX/2jJnolz39m3RxVGZCz/jOPjf+dta4Qwm3qAmMA4GHwxKAszjPDoY8iI7uigsFF+c+Y/Aj8i7+ZwfHMbYs7JTxyE/MhMmYFagpMgQM9w=
+Received: from 30.246.176.102(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0Wqyle5w_1761465304 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Sun, 26 Oct 2025 15:55:06 +0800
+Message-ID: <3db524e7-b6ce-4652-8420-fdb4639ac73a@linux.alibaba.com>
+Date: Sun, 26 Oct 2025 15:55:04 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+To: Jason Gunthorpe <jgg@nvidia.com>, Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+ Leon Romanovsky <leonro@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+ kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <20251022125012.GB244727@nvidia.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20251022125012.GB244727@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: csqnc8et951ohbkn3x764e7e7or1z3ra
 X-Rspam-User: 
 X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3DB6A100003
-X-HE-Tag: 1761454459-848126
-X-HE-Meta: U2FsdGVkX1+jFv73mVFcBSddj4BIWagu7tbIbGQvH6dxho1BhGIEHZNAdd99uw/b5pYiSIF4WV7pNFvyWnlbmlVMLDtOuzPAL3kRN1P+AkM75orTvcCKfW74UT3SJJNRYNujaUwDTRxat7hUW5Hx24MpBd+S3PHJcz5jebjWOhHSl7GAxq/lXyfJR1BPV4GyzzMNboYjl79jK3NEvqcFTOcjcnv+yaJkZ01vdFRQaGr83OvxaxIGIjAUu/1h/cIPb+2WSHsAjslY95ESN0vq2401/M68CEZU9S81J3FB8akHj4OLOpxq/8DAyQJgpAL/uXAvohR/eX8aTUaPhzb4efrCJO4WOk4MKgvHh19uuEJMJylZlCscQRcwb2taexJDjtokYk6UA2IklHnKkN6qbkgYGJGeCWgOuR/dpU4ECrVsjQW52Z5LQ4IPBdfieb0S4EieByE71E6d+437g1YWpioz0IZozrGz3tWPxCUR2/l0Dg04D0YPdHf4eanwVKE3Hxw4RPWBXUUqV8Wnh6LJeuRCDksuAEnHgw3DlB4lgVkt5cr6/QJDV35EGa4qQypcDVjQ2zpMctsh44zP/Bl5jciwi1DZAswGUJcyGrMeOemmXkpSXscgL/NHf6/EC/FblWny4BLMFB37YZs32jCZYPz/bI7SyvrK4AX4Fhuhs9g21cYrr0VL4g4nTMGOOuZvDGNEHRcSP4yVo6pSJtMo4S1y9VBEelW/Q2ySBkFNDiiFtnHf2E9VOrpPVAwOnIpMtAfhBnKvEHW0CMrwryJscn2Q/qIO1xeGvGO+YHW3vAVKdYJHbZsgjupkYQmgYl5vDGWaPPOEHy8ZReGGggEdPNcRPJuDfT7/g87NVKN4O7ecw/kOU2SRsXZSaXM1oeymfg8ZmQvB6F38jA0yFqfC4X/bywD/xVbX8o5T9RibeDI0fFpRZVrn8ci/DDU4KR0vqvHcXSwWaXP3eoeDO8P
- 7xf6dnec
- sWeKCIt0Zm04ziCYCYZwRbkLrdkKyBjLLu3vxDUQBoTDpiMvZiC5o9EXeaYOOqytgktB73lEcem3l606IBWQ3gAhii7kvQL9h6b9Z97hcdPVpKztdxe/VFleby8D9IQuZBCmp5h0gR2XhyYUrBd6GoJuBH5sr2Jw1xs/WKFzKjAuWkRaNz747jx1WJOS0bUSw+cpkjIAFKaLEBjj8CDN1r0VTcOHTiYHtiKk4p1WRuVFpvTP+M26a/bfQWMZWcS0OQFs6XE1luSPFwV0kJ68Ua+8wsCS3qbZAuKnvgt+V9fJwKIKB2BplluvUarS/R2slJDmncbMfYnFZGntsg4NKB5wRbFgr9A/VWZXm
+X-Rspamd-Queue-Id: 1DF3E140007
+X-HE-Tag: 1761465314-807171
+X-HE-Meta: U2FsdGVkX19amITOi4e3Pnj2boUw4VdaM5R8dIDDS9Nwq6T+8S6OQB0OPxVH+Xy/hFWDx7YW0S8CQIOqB1JX6ZpL9bFFlA9mdKYPXU5jfGqJPFGK9qQEFnszFgzOkA3CEf43SC9M0iigz12KSd827E/6u+yFmmkOcZmSg1D85GTRdP7SGPnyRBjw1Df3IqcquBNa/W8UOcyruoyCClmGvCiqKtRy74kvv955LW9ItDqFepUHV2hB9BPWwFH+ZNI5Yl7eCtuY2n6Lpn1UYB5p/yxYuri0Do57rAnsSGuMcUZK6evjkpzKj6vJnz1sBiknLsvS+PBTyLuZG1b8IQ8DSrtZz3Mxk35OaWMwvRkJ1LW1gUrTrqQ7+KuYeQH3YJ7ZNheFp1Gwl7DCu9T7x746fp2MVZhhwbkjenKAr3l5dgrFzG32/iLnWyOakYyuczzj4tcuuuJa7uldPVrP+ANdBOXFMJOnn5/fAdDXEt3nnvV4WfZpxxHZDasK9t+TaEExhSwUsSiibvl3ny/OZRZMcYOP+/+BY6ROewvidB/76jAI29PY8zZ6bLBsv7y71n3soW0R7N8UJawHJIoNH6TLg5UApQ82XL+Z8nqjBtzfEvKbfSTSJJJZ1mDH0sF5l/Wdx3pTqNe3Zzyl0EN2e3cEfBlouQp7SMpX4QRY3sCOcSwrLg6YgqCbNU1OYorttcgVOs9evoYXIhXvjl5ldwZ+YfVghWXDAszcJBUtSHIs1P8iOF0Ei3tkCNWisDqNgXQlqdoo3solRTEdboWmFHBy77J2DC6zoYQ3Scy9Uk6YhM9pD7lt5omc7/cKmpGLhvnf5JaXaIbLhIjGeso5CVjPinwC7vNEGdcE47TfWfSeYOODHKEicczJM2Qm+nxN4/hErUWcqr6pxp8zrtmrgjFlPJxCvcRnBa1+1GUl4TWijge5Rh0DP4bgGXvZdFqY/xp7xHGtGFCVpy3cPUUXyxT
+ 0u3J8pLz
+ DMARX99LSopKdt1rD2QRR9GLRJi7wKvcsdm5SV3q8Z0WL+6YUOxkUJAiMHaKZMk7+/JQMx49esNtOU7s7MFLAl6BPCj2wFZC5+DigDRs99yB3fOo8T0ZNv0ee8FDp8+Qu/uuCAFpWVMSvJymidCW/X/wjyBoty9OOZoCVMPuo/qx/k+7m/4yR646id721ymTIO0CcNnJWiTNVBmE2mrxOXQ8A9JNI5PixUtdXhTMnXQ5lMD8MeE1g2VNnMtHMfmk2E+vwWAgFjjmJjOMCW5NcepnzRifx+3zNbyDXowyRuQmH3wvhvaOahqdD2KHNLhWqLl62
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,36 +101,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Oct 2025 10:26:05 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-> > Because the Sep 28 2025 Fixes: totally fooled me and because this
-> > doesn't apply to 6.17, let alone to 6.ancient.
-> > 
-> > > It sure is a fix for that. We can indicate to which stable 
-> > > versions we want to have ti backported.
-> > > 
-> > > And yes, it might be all stable kernels.
-> > 
-> > No probs, thanks for clarifying.  I'll restore the
-> > 
-> > 	Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> > 	Cc; <stable@vger.kernel.org>
-> > 
-> > and shall let others sort out the backporting issues.
-> 
-> One possible way to relax backporting requirements is only to backport
-> to kernels where we can have writable file mapping to filesystem with a
-> backing storage (non-shmem).
-> 
-> Maybe
-> 
-> Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
 
-OK, thanks, I changed it to
+在 2025/10/22 20:50, Jason Gunthorpe 写道:
+> On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
+>> From: Leon Romanovsky <leonro@nvidia.com>
+>>
+>> Add support for exporting PCI device MMIO regions through dma-buf,
+>> enabling safe sharing of non-struct page memory with controlled
+>> lifetime management. This allows RDMA and other subsystems to import
+>> dma-buf FDs and build them into memory regions for PCI P2P operations.
+>>
+>> The implementation provides a revocable attachment mechanism using
+>> dma-buf move operations. MMIO regions are normally pinned as BARs
+>> don't change physical addresses, but access is revoked when the VFIO
+>> device is closed or a PCI reset is issued. This ensures kernel
+>> self-defense against potentially hostile userspace.
+> 
+> Let's enhance this:
+> 
+> Currently VFIO can take MMIO regions from the device's BAR and map
+> them into a PFNMAP VMA with special PTEs. This mapping type ensures
+> the memory cannot be used with things like pin_user_pages(), hmm, and
+> so on. In practice only the user process CPU and KVM can safely make
+> use of these VMA. When VFIO shuts down these VMAs are cleaned by
+> unmap_mapping_range() to prevent any UAF of the MMIO beyond driver
+> unbind.
+> 
+> However, VFIO type 1 has an insecure behavior where it uses
+> follow_pfnmap_*() to fish a MMIO PFN out of a VMA and program it back
+> into the IOMMU. This has a long history of enabling P2P DMA inside
+> VMs, but has serious lifetime problems by allowing a UAF of the MMIO
+> after the VFIO driver has been unbound.
 
-Link: https://lkml.kernel.org/r/20251023093251.54146-2-kirill@shutemov.name
-Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-...
-Cc: <stable@vger.kernel.org>
+Hi, Jason,
+
+Can you elaborate on this more?
+
+ From my understanding of the VFIO type 1 implementation:
+
+- When a device is opened through VFIO type 1, it increments the
+   device->refcount
+- During unbind, the driver waits for this refcount to drop to zero via
+   wait_for_completion(&device->comp)
+- This should prevent the unbind() from completing while the device is
+   still in use
+
+Given this refcount mechanism, I do not figure out how the UAF can
+occur.
+
+Thanks.
 
