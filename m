@@ -4,85 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161F7CCD1BF
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 00:03:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2055DCCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 01:05:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E8B5A8E0155; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
+	id CD2D48E0156; Sat, 25 Oct 2025 21:05:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E3BF78E0150; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
+	id CAA698E0150; Sat, 25 Oct 2025 21:05:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D52128E0155; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
+	id BC0BF8E0156; Sat, 25 Oct 2025 21:05:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF61F8E0150
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50656129765
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:03:40 +0000 (UTC)
-X-FDA: 84038316600.13.5F28664
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id AB33012000A
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:03:38 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZftjGyc5;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id A5B9D8E0150
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 21:05:25 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 304E457270
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 01:05:25 +0000 (UTC)
+X-FDA: 84038472210.22.44100A8
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 8F4E440003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 01:05:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DMN1HsNl;
+	spf=pass (imf12.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761437018;
+	s=arc-20220608; t=1761440723;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gZnSMw7nXjXzMHenaC0WdXyvdVNAqoqEVjgZmZOhfao=;
-	b=wDEdl2GTDKPTkFVp0nDyXeTGyAydUuOHYXZddRuF5PVWqoimaJ+OJRbXSvuVJzodyeXlLK
-	lOLhs7XdaUQE5D8GmY3dJmDf2bclPAFFkEALlNgBLxRcw4m1Uk+Frdx95OJUV1usPdwXzC
-	m1IiJ0MnFjAem5AkfWHLClNyUF1X+FU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=yS34+uhylNdFYNWrvgsPGh1bBy7nTRn8Y42YGAOkzr0=;
+	b=gsXv+Io6CctWL0FrYazarKkGNaQPfLUURflBVEBquTcai/OCicIr9G2tTixjdcjsSHZYrx
+	cJlhjxnt6BT373m3mnqjiNsJCSaxiIHm+LTqOuhmXaGwaqBb8q+bIERO0vPbXyJx7/9d9+
+	1sVkHPxAk1H79Jq43+tGZaIHg/kDdis=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZftjGyc5;
-	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761437018; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=DMN1HsNl;
+	spf=pass (imf12.hostedemail.com: domain of jinji.z.zhong@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=jinji.z.zhong@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761440723; a=rsa-sha256;
 	cv=none;
-	b=EOjDw8K8khMPAlqmtvXwPXQwcCKyVrLlqAFwj/VtzaC6SpyDuSc3rG7cFr/fppLJyiA37R
-	sClzTN+TChd0M9WbotG01K28DU/2u8jpJxYWkw0L342jDLYgBMPsRr8ZMIvmlkJ1AqpNuC
-	/sx61XFE1ztKCRYXQAgfWMk4b5iOxrA=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B820060194;
-	Sun, 26 Oct 2025 00:03:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4814BC4CEFF;
-	Sun, 26 Oct 2025 00:03:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761437017;
-	bh=qjil+McBNRBHW+rdqa2Qf2obUOow2o73ABEpawIdCfA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ZftjGyc5odtP0LBCbfeSJaCAejLYaDXvXvS8tjaQj9xywRPs4q/0c/GdiOV/pbcFD
-	 XOTTvoqP0N/CyxCXZ3nOYbySCbI3fAoIarjIjZon+GG4zMoRGpyu4fUqYLia2JRjQa
-	 k4BRa0LR2A12REokbNGlxx260I6QYeoxRAsJ7UFE=
-Date: Sat, 25 Oct 2025 17:03:36 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Nico Pache <npache@redhat.com>, oe-kbuild-all@lists.linux.dev, Linux
- Memory Management List <linux-mm@kvack.org>
-Subject: Re: [akpm-mm:mm-new 173/182] mm/khugepaged.c:113:25: error:
- variably modified 'mthp_bitmap' at file scope
-Message-Id: <20251025170336.f0c72983aa63f58c66e2aa2e@linux-foundation.org>
-In-Reply-To: <202510251530.eJulmicR-lkp@intel.com>
-References: <202510251530.eJulmicR-lkp@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AB33012000A
-X-Stat-Signature: jmio1ftk8qi5hcmrn33zd5bfqcambet4
+	b=4vrdIPAVEsZug8+kUOG5FkVxXobrntbMj4U/6rp4zvZKwPiGvneb0nfDgY4lB5tbyt7/hl
+	EUIjSYKvKMZag7WU4+zH4KCv9S+cOvncqnaD4TLPVSjWfUiwAfkkm0xzvPQxz9qcjR4Fcc
+	7SfZt3ACFLlGjfgFxfGg95VQSycc+oc=
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7a2852819a8so1909783b3a.3
+        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 18:05:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761440722; x=1762045522; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yS34+uhylNdFYNWrvgsPGh1bBy7nTRn8Y42YGAOkzr0=;
+        b=DMN1HsNlxGjnCzBV1bjSdlJSVFFGY4C7bNxl4iRY39VYygea0hax/YgIQ3JsSvBq+7
+         Qkr7KW5Ewl9X5W2wVJQZ2QEW/OQbaxfUaqofzBarQJNUdj/zRmriNMfGWtLaj1Jp83Sw
+         5MOgr1PItrkCmda6lYUvLIXn1PvE4aZadjoylpDXzCtLJjShkP5B/h7XmVm/jGcTzQ7m
+         HnbUMgi4Z3XcPEBHDFHD3DHR7HBo70Cic/joPWM4v4HOWT6L+UiTgI6ta2xIyowQeHHf
+         EwCBdVETxXr84E3lmAwxy01+QcXqUkJZiJm2ltP9yKmuLaKRNa4VZXPs4B3fvWuXM8Z4
+         fyug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761440722; x=1762045522;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yS34+uhylNdFYNWrvgsPGh1bBy7nTRn8Y42YGAOkzr0=;
+        b=vWtBfO0SkoxOWfr0mHnB9gmH0a0vMLoh4aFbhDceS9FVe3EehDzXW0L3rTpZT7hN9E
+         BlPEs0CWAlY1XQu+FIJ12PRcTVwNwoI8boDDdEzUD8qKL99DEd3IaPSNoKYPVSvqr83Q
+         W9k9hGrYaLg1IC0/vjoE9+Y9u2gSPLNqPZCcRuXVQDJKgOaG9eJj/5aXKH+34JL+X5o0
+         5X5Yzj+Tk1xQZzLqrUvGEDinLK1fCbYe8dRpcBOpESy0fr4XsSdrKTaq07zcMshoYljS
+         Hh9xMxayU+Th47ya6IEF/EtBC6nPP7J7owkkTSCieazxTFiGIh9NHQYcic+mW7QN1hjo
+         1lDw==
+X-Forwarded-Encrypted: i=1; AJvYcCUaPxjYibDGAus77uXz2kYHpBfGqo7ykGKFOlUFAPZqj4BduQQWmreb0Hx86eVd5HSAozi55CxL1Q==@kvack.org
+X-Gm-Message-State: AOJu0YxziH2sMPt9M66yb/1K3svvXjY1vt8yQBOFI9PPrlyci1BHvKOM
+	V2lcAl153sEqiNo2KEzWbqSSYlrM/1BF7EkwpNF6NXCNY0eSlhlqD/8c
+X-Gm-Gg: ASbGncvWqR3BDn3uieDV8z+FTqfMu6Cs+xcs6LJhNzIfECge2dJi4PWCmSkdg4FDC5B
+	L3w9nIUQIjvTrJOLawaUoD5ae2E5phn/Qtd18uwlWCaT9zxXRT7JtNowjeK5GEJqjd6O4Rh3X0+
+	Owil7wXqfqFOdAr0G3ByRYGGw4iuw9FfO6LS/wsJgbAwCFhBG6JeKLxtb9McKJDDC9Kr1nMsaWa
+	PVu6LAe5HqwED+Q+MrKCdUf2alote3uXJ3d7popU9jWuF1l6HwV0vkZW6gT1IQccKs/mbppG5L1
+	Ze3el0ZNCBUVY5bUoRqKY4PpDAevnKwP3P2giD6CtqIs/2fHUxzwVMPaRMQG+9OGMJ3lxhSG0wU
+	qFLIL9wbt+b9QVzZMNUOUZgunQzOA5uZynfHYS1XuPIC2lzzZTUKlrbYEmQdmyxRZjPGo3ysaEQ
+	d21XS98P9PfOsyzg==
+X-Google-Smtp-Source: AGHT+IGqJ3fK980blF3S2OhDDl1kPCFC3PDx3uiV6lRR9MlLGgQ+c3xMg89feF4XpI76Z2y7cP/wYQ==
+X-Received: by 2002:a05:6a00:23c2:b0:780:f758:4133 with SMTP id d2e1a72fcca58-7a274ba91d9mr12147230b3a.10.1761440722260;
+        Sat, 25 Oct 2025 18:05:22 -0700 (PDT)
+Received: from daniel.. ([221.218.137.209])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a41404987esm3371597b3a.36.2025.10.25.18.05.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 25 Oct 2025 18:05:21 -0700 (PDT)
+From: jinji zhong <jinji.z.zhong@gmail.com>
+To: minchan@kernel.org,
+	senozhatsky@chromium.org,
+	philipp.reisner@linbit.com,
+	lars.ellenberg@linbit.com,
+	christoph.boehmwalder@linbit.com,
+	corbet@lwn.net,
+	tj@kernel.org,
+	hannes@cmpxchg.org,
+	mkoutny@suse.com,
+	axboe@kernel.dk,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	akpm@linux-foundation.org,
+	terrelln@fb.com,
+	dsterba@suse.com
+Cc: muchun.song@linux.dev,
+	linux-kernel@vger.kernel.org,
+	drbd-dev@lists.linbit.com,
+	linux-doc@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-mm@kvack.org,
+	zhongjinji@honor.com,
+	liulu.liu@honor.com,
+	feng.han@honor.com,
+	jinji zhong <jinji.z.zhong@gmail.com>
+Subject: [RFC PATCH 0/3] Introduce per-cgroup compression priority
+Date: Sun, 26 Oct 2025 01:05:07 +0000
+Message-ID: <cover.1761439133.git.jinji.z.zhong@gmail.com>
+X-Mailer: git-send-email 2.48.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: jhyashw6jajzgakhqwqzdkufuedzom88
+X-Rspamd-Queue-Id: 8F4E440003
 X-Rspam-User: 
-X-HE-Tag: 1761437018-550387
-X-HE-Meta: U2FsdGVkX19gF9gyXqbJl+wf1KLVLsshTisA0397QOpOp5Bu+bFgmvzVGwZ89J2aISXQhyP2ZfWBMaq/QG6cJw+9BQAX3XE3SHjFZkiTPC5lcvTOxJbtH5pDAFZziZWZA0EBGDo/nZsZXKJcG8Pt1EITRLZkXL4OUYqfubFlXEZFX2ZHyIb6+KBx8YXBdfa7rLj7mEDYmml3vLsDZ5qw9YRb+W83bAtifAub4lqsAb7Jh3qbmOTX4tcVhFgOcl0s0NS36IBrvLju3jKg5HVE3O4ntXbZ+2wJHr3Ss3LBgNwfp7IZGAEgSDX5o76PP2Lmo7aVxOwz7AiweQ+PvUjzZ/RLkxRUPuGGVw3ncRPBjpUeQmuFjzHJ/fTSk1qT9Wnhhk+54vS4gXndQtP52OGiIzT2v+FsC4I/EB7rsoCk2zLs/TV1ZoaW3ryuLqWZ7TKOJmrx1U/Lq8rLm7wfiP9iyLVSwEipSSCCmUF/rlnWm5Of8nox7/CKZG92cEawMnlNM2Zp9IIndpKDGZTAJ3vX7aMpRdak7VyI4P2D/eS7UiDIWyXHx+e8tPrPpu3Fl4lB5SuZc5XQ92SVYDX87wEbh2VPrpnLURsKSNOBiMztswSNh4o9Os9zX48DyZ72uoThXU9V8xqtqGM2XuokzpRAMI8wN0bXOE3VTYOO52uDxIJ0lv7jqZG3EgGRhjqDvp480bCtIZn6CmzVO2jjc2wfJ+V0L8VBGfLpRAB0xIPGppQ/WpH7/v0rSmTbzV2EL5sQ4skD2rQWuRsQeGibtZc213viHvYrbJHs91NUxZ3EhWR/6BJ9d+KZXlIgvYlzE3EDUo457B9GYHQ8esavBhqxLN9nX9G2BE1XTTu8SdbM+/ZYL/DIbtgSzxiKzxXpOPnSY9jFDXVfPx5uccZEm9KTJX+dBncjUDZ6l+nZq6njKZvo0mpvpA9e7GO04un3sCBvgWSL8td19U/STF/tyzy
- NhHIeddQ
- PQqenIAnxYFrJmNcUgeYbTKM3kfWzZfgYEPOOV59QrR4PnApjNpZXx8eNF//TriF88wIlTkwTTmufrs3TVnurjuZ0F1L8pnaRwtDpEIXabL2A+Q6hUycK0yiO2tDoj3TwHlA0gj+DEN60/03EcVWjK0Q5Tpg2BsfsYY3qQEwGzJWdX4QY+VwqWK/1PwnlP2x5jNBXxTvURj51AC8G4mu7KfOhNekPoJKPC26xl0jlAxn2HVvqvG8Gxm3mqoFy9pmHXBuvwM8JgTqxfCvcVG82QO56LrZSnR2W+01c7cJacPi7BU1YrzB9zc2TE68fwg86DfWx1hRCePwRv0GJvOoNLeebXuD0KMoRwHvB3ZMrvrpnF7cTg0vYtTef8JRZ4aS63CYe3B8KIcDINCke5m6u7kPRzA==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761440723-399126
+X-HE-Meta: U2FsdGVkX19Iv7fRhk4KeF3wGQKMtQVVs+tyqzL1IDf3ndB2K1w2VZHR6sqHKcI2wP4YEwRNktf3KEq/bApJqdoSEs6fsR5R2cdk1yotRhTD/oJILMPINhoVKA4IMhbeFC98I+B6BNDFSDsZGId5bhLbJ3SY3qS8jPjoZPp/0/meYV9lJyDWqL0iBJVnacibDtTnFLXZJ2x7pN4Cni4q/vq0hyjS7rZLaQXTidjkUwwXmxiyqWaeCuD6L+E/cwKd5c9EzU3lO9dtOixnv64EmfGc8ACqOIpVD1CeXPQuIjmtFfGE9h1dgry2HjQTcWcN5a8OsvCDITIu2eHxK4jwjaH2TM0rEctKusYHp0lXTAFgoaGBAjBXaYCyH0ntt4r46zZ4g5L4qSHlErrYuKnL9MzQ+0sD9e8ZuhgpNRRRVOenarZ1O0EmWx1wRrn4BESucw9wgmoRREQGK5HbnKcHZHBB+BzrMWqDmtSC7TC04g373ChVrb4Z88GwNiFOtXfJZem3fuKqClCl8uYB6WnQdDn12L/IXfGvZG88gXfOcARxPoKsOYLcpF9Zxtr9TqXV1FMpB9dI2XNjPl9TrdL+qa1y0KbyXPW9iw4Eur9q8eZxfB6wNj9eqTiTeDPsDhOKdxP5CQRltfHmVPHwFS0gK1lQuLHyxphQy4Hm1ouR2Vf3Fm+gls/Srslr5PlQRROrgRd1H6ywwXyuQClnwMx1hdpFFzUx8g2mdplpvr8qwMJrFtrpbgdt6yjOgIxmlgJ9fIiUrHXSffjajQ8EHfpwlOgh60iHYX1VzibAX0Cn5XVePHj8QILAQpeOl8egT6XgZXGloEL1yC74vyme8QqFkufkmfNh1baO4KONDLo9L0UvByuRS2GVO7/VCyaacsatRQEJLGf3p/bfZjjHPsk2Sf5ycEph6lY19/3/8W1H+3EtZ9H4yjSe+VwxiuscKJTKT2mIZDzYXsXbQeRAyi6
+ x4JTDsNM
+ VVfIa4YiCr8t8S8sAy95/OwuVsErrmnC07UMQ8DjeKzyYU9JJUoQQhtVYelb+HPQs/Z7A5B6rM4KWQlwZb1t6U+3tJLNLUhnDZNMGrQE53zuvmXem/RPRZGKNX4EHxgcYKLkYOOo2V0jBr4E4FrCd37/j0gdfszEI28CH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,68 +140,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 25 Oct 2025 15:14:10 +0800 kernel test robot <lkp@intel.com> wrote:
+Hello everyone,
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
-> head:   752c460b5865d87117095c915addcce7a68296f2
-> commit: 8387af7962dd62a2a2cdb741e702b476da440ff0 [173/182] khugepaged: introduce mTHP collapse support
-> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/config)
+On Android, different applications have varying tolerance for
+decompression latency. Applications with higher tolerance for
+decompression latency are better suited for algorithms like ZSTD,
+which provides high compression ratio but slower decompression
+speed. Conversely, applications with lower tolerance for
+decompression latency can use algorithms like LZ4 or LZO that
+offer faster decompression but lower compression ratios. For example,
+lightweight applications (with few anonymous pages) or applications
+without foreground UI typically have higher tolerance for decompression
+latency.
 
-Yes, this config is troublesome.
+Similarly, in memory allocation slow paths or under high CPU
+pressure, using algorithms with faster compression speeds might
+be more appropriate.
 
-> compiler: powerpc64-linux-gcc (GCC) 15.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202510251530.eJulmicR-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->    In file included from include/linux/kasan-checks.h:5,
->                     from include/asm-generic/rwonce.h:26,
->                     from ./arch/powerpc/include/generated/asm/rwonce.h:1,
->                     from include/linux/compiler.h:382,
->                     from include/asm-generic/bug.h:5,
->                     from arch/powerpc/include/asm/bug.h:116,
->                     from include/linux/bug.h:5,
->                     from include/linux/mmdebug.h:5,
->                     from include/linux/mm.h:6,
->                     from mm/khugepaged.c:4:
-> >> mm/khugepaged.c:113:25: error: variably modified 'mthp_bitmap' at file scope
->      113 |          DECLARE_BITMAP(mthp_bitmap, HPAGE_PMD_NR);
+This patch introduces a per-cgroup compression priority mechanism,
+where different compression priorities map to different algorithms.
+This allows administrators to select appropriate compression
+algorithms on a per-cgroup basis.
 
-And "khugepaged: introduce collapse_max_ptes_none helper function"
-causes this:
+Currently, this patch is experimental and we would greatly
+appreciate community feedback. I'm uncertain whether obtaining
+compression priority via get_cgroup_comp_priority in zram is the
+best approach. While this implementation is convenient, it seems
+somewhat unusual. Perhaps the next step should be to pass
+compression priority through page->private.
 
-: In file included from <command-line>:
-: In function 'collapse_max_ptes_none',
-:     inlined from '__collapse_huge_page_isolate' at mm/khugepaged.c:582:22:
-: ././include/linux/compiler_types.h:597:45: error: call to '__compiletime_assert_784' declared with attribute error: min(khugepaged_max_ptes_none, (1<<((16 + __pte_index_size)-16))/2 - 1) signedness error
-:   597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-:       |                                             ^
-: ././include/linux/compiler_types.h:578:25: note: in definition of macro '__compiletime_assert'
-:   578 |                         prefix ## suffix();                             \
-:       |                         ^~~~~~
-: ././include/linux/compiler_types.h:597:9: note: in expansion of macro '_compiletime_assert'
-:   597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-:       |         ^~~~~~~~~~~~~~~~~~~
-: ./include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-:    39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-:       |                                     ^~~~~~~~~~~~~~~~~~
-: ./include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-:    93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
-:       |         ^~~~~~~~~~~~~~~~
-: ./include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
-:    98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
-:       |         ^~~~~~~~~~~~~~~~~~
-: ./include/linux/minmax.h:105:25: note: in expansion of macro '__careful_cmp'
-:   105 | #define min(x, y)       __careful_cmp(min, x, y)
-:       |                         ^~~~~~~~~~~~~
-: mm/khugepaged.c:489:25: note: in expansion of macro 'min'
-:   489 |         max_ptes_none = min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - 1);
-:       |                         ^~~
+jinji zhong (3):
+  mm/memcontrol: Introduce per-cgroup compression priority
+  zram: Zram supports per-cgroup compression priority
+  Doc: Update documentation for per-cgroup compression priority
 
-I'll remove the v12 series from mm-new.  Nico, TODOs for v13 please.
+ Documentation/admin-guide/blockdev/zram.rst | 18 +++--
+ Documentation/admin-guide/cgroup-v2.rst     |  7 ++
+ drivers/block/zram/zram_drv.c               | 74 ++++++++++++++++++---
+ drivers/block/zram/zram_drv.h               |  2 +
+ include/linux/memcontrol.h                  | 19 ++++++
+ mm/memcontrol.c                             | 31 +++++++++
+ 6 files changed, 139 insertions(+), 12 deletions(-)
+
+-- 
+2.48.1
+
 
