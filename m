@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5757CCF9E9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 22:24:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB857CCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 22:29:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 415FD8000B; Sun, 26 Oct 2025 18:24:40 -0400 (EDT)
+	id 2734B8000C; Sun, 26 Oct 2025 18:29:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C6748000A; Sun, 26 Oct 2025 18:24:40 -0400 (EDT)
+	id 24B7F8000A; Sun, 26 Oct 2025 18:29:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B4EC8000B; Sun, 26 Oct 2025 18:24:40 -0400 (EDT)
+	id 160F38000C; Sun, 26 Oct 2025 18:29:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 155AD8000A
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:24:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8DA3D13AEE6
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:24:39 +0000 (UTC)
-X-FDA: 84041695878.14.319A1A8
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B28861C0004
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:24:37 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fME87SLA;
-	spf=pass (imf21.hostedemail.com: domain of 3o5_-aAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3o5_-aAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 028138000A
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:29:27 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8E6EC12A361
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:29:27 +0000 (UTC)
+X-FDA: 84041707974.10.0C82E19
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BCA91100003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:29:25 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=szklzdl3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3w6D-aAgKCE4zqs02q3rw44w1u.s421y3AD-220Bqs0.47w@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3w6D-aAgKCE4zqs02q3rw44w1u.s421y3AD-220Bqs0.47w@flex--jackmanb.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761517477;
+	s=arc-20220608; t=1761517765;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cHGZJ/FWhRHS3eTWCGRfR1qdcXyKkde8moMbVfyV3dM=;
-	b=IETZN04HPEfo5xxTgMwvb9XcbMLHu1Yk6glOoEcWH+GtipcB+L5/xzVhi//r95R+Cht7lZ
-	QymxP7pDW0B1V9GMn0te3p6CGjbnT7YOZE1b7em0gY/2f9prPzgLdIBCB85lfGnD6naylp
-	9mNBbu1QhWli5mBZ4cAM/a3nBiBtm3Q=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=fME87SLA;
-	spf=pass (imf21.hostedemail.com: domain of 3o5_-aAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com designates 209.85.128.73 as permitted sender) smtp.mailfrom=3o5_-aAgKCCwRIKSUIVJOWWOTM.KWUTQVcf-UUSdIKS.WZO@flex--jackmanb.bounces.google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761517477; a=rsa-sha256;
+	bh=66iqL1wQDJrMjUMimUYRUQT7RhtIF8bdulrGmkclbmU=;
+	b=QWqJeGK/vK9LeYrcoAPVvXncX4K1kTJEArcm93RbRhtyB9ctUKhnoGPDN9a5tWQX0Nxt5+
+	PefTjRFG+mh42lrX4lzgGPQ8gJWJEhVjovKbw5yCzdpy9hFtFhp/+YIAuJdFIr7ers6nej
+	Z5UxWotTTTGi0vgfxipnh30a0idzVQE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761517765; a=rsa-sha256;
 	cv=none;
-	b=GbixDKFtTUXYX9GH8lNSp8pojjc/jYrfoL2vj7BQufRiFnArcVITtpux+1nmzRPN+dmvFr
-	f5Ka8XUOSld8cD1KTuoY2eSu6ZcR3x6vMB4ZMmEMq9VTThTgIPdMxMckzJqgZB/Gyn8Da8
-	BtMuweHC03pyhEXg29rhy5OODreUhoo=
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-47111dc7c5dso23147505e9.0
-        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 15:24:37 -0700 (PDT)
+	b=PiZ7HRcdIdeJg/H6NUvhB/PtG49G/TnJX+/LqCueu0+2FwJ0leVOJUvLQQRTz9EBbWyJHj
+	w5sAz4Vkfk6HwFIOGFqveV+88bk1GKzaIuU7Dfjjwj3PcpPi54j50vuF4Ff8+2ewDw1192
+	2tRdhxBVK2lloZVOhZjn6VOIsMIWj1k=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=szklzdl3;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf14.hostedemail.com: domain of 3w6D-aAgKCE4zqs02q3rw44w1u.s421y3AD-220Bqs0.47w@flex--jackmanb.bounces.google.com designates 209.85.208.73 as permitted sender) smtp.mailfrom=3w6D-aAgKCE4zqs02q3rw44w1u.s421y3AD-220Bqs0.47w@flex--jackmanb.bounces.google.com
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-63c588cb6d5so261947a12.1
+        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 15:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761517476; x=1762122276; darn=kvack.org;
+        d=google.com; s=20230601; t=1761517764; x=1762122564; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cHGZJ/FWhRHS3eTWCGRfR1qdcXyKkde8moMbVfyV3dM=;
-        b=fME87SLAcC2e48jne/4oiU1CenHAtNXRfrGsQt9kRVkIJdobo2Mbyo9x5r1UAs0/86
-         MMlNQmkeuPECxzfXb+rIIcijxLnGCflBgz3BlQ6N8F6r8yLoSeHRaSiauopLI7140T9v
-         iEUV4g5gimFKkwE+sVokGWfHN62OS63Pzyc/hHtlK4I8tnSSAtgw3mlgghltn8CCs2Ln
-         fk2Q4xsaTt/DiDSG6ReKL5SX9yiiDmvaEKlihFksrEjlnSXcMI99UsB6/sbbOkfRm7od
-         CYfLGjcrrPjtlkH/K7E8yVJolUTUwMzTYu4nzCR4sINZ/4plwIbxZmWVxYu21zGNfAnU
-         ulHg==
+        bh=66iqL1wQDJrMjUMimUYRUQT7RhtIF8bdulrGmkclbmU=;
+        b=szklzdl3md/mikuFV8bd2jq44d93L78LZDpGRBlYOdO0rhQUeu+1aCAInxirTkhZEY
+         jrCgNSL5WpJdS+rBfs+VPGFRUloZVJol7PC8PcXgijlByh9Sp5fGD3KDJtx/M6QOk2hf
+         3sGBrgqlfUhF5A/zZCKxlAXuIevGtIR7IZR6xpeVIO1lWgOquzGWWKjA7yanJe9rtFj/
+         w7Zf+ddSsHoYl+JCtQ7C+CLx9MZyhTMAPsx0DcPRE0GueTAmFY3C/K2R7gNU87Fd7u1B
+         eCUVYCD0ZvG8wtRn6sv99YuPpDCh8WWGhVAFVIZ+MahQYt9JTDh7bKdKAubWMRcotJzw
+         16LA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761517476; x=1762122276;
+        d=1e100.net; s=20230601; t=1761517764; x=1762122564;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cHGZJ/FWhRHS3eTWCGRfR1qdcXyKkde8moMbVfyV3dM=;
-        b=FmT/ud431PUEE4Ag65IcWNtcx1qdufrNpBR+1Kx7qX+vK4LXe/xUnUG4tjFl+67Jvc
-         2rfruK89MrtoIx/Gy8tA2nPpKb/EeNeSkSFQKLFkiBjvPGiv8QV6xF1qMwkw+3SXkFYy
-         Pt7T1EJQbTMuU2BkbBBxO4/Z6nr0XcZXNtyPtYK95E/jHQWovCC6O/5Vi3JKXTupo5ck
-         0jt1pRXKUueiI5hstbakJsKtf1USO6rqlscJz4yNm41jJA2JmQbKX23GueZmpkXEh5q7
-         QHwagA/SvUvGzn73wsBmhx2AdVAe0cU1wDY6QXhCfTLy+85tlyLCT7VdBUi12YtC1snn
-         KIaw==
-X-Forwarded-Encrypted: i=1; AJvYcCXlpRvIf+U5XthnC4uJoS05ONVzBZnaTNZ9BL22h+aw4BNlCZVCyVvCfogrrjSDbwoEcaFKuNRS6w==@kvack.org
-X-Gm-Message-State: AOJu0YyGefST19H9aEg8rB1041dNyJSAnxgHfqd3MzwsjhsnPTiBUaR+
-	Ufg56GThMAffhI1K4QSvpRYdSFjRuRhYMAKCNmyhbDNlD7q6OgBOs/ziiXP9Jz6vhvAjKSH+3cA
-	BCmci1NPs5mmQmg==
-X-Google-Smtp-Source: AGHT+IHj/c8LyqHGoW5GCJEuHvxHaDbxWQRZUdfupcgzlN6fiqnXJsRG2h1ZOkjY2++CsrtrHb/vSh2pHHLn6Q==
-X-Received: from wmol4.prod.google.com ([2002:a05:600c:47c4:b0:475:decb:4c4d])
+        bh=66iqL1wQDJrMjUMimUYRUQT7RhtIF8bdulrGmkclbmU=;
+        b=G1qNEBC5ZLE0tJ/FixZddav4iPu9SXTFmtfxJgUpzfe3Pscxk4R07iZkKX1fGV9kYn
+         EcYUUEmJ/9xl5JL0EWExp/cefdjfVBQs2t0UhNBAAjX0ZpYxrYv3O2sbcwOMDOu8ANJV
+         fQTqSyXJfGVy9frqemenhCvAfoK5oGcK3hec1OJIb3Wm3EZEM69OnVIY2NKcDSZuvhtd
+         u6xTOOgn2DTeY6CUhAyccgjnRBZq5fqRGbS+3fam6gzUMrqikfwKaY608FGiTdrk5ilC
+         SnW7lvMmukeL7ooepWSMwkZZsXkEr1ZwZNxkNOZffK8lxErGeluUr8FOdeAUXGatTqj9
+         V5QA==
+X-Forwarded-Encrypted: i=1; AJvYcCVu1UiEsf4Ef3sAMj4cRkRtDijdXMVq4hsvagu1ghvbwBf6Ii0JEqnyjKPnen8AhL0pGNuRrUCUfw==@kvack.org
+X-Gm-Message-State: AOJu0YwXMsqCt/G5f6U4GTj0OeGuAHg4NIQAjy1ADuppH/XFtRYftHYD
+	SpT9eMgWqXrQQCOuS5vRCPMDWWxS6XOrOqTRf7tzDzB11Mtapd/FBCAMCtz30jYH1m4zHjS3yVp
+	1TupancBhIm6B6g==
+X-Google-Smtp-Source: AGHT+IEFiLJX44hMWNXHZC3Aih1gij7lk8DQBXxxJ2bwgJL5TDkN/S5/hEJ472CJdxkQKTEOJdcGAy+su2hzzQ==
+X-Received: from edf6.prod.google.com ([2002:a05:6402:21c6:b0:639:c8c6:de62])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:3541:b0:46e:5302:7751 with SMTP id 5b1f17b1804b1-475d24259d9mr78139875e9.9.1761517475888;
- Sun, 26 Oct 2025 15:24:35 -0700 (PDT)
-Date: Sun, 26 Oct 2025 22:24:35 +0000
-In-Reply-To: <20251025100642.GVaPyhMp4CEmsYW3xy@fat_crate.local>
+ 2002:a05:6402:26d1:b0:63e:14c2:2818 with SMTP id 4fb4d7f45d1cf-63e14c22f06mr15645925a12.17.1761517763982;
+ Sun, 26 Oct 2025 15:29:23 -0700 (PDT)
+Date: Sun, 26 Oct 2025 22:29:23 +0000
+In-Reply-To: <20251025114801.GWaPy48dhlZ_EVoqKi@fat_crate.local>
 Mime-Version: 1.0
 References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
- <20250924-b4-asi-page-alloc-v1-2-2d861768041f@google.com> <20251025100642.GVaPyhMp4CEmsYW3xy@fat_crate.local>
+ <20250924-b4-asi-page-alloc-v1-3-2d861768041f@google.com> <20251025114801.GWaPy48dhlZ_EVoqKi@fat_crate.local>
 X-Mailer: aerc 0.21.0
-Message-ID: <DDSLTWM2FL58.3MIDS5WUOEEZW@google.com>
-Subject: Re: [PATCH 02/21] x86/mm/asi: add X86_FEATURE_ASI and asi=
+Message-ID: <DDSLXKU87HTE.G0XUZ5BG5M8K@google.com>
+Subject: Re: [PATCH 03/21] x86/mm: factor out phys_pgd_init()
 From: Brendan Jackman <jackmanb@google.com>
 To: Borislav Petkov <bp@alien8.de>, Brendan Jackman <jackmanb@google.com>
 Cc: Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
@@ -100,16 +100,16 @@ Cc: Andy Lutomirski <luto@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.c
 	<akpm@linux-foundation.org>, <david@redhat.com>, <derkling@google.com>, 
 	<junaids@google.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, 
 	<reijiw@google.com>, <rientjes@google.com>, <rppt@kernel.org>, 
-	<vbabka@suse.cz>, <x86@kernel.org>, Yosry Ahmed <yosry.ahmed@linux.dev>
+	<vbabka@suse.cz>, <x86@kernel.org>, <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: o4g3euro4wstyyznygzu96xibn1mxd7q
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B28861C0004
-X-HE-Tag: 1761517477-418924
-X-HE-Meta: U2FsdGVkX19GkBwdS9/NM6IqYRHoihVN/xjg4bYNDNBGrvEIyMwb7At9sXWPF2oXHG7DVypfKI15lp3WzfrI95zHLBallbFaa4X/zZNz5u0TwfEQEfLylBHjhOiDQpInBtgZhbv1GhNKacRa5vldoGSLjPaquzbiyGQ9ZtUkzvodSREehNfFTBKfr7gz/vSpQRdDpBsrRULl+MYRnTXaT3ZyQhzQXnpWzD97GHWqqisCPvJC0Jy35uP7/91mPgyQYE7NcNIf1ukcl1UiWycCeFjUGBCv4fW6qojKWVuge2hxkw7lFfrAqfCTwt6ygnDWUwEn7GMcu7wo4tWM+KgacWnEF8MVrj22fM7VQVCF5x4bVUnkZMO+b/aSoGuzgI4lX0HEnYaLAbSZHEv8crE5GeHxkXqXibPh+fZcNZx3T8BAU7NtKD48vs98gjnPXRd+EjoeGrrKnViEdZntIqstG2lWSUSToQVNmD7gfLK93WOHTefbH+mpr6x0jbPwvqStEVofRE5vHyx2Hg3ioR8t384WbJV5tkGCdmxlNHFR0B+HuT4dIac1ONxLJsk+HVrLjH4BjPTOL1TwBWSDFpcoJhyw5vsmrE+2lWUewXOJD2yL5dH712x3c1ND0KyCXyKIuy+bdxY7o6oqhwLMKQW3h6hopsHVsuXf58a6MowjzfwbOAy/YsrOVymS0sHgZMrIbipwsguzRFTxiHpJtugppzEWPUW1T0ljeSebit6nBOd9F5z8KqfO9wiveHDVz6u6Nb0bpE7eRnPJrCP48ouNxZG7ZbFCbyE8QSvc3LTjp3snuKsVIL7LJV9JPEsvhm4qz0cYnk+KVswwi/c9OOIw4yUdGWpmK+gAs+nofhDaf2NQm9pIvo3yyLpAiHrKFQIpHwr7Q89AK5BLmJOQxvo1mgpklG72joKQEMszMhzWgrM52JvlAmmkUeWU/eTENr4VHiAevW7dT30NHh86y8C
- fhj2JP+2
- 37XjHABTD9QqRaiIu+3tEeTjVYM4xuWgWepByNebnlQ4l+0Flq34ulGj1YK4OW69mK3a00JDSq3oGTlY4BasGdaOR3KiqV3ilA3J0+q8a4Uw9IezVV3Wmwq/FbT+e+QSKvqzusgvtJDtuMKR0YiNUHo8DnfZ3kPjLxUSUf65NijLRGEu5gMmWg5qIMEjU8TMU1EZ3ouKICJ0fasN1dQFiwWmEkYjp0F37EmZtiqwc8i65Y4+XrfI7vEASCN2w++q3FuULdps1DxarWYdEYCicH0IrQVKnyxFl617KwSoW0jBb8xL1DUn3dO4U4Jh4cwQF+49Mhcem9yYZHnge9LGgROvfW60ECrxUuZ3VmGbb8H979mo6nFPHpkZ2A8i+bBKYQLg1YHW+gYeGwm77KnuSiCTuO44mZGVqeZVo9wqjD/uNOUtUZcxucMEM1DDXRLeSvFDjBAcHjR+NIpiNZ0z2mNiZLykeDzj4AJSj2mIrovNitrKodmXOnoew2hbwF5pfzBT6veQI5Zuk/xPqYCuqSLB9ByC7s/IBmYcgyimF9Xe8BL7a4ZvA9Sqqvk+L67YkRTV9ixWkxv5+CvODPqJweLKavwrr78/LMxnDIFeq0RJcG07C7fNGn2r7/0MQGJg+djIwAoc77maYLV2cQV3uIDwgehTn1gyEXr3pdt1LYFlNicTCYMoEm+0jdzCQAoE8sQ4PEhyY0OkPzGHrL7dKks5ENlsBGIcEHh6n+oiVJMZKp5ECwr1Y77gfSA==
+X-Rspamd-Queue-Id: BCA91100003
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 6ywe4enmhwron45adigo9nbmjtdt1c7k
+X-HE-Tag: 1761517765-542342
+X-HE-Meta: U2FsdGVkX1+mbYQy5aqXLFmZcPgkq2cwlMAmA6yM/SUizTumQaR3ZfOPoF2oKIsR0/7SvGo2CsOjvMVdBkSJHgHDZrGHiitw9u0qjddyr+ICGtRYe5FJHHaOQkM+V0KkitIlyu8mJ7UUsm8ZAUBBfCq4NQcTOopXo5sU/BK9O+yC/gvw4F1SOFVXdEx31Zyw4csIWgT0CbFnCMMCKIwWtHKyVFVbWKxBPmBsqPWNX7mDquOLNJaGVFfs9JYhS5ASepjm0xn+rkml1lq7Vsfrx2NCWY+KXHwmjTnhnG/uLF7yWC8GHTsnTCp5AdHOvtVcc/eA+r3dCIKExBUb6tVj/NTENFnDkb9jXIsci7EK9MHxqYjkwdRFH1KUyl8acR+DI/ROr63mmsn4zVzNg7XUn3IdnOPN9YCAPfLk454/Q55VJJwiZ3OkfaCc2ovAUP6HcLSi1IGb83QdCAJW/mV6C0w95nLaUhB+4EzykvpE5kkW1gDalRKOpSr65KpnD7hNH0oY9HYkL/ldMxOzDDiW6RGGe9l/wmuc18/fJCLqLjPz9yKAjwX7hwaEn+LWg+q6rVkvi2qhsZ51FPJwnU/kWWwCyLGakgRNXNkv0rycfH1eknjLKR5oK+hYAnB1AXhCNT89LQLoR8yRi3B1diuLkCxOonZbH2fhlklSFJgvq88W8x1yuIYzE18MQ8Kxh5OYUZz0gZiHzx/0++eHRNRogOppsE+BAzonhwALGPfKF1LW62+R30OadufxedVjWvOoO6kfeqsYXWRhzyyHc/DZjFx4dgK3At9IhbdZkKhYF5uZ6IIVnSxsHSLx/15eTBkO7AMLh9idy6w833E8OadWxU2kBC1koU6kXTcjETecR0ayGqsoWHW7+zG3SJTPkBU2/MQcODnHT5o+YmNi4elx9zFfHB3UBnhAsQ1745Zzr6DzgwHmtzKc75M4bwvSFSyNIwVGdQHqcwPfmKwKWp/
+ 8ertw4Ey
+ Ghdqc8kuDg7oosSUzkSOnMhxoQ5rNrQu6rtjPeiWoFDESiFDucsfh/xQ5VyK3xNoBF3yp6MSinEKzwrBEDUZDOqfm8V672+EyJ8nkFiJX2VYJrk+t3ChEWyZqHnp9omMbUQehS3f2sZzi85Z5ytPCPoXggTFQeu7K0nZv15/o+KvM37PjwtOe3nMYah4AesDZT/1RdxQA0B6ljX7BN8CILCuwcK9gfwNeBaoljttgj7/9t0rv4KQ/HcpX/FS2FGAaKvGkN+p4sG+scS2K5hwEn4yxECt6LydwBsU7uTXxhaXdsxkSOS62mBAjgcS/4QOLvwxkhseMd1gDhUE9pARvfYQ5H1M2OE54BMzfSR66P0nfu+dkDzXB7uTC8FSVGXJuf57KF+Xo4gyiyKtu2BhGX5rVPzY5XkIKUn5bsSqAKJP9aOiBgL5c/+l2dOX2W/2RxdLnp6Vmxh1o582FR71wR8nZ7aM57a567gkdDCWcmZNav3ce5vWQV1NRTwbo3XOnkUuDHgfQ6ZnM/J+y/CF/DakNoHBWsgwVzebe87ng03R1RYQrsg8O74n68kve+8RWO4reAL3SgscJKxbF0+oM8mV7T3D79eV3iSUwpErBdoONEw1j8azPw6he0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,173 +118,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat Oct 25, 2025 at 10:06 AM UTC, Borislav Petkov wrote:
-> On Wed, Sep 24, 2025 at 02:59:37PM +0000, Brendan Jackman wrote:
->> diff --git a/Documentation/admin-guide/kernel-parameters.txt b/Documentation/admin-guide/kernel-parameters.txt
->> index 6c42061ca20e581b5192b66c6f25aba38d4f8ff8..9b8330fc1fe31721af39b08b58b729ced78ba803 100644
->> --- a/Documentation/admin-guide/kernel-parameters.txt
->> +++ b/Documentation/admin-guide/kernel-parameters.txt
->> @@ -5324,6 +5324,14 @@
->>  
->>  			Not specifying this option is equivalent to pti=auto.
->>  
->> +	asi=		[X86-64] Control Address Space Isolation (ASI), a
->> +			technology for mitigating CPU vulnerabilities.
->
->> 			ASI is
->> +			not yet ready to provide security guarantees but can be
->> +			enabled for evaluation.
->
-> Yeah, no need for such "temporary" statements in the help text since you're
-> going to have to touch it again once it becomes a full-fledged feature.
-
-Sure. Per Dave's feedback it is anyway gonna have to be merged in a
-state where it already does something useful, so I guess this statement
-will need to be updated regardless.
-
->> +			on   - unconditionally enable
->> +			off  - unconditionally disable
->
-> "unconditionally" as opposed to some other setting which is conditional?
-
-My assumption here is that eventually we'll end up with an "auto"
-setting or something, where the big startup condiguration dance in
-bugs.c decides whether to enable ASI based on your CPU/attack vector
-controls/individual mitigation configs.
-
->> +
->>  	pty.legacy_count=
->>  			[KNL] Number of legacy pty's. Overwrites compiled-in
->>  			default number.
->> diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
->> index 53acdf22fe33efc6ccedbae52b262a904868459a..32a4c04c4be0f6f425c7cbcff4c58f1827a4b4c4 100644
->> --- a/arch/x86/include/asm/asi.h
->> +++ b/arch/x86/include/asm/asi.h
->> @@ -2,4 +2,14 @@
->>  #ifndef _ASM_X86_ASI_H
->>  #define _ASM_X86_ASI_H
->>  
->> +#include <asm/cpufeature.h>
->> +
->> +void asi_check_boottime_disable(void);
->> +
->> +/* Helper for generic code. Arch code just uses cpu_feature_enabled(). */
->> +static inline bool asi_enabled_static(void)
->
-> "static" because? There will be a dynamic one too?
-
-Actually... no, probably not - should drop this from the name, thanks.
-
-(At some point I think I was worried about spamming the kernel image
-with too many static branches, but this seems like a bridge to cross if
-we ever actually come to it).
-
+On Sat Oct 25, 2025 at 11:48 AM UTC, Borislav Petkov wrote:
+> On Wed, Sep 24, 2025 at 02:59:38PM +0000, Brendan Jackman wrote:
+>> +static unsigned long __meminit
+>> +__kernel_physical_mapping_init(unsigned long paddr_start,
+>> +			       unsigned long paddr_end,
+>> +			       unsigned long page_size_mask,
+>> +			       pgprot_t prot, bool init)
 >> +{
->> +	return cpu_feature_enabled(X86_FEATURE_ASI);
->> +}
+>> +	bool pgd_changed;
+>
+> I have to say, that pgd_changed is yuck but I don't have a better idea and
+> this has happened a long time ago anyway.
+>
+> How about you have the caller pass in false:
+>
+> 	bool pgd_changed = false;
+>
+> and then callee sets it to true when it does so?
+
+Sure.
+
+Per Dave's feedback I am still slightly hopeful I can find a way to
+come in and refactor this code so that it's gets cleaner for you guys
+and then ASI becomes a natural addition. So far I don't come up with
+anything in init_64.c but I'm still planning to stare at set_memory.c a
+while longer and see if anything comes to mind. So maybe we'll be able
+to reduce the yuck factor a bit.
+
+>> +	unsigned long paddr_last;
+>
+> The tip-tree preferred ordering of variable declarations at the
+> beginning of a function is reverse fir tree order::
+>
+> 	struct long_struct_name *descriptive_name;
+> 	unsigned long foo, bar;
+> 	unsigned int tmp;
+> 	int ret;
+>
+> The above is faster to parse than the reverse ordering::
+>
+> 	int ret;
+> 	unsigned int tmp;
+> 	unsigned long foo, bar;
+> 	struct long_struct_name *descriptive_name;
+>
+> And even more so than random ordering::
+>
+> 	unsigned long foo, bar;
+> 	int ret;
+> 	struct long_struct_name *descriptive_name;
+> 	unsigned int tmp;
+
+Ack
+
 >> +
->>  #endif /* _ASM_X86_ASI_H */
->> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
->> index 4091a776e37aaed67ca93b0a0cd23cc25dbc33d4..3eee24a4cabf3b2131c34596236d8bc8eec05b3b 100644
->> --- a/arch/x86/include/asm/cpufeatures.h
->> +++ b/arch/x86/include/asm/cpufeatures.h
->> @@ -499,6 +499,7 @@
->>  #define X86_FEATURE_IBPB_EXIT_TO_USER	(21*32+14) /* Use IBPB on exit-to-userspace, see VMSCAPE bug */
->>  #define X86_FEATURE_ABMC		(21*32+15) /* Assignable Bandwidth Monitoring Counters */
->>  #define X86_FEATURE_MSR_IMM		(21*32+16) /* MSR immediate form instructions */
->> +#define X86_FEATURE_ASI			(21*32+17) /* Kernel Address Space Isolation */
->
-> I think we really will need to show this in /proc/cpuinfo as it is a real, big
-> feature which gets proper kernel glue vs some silly CPUID bit.
->
-> IOW,
->
-> #define X86_FEATURE_ASI			(21*32+17) /* "asi" Kernel Address Space Isolation */
-> 						      ^^^^
->
-> Not sure, though, when we should make it an ABI - perhaps once the whole pile
-> has landed...
-
-Hm yeah, I actually also thought I had some direct feedback from one of
-the x86 maintainers saying not to expose it here. I can no longer find
-that feedback on Lore so I think I must be misremembering, the flag
-was already hidden back in [0].
-
-[0] https://lore.kernel.org/linux-mm/20240712-asi-rfc-24-v1-5-144b319a40d8@google.com/
-
-If that feedback indeed doesn't exist then personally I'd lean towards
-exposing it right away, I don't see that much downside in terms of ABI,
-since ASI kinda "doesn't do anything", from a SW point of view it's just
-a very weird and complicated NOP. It's hard for me to see how userspace
-could grow a functional dependency on this flag. Whereas for general
-monitoring it's handy.
-
-Still, there's definitely no hill I'd die on here.
-
+>> +	paddr_last = phys_pgd_init(init_mm.pgd, paddr_start, paddr_end, page_size_mask,
+>> +				   prot, init, &pgd_changed);
+>> +	if (pgd_changed)
+>> +		sync_global_pgds((unsigned long)__va(paddr_start),
+>> +				 (unsigned long)__va(paddr_end) - 1);
+>> +
+>> +	return paddr_last;
+>> +}
+>>  
 >>  /*
->>   * BUG word(s)
->> diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
->> index 5b9908f13dcfd092897f3778ee56ea4d45bdb868..5ecbff70964f61a903ac96cec3736a7cec1221fd 100644
->> --- a/arch/x86/mm/Makefile
->> +++ b/arch/x86/mm/Makefile
->> @@ -52,6 +52,7 @@ obj-$(CONFIG_ACPI_NUMA)		+= srat.o
->>  obj-$(CONFIG_X86_INTEL_MEMORY_PROTECTION_KEYS)	+= pkeys.o
->>  obj-$(CONFIG_RANDOMIZE_MEMORY)			+= kaslr.o
->>  obj-$(CONFIG_MITIGATION_PAGE_TABLE_ISOLATION)	+= pti.o
->> +obj-$(CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION)	+= asi.o
->>  
->>  obj-$(CONFIG_X86_MEM_ENCRYPT)	+= mem_encrypt.o
->>  obj-$(CONFIG_AMD_MEM_ENCRYPT)	+= mem_encrypt_amd.o
->> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
->> new file mode 100644
->> index 0000000000000000000000000000000000000000..8c907f3c84f43f66e412ecbfa99e67390d31a66f
->> --- /dev/null
->> +++ b/arch/x86/mm/asi.c
->> @@ -0,0 +1,28 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +#include <linux/asi.h>
->> +#include <linux/init.h>
->> +#include <linux/string.h>
->> +
->> +#include <asm/cmdline.h>
->> +#include <asm/cpufeature.h>
->> +
->> +void __init asi_check_boottime_disable(void)
->> +{
->> +	bool enabled = false;
->> +	char arg[4];
->> +	int ret;
->> +
->> +	ret = cmdline_find_option(boot_command_line, "asi", arg, sizeof(arg));
->> +	if (ret == 3 && !strncmp(arg, "off", 3)) {
->> +		enabled = false;
->> +		pr_info("ASI explicitly disabled by kernel cmdline.\n");
->> +	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
->> +		enabled = true;
->> +		pr_info("ASI enabled.\n");
->
-> I'm not sure about those pr_info()s. When it is disabled, you can clear
-> X86_FEATURE_ASI so you won't see it in /proc/cpuinfo and then it is disabled.
-> And the same when it is enabled.
-
-Agreed, if we expose the CPU flag we don't need the printks.
-
->> +	} else if (ret) {
->> +		pr_err("Unknown asi= flag '%s', try 'off' or 'on'\n", arg);
->> +	}
->> +
->> +	if (enabled)
->> +		setup_force_cpu_cap(X86_FEATURE_ASI);
->> +}
->
-> Not an early_param() ?
-
-Oh this is just for consistency with pti_check_boottime_disable(). But,
-I think that function actually exists because of init ordering issues
-that aren't relevant here, so early_param() seems fine to me (or, if I
-find some reason why it doesn't, work, I'll add a comment in v2 to
-explain why we don't use it).
-
-Thanks for taking a look :)
+>>   * Create page table mapping for the physical memory for specific physical
+>> 
+>> -- 
+>> 2.50.1
+>> 
 
 
