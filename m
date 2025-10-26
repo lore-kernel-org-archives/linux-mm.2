@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42E47CCF9EC
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46653CCF9E9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28DA78E017D; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
+	id 7E5858E0179; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23C4C8E0179; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
+	id 76EE08E017E; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0B8F38E017D; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
+	id 59F088E0179; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id F00A78E0179
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 14:22:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id C635E129D6B
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 3654A8E017E
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 14:22:29 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D204313A858
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:28 +0000 (UTC)
-X-FDA: 84041085576.22.61759E0
+X-FDA: 84041085576.18.FBCC9E9
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 307484000C
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:27 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hz1orSbv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761502947; a=rsa-sha256;
-	cv=none;
-	b=j5fuZyBNetx2gui5+qooU8hMUDGy4vKiZnlvDgVi9iV2jzYuka7CMnPO3qCZ1MUEx03h1q
-	xYiJLK3qlo2Bdff48VhEwOZYvSQMCPC158MX1W6qkBHzg8qSh1cYGJBTGksie2kSBJmbGm
-	MP5I6FTk70HG8GYrmJB+wqPBl/1lP+E=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Hz1orSbv;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	by imf06.hostedemail.com (Postfix) with ESMTP id 26F88180003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:26 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8HhEKac;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761502947;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Wc9W9cvZu6ji3KL/0jCsRP1SeXOo16vZLOttk7+IIT0=;
-	b=nj3J37gSDGYd6jQ/HjrQG6EL1K0JAW3BaYjOpuxvISqEFnjFErs0EqP0iZs9hprxsSfPGF
-	mv/vh+CXIvEvWbQnYixnyPp7l8VTvycM74scdQu/hS9XIBxpDBwsDN6LoiQ9rwysZ4kjax
-	WpGRyGVfAjKgXCFLTL5QTBuVBGSHEU4=
+	bh=GzKD5JL6IymFK1OYMS617C2qW1B0Sz1Oo4QS+YhTXew=;
+	b=InELRC6ECydVrGlhStg3PMecdaMdM1/VjKjcRsCiEJEAyBX8QCj6shJfZBAiBUx/PABBAg
+	eIduiu82qXZsVdD1/a+8divyGBAStD01uojUjrT9NFDm3sPeu8MiJ7ReynfTExoZHsV97J
+	mlbh4Xv086S34m21Ob26zFJJM3TllEo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761502947; a=rsa-sha256;
+	cv=none;
+	b=6zwLNdGvaH0VbQGBh5aeSfqDL4DJ9t/HWNqJmkDuqg8w5dwE3ZUj8qv8j8pLzCjtrqF26J
+	e8soOTSxHAR4NLbSo0ybHR/Z2Nrs5UT2R7ZxwbCyEBAjpEfEUI7+HRnbw+zoeDfC3w38Dk
+	jTlUPy2+BLH06k9FyqhJ6XLwZzDKIuI=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a8HhEKac;
+	spf=pass (imf06.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 176CB451C5;
-	Sun, 26 Oct 2025 18:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B4BC116C6;
+	by sea.source.kernel.org (Postfix) with ESMTP id B47AD451B3;
+	Sun, 26 Oct 2025 18:22:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60492C4CEE7;
 	Sun, 26 Oct 2025 18:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761502946;
-	bh=I1qOOem2KN/JkZ9BYY8eeWzyQQxWRZ7InKt4fNjdwKE=;
+	s=k20201202; t=1761502945;
+	bh=HTEUhayo10VIIHTrpNQMg1meUMUdoEd6UZy7MJUO3rU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hz1orSbvkBt07uCPY9LqB+5RZ4lOiEganPCCSlYwGKdf8CP5+J7XAkwN5Ov9Ow2aX
-	 k1Hp1eHEVwLCMHudHdZ8AZ9Y3xVPutNbeQ8aEDMz0QHP1MCQk+C9E9SplA4v2E/dhG
-	 KSc2I1kpRL2KEyL7ZyrUzL+SZAKWCRwYsWz1E7yGWqMJwdkTzGV3cbPe+oNqtMfeoK
-	 duJx7rjzR/20lz3rrdDelbelInYeuR72NwUwFemhjiPTKLZfPmKmQ9p9pnToJcz3iC
-	 MjbpydH0AkfLc0zE8FfYF33u2a7C6oJIl062xJ3rV3EUmagGbs8KbeE2CHGUI6LP3N
-	 0yzbVz46qNZYg==
+	b=a8HhEKacHBy4+fTLed4bI/HXIzp7f0fyoBsAaukKkycunU/gHfrRznT04l5Hpi6XS
+	 QX+yv9feyV4/2phxDVXL10MnhFjxx3pKGIrkyHJQtabJihUZh/XefOqpuBm9A8qowW
+	 xjJz2FeVtH1Wyvt9RcslPpeX8osSGVQ1HybXCNpwN3s1z4GcByZrb3Ls7lV+Pfj8C2
+	 ccYDEjAXXn8c+6zchlv/j26VcUS2ul230UE/6ve4dm63r+KmxbFvgOirEuG4nzIVlY
+	 +YRAHmcrGlWj7wl1ixuTisJQ4OPWlJKQWZB/EV9UJ0n+MZdKwHoJhdziAESyqM2Xiw
+	 iisJsBClf9h5A==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,22 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 8/8] Docs/admin-guide/mm/damon/stat: document negative idle time
-Date: Sun, 26 Oct 2025 11:22:13 -0700
-Message-ID: <20251026182216.118200-9-sj@kernel.org>
+Subject: [PATCH 7/8] Docs/admin-guide/mm/damon/stat: document aggr_interval_us parameter
+Date: Sun, 26 Oct 2025 11:22:12 -0700
+Message-ID: <20251026182216.118200-8-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251026182216.118200-1-sj@kernel.org>
 References: <20251026182216.118200-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nx195xydy6bac9a4q6xa9qbqbsrjtugm
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 307484000C
-X-Stat-Signature: 7c1g1t3af5zx6po7ehzimytxxqe8c7uc
-X-HE-Tag: 1761502946-764387
-X-HE-Meta: U2FsdGVkX1+qR3nDal/rjdyCM8xP3xPr1waXTacFfZ5Ay6oQkf6vONDytkkQnbR0dOCgPP0n3hig1fxMRX5GQxLa9XWH3M7Q0SQNxfg+Og9yLGf4IoW7MpSyVLdq9x44lpNJAkKremPqX3bge1U4cwjTcKIZr+YnBnEvjC5mWEAPau5RNur+DPQYzcuJDsZMA5pKHOYj9dWhXqfVgk7FM2ejnw2s8V+/pZV6XOXlXNyzflHgb29SsKklBH/PitvGUqFt6cCtS6uVCtA2vcH9kQ2OKfea+krxrbIEF8y43f6votwiMv6XOl1I80mMbidTG3YCJ7zs7vUPZ1vQv9vEncrF6X++nSpLxtLMAGV9SSzfzWAYglkKQ/UaM+t4x5lrZBl2c6JaDiS1ZsXLuYwoDYVzUz+wPHVcJUwjuu1+15RLlNoE8zZNaJTR2q3or8wBJLPA24mcqaFAN2rQz6ptgEJ79ITBYXChLRZtirdD8MeU7wBIrSAcutYeaQbG7p6W3KEQ9YUL+eY2pKz9b4l4fIkNsAyn8J4Ncd2/sPMbi68e3ab2b9lxe3gopmjxa/Mdf4KRF9oBOO42dJKxX0L70VdLxtUUjPmu9QNeo7a59aEWGTIUV2UTKYK6QPNsKGaQNFv2TRXjm6rQ00h15m7PjQTcUa6NjHCxIPNHzgcknZn3io1r0svjvkg2G5bBTTaDuWC6TeQhMt/HNWMlGgYSLD8V+WN/KTY2gliHvYuHjjbj9Clb4DXSPRfHjLZLLmJ10k5Vtmer/Ji/32ObAe4e8GvJxpydkS77vHE+3CPkyb7tFSSiEuT1jjKduxYu8IFUlxCZ+wbsmZ5ZLGnPZn5/AVch/GCiNrxpkEywjzvQFvQ5ncx2LvtVaZbhAcFWaXcNyhOuzuL4e9XTM3EbJZTu5Y1l0w3qbKbc68HBV0KmuOsPomvuyBerP9aZ8X/v3Mdxirg2NtlDIZlsR+YpY8U
- Y/4EkZ+I
- u7G8X5xc2fNYxot1hLwquJWqVSyUWo/0eqBr/O8ldoKRXdI4CEp1C7aqJQr9sBrqBFmPu4+vJiODQax02pnTHfVerCqYhlZcB2q89vzOeOpb6XG3NrBeozPyyAGvsItiZj9FNWSGcM8HNursJ3aRIcPIDgU+oCbfgh8DkvacDrfunh4mAxtHk8GIwOY7VJeLOPSXlXWmrXhCe9u0hywYU43jYZcHVFYuVyhQ4lTdEvOq5pTU=
+X-Rspamd-Queue-Id: 26F88180003
+X-HE-Tag: 1761502946-157686
+X-HE-Meta: U2FsdGVkX1/L2vjXMWjP7R/KmAlVbHakHBI1hGk4FaUw8HkA5ajwAAHyuWJ5SrT2vGe1kQgvNs6y1ZgWUl5w4Jb1iTP+TXp2ejfWrw22GA1TL7T/zL9Qw6wuIhZKt0pFxUMWBwsVXTRpH37/hn10fGwWTi4Up07n6bWRZ1v+k/ec8sa2GrIDKeJKpC3pG1BAGv/8VEEvbzgWH3So9mQQK1RKJc0+k43KP41Wne/4EfGjL29/KWPyXLn45SbhSSxgvkNdNnXyY6/ati7ry+H3t7K5qUsic1oyfgd5pz/xzJ2xMh0BstMxHyrE8LNZOdVvRo7UvEYV/G9ke7CkV4YczupAve6l2YVBw45C3tW25Ar6/fZhQfG9rG5qBDQ0t52WZ/Zas26ro3xpBAzFUlh+Z9N0yjPuGUFKmkdBtPVoZ4V3jKsHMW7MqQs4pADd9SnuCDbEmb6n+Bw/3/iGgkWL4aunf5Mb5wQBH5ercMJje975n2OlzG90h8mmo2gf35ztgFa2isIXRyIetHiIm+ljlYKCWCza0NBqfBQ6UGd75wqgqAmguEduls+sGeZfVtn+pxjBw4ItM2ZX42kxc1QfcHPjvdWSWnMQNxj6LCcIi/I+uJakNiC3tUuO9Wp1TOUB2CwHqPaXa2Izs5EHixQHco5IQrvQ5drVKQId3OT3lwxZDlcAu4mUQCCI4J3YgCRIMC5hZUOWwW9HmcMGxAjjEsB8VfOQXwFZtEQq2rygjHMYKpplUbG1fvNzqO1xQz7n8mjMVmwqVsYYRr9rqOFqQ4DWqyFjwhTBzRAsgrlgNN6+QaCDU7wstpg0VvJHFISw1QhCNa+hiJImKZdgUq2pOBXAA2YOWWKunrolmfWXs4dfJIf1Vc6FroMwNSrYby89h+lZDykGffHNKdERIHjd+o8UR/SuhTTuVN1ZNRY+Au09S/LHq6Io37rJb9FVmXliWilRkX/AyZ+l/VqB+m7
+ TQYbjvAv
+ NUkUDFLaskwa3y173nMeUHwwjiPlCO5tjYCM3Omb5xUVnUCcvXBzuW+POtbbjAJ6LHPevsWV7fL5XH7vbl3Qyo6+X0KF/Sy2W2A9O7ClDqpHCAhBUwRixaMh5NRoSPV7uEdjJxgXEHaqJGNKTwDmxP6p4xiDl3D+cThfqB0kVwihYtZue9rFvlM/J+ISQL4ibcDQVC0hpS1KzuhEyCSZj9p5vjgeCJU5hUh593xGaWUcmiInX2uuQeUHTwBEMrUchUbF7x+Nw2Q+3zyybPSqZvl6I9QvwGFsfdfCWInKUuJ2egr8EUbBZMlXWgXRi1bmpHDnJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,40 +102,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit a983a26d5298 ("mm/damon/stat: expose negative idle time")
-introduced the negative idle time feature for DAMON_STAT.  But it is not
-documented.  Document it on the usage document.
+Commit cc7ceb1d14b0 ("mm/damon/stat: expose the current tuned
+aggregation interval"), has introduced 'aggr_interval_us' parameter for
+DAMON_STAT.  But the new parameter is not yet documented.  Document it
+on the usage document for the module.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/admin-guide/mm/damon/stat.rst | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ Documentation/admin-guide/mm/damon/stat.rst | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
 diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation/admin-guide/mm/damon/stat.rst
-index 754f98d47617..e5a5a2c4f803 100644
+index 20f540a9d3d2..754f98d47617 100644
 --- a/Documentation/admin-guide/mm/damon/stat.rst
 +++ b/Documentation/admin-guide/mm/damon/stat.rst
-@@ -74,12 +74,13 @@ memory_idle_ms_percentiles
- Per-byte idle time (milliseconds) percentiles of the system.
+@@ -10,6 +10,8 @@ on the system's entire physical memory using DAMON, and provides simplified
+ access monitoring results statistics, namely idle time percentiles and
+ estimated memory bandwidth.
  
- DAMON_STAT calculates how long each byte of the memory was not accessed until
--now (idle time), based on the current DAMON results snapshot.  If DAMON found a
--region of access frequency (nr_accesses) larger than zero, every byte of the
--region gets zero idle time.  If a region has zero access frequency
--(nr_accesses), how long the region was keeping the zero access frequency (age)
--becomes the idle time of every byte of the region.  Then, DAMON_STAT exposes
--the percentiles of the idle time values via this read-only parameter.  Reading
--the parameter returns 101 idle time values in milliseconds, separated by comma.
-+now (idle time), based on the current DAMON results snapshot.  For regions
-+having access frequency (nr_accesses) larger than zero, how long the current
-+access frequency level was kept multiplied by ``-1`` becomes the idlee time of
-+every byte of the region.  If a region has zero access frequency (nr_accesses),
-+how long the region was keeping the zero access frequency (age) becomes the
-+idle time of every byte of the region.  Then, DAMON_STAT exposes the
-+percentiles of the idle time values via this read-only parameter.  Reading the
-+parameter returns 101 idle time values in milliseconds, separated by comma.
- Each value represents 0-th, 1st, 2nd, 3rd, ..., 99th and 100th percentile idle
- times.
++.. _damon_stat_monitoring_accuracy_overhead:
++
+ Monitoring Accuracy and Overhead
+ ================================
+ 
+@@ -19,7 +21,9 @@ overhead minimum.  It auto-tunes the intervals aiming 4 % of observable access
+ events to be captured in each snapshot, while limiting the resulting sampling
+ interval to be 5 milliseconds in minimum and 10 seconds in maximum.  On a few
+ production server systems, it resulted in consuming only 0.x % single CPU time,
+-while capturing reasonable quality of access patterns.
++while capturing reasonable quality of access patterns.  The tuning-resulting
++intervals can be retrieved via ``aggr_interval_us`` :ref:`parameter
++<damon_stat_aggr_interval_us>`.
+ 
+ Interface: Module Parameters
+ ============================
+@@ -41,6 +45,18 @@ You can enable DAMON_STAT by setting the value of this parameter as ``Y``.
+ Setting it as ``N`` disables DAMON_STAT.  The default value is set by
+ ``CONFIG_DAMON_STAT_ENABLED_DEFAULT`` build config option.
+ 
++.. _damon_stat_aggr_interval_us:
++
++aggr_interval_us
++----------------
++
++Auto-tuned aggregation time interval in microseconds.
++
++Users can read the aggregation interval of DAMON that is being used by the
++DAMON instance for DAMON_STAT.  It is :ref:`auto-tuned
++<damon_stat_monitoring_accuracy_overhead>` and therefore the value is
++dynamically changed.
++
+ estimated_memory_bandwidth
+ --------------------------
+ 
 -- 
 2.47.3
 
