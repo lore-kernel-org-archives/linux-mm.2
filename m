@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A3D6CCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 10:03:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E913CCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 10:03:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DAE9A8E0168; Sun, 26 Oct 2025 06:03:33 -0400 (EDT)
+	id D60388E0169; Sun, 26 Oct 2025 06:03:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D5EE58E0150; Sun, 26 Oct 2025 06:03:33 -0400 (EDT)
+	id D11118E0150; Sun, 26 Oct 2025 06:03:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C006F8E0168; Sun, 26 Oct 2025 06:03:33 -0400 (EDT)
+	id BD9808E0169; Sun, 26 Oct 2025 06:03:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A63408E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 06:03:33 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 644A786F4C
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 10:03:33 +0000 (UTC)
-X-FDA: 84039828306.19.077C97E
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 80F63C0002
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 10:03:31 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=STkDSgHM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id A50108E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 06:03:42 -0400 (EDT)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7321FB8BC6
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 10:03:42 +0000 (UTC)
+X-FDA: 84039828684.26.9839936
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 92165C0005
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 10:03:40 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mi6wTnVA;
+	spf=pass (imf28.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761473011;
+	s=arc-20220608; t=1761473020;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cWfcrGPw8X5skKV0gndo5LB8ERy80+4uQwaPXZmD778=;
-	b=WrIAJFPmFlQ+noj8MGPw3C4Y7TiYS/jcaoGL9nRCpmujdf2Gas9HdhusxggcWdHq2MZmge
-	iP4pe4cEE811ELxtTdN1vBNygd0G3PGFSxtj3jeQ7PPGR3Ccu/bEZRZlJIvU6FwSdnW1rF
-	cpwd9unR0cSBJG2KMw0Sbg/OFDzvKRw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761473011; a=rsa-sha256;
-	cv=none;
-	b=gTz30sy35ohmyJoFmLTEdoD/updhyJ9U4NG5+NBw5RRwreefc79R5d/AsAUTHyaFXxYPmr
-	/QFPzsWw5bV7jyUJN7i9D5CInh1nYQh07bvNqWq+ASCF6QA3L13Vh9YWbBFPaOeBr0T8RP
-	ur68SviLRa+ACAtnndaLKJUEtsJYcMk=
+	bh=V4o89aqQquJfXg8DHNFFwhPZpHBrXkamiWZUkDvNw/U=;
+	b=bpjuPnn4vJFypDH0PANe6BouALS8McO2QbT2RIy9dR7WVtD8yYkQVWMrQSoRqTxRndHhvs
+	RBvwvOjW5+Il+WOyfJWZ+mAOT/SK+WW3+eFYs+jxO/Y3b/BwuC+wy3aPnSr+EfeTRD7KaT
+	Wdq4GeurnvPNvAOZknWzv8wgaj5tWI4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=STkDSgHM;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33bafd5d2adso3455685a91.3
-        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 03:03:31 -0700 (PDT)
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Mi6wTnVA;
+	spf=pass (imf28.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761473020; a=rsa-sha256;
+	cv=none;
+	b=iv48JPkBGmuf/ZtKIx6Xe8CcS+vQ2JAher2B2S5JkOVg5UL1RM3s0gTK8U0ULcIW+mVqkN
+	FUAKW5xLaOLPp/Cx4mBNBg1oBQGY0h6CFluB1oJDSAlfdgtTcDzksByryFQg7QRe1gtyRY
+	qH6CLrMwpPEYtWkoGnONO2G5a7TQr10=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-33be037cf73so3825831a91.2
+        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 03:03:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761473010; x=1762077810; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761473019; x=1762077819; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cWfcrGPw8X5skKV0gndo5LB8ERy80+4uQwaPXZmD778=;
-        b=STkDSgHMlEq0Os0L2pziGWpWRIXYFcgwe3Ym8UN/686kIQUAhk6xmlMBmCi43Ewjxs
-         XpfT5fd2l68s43qxzx6QvpREECD/Z117rc+VxFCpXhHBNRYfy1fBeooVbBnWMEhMaIqH
-         5XSUu5qmAo48A3yvNTQQSffTTNxCM+jtrpcu7ubVg47K4PP3KOMWGkjRES3l7SGZOh0A
-         oExMexDdezgwFA5dqPe8IUXNLcpZcgX2WiSzrPvGY8TxDwkFK3QAXfm1EW9d0gKGMNTA
-         Gjb+8xGuhgbnCwmNjCe4v+lfiWoUp/QWxZi2f6U5MZxsiHhwlgMgR76vrKZvpMDQqhRT
-         J0eg==
+        bh=V4o89aqQquJfXg8DHNFFwhPZpHBrXkamiWZUkDvNw/U=;
+        b=Mi6wTnVAhbKcOMNV/Me0Wq+HFqls+aKsZ6ivCsqjyReuhNjHVeyvxYuMe8rWPlCBHs
+         4BMT3OXAb/Jd1HXPbs+xzu/ZjWxqGrRcK6CblXds/dwsL2lIXjVh+CSXIQD02sBRRcTf
+         //YjWAQS7/7ZkLBfC1MlOoEOSLahLw3QOr6kPxuAp/RVC81xWLQxRVbN6Z15vB2H4E1D
+         qPlDKLGkidNQe25Nb6im2pf4l78hf7BaDj2LDYCtCSeJeRnTDiUE7iddArwm7L0befqp
+         uU6Qxa7utHlqt9IbQpRDYJ8KSqR+gUAwo6vRkXPjqGadt337IqCInNhRcf7CwrE8h8u6
+         7iZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761473010; x=1762077810;
+        d=1e100.net; s=20230601; t=1761473019; x=1762077819;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cWfcrGPw8X5skKV0gndo5LB8ERy80+4uQwaPXZmD778=;
-        b=WcNAOzyXFYWdpqpEoLDg2scWjxQHdwQVxT1u6JxvsLY+SCbf8oj1cxANVN4YkvWYRK
-         wk5W0qNC3oH1EjUF9DdqQ7V91/GTYiur1zHXHAYMxeJDOeIv9Fl4iYTkl4ux0U7pqHML
-         YAFlePPMhcyXbO60AT5XEBcnGz/kUtVqn3oYhRqYMPfGuzUShHRvw51Vz4/W11Ox0xqR
-         nPPpx36XczfOe661GbR9dJwrsOZxL9OAiCijBnEDPXGAn2gXM47I60M7EzbkpkbMOtki
-         A18hfiOBb6ivH9Uf7twXCHF+Fk8SOLxwE+65AU+HmqX4TrUahmaV/QRjCiWqxEMFGnQ9
-         ehQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUaU+5QPlqJejBUC0lGEXfIwpnZG3fitX2Cs3jFbJRTbNm/K4UUOjfSsaZt8uyKm0fGo7C5CkATA==@kvack.org
-X-Gm-Message-State: AOJu0YwsBC99pCrY1JLGWOpIRu8GhOGe1iRRomJOEGAfNp17qwp94bep
-	N4A7dsdqOZXWUcyS32E8f8qh3JDght8CTsOF3tcDRK0pNCgGCxUSzcOU
-X-Gm-Gg: ASbGncu/nRvxjXZhGmxGJ2zMaeTf1a38wbbWemrqQcn0xF+uMauvLlMOXgFOEm+Ulkr
-	DXLCbpW5LcfDZ2Qln8/t7ckMbIHWCSHpy8G1VdEQk8F1bQ540XkLS9T8b7FkHTpfR0O0kxRHFIE
-	rO5x0DfZdfy22lZZD6/XhevfBpyBNBRQSjGPw6prUvtrTmKCJmFKw4Qr2rgheQKpJCZrS/SYLCO
-	q04kVp8OMCxlByAoNwUZqYJ+rT2PqFtEMs6MirBAzflCNOPpg0TMOiRituYhfLDtQa5ob7ycZz5
-	VcDve2pd/gdtUP8nDs+ZChMPL41xSIfX+B477WAbeFvLrZaqV09fns5j2Qy0uYs6rLqEe3Kt1iU
-	QBRGxNKEG5f681Ly0FU1JkRaV9wdmCLpHMJCgTacsbbytoq68gwK+egT60BF4F6JYgknkpMvGt0
-	GWTUKtsRdWkn3EeVtZnAbubS8qh/gJy5gF6C4=
-X-Google-Smtp-Source: AGHT+IFU+r5rd1i/zL0ytQ8WGidWA2lJlrB/4TzfYyuXqTn8bqTegd2HnrJMszIQIY77p0EH4LGqxw==
-X-Received: by 2002:a17:90b:3ec1:b0:33b:a5d8:f198 with SMTP id 98e67ed59e1d1-33bcf90b791mr39786862a91.25.1761473010340;
-        Sun, 26 Oct 2025 03:03:30 -0700 (PDT)
+        bh=V4o89aqQquJfXg8DHNFFwhPZpHBrXkamiWZUkDvNw/U=;
+        b=fAObqRxuepRPxHnSff8nnKBVn0J3uRB3uecn0QwCZvKxOjOOfNfDjOrGfUjW/Y0qJm
+         qeSfWEmCeR4n6t70he5wh3XMDLAcWVtq0zxjgM2JscCr9qKQSjQdpbzj+vs/LeTL+89h
+         xYi8WcwqN0Af0GU20xOFg6hb5ZQQtZGmcWMEOYEYmUK3dBI/uTWckkD825GZRMA0p0KX
+         O3VMPuGyKe/Z46YsdDow8LTWoV6z+UlTOPfJlZJGJiCQJlmVMtvi72WtfJPuYz7mlfUN
+         ce6kgUirER+pkrCsA1DlooaGnl7Tv+fe/uKvEfSzwtgeE2oRhIzCQB2NXOlD7WA0j22U
+         aGNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVgyi5Zi5/trp8zv3tZMnZnTueNS+QLYE4K/PaVoBfyVOM53RLrYnkUKa94SC6gXMFTfKXSqKtOAA==@kvack.org
+X-Gm-Message-State: AOJu0YzHbkHa/jkScGhJ4QotnN9jUCo1OHy5aWWXIHq6IsDmT5Nrvaqc
+	0yomQ5japXNuGTaQeD8+IEQSBW/tj0buVp0CW/drQAwEFK7AMHyNh4Zc
+X-Gm-Gg: ASbGncuwbRkYy3JzU1NNbug2gnmOsw6aSluS3hL+neEpZw+WcjRqN04K9Y4L1ObhuP1
+	TX6ObGsIu/yF8RK0acsjgf1PQ4R/o0tjJKsyvombHbjm8qlRVZplswSAmlUoH3t4D1HfxEenN3/
+	87CkXgNYU+WfItw1Zi3Eo9f6rVL77UjJIEbb/KPgwQWq2MSHAsyPFXLANfF10ChPPpZMR7iTn3y
+	pC/4AoC3H1+xmqEDDQKlpZZc0IznM66G0MPegvgfOSlZehZOL7M3jykgK44j9Yv9/XCMdHMY6B4
+	qBd0IF+kZFkTibIXySQWPFxLxnU20FBnw/jgl8LquZd+QiEOab2IaOvpZuE3gauJt7PykOd3fsw
+	XDmgOwqdPPydutehP+AxIy7ClgsaLYhK7N+CkhDE+p+jNgxNfqmaAk9bYHrDYJBAjfVjcC/Nrii
+	qBIl43G2PYx0S2dnTrOJ5Lr960F89LJ6bE+1M=
+X-Google-Smtp-Source: AGHT+IEWDnNXiVyz/gd1nQI/808f4jzNUVCrA10jfGdkE98h3Ersd56GF+aeFpUTYUxm6IHK2gsQ7A==
+X-Received: by 2002:a17:90a:e7d0:b0:32e:5d87:8abc with SMTP id 98e67ed59e1d1-33bcf9146e9mr41622228a91.36.1761473019447;
+        Sun, 26 Oct 2025 03:03:39 -0700 (PDT)
 Received: from localhost.localdomain ([2409:891f:1a84:d:452e:d344:ffb:662b])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7d1fdesm4824966a91.5.2025.10.26.03.03.21
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7d1fdesm4824966a91.5.2025.10.26.03.03.30
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 26 Oct 2025 03:03:29 -0700 (PDT)
+        Sun, 26 Oct 2025 03:03:39 -0700 (PDT)
 From: Yafang Shao <laoar.shao@gmail.com>
 To: akpm@linux-foundation.org,
 	ast@kernel.org,
@@ -128,22 +128,22 @@ Cc: martin.lau@linux.dev,
 	bpf@vger.kernel.org,
 	linux-mm@kvack.org,
 	Yafang Shao <laoar.shao@gmail.com>
-Subject: [PATCH v12 mm-new 08/10] selftests/bpf: add a simple BPF based THP policy
-Date: Sun, 26 Oct 2025 18:01:57 +0800
-Message-Id: <20251026100159.6103-9-laoar.shao@gmail.com>
+Subject: [PATCH v12 mm-new 09/10] selftests/bpf: add test case to update THP policy
+Date: Sun, 26 Oct 2025 18:01:58 +0800
+Message-Id: <20251026100159.6103-10-laoar.shao@gmail.com>
 X-Mailer: git-send-email 2.37.1 (Apple Git-137.1)
 In-Reply-To: <20251026100159.6103-1-laoar.shao@gmail.com>
 References: <20251026100159.6103-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: efptf6dw51jm5b7dcdrg4w1hey1znpzn
+X-Stat-Signature: 7kg5g56yuy8w8ek8gsbhi74ibs1rnb8b
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 80F63C0002
-X-HE-Tag: 1761473011-975311
-X-HE-Meta: U2FsdGVkX1+ae2L3OMbOjIBkFl+hltm3fnJnDarcNjNL7r2Pu9Wo11f6usuI6y8bvFHARCZS+I4j1zA5yHjEJTSpABYr1mi7Vyod/3jfan4FNWHTRVAQZCXNIVR4v9B3/3xFrsI99yMunAoNFpWiK/ToGZxVPO9KpfYY/WY/bFTpsMGS73ojBC/Dsr+jibHbdymkdIMPV1WUES3r8GNUqYS6juJXnHiWuwEGDRL+hM+7f4PymUFpRPl1c8uBxT00Wr8UDyWD8YnIXyQ6jImLXACAE4yaWgsetuv1Mfi1DWMN5U+rPmcsISTgW3v9wvCXYw/5tQvwsQn1YhOUXDAihu40l1wPlqnY4tjeVeX/9EEae9S9Vme3KcX3zoqSooRIWFONQui5anV+AWOlTW3RLVrR+M1B/umlcaTDpPMszX43IOeN9hZxE5w+PAjwdQUOurz/I3RLdSpzoXsSmHloH9kxU1qGzjQrq3xOovuW3iqCsMKls4rmao9pkMOcrz239wVP0N19nijyzVNlm1gV1ZdNWhQrDM49JobzU/jChIkfzg4nn2X3q14cbXnsZdSPsKJpdpbjXQj6kreyBqFcrmt9xw8gu8p0BaGCvzuk4uNCnARTgrQxk3+QW39KFRcfWXoM7eoBJv6F561xF9Hzv9z0CxbAvuUuT4r3D1ZiK2q6RnMYNWU7H6i0MZZzeNChkMcbqN5SVJYyy6yU01+8iSVQiKppb4Lqzs1aG6KsfiZFuZPJGkrNEAJq1le8BpNYIDTTrVASHcAFdGBRO5398+TKB1X0LcwZlDv+xUU2cAJjLyrcKTlQvAKhvK6pMeokkYvlEzpbc1W8G7uuuxszIOK1yPVOca8IWJ8J1+yh2iNQTOYYEU5erjoYTQBY71zfgskKohIoY4ZXMqF/jewFSNNZWBk9/W/kY+i/cjeVL6wqSMn8/RdasQQxRASOhjOHylyZQte9b3SV2+stLZZ
- fJSeWL2m
- x4MD17W4Y21fyj6pZrZuXNHA8CAyggn300RTP1tP41yOjxVTQhAc+4ykVp7sFXHwE0wSeQ3MV0hNWAa90eGGQolZOdjB/5qx/C5YjOsxTNunlNJq8nbU7ABLMXz9UmOreeo+T6r7mQpmUigPTXM+ZstIvvDlO3rYJElA7sKDLk742M2WymNQy61J8C79HIm4CpMtlICIzCMnMgQ5XZDJyakyT+z/zBEXfPHZizxcud7EQx/amfpyOywDatS79sYY/oy+kRBP1eZN6STARxmSnKASgtp8P5yhOJPRFVPaUfkWvkavVugU/jcdUDs5ZfnNX2TKhw7sidaIDH3G0whEZVVsxVytud0L0QZgsY7qA2o1Gmi6n6dQzMdCIOyr7y9LL7T3P9QjXP/y1yjW8ud4ZqLeOjQHpDVD+mSoczwALj42KsVYR++HrD/tKG49L+REhJXleFLHICSp8SKV4KJ6JBeosyESbyJSGlhc9oi0lmuyF97HwF3pOgXW1Mlz4clY/bK0uKBNQ08p3mmk=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 92165C0005
+X-HE-Tag: 1761473020-507824
+X-HE-Meta: U2FsdGVkX1/nCH1wNNXFRifYhDe1p65eM0+OISbv02+YXRC1uvKq9eWTyYfFuckg0Qza6F/G0f61eDa1wpFrqvXo6k0Z2nD1upwym0dUiJaOvs58e6TEdjFEgDdqD4EgXfUk2HXdLNmsnZnGtHKRj5+0bSq5brwtRRxSofX3IluyfbtA7ZxXqqdQL7XdI3owIPCM1DkeE/j+tpghquRvagMrSiXt8vWB51eEpxu5xsNByTjOM0+wVp5VibrEzRyXwniZr7r4+DagOooY2I88o+eOXng826XsytvdjKYpTRjZ4kLa0RkvPVLQk5H8uJMHZ6Lu/1gblfJgsLvE1mNGPov/EimLSK8IbaPuFV1zJrGfjegugNmaKyaS0ih9oTy5NyHLIn5gNyLDEkyJ2zmi7T8gGGOELujWmHodByudB5PYhS+npFvoP0JalL4COZXiJhotU6cxjoagnYYzD4WnvRgMr3pi9Lp71Zi+LgANhGcvJLdABlusG/cwYLQZiZrLJQWmciyvrO816tABuTdtQ4tUn4Ncb1SOr7E1kryhacTLrPBUE1MJo4BX+8LUMn4vz9QWykBH+CdUrjO+EupBnSj8aBsngTs/g82Dcy63EbPjfqAlmTMoWs+e+PvaydcKOxv63lyfvgb7CWys+nAOamg8wW1RxWuBNZ1dQGKRLvLly1KHhO7RryG9coxgkNoXNW0CQOI8AzskDLCoidTCQy9hfP/VQe+hLab8ZbjqT3KmLVS6sjfphdUZcAgy+63hfNvRGe9XBxL7YSZkOZUkBXFhyOdArXObWEBrDnxxLYnrprRCDOqDVGz0yYD5IxYNGUYdElrgPXKR+0v/WSQWd0lH9xCL4sgT+FRutemEYbXqHmnDXTyM/Tr6ir3fNO1fKF3vsrYBkDXakoy93gyQkdl01AP/pYwcpq6luLAHg1zuczrImVFcYMlk+tRNb16yOM7oqgUzmFH63RfusDX
+ r1TkedWK
+ zqNHIOtMu91TWRW6m2Ebta1a+5DkaCgALrRDTVff3lFCaVshUFeIyzEinuBGkBaFlocTt1sDrC7ZQROI9zGFn3RBw2n74FQbGV22BpePVSM2Gu1/Wr/w+brVIfDWV3iWINnrldl6AugL7SZQK8CUXk1Z632OdzAjunbYZoQ+UIb9eDS3KCFES2F+wnMrccXr39mycC4C31S6jffue8cOJcdyEEbC306/DDJpPa7fVbZZR3mQhu/reiE6he1qQk1JVxOxYKupSVRA94isGL/n88muKdB5NMuhu3Luu/DUkcFlIPknBQEkcNlm7MMBkjKnDgJUzCs7O9v2HR7BUU2TQl88j22Yxs7X/suaAZl6x2E9A/lX6xV6rfdKybr4WCLAHVkcgPO62tWpLFNS6RfbIRoIIIoiZFDyE+u3KGm2mAFdEABv+rIa5uwH1nuuaQNC2czh/FOX2Zt3QyYgfv7bYjm4eO4mJ+dPcr7yG/46BFaBlXxgwISh376DZqPyWyNFoDsYZGaGNHjQbk40=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -152,343 +152,162 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This test case implements a basic THP policy that sets THPeligible to 0 for
-a specific task. I selected THPeligible for verification because its
-straightforward nature makes it ideal for validating the BPF THP policy
-functionality.
-
-Below configs must be enabled for this test:
-
-  CONFIG_BPF_MM=y
-  CONFIG_BPF_THP=y
-  CONFIG_TRANSPARENT_HUGEPAGE=y
+This test case exercises the BPF THP update mechanism by modifying an
+existing policy. The behavior confirms that:
+- EBUSY error occurs when attempting to install a BPF program on a process
+  that already has an active BPF program
+- Updates to currently running programs are successfully processed
+- Local prog can't be updated by a global prog
+- Global prog can't be updated by a local prog
+- Global prog can be attached even if there's a local prog
+- Local prog can't be attached if there's a global prog
 
 Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
 ---
- MAINTAINERS                                   |   2 +
- tools/testing/selftests/bpf/config            |   3 +
- .../selftests/bpf/prog_tests/thp_adjust.c     | 245 ++++++++++++++++++
- .../selftests/bpf/progs/test_thp_adjust.c     |  24 ++
- 4 files changed, 274 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/thp_adjust.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_thp_adjust.c
+ .../selftests/bpf/prog_tests/thp_adjust.c     | 79 +++++++++++++++++++
+ .../selftests/bpf/progs/test_thp_adjust.c     | 29 +++++++
+ 2 files changed, 108 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index e8eeb7c89431..295cbda88580 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16524,6 +16524,8 @@ F:	mm/huge_memory.c
- F:	mm/huge_memory_bpf.c
- F:	mm/khugepaged.c
- F:	mm/mm_slot.h
-+F:	tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-+F:	tools/testing/selftests/bpf/progs/test_thp_adjust*
- F:	tools/testing/selftests/mm/khugepaged.c
- F:	tools/testing/selftests/mm/split_huge_page_test.c
- F:	tools/testing/selftests/mm/transhuge-stress.c
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 70b28c1e653e..8e57c449173b 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -7,8 +7,10 @@ CONFIG_BPF_JIT=y
- CONFIG_BPF_KPROBE_OVERRIDE=y
- CONFIG_BPF_LIRC_MODE2=y
- CONFIG_BPF_LSM=y
-+CONFIG_BPF_MM=y
- CONFIG_BPF_STREAM_PARSER=y
- CONFIG_BPF_SYSCALL=y
-+CONFIG_BPF_THP=y
- # CONFIG_BPF_UNPRIV_DEFAULT_OFF is not set
- CONFIG_CGROUP_BPF=y
- CONFIG_CRYPTO_HMAC=y
-@@ -115,6 +117,7 @@ CONFIG_SECURITY=y
- CONFIG_SECURITYFS=y
- CONFIG_SYN_COOKIES=y
- CONFIG_TEST_BPF=m
-+CONFIG_TRANSPARENT_HUGEPAGE=y
- CONFIG_UDMABUF=y
- CONFIG_USERFAULTFD=y
- CONFIG_VSOCKETS=y
 diff --git a/tools/testing/selftests/bpf/prog_tests/thp_adjust.c b/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-new file mode 100644
-index 000000000000..2b23e2d08092
---- /dev/null
+index 2b23e2d08092..0d570cee9006 100644
+--- a/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
 +++ b/tools/testing/selftests/bpf/prog_tests/thp_adjust.c
-@@ -0,0 +1,245 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include <sys/mman.h>
-+#include <test_progs.h>
-+#include "test_thp_adjust.skel.h"
-+
-+#define LEN (16 * 1024 * 1024) /* 16MB */
-+#define THP_ENABLED_FILE "/sys/kernel/mm/transparent_hugepage/enabled"
-+#define PMD_SIZE_FILE "/sys/kernel/mm/transparent_hugepage/hpage_pmd_size"
-+
-+static struct test_thp_adjust *skel;
-+static char old_mode[32];
-+static long pagesize;
-+
-+static int thp_mode_save(void)
+@@ -194,6 +194,79 @@ static void subtest_thp_eligible(void)
+ 	bpf_link__destroy(ops_link);
+ }
+ 
++static void subtest_thp_policy_update(void)
 +{
-+	const char *start, *end;
-+	char buf[128];
-+	int fd, err;
-+	size_t len;
-+
-+	fd = open(THP_ENABLED_FILE, O_RDONLY);
-+	if (fd == -1)
-+		return -1;
-+
-+	err = read(fd, buf, sizeof(buf) - 1);
-+	if (err == -1)
-+		goto close;
-+
-+	start = strchr(buf, '[');
-+	end = start ? strchr(start, ']') : NULL;
-+	if (!start || !end || end <= start) {
-+		err = -1;
-+		goto close;
-+	}
-+
-+	len = end - start - 1;
-+	if (len >= sizeof(old_mode))
-+		len = sizeof(old_mode) - 1;
-+	strncpy(old_mode, start + 1, len);
-+	old_mode[len] = '\0';
-+
-+close:
-+	close(fd);
-+	return err;
-+}
-+
-+static int thp_mode_set(const char *desired_mode)
-+{
-+	int fd, err;
-+
-+	fd = open(THP_ENABLED_FILE, O_RDWR);
-+	if (fd == -1)
-+		return -1;
-+
-+	err = write(fd, desired_mode, strlen(desired_mode));
-+	close(fd);
-+	return err;
-+}
-+
-+static int thp_mode_reset(void)
-+{
-+	int fd, err;
-+
-+	fd = open(THP_ENABLED_FILE, O_WRONLY);
-+	if (fd == -1)
-+		return -1;
-+
-+	err = write(fd, old_mode, strlen(old_mode));
-+	close(fd);
-+	return err;
-+}
-+
-+static char *thp_alloc(void)
-+{
-+	char *addr;
-+	int err, i;
-+
-+	addr = mmap(NULL, LEN, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANON, -1, 0);
-+	if (addr == MAP_FAILED)
-+		return NULL;
-+
-+	err = madvise(addr, LEN, MADV_HUGEPAGE);
-+	if (err == -1)
-+		goto unmap;
-+
-+	/* Accessing a single byte within a page is sufficient to trigger a page fault. */
-+	for (i = 0; i < LEN; i += pagesize)
-+		addr[i] = 1;
-+	return addr;
-+
-+unmap:
-+	munmap(addr, LEN);
-+	return NULL;
-+}
-+
-+static void thp_free(char *ptr)
-+{
-+	munmap(ptr, LEN);
-+}
-+
-+static int get_pmd_order(void)
-+{
-+	ssize_t bytes_read, size;
-+	int fd, order, ret = -1;
-+	char buf[64], *endptr;
-+
-+	fd = open(PMD_SIZE_FILE, O_RDONLY);
-+	if (fd < 0)
-+		return -1;
-+
-+	bytes_read = read(fd, buf, sizeof(buf) - 1);
-+	if (bytes_read <= 0)
-+		goto close_fd;
-+
-+	/* Remove potential newline character */
-+	if (buf[bytes_read - 1] == '\n')
-+		buf[bytes_read - 1] = '\0';
-+
-+	size = strtoul(buf, &endptr, 10);
-+	if (endptr == buf || *endptr != '\0')
-+		goto close_fd;
-+	if (size % pagesize != 0)
-+		goto close_fd;
-+	ret = size / pagesize;
-+	if ((ret & (ret - 1)) == 0) {
-+		order = 0;
-+		while (ret > 1) {
-+			ret >>= 1;
-+			order++;
-+		}
-+		ret = order;
-+	}
-+
-+close_fd:
-+	close(fd);
-+	return ret;
-+}
-+
-+static int get_thp_eligible(pid_t pid, unsigned long addr)
-+{
-+	int this_vma = 0, eligible = -1;
-+	unsigned long start, end;
-+	char smaps_path[64];
-+	FILE *smaps_file;
-+	char line[4096];
-+
-+	snprintf(smaps_path, sizeof(smaps_path), "/proc/%d/smaps", pid);
-+	smaps_file = fopen(smaps_path, "r");
-+	if (!smaps_file)
-+		return -1;
-+
-+	while (fgets(line, sizeof(line), smaps_file)) {
-+		if (sscanf(line, "%lx-%lx", &start, &end) == 2) {
-+			/* addr is monotonic */
-+			if (addr < start)
-+				break;
-+			this_vma = (addr >= start && addr < end) ? 1 : 0;
-+			continue;
-+		}
-+
-+		if (!this_vma)
-+			continue;
-+
-+		if (strstr(line, "THPeligible:")) {
-+			sscanf(line, "THPeligible: %d", &eligible);
-+			break;
-+		}
-+	}
-+
-+	fclose(smaps_file);
-+	return eligible;
-+}
-+
-+static void subtest_thp_eligible(void)
-+{
-+	struct bpf_link *ops_link;
-+	int elighble;
++	struct bpf_link *old_link, *new_link;
++	int elighble, err, pid;
 +	char *ptr;
 +
-+	ops_link = bpf_map__attach_struct_ops(skel->maps.thp_eligible_ops);
-+	if (!ASSERT_OK_PTR(ops_link, "attach struct_ops"))
-+		return;
-+
++	pid = getpid();
 +	ptr = thp_alloc();
-+	if (!ASSERT_OK_PTR(ptr, "THP alloc"))
-+		goto detach;
 +
-+	elighble = get_thp_eligible(getpid(), (unsigned long)ptr);
++	old_link = bpf_map__attach_struct_ops(skel->maps.thp_eligible_ops);
++	if (!ASSERT_OK_PTR(old_link, "attach_old_link"))
++		goto free;
++
++	elighble = get_thp_eligible(pid, (unsigned long)ptr);
 +	ASSERT_EQ(elighble, 0, "THPeligible");
 +
++	/* Attach multi BPF-THP to a single process is rejected. */
++	new_link = bpf_map__attach_struct_ops(skel->maps.thp_eligible_ops2);
++	if (!ASSERT_NULL(new_link, "attach_new_link"))
++		goto destory_old;
++	ASSERT_EQ(errno, EBUSY, "attach_new_link");
++
++	elighble = get_thp_eligible(pid, (unsigned long)ptr);
++	ASSERT_EQ(elighble, 0, "THPeligible");
++
++	err = bpf_link__update_map(old_link, skel->maps.thp_eligible_ops2);
++	ASSERT_EQ(err, 0, "update_old_link");
++
++	elighble = get_thp_eligible(pid, (unsigned long)ptr);
++	ASSERT_EQ(elighble, 1, "THPeligible");
++
++	/* Per process prog can't be update by a global prog */
++	err = bpf_link__update_map(old_link, skel->maps.swap_ops);
++	ASSERT_EQ(err, -EINVAL, "update_old_link");
++
++destory_old:
++	bpf_link__destroy(old_link);
++free:
 +	thp_free(ptr);
-+detach:
-+	bpf_link__destroy(ops_link);
 +}
 +
-+static int thp_adjust_setup(void)
++static void subtest_thp_global_policy(void)
 +{
-+	int err = -1, pmd_order;
++	struct bpf_link *local_link, *global_link;
++	int err;
 +
-+	pagesize = sysconf(_SC_PAGESIZE);
-+	pmd_order = get_pmd_order();
-+	if (!ASSERT_NEQ(pmd_order, -1, "get_pmd_order"))
-+		return -1;
-+
-+	if (!ASSERT_NEQ(thp_mode_save(), -1, "THP mode save"))
-+		return -1;
-+	if (!ASSERT_GE(thp_mode_set("madvise"), 0, "THP mode set"))
-+		return -1;
-+
-+	skel = test_thp_adjust__open();
-+	if (!ASSERT_OK_PTR(skel, "open"))
-+		goto thp_reset;
-+
-+	skel->bss->pmd_order = pmd_order;
-+	skel->struct_ops.thp_eligible_ops->pid = getpid();
-+
-+	err = test_thp_adjust__load(skel);
-+	if (!ASSERT_OK(err, "load"))
-+		goto destroy;
-+	return 0;
-+
-+destroy:
-+	test_thp_adjust__destroy(skel);
-+thp_reset:
-+	ASSERT_GE(thp_mode_reset(), 0, "THP mode reset");
-+	return err;
-+}
-+
-+static void thp_adjust_destroy(void)
-+{
-+	test_thp_adjust__destroy(skel);
-+	ASSERT_GE(thp_mode_reset(), 0, "THP mode reset");
-+}
-+
-+void test_thp_adjust(void)
-+{
-+	if (thp_adjust_setup() == -1)
++	local_link = bpf_map__attach_struct_ops(skel->maps.thp_eligible_ops);
++	if (!ASSERT_OK_PTR(local_link, "attach_local_link"))
 +		return;
 +
-+	if (test__start_subtest("thp_eligible"))
-+		subtest_thp_eligible();
++	/* global prog can be attached even if there is a local prog */
++	global_link = bpf_map__attach_struct_ops(skel->maps.swap_ops);
++	if (!ASSERT_OK_PTR(global_link, "attach_global_link")) {
++		bpf_link__destroy(local_link);
++		return;
++	}
 +
-+	thp_adjust_destroy();
++	bpf_link__destroy(local_link);
++
++	/* local prog can't be attaached if there is a global prog */
++	local_link = bpf_map__attach_struct_ops(skel->maps.thp_eligible_ops);
++	if (!ASSERT_NULL(local_link, "attach_new_link"))
++		goto destory_global;
++	ASSERT_EQ(errno, EBUSY, "attach_new_link");
++
++	/* global prog can't be updated by a local prog */
++	err = bpf_link__update_map(global_link, skel->maps.thp_eligible_ops);
++	ASSERT_EQ(err, -EINVAL, "update_old_link");
++
++destory_global:
++	bpf_link__destroy(global_link);
 +}
++
+ static int thp_adjust_setup(void)
+ {
+ 	int err = -1, pmd_order;
+@@ -214,6 +287,8 @@ static int thp_adjust_setup(void)
+ 
+ 	skel->bss->pmd_order = pmd_order;
+ 	skel->struct_ops.thp_eligible_ops->pid = getpid();
++	skel->struct_ops.thp_eligible_ops2->pid = getpid();
++	/* swap_ops is a global prog since its pid is not set. */
+ 
+ 	err = test_thp_adjust__load(skel);
+ 	if (!ASSERT_OK(err, "load"))
+@@ -240,6 +315,10 @@ void test_thp_adjust(void)
+ 
+ 	if (test__start_subtest("thp_eligible"))
+ 		subtest_thp_eligible();
++	if (test__start_subtest("policy_update"))
++		subtest_thp_policy_update();
++	if (test__start_subtest("global_policy"))
++		subtest_thp_global_policy();
+ 
+ 	thp_adjust_destroy();
+ }
 diff --git a/tools/testing/selftests/bpf/progs/test_thp_adjust.c b/tools/testing/selftests/bpf/progs/test_thp_adjust.c
-new file mode 100644
-index 000000000000..b180a7f9b923
---- /dev/null
+index b180a7f9b923..44648326819a 100644
+--- a/tools/testing/selftests/bpf/progs/test_thp_adjust.c
 +++ b/tools/testing/selftests/bpf/progs/test_thp_adjust.c
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+int pmd_order;
+@@ -22,3 +22,32 @@ SEC(".struct_ops.link")
+ struct bpf_thp_ops thp_eligible_ops = {
+ 	.thp_get_order = (void *)thp_not_eligible,
+ };
 +
 +SEC("struct_ops/thp_get_order")
-+int BPF_PROG(thp_not_eligible, struct vm_area_struct *vma, enum tva_type type,
++int BPF_PROG(thp_eligible, struct vm_area_struct *vma, enum tva_type type,
 +	     unsigned long orders)
 +{
-+	/* THPeligible in /proc/pid/smaps is 0 */
++	/* THPeligible in /proc/pid/smaps is 1 */
 +	if (type == TVA_SMAPS)
-+		return 0;
++		return pmd_order;
 +	return pmd_order;
 +}
 +
 +SEC(".struct_ops.link")
-+struct bpf_thp_ops thp_eligible_ops = {
-+	.thp_get_order = (void *)thp_not_eligible,
++struct bpf_thp_ops thp_eligible_ops2 = {
++	.thp_get_order = (void *)thp_eligible,
++};
++
++SEC("struct_ops/thp_get_order")
++int BPF_PROG(alloc_not_in_swap, struct vm_area_struct *vma, enum tva_type type,
++	     unsigned long orders)
++{
++	if (type == TVA_SWAP_PAGEFAULT)
++		return 0;
++	return -1;
++}
++
++SEC(".struct_ops.link")
++struct bpf_thp_ops swap_ops = {
++	.thp_get_order = (void *)alloc_not_in_swap,
 +};
 -- 
 2.47.3
