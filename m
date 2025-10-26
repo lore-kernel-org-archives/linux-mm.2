@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A5831CCF9EA
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 22:12:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6FD2CCF9E9
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 22:13:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 535618E0189; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
+	id 715978E018A; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BE8280009; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
+	id 6B99A8000B; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 272F98E0184; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
+	id 3D3098E018A; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EDD468E0188
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:12:56 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9B988B8345
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1D46D80009
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:12:57 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BD74816044A
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:12:56 +0000 (UTC)
-X-FDA: 84041666352.14.9D7FBCD
+X-FDA: 84041666352.06.2DD52CE
 Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 61C60A0008
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:12:54 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=ldtqOC32;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf25.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3DF0B80002
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 22:12:55 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=GDPHiDaQ;
+	spf=pass (imf02.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761516775;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dIA/jdXg8XhpF5qFcJkcp8Nfo/i/kNxnm5Fq/ADnXoU=;
-	b=4r71NNNw0IRax571BOx0L/qOphV/Zt/Ji3mQGVSXnRzIekzsNoyThelIWLxnBKqV35XWyF
-	86gEM46bRbsHV91iqaWrCP0BTfDavao5hMNGXd9L3iQ/WZJzLJaGfba92MuSz9k/ui6qJ6
-	YsC06k65tTfTwDrmBz41y0NY/iB18Jk=
+	bh=hzsd16Tk4N416+vtdjDD9iGYV6V8cuWWcU6HWANhALM=;
+	b=mFzIGhzfRFvPKAbMtQ2F5NTNMvLj9OJObVhFdhMg9XnvlF56xyXADDH5CQa9lArFO6oUT1
+	dCsfTkuOu6DywejF7cQCVaRpzM7h5tiOb8aGR7EMO3xRaR0GixL6uHWsLO+sGsE1/IvY7/
+	t7Ja94ZecJgOJKyxDdmq5G38zB0s2RM=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=zytor.com header.s=2025102301 header.b=GDPHiDaQ;
+	spf=pass (imf02.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
+	dmarc=pass (policy=none) header.from=zytor.com
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761516775; a=rsa-sha256;
 	cv=none;
-	b=ibuIuFC8JaM0jwsEXgPhudsIz6ocha76x+aQtMGWJTb5G1t5T7eC+Gk8+MIli3EplMjfHk
-	4BzHmg9/YDi/P+LHOaTyt5Yb9rPv1AkJjR87nUoGiQ583i2TlY4pgZELJMMQrV1Zs/kvmm
-	drm0cNft/Md8z726w0sRbbl/09qOTuY=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=zytor.com header.s=2025102301 header.b=ldtqOC32;
-	dmarc=pass (policy=none) header.from=zytor.com;
-	spf=pass (imf25.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com
+	b=8I4SCBU1RG34RlCUrh+uX+od5Ux01APdcoe8asVXN5hp1XzuPgpmETKsOzFvMkdiFs2fkD
+	lMXXdhYcnfIdTOcUXwM37HHFQ//ImEJHHp5ExM0zcZvx4NtBl59NRYg9XK+TUWJIEwrnPe
+	ELJ3SDlIF9JRfq02SDiXBWWpsryJnpE=
 Received: from mail.zytor.com ([IPv6:2601:646:8081:9484:8257:f1ab:878e:498b])
 	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59QMCFpO548264
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59QMCFpN548264
 	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Sun, 26 Oct 2025 15:12:25 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59QMCFpO548264
+	Sun, 26 Oct 2025 15:12:24 -0700
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59QMCFpN548264
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1761516747;
-	bh=dIA/jdXg8XhpF5qFcJkcp8Nfo/i/kNxnm5Fq/ADnXoU=;
+	s=2025102301; t=1761516745;
+	bh=hzsd16Tk4N416+vtdjDD9iGYV6V8cuWWcU6HWANhALM=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=ldtqOC32Z7ofOTOOL2gbuuiwZQIpVuKjbUYHk5QVeXaNEf+wP6+wzmT22LWB0hW9f
-	 t2Rihp7rML9voHc7NL5XoGrbMklovVeD70bngnDkpGp37wxqk+bbK7gyZeJIHlDrQa
-	 ACGkOHod7Hn1wm5kztomJX5XveMz5zhrABMDmDmVzcLaS8UzUQ8a3uTKmbDErDXZw6
-	 XMBdoIbgVztNYlOMsJHG4H9Pjovy/6+QbvmnwFeGfYLAsD48K93t0avD8kJtNGkeME
-	 5J3T/LU8s0521B2bft8Qnhpbp4bsCsPakMyA3GgVndF8AdHGavJmAd/mcXSWVo9fid
-	 nWupg9XHOVKFg==
+	b=GDPHiDaQjqh4k3a4U+47ybqkHjhVkac5gEVdIoSd7V/tM7lZ64H7FQ5ZVNWAOh3xY
+	 hs3fajKprTuBOxTHlED1aaCVpX/pkUo8K2MOmPwR/EDQCzTMwLE7BJ0qzoyqGT7Vlm
+	 2TmEOdmmx7S++t8Ysboe0oZz9tO35+jcZAO4pscigd8SO16eh5vTI1hmLPGG8TZgLr
+	 6w6HSdm25WHtfhvam06xgNaulibqzgO1jS2uG7jY3t+57WdrqQoHBQojz/MaS2cqvl
+	 t9J8JycyzDr/iIJmvYj247thxg9hOiNM7O9DPjO8HKIIxUTIXMzXbpUDSaCjAvfkCO
+	 HRj76AIji1xnA==
 From: "H. Peter Anvin" <hpa@zytor.com>
 To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
@@ -81,22 +81,22 @@ To: "H. Peter Anvin" <hpa@zytor.com>, "Jason A. Donenfeld" <Jason@zx2c4.com>,
         Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
         linux-kernel@vger.kernel.org, linux-mm@kvack.org,
         linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: [PATCH 4/6] x86/entry/vdso32: remove SYSCALL_ENTER_KERNEL macro in sigreturn.S
-Date: Sun, 26 Oct 2025 15:12:04 -0700
-Message-ID: <20251026221208.1938173-5-hpa@zytor.com>
+Subject: [PATCH 3/6] x86/entry/vdso32: remove int80_landing_pad
+Date: Sun, 26 Oct 2025 15:12:03 -0700
+Message-ID: <20251026221208.1938173-4-hpa@zytor.com>
 X-Mailer: git-send-email 2.51.1
 In-Reply-To: <20251026221208.1938173-1-hpa@zytor.com>
 References: <20251026221208.1938173-1-hpa@zytor.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: czpgsabff3hfzoobuho8ga333o86zegr
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 3DF0B80002
+X-Stat-Signature: gyxzib9midj585fgj5ebfm7y6iky9uu7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 61C60A0008
-X-HE-Tag: 1761516774-404750
-X-HE-Meta: U2FsdGVkX18tfXn3k6OCOBY0oCWihmlOpr21F0c2NvPWmYuiwyC62A5XUQQDlM/qAjTSphvXsPlzxnNbk/n3MRoHDNQboTVATDnkBErGNKOjxVsM1wLDxKqsQJ11ynXtRIC1guaFduUR0hQhUa4HyWDAs9P8PL+UaJsHl7XGZ6HOBt9NmeIJ0SxRFABLbH8HIkersoYOIvYuC7Jq0qwOh+ej2bERK6dnrbUHu1wzfrRE3iqrn7NsF6bUdp7g3ampr+UB5nrq5/WoU8jjEXH10Wh522KjHnAGJNEenX0xl8YsLU3WOYGHexVRspZ4/8lFO1IT3J3PJL9lNN8ZGudbKK0riVZKj3cNlQTJjUT3zkYVM2k1DzEmUM2o52T0vPctlocUjFfd44paxW02e0BCyPSGSiYYM0lQAvaquwkGCy3b0K9xBKxgce70sYCWP8V2aLWrlipk0jD4ooOl7eG19mgcKqXwWLUm9nX/Slja8HBeWm3O3oQG74Lp3FLILECUkPpBWnbMdHgOwlg1Cq/0Azib81sKxPEot+Zmr24054patOF8j9eJRzdOcDybetVLcwVul+hN3iI+MNlbhQnS/6kkeV2MPNKk+WiZwvt2ZuT397IMjXKZ1nwl2DStO6tgvy3Q8361SiweIm6Irs584zR80600eEoSvkp9hu6P+Tl+RP01c7+Xu/KAsCQy9+khnlHhxAv9xvDjaq+4o7GDw2lSgNz1EVN0isg78BZEnYWuIMVoe4uruhsJa19CuMNcwzBwiYFgI2h0FKMrpBDKc27fR12hDJp7qAv/m1kaU/4AOGA+5/h4TxZBgsl25AQHh3BrNiO1wF0QzSkHY5f8Lag35J2aTLFwfyNULhi8WN/TgaG4d6tOoC2RRTZRS6NkO89j0hI/QJBGkz02T5fp6lO9on2mgHB20VsUGCznAKDyWS46Nlk8GExO/k7FUZaUoqB47NVmWBeFDxD7eK4
- ciKIFm5Q
- NoFh9Ojk0ZJtP7gAIwcALks8L8IdYBDZQL/buNXeLKqU6N7iLptfu5jaxukpapdBtavYLL/wV39wMve83KS+FH4v3Vnktd4Qh6pYB2hIaNAcF2Sp1rUTt7QcCv4bHgpX+lMZ4ksGSMDWM7YS0nh51H8BW8TC/cCzpxEWwj0s3IE0ClLQ6joAahJCyXRxp1QY31ndDBHYFTWmYvZE995wAtm25KtTR9SYBcgR63KKSvkv16OkbdxWqOtKZXkSD8dGC9zJGtxdWPQ+N9GlUqscjhbKPYB3oH12fuMd28CZmFQMWz9NGCDqgs5TQ3HPSp26ypWE9DH2rTM9RhgPcDn4hPXCCNU5HM5TAEhKYDQFxrk/C2pQ=
+X-HE-Tag: 1761516775-624039
+X-HE-Meta: U2FsdGVkX1/iNppxaxcenzOiCjJCaQs4RPzhsuC3u7jdIOGnhfB/Smz0gXpGoU0czoq+wRU8O5YHwo1pJDH7pTf2RjhC+2/aFZDL8krON/hiJYHVs1vA58JaOOI4mi/u21ClS0krpHxlQulaQdd3C6Oq+kQMp9lsKOzDEMpFHniVsYCy7k3B6HtjdLztiuZ5q7/uCFN0r2NLybljgjHtZLPIK9k09roe+roIysuesVd2lNkF8LuHXv6Zy82uPiQv9fwno4jnJ85R3hX8jKCAQnCjt3ceWDLFxmPVeQErHeg4F7i6A8t3WN2G58aoeTt4BYlX3yijh9Ddbfe2MlD01EfzMtfZC2kIZ9c5Ti5g3j8sL+mxNWDrxHr14CME7pqGkKAtVvIIlYYiwpZuyAyvde898yNKwNKPagMCn4+S6lDNUARdK9km1RmlHNTGpOEaFSUxZZS3SO/0nQWJk7NPRxkErf3xAibApYWlvrHkyygBy4vpnV9C6ZX4W1ygfOiu6+aGsVh8eSb1Iu8MKl4Fo7DzGW49dGFoKU+oBcCq3jYc5C2say8gmrarbeWT3cqSnUXXryPzq1HiWKl1rA7joJtj557uUeKObk8sIhhGJmaL62jToq5IBtMMjh5rlcYlEtxaeVPBioLtZqfnXxfkfBDIsaFOGppYH15+pT7ejQjPuN+4X/ze9aaNT3OsBvSjHm5DhiOOb+Lg6GlpKCu2dEwDhSH42CllCSaTuUidA5uTf2XniHKrerJYYBYHQWLQ2MzkGjZ0bns3HNwEFcfCsDhrO8G9cM67UqPTruRUS2u6icxPQr/8N1bVLBE4jfZvRyKJ98HNHMGlkUxWN6ydUgt20rWQSh+7iLLa/k+/ZkpBuZqRJO6mBZV4+6PtxdvKPJq6jdqXJYBOUObmj3kK4GFIvyfY1XpFFUmnD9R1QSM2vBTNGE4pc/otpgi0x0OLGdxA6Owl/V/k34tYlq0
+ F2x5Bdoo
+ Ym67iazHdjqFHym+ppQX/9Atw9tQIMKYaa/re
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,50 +105,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-A macro SYSCALL_ENTER_KERNEL was defined in sigreturn.S, with the
-ability of overriding it. The override capability, however, is not
-used anywhere, and the macro name is potentially confusing because it
-seems to imply that sysenter/syscall could be used here, which is NOT
-true: the sigreturn system calls MUST use int $0x80.
+There is no fundamental reason for the int80_landing_pad symbol. If ip
+falls within the vdso, and the vdso is moved, we should change the ip
+accordingly, regardless of mode or location within the vdso. This
+*currently* can only happen on 32 bits, but there isn't any reason not
+to do so generically.
+
+Note that if this is ever possible from a vdso-internal call, then the
+user space stack will also needed to be adjusted (as well as the
+shadow stack, if enabled.) Fortunately this is not currently the case.
+
+At the moment, we don't even consider other threads when moving the
+vdso. The assumption is that it is only used by process freeze/thaw
+for migration, where this is not an issue.
 
 Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
 ---
- arch/x86/entry/vdso/vdso32/sigreturn.S | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/x86/entry/vdso/vdso32/system_call.S |  1 -
+ arch/x86/entry/vdso/vma.c                | 16 ++++++----------
+ arch/x86/tools/vdso2c.c                  |  1 -
+ 3 files changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/entry/vdso/vdso32/sigreturn.S b/arch/x86/entry/vdso/vdso32/sigreturn.S
-index 1bd068f72d4c..965900c6763b 100644
---- a/arch/x86/entry/vdso/vdso32/sigreturn.S
-+++ b/arch/x86/entry/vdso/vdso32/sigreturn.S
-@@ -3,10 +3,6 @@
- #include <asm/unistd_32.h>
- #include <asm/asm-offsets.h>
+diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vdso/vdso32/system_call.S
+index 2a15634bbe75..d14eca4403c5 100644
+--- a/arch/x86/entry/vdso/vdso32/system_call.S
++++ b/arch/x86/entry/vdso/vdso32/system_call.S
+@@ -62,7 +62,6 @@ __kernel_vsyscall:
  
--#ifndef SYSCALL_ENTER_KERNEL
--#define	SYSCALL_ENTER_KERNEL	int $0x80
--#endif
+ 	/* Enter using int $0x80 */
+ 	int	$0x80
+-SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
+ 
+ 	/*
+ 	 * Restore EDX and ECX in case they were clobbered.  EBP is not
+diff --git a/arch/x86/entry/vdso/vma.c b/arch/x86/entry/vdso/vma.c
+index 8f98c2d7c7a9..e7fd7517370f 100644
+--- a/arch/x86/entry/vdso/vma.c
++++ b/arch/x86/entry/vdso/vma.c
+@@ -65,16 +65,12 @@ static vm_fault_t vdso_fault(const struct vm_special_mapping *sm,
+ static void vdso_fix_landing(const struct vdso_image *image,
+ 		struct vm_area_struct *new_vma)
+ {
+-	if (in_ia32_syscall() && image == &vdso32_image) {
+-		struct pt_regs *regs = current_pt_regs();
+-		unsigned long vdso_land = image->sym_int80_landing_pad;
+-		unsigned long old_land_addr = vdso_land +
+-			(unsigned long)current->mm->context.vdso;
 -
- 	.text
- 	.globl __kernel_sigreturn
- 	.type __kernel_sigreturn,@function
-@@ -16,7 +12,7 @@ __kernel_sigreturn:
- .LSTART_sigreturn:
- 	popl %eax		/* XXX does this mean it needs unwind info? */
- 	movl $__NR_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_sigreturn:
- SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
-@@ -28,7 +24,7 @@ SYM_INNER_LABEL(vdso32_sigreturn_landing_pad, SYM_L_GLOBAL)
- __kernel_rt_sigreturn:
- .LSTART_rt_sigreturn:
- 	movl $__NR_rt_sigreturn, %eax
--	SYSCALL_ENTER_KERNEL
-+	int $0x80
- .LEND_rt_sigreturn:
- SYM_INNER_LABEL(vdso32_rt_sigreturn_landing_pad, SYM_L_GLOBAL)
- 	nop
+-		/* Fixing userspace landing - look at do_fast_syscall_32 */
+-		if (regs->ip == old_land_addr)
+-			regs->ip = new_vma->vm_start + vdso_land;
+-	}
++	struct pt_regs *regs = current_pt_regs();
++	unsigned long ipoffset = regs->ip -
++		(unsigned long)current->mm->context.vdso;
++
++	if (ipoffset < image->size)
++		regs->ip = new_vma->vm_start + ipoffset;
+ }
+ 
+ static int vdso_mremap(const struct vm_special_mapping *sm,
+diff --git a/arch/x86/tools/vdso2c.c b/arch/x86/tools/vdso2c.c
+index f84e8f8fa5fe..c81bb32b1e6c 100644
+--- a/arch/x86/tools/vdso2c.c
++++ b/arch/x86/tools/vdso2c.c
+@@ -79,7 +79,6 @@ struct vdso_sym required_syms[] = {
+ 	{"__kernel_vsyscall", true},
+ 	{"__kernel_sigreturn", true},
+ 	{"__kernel_rt_sigreturn", true},
+-	{"int80_landing_pad", true},
+ 	{"vdso32_rt_sigreturn_landing_pad", true},
+ 	{"vdso32_sigreturn_landing_pad", true},
+ };
 -- 
 2.51.1
 
