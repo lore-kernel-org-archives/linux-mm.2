@@ -4,134 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D356CCCD1A5
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 16:22:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11EA4CCD1A5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 16:23:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5CA68E0170; Sun, 26 Oct 2025 12:22:15 -0400 (EDT)
+	id 3A8C98E0171; Sun, 26 Oct 2025 12:23:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A33CD8E0150; Sun, 26 Oct 2025 12:22:15 -0400 (EDT)
+	id 359848E0150; Sun, 26 Oct 2025 12:23:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9227B8E0170; Sun, 26 Oct 2025 12:22:15 -0400 (EDT)
+	id 26FDF8E0171; Sun, 26 Oct 2025 12:23:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7F1548E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 12:22:15 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 00CAF160317
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:22:14 +0000 (UTC)
-X-FDA: 84040782630.26.B59268D
-Received: from cichlid.ash.relay.mailchannels.net (cichlid.ash.relay.mailchannels.net [23.83.222.36])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 13D85180006
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:22:11 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=gl+m3rbk;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=pass (imf06.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.222.36 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761495732; a=rsa-sha256;
-	cv=pass;
-	b=KyVDmNxUYcCHkKSlKytiJE3w6adcJVnjlqJtXDMR8cEYTHkKKSJwedbss4X4sz0pHVrt9A
-	jBHZ5qSZHDF+AqxSZf/u7ZI9qXhT4WJZyUaTDpvnvWOavEyfpbWT8dtRjvYSO9HdmdqW/q
-	tA5GHPaK059s66g13sPMjbW44fzqJXw=
-ARC-Authentication-Results: i=2;
-	imf06.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=gl+m3rbk;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1");
-	spf=pass (imf06.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.222.36 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761495732;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 12E548E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 12:23:47 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id ACC9112A1FF
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:23:46 +0000 (UTC)
+X-FDA: 84040786452.21.94C5759
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 236BD40009
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:23:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ED82mNNR;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761495825; a=rsa-sha256;
+	cv=none;
+	b=My7Oeo8nANUHiy9HGvMoB64imDqZu7R7bnmArA5h8wNJLQSsLVRj80sdmKT/y9iXIfE0UE
+	Cetad7mCXpujhaVxqSCM5yBFHgx1QCZMYQrAI1onn00t6m9o/YrhIRSur+qq4waAlmLQEl
+	9u50Q1uydawQ0EZsDSBhNZujSmcTwYY=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ED82mNNR;
+	spf=pass (imf27.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761495825;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=MM88zLJ5rxpHST/Heh+0Np7jYGHxRTupznLlA+uOGBE=;
-	b=3a77wN1BZMpoxetMrks1wuGu1WxruaCu4xpVQGM9XZs64Tx21UXjEQ2Nd/XtdsRhfNoD90
-	XPnaEQpIfhVZeZswmcSMF30M+gDVAnWvqu27a4VGDARVmzMTz6kfNXQfZvP5Qnb18neXxn
-	YuXJLxhfS8AQEQiH1GhuBZ+PhobqtOM=
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 0CCB9362137;
-	Sun, 26 Oct 2025 16:22:10 +0000 (UTC)
-Received: from de-fra-smtpout2.hostinger.io (100-120-23-87.trex-nlb.outbound.svc.cluster.local [100.120.23.87])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 3E114361B05;
-	Sun, 26 Oct 2025 16:22:08 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761495729; a=rsa-sha256;
-	cv=none;
-	b=BfSrpQ7obPY04xoNL0gAfYkAZVkVnU5RK49Dz9iphXualZezzKbELAQC57YzdnwPcoZzwo
-	SWkUHBkocmGJA459vHbaAjRJJuGYXe/01GVWHPbsHfSUI5CKwbnthxfcOiyZ0nlvl/8rOu
-	05XwvVke8cfe8mOb1wZW39UYuQi94lzRu2qgCLdniOuybrGfC9+blUvYW0Di0EDS/J8lDU
-	08b816+aHvDoOISeXJ7nrtAk/49xwkP6IE78XbPfzpflo4dPpY8euH9w0TCMErY7zyomzr
-	VWRA37jocymQPZFf6vH+H3G5AIhPq7FL4Ym42zEXnlOlew672t9XWafCF/1w5A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1761495729;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
-	bh=MM88zLJ5rxpHST/Heh+0Np7jYGHxRTupznLlA+uOGBE=;
-	b=N4fEQpE95EnVLMAH+EwnQ2ioK3PlBNaBAbMLSf2LNyUwgFSWe9Gjx3nIvu0JYEe/waOuPb
-	8dfLM3Tz6FE5gQyuuAdKxl84oupbY9MZWoV2oKNRSv05AHY6eolGBejUYOvgliMsDXkLKw
-	H6myH4izaW5fgxLf+cMLnJpwsGYeNbF0rSMq4Z04/GA7L+SCKzhjywSKUT3vXDBn6AYpsK
-	plWncSqXk4lPANBbtLn5MFhpSfiEscbfW4qao1jxz691oWOoAxOps0sXvLU3DKS4C7piW4
-	OPo87aVbLdaD0UcY/iC2p3rFX6eIEBZXdazRkSwDT2VOXUk8l5bPMSzxxzt0Yw==
-ARC-Authentication-Results: i=1;
-	rspamd-674f557ffc-8hdz9;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MC-Relay: Neutral
-X-MailChannels-SenderId:
- hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MailChannels-Auth-Id: hostingeremail
-X-Thread-Thoughtful: 28aaf1236a54f91b_1761495729250_785022570
-X-MC-Loop-Signature: 1761495729250:3874482419
-X-MC-Ingress-Time: 1761495729250
-Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
- [148.222.55.5])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.120.23.87 (trex/7.1.3);
-	Sun, 26 Oct 2025 16:22:09 +0000
-Received: from fedora.tail0cc0bf.ts.net (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
-	(Authenticated sender: contato@israelbatista.dev.br)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cvhjn1PJ6z3wbs;
-	Sun, 26 Oct 2025 16:22:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
-	s=hostingermail-a; t=1761495726;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MM88zLJ5rxpHST/Heh+0Np7jYGHxRTupznLlA+uOGBE=;
-	b=gl+m3rbk2Gujv+1wLAFmd6mDlAY/Xy70SKXZkd7lRmhWBODteq5Xx3B1Q/GCzURYbSe/PE
-	Z9QNdBnUGLXngeTolLUkpGLyEV+Vs+YjpmZpf2Utt89W/O3/UJl61xKpCgcUc1tBmNylGL
-	r6RxVcg0Zkv07Jyu/UILuz6Hj8qGYfORSvtrXLEuZ8cOKr090KZsq+y1+p9U/oQNqo4x6A
-	KQt0lLOqhsbtx5Mjv/k3/kTayPAVW2XoogLjoppiHqtB1Qjz8UfcAo+PAPbV9Itjcs8Ldf
-	1j9luxM2OIm0yOXj3HgPpwXKvbxvE6JO2ukHeAr4e+naGjMxbJHE/oitQ6UnrQ==
-From: Israel Batista <linux@israelbatista.dev.br>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	linux-mm@kvack.org
-Cc: linux-debuggers@vger.kernel.org,
-	Israel Batista <linux@israelbatista.dev.br>
-Subject: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-Message-ID: <20251026162156.12141-1-linux@israelbatista.dev.br>
-X-Mailer: git-send-email 2.51.0
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xdotdwfiDsf0XBSSRErv+cEaOocplU74nYYkd5arT8o=;
+	b=feg016SN+//mW9yfTnbwN23WcVVI0l2WlXOyF6jh3jIWJDQXtpQjweOExm30vDi3VZptwa
+	Xu6cOBOLBhy4+sWYscPHRHdS8z+6rwB8y2hhHBOZ9euDLoAznMVZh7pWdSlHT7T70sqTJP
+	by1ryo0UN8vwmGgmxE0eGm2qw7rcbsw=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6849B60306;
+	Sun, 26 Oct 2025 16:23:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC36C4CEE7;
+	Sun, 26 Oct 2025 16:23:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761495824;
+	bh=IzIryL5ZzSIK5IAADXW8ppRRMG5QdtE1U1LqyYCn2mI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ED82mNNRqJ3jL9ehZj1qNyPphPq68PfaTZpFEelfjITAU4qGtuUKf/8h/2qFQbOTb
+	 z1KR9ENADYHkDYhyQE6kcTPvpTGMdCXLpadop2cSDHl4+GXDg4PBoicMiNEMm93lql
+	 VoiWY85vHidBbxkYTZ70BhkP/e8UPe+czQAAmn+DX+aBVknZC79AHLEzoG9ha0j+am
+	 SCP54gQMgxT+XKxQYhkvv9+OywRKrIOC1wzvIFNuysd/RhrPoFyZJm2dOHpUU+R+w8
+	 WeoTskL6dViCKt7nP6rDJodk39ucVwwiAZWczO/dN0uXB6SZ4GcR2uXwwiAVO5IZ5L
+	 DXoHwdlQ8sxxg==
+Date: Sun, 26 Oct 2025 18:23:35 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
+	rdunlap@infradead.org, tj@kernel.org
+Subject: Re: [PATCH v8 3/8] kho: drop notifiers
+Message-ID: <aP5LB5NQ4lhhAA6Y@kernel.org>
+References: <20251024161002.747372-1-pasha.tatashin@soleen.com>
+ <20251024161002.747372-4-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Date: Sun, 26 Oct 2025 16:22:05 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=68fe4aae a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=vgun6L5qt0XZy9YrhB4A:9 a=TWtOS45hTxhqQf3p7L_t:22
-X-CM-Envelope: MS4xfEAzvQr/tVdCv/Pvsqfxu03jvQZ9r4K622GFFLllRo+gOZuz8VrMe2eXaMabqLDMI/I593auInNWEXoFjW0t19MwcPQPrPWTI/1JBDlNJvYPp3146tPN h36mLo84GmlwAe31XvcTV8jV8doezGSotbYg2lAsKFt1lL8UR7IdBjBI3vAErmRthKjDgtY3rlmLNJV1j4q9SmbJ+sW/8KnDU0+gQs5L62RL7LpRbfWSa8Np PKdSPoCrRI4qKNej1QBdrFcXd21dNu1OzjADuyA8+Cfiiexa0jtr9HyZ4UA9XPS/PV/9sriReLehl8ba1wwZu3YHI1agK/TvSU0lXTIYiLeeVlWDQrfyAZiC +j/zAbBPK892lvH+JVbPVZtQOBPClop8BHAKTqzLFst0Sou8/VaOpDCvuPvdx3ymoQ/7r0RY
-X-AuthUser: contato@israelbatista.dev.br
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251024161002.747372-4-pasha.tatashin@soleen.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 13D85180006
-X-Stat-Signature: s79yy8y6qt71fbt63rhmbc1sq5ne7xrc
-X-HE-Tag: 1761495731-572636
-X-HE-Meta: U2FsdGVkX1/VMhXPu9i65N7PvmhM5Rsu5i3FnfeyC4Os8HzUlVLiRTOnOh9oI/M+i5vY3p6PD0Mnfjl9bUjzC0loaYmyY8Lxcc6FRTpFlh3SKVs8JDVVjf0dn/e6VRflKmIzJRZ+kYQ4fBeM3CJpzCaf6wgsb/YuKh0Lms38TaA9ygF2Arzxp7P7ZS5GZAIvYvXDxCzj+Qve5WdDg5ihl4FLA5Zb7dAC96pVuCDwLHKFB3hb4KKuI+glgjBRfgbmiSzawtGKwVtEfWtN5JWJHw9u5x5NO4OjWOnzDURxcEOlhLe39E8ZYLZSg5MIS5ht4cfyqOgKHaN6jFA9Js+8C6QYZnZS2xSZqxFTKejP/D/jDDdRLtzqQn8wYLWDpTXTAd09GIbjP+GpFLR6t0rQtNGDE6s41kuciL5Gi7Oop0xgmM1hFdi/vbFSk8uffJ6YbmnrOnhtKL/54D6y2OR5VKdQXk3Fx53U5zk8NG4qL9lCeprGKwByUZ4SOCCMmqCZus41vG7tU+rJ9V6mzEtktDIJYA9Z61zQdtbB0YLswxygt79ESzI5UFaR+W+6ylWvFS9Cz5ewEP/FrZPmmH7r4GRtLiijcc6qZu5lgQuFL5s0Zz4hRV4Idwlccjm0sW1/U/QDSn5U7pcXvm1OspRTNiAjQTLo3ks8729XeZoZsMZj0OBNt6uySc7dspsDvFru+8FiHqugovceUVeZtVvveWA1R08ZL2kMauF+0cD+Sqq2BQATiVhpBeCdcHVMNiAlnOhmcI/jZ4Psb3wIL87nO1Q7qh+kVtc7SJ81vxsM4wUCM6TGjbauveafuX+zcRNDlN8PXThDN1UwyRUrzpCPSWnlW6kKuky6Jk64fEa6AHg+7+HXTmHKGud+Qd4oH/9hnPJOqTIJjYoOwcNWAlVHA1LXuihl+ni75arYY63fpuSQhUUVQNhSWGJJi6P7UjuVGgHiEkEFtc6tzN0LL3Z
- +Wh3vkkf
- FfNhx9usgkzZ5p9lFFk88SQTeVhP9qItaiyf0LTD/lDtUKv0Z/GDQGGThh8c59y5afA7VLsAku7ik4XfW/ue/qZqeUBHQDQqZsrNrG0bk/OOrL1Q34iQQKYrFr1b5Wqftcd+Jk8yCal6BuCtZOFS8b/kHCshcdogGPlMH0+wd4Zcjcbv7a434DFx0oeoInN1qa7VTBC3LWVTZBozzz3CQm+UfPGUy6rmALovwKNCdCTqar9FpgRkSOTV8mvciMz/mO1ARGbM7239XVeu4jsVtRUyLG2PCEerR6DsdSN9hU2EszvVCxIbCh4jsWiaL70YfNZcIY/IGZDK/uJVXKEOe0yv17lf+ij+jxlJy
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000054, version=1.2.4
+X-Stat-Signature: thw67fgy6c63x9hjrbgq99k1edmry7xc
+X-Rspamd-Queue-Id: 236BD40009
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761495824-74003
+X-HE-Meta: U2FsdGVkX1+wsI8rZFGz/XaM3/9fiTUINRrrqxhVFhM8gKOUmMEVcaw9zN8HSEPKsT5fRvvpNJ2+en5rWUVKHNwpRcf8LYpyduE4J/B20zbSkBstOpTOAmk50OQf1iRRQtZc3W+R5ZQ1SOhVRcB7vjWg+Q/Qjrt+mpDlrZIoy0T4tkugYj+JR3IOzc3r87q6KeRQkvb3M9LpLmvBGbXSzeKt+CFwIAmDerHWYqhIXzDuzSxWstZQIeVFLQzo/IoRTzDNNqeKkbjDJRGzQKG02rI0wkSRWMTlzOfoDFI3CphL6yR5J6X/qjnKrJBLNYnQ5cnkkI5rG+ow+22Xoe73l5YK4GhqBze7i3/+n/q4UZMygmHhZg2Xt688VJmjXvYgHXL6n/UCUpIF8vZwKwHEO96x2yOh6Gq/8/GaILqvIT3Jcn2twWBBZM5HI04wYH0CusoestkBfo4+GPq0uJv5p7nkhdAzAwVehsfch25S2P9XoAOaRjPA8EqUlbdtTbSNK8uNl5k9PHnHE6VvHTI87mJZUhbiJltSTd8qgflO0TV6hJK+4IVrTRTnE+F6OzwgOilRpZh1jHu8mu82IB/1DMCj1n6Z3CJ9DO1OXEE6Fg3jk4ZM5N83eEsrKoaglcmKzOmaLpG4w2DHRMPXRZigPk6jMSAHbpKtxDvPg1ibCiWZRZltYnmcQ83etsKPCs8B2H3teCHOwy94S6RtLMEzmVFxJx32koqpZ50cmrWoLQbQ/qAeqvZ7d+1ugzPAgnomD9EiS5Izb7Up3hdDmICP+XoW22fzIu3wE4DYpRGu1cOoz+sAkJ4VYA+yFO6qG3xVG8fgZo91LUCDUr83Z1q8YtfEeTqtzJaousDkBTnU0wtRdbl5RzMhx5COtfOBxDj0N5DOm1soadNVJRXbNsW0ZoJ6uyBjR7zbrjToyi4q7cF/klfmhdvNPWAmFImIzQNMCF16HoU4MryB32uRoJw
+ DLfmiOi5
+ C7yvtKnKrsBHyY2hbcmryN9E3NPtNcwJloEL0PEOciGc+hnIjFZsqNXRtdZ9LN75cRpdH+csbu//BK24sc4bZjB4lgJocqDaPe9LvtY4YAlN1lahAOQHUg+6lFk5WjRBrDDflUPtIUWPH9mNL3Rf3Cdyn9Y3t7PaaI9Ta3XSWNqYg+FTJ/exrM0ExUzN10DrUY+jiNRPUFdrJKte4zEm8gxZE/Om3kiROREQMfKwKiW7vPLJ9ln+YuN8055o6fOioMMEssVwRKpWOizd+mNBfgtuzcDi/oGTUdmEC2JkwXIYehnM=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -139,50 +95,175 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The MEM_* constants indicating the state of the memory block are
-currently defined as macros, meaning their definitions will be omitted
-from the debuginfo on most kernel builds. This makes it harder for
-debuggers to correctly map the block state at runtime, which can be
-quite useful when analysing errors related to memory hot plugging and
-unplugging with tools such as drgn and eBPF.
+On Fri, Oct 24, 2025 at 12:09:57PM -0400, Pasha Tatashin wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> The KHO framework uses a notifier chain as the mechanism for clients to
+> participate in the finalization process. While this works for a single,
+> central state machine, it is too restrictive for kernel-internal
+> components like pstore/reserve_mem or IMA. These components need a
+> simpler, direct way to register their state for preservation (e.g.,
+> during their initcall) without being part of a complex,
+> shutdown-time notifier sequence. The notifier model forces all
+> participants into a single finalization flow and makes direct
+> preservation from an arbitrary context difficult.
+> This patch refactors the client participation model by removing the
+> notifier chain and introducing a direct API for managing FDT subtrees.
+> 
+> The core kho_finalize() and kho_abort() state machine remains, but
+> clients now register their data with KHO beforehand.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> ---
+>  include/linux/kexec_handover.h   |  28 +-----
+>  kernel/kexec_handover.c          | 166 +++++++++++++++++--------------
+>  kernel/kexec_handover_debugfs.c  |  17 ++--
+>  kernel/kexec_handover_internal.h |   5 +-
+>  lib/test_kho.c                   |  33 +-----
+>  mm/memblock.c                    |  62 +++---------
+>  6 files changed, 126 insertions(+), 185 deletions(-)
 
-Converting the constants to an enum will ensure the correct information
-is emitted by the compiler and available for the debugger, without needing
-to hard-code them into the debugger and track their changes.
+> diff --git a/lib/test_kho.c b/lib/test_kho.c
+> index 60cd899ea745..1c6c4ce83666 100644
+> --- a/lib/test_kho.c
+> +++ b/lib/test_kho.c
+> @@ -120,6 +93,7 @@ static int kho_test_prepare_fdt(struct kho_test_state *state)
+>  
+>  	fdt = folio_address(state->fdt);
+>  
+> +	err |= kho_preserve_folio(state->fdt);
 
-Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
----
- include/linux/memory.h | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+We should bail out here, no point creating an fdt if it won't be preserved.
 
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index ba1515160894..8feba3bfcd18 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
- unsigned long memory_block_size_bytes(void);
- int set_memory_block_size_order(unsigned int order);
- 
--/* These states are exposed to userspace as text strings in sysfs */
--#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
--#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
--#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
--#define	MEM_GOING_ONLINE	(1<<3)
--#define	MEM_CANCEL_ONLINE	(1<<4)
--#define	MEM_CANCEL_OFFLINE	(1<<5)
-+enum mem_states {
-+	/* These states are exposed to userspace as text strings in sysfs */
-+	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
-+	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
-+	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
-+	MEM_GOING_ONLINE	 = (1<<3),
-+	MEM_CANCEL_ONLINE	 = (1<<4),
-+	MEM_CANCEL_OFFLINE	 = (1<<5),
-+};
- 
- struct memory_notify {
- 	unsigned long start_pfn;
+>  	err |= fdt_create(fdt, fdt_size);
+>  	err |= fdt_finish_reservemap(fdt);
+>  
+> @@ -131,6 +105,7 @@ static int kho_test_prepare_fdt(struct kho_test_state *state)
+>  
+>  	err |= fdt_finish(fdt);
+>  
+> +	err = kho_add_subtree(KHO_TEST_FDT, folio_address(state->fdt));
+>  	if (err)
+>  		folio_put(state->fdt);
+>  
+> @@ -203,7 +178,7 @@ static int kho_test_save(void)
+>  	if (err)
+>  		goto err_free_folios;
+>  
+> -	err = register_kho_notifier(&kho_test_nb);
+> +	err = kho_add_subtree(KHO_TEST_FDT, folio_address(state->fdt));
+
+This is the second time we add the same subtree, isn't it?
+
+>  	if (err)
+>  		goto err_free_fdt;
+>  
+> @@ -326,7 +301,7 @@ static void kho_test_cleanup(void)
+>  
+>  static void __exit kho_test_exit(void)
+>  {
+> -	unregister_kho_notifier(&kho_test_nb);
+> +	kho_remove_subtree(folio_address(kho_test_state.fdt));
+>  	kho_test_cleanup();
+>  }
+>  module_exit(kho_test_exit);
+> diff --git a/mm/memblock.c b/mm/memblock.c
+> index e23e16618e9b..e3bef9b35d63 100644
+> --- a/mm/memblock.c
+> +++ b/mm/memblock.c
+>  static int __init prepare_kho_fdt(void)
+>  {
+>  	int err = 0, i;
+> +	struct page *fdt_page;
+>  	void *fdt;
+>  
+> -	kho_fdt = alloc_page(GFP_KERNEL);
+> -	if (!kho_fdt)
+> +	fdt_page = alloc_page(GFP_KERNEL);
+> +	if (!fdt_page)
+>  		return -ENOMEM;
+>  
+> -	fdt = page_to_virt(kho_fdt);
+> +	fdt = page_to_virt(fdt_page);
+>  
+>  	err |= fdt_create(fdt, PAGE_SIZE);
+>  	err |= fdt_finish_reservemap(fdt);
+> @@ -2499,7 +2464,10 @@ static int __init prepare_kho_fdt(void)
+>  	err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
+>  	for (i = 0; i < reserved_mem_count; i++) {
+>  		struct reserve_mem_table *map = &reserved_mem_table[i];
+> +		struct page *page = phys_to_page(map->start);
+> +		unsigned int nr_pages = map->size >> PAGE_SHIFT;
+>  
+> +		err |= kho_preserve_pages(page, nr_pages);
+>  		err |= fdt_begin_node(fdt, map->name);
+>  		err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
+>  		err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
+> @@ -2507,13 +2475,16 @@ static int __init prepare_kho_fdt(void)
+>  		err |= fdt_end_node(fdt);
+>  	}
+>  	err |= fdt_end_node(fdt);
+> -
+>  	err |= fdt_finish(fdt);
+>  
+> +	err |= kho_preserve_folio(page_folio(fdt_page));
+
+When looking at the end result after patch 8 it becomes a total mess.
+Let's move this right after the allocation and make it
+
+	err = kho_preserve_folio(page_folio(fdt_page);
+	if (err)
+		goto err_free_fdt;
+
+> +
+> +	if (!err)
+> +		err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+
+and replace this pattern with usual kernel
+
+	if (err)
+		goto err_free_fdt;
+
+	err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
+	if (err)
+		goto err_free_fdt;
+
+so that only fdt operations will be a part of 
+
+	err |= fdt_<function> 
+
+sequence.
+
+>  	if (err) {
+>  		pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
+> -		put_page(kho_fdt);
+> -		kho_fdt = NULL;
+> +		put_page(fdt_page);
+>  	}
+>  
+>  	return err;
+> @@ -2529,13 +2500,6 @@ static int __init reserve_mem_init(void)
+>  	err = prepare_kho_fdt();
+>  	if (err)
+>  		return err;
+> -
+> -	err = register_kho_notifier(&reserve_mem_kho_nb);
+> -	if (err) {
+> -		put_page(kho_fdt);
+> -		kho_fdt = NULL;
+> -	}
+> -
+>  	return err;
+>  }
+>  late_initcall(reserve_mem_init);
+> -- 
+> 2.51.1.821.gb6fe4d2222-goog
+> 
+> 
+
 -- 
-2.51.0
-
+Sincerely yours,
+Mike.
 
