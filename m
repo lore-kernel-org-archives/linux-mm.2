@@ -4,90 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0F8CCCF9E5
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 20:36:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66129CCF9EB
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 20:36:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C72F08E0120; Sun, 26 Oct 2025 16:36:31 -0400 (EDT)
+	id 40F838E0185; Sun, 26 Oct 2025 16:36:34 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B11488E0184; Sun, 26 Oct 2025 16:36:31 -0400 (EDT)
+	id 321B28E0184; Sun, 26 Oct 2025 16:36:34 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FCFE8E0120; Sun, 26 Oct 2025 16:36:31 -0400 (EDT)
+	id 173C88E0185; Sun, 26 Oct 2025 16:36:34 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 875738E0120
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:36:31 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EDDD18E0184
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:36:33 -0400 (EDT)
 Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 50E83586F3
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 20:36:31 +0000 (UTC)
-X-FDA: 84041423382.04.8B8B5CC
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 88A82C02E9
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 20:36:33 +0000 (UTC)
+X-FDA: 84041423466.04.265AF19
 Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 8AE2D16000B
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 20:36:29 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cwXSvVE9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3TIb-aAYKCKETVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3TIb-aAYKCKETVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761510989; a=rsa-sha256;
-	cv=none;
-	b=W9aFPfW/taomiw4xrpVCPZq37yp+tAGmKQn1O1RCkdDm3+7UpRfFeiTuU0KtkDZmhke0G6
-	OoYUmB43hxjcaxtLVEDNhguA4xX6hqrLzVxGa1Zp3uI4UrKmrRUFChjyk+lFkkB9yhbGYT
-	fK9k+WUoTpFSaXHb3bqt+yDMltZd5vA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=cwXSvVE9;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf08.hostedemail.com: domain of 3TIb-aAYKCKETVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3TIb-aAYKCKETVSFOCHPPHMF.DPNMJOVY-NNLWBDL.PSH@flex--surenb.bounces.google.com
+	by imf20.hostedemail.com (Postfix) with ESMTP id B95B01C0003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 20:36:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I2W+QhOd;
+	spf=pass (imf20.hostedemail.com: domain of 3Tob-aAYKCKMVXUHQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Tob-aAYKCKMVXUHQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761510989;
+	s=arc-20220608; t=1761510991;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F+hwvxvjiT/648L8Azhj+YaogvoFsk4ZqGTdVX9dBk8=;
-	b=4scl/vMsfRcQqiPed3GFiJTToV2un96EK4XhhYwz5/WVXv36Q9Dz1lCMMsRMdCJAXKAT32
-	J3KowNhtBAIQUChyRFzB4q2elbOX5FU2NIF+1mBHvE9x6hbFDSAouZ5exwcs3d7kmvsGl8
-	MiCglYWJrha1ILokwXG4oR6UJ2DgRtA=
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2698b5fbe5bso54164745ad.0
-        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 13:36:29 -0700 (PDT)
+	bh=W8fKQJfeDm6lPLiecQTGQk23fhbVChRxMsUUt63Q0w4=;
+	b=ij40SquUbTOJ8utUMBIeFPPH/MF1aCd1mkXC/X9SkYW3/A2Jn0GUqFcFfzZWo65vbP0ekI
+	MJOAloZ0V7bfQki14Y7TiQDn60XajpwCA2cq1M+cjUzSgI8ZkWV282JJkDbOocv2AA+lTn
+	CXGg4GurC/Veela/Cc/KrG9Ud+AXFPo=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=I2W+QhOd;
+	spf=pass (imf20.hostedemail.com: domain of 3Tob-aAYKCKMVXUHQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--surenb.bounces.google.com designates 209.85.214.202 as permitted sender) smtp.mailfrom=3Tob-aAYKCKMVXUHQEJRRJOH.FRPOLQXa-PPNYDFN.RUJ@flex--surenb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761510991; a=rsa-sha256;
+	cv=none;
+	b=IXq4omwHdm0OqPxlM7JnhlLqqIJv+vO7Ret24A/8Ek9M2/QEHRnV8d8SpKP5ER7HKx6zK5
+	Ik/pwBxv6iDSdvLkbK4dHzR1dAfEoVmSncPDuGLi0bi6DA7prA/70FrCyl12GloYlsXt4q
+	Y2fkZNOluQEWj+Fx9BBAUcpYpGJGMO8=
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2909daa65f2so57171985ad.0
+        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 13:36:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761510988; x=1762115788; darn=kvack.org;
+        d=google.com; s=20230601; t=1761510991; x=1762115791; darn=kvack.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=F+hwvxvjiT/648L8Azhj+YaogvoFsk4ZqGTdVX9dBk8=;
-        b=cwXSvVE992pCpKU4de8+l5m3AFAdiW8m6WXc+eYUa0cwFgaS99ZbS7KAKvMAeTYOZs
-         pAS0f0m5Ujhx5R553fjMgFGYJPWWZwGFWs4P7Fet2HJNlsnJ8BXOTxhgffxfSg7Ne1DY
-         U0IMuclj7vQpVbsALRKbTdauyFhaf0cKbfuteWaLt9soRh3znFQVrTyVd39hkgsDTxKy
-         nzfZdidCYzuKvHWEd+yfTBYnnRqWAHwGad1nFA2NiWqyr93CUbsu8FmO7RuTaiB3CbWO
-         C7elGyxFZq+ma/y3uralip5Po4t2o+d89oB18CYMzTqZtDKi7btxbIU6hlRO+FDXxbef
-         +pcg==
+        bh=W8fKQJfeDm6lPLiecQTGQk23fhbVChRxMsUUt63Q0w4=;
+        b=I2W+QhOdEQ0QvPQDOxWRIbH57aY452LbAg7nEt76sPwHy5xngGc78pzRJwk8dD/N7F
+         F6jLy8G5kjuRew2NjhWGHu7zE9nBHg9o7LtU4moq6ztV9u/nPsT/5s6so9L9d7OpByxt
+         umBjLeYHOui1hKZPOs6GNB75OgECuTareCUSXMYYh+n2qaSwaLRBdWBXgifpVRZsSAqd
+         mH1SHGwRx9putuwCdnzBeH/lJoN/gMRdh+SKrm/DU/P7N1AYXZjNASxhbgqiNiOM2Ily
+         38cy+KwX8dae/A0y5o+S88JWuhGmkI1uH0rsBzT/i8+4pwqwlMdG+Adbs/v0Q4x8fzDb
+         Djag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761510988; x=1762115788;
+        d=1e100.net; s=20230601; t=1761510991; x=1762115791;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=F+hwvxvjiT/648L8Azhj+YaogvoFsk4ZqGTdVX9dBk8=;
-        b=YxgymCB6PxWQNbl8wQson9HwkE5OOwh6bEvb69QKrvaNHEtVMHzIhNcH/wQO0c8VL4
-         aysdCS8S06k6gq0gAGCRqLfpTd8TR4vFqaqGFHuro20ubwxObgSgsaNqTTlhnXR0VL5p
-         MvRqWnlMRKy7/Wv9brD5xa3xRalHMwZ2gPzRAPhVAmHqdiSbgPD8igAQ3Qwqo97yoCpQ
-         JWLMXS9XmQvAGwZr+B9GtfZoZ9spvOwlCdFfFS1RTYYcdNID+DIhQxKyZAaZAMix5WMA
-         c9IlnIwFBkEcBm0MKkAn4gc8H4d+AltRYr1sIGWDOKfw+Fq2c8QLQgLB/VsQncSn0trg
-         XglA==
-X-Forwarded-Encrypted: i=1; AJvYcCWViBNz2RZoIozrKj4YW6aYG/n9yTuwLCiAVctDbCCIIOOXhnZ8uu73oHnD7uIX7Y9GmKMPxDnKJQ==@kvack.org
-X-Gm-Message-State: AOJu0Yy76IXefG8tR4u143MxVER9DauWEChlv/nBA5HiX7M3b0wb4jYA
-	HA/WB/PFvbgxiWnroC7we8aOin/RGbAnyajZ0ghZ3DfXeOTXIufrzDbIX5j00BkvQyLfpAPt2HE
-	mG7EbAQ==
-X-Google-Smtp-Source: AGHT+IEGiuaYNqtmzAs0E42cvktCDNQUumB1H3lnOt3eYy3N7OB3Lp+O2CXv9ksq+J9ruS+aEn5/XTF4vMk=
-X-Received: from pjbgt15.prod.google.com ([2002:a17:90a:f2cf:b0:33b:b662:ae3a])
- (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1a4c:b0:24c:c8e7:60b5
- with SMTP id d9443c01a7336-290c9cb6243mr210845465ad.16.1761510988422; Sun, 26
- Oct 2025 13:36:28 -0700 (PDT)
-Date: Sun, 26 Oct 2025 13:36:09 -0700
+        bh=W8fKQJfeDm6lPLiecQTGQk23fhbVChRxMsUUt63Q0w4=;
+        b=VurfeaQSH80n+5sQJE0reHAAdKA21m2Q7DcQlZn4bxTGOFLjP3jOg5WMyop14Ic7mP
+         q1tk5G9gjd1jPUdmQu1nbY5DpwLydI0JsRx2e4Yc2HjxsUrXba+zM+UES3Fc9OisrBoa
+         wk+tJ8wL5TsWWKgLmBd2rAezRJtPIszvCdm9UCmDzPPxP2EY/IwbIxyRZ4x0wXGb7KY0
+         cRt75h1xbOgcWXtl2FEhr7wlFhmEXdJz/mh5SeisP2FYhZWVbxzaUuBX0Ws5ce22azfC
+         4KQxow5OgtlVyD8AXDbjACWcLK/gdxl+/PR0naBQ0Ae8v04gDh5lObjeFObpIVPOgJLD
+         3n5w==
+X-Forwarded-Encrypted: i=1; AJvYcCWAsAnrEgNUvAZ5u6Gutc6eR6gh3dK+5QXdPwYqsHSCRgJ0t/y+iQE+wqmLZaiHXAtqvA6VnKjLmw==@kvack.org
+X-Gm-Message-State: AOJu0YySEUxmOPlnbfLWFP5DIuyRr1pNj3Sd2CVuuwibvHVTcKNISnNs
+	3PBaN5O0nPK4xTAxvYny8iDStcvQqP4slbCcGhy/686uCCgc8XQUiwSS426+qJb0Hrdy4GsDQwo
+	MJhAokA==
+X-Google-Smtp-Source: AGHT+IF0KfskSdKLpVux68qy5bYP7cU8OOYanXrqoLeO8zCN1YVKm99EcrKefxwR8RyvHyXu3BZDAiNrGaY=
+X-Received: from plgs4.prod.google.com ([2002:a17:902:ea04:b0:268:eb:3b3b])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64b:b0:274:506d:7fcc
+ with SMTP id d9443c01a7336-29489d71137mr117673365ad.6.1761510990611; Sun, 26
+ Oct 2025 13:36:30 -0700 (PDT)
+Date: Sun, 26 Oct 2025 13:36:10 -0700
 In-Reply-To: <20251026203611.1608903-1-surenb@google.com>
 Mime-Version: 1.0
 References: <20251026203611.1608903-1-surenb@google.com>
 X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
-Message-ID: <20251026203611.1608903-7-surenb@google.com>
-Subject: [PATCH v2 6/8] add cleancache documentation
+Message-ID: <20251026203611.1608903-8-surenb@google.com>
+Subject: [PATCH v2 7/8] mm: introduce GCMA
 From: Suren Baghdasaryan <surenb@google.com>
 To: akpm@linux-foundation.org
 Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
@@ -100,16 +100,16 @@ Cc: david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
 	minchan@kernel.org, surenb@google.com, linux-mm@kvack.org, 
 	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	iommu@lists.linux.dev
+	iommu@lists.linux.dev, Minchan Kim <minchan@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: gwjo5j18tkdinq4nofjs4mi8uccu95m9
-X-Rspamd-Queue-Id: 8AE2D16000B
-X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: B95B01C0003
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-HE-Tag: 1761510989-177451
-X-HE-Meta: U2FsdGVkX199GTLWrS1CIZdOaibRoh/MXMtTyLCVpjZX7Wv6AYqU8k7xhfU9mUhAH2nqRmnE2T+g7nBVHzqvZHuks0RISmpILtFBduWi+WxPboZ6sWwd5g8EPXnKqcmm5LOpb/jz6h93K0fh1aEgcXGQTVghF05RhARu0h7dv27lyP6BvYd2gsTJTr9pAgKpP49IhhoMQYbpp0f1D8ggIRJFiO/B1v/wmry7EcT/bVwN8EY9IP8tHN2JVCJFnfI639uqd9/zwnsA1av/YXKkMpV1FgEpqEyPkuz8dByub4sxjVFbPImuQQvEYdy/MguET+oDMOAEPuak990kIrtI0rM7RlDac+Z4YipdYl6zn4yXZb6BfeJFNYQolH14Be4nBZaI7T0PPCHATRiIvxep2qP1zCs09z13i291jEmAlMH0ka5APKFpm7ytZMgxe+KDbZqy17KE/58hcXLp/E7BgWyZFgV841GJWciNWAFRi8spIOswKWoKP9LYFVmeB9xA4z9k9KloztCc0lqCMuuILLb02PXYhgDaqF9cATN8a8xQ6y7/GeeKOjyzbjnVFLX6GBbN1t/WI47hM5g5TDWlrxz4/OIKybsC4FyLpSy6nK1GRzPWFH53UOMdbozQJY67L5ZN9JkG1vY7i0WTjCgbhS/ot1IbzpGHVasienKoLMSkE5deHmWonEgmxsQEFvMqBpJVlsYjrnbatLRdIhg7tWoAXRgo45ZzKZT7EtmEeAKB+zusNlotzksguJ8/GIFp0fRanLHIzGi55+tgkhFql4RvFMRtWL0n68gZk6xThrbCuw0NcrTqowqfgF4neS4Zma4k0eSrwZZLMgeh3XKvAQPjiaqTvroCqm/994Q9T2LRpAOkPFwAFwAnA0PuGp+J6RpzZiIESoTCIwXdsxm+My9LaTLmQmD1WZn1nz4h0xyCiOrKTgJZ5sy+D8gyQPGWb4R10qaLaZ06GxcLS/P
- EuCvVTj5
- /MhQIoR1qE7UxAOkx8F2HQDl8sDyIhMW+3qslkJam22/roU1qYMt6n/USWIy8EyqRcfwzn9v6/VPFG/nlW78J++cLeyeDlBz5cAQfhVnVq6nFf0i2MHLsy644fih2BsRNixUL1S2OulTGIptssU43Hjgamn60Gz13Gm4tQ3pIfZjT0xniOxBz639g0DFkAC44Y9cjZO+EmkXUIz9O4AmSyIcaHBL/LWPNbmqmRlmaA4E1xXfL1AQsbYq/0P4RaAzaiq1lol/tb4HAKXCYX4QfhnKSRcxMDueSWY/6FoXttU/Vi/0ikX+6l3CB40LmeIbfucr9K1VnLCNpSN+brk+6d2UrWUnF4+agVRH2GsL66rTUuGl8wvCKZkxcoBRBwe0zlaf/hgBxVO7zXgUOtUbBJKZoR7eWPadXovhCg0wlxEMb5Pu9prP5iptV1HDuaVwB483JTVCP/FqQLGT3OdVfTpxG6KgA8UV7Gg8jrwW0EZ2d6nGZEK8xOBvL+OcFYrNLufE5uJcBYETNolsAwV2KiQd7RZ6AjsKRYbIUaGbjkeoMtn6rO6VKX7EUKw==
+X-Stat-Signature: 8uyr7deeabdufx5j91ck5x9njqemckaw
+X-HE-Tag: 1761510991-584752
+X-HE-Meta: U2FsdGVkX18DXp5yxmvjpZ5Xk8eKrddWgTiaz6M1MN9WA0aGtSwuJq3vaEBkhHSWNR+N2kfv5gHc4iu2KiEKCgw86W0Sd//IuB3fxup6jkN7/WA+c24+TL+7jjyPwP2iQ5BuDwB8FXWbd5SrCla/Fxn9JG17pBJqFmneCy3iz/8t1xNk5HERRS54XrQBUz3nNDzaCcxv8Xx5DbaP2aAJcHJAlo520x00MEyvVej/suo5J30ruDPnxSYg3EVmWkVzHUy0JUpsysa+7VvOltJkjM8ikqNP7nRs7R0GZ44jn80g74y2Mn8JHHnoDoN6V46QRbEKhpcns2jRTrJ5oOjX5lQIqsgQow+CJjq86FbkGvwPhzyqXhdJ41TpMyls+tK9fPehWWxnFHHs81ilS3uBO5WAJaCQJzknEkbqnf+YqXrhRwCV4+R3LqJOdwYEar95un0ctSfbB74X8NXOcLGB+JUTMsAduOrJUWNerJ0GAJmKzjLCBxSHz2A+W9nUVAOcDt/qOSX1RZQhU0o/9Ak+ixPztC/HSmlPpMdFNlQ4y9M2oZRPEPNNF+3znrSB9Jqyc5fknaFHBlyjKXTzndaN8agkHwNqRQ/KvNC9fbXuOGvdtMDs4SpQyVixvtmMi588ojMBcL+QM2xq5j/yLabRt41o9nOiopVaSrfP2hqxOukKcdOR50D9fLNZrbSQLzYAv7W0OYIISYFghuEQNzrcnUb3XpZcWVouahw0CStYToI74FWESHwnzrJumexYGGzxfjC/iVH2yS/jgCsfsVtUqBmFqvr/BHQXNpuNZhxPZPqSlCha98WrgWRAjTmcVxWVyQKeW7/ex6uJZX0Xeh6bmzdhmu5/D+rTeYOyNsn1RVnOQXmbhtAWRpaukWWotAlKa/Bm65/iSap8Da+o8s9AtOn345K/qcO7S+vVWNHmtCpdmprzlK+CghDCvNE+an30qwUUZ0GhrmukdelOjX2
+ kYr2Wqu1
+ svtfFT0Zx3+xUSaGs/oQKmwSOzpaORZH8MhM3349+z/FlIitjOfcf/zLuebuVdQsyZy31oiWhPWwqNWOI3EQUfvXLLSZwugCJo5xZ5y0YEhSRzb+Oxwic125gl1rSrLOUecGSdeeb46cR8bMKPtJsWO1dstePEca6S2jSeIL050YQ54/g76A+XKtrHSe65cUGGuSmh14wbW31bFryoc8Gvlg61MXalXKud2n/KskJaYVT7K1qsORi94ME3x1QVYof63Iq+l7BLsGyW9mU0uKNI9vMi1ui81VTkZSyG9YfLpkgMIl1tYHr8Xs8fKyuCbrr4StHJmA2JsdlmXV23HFLBIyN2MHEdINX8OOkV1o2ujq3k+p7LtN+QdU9kLFvQAavu4LVRJsupyHNg9v65XYeE3jvYlyu+aC4SfDtUxwG8nTRrOBc6ZZpWmccXzbDMsj97Xl+HDGNDlJUhT1hTv1/4YQSkQY6YvKSNfJHSIMLmqv6JNoZYqDVbA++155FJbZSKhYn0glRu5U2LXUVtotWhZC20mbXXZZ2ThAMIz35LLyBstIsUhDspuUPxMIJurzgHtG3GnVEkTCsASrA3qLaVKvA2Olu8c7d2dNTiEvTl6rWF381xo7ztPmPoebNbCbeeXK0OeS9OkbFP8VFfS6dgw1F+394INQ/eP/C0xoPmpTo0SWpQvDdfkAlK7FgeRyuFvdk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,187 +118,381 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Document cleancache, its APIs and sysfs interface.
+From: Minchan Kim <minchan@google.com>
 
+This patch introduces GCMA (Guaranteed Contiguous Memory Allocator)
+cleacache backend which reserves some amount of memory at the boot
+and then donates it to store clean file-backed pages in the cleancache.
+GCMA aims to guarantee contiguous memory allocation success as well as
+low and deterministic allocation latency.
+
+Notes:
+Originally, the idea was posted by SeongJae Park and Minchan Kim [1].
+Later Minchan reworked it to be used in Android as a reference for
+Android vendors to use [2].
+
+[1] https://lwn.net/Articles/619865/
+[2] https://android-review.googlesource.com/q/topic:%22gcma_6.12%22
+
+Signed-off-by: Minchan Kim <minchan@google.com>
 Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 ---
- .../admin-guide/mm/cleancache_sysfs.rst       | 51 ++++++++++++++
- Documentation/admin-guide/mm/index.rst        |  1 +
- Documentation/mm/cleancache.rst               | 68 +++++++++++++++++++
- Documentation/mm/index.rst                    |  1 +
- MAINTAINERS                                   |  2 +
- 5 files changed, 123 insertions(+)
- create mode 100644 Documentation/admin-guide/mm/cleancache_sysfs.rst
- create mode 100644 Documentation/mm/cleancache.rst
+ MAINTAINERS          |   2 +
+ include/linux/gcma.h |  36 +++++++
+ mm/Kconfig           |  15 +++
+ mm/Makefile          |   1 +
+ mm/gcma.c            | 244 +++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 298 insertions(+)
+ create mode 100644 include/linux/gcma.h
+ create mode 100644 mm/gcma.c
 
-diff --git a/Documentation/admin-guide/mm/cleancache_sysfs.rst b/Documentation/admin-guide/mm/cleancache_sysfs.rst
-new file mode 100644
-index 000000000000..503f17008046
---- /dev/null
-+++ b/Documentation/admin-guide/mm/cleancache_sysfs.rst
-@@ -0,0 +1,51 @@
-+==========================
-+Cleancache Sysfs Interface
-+==========================
-+
-+If CONFIG_CLEANCACHE_SYSFS is enabled, monitoring of cleancache performance
-+can be done via sysfs in the ``/sys/kernel/mm/cleancache`` directory.
-+The effectiveness of cleancache can be measured (across all filesystems)
-+with provided stats.
-+Global stats are published directly under ``/sys/kernel/mm/cleancache`` and
-+include:
-+
-+``stored``
-+       number of successful cleancache folio stores.
-+
-+``skipped``
-+       number of folios skipped during cleancache store operation.
-+
-+``restored``
-+       number of successful cleancache folio restore operations.
-+
-+``missed``
-+       number of failed cleancache folio restore operations.
-+
-+``reclaimed``
-+       number of folios reclaimed from the cleancache due to insufficient
-+       memory.
-+
-+``recalled``
-+       number of times cleancache folio content was discarded as a result
-+       of the cleancache backend taking the folio back.
-+
-+``invalidated``
-+       number of times cleancache folio content was discarded as a result
-+       of invalidation.
-+
-+``cached``
-+       number of folios currently cached in the cleancache.
-+
-+Per-pool stats are published under ``/sys/kernel/mm/cleancache/<pool name>``
-+where "pool name" is the name pool was registered under. These stats
-+include:
-+
-+``size``
-+       number of folios donated to this pool.
-+
-+``cached``
-+       number of folios currently cached in the pool.
-+
-+``recalled``
-+       number of times cleancache folio content was discarded as a result
-+       of the cleancache backend taking the folio back from the pool.
-diff --git a/Documentation/admin-guide/mm/index.rst b/Documentation/admin-guide/mm/index.rst
-index ebc83ca20fdc..e22336e5c9d2 100644
---- a/Documentation/admin-guide/mm/index.rst
-+++ b/Documentation/admin-guide/mm/index.rst
-@@ -25,6 +25,7 @@ the Linux memory management.
-    :maxdepth: 1
- 
-    concepts
-+   cleancache_sysfs
-    cma_debugfs
-    damon/index
-    hugetlbpage
-diff --git a/Documentation/mm/cleancache.rst b/Documentation/mm/cleancache.rst
-new file mode 100644
-index 000000000000..bd4ee7df2125
---- /dev/null
-+++ b/Documentation/mm/cleancache.rst
-@@ -0,0 +1,68 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+==========
-+Cleancache
-+==========
-+
-+Motivation
-+==========
-+
-+Cleancache is a feature to utilize unused reserved memory for extending
-+page cache.
-+
-+Cleancache can be thought of as a folio-granularity victim cache for clean
-+file-backed pages that the kernel's pageframe replacement algorithm would
-+like to keep around, but can't since there isn't enough memory. When the
-+memory reclaim mechanism "evicts" a folio, it stores the data contained
-+in the folio into cleancache memory which is not directly accessible or
-+addressable by the kernel and is of unknown and possibly time-varying
-+size.
-+
-+Later, when a filesystem wishes to access a folio in a file on disk, it
-+first checks cleancache to see if it already contains required data; if
-+it does, the folio data is copied into the kernel and a disk access is
-+avoided.
-+
-+The memory cleancache uses is donated by other system components, which
-+reserve memory not directly addressable by the kernel. By donating this
-+memory to cleancache, the memory owner enables its utilization while it
-+is not used. Memory donation is done using cleancache backend API and any
-+donated memory can be taken back at any time by its donor with no delay
-+and with guaranteed success. Since cleancache uses this memory only to
-+store clean file-backed data, it can be dropped at any time and therefore
-+the donor's request to take back the memory can always be satisfied.
-+
-+Implementation Overview
-+=======================
-+
-+Cleancache "backend" registers itself with cleancache "frontend" and gets
-+a unique pool_id, which it can use in all later API calls to identify the
-+pool of folios it donates.
-+Once registered, backend can call cleancache_backend_put_folio() or
-+cleancache_backend_put_folios() to donate memory to cleancache. Note that
-+cleancache currently supports only 0-order folios and will not accept
-+larger-order ones. Once the backend needs that memory back, it can get it
-+by calling cleancache_backend_get_folio(). Only the original backend can
-+take the folio it donated from the cleancache.
-+
-+Kernel uses cleancache by first calling cleancache_add_fs() to register
-+each file system and then using a combination of cleancache_store_folio(),
-+cleancache_restore_folio(), cleancache_invalidate_{folio|inode} to store,
-+restore and invalidate folio content.
-+cleancache_{start|end}_inode_walk() are used to walk over folios inside
-+an inode and cleancache_restore_from_inode() is used to restore folios
-+during such walks.
-+
-+From kernel's point of view folios which are copied into cleancache have
-+an indefinite lifetime which is completely unknowable by the kernel and so
-+may or may not still be in cleancache at any later time. Thus, as its name
-+implies, cleancache is not suitable for dirty folios. Cleancache has
-+complete discretion over what folios to preserve and what folios to discard
-+and when.
-+
-+Cleancache Performance Metrics
-+==============================
-+
-+Cleancache performance can be measured and monitored using metrics provided
-+via sysfs interface under ``/sys/kernel/mm/cleancache`` directory. The
-+interface is described in Documentation/admin-guide/mm/cleancache_sysfs.rst.
-diff --git a/Documentation/mm/index.rst b/Documentation/mm/index.rst
-index ba6a8872849b..7997879e0695 100644
---- a/Documentation/mm/index.rst
-+++ b/Documentation/mm/index.rst
-@@ -41,6 +41,7 @@ documentation, or deleted if it has served its purpose.
-    allocation-profiling
-    arch_pgtable_helpers
-    balance
-+   cleancache
-    damon/index
-    free_page_reporting
-    hmm
 diff --git a/MAINTAINERS b/MAINTAINERS
-index eb35973e10c8..3aabed281b71 100644
+index 3aabed281b71..40de200d1124 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -6058,6 +6058,8 @@ M:	Suren Baghdasaryan <surenb@google.com>
- M:	Minchan Kim <minchan@google.com>
- L:	linux-mm@kvack.org
- S:	Maintained
-+F:	Documentation/admin-guide/mm/cleancache_sysfs.rst
-+F:	Documentation/mm/cleancache.rst
- F:	include/linux/cleancache.h
- F:	mm/cleancache.c
- F:	mm/cleancache_sysfs.c
+@@ -16384,6 +16384,7 @@ F:	Documentation/admin-guide/mm/
+ F:	Documentation/mm/
+ F:	include/linux/cma.h
+ F:	include/linux/dmapool.h
++F:	include/linux/gcma.h
+ F:	include/linux/ioremap.h
+ F:	include/linux/memory-tiers.h
+ F:	include/linux/page_idle.h
+@@ -16395,6 +16396,7 @@ F:	mm/dmapool.c
+ F:	mm/dmapool_test.c
+ F:	mm/early_ioremap.c
+ F:	mm/fadvise.c
++F:	mm/gcma.c
+ F:	mm/ioremap.c
+ F:	mm/mapping_dirty_helpers.c
+ F:	mm/memory-tiers.c
+diff --git a/include/linux/gcma.h b/include/linux/gcma.h
+new file mode 100644
+index 000000000000..20b2c85de87b
+--- /dev/null
++++ b/include/linux/gcma.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __GCMA_H__
++#define __GCMA_H__
++
++#include <linux/types.h>
++
++#ifdef CONFIG_GCMA
++
++int gcma_register_area(const char *name,
++		       unsigned long start_pfn, unsigned long count);
++
++/*
++ * NOTE: allocated pages are still marked reserved and when freeing them
++ * the caller should ensure they are isolated and not referenced by anyone
++ * other than the caller.
++ */
++int gcma_alloc_range(unsigned long start_pfn, unsigned long count, gfp_t gfp);
++int gcma_free_range(unsigned long start_pfn, unsigned long count);
++
++#else /* CONFIG_GCMA */
++
++static inline int gcma_register_area(const char *name,
++				     unsigned long start_pfn,
++				     unsigned long count)
++		{ return -EOPNOTSUPP; }
++static inline int gcma_alloc_range(unsigned long start_pfn,
++				   unsigned long count, gfp_t gfp)
++		{ return -EOPNOTSUPP; }
++
++static inline int gcma_free_range(unsigned long start_pfn,
++				   unsigned long count)
++		{ return -EOPNOTSUPP; }
++
++#endif /* CONFIG_GCMA */
++
++#endif /* __GCMA_H__ */
+diff --git a/mm/Kconfig b/mm/Kconfig
+index e1a169d5e5de..3166fde83340 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -1097,6 +1097,21 @@ config CMA_AREAS
+ 
+ 	  If unsure, leave the default value "8" in UMA and "20" in NUMA.
+ 
++config GCMA
++       bool "GCMA (Guaranteed Contiguous Memory Allocator)"
++       depends on CLEANCACHE
++	help
++	  This enables the Guaranteed Contiguous Memory Allocator to allow
++	  low latency guaranteed contiguous memory allocations. Memory
++	  reserved by GCMA is donated to cleancache to be used as pagecache
++	  extension. Once GCMA allocation is requested, necessary pages are
++	  taken back from the cleancache and used to satisfy the request.
++	  Cleancache guarantees low latency successful allocation as long
++	  as the total size of GCMA allocations does not exceed the size of
++	  the memory donated to the cleancache.
++
++	  If unsure, say "N".
++
+ #
+ # Select this config option from the architecture Kconfig, if available, to set
+ # the max page order for physically contiguous allocations.
+diff --git a/mm/Makefile b/mm/Makefile
+index 845841a140e3..05aee66a8b07 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -149,3 +149,4 @@ obj-$(CONFIG_TMPFS_QUOTA) += shmem_quota.o
+ obj-$(CONFIG_PT_RECLAIM) += pt_reclaim.o
+ obj-$(CONFIG_CLEANCACHE) += cleancache.o
+ obj-$(CONFIG_CLEANCACHE_SYSFS)	+= cleancache_sysfs.o
++obj-$(CONFIG_GCMA)	+= gcma.o
+diff --git a/mm/gcma.c b/mm/gcma.c
+new file mode 100644
+index 000000000000..b86f82b8fe9d
+--- /dev/null
++++ b/mm/gcma.c
+@@ -0,0 +1,244 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * GCMA (Guaranteed Contiguous Memory Allocator)
++ *
++ */
++
++#define pr_fmt(fmt) "gcma: " fmt
++
++#include <linux/cleancache.h>
++#include <linux/gcma.h>
++#include <linux/hashtable.h>
++#include <linux/highmem.h>
++#include <linux/idr.h>
++#include <linux/slab.h>
++#include <linux/xarray.h>
++#include "internal.h"
++
++#define MAX_GCMA_AREAS		64
++#define GCMA_AREA_NAME_MAX_LEN	32
++
++struct gcma_area {
++	int pool_id;
++	unsigned long start_pfn;
++	unsigned long end_pfn;
++	char name[GCMA_AREA_NAME_MAX_LEN];
++};
++
++static struct gcma_area areas[MAX_GCMA_AREAS];
++static atomic_t nr_gcma_area = ATOMIC_INIT(0);
++static DEFINE_SPINLOCK(gcma_area_lock);
++
++static int free_folio_range(struct gcma_area *area,
++			     unsigned long start_pfn, unsigned long end_pfn)
++{
++	unsigned long scanned = 0;
++	unsigned long pfn;
++
++	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
++		int err;
++
++		if (!(++scanned % XA_CHECK_SCHED))
++			cond_resched();
++
++		err = cleancache_backend_put_folio(area->pool_id, pfn_folio(pfn));
++		if (err) {
++			pr_warn("PFN %lu: folio is still in use\n", pfn);
++			return err;
++		}
++	}
++
++	return 0;
++}
++
++static int alloc_folio_range(struct gcma_area *area,
++			      unsigned long start_pfn, unsigned long end_pfn,
++			      gfp_t gfp)
++{
++	unsigned long scanned = 0;
++	unsigned long pfn;
++
++	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
++		int err;
++
++		if (!(++scanned % XA_CHECK_SCHED))
++			cond_resched();
++
++		err = cleancache_backend_get_folio(area->pool_id, pfn_folio(pfn));
++		if (err) {
++			free_folio_range(area, start_pfn, pfn);
++			return err;
++		}
++	}
++
++	return 0;
++}
++
++static struct gcma_area *find_area(unsigned long start_pfn, unsigned long end_pfn)
++{
++	int nr_area = atomic_read_acquire(&nr_gcma_area);
++	int i;
++
++	for (i = 0; i < nr_area; i++) {
++		struct gcma_area *area = &areas[i];
++
++		if (area->end_pfn <= start_pfn)
++			continue;
++
++		if (area->start_pfn > end_pfn)
++			continue;
++
++		/* The entire range should belong to a single area */
++		if (start_pfn < area->start_pfn || end_pfn > area->end_pfn)
++			break;
++
++		/* Found the area containing the entire range */
++		return area;
++	}
++
++	return NULL;
++}
++
++int gcma_register_area(const char *name,
++		       unsigned long start_pfn, unsigned long count)
++{
++	LIST_HEAD(folios);
++	int i, pool_id;
++	int nr_area;
++	int ret = 0;
++
++	pool_id = cleancache_backend_register_pool(name);
++	if (pool_id < 0)
++		return pool_id;
++
++	for (i = 0; i < count; i++) {
++		struct folio *folio;
++
++		folio = pfn_folio(start_pfn + i);
++		folio_clear_reserved(folio);
++		folio_set_count(folio, 0);
++		list_add(&folio->lru, &folios);
++	}
++
++	cleancache_backend_put_folios(pool_id, &folios);
++
++	spin_lock(&gcma_area_lock);
++
++	nr_area = atomic_read(&nr_gcma_area);
++	if (nr_area < MAX_GCMA_AREAS) {
++		struct gcma_area *area = &areas[nr_area];
++
++		area->pool_id = pool_id;
++		area->start_pfn = start_pfn;
++		area->end_pfn = start_pfn + count;
++		strscpy(area->name, name);
++		/* Ensure above stores complete before we increase the count */
++		atomic_set_release(&nr_gcma_area, nr_area + 1);
++	} else {
++		ret = -ENOMEM;
++	}
++
++	spin_unlock(&gcma_area_lock);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(gcma_register_area);
++
++int gcma_alloc_range(unsigned long start_pfn, unsigned long count, gfp_t gfp)
++{
++	unsigned long end_pfn = start_pfn + count;
++	struct gcma_area *area;
++	struct folio *folio;
++	int err, order = 0;
++
++	gfp = current_gfp_context(gfp);
++	if (gfp & __GFP_COMP) {
++		if (!is_power_of_2(count))
++			return -EINVAL;
++
++		order = ilog2(count);
++		if (order >= MAX_PAGE_ORDER)
++			return -EINVAL;
++	}
++
++	area = find_area(start_pfn, end_pfn);
++	if (!area)
++		return -EINVAL;
++
++	err = alloc_folio_range(area, start_pfn, end_pfn, gfp);
++	if (err)
++		return err;
++
++	/*
++	 * GCMA returns pages with refcount 1 and expects them to have
++	 * the same refcount 1 when they are freed.
++	 */
++	if (order) {
++		folio = pfn_folio(start_pfn);
++		post_alloc_hook(&folio->page, order, gfp);
++		set_page_refcounted(&folio->page);
++		prep_compound_page(&folio->page, order);
++	} else {
++		for (unsigned long pfn = start_pfn; pfn < end_pfn; pfn++) {
++			folio = pfn_folio(pfn);
++			post_alloc_hook(&folio->page, order, gfp);
++			set_page_refcounted(&folio->page);
++		}
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(gcma_alloc_range);
++
++int gcma_free_range(unsigned long start_pfn, unsigned long count)
++{
++	unsigned long end_pfn = start_pfn + count;
++	struct gcma_area *area;
++	unsigned long pfn;
++	int err = -EINVAL;
++
++	area = find_area(start_pfn, end_pfn);
++	if (!area)
++		return -EINVAL;
++
++	/* First pass checks and drops folio refcounts */
++	for (pfn = start_pfn; pfn < end_pfn;) {
++		struct folio *folio = pfn_folio(pfn);
++		unsigned long nr_pages = folio_nr_pages(folio);
++
++		if (pfn + nr_pages > end_pfn) {
++			end_pfn = pfn;
++			goto error;
++
++		}
++		if (!folio_ref_dec_and_test(folio)) {
++			end_pfn = pfn + nr_pages;
++			goto error;
++		}
++		pfn += nr_pages;
++	}
++
++	/* Second pass prepares the folios */
++	for (pfn = start_pfn; pfn < end_pfn; pfn++) {
++		struct folio *folio = pfn_folio(pfn);
++
++		free_pages_prepare(&folio->page, folio_order(folio));
++		pfn += folio_nr_pages(folio);
++	}
++
++	err = free_folio_range(area, start_pfn, end_pfn);
++	if (!err)
++		return 0;
++
++error:
++	/* Restore folio refcounts */
++	for (pfn = start_pfn; pfn < end_pfn;) {
++		struct folio *folio = pfn_folio(pfn);
++
++		folio_ref_inc(folio);
++		pfn += folio_nr_pages(folio);
++	}
++
++	return err;
++}
++EXPORT_SYMBOL_GPL(gcma_free_range);
 -- 
 2.51.1.851.g4ebd6896fd-goog
 
