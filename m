@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13210CCF9E9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B3FBCCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5FB58E017B; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
+	id 5C2508E017C; Sun, 26 Oct 2025 14:22:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC5638E0179; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
+	id 59A198E0179; Sun, 26 Oct 2025 14:22:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C01E48E017B; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
+	id 462908E017C; Sun, 26 Oct 2025 14:22:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id ACFA18E0179
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 75255140436
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 2D06C8E0179
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 14:22:28 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id DD60658455
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:27 +0000 (UTC)
-X-FDA: 84041085534.28.BD5B9FA
+X-FDA: 84041085534.04.BCDDC1B
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C8CF92000B
+	by imf01.hostedemail.com (Postfix) with ESMTP id 36B1240009
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrXQl9tf;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n4iaAqhw;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761502945;
+	s=arc-20220608; t=1761502946;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oD6wgeJqRvtzVh1+Gt9B9TfGQ80ZOSSRWlzeiQsvHX0=;
-	b=b3rTUvdp7vNUuhxafp6rZLvyp1O8K458Sv5aEJp5vLzjfuMQMNgusLdJQOwKOhNFm7JrYN
-	ws3aJcACKnk5GV9UudgtQTSnXOePSFeC00UQSkVntjpJKcs5D97foohYMfq1wcqxUdVIC+
-	QzTIfaMmb3DLjcVRw6svGP/S+nVzQPg=
+	bh=RIzhcztvdhExelb95JXKo5q/cGmhzNTikDXQnOSAs2o=;
+	b=3s0tT46YxGB5XzKnQ2YU2ctu4V9w4KL/VDQDOvIrfw/Dk2j7n2y2c5c4K1eUcKwwaxOjIr
+	wPhUBK1aXP0EbTcKUUAEfPhxxqWNA3+vw5I+izeIlttXFP8akv7qY5eHJkDyxIDESJoGuY
+	FfR8IELPUO4oJ7uNi5jEz6zb1sTrDiE=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JrXQl9tf;
-	spf=pass (imf13.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n4iaAqhw;
+	spf=pass (imf01.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761502945; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761502946; a=rsa-sha256;
 	cv=none;
-	b=02Do5sg2VbdQkq+JNeO/xtpJW8g+/Sn73Ww1o1G4nhKGYayGGMpXglFcDZkJZwZhpj9Ff9
-	W11dBlmG2m7BHXoUQkvhPBmV5TtUpDzbDPKq1hXVQDAVIaFZ+Ci2KZ1+Wf334FczW84HCC
-	1ByKShCvl3g4kp0GxekGoBHf7uA0UDk=
+	b=b4dPA361cK6DIeIMZ0mw8pq3KlCpXVfuUZsRVK4GgXeqGA3pNgMwlBr5mHw8wZBJgAWxVa
+	lSCYL39ZyZkcOcf4rxZiRWXMbdLn95xf/KiFEPGiauxm86yAWDoRFPiKP7sGJ+Rx1LPpVS
+	iok5cp5yivIuCh/xyryAmjvXVO1PdA0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 05DED45165;
+	by sea.source.kernel.org (Postfix) with ESMTP id 5E09C45163;
 	Sun, 26 Oct 2025 18:22:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69EEC4CEFB;
-	Sun, 26 Oct 2025 18:22:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0960FC116B1;
+	Sun, 26 Oct 2025 18:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761502944;
-	bh=8D5yaBNoORZTjw6kCzlvjtMnwf2Nw6k/T84eceynYyo=;
+	s=k20201202; t=1761502945;
+	bh=Ye9gPfLydwxtuswRkRjGLaZyg7wyJw5BXTXb4LCA/9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JrXQl9tfSD27c7Z8V6xmI1K+BHriwIBFaEIky7BUctjW6S9ZqGYYE1bOhPPniqZVB
-	 L3riMN8A5k0Z8xn5kQXXJXW3oRdTsvdNe5oK3eUp7jlH1bVO3kG/WIIiu1LkkceVGi
-	 +i0dzpS3yDFNwvb0jLOxPZxn+jVBgteRM6dMdWjqGrrBZbLDMfGIQ2TL9q1L5ECWYa
-	 +NOu0R10XMorUUU7W6UZeYKagpAPUFcMJ8/s+oGJuhwMcjJ2+6lU55Cg7nRdzbxwB3
-	 Vx+vd6DQ8204ArCRkZANQXgLdU6kTb2BqzoJM1hY2L+XYWOMwIOzVvC6gGdVIhzSKk
-	 Iw1IoQL2gaWgA==
+	b=n4iaAqhwB5JvVaVfwkYNA5j7yeVP+XbXRkVweDT6FKg34mWaD7CCR+yBJ+JHF23Sp
+	 GlxkkRonxGlH0NjNs5HuLLO2OBxbsOz2Jaz2k/HnLBlMOtcR3VOnw43j96aauZd1/C
+	 23xcOPBr4ETIG0JTrPFHFJZb+VgolCm39vTsqNgsXfg9GR7IbAntrIsG8DLxDZeX0d
+	 LxX9F132MxbbKEYAur+rGu21J4TJqQNeTCd7ypogaBVJse3HzcJ+LdQr4AUVKlfBML
+	 ZuJ7XARQDRwvVdzKKb3cf4JBRGUZvSaqV0Vdmc0sqJOVSL3GWVfZH3VTGkKcEBIsVl
+	 oC7o9uQY5iHzw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,22 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 5/8] Docs/admin-guide/mm/damon/reclaim: document addr_unit parameter
-Date: Sun, 26 Oct 2025 11:22:10 -0700
-Message-ID: <20251026182216.118200-6-sj@kernel.org>
+Subject: [PATCH 6/8] Docs/admin-guide/mm/damon/lru_sort: document addr_unit parameter
+Date: Sun, 26 Oct 2025 11:22:11 -0700
+Message-ID: <20251026182216.118200-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251026182216.118200-1-sj@kernel.org>
 References: <20251026182216.118200-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C8CF92000B
-X-Stat-Signature: yifbom8kw6cwk83eg4tcf5js5xo8iqzd
+X-Stat-Signature: tuds95edi611u5qaii95tijwhuw7uanp
+X-Rspamd-Queue-Id: 36B1240009
 X-Rspam-User: 
-X-HE-Tag: 1761502945-45195
-X-HE-Meta: U2FsdGVkX19Ougk0EQM7/zpsPp5qhzvMhjI0PSHC8osZ9ccBrxE4RUr0Fm/7oOaQvdpPg4bn7KCFaEvwkWG2uF5YwQvf5PIklpq+RBx2YImfWUM+Enyh6mconmyMAyxMF/HL8wVrVlcK9pdIS2FggSNeRDBuXyMCaL7TC2SKLJX78Y37iwmBksfIXfZfEBqKN8JTxB+0xjL288jeiGxGpSw5vZy4zGgyWts6cF9o8eqKV7zyxxvdRXqn84aHqIXE2x8SXwPcsvh47HUizPxpTu27h8gGYQzuY7Ea78DNP+mHOx0dd2lJCa8YskdjLV0TAoM5+czKzgCw2PNRTJ/go7BC7d9nwTFaxWvmFJeqUqx+ORRI1q5/Q1zCkuymUdaeCJcwdo4yGTdXyTyklUgbOnuZxOytctzXHI0KkrQ+/1fkfQTsWMuUFTQFss6Q+zYGViQSWIbRKI/xvaEHqeigE6rrfh3X4C/QEqFxsVGIl+wnjeG96ti2xMIYh/FqCeOcxy2IuSl+zBHe5S3b65LiOMoSYTeCmcc2sX+hyGAivR47GHN2Q9fdu/ExGqNy6NiXRzeo8YMhQWgfzC48fYxSmMicNcUuJyRqaBeFyg2wmoiaqzZ6asMYsuL4oDcSbcyaWoxeUAWntwZ/Lkt9w7Qx2VZkxiBeojqy1QHZi9Wxa+Bxy6MmunAa0M1bgz4jg7FOyK78wDeXlo/o7kaoNAUe920rUjBzdFanUjF7DOLdB3AV1k6ylERhNvHPV1VRvxCvcb13NUpgjS8/uMZ+5/GWKaIJ+WudNxqD1gUts96hXEPQipzruFuk8N0+3/Uv29s0rghEyLYtkvfQTnXlRayj5p5d3rxRhb0693nMg7/e8wIAbTZUPNZ2wVHrJXIplDm1WqfEd7QL2Xb3yF/4sCpi3cJNZHQWNUk+lCfvlQjPz4qvt6rI9vQaqHroG8N2o0TNhkkc4rjyU0/eNBhFTTJ
- 36g65gqo
- D4y4W7Oi+RKUpzI33rGc4vLMEFiKZQoP9zAMnygDGqQ25EUYRRVJrp9uLLYaPZGQWAUb0THIB0N1MrN7r89wZql5Kqsmpen3VY0s/EtIjMKKmjr/VUXfTockd4YHGLMDpTV4uRlETVlFBtoMOOmTe5wmTupUA2/nSH7RCoklWKg36iS2ZQaGpZg2kSqZiLvY07wc/FwhvIt3HSgvFBv0BB6kbhPN3ytPx3jmm3Ril0kk6CnKYYcDBz3eny3zcp/S+m2cVKAcEx8/eXdl0yCZTeWQvqO0OfRJawEDt
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761502945-631412
+X-HE-Meta: U2FsdGVkX18B29l0KBcb6B1+4E5rl40Tbfm4YuljPCKl3im5EX/WtEpbaMRbJK8G0keN6lWCRK14zjp4KG1LxQJmODPc0MhAKcvZMT2Y9GgcR02ZJo1BLi9Yu0VKJOgSvgTrPrsCXvcR/XVy3qXALMbyCMo8JGaBjT+GlpI5njOuERoQdou3zqAoWY7C75MmgpHNSPSHQ+bV9IDe8vrltY9XsY79IaVzlGmGn/C9r1HDKsKg3bZ9eaU3KvH3jh9D3lHQt6v4IuBv395WA9woZbsN0Wl2wdakGIaBKbuz7tFObZGYnF5RgNJeyM8JlVgHAyKc+kp98HXt9X1JZD12qxFmhYx9eXPdu624L3Te5iMRoe+9BDw708UPX0vmb25yn/T3f4slnvE/O1DDydT7gLO1jUZFazpE4xNXB1lOtSUdF1fBkpah+MP9WUqeDu9JPbfg+59TeNRUpHiVrLJ73NS4E+tGpQ0dn6hABSdaOTR/+17TrRFpWFLEy713Jq7kZnA/Cl2nbeXda/rZlM76xDDMbOG9LHJs0a64hhyKyIFjnwscOq/rIbaKUB34EQZi1nQYAqbZRbUDFRNOk7V3jVkBMvnLNvEfyjXmwOhq6gQmx6pF/ChZfZ+Llce5kB2+c5ZJllb5sKVT4bsNMGB6DK68ro9scUFsP/Gph1KCphUhapcT91LAuqrxiXwaFGSroc8gejdDGaaIYmYiMbVLWBdKyv3kkeZmR3yixkPhqILj7b1N1Fibn0d+ZvDECz3KCkfYu9jTFKq6/mv/BeJyIyTYhVrf9mDOawnS4ZzLnyaF285TC4oiWA8ZiyHaX9ziZTByzXwmrJ2SRtdiva+vBHPnTWdJX9zjFBcMKud7osnXuR+8HUJmDxX/ZnD8trgrdb7IfAM6rLh5BbcmJHyp0VJ23m/9JHmqcJaeMDleeT6jb28TMkRUvVu+SHPGxUsTg8McsbPoF6H5LKAvBRl
+ nwJwXMr3
+ UqqhegBTtTvjSQcnqGraHATN52Czu3TC867VLhSIqxCzL48MzIsi9P1Q8N2A2uCRu/lPcJgKSKFZml2LKh/6y7HWZgJR2ukFy4QLfs6UxBB4uyf9Lb6XtPCl3rNYL5Atl81dxb9nrE+bUuIgfeAdmXHKQPewYuj8TmBm9xNUzsbqlMlag5gPVg3QrIwpDXRtxZEm14gWFu7EGSQ8iQLvHBAcUouYOYitQTe+pP2BrosYL9y+5iCK22fK0uUU/Vb3f+9fHVaqBElYQpQnHEdL5AbuXo0k2B41svDKL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,22 +102,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 7db551fcfb2a ("mm/damon/reclaim: support addr_unit for
-DAMON_RECLAIM") introduced the 'addr_unit' parameter for DAMON_RECLAIM.
-But the usage document is not updated for that.  Update the document.
+Commit 2e0fe9245d6b ("mm/damon/lru_sort: support addr_unit for
+DAMON_LRU_SORT") introduced the 'addr_unit' parameter for
+DAMON_LRU_SORT.  But the usage document is not updated for that.  Update
+the document.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- .../admin-guide/mm/damon/reclaim.rst          | 22 +++++++++++++++++++
+ .../admin-guide/mm/damon/lru_sort.rst         | 22 +++++++++++++++++++
  1 file changed, 22 insertions(+)
 
-diff --git a/Documentation/admin-guide/mm/damon/reclaim.rst b/Documentation/admin-guide/mm/damon/reclaim.rst
-index 92bb7cf1b558..552a7786b082 100644
---- a/Documentation/admin-guide/mm/damon/reclaim.rst
-+++ b/Documentation/admin-guide/mm/damon/reclaim.rst
-@@ -232,6 +232,28 @@ The end physical address of memory region that DAMON_RECLAIM will do work
- against.  That is, DAMON_RECLAIM will find cold memory regions in this region
- and reclaims.  By default, biggest System RAM is used as the region.
+diff --git a/Documentation/admin-guide/mm/damon/lru_sort.rst b/Documentation/admin-guide/mm/damon/lru_sort.rst
+index 7b0775d281b4..72a943202676 100644
+--- a/Documentation/admin-guide/mm/damon/lru_sort.rst
++++ b/Documentation/admin-guide/mm/damon/lru_sort.rst
+@@ -211,6 +211,28 @@ End of target memory region in physical address.
+ The end physical address of memory region that DAMON_LRU_SORT will do work
+ against.  By default, biggest System RAM is used as the region.
  
 +addr_unit
 +---------
@@ -130,19 +131,19 @@ index 92bb7cf1b558..552a7786b082 100644
 +``monitor_region_start`` and ``monitor_region_end`` should be provided in this
 +unit.  For example, let's suppose ``addr_unit``, ``monitor_region_start`` and
 +``monitor_region_end`` are set as ``1024``, ``0`` and ``10``, respectively.
-+Then DAMON_RECLAIM will work for 10 KiB length of physical address range that
++Then DAMON_LRU_SORT will work for 10 KiB length of physical address range that
 +starts from address zero (``[0 * 1024, 10 * 1024)`` in bytes).
 +
-+``bytes_reclaim_tried_regions`` and ``bytes_reclaimed_regions`` are also in
-+this unit.  For example, let's suppose values of ``addr_unit``,
-+``bytes_reclaim_tried_regions`` and ``bytes_reclaimed_regions`` are ``1024``,
-+``42``, and ``32``, respectively.  Then it means DAMON_RECLAIM tried to reclaim
-+42 KiB memory and successfully reclaimed 32 KiB memory in total.
++Stat parameters having ``bytes_`` prefix are also in this unit.  For example,
++let's suppose values of ``addr_unit``, ``bytes_lru_sort_tried_hot_regions`` and
++``bytes_lru_sorted_hot_regions`` are ``1024``, ``42``, and ``32``,
++respectively.  Then it means DAMON_LRU_SORT tried to LRU-sort 42 KiB of hot
++memory and successfully LRU-sorted 32 KiB of the memory in total.
 +
 +If unsure, use only the default value (``1``) and forget about this.
 +
- skip_anon
- ---------
+ kdamond_pid
+ -----------
  
 -- 
 2.47.3
