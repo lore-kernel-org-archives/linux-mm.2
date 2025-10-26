@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52F5BCCF9E9
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9BAFBCCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 18:22:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 132DD8E0177; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
+	id 33D218E0178; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DCF88E0178; Sun, 26 Oct 2025 14:22:26 -0400 (EDT)
+	id 1F0808E0179; Sun, 26 Oct 2025 14:22:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D88618E0177; Sun, 26 Oct 2025 14:22:26 -0400 (EDT)
+	id E25198E017A; Sun, 26 Oct 2025 14:22:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C7AA88E0150
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CD2908E0178
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 14:22:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 9922EB7F3F
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9A3E31A02A5
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:26 +0000 (UTC)
-X-FDA: 84041085492.09.BECC409
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id F034D14000C
+X-FDA: 84041085492.12.CDAAD61
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 157601A0009
 	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 18:22:24 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrUXWisV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huyxrle8;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761502945;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wLdoQZXG/X6XUj9yEShKkP7SJvznKr2Ggcw8RKW9U38=;
-	b=dxoMWqLxGa+lCaU3c3pVvG11/MNf+GY41xz7KRN8l+F528HVCMeIk9pkwR8alvgwSnxnnO
-	RWfCPW6DtK2YW7UK8ZWYjZcm/1GAbuZBSdR/zmdY+m+kJYP2vGaKP1s0wc9vboEjrEhoag
-	SKLSQ4LOlc/WYr8MLVaAAeHpnVX5VZg=
+	bh=iyUFmZfYvd7PlI3XW0pd92pZ7Oyu0EqJ41Gixt59Lsg=;
+	b=TdPI0KS6jW/d+Jwg+ozkyyeyLnqmDTo7lFIbzmphzFss5tpSw1UoHlmEDDyypKCxwFkYuc
+	PPRNy+czsE95A6nXmNYN7l7QttrGizWR3tBjSYaeHkucepwuqBv4NuAd2/bpM79ssDRKnw
+	sHmgl5z6Pe+teGMMJKiOq9BYyXhEaDk=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huyxrle8;
+	spf=pass (imf19.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761502945; a=rsa-sha256;
 	cv=none;
-	b=f5tN3fn5GCS2fpekUvANIGiZyb2M8lE+RANy4jCTvEikbgb6PlqwO01rzxNDmOqbRv9ilx
-	F8uNBNl4adWJ0Sh+lCkv3swwhQCJkM3FQwjAqduKiuW/iexSAw0HrsHg/aKCG/dP0t1noW
-	+kK7clbpLW3brdWHm/2y5fWN5H9nSmw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=rrUXWisV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+	b=T+Cuy7XR4juc8LamvJwPWDQiYRcBy7ZT7Tkk/NlEJD/BTpYiHtsTBhABNpz3USoGBy9LaB
+	NGNAKh4sPJhd1ocIpbX73/1XEtAtCQnZgep9MKjYVxO+LufkkWVOfNRypOukarT4hmXPpw
+	TMoqdd6oQAMqoVuPffqNlzGfB8Hx4ro=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E747043878;
-	Sun, 26 Oct 2025 18:22:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913E6C116D0;
+	by tor.source.kernel.org (Postfix) with ESMTP id 81F91602EA;
+	Sun, 26 Oct 2025 18:22:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99EFC116C6;
 	Sun, 26 Oct 2025 18:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761502943;
-	bh=vR/jN1F5Lce+/wYJ3r7vPrVeoUjeNepMfhGqCYSRWqk=;
+	s=k20201202; t=1761502944;
+	bh=2OxNFKvhCT36RDHavLAyK2OGp+6UAUMynMMToyr3JtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrUXWisVTkQuT/o97FuvkpH48DZbMUE8mE2W8Umu5nU3QnHmLelcE5jBmq95VgdCr
-	 pY/zhcBoT8GkIudvveTt1LFwjoCVwxxN58tWskdBWOJ/oadZBuZaTf9l499ApRhP+y
-	 HYlXni3I9sVHVfTDml1uHzYVAxTRvsrBfbuTCCs81RZhz6a29HzIy0mOGp73H/lEDf
-	 EesRjDcqND1pYBOzH7F9SFKGoUdGBZknts4E8rkxMqOhDQ1DXFTzbUs08qVOMlw4JS
-	 +Bk5Womdr7dJUTyra0iV2Wvnrlg0W0qfP42AVCgCzLYoP78dpvJMA1MQboaEuCs/cG
-	 DPdMcDpxOvNHg==
+	b=huyxrle8m2VS/tPkSLY/a3secq5QD21olmVFnk+tEm911u4eZdB6SU7qaYj2eF0gK
+	 gpWzMJYOt8vybSCS4Y9miij0pJiU5UalTlQqfGAMVtlAcvma8QfvcjkWr/CpoT1pJL
+	 6Xm9qn/NvEhe80WGuKeg5NbqtDgkEyNnvWAQZZaXkWVpuDOjEK5lTOnWQ0uTp23eXX
+	 JsYVdqymwjAyDGNJ18VbUseyhj/hR3ISscQ4nLD3WzVku3o6kRSfGTOrBJFl7y0tqM
+	 6c/7uEB1MuqZyTgEm+H3vvedJgo39A9T8kMgVtllJ2+sBtpuV/N+8FH6lxT7DJwNM2
+	 JfgJ5Skle1M3A==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
@@ -78,22 +78,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 2/8] Docs/mm/damon/design: fix wrong link to intervals goal section
-Date: Sun, 26 Oct 2025 11:22:07 -0700
-Message-ID: <20251026182216.118200-3-sj@kernel.org>
+Subject: [PATCH 3/8] Docs/admin-guide/mm/damon/stat: fix a typo: s/sampling events/sampling interval/
+Date: Sun, 26 Oct 2025 11:22:08 -0700
+Message-ID: <20251026182216.118200-4-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251026182216.118200-1-sj@kernel.org>
 References: <20251026182216.118200-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: z1ckouy1uz95zqkqby4563u5uf3tt7hq
+X-Rspamd-Queue-Id: 157601A0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F034D14000C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: b46jgicfehcfgipbsw4qgxumt5ite1rw
-X-HE-Tag: 1761502944-390734
-X-HE-Meta: U2FsdGVkX1+BTjBCzW+PMs92gz9ETDk6yPY8+R4BnjtHcMeP6Z83BVKyr1uWWAArk+9I2PMZZ56Z7HLP99oBBhe8+Kbrl+5DHxDuzho73mhcdk4ncTd67Ba2B1jmv4QRBh1Z0E/JLDK0jSl+5tyu33ZiMsBmNFw2J4wVUq3ldpqP6aA0g9h2NcNP/1AMHa5fKMhPF1S2HQnmIcrb7bFJ1LTDFf+p1pi3dJvZKsN4o2vzxSNqljdRm0cU0HfWedgXwtVXy8zKaaTH5c7Cl6Yo5NrcM3xScRVH/0z+mqvwD3ilrst0dHZEsNL5yQSIaOCX5US/0MXKvdMikRaBjicSEceWg1TBk4JUh2oWp6EEwitQbVp2hQcuhj+C28SGQWzE/P3g1KEhGijEhfAGj3lUjQDyua69wm/0p8XT2JerVkQXj9nKnW2QdP6c3RUr++i3ebyEOYB6Rhc5mhFYWd+Hr/Lo6JKsTcGk4lMf0fk9D7czLtYcOziNUDni3InsjOTdh666DynZZgHsN5Ajto3510xAcZPwIOYfDHx06QIvt57bIRUjSdZahgKa9LaDsIOHPZRyFYaOsaWb2IiXOhtWS+r9AU5K1xmGVRvV0goQQGEZmzeGbpLtnZhEXYrdTklkSRq5qrbAbu8GJXi0iJ6COjPcE0idZ/RWURVeoKNWnJfiOI0BW9O2Vc5OI5DhA1ipLuiYUvswKrcPzK94Biux5RM/IoEpm0i0P1aBvf8r8eqvLKsHp/IsJKaBstjWoBaZxBb/l9u2YMjtvpq5W+1cDbR7jkN7GBQX9KIiyrvJ8q2DFyC1D7iADRgUiVf1QqVfacobl3vDRf+Z8PveLpvibVn3m5ONz8ULQAMQqRhK/Dx7dnjIE4hq8DJ6WEhbE3WpGnhBE0rNyWSLbjdbJFrDMAb2D4rIbw4L+RSO+kSB2tmA7X5dI2pwDQVK1hRKIE/+Fu0U4X1eOhN5PSjWpR1
- D6bmpnnf
- KyA3c8hb0ppCc2CV0l7VYZi/97v6jOMJjdOfKBM5+6UC7nZP/7sXAigPjgC3hXg6VmdViEtf0k6Z0PxOK6HU5UwKkQpPlbRE0a2yTlm8MYanLzoehMypmM/ZM7w5wSKZSJEjpBz4E88PnqnTODfDy5tUDBRxB6bk70mLwi3zEtvGRj9tEOnrzSqTjlU2OAEXHh60XudI7xgPV1yo7hq6hb7ljN/y5Zl/In2nvPtIlAbhUN9xc48E3TvpJg0E9wUNQsCcZgVYbpfJiqbU=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761502944-352659
+X-HE-Meta: U2FsdGVkX1+OsG2tc1GTuGzIQFV8poxtS/Wb0S+yG4e56UXG2Sz3MDIHvi0zX/Gbi2CP5Sr6XVcAO5EWd8XHgXUcNAkDHsVWQHAwgl9LaN0Q7JC2KFCO9w4Aci2Ih/yTaGO1M0HifOojPUPT3MMwNawTQhq0YCtELo1Zg0ozdvbv5nWmJ1crfQqoYsIQbhvCcbj2aGpfC20JeTy3sLaeAkfccJkkPM333IkCQUZfOygsBc6oz31st7R8lskIp/cq9yZFfUXfc3VYpRp+zTzFj7zL9Nf5hBnPboHp6n7D0cIaoBLVLK245XbqOkKmW2mIVsfnhYGgOTULbpcP2j1c5LIC8urAyfEG3r34BpnHnZ1XtDpda6geYFDJdgJJKdqGtvTwQEdb6qvxIdFjnVFuHm3zJ/OkP/2CMmnDErLZiTnqlOTDIJhGjnz5wAL4WrEh2G/h0V59HeiKAC78VU6sb9sQXvYU4ntNugpuHiOZDnBuY7LBof656P1jcaOgrl5Kr2O5pZ79klZwEkHPkmV/1EBWsmT85ZxxkfkfCTjMC893EGjyS0QZ2iOzH+7VkGH6Vt+02VQsXyyxtDh69CTTk2eG7UYONacN8Dhy3BdEU2Kf93GWvsIQAj6RxqfOQvht4zJwrUqKeHX2uBVItAJunTQw1A4wN40at1vIe08j7q7c8y92iyB6Jd0cmYKuW4ZQECYMjduLEdbN7aLc/MXc9DkDDYpuSJfNOEqbr4tt4CQxj4lG1FXkHQq7Kiab8CRdIZHIqIYJrsKUo9twmDWCsM2ZCRSB0PTf3KUl8fUrR/m9qfsPQU3wdrsyy+8uUCiiwUskpTPmpe6ffmgsuTSNhC0mSkw818woTitoJkrTXm/rskYB8w9EQLRkDznwEicv8ea8E9oCujcTFNmeTcLPqPTGfYMaDoDjZS4sHr2hgSb55z78oohoP1o7+Bhi2jewWNXex084ohBMohguLXy
+ BIJ4TElJ
+ GLvFvfeP4Y5x2ZO2FNACgS/48QsuQXZdgA2Dv03raFHE1fbSbSCq1+TRmpeuOA2X8QyLL7W+ESxPiAahM/sBgQhwz/uATOHIhn0Dm9yxQCxcWkef7Olmcq7dsYevrntiutqBXHdJW/YF5ZWtkaT6ovcfoddRnZqItKg7yCSBMZbJYD1gVxBh5vHsbJcjGzkzmfVadTPd7gto50RncqEv0eOvwKxa0LbkxT5lt29no25K+waI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,31 +102,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit b243d666d107 ("Docs/admin-guide/mm/damon/usage: add
-intervals_goal directory on the hierarchy") mistakenly added a wrong
-reference for intervals goal usage documentation on the design document.
-Fix it.
+It is a contextual typo.  Fix it.
 
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- Documentation/mm/damon/design.rst | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/admin-guide/mm/damon/stat.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/mm/damon/design.rst b/Documentation/mm/damon/design.rst
-index b54925ea78e9..2d8d8ca1e0a3 100644
---- a/Documentation/mm/damon/design.rst
-+++ b/Documentation/mm/damon/design.rst
-@@ -381,8 +381,8 @@ That is, assumes 4% (20% of 20%) DAMON-observed access events ratio (source)
- to capture 64% (80% multipled by 80%) real access events (outcomes).
+diff --git a/Documentation/admin-guide/mm/damon/stat.rst b/Documentation/admin-guide/mm/damon/stat.rst
+index 4c517c2c219a..20f540a9d3d2 100644
+--- a/Documentation/admin-guide/mm/damon/stat.rst
++++ b/Documentation/admin-guide/mm/damon/stat.rst
+@@ -17,7 +17,7 @@ DAMON_STAT uses monitoring intervals :ref:`auto-tuning
+ <damon_design_monitoring_intervals_autotuning>` to make its accuracy high and
+ overhead minimum.  It auto-tunes the intervals aiming 4 % of observable access
+ events to be captured in each snapshot, while limiting the resulting sampling
+-events to be 5 milliseconds in minimum and 10 seconds in maximum.  On a few
++interval to be 5 milliseconds in minimum and 10 seconds in maximum.  On a few
+ production server systems, it resulted in consuming only 0.x % single CPU time,
+ while capturing reasonable quality of access patterns.
  
- To know how user-space can use this feature via :ref:`DAMON sysfs interface
--<sysfs_interface>`, refer to :ref:`intervals_goal <sysfs_scheme>` part of
--the documentation.
-+<sysfs_interface>`, refer to :ref:`intervals_goal
-+<damon_usage_sysfs_monitoring_intervals_goal>` part of the documentation.
- 
- 
- .. _damon_design_damos:
 -- 
 2.47.3
 
