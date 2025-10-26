@@ -4,86 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B73CCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 04:51:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27154CCD193
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 04:54:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 26BCE8E015D; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
+	id 7F0988E015E; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 21C998E0150; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
+	id 7A14B8E0150; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 132AF8E015D; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
+	id 6DEB28E015E; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F34ED8E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:51:39 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86FE4C025E
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:51:39 +0000 (UTC)
-X-FDA: 84039042318.28.1F5020C
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id F404D40005
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:51:37 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jISZLSQS;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5B0ED8E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:54:21 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEC5F577E8
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:54:20 +0000 (UTC)
+X-FDA: 84039049080.10.DB7D97B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 3DB6A100003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:54:19 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSa90mR0;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761454298;
+	s=arc-20220608; t=1761454459;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3n+pNbQ3ZBkgKWwhcjEgBnjkuULYV9gEIE5B8VZdZf4=;
-	b=btjBElm/KWSntKa6NSB2vBAXhexz5BJjwN61jd6fk22oVeMmCaPn46tcDYFFjjwGHX3Xos
-	22Sdd5jkdz1A9vxYpSjBoeBnoxciS4rk1oxaly0UVt0PWc6E2MUH6spG4MPYMunq3jQ72Y
-	umwR90VUVpOmVWPq6IHPQJiXDBCF3xM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761454298; a=rsa-sha256;
-	cv=none;
-	b=n090vzoMXQtQ9X+FleXzl7ai6jCAKcHqlUb0SDmFlaG2bBAeRJyQeoQxwOMUBlvkWjcPsW
-	Lbej9ZO/h5c+wKA4IiUDodNPRvqucZWj2kPWSQAODDzli05PBawtkOJ3eQAa4iaGxlR+HB
-	rJj0ciuyahquHMr1vy3kGQsTrcnxx5o=
+	bh=U1qWh9wQYmqqXjANQ9udrR+FHPUEdVxXolZRGRUJdBI=;
+	b=m9npZpXoCe37DsfnDPrlFm3Xfq6WAeP2G11poTe653f/AUIvrwA+SzS34FS+Fx+tgaI3LX
+	HCzdWbreX9JMFOaKlnDpsgRn6HDQA4Evy9GluRtZ5HWVx0jNV62hBNCC+fB0l4hECn3wnC
+	0yOBUJkWRP5RNeTL7NaGkdjmrjjg12o=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jISZLSQS;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf05.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZSa90mR0;
+	spf=pass (imf05.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761454459; a=rsa-sha256;
+	cv=none;
+	b=Cvo4SVbS9SaQoT8t5YqHjyMDN+mFPo0voD6TeMV4ZbTru1Kz30Q4bSPthXv/bk4CUf8XNc
+	cXyzau3RWat5fi6DhG6i4Ai6zaWBErqEGZlcbkLyrtS8OBbQPDcFZGiJz8CeRaKT6if3DX
+	vPs06dtABX4q9qtwD4KOwTFmzEF8cyc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 22C6260194;
-	Sun, 26 Oct 2025 04:51:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A5BC4CEE7;
-	Sun, 26 Oct 2025 04:51:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3181E4422E;
+	Sun, 26 Oct 2025 04:54:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A70C4CEE7;
+	Sun, 26 Oct 2025 04:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761454296;
-	bh=jPmY9EuaikqLfsyh48vPZOJpqI2dti5YZlMz2+bkIUI=;
+	s=korg; t=1761454458;
+	bh=ucWJuWDs7R36b9/cO5QkJztWCLe4j4T2lRr4BgXYjkw=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=jISZLSQSCwqRaR+wnHgDJfumz4BjQrB1NVVE9UVd662AW6j84/NyVOSq/QzRUQ7if
-	 MIzUZIOcoTBOFJ3B4XmuRDhok10sFz4JALbtCNiDwXB6Z03ERRA3+AArGfKfaz9+i7
-	 7K7fGGVYo/chdbr/Q9nk8lQvmIRhenVha5M6vmew=
-Date: Sat, 25 Oct 2025 21:51:35 -0700
+	b=ZSa90mR0ncqVcsn+MWBFbF6cTiS2j8rPQM93oADJ4MLoxpTvK0abfvEwrQdH4NyJY
+	 ZguZeHhHFg8HHhNpkr6fzPHh9FpaXSo2HREt9XkTep4zWROZeEfRc+H7PibHtUB9Bp
+	 QJnC0l/W4BkCdCKVO5dV4weZI0VCrwChmVfmIWGo=
+Date: Sat, 25 Oct 2025 21:54:16 -0700
 From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Yunhui Cui <cuiyunhui@bytedance.com>, llvm@lists.linux.dev,
- oe-kbuild-all@lists.linux.dev, Linux Memory Management List
- <linux-mm@kvack.org>, Douglas Anderson <dianders@chromium.org>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 40/49] ld.lld: error: undefined
- symbol: hw_nmi_get_sample_period
-Message-Id: <20251025215135.d947785ef3edcb7b725cfcf2@linux-foundation.org>
-In-Reply-To: <202510240701.eB6r97V3-lkp@intel.com>
-References: <202510240701.eB6r97V3-lkp@intel.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>, Alexander Viro
+ <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Lorenzo
+ Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
+ <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
+ <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
+ <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
+ linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+Message-Id: <20251025215416.dbe01a36382fdd1a6d6a8e5b@linux-foundation.org>
+In-Reply-To: <xhpgje5pb5sxi5frjvje73v7oatablynl7ksyjnbrglwh5qx7h@fforsl3cwbl6>
+References: <20251023093251.54146-1-kirill@shutemov.name>
+	<20251023093251.54146-2-kirill@shutemov.name>
+	<20251023134929.b72ab75a8c132a17ae68a582@linux-foundation.org>
+	<3ad31422-81c7-47f2-ae3e-e6bc1df402ee@redhat.com>
+	<20251023143624.1732f958020254baff0a4bee@linux-foundation.org>
+	<xhpgje5pb5sxi5frjvje73v7oatablynl7ksyjnbrglwh5qx7h@fforsl3cwbl6>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
+X-Stat-Signature: hy1dbnu6aj7eha4u9xumbmnh9fufi14q
 X-Rspam-User: 
-X-Rspamd-Queue-Id: F404D40005
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 3ntyyrdz5a4hmsnww548psq6z8bqhwa8
-X-HE-Tag: 1761454297-443766
-X-HE-Meta: U2FsdGVkX196vgBolfZif271chlgmDAZnBix9BsjTfBHjC5yx6hjfctP2M9MEZUAgvSTD8nOWBhUD1YJ6heyBuB9Heb0ehEP2d2lJKkEuq2lzXBHSWgJwcwkWtIuyGatiZ4aXqNbcBA8WMQmlGxHLoRmFqn052cJQKIVj8bpV+T5NqOImi3zMJjzZquFM5K7M/U/lEpDjPJeJYanEV58id6+w3QXooAj0LV+cH4pIGiV3XTDHH2X66ti6IGmByl83aizmj/0l/iu8V+kXXIFj3ejNHNgoj/OjmdydNO+qxegHSXsmO/7V6ntVAZ5nvYCmZadb4C6m5H7PqAQx8Ew28geMvewmBmYNIO5UMgIv/oskYsAnAO/a75+FL/fMFd4WXTTEWjtZ4YivHKIIIQJirUuhwiKvgIlkcM7vro7PFGWoAoAI72zwSvOfyoEzNO7PxzeI2UZ8tAc5oBSgSGvi6QiA/HZdmmwFmxRyfKDSiPfQ6Ewza/UaoLct9OD69R+V2IkMhqUN5SpAyTZ35Dd8w2NMhlZo7X1JPr1ZLzVdTLus8O9sYYjdRH0OzQwrk0F8mGc7uDwArpgApdZyVRSUsu4TThp/M0vOKipAVAE7rxHz33OhOpFAv2pTbrfjhvpom23/ldAWDTwpBFnEuqSJ+IrKIiMl5loIJ05a+M/9D4O6YubqZoz3q8o8sm+Q1XmaMP/lrC6eq4AJYjCYYd1WSGWWHIlo/9Tu9kXiTbaRhvf1XD24ON94VuzxIPCtqMka/Owo43/VJ/fILsiDF5SD9aJRNFD8hVnnhbeLpBRLeTyDZfwfnD8RCIdU1MT4a1vTBReUX8KG4hGorwUJpZx6E+kx6ET6V0eIYJAzj3baN6AT7FgoOuChmGnQ9uV15Nj6rlDtYtZ7PAcZs8jTYWrfILWVFeynqqPgfDqJDx/wd/uBHHFsrV0gIJhWCSNmycLEr97YbMbg55YKpfuGfU
- sdC2PtyO
- ZhXnypBOU46rZwPRBF5KMTI+aDTk7t9EGjsMrGwzfe4Fj5NtGjQHimoLDD0NrGSh+ZXzhrl9MrcgjnxC7OZSRYzs6fmigw1mA3AZpapLSutAsZxrqbWuFCirc1e6kH6DInYqFdROEFXyvZiVJeAqmrZqJPoZctOKPry+ervROBg3mHsdo/oIh4NHKvORJlQNq9eHEK8o13gOwyHW7c19CPnl+rhyT/ngQApxhVYFXuKivi7gEHPAnhUaSKu1dGt/LvvUHHGuOrLoctdoxV9lw4kLYICYcVz+LsXAK8P+4Pm3s5vFqxHRn71UrYB2Jgsms3fHA0TwG1PgLM8d/gKpcAUMDXiAnnpwkYFPWkN1z4j5eJE5xWXB5Gxufx5K81UaUir+0fHykNBr3cT6qQfvx/9YX81HWPtuXvVGDs4N2++Fmw7Ni+g7O6hKYPnAwK65p7wdFZyj6WFIF8+k=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 3DB6A100003
+X-HE-Tag: 1761454459-848126
+X-HE-Meta: U2FsdGVkX1+jFv73mVFcBSddj4BIWagu7tbIbGQvH6dxho1BhGIEHZNAdd99uw/b5pYiSIF4WV7pNFvyWnlbmlVMLDtOuzPAL3kRN1P+AkM75orTvcCKfW74UT3SJJNRYNujaUwDTRxat7hUW5Hx24MpBd+S3PHJcz5jebjWOhHSl7GAxq/lXyfJR1BPV4GyzzMNboYjl79jK3NEvqcFTOcjcnv+yaJkZ01vdFRQaGr83OvxaxIGIjAUu/1h/cIPb+2WSHsAjslY95ESN0vq2401/M68CEZU9S81J3FB8akHj4OLOpxq/8DAyQJgpAL/uXAvohR/eX8aTUaPhzb4efrCJO4WOk4MKgvHh19uuEJMJylZlCscQRcwb2taexJDjtokYk6UA2IklHnKkN6qbkgYGJGeCWgOuR/dpU4ECrVsjQW52Z5LQ4IPBdfieb0S4EieByE71E6d+437g1YWpioz0IZozrGz3tWPxCUR2/l0Dg04D0YPdHf4eanwVKE3Hxw4RPWBXUUqV8Wnh6LJeuRCDksuAEnHgw3DlB4lgVkt5cr6/QJDV35EGa4qQypcDVjQ2zpMctsh44zP/Bl5jciwi1DZAswGUJcyGrMeOemmXkpSXscgL/NHf6/EC/FblWny4BLMFB37YZs32jCZYPz/bI7SyvrK4AX4Fhuhs9g21cYrr0VL4g4nTMGOOuZvDGNEHRcSP4yVo6pSJtMo4S1y9VBEelW/Q2ySBkFNDiiFtnHf2E9VOrpPVAwOnIpMtAfhBnKvEHW0CMrwryJscn2Q/qIO1xeGvGO+YHW3vAVKdYJHbZsgjupkYQmgYl5vDGWaPPOEHy8ZReGGggEdPNcRPJuDfT7/g87NVKN4O7ecw/kOU2SRsXZSaXM1oeymfg8ZmQvB6F38jA0yFqfC4X/bywD/xVbX8o5T9RibeDI0fFpRZVrn8ci/DDU4KR0vqvHcXSwWaXP3eoeDO8P
+ 7xf6dnec
+ sWeKCIt0Zm04ziCYCYZwRbkLrdkKyBjLLu3vxDUQBoTDpiMvZiC5o9EXeaYOOqytgktB73lEcem3l606IBWQ3gAhii7kvQL9h6b9Z97hcdPVpKztdxe/VFleby8D9IQuZBCmp5h0gR2XhyYUrBd6GoJuBH5sr2Jw1xs/WKFzKjAuWkRaNz747jx1WJOS0bUSw+cpkjIAFKaLEBjj8CDN1r0VTcOHTiYHtiKk4p1WRuVFpvTP+M26a/bfQWMZWcS0OQFs6XE1luSPFwV0kJ68Ua+8wsCS3qbZAuKnvgt+V9fJwKIKB2BplluvUarS/R2slJDmncbMfYnFZGntsg4NKB5wRbFgr9A/VWZXm
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,30 +106,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Oct 2025 07:44:47 +0800 kernel test robot <lkp@intel.com> wrote:
+On Fri, 24 Oct 2025 10:26:05 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> head:   b0165d26ed76a1d8825e54ddc5c0b62db5113f13
-> commit: 5ec1304ad3434337b407db8e6e3bf6e2964c045f [40/49] watchdog: move arm64 watchdog_hld into common code
-> config: arm64-randconfig-002-20251024 (https://download.01.org/0day-ci/archive/20251024/202510240701.eB6r97V3-lkp@intel.com/config)
-
-CONFIG_WATCHDOG_PERF_ADJUST_PERIOD isn't set.
-
-> compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510240701.eB6r97V3-lkp@intel.com/reproduce)
+> > Because the Sep 28 2025 Fixes: totally fooled me and because this
+> > doesn't apply to 6.17, let alone to 6.ancient.
+> > 
+> > > It sure is a fix for that. We can indicate to which stable 
+> > > versions we want to have ti backported.
+> > > 
+> > > And yes, it might be all stable kernels.
+> > 
+> > No probs, thanks for clarifying.  I'll restore the
+> > 
+> > 	Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> > 	Cc; <stable@vger.kernel.org>
+> > 
+> > and shall let others sort out the backporting issues.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202510240701.eB6r97V3-lkp@intel.com/
+> One possible way to relax backporting requirements is only to backport
+> to kernels where we can have writable file mapping to filesystem with a
+> backing storage (non-shmem).
 > 
-> All errors (new ones prefixed by >>):
+> Maybe
 > 
-> >> ld.lld: error: undefined symbol: hw_nmi_get_sample_period
->    >>> referenced by watchdog_perf.c
->    >>>               kernel/watchdog_perf.o:(hardlockup_detector_event_create) in archive vmlinux.a
->    >>> referenced by watchdog_perf.c
->    >>>               kernel/watchdog_perf.o:(hardlockup_detector_event_create) in archive vmlinux.a
+> Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
 
-Thanks, I'll remove this version of the series from mm.git.
+OK, thanks, I changed it to
+
+Link: https://lkml.kernel.org/r/20251023093251.54146-2-kirill@shutemov.name
+Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+...
+Cc: <stable@vger.kernel.org>
 
