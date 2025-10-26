@@ -4,92 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35089CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat, 25 Oct 2025 17:57:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 161F7CCD1BF
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 00:03:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C62C8E0154; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
+	id E8B5A8E0155; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 877468E0150; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
+	id E3BF78E0150; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 78C668E0154; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
+	id D52128E0155; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6317D8E0150
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 13:57:15 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0080D1A010F
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:57:14 +0000 (UTC)
-X-FDA: 84037393188.05.A0058B2
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 577A580004
-	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 17:57:12 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ECXAMnnY;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id BF61F8E0150
+	for <linux-mm@kvack.org>; Sat, 25 Oct 2025 20:03:40 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 50656129765
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:03:40 +0000 (UTC)
+X-FDA: 84038316600.13.5F28664
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf29.hostedemail.com (Postfix) with ESMTP id AB33012000A
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:03:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZftjGyc5;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761415033;
+	s=arc-20220608; t=1761437018;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Z9vGoY+nbBaOsbKg03YXEdXl7WE0FeSV0k77hTLT5bU=;
-	b=M3MHxIi0IVUn1PwNIiQynfK1K6DMNteNOOHsSXUAIAGMF2FqZb2Z8ziyqqlwb1sWghiOaX
-	7bm+aeHWbPYBla3W19vtlSUvyc3Xk/ugorOr+VW6kbwuwYVaisVG9bHZiRmAUE/CK2jfCS
-	sNIHDKBNnuTZnqQF0tS/3clhmSzWGRw=
+	bh=gZnSMw7nXjXzMHenaC0WdXyvdVNAqoqEVjgZmZOhfao=;
+	b=wDEdl2GTDKPTkFVp0nDyXeTGyAydUuOHYXZddRuF5PVWqoimaJ+OJRbXSvuVJzodyeXlLK
+	lOLhs7XdaUQE5D8GmY3dJmDf2bclPAFFkEALlNgBLxRcw4m1Uk+Frdx95OJUV1usPdwXzC
+	m1IiJ0MnFjAem5AkfWHLClNyUF1X+FU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=ECXAMnnY;
-	spf=none (imf30.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761415033; a=rsa-sha256;
+	imf29.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ZftjGyc5;
+	spf=pass (imf29.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761437018; a=rsa-sha256;
 	cv=none;
-	b=YwxgtHnr6UuLWHHDU4Bye2tbg+o8LUzyCRWcx6OyOXXERVu3cqAsR6YToNjaeeydf4o4N3
-	mY04j+BDL5vWmaL/fb4YcKu8eroT5g480xz93YLuuc4qGP4QnwrNqDm5rbVfGH0NNVaEso
-	I32UCvqzvhPj9mDKuH5022jYsQLTpbE=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Z9vGoY+nbBaOsbKg03YXEdXl7WE0FeSV0k77hTLT5bU=; b=ECXAMnnYzkobhQTzmNKTN+D2JT
-	LJwyNcLznU3digEnaytP90GukMfPxEKZNmmye4UGQ19jzCPM3wd8PiPgiIC7rzd+6qJXDIQYUGAyA
-	2UjXIykYnLNnFjQKG2y5vqoMwm4cV0lUhRAAqEJlVF3M3zZ38cWcedP3YCY3Zo3DJvEsndNjmucqF
-	tvLgUBTnHX9radZQYvZRG6yBwaTBX/qMTHGwJRZTD6p+bs9wPQvNqZ60kUFBpHzb8kJU1LZEJSGuJ
-	mUz2Mv1HnWqADDRfXGwQitYT2Rk39kHpK7WCBCsp+5eG/+hoxz7/sVJnLd6cN+Qp+3TFITzoZ/ST+
-	L/vzx7tQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vCiVd-00000001ILI-4AtI;
-	Sat, 25 Oct 2025 17:56:58 +0000
-Date: Sat, 25 Oct 2025 18:56:57 +0100
-From: Matthew Wilcox <willy@infradead.org>
-To: Baokun Li <libaokun@huaweicloud.com>
-Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-ext4@vger.kernel.org,
-	tytso@mit.edu, adilger.kernel@dilger.ca, jack@suse.cz,
-	linux-kernel@vger.kernel.org, kernel@pankajraghav.com,
-	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org, yi.zhang@huawei.com, yangerkun@huawei.com,
-	chengzhihao1@huawei.com, libaokun1@huawei.com,
-	catherine.hoang@oracle.com
-Subject: Re: [PATCH 22/25] fs/buffer: prevent WARN_ON in
- __alloc_pages_slowpath() when BS > PS
-Message-ID: <aP0PachXS8Qxjo9Q@casper.infradead.org>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-23-libaokun@huaweicloud.com>
- <aPxV6QnXu-OufSDH@casper.infradead.org>
- <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
-X-Stat-Signature: bgci98gc1is7oq9ow839a5s3n4y47ybz
+	b=EOjDw8K8khMPAlqmtvXwPXQwcCKyVrLlqAFwj/VtzaC6SpyDuSc3rG7cFr/fppLJyiA37R
+	sClzTN+TChd0M9WbotG01K28DU/2u8jpJxYWkw0L342jDLYgBMPsRr8ZMIvmlkJ1AqpNuC
+	/sx61XFE1ztKCRYXQAgfWMk4b5iOxrA=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B820060194;
+	Sun, 26 Oct 2025 00:03:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4814BC4CEFF;
+	Sun, 26 Oct 2025 00:03:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761437017;
+	bh=qjil+McBNRBHW+rdqa2Qf2obUOow2o73ABEpawIdCfA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZftjGyc5odtP0LBCbfeSJaCAejLYaDXvXvS8tjaQj9xywRPs4q/0c/GdiOV/pbcFD
+	 XOTTvoqP0N/CyxCXZ3nOYbySCbI3fAoIarjIjZon+GG4zMoRGpyu4fUqYLia2JRjQa
+	 k4BRa0LR2A12REokbNGlxx260I6QYeoxRAsJ7UFE=
+Date: Sat, 25 Oct 2025 17:03:36 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Nico Pache <npache@redhat.com>, oe-kbuild-all@lists.linux.dev, Linux
+ Memory Management List <linux-mm@kvack.org>
+Subject: Re: [akpm-mm:mm-new 173/182] mm/khugepaged.c:113:25: error:
+ variably modified 'mthp_bitmap' at file scope
+Message-Id: <20251025170336.f0c72983aa63f58c66e2aa2e@linux-foundation.org>
+In-Reply-To: <202510251530.eJulmicR-lkp@intel.com>
+References: <202510251530.eJulmicR-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: AB33012000A
+X-Stat-Signature: jmio1ftk8qi5hcmrn33zd5bfqcambet4
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 577A580004
-X-HE-Tag: 1761415032-604691
-X-HE-Meta: U2FsdGVkX1/llFkyad9iEWKkq2dDuELZBZVIXLpG10yEuErJGO1VG35O7H+csvnGJga8+QwtVp7+RB46O6ltB7ZNbQyIQf/9yzGm8d5KEZiFFDOGFAA+G300F8EDn9qNqq/IkjKE1+3nmSCf6TCz3034iIjdL1UVUYBP7J4eNmpshPQMyz6LcaGXRzbg5j/++du2Zl8Emgi6F+WcH6Pr4yLK0Dmct5BHnANSkDmlai7vk+GwklRjuztPMqdUF9mq7QU7A/kTDuWYgJ/02GlgD3Azee7jp3gHiELti6J7JOiteoexwqkuSJbsHMAD1Zngsaxco4GXeZUZoYiwyeYl5EIvKq1Cz8fHsMLE3/pH0eu+OYudrNUOFL/twdieRTOytwxyA246eDSFbbehHUETqoYWF3S7ijEDdE9syD9Mtt61V/PXqMMYEWpwAdMxU5tGRNwTbN4TuByaM3DAWkF0tFoZklnTmGklpHVed1baJtvenRpdxJdqOJ21s2waayqJg8+94ibhaqEP+c1HhM2sjQMLRQ8dur8lGkUXOqWarBSHSaUCX3UHZmrLgx4EbNT8V/sl95mjEe215p6UHpE7J3t2hol0hgaFZfI2xeRfdAqe6NthOabhpL/JhKZs8nPA53qlG8Mdk6ribz3lCUvgt789vuLlPG6IaEUpWtU2xjWZShdYCF8SXmrOtOXAk7yHnRnBUVkKdM64i3miLVSnX3GGLdCL167GMrcF3ks0qq6Ijyp4L1JMX2IzZ50W5jE7q7fGBNkN8h8NQ/XCa45T3muMgcnBilAKHnKl50XMRZZGDx0TRVE6LzvfqPFd2xzUfI4eVKILl/+vfGFopN8kfgfzupyI94q8dEYiHPulDlEG8SFq+lniHlrAZVvUtPcQvCBAftvFq6qca0wjoYlZhHtlofUlAhs7CNOez3qYqGQWUr5Yzvyt+HT7CDt9/JA9hXSgq6VfZU/wdlue175
- gnYnAhcG
- QzGLGwOLL4BSAhlvye0NzKOkHCMJ2yTKrlZTcNDKurvTxmv398U0fKInwwz5Q5laMPyI+4f9qDlIo94tmCTeBT//AHgBQGqGwFQ0Gp2olPS5GifaCrpyRDt2g4NmWDPWU2P2/nAPm0d1K4itfJcK6iMYtvzi7ClzVCyvV7IcDPEiatqeDbHXWv9xzpJ3O9QthuGdINvd3zIShnI8+gi62x8bKdyf2O5oTvPPYyQvGCc2GeWGv//kT/dMj/NXq1jnnrZIk6jsHevdYXs6IH0A/JjEzolsPO5M/Do4VbVs5jLb38qFWhsAviMaALkxaj23FS2ro
+X-HE-Tag: 1761437018-550387
+X-HE-Meta: U2FsdGVkX19gF9gyXqbJl+wf1KLVLsshTisA0397QOpOp5Bu+bFgmvzVGwZ89J2aISXQhyP2ZfWBMaq/QG6cJw+9BQAX3XE3SHjFZkiTPC5lcvTOxJbtH5pDAFZziZWZA0EBGDo/nZsZXKJcG8Pt1EITRLZkXL4OUYqfubFlXEZFX2ZHyIb6+KBx8YXBdfa7rLj7mEDYmml3vLsDZ5qw9YRb+W83bAtifAub4lqsAb7Jh3qbmOTX4tcVhFgOcl0s0NS36IBrvLju3jKg5HVE3O4ntXbZ+2wJHr3Ss3LBgNwfp7IZGAEgSDX5o76PP2Lmo7aVxOwz7AiweQ+PvUjzZ/RLkxRUPuGGVw3ncRPBjpUeQmuFjzHJ/fTSk1qT9Wnhhk+54vS4gXndQtP52OGiIzT2v+FsC4I/EB7rsoCk2zLs/TV1ZoaW3ryuLqWZ7TKOJmrx1U/Lq8rLm7wfiP9iyLVSwEipSSCCmUF/rlnWm5Of8nox7/CKZG92cEawMnlNM2Zp9IIndpKDGZTAJ3vX7aMpRdak7VyI4P2D/eS7UiDIWyXHx+e8tPrPpu3Fl4lB5SuZc5XQ92SVYDX87wEbh2VPrpnLURsKSNOBiMztswSNh4o9Os9zX48DyZ72uoThXU9V8xqtqGM2XuokzpRAMI8wN0bXOE3VTYOO52uDxIJ0lv7jqZG3EgGRhjqDvp480bCtIZn6CmzVO2jjc2wfJ+V0L8VBGfLpRAB0xIPGppQ/WpH7/v0rSmTbzV2EL5sQ4skD2rQWuRsQeGibtZc213viHvYrbJHs91NUxZ3EhWR/6BJ9d+KZXlIgvYlzE3EDUo457B9GYHQ8esavBhqxLN9nX9G2BE1XTTu8SdbM+/ZYL/DIbtgSzxiKzxXpOPnSY9jFDXVfPx5uccZEm9KTJX+dBncjUDZ6l+nZq6njKZvo0mpvpA9e7GO04un3sCBvgWSL8td19U/STF/tyzy
+ NhHIeddQ
+ PQqenIAnxYFrJmNcUgeYbTKM3kfWzZfgYEPOOV59QrR4PnApjNpZXx8eNF//TriF88wIlTkwTTmufrs3TVnurjuZ0F1L8pnaRwtDpEIXabL2A+Q6hUycK0yiO2tDoj3TwHlA0gj+DEN60/03EcVWjK0Q5Tpg2BsfsYY3qQEwGzJWdX4QY+VwqWK/1PwnlP2x5jNBXxTvURj51AC8G4mu7KfOhNekPoJKPC26xl0jlAxn2HVvqvG8Gxm3mqoFy9pmHXBuvwM8JgTqxfCvcVG82QO56LrZSnR2W+01c7cJacPi7BU1YrzB9zc2TE68fwg86DfWx1hRCePwRv0GJvOoNLeebXuD0KMoRwHvB3ZMrvrpnF7cTg0vYtTef8JRZ4aS63CYe3B8KIcDINCke5m6u7kPRzA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,47 +91,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 25, 2025 at 02:32:45PM +0800, Baokun Li wrote:
-> On 2025-10-25 12:45, Matthew Wilcox wrote:
-> > On Sat, Oct 25, 2025 at 11:22:18AM +0800, libaokun@huaweicloud.com wrote:
-> >> +	while (1) {
-> >> +		folio = __filemap_get_folio(mapping, index, fgp_flags,
-> >> +					    gfp & ~__GFP_NOFAIL);
-> >> +		if (!IS_ERR(folio) || !(gfp & __GFP_NOFAIL))
-> >> +			return folio;
-> >> +
-> >> +		if (PTR_ERR(folio) != -ENOMEM && PTR_ERR(folio) != -EAGAIN)
-> >> +			return folio;
-> >> +
-> >> +		memalloc_retry_wait(gfp);
-> >> +	}
-> > No, absolutely not.  We're not having open-coded GFP_NOFAIL semantics.
-> > The right way forward is for ext4 to use iomap, not for buffer heads
-> > to support large block sizes.
+On Sat, 25 Oct 2025 15:14:10 +0800 kernel test robot <lkp@intel.com> wrote:
+
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-new
+> head:   752c460b5865d87117095c915addcce7a68296f2
+> commit: 8387af7962dd62a2a2cdb741e702b476da440ff0 [173/182] khugepaged: introduce mTHP collapse support
+> config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/config)
+
+Yes, this config is troublesome.
+
+> compiler: powerpc64-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251025/202510251530.eJulmicR-lkp@intel.com/reproduce)
 > 
-> ext4 only calls getblk_unmovable or __getblk when reading critical
-> metadata. Both of these functions set __GFP_NOFAIL to ensure that
-> metadata reads do not fail due to memory pressure.
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510251530.eJulmicR-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    In file included from include/linux/kasan-checks.h:5,
+>                     from include/asm-generic/rwonce.h:26,
+>                     from ./arch/powerpc/include/generated/asm/rwonce.h:1,
+>                     from include/linux/compiler.h:382,
+>                     from include/asm-generic/bug.h:5,
+>                     from arch/powerpc/include/asm/bug.h:116,
+>                     from include/linux/bug.h:5,
+>                     from include/linux/mmdebug.h:5,
+>                     from include/linux/mm.h:6,
+>                     from mm/khugepaged.c:4:
+> >> mm/khugepaged.c:113:25: error: variably modified 'mthp_bitmap' at file scope
+>      113 |          DECLARE_BITMAP(mthp_bitmap, HPAGE_PMD_NR);
 
-If filesystems actually require __GFP_NOFAIL for high-order allocations,
-then this is a new requirement that needs to be communicated to the MM
-developers, not hacked around in filesystems (or the VFS).  And that
-communication needs to be a separate thread with a clear subject line
-to attract the right attention, not buried in patch 26/28.
+And "khugepaged: introduce collapse_max_ptes_none helper function"
+causes this:
 
-For what it's worth, I think you have a good case.  This really is
-a new requirement (bs>PS) and in this scenario, we should be able to
-reclaim page cache memory of the appropriate order to satisfy the NOFAIL
-requirement.  There will be concerns that other users will now be able to
-use it without warning, but I think eventually this use case will prevail.
+: In file included from <command-line>:
+: In function 'collapse_max_ptes_none',
+:     inlined from '__collapse_huge_page_isolate' at mm/khugepaged.c:582:22:
+: ././include/linux/compiler_types.h:597:45: error: call to '__compiletime_assert_784' declared with attribute error: min(khugepaged_max_ptes_none, (1<<((16 + __pte_index_size)-16))/2 - 1) signedness error
+:   597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+:       |                                             ^
+: ././include/linux/compiler_types.h:578:25: note: in definition of macro '__compiletime_assert'
+:   578 |                         prefix ## suffix();                             \
+:       |                         ^~~~~~
+: ././include/linux/compiler_types.h:597:9: note: in expansion of macro '_compiletime_assert'
+:   597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+:       |         ^~~~~~~~~~~~~~~~~~~
+: ./include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
+:    39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+:       |                                     ^~~~~~~~~~~~~~~~~~
+: ./include/linux/minmax.h:93:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
+:    93 |         BUILD_BUG_ON_MSG(!__types_ok(ux, uy),           \
+:       |         ^~~~~~~~~~~~~~~~
+: ./include/linux/minmax.h:98:9: note: in expansion of macro '__careful_cmp_once'
+:    98 |         __careful_cmp_once(op, x, y, __UNIQUE_ID(x_), __UNIQUE_ID(y_))
+:       |         ^~~~~~~~~~~~~~~~~~
+: ./include/linux/minmax.h:105:25: note: in expansion of macro '__careful_cmp'
+:   105 | #define min(x, y)       __careful_cmp(min, x, y)
+:       |                         ^~~~~~~~~~~~~
+: mm/khugepaged.c:489:25: note: in expansion of macro 'min'
+:   489 |         max_ptes_none = min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - 1);
+:       |                         ^~~
 
-> Both functions eventually call grow_dev_folio(), which is why we
-> handle the __GFP_NOFAIL logic there. xfs_buf_alloc_backing_mem()
-> has similar logic, but XFS manages its own metadata, allowing it
-> to use vmalloc for memory allocation.
-
-The other possibility is that we switch ext4 away from the buffer cache
-entirely.  This is a big job!  I know Catherine has been working on
-a generic replacement for the buffer cache, but I'm not sure if it's
-ready yet.
+I'll remove the v12 series from mm-new.  Nico, TODOs for v13 please.
 
