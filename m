@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2837CCD1A5
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 16:29:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 919EFCCF9E5
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 16:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6F928E0172; Sun, 26 Oct 2025 12:29:50 -0400 (EDT)
+	id EBAE78E0173; Sun, 26 Oct 2025 12:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A47078E0150; Sun, 26 Oct 2025 12:29:50 -0400 (EDT)
+	id E92568E0150; Sun, 26 Oct 2025 12:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95C108E0172; Sun, 26 Oct 2025 12:29:50 -0400 (EDT)
+	id DCF218E0173; Sun, 26 Oct 2025 12:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8167E8E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 12:29:50 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2795858F6D
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:29:50 +0000 (UTC)
-X-FDA: 84040801740.09.0EB9FC1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 93C03140002
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:29:48 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ4SiShq;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id CDC108E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 12:32:56 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 69C6E13A64B
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:32:56 +0000 (UTC)
+X-FDA: 84040809552.25.571256E
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf15.hostedemail.com (Postfix) with ESMTP id BB683A0003
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 16:32:54 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FReRi25K;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761496188;
+	s=arc-20220608; t=1761496374;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uXo3VMe4/7ip/N7qvlP++FAStAFtSKwSCrWdnL97kr8=;
-	b=U6urqFbyeu2CjKtmfEkFVN0QudukOBvOI179b1gkdZzp6eZmirQyi/XeALDtagZTv8vA9/
-	RlA2LkDH0WPODBIXWOpMCE41hyrJMopk5dGLX3ybceJ9qijtWwfkprLkMh3miHO1PPhkjt
-	mZRkv7UMZgTyqIXmEwReA/9h3XufcZw=
+	bh=e+k1Lu5V6QrT/P4aS99VtQvPgEs7LNb9hfLAM9UimpM=;
+	b=te7Dl1OD4LuNBUzoQuUPuCMkGZ/gQCQZb1fTOxFZ0Odltlp9f7rSsJoIlWfZFznfzWamzk
+	+CzkLDI5x6T3/dtwBI0PVuVuzFVYE+qlHlgHQWuoa7D5zR/t1xkEtKvmbwjYq6KUkI9xuX
+	ZJi1LZWc9tHL2DuRgP5O2eC8p6ipwcA=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=oQ4SiShq;
-	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FReRi25K;
+	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761496188; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761496374; a=rsa-sha256;
 	cv=none;
-	b=Vg2mnerunEVCzjSOYVLMjOWdiIYY0yrjCxshR7cTUOvRFortmSJttM0reKhlk2E+bOl53Y
-	FveD76onQOmDZTARDrpBVZpJh1TW4+6gyS5eaTFeMJFAdbgb+IVGaxHzoFFgo9zG3UgOUr
-	e9GZIdj1QN8wLgbxO38+Vo0x/ScbiFg=
+	b=Omv0Qr1vdMZ8XlMquqIcAK0eQxhJZWSfO2rZ1Be3okPmQSRBWgVeMaeb+gO1XcLdBhuOuG
+	qwIBrXFCRExX+ID99jvPlEVVnSOzOo5u1CS7gafuObo7CqM9Ewq9nOtMDQmE0FfV6mSo3s
+	1TQ59rfdRrVCA+pGUjkR/3EfHlXG5pk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E044A60306;
-	Sun, 26 Oct 2025 16:29:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4175C4CEE7;
-	Sun, 26 Oct 2025 16:29:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 71C2F44799;
+	Sun, 26 Oct 2025 16:32:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99F3C4CEE7;
+	Sun, 26 Oct 2025 16:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761496187;
-	bh=sO0a7q5i7MeIpNSac1aJH83qJF+UpedUXSyygfAYUOE=;
+	s=k20201202; t=1761496373;
+	bh=TLoSRzFkmVrwgpjKLeey5fVAXkXkjkmPb8voffDY+HI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oQ4SiShqErdQlNweJkeXuQAUrzvImzw7c+n0h00KfYxTBSa2swPH8us/GQ9Rn5P78
-	 lPNe18Sld99k1WToJIgKtTs0dEiFgoLMpIlJAvC3zrYjw324NP96DqAXpDuuY4Gnqh
-	 WKVUH0J+0DOdhYkMsVBV4biHJ3l17/X7CLW2MkucKYblQ7NAQ3Gv0XjwY2enKqKf1S
-	 dZOYhAvqeZ86hPpTD7kbqGhB+QymcmtU24b6VxktHyzZHczsdwZzv0jXojyevYoaQV
-	 +ct0siLBpjpEXLY58908awCeduA3BfqsV9BgyXLtrKtF783mOXvfHwug3LVoYRiM1b
-	 bjnBa/AgwF4Ew==
-Date: Sun, 26 Oct 2025 18:29:38 +0200
+	b=FReRi25K/f+KSaosgYM1ay6UWpxX7lF5Eq8dVT8Mm1vZxatuQeSSSKe46o2h4C5P8
+	 kvWdFVgRG/3MRT47JjoBJGaVd8hyr81OlcauaNfdu4oA2j9sFcQq7iaD6b7lRNrM4C
+	 h7213YEZiH2wch9bQQcTzN2Ulx2wWpcaSLxmA88IYW76wGzBCS59YnuiyXyPLszMdz
+	 53Zl2pgwsiHxbX7F3bLrgImltnHnZsqo9b+afYNwa6cH2oGtQm83Mgyl9vP4eHAqyC
+	 6vuxdaNLuO3tV1AOgi+zrJIrtX9WiNvsSCd9tk6HMpdIlwhBh27Jgd4oppcInZfMnz
+	 Smi3cPsUAKppA==
+Date: Sun, 26 Oct 2025 18:32:44 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
@@ -71,22 +71,23 @@ Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
 	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
 	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCH v8 8/8] memblock: Unpreserve memory in case of error
-Message-ID: <aP5Mcr9WCt5CHon6@kernel.org>
+Subject: Re: [PATCH v8 7/8] liveupdate: kho: move kho debugfs directory to
+ liveupdate
+Message-ID: <aP5NLJoSfKTVnsQV@kernel.org>
 References: <20251024161002.747372-1-pasha.tatashin@soleen.com>
- <20251024161002.747372-9-pasha.tatashin@soleen.com>
+ <20251024161002.747372-8-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251024161002.747372-9-pasha.tatashin@soleen.com>
-X-Stat-Signature: hq9zgazmoicg73z3bwb5xs5349dr5zou
+In-Reply-To: <20251024161002.747372-8-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: BB683A0003
+X-Stat-Signature: si7izj6nm8kkqdfey864s3pgsdcaat69
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 93C03140002
-X-HE-Tag: 1761496188-153993
-X-HE-Meta: U2FsdGVkX1+YOSS6JiEkhpL3yAjYrt4FQFckq/0x5LkWKs/PT+z6Wb2B2qyiGsE0R8i9P503ixPFL8yuzSDIBeTYESJWY1hcJpPGVTSkpcynZMXA9x0GLPi5tYA3FwXp1XWm+fktSUO9/sc7bbYRYSnrnaXoKfYt9sMmIwRLsd6hBxLq+BXX8i7eSApn/DaHP1FGmLVpgkc+Paic1vv7tGkx5DRcA4m1S+yuz3rGpc1MocwumjijAKFLI4wz+a4eoR4kb9eKU0aar2EKNhcqmyVFj6Nd3chYXO8gEXbM8tJSyAggw5lzBsnAIfG2cS+4P6IzDA9A6X0Q7UBKzDsR/CGFVGz4sl2kvqKTgW6flXPEavlQFvgGIomIgX/SU6d9V4ZGiueeVf2KD9ubbC/U76nSYYmp7wLSzrQGQDdsoUwwIRlFn/mlTpcgrBL0KvkU+LzYK4tBHwnR2fX//XONO3+hNEEgXt98EQ/nAxmofBZq8u0QlcBR9MCNZY0BtJPYWXYrk/dg41zHjqE+IfrpPqx5gW3fS6YwD1HA7sn70VFC2bFLBjX7tMnRvnPHRztAgWoEHt1yYPD1r4cCLyh+UVl+h2QRS3b15lw5/sur6LHF7GqeMr/GGCMqWVi+RxgtWsZXmYZv3gAvvRxUwi3s80u4VNnrSAakdifRsgk6jrhcR0sFIC2tJGNF3ZtxugJA5dE6DSDDPQoh3YTt6ZSkI35jIiNww26qJgYWZavWbzYtam5iI7hZH7RjHNNNsnvWN4TddPE3e++GXGwyXIvqq7Ih2z5X5j+MW6eN0/KzlyYNi/dVFMtpPd+QbDaz9nhaDIB6Dbe5A5uFqyX3XSelNCQGmxEIj9IhPTwkytVKCbLaxkvAJzgxrjeK9/j8HLcxKFtQ8VPnmBkoBxc+TcLaKDRXQdd4HH8UO1K+Imvxa/x+AqIF6YJkVh942kaSSMNXONAdtf2zuZrYM7NFKeU
- aO8gEzFK
- YTXVMiqItAuNRpVn9pmyoz/zxT3sL6gXgUPEx8QihngH8BWWlEVHA7Xc7qScwlK5qZWsxkvgAT4hTtZFKVt+zAgPNPJhuiBA9RXnpJnv4Mm7zklSvKK0Q6piT4Lm/s2j/IWVmm84MywTmG9IJ7cstABNhwt7DSShyen719Fv8nnB/qVEQWYqY6WYIDLi8sWtz+DZGGGY99B9KNNwUAeWXp44i39OkGImHRxmnjlMU2DZl//ZFCvISNDWjhlja/YLD5aj9xXb8QGl1gKxWQPj0A7iny3bTZnY/RMOYv7+2h1/4d88=
+X-HE-Tag: 1761496374-149683
+X-HE-Meta: U2FsdGVkX1+wzLPOCD8fex+OZRWq7+6/OULYvVKv2qmr4fV2Zg1PrlyOuTDBVtfaNReXAFidG3UBiJjrnQiYNwoCfqs/+AB/Q/BUW4amQiB52XwH/ow5D42HWYC4N2cs2p8j36eMMhLHnwaUzkVvAMZwtT3iiix6hgFUQuof4g9wKIyJT0mL/zRya0W/7cDQGNql3tn465mmgeCsy5NDjSTPSR0dlPqRVtatYFdeojR8jcfeYCdUpi/qFv+W1D4q4XiWZyjCoRCLnEObQmcYII+V0nWDhg54z2IdKJKwbQpIGSXr5+GcOcILEsyuVIH6VkzTW2DPkylD7BwUHs+Awwu8yysKm6diCBVedBhsHCx0t1UiNMPPB5wMe3p753yP5l2lujc52Oifh0NP6TyAGoSr26mCbizXxovQgAyScJhzeZdf+a4fwnRM5SynGZws1FHShM106I7ELbz1pvOGTZHHBAQPYLjtmFke3QnDJkTC68zHBmiCCFlJToCNQ5v7+WBysHWaVkUw5cHof9Welr6JbLeUs2WhyIU11d0P1jA4jK5ZNA7hv6W0ZSH4dlQYe0Ij/5nRwQU3oY1PQLYMl+soH3VC+n4ZA77GYOJaiKe5WCCoL4XYdglnzhn/UEf9dQJo9m1GOw3yqAeAYjAIdaLxxvUPc4zp+Y2Od3B7Qn97j/XZo1yO2Rm9fHNaEifKtPOoIznwszHJC2Gjn20pJgKz4Q09hPAeBJqyr7RnB2C9Bal9aXeWekT0FWc7LGuzAznYK4GaNmTPBq6Hv2G41n8qfQ9qiRhW/7I6PUA9DM3nvpbawA865i2pPIjvdkOoXjMhdGKc5ZbuoRaaQJ1x4hzGmQuk1gW6I+k/aZef1Ujmeo0KEXxaGlSpg6j6IT8NRcxsLESBva5BAyDpTQc6ebO10DA9xue8HSGd1VWaGNUioZLYf4iUljhEwm4FM0SG2E477fuv+i0D/XIdfS0
+ ieIBQuLZ
+ b+VDhgPrFposvzKEZ8SqgZG6LNxInsGL79+Tq6iiAtyhj49kuPn3+WBwz3C1GG6cVqIht2K+ghSQ+7b7n1Gsn2KMQpJ6xKYmw0X+N2N4vY06B+B3Fdhs+QQHlACqnouf908EEIb98/1cyAFI8V55GEnQ4uLVc7EysPRenUgcs6mk+eXhWsgWV39EYcKzhITzYiryzyGdoNIVQ6avRLU/1BE/dsJfRomLumiPJt0NSgYrKVSWR1mFbKWJrR8YDOLlr99Am
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,100 +96,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 12:10:02PM -0400, Pasha Tatashin wrote:
-> If there is an error half way through KHO memory preservation, we should
-> rollback and unpreserve everything that is partially preserved.
+On Fri, Oct 24, 2025 at 12:10:01PM -0400, Pasha Tatashin wrote:
+> Now, that LUO and KHO both live under kernel/liveupdate, it makes
+
+And they still don't :/
+
+> sense to also move the kho debugfs files to liveupdate/ in order to
+> keep current and upcoming LUO/KHO features organized.
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
-> ---
->  mm/memblock.c | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
+> The old names:
+> /sys/kernel/debug/kho/out/
+> /sys/kernel/debug/kho/in/
 > 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index e3bef9b35d63..5ceaa02af7d6 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2447,6 +2447,7 @@ int reserve_mem_release_by_name(const char *name)
->  
->  static int __init prepare_kho_fdt(void)
->  {
-> +	bool fdt_folio_preserved = false;
-
-fdt_preserved is enough IMHO.
-
->  	int err = 0, i;
->  	struct page *fdt_page;
->  	void *fdt;
-> @@ -2462,12 +2463,14 @@ static int __init prepare_kho_fdt(void)
->  
->  	err |= fdt_begin_node(fdt, "");
->  	err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
-> -	for (i = 0; i < reserved_mem_count; i++) {
-> +	for (i = 0; !err && i < reserved_mem_count; i++) {
->  		struct reserve_mem_table *map = &reserved_mem_table[i];
->  		struct page *page = phys_to_page(map->start);
->  		unsigned int nr_pages = map->size >> PAGE_SHIFT;
->  
-> -		err |= kho_preserve_pages(page, nr_pages);
-> +		err = kho_preserve_pages(page, nr_pages);
-> +		if (err)
-> +			break;
-
-Please
-
-	goto err_unpreserve;
-
->  		err |= fdt_begin_node(fdt, map->name);
->  		err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
->  		err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
-
-	if (err)
-		goto err_unpreserve;
-
-and drop !err from the loop condition.
-
-> @@ -2477,12 +2480,27 @@ static int __init prepare_kho_fdt(void)
->  	err |= fdt_end_node(fdt);
->  	err |= fdt_finish(fdt);
->  
-> -	err |= kho_preserve_folio(page_folio(fdt_page));
-> -
->  	if (!err)
-> +		err = kho_preserve_folio(page_folio(fdt_page));
-> +
-> +	if (!err) {
-> +		fdt_folio_preserved = true;
->  		err = kho_add_subtree(MEMBLOCK_KHO_FDT, fdt);
-> +	}
->  
->  	if (err) {
-> +		int nr_reserve_map_preserved = i;
-
-nr_preserved is clear enough.
-Also let's declare it before the preservation loop and count it there. Than
-we can make loop variable local which makes it safer against certain side
-channel attacks. I.e the loop that preserves the memory would be
-
-	for (unsigned int i = 0; i < reserve_mem_count; i++ nr_preserved++) 
-
-> +
-> +		for (i = 0; i < nr_reserve_map_preserved; i++) {
-> +			struct reserve_mem_table *map = &reserved_mem_table[i];
-> +			struct page *page = phys_to_page(map->start);
-> +			unsigned int nr_pages = map->size >> PAGE_SHIFT;
-> +
-> +			kho_unpreserve_pages(page, nr_pages);
-> +		}
-> +		if (fdt_folio_preserved)
-> +			kho_unpreserve_folio(page_folio(fdt_page));
-> +
->  		pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
->  		put_page(fdt_page);
->  	}
-> -- 
-> 2.51.1.821.gb6fe4d2222-goog
+> The new names:
+> /sys/kernel/debug/liveupdate/kho_out/
+> /sys/kernel/debug/liveupdate/kho_in/
 > 
+> Also, export the liveupdate_debufs_root, so future LUO selftests,
+> kexec telemtry, and other users could use it as well.
+
+No, this is backwards. If anything it will be kho_debugfs_root.
+But I don't see why we can't have /sys/kernel/debug/liveupdate alongside
+/sys/kernel/debug/kho.
+ 
+@Andrew, please drop this patch for now.
 
 -- 
 Sincerely yours,
