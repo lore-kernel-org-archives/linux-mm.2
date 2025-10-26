@@ -4,114 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E281CCD193
-	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 04:46:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C4B73CCD193
+	for <linux-mm@archiver.kernel.org>; Sun, 26 Oct 2025 04:51:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20A28E015C; Sun, 26 Oct 2025 00:46:50 -0400 (EDT)
+	id 26BCE8E015D; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA9728E0150; Sun, 26 Oct 2025 00:46:50 -0400 (EDT)
+	id 21C998E0150; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C986B8E015C; Sun, 26 Oct 2025 00:46:50 -0400 (EDT)
+	id 132AF8E015D; Sun, 26 Oct 2025 00:51:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B3CA28E0150
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:46:50 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 63C67B77F8
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:46:50 +0000 (UTC)
-X-FDA: 84039030180.06.C9A11CE
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 987221C000C
-	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:46:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sedpvjBd;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761454008; a=rsa-sha256;
-	cv=none;
-	b=j6b9HYy/FBM+vQ3Hm/z6Lkm/w5hYwTMHX483k1e0FFxTGUne/OohFUZoq4QoHh1nOxoV90
-	+1EwXwt2kbl5V2/fieiIzFxccLoOqChBqkpUZQ66WRUk6esitw6QOIzABI55iyDGX0lLTJ
-	gVAfrUaDzQ0rhuBtDr0Pnm7lNo8HtK8=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=sedpvjBd;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf21.hostedemail.com: domain of rientjes@google.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=rientjes@google.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F34ED8E0150
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 00:51:39 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86FE4C025E
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:51:39 +0000 (UTC)
+X-FDA: 84039042318.28.1F5020C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id F404D40005
+	for <linux-mm@kvack.org>; Sun, 26 Oct 2025 04:51:37 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jISZLSQS;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761454008;
+	s=arc-20220608; t=1761454298;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Jk56zMULVnvV5vOe2VW536n7g9TcNK0rT/QUET2KO6I=;
-	b=q7rcvOeb0d7ZTJRvwUxnUE0+q+z0MAyQZYMjzt741aLPGaBM5DzzfMinUQ/xrTiTJxzuyZ
-	IWZrdFQ2Y4hPZeM3ztlROZfDf2DFK6XDL8WGnfFVb2ODBHrIRjkJYgn4ValbU3aAMP2e9E
-	k8aJ5bQ1LQb+RcF7vrPDS9N5dMf3yDE=
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-290da96b37fso149015ad.1
-        for <linux-mm@kvack.org>; Sat, 25 Oct 2025 21:46:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761454007; x=1762058807; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jk56zMULVnvV5vOe2VW536n7g9TcNK0rT/QUET2KO6I=;
-        b=sedpvjBdqpJtfAL/ZU0ndXx1sBbooimCz1Fn6JEfCSUw9GbhHkEozq6YkNOcbTIUZE
-         qWfnPI0VM2NkyAWD08gcvI3M0T+XDCy04jes5GVZigL8t0I1SZlJ2mvIl+Vi1bwHMEF2
-         3ADVq7+iuwAqX927EJ+8cgRd6/UqZa4xCCA9SmesjkAYthVZ4YUsE2jtWN088uO4DpV4
-         a1TJ82CPqTtI87TlJbzrtIO0xWS3wGEeKpqyCJ9R0zXzggyE5SFyYPu5JYMvpT7nhFza
-         xU1j+MA2GlJBflKwFPfUvT/dLhT3O7BXUcTz0sU4gZzwXuRPKHthEzs64YtYbHsv6u72
-         arWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761454007; x=1762058807;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jk56zMULVnvV5vOe2VW536n7g9TcNK0rT/QUET2KO6I=;
-        b=Y3B9R8Vuze8qFz1ocj6Cqs9qAbdkgexjOrEn+SAizZ7ozjBN6MNV1SxTSsZ6dvogSH
-         Ir86aegklv4/HdlUhrMnRPfjcf0njx8G8qbz6x518q7x+2yEvK9Sl/JYowTtdZ0N2pxh
-         3G7J/XxAUkpMGVLn7LnWnrkEeAFZcZXRHueKs5yDKbC6OokMaJRUstBtXPmZWCliutcK
-         jwtltu8thPrk7QYoAuRBZViLJHcEwqV9PKbeu6/lkHv2PqR1//SyWr6YW+2dP+uLFFdH
-         FJp5qZatNP+vV0QY3DmI7Pl3MTu0+aAKaaZwQxoR8rSjcSEZW7krMgXSHvDLgZ2fIcg5
-         i8eA==
-X-Gm-Message-State: AOJu0Yxj6jsVbaW1a+kT5DLuLDcuY00TnyJOVilGGmDr1C3RJocF3qi+
-	iRQOd7RhlqlgnQokomrARm+5uU2nKTCI7JXGYBRaEnJ35uVuPb5DTvWDIucZsXFBMBas2723tDQ
-	90Pi5Jg0N
-X-Gm-Gg: ASbGncsU3V19ZZMUxBRpslsSFyeDJecCHLn1dk4GtCkrTwKv+038XNBlI4O6RMoUui4
-	iW+qWsVUQ7zK8Ejvi2NYB/HEY4iDnRGdOxbNfod67tIb4rW/IF5QDrJL5u6JRnn3n50x1m0iYDj
-	OILxhO5OxL2IIVXQhvG1/0XlPLOVmdsrC5rsQ6heUQZerIv9h9ODvjQJdCJz6Momx4is+bbsUqB
-	tBrNJsU6d8mX9sURBE42HIy4tR3RWr2XJGFWHsOAtBfNml/etmPneAe5yHcvzN0HzEiXJR7oFHE
-	ji01HJOyZ/Ik2OdHWC014lSqJXrdmfi5jNBzk6QOfLFvRiGFm34i1mwV9VorhO02BSIxmS2h+Gh
-	oMXOW/Aj0JLGAp9dL5LSYnlRA9Zpe5O53RTi1xfUtyVgq9h/qHHRSO5IjArDGLnp79qrxrTmEZz
-	vWiefVOMJ43Fk5I7oBRhCG9iqGv53EsRchgm2AVo0FHrqdCVGDPfq64h0GoPxtmar55t/ixUssP
-	jn/R8AITz4tfrbpTfYD5dyke7zE5Fg=
-X-Google-Smtp-Source: AGHT+IFl64t4lXUYbfcSm4H8ba3t+zSzA5qD8iJDW5UyzavC2m1yzO8TojKTuIllnPQCuYLL/luJeg==
-X-Received: by 2002:a17:902:e892:b0:290:c639:1897 with SMTP id d9443c01a7336-29497baa523mr4171425ad.2.1761454006915;
-        Sat, 25 Oct 2025 21:46:46 -0700 (PDT)
-Received: from [2a00:79e0:2eb0:8:2c09:d2bb:f03c:a13c] ([2a00:79e0:2eb0:8:2c09:d2bb:f03c:a13c])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498cf4aa5sm39074375ad.13.2025.10.25.21.46.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 25 Oct 2025 21:46:45 -0700 (PDT)
-Date: Sat, 25 Oct 2025 21:46:44 -0700 (PDT)
-From: David Rientjes <rientjes@google.com>
-To: Gregory Price <gourry@gourry.net>
-cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com, 
-    akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, 
-    mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
-    David Hildenbrand <david@redhat.com>, Wei Yang <richard.weiyang@gmail.com>
-Subject: Re: [PATCH v3] page_alloc: allow migration of smaller hugepages
- during contig_alloc.
-In-Reply-To: <20251024192849.2765667-1-gourry@gourry.net>
-Message-ID: <6dad209a-5dd5-546e-a8ad-e8b720955e77@google.com>
-References: <20251024192849.2765667-1-gourry@gourry.net>
-MIME-Version: 1.0
+	bh=3n+pNbQ3ZBkgKWwhcjEgBnjkuULYV9gEIE5B8VZdZf4=;
+	b=btjBElm/KWSntKa6NSB2vBAXhexz5BJjwN61jd6fk22oVeMmCaPn46tcDYFFjjwGHX3Xos
+	22Sdd5jkdz1A9vxYpSjBoeBnoxciS4rk1oxaly0UVt0PWc6E2MUH6spG4MPYMunq3jQ72Y
+	umwR90VUVpOmVWPq6IHPQJiXDBCF3xM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761454298; a=rsa-sha256;
+	cv=none;
+	b=n090vzoMXQtQ9X+FleXzl7ai6jCAKcHqlUb0SDmFlaG2bBAeRJyQeoQxwOMUBlvkWjcPsW
+	Lbej9ZO/h5c+wKA4IiUDodNPRvqucZWj2kPWSQAODDzli05PBawtkOJ3eQAa4iaGxlR+HB
+	rJj0ciuyahquHMr1vy3kGQsTrcnxx5o=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=jISZLSQS;
+	dmarc=none;
+	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 22C6260194;
+	Sun, 26 Oct 2025 04:51:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A5BC4CEE7;
+	Sun, 26 Oct 2025 04:51:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761454296;
+	bh=jPmY9EuaikqLfsyh48vPZOJpqI2dti5YZlMz2+bkIUI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=jISZLSQSCwqRaR+wnHgDJfumz4BjQrB1NVVE9UVd662AW6j84/NyVOSq/QzRUQ7if
+	 MIzUZIOcoTBOFJ3B4XmuRDhok10sFz4JALbtCNiDwXB6Z03ERRA3+AArGfKfaz9+i7
+	 7K7fGGVYo/chdbr/Q9nk8lQvmIRhenVha5M6vmew=
+Date: Sat, 25 Oct 2025 21:51:35 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Yunhui Cui <cuiyunhui@bytedance.com>, llvm@lists.linux.dev,
+ oe-kbuild-all@lists.linux.dev, Linux Memory Management List
+ <linux-mm@kvack.org>, Douglas Anderson <dianders@chromium.org>
+Subject: Re: [akpm-mm:mm-nonmm-unstable 40/49] ld.lld: error: undefined
+ symbol: hw_nmi_get_sample_period
+Message-Id: <20251025215135.d947785ef3edcb7b725cfcf2@linux-foundation.org>
+In-Reply-To: <202510240701.eB6r97V3-lkp@intel.com>
+References: <202510240701.eB6r97V3-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 987221C000C
-X-Stat-Signature: obj47ue6ryapdhn4n67p9cw6rfn4imjf
-X-HE-Tag: 1761454008-640990
-X-HE-Meta: U2FsdGVkX19gPBnO5mDP9bzlSBjCElJaN1TXetKgMn+xuitwgMgqLECnPh2Da/kqXxo0nbqOCVjCT060DaBAM2egzVPZsprCDVdt8plvbdZAs9TZAJMSYQ88UABBTwWRpbIkxbJb+9+I8ssKt0SM+jV5oyZSRkEIGrSwVD5uJhuRqdIrGj6DmJ/syXLttU0dKRGewRAyrFxfiJ0QdpM5zTt4zsiRWIn2ImwC8wr/FZlx8rPBM5CKar9/VhRy59oIUYtuYOV236FEGY7+nmr5nQLI8zA8m4N+SxsEi7d9uDZQssuYZEe2TV/JSyjG1SJd1Soq+cgHuCt2vjqDSVOYsliVem2LsZmLPO6Jj6afq6hvSv4iWy8n8bJhGiF+GdDe2VCZ04gF2lsLomUgdF09ue0h+EkPS7IAYEIo05dF7inoI1XNG7cMLdAEm0U0A0VCwCf+XNH4NuyKGTSazIn4m5r0EpDwlcZe8gOuFdzXzXkCxDAGhnlTvEKh5VHvbgUN6NL380XUHneqBs68zNs+SbMFSBUBsVmmamLsDz0Ewr88oUfzXsTmvDjCtsDq6ymlexTxmk3IaKwfaPeyG/cNk/PhkN09OzsDBtUUOqEMlUKkOWFa/t85RoF6S6MfJd33x2jxdiPlOLgJhX+ksa2ZyWbhejxdmC8JYI7cwe2zunamT7dDV5GetPcCup3NSWP787Z/KUU6FcJ4mof5UTTDv42fV3vQnnYvdLC8rQX6M5MHMRvARBrQeJNe8mI2Fzctu96Pm3g08bifLr2iS5hVbSimIZFcQ+gLrhtPfY1lnXAbqjv2JeK5+VIvfQxJsDI8xt8xaKgmIAtEGWaBWG4XE6t+pnr1uJVdhQfcZuOuXQ4jPOOqACzrNpvcwlkwQGqq8HygjJsG6YkyUlRMKqLDolV9RegnPWfIhA7PYWcnwtyXbL7QykZUA4Ofzqz++pLlzW8hlgUOcj4TiVf+eTn
- peZ0qZyv
- bhvGhffAawKdjr+RDlVewBX53hKhotuCJSrB9lNwKr4cjgtf0kSv+cUWOHjfFEHnQC4PesHTN4CSymOjzG/4hL+msq5cIzOuFVsIRZBo6cfT2RuUixIXkxYn538m0uJksJsZQH1Rg5qkA706c9mN6WBk4X58hzzvST+QBWs2SE9Hfj+ghj0L1eMU+htrsHj4/MwWPfgZS3F5wMziuSVYitUSvjqOAIpW47jTOgemSUJGXZmvd+SvCrL856ATivhrDgrqeqd75ynDgPknhsfHLo7chkHJQ+JZvUAwf586oGDl63iQOYocy7y3vq9Hykys7ipLOfZC7oavUKLazJXYvaVuJ7tns99hKnFdP4xfIXpO3VngSPh+I6Bljh9A1PJMDshfMcOgmiKmoUP2RqE9CjjLpzTBr+byf7mK4Fp1CuuvnTQ2I4ilCcpGngQPdy3HkBR3EZcw8kHcbZEbamdcT/Upz7HORQOTYZWAJXDCISszJy6BHVces0e/ClPgFxCjSplEAwcVHP5/Q+S5domKYOuQJVBDv7bMO1D1Nemd1n1stxKCo81NvGCbb3UMDATOOgKhbEhXvlUbJMbl487Yu4vI2yZBgGUsPUhJA
+X-Rspamd-Queue-Id: F404D40005
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 3ntyyrdz5a4hmsnww548psq6z8bqhwa8
+X-HE-Tag: 1761454297-443766
+X-HE-Meta: U2FsdGVkX196vgBolfZif271chlgmDAZnBix9BsjTfBHjC5yx6hjfctP2M9MEZUAgvSTD8nOWBhUD1YJ6heyBuB9Heb0ehEP2d2lJKkEuq2lzXBHSWgJwcwkWtIuyGatiZ4aXqNbcBA8WMQmlGxHLoRmFqn052cJQKIVj8bpV+T5NqOImi3zMJjzZquFM5K7M/U/lEpDjPJeJYanEV58id6+w3QXooAj0LV+cH4pIGiV3XTDHH2X66ti6IGmByl83aizmj/0l/iu8V+kXXIFj3ejNHNgoj/OjmdydNO+qxegHSXsmO/7V6ntVAZ5nvYCmZadb4C6m5H7PqAQx8Ew28geMvewmBmYNIO5UMgIv/oskYsAnAO/a75+FL/fMFd4WXTTEWjtZ4YivHKIIIQJirUuhwiKvgIlkcM7vro7PFGWoAoAI72zwSvOfyoEzNO7PxzeI2UZ8tAc5oBSgSGvi6QiA/HZdmmwFmxRyfKDSiPfQ6Ewza/UaoLct9OD69R+V2IkMhqUN5SpAyTZ35Dd8w2NMhlZo7X1JPr1ZLzVdTLus8O9sYYjdRH0OzQwrk0F8mGc7uDwArpgApdZyVRSUsu4TThp/M0vOKipAVAE7rxHz33OhOpFAv2pTbrfjhvpom23/ldAWDTwpBFnEuqSJ+IrKIiMl5loIJ05a+M/9D4O6YubqZoz3q8o8sm+Q1XmaMP/lrC6eq4AJYjCYYd1WSGWWHIlo/9Tu9kXiTbaRhvf1XD24ON94VuzxIPCtqMka/Owo43/VJ/fILsiDF5SD9aJRNFD8hVnnhbeLpBRLeTyDZfwfnD8RCIdU1MT4a1vTBReUX8KG4hGorwUJpZx6E+kx6ET6V0eIYJAzj3baN6AT7FgoOuChmGnQ9uV15Nj6rlDtYtZ7PAcZs8jTYWrfILWVFeynqqPgfDqJDx/wd/uBHHFsrV0gIJhWCSNmycLEr97YbMbg55YKpfuGfU
+ sdC2PtyO
+ ZhXnypBOU46rZwPRBF5KMTI+aDTk7t9EGjsMrGwzfe4Fj5NtGjQHimoLDD0NrGSh+ZXzhrl9MrcgjnxC7OZSRYzs6fmigw1mA3AZpapLSutAsZxrqbWuFCirc1e6kH6DInYqFdROEFXyvZiVJeAqmrZqJPoZctOKPry+ervROBg3mHsdo/oIh4NHKvORJlQNq9eHEK8o13gOwyHW7c19CPnl+rhyT/ngQApxhVYFXuKivi7gEHPAnhUaSKu1dGt/LvvUHHGuOrLoctdoxV9lw4kLYICYcVz+LsXAK8P+4Pm3s5vFqxHRn71UrYB2Jgsms3fHA0TwG1PgLM8d/gKpcAUMDXiAnnpwkYFPWkN1z4j5eJE5xWXB5Gxufx5K81UaUir+0fHykNBr3cT6qQfvx/9YX81HWPtuXvVGDs4N2++Fmw7Ni+g7O6hKYPnAwK65p7wdFZyj6WFIF8+k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,21 +92,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 24 Oct 2025, Gregory Price wrote:
+On Fri, 24 Oct 2025 07:44:47 +0800 kernel test robot <lkp@intel.com> wrote:
 
-> We presently skip regions with hugepages entirely when trying to do
-> contiguous page allocation.  Instead, if hugepage migration is enabled,
-> consider regions with hugepages smaller than the target contiguous
-> allocation request as valid targets for allocation.
-> 
-> isolate_migrate_pages_block() already expects requests with hugepages
-> to originate from alloc_contig, and hugetlb code also does a migratable
-> check when isolating in folio_isolate_hugetlb().
-> 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Gregory Price <gourry@gourry.net>
-> Reviewed-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+> head:   b0165d26ed76a1d8825e54ddc5c0b62db5113f13
+> commit: 5ec1304ad3434337b407db8e6e3bf6e2964c045f [40/49] watchdog: move arm64 watchdog_hld into common code
+> config: arm64-randconfig-002-20251024 (https://download.01.org/0day-ci/archive/20251024/202510240701.eB6r97V3-lkp@intel.com/config)
 
-Acked-by: David Rientjes <rientjes@google.com>
+CONFIG_WATCHDOG_PERF_ADJUST_PERIOD isn't set.
+
+> compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251024/202510240701.eB6r97V3-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202510240701.eB6r97V3-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> ld.lld: error: undefined symbol: hw_nmi_get_sample_period
+>    >>> referenced by watchdog_perf.c
+>    >>>               kernel/watchdog_perf.o:(hardlockup_detector_event_create) in archive vmlinux.a
+>    >>> referenced by watchdog_perf.c
+>    >>>               kernel/watchdog_perf.o:(hardlockup_detector_event_create) in archive vmlinux.a
+
+Thanks, I'll remove this version of the series from mm.git.
 
