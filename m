@@ -4,140 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B394CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:41:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A802CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:48:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2590800C3; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
+	id 7DBD9800C4; Mon, 27 Oct 2025 19:48:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CFD258009B; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
+	id 78C918009B; Mon, 27 Oct 2025 19:48:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEBA0800C3; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
+	id 67B76800C4; Mon, 27 Oct 2025 19:48:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id ADFBC8009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53BCE48ADD
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:41:57 +0000 (UTC)
-X-FDA: 84045519474.16.9C22ADA
-Received: from cyan.elm.relay.mailchannels.net (cyan.elm.relay.mailchannels.net [23.83.212.47])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 9EED1140007
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:41:54 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=auF05oNm;
-	spf=pass (imf23.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.212.47 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761608515;
+	by kanga.kvack.org (Postfix) with ESMTP id 535A78009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:48:12 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE5841402B0
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:11 +0000 (UTC)
+X-FDA: 84045535182.08.64D24E3
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 70F8540002
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:10 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks2vehgv;
+	spf=pass (imf04.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761608890;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
-	b=DwWmG8R5aMTcqyGwtR7fv9/AUpBTNp8H1S0axiVUQg4ko9OlUIjDvK8G9H2jaOg9ulzwpL
-	ZmNuNM6trOAPIvTrKaZg9XLs0U2umVadQEMON3Rn4hfGk1I0+EdiLprvAQatwnqoG5wzQc
-	m05KnTMvH0jpStH99k26H6vyoE8qdug=
-ARC-Authentication-Results: i=2;
-	imf23.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=auF05oNm;
-	spf=pass (imf23.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.212.47 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
-	dmarc=none;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761608515; a=rsa-sha256;
-	cv=pass;
-	b=rUo2MA6PD5BERY+0aGtHrpDS+st9ncsvNottRyc8wRKMfZh7/f287OClYK+XpXHRVY4RbB
-	med41B1IAkBdfyZXpDflFeQuK/MxtQKIrCloiRRyp6hQODfzNnyRczGmkXv8XfradfXzG7
-	uv2zicShouCmyMi+WymM8QhucAxs/lI=
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id B46E5421E21;
-	Mon, 27 Oct 2025 23:41:52 +0000 (UTC)
-Received: from fr-int-smtpout17.hostinger.io (trex-green-3.trex.outbound.svc.cluster.local [100.121.22.161])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id A62B3421E7E;
-	Mon, 27 Oct 2025 23:41:50 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761608511; a=rsa-sha256;
-	cv=none;
-	b=m7xkr+ca1NqFxV42Z7mS4rEbu6sPMYlCU2JWEe+pCHNRhJqJL/AKiBYL1AoLfE+bEjuPEz
-	DXLr4nvJfna3DOxziEmlEbM96bapgTekc36nrvOzXQzGYKkdoVBdWM7ObgT55wcG1LMCNB
-	uPJmwWz76zJlg7hviCFdEVZWLGhfKq7Ss3lvZXzqtYngPkW89erCRSJx2sknUfr0rlsewc
-	oRTJkUAJdw2DWGBOHVttTqo7z89LahG5iQRiYUz4QsQeDteDruXF6ncPScoxSm9yPMoK8c
-	maau8tU3D4fobFX8sfNZKquZvN/F9ttsHASx29yA8N+n7Qo1miv6ScCQ2ybIog==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1761608511;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
-	b=uvh91yRiU/+dKUBdaoEPtr5pxu0Yy0/Rs/5bzVOfFuqdHz3XZeYlgUSno2CfyNkrU9PNjN
-	cfp8/lKr28+LA0hTnSg+moq/PpZQ+wJNPQB2MJ5f21hffkCQjP0tqVs0Oj0iWKNcl4+yXe
-	XKKWirdWgDwXFyMRZSJBcxIBi8Ej/MzFHLOBmRVaCucByRJt29+7Y6oYiHo3BT2lvT6QPR
-	vEIw8Rb2O59nuw/L34fV3ufneW0afhpXbF8UdWeltW/FaUoW0nEMcHWy6rvQs6tie2gWgB
-	DBL7Zwa7FMiHV60ds/vjeXeFYejbDIy/Pa1PlbZfta0e259iNDpvA1AtkiPmNQ==
+	bh=MizWdXyw6AIzxGIrXCjHoooSwVTTTvYHdU7hOQREXMQ=;
+	b=NWp+1c1EcUWBBIrBTafIKYJvBQupNyAD5Xe1Maj9bDflvYSZ8xOhp7UJrgHCSYns3vqSh6
+	5iUHtSbyTSH8xqNkil4xsbw4SdOV5CAgZ4wVppnnltKtF4Zm6sQD4HMdrB5Ga87WP15ioM
+	VlpFhBmHAOs4qaYNCNRxNXRI/xDBncc=
 ARC-Authentication-Results: i=1;
-	rspamd-674f557ffc-j5ljt;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MC-Relay: Neutral
-X-MailChannels-SenderId:
- hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MailChannels-Auth-Id: hostingeremail
-X-Spill-Arch: 54bd9cc055e65ecf_1761608511816_2982394158
-X-MC-Loop-Signature: 1761608511816:1182732274
-X-MC-Ingress-Time: 1761608511815
-Received: from fr-int-smtpout17.hostinger.io (fr-int-smtpout17.hostinger.io
- [148.222.54.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.121.22.161 (trex/7.1.3);
-	Mon, 27 Oct 2025 23:41:51 +0000
-Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
-	(Authenticated sender: contato@israelbatista.dev.br)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cwVQh09wBz1ymV;
-	Mon, 27 Oct 2025 23:41:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
-	s=hostingermail-a; t=1761608509;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
-	b=auF05oNmU6sYaz9qm2z9Em6ubZJJ/uM6uorE5H9wKKlo2qh428/CODReNMz9anX6EenwHp
-	Nm3imuydbGHNO4aY9HU2jwUcn3G/awHDfmV3S7TDhBGRGzhvFliISm+on3cjQcdtmn9Gyv
-	IWIhoByb0/Ls7KovKUHiDqWg3nTt4r4/BKOWXGEdmfwL/q+mHATlJUHeVQwGi3ZlZPoU++
-	47V9qmdeCoi3phUrjaa99ILdvbECX1hJ+TmDmJ81Qeht74aPrWZrHFdCFD77D0fXlBATUx
-	t2ToOAGXCKFfnQM/fl1GordU5mUab8QmYy8bAE2Lu9scpJ+qDXsJ9a7Y7Du/JQ==
-Message-ID: <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Ks2vehgv;
+	spf=pass (imf04.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608890; a=rsa-sha256;
+	cv=none;
+	b=eUjlKuq2LhmI+TlytwZ51pbXD1aa2Az9fHBtSVKWKIW5NU9a8vccXswo/cwWcEqLgusRo9
+	P9z2sfv8Mihz6qDL4xgT7N8ohUoQX0P/RPHB8nZZe7U06jiO1I1/1amWaxjJJ4GaBZVurQ
+	Cd/j/M+mB66JCSyY1yc+KZFgpuiAhLU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A41E1602FF;
+	Mon, 27 Oct 2025 23:48:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F9E1C4CEF1;
+	Mon, 27 Oct 2025 23:48:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761608889;
+	bh=mokQ459eH608y3YAxdf7XicrEDOCujpMlCAdC1dG4dE=;
+	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
+	b=Ks2vehgvD+K331IgMpd34Fj/yzi7Px2UQNNzLRN9tGjZdamoYzPL+4uNqaRDPGMCs
+	 Oca4pwYxqbSp2o9sIenB4x9Y5SkrSp/JTqDjCBjBkR8x7S+x79GtVMByn2AwcsyzX1
+	 ag9bLXYgIeu5cDFY0NTsMKNUPv/5gvxvWzpJT9AuJZ52qZ4Z4jJpW/Ve5tYoKPjJPh
+	 joUnF8BgVQlznUBrfU/m5pu4LOlPKS8B+nt0A0VvrzCGAVbPjtd3cVng33pjME0gEK
+	 OzLATd0saTLE4jssY6XaWMCDvGNuw7y31SaR7tsKahBjzCXqut4fR8Fj27X1EA/eZq
+	 TYVyLPpK+KgLg==
+Content-Type: multipart/mixed; boundary="===============0101190093044867176=="
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Israel Batista <linux@israelbatista.dev.br>
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-To: Omar Sandoval <osandov@osandov.com>
-Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
- linux-debuggers@vger.kernel.org
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <aP-3dauwpc-Kq5Kh@telecaster>
-Content-Language: en-US
-In-Reply-To: <aP-3dauwpc-Kq5Kh@telecaster>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Date: Mon, 27 Oct 2025 23:41:47 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=NuiDcNdJ c=1 sm=1 tr=0 ts=6900033d a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=_ZKPHTLhK7m246hEAoEA:9 a=QEXdDO2ut3YA:10
-X-CM-Envelope: MS4xfLgx9kVtAxys6ymeasq03EQxMVirb1+nJXGZwAg3ORbMcDKG5wdrMLa0HedftkBrxOx+/jUR+EIXYem2+TTvLv1Z5ReIzc+StfggC8dD7+y10KFzl/dA +6wFkLI5bvgiKsFkrh3bEKV+ACC6VMe1h/ahP/ORloIijiYnMGQIOExxSzZzAGZeal50ib6bgzfv1SQEzI6JHBFyQbolR30/KpPF1DlF+KabGkqiUhteN4cX ZaFEyFQUe7OdprxS8Aa57Qbcy9zEDI8bi6FlGyU74gFJL5im7/p8Pzhpe9Q0VwGhvqiUwOF9uJNxNpXpZfcOKRWOPdaNpBV7wdvGnSMQD45ugbqNvFbrLCAp zXTXrEgBWqs0DlfAOivC9jgB5KamHh+SZrx81mJWdbm+1aFV/yxwJMioEjhcH3n9tYDVbU40AyxslR6/KDOA/doq0zP12g==
-X-AuthUser: contato@israelbatista.dev.br
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9EED1140007
-X-Stat-Signature: mbmkp9ymb9xwpk6yoquj6zxmraai33uq
+Message-Id: <0bb955784824863853d84e4b2fa96c81e3a0dd034b1705bbbbc452f8e4dd27b2@mail.kernel.org>
+In-Reply-To: <20251027232206.473085-10-roman.gushchin@linux.dev>
+References: <20251027232206.473085-10-roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2 20/23] sched: psi: implement bpf_psi struct ops
+From: bot+bpf-ci@kernel.org
+To: roman.gushchin@linux.dev,akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,ast@kernel.org,surenb@google.com,mhocko@kernel.org,shakeel.butt@linux.dev,hannes@cmpxchg.org,andrii@kernel.org,inwardvessel@gmail.com,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,martin.lau@kernel.org,song@kernel.org,memxor@gmail.com,tj@kernel.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
+Date: Mon, 27 Oct 2025 23:48:07 +0000 (UTC)
+X-Stat-Signature: fn1yfxykbpoxge6txuz8wcdapnhihaks
 X-Rspam-User: 
-X-HE-Tag: 1761608514-266503
-X-HE-Meta: U2FsdGVkX1/xvPzjYRKU425ye+tDvSRLJZ9Qhm7uJ3wHM2VZta4ckKLlFoX2H7BbHkyZnaiOse/QNe2kJ3WjtaTX0DNMHDS6AZAc8HIDb68iFrN4o2oTPQ1rGSOWhegcKOKog3QdpnWcoSRoySIL5UdPZM6WuvvS+LimOr78te6BmR03LMALn4+UUyX6WpLzvv9H+Ew66UzYqtOgEEWBVERAoL4A+USkCzfQjdUORBJGLs6UjOA7Ds84zTBrKv+4Zhudn8aRfwqzPi15Y9kUYzUEaGUvomVD60JZpkTeijUuthOBt9ixqikBwxAyivU0H4UJ3q80wvoF389+VV/NtWpDVqayvF0y4Lj+tZBJG62FWSzQMmUIrIR1wsLmkH2ajtomokcKJxpWh6toes6H8eWMeLOSOyq4Nq7UFGcAXUQNKIahVCnyQv4G0s2EhWP6kx27WuouqAHfYYwip8Zbqgcs+4vqVBCa5iMH0f5ffzldzFHt93WsV8GSIwtHeAsY40fGgXpIQxlBtoX6lME0+DhWmzcBIKkvAUffETclJO4l4EpdxyA0jqdAfypxcLrH+RxJwLBfqGNQu9SRIOFm6hKXXahEKLcHucrJzqhU7T9ZtEdBYwqGBnroPkAJDLIxREbQIKr0gnVDXcSKo1VgOqR5sYRch9BEj0rTMG2Z2yZ9NwQZ+TfmnD/BtsHXVRSqBfnbns7jLfg08e4G/oY0yp5VZqqeqQ/1ZPHT/59g0lHNCxWaEUv9q9BmK99Dn3T/9XyACjowfu73TaVL+7MY8KiWQzAibm+fDqdlDJa/dy5uqjs/pcps32hSyf62QnfctUqV8qaAkOh+u1SvTeuVyGxXXERQcs1WcynE0MIQoe1xjguOIW7K6kZbyS3GgVyf6hmvZ453A4VYUurOsagXsaNAyU0tBtFU+YRv2ayCF/IBvAk4opMzvjxjB/zUKkY0bzol0wnt1kNBsgawA6t
- b+FLUf8q
- 5g6qc++HEqDQgYdgct9UACoiu8+95mKheb2x2oQ24QKURajjVwO2V3fB4f0TLuPATMfFK7YPYlkeJYqU=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.325902, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 70F8540002
+X-HE-Tag: 1761608890-501871
+X-HE-Meta: U2FsdGVkX19RrVGLCbqjz83w/lrYVXC1Ochq1I28G2IrPXWi7/gEWLWDUCG33/gpj+eMctvsmf5lBtdkL5g7cPZ3UZM5cvYkW1dE9G2gsjw8S/zE5HsXMuMhxLRZuT0mf8g1Gl5ZEY9YQ3lxCK9vBFlzwkJ21bvjJK7AH1+gjpZs3Ts2/1e1Leqz1RSObi7lpUUtsY2P5xfEq8N+N45O4vjQGQg1myf5GNudIbIkd5bvx5+lZf/QZgXx9U1KZdC8uJ0LOls2D8XIjZKnv+z4HIApR+2kPrAD2zUhIgU3z9klDjShzQB01Yvx+kv8PtQ+Jo/JwqZsbDSCxoCZA7CHcv+fpwdlvFggTvcKYDi1lagkdhUw1y8sxBaenk+VJz+lxsGnaZL4Bz35kaCwCJUUMR8SUh5ByUQcKf1lnDqluiLRrFRXuYeGc3d6Ax5sPbZZr4qXOUiEX/o3RSMeOk8hafxM+yKZaz6s2xYKNY3/GiN1bZiI7psvmUw6lf0JZw25xYFmzAv+QksMM0yRmt94RLynfu0vfLi267ba5H4tc2fG1YsMH6F0YUHYqcxLQiX8yM/8a9MfttsurBBch58MFvhpeotnem1uaXY/imODQ/JfkTmzJwgBTFn3ZfEI8w/jOuv1jm0ZKPKwMNuA6DzXZ7LgeLRlcCAKdLRt/1TE6D2Ihdt9MvZu6M075FEyXqmmLv9lThKAtOKlOXTB/k0x9YNU8CBjgz0ab1GGXiEUiUAFRbCT1wV/WJDbK3Dxpt4lzxDdAJRNpQXIwQCbRXXRcEsa0ww72uguUARw7jg4L7HI6nU6NXEcqUKR5iRJwrf4HT6jJWsKF8Ugf9xuP22jRhWFRXgRjpvoug8An2XbUcLHfRzyuY11k69kh8ekVUCH0NbGSStXjZ8d8w0WsehW3nY0VWioArJmFfXS6RDwm/huDh5afE21oUPAmF4du1yNlgDSiZm8JYfTy97FERM
+ LljoaNI2
+ +Zp1Pg3JaN4hhlSZR7x8bSBpUJ2uCC3uiDaLBPXtAJBS1Fk67IEGW6nj6PXPFLKDaZzT/pDTWaq+Vb+XG0VeBnbv3Z+hgF/xSRq7OdEnOZ61tcuZvjXZZv/okyuwMimCutDxPamI6qoNE9ohjwGrTg8/aeXqp1IyiBxmb9uoK1ebcR3INh8zT6wNVmgKlDrxB5K6/mU6Kfr5IrYLEBcRFGjcWNNsQIAc3U7LdWRlppSOeq853sttq/g9Eb8QZRC1v+lVpmJNjZIngJ8pIOe6rgbBz7HtGHDORNB1SZuSZQepU3syt9J2LoWZuaOXGsGuLlyZl/9G2qWcmK83g3EpzyiwwkooWv7pN7vnEXRE8vy4Nm/LZ+/4pBDcABg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -145,25 +89,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+--===============0101190093044867176==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
 
 
-On 10/27/25 15:18, Omar Sandoval wrote:
-> 
-> What kernel version is this patch based on? It doesn't apply on mainline
-> because it is missing a couple of definitions added in 6.9 by commit
-> c5f1e2d18909 ("mm/memory_hotplug: introduce
-> MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
-> 
+```
+commit 264db34cd79e7c07b4b1e58e2efae3d632df9cb2
+Author: Roman Gushchin <roman.gushchin@linux.dev>
 
-Sorry, my bad. I mixed-up my local branches and created the patch from
-linux-next rather than Linus's tree. I will create a new patch with the
-proper changes.
+sched: psi: implement bpf_psi struct ops
 
->> +enum mem_states {
-> 
-> mem_state is very vague. enum memory_block_state might be a more
-> appropriate name.
-> 
+This patch implements a BPF struct ops-based mechanism to create PSI
+triggers, attach them to cgroups or system wide and handle PSI events
+in BPF.
 
-Agreed, I will change it on the next version of the patch.
+> diff --git a/kernel/sched/bpf_psi.c b/kernel/sched/bpf_psi.c
+> new file mode 100644
+> index 000000000..c383a2011
+> --- /dev/null
+> +++ b/kernel/sched/bpf_psi.c
+
+[ ... ]
+
+> +void bpf_psi_cgroup_offline(struct cgroup *cgroup)
+> +{
+> +	struct psi_group *group = cgroup->psi;
+> +	u64 cgrp_id = cgroup_id(cgroup);
+> +	struct psi_trigger *t, *p;
+> +	struct bpf_psi *bpf_psi;
+> +	LIST_HEAD(to_destroy);
+> +	int idx;
+> +
+> +	if (!group)
+> +		return;
+> +
+> +	spin_lock(&group->bpf_triggers_lock);
+> +	list_for_each_entry_safe(t, p, &group->bpf_triggers, bpf_group_node) {
+> +		if (!t->pinned) {
+> +			t->pinned = true;
+> +			list_move(&t->bpf_group_node, &to_destroy);
+> +		}
+> +	}
+> +	spin_unlock(&group->bpf_triggers_lock);
+> +
+> +	list_for_each_entry_safe(t, p, &to_destroy, bpf_group_node) {
+> +		bpf_psi = READ_ONCE(t->bpf_psi);
+> +
+> +		idx = srcu_read_lock(&bpf_psi->srcu);
+> +		if (bpf_psi->ops->handle_cgroup_offline)
+> +			bpf_psi->ops->handle_cgroup_offline(bpf_psi, cgrp_id);
+> +		srcu_read_unlock(&bpf_psi->srcu, idx);
+> +
+> +		spin_lock(&bpf_psi->lock);
+> +		list_del(&t->bpf_psi_node);
+> +		spin_unlock(&bpf_psi->lock);
+> +
+> +		WRITE_ONCE(t->bpf_psi, NULL);
+> +		flush_workqueue(bpf_psi_wq);
+> +		synchronize_srcu(&bpf_psi->srcu);
+> +		psi_trigger_destroy(t);
+> +	}
+> +}
+
+Can bpf_psi_cgroup_offline() race with bpf_psi_ops_unreg() and access
+freed memory?
+
+Consider this sequence:
+
+Thread A (bpf_psi_cgroup_offline):
+  - Pins triggers under group->bpf_triggers_lock
+  - Reads bpf_psi = READ_ONCE(t->bpf_psi) outside any lock
+
+Thread B (bpf_psi_ops_unreg):
+  - Iterates bpf_psi->triggers, skips pinned triggers
+  - Calls synchronize_srcu(&bpf_psi->srcu)
+  - Calls kfree(bpf_psi)
+
+Thread A:
+  - Tries srcu_read_lock(&bpf_psi->srcu) on freed memory
+
+The pinning mechanism prevents Thread B from NULLing t->bpf_psi when
+Thread A has pinned the trigger. However, Thread B unconditionally
+frees the bpf_psi object itself even when it didn't process any
+triggers because they were all pinned by Thread A.
+
+After Thread A pins all triggers and releases group->bpf_triggers_lock,
+Thread B can complete bpf_psi_ops_unreg(), call synchronize_srcu() (no
+readers yet), and free bpf_psi. Then Thread A accesses the freed
+bpf_psi via srcu_read_lock() and spin_lock().
+
+> +static void bpf_psi_ops_unreg(void *kdata, struct bpf_link *link)
+> +{
+> +	struct bpf_psi_ops *ops = kdata;
+> +	struct bpf_psi *bpf_psi = ops->bpf_psi;
+> +	struct psi_trigger *t, *p;
+> +	LIST_HEAD(to_destroy);
+> +
+> +	spin_lock(&bpf_psi->lock);
+> +	list_for_each_entry_safe(t, p, &bpf_psi->triggers, bpf_psi_node) {
+> +		spin_lock(&t->group->bpf_triggers_lock);
+> +		if (!t->pinned) {
+> +			t->pinned = true;
+> +			list_move(&t->bpf_group_node, &to_destroy);
+> +			list_del(&t->bpf_psi_node);
+> +
+> +			WRITE_ONCE(t->bpf_psi, NULL);
+> +		}
+> +		spin_unlock(&t->group->bpf_triggers_lock);
+> +	}
+> +	spin_unlock(&bpf_psi->lock);
+> +
+> +	flush_workqueue(bpf_psi_wq);
+> +	synchronize_srcu(&bpf_psi->srcu);
+> +
+> +	list_for_each_entry_safe(t, p, &to_destroy, bpf_group_node)
+> +		psi_trigger_destroy(t);
+> +
+> +	if (!list_empty(&bpf_psi->node)) {
+> +		mutex_lock(&bpf_psi_lock);
+> +		list_del(&bpf_psi->node);
+> +		mutex_unlock(&bpf_psi_lock);
+> +		static_branch_dec(&bpf_psi_notify_key);
+> +	}
+> +
+> +	cleanup_srcu_struct(&bpf_psi->srcu);
+> +	kfree(bpf_psi);
+> +}
+
+When bpf_psi_ops_unreg() skips all triggers because they're pinned
+(by bpf_psi_cgroup_offline()), does it still free bpf_psi too early?
+
+The to_destroy list will be empty if all triggers were pinned, but
+the function still proceeds to cleanup_srcu_struct() and kfree(bpf_psi)
+while bpf_psi_cgroup_offline() may be using that bpf_psi pointer.
+
+
+```
+
+---
+AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
+See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
+
+In-Reply-To-Subject: `sched: psi: implement bpf_psi struct ops`
+CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18859027430
+
+--===============0101190093044867176==--
 
