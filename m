@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC1CCCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:18:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0C7E8CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 268AF800B0; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
+	id 6AD1D800B1; Mon, 27 Oct 2025 19:18:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 218468009B; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
+	id 65DDF8009B; Mon, 27 Oct 2025 19:18:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0E02A800B0; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
+	id 59B0A800B1; Mon, 27 Oct 2025 19:18:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id EB7208009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:18:14 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B663113A259
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:14 +0000 (UTC)
-X-FDA: 84045459708.17.CD3A583
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 0C097A0008
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:12 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w5UMrwUa;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 440AA8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:18:19 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13BB4489A4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:19 +0000 (UTC)
+X-FDA: 84045459918.18.C2F0458
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [95.215.58.183])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 63E6B1A000D
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:17 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hvHbWkeM;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607093;
+	s=arc-20220608; t=1761607097;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1pBvFLnmQUGhHDldbyfAqGwleevT81Px3hvXcQya18A=;
-	b=3/3Y38CTdQnKKq4K4xa0koEOGHkLJmnN7WPnAgmnLDYLgvHgQOQVk6jiA/hBlNPbQei5z5
-	XbtoD412x9ty+du1Y0vX73GZHz9HlUoiirfgBJfpjiDT4Q74hjGEzc2EzDMgQuXD+SrsJq
-	VVLgWr4wW6YIObJ2cs+0TTlL1d+Afjw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607093; a=rsa-sha256;
-	cv=none;
-	b=tUD42dbA7qBSTcJw+GFmPRwd/duufEhIVsHFye7R29IL/hBvLp7cOkYXxQM7YAEsfCED05
-	6xaEERlRR4j+XbiXm628FciOwDIS+tHIruJ5FN3qfVnN8uO5NnNn7L2u7SCald68FBGHTR
-	EUeKpAGK2ZBofWET+5SrBJQaBIaN3yw=
+	bh=0L0/Ocn9RqSsZN0Y29o3qrSHIg/Knm5QfgmpjPK++Dc=;
+	b=Lb8ewccVkWWV1UQUCeNxkgNltoG+2v2sp7FXJZsMROas9lnOXisSA0cQpUTaT24yTyu5RU
+	3Of5YK9kEnDz5u/FZjQUbg4kkxTJbymxHUBxe5hURTaA+zG9yRFkkOVXlZoiQnF7+gkGxr
+	wfap9hllkbAc2FGB9l6APPJY/8XkAWc=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=w5UMrwUa;
-	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	imf19.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=hvHbWkeM;
+	spf=pass (imf19.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607097; a=rsa-sha256;
+	cv=none;
+	b=hcblH2r+Oy6Ll6bnHtlAr7CP2EgbDoacJnrnHiMOYy1ktygCskkvIh2zNEB1YBma/YJRCQ
+	+pB7HIZnQIlshzrV18pPrYwHF+IzbmjcvSbpimYsy1xvupwbk1yGn3t7du/q5wnqDmQDLh
+	nltLC3Mza7iR9PmQOVXGZt6aNfbM5Kc=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607091;
+	t=1761607096;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1pBvFLnmQUGhHDldbyfAqGwleevT81Px3hvXcQya18A=;
-	b=w5UMrwUaoMs+GXh5EBhwvblLHe56g5Uq//mZp5YrlIP4NiHqkzroAOo1KdY9GZFzBBdZBH
-	tdNPolJqq+i4qqTGuetYltCar6ZHnLfsICgRE7BoeH/soUxhA0t7GyTI/CnWvYY8sjfHvL
-	ewVRkWVHPz9s4vIAASuiU7JSKnftYcI=
+	bh=0L0/Ocn9RqSsZN0Y29o3qrSHIg/Knm5QfgmpjPK++Dc=;
+	b=hvHbWkeMCi+mGvHKY6QdSAqkwB8+dvLP330BknCQWQjexYhiDSjpkQh68nnGVIqt/WmOXA
+	ym1pLJPCyIrwF+Fey/vwtrn/TcqXV/szfQ9TBW3DZxGU4AfLfCUEDoA0GDLWkq1yqy/SAz
+	GwrAo1ztd805084vXph8luCWScY37+U=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -77,22 +77,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 08/23] mm: introduce BPF kfuncs to deal with memcg pointers
-Date: Mon, 27 Oct 2025 16:17:11 -0700
-Message-ID: <20251027231727.472628-9-roman.gushchin@linux.dev>
+Subject: [PATCH v2 09/23] mm: introduce bpf_get_root_mem_cgroup() BPF kfunc
+Date: Mon, 27 Oct 2025 16:17:12 -0700
+Message-ID: <20251027231727.472628-10-roman.gushchin@linux.dev>
 In-Reply-To: <20251027231727.472628-1-roman.gushchin@linux.dev>
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: mq4frgikg7qdjutpdsi71hf6uhjmzaq5
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 63E6B1A000D
+X-Stat-Signature: u5ikudc34byo1frjew6oq9y4w4dzxbfe
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0C097A0008
-X-HE-Tag: 1761607092-390900
-X-HE-Meta: U2FsdGVkX1/ZGs0eE5+XjStrfWTAZbnt1yvgKSU5iGpyK3UiGg/DeTtQDrfE17VjGSzGek+fgk4yx2H58zuUhNWb4xyHFui6iPyYl9D9CzN+XbG1aTjuoQsm/0m9XS4Ei35GXJmVYIYQClelv6U63HKjVtBjKwDxRkldJK9vGBbqmpQGr7bDDizkdJP3aIXcAkZUvxCyQOIKdU9qxcMqpFm+5PhWExsbEpgjPConEwUSwztcOx3/b219GJHXM3kRbwT0f7bZhTts9kEudb6LCt0GmsIODC+cDjOuA0wziMADnK5OUKwkjLwGalb/2A8oMvgVvMTfDFaskFBOk9A8xjHdUBNK4usyrDSHtlrXAfO4ljzcWpgBGkNm3mVjd0TcglPQeKd+XJrD964RMGUezWB5OAUx6cHqsBkp7W7U9JZtBSty7Dh2kJ3kpH5H+uXjYyorvYoNVv2QPpS83jMEH2ug/1UbMe36/TGcnUc2M6pqmu04CrGoznzeF2e5OxkurDJiGRc4BVBAkrvh7U8KQVJ8tn9BiHFkoQtx7UweP7OCVOLIeH8IR5s5lARXPweYV7dzFDo+UL6umwvfoFW+wHV/41aUnCpRYlINRvjYM2Nvv49oyZzFOgFIFNdDcOxPVFVa6Cr1u7D7AaqzAtScFbfu4xghr4xYeYAQ3q8/BJNWURe3lfZpb0RIdHl+7LB2U4l+gyIrHvelYr01pFJNMebGeBcaspM3pZ2PoZ2KDVs6ppZkJGb7HTHDi3aL9p5EprsyGxL3djvBGoRKCg9Mpvier9ZyJKCJBjbNWvIUQDcRiaLyQYpJE6dTJpa90NQQMG9m0Zyj9Ua2bLeyNJc0CNLaS6swLhPoZrOV7WD0/I5NMn/CRy/hs/v+3dzXWw8VofzVqwiU/vf2GaOuazBp5io1gUsoxdCNqjVmBTdoYUrBTqPBkOq5zAMoa5Gp4Mhozm8KUjXl9IpYpTGuNG1
- z08WcxER
- SfIaskJrXjwZjdg/do2Tti2NkT2FDYzoMkdF02rNsp2mLd8+VXeg9vOwSEhm5pPxM8b/csiMbncj3x4qagJp5c/qgfMP+ytYg21xBV+dNW2dxAQsqSNxppyR95ZcABqQrJ2fra+hqSfN51GcDaAcmNvmgNeuDiR/HKWe7poAoiHlx1nFBCdiEaI/0KUDKiSanteeuUnh31Ep0gycQB1cgAAFPgzawZQLCtCucB8vzEBBLNDU=
+X-HE-Tag: 1761607097-574
+X-HE-Meta: U2FsdGVkX1/cWp/XrxjpGZgqyDV5MkIp8bbirC08OMPvddRrSl4a3WIx9TFJiv7+64dQI8PAkK20bUAGj0+sydXlwpEH+yEWQDm3xslLrLUJqbrWat5z6AuGhFRc8mEsTbRci45KtJ/TZSrz5rb+U4TdGq8ratJkozA8wbW+BDKmAjSlt4R/FZMImztj8wyAlwwLf8RA8x3iwcBNz+5tLgIxbOokV0iCIpSBU9DFgTwGJRWNV/Twu9z0Ql+i3/WsK2Lyvhn9hLqv7CC8LNHCFR01LMg+GZAjqgMOZbF4w6wdSUl9g4S+7xtKOQwxjy3TnI+cRbh7Wmi2lSyJaZL+kxBK/BKmU95PnX++nWvT02nBb1zp5E8ShGtyv/AG4YJb9cDASSQgXi22M755sl/+Y59IvRdkwB+/zs1ZvAlF1KFKPVBAf3ChwsLiv8h3fU036TSbPV+OrBqtD/8sqfDEG/AbdXViCpRrtJfkYuGo/3bCBC9nEMEq1KQCOCoZEhSHWEPQ1fQ17A7HHX7rAqCMZk3pTwW2VTywi4X5goNm9i5cBji98UGfxqj+Fu9WlTKXldZ/FVAmgzWclrX23ic1cgmPNmHh0lic/PBg9NFIKf+gsWUFD7K43EoePdXIb++vsowaLtJKDLJS4jn6NaZsZAr72gue6puRXpjc5AZOSS0anTXOWmctXtftXaYQT++pA6LTSD+1GHHZ8IbKvCALccpg4nY+P4oWkrs97lFuDuyn93uWaGxFlUDvNw8E7avsCimL2JiStrAijgw6fIGCkQrx3vyt++HtiQb7HSoEuuUPAlqKZQ394ixkSecWMIkAZoYEz7ugHtrMyrdk7boWizivgeLC4hh9Fks/li00n0CDfB5Juyw2r3wRaBfmIFQl4CzjuwpBlpe78ov8lg/uKNSVZhec8V6CUeimxKEqcBiI5wpBQ3IRZzCLGfv+GRZQ24iP+aY8cfCEWyfAhS+
+ ckyGkxxz
+ 74U8lA6kbHhyjj4m5m+anfeq0PQ/70Grfflf/c5NdHrmDtAvcF7be4UA5vfWUqMbhxV6QfhHNu+BrsTx/2CgZph4rfO4Ql2AWI0dvezuXmeD8AyoTvwZXtbQhgAIsL6ALsOxyFsthWF2wd9cDguwUG6pNtn7QqgWjXhNI67P1S4Fx4GTgw2i2okwEu4V9o7+SVrlZmiAytrNOc2o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,133 +101,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-To effectively operate with memory cgroups in BPF there is a need
-to convert css pointers to memcg pointers. A simple container_of
-cast which is used in the kernel code can't be used in BPF because
-from the verifier's point of view that's a out-of-bounds memory access.
+Introduce a BPF kfunc to get a trusted pointer to the root memory
+cgroup. It's very handy to traverse the full memcg tree, e.g.
+for handling a system-wide OOM.
 
-Introduce helper get/put kfuncs which can be used to get
-a refcounted memcg pointer from the css pointer:
-  - bpf_get_mem_cgroup,
-  - bpf_put_mem_cgroup.
+It's possible to obtain this pointer by traversing the memcg tree
+up from any known memcg, but it's sub-optimal and makes BPF programs
+more complex and less efficient.
 
-bpf_get_mem_cgroup() can take both memcg's css and the corresponding
-cgroup's "self" css. It allows it to be used with the existing cgroup
-iterator which iterates over cgroup tree, not memcg tree.
+bpf_get_root_mem_cgroup() has a KF_ACQUIRE | KF_RET_NULL semantics,
+however in reality it's not necessarily to bump the corresponding
+reference counter - root memory cgroup is immortal, reference counting
+is skipped, see css_get(). Once set, root_mem_cgroup is always a valid
+memcg pointer. It's safe to call bpf_put_mem_cgroup() for the pointer
+obtained with bpf_get_root_mem_cgroup(), it's effectively a no-op.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- mm/Makefile         |  1 +
- mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 89 insertions(+)
- create mode 100644 mm/bpf_memcontrol.c
+ mm/bpf_memcontrol.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/mm/Makefile b/mm/Makefile
-index 051e88c699af..2d8f9beb3c71 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -107,6 +107,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
- endif
- ifdef CONFIG_BPF_SYSCALL
- obj-y += bpf_oom.o
-+obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
- endif
- obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
- obj-$(CONFIG_GUP_TEST) += gup_test.o
 diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-new file mode 100644
-index 000000000000..1e46097745cf
---- /dev/null
+index 1e46097745cf..76c342318256 100644
+--- a/mm/bpf_memcontrol.c
 +++ b/mm/bpf_memcontrol.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Memory Controller-related BPF kfuncs and auxiliary code
-+ *
-+ * Author: Roman Gushchin <roman.gushchin@linux.dev>
-+ */
-+
-+#include <linux/memcontrol.h>
-+#include <linux/bpf.h>
-+
-+__bpf_kfunc_start_defs();
-+
+@@ -10,6 +10,20 @@
+ 
+ __bpf_kfunc_start_defs();
+ 
 +/**
-+ * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-+ * @css: pointer to the css structure
++ * bpf_get_root_mem_cgroup - Returns a pointer to the root memory cgroup
 + *
-+ * Returns a pointer to a mem_cgroup structure after bumping
-+ * the corresponding css's reference counter.
-+ *
-+ * It's fine to pass a css which belongs to any cgroup controller,
-+ * e.g. unified hierarchy's main css.
-+ *
-+ * Implements KF_ACQUIRE semantics.
++ * The function has KF_ACQUIRE semantics, even though the root memory
++ * cgroup is never destroyed after being created and doesn't require
++ * reference counting. And it's perfectly safe to pass it to
++ * bpf_put_mem_cgroup()
 + */
-+__bpf_kfunc struct mem_cgroup *
-+bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
++__bpf_kfunc struct mem_cgroup *bpf_get_root_mem_cgroup(void)
 +{
-+	struct mem_cgroup *memcg = NULL;
-+	bool rcu_unlock = false;
-+
-+	if (!root_mem_cgroup)
-+		return NULL;
-+
-+	if (root_mem_cgroup->css.ss != css->ss) {
-+		struct cgroup *cgroup = css->cgroup;
-+		int ssid = root_mem_cgroup->css.ss->id;
-+
-+		rcu_read_lock();
-+		rcu_unlock = true;
-+		css = rcu_dereference_raw(cgroup->subsys[ssid]);
-+	}
-+
-+	if (css && css_tryget(css))
-+		memcg = container_of(css, struct mem_cgroup, css);
-+
-+	if (rcu_unlock)
-+		rcu_read_unlock();
-+
-+	return memcg;
++	/* css_get() is not needed */
++	return root_mem_cgroup;
 +}
 +
-+/**
-+ * bpf_put_mem_cgroup - Put a reference to a memory cgroup
-+ * @memcg: memory cgroup to release
-+ *
-+ * Releases a previously acquired memcg reference.
-+ * Implements KF_RELEASE semantics.
-+ */
-+__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
-+{
-+	css_put(&memcg->css);
-+}
-+
-+__bpf_kfunc_end_defs();
-+
-+BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-+BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
-+BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
-+
-+BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
-+
-+static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
-+	.owner          = THIS_MODULE,
-+	.set            = &bpf_memcontrol_kfuncs,
-+};
-+
-+static int __init bpf_memcontrol_init(void)
-+{
-+	int err;
-+
-+	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS,
-+					&bpf_memcontrol_kfunc_set);
-+	if (err)
-+		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
-+
-+	return err;
-+}
-+late_initcall(bpf_memcontrol_init);
+ /**
+  * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+  * @css: pointer to the css structure
+@@ -64,6 +78,7 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+ __bpf_kfunc_end_defs();
+ 
+ BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
++BTF_ID_FLAGS(func, bpf_get_root_mem_cgroup, KF_ACQUIRE | KF_RET_NULL)
+ BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
+ BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
+ 
 -- 
 2.51.0
 
