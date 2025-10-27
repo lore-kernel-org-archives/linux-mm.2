@@ -4,121 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D40BFCCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 04:08:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C2B0CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 06:03:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1507D80012; Mon, 27 Oct 2025 00:08:01 -0400 (EDT)
+	id D18E780014; Mon, 27 Oct 2025 02:03:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0FA848000A; Mon, 27 Oct 2025 00:08:01 -0400 (EDT)
+	id CC96C8000A; Mon, 27 Oct 2025 02:03:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F03E080012; Mon, 27 Oct 2025 00:08:00 -0400 (EDT)
+	id C042F80014; Mon, 27 Oct 2025 02:03:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id D83198000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 00:08:00 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39373B8CBE
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 04:08:00 +0000 (UTC)
-X-FDA: 84042561120.06.51C6766
-Received: from mail-qk1-f179.google.com (mail-qk1-f179.google.com [209.85.222.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 61AA68000E
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 04:07:58 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=abXmGMrf;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AC62E8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:03:16 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6E72159386
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:03:16 +0000 (UTC)
+X-FDA: 84042851592.05.6F808F3
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 743D620009
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:03:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OgePVYlo;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of joshi.k@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=joshi.k@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761538078;
+	s=arc-20220608; t=1761544994;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ibO/MfxDLcDBhKW6DTcsagfs6zgnKHMHLzVm/Gfs7jw=;
-	b=AfUsfz90610T7IbqJD+37CE8iCNmJWi+R7521STb5bDqoR7TkS5VZrp4W8hfVzAvyjbATZ
-	12tWC/fRZXBnQ7GQsOjCW5HqmOXVnasLkFV9Et7PfjLbYtEKert5FtlqmNvY39O3BvScOU
-	AZIbgw2nAn1mm8fCyh6Pbbw62fiGFWg=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=abXmGMrf;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.179 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761538078; a=rsa-sha256;
+	bh=vZJD6tbrr7iDfFmW+CWqwnzZbJ2h3gEHO1zpYTWAHuI=;
+	b=WWCrotIYgUcBRu6dy+/HNJq+VWcrkcQ3clJJiAbsjXgcthjINTRawF3VpAwnIeN/7G44dk
+	mhReNKwJ3OKIgGKw4VeBhkwnFyJj4sJcQCY2iRiLCEMD7sGMlwZlSXRMbxY98wUg+cS9Qu
+	oZLUlV1noC8N334ziId8ecfocHRiUMc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761544994; a=rsa-sha256;
 	cv=none;
-	b=j4ZF5Sfz/Fa/vO3CRQNaPWj0VSgP/jVUaPrLWab63ANPArCocOFo/BbvpE4wHKMIj5y06Q
-	q+GkiWHJ56iAr6nMLqcohBb78aJMtHwWZ1o/qL4fQQUAO7qIh8Jd4iug+IYuCM2BMzeFdJ
-	Ua3VYWnExLcMK6q/VW4vzm3DNlJWqds=
-Received: by mail-qk1-f179.google.com with SMTP id af79cd13be357-89f54569415so206659485a.1
-        for <linux-mm@kvack.org>; Sun, 26 Oct 2025 21:07:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761538077; x=1762142877; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ibO/MfxDLcDBhKW6DTcsagfs6zgnKHMHLzVm/Gfs7jw=;
-        b=abXmGMrf9Gv3bHERyirW+qvbFhYlEJzhVYVDbO7g2iBL0kTJ4aBntQUtT2Kj9UwMPc
-         keKq7BfShmtt95rwC9awGtgY1fq6iEZp0EeDUxzFOkOseeb5Tj/DTy0zG9Jliv4l6pHJ
-         rISEAEEoqY1BFpbhqF3HTRW2+XTQ9wd64IX2znZUh9zvVmWTVr7wuQ2pVLDgPM8uomBi
-         tVMh36LIaYZrTyXHK6koAB4IQdSXMWFUS8AISy3uSyVsbiRlZ7H5ZluyA8ZtwmnQBCeE
-         cf6pOf6KbBFSYTE4ByEkhpyurVhhLLf/cybAwBrpWteRFT5ihHdjE3urBdSNR0Y+yY9Q
-         mrSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761538077; x=1762142877;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ibO/MfxDLcDBhKW6DTcsagfs6zgnKHMHLzVm/Gfs7jw=;
-        b=MYDPAHpFUBfK2Qc63HUVHJ+o9V94s9F8QmAGAbX2RP9zY3whdDBtFG6l+rSx0/esAK
-         ALw/2CkYmMqYpnZCIbFVNsQ2Fr8SUnmiMyzSHFwhGn3lRlpOkgcZE7SnfaOvGx9cXj+I
-         UbA21zn6muzk6K2z2fSMjC69dm+qh9gvZZyjWAinEZZX5OobVhw6EfCBraTQQrhxTQgk
-         S4jVo1jcjngSVv/QY4+uZ/POQ6Wx6BPUpsfN+KdyIwuHz3kVWP6J4thUyY8r40hY1Vb+
-         diacG/xMr+3/uS0ZMwzS9bgnjP+3iNTDhqJwFuawQeGX6zyyWm4aZpsMPtjUt/BnmtAM
-         uHzA==
-X-Forwarded-Encrypted: i=1; AJvYcCXJg23XP+Y/lDhKVJE78CPRsLLvFEvdres1z340zYHeVAq3yopQ2LMIRqX1YrDrOi+4Q8yZePyV/Q==@kvack.org
-X-Gm-Message-State: AOJu0Yy3LAtFC/v/Jx+LjAOD5LAHrMxra3xSeLJmwXF9nTVBE67whNYV
-	6FUeYOVmYQ14vzf9Lh1e8mBkKwJwAz5bGGUPP9RDiKS46qq1YvLXu/9X/zyzwYmasfb/sBdJEuK
-	U/fbIQ8FaB14yR7aYYyx0qSEzEiK4NrM=
-X-Gm-Gg: ASbGncvOkmGE7TkBNSfm1tRbjxKY/d4sr4x0sgOTmlrB73QqnM49Q0wTgQJAc0wx9lG
-	uyojVSCWCb02FjbLUBBqe/Nu0NylIGJqpLP23fPcjM8SdUz+Jbv+Jg2v5BZduBjvua5Qwt1zvqA
-	bG+5rAEOzET3D5MUeDWFNQU9c1y4a8dsyEZCOeIOYUoCFhY2L4CGQSOwsbdD9WtCDKOyy54mxw1
-	FvPIVceeywdjwNEv5SyvwknjmhgdB2nQZ7AwNHc09pHp5ESmSwQmvET6VUkMWxEx4Y48hh+rFOQ
-	xH3bzVk/SnGWU9Vh
-X-Google-Smtp-Source: AGHT+IGefw2r8nKdqOS0SwKxCjvapqhvhgaNjigQHwL9BSMI9Uj9YevfnjblAyLG9nJZtA6yZ5tJ9nPfP/17o5LX1lo=
-X-Received: by 2002:a05:620a:4556:b0:8a4:e7f6:bf57 with SMTP id
- af79cd13be357-8a4e7f6e1a2mr122937585a.5.1761538077288; Sun, 26 Oct 2025
- 21:07:57 -0700 (PDT)
+	b=epiIYejY0t9PL6U4Hyuu96UpYdUN/OMp3U1Ju3vO9Rb5qbswHywxnH+GTwCdI7mzXl8Fc/
+	ky8+5AejLAGwuuhy24zuxQzw5tia5RJRUK37mh1lzW0DBJTLBS6kSqqzzMR1K1P0cFMcEY
+	46Yfm5FucAZ4pxfTwTRBvqXrnaBofEM=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=OgePVYlo;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf13.hostedemail.com: domain of joshi.k@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=joshi.k@samsung.com
+Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
+	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251027060309epoutp03cc2d3da0a3d75aebf7832f5f30255126~yQ9XJEo0_3229132291epoutp038
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:03:09 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251027060309epoutp03cc2d3da0a3d75aebf7832f5f30255126~yQ9XJEo0_3229132291epoutp038
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761544989;
+	bh=vZJD6tbrr7iDfFmW+CWqwnzZbJ2h3gEHO1zpYTWAHuI=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=OgePVYloTzMwdpjohkzCoRbk4F594k8Tqaycd53CWK/4krMeBYswwPY0NbmBS9PBu
+	 wtuTBit1R7Y5ZmbTlhnks9aswEv8cxqajljKWVsieRawVmwlKi8iZaFx6DEc+WMjxL
+	 pSM50i2hP1e3Hs47qMMg0/B6/xElN1FimN/KL+dM=
+Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPS id
+	20251027060309epcas5p146799ade6f600a50131d97b45f1b58dd~yQ9W4y1Ee2957529575epcas5p1Z;
+	Mon, 27 Oct 2025 06:03:09 +0000 (GMT)
+Received: from epcas5p4.samsung.com (unknown [182.195.38.86]) by
+	epsnrtp02.localdomain (Postfix) with ESMTP id 4cw2x82ngLz2SSKh; Mon, 27 Oct
+	2025 06:03:08 +0000 (GMT)
+Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
+	epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
+	20251027060307epcas5p1eb3ad9d4926616811459f164f5b55354~yQ9VfuJ5m2957529575epcas5p1T;
+	Mon, 27 Oct 2025 06:03:07 +0000 (GMT)
+Received: from [107.122.11.51] (unknown [107.122.11.51]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20251027060305epsmtip28f9d9c355023391ee7a7d7094627680f~yQ9TSqnzg2329923299epsmtip2B;
+	Mon, 27 Oct 2025 06:03:05 +0000 (GMT)
+Message-ID: <03b69a96-161f-4c5c-90f9-9be55d58d8ff@samsung.com>
+Date: Mon, 27 Oct 2025 11:33:02 +0530
 MIME-Version: 1.0
-References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-5-laoar.shao@gmail.com>
-In-Reply-To: <20251026100159.6103-5-laoar.shao@gmail.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Mon, 27 Oct 2025 12:07:45 +0800
-X-Gm-Features: AWmQ_bnqDQ_nqt4D6_uisIDfd46Kja53Wh7oCLWwA2TUqJRp3ILNLRZozn7IGYE
-Message-ID: <CAGsJ_4y+fW1wdvZzfRWbWQT24rvA6vGJ4-oxhJBxXMr9m_d7HA@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 04/10] mm: thp: decouple THP allocation between
- swap and page fault paths
-To: Yafang Shao <laoar.shao@gmail.com>
-Cc: akpm@linux-foundation.org, ast@kernel.org, daniel@iogearbox.net, 
-	andrii@kernel.org, david@redhat.com, lorenzo.stoakes@oracle.com, 
-	martin.lau@linux.dev, eddyz87@gmail.com, song@kernel.org, 
-	yonghong.song@linux.dev, john.fastabend@gmail.com, kpsingh@kernel.org, 
-	sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org, ziy@nvidia.com, 
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, hannes@cmpxchg.org, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, willy@infradead.org, ameryhung@gmail.com, 
-	rientjes@google.com, corbet@lwn.net, shakeel.butt@linux.dev, tj@kernel.org, 
-	lance.yang@linux.dev, rdunlap@infradead.org, clm@meta.com, 
-	bpf@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: n441zqoqg77e7wtuxi4oiphq463k4d6x
-X-Rspamd-Queue-Id: 61AA68000E
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] block: make bio auto-integrity deadlock safe
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Andrew Morton
+	<akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, David
+	Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
+	Harry Yoo <harry.yoo@oracle.com>, "Martin K. Petersen"
+	<martin.petersen@oracle.com>, linux-block@vger.kernel.org,
+	linux-mm@kvack.org
+Content-Language: en-US
+From: Kanchan Joshi <joshi.k@samsung.com>
+In-Reply-To: <20251023080919.9209-4-hch@lst.de>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20251027060307epcas5p1eb3ad9d4926616811459f164f5b55354
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251023081005epcas5p371dc081977202f0e60a47067d8109064
+References: <20251023080919.9209-1-hch@lst.de>
+	<CGME20251023081005epcas5p371dc081977202f0e60a47067d8109064@epcas5p3.samsung.com>
+	<20251023080919.9209-4-hch@lst.de>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: t3szzidrqbfa35rak5sozjjb8a8ruoow
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761538078-571139
-X-HE-Meta: U2FsdGVkX1+HDZ8IdKwrI7ENbIlK0ya/V//uZhvPEW8EGcM8O6foO/gLPUtWfhg/1tTJzs6eYQhEGrkAoSx9D5NRC/5yCwF9G3cs0dJweWcUT0CqpHdjvUeClwCEbh7Ps1We5vBSllCw/SGO0YEtxAvkk2Bcx2uHkCp4g5ML0pnEA0tQ2ZXTpuTK8lmHgEcy7V2B8QHiH8AD3B/htBdYPPx56CQJMBj3JXi1LcK5kY27HpGR6s5wELpTxejVZWYcaa/XCFwwkvhgSpCvRuf9OTU9f9lxCDCWI6Fy9XhThz2Quco7UaibmQGuBob2UUMGx5tlixPEZnjmpbuLFV8g3edQzROTdMz1coN9e+igTRqFUX2bwRYnSiO7bw7LymaB2om6pvhroWuGtPyfM0iS2JBnuuK4lkrXcL85ipdbAbyVTP9Nv6bIfyYnPLM8l9YqVdW0uPBFLO+Mxja//cyOf49z+JH5YnEIzjvYvkmZqoXFVqtymu1CYFUlO52id0E42G5dt5zm6BaM9KgSS53TOHF9JtOpnF0pEhN3RRxY6wsekKRGvXeUgjAQE2z/l8eCeaCCtfdYpiWf2u5X7UE14fClks6Dickw1Ewav2YEzvzRjYa/hJzavAKgIu9vEaz3fwRN+FfTTfqCo3PCnfiBN72r6OwT1koruONGtLBR9CLgGXvP9IjpKi75gGVvdYzBHexWTESM26V+kgKNBSlI8IfKzPjqMUR8nrQRJ7A/EX8/+zQJmh8EjNoNLUldPL1tcQDUhgNBSdNHHgzTRwRssYPczj+GmL88Uq3pj61Ig3KO9MXzeXauUnfE1IPujpy/7B4F8E1T9DFrJZpoyrEA6pnrYaWDKxr72xLv+IGkhDLG5d4o6kJMZ3yCdSujsyTzDThrkkXhX2OWZXHNPXufOmpgpPrcNkPdueEjg5klbaDXZChlbso2Y+KsKawAD/X38VZpYnHNCFyl8axCMEQ
- Q2HQGTFM
- SMPeJdo9dm1wQw5Z7/LvzLC52jfQZiFHOSpQnPZpqUjEK8GeJKqmiGFmi/O7vD906qum85lJr7VQUTyj+dK5yDpqp0pzIcfEMjaDlUtfhPycKja8cibEFQZcYw4HID93lgEOgtcHmsyKfrek4+Cqxjv5Cd9T7D6DJgDsqsaI3R8w3slNVvNdY5T4yjCEs/rWUSKssWG5n3JkcxD8HpYQ34TBU7GkB9RyEnglijym9Bz8rDktmXcKg+Wzh9l6Pp5n36XFvld0KqBeSSV+DmpbwtbCPJzqS2tSNG5Q2jGc5r4WpNgWHa+qfu6swvVQkbIUzMTG38MyDvfIdAyBQlXou5bDKSWZ6Ah7JRnuKjD6jL/PUFaSwsATRzbgrxV9grZj9+bT9rXZIDzRkog1wgbvQAVAxrjacZ/Koa79xRAs3dyV3y9ALrqsLx97w4C2PlweGLIbQSfxNkADUrRwn2iyzc+rSaIq5VKGQrpa+joN+2vI1DOq4lEwETRJ5fg==
+X-Rspamd-Queue-Id: 743D620009
+X-HE-Tag: 1761544993-780790
+X-HE-Meta: U2FsdGVkX19kcWqpEXNg2N9a4Fzi9Djnjztr5SBkrlmBlrTNqkqI8YPE4T7r7479kmXwUsgMDTgAq90sWuzzJ0rQ4TT67/HITjCuKNGHssiwFZJhOHFChiZ4W5CozbPoYORbSboRlQE7hAkeIEGzKuopXeic2ZY+FQOVs4IMPcb7e3aXOyCwxjppgIq1RGWhT8XoT1UWMcUiLHAgqR95CSDSV5vUZd2DBenEColp+P1UrMQZUDCwJ1hNx5rBDVRnaqsrgzdW169wA3PWwQKVBGiCrNNLqCwoXb3HDgMzBh+5pMjsih9gAEZa0Or44CFGU+/e3NQfmmTn0HPhaFnUwAcDCVDOnLC6J27/iEFEAmjn8vPXg5cbVr7XUGPi5l8HHfN2UiQNnb0Qkks8cs+klbt18GVpVX6vJumBbvHXbIYUuu2xM6LRDT+4hbtEeqH8Yb3FiSwjdhVzwqZq1kZyN7FdhrYNJiFpfUaO9TU7C893KXpV8sV8OAB3WSPcui89TqajteZ5wNCMH2ROGYg1cLjwQ2PWAoLgt39Xv0bHxZ/7w3DNfwxxQJXpKfjbEU+xrfVURcusunf4yxp68ZrtHJw2TPrkNs3TxKOrcm52Kdj/UaV7bz890OaLTVIPlWeOIEi0GnJFTlpVkzoKT5yO9t8UP286U1nRfJ3P1tk2eyby+sqRQ5j356DmGaSrcUvZvyGLs3NdKxqTRJyjC0y12b+8+wg7/qY31QgKn3V5KWrx/JfdfgB/M93s/zgLY0T5ZDftgF7XB0C/ir5EXMUYUerpTULP8IcAAtVSSLAnlb9u5ko1Nzy4HZK8CVYVbWHz2DtqVRKO3b5D30rkfCPws4mAD6zpMQEfr1AcTbvy9is+y75TlIWWLFwvhaYddh7om3N32HpXssCiLyc/vRbHKiReov09UPexb9erMSJpZrTmAvVh75B1wUF48llT3i8/v/0xBQdweSKis474KPc
+ BbgOEANx
+ JuvzNZ+ehJxCEED8YBNGbFKEUpDB21gWSMIOE1bpJ7s0cH0h1I529zDTFZ2JHBqhmKIbP1boY/W7O5pQZZ6lHzMPx6A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,30 +117,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 26, 2025 at 6:02=E2=80=AFPM Yafang Shao <laoar.shao@gmail.com> =
-wrote:
->
-> The new BPF capability enables finer-grained THP policy decisions by
-> introducing separate handling for swap faults versus normal page faults.
->
-> As highlighted by Barry:
->
->   We=E2=80=99ve observed that swapping in large folios can lead to more
->   swap thrashing for some workloads- e.g. kernel build. Consequently,
->   some workloads might prefer swapping in smaller folios than those
->   allocated by alloc_anon_folio().
->
-> While prtcl() could potentially be extended to leverage this new policy,
-> doing so would require modifications to the uAPI.
->
-> Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Acked-by: Usama Arif <usamaarif642@gmail.com>
-> Cc: Barry Song <21cnbao@gmail.com>
+On 10/23/2025 1:38 PM, Christoph Hellwig wrote:
+> @@ -194,6 +194,17 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
+>   					(1U << bi->interval_exp) - 1);
+>   	}
+>   
+> +	/*
+> +	 * The block layer automatically adds integrity data for bios that don't
+> +	 * already have it.  It allocates a single segment. Limit the I/O size
+> +	 * so that a single maximum size metadata segment can cover the
+> +	 * integrity data for the entire I/O.
+> +	 */
+> +	lim->max_sectors = min3(lim->max_sectors,
+> +		BLK_INTEGRITY_MAX_SIZE /
+> +			bi->pi_tuple_size * lim->logical_block_size,
+> +		lim->max_segment_size >> SECTOR_SHIFT);
 
-Thanks for addressing this.
-Acked-by: Barry Song <baohua@kernel.org>
+Two issues:
+- When underlying device has pi-type 0, pi_tuple_size will be 0 and this 
+will cause divide-by-zero.
+- The second value in above min3() is in bytes, and other two in 
+sectors. So this clamping may not be happening correctly.
 
-Thanks
-Barry
+
+
 
