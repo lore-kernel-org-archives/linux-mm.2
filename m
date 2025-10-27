@@ -4,112 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA29CCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:29:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 429DBCCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:34:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15B558002D; Mon, 27 Oct 2025 05:29:26 -0400 (EDT)
+	id 783B58002E; Mon, 27 Oct 2025 05:34:53 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 10C0B8000A; Mon, 27 Oct 2025 05:29:26 -0400 (EDT)
+	id 75AE28000A; Mon, 27 Oct 2025 05:34:53 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F15648002D; Mon, 27 Oct 2025 05:29:25 -0400 (EDT)
+	id 622E38002E; Mon, 27 Oct 2025 05:34:53 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DB3628000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:29:25 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82F2248DBF
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:29:25 +0000 (UTC)
-X-FDA: 84043371090.14.99BF955
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 5183C8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:34:53 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F388212A7AB
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:34:52 +0000 (UTC)
+X-FDA: 84043384824.16.F4C3222
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 0494240002
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:29:22 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KnjnX0i3;
+	by imf19.hostedemail.com (Postfix) with ESMTP id 493121A000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:34:50 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Yid8InZH;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761557363; a=rsa-sha256;
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761557690; a=rsa-sha256;
 	cv=none;
-	b=atVWzHboWNpfAwfCUYoha0JsYeydr24ybDDVpRY4R0RhdbGLGWDVSfqQCyA+FA+of4rrfb
-	Wl7qUQ04lClOcIxtoekD537/xeS5h0IVM07lLn3R5x7eVbTFVl1bRl438wYn39nceFmN0S
-	uMVYNbOmwdIKP/1D+wkATnUv/lrCiFQ=
+	b=6u4yax4LEkicgCMGB+mt1J0qDizEEiMnUd+ZPnbA/XlflwvQUNBvUkQ4Ju2Fwma+D0eion
+	0sJEkunv12hr0QJzYTdH8e5eQYPKPvEYNn3GKaoUXSekfD4QczbJmTbJvXqyGHuN7ZcSeN
+	4es2kGWr0H6VvmMH+mmwboBCFGYzsxM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KnjnX0i3;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Yid8InZH;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761557363;
+	s=arc-20220608; t=1761557690;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
-	b=dYcOcln5SejN9hdODKoDxVAR0uqde2nQoIREcT9/XIfb084bTf5Zby7ROh4uZ4RNG7xSwn
-	ImPpMaUY3iwG73TF8rwwLdhxktWgOEhMxoOv9Y74i43IbAs8bb2zbTL7NRYty976J+iTux
-	YVinglio3+DmifHCAUtUlplw0YqRTgc=
+	bh=enI7LZNpEoEgG2kCIqkqYuUnATtEoWBy7Pep0LNgBPY=;
+	b=JWPukjimizeg9TjL3Ff2yx+P+3OY72ExtuVn/ZEymIn4ZyWLn4eeoAFQfL3vYwrG2WnVUG
+	HUtHwRvj5r7rNXzBs6GS69JOCnz7Bvg3S73j7PKX2eslsY5EHmxlvCKvvEkjCt+b+Qjb/O
+	cszRBExImPCJzosOoidiA+Nh5SoGB6I=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761557362;
+	s=mimecast20190719; t=1761557689;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
-	b=KnjnX0i3duky/AZCXSbTzV7M7NEvouBXHsuJzHTLrJ+hslxg8FiFX3SxZuNaPCQIa/mc+q
-	XOxjsWBsGLAP8CSP1j/wpNt239ZwtY0mcTm0/A5InQhdA8TQvQoEuJ9AH+1KI1oYpH+sty
-	/FR56F+a/JJacMbph4EGO3XQtITWsyI=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=enI7LZNpEoEgG2kCIqkqYuUnATtEoWBy7Pep0LNgBPY=;
+	b=Yid8InZHBrQjYFAUOmUdcAQlA8bUaDWZq0dY9harMA5Uyy9tvuwxp5Ic0c4sQIceOz/EY8
+	yl2PJpV9LDxo+4aeTyTkgiTDZWzTYC8D2BXanI1LFmGZdyzfe8c2TWRmqwxmpK9Y0eulww
+	KuMR5OSFrt//FuV2a+TmfYIR88vWqyE=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-473-EYNvLBkBNOyX_G8NUqCA4g-1; Mon, 27 Oct 2025 05:29:20 -0400
-X-MC-Unique: EYNvLBkBNOyX_G8NUqCA4g-1
-X-Mimecast-MFC-AGG-ID: EYNvLBkBNOyX_G8NUqCA4g_1761557359
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-579e84da8a6so2322359e87.0
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:29:20 -0700 (PDT)
+ us-mta-689-_fNf2smON8uZg3JJE-7Kpg-1; Mon, 27 Oct 2025 05:34:48 -0400
+X-MC-Unique: _fNf2smON8uZg3JJE-7Kpg-1
+X-Mimecast-MFC-AGG-ID: _fNf2smON8uZg3JJE-7Kpg_1761557687
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4721b4f3afbso11790165e9.0
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:34:48 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761557359; x=1762162159;
+        d=1e100.net; s=20230601; t=1761557687; x=1762162487;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
-        b=lbrhJH9raIiaYIOYDhT7Fp8KCMc+vUSXoIDDSqrV1LRWlI+4J8CJ5tcyHg69g4aCDi
-         uKk1260WRSVMmGt5JkCtTvJFQO0Xah9uRIssWPs6zlmvK/gU2oyTluEdHU9TNbCsI/M9
-         EuPJBU6+VrQfWZWdKwc7eROXoswm9R9qnGf2anrfBBUSkoEz8Ze6Hd3L5YRl4hBGHPdM
-         MUyv0pVJGuO7jD3qkP8mryBVoN4v6ONmBe+Yqf6fE3pmnXWiIkf2h1D8v/hCl4YNlovw
-         lTl3EIjPkGfCFQkCOXQMaFTYVRLkADgersaSM1e+NuGmkODQZpQUck96Af2x4wuhuKzG
-         NRqA==
-X-Forwarded-Encrypted: i=1; AJvYcCWGL3JspxBaPjs7qnV+VkrE+pNsfcLKc71+bbgNRvb5LR6ruz+yKbitizAyawziTfMcx612vG6Ofg==@kvack.org
-X-Gm-Message-State: AOJu0Yx0o18i+1Ji6mycsv4BZo7J9opOvjs2dj3GA/OoFlnTyNsdPJUO
-	IQnYBjyVdmSdsop9R+/6h3QazFDEWkSeCGOFlhbJeqiqysJ/mPDlENEoYOPqa7NdnT+vsdJvrtq
-	IUo1jToDN/UMI4XsBM7aytB6lsJGg50bxki1IGn82rTetIkbgiEA2OzHAi7wK
-X-Gm-Gg: ASbGncuo/GoGsz3e5dEhHUrIytKYbWJym+c566LxmQJyvP5XIyvjD+QUh9oQugFs1Hs
-	bRBKcni2v0f3ddPDzyI8D96tjlbDXc9Ck2csQEjIJFal/bbdzPFYJS7zfqOggsSVpXkIGYx3Rqw
-	npN+UnouWYDdm+2QzKcPrUp+ouO2c4qWM7PBFcScKFjSgbKa+2iHecxVau5WnOW2NpEZieO5i3t
-	QXdXw7HdVRiHlwXuwdSSVvcVBkgH5taOYqtfFKQHCYxskGVzMXffbV2L09UUVZkVbjvqW0w53w+
-	wqEVQHQ20iLgD4HoGAp+wMEs3lhYVr9JRxrrUPNTIhgDp26Uz8HJCTrhGTMasZHODuBFD9Ak1HK
-	FhO+r5rMkBn28+Cdqkf5JK/TklUiLg0X0T/cd3aW1fUubU36C9hbm75ASlzkLYlRaBSxe8VgVgp
-	sQK+yP2dpcyhE8Jqa4/gYottmeFpc=
-X-Received: by 2002:a05:6512:b97:b0:591:c2f8:9a5a with SMTP id 2adb3069b0e04-592f5a597bbmr4225769e87.35.1761557358822;
-        Mon, 27 Oct 2025 02:29:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGeFOAW1hrpbsW0eQlRbjQxJr+vhA/fG2pz5sBmADxwmWW7wq6SVBBMIi1ckQnF6/ww/Geqxg==
-X-Received: by 2002:a05:6512:b97:b0:591:c2f8:9a5a with SMTP id 2adb3069b0e04-592f5a597bbmr4225749e87.35.1761557358143;
-        Mon, 27 Oct 2025 02:29:18 -0700 (PDT)
+        bh=enI7LZNpEoEgG2kCIqkqYuUnATtEoWBy7Pep0LNgBPY=;
+        b=jvLR7RCwNIitzBuSkNi0etjwF7MuQ/Bb9mfqyYqSQH5xoJ50T3Tl7mLncquuqeZtpI
+         QiXJSLOxjDvgGsxUCnSrK82lCLy6ArnOfcUtl1AxRb0HbqBOzaFnPQffTvgc/HkSqeks
+         pD52fZZlLf6CfQHcC6VM/z6ue8fsBVmctefxCTHh9yOFJ6Yb/OhGIGaRArKgizvxp2JY
+         Rsjb77nxxW1ISTAvQVMfikfk2buEUEYLEickBvaHvdY0s4vbIUBq96vEFWUnh5HvkrXs
+         5iJeqQGZYidVTPS5P6WkBcs5ZJ/+mtvCmCsysNJcpGWW2db5QxZ+qPmMhTl+QUnmZMWG
+         zvUA==
+X-Forwarded-Encrypted: i=1; AJvYcCUfpfc+WEnV4Yy/sIG+lgF8TjeHkofzGoJBE0WVCmqRekWz10XqL4d+7FaPyPEz5BsT2TDYc0vwlw==@kvack.org
+X-Gm-Message-State: AOJu0YyZgcRbGa7S4fibgAZd0f95DCOZ4xalajGAKSVTN1Z502jlRaXq
+	wjPAdUuWhb46TtZZqvrKQ+VuAPi8jkFKFrcLAaUxcpHAU/OsT1mA8nV2f7pIV8/McCceMaksmRN
+	WDsGCMR3mX5Sw9C45+vbB1emWf6IFQmm8n7CKUHUzkCQ9cZQcv27F
+X-Gm-Gg: ASbGncu2T5mgJau5Cpuxhc5vLJOdr6zEdaLUlormhLI/F3OXo+H0G4NY5ZnfrbxKXDv
+	7lFY/0iw4Yl/LDcqKYwrgqz+A5fEw9j6eg9y10omo+mz72m3nQ+OgFT5T2A4JqNcP9tJ5upSlYe
+	/4B2/cGK0NWr43r/b3wAKuFHBKO/lOWRIxXAyKTKwnzxjEHc97MAvAKgN9/OfiTQfZnlpRNoLCh
+	E+sFkybz7BEzbuf+ZG4o1MBLWefxIFzWVfFWoQXwi7gKpZHIJC7n05TwUEYYt942VcA5+WSRMhP
+	r3/uZopQfAIiFpnQjkrEt5ev6nYtaXjy1Z6hnsHcBWeOKvQlc/9MoubGLrpOzB1jbATi/bNNNxU
+	EnmxpggswK8iAEfPhALH95GqBbA+CjPwcxZP8pCDEEbyQJq11gne0zFUHcb2znjaSPGJD5QHlzZ
+	YYZPANWiaTj8G8KGlPKh4GmYGPXOc=
+X-Received: by 2002:a05:600c:800f:b0:471:672:3486 with SMTP id 5b1f17b1804b1-475d2e7e9c3mr74954835e9.15.1761557687243;
+        Mon, 27 Oct 2025 02:34:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEbYhXBdD/2sb21JkRwYqN4qMp1O+MlBYVpVhQAmAEtPEi4yKtKC4y56wL69hYkHpXzsclqsw==
+X-Received: by 2002:a05:600c:800f:b0:471:672:3486 with SMTP id 5b1f17b1804b1-475d2e7e9c3mr74954495e9.15.1761557686886;
+        Mon, 27 Oct 2025 02:34:46 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f5fc75sm2135864e87.59.2025.10.27.02.29.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dcbe5587sm146578635e9.0.2025.10.27.02.34.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 02:29:17 -0700 (PDT)
-Message-ID: <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
-Date: Mon, 27 Oct 2025 10:29:15 +0100
+        Mon, 27 Oct 2025 02:34:46 -0700 (PDT)
+Message-ID: <0fd86682-0679-48ee-8622-d9d7a977d69c@redhat.com>
+Date: Mon, 27 Oct 2025 10:34:43 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-To: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
- linux-mm@kvack.org
-Cc: linux-debuggers@vger.kernel.org,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+To: "Kirill A. Shutemov" <kirill@shutemov.name>,
+ Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
+ Matthew Wilcox <willy@infradead.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
+ linux-mm <linux-mm@kvack.org>, linux-fsdevel
+ <linux-fsdevel@vger.kernel.org>, linux-kernel@vger.kernel.org,
+ Kiryl Shutsemau <kas@kernel.org>
+References: <20251023093251.54146-1-kirill@shutemov.name>
+ <20251023093251.54146-2-kirill@shutemov.name>
+ <18262e42-9686-43c1-8f5f-0595b5a00de1@redhat.com>
+ <ca03ba53-388d-4ac4-abf3-062dcdf6ff00@app.fastmail.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -155,21 +171,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251026162156.12141-1-linux@israelbatista.dev.br>
+In-Reply-To: <ca03ba53-388d-4ac4-abf3-062dcdf6ff00@app.fastmail.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: -CHfRook_qTmoweu4gZ5D4MmchwSrWQFaOhKOPCvSYs_1761557359
+X-Mimecast-MFC-PROC-ID: 9mfGa1IXLDe5eWbDa90ckft6YVhpMYCOccEKozoIfKQ_1761557687
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wu7idh6tssey8ejuanmoxtu7gnq7em9s
-X-Rspamd-Queue-Id: 0494240002
+X-Stat-Signature: n3cc684j1pzw4i4yc7aerpzquxc9fizf
+X-Rspamd-Queue-Id: 493121A000A
 X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761557362-234239
-X-HE-Meta: U2FsdGVkX19H7Rytxu3oZn6OoOXhkxIYxv/iQtz7BVfXBGs6CMgOI3xQ8FnNET35Gdod0crvVp/zWqhN2WlY7PhykO5l4lW1rFr1L7pYFC/n/TkiQVGC/nxbwTtjyytkkYZQmhrTh8G/BVWOPXNjDFPXCxDVnIapB4lDXMZAp0eZGs7eiQIxSApyfZldc7fvDrpJnJVrlx7Uz7ZoRqkAgvmD1aTinFRmfWCZ15rRDzVwhVzmqUcyEuY8MDR6to1Bq1+xqpr1R1/Llgy/b3P20HkTYDuc4mhSd/5BAUqF6PYd/RdYVvEkRKbqQJjshqeicvCt4PZkWwHWnXx38iAYJVEjGQlbF+IVIAQN+Xq/wEcuXMWn8D3ke392yevmQt7sr+n9e4T1occBZ5AA+m5YSd5zri4JrYSLztRF+O+JY/1c/tzW105mbjHM8HvYOHC61r9AvJq3ABmHQaBPaaVk6KLKbCMuSHPFnxTKRWk8BeWEDAXrk9sOWrg8/riakB/+JSCIjP0CzQVKsmxV0/TugGCQIbNls4f31aJa7ptNg3yUGK3h4M3Qbi7lvuYxYuORbZZP9nchr98sBQGHrfY2osMEMD0T/97DQWiemEwx8wcoOtdboPcQi1t2u+zQx7R+I3+JLcUJVPDr89p+Qot2f1OcFUTX6yp8fy1PFXkx5xmjovQE8nHqmEpMvrIGKRZmJuI/hLdUqIdOlHfuI9YS+5MTv09/djPolwFDsuCttb+QkFxqdaLjQxqJ329IVx8qaUgBJJ8mXjGUDf6BYKJKDeleJ2MjEnjCQO8aAzf+v7WhHLpWixNzxxv4+N4qamH7oGrCRgAmJIZ0WLCbs82h1NmjDIVN02zpeijCPboRg3UrA+8Ye0xsIYhGQU0cmck1cIB9IJX4PiQcwbZYV+y6KHx2cthB0476ySZA896n2EOnmt4R5hEMhWV1NM1U5rohrJaYIta25uoz/Qbg1O0
- MtrZ9kbN
- 83C3HvRNU3dojFnIMvbJ0gq17I8DdjdiIGt/l9GWX7PVc7ZN//c2yqLyIWjSwJH8oJvt14XCSQXjK5bIIg1QQvuG/NP4T2JPVVF5sLW2GLYFpy6bGRPE9iAruaPuHwJLGX9Yrvo4GlRLbRvLlLX4y4K3VOHFvl/1yUpEWrn+739uMJ71dAKel1LyffWwFVclpTVuLbs7X5WZ062MaT1ySTCMoni8jO6YeVnEA12LjQ0KHmmbfkZTm/x32KuxDipnq209KyxNURCNrQElNpf0xP+3zuKOt3ZWPGwifQlhgZKrmujuGoenVqJA/ayid+hrUpCNTtqO9FwEnbuEtvxrhmd8NGeWt/XHlGZ4c0YwJG6AFzz32dCMzoferLuiyPI/K2ibPVnnWRDucH4OfUtLvx8Ui2CYDblZn2p4T6ZceugbRiBDmkEvNmIHzhMzUrC7KLK8v8LwVFHoKOazJAujoWKdrNsy3GpipOg4r
+X-HE-Tag: 1761557690-452039
+X-HE-Meta: U2FsdGVkX19DrHmhBiR9VeSmw5UOn3UsaYKUuZvJcblUgXg2NgHqy0RxZP3POJ6fqMPBPV6jRzF8dCGWXIRELb08jqbt+Uji0v+dODs1DGvmzo0a2lqwCdE+iLm2HKrXMV5orLWA5G96RkFUwQP6LPyAQiPFqMtbSNBUUIOszOyuoSsqneeFtSTQK8zHHk91RG4V8KW7Gj9pqphYOFs+Gx53hjHhkA49P+Wr1ntj23dS3YzUik1J9cgQ3Duv+YMe3tgkWZDBahDqHkdvWlvpIBbLY+gb68U62q4sDTljoT9HpzFTdAEzLkr9wfTsmwIWaz7VE+EvAZUpI7Y7D5lCxBfEG4LcNMmBC8BVH2oSOp5EPfqK6ppslk3afLdoEnu8WMvWKWLSjvqdHT/qobdb3j/MYoxKVCiMvOLTYlP1kQdmBvO0iXQoJUImBRRTm1UsIQPXZw5toV72kWKHjO1kgdJHvwHe3knj6WzbolvdC4TgrnGT0YG4sqHTO4OeF0hOs/l8/5YaW2lSjxhaqEuk+VJBYl9PR/TtbAdwgGTpwmFZVJhGIEIHkZ4g/BERdJf6d//kv0fi71Ew65f1Drt8Plnn0hS95rjL+vQ7GlyCljLwGzRNByg3TOK0GsugMLkYwx0Y43r2BiagGkwEYep2GUVgXtqjD/NzNXJKYqDc14RJ9iAfP4KZ4BiLuQzyTtJlvZvvZiaxyxVOqlJkeC1/UH+y+7cxWAAGqGylOM2LpUPHcGjwOIP8O1h0GgutHstTxIinSa1bdVvTvX4cdcVpENDu8avkDOQXNxJ+GAUxW9qfI7JKOZecgY46GhvhjDmC/+EqL3koeoPgpIWbCQvh+1O6ANrbwQ1BAOuq4FnWH/fmXbVRshZJSaJZyHQOdnlujbZclCpTcoZk7AiyqiVdcJabkthmCGUr7ImGL0RdwOFaghmh1527is4sNSzFlDaf3RjvK5oiQ26Aj/Zhkeh
+ 5EaHe6GK
+ qWfdFZQNwCFKT3Su0wyiKA34TGuevjhqNLNylsdx3awhFBRGkDLSROtNH95+4+0Q8A0gfCWB7N+r5kQarKd1CGvPVXhqlSmNZ2Qp8U2MDZqZ2jLRlxbw248WEb5WbuG5FkDx3Hc9NxTO5OgM63/MOP2Gy1x+udMov/VAh4wUL91rZHxAusS80jXUNV/H4RuBecRwn76RQHeEcGxcHzwS/n2frbDRdZT+CsDksP46psSncmbQkWJ0SHVcmhKsKdl/0jZG8jhQpaU2hXbyntnJqWEbEB425iGmH3Uzpe//hgGJq5e3i0zKsf03S1itMKcWdGBMQmuV9D9NC+4PxMxTwjMMGQIBdMukrEAHEdTMMV21gBeJ7niLudAhYGej7FgUjk0Vib0hmeySdwIbyZJejk6hLT3rcUYwyZuaOBQLCCURN1O+y1ojlpNX2zmp0cKL1mMsY/0dafPyjbM6z1dE3WwnAV8h1gWt/8Bvj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,60 +194,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 26.10.25 17:22, Israel Batista wrote:
-> The MEM_* constants indicating the state of the memory block are
-> currently defined as macros, meaning their definitions will be omitted
-> from the debuginfo on most kernel builds. This makes it harder for
-> debuggers to correctly map the block state at runtime, which can be
-> quite useful when analysing errors related to memory hot plugging and
-> unplugging with tools such as drgn and eBPF.
+On 24.10.25 21:32, Kirill A. Shutemov wrote:
 > 
-> Converting the constants to an enum will ensure the correct information
-> is emitted by the compiler and available for the debugger, without needing
-> to hard-code them into the debugger and track their changes.
 > 
-> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
-> ---
->   include/linux/memory.h | 16 +++++++++-------
->   1 file changed, 9 insertions(+), 7 deletions(-)
+> On Fri, Oct 24, 2025, at 16:42, David Hildenbrand wrote:
+>> On 23.10.25 11:32, Kiryl Shutsemau wrote:
+>>>    	addr0 = addr - start * PAGE_SIZE;
+>>>    	if (folio_within_vma(folio, vmf->vma) &&
+>>> -	    (addr0 & PMD_MASK) == ((addr0 + folio_size(folio) - 1) & PMD_MASK)) {
+>>> +	    (addr0 & PMD_MASK) == ((addr0 + folio_size(folio) - 1) & PMD_MASK) &&
+>>
+>> Isn't this just testing whether addr0 is aligned to folio_size(folio)?
+>> (given that we don't support folios > PMD_SIZE), like
+>>
+>> 	IS_ALIGNED(addr0, folio_size(folio))
 > 
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index ba1515160894..8feba3bfcd18 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
->   unsigned long memory_block_size_bytes(void);
->   int set_memory_block_size_order(unsigned int order);
->   
-> -/* These states are exposed to userspace as text strings in sysfs */
-> -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
-> -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
-> -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
-> -#define	MEM_GOING_ONLINE	(1<<3)
-> -#define	MEM_CANCEL_ONLINE	(1<<4)
-> -#define	MEM_CANCEL_OFFLINE	(1<<5)
-> +enum mem_states {
-> +	/* These states are exposed to userspace as text strings in sysfs */
-> +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
-> +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
-> +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
-> +	MEM_GOING_ONLINE	 = (1<<3),
-> +	MEM_CANCEL_ONLINE	 = (1<<4),
-> +	MEM_CANCEL_OFFLINE	 = (1<<5),
-> +};
->   
->   struct memory_notify {
->   	unsigned long start_pfn;
+> Actually, no. VMA can be not aligned to folio_size().
 
-CCing Lorenzo, we recently had a discussion about such conversions.
+Ah, I missed that we can also have folio sizes besides PMD_SIZE here.
 
-The states are mutually exclusive (so no flags), so I wonder if we can 
-just drop the (1<< X) setting completely. IIRC, these values are not 
-exposed to user space, only the corresponding names are, see state_show().
+So it's all about testing whether the complete folio would be mapped by 
+a single page table.
 
-
-Won't the compiler now complain that e.g., kcore_callback() does snot 
-handle all cases? (no default statement)
+(a helper would be nice, but cannot immediately come up with a good name)
 
 -- 
 Cheers
