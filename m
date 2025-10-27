@@ -4,95 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C577CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 14:03:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F86CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 14:53:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A9CD08005A; Mon, 27 Oct 2025 10:03:11 -0400 (EDT)
+	id 8C7318005C; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 989D08000A; Mon, 27 Oct 2025 10:03:11 -0400 (EDT)
+	id 89EB38005B; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 767668005A; Mon, 27 Oct 2025 10:03:11 -0400 (EDT)
+	id 7DBF68005C; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6056A8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:03:11 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 01DE11DDD89
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:03:10 +0000 (UTC)
-X-FDA: 84044060982.06.E174DC3
-Received: from canpmsgout05.his.huawei.com (canpmsgout05.his.huawei.com [113.46.200.220])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 980ECC0013
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:03:08 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=KKes2zCN;
-	spf=pass (imf10.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC198005B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35527C0146
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:53:37 +0000 (UTC)
+X-FDA: 84044188074.13.80A1D97
+Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 6FE491C000C
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:53:35 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761573789;
+	s=arc-20220608; t=1761576815;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=skT01swcwscnrABmfNzvfcVy552sDhR1HXvQJoW73Zc=;
-	b=xFHbxwLXi5YUUCCZT+roq75rXtfpBLQdfSgkjfoMj8YSTPvfOmVj9RIiygbKLNs4KN/8AM
-	bdcKGsTi5TcnbZ2gyE0GdhuWk+c5PFuv0Dc9t6huHRQ4gaYHQG6q4Ltwg0LXeYat4BJEIy
-	kGtbew/X+P9tEpHO42i30bMrXYSrLrU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=LBaCICudemK5hqX8hGCj3Ny3uuhnAOdCVI/QK0vqE8U=;
+	b=MbdolDYtIdnxscmMq9ksYFb7zLIS8d363ui1Tvkleqyn7YiF+ZI2WMY8ZDT/S3m3qtNN6r
+	WlakiuE7eP1qrXI2vKPTMuh6MOrnvOi/D91MMqxbh7ScVtkFJcHEv+GsMIqtpd23lLLKW+
+	J7FNLZi8oQiif4c4uoRWy6tR0yrF85A=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=KKes2zCN;
-	spf=pass (imf10.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.220 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761573789; a=rsa-sha256;
+	imf21.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761576815; a=rsa-sha256;
 	cv=none;
-	b=TYJlx7khVK0fEBdS3tTTlp//kl3u95f+7/ufJxr8UCQuGqGBwsBmCa5M3MrEtpqfwpg7KO
-	NDOwh03GBifgZCgxMw15yHCJr2UzTRs55go0bURKq7tOKs+CituxEnQg7zX5D36pppwPIT
-	jDv+wnPJHGuWjChf9fCyQMp17qyk4ag=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=skT01swcwscnrABmfNzvfcVy552sDhR1HXvQJoW73Zc=;
-	b=KKes2zCNnXquaxMSEaw4Qt+Vor+rZlmTdwMNmSWUFbYdgpEHaW3K0x3f7xGQhmEiG7vAdHI2r
-	YcGWXVqxQmHSsmylD3DWdBgRZqto3seOnIv1RYYOpdkhrLCOcXF7QlY8Iv3hBswtq2TtB6hx3AR
-	xwHbnOhLykF15V72hPpdP58=
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by canpmsgout05.his.huawei.com (SkyGuard) with ESMTPS id 4cwFZ23xt8z12LKJ;
-	Mon, 27 Oct 2025 22:02:18 +0800 (CST)
-Received: from dggpemf500012.china.huawei.com (unknown [7.185.36.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id C9CBF140203;
-	Mon, 27 Oct 2025 22:02:56 +0800 (CST)
-Received: from huawei.com (10.50.85.135) by dggpemf500012.china.huawei.com
- (7.185.36.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 27 Oct
- 2025 22:02:56 +0800
-From: Zhang Qilong <zhangqilong3@huawei.com>
-To: <akpm@linux-foundation.org>, <david@redhat.com>,
-	<lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
-	<rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
-	<jannh@google.com>, <pfalcato@suse.de>
-CC: <linux-mm@kvack.org>, <linux-kernel@vger.kernel.org>,
-	<wangkefeng.wang@huawei.com>, <sunnanyong@huawei.com>
-Subject: [RFC PATCH 2/3] mm/mincore: Use can_pte_batch_count() in mincore_pte_range() for pte batch mincore_pte_range()
-Date: Mon, 27 Oct 2025 22:03:14 +0800
-Message-ID: <20251027140315.907864-3-zhangqilong3@huawei.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251027140315.907864-1-zhangqilong3@huawei.com>
-References: <20251027140315.907864-1-zhangqilong3@huawei.com>
+	b=1xM8WEZIsgUhfbXV54MmIWLs5DR6setzS0P+nXEi5pF9TR9LWWMG2qnDnouGt+vLIrhd/2
+	0+YBi6rNfkENIjLQog6nhWnPC1hKKepqzs79t3F5yA67pcnN+LCdfAFymXi37zhdUeBtn7
+	ChzHSr1gwtQgNobvQILAEQyOZE/Kch0=
+Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 158CE1DE3B6;
+	Mon, 27 Oct 2025 14:53:33 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 28FBC20028;
+	Mon, 27 Oct 2025 14:53:28 +0000 (UTC)
+Date: Mon, 27 Oct 2025 10:54:03 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Alex Markuze <amarkuze@redhat.com>
+Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+ bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com,
+ idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com,
+ kees@kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de,
+ mhocko@suse.com, rppt@kernel.org, peterz@infradead.org, surenb@google.com,
+ vschneid@redhat.com, vincent.guittot@linaro.org, vbabka@suse.cz,
+ xiubli@redhat.com, Slava.Dubeyko@ibm.com
+Subject: Re: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph
+ consumer
+Message-ID: <20251027105403.2d020b8d@gandalf.local.home>
+In-Reply-To: <CAO8a2SgZ8gZ0VdtBAeW8wLMDxa+Eq42ppr-99tUpiu3Tpwqz5w@mail.gmail.com>
+References: <20251024084259.2359693-1-amarkuze@redhat.com>
+	<20251024135301.0ed4b57d@gandalf.local.home>
+	<CAO8a2ShRVUAFOc7HECWbuR7aZV0Va3eZs=zxSsxtu0cMvJmb5g@mail.gmail.com>
+	<20251025105944.1a04e518@batman.local.home>
+	<CAO8a2SgZ8gZ0VdtBAeW8wLMDxa+Eq42ppr-99tUpiu3Tpwqz5w@mail.gmail.com>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.50.85.135]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf500012.china.huawei.com (7.185.36.8)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 980ECC0013
-X-Stat-Signature: xrp7br3k8ic85uoan9domas556ya9t8h
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX18QkOO9R21LVBrW4cwrEsvG40q+N7FRrKg=
+X-HE-Meta: U2FsdGVkX1/y2rxUidxPu/q4n8C0KJZeyG9NUfc267rFSYjiZBs19+cLFZ1Ce5eI25D7AtEIUV88ToUUjzXl12lsYbGAgOTQYwQg5nE7AyNBP1f7Bt2CIa4mybazVYojiJXsfpZEyBhhJuY8YYQW/U0XRduqJYyOMi4Xk3v9Mo1bW7ImUBopldJfQW9+NP+Moo18A+AzIZtEdv8wx0PpAiegJ9cvnQI705vJv4huyvM5eprVEIcCifuhhNtKcMV6hRz124rK2MjqUDdFccljiUkErq6KpbP2LYaxEaDSoqwcHaVp1KD7b3B6Zz26gXdoH4pIcwzKBvP09JRLCAVwIjFCzDQSEur7
+X-HE-Tag-Orig: 1761576808-121962
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 6FE491C000C
+X-Stat-Signature: btabxbh6rn4s9y75i8tsernxrkczhxfu
 X-Rspam-User: 
-X-HE-Tag: 1761573788-82354
-X-HE-Meta: U2FsdGVkX1+MWyHUfNbPEgAAkukVv1uzToUunXE/3EJQFPc1MoNUkQfSk++IVD/C46DOYlfkNxGpCpLCl/19RI5Xbb5YUkCWRizna4WOVexD5yiydw5xofJ1hjBQS227O11EcsgreKwYggP8KgcB0TNB+AktE/8o5b5aVTw+/AiEIRH9hth4bbtOWp+plIn/uH2VN13irHGR33D/9tDlC1fHO0FD7laovGbX8f2EYEwPo8Q6UIBk+g4NbfQwwvynwLdPRDQlgFHsP44z3Mwc6VLHTkS9pE3lWb26K2OVxhW34kctzRW1JbSnoYG257CnavyFzokKJyP8aNJ52bXXGI/W3AhaZxvsKFSmZ7elzjhG/yd4AuenJC1KKZYykWxo90NFOgblaoM2SLY4uHblkIBDNEjWDqHrYdIMaSsftt2pz4tZ6M6ITgL/GE52u33V8F6drklEw14ngcZewywuMRgRp752zny3ENBl+Fjz6K0VbG17qIyit/PYDdR/RA2jj2JQoSQ9NkMwN7HP+dNz3bxA4FERyU4igJnOiN/STD17zGvyQAl71Q7dykFBdNMSCKYGL30e49GdkBgJAJx0iqdkEOaE0SNn4MBu9XWC4z6HseigKDJYtdYyoLsvAtAyNppItZs041umiRMoIvgX+nw6dzG2CyXppHkcwuwlNoHh66m84RLnPeTSgrQ6h4ZdDNjFIXuUXqcRdHoHMJDwdfbN/08y4yRFxvt3XQ9IGQGq7NDn5cR9avyF7iD0NZup8Z7xtRH+nddO7WXu/1UQ405m8iyu22YxqvWHIiN6lnOheUWX7b17ORoIMpaw9x9T0b+cDnuxwsF4xhWN6OCdbk9DP/ZiBhZOxBwF1zJtTuxnOwq0V9D7jVceoD7JKNjDG/VUYwsmiz3Qmi4MhmklcIc0x4BQ1kJOQKhNw8KppWue/CGOxwQvecoRMY+SgahboQgPspfYFjb68Q2cXbh
- KOEhZAB8
- JNDJuCa49lDejtJtqn8AIhjewkpXDk2sw814+P3I5/0cttlvbbKng0nnqsiRkJEr1+DhsclECqpz/TUQyQ8OCOQ4A63F/3cfzwSy/Ww1xVzwqCgKjp+cvGI8OH1J0mfTvQxMKsjl+V7IEnJvZNYzziOLMgYvKoVuFbv+kywp8CQ9lb2p1Md1rcFdFhyEY5OwfdLjFbifDr4c/9+ZUvCG90DgEbrrc7bOkXwdfg+VOmYxjiRYUCrvAZ17A/LdEQqfx5EoVQ5HHVOFdq4FWQ3mswgQB2lqcBoTCEqU26gnwzQRuktRahqt5e4mOHwouL4VbeHrhxUcbQMPSUUby/GXmKhxm4w==
+X-HE-Tag: 1761576815-503571
+X-HE-Meta: U2FsdGVkX1+KVifotOSdaq1uGbh2Af2EBk3SAzYBD2g2KTKXapYZWpUC/ntWrPgo615dhbumw3+k6iuKSQDpQYEZNj01Aw0dHUmhisSD/U4m0AfEfBE6++yUEcEcv3Xir9zQop7yLQyfc4QkP50Y1y8pW0E1hcKOev1bhh9mhiQHndIrvUxorPtMrMiiRv1SyItRqa++IX3Fk4ODHEVphN687fHkxjTt27mJnV4FvSPf8CbHEgZq6mUZPBUIpaGX0Umr3U49uVkxPG2MFcRmKyTwVmzpvXw8sGpa3i/OePfl+bQk8SFZDCghGjNLzuKpcuw52g0v+/luUrdDq7KA6aE58xeH+7UYPDkn1v41N8lzfDNbnwj0ra2GEeSV4uwFbSwHwFF+hkCdweSvIpk6bD3rq8x3yH37rtR0ERMaK4/8SmlecuHit1pTK9xpDIByud0LWTUhnI0tNbRZONG9+EO4kDE2aL1w1sU5G30BIAwyMhqc4pmI/ZU7CGOp4nBOqiH0DGK6nLzCquxTPRmDOCjuP/yBeeVQkxzhFeedAeIu6B95SONuxL6V77m3TVDGZRPn7X1h6JxZXDym6wzl9ZKI2hCWTm1jgAvXXbjp0BFTyZEqp4ShEuwwaiO3vSvzOTm5VgFooym/padYN9rmvAdBj0GNQXdgIDG7gaMYFTlXkcsMcjTJWwOQtYwPAYJqlitUBpn9OdRo07mXLuNPGKRxTZHGXYXy2tIjHQuhErIudUpiLBeO2OdWCU6h7rHZMm+3H6wvgzK4XsM9ynrgQT20Cu379loE+xWRe/RKIUrZdMlmY6pplkCxj0AoKhAjNHNC/NZmU3lshJnhpl7RUBJC64I1zNBRYirfud0iziNtuxduTZ4DOfIPGxqhYPlBrpkUn8h2YtgH92sBENPqb+AohHkJgVWzY0qYMTqpmPCkvTbD0MGbJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,70 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In current mincore_pte_range(), if pte_batch_hint() return one
-pte, it's not efficient, just call new added can_pte_batch_count().
+On Sat, 25 Oct 2025 20:54:00 +0300
+Alex Markuze <amarkuze@redhat.com> wrote:
 
-In ARM64 qemu, with 8 CPUs, 32G memory, a simple test demo like:
-1. mmap 1G anon memory
-2. write 1G data by 4k step
-3. mincore the mmaped 1G memory
-4. get the time consumed by mincore
+> Please correct me if I am wrong, I was not aware that ftrace is used
+> by any kernel component as the default unstructured logger.
+> This is the point of BLog, having a low impact unstructured logger,
+> it's not always possible or easy to provide a debug kernel where
+> ftarce is both enabled and used for dumping logs.
+> Having an always-on binary logger facilitates better debuggability.
+> When anything happens, a client with BLog has the option to send a
+> large log file with their report.
+> An additional benefit is that each logging buffer is attached to the
+> associated tasks and the whole module has its own separate cyclical
+> log buffer.
 
-Tested the following cases:
- - 4k, disabled all hugepage setting.
- - 64k mTHP, only enable 64k hugepage setting.
+This looks like a very specific solution trying to be a little more generic.
 
-Before
+The more generic a solution becomes, the more "bloated" it becomes as well.
+That's the nature of tracers and loggers. Ftrace was designed to be very
+generic, and yes, it can be more bloated because of that. But it is also
+designed to be tuned down to be a highly efficient tracer. One that can be
+used in a production environment. Sure, if you enable every event, it will
+cause a noticeable overhead, but ftrace is designed to surgically pick
+which events should be enabled or not, keeping the overhead within the
+noise.
 
-Case status | Consumed time (us)  |
-----------------------------------|
-4k          | 7356                |
-64k mTHP    | 3670                |
+Ftrace is more of an "infrastructure" than a tool. It provides access to
+trace almost every function , but you can use that same code to implement
+live kernel patching or BPF hooks to functions. The trace event and
+tracepoints are part of ftrace, and are used for things other than tracing.
 
-Pathed:
+Perhaps it may be more suitable to make BLOG use the tracefs interface,
+then to create an entirely new interface based on debugfs (which BTW, a lot
+of production systems do not enable debugfs which is why ftrace uses its
+own tracefs that does not depend on it).
 
-Case status | Consumed time (us)  |
-----------------------------------|
-4k          | 4419                |
-64k mTHP    | 3061                |
-
-The result is evident and demonstrate a significant improvement in
-the pte batch. While verification within a single environment may
-have inherent randomness. there is a high probability of achieving
-positive effects.
-
-Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
----
- mm/mincore.c | 10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
-
-diff --git a/mm/mincore.c b/mm/mincore.c
-index 8ec4719370e1..2cc5d276d1cd 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -178,18 +178,14 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 		/* We need to do cache lookup too for pte markers */
- 		if (pte_none_mostly(pte))
- 			__mincore_unmapped_range(addr, addr + PAGE_SIZE,
- 						 vma, vec);
- 		else if (pte_present(pte)) {
--			unsigned int batch = pte_batch_hint(ptep, pte);
--
--			if (batch > 1) {
--				unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
--
--				step = min_t(unsigned int, batch, max_nr);
--			}
-+			unsigned int max_nr = (end - addr) >> PAGE_SHIFT;
- 
-+			step = can_pte_batch_count(vma, ptep, &pte,
-+						   max_nr, 0);
- 			for (i = 0; i < step; i++)
- 				vec[i] = 1;
- 		} else { /* pte is a swap entry */
- 			*vec = mincore_swap(pte_to_swp_entry(pte), false);
- 		}
--- 
-2.43.0
-
+-- Steve
 
