@@ -4,126 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAEB8CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:22:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA29CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:29:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BFF28002C; Mon, 27 Oct 2025 05:22:18 -0400 (EDT)
+	id 15B558002D; Mon, 27 Oct 2025 05:29:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 16FFC8000A; Mon, 27 Oct 2025 05:22:18 -0400 (EDT)
+	id 10C0B8000A; Mon, 27 Oct 2025 05:29:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 037548002C; Mon, 27 Oct 2025 05:22:18 -0400 (EDT)
+	id F15648002D; Mon, 27 Oct 2025 05:29:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E0B0B8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:22:17 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 970D3160516
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:22:17 +0000 (UTC)
-X-FDA: 84043353114.01.6E6BDC7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 22873A000F
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:22:14 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZeArEhqO;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DB3628000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:29:25 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 82F2248DBF
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:29:25 +0000 (UTC)
+X-FDA: 84043371090.14.99BF955
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 0494240002
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:29:22 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KnjnX0i3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761557363; a=rsa-sha256;
+	cv=none;
+	b=atVWzHboWNpfAwfCUYoha0JsYeydr24ybDDVpRY4R0RhdbGLGWDVSfqQCyA+FA+of4rrfb
+	Wl7qUQ04lClOcIxtoekD537/xeS5h0IVM07lLn3R5x7eVbTFVl1bRl438wYn39nceFmN0S
+	uMVYNbOmwdIKP/1D+wkATnUv/lrCiFQ=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KnjnX0i3;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf04.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761556935;
+	s=arc-20220608; t=1761557363;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=A/GXeoHonKMlzjFGTYijF05WfyyHRvFPdjwbyNeXc3Y=;
-	b=CaLmBl7zS4iRJGJRqBgM/13Z3GKKaQt7w540JGn2iQcb7nEyYxljnZFDEPPLVPYcNYD6eP
-	Gh/miAocQwT3WTvGz5LI4ewqsAoBp2YzC1cBtUVzu7zsKmY0Pev1z1sQcGBkB9JldHb+u0
-	H8+uwzt5Ikiy8/dfDvzJsMibnZBqmsg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ZeArEhqO;
-	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761556935; a=rsa-sha256;
-	cv=none;
-	b=U/McXNsey4CXsbetoilgtfGPoGbmEO0bYopSsHdTGg0zs9g6FKmOeC1DdFWB9QiLLrkHqd
-	yclVZktYLJR6P62bCyh1PNkI+GXZGbUwNnThXiP7VxX0gT+z/lyNoeFlOkkZp0RB3SeIdl
-	8bw52uAtmS1rAZIoeiCtJNUTXVScyB0=
+	bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
+	b=dYcOcln5SejN9hdODKoDxVAR0uqde2nQoIREcT9/XIfb084bTf5Zby7ROh4uZ4RNG7xSwn
+	ImPpMaUY3iwG73TF8rwwLdhxktWgOEhMxoOv9Y74i43IbAs8bb2zbTL7NRYty976J+iTux
+	YVinglio3+DmifHCAUtUlplw0YqRTgc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761556934;
+	s=mimecast20190719; t=1761557362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=A/GXeoHonKMlzjFGTYijF05WfyyHRvFPdjwbyNeXc3Y=;
-	b=ZeArEhqOB2nPgT9UQdOsrhP+1You61yRQzP5NqROTx89v6lck5+75GFDk0LIDtb7amFQs+
-	B/bndFWgO5eZ6CkdyOyPB/q9QgegFXScqpIETZYzej3ZQb4g07FK7yGJI/JdWzrx+nvRaD
-	q34NxUqAonKLh8PeMRSsmlIuYx54b1k=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
+	b=KnjnX0i3duky/AZCXSbTzV7M7NEvouBXHsuJzHTLrJ+hslxg8FiFX3SxZuNaPCQIa/mc+q
+	XOxjsWBsGLAP8CSP1j/wpNt239ZwtY0mcTm0/A5InQhdA8TQvQoEuJ9AH+1KI1oYpH+sty
+	/FR56F+a/JJacMbph4EGO3XQtITWsyI=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-tOP5zRcSMVC7z1u9glDaMw-1; Mon, 27 Oct 2025 05:22:13 -0400
-X-MC-Unique: tOP5zRcSMVC7z1u9glDaMw-1
-X-Mimecast-MFC-AGG-ID: tOP5zRcSMVC7z1u9glDaMw_1761556932
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-427013eb71dso4359076f8f.2
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:22:12 -0700 (PDT)
+ us-mta-473-EYNvLBkBNOyX_G8NUqCA4g-1; Mon, 27 Oct 2025 05:29:20 -0400
+X-MC-Unique: EYNvLBkBNOyX_G8NUqCA4g-1
+X-Mimecast-MFC-AGG-ID: EYNvLBkBNOyX_G8NUqCA4g_1761557359
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-579e84da8a6so2322359e87.0
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:29:20 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761556932; x=1762161732;
+        d=1e100.net; s=20230601; t=1761557359; x=1762162159;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=A/GXeoHonKMlzjFGTYijF05WfyyHRvFPdjwbyNeXc3Y=;
-        b=MZh2PbAaXIhdQCHhDtTCnSokHAC3bNDrAXOLCEF9xzgl26yPv26hBLZRngcfq4qf2t
-         JYCEk4D8UPbbygY/Ffttm0NAYgOStf8E660cvTLSjqVjsTq1oqp6AbbYEhwHpIrQ4aTY
-         u2NCq89d9Jp3V2+/aMNc4W7P47jgR4vqo17m//95u4W146GFW0aG3SewI2q3cNvOBsPq
-         wX52l22eCXt89AreiaFkc+5u0ayBQG3yZx3C6/rSVHjiUQXR/FwxPDZnGKTzsDRXeDMo
-         2WMkaXICjegFtbWV19D0NLdOWvg+wZkrzqsNMBuI0O3edNR/qYv+i9YkUEgYdNpztFLx
-         WBxA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1QJOQkF7GOjq5y0p6p40gC5j4BZSD6GRX7jwMsseIO0hXbtARoKp3KLXPTe8UeLTpQ6fmhH8kKg==@kvack.org
-X-Gm-Message-State: AOJu0Yzpran77HjpWr6+2AF90FY5ARmjFnWIdoHkhygGvuBEB5iqYMn7
-	gM6KcIrD8x8lfJ75dOn7YGWeuRWRDHqZYKGOndi4Pfqne+XKzj2VjADTFqv1BRKqWPhTmvIl7lm
-	8dY5jPKqpFda42YVduUW57R2DFYtf+Jv+0ww3Z2+mYtSbJXWLBSk0
-X-Gm-Gg: ASbGnctWmBlo8cameBGUlOHfLyhm+bC7aRUIFal9wlKYie66XRw3N2Lj8AuqCdqprMW
-	61qCAhPHzYHw7U7NCKs7rF7AiuocNZ2cxoK0erTQqasPEGRVsdnp1iCGuiA3tgWrA5y7KK1jIb7
-	7zh9mk/PwlWfJEkGGsivBy7gbJJH9y04JUq96dFq1LqH0u4895O06vmUh+TN5phZ/LarhrRoXKg
-	hGJ1sPDUJNErzuvypf6vZJjqS7z12wUSlQhxIK4aVKjZ3BElJyfUzJ+D6bmrvS4EGRoZnygrJe7
-	DTPOiT4etqnlkNdyTUGDGpDI1haOANdAvArHDEs3PbqNkAOGUIMNl+5lfk3F6U/EqbmVeVTsTly
-	rbl4jRD3ANomkBSDJ6aiUUDtjQjfyX7r/TR1l5vhlEiObxzEKKeAH9eBiroFqrfrv9H4aRspdVX
-	MfWu3zf69C+xhnhFv8CFixKyI4Ya0=
-X-Received: by 2002:a05:6000:4024:b0:3e9:a1cb:ea8f with SMTP id ffacd0b85a97d-42704da3924mr26721883f8f.52.1761556931764;
-        Mon, 27 Oct 2025 02:22:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHDRyzbYNgapAsDQVUP/dfMOneGlFTnaQdS54xLTyrz5QcB73wRWvx5krJws1/xS1I2xHKHjw==
-X-Received: by 2002:a05:6000:4024:b0:3e9:a1cb:ea8f with SMTP id ffacd0b85a97d-42704da3924mr26721844f8f.52.1761556931254;
-        Mon, 27 Oct 2025 02:22:11 -0700 (PDT)
+        bh=jl/dK5oSynHQvdUuuR4Mz7gZbj0+FmaCnU04jPDI/7g=;
+        b=lbrhJH9raIiaYIOYDhT7Fp8KCMc+vUSXoIDDSqrV1LRWlI+4J8CJ5tcyHg69g4aCDi
+         uKk1260WRSVMmGt5JkCtTvJFQO0Xah9uRIssWPs6zlmvK/gU2oyTluEdHU9TNbCsI/M9
+         EuPJBU6+VrQfWZWdKwc7eROXoswm9R9qnGf2anrfBBUSkoEz8Ze6Hd3L5YRl4hBGHPdM
+         MUyv0pVJGuO7jD3qkP8mryBVoN4v6ONmBe+Yqf6fE3pmnXWiIkf2h1D8v/hCl4YNlovw
+         lTl3EIjPkGfCFQkCOXQMaFTYVRLkADgersaSM1e+NuGmkODQZpQUck96Af2x4wuhuKzG
+         NRqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWGL3JspxBaPjs7qnV+VkrE+pNsfcLKc71+bbgNRvb5LR6ruz+yKbitizAyawziTfMcx612vG6Ofg==@kvack.org
+X-Gm-Message-State: AOJu0Yx0o18i+1Ji6mycsv4BZo7J9opOvjs2dj3GA/OoFlnTyNsdPJUO
+	IQnYBjyVdmSdsop9R+/6h3QazFDEWkSeCGOFlhbJeqiqysJ/mPDlENEoYOPqa7NdnT+vsdJvrtq
+	IUo1jToDN/UMI4XsBM7aytB6lsJGg50bxki1IGn82rTetIkbgiEA2OzHAi7wK
+X-Gm-Gg: ASbGncuo/GoGsz3e5dEhHUrIytKYbWJym+c566LxmQJyvP5XIyvjD+QUh9oQugFs1Hs
+	bRBKcni2v0f3ddPDzyI8D96tjlbDXc9Ck2csQEjIJFal/bbdzPFYJS7zfqOggsSVpXkIGYx3Rqw
+	npN+UnouWYDdm+2QzKcPrUp+ouO2c4qWM7PBFcScKFjSgbKa+2iHecxVau5WnOW2NpEZieO5i3t
+	QXdXw7HdVRiHlwXuwdSSVvcVBkgH5taOYqtfFKQHCYxskGVzMXffbV2L09UUVZkVbjvqW0w53w+
+	wqEVQHQ20iLgD4HoGAp+wMEs3lhYVr9JRxrrUPNTIhgDp26Uz8HJCTrhGTMasZHODuBFD9Ak1HK
+	FhO+r5rMkBn28+Cdqkf5JK/TklUiLg0X0T/cd3aW1fUubU36C9hbm75ASlzkLYlRaBSxe8VgVgp
+	sQK+yP2dpcyhE8Jqa4/gYottmeFpc=
+X-Received: by 2002:a05:6512:b97:b0:591:c2f8:9a5a with SMTP id 2adb3069b0e04-592f5a597bbmr4225769e87.35.1761557358822;
+        Mon, 27 Oct 2025 02:29:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGeFOAW1hrpbsW0eQlRbjQxJr+vhA/fG2pz5sBmADxwmWW7wq6SVBBMIi1ckQnF6/ww/Geqxg==
+X-Received: by 2002:a05:6512:b97:b0:591:c2f8:9a5a with SMTP id 2adb3069b0e04-592f5a597bbmr4225749e87.35.1761557358143;
+        Mon, 27 Oct 2025 02:29:18 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952cb7dcsm13518433f8f.11.2025.10.27.02.22.09
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-59301f5fc75sm2135864e87.59.2025.10.27.02.29.16
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 02:22:10 -0700 (PDT)
-Message-ID: <8fc01e1d-11b4-4f92-be43-ea21a06fcef1@redhat.com>
-Date: Mon, 27 Oct 2025 10:22:08 +0100
+        Mon, 27 Oct 2025 02:29:17 -0700 (PDT)
+Message-ID: <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+Date: Mon, 27 Oct 2025 10:29:15 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-To: Hugh Dickins <hughd@google.com>, Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Matthew Wilcox <willy@infradead.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Christian Brauner <brauner@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
- Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt <shakeel.butt@linux.dev>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
-References: <20251023093251.54146-1-kirill@shutemov.name>
- <20251023093251.54146-2-kirill@shutemov.name>
- <96102837-402d-c671-1b29-527f2b5361bf@google.com>
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
+ linux-mm@kvack.org
+Cc: linux-debuggers@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -169,21 +155,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <96102837-402d-c671-1b29-527f2b5361bf@google.com>
+In-Reply-To: <20251026162156.12141-1-linux@israelbatista.dev.br>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: OWcP1HcdjpfQnf1trFRGembDLAoN_THFke97rvqFF5Q_1761556932
+X-Mimecast-MFC-PROC-ID: -CHfRook_qTmoweu4gZ5D4MmchwSrWQFaOhKOPCvSYs_1761557359
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 22873A000F
-X-Stat-Signature: nhzsd33mzoeqpbb84u6k8d88k84riprm
+X-Stat-Signature: wu7idh6tssey8ejuanmoxtu7gnq7em9s
+X-Rspamd-Queue-Id: 0494240002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761556934-901364
-X-HE-Meta: U2FsdGVkX198mcDqwxeEfgTubMBIsZWY2TOAOYpSFNQNs3riku9s42mjqn4awvO2biYO9z98oyJJRFVU+ey35ma5LRO/8kVGccPXUurBfIkG5i65e1yxlYA93I3qUr8eyUEQuLDBizBgslOYLoZZ3iCZL5EjD+Kxt/Gf4xIBObXgmF0/Pv5/qZxb5VkBx6+LL/+5OF7DLGAuYs2Ztcm+sLiJBHy2H6bUC/PKYzHwP+P8M6Ja8YTCmBgHke7LuN2iGGBeoxd1tdjQXH/Mner6aLSKAN5wsCVlj1qQr9U76CwgJzh+JAkZjJV722nu+4Nrnd4SzgDUbgB+z36k5PSp/F2iej+Gk1f/mY5VHu3IWMFeQsa2cCsjP6r/ZctNRKysNO4VmNaqJXPCKnwdrnRit3mLeIPjuJb9sqZQpgpAQp9FWiBuD/AyhO4ULwgn7scaNGzpku4xBQQN4G8l0Krn6Glvzn1XJlfQ2Qtrcoxk50o6/EG5mVoAg//eE9PgHMfTqDGXf+vxXhurP6t/7Jti4CyjbFptrRt6FHD96j1nNI5Tcig+1w9qIfCa48Zb8gVYAVNqDYhF7gLjKf+LWPsdJftdQ7giuGY/HOX76OBX3WsLAvjHh20jlpvQWTI+0Zp3a/bUVrjmVkTo0v8wHY9S1jAIkbnLvTBiDhhCWJE/Bb27jao/Fx80KpNXZ6OOkKGSLm9VU+ecatIW1LnXoDPDRbsVoP+FuNXoO44TXw0+iaaOaM9CMkMyrDnVrUI+nC1a/wwSWDBYnX9I9IGO4Zm5vltGIsOGNy4jUg1gev1tUCwsvH8BLWuuy50ZEYB/6qlFa7ajr8+QyXoPZTz/KC1uU34IGw/DUF6QqCMx0WiHuKkE3cCEY77BjZ1SxpymegwFoo2f4m1mng6ZSES9PtMyyetRV/cOSvTp8fP8GJVHgOXq2JGpsFMH809NcTqEZD/bbufsjBe5b32aBqJ0t6l
- Y6252imk
- L15yAireZgBmZ3eKqN53rFfPSxuMaj8njQ1VHbev5+mKtwIejw9EQx4ry92XDL3x8i0ba8UFw7KLG8yEgs/esZqJqnRXTygQ5rx1/+InktLTKoJDywHAg2tY0c0opN8/0uWaUAyZfOldEFe0jOda8/FIMvjNzhmI1VWa39+6eLUbpD1uk81JQathhNAFLlbwaBophGWITdvKF9zqpyI5w+z2xiuB4Ul1ITFM8RaeZ4kHLrjC5JO2LEJicwRmaw6T/wvNqpKLuVaKeoHSxkna8ypBjlDnK7tzj4JQ2CyI8z4QF2RcIZGkSe/UZfg5h5vp60EfX1sZlKxpkvZGnCeHrS+Rs/5iNurWEJf1ySiq+jPF+N04+g/oUMHd6y2c8G6hAT5OF8B6YrqxFu1jhuWaxFZc50lGz5vOOT4/oOKqGWJmSJYwW/C4uViGDV+hudC0HkPMJxmCeKPYpUZiDR/D8gJrJRHAm8KYwOO9/MUGOsZOvHv55cFwoMu9PjA==
+X-HE-Tag: 1761557362-234239
+X-HE-Meta: U2FsdGVkX19H7Rytxu3oZn6OoOXhkxIYxv/iQtz7BVfXBGs6CMgOI3xQ8FnNET35Gdod0crvVp/zWqhN2WlY7PhykO5l4lW1rFr1L7pYFC/n/TkiQVGC/nxbwTtjyytkkYZQmhrTh8G/BVWOPXNjDFPXCxDVnIapB4lDXMZAp0eZGs7eiQIxSApyfZldc7fvDrpJnJVrlx7Uz7ZoRqkAgvmD1aTinFRmfWCZ15rRDzVwhVzmqUcyEuY8MDR6to1Bq1+xqpr1R1/Llgy/b3P20HkTYDuc4mhSd/5BAUqF6PYd/RdYVvEkRKbqQJjshqeicvCt4PZkWwHWnXx38iAYJVEjGQlbF+IVIAQN+Xq/wEcuXMWn8D3ke392yevmQt7sr+n9e4T1occBZ5AA+m5YSd5zri4JrYSLztRF+O+JY/1c/tzW105mbjHM8HvYOHC61r9AvJq3ABmHQaBPaaVk6KLKbCMuSHPFnxTKRWk8BeWEDAXrk9sOWrg8/riakB/+JSCIjP0CzQVKsmxV0/TugGCQIbNls4f31aJa7ptNg3yUGK3h4M3Qbi7lvuYxYuORbZZP9nchr98sBQGHrfY2osMEMD0T/97DQWiemEwx8wcoOtdboPcQi1t2u+zQx7R+I3+JLcUJVPDr89p+Qot2f1OcFUTX6yp8fy1PFXkx5xmjovQE8nHqmEpMvrIGKRZmJuI/hLdUqIdOlHfuI9YS+5MTv09/djPolwFDsuCttb+QkFxqdaLjQxqJ329IVx8qaUgBJJ8mXjGUDf6BYKJKDeleJ2MjEnjCQO8aAzf+v7WhHLpWixNzxxv4+N4qamH7oGrCRgAmJIZ0WLCbs82h1NmjDIVN02zpeijCPboRg3UrA+8Ye0xsIYhGQU0cmck1cIB9IJX4PiQcwbZYV+y6KHx2cthB0476ySZA896n2EOnmt4R5hEMhWV1NM1U5rohrJaYIta25uoz/Qbg1O0
+ MtrZ9kbN
+ 83C3HvRNU3dojFnIMvbJ0gq17I8DdjdiIGt/l9GWX7PVc7ZN//c2yqLyIWjSwJH8oJvt14XCSQXjK5bIIg1QQvuG/NP4T2JPVVF5sLW2GLYFpy6bGRPE9iAruaPuHwJLGX9Yrvo4GlRLbRvLlLX4y4K3VOHFvl/1yUpEWrn+739uMJ71dAKel1LyffWwFVclpTVuLbs7X5WZ062MaT1ySTCMoni8jO6YeVnEA12LjQ0KHmmbfkZTm/x32KuxDipnq209KyxNURCNrQElNpf0xP+3zuKOt3ZWPGwifQlhgZKrmujuGoenVqJA/ayid+hrUpCNTtqO9FwEnbuEtvxrhmd8NGeWt/XHlGZ4c0YwJG6AFzz32dCMzoferLuiyPI/K2ibPVnnWRDucH4OfUtLvx8Ui2CYDblZn2p4T6ZceugbRiBDmkEvNmIHzhMzUrC7KLK8v8LwVFHoKOazJAujoWKdrNsy3GpipOg4r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -192,67 +178,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27.10.25 09:20, Hugh Dickins wrote:
-> On Thu, 23 Oct 2025, Kiryl Shutsemau wrote:
+On 26.10.25 17:22, Israel Batista wrote:
+> The MEM_* constants indicating the state of the memory block are
+> currently defined as macros, meaning their definitions will be omitted
+> from the debuginfo on most kernel builds. This makes it harder for
+> debuggers to correctly map the block state at runtime, which can be
+> quite useful when analysing errors related to memory hot plugging and
+> unplugging with tools such as drgn and eBPF.
 > 
->> From: Kiryl Shutsemau <kas@kernel.org>
->>
->> Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
->> supposed to generate SIGBUS.
->>
->> Recent changes attempted to fault in full folio where possible. They did
->> not respect i_size, which led to populating PTEs beyond i_size and
->> breaking SIGBUS semantics.
->>
->> Darrick reported generic/749 breakage because of this.
->>
->> However, the problem existed before the recent changes. With huge=always
->> tmpfs, any write to a file leads to PMD-size allocation. Following the
->> fault-in of the folio will install PMD mapping regardless of i_size.
->>
->> Fix filemap_map_pages() and finish_fault() to not install:
->>    - PTEs beyond i_size;
->>    - PMD mappings across i_size;
+> Converting the constants to an enum will ensure the correct information
+> is emitted by the compiler and available for the debugger, without needing
+> to hard-code them into the debugger and track their changes.
 > 
-> Sorry for coming in late as usual, and complicating matters.
+> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+> ---
+>   include/linux/memory.h | 16 +++++++++-------
+>   1 file changed, 9 insertions(+), 7 deletions(-)
 > 
+> diff --git a/include/linux/memory.h b/include/linux/memory.h
+> index ba1515160894..8feba3bfcd18 100644
+> --- a/include/linux/memory.h
+> +++ b/include/linux/memory.h
+> @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+>   unsigned long memory_block_size_bytes(void);
+>   int set_memory_block_size_order(unsigned int order);
+>   
+> -/* These states are exposed to userspace as text strings in sysfs */
+> -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
+> -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
+> -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
+> -#define	MEM_GOING_ONLINE	(1<<3)
+> -#define	MEM_CANCEL_ONLINE	(1<<4)
+> -#define	MEM_CANCEL_OFFLINE	(1<<5)
+> +enum mem_states {
+> +	/* These states are exposed to userspace as text strings in sysfs */
+> +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
+> +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
+> +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
+> +	MEM_GOING_ONLINE	 = (1<<3),
+> +	MEM_CANCEL_ONLINE	 = (1<<4),
+> +	MEM_CANCEL_OFFLINE	 = (1<<5),
+> +};
+>   
+>   struct memory_notify {
+>   	unsigned long start_pfn;
 
-No problem, we CCed you on earlier versions to get your input, and we 
-were speculating that shmem behavior might be intended (one way or the 
-other).
+CCing Lorenzo, we recently had a discussion about such conversions.
 
->>
->> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
->> Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
->> Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
-> 
-> ACK to restoring the correct POSIX behaviour to those filesystems
-> which are being given large folios beyond EOF transparently,
-> without any huge= mount option to permit it.
-> 
->> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-> 
-> But NAK to regressing the intentional behaviour of huge=always
-> on shmem/tmpfs: the page size, whenever possible, is PMD-sized.  In
-> 6.18-rc huge=always is currently (thanks to Baolin) behaving correctly
-> again, as it had done for nine years: I insist we do not re-break it.
-
-Just so we are on the same page: this is not about which folio sizes we 
-allocate (like what Baolin fixed) but what/how much to map.
-
-I guess this patch here would imply the following changes
-
-1) A file with a size that is not PMD aligned will have the last 
-(unaligned part) not mapped by PMDs.
-
-2) Once growing a file, the previously-last-part would not be mapped by 
-PMDs.
+The states are mutually exclusive (so no flags), so I wonder if we can 
+just drop the (1<< X) setting completely. IIRC, these values are not 
+exposed to user space, only the corresponding names are, see state_show().
 
 
-Of course, we would have only mapped the last part of the file by PMDs 
-if the VMA would have been large enough in the first place. I'm curious, 
-is that something that is commonly done by applications with shmem files 
-(map beyond eof)?
+Won't the compiler now complain that e.g., kcore_callback() does snot 
+handle all cases? (no default statement)
 
 -- 
 Cheers
