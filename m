@@ -4,117 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2A5CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 11:37:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93297CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 11:38:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E863D80036; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
+	id EADF680037; Mon, 27 Oct 2025 07:38:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E0FAB8000A; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
+	id E368B8000A; Mon, 27 Oct 2025 07:38:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB0AF80036; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
+	id CFEB080037; Mon, 27 Oct 2025 07:38:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id B4E678000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B8A6D8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 07:38:01 -0400 (EDT)
 Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4ACE058EFB
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:37:58 +0000 (UTC)
-X-FDA: 84043695036.07.BB451FD
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 631CD1A0549
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:38:01 +0000 (UTC)
+X-FDA: 84043695162.07.FCAF58C
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 8A453180010
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:37:56 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPZB8lkX;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by imf22.hostedemail.com (Postfix) with ESMTP id 9BF6BC0002
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:37:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="IOWTV/CE";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761565076;
+	s=arc-20220608; t=1761565079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ZRl9oLflvWHs5kO5bw6wYiBk4wzNJtdVpiC8Ni43hE=;
-	b=AkiTR3HCvIF2s5vZla4lkLtfOKMgMscIOHedZ4Fu0pC9nLiR1XaTeBvGeC0shmFxl4g56D
-	9YqNcdGIBfI1mrgZm0pw1MCh6JuljlySZxxXJSuk6WpERdBPCguz6MU+9lvTylbvIQpKFc
-	L+EKinVRMtpNStKpQeloa5RvOcUg7zA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761565076; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:dkim-signature;
+	bh=1XXd1E6adw1mAT501j+9jaMjADtEFwARDIcCb4bfwMU=;
+	b=tjM2r2TTzhtUDfF/cPzEDMkJY/mdsVEaukGDZZCCRETNrErKqk4vvvfv/4kbkU/Rf8rIum
+	8gk1Wyj+g13HN2dk5C/Ujjvi/oxm8sevN8Rg/pTUwAIyEFyb+ScEXoE3FQYgmyu2YFwaDy
+	qb8B/j7c2zFoHUB9Wy5KWv4ETUNeAkI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761565079; a=rsa-sha256;
 	cv=none;
-	b=Wllgo/QhPXSfjYcHTz4f/zJc6UN0wXE0zqBwE2fCzHkeE3eAXnlO9q08HlEPrFy6IggNXK
-	yQm3mTxyG5Tqhyv1SzqUP3oZZrV6H9j7YCypSz92wlBt8hmCY7ZFsW5/oe5Cae9y7uyZ+0
-	DYdKdmQtml1jVTfVmqkafozKeloi5Hk=
+	b=tl84OvDoKj6GORU0JCB9jJNfDeZTrhdQf6zP0+6HlLnlkCy41DbkAU2kIghMYhXG1u0nxx
+	P4VQMC5Z+yJibKKAW6+xOHQPqv4hXTfKOnEhlC6LyjgyOVLHYYHe89hg1mnA4UCivii02E
+	0EvWg1eayVQbBChEaer1uDVm2pWVoPk=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPZB8lkX;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf22.hostedemail.com;
+	dkim=pass header.d=linuxfoundation.org header.s=korg header.b="IOWTV/CE";
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf22.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3011E457AA;
-	Mon, 27 Oct 2025 11:37:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC65DC4CEFF;
-	Mon, 27 Oct 2025 11:37:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761565075;
-	bh=qEFSBVn7tvYChgqBuSbB762Baav+81SepQq/Uf98LX4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=QPZB8lkXka1OfqOTgreoj/P2Lg1hhWZXmp0ATPFjOUcqNjUMSysHbPqTyyVoyY21G
-	 pIPzTIEX+qR7+KzqRNGZ6cuJXse0MlchxX/qiRN2MqZYCiQY5t5V0OXONi9DqK3SSz
-	 K3AyPumi09jDGxYjIm9az3m97OE5uWSLyHisKPIPa2hli7eY0f5ffKsNYg1fH9rG2p
-	 Mc/tUYgYA3hAo/ShlSZseCveHX6OpCES8EJxQWqW8eVPC+0G+rGD1UU4DqFc705ygd
-	 p9jQBRWFkJa9wCUdyjyZpLmnuP/QTLnJSuAhyKVtHkBPYhC5plFZDMfv/br3uPs/P3
-	 MSRt9bNkz34ig==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
- <pasha.tatashin@soleen.com>,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
-  leonro@nvidia.com,  witu@nvidia.com,  hughd@google.com,
-  skhawaja@google.com,  chrisl@kernel.org,  steven.sistare@oracle.com
-Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
-In-Reply-To: <20251020142924.GS316284@nvidia.com> (Jason Gunthorpe's message
-	of "Mon, 20 Oct 2025 11:29:24 -0300")
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
-	<mafs0ms5zn0nm.fsf@kernel.org>
-	<CA+CK2bB6F634HCw_N5z9E5r_LpbGJrucuFb_5fL4da5_W99e4Q@mail.gmail.com>
-	<20251010150116.GC3901471@nvidia.com> <mafs0bjm9lig8.fsf@kernel.org>
-	<20251020142924.GS316284@nvidia.com>
-Date: Mon, 27 Oct 2025 12:37:44 +0100
-Message-ID: <mafs0y0owd187.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by sea.source.kernel.org (Postfix) with ESMTP id C9312438E8;
+	Mon, 27 Oct 2025 11:37:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50003C4CEF1;
+	Mon, 27 Oct 2025 11:37:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1761565078;
+	bh=bMN3fuj8HMpUw27Rgszzdr2o/0myHcOBcqSRrjK/4sE=;
+	h=Subject:To:Cc:From:Date:In-Reply-To:From;
+	b=IOWTV/CEUSA+4ZquJXg5F8AHrkt4PZvT6DVdptN1qru4hW697ANYZOlJATjI+KThj
+	 9T6c+THhAdudRld28q3Y0HUihhBP47mOvxO+Qjsq5IKLpPLzxZ7P5rFmN8fJb1JNvY
+	 0nBAOwIbwPCSHZmezwXKaQ1gj1SLCABGOdL+CAS4=
+Subject: Patch "Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"" has been added to the 6.1-stable tree
+To: akpm@linux-foundation.org,david@redhat.com,greg@kroah.com,gregkh@linuxfoundation.org,lance.yang@linux.dev,leon.hwang@linux.dev,linux-mm@kvack.org,lorenzo.stoakes@oracle.com,shuah@kernel.org
+Cc: <stable-commits@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 27 Oct 2025 12:36:02 +0100
+In-Reply-To: <20251023014732.73721-1-leon.hwang@linux.dev>
+Message-ID: <2025102702-narrow-rockiness-34fa@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6kn117dbecdzbh9xcx1nd6czxgu4kztg
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-stable: commit
+X-Patchwork-Hint: ignore
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4kec6azmzcodqycdgpokbjkduj97osir
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8A453180010
-X-HE-Tag: 1761565076-615581
-X-HE-Meta: U2FsdGVkX19K+9fGQdRPiD4VD9dyFPeAqSRrK4DLrnWB4YCRIWK1kLtTFiW5QWIKcG8N4eyuX2BoXoD6FV5XE3RSdkU7wny23+pTx6o4qFZ6Be7PHOM60OTg0ooBDkDWIOFBbd55Q5r6QIaHxkmI0ISi9W/CHXxx5LqEayyzwkEdarI6UzKr22fC6Enll4UJztREfeJoCiQGxdeaGicPWSiSOrMHVJX6jXQwnKpT71QMS7g1aC/vBNmVezogof0rNHGq9v+jUm5MkjK34Ls3LDbG2gNKODnGX05s2C64TO41SahIBPdsUmMSAu8ZnSV1yVqG30UdDRDZ/J6YO5qhO4TRaVQCuY9mb6KWouAHDgM5LwYkmULEfAr6+VlY6W+m451MnzMJ20/rzQ0sko11Cr8L5TNJB7jWaT/6GnLn68sKDkgnlc7nE9ATG8+HGtN+6BUH3XTJ0VwJi/Bau24rSw0qayfh4j10/aNDdNeL41zuKsaWuUqpalXVRNJrIMtYnBCaci6dh9tEHYWHUdSFquSh1WM0J252lZTqF0zXtmsCTR+LXmIVVbXhsBufiEIUe/1DUeY/SsDOW4pwNoz5++yVQ2PkQfZaihZ+xxm5x+nasYNyoYOeyQtywdqaG6d8Gz3wmH/zAStgDCSP2CW9wFAqRzTXG69RLBhAuEQyK+UE1pN8vK+x+fcP6J5I5BBHs7X2VE1bT3kA3BqiQb0vitoY5uD0VbMHCmbT7mDDsBdGQFvsuMrddfk+LZP6SPQFV6cFa/ZGLMhirhyHyVEhpNA4kXXPt1r/4UYXLvR9t1lc+CimUHP6qvMtJnhMJYuFKws0Lf1VjHE5shZjCBj6LZq0SVFqyWGLDZj2kEciCSMhk9HrwgbSDMIKj8DUdMET3KaSiBw2Euu+23WxwIghNgMIvvWAtPmn/RcA48wy48OgOhPc9SADl2PblvHrEj8sj737GWYBvkd7O1dkygB
- n7uoYT2p
- oWz0snUQbsgBTXcVVDvAIhwdz4wQtFs/xxNN4PR0fi1o/7wdw6qs1dCnvXjzcv0OPDKD2SDm3RA9XRC0BqENNJeUGwptz8d/jjk03NBjJNwmJLbW74F5v9MwT+juAwFpc8zmYLpfslWGgIf/NjhH18+IzQM82S3Ce5Se893dWhHDpXqvJ7TyIPyb2T+yQz2BeuRJRkZ4gM5SPAlaFgR8HjPV+dwCI0CO7g9lDpfbkj0ptu1o=
+X-Rspamd-Queue-Id: 9BF6BC0002
+X-HE-Tag: 1761565079-263805
+X-HE-Meta: U2FsdGVkX1+uV7mCosykuAJXAh365BCmPlMVvcsPJ+BmXfB0hUhVCo272TvLOmF3FUB4wRRCMxm1G2EveNVwpJyVLvhPY8VlEYI2BBfWwOojn3GUSPi5JtuNGsBAsCniNRQZgPUOzZNKCtt8G2tkeN8nUCZ5lC4Y3NBQlh4mWeiawyxc6HOwRBU97zBK81Fy5WyWZOmkNmnDs/xclexYCWWufeyaNWTMjtmBjBIGrINtfeeCvvTUjangtzHmA1/0NjvglwWHFFwrWrQ7ozG1PVZ5H1CzU+vR1FX+AtyQbbEClYlPV3CyBlu4LwuSflwYargFtTqUwa2Rl39WR1SfFEFT6R6qwzOc/RV8cjA+afeoFhROC6iDtM3IKxb9SjSCb4joHEGb34n4FA5tcv2WSX/2zrO0QraeMCiVZ3MEgdnbZ6e4B8+FCuK5eAUxr08oDg4K7bPFrkdoU+rDFllOlzbDse+WXJWaJyNH8kddTNhYobWAJx+E/Brb0W3fRxjtbrFw7T41TeT9O/9oz/CoeDteFNYD8E4lsDbQAJ3uf5SqIJJrYVhBj8PTvz1UDRcff8kGernHNBgFcqysDxy/CB1c2/CIxZ8vxVDvCcWaAllIDa4nfFeN2jUS+zD7HPEOjol+7X+wHUeZuQVA1VhyxnrnvzaJjOTUeABw7SE9KfexkAB90JsYJIRFhGsGdlxeRo6XYVitvVw7KZxGA94XvP4jxpLIllRb4cJMPw9nwYwebbIo+3VJvcgqKbgsH5qktWtyz82F0MrDXemBqiej6WsM52qH3AuEmLa3A31Xyi0NyIy2e18qmA/PaMuiE7pvHIYPnLUvKGbukHDMZNOXGcncWDdWeTf+jiYAytrS5auJZXVrwyHGaD6ZyOGEW2TZw4e/1fMlYqRLVfjMvdibalKwvHEEhcc8mow7rXlAKi17fZLnAccwWovpff1rUK9uTCLNkxGRqdNGgMQ+xLr
+ tEd2kYXC
+ uy+CsOzkcJcn2HJXbu9M+CJSxB0VtrZZ5mE0d7lryyMDQiKlD/OfM4Je+8kjpMUWyaSwgzeIV9Ea+c94pBWQxnQgBS4WilgUWFHhsmu85TOwWvysoJlWUsOW0xxwYjmzAUiVBSBPyYy3fDPMCV9FpLp6brToNd3pAsmNbdY0ruOUP4mH3VTtCc/WEwYmhSAgmov9vVWyBzy3UzpJUmtRUnWeFbg+189Z7iohS+670rPw7CRv3Kr0bRKc04eA2MevxQ55o85vM0WA5WITXWvoXYsbHwPJNsg2h52G+CJ8/DXyaO4fwV0WXJ9Yd0E+gMugRbVj/DB2lbHiOhmo6Ks/eRnFIUtmeYM46nkGKNmjcDudmOZAPb7Pl5hlEWCzbKWJJpV/RIFKrwB37H3zYhjJBPTYuzFhbzWD5AQ+UPg5hbeda7gtm2qU7oz4oOkJ13/j6VDktSeO787GLe63nE6YSmSFCX4+hHv3j5pElBF5dwABQAz7Y4/2V9LbwJB7hm9gZc9oNxZywY+xw+TmvNqs0Ex8l+vySztAzO6+3gaOKscxQ5GgC47wIRbEWHqcyodtsGl0bARNWtv4PqNa18pGNzsWn3jrJAYy4yil5a/VGwHM/Pd5ut2nSCwx91khKn17T4scL7MAJWtaKK0bikKxDUQqu02eWZ9hBhnhKQ7M9FjkEMdZC8VOZdpfslFuYW7yGlPOk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,91 +89,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20 2025, Jason Gunthorpe wrote:
 
-> On Tue, Oct 14, 2025 at 03:29:59PM +0200, Pratyush Yadav wrote:
->> > 1) Use a vmalloc and store a list of the PFNs in the pool. Pool becomes
->> >    frozen, can't add/remove PFNs.
->> 
->> Doesn't that circumvent LUO's state machine? The idea with the state
->> machine was to have clear points in time when the system goes into the
->> "limited capacity"/"frozen" state, which is the LIVEUPDATE_PREPARE
->> event. 
->
-> I wouldn't get too invested in the FSM, it is there but it doesn't
-> mean every luo client has to be focused on it.
+This is a note to let you know that I've just added the patch titled
 
-Having each subsystem have its own state machine sounds like a bad idea
-to me. It can get tricky to manage both for us and our users.
+    Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"
 
->
->> With what you propose, the first FD being preserved implicitly
->> triggers the prepare event. Same thing for unprepare/cancel operations.
->
-> Yes, this is easy to write and simple to manage.
->
->> I am wondering if it is better to do it the other way round: prepare all
->> files first, and then prepare the hugetlb subsystem at
->> LIVEUPDATE_PREPARE event. At that point it already knows which pages to
->> mark preserved so the serialization can be done in one go.
->
-> I think this would be slower and more complex?
->
->> > 2) Require the users of hugetlb memory, like memfd, to
->> >    preserve/restore the folios they are using (using their hugetlb order)
->> > 3) Just before kexec run over the PFN list and mark a bit if the folio
->> >    was preserved by KHO or not. Make sure everything gets KHO
->> >    preserved.
->> 
->> "just before kexec" would need a callback from LUO. I suppose a
->> subsystem is the place for that callback. I wrote my email under the
->> (wrong) impression that we were replacing subsystems.
->
-> The file descriptors path should have luo client ops that have all
-> the required callbacks. This is probably an existing op.
->
->> That makes me wonder: how is the subsystem-level callback supposed to
->> access the global data? I suppose it can use the liveupdate_file_handler
->> directly, but it is kind of strange since technically the subsystem and
->> file handler are two different entities.
->
-> If we need such things we would need a way to link these together, but
-> I'm wonder if we really don't..
->
->> Also as Pasha mentioned, 1G pages for guest_memfd will use hugetlb, and
->> I'm not sure how that would map with this shared global data. memfd and
->> guest_memfd will likely have different liveupdate_file_handler but would
->> share data from the same subsystem. Maybe that's a problem to solve for
->> later...
->
-> On preserve memfd should call into hugetlb to activate it as a hugetlb
-> page provider and preserve it too.
+to the 6.1-stable tree which can be found at:
+    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
-From what I understand, the main problem you want to solve is that the
-life cycle of the global data should be tied to the file descriptors.
-And since everything should have a FD anyway, can't we directly tie the
-subsystems to file handlers? The subsystem gets a "preserve" callback
-when the first FD that uses it gets preserved. It gets a "unpreserve"
-callback when the last FD goes away. And the rest of the state machine
-like prepare, cancel, etc. stay the same.
+The filename of the patch is:
+     revert-selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch
+and it can be found in the queue-6.1 subdirectory.
 
-I think this gives us a clean abstraction that has LUO-managed lifetime.
+If you, or anyone else, feels it should not be added to the stable tree,
+please let <stable@vger.kernel.org> know about it.
 
-It also works with the guest_memfd and memfd case since both can have
-hugetlb as their underlying subsystem. For example,
 
-static const struct liveupdate_file_ops memfd_luo_file_ops = {
-	.preserve = memfd_luo_preserve,
-	.unpreserve = memfd_luo_unpreserve,
-	[...]
-	.subsystem = &luo_hugetlb_subsys,
-};
+From leon.hwang@linux.dev  Mon Oct 27 12:22:10 2025
+From: Leon Hwang <leon.hwang@linux.dev>
+Date: Thu, 23 Oct 2025 09:47:32 +0800
+Subject: Revert "selftests: mm: fix map_hugetlb failure on 64K page size systems"
+To: stable@vger.kernel.org, greg@kroah.com
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com, lance.yang@linux.dev, shuah@kernel.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org, Leon Hwang <leon.hwang@linux.dev>
+Message-ID: <20251023014732.73721-1-leon.hwang@linux.dev>
 
-And then luo_{un,}preserve_file() can keep a refcount for the subsystem
-and preserve or unpreserve the subsystem as needed. LUO can manage the
-locking for these callbacks too.
+From: Leon Hwang <leon.hwang@linux.dev>
 
--- 
-Regards,
-Pratyush Yadav
+This reverts commit a584c7734a4dd050451fcdd65c66317e15660e81 which is
+commit 91b80cc5b39f00399e8e2d17527cad2c7fa535e2 upstream.
+
+This fixes the following build error:
+
+map_hugetlb.c: In function 'main':
+map_hugetlb.c:79:25: warning: implicit declaration of function 'default_huge_page_size' [-Wimplicit-function-declaration]
+79 |         hugepage_size = default_huge_page_size();
+
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ tools/testing/selftests/vm/map_hugetlb.c |    7 -------
+ 1 file changed, 7 deletions(-)
+
+--- a/tools/testing/selftests/vm/map_hugetlb.c
++++ b/tools/testing/selftests/vm/map_hugetlb.c
+@@ -15,7 +15,6 @@
+ #include <unistd.h>
+ #include <sys/mman.h>
+ #include <fcntl.h>
+-#include "vm_util.h"
+ 
+ #define LENGTH (256UL*1024*1024)
+ #define PROTECTION (PROT_READ | PROT_WRITE)
+@@ -71,16 +70,10 @@ int main(int argc, char **argv)
+ {
+ 	void *addr;
+ 	int ret;
+-	size_t hugepage_size;
+ 	size_t length = LENGTH;
+ 	int flags = FLAGS;
+ 	int shift = 0;
+ 
+-	hugepage_size = default_huge_page_size();
+-	/* munmap with fail if the length is not page aligned */
+-	if (hugepage_size > length)
+-		length = hugepage_size;
+-
+ 	if (argc > 1)
+ 		length = atol(argv[1]) << 20;
+ 	if (argc > 2) {
+
+
+Patches currently in stable-queue which might be from leon.hwang@linux.dev are
+
+queue-6.1/revert-selftests-mm-fix-map_hugetlb-failure-on-64k-page-size-systems.patch
 
