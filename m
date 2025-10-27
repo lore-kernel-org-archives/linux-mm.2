@@ -4,83 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74F1ECCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:48:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CE23CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:48:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5AB0800C8; Mon, 27 Oct 2025 19:48:25 -0400 (EDT)
+	id E1E508009B; Mon, 27 Oct 2025 19:48:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D32618009B; Mon, 27 Oct 2025 19:48:25 -0400 (EDT)
+	id DF5F5800C9; Mon, 27 Oct 2025 19:48:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C6F70800C8; Mon, 27 Oct 2025 19:48:25 -0400 (EDT)
+	id D30AA8009B; Mon, 27 Oct 2025 19:48:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B55378009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:48:25 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6D10814028E
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:25 +0000 (UTC)
-X-FDA: 84045535770.04.06771DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id BCD99C0006
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:23 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gfIQEUEQ;
-	spf=pass (imf22.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id BF8118009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:48:28 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 90DEAB7C55
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:28 +0000 (UTC)
+X-FDA: 84045535896.02.804EB14
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 03ABB4000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:26 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ip4AuaoN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761608903;
+	s=arc-20220608; t=1761608907;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4eMvISwjAV2iG/mOWrYVKuWSHP+jZRkdt7Dk7yKMvg=;
-	b=RGJS3uHBm8zbVSGW/zusaMMxbE0/7s8LPMexOHP/taZss3NAyEEdFMkO9X1cMcf+yEU8WP
-	h4hh8Qf9IBaqXcx/9UQdHGLqmi/Kh6qAhWmdBcgsZR5SD+6INu9pMndLWlnPmxboTYBZ44
-	poqBsfISl6fi0708LiWkQRlpEqKbC20=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gfIQEUEQ;
-	spf=pass (imf22.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608903; a=rsa-sha256;
+	bh=s19m8tgEhDYzZU/Il6ek5ULFR9AunFHrycMOW2w6B+I=;
+	b=3TbV/q8Yzayl/tUg6MkUAcJh59aZWU9XSpmyez0TtKvBsFntDMWC0ve08r1JbZIeJaPjax
+	jvuhAHvppRiLj/6l7N12LCoHpADfss9dX3GaFdyvoT/NM6skiA4FC2jk8kPOLKWVgpZjIU
+	VetOwMDtAyN+2pE6A9z6Qw30URcUU70=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608907; a=rsa-sha256;
 	cv=none;
-	b=S8lcao0TsNhCVQlk6alAPylsJ3kk9+ZJ1/LSHTS0h6WEkrqL47xSjWN4tzVKSv7IHtDa2U
-	GFpP6/596UEKVMsJXvqpnLEZYNHi4ujoTn89mAp2Z1rMc9DtRYnH/K/EyC79RFVsMvWjj9
-	o3gMRuIXyAwWnCMJVAJI3SGxC0OSHq0=
+	b=k4vCLlf0vP3DEugOEypAEDXcRcqRAEn+l0VxaYgRvPvv3Ji8c/hfvMuWlF34ZiJwJM0xYj
+	0Dkv5kzBiXs4PUYejboVWuFNMBQep4W2vE2P0f6l6TxJ6UEeUyFuHrjxInq6sx4G3JxlQp
+	bzpvQ9FExDveQX2daktXByBhDYNiI2A=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ip4AuaoN;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf12.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id E84764369A;
-	Mon, 27 Oct 2025 23:48:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11819C4CEF1;
-	Mon, 27 Oct 2025 23:48:21 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 897396058A;
+	Mon, 27 Oct 2025 23:48:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E68C113D0;
+	Mon, 27 Oct 2025 23:48:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761608902;
-	bh=AnKh9TnjGx6cTQHLhdWTDeeCl/DZJcm2y5DLoUM1VdQ=;
+	s=k20201202; t=1761608906;
+	bh=Ymrk/bnWDm2vxd/nlsLHXR0AGQ17YZKwVmvB5bIG/UQ=;
 	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=gfIQEUEQEQi+CfwEFux9nzPvcCq3QrhwulrRz3IrdqsruHvUIgsPMK56xlLanv3zY
-	 peCjFOLErcM8XS1tvtrG4GU+RtTgLDu19+0Y0EByMZ7MftGEW7mYNYkwnMLwp70Cs7
-	 iLtvefYfCXDM1Edbuvmzg+SJteDVp//b3FDA6wM2dx1uowvn/OM6klNwml72HvDhIE
-	 gfWNkzOPxRryVmkpj3rmhNKPTEq6FC+ksk5gMdm7EKO19FAipFoiy5qPnpYDJRrITb
-	 A+JisPsY7cXjEB4fut3FGxq16Nb5pIj7O5+3Qtzn5nssYXobEmdl/FacvC3lNp9Kuk
-	 +uS6QYXz1VU8Q==
-Content-Type: multipart/mixed; boundary="===============4764234490748152666=="
+	b=ip4AuaoNa+2WWxf+izH396ZLhnsd/7XBE26w4xIzGTJgtZn8K932+c9sMUNuwAqkZ
+	 vcMLNsWCbeZsH7HhNPpueq2Oxeum7lgdSqilydy4isaJN8WGoEuJBOuYXkndDByQMl
+	 up/nvZDWqorYxBwD2lv4mmIeGOae/TQnDS8uzehub6NKnu+GTspISnZNiuYlyqRAN2
+	 dI4bogd2tfpkKHRXbuMIaMgbf0aogoC/p/9CXCjdAFRSiI8VT6Rrfxux5RjRnJFiNU
+	 +hU/AOHoinvhfn4LDK17radRPA8GQ1MzFt73YBFVND+Y2NxW6eRWtDjdLSdAgMD3jA
+	 f8PWukPa8bvFQ==
+Content-Type: multipart/mixed; boundary="===============7910205454797298679=="
 MIME-Version: 1.0
-Message-Id: <2c91977fcab04be6305bf4be57e825f7e84005d16667adcdfad0585be506537c@mail.kernel.org>
-In-Reply-To: <20251027231727.472628-9-roman.gushchin@linux.dev>
-References: <20251027231727.472628-9-roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2 08/23] mm: introduce BPF kfuncs to deal with memcg pointers
+Message-Id: <58dd6b759499f212f626e6d7658dd558b3e6a334e0780898002cb2cb84dbcb85@mail.kernel.org>
+In-Reply-To: <20251027232206.473085-7-roman.gushchin@linux.dev>
+References: <20251027232206.473085-7-roman.gushchin@linux.dev>
+Subject: Re: [PATCH v2 17/23] bpf: selftests: introduce read_cgroup_file() helper
 From: bot+bpf-ci@kernel.org
 To: roman.gushchin@linux.dev,akpm@linux-foundation.org
 Cc: linux-kernel@vger.kernel.org,ast@kernel.org,surenb@google.com,mhocko@kernel.org,shakeel.butt@linux.dev,hannes@cmpxchg.org,andrii@kernel.org,inwardvessel@gmail.com,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,martin.lau@kernel.org,song@kernel.org,memxor@gmail.com,tj@kernel.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon, 27 Oct 2025 23:48:21 +0000 (UTC)
-X-Rspamd-Queue-Id: BCD99C0006
-X-Rspamd-Server: rspam11
+Date: Mon, 27 Oct 2025 23:48:24 +0000 (UTC)
+X-Rspamd-Server: rspam01
+X-Stat-Signature: sgntf75a6maifwqk1g3gyozt5quajdgk
 X-Rspam-User: 
-X-Stat-Signature: 38krt3ocro85u7a8towshiui3jfx43e9
-X-HE-Tag: 1761608903-16572
-X-HE-Meta: U2FsdGVkX1/Y2gbVKQyu7q02+chwypRqWU/SVEVXlC4jwNT95xkOxP4GlEUcWOL7s89+OQ54mA8RGPPb8E/FzEmqO9jJN4jWzY0gKK9nQGY+mP6IJB7AxiduEh5Bqhimi8/XlCiLk+U/piLWyrK1cCFe4C0Y7aNCga2LpdQrwdU0eDLD67MVboIBzopg7HKEOI7gCnff45JT/KEJTA4RQ7Vy7tV1bWWsbWGslGbUT3XNtZS9N1FM7O8Mp3Iu30CeNRSClmLAKCjJIpYleBywC+InxT87k10zrE6wU18IVxNc2xt57Xt9S8JVZUK0cHh5QkJnYVSGA4vh1iiRxPjLqyaphed6bj5LEH0xEPynXtBUmg7F1ppBly9aUm2y6ijNULUdPzbODe6s7l+0n2F9cpvkSorMf2QsDy0/vFo+hVML4KUQiBZQdPI0tj9Vj+J7FSEaboRPWzno6K2b+H3V+DsQGPOIbEFtvJqQMAQexOa8TYkQ/XG56MSsVcTejECnEKph0sCUZSmOO+zl5lQvKOjLPPnuUE45ly5IRL18aQea+IY4lq/cgcmhCVwY2tpK2IWO0ZnHUkY6ywE0XhEqPiEZwDNUesOW/e3RTAp0TV8FoWs5csWrJb8HJOI9OSmyZ0rvOxV8ByNRu9fFzSr0nisCGV8jCrwm8sgDb2BdWL/ZeEC+digsei7btr+E/s5qjvXpLd2B/Dd79TxGIdgDYmsjhKJ8yV4R7q0njHqWMiWHaUU3brsO1CwaVhDuqgP4dX78CF2gdOQ4XlUpVN1e4+1tUAqmaLA1ZHCBNszA7Zwf9TTVhT+m/lqGRcJxfojG//H4t9JoEMrNbwzlbZSybY1VvfV8qHHX98rgVdhkMLsiG9W+jGRKU5qknc6HqJWUA2IbVONMco+WVxM7I+rsHEIYTLx29mmQul+UyTt91vlbxHDdABmJ1Ifn7RQd0e6fHivkfNian17U+55KoDo
- +882CDTU
- PjihFy2mNeHeCMK96wYVeXZ6CUnSmSyQ286U2nLyGGFoF/m/GxwTHBbVwjKUoDJatkZQulCGmXbeye6lp7UuLgdRiUTWXX2CdN06eVQp5b+//MmlgkhV2wC7+MymslM6tb3fE70xt4BYect8G6kMHdi3GJLhx+ibzQhqopiXlV5jlMMcSNqIQfMc01ycXFdLEvObqvU7OeuVtWdwngdD9K5TBa7Pw3Bs4ZdwjvwHUvzreoEmAwHRx5HZBwgyDwN5WsJyF3epphfFd7+jdbsh2ebPxmiwNeJsZaLD3v/1UTnA/jnqeaVZSTwJ6rsHhfwqSrnDvb3c9mJaOr2HQUV6UoDYAPiNvfkLsO9okdXIajnOTuhLak2QcMqg/TvqjLssR22WbHbXL27EkuB8=
+X-Rspamd-Queue-Id: 03ABB4000A
+X-HE-Tag: 1761608906-220279
+X-HE-Meta: U2FsdGVkX18y0jT/SfgZDWTfdo/k++aizePmMsinl51tytrMlTJArb9ziM56Y03LomG83+sf/MOJ59PhgvXWUcjwWMwUnB2ZGwmtkXMGVtDxPtjTjZ1RryKwdIKTw4i4hip+WQ07z8ctq4pROAnVfHwS/3CrZz5XLI5e9A9Z4mlxjybdbdLO4CTcgqEGX84sLfuWuwsC5V6nqXtINCCZV7b0tWhxFDDH6BpOGzBlyNAAuO83brmIuU8XDEQ1nxCIO5cEvZRAwB720xbTJeJaoX4Pqo07+DIdgwlWiXE9+ptbozmETEXAkARDSStbgyOWdUWxIjzsiXWOWhKiP2x2Z2QUuEXl+JTi5fj530+VhhwxhVZtNPwzrgd86dt/Fyp6wnsWXc62cTHWJKzrp3iCIYj1UoXOYBTqDK474WWWnWUMlZljA40m78yOklobcA1+IGVY97jPe+fiOM8W62PXNNkxfvHYxpTWf/SaoDG4Tlp/vTn73+eZkM6KLTyI8wypmfdlQqRRrwg1Fca5S0YZMo/rJkMsuEYdPK3ed6qJiTvmMZu98bTxYzvOUCFz7PHlMJNGGC3iAymgkcnjczdUfOhuAWz8sE26QlLjc16TZbyl0bP3MCAFSOnOBjdL+Kt1FnLrFaEU1jqGZMA+Y+qKY/Ys+vTGpl1G74A+tphGpMcbw1AKmrtMwCw/MOjB5ZZ1nCueTaZm8b9/3edzmdAI/coRAY0WlK6+f4zQhc6K2GZNkAjD+yp6MCMmbt9JzOC/klWrlA/QPKgWX5oRLzjX2eyOMZo1uO9B/el5wIAPXHJxwpHX23KlzHIiYfNVuv3w+Q4qNL+zsODx79LEDXe7Tvc2LoaIzl/2pCXwhr9k8GUwj6GRjyFjeCSUc4MOc2c/b5dyydAR3kPw/3RmxlwCqYsH+ZaQvPICuMzB8N7FyAOR/76d1PqNZdE4WdA9YwjYW3Yh4TlA/U0ZN3RGNhm
+ j620J639
+ bOqDvGRYXeoM8UjltiW7Enp8tkoEcoBRUa1FAOulAU3RXlzttSsNt8hNUwuAHyL40sa5RFuOEJBy1D/Prz8zPBOjnnTVj6XcxqCOf4Dpm+Y/aywqX9Y5tEXu3SYlcJIdaX4MYmcenn7hbnQyrlbi4RQjFoRUpSy1aceBDuJb7zQNQFPFDdZ2SE+cEafavwiebfoQ8j5RDId3Gv/BQWcvfygny5H8vXGuihQ9sh2JdfipoXR3G9eSmGPsZdB8qJVNiZvKdUuaEERgsLhxKiUzjgVbrCnv5zXGsZgB1dO1KSmUYJgpNaqaNZkQmxqeRy/UF3wcDXpI+CV2WmXpmVdxejH6x890fd+wVhv1u4ofGS/1Ky/77aA3OniOpdFD+3NaTB8B+AygrxwBq8JLS5rk8yEkCA5+SASrTuMze07/Zz9bECPGamP8GXhT7LW56ivuRyskX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,107 +89,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============4764234490748152666==
+--===============7910205454797298679==
 Content-Type: text/plain; charset="us-ascii"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 
 
 ```
-commit ec8e2e1769704b4f69261f36e6aaf035d47c5f0f
+commit 712137918bba1b0a9c7c670bab9200b0f0d6a7e8
 Author: Roman Gushchin <roman.gushchin@linux.dev>
 
-mm: introduce BPF kfuncs to deal with memcg pointers
+bpf: selftests: introduce read_cgroup_file() helper
 
-This commit introduces two new BPF kfuncs for converting css pointers
-to memcg pointers with proper reference counting: bpf_get_mem_cgroup()
-and bpf_put_mem_cgroup().
+This patch adds a new helper function read_cgroup_file() to read from
+cgroup control files in BPF selftests. The function opens a file,
+reads into a buffer, and returns the result.
 
-> diff --git a/mm/Makefile b/mm/Makefile
-> index 051e88c69..2d8f9beb3 100644
-> --- a/mm/Makefile
-> +++ b/mm/Makefile
-> @@ -107,6 +107,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
->  endif
->  ifdef CONFIG_BPF_SYSCALL
->  obj-y += bpf_oom.o
-> +obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
->  endif
->  obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
->  obj-$(CONFIG_GUP_TEST) += gup_test.o
-> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
-> new file mode 100644
-> index 000000000..1e4609774
-> --- /dev/null
-> +++ b/mm/bpf_memcontrol.c
-> @@ -0,0 +1,88 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Memory Controller-related BPF kfuncs and auxiliary code
-> + *
-> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
-> + */
-> +
-> +#include <linux/memcontrol.h>
-> +#include <linux/bpf.h>
-> +
-> +__bpf_kfunc_start_defs();
-> +
-> +/**
-> + * bpf_get_mem_cgroup - Get a reference to a memory cgroup
-> + * @css: pointer to the css structure
-> + *
-> + * Returns a pointer to a mem_cgroup structure after bumping
-> + * the corresponding css's reference counter.
-> + *
-> + * It's fine to pass a css which belongs to any cgroup controller,
-> + * e.g. unified hierarchy's main css.
-> + *
-> + * Implements KF_ACQUIRE semantics.
-> + */
-> +__bpf_kfunc struct mem_cgroup *
-> +bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
+> diff --git a/tools/testing/selftests/bpf/cgroup_helpers.c b/tools/testing/selftests/bpf/cgroup_helpers.c
+> index 20cede4db..8fb02fe4c 100644
+> --- a/tools/testing/selftests/bpf/cgroup_helpers.c
+> +++ b/tools/testing/selftests/bpf/cgroup_helpers.c
+> @@ -126,6 +126,45 @@ int enable_controllers(const char *relative_path, const char *controllers)
+>  	return __enable_controllers(cgroup_path, controllers);
+>  }
+>
+> +static size_t __read_cgroup_file(const char *cgroup_path, const char *file,
+> +				 char *buf, size_t size)
 > +{
-> +	struct mem_cgroup *memcg = NULL;
-> +	bool rcu_unlock = false;
+> +	char file_path[PATH_MAX + 1];
+> +	size_t ret;
+> +	int fd;
 > +
-> +	if (!root_mem_cgroup)
-> +		return NULL;
-> +
-> +	if (root_mem_cgroup->css.ss != css->ss) {
-                                            ^^^^^^^
+> +	snprintf(file_path, sizeof(file_path), "%s/%s", cgroup_path, file);
+> +	fd = open(file_path, O_RDONLY);
+> +	if (fd < 0) {
+> +		log_err("Opening %s", file_path);
+> +		return -1;
 
-Can this dereference a NULL css pointer?  The function checks css for
-NULL at line 42 with "if (css && css_tryget(css))", which suggests css
-can be NULL.  If a BPF program calls this function with a NULL css,
-wouldn't it crash here before reaching that check?
+Can __read_cgroup_file() return -1 when its return type is size_t?
 
-> +		struct cgroup *cgroup = css->cgroup;
-> +		int ssid = root_mem_cgroup->css.ss->id;
-> +
-> +		rcu_read_lock();
-> +		rcu_unlock = true;
-> +		css = rcu_dereference_raw(cgroup->subsys[ssid]);
+The function signature declares size_t (unsigned), but returns -1 here.
+When -1 is implicitly converted to size_t, it becomes SIZE_MAX
+(18446744073709551615 on 64-bit systems). Callers checking for errors
+with "if (ret < 0)" will fail because size_t is unsigned, and callers
+checking "if (ret == -1)" will also fail after the cast.
+
 > +	}
 > +
-> +	if (css && css_tryget(css))
-> +		memcg = container_of(css, struct mem_cgroup, css);
-> +
-> +	if (rcu_unlock)
-> +		rcu_read_unlock();
-> +
-> +	return memcg;
+> +	ret = read(fd, buf, size);
+> +	close(fd);
+> +	return ret;
+
+Does this handle read() errors correctly?
+
+The read() syscall returns ssize_t which can be negative on error.
+Assigning this to size_t (line 143) converts negative error codes into
+large positive numbers. For example, read() returning -1 becomes SIZE_MAX
+when stored in ret.
+
+Should the return type be ssize_t instead of size_t to properly propagate
+both success (byte count) and error (negative values) to callers?
+
 > +}
+> +
+> +/**
+> + * read_cgroup_file() - Read to a cgroup file
+> + * @relative_path: The cgroup path, relative to the workdir
+> + * @file: The name of the file in cgroupfs to read to
+> + * @buf: Buffer to read from the file
+> + * @size: Size of the buffer
+> + *
+> + * Read to a file in the given cgroup's directory.
+> + *
+> + * If successful, the number of read bytes is returned.
+> + */
+> +size_t read_cgroup_file(const char *relative_path, const char *file,
+> +			char *buf, size_t size)
+> +{
+> +	char cgroup_path[PATH_MAX - 24];
+> +
+> +	format_cgroup_path(cgroup_path, relative_path);
+> +	return __read_cgroup_file(cgroup_path, file, buf, size);
+> +}
+> +
 
 [ ... ]
 
-> +__bpf_kfunc_end_defs();
-> +
-> +BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
-> +BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
-> +BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
-> +
-> +BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
+> diff --git a/tools/testing/selftests/bpf/cgroup_helpers.h b/tools/testing/selftests/bpf/cgroup_helpers.h
+> index 3857304be..9f9bb6b5d 100644
+> --- a/tools/testing/selftests/bpf/cgroup_helpers.h
+> +++ b/tools/testing/selftests/bpf/cgroup_helpers.h
+> @@ -11,6 +11,8 @@
+>
+>  /* cgroupv2 related */
+>  int enable_controllers(const char *relative_path, const char *controllers);
+> +size_t read_cgroup_file(const char *relative_path, const char *file,
+> +			char *buf, size_t size);
+>  int write_cgroup_file(const char *relative_path, const char *file,
+>  		      const char *buf);
 
 [ ... ]
 
@@ -200,8 +197,8 @@ wouldn't it crash here before reaching that check?
 AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
 See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
 
-In-Reply-To-Subject: `mm: introduce BPF kfuncs to deal with memcg pointers`
+In-Reply-To-Subject: `bpf: selftests: introduce read_cgroup_file() helper`
 CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18859027430
 
---===============4764234490748152666==--
+--===============7910205454797298679==--
 
