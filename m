@@ -4,86 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83F86CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 14:53:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F340DCCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 15:00:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C7318005C; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
+	id 41CB48005B; Mon, 27 Oct 2025 11:00:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 89EB38005B; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
+	id 3F48A8000A; Mon, 27 Oct 2025 11:00:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7DBF68005C; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
+	id 331BD8005B; Mon, 27 Oct 2025 11:00:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC198005B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:53:37 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 35527C0146
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:53:37 +0000 (UTC)
-X-FDA: 84044188074.13.80A1D97
-Received: from relay.hostedemail.com (unirelay01 [10.200.18.64])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 6FE491C000C
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:53:35 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 229238000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:00:46 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A3DDE160186
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:00:45 +0000 (UTC)
+X-FDA: 84044206050.04.5A5E3D5
+Received: from mail.ilvokhin.com (mail.ilvokhin.com [178.62.254.231])
+	by imf23.hostedemail.com (Postfix) with ESMTP id C57C414001E
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:00:43 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=0OA03ObG;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761577244; a=rsa-sha256;
+	cv=none;
+	b=it7r7S6kbFM0lgWHyay5qOA+3dQIR+W7rYb6a8az9JI0u4T8Suzi0RKCwpuGIR+CdwVJ2Y
+	WSRl59JYgGLK+QagsGE04zt5QIGcw7RVRiZ6KylHzboZPRmJ63pLOtrRcR7htA9ZmigY9L
+	dbpXyJ3cpnjIoraN8P0UZlmJZL/b7Yo=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=ilvokhin.com header.s=mail header.b=0OA03ObG;
+	dmarc=pass (policy=reject) header.from=ilvokhin.com;
+	spf=pass (imf23.hostedemail.com: domain of d@ilvokhin.com designates 178.62.254.231 as permitted sender) smtp.mailfrom=d@ilvokhin.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761576815;
+	s=arc-20220608; t=1761577244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LBaCICudemK5hqX8hGCj3Ny3uuhnAOdCVI/QK0vqE8U=;
-	b=MbdolDYtIdnxscmMq9ksYFb7zLIS8d363ui1Tvkleqyn7YiF+ZI2WMY8ZDT/S3m3qtNN6r
-	WlakiuE7eP1qrXI2vKPTMuh6MOrnvOi/D91MMqxbh7ScVtkFJcHEv+GsMIqtpd23lLLKW+
-	J7FNLZi8oQiif4c4uoRWy6tR0yrF85A=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761576815; a=rsa-sha256;
-	cv=none;
-	b=1xM8WEZIsgUhfbXV54MmIWLs5DR6setzS0P+nXEi5pF9TR9LWWMG2qnDnouGt+vLIrhd/2
-	0+YBi6rNfkENIjLQog6nhWnPC1hKKepqzs79t3F5yA67pcnN+LCdfAFymXi37zhdUeBtn7
-	ChzHSr1gwtQgNobvQILAEQyOZE/Kch0=
-Received: from omf20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 158CE1DE3B6;
-	Mon, 27 Oct 2025 14:53:33 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf20.hostedemail.com (Postfix) with ESMTPA id 28FBC20028;
-	Mon, 27 Oct 2025 14:53:28 +0000 (UTC)
-Date: Mon, 27 Oct 2025 10:54:03 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alex Markuze <amarkuze@redhat.com>
-Cc: ceph-devel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, Liam.Howlett@oracle.com, akpm@linux-foundation.org,
- bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com,
- idryomov@gmail.com, mingo@redhat.com, juri.lelli@redhat.com,
- kees@kernel.org, lorenzo.stoakes@oracle.com, mgorman@suse.de,
- mhocko@suse.com, rppt@kernel.org, peterz@infradead.org, surenb@google.com,
- vschneid@redhat.com, vincent.guittot@linaro.org, vbabka@suse.cz,
- xiubli@redhat.com, Slava.Dubeyko@ibm.com
-Subject: Re: [RFC PATCH 0/5] BLOG: per-task logging contexts with Ceph
- consumer
-Message-ID: <20251027105403.2d020b8d@gandalf.local.home>
-In-Reply-To: <CAO8a2SgZ8gZ0VdtBAeW8wLMDxa+Eq42ppr-99tUpiu3Tpwqz5w@mail.gmail.com>
-References: <20251024084259.2359693-1-amarkuze@redhat.com>
-	<20251024135301.0ed4b57d@gandalf.local.home>
-	<CAO8a2ShRVUAFOc7HECWbuR7aZV0Va3eZs=zxSsxtu0cMvJmb5g@mail.gmail.com>
-	<20251025105944.1a04e518@batman.local.home>
-	<CAO8a2SgZ8gZ0VdtBAeW8wLMDxa+Eq42ppr-99tUpiu3Tpwqz5w@mail.gmail.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=CN7U7He+kRo4ITOtEJtKAVIRmgMIfl0h1hsDAJ7PytY=;
+	b=M+p9vnIBDvynAvYuYo5UWxHa7UAIEb+54ipjHOEV6wzDELT+Cnib5+Tn33F+be8zA4h2B7
+	OFT6cRIv0dHL+J4YxasWH7T0hDqo4EcVc3mFtXmQolVpcNsUAmeX8NZQdIayWNdvr7VzpW
+	HDkFV1PnMNT5G2wmfOtgrlYETuQ/baE=
+Received: from shell.ilvokhin.com (shell.ilvokhin.com [138.68.190.75])
+	(Authenticated sender: d@ilvokhin.com)
+	by mail.ilvokhin.com (Postfix) with ESMTPSA id 313B39AFCD;
+	Mon, 27 Oct 2025 15:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ilvokhin.com;
+	s=mail; t=1761577242;
+	bh=CN7U7He+kRo4ITOtEJtKAVIRmgMIfl0h1hsDAJ7PytY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=0OA03ObG2z0vmHiOHSt7uFjNLbluACjBfJof0coJZCaG0d1E/N7GCIB4ruTan95J3
+	 z8XmIo1uk+5nMlNK2Mnc58vapMPFO8tqjJi847snLlw0gzXM8iCI0RoClPgjE2q31x
+	 GOtbNu37pGeJMnukJRCaWHflXNmQ3+9+wUF+VvBA=
+Date: Mon, 27 Oct 2025 15:00:38 +0000
+From: Dmitry Ilvokhin <d@ilvokhin.com>
+To: Pedro Falcato <pfalcato@suse.de>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kiryl Shutsemau <kas@kernel.org>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+Message-ID: <aP-JFqlCE6ee5_Ln@shell.ilvokhin.com>
+References: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com>
+ <5dt6roxyx3h4zojls7cvr4nyjtahi33ti2sir2ijr3w4wjliyz@fl32rra6phll>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
-X-Session-ID: U2FsdGVkX18QkOO9R21LVBrW4cwrEsvG40q+N7FRrKg=
-X-HE-Meta: U2FsdGVkX1/y2rxUidxPu/q4n8C0KJZeyG9NUfc267rFSYjiZBs19+cLFZ1Ce5eI25D7AtEIUV88ToUUjzXl12lsYbGAgOTQYwQg5nE7AyNBP1f7Bt2CIa4mybazVYojiJXsfpZEyBhhJuY8YYQW/U0XRduqJYyOMi4Xk3v9Mo1bW7ImUBopldJfQW9+NP+Moo18A+AzIZtEdv8wx0PpAiegJ9cvnQI705vJv4huyvM5eprVEIcCifuhhNtKcMV6hRz124rK2MjqUDdFccljiUkErq6KpbP2LYaxEaDSoqwcHaVp1KD7b3B6Zz26gXdoH4pIcwzKBvP09JRLCAVwIjFCzDQSEur7
-X-HE-Tag-Orig: 1761576808-121962
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6FE491C000C
-X-Stat-Signature: btabxbh6rn4s9y75i8tsernxrkczhxfu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5dt6roxyx3h4zojls7cvr4nyjtahi33ti2sir2ijr3w4wjliyz@fl32rra6phll>
 X-Rspam-User: 
-X-HE-Tag: 1761576815-503571
-X-HE-Meta: U2FsdGVkX1+KVifotOSdaq1uGbh2Af2EBk3SAzYBD2g2KTKXapYZWpUC/ntWrPgo615dhbumw3+k6iuKSQDpQYEZNj01Aw0dHUmhisSD/U4m0AfEfBE6++yUEcEcv3Xir9zQop7yLQyfc4QkP50Y1y8pW0E1hcKOev1bhh9mhiQHndIrvUxorPtMrMiiRv1SyItRqa++IX3Fk4ODHEVphN687fHkxjTt27mJnV4FvSPf8CbHEgZq6mUZPBUIpaGX0Umr3U49uVkxPG2MFcRmKyTwVmzpvXw8sGpa3i/OePfl+bQk8SFZDCghGjNLzuKpcuw52g0v+/luUrdDq7KA6aE58xeH+7UYPDkn1v41N8lzfDNbnwj0ra2GEeSV4uwFbSwHwFF+hkCdweSvIpk6bD3rq8x3yH37rtR0ERMaK4/8SmlecuHit1pTK9xpDIByud0LWTUhnI0tNbRZONG9+EO4kDE2aL1w1sU5G30BIAwyMhqc4pmI/ZU7CGOp4nBOqiH0DGK6nLzCquxTPRmDOCjuP/yBeeVQkxzhFeedAeIu6B95SONuxL6V77m3TVDGZRPn7X1h6JxZXDym6wzl9ZKI2hCWTm1jgAvXXbjp0BFTyZEqp4ShEuwwaiO3vSvzOTm5VgFooym/padYN9rmvAdBj0GNQXdgIDG7gaMYFTlXkcsMcjTJWwOQtYwPAYJqlitUBpn9OdRo07mXLuNPGKRxTZHGXYXy2tIjHQuhErIudUpiLBeO2OdWCU6h7rHZMm+3H6wvgzK4XsM9ynrgQT20Cu379loE+xWRe/RKIUrZdMlmY6pplkCxj0AoKhAjNHNC/NZmU3lshJnhpl7RUBJC64I1zNBRYirfud0iziNtuxduTZ4DOfIPGxqhYPlBrpkUn8h2YtgH92sBENPqb+AohHkJgVWzY0qYMTqpmPCkvTbD0MGbJg==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C57C414001E
+X-Stat-Signature: gj7scbjyzd617abpkfmj4uq89kx4dq5r
+X-HE-Tag: 1761577243-708478
+X-HE-Meta: U2FsdGVkX1+ZtFhkiNdzZ2vWEIJ2loCvI/5qwTGs+o88fi8ZJMRa3XxIFnBgUcHix2OjTVhe5EP7TM+T994tsjLd4ganvTiQxLkTuzQnNZWOpkdz9aXg8kBtX2IlxxmgB0axhU5eu2NmcSbFToPYfTAHRRnZw8qXLUzocxO6Ily/ITrKdyglKLuJ3CDW6ybyeeXZ8zcp9vCGXQB6/eh5oLqXaV3LSPbdVEtiiJ/stSr+1ervQBfkp5609ipPzBGVf0LOeK4kg71pPJKJZnXqkXIn8DLj2lyG9bArmJMEdx+AclwMk26GnN9cdNh1QMmwO7KFr59u39WrbXNSRfrGw5cf7Jtbw5UAUbIlufnk+ZcGrKvQHZfEVubAB30S7OA6V3f5hi26DcHZLQjaCKlI/yFU7w12MbxdknUaauJQWVvwNZIhCIQ78w7oVQK9SJMdvmbAbCiTj84VhuhlbHq9jjH0GRp1Twwa56RogSaFA/CUnSpbBXiTw0zm1T3UeoInfJvOkwNVCW7yqFrizuBW/1hTWsyzioOwvtDeRc/2+RPNZkan4Ba9k6Fm8ZKGFfRd2LalPyXMkJk/RgE2jcZf5GXTLKV1mx2yhk5+F7/V1DqWD2BwD3dEAImKGiO8z1rBYcBVtlfogC5ZKeJHG4xAMb36X/J5jYTqN49+dosZD3BQtTbVDGlEiMjRhMZSQvGpQnRz1/SkRFozcX7pifiwPk2AG9py78zfhdcxeFlaVAw+YUsTyGruxR8uy1q0qbhE6u8D8ADBCHLl04fbFLEuCy8aJBwMb11T5zgb+bJyeyifOVzV4zgseN4AlFewjmss96KahzghOeixKltZkDROwiLUe8tpmHLYDV/kRG1xYCBvSjqUe4I9lgN7Bmuk9u3CInphHwNilSktR08BkV/RCZd3IJQlCzo+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,41 +94,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 25 Oct 2025 20:54:00 +0300
-Alex Markuze <amarkuze@redhat.com> wrote:
+On Fri, Oct 24, 2025 at 09:27:39PM +0100, Pedro Falcato wrote:
+> On Thu, Oct 23, 2025 at 06:12:02PM +0000, Dmitry Ilvokhin wrote:
+> > Allow to override defaults for shemem and tmpfs at config time. This is
+> > consistent with how transparent hugepages can be configured.
+> > 
+> > Same results can be achieved with the existing
+> > 'transparent_hugepage_shmem' and 'transparent_hugepage_tmpfs' settings
+> > in the kernel command line, but it is more convenient to define basic
+> > settings at config time instead of changing kernel command line later.
+> 
+> Why do you need these options instead of using CONFIG_CMDLINE?
+> They should pull off exactly what you want, but without changing the kernel?
 
-> Please correct me if I am wrong, I was not aware that ftrace is used
-> by any kernel component as the default unstructured logger.
-> This is the point of BLog, having a low impact unstructured logger,
-> it's not always possible or easy to provide a debug kernel where
-> ftarce is both enabled and used for dumping logs.
-> Having an always-on binary logger facilitates better debuggability.
-> When anything happens, a client with BLog has the option to send a
-> large log file with their report.
-> An additional benefit is that each logging buffer is attached to the
-> associated tasks and the whole module has its own separate cyclical
-> log buffer.
+Thanks for the suggestion, Pedro. I think CONFIG_CMDLINE could work, but
+for this purpose it doesn't seem ideal. Relying on CONFIG_CMDLINE isn't
+a very scalable solution, since over time it tends to accumulate into a
+long, unstructured string that isn't validated at build time. It also
+mixes configuration layers: build-time policy and boot-time setup, which
+makes the resulting behavior a bit harder to maintain in the long run.
+So this approach is mainly about improving long-term maintainability and
+operational clarity. I hope that makes sense.
 
-This looks like a very specific solution trying to be a little more generic.
-
-The more generic a solution becomes, the more "bloated" it becomes as well.
-That's the nature of tracers and loggers. Ftrace was designed to be very
-generic, and yes, it can be more bloated because of that. But it is also
-designed to be tuned down to be a highly efficient tracer. One that can be
-used in a production environment. Sure, if you enable every event, it will
-cause a noticeable overhead, but ftrace is designed to surgically pick
-which events should be enabled or not, keeping the overhead within the
-noise.
-
-Ftrace is more of an "infrastructure" than a tool. It provides access to
-trace almost every function , but you can use that same code to implement
-live kernel patching or BPF hooks to functions. The trace event and
-tracepoints are part of ftrace, and are used for things other than tracing.
-
-Perhaps it may be more suitable to make BLOG use the tracefs interface,
-then to create an entirely new interface based on debugfs (which BTW, a lot
-of production systems do not enable debugfs which is why ftrace uses its
-own tracefs that does not depend on it).
-
--- Steve
+> 
+> -- 
+> Pedro
 
