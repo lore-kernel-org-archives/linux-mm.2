@@ -4,104 +4,203 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AEF64CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:38:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26446CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:39:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2BC380054; Mon, 27 Oct 2025 09:38:13 -0400 (EDT)
+	id 2A7E980055; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D03778000A; Mon, 27 Oct 2025 09:38:13 -0400 (EDT)
+	id 257428000A; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C401A80054; Mon, 27 Oct 2025 09:38:13 -0400 (EDT)
+	id 146DE80055; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B011D8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:38:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 42306160110
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:38:13 +0000 (UTC)
-X-FDA: 84043998066.11.F814050
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 5C91240012
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:38:11 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 03EB38000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6AB1160112
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:39:26 +0000 (UTC)
+X-FDA: 84044001132.04.CFB46E9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 39442160002
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:39:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761572291;
+	s=arc-20220608; t=1761572364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Yg4tHkrWB8iD6I0E177EhXaJTLbrmVH+67p7EVU8ik0=;
-	b=kUEwOLRNxz89s7aPfmG2rVS+OnAgYh34DgnAdHgOyFNftXj/2tmPvXpb6Lo0d28VQs5Uw+
-	aSSlAmPmpdQFCuWZZbXKtNDfI1ZJjkJgvaSIhcGWJWnIkPVFBjC+khu36WFKPh4Q6N98TL
-	QDlIOYXOuZAIShbrjyC3XSkTzwE1Sy4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761572291; a=rsa-sha256;
-	cv=none;
-	b=4P5rXgBM/CMvrsSNH4sTxXSKl7TYi/CHPNxkfsD/9vSrp5b1hVu2AsiIQcwKJgXhoDl6/q
-	U8BwRtNG8I7RL72b9+cZU0f79PDymIu9cEO7gTIgNalu5lL5boO8LRfe4XNkHjoCLIuI9g
-	NG89IcYOSsAA8X5EluISLghmMbRzyz4=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
+	b=X6Md275YDUrbpz1kzdI+BmDmSDq7Df8Xm+S2iOZdukistWM4vtMJh7UwXJz7jnA+w+DUXp
+	1el334ruZsL6z4xs8W8XYYuHE+V7hQ9OICi1g5ca/6lSDIh66DcR4jczqdGRxvZ7D+r+aE
+	2DI6DVI8M6vROpbt1LLzoMkrWjilav0=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 593A4175D;
-	Mon, 27 Oct 2025 06:38:02 -0700 (PDT)
-Received: from [10.57.68.196] (unknown [10.57.68.196])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0FD233F673;
-	Mon, 27 Oct 2025 06:38:02 -0700 (PDT)
-Message-ID: <1db69026-199c-4cee-bb3b-1217f8a3afad@arm.com>
-Date: Mon, 27 Oct 2025 14:38:00 +0100
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761572364; a=rsa-sha256;
+	cv=none;
+	b=LWvqS9iYB0uRI2FaKKW1hDPOmFE5TiAkLgn575tmbZnoXtGvTLmrjV07kPk5Wl879IuTDH
+	C9JB3Qai7fgf42kopj/ul9vlF95krouhO512qoVMtI7FzydtO4ucAIPlg9PAEsge0s9isy
+	sZCIejsOd0m88YBtH1NMrjivQ0GwIJ8=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id EA91A21B21;
+	Mon, 27 Oct 2025 13:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761572362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
+	b=uAJW/z40YgANMYhmD50708FHkiKIs2E+rgLkpZiPOVKlkoft9lcSiCB+KMwvkdTBJuBdzG
+	1UhGzq2JqoZjgk64YQEoitm2O+xU7kyYAzyXFfjZqOQD1GrLbQyjfVVeN1pq0lbMHR0hXh
+	0oM2jHeDfCNTIQWopnQnaAudiOnYeFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761572362;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
+	b=FP44aS9ioBrt+HRJvuoeyP4iKpqxYiMu9h1hjOQq5L0lX0/5TSitUuEAxeFuZ1UVlMVZLq
+	5EXBdVJuMsSgBtDA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761572362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
+	b=uAJW/z40YgANMYhmD50708FHkiKIs2E+rgLkpZiPOVKlkoft9lcSiCB+KMwvkdTBJuBdzG
+	1UhGzq2JqoZjgk64YQEoitm2O+xU7kyYAzyXFfjZqOQD1GrLbQyjfVVeN1pq0lbMHR0hXh
+	0oM2jHeDfCNTIQWopnQnaAudiOnYeFw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761572362;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
+	b=FP44aS9ioBrt+HRJvuoeyP4iKpqxYiMu9h1hjOQq5L0lX0/5TSitUuEAxeFuZ1UVlMVZLq
+	5EXBdVJuMsSgBtDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60BDB136CF;
+	Mon, 27 Oct 2025 13:39:21 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id lfDsFgl2/2gIWwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 13:39:21 +0000
+Message-ID: <b73fdd99-befe-4e2b-b029-909c4b31902b@suse.cz>
+Date: Mon, 27 Oct 2025 14:39:20 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when
- context-switching
-To: David Woodhouse <dwmw2@infradead.org>,
- David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-12-kevin.brodsky@arm.com>
- <f0067f35-1048-4788-8401-f71d297f56f3@redhat.com>
- <348e5f1c5a90e4ab0f14b4d997baf7169745bf04.camel@infradead.org>
- <6ed9f404-9939-4e9f-b5aa-4253bef46df1@arm.com>
- <7324616a8d2631aa8132f725f9f6551e3e6b21dd.camel@infradead.org>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <7324616a8d2631aa8132f725f9f6551e3e6b21dd.camel@infradead.org>
+Subject: Re: [RFC PATCH v1 08/37] KVM: guest_memfd: Don't set FGP_ACCESSED
+ when getting folios
+Content-Language: en-US
+To: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+ linux-trace-kernel@vger.kernel.org, x86@kernel.org
+Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
+ brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
+ corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
+ david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
+ fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org,
+ hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
+ isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
+ jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com,
+ jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com,
+ kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev,
+ liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
+ mail@maciej.szmigiero.name, maobibo@loongson.cn,
+ mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
+ mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com,
+ mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev,
+ nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
+ palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
+ pbonzini@redhat.com, peterx@redhat.com, pgonda@google.com, prsampat@amd.com,
+ pvorel@suse.cz, qperret@google.com, richard.weiyang@gmail.com,
+ rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org,
+ roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
+ shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
+ steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
+ tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
+ viro@zeniv.linux.org.uk, vkuznets@redhat.com, wei.w.wang@intel.com,
+ will@kernel.org, willy@infradead.org, wyihan@google.com,
+ xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com,
+ yuzenghui@huawei.com, zhiquan1.li@intel.com
+References: <cover.1760731772.git.ackerleytng@google.com>
+ <dc5f58f5d3427b6291486a24061b6301761dda3d.1760731772.git.ackerleytng@google.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <dc5f58f5d3427b6291486a24061b6301761dda3d.1760731772.git.ackerleytng@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: ohg9uar6j7tommsif45zbj1a36ydg4uy
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 39442160002
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C91240012
-X-HE-Tag: 1761572291-749188
-X-HE-Meta: U2FsdGVkX1+AFkuaftXatRlQso19j8ET6RRPSyljdaRNzUTfa/icdDR9s/i2Aihq7Hmq9SMFKfLIYTjzQ5KKXwJm2yDBEq1atYU030khE6ILKp6n0bJ0pYBQwg6wfJdiFdcS6mTHWER6vNqnXuUvCaSX8vYnxg3Hd9jrba5x52BMrNoyJR06hlguDs0cX7cV/2F72XXy2JmF0UWwHGs5ypmE59OrqWcIhr76sioFY87fVNO13L0fvtBtHVjHCHJwwwMcSLno24ohvWPWSAFH8lkpDqvsLU2DujxPM8b6fNKWyqMffkrnGFrnYDgmYa/q5EYwOskYVzaoj/XUWtvrPseXbSfee5HSYqXOhJ4QEkUgrscmxD2yqwp3gsAsGdBqLb7LZphPwk1+BZrj4l82R5+zSC0+M8w/1vurBZ5Q3bB3Bef3QPhCDAlLq7tFNLFiEfNApZrYG+nQCH9MtUuhiPjf/qKm1x0HDjGTCgJUoFsHYck2ILt6cBXJ9HXyOj4sxC3POyqa7v6FPwBviZt6flSOZkRd/fGKQAQyhYLfcQQDEyY53ir7rCzOwC8/J/zqdgCC1HeSnj/+0+/XnDo9vh6V12c0tofu70RxFqU/i2jjd1OWzHDviQIGfUKz3lb0MEVxPmGbm6WHQNf+py+vxIeFTXuTPeeVKDRfT5xlSHCu4wnZJrs+BiJXIfW+j1Oe142hEnEhFgVFAiNEmmZQf0lS3eC00OKinqqotGFHD0Mq5onMEJBzGVt5Cm1b5vjs0cjRoJmuDId8OvuMBc8WCHmsSWYKVgA42kMGoHqxxjcEcRiKg6GBfpb5k/a7BCkyZxBaYnLSv+eEfHU0A+t6b71CoK7/kXAxblBbJ81V1M+p30jlGrD6Sg50s4GN+5wEi0uEoQm6ia3H775Kw0Y6gwgRHAIk2xn+7jRP9n4Ccr6XQi8b7e+iK1Ad6bOrPBdImY3mmSxXP0CrBBgKBN6
- h2AxNl+B
- gABH1BULMXio7lnSo1/XGCa4njLRv9kYg/CiCgqSnu72pCdcf3GEHndlDnfKlvK2uupDjeDhVnXQJqQqcqL8mcf1VxlZ4vqDU5Hb8GnP5ggrWS+C5TRvae3f/fy0WVh6qyuo4NB/Uhqupzv9AyHCvD4zT7B5sQ9V6VeR5Drg4QbR2LyXCx+I6YRGAYjmnZ8rMbk6hDhlBaMeY9vwjKJnxoUzTSsUMtQJIvUY2iJo6w/O0Zn3Y7ZGc98dsuPBwmil5afIGxZXf6UNlgAYXFsHUp1GnTyZIfot3nbyhcGi0rI7XofzbgvCMZLcPYbD/oGlpYtAtpY3IEQ+36LE=
+X-Stat-Signature: x43rjkw74ippntrob8dgujnk3anmqxzk
+X-HE-Tag: 1761572364-701668
+X-HE-Meta: U2FsdGVkX19YqmusWoxqy8I5BKIudNNOGETK1X8c7+EAryGtZaRs6eNrBQtmsK7cfu/7pFpUcbZn95tzd8fuV//Yn+Y1qIDi/BhHVR3q1BBwBYrjKrsOdaD+c589TjgfmreFtQ8M+WOdTQO8mREpOiNjwDSvFVohj/MaIt50QbcL/Ebze+AxAoLZZ2JX09E0WDVeILKBuPiEImyoKivQBK2zP5p1V3QMtFWQud6L5s94NQK6Ws6P8TOf7tIOQ3M8AfNvVdpWeikHZrbYCCMkg5w31gIDPCDX8zkBPiRfO9vmwNPvMiGe0zICUn9IU36xni4w90awv8zEG2EJCz3uJ7EepSazr3p6IkZsrfXL8LeGn+/dJC5yf3VXMHI42iUH3x4Jm+lMBOJnWYapbLglQ9ZgzXfQtWSnBsR8CAUrZ/pzEnknpjPE4RQIAJvcmLs0kBPEXJbEJAN2lvjvoowCwjggd+pe7fX5qqPCTSmGno4iaHfOQvjdsgeYyVd5Kqig1Wj81ErQplzEjkfYmZi+3gaufXnv7njjaFl/CT4xJnWI8JcIHeleMxSGVXTRz7rY0pCRGG7uFeIhRuVd4qKMVD2HBd32cBZA1oVOi1L6EA+1gpk+A7d5mfttsivk4Nnz6WWA9rcXrCs4/perNNivXcHsc9IWlKaEFXpMQAOPoHxs2Zj+Bd6bXq2ckBvZEkS0X4j8Mq2wXf1tG4++QUKpoZ2xEhLU/MxWk4hHA5Wg9u7wTtSYKhbxTM9ysQF1jRm9A9mFz1XYccHNH8W/5oBY0gsA1iWC39BpjydgqzDozqce33dzUZ5euu4RCmcTwrw+i6PzdhjqEZ1Vmm/EojRUAyJvpswOG7lnogTdvVwolC7iqd9cVg6t+jAl5Lw/Y7WBzA+soEbPE+7P2QCBqgC7zzml2ftgNOr64zF+xHSL81g1SutoLWFzolzM3wIi1UxsyAcbLwnQajKgVl4fu8v
+ X8Brgaq+
+ PCosCoTT1m8FQnucxRZv1cr8+rak5OkwAmnYKA+fP4KveTx9kNbJQxXoOMgkPQvxIokr2WYtu4DGGnERDLk8cHfPh03qS1pO0iZjrqI2QTkH8NDgrpkYwDi7ysmxD8PMzdawakk/FT+wDwCNrrYur5N/k1Oo4SD/pwWjbYJta3JMpbrjxVDmxDjSv13KEgM8X9O95CVhJDLK7CUCDU3hvUbQXiQuURFo37Z9ebyzsi7VoI6XGQFKIaUctr4cxnPp66aaRzGD3GTeQ6hA22/6n0RK1wLL+DDW6M0S/0CO9eRuA2J15Rfsm79oramm+AxVzfV8ADDCgDCeRz/w9RYwe99RBOlXsO8KQGObXCM6jaW1+FfOqYL/hlba/i4+/POvPy6aIT4zd/rw6QUe61E02V48eXYo9aesUkufgI8pivNquscs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,45 +209,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24/10/2025 17:17, David Woodhouse wrote:
-> On Fri, 2025-10-24 at 17:05 +0200, Kevin Brodsky wrote:
->> On 24/10/2025 16:47, David Woodhouse wrote:
->>> On Thu, 2025-10-23 at 22:06 +0200, David Hildenbrand wrote:
->>>> On 15.10.25 10:27, Kevin Brodsky wrote:
->>>>> We currently set a TIF flag when scheduling out a task that is in
->>>>> lazy MMU mode, in order to restore it when the task is scheduled
->>>>> again.
->>>>>
->>>>> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
->>>>> mode in task_struct::lazy_mmu_state. We can therefore check that
->>>>> state when switching to the new task, instead of using a separate
->>>>> TIF flag.
->>>>>
->>>>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->>>>> ---
->>>> Looks ok to me, but I hope we get some confirmation from x86 / xen
->>>> folks.
->>> I know tglx has shouted at me in the past for precisely this reminder,
->>> but you know you can test Xen guests under QEMU/KVM now and don't need
->>> to actually run Xen? Has this been boot tested?
->> I considered boot-testing a Xen guest (considering the Xen-specific
->> changes in this series), but having no idea how to go about it I quickly
->> gave up... Happy to follow instructions :)
-> https://qemu-project.gitlab.io/qemu/system/i386/xen.html covers booting
-> Xen HVM guests, and near the bottom PV guests too (for which you do
-> need a copy of Xen to run in QEMU with '--kernel xen', and your
-> distro's build should suffice for that).
->
-> Let me know if you have any trouble. Here's a sample command line which
-> works here...
->
-> qemu-system-x86_64 -display none --accel kvm,xen-version=0x40011,kernel-irqchip=split -drive file=/var/lib/libvirt/images/fedora28.qcow2,if=xen -kernel ~/git/linux-2.6/arch/x86/boot/bzImage -append "root=/dev/xvda1 console=ttyS0" -serial mon:stdio
+On 10/17/25 22:11, Ackerley Tng wrote:
+> guest_memfd folios don't care about accessed flags since the memory is
+> unevictable and there is no storage to write back to, hence, cleanup the
+> allocation path by not setting FGP_ACCESSED.
+> 
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> [sean: split to separate patch, write changelog]
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Thanks this is helpful! Unfortunately lazy_mmu is only used in the PV
-case, so I'd need to run a PV guest. And the distro I'm using (Arch
-Linux) does not have a Xen package :/ It can be built from source from
-the AUR but that looks rather involved. Are there some prebuilt binaries
-I could grab and just point QEMU to?
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-- Kevin
+> ---
+>  virt/kvm/guest_memfd.c | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 855e682041311..2a9e9220a48aa 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -167,14 +167,13 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>  	 * Fast-path: See if folio is already present in mapping to avoid
+>  	 * policy_lookup.
+>  	 */
+> -	folio = __filemap_get_folio(inode->i_mapping, index,
+> -				    FGP_LOCK | FGP_ACCESSED, 0);
+> +	folio = filemap_lock_folio(inode->i_mapping, index);
+>  	if (!IS_ERR(folio))
+>  		return folio;
+>  
+>  	policy = kvm_gmem_get_folio_policy(GMEM_I(inode), index);
+>  	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+> -					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
+> +					 FGP_LOCK | FGP_CREAT,
+>  					 mapping_gfp_mask(inode->i_mapping), policy);
+>  	mpol_cond_put(policy);
+>  
+
 
