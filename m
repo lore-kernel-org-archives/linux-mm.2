@@ -4,131 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6C843CCF9EB
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 08:09:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA2D7CCF9EB
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 08:21:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9817780020; Mon, 27 Oct 2025 04:09:07 -0400 (EDT)
+	id F3DF480021; Mon, 27 Oct 2025 04:20:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 932018000A; Mon, 27 Oct 2025 04:09:07 -0400 (EDT)
+	id EEE608000A; Mon, 27 Oct 2025 04:20:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 820CC80020; Mon, 27 Oct 2025 04:09:07 -0400 (EDT)
+	id DDDF180021; Mon, 27 Oct 2025 04:20:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 66A188000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 04:09:07 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 069AE13B245
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:09:07 +0000 (UTC)
-X-FDA: 84043168734.02.2693FF0
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 416F1100003
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:09:05 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BHQiDU1h;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C7D898000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 04:20:59 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6CA0D59536
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:20:59 +0000 (UTC)
+X-FDA: 84043198638.18.A7E16FE
+Received: from mail-yx1-f42.google.com (mail-yx1-f42.google.com [74.125.224.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 96C4D40007
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:20:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ouAvak8X;
+	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761552545;
+	s=arc-20220608; t=1761553257;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yvxeQRhhg830l0sanhrt4dj9VmhvTVyDa0jNQUK1mG4=;
-	b=ZGVB1iWlQiIjWhaFcPIPqjRhJJviAGMfIEAV+dLA/HezajMOHXMYoTtbaTC7s6vcdL50qE
-	z9vIRwcoJTOjxV3LLBWas9FpcrzNT6y7qXtz8e2MsgkN6Yasf02rCt0uIb8EAXOGmMhMK/
-	JtuKgk6g/i1/9mB15m+D9A/0DlJDUeI=
+	bh=v8i9V9XN9hg6qjjGZ1kzhc0nrYJh0IgUWRXxrYjVsEk=;
+	b=VHO4Mp5UfDpo3OU0GbWXm482GmW3LTMWp+P0tRL50+Sc8aY1GZ7LKSJdVS9I0vMsXhv0dM
+	vxoVlKLnNN7pcjnDfFQHkT03y3dDdNQeBYkY6A6uPCn2tXNLtXHiPWDRmXPxZuQVQb9w3D
+	nF6X5atc9oU8Jioc+NOIng9G13Xe46E=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=BHQiDU1h;
-	spf=pass (imf14.hostedemail.com: domain of safinaskar@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=safinaskar@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761552545; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ouAvak8X;
+	spf=pass (imf07.hostedemail.com: domain of hughd@google.com designates 74.125.224.42 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761553257; a=rsa-sha256;
 	cv=none;
-	b=rSqbJdlwWHPOB8WHBDH8ce83UHoSdL5ZdEd2cbE35iwC+8WNXvqDTdNG83K01Y34mhV6NJ
-	vuMEhPx9M1dQPx2EfbpfSgMhdUQwBGeutZ38dqcYflZbh0TMNEf332kuFbZc9+IGk8Jhpd
-	7lmTKzRyn6JlbVKEsVdF7ZXMurlsoTg=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d53684cfdso973539566b.0
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 01:09:04 -0700 (PDT)
+	b=Rfg3Lp7TzCeI2uFWl3YWZT3fd6ikd0J//VxkR0jtN2JhyOuyhN/G04HbJAop6Z3VN5f/k0
+	qVEPuBKpKuJbc0NfJB7GcoexVMcoln4zdeh2wt6vzBQbjn9bRi7hYS5B+YrPnN+VsY4Ua+
+	Yo45LJdtD508d0pkAJwFyDQPOTv6Sic=
+Received: by mail-yx1-f42.google.com with SMTP id 956f58d0204a3-63e0c6f0adfso4366890d50.3
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 01:20:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761552543; x=1762157343; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yvxeQRhhg830l0sanhrt4dj9VmhvTVyDa0jNQUK1mG4=;
-        b=BHQiDU1hn7zgL9U1SqE+VzntDyLrSJq635cdsKUW0gmuW1wVPQt5qjvXzLzlxAadJj
-         G+dHOF/k9RTfkxdpJ+tmI4tYa+EmsoMbcUcdwyjONia3ZgPIvUsHYXpIfNc6KPp7BORV
-         BTxZ1Rn0Rz6HSErFGZ/rdOV9dAXcC1SQoj8uLBQWfQrmESaNl7g1lf1Hg3199IEbGpis
-         x+PLt7ZlwUlxAEVdfjhiR8AE2PKvm1obXXUN8hiTvyT3T9HXNxcgQx2OeIZfeoxs81/E
-         yah9dPmi0PnoGaxxlkbJHWx+ncS0T60NLD9WqoWGerzlPSigPXcpqLagtTtJP97Ec8t/
-         jYPg==
+        d=google.com; s=20230601; t=1761553256; x=1762158056; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=v8i9V9XN9hg6qjjGZ1kzhc0nrYJh0IgUWRXxrYjVsEk=;
+        b=ouAvak8XkzcFf1tLoHO0CGZVyH5Lc82O/lh3/ddH9EuDy4ho74QXoc4d9fiKp7kG+v
+         51stP5Qin6qCy+NXp3gFxPojtLzf+2HE0BRC93ssNZHLAhLGYCozAsL/546+gvVPCf7U
+         B8fhRTrby1bMiThEtfsvYTpvsWM9hLzrVdoa5Vt+1b3IAV0GyQ8CuXCCRv0Bhl5nmZzO
+         6Zg24EKEzDJlCfm1QN2ignBH85FAKFNvJ5CJKZ3QKFZcP8t43PL6Nn1o96F2mNAr+67q
+         TBUYmXpK3+sM8PsNF+v9DfF+xCrwJJZ9wf5fvdjGSQ5yFxuSe3wMdb4YPBAAv0AswpQ/
+         Y2FQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761552543; x=1762157343;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yvxeQRhhg830l0sanhrt4dj9VmhvTVyDa0jNQUK1mG4=;
-        b=QJrJDXqc4clFc5/hLMvn0v43QbgxTe7lw4Pm9WVT+8RK8up9Qv4WBP4i08s4AFhS7v
-         QRhLmGw+LIkrRUkr6L1s1ooG8Uo/xW0Jc7pGWdiuT/zwCbqs7Q5yai3hY20LGn3UAJ7+
-         cN2U3Zf3whXiG9XvZ+mdDOB+gAADIbCpW7OVC+QEHFtXGRPL/u0g+FFxBlu9CjK5IYeh
-         6GzX/DalNTejlx6gezdCTN5Sk+6j2El4H9r0r69jJXNLhiWPAxa7uAebojWAEJFAeAPL
-         FA7GjJ5UZ2nKJtU1bt1qsU43cfb0BuQNhEBV87vVWy6zscwXJLlbp9+8dITGLmKITLDb
-         fXIA==
-X-Forwarded-Encrypted: i=1; AJvYcCVqOb91OkW52Q6spn5JKLTrzDJ5hvws0cZCqY68TuIv4Z9T7wbeJ2nNUPt3ad8LGcyNRyWEaAeNhA==@kvack.org
-X-Gm-Message-State: AOJu0YzzWhE65xwHh0mKCMKG+kWX2GvXzbjw5veZrr+nkXikSP+fkyjY
-	ENJ1KWetkkxPu+/DOkVgJ3eAj/MUvPXxXw0pLpIs05rTqKs2XW9nqUgp
-X-Gm-Gg: ASbGncvtwJx2l5kKMXJIL7Y8kOavbLnA5eURH4MKv9a3TJGNQmrMvwNPHoL5RYQ2cNU
-	2nUBN/kr5RxaTn9LuEfmSw7rg//ks+VLS76cmYOXJylxlAuxSarOi+E4hRzBSZ0XZSWIF6gfF3+
-	1G9WCStB+SGmYFzFisiWA+RFCI/F8QLX5J9Hkzyj0w9dfHcDEQJBSjxoFsFnOz9cFZx5DpEpxHO
-	a/oyGY+DT4q+9JL1oIp/mlaExXTbFqrwkx9Bw7ZpAaIGoF0CpExPDN/MbABeSe4LKsw2D7qMUZX
-	fgAPuJXN3sQH8cmir73LMM9Ohs5dO9XkACkhygZgLV8ucPZEGN+z1env74sJNzkReKQrrBWb/61
-	PnUPg9yUZhZXIiGi3bgjPeKBcBmMpeOUawfhe5M1CnWL+WsfB8ThTtCqGX51vaFIB/NrPXIR83A
-	4p
-X-Google-Smtp-Source: AGHT+IFijVOlnEStwgdV8OnlKBS1QW3pyY3ndH6Fj16lvbKA8iEuH12vqflityGstfLwZ0jBGpQJHQ==
-X-Received: by 2002:a17:906:c43:b0:b6d:7e01:cbc5 with SMTP id a640c23a62f3a-b6d7e01debbmr639439666b.53.1761552543311;
-        Mon, 27 Oct 2025 01:09:03 -0700 (PDT)
-Received: from localhost ([212.73.77.104])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-b6db1c84813sm53108666b.19.2025.10.27.01.09.00
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 01:09:02 -0700 (PDT)
-From: Askar Safin <safinaskar@gmail.com>
-To: gmazyland@gmail.com
-Cc: Dell.Client.Kernel@dell.com,
-	brauner@kernel.org,
-	dm-devel@lists.linux.dev,
-	ebiggers@kernel.org,
-	kix@kix.es,
-	linux-block@vger.kernel.org,
-	linux-btrfs@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-lvm@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-pm@vger.kernel.org,
-	linux-raid@vger.kernel.org,
-	lvm-devel@lists.linux.dev,
-	mzxreary@0pointer.de,
-	nphamcs@gmail.com,
-	pavel@ucw.cz,
-	rafael@kernel.org,
-	ryncsn@gmail.com,
-	safinaskar@gmail.com,
-	torvalds@linux-foundation.org
-Subject: Re: dm bug: hibernate to swap located on dm-integrity doesn't work (how to get data redundancy for swap?)
-Date: Mon, 27 Oct 2025 11:08:56 +0300
-Message-ID: <20251027080856.2053794-1-safinaskar@gmail.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <a48a37e3-2c22-44fb-97a4-0e57dc20421a@gmail.com>
-References: <a48a37e3-2c22-44fb-97a4-0e57dc20421a@gmail.com>
+        d=1e100.net; s=20230601; t=1761553256; x=1762158056;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v8i9V9XN9hg6qjjGZ1kzhc0nrYJh0IgUWRXxrYjVsEk=;
+        b=AeAcUYNHOuTWu44eQJ7uR/xGMcFIckfOovD8icF8cFQpHixb2TESpmcePLkJI3B6hT
+         Me3cn5I0U6FxFsRW4RKOCl8wALSoo/kTAA9J5E3bsOERtE83+RXrRSbWHP/zHbme5LeT
+         pR4aHcwFqUIGetR8tOJcm0saHMwGhHIAaQOU5zix+vkafs/eml2suldm7wI9v4WFDtbT
+         1f3y28Z55a0cAZQEjR7JP+YWThuGVFxGKAYI3Y/hYORPBZ4YYH9HNGCCKDQTbyQdilAt
+         ycsq/C0lCql618VDxkTriBg+QiRgufstkVc1GkhdhyVKlpCfJ4dL0PGfj4dZtoPwaPoo
+         xBGA==
+X-Forwarded-Encrypted: i=1; AJvYcCU3bNHGhthGT6irEl48b0/MP4Ku1bz8h5u3WH15d7wFRA8RPCEkBEB9egZ8hc3YDAplRaPWkPmbbw==@kvack.org
+X-Gm-Message-State: AOJu0YzaP9h0kBP/aD7PVgNnj61FJzEv4saQJYSD+vacZFuVgma2CDJb
+	BzZaMuMb3eJK9qdoTFO2v08Egve0iTMjp1nXK9jCMckNIkfS20sFfghevF4F5I0wVA==
+X-Gm-Gg: ASbGnctvi4p4k7/HKexyQkcyGUSBliJsly4fvAjMohItDZMqupjJ9VS96Z7pCdTgP6R
+	JY2UuifyJGapxlhqrTxYF54U1B901HYkCsgS5wN0HYF2A0SSn5IMEPVx1zat5CmD6QfbwdHQaAV
+	+EVhaS2kd4xDK9F1Tzo3edauNF66SZwFEGJmki+0RMiK+CvoNMuUpNN+1cevfwTsnx0WlXbS9Oz
+	o3pN4qC+Y+YE+Z11gDFEaQhmqyd46YkroL2BLQ3fyZ8HAG+BCukbvMkABR3kGWcAHP+K3wG34+d
+	jgYXdtx8/ZyQFBM8iKuJ5DKiWsxsh+a1y6gTz7C0F31YgWdE20GJCkoQWxDhJ9rCmRIviX6v1g7
+	J6YKjQNPmZQUN52ysSxJ2QhIGr8RzJSLQvvGkajR7CWmjZemrr7rQXdYVb/HqgA7/lNXk6PltJ6
+	S+TWFC5o/VjrGIu8bT1zrNP3PnpUcArtrjyH2CFOHEjVjXcpBh+mQTVq1Nf2YO
+X-Google-Smtp-Source: AGHT+IEkrjgBL/rVFsJvctj6nF95xlm6ZoesSRoLMtXTNJL5ue1ifqY7ixGqz6500hmN62Bj943W/w==
+X-Received: by 2002:a05:690e:258d:b0:63e:e3c:ea59 with SMTP id 956f58d0204a3-63f4357cd79mr6910825d50.56.1761553256284;
+        Mon, 27 Oct 2025 01:20:56 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 956f58d0204a3-63f4c3bc6e3sm2081958d50.3.2025.10.27.01.20.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 01:20:54 -0700 (PDT)
+Date: Mon, 27 Oct 2025 01:20:42 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+    Johannes Weiner <hannes@cmpxchg.org>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org, Kiryl Shutsemau <kas@kernel.org>
+Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+In-Reply-To: <20251023093251.54146-2-kirill@shutemov.name>
+Message-ID: <96102837-402d-c671-1b29-527f2b5361bf@google.com>
+References: <20251023093251.54146-1-kirill@shutemov.name> <20251023093251.54146-2-kirill@shutemov.name>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: nyhrwso1stcura73c7e7j3c5csaf7wxy
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 96C4D40007
+X-Stat-Signature: rjtycz75qkgnwgknh9sdhbjkrj7r6z4d
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 416F1100003
-X-HE-Tag: 1761552545-855141
-X-HE-Meta: U2FsdGVkX1/h7TLkXwsMk+BjtDKBDfdH9n3K2uGwgjuyVF4bNgma4MYm0DzIkmAKbqaTGxpOsuUFbV36M5GjB45C0/12MHRJaNq1GfSPpJ7xl7QetVDY1mZFUyVkU8qu9TNuCi6J08mzwLPVrJ9Od5j2eioKXokBXn+mxIBds+6dM0CCHAXF90uTHTw60uEOeDLDuWrka4xTyu9AiKCpsSGiTw9PSXY7rXw5U8jYUtWQxFf/+7gzRYWz9A2mw6nrgslF2D8Y4cPp+MRR8TL+LDgmrRn6djXyUl02q046QXvgi12cJ1QIZ7b8oWD1YWWv6UwJ6mQR8THZlQ0vrvJQkseiS54Lf9rIIi0Ym4VKUxYUGAZ4ebau3fsHqwhJdvWLY4EHPLfmP7BO4hehAcKqi/H1gYyDtUKa37GAnDX7JcCUgFZVjKxx8DUwsSD7Tp1gWZaUePpjjcIW/bRv9Yfaq4vk4yTRZh36WWIGGkKSKBH4DR34Y+ky1LElefOypcJlJvoDdfnlbw76QQdd6osBMynowNoI9kRO2DiIHkFsZjAeL/K7Y6PnCSJRO2uDb9E8ot8qyLCCxPLHjnJCk3P4JelZ5Ir1herzXQ9Y7Uas4bf7vzo5mENVXSpC8bLKP9EOE+vdmg8YQd4v7Ni8YeXqKeald1J7kcGg/rfohESiP9ZwP+UMOqMSgci1MBKi9SKHrukJ8qF45uLA+5qGpIJ8t+a0aFaX8ZcxZre7AAjXnthlHF/Ke33Jfgvsbpg0o8G0jmAipHOV44qgIIRjWXHes1TflZ1rhGuRj2xQuxygfJP/fK/tq90xCB/pa8y9Pd1OipQADrhaG/74Ev+L14luQoALUB3MCQ/IH4dv6AJK6pVwcnn+wliHZBkijc/vWDqSP1Qiuc2DN0hIzvST36KCJ/nxveovBpxY3wEHu2QB1METXMxBZctU44ht9GS1SfdOjV4lcJCmRHZZSenfVAo
- qzRO7+35
- CoCqt9LEfWg+JkI5J/OQQHMf250irqQNDNhOZyFmYs3veY5WgCxPE+043mlOqrc6Zp3Nq8iyez6De4hil9U/c6rkM5cP7RlocTPNySMLsEogsdTM=
+X-HE-Tag: 1761553257-261743
+X-HE-Meta: U2FsdGVkX19X6PLCajwjM02dGT2c5AEJPUyJvyQLYmBT5Qu7kmD4H9i3i+14LH72ejk4bEPkVbT78u3mGMMX3r818UUYfq5Eku7k7LMLE2VQfAcZRKbGgmM1FVjPLTLsMDFn9YvGhWW6imo5lMXgamNfubAzpTbzsqK2DoJ+VU6v4vXS9dyUWOgex9KrWvyogyWlAtIRo/6YkQmM/tbFEBKOuyDGVY7CGApg7K/DHaRvIzGpx1pwcdxJn220r7KyGPwfCpqM809J/+gkwZXORzj7/4unqvkmo7S9Nw2/xawuLR9e6TrGTV0xXvVidiSr1E0cqAm2ADCZO9qGpizEGdV+ycK+Yl9KSlBIxdwy8/V0EV3+IKaNeWHCGmZHmU/PKuT0UJwNlZAzSpy+Bsg8v1So/MkyI9sdH7SZqnxHsE+o8TZEp2li3p8ptEexqYfPMYhx7k+ZNypWw0vobFV85uSFi/6e67xaiDct9zofXQhKCjzHrIEh0Sw11tYitbJwOqCR0+7LFAQbVxF/mUhfCeuEK166WUKocvXD71xXtT8fOkD/67CfCIpcleIYX0AgCIs2EMTtdKurkJecmWJ0hK4PaA5A2Q1sqnwW5lwSYlTPo5rXgnhBU/1QNNRwd+ERCvWgRiIFZcJVq9gLCb6GizZS6eFwJ1hhSPl8ElU69mPWr8QEJmz8qY/irWG7urUWopht6l2Q0skgbe51/UTiAmBSx9OwfiqOFQ19weqFyHi3qt1a/lyO3IXnLk/zJpHOh62OzL+S4RygC9x2mI4mdY/QGjRl8yMws/bZJANqYtevKZfXLhx2799qYkpv2Qt3q01wyBbFttYtaRQ9a+YUbd8RZQJQALCJuyRQLcUdQpl8YvA8v03UHzfcwUbVESor/7eJOvaAdyAvexwZPcjEqXUCeBaZA6x+Vad4FTpqEVJdag53G54CF1c2JUtjj49HFmvl7byAKpmfufq0C6s
+ 0F1KWPIm
+ LDJB6b4QytxVOCMPyrML9N00IWM3UeWbCvOWdmb8wPqXkaNKQeTrdmQxmFL4gszv1yC5zSVNqZi/MeVR6Q4+aNto2xoo1cjNLY2F1sFPQF7aO69epZy6HvPkFsKRF4Pw0yhUN5r7vZPNSHQZGrESY9MRdnZq4tdWczmMYPzBi+0hUgEFOpWeShZInGl85ke5W4hIbQfb7qY8V8XjHIMxniLC1Cxnv1JMAuC8c1Px4JM9+OQEOaE5X2uhe3wecjps+WHja6GuSA7+UFio2dyOdIlVVhBIOVMUjDY9UKlSNUKHA8rsemuoykIb6enJipO566vkhl66uMJ0xASaqotoCw+JdH3v/W/6bS63JBV25szdyRCnBjtz+ZFkReJmsSvY8GKLW+iyXplOWRKYD7pXLj8/70sLJHpsj376S5kzcmPwjzD8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,103 +131,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Milan Broz <gmazyland@gmail.com>:
-> Hi,
+On Thu, 23 Oct 2025, Kiryl Shutsemau wrote:
 
-That patch doesn't fix the problem. I will send more details within some
-days, hopefully today.
+> From: Kiryl Shutsemau <kas@kernel.org>
+> 
+> Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+> supposed to generate SIGBUS.
+> 
+> Recent changes attempted to fault in full folio where possible. They did
+> not respect i_size, which led to populating PTEs beyond i_size and
+> breaking SIGBUS semantics.
+> 
+> Darrick reported generic/749 breakage because of this.
+> 
+> However, the problem existed before the recent changes. With huge=always
+> tmpfs, any write to a file leads to PMD-size allocation. Following the
+> fault-in of the folio will install PMD mapping regardless of i_size.
+> 
+> Fix filemap_map_pages() and finish_fault() to not install:
+>   - PTEs beyond i_size;
+>   - PMD mappings across i_size;
 
-Also, I just found that for reliable reproduction you need to do
-"swapoff /dev/mapper/swap; cat /dev/mapper/swap > /dev/null" after resume
-(assuming you were able to resume, of course).
+Sorry for coming in late as usual, and complicating matters.
 
-So here is updated script for reproduction in Qemu:
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+> Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
 
-https://zerobin.net/?0aa379bae218cf92#DDVFMvfi6S3ydCQLSrL+us1lHjXQJIZasW55JI7gEfU=
+ACK to restoring the correct POSIX behaviour to those filesystems
+which are being given large folios beyond EOF transparently,
+without any huge= mount option to permit it.
 
-This script is very easy to use!
+> Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
 
-Try 1-2 times to reproduce.
+But NAK to regressing the intentional behaviour of huge=always
+on shmem/tmpfs: the page size, whenever possible, is PMD-sized.  In
+6.18-rc huge=always is currently (thanks to Baolin) behaving correctly
+again, as it had done for nine years: I insist we do not re-break it.
 
-Here is result of that script:
+Andrew, please drop this version (and no need to worry about backports).
 
-https://zerobin.net/?3d9447900052f9ce#ng0htJDAdSsvqVunL+BnoLHXszM6ardt9R3wkbO9L28=
+I'm guessing that yet another ugly shmem_file() or shmem_mapping()
+exception should be good enough - I doubt you need to consider the
+huge= option, just go by whether there is a huge folio already there -
+though that would have an implication for the following patch.
 
-This results are on 43e9ad0c55a3, which is current master, without Mikulas Patocka's
-patch, but with this Mario's patch:
-https://lore.kernel.org/linux-pm/20251026033115.436448-1-superm1@kernel.org/ .
-Mario's patch is needed, otherwise we get WARNING when we try to hibernate.
+(But what do I mean by "huge folio" above?  Do I mean large or do
+I mean pmd_mappable?  It's the huge=always pmd_mappable folios I
+care not to break, the mTHPy ones can be argued either way.)
 
-Again: these logs are without Mikulas Patocka's patch. I will send results
-of testing his patch later, hopefully today. But don't expect much. As I said,
-his patch doesn't work.
-
-"log-def-1" is output of first Qemu invocation (i. e. first boot) with
-default integritysetup options. "log-def-2" is second Qemu invocation
-(i. e. when we try to resume).
-
-log-bit-{1,2} is same thing, but with "--integrity-bitmap-mode" added to
-"integritysetup format" and "integritysetup open".
-
-log-no-{1,2} is same, but with "--integrity-no-journal".
-
-log-nodm-{1,2} is same, but without dm-integrity at all, i. e. we create
-swap directly on partition.
-
-As you can see in logs, hibernate with dm-integrity never works perfectly.
-We either unable to resume, either we are able to resume, but then get
-integrity errors when we do "cat /dev/mapper/swap > /dev/null".
-
-Swap directly on partition works.
-
-Again: you may need 1-2 attempts to reproduce using this script.
-
-Also: the bug is reproducible even if we do "echo test_resume > /sys/power/disk".
-
-> Are you sure you used --integrity-no-journal both in activation before
-> hibernation and also in resume? If not, please try it.
-
-I'm totally sure. (You can see script above and "set -x" output in logs.)
-
-> You can verify it with "integritysetup status <device>" - it should say "journal: not active".
-
-I just checked. It indeed says so.
-
-> And if it does not work, could you try to use -integrity-recovery-mode the same
-> way (both before hibernation and later in resume)? This will effectively ignore checksums
-
-So I should pass it to both "integritysetup open" invocations, but
-not to "integritysetup format" invocation. Right? Okay, I did so.
-
-I. e. I did this:
-
-integritysetup format --batch-mode --integrity xxhash64 /dev/sda # when formatting
-integritysetup open --integrity-recovery-mode --integrity xxhash64 /dev/sda swap # before hibernate
-integritysetup open --integrity-recovery-mode --integrity xxhash64 /dev/sda early-swap # when resuming
-
-And something completely unexpected happened!
-"swapon" failed immediately after "mkswap"!!! I. e. "swapon" was
-unable to read swap signature right after "mkswap".
-Here is log:
-https://zerobin.net/?ebe34fc9ce94be45#6DWKSXvgUDKIrF4299th0ylhQNEcdqeeBfxzSJjROpA=
-This seems like another dm-integrity bug.
-
-> You can verify it with "integritysetup status <device>" - it should say "mode: read/write recovery".
-
-Yes, it says so in logs above.
-
-> You can also try to decrease journal commit time with --journal-commit-time option,
-
-I just put "--journal-commit-time 1" to format and both opens. I got the same
-result I get with default options: i. e. blkid returns "swap" instead of
-"swsuspend", when I try to resume. Here are logs:
-https://zerobin.net/?c5f8320eb89b1cfb#drrxRgnGk817oEDUA8idhn+WEQgocWjtbsAYuEHF5rI= .
-
-> Redundancy? You mean data integrity protection? There is no redundancy, only additional authentication tag
-> (detecting integrity error but not correcting it).
-
-Yes, I meant integrity protection.
-
--- 
-Askar Safin
+Hugh
 
