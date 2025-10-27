@@ -4,205 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CED9CCCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:27:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D7FDCCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:32:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1EE8B80052; Mon, 27 Oct 2025 09:27:37 -0400 (EDT)
+	id 68EE880053; Mon, 27 Oct 2025 09:32:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 19F0B8000A; Mon, 27 Oct 2025 09:27:37 -0400 (EDT)
+	id 63F578000A; Mon, 27 Oct 2025 09:32:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 017E380052; Mon, 27 Oct 2025 09:27:36 -0400 (EDT)
+	id 57C7B80053; Mon, 27 Oct 2025 09:32:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id DB0258000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:27:36 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 828BFA909F
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:27:36 +0000 (UTC)
-X-FDA: 84043971312.11.500885F
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 13BB4180009
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:27:33 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TM9vO7Jc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=85Ixpc4J;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Neqw/yzt";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N5zhOPEQ;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	by kanga.kvack.org (Postfix) with ESMTP id 422748000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:32:56 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D7EB0C0115
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:32:55 +0000 (UTC)
+X-FDA: 84043984710.08.84F4732
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf12.hostedemail.com (Postfix) with ESMTP id AFDEA40009
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:32:53 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761571974; a=rsa-sha256;
+	cv=none;
+	b=KF3jgWVvDg15NJVLMw4r62PQ5H5bwfnxWRjU5Q95wRNWflV0AXGUFF6P/pJ9V77LLKUdM3
+	/c1uw/p4ErCHcMQxpM6AF4fQmEK8u1VOt6bA1G+PMoJ4nUpi2zjSNVjXdBvVynX+J5qFZp
+	OKrxZJCaRdqn0z6lpXBlUCRc3CjPD7s=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	spf=pass (imf12.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761571654;
+	s=arc-20220608; t=1761571974;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5XpAc/wnKhW7u09JNrLPt9PaFPUwXBy6MclCMVEFG2c=;
-	b=7CH8XRl0gXHIVqepWfsbz9wbkzWEObgVJFIYfMBqPEHlkjrThnIatwkW3rKRnGQUu5vUNk
-	BhOK0Vnzv0bYTFvfFwwpA/eIOVY6GH+hSjwd3z+h+czfzhDkn2oK4J5vYLCzRd8xm+mt6K
-	QJDulvLek8fvPkl1iEV5IfBbT53V7TQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761571654; a=rsa-sha256;
-	cv=none;
-	b=rGeZ0/5wxQyme8lx2DSbl6zYkFJMzdfF+FItCaimj1X1be5Kg9DQQ8YXSp6uDygGbKzKOB
-	lna9GKxQlOpsVvjdmEaIQS9p/wMEN57cYtpJKZa9HbDmHekdDCFrH1u+CwOW9kUkzuws7V
-	ifdGTbLjNNe85koQaoBP/O33xxAjA/Y=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=TM9vO7Jc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=85Ixpc4J;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Neqw/yzt";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=N5zhOPEQ;
-	dmarc=none;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CF540219E4;
-	Mon, 27 Oct 2025 13:27:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761571651; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5XpAc/wnKhW7u09JNrLPt9PaFPUwXBy6MclCMVEFG2c=;
-	b=TM9vO7Jc61kw+VXUhOQ+PGjaEbab7kI7IqQsWiI8Becj2jWF0T18ysXykCJva50100qZiV
-	KxZS/IYk5nxsFp6WBXD0QGjZtXB7J+QsgAyu4CLo+QaJKwPfCZmam4WTXqa6eI4ABpLRp5
-	VFCL6kLowFxDpMiOc6vWqgGf19tN7GU=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761571651;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5XpAc/wnKhW7u09JNrLPt9PaFPUwXBy6MclCMVEFG2c=;
-	b=85Ixpc4JK9GwDRQJK1w6m0apKLDqjn/tLJKiqOW/a2SWTiwaaxcoQIeZxANpbukVMYAZUC
-	Cq9BrhPHp0AEVPBQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761571650; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5XpAc/wnKhW7u09JNrLPt9PaFPUwXBy6MclCMVEFG2c=;
-	b=Neqw/yzt5jkjQeyE88ZObAB5rNiQRIMgkO1G/L0izC2JO31t3R8ruwVCycwb9ObjVlA3lC
-	NTdrolCFr07dGsBUvQQI10lxfPW+Paamqcryxl8G5O7pUW/xYZi2+FFmEIEyYZWKoN7Pm8
-	FuVlvhMX17+Qxsh8z81l6vY52dMCbA8=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761571650;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=5XpAc/wnKhW7u09JNrLPt9PaFPUwXBy6MclCMVEFG2c=;
-	b=N5zhOPEQviM9fOW+4dNYU4eUhqEyCo0EbRr9vYHizE0xAZESli17qpj+4h+HXMWzK0upNn
-	dbhf1I3lAqr0C5Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38112136CF;
-	Mon, 27 Oct 2025 13:27:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id /r5bDUJz/2gfTwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 13:27:30 +0000
-Message-ID: <33d350d9-b247-4181-b8c8-5e879acd35fe@suse.cz>
-Date: Mon, 27 Oct 2025 14:27:29 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=LZIV7DiVBQ9ZGj7Mw+AxaUbETtcLCEViFbmC0IEP6UQ=;
+	b=tlicdbbd3nIn2fz6s5ojqJElbWzn/Ub7R9+98SN3X7IJv/+plLukxsg+GvP0WRDaAgOZVQ
+	49qH4PIZ4Ow+S1ZRvkEKETJdcudTy0/E4orcqaMSiS0mbqIRHh7VCNbt6MFqj959W099xE
+	4/Azn6791rMR9p2UKR8K6EJcmMY0FCw=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A1A07175D;
+	Mon, 27 Oct 2025 06:32:44 -0700 (PDT)
+Received: from [10.57.68.196] (unknown [10.57.68.196])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AF5AF3F673;
+	Mon, 27 Oct 2025 06:32:45 -0700 (PDT)
+Message-ID: <2be0732d-d8fb-424d-bc4e-443cc49d0092@arm.com>
+Date: Mon, 27 Oct 2025 14:32:42 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 01/37] KVM: guest_memfd: Introduce per-gmem
- attributes, use to guard user mappings
-Content-Language: en-US
-To: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, x86@kernel.org,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- "maple-tree@lists.infradead.org" <maple-tree@lists.infradead.org>
-Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
- brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org,
- corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com,
- david@redhat.com, dmatlack@google.com, erdemaktas@google.com,
- fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org,
- hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com,
- isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com,
- jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com,
- jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com,
- kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev,
- liam.merwick@oracle.com, maciej.wieczor-retman@intel.com,
- mail@maciej.szmigiero.name, maobibo@loongson.cn,
- mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org,
- mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com,
- mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev,
- nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev,
- palmer@dabbelt.com, pankaj.gupta@amd.com, paul.walmsley@sifive.com,
- pbonzini@redhat.com, peterx@redhat.com, pgonda@google.com, prsampat@amd.com,
- pvorel@suse.cz, qperret@google.com, richard.weiyang@gmail.com,
- rick.p.edgecombe@intel.com, rientjes@google.com, rostedt@goodmis.org,
- roypat@amazon.co.uk, rppt@kernel.org, seanjc@google.com,
- shakeel.butt@linux.dev, shuah@kernel.org, steven.price@arm.com,
- steven.sistare@oracle.com, suzuki.poulose@arm.com, tabba@google.com,
- tglx@linutronix.de, thomas.lendacky@amd.com, vannapurve@google.com,
- viro@zeniv.linux.org.uk, vkuznets@redhat.com, wei.w.wang@intel.com,
- will@kernel.org, willy@infradead.org, wyihan@google.com,
- xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com,
- yuzenghui@huawei.com, zhiquan1.li@intel.com
-References: <cover.1760731772.git.ackerleytng@google.com>
- <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <638600e19c6e23959bad60cf61582f387dff6445.1760731772.git.ackerleytng@google.com>
+Subject: Re: [PATCH v3 11/13] x86/xen: use lazy_mmu_state when
+ context-switching
+To: David Hildenbrand <david@redhat.com>,
+ Demi Marie Obenour <demiobenour@gmail.com>,
+ David Woodhouse <dwmw2@infradead.org>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+ <20251015082727.2395128-12-kevin.brodsky@arm.com>
+ <f0067f35-1048-4788-8401-f71d297f56f3@redhat.com>
+ <348e5f1c5a90e4ab0f14b4d997baf7169745bf04.camel@infradead.org>
+ <70723f4a-f42b-4d94-9344-5824e48bfad1@redhat.com>
+ <3ff4aaeb-61ce-4b72-ba90-1b66374b1b95@gmail.com>
+ <6c9bd0c6-0968-41ac-b0b4-53c881748cfb@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <6c9bd0c6-0968-41ac-b0b4-53c881748cfb@redhat.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: zoh9up55ue7djoohotj7s5h5rngigf9f
+X-Rspamd-Queue-Id: AFDEA40009
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 13BB4180009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: uj7z1oihdfxdehy6g7dzcjnk93ymygj5
-X-HE-Tag: 1761571653-190112
-X-HE-Meta: U2FsdGVkX19X+TNMsX5KuMToYVz2cUDSE/8I8NlzrxOaKJBEq9Z/olY2uwvUNSQeYwE/LqVdkdL2MB4VKpPRliRo+Ji1KlSZBOKwfpuQUMx+LJ9FmVXVouVjWmZ1FyJIn28Yc0FTTLHYPIm4oqKcuV4gPS4Qo/M6oKsN7J7BHm0B7+gtSGzVu8zfjqbHlJEAEpAohAr0jOXg6ouqRtrJdzxT3sYQjForLl7MqHyYbCJJUxoiCRhIwsYxcXcw1+NQVzkwwjw5OI/qMfNzNQBAvhlWqsGypnngMoct8Ld8NGc94UCSy+AH8hYNqfBoVldnKtADqaJYmSpzMCfGJ8+rZsnU5I4WI4uxOas9m/Xrtu1Ax9Ih1kXj+sU2AAPO6xNrBSFoxs2i94xgGIA0Ko9YL0qPSX1f6Cl2zyDBYUKLeiPYxR4dsw/84S9SPFXSkoSfqu2paUFDlTvWvNzxorxlnAuRGcY87MCt9Hh66EVG1MAJRoGc6446wM2Xl88LtjpcdEDeoE5KjfXzyS7uVlVhc1jt7RqS6hlOLTzv/VAcJVGfZvk11u441ESSC0uNovYm/38ui1DjXmGoQa2EwWlMuu+ufGxOsq/44hIvSlEXaAQyw+6gfl2Sapz0Ak/VEgfSXuBsG124ODeZ/l5/jriiDEmtyGYJVXtyWKJmMvQySNthmdHh7t315IAFsHcFA3iN/o+M1F4RLnbEb4aGUwzUxOLGh/Fsbc/gHzSLDicaTwv6IQ/X2Zqy16VZvUjb3UBEAQXRDsfkFXCBLaMrloYMzh2TULM7oVmb2vXMHvX/Ocnc6JrsOxGZiX6iNK77iKrKY8YHNSKispIajeaU8Lkkp/CZlLwA5vxGTzp75o4CRQnSCUU7X2AYrWcb6kkLtzxYOZccshX3Pv2I/ZnPB2/Q4RjPBrHlxa4q0P2cIcpMRWX6kgG9JjDxz48+2feKw9QspcR0e0ypuFig5SBheiT
- 1Ft5lkIL
- +JA9jUI12lFtgz95dKri0xu393CaRPL/HdwpOBUhLfqVJzpEHJnpRuAQno0KrTw2p5+TG6fo04Y6m0pSNe6gr6Y4JzNtCBiriARq8HiLGrYOjdSTaOvSytl1uzx8ygLNZu1a0SjkRKIt8Y6VbNLu4QmCQmFqFbvR2MU1fi6QuBonNvhWm+UF8Z30XUL362hRlTeJHtVIqpHtjZO9cnUVylcWayPeQQYPFnQxuRi/6pwMAV9CKP1aCawLXAoNpk9qBWDk12BhwIQRPnRiD7FgnxHRa8X3QoviF6HrVDoTWFwIxgM96gqQ/4kY4G3k9sCa2fx7x24kQn/iOjb+SfmZmUzzbgbKn6P5whCj7gHEz+9TxnWc2pagc5iKLGH5SAHev5vYO+wRPVQkELRsHRjUcoK9rLRe8eQs2u4LibL2PRNyvcG3fhPJKWFN7aTLQFHaFYSyBdZMIwRTfY23EKR2ICnvm3w==
+X-HE-Tag: 1761571973-556025
+X-HE-Meta: U2FsdGVkX1+rcYhcPfMj0aFQ8cHfA5fqtrZ/AU0MZe9OWKb+MUbuL9xylNaNyjvni4wFXCo0Qp+ZXrEsm+mhyxZJ6XS3yZJK7WK7KG+/pISzHS5JSHAZJmdQl4TwNzXv740ExCoJQ7TkCfuxRhRBO9aDtHPMTaea3mBD7InUDlEtdI1gI+S0tu/nKgqze/OwQUORrOqddbZqwqFIgMdS7+yNLruQ/aNzG/Ea4cVv+6ftUQO2+IQYxwp8wty57vClBe5K1/6bJtcLFZYZN0UhYYi6eZfieG/Y9IAEWqGXocU0tSZqWpQP96yfkLXY+BY4Gcumi70XJtaawByI7OjN3oXjcvVLaPMqeLsGTIX5kw06BxOSd+AT8DKx1cIMrPLb6EF/LHknCg2ilL9d9dY9YR1SjMnpKZqnvPw7htJ9vXNTktyn/O/fObTAovmo3B+ZAXLAgLo/BNM/fdlQaL436FNWfnImwlFHEnPZnj7DSlf7RMpSocSTu+LlGatQ8WS8CbNRqzzDQwKsaYIdVfXYph4kujKMTt5B3smtm6hwuYEvna50UWGG+y5ulwaE+XArTq0OMvmCwnNR4TH6tOa5RNzGy2NHRRmsXSBBfKNF6VMzy+vV8l13+ZFfap/5Imq2zGC+QiYAWzyONXV/5axx/sXVdX/2syrEDiI5t6jbXN+4eCnCpL4iYdsK0MT0FpSQYS7poquK3oi2hgSuKamJB+G6nEuVTifx0+oWxrt5sz2xUyz/a2wJG8tspxckQM+wTdfkVh8u3g040bAcinQCDBuw/LPZ/w0G4U7AjNFjvveGeImmqAdy4RyRIo7qu8g9SkiQCznnKiOVFr8N3y6XLVatWLjZWW5Klc5rj/gJS1qzfqQZulZOJkNXH1tUt5QmlTdrz2JS7W/o/W4iDbrYGMZ9MdGRAw0nLOrnYM/etidBkSpfGxWDfiO+FN0Uz9xS6urKbA7OPvaT6Tl7zBD
+ Fxhx426F
+ MvagrmZwxsSCuOAhGFykJMocfzMbh/MdZipx4SY8pQTeYsGuxH9Z1oYGO4ibwiauMPILjIe3fYH79eyjqI8ibAyL6z4bFzDgrrcJMSA9UdisBYjTt8ZQZQVRvt1mB50Iw5n1rWtFNWIsk5DH/B10ls1FmlHvOKatdZsy38Ay9Ej5av9cpZyd790PvsCBZfOxZ+lUzXn1gdZd84Ap81Gi/16j9ZyIzsJXRNNd557zNCNJi311vBQ0HC4VJnCVy5kh3D57AArHj/knsMg94UbfyMj3oyg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -211,229 +112,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/17/25 22:11, Ackerley Tng wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Start plumbing in guest_memfd support for in-place private<=>shared
-> conversions by tracking attributes via a maple tree.  KVM currently tracks
-> private vs. shared attributes on a per-VM basis, which made sense when a
-> guest_memfd _only_ supported private memory, but tracking per-VM simply
-> can't work for in-place conversions as the shareability of a given page
-> needs to be per-gmem_inode, not per-VM.
-> 
-> Use the filemap invalidation lock to protect the maple tree, as taking the
-> lock for read when faulting in memory (for userspace or the guest) isn't
-> expected to result in meaningful contention, and using a separate lock
-> would add significant complexity (avoid deadlock is quite difficult).
+On 27/10/2025 13:29, David Hildenbrand wrote:
+> On 25.10.25 00:52, Demi Marie Obenour wrote:
+>> On 10/24/25 10:51, David Hildenbrand wrote:
+>>> On 24.10.25 16:47, David Woodhouse wrote:
+>>>> On Thu, 2025-10-23 at 22:06 +0200, David Hildenbrand wrote:
+>>>>> On 15.10.25 10:27, Kevin Brodsky wrote:
+>>>>>> We currently set a TIF flag when scheduling out a task that is in
+>>>>>> lazy MMU mode, in order to restore it when the task is scheduled
+>>>>>> again.
+>>>>>>
+>>>>>> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+>>>>>> mode in task_struct::lazy_mmu_state. We can therefore check that
+>>>>>> state when switching to the new task, instead of using a separate
+>>>>>> TIF flag.
+>>>>>>
+>>>>>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>>>>>> ---
+>>>>>
+>>>>>
+>>>>> Looks ok to me, but I hope we get some confirmation from x86 / xen
+>>>>> folks.
+>>>>
+>>>>
+>>>> I know tglx has shouted at me in the past for precisely this reminder,
+>>>> but you know you can test Xen guests under QEMU/KVM now and don't need
+>>>> to actually run Xen? Has this been boot tested?
+>>>
+>>> And after that, boot-testing sparc as well? :D
+>>>
+>>> If it's easy, why not. But other people should not suffer for all the
+>>> XEN hacks we keep dragging along.
+>>
+>> Which hacks?  Serious question.  Is this just for Xen PV or is HVM
+>> also affected?
+>
+> In the context of this series, XEN_LAZY_MMU.
 
-+Cc Liam and maple-tree list, especially for this part.
+FWIW in that particular case it's relatively easy to tell this is
+specific to Xen PV (this is only used in mmu_pv.c and enlighten_pv.c).
+Knowing what to test is certainly not obvious in general, though.
 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Fuad Tabba <tabba@google.com>
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->  virt/kvm/guest_memfd.c | 119 +++++++++++++++++++++++++++++++++++------
->  1 file changed, 103 insertions(+), 16 deletions(-)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index b22caa8b530ab..26cec833766c3 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -4,6 +4,7 @@
->  #include <linux/falloc.h>
->  #include <linux/fs.h>
->  #include <linux/kvm_host.h>
-> +#include <linux/maple_tree.h>
->  #include <linux/mempolicy.h>
->  #include <linux/pseudo_fs.h>
->  #include <linux/pagemap.h>
-> @@ -32,6 +33,7 @@ struct gmem_inode {
->  	struct inode vfs_inode;
-> 
->  	u64 flags;
-> +	struct maple_tree attributes;
->  };
-> 
->  static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
-> @@ -54,6 +56,23 @@ static inline kvm_pfn_t folio_file_pfn(struct folio *folio, pgoff_t index)
->  	return folio_pfn(folio) + (index & (folio_nr_pages(folio) - 1));
->  }
-> 
-> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
-> +{
-> +	void *entry = mtree_load(&GMEM_I(inode)->attributes, index);
-> +
-> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
-> +}
-> +
-> +static bool kvm_gmem_is_private_mem(struct inode *inode, pgoff_t index)
-> +{
-> +	return kvm_gmem_get_attributes(inode, index) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +}
-> +
-> +static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
-> +{
-> +	return !kvm_gmem_is_private_mem(inode, index);
-> +}
-> +
->  static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
->  				    pgoff_t index, struct folio *folio)
->  {
-> @@ -415,10 +434,13 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
->  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
->  		return VM_FAULT_SIGBUS;
-> 
-> -	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
-> -		return VM_FAULT_SIGBUS;
-> +	filemap_invalidate_lock_shared(inode->i_mapping);
-> +	if (kvm_gmem_is_shared_mem(inode, vmf->pgoff))
-> +		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
-> +	else
-> +		folio = ERR_PTR(-EACCES);
-> +	filemap_invalidate_unlock_shared(inode->i_mapping);
-> 
-> -	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
->  	if (IS_ERR(folio)) {
->  		if (PTR_ERR(folio) == -EAGAIN)
->  			return VM_FAULT_RETRY;
-> @@ -572,6 +594,46 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
->  	return true;
->  }
-> 
-> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
-> +{
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
-> +	u64 attrs;
-> +	int r;
-> +
-> +	inode->i_op = &kvm_gmem_iops;
-> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> +	inode->i_mode |= S_IFREG;
-> +	inode->i_size = size;
-> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> +	mapping_set_inaccessible(inode->i_mapping);
-> +	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> +
-> +	gi->flags = flags;
-> +
-> +	mt_set_external_lock(&gi->attributes,
-> +			     &inode->i_mapping->invalidate_lock);
-> +
-> +	/*
-> +	 * Store default attributes for the entire gmem instance. Ensuring every
-> +	 * index is represented in the maple tree at all times simplifies the
-> +	 * conversion and merging logic.
-> +	 */
-> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
-> +
-> +	/*
-> +	 * Acquire the invalidation lock purely to make lockdep happy. There
-> +	 * should be no races at this time since the inode hasn't yet been fully
-> +	 * created.
-> +	 */
-> +	filemap_invalidate_lock(inode->i_mapping);
-> +	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
-> +	filemap_invalidate_unlock(inode->i_mapping);
-> +
-> +	return r;
-> +}
-> +
->  static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  {
->  	static const char *name = "[kvm-gmem]";
-> @@ -602,16 +664,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
->  		goto err_fops;
->  	}
-> 
-> -	inode->i_op = &kvm_gmem_iops;
-> -	inode->i_mapping->a_ops = &kvm_gmem_aops;
-> -	inode->i_mode |= S_IFREG;
-> -	inode->i_size = size;
-> -	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
-> -	mapping_set_inaccessible(inode->i_mapping);
-> -	/* Unmovable mappings are supposed to be marked unevictable as well. */
-> -	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
-> -
-> -	GMEM_I(inode)->flags = flags;
-> +	err = kvm_gmem_init_inode(inode, size, flags);
-> +	if (err)
-> +		goto err_inode;
-> 
->  	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
->  	if (IS_ERR(file)) {
-> @@ -798,9 +853,13 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	if (!file)
->  		return -EFAULT;
-> 
-> +	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
-> +
->  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, &is_prepared, max_order);
-> -	if (IS_ERR(folio))
-> -		return PTR_ERR(folio);
-> +	if (IS_ERR(folio)) {
-> +		r = PTR_ERR(folio);
-> +		goto out;
-> +	}
-> 
->  	if (!is_prepared)
->  		r = kvm_gmem_prepare_folio(kvm, slot, gfn, folio);
-> @@ -812,6 +871,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
->  	else
->  		folio_put(folio);
-> 
-> +out:
-> +	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
->  	return r;
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
-> @@ -925,13 +986,39 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
-> 
->  	mpol_shared_policy_init(&gi->policy, NULL);
-> 
-> +	/*
-> +	 * Memory attributes are protected the filemap invalidation lock, but
-> +	 * the lock structure isn't available at this time.  Immediately mark
-> +	 * maple tree as using external locking so that accessing the tree
-> +	 * before its fully initialized results in NULL pointer dereferences
-> +	 * and not more subtle bugs.
-> +	 */
-> +	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN);
-> +
->  	gi->flags = 0;
->  	return &gi->vfs_inode;
->  }
-> 
->  static void kvm_gmem_destroy_inode(struct inode *inode)
->  {
-> -	mpol_free_shared_policy(&GMEM_I(inode)->policy);
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +
-> +	mpol_free_shared_policy(&gi->policy);
-> +
-> +	/*
-> +	 * Note!  Checking for an empty tree is functionally necessary to avoid
-> +	 * explosions if the tree hasn't been initialized, i.e. if the inode is
-> +	 * being destroyed before guest_memfd can set the external lock.
-> +	 */
-> +	if (!mtree_empty(&gi->attributes)) {
-> +		/*
-> +		 * Acquire the invalidation lock purely to make lockdep happy,
-> +		 * the inode is unreachable at this point.
-> +		 */
-> +		filemap_invalidate_lock(inode->i_mapping);
-> +		__mt_destroy(&gi->attributes);
-> +		filemap_invalidate_unlock(inode->i_mapping);
-> +	}
->  }
-> 
->  static void kvm_gmem_free_inode(struct inode *inode)
-> --
-> 2.51.0.858.gf9c4a03a3a-goog
+- Kevin
 
+>
+> Your question regarding PV/HVM emphasizes my point: how is a submitter
+> supposed to know which XEN combinations to test (and how to test
+> them), to not confidentially break something here.
+>
+> We really need guidance+help from the XEN folks here.
 
