@@ -4,84 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F4F3CCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:35:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B394CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:41:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDBF3800C2; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
+	id D2590800C3; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DB7EE8009B; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
+	id CFD258009B; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC9F0800C2; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
+	id BEBA0800C3; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B8F938009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78DA686524
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:35:47 +0000 (UTC)
-X-FDA: 84045503934.01.9D01779
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A8DA61C0009
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:35:45 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DsgRW1CV;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id ADFBC8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:41:57 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 53BCE48ADD
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:41:57 +0000 (UTC)
+X-FDA: 84045519474.16.9C22ADA
+Received: from cyan.elm.relay.mailchannels.net (cyan.elm.relay.mailchannels.net [23.83.212.47])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9EED1140007
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:41:54 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=auF05oNm;
+	spf=pass (imf23.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.212.47 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
 	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761608145;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761608515;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8gtlWGlf8Il3fDP1MGAoknIABk6TQTdJM1ZjO/034mk=;
-	b=oRQicnUkPHf+VZSlhXuQdEAGl4YZYIH3mCed5RbEWf2NgK6D2pI62m24hoQm9uW4Z78xuK
-	FjH66kdaTqhmWC1cyVjoS3Q4gOcFk9lghnGUGt+SKAEcLyJf/EcUPagRn5aABCRy5Jw5Vk
-	j1VXvRNYljt+dJtTd5F+NqJabET5rGg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608145; a=rsa-sha256;
-	cv=none;
-	b=A8fs734jifH1A7UC0MTU3rtfXuy3VY+OcPffeind3B8xsyT2cRq0IcCyDyf729KZ82Ort7
-	h6+FvK8iYCj/GbUybvGFjT5SYx1adixqeGx6847vg+uMRZAJkmMD8GZ0gl896HNHp2IL7Z
-	K2n4UtgQabdfqOpqkENw2HxoFPjiF/4=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DsgRW1CV;
+	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
+	b=DwWmG8R5aMTcqyGwtR7fv9/AUpBTNp8H1S0axiVUQg4ko9OlUIjDvK8G9H2jaOg9ulzwpL
+	ZmNuNM6trOAPIvTrKaZg9XLs0U2umVadQEMON3Rn4hfGk1I0+EdiLprvAQatwnqoG5wzQc
+	m05KnTMvH0jpStH99k26H6vyoE8qdug=
+ARC-Authentication-Results: i=2;
+	imf23.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=auF05oNm;
+	spf=pass (imf23.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.212.47 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
 	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 651EF448BC;
-	Mon, 27 Oct 2025 23:35:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB11C4CEF1;
-	Mon, 27 Oct 2025 23:35:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761608144;
-	bh=hwP/ISptcED0C3gyAgZ7TO//hrJsL4mtGE0vyK8MMKY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=DsgRW1CVuz7pf/7lDWSQnSrE5lGx71T5LIt5ghrJXhpQ0KVQ23X8tAhdxcLFSfPvN
-	 7909z9taUvPExsiFMmji6rakj7APUszplZBRGGnGCRr5e3EuRfldu+w6U61snmkSD/
-	 M4CgCrfH8raUQ+gz3eGYh6/lUUi+I9KknzqBEWt0=
-Date: Mon, 27 Oct 2025 16:35:43 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: bajing <bajing@cmss.chinamobile.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] Fix the problem that kunit cannot run
-Message-Id: <20251027163543.bbf0f6bf9f81c3a61afa48a2@linux-foundation.org>
-In-Reply-To: <20251027091231.1770-1-bajing@cmss.chinamobile.com>
-References: <20251027091231.1770-1-bajing@cmss.chinamobile.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761608515; a=rsa-sha256;
+	cv=pass;
+	b=rUo2MA6PD5BERY+0aGtHrpDS+st9ncsvNottRyc8wRKMfZh7/f287OClYK+XpXHRVY4RbB
+	med41B1IAkBdfyZXpDflFeQuK/MxtQKIrCloiRRyp6hQODfzNnyRczGmkXv8XfradfXzG7
+	uv2zicShouCmyMi+WymM8QhucAxs/lI=
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id B46E5421E21;
+	Mon, 27 Oct 2025 23:41:52 +0000 (UTC)
+Received: from fr-int-smtpout17.hostinger.io (trex-green-3.trex.outbound.svc.cluster.local [100.121.22.161])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id A62B3421E7E;
+	Mon, 27 Oct 2025 23:41:50 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761608511; a=rsa-sha256;
+	cv=none;
+	b=m7xkr+ca1NqFxV42Z7mS4rEbu6sPMYlCU2JWEe+pCHNRhJqJL/AKiBYL1AoLfE+bEjuPEz
+	DXLr4nvJfna3DOxziEmlEbM96bapgTekc36nrvOzXQzGYKkdoVBdWM7ObgT55wcG1LMCNB
+	uPJmwWz76zJlg7hviCFdEVZWLGhfKq7Ss3lvZXzqtYngPkW89erCRSJx2sknUfr0rlsewc
+	oRTJkUAJdw2DWGBOHVttTqo7z89LahG5iQRiYUz4QsQeDteDruXF6ncPScoxSm9yPMoK8c
+	maau8tU3D4fobFX8sfNZKquZvN/F9ttsHASx29yA8N+n7Qo1miv6ScCQ2ybIog==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1761608511;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
+	b=uvh91yRiU/+dKUBdaoEPtr5pxu0Yy0/Rs/5bzVOfFuqdHz3XZeYlgUSno2CfyNkrU9PNjN
+	cfp8/lKr28+LA0hTnSg+moq/PpZQ+wJNPQB2MJ5f21hffkCQjP0tqVs0Oj0iWKNcl4+yXe
+	XKKWirdWgDwXFyMRZSJBcxIBi8Ej/MzFHLOBmRVaCucByRJt29+7Y6oYiHo3BT2lvT6QPR
+	vEIw8Rb2O59nuw/L34fV3ufneW0afhpXbF8UdWeltW/FaUoW0nEMcHWy6rvQs6tie2gWgB
+	DBL7Zwa7FMiHV60ds/vjeXeFYejbDIy/Pa1PlbZfta0e259iNDpvA1AtkiPmNQ==
+ARC-Authentication-Results: i=1;
+	rspamd-674f557ffc-j5ljt;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MC-Relay: Neutral
+X-MailChannels-SenderId:
+ hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MailChannels-Auth-Id: hostingeremail
+X-Spill-Arch: 54bd9cc055e65ecf_1761608511816_2982394158
+X-MC-Loop-Signature: 1761608511816:1182732274
+X-MC-Ingress-Time: 1761608511815
+Received: from fr-int-smtpout17.hostinger.io (fr-int-smtpout17.hostinger.io
+ [148.222.54.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.121.22.161 (trex/7.1.3);
+	Mon, 27 Oct 2025 23:41:51 +0000
+Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
+	(Authenticated sender: contato@israelbatista.dev.br)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cwVQh09wBz1ymV;
+	Mon, 27 Oct 2025 23:41:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
+	s=hostingermail-a; t=1761608509;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=UF2FEr/ckedYBRJkD+m/g5x+lv+k26BHP65ZAf74xNQ=;
+	b=auF05oNmU6sYaz9qm2z9Em6ubZJJ/uM6uorE5H9wKKlo2qh428/CODReNMz9anX6EenwHp
+	Nm3imuydbGHNO4aY9HU2jwUcn3G/awHDfmV3S7TDhBGRGzhvFliISm+on3cjQcdtmn9Gyv
+	IWIhoByb0/Ls7KovKUHiDqWg3nTt4r4/BKOWXGEdmfwL/q+mHATlJUHeVQwGi3ZlZPoU++
+	47V9qmdeCoi3phUrjaa99ILdvbECX1hJ+TmDmJ81Qeht74aPrWZrHFdCFD77D0fXlBATUx
+	t2ToOAGXCKFfnQM/fl1GordU5mUab8QmYy8bAE2Lu9scpJ+qDXsJ9a7Y7Du/JQ==
+Message-ID: <391c924d-b6f4-429f-8190-b33e3b6a3942@israelbatista.dev.br>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: Israel Batista <linux@israelbatista.dev.br>
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Omar Sandoval <osandov@osandov.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
+ linux-debuggers@vger.kernel.org
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <aP-3dauwpc-Kq5Kh@telecaster>
+Content-Language: en-US
+In-Reply-To: <aP-3dauwpc-Kq5Kh@telecaster>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Mon, 27 Oct 2025 23:41:47 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=NuiDcNdJ c=1 sm=1 tr=0 ts=6900033d a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=_ZKPHTLhK7m246hEAoEA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfLgx9kVtAxys6ymeasq03EQxMVirb1+nJXGZwAg3ORbMcDKG5wdrMLa0HedftkBrxOx+/jUR+EIXYem2+TTvLv1Z5ReIzc+StfggC8dD7+y10KFzl/dA +6wFkLI5bvgiKsFkrh3bEKV+ACC6VMe1h/ahP/ORloIijiYnMGQIOExxSzZzAGZeal50ib6bgzfv1SQEzI6JHBFyQbolR30/KpPF1DlF+KabGkqiUhteN4cX ZaFEyFQUe7OdprxS8Aa57Qbcy9zEDI8bi6FlGyU74gFJL5im7/p8Pzhpe9Q0VwGhvqiUwOF9uJNxNpXpZfcOKRWOPdaNpBV7wdvGnSMQD45ugbqNvFbrLCAp zXTXrEgBWqs0DlfAOivC9jgB5KamHh+SZrx81mJWdbm+1aFV/yxwJMioEjhcH3n9tYDVbU40AyxslR6/KDOA/doq0zP12g==
+X-AuthUser: contato@israelbatista.dev.br
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9EED1140007
+X-Stat-Signature: mbmkp9ymb9xwpk6yoquj6zxmraai33uq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A8DA61C0009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: yhwfcrkc3h91y47b56z6uwwnagaqjpb7
-X-HE-Tag: 1761608145-870832
-X-HE-Meta: U2FsdGVkX1/D8inkb2ScVs1S6/4HYs21sN/Kj6Ldp1SutVHZPPWAUttuoa5v+tW/mvORG3w1IXaGFYCPSXzyD6Q22xsbSMOnI7N9KzBUkezIXRgUjwfF70kFoNYPWdt4rwaYr22c2UaTWuRqKshZUUtIPkFhCfyYNpbqLa2gnxmAbuHB+O8kITJ/yYRfEgJlYeIory09wzzx88saHJS5cjAZ2ltFg+DFyZI00rXk4jgB9czquBnpo5xN3+5NwxMX+1EzgYJHgbQN/djVFU6ao2k0VBHgRo8Xq8YYiTeEy2JmcprmhPxOrLLxz3vsIWep54Z8cetq363Eh4CmY2gYEnGJLbUkb0kPnF0KC7BALbu4g27amtxe54qrbMdBAiIDqx+6Cf8pbBXW55yeCTFWkLu3+to1AoSHmw4BVBSS7GHK3Vw9aXwh3cg1x5T/DdkWOD9q8QT1jYqpURQKcGLIGc2xb+QCt29qcL3deQ4T7wEQJSUXHqGk1MsdC3Z4w0pxdhJprXYzdIRLQRM1UQwDtTp6A5sbSG+Sbj5uAeua0tafKFpkC/9yTmmG4ZqAHm4PkDI5r0TaucvJCxttVxhqtU5XefhmodE2CBs/R4cArV5a5sHLyEyPKDjP8o/OQzhbB6n/tsE+DmmXOZTLBRPZTBeMn/O8XV0uu1Niu6Feq53oq83hN/Y0v4V99i/LlsEBLjuiv1NijoaaDNQavUw7GnNz5bI8ihnVLRh0l7kqavIe+nu4pX575ObzfzXPkjnec2Vse9a6pKSiBglG5Y2QP30meIgDKDY6LZMqhbK2AxUGshD3J57CSiUpteHRP401BqJ2a3KNmDe1HRo/58Qu6YhyeVYLHjvE/KfaKpLTPnA+9BqibrO0l+Fugig42CzMTizqK2JmF4vvkLMLpe1K1vX701Mar1zoNDrSNIcgw9451dOY0kedh1NV0+ZSAqLVb3MwNuktOe2KoDtf4hh
- WHtom75p
- CM/w8EE/plEILeMp644+8/IOEZXe9k/3WcpAtjvNa+glfnxfsuaGMnwOrkrZkDsd6juu0MuxLGyPf4awfC76arvaLchb0eg1jOv4KrXZ626t9/kXfU105o9g2krL8l070mXl2q8HTnLa7I4LGH/kSBr/On1EuRY9EnHZ80q6Bce+dxiydrJPDFuj6an2Q9x+0c42OoGQIkzuW3CvXb9rb93CyWUXa2VvilsqLDHuqqfkp5xavQPClXi6QJ5EVXPq4OxmDYPbDmt3mV4GFhowpwkdEuRGYx64WOGohTJ3EdGNl6IE=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1761608514-266503
+X-HE-Meta: U2FsdGVkX1/xvPzjYRKU425ye+tDvSRLJZ9Qhm7uJ3wHM2VZta4ckKLlFoX2H7BbHkyZnaiOse/QNe2kJ3WjtaTX0DNMHDS6AZAc8HIDb68iFrN4o2oTPQ1rGSOWhegcKOKog3QdpnWcoSRoySIL5UdPZM6WuvvS+LimOr78te6BmR03LMALn4+UUyX6WpLzvv9H+Ew66UzYqtOgEEWBVERAoL4A+USkCzfQjdUORBJGLs6UjOA7Ds84zTBrKv+4Zhudn8aRfwqzPi15Y9kUYzUEaGUvomVD60JZpkTeijUuthOBt9ixqikBwxAyivU0H4UJ3q80wvoF389+VV/NtWpDVqayvF0y4Lj+tZBJG62FWSzQMmUIrIR1wsLmkH2ajtomokcKJxpWh6toes6H8eWMeLOSOyq4Nq7UFGcAXUQNKIahVCnyQv4G0s2EhWP6kx27WuouqAHfYYwip8Zbqgcs+4vqVBCa5iMH0f5ffzldzFHt93WsV8GSIwtHeAsY40fGgXpIQxlBtoX6lME0+DhWmzcBIKkvAUffETclJO4l4EpdxyA0jqdAfypxcLrH+RxJwLBfqGNQu9SRIOFm6hKXXahEKLcHucrJzqhU7T9ZtEdBYwqGBnroPkAJDLIxREbQIKr0gnVDXcSKo1VgOqR5sYRch9BEj0rTMG2Z2yZ9NwQZ+TfmnD/BtsHXVRSqBfnbns7jLfg08e4G/oY0yp5VZqqeqQ/1ZPHT/59g0lHNCxWaEUv9q9BmK99Dn3T/9XyACjowfu73TaVL+7MY8KiWQzAibm+fDqdlDJa/dy5uqjs/pcps32hSyf62QnfctUqV8qaAkOh+u1SvTeuVyGxXXERQcs1WcynE0MIQoe1xjguOIW7K6kZbyS3GgVyf6hmvZ453A4VYUurOsagXsaNAyU0tBtFU+YRv2ayCF/IBvAk4opMzvjxjB/zUKkY0bzol0wnt1kNBsgawA6t
+ b+FLUf8q
+ 5g6qc++HEqDQgYdgct9UACoiu8+95mKheb2x2oQ24QKURajjVwO2V3fB4f0TLuPATMfFK7YPYlkeJYqU=
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.325902, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,55 +145,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Oct 2025 17:12:30 +0800 bajing <bajing@cmss.chinamobile.com> wrote:
 
-> When running ./tools/testing/kunit/kunit.py run,the error for mm/swap.h
-> is as follows:
-> ERROR:root:In file included from ../mm/shmem.c:43:
-> ../mm/swap.h: In function ‘non_swapcache_batch’:
-> ../mm/swap.h:66:19: error: implicit declaration of function ‘swp_offset’;
-> did you mean ‘pud_offset’? [-Werror=implicit-function-declaration]
->    66 |  pgoff_t offset = swp_offset(entry);
->       |                   ^~~~~~~~~~
->       |                   pud_offset
-> In file included from ../mm/shmem.c:68:
-> ../include/linux/swapops.h: At top level:
-> ../include/linux/swapops.h:107:23: error: conflicting types for ‘swp_offset’
->   107 | static inline pgoff_t swp_offset(swp_entry_t entry)
->       |                       ^~~~~~~~~~
-> In file included from ../mm/shmem.c:43:
-> ../mm/swap.h:66:19: note: previous implicit declaration of ‘swp_offset’ was here
->    66 |  pgoff_t offset = swp_offset(entry);
->       |                   ^~~~~~~~~~
-> cc1: some warnings being treated as errors
-> make[4]: *** [../scripts/Makefile.build:243: mm/shmem.o] Error 1
-> make[3]: *** [../scripts/Makefile.build:480: mm] Error 2
-> make[3]: *** Waiting for unfinished jobs....
-> make[2]: *** [/home/openeuler/kernel/Makefile:1924: .] Error 2
-> make[1]: *** [/home/openeuler/kernel/Makefile:234: __sub-make] Error 2
-> make: *** [Makefile:234: __sub-make] Error 2
+
+On 10/27/25 15:18, Omar Sandoval wrote:
 > 
-> ...
->
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -4,6 +4,7 @@
->  
->  #ifdef CONFIG_SWAP
->  #include <linux/blk_types.h> /* for bio_end_io_t */
-> +#include <linux/swapops.h>
->  
->  /* linux/mm/page_io.c */
->  int sio_pool_init(void);
+> What kernel version is this patch based on? It doesn't apply on mainline
+> because it is missing a couple of definitions added in 6.9 by commit
+> c5f1e2d18909 ("mm/memory_hotplug: introduce
+> MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
+> 
 
-Thanks, but I suspect you're using an older kernel.  6.18-rc3 doesn't
-look like the above and it already has
+Sorry, my bad. I mixed-up my local branches and created the patch from
+linux-next rather than Linus's tree. I will create a new patch with the
+proper changes.
 
+>> +enum mem_states {
+> 
+> mem_state is very vague. enum memory_block_state might be a more
+> appropriate name.
+> 
 
-: #ifdef CONFIG_SWAP
-: #include <linux/swapops.h> /* for swp_offset */
-: #include <linux/blk_types.h> /* for bio_end_io_t */
-:
-: static inline unsigned int swp_cluster_offset(swp_entry_t entry)
-
+Agreed, I will change it on the next version of the patch.
 
