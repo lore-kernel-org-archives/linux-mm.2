@@ -4,84 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24A96CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3911CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:54:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82C66800CB; Mon, 27 Oct 2025 19:48:36 -0400 (EDT)
+	id 0E5D2800CC; Mon, 27 Oct 2025 19:54:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DB02800C9; Mon, 27 Oct 2025 19:48:36 -0400 (EDT)
+	id 09582800C9; Mon, 27 Oct 2025 19:54:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6CB33800CB; Mon, 27 Oct 2025 19:48:36 -0400 (EDT)
+	id EC605800CC; Mon, 27 Oct 2025 19:54:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 593D3800C9
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:48:36 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 077E81602B0
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:36 +0000 (UTC)
-X-FDA: 84045536232.05.A777F7E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 882344000E
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:48:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tPRqOgu4;
-	spf=pass (imf04.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761608914;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DB816800C9
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:54:06 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 758B212A3D9
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:54:06 +0000 (UTC)
+X-FDA: 84045550092.28.87DA46E
+Received: from duck.ash.relay.mailchannels.net (duck.ash.relay.mailchannels.net [23.83.222.52])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C6EAAA0009
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:54:03 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=V5psUi7S;
+	spf=pass (imf25.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.222.52 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761609244;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2z5GzmvfqBkg+Yy4CBfp0CnXLe754haiYhMjuxco5fs=;
-	b=RykA137fEEORY3b9c2v9lLZvP3Q8L3XBoMkcqSuvtQYdf/9Nnyt6ezSOyqReV9FrTweyQn
-	VuHX3GiNmMvkXQsbRnPyjaMzjThgC2y0E7kHfWFpDuDfG1ejmwoheDxgaBowBKQRtQ6nYX
-	Di72Y6ldlcAYrXoAA2hIEUav2JwT0bk=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tPRqOgu4;
-	spf=pass (imf04.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608914; a=rsa-sha256;
+	bh=2hHmlaz+cO6ss8rEa7DEhaPgSA8+zPxoNmKUdon4sxE=;
+	b=DI0yT5zGpDaI1S+Cbi7Jc4dlj6wTDgS+RxmNYLhk+bOZ4Oow88RUKrr/j0kbHQWraYaaku
+	nfdUaYtUWSsfIe2UWisflF/whZwAuMzKYQrhodZH5xf7jV+iq6XF6/tWcJZj+AN4AILlrL
+	aSUnJqMVVUC7RwCrefN9si3r27nwXH4=
+ARC-Authentication-Results: i=2;
+	imf25.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=V5psUi7S;
+	spf=pass (imf25.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.222.52 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
+	dmarc=none;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761609244; a=rsa-sha256;
+	cv=pass;
+	b=ZP6wbqpi1RvinBz4DN7XiBgOtzM5trb+GhKjc1nsyzmmr9Km6xUSdbdkAWgttf/9eCXNhs
+	h20tbjl0cYg217clcSHJs/b0joEeKoyjH1DCS+EWXlAVoT0uoM143htpdooGvcin5R1UMT
+	Xq5RKXt0JjgqljWTgI+ucZEE1dxHF7Q=
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id DDAFC901A48;
+	Mon, 27 Oct 2025 23:54:01 +0000 (UTC)
+Received: from de-fra-smtpout2.hostinger.io (100-117-132-18.trex-nlb.outbound.svc.cluster.local [100.117.132.18])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 5E8569019BB;
+	Mon, 27 Oct 2025 23:54:00 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761609241; a=rsa-sha256;
 	cv=none;
-	b=7vIN3t4OcC9WP1+pKxcbLqz4ZAHWCmL2+u8zOSThJhhQGVOmelDBlyhpW4QJJnjsDvCB/j
-	ELQ4A4JSNooXVPdkPUTdSqAaq+1DL1/njwsLrRAf08NuDIE3XP6NmCS6ZUcv2wowEkrgqI
-	1EqiUcGLks5gxVhODk1A8Aqq7pGxAi8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0E0E861353;
-	Mon, 27 Oct 2025 23:48:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E9EDC4CEFB;
-	Mon, 27 Oct 2025 23:48:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761608913;
-	bh=MiWeawgOpWW6lFOdqjirFo9YOvPI6E0zLgwWGg50DDU=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=tPRqOgu4RIvS+PCuXstq77PKbJCcZTI5NDGeUb2Ri6lQh9+Zg3OhtXbV36KT4GCDC
-	 ZNXIX9KzTgnDmyCGDDRkhZR+HYPVAESYhT3w6XI6XJYTe/V5rmNE/9NV3z7nmICRaQ
-	 hd0GVprCC4Jqh2NlnYyueau1DcA9bs5cyaY1JQbrFTBz/AYYlF9vqVue2TxqAG0wSr
-	 ahmjwEfUtuwg+BPY+Z78MJJ+DvmKtM1HFGuCVj3whDLBfzvOrk6GGAA/L3EA0s5Ut4
-	 +gzR9uDjRpC/PYPl8QhE73UxPDRgzvXLpNP2C1Zvqu3BRF6b3A9N6UgrSMybY/wvpP
-	 BToA8bGIghCjg==
-Content-Type: multipart/mixed; boundary="===============5262190113094449615=="
+	b=rqJYtCvOCDrcpx+2JXR+s21IGNL4tnaczAC4qk8qCqvkeObLIMkYj7oKUA4LliVRD+omto
+	8A2BK/J2/s60dZbHb5LN7QKVpktXLNAOyuXhqV4Ne3+EDrA4mJOlT4/Zu/fyXgXO2kRQu0
+	h0G0B4JvZBfHWP4RQBUAzGtHbJmA1erLm8c6vwBMK6Im/F84BvqXFpT/UlFbf3YXjyjbRG
+	dQyWQvpm6+TEcR9Gk9lgUzx7sptboO/t+6MFcidclxHEZj3OJONi6laVs0UyRCc+S/juaT
+	JzHspExZyKBGGsdto55qRQVqRJQtIM22ik2W0033YtTOhQud+M+BJdifwK9Y7Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1761609241;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=2hHmlaz+cO6ss8rEa7DEhaPgSA8+zPxoNmKUdon4sxE=;
+	b=btoGfdvgYQWCXN2mQe+cj94s/JJlvM0x7UJL+tocq6fxyKKZDZMXo0cRkkQZX23vP4pP7E
+	8/6ClyeC6V5riLpuGDip3b9/xvTHrLyYP5+Q12zJklvPDXLgUmvh9a64p77NfSkKHBUGtU
+	Tz5WkP+P39uaVfHapHWUd4sDYamJTjsw0AAgb/uv4ea6H8O24suSxfDsyFpLWNelSkZKN8
+	N5BgAKhhLHzNh5fzM6X1VTk18m01iFOmBifnbrTA9nwUiCxXK9r1uI0mYjcrJhWxz8+g0D
+	AjIUKBLwFE250aSNbssi3HJPOjIh+hDHng4JpextzlnOS4EOFyQcbylk1HMSqg==
+ARC-Authentication-Results: i=1;
+	rspamd-9799b5d46-sl7bq;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MC-Relay: Neutral
+X-MailChannels-SenderId:
+ hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MailChannels-Auth-Id: hostingeremail
+X-Sponge-Tasty: 2a24e5a130323413_1761609241797_968232376
+X-MC-Loop-Signature: 1761609241797:3855391038
+X-MC-Ingress-Time: 1761609241797
+Received: from de-fra-smtpout2.hostinger.io (de-fra-smtpout2.hostinger.io
+ [148.222.55.5])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.117.132.18 (trex/7.1.3);
+	Mon, 27 Oct 2025 23:54:01 +0000
+Received: from [IPV6:2804:d59:8970:3b00:5f26:e2da:68e6:2358] (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
+	(Authenticated sender: contato@israelbatista.dev.br)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cwVhj1cvnz3wbj;
+	Mon, 27 Oct 2025 23:53:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
+	s=hostingermail-a; t=1761609238;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2hHmlaz+cO6ss8rEa7DEhaPgSA8+zPxoNmKUdon4sxE=;
+	b=V5psUi7SswikmUfPKEutE0yIsvu2VGZ+xjWmYfqp931bUUfCe9N1zlVkRNexCtpndWJfVJ
+	CRpmFL1ocRNbABJjLvpNmCR1tnTPWRSHPSCdXJsaZSrAlXuPReEfy6iLC1RmPg3PWxiF9K
+	HsXwrTvgaK7TwLYPT6NOjgewy7rLx6nebbX1iPie7zK+w7fk3/rPn+LJCRlyCBFBfRnqNn
+	zUP/73qk61pRNud7hT+09B0uRHAqh7CQ2LH1nVRozk1ExLcqSzZjT8XEvQ9iBGvsfce3rU
+	wwLDlZjibqmDzIH1GNkTy6iB6MgDM5CwBm0OB7maXoNkaOVcPbJE86a3hRTIlg==
+Message-ID: <aaff172e-8fdd-4ff3-8161-1c7afb1f3e64@israelbatista.dev.br>
 MIME-Version: 1.0
-Message-Id: <634e7371353c8466b3d0fa0dd7ceeaf17c8c4d7b274f4f7369d3094d22872cd6@mail.kernel.org>
-In-Reply-To: <20251027232206.473085-4-roman.gushchin@linux.dev>
-References: <20251027232206.473085-4-roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2 14/23] mm: allow specifying custom oom constraint for BPF triggers
-From: bot+bpf-ci@kernel.org
-To: roman.gushchin@linux.dev,akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,ast@kernel.org,surenb@google.com,mhocko@kernel.org,shakeel.butt@linux.dev,hannes@cmpxchg.org,andrii@kernel.org,inwardvessel@gmail.com,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,martin.lau@kernel.org,song@kernel.org,memxor@gmail.com,tj@kernel.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon, 27 Oct 2025 23:48:32 +0000 (UTC)
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 882344000E
-X-Stat-Signature: jjnqpx79kijh4onohush9rxiq9jjykwt
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Omar Sandoval <osandov@osandov.com>
+Cc: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-debuggers@vger.kernel.org
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+ <aP-2x314BKks2_N9@telecaster>
+ <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
+Content-Language: en-US
+From: Israel Batista <linux@israelbatista.dev.br>
+In-Reply-To: <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Date: Mon, 27 Oct 2025 23:53:57 +0000 (UTC)
+X-CM-Analysis: v=2.4 cv=Ceda56rl c=1 sm=1 tr=0 ts=69000616 a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10 a=a51BL_R8RzZOHhO6insA:9 a=QEXdDO2ut3YA:10
+X-CM-Envelope: MS4xfGXM2iX6cMtMD4gYf0VOTxgQxMkzqQMmPBhXrc8K4Diye1+jZk1x7wGKANwGY+9urEwZMQM3ns/EtmRuuUYlLZdM3cwal165PTsGCkd633bO2GCHibYT zWrR/CL8l6CQzAPCVwfzuLVTrSCa2kuulzAi1SqHlCdjj2DaDNJ0qUAbMGB37y85D04QJeicJbIvS/81lNnmV4/IPhjUrXOSZWDPRizTuJJsZtVoKWCdFgtC F+k9uiWKETeqmUD7RetGmzQhIOGcNGMTeGJJaQaZz99x5KBDzdau2dj1EUzTa1e6fa4g7ddozP8FR1jsFonn253b38BqtZL8at/mu0fMUlJ7Iyc3VYFMm0Aj C2NKdxnsn/XnJ36rlX+vPH0z1t/mbUyExx4x4V+mgvPsgVnGJsyDgE9j6PBqT+yw5OTCuazugVWkPmEGrsKOBhazwG/fesvPBktjnb+o4Xfvl489QT7krt+C UbHuITY5+AzOiZyK
+X-AuthUser: contato@israelbatista.dev.br
+X-Stat-Signature: 4fb3bsxzm6pu9drdgx6h9kn4ags9ymes
 X-Rspam-User: 
-X-HE-Tag: 1761608914-19589
-X-HE-Meta: U2FsdGVkX1+ZS3bGsk0kcITPRlHWs24h5IQsCVWLvq2NP8U6FqLGRTlWNoAVH0mBRolGfDoOHJNh5NbReINlDP2AV8T5/5l/mh/cTjY57T8QsYSH4XVIBKMErejXHH2GlBskFQDBKwBhJ0C5udWBbL7SdotKcC0kJJX3Gxpi9ajhDgbmg5PNq4fbhSHn2dWDdrpkxNSWWnJnAq2ohIBvx8GLefnPUTvtDYey+Vh0+oBDUZPToqhxVae82L5vyI3KROISDTZZJbeti5t5+UUFjTOqbQZjhf6Upns6gqM0igqzR4RRSBI5PdciWO0OvYI/lwVWrYIK+ugCPcHEAzWPJm/+7edwdqY7rMwPI3qLsiRUmdwRRyojy6gHygY0X9yQIqhYuT+iZ5Gn4BC8mhGBH2uhiO3wLqV1e2rPfJQvsxW1DJ/XQpgPeQd1EEM4RX4k8E/mkkpO8PCXqf6vQyuxCFKp4DiLq5pNfD7e6sHtfQo6iTvwsy8CDOLRMlTrxqSIFVf7Xwm0C27XQU2yZcamDYCFDLQOABATcMlupnn/Kk2wx+22c7KUjNZSRB32GCdJwha4Nok6OO+VlzfvWsvzpS3PH2vI2i6pAhV8p4WX+Y/FHau959N2uyKDxxdTCXRpqnUhO0q+L1vr9GGn2sfnHVXbujRXxbfVr982MbyMJD8V4nGjrf/pVcfs+m1Qc1BySL/JjOeVs/F7exsHfD5axBEqOgEiN1daKGRCZCGVXBP16sxdPZ+oohSyceS99e+rpJeRw9M07a0yJLDNEtq5bYSRstdUPnzxt1qm0/IfYjpGJcL1jCClaCDId/FvdB5r8ZUtYksz7TaTVy2uzPXT1BIzrMt7dm7OfnC5a9MQijqQVuGS+7m39NMuPJTeK8Dk5MbnTVJCSbVxFE8qFXsPUwzcn75oXsHsmTXb4XwQVOzQaoU/RaFmAahINu/fCPuREwbW+I4a5cLRm6aMCth
- YrnUkp/L
- 8Ley/ITIrOrcOgJqY/jtKgw/JOWoetdEJX5Dq+L6JRZDh8aPS+b28UUUU+d4ONkrhUY2TtMqG5JAzUSP5K0saS3Kb4/xDxmxWA8kTqiJ81wpRaWMJuMMPCPRJzZbQ5Z3SaPm4mI7363mCzMZWLJJ0G3dCl1WfIfFygh/Vze3B5SGpSo+L+UQdrcKltVkB1SuPGzGK7NRAD0zaQ0awtppt///gu7DgrQJRpW3XhfUyKP2pPv3R/CQTqIDD6cI/OY+358t9smbCaf4YoKe9SqmWHzIW3r7K6uHxJxLqvcHSFKZvWflOKNsQMqTYm/H8jYVBfy0/
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C6EAAA0009
+X-HE-Tag: 1761609243-5129
+X-HE-Meta: U2FsdGVkX19iDpl6IRcMrmGNuL3NaMG8kACc7KL7GiDFiCgI+W8nKWof9p2A+qgfGpgpPOzBnrVPiCgrJJcQIHba9NIlBzERmFqPeluNgkonRed7Bi2vlNE01NjV3xoy8N9bBnOFZMTAJh2gr8kXHllu7JDWBzQarceSOHflc3VloAq5/yquywZENZiVvBtTolQiygIyWoDj1JvI6NmYjCTiS0M6wv8zroaQkmE822OEImp6CNz+0u43JNUysy4kTYRhVz3t5J2zGopRNvNuFf7TE+916SAl6JCJ3bmqW6AgDMjH+UdulEO7qSZ7Bly2zrFoePRb+4AmNfu0aQfJBQmdndTXczobw1U1c12FsnH3T8qCfkn7UuycaWkODrTkx3IumWAxkxChI2UeXqCNOQ4L2ntumEWdLO7p81JPQEAS6/UUuiKy7TX4Gnk8h7kcZPxYrKvQisdkNmndbgmabFWGq28ZHxesUfN2JSrVrPwDAj5M/AbPy3TTSxBngOlzQrBfN5AhOhIP4utDS64Y3IGmt6EbMpMG7RZwvxYkNWU+tQZrro93Rq+dT5h9tCxvF3VGFeCX+rX3WvQX6w+tTm6ACSU0Mzi3scBUooITx5MY004JecZky48v80pYLtFTJ5anreRegyScW16LNmGjqGJY2FVr+gF01Zpd6fLQkJgP/hUrWUkR4Ag+K69DfOag3D2VtjubBqcJL09S1GYmYz6nLaYM3XbZdjLNdSSOrlwKrwlAMRSypC9R/TzETgHQ/yWBXB9JdZhsNivdQeqgv8jXMZrcvbNfIzpykUDiMtfD6CBK3jKZ48Hmt/s/YHbOqt96R3TWt5sDrh/hmiGRg0w6qyVOUJlwsNJTfZbVoSkkWNclp/wrDDGhLeRubPfjlxk2zaAWAvPtDtFNka+ssX6S4yR77hHmyftUhuLNDoBk05myVerDc0IqU2eF2/eq1uzsy5wf4HsSIBfrxTh
+ JuR07Nr7
+ Y6I0XzwpW90akcASB3zDlibTJJk8HZk73cW0WPopzgMWLt2Lw/O9XdHhJb0HLpy4kDZQcPsnsdsztruTM95nBdZUjlEpz9HchSCuyod/Kid3q+qMpD68za8as43bIekHW1ptSwAHOvegW6XCiM5OJRLyLC9qYzh0CVV9c4Q4hDU6FoIBiKV4PbT9v63kBIx42X9276v1TnhJaqQBK4u40C0c3OZ0dDEphQubdWc01x8vzCXBe7cC3uwO8eKPECw2bhdkJe72n1JbHBOT8q9eBXUPw9le/1alhg1M0YmFfrph7gz2k332Xl1RP5RrpR/hHNULOdGAXbjIWJdkvgWy7FSMhpkqMX+bStjVRQTRqIy/5XAwmd4jfAdZzv79o/ofZhQt8OSWqdhDLu/7UOKWBGyYNkw==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.016637, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -89,109 +148,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============5262190113094449615==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
 
 
-```
-commit 5cd8d912032d2c2105c04660338cf4ad47d24697
-Author: Roman Gushchin <roman.gushchin@linux.dev>
+On 10/27/25 16:46, Lorenzo Stoakes wrote:
 
-mm: allow specifying custom oom constraint for BPF triggers
+> 
+> So why are we naming the type... does drgn require it?
+> 
 
-This patch adds a new OOM constraint type CONSTRAINT_BPF and allows
-BPF programs to specify a custom constraint name when calling
-bpf_out_of_memory().
-
-> diff --git a/include/linux/oom.h b/include/linux/oom.h
-> index 3cbdcd013..704fc0e78 100644
-> --- a/include/linux/oom.h
-> +++ b/include/linux/oom.h
-> @@ -19,6 +19,7 @@ enum oom_constraint {
->  	CONSTRAINT_CPUSET,
->  	CONSTRAINT_MEMORY_POLICY,
->  	CONSTRAINT_MEMCG,
-> +	CONSTRAINT_BPF,
->  };
->
->  enum bpf_oom_flags {
-
-[ ... ]
-
-> @@ -63,6 +64,9 @@ struct oom_control {
->
->  	/* Policy name */
->  	const char *bpf_policy_name;
-> +
-> +	/* BPF-specific constraint name */
-> +	const char *bpf_constraint;
->  #endif
->  };
-
-[ ... ]
-
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index d7fca4bf5..72a346261 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
-
-[ ... ]
-
-> @@ -267,6 +281,9 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
->  	bool cpuset_limited = false;
->  	int nid;
->
-> +	if (oc->constraint == CONSTRAINT_BPF)
-> +		return CONSTRAINT_BPF;
-> +
->  	if (is_memcg_oom(oc)) {
->  		oc->totalpages = mem_cgroup_get_max(oc->memcg) ?: 1;
->  		return CONSTRAINT_MEMCG;
-
-[ ... ]
-
-> @@ -1350,11 +1367,14 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
->   * Returns a negative value if an error occurred.
->   */
->  __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
-> -				  int order, u64 flags)
-> +				  int order, u64 flags,
-> +				  const char *constraint_text__nullable)
->  {
->  	struct oom_control oc = {
->  		.memcg = memcg__nullable,
->  		.order = order,
-> +		.constraint = CONSTRAINT_BPF,
-> +		.bpf_constraint = constraint_text__nullable,
->  	};
->  	int ret;
-
-When CONSTRAINT_BPF is set in bpf_out_of_memory(), the early return in
-constrained_alloc() prevents oc->totalpages from being initialized.  This
-leaves totalpages at zero (from the designated initializer).
-
-Later in the call chain out_of_memory()->select_bad_process()->
-oom_evaluate_task()->oom_badness(), the code performs division by
-totalpages at line 237:
-
-    adj *= totalpages / 1000;
-
-Can this cause a division by zero?  The path is reachable when a BPF
-program calls bpf_out_of_memory() and either no BPF OOM handler is
-registered or the handler fails to free memory, causing execution to fall
-through to select_bad_process().
-
-
-```
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-In-Reply-To-Subject: `mm: allow specifying custom oom constraint for BPF triggers`
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18859027430
-
---===============5262190113094449615==--
+It doesn't need to be named, but as David pointed out, we could find
+where these values are being used and replace the type with the proper
+enum. I quickly grepped the codebase and it seems doable, I'm probably
+adding these changes to the next version of this patch since there are
+some things to fix anyway.
 
