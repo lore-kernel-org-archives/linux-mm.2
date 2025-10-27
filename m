@@ -4,134 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA0E4CCF9EB
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 16:25:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10C43CCF9EB
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 16:27:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E77328006F; Mon, 27 Oct 2025 12:25:07 -0400 (EDT)
+	id 4919380070; Mon, 27 Oct 2025 12:27:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E4F1A8000A; Mon, 27 Oct 2025 12:25:07 -0400 (EDT)
+	id 442958000A; Mon, 27 Oct 2025 12:27:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3E068006F; Mon, 27 Oct 2025 12:25:07 -0400 (EDT)
+	id 30A6D80070; Mon, 27 Oct 2025 12:27:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id BE0718000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:25:07 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9891B1A0197
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:25:07 +0000 (UTC)
-X-FDA: 84044418654.07.E4FA72B
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 097412000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:25:04 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QeidNnQY;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1932A8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:27:08 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 9D33A1A018F
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:27:07 +0000 (UTC)
+X-FDA: 84044423694.27.3B64A35
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 3B3B5A001B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:27:05 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IGx5uxi7;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761582305;
+	s=arc-20220608; t=1761582425;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EJ5VPlj4otrH6ErEHjuzGdU9BRwHQ8d9NMaXu6e9vKY=;
-	b=chbcUP4K4BjDD5JQIZRAg2wUb6z27EaRg9fex3wRMheu619lsDkeOpzXvKtPBgiC+gJIdW
-	1G6Dkalk3RwtN3gCt/MG7FNBYwewpyPcaB5bzLk1ypvLDDMcHTLscEOfPDAR91f5jY1v9J
-	Asm40mLdGCD1QQC5lf/3pRyXs568iTI=
+	bh=gFGTrLXSQViuLtwu+2VekUSYMKsImqKp1Rcio5lWi+8=;
+	b=yhT7vQzAdEuitFGy9R/cfhNHv9l1cnxXfWzfloU3bz+2Cqvn32qBp7k2+6+HyFBPmHyohE
+	Xkeky2mfwdJIBvHooNdpx4cfwavyAd21+8XuJ9AuCmpEbQhT+0TWjnCOxF34YChDYHRcid
+	94z6/nf5O/6ZquNs9tg1+XXaEPkieQI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=QeidNnQY;
-	spf=pass (imf13.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IGx5uxi7;
+	spf=pass (imf15.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761582305; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761582425; a=rsa-sha256;
 	cv=none;
-	b=ucBvFXBOwdVbzlShmx+HFA5hG5mcEfk55EJ2iysZZD+J9S5zuo9Puy6CJbwZ398IzEmmFf
-	NVDvVehgTsis/eRtwdpFa30c6Y/38aLfxWH59nDS91AQQQNre6ygrMcE2mCRWplqAIV6PC
-	jP3E+tJjyTJ3premCm8+FGv4PUA/4ME=
+	b=ZRaqU8M6v+3D0n88n4JJKsxjSIyXoUwq5w6w4APpPaK3pUUa+Lj5Mj3jfpK6Fc1VZH3/SF
+	1GMwahdxxiKsdXuHq0NGPZodu7z65VZFQn1UXSNKxYPRh3r3QpO60/qZh/XgkFTP/nLj/m
+	vGNvl2iwenoPBjpCl/ojRpmRIXnQenQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761582304;
+	s=mimecast20190719; t=1761582424;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EJ5VPlj4otrH6ErEHjuzGdU9BRwHQ8d9NMaXu6e9vKY=;
-	b=QeidNnQYyHxSTWWki/8j887F6dE8Wx3bcqfniLlnnmd02KFgmwLEkU+pkPY4t3VrV3OVFG
-	Oti+Y+m+c6yJk6B81lVe14CsKqyN+OdHBz36X8u1rh6UFT+VR6L15G2EX+2ebbgxmfOGW+
-	ZSdD1R+uWjiGBCrOPa+QXq6N/tjXA0A=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=gFGTrLXSQViuLtwu+2VekUSYMKsImqKp1Rcio5lWi+8=;
+	b=IGx5uxi7AJCSUAKwHzDXcKwwxaVQyEjaZiljIvT6/ebYSFOKgbfAKmxETSPQlir9Xdvg3t
+	5ZBOVOq2k8hu2aCTAKs8QTMYnVkuYt/sVp8sLEo23T5djMjBxftv4Rav6GmOgqNuwpHGx+
+	eFkrVMCS+4g9Zaa48hsoxkSvMUqO/Hk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-7RG0a7IJN8KXoj0Mbq8dDA-1; Mon, 27 Oct 2025 12:25:03 -0400
-X-MC-Unique: 7RG0a7IJN8KXoj0Mbq8dDA-1
-X-Mimecast-MFC-AGG-ID: 7RG0a7IJN8KXoj0Mbq8dDA_1761582302
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-475e032d81bso17397025e9.3
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:25:02 -0700 (PDT)
+ us-mta-669-EagkAWH2PVKxe9su9o1FaQ-1; Mon, 27 Oct 2025 12:27:03 -0400
+X-MC-Unique: EagkAWH2PVKxe9su9o1FaQ-1
+X-Mimecast-MFC-AGG-ID: EagkAWH2PVKxe9su9o1FaQ_1761582422
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-40cfb98eddbso3266515f8f.0
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:27:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761582302; x=1762187102;
+        d=1e100.net; s=20230601; t=1761582422; x=1762187222;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=EJ5VPlj4otrH6ErEHjuzGdU9BRwHQ8d9NMaXu6e9vKY=;
-        b=nRc67/HFwx0CXwcF1fn1gR3zSUzzVaR75GtzbM+SWs1YG82X4Bza7ebqh55so74tS3
-         Fuq93TcwU1vsbcKJjqmlC5O0yyBuRza9a5/0QPyiqXxKFPIttpSaw/i1Hvf4yIQ7pkKa
-         mccVZwFVp0vUWcMBnCn3NYDutSmisG51VU6XUDZNd5MKCaIhRiUOdDza0pEdImSsHXKx
-         ozEUy4tO6+VTQAZlbzTOysh60N9SIeUiXZ0Wg+8FfxgBx6XqY5FyJoSoG3Z3MTX6TEvt
-         1KyrFioB2fKPoNEzt9lgNcNMG0wPqENNzdl7zomhBynjWnSzWQJJvkOD2dIbTA8MCqTu
-         3b7A==
-X-Forwarded-Encrypted: i=1; AJvYcCW68xZt4OUhpIYmBfYFsM5DnEXeejjeSbOB2qsInzky7hzDs0rWYupKpxNhvnrDsuRTkgvEZpSiDg==@kvack.org
-X-Gm-Message-State: AOJu0YyT5OGaub64XehmjdPXp+zMWCQcjY2l1iN10Q3Bj8e8dROHE+6d
-	tbLNxyRdt27xpQY+FkmG3WHnjSyGp87oYxWLl7pkyk0fxH34QQ7y5UlRdow829MMY/Yj4wVaGKc
-	196AupuqmF1yMStRsPoSGAc9wRPlMFTPKxpcQQOY/MbhgErN/eXQ5
-X-Gm-Gg: ASbGncvAAqWz9FHxvNQeBFSyfHBruNbbuKqJzY7RH/cGscRuS56vDHm791C6BTZsCAB
-	a1rPoMoajDVE/7mVatXUJiF/b2sqnjg6UcbIZfgb2WpJA7VmZTvJZy44Obt4mZRIizeN6pfGXbb
-	ej6leJdvQ5ZzBP+wBRDFAYQ6ejFZEbU32pPQzqXeA5SZigFe3buQNdPU0Zxtytdwx14JEYjochB
-	wkB3ZH+Jhb/UCA3RHCzA/rj8YHAUUSscL34xlTgh+KswUaPpEhWqiTLJLdeLT3UYCJRcbBf/MDR
-	EWWBBgKyFi0yQc/VAZfES+6D5CRozujCCPzQDIL/aL1nzRNeeAIKW7xRDPpOywDQnaxYC0/i8GY
-	FtpeG4FVqvqPw8za/vZrS2FatO5uXVRNJjuWyevIvAyvrO6AVJCERyWTVbbSv0odICEmYxV0QKd
-	y08/XpILT6qWIPFg/m4PMPnYXtOHA=
-X-Received: by 2002:a05:600c:3e8d:b0:475:dd89:ac7 with SMTP id 5b1f17b1804b1-47717df7ef0mr2442385e9.1.1761582301708;
-        Mon, 27 Oct 2025 09:25:01 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEcpfk6BDA32rXrYsquQ4cz9qgC2WRauB7zTOhtVhTNHZoQZbKrXzlM5wPgRBa5cEga5fDZQQ==
-X-Received: by 2002:a05:600c:3e8d:b0:475:dd89:ac7 with SMTP id 5b1f17b1804b1-47717df7ef0mr2442105e9.1.1761582301286;
-        Mon, 27 Oct 2025 09:25:01 -0700 (PDT)
+        bh=gFGTrLXSQViuLtwu+2VekUSYMKsImqKp1Rcio5lWi+8=;
+        b=mI7j8NtSXvmJbrI5IKfQ4lK0YIZcZ16yQ5tosDBbXimwk0WAbWuVFpyl7+kVwMP9Jd
+         I8+Sn///LL1EwUxzhlBR9b9z60cbcgnW+u4kpA2pCBOl8DAHrZYNjSAqjOrZMHbsrtKw
+         O7aB/1IqBiKDoOL+2IzuX8/WI9Du5h8gDH5catfvpdZuQ3Fn4Te73uC+I/ZqXIIxMMlx
+         w3fyJdBzqje7YXhLc89L9B/Z5n+uD5hnLN/NrIvyWC9OPj1EDA0c18r4wk4lPg40/1nv
+         jPdta8UatmbM/SB/pQoUSviMR9fLxYYWsKeuU46mIUlgHfS+6Bw9QHs5FFB5EN4XET3P
+         6xRg==
+X-Forwarded-Encrypted: i=1; AJvYcCU+++Ez1eQUkcyCGUj6LOC6t8+Ziiq4YIa8kDu3MfA661jzbWpcscQ6MvXzk9SL6ttw3hCR2d/zmg==@kvack.org
+X-Gm-Message-State: AOJu0YzRtSKCNdLHgscGk0TFq6dH7aFMI/jKCje5OzTUhsppnBHw8AfY
+	uaideMw3cW7lmXo+GFjKYWStPUTTtvLGLAvZBQ8FyKzW9SUnM3X9zDpBHetvG4qrFq0ttEzqSdZ
+	BeoEWHX3AfBv6a+TzgymGixSePcXa9Pz6gGS6ADH/xmAR5TX6pT91
+X-Gm-Gg: ASbGncvSP7e5mTjMC4a66QutI2NhOTSu0T4qrNqJbCKgzwfT6ZkJJbtb9ynHVfbcv5J
+	AX+8wfNdSHZOdPM1HIbvWdEZSYyyuCneppYNHGdHQbq9NjR5UWO8RXrLLFjb5Kt/Yc7Cq5jzEoV
+	/PCQaTXeI299H658+P5qxKWPSMWbm0DmRlOHf5MlH2eC3775SzmzZWshWQHCW4QCoHbQkqmsawQ
+	qGU3YbZHFNqQz1j869EyIRGQrVqQ/WO0P2kiagLtBduUVpyudCgKoBlcJzU1ywZnCHy6kle5MiF
+	XI+6QxES8vAWPwo18A//9RRLf32DtaHkLeX/8mI/HLiAtOtzVKhyJ4CEz2vmPwQy3Sk/TWDkZzs
+	yOJb9nyUR3pYjisUoQy9Q/ylywTF/4ZrFahVWbEmJNt1L8kjwH98ubHu2T/QNlHWBkkMqK/BhcI
+	i3lfUBOD7pCT2dNxz2kUXJEC5mMNQ=
+X-Received: by 2002:a05:6000:240e:b0:429:8d74:4b16 with SMTP id ffacd0b85a97d-429a83dcae4mr27393f8f.20.1761582422057;
+        Mon, 27 Oct 2025 09:27:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGoo80cUWX+0e1u72oeksXrmAM7quVFts+JpWS6K9jyENOeTtl/MzibHxpQ/ny1e2QhKFedUQ==
+X-Received: by 2002:a05:6000:240e:b0:429:8d74:4b16 with SMTP id ffacd0b85a97d-429a83dcae4mr27364f8f.20.1761582421600;
+        Mon, 27 Oct 2025 09:27:01 -0700 (PDT)
 Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd01c07fsm74064275e9.2.2025.10.27.09.24.58
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d9e80sm15164870f8f.28.2025.10.27.09.27.00
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 27 Oct 2025 09:25:00 -0700 (PDT)
-Message-ID: <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
-Date: Mon, 27 Oct 2025 17:24:57 +0100
+        Mon, 27 Oct 2025 09:27:01 -0700 (PDT)
+Message-ID: <20745ea3-4bc5-4032-ae61-b928f2568175@redhat.com>
+Date: Mon, 27 Oct 2025 17:26:59 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-7-kevin.brodsky@arm.com>
- <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
- <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
- <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
- <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
+Subject: Re: [PATCH] mm: shmem/tmpfs hugepage defaults config choice
+To: Dmitry Ilvokhin <d@ilvokhin.com>, Matthew Wilcox <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Hugh Dickins <hughd@google.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Kiryl Shutsemau
+ <kas@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ kernel-team@meta.com
+References: <aPpv8sAa2sYgNu3L@shell.ilvokhin.com> <aPstDXRerYqi1O2X@tiehlicka>
+ <aPtg1vUnpkaK1Ce5@shell.ilvokhin.com> <aPvjFuio9lBKf2In@casper.infradead.org>
+ <aP-ciK_NsCPFZLHZ@shell.ilvokhin.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -177,21 +162,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
+In-Reply-To: <aP-ciK_NsCPFZLHZ@shell.ilvokhin.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: MAnpQpSzHwnQyjz9I_6d81hqmM87A3zYteq5_7EaYiA_1761582302
+X-Mimecast-MFC-PROC-ID: imFmvRdUdEBcKvwCnnPLPO4jsi_MXEjoJz3o1S06Npg_1761582422
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: py5j36m4p9jsjmbwd4uxgu9yq553depx
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 3B3B5A001B
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 097412000A
-X-HE-Tag: 1761582304-498950
-X-HE-Meta: U2FsdGVkX192+pCKdgwMgQzKMZL7CWRpcr4vSKJMZDByo8EB6wtftU/9lFd116m90IzsC9aN38Aeb/YDzqHDkYMukQZjhNbwCPm4vHVMZ/U1BYC5oShiWXwrtMsV5vL3BMr8CvEGrXCZZF0uuN4PLc990z83dOu9/7pionydqlVtu+rJNsdDB9HLQygHqrvI6ZQ5OAkT2hhjMkzixNfyGsr3lLnOfv3U1CKX6GkYqHmMPMML4rxYD5naYfTYtXO4DXPFqfjPFA0CTFIfY29wUocQ6MtyZ8LDBE4xgZ7st1bvlxD11LaTayb3bX7t8ryW1BuZU79JKHqZQyp7m2f0Hj4xhOF/KsD133DUf4v02J2xWRYXzMIo0108kZCpk46uKTLy2R2zcjWGIzT+BNI/cROF4EX7+S+/LVMwa2I8/h12olYxyhBqef1z2TbdC+3DLoZQk8+3YE1OLXWjWyG292UkryTitD+CYzViM76oZLBzxrFHByM+ZG1iOFbF/PKAxFw+0KlSMYC1h8FGxiIZQrMlHcfaBfhT9XOoXstD7vheYC8ODFoRSCFgmDwrKbZkNFK75gQkiy5nVfE2t3TQ1i351BYyxHwq9y7PfRR0HXhqJLEsXhn0mAHlijVc8XbzcsXtdqkLHq1KQznEdhmmbSXCrROaIkbhox30VhLQ6wKeojXCmVu69AT8YBDfr8evIvsS6iCDuRDeun6TQa8r+VpeRaakpVnbRln67t6JqlRbt0UeQqn6EuebQ0aDvi5tC+4ZqeU9YJ3jHj0fDvD7UmQI1UCpN3Cvg/ao7c2ZS31do0NSuU6bRucO7u8UHJ6ZZ0pi+dL/+AEgYaRpY8hfkFUBRP7FoWvT6bsNjTdt7tUW4nt24XbmRKt6csdwbMHLYuk7RD8vUOIikBgr9hUu/ZV60t2iwgOmDLspxD9RSXK9MYc4Dq3KUPL8guCg55GaFH06DyCNQqi7koNWpIf
- jJY3YORL
- UhIF/P3i9EKYZ3xcd3b/NJbJhVeMNOCDyI3LspKJ/UOXWIa8KHTalywZR22XmAGkg0AHNf1h6GH2TxzYQTVBDDyBrMyWOFPpy6KmfE68PGaPAm9PXZKDY9F8pr4bExSAegf2JmJr39A/0eYm9fC3MRf1IvaZ2J30MMSVjflvWjni2fsoXdkxykZfwLFpa7k/niJu90lP164RKjHWi6nOEFYERgvLYZ1bzlNBElffyv2vqtJCsqD0uxNvIsWVKamDg01trm12EyTDUfea0SP2LX9nmD7E8PNh/UpKUGfwI0eNBAtWVAJquzB/etGe/w+QvK9QVbPMbRNA57WR+9ByfokZjtRqh3WUCPFHvz+JeEuLgKOpJD+Evh+OLd6+k/UAqAofMdddXzpQ5/5pSpmMRE/FN+ONb2OVSHsVYmrqrZIcBOLRRGCVQrZkk6OJ/i+v82LOKrIXusWty3Z+xMiicK08pvZamG2WSK73l8q6Bx3wfgzO/GPdDswL/AA==
+X-Stat-Signature: kjarcjxhu1zrops4eae76ezf871x638h
+X-HE-Tag: 1761582425-267793
+X-HE-Meta: U2FsdGVkX1+prekNslYlgeY6VvTsxnZoS9AU+dXuG1zuex4WbPTY23jqQ7oKaNknpm0RTRm3IOY+Q1wH7LAgTxskDWpo14FcBEE7hMAC5DZ3aeSEu4SOz3OeESbnpwEvXQV5i9mSwhYuKlnYZ5wzgCv1xpdE6FzT8eDNuuO0H9U8wCjKFBaRWCvpC7ITr3sANwJtC8m5CHVRzKQdWCtgSKCb/7Mo239ROlTGHmPpbUYiiU6dTMiSUfri0kxUAv6BESU6Nx1CMbq1a4zftk+/sUF4txGFlNgbtHwzM2NgM/ZBu3m0RXIst43b1BN4IVynlloJVytQtG1JNSJRoLtecGg3aMvHCvEfXx4Q2uvkENgWEw4wQhOjnlUdgeajRuluo0/BvwwrwncQT3r+heuGlrws3hpp17zHlWRxQQfB/QTWGSnffhFyLMskIfHOlAo68m3eEEOA3Iu3YvbIMkqqmqX/rh6p3s1hxr91bnur/Udv7OG7mp3lMHbRomxfxetLS5YgYCy3Gifx62BKLeie/9n1ifbb1vI7N556EF6DagKOvj5fmSqEtyoufOINLvwUPEq88QGPd05y5/6pHmxuyyG7lZHJbPupTlo7y5gH573uylPpbYpQ/AA55ZMACyVWD8NYWdbVrn/rSuFxeXfpkm/uoHa+oX9Kd1w8PiFPk8tdxE/5STScyfDmgQLXMD2M6oHtYz02TQYzf08lzNfgqi1+UXLirYbQMLW7nxOO5Yezy13Zoz/ra41SHhkrBKKR3vc7YY6LdmTDgeS75G6yxZxQbRtFuG0z4XwfIwrj0ZoKri7MTRLfS1ZYZvmTWjlRBmuiGyzPEQBBa71B/rmydZYdUKewQGvWdqQ+7B/cFcnLfuiNCC9ie/36aCqU0ZgVidp4VPMlut2IJ21yd9vEW4E2TPJIlZOau6q44nPlqZfNzRU+QLHs0mCJqoIcv+nbZZEVUZkbiAgFRdblU4B
+ qZYlUW0g
+ 3Ya5nN9No8272RJa6mV1oZL3AImU8G/pvpas/XKBzxa80N8s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -200,75 +185,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 24.10.25 16:32, Kevin Brodsky wrote:
-> On 24/10/2025 15:27, David Hildenbrand wrote:
->> On 24.10.25 14:13, Kevin Brodsky wrote:
->>> On 23/10/2025 21:52, David Hildenbrand wrote:
->>>> On 15.10.25 10:27, Kevin Brodsky wrote:
->>>>> [...]
->>>>>
->>>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
->>>>>      followed by an immediate exit/rescheduling and some followed by a
->>>>>      conditional exit. These functions assume that they are called
->>>>>      with lazy MMU disabled and we cannot simply use pause()/resume()
->>>>>      to address that. This patch leaves the situation unchanged by
->>>>>      calling enable()/disable() in all cases.
->>>>
->>>> I'm confused, the function simply does
->>>>
->>>> (a) enables lazy mmu
->>>> (b) does something on the page table
->>>> (c) disables lazy mmu
->>>> (d) does something expensive (split folio -> take sleepable locks,
->>>>       flushes tlb)
->>>> (e) go to (a)
->>>
->>> That step is conditional: we exit right away if pte_offset_map_lock()
->>> fails. The fundamental issue is that pause() must always be matched with
->>> resume(), but as those functions look today there is no situation where
->>> a pause() would always be matched with a resume().
+On 27.10.25 17:23, Dmitry Ilvokhin wrote:
+> On Fri, Oct 24, 2025 at 09:35:34PM +0100, Matthew Wilcox wrote:
+>> On Fri, Oct 24, 2025 at 11:19:50AM +0000, Dmitry Ilvokhin wrote:
+>>> Primary motivation for adding config option is to enable policy
+>>> enforcement at build time. In large-scale production environments
+>>> (Meta's for example), the kernel configuration is often maintained
 >>
->> We have matches enable/disable, so my question is rather "why" you are
->> even thinking about using pause/resume?
->>
->> What would be the benefit of that? If there is no benefit then just
->> drop this from the patch description as it's more confusing than just
->> ... doing what the existing code does :)
+>> So you work for Meta?  It is poor form to send patches without
+>> disclosing your employer.  That way, we'd all be able to see that the
+>> positive reviews come from your colleagues rather than having it look
+>> like everyone's just "oh, i'm a random developer doing this on my own
+>> time".
 > 
-> Ah sorry I misunderstood, I guess you originally meant: why would we use
-> pause()/resume()?
-> 
-> The issue is the one I mentioned in the commit message: using
-> enable()/disable(), we assume that the functions are called with lazy
-> MMU mode is disabled. Consider:
-> 
->    lazy_mmu_mode_enable()
->    madvise_cold_or_pageout_pte_range():
->      lazy_mmu_mode_enable()
->      ...
->      if (need_resched()) {
->        lazy_mmu_mode_disable()
->        cond_resched() // lazy MMU still enabled
->      }
-> 
-> This will explode on architectures that do not allow sleeping while in
-> lazy MMU mode. I'm not saying this is an actual problem - I don't see
-> why those functions would be called with lazy MMU mode enabled. But it
-> does go against the notion that nesting works everywhere.
+> Thanks for the feedback, Matthew. For transparency: I work for Meta, and
+> this patch is being submitted as part of that work. I know it's common
+> for many contributors to submit work-related patches using personal
+> emails, but I can understand your point and appreciate the guidance.
 
-I would tackle it from a different direction: if code calls with lazy 
-MMU enabled into random other code that might sleep, that caller would 
-be wrong.
+Note that Willy, for example, signs-off patches with
 
-It's not about changing functions like this to use pause/resume.
-
-Maybe the rule is simple: if you enable the lazy MMU, don't call any 
-functions that might sleep.
-
-Maybe we could support that later by handling it before/after sleeping, 
-if ever required?
-
-Or am I missing something regarding your point on pause()/resume()?
+	Matthew Wilcox (Oracle) <willy@infradead.org>
 
 -- 
 Cheers
