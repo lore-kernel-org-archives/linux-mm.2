@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7D81CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD375CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:18:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E086800AC; Mon, 27 Oct 2025 19:17:57 -0400 (EDT)
+	id 17D3F800AD; Mon, 27 Oct 2025 19:18:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9088009B; Mon, 27 Oct 2025 19:17:57 -0400 (EDT)
+	id 12E888009B; Mon, 27 Oct 2025 19:18:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE8E4800AC; Mon, 27 Oct 2025 19:17:56 -0400 (EDT)
+	id 042E8800AD; Mon, 27 Oct 2025 19:18:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DB9688009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:17:56 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8DB16C01F9
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:17:56 +0000 (UTC)
-X-FDA: 84045458952.13.0945978
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D4C044000F
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:17:54 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pacyHFTh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E69328009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:18:00 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9383112A422
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:00 +0000 (UTC)
+X-FDA: 84045459120.21.26E2553
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf07.hostedemail.com (Postfix) with ESMTP id DD80C40004
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:17:58 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DChI+nOh;
+	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607079; a=rsa-sha256;
+	cv=none;
+	b=GR+NVRXEg88JEd5kVfxSG8gAABo8GVjxNpoS0/jg2pnvt13uZuO0D632tN4RGadch6g9/d
+	6xNBCtXYpJaiZXkpfPiQhpBPGqPO/W9s56qUkksGvyasvuMxyD+hfZ3nVJ6Vy+bZbvb847
+	wsRPlfR8jRUghgw9m4mARxnqNoqroig=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=DChI+nOh;
+	spf=pass (imf07.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607075;
+	s=arc-20220608; t=1761607079;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0l0t2z6jhNE2z17NKK8gjaGASdsEhVg9kL49c/ISKE=;
-	b=waRUzv9mlYKkTOyH1AEdEBUYj5+Bsd8c6mXyYak/A++k/ka7gv/T06nhTV5b5WsxDPOHkI
-	3TS35pHcBZopaYNXc727iUIAnoJtQCbPJzs13UHaR03eQf9l8tS7QYFlMf8JYBlNhmOTZG
-	zDTQhItfol+h3S5/8pD5mcIaj+fqoQk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607075; a=rsa-sha256;
-	cv=none;
-	b=HC9HHcNZHr8FAd3/62YIG1WHEZhrdVfV+VPUh8aWbnjO3C76y550kdKVsFUb6cHlURPXVF
-	5YRfeNjkgHsLQaHsD+XiHfaunvEcJmihnvLiBFCs8z0qz9t7RSZWzOgZykG24eHB2GGo7f
-	pJsXbV958azzDPvlUe0fcbF1+ndSupA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=pacyHFTh;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf27.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	bh=0vZi5Lm6HCXIvJj/q+L10BffcrsXOVY7/TA959BCzAY=;
+	b=jZvvAIpbVc0iInUzUhcGqxpHPyM0qejwE7paWybXVjDm9QpBa6Db/un7qCq8UlkSmx2jdi
+	XzEN8w9im0lFTJNrmWJdA5EBXgJ2S10DY30kZ1a7ZtFRdHUPNXZWVdyk5e67kPWzD/RDnj
+	vJzRDfgdMWqFlKulJ/4aUTQ355BcbH4=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607073;
+	t=1761607077;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=e0l0t2z6jhNE2z17NKK8gjaGASdsEhVg9kL49c/ISKE=;
-	b=pacyHFThuJC47YY9Mr3wRKzrbF0AwB6lU0s2BdtV2dFfiEDufmHfV5ZwlzRWX/d/23k/L0
-	F4AO04GiE/rOnYDt8ohD7rimZelbe8iL0wtlTpOTeuFb0KitV8nTFwjwZVnA+9F9krd2qV
-	c7mmNiUB9zx4dMX/t50olXVyoMx0Szs=
+	bh=0vZi5Lm6HCXIvJj/q+L10BffcrsXOVY7/TA959BCzAY=;
+	b=DChI+nOhg5pm0r/ehW0aA7Na275GkEkntqDZcK3b1Dwod6J7Mzy4LWhPA9pDr9SZZlW2FP
+	O/X9pKzumDkjOjsl0o10KvMl3obEFu91NSz4LHU+7mRfQDrjEm7Hw1/2POKAkt7x9TQD4K
+	Ybq7JocSIOeCr0DjI3Vf2lO0N+b5ny4=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -77,22 +77,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 04/23] mm: define mem_cgroup_get_from_ino() outside of CONFIG_SHRINKER_DEBUG
-Date: Mon, 27 Oct 2025 16:17:07 -0700
-Message-ID: <20251027231727.472628-5-roman.gushchin@linux.dev>
+Subject: [PATCH v2 05/23] mm: declare memcg_page_state_output() in memcontrol.h
+Date: Mon, 27 Oct 2025 16:17:08 -0700
+Message-ID: <20251027231727.472628-6-roman.gushchin@linux.dev>
 In-Reply-To: <20251027231727.472628-1-roman.gushchin@linux.dev>
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Stat-Signature: qswn6kgqhjytawucjcniaqsb1uu1n33w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4C044000F
-X-HE-Tag: 1761607074-621768
-X-HE-Meta: U2FsdGVkX1+I5O1MwZe85ly91U1icpLzvQNtTFjOI4ilwLd9+7ekRm7HRGLVZFM9Q54jv/+F/id/OMNbriAli1KIcgLXU1Wa2DuAGCvj9NEZhxX2P8EtSCca4VTY4oTJPnvYjkzVGM7ECONslu0YP7SSQsm2j14/XwLzL+AtbgiS9O0b9ZdSYd+5Taa6xEsdrahGYDhms/OjOa+whb84uy+GVYLckxYw9CJP6TfnB9jhOoZd/jHO5Qnb0X/jgnzOe8++zPe85zMpeZ13todShI5P5gpvF5Bmj6YwY1HtaQyhrZGWyOV2n1LnwsVXQYAlQJTHwPQVVCCV0ndiD1Nth0fnadnh9/qBjQfercLuRU+YmP8M0ttO7EMPwE8VILfWfz9zNWHbCKjz2EsprP4miQZVCB2u3yk0CXacF39OXl6K7VYnvYIbej9pg2tnUGMVoCHL00GbGmTksTuruQzbHrlly2YpE6SwzdkOGw8XSqO2YtPf3BygY9Sepa62dws3gW1iVhjt1YAR+WpeV5lemHFzBrwl46zcqq/JEmVnlhQuvEfdDO2YdsRClGJXPTX5++DxXpyyky016X71Aul2k6jb4rO3pr49Bhcok74bFUBFQC0AO9fjx31ovM0cU2wou2B/AUiatXQQ8pgQC1+7EPsrVyyhYYLyCtALKbgsDzue5wA8k6zQFGLsUYFEiVS2YX/W3MKMBpbFhnhBrkyHle+/j/7gOUW8pS5IEXlmoxz4zKxXQfENaC1Gd4hW4xWU7Y3Lu0PhYOBX6TUyn1GyOa7Dcndfxvdqz2lbr0aM2OfkclUNs+hmwbC3cVksOEbgHYJlbSg+78oL0hdkVyJpaLBQ0gCVMQ+SkShOINag0dSmVSYARhpoYgkorvSseO0QGDBy4r0jujXSkodqGXtpEfp0Up3HGNVuoCQwujTNjhOQLZr4twfURF5coNgO6dzTnU+/GV4OGWdz8WydHxO
- UYspIR4k
- 759C9o4rwuZce/uq5/zAUtb+fQdjn/5Y6jr6Hb9a/QxV0Nd2qFTNt2EzKRUrzhbzlBewTumg3D3C+WVmQ7nKoYhFo45Tq80SUBs5iY/mlXkFbOcnGmuH6MzUNT3mMTyLsJbphD5dgzfLiwG4QVodfZQBhvD/3IowEzaJ4X/2DuDHgg6wU6w9sCNKo+vqnZzST5K2H9nZMX3s9MR4RJlnfLWm2/Fc1dkW9Nx4SwbHqX2uWEe3Rz5cptTK3ZaxNAfR59KLjhuKBicWpon5O0mRMuEukJQ==
+X-Stat-Signature: d9efq4mf15uyycktuo3ne535pme7t3m7
+X-Rspamd-Queue-Id: DD80C40004
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761607078-690870
+X-HE-Meta: U2FsdGVkX190Q0+TMUkVDH5QkTYmB2uOEXvUb8D182r90/Q62C+KRiyfNy10O4vgjuBGvgTlYAmY7iYqmQhCxK2aH5WkGAZ5hDP/6W91+H/EoMZSWgaKZKhif3/a9UVjZwYYYvDx+XKJyyjNbke7W7p+Jcc9cnp3nlIzIF68eWRA8bxfkp+U1ILhgWKNl6dt75YbIPfo/b7r7lDwAdxk3KgbKG6rBVUD9YR9SQiee03eSgHYY0o02h4CPaAQbciQsAaRKQGtz67PetmDP11JdglmYd8xcB28zW/zjByB8Xo6oeXXmxi0nrwLqDkYgrfKPydSTd6KoP4dhL0n+KcbYgxGNIRcEH0efQz0bvSKzSQPrQotQhjkAKvWnY1mzZP8q6SYeKNd2fPCpYKRIiauykxeejITb+MQzP6HlODxbFRRxtoh3EMVHijUYZw3I59WjuGfQerj0fPd3D0hXBhBpKLRUaEO7B6qGaW6QV6K+VkdQvreFqIJ1do5z/fXpaOxgVKWzdVSY7KHOKxqq+3OBBsOsuVMLOyp1sj33KH26llB79+tfoMy8/voGspZMkaN+3bhPowmPcKpxB77hUN33CtQqNvhqZbvIEoWOqR3RLRFTvV8LxVzOoEmfW23fehrxif1zdL+altuqHlmxjK5ORqRexYz/Lzue9JK6knf0MMY8vgfzLNDQsuxa3scmh9F4nUnPfB9Mn74Jub5Ut2iEYUDR4xUJGQKIIksKekJAdoyE5b2Mj7HjAdTJrN+6Qeb4mZ9p7ax0XSRCL0VqBAFbTgB38m9xot7U53CZAtFSCfvuw56hbvco53a0vua4Mu3IJ06l7intVJgefov2KnetJwqFFUc5EfI66RWGs0A3u3I7fbowGL9bIFNdMhnq7oDNyvmyVRfX7rfFTpWHEXqZ/ZgLdPPtuWTasr1xgYNCgYHDbIeQg6iH9iXinIb7S1Qk2Kz2wqOLJZKqaFNL+k
+ JCWgVRFW
+ fNztNUe03XAOwPB3NE1a4tlGJZTaLieAzWvFPI3o7owFAmCnDuL/VFSB3I5R6pKV1cb2VG5gAEO1Tq3ssjNcARHe9lw8mzaU4J+0tudyz0kZB8x52yfaH2pQttZTUMR5gLWA2ec0hHa40EdSAZyGrN355uIOWz47OKrZ1wjngnF1ObDKy7nJ6t1a+AWYmKJYfp5lxo2dfiZXGOxIEyVncrCtiGRjIBmpok0/X5zFu/as29s6r1fK91GS4u2TBbxIaNwbnOniLH5ve68r1SJPbRQ09Hw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,64 +101,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
-but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
+To use memcg_page_state_output() in bpf_memcontrol.c move the
+declaration from v1-specific memcontrol-v1.h to memcontrol.h.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- include/linux/memcontrol.h | 4 ++--
- mm/memcontrol.c            | 2 --
- 2 files changed, 2 insertions(+), 4 deletions(-)
+ include/linux/memcontrol.h | 1 +
+ mm/memcontrol-v1.h         | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 873e510d6f8d..9af9ae28afe7 100644
+index 9af9ae28afe7..50d851ff3f27 100644
 --- a/include/linux/memcontrol.h
 +++ b/include/linux/memcontrol.h
-@@ -832,9 +832,9 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
- {
- 	return memcg ? cgroup_ino(memcg->css.cgroup) : 0;
- }
-+#endif
- 
- struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino);
--#endif
- 
- static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
- {
-@@ -1331,12 +1331,12 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
- {
- 	return 0;
- }
-+#endif
- 
- static inline struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
- {
- 	return NULL;
- }
--#endif
- 
- static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
- {
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4deda33625f4..5d27cd5372aa 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -3618,7 +3618,6 @@ struct mem_cgroup *mem_cgroup_from_id(unsigned short id)
- 	return xa_load(&mem_cgroup_ids, id);
+@@ -949,6 +949,7 @@ static inline void mod_memcg_page_state(struct page *page,
  }
  
--#ifdef CONFIG_SHRINKER_DEBUG
- struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
- {
- 	struct cgroup *cgrp;
-@@ -3639,7 +3638,6 @@ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+ unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
++unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+ unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
+ unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+ 				      enum node_stat_item idx);
+diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+index 6358464bb416..a304ad418cdf 100644
+--- a/mm/memcontrol-v1.h
++++ b/mm/memcontrol-v1.h
+@@ -27,7 +27,6 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
+ void drain_all_stock(struct mem_cgroup *root_memcg);
  
- 	return memcg;
- }
--#endif
+ unsigned long memcg_events(struct mem_cgroup *memcg, int event);
+-unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+ int memory_stat_show(struct seq_file *m, void *v);
  
- static void free_mem_cgroup_per_node_info(struct mem_cgroup_per_node *pn)
- {
+ void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
 -- 
 2.51.0
 
