@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 960FBCCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8042DCCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:23:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F1C7E800BA; Mon, 27 Oct 2025 19:22:54 -0400 (EDT)
+	id DBD4D800BB; Mon, 27 Oct 2025 19:22:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ECC8B8009B; Mon, 27 Oct 2025 19:22:54 -0400 (EDT)
+	id D6D9A8009B; Mon, 27 Oct 2025 19:22:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E09C8800BA; Mon, 27 Oct 2025 19:22:54 -0400 (EDT)
+	id CAAEB800BB; Mon, 27 Oct 2025 19:22:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4D18009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:22:54 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id A5A5687859
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:54 +0000 (UTC)
-X-FDA: 84045471468.24.0DA3CFF
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf18.hostedemail.com (Postfix) with ESMTP id CEAB21C0009
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:52 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RqKmQfBZ;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BA16F8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:22:59 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 40BA212A143
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:59 +0000 (UTC)
+X-FDA: 84045471678.06.5FFA6C2
+Received: from out-178.mta0.migadu.com (out-178.mta0.migadu.com [91.218.175.178])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 5ACE3A0008
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:57 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cRZVPjq4;
 	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607373; a=rsa-sha256;
-	cv=none;
-	b=OngWWfyGYySyy9Jlf+m53d2uXv+vj1RyTyLI39qoAXfrC3QUNXcSz5ZfpIqgb1lqVhXJnT
-	IQNHny5qUn3dfIzFw5CjH3/fGCYrq3cnTuKGtdsFNLYC/xwlW2wToRAwpTLJ5BfiQpz+VY
-	ZlE/rMx7H+R/R6+93t8FEq7qPWXQjmw=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=RqKmQfBZ;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607373;
+	s=arc-20220608; t=1761607377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DZ0f+kz7SjYR0994KQXx6s1K86PlfExovkcbk43EfBE=;
-	b=z7rhlmQe9LcLd2Z6n98ufIcWhUf8aB/ml6vOhFmps7e5+OcD+mYYQa8lj70cA3M0fifFl4
-	uKdp4WxLDwk5Z+UsNPc6GcVd/halgj/FZsXCfOVGAMz7Oe0oYlPUJ8rjcPrG0bQPprLrDI
-	YqR9gIgeJUXbEsmlsgZy0WK9n7otvf8=
+	bh=Fpx83VmXhSXA3iZoTTu3uB82TfMzg8o1yaXlXxkl2ts=;
+	b=4nnpzu0pqdka8gH17SaYiFFRCp26RIx/saEmyoy2BgVDx88t/zTUFCVLVo2cRwrFgzZMoT
+	jt8WmiWTaLJzn+K5H04p8dfnM0uSzf4GTeSueAfoy4cN9vFcNTJFYE/q1Pdx8FniGeIcTy
+	Dv+QcS/yChZy7fuFhjYyAL0z/WVcE7U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607377; a=rsa-sha256;
+	cv=none;
+	b=cl0qeG8DxEgqlVqw/rAIGJvLz3JySv4MPENDTzENkUf+OdrcRwJWuvN5ILeuyEB4QVZWZS
+	45fGu3pDSEBGLzd1D2oZKHqD3WvIlR7r0/IeeThs3h7QXz/cKqgu3mHB7Wr4zocnluvs8P
+	hI4FlKhqbck+Ks6nkDSKB48E+Oc2XV0=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=cRZVPjq4;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607371;
+	t=1761607375;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=DZ0f+kz7SjYR0994KQXx6s1K86PlfExovkcbk43EfBE=;
-	b=RqKmQfBZBdZFvjHHa2i1c9LuHkG9bPcN+BuPZKMDcm4i/kbV24DwlpFnFvXjg+1T9AVP7B
-	j9IQ8U51XYUpf4RO/1o69mHO7zYEqNgXsygZQaUzVg5yAswdy8bWjh2eYiFQNdHXeMaP6G
-	R4OGd/e5r3E6JQsPyQj2O5oIjCEanqk=
+	bh=Fpx83VmXhSXA3iZoTTu3uB82TfMzg8o1yaXlXxkl2ts=;
+	b=cRZVPjq4veM1ffE3TOeNuzgakh/gbAZksO4T3TbNy/RutNjjqJYSAfqBF4g84QiCZcq1NW
+	B8pdACdhed5GKS1MvdHPYgCxhVOy/J2nEB5HLV+QD7c/mH4Ar/zs8YWqsqWEBfyFebPut7
+	H+87v9PRqNvgFfLoKSZSog6yHvzHY00=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -77,22 +77,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 18/23] bpf: selftests: BPF OOM handler test
-Date: Mon, 27 Oct 2025 16:22:01 -0700
-Message-ID: <20251027232206.473085-8-roman.gushchin@linux.dev>
+Subject: [PATCH v2 19/23] sched: psi: refactor psi_trigger_create()
+Date: Mon, 27 Oct 2025 16:22:02 -0700
+Message-ID: <20251027232206.473085-9-roman.gushchin@linux.dev>
 In-Reply-To: <20251027232206.473085-1-roman.gushchin@linux.dev>
 References: <20251027232206.473085-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: f75pqsyej7u7s5pxdeisxrbomxsbdh66
-X-Rspamd-Queue-Id: CEAB21C0009
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761607372-230016
-X-HE-Meta: U2FsdGVkX1+EU9EcRgAZfeOvUIg7mdrqWiTzzb+3pMnuOfRNbvxRAq7YqvuKuVuHE/wa2JzB1Pj0mhIxSjVb5CMfKHMxWveou6l6CmG8dbsNrUpkOSUAk3VhCYBGm0q4V41DiK8/i622ORI13smQqVdEZSpsDAPxMQlAydLiW5Ffpc09keHy6imX9/2gqyGWHp1JQ7dusAbvUT+A8nFWwSPzBfA9BtVvHee8WhNEZ8XmlQjck3eOwG2zE9dJX7OChXRa2vMRxjY99W43jEHBh4wDLjtPAiZtvJYNlBH2EeZe6munNNQh+jBgnbjCPVxD21JJfyRPwef+J+BxE6j0uvzGVqVrnvWMH4ypTJA+IRDML+qap9zWI+ZqjLG80j3+G9AvQ/ZtCLp1ldo0xy2QEOThID7ufofl5mpD4pHW4fzn8LXxV2ZNQJ1d3sMYjLITfM3r2m9tx4ukomm2mqHnzy8WrvW4C80iNeDObReKLYVoDdPhB4axauzEf3VJfXosNu3kIiBaZMllvlI4EvoI0AUnBbJGZXBXAnfdcgtF02OPoT6jMaH+0pVP262E5AbJ1w3xwG0zBGk5rtYlGArjmvew5/eIEoTqNcZJL5EHGbx8c4mhnddBMO6WlEcp37VicQ7KrOaSs8UjCmKRlUfxMxqUReEReU9H7c6y4pFj09Cp7mSU6YELrRYTY/CyTXpjIIpZXS0n1+ILGC2VOVRj4YbzTqtOZEc2IEYqs+jRnMIy4sPPx0TaW821yJpW6kJOriO/hPVFeZaVk+OxcbCHPDDzWCEV+gXZ5xg6ygvg2DORztXLiiE0+7uQ4IqDY2mm+pm8SVDU9Lsz14V0dV4mJPSdYQFxj4dtDYGYAGx0og/A5KVAMxDiKJSHjO7yD331BMz+iv+Ky6aXVfIhPljgJREMMTRsANRsNn5ZeE+UBX/jFUAYF67NCLkHtIGD3nvOjmze+RsvFbIlA/GLZMw
- qqtWX0f2
- e/Uvm2Vhqhcayin2yZDeRoKEUTN3Md1LN1MSnpah/v2ldCaQN0a9YcFDvO7tJiJarc10kwxcGL+t0NKghp/dGVJo9u45WnY5PpqegVS7+obdrCWt6QI/JlzV6JMDMw5WBhG3z/zDq0tX0PWUS1PZqsLI5HPEzvnEmg3cS+kHvK8rUfEzFnMkpMFw+Fyp+V6mQSk5O
+X-Rspamd-Queue-Id: 5ACE3A0008
+X-Rspamd-Server: rspam02
+X-Stat-Signature: zy9k6jmjgyamhzuaem34hqgxkqmectqo
+X-HE-Tag: 1761607377-395086
+X-HE-Meta: U2FsdGVkX1/CVB9Gew7FcfM/OFZtcrZXO5UT7awcL3GdxcXibp5wfGZm1lYWDnWJMlbphYgbDbjgpkVA2dl3n/nZxbn+4fj+YeNle+o2bQ9y8lb9BaJdVHDK1iRdGXrXq1+3XvjTgcjNp88CbyLZw3W51Z6ri58YjBt5vpfSLwrGAbfjSwRb5f9a1YpNF6Axu+vlWWrXLUH0b3X5gABGlOxMYEyldaiUpWjeQDwhfF63HjrE/ka/PSG5bwjafFb43HJC1scbtH03itDAgJOFIrEEdaGXHRl+rTgIAZFLsYzJCxW2bTO6/utwpsap9TdkYnMGe2Q65NwChKiQXb2tGMHH8UaPdbs03q8I91x0ubAUiv7imbIxbuIORb/NXahFdhkfkJqISwjVJoAW/nQUa/R2crFzZt6sSkOP7pUiB654VTSbHIv13qcCrtkztLNeic/9yeYUXU3YRlB7sctjLvCyAM0YHccv2jU3Xcr0Y5OkQrzXLYLQUaCZQYLR3ySs5HvGUFDGg3uj1wfyuAjZ+v7QNTRxQxvIsywr4VSqaxxOGfnZwKoXIYTnMOb3oYI2PJp1qlnOuvPz8wCFZCheb2q/HNMxJ04Newyr1QyxmnmzICDG8JuXUskqtRUYJUIUKbZyowyJIBF8BefmnWbieoJv5y+IQa1Tg4HVERBp+JW4SniCwoLBZKVPWIAhChWJahm+0A0LEA/9Hu9YeQSIrrJc23z/AR2z/4MqP2f03S8J1u4wBY3EbEpOMqFrqGp+CgQmCNIsP74Reoqk3UAP91afRyDUOCWLrvoot/LKQvg6pAUtRq3KHynZ+R+VxGujHhq/mQwJeXOq5GwTPMErP5NPrxhMTzA8w80bs7bfSOFNrI/6fj1CiryClqk6VdwwMevcmu99KIysvnTAaYc1Xc3PQ9ajqjVbUUmuCTn8D7J7UXhchWay2E2TLUE6E20qLCF/xuNHqrr3c3sfcci
+ zrbwHlET
+ wDIqOQ3U+ChGyiQmH858IkfWr4kwYzar0R8+em1+/A2vjABYqljtGTiCdCZDeSdvx/sy1xIstNI530kp8Sb0WjTTVPxMHxZic8W3Jl7VjzgoKuh5NLnFPNO8yArIdMcQj7hmRvdUwcj0l+kqFJy0voHs5nR+Hs93SMTYjuIWujUW8NkcSki5F4E7Nir7vWn7Eh3+EzAehHBgCE9fwd0QqeDpH7Io1at0vNdy21viokywCjguxfHihdsblY8OKKBirMW2q6wjz9pzY63VOR5feQe+FmrGsjERcZRgH
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,409 +101,333 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Implement a kselftest for the OOM handling functionality.
+Currently psi_trigger_create() does a lot of things:
+parses the user text input, allocates and initializes
+the psi_trigger structure and turns on the trigger.
+It does it slightly different for two existing types
+of psi_triggers: system-wide and cgroup-wide.
 
-The OOM handling policy which is implemented in BPF is to
-kill all tasks belonging to the biggest leaf cgroup, which
-doesn't contain unkillable tasks (tasks with oom_score_adj
-set to -1000). Pagecache size is excluded from the accounting.
+In order to support a new type of PSI triggers, which
+will be owned by a BPF program and won't have a user's
+text description, let's refactor psi_trigger_create().
 
-The test creates a hierarchy of memory cgroups, causes an
-OOM at the top level, checks that the expected process will be
-killed and checks memcg's oom statistics.
+1. Introduce psi_trigger_type enum:
+   currently PSI_SYSTEM and PSI_CGROUP are valid values.
+2. Introduce psi_trigger_params structure to avoid passing
+   a large number of parameters to psi_trigger_create().
+3. Move out the user's input parsing into the new
+   psi_trigger_parse() helper.
+4. Move out the capabilities check into the new
+   psi_file_privileged() helper.
+5. Stop relying on t->of for detecting trigger type.
 
-Please, note that the same BPF OOM policy is attached to a memory
-cgroup and system-wide. In the first case the program does nothing
-and returns false, so it's executed the second time, when it properly
-handles the OOM.
+This commit is a pure refactoring and doesn't bring any
+functional changes.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- .../selftests/bpf/prog_tests/test_oom.c       | 249 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_oom.c  | 118 +++++++++
- 2 files changed, 367 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_oom.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_oom.c
+ include/linux/psi.h       | 15 +++++--
+ include/linux/psi_types.h | 33 ++++++++++++++-
+ kernel/cgroup/cgroup.c    | 14 ++++++-
+ kernel/sched/psi.c        | 88 +++++++++++++++++++++++++--------------
+ 4 files changed, 113 insertions(+), 37 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_oom.c b/tools/testing/selftests/bpf/prog_tests/test_oom.c
-new file mode 100644
-index 000000000000..6126d961aba3
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/test_oom.c
-@@ -0,0 +1,249 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+#include <bpf/bpf.h>
-+
-+#include "cgroup_helpers.h"
-+#include "test_oom.skel.h"
-+
-+struct cgroup_desc {
-+	const char *path;
-+	int fd;
-+	unsigned long long id;
-+	int pid;
-+	size_t target;
-+	size_t max;
-+	int oom_score_adj;
-+	bool victim;
-+};
-+
-+#define MB (1024 * 1024)
-+#define OOM_SCORE_ADJ_MIN	(-1000)
-+#define OOM_SCORE_ADJ_MAX	1000
-+
-+static struct cgroup_desc cgroups[] = {
-+	{ .path = "/oom_test", .max = 80 * MB},
-+	{ .path = "/oom_test/cg1", .target = 10 * MB,
-+	  .oom_score_adj = OOM_SCORE_ADJ_MAX },
-+	{ .path = "/oom_test/cg2", .target = 40 * MB,
-+	  .oom_score_adj = OOM_SCORE_ADJ_MIN },
-+	{ .path = "/oom_test/cg3" },
-+	{ .path = "/oom_test/cg3/cg4", .target = 30 * MB,
-+	  .victim = true },
-+	{ .path = "/oom_test/cg3/cg5", .target = 20 * MB },
-+};
-+
-+static int spawn_task(struct cgroup_desc *desc)
+diff --git a/include/linux/psi.h b/include/linux/psi.h
+index e0745873e3f2..8178e998d94b 100644
+--- a/include/linux/psi.h
++++ b/include/linux/psi.h
+@@ -23,14 +23,23 @@ void psi_memstall_enter(unsigned long *flags);
+ void psi_memstall_leave(unsigned long *flags);
+ 
+ int psi_show(struct seq_file *s, struct psi_group *group, enum psi_res res);
+-struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
+-				       enum psi_res res, struct file *file,
+-				       struct kernfs_open_file *of);
++int psi_trigger_parse(struct psi_trigger_params *params, const char *buf);
++struct psi_trigger *psi_trigger_create(struct psi_group *group,
++				const struct psi_trigger_params *param);
+ void psi_trigger_destroy(struct psi_trigger *t);
+ 
+ __poll_t psi_trigger_poll(void **trigger_ptr, struct file *file,
+ 			poll_table *wait);
+ 
++static inline bool psi_file_privileged(struct file *file)
 +{
-+	char *ptr;
-+	int pid;
++	/*
++	 * Checking the privilege here on file->f_cred implies that a privileged user
++	 * could open the file and delegate the write to an unprivileged one.
++	 */
++	return cap_raised(file->f_cred->cap_effective, CAP_SYS_RESOURCE);
++}
 +
-+	pid = fork();
-+	if (pid < 0)
-+		return pid;
+ #ifdef CONFIG_CGROUPS
+ static inline struct psi_group *cgroup_psi(struct cgroup *cgrp)
+ {
+diff --git a/include/linux/psi_types.h b/include/linux/psi_types.h
+index dd10c22299ab..aa5ed39592cb 100644
+--- a/include/linux/psi_types.h
++++ b/include/linux/psi_types.h
+@@ -119,7 +119,38 @@ struct psi_window {
+ 	u64 prev_growth;
+ };
+ 
++enum psi_trigger_type {
++	PSI_SYSTEM,
++	PSI_CGROUP,
++};
 +
-+	if (pid > 0) {
-+		/* parent */
-+		desc->pid = pid;
-+		return 0;
-+	}
++struct psi_trigger_params {
++	/* Trigger type */
++	enum psi_trigger_type type;
 +
-+	/* child */
-+	if (desc->oom_score_adj) {
-+		char buf[64];
-+		int fd = open("/proc/self/oom_score_adj", O_WRONLY);
++	/* Resource to be monitored */
++	enum psi_res res;
 +
-+		if (fd < 0)
-+			return -1;
++	/* True if all threads should be stalled to trigger */
++	bool full;
 +
-+		snprintf(buf, sizeof(buf), "%d", desc->oom_score_adj);
-+		write(fd, buf, sizeof(buf));
-+		close(fd);
-+	}
++	/* Threshold in us */
++	u32 threshold_us;
 +
-+	ptr = (char *)malloc(desc->target);
-+	if (!ptr)
-+		return -ENOMEM;
++	/* Window in us */
++	u32 window_us;
 +
-+	memset(ptr, 'a', desc->target);
++	/* Privileged triggers are treated differently */
++	bool privileged;
 +
-+	while (1)
-+		sleep(1000);
++	/* Link to kernfs open file, only for PSI_CGROUP */
++	struct kernfs_open_file *of;
++};
 +
+ struct psi_trigger {
++	/* Trigger type */
++	enum psi_trigger_type type;
++
+ 	/* PSI state being monitored by the trigger */
+ 	enum psi_states state;
+ 
+@@ -135,7 +166,7 @@ struct psi_trigger {
+ 	/* Wait queue for polling */
+ 	wait_queue_head_t event_wait;
+ 
+-	/* Kernfs file for cgroup triggers */
++	/* Kernfs file for PSI_CGROUP triggers */
+ 	struct kernfs_open_file *of;
+ 
+ 	/* Pending event flag */
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 6ae5f48cf64e..836b28676abc 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -4000,6 +4000,12 @@ static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
+ 	struct psi_trigger *new;
+ 	struct cgroup *cgrp;
+ 	struct psi_group *psi;
++	struct psi_trigger_params params;
++	int err;
++
++	err = psi_trigger_parse(&params, buf);
++	if (err)
++		return err;
+ 
+ 	cgrp = cgroup_kn_lock_live(of->kn, false);
+ 	if (!cgrp)
+@@ -4015,7 +4021,13 @@ static ssize_t pressure_write(struct kernfs_open_file *of, char *buf,
+ 	}
+ 
+ 	psi = cgroup_psi(cgrp);
+-	new = psi_trigger_create(psi, buf, res, of->file, of);
++
++	params.type = PSI_CGROUP;
++	params.res = res;
++	params.privileged = psi_file_privileged(of->file);
++	params.of = of;
++
++	new = psi_trigger_create(psi, &params);
+ 	if (IS_ERR(new)) {
+ 		cgroup_put(cgrp);
+ 		return PTR_ERR(new);
+diff --git a/kernel/sched/psi.c b/kernel/sched/psi.c
+index 59fdb7ebbf22..73fdc79b5602 100644
+--- a/kernel/sched/psi.c
++++ b/kernel/sched/psi.c
+@@ -511,7 +511,7 @@ static void update_triggers(struct psi_group *group, u64 now,
+ 
+ 		/* Generate an event */
+ 		if (cmpxchg(&t->event, 0, 1) == 0) {
+-			if (t->of)
++			if (t->type == PSI_CGROUP)
+ 				kernfs_notify(t->of->kn);
+ 			else
+ 				wake_up_interruptible(&t->event_wait);
+@@ -1292,74 +1292,88 @@ int psi_show(struct seq_file *m, struct psi_group *group, enum psi_res res)
+ 	return 0;
+ }
+ 
+-struct psi_trigger *psi_trigger_create(struct psi_group *group, char *buf,
+-				       enum psi_res res, struct file *file,
+-				       struct kernfs_open_file *of)
++int psi_trigger_parse(struct psi_trigger_params *params, const char *buf)
+ {
+-	struct psi_trigger *t;
+-	enum psi_states state;
+-	u32 threshold_us;
+-	bool privileged;
+-	u32 window_us;
++	u32 threshold_us, window_us;
+ 
+ 	if (static_branch_likely(&psi_disabled))
+-		return ERR_PTR(-EOPNOTSUPP);
+-
+-	/*
+-	 * Checking the privilege here on file->f_cred implies that a privileged user
+-	 * could open the file and delegate the write to an unprivileged one.
+-	 */
+-	privileged = cap_raised(file->f_cred->cap_effective, CAP_SYS_RESOURCE);
++		return -EOPNOTSUPP;
+ 
+ 	if (sscanf(buf, "some %u %u", &threshold_us, &window_us) == 2)
+-		state = PSI_IO_SOME + res * 2;
++		params->full = false;
+ 	else if (sscanf(buf, "full %u %u", &threshold_us, &window_us) == 2)
+-		state = PSI_IO_FULL + res * 2;
++		params->full = true;
+ 	else
+-		return ERR_PTR(-EINVAL);
++		return -EINVAL;
++
++	params->threshold_us = threshold_us;
++	params->window_us = window_us;
 +	return 0;
 +}
 +
-+static void setup_environment(void)
++struct psi_trigger *psi_trigger_create(struct psi_group *group,
++				       const struct psi_trigger_params *params)
 +{
-+	int i, err;
++	struct psi_trigger *t;
++	enum psi_states state;
 +
-+	err = setup_cgroup_environment();
-+	if (!ASSERT_OK(err, "setup_cgroup_environment"))
-+		goto cleanup;
++	if (static_branch_likely(&psi_disabled))
++		return ERR_PTR(-EOPNOTSUPP);
 +
-+	for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+		cgroups[i].fd = create_and_get_cgroup(cgroups[i].path);
-+		if (!ASSERT_GE(cgroups[i].fd, 0, "create_and_get_cgroup"))
-+			goto cleanup;
++	state = params->full ? PSI_IO_FULL : PSI_IO_SOME;
++	state += params->res * 2;
+ 
+ #ifdef CONFIG_IRQ_TIME_ACCOUNTING
+-	if (res == PSI_IRQ && --state != PSI_IRQ_FULL)
++	if (params->res == PSI_IRQ && --state != PSI_IRQ_FULL)
+ 		return ERR_PTR(-EINVAL);
+ #endif
+ 
+ 	if (state >= PSI_NONIDLE)
+ 		return ERR_PTR(-EINVAL);
+ 
+-	if (window_us == 0 || window_us > WINDOW_MAX_US)
++	if (params->window_us == 0 || params->window_us > WINDOW_MAX_US)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/*
+ 	 * Unprivileged users can only use 2s windows so that averages aggregation
+ 	 * work is used, and no RT threads need to be spawned.
+ 	 */
+-	if (!privileged && window_us % 2000000)
++	if (!params->privileged && params->window_us % 2000000)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	/* Check threshold */
+-	if (threshold_us == 0 || threshold_us > window_us)
++	if (params->threshold_us == 0 || params->threshold_us > params->window_us)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	t = kmalloc(sizeof(*t), GFP_KERNEL);
+ 	if (!t)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	t->type = params->type;
+ 	t->group = group;
+ 	t->state = state;
+-	t->threshold = threshold_us * NSEC_PER_USEC;
+-	t->win.size = window_us * NSEC_PER_USEC;
++	t->threshold = params->threshold_us * NSEC_PER_USEC;
++	t->win.size = params->window_us * NSEC_PER_USEC;
+ 	window_reset(&t->win, sched_clock(),
+ 			group->total[PSI_POLL][t->state], 0);
+ 
+ 	t->event = 0;
+ 	t->last_event_time = 0;
+-	t->of = of;
+-	if (!of)
 +
-+		cgroups[i].id = get_cgroup_id(cgroups[i].path);
-+		if (!ASSERT_GT(cgroups[i].id, 0, "get_cgroup_id"))
-+			goto cleanup;
-+
-+		/* Freeze the top-level cgroup */
-+		if (i == 0) {
-+			/* Freeze the top-level cgroup */
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.freeze", "1");
-+			if (!ASSERT_OK(err, "freeze cgroup"))
-+				goto cleanup;
-+		}
-+
-+		/* Recursively enable the memory controller */
-+		if (!cgroups[i].target) {
-+
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.subtree_control",
-+						"+memory");
-+			if (!ASSERT_OK(err, "enable memory controller"))
-+				goto cleanup;
-+		}
-+
-+		/* Set memory.max */
-+		if (cgroups[i].max) {
-+			char buf[256];
-+
-+			snprintf(buf, sizeof(buf), "%lu", cgroups[i].max);
-+			err = write_cgroup_file(cgroups[i].path, "memory.max", buf);
-+			if (!ASSERT_OK(err, "set memory.max"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "0");
-+			write_cgroup_file(cgroups[i].path, "memory.swap.max", buf);
-+
-+		}
-+
-+		/* Spawn tasks creating memory pressure */
-+		if (cgroups[i].target) {
-+			char buf[256];
-+
-+			err = spawn_task(&cgroups[i]);
-+			if (!ASSERT_OK(err, "spawn task"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "%d", cgroups[i].pid);
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.procs", buf);
-+			if (!ASSERT_OK(err, "put child into a cgroup"))
-+				goto cleanup;
-+		}
++	switch (params->type) {
++	case PSI_SYSTEM:
+ 		init_waitqueue_head(&t->event_wait);
++		t->of = NULL;
++		break;
++	case PSI_CGROUP:
++		t->of = params->of;
++		break;
 +	}
 +
-+	return;
+ 	t->pending_event = false;
+-	t->aggregator = privileged ? PSI_POLL : PSI_AVGS;
++	t->aggregator = params->privileged ? PSI_POLL : PSI_AVGS;
+ 
+-	if (privileged) {
++	if (params->privileged) {
+ 		mutex_lock(&group->rtpoll_trigger_lock);
+ 
+ 		if (!rcu_access_pointer(group->rtpoll_task)) {
+@@ -1412,7 +1426,7 @@ void psi_trigger_destroy(struct psi_trigger *t)
+ 	 * being accessed later. Can happen if cgroup is deleted from under a
+ 	 * polling process.
+ 	 */
+-	if (t->of)
++	if (t->type == PSI_CGROUP)
+ 		kernfs_notify(t->of->kn);
+ 	else
+ 		wake_up_interruptible(&t->event_wait);
+@@ -1492,7 +1506,7 @@ __poll_t psi_trigger_poll(void **trigger_ptr,
+ 	if (!t)
+ 		return DEFAULT_POLLMASK | EPOLLERR | EPOLLPRI;
+ 
+-	if (t->of)
++	if (t->type == PSI_CGROUP)
+ 		kernfs_generic_poll(t->of, wait);
+ 	else
+ 		poll_wait(file, &t->event_wait, wait);
+@@ -1541,6 +1555,8 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
+ 	size_t buf_size;
+ 	struct seq_file *seq;
+ 	struct psi_trigger *new;
++	struct psi_trigger_params params;
++	int err;
+ 
+ 	if (static_branch_likely(&psi_disabled))
+ 		return -EOPNOTSUPP;
+@@ -1554,6 +1570,10 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
+ 
+ 	buf[buf_size - 1] = '\0';
+ 
++	err = psi_trigger_parse(&params, buf);
++	if (err)
++		return err;
 +
-+cleanup:
-+	cleanup_cgroup_environment();
-+}
+ 	seq = file->private_data;
+ 
+ 	/* Take seq->lock to protect seq->private from concurrent writes */
+@@ -1565,7 +1585,11 @@ static ssize_t psi_write(struct file *file, const char __user *user_buf,
+ 		return -EBUSY;
+ 	}
+ 
+-	new = psi_trigger_create(&psi_system, buf, res, file, NULL);
++	params.type = PSI_SYSTEM;
++	params.res = res;
++	params.privileged = psi_file_privileged(file);
 +
-+static int run_and_wait_for_oom(void)
-+{
-+	int ret = -1;
-+	bool first = true;
-+	char buf[4096] = {};
-+	size_t size;
-+
-+	/* Unfreeze the top-level cgroup */
-+	ret = write_cgroup_file(cgroups[0].path, "cgroup.freeze", "0");
-+	if (!ASSERT_OK(ret, "freeze cgroup"))
-+		return -1;
-+
-+	for (;;) {
-+		int i, status;
-+		pid_t pid = wait(&status);
-+
-+		if (pid == -1) {
-+			if (errno == EINTR)
-+				continue;
-+			/* ECHILD */
-+			break;
-+		}
-+
-+		if (!first)
-+			continue;
-+
-+		first = false;
-+
-+		/* Check which process was terminated first */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+			if (!ASSERT_OK(cgroups[i].victim !=
-+				       (pid == cgroups[i].pid),
-+				       "correct process was killed")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!cgroups[i].victim)
-+				continue;
-+
-+			/* Check the memcg oom counter */
-+			size = read_cgroup_file(cgroups[i].path,
-+						"memory.events",
-+						buf, sizeof(buf));
-+			if (!ASSERT_OK(size <= 0, "read memory.events")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!ASSERT_OK(strstr(buf, "oom_kill 1") == NULL,
-+				       "oom_kill count check")) {
-+				ret = -1;
-+				break;
-+			}
-+		}
-+
-+		/* Kill all remaining tasks */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++)
-+			if (cgroups[i].pid && cgroups[i].pid != pid)
-+				kill(cgroups[i].pid, SIGKILL);
-+	}
-+
-+	return ret;
-+}
-+
-+void test_oom(void)
-+{
-+	DECLARE_LIBBPF_OPTS(bpf_struct_ops_opts, opts);
-+	struct test_oom *skel;
-+	struct bpf_link *link1, *link2;
-+	int err = 0;
-+
-+	setup_environment();
-+
-+	skel = test_oom__open_and_load();
-+	if (!skel) {
-+		err = -errno;
-+		CHECK_FAIL(err);
-+		goto cleanup;
-+	}
-+
-+	opts.relative_fd = cgroups[0].fd;
-+	link1 = bpf_map__attach_struct_ops_opts(skel->maps.test_bpf_oom, &opts);
-+	if (!link1) {
-+		err = -errno;
-+		CHECK_FAIL(err);
-+		goto cleanup;
-+	}
-+
-+	opts.relative_fd = 0; /* attach system-wide */
-+	link2 = bpf_map__attach_struct_ops_opts(skel->maps.test_bpf_oom, &opts);
-+	if (!link2) {
-+		err = -errno;
-+		CHECK_FAIL(err);
-+		goto cleanup;
-+	}
-+
-+	/* Unfreeze all child tasks and create the memory pressure */
-+	err = run_and_wait_for_oom();
-+	CHECK_FAIL(err);
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	test_oom__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_oom.c b/tools/testing/selftests/bpf/progs/test_oom.c
-new file mode 100644
-index 000000000000..ded5c0375df7
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_oom.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+#define OOM_SCORE_ADJ_MIN	(-1000)
-+
-+static bool mem_cgroup_killable(struct mem_cgroup *memcg)
-+{
-+	struct task_struct *task;
-+	bool ret = true;
-+
-+	bpf_for_each(css_task, task, &memcg->css, CSS_TASK_ITER_PROCS)
-+		if (task->signal->oom_score_adj == OOM_SCORE_ADJ_MIN)
-+			return false;
-+
-+	return ret;
-+}
-+
-+/*
-+ * Find the largest leaf cgroup (ignoring page cache) without unkillable tasks
-+ * and kill all belonging tasks.
-+ */
-+SEC("struct_ops.s/handle_out_of_memory")
-+int BPF_PROG(test_out_of_memory, struct bpf_oom_ctx *exec_ctx, struct oom_control *oc)
-+{
-+	struct task_struct *task;
-+	struct mem_cgroup *root_memcg = oc->memcg;
-+	struct mem_cgroup *memcg, *victim = NULL;
-+	struct cgroup_subsys_state *css_pos;
-+	unsigned long usage, max_usage = 0;
-+	unsigned long pagecache = 0;
-+	int ret = 0;
-+
-+	/* Pass to the system-level bpf_oom ops */
-+	if (exec_ctx->cgroup_id)
-+		return 0;
-+
-+	if (root_memcg)
-+		root_memcg = bpf_get_mem_cgroup(&root_memcg->css);
-+	else
-+		root_memcg = bpf_get_root_mem_cgroup();
-+
-+	if (!root_memcg)
-+		return 0;
-+
-+	bpf_rcu_read_lock();
-+	bpf_for_each(css, css_pos, &root_memcg->css, BPF_CGROUP_ITER_DESCENDANTS_POST) {
-+		if (css_pos->cgroup->nr_descendants + css_pos->cgroup->nr_dying_descendants)
-+			continue;
-+
-+		memcg = bpf_get_mem_cgroup(css_pos);
-+		if (!memcg)
-+			continue;
-+
-+		usage = bpf_mem_cgroup_usage(memcg);
-+		pagecache = bpf_mem_cgroup_page_state(memcg, NR_FILE_PAGES);
-+
-+		if (usage > pagecache)
-+			usage -= pagecache;
-+		else
-+			usage = 0;
-+
-+		if ((usage > max_usage) && mem_cgroup_killable(memcg)) {
-+			max_usage = usage;
-+			if (victim)
-+				bpf_put_mem_cgroup(victim);
-+			victim = bpf_get_mem_cgroup(&memcg->css);
-+		}
-+
-+		bpf_put_mem_cgroup(memcg);
-+	}
-+	bpf_rcu_read_unlock();
-+
-+	if (!victim)
-+		goto exit;
-+
-+	bpf_for_each(css_task, task, &victim->css, CSS_TASK_ITER_PROCS) {
-+		struct task_struct *t = bpf_task_acquire(task);
-+
-+		if (t) {
-+			/*
-+			 * If the task is already an OOM victim, it will
-+			 * quit soon and release some memory.
-+			 */
-+			if (bpf_task_is_oom_victim(task)) {
-+				bpf_task_release(t);
-+				ret = 1;
-+				break;
-+			}
-+
-+			bpf_oom_kill_process(oc, task, "bpf oom test");
-+			bpf_task_release(t);
-+			ret = 1;
-+		}
-+	}
-+
-+	bpf_put_mem_cgroup(victim);
-+exit:
-+	bpf_put_mem_cgroup(root_memcg);
-+
-+	return ret;
-+}
-+
-+SEC("struct_ops.s/handle_cgroup_offline")
-+int BPF_PROG(test_cgroup_offline, struct bpf_oom_ctx *exec_ctx, u64 cgroup_id)
-+{
-+	return 0;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_oom_ops test_bpf_oom = {
-+	.name = "bpf_test_policy",
-+	.handle_out_of_memory = (void *)test_out_of_memory,
-+	.handle_cgroup_offline = (void *)test_cgroup_offline,
-+};
++	new = psi_trigger_create(&psi_system, &params);
+ 	if (IS_ERR(new)) {
+ 		mutex_unlock(&seq->lock);
+ 		return PTR_ERR(new);
 -- 
 2.51.0
 
