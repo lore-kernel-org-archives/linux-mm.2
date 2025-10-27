@@ -4,232 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46090CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 12:00:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D326CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 12:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 98E178003E; Mon, 27 Oct 2025 08:00:56 -0400 (EDT)
+	id D6F1E80041; Mon, 27 Oct 2025 08:07:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93E638000A; Mon, 27 Oct 2025 08:00:56 -0400 (EDT)
+	id CF9098000A; Mon, 27 Oct 2025 08:07:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82D898003E; Mon, 27 Oct 2025 08:00:56 -0400 (EDT)
+	id B728080041; Mon, 27 Oct 2025 08:07:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D3D98000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:00:56 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2710D13AD36
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:00:56 +0000 (UTC)
-X-FDA: 84043752912.16.7028B22
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 8D0EFA0019
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:00:52 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=A49eSCi8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=AAcG5okQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761566452;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9E4C48000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:07:23 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3B9BE1405C3
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:07:23 +0000 (UTC)
+X-FDA: 84043769166.03.91BE100
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 43DFC40004
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:07:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hb6PTjvS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761566841;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=y4pj9AHLwkFMEr9c9kBvOVzrpFujuuv7Gqfc/uc1z9E=;
-	b=QZzDvA28pOr5gU8ZQyb01uf2u0N17vZ+3qKYu+sPR9d7GFYeoQW93BXxEuaakVrz7fIYua
-	Q5c44znPXABRI9525oDsJbURMviJ+gsshrQq9l/m5YlhI6OvWxawEC8oI62996kTBSl2Rc
-	OOmr2toL67hWQgI5NiG0i9GdtVQwBZo=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761566452; a=rsa-sha256;
-	cv=pass;
-	b=8JNV1FScOK4grcg7x0w9u420u/58XWefaiIZ0xEcjlE0RfT/bc/NSpQ7FyOAxgYOH7nkMh
-	RKBb9yH4Ts8ApASejaBpvHm5+t+bsoig+i8PaDRPp2NWeG/Tqb5x0y/mv3ITTgO86UJ2yv
-	U+fC5h/rzeangrlUpmklCnR/0jayI+U=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=A49eSCi8;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=AAcG5okQ;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59R9CW8B005061;
-	Mon, 27 Oct 2025 12:00:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=corp-2025-04-25; bh=y4pj9AHLwkFMEr9c
-	9kBvOVzrpFujuuv7Gqfc/uc1z9E=; b=A49eSCi8V7Hf7JJMRnHBuS00dKNDQ2oQ
-	NjA57uXRyUu9u86YLTidELr0YDJwYPO2xYFNAZ+i0zhzBC4hJzimc+LUUB5DaGEL
-	t7Qbwuozq2C8rhHUwpejlFt5AV0eQOdDB6nomkeIr45qPs+vFmMIaYHqAEkYdi5S
-	d6HS/+W3NX16T0Wf7rLRK6lx1slGBjpHJffmaTrniC31wQ+dSDQdKcdS7hy9+4R6
-	RDvUqk8Z94JNF5c15DyG9AALd0++EUrOkJBNafJeGOF+FTu9fMTxzoN/PUK6+DuH
-	ZLxPKG3sfCgEkX08cYd6JZxoG5fa/UXSkqgDgJ7sOzq1A9V3tk+ivg==
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a2357gpec-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 12:00:41 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59RBrqWf013433;
-	Mon, 27 Oct 2025 12:00:40 GMT
-Received: from cy7pr03cu001.outbound.protection.outlook.com (mail-westcentralusazon11010063.outbound.protection.outlook.com [40.93.198.63])
-	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n06q1gv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 12:00:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SNg1TCW9sB7hzn/2vut9GZIBo/CEsjSIaP0N7DjWYLcI6GF4FcB2s1amLlLJ30AWFqjB4iqL3bpqrpedHGOXyuuTPp3+G5Bzqfo1XVp5TzHrxC9pSa8gFH3Iec5Hs+N+MpoVgDvIY9+gsrVnaDbnLbDV3kXDlYvZCGNKGx0onulNyum5oMy7UGeDaBmnGj9TGLQUnTsCIgZd1VfvY1HMFgjA6O3xNQhXS7xpbGitYznUwbQ6cCxSPZz7oxTgKo3HxZ653W5qsjtQ9YDiGiiL3mm1k56CKW/cOMb62NgYK4PD7Em+UJgQfr+UYC0oICI66gN+9voUkUJADP1deGNcrA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=y4pj9AHLwkFMEr9c9kBvOVzrpFujuuv7Gqfc/uc1z9E=;
- b=dmDNwkpQL8SjgD782LjZ54Kq5Dx/VMaIwZhVp8iu+BmI1rDNr+/DK3+UXvtmIAbHYw4pFj0NOIi/L+1rQBWpIkiLLZBkKFG0D2dToo9b/xU3pHviFKz7vYH2KfBUdBSGJ6TdbuLS8RDyc29C+5w+AAeLhtnozunvxYHXRihAh//TK35qkgQZJEpSWeRRwH2HBxb7qmdhyZm6fhDqkPNTa+eu7c8YxikaVj4+bPUYIz+EjrfAK4zKJgqnKM2NZBY6CTUT4B0MziQ/gwTLef6/C7HSG9mhe0r2bk0tRlBSzdS3qaLk5nNYY+22ozme3YtHeQlygIjRxB4+dKki7vt9Nw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=y4pj9AHLwkFMEr9c9kBvOVzrpFujuuv7Gqfc/uc1z9E=;
- b=AAcG5okQGX1tLO9RBa5QS30aD4yIFmUqDoxDNf21ZWoJGye6CvaURp+Eb+o+5mTPX0hOOgvLjQx7T4RkAoO8HQjvmwTjNNdzSMqjRbvW+AuzxNVWnJOA9EtvsyWzP47meLjl5pkSOaiGEf1Oy95qzlYfbsdWewHOhFweXSoTNZ0=
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
- by MW5PR10MB5737.namprd10.prod.outlook.com (2603:10b6:303:190::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 12:00:35 +0000
-Received: from CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
- ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
- 12:00:35 +0000
-From: Harry Yoo <harry.yoo@oracle.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: David Rientjes <rientjes@google.com>,
-        Alexander Potapenko <glider@google.com>,
-        Roman Gushchin <roman.gushchin@linux.dev>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Feng Tang <feng.79.tang@gmail.com>, Christoph Lameter <cl@gentwo.org>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>, linux-mm@kvack.org,
-        Pedro Falcato <pfalcato@suse.de>, linux-kernel@vger.kernel.org,
-        kasan-dev@googlegroups.com, stable@vger.kernel.org
-Subject: [PATCH V2] mm/slab: ensure all metadata in slab object are word-aligned
-Date: Mon, 27 Oct 2025 21:00:28 +0900
-Message-ID: <20251027120028.228375-1-harry.yoo@oracle.com>
-X-Mailer: git-send-email 2.43.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SEWP216CA0133.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:2c0::10) To CH3PR10MB7329.namprd10.prod.outlook.com
- (2603:10b6:610:12c::16)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=b2s7I9GGNFgDr0lnQJQktZOYPEn4uNejSSlno1ll/NY=;
+	b=X5ul18IpAEElzvxsqeqI6NRoE9u08alxu4O1SeUyT0TBUsdRFg2lvxUgWy8fvjm7a9NZQu
+	SWe655O2+6wudoqX6FEB1+fxud/nvBBt9lKi6Qe17tdvl39vj6xW3jMu42Z30J4+x76F5F
+	7aFVQ2GAfPDRZ20Ya/6iqcKLhgBXyns=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761566841; a=rsa-sha256;
+	cv=none;
+	b=ZW1cY0Cv1NK7Ci0g7RZ7VHko4cBlr7s1bkYFHuExR2CO32gXnuIiAQqaA5hxufoFlc60Ux
+	0Kbt/I6MKZsRoD9SlLS2wM2yXvKKAAr0iwHfPOhtt8fJIGj2XbIejSUo/phVMTKVEnA49w
+	hZ4TMRLarbALNct7QkhbbzWDTTOgeKQ=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hb6PTjvS;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf11.hostedemail.com: domain of peterz@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=peterz@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=b2s7I9GGNFgDr0lnQJQktZOYPEn4uNejSSlno1ll/NY=; b=hb6PTjvSbMA9+G4lC2NiF1ZBDT
+	Biypbx9f4KRwKfRjvvbTeuCBlL/6UI+l7PXTUHa6HorJDZATV9WLcs1AdTwW2T9NLGQhTBXsQ9lWE
+	vebcdTT5Va4Tpvbu6hBXh08MYgxmALoDt0txgWBcgRo4eutibhhhk64u/VpxKYfmHIvP25H/Tde3R
+	ZW2KLw2olrWKhcaf4Mdp2j6kb3KXABl1K/oASwrdPiOratiNJEHTA/h6QVerWdAfTRIzvN8OBAgyT
+	kUq/p2AUh6a7Gdjj4abD6xS52EX/+Wg1LM3dOBh8CErHcKBx6xGaFpqHAHpGmstGdpVZiBG9ouyHI
+	rBIQRbjg==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by casper.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDM01-00000000V71-0Wvw;
+	Mon, 27 Oct 2025 12:06:58 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id D27E6300220; Mon, 27 Oct 2025 13:06:57 +0100 (CET)
+Date: Mon, 27 Oct 2025 13:06:57 +0100
+From: Peter Zijlstra <peterz@infradead.org>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>, Kees Cook <kees@kernel.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
+	James Morris <jamorris@linux.microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Adrian Reber <areber@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	tiozhang <tiozhang@didiglobal.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
+	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	David Windsor <dwindsor@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hans Liljestrand <ishkamiel@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+Message-ID: <20251027120657.GW4067720@noisy.programming.kicks-ass.net>
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MW5PR10MB5737:EE_
-X-MS-Office365-Filtering-Correlation-Id: d8801c7e-7e44-41db-718e-08de15506fd1
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?X0P2lt4dMmSucrlh41INcrwppknLkn4lfebrcKYGduTjnz+ivQkuwhBPSsXr?=
- =?us-ascii?Q?gpaVp2CS+YjjhN1BH4lFqdSgPtPC584fN7KKipSLvQeAtA7dgv6dnWXXEnmX?=
- =?us-ascii?Q?OfNzfqAEmAeNQxspvZZgwtMwqzgG3sBmKWzq7ml6u+USbMBij7I2zbiUd1t7?=
- =?us-ascii?Q?UUEew0nWwY1BUo+uCeVq4oS6SzaLTspBi/vMFQCCc+7Zwel660NdGRqNzeF2?=
- =?us-ascii?Q?F9iGl5VdDgzxK8K/uXSz1dsE9vAA3/+qTAeZOdbgBZdv53GjMKm9cd9107KZ?=
- =?us-ascii?Q?2xVj+3mRBHGYi4vJjmRZiZcNqu76lrxaQdj4nw0ldKdknysrwvyY/4rMDJqJ?=
- =?us-ascii?Q?zWYcN8xpk1ZP3Ei3sHFV09RNYdT5ZxovwVLIewlv9dX3ppJ1599fKkyMmq8E?=
- =?us-ascii?Q?dpSdHTx7dbccVuH8XZtc0u9pD3nxaSJnHtPYHPoDH7cf2BRZm1cWZdclGPSw?=
- =?us-ascii?Q?IusNoCFOokxknLVpuDytvdQk9IJFfOTghxagKzcYwzcxgO1l99Z+EdMZHyCj?=
- =?us-ascii?Q?H7q7vRHOR9rN6yCdQvReCZsqJoUB/RCdqFH9vBn3U7EyioIUO+Ymfo2dWF0l?=
- =?us-ascii?Q?43Z7XDcDVCR/SSaUXS+8oBV5LkjDgCj83Cb0FO0ZzoTa27ay0FPGGbFbiOds?=
- =?us-ascii?Q?6OZ604XhBF3X6JISB4+5p92NdtOW66g+blfXC1WlpGt5xjzB4GAO6hiwi7gs?=
- =?us-ascii?Q?uQ6aX1d7Fz9UovfqXQsGzLSD2FSc+4dEfrrCIjvXHsUCiZhr9cC4gD2AFe20?=
- =?us-ascii?Q?b1bvxtg8J8axqAcN70kNcEIql3LnI7P07jW61nLMWYy3j4MqFA4yfoj7CbHu?=
- =?us-ascii?Q?heGRrFPoYQyNYUYqliufXQP9tnIF2x6Gd6H3j+jUK+xONj34vd70G3Eao9D9?=
- =?us-ascii?Q?Jle1d2b+TrleUByTQcsStvnPfdIB05B5euG9yxTWAMnndCYpiATm06D1bheP?=
- =?us-ascii?Q?mDyulkFJxSt6LXxPkfuCjsCGkSePY/2Vo/sBuu+5f3xkcRlNIEjSLUYbsK6I?=
- =?us-ascii?Q?c3mwVSFGXHTYADjSqknsciWQt5Njt86RaPGcMfTr8zVIyP5i6FhYq1iEINZq?=
- =?us-ascii?Q?AdfsaqAKoKlF1aCRWTypcodPHW0VooQXPx+mf8xuqDbhCO6HWIQ5nbvOU4Yk?=
- =?us-ascii?Q?BWVP8B2o94oxFnb70caiJOWiAYWlW1ShqJu5YV+vtX5I+kYsW3WEUEOA4aJq?=
- =?us-ascii?Q?AiFfDtf0mSzBEcqGZ7/bM4J6NtV03yLUxKdOXQy1qHuaIkRb89K9ZTdSTP6J?=
- =?us-ascii?Q?Pwq+FuwtjdY/Aw7WT5Ki2agyqeT3YBkEgC2ZAgkcpjQqUTi3nT3vbjLeQcNs?=
- =?us-ascii?Q?1V7t9w8FoLZMZsFgbhOxxTXqMoqsKj7EfBhDNVmzQMZLxk/RMxzSp27ouyQZ?=
- =?us-ascii?Q?q6gRXx99yj7hRfFNk3KvlYJSlElY3T7IbXt69iC6VlyIsDUsixJq/wckWvQ/?=
- =?us-ascii?Q?rfGRuz8gRBIsqE53R7BaiIWtUU0tXzw2?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uFD64CGq1Ohjy3awKpe/F0NV8gE3/F9EdM5/10gQUHZLPMw+qToTtO+QEO35?=
- =?us-ascii?Q?J/SXTrq46ZrTE3kSLC/9mgpKHAZviY7MwfPhbwMs4amNlCRAa984jDpc3fXb?=
- =?us-ascii?Q?r7hQGkJslnHYIlakB31M+YSyqH0+odEzKzH0P+88U03x239G0qbTS1SjtGjg?=
- =?us-ascii?Q?AVt5PAuzC9BePL3Go4W5GImdHhd67tN3KxxLk2mZ7H4a4E1LUCmCSxikdAw+?=
- =?us-ascii?Q?10f6wFdzzVasC24dZbwvYq0PjMtbUUXCe/f3bBuX1GZ6tUmWcwu+Douw41zK?=
- =?us-ascii?Q?k8bwR8Iv2v80L4QR4PVfg/mtxRqx4FJUstq5RLOs41RweGYwGrXudpbaDj4t?=
- =?us-ascii?Q?xgO5AvjKIeSk3q8UYowXo8x39rxOmNKl9Y7bl+d/9u8VwyRF7Tx7bCMIRwLl?=
- =?us-ascii?Q?rsBvZYMJ0hQHkvc3POO8zCKohy4b/l29RLzYvQuJh+KdyG91BzdgMmundTWH?=
- =?us-ascii?Q?jHXZ9o3LH7wJnBPYiwoY7/rbGWuBuRyVxVjduotI0q9cO7nlpg0W9nJq07Iq?=
- =?us-ascii?Q?0Qqd2xkjO2cSGe+OzKkh9gCVi0jRT2zoUttJfMhPGkn6APSi2wmOcJTlcUkx?=
- =?us-ascii?Q?psYVoJuZsgu1gxH5f6tRdLZQZ1nqOlW9m2z7eW15deZl91A3NCJ9Oc3fL+q/?=
- =?us-ascii?Q?Gkl1OhfmxgY5MaqtlTVCWdxBCWy1QJlVJm7HTnsq/RgVnM163ZMryD+a/WPE?=
- =?us-ascii?Q?SbbCHfp6d31JtRG6/YQq9D8ygSOSjYFrP0ICeBAVLmPyCfgUylz/ghGk3mf5?=
- =?us-ascii?Q?MjGeM/VgBst9atOIlwMqwA5i0TmJWl8+0fo8iJaAgEvA0mvlzGqjtB2jz44+?=
- =?us-ascii?Q?CgC6SHIRt6+Vf8iFy1G6C309r8h8Uvz1BhEGZv9HsoHm242I4jfhie6i9Y3A?=
- =?us-ascii?Q?HZi9KCuc++IwQJ0JWi7S+6s0cOGDUnu5LtUOPGtAu1QvPD7pflIIlX6NcCBC?=
- =?us-ascii?Q?3mnHGLHqHk7ygLQ5t0DZ78X87HA7MfOk7EE65UMQnGS5Ovg4LdO3q6zNzGM3?=
- =?us-ascii?Q?JfM0nE7bXMGf+hpY4xmL2XlR6pX2Cqo9XTRQVUkU7QuT+E8swAbexVxmczRC?=
- =?us-ascii?Q?29IIIa2NIfEt1trOvxKWIZjsZLNr18kiR9is5AefYwJj2Kmb57XEuAzA+OPF?=
- =?us-ascii?Q?psjb1Cs+b6SnYQHgstv79Zq2oMPFkolf4v+6/zEe8Ri/XyRMEGj6sIqAuEvV?=
- =?us-ascii?Q?5ejE9kPE2ONYH0VeJiUbP9DIYqiVT1uHNrEhlJ3owz5HQv1S5l7cICPxoQPl?=
- =?us-ascii?Q?JYKvo08ARuJ2iNFh6IBXa8XH7w5RP1WKunmG/HU722gFzmlwZ5KP1RTcpWSK?=
- =?us-ascii?Q?9buL25JpnS9aVIrCPGRp/R6pLUlHqrXRW6ojXIEhaGYBl15edcLG43zc0688?=
- =?us-ascii?Q?N7Cl7bZ1ycIJDql2cos1Tsu4uQBUOsLq8HRax/aN+Kt9HE+7f+32pwMzJHUG?=
- =?us-ascii?Q?bAc2fAe0YubAZJ+dlBTMKkrluGXvPyqtVAKgABR68TDnTQCRUgKVWAVID2Fh?=
- =?us-ascii?Q?BbVLPXcfBAFHDD2oE+4wVcTlBXsCD5eBuFScQ3ZhcVjvryHhiQbdzJWLBHpA?=
- =?us-ascii?Q?22kg4jFchHH/UXKA3iCUG752W84H7XB96JtUV4t9?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	Qkn+SrykPh09H1q2XT6ghyvfT3HIDKDqs+Y8GkXJoolOCv9kn+hGYWzUVPOZZNR4qLOh/Cj0UtSL4Da/eccApfixiUkGUwnQHIkOVqKmX041kbFlvsyWuMLhE6jIt/z/bcsusNjiC3uZnGFnqBDnZ3EBhcmvLndmRhuMe3IQIRMgk1jBt5Zv4l9Vg6DroM3dIVaGsl25RhYS9rVGOiWsxckjgZup+nAnRws79kxn8j6xlEqWaspspaE1VuvEOjX2nPeMRzXsq+tQ5cJ5YxvUC0Knu9HtFd8D2d2DOul6lrbb/b323O5Wq9oC1fcCHOTzI6JdrDuagXb6nEOYEY/GeuELP2d7PpYpTUiKt1EuemfW6gjM5yrDN1HX8W8cbAyZQIYPO5FTEFzsYXR1OZwZLpFLDvIS0+NV/byVVW6iJ7D/Gw3LFBbtWH1EcPGgiFcI8v3IO9Xv1KxcXLOknATwKQ2h/ZIk2XFhNuzR/yAH0Q4QL6geCiOpqD+dbqAys/BRVECT/t9T2iJzHqeOQCYSUcwJhOEJ3Rx8b13S8VW5QlHQxkTHiXm1km8+9ROf5Nv5y5nuni6eLMuaD8dFbG3JoWmndvpoyDKuQYlmtwQptz4=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d8801c7e-7e44-41db-718e-08de15506fd1
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 12:00:35.3015
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: lpfJLC3GRbrWJSi5go2UhD2N1xZNm6/2SAHITxfoVpAfl5g8TLSXEp2PuR8Gt0jCTVXeqvGhxF8B66uuEr3JIA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW5PR10MB5737
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_05,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 spamscore=0 adultscore=0
- phishscore=0 bulkscore=0 mlxscore=0 mlxlogscore=999 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510270111
-X-Authority-Analysis: v=2.4 cv=Bt2QAIX5 c=1 sm=1 tr=0 ts=68ff5ee9 b=1 cx=c_pps
- a=e1sVV491RgrpLwSTMOnk8w==:117 a=e1sVV491RgrpLwSTMOnk8w==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=x6icFKpwvdMA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8
- a=yPCof4ZbAAAA:8 a=60bAUpEqyJ0hnt3RZ0MA:9 cc=ntf awl=host:13624
-X-Proofpoint-GUID: YOXAiuxnodo4cZmxgGIDBMe7HzYiy_Os
-X-Proofpoint-ORIG-GUID: YOXAiuxnodo4cZmxgGIDBMe7HzYiy_Os
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA1NCBTYWx0ZWRfX2gaPL8uCKjWD
- +t//X9Cdr4KWUwQxozYWEKg663nZLaS48Y4XQB31XMo8cerJP04eJJs8UAZOEQEg1IOdCLXsvTG
- xaZeVx2FKHSLj78p7jRGSyWPGUTY+zXZC4QKjV3bkUaCKvrnlHCinmQfyfMhiXcKIJE/P1rkzeb
- jfyXldKR3bj8V/06PiBPFIGc7kGzsPd+nk5qZNX5ATZDWIfXM0ep+Kj07V3pEGS8HcMyQLJ9L56
- 4WVqp6QsBEEKyfqe4cT5nhDfaD/zkCR2xCxNRjiBoTicT26nEFTW1ww6RFgIYMu4+XQAWh8BUjr
- jIJWzy8ZzvJ89RXF8OgFRF8HuUVDIYf8Y7t/80EDzKrzlA0Vz2/VW+bqyPYkzQ51gEorBqWnsKA
- LCIjIZHWs+oftyswW8YGY7l14gwjgA5VDuYetJtpq13eaeVlJUs=
-X-Rspamd-Server: rspam05
-X-Stat-Signature: o6em5984uho69wnjmgogf9k5socyjtpw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ohro5jq8m11qbfawesmxf3zryu5br6su
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8D0EFA0019
-X-HE-Tag: 1761566452-978883
-X-HE-Meta: U2FsdGVkX1+JIwKpanGclV2jmXUJ/PNsJOAxRQG2TOjkVP+m0DeFMCGAzLxOmIr2zpnvd6PqAN5DDZ+3MV2pNzXovKB8erqoH6fl0XrNh/N58XL26uOHBvtAiVCE1QtOpBFhCpCpUocpYHU0otoiFQUJmi/DNp4cGoH86Z7o8ICLgVq8JZla3lSk5mq4P0LaAurkbl3l3yhR/EZMFIRjbGUg/KvK2CQ2xNtQrHQNh6efk4HB3E2cTcMZYAM4Vj6e5MN0FVGr/6s2QEOjD1127cx+LeZo5dV7vKBNGghXtlfcR5K48XAGFI12eFtLdceDhLVxwg6SpKHYBM4N3P2xw6PNk32NKwsaFRIcLlbcX/8MGCC6Bwpn+zbPVZCkqljNCRABbDi6JeoEYhjT6hDAXf0/saPhyRShCX+CQvPDm2wFNopu8npBF2xy6LA67bV3S46+Tc+m9Ib2tPZMwg0QUCl+w1ZlLKMjbzyJkyMPTzioHbr8ZChkZ42OQ1fnQufjN7XpRU0OMdz9ER1SQKniF4ec+bORsHynTFsWNatu2AjaEI6dr+8pV8PS0syY86fgQClM9UjecHlUfey39O4R/F5TjObiVl8misy/4cQxIaotcUg3n0le1Kol+RzxHD57hzc9uYgZfEwdQzw3JtaqGayAB+MUbkjK3eDShdwo+NKT6VPP8MdhtxYz7Zpa9NSiqHuYMIFWscvH7vTifCXpLq1vsK3Fg0njte8d6imSy4Bl70U8s/JLkS466OspricbyM6RRtM1+JIyb7WufEfL85RHFO+SobnVXM5vVkMrN+H5oV348QbZ5Uxk6w2SoI3Fzj499ynE+GXsyZzMN7vkFLtSoT0ibikqWfL+3yAf4yhz5+32gtC9hITJWqrP6dJPM1qdNDoa72Cnt5WR18XQ/1Z2Gh/tQ7c7mpZZ2wWmc3QrtoebIKUnbyvib9bl0LgK7bYopls7XjdUAhCY9OS
- qrZTspba
- eGIy8zcKmk/2xBsWRcVKLJpmCgydkb1+/2QNvjqfMbaaDUKBcqKeuNhl1pq7qyiUDosWRK8RIIrdXYuUmIfGilUEMgeIpmphsnJGtDul0LoLmAkNTRER9k1AeX68LVMQ/tco1DaaOI59VmeUiiVd7thIloXBAzu2dFFm7JVACVEAlGrrkSf/O+q6bM4Og1TlinjuXa0OfuTA9d0CDV9VHKBZ8aAHukWwfLggFBV7swIQoOtwYAFmtSYKH9Gt2XglF7fVefSAtdFaeqjlw9OlhKGyPSn4aIvY0IPBBfN+dow90AKYNop96ocOSv/GQdvFhBFoiECz4zPuhPgHFwqCVSqt3tGrsvuFkbtynHmaO6Wt4Zyl4MLg6BJb8D6TumqwQpN7ilUOBIZam49tYwFU89YRvJEWFSh75cnMl3rKgKwjRx76CfQgw2mmUcsoLBCkWHaLKD3q4pdg2B3XYJ9OZDaRd29GMdSUO5kcQxj4LYA2I8b7LqPp8ycnwwuC0srhWAj4YYpOn4Udk4G6ruA4C4ULzvK35pxnRBRb8Drqe49wwirqwVF03MX5CL3xR99yfjk1fa/9jJKTQf3n6RrUf13TQ0Po/LrSo3D50EcZFawXup7BgC/u1xW/cs20sw5SD0pkkmHrvCRSiYtr2fCohdhtt7iTXFZs+n0tGmIh5PGk42qDqG8PwqYBwsaG+4H4WNDKQvHlmz3eLZiMKyU7f69lFQKe5WdhxIhQ5oCnFv+qAol8zdCnlG2p0IWZ4sWhXOfFq
+X-Rspamd-Queue-Id: 43DFC40004
+X-HE-Tag: 1761566840-962158
+X-HE-Meta: U2FsdGVkX1/WS+74AEPTnAaPEhmtcD3yxcC3MhC/25kBbM2OeBqfIFbz7k8ecat17I2Logf4t9TYN2XzgjYr3PBmMa61nerREgxNsooa54RPFvxf/QEwVDyA5qqdmgNCU61oa8kn9+eelE69EGqo/tPRxNVeBtNhN8oyeQryJ1m7Q26Ts33C3z5wPh8Vsyo0aLmPPlnq9wRIa7uHbcqEk0AXX1yMeu982fr4J98L++1p4IXGQ93kqR/PDQYcbEXwiCKzykTRiGxHZIF4QfbCvx/i5R71ax7+5OovBhQpDA8Mi2EWxhy0mYaC3lQpBCVlL11lumStkMA7fuBW6MZIyVv2tRz5MKphlNWrEy4gV0mTKYbShd4ln435+Bpj5C6yKgzbBaMWigJrvxaYIODIQ4kF2Rx3TVRWv6g55+7pZiErXDR78IBdGNvAl2xC27uLnS8t2y8G8d5kowfWTD2a3hIA55q5UMleLOzHbsGrMMwbqq5regb7RlAScuG+Kvx0eUPjfDh1um/nIrbGKs6mBY5FXa4eTF9NEIXCD3d6IMfxnsZXgq6uCqSqc5z0hdvU5E0Eg2iYfeBYXw9vsddQO1MottnR/ObmISxPybfYoHSg/dXUrAAGCBL04foSR7hjELAgqgd257ddjOh94n/Ew+YTAvs3ng78OpGbB/YX1UqicHRhMW/J/ynWMEwtYv/wsa8IrMJOxljt1R1yZ6gVuOP6UOxdL98N1Ym3H9bC/EGo6RIc7O6RnRhUIMxVeEchYxrh8K0i7SfZeZNz8oWuv+anDsNRrPem5MA93g1Tj4dcX6CkdGP9wemWRLAWOSpeMsMJIN4mRxze4dA6nYXSHAyrFJhxIqgpyQeFkY6oIBc8y8uBvyK9QWUseHEmxFEpdwoVK/QETCVYKO/9Ny/UcwIdaodNaFjqRFvMuP/+UTRNqPnVTejLGBOQJjA6ZGCFvC8oieKHMUPLewHbLL1
+ kt00WoUH
+ MBMbyc4NgIlL52Qo10ozBf4fn4APRx6N33bLff0OX9TGmKCC4jKzBFpZ5SJcxvc8rXvKuriZ4M2QiIUPxdYE1+CydBqbj+1V84yv/ApZAsxqCj7Ajfl1i11tV35MrMu3SHYu89Eam/xjMm2pwaBgGqKbgb+6yJUkxT+sxNoHc4SorJMGX31DNSrtk3Aqy+P/NHtzPf9O8Vrk8kd9oypxSCA0hpo+l1Q7yROnI8nTBN/7/zNtjsFLTpLU8IndpQzaKWIHzwOfOsTax5avQI3UdD0Ldr0Bl7BlvjtCIYP7/ONVVM0ddFYedwKUX/pSQCKz5iSYVK/Tbf/fBreh4Zfq6IqIf0nhxMFQzSfczyKw1639Q4l0g0+c7bK2+gDq+2Zy+DjnrKkHp8UOb09dg9BnF8HXEqw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -238,119 +140,407 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the SLAB_STORE_USER debug flag is used, any metadata placed after
-the original kmalloc request size (orig_size) is not properly aligned
-on 64-bit architectures because its type is unsigned int. When both KASAN
-and SLAB_STORE_USER are enabled, kasan_alloc_meta is misaligned.
+On Thu, Aug 21, 2025 at 07:34:58PM +0200, Bernd Edlinger wrote:
 
-Note that 64-bit architectures without HAVE_EFFICIENT_UNALIGNED_ACCESS
-are assumed to require 64-bit accesses to be 64-bit aligned.
-See HAVE_64BIT_ALIGNED_ACCESS and commit adab66b71abf ("Revert:
-"ring-buffer: Remove HAVE_64BIT_ALIGNED_ACCESS"") for more details.
+> The solution is to detect this situation and allow
+> ptrace_attach to continue by temporarily releasing the
+> cred_guard_mutex, while de_thread() is still waiting for
+> traced zombies to be eventually released by the tracer.
+> In the case of the thread group leader we only have to wait
+> for the thread to become a zombie, which may also need
+> co-operation from the tracer due to PTRACE_O_TRACEEXIT.
+> 
+> When a tracer wants to ptrace_attach a task that already
+> is in execve, we simply retry the ptrace_may_access
+> check while temporarily installing the new credentials
+> and dumpability which are about to be used after execve
+> completes.  If the ptrace_attach happens on a thread that
+> is a sibling-thread of the thread doing execve, it is
+> sufficient to check against the old credentials, as this
+> thread will be waited for, before the new credentials are
+> installed.
+> 
+> Other threads die quickly since the cred_guard_mutex is
+> released, but a deadly signal is already pending.  In case
+> the mutex_lock_killable misses the signal, the non-zero
+> current->signal->exec_bprm makes sure they release the
+> mutex immediately and return with -ERESTARTNOINTR.
 
-Because not all architectures support unaligned memory accesses,
-ensure that all metadata (track, orig_size, kasan_{alloc,free}_meta)
-in a slab object are word-aligned. struct track, kasan_{alloc,free}_meta
-are aligned by adding __aligned(__alignof__(unsigned long)).
 
-For orig_size, use ALIGN(sizeof(unsigned int), sizeof(unsigned long)) to
-make clear that its size remains unsigned int but it must be aligned to
-a word boundary. On 64-bit architectures, this reserves 8 bytes for
-orig_size, which is acceptable since kmalloc's original request size
-tracking is intended for debugging rather than production use.
 
-Cc: stable@vger.kernel.org
-Fixes: 6edf2576a6cc ("mm/slub: enable debugging memory wasting of kmalloc")
-Acked-by: Andrey Konovalov <andreyknvl@gmail.com>
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
----
+> diff --git a/fs/exec.c b/fs/exec.c
+> index 2a1e5e4042a1..31c6ceaa5f69 100644
+> --- a/fs/exec.c
+> +++ b/fs/exec.c
+> @@ -905,11 +905,13 @@ static int exec_mmap(struct mm_struct *mm)
+>  	return 0;
+>  }
+>  
+> -static int de_thread(struct task_struct *tsk)
+> +static int de_thread(struct task_struct *tsk, struct linux_binprm *bprm)
+>  {
+>  	struct signal_struct *sig = tsk->signal;
+>  	struct sighand_struct *oldsighand = tsk->sighand;
+>  	spinlock_t *lock = &oldsighand->siglock;
+> +	struct task_struct *t;
+> +	bool unsafe_execve_in_progress = false;
+>  
+>  	if (thread_group_empty(tsk))
+>  		goto no_thread_group;
+> @@ -932,6 +934,19 @@ static int de_thread(struct task_struct *tsk)
+>  	if (!thread_group_leader(tsk))
+>  		sig->notify_count--;
+>  
+> +	for_other_threads(tsk, t) {
+> +		if (unlikely(t->ptrace)
+> +		    && (t != tsk->group_leader || !t->exit_state))
 
-v1 -> v2:
-- Added Andrey's Acked-by.
-- Added references to HAVE_64BIT_ALIGNED_ACCESS and the commit that
-  resurrected it.
-- Used __alignof__() instead of sizeof(), as suggested by Pedro (off-list).
-  Note: either __alignof__ or sizeof() produces the exactly same mm/slub.o
-  files, so there's no functional difference.
+&& goes at the end of the previous line
 
-Thanks!
+> +			unsafe_execve_in_progress = true;
+> +	}
+> +
+> +	if (unlikely(unsafe_execve_in_progress)) {
+> +		spin_unlock_irq(lock);
+> +		sig->exec_bprm = bprm;
+> +		mutex_unlock(&sig->cred_guard_mutex);
+> +		spin_lock_irq(lock);
 
- mm/kasan/kasan.h |  4 ++--
- mm/slub.c        | 16 +++++++++++-----
- 2 files changed, 13 insertions(+), 7 deletions(-)
+I'm not clear why we need to drop and re-acquire siglock here.
 
-diff --git a/mm/kasan/kasan.h b/mm/kasan/kasan.h
-index 129178be5e64..b86b6e9f456a 100644
---- a/mm/kasan/kasan.h
-+++ b/mm/kasan/kasan.h
-@@ -265,7 +265,7 @@ struct kasan_alloc_meta {
- 	struct kasan_track alloc_track;
- 	/* Free track is stored in kasan_free_meta. */
- 	depot_stack_handle_t aux_stack[2];
--};
-+} __aligned(__alignof__(unsigned long));
- 
- struct qlist_node {
- 	struct qlist_node *next;
-@@ -289,7 +289,7 @@ struct qlist_node {
- struct kasan_free_meta {
- 	struct qlist_node quarantine_link;
- 	struct kasan_track free_track;
--};
-+} __aligned(__alignof__(unsigned long));
- 
- #endif /* CONFIG_KASAN_GENERIC */
- 
-diff --git a/mm/slub.c b/mm/slub.c
-index a585d0ac45d4..462a39d57b3a 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -344,7 +344,7 @@ struct track {
- 	int cpu;		/* Was running on cpu */
- 	int pid;		/* Pid context */
- 	unsigned long when;	/* When did the operation occur */
--};
-+} __aligned(__alignof__(unsigned long));
- 
- enum track_item { TRACK_ALLOC, TRACK_FREE };
- 
-@@ -1196,7 +1196,7 @@ static void print_trailer(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 	if (slub_debug_orig_size(s))
--		off += sizeof(unsigned int);
-+		off += ALIGN(sizeof(unsigned int), __alignof__(unsigned long));
- 
- 	off += kasan_metadata_size(s, false);
- 
-@@ -1392,7 +1392,8 @@ static int check_pad_bytes(struct kmem_cache *s, struct slab *slab, u8 *p)
- 		off += 2 * sizeof(struct track);
- 
- 		if (s->flags & SLAB_KMALLOC)
--			off += sizeof(unsigned int);
-+			off += ALIGN(sizeof(unsigned int),
-+				     __alignof__(unsigned long));
- 	}
- 
- 	off += kasan_metadata_size(s, false);
-@@ -7820,9 +7821,14 @@ static int calculate_sizes(struct kmem_cache_args *args, struct kmem_cache *s)
- 		 */
- 		size += 2 * sizeof(struct track);
- 
--		/* Save the original kmalloc request size */
-+		/*
-+		 * Save the original kmalloc request size.
-+		 * Although the request size is an unsigned int,
-+		 * make sure that is aligned to word boundary.
-+		 */
- 		if (flags & SLAB_KMALLOC)
--			size += sizeof(unsigned int);
-+			size += ALIGN(sizeof(unsigned int),
-+				      __alignof__(unsigned long));
- 	}
- #endif
- 
--- 
-2.43.0
+And I would like a very large comment here explaining why it is safe to
+drop cred_guard_mutex here.
 
+> +	}
+> +
+>  	while (sig->notify_count) {
+>  		__set_current_state(TASK_KILLABLE);
+>  		spin_unlock_irq(lock);
+> @@ -1021,6 +1036,11 @@ static int de_thread(struct task_struct *tsk)
+>  		release_task(leader);
+>  	}
+>  
+> +	if (unlikely(unsafe_execve_in_progress)) {
+> +		mutex_lock(&sig->cred_guard_mutex);
+> +		sig->exec_bprm = NULL;
+> +	}
+> +
+>  	sig->group_exec_task = NULL;
+>  	sig->notify_count = 0;
+>  
+> @@ -1032,6 +1052,11 @@ static int de_thread(struct task_struct *tsk)
+>  	return 0;
+>  
+>  killed:
+> +	if (unlikely(unsafe_execve_in_progress)) {
+> +		mutex_lock(&sig->cred_guard_mutex);
+> +		sig->exec_bprm = NULL;
+> +	}
+> +
+>  	/* protects against exit_notify() and __exit_signal() */
+>  	read_lock(&tasklist_lock);
+>  	sig->group_exec_task = NULL;
+> @@ -1114,13 +1139,31 @@ int begin_new_exec(struct linux_binprm * bprm)
+>  	 */
+>  	trace_sched_prepare_exec(current, bprm);
+>  
+> +	/* If the binary is not readable then enforce mm->dumpable=0 */
+> +	would_dump(bprm, bprm->file);
+> +	if (bprm->have_execfd)
+> +		would_dump(bprm, bprm->executable);
+> +
+> +	/*
+> +	 * Figure out dumpability. Note that this checking only of current
+> +	 * is wrong, but userspace depends on it. This should be testing
+> +	 * bprm->secureexec instead.
+> +	 */
+> +	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
+> +	    is_dumpability_changed(current_cred(), bprm->cred) ||
+> +	    !(uid_eq(current_euid(), current_uid()) &&
+> +	      gid_eq(current_egid(), current_gid())))
+> +		set_dumpable(bprm->mm, suid_dumpable);
+> +	else
+> +		set_dumpable(bprm->mm, SUID_DUMP_USER);
+> +
+
+I feel like moving this dumpable stuff around could be a separate patch.
+Which can explain how that is correct and why it is needed and all that.
+
+>  	/*
+>  	 * Ensure all future errors are fatal.
+>  	 */
+>  	bprm->point_of_no_return = true;
+>  
+>  	/* Make this the only thread in the thread group */
+> -	retval = de_thread(me);
+> +	retval = de_thread(me, bprm);
+>  	if (retval)
+>  		goto out;
+>  	/* see the comment in check_unsafe_exec() */
+> @@ -1144,11 +1187,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+>  	if (retval)
+>  		goto out;
+>  
+> -	/* If the binary is not readable then enforce mm->dumpable=0 */
+> -	would_dump(bprm, bprm->file);
+> -	if (bprm->have_execfd)
+> -		would_dump(bprm, bprm->executable);
+> -
+>  	/*
+>  	 * Release all of the old mmap stuff
+>  	 */
+> @@ -1210,18 +1248,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+>  
+>  	me->sas_ss_sp = me->sas_ss_size = 0;
+>  
+> -	/*
+> -	 * Figure out dumpability. Note that this checking only of current
+> -	 * is wrong, but userspace depends on it. This should be testing
+> -	 * bprm->secureexec instead.
+> -	 */
+> -	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
+> -	    !(uid_eq(current_euid(), current_uid()) &&
+> -	      gid_eq(current_egid(), current_gid())))
+> -		set_dumpable(current->mm, suid_dumpable);
+> -	else
+> -		set_dumpable(current->mm, SUID_DUMP_USER);
+> -
+>  	perf_event_exec();
+>  
+>  	/*
+> @@ -1361,6 +1387,11 @@ static int prepare_bprm_creds(struct linux_binprm *bprm)
+>  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+>  		return -ERESTARTNOINTR;
+>  
+> +	if (unlikely(current->signal->exec_bprm)) {
+> +		mutex_unlock(&current->signal->cred_guard_mutex);
+> +		return -ERESTARTNOINTR;
+> +	}
+
+#1
+
+> +
+>  	bprm->cred = prepare_exec_creds();
+>  	if (likely(bprm->cred))
+>  		return 0;
+> diff --git a/fs/proc/base.c b/fs/proc/base.c
+> index 62d35631ba8c..e5bcf812cee0 100644
+> --- a/fs/proc/base.c
+> +++ b/fs/proc/base.c
+> @@ -2838,6 +2838,12 @@ static ssize_t proc_pid_attr_write(struct file * file, const char __user * buf,
+>  	if (rv < 0)
+>  		goto out_free;
+>  
+
+Comment explaining why this needs checking goes here.
+
+> +	if (unlikely(current->signal->exec_bprm)) {
+> +		mutex_unlock(&current->signal->cred_guard_mutex);
+> +		rv = -ERESTARTNOINTR;
+> +		goto out_free;
+> +	}
+> +
+>  	rv = security_setprocattr(PROC_I(inode)->op.lsmid,
+>  				  file->f_path.dentry->d_name.name, page,
+>  				  count);
+> diff --git a/include/linux/cred.h b/include/linux/cred.h
+> index a102a10f833f..fb0361911489 100644
+> --- a/include/linux/cred.h
+> +++ b/include/linux/cred.h
+> @@ -153,6 +153,7 @@ extern const struct cred *get_task_cred(struct task_struct *);
+>  extern struct cred *cred_alloc_blank(void);
+>  extern struct cred *prepare_creds(void);
+>  extern struct cred *prepare_exec_creds(void);
+> +extern bool is_dumpability_changed(const struct cred *, const struct cred *);
+>  extern int commit_creds(struct cred *);
+>  extern void abort_creds(struct cred *);
+>  extern struct cred *prepare_kernel_cred(struct task_struct *);
+> diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+> index 1ef1edbaaf79..3c47d8b55863 100644
+> --- a/include/linux/sched/signal.h
+> +++ b/include/linux/sched/signal.h
+> @@ -237,9 +237,27 @@ struct signal_struct {
+>  	struct mm_struct *oom_mm;	/* recorded mm when the thread group got
+>  					 * killed by the oom killer */
+>  
+> +	struct linux_binprm *exec_bprm;	/* Used to check ptrace_may_access
+> +					 * against new credentials while
+> +					 * de_thread is waiting for other
+> +					 * traced threads to terminate.
+> +					 * Set while de_thread is executing.
+> +					 * The cred_guard_mutex is released
+> +					 * after de_thread() has called
+> +					 * zap_other_threads(), therefore
+> +					 * a fatal signal is guaranteed to be
+> +					 * already pending in the unlikely
+> +					 * event, that
+> +					 * current->signal->exec_bprm happens
+> +					 * to be non-zero after the
+> +					 * cred_guard_mutex was acquired.
+> +					 */
+> +
+>  	struct mutex cred_guard_mutex;	/* guard against foreign influences on
+>  					 * credential calculations
+>  					 * (notably. ptrace)
+> +					 * Held while execve runs, except when
+> +					 * a sibling thread is being traced.
+>  					 * Deprecated do not use in new code.
+>  					 * Use exec_update_lock instead.
+>  					 */
+> diff --git a/kernel/cred.c b/kernel/cred.c
+> index 9676965c0981..0b2822c762df 100644
+> --- a/kernel/cred.c
+> +++ b/kernel/cred.c
+> @@ -375,6 +375,30 @@ static bool cred_cap_issubset(const struct cred *set, const struct cred *subset)
+>  	return false;
+>  }
+>  
+> +/**
+> + * is_dumpability_changed - Will changing creds affect dumpability?
+> + * @old: The old credentials.
+> + * @new: The new credentials.
+> + *
+> + * If the @new credentials have no elevated privileges compared to the
+> + * @old credentials, the task may remain dumpable.  Otherwise we have
+> + * to mark the task as undumpable to avoid information leaks from higher
+> + * to lower privilege domains.
+> + *
+> + * Return: True if the task will become undumpable.
+> + */
+> +bool is_dumpability_changed(const struct cred *old, const struct cred *new)
+> +{
+> +	if (!uid_eq(old->euid, new->euid) ||
+> +	    !gid_eq(old->egid, new->egid) ||
+> +	    !uid_eq(old->fsuid, new->fsuid) ||
+> +	    !gid_eq(old->fsgid, new->fsgid) ||
+> +	    !cred_cap_issubset(old, new))
+> +		return true;
+> +
+> +	return false;
+> +}
+> +
+>  /**
+>   * commit_creds - Install new credentials upon the current task
+>   * @new: The credentials to be assigned
+> @@ -403,11 +427,7 @@ int commit_creds(struct cred *new)
+>  	get_cred(new); /* we will require a ref for the subj creds too */
+>  
+>  	/* dumpability changes */
+> -	if (!uid_eq(old->euid, new->euid) ||
+> -	    !gid_eq(old->egid, new->egid) ||
+> -	    !uid_eq(old->fsuid, new->fsuid) ||
+> -	    !gid_eq(old->fsgid, new->fsgid) ||
+> -	    !cred_cap_issubset(old, new)) {
+> +	if (is_dumpability_changed(old, new)) {
+>  		if (task->mm)
+>  			set_dumpable(task->mm, suid_dumpable);
+>  		task->pdeath_signal = 0;
+> diff --git a/kernel/ptrace.c b/kernel/ptrace.c
+> index 75a84efad40f..230298817dbf 100644
+> --- a/kernel/ptrace.c
+> +++ b/kernel/ptrace.c
+> @@ -20,6 +20,7 @@
+>  #include <linux/pagemap.h>
+>  #include <linux/ptrace.h>
+>  #include <linux/security.h>
+> +#include <linux/binfmts.h>
+>  #include <linux/signal.h>
+>  #include <linux/uio.h>
+>  #include <linux/audit.h>
+> @@ -453,6 +454,28 @@ static int ptrace_attach(struct task_struct *task, long request,
+>  				return retval;
+>  		}
+>  
+> +		if (unlikely(task == task->signal->group_exec_task)) {
+> +			retval = down_write_killable(&task->signal->exec_update_lock);
+> +			if (retval)
+> +				return retval;
+
+This could be written like:
+
+			ACQUIRE(rwsem_write_kill, guard)(&task->signal->exec_update_lock);
+			retval = ACQUIRE_ERR(rwsem_write_kill, guard);
+			if (retval)
+				return retval;
+
+> +
+> +			scoped_guard (task_lock, task) {
+> +				struct linux_binprm *bprm = task->signal->exec_bprm;
+> +				const struct cred __rcu *old_cred = task->real_cred;
+> +				struct mm_struct *old_mm = task->mm;
+> +
+> +				rcu_assign_pointer(task->real_cred, bprm->cred);
+> +				task->mm = bprm->mm;
+> +				retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+> +				rcu_assign_pointer(task->real_cred, old_cred);
+> +				task->mm = old_mm;
+> +			}
+> +
+> +			up_write(&task->signal->exec_update_lock);
+
+And then this goes away ^
+
+> +			if (retval)
+> +				return retval;
+> +		}
+> +
+>  		scoped_guard (write_lock_irq, &tasklist_lock) {
+>  			if (unlikely(task->exit_state))
+>  				return -EPERM;
+> @@ -488,6 +511,14 @@ static int ptrace_traceme(void)
+>  {
+>  	int ret = -EPERM;
+>  
+
+This needs comments.
+
+> +	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+> +		return -ERESTARTNOINTR;
+> +
+> +	if (unlikely(current->signal->exec_bprm)) {
+> +		mutex_unlock(&current->signal->cred_guard_mutex);
+> +		return -ERESTARTNOINTR;
+> +	}
+
+#2
+
+> +
+>  	write_lock_irq(&tasklist_lock);
+>  	/* Are we already being traced? */
+>  	if (!current->ptrace) {
+> @@ -503,6 +534,7 @@ static int ptrace_traceme(void)
+>  		}
+>  	}
+>  	write_unlock_irq(&tasklist_lock);
+> +	mutex_unlock(&current->signal->cred_guard_mutex);
+>  
+>  	return ret;
+>  }
+> diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+> index 41aa761c7738..d61fc275235a 100644
+> --- a/kernel/seccomp.c
+> +++ b/kernel/seccomp.c
+> @@ -1994,9 +1994,15 @@ static long seccomp_set_mode_filter(unsigned int flags,
+>  	 * Make sure we cannot change seccomp or nnp state via TSYNC
+>  	 * while another thread is in the middle of calling exec.
+>  	 */
+> -	if (flags & SECCOMP_FILTER_FLAG_TSYNC &&
+> -	    mutex_lock_killable(&current->signal->cred_guard_mutex))
+> -		goto out_put_fd;
+> +	if (flags & SECCOMP_FILTER_FLAG_TSYNC) {
+> +		if (mutex_lock_killable(&current->signal->cred_guard_mutex))
+> +			goto out_put_fd;
+> +
+> +		if (unlikely(current->signal->exec_bprm)) {
+> +			mutex_unlock(&current->signal->cred_guard_mutex);
+> +			goto out_put_fd;
+> +		}
+
+#3, and after typing this same pattern 3 times, you didn't think it
+needed a helper function ?
+
+> +	}
+>  
+>  	spin_lock_irq(&current->sighand->siglock);
+>  
 
