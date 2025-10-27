@@ -4,80 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B16D0CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:13:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3766ACCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 09:14:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA14880029; Mon, 27 Oct 2025 05:13:09 -0400 (EDT)
+	id 928D08002A; Mon, 27 Oct 2025 05:14:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E51AC8000A; Mon, 27 Oct 2025 05:13:09 -0400 (EDT)
+	id 8D84F8000A; Mon, 27 Oct 2025 05:14:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D67E080029; Mon, 27 Oct 2025 05:13:09 -0400 (EDT)
+	id 7C6D68002A; Mon, 27 Oct 2025 05:14:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C332A8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:13:09 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 69B94B96DD
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:13:09 +0000 (UTC)
-X-FDA: 84043330098.11.86BA0F6
-Received: from cmccmta1.chinamobile.com (cmccmta2.chinamobile.com [111.22.67.135])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 2856F40008
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:13:05 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	spf=pass (imf12.hostedemail.com: domain of bajing@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=bajing@cmss.chinamobile.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 690CB8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 05:14:47 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F087B88682
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:14:46 +0000 (UTC)
+X-FDA: 84043334172.24.F0265E4
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0051140006
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:14:44 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="W pyy6kj";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l9/9wrY/";
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761556387;
+	s=arc-20220608; t=1761556485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=aKw82pXdMpn/ObwzjoSNfbo1FOc45dMx2bgNJuXIiEU=;
-	b=j/0DggDXvQB7U5IafbyEvVUHcL4TGVJVuVF7DPUenG4P6pN+yE9kE12dA8nGUzKv7nKJnK
-	3wskfhQ6uV9eUZBwyVAWspx1ytZ5gYSdQdnV3xjO4VS/+MEBCGUBx7mEtMYqJR8hrLQ2GJ
-	yRgHEioFY38M2vHjwVJVsxZUH6Ni1M0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	spf=pass (imf12.hostedemail.com: domain of bajing@cmss.chinamobile.com designates 111.22.67.135 as permitted sender) smtp.mailfrom=bajing@cmss.chinamobile.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761556387; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=ib3gQpzJ+dspAAgN4VDq9O7p0OnCeMLRAxqGQCUWjEk=;
+	b=bTsG2y9OKqHHiW1fGRKQJXi3EEdn3gSrJwdFpMaFy3Q31ZbftFFVGwZkuJsvLnxTYE7vpD
+	2drpWSe5E+8xMv4EWO8CuNGd/42O3wEfiNa0niJ77CznxFjlqzOi/ehUI+Tm9u3gtmpS3q
+	ZviT5ocrfJ3ZKPpwBF4g/AVqukHoSaU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761556485; a=rsa-sha256;
 	cv=none;
-	b=DcpQNSQdGjVLgTcTzk6xHjJNEeCQDy/H0RpwNEz56ok/Qb9AAEcMJk1fTH9GcNGqJ4Hppm
-	x5FpKfr6UYY6OhNKxSh6xt+Qpc9WvMMF3ctEUcP9xIlxkhVgPUNOe+ObWQQZmXKPgnYYkh
-	GOg4MYrBs/u7zmCEmfcfzUx8bIlnuSg=
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
-	by rmmx-syy-dmz-app03-12003 (RichMail) with SMTP id 2ee368ff379c6a4-19fb3;
-	Mon, 27 Oct 2025 17:13:03 +0800 (CST)
-X-RM-TRANSID:2ee368ff379c6a4-19fb3
-X-RM-TagInfo: emlType=0                                       
-X-RM-SPAM-FLAG:00000000
-Received:from FHA-W4100033 (unknown[36.137.216.17])
-	by rmsmtp-syy-appsvr08-12008 (RichMail) with SMTP id 2ee868ff37855ca-a4e75;
-	Mon, 27 Oct 2025 17:13:02 +0800 (CST)
-X-RM-TRANSID:2ee868ff37855ca-a4e75
-From: bajing <bajing@cmss.chinamobile.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	bajing <bajing@cmss.chinamobile.com>
-Subject: [PATCH] Fix the problem that kunit cannot run
-Date: Mon, 27 Oct 2025 17:12:30 +0800
-Message-ID: <20251027091231.1770-1-bajing@cmss.chinamobile.com>
-X-Mailer: git-send-email 2.50.1.windows.1
+	b=f7h2I4tLFq4kgkzo5ll2+SrZMcarAIW+KSqCOf2ElGBG0peC5fcehErmT6c2fjO0VK87or
+	Fym8G+nwCVhl2b1rw3vJV045ZEwNlVyTm87tUhdFOBnQXJ8o9B8FchvJ2kicx2AbST+gU6
+	0ciZxpGVKX3MrQ91KGXc/vu/OIr85/A=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="W pyy6kj";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="l9/9wrY/";
+	dmarc=none;
+	spf=pass (imf27.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.phl.internal (Postfix) with ESMTP id 3AE2E138037D;
+	Mon, 27 Oct 2025 05:14:44 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Mon, 27 Oct 2025 05:14:44 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1761556484; x=
+	1761563684; bh=ib3gQpzJ+dspAAgN4VDq9O7p0OnCeMLRAxqGQCUWjEk=; b=W
+	pyy6kjbYZIpMNvsn6u8lWrvAgvG7AlrJ2FU/9CxigvrmTZ31s77EK1xWt+PLSSXX
+	QI795DCVU/ll0ieqdqGhKVmVe+ZFD02N6xabxRowpwNWKX59XNkxTBp0XIHS7SLQ
+	jP9Zs/1SUUQS2NDNg26lWETO8ENCwc1HY5xDOIokF1rBYMrhdRG4T0WZVWKXsvxG
+	EC85Tx+VJTAKghTlJuIWVCja6NmFiGwFPqbqXuKfk1YfP9O0zuDRUl5KvNsj04Dw
+	0xn2N1UnFhSj4GqmtOLiYROQ5wnkX6vFwj0rZWxKhzKRyoptDdjXKXkwFLsc/ozx
+	1xquqnUs52ULyFer19YQw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1761556484; x=1761563684; bh=ib3gQpzJ+dspAAgN4VDq9O7p0OnCeMLRAxq
+	GQCUWjEk=; b=l9/9wrY/4m6ICv1BZWsV1B8U8iuzjGoDhnacN2D7lZlqMo3YGh6
+	0dxBonLjSShWUmMVrVZMhLjcvhw4dkmGxhrVtJc1+uQ359X1S4xikGK4/HBtFdwi
+	dtDxLd/nbT4qt7fmS5jOyVk63WracO8WKf6GHRW1wQdtdyEG2kbZARHvHpKsHSUb
+	NaCbOUvDPXBHZEbAqO0pKxtIJaeSWNQmCpDu47XRTFNWx+w3poZQpA3MaoV6pgCy
+	HkMp+V4C0hAXGi2k9kSDAQd6ZswsNvZnWeCt5j2FiobOurKIzAyw3/tixAEk6OGr
+	csIvaI2COCp+3qXuVNT62UMMgggyg+MJv0w==
+X-ME-Sender: <xms:Ajj_aLAd4AjVLn68RIa5dKxZOS2fwdx1RhoJznr51abL8fGa_wDFrA>
+    <xme:Ajj_aKnZykUeegM_rXiJusTi1rwrYye9zHzwpN3VKeCS4cHQviuoS4vXRAeZS_B2k
+    Ny0c0Z-F5w0TwxWxQX70akou3pmoUQy_W0s3fJ6PByUIY-EiLm7jds>
+X-ME-Received: <xmr:Ajj_aJiZWR8aRThPAADi3GInkvQkAazdCu378TuUW4GBMI-5fk539MdqzRDohA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejheekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhhughhhugesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtthhopeifih
+    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
+    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:Ajj_aK0F86OvsqKUuDmWYa16LQ3o-ZC5BZyx3yG0pFU_4B6j9XcVMg>
+    <xmx:Ajj_aNRduC-zzQpaZiuPIkIN9-XuLgLGvxnho_tK99J_X0MfH-I7kA>
+    <xmx:Ajj_aMbU23mxVz9IT9OZnusHvqvI8nnOss5kkS07yko1uufhkWArbw>
+    <xmx:Ajj_aK4xI3Sbk46VwdtUNMgal6bd9PnChr_3OyYCnYa5ST2NlI3eIQ>
+    <xmx:BDj_aGcNSJgQIduzTcOhuub8dUJubkX2r4cmqkFgLr8LLKpFmtr-r-3_>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 27 Oct 2025 05:14:41 -0400 (EDT)
+Date: Mon, 27 Oct 2025 09:14:39 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+Message-ID: <rn5mz62oyfxn4awnylebnsfwp7ixhe5mgvcmnjt3eydglzv5av@eshh4ipljc3l>
+References: <20251023093251.54146-1-kirill@shutemov.name>
+ <20251023093251.54146-2-kirill@shutemov.name>
+ <96102837-402d-c671-1b29-527f2b5361bf@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: egdg4e4uig71rpxmc79qz6y4j5m3poan
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <96102837-402d-c671-1b29-527f2b5361bf@google.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 2856F40008
-X-HE-Tag: 1761556385-599802
-X-HE-Meta: U2FsdGVkX19joSb84oDCZ7wGjoVRAysUzZRNeR5vJiB8PU2Kab2PCdkOlMQbzPdhd2zH3bgTS3WKE7tDwCE0cl2d8A4EsAk7oBrlPAezDJQTDyzd9LMF/c/87zxd5NhD5YlxQBjuFDMyaZg4qVp4EpGTtIfiPH2mRXj4FGjxxrC6xiRM9PCuUzGsK9pGZcmk4zeJ7j0tozlshyzM7F5yevp1OLK3jMMWd1oky+5op5bfilrRSO9YjW60BXtnyJjKXAPJ8rLLMXrJXpfF8qGbqooMw5ZBqK5h81vh9wGeaUjk66N0FttmMIEyw+JEYobdwdwdwkxY5PpL4Sh/Wk7wAyAgeJ9xKhRvnSCHRsE0b4L61/1h6bYZoQD+KSHng6HqgZ1YysOb8V9QmrF2mCQazz8hEFjVnQls/mLeJ8QktZGVM2KONWbNr8vWCDM+pXJvXoLwTojRseF68HXPm9Z4UoMyCZJ7/spCS9hHGnXTk2uy+Zn2hNIC3kpwx5hk9hflSmL95S1ECaSo8lCNaegLuvdXEUwuMjRMwxJagcCUeQ3zEyW5NTeyQsbmvCt7l9YAsgU600IzVULtR2OPuDave+MEpwMqSaap0O5B0+doa4YcICL9RmqTPUpmZsDPTOTy4cRzYF5h5fA8a2zHN3TOp0NMHthg4ICM6mtDcy6kkLbhcTu8XFm3Vz/v3BK4c2y57x0vegiUSgZN3788HC/VpLB9jmCLgQnnkMO1LRnCoieSzXR+xjUNedmgQqtRbNRuGhGyd6IaNHiXafpEETg6CsOU7QFEOVSCRQImEEJP7DkSggBt8ehAmXtx0se0Z1fh226MKu1X0aKg73UX/CTGjGQgPbI/g521w6qGmoz2ZOjDr5YPPsnwGdVyJ4e7f+wRgCVAG1arC0SDXWt7HYMe3r9+U34Llp9vfY3+7tXIQATo3nwfdN8F5+KcjPPlGV5e0D0IZc9LUqKu0Gs8r+J
- J9IhFi7l
- ohlnok7bJy0Ky0HvA4hFZXsxQRIM2teD3+EqkhdhnZOHm28K/c6+/WxubWQ==
+X-Rspamd-Queue-Id: 0051140006
+X-Rspamd-Server: rspam02
+X-Stat-Signature: toxkdh96mbum9ufthossdtn998w8udqc
+X-HE-Tag: 1761556484-656013
+X-HE-Meta: U2FsdGVkX1924EEl6JBvuxC+H0piYskaQBwq0edysLj5mYN7tt8tWINdD+Xdi9ar20gK7gSEXoYYyD0oLORuADEycjv93ePwbcXRT6oG/3MhH3g35lke2Gsyc7pxC7DkCnkCvfLToWY7sFwn4Ex1hc+pwaYfpm8LCRm6slIixkY5Hu1k/G17NA3JZUuC/kw6rnIbNFTahH1+CXaLZd5Z9zcW/RKTZ8ZnYzqkjf45lDazCQ53gmmg/2GHMIPRRJh0i9w04JzUFo0L+FBl2l21MTarld4o2CzYTX9QbhyUu895kFJgB69FTB6F6DV2kpAHakZlKJFArIOfA40V7gTt4D2BPocDGOwBTnuO/KML3W6zeYNT/uiEZ8eokBYu7Ja+aCCA0SRktYGggg67U8BckrLz2EMjO+UgnI0On2Z5iEWIMKzHf3wjfdoJZRidCP+oK9yaWN5huofaVK7GXa9C8GWQySrD3k8uw4l7QuWDwbSirKUeySlPK6yz2MoaO4iTy+4gMbrfsyh7x68kXGXfKHyW7CW5bKPhkl2d0w0lA3o3IsVWUw9P2RYBgIc90JWU42s+2Pr810ZziyU/1EawS2zd6sFh9E9FMI1o6QQD3bG50zHrBh61waqk1GL/4tB6waOYsty5F/Bm5BadsgmQ6y17YbeftMUcQuwyXAJFG870r1SVFbJ0pJ/rpSAXcEswbfuyVwuMT0Xfzvk0NClCzlNhUTqc1+9S3NAGwcVdwHXARjmsakRw8uCe2hsaSdzOfF9mAqDxApc0P8gvVkYytIde3TYQK993BwR/mPjoqq19O6flLOUFbsaN/GESa+iHJvijEnMY3smYvvsED6ch65RKJAwu3eE23l0Gx2EiGUjfPHOBKmm0Mwg2DMHkfn9h2ivfnVGL5uGAeKLDnPzOgSKgRcgVpkC0jv1yqkrKDobTNepYpxKQr2ELOyf5PiQSst/TXZxikPBw5uK9Q3X
+ +W/ycMSB
+ TUVm7Mh/MLs6b9WmPAp0N0qjOw+gXbGYwBzLtdFJ97oUP16ilS8doKEB5YRyDHVk66ZlG0XLO0P9dhgNY7n4RfyD05TCLIiLnlkml7zM9010PXCb8226P5jaPiJ4LmC3UR7gSE72f0E4goJu684GHNHaZ/5+PoKDwcEp3Py+LUvdrcy9ZnqVMpFR8ZjanX/r+w0ahkoE+Fstibis0voPZswp1fzwOeyxydU0xfGKhdj1v1XyeD8FKCBJ7CeUTRMnO/fJiYOlQgZEYPCDOTYTrCdEpavMSYynslKdtikuSbcsmZMJC4DzTF7+RtVBPI51TiAwWEf73GI7FePXb2/IP8ubqokYWJGt/bGH7nTa2mYTnyaBiCivMdaW/MNKTb6+xW1Sn2hO5t1LQe5NTC4QwqagqRy0k7AN8hch75AN+MQpAJSP4xiSUBO0eLZDKOdKcOJINVWmf41r6Zn3oY5VNi/vk9dRF4/xN3+oH4xCvJZ+IBTTqYSyklVoeb4X9l4H8WiixYazR4nygbeY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,52 +145,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When running ./tools/testing/kunit/kunit.py run,the error for mm/swap.h
-is as follows:
-ERROR:root:In file included from ../mm/shmem.c:43:
-../mm/swap.h: In function ‘non_swapcache_batch’:
-../mm/swap.h:66:19: error: implicit declaration of function ‘swp_offset’;
-did you mean ‘pud_offset’? [-Werror=implicit-function-declaration]
-   66 |  pgoff_t offset = swp_offset(entry);
-      |                   ^~~~~~~~~~
-      |                   pud_offset
-In file included from ../mm/shmem.c:68:
-../include/linux/swapops.h: At top level:
-../include/linux/swapops.h:107:23: error: conflicting types for ‘swp_offset’
-  107 | static inline pgoff_t swp_offset(swp_entry_t entry)
-      |                       ^~~~~~~~~~
-In file included from ../mm/shmem.c:43:
-../mm/swap.h:66:19: note: previous implicit declaration of ‘swp_offset’ was here
-   66 |  pgoff_t offset = swp_offset(entry);
-      |                   ^~~~~~~~~~
-cc1: some warnings being treated as errors
-make[4]: *** [../scripts/Makefile.build:243: mm/shmem.o] Error 1
-make[3]: *** [../scripts/Makefile.build:480: mm] Error 2
-make[3]: *** Waiting for unfinished jobs....
-make[2]: *** [/home/openeuler/kernel/Makefile:1924: .] Error 2
-make[1]: *** [/home/openeuler/kernel/Makefile:234: __sub-make] Error 2
-make: *** [Makefile:234: __sub-make] Error 2
+On Mon, Oct 27, 2025 at 01:20:42AM -0700, Hugh Dickins wrote:
+> On Thu, 23 Oct 2025, Kiryl Shutsemau wrote:
+> 
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> > 
+> > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+> > supposed to generate SIGBUS.
+> > 
+> > Recent changes attempted to fault in full folio where possible. They did
+> > not respect i_size, which led to populating PTEs beyond i_size and
+> > breaking SIGBUS semantics.
+> > 
+> > Darrick reported generic/749 breakage because of this.
+> > 
+> > However, the problem existed before the recent changes. With huge=always
+> > tmpfs, any write to a file leads to PMD-size allocation. Following the
+> > fault-in of the folio will install PMD mapping regardless of i_size.
+> > 
+> > Fix filemap_map_pages() and finish_fault() to not install:
+> >   - PTEs beyond i_size;
+> >   - PMD mappings across i_size;
+> 
+> Sorry for coming in late as usual, and complicating matters.
+> 
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+> > Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
+> 
+> ACK to restoring the correct POSIX behaviour to those filesystems
+> which are being given large folios beyond EOF transparently,
+> without any huge= mount option to permit it.
+> 
+> > Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
+> 
+> But NAK to regressing the intentional behaviour of huge=always
+> on shmem/tmpfs: the page size, whenever possible, is PMD-sized.  In
+> 6.18-rc huge=always is currently (thanks to Baolin) behaving correctly
+> again, as it had done for nine years: I insist we do not re-break it.
+> 
+> Andrew, please drop this version (and no need to worry about backports).
+> 
+> I'm guessing that yet another ugly shmem_file() or shmem_mapping()
+> exception should be good enough - I doubt you need to consider the
+> huge= option, just go by whether there is a huge folio already there -
+> though that would have an implication for the following patch.
+> 
+> (But what do I mean by "huge folio" above?  Do I mean large or do
+> I mean pmd_mappable?  It's the huge=always pmd_mappable folios I
+> care not to break, the mTHPy ones can be argued either way.)
 
-Signed-off-by: bajing <bajing@cmss.chinamobile.com>
----
- mm/swap.h | 1 +
- 1 file changed, 1 insertion(+)
+I assume you want the same exception for the second patch as well?
 
-diff --git a/mm/swap.h b/mm/swap.h
-index 26fa536a8947..04695e1af068 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -4,6 +4,7 @@
- 
- #ifdef CONFIG_SWAP
- #include <linux/blk_types.h> /* for bio_end_io_t */
-+#include <linux/swapops.h>
- 
- /* linux/mm/page_io.c */
- int sio_pool_init(void);
 -- 
-2.50.1.windows.1
-
-
-
+  Kiryl Shutsemau / Kirill A. Shutemov
 
