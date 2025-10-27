@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D370CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:23:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48544CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:23:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 706BC800BE; Mon, 27 Oct 2025 19:23:14 -0400 (EDT)
+	id A8917800BF; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6B6D48009B; Mon, 27 Oct 2025 19:23:14 -0400 (EDT)
+	id A3A0F8009B; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F425800BE; Mon, 27 Oct 2025 19:23:14 -0400 (EDT)
+	id 928E7800BF; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 517C08009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:23:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E2BB913A3DC
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:13 +0000 (UTC)
-X-FDA: 84045472266.02.1E3EF20
-Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 40CC01C000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:12 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lkPPVpm+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 816ED8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F25F1A029C
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:18 +0000 (UTC)
+X-FDA: 84045472476.09.793BC51
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 92E0540002
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:16 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E7E4LM8d;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607392;
+	s=arc-20220608; t=1761607396;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a2kGxV06HfpxcpPiUPTzmwiOkPAgJASkvhN4/4SyEC0=;
-	b=gv2a3Hi1NIqUPoVe77hQcMsxdQRZQt8zOmSV6yHfXuktOTgl8pieNa/xGfkrOR3RSTz1Yw
-	PR8cWHsGgDJvO74cAzj2r+uyaS81kChhzEcjh/VbaZbFwY30SXxJ664KF8YLPmfQH+zumM
-	sjLvebFx8t2clcR8jOzcQ9pK2cKyg8Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607392; a=rsa-sha256;
-	cv=none;
-	b=4jAfsdQOwUKZBUjZ8arbB18VOZS3EeU3fu/Hr51Ezzo01AtbElb42J3VMeGOvbACIfQqYg
-	LutO05KC8UX3nmR8UHmngnYRutu3do5VMTGK5lD2OQCcRD+0WP1Vk+g30XyZ5/vsAP6y7A
-	X/zfj41XaE9yTodzcDlvREPPjxvLW4E=
+	bh=zUole0fevJNTWH/QrfuoUDEj281F+dD7fcGUfbGb1V8=;
+	b=sAVKupFbygSNOCsAnfTa7pwa2hbSt68ttGb4I9ZjGZcX5eJF2/t6oSJwF7C/XfrRgs+MIL
+	K8qtuehYJNsuPEOBnTjCh/JjlbZ0EHUlv4Oj0Pjm3zVGAbbsgFzJs2vjct44ER194/sHZ3
+	WiJ7UQlSbnP/0JoJ/cElgV9YjsovUjs=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=lkPPVpm+;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=E7E4LM8d;
+	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607396; a=rsa-sha256;
+	cv=none;
+	b=Pvu4f40OS5vt9ys4MgBYW3CqH8vzJPrQh2JNNgVsuxEVOc5NFV17Pk4EIjndPEVXyqlc+e
+	0ODOkyg1KCzGh8zfkxCp3+8EAIlq6BcEA/tndRth2NllYKJu9yi2ZevJplp4UVjfcyImmp
+	RnhVP0DGQUBaDT/Nnzo4/rtiMEN4hT8=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607390;
+	t=1761607395;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a2kGxV06HfpxcpPiUPTzmwiOkPAgJASkvhN4/4SyEC0=;
-	b=lkPPVpm+fnPC+unyLNVdYESh1AWhGBETU6J5rz5lYfNm22BM8j6bPfNZmg02w4elxICR0n
-	S7H1oC2dJuR60zhzC0B9AEfHrBwhnVD0n10MQRTRVy7hXbK3vwU8LhRtK3YjmIdbu9Udvc
-	NT6/mKoIvYG4SIBTftkywZcMHKcY83Q=
+	bh=zUole0fevJNTWH/QrfuoUDEj281F+dD7fcGUfbGb1V8=;
+	b=E7E4LM8dJ/rehFz/AdqoNoWUiisJMzEZYiPcspGMTpSMJc+isYT5KpRiWBUtC5bvTBEnNk
+	13DwqOcebTOKCNjdutYBUn2zf223HSkRZ5HqzVB273/Zs6Rdy+/02MadYY8X6GmkTqxUzb
+	SEzFrJjrfveD/JJz9dwULbYzl65J9uY=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -75,23 +75,24 @@ Cc: linux-kernel@vger.kernel.org,
 	Martin KaFai Lau <martin.lau@kernel.org>,
 	Song Liu <song@kernel.org>,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH v2 22/23] bpf: selftests: add config for psi
-Date: Mon, 27 Oct 2025 16:22:05 -0700
-Message-ID: <20251027232206.473085-12-roman.gushchin@linux.dev>
+	Tejun Heo <tj@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>
+Subject: [PATCH v2 23/23] bpf: selftests: PSI struct ops test
+Date: Mon, 27 Oct 2025 16:22:06 -0700
+Message-ID: <20251027232206.473085-13-roman.gushchin@linux.dev>
 In-Reply-To: <20251027232206.473085-1-roman.gushchin@linux.dev>
 References: <20251027232206.473085-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 4gn11843skms4oswsor89zuij64hukc8
+X-Rspamd-Queue-Id: 92E0540002
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 40CC01C000A
-X-HE-Tag: 1761607392-868054
-X-HE-Meta: U2FsdGVkX193ylyNeyH6cgmh5XumHCmuxojz8IYmfbGRi3f6+gxblxvRtvq2J9HQc9MoZcotczlsZbFZdUhf7FGvJi9lGMfLxyimfW+mO7fTZX/zm+D7dXttrhaAjPPL1c5lWDzd8WPKHKhGuIDN7dIowjhC76lP7jnha2ONRZ7+x7K/1xRvrLuILp+AoWGkAPCERgsMRUDVrDRb3nTuvPEB5h+vLU0WC/C1P+NqVfXjp9+VKp0r7dhLVuHuEsl+acYarYqL5iLy4Ublb50APcb/8BUk6lBM1CLKVc9IvwYLa74Ihb0ju0mWnsgqCQGKitFN+1QAHxfKJgkYKnG/fB3iXrdCoyPf0DBe1cYnCKWfAsJ7v7nZUwx4OrFjQ55wNtDtFP8KsiQgVRo7BY9FptTsPYJimAbECXt9M71jppug7fvx51ValBuJCmUOGvYBaDUvV1qbtUsbTLg3adtWYpMgxjEfLpGK21JEkREI252+h6gBV4IQuK72zXMX/MRfn4flhuSiIOzEmVNmc58amUZ5mOth1OAyU3vnU3ZaPa73G4L8vDas7VjvECaYb2/mvNiIzaWWOkHc8EhYKr/IBYRmLiCM36vN/UKQmPJG/BtfC1Olve/efo7uZhFsKPTUomxB8lXwIhSB79zy30X5LGYwcsKy1XOTWOhfKBKTnpmyFR99tZe1I7PbFxfY6qVmFTdMLSf7/PAdxRvZkog1QAuGdRZl5q3hZnqflJb2Jed8lCtMS3ddgIwqPVD14RZOoXF93PYg06iP55LH64X07Bls4qn5iB4wXp/edeVAdQ9QgL1yGhXHmyD6DlLpTkvj+/Em1WOyxf+4D/Wz40mc5fn7Wmvvmm68kyBoxZocmDrqlVLSfvN5JFRAW2kKKqvsRkrX2csqLuhtycL8JV5cYjmJHmkNupJaHEdH/GloftMQm8t2ffbcLs7ukBVfLsz8Vmy/SJKvZZ1uU8d/vam
- kOA8f48n
- lLu2Y853GoUhpKvCv5YT80s/j1bRVb1BrBS/uX4ugF36CFbvdaQztnSvGCaf5+sMDAndeQkDY+CKf8t/g6RdWDJilGJ+55ENXD7T9PjToBLlGbQbKHS60eu0mVtV7g4rLv7Yy/3Ua8YHamXeYJOv0QGz5HVlnQs4a9htP6ttcdrOwsibIw8IaTTIQp9O9YLC2nJoPd0NapE8Q25XadFJzAiP09TEUlOP4L1RXyMPpfW5AlycAzAoNgDaFXA==
+X-Stat-Signature: u7oy7sqs5yotqzty55fcif3dj69hpofd
+X-HE-Tag: 1761607396-664634
+X-HE-Meta: U2FsdGVkX1+ijg1EB+Fy6Iy81/hkU+vXd6UgBvXC5wBDRWGQv5OHHt5g0Vbir8UDydS6xFCil4uW6847a3/wCOJ9aCc4YT9PvOeyU9umYQHJdf4c9O4uAZaLoPlL9MmoJqxYWTDhMG7wJoRjkswFOzJyogkFwnkwVYrx3pTVBwMVgZu+mJhLPi/GesUh1SHEm/wMvNXQAuFIw3kNHMCDepzODYsxjZmC/TT52RAHw0tQ6jzKxNjwczv7alTdTzwbw5GVKLFfViiIO9huSl7+9I/n7az19LqZ1yLnqqyQnp0IwYgYuw3RaQxsch0UuhsbAaiSAN0oZY7a83fL1Gx3zaCMTuF9SliWJXptaSa1qrMk3cx6Y4BycNsknY3Ga/TwXMDTj0NQFrxfLxGpXOIJCH2P1sPxbtzfEjmJCfFm31QpciISKAtDKXU7Yhjt8h9tZn8bYp+KSiTk+ulHGZscU2dyGf9g2dlM7L3lo+Ht4JW/55D6VLeM5V1I1z2h5jTXgj8sww6CRWmdbSTmf95BmtsWBOvz2Wy74aDh+bm8uYw5PFNTMqWZsx7eT+VSRGpSOEkCiopxx7p8iVGxqbtkYd7hRLlARC8zpyKLVJqJ1k4KMXTYfAPombi6F1T9XMMZOmnLjzuNUiHe/oAVOzqTckH7XA3mmGFVF3rUTYWQOGZ6Nn7p5hC5Na4j6cwm5okBQVKIbuj/tM3fFlnqE1BlzYJU2eLcL8WdqM8YiGfS5QfEFdbxzNFaky2COh4HeP2AyCwJs+IbxN+9gt7Gg0vKZBpELoG218mmeSdEWDiE/6nPG3sDfms0pSiEGQdGS9wqyjJsK7XecPR7An/toy3yhNQAkfD1gdTdqnKqgpi7Iz4peW3bXXEVd95jC2gn1wbpqycWVDakoGdoD7nyhRfdL/7ENaKIUhwR4vC3zwsa/kcDPXsikRrtVCXN2gzxVt6t3zjHb07Hx5rfdZOp/xf
+ NDsr5jNF
+ GCH0h798UQV0whcrijWiED0+rTrogRrsI7n3KuJwTCsjhKiymAKngCz7zqbWz3yx/3ir2LfhS/EeGZNhb2xoEGEzxF2nXNDM18VVoG6T3WAMsSNqFED5ZsIuGP54x/8MSfKAZZjdr49RzkCNBBGH0Agdt+2L8sDA9lXGZ0R9yeTU33Bg8BYzIS2QujOUy9z5UYHdr
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,28 +101,364 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: JP Kobryn <inwardvessel@gmail.com>
+Add a PSI struct ops test.
 
-Include CONFIG_PSI to allow dependent tests to build.
+The test creates a cgroup with two child sub-cgroups, sets up
+memory.high for one of those and puts there a memory hungry
+process (initially frozen).
 
-Suggested-by: Song Liu <song@kernel.org>
-Signed-off-by: JP Kobryn <inwardvessel@gmail.com>
+Then it creates 2 PSI triggers from within a init() BPF callback and
+attaches them to these cgroups.  Then it deletes the first cgroup,
+creates another one and runs the memory hungry task. From the cgroup
+creation callback the test is creating another trigger.
+
+The memory hungry task is creating a high memory pressure in one
+memory cgroup, which triggers a PSI event. The PSI BPF handler
+declares a memcg oom in the corresponding cgroup. Finally the checks
+that both handle_cgroup_free() and handle_psi_event() handlers were
+executed, the correct process was killed and oom counters were
+updated.
+
+Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- tools/testing/selftests/bpf/config | 1 +
- 1 file changed, 1 insertion(+)
+ .../selftests/bpf/prog_tests/test_psi.c       | 238 ++++++++++++++++++
+ tools/testing/selftests/bpf/progs/test_psi.c  |  82 ++++++
+ 2 files changed, 320 insertions(+)
+ create mode 100644 tools/testing/selftests/bpf/prog_tests/test_psi.c
+ create mode 100644 tools/testing/selftests/bpf/progs/test_psi.c
 
-diff --git a/tools/testing/selftests/bpf/config b/tools/testing/selftests/bpf/config
-index 70b28c1e653e..178c840c844b 100644
---- a/tools/testing/selftests/bpf/config
-+++ b/tools/testing/selftests/bpf/config
-@@ -110,6 +110,7 @@ CONFIG_IP6_NF_IPTABLES=y
- CONFIG_IP6_NF_FILTER=y
- CONFIG_NF_NAT=y
- CONFIG_PACKET=y
-+CONFIG_PSI=y
- CONFIG_RC_CORE=y
- CONFIG_SECURITY=y
- CONFIG_SECURITYFS=y
+diff --git a/tools/testing/selftests/bpf/prog_tests/test_psi.c b/tools/testing/selftests/bpf/prog_tests/test_psi.c
+new file mode 100644
+index 000000000000..b294cea0a6fe
+--- /dev/null
++++ b/tools/testing/selftests/bpf/prog_tests/test_psi.c
+@@ -0,0 +1,238 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <test_progs.h>
++#include <bpf/btf.h>
++#include <bpf/bpf.h>
++
++#include "cgroup_helpers.h"
++#include "test_psi.skel.h"
++
++enum psi_res {
++	PSI_IO,
++	PSI_MEM,
++	PSI_CPU,
++	PSI_IRQ,
++	NR_PSI_RESOURCES,
++};
++
++struct cgroup_desc {
++	const char *path;
++	unsigned long long id;
++	int pid;
++	int fd;
++	size_t target;
++	size_t high;
++	bool victim;
++};
++
++#define MB (1024 * 1024)
++
++static struct cgroup_desc cgroups[] = {
++	{ .path = "/psi_test" },
++	{ .path = "/psi_test/cg1" },
++	{ .path = "/psi_test/cg2", .target = 500 * MB,
++	  .high = 40 * MB, .victim = true },
++};
++
++static int spawn_task(struct cgroup_desc *desc)
++{
++	char *ptr;
++	int pid;
++
++	pid = fork();
++	if (pid < 0)
++		return pid;
++
++	if (pid > 0) {
++		/* parent */
++		desc->pid = pid;
++		return 0;
++	}
++
++	/* child */
++	ptr = (char *)malloc(desc->target);
++	if (!ptr)
++		return -ENOMEM;
++
++	memset(ptr, 'a', desc->target);
++
++	while (1)
++		sleep(1000);
++
++	return 0;
++}
++
++static void setup_environment(void)
++{
++	int i, err;
++
++	err = setup_cgroup_environment();
++	if (!ASSERT_OK(err, "setup_cgroup_environment"))
++		goto cleanup;
++
++	for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
++		cgroups[i].fd = create_and_get_cgroup(cgroups[i].path);
++		if (!ASSERT_GE(cgroups[i].fd, 0, "create_and_get_cgroup"))
++			goto cleanup;
++
++		cgroups[i].id = get_cgroup_id(cgroups[i].path);
++		if (!ASSERT_GT(cgroups[i].id, 0, "get_cgroup_id"))
++			goto cleanup;
++
++		/* Freeze the top-level cgroup and enable the memory controller */
++		if (i == 0) {
++			err = write_cgroup_file(cgroups[i].path, "cgroup.freeze", "1");
++			if (!ASSERT_OK(err, "freeze cgroup"))
++				goto cleanup;
++
++			err = write_cgroup_file(cgroups[i].path, "cgroup.subtree_control",
++						"+memory");
++			if (!ASSERT_OK(err, "enable memory controller"))
++				goto cleanup;
++		}
++
++		/* Set memory.high */
++		if (cgroups[i].high) {
++			char buf[256];
++
++			snprintf(buf, sizeof(buf), "%lu", cgroups[i].high);
++			err = write_cgroup_file(cgroups[i].path, "memory.high", buf);
++			if (!ASSERT_OK(err, "set memory.high"))
++				goto cleanup;
++
++			snprintf(buf, sizeof(buf), "0");
++			write_cgroup_file(cgroups[i].path, "memory.swap.max", buf);
++		}
++
++		/* Spawn tasks creating memory pressure */
++		if (cgroups[i].target) {
++			char buf[256];
++
++			err = spawn_task(&cgroups[i]);
++			if (!ASSERT_OK(err, "spawn task"))
++				goto cleanup;
++
++			snprintf(buf, sizeof(buf), "%d", cgroups[i].pid);
++			err = write_cgroup_file(cgroups[i].path, "cgroup.procs", buf);
++			if (!ASSERT_OK(err, "put child into a cgroup"))
++				goto cleanup;
++		}
++	}
++
++	return;
++
++cleanup:
++	cleanup_cgroup_environment();
++}
++
++static int run_and_wait_for_oom(void)
++{
++	int ret = -1;
++	bool first = true;
++	char buf[4096] = {};
++	size_t size;
++
++	/* Unfreeze the top-level cgroup */
++	ret = write_cgroup_file(cgroups[0].path, "cgroup.freeze", "0");
++	if (!ASSERT_OK(ret, "unfreeze cgroup"))
++		return -1;
++
++	for (;;) {
++		int i, status;
++		pid_t pid = wait(&status);
++
++		if (pid == -1) {
++			if (errno == EINTR)
++				continue;
++			/* ECHILD */
++			break;
++		}
++
++		if (!first)
++			continue;
++		first = false;
++
++		/* Check which process was terminated first */
++		for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
++			if (!ASSERT_OK(cgroups[i].victim !=
++				       (pid == cgroups[i].pid),
++				       "correct process was killed")) {
++				ret = -1;
++				break;
++			}
++
++			if (!cgroups[i].victim)
++				continue;
++
++			/* Check the memcg oom counter */
++			size = read_cgroup_file(cgroups[i].path, "memory.events",
++						buf, sizeof(buf));
++			if (!ASSERT_OK(size <= 0, "read memory.events")) {
++				ret = -1;
++				break;
++			}
++
++			if (!ASSERT_OK(strstr(buf, "oom_kill 1") == NULL,
++				       "oom_kill count check")) {
++				ret = -1;
++				break;
++			}
++		}
++
++		/* Kill all remaining tasks */
++		for (i = 0; i < ARRAY_SIZE(cgroups); i++)
++			if (cgroups[i].pid && cgroups[i].pid != pid)
++				kill(cgroups[i].pid, SIGKILL);
++	}
++
++	return ret;
++}
++
++void test_psi(void)
++{
++	struct test_psi *skel;
++	u64 deleted_cgroup_id;
++	int new_cgroup_fd;
++	u64 new_cgroup_id;
++	int err;
++
++	setup_environment();
++
++	skel = test_psi__open_and_load();
++	err = libbpf_get_error(skel);
++	if (CHECK_FAIL(err))
++		goto cleanup;
++
++	skel->bss->deleted_cgroup_id = cgroups[1].id;
++	skel->bss->high_pressure_cgroup_id = cgroups[2].id;
++
++	err = test_psi__attach(skel);
++	if (CHECK_FAIL(err))
++		goto cleanup;
++
++	/* Delete the first cgroup, it should trigger handle_cgroup_offline() */
++	remove_cgroup(cgroups[1].path);
++
++	new_cgroup_fd = create_and_get_cgroup("/psi_test_new");
++	if (!ASSERT_GE(new_cgroup_fd, 0, "create_and_get_cgroup"))
++		goto cleanup;
++
++	new_cgroup_id = get_cgroup_id("/psi_test_new");
++	if (!ASSERT_GT(new_cgroup_id, 0, "get_cgroup_id"))
++		goto cleanup;
++
++	/* Unfreeze all child tasks and create the memory pressure */
++	err = run_and_wait_for_oom();
++	CHECK_FAIL(err);
++
++	/* Check the result of the handle_cgroup_offline() handler */
++	deleted_cgroup_id = skel->bss->deleted_cgroup_id;
++	ASSERT_EQ(deleted_cgroup_id, cgroups[1].id, "deleted cgroup id");
++
++	/* Check the result of the handle_cgroup_online() handler */
++	ASSERT_EQ(skel->bss->new_cgroup_id, new_cgroup_id,
++		  "new cgroup id");
++
++cleanup:
++	cleanup_cgroup_environment();
++	test_psi__destroy(skel);
++}
+diff --git a/tools/testing/selftests/bpf/progs/test_psi.c b/tools/testing/selftests/bpf/progs/test_psi.c
+new file mode 100644
+index 000000000000..4ddec7ec3eda
+--- /dev/null
++++ b/tools/testing/selftests/bpf/progs/test_psi.c
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include "vmlinux.h"
++#include <bpf/bpf_helpers.h>
++#include <bpf/bpf_tracing.h>
++
++char _license[] SEC("license") = "GPL";
++
++#define PSI_FULL 0x80000000
++
++/* cgroup which will experience the high memory pressure */
++u64 high_pressure_cgroup_id;
++
++/* cgroup which will be deleted */
++u64 deleted_cgroup_id;
++
++/* cgroup which will be created */
++u64 new_cgroup_id;
++
++/* cgroup which was deleted */
++u64 deleted_cgroup_id;
++
++char constraint_name[] = "CONSTRAINT_BPF_PSI_MEM";
++
++SEC("struct_ops.s/init")
++int BPF_PROG(psi_init, struct bpf_psi *bpf_psi)
++{
++	int ret;
++
++	ret = bpf_psi_create_trigger(bpf_psi, high_pressure_cgroup_id,
++				     PSI_MEM | PSI_FULL, 100000, 1000000);
++	if (ret)
++		return ret;
++
++	return bpf_psi_create_trigger(bpf_psi, deleted_cgroup_id,
++				      PSI_IO, 100000, 1000000);
++}
++
++SEC("struct_ops.s/handle_psi_event")
++void BPF_PROG(handle_psi_event, struct bpf_psi *bpf_psi, struct psi_trigger *t)
++{
++	u64 cgroup_id = t->cgroup_id;
++	struct mem_cgroup *memcg;
++	struct cgroup *cgroup;
++
++	cgroup = bpf_cgroup_from_id(cgroup_id);
++	if (!cgroup)
++		return;
++
++	memcg = bpf_get_mem_cgroup(&cgroup->self);
++	if (!memcg) {
++		bpf_cgroup_release(cgroup);
++		return;
++	}
++
++	bpf_out_of_memory(memcg, 0, BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK,
++			  constraint_name);
++
++	bpf_put_mem_cgroup(memcg);
++	bpf_cgroup_release(cgroup);
++}
++
++SEC("struct_ops.s/handle_cgroup_online")
++void BPF_PROG(handle_cgroup_online, struct bpf_psi *bpf_psi, u64 cgroup_id)
++{
++	new_cgroup_id = cgroup_id;
++
++	bpf_psi_create_trigger(bpf_psi, cgroup_id, PSI_IO, 100000, 1000000);
++}
++
++SEC("struct_ops.s/handle_cgroup_offline")
++void BPF_PROG(handle_cgroup_offline, struct bpf_psi *bpf_psi, u64 cgroup_id)
++{
++	deleted_cgroup_id = cgroup_id;
++}
++
++SEC(".struct_ops.link")
++struct bpf_psi_ops test_bpf_psi = {
++	.init = (void *)psi_init,
++	.handle_psi_event = (void *)handle_psi_event,
++	.handle_cgroup_online = (void *)handle_cgroup_online,
++	.handle_cgroup_offline = (void *)handle_cgroup_offline,
++};
 -- 
 2.51.0
 
