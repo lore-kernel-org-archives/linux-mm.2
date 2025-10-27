@@ -4,95 +4,149 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48544CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:23:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D30BCCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:33:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8917800BF; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
+	id D1111800C0; Mon, 27 Oct 2025 19:33:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A3A0F8009B; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
+	id CC1C28009B; Mon, 27 Oct 2025 19:33:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 928E7800BF; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
+	id BB084800C0; Mon, 27 Oct 2025 19:33:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 816ED8009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:23:18 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F25F1A029C
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:18 +0000 (UTC)
-X-FDA: 84045472476.09.793BC51
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 92E0540002
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:23:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E7E4LM8d;
-	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A2B1C8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:33:04 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 40AB7C0273
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:33:04 +0000 (UTC)
+X-FDA: 84045497088.20.7DCFBB4
+Received: from mail-qv1-f41.google.com (mail-qv1-f41.google.com [209.85.219.41])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 5CEAF12000C
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:33:02 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ZFQyD/74";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607982; a=rsa-sha256;
+	cv=none;
+	b=mEiWgf++qt81yha7UFE0ivDrs7n2iQOUywKKNkgXQ8DYioBfGYOfXU9LLMDKQK/NL2bcUm
+	PeJvQaukp2HhLwIRVxnADY8mjwitf92G/kCzSCq9FFPF5InASIWEtl2w0DOjQOGNxclZ+7
+	xIuLQxcNJBjq4JA4xZIcTLKioPgEOWM=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=gourry.net header.s=google header.b="ZFQyD/74";
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.41 as permitted sender) smtp.mailfrom=gourry@gourry.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607396;
+	s=arc-20220608; t=1761607982;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zUole0fevJNTWH/QrfuoUDEj281F+dD7fcGUfbGb1V8=;
-	b=sAVKupFbygSNOCsAnfTa7pwa2hbSt68ttGb4I9ZjGZcX5eJF2/t6oSJwF7C/XfrRgs+MIL
-	K8qtuehYJNsuPEOBnTjCh/JjlbZ0EHUlv4Oj0Pjm3zVGAbbsgFzJs2vjct44ER194/sHZ3
-	WiJ7UQlSbnP/0JoJ/cElgV9YjsovUjs=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=E7E4LM8d;
-	spf=pass (imf01.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607396; a=rsa-sha256;
-	cv=none;
-	b=Pvu4f40OS5vt9ys4MgBYW3CqH8vzJPrQh2JNNgVsuxEVOc5NFV17Pk4EIjndPEVXyqlc+e
-	0ODOkyg1KCzGh8zfkxCp3+8EAIlq6BcEA/tndRth2NllYKJu9yi2ZevJplp4UVjfcyImmp
-	RnhVP0DGQUBaDT/Nnzo4/rtiMEN4hT8=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607395;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zUole0fevJNTWH/QrfuoUDEj281F+dD7fcGUfbGb1V8=;
-	b=E7E4LM8dJ/rehFz/AdqoNoWUiisJMzEZYiPcspGMTpSMJc+isYT5KpRiWBUtC5bvTBEnNk
-	13DwqOcebTOKCNjdutYBUn2zf223HSkRZ5HqzVB273/Zs6Rdy+/02MadYY8X6GmkTqxUzb
-	SEzFrJjrfveD/JJz9dwULbYzl65J9uY=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
+	bh=SeBkBGZ09M3QB76OpujQtXgjWBBtrpYzqcpEmFvCTi4=;
+	b=jE0f9u7zFfvIdVZdRL+Kg1BJZr/5QmWYpajpX4EtO7OTqaXgV6abYB+ltXLoZDmvzIRg13
+	3Lrt0Q5NVLbrpIIiOSvZqxcaCh1OC+g8ZaUQbh6j2B3dp8s9HnUBsYw4kVCMml5/w/osAo
+	wYGSyuqgN+oOMOqqC0ikl5nuFYTfibs=
+Received: by mail-qv1-f41.google.com with SMTP id 6a1803df08f44-87d8fa51993so61848706d6.1
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:33:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gourry.net; s=google; t=1761607981; x=1762212781; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SeBkBGZ09M3QB76OpujQtXgjWBBtrpYzqcpEmFvCTi4=;
+        b=ZFQyD/749pZ87cwpl0JVqAhXJEjQESEnooYwonwyjYVf6ILXhVJF7PjbU6A8Y+Kfuh
+         760/MIEgB1NzAYbtSLRhx2Lk8o9l9LP0+hlL+qyNoMg+IzJH1bfV6Ya7D9CWppdVBJnh
+         Pq+qtpDMxEXM+nsUCfQTT1JYbQp9rQ+mbSWliEbptc+5cffPuvWCrQm7BeplL+CUvYyR
+         n5HAu0cvnDGkpYTia5DHGyDmYJNvGmEXwjLwxVJswQvd8PrKyUBaAGL2+xTMrg7AW/hQ
+         AqRfTMI0AYCDPDCyU0w/CvGTyJ5gniFJow+T7BaAgOUnxJ6Zx2mr2UtETEk6DCCbIEHs
+         cnoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761607981; x=1762212781;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SeBkBGZ09M3QB76OpujQtXgjWBBtrpYzqcpEmFvCTi4=;
+        b=Z+eEzCrqA2MpCu6b8HCz2HiG6Ib+03QtddMu3nDjJ4Chwa4orOEHVPNLJKVPNVsyE9
+         zcguqAhQVg/zMH419pwgXS0bXlqdDZ51nbzE3P1658VNfUI1WB+KTeYPtWlO5Xv/kQVQ
+         ogcg0/6a4EWH6GYVlm/BEAF18yKyOg8zDslKX/PUKZI8Llr7FA0Y7AKV2quzIfvK9aPz
+         4iyz2RtqRqD0YdVa03ItT3He+jaESw5vZktexm1e8efCkPKZ5QHj8gKj5mfXq4tk2+AQ
+         4RZOn9327L4Uf+0GuEooJxWCwP8NUntCOrbLmR2TUU+jt6T+yDgc6mBfaTxMTUeoB66N
+         XzEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVyZKs4m986IqSwSy14O8SqHoHCbuZjYfL+kWYEHE7T4fDl1/gjDzhXUbzcMB6lGS7kgaloOFQxag==@kvack.org
+X-Gm-Message-State: AOJu0Yw+rLCXah5Qty55/7B+ao63juibV6amtdO2y1Keys2yBBQfWTeL
+	VCg8r/nbHrMmxhEBDsCfje82HQuia2AqE1jq5+76CIs46LCBjtpK4ddaMZkurfB6ZI4=
+X-Gm-Gg: ASbGncsqCQFTvWwPoHyjbt+E457tApngDEQvEkpBsD00P6DQLCAm7tnNJWK5acpNzd3
+	cYc4UZ5HBA0c9r1+DhSgSZyGMf5JNJM1nSarzX7wCeO2AFKcj7ZRmNogIcMuArRH5J+FPeo38ay
+	oBghXlmNbIF4ZN29eWfsDVUuJeOVKIyxjSBmmuEg2of0tFOwqpt9fY3Q4zWvp+kGSBPWBmS3gx+
+	cu50gePc8FuTyMDtZJBc4kAGF1/0J9OQLJsNSBMq+LMRqpJgq6zSUeHc9tzNZ2CAB8ZEVHicZgd
+	pD5W7MRX4avBf7mC9wcQFnsMGmS7zf2DeurZjPrgBuhwLz2QtMuDpolRadLG2aqVUGfmT/zV7+w
+	2l/M5l131EPJJ5McbGmpONp+sXwYbb9OZlQmruLUrSOfgFpeRvFqje6CwUKMBTkmcTwsCA8TfS0
+	CmqK/jAyqbeMm4qsjY9TxyMYWTuq3dG2h37hhU5/wQ/wuH0PH2ZzBv8CWu/oM=
+X-Google-Smtp-Source: AGHT+IGY0mnN3CFDP7vaLRad7aeAt7RbVIUmDhfxoFPsiCMHR/zS0q6YLuuynQuqtuF/1igQEZd8Tg==
+X-Received: by 2002:ad4:5cad:0:b0:87c:2b03:c776 with SMTP id 6a1803df08f44-87ffb0f3094mr20891046d6.47.1761607981318;
+        Mon, 27 Oct 2025 16:33:01 -0700 (PDT)
+Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc48ea92fsm64277606d6.24.2025.10.27.16.32.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 16:33:00 -0700 (PDT)
+Date: Mon, 27 Oct 2025 19:32:58 -0400
+From: Gregory Price <gourry@gourry.net>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
 	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	bpf@vger.kernel.org,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 23/23] bpf: selftests: PSI struct ops test
-Date: Mon, 27 Oct 2025 16:22:06 -0700
-Message-ID: <20251027232206.473085-13-roman.gushchin@linux.dev>
-In-Reply-To: <20251027232206.473085-1-roman.gushchin@linux.dev>
-References: <20251027232206.473085-1-roman.gushchin@linux.dev>
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 00/12] remove is_swap_[pte, pmd]() + non-swap
+ confusion
+Message-ID: <aQABKgQYfVkO7n9m@gourry-fedora-PF4VCD3F>
+References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
+ <20251027160923.GF760669@ziepe.ca>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 92E0540002
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027160923.GF760669@ziepe.ca>
 X-Rspam-User: 
-X-Stat-Signature: u7oy7sqs5yotqzty55fcif3dj69hpofd
-X-HE-Tag: 1761607396-664634
-X-HE-Meta: U2FsdGVkX1+ijg1EB+Fy6Iy81/hkU+vXd6UgBvXC5wBDRWGQv5OHHt5g0Vbir8UDydS6xFCil4uW6847a3/wCOJ9aCc4YT9PvOeyU9umYQHJdf4c9O4uAZaLoPlL9MmoJqxYWTDhMG7wJoRjkswFOzJyogkFwnkwVYrx3pTVBwMVgZu+mJhLPi/GesUh1SHEm/wMvNXQAuFIw3kNHMCDepzODYsxjZmC/TT52RAHw0tQ6jzKxNjwczv7alTdTzwbw5GVKLFfViiIO9huSl7+9I/n7az19LqZ1yLnqqyQnp0IwYgYuw3RaQxsch0UuhsbAaiSAN0oZY7a83fL1Gx3zaCMTuF9SliWJXptaSa1qrMk3cx6Y4BycNsknY3Ga/TwXMDTj0NQFrxfLxGpXOIJCH2P1sPxbtzfEjmJCfFm31QpciISKAtDKXU7Yhjt8h9tZn8bYp+KSiTk+ulHGZscU2dyGf9g2dlM7L3lo+Ht4JW/55D6VLeM5V1I1z2h5jTXgj8sww6CRWmdbSTmf95BmtsWBOvz2Wy74aDh+bm8uYw5PFNTMqWZsx7eT+VSRGpSOEkCiopxx7p8iVGxqbtkYd7hRLlARC8zpyKLVJqJ1k4KMXTYfAPombi6F1T9XMMZOmnLjzuNUiHe/oAVOzqTckH7XA3mmGFVF3rUTYWQOGZ6Nn7p5hC5Na4j6cwm5okBQVKIbuj/tM3fFlnqE1BlzYJU2eLcL8WdqM8YiGfS5QfEFdbxzNFaky2COh4HeP2AyCwJs+IbxN+9gt7Gg0vKZBpELoG218mmeSdEWDiE/6nPG3sDfms0pSiEGQdGS9wqyjJsK7XecPR7An/toy3yhNQAkfD1gdTdqnKqgpi7Iz4peW3bXXEVd95jC2gn1wbpqycWVDakoGdoD7nyhRfdL/7ENaKIUhwR4vC3zwsa/kcDPXsikRrtVCXN2gzxVt6t3zjHb07Hx5rfdZOp/xf
- NDsr5jNF
- GCH0h798UQV0whcrijWiED0+rTrogRrsI7n3KuJwTCsjhKiymAKngCz7zqbWz3yx/3ir2LfhS/EeGZNhb2xoEGEzxF2nXNDM18VVoG6T3WAMsSNqFED5ZsIuGP54x/8MSfKAZZjdr49RzkCNBBGH0Agdt+2L8sDA9lXGZ0R9yeTU33Bg8BYzIS2QujOUy9z5UYHdr
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5CEAF12000C
+X-Stat-Signature: unrsq5sct9d85fkr36745szkmbageu8h
+X-HE-Tag: 1761607982-495465
+X-HE-Meta: U2FsdGVkX1+ctQ+NpCA3CDAgcCyQOGEu2+xvVJ/3ptdrVl4/Ppuldgiref7W7Jdf1ij6K/a4BPVAa3K3/8I9BpnaWzN0jBT62iEwj3e1xa6KdYcQrpeRlYefIPuHa3Kv4kb+dPwhiSLO0oXGRx3pzC1fMb13yj8VHKJaRsi6cZxZJ5zoOEYm3PCSAvtuqXPMG/HNYW36iO0X6KVw9GXoMne0LjgJgmWohEmRdVSUBNyAIB/zYTTh2A8iz7wcNuf9odsWp/8ZInVAWRMFFqLrE4huq6eH/J5dgKMWz9O02lcdSdPOEisBRCc673iKcajvG9x04LpI3CicB/xFI8NxfNOuRepmf7S6r+zcS0EukXT2Iav2KxZxCc+egzZzpHyDG7tGvgZEC06qhCwgEjkXRwWcNum2xJek3CoEaEpWrhiyAJQruU4FHcd0rlC9mC9gxuVHXstsAtjvYxiB10EznLqiEAZra4JfjSmaJWTCbQWqcGbmwbGgXobGZOUVpezsIdE9fpHTsL4AtJHLu/KGR4rWfhpoLXBwgnszcpmbDw768gXz8X+bP+SrouyFzKwAJqdxfI05+DJaXXpxOM0gVlTEZVoKNfgdrxjyxGILKIqghXbJkMJNHKCB2erCLwcM5hXpp9QWdy+AWQBtXjVbvBSehWAhqHxbyUgqHZe1Eb8AyYDvAzJQ8oaHj20mfpMfpLGVwuwAphsmebSDQGOOSMVOc5cF9Vq+Z9CIGXJRkIvbf6ack5NSZN3QClLF9AzmK4XjIWh2BnrQfYV9ewJrMF4hprOEdSF/uX7wmzfV0VxYMFuNQhcKUwFGNpzVSaf52zkLYH+3kGrnTIFiFhLk894xxuPV6TZYNdGQE/gypyeFVKKETB079Tz1QPuydFQDuBW5PX16HF5p5zN35NDT7QLeM1TE+J9KT934HeVfx7pPKKuGaSn3+LM1tERdLjos0pjvxM4k7HmPoc+tlFu
+ 6o22zSjl
+ qiU1+WmFKaq1vlGC0IIS0bQ0edFZHYg6sdN6v/aderWRIkYLGP8sz4eQE+8JpaaArVCWNVQeJZreA7GwFcQbxEmJxgOvijgpdONJJ2DN3hMfvBPD0jhZ9oM/uXE/7FmhqCKKa6nFTzYLBXnS6wdQZCNk+lU5er2r928nQuOkUk+e1wmM0MuB6JQHqm4WgmmJ+GR8KUxPXreDb0I0maN6GATT6ZAm8OOUzdECN2U03UhZqxLPfUPfER9Fy2gRc0RMgizNYcjNjzUFnCsgJShJLFFpFjXzZPt7RjUqpkVxA4sLShp/qQDqBINFQs3ztU0lSNyrg5QfOEbOSVX0jReohT12ml0cMI4JTljkZi8GQxzSBQqYwXHoRqVUYsuy5r/4GWwGsuhnvZHwWc8mpAF0Q/bWrPi2RwogmF9bmX+dizsRPL0GYdatfwScnSsLwChYryrDD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,365 +155,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Add a PSI struct ops test.
+On Mon, Oct 27, 2025 at 01:09:23PM -0300, Jason Gunthorpe wrote:
+> 
+> I'm not keen on is_non_present_entry(), it seems confusing again.
+> 
 
-The test creates a cgroup with two child sub-cgroups, sets up
-memory.high for one of those and puts there a memory hungry
-process (initially frozen).
+The confusion stems from `present` referring to the state of the hardware
+PTE bits, instead of referring to the state of the entry.
 
-Then it creates 2 PSI triggers from within a init() BPF callback and
-attaches them to these cgroups.  Then it deletes the first cgroup,
-creates another one and runs the memory hungry task. From the cgroup
-creation callback the test is creating another trigger.
+But even if we're stuck with "non-present entry", it's still infinitely
+more understandable (and teachable) than "non_swap_swap_entry".
 
-The memory hungry task is creating a high memory pressure in one
-memory cgroup, which triggers a PSI event. The PSI BPF handler
-declares a memcg oom in the corresponding cgroup. Finally the checks
-that both handle_cgroup_free() and handle_psi_event() handlers were
-executed, the correct process was killed and oom counters were
-updated.
-
-Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
----
- .../selftests/bpf/prog_tests/test_psi.c       | 238 ++++++++++++++++++
- tools/testing/selftests/bpf/progs/test_psi.c  |  82 ++++++
- 2 files changed, 320 insertions(+)
- create mode 100644 tools/testing/selftests/bpf/prog_tests/test_psi.c
- create mode 100644 tools/testing/selftests/bpf/progs/test_psi.c
-
-diff --git a/tools/testing/selftests/bpf/prog_tests/test_psi.c b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-new file mode 100644
-index 000000000000..b294cea0a6fe
---- /dev/null
-+++ b/tools/testing/selftests/bpf/prog_tests/test_psi.c
-@@ -0,0 +1,238 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <test_progs.h>
-+#include <bpf/btf.h>
-+#include <bpf/bpf.h>
-+
-+#include "cgroup_helpers.h"
-+#include "test_psi.skel.h"
-+
-+enum psi_res {
-+	PSI_IO,
-+	PSI_MEM,
-+	PSI_CPU,
-+	PSI_IRQ,
-+	NR_PSI_RESOURCES,
-+};
-+
-+struct cgroup_desc {
-+	const char *path;
-+	unsigned long long id;
-+	int pid;
-+	int fd;
-+	size_t target;
-+	size_t high;
-+	bool victim;
-+};
-+
-+#define MB (1024 * 1024)
-+
-+static struct cgroup_desc cgroups[] = {
-+	{ .path = "/psi_test" },
-+	{ .path = "/psi_test/cg1" },
-+	{ .path = "/psi_test/cg2", .target = 500 * MB,
-+	  .high = 40 * MB, .victim = true },
-+};
-+
-+static int spawn_task(struct cgroup_desc *desc)
-+{
-+	char *ptr;
-+	int pid;
-+
-+	pid = fork();
-+	if (pid < 0)
-+		return pid;
-+
-+	if (pid > 0) {
-+		/* parent */
-+		desc->pid = pid;
-+		return 0;
-+	}
-+
-+	/* child */
-+	ptr = (char *)malloc(desc->target);
-+	if (!ptr)
-+		return -ENOMEM;
-+
-+	memset(ptr, 'a', desc->target);
-+
-+	while (1)
-+		sleep(1000);
-+
-+	return 0;
-+}
-+
-+static void setup_environment(void)
-+{
-+	int i, err;
-+
-+	err = setup_cgroup_environment();
-+	if (!ASSERT_OK(err, "setup_cgroup_environment"))
-+		goto cleanup;
-+
-+	for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+		cgroups[i].fd = create_and_get_cgroup(cgroups[i].path);
-+		if (!ASSERT_GE(cgroups[i].fd, 0, "create_and_get_cgroup"))
-+			goto cleanup;
-+
-+		cgroups[i].id = get_cgroup_id(cgroups[i].path);
-+		if (!ASSERT_GT(cgroups[i].id, 0, "get_cgroup_id"))
-+			goto cleanup;
-+
-+		/* Freeze the top-level cgroup and enable the memory controller */
-+		if (i == 0) {
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.freeze", "1");
-+			if (!ASSERT_OK(err, "freeze cgroup"))
-+				goto cleanup;
-+
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.subtree_control",
-+						"+memory");
-+			if (!ASSERT_OK(err, "enable memory controller"))
-+				goto cleanup;
-+		}
-+
-+		/* Set memory.high */
-+		if (cgroups[i].high) {
-+			char buf[256];
-+
-+			snprintf(buf, sizeof(buf), "%lu", cgroups[i].high);
-+			err = write_cgroup_file(cgroups[i].path, "memory.high", buf);
-+			if (!ASSERT_OK(err, "set memory.high"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "0");
-+			write_cgroup_file(cgroups[i].path, "memory.swap.max", buf);
-+		}
-+
-+		/* Spawn tasks creating memory pressure */
-+		if (cgroups[i].target) {
-+			char buf[256];
-+
-+			err = spawn_task(&cgroups[i]);
-+			if (!ASSERT_OK(err, "spawn task"))
-+				goto cleanup;
-+
-+			snprintf(buf, sizeof(buf), "%d", cgroups[i].pid);
-+			err = write_cgroup_file(cgroups[i].path, "cgroup.procs", buf);
-+			if (!ASSERT_OK(err, "put child into a cgroup"))
-+				goto cleanup;
-+		}
-+	}
-+
-+	return;
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+}
-+
-+static int run_and_wait_for_oom(void)
-+{
-+	int ret = -1;
-+	bool first = true;
-+	char buf[4096] = {};
-+	size_t size;
-+
-+	/* Unfreeze the top-level cgroup */
-+	ret = write_cgroup_file(cgroups[0].path, "cgroup.freeze", "0");
-+	if (!ASSERT_OK(ret, "unfreeze cgroup"))
-+		return -1;
-+
-+	for (;;) {
-+		int i, status;
-+		pid_t pid = wait(&status);
-+
-+		if (pid == -1) {
-+			if (errno == EINTR)
-+				continue;
-+			/* ECHILD */
-+			break;
-+		}
-+
-+		if (!first)
-+			continue;
-+		first = false;
-+
-+		/* Check which process was terminated first */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++) {
-+			if (!ASSERT_OK(cgroups[i].victim !=
-+				       (pid == cgroups[i].pid),
-+				       "correct process was killed")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!cgroups[i].victim)
-+				continue;
-+
-+			/* Check the memcg oom counter */
-+			size = read_cgroup_file(cgroups[i].path, "memory.events",
-+						buf, sizeof(buf));
-+			if (!ASSERT_OK(size <= 0, "read memory.events")) {
-+				ret = -1;
-+				break;
-+			}
-+
-+			if (!ASSERT_OK(strstr(buf, "oom_kill 1") == NULL,
-+				       "oom_kill count check")) {
-+				ret = -1;
-+				break;
-+			}
-+		}
-+
-+		/* Kill all remaining tasks */
-+		for (i = 0; i < ARRAY_SIZE(cgroups); i++)
-+			if (cgroups[i].pid && cgroups[i].pid != pid)
-+				kill(cgroups[i].pid, SIGKILL);
-+	}
-+
-+	return ret;
-+}
-+
-+void test_psi(void)
-+{
-+	struct test_psi *skel;
-+	u64 deleted_cgroup_id;
-+	int new_cgroup_fd;
-+	u64 new_cgroup_id;
-+	int err;
-+
-+	setup_environment();
-+
-+	skel = test_psi__open_and_load();
-+	err = libbpf_get_error(skel);
-+	if (CHECK_FAIL(err))
-+		goto cleanup;
-+
-+	skel->bss->deleted_cgroup_id = cgroups[1].id;
-+	skel->bss->high_pressure_cgroup_id = cgroups[2].id;
-+
-+	err = test_psi__attach(skel);
-+	if (CHECK_FAIL(err))
-+		goto cleanup;
-+
-+	/* Delete the first cgroup, it should trigger handle_cgroup_offline() */
-+	remove_cgroup(cgroups[1].path);
-+
-+	new_cgroup_fd = create_and_get_cgroup("/psi_test_new");
-+	if (!ASSERT_GE(new_cgroup_fd, 0, "create_and_get_cgroup"))
-+		goto cleanup;
-+
-+	new_cgroup_id = get_cgroup_id("/psi_test_new");
-+	if (!ASSERT_GT(new_cgroup_id, 0, "get_cgroup_id"))
-+		goto cleanup;
-+
-+	/* Unfreeze all child tasks and create the memory pressure */
-+	err = run_and_wait_for_oom();
-+	CHECK_FAIL(err);
-+
-+	/* Check the result of the handle_cgroup_offline() handler */
-+	deleted_cgroup_id = skel->bss->deleted_cgroup_id;
-+	ASSERT_EQ(deleted_cgroup_id, cgroups[1].id, "deleted cgroup id");
-+
-+	/* Check the result of the handle_cgroup_online() handler */
-+	ASSERT_EQ(skel->bss->new_cgroup_id, new_cgroup_id,
-+		  "new cgroup id");
-+
-+cleanup:
-+	cleanup_cgroup_environment();
-+	test_psi__destroy(skel);
-+}
-diff --git a/tools/testing/selftests/bpf/progs/test_psi.c b/tools/testing/selftests/bpf/progs/test_psi.c
-new file mode 100644
-index 000000000000..4ddec7ec3eda
---- /dev/null
-+++ b/tools/testing/selftests/bpf/progs/test_psi.c
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include "vmlinux.h"
-+#include <bpf/bpf_helpers.h>
-+#include <bpf/bpf_tracing.h>
-+
-+char _license[] SEC("license") = "GPL";
-+
-+#define PSI_FULL 0x80000000
-+
-+/* cgroup which will experience the high memory pressure */
-+u64 high_pressure_cgroup_id;
-+
-+/* cgroup which will be deleted */
-+u64 deleted_cgroup_id;
-+
-+/* cgroup which will be created */
-+u64 new_cgroup_id;
-+
-+/* cgroup which was deleted */
-+u64 deleted_cgroup_id;
-+
-+char constraint_name[] = "CONSTRAINT_BPF_PSI_MEM";
-+
-+SEC("struct_ops.s/init")
-+int BPF_PROG(psi_init, struct bpf_psi *bpf_psi)
-+{
-+	int ret;
-+
-+	ret = bpf_psi_create_trigger(bpf_psi, high_pressure_cgroup_id,
-+				     PSI_MEM | PSI_FULL, 100000, 1000000);
-+	if (ret)
-+		return ret;
-+
-+	return bpf_psi_create_trigger(bpf_psi, deleted_cgroup_id,
-+				      PSI_IO, 100000, 1000000);
-+}
-+
-+SEC("struct_ops.s/handle_psi_event")
-+void BPF_PROG(handle_psi_event, struct bpf_psi *bpf_psi, struct psi_trigger *t)
-+{
-+	u64 cgroup_id = t->cgroup_id;
-+	struct mem_cgroup *memcg;
-+	struct cgroup *cgroup;
-+
-+	cgroup = bpf_cgroup_from_id(cgroup_id);
-+	if (!cgroup)
-+		return;
-+
-+	memcg = bpf_get_mem_cgroup(&cgroup->self);
-+	if (!memcg) {
-+		bpf_cgroup_release(cgroup);
-+		return;
-+	}
-+
-+	bpf_out_of_memory(memcg, 0, BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK,
-+			  constraint_name);
-+
-+	bpf_put_mem_cgroup(memcg);
-+	bpf_cgroup_release(cgroup);
-+}
-+
-+SEC("struct_ops.s/handle_cgroup_online")
-+void BPF_PROG(handle_cgroup_online, struct bpf_psi *bpf_psi, u64 cgroup_id)
-+{
-+	new_cgroup_id = cgroup_id;
-+
-+	bpf_psi_create_trigger(bpf_psi, cgroup_id, PSI_IO, 100000, 1000000);
-+}
-+
-+SEC("struct_ops.s/handle_cgroup_offline")
-+void BPF_PROG(handle_cgroup_offline, struct bpf_psi *bpf_psi, u64 cgroup_id)
-+{
-+	deleted_cgroup_id = cgroup_id;
-+}
-+
-+SEC(".struct_ops.link")
-+struct bpf_psi_ops test_bpf_psi = {
-+	.init = (void *)psi_init,
-+	.handle_psi_event = (void *)handle_psi_event,
-+	.handle_cgroup_online = (void *)handle_cgroup_online,
-+	.handle_cgroup_offline = (void *)handle_cgroup_offline,
-+};
--- 
-2.51.0
-
+So even if we never get to the point of replacing swp_entry_t, this is a
+clear and obvious improvement.
+~Gregory
 
