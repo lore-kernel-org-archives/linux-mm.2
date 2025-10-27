@@ -4,93 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E80D0CCF9EB
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 06:58:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3290BCCF9EB
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 07:19:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 534C48001B; Mon, 27 Oct 2025 02:58:20 -0400 (EDT)
+	id 0588C8001C; Mon, 27 Oct 2025 03:19:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50DC88000A; Mon, 27 Oct 2025 02:58:20 -0400 (EDT)
+	id 00A448000A; Mon, 27 Oct 2025 03:19:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44BE98001B; Mon, 27 Oct 2025 02:58:20 -0400 (EDT)
+	id E89178001C; Mon, 27 Oct 2025 03:19:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 3465E8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:58:20 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BAA7416034D
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:58:19 +0000 (UTC)
-X-FDA: 84042990318.24.C034000
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 2345BA000D
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:58:17 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WgYHd1gR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D48238000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 03:19:54 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 83FEF12A616
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 07:19:54 +0000 (UTC)
+X-FDA: 84043044708.03.D10DD1A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf11.hostedemail.com (Postfix) with ESMTP id EA04840004
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 07:19:52 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nsoHJ+bM;
+	spf=none (imf11.hostedemail.com: domain of BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761548298;
+	s=arc-20220608; t=1761549593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ec87UVNa5eRmR8hfs8sH6j92e6f3tj+hMNk7rV7r6Is=;
-	b=cmkQpJNRUaOzbfcKz5S7Vvrgj8REwguxNFIq9hoAM91yqEu9Bo1VxFba3ingFr2Gc6Tumt
-	DRjT+9zlfJ1LbmlbSgX03H8oxnuCadL4Vswa2effZSUDoJ1i1WxazHVjRYD8h0tqLH3KkY
-	dHm67KTTqLUrBCpXa7w2SrcGHdbfOTM=
+	bh=8isuxF9+HzRUnIUyZzMqC3A83K198wXQsRPVcNAqodI=;
+	b=xMl3AM19jT7J4B+jB66sLqc2FLKLTCMVKKWIclPrwZSwcq48oK00iXjyJGNQbN+ju4CTWb
+	B3NUItKRKwv8IqYtQJddSPkHdp4GvmKdQjOjQI/0K9P2rBw/Fr91kj4LtYeK7CphUQbjjb
+	7k2+z0XuovTNO5dqWB86bCi7nzJj7JA=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WgYHd1gR;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf25.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761548298; a=rsa-sha256;
+	imf11.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=nsoHJ+bM;
+	spf=none (imf11.hostedemail.com: domain of BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761549593; a=rsa-sha256;
 	cv=none;
-	b=cnqf59XFNxGrOmxDiHAFCz5YrBWMX4W49kuSbcSgZVkqBReUfK6G47sog8R50kW5Xk2rPz
-	VN7a0icNFy++Bcnuqe9ATdKcP56M7W4JLwMduglu2S+og8mLbnEA+dCM2aY7xaxdNxXJtf
-	r+/Sr0LHHQ8s9UhVFDDB7On9A+p7vCM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 7A0046038D;
-	Mon, 27 Oct 2025 06:58:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97AD3C4CEF1;
-	Mon, 27 Oct 2025 06:58:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761548297;
-	bh=lbGgWupkovq81DImc+Wfj/Z+qTggpqUzQ5AribnsI4Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WgYHd1gRoMxFqKfxyVNMKdMBnx9LTmiWGz9jsusgML8qyb1cDoittaMKbRXdbKibm
-	 p3C6RKP/o0JYKQ2ITDj2QPCNF+39qqS3oj+PCGUyAR+Qa7GI0Pd45iPt0aSo3fcOZ1
-	 bOEXHU78SCT2qDR5iScbhySSNt4n9IdSiyHghmqANQwbeVeQK9P9Smyu58ciepIfJR
-	 nQLa6zLLFJMopTremXr7vWdGvhdPZL0ze/KJXCQz9zywcVPNoviWG+SMNVygDaaw96
-	 Q8/6D7q2pMOfzkBj6yg1KTjt2J2zW9q4x1RKZ6mXMyH7ijGHy1jJOMEAUGEwZyNbxV
-	 ohhV4WLdQZxlw==
-Date: Mon, 27 Oct 2025 08:58:08 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org
-Subject: Re: [PATCH v8 8/8] memblock: Unpreserve memory in case of error
-Message-ID: <aP8YADj4ha3trjJn@kernel.org>
-References: <20251024161002.747372-1-pasha.tatashin@soleen.com>
- <20251024161002.747372-9-pasha.tatashin@soleen.com>
- <aP5Mcr9WCt5CHon6@kernel.org>
- <CA+CK2bCUc5Q5PxCy3jGN9CC48Zz_evq51d7Hps7=r9g28z7tig@mail.gmail.com>
+	b=cXmppMt5oAIoZjaQt8TEAxrUcn8iOgVIox5ZeeXspfGawOaNrBQbUxwLVJxvmMnKm41lQQ
+	HFveDZFG4U6zBePHTDWg7ziI9b5YNujiJhuwg3+11XVV6BAdPdstHQ8+kbAq22UeXuXerS
+	ODYrtUPwYINyYZ6Ed/vepvIrszrtf+o=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=8isuxF9+HzRUnIUyZzMqC3A83K198wXQsRPVcNAqodI=; b=nsoHJ+bMFDWRK1YdVtaeNJLZlg
+	lMQj6nDziNAYiIIJjXjAWxv0KOKwn9qrbaddNSZG1Me15w/QvFOt6EwSR6SV52SR4vCLRfIuHgBkp
+	njxEA5htbhv3qQviL2/KGKqHHYIvMOESrkfHMFZoZys05vQqhIoo2RnZdrZyHMpYc/PrSDIvE7LUK
+	RkAGFAWSL4OxQbZr2PzZQK6Ym+PbNjyoE+aMtKuK9eRqPJoCVHA6e6NTzp3DgA/H4QsS/ujl+C65A
+	l3SOUoFbtjk/aL9jZgGIgeqeBAsG7q/AcuHqhLYODV1C2PeISGtyGxejeZr7/COVMnSAy33Rwwz3F
+	91qQSEwQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDHWB-0000000DGf5-0Gt8;
+	Mon, 27 Oct 2025 07:19:51 +0000
+Date: Mon, 27 Oct 2025 00:19:51 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Meta kernel team <kernel-team@meta.com>
+Subject: Re: [PATCH] memcg: manually uninline __memcg_memory_event
+Message-ID: <aP8dF8y5uB7qwIUd@infradead.org>
+References: <20251021234425.1885471-1-shakeel.butt@linux.dev>
+ <aPorFhxQc7K5iLZc@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+CK2bCUc5Q5PxCy3jGN9CC48Zz_evq51d7Hps7=r9g28z7tig@mail.gmail.com>
+In-Reply-To: <aPorFhxQc7K5iLZc@tiehlicka>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Queue-Id: EA04840004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2345BA000D
-X-Rspamd-Server: rspam03
-X-Stat-Signature: wy8ncquoifeh37cbwdw9ut8kwmk1e9e9
-X-HE-Tag: 1761548297-731927
-X-HE-Meta: U2FsdGVkX1+l1xamy+F17+yIDqF5olVDo60n3qNUuAEbcsQFCojclIkTpccJy1F50iNMFeZ0kD2bUC13kU01AICavggp1TGGwvSmfkKWGCBv4LrA+cnD8E377gvQxVRWVYOwOHcIor0SteexPl1o+fEj2QJR8ioe4kYjZaoWOPXQ33XCmtMlFjZY0A9hVBd6qIauhXpXMdp+UP70rWLTtYoR22GMEVcuoVaKRiBvlktNs34/+6Gz00n7a8In8JTPVfXOgLric/fuC0PInJhkkNPkYb1wWHpTOScEZGn5FMot5N+G9a7V96xQvZDCbbuBsC6K4Kk6wFSWwEWHI2sFNEgl0/9maFLnhwIDk7LQ4d6/9Hi2d6DiZhmcbS6xz70x19KlPVG/0Iu3cOs0Q4i4TJ2xxoH4TbAHBiiikvCuMbdWpm32F904uhh1gPSJXHIa64JhpEj494kU4ZGrzB7AuoCj6hT2OUKDNTxITTlAELOFw9UKTBeR+Ypt/ZWfzABMywhhNk3WZpMhdm4yV7JhWQU4YNLhtTw0DwS0AZBLfvE2/F2c73W4NyNlRt8xFs2ZCHFGRMrUvyzPt01ehmm4LK+vr7nJvF9twSFU5KtgUZKIXc300C6g+oOVdyDTrkZvvH2xcKWG6IJgwSwVGGZ2R1/w+UEG6tcJLRq6lk3oYt2R4xkwQcC3EvPD3gD5Dtf1gsggQYv/ZYP89poSipDL9XmtlruHsUpHEphx3WbppMjDKyBDrHNULZ3Gi2ZwCPyzAOdSBb8vooYHOC8DVOLhTeVQ788zrc3PRnqJDqJ5KP/vlYCBeSzytrok626XsqtR3ZkyZTET5myvwXiOWEW4Y9YTYeVkz0hILvTh3M/PkF3LHSwPbB9xWsAL4cXH9iAdGu+Bv1MJIO4e7g9Hqagg3R/MQG7F+UR7e2aS9MX3k39xHSlWZyRSt48ur6tqd+ec2tWanMihYrK2tUWgInn
- B5pD4m4U
- 6jj2DoHXzCEzYH4oRzyoP1sT8LHssBq0gq9wiesWkkgB87YJ4+Xdr+cQCxX0oFJBOIooINvT8ayjacz2QqRY2B1BR+VsdBRBcw4xAOSqJQxmTeua9RDP4ronAb+Qn9FY3KhDgoyH9PkzOnF5XB5LSq5F1mxuNGHC3f7D4BlQsmgdsc/HB4bSiD7eD4rs7UmHQ4L9P/BMop/EDIHN0aAU0x1hsgZ+cHOocR26Q62trp1TVWDj17gWOdNs4yzmKW43srFSBBBufiG0evfo=
+X-Stat-Signature: 45cgoqjya6au6xf6ajns54wy8io3461z
+X-HE-Tag: 1761549592-556913
+X-HE-Meta: U2FsdGVkX18Xe9s39HZOgG75UMtei2RnChvt1/QMGMjlOKzCkbiVCTJ0LwKINJTSGXPRtORUmxPprI1NNdaEs7dBKR+ohDrNrGmZPv7pRvFuRky8V0oMkADQm/Msmw1ao0395hDmaqc/SKeMC10atQem+utcMdtGZeUW7zhqK0zANeDYTSLCz9Tg0D6F6fs/9b7hc7U9NANAQAIDRQzPRaEgWtlE7GyzLvUef7GnFfulWrOzYVAEG7n1yYmAPYAGES44gROtmidYphty3D5Gndy9dpDTLeX7Z5jyZ0AV09ukiPzLy2vy3Rvr35yvJpmvGfWEQRS0PTTn0uNbHoPFX5obc6qvg/qR9O/08m6qiuHPBKqoMt6oG7gfdtrIwVvRefS87SaG713CBCqEj6monTK+aRrBgrDbXgxVPIo/hQFL16JXmeugwjvBVrSkRAD06VsDpPTa8Df8mPlJXrNrJMkWivsJtkTLf6EQZS9McfM+m4hpb5PyTqZ/wwx20Etuf5wPsIdBr/RZtjB15dSTMKKEo8YEU03z4cL43F8KSrUTqBhaqsDhdICrUCPHhpB08lZa96R2bDxZbCaNoVB6ooJOPMKZxDdYwaJauYaU/6JZTi5O6iM75kH37GOhWzTogdlAH2okhZn2yxTBdhS2GTLSrJZF41aj64vntNPinwRmYV4NBn/LzkCloNPEZmCSXujwUNXIZx8O8ZAzZXn3l2Yy7qdsbK4RnKh9vcbTWKOzXf8O/ttxBhSFIWlEREGCXhuJ+l6xEz5/U3bzWQwzpq7Ak2or0IC6N+aGisAvHx+q6Qn+fayP1K0os77ep5I2w3XY/r/NVCgJd5TwDOF1614pDaqWwq0s8mubL1Non/6AaPdLfPFkaR4e5X83kqXkvx/RN0bxuKaNSRaFIZ7xYw3NLpmR6ojfD7Gz2vv3ZWjRCz5/MEpiGgpMeEuz960w6bt5Zb4X6eBpxNeC//u
+ T50NbzQ/
+ UkRhpBdujikdkvnk3wP8+/ajbXzjaDnp/2wYMEkHrXlrGa7H8oJ6zB4vpZqns2Ks7vua5xYHerQeVJQh6nlWNiyjQ3LMwVAJjHwr+B1jN8YgeNrzTLCCebhwXnztlXOP0X1kGiCMfxhixguq+MakcCKh66kivzgJjAlfBunZ4EXcucLXa0ABBEF4opTTxt/jnwYFk8FT4b72PUm29SNJsoEXqS7RRBMsC3JITCXLiEbBe7tF/c32yuLoiNb3wnvAwimbr2OSuUYJHqytNNL03hCimzr89yZZpFlplE5bwPl8b5lIhF2dbl6vpAE9FTpX7CsoU2iRneU3aqX8quTLBRsy+YT/rhzuh1QUD/SNbhylSl+mM85boImR5JDj1DGcmi4TLb484pO+pA9ynyPvqdGJEQcIWCgEbkf8JWxfE74k0beXRwOByyjIt8vQ2FPmxXq8ArxtKTa1V92IdunHlbob4aeILyvJRK33mssfSRUoDZDde1qXKMDqONO9zHfuNEm8udL7K+HbbIOrW4AtvzG/TGbInpdhb0uU55D0sHQSPSCU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,70 +96,10 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 26, 2025 at 01:41:30PM -0400, Pasha Tatashin wrote:
-> On Sun, Oct 26, 2025 at 12:29 PM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > > @@ -2462,12 +2463,14 @@ static int __init prepare_kho_fdt(void)
-> > >
-> > >       err |= fdt_begin_node(fdt, "");
-> > >       err |= fdt_property_string(fdt, "compatible", MEMBLOCK_KHO_NODE_COMPATIBLE);
-> > > -     for (i = 0; i < reserved_mem_count; i++) {
-> > > +     for (i = 0; !err && i < reserved_mem_count; i++) {
-> > >               struct reserve_mem_table *map = &reserved_mem_table[i];
-> > >               struct page *page = phys_to_page(map->start);
-> > >               unsigned int nr_pages = map->size >> PAGE_SHIFT;
-> > >
-> > > -             err |= kho_preserve_pages(page, nr_pages);
-> > > +             err = kho_preserve_pages(page, nr_pages);
-> > > +             if (err)
-> > > +                     break;
-> >
-> > Please
-> >
-> >         goto err_unpreserve;
-> 
-> While we can do that, we loose some symmetry of not performing
-> fdt_end_node() and fdt_finish() if fdt lib ever adds some debugging
-> facility to make sure that open nodes/trees are properly clodes, this
-> is going to flag that. I prefer my current implementation.
+On Thu, Oct 23, 2025 at 03:18:14PM +0200, Michal Hocko wrote:
+> As the only user is in tree should we make that EXPORT_SYMBOL_GPL
+> instead?
 
-Why do we care about fdt that we are never going to use and that's freed a
-few lines below?
+Yes.
 
-> > >               err |= fdt_begin_node(fdt, map->name);
-> > >               err |= fdt_property_string(fdt, "compatible", RESERVE_MEM_KHO_NODE_COMPATIBLE);
-> > >               err |= fdt_property(fdt, "start", &map->start, sizeof(map->start));
-> >
-> >         if (err)
-> >                 goto err_unpreserve;
-> >
-> > and drop !err from the loop condition.
-> 
-> That is going to miss one 'nr_preserved++' . We cannot do that, we
-> could move it to the beginning of the loop, but I prefer keeping err
-> right in the condition.
- 
-I very much dislike the error handling after this patch. From a single
-
-	if (err)
-		put_page()
-
-it grew into a complex beast with special variables just for the sake of
-it.
-
-What I'd like to see is something like
-
-err_unpreserve_fdt:
-	kho_unpreserve_folio(page_folio(fdt_page));
-err_unpreserve_mems:
-	for (unsigned int i = 0; i < nr_preserved; i++) {
-		/* unpreserve mem[i] */
-	}
-err_free_fdt:
-	put_page(fdt_page);
-	return err;
-
--- 
-Sincerely yours,
-Mike.
 
