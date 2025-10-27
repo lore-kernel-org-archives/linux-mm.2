@@ -4,117 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A324BCCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 10:49:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC2A5CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 11:37:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B3C580035; Mon, 27 Oct 2025 06:49:19 -0400 (EDT)
+	id E863D80036; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 08BAA8000A; Mon, 27 Oct 2025 06:49:19 -0400 (EDT)
+	id E0FAB8000A; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EBC0F80035; Mon, 27 Oct 2025 06:49:18 -0400 (EDT)
+	id CB0AF80036; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D1E9D8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:49:18 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A5D758E62
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:49:18 +0000 (UTC)
-X-FDA: 84043572396.14.C97F04D
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 979F080015
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:49:16 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XnBXr96Q;
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B4E678000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 07:37:58 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4ACE058EFB
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:37:58 +0000 (UTC)
+X-FDA: 84043695036.07.BB451FD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 8A453180010
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:37:56 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPZB8lkX;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761562156;
+	s=arc-20220608; t=1761565076;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
-	b=Ray2/cs8dmgFHqAWRTPSdo5GSrRroazBBAB7D+sJ/pf29CtoxplV5UXz9RSQlQU6iuMklf
-	1S9R1HBiBG/E8YM8eF9lxp4FTRicKZt0zScRjBWsbNjcQ970rDQlCN1CeoVQXaXjQDQbGm
-	Cupyy097HoY8MHZtWIfalcAlM2ooeFc=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=XnBXr96Q;
-	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761562156; a=rsa-sha256;
+	bh=5ZRl9oLflvWHs5kO5bw6wYiBk4wzNJtdVpiC8Ni43hE=;
+	b=AkiTR3HCvIF2s5vZla4lkLtfOKMgMscIOHedZ4Fu0pC9nLiR1XaTeBvGeC0shmFxl4g56D
+	9YqNcdGIBfI1mrgZm0pw1MCh6JuljlySZxxXJSuk6WpERdBPCguz6MU+9lvTylbvIQpKFc
+	L+EKinVRMtpNStKpQeloa5RvOcUg7zA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761565076; a=rsa-sha256;
 	cv=none;
-	b=2ArcDCplV6lbia4KDnWw7/C4VDiTf1q+bsqCxeZG7B6kU3jZbK4l0oRo1rC7dutOjNwJnu
-	tkPqlRQv2vVWhSVyyh/CjvMmgMjz1YyaEBC7M4VErdlH6W9NA1zv/f6W0rNieQG2uBwgMI
-	X4UpYU04Sc5kr1fLKPz2re8CKF6Lw4U=
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-784826b775aso48833217b3.2
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 03:49:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761562156; x=1762166956; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
-        b=XnBXr96QxHGkMOCRYekQTB97sWD9X4Jwv5BzcXQ9nzNN3onNvgfdG5wwTibydC3Jde
-         sfcIor6V3mYu8FQVxTot+20wWeByu8bpYrkBymHSMx4Qx8cYKYjhXYPD6Tv9VtLl6gkL
-         M0+cnl7J7pgH7ERogKxQvg3v97GZVTx3nobQ35Mtr0WidkstXAqTf3bRFqbnn1cchbtV
-         spHhC73AQOFv3s+/1Mo2YD4a2XgYKrKcTqTV8rVcPslmyqihD+maXAfjk4E828MKpOsf
-         kwpntCYdB09lqc27mKy3cWy8H6zz1GTq+u8DXRHNYdI0kQfGY7WQQ/wLNByWFBM4qW0j
-         gR7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761562156; x=1762166956;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
-        b=uQAM6moyMdw0IHgGqGT1UYUHkIRWITC4XlAJUrBn13jVwY5VAofpTggl0Aa2fS9xpb
-         wxQrny358r9Ys2ktrpqQA2Qq67kDKNADC2NYGcbVgHlZyFv8JfCpHE5nVN9kDpQ6Y/li
-         9mZskTEZZn9qV3g8sYMAShNk6Fb7RM1SBMW8lNaZsRMmY764klsKnFWstF1eyra7PHp9
-         DMmMd5YkD8wSX7x7aMklWkVlekhM0xDrYy2ZbY3xo2nQDsSDnBOtYlBmDj1wVf7GO7AH
-         Q0AqAsKVoZbAZ5TxYXWzhSgS/ZNNIFM5UNsPDminnzUsg40kjlJOykUW8koPoebinyri
-         epuA==
-X-Forwarded-Encrypted: i=1; AJvYcCVZ9m2UFyHXMfUMIoUgbEQf178LVzzc7DPv7442dsyMwKXniXBQIIniAGrPxqAIWU6QVyskfPdE5w==@kvack.org
-X-Gm-Message-State: AOJu0Yw8KppTzfDbGAaO69gAJoxvNvA2ywxsL12cg/q9I/AE8ON5yca1
-	P4WVSSPycWG0wzujszM3K/shMzRZh5/e2MTBQ0mxWu5Yr14ls3NCXgQ4pfawgSDxJA==
-X-Gm-Gg: ASbGncvbQUdsxiUV0p/CS9TVwXqert63WAABocqvOl+H87J21VdYR1ssIJs0Sx7EuJw
-	tk2h+ha+FaBYg+G+/uUZB4yqe6dic6+yUu0VdKllCSTYRLd1dC05nWaFkAPywGU7VtYHFrTSHq0
-	4m4LJ6agFCMFXa896Wtn44RdzHn8Xjd3P9ngHTYfR06OVG04OabwulzvB8eKylhSak2pXMJeVZ0
-	Hm5kUtAEl9PKST5qHe/akiuDOER+cL29DwgflU7gRXNyMqnKYCzlbx59pxMd2ZtfqKkg6C2bTnQ
-	1TCC5+YIRXDg8XS7Ru9JOuUo2up0ick+3mZvqy/XM+3PJWIWSL/Bv3ddd3kp+7VfSmieemzLGFO
-	lLD0fWiW7LDlKM8yDXUMVC6f76Ama330LudWwqZvc7TWYK0YVE1VxooZsc1HiAXFKXIvc1K3RFh
-	738Xlwi8YL/swkEViL5RBdLs6BEtOPgp019/QbTsoTbDpO/w/oKm+41DgPBEb1j4GlPfwqUM0=
-X-Google-Smtp-Source: AGHT+IF4G0GWxPrawsqJUunlI8mR7Zlz3Bdu/PVS/V73SpblujEtTUttzB5AMtvsR7iP+Kk1d5taaQ==
-X-Received: by 2002:a05:690c:25c4:b0:723:bf47:96f8 with SMTP id 00721157ae682-7836d343077mr323894387b3.53.1761562155421;
-        Mon, 27 Oct 2025 03:49:15 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed1e84ffsm18025877b3.55.2025.10.27.03.49.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 03:49:14 -0700 (PDT)
-Date: Mon, 27 Oct 2025 03:49:12 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-cc: David Hildenbrand <david@redhat.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    Matthew Wilcox <willy@infradead.org>, 
-    Linus Torvalds <torvalds@linux-foundation.org>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-    Yang Shi <shy828301@gmail.com>, Dave Chinner <david@fromorbit.com>, 
-    Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
-    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] mm/filemap: Implement fast short reads
-In-Reply-To: <CAHbLzkpx7iv40Tt+CDpbSsOupkGXKcix0wfiF6cVGrLFe0dvRQ@mail.gmail.com>
-Message-ID: <b8e56515-3903-068c-e4bd-fc0ca5c30d94@google.com>
-References: <20251017141536.577466-1-kirill@shutemov.name> <dcdfb58c-5ba7-4015-9446-09d98449f022@redhat.com> <hb54gc3iezwzpe2j6ssgqtwcnba4pnnffzlh3eb46preujhnoa@272dqbjakaiy> <CAHbLzkpx7iv40Tt+CDpbSsOupkGXKcix0wfiF6cVGrLFe0dvRQ@mail.gmail.com>
+	b=Wllgo/QhPXSfjYcHTz4f/zJc6UN0wXE0zqBwE2fCzHkeE3eAXnlO9q08HlEPrFy6IggNXK
+	yQm3mTxyG5Tqhyv1SzqUP3oZZrV6H9j7YCypSz92wlBt8hmCY7ZFsW5/oe5Cae9y7uyZ+0
+	DYdKdmQtml1jVTfVmqkafozKeloi5Hk=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QPZB8lkX;
+	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 3011E457AA;
+	Mon, 27 Oct 2025 11:37:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC65DC4CEFF;
+	Mon, 27 Oct 2025 11:37:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761565075;
+	bh=qEFSBVn7tvYChgqBuSbB762Baav+81SepQq/Uf98LX4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=QPZB8lkXka1OfqOTgreoj/P2Lg1hhWZXmp0ATPFjOUcqNjUMSysHbPqTyyVoyY21G
+	 pIPzTIEX+qR7+KzqRNGZ6cuJXse0MlchxX/qiRN2MqZYCiQY5t5V0OXONi9DqK3SSz
+	 K3AyPumi09jDGxYjIm9az3m97OE5uWSLyHisKPIPa2hli7eY0f5ffKsNYg1fH9rG2p
+	 Mc/tUYgYA3hAo/ShlSZseCveHX6OpCES8EJxQWqW8eVPC+0G+rGD1UU4DqFc705ygd
+	 p9jQBRWFkJa9wCUdyjyZpLmnuP/QTLnJSuAhyKVtHkBPYhC5plFZDMfv/br3uPs/P3
+	 MSRt9bNkz34ig==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  Pasha Tatashin
+ <pasha.tatashin@soleen.com>,  jasonmiu@google.com,  graf@amazon.com,
+  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
+  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
+  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
+  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
+  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
+  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
+  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
+  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
+  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
+  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
+  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
+  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
+  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
+  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
+  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
+  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
+  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
+  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
+  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
+  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
+  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
+  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
+  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
+  saeedm@nvidia.com,  ajayachandra@nvidia.com,  parav@nvidia.com,
+  leonro@nvidia.com,  witu@nvidia.com,  hughd@google.com,
+  skhawaja@google.com,  chrisl@kernel.org,  steven.sistare@oracle.com
+Subject: Re: [PATCH v4 00/30] Live Update Orchestrator
+In-Reply-To: <20251020142924.GS316284@nvidia.com> (Jason Gunthorpe's message
+	of "Mon, 20 Oct 2025 11:29:24 -0300")
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+	<CA+CK2bB+RdapsozPHe84MP4NVSPLo6vje5hji5MKSg8L6ViAbw@mail.gmail.com>
+	<mafs0ms5zn0nm.fsf@kernel.org>
+	<CA+CK2bB6F634HCw_N5z9E5r_LpbGJrucuFb_5fL4da5_W99e4Q@mail.gmail.com>
+	<20251010150116.GC3901471@nvidia.com> <mafs0bjm9lig8.fsf@kernel.org>
+	<20251020142924.GS316284@nvidia.com>
+Date: Mon, 27 Oct 2025 12:37:44 +0100
+Message-ID: <mafs0y0owd187.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="-1463770367-1022125602-1761562154=:3513"
-X-Rspamd-Queue-Id: 979F080015
-X-Rspamd-Server: rspam11
+Content-Type: text/plain
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6kn117dbecdzbh9xcx1nd6czxgu4kztg
 X-Rspam-User: 
-X-Stat-Signature: ujdwrupcch3xi5sfif8z18wijahef1wd
-X-HE-Tag: 1761562156-276223
-X-HE-Meta: U2FsdGVkX186uj6j4g3twOnaY7P9CavZTIycnsAK+9VgDeHVc6GB4vUkWPgI2NhQTe2ngtHMUpdZ7a9HjKXvjjn6gq69b+ANC5WO8MS+8FQj5VldMbtf3KNwWOCKLfXeEv5OzLETmk5GnIJy7IgUq/q0uxIb6I3fAGGxqT5xTnvtfbiut732U7FyU38KoEMhpYMlJw4FZqkdIBMLkeov0HngwpTlYocfUxaJrlWRhBxNAQc4yKKIvWXgvIxwwk5YpxIcFrqSRxLMTloJtQgSSeu0sEs5mgMmUjVglEpgopbh87+WknFg6HU66xCcmWROQ/+8QvPXnN0ilEfXZxErCOKRyU9iLHAy69neTJgZuQyRIgKgodaXzFkJTsUMYXu6yN0Vo1Rd2WZCUP7J3QxATg5qSNvkp7i6HrAeb6o9A2ylXRXivQZADhoH8N8souqOQUqZtxOIFijZ0fH/90Ab7E7M5YWBznUqF21GMMo4v3EfxobdVvDw/sFpoCrwX3n9LSt+vDmUgNypccLKHREYENbl+n9viB6XuoWLNOsj6yyq3PPxQsklx+QbnPdxpviiRrjeCBvX7fAPqB5xhJGf9QBcVvMDl6wimVP5r36uDb1LwmPSUwvNGaG07EHoopmik4CW8geKzBHWCak8bfGdLYvsVFDobR2RFeSJUON2mFU6bSnxq7Fr8YbGImlXtXd+JFy8Ql70PkrPrHwvQesrZXsF6apN9CM/USM39T1M8JtNVuGOWaIhtMSA7BDL0a2xqW2v4RBTblTboBDROLaeESlbaf3HtjN6K3YV0Ci0TEk7SB/gBHsfAlRz8eTCroplkqi/SV+zhTCh0p95AXEK0nuIdebv4T2Kt/Czvo6oSna/Wxt3AX154khoeDP/0zctc7aaygWD4smptxOMvhW2hybPmlzhAG9Uut1Ab4Nd/bqI/WWzPzaKTBRgL2DUzgybqLpKUAPVjxUhxZWkKjg
- 1irjq39P
- Isoc0m4x0rC2u1nzw39I/8CSWGb5YykqZDW540hSBrzH2KxQDJHtsaHI2QymSaJSI5qEEAtEGUoK74L9VTUUJhxkqTRXBVTQy9t2tGeu/diPhBc/9dngsOwgE14iDOcRx0k2wGsqLdyKp92RZcvn2EU4rJYMeCi+2OdR7XTMMxIOtsavSGtC0c6M42KnT+9SzYOQeufOD7ABDmyJt6izwrWjehDn2XytPu6ehBpzu9puJwLgs7pvlnfEZ7UagITQh4S8v0PjJawzNUqJ2KuOierrN4w1dUCFrRlzJ8pinD1+N57WhNtetjweJTqkM6RA5X7XNM3OwcbZfbK4sKoecfGxZfBOLyWgVMGqOOn4CYGHXo8jYqS6luRM2q39OBQ4YWCd8E3vzELcLKsMGV+Ecrgf/98ifUUOo/TVb8BVBgP4PiFWQBQ23KiMJMg==
+X-Rspamd-Queue-Id: 8A453180010
+X-HE-Tag: 1761565076-615581
+X-HE-Meta: U2FsdGVkX19K+9fGQdRPiD4VD9dyFPeAqSRrK4DLrnWB4YCRIWK1kLtTFiW5QWIKcG8N4eyuX2BoXoD6FV5XE3RSdkU7wny23+pTx6o4qFZ6Be7PHOM60OTg0ooBDkDWIOFBbd55Q5r6QIaHxkmI0ISi9W/CHXxx5LqEayyzwkEdarI6UzKr22fC6Enll4UJztREfeJoCiQGxdeaGicPWSiSOrMHVJX6jXQwnKpT71QMS7g1aC/vBNmVezogof0rNHGq9v+jUm5MkjK34Ls3LDbG2gNKODnGX05s2C64TO41SahIBPdsUmMSAu8ZnSV1yVqG30UdDRDZ/J6YO5qhO4TRaVQCuY9mb6KWouAHDgM5LwYkmULEfAr6+VlY6W+m451MnzMJ20/rzQ0sko11Cr8L5TNJB7jWaT/6GnLn68sKDkgnlc7nE9ATG8+HGtN+6BUH3XTJ0VwJi/Bau24rSw0qayfh4j10/aNDdNeL41zuKsaWuUqpalXVRNJrIMtYnBCaci6dh9tEHYWHUdSFquSh1WM0J252lZTqF0zXtmsCTR+LXmIVVbXhsBufiEIUe/1DUeY/SsDOW4pwNoz5++yVQ2PkQfZaihZ+xxm5x+nasYNyoYOeyQtywdqaG6d8Gz3wmH/zAStgDCSP2CW9wFAqRzTXG69RLBhAuEQyK+UE1pN8vK+x+fcP6J5I5BBHs7X2VE1bT3kA3BqiQb0vitoY5uD0VbMHCmbT7mDDsBdGQFvsuMrddfk+LZP6SPQFV6cFa/ZGLMhirhyHyVEhpNA4kXXPt1r/4UYXLvR9t1lc+CimUHP6qvMtJnhMJYuFKws0Lf1VjHE5shZjCBj6LZq0SVFqyWGLDZj2kEciCSMhk9HrwgbSDMIKj8DUdMET3KaSiBw2Euu+23WxwIghNgMIvvWAtPmn/RcA48wy48OgOhPc9SADl2PblvHrEj8sj737GWYBvkd7O1dkygB
+ n7uoYT2p
+ oWz0snUQbsgBTXcVVDvAIhwdz4wQtFs/xxNN4PR0fi1o/7wdw6qs1dCnvXjzcv0OPDKD2SDm3RA9XRC0BqENNJeUGwptz8d/jjk03NBjJNwmJLbW74F5v9MwT+juAwFpc8zmYLpfslWGgIf/NjhH18+IzQM82S3Ce5Se893dWhHDpXqvJ7TyIPyb2T+yQz2BeuRJRkZ4gM5SPAlaFgR8HjPV+dwCI0CO7g9lDpfbkj0ptu1o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,62 +123,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Oct 20 2025, Jason Gunthorpe wrote:
 
----1463770367-1022125602-1761562154=:3513
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
+> On Tue, Oct 14, 2025 at 03:29:59PM +0200, Pratyush Yadav wrote:
+>> > 1) Use a vmalloc and store a list of the PFNs in the pool. Pool becomes
+>> >    frozen, can't add/remove PFNs.
+>> 
+>> Doesn't that circumvent LUO's state machine? The idea with the state
+>> machine was to have clear points in time when the system goes into the
+>> "limited capacity"/"frozen" state, which is the LIVEUPDATE_PREPARE
+>> event. 
+>
+> I wouldn't get too invested in the FSM, it is there but it doesn't
+> mean every luo client has to be focused on it.
 
-On Thu, 23 Oct 2025, Yang Shi wrote:
-> On Thu, Oct 23, 2025 at 3:34=E2=80=AFAM Kiryl Shutsemau <kirill@shutemov.=
-name> wrote:
-> >
-> > On Wed, Oct 22, 2025 at 07:28:27PM +0200, David Hildenbrand wrote:
-> > > "garbage" as in pointing at something without a direct map, something=
- that's
-> > > protected differently (MTE? weird CoCo protection?) or even worse MMI=
-O with
-> > > undesired read-effects.
-> >
-> > Pedro already points to the problem with missing direct mapping.
-> > _nofault() copy should help with this.
-> >
-> > Can direct mapping ever be converted to MMIO? It can be converted to DM=
-A
-> > buffer (which is fine), but MMIO? I have not seen it even in virtualize=
-d
-> > environments.
-> >
-> > I cannot say for all CoCo protections, but TDX guest shared<->private
-> > should be fine.
-> >
-> > I am not sure about MTE. Is there a way to bypass MTE check for a load?
-> > And how does it deal with stray reads from load_unaligned_zeropad()?
->=20
-> If I remember correctly, _nofault() copy should skip tag check too.
->=20
-> Thanks,
-> Yang
+Having each subsystem have its own state machine sounds like a bad idea
+to me. It can get tricky to manage both for us and our users.
 
-Not a reply to Yang, I'm just tacking on to the latest mail...
+>
+>> With what you propose, the first FD being preserved implicitly
+>> triggers the prepare event. Same thing for unprepare/cancel operations.
+>
+> Yes, this is easy to write and simple to manage.
+>
+>> I am wondering if it is better to do it the other way round: prepare all
+>> files first, and then prepare the hugetlb subsystem at
+>> LIVEUPDATE_PREPARE event. At that point it already knows which pages to
+>> mark preserved so the serialization can be done in one go.
+>
+> I think this would be slower and more complex?
+>
+>> > 2) Require the users of hugetlb memory, like memfd, to
+>> >    preserve/restore the folios they are using (using their hugetlb order)
+>> > 3) Just before kexec run over the PFN list and mark a bit if the folio
+>> >    was preserved by KHO or not. Make sure everything gets KHO
+>> >    preserved.
+>> 
+>> "just before kexec" would need a callback from LUO. I suppose a
+>> subsystem is the place for that callback. I wrote my email under the
+>> (wrong) impression that we were replacing subsystems.
+>
+> The file descriptors path should have luo client ops that have all
+> the required callbacks. This is probably an existing op.
+>
+>> That makes me wonder: how is the subsystem-level callback supposed to
+>> access the global data? I suppose it can use the liveupdate_file_handler
+>> directly, but it is kind of strange since technically the subsystem and
+>> file handler are two different entities.
+>
+> If we need such things we would need a way to link these together, but
+> I'm wonder if we really don't..
+>
+>> Also as Pasha mentioned, 1G pages for guest_memfd will use hugetlb, and
+>> I'm not sure how that would map with this shared global data. memfd and
+>> guest_memfd will likely have different liveupdate_file_handler but would
+>> share data from the same subsystem. Maybe that's a problem to solve for
+>> later...
+>
+> On preserve memfd should call into hugetlb to activate it as a hugetlb
+> page provider and preserve it too.
 
-I sew no mention of page migration: __folio_migrate_mapping() does
-not use page_cache_delete(), so would surely need to do its own
-write_seqcount_begin() and _end(), wouldn't it?
+From what I understand, the main problem you want to solve is that the
+life cycle of the global data should be tied to the file descriptors.
+And since everything should have a FD anyway, can't we directly tie the
+subsystems to file handlers? The subsystem gets a "preserve" callback
+when the first FD that uses it gets preserved. It gets a "unpreserve"
+callback when the last FD goes away. And the rest of the state machine
+like prepare, cancel, etc. stay the same.
 
-It is using folio_ref_freeze() and _unfreeze(), thinking that
-keeps everyone else safely away: but not filemap_read_fast_rcu().
+I think this gives us a clean abstraction that has LUO-managed lifetime.
 
-And all other users of folio_ref_freeze() (probably not many but
-I have not searched) need to be checked too: maybe no others need
-changing, but that has to be established.
+It also works with the guest_memfd and memfd case since both can have
+hugetlb as their underlying subsystem. For example,
 
-This makes a fundamental change to speculative page cache assumptions.
+static const struct liveupdate_file_ops memfd_luo_file_ops = {
+	.preserve = memfd_luo_preserve,
+	.unpreserve = memfd_luo_unpreserve,
+	[...]
+	.subsystem = &luo_hugetlb_subsys,
+};
 
-My own opinion was expressed very much better than I could,
-by Dave Chinner on Oct 21: cognitive load of niche fastpath.
+And then luo_{un,}preserve_file() can keep a refcount for the subsystem
+and preserve or unpreserve the subsystem as needed. LUO can manage the
+locking for these callbacks too.
 
-Hugh
----1463770367-1022125602-1761562154=:3513--
+-- 
+Regards,
+Pratyush Yadav
 
