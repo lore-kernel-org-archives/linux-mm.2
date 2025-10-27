@@ -4,109 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64605CCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 18:18:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6BE07CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 18:32:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B121280084; Mon, 27 Oct 2025 14:18:34 -0400 (EDT)
+	id B328480085; Mon, 27 Oct 2025 14:32:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE9DE8000A; Mon, 27 Oct 2025 14:18:34 -0400 (EDT)
+	id B09B18000A; Mon, 27 Oct 2025 14:32:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A003A80084; Mon, 27 Oct 2025 14:18:34 -0400 (EDT)
+	id A1F3580085; Mon, 27 Oct 2025 14:32:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 8AA718000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:18:34 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 32805139FAC
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:18:34 +0000 (UTC)
-X-FDA: 84044704548.04.01C14DD
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 46BFF8000F
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:18:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=MmBQCWuq
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 8E7288000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:32:42 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 33B791A023D
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:32:42 +0000 (UTC)
+X-FDA: 84044740164.08.D1996E4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 2A57C20007
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:32:37 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=28hhJwrW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oCSSo1Q6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MFgb0DcY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NNHO9nAz;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761589112;
+	s=arc-20220608; t=1761589960;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8hHHPAlRJEB1JX0GbzKMa+2xxx7G+tpWaRTFldiRkSo=;
-	b=pdCPoWV6m3IVITcvDEQ0yxzRq7Z3r6cbVTmMi+rZs8Ifzdv1/CU6GWuI3jvc7DjPvyaAlc
-	FDqwdcQdueNUqLLEK/dmoHDDLT3ybI67B/NX122mMubL9PzK77H2RSIEbWc/640MmXNmP2
-	TSq88zpaOGIvGXnCunYiMTjh9s5Sk0A=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=MmBQCWuq;
-	spf=none (imf02.hostedemail.com: domain of osandov@osandov.com has no SPF policy when checking 209.85.210.170) smtp.mailfrom=osandov@osandov.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761589112; a=rsa-sha256;
+	bh=O8rPVFIRQgCv92HXGFMD6V73imct01W8ORHRoz8nI7Y=;
+	b=yWJCIXsYSG8ueq4IRr5nVpMjfzPPMd25Lp/TBEyRXQcsM+yeKKlm7xkZNIoJ7TsJXpah7n
+	PxhjQfSHaPIZgvg/32rm64uyTVayji8KtAY9EQMNxBBdh1z4G734RR4KpW1qBiIqdDvNqR
+	qkOMfsMK3z2JDRebYYPYUNsIdY5Dfxw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761589960; a=rsa-sha256;
 	cv=none;
-	b=ELvAMLLn79uHI+2BhTHZKSyQnWAAyaF2Qe0bdga98bcNzRM5hdrUg6VG0CmlO3WI2pyIY2
-	jbV4srXmd9/oUkogFagg94t1rEEvvuWpIdO66dD6X/yWFoXEUoBxTH9hkVfaEk7XN2LuYN
-	WJol9XitHHm3GcSFSWh3Mx6P+0YEJMk=
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a2687cb882so648316b3a.3
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761589111; x=1762193911; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8hHHPAlRJEB1JX0GbzKMa+2xxx7G+tpWaRTFldiRkSo=;
-        b=MmBQCWuqri+u3yOW8Ti0Cvp2TBGOt8Sozb3Zu1qw9De6vwanHe/Hrg6rNJkHGZD3q4
-         g7Bf2afQP/Gic+qFzHRz/L29ryoFsZIZ7e0/2pqQ8N1SCXLx8Ue9B68ys34OgFqbeqvk
-         lazwFVWcAGwQsAlBYXJStMFzPSCKikESvhfaZMHYDFIlb5wrzMdEiSdwCH5Pw/yuebaz
-         r4xBa+YNBy987Fq579+UB+CJg0qgzQFgj6TwZpt18AGY1aBwkutEGPkFNpvL/PvCJSnz
-         /mz7jJKcmK+i3b4CrHrA8TKcHeeFyZLEsoYc3r98+rwZ6XhkzW0zRi8/5XYhxM/YvnEd
-         I1Fg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761589111; x=1762193911;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8hHHPAlRJEB1JX0GbzKMa+2xxx7G+tpWaRTFldiRkSo=;
-        b=nsZc6yqFAGK7VSuewWNt7RVnUr77uroluy8sHRuh0Js9xzqJABaEQShfA1LwYNwDut
-         c5sIePplPMi2WO4/HVYtA14C5MvcODRvfTU0Eb/B1gKTuUKX6p7GOZ7REjsFd2cVCRkO
-         rc/xDZdp1EiuLAcI5lVQcS3VZrcKaeXhA40WLl6++RP6FRrjTqAq9aw0rJCuwpD3FyjZ
-         IPPZx2UiCBtoSGNroOAZs+VBN98YI3mz8iHA/XV8aL1E21PoyTtvGjqY6kft8YFhUb/j
-         0o/RMZcRf+qDVgwg3yrDBXZ48nfuXKTLOTEpaNirz6QRXpGy9c4QiDcQhNtwuDV1xfhB
-         kYXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3P8D37XuGcZ27NotLLYNi4HUfYMZgqG6MDN7VHLswJzhjlmGgF151XHxrPi5Au0HJGLvPcCsFFw==@kvack.org
-X-Gm-Message-State: AOJu0Yzar242uiR4f41SqXEOZ/87POK5hZoUrUgb9HcIICjGProSBSHv
-	EUeZvrS6ed/1dO9OaNZPrIuS/HS7aHez2fvMNcI0FHzfXzk/p1V8IV0KWZUx8GeHhOM=
-X-Gm-Gg: ASbGncueaOlkztq+fUZU7rXTF25kZ9ek/DYtV5bLy/ri/Q668+yAZ1/1RBJDcBnE22v
-	cv6+ceZ6lvfJ+wP8NH59Obbln6HbJnhZE4c97ysM50UaQxqSq76VHsUyetxz4XDxr3yKFZfWI3W
-	kQ3aJaZJUoRND/n/UGpDcqWkY7Rz06qkFxxlWbUyrOn5HwcJna1bBjWLhOFIDEG+NYndYNAlArx
-	3D7K4lW7+aFM1cBWd2gnuslmyc0PMFFnonkR3S94pl63qpTj0lHKCXCiXBTbNi6VOhyDsEKvOHX
-	J9JAGEo/4wwuNvCyYt3Ru6h0459hs7jHZvhxtuDbNS+LJW6qVGEJYI00jv2DWdu5Nlz38VYMor5
-	FLk4t5YdtMOdEZqJW6PNpJTtYcMHsITQa5ke4czrZKSIgETemCvogvhi9RBh4T90PB4k=
-X-Google-Smtp-Source: AGHT+IH+WOVT11S4sntBjYZgzee8qptVn9rhiLytdeFJhaeg0WjK0KUKG+IPmyVHCRZ/+efgBvP/aQ==
-X-Received: by 2002:a05:6a00:4b01:b0:742:94fe:c844 with SMTP id d2e1a72fcca58-7a441c09940mr515843b3a.4.1761589111082;
-        Mon, 27 Oct 2025 11:18:31 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:500::4:c4])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a414068f0fsm9053188b3a.46.2025.10.27.11.18.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 11:18:30 -0700 (PDT)
-Date: Mon, 27 Oct 2025 11:18:29 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: Israel Batista <linux@israelbatista.dev.br>
-Cc: akpm@linux-foundation.org, david@redhat.com, linux-mm@kvack.org,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-Message-ID: <aP-3dauwpc-Kq5Kh@telecaster>
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+	b=VNhaPJdUa90/ENFHaks+aVCqlBjz0z0GTK3djxsDK7PZAalS/ANZNx1TYDejVZ/XCyGHAo
+	rV1St35+Ql0kscHMQlUfFkp0NK5NS+F8F8Gb+Dvrn9xrG5zK7aL9JuWnIGKuIXjKX+XhW8
+	vEBBkQjL3Kl/V1iHw4+bKAaF7pPtqC8=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=28hhJwrW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=oCSSo1Q6;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=MFgb0DcY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NNHO9nAz;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 8D9D61F387;
+	Mon, 27 Oct 2025 18:32:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761589956; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=O8rPVFIRQgCv92HXGFMD6V73imct01W8ORHRoz8nI7Y=;
+	b=28hhJwrW6vdDKviAa1rsA6mADWrOFjhxZO7GNHzLNcjo+sKw5qMxMsRXiRrELaoovBvJbT
+	2Ec3hzzRRAGeU0Ov6n0fOsRlvykGUTZRY/kAmUB29uODhleZ6hfN35znL+6r7yw0/eqvH1
+	Aawc1EgPXeGA6PDnqPovmKjPfknc9+U=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761589956;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=O8rPVFIRQgCv92HXGFMD6V73imct01W8ORHRoz8nI7Y=;
+	b=oCSSo1Q6f5p/sw3jTqmBU8nru5dSlTedDUcdVCwqox/EQwfC7hFq4qCWBttdEEr3vDXMET
+	iMMmbh2WDY1UYEAg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761589955; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=O8rPVFIRQgCv92HXGFMD6V73imct01W8ORHRoz8nI7Y=;
+	b=MFgb0DcYPS4VOwDZBLt+R1ZzdjSNtxGZJB19HEsRrg3x89beEvCVhXiWCYwaH92JLo15Dd
+	iYNnXwCAVujKeZmz9jhhTWjAB30EOILqN+zgwjExoyxENMSZkbmz+HbStou0yYYx9mX7fA
+	+J5Pa3RZfjZuP6MIAYhX6SWcM58ln9k=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761589955;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=O8rPVFIRQgCv92HXGFMD6V73imct01W8ORHRoz8nI7Y=;
+	b=NNHO9nAzROXYjCE6mO52dtZV4lNQxzZcAxn5SzGZSHH3nodezCwW7X/7LllPxfp+qcFakW
+	NCrBYOAohVEY0XBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7C84013693;
+	Mon, 27 Oct 2025 18:32:35 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id dK0THsO6/2iLCwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 18:32:35 +0000
+Message-ID: <44066802-b505-4431-881d-371cf36f6d92@suse.cz>
+Date: Mon, 27 Oct 2025 19:32:35 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251026162156.12141-1-linux@israelbatista.dev.br>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 46BFF8000F
-X-Stat-Signature: trhsxgc3whjqdr1z79znaa4nh7niswmi
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/17] memcg: Convert mem_cgroup_from_obj_folio() to
+ mem_cgroup_from_obj_slab()
+Content-Language: en-US
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org
+References: <20251024204434.2461319-1-willy@infradead.org>
+ <20251024204434.2461319-16-willy@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251024204434.2461319-16-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4niz7578kqcj4gftgnhcxgr4zthswhhm
 X-Rspam-User: 
-X-HE-Tag: 1761589112-893678
-X-HE-Meta: U2FsdGVkX1/g8b+DA6TZXev7Yhou3VRQH/OceQQwMQp2jewc6VDmWtNiZ0yr8qltI1Vb3XPdY5z159lUEX4drhg3bXi4YUVCCnyjccR6hlO041RekbuKWwy4xJHi54Q6wHswG/43ftv5qKN+MPYA9Do+bH659YQbXWDtHzKwtmlHXx7+NXUxrAmf7FGFIWO9VeI+Vral4DF8R9GVAKhMFqHNdgNfB5Q6CR0QQWdUMnurQze0qZF2gdNfyW+xkksUkBBjegolaXGG5SyA7MGnsPkPB20AdvoiqzD+RjjaklaXPcAvmlAfO0+Pqyg3T7kn/xVBOYgz9c8CmeZRdWfePtvkua+0bh7RGQDrPme0jyenU7keRxX/7eCrOkg123VbMFHdQCFFhO2zEUqdobqSjPVSywGraMDZDAtZ7EB+09MTc1e9ameIJc4AYWuxOKNXvu8WaW6Cp3+LvTkpazMm/6pRx0zhyfzWLFutupW5W+aLdWW6Sr2CSMB8bvXiDM8NA6FGXup314/d+d0HqCYIOfOJEGi0NZ8CFmb0xZo93xwRGKxFPiiC3E6hpCI9b7SxVDD1sHNRUffIISwl7cFjqkbzITtuf3hSmN6T3hQOesYklVWCSQ9QR8dGN45qRIdEolDMq02JZVBnK/Z6oNgmz/svKE4Gc7GrMpbNVepJIPHwKjOkZ95JrGQ+nO17QlPA3P/XEtsAl+YItZvvmsM3OjRl0RUN1R6Go42nk5cycYjjSeK8QyEaJILX3Xg0n80uq18g5h1aACy09+7fr7nOcXcHInPpOhIcJDsLnrtOnIa8Wbkukz4ejDPymc8uOEHqE2I86rCSjLtGXqu5a1+ND2lLeFigR0THXwkdryHQkAWeRS9gzYwj50ETCZrq45Fb+60jhZI/oO6qu2Z+dJxX0aF4b5qbIfScRqJFNf8faBR18KU2K9SyDJD02w7BPIOJ8NNofdjGo2t+edUxIby
- KcwWUGx+
- SVRfcQKe2WZyHjPGvbZlE13Y+Op6GvY26u+f5Ix3+2j7RsuYsSRTCevVvLGx7DQa7v4T25CRGPkX3Lrj+AarLjNclcmouzFcu2CZgZoQcygOUEKUrqgtBlMhZVqr+/wPIB9mkpeQE0EBC1Yx9OvvLZ/GerQuUauwnEtYTK86PtQWlqoHtdacPuz+3bzKDWayksxqDGF1Jx3Rt/TcbZ6axP1hOG/FNlZkxZ9kbIbTYQLoJs6Em1H2OLpsBuq6NodY7gRFrtKaoCs3RdzzXqf45wT7zE8l0XAfT/W+AcuvggOUZL6l2HLGbRNrLg9RGfkMrjd5PFmEsLwPFwZ+g8q/KndWLZTHzi9gXaWpDBS6PVIMVBiE9B5UMxfqDdaKFWRObqXaYIDUaGKo7+Ab/peK2jNzf0WUWBb/BiAPS3KvYPz5PGPIkNIUp9opcU80eDqKBfaU1
+X-Rspamd-Queue-Id: 2A57C20007
+X-HE-Tag: 1761589957-145087
+X-HE-Meta: U2FsdGVkX18JPP8G3DD2l75ODOdORaWiEl8JgNmEyr9LwCxnbj1y5JOX6dIhnXixsW+FpEkYrq51xNExJZbN8DLnkviNjDHLPsDdf8nGrNAWFBKKUNulIFPf9y+7GlcoykWbK4XaZbcA4/6Bgl+9K7gVjB57hVD2e58RA/JzM4ZH10mbU1EKWsdBBogDhvboTTuGofD8khr/XlZPRRzrrce8YApTysy8y3OWL24kf/TRxocTFcnZnOLRkGulMP7K1HAg1mcEQqpa0+C2Kmk7DxE9tFxhz+UwE50CcFzA3GGDlSL3SJgCfjBTyAg6u4wag58TzxmZY/1b13MLkyuzqFY1DkgHmRHSCRulnc64HC6Wn9K3pQdkkrI2XSb3DEV0p8EcfYALD47qA6SWWQDo9sAbMScDOId9WLjdYjbz0/yjSe/v9SM1uxlrJ+yGeSa+naWXPpAQj+E9i4aBDzyu7xsP9yc7Pt2YLGSeK/aFtF/WY7DndjRd++7qxtdcDD0pLwJpw1BVcnauS/u/hws3vNzanxZe9UVNDymBwfEoj5nR0dlSMcEGQGGQ03kG/UmKqHFM3hiyXEbMgrJ+Pi5kvoF99hOOabup548fPBlNJMGvvuDOeVLVaOIOXWs4jreRws18M+rYCNoAaeORhJuESDFV8Aw5HfnDpXLcEc0rHc3b/OtHwpMlVVMsuySVHBYld9Wme958+UD8oLuiZ2KqzY6Y1TGcCT0Cyq/SqRm/aLceaTpDakhhEHebbF4P/bBuSwsBdiwJMgdH+3KUlE6gsj1pfs8asw8UQnojuK+rsz06M8K73IZMHyGuvspxf9j3i/hziNRbxurpeDzQ+MogpJB/8P258Zq+nfMxMVVpMuK3cey6foGWIZUVaI4+bjgpi0p4+VRdg7WZZ1zbvo7yaWT8xo3TRd4DpZ0rC+wOo74fXuPNlYRGkdQEf8rBZ1IKm6dHYeUvNnixYGWymkf
+ ErSFS8lF
+ 1ZdlKzKh6D5mQjJcpxYZ4xxLycZ0u4wAoQKZsdYywKwOOGRAMz8FdsQhwjwRl+Zcw745vA69GjA6CmNz5bP6L+CkunvfwFZfRmAPuRMzOIQ6iL/AOs1GTg9JGd4UP5/LZYgwY+qN2mHffMJz0xA830z09pS+RCfhhM/gM66/rLBG6+uJQfZs0+JlDRkghAGViS7oahmVGismvr8YpStVzQG0GqPNmG9veEJF3GiUUdVCzDMl8Ty8BwbzSsvmD+Xi9FdgxhQdBe7Bu2VMZpQmySMZ2EidRWluhCO4p+krtZYI6VO/Shupbx/XiSbLa6G1/NJpO3HdutYk8ajimGf9L5kl23SXnXBVs5CIdt5RpqktDkDEYrDNyDaPw7q7mOB14qNKwk3Z2WTJ26vY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,66 +181,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 26, 2025 at 04:22:05PM +0000, Israel Batista wrote:
-> The MEM_* constants indicating the state of the memory block are
-> currently defined as macros, meaning their definitions will be omitted
-> from the debuginfo on most kernel builds. This makes it harder for
-> debuggers to correctly map the block state at runtime, which can be
-> quite useful when analysing errors related to memory hot plugging and
-> unplugging with tools such as drgn and eBPF.
+On 10/24/25 22:44, Matthew Wilcox (Oracle) wrote:
+> In preparation for splitting struct slab from struct page and struct
+> folio, convert the pointer to a slab rather than a folio.  This means
+> we can end up passing a NULL slab pointer to mem_cgroup_from_obj_slab()
+> if the pointer is not to a page allocated to slab, and we handle that
+> appropriately by returning NULL.
 > 
-> Converting the constants to an enum will ensure the correct information
-> is emitted by the compiler and available for the debugger, without needing
-> to hard-code them into the debugger and track their changes.
-> 
-> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 > ---
->  include/linux/memory.h | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
+>  mm/memcontrol.c | 36 +++++++++++++-----------------------
+>  1 file changed, 13 insertions(+), 23 deletions(-)
 > 
-> diff --git a/include/linux/memory.h b/include/linux/memory.h
-> index ba1515160894..8feba3bfcd18 100644
-> --- a/include/linux/memory.h
-> +++ b/include/linux/memory.h
-> @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
->  unsigned long memory_block_size_bytes(void);
->  int set_memory_block_size_order(unsigned int order);
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 1a95049d8b88..c3ba53b40375 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -2558,38 +2558,28 @@ static inline void mod_objcg_mlstate(struct obj_cgroup *objcg,
+>  }
 >  
-> -/* These states are exposed to userspace as text strings in sysfs */
-> -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
-> -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
-> -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
-> -#define	MEM_GOING_ONLINE	(1<<3)
-> -#define	MEM_CANCEL_ONLINE	(1<<4)
-> -#define	MEM_CANCEL_OFFLINE	(1<<5)
-
-What kernel version is this patch based on? It doesn't apply on mainline
-because it is missing a couple of definitions added in 6.9 by commit
-c5f1e2d18909 ("mm/memory_hotplug: introduce
-MEM_PREPARE_ONLINE/MEM_FINISH_OFFLINE notifiers").
-
-> +enum mem_states {
-
-mem_state is very vague. enum memory_block_state might be a more
-appropriate name.
-
-Thanks for sending this!
-
-Omar
-
-> +	/* These states are exposed to userspace as text strings in sysfs */
-> +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
-> +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
-> +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
-> +	MEM_GOING_ONLINE	 = (1<<3),
-> +	MEM_CANCEL_ONLINE	 = (1<<4),
-> +	MEM_CANCEL_OFFLINE	 = (1<<5),
-> +};
+>  static __always_inline
+> -struct mem_cgroup *mem_cgroup_from_obj_folio(struct folio *folio, void *p)
+> +struct mem_cgroup *mem_cgroup_from_obj_slab(struct slab *slab, void *p)
+>  {
+>  	/*
+>  	 * Slab objects are accounted individually, not per-page.
+>  	 * Memcg membership data for each individual object is saved in
+>  	 * slab->obj_exts.
+>  	 */
+> -	if (folio_test_slab(folio)) {
+> -		struct slabobj_ext *obj_exts;
+> -		struct slab *slab;
+> -		unsigned int off;
+> -
+> -		slab = folio_slab(folio);
+> -		obj_exts = slab_obj_exts(slab);
+> -		if (!obj_exts)
+> -			return NULL;
+> +	struct slabobj_ext *obj_exts;
+> +	unsigned int off;
 >  
->  struct memory_notify {
->  	unsigned long start_pfn;
-> -- 
-> 2.51.0
-> 
-> 
+> -		off = obj_to_index(slab->slab_cache, slab, p);
+> -		if (obj_exts[off].objcg)
+> -			return obj_cgroup_memcg(obj_exts[off].objcg);
+> +	if (!slab)
+> +		return NULL;
+>  
+> +	obj_exts = slab_obj_exts(slab);
+> +	if (!obj_exts)
+>  		return NULL;
+> -	}
+>  
+> -	/*
+> -	 * folio_memcg_check() is used here, because in theory we can encounter
+> -	 * a folio where the slab flag has been cleared already, but
+> -	 * slab->obj_exts has not been freed yet
+> -	 * folio_memcg_check() will guarantee that a proper memory
+> -	 * cgroup pointer or NULL will be returned.
+> -	 */
+> -	return folio_memcg_check(folio);
+
+The changelog should perhaps mention this removal so it doesn't give people
+pause. I think the comment describes an impossible scenario, you probably
+concluded the same. I'm not sure if it became impossible unnoticed at some
+point, or was bogus since the beginning. I'll pretend I did not try git
+blame that.
+
+> +	off = obj_to_index(slab->slab_cache, slab, p);
+> +	if (obj_exts[off].objcg)
+> +		return obj_cgroup_memcg(obj_exts[off].objcg);
+> +
+> +	return NULL;
+>  }
+>  
+>  /*
+> @@ -2606,7 +2596,7 @@ struct mem_cgroup *mem_cgroup_from_slab_obj(void *p)
+>  	if (mem_cgroup_disabled())
+>  		return NULL;
+>  
+> -	return mem_cgroup_from_obj_folio(virt_to_folio(p), p);
+> +	return mem_cgroup_from_obj_slab(virt_to_slab(p), p);
+>  }
+>  
+>  static struct obj_cgroup *__get_obj_cgroup_from_memcg(struct mem_cgroup *memcg)
+
 
