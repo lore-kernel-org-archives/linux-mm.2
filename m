@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0ABAFCCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:22:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0C7FCCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:22:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B7A8800B6; Mon, 27 Oct 2025 19:22:35 -0400 (EDT)
+	id 4461E800B7; Mon, 27 Oct 2025 19:22:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640828009B; Mon, 27 Oct 2025 19:22:35 -0400 (EDT)
+	id 3F6408009B; Mon, 27 Oct 2025 19:22:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 556C1800B6; Mon, 27 Oct 2025 19:22:35 -0400 (EDT)
+	id 2E5DA800B7; Mon, 27 Oct 2025 19:22:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 424C08009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:22:35 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0B1CD1DFED2
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:35 +0000 (UTC)
-X-FDA: 84045470670.03.7E32C62
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 185DE8009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:22:40 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CC7AE1602A1
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:39 +0000 (UTC)
+X-FDA: 84045470838.30.686498A
 Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 5FA8D4000B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:33 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LauNHSgU;
-	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2C9E918000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:22:37 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xew2qL4G;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607353;
+	s=arc-20220608; t=1761607358;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZ5tLITVqa9KDyo9t477rOVIrm5gFKPHpPau7ALAhGY=;
-	b=bgHi28oT4v/n0PRazun3xyoLVFzkOsZhsfn0p5WXirBniDttEF8vJG0heWjzmYBM2eX5HH
-	OHSBi2S+bQXGvDCcEdxHB6VZKqEBAaFHaKk+onFyzkImW2MGsGXhkrNkKd34GusLM5fo+Z
-	vFCsw9IoDi9nbr5IqQn/jN5+G9htFzQ=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=LauNHSgU;
-	spf=pass (imf04.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607353; a=rsa-sha256;
+	bh=YdK0aCR8A07YZRsNoWuzLvR86FzrKXgk6tVODaQUgqs=;
+	b=aul9JANwcZzAiu/8SKXjysVNKw61Ytyw7KbQBlr4ZWj51hEublEtlT6+AzY3U3qx5u21wM
+	e5upX2w4vY2yQiVSG3O2h84sfEWSQVBDa86Tr3wqUpEvUKRhioZ3/wv1a6OojhE3FcyHrQ
+	GWVUbgH4O0ZwI4g5Oqf5kbSeRYxYnVQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607358; a=rsa-sha256;
 	cv=none;
-	b=asbouunaTGsbowE+A76H/xLAgumqnGr142LPA4looDS6wTLriQGLL9UY41NP0zDXYYTMjH
-	vnm64KYZD9eKlq6lLN0LN+vFkno/OpPnv2nhNVLNT0UCO19Lu121Fhm+Teth19mn9n2HsI
-	H8p6mCpmnWbTdfu7kEHAXW5u5MPluAs=
+	b=RwD8k3DM4t0RGY31swK9uaLBV5gpFbwueGdXAPkd11+/EgcRINlSurkI/omkiHRay7UEPQ
+	ZBXIuSvcqzuqKdRUmAFiNV0vZc6bWUnbnrz77Mj3A9j9PGsVUV1naap0195GLDrjDWCsN3
+	0Gyzh10s1bxcCfdOSRAd3PMM64o3osg=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Xew2qL4G;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf16.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607351;
+	t=1761607356;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=cZ5tLITVqa9KDyo9t477rOVIrm5gFKPHpPau7ALAhGY=;
-	b=LauNHSgUGUpJIP0Wk4mTGW3O8EQdK3D++1OLIJUOcHYVAIVVjetLzzHiNbZg/z+LihJNYb
-	XuqL/31o/ekZjCeriN0LLSFKm9P7EhF0Kpc7iOAJL+oPn3up8+Y5zaE7XeDZvL/ixPvHyQ
-	RCpDIP7U/kxHgVe5BsgQ3b3EH9+Ba2U=
+	bh=YdK0aCR8A07YZRsNoWuzLvR86FzrKXgk6tVODaQUgqs=;
+	b=Xew2qL4G/tWdDy6CNgxiCYnwBMK9DK6KFVqIAnXSBNQMYcs3G7gG9nbce81eK/BwtmDDHc
+	g+tN4YMVvDQt2CbI07LM4/eh0MNyo3y+aC1NPAyKQt/wUHU72S6D4umO0NRYt9Tq1AvzqQ
+	1ka9AhsBKnJgbN2AZ7/PFQf5ARhmIrY=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -77,22 +77,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 14/23] mm: allow specifying custom oom constraint for BPF triggers
-Date: Mon, 27 Oct 2025 16:21:57 -0700
-Message-ID: <20251027232206.473085-4-roman.gushchin@linux.dev>
+Subject: [PATCH v2 15/23] mm: introduce bpf_task_is_oom_victim() kfunc
+Date: Mon, 27 Oct 2025 16:21:58 -0700
+Message-ID: <20251027232206.473085-5-roman.gushchin@linux.dev>
 In-Reply-To: <20251027232206.473085-1-roman.gushchin@linux.dev>
 References: <20251027232206.473085-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: hh6fks3z4hi393x1otzgsh1966efbjwh
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 5FA8D4000B
-X-HE-Tag: 1761607353-872792
-X-HE-Meta: U2FsdGVkX19nuHFakEOZb4C9y6mw9SclC3NuEAr2yu/5xPjMvpJ1wUzJt8aTv1Pq4K62dr+P1BJK0bG8IPRCOOecAWzY8EBezeQ3ZnyeOnUkZ6cbSzFz0/2eIkU43QIKEMjv21laXRC3gPKBYc1rVZfT4Bdbh/8RijxtaFYWEG5ekYFJ/fHZkAf/EiTggKgc7ZYrMZrVrggXQvjV2LhZmCjG7H33kxqX46dtM1cSX7tFnQHpWlmjZC96AjjP4JZyGcaSJV4TlSOIDP/gsxQXa96vOx7CV1ngBU72wfPE7UsTR94/yrTK4EVL4DHfKy9Mdn3+ZpZSzJu40UFjzkIPcS3Ykf7yvBKINJNnsThh/VKgYhKwe5FNtZYpOyILXkJ10Nny3yjmuOYnB4NdVru9gTuC/HeOvlhum6kGHliFp5dxX/VMgOafbWvHb/wl2OCH5wDq8JR9mNXHP4sCnqwT+e6Nhs8/HMVtLdMObuad10z6INMKESM6HYYkiACYEhJjOXCaXfZMbINw6oqSKbbhRo0BsYeXEe9AofG7eIe6G6KHY2/5cJUJLOKT1g2T+nXZWzgSbsKmxNrbA+Y2kzsSgrKGeQMGPU5o5A8M6ENnVEu2dX2NDvvuzKte3IkbNKgdKonMfZNKdwBe28k/yflCZPfTMe20g9U6ybMwcYB25BqVY/p5a7618KZOSZH3wfQY2eCIh7kW4g2Vmoeiah4IRe7vQkdl72kH3waamfYe3jYRmdTJqIiX++5RGmDVrPkAOe6u8r2Vz9qM0yDQZEM374n+3DLuVyMqh9mPWo0TBHow/YtL3+uC8WTWRJ4SUf0jCRI1PGMM/Q25S57zkWr4gPMLJyC1VWslDBhoUENUG52vVF5r06Zk3R748EgUSUDoFLA8V3UCRUsr4vdN8bqQk8ZmtemqdGHjiKHrb+6vWr/gLhRaXMSIVUtdsIImaopTnUKOg736vT3N6pB6tSO
- oc4c2svP
- nWGtcn2WYp4OIJhjXZjtx2BrSUe5UH3thRJD4WC188hgiXCgVJErwhnNlDQFPwbpV2yO638K2KcBWFzBo5Qc3FxQD1IcFG0FQ7cCTL8a2KcInODNfJRyNliuonR11OuaN1xqCmITxb+ZfizEFrJHVqtFQ5jIItRKA5F4JDjLitklKhal9vG/GOP/FCRwR2preNSDUvaohI+EKYrg=
+X-Rspamd-Queue-Id: 2C9E918000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: giaeie5egpsd5modxzzpp17h5kptj6op
+X-HE-Tag: 1761607357-67984
+X-HE-Meta: U2FsdGVkX1+XF5Qcb0BSXkah0UbJ7FJvvXYd8z0Z+YKZ5ewrWlgiDqUBZTsVT6/Y9gTsN4/HNz8NSPsJRfoJ5WptaSnWMzoQa1RKsUv/gxWVEgZpghGBowLvVPoprX5GxvRwaQgF5VbyWZQEb53SmmMqzlZaCoUoVikMHcbiIreTzmrrcY4iLhsai7jU1ZvHv4Bp/4M6UPnM4hZ8Iqx/KlVGl7CjII2MQEuo+piaTOaGL+mk9bzeWzvuZgRCuQyMrQjBS7H1qCzHdS6CIXlWSv6gfQTsl/n0gmADsnjItVu8GVUXlH6LmJyYHgf+HwA/b/Kdnt4zFNQub+cCHl8JxhHyImFlyWiIUedlw7rJ+lXLwg0hQ/XP50Fjh+hnnSSwoQCBFlCZC6gD2qiy+Rn5Cs35YGYBgVzaSlEhnUSIhRrOts7x/kokLAdhQi/pSannPdk+qgIiSek2Caop6Ih3Op5W00nr0ykGf+F8SV8aS4CA/6RBN1d7TT+ECTjnJK9brOFmQhLnlBAh65A+15SeZaW17706RqONpJDwqwRulSjmwvaWgJ3A+o7SdDJ1tu6evx/YEWnr41TLsnxO/KvTUBc01M6Y0LuuRByV4wzL3WA91yrqytHPxZPZhxDfSzz2OUTiv/rNLdjweCMO7Br7zoZuEhafBEL3FBdT8v6fClhSuCEJ7Gzq+AvQNqB2Csk6pybXtDYJZVwYIEIHT+3KAoRJgdo9+ZNBkPe1WfLSgNsfsHm4xktq32oZhh829z5M5hCkFDIPdKLBqd70FxBjEi2WVe2/4THvHJkXwaUJ+eU/oCJiTraXKH2w9iJCOqE9y1OUJkwZ5jUB/+GXXa86mMs/7l0obNEehBRk/zbV6aTD0eSoUNdemt1/PNfFdZ8WBaMEFJbX2M0qvQiE0y77Ij9lmEEz8pU9t+jlSnIgbysrpeGIP7wyXRfrw1ONcPU2S8k7WmhQtgU1PBqWPPK
+ sEgOWk5b
+ 4MovS5z0q+oKV2ez/IXFJbp2IXRBw1rQsBQfEov+Gi70+4rOnvX3wyh0NdqaGdo9Mz9l8+8HS9z8eHI/ssWfVjwctHh4zDkMtoKO6I28jI1kK744D6GtIsp0viAtNW7eL1LBQ8lb8yPOF16VpYKbNYKcIyMudcBEfY3gq9vj2GrYIH5MPR1DPEFKwZrSGlAx1U3cVPhPHePhOfkDemXtvWQa9nM5CEFpQAZh0eFsLzqPmrsei0MZm9DBQvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,163 +101,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently there is a hard-coded list of possible oom constraints:
-NONE, CPUSET, MEMORY_POLICY & MEMCG. Add a new one: CONSTRAINT_BPF.
-Also, add an ability to specify a custom constraint name
-when calling bpf_out_of_memory(). If an empty string is passed
-as an argument, CONSTRAINT_BPF is displayed.
-
-The resulting output in dmesg will look like this:
-
-[  315.224875] kworker/u17:0 invoked oom-killer: gfp_mask=0x0(), order=0, oom_score_adj=0
-               oom_policy=default
-[  315.226532] CPU: 1 UID: 0 PID: 74 Comm: kworker/u17:0 Not tainted 6.16.0-00015-gf09eb0d6badc #102 PREEMPT(full)
-[  315.226534] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-5.fc42 04/01/2014
-[  315.226536] Workqueue: bpf_psi_wq bpf_psi_handle_event_fn
-[  315.226542] Call Trace:
-[  315.226545]  <TASK>
-[  315.226548]  dump_stack_lvl+0x4d/0x70
-[  315.226555]  dump_header+0x59/0x1c6
-[  315.226561]  oom_kill_process.cold+0x8/0xef
-[  315.226565]  out_of_memory+0x111/0x5c0
-[  315.226577]  bpf_out_of_memory+0x6f/0xd0
-[  315.226580]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  315.226589]  bpf_prog_3018b0cf55d2c6bb_handle_psi_event+0x5d/0x76
-[  315.226594]  bpf__bpf_psi_ops_handle_psi_event+0x47/0xa7
-[  315.226599]  bpf_psi_handle_event_fn+0x63/0xb0
-[  315.226604]  process_one_work+0x1fc/0x580
-[  315.226616]  ? srso_alias_return_thunk+0x5/0xfbef5
-[  315.226624]  worker_thread+0x1d9/0x3b0
-[  315.226629]  ? __pfx_worker_thread+0x10/0x10
-[  315.226632]  kthread+0x128/0x270
-[  315.226637]  ? lock_release+0xd4/0x2d0
-[  315.226645]  ? __pfx_kthread+0x10/0x10
-[  315.226649]  ret_from_fork+0x81/0xd0
-[  315.226652]  ? __pfx_kthread+0x10/0x10
-[  315.226655]  ret_from_fork_asm+0x1a/0x30
-[  315.226667]  </TASK>
-[  315.239745] memory: usage 42240kB, limit 9007199254740988kB, failcnt 0
-[  315.240231] swap: usage 0kB, limit 0kB, failcnt 0
-[  315.240585] Memory cgroup stats for /cgroup-test-work-dir673/oom_test/cg2:
-[  315.240603] anon 42897408
-[  315.241317] file 0
-[  315.241493] kernel 98304
-...
-[  315.255946] Tasks state (memory values in pages):
-[  315.256292] [  pid  ]   uid  tgid total_vm      rss rss_anon rss_file rss_shmem pgtables_bytes swapents oom_score_adj name
-[  315.257107] [    675]     0   675   162013    10969    10712      257         0   155648        0             0 test_progs
-[  315.257927] oom-kill:constraint=CONSTRAINT_BPF_PSI_MEM,nodemask=(null),cpuset=/,mems_allowed=0,oom_memcg=/cgroup-test-work-dir673/oom_test/cg2,task_memcg=/cgroup-test-work-dir673/oom_test/cg2,task=test_progs,pid=675,uid=0
-[  315.259371] Memory cgroup out of memory: Killed process 675 (test_progs) total-vm:648052kB, anon-rss:42848kB, file-rss:1028kB, shmem-rss:0kB, UID:0 pgtables:152kB oom_score_adj:0
+Export tsk_is_oom_victim() helper as a BPF kfunc.
+It's very useful to avoid redundant oom kills.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- include/linux/oom.h |  4 ++++
- mm/oom_kill.c       | 38 +++++++++++++++++++++++++++++---------
- 2 files changed, 33 insertions(+), 9 deletions(-)
+ mm/oom_kill.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/include/linux/oom.h b/include/linux/oom.h
-index 3cbdcd013274..704fc0e786c6 100644
---- a/include/linux/oom.h
-+++ b/include/linux/oom.h
-@@ -19,6 +19,7 @@ enum oom_constraint {
- 	CONSTRAINT_CPUSET,
- 	CONSTRAINT_MEMORY_POLICY,
- 	CONSTRAINT_MEMCG,
-+	CONSTRAINT_BPF,
- };
- 
- enum bpf_oom_flags {
-@@ -63,6 +64,9 @@ struct oom_control {
- 
- 	/* Policy name */
- 	const char *bpf_policy_name;
-+
-+	/* BPF-specific constraint name */
-+	const char *bpf_constraint;
- #endif
- };
- 
 diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index d7fca4bf575b..72a346261c79 100644
+index 72a346261c79..90bb86dee3cf 100644
 --- a/mm/oom_kill.c
 +++ b/mm/oom_kill.c
-@@ -240,13 +240,6 @@ long oom_badness(struct task_struct *p, unsigned long totalpages)
- 	return points;
+@@ -1397,11 +1397,25 @@ __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
+ 	return ret;
  }
  
--static const char * const oom_constraint_text[] = {
--	[CONSTRAINT_NONE] = "CONSTRAINT_NONE",
--	[CONSTRAINT_CPUSET] = "CONSTRAINT_CPUSET",
--	[CONSTRAINT_MEMORY_POLICY] = "CONSTRAINT_MEMORY_POLICY",
--	[CONSTRAINT_MEMCG] = "CONSTRAINT_MEMCG",
--};
--
- static const char *oom_policy_name(struct oom_control *oc)
- {
- #ifdef CONFIG_BPF_SYSCALL
-@@ -256,6 +249,27 @@ static const char *oom_policy_name(struct oom_control *oc)
- 	return "default";
- }
- 
-+static const char *oom_constraint_text(struct oom_control *oc)
++/**
++ * bpf_task_is_oom_victim - Check if the task has been marked as an OOM victim
++ * @task: task to check
++ *
++ * Returns true if the task has been previously selected by the OOM killer
++ * to be killed. It's expected that the task will be destroyed soon and some
++ * memory will be freed, so maybe no additional actions required.
++ */
++__bpf_kfunc bool bpf_task_is_oom_victim(struct task_struct *task)
 +{
-+	switch (oc->constraint) {
-+	case CONSTRAINT_NONE:
-+		return "CONSTRAINT_NONE";
-+	case CONSTRAINT_CPUSET:
-+		return "CONSTRAINT_CPUSET";
-+	case CONSTRAINT_MEMORY_POLICY:
-+		return "CONSTRAINT_MEMORY_POLICY";
-+	case CONSTRAINT_MEMCG:
-+		return "CONSTRAINT_MEMCG";
-+#ifdef CONFIG_BPF_SYSCALL
-+	case CONSTRAINT_BPF:
-+		return oc->bpf_constraint ? : "CONSTRAINT_BPF";
-+#endif
-+	default:
-+		WARN_ON_ONCE(1);
-+		return "";
-+	}
++	return tsk_is_oom_victim(task);
 +}
 +
- /*
-  * Determine the type of allocation constraint.
-  */
-@@ -267,6 +281,9 @@ static enum oom_constraint constrained_alloc(struct oom_control *oc)
- 	bool cpuset_limited = false;
- 	int nid;
+ __bpf_kfunc_end_defs();
  
-+	if (oc->constraint == CONSTRAINT_BPF)
-+		return CONSTRAINT_BPF;
-+
- 	if (is_memcg_oom(oc)) {
- 		oc->totalpages = mem_cgroup_get_max(oc->memcg) ?: 1;
- 		return CONSTRAINT_MEMCG;
-@@ -458,7 +475,7 @@ static void dump_oom_victim(struct oom_control *oc, struct task_struct *victim)
- {
- 	/* one line summary of the oom killer context. */
- 	pr_info("oom-kill:constraint=%s,nodemask=%*pbl",
--			oom_constraint_text[oc->constraint],
-+			oom_constraint_text(oc),
- 			nodemask_pr_args(oc->nodemask));
- 	cpuset_print_current_mems_allowed();
- 	mem_cgroup_print_oom_context(oc->memcg, victim);
-@@ -1350,11 +1367,14 @@ __bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
-  * Returns a negative value if an error occurred.
-  */
- __bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
--				  int order, u64 flags)
-+				  int order, u64 flags,
-+				  const char *constraint_text__nullable)
- {
- 	struct oom_control oc = {
- 		.memcg = memcg__nullable,
- 		.order = order,
-+		.constraint = CONSTRAINT_BPF,
-+		.bpf_constraint = constraint_text__nullable,
- 	};
- 	int ret;
+ BTF_KFUNCS_START(bpf_oom_kfuncs)
+ BTF_ID_FLAGS(func, bpf_oom_kill_process, KF_SLEEPABLE | KF_TRUSTED_ARGS)
+ BTF_ID_FLAGS(func, bpf_out_of_memory, KF_SLEEPABLE | KF_TRUSTED_ARGS)
++BTF_ID_FLAGS(func, bpf_task_is_oom_victim, KF_TRUSTED_ARGS)
+ BTF_KFUNCS_END(bpf_oom_kfuncs)
  
+ BTF_SET_START(bpf_oom_declare_oom_kfuncs)
 -- 
 2.51.0
 
