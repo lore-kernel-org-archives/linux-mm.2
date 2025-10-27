@@ -4,101 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 743DFCCF9EB
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 19:04:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16A40CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 19:16:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 97D6880087; Mon, 27 Oct 2025 15:04:21 -0400 (EDT)
+	id 440AE80088; Mon, 27 Oct 2025 15:16:32 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 92D208000A; Mon, 27 Oct 2025 15:04:21 -0400 (EDT)
+	id 3F0928000A; Mon, 27 Oct 2025 15:16:32 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 81BFF80087; Mon, 27 Oct 2025 15:04:21 -0400 (EDT)
+	id 2B86180088; Mon, 27 Oct 2025 15:16:32 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 62FEA8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:04:21 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1958DB74E5
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:04:21 +0000 (UTC)
-X-FDA: 84044819922.28.F0052C0
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 14D6B180013
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:04:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NTs7+Vwj;
-	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 173988000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:16:32 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 911D11A0257
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:16:31 +0000 (UTC)
+X-FDA: 84044850582.24.3FC8B3B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf14.hostedemail.com (Postfix) with ESMTP id BD4DC100016
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:16:28 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E23WllTF;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761591859;
+	s=arc-20220608; t=1761592589;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b5pBYMXTPntDn60DieBKkNa4T8Czf+7QY+NB3lTrCd4=;
-	b=19WoZ6fbdvig8FZHwW2QUDz/QejG6cPWjOIYekykue+ujYdpBAWiZ8ZCmxxx0EBwP+HbcP
-	aTMNaD48Q4KoLu8JdT9lbtyu9x6gsUId7TmHN/WU8CJmYKoAj8o5rKnBV9GB/79ZYqNkuJ
-	v2NsnOWxlot7l1SxxvIQBS4ksiRjmOI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=linuxfoundation.org header.s=korg header.b=NTs7+Vwj;
-	spf=pass (imf06.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761591859; a=rsa-sha256;
+	bh=biEqkPiWZ7skPB3ZUYN7GM347nSsM+EvIC+QGhJXhFc=;
+	b=2U185pgstLJ75rAwU8C8QE1JscqZPPAlqnnAaxaU/Dlmm301M3UlWpyjJjKRNPkS4xXh7m
+	csb5oJiGuIxbXBDgzsqfZy5zyzL8n+62YbKCLFVFSyi1kPcghD3pupCF5nOnFIDr4S9njq
+	iNZehzj+ipTngilJVfKC1i9TbkQEqZ0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761592589; a=rsa-sha256;
 	cv=none;
-	b=Tfy7qqq7SHTePbIyYMNS2aJlNmfacBF9azLUQRYrCpQ/rpQ/3CjO82vrMeg1NOVtiQeFs2
-	kAkgAc3NgmDhX0errB8kaziwwiXSRMObsn8MjrH2kUsOnvUMxv+2Jd58mwZnCoBqJYFF+H
-	UWXzTu04H1XW6A8Zb6GrxQE4gt0SpkY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C0F4B4483F;
-	Mon, 27 Oct 2025 19:04:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257A5C4CEF1;
-	Mon, 27 Oct 2025 19:04:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1761591857;
-	bh=b2BsWYnZLRQZDPpKVQRoLrMmWrDa6Fhuq3j6U0/3mzA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTs7+VwjoatVBtKor1+ZLn6Zeh4ZTS+4gcih0p+gNvhj+vttRK7UhAONC38ukl1Dr
-	 zCuoLv1ALUbdZUfE6/5CpiVBQqL2EY5nZ/V79aqjTLZyY4tksk8XprRnhGzXjnxsIZ
-	 /DjoXbQByA4wf6TrMYItJY233QG+2ANqoiKpHoxY=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	David Howells <dhowells@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Matthew Wilcox <willy@infradead.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Layton <jlayton@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Boris Pismenny <borisp@nvidia.com>,
-	John Fastabend <john.fastabend@gmail.com>,
-	linux-mm@kvack.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/123] splice, net: Add a splice_eof op to file-ops and socket-ops
-Date: Mon, 27 Oct 2025 19:35:04 +0100
-Message-ID: <20251027183447.045484526@linuxfoundation.org>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251027183446.381986645@linuxfoundation.org>
-References: <20251027183446.381986645@linuxfoundation.org>
-User-Agent: quilt/0.69
-X-stable: review
-X-Patchwork-Hint: ignore
+	b=Xz2UDCM6I3F1+dA0ptOwqwHX1uTTGbU+G9SdLvZ9sRIrIQWZ9VuHgnBoRRJjCv1qyt6TTK
+	41xR5jGxdI4aQIGir9hZ1NVqdJ1eKGoCGz7njDTci8p6Hqus98RNPLwpzLEr1i5pFCh3zh
+	9gUo33ERNQmYAAWFSG797cicA9WfkQU=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=E23WllTF;
+	spf=pass (imf14.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761592588;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=biEqkPiWZ7skPB3ZUYN7GM347nSsM+EvIC+QGhJXhFc=;
+	b=E23WllTFh4ZS0xHEMCPWRR4DK9/MfCX9UM+qQNxAN/TsBQCx9ZzzaUrfhA/573fk/ZjnGB
+	trl3fgoo0lj+GXFp9WJv1RAM12c046w+ZOtyscudSujmcGqYLWejaTD1gGH7S/r/9IO7Ek
+	u3zji3ccHhG6+TUKRqtaLHEuyQnD94Y=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-311-wDCu1bXTNx-EQbjB5F_C5A-1; Mon, 27 Oct 2025 15:16:26 -0400
+X-MC-Unique: wDCu1bXTNx-EQbjB5F_C5A-1
+X-Mimecast-MFC-AGG-ID: wDCu1bXTNx-EQbjB5F_C5A_1761592585
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4298b58bd3bso2534479f8f.2
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:16:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761592585; x=1762197385;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=biEqkPiWZ7skPB3ZUYN7GM347nSsM+EvIC+QGhJXhFc=;
+        b=TGHB0k4qUQ5NL/cfKpA2a/P2sSc/yuCJzeeScHyCq6y/zqqdg9HjlD01ydmf8zwTdU
+         9ZoRMFaVQkxxs2RvdrqXPo7wSCb4ZlB3lwt9tLdhP0EvBkSCelHS29OYMsYUhmBuOccb
+         Kc/WGRz1s284YAaDgHxAw4KPRLNM662Xz6mBNtNQGKjIoEOhA5/Y4kM7dP/gp3AT1VMh
+         sXFrfThr0NyrnX7xF7H5WLjOIjgw2aHi5BtuotnVSKHN76UGR39Ctnu9u1X5AvyR7rLx
+         Kc+SECtELPLR1M/X0HxAMLl6fYl+1HN/AytJPQxhSqbdj/dH2pVlu82yRthpoMcJRn9O
+         U6OQ==
+X-Forwarded-Encrypted: i=1; AJvYcCULqNnjbzzJpJ6wRMUe/rqbXxdaC+3qfSHIX4LuEqOZBCIKekTjOxnTKomxykC5PW8G0jRK89WbeQ==@kvack.org
+X-Gm-Message-State: AOJu0YwXCJD+qDhMppH+tQzGVNdekJ28e2IPlDcb0CGHCZhU67RGyqVI
+	Ch8aHW/lUWtFBWzfFK5nSDZm79e01MQlD8salcNzxv+OUG0h/WlLRiSI0PUfXJHBlV4oOaRmBW7
+	+lS320XlfIaKTa5MObCBmHfRNRBKN48qwn26x+vYJ7YvPGt1nNXGr
+X-Gm-Gg: ASbGncupr1jZmZ8MudmYvXeI/1L5VwnCt62w8ctz5CrOGnaUXoNkm0aTAwNkhbNg5sS
+	piiOT4sZUGcy3PH4x1B87BPBiS3mWerF9D+VaR2HmQ/UN7bn8LfkCRj/OsYa7mRjs5TQgq1slWZ
+	BIKtF4qGPcHolXh2c/0WAR869GN3EX5GvrIIL98sH7T6jEJsr7NeZAa8P85xtfrSMYugCzUNG2s
+	oKMNFxZ3AN1L3Jd0GkgVdRSZ5YwMkrh66yVS8blCVEcDt7KttxX/5AbvqRbAaRmw6ERPTHuXGMv
+	jqRnLZ6W2KcIA2I2mte2PLyfU25t+SxN/vgGJcOnOhVL/nFZGfo3sJkC958mc7E0kEMoDMz8kt7
+	SN3Qt6sWN2deSg/CoY3dcBxnrFiMsiGOKBz/S5oM5Cgkc4V16nv1xVLXz2l3SspO2gLyMhLInc8
+	0x3bBIbfFCUOoNW++CGKnIHL37zFQ=
+X-Received: by 2002:a05:6000:2282:b0:428:3be9:b465 with SMTP id ffacd0b85a97d-429a7e82d65mr735444f8f.51.1761592585239;
+        Mon, 27 Oct 2025 12:16:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAbcxPet5KDK4EyDqX4B1ENPi0b55gto2Df397tHLhHRC58HpBYcH56FL5Wv4AO4I76PFYEw==
+X-Received: by 2002:a05:6000:2282:b0:428:3be9:b465 with SMTP id ffacd0b85a97d-429a7e82d65mr735425f8f.51.1761592584792;
+        Mon, 27 Oct 2025 12:16:24 -0700 (PDT)
+Received: from ?IPV6:2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169? (p200300d82f3f4b00ee138c225cc5d169.dip0.t-ipconnect.de. [2003:d8:2f3f:4b00:ee13:8c22:5cc5:d169])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df62dsm17170002f8f.45.2025.10.27.12.16.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Oct 2025 12:16:24 -0700 (PDT)
+Message-ID: <99e795fa-ba7e-4334-98e1-c17ba8ce5e3e@redhat.com>
+Date: Mon, 27 Oct 2025 20:16:23 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: zzzrgbesy93x35qdxhi4ceqrhiskmuc7
-X-Rspamd-Queue-Id: 14D6B180013
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+To: Omar Sandoval <osandov@osandov.com>
+Cc: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
+ linux-mm@kvack.org, linux-debuggers@vger.kernel.org,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
+ <aP-2x314BKks2_N9@telecaster>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <aP-2x314BKks2_N9@telecaster>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: yk8NZNag92z6OP5zAww52kQAcDr_GUrpzsc4ksb16Yc_1761592585
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: qinpxmt5co7izuefczo7qn367ef6wtsb
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761591858-867496
-X-HE-Meta: U2FsdGVkX1+dZ43AMl/y21nlUrgPguZ+DLq3/zWjEdJcGP4vgXICtUQPKupWtW9Ba8f5WO6GxZQ9ndKA2lVRb/2irSpK/mNjncOzUkzuVBFK6JsVG1FC3h6Zd46DLTbxTE0VWG+bKeXbFtQAWYCh1dwtyJKmL4LcetuX7B+dfJhnfx8+9Ax+qUaVoRxPGwdT8VGLvBIadyP838t7kP4xcVzEY2nIGqCtMUEX7Xw9uYZolIHxOLehfotnctdlEcEUse0x6eshoOiLqorm+UJLO5HcHeMtNGuW5ZRHQ7kr9HWb7901mk5uv3tMKP84uXFUmrTPmDciJd0VLv5dPvg3Yf/Fi10eSB+kK3eZn0nSLVFaKJIDk4MOVbHPDS13YmTFOzDVQ81lbm0X89/BNp9l2X1cQkxB8o/k0U5PRFOhtTlq65isrvPB+jIKIqLc6Bt0oP8RlOgsZIGNCCCh7Vm2TcukvMstmRIW3/8rRf8up5yadf363DuFVCsZ2SeXAcGvRB4mAZDoULVG3WFt83EGHpzmt5YOJPfVXkhEoWnQGTjlLmVdQrQ/SDnDKcmU7aajUnaELUe91815UlqkXzABJGP4Alk49tOjYjYFovrolesbYdM9kjULaPP7JEA6tmuqVS8RiL5v9NcT7ur4A4t24mzNTcBnoeDKr+9LgAwQpAxbHEjmrf2U9wTYbppRiV5+cieLRuiKE8bofneTonyZLgdue5aGqkAr73gRSywribQlGLahweF1I+21iTwWr+eRhq2bAIzEYpc3In7cENPogMb7NS39WGoIGdEsT7LBhF8RmqZ0RcZNKS7EKjhgeIPzoNNoXAb9pMpS0rBlL7yuuju2rPh5Gi90tqJ9ulYI4hvw0mzNQVq7m3Z5L7l9h5US8XkeiFFLvCWQbtJ9BU5dQ7TjsHaMVfp7oVILm4Zzc+JpKzTpdUFeYuz1SXGqbi7rYDSh++nrgUF2OIYG5kB
- mB0x24QJ
- XjoaGxYw/x9lHDkRBpb7Gb9DmV+CfxcwUTcytDehHIeD+cz7nXjt2vb80RqdHNbdeELvUFDgX+SUMde29MYGO35hcY4Ehap9num0VKJdmLysqHRNHknwZBbwUIAZLE1//Bzfb8JeFvZ9EBSeCL3Vuuk1W5qTpqRFPf8X7AJlIHmgCue33B4FuHqVzOGoMuoiq/V0qRbG7bYw13u8cCaEOdItlMv+IKwp7UNHOcIAsZblB9Jcm2N9l+cWDeSPLXPI0qR7bTKMIYTjT67cTPN9H2RyHvDKDXNVt6P3Sdq7ZIrxq4o492uDOHnzagRU3k9yFAsYl4+J9c/Y08fBLdAN9L307cg/vJ+TpubVEmx8742aRCDH9ND2J7QRc022ZgdyRpiC+POZ+H7AqEPu6QGQN5KXiWzyrZmn6BsoCr66+FlVfnKDBPW0qoEOoeXeHUr3tKbBrJVHiNEHrqSMdGkdizUSQE29JX+C36N6Mow5aCpDW15ZUzOsoJ8YwdspiKObZz3QovQTK2s1qin1K8zN+GMTAs3BumWNYa0UHTRIDTZw6rbf3slUw6Rpv7f+FCRQ9b26+ww+K3q2/FxEuMRHEVykZMcE+zsCkRySmvECkw30N7KAQB2uY+vnENuZPP/KniouRLRn1mdSeGu01QDYlayPQDwS+Q826HloVNvpB28TItSQu6rOkoTQH52WMhDKn3XS/
+X-Rspamd-Queue-Id: BD4DC100016
+X-HE-Tag: 1761592588-639157
+X-HE-Meta: U2FsdGVkX19QjCowqVm6hx/txEIYDdxpSXOXzkpG4GflmYUvM2yjueZfKE0GqYXZEg9RIxL1T4iYlWmZUz0lf6D8HJmr1weWjeCPZb2V0EuOwZsrVWEcJgaZ6qIThgcOn1a5R3ERTuKhNUgaG03Rnvkne27J2o3LPhM1gkWGZfOAn06DxgsjUlc27QaJm2jKfMR8WPpbQKgmKBcH8ZoHdhMnyjTb27pGpUQqfdnMwaMNz1CSJ9OFAcxedsklvs/GS+4DF79vzrHobO/6QhGTxdJj7XxrraXDPnAkXwfWKuJl8s92uke49Fo1AcTrUm/q+EmU4u/t3Bspdw8cuZCFpZCdaqcE+F894BA4lhADbCmeKfmY2A94x+Xd/uMZW3pSMjHg4m+bHZSCkDrnqGSGBJ4ozCHHziZgU+OKmUaDh/dEXbgWBZs4wfHuZSRf0LsEJwrWRM7+rOPKCJIFR/LTyQAL0+m+z2PUKYcQMTi8g1kramaZ5EyVt+v1rs8iW6Gi/RWcNq/lC8Qb5K5Zde8QSww3FrZ1Azi3+P03HZoAsrJXQEx1oh919qZ7+LQzmBJ7YqTYYGTLZcclbjMJRvr7/+GP3TbJJacZJL57DVipskFo3i7XZ2rRCEoF+MzdGwcgCq+X6JASN4iGLiERRFKLKh74BbcOyhYNZlkaPatwDPRG8Q6iGtperNfsaXd5/jyh4/evsmqJwS0cEO25UrvUClDmXR0hgi269W9Czjjzw2bs24uOs4CGHxQ73GKTa5rw0rukN8ee0sSABaA6zlt957xADk4PaOuZSA/fOLKEw0+bRaoqqh1/K5QOXQxqlJzCYx1QDCf63OFXefd5FvF+VM++ebr0/foLNmiq47ID+V5CdZSFVBA24/k7qKhz5HJ4U/nh2dRWcSODAXQrd3VeG52xeyGV3FNnLTuEFvKbBrnk9N69V/l4m7caeAElmF5wzDZuU6XdNPeU7bQaobl
+ 0zpjOlUx
+ EfIb8oIgVJFxSulQaceDM4CwMQriK3Ugb0qS7VV3u2anGgiNCvA4BjjZ2Z+qDcS1bmPVGxoTvHXtv/WTclZS7522XkVofRtAx+foc7ug7XVXMJfTdy5/aXAcfag/Qx9RHvL39A0IzvKLJU9rJNcAwzv1Hs4qEUGC2fTfzOkJaj3nXqpZC+8d3a12LZqB9Bcijsy2roMoV+jNejGuWbtCmVuZe+78SoyoUtH+YYCSqLdDuiuCXvN/z9NpmY9K2HtX20UWZASddlBTn1bU84tUcSsdcOjfERI0TPB7OI2PlwmAU97ai1GC/ZZ/VT4qEQZVhXiq7dmpPvdArD6drmyuKgl3pjg2K5rRxy8jd/thGn4IMkdeYwvnp5DdaKYzWOATJGb7gvN+2TIc4k4GMAffqQtcv1LVx+a5i0cuDTfbu5S/eljElLj/WuwW+CnPSTHuSLlGQVHdzq/8BdhPqC+bN5/nbvGeikCe+lh8y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,217 +180,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+On 27.10.25 19:15, Omar Sandoval wrote:
+> On Mon, Oct 27, 2025 at 10:29:15AM +0100, David Hildenbrand wrote:
+>> On 26.10.25 17:22, Israel Batista wrote:
+>>> The MEM_* constants indicating the state of the memory block are
+>>> currently defined as macros, meaning their definitions will be omitted
+>>> from the debuginfo on most kernel builds. This makes it harder for
+>>> debuggers to correctly map the block state at runtime, which can be
+>>> quite useful when analysing errors related to memory hot plugging and
+>>> unplugging with tools such as drgn and eBPF.
+>>>
+>>> Converting the constants to an enum will ensure the correct information
+>>> is emitted by the compiler and available for the debugger, without needing
+>>> to hard-code them into the debugger and track their changes.
+>>>
+>>> Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+>>> ---
+>>>    include/linux/memory.h | 16 +++++++++-------
+>>>    1 file changed, 9 insertions(+), 7 deletions(-)
+>>>
+>>> diff --git a/include/linux/memory.h b/include/linux/memory.h
+>>> index ba1515160894..8feba3bfcd18 100644
+>>> --- a/include/linux/memory.h
+>>> +++ b/include/linux/memory.h
+>>> @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+>>>    unsigned long memory_block_size_bytes(void);
+>>>    int set_memory_block_size_order(unsigned int order);
+>>> -/* These states are exposed to userspace as text strings in sysfs */
+>>> -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
+>>> -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
+>>> -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
+>>> -#define	MEM_GOING_ONLINE	(1<<3)
+>>> -#define	MEM_CANCEL_ONLINE	(1<<4)
+>>> -#define	MEM_CANCEL_OFFLINE	(1<<5)
+>>> +enum mem_states {
+>>> +	/* These states are exposed to userspace as text strings in sysfs */
+>>> +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
+>>> +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
+>>> +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
+>>> +	MEM_GOING_ONLINE	 = (1<<3),
+>>> +	MEM_CANCEL_ONLINE	 = (1<<4),
+>>> +	MEM_CANCEL_OFFLINE	 = (1<<5),
+>>> +};
+>>>    struct memory_notify {
+>>>    	unsigned long start_pfn;
+>>
+>> CCing Lorenzo, we recently had a discussion about such conversions.
+> 
+> Yeah, I've been asking people to send out these conversions as we
+> encounter them in drgn, but ONLY when the absence of a value in the
+> kernel debugging symbols causes actual problems for drgn. I want it to
+> be clear that we're not spamming these just to cause churn. This is an
+> unfortunate corner case of debug info that leaves us with no other
+> option.
 
-------------------
+Well, I think we use the opportunity to clean all this further up, so 
+all good :)
 
-From: David Howells <dhowells@redhat.com>
+> 
+>> The states are mutually exclusive (so no flags), so I wonder if we can just
+>> drop the (1<< X) setting completely.
+> 
+> FWIW, putting my C standard committee hat on, there is nothing wrong
+> with combining flags in an enum. 
 
-[ Upstream commit 2bfc66850952b6921b2033b09729ec59eabbc81d ]
+Right.
 
-Add an optional method, ->splice_eof(), to allow splice to indicate the
-premature termination of a splice to struct file_operations and struct
-proto_ops.
+> C11 is silent on the matter, but C23
+> made this explicit. Quoting 6.7.3.3, paragraph 16: "After possible
+> lvalue conversion a value of the enumerated type behaves the same as the
+> value with the underlying type, in particular with all aspects of
+> promotion, conversion, and arithmetic." Lorenzo may have been thinking
+> of the stricter rules in C++.
 
-This is called if sendfile() or splice() encounters all of the following
-conditions inside splice_direct_to_actor():
+Right, it was around semantics.
 
- (1) the user did not set SPLICE_F_MORE (splice only), and
+For example, instead of defining the flags as an enum, define the actual 
+bits in an enum.
 
- (2) an EOF condition occurred (->splice_read() returned 0), and
+> 
+> Of course, semantically, it makes more sense to use distinct values in
+> cases like this where the values are not actually flags.
 
- (3) we haven't read enough to fulfill the request (ie. len > 0 still), and
+Right. And that's the case here, we just made it look like flags for no 
+apparent reason.
 
- (4) we have already spliced at least one byte.
+So I hope we can clean this up in the same go (same patch or addon patch).
 
-A further patch will modify the behaviour of SPLICE_F_MORE to always be
-passed to the actor if either the user set it or we haven't yet read
-sufficient data to fulfill the request.
+> 
+>> IIRC, these values are not exposed to
+>> user space, only the corresponding names are, see state_show().
+>>
+>>
+>> Won't the compiler now complain that e.g., kcore_callback() does snot handle
+>> all cases? (no default statement)
+> 
+> Only if the controlling expression of the switch statement actually has
+> the enum type. All existing code uses unsigned long, so the compiler
+> doesn't care.
 
-Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
-Link: https://lore.kernel.org/r/CAHk-=wh=V579PDYvkpnTobCLGczbgxpMgGmmhqiTyE34Cpi5Gg@mail.gmail.com/
-Signed-off-by: David Howells <dhowells@redhat.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-cc: Jens Axboe <axboe@kernel.dk>
-cc: Christoph Hellwig <hch@lst.de>
-cc: Al Viro <viro@zeniv.linux.org.uk>
-cc: Matthew Wilcox <willy@infradead.org>
-cc: Jan Kara <jack@suse.cz>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: David Hildenbrand <david@redhat.com>
-cc: Christian Brauner <brauner@kernel.org>
-cc: Chuck Lever <chuck.lever@oracle.com>
-cc: Boris Pismenny <borisp@nvidia.com>
-cc: John Fastabend <john.fastabend@gmail.com>
-cc: linux-mm@kvack.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: b014a4e066c5 ("tls: wait for async encrypt in case of error during latter iterations of sendmsg")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/splice.c            | 31 ++++++++++++++++++++++++++++++-
- include/linux/fs.h     |  1 +
- include/linux/net.h    |  1 +
- include/linux/splice.h |  1 +
- include/net/sock.h     |  1 +
- net/socket.c           | 10 ++++++++++
- 6 files changed, 44 insertions(+), 1 deletion(-)
+Ah, indeed, inherited from the notifier_call implementation. Which 
+brings us to another topic: likely we should see where we can then 
+actually used this named enum.
 
-diff --git a/fs/splice.c b/fs/splice.c
-index 5dbce4dcc1a7d..e8591211044a3 100644
---- a/fs/splice.c
-+++ b/fs/splice.c
-@@ -767,6 +767,17 @@ static long do_splice_from(struct pipe_inode_info *pipe, struct file *out,
- 	return out->f_op->splice_write(pipe, out, ppos, len, flags);
- }
- 
-+/*
-+ * Indicate to the caller that there was a premature EOF when reading from the
-+ * source and the caller didn't indicate they would be sending more data after
-+ * this.
-+ */
-+static void do_splice_eof(struct splice_desc *sd)
-+{
-+	if (sd->splice_eof)
-+		sd->splice_eof(sd);
-+}
-+
- /*
-  * Attempt to initiate a splice from a file to a pipe.
-  */
-@@ -869,7 +880,7 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
- 
- 		ret = do_splice_to(in, &pos, pipe, len, flags);
- 		if (unlikely(ret <= 0))
--			goto out_release;
-+			goto read_failure;
- 
- 		read_len = ret;
- 		sd->total_len = read_len;
-@@ -909,6 +920,15 @@ ssize_t splice_direct_to_actor(struct file *in, struct splice_desc *sd,
- 	file_accessed(in);
- 	return bytes;
- 
-+read_failure:
-+	/*
-+	 * If the user did *not* set SPLICE_F_MORE *and* we didn't hit that
-+	 * "use all of len" case that cleared SPLICE_F_MORE, *and* we did a
-+	 * "->splice_in()" that returned EOF (ie zero) *and* we have sent at
-+	 * least 1 byte *then* we will also do the ->splice_eof() call.
-+	 */
-+	if (ret == 0 && !more && len > 0 && bytes)
-+		do_splice_eof(sd);
- out_release:
- 	/*
- 	 * If we did an incomplete transfer we must release
-@@ -937,6 +957,14 @@ static int direct_splice_actor(struct pipe_inode_info *pipe,
- 			      sd->flags);
- }
- 
-+static void direct_file_splice_eof(struct splice_desc *sd)
-+{
-+	struct file *file = sd->u.file;
-+
-+	if (file->f_op->splice_eof)
-+		file->f_op->splice_eof(file);
-+}
-+
- /**
-  * do_splice_direct - splices data directly between two files
-  * @in:		file to splice from
-@@ -962,6 +990,7 @@ long do_splice_direct(struct file *in, loff_t *ppos, struct file *out,
- 		.flags		= flags,
- 		.pos		= *ppos,
- 		.u.file		= out,
-+		.splice_eof	= direct_file_splice_eof,
- 		.opos		= opos,
- 	};
- 	long ret;
-diff --git a/include/linux/fs.h b/include/linux/fs.h
-index a8d708fe08b30..72a956d243c2e 100644
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2104,6 +2104,7 @@ struct file_operations {
- 	int (*flock) (struct file *, int, struct file_lock *);
- 	ssize_t (*splice_write)(struct pipe_inode_info *, struct file *, loff_t *, size_t, unsigned int);
- 	ssize_t (*splice_read)(struct file *, loff_t *, struct pipe_inode_info *, size_t, unsigned int);
-+	void (*splice_eof)(struct file *file);
- 	int (*setlease)(struct file *, long, struct file_lock **, void **);
- 	long (*fallocate)(struct file *file, int mode, loff_t offset,
- 			  loff_t len);
-diff --git a/include/linux/net.h b/include/linux/net.h
-index ba736b457a068..9054f17e4b631 100644
---- a/include/linux/net.h
-+++ b/include/linux/net.h
-@@ -187,6 +187,7 @@ struct proto_ops {
- 				      int offset, size_t size, int flags);
- 	ssize_t 	(*splice_read)(struct socket *sock,  loff_t *ppos,
- 				       struct pipe_inode_info *pipe, size_t len, unsigned int flags);
-+	void		(*splice_eof)(struct socket *sock);
- 	int		(*set_peek_off)(struct sock *sk, int val);
- 	int		(*peek_len)(struct socket *sock);
- 
-diff --git a/include/linux/splice.h b/include/linux/splice.h
-index a55179fd60fc3..41a70687be853 100644
---- a/include/linux/splice.h
-+++ b/include/linux/splice.h
-@@ -38,6 +38,7 @@ struct splice_desc {
- 		struct file *file;	/* file to read/write */
- 		void *data;		/* cookie */
- 	} u;
-+	void (*splice_eof)(struct splice_desc *sd); /* Unexpected EOF handler */
- 	loff_t pos;			/* file position */
- 	loff_t *opos;			/* sendfile: output position */
- 	size_t num_spliced;		/* number of bytes already spliced */
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 3158cf0269ac9..b987074f80965 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1229,6 +1229,7 @@ struct proto {
- 					   int *addr_len);
- 	int			(*sendpage)(struct sock *sk, struct page *page,
- 					int offset, size_t size, int flags);
-+	void			(*splice_eof)(struct socket *sock);
- 	int			(*bind)(struct sock *sk,
- 					struct sockaddr *addr, int addr_len);
- 	int			(*bind_add)(struct sock *sk,
-diff --git a/net/socket.c b/net/socket.c
-index bb2a209e3e28d..1d71fa44ace45 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -129,6 +129,7 @@ static ssize_t sock_sendpage(struct file *file, struct page *page,
- static ssize_t sock_splice_read(struct file *file, loff_t *ppos,
- 				struct pipe_inode_info *pipe, size_t len,
- 				unsigned int flags);
-+static void sock_splice_eof(struct file *file);
- 
- #ifdef CONFIG_PROC_FS
- static void sock_show_fdinfo(struct seq_file *m, struct file *f)
-@@ -163,6 +164,7 @@ static const struct file_operations socket_file_ops = {
- 	.sendpage =	sock_sendpage,
- 	.splice_write = generic_splice_sendpage,
- 	.splice_read =	sock_splice_read,
-+	.splice_eof =	sock_splice_eof,
- 	.show_fdinfo =	sock_show_fdinfo,
- };
- 
-@@ -1037,6 +1039,14 @@ static ssize_t sock_splice_read(struct file *file, loff_t *ppos,
- 	return sock->ops->splice_read(sock, ppos, pipe, len, flags);
- }
- 
-+static void sock_splice_eof(struct file *file)
-+{
-+	struct socket *sock = file->private_data;
-+
-+	if (sock->ops->splice_eof)
-+		sock->ops->splice_eof(sock);
-+}
-+
- static ssize_t sock_read_iter(struct kiocb *iocb, struct iov_iter *to)
- {
- 	struct file *file = iocb->ki_filp;
+struct memory_block -> state looks like *the* candidate ;)
+
 -- 
-2.51.0
+Cheers
 
-
+David / dhildenb
 
 
