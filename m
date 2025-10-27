@@ -4,80 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CEAFCCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 06:47:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0313ACCF9EB
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 06:54:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB4E980018; Mon, 27 Oct 2025 02:47:36 -0400 (EDT)
+	id 46A7A80019; Mon, 27 Oct 2025 02:54:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B38F58000A; Mon, 27 Oct 2025 02:47:36 -0400 (EDT)
+	id 4421D8000A; Mon, 27 Oct 2025 02:54:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4F4580018; Mon, 27 Oct 2025 02:47:36 -0400 (EDT)
+	id 37EC080019; Mon, 27 Oct 2025 02:54:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EAD68000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:47:36 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F1CC1A02BD
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:47:36 +0000 (UTC)
-X-FDA: 84042963312.20.1A4771E
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 51917120002
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:47:34 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf29.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 251EE8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 02:54:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id C16D9B9C34
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:54:54 +0000 (UTC)
+X-FDA: 84042981708.24.1E8D765
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id F0A5D4000B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:54:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H0uxDnnF;
+	spf=none (imf04.hostedemail.com: domain of BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761547654;
+	s=arc-20220608; t=1761548093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dhbMunnqbvBtzKi2BzLr9q8kSiN5y7FgBiHVN8by2Yw=;
-	b=hJ5ip5IwStr6rrxY4Wcs+UH92F9CTTBDjrx9Ha48CSvWQ/eXUrIYSAxwssGgrn2aFNC54r
-	tB8s3D4jRBC11SRoecEm3d1qDpag1QA6/3SZecTMbDqhLgsSyGgZ3Fu8xRuMCSt7+g1oc/
-	gjmzU01UC8ViaT7X2wTfY/Ifp4UvmuA=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf29.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761547654; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=HZ1cENyC3OKTlLcokwNqr7wXJ9H0uHel37Dp79dnSVo=;
+	b=TstlTDy2HLRUZmdsKU8SBXYs+jOTLv5gxF41/8IwokFGIfhUpnwKMb64SUaHYBf9Ech+8G
+	04WMdwMs94rG0/+VwvU3chBY8zQAXLNoKoYgyB3bf5X+/ZXjxCBHM6YxDHHhpyUYxctndh
+	phgVVfYT79WWJa8VW9gfSx6du5Kr5xM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761548093; a=rsa-sha256;
 	cv=none;
-	b=NyQ9j66Hys/6PLs1mJHhIy7iHv1Z2/CEafToJ8HVszqgFAl3cSDfgFKFHGXrtsCptc4Qi3
-	KhD4ZiDNF9Ml/2OnCKVqvsxHwSEHKURzc89PoVOx01QD4g/aGZHsY9Svg5+85R/FpV2nXg
-	ZkDoHUbr291CU2Zkt/BE3CL8HGE1cQ4=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 42A3B227A87; Mon, 27 Oct 2025 07:47:28 +0100 (CET)
-Date: Mon, 27 Oct 2025 07:47:28 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	linux-block@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 1/3] slab, block: generalize bvec_alloc_gfp
-Message-ID: <20251027064728.GA13145@lst.de>
-References: <20251023080919.9209-1-hch@lst.de> <20251023080919.9209-2-hch@lst.de> <aP6QX_gNpY9UDtub@casper.infradead.org>
+	b=3pZ4L857z/LZrF6jngvyqxBGvuI5lRFQM5eouAEgtaa9FFPnYwTfzX+AEQjAAm8dRQX9nT
+	sqiy2BWHoTjmK/fS+x0g0A38suzdiAKp4pTuVoUMbeH6W5/l99wG03tsckUw5lyo+t6CDD
+	hPHQwwzXctTDRMhUuOYRF6JWCdlg8m8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=H0uxDnnF;
+	spf=none (imf04.hostedemail.com: domain of BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f89618a03c6ce0da8aec+8100+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=HZ1cENyC3OKTlLcokwNqr7wXJ9H0uHel37Dp79dnSVo=; b=H0uxDnnFfGSmqhHOC8bIChmg2U
+	zqeyhzXYYeltjfd6s4eSCvSF70/LWP568ahKfzgVEL36melttZ6xkUEonRCPOOtUxFfYSBRpetta+
+	C7jrPsmafvNgsoxIx7/8DlYPxU5PJY9qXHXCDW0eoWTxVVCPHBWhfdRrqyjlYhSM5niMX66o9vCB8
+	J7qRUYdVoIioFx7orkFpT2m/6CPixRMfzocTeUS/eIX9j6/yvQzDPN05SSmiVgbZX6oI1Wv6FVQ0+
+	IUxehKy2s3qD05HoxXBvxki94YTFIG+ro6y75bhoL0D6Pr5Wv9t7QOYZcqZ9EfHhKRnHFPTgiQ6gp
+	KHi+loWA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDH7p-0000000DEPR-06m6;
+	Mon, 27 Oct 2025 06:54:41 +0000
+Date: Sun, 26 Oct 2025 23:54:41 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com,
+	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com,
+	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, hch@infradead.org, jack@suse.cz,
+	willy@infradead.org, m.szyprowski@samsung.com, robin.murphy@arm.com,
+	hannes@cmpxchg.org, zhengqi.arch@bytedance.com,
+	shakeel.butt@linux.dev, axelrasmussen@google.com,
+	yuanchu@google.com, weixugc@google.com, minchan@kernel.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [PATCH v2 0/8] Guaranteed CMA
+Message-ID: <aP8XMZ_DfJEvrNxL@infradead.org>
+References: <20251026203611.1608903-1-surenb@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <aP6QX_gNpY9UDtub@casper.infradead.org>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: jnfjuir7anangg48w4zfnuofct6jd66m
-X-Rspamd-Queue-Id: 51917120002
+In-Reply-To: <20251026203611.1608903-1-surenb@google.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 4h8xtbuxetaw9uc116h3qzipoutpjaag
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761547654-763241
-X-HE-Meta: U2FsdGVkX1+dBABIAp1E9+oz1A/NfHecASMRSMhKAC0NZRuKd4h2ImTMSRqP5S+3oq0A/40m52bY4RoI3EgIljCZqxmHEwMlUm3YO+xdGvc/nvc6vKWqQsDMGoyYe7PWtBkq2fEB9geRUIo7V/ZmbuhvBuSPeijmXzv6F41PZvpAiYUNxalbcON5v9XLPuQVy+iWpCTNMgSvqiuv0WnxgvXXRvHekM/F3ork/deOmk4HC0LYBJHEjKY8amRhlBKi8o9WQJhv1p2Dbbmy8emEJNjB4LJqjd1h1WKCLWTQn8oeeALKkeslzkryz5dA1v47kCqJshyVgavvRD/G73bVH0B5v4HYi+xwwwXghT8OTk/bw2Vf5QaSmtVojR+dmSuAYGBzhvB8QA3WEYA6TUPUBc5ex/XJ3vqdGW3/K/OafZl4DdrXQI4l/fCV3PEhQrnhAtwqs2q5+S1zAaC46FBUjLqPPNWx2EDYr/QcvAgC1/y7/1ykcpPSGYF/tZHNSrSw5GU6ea4TOUFQz665MREVWQCSi2boyc53k379fXN2He0JPMENLjCWXYozz74WsQBwIdSasmMNgCnhNq17FLNhEK6/oeK5a0Dt939N2QG3Zeq//JIN0KKFLWUhXcOOhhhWC0mzUvNYDS0WCjIqiYEDD9oYsAChu1uQcSfutiAVr/NdKY7eOZRSjqJ9b6LYyRX+c6kqGswXsmcbhb4QBXGVwyIGbmNDQjEVR20Ptbu9I2+5f5Ea5eN+hmurNng6VyM0B9A1tMvcYXmS9tWXcht9wmxUiFmcQfzP54cDYpBLBGaHAG+MFNAuiigj/ioZnvzxH1gG1BgZMJN2eUPtAFCt6kVW7LZcWyJL/3zmKBiVAa+6zvDvkvOH0Uq3HW7roquzN06fqSzGA2nSF4KP6w9OUN5VDlsj3ZDUrh7AyVnniqxIY5OGMsgl11se8mK+Zym1G4wkyDpjupsuu4jLkLb
- qe8QkESk
- J2xFc0R/mSQGZFVC+aLB/Y1qLciBWlHyjcxonvEWibs/7sQ2fOY7HiFfuCs2177AzOOHnX6U/c4+WJywm95l7Zj4MLjLssAB9KZEoYPAVOVWO7u4OEjyeKtQIcW0c+si/A85Qwc48kGLMoV8=
+X-Rspamd-Queue-Id: F0A5D4000B
+X-HE-Tag: 1761548091-77983
+X-HE-Meta: U2FsdGVkX18I+TvuwnpumcNNiID+jwkLpcbIXzZO3u9sjR9hEwEHO5Q7EydcLS2hzBjH+6kvvjy8b1TRcQY+3xInRXtwff7FqZLHQQI4eEpTHyFevRyxB+vQcPjczaObwe4n0yInYnKdNdxw7kKR/y6YGFWqra0yDYfFCuk1pyn3ItrMIrAHuK2u6NZpLcuqmPNAaaJl5y9jOKebyWw9M7cEsF8SUExUopC2iwrdYOGTvtwzaHd700vBMU9ghyEzRupiWlsXgz40xciDMdqoHcSeIG+HUoscdzbtVwqzE4gHxDIWtoiYg0OKT+hEAQo1XfyHwvzKSg6zQTbEcUbZMdjxad29Gx+vRjFbAXo/wDOFdZK4gJO/DxckFd+EbbG/50KkfzRtN1m8rvpRgFwhFc7ZdKcViBUAXAqgVRyYvwWR5VtDi4NNBb2kv+Hq8fvcheUZF/FB33gFkDiqrg88FPNgNCd645Hvh82rtwozNOc63xXjBo42JwB+expLfqxdgkotANQXeJ3FWvVejX6OSq53Vqgfp1FzAVuiiF1ZlEJo666Xx7jxuB32kOE3WcfMWliK/UI2R6fP33Oy5fk0dYx2us4q32Pmf4ZOmdbcDY+OUdNC3U/E7qBGW0FNt1OCMZ+HrcWzDmyjFbkZN+33qdNvysDJwRrlxeh1NtQpAXG3viz3k+2hMduyWyfYAxFrCo1/hRXsSOCUrf8DxnrBg5tcE3UPAnqiovYpZa6uYy2hqftzRxGoebiFJGJ8GfMzgmrPCbDff9P343NAy5En4kmNNVegNQlROXsUVDMI3+96bgAw2ovWvWf5sU7QPlL+uhWa+L3MwuDUynjvOPDLaJlpQSV5EYa8HezGqyrSC/vo7xNZxq+/7Fi00IOdTtZZr1UzW4bkItvujHKXzo7YIqtmpG2GkZm73lLfCdpT8TY/193a78blxRq8gJsej2hNKol9ikbwNO70nyjt65S
+ 7Jfpxc04
+ UJY8ZlwXr+a8OEY4QYjhGhcrAwIWNsdHHoyalpIMQrlu9K1gtkpeHR/oGlIaBcI9edTfXFrd6gQVyBEhCzXh4R0RRWaqXLTMz7QO+OtL3HnXXFd2t80FXwvhkG0WEzd/zR1OzITB13iM/OvX36Dx5hchdWBufzQBSZDKZjI6SoqMJvl3lELk6gsUVAQIW8kJwY2IhI035tUQxampGIlLzrZPZGQ2ydmwQXP4v8cPbZEukfy3Ic3VW5e8CONOfaCjdB4i6IeRZs47NmHwQniP+vJ62IAVRANWivMnT8lymw/pYUwgJ25/g2OWi1oUnMKWOeDU7J41FVKa/NjnHjr0xlMwDIPDTzBpfeRv/YwL7Hj1VlULYCgTUKoDTNnS2s4EbzGJT0eSVB1448A0InLXVD/ekX1r34Nhykg5TuDfGfEFoRAapOn05fNAsO2oB8P43xNivMgUNz58ImSnJhsSm7dwGmjMvQlIUrefPUnAFmbeLcbnG49pFsQ9pSw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,16 +100,11 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Oct 26, 2025 at 09:19:27PM +0000, Matthew Wilcox wrote:
-> it's quite different.  I am by no stretch of the imagination a GFP
-> flags expert, but it seems to me that we should make the two the same
-> since they're both "try to allocate and we have a fallback if
-> necessary".  I suspect kvmalloc() is called with a wider range of
-> GFP flags than bvec allocation is, so it's probably better tested.
-> 
-> Is there a reason _not_ to use the kvmalloc code for bvec allocations?
+Hi Sure,
 
-It's using a dedicated slab cache, which makes sense for such a frequent
-and usually short-lived allocation.  We also don't use vmalloc backing
-ever at the moment.
+jsut as last time please don't build empires with abstractions that
+don't have a single user, and instead directly wire up your CMA variant.
+Which actually allows to much more easily review both this submission
+and any future MM changes touching it.
+
 
