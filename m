@@ -4,174 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A11A7CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 18:04:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DA43CCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 18:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0433980081; Mon, 27 Oct 2025 14:04:19 -0400 (EDT)
+	id 36A4280082; Mon, 27 Oct 2025 14:15:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F35398000A; Mon, 27 Oct 2025 14:04:18 -0400 (EDT)
+	id 31AF38000A; Mon, 27 Oct 2025 14:15:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFDF380081; Mon, 27 Oct 2025 14:04:18 -0400 (EDT)
+	id 209C580082; Mon, 27 Oct 2025 14:15:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CB48B8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:04:18 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 79D2FC0223
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:04:18 +0000 (UTC)
-X-FDA: 84044668596.29.8759ABC
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 42CE516000C
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:04:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=h90XAuon;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OjoIL1Y9;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pGvVdq+L;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EHfJJzjM;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0A4248000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 14:15:41 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id AAB20140216
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:15:40 +0000 (UTC)
+X-FDA: 84044697240.17.35A0C87
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id AD219140004
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:15:38 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=Xv2AVSbz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761588256;
+	s=arc-20220608; t=1761588938;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RKhZqMc355tSWa8i+ajqzPxXOBkuGBJTN5j3rmeaLQA=;
-	b=p3o05tnHc8nV3S5H4oywqsvjAmNMX5gTvVdJpp96J8XJp++hfNPxKaH2lUDWFhzMkae8hR
-	1jvkT30HW3yKXeulIqRoeNaSjR+oUcmA0HsN6bgVxObB7yBLgxm42y3fgtFUwF7VfT8l8Q
-	7zDXBHky4vaPFZiEKP5hWSnAbbgknO4=
+	bh=U4cQfaALGoc4/l8gySmGcJH2leMlkWogl7C+rSKi2tY=;
+	b=Ts/e/gRr0Y3lXC5pA6uTMlCaa+SD+igDD4IKqdmdrnNT0091BEPwEJ94uyus7SA6ZAJJxy
+	uzsrgG06DiCrps+5KekHDQJDkyMkzJ9a376zKD23Tu8BaFC2/4RsIJVZ4sBub9+hx46Jsz
+	6vwbyF2zf+psQ4aCBdkHUi8XLKmU4k4=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=h90XAuon;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OjoIL1Y9;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pGvVdq+L;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=EHfJJzjM;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761588256; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=Xv2AVSbz;
+	dmarc=none;
+	spf=none (imf23.hostedemail.com: domain of osandov@osandov.com has no SPF policy when checking 209.85.214.176) smtp.mailfrom=osandov@osandov.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761588938; a=rsa-sha256;
 	cv=none;
-	b=wOAZhU9RbKqqFjqO+NXZRewjY8BoB9nMGYZfgWsvWwrk+M1pRCUnBPaz9p6CjCCcw5e1p+
-	FPnp8dfegrxHR/AoUwhr9dsVAR/86HWQEaLjM/nO04XBOtTIrUwPLz0GRlRRY/lrw6pT5M
-	St/E61POnoodzU7GJzcEXSMImsSdDOY=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 9222D1F44F;
-	Mon, 27 Oct 2025 18:04:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761588254; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RKhZqMc355tSWa8i+ajqzPxXOBkuGBJTN5j3rmeaLQA=;
-	b=h90XAuonqgCeyvkhmyGQ0ujI6Ny8SyeLoxjmHskr58+WjAmfpGAxKtKaQhBIr6IfznrCXR
-	mi5QtFCytSZx+6Dc/4mQBiS+vG68nUYmWFx+50Zyz1k+E/2vwWCWOqWlirPNRRIMHlfkkj
-	9ajcY25FZxdrkM9OR+PPmn9/Vn+mJP4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761588254;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RKhZqMc355tSWa8i+ajqzPxXOBkuGBJTN5j3rmeaLQA=;
-	b=OjoIL1Y9xwtei45K0B6K4VjW38PNpGzT4SYtUVnjSxQt7Wvjic7NMsPs3uZQrxGKLyKfhY
-	UaV4t1XCEdtHtJDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761588253; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RKhZqMc355tSWa8i+ajqzPxXOBkuGBJTN5j3rmeaLQA=;
-	b=pGvVdq+LOlG5UiWVLq+NqWdFlOLyVr7H409rw4Oz7Hw+FsTKLrDPmaiK98LJIEjL40Do7Q
-	SuTtFq8vJLxbS9aNhip3TS2F9ozXlrOoMJQo4uwuL9zDYzCzc9PW6Xct1GX91WWLuPAGvr
-	X8AQT05xRMWNkj5EVT26vsc+WxMp6Wk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761588253;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=RKhZqMc355tSWa8i+ajqzPxXOBkuGBJTN5j3rmeaLQA=;
-	b=EHfJJzjMSkfCGWY4dhzm6ghAX7ZHN/DURLnDoQIbieSB4jCNI1dkBOsKIxKAAYp3QEpMWb
-	Tolj4t//LhAXaBDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 816A2136CF;
-	Mon, 27 Oct 2025 18:04:13 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id e51IHx20/2iJbwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 18:04:13 +0000
-Message-ID: <769bd988-e2ae-466c-9e5b-aee235cf1e2e@suse.cz>
-Date: Mon, 27 Oct 2025 19:04:13 +0100
+	b=HK3ozb6ums1EukIOTt0FxfDeRnIgCQjsYHsdnKRaZ47fPLRNq/izY2yXkfb5iJuPFiOMXk
+	3V8JrSMLoey6tbfKxS9o3U3JBKBz+1aZAX1Q8OCKBXqiSk/khhXTu9ZciPEX8Of9PE35NA
+	m5ZW3v7ki8Ki8M1uKte75/Bm4vdeHUs=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-27eca7297a7so5362275ad.1
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:15:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761588937; x=1762193737; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U4cQfaALGoc4/l8gySmGcJH2leMlkWogl7C+rSKi2tY=;
+        b=Xv2AVSbzZC6MbuSd81AJIOKl0qHftg/rDcN36Mno4ru04ieo0S5vC92iHxonrH6iPB
+         XDhK3vI9hl8GywLOnYjUJNVnurlKG3hlHZYTKNS4i5Urv7viHi72899MHvewRgpX2hkL
+         VV3zmgVGO9VobSWuYwlpOELz2nrqqzlibwqZfnt9AVEX/72Xx8uo/ziK1ewoVMJXO26g
+         k4Mp3o0wnQBP8tOuQMP1jD0rRuOsNsmpz2KrInJJ/jpkOEOexa/a9B5/MiINB1hvxEPq
+         zSj/zEwXOLLOikmRH0iGbG6WA229Qu+/COKa4cunO21dETMXZ7+5EhJHruQFKLQlBnFe
+         IvZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761588937; x=1762193737;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U4cQfaALGoc4/l8gySmGcJH2leMlkWogl7C+rSKi2tY=;
+        b=iX1DuJ/uoR9dQAhr5g+FbqWfkrneGxfdjyTM3oxsMb5XJ31jshEo0qx769vvz+IfJF
+         iwH47vYWtTnPn8yttNgeYtrPU0C2Lju9H7McyXUHpySql0fBxHQw6ADjJLmfbqmGoT/y
+         Qo0tfD0EGkfTLKNanOEJu2rX2U9G76n8MtT+04uTs4ZGqDe/tSd7HRIOioI4YrKRbjpI
+         ssteRWcQLh7MS122kTOoporpKQUnPW4M/m/dk8rB+eP2ZaHZ4WhlueVLb0d3+3oh/b5/
+         FyoTXfNusYIR6qvT8FXsc7Wy3V8uj015jMKJ+eDP51nMC7yfpAedsuo9kOtV4dsi09zn
+         idcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWq4VPD+7UAm4bwdFdAMmqZQw02biwWYH6jaS2fTNGjILjVugQy6BZIl5bfZG4IlZZLbCOz4cInmA==@kvack.org
+X-Gm-Message-State: AOJu0Yzw7sEBZtD+GvNtxIIOKRG9lUJM8CLQmfjYJ0D+vLiGHs6UiZQM
+	XUMeFuthhlU5VjSsu/p+D5awJWavb7chso2+A97oPKsQt/ZfDoS2nLU89k7DdmrrUZk=
+X-Gm-Gg: ASbGncsN6QpzDaXY9jjLzuuDURrK+VTd7EBoIKKVY1NbILh7qFmOsqwv0hrvXR22JFL
+	rBuGMOIzlTER96q9B8dwkGJjSlLE+R8BM5DRIIkXj4i0U8M6xwFcygr/V/qea4hmdJZQ8dksuCr
+	5yvbhtyCQO+4gIt3QK0z5292uaItrtIANFEsJg22cKZrnYeKc5TrffshN4B24TadNPIYdcPeK25
+	FYCERh6aIRMmor/4bRh6KtTwG4Zg1FEoXYLgP1o80m8DrcfNUVSmic7Pc6B16QI39WpwJtdg8mh
+	/bU1c1bz3mC6Eycb0/NvoQJ7v+KBMPQyfyPod37uT2l+N0xgeQloGkgPcWvOscOBBs5BhX3VNU5
+	Udb11oYn/QAGGjzF68kwPUtw4UJP661nxo8W6wyytqXjeh2nKfbMNZ5Pl3VP++cSNico=
+X-Google-Smtp-Source: AGHT+IErLx4Y+CSbvwTvDMkVz8jKZH2EyxwoVZhXlu4W9Ro2SZvylBJFK1+cynLtv1hH9V9kl98hhw==
+X-Received: by 2002:a17:903:2f0d:b0:290:ccf2:9371 with SMTP id d9443c01a7336-294caca9e03mr5485335ad.0.1761588937149;
+        Mon, 27 Oct 2025 11:15:37 -0700 (PDT)
+Received: from telecaster ([2620:10d:c090:500::4:c4])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d4287bsm91043815ad.80.2025.10.27.11.15.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 11:15:36 -0700 (PDT)
+Date: Mon, 27 Oct 2025 11:15:35 -0700
+From: Omar Sandoval <osandov@osandov.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
+	linux-mm@kvack.org, linux-debuggers@vger.kernel.org,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
+Message-ID: <aP-2x314BKks2_N9@telecaster>
+References: <20251026162156.12141-1-linux@israelbatista.dev.br>
+ <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 11/17] slab: Remove dead code from free_large_kmalloc()
-Content-Language: en-US
-To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org
-References: <20251024204434.2461319-1-willy@infradead.org>
- <20251024204434.2461319-12-willy@infradead.org>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251024204434.2461319-12-willy@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 42CE516000C
-X-Stat-Signature: 8zhp7heputzo9coqbixsh6hsdhgt3z7s
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1761588256-423619
-X-HE-Meta: U2FsdGVkX1+3rSdC/5Ec99tKXO09oEs0O0d8Zf8MzlfV05h90+IfAKV8hWWgZo11tHM0rN2yk+Aeel2bpRAbppmGalVfcyzwbpdm4RDc72ZE9tTX7W7Ljbs/QZDTaAXx3rUzYtMSF08Wez9nb18NCBSNk37J5p/+lLdLVP4hBuCYkQHKpliLYdFYO5k9B+vanW+UEi5HyZArmWAsrlc8B2dnipyDcm9B1Ub2ilaszkw/IqtRK3z34lbV8LP1KOYmhmjdTKLrMsEyQIriWSfaqU7awbYxZ/0jPGhvEkZut6yvZREVCPImtLiP7N9CHvRTqslYs6hYrICvd3yLX9H54DnkG1kB53EdD8PYFZ+kkKYF19KhNIqcD1R/VToBQQWB3b4+hLFUl81XlhpwrQRdoa0teEUlW88Nz+/svso19b9uYjrHDOzQCYHYqXW95vhKI55vGdkf033mCrgC0IWJNkqvA+ZImRz+3JIVcptbNZUPs6pTUfeY9PKUl+JcaqPQDUQlfL5t1XbhLhUeANjS/o6dAjdRVNX796TRtGqbuThtAaB8cxPzmML35I2SZubo+b2JXs4VeHiC9vF5ixZyES/glkPFrEc3DT1Dk5PBb0Ra4AT8+zIrWW+Do1Y2EMz0oZoil1KmGXWfkK9ZXnYIq2Mvi5ZE/Za5/kX8Q/6vq3XlivenBOiDLpi2+HoJmIGciHTvFSPdC4Bnm0MNASZNRPytMJ0zEzHgGcSfKEWXgQalTkgkZaBKZ7W0vPsAwltqFCYiYSLEw73BLz0fUmqvk3J5V/LXE9QarXAgWLuAaf2QQdWuk6umeftrcX/NfkQldAhUtPIY3401PNjEwMx/Fn9sLev6FW88RdDLkxL1EW4XVX71Oe1F9iTILKFHNAQk7bw/EZ906Ol5J7VyvQaw21CGszeIJUCSaRQ8T7vVZJklwGZ9NGHFnntqYftonbpHcBwSnjPvMRb7qw95ByY
- QgsR04uF
- nnwWjQBr4sW6on1Pdptb+d1TdbB2JaZYeUqh5aTyTDIyA3Rw=
+X-Rspamd-Queue-Id: AD219140004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: h8bkk5boexsod8owb69qs8ra7nxs5na6
+X-HE-Tag: 1761588938-229538
+X-HE-Meta: U2FsdGVkX19vl8fDAsqFy6QKPiVm9v8Fm+/GgOgWX1113gB0L944ZYRi4vo+Mp1sviB2xyD1ErjXsnKKGuEbqin+duEfUzl8E9HAVQyXsgPl8ONzc0S2RncZJjAk4Io36amU1KaXIfDRhkwf5sK0KHyjO9wgKun54Cr8bR1GFXZ1aBAUStW4ypHFNG+B+9G/cKZ8DPtYoixsSVRnnrSQl1f6QDmgqLdaDix5b595MZyarHMOrWliP+i07i+veF6Ffo78+GvpHQzKd0DvJAJG5Ov9gPXpUOwRFCAeaVZ985tZ0HmcEO40aWrFVIIzvZZYfXTfUJJq2bZGNmefNYYpjTg6LUevqLUEfbpN95n8YjqmFVNXYGEPcBvdWqNEa8yUje3pq0UNJ5eQeWZx3cZIstth4hpGegboTcCg6BQQd7JKgbyd2RaNzir0FJkGmLzQpSd2XY3BZJ7DhMgfvA1iM/qbkB1Vtfr8nvKSke4bHSDwkO5zw8VTArGZxHjmjbE3oJS+Zo5/vsKJF3/WPyLGIrZMXhvLnLGfCBu9BKHtgWQc2ZBvuC4fZSIjECLso4G37E9kqWFf2jslWGSa6Xd8Pp4aLj0vu0io7/GSpT8Me/aD1+fgIR9UnTZ0uB0X9CEByEE1TduQHGDPfQvrsCf0Werlk1em6kB0F8lBR3tN6IpUxDryj92/61lZnNjpN/awdxUuFk+ZJ+EVMAYcZq5azjCkBZeGfN+W+AtO8FTZsmbw3kjrZEheUaj1IUu19u5ojx0vmy8uZ24vTqQXOVj2HoG/tdXnvxHo2QxN9hzidoHxgeXnpzR/3BbmZFLKWVJkbB83rpM1MWp1o3qP+DRuZRY7hxWBT83VcWCT2FQdpzDALV8O5xT/Q5ShuOq83WW2nnGxP+9L0CwEUVKIqPh0ZuqtS8xXtN2oe3+xuvCo7sq6e1KztzSrZhjtN9TuItnL/3L7CzwI8Ku2iDWg25P
+ Ki3Fx7HE
+ J/iYRNlOfq5W4F+qGDPJyv9Amk/+74kKoQvgiKxJAZZ2bd7GRF0gCjwrHkNby4xLYz87chRBMnyxeqAuiEKHBj6Xo+vidwQkmesff5LcS+PiWH9EWrN4c6uk2ttyKcqPBQdSkHEeAuYw41k2OhJRMEOp4prCSv5bABI1HbIxf3JFcZSBAVrb5bn8FXc7JgaSsL/xxwNYVc59p0f8LCro30cQL3yZe8ZpyDXeKAU8qRlx6FCk1SEJ3owa4himfyjS4pPcZyF7l2RVDEd2xI9sS3G5Z+HUgXGP6unaF+NECecaNzd9EndLkaP5xnTZVNUcB3WoDTsU4yjLNhUHFZCKoD01wfoHdFEvGrog50E5Or4ZFktTwBqcjFgZ8NzzPLGsz3/pXRpz5E5pE+TFXKEFVdCZMOnuCdLuhjRALkkb4gaf25ttxA9D/DhxGyqD019r7/ogF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,35 +117,88 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/24/25 22:44, Matthew Wilcox (Oracle) wrote:
-> All three callers of free_large_kmalloc() check PageLargeKmalloc
-> first so this warning is now unnecessary.
+On Mon, Oct 27, 2025 at 10:29:15AM +0100, David Hildenbrand wrote:
+> On 26.10.25 17:22, Israel Batista wrote:
+> > The MEM_* constants indicating the state of the memory block are
+> > currently defined as macros, meaning their definitions will be omitted
+> > from the debuginfo on most kernel builds. This makes it harder for
+> > debuggers to correctly map the block state at runtime, which can be
+> > quite useful when analysing errors related to memory hot plugging and
+> > unplugging with tools such as drgn and eBPF.
+> > 
+> > Converting the constants to an enum will ensure the correct information
+> > is emitted by the compiler and available for the debugger, without needing
+> > to hard-code them into the debugger and track their changes.
+> > 
+> > Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
+> > ---
+> >   include/linux/memory.h | 16 +++++++++-------
+> >   1 file changed, 9 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/include/linux/memory.h b/include/linux/memory.h
+> > index ba1515160894..8feba3bfcd18 100644
+> > --- a/include/linux/memory.h
+> > +++ b/include/linux/memory.h
+> > @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
+> >   unsigned long memory_block_size_bytes(void);
+> >   int set_memory_block_size_order(unsigned int order);
+> > -/* These states are exposed to userspace as text strings in sysfs */
+> > -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
+> > -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
+> > -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
+> > -#define	MEM_GOING_ONLINE	(1<<3)
+> > -#define	MEM_CANCEL_ONLINE	(1<<4)
+> > -#define	MEM_CANCEL_OFFLINE	(1<<5)
+> > +enum mem_states {
+> > +	/* These states are exposed to userspace as text strings in sysfs */
+> > +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
+> > +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
+> > +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
+> > +	MEM_GOING_ONLINE	 = (1<<3),
+> > +	MEM_CANCEL_ONLINE	 = (1<<4),
+> > +	MEM_CANCEL_OFFLINE	 = (1<<5),
+> > +};
+> >   struct memory_notify {
+> >   	unsigned long start_pfn;
 > 
-> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-> Reviewed-by: Christoph Lameter (Ampere) <cl@gentwo.org>
+> CCing Lorenzo, we recently had a discussion about such conversions.
 
-With testing page_slab() for NULL and fallback free_large_kmalloc() I'd then
-not remove the warning.
+Yeah, I've been asking people to send out these conversions as we
+encounter them in drgn, but ONLY when the absence of a value in the
+kernel debugging symbols causes actual problems for drgn. I want it to
+be clear that we're not spamming these just to cause churn. This is an
+unfortunate corner case of debug info that leaves us with no other
+option.
 
-> ---
->  mm/slub.c | 5 -----
->  1 file changed, 5 deletions(-)
+> The states are mutually exclusive (so no flags), so I wonder if we can just
+> drop the (1<< X) setting completely.
+
+FWIW, putting my C standard committee hat on, there is nothing wrong
+with combining flags in an enum. C11 is silent on the matter, but C23
+made this explicit. Quoting 6.7.3.3, paragraph 16: "After possible
+lvalue conversion a value of the enumerated type behaves the same as the
+value with the underlying type, in particular with all aspects of
+promotion, conversion, and arithmetic." Lorenzo may have been thinking
+of the stricter rules in C++.
+
+Of course, semantically, it makes more sense to use distinct values in
+cases like this where the values are not actually flags.
+
+> IIRC, these values are not exposed to
+> user space, only the corresponding names are, see state_show().
 > 
-> diff --git a/mm/slub.c b/mm/slub.c
-> index e72016ff0236..e37f584352f2 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -6738,11 +6738,6 @@ static void free_large_kmalloc(struct page *page, void *object)
->  {
->  	unsigned int order = compound_order(page);
->  
-> -	if (WARN_ON_ONCE(!PageLargeKmalloc(page))) {
-> -		dump_page(page, "Not a kmalloc allocation");
-> -		return;
-> -	}
-> -
->  	if (WARN_ON_ONCE(order == 0))
->  		pr_warn_once("object pointer: 0x%p\n", object);
->  
+> 
+> Won't the compiler now complain that e.g., kcore_callback() does snot handle
+> all cases? (no default statement)
 
+Only if the controlling expression of the switch statement actually has
+the enum type. All existing code uses unsigned long, so the compiler
+doesn't care.
+
+> -- 
+> Cheers
+> 
+> David / dhildenb
+> 
+> 
 
