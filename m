@@ -4,238 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 723A6CCF9EB
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 15:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FD79CCF9EB
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 15:34:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B63398005F; Mon, 27 Oct 2025 11:32:10 -0400 (EDT)
+	id AA51E80060; Mon, 27 Oct 2025 11:34:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B3A878000A; Mon, 27 Oct 2025 11:32:10 -0400 (EDT)
+	id A55B98000A; Mon, 27 Oct 2025 11:34:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A030F8005F; Mon, 27 Oct 2025 11:32:10 -0400 (EDT)
+	id 91D1680060; Mon, 27 Oct 2025 11:34:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 8EE838000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:32:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 481091A0173
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:32:10 +0000 (UTC)
-X-FDA: 84044285220.01.DBA12D5
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BF7B9C0008
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:32:06 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ii0lOy3z;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ipm7zEsr;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761579127;
+	by kanga.kvack.org (Postfix) with ESMTP id 79A298000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 11:34:54 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 424321392C3
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:34:54 +0000 (UTC)
+X-FDA: 84044292108.21.EC605F9
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id E2C5B1C000C
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 15:34:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XpUhomsW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ph6lNcB5;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XpUhomsW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ph6lNcB5;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761579292; a=rsa-sha256;
+	cv=none;
+	b=owXekHHL4shp0pQBeqTbs8d0ywzcFgAmNysg2FsBRD7qBwWdf7b8igS3P46acqc3ciNljR
+	afgCeQFKCsZFy2Z6XAmpkaGSK+ketokvnLI5zyASknQfAhiMLCsfIHfz/rPixmeD/bBgPU
+	7ol+wCBUdAAK9I3S3qgwCv6X34PVzmc=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XpUhomsW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ph6lNcB5;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XpUhomsW;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Ph6lNcB5;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761579292;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WSYnQBgjtcl4GvR3OJbqYk4X9SSfTP/26wYSxf5+s+w=;
-	b=g4ZC6IhWRIn1tVnsMNy8TNndos0MfqdZrdTJ2ihD8Zlg7H6E7nQk+7/Wi68tV7xY7Q0JjO
-	z6pQlZFSGg/44Az6bVL7DNwXVkb0HgBWyQLYDybzm6MU70GsxusO5UectvAzVScoRDs1ka
-	9vTQM8feYuVHI+F/6oOiUFsLZoC7htI=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ii0lOy3z;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Ipm7zEsr;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	spf=pass (imf28.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761579127; a=rsa-sha256;
-	cv=pass;
-	b=SUwocAjonlgDrJNxF80B4poyHbachiKW9kODSIZmFzskrZOD3cYl2eo0RCs6geiPbxtxSV
-	zs8YI8Qsmd3sL92imGA9TRYK1/lqsU+OUy8urTamsZ2iQBE7Q6KbYjbHnEjbNmysTLUf75
-	fTImvJ6pQ2Y7o2Sb82SdPe66/NtofB8=
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RDY9VT005555;
-	Mon, 27 Oct 2025 15:31:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=WSYnQBgjtcl4GvR3OJ
-	bqYk4X9SSfTP/26wYSxf5+s+w=; b=ii0lOy3zedIn0p8tcvFS1SGWIp7dDyGZd9
-	xggiYGQF5kT3XdZ2liAlCXr7ckObQBN8AwgDoN4GgDx+gGCbWQmSF9qS1fheh2+Z
-	+8XAILZHUhmuflJu3kGCA+R0l935EOew9VNGwhwe+iVGfKSz+NoWsepbREIvj9QM
-	iaCR3JAC+QBDQCMabeWSRN3Im21BsYpFZHddqbp7QCd1ATrB1dIPwR0AwO03kl+0
-	K0z0DuJ4+2F/DsJCCeedVZ9gKDBdTYaRiC7VGKBt24+0usrxZvQ5ZDeJDHrpnkW4
-	KSqu3FMvlKLomPibgfGf2ye6EhpTGJqbn3izQONpJaSkXLKDlmvw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a22uwh848-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 15:31:47 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59RE15nF025120;
-	Mon, 27 Oct 2025 15:31:46 GMT
-Received: from dm5pr21cu001.outbound.protection.outlook.com (mail-centralusazon11011069.outbound.protection.outlook.com [52.101.62.69])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n076ft0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 15:31:46 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=m0yovkXi1vbmcVjbXOgtA2lL7FlEgx8FY/Km5ymMVV5YEhDdTg3ksBXKjTN+1CexLFVOj5PoA2KwPQgATihK3qbKg2W/NcD8lT0DG9Lzm4ydobeYRNpf1XnuD4IFACnn6es2v+6FmwhjItT7/D02w5eQg6+TFIoA8vy5UaxBsxtuCrgIy0V7+bae67iF3qQV6aOSUefJ/Vc7/8MHCdttFLcVO1iZuzcozd8OTRVooy1LOJ0t/FylETJKWBL2xMJQhrWenx22JttsvxBqLupiT2akGa+udM0F0BU3hup9E0SSjL/Vz8N6uBD8k2HIJ6qYqnYa/aGNHajnF0U6PolXYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WSYnQBgjtcl4GvR3OJbqYk4X9SSfTP/26wYSxf5+s+w=;
- b=KnQb0gryXIp/gmgF6QW5c7ZlfJfCPY2gmHacAYcl8iDdYhCicOFIvHjMQZro2ZXgPbL+kDA5aK4JEZ6ZlzOfwBiYTcAF5yMooHJebtGE92p9xPAHMrtcXbB6tjKBgDkhk1jqKTI2ZG0EvI2ojsl/LxWmq80IHlyAoWYDAplSKYFxEdT7dA7iNxWt7imgrFWS11K0rJEINixqGwP6Inaqc2dMWmPGwgxfDemDrDM8WprpZtGV/K7F3v3XCiYs+5hBuasOBWQumToABEdC2IXtTUrSmg+GICZiKURSRQvwTc4L6o1uJKZgQxAgSk6ATVQuV5Blqu0NFICjykVtMXw2Pw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WSYnQBgjtcl4GvR3OJbqYk4X9SSfTP/26wYSxf5+s+w=;
- b=Ipm7zEsrmXb5C5Awbq/0iGSZJFDmjUIL7PJ5ctOM3BAucCiXHJWk4t4B0U3E9jx3E1tk+V9qcRsuzZpeqAwLaC64ozcwNivRIp3NFS3haZW84LbqtW/W45SNlf/CsKG14AA1V26eM1HA6WxyQ1PoTSJ3ccCDyEfL2DUdReffVV0=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by DS0PR10MB7065.namprd10.prod.outlook.com (2603:10b6:8:143::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Mon, 27 Oct
- 2025 15:31:42 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9253.018; Mon, 27 Oct 2025
- 15:31:41 +0000
-Date: Mon, 27 Oct 2025 15:31:38 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
-        kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org,
-        nao.horiguchi@gmail.com, Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, stable@vger.kernel.org
-Subject: Re: [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio
- is split to >0 order
-Message-ID: <c294bec8-1343-4319-945f-8c0936b3f2f6@lucifer.local>
-References: <20251023030521.473097-1-ziy@nvidia.com>
- <298f1a0c-a265-4b0c-a5a0-7f916878dcc7@lucifer.local>
- <60D65915-5FF5-4ECA-A52F-8B9FE8F714F4@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <60D65915-5FF5-4ECA-A52F-8B9FE8F714F4@nvidia.com>
-X-ClientProxiedBy: LO4P123CA0617.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:314::18) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=fkCzjDITEmu3iQxYf6mZpY8gvpmTVbipkrkmE98m6bo=;
+	b=R6/OjuxBgbZd7y1WqoUT9RfggKSSia4vE+SuBEsl6jgtCvdP8izuC15abqHWLIgrf1CrW/
+	N/Huz3XJ3tGWmpUDc9VqddCTi2YHugXecy50XijDmIaFTRFOgOUoBnVKBBhc01eQRhXvLM
+	ag/f/kSNzqSRIYAaMFzfrFil6N38+Tw=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 57BF0216E5;
+	Mon, 27 Oct 2025 15:34:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761579290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fkCzjDITEmu3iQxYf6mZpY8gvpmTVbipkrkmE98m6bo=;
+	b=XpUhomsWvl2pT+PCBK443uB7hrYG/EHz5cjIQTWG1UL1u79ffepvEX5YmoswY9Lk2Oun0Q
+	V9R3sYS+tKzzVVvQGGc7KVHC/x0YAgWAemJ/5XS71fYtrvrcR79gDSXkb4biE+96lHS7MA
+	fNUaE9Im0xT2URwfiVOTCJhwJOjMBCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761579290;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fkCzjDITEmu3iQxYf6mZpY8gvpmTVbipkrkmE98m6bo=;
+	b=Ph6lNcB5hORsusJa9YZn+nnyTcltzvRFJ6pBRRZrC7vtrZNJ9vzg6Ec92C9r0TcSU7oC8S
+	C5evCAG7JVSxfUAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761579290; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fkCzjDITEmu3iQxYf6mZpY8gvpmTVbipkrkmE98m6bo=;
+	b=XpUhomsWvl2pT+PCBK443uB7hrYG/EHz5cjIQTWG1UL1u79ffepvEX5YmoswY9Lk2Oun0Q
+	V9R3sYS+tKzzVVvQGGc7KVHC/x0YAgWAemJ/5XS71fYtrvrcR79gDSXkb4biE+96lHS7MA
+	fNUaE9Im0xT2URwfiVOTCJhwJOjMBCc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761579290;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=fkCzjDITEmu3iQxYf6mZpY8gvpmTVbipkrkmE98m6bo=;
+	b=Ph6lNcB5hORsusJa9YZn+nnyTcltzvRFJ6pBRRZrC7vtrZNJ9vzg6Ec92C9r0TcSU7oC8S
+	C5evCAG7JVSxfUAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 31771136CF;
+	Mon, 27 Oct 2025 15:34:50 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id FTU0CxqR/2ifUgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 15:34:50 +0000
+Message-ID: <fc6434a8-21fe-4924-95fc-5a1fd1f3d197@suse.cz>
+Date: Mon, 27 Oct 2025 16:34:49 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB7065:EE_
-X-MS-Office365-Filtering-Correlation-Id: 47adb341-a13a-48be-871c-08de156ded95
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kN7oBf+6lKNsXnIGAl/JiEZJEJUnUpEYaSkcODZCRcgYtvIolFX1oxvz8u+R?=
- =?us-ascii?Q?grT8OykhipCnJwUYCU4/Y+6UsM4OkRajAXfWm8cN+b1guZlvVlR52kwRxv6x?=
- =?us-ascii?Q?QWPmLm2vzSHM6vlXk5CsFXV3LLhvUxVNqy7rSDyE+N871Rl+I9RE7IJ1eBhl?=
- =?us-ascii?Q?gUB5e1qE7Okc1oWWWq82RZFmcGqfuXgUOD9Gb3H5PJ7wHPVmSWAeO9ZMTFf0?=
- =?us-ascii?Q?1vlXwvsQhJnj53DQeJT9zCcaTLc7IuSrpwMNDAFZD9dNfKybmtz7CVPcKLp/?=
- =?us-ascii?Q?rMKEEelIt/VZknPd0s+91Ke5NLHlVYs/PZrdPAvVsZbP15mGuSaqAYpiZ/Kp?=
- =?us-ascii?Q?qu4hThEi4ePX2z+2+BUtn2TKm8vU+fLdfPRYzjRah85nvNakiIfbcf5//ydx?=
- =?us-ascii?Q?L7NLFyVRIr7KSF8Wr5jBI4WCMdJgA4Kd+maVNA+/qoTjLtf682wuW4Qpuwos?=
- =?us-ascii?Q?BG198rweDUUuUUnAn23Kjy9ethfBwZvWzLzjgijynX9beCATCQNjcugKR7DN?=
- =?us-ascii?Q?gKKscqEpuBM6BN5vQqZAyZ/bbMn05TBizDgcqAI3nFEFUKfGUD10FFEHHny1?=
- =?us-ascii?Q?GVjHXRzHYLcrTR5Ue/jGCOK87tHXUmwH50nd4wFDEQ61IYxPdHSE7gzDkMEV?=
- =?us-ascii?Q?2tVrszBllixj4q9yci2erG7XBsTQzeHr17O/egZ3pMnNdZdzStYxZfjMXhvM?=
- =?us-ascii?Q?JA0FJaYPh+//Yquay+sJghUDIvoazZ3VQmVyqEAVp9QpZfms/uX0hO6hQunx?=
- =?us-ascii?Q?wSrBATkeybOX/+w2sBcuFMsKbSs8K2dgtLScLyX6LI33pHlUnOk0U7JHOWZH?=
- =?us-ascii?Q?ApjM1ZdIBNeIM65WhyfuIcUL/74V+HbS6HWk/tRMxYrYFQuSIYbupW+Kt+sH?=
- =?us-ascii?Q?SRBbiYbIdVy/10h8c+7ZANMVpqLJz45g3IoFDxIWq5y/XNOQHazydd7EVBo5?=
- =?us-ascii?Q?XSbvhm4WGkzZUpdYl+O4Lj5nvf7dTHmMre/X//hmYM7D1dZPaNbxnQLQeI+x?=
- =?us-ascii?Q?hKw0tLEegrs9ObL0QUsPVNwIYX+DL/fVw7PiJiB/Xidn8z+aXY/iraYGy9Fd?=
- =?us-ascii?Q?kTDm8mTG8o/fyzwBoYiukgaMnzuiBdaqF8YkDiTGFXSBj9j/Y1sJ8OZhNisQ?=
- =?us-ascii?Q?DKEU7MHM9x5FoCcRCsYNPL3tGozNUglD++2pzpOBubchu1Ms3R6H72OzIbwO?=
- =?us-ascii?Q?RhhD/0/phuvQP5QO3jJKjLBaGVWArTKZKnYz92a1xxcYl6ShwQH5bayk2ZIF?=
- =?us-ascii?Q?8y83cnpMzZ+zKY6w79NIgAupoOzkTxI8qARo1qCLve/QAdo/q5MY9bmLy23/?=
- =?us-ascii?Q?PXh9vwzSx9GiqO+wKZ1VGhaiMtGIhW06SJwKLLwJuY7XL8rzy64sHoNbJqGc?=
- =?us-ascii?Q?FGcwHKjDFPTTBIxle1oT6GjHnWw4GivLVNGw6EH9ITgS9Bcv0FbYi+ofuM4d?=
- =?us-ascii?Q?7vl8MWaK5sg=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?dJpWk8qvPduVKDx00sce8JXo/Fp2Mbf0gG60VofAFHT0o6pt/a5O1N77PniG?=
- =?us-ascii?Q?QW7qHpvfPc40+pUbPw+o5JCIRKhPRRpLXBA0BgSADb+42D0eW4v4gdcNuos4?=
- =?us-ascii?Q?evy5Tv+doH5Rcq/CoxTBmx1TdYDtPbx/PdFj7o8pEnXg7e6QpZ3AB02P1UXw?=
- =?us-ascii?Q?8R/3Z0sXMBUDTfRX9KsOn4nTfpW5yojCiW+I/zVdraXYOwKvwNq5yvs6hFE1?=
- =?us-ascii?Q?+6pNlE8T83qYnt4g+AxsAJad71Y5LRFb9kGg6zDrqgb8YKSP/9069TVwAEps?=
- =?us-ascii?Q?dJwvhCaqC2oB3YRjy+pAAZT6bbC8hCaEG+0PkSNIAmMJjHeAzmhzRnN7L/ts?=
- =?us-ascii?Q?phNjZh0YWgyHazsDgOvSWUdI9OGbAYU0uB5rMSnB6YytJ/Ys36Bku44NenZP?=
- =?us-ascii?Q?VpdNy0cBesLOdcYS9gnXXyu0it8D35+X9Sv+SbZcelJxYiaP5oj/M12j2TMu?=
- =?us-ascii?Q?JdGt66CwMcAGmOYbx7BNXZq8lc1GvDVFO39g+yzFvWWUG7H1Ev9qfj5dNqGX?=
- =?us-ascii?Q?/VKVvE1bpQcGkZq4QjP9pIJPMC0lgI2S+DRijXp0tdBpgft4Of9rZ5YR1hRT?=
- =?us-ascii?Q?NQoWrBNVSGn0RVRHwNaQLhPGf4azJ5w1yitn+p2nWfG5iZZ0Q6LYHli94ml7?=
- =?us-ascii?Q?q6e+tkq33IF9Twp0o01FhFG8SNaiOEu8E/XpKG/wmSOqdQz0KfsFzuO13BE+?=
- =?us-ascii?Q?UmuyByulgcWO7GP7UVDrGmw1fw23q29eImNwHlfzZNi1fNpvxcsF+RrDfeVu?=
- =?us-ascii?Q?c7X2t28Jv1W5xF0UeNi2KDw/Chd6DcjRXLiXepbxUvw+BZWS+hVw18UIJYdp?=
- =?us-ascii?Q?4BFN4ZB+QCyjuv4RJnXFE+fpO8aOtjT1qsHxcubhjWKP1nAs81oKPQGSu5dU?=
- =?us-ascii?Q?WPZBrAIbZKpJ0YAdHC8hLro2kG854tN/zDxxEviCiaB6ptCkgyLy7TG931Xa?=
- =?us-ascii?Q?wXs1XdebvRL7Lz4jvMKKnROEPenZZuUyQ/hZQ1BClZBzTWRucE9zIZ9AfwaL?=
- =?us-ascii?Q?UUDB8F2XyY3yeul6PhSYJywOLxah1+sjeINUs22wJLvpP4XSTwziYiNLe7qW?=
- =?us-ascii?Q?o07myHZ+0nyE9iNlnBn3AYCskibrqBwopr3sPMh/ZErn+S3AXL3MTOELzhNR?=
- =?us-ascii?Q?GNpxLKaj5PvzWZC/oLxOmZCCylvYASlMuqqqqgPCDUw0BgQXx3/5Z1vEpMqq?=
- =?us-ascii?Q?rMrjAig8TaSBjhlZSYhjYErHF8EA0BGvrVQYx5g17/22GQ8ZjJ2M//TpSmVg?=
- =?us-ascii?Q?vAJbbCi8nFhq6kEJnSNgIE4VDg1iM5xGDy62uKgpCgVULYz6215JqenokeXf?=
- =?us-ascii?Q?NbOnuNEZPAi/7XrrOQ+9EHrG7OZGGyttQsVrg5nAuvDceGohd5mAaB1D4HRI?=
- =?us-ascii?Q?DopVt6jq84XTe9ZY+EtJDxUw2pUE5kVTiSwCxClQj3hGBx9uYDgPkFsK+kAg?=
- =?us-ascii?Q?k0QlA0FSOs7LrvGxQxcIyYNOiKh+CnvWwWozD+jgOvaZGwiQfDx9eQKyOGkN?=
- =?us-ascii?Q?MU2VOQpRYU8K8D6zHQz6NUKUWkdvCJlWohGdkikgXV+hkHZovlJjAMt1qVpT?=
- =?us-ascii?Q?XLPdvdINsDPDo2KSjwMH1io9r7YmF+sWkOjEmqsEahZ4713llnx6ZXXpw+Z7?=
- =?us-ascii?Q?Bg=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	uFgsIco4t0czE9oh3KGi0eA7HAtbPWaatPPqr8uilVTotMa5rK3gvBGCT/Eq1ZVpyly0B5TmNiHzQCaJe4rOI7pG8F18etrXaeldyHmch8Wax5Wqk93KndPpjFlHWF31pJSZhk9poEeDXeJfiQZR084sIeIpcjif4fLf4wwJZOEsCMV4vhmWJV283iToSBBSMhqMeYnx9L+fDz3sdhn2aDbJ/rLXaR1848Dgm6yw/5CcRH37LM+91vPzZJuJoz3KDBe6IVW8M636+E1GrMo70TEda0a6NPsUwnTQyhHZL1f9b1yEJRUNYc/fdh0ZobrGwplWQaGUCATh2cQUhmkSwmZNXalLh1qaqNiyFkgkM9KNL6+/7EG3irHaU/JRTkf683t0hUe3nP4NkYqyiMbLhQKKBn3pDyYfO1sjd0zpueGKKOPG6yU8OaE+r1M1NqgU7Kg+0/YSW6sfTe8mpWuW4kAE1rV5rboniIp3r9jpEDYfS9OVksRUNDGZkw+B1n955uy3ycYXhsZGjMkCA30A7z9N5z03qxXwxk4zjx9ffB401inYIyREgy6q3sZGvGftUyBTFLmuJHLuTw9aQiYed0VEX+4E6S0vz0zdlklBmIg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 47adb341-a13a-48be-871c-08de156ded95
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 15:31:41.6454
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: dmBBFJKSwdaEewkQB51to84Ss1iXCcFD8ZgkDpoTXZybTgJKvd38RnF4kv9LMx+SaKe0/FwAZdbcHHEgmt5beIoITAZCFWzDaetpZmqgtE4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB7065
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-27_06,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 adultscore=0 mlxscore=0
- phishscore=0 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
- definitions=main-2510270144
-X-Proofpoint-GUID: ycnolg3CfFq9xUuFPpxKtyFTKIkkV84R
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA1MSBTYWx0ZWRfX2H1tQj8toyvp
- KKGpS72tmafCZQUWY9RQFbmNrFvco7COu0zfsMHluByHpGhJziR8WxlppDXmVfCKUkWq1YWJHrb
- EyB1+yufLlc5EWTSB8/FRisIHGgxN4GfGPvZDtL7zUlC0nEP1g8yS/EGF5OpbesYsaH/Qf0pPXl
- NiY5MeqZrjOWr0NbZVngoIbwNMWP6ZvWxo30AuI7IQY9yfq2QsvhKv61lbKLynzFUhbVoJKmuwk
- NFl7PKPPRfKzz9dREaoyF8bdb3SPeyaMOLETnugkO4PeJ2JlfDu3bZ2MsEIpWuKldsOGXOwEe64
- uybubqMqT2Ey62rSklOhCyVuJ751jK4H5+03CjIKrPZF3JjFvK2Ha7sh6lQSyGZSnQBJZ8SqvZM
- Gvz08BmI3gtThfGdFmyXPz61eE0z4w==
-X-Proofpoint-ORIG-GUID: ycnolg3CfFq9xUuFPpxKtyFTKIkkV84R
-X-Authority-Analysis: v=2.4 cv=Ae683nXG c=1 sm=1 tr=0 ts=68ff9063 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=pGLkceISAAAA:8 a=Ikd4Dj_1AAAA:8 a=yPCof4ZbAAAA:8
- a=jXjzwb-ZsEZO7R3cNCMA:9 a=CjuIK1q_8ugA:10
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 01/17] slab: Reimplement page_slab()
+Content-Language: en-US
+To: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-mm@kvack.org, Dmitry Vyukov <dvyukov@google.com>,
+ kasan-dev <kasan-dev@googlegroups.com>
+References: <20251024204434.2461319-1-willy@infradead.org>
+ <20251024204434.2461319-2-willy@infradead.org>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251024204434.2461319-2-willy@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 39r69ordgsh6zibt1qn8xmtr5bfogwzq
+X-Rspamd-Queue-Id: E2C5B1C000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BF7B9C0008
-X-Rspamd-Server: rspam03
-X-Stat-Signature: kyuowptoap9ggd84ttbeaf1skpyxtyks
-X-HE-Tag: 1761579126-827959
-X-HE-Meta: U2FsdGVkX1+wFYOXbNLBvNntg2XDG9miyX4BUjqHCKFr1hQ9tvF0vnJxcfqTsh0mgnNmU5icEURTsNXzwwG/qsEug3LugsU/+w5IgkoUJJ/QKGCqEcUW/faszkTfs08KQTQ9IQ6FSC/mGtQW9YnonmGD6pjzzSUsEDSfGWheJI79zbMdCxOe7GVx2DkjF7cqJ3xUft/P+bR/ZBYmM3Q1+sRf3I8OulT3SI+va0+7AJDwPqZfTi/01F3yPH5tRipP05PixELGWtRjXZOERrkziUyUPsAFtGzFy4NUjOwVHUIZclV/2AdRWXEVTZMGCn3zf3lEkRcqzN5ax/6Cz3gCEAi40w1SCJMNbTgH0osrFVDQJfona7eSpKKvEpZ2SHQpJs+FoA6qrMQepco+G6bG1S0ectNEUO4EsMMUQpdKd+qxNBD2+0j88Bf6DLkBxyy+7gu1WkMunkbO5I3dnbaNK+TGNzeJgttvyyUf11OtUsk/2bEDLHVRskTrLf5Iu5sFfGNXwtjrslHycT4wGOB6tvoVci7uh7da2olja+UBACDFoz+kHFbeP7fgPzbcg0++XPLQ9Xi9fgg4AXSPTiI5FEN46xMUydOiAofn3bTryQ2yVDzOifsLiwFzKqFrOHyZqQw9QPp4ou8fabzjazuREwVlXBS/P8Wchxa1MM8Oc8yQjTj1SnT6uyt/vaNHA+mvm/uoTit5Z6RNOtZMkS0u2Qqz8dEkSiBA/CPyrbDFY2Xkdkqt8OQraTBVwxUFJYfe/YmnAk4uL/k1QfxspWpeksXg+BIhMjyn/omESKudcEkdlx1H4xMbRzvniTXGlAcy+qMsGRCtQCaTRWnF2/liszpyBOhXsho8fme9Ag66ohlI0B3XHa8frZNBn8S7/jT6b2z/g7WUhaAvx/R8EB8A4lsFpZxG7qT0yvHRWzepN2LLF8082yW9Q5Ge8aPQFirBaHBXLuE1lvoy0v1nAkO
- UGdZHvCf
- I3RUgg5TYQy27m1RUuM6n+/QPOytRaWRmhrpv3d5lMKjQ5gcRSfgjgZhN3U9LjXAO+AcnXckZNmqpudf+YyjP6E62nzpoXZum7fr3dt+SW2NAAGPczLSmr3qZgu5RFttkIb8jnSneT3OhQVYae7q+V/gvjLJs2gjmDOMnjcPH07LLf2rxo2HdeldtXjro5AnjM5DAJMAU8jBmiWSCzLmAbzgwALZHb8a8+XZOYgCZc1GgLghS7pYjiVDOyHEg1NvTCQ7tUf2FiVZMEgZYtta9sWdVHCHbHHe6FkbixpTckfAjY0LBHxD1+FWQo0UoOAJ9R8K4iq8PSV/p+7ioi03ggMmuadZGsmA5vi2VNMP23o2mORvVJWnSNa/CxIv9+JhExWS2dRzxVesObdwOcFSnlO6z0nUdoNrRYbZS2/sQHlE/my6vcvsoN+SqsIPKtQiXIA8pTw7K3AZPaW/mfWSb9K0fL6vDeb0L33NixKE5MMvyOXoHUJkz3i4/GsFcYCu0PNhbuCPDhNhKIpe9NCgORo9sOOmY2cgCq3OAExfux/gCTlgasTI2YD5sSQ76fZSuy+EEiVZw3844iJvJq5zlvIYE6d2eTF3Z4CEor3xob2DWlULjaINUAW537+fROxOwjjw4ZqE0oxIpnUExAom8VRGzkGHoe9a9xt1uKxP/T7anSVURW+fAinwJyEBCEXTMBTOQ/5yEqqFf3ZXYJlmLXGrASmYLbDvgc9NJTt+umU1NlC7Bjen5ebICQIRUGZweLFOJKu//EkMcQss00uy1o2V7SxyYnxJqPzYLocuDJLSBgyTR/+5bLMUSgouk8rR7J+RE7YLflSCnbSA=
+X-HE-Tag: 1761579291-948237
+X-HE-Meta: U2FsdGVkX1/1Aje45TNAmTtjN6OE1WFlFEWNMBxsPSQ58OyjP4W3hIGkZFc6Qy50B1LXzrL1x0Ffozoi6QbFp6FuB44e31NLPqeaFnyFHYL/1fMHUTz5Hs8s0/A2em0kFkure2625mbEvMxF4dlCvwzbn6lXfdbEmxU1kguaGWotb8GM2wi9DMK5dABNKrCRYnoSwA2iGbpAz5rnYwNUnNcZSsfqzBlbYg5dy07Rt32eaQF31Ud2+/WLNyN+VUjpzUWoDZUOkvUzj9kurH8ssMRSP4t+WhcPFL4KFEx7z+jphSXuseVww+TZwe7TOaEU67QBz1cF4CA8DF/w/lVytNZus6gGDm61UhTbKH5HB5taHPZhCNSNSqhsPIkYNF28f2Ei2cdLyu7ndLOQuN6rZ66lBYd2eAQO06GGhMgVGRI6SzYRNDG6B1mAmkz+N1zujRLqGUnx1hostDU4O6aeMn1qZTWM+KTsd7UCiQ4HrVUg7G9v/UabwyDVNpwk1Bz7+mOYWF+m1gZtEtcgpfYeByNs9UA62bdXgunayXyy96UFV69gdNa/CtftPYkmNzdm/QfiqEzEcg9NmdIjP1+Lv9ACiDbtxFkIA2xW8bLwd1Gs0lVf1ZIXqnXgfat6MRy6UrUAIE34hHfTeX8Xq/EF8UqrNZUtmpi1AQJVT9/9KxLCLmPWnQSVpgnmGPi2cO5pLoP4w6gsx+XuROz0ATSfcVpfoosj1CFGzcux47K/0PZinmpEGHQSZGySP0uVANLtDUktpdHEbRTSJQU5n5Clq6COgrdK7CczQW2ntkhGcMmKS7LACD4/XaYNsDEdyFt+jNTJEOS2W9ddRHxX2i4idXMF7YP/RuE/spcn7AmyntbVFdirGz2Tq5dP3OCwxv12R+dLWc52k/kjSt5riMMwLi6YK6TLp01c+wu5hwiD+NSyC1BsdPUgJeGdawhZTyeOBtlcYvKl248PprYIpvl
+ 1QuJg8fs
+ gaeWto7l62hnVD8c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -244,180 +181,138 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Oct 25, 2025 at 11:30:19AM -0400, Zi Yan wrote:
-> On 24 Oct 2025, at 11:44, Lorenzo Stoakes wrote:
->
-> > On Wed, Oct 22, 2025 at 11:05:21PM -0400, Zi Yan wrote:
-> >> folio split clears PG_has_hwpoisoned, but the flag should be preserved in
-> >> after-split folios containing pages with PG_hwpoisoned flag if the folio is
-> >> split to >0 order folios. Scan all pages in a to-be-split folio to
-> >> determine which after-split folios need the flag.
-> >>
-> >> An alternatives is to change PG_has_hwpoisoned to PG_maybe_hwpoisoned to
-> >> avoid the scan and set it on all after-split folios, but resulting false
-> >> positive has undesirable negative impact. To remove false positive, caller
-> >> of folio_test_has_hwpoisoned() and folio_contain_hwpoisoned_page() needs to
-> >> do the scan. That might be causing a hassle for current and future callers
-> >> and more costly than doing the scan in the split code. More details are
-> >> discussed in [1].
-> >>
-> >> This issue can be exposed via:
-> >> 1. splitting a has_hwpoisoned folio to >0 order from debugfs interface;
-> >> 2. truncating part of a has_hwpoisoned folio in
-> >>    truncate_inode_partial_folio().
-> >>
-> >> And later accesses to a hwpoisoned page could be possible due to the
-> >> missing has_hwpoisoned folio flag. This will lead to MCE errors.
-> >>
-> >> Link: https://lore.kernel.org/all/CAHbLzkoOZm0PXxE9qwtF4gKR=cpRXrSrJ9V9Pm2DJexs985q4g@mail.gmail.com/ [1]
-> >> Fixes: c010d47f107f ("mm: thp: split huge page to any lower order pages")
-> >> Cc: stable@vger.kernel.org
-> >> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> >
-> > This seems reasonable to me and is a good spot (thanks!), so:
-> >
-> > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> >
-> >> ---
-> >> From V3[1]:
-> >>
-> >> 1. Separated from the original series;
-> >> 2. Added Fixes tag and cc'd stable;
-> >> 3. Simplified page_range_has_hwpoisoned();
-> >> 4. Renamed check_poisoned_pages to handle_hwpoison, made it const, and
-> >>    shorten the statement;
-> >> 5. Removed poisoned_new_folio variable and checked the condition
-> >>    directly.
-> >>
-> >> [1] https://lore.kernel.org/all/20251022033531.389351-2-ziy@nvidia.com/
-> >>
-> >>  mm/huge_memory.c | 23 ++++++++++++++++++++---
-> >>  1 file changed, 20 insertions(+), 3 deletions(-)
-> >>
-> >> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> >> index fc65ec3393d2..5215bb6aecfc 100644
-> >> --- a/mm/huge_memory.c
-> >> +++ b/mm/huge_memory.c
-> >> @@ -3455,6 +3455,14 @@ bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
-> >>  					caller_pins;
-> >>  }
-> >>
-> >> +static bool page_range_has_hwpoisoned(struct page *page, long nr_pages)
-> >> +{
-> >> +	for (; nr_pages; page++, nr_pages--)
-> >> +		if (PageHWPoison(page))
-> >> +			return true;
-> >> +	return false;
-> >> +}
-> >> +
-> >>  /*
-> >>   * It splits @folio into @new_order folios and copies the @folio metadata to
-> >>   * all the resulting folios.
-> >> @@ -3462,17 +3470,24 @@ bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins)
-> >>  static void __split_folio_to_order(struct folio *folio, int old_order,
-> >>  		int new_order)
-> >>  {
-> >> +	/* Scan poisoned pages when split a poisoned folio to large folios */
-> >> +	const bool handle_hwpoison = folio_test_has_hwpoisoned(folio) && new_order;
-> >
-> > OK was going to mention has_hwpoisoned is FOLIO_SECOND_PAGE but looks like you
-> > already deal with that :)
->
-> Right. And has_hwpoisoned is only set for large folios.
+On 10/24/25 22:44, Matthew Wilcox (Oracle) wrote:
+> In order to separate slabs from folios, we need to convert from any page
+> in a slab to the slab directly without going through a page to folio
+> conversion first.  page_slab() is a little different from other memdesc
+> converters we have in that it will return NULL if the page is not part
+> of a slab.  This will be the normal style for memdesc converters in
+> the future.
+> 
+> kfence was the only user of page_slab(), so adjust it to the new way
+> of working.  It will need to be touched again when we separate slab
+> from page.
 
-Yup this is what I meant by you already dealing with it :)
++Cc KFENCE folks.
 
->
-> >
-> >>  	long new_nr_pages = 1 << new_order;
-> >>  	long nr_pages = 1 << old_order;
-> >>  	long i;
-> >>
-> >> +	folio_clear_has_hwpoisoned(folio);
-> >
-> > OK so we start by clearing the HW poisoned flag for the folio as a whole, which
-> > amounts to &folio->page[1] (which must be a tail page of course as new_order
-> > tested above).
-> >
-> > No other pages in the range should have this flag set as is a folio thing only.
-> >
-> > But this, in practice, sets the has_hwpoisoned flag for the first split folio...
->
-> handle_hwpoison is only true when after-split folios are large (new_order not 0).
-> All folio has_hwpoisoned set code is guarded by handle_hwpoison.
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-Yup I know, maybe I should have been explciit :)
+Otherwise LGTM.
 
->
-> >
-> >> +
-> >> +	/* Check first new_nr_pages since the loop below skips them */
-> >> +	if (handle_hwpoison &&
-> >> +	    page_range_has_hwpoisoned(folio_page(folio, 0), new_nr_pages))
-> >> +		folio_set_has_hwpoisoned(folio);
-> >>  	/*
-> >>  	 * Skip the first new_nr_pages, since the new folio from them have all
-> >>  	 * the flags from the original folio.
-> >>  	 */
-> >>  	for (i = new_nr_pages; i < nr_pages; i += new_nr_pages) {
-> >>  		struct page *new_head = &folio->page + i;
-> >> -
-> >
-> > NIT: Why are we removing this newline?
->
-> It is a newline between two declarations.
+> ---
+>  include/linux/page-flags.h | 14 +-------------
+>  mm/kfence/core.c           | 12 ++++++++----
+>  mm/slab.h                  | 28 ++++++++++++++++------------
+>  3 files changed, 25 insertions(+), 29 deletions(-)
+> 
+> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+> index 0091ad1986bf..6d5e44968eab 100644
+> --- a/include/linux/page-flags.h
+> +++ b/include/linux/page-flags.h
+> @@ -1048,19 +1048,7 @@ PAGE_TYPE_OPS(Table, table, pgtable)
+>   */
+>  PAGE_TYPE_OPS(Guard, guard, guard)
+>  
+> -FOLIO_TYPE_OPS(slab, slab)
+> -
+> -/**
+> - * PageSlab - Determine if the page belongs to the slab allocator
+> - * @page: The page to test.
+> - *
+> - * Context: Any context.
+> - * Return: True for slab pages, false for any other kind of page.
+> - */
+> -static inline bool PageSlab(const struct page *page)
+> -{
+> -	return folio_test_slab(page_folio(page));
+> -}
+> +PAGE_TYPE_OPS(Slab, slab, slab)
+>  
+>  #ifdef CONFIG_HUGETLB_PAGE
+>  FOLIO_TYPE_OPS(hugetlb, hugetlb)
+> diff --git a/mm/kfence/core.c b/mm/kfence/core.c
+> index 727c20c94ac5..b16e73fd5b68 100644
+> --- a/mm/kfence/core.c
+> +++ b/mm/kfence/core.c
+> @@ -612,13 +612,15 @@ static unsigned long kfence_init_pool(void)
+>  	 * enters __slab_free() slow-path.
+>  	 */
+>  	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+> +		struct page *page;
+>  		struct slab *slab;
+>  
+>  		if (!i || (i % 2))
+>  			continue;
+>  
+> -		slab = page_slab(pfn_to_page(start_pfn + i));
+> -		__folio_set_slab(slab_folio(slab));
+> +		page = pfn_to_page(start_pfn + i);
+> +		__SetPageSlab(page);
+> +		slab = page_slab(page);
+>  #ifdef CONFIG_MEMCG
+>  		slab->obj_exts = (unsigned long)&kfence_metadata_init[i / 2 - 1].obj_exts |
+>  				 MEMCG_DATA_OBJEXTS;
+> @@ -665,16 +667,18 @@ static unsigned long kfence_init_pool(void)
+>  
+>  reset_slab:
+>  	for (i = 0; i < KFENCE_POOL_SIZE / PAGE_SIZE; i++) {
+> +		struct page *page;
+>  		struct slab *slab;
+>  
+>  		if (!i || (i % 2))
+>  			continue;
+>  
+> -		slab = page_slab(pfn_to_page(start_pfn + i));
+> +		page = pfn_to_page(start_pfn + i);
+> +		slab = page_slab(page);
+>  #ifdef CONFIG_MEMCG
+>  		slab->obj_exts = 0;
+>  #endif
+> -		__folio_clear_slab(slab_folio(slab));
+> +		__ClearPageSlab(page);
+>  	}
+>  
+>  	return addr;
+> diff --git a/mm/slab.h b/mm/slab.h
+> index 078daecc7cf5..a64b9b2c8731 100644
+> --- a/mm/slab.h
+> +++ b/mm/slab.h
+> @@ -146,20 +146,24 @@ static_assert(IS_ALIGNED(offsetof(struct slab, freelist), sizeof(freelist_aba_t)
+>  	struct slab *:		(struct folio *)s))
+>  
+>  /**
+> - * page_slab - Converts from first struct page to slab.
+> - * @p: The first (either head of compound or single) page of slab.
+> + * page_slab - Converts from struct page to its slab.
+> + * @page: A page which may or may not belong to a slab.
+>   *
+> - * A temporary wrapper to convert struct page to struct slab in situations where
+> - * we know the page is the compound head, or single order-0 page.
+> - *
+> - * Long-term ideally everything would work with struct slab directly or go
+> - * through folio to struct slab.
+> - *
+> - * Return: The slab which contains this page
+> + * Return: The slab which contains this page or NULL if the page does
+> + * not belong to a slab.  This includes pages returned from large kmalloc.
+>   */
+> -#define page_slab(p)		(_Generic((p),				\
+> -	const struct page *:	(const struct slab *)(p),		\
+> -	struct page *:		(struct slab *)(p)))
+> +static inline struct slab *page_slab(const struct page *page)
+> +{
+> +	unsigned long head;
+> +
+> +	head = READ_ONCE(page->compound_head);
+> +	if (head & 1)
+> +		page = (struct page *)(head - 1);
+> +	if (data_race(page->page_type >> 24) != PGTY_slab)
+> +		page = NULL;
+> +
+> +	return (struct slab *)page;
+> +}
+>  
+>  /**
+>   * slab_page - The first struct page allocated for a slab
 
-Oh you're right, sorry!
-
->
-> >
-> >>  		/*
-> >>  		 * Careful: new_folio is not a "real" folio before we cleared PageTail.
-> >>  		 * Don't pass it around before clear_compound_head().
-> >> @@ -3514,6 +3529,10 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
-> >>  				 (1L << PG_dirty) |
-> >>  				 LRU_GEN_MASK | LRU_REFS_MASK));
-> >>
-> >> +		if (handle_hwpoison &&
-> >> +		    page_range_has_hwpoisoned(new_head, new_nr_pages))
-> >> +			folio_set_has_hwpoisoned(new_folio);
-> >> +
-> >
-> > ...We then, for each folio which will be split, we check again and propagate to
-> > each based on pages in range.
->
-> Yes, but this loop only goes [new_nr_pages, nr_pages), so the code above is
-> needed for [0, new_nr_pages). The loop is done in this way to avoid redundant
-> work, flag and compound head setting, for [0, new_nr_pages) pages and the
-> original folio, since there is no change between the original values and
-> after-split values.
-
-Yup I know, was just working through the logic, it looks right to me!
-
->
-> >
-> >>  		new_folio->mapping = folio->mapping;
-> >>  		new_folio->index = folio->index + i;
-> >>
-> >> @@ -3600,8 +3619,6 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
-> >>  	int start_order = uniform_split ? new_order : old_order - 1;
-> >>  	int split_order;
-> >>
-> >> -	folio_clear_has_hwpoisoned(folio);
-> >> -
-> >>  	/*
-> >>  	 * split to new_order one order at a time. For uniform split,
-> >>  	 * folio is split to new_order directly.
-> >> --
-> >> 2.51.0
-> >>
->
->
-> --
-> Best Regards,
-> Yan, Zi
-
-Thanks for doing this! :)
-
-Cheers, Lorenzo
 
