@@ -4,138 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99F11CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 10:40:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A324BCCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 10:49:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6D5F80034; Mon, 27 Oct 2025 06:40:12 -0400 (EDT)
+	id 0B3C580035; Mon, 27 Oct 2025 06:49:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D44578000A; Mon, 27 Oct 2025 06:40:12 -0400 (EDT)
+	id 08BAA8000A; Mon, 27 Oct 2025 06:49:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C33C880034; Mon, 27 Oct 2025 06:40:12 -0400 (EDT)
+	id EBC0F80035; Mon, 27 Oct 2025 06:49:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id B01EB8000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:40:12 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 36A9B13B0D8
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:40:12 +0000 (UTC)
-X-FDA: 84043549464.11.FFC05DC
-Received: from flow-a3-smtp.messagingengine.com (flow-a3-smtp.messagingengine.com [103.168.172.138])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1DA7EC0002
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:40:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="P CJzgJt";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Xiqxl8wy;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D1E9D8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 06:49:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 7A5D758E62
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:49:18 +0000 (UTC)
+X-FDA: 84043572396.14.C97F04D
+Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 979F080015
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 10:49:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XnBXr96Q;
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761561610;
+	s=arc-20220608; t=1761562156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=J5CcOF0C2/ovI9Kf7WL/hZcJiwTY902lhGxvmOPQI6g=;
-	b=BFBtSFarsmtQGnnkG3kjm7FMOhvLGQw8w76GRhhBnbkuA+m2pvyzDgfZRm32VvLAMDkrw/
-	VE+q80Ub8d3+FENeeLSa/aKn54QvX94DQExeYJXfP7FlH7HmNl6NY7eTAS9xon49PYwoot
-	QK6boBD/KYhUVaGTNJNGv6E4ENDcvTs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761561610; a=rsa-sha256;
-	cv=none;
-	b=6/T35H2pmLF2qAn+LUvkqVHhleZZRnXo1NNFdU5CZZ/eYDx719062ZNE4BNGFsoHFfBjW3
-	sam5CafdzjdwOUK6JEeTLyqc6w/WFknD0CPssi321aBk6z5FgmWeh5BVg7lzi7+914/t5e
-	dqeSr/Iz6wT5QFxzhbttXYSrSy+MINY=
+	bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
+	b=Ray2/cs8dmgFHqAWRTPSdo5GSrRroazBBAB7D+sJ/pf29CtoxplV5UXz9RSQlQU6iuMklf
+	1S9R1HBiBG/E8YM8eF9lxp4FTRicKZt0zScRjBWsbNjcQ970rDQlCN1CeoVQXaXjQDQbGm
+	Cupyy097HoY8MHZtWIfalcAlM2ooeFc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="P CJzgJt";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=Xiqxl8wy;
-	spf=pass (imf22.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.138 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
-	dmarc=none
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailflow.phl.internal (Postfix) with ESMTP id 35CFB1380262;
-	Mon, 27 Oct 2025 06:40:09 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Mon, 27 Oct 2025 06:40:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1761561609; x=
-	1761568809; bh=J5CcOF0C2/ovI9Kf7WL/hZcJiwTY902lhGxvmOPQI6g=; b=P
-	CJzgJtt5dAoV8zeL8X0lxYn2Qo4veQXJvbY8jGok+uZzilSpisKjhoGQJfzWoWG8
-	e4xIs3PJ2lcAGSzXqsi8E5h1bI+cxfwzInHcUwxzavFeTte8tvLPR/JIIsyxnNve
-	ohQZ0QEWn7OseFVwoYa+9MWbUD0+oMl0WRIAghIChFDyAMiVSEQMvPVKWiYUy6Ap
-	XVC+MbXgPZMhX/FaMvooF0C+Fuxictkz9jFqIWwLKRKke3nX+x8QfSZEtblxnWb3
-	6eCE0mY2sqeFfff4voAKEbkXzo2AQI7ogO425Q61OXg6+w8RgaeEazgTDosUzJMG
-	f3aZkyCDdDnZ56RJklf8Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1761561609; x=1761568809; bh=J5CcOF0C2/ovI9Kf7WL/hZcJiwTY902lhGx
-	vmOPQI6g=; b=Xiqxl8wy2eezShYtWPExGsK3jlkuwh5n8AQWQss9+0ok+f+VP41
-	UxLy3eaCrWpNHotHsebHtvKgXQgq3OfYSuKcT3BHUR9OwH5nmQ8YkMFuWKMKwtO8
-	UqumRJ0dnM7UaWvN2O8FNeUdZPF3Qbue9SDOp7az5Il0pEIVGA5eQHChXvRFzVhu
-	eAWaAwIu4y019yhILqjttlQ9U2iltbhok2QlEUQBWn93mGrTds683rekZZbRAev8
-	8GPSUV8F85I7Pik9etBXlqldlTd7ZNv9pdfsd93GMOiP1t+bpFn2VU91ZFkfX9or
-	jyZZ2BCbXiDTcuYt0NpRnvJc2uzV5/CYQdw==
-X-ME-Sender: <xms:B0z_aABhHTXyAc9gywNkg40h5ypJplx0CY0QJx4wrb2xkr7HuebJVQ>
-    <xme:B0z_aLliGpToF8gtI04iMoqF2kWSLtUeDvvkn_KHPW8Xy2n2MPFXwOcFLWI9UNMGA
-    GB3sTCkq0OQCMgxE-3N-oGTkjPnp6bH4pZYcTIYfmc3Sn9-GOA7KUJs>
-X-ME-Received: <xmr:B0z_aGhVGydf4aIWEc5HGCw6Xu9AoTNMwFLQxR1XzhXS37ErkSS1wBKvDK050Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduheejjeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhhughhhugesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
-    ghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtthhopeifih
-    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
-    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:B0z_aD3d7IOpUEH6nfto9rwvKaqbSf02e0QrfL9xl2oaJgtlaI6n0g>
-    <xmx:B0z_aCSGhJ3s1q9UrX279aQu7CavvQoSgMNRwLGVVk7lHG3ibPADNg>
-    <xmx:B0z_aNbewC8p69Y3STPH3qX6-wLiUX3bimrPjz2qIfrI9Vug-cZuMg>
-    <xmx:B0z_aH7actSeoaL6p0LQO9TS_jYBqkikxndFchvqrE14-dndwt-3-g>
-    <xmx:CUz_aCh2oiJbFTOucV9lLdCMUcF4Q5ZcIK9KeA9H8wm8Eo4MRa1m6UK2>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 27 Oct 2025 06:40:06 -0400 (EDT)
-Date: Mon, 27 Oct 2025 10:40:04 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2 2/2] mm/truncate: Unmap large folio on split failure
-Message-ID: <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
-References: <20251023093251.54146-1-kirill@shutemov.name>
- <20251023093251.54146-3-kirill@shutemov.name>
- <9c7ae4c5-cc63-f11f-c5b0-5d539df153e1@google.com>
+	imf30.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=XnBXr96Q;
+	spf=pass (imf30.hostedemail.com: domain of hughd@google.com designates 209.85.128.179 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761562156; a=rsa-sha256;
+	cv=none;
+	b=2ArcDCplV6lbia4KDnWw7/C4VDiTf1q+bsqCxeZG7B6kU3jZbK4l0oRo1rC7dutOjNwJnu
+	tkPqlRQv2vVWhSVyyh/CjvMmgMjz1YyaEBC7M4VErdlH6W9NA1zv/f6W0rNieQG2uBwgMI
+	X4UpYU04Sc5kr1fLKPz2re8CKF6Lw4U=
+Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-784826b775aso48833217b3.2
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 03:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761562156; x=1762166956; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
+        b=XnBXr96QxHGkMOCRYekQTB97sWD9X4Jwv5BzcXQ9nzNN3onNvgfdG5wwTibydC3Jde
+         sfcIor6V3mYu8FQVxTot+20wWeByu8bpYrkBymHSMx4Qx8cYKYjhXYPD6Tv9VtLl6gkL
+         M0+cnl7J7pgH7ERogKxQvg3v97GZVTx3nobQ35Mtr0WidkstXAqTf3bRFqbnn1cchbtV
+         spHhC73AQOFv3s+/1Mo2YD4a2XgYKrKcTqTV8rVcPslmyqihD+maXAfjk4E828MKpOsf
+         kwpntCYdB09lqc27mKy3cWy8H6zz1GTq+u8DXRHNYdI0kQfGY7WQQ/wLNByWFBM4qW0j
+         gR7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761562156; x=1762166956;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OgHGUo7vKPOLMFys7tnpJgx6l5wHevbg8X8g3p58eD4=;
+        b=uQAM6moyMdw0IHgGqGT1UYUHkIRWITC4XlAJUrBn13jVwY5VAofpTggl0Aa2fS9xpb
+         wxQrny358r9Ys2ktrpqQA2Qq67kDKNADC2NYGcbVgHlZyFv8JfCpHE5nVN9kDpQ6Y/li
+         9mZskTEZZn9qV3g8sYMAShNk6Fb7RM1SBMW8lNaZsRMmY764klsKnFWstF1eyra7PHp9
+         DMmMd5YkD8wSX7x7aMklWkVlekhM0xDrYy2ZbY3xo2nQDsSDnBOtYlBmDj1wVf7GO7AH
+         Q0AqAsKVoZbAZ5TxYXWzhSgS/ZNNIFM5UNsPDminnzUsg40kjlJOykUW8koPoebinyri
+         epuA==
+X-Forwarded-Encrypted: i=1; AJvYcCVZ9m2UFyHXMfUMIoUgbEQf178LVzzc7DPv7442dsyMwKXniXBQIIniAGrPxqAIWU6QVyskfPdE5w==@kvack.org
+X-Gm-Message-State: AOJu0Yw8KppTzfDbGAaO69gAJoxvNvA2ywxsL12cg/q9I/AE8ON5yca1
+	P4WVSSPycWG0wzujszM3K/shMzRZh5/e2MTBQ0mxWu5Yr14ls3NCXgQ4pfawgSDxJA==
+X-Gm-Gg: ASbGncvbQUdsxiUV0p/CS9TVwXqert63WAABocqvOl+H87J21VdYR1ssIJs0Sx7EuJw
+	tk2h+ha+FaBYg+G+/uUZB4yqe6dic6+yUu0VdKllCSTYRLd1dC05nWaFkAPywGU7VtYHFrTSHq0
+	4m4LJ6agFCMFXa896Wtn44RdzHn8Xjd3P9ngHTYfR06OVG04OabwulzvB8eKylhSak2pXMJeVZ0
+	Hm5kUtAEl9PKST5qHe/akiuDOER+cL29DwgflU7gRXNyMqnKYCzlbx59pxMd2ZtfqKkg6C2bTnQ
+	1TCC5+YIRXDg8XS7Ru9JOuUo2up0ick+3mZvqy/XM+3PJWIWSL/Bv3ddd3kp+7VfSmieemzLGFO
+	lLD0fWiW7LDlKM8yDXUMVC6f76Ama330LudWwqZvc7TWYK0YVE1VxooZsc1HiAXFKXIvc1K3RFh
+	738Xlwi8YL/swkEViL5RBdLs6BEtOPgp019/QbTsoTbDpO/w/oKm+41DgPBEb1j4GlPfwqUM0=
+X-Google-Smtp-Source: AGHT+IF4G0GWxPrawsqJUunlI8mR7Zlz3Bdu/PVS/V73SpblujEtTUttzB5AMtvsR7iP+Kk1d5taaQ==
+X-Received: by 2002:a05:690c:25c4:b0:723:bf47:96f8 with SMTP id 00721157ae682-7836d343077mr323894387b3.53.1761562155421;
+        Mon, 27 Oct 2025 03:49:15 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed1e84ffsm18025877b3.55.2025.10.27.03.49.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 03:49:14 -0700 (PDT)
+Date: Mon, 27 Oct 2025 03:49:12 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+cc: David Hildenbrand <david@redhat.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+    Yang Shi <shy828301@gmail.com>, Dave Chinner <david@fromorbit.com>, 
+    Suren Baghdasaryan <surenb@google.com>, linux-mm@kvack.org, 
+    linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] mm/filemap: Implement fast short reads
+In-Reply-To: <CAHbLzkpx7iv40Tt+CDpbSsOupkGXKcix0wfiF6cVGrLFe0dvRQ@mail.gmail.com>
+Message-ID: <b8e56515-3903-068c-e4bd-fc0ca5c30d94@google.com>
+References: <20251017141536.577466-1-kirill@shutemov.name> <dcdfb58c-5ba7-4015-9446-09d98449f022@redhat.com> <hb54gc3iezwzpe2j6ssgqtwcnba4pnnffzlh3eb46preujhnoa@272dqbjakaiy> <CAHbLzkpx7iv40Tt+CDpbSsOupkGXKcix0wfiF6cVGrLFe0dvRQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9c7ae4c5-cc63-f11f-c5b0-5d539df153e1@google.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: tdmdfuwj7q7gewcbz3yyxwuyc6r75xuh
+Content-Type: multipart/mixed; boundary="-1463770367-1022125602-1761562154=:3513"
+X-Rspamd-Queue-Id: 979F080015
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1DA7EC0002
-X-HE-Tag: 1761561609-950095
-X-HE-Meta: U2FsdGVkX18x6pEII6uezyWDLv35BQPa+dHmVMhmD4NerrPdsHQ1tF1Rp5fyV8FwSFgcq6JjzmJBP6yk/PYitQQrRoS/2vrw3tu4RPHD/DcKjeCMzJtFBYRV77ubiVnyVl0pU508PH2jFK8KvLXwXrYSnoAjb8i/LXKlF/Jz9HpdVRTrVwZweVgxgx+Kgynb9RAbJpfSTnnYeOXiYp1cOPeeysHOC+rPi9wZvLVkWG6OyRhG42VKVbV0Cv+r6eenuS1Qgu5hnaxmRO9U7/bL4oJjmI63dTY4788GM45af0UaECUf6QePlRBcRu55LUsZc8SKUumuJcZpoHo3vBGkBXS0KDRhmOue7ZuW9MHDrerd/asO0Q11bzJS0a2NCaWkJrhuYOiP1gVI1oCX5J//SKQnrZHu1dyuKU3bhzStInJ91sTm/9Os7SBLzIc7zs5519QzhXRNXCxng6m3ytM4vHIZvYyUseCxQQpDvoHIQ6cmYvtjfwCmP0P+xAH2Kktx9tK+9DFKyzCuitbZo91rBbvIekn4O+a7qE8ZBB09qP2YJgf3B5LccyUUaxHMUkWxUYVi5TuhMcPoBd2rH3h8xZtDFspmyvdtouLn2I09rGfOtpmuRZ+efE+sd6+ilmFE3WKQDnaG0YEhAGKOJnO7y6tosdhfkoT6MIRsB/aBBwsqBuk9qLGXcW0hW5ItnkzagKmkWVp79sfKfj4QfUDsq3G0YTY7qFQ3oIiiOi8iG8PRtHMfTS3TJ1z+udc0he/C134Tl770SBwzk6bWk303jLIyFNMRs+ZmxEEjYk4IkhRutf7ERweMck/SFRHZw8gm7y4uleWpwQVHNZPI30AM71bgdoO1Ce7lQoPolq8Eg9Tff6z+P+twHQgy0pb+wjM7PgU8j7IoUzRL5+doo2S5XIQW+doOfhwPeyglCj7By/yF1e0Llag6U6eSjIJNcUOjuPiWAZbCV0LLneiirs1
- 7DKVdfMe
- WZutObTP6eZUCsTRfWnS1f70BEUmdKKH8Y8NEGXeEvJvaAJFcfEy6Wl0N2VdN1ipLxWw/OvzTxFozucsLbw0dHFLaI7YqyKD/u8OfM+zKF1Ys2KS/wru8+qx2AE2MTa7ZDwbF1792MjiFJgI74WEKyd22XnYbfAopDZ0rUyaRZUJkRXlhy9rfq5gQcx+suQ7P5dVwOpaFwIGjgq6gORq4C1RpLmNVzqxyz/FXhvTEb/tIIYLUucW2KKQV3YWnYOwJY1SXtuOmEbvaA89MNO5VznsQS1xUxYojMt4olTG2mJlIe02H985g26g8lEXCfBdoMGq2OsAG0zi4tgz+SjfKq4D7o7SyYVtOPjOWKM3odOxbxdEXDzYOH9/6Y8JcISrEjb7G2LuvdolaQ3++TYNCpvPEifLGyZEhCgZqFrRz1oXXKS/HrnObq1tvXg==
+X-Stat-Signature: ujdwrupcch3xi5sfif8z18wijahef1wd
+X-HE-Tag: 1761562156-276223
+X-HE-Meta: U2FsdGVkX186uj6j4g3twOnaY7P9CavZTIycnsAK+9VgDeHVc6GB4vUkWPgI2NhQTe2ngtHMUpdZ7a9HjKXvjjn6gq69b+ANC5WO8MS+8FQj5VldMbtf3KNwWOCKLfXeEv5OzLETmk5GnIJy7IgUq/q0uxIb6I3fAGGxqT5xTnvtfbiut732U7FyU38KoEMhpYMlJw4FZqkdIBMLkeov0HngwpTlYocfUxaJrlWRhBxNAQc4yKKIvWXgvIxwwk5YpxIcFrqSRxLMTloJtQgSSeu0sEs5mgMmUjVglEpgopbh87+WknFg6HU66xCcmWROQ/+8QvPXnN0ilEfXZxErCOKRyU9iLHAy69neTJgZuQyRIgKgodaXzFkJTsUMYXu6yN0Vo1Rd2WZCUP7J3QxATg5qSNvkp7i6HrAeb6o9A2ylXRXivQZADhoH8N8souqOQUqZtxOIFijZ0fH/90Ab7E7M5YWBznUqF21GMMo4v3EfxobdVvDw/sFpoCrwX3n9LSt+vDmUgNypccLKHREYENbl+n9viB6XuoWLNOsj6yyq3PPxQsklx+QbnPdxpviiRrjeCBvX7fAPqB5xhJGf9QBcVvMDl6wimVP5r36uDb1LwmPSUwvNGaG07EHoopmik4CW8geKzBHWCak8bfGdLYvsVFDobR2RFeSJUON2mFU6bSnxq7Fr8YbGImlXtXd+JFy8Ql70PkrPrHwvQesrZXsF6apN9CM/USM39T1M8JtNVuGOWaIhtMSA7BDL0a2xqW2v4RBTblTboBDROLaeESlbaf3HtjN6K3YV0Ci0TEk7SB/gBHsfAlRz8eTCroplkqi/SV+zhTCh0p95AXEK0nuIdebv4T2Kt/Czvo6oSna/Wxt3AX154khoeDP/0zctc7aaygWD4smptxOMvhW2hybPmlzhAG9Uut1Ab4Nd/bqI/WWzPzaKTBRgL2DUzgybqLpKUAPVjxUhxZWkKjg
+ 1irjq39P
+ Isoc0m4x0rC2u1nzw39I/8CSWGb5YykqZDW540hSBrzH2KxQDJHtsaHI2QymSaJSI5qEEAtEGUoK74L9VTUUJhxkqTRXBVTQy9t2tGeu/diPhBc/9dngsOwgE14iDOcRx0k2wGsqLdyKp92RZcvn2EU4rJYMeCi+2OdR7XTMMxIOtsavSGtC0c6M42KnT+9SzYOQeufOD7ABDmyJt6izwrWjehDn2XytPu6ehBpzu9puJwLgs7pvlnfEZ7UagITQh4S8v0PjJawzNUqJ2KuOierrN4w1dUCFrRlzJ8pinD1+N57WhNtetjweJTqkM6RA5X7XNM3OwcbZfbK4sKoecfGxZfBOLyWgVMGqOOn4CYGHXo8jYqS6luRM2q39OBQ4YWCd8E3vzELcLKsMGV+Ecrgf/98ifUUOo/TVb8BVBgP4PiFWQBQ23KiMJMg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,86 +123,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 03:10:29AM -0700, Hugh Dickins wrote:
-> On Thu, 23 Oct 2025, Kiryl Shutsemau wrote:
-> 
-> > From: Kiryl Shutsemau <kas@kernel.org>
-> > 
-> > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> > supposed to generate SIGBUS.
-> > 
-> > This behavior might not be respected on truncation.
-> > 
-> > During truncation, the kernel splits a large folio in order to reclaim
-> > memory. As a side effect, it unmaps the folio and destroys PMD mappings
-> > of the folio. The folio will be refaulted as PTEs and SIGBUS semantics
-> > are preserved.
-> > 
-> > However, if the split fails, PMD mappings are preserved and the user
-> > will not receive SIGBUS on any accesses within the PMD.
-> > 
-> > Unmap the folio on split failure. It will lead to refault as PTEs and
-> > preserve SIGBUS semantics.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> 
-> It's taking me too long to understand what truncate_inode_partial_folio()
-> had become before your changes, to be very sure of your changes to it.
-> 
-> But if your commit does indeed achieve what's intended, then I have
-> no objection to it applying to shmem/tmpfs as well as other filesystems:
-> we always hope that a split will succeed, so I don't mind you tightening
-> up what is done when it fails.
-> 
-> However, a few points that have occurred to me...
-> 
-> If 1/2's exception for shmem/tmpfs huge=always does the simple thing,
-> of just judging by whether a huge page is already there in the file
-> (without reference to mount option), which I think is okay: then
-> this 2/2 will not be doing anything useful on shmem/tmpfs, because
-> when the split fails, the huge page will remain, and after 2/2's
-> unmap it will just get remapped by PMD again afterwards, so why
-> bother to unmap at all in the shmem/tmpfs case?.
-> 
-> But it's arguable whether it would then be worth making an
-> exception for shmem/tmpfs here in 2/2 - how much do we care about
-> optimizing failed splits?  At least a comment I guess, but you
-> might prefer to do it quite differently.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-It is easy enough to skip unmap for shmem.
+---1463770367-1022125602-1761562154=:3513
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-> Aside from shmem/tmpfs, it does seem to me that this patch is
-> doing more work than it needs to (but how many lines of source
-> do we want to add to avoid doing work in the failed split case?):
-> 
-> The intent is to enable SIGBUS beyond EOF: but the changes are
-> being applied unnecessarily to hole-punch in addition to truncation.
+On Thu, 23 Oct 2025, Yang Shi wrote:
+> On Thu, Oct 23, 2025 at 3:34=E2=80=AFAM Kiryl Shutsemau <kirill@shutemov.=
+name> wrote:
+> >
+> > On Wed, Oct 22, 2025 at 07:28:27PM +0200, David Hildenbrand wrote:
+> > > "garbage" as in pointing at something without a direct map, something=
+ that's
+> > > protected differently (MTE? weird CoCo protection?) or even worse MMI=
+O with
+> > > undesired read-effects.
+> >
+> > Pedro already points to the problem with missing direct mapping.
+> > _nofault() copy should help with this.
+> >
+> > Can direct mapping ever be converted to MMIO? It can be converted to DM=
+A
+> > buffer (which is fine), but MMIO? I have not seen it even in virtualize=
+d
+> > environments.
+> >
+> > I cannot say for all CoCo protections, but TDX guest shared<->private
+> > should be fine.
+> >
+> > I am not sure about MTE. Is there a way to bypass MTE check for a load?
+> > And how does it deal with stray reads from load_unaligned_zeropad()?
+>=20
+> If I remember correctly, _nofault() copy should skip tag check too.
+>=20
+> Thanks,
+> Yang
 
-I am not sure much it should apply to hole-punch. Filesystem folks talk
-about writing to a folio beyond round_up(i_size, PAGE_SIZE) being
-problematic for correctness. I have no clue if the same applies to
-writing to hole-punched parts of the folio.
+Not a reply to Yang, I'm just tacking on to the latest mail...
 
-Dave, any comments?
+I sew no mention of page migration: __folio_migrate_mapping() does
+not use page_cache_delete(), so would surely need to do its own
+write_seqcount_begin() and _end(), wouldn't it?
 
-Hm. But if it is problematic it has be caught on fault. We don't do
-this. It will be silently mapped.
+It is using folio_ref_freeze() and _unfreeze(), thinking that
+keeps everyone else safely away: but not filemap_read_fast_rcu().
 
-> Does the folio2 part actually need to unmap again?  And if it does,
-> then what about when its trylock failed?  But it's hole-punch anyway.
+And all other users of folio_ref_freeze() (probably not many but
+I have not searched) need to be checked too: maybe no others need
+changing, but that has to be established.
 
-I don't think we can do much for !trylock case, unless we a willing to
-upgrade it to folio_lock(). try_to_unmap() requires the folio to be
-locked or we will race with fault.
+This makes a fundamental change to speculative page cache assumptions.
 
-Maybe folio_lock() is not too bad here for freshly split folio.
+My own opinion was expressed very much better than I could,
+by Dave Chinner on Oct 21: cognitive load of niche fastpath.
 
-> And a final nit: I'd delete that WARN_ON(folio_mapped(folio)) myself,
-> all it could ever achieve is perhaps a very rare syzbot report which
-> nobody would want to spend time on.
-
-David asked for it. I am fine either way.
-
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Hugh
+---1463770367-1022125602-1761562154=:3513--
 
