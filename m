@@ -4,103 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F6CCCCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 12:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 845B7CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 12:29:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 84A3B8004A; Mon, 27 Oct 2025 08:29:37 -0400 (EDT)
+	id DF20B8004B; Mon, 27 Oct 2025 08:29:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 800A88000A; Mon, 27 Oct 2025 08:29:37 -0400 (EDT)
+	id DA0CE8000A; Mon, 27 Oct 2025 08:29:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C7CD8004A; Mon, 27 Oct 2025 08:29:37 -0400 (EDT)
+	id BF4278004B; Mon, 27 Oct 2025 08:29:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3418000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:29:37 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id DDEF68881F
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:29:36 +0000 (UTC)
-X-FDA: 84043825152.23.D954748
+	by kanga.kvack.org (Postfix) with ESMTP id A449F8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 08:29:44 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 66AD812A62C
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:29:44 +0000 (UTC)
+X-FDA: 84043825488.14.916A26B
 Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 5A2A74000E
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:29:33 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=d+7AHr3S;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=txqeZw3T;
-	spf=pass (imf27.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+	by imf08.hostedemail.com (Postfix) with ESMTP id E5958160008
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 12:29:40 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ki0QQOHu;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KNfYGjuC;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761568181; a=rsa-sha256;
+	cv=pass;
+	b=jVlOTrE1iFom/SBZnaxZSFB24X+j9BGlcvsO0xZoiI1iwvty0atLTrHJU+wkexS/Kr/4+u
+	RL3uoGperJWTS5vfYpaTFavuh1vQOZFjIT80uDeLjluoMMMDgJ9kgjjRf8Ct1CxrVWAB4W
+	3S+nD7nwvRBtTsJJpo6Spzg9cufLexc=
+ARC-Authentication-Results: i=2;
+	imf08.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ki0QQOHu;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=KNfYGjuC;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf08.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761568173;
+	s=arc-20220608; t=1761568181;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/+GYVzpkWTncbwZTqYSKMk5iKtZQhjZZqJtz3v+YmQs=;
-	b=2L7gRlgIfpAW7rtF1sLxrAZVBSywP8wT5R3jnub2yQ2w6SERiHga72UPj6C653XAgoVdd6
-	nrMcGsuz2plfnXY9RBLdLwhGq8LaGuiZ5O9/PCD+agAKjLNEcAM+gnM0DbWFKSdw/jAhTe
-	49TKoO8qjQ/K/+kfIGDFct6VOZyp2Mk=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=d+7AHr3S;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=txqeZw3T;
-	spf=pass (imf27.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761568173; a=rsa-sha256;
-	cv=pass;
-	b=7N8dUolGnOp2C0Py9ZGJ+D8J6hNqxWC2RpwHG4BeKwwGFR418MSzwCh6AYegeRRfpegXYs
-	MEYm6wvnO7Ia58fZtW89rLSx91ilFEnvJNJsoLFpzen5bHbojZw0cffVBo8eE6LRodShNM
-	hC8K/Z4GNevTIx57/Zh6isjR+4Kt9HE=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RCCJgx014889;
-	Mon, 27 Oct 2025 12:29:23 GMT
+	bh=QSXhpgRJowOq+kq57W/4A+rcpEOe5gphRdse+tFjt0U=;
+	b=qpSnxkMFjJydiLK9HrfAZE/ATTVGyTTdH73Mlr7dz+4RQex2fmdxRM3Aumk8hZhRpvw0SL
+	VC5x2WWYz/+AVfhfZFELOldfJTlNrifqbLBMtBl5OOXI51H7zvyV6/zWUJrkMKOtf4wX+k
+	hvL8+Rw6PGcZMWYu4ku9Z6cpU+08o3o=
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59RCCF29025450;
+	Mon, 27 Oct 2025 12:29:31 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=/+GYVzpkWTncbwZTqYSKMk5iKtZQhjZZqJtz3v+YmQs=; b=
-	d+7AHr3SIH7TJJmqVVh2hr15ZrGbY5zlk/IhgcoO6w7ye3SMzDLkVQBI2bV3Al6z
-	BBKtqBE20YEgDU+RAv52czIemnHFNez+mQl2rMx+dZfslcFeMDbECJa8PpqE++QB
-	jO/NafII9jQSplj/g/BWPstRoUMOgWEeFnL+ge80bs6yalWI0ZunezYR4cWd1K5I
-	R8nIbL0aTz+hXoLFgVmfSHoTTwlk9l9v92RVPDRap04j44TPprZ7+7GaCMQ71D3m
-	uYMeejNQJo5JyDMWvCgzQ4IEjbPSF+p1YhohnccjWlFXR4wfczglz19LRXdgYxhI
-	mLsfUSyV3ADuXgXVBl5IrA==
+	corp-2025-04-25; bh=QSXhpgRJowOq+kq57W/4A+rcpEOe5gphRdse+tFjt0U=; b=
+	ki0QQOHuJ5HfVtEfQa6XA+F3y3aFN8dTRdlXMZ2lvrY83n8lxBNUdugFfozfKbph
+	Yt5hSdIbVZoAfXYinKRjxyEginTGNpXyVwffoYhPY7Sa5d/Qq7rCozyDZ9/Bmqn/
+	ybaXUx7khpjL6u4fGw/jm76kXSkBwI3h0VMfZ0eSydt8yPMbW/vrAhvirIPtQEb5
+	xUX67epg/8ceXOUWncUgKeROunTJ/Eu2ugZWA0APEiONa1PIvqUxRN3Tl1OAqDWy
+	zkKRw93w7y3XsQFjw3+kOgeUTLevAANDNkkwuYnEJ83iXs/sStG+p+4EJTm0DKdI
+	87EN/i13qYar94+INn4ipQ==
 Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a0q3s37rm-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a2357gqtx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 12:29:23 +0000 (GMT)
+	Mon, 27 Oct 2025 12:29:30 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59RAowmv025109;
-	Mon, 27 Oct 2025 12:29:22 GMT
-Received: from ph7pr06cu001.outbound.protection.outlook.com (mail-westus3azon11010021.outbound.protection.outlook.com [52.101.201.21])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n06yhuu-1
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59RANtcu025102;
+	Mon, 27 Oct 2025 12:29:30 GMT
+Received: from co1pr03cu002.outbound.protection.outlook.com (mail-westus2azon11010010.outbound.protection.outlook.com [52.101.46.10])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a0n06yhy3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Oct 2025 12:29:22 +0000
+	Mon, 27 Oct 2025 12:29:29 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MTgIOx5pTagWf7r4AZVvIpL85b4Rh9e+eBvKICr2VIcjyrLTS9pFFgri+n4Bvb0OwVxLTzshVCGp5aq4doISvXFzry+3bYBZYxiORzQfkkanKX1Er68iP7pxj6LTuRJTX8WvZkbVnhJRfjZsfqRb7WzisfgUcEU4gMSHbFP11+9K/xncCDSzOcTz3g0AJf/rmaqtg6F+l7N7HAn14cVoC00k/XvSvuqQltZiqu5xwbo+s89AvKRT8wHPHPULihmLEq8T+KzfGssy4xLqy2YaRvVkkqouf/Z7a6JadRlk0+o2hNTq5ll5JErZOyjM0IuvACyNc9a4bEmi5KqB7coqmQ==
+ b=y1/IiLepWiVyqx90s1PtZVmu6g+Zl5oH2P7PnhlWXKSsT8fc/ZnTYNTeaIUlyV9GPcSwGOg9awWEgo+zb3vW5QjkxEFws4lTxERySkqKB2FVs+4YZLDW53Bla+Y5EDjVsU9jYtjzEs0E5H92zWMuDboTXfvicxmLs/lMfgBEeceyvreasammd0smEFkS8Ib3EQvvRzyz40EdIu5gIz4JPa7UT0QwX6LPgbPXg7zK3HKnvNNxvNF9t5RanAI+QsUehRbVKhAIso4Igb3PrrJyHmEc7xZ3+o3PvObM1iBxprWwz9Qy0XgohUiOljLCYd309nujoJLgWkIqr0vfsvuo/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=/+GYVzpkWTncbwZTqYSKMk5iKtZQhjZZqJtz3v+YmQs=;
- b=eQe10zH4xePBnD7Wwrg6St4Fy5fnI/JDy78OdOIP7z/y8Fua96t6oZeahhapvH7eGRF1+A3su7LIR7Il12tsUt9x1/Zj8d3AdaaUhx/EhBs4n7awAC5RrDygaVL1iOcf355PLZJuRlFPygDuOjTOpi+cfMdqvaQWCvQSTFTPKQNYaxVKswu1Aa9eB9wxxSaPJb2oEJHMDbMctMuFRTPpnVKZeHAKgsQy8VbFNz/GoFwlx+JODxJ/RUDQNsR4Q3Y9JeHYKsIzv8Cfoz3zvA9pYZIIY+jvWPDLi8L7QrEPKa0x05N5qSjCGwvmFgJLk95vg21BMMwsqlsrxJMgBi+CnQ==
+ bh=QSXhpgRJowOq+kq57W/4A+rcpEOe5gphRdse+tFjt0U=;
+ b=NzonkMuIDgNA2iwiUD5e8Af/fO1WtBUW3qBQujGzV3Q/D1siNCPNIRTvv8OjNRE6CKAukU7MJQv410TFDl1k6eOJXMXJCXky+0AM1huFKXPqFhGGiYZjxSXI5URwhkWDKgvUFdQPVkt6BimKsxh4YxWIVSuo7bNCWedSAH+ecqLaxoX2N2anBCCcX3Pf6R7G3SLVebiJrXEN+xqD15Uzuv12NmCeYcaX/USPYQ7Ei7thlBuJctPAcFQ2xgRoTBk1c7nfuvRLUHxOwKVKD2s12uDxr+ilLsUpr5+L2Ma1nuPQ2lonLpa7v2siqo1cXx+Qv9AanimmpbRsZtvlCRVlig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=/+GYVzpkWTncbwZTqYSKMk5iKtZQhjZZqJtz3v+YmQs=;
- b=txqeZw3TpyRVKCdhYdwZLWOq16oln6kPFdN7tDbxKU/7dFaD6wEOcsDixXH8w3vdik1F5DkXln+C8sMng1xEzOnFuREBRBVzLWToZVUnHncbAfcXcWrWcfa1Y0Qk8ISN4jO6aFHbRLj/vQj0KGSkjNkKz2e1Wpjel/4i7fjkW34=
+ bh=QSXhpgRJowOq+kq57W/4A+rcpEOe5gphRdse+tFjt0U=;
+ b=KNfYGjuCL8EjR4pW1uK9CnyqwtWxf7TxQKZCIGwoSSGlrOhTzQpxZxeEBltbyy0aHVjypoKE26qAw8sIJbrf9Yoq8VbxnrjUDnc6Mm8T93HH6sSMUiu4H0oapDiY2viUX7FxXRMUR3jg9OyHBJq06jMX4/70wxm8NE+9MLx1v5s=
 Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
  by MW4PR10MB6371.namprd10.prod.outlook.com (2603:10b6:303:1ea::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.19; Mon, 27 Oct
- 2025 12:29:19 +0000
+ 2025 12:29:25 +0000
 Received: from CH3PR10MB7329.namprd10.prod.outlook.com
  ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
  ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9253.017; Mon, 27 Oct 2025
- 12:29:19 +0000
+ 12:29:24 +0000
 From: Harry Yoo <harry.yoo@oracle.com>
 To: akpm@linux-foundation.org, vbabka@suse.cz
 Cc: andreyknvl@gmail.com, cl@linux.com, dvyukov@google.com, glider@google.com,
@@ -110,94 +110,94 @@ Cc: andreyknvl@gmail.com, cl@linux.com, dvyukov@google.com, glider@google.com,
         vincenzo.frascino@arm.com, yeoreum.yun@arm.com, harry.yoo@oracle.com,
         tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [RFC PATCH V3 5/7] mm/memcontrol,alloc_tag: handle slabobj_ext access under KASAN poison
-Date: Mon, 27 Oct 2025 21:28:45 +0900
-Message-ID: <20251027122847.320924-6-harry.yoo@oracle.com>
+Subject: [RFC PATCH V3 6/7] mm/slab: save memory by allocating slabobj_ext array from leftover
+Date: Mon, 27 Oct 2025 21:28:46 +0900
+Message-ID: <20251027122847.320924-7-harry.yoo@oracle.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20251027122847.320924-1-harry.yoo@oracle.com>
 References: <20251027122847.320924-1-harry.yoo@oracle.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SL2P216CA0103.KORP216.PROD.OUTLOOK.COM
- (2603:1096:101:3::18) To CH3PR10MB7329.namprd10.prod.outlook.com
+X-ClientProxiedBy: SEWP216CA0080.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2bc::16) To CH3PR10MB7329.namprd10.prod.outlook.com
  (2603:10b6:610:12c::16)
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|MW4PR10MB6371:EE_
-X-MS-Office365-Filtering-Correlation-Id: fb263cbf-b559-40e1-e641-08de1554736d
+X-MS-Office365-Filtering-Correlation-Id: cc76ea0c-0dba-463f-798c-08de1554767b
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SLD3D1vH3FJ8EcbNa9epUf3QdomTVjbO/zrfO6Z3sN16whgxTzsxWEto/ld6?=
- =?us-ascii?Q?PMKy7+zLAVW1r2sJKGs9/Off0DSVvlLrhgalPLekQkcAWJSMRUJFrMWpPOvg?=
- =?us-ascii?Q?Q4t3jLos3/ARLOHx1GOUUrotxo6rXf4wtas1/d2CiMgZbHWDhclZ34HUVv5D?=
- =?us-ascii?Q?Cj90vqSHmiMPsiTKe72Nz9PdIHY8C16N2TgfdkUB3oj4ZIVKaqL+j6E8B20d?=
- =?us-ascii?Q?kc4xXiEiSM3Q/3NrD0BXCzXAxgBULdXtZO9l6mmgc+4lFp86BL8ije4XSVU2?=
- =?us-ascii?Q?jrhi6togKT/e75DzYKBtLHivTaAZz5uXGS71SIvq+UGhUb0A/TLqaHOq/71L?=
- =?us-ascii?Q?Va8sTcpuK01Ux5bFt4SO59KmqTEnsqrzcY8aV195voLnEeoAGISYUtuX+sqo?=
- =?us-ascii?Q?GeuTi7Sy8SHu5K4VcHJujh/gRWuM6ODq99LxhvDAT0eej54WjILWLYE5bFhg?=
- =?us-ascii?Q?dQRHGaCfCiZM/TEpO2rfo2f699pjV5IVNISCbantQ/slnrYqqyu1byovsGAX?=
- =?us-ascii?Q?cMdqIr9ZKmHSmEaLti4SQuZJ7ei0Yy7UrN+LKLL3uChTWOoE4HXpxNkw6Ifj?=
- =?us-ascii?Q?x7luVtZPvk/vsq8kVVR9PomMh7r84BhNThBm4vjOaMa4ZQA+C9OEPDfwsBWK?=
- =?us-ascii?Q?VEVz6vzh7KSRN9x+HOni2FEJRj67uHaoOuSUsfH9G+AhYdfSW/Do5gx1+nBJ?=
- =?us-ascii?Q?4KjM/bBnE9JivB9yn5HZ6KrKTXd7F7O/fr+JvcvvCvMlPFly4xOpycrMlUld?=
- =?us-ascii?Q?XNodhISPlpa4r4wXz5rf91wQUFFhQ9dpEGR1hiIpHwkaRiRHs5Eic0/4YR9N?=
- =?us-ascii?Q?RSiUBvaV8HJTj+oFJzFxhIt8Kq0QRO/zYdLFlEIXws+L1sWOhkjOTrAecOhY?=
- =?us-ascii?Q?9Vbx83CfO0xp6bonVMNtlzWlFP5uedfBknEDUdWMpMhbSCdlAikli5K2w8ft?=
- =?us-ascii?Q?JcMBbFDQMI+SKQ2EKaalF1OyLi17jcZB6JIZ0LLngZiweNwYPAx/grJrZUlO?=
- =?us-ascii?Q?3JyF1sL7ZV96dsGpwM9ss0HKAJlQNFbZOnRfR4vI/prq6QhDMv+GJgi8cT81?=
- =?us-ascii?Q?X0fz9AmmpKJlNkAXZ59bHawQJWHCvC8NhCz7e7tB/2g1KlWZjYdmMc5vip7M?=
- =?us-ascii?Q?9/2xDUxXPYith233CxiUljDv0IjGDsK90uiLT1gGNdyNjsB65gjLWWewCOUd?=
- =?us-ascii?Q?9V4k9x5+MJ1hj0cm+ABkaScQGWSdQfTMxqoK80VZBfppxX/XYZavTlUqLsBo?=
- =?us-ascii?Q?QZgC++NFacellGDFc0h625jCVT3hDfMceZy35OxCXQP+RcFgP9g+5Ws8vORj?=
- =?us-ascii?Q?Xg5jVkSlxgZZU1BePk9kO9G0lqRgmnRrVt4JzkHk6UaYMdQTAusLGW6pLliU?=
- =?us-ascii?Q?2KJzKMGpZb5j9KNh5tnkeB1VStxTGiHt6MwqflIm3dKE1B9KFgT8kLNhaWsD?=
- =?us-ascii?Q?muTkYf3Ey3QPp+GayTDM+kmb2bABhlY4?=
+	=?us-ascii?Q?VtcFAmguyuVwLohDnHmc0VW5m9kXbzbW8WIgTGVt0SloK+l5hZ4soIOybybM?=
+ =?us-ascii?Q?TGcUb0AOXZj+f8y1xez6rOXRggT4Zg0QV79whc9eZV5vAf+BgQ46lJsgR8zb?=
+ =?us-ascii?Q?nFL84U49hbsJuh7QUOd2d6AN2VzPLYj4KceF2F5LHj37JVpXpjoLy5eknkcd?=
+ =?us-ascii?Q?w0Hw3LoIlOdUt9NsVMl7ZnHQw/Qxa+uGHgJT0q8LqrB6S8vGrJjCkxqPvXhm?=
+ =?us-ascii?Q?666ampRV8w1/5j4JRXRKw0frOtd2mV/u6PgLxSimaOr5zNYE3rhtILz+e/80?=
+ =?us-ascii?Q?DtVk+JnP2mHGhsdARxVxk10RgzSFKluwKW6Y6ABMY7q+UFfa36+OrCXmd5pu?=
+ =?us-ascii?Q?ehiQSeyNV5KqwqdO0zltYp2XQMbCdNcUGcU86f+5nAEjhqEdu/fHGvkIiO5b?=
+ =?us-ascii?Q?S02+Wv7ErcZPpsJojOxEqz5yZhzwDV7+fa0FTIioS4/ovCN97xt0mzuNIOuJ?=
+ =?us-ascii?Q?jhpWsSmdf6pNhRp6KFN+3Uz+XhSSVuCN8ryRDVE2YNOVzE6OH7cJ7T0/eAvz?=
+ =?us-ascii?Q?5NbRRIoMVTQWunstYR8KLEv4OM1mIsiKQe2ME/D/qis7tQhGkl0LZcn8yl3y?=
+ =?us-ascii?Q?3Svsb9YQ8fy3xwCdjNBv5eZZHPgoieLWb0H3YE43V0fdF+jpkGq99jipumlL?=
+ =?us-ascii?Q?iA5yx4DQ3Q1y15FU9xZna1NB5mVBNs2USR9L+cc50L+YW8K/YTJOORch3UoX?=
+ =?us-ascii?Q?LFoaQc41tnUpbNCbKdqXPc/Mt5D8yMmEgA21bzQJ9j6af8QEi6Jlz8K8nHo5?=
+ =?us-ascii?Q?RsdfeAuDUBs8WxRhIT60CWZxu3AU7gTkzxT7TdBwZgosd7ySq+s+7QlVQ0yf?=
+ =?us-ascii?Q?rYdK2VsuThy3dbBE9A2CVcQvxar4qmiNiqZ1KRspU9KCaZyMzS8dLqOdM6MI?=
+ =?us-ascii?Q?Q0+uAG26hBMceGFEHim+JQMcmXm8My9lyxoP/b0ykzxKgp1qzAQkmX3H3qYJ?=
+ =?us-ascii?Q?P2Rz+dtKeSbdZQygjalC1CQkblIJufM4KuMiN2KVGJ76Ndd5BZCUWJ45+ifD?=
+ =?us-ascii?Q?AwTA9Ip/1Us37s38rg51H2KgAJS7R+oYTkUon4pBtby+KWgEE1QmyspTIAia?=
+ =?us-ascii?Q?AWJGU6k2BB9hCfcjYaoODXzTYEidke5/Sy346qmY/8Z1JiqrJtbqdAqdT4WV?=
+ =?us-ascii?Q?3zYe/yXbg5mjbPNA3OVT48GOVd8TGB2GSR/7YcRHiKp7hipqK5a8MG0TUKoL?=
+ =?us-ascii?Q?dALigctpHNVCtd80Yt21nPc9hMiXC4QuvIudVupmb5eGhBuw0NeIxsMonthj?=
+ =?us-ascii?Q?FHXJSXZB4EwN3WDavSGh2IWj2i3689GjdT+yj12vnx9A3fUeEUfg3CgzQVWb?=
+ =?us-ascii?Q?zUvzS0D7sFLjYtEGVU5B9FzMG/6T7+1rSzqCejn1J7HO9cEqb5Qko35hEBIG?=
+ =?us-ascii?Q?G6uAlyic3TFkpuuzT8urO3VBDgeHreIyrX0t4F+GIZR6ZGWFc58RmQVsvjSm?=
+ =?us-ascii?Q?pWCmyfyA1LzJd+lnLn0WIeaQ0U/wgJRr?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?BIF2XEUek5R2/qoZLLQbYlVYSLZf4/UAnqgE5xXMZffV0qUq+nvDKX3U9Wz2?=
- =?us-ascii?Q?3A2MoWoEl+qCvibrL+LFTgyeEPNztIfnrNnVyaeEEj7ZM9ed4rCNp4irBd1u?=
- =?us-ascii?Q?L20v8Ejls0kGT4f1itD+Uvza1PqVYrDyKLG5v4M/e2lzPVjCY+zey78xafQj?=
- =?us-ascii?Q?sqzrqB9gjnGL4CmZwS1WIj5s2iBkimInCUr2U2w1PebBQHx7fW99u5HEIwEJ?=
- =?us-ascii?Q?WbzroVHqQAz5tPW82iTuFZMbBeY5v5Y786w6uHrbBBoS08Did/pSgknWk588?=
- =?us-ascii?Q?InFVSgazj1kEnEk12xg4C+qxgf5Mw08tVjNZmXdG7JJ3MytMk7r4ydNmuyZM?=
- =?us-ascii?Q?Gg78qbBytn+lnyHeOxiV2U+Y+kv+2dfVysvu+xuUSxU1JJmwIhBgeNCFEnbg?=
- =?us-ascii?Q?2C+0UVkKueuNuNr4qQuL7imKitMkd9i0+MkgFs2WTeUSKEPjHTUmlzsu6fAz?=
- =?us-ascii?Q?wr704WEUwvxt2wNn7A4C4K0nmBGlWjvtfMjIa75IWOtIsTfJswzBrFu1+oDn?=
- =?us-ascii?Q?FVWz+i314S3+z06twgAzCOIgWs5ArK7t4UlERJ8fOTDMKdsPtibkvq8As1qO?=
- =?us-ascii?Q?zLWrXNIuIphIXuX5v4P1x/TxAABILoyGFaiyl3wJqMJT8LcJIowgQe3UHlbY?=
- =?us-ascii?Q?8tZN2veiwFkS8aOlBUvWWud6MFctik55SKqDfdmYi36XkDUvGadEmeV8hxiv?=
- =?us-ascii?Q?LHA19nzhcEVZIUrMEt1D1w013S9dPo1yR/hxPCMut65lfqcvVq61LoRxfkEe?=
- =?us-ascii?Q?k6kvJjyKCYyk3ioJeYTsE+H+4GRfJLa5a02PynEsbxN0O9p1fTdah9mH9+ww?=
- =?us-ascii?Q?AL799iyQMmaaQLe5Ib7O3UBaCA1of9WpleMMDy2WRSIwYWAAt2lX72y5y3SK?=
- =?us-ascii?Q?LkV5SsRraAxGLbjTUGC/7N41vsYyIc+eZTAnnCarfYhPbvMbqI+SmQDftKcM?=
- =?us-ascii?Q?aWgdw7F/o1ITr302R4+rxGm7I3SZl3q9wOyDssmKHK9zzHZ1be70KQEedwUJ?=
- =?us-ascii?Q?Vw03OgM5lRXNef/Ik8gt1J96crZySnVT5PfIqDe9Sj9li3EeBGt+mShBaFIO?=
- =?us-ascii?Q?YQa7ikPUVz6bVE/jtPGWwNZ6oJkbZDiS8Xqb/1jp9XVlFokx0V3itlf+A7Rg?=
- =?us-ascii?Q?xnJmVLc1FazsPUvLVmXfgMwXZDbtqIrYanWwd2QfAL91jMVVvZOD53XoNrnO?=
- =?us-ascii?Q?6W2unXukfVaGOxcDKhNWobTncOiMMBKwawbBrr+Y6U1HSIhzXIel48IOQ21p?=
- =?us-ascii?Q?0iMERmtveMRW2ZeBUpRDxbhdyRQQuWbUeZrfD8lWKIpomlxlNDBPtRi28UIJ?=
- =?us-ascii?Q?buXBzre2u/ruR8JP7NlwjXYBFq26fLWpHFoOM5ZzBCIS8imgCJil9Sb6CFZg?=
- =?us-ascii?Q?GflYMoyugFkWtfF0G/T3nGdZnbdAySrViyaBA0HLFb2Zr+rZfI0n0AuKaIrn?=
- =?us-ascii?Q?Nlr9dIC/+AKPTfV8iIp2XDJ9kqSgeBmW34VYRI8bMkBff2s8ykkPMRTwLuGu?=
- =?us-ascii?Q?SKs3sewu7Kqnbyo2DdVwu7obUF3oTnz+QRHVi0M2yREtpEOgE0/YIA5SQiB1?=
- =?us-ascii?Q?Ocl+mQ2PLmeetErWJyx8yY4dFvxvqvpfKWKWukAJ?=
+	=?us-ascii?Q?rs7D+k1aYntiEOmg8wwx95ic8yu3qQx91XIHnbsxOw+stUE5mrYmD1zTl04W?=
+ =?us-ascii?Q?04xZ+sxhKAOPc54YT/rc9lP3TwM1p59CE7a29T6PUJp5+bHomI7GKYp5F5gh?=
+ =?us-ascii?Q?kt04frtFmR5k+mvr9dPVv12AxzcDI2XrSz+9E4/rcWBb+JIPCH+Tj2B0srzG?=
+ =?us-ascii?Q?dyGSdveDd6HiJffNAL/msOsqlBzKs9wa07IGKwjnX+e8R9mk/vgBGmqS6h5N?=
+ =?us-ascii?Q?0sDjLr1x1j3qduNqJMCLzopmXunzC8/BS2AvNQKD2/Nx1RPUhNfuRlGepIcl?=
+ =?us-ascii?Q?YhHycpjQ7JlwJAYUDSdiwF7RwAt8UxjpiH63AOQfhuU1eR96xCDZ2FfRYO0u?=
+ =?us-ascii?Q?m5bu6zIWeYMzVMHDIhAOUStryl9CrwKsbRkdjhtepqR7KfCKidvj5T94BZRm?=
+ =?us-ascii?Q?k7iXi49xmdP7KlK1UYrhJC7RhpQsbifc1xmURDmB5Gks68TUtWNcJKLXPTbD?=
+ =?us-ascii?Q?mawyJKwLej51c8Ezg7I0YYiiLr+eymPVP2/rOGAzABTMBD2Ht88tdQ8kPthI?=
+ =?us-ascii?Q?b6+9WVose4X1ojLKO+E4fbMBR0LSqDV6T11IPmHd7itJc/gGI2bL09wEt/Db?=
+ =?us-ascii?Q?fZuDLaHnTbNJkj3cMDgX4te7+8RT7HqmQ9wAYVXtr5tr7jEbBCeeUQB/70ys?=
+ =?us-ascii?Q?lw4Trc02OtHFvNuv+4B8el6261bLqMMaD77GVU/QjOvu0h8aXYOH5Ex5zjpE?=
+ =?us-ascii?Q?hjugfCYYvU5bdQj8/1jqubIvcBegHEBGVYf93/y84MGsR0rUZAi2qhZ80/sQ?=
+ =?us-ascii?Q?SVGwVy9uizOvscbt8bHFQFcnAU92kXSayLT2lSrbrTpPEiQEPjGSlPJrLHbs?=
+ =?us-ascii?Q?LcvNOuP3Yjn0UaGPAHWtRMPTfLAKB48D01FyZEvgnh2ZbuU2sNfleRa3qDy4?=
+ =?us-ascii?Q?6egij3p0C/yWST88axOSuOXT4gHQzfafaQnLXgezbSYjYkvtkIR/Jxv/Q+tn?=
+ =?us-ascii?Q?gqH9KdJykPfleR/9NGO8T06JQTu9TnkMGG0yiMKVVgMoWoTJjxM9rNz5vXVi?=
+ =?us-ascii?Q?Eqo3ljPj1SzJusj1JmuLkKjBFjUIJYcSBN/tMmM7qnwCnTi93wIF2JqoalAd?=
+ =?us-ascii?Q?tAgDYB0vltxnIegHF9SPq29W3nSNgDQkWZCgt7VWOti8/Mhq50vNXUk+4DAi?=
+ =?us-ascii?Q?65S1lGFz63dYSuFXquILKkdCkTI0hDLB+rI3iUTNQ8PgTaBsUtq5mCxzn2cz?=
+ =?us-ascii?Q?IrwPxG4Bmsy86Ed8LXIAuZ//fn7atsTdqAlKhSqL3T7Mf7oJevfTPiiuJh1G?=
+ =?us-ascii?Q?yqy+vvAf4eHRMzHAdX5eH9ns8Lx6fnjuK4Z7EJ3ekGzaiAO78NjEYunGFpsG?=
+ =?us-ascii?Q?0+i97zzJy5tdyALUkbEqkmfoGppnUeBEl2Ff908ZUokqG+IFKy68S6OkdTGX?=
+ =?us-ascii?Q?LpTIiGaQZRVmWvVsgumqDmEdzyn6LnDFpVGgY0NrwuaM4XxrdKJjfMb7MDNw?=
+ =?us-ascii?Q?08NFHc5ctcj6itImOKSoBZmKifpFMy3TaPVbloh6x5p0Bd9jDXorchpLjX/g?=
+ =?us-ascii?Q?ouw8dy+IjnFqu225gHhQN1ATwbLi3zZZjQ7MVuUIOdKPKbqnP+ff9uShuc+2?=
+ =?us-ascii?Q?raDTMHd4ETTH9Y7NhFBa5MdPq+6Qs4G7iWp7WBTy?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	XjMzPmZ8jv9D7XGHyk5z6SDwi2lK+TZiniUF8FF9CLIjvZG70rTInASPdzRYhV159EOy1v6Sw2HOheu46rxGG5OFjr9px5JhonWWu0ewIRl5/g7nKWrfrmDkXxFMlfRFEW6e2IaRaNPDS8yTYAHSLrhdFjM6auQUX2vYes6D3Jm3VQIFHLb2furirrxeCjgVfYKysmEYsZtXKg97FK+Y481V+M2+RyDPu6mR7SugLanEG3p/OThtD9RFoPikNDi7q/FzDBhW6GMJovODTgsBm6Qy63UAn0XDekQL4JokROoKv7/kShp6DphIuPXAvMLR4Ns3xj3IocrInrxXEr6QTP3DKLYkNhWvqLPNUisrjqLrVwwUim/r/Y2sNWtwiCCKeS2zZTas1TUegf61Z95g+kKH0hQ6PpW1MSR3flGYZiyoSEdqdCwAXef6W4yn3Wy4zGPVa9tbp2lW/InmaIXMKcv7WElTFjSQx0sNQ6H0YbQGI3IWxutcg9TxCO+vhp8rnWWCjumdohZVj1cJTTXS44C9/NPGi7Eybgk75ogOJo3RcIyrQyoPEIgYUQ4fSwJJkTnbKu5MTeq4ZUbPnAO3sG+UdfIdcSpWYZWnsdrVv8U=
+	Uvb8GVrTNECRDxgFQWyhOXyTvlFHa787IYqR0OKLwmYO6EVxuQGGOBMrbaqnagNXbC70c1Wgz5xfb6wLzUKvJKIdF0lbWHM2LEGFw4z5F1/taI1865VFx8REHyiGXy0vfN8nh01ZjmBkeY/4F4wRgrNtDATIz3vnXmMF2MHcBQRI0sgwI9rSx9l+ScslnTxsEHmIFIqpcPROnOFARJFU2svrpkOCFXTzHDOr6XD3rvk4HDu4NnDe9AA9hTA13IXU+Po9xB4HH+ATSbSQ/qtd/VnlIHdnxJ1UqUuUVb94T1HAz6rUBejSjmw0ucRlaAXxvlIAuGuDAD+05kv0XW5gkJRgM6ZwSR8HRxmqjA34UCypZ9zFIaZQ7aRMdaMVHNVufjzr5SFFUi0Q2OGHILM1hZ29vLm5zdIjRUzwpNGLhHaGBG2veVhirS+49pCKuhbUIlIO3v+PQu7soy80Ow/MBra4fz3z2aoQJRThy/Lc/6SdRUyo9nYWeJkZdRTQEv1TtGtBtJ8y3Zh4RCq51PF2MfMtvPzdAy/QHZr7ObiUWbQrQOl38AhIGU4lK1Zlv3OAofgxG05Eegh+Ei7pkAIvYSVJ72HhyZ7jSTbLR8rHW1o=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fb263cbf-b559-40e1-e641-08de1554736d
+X-MS-Exchange-CrossTenant-Network-Message-Id: cc76ea0c-0dba-463f-798c-08de1554767b
 X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 12:29:19.4271
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Oct 2025 12:29:24.6461
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KxecLH+iYjyh4x8DWlLIaw74l8N40suYdhVJ2d6loH9zqcQvzArJT2FeBEkGWeLetg1qv7Nn728PSb4IbW8gVw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: gZFDcyH4BSX+SsWXcO2sr8TxOdZHUTVz/Hdo+/E+7RS6eRylahiolbNNMv22P35L36xmMrn1bWFu5233DWaBLw==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB6371
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
@@ -206,29 +206,29 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 a
  phishscore=0 malwarescore=0 spamscore=0 suspectscore=0 bulkscore=0
  classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510020000
  definitions=main-2510270116
-X-Proofpoint-ORIG-GUID: hkK62jZd72RCfJGRsuJQeDe8SmeanE-E
-X-Proofpoint-GUID: hkK62jZd72RCfJGRsuJQeDe8SmeanE-E
-X-Authority-Analysis: v=2.4 cv=Q57fIo2a c=1 sm=1 tr=0 ts=68ff65a3 b=1 cx=c_pps
+X-Authority-Analysis: v=2.4 cv=Bt2QAIX5 c=1 sm=1 tr=0 ts=68ff65aa b=1 cx=c_pps
  a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
  a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
  a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=x6icFKpwvdMA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8
- a=T5WUlLNADvwsp-5gFyEA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAzMSBTYWx0ZWRfX0YPqUPwVbZ1S
- Lrbt21nssJaTKeX2BBHovRtq33L+086APuHcUbdCjzL1AFWY6ZYKTvhFCc/Wawq7WdRA2+57xmQ
- qt8fbxUMiDMomfW92s3b7BZ0WgbVXWiEoqeU/ZF8j0QYXCcMyRtE3e+5U6orRsjxQA7BjHEAqFL
- OdjW6XhtEE+vVrMSUJT5f7i1t4bul7c2ncS92+/aURYcsE9BwodJJ8C/5pL5men+sJDIVm20Wk1
- 5hDd6bJuLy3Got6nKBda2rJuGrnzYEc+vIEVy+OthgwCPzCvmvrTWMtGCT6BCZfC6exngOjZpah
- sceK2onwd30LmVlYr0irtq8Ejk/k/EHkiHdO10gxAAGt6Bu0jJ7hkl+Y+VCNSKu5ylbehXLe3C6
- tmPZV1hWK0nGi3VfqRD/H0TH0wZ0Tw==
-X-Rspamd-Queue-Id: 5A2A74000E
-X-Rspamd-Server: rspam11
+ a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
+ a=yeldhbV0fVjYLvCz6hIA:9
+X-Proofpoint-GUID: IDU4WYRmjPbzQselmlGSfWLIpBu7ndbU
+X-Proofpoint-ORIG-GUID: IDU4WYRmjPbzQselmlGSfWLIpBu7ndbU
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI3MDA1NCBTYWx0ZWRfXxKeejNVcmN2L
+ yVzo+XVg3UEv9dxYSfPMUwSmOttoMktXl7L1SKU+uOTeNMDF0ymZk4sTz2OBWECHkkj3EJa5r/M
+ bq1q6lniEL5aPdNI5P7Ei/E2kyy50GOmowL9RyLuYwovLQHXVmKPubJuutJaOSzf/Dl2TRD81t0
+ bFUWa8pnY8pQYBbriOJC8fOHzvCEF+kcCnesq4qxadbOEfIYt1AA/9R0Txiqj2pMlzx80lpgcoF
+ Zx8m+G8eshQvFPrF+I43ixQqWphZuMZWX43xjSYimGzDrrE/ev3raO33njIOGcbSxdag6kEeaTz
+ LEFSt4QCUGqx3mWc0+7GkUjSK2dFmfD9tCml/Z+0oto9rwUAQYzTkKxb3JQiGiso6IHPVhTAuh5
+ itIIct/CxheON1P+F2d+Dbk8hEfEmA==
 X-Rspam-User: 
-X-Stat-Signature: s3y93eaheyj36zym14pg6h1ofihnood1
-X-HE-Tag: 1761568173-564533
-X-HE-Meta: U2FsdGVkX1+baiHSpHhsaAWIUlFX/2ndO7YM4+1v79quqRPWzP/vckNxf6cGqjX71avw5RDxLDhGY7QRb1PWYaprm/UqA5Ey8vHvSIoj/Wokfnv7QmNbcgkUaiHachxS9uPlYDSqN/bWv+kHLwrjoTxW4X76DlitCFJMQeIOaTKjPKr6eavHFoGfy8ud7NvoPewAr6A5kJOb+qJKr08av4z2FjGo3pb4nHo1/yVLCuEDSrmKSbxP0MSrw2/Nh00dZ82oygf7ptnGvnpYsvMIANHdaj7QNQWIjqQyzROxhCeJLusZs47kxOHnX0QVxOiSx0bT4ElxXt8KQUQsQrkiO1elTF9JEOIgf5MNCw793E7TJCw9K+xBgNDKTztElBR1qcaePAYXWCooamKEXA23pGWsbVSyju/wkFZF4pf+ZBZsbkg0TgENjwKUD7Z3yj3ZaD0h7LNY6wm5RQIN4oETszvCND1LHRYk4Qi8ar8doZZKmgVniGx9F0l5LIBRzqP+k8FZrvn4ekBcz7i7hdcyl6VM9IVKUusQM6cJOlWnp8g6ynhQQORlEBTGgBuuyPGF72MgCL6m+LATJEZ9fS7ZWXkeNnamZzbyZw6PXwiYKCNWd12zy6NeEaEgxhd5CsBK1NHqb1cSX8O6jE56ZKUm9QFx/RXoqcCwgOuwz2D4V3xb1A7E1/FGg5nirRm+tvnJuNEvWa5GaQ36AdarAfXxZKOSeSPCp4jvmdvC6qGWUGl0aQ42n3B8wCUHr+wWZOHOnsrjzxiIoJ4UaoUr/tAqab2HRDiZtjU6y5UYnkJ0GoJIYrLt0CaGTGzsY0vkc3Xt0z8KtHbowjUaS+ctBZ3ncaujpQY9WzEijCsae/TOcTU4Jc/N7yG0SvjorPBdJHzUFkPyUOrYAD8kFOyN6uVQRd+E+waV0HqkHW9Jk3UsxtHTcGdUhB6qwmDg38riw34dzuBggZtqs/IgVx99Pt8
- QbNWYVz6
- vcWUYKDkNJQYWuXRyH/2abuZrjoBdc6Jrr5i1TGRjKXZMxW2F1E4aUYuPastABar1mLgGfu0GNg55G5Y8V1fti9XvW74jFFKt4LBKfESn3/A0f49qMmuiAlzSJyhzGKVvTBDAzzug6mD867Xz+l1eZk+F8RbiMrqAbiLQlbmE2hhYJ4akt9GwE/NplZ8pDC9AnTDwjc+siemRoenrOTFgdaR7/cHWHNQBKfj67N+iv8bbPrm5SRs+wGRJkpPsWgN1PJuS59sZqTa7MAI68mZ8lhoX6+x0FK8wKGJVBe4NLmm/0O6czfaR+95Mqwq/L4omjGI3uNGZlQ1G4XI+og3mDhMeXGnnilOTfiQQjxh3lkV/pTItEya+VqjKWw2h/a/5e/g8yL8Sf9zb0kj0RJVtqbYiOnN5vmWWxVI+7Z7EpFfeZSmVK2I8feR19SlgZYLDSPY76CCQL73AWt+tAiVSKMpzwH+sv+2817q6SQ0wO/xQNcyaY3U8ZSMK2L84bjOqI3SPf2QphMxYxFmaGTiK72ji/3JIkToJMVObUt4tIEXc+KskF75/NcKS4c93ReGMG17+8zkpwiKmZQ1p8+a+JGtNbyzgvrACpdgjwqpeT1sa7NsOQXSuHoxX4Jl/5aYQRQwjtWxRJxLllpQw5ofwxr4hGi72BkXRR86/9ltKlroukZ3uuNhWFyBdqqz8yVALJF1y1Ow0MiGAOkvIDCZhBzrftWlYjcODb5bysW9sisHX0Q9AfYfNlkiYnTr6pW+mkIMXhkTmjYqpUE+TehdBU070bg==
+X-Stat-Signature: ofgnp649ushzbjfikkz575ozc13t1ya4
+X-Rspamd-Queue-Id: E5958160008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761568180-649214
+X-HE-Meta: U2FsdGVkX1+sMucqL7T6aTU6hdnCBtGFIEiWj0z3sAPhiOb5P4HfLnjZ/IMooBrj9t2B8xZWIA4zO6C5njcZ55PySiM1UzllrG29IuLYxw/G/U2WaKR1tpQx/GsUzvED6IWvgQ2SRlkv7sMu22Ly7zdbcBySF0NN4BMeVI3kWTZPbo70CcKgxI9aIKgttLasVeNBXUbBgdLKP0sZAjGZnj9qu9i4zXiPmpvdRdPBWaBF11DlrerBXaEUDmmcAU5xCHE3GS4kf8C3i+nJRFND096AR4wpZ4tw+QotPUa58LuZo3SHVugJ1SuZxQCAKEkX614qpx21e+L8l3FodDGvRz5gbieKB9v1hevYvrV+slOxPcQoipEkpabukSLzqEwXcMrzdUXPj/5AiRKsjMeap6+z/uthSvCbCHER15kup8rNmeglPDf0l1mFblLji7+mHibg/L+LQPIrUILmw48ikyLz1L1mSINbl8/faMhXxiOcUFPGawW+Z+3UJz40AbZ6KwKei4pSWchmjYolXK6w9VyeGFT+ta5FMGUZic5LgdxdDw/VKTYRxhPrDyEW8Gt2iV/l9zXYsEJpixsFSPzgy+UzGhwClITcmEeRWGXunzlriBh/3IyvSWq0/TxwK7PJPJz7p/0LzUTkN0fNMG7AiSW1vA3XPUFtkaIuw9HopNuWcAJJRhWVL6Kij37vwzW/tHWOLXrB8xPp8gljWbu7mUj6EboEkPbfUsIxQsEY+nsf48H3Sd8dXeupeGwZb+Cdyee4wYGSh91KD8rOQuACzIHzkh/BdttmFowlahsdx0Ni7+H7UQtikY+ZbVUQols6fHq9+FArhn6zTv03GnkIIcoI/3y3E7BC0R6/dWxtfZ83hGVDCmTtQC0YucfHKzLmUT58wv8bMkcc+OwOP1RVliYzMa+3mk3kIpz1g4CiGDUeu+50W/ZtFdKg9xj5DRBGLY1GAyPxf2n4dJYOPdS
+ n50D6UUZ
+ J5R0tVoXSFZBO0oGPP82KTeQPhDzxh+JIuI2vGG/2Rbmc/YIewZG7oRT1yCNSupPUgYxqXX7nbnCWq/9YFwmn0fDsY3uWqowE4F7QcJkIDadRZBPuXuetE8n7KdK5IfMcn5mfkSR195eo8Wr+nJ3g1sFMDUg5k7pnORnwoe6OIerfifdlBC4UQ+5Ua+oTlT+ClHHxIavMSDuBXtPm8VJmwAIO6f9uwkkxxS4v6BFVhW4zjr/CGb/0g3lEI4uPLDraC4zgoSoVcz20imv1O/rO6FdnOQFT9mIdiYMAdbHiJ38XNJOOYF5dMsNew5hns4+c/mgmAzS7YprxJOAHlCsAY9R91Vs1rdXo3tcm79cj6X6T7878+uXlrWFXGFde1vgKNzEzzO97BJ9mj5G5mpkwzlvOT6g0GHCdZk+BAzwer1nn8555A/WtBhApX8rtKbfXVe6sXXiNIrzSfMLiYp4NzBMo/TqPa2+x9IiYyvNTTP+bYY1GU0QfAaTovlJm7Ms5lFWuG1vps+wtmcSrWF2DFR5Bd2F2JIpDKd2XG2K+ifc/V3t+a3ABgf77c7lABIf0HOeD96xM/psCb0UuTpzMPUe40BQds3Z3NL4eZebmDYb5fJE8DXhswm88PY0WE/8ZdDiytQAcete3qpSR8I4loKH9Sye6MCNWHUDSUhH2y927dbb0uZZFk/U/rU77gmYJS5Me+CsC52Gr+mfhkbLuYDTaLmz620nJxdMgghSfzSL6iA4HFAOPsQbZBp/cfGgVpiIAyXXJOtMKPnqsodtK9SVnJiTi3M7cUFso
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -237,215 +237,255 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the near future, slabobj_ext may reside outside the allocated slab
-object range within a slab, which could be reported as an out-of-bounds
-access by KASAN. To prevent false positives, explicitly disable KASAN
-and KMSAN checks when accessing slabobj_ext.
+The leftover space in a slab is always smaller than s->size, and
+kmem caches for large objects that are not power-of-two sizes tend to have
+a greater amount of leftover space per slab. In some cases, the leftover
+space is larger than the size of the slabobj_ext array for the slab.
 
-While an alternative approach could be to unpoison slabobj_ext,
-out-of-bounds accesses outside the slab allocator are generally more
-common.
+An excellent example of such a cache is ext4_inode_cache. On my system,
+the object size is 1144, with a preferred order of 3, 28 objects per slab,
+and 736 bytes of leftover space per slab.
 
-Move metadata_access_enable()/disable() helpers to mm/slab.h so that
-it can be used outside mm/slub.c. Wrap accesses to slabobj_ext metadata
-in memcg and alloc_tag code with these helpers.
+Since the size of the slabobj_ext array is only 224 bytes (w/o mem
+profiling) or 448 bytes (w/ mem profiling) per slab, the entire array
+fits within the leftover space.
 
-Call kasan_reset_tag() in slab_obj_ext() before returning the address to
-prevent SW or HW tag-based KASAN from reporting false positives.
+Allocate the slabobj_exts array from this unused space instead of using
+kcalloc(), when it is large enough. The array is always allocated when
+creating new slabs, because implementing lazy allocation correctly is
+difficult without expensive synchronization.
 
-Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+To avoid unnecessary overhead when MEMCG (with SLAB_ACCOUNT) and
+MEM_ALLOC_PROFILING are not used for the cache, only allocate the
+slabobj_ext array only when either of them are enabled when slabs are
+created.
+
+[ MEMCG=y, MEM_ALLOC_PROFILING=n ]
+
+Before patch (creating 2M directories on ext4):
+  Slab:            3575348 kB
+  SReclaimable:    3137804 kB
+  SUnreclaim:       437544 kB
+
+After patch (creating 2M directories on ext4):
+  Slab:            3558236 kB
+  SReclaimable:    3139268 kB
+  SUnreclaim:       418968 kB (-18.14 MiB)
+
+Enjoy the memory savings!
+
 Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
 ---
- mm/memcontrol.c | 15 ++++++++++++---
- mm/slab.h       | 24 +++++++++++++++++++++++-
- mm/slub.c       | 33 +++++++++++++--------------------
- 3 files changed, 48 insertions(+), 24 deletions(-)
+ mm/slub.c | 147 ++++++++++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 142 insertions(+), 5 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 2a9dc246e802..38e6e9099ff5 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -2570,17 +2570,22 @@ struct mem_cgroup *mem_cgroup_from_obj_folio(struct folio *folio, void *p)
- 		struct slabobj_ext *obj_ext;
- 		struct slab *slab;
- 		unsigned int off;
-+		struct mem_cgroup *memcg;
- 
- 		slab = folio_slab(folio);
- 		obj_exts = slab_obj_exts(slab);
- 		if (!obj_exts)
- 			return NULL;
- 
-+		metadata_access_enable();
- 		off = obj_to_index(slab->slab_cache, slab, p);
- 		obj_ext = slab_obj_ext(slab, obj_exts, off);
--		if (obj_ext->objcg)
--			return obj_cgroup_memcg(obj_ext->objcg);
--
-+		if (obj_ext->objcg) {
-+			memcg = obj_cgroup_memcg(obj_ext->objcg);
-+			metadata_access_disable();
-+			return memcg;
-+		}
-+		metadata_access_disable();
- 		return NULL;
- 	}
- 
-@@ -3197,9 +3202,11 @@ bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 
- 		obj_exts = slab_obj_exts(slab);
- 		off = obj_to_index(s, slab, p[i]);
-+		metadata_access_enable();
- 		obj_ext = slab_obj_ext(slab, obj_exts, off);
- 		obj_cgroup_get(objcg);
- 		obj_ext->objcg = objcg;
-+		metadata_access_disable();
- 	}
- 
- 	return true;
-@@ -3210,6 +3217,7 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
- {
- 	size_t obj_size = obj_full_size(s);
- 
-+	metadata_access_enable();
- 	for (int i = 0; i < objects; i++) {
- 		struct obj_cgroup *objcg;
- 		struct slabobj_ext *obj_ext;
-@@ -3226,6 +3234,7 @@ void __memcg_slab_free_hook(struct kmem_cache *s, struct slab *slab,
- 				 slab_pgdat(slab), cache_vmstat_idx(s));
- 		obj_cgroup_put(objcg);
- 	}
-+	metadata_access_disable();
- }
- 
- /*
-diff --git a/mm/slab.h b/mm/slab.h
-index 22ee28cb55e1..13f4ca65cb42 100644
---- a/mm/slab.h
-+++ b/mm/slab.h
-@@ -591,10 +591,14 @@ static inline struct slabobj_ext *slab_obj_ext(struct slab *slab,
- 					       unsigned long obj_exts,
- 					       unsigned int index)
- {
-+	struct slabobj_ext *obj_ext;
-+
- 	VM_WARN_ON_ONCE(!slab_obj_exts(slab));
- 	VM_WARN_ON_ONCE(obj_exts != slab_obj_exts(slab));
- 
--	return (struct slabobj_ext *)(obj_exts + slab_get_stride(slab) * index);
-+	obj_ext = (struct slabobj_ext *)(obj_exts +
-+					 slab_get_stride(slab) * index);
-+	return kasan_reset_tag(obj_ext);
- }
- 
- int alloc_slab_obj_exts(struct slab *slab, struct kmem_cache *s,
-@@ -625,6 +629,24 @@ static inline enum node_stat_item cache_vmstat_idx(struct kmem_cache *s)
- 		NR_SLAB_RECLAIMABLE_B : NR_SLAB_UNRECLAIMABLE_B;
- }
- 
-+/*
-+ * slub is about to manipulate internal object metadata.  This memory lies
-+ * outside the range of the allocated object, so accessing it would normally
-+ * be reported by kasan as a bounds error.  metadata_access_enable() is used
-+ * to tell kasan that these accesses are OK.
-+ */
-+static inline void metadata_access_enable(void)
-+{
-+	kasan_disable_current();
-+	kmsan_disable_current();
-+}
-+
-+static inline void metadata_access_disable(void)
-+{
-+	kmsan_enable_current();
-+	kasan_enable_current();
-+}
-+
- #ifdef CONFIG_MEMCG
- bool __memcg_slab_post_alloc_hook(struct kmem_cache *s, struct list_lru *lru,
- 				  gfp_t flags, size_t size, void **p);
 diff --git a/mm/slub.c b/mm/slub.c
-index 4383740a4d34..13acc9437ef5 100644
+index 13acc9437ef5..8101df5fdccf 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -973,24 +973,6 @@ static slab_flags_t slub_debug;
- static char *slub_debug_string;
- static int disable_higher_order_debug;
+@@ -884,6 +884,94 @@ static inline unsigned int get_orig_size(struct kmem_cache *s, void *object)
+ 	return *(unsigned int *)p;
+ }
  
--/*
-- * slub is about to manipulate internal object metadata.  This memory lies
-- * outside the range of the allocated object, so accessing it would normally
-- * be reported by kasan as a bounds error.  metadata_access_enable() is used
-- * to tell kasan that these accesses are OK.
-- */
--static inline void metadata_access_enable(void)
--{
--	kasan_disable_current();
--	kmsan_disable_current();
--}
--
--static inline void metadata_access_disable(void)
--{
--	kmsan_enable_current();
--	kasan_enable_current();
--}
--
++#ifdef CONFIG_SLAB_OBJ_EXT
++
++/*
++ * Check if memory cgroup or memory allocation profiling is enabled.
++ * If enabled, SLUB tries to reduce memory overhead of accounting
++ * slab objects. If neither is enabled when this function is called,
++ * the optimization is simply skipped to avoid affecting caches that do not
++ * need slabobj_ext metadata.
++ *
++ * However, this may disable optimization when memory cgroup or memory
++ * allocation profiling is used, but slabs are created too early
++ * even before those subsystems are initialized.
++ */
++static inline bool need_slab_obj_exts(struct kmem_cache *s)
++{
++	if (!mem_cgroup_disabled() && (s->flags & SLAB_ACCOUNT))
++		return true;
++
++	if (mem_alloc_profiling_enabled())
++		return true;
++
++	return false;
++}
++
++static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
++{
++	return sizeof(struct slabobj_ext) * slab->objects;
++}
++
++static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
++						    struct slab *slab)
++{
++	unsigned long objext_offset;
++
++	objext_offset = s->red_left_pad + s->size * slab->objects;
++	objext_offset = ALIGN(objext_offset, sizeof(struct slabobj_ext));
++	return objext_offset;
++}
++
++static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
++						     struct slab *slab)
++{
++	unsigned long objext_offset = obj_exts_offset_in_slab(s, slab);
++	unsigned long objext_size = obj_exts_size_in_slab(slab);
++
++	return objext_offset + objext_size <= slab_size(slab);
++}
++
++static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
++{
++	unsigned long obj_exts;
++
++	if (!obj_exts_fit_within_slab_leftover(s, slab))
++		return false;
++
++	obj_exts = (unsigned long)slab_address(slab);
++	obj_exts += obj_exts_offset_in_slab(s, slab);
++	return obj_exts == slab_obj_exts(slab);
++}
++#else
++static inline bool need_slab_obj_exts(struct kmem_cache *s)
++{
++	return false;
++}
++
++static inline unsigned int obj_exts_size_in_slab(struct slab *slab)
++{
++	return 0;
++}
++
++static inline unsigned long obj_exts_offset_in_slab(struct kmem_cache *s,
++						    struct slab *slab)
++{
++	return 0;
++}
++
++static inline bool obj_exts_fit_within_slab_leftover(struct kmem_cache *s,
++						     struct slab *slab)
++{
++	return false;
++}
++
++static inline bool obj_exts_in_slab(struct kmem_cache *s, struct slab *slab)
++{
++	return false;
++}
++#endif
++
+ #ifdef CONFIG_SLUB_DEBUG
+ 
  /*
-  * Object debugging
-  */
-@@ -2042,9 +2024,11 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
- 		struct slabobj_ext *ext = slab_obj_ext(obj_exts_slab,
- 						       slab_exts, offs);
- 
-+		metadata_access_enable();
- 		/* codetag should be NULL */
- 		WARN_ON(ext->ref.ct);
- 		set_codetag_empty(&ext->ref);
-+		metadata_access_disable();
- 	}
- }
- 
-@@ -2245,8 +2229,11 @@ __alloc_tagging_slab_alloc_hook(struct kmem_cache *s, void *object, gfp_t flags)
- 	 * If other users appear then mem_alloc_profiling_enabled()
- 	 * check should be added before alloc_tag_add().
- 	 */
--	if (likely(obj_ext))
-+	if (likely(obj_ext)) {
-+		metadata_access_enable();
- 		alloc_tag_add(&obj_ext->ref, current->alloc_tag, s->size);
-+		metadata_access_disable();
+@@ -1404,7 +1492,15 @@ slab_pad_check(struct kmem_cache *s, struct slab *slab)
+ 	start = slab_address(slab);
+ 	length = slab_size(slab);
+ 	end = start + length;
+-	remainder = length % s->size;
++
++	if (obj_exts_in_slab(s, slab)) {
++		remainder = length;
++		remainder -= obj_exts_offset_in_slab(s, slab);
++		remainder -= obj_exts_size_in_slab(slab);
++	} else {
++		remainder = length % s->size;
 +	}
- }
++
+ 	if (!remainder)
+ 		return;
  
- static inline void
-@@ -2272,11 +2259,13 @@ __alloc_tagging_slab_free_hook(struct kmem_cache *s, struct slab *slab, void **p
+@@ -2154,6 +2250,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
  	if (!obj_exts)
  		return;
  
-+	metadata_access_enable();
- 	for (i = 0; i < objects; i++) {
- 		unsigned int off = obj_to_index(s, slab, p[i]);
- 
- 		alloc_tag_sub(&slab_obj_ext(slab, obj_exts, off)->ref, s->size);
- 	}
-+	metadata_access_disable();
++	if (obj_exts_in_slab(slab->slab_cache, slab)) {
++		slab->obj_exts = 0;
++		return;
++	}
++
+ 	/*
+ 	 * obj_exts was created with __GFP_NO_OBJ_EXT flag, therefore its
+ 	 * corresponding extension will be NULL. alloc_tag_sub() will throw a
+@@ -2169,6 +2270,31 @@ static inline void free_slab_obj_exts(struct slab *slab)
+ 	slab->obj_exts = 0;
  }
  
- static inline void
-@@ -2394,8 +2383,12 @@ bool memcg_slab_post_charge(void *p, gfp_t flags)
- 	if (obj_exts) {
- 		off = obj_to_index(s, slab, p);
- 		obj_ext = slab_obj_ext(slab, obj_exts, off);
--		if (unlikely(obj_ext->objcg))
-+		metadata_access_enable();
-+		if (unlikely(obj_ext->objcg)) {
-+			metadata_access_disable();
- 			return true;
-+		}
-+		metadata_access_disable();
- 	}
++/*
++ * Try to allocate slabobj_ext array from unused space.
++ * This function must be called on a freshly allocated slab to prevent
++ * concurrency problems.
++ */
++static void alloc_slab_obj_exts_early(struct kmem_cache *s, struct slab *slab)
++{
++	void *addr;
++
++	if (!need_slab_obj_exts(s))
++		return;
++
++	metadata_access_enable();
++	if (obj_exts_fit_within_slab_leftover(s, slab)) {
++		addr = slab_address(slab) + obj_exts_offset_in_slab(s, slab);
++		addr = kasan_reset_tag(addr);
++		memset(addr, 0, obj_exts_size_in_slab(slab));
++		slab->obj_exts = (unsigned long)addr;
++		if (IS_ENABLED(CONFIG_MEMCG))
++			slab->obj_exts |= MEMCG_DATA_OBJEXTS;
++		slab_set_stride(slab, sizeof(struct slabobj_ext));
++	}
++	metadata_access_disable();
++}
++
+ #else /* CONFIG_SLAB_OBJ_EXT */
  
- 	return __memcg_slab_post_alloc_hook(s, NULL, flags, 1, &p);
+ static inline void init_slab_obj_exts(struct slab *slab)
+@@ -2185,6 +2311,11 @@ static inline void free_slab_obj_exts(struct slab *slab)
+ {
+ }
+ 
++static inline void alloc_slab_obj_exts_early(struct kmem_cache *s,
++						       struct slab *slab)
++{
++}
++
+ #endif /* CONFIG_SLAB_OBJ_EXT */
+ 
+ #ifdef CONFIG_MEM_ALLOC_PROFILING
+@@ -3155,7 +3286,9 @@ static inline bool shuffle_freelist(struct kmem_cache *s, struct slab *slab)
+ static __always_inline void account_slab(struct slab *slab, int order,
+ 					 struct kmem_cache *s, gfp_t gfp)
+ {
+-	if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
++	if (memcg_kmem_online() &&
++			(s->flags & SLAB_ACCOUNT) &&
++			!slab_obj_exts(slab))
+ 		alloc_slab_obj_exts(slab, s, gfp, true);
+ 
+ 	mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+@@ -3219,9 +3352,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	slab->objects = oo_objects(oo);
+ 	slab->inuse = 0;
+ 	slab->frozen = 0;
+-	init_slab_obj_exts(slab);
+-
+-	account_slab(slab, oo_order(oo), s, flags);
+ 
+ 	slab->slab_cache = s;
+ 
+@@ -3230,6 +3360,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+ 	start = slab_address(slab);
+ 
+ 	setup_slab_debug(s, slab, start);
++	init_slab_obj_exts(slab);
++	/*
++	 * Poison the slab before initializing the slabobj_ext array
++	 * to prevent the array from being overwritten.
++	 */
++	alloc_slab_obj_exts_early(s, slab);
++	account_slab(slab, oo_order(oo), s, flags);
+ 
+ 	shuffle = shuffle_freelist(s, slab);
+ 
 -- 
 2.43.0
 
