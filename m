@@ -4,61 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D95FCCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:18:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDC1CCCF9E5
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:18:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B68E9800AF; Mon, 27 Oct 2025 19:18:10 -0400 (EDT)
+	id 268AF800B0; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B17ED8009B; Mon, 27 Oct 2025 19:18:10 -0400 (EDT)
+	id 218468009B; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A0764800AF; Mon, 27 Oct 2025 19:18:10 -0400 (EDT)
+	id 0E02A800B0; Mon, 27 Oct 2025 19:18:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 8E2BF8009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:18:10 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2244F1602A2
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:10 +0000 (UTC)
-X-FDA: 84045459540.01.3270499
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 795EF40009
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:08 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ROkJHcpF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB7208009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:18:14 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B663113A259
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:14 +0000 (UTC)
+X-FDA: 84045459708.17.CD3A583
+Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 0C097A0008
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:18:12 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w5UMrwUa;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761607088;
+	s=arc-20220608; t=1761607093;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eRMoLOPHk0Zw/08DZLynFUa0w3uLlt8Rci/TaWmsNjU=;
-	b=sM12eOWDHTz6FK4ZICuGWElCjx/dvJmTvRBvv/M163kkKCKPjx+sHz02mXjLfaeOL5LYnA
-	FEDESxF96kjTajdz1SQGPRGW2u8W8C9f92o20LQs2hscZy6mVI5+7SVBKurvPLd8lmHDaJ
-	nvf8QP5S7r19cyQQHqEwqPA4FhRZGY8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607088; a=rsa-sha256;
+	bh=1pBvFLnmQUGhHDldbyfAqGwleevT81Px3hvXcQya18A=;
+	b=3/3Y38CTdQnKKq4K4xa0koEOGHkLJmnN7WPnAgmnLDYLgvHgQOQVk6jiA/hBlNPbQei5z5
+	XbtoD412x9ty+du1Y0vX73GZHz9HlUoiirfgBJfpjiDT4Q74hjGEzc2EzDMgQuXD+SrsJq
+	VVLgWr4wW6YIObJ2cs+0TTlL1d+Afjw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761607093; a=rsa-sha256;
 	cv=none;
-	b=maivITRZo013mawgkR4VK26uRciSiGFqtZZvTT5njSPQu+6v7LtlyPn/PHxxRn2T+vQhsx
-	bPid2+V6bYKFfvcSEHLXiNkqP2YMxlNmjIzdF67sbl8ZugqSgN4CMVxIGXtHdpeD3K6yVY
-	lMh6E/Vfmo/nb0OVNoypjOGbqcLF2F4=
+	b=tUD42dbA7qBSTcJw+GFmPRwd/duufEhIVsHFye7R29IL/hBvLp7cOkYXxQM7YAEsfCED05
+	6xaEERlRR4j+XbiXm628FciOwDIS+tHIruJ5FN3qfVnN8uO5NnNn7L2u7SCald68FBGHTR
+	EUeKpAGK2ZBofWET+5SrBJQaBIaN3yw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=ROkJHcpF;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf11.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w5UMrwUa;
+	spf=pass (imf25.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.171 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761607087;
+	t=1761607091;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eRMoLOPHk0Zw/08DZLynFUa0w3uLlt8Rci/TaWmsNjU=;
-	b=ROkJHcpFJxR287s1ClvLk0n/MitKV8WJh8dlnZNiqyODiF+DR+ny7u/TdxVPmSWMwOxXEA
-	aG8phPsu61dTRGejYx6hsc27/+yhxZxEHIVm2FOjrHFgLToswrU8B8vcFnIZSlzRpdj6Yk
-	eGBpTppxkOy3tz5kgupq5haQ1I+SjVg=
+	bh=1pBvFLnmQUGhHDldbyfAqGwleevT81Px3hvXcQya18A=;
+	b=w5UMrwUaoMs+GXh5EBhwvblLHe56g5Uq//mZp5YrlIP4NiHqkzroAOo1KdY9GZFzBBdZBH
+	tdNPolJqq+i4qqTGuetYltCar6ZHnLfsICgRE7BoeH/soUxhA0t7GyTI/CnWvYY8sjfHvL
+	ewVRkWVHPz9s4vIAASuiU7JSKnftYcI=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: linux-kernel@vger.kernel.org,
@@ -77,22 +77,22 @@ Cc: linux-kernel@vger.kernel.org,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
 	Roman Gushchin <roman.gushchin@linux.dev>
-Subject: [PATCH v2 07/23] mm: introduce bpf_oom_kill_process() bpf kfunc
-Date: Mon, 27 Oct 2025 16:17:10 -0700
-Message-ID: <20251027231727.472628-8-roman.gushchin@linux.dev>
+Subject: [PATCH v2 08/23] mm: introduce BPF kfuncs to deal with memcg pointers
+Date: Mon, 27 Oct 2025 16:17:11 -0700
+Message-ID: <20251027231727.472628-9-roman.gushchin@linux.dev>
 In-Reply-To: <20251027231727.472628-1-roman.gushchin@linux.dev>
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: mq4frgikg7qdjutpdsi71hf6uhjmzaq5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 795EF40009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: goisjybdsajcqojnkezdx9swahuj4481
-X-HE-Tag: 1761607088-741732
-X-HE-Meta: U2FsdGVkX1+HZ3zrqLht9EOpLsqLpDbjxOakzPNDkJ6ryllclQTBFLGALY+eKNoQR0MctjwqWPD9AuD6OaUIr5VvXWingc6OUqt939aT27ymILcquh8cRMZAj2Wv82Q/x1w51KdY0MeAB+8C4Ostqgz17udrdsGNG/wTGbQzVdhfg6t+8piq0FXnAxT8axe+24PN1+pi0XWPliFtp4aHVzLivDUUBpiA7BveIiFk7rm7F6W1zh4FBNmM2ZvbDzoO+myILr0sUQAtZnXlNeFGdlgma4C3pjBmHAj2OLcM45QwKabgqLSzgj1H5bJZbS2nUDeNBa74iuuGE4rWURE2jY5SLkiL89UIYDyfl8l/4Y3mmSvyRAnWuTSpA+m+gZ1Y3A+Y8V0B7WMnUDgD8DaPA7p4BkV1NibpzRxzHzwoU4NxyCda4gXl2yMII1acN4xf+SxwCyu7n4wrqFJ29p3xblacAXk6B2eoSkPnw7bfqI6xx0TluflNfEIMFblZRN6wPfim+OgYn3TT8fzEc3fytb1Vzw8fSPQuHcT+OrM4VK2endCwUvyTuQSxQborDtSHC6EHIJxdGUsJcLBpzFEgxrSSygCKhm253ku9InfEtVmbjsf+uZBHaVt4XkiIB9MosurbjK284LZ66hv1lWleMOZVWkjVP3htfdxJqC+YTAOGQ7YvDX1+7PpGa4Ron5BQPUUxVqm01EthYdKJzmhfDAz12uoDWdjYIQ5KOXz9Ulq2Ezm8ptANZRU/FFWLLbunYZIVy0bbS1WhChHAT/zYNp7w8iYZsrMHkLqmDb0IXsimNsMxrGwiIgkLc1GnPCRM9/53XMSlAsYPLuLSv3PXdWE/70pljJwqI0FZI79mnOtJvqwm8GFGrW6SDn0SDWIzt8WyqAd1eAOm/yn/rZ+QDtBldxFEnrmUqf4Zo/yCg1RkfjV0gWt2i5KsYLBeoXdRkSYrBW4MbYAkpki4UNP
- i547aTJD
- qbcYrPSFQGQS2TMz6JipjgD5r+gavRGflwKbfK8HRbJTRprlbnIMHtwEeum6rumgRWQrc2VRBYJmfbzmAbFL3HQhbq1qyR9kNDXZ+dsQ8UuULmzWv0OKhGX7ZQFhW4HTaVVyAyQeVaC1lZz7yb8DlNpKJWmMOooA3jKw/1ile12rf/wUtqDOvvpi4eGBwdXTSEBC5JlRAvN9rLU5q07gnCPOm8j5iEZMjEKmO7nFxtryy7p5Segb23t49Fg==
+X-Rspamd-Queue-Id: 0C097A0008
+X-HE-Tag: 1761607092-390900
+X-HE-Meta: U2FsdGVkX1/ZGs0eE5+XjStrfWTAZbnt1yvgKSU5iGpyK3UiGg/DeTtQDrfE17VjGSzGek+fgk4yx2H58zuUhNWb4xyHFui6iPyYl9D9CzN+XbG1aTjuoQsm/0m9XS4Ei35GXJmVYIYQClelv6U63HKjVtBjKwDxRkldJK9vGBbqmpQGr7bDDizkdJP3aIXcAkZUvxCyQOIKdU9qxcMqpFm+5PhWExsbEpgjPConEwUSwztcOx3/b219GJHXM3kRbwT0f7bZhTts9kEudb6LCt0GmsIODC+cDjOuA0wziMADnK5OUKwkjLwGalb/2A8oMvgVvMTfDFaskFBOk9A8xjHdUBNK4usyrDSHtlrXAfO4ljzcWpgBGkNm3mVjd0TcglPQeKd+XJrD964RMGUezWB5OAUx6cHqsBkp7W7U9JZtBSty7Dh2kJ3kpH5H+uXjYyorvYoNVv2QPpS83jMEH2ug/1UbMe36/TGcnUc2M6pqmu04CrGoznzeF2e5OxkurDJiGRc4BVBAkrvh7U8KQVJ8tn9BiHFkoQtx7UweP7OCVOLIeH8IR5s5lARXPweYV7dzFDo+UL6umwvfoFW+wHV/41aUnCpRYlINRvjYM2Nvv49oyZzFOgFIFNdDcOxPVFVa6Cr1u7D7AaqzAtScFbfu4xghr4xYeYAQ3q8/BJNWURe3lfZpb0RIdHl+7LB2U4l+gyIrHvelYr01pFJNMebGeBcaspM3pZ2PoZ2KDVs6ppZkJGb7HTHDi3aL9p5EprsyGxL3djvBGoRKCg9Mpvier9ZyJKCJBjbNWvIUQDcRiaLyQYpJE6dTJpa90NQQMG9m0Zyj9Ua2bLeyNJc0CNLaS6swLhPoZrOV7WD0/I5NMn/CRy/hs/v+3dzXWw8VofzVqwiU/vf2GaOuazBp5io1gUsoxdCNqjVmBTdoYUrBTqPBkOq5zAMoa5Gp4Mhozm8KUjXl9IpYpTGuNG1
+ z08WcxER
+ SfIaskJrXjwZjdg/do2Tti2NkT2FDYzoMkdF02rNsp2mLd8+VXeg9vOwSEhm5pPxM8b/csiMbncj3x4qagJp5c/qgfMP+ytYg21xBV+dNW2dxAQsqSNxppyR95ZcABqQrJ2fra+hqSfN51GcDaAcmNvmgNeuDiR/HKWe7poAoiHlx1nFBCdiEaI/0KUDKiSanteeuUnh31Ep0gycQB1cgAAFPgzawZQLCtCucB8vzEBBLNDU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,95 +101,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce bpf_oom_kill_process() bpf kfunc, which is supposed
-to be used by BPF OOM programs. It allows to kill a process
-in exactly the same way the OOM killer does: using the OOM reaper,
-bumping corresponding memcg and global statistics, respecting
-memory.oom.group etc.
+To effectively operate with memory cgroups in BPF there is a need
+to convert css pointers to memcg pointers. A simple container_of
+cast which is used in the kernel code can't be used in BPF because
+from the verifier's point of view that's a out-of-bounds memory access.
 
-On success, it sets om_control's bpf_memory_freed field to true,
-enabling the bpf program to bypass the kernel OOM killer.
+Introduce helper get/put kfuncs which can be used to get
+a refcounted memcg pointer from the css pointer:
+  - bpf_get_mem_cgroup,
+  - bpf_put_mem_cgroup.
+
+bpf_get_mem_cgroup() can take both memcg's css and the corresponding
+cgroup's "self" css. It allows it to be used with the existing cgroup
+iterator which iterates over cgroup tree, not memcg tree.
 
 Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 ---
- mm/oom_kill.c | 67 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 67 insertions(+)
+ mm/Makefile         |  1 +
+ mm/bpf_memcontrol.c | 88 +++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 89 insertions(+)
+ create mode 100644 mm/bpf_memcontrol.c
 
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index d05ec0f84087..3c86cd755371 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -1288,3 +1288,70 @@ SYSCALL_DEFINE2(process_mrelease, int, pidfd, unsigned int, flags)
- 	return -ENOSYS;
- #endif /* CONFIG_MMU */
- }
+diff --git a/mm/Makefile b/mm/Makefile
+index 051e88c699af..2d8f9beb3c71 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -107,6 +107,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
+ endif
+ ifdef CONFIG_BPF_SYSCALL
+ obj-y += bpf_oom.o
++obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
+ endif
+ obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
+ obj-$(CONFIG_GUP_TEST) += gup_test.o
+diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+new file mode 100644
+index 000000000000..1e46097745cf
+--- /dev/null
++++ b/mm/bpf_memcontrol.c
+@@ -0,0 +1,88 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Memory Controller-related BPF kfuncs and auxiliary code
++ *
++ * Author: Roman Gushchin <roman.gushchin@linux.dev>
++ */
 +
-+#ifdef CONFIG_BPF_SYSCALL
++#include <linux/memcontrol.h>
++#include <linux/bpf.h>
 +
 +__bpf_kfunc_start_defs();
++
 +/**
-+ * bpf_oom_kill_process - Kill a process as OOM killer
-+ * @oc: pointer to oom_control structure, describes OOM context
-+ * @task: task to be killed
-+ * @message__str: message to print in dmesg
++ * bpf_get_mem_cgroup - Get a reference to a memory cgroup
++ * @css: pointer to the css structure
 + *
-+ * Kill a process in a way similar to the kernel OOM killer.
-+ * This means dump the necessary information to dmesg, adjust memcg
-+ * statistics, leverage the oom reaper, respect memory.oom.group etc.
++ * Returns a pointer to a mem_cgroup structure after bumping
++ * the corresponding css's reference counter.
 + *
-+ * bpf_oom_kill_process() marks the forward progress by setting
-+ * oc->bpf_memory_freed. If the progress was made, the bpf program
-+ * is free to decide if the kernel oom killer should be invoked.
-+ * Otherwise it's enforced, so that a bad bpf program can't
-+ * deadlock the machine on memory.
++ * It's fine to pass a css which belongs to any cgroup controller,
++ * e.g. unified hierarchy's main css.
++ *
++ * Implements KF_ACQUIRE semantics.
 + */
-+__bpf_kfunc int bpf_oom_kill_process(struct oom_control *oc,
-+				     struct task_struct *task,
-+				     const char *message__str)
++__bpf_kfunc struct mem_cgroup *
++bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
 +{
-+	if (oom_unkillable_task(task))
-+		return -EPERM;
++	struct mem_cgroup *memcg = NULL;
++	bool rcu_unlock = false;
 +
-+	/* paired with put_task_struct() in oom_kill_process() */
-+	task = tryget_task_struct(task);
-+	if (!task)
-+		return -EINVAL;
++	if (!root_mem_cgroup)
++		return NULL;
 +
-+	oc->chosen = task;
++	if (root_mem_cgroup->css.ss != css->ss) {
++		struct cgroup *cgroup = css->cgroup;
++		int ssid = root_mem_cgroup->css.ss->id;
 +
-+	oom_kill_process(oc, message__str);
++		rcu_read_lock();
++		rcu_unlock = true;
++		css = rcu_dereference_raw(cgroup->subsys[ssid]);
++	}
 +
-+	oc->chosen = NULL;
-+	oc->bpf_memory_freed = true;
++	if (css && css_tryget(css))
++		memcg = container_of(css, struct mem_cgroup, css);
 +
-+	return 0;
++	if (rcu_unlock)
++		rcu_read_unlock();
++
++	return memcg;
++}
++
++/**
++ * bpf_put_mem_cgroup - Put a reference to a memory cgroup
++ * @memcg: memory cgroup to release
++ *
++ * Releases a previously acquired memcg reference.
++ * Implements KF_RELEASE semantics.
++ */
++__bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
++{
++	css_put(&memcg->css);
 +}
 +
 +__bpf_kfunc_end_defs();
 +
-+BTF_KFUNCS_START(bpf_oom_kfuncs)
-+BTF_ID_FLAGS(func, bpf_oom_kill_process, KF_SLEEPABLE | KF_TRUSTED_ARGS)
-+BTF_KFUNCS_END(bpf_oom_kfuncs)
++BTF_KFUNCS_START(bpf_memcontrol_kfuncs)
++BTF_ID_FLAGS(func, bpf_get_mem_cgroup, KF_ACQUIRE | KF_RET_NULL | KF_RCU)
++BTF_ID_FLAGS(func, bpf_put_mem_cgroup, KF_RELEASE)
 +
-+static const struct btf_kfunc_id_set bpf_oom_kfunc_set = {
++BTF_KFUNCS_END(bpf_memcontrol_kfuncs)
++
++static const struct btf_kfunc_id_set bpf_memcontrol_kfunc_set = {
 +	.owner          = THIS_MODULE,
-+	.set            = &bpf_oom_kfuncs,
++	.set            = &bpf_memcontrol_kfuncs,
 +};
 +
-+static int __init bpf_oom_init(void)
++static int __init bpf_memcontrol_init(void)
 +{
 +	int err;
 +
 +	err = register_btf_kfunc_id_set(BPF_PROG_TYPE_STRUCT_OPS,
-+					&bpf_oom_kfunc_set);
++					&bpf_memcontrol_kfunc_set);
 +	if (err)
-+		pr_warn("error while registering bpf oom kfuncs: %d", err);
++		pr_warn("error while registering bpf memcontrol kfuncs: %d", err);
 +
 +	return err;
 +}
-+late_initcall(bpf_oom_init);
-+
-+#endif
++late_initcall(bpf_memcontrol_init);
 -- 
 2.51.0
 
