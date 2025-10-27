@@ -4,114 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55DFBCCF9E0
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:34:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F4F3CCF9E0
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:35:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E1BF800C1; Mon, 27 Oct 2025 19:34:35 -0400 (EDT)
+	id DDBF3800C2; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9B80E8009B; Mon, 27 Oct 2025 19:34:35 -0400 (EDT)
+	id DB7EE8009B; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8CEC0800C1; Mon, 27 Oct 2025 19:34:35 -0400 (EDT)
+	id CC9F0800C2; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 72EB48009B
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:34:35 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 032E6160289
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:34:34 +0000 (UTC)
-X-FDA: 84045500910.17.363F2D0
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 145C240004
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:34:32 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=YxCfl5aM
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B8F938009B
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:35:47 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 78DA686524
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:35:47 +0000 (UTC)
+X-FDA: 84045503934.01.9D01779
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A8DA61C0009
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:35:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DsgRW1CV;
+	dmarc=none;
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761608073;
+	s=arc-20220608; t=1761608145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uPCmD4uzhtfswoc/l5V0R9c2cekIs5r3x52JtrQEQ6g=;
-	b=jh0UtRLClQMAneKVdBo9dwhLqnmA9h0jVJFgu58y82CBGtjmIUgNSODTCkj6ckXp2YUP8H
-	WLdCdZRHvRRBJXgs/JYlgmzDRNUO9i7ACzuGXLYNP9LWykCIzSH+Rc4Uga1+jqJ9aKm1ev
-	AjG8iQXW8jGGCWP/s94/zas5iwi5jE4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608073; a=rsa-sha256;
+	bh=8gtlWGlf8Il3fDP1MGAoknIABk6TQTdJM1ZjO/034mk=;
+	b=oRQicnUkPHf+VZSlhXuQdEAGl4YZYIH3mCed5RbEWf2NgK6D2pI62m24hoQm9uW4Z78xuK
+	FjH66kdaTqhmWC1cyVjoS3Q4gOcFk9lghnGUGt+SKAEcLyJf/EcUPagRn5aABCRy5Jw5Vk
+	j1VXvRNYljt+dJtTd5F+NqJabET5rGg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761608145; a=rsa-sha256;
 	cv=none;
-	b=70lcFesuW3SM9FL+2nRrGIc2Hm+aHteACN46NsraGD31TeUC3zUZVgJ4MzYTwVN8YWeYdL
-	dSFG5oS7paMmd6WeBVOC6dCXnZ7eN0+s5qzvD+j8AYYqfT+oLSed2yhsRMDjp2mxyU3WGd
-	aqdD30Bk3JG04sV9ruCVNYN26PtaGz0=
+	b=A8fs734jifH1A7UC0MTU3rtfXuy3VY+OcPffeind3B8xsyT2cRq0IcCyDyf729KZ82Ort7
+	h6+FvK8iYCj/GbUybvGFjT5SYx1adixqeGx6847vg+uMRZAJkmMD8GZ0gl896HNHp2IL7Z
+	K2n4UtgQabdfqOpqkENw2HxoFPjiF/4=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=osandov-com.20230601.gappssmtp.com header.s=20230601 header.b=YxCfl5aM;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DsgRW1CV;
 	dmarc=none;
-	spf=none (imf11.hostedemail.com: domain of osandov@osandov.com has no SPF policy when checking 209.85.216.47) smtp.mailfrom=osandov@osandov.com
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-33bb66c96a1so1552719a91.1
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 16:34:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=osandov-com.20230601.gappssmtp.com; s=20230601; t=1761608072; x=1762212872; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uPCmD4uzhtfswoc/l5V0R9c2cekIs5r3x52JtrQEQ6g=;
-        b=YxCfl5aM0eaT8Pl+/p7wfHg+K+ELt0/o10GRIYtr4/y0PvGaQyXhdrdzjiIa7WvbPZ
-         8lG+qvocGcv27+Z2xgE+Nl9JCpK55M4WFFFYnrt77O4bBGntjld80qlavU1hwug9/4XG
-         SP8zL/eMVypCk3CtziPsS3oZDjLzzSdV3oR6GRr6W99fPj83gQLLcDzls15/RaDh0MDf
-         lSDBgHK/SWjZGU+tKCsiE+wNqPPsYbRdw+utEaarAxiDmPt3iCq/ekxTJyBdHGNOdMth
-         MqODKCCW3Nb5E7RewfOJPR8l1d5C/pzQ6B4Yun0ermzRBFZA+87l4FsC0S1Uzeq/XSgS
-         Mwsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761608072; x=1762212872;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uPCmD4uzhtfswoc/l5V0R9c2cekIs5r3x52JtrQEQ6g=;
-        b=he/dH7Akn55Rz8Q1aDoBjE+8IbIpi9Z5HqEsxDxIvePoHiJRQd0JaaFQPG2NvidYs3
-         gPr+em1aBvD5wRisMQ7oJWIE6eRP85uxYN5rLMSpEYm1n6HX8Win7I4py15UXQlai04V
-         rzwBIPn2hAETszRx4hWJRZow2u8jd4DOMfZpQPlJLMZbCEk875Z6OV1tiN0/8igssVkq
-         PTysgEvaGbfieQkjpALkk/aROymqWhXQTbexNLEx9joyu+ctz64hhc2fM3l1IKUCU8YS
-         TD7IPILQ2ilmkOVKpNXcOwxCFAtcmYSXvm0QvLNP58RpxImtvLJn/T4Jd3VUflKo18SI
-         wHiw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlqS0b83IRdZ4wgSseH68hbTZcOF8Pug2JmPCTjlBW2lOATeMqVT2AyqKt7AsyT84gcNyVBg7U8w==@kvack.org
-X-Gm-Message-State: AOJu0YxmbwhQ37SEbvd591nU7Ivr4GByNBtFt2XfSovXXSSjQx+dsONa
-	RzWK5SsrFZ40h5fddZpJa51oGhjgWBlLM4NhHKl6nMpu9RP08OkMypFoo4bFk2xbjCE=
-X-Gm-Gg: ASbGncvuavm9tb7oqkUGLiB14B6d4MEb81LEo91QMPGKlIZM1QUUkUuuJA7F3Voy7i7
-	uoerDHDKhTQimZiV/HXZvhBuPRR9TktH9VLLoGAtuyPvxPIG/opvStM8PuplTPCor2rewJe25cI
-	bHZGgf+XyXlJWMzAXCYwy8vMLbnRoBn/XXEc3Jyb0p78b3zMWvJJDUqQtpeVLlYwK9x82PGg0Vk
-	u9rIgimRKAt3Sno9/Niot+ZXglDKb3v9t9IOMzIZdh2G5SRL7GQcBXcb8FfGrvN0l1Fq1OYLKr1
-	/JWdTCCNWy54i43qYYuq59azeNs0yzW9YlvSHzi0cL0xkvmn+FkUanadUakLLAbd5SKtn7N6dfE
-	g8s1W7D4bshoWDd4W1f07oRfZBdO3kLHY+/8oLlJZoQhm1U37TrADk/mVkjmXJSQyDxo=
-X-Google-Smtp-Source: AGHT+IF+fIC8nkEhc1qH8rsvSrdHlsUcfw3Mhoj6ntlufIF+zqKXRzzjo2Jm1L6py6bmWl1j/Yu00g==
-X-Received: by 2002:a17:902:db11:b0:25c:9a33:95fb with SMTP id d9443c01a7336-294cb502797mr8728975ad.8.1761608071589;
-        Mon, 27 Oct 2025 16:34:31 -0700 (PDT)
-Received: from telecaster ([2620:10d:c090:500::4:c4])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d273cdsm93594155ad.55.2025.10.27.16.34.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 27 Oct 2025 16:34:31 -0700 (PDT)
-Date: Mon, 27 Oct 2025 16:34:29 -0700
-From: Omar Sandoval <osandov@osandov.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: David Hildenbrand <david@redhat.com>,
-	Israel Batista <linux@israelbatista.dev.br>,
-	akpm@linux-foundation.org, linux-mm@kvack.org,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-Message-ID: <aQABhaMC8xfO2Vem@telecaster>
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
- <aP-2x314BKks2_N9@telecaster>
- <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: cp3ie48qgeyafyfggkzo14ohxmtbr1ix
+	spf=pass (imf18.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 651EF448BC;
+	Mon, 27 Oct 2025 23:35:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BB11C4CEF1;
+	Mon, 27 Oct 2025 23:35:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761608144;
+	bh=hwP/ISptcED0C3gyAgZ7TO//hrJsL4mtGE0vyK8MMKY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DsgRW1CVuz7pf/7lDWSQnSrE5lGx71T5LIt5ghrJXhpQ0KVQ23X8tAhdxcLFSfPvN
+	 7909z9taUvPExsiFMmji6rakj7APUszplZBRGGnGCRr5e3EuRfldu+w6U61snmkSD/
+	 M4CgCrfH8raUQ+gz3eGYh6/lUUi+I9KknzqBEWt0=
+Date: Mon, 27 Oct 2025 16:35:43 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: bajing <bajing@cmss.chinamobile.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] Fix the problem that kunit cannot run
+Message-Id: <20251027163543.bbf0f6bf9f81c3a61afa48a2@linux-foundation.org>
+In-Reply-To: <20251027091231.1770-1-bajing@cmss.chinamobile.com>
+References: <20251027091231.1770-1-bajing@cmss.chinamobile.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 145C240004
-X-HE-Tag: 1761608072-923463
-X-HE-Meta: U2FsdGVkX1+nr1/EentDYgYbFQVOypQ5Ss74bsVVGxGuBRS8geN0Nv+vzNjMJ03AJ042IdeF41z09fN7+uWLxs/DeW5dKiTPgV6oqOwdXYwq2LXk4oz63R9vw4Q5plmBjE5rHAlZhvszYAwRvTozKg3WmsA6YaJQU8s3q2iOdO8z8FHZIWiysgdQ0ow8DoqLPBr6LIqVWCodT0eiCcTCV1wQVGykAp/WHHQ4btB1FudUpRo0YBICVJC5CZvlCk8nMwIn9BAM7WA81AXhDDlKMPP+lE1MsroIWSMjX76+blKXH+Ek/45DSkjopl2Z6pmPOI7DwaP9aVIH23tJp3yvAXnmgMBVg16S2vxJFsGzxG2IWEnCuMLriFhxP5H/VWkVMxHhHO3cMVLm+bx2q6XLF7xvwAYbAaLPzxq8x8yR8j0ztrcxEgzsjw9A8OtEjvEDEvMdpRJ6LA/rHcYhVwuG9q6dNkFKMadGueCQnfdx1+tzym8D+UnSG1D1tPYuEZvlV9SM8Oy3eiAUHSBPADsnbOepOBHhW/MjJODiKjZ3X34ZJTBIX4JMaq6s19V6yK5YeA3p3uHnGW4IurI0lYbs1rC6CkDz59sVi+M+7l8VK9KU+pQtFhkKB2zKXjVgmYYwISgz07KNJLU6UQhLeurIx/iB5o0zsfAEKWjUK+sOOBSd6VGBywBOX0N90GiDEG47BoVM2rf2nj3GTBnQJKPHzQrCK0RVpFb5VwRuMsudfPFshS78FR7t3oZnR2JJ95gx08U+QKivWup25GgLNtDUa6vgLjsZC9V/OE2y9lAeMFaPkEJCMJLtnN29n0KwMLUN77V2/Bos15ng+U2UHlCCfkZrG29iic80K6XRnxlByRmJl5TRzpCqF43lQ/bQHNqcHgtyvvAXSxBdM54iZQcMhe7K8/MiTWiabsgs4o3QTOf/F6YrtSvFLyCHMidtcwBWKqeq1ZiUwM+tDNKzTvA
- L1vt9T6Y
- NJqQAS9fXGy494YchbZjE/mMceS5K3sn4TdlQj+DQNiYC74PFiJsCl6IO0txVeync5wwNh2J1b+k7cnoFjbAFn6EvCxjzpl6qRiX5Jmz+FqaC22o4bgb6d5O3UNhND1Wtaddj1yK+V5d7wo9Ap2t23eodO2A9qwBoPuphwiDAG4ozovbhekIgoemM1KVEJ23hfrXxseGyOsJUJ9YUD07Dg3Dza2dBYfaqElVHtqNvBi0VmktC88/RHn+MPY33fWdFsc6UaNGPkee+Nn3PMdmTTjeSgFrHSXd53V67bql6oKQuja8ErRWDgkekZlbRVd6wRhq4UIuC4Kl/f5DG+bPFGRuEGVRRf33hnETY8Q9NwW+FlcfLOBziCnuCC14V5GveUCkZOesOWkSAi8OtsNRvvv+TIWlD2u+dQBrIPJhl80M34h8CFVS+iSz0mw==
+X-Rspamd-Queue-Id: A8DA61C0009
+X-Rspamd-Server: rspam02
+X-Stat-Signature: yhwfcrkc3h91y47b56z6uwwnagaqjpb7
+X-HE-Tag: 1761608145-870832
+X-HE-Meta: U2FsdGVkX1/D8inkb2ScVs1S6/4HYs21sN/Kj6Ldp1SutVHZPPWAUttuoa5v+tW/mvORG3w1IXaGFYCPSXzyD6Q22xsbSMOnI7N9KzBUkezIXRgUjwfF70kFoNYPWdt4rwaYr22c2UaTWuRqKshZUUtIPkFhCfyYNpbqLa2gnxmAbuHB+O8kITJ/yYRfEgJlYeIory09wzzx88saHJS5cjAZ2ltFg+DFyZI00rXk4jgB9czquBnpo5xN3+5NwxMX+1EzgYJHgbQN/djVFU6ao2k0VBHgRo8Xq8YYiTeEy2JmcprmhPxOrLLxz3vsIWep54Z8cetq363Eh4CmY2gYEnGJLbUkb0kPnF0KC7BALbu4g27amtxe54qrbMdBAiIDqx+6Cf8pbBXW55yeCTFWkLu3+to1AoSHmw4BVBSS7GHK3Vw9aXwh3cg1x5T/DdkWOD9q8QT1jYqpURQKcGLIGc2xb+QCt29qcL3deQ4T7wEQJSUXHqGk1MsdC3Z4w0pxdhJprXYzdIRLQRM1UQwDtTp6A5sbSG+Sbj5uAeua0tafKFpkC/9yTmmG4ZqAHm4PkDI5r0TaucvJCxttVxhqtU5XefhmodE2CBs/R4cArV5a5sHLyEyPKDjP8o/OQzhbB6n/tsE+DmmXOZTLBRPZTBeMn/O8XV0uu1Niu6Feq53oq83hN/Y0v4V99i/LlsEBLjuiv1NijoaaDNQavUw7GnNz5bI8ihnVLRh0l7kqavIe+nu4pX575ObzfzXPkjnec2Vse9a6pKSiBglG5Y2QP30meIgDKDY6LZMqhbK2AxUGshD3J57CSiUpteHRP401BqJ2a3KNmDe1HRo/58Qu6YhyeVYLHjvE/KfaKpLTPnA+9BqibrO0l+Fugig42CzMTizqK2JmF4vvkLMLpe1K1vX701Mar1zoNDrSNIcgw9451dOY0kedh1NV0+ZSAqLVb3MwNuktOe2KoDtf4hh
+ WHtom75p
+ CM/w8EE/plEILeMp644+8/IOEZXe9k/3WcpAtjvNa+glfnxfsuaGMnwOrkrZkDsd6juu0MuxLGyPf4awfC76arvaLchb0eg1jOv4KrXZ626t9/kXfU105o9g2krL8l070mXl2q8HTnLa7I4LGH/kSBr/On1EuRY9EnHZ80q6Bce+dxiydrJPDFuj6an2Q9x+0c42OoGQIkzuW3CvXb9rb93CyWUXa2VvilsqLDHuqqfkp5xavQPClXi6QJ5EVXPq4OxmDYPbDmt3mV4GFhowpwkdEuRGYx64WOGohTJ3EdGNl6IE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,162 +89,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 07:46:43PM +0000, Lorenzo Stoakes wrote:
-> On Mon, Oct 27, 2025 at 11:15:35AM -0700, Omar Sandoval wrote:
-> > On Mon, Oct 27, 2025 at 10:29:15AM +0100, David Hildenbrand wrote:
-> > > On 26.10.25 17:22, Israel Batista wrote:
-> > > > The MEM_* constants indicating the state of the memory block are
-> > > > currently defined as macros, meaning their definitions will be omitted
-> > > > from the debuginfo on most kernel builds. This makes it harder for
-> > > > debuggers to correctly map the block state at runtime, which can be
-> > > > quite useful when analysing errors related to memory hot plugging and
-> > > > unplugging with tools such as drgn and eBPF.
-> > > >
-> > > > Converting the constants to an enum will ensure the correct information
-> > > > is emitted by the compiler and available for the debugger, without needing
-> > > > to hard-code them into the debugger and track their changes.
-> > > >
-> > > > Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
-> > > > ---
-> > > >   include/linux/memory.h | 16 +++++++++-------
-> > > >   1 file changed, 9 insertions(+), 7 deletions(-)
-> > > >
-> > > > diff --git a/include/linux/memory.h b/include/linux/memory.h
-> > > > index ba1515160894..8feba3bfcd18 100644
-> > > > --- a/include/linux/memory.h
-> > > > +++ b/include/linux/memory.h
-> > > > @@ -89,13 +89,15 @@ int arch_get_memory_phys_device(unsigned long start_pfn);
-> > > >   unsigned long memory_block_size_bytes(void);
-> > > >   int set_memory_block_size_order(unsigned int order);
-> > > > -/* These states are exposed to userspace as text strings in sysfs */
-> > > > -#define	MEM_ONLINE		(1<<0) /* exposed to userspace */
-> > > > -#define	MEM_GOING_OFFLINE	(1<<1) /* exposed to userspace */
-> > > > -#define	MEM_OFFLINE		(1<<2) /* exposed to userspace */
-> > > > -#define	MEM_GOING_ONLINE	(1<<3)
-> > > > -#define	MEM_CANCEL_ONLINE	(1<<4)
-> > > > -#define	MEM_CANCEL_OFFLINE	(1<<5)
-> > > > +enum mem_states {
-> 
-> Why are we naming a type we never use...
+On Mon, 27 Oct 2025 17:12:30 +0800 bajing <bajing@cmss.chinamobile.com> wrote:
 
-As David suggested, naming it means that we can then use it in a way
-that enables compiler warnings and documents the code better.
+> When running ./tools/testing/kunit/kunit.py run,the error for mm/swap.h
+> is as follows:
+> ERROR:root:In file included from ../mm/shmem.c:43:
+> ../mm/swap.h: In function ‘non_swapcache_batch’:
+> ../mm/swap.h:66:19: error: implicit declaration of function ‘swp_offset’;
+> did you mean ‘pud_offset’? [-Werror=implicit-function-declaration]
+>    66 |  pgoff_t offset = swp_offset(entry);
+>       |                   ^~~~~~~~~~
+>       |                   pud_offset
+> In file included from ../mm/shmem.c:68:
+> ../include/linux/swapops.h: At top level:
+> ../include/linux/swapops.h:107:23: error: conflicting types for ‘swp_offset’
+>   107 | static inline pgoff_t swp_offset(swp_entry_t entry)
+>       |                       ^~~~~~~~~~
+> In file included from ../mm/shmem.c:43:
+> ../mm/swap.h:66:19: note: previous implicit declaration of ‘swp_offset’ was here
+>    66 |  pgoff_t offset = swp_offset(entry);
+>       |                   ^~~~~~~~~~
+> cc1: some warnings being treated as errors
+> make[4]: *** [../scripts/Makefile.build:243: mm/shmem.o] Error 1
+> make[3]: *** [../scripts/Makefile.build:480: mm] Error 2
+> make[3]: *** Waiting for unfinished jobs....
+> make[2]: *** [/home/openeuler/kernel/Makefile:1924: .] Error 2
+> make[1]: *** [/home/openeuler/kernel/Makefile:234: __sub-make] Error 2
+> make: *** [Makefile:234: __sub-make] Error 2
+> 
+> ...
+>
+> --- a/mm/swap.h
+> +++ b/mm/swap.h
+> @@ -4,6 +4,7 @@
+>  
+>  #ifdef CONFIG_SWAP
+>  #include <linux/blk_types.h> /* for bio_end_io_t */
+> +#include <linux/swapops.h>
+>  
+>  /* linux/mm/page_io.c */
+>  int sio_pool_init(void);
 
-> > > > +	/* These states are exposed to userspace as text strings in sysfs */
-> > > > +	MEM_ONLINE		 = (1<<0), /* exposed to userspace */
-> > > > +	MEM_GOING_OFFLINE	 = (1<<1), /* exposed to userspace */
-> > > > +	MEM_OFFLINE		 = (1<<2), /* exposed to userspace */
-> > > > +	MEM_GOING_ONLINE	 = (1<<3),
-> > > > +	MEM_CANCEL_ONLINE	 = (1<<4),
-> > > > +	MEM_CANCEL_OFFLINE	 = (1<<5),
-> > > > +};
-> 
-> If it has to be named, can we just expose the bits as an enum and the values as
-> BIT(...)?
-> 
-> > > >   struct memory_notify {
-> > > >   	unsigned long start_pfn;
-> > >
-> > > CCing Lorenzo, we recently had a discussion about such conversions.
-> >
-> > Yeah, I've been asking people to send out these conversions as we
-> > encounter them in drgn, but ONLY when the absence of a value in the
-> > kernel debugging symbols causes actual problems for drgn. I want it to
-> > be clear that we're not spamming these just to cause churn. This is an
-> > unfortunate corner case of debug info that leaves us with no other
-> > option.
-> 
-> Right. That really sucks, but I like drgn so if reasonable I do want us to
-> make life easier there... :)
-> 
-> >
-> > > The states are mutually exclusive (so no flags), so I wonder if we can just
-> > > drop the (1<< X) setting completely.
-> >
-> > FWIW, putting my C standard committee hat on, there is nothing wrong
-> > with combining flags in an enum. C11 is silent on the matter, but C23
-> > made this explicit. Quoting 6.7.3.3, paragraph 16: "After possible
-> > lvalue conversion a value of the enumerated type behaves the same as the
-> > value with the underlying type, in particular with all aspects of
-> > promotion, conversion, and arithmetic." Lorenzo may have been thinking
-> > of the stricter rules in C++.
-> 
-> I don't really understand the argument being made there.
-> 
-> That's just saying the enum behaves as if it's the underlying type? I'm not
-> arguing otherwise.
-> 
-> Consider:
-> 
-> enum some_name {
-> 	X,
-> 	Y
-> };
-> 
-> void some_func(enum some_name val)
-> {
-> 	switch (val) {
-> 	case X:
-> 		...
-> 	case Y:
-> 		...
-> 	}
-> 
-> 	// compiler doesn't warn about missing cases.
-> }
-> 
-> This is already giving some sense as to the intuition that enums specify
-> all the values as declared specific enumeration values.
-> 
-> But intuitively, with the enum as a _named_ type, it's _weird_ for there to
-> be possible values for it that are not listed.
-> 
-> The problem here for me is the type being _named_.
-> 
-> If it's unnamed, then it doesn't really matter, it's just another way of
-> declaring the values.
+Thanks, but I suspect you're using an older kernel.  6.18-rc3 doesn't
+look like the above and it already has
 
-I read
-https://lore.kernel.org/all/809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local/
-("it's not valid to have flag values as an enum") as a claim that this
-was invalid at the language level, but it sounds like your objection is
-more of a personal style preference. Which is totally fine, the MM
-subsystem can have whatever rules it wants.
 
-To play devil's advocate, using a named enum for flags makes it easy to
-document what flags are used for a given field. I don't know about you,
-but I'm often annoyed when I come across an undocumented `unsigned long
-flags` and I have to track down what set of flags it uses. And switching
-on a flags value doesn't make sense in the first place regardless of
-whether it's a macro or enum, so I don't expect that concern to matter
-much in practice.
+: #ifdef CONFIG_SWAP
+: #include <linux/swapops.h> /* for swp_offset */
+: #include <linux/blk_types.h> /* for bio_end_io_t */
+:
+: static inline unsigned int swp_cluster_offset(swp_entry_t entry)
 
-> If drgn needs it named, then just name bit values and use BIT(...).
-> 
-> >
-> > Of course, semantically, it makes more sense to use distinct values in
-> > cases like this where the values are not actually flags.
-> 
-> enum's are kinda defined by being distinct values...
-> 
-> >
-> > > IIRC, these values are not exposed to
-> > > user space, only the corresponding names are, see state_show().
-> > >
-> > >
-> > > Won't the compiler now complain that e.g., kcore_callback() does snot handle
-> > > all cases? (no default statement)
-> >
-> > Only if the controlling expression of the switch statement actually has
-> > the enum type. All existing code uses unsigned long, so the compiler
-> > doesn't care.
-> 
-> So why are we naming the type... does drgn require it?
-
-Nope, drgn can work with anonymous enum types just fine. As long as
-we're all on the same page that naming it/not naming it and using bit
-numbers/flag values is a style choice and not a language requirement,
-I'm happy with whatever approach makes the maintainers happy.
-
-> Thanks, Lorenzo
 
