@@ -4,115 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 26446CCF9EA
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:39:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B1AB2CCF9EA
+	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 13:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A7E980055; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
+	id ED7E080056; Mon, 27 Oct 2025 09:56:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 257428000A; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
+	id E608B8000A; Mon, 27 Oct 2025 09:56:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 146DE80055; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
+	id CDA6180056; Mon, 27 Oct 2025 09:56:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 03EB38000A
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:39:27 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B6AB1160112
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:39:26 +0000 (UTC)
-X-FDA: 84044001132.04.CFB46E9
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B572F8000A
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 09:56:44 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 64D9E12922E
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:56:44 +0000 (UTC)
+X-FDA: 84044044728.27.1E56C3F
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 39442160002
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:39:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	by imf21.hostedemail.com (Postfix) with ESMTP id DFB811C0007
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 13:56:41 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZnsBY5q;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=buInvN6u;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZnsBY5q;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=buInvN6u;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761572364;
+	s=arc-20220608; t=1761573402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
-	b=X6Md275YDUrbpz1kzdI+BmDmSDq7Df8Xm+S2iOZdukistWM4vtMJh7UwXJz7jnA+w+DUXp
-	1el334ruZsL6z4xs8W8XYYuHE+V7hQ9OICi1g5ca/6lSDIh66DcR4jczqdGRxvZ7D+r+aE
-	2DI6DVI8M6vROpbt1LLzoMkrWjilav0=
+	bh=uIeIX1/GfDr+PgyE+6keWOlaywVCkkDhuvCBLGIQkjk=;
+	b=KPxw9AlTB6Bkuy8TGn84/cQGAwIVyWMGrt1jbbkEukF02smxF4lCqgfn9jYhttKWuRBcsB
+	m0NXG9EjFoTWG3/fufsKr4GKr+Bj+pZNWdNqa8P/Igl7N7peKXS2eNHrRLOxrVz5bH2PQ+
+	wuR7RpwzplG4WhULGwTuVvmNB+K/Hw8=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="uAJW/z40";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=FP44aS9i;
-	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZnsBY5q;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=buInvN6u;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=JZnsBY5q;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=buInvN6u;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761572364; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761573402; a=rsa-sha256;
 	cv=none;
-	b=LWvqS9iYB0uRI2FaKKW1hDPOmFE5TiAkLgn575tmbZnoXtGvTLmrjV07kPk5Wl879IuTDH
-	C9JB3Qai7fgf42kopj/ul9vlF95krouhO512qoVMtI7FzydtO4ucAIPlg9PAEsge0s9isy
-	sZCIejsOd0m88YBtH1NMrjivQ0GwIJ8=
+	b=HJU8saxOeZntUvDEkAh7x5O/cZUuC2+/mDYB8P+kAc5x76w91tnuR/TRqdCfbldJ7QC/4c
+	1dNQaEa9lpiHEqDLXHqjf6GdSgNeWXgAPCBJRIMpilckQKouTX76CS9ImJat9HZ+ehYNSt
+	W8zuWqhLZzBtYuO1JvYvGU/GblwT1O8=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id EA91A21B21;
-	Mon, 27 Oct 2025 13:39:21 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 013E6219EE;
+	Mon, 27 Oct 2025 13:56:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761572362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761573400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
-	b=uAJW/z40YgANMYhmD50708FHkiKIs2E+rgLkpZiPOVKlkoft9lcSiCB+KMwvkdTBJuBdzG
-	1UhGzq2JqoZjgk64YQEoitm2O+xU7kyYAzyXFfjZqOQD1GrLbQyjfVVeN1pq0lbMHR0hXh
-	0oM2jHeDfCNTIQWopnQnaAudiOnYeFw=
+	bh=uIeIX1/GfDr+PgyE+6keWOlaywVCkkDhuvCBLGIQkjk=;
+	b=JZnsBY5qPwthR5hhTqYWrvQ/1mdrWii+uV53ENK75DAwpaEmMVkY1w7ma9zUR4EfrKgGya
+	1OrddNE4houLjN+9NGiRv9Ozd+8+MPUs0gH+ZJvybrkKGQNKF9vc/lj/pE7n1YpSY9MF++
+	l6yXlVy8urdAKGUKAYjeRP/k3qZVpjA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761572362;
+	s=susede2_ed25519; t=1761573400;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
-	b=FP44aS9ioBrt+HRJvuoeyP4iKpqxYiMu9h1hjOQq5L0lX0/5TSitUuEAxeFuZ1UVlMVZLq
-	5EXBdVJuMsSgBtDA==
+	bh=uIeIX1/GfDr+PgyE+6keWOlaywVCkkDhuvCBLGIQkjk=;
+	b=buInvN6u02YGaAWTrVv2bmsTWV0J4zrRKFc7h2f43S8FkaJ1xi2XImub14diqk0DM0Cfe/
+	2JuLCmtx1z16oXCg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761572362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761573400; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
-	b=uAJW/z40YgANMYhmD50708FHkiKIs2E+rgLkpZiPOVKlkoft9lcSiCB+KMwvkdTBJuBdzG
-	1UhGzq2JqoZjgk64YQEoitm2O+xU7kyYAzyXFfjZqOQD1GrLbQyjfVVeN1pq0lbMHR0hXh
-	0oM2jHeDfCNTIQWopnQnaAudiOnYeFw=
+	bh=uIeIX1/GfDr+PgyE+6keWOlaywVCkkDhuvCBLGIQkjk=;
+	b=JZnsBY5qPwthR5hhTqYWrvQ/1mdrWii+uV53ENK75DAwpaEmMVkY1w7ma9zUR4EfrKgGya
+	1OrddNE4houLjN+9NGiRv9Ozd+8+MPUs0gH+ZJvybrkKGQNKF9vc/lj/pE7n1YpSY9MF++
+	l6yXlVy8urdAKGUKAYjeRP/k3qZVpjA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761572362;
+	s=susede2_ed25519; t=1761573400;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=i27u97N4e73GoXPAJTcuvMQHbHuPQ9/roOonBRBxYNQ=;
-	b=FP44aS9ioBrt+HRJvuoeyP4iKpqxYiMu9h1hjOQq5L0lX0/5TSitUuEAxeFuZ1UVlMVZLq
-	5EXBdVJuMsSgBtDA==
+	bh=uIeIX1/GfDr+PgyE+6keWOlaywVCkkDhuvCBLGIQkjk=;
+	b=buInvN6u02YGaAWTrVv2bmsTWV0J4zrRKFc7h2f43S8FkaJ1xi2XImub14diqk0DM0Cfe/
+	2JuLCmtx1z16oXCg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 60BDB136CF;
-	Mon, 27 Oct 2025 13:39:21 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 59550136CF;
+	Mon, 27 Oct 2025 13:56:39 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id lfDsFgl2/2gIWwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 13:39:21 +0000
-Message-ID: <b73fdd99-befe-4e2b-b029-909c4b31902b@suse.cz>
-Date: Mon, 27 Oct 2025 14:39:20 +0100
+	id R598FRd6/2jGbAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 27 Oct 2025 13:56:39 +0000
+Message-ID: <ce78da49-2525-44af-9cb8-301bf6a4658a@suse.cz>
+Date: Mon, 27 Oct 2025 14:56:38 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v1 08/37] KVM: guest_memfd: Don't set FGP_ACCESSED
- when getting folios
+Subject: Re: [RFC PATCH v1 09/37] KVM: guest_memfd: Skip LRU for guest_memfd
+ folios
 Content-Language: en-US
 To: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org,
  kvm@vger.kernel.org, linux-doc@vger.kernel.org,
@@ -148,7 +148,7 @@ Cc: akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de,
  xiaoyao.li@intel.com, yan.y.zhao@intel.com, yilun.xu@intel.com,
  yuzenghui@huawei.com, zhiquan1.li@intel.com
 References: <cover.1760731772.git.ackerleytng@google.com>
- <dc5f58f5d3427b6291486a24061b6301761dda3d.1760731772.git.ackerleytng@google.com>
+ <02aad35b728f4918e62dc6eb1d1d5546487b099e.1760731772.git.ackerleytng@google.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -189,18 +189,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <dc5f58f5d3427b6291486a24061b6301761dda3d.1760731772.git.ackerleytng@google.com>
+In-Reply-To: <02aad35b728f4918e62dc6eb1d1d5546487b099e.1760731772.git.ackerleytng@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 39442160002
-X-Rspamd-Server: rspam11
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DFB811C0007
+X-Stat-Signature: fyft1uf4wajtc5zgguqrxmtcne8ybc8m
 X-Rspam-User: 
-X-Stat-Signature: x43rjkw74ippntrob8dgujnk3anmqxzk
-X-HE-Tag: 1761572364-701668
-X-HE-Meta: U2FsdGVkX19YqmusWoxqy8I5BKIudNNOGETK1X8c7+EAryGtZaRs6eNrBQtmsK7cfu/7pFpUcbZn95tzd8fuV//Yn+Y1qIDi/BhHVR3q1BBwBYrjKrsOdaD+c589TjgfmreFtQ8M+WOdTQO8mREpOiNjwDSvFVohj/MaIt50QbcL/Ebze+AxAoLZZ2JX09E0WDVeILKBuPiEImyoKivQBK2zP5p1V3QMtFWQud6L5s94NQK6Ws6P8TOf7tIOQ3M8AfNvVdpWeikHZrbYCCMkg5w31gIDPCDX8zkBPiRfO9vmwNPvMiGe0zICUn9IU36xni4w90awv8zEG2EJCz3uJ7EepSazr3p6IkZsrfXL8LeGn+/dJC5yf3VXMHI42iUH3x4Jm+lMBOJnWYapbLglQ9ZgzXfQtWSnBsR8CAUrZ/pzEnknpjPE4RQIAJvcmLs0kBPEXJbEJAN2lvjvoowCwjggd+pe7fX5qqPCTSmGno4iaHfOQvjdsgeYyVd5Kqig1Wj81ErQplzEjkfYmZi+3gaufXnv7njjaFl/CT4xJnWI8JcIHeleMxSGVXTRz7rY0pCRGG7uFeIhRuVd4qKMVD2HBd32cBZA1oVOi1L6EA+1gpk+A7d5mfttsivk4Nnz6WWA9rcXrCs4/perNNivXcHsc9IWlKaEFXpMQAOPoHxs2Zj+Bd6bXq2ckBvZEkS0X4j8Mq2wXf1tG4++QUKpoZ2xEhLU/MxWk4hHA5Wg9u7wTtSYKhbxTM9ysQF1jRm9A9mFz1XYccHNH8W/5oBY0gsA1iWC39BpjydgqzDozqce33dzUZ5euu4RCmcTwrw+i6PzdhjqEZ1Vmm/EojRUAyJvpswOG7lnogTdvVwolC7iqd9cVg6t+jAl5Lw/Y7WBzA+soEbPE+7P2QCBqgC7zzml2ftgNOr64zF+xHSL81g1SutoLWFzolzM3wIi1UxsyAcbLwnQajKgVl4fu8v
- X8Brgaq+
- PCosCoTT1m8FQnucxRZv1cr8+rak5OkwAmnYKA+fP4KveTx9kNbJQxXoOMgkPQvxIokr2WYtu4DGGnERDLk8cHfPh03qS1pO0iZjrqI2QTkH8NDgrpkYwDi7ysmxD8PMzdawakk/FT+wDwCNrrYur5N/k1Oo4SD/pwWjbYJta3JMpbrjxVDmxDjSv13KEgM8X9O95CVhJDLK7CUCDU3hvUbQXiQuURFo37Z9ebyzsi7VoI6XGQFKIaUctr4cxnPp66aaRzGD3GTeQ6hA22/6n0RK1wLL+DDW6M0S/0CO9eRuA2J15Rfsm79oramm+AxVzfV8ADDCgDCeRz/w9RYwe99RBOlXsO8KQGObXCM6jaW1+FfOqYL/hlba/i4+/POvPy6aIT4zd/rw6QUe61E02V48eXYo9aesUkufgI8pivNquscs=
+X-HE-Tag: 1761573401-218483
+X-HE-Meta: U2FsdGVkX1+ugl5V9JffJC2OqW0zYFeUtmCmdg1/dSeRoHY8gTVaAxr3E47X6eiU5zTMhv60vXm14rjJ7wBFnPT+Eya2HFa7V42YhIfHz936X+WDx/bIhFVu1Z0j3x/KqfRzT1uDyCm0xXPbNv/q3p0dT7Ea3QdSX4kAwG/edbTZ6D8F+fjTQu5Rb4Iqr1UaqOaMLCSrRzeRS7QQkZWqEovYMs8Eejy5kkOjQuv4jXPpCqNCJg0uPeijDXnoNw50hEfrfTD3sKxU0RSjANMgVo311Gt8HmfprJKRt6yBoBwD5OrYoQjVSTOjr/bjBiFV0pun0kcN+KhRRdO8JDCG9ja56o6TlTVKtFqbZj8f7T1fq/loV9SITkRbXpm9Kw1+M6wBZlGzMt3yj87K/4TSZ3H6rNeWdfVAWM4vFYD0XJTdmu2JvVVflChKQfo8BCpty/Lj/4TYZIiMSKJCVWqqJ2vPsUw3ckusvV3vujrlm3fryFQEvt4CLKeqWJ7y8yVMptnw2KXoiNPeRhN95De4SxH5VPeZJCvLvxVWTUjzOqI/M768W1nT+X0COmy4BFXFyrrxiqgYUy4aXO+qZ1s2UcRkDHFWP/J2GDMe8It7bObXhDd0CRXwduo5U8G1Q1LmVFNegoUjqDc6c99LpHyU6aXbtAcRdG8sz3pXftBcIFvxQ1/2+T309gwPIIpZe9cD/S/i270Ock1Cc8tZD5jGIs7EkNLSzUeBJVl6qj9m2TO0rZ+ekkTF/OjsLGSV88ebc2yGEDLf3OpbxiOp12frF9xBGwnVZfnxw4fJSXpWRXt4wyd1BVLvMpK9isqvCMEOfpA4Mq61yaG5zZLH9ORlEQAqwNl0IachkdAQRqAPDp2BFLXFe7k0ik8Ik33iZP/zew/r+r0pCF6SpG/ajPIOEB99jkaCqyhdnBQonLtTd/n6YJGY+JyH8GEgb5Nq/OXETCEXnLJllRrfM/JFKQ7
+ Z//NjZwr
+ 7I2itmhwZJD8L3VtvBAbcosgNiYdfeHSqtrc0AwhoMNdPlirIvPeC6bqazqI3kQZAEH8HVLlukgKAVC3vCVe+Jj2NzQRwoqUgoTZ8uLCowR9U57w2f24r8YetthWnAOZc1P/xaW6o30A71cwwRu5E84NVokybvhERX/LAp1HuhDDKvsTv3aM5YsfXbfqaiUwbFHAMzoiJNNBBSDxAqtoOYnH7FCfu1lrG8LfyHaAhR6cdjJjZGOsmHg01yqjVqEzKq2xnNA9r1Kr1YD/t0mb/3hNt4Je4UiN/vUQI+IgsZEd7UXZ8MtTbpJ5d/o/cQk9fc+9CuuHwRxTsgHx9Am7+JuuwfOyAdmwtM9hmzVykwc41brq+BPC274oN7E17RmNMgA41IVhzr0sBBnj/6qIYS7FXC87Y2ybo35NvtdU7tjGE7doXDCsgojfVxg4tYrNUc+5oT0CCpHDyZ7/YyVaqVbgQaA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -210,40 +210,187 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/17/25 22:11, Ackerley Tng wrote:
-> guest_memfd folios don't care about accessed flags since the memory is
-> unevictable and there is no storage to write back to, hence, cleanup the
-> allocation path by not setting FGP_ACCESSED.
+> filemap_add_folio(), called from filemap_grab_folio(), adds folios to
+> an LRU list. This is unnecessary for guest_memfd, which does not
+> participate in swapping.
+
+IIRC guest_memfd mappings are unevictable. That should mean they are not
+ultimately added to a list (see lruvec_add_folio()).
+
+> In addition, the LRU list takes a reference count on the folio. With
+
+IIUC the refcount is temporary while being on the percpu
+&cpu_fbatches.lru_add, added by __folio_batch_add_and_move(). When flushed
+via folio_batch_move_lru(), the refcount is removed and there's only the LRU
+folio flag that remains. The fbatch flushing can be triggered if you see an
+unexpected refcount increase. So it might be feasible to do without this
+patch (maybe it was already tried and there were substantial issues, in
+which case should be mentioned).
+
+> shared-to-private memory conversions for KVM guests dependent on folio
+> refcounts, this extra reference can cause conversions to fail due to
+> unexpected refcounts.
+> 
+> Rework kvm_gmem_get_folio() to manually allocate and insert the folio
+> into the page cache without placing it on the LRU. This is done by
+> calling __filemap_add_folio() directly.
+> 
+> The folio is then marked unevictable to avoid participation in
+> swapping. The ->free_folio() handler is modified to unset the
+> unevictable flag when the folio is released from guest_memfd.
+> 
+> This change ensures that LRU lists no longer take refcounts on
+> guest_memfd folios, significantly reducing the chance of elevated
+> refcounts during conversion.
+> 
+> To facilitate this, __filemap_add_folio is exported for KVM's use.
 > 
 > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> [sean: split to separate patch, write changelog]
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
 > ---
->  virt/kvm/guest_memfd.c | 5 ++---
->  1 file changed, 2 insertions(+), 3 deletions(-)
+>  mm/filemap.c           |  1 +
+>  mm/memcontrol.c        |  2 ++
+>  virt/kvm/guest_memfd.c | 60 +++++++++++++++++++++++++++++++++---------
+>  3 files changed, 50 insertions(+), 13 deletions(-)
 > 
+> diff --git a/mm/filemap.c b/mm/filemap.c
+> index 03f223be575ca..60c7c95bbd7e6 100644
+> --- a/mm/filemap.c
+> +++ b/mm/filemap.c
+> @@ -954,6 +954,7 @@ noinline int __filemap_add_folio(struct address_space *mapping,
+>  	return xas_error(&xas);
+>  }
+>  ALLOW_ERROR_INJECTION(__filemap_add_folio, ERRNO);
+> +EXPORT_SYMBOL_FOR_MODULES(__filemap_add_folio, "kvm");
+>  
+>  int filemap_add_folio(struct address_space *mapping, struct folio *folio,
+>  				pgoff_t index, gfp_t gfp)
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index 8dd7fbed5a942..fe8629414d0a9 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -4721,6 +4721,7 @@ int __mem_cgroup_charge(struct folio *folio, struct mm_struct *mm, gfp_t gfp)
+>  
+>  	return ret;
+>  }
+> +EXPORT_SYMBOL_FOR_MODULES(__mem_cgroup_charge, "kvm");
+>  
+>  /**
+>   * mem_cgroup_charge_hugetlb - charge the memcg for a hugetlb folio
+> @@ -4893,6 +4894,7 @@ void __mem_cgroup_uncharge(struct folio *folio)
+>  	uncharge_folio(folio, &ug);
+>  	uncharge_batch(&ug);
+>  }
+> +EXPORT_SYMBOL_FOR_MODULES(__mem_cgroup_uncharge, "kvm");
+>  
+>  void __mem_cgroup_uncharge_folios(struct folio_batch *folios)
+>  {
 > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 855e682041311..2a9e9220a48aa 100644
+> index 2a9e9220a48aa..dab2b3ce78bc8 100644
 > --- a/virt/kvm/guest_memfd.c
 > +++ b/virt/kvm/guest_memfd.c
-> @@ -167,14 +167,13 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+> @@ -148,6 +148,41 @@ static struct mempolicy *kvm_gmem_get_folio_policy(struct gmem_inode *gi,
+>  #endif
+>  }
+>  
+> +static struct folio *__kvm_gmem_get_folio(struct address_space *mapping,
+> +					  pgoff_t index,
+> +					  struct mempolicy *policy)
+> +{
+> +	const gfp_t gfp = mapping_gfp_mask(mapping);
+> +	struct folio *folio;
+> +	int err;
+> +
+> +	folio = filemap_lock_folio(mapping, index);
+> +	if (!IS_ERR(folio))
+> +		return folio;
+> +
+> +	folio = filemap_alloc_folio(gfp, 0, policy);
+> +	if (!folio)
+> +		return ERR_PTR(-ENOMEM);
+> +
+> +	err = mem_cgroup_charge(folio, NULL, gfp);
+> +	if (err)
+> +		goto err_put;
+> +
+> +	__folio_set_locked(folio);
+> +
+> +	err = __filemap_add_folio(mapping, folio, index, gfp, NULL);
+> +	if (err) {
+> +		__folio_clear_locked(folio);
+> +		goto err_put;
+> +	}
+> +
+> +	return folio;
+> +
+> +err_put:
+> +	folio_put(folio);
+> +	return ERR_PTR(err);
+> +}
+> +
+>  /*
+>   * Returns a locked folio on success.  The caller is responsible for
+>   * setting the up-to-date flag before the memory is mapped into the guest.
+> @@ -160,6 +195,7 @@ static struct mempolicy *kvm_gmem_get_folio_policy(struct gmem_inode *gi,
+>  static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
+>  {
+>  	/* TODO: Support huge pages. */
+> +	struct address_space *mapping = inode->i_mapping;
+>  	struct mempolicy *policy;
+>  	struct folio *folio;
+>  
+> @@ -167,16 +203,17 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
 >  	 * Fast-path: See if folio is already present in mapping to avoid
 >  	 * policy_lookup.
 >  	 */
-> -	folio = __filemap_get_folio(inode->i_mapping, index,
-> -				    FGP_LOCK | FGP_ACCESSED, 0);
-> +	folio = filemap_lock_folio(inode->i_mapping, index);
+> -	folio = filemap_lock_folio(inode->i_mapping, index);
+> +	folio = filemap_lock_folio(mapping, index);
 >  	if (!IS_ERR(folio))
 >  		return folio;
 >  
 >  	policy = kvm_gmem_get_folio_policy(GMEM_I(inode), index);
->  	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
-> -					 FGP_LOCK | FGP_ACCESSED | FGP_CREAT,
-> +					 FGP_LOCK | FGP_CREAT,
->  					 mapping_gfp_mask(inode->i_mapping), policy);
->  	mpol_cond_put(policy);
+> -	folio = __filemap_get_folio_mpol(inode->i_mapping, index,
+> -					 FGP_LOCK | FGP_CREAT,
+> -					 mapping_gfp_mask(inode->i_mapping), policy);
+> -	mpol_cond_put(policy);
 >  
+> +	do {
+> +		folio = __kvm_gmem_get_folio(mapping, index, policy);
+> +	} while (IS_ERR(folio) && PTR_ERR(folio) == -EEXIST);
+> +
+> +	mpol_cond_put(policy);
+>  	return folio;
+>  }
+>  
+> @@ -588,24 +625,21 @@ static int kvm_gmem_error_folio(struct address_space *mapping, struct folio *fol
+>  	return MF_DELAYED;
+>  }
+>  
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>  static void kvm_gmem_free_folio(struct folio *folio)
+>  {
+> -	struct page *page = folio_page(folio, 0);
+> -	kvm_pfn_t pfn = page_to_pfn(page);
+> -	int order = folio_order(folio);
+> +	folio_clear_unevictable(folio);
+>  
+> -	kvm_arch_gmem_invalidate(pfn, pfn + (1ul << order));
+> -}
+> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+> +	kvm_arch_gmem_invalidate(folio_pfn(folio),
+> +				 folio_pfn(folio) + folio_nr_pages(folio));
+>  #endif
+> +}
+>  
+>  static const struct address_space_operations kvm_gmem_aops = {
+>  	.dirty_folio = noop_dirty_folio,
+>  	.migrate_folio	= kvm_gmem_migrate_folio,
+>  	.error_remove_folio = kvm_gmem_error_folio,
+> -#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
+>  	.free_folio = kvm_gmem_free_folio,
+> -#endif
+>  };
+>  
+>  static int kvm_gmem_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
 
 
