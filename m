@@ -4,117 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 37649CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 17:26:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96DD6CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 17:31:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9124F80191; Tue, 28 Oct 2025 13:26:12 -0400 (EDT)
+	id 8F6EA80192; Tue, 28 Oct 2025 13:31:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8C32E8013F; Tue, 28 Oct 2025 13:26:12 -0400 (EDT)
+	id 8A6A98013F; Tue, 28 Oct 2025 13:31:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8004780191; Tue, 28 Oct 2025 13:26:12 -0400 (EDT)
+	id 795ED80192; Tue, 28 Oct 2025 13:31:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D9D58013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:26:12 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 370D150449
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:26:12 +0000 (UTC)
-X-FDA: 84048201384.01.F0159BC
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 4A0DE140003
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:26:10 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4dCBXDYn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 65DC58013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:31:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0817F12AAB7
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:31:08 +0000 (UTC)
+X-FDA: 84048213816.28.F2D45F0
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1A051140011
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:31:05 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G+eG65Pp;
+	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761672370;
+	s=arc-20220608; t=1761672666;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JfkiUG6+iw2UhSy31dGJmvgvAekk/kMSwRwnJkf7r0s=;
-	b=SAebQX39AxJZdSlVEl5BDrm1s7tIjUje9Cov2KqjQ35+2OULWuy5YIlDY9MAHQ+QQWsJ4H
-	4pPilV4gzGxHCT5e/TV0rFps29renzzMiK2mlUOUU804w1IsoM4dasAY5H/cLFSwOFE4Qa
-	rJnkXM09Scuvrz9TrYQtger86nrJFNI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761672370; a=rsa-sha256;
-	cv=none;
-	b=4zgFsaqe6UNfyZQswDKKZGnclE3vDeHujJ2oSIsQRaQGLVEGjDOfdeMwLAkFtuJul6B4cu
-	UpE08U0yoM0ZpyTGbKJJnBLXswmhv3OvhLcRVy3BOiYIDnYCtQvqtYZ3LSs0bMxRYLj+9G
-	im5BDEn/O1FZA5rWyYMbIyG4eeQP8Ac=
+	bh=nSwI/dovbxHZsefyXJPKSjPbHaJhS6KhhKTTIMoQyd8=;
+	b=udbJIhh2KXApppfQKjQ2tdpfRnAOympSjLcBU5iCDfzypqh2gAZYeiMiRHRIm8sL+QU9Tt
+	8SpgPfG1+jCnJ8GRKHzelweMfuBYiR/p3T+O2cC9o489vr18r610l9GY0YS+2Ba6C+Vw6v
+	/urXM5M/oOJAyROmR8HOzjJwEjLLsj0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=4dCBXDYn;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf09.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed0c8e4dbcso24581cf.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:26:10 -0700 (PDT)
+	imf26.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=G+eG65Pp;
+	spf=pass (imf26.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761672666; a=rsa-sha256;
+	cv=none;
+	b=VO0TtZUUFUxp8mHMko7K85n65KCkRVYlcCwnX3qYSgmYQn5xIC6eN5niR6VbKN42jH2jeB
+	t4rrA3w3TPyNQmn3D2dYuJwBw3ENv8DgaYE23vsGsKlxuC/ZrhtldKxP+r9XV2CTyReZiF
+	kSbXo/f27cjv7PX9zrWxqsbMxPF4/f4=
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-4298a028de6so76369f8f.0
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:31:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761672369; x=1762277169; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761672664; x=1762277464; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JfkiUG6+iw2UhSy31dGJmvgvAekk/kMSwRwnJkf7r0s=;
-        b=4dCBXDYnlclCas0X3NQfR7YTg/Lo/zCFwnPdAZqoRPY9+236foqcXMGQ3hrsIC6/1C
-         Frou40NDGvn1HCRzrlhXUO57tYyOTlhzN1NQ9ZOMfG+UdQvXJ1XFqy8RHIH2o9QtbZcA
-         XrPP4aGolYxDf089ZmcfLH7gDvo6uIGAFPDqix6BYxOHLdgm2kQOjDAr/nVJeF74YxHP
-         eUhCmEOwHkb1XvFkgDJ+J2hK+uiEWgqhlWK/TzPNR654Be+tVnVTiCyTqZusKmieXOlW
-         UcrgsenIslKpYSVQfyjapW2OyvXQ4wyN8K6Vjk1Hne6IEQDtojFpkvc5tvpaY5WghGzy
-         gkJg==
+        bh=nSwI/dovbxHZsefyXJPKSjPbHaJhS6KhhKTTIMoQyd8=;
+        b=G+eG65PpX3DHjBpO0HiKar+gzQ19vGvl6gWYQdJd/b/iJyAgIMwOB9zyl8Y7XvCCF4
+         MXl8SrEIWauQfVM7IJ4rMrzWfTHTSGSeATd0mQZEDZ1HtHX8aBr45kOB/VpD56Sa9ZGn
+         TY8VaCEsk4rA9PrAtwAGX/0+Gmo7UX5wn+96PAehVw8t5ZyZ3dEcC5XesaBzDbeTUBL7
+         zJTejPn/ylVLBSdHk2BM849rTy/3KUdy/0UAxNqKSdgcfgxG6P7k4ZD0cLv/yNE5moaR
+         X44h6eACEi9ejUO9x7B7BzQBp2nrqQthJsXkwurghKKF1zsnmpvG/bQgpA2UMxa8ZYjx
+         H6hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761672369; x=1762277169;
+        d=1e100.net; s=20230601; t=1761672664; x=1762277464;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JfkiUG6+iw2UhSy31dGJmvgvAekk/kMSwRwnJkf7r0s=;
-        b=lspx1oy9U7TBaxaF0eu6t95og9ucNV28VliKq4c+au/nxpAk4ACxggVjc/fWBJ2GlQ
-         yGDyl9Tiv4SdZ62Qavnm3nzXnDDXEbmHNmdMiuRJxpIcVE5+7u+sbfgXswV+3PqM/YPR
-         OnNWwjz4d8L9Z3KM82eDb+Kx7Db7T6SXKlslbBOGu9+G4WjcNor0PZoiD6Fm4BC4UMMg
-         RPXUvrb2bqEVBv8JmpJCshMrU9lrZfySYMWPGssVsouvYfzJHTNPhhI41R8F6sFGIklv
-         xEuPxHbFW1EMLAFU34UlMnAH3ZlWG3CSIqZAxzMUi2b2/FJFEQP/V4dtff40PFUbP4qj
-         q3rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXL/U+xaglZCca+krB3S11cCleCNYydp8JxsbB1W9WUqjd7NBTWzixo/y/0n3RlZHdYZX62F16Dag==@kvack.org
-X-Gm-Message-State: AOJu0YwtZdFJpxwQNUscQJ/j9xATuJkBB+5jIULNB1SdFZtJ/IN+fIXE
-	QEW7x8eypCg1FoD6LVV4uYx4M4vwCR7CgS/2XA+NQvF+Hvl2dGVOI1LpMoBRUFjqL7I9Wv5R95R
-	VoVuC2JftbcuubexcGHt80nBRu4ZhHszTWC12pp46
-X-Gm-Gg: ASbGncs5wqOnim4iU2XyBXhsv2mKc+t++x7terpMEz6QKDrSpQBny3aVluP1K/K4KAx
-	hPqr5/t00xzOrKYrI9W2LNgaI+A8GqN3UbxNsFUHtLnk9M8ArjIgffxKkmjJOHypZg2e7NQKECO
-	WHsLEE8NyhlMCqmiYF8xMouhcFoUT0pGWB7XgcPqSw/tdXXhYuQ53QycW8V2r9OpPgknvmcpOht
-	5bbALpavOsWjfRa2fee9ur+eWzBQBLLPHHCQYy80RpwtTBVfMips3OPa4ILL3ps7iF48LnRslF7
-	eG0VIE1DViyA5pgGkoH5Mw3LDg==
-X-Google-Smtp-Source: AGHT+IHzoBJIe4jVodZbEvla5R7rampjy3ci2pHKZPMRnGU0o5gKAx9pVCoQf6YY6ezuy6hJhcna9HUVRGij/ntiFOc=
-X-Received: by 2002:a05:622a:110c:b0:4e6:eaea:af3f with SMTP id
- d75a77b69052e-4ed1593dc59mr156611cf.3.1761672368890; Tue, 28 Oct 2025
- 10:26:08 -0700 (PDT)
+        bh=nSwI/dovbxHZsefyXJPKSjPbHaJhS6KhhKTTIMoQyd8=;
+        b=WdOuvcDlHXD6N8PFyM/iOdRmdO8uEfnH8yS8qehrycdkVTXxbCzAXYiMWw2siGxp4s
+         13bVlzt+3aLScu0xXaleYmSr9nWeA7MuP4WurwELmUc16qu1xS0au01i647FZvJu6D3R
+         g7nEBSHOhTMCVCde021Rp/K7EUnU9TNOVHjq3c/1PzZqVzFu9v0Et7UDmaP8T+rDYoiI
+         bPe3pw9M4DRwIDI8Fogftk5vqcLKwVSjj54KpZCGRdd0+1/NytLF0X/8CYhoTxQHxwVv
+         tJfsAK/8tCuWd2Pdx5UmcbKLg6H/vI6Y12GDyXNmbc4/ObVdpT0BSZl2i7poI6Gnxs+b
+         LhdA==
+X-Forwarded-Encrypted: i=1; AJvYcCVIKQcD+RBup+3EaDVBWjjvZYfVcLbt8HVyaK94gA/mkQ5yHq+Hy+00EqxigKqNPZjofRNFLIMgrw==@kvack.org
+X-Gm-Message-State: AOJu0YzIjRCipdrpfJUGjMN7g/7dDUiHCofCpls6h0VPywRirYf78cwz
+	m2hdcuaHPA4aRW54peAXnUl/+wmaNY6QCKG9WndekXNs8lVbTBMe8ncfzv8f7FjGI5B3BNpX3dt
+	HdQNfjDK14qgVaf+ivew/iUpyK+DAhVU=
+X-Gm-Gg: ASbGncuWNr3jgEEh/4gI7revimgjD6AZta2O4gEKo8mbt4vJIhcFfX1xarZOK62Z8D1
+	DKqv13ouFFIa4p/PwHfnFDoRQBlKVBfOYecy7x5UCZrz/R3YW8ngksvez0it0FHRL1Xb5bXdtz9
+	wlpK7MvxNgZ/xoM3a5LnQSSbVGASiYKHqw0OsjxYWQx2AwRh2ZfThGHA1c1l/kqnT9zDl3apIwP
+	c5RC2nMZOXdoBadX9BrhWgPm1UzQ6OkNkDPxhD/5qgmXWP/pk2L/fbrWI/j3/qyeE+5XV/hy21a
+X-Google-Smtp-Source: AGHT+IHTdDJ7W91+X0Lit2Jf9Ol9397LLqUf9gynWpswTVO1GNQdk1TYiUTC6R125faMYDU49nZxa0ZLkOYh93L+Thc=
+X-Received: by 2002:a5d:5888:0:b0:426:dbed:28c1 with SMTP id
+ ffacd0b85a97d-429aeb04dbfmr49732f8f.14.1761672664362; Tue, 28 Oct 2025
+ 10:31:04 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-3-harry.yoo@oracle.com>
- <CAJuCfpGo=m9vdRQCqa-2MtAb9GBNsF4+6YXm7vzGFYtqsOzq1A@mail.gmail.com>
-In-Reply-To: <CAJuCfpGo=m9vdRQCqa-2MtAb9GBNsF4+6YXm7vzGFYtqsOzq1A@mail.gmail.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 28 Oct 2025 10:25:57 -0700
-X-Gm-Features: AWmQ_bmKilFBM39l_iVIomcjoYMaO1avK7j0mImfETowwXOoO4uxKbRGQDyfLKQ
-Message-ID: <CAJuCfpHKWx2HO0cdrynxNe+PYBFnqZ91vDiezrewk=LnKBReMg@mail.gmail.com>
-Subject: Re: [RFC PATCH V3 2/7] ext4: specify the free pointer offset for ext4_inode_cache
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
-	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
-	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20251027232206.473085-13-roman.gushchin@linux.dev>
+ <ab8c7bf2f312e150c22d83e5ebe91e17f3c4be42b3ff0825623caf3aac4086af@mail.kernel.org>
+ <87ikfzuezd.fsf@linux.dev>
+In-Reply-To: <87ikfzuezd.fsf@linux.dev>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 28 Oct 2025 10:30:50 -0700
+X-Gm-Features: AWmQ_bmmzQlUp9ca5HlQPxn2I7vrph6AvsljwavTyuNEOnR6T4XT912-2Ipx8hs
+Message-ID: <CAADnVQLcmJ3X7X6oW_v0KgQCPtgjmYNtgfqXqH5tFrQ+Q+5v+A@mail.gmail.com>
+Subject: Re: [PATCH v2 23/23] bpf: selftests: PSI struct ops test
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bot+bpf-ci@kernel.org, Andrew Morton <akpm@linux-foundation.org>, 
+	LKML <linux-kernel@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, inwardvessel <inwardvessel@gmail.com>, 
+	linux-mm <linux-mm@kvack.org>, 
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Song Liu <song@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Eduard <eddyz87@gmail.com>, Yonghong Song <yonghong.song@linux.dev>, Chris Mason <clm@meta.com>, 
+	Ihor Solodrai <ihor.solodrai@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Stat-Signature: t8x1wpxh6hrsbqopkyy3ue3caamn7ww9
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1A051140011
+X-Stat-Signature: cbd5kum48qehidg4hb6zqzsqiuikxnwd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4A0DE140003
-X-HE-Tag: 1761672370-141500
-X-HE-Meta: U2FsdGVkX1+dNrMaJYVt1XLWvL1+6LwEHI3oOOPHiZDI3L3+A1Lrde9N5W1d21ov9+ujUG16cXY+gK1VVjJcXqAgiDLguiqTWNv6kFjFv6Sn2xwQSw+4LYGbhggCXRhjCc/oFvasjbaBgjzZqjBh9v5WstXYzRd8sBUvWNrQCY15YFZozFrJKytlq84zDcFQEZXNuB4rxyaOaegNFff/TJJDDN10V+AhL1mWkNalLa2ZCCYX4bMPVomx04et9VxKbV74k+5LeL06y49AD4T9Uaa1yqfT7ib48R87/0RB6h8guIqBLdQBku4BEtQ8hvDZjZpFOig8N+hJz+UPvRSgyGTA0sJxlE6SxATtMybGMIIV3tO3LV8qusuMAOzWyc7SrvzUBWkxaKkdTn7NYB1dTIAsOlgIMXc4xIRXqldtna87wEmqXclfNLrnWVX0nsWZ7teLH3GbWIrt1qpnTCnBnWVO8Nc6LNARvtjYoHyrkNv7JxdyE0y7SjDt8Wc8sJt6SZuMXzgmID2dJxAyzXcmxV+70FnNWQAhBVNZ4J805XyyD9G3FvJtGmUGQ2QpqOViTpPmKflAN9F43xCHWSCQQBuR6lo4+JcFB0Dydb4lwqkVgCFzfH8lugJ0Tp0eLNojr/0En6pJ5mmKq6BYVOzRQerX8+ANMM0E+E6giDjSsCAU9MsQTU7aOtpu+6qrzSnbD64twm73Q3rPuIcVk7K9hdsiJOVe9eFa1XCQqDqlYA5ZSpk0TTM6fvOpYhsdN+UF/w5HQ2P49IYQx4f97Rm9snqsjzhZPWlsjCLomhLXlEN2Bo++jv1yGDoG490iE7MgBhz/hr5R3MdMNlWJ0oyOLkegf/QKzrW2EPaIGmXQFPUGpV68obmrwgiGNWuOfm8GIKp1VyahXg3oYal6xgCnWNbPG+/c83cfnHH9HpVnkf+pdCOnbtZ0SZRow7cqkNu7VvU0Z1qAypH1cM0uY+P
- J8EnZIlK
- enLFz9wmx0tM/75w9Jfp6MWDWh7+HjHWlH5SCROozmhoTgofGbXk1KzvnKI7HrR4E9LzdK20dOf08oSvQeSwAzB6Mxt/jG+wZV3q2oTcfx0a8soPwMKjAXOufyWCSsCO4DUYZv3V5ar9rrQh0w4o70WZ7P6oXcdm5wds9DgfSlwJEtNAyDEadlpVq76HkdX/utcJ52bMwVNptmOC5TdW75TjzPOTP7gRYVBN6sYjzW5R8FH+5e/Q29o7K1ILT+1yeFx6DvaOltgXzDZNIP4qiyj4DHVbTWuEX945NxF3zgJbCeahjjpHH3zKMuM/sQlI6mgGr5rB2ZVywzjri+YPI1gZT2xNf042KC30cyh+z+5O6bPuiQeBOKZbEEi5BFILmtTluLuYcSDWqhIsP/5l9/jhy3RsoC02G9fD1
+X-HE-Tag: 1761672665-94147
+X-HE-Meta: U2FsdGVkX19ZsC8f8Qblem2hQywfiz64J1iedeRa9PHtxptAuAYirp2cYzsX6SXSY9rNHYAN1Bm+sm42M70pM/OJfwqnShqkK6UTrB1K3wgGDUS39r34diYrSqNL74ntqMTzu3Q28ZKOGs5nklGRlSWP94PB/BIqEGiQl4KACkS1046GfSZIM1H1rTpGtFXhoFNtmMJQU4ZxhoJVHjh9P57HFFjEVoTAkmVklLjXU6m/SnpbQ0hjTb+0BS+fjBI0cyuFzzTaI6Ex87wDzTc3LQw54SwALizi5zlAp2XLyt+8+ioG1GUtFPWDXD4aM8yIxIobt/v+K+fmDAq+dJJz7XsiKSOrpHgaJlmJs0xuPxHgK15fkogFXTM/EvhCFzje4fA6idu4eAkznvV2tyISFE+f7cvXb5SjqOCWOwy4qKSGsQNyDvsD/tmZiYqTfcXfcvd2IW/D7bI++azCx1NLZOOQT2kgd9IHpPpTOel1OnVDqa1c3vvppQEAkCVskkBvYd1lydf+r+E3t1HuXUsvVOv2JOU+gUC8MHFvlVS2bu629q7k7JkKH5aUjApXWfyxlzwArc3SPR1dQfu39tSU0ZtA2cs0MTd7j+cFhM07aBfzyb54Rf/ukm8xyHQu77cjxsCsR8Ohb+9nmC0A4xNZjzrsBHJIOVTkgFNfFZJbdYaAPCxk8+SBo1bRaRxmk4jFKcG+tjfEV/gQAnEfyrqDMXtWDpdSXOvgIPO8/AR782zO9fPiYV8TPDGdNabmkY2H7V4M20bYEyeJZeB/nIx6A6wGvlfU42DfH5fTfWJXbCJU3zDkWVleJcPrbNpv6VjtjgsHg/pkQEa9BUVqfxka44YJovvwLvype8FEfQNHJXJKlugDLlwSeZtyWA1Mfx6D8WWoMMipaoR7x40CkIsxlwl/FVGPxR0jVItQaSecKjoKk79jHiRvemaobV3TJ368zRck46lqY8xFh7otrc4
+ wYpWhQGz
+ 1tm4SeR7HPHNCIn601oXj+G3hCtvNI7Kecs5LXyoRFOKHK5nnGCTC/nGoQV56tg7tdybKucii7ZrqqepjYlIIR5BwF8XDENByaL1Zhe+8q+LsPc/iS0XRu/yUcVhgWixLo/LeV5EAv1EMm6OMUTGNtctaRofnTsenP299neZJexrxvebc1GPToaxUpypWUuhTS0jbzD9xK3YvJHO7e9emJhmi5x2OwcV0dGFWtEkwxLqK5DaB7xtqWSrYOrS36psjABqHfI6I8aWW3YZyf1b4UZlhY2nFXnmGApWcihmZmP39YcNSDQGsjs+Nf4AuKs9zUg/3sV8HVxE0sBhpbeQY5gv4DI+8zPdnAtvEo+nNeSb2maznT5IPKqQjGpUl3qq87klBuEKOqS5qjbbRpsX8avmLpPD3Dt5HP4G4I0r685lLMUlrKWHZveRr/IMloIBv8DvlXgJ8MZoytnMc75ttNMNVuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,82 +127,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 10:22=E2=80=AFAM Suren Baghdasaryan <surenb@google.=
-com> wrote:
+On Tue, Oct 28, 2025 at 10:13=E2=80=AFAM Roman Gushchin
+<roman.gushchin@linux.dev> wrote:
+> >> +
+> >> +/* cgroup which will be deleted */
+> >> +u64 deleted_cgroup_id;
+> >> +
+> >> +/* cgroup which will be created */
+> >> +u64 new_cgroup_id;
+> >> +
+> >> +/* cgroup which was deleted */
+> >> +u64 deleted_cgroup_id;
+> >>    ^^^^^^^^^^^^^^^^^^
+> >
+> > Is deleted_cgroup_id intentionally declared twice here? This appears
+> > to be a duplicate global variable declaration - the same variable is
+> > declared at line 13 with comment "cgroup which will be deleted" and
+> > again at line 19 with comment "cgroup which was deleted".
 >
-> On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> =
-wrote:
-> >
-> > Convert ext4_inode_cache to use the kmem_cache_args interface and
-> > specify a free pointer offset.
-> >
-> > Since ext4_inode_cache uses a constructor, the free pointer would be
-> > placed after the object to overwriting fields used by the constructor.
-> > However, some fields such as ->i_flags are not used by the constructor
-> > and can safely be repurposed for the free pointer.
-> >
-> > Specify the free pointer offset at i_flags to reduce the object size.
-> >
-> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > ---
-> >  fs/ext4/super.c | 20 ++++++++++++++------
-> >  1 file changed, 14 insertions(+), 6 deletions(-)
-> >
-> > diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> > index 699c15db28a8..2860e0ee913f 100644
-> > --- a/fs/ext4/super.c
-> > +++ b/fs/ext4/super.c
-> > @@ -1474,12 +1474,20 @@ static void init_once(void *foo)
-> >
-> >  static int __init init_inodecache(void)
-> >  {
-> > -       ext4_inode_cachep =3D kmem_cache_create_usercopy("ext4_inode_ca=
-che",
-> > -                               sizeof(struct ext4_inode_info), 0,
-> > -                               SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT,
-> > -                               offsetof(struct ext4_inode_info, i_data=
-),
-> > -                               sizeof_field(struct ext4_inode_info, i_=
-data),
-> > -                               init_once);
-> > +       struct kmem_cache_args args =3D {
-> > +               .align =3D 0,
-> > +               .useroffset =3D offsetof(struct ext4_inode_info, i_data=
-),
-> > +               .usersize =3D sizeof_field(struct ext4_inode_info, i_da=
-ta),
-> > +               .use_freeptr_offset =3D true,
-> > +               .freeptr_offset =3D offsetof(struct ext4_inode_info, i_=
-flags),
->
-> Hi Harry,
-> AFAIK freeptr_offset can be used only with SLAB_TYPESAFE_BY_RCU caches
-> (see https://elixir.bootlin.com/linux/v6.18-rc3/source/include/linux/slab=
-.h#L302)
-> and check at https://elixir.bootlin.com/linux/v6.18-rc3/source/mm/slab_co=
-mmon.c#L234
-> should fail otherwise. The cache you are changing does not seem to
-> have this flag set.
+> Correct, fixed.
 
-Oh, sorry, your patches got reordered in my mailbox and I missed the
-first one where you are removing this limitation. Let me review that
-first. Sorry for the noise.
+wow. TIL.
 
-> Thanks,
-> Suren.
->
-> > +               .ctor =3D init_once,
-> > +       };
-> > +
-> > +       ext4_inode_cachep =3D kmem_cache_create("ext4_inode_cache",
-> > +                               sizeof(struct ext4_inode_info),
-> > +                               &args,
-> > +                               SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT);
-> > +
-> >         if (ext4_inode_cachep =3D=3D NULL)
-> >                 return -ENOMEM;
-> >         return 0;
-> > --
-> > 2.43.0
-> >
+I didn't know that C allows such double variable definition
+outside of function bodies.
+Even with -Wall gcc/clang don't warn about it.
 
