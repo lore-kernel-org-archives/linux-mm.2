@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0BCE9CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 04:51:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CC658CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 05:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6AB7080115; Tue, 28 Oct 2025 00:51:42 -0400 (EDT)
+	id 1FEAD80116; Tue, 28 Oct 2025 01:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6839F800E4; Tue, 28 Oct 2025 00:51:42 -0400 (EDT)
+	id 1D507800E4; Tue, 28 Oct 2025 01:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5993180115; Tue, 28 Oct 2025 00:51:42 -0400 (EDT)
+	id 0EBA980116; Tue, 28 Oct 2025 01:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3FBC2800E4
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:51:42 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DAFCA12A295
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 04:51:41 +0000 (UTC)
-X-FDA: 84046300002.15.28A469C
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 01501800E4
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:11:32 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7B0231A03E8
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:11:32 +0000 (UTC)
+X-FDA: 84046350024.18.A908E26
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 4758240004
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 04:51:40 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=CSwioWHM;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761627100; a=rsa-sha256;
-	cv=none;
-	b=WBUQaGl3X9aMHZ9q5OpIoef/yRwyrLVFb1hr5P31Ciw6etJA+35zUf6WAGCimEpV/9cwR8
-	OrA1dNQqjuRWaOALJHkms7/gIsLNjSo0Cm0gzlReYbj916+M3b3nvqP3KNA5hs24CW/hKw
-	boulzm1JzZMsDqBUsNAV7mwutr9jxBw=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=CSwioWHM;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	by imf03.hostedemail.com (Postfix) with ESMTP id D471620003
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:11:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=aezvGRHC;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
 	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761627100;
+	s=arc-20220608; t=1761628290;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k5R7qQToxQWR7KjWdFkG8Y/hiI30yNcp9738fQOhLf8=;
-	b=VdK0hSWf9klSfhg6RtkbpnnwGtxNZlJ5wtGcroxG8y7yt1MdxG2hwIsXgtrAkMv+dk3jNP
-	EGJfPftYR8+pDHcjbfRq3pirdF5KzDfCaeHeVlia/UUs1Rsg8aoR1bsButGmbEvoLnbQDw
-	kSSp5IpYNVZoRrRNtEvMe0mQM+mlYrc=
+	bh=sU0Rwyb1f70hxWqGLaDrX9gfHmhzhxjXEuqfS3xyBnk=;
+	b=krvDZoBu7q2kUqmMAHJitBpg2IBIjcdudW2fnLS9y+UTJrvSohV93B1tvh5TVmb2IY8drH
+	2+HTUNd55y9m83niWo1/Ki3RM4gIMBrhGbJxxfpOPYhWZsfNyocSN8/e0b/awEPv5IfzFT
+	ubW/3ZDdvQdYecGaQ40Rk+pOZwsjQO4=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=aezvGRHC;
+	spf=none (imf03.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761628290; a=rsa-sha256;
+	cv=none;
+	b=XnhvccWRh9jpJfrj7t+JPKLZr097IC2Ksb5ZiqA1aqVqNYPLcUodbZ8upEc1Y2QOVavqPd
+	gYD9C1pT/2Vy4dTW7XUctKkU/Y4EsyTWh01XLBrOhzvdO3Ho/OEtg0nQ3CrA6Dw6ucC16w
+	ztDGupLReq6/DilA/XR8bqh39hEhFT0=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=k5R7qQToxQWR7KjWdFkG8Y/hiI30yNcp9738fQOhLf8=; b=CSwioWHMkAvW6SGjMY+tOVcC4C
-	ErTgqhXrVFIbKQzlGEbgvGLZMqg+6Cc0TRH3RWyH0JLRNn8rnL2cUCDwwFJhl6NI8n9ePA3QtG6es
-	0Lhr2WRa3V1d/b+pEoyq3hIqMn0bpRQGFN5gwnlGDHq+HGnnQ5wg9iOFz+RaTnbew65HX1egQ6KvE
-	n5hAAclm2q93wnuOsT2uQvfV8kX7Vq3oYzFBMNys9gr6d4tw4QXtfyIS124vaLKNWYoH1kYH5pYhg
-	xZEiraZ+NVWnVS0EnRiPjVc0uuS7MkBNwlypjYaWIhrO0eOc3vPZ0yHTbVjaFBexxmcU5XmtdG5/w
-	WsjvEL1w==;
+	bh=sU0Rwyb1f70hxWqGLaDrX9gfHmhzhxjXEuqfS3xyBnk=; b=aezvGRHCAvghStX3Ot6akRYpUE
+	1NYciV5CtxHpLzJAoEByhqUGZCqM2jR9V9yjSv5TtgO478v10dNgSG45eYSF4vEiepoN4lND+f1cp
+	xw3HAEKFsvAEXsrc3hs7rvl7cA6u2BsRlakJSCpTDl3WcNXb1vZ6qaNk4ZZ2LXWmHqEGjfpWB5puv
+	RLpIbUkW9d/NrEw3RCyXWcw/XhPdPXgCObU59mjLpO6JAiZ466tyzKUwZBn0YeQSggWYHCi+SzqQa
+	9FzpN28Wy5jziRDlq1AnNJD0iePGY6o2wVoBpbkOQJAhgTITpW1PqiazuaQmUq3GB8dy/pJ0VmaS4
+	Hf4MMDyg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqq-00000001eXx-2U0R;
-	Tue, 28 Oct 2025 00:46:16 +0000
+	id 1vDXqt-00000001eha-4Bho;
+	Tue, 28 Oct 2025 00:46:20 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v2 18/50] convert pstore
-Date: Tue, 28 Oct 2025 00:45:37 +0000
-Message-ID: <20251028004614.393374-19-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 43/50] convert hypfs
+Date: Tue, 28 Oct 2025 00:46:02 +0000
+Message-ID: <20251028004614.393374-44-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: D471620003
+X-Stat-Signature: b6rw4n3tk7p9e74mr88hd344isdmdkj3
 X-Rspam-User: 
-X-Stat-Signature: 4atyb5pr48ih1od3tau69eha3zunqkp1
-X-Rspamd-Queue-Id: 4758240004
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761627100-439
-X-HE-Meta: U2FsdGVkX1/ljsghFUwlFQD7h9NWJHLCJb5otviCE1pAcRV4bvN4g6l5BXIFzNiDiuLjFwmu70De0FWwzQ5FfUO5PPgBYT7R5L/hlD8OBfzJ+BFiM4DacvrbHi28wb3STO3LZsxc4t9QHWk6Kus/lENY2ErGJznyKg7wbHDGTtlQdZi1ctTGm0NaXFgJHUo7EUjTFCUxYsnVT6xUn9GteKnZDZ1JyROmGvNW+4fgH99xtgLuKOJFgMJpuHZGADJrLpWMXscnsXSmbSibfAZrr2InYVoB5QM9KlkCgcNp4ZwTG8HPGKQ4p8s/Ryxgpmt3xMYY1QBqZdVbzIBzwtEzYUYBe/R9ewzmbp0rfaDMP88UfXpPQ8K1YeR4TRFcT0cHQ6a2zvU0yUd+pMzjKL2uEDA7R6hH7+eILrY4+cEqZD5krIAjpDpLVFV0cm5ewofnlLZ+Huk2b0J2GCjaPSEGc4j3eMwUq6DlPMuvMcTtAbG1c0hoZ3vr282AmXa/1wkjoeb0KNFpJhA8Rmk3uEvN8/LfMAaKQDuO+Eur0UXF0V4Chq3nHlohgEhweGR8x3hQEhmTI4jL/KDvdX27rFDCtsRnU2uF/03TiTuXmSB5AP/PgpCA/5Mr4Omb2nlGYb7rhmp0nkKwe7ZcG4Iwp5MHwCNxb4vatuisPfbXlu9vvFQJGP70M8O8rWgfhlQswu6h47yyPOdpj/EcuWR4KQedqRSkaZtRcl5KkQeIJTkLKiGPFo20fq4Uu2z5Ah8/kkb4lcE8RGvjcYX94M0Q3x4SBzzf3yp8y/4xg6j/5J3bKmDMyrQrQgwHka+vRZZEcb0Jxg614Iw6+ACKvcwZU1lGExcfZ2+4Y7c68PSCg04Gocgjjgyn9v2d9PIv4iZZRARkxq7sGTRpXnyqtgCFw1AVfYILAXQFspJo3cjAdtr1WF5YFgjjLEG93Hsauy44W2m409FAIbw1kdddZytcKVc
- KHxe0OgJ
- /ksxk6J6PqLWNI2MLCYbgblIX6G1j1EWIHsfoguVu3PNSR3rsuz53Qm4ClWj1tVVehiSDJXawIQ3+r07vDRWXXgsua+yoYsM7pIiVsopYWu2zPGagO34xrBP0AbmKxIpaaEdoZ0lSExNTnsOepdjOQT3hGdJeNGGxjJm2Bp+hbVOrLM2Sden22kP4ijMlo31+aTLrrs/1Vb1RmXaJ2xBDLEEsXKP5qxDJ1P98ty8RmX0UPy68mTh60ypa7OGhxwfRO+kbRFWxJRPAhnETM97eQ2CgDbBHDwF+9TS2yCct6mIPZ2py2f25knA1kqg5TZ+TaKO+luutB/8BAiYPgwZk61c8R3Voo2INfaBf9dWIyTmPdwlQhgwE7l66x7wJ57TLuOEn4O3bLndQbhgR+TvWiwKU5CrBv4M8TzT+
+X-HE-Tag: 1761628290-989730
+X-HE-Meta: U2FsdGVkX1+YLH6Z/UDe4vtRXWZCLv88JatH6DwWd6pzN0jWHjNT6NxeHITLMlmXHY12BnTx8EWrGv0ENeDsnX3frEIN3fR+kSlThJEbL6Ak8LR2P1FG8qO0wqiTQ660deI4r3H2/fkFakWO1U33oETLNzQaZ6dd8UtoLKIuD7A3676/k5vi8QK7gEcHs0pToa9vauXt8Aq2sMt4twJlPU6Eu4bG+mFD+lUFFAWTERNyzQC4jG1unAXhKcPxx6lv5/sn8D1wHX/++7P18QzRFOYEPYSxxdMShlph7BZJTZYojYtCpmRm3wdtdGHoyA7Td8uvkRKORj6ootBYfK1WiNh1ocMtgC57R+Qp0MGZ0ulGnSWAvOwlpU8YLjxRFDQWJhiqM5yINO4NgSPWj//4bcJKX/GXWszzUgyPQ2lg2X4dHM1qkwWrX9IlJO609Zc8avufLqzmKLRO5HMylcblIqewx9ia2GgB/HiisX+zT0DTzEcgCwn5t5vNH3k6SP/YnYDUkZo+k3Ic77PCjS4yadqfeKHeUGjytcjNQoKz8t+H8ci4kqg1s7GPOzNKbZJHEePvB/tmP7qDCy01TH99FMde7vjUa91b6XZ23JRxShkroSGKUywi7NkTmiKEiIjUwVLV9SYqAyQ/BBK1wDJMNdJ71BBPILsNL7qvp9Ynmo2dkkhj5TKbXUnmC7rJs9lYpDJUCzp0kZ8i9cZsZhrZXqdcMKaS2aa1km4IZNEcYfUCDoZLsH0YZBtECyeSpYLPUpTOciMGWd74iGlTugqTBwsNolW7N1h2agNEZxPt2bNUWVlQ7OBXS4LyGSC1rlYR2Ml4KTqlF+CWbHBA6rM+/ATME/2odriYpGOVXGhnI4YMKhWb9V0uSRjjLPxbL+XZUYKO3xA7TZXs+G656W8XTML0P/kOypCFw3bpdDmq8WYBiEyN6skQFTJVwmAPLIy/sJLAW8DQVOKWHCfebIP
+ jGrhl/hW
+ Fi/iB9rHtWBqgNq1KYgSlmw/S8OvfsumdcR3jL10LOAzhrRZnC/TLZqZAXF1KSJhu+K+eaRKQY+OTeF1XpW8/R+gVXC9KiMOVLyb497fwJXqACCnuqrxOY11RPFV8364FYrKULE1+6nDwELq3tLths/YezRenpORdvX2hSh2J7DhOnjvXsQMDlVTApXq5Q+75Ns/wLK126Hs6AU5ctTJO8jbJI6hg0ejuR/ywEgke8IdNxF2QfHhZ635aAD9QwQdjBCIe6pqdc7FuzR3V/k9iOCz+HfFQ3BY5SKfJ0DjWaNXYd7OHpX/wN9qcwj9fFsGNc/tda8l9Ru80SvzscnCxzqAp77ck65qGSCbfDig2vKAwPHHTdJOCfRHSsCSQcM8Tc0kmPNRJiDLLS+quYhZ0tLOvSFaSzVBQci0Q
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,51 +108,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-object creation by d_alloc_name()+d_add() in pstore_mkfile(), removal -
-via normal VFS codepaths (with ->unlink() using simple_unlink()) or
-in pstore_put_backend_records() via locked_recursive_removal()
-
-Replace d_add() with d_make_persistent()+dput() - that's what really
-happens there.  The reference that goes into record->dentry is valid
-only until the unlink (and explicitly cleared by pstore_unlink()).
+just have hypfs_create_file() do the usual simple_start_creating()/
+d_make_persistent()/simple_done_creating() and that's it
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/pstore/inode.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ arch/s390/hypfs/inode.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/fs/pstore/inode.c b/fs/pstore/inode.c
-index b4e55c90f8dc..71deffcc3356 100644
---- a/fs/pstore/inode.c
-+++ b/fs/pstore/inode.c
-@@ -373,7 +373,7 @@ int pstore_mkfile(struct dentry *root, struct pstore_record *record)
- 	if (!dentry)
- 		return -ENOMEM;
+diff --git a/arch/s390/hypfs/inode.c b/arch/s390/hypfs/inode.c
+index 6a80ab2692be..98952543d593 100644
+--- a/arch/s390/hypfs/inode.c
++++ b/arch/s390/hypfs/inode.c
+@@ -311,7 +311,7 @@ static void hypfs_kill_super(struct super_block *sb)
+ 	struct hypfs_sb_info *sb_info = sb->s_fs_info;
  
--	private->dentry = dentry;
-+	private->dentry = dentry; // borrowed
- 	private->record = record;
- 	inode->i_size = private->total_size = size;
- 	inode->i_private = private;
-@@ -382,7 +382,8 @@ int pstore_mkfile(struct dentry *root, struct pstore_record *record)
- 		inode_set_mtime_to_ts(inode,
- 				      inode_set_ctime_to_ts(inode, record->time));
- 
--	d_add(dentry, no_free_ptr(inode));
-+	d_make_persistent(dentry, no_free_ptr(inode));
-+	dput(dentry);
- 
- 	list_add(&(no_free_ptr(private))->list, &records_list);
- 
-@@ -465,7 +466,7 @@ static void pstore_kill_sb(struct super_block *sb)
- 	guard(mutex)(&pstore_sb_lock);
- 	WARN_ON(pstore_sb && pstore_sb != sb);
- 
+ 	hypfs_last_dentry = NULL;
 -	kill_litter_super(sb);
 +	kill_anon_super(sb);
- 	pstore_sb = NULL;
+ 	kfree(sb_info);
+ }
  
- 	guard(mutex)(&records_list_lock);
+@@ -321,17 +321,13 @@ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+ 	struct dentry *dentry;
+ 	struct inode *inode;
+ 
+-	inode_lock(d_inode(parent));
+-	dentry = lookup_noperm(&QSTR(name), parent);
+-	if (IS_ERR(dentry)) {
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto fail;
+-	}
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry))
++		return ERR_PTR(-ENOMEM);
+ 	inode = hypfs_make_inode(parent->d_sb, mode);
+ 	if (!inode) {
+-		dput(dentry);
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto fail;
++		simple_done_creating(dentry);
++		return ERR_PTR(-ENOMEM);
+ 	}
+ 	if (S_ISREG(mode)) {
+ 		inode->i_fop = &hypfs_file_ops;
+@@ -346,10 +342,9 @@ static struct dentry *hypfs_create_file(struct dentry *parent, const char *name,
+ 	} else
+ 		BUG();
+ 	inode->i_private = data;
+-	d_instantiate(dentry, inode);
+-fail:
+-	inode_unlock(d_inode(parent));
+-	return dentry;
++	d_make_persistent(dentry, inode);
++	simple_done_creating(dentry);
++	return dentry;	 // borrowed
+ }
+ 
+ struct dentry *hypfs_mkdir(struct dentry *parent, const char *name)
 -- 
 2.47.3
 
