@@ -4,127 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94642CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 11:49:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93CF6CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 12:02:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB0D58013B; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
+	id E47958013C; Tue, 28 Oct 2025 08:02:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D885F80131; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
+	id E1EA580131; Tue, 28 Oct 2025 08:02:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CC5338013B; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
+	id D5C9A8013C; Tue, 28 Oct 2025 08:02:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BA07380131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E13914041D
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:49:02 +0000 (UTC)
-X-FDA: 84047351724.14.379835D
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf10.hostedemail.com (Postfix) with ESMTP id F062EC0008
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:48:59 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761652140; a=rsa-sha256;
-	cv=none;
-	b=RX0e76HwTFvntRwWRtZGDbfQwMxA5HtqzlRk5LtN0v5P/Ti7/AzB3VAoe+H6QzaA3cd34a
-	ewApV6Eg806kDAxxDWSoa718xIVPOqW1WEV1WVC9kUqZPk3e3U30axDS+gZqPZ6ij1WSnL
-	ZMgnYdUWwf/C+2F9ogXUWb3q3Mya1tg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
-	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C389580131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 08:02:16 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5E3FB1A0450
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:02:16 +0000 (UTC)
+X-FDA: 84047385072.06.FE94CC3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A79B62001B
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:02:14 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZX30kq;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761652140;
+	s=arc-20220608; t=1761652934;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=ttzhCw60j0HyY1YG9AWzG/ObjnvBPnr03qMlUBZDZkhyFgdDsaQeigan3bCurvm7RnjNOI
-	QUI7q+gMxTXlZYdkrUL61E0DtVw9mi2zpswpKzLbyhS9t+HASa/fyFFOGQhCXve1DOs/Yd
-	mGMDCyAViskf+M/aduqpQKNHMzm5YvQ=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 291FC21A49;
-	Tue, 28 Oct 2025 11:48:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
-	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
-	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761652138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
-	VA+fmGcg/MJ8dvBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
-	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
-	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761652138;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
-	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
-	VA+fmGcg/MJ8dvBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B57313A7D;
-	Tue, 28 Oct 2025 11:48:57 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wJN7FqmtAGlAegAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Tue, 28 Oct 2025 11:48:57 +0000
-Date: Tue, 28 Oct 2025 11:48:51 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Dev Jain <dev.jain@arm.com>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Barry Song <baohua@kernel.org>, 
-	"open list:MEMORY MAPPING" <linux-mm@kvack.org>
-Subject: Re: [PATCH] mm/mremap: Honour writable bit in mremap pte batching
-Message-ID: <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
-References: <20251028063952.90313-1-dev.jain@arm.com>
+	bh=tfMsea7TQrE0ohU/AUK+mCK7z9z1HMJ9p7hWvfgND/Q=;
+	b=e/Dt5N7y9hpUb1C7+tQvKS+0+JQRFL7q9HYSiIqfutloZBvHqSVrDVTMTerPqhioBomaX6
+	MB7cVzGiiKFawcduZdBg6BFaMjHqNIJwL0DUNP0wTLS8ZQKxVf1ePjAqV626l8WfAQAQxt
+	aZfoTiHQK2HK1/uUSD7fzgo3V8xPJ6s=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SwZX30kq;
+	spf=pass (imf13.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761652934; a=rsa-sha256;
+	cv=none;
+	b=8XL3ptBK6B+ThMUnSfL7K+UawgLQqx9zYiMl/Pu8Y9ge6SluWvt1VoNByQbgyvPDB5ELbQ
+	os2VN4618k0yIY8mURUWdTm52AR6hvokqipolnJMKk3o5d5C7gE22QnGrVt0BDJkyHusKg
+	BoCktpf7UX471k6N8lmfko/UUt5RS+g=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 71695432BF;
+	Tue, 28 Oct 2025 12:02:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F27C4CEE7;
+	Tue, 28 Oct 2025 12:02:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761652933;
+	bh=mZf/YKmsAob1fECJczEmiCct9PI3ELB+8/2Zjo1x01o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SwZX30kqTRxKywW3JAgQpZq9YEFkCs4mbYnsls8E10OCO8sCik7skaC6kTTCKlfog
+	 IAGPeflZVG4EU9joGw/E4TiGl7RA8FEFNbJr5eZDvYRVR5AqDOAKiVBJ3RW9NglqMt
+	 YrKtMpdU8ZM7ej9CU2ASIMTiUtmkgbi/4YlElhPAm8ukENsd2Q5yb9qGC57bQdTv87
+	 kSyfTWb41F+rhshf2CL1q0957AOwBmoHWs/npuXlrXKWFgxS/IeSKCP1J/gK/MKvkJ
+	 lcPBPR7SnFgSuuCKpUntaxB+uWX3d7haPhR2st8URjXBigR+NbHjYiQJL0WRxmtmiQ
+	 /cOOFozsC/eiA==
+Date: Tue, 28 Oct 2025 14:02:07 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: David Matlack <dmatlack@google.com>
+Cc: Alex Williamson <alex.williamson@redhat.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+	Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+	kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-media@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, Logan Gunthorpe <logang@deltatee.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251028120207.GQ12554@unreal>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <CALzav=cj_g8ndvbWdm=dukW+37cDh04k1n7ssFrDG+dN3D+cbw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251028063952.90313-1-dev.jain@arm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=cj_g8ndvbWdm=dukW+37cDh04k1n7ssFrDG+dN3D+cbw@mail.gmail.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: A79B62001B
+X-Stat-Signature: ensfet89d4ksbmuzbsntijgeahgfcuje
 X-Rspam-User: 
-X-Stat-Signature: wbfaxm8ojafxua8b6xn9w6b5maifcj9d
-X-Rspamd-Queue-Id: F062EC0008
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761652139-789436
-X-HE-Meta: U2FsdGVkX19AsCi6elY5xJJw4BkdvfYHKvQmUTUbKc8BKrZwHzu/68ZkdUWlgHxRuYiT3BTWWt3K2LCJideUiEA9uz+lj1Lzrkum59nb9ZYtLnVuQJtz3l6zsuZsJ4PYmM1xd5fy36Puc0Ob6roSWvDKuNZZfSGL0HE0PDAys3h2lcYpcI4qHrDWeAVmnKdtUp61mwOmjByDbno7sWlLmXcltd21jC8qtEogRU0/0mRT2zJ5na8X4awK8/mLiYXrFVcEfRqPNcHKO4uMaqxIZs6EAoWNs/g2PQKp/2HIwZ35CRIYaR2pFmBuBnP6KTevxuSbh5NI5sJtfafsBZ6Aqg5q8TRr5ChS8cvjFXqE2wRGxK5odFpTnLqJGbOCTmGRvRCOSgbAkDEAleK09qyZtz1E42BILGMp5B9pOXJRmN4GwnIofXAh7aueVDsTdEzi8a9A6dPBvj27RA0lsiPOZL/ugIeMXIbfF+PIIbP+UGwi9pQZj8QGjpmBd5s12rwicxNDpOWXT04Bpy0yPjuS9wjnP7c3uamSpbn/VO+xxMl4AFgjjMDhLsw3KXKZbGXxkxxLgXHXXIrBO+7mh2MiItA98oVlSA9Wu1yWAbkgjSJL2yck5cG3k0irC6W0ldn5C/Vt6v5afthaqs2Q6ZH/5vRYM5r9rWS5nq6A4ck63EQjnuD2+xflvGfOisL5l1TadMBnyblFhESJxSsdFqpL7bIkzH2dvToHuggVIGvWGgPkIoJaqQoq3YW1RG/uDvPwcvqug+lS/MyMlBirccIP/G69IHqh/osjZRM3PsYBqxHFgLbXcoTGDk5SrhA4qIC/Wd6RqEqnubIyCFWbXfLfOaTeuC0qB7ZnFtFTXjv5033rlE+rh6YmZ/+3cjnKl8b2dK1qojBbNca56OJd10MzDlrkppYCowZo7kCdeWeOzJDsmc3xeuYKJZxuVJ20524UgD/+jP8h5zAbOuYDt8p
- YZ+tM5Dy
- 3iZ+dblocAygcQy/IHT1rSUHdcaGuFbruTdkIPupswLEkGI0rZEB2MGtLtFN1gOCymfDTSDDLXrVwV8cGnTbhPskRKtFAFVIyz1YWHK2aWGF5X0fqFr9Ls1Wh5Oau0ssQGG8QaFaac1gIzraMbGC5rHyVP94dP9M6m9EMewCj14ILk/pU0bj/xuh9cy+RAOD5PqBP71PWUJ5Gmdz/5Wc/qsvqb9H+B6/DYco9dodXuSXQKuvC4H+5k6nn6ckP6fCk+ox6yDlx7dYNcljKs5eeAeaHUSdZdXtAsEC83JMSCpaseE5htC3+i+no2AE5D2s8UoJJexReB0vzIDrHOK01LIe60uKHVQ2zL/hwn49SCcGqVrrmpJeRb8Sbl1jFouZWBb6fIs9boMjDRbSKtweie8zfkg==
+X-HE-Tag: 1761652934-342017
+X-HE-Meta: U2FsdGVkX1/hsJmiE2pBaXm9FYyGw8auh3F6Q9NF9v2veu3vUqxGetLK0hHbBwP64V6dOllAY6vkpqPZGRvrpND7UqAddurpTZwr51unED3qWGPtM4RBTg5yqAlsLR50UqPiKqny0NyBOvAKa8S7mpU3+BEXa4R6tVIn1Cf2gpPPwiz3EybhuIIWt8icIXqXCmGcO+jz+oofxUyXv25zvfnDTulH8cUKHL0zGVioGv8PdTrlY7SEmj+t3VoDTp0vPxHIURI6FXgJz7vNUhY2a+Dw4fzo4NraykJ/tNgRxtJF4l2KtyAVpYZ4F/+QoU13o89FyUA/8u9o8GVIxb31SH5R4tJicZmZC2pITD3c+pzTwFis6zatRMmetDT0uHOEf4dkUIc3xPm8V6KrN9NjK0Z2fAHOU1O4bh2eRp9ywyKwMUqF25dmOeqj1+Xuyym2mJlw6f+47TOq3hWW6psXwLONUmZjhgMUghXDbxe/3AEx22/EDNQ+ReZfWQ7QlCOaB+/+Pc+0Rx4zsnekCLqMVV8NoFz6NnrmNUX061wDp8SJROpJ3Ycz8THoMTHuPoTFpXcxVQDab/aEeaMuqtTm6RBC6Lyif8aadzUDC6HjdC5yvPdj+dIsPgLbPEiqhDqUp3hKY+ICAcDRHs8b05504eEA0VcWVEmmqmEQFH7Rxm080Q3JcoCWSBm2z6eb8Q63vV1qqS5uA5MLgkW/y8EDv9rt0TnSqGbPeXCXi7fR4kDMorKR/hQXMxGEbAvjmKtYQxUeBl8/oe0dtIYQ0/ur6Is8++rezATdQexDv0rp9CtmiGacHx/3itpx2iE9rlcfHbq0+047QKvsDXgTlFJvDkrbhEZZBvC1d6z7W1g9hjAoxmGkzfZr/QiOACDdhoFzvZ5+RZh9lWbS4sruO7G6KgzWpMEcXnA2qLJrdeVUMUi1q/A7oyawEon6YBHydfrFqlOvvRc+I1fThlKE1rh
+ imoMDW0l
+ lu6+yhUrsynrUkMa00MCEzCTWdsA5bHNIAQ9zXjcK6iTZiyQrUrIkjJRYO8I+C6gkUA1ej9MF8Ys5JnBNSMn3B3Xej/ET/6v2Mf2gZOBJylisqbgGrLP6oYuHCkUUzJ3zi77wM7wxPaTQo5UZ2xpX+B6ZaAlH7fiOsGPNvB58Ky8IV9r/HYTtPkZOGDy17CB/XVzeggemdQEnQ79s2yZ2ccYkZTDi7dB3SsN7FoSyxKlDD6Q1Pk8xZPzlZ8E949nRz5S1sZMgUEvp5KlsEEwoWekzW+3tai28tTSYmMT8x4O2GVVYHyy+Xx9taTC1KH0beQrRt00BZ6ZYyKY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,45 +110,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 12:09:52PM +0530, Dev Jain wrote:
-> Currently mremap folio pte batch ignores the writable bit during figuring
-> out a set of similar ptes mapping the same folio. Suppose that the first
-> pte of the batch is writable while the others are not - set_ptes will
-> end up setting the writable bit on the other ptes, which is a violation
-> of mremap semantics. Therefore, use FPB_RESPECT_WRITE to check the writable
-> bit while determining the pte batch.
->
+On Mon, Oct 27, 2025 at 04:13:05PM -0700, David Matlack wrote:
+> On Mon, Oct 13, 2025 at 8:44 AM Leon Romanovsky <leon@kernel.org> wrote:
+> >
+> > From: Leon Romanovsky <leonro@nvidia.com>
+> >
+> > Add support for exporting PCI device MMIO regions through dma-buf,
+> > enabling safe sharing of non-struct page memory with controlled
+> > lifetime management. This allows RDMA and other subsystems to import
+> > dma-buf FDs and build them into memory regions for PCI P2P operations.
+> 
+> > +/**
+> > + * Upon VFIO_DEVICE_FEATURE_GET create a dma_buf fd for the
+> > + * regions selected.
+> > + *
+> > + * open_flags are the typical flags passed to open(2), eg O_RDWR, O_CLOEXEC,
+> > + * etc. offset/length specify a slice of the region to create the dmabuf from.
+> > + * nr_ranges is the total number of (P2P DMA) ranges that comprise the dmabuf.
+> > + *
+> > + * Return: The fd number on success, -1 and errno is set on failure.
+> > + */
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF 11
+> > +
+> > +struct vfio_region_dma_range {
+> > +       __u64 offset;
+> > +       __u64 length;
+> > +};
+> > +
+> > +struct vfio_device_feature_dma_buf {
+> > +       __u32   region_index;
+> > +       __u32   open_flags;
+> > +       __u32   flags;
+> > +       __u32   nr_ranges;
+> > +       struct vfio_region_dma_range dma_ranges[];
+> > +};
+> 
+> This uAPI would be a good candidate for a VFIO selftest. You can test
+> that it returns an error when it's supposed to, and a valid fd when
+> it's supposed to. And once the iommufd importer side is ready, we can
+> extend the test and verify that the fd can be mapped into iommufd.
 
-Hmm, it seems to be like we're doing the wrong thing by default here?
-I must admit I haven't followed the contpte work as much as I would've
-liked, but it doesn't make much sense to me why FPB_RESPECT_WRITE would
-be an option you have to explicitly pass, and where folio_pte_batch (the
-"simple" interface) doesn't Just Do The Right Thing for naive callers.
+No problem, I'll add such test, but let's focus on making sure that this
+series is accepted first.
 
-Auditing all callers:
- - khugepaged clears a variable number of ptes
- - memory.c clears a variable number of ptes
- - mempolicy.c grabs folios for migrations
- - mlock.c steps over nr_ptes - 1 ptes, speeding up traversal
- - mremap is borked since we're remapping nr_ptes ptes
- - rmap.c TTU unmaps nr_ptes ptes for a given folio
-
- so while the vast majority of callers don't seem to care, it would make
- sense that folio_pte_batch() works conservatively by default, and
- folio_pte_batch_flags() would allow for further batching (or maybe
- we would add a separate folio_pte_batch_clear() or
- folio_pte_batch_greedy() or whatnot).
-
-> Cc: stable@vger.kernel.org #6.17
-> Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
-> Reported-by: David Hildenbrand <david@redhat.com>
-> Debugged-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
-
-But the solution itself looks okay to me. so, fwiw:
-
-Acked-by: Pedro Falcato <pfalcato@suse.de>
-
--- 
-Pedro
+Thanks
 
