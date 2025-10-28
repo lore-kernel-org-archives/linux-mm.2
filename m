@@ -4,125 +4,173 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 060CECCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:12:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A60CCCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:14:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5395780174; Tue, 28 Oct 2025 12:12:19 -0400 (EDT)
+	id 7603D80175; Tue, 28 Oct 2025 12:14:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4EA198013F; Tue, 28 Oct 2025 12:12:19 -0400 (EDT)
+	id 711088013F; Tue, 28 Oct 2025 12:14:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B1CF80174; Tue, 28 Oct 2025 12:12:19 -0400 (EDT)
+	id 5FEFA80175; Tue, 28 Oct 2025 12:14:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 25A138013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:12:19 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D7F861A0508
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:12:18 +0000 (UTC)
-X-FDA: 84048015156.11.546CDAB
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 99550140007
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:12:16 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xeW+RZdi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=almasrymina@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 516C98013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:14:01 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1DCC348B48
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:14:01 +0000 (UTC)
+X-FDA: 84048019482.05.9911906
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 7D80D18000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:13:58 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LVD+P2iG;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761668038; a=rsa-sha256;
+	cv=none;
+	b=g3q+6u3BSw1ADIesE1UZPcpAxOYuQXjbOfZxIld9xy7V3Vlbsw3LO77wdLiYWhkSMXamlV
+	fSio2DVhSw9iFdHuWHu9cgz7GgdwyPLiZqNOQ7N7HFnqhoqRwgd7eeONOwKdor4IY5jJZ6
+	PwGHiQZqn8Hs27IuXrcSL/0bksy1Mkw=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LVD+P2iG;
+	spf=pass (imf16.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761667936;
+	s=arc-20220608; t=1761668038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qxRI++0kUA4C88E54g3jys1xp+GEI9qFS2ZGVb0fFIA=;
-	b=aPZv4/EoMr959ugy52V935Wv5/ODkcyN5UfvUr3bGofE71qSCb67EPe78UmmGEBSC+na27
-	xPPsR2GxSsJ5dIH3Y/ib2+v2Fn2pxgPgNaWySHJ6YWo94nyRfFMYhy8Db+/n9jNsGZeibz
-	DfDRsT5vg1sZQ7K7JZYlE+sEpEJe72Q=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xeW+RZdi;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf23.hostedemail.com: domain of almasrymina@google.com designates 209.85.167.51 as permitted sender) smtp.mailfrom=almasrymina@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761667936; a=rsa-sha256;
-	cv=none;
-	b=r5loZFbllJAL5EcqVQYxYGYeqIS6Na6RpOMFXfcnE19k/oUthcJ1N/sGoKPW3OSxH9XBdy
-	O0jNY4lvo38HEHkNgNlNDrfHTNPOdFOpAWKgwNVuJV94K1PhGB/59OwCyE7rOZlOcDiNU+
-	1jYY1jdi0iNJTRelt7R08vbHgY294yg=
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-58b027beea6so9390e87.1
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:12:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761667935; x=1762272735; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qxRI++0kUA4C88E54g3jys1xp+GEI9qFS2ZGVb0fFIA=;
-        b=xeW+RZdiQQoZEpFYTZMdbx2nw6ZUH/94uioDIBd628PSP/vl5Jl9AzFO7RGBgd2tSL
-         xceYdeQqpPskn5gvovYapFY9Kut+RNDbodgdH2hqlFnJ7kCF4sEx9oK5IzUCScffraIo
-         f9EowqUNDPCm2IVZmGAK59x7ctDZRr729kcuYuBKS5Er2IcALjnUnOE9cFkR4wCZAvyd
-         NI/WDrPTIvMPXmGG4Kq/PLMzf5Elyz+wwXeVD1cA18P3F+/mQELN3BvjX51sKHHxSxd/
-         k9Xaj8KAq9u5jvtpFjkoAy3hb2tuL5S5UI+Zrt6Y80H8V0ezEP4WHNoV5qY0ZTW29xJh
-         CXcw==
+	bh=KvvpFK250LHbofQ0y9+Mb287YMhgXcSSFNTTgJ2zzcM=;
+	b=txii0vWloIOUpSQZxkYdXNz3C9vzl85AuKFGrcJVyFWK1kM5qcUOmke67HuUVa2GqS8TE+
+	3zvtIEQz97SHKOqQ7uduNyKak458of5e1itxer/4XsH26I6OA7fWGoNP42rv9M+klymPES
+	XLAGeUsI6TwBvsl2h+/luZ6m5JfEdMk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761668037;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=KvvpFK250LHbofQ0y9+Mb287YMhgXcSSFNTTgJ2zzcM=;
+	b=LVD+P2iGhXC0dpgA73KIxOJm4B6LhpDBDvvw+ZMSpn7Nc8jBTvpyLa/lrcAIplHR36Lmnr
+	IT/CW2ytQ4uU0sjhx+bZtASBN6RbtlnPiJDMCFVpEFhImt7p18CD60BMUuWdBy9cSvH+h7
+	lh7ysnsoGExwwYU+HV89yEU/ElWeA/c=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-WzzhBuypN2SIojpw69oJVQ-1; Tue, 28 Oct 2025 12:13:52 -0400
+X-MC-Unique: WzzhBuypN2SIojpw69oJVQ-1
+X-Mimecast-MFC-AGG-ID: WzzhBuypN2SIojpw69oJVQ_1761668031
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-475dabb63f2so15460575e9.3
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:13:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761667935; x=1762272735;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qxRI++0kUA4C88E54g3jys1xp+GEI9qFS2ZGVb0fFIA=;
-        b=Z1ttJahui6nIgjwwRBJbaBQV1lF6H9z+ubxjjlXGDLOdtp66gcNIU3NwmmFTOuW313
-         N5z2C8KjQT0k6f9qW88crJsOCu7K2q3SiJhY9PF1j6GFXuBw2+/Whzfg0kxu6zLNkVhn
-         pcJXhzM1dyWlxCmaq/xjDJEZBXHMHfBMgawh4UfUfDWS/v3hwCo8AGrmwTfe/YNcygtE
-         guaciRY+yin+aPUEd5dbHxSe1u9BGO/nvFXOJLO3C4yjUQrj0i7PP/b7kBne6Kekwmk3
-         xpgV0AD/l7WnKik+l5TR/0C9yDWjSwnBioj4yGMP98sQ7J7HZr5qAPioG+uJt5ZjjOq8
-         oxLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVlaGD4l4EbW1nQW3Syy0EKXgZRcyuQJgQKSkg8eZKBf0XSFb3ncXzRLEFYWJZaiwK2zS6RMtyfDw==@kvack.org
-X-Gm-Message-State: AOJu0YxvQnuIcrqqtJHaXH+4smPlyh8kFVxkSuY3CJC2YZs1ZhI/8VMo
-	AAwdViORITylz88qDlHmSXThP9KuH4EWnBW+Lpz1t9qU5Iqhkly4bZUUwXYpgfP2IixfAAU0ALS
-	aG2OIJj9CpUim0tK391FTVI86vPizGf6zLbQXC1XL
-X-Gm-Gg: ASbGncv4BxROJ3SMrYg7KAaeHi6L3L0hri/c2WLiIE+W8pVq/KqBtFy1VAScq9kii0p
-	Hp0FpI9j2P6SrAKuSA3mwpZU364l2O6SB0zfCXb/2b9uVUBbN9jsXSNr+if4eo/JXsmGfaolBYf
-	6KSUR0SUShxAy2SO4IY4CPrZT/eM3N132DS7BvLEixNK+XsZneANxDpw26cCkSeI69Mc6ZWEvHi
-	b2w8v1+eFx7/GINZy6vXChjzEehofsy15leUP1ZbiClWyOzdDxnU+Dns1acA+GwIXAPAcmesSg0
-	rCMZgiF3IJFdgqbJ/+rmncM83g==
-X-Google-Smtp-Source: AGHT+IGHjnuV06Q110K/XiF/19HksKvviTMay1daMlenEI88sIR67s4zP4V81F71auWP2H80fovhcnl0+5UV0L8pGUg=
-X-Received: by 2002:a05:6512:b84:b0:586:8e3c:9456 with SMTP id
- 2adb3069b0e04-5930eed566dmr430517e87.0.1761667934253; Tue, 28 Oct 2025
- 09:12:14 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761668031; x=1762272831;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=KvvpFK250LHbofQ0y9+Mb287YMhgXcSSFNTTgJ2zzcM=;
+        b=VU96aviFC4GgI+JVLwlc0fVIMLhqUawqowu7rdRJfM9sVnB1GXvc02SG/YpslfrwEC
+         Vnm5dsKJEbmXQKm5Wv7cyixIDcs79awEAe0d0yTXHVnuoEbNQHloCYB0Tg1ya8dAkkGn
+         WrwWEuBQU8Gc6s4S8WMgzI8BCKi0fMQaNaePQ2ryDYiZJi7ToJEa/hWyMc80VnG/CUYd
+         fohQGNjjm+Nuh18TLkvhjHCS8BKb0xxXc8Rp1rja3U7/pQG2T0MPvgQrJ3IqcXyXS1o3
+         UgtjIUXg4GyP9TpXIRqR2P/nOcKnmO+4AIPkOCVovpAdSmPnAVVAYsrHbEUwWa9fxf8Y
+         MYBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWO7KgVqSlcwlcjOPFp1+m3W6qYtFMPBBVnsBuOjyfB0kYZYhq9qYRWosDOrJAUw3hOvK8/oXSDYg==@kvack.org
+X-Gm-Message-State: AOJu0YzKIoNh+ymRN5xIOrNAycnDTVWdGmPume8vDP4vlvmwYUbAvjgf
+	UElRgC8o9Nw0MDhcHcqOXnkZqnmaje2Rjct4JSlWEa1GLu73TzcQUFSvMhVru+LqV8SxHCk56pM
+	PuY4CMUD0mUKpb3VBI1efRY5C+UTXtthK4I+Gu0is3xxeVSRDaYgJ
+X-Gm-Gg: ASbGncugG9Pwu+RFdbVEi1Aaw/TScWxBajCI0nZTr9+pZ0C9GzOkyuTrNR62xRx4vR6
+	NQR/LXXVUV31Kkb6Wj40/cnKGlfWGiGo98MP35y1Y3BC5P70BJY2uLPbCvmGz+3M0O+AajObmbK
+	lKr5+qTvyEWFXiuve/cQ+qsMhToDPp6ZbKjy8nS7Sr5m+vywIzrKe44EX9AL0JOz9yxtQR3qgIj
+	lMJOKLYTEFHxEXc70ndcFtVlJ/ZoSs8rI6mJycfnuY+mWqTeIIxi/Ele4gU87FIMRr4WY4Bewzv
+	p8isiMG13hqxRlD4oGzcYGrkY6vzWTR9qE9RjrBoFSOdKg4F/1LNCwmaklayj1k9aTz8UDCYtIb
+	EOaXMxCD1U7UXSUCgeGdRGYEoZTIm22tz
+X-Received: by 2002:a05:600c:3b27:b0:475:da13:2575 with SMTP id 5b1f17b1804b1-4771e1ab8a0mr264315e9.35.1761668031172;
+        Tue, 28 Oct 2025 09:13:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHYLMRn+FNd6v1pe6gevrEN6O2ueeH/AKghCdZ+vk7Py4/AlR9hq5U2B0FyPXLgVOsHfXK9hw==
+X-Received: by 2002:a05:600c:3b27:b0:475:da13:2575 with SMTP id 5b1f17b1804b1-4771e1ab8a0mr264115e9.35.1761668030728;
+        Tue, 28 Oct 2025 09:13:50 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952db80fsm20703850f8f.31.2025.10.28.09.13.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 09:13:50 -0700 (PDT)
+Message-ID: <c1c9aedf-fb1b-47c8-8204-dbc28e9da4f3@redhat.com>
+Date: Tue, 28 Oct 2025 17:13:49 +0100
 MIME-Version: 1.0
-References: <20251023074410.78650-1-byungchul@sk.com> <20251023074410.78650-3-byungchul@sk.com>
- <CAHS8izME4W3ENXNXf4Cxegmk9xnRmKajpRMQ18L0=FGTFebeaw@mail.gmail.com> <64E18E02-727B-47C4-8849-486AB98CACD8@nvidia.com>
-In-Reply-To: <64E18E02-727B-47C4-8849-486AB98CACD8@nvidia.com>
-From: Mina Almasry <almasrymina@google.com>
-Date: Tue, 28 Oct 2025 09:12:00 -0700
-X-Gm-Features: AWmQ_bmxv3BL-tBNLLwsdAEGZyVMyLK1NK7F8-nJ_Ys_3boWKRkq5vfhkylVKmE
-Message-ID: <CAHS8izNuSkxn1HZJ-1W_wa7QsQFE5yKUjbfSgKEzv9tLLOYveQ@mail.gmail.com>
-Subject: Re: [RFC mm v4 2/2] mm: introduce a new page type for page pool in
- page type
-To: Zi Yan <ziy@nvidia.com>
-Cc: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com, harry.yoo@oracle.com, 
-	ast@kernel.org, daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, 
-	hawk@kernel.org, john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, 
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch, 
-	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org, 
-	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
-	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, 
-	ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org, 
-	kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com, 
-	baolin.wang@linux.alibaba.com, toke@redhat.com, asml.silence@gmail.com, 
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, 
-	dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: hugetlb: fix HVO crash on s390
+To: Joao Martins <joao.m.martins@oracle.com>,
+ Luiz Capitulino <luizcap@redhat.com>
+Cc: osalvador@suse.de, akpm@linux-foundation.org, aneesh.kumar@kernel.org,
+ hca@linux.ibm.com, borntraeger@linux.ibm.com, mike.kravetz@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org
+References: <20251028153930.37107-1-luizcap@redhat.com>
+ <50d815a1-8384-4eaa-8515-19d6c92425b3@oracle.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <50d815a1-8384-4eaa-8515-19d6c92425b3@oracle.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 39ud8EnT6U0y74kSWtVUwaDg63I1Y5tWeM9vMphmyds_1761668031
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 99550140007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: xsragob9odbzzbroyjyuwpu4hyj7o949
-X-HE-Tag: 1761667936-465450
-X-HE-Meta: U2FsdGVkX19OWlcS5U6nLxdaDikGqQNmHiiv0cGc0Iiszovp8QYZAgYH1K0WEYfEEDO0ian2rC+eIxy3faAZ4xvsDkxv/T7xmN+DU/RCRAjx6wnly+jw0W+vGGk1s2+6jeLer9Nd4n23EpaTTgsU2BiOPAZdWHChPjfhAw9MngWD2kVmOdKlAt6f8yET3ljuRIMaV1qOQmWjNJ8mrA/0r2aaKUPYTwnM2bbkQJ+lvyZRhuaOvCJ5/5m5llI+GfT6qVALgDc6Na6YclGYYhE/LEvJfe0tpzsgdIMJqCxFbv3UJyesmDvfqa9BT5uI3/ls8SctC4jpE4If6NOJM8dWMHxYDY+m3BnSCMT3UXsXTrSBiOAfvog4fKUtMBCUjzV5jwvg/C5IC9y+H2ivqYkHDggcIDrlUOqIYpEGfVrd4xBCg7LYwQybpG4ibhWESN1RfGBpG4IApb4J02jBK0nKtl/kHQs9TxfXmPxz1cPNp1SlGporMf7fXUXvrLaVjaSeNMSnt2iuADA/6J7hmhylu5RCwuicyBfuMzEQlJlwh1LXJg8hDqUTpuGqWwKfKfr1Tv13BO3HFqUJ0V//5ZZ/sYH+deG6WzsvDS8JUvu0ZVJ+DvZ5MmecWEak2J02aJ83zpW5tb765L/LyfzfeHL/hgcShgAgEawpl2ruUymus+0cDWtpmPCLr2m8ha6mTYC5NPsq630gNzk/t0aOOJTpKchePGImDyWPI0C/XKQ97dKRigRR/sF1Kuq0ftvRna0pgzKNqBpopbd+seaN8mnGq1z6F1fGGyEeJlaBdxCHD7jprAxQprJ9Smejqo8KxkoinOMl7jyWxwIlzcjB3mq8d3GRJoacI6Dwi9Hp2wb2YE41HZ29jhzkHSAlhLbEXBXTJQ+Rz+ObiJOldTjiLVA2nlCXkIm0xYZsvOG+S2LXEJtxhcQwQ63Vr4kf5GfVpWizo7Wf28sLDHNnpxee0tC
- QsHDo2iz
- sd35iUDCu3O94Ivz8f3aXm6dgrjQ9tGWshDEHLuX2YpVwQerzh7thaNtaRMZpNaRei1XagKdw8XwT8PCeTytob+STCdPgMSob+OCU5HOxt6vP84uVMNV5kxk02nv+0jzRndSer4MMwDnsIO9SvrWcf5+AQ5++7Boh9Nuy/hMJhZDCTtRIrQtn9DOAhBrKdGyW1+hgKBnkJWxhsacnX3VDlyh0L1P1USKibVjdYcaIsVogjn+AMJR5XHKSW8EFtse3p0sfeBIngrCmeEJuFLmOHBYJpP7EKW957Bia3iik9jmqn1UKTKuo3MvK5MS/1IkFQvK1FJ27JuecYG4xnxoSBylkAhxElQoORQbAuIwtzgjQcxA8O7Fwl7TWHXWevDt3htIGyy3+UO49RX8LooN5FQEWl1A2PMq6NieSEMfdGEJsGeDrtkBYCVnqRQ==
+X-Stat-Signature: 86hmk6x3y4g61j7dy6pwtnzxfwu1q911
+X-Rspamd-Queue-Id: 7D80D18000A
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761668038-991955
+X-HE-Meta: U2FsdGVkX1+lS+A0O0ibCqkIvZDh+gm8PUt5cTQtw2w50EGm+r69RBPS5QmzBhHPtSDl7xgL4hyodSPsqRSwW+w/hxcH9zE8Bpyfd/z3QUKk+y6FCL+9Vw7FJI48tiur/7z0e7EfqT4TyoDlHrM4cs1HKPzCDDIsEZP3JhKAuIVOspoqk0PrhxFckgoBoxDKwUYQOdUFVXqnFVwLIdB4vaQQFEmQU4geCLCWqVEic4fhib/Uh2CAN7/yPgPXMjyuY7JF15BgDBF7QLn/ZLG8RtX3uSMfJaR7i98gKTY6uldByrsfS1+upUEdODQOsYvuhwBeXweg4V1nGyIrGg7ksVgZTYVkfgR24HgU0FGTJ0uk5vD63fgevDmGtK6yR+uxpNskoK/gnquLokVclzYvOQrBDh329WRWVoP9ZKJEau9kDCNNLk19Qp7J0hqrMgbEvU52Yj2b+y2UaawQnwNIhWtfH/Xg1JjORw1fJ8UabzufhdrGDeuIuaC51OsXEqQnam1xKC/NSAy5K5qnVFEx/O1tz7hbB/4SSuodfvZwcY7YK4GP2Vl7Cc3jc+YyUToOKweKw5x496nlgTh/tQPUizOyOpZHvNdLdgFy7dEVuXEohvlfl0ygAq9Sc9XvmB9ZJ1DAG6nQurBhduYy207e+hxf04TLr9Ur+kJstHPlOAPUCyeQC5LXACPARQynShMGxeGSQeAm/LbmqH4O2I3dbz3TAky09yp84F7g9XlTsflSE2fMyEA/TJaPLKliYqVGyQQsrdDvM9d/F5Ihajp42TIM1CklPgvhsMlH1+VSNNlxZAUrwYbALluwKGRdt48ux3QjypZ3eJRERqj7xEjEn8EhFF/TR1SUewvYsuKi8/FLSJht9RTnF6tBgBDlLmFgtEaEnL1g7U+WOm1qup3y67PxdsUKOWHLxyD15QyaEP98FjIiX9f8gONgw4wg4EK1lt803v3h0HjFZXqKLhz
+ NMticnTJ
+ Qgd2FCw06O3o0Ivwxwg/xQw6ksFLMHugvYXyEzCYCxqlHzsKMur0XKtuHGxysIj9T2NaE7v6jxEjgBgUWmkX1x8YK2AU1b7TEIM6ECIeXdpoicD6MGJohS1BoIDijUwEijazL37fprbhzFqG6t9inCk0vkn7JICjesEMm4Tq6C0BvhlbEySWsdKBAy9u3b5Urg8hqLCLmBFThmgdr1RYmOv49IodjfWNCaawtVbivqgFAmV0o7U1+2nbkxFytqHYQwRPUl8xxbg0k8YL90p9VmOuDS++Mq9ElwlCJu1SyGeXRsZI7nan/5npYXBsmH8ne12Hf6FF5RdLEmyyJ1OQ48+InJ0PkNdU5y1eOo6nGx3sqiTyIswdqmOfs8GWMXprwXNFFgu9U1AOJyrEb4IkvDX7X0o4pulHZP6D2yinRrEwffakfoCbFcpcLRUNhwsRO7xJlcYyOhn+awBMLTSsB7uMz82kklnWd8QbNhx/2Y9rdiSjxVuCgrFf9n9lRt8g8nzNe
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,221 +179,106 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 6:45=E2=80=AFPM Zi Yan <ziy@nvidia.com> wrote:
->
-> On 27 Oct 2025, at 21:28, Mina Almasry wrote:
->
-> > On Thu, Oct 23, 2025 at 12:45=E2=80=AFAM Byungchul Park <byungchul@sk.c=
-om> wrote:
-> >>
-> >> ->pp_magic field in struct page is current used to identify if a page
-> >> belongs to a page pool.  However, ->pp_magic will be removed and page
-> >> type bit in struct page e.i. PGTY_netpp can be used for that purpose.
-> >>
-> >> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(=
-),
-> >> and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> >> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> >> netmem_clear_pp_magic().
-> >>
-> >> This work was inspired by the following link:
-> >>
-> >> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@g=
-mail.com/
-> >>
-> >> While at it, move the sanity check for page pool to on free.
-> >>
-> >> Suggested-by: David Hildenbrand <david@redhat.com>
-> >> Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> >> Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> >> Signed-off-by: Byungchul Park <byungchul@sk.com>
-> >> Acked-by: David Hildenbrand <david@redhat.com>
-> >> Acked-by: Zi Yan <ziy@nvidia.com>
-> >> ---
-> >> Hi Mina,
-> >>
-> >> I dropped your Reviewed-by tag since there are updates on some comment=
-s
-> >> in network part.  Can I still keep your Reviewed-by?
-> >>
-> >>         Byungchul
-> >> ---
-> >>  .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
-> >>  include/linux/mm.h                            | 27 +++---------------=
--
-> >>  include/linux/page-flags.h                    |  6 +++++
-> >>  include/net/netmem.h                          |  2 +-
-> >>  mm/page_alloc.c                               |  8 +++---
-> >>  net/core/netmem_priv.h                        | 17 +++---------
-> >>  net/core/page_pool.c                          | 14 +++++-----
-> >>  7 files changed, 25 insertions(+), 51 deletions(-)
-> >>
-> >> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/driver=
-s/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> >> index 5d51600935a6..def274f5c1ca 100644
-> >> --- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> >> +++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-> >> @@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdp=
-sq *sq,
-> >>                                 xdpi =3D mlx5e_xdpi_fifo_pop(xdpi_fifo=
-);
-> >>                                 page =3D xdpi.page.page;
-> >>
-> >> -                               /* No need to check page_pool_page_is_=
-pp() as we
-> >> +                               /* No need to check PageNetpp() as we
-> >>                                  * know this is a page_pool page.
-> >>                                  */
-> >>                                 page_pool_recycle_direct(pp_page_to_nm=
-desc(page)->pp,
-> >> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> >> index b6fdf3557807..f5155f1c75f5 100644
-> >> --- a/include/linux/mm.h
-> >> +++ b/include/linux/mm.h
-> >> @@ -4361,10 +4361,9 @@ int arch_lock_shadow_stack_status(struct task_s=
-truct *t, unsigned long status);
-> >>   * DMA mapping IDs for page_pool
-> >>   *
-> >>   * When DMA-mapping a page, page_pool allocates an ID (from an xarray=
-) and
-> >> - * stashes it in the upper bits of page->pp_magic. We always want to =
-be able to
-> >> - * unambiguously identify page pool pages (using page_pool_page_is_pp=
-()). Non-PP
-> >> - * pages can have arbitrary kernel pointers stored in the same field =
-as pp_magic
-> >> - * (since it overlaps with page->lru.next), so we must ensure that we=
- cannot
-> >> + * stashes it in the upper bits of page->pp_magic. Non-PP pages can h=
-ave
-> >> + * arbitrary kernel pointers stored in the same field as pp_magic (si=
-nce
-> >> + * it overlaps with page->lru.next), so we must ensure that we cannot
-> >>   * mistake a valid kernel pointer with any of the values we write int=
-o this
-> >>   * field.
-> >>   *
-> >> @@ -4399,26 +4398,6 @@ int arch_lock_shadow_stack_status(struct task_s=
-truct *t, unsigned long status);
-> >>  #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SH=
-IFT - 1, \
-> >>                                   PP_DMA_INDEX_SHIFT)
-> >>
-> >> -/* Mask used for checking in page_pool_page_is_pp() below. page->pp_m=
-agic is
-> >> - * OR'ed with PP_SIGNATURE after the allocation in order to preserve =
-bit 0 for
-> >> - * the head page of compound page and bit 1 for pfmemalloc page, as w=
-ell as the
-> >> - * bits used for the DMA index. page_is_pfmemalloc() is checked in
-> >> - * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-> >> - */
-> >> -#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
-> >> -
-> >> -#ifdef CONFIG_PAGE_POOL
-> >> -static inline bool page_pool_page_is_pp(const struct page *page)
-> >> -{
-> >> -       return (page->pp_magic & PP_MAGIC_MASK) =3D=3D PP_SIGNATURE;
-> >> -}
-> >> -#else
-> >> -static inline bool page_pool_page_is_pp(const struct page *page)
-> >> -{
-> >> -       return false;
-> >> -}
-> >> -#endif
-> >> -
-> >>  #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
-> >>  #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
-> >>  #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-> >> diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-> >> index 0091ad1986bf..edf5418c91dd 100644
-> >> --- a/include/linux/page-flags.h
-> >> +++ b/include/linux/page-flags.h
-> >> @@ -934,6 +934,7 @@ enum pagetype {
-> >>         PGTY_zsmalloc           =3D 0xf6,
-> >>         PGTY_unaccepted         =3D 0xf7,
-> >>         PGTY_large_kmalloc      =3D 0xf8,
-> >> +       PGTY_netpp              =3D 0xf9,
-> >>
-> >>         PGTY_mapcount_underflow =3D 0xff
-> >>  };
-> >> @@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
-> >>  PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
-> >>  FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
-> >>
-> >> +/*
-> >> + * Marks page_pool allocated pages.
-> >> + */
-> >> +PAGE_TYPE_OPS(Netpp, netpp, netpp)
-> >> +
-> >>  /**
-> >>   * PageHuge - Determine if the page belongs to hugetlbfs
-> >>   * @page: The page to test.
-> >> diff --git a/include/net/netmem.h b/include/net/netmem.h
-> >> index 651e2c62d1dd..0ec4c7561081 100644
-> >> --- a/include/net/netmem.h
-> >> +++ b/include/net/netmem.h
-> >> @@ -260,7 +260,7 @@ static inline unsigned long netmem_pfn_trace(netme=
-m_ref netmem)
-> >>   */
-> >>  #define pp_page_to_nmdesc(p)                                         =
-  \
-> >>  ({                                                                   =
-  \
-> >> -       DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));             =
-  \
-> >> +       DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));                        =
-  \
-> >>         __pp_page_to_nmdesc(p);                                       =
-  \
-> >>  })
-> >>
-> >> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> >> index fb91c566327c..c69ed3741bbc 100644
-> >> --- a/mm/page_alloc.c
-> >> +++ b/mm/page_alloc.c
-> >> @@ -1042,7 +1042,6 @@ static inline bool page_expected_state(struct pa=
-ge *page,
-> >>  #ifdef CONFIG_MEMCG
-> >>                         page->memcg_data |
-> >>  #endif
-> >> -                       page_pool_page_is_pp(page) |
-> >
-> > Shouldn't you replace the page_pool_page_is_pp check with a PageNetpp
-> > check in this call site and below? Or is that no longer necessary for
-> > some reason?
->
-> It is done in the hunk below this one:
->
-> @@ -1379,9 +1376,12 @@ __always_inline bool free_pages_prepare(struct pag=
-e *page,
->                 mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
->                 folio->mapping =3D NULL;
->         }
-> -       if (unlikely(page_has_type(page)))
-> +       if (unlikely(page_has_type(page))) {
-> +               /* networking expects to clear its page type before relea=
-sing */
-> +               WARN_ON_ONCE(PageNetpp(page));
->                 /* Reset the page_type (which overlays _mapcount) */
->                 page->page_type =3D UINT_MAX;
-> +       }
->
->         if (is_check_pages_enabled()) {
->                 if (free_page_is_bad(page))
->
-> where
-> free_pages_prepare()
->   -> free_page_is_bad()
->     -> page_expected_state()
->
+On 28.10.25 17:05, Joao Martins wrote:
+> On 28/10/2025 15:39, Luiz Capitulino wrote:
+>> A reproducible crash occurs when enabling HVO on s390. The crash and the
+>> proposed fix were worked on an s390 KVM guest running on an older
+>> hypervisor, as I don't have access to an LPAR. However, the same
+>> issue should occur on bare-metal.
+>>
+>> Reproducer (it may take a few runs to trigger):
+>>
+>>   # sysctl vm.hugetlb_optimize_vmemmap=1
+>>   # echo 1 > /proc/sys/vm/nr_hugepages
+>>   # echo 0 > /proc/sys/vm/nr_hugepages
+>>
+>> Crash log:
+>>
+>> [   52.340369] list_del corruption. prev->next should be 000000d382110008, but was 000000d7116d3880. (prev=000000d7116d3910)
+>> [   52.340420] ------------[ cut here ]------------
+>> [   52.340424] kernel BUG at lib/list_debug.c:62!
+>> [   52.340566] monitor event: 0040 ilc:2 [#1]SMP
+>> [   52.340573] Modules linked in: ctcm fsm qeth ccwgroup zfcp scsi_transport_fc qdio dasd_fba_mod dasd_eckd_mod dasd_mod xfs ghash_s390 prng des_s390 libdes sha3_512_s390 sha3_256_s390 virtio_net virtio_blk net_failover sha_common failover dm_mirror dm_region_hash dm_log dm_mod paes_s390 crypto_engine pkey_cca pkey_ep11 zcrypt pkey_pckmo pkey aes_s390
+>> [   52.340606] CPU: 1 UID: 0 PID: 1672 Comm: root-rep2 Kdump: loaded Not tainted 6.18.0-rc3 #1 NONE
+>> [   52.340610] Hardware name: IBM 3931 LA1 400 (KVM/Linux)
+>> [   52.340611] Krnl PSW : 0704c00180000000 0000015710cda7fe (__list_del_entry_valid_or_report+0xfe/0x128)
+>> [   52.340619]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+>> [   52.340622] Krnl GPRS: c0000000ffffefff 0000000100000027 000000000000006d 0000000000000000
+>> [   52.340623]            000000d7116d35d8 000000d7116d35d0 0000000000000002 000000d7116d39b0
+>> [   52.340625]            000000d7116d3880 000000d7116d3910 000000d7116d3910 000000d382110008
+>> [   52.340626]            000003ffac1ccd08 000000d7116d39b0 0000015710cda7fa 000000d7116d37d0
+>> [   52.340632] Krnl Code: 0000015710cda7ee: c020003e496f	larl	%r2,00000157114a3acc
+>>             0000015710cda7f4: c0e5ffd5280e	brasl	%r14,000001571077f810
+>>            #0000015710cda7fa: af000000		mc	0,0
+>>            >0000015710cda7fe: b9040029		lgr	%r2,%r9
+>>             0000015710cda802: c0e5ffe5e193	brasl	%r14,0000015710996b28
+>>             0000015710cda808: e34090080004	lg	%r4,8(%r9)
+>>             0000015710cda80e: b9040059		lgr	%r5,%r9
+>>             0000015710cda812: b9040038		lgr	%r3,%r8
+>> [   52.340643] Call Trace:
+>> [   52.340645]  [<0000015710cda7fe>] __list_del_entry_valid_or_report+0xfe/0x128
+>> [   52.340649] ([<0000015710cda7fa>] __list_del_entry_valid_or_report+0xfa/0x128)
+>> [   52.340652]  [<0000015710a30b2e>] hugetlb_vmemmap_restore_folios+0x96/0x138
+>> [   52.340655]  [<0000015710a268ac>] update_and_free_pages_bulk+0x64/0x150
+>> [   52.340659]  [<0000015710a26f8a>] set_max_huge_pages+0x4ca/0x6f0
+>> [   52.340662]  [<0000015710a273ba>] hugetlb_sysctl_handler_common+0xea/0x120
+>> [   52.340665]  [<0000015710a27484>] hugetlb_sysctl_handler+0x44/0x50
+>> [   52.340667]  [<0000015710b53ffa>] proc_sys_call_handler+0x17a/0x280
+>> [   52.340672]  [<0000015710a90968>] vfs_write+0x2c8/0x3a0
+>> [   52.340676]  [<0000015710a90bd2>] ksys_write+0x72/0x100
+>> [   52.340679]  [<00000157111483a8>] __do_syscall+0x150/0x318
+>> [   52.340682]  [<0000015711153a5e>] system_call+0x6e/0x90
+>> [   52.340684] Last Breaking-Event-Address:
+>> [   52.340684]  [<000001571077f85c>] _printk+0x4c/0x58
+>> [   52.340690] Kernel panic - not syncing: Fatal exception: panic_on_oops
+>>
+>> This issue was introduced by commit f13b83fdd996 ("hugetlb: batch TLB
+>> flushes when freeing vmemmap"). Before that change, the HVO
+>> implementation called flush_tlb_kernel_range() each time a vmemmap
+>> PMD split and remapping was performed. The mentioned commit changed this
+>> to issue a few flush_tlb_all() calls after performing all remappings.
+>>
+>> However, on s390, flush_tlb_kernel_range() expands to
+>> __tlb_flush_kernel() while flush_tlb_all() is not implemented. As a
+>> result, we went from flushing the TLB for every remapping to no flushing
+>> at all.
+>>
+>> This commit fixes this by introducing vmemmap_flush_tlb_all(), which
+>> expands to __tlb_flush_kernel() on s390 and to flush_tlb_all() on other
+>> archs.
+>>
+>> Fixes: f13b83fdd996 ("hugetlb: batch TLB flushes when freeing vmemmap")>
+> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+>> ---
+>>   mm/hugetlb_vmemmap.c | 17 +++++++++++++----
+>>   1 file changed, 13 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
+>> index ba0fb1b6a5a8..5819a3088850 100644
+>> --- a/mm/hugetlb_vmemmap.c
+>> +++ b/mm/hugetlb_vmemmap.c
+>> @@ -48,6 +48,15 @@ struct vmemmap_remap_walk {
+>>   	unsigned long		flags;
+>>   };
+>>   
+>> +static inline void vmemmap_flush_tlb_all(void)
+>> +{
+>> +#ifdef CONFIG_S390
+>> +	__tlb_flush_kernel();
+>> +#else
+>> +	flush_tlb_all();
+>> +#endif
+>> +}
+>> +
+> 
+> Wouldn't a better fix be to implement flush_tlb_all() in
+> s390/include/asm/tlbflush.h since that aliases to __tlb_flush_kernel()?
 
-Thanks, looks fine to me then. I'm not extremely familiar with this
-code so I won't give a Reviewed-by, but here is an ack, FWIW:
+Agreed, that feels cleaner and avoids this ifdef here.
 
-Acked-by: Mina Almasry <almasrymina@google.com>
+-- 
+Cheers
 
---=20
-Thanks,
-Mina
+David / dhildenb
+
 
