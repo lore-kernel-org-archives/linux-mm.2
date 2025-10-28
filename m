@@ -4,102 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EDBB2CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 06:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22EEDCCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 06:18:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 313788011E; Tue, 28 Oct 2025 02:11:33 -0400 (EDT)
+	id 6D3738011F; Tue, 28 Oct 2025 02:18:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2EA61800E4; Tue, 28 Oct 2025 02:11:33 -0400 (EDT)
+	id 6ABA2800E4; Tue, 28 Oct 2025 02:18:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B2F48011E; Tue, 28 Oct 2025 02:11:33 -0400 (EDT)
+	id 5E83E8011F; Tue, 28 Oct 2025 02:18:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 0626A800E4
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:11:33 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 92D4149109
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:11:32 +0000 (UTC)
-X-FDA: 84046501224.13.61ED7E6
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id EF5C2180008
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:11:30 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=en38n3Ho;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761631891;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=;
-	b=SEkDdA0YFTrFJZkDa/8NSoN/1Xfy3RqGwfoOnm4AK8Mnw0cyDsHmmRZ7FFB7xg0gwM9rSl
-	5c+trHQew0KI8bL4Af6HSTLHKH0005fRl6Mxkn7k3uQzhpKfl7cle2qcPMlH++VWZw39Hg
-	aROfF98Cz1li8gNBkWyp8djuzag9CYw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=en38n3Ho;
-	spf=none (imf24.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761631891; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4CDB1800E4
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:18:58 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFA3348CD5
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:18:57 +0000 (UTC)
+X-FDA: 84046519914.30.9D69609
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 32256140002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:18:54 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Q0zkTcDR;
+	spf=pass (imf26.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761632336; a=rsa-sha256;
 	cv=none;
-	b=ACY+lOr1KGcCfilZ0lGfBMhaeiVoC3X0LO/d5H+x8js3g0kwi1PAdk2FQrT9tmHISLaBT8
-	SvyEoa4p6QPmy7wCKOfXi1WVMa2aIEaOh4k2s4XzTj1LZRbDXbqObG0OwbPQzSK8IU1MwV
-	o3qxBlCZyBCs/EydT3/5grpSn+4XU/M=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=NeGicC5Z67ZOycdylyHVP58sPv/wzz9kpKbtM8vrBao=; b=en38n3Ho4OllXdazOO42BlB+wf
-	jLWpRZUqHeOL4fVy14AZUu0if+Zl0TYbzTm0FT4IkBHK0nL7PpgGPpqFJxsd5BctsjcfxD+WGf/Nd
-	RNcAo/2+zVnE4mYgH3rt20keuFI59nUR5ddlqTumaQImzzOGi2MO1tpBgntbek9BD3SKkh3K8BmPO
-	KZ57zXUChompwqBOodJ1GzIWTOBp0GBTEJDKcGiHG9IdciXVUVRem1vBUUpwsTRZlv6ulgq4cuPCN
-	MDhMeyq4GU7mKoeZnEVt2ksHnCwVu+lSAuQwBykTxlt5GMnS9YMK/1sm2pmWsx1Ilp2nwhFUTVScz
-	Ww6yXlUQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqq-00000001eXS-0sEj;
-	Tue, 28 Oct 2025 00:46:16 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v2 15/50] convert bpf
-Date: Tue, 28 Oct 2025 00:45:34 +0000
-Message-ID: <20251028004614.393374-16-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	b=PV5uQGsReeYdtll+HYVODEpdbAicJYckho6g+yhpkTZmtkYS95KZkfBuGflNE7a8gG0cbg
+	N/4V3tWfo5kDMRRnOIh1V0xa9jTFOzKVJyuIJXCansL2ObClhcH3tKe7fXVuFzqCQe2Qje
+	PHgR5jnSOFviU+AnzackHYxklfpQmIk=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Q0zkTcDR;
+	spf=pass (imf26.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.226 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761632336;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Xq9ZpBKijRP4yN0dW1eTvhFf2QVdu1P/bLYVpE2xac4=;
+	b=XxgCZY2ew9ZfNPFzSRaTmbY9t4Wxw9tLjWJFSaLcKNGwpBuHIu5laYfpY0gqZvr0ZkjBr7
+	FwnxL/C/XbaKB44qbBemwLkwMLAWP/GAmgIQjtQzGSHHFPVFAh/COa/FVQ4uHsiA/lGMdr
+	StvxVnCyIBm1//rPRXwayhHlof9b3uQ=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Xq9ZpBKijRP4yN0dW1eTvhFf2QVdu1P/bLYVpE2xac4=;
+	b=Q0zkTcDRWzoy2qrLKW917T7U0pYBoZvoP+MlBy/OSKPYNdKxaJLI58w5moDfgBIUk9jUqXyF2
+	u9/Cuuw3E29oFpSTKnQNPBWxdV9+opsJQreD3AtklCeJT7zqWgXUP6IHN1cGUbHVY3L1h+Kv5yb
+	QHr/QpepM3Q34x9FoTwZLLc=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4cwgDC3bNxzKm6s;
+	Tue, 28 Oct 2025 14:18:19 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 9087F14027A;
+	Tue, 28 Oct 2025 14:18:47 +0800 (CST)
+Received: from huawei.com (10.50.85.135) by dggpemf200018.china.huawei.com
+ (7.185.36.31) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Oct
+ 2025 14:18:46 +0800
+From: Quanmin Yan <yanquanmin1@huawei.com>
+To: <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yanquanmin1@huawei.com>, <wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+Subject: [PATCH] mm/damon/stat: set last_refresh_jiffies to jiffies at startup
+Date: Tue, 28 Oct 2025 14:19:27 +0800
+Message-ID: <20251028061927.1378746-1-yanquanmin1@huawei.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: EF5C2180008
-X-Stat-Signature: 9nzpidrgooyxaockdrefq1i8wuoessrk
+Content-Type: text/plain
+X-Originating-IP: [10.50.85.135]
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
 X-Rspam-User: 
-X-HE-Tag: 1761631890-837891
-X-HE-Meta: U2FsdGVkX1/q5vG7oad0M/EOxb7O/XCmIxM5D/3je/xscB5pjKi9IEa/OqZnlTt1oPTPF+Ovr6N7LkinJr2edOuka6DUTBfR2DXra6X56UIdE2pxvVQzYLj1qglaido8p1aKwUUuLMmUpnLtMFrx97ivqx6107dk2y8T0D0ICma6foKdJZiBmPfrxodZwDfjNTEih3MM3qijCOL62yWGqYtJOE6i2v93iRnMlex363sxU6nZCaM3HGhsjr2vpkJ+K4FLNBgcyySVkIhZ588VDXxrsryeJ1e5h+MERzD+R7dZYsl5JVIms7qalU5ASUoVjDplzm1ihhK7lne3aeQ5qtgMkMXkUiFhCiy4qn5oNhmPjbGqUFjiwZPj0Hw60Wzg8jhYSjk5jkWZ9tX1Ssv3vQp3Y9zxVyd9ArbUCCmAh6yrRaSqA0f9dEgWozLutb/P9fNLbHbPl5BcS7uSbGULZK+08MNp7FqGBt5fBLpzaYX1khZKyy9ql+hCNvIo2OekY/d9Pa0DArQsDny/EtYNFqqFmRIp+sS7bLzCH3pzJgAbThg/hL9EuLvpSrjlEJ8NioQvcaMgB+zTs2P3nYOFj/szyABl9R6hgwHEUsqcKFN/h2vkDWmfEARgol/GF2FhuQ7AzWkW8ahcJ9stlkJ4X5oAqtNHOtuo2UcCcvBdPqss4wyRe0+jRKBzWfTipphCWwJ6v6U7jvBbvHS3urzpaJG6gPk6l63DyUtMMdS7kEwhUMbjfFHadp+k/3csNs8ss88RjZeUFJWLZV17wk2/eORpOHuSI3wMfUkfATbwt6d1iSZQ3KQdCZx1iEg/rLWHcGKZnSH9ypgk2JsT/4J1nyVaMzcq/e4YxkrTFvR9TivR7OKdGr49J0Z8k1xUOt5uBMtk0VgOco1uURp0Uh73VLW4LjKof6/HmqahTr6FVzdCOFkyVjFCACpDl7guZFsfVKtJWjNf3OrJ2k1FYhZ
- z0+Ia0M1
- wJ+zgl84QbKNDuAr2B0/G1ZPwQR/iC/MAo57gie6JyCoeVCk+TZ37lybrVbGH1iRVXikumn4I+dQNRCrsUyBYqhcLMTh929/n7FwvAk0oRJBXTDvpnd/VQs0QMMA671aw4YeUrrpM9zHNdCeTs35ivdHBTOhcMdVO0uLqrqCNzst/f3NjUPz80lnrEMagpSI5t0ilck8UA2YW6Ab5F0Q30xhyOoV3QuFVyso2xy0WyL5XX750Vgl9uv27FzOzZiEHeHV5exslG8qKVVVsTHYBx7AXdgFJiiCxsA9nvL4tnmaHpbc+CJupVvB/JQnsfYcBm8jqus0ez4RrS+Bf9u/GQDHfAlRO06dQ0yDAzGbDrnZr2jp+hUJOr5XKxastXuT9tzIPrXZDFH9mwCo2Yh+oDuIHFRjx3ItT3BwU
+X-Stat-Signature: om47n8s5bpriaf4merqmtyi63uiwkda1
+X-Rspamd-Queue-Id: 32256140002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761632334-719066
+X-HE-Meta: U2FsdGVkX19J5qmyO2omarvxA7B1zsBjnbs11nuW2fuDbqe3BRB65u0KCcvtPvrmw+AUJr7NxLYhY+9ipb2tFQCjiX0GH3nu1RA3F1K3zFCNmImBmWHQVJKvRkxWHuzqUBFerA1eKxQz8QBdl62jLVm5sPDCGv6wy+G84tdU5i/EnDX+JrV5011Mh7zJ2IpjhLlWGR3G/6ZbJ6VYj3qmH9f+yl620MhaKSLuN6KjIxOCc/eNwnGI39Loh4BzAd1v8NiZQSZ6zSzPQ9kd9kXH2TX0tb6rUnBbvLi1C2ACKkZBxKOJaZE3YheKRSOnMziS6fYjwCn1jrO7AsOdkzcCT7GfZr0UmQyuVcW6iS3K32hpJkdzjaZsOqMZXMmHJBV7+X7NQDNCWV57TOfZCnnqqoU5+c9GMN++1QJaFuLf+nKQ/pvmZO0Eyai/lyfeiOgF4JyI0G3xxT+3yEDVC7Uy+IIy9Clq4Npm1mBZsy0UjzGXc/jtvfI2pWyKMAu5q1tJWSbxljGf+qcZGE87I7CzB7OuVuGt+sWKm1P9jxg/eDkfG/wZ/h2QEkW8CSdm1i01yhvUP0zmS+0x8YWhAdC3KMdkNA1kb18kYPmhi+qC6IhxN19oaEwFYbMp6fkRRtwPTkX3H+uGv/PY13o0bj9oxqpnutaUnntOsrZ/MmKiG4hey0wA1pt16+Ny7X+AxCfLt7Vi1L9KOZZD8OcnXi8G8lXOgLtrgMgh3bhFUhBhkoUPmOM+zl2DJiwYd90Ss7ItaTFNoETb6wOCqUmCUoqwEjWQF1FHZJSpsOI30nXoRT/yS5B4V7pUS8AO76lLigmt05E7ZqZB30rbmwENfCZX1qBOBCH5CLGg623ixnBV+EDAR9JsiI8JT/PWKYRBc43A0lg+0lDHifHt9DeYPKwRmWNxfszYNgHcfxV/ZISLq0sJRWuZBDKzbbYWyG7U4jwkOvHUCRHMEEtuUNVzari
+ dCHB5PRK
+ yqSHxKUkWkUSBrwZ4/35k7yH6sQgugJ9dm3H9zu2IduDOyUpN4X6F+LOXhGnhWVfBNgEQffczn+Hjdtg+ymzlI493S7889tQYNI1rwc3/krAB+sTBZNnKqJTApxqdBZAG8JryruZq87Je1KAjYIxNm2X5N+NogObP7SZLWRq4ou5XVwOEwQ3zE/oQ0m1i4y6WFhOYrvvj+jGWIGXoZWh5bgw2Vh/BQAuXiExI8vbkaZqsM4M+USHFyOTceEP4tI/iWomDiH/Cw1HRPZgvES+uMtzdJxwafj0cikbuow+16e5kGwUQ8H0qSWk1JQ5sw5boa9srAFokBGGoMWateQ2qpkCS20hnWK8z7C2GtVdAnfyFcpVvyy+hmrQJ4LTg8mX3dBNK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,67 +96,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-object creation goes through the normal VFS paths or approximation
-thereof (user_path_create()/done_path_create() in case of bpf_obj_do_pin(),
-open-coded simple_{start,done}_creating() in bpf_iter_link_pin_kernel()
-at mount time), removals go entirely through the normal VFS paths (and
-->unlink() is simple_unlink() there).
+In DAMON_STAT's damon_stat_damon_call_fn(), time_before_eq() is used to
+avoid unnecessarily frequent stat update.
 
-Enough to have bpf_dentry_finalize() use d_make_persistent() instead
-of dget() and we are done.
+On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
+jiffies wrap bugs appear earlier. However, this causes time_before_eq()
+in DAMON_STAT to unexpectedly return true during the first 5 minutes
+after boot on 32-bit systems (see [1] for more explanation, which fixes
+another jiffies-related issue in DAMON). As a result, DAMON_STAT does not
+update any monitoring results during that period, which can be more
+confusing when DAMON_STAT_ENABLED_DEFAULT is enabled.
 
-Convert bpf_iter_link_pin_kernel() to simple_{start,done}_creating(),
-while we are at it.
+Fix it by setting last_refresh_jiffies to jiffies at startup.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+[1] https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
+
+Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
+Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
 ---
- kernel/bpf/inode.c | 15 +++++----------
- 1 file changed, 5 insertions(+), 10 deletions(-)
+ mm/damon/stat.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/bpf/inode.c b/kernel/bpf/inode.c
-index 81780bcf8d25..9f866a010dad 100644
---- a/kernel/bpf/inode.c
-+++ b/kernel/bpf/inode.c
-@@ -144,8 +144,7 @@ static int bpf_inode_type(const struct inode *inode, enum bpf_type *type)
- static void bpf_dentry_finalize(struct dentry *dentry, struct inode *inode,
- 				struct inode *dir)
- {
--	d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
+diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+index 6c4503d2aee3..6dc3e18de910 100644
+--- a/mm/damon/stat.c
++++ b/mm/damon/stat.c
+@@ -132,6 +132,9 @@ static int damon_stat_damon_call_fn(void *data)
+ 	struct damon_ctx *c = data;
+ 	static unsigned long last_refresh_jiffies;
  
- 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
- }
-@@ -420,16 +419,12 @@ static int bpf_iter_link_pin_kernel(struct dentry *parent,
- 	struct dentry *dentry;
- 	int ret;
- 
--	inode_lock(parent->d_inode);
--	dentry = lookup_noperm(&QSTR(name), parent);
--	if (IS_ERR(dentry)) {
--		inode_unlock(parent->d_inode);
-+	dentry = simple_start_creating(parent, name);
-+	if (IS_ERR(dentry))
- 		return PTR_ERR(dentry);
--	}
- 	ret = bpf_mkobj_ops(dentry, mode, link, &bpf_link_iops,
- 			    &bpf_iter_fops);
--	dput(dentry);
--	inode_unlock(parent->d_inode);
-+	simple_done_creating(dentry);
- 	return ret;
- }
- 
-@@ -1080,7 +1075,7 @@ static void bpf_kill_super(struct super_block *sb)
- {
- 	struct bpf_mount_opts *opts = sb->s_fs_info;
- 
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 	kfree(opts);
- }
- 
++	if (unlikely(!last_refresh_jiffies))
++		last_refresh_jiffies = jiffies;
++
+ 	/* avoid unnecessarily frequent stat update */
+ 	if (time_before_eq(jiffies, last_refresh_jiffies +
+ 				msecs_to_jiffies(5 * MSEC_PER_SEC)))
 -- 
-2.47.3
+2.43.0
 
 
