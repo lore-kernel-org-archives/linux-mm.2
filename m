@@ -4,109 +4,154 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43269CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 12:38:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B3769CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 12:48:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 82F308E0190; Tue, 28 Oct 2025 08:38:05 -0400 (EDT)
+	id F1F928E0191; Tue, 28 Oct 2025 08:48:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 806118E0016; Tue, 28 Oct 2025 08:38:05 -0400 (EDT)
+	id ED06D8E0016; Tue, 28 Oct 2025 08:48:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7432E8E0190; Tue, 28 Oct 2025 08:38:05 -0400 (EDT)
+	id D71788E0191; Tue, 28 Oct 2025 08:48:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6373F8E0016
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 08:38:05 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0F78A16045A
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:38:05 +0000 (UTC)
-X-FDA: 84047475330.20.C1C5CAC
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 03C6E100010
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:38:02 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=keG6XVs4;
-	spf=pass (imf14.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
+	by kanga.kvack.org (Postfix) with ESMTP id C26298E0016
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 08:48:31 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 71D27B97FC
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:48:31 +0000 (UTC)
+X-FDA: 84047501622.01.95F0CA0
+Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 599C9180002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:48:29 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=XjJiurAH;
+	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761655083;
+	s=arc-20220608; t=1761655709;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sogyW661oCbNHSPgSbES/VRknKCAgbGkPwNv2CeIoPg=;
-	b=yMWTtLx9AWlehqo7r8O1/5DUjFDyEfbZSM4mBwICtRMPZeYgeKdONGLXS+FkRZeV5WMDc3
-	vzSBBZRCOlR/pv+WDjwykgSdoLAViXIqkKG/6gXAPCcm2ktFp83W551TZ+2wH1JsoN2JxF
-	5t448cGuPBbFRURZhdRt0pbRbUvSbYY=
+	bh=Olopx85j++3FTIQ4p47k6xJ/f5lMguJl5tBEftSDYws=;
+	b=Iub7r3Ua7CBCFTzrCmLr8EF7muM1+MnwvIFM46sK5pJ9TATV82nP/KuSXplMz/+YNTHxBC
+	6qGfhXZ4rHTAb8z7nmoiY6NtyanCvA2T8KSTug6DoISsD64k8nJvVp3xl+FENdy8dljhTw
+	SYLYa3l0tuw0r7kJY7BEg8LskLXi5zY=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=keG6XVs4;
-	spf=pass (imf14.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761655083; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=XjJiurAH;
+	spf=pass (imf06.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.47 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761655709; a=rsa-sha256;
 	cv=none;
-	b=BI40HDfgL9xdSMlI8nt5v80Bf/qktQCCBK97JfdVPrLPc/1WkZ4P2iFYYUN2LtRGsvzwmz
-	BKiHri2sVISUvL3V1NthJE68xYCke/1a11Zeg873QGd3W8et2oXm/15vlhxaepL/S10ZsS
-	m90MqLuIH/jrh88sdx1AlzpuRaiFXsg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1761655081;
-	bh=PO5GYW3JRfyGqT//NznkfbFWET3Cuq1GDBXCxKeHqpQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=keG6XVs4IngS/M9orK3tSBGfwrYw0Wbiep2ZWCxwZGD7wpd3Mvw/3qST52CtSKRch
-	 WiOJ7wfTdQF6EK49QnyyyGCrnKdLTw0fbRd5T/YS3toi/mLEwlc8qLiclCh/S57jFf
-	 Un6GUXQaYxOnMWM6Ale69R8Aj0lnkKYuH2cZ+zOw=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id AFA251C01DF;
-	Tue, 28 Oct 2025 08:38:00 -0400 (EDT)
-Message-ID: <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
- raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
- a.hindborg@kernel.org,  linux-mm@kvack.org, linux-efi@vger.kernel.org,
- ocfs2-devel@lists.linux.dev,  kees@kernel.org, rostedt@goodmis.org,
- gregkh@linuxfoundation.org,  linux-usb@vger.kernel.org,
- paul@paul-moore.com, casey@schaufler-ca.com, 
- linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
- selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Date: Tue, 28 Oct 2025 08:38:00 -0400
-In-Reply-To: <20251028004614.393374-7-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	 <20251028004614.393374-7-viro@zeniv.linux.org.uk>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIB
- wMCAQYVC
-	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAV
- QEEwEIAD
-	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9
- D9OOU8qB
-	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTV
- YG5zyLRi
-	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZ
- uorhFE06
-	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xj
- WKAB6OII
-	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvC
- W2e4dAlG
-	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	b=FW6lxPtqRM8fmqdCGBBGPDHfEExdTVQhhwC+yJCvTnPENH5uJ8gnt6qwDV9HeqcFWcYGUY
+	CyJCue+3kLxmlL9A9kCgtYdS0qcPzaaeOUdxHKJGWxwHAO0x3XUSRlGRxaO/uhgaFm7bLq
+	NtWQd6RtKOUyo9n483XG+rN8xgUGUXs=
+Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-87d8fa51993so69232986d6.1
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:48:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1761655708; x=1762260508; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Olopx85j++3FTIQ4p47k6xJ/f5lMguJl5tBEftSDYws=;
+        b=XjJiurAH8MGsEiOFvZCfV0bdkwCjun4TAQ9S/yUheZ9iaUKTI8y0GwxF7S19+vPDeA
+         GhYwMsndcGod2l5IC8KhOP3bdJHRQwCJSv/+MPwNCneTLileaQmCrpkD0vVqFsd25azZ
+         vgK6ZlgIYz4mnBmhhw2m7vJ/hSWfJ0rQsOyornJfb6/Xk4OGMxbAVmAqqkPq9hwyx8fB
+         EcuW/5sG1VUXlDSYnH3bsUdPl39mM7z1N4cxWvxRjKuUjx3SK8kXFhU138Ywel4LFSFU
+         xlfEBkJtVaG0AY3VvUkKSdCe9a54hsJGDxD5TMqmbYRj3UYraetztqI+Ao8s2n8AKbsR
+         91XQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761655708; x=1762260508;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Olopx85j++3FTIQ4p47k6xJ/f5lMguJl5tBEftSDYws=;
+        b=EVJL/dFU9j9vQRLysXB0m5z1gZUzu1iw33KvHH2EW4ddGtbwRFlyYOHnh5jq2iz4BB
+         OhgyXqOfWZ2tiibSzXHbY4ySImwJUfFSJRJnEVT1kql9k0exPwfVP5ytKY1zCBCeQEXr
+         CA8bGxnfamVdHutdZUiJI3zCI+HhVmIB79kJGDpOitKqBK12THSmZFuozKA0T1L6TRiP
+         I9J1y1esNmOh6KStAiFlp0d7VG/2Xxq4h5jt8IA4mW4fdlKV2YsPw+ZltRL72KcQNU/5
+         yOsQzhV9G7YzO4LeQaH6jSevq8/Fln5XubTgvp96XtD2dIVhLt8zcSl3vhexKpJAsrDG
+         Y/jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWFju1R4rZf8af7JrbhTOG456DofCwLLkKQOWK/0j02h8f0jMUsxeWqyYWlIV9CnXqfkC530xhDyQ==@kvack.org
+X-Gm-Message-State: AOJu0YzoJpn/pkh2Z8PyDnCcxMn5Xo27gLTiPfNvjHsvfjxULutmc1NG
+	XYR7sS0pTs0KfIhFbM3mRNhLA+pyTim/mXV8bbRGHQ4L+DvD3fD2y3MTRDK2zYkGzrY=
+X-Gm-Gg: ASbGncsOEDv+hqy44EbsDeCIw02OdbS+CXuuzBJ5ZY0dwpLCN6Hmbb2Ny8Avya6kail
+	FwZeGp1FLFeUJV4qDUewl69sbGbPWK08WDkT9K8GwkXywZU/K0CX6gyj6QIrErxrkMBYSNadQ6v
+	UCgrA/pAggjeAnz5QYIh+nXw2VE27q9hg/enqfkvngpmfueo2RT3GIUcQ327Do7YpFMuw6GE9yA
+	YdHhA8MVrnLXIpMVE+8tm3ivFEwP21HkfMfZepHxoMCx2QwhayRb3SJdRJPDIW3BDh76nyKIN6p
+	XLGTalHfZ15ucJUqaAUQjiwFrwL9VCAbHfj1heorQmh+ZP+1eZuNtJWCXNJW10HYXv7D1bn2MN7
+	h+5DfMNejnTr7L/LGcI23XXhGD4HwNa40DLwK8honJ42Ev/i5eT1EZ8t1eApEX0cP1wKsVeBFZd
+	VOJNs7aYYRdYEafPdEMa17PKtmX7/rcK/+PtlasOfblkTvAA==
+X-Google-Smtp-Source: AGHT+IHiUNJHwvr/nLoj/e7qPf6JckrC19yXD6gHtAA14Gx8htpJ7qO77Enxzi9C2v+UJSUvbdZfVQ==
+X-Received: by 2002:ad4:5c65:0:b0:87c:1889:6a7f with SMTP id 6a1803df08f44-87ffb000afdmr37515826d6.5.1761655708162;
+        Tue, 28 Oct 2025 05:48:28 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc48e08d3sm76769836d6.19.2025.10.28.05.48.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Oct 2025 05:48:23 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vDj7a-00000004Oq0-01nS;
+	Tue, 28 Oct 2025 09:48:18 -0300
+Date: Tue, 28 Oct 2025 09:48:17 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Peter Xu <peterx@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [RFC PATCH 00/12] remove is_swap_[pte, pmd]() + non-swap
+ confusion
+Message-ID: <20251028124817.GH760669@ziepe.ca>
+References: <cover.1761288179.git.lorenzo.stoakes@oracle.com>
+ <20251027160923.GF760669@ziepe.ca>
+ <8d4da271-472b-4a32-9e51-3ff4d8c2e232@lucifer.local>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 03C6E100010
-X-Stat-Signature: 9b561twnm55f7riq6acof5yzzx1eo93x
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8d4da271-472b-4a32-9e51-3ff4d8c2e232@lucifer.local>
+X-Stat-Signature: agar1p63k7jhrskixz9hzo6yzxkeeyqq
 X-Rspam-User: 
-X-HE-Tag: 1761655082-418768
-X-HE-Meta: U2FsdGVkX18qqZs9YLS+wd0IUxIkv2jpKhJ2XKnZhuGpt6WjyylvvsWBmZum3+3YQQCnzYMasGlKx6eX15+fMdBCLImaCAoa92r6dm4xOX0J7hVMjDrTynRUhyzjPCgXuhgS+doFP0GNs/wAMOogzAOKjL1jXMF3vha2dJKOe2JsEV90Ar0CspkVTPVRwswCQ/ae+gPJHcUsonQeGUMASsYKoulhY2/3E5bmsGFP4OSKQOUJNDCC6VO43kjUviM6ROp5kEeYTFfU0aWpyWm1b1SknGBqu9fW+VvAsZ1T5QccVhebcNS3JQNLl/4qVAEcvRRo3P+O5H18k069rl8newIAtEb2bvENfHq/oDAR6fenYEAIcj8hJ2uV6IrdiLfFHe0FR9qNXup8H8dI9G1/GDFMFADeGazq3X6+xKUZAF0VURkv+JuEwDejwSRo4ciEsx/LDCsVRotGBEoLOQ9owFvN1VDIBt2jes/r+NYbllQAulmopHCHsBxilbAolul7Uk7X8VjKvyw7BgutFtM3Aitu2eCH9uryzirWxP/sAKYGzhh0FHjAUVLpqALAbhMrzOof+9tKqdyaH/qF1mQHBpY/FginzmoCSQXaBvjp/6dTKJnMDJqtuUOPx/Lw3SHWu8iaWJln2+C8WL43h9tqINUb1XQ2YJJom3ZRC0uU6TxPIj35OEGylDx/D6U12sGzMYj/qXd7UGSVFo2qeJvmi7SqEBcGR7ryrapXXBFYM1krv7BPLz30iD0yGH9p4l3fuULQL2XkzrAGdQjE6Q6l/GujLwr2DUQ6uC91RZAY9iaJUgpLOT8DjSSsQVP5DYdudMJBztaPi0ukGZkTMxo9bsOHdxcZMaRQVzSFXl6KXoP9Ah5Yw0znYsTslVhyKOczhA5l1u/5koig+JHY/4BLJwrguTjSuGVyX7f1Hms20HgNRRTpIff9q06xENxw6Pz8WaagbP/4MW+SFNH4RTT
- GK1ueesu
- q0zs5KpmRtQN7GFLbTvCxmo97tEP76/YZAa9dykcacmV6ziTC0dGZT2Zuu6miVZ2kE/WSjF0KQhU7NYr5RgJCuMw3lU/OLdkFL1FATRN45PMGahirYS6032sBF/TursnynRrhMWQ8gHwJrJ4ifnAxH6nvMrX2DHj2tP8dQ7Q2UQ63pqCr4Qrrp9umpwytHPUK07sCqFXka04o51eHso9rtfjFs910gxDAYFplAnjl6T6Wtj3Gx0ER4R2y62Y0wXJRhETcXLGV9RH1a8mY0HWgDdYjUCCye0Y38nesGc0tZ+2EfTKPGYyw1GpNaQQfjUAad0Ge5fjWHcgrhu97W7LmtJbIhQJKEb1yCjaK5iEw8n9Tjw+49DT+r2yiMmglKGdSjbSE
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 599C9180002
+X-HE-Tag: 1761655709-396346
+X-HE-Meta: U2FsdGVkX19hb2SbYINjgzQvYAzN/NTaUU9lYRdNz6rdlkksKv82/1v5Xjv/TW92dLpUBM90mB9q5sFBQ0JFIkbPrgLZpb9CPu/fwVTFXj0i5pitj8U5XI3kvYudD+B/3ChO1I7NLk2UyuwHWCUjqgQAyU1lH5kTtF931RGuyj4BJpRmA7NdERAo9eQMIgyMKPiD/Kve8NunNzsetqAMCY/zaiAlOn7nuraIFbdjLSSRm1H6yk5wAwBTCGSg1DoqzzXOXM8jUBwyT8dIsEwstoHLVWDGvpG+qxO8Cm9LNI5hh8p0ajHCCHj9v62imX6kmbApfJPppnSPx+mD1HU6SG1tNmTRCCZqQ6FsFxyYQmTsEv3ULUmdgEa1XPlS1w+ckTkdQBEVnf7FpXzg/LPys06NcHP3c94fLJtSAMMQ/gPGrHERjby2e/LKp14WyoP2iDcwnxGHLKdBzGFuqk6MNs9iMqCsVWtRGfr4XZjHvZRy41kDHRQxjjNzcN2KQ+T7BFpHCWWEa1ClE0dI2RQaEPtIvEky6I+MxPb1DPTa4L7Lyq6IibPsWx1AWXo61YoHvAuzgYhf6tjEOllZdy6Qtacr+KwSWixwGAcfcF91+r14WReQO15nVBTWMtHYl+0+nGrnZ0DvdhF41RVGeqcjVlgwRqQgKH++bNnD/h9jnr1lr3FdYk7siQ1LqzgYflg6RPKApwwQ0RP0HRrB7u9Q3N1D5aLiBstB7FW78oTq9a6fp/xGDMnv7qFBXv+W7erAMIvn98lUpQL2rq1jH2pt7lTuYophHembyyANSddJVeKgFarz/eZvnpUPAeeF0rfGOkNLkT2Z/ytQpq3YA/cYW83p7W27z9GAqq2lmM8hxfbYbmoL4fhbD6YQD2YE4rFVZtMjyER8dYGwtv5T7Hgr4WCELpKb5XjuEMUGBQr0Yv4Q2ZL6lHHijJOHQQUDtISDv2qzfBSb3iDf6kvXM95
+ ImiZ7q5A
+ 87gOtid9dmdJnkP8LxPNFKAIlcLO9u3HT4g0MnQiKH48eDpp/8xXFmhIenFUn3UpHKz80V53ZsFM4arp2QAXpOyKivMpionC+UgHrys4gofIkIU3l/cNAO9OouKhsH1niGJD7MvleNQEBoKSC6zC/vsnUkCuULwDP9w216HFtUAkTEQUic73BTIlhqY5w5y7MAqNyN4g/UAJ48Q0XMBqRdNyN89t5IjbPdtY6wD3hlmZiyBNQJMySNDlWDXtLmc4y+JSUt0Yfh0fQvR4OpdBA1VdKwj8L9n6P27B7QNS1O/LgaLrdnvxpGn9IA4gmgF4+9Mn2K4omOxDIe0KEw33s0PsJQAaZ7SK6kZKAW22z46E1zvY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,28 +160,174 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-[...]
-> +void d_make_discardable(struct dentry *dentry)
-> +{
-> +	spin_lock(&dentry->d_lock);
-> +	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> +	dentry->d_lockref.count--;
-> +	rcu_read_lock();
-> +	finish_dput(dentry);
-> +}
-> +EXPORT_SYMBOL(d_make_discardable);
+On Mon, Oct 27, 2025 at 05:33:57PM +0000, Lorenzo Stoakes wrote:
+> (Note I never intended this to be an RFC, it was only because of
+> series-likely-to-be-dropped causing nasty conflicts this isn't an 'out
+> there' series rather a practical submission).
+> 
+> To preface, as I said elsewhere, I intend to do more on this, renaming
+> swp_entry_t to probably leaf_entry_t (thanks Gregory!)
+> 
+> The issue is no matter how I do this people will theorise different
+> approaches, I'm trying to practically find a way forward that works
+> iteratively.
 
-I was going to ask why you don't have a WARN_ON if the dentry is not
-persistent here.  Fortunately I read the next patch which gives the
-explanation and saw that you do do this in patch 50.  For those of us
-who have a very linear way of reading and responding to patches, it
-would have been helpful to put a comment at the top saying something
-like persistency will be checked when all callers are converted, which
-you can replace in patch 50.
+It is why I suggested that swp_entry_t is the name we have (for this
+series at least) and lean into it as the proper name for the abstract
+idea of a multi-type'd value. Having a following series to rename
+"swp_entry_t" to some "leaf entry" will resolve the poor naming.
 
-Regards,
+But for now, "swp_entry_t" does not mean *swap* entry, it means "leaf
+entry with a really bad type name".
 
-James
+And swpent_* is the namespace prefix for things dealing with
+swp_entry_t.
 
+If done consistently then the switch to leaf entry naming is just a
+simple mass rename of swpent/leafent.
+
+> > That suggests functions like this:
+> >
+> > swpent_is_swap()
+> > swpent_is_migration()
+> > ..
+> 
+> The _whole point_ of this series is to separate out the idea that you're
+> dealing with swap entries so I don't like swpent as a name obviously.
+
+As you say we can't fix everything at once, but if you do the above
+and then rename the end state would be
+
+leafent_is_swap()
+leafent_is_migration()
+ ..
+
+And that seems like a good end state.
+
+So pick the small steps, either lean into swpent in this series as the
+place holder for leafent in the next..
+
+Or this seems like a good idea too:
+
+> We could also just pre-empt and prefix functions with leafent_is_swap() if
+> you prefer.
+> 
+> We could even do:
+> 
+> /* TODO: Rename swap_entry_t to leaf_entry_t */
+> typedef swap_entry_t leaf_entry_t;
+>
+> And use the new type right away.
+
+Then the followup series is cleaning away swap_entry_t as a name.
+
+> > /* True if the pte is a swpent_is_swap() */
+> > static inline bool swpent_get_swap_pte(pte_t pte, swp_entry_t *entryp)
+> > {
+> >    if (pte_present(pte))
+> >         return false;
+> >    *swpent = pte_to_swp_entry(pte);
+> >    return swpent_is_swap(*swpent);
+> > }
+> 
+> I already implement in the series a pte_to_swp_entry_or_zero() function
+
+I saw, but I don't think it is a great name.. It doesn't really give
+"zero" it gives a swp_entry_t that doesn't pass any of the
+swpent_is_XX() functions. ie a none type.
+
+> that goes one further - checks pte_present() for you, if pte_none() you
+> just get an empty swap entry, so this can be:
+
+And I was hoping to see a path to get rid of the pte_none() stuff, or
+at least on most arches. It is pretty pointless to check for pte_none
+if the arch has a none-pte that already is 0..
+
+So pte_none can be more like:
+   swpent_is_none(pte_to_swp_entry(pte))
+
+Where pte_to_swp_entry is just some bit maths with no conditionals.
+
+> > I also think it will be more readable to keep all these things under a
+> > swpent namespace instead of using unstructured english names.
+> 
+> Nope. Again, the whole point of the series is to avoid referencing
+> swap. swpent_xxx() is just eliminating the purpose of the series right?
+> 
+> Yes it sucks that the type name is what it is, but this is an iterative
+> process.
+
+Sure, but don't add a bunch of new names with *no namespace*. As above
+either accept swpent is a placeholder for leafent in the next series,
+or do this:
+
+> But as above, we could pre-empt future changes and prefix with a
+> leafent_*() prefix if that works for you?
+
+Which seems like a good idea to me.
+
+> > I'd expect a safe function should be more like
+> >
+> >    *swpent = pte_to_swp_entry_safe(pte);
+> >    return swpent_is_swap(*swpent);
+> >
+> > Where "safe" means that if the PTE is None or Present then
+> > swpent_is_XX() == false. Ie it returns a 0 swpent and 0 swpent is
+> > always nothing.
+> 
+> Not sure it's really 'safe', the name is unfortunate, but you could read
+> this as 'always get a valid swap entry to operate on'...
+
+My suggestion was the leaf entry has a type {none, swap, migration, etc}
+
+And this _safe version returns the none type'd leaf entry for a
+present pte.
+
+We move toward eliminating the idea of pte_none by saying a
+non-present pte is always a leaf_entry and what we call a "none pte"
+is a "none leaf entry"
+
+> leaf_entry_t leafent_from_pte()...?
+
+Probably this one?
+> > static inline bool get_pte_swap_entry(pte_t pte, swp_entry_t *entryp)
+> > {
+> >    return swpent_is_swap(*swpent = pte_to_swp_entry_safe(pte));
+> > }
+> 
+> I absolutely hate that embedded assignment, but this is equivalent to what
+> I suggested above, so agreed this is a good suggestion broadly.
+> 
+> >
+> > Maybe it doesn't even need an inline at that point?
+> 
+> Don't understand what you mean by that. It's in a header file?
+
+I mean just write it like this in the callers:
+
+  swp_entry_t leafent = pte_to_swp_entry_safe(pte);
+
+  if (swpent_is_swap(leafent)) {
+  }
+
+It is basically the same # lines as the helper version.
+
+> > > * is_huge_pmd() - Determines if a PMD contains either a present transparent
+> > >   huge page entry or a huge non-present entry. This again simplifies a lot
+> > >   of logic that simply open-coded this.
+> >
+> > is_huge_or_swpent_pmd() would be nicer, IMHO. I think it is surprising
+> > when any of these APIs accept swap entries without being explicit
+> 
+> Again, I'm not going to reference swap in a series intended to eliminate
+> this, it defeats the purpose.
+> 
+> And the non-present (or whatever you want to call it) entry _is_ huge. So
+> it's just adding more confusion that way IMO.
+
+Then this:
+
+  pmd_is_present_or_leafent(pmd)
+
+Jason
 
