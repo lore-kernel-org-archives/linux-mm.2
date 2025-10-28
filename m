@@ -4,218 +4,175 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27864CCF9EE
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 09:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7641CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 09:44:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 88B7780133; Tue, 28 Oct 2025 05:32:41 -0400 (EDT)
+	id E717D80134; Tue, 28 Oct 2025 05:44:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8633180131; Tue, 28 Oct 2025 05:32:41 -0400 (EDT)
+	id E271F80131; Tue, 28 Oct 2025 05:44:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 751DA80133; Tue, 28 Oct 2025 05:32:41 -0400 (EDT)
+	id D100880134; Tue, 28 Oct 2025 05:44:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 61CE980131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:32:41 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08ACEC0424
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:32:41 +0000 (UTC)
-X-FDA: 84047008122.27.74BB5B1
-Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010003.outbound.protection.outlook.com [52.101.85.3])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 164F21C0011
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:32:37 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=t3WzHDtB;
-	spf=pass (imf20.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.3 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761643958;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B7BCC80131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:44:46 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B30413AEE6
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:44:46 +0000 (UTC)
+X-FDA: 84047038572.13.F939C3F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id BE7404000C
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:44:43 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IpPocVys;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761644684; a=rsa-sha256;
+	cv=none;
+	b=lgDC69+nId31CrAmSMCEBh1NtaJ90I0es7XUdroYpLjq3lvJiKc4afuVoqmWxFa4v9Ad8k
+	eDVx/GWa0jCwsmsqVm+VbP9eN+6Xfr2eNm192vvyeiie3j+xWkRzJ1fa4rEW3Dc4Nn+5A+
+	4YLU6mQVx8Nrz3JSkbGyQt4gbOEU2Lg=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IpPocVys;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761644684;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sQ7AoOjYFZOGL5fPAQPHD4Ndj7ep1FjVGInLu8c9YFo=;
-	b=LCSpy16pjKlGFYy4iz+vZteW/NjAK+Sawihgx/hNMWhksFFlCTrLtnqRFcXFGfflSqvFGf
-	aiYMNIkOVYZj+039KMitRLZIe4vUdUdaDWLtHY8u8RwVtgGkhfbdDVtt6qdnFY5aXYfLcj
-	qhcehvfUAa/KF1J/WJPvghP5FIXhIo8=
-ARC-Authentication-Results: i=2;
-	imf20.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=t3WzHDtB;
-	spf=pass (imf20.hostedemail.com: domain of balbirs@nvidia.com designates 52.101.85.3 as permitted sender) smtp.mailfrom=balbirs@nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	dmarc=pass (policy=reject) header.from=nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761643958; a=rsa-sha256;
-	cv=pass;
-	b=dtQA04sQKiW8PcPQaM3WHk+VUYVX6pqZ8Ggc5mmDfjWzfpKfiRtvNwrMkT67lBei7KB8l/
-	3Fztn6XsiNxhnnjtr53z3ve9T7uZ4KmcaCYaVZLNk3i01DDbHpTAoam9M6HRhwzNXbcDD9
-	s9eifCAWhquaT3N9KqRoaYDXc2nSry8=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=I/arccEiprIwm00K5d+SZ/uc10ZDqohw623Bj3T5JndyKMTU0Th+jpQfgeBhmL5YaR6vU88QsYqHw1RS4BgQ/LucGMlwtLLpd/HAC35LnIAp73zwP6tE1+Qbwo0lMsa3CL1emP4bLiO6XJaSGlvgHwGanZr4RqNS24Pb+WelVdgEEs5jiLU3jNJ1AnA/44LBFcPjBRIh5eUVoHBq7f8sF7M+lPQX/g8GX57pu5S3jxNOGbyUj+BdVtllfoTLzRBuhK3SUhjaKYJndyQZXQIbFGFnS9fOkRzt3Lbjetka+d5FfJ1VBdq8H86OfYWRbDez6VoDuLl3ZywM7Py2z0dyTQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sQ7AoOjYFZOGL5fPAQPHD4Ndj7ep1FjVGInLu8c9YFo=;
- b=wnz6q44DN9z7/bSkg9vEENQcEnGbhObBrwKhYnE9NkgFH4Rq5IEGo9DqRH0teTzzv1a77sCSwfoe2YTLgw+bgh5kDUx4n9e40U6aFvxWTY5r+7E7pdXxC9bnYGFarVDI2m67gvHIrftAivL1bUxAmTyWdO4Q6LUC4tACKSFEtzIqJFlXpCpPvOwx2UlPQ7NIl+JeKzFc4+ExdWhAvX+6Z2494uQZ9HQqzkVkubMOWG+zFOSp5tccwvcXtYUZBLzaa4nm6yvX/LGrTa/TUq0bNjFdEMDAOhYZvcwkXZ2wpshvTa+ID1TTwr8bcnzDOjgEdWkLrOBSTNdicx+7sWza2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sQ7AoOjYFZOGL5fPAQPHD4Ndj7ep1FjVGInLu8c9YFo=;
- b=t3WzHDtB5bpd6ewN99T0Uh3caMzca5ABtVqMF6EEINLVbALzkuU5/Ms2yZeN1NmWz1ik5cmvM/XZKhju5AifAO/g5d7f2/o6LGjs+/KhIvoWL0nmr48XBwmAwJYNSJn/VyNgSRgwxvUip2g+8EPrCf/FNvplqu7+I7OHlXyrw6h/W2lJHb1uaBJyaPiMWlgW14F/GCQQJ+rHR4TbJ61pxHbUeNY1Ejh2x6VwPjx4BqaiUrpzlOxIoKyabNzoxKlLsQ5ttKKXsULgucerQlprB4g/2rwGfDuSvPFbki+/nchP5KyLuiI5imLvXC1MIu3YqS92JOEJ5CNX6yRB2grIFA==
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com (2603:10b6:510:223::13)
- by SA0PR12MB7478.namprd12.prod.outlook.com (2603:10b6:806:24b::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.12; Tue, 28 Oct
- 2025 09:32:33 +0000
-Received: from PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251]) by PH8PR12MB7277.namprd12.prod.outlook.com
- ([fe80::3a4:70ea:ff05:1251%7]) with mapi id 15.20.9275.011; Tue, 28 Oct 2025
- 09:32:33 +0000
-Message-ID: <2c3f4af6-6f52-4912-ae4d-531c6ec9f75a@nvidia.com>
-Date: Tue, 28 Oct 2025 20:32:25 +1100
-User-Agent: Mozilla Thunderbird
-Subject: Re: [v7 11/16] mm/migrate_device: add THP splitting during migration
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-mm@kvack.org,
- akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>,
- Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
- Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
- Ying Huang <ying.huang@linux.alibaba.com>,
- Alistair Popple <apopple@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lyude Paul <lyude@redhat.com>,
- Danilo Krummrich <dakr@kernel.org>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Ralph Campbell <rcampbell@nvidia.com>,
- =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>,
- Matthew Brost <matthew.brost@intel.com>,
- Francois Dugast <francois.dugast@intel.com>
-References: <20251001065707.920170-1-balbirs@nvidia.com>
- <20251001065707.920170-12-balbirs@nvidia.com>
- <20251019081954.luz3mp5ghdhii3vr@master>
- <62073ca1-5bb6-49e8-b8d4-447c5e0e582e@nvidia.com>
- <97796DEE-E828-4B12-B919-FCA2C86756DE@nvidia.com>
- <debc988e-45cc-481d-b688-a5764647f3e5@nvidia.com>
- <D00196E8-E812-41CF-A2F8-A38251161ACA@nvidia.com>
- <3d58b839-a24a-4481-9687-3083541b80a1@nvidia.com>
- <8D530774-F2CE-444F-8453-529821F30E4D@nvidia.com>
-Content-Language: en-US
-From: Balbir Singh <balbirs@nvidia.com>
-In-Reply-To: <8D530774-F2CE-444F-8453-529821F30E4D@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SJ0P220CA0020.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:41b::26) To PH8PR12MB7277.namprd12.prod.outlook.com
- (2603:10b6:510:223::13)
+	bh=YxcMaptV7eoYdZlbqSoVlIYopnhiS0mwWTyE9BWm+8I=;
+	b=Cti7RxuoQwwspYR89QEfA6/su7ioycbWKezK5OQk+XbJwgvg4+w7oqVGz0fkKSrt+PSAAf
+	sJj8m4CcCIhVysCGaNwUCo2NXplRQZyGao6pWfNoIGHyGrRucZ/obIib7zx+bkTONlX4JU
+	8YLL1F4EU1AAOK3tx8U+wVJz8PUFw8E=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761644683;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=YxcMaptV7eoYdZlbqSoVlIYopnhiS0mwWTyE9BWm+8I=;
+	b=IpPocVysy3Mg/kkxnC09ewGsnGfxIDGN3poPNriYHxuMxlAPqEbaEHQKH70Cib9aUJpX4R
+	8IZUaqK/Je8ExTCDKsGDSp8NZKCuo9pWapYe7H7RYDnhQnBMr7MKnECcVmCWMeOPiAmcjD
+	QNB+mcD7SxxYpEqeBNtjBg7oQrRAoJo=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-399-DsVAQFnOOiaRofz7h0QpgA-1; Tue, 28 Oct 2025 05:44:41 -0400
+X-MC-Unique: DsVAQFnOOiaRofz7h0QpgA-1
+X-Mimecast-MFC-AGG-ID: DsVAQFnOOiaRofz7h0QpgA_1761644680
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-47717c2737bso2410625e9.2
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:44:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761644680; x=1762249480;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YxcMaptV7eoYdZlbqSoVlIYopnhiS0mwWTyE9BWm+8I=;
+        b=Ylmtqc6VX21ObKX8EtHJohzLkdBguo/llkLfCGf0cjfCPzv2uceDMbQAcnV49/XzIn
+         5WRhgDWI1eTi0BFehxOadH2h5oQ/vEBZYHlvwEa86ujZUaXBGaDXaq4lal72EH4JA1iO
+         fLupWZQXfuhaQFXBRnI8G2aa5wNVS34Lq2cOK7vjbhCPaxlE0d/X5GEPOXxfpbwwf/Bu
+         JINZWtbsc+rX+jqTjW/xXnhgMEsDt2t67GJF1qvjLrNFSJxnY4dqgvnGDAjAu1mYiG5O
+         sMswydyBE8w+A0Fl2Wa/Mk83gh9JKYQp+dNTRejQbaKHBG9XQKdIHP47/dz2eyNvySEJ
+         wP6g==
+X-Forwarded-Encrypted: i=1; AJvYcCUod7f5XMe9COci5pZzyH8g+Wi/7GlWhov/8dEIboDN6/IlWqSTeeEfxBQFDYjqfkgjUpE7dMOg8Q==@kvack.org
+X-Gm-Message-State: AOJu0YwkH+7XAWnSKicyymv60I7MP5d4o3JMHAGIX6kv0h8hVjxPjsHV
+	+mmexePZw/XJ1uMK2AYxiVGai8FF1CmyncXGo1afFynuagfwgfGZr78hxGAAuoN5ZLDormvkPAU
+	0k4Q8r7A5bEzZl2e5zabkq87mxUW7LeteH272TVZv7KsIeU7nJl6i
+X-Gm-Gg: ASbGncvmRKSkkztg9aAZpzS7n5/LmWyFADcJaiz0t2zzo3ritc3z1F/LFqpwAYYTg94
+	mYBcYk+z6kIkwpX3FPh2V3PUpjZdUShg0Bzz3D0w8INVYNAuB23tn0dqY6MPqExOfPk2xTjBajo
+	dB5zv6LLywWnzDYR36ce82s1TyYtm6x/R1lafVYAAgLGe2bExNGfN/T7XtuENt3ZCunhyonEx4t
+	xwlGY5SrRpYbN6c5eVd4CAIdqBuXV58k1L+lyQuWfi/DUzlMsfwlYtF1ZjtWus5CKYqRomoz/Td
+	9MC3fMpjkdq68RZzawkDy+dJuBXKL6YstF97DZUAtfTkGQt6piWx4vb7ts9feQoTpyTh10IRSSG
+	731Mtbj8AD+u5Y8yrystTjAsRGIgPyI50
+X-Received: by 2002:a05:600c:548a:b0:46f:b43a:aef2 with SMTP id 5b1f17b1804b1-47717e7f4cfmr19256705e9.38.1761644680098;
+        Tue, 28 Oct 2025 02:44:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFA0vSYLtxoOKqxkOZY7xYgAXRBusIt+EB6OwH5I1UUbtzv3C7HHhyCrwUYbutjJaFFl6AwZw==
+X-Received: by 2002:a05:600c:548a:b0:46f:b43a:aef2 with SMTP id 5b1f17b1804b1-47717e7f4cfmr19256445e9.38.1761644679593;
+        Tue, 28 Oct 2025 02:44:39 -0700 (PDT)
+Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952ca979sm19799481f8f.14.2025.10.28.02.44.38
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 02:44:38 -0700 (PDT)
+Message-ID: <a675d644-38d0-43d7-be42-8bc3753c74ee@redhat.com>
+Date: Tue, 28 Oct 2025 10:44:37 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR12MB7277:EE_|SA0PR12MB7478:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0265f383-73da-471d-58d5-08de1604ec2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UDZHRzZBNTVOb1J4cm56NFppY1paNGI1SjNOcENiMkxHSE5BaUdzNEZoL3pG?=
- =?utf-8?B?TDVtU2lCcFpDZ3N4ZUhuQVFyTUliN0YrTFJldFBOQVFxZS9IVW1qRlJwaTVM?=
- =?utf-8?B?TnQwRDNMZWN5SUFNUExMT1dtY3kzaXZFb2UyM2ZTM2ZnZHNYRFgxZ2VqYWIx?=
- =?utf-8?B?d2dtSGlrZnJaVy81VHJyUlhHcHhjSVMwVy95aUZRdmNmeWlzRWRLbWc3c1ht?=
- =?utf-8?B?Lzl0WDU2ZE1TS0ZXZkx2U2syd2x2eFYxTHFhemw3OU50cVJWa0JMN0VVT2dM?=
- =?utf-8?B?ZjFNYThuWldHdHpJQ3BzZklrU296cjBoK1Z1b0RhUFJvUERyL3lvaWlPbE0v?=
- =?utf-8?B?d0hRcTFUdEJMLzdhdURVZURpU2lDSldsZm8vbktOQkVUR1pmdG4vTG44dk10?=
- =?utf-8?B?eXpxelhhVzZhdi95YnNBYVVRTHhjM1NBWFVaVWlJOGhjRWZ4dVl2ZEhlNXA2?=
- =?utf-8?B?ZDduNGg0RzlpMlVlV0t3RXhQVzJzWEdjQjJ6ekFpVlBDbmtSRy9Yd09GZXNC?=
- =?utf-8?B?eDVEb1lLTkZWNUtDMk9UQnR5OVNVMFdBUnc2SVU5S3ZaSGNYNHlOVHlKL3ph?=
- =?utf-8?B?Snd6YjROV28wck5OWENueXlrbXozdGd6NWFwQzVxcDdXZFQrKy9QL25WUkk5?=
- =?utf-8?B?R0hFVFJ4VzdCWHE3NFpLMXRSZDlsZGdmckxNWHp5Z0RIVVZWZjZ3YzUyN2tZ?=
- =?utf-8?B?UUQrZUdaMU0vVXNCTTNlR210Z3dwZFY0dDkxeUhRNmcvb3BaWG1iLy93RHlp?=
- =?utf-8?B?dE8zN2diT1RqUkxJZWxXdWdvK2h1K2ZJMEFIcU9USjZrN0E3T0Z1OFNzTEtM?=
- =?utf-8?B?QW5nMm1INm90cERqNE0wRGZvSGJCcldBWGtwTlhCN3UxU01hRXQ3VFJpL2M0?=
- =?utf-8?B?MnZpaUREeXpoSWt4SVlDTkt2eHBDSWRLL2VKQTVObjNzaCtjdXZteWltOFlt?=
- =?utf-8?B?NEU4SUhCcHlHOXhqaldzYzRMdHJ5MENlVWx4N1RBWHREK01XOTJJa2lqL1dB?=
- =?utf-8?B?eGFxQzZubUQzNy9FeGJPVjl3dk56aFhuR05UQ2RFL2N0RWgvQk90ZTVHRXpl?=
- =?utf-8?B?TVZyS0ZscTZzYnd2NkxKaVRoZFZnWFcvaUUyME5pMlVmS0lFcEh3YVVxQjVp?=
- =?utf-8?B?b3dtd3RZcXlTblVUemxCa0ZoR0F5eiszeVRlWGJERlFsUHFveEZCYWRSN2FY?=
- =?utf-8?B?TTZ6UHVZeUx1SDQrMEJZVnhJRzNUTEwxbzRlWmtxaTdWRmJCRTVmaFpuVm80?=
- =?utf-8?B?MDJEU21wb3E4QnVQbjVhdVFEWUZ2a0tNQkFLU1grTEhUNGcwU1JIdWZWaVBt?=
- =?utf-8?B?MTJ2TEEvVm4xZ0huSFpKWFJ4RjhLWmo5WUw2TmtwTU5HblppMnd6ZHpnbDcz?=
- =?utf-8?B?T25RdG12Vkd3cFJQT2JrOWE4WTdDVkNTdTdCbHFLMWNVQ2dRUE04ZXdMbzZZ?=
- =?utf-8?B?QmJlSndtUVQyUkJSdGFJY1FETHZ3QzFsUUlSK2w1SWRlZEhKOXVST3hWVzFI?=
- =?utf-8?B?clFXT2hIeEdJUy9MZzhDSXpWN3Z1TkVWZk5PamFWMmhDUGwrdzZhdkV6THFJ?=
- =?utf-8?B?dklKSDA4N0hVWk5mUVBnU2I3NkxKT285Lzc5Ukw0YW80QjFBdzUvQzJEZG1p?=
- =?utf-8?B?bUNGQXFMbHFnWUlqczVHc2FZL00wVG56NEsxbGJLNzNXZFMzWlZNLzgvNmp1?=
- =?utf-8?B?bGxZdWtSTTVFZUoyUXlUMkdIYnpvbFNmY04yVEtOSHBGYnlSWDU0QjBudm5o?=
- =?utf-8?B?aGt1Y3AyTE5ZSVVQNjVpdklIbzZkT28zNm52c2dYRzk5Q3MxNE1zZmVsK0RG?=
- =?utf-8?B?WDkxTzN3NTMzRTNoeXFwY2hNbGJHbndjSUVyNmp2a3RzZzBncERQaWE3azJz?=
- =?utf-8?B?Vkxjcm1iT0t1KzNoaDgwOFVlSHllcmd3OVYvTXdVaERFcC9YUjJ0dUYzR25J?=
- =?utf-8?Q?Cp3wvXq4CF23Q5xKSezwa64MyfmN5txq?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR12MB7277.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(10070799003)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?Z2J5SkhGV2czYTh0cGMrc1BaTVBKaVVwZXNtVTFteU9mWWdlSHQyMHNXeTZB?=
- =?utf-8?B?SlRUOXBwZzJxWGRpZHIzNVp2OEVLTjFWYjliOUNUNDdDaHlBNXE5L3grcFc4?=
- =?utf-8?B?b0RrY0wrUUhqc1ZNc2gzRzFMTVFzQmppeTVyWDI4cmNscE81YUVkV0FGSjRH?=
- =?utf-8?B?Ym1oaHpWaDk3TzdkQzk0eWtpaGo1NEV4aXBEWGZRdDRwUTdBWXZaenRic09Q?=
- =?utf-8?B?ZkJNbCtheEVMejVaSDIxNFVxMXdGMkx5ejBFRG5iQ2Q4Vkxrcnp5UjV5Q2py?=
- =?utf-8?B?eTJ5bHg1V3B6VktXakJFdkx2aUV6WGNGSlYrcEIvUnRtY2szTDlDdGdDdmN3?=
- =?utf-8?B?OC9XcHAySEVXamx4TC9LTmVqWi9KcndUZGRnRDArZmhUR25Hc1d3L0VudlND?=
- =?utf-8?B?eWc0NURObW85WVFFQ2pHTXVsSGlMUmtNc1RzSS9lRTIya082VUFXRVYzZ3Nr?=
- =?utf-8?B?ckE3MWxqa1BYVWZxdlNaS0tuajNtSUFIMXRqT3JkVGxJQ1U3VHJScy8wNFZk?=
- =?utf-8?B?dWp5ZU9MUXBmWjA3SG1FUWN0cWRqV3ZGdGh2Q2dMOWFJL0NUOExmb2VuU2JI?=
- =?utf-8?B?NFJFTUZKRmQ2Q1JDdkhJRXRValRJYXF5T2N3ekNCUWY0UnB3NmF3THQ0MFNp?=
- =?utf-8?B?VGp0cTJqZ3U2cGlGYWtTZGljM28zLy9KdllBSldVazRQNml1MDcxK2hNbkpR?=
- =?utf-8?B?Q0pZdytOMFp5aVNTOC8vVnJDR3BGQVhsM0drcnNEOFlZdnhhTGVoS1lSSFR1?=
- =?utf-8?B?MDFDdTRGcWoydS9mQVlSZUJZMlY1QjRFb01mSXBmNTI0dTN2TWVPbUpZWm40?=
- =?utf-8?B?ZUdVUW81TVRUOTc1eFVuUFovS0hSV1ptakZ4ekw1MnJkU2NSa2tNdUFrbHFx?=
- =?utf-8?B?OVd2Vm9YalQzdmswRGJXZmhHV3lqdjhNRjBraVJkWWFzUFhsanZDVTg4NDNm?=
- =?utf-8?B?QkRScEtBbno2a3Q0c1M3SC9sd1RPTjNLZDhNWDFYYUY3YXd1THZDTW9ONjBW?=
- =?utf-8?B?QWVCN05hV296UVYvMFZIa09sU1ZCeFpXdjZUN0dsZXNlZXJWNHJxNUZUYXBq?=
- =?utf-8?B?cUtXWmNaaks5ZTRQdFJLVk8ySElxZWJJODFQanBXOEpkR0I2dHZHTFNrVENn?=
- =?utf-8?B?R2FXSWpsWHdPdmN1bzFoY0NXOUhuTGkwdjdOZ0x1bzNXY0pmcU1tODFYWkV4?=
- =?utf-8?B?UVNxK0NYZGIxMzZyK0RtY1FTQnduYXY2dzFFQWVVR1A1UFVReTVYVWdkNXl1?=
- =?utf-8?B?QmxQRGl5NVhhWWZDblQzZDduemJXMDREbFI3UnVpYVEwVnpQb21hbENac0xV?=
- =?utf-8?B?UDBOS1dwWUdzd3BzNk9mQkRXWXpaQ0NIK2Y0elNhWE5mczlMU2kvSk85aWFY?=
- =?utf-8?B?c1pUVDNieDJQVXNUNTBucERQSHhzN2RpOFpzR2YxbEFxbk9rS0RHajlXeHps?=
- =?utf-8?B?Wm1pcXUrdkVGQXN1dXJCYzBNRDk3UEhSd0NuOUgvdHNVbG9tYU5TeXdnc0hj?=
- =?utf-8?B?azZNTDJtNDJYMFFZeE9UK0xSdG5tWndtdzNUaVhLaThKZkhwNWpTOEkybjBX?=
- =?utf-8?B?M1hwZ2E5RjdMM245QXhoNWNzejJOazh1TENSNDB6U29qZmQ2dGhjN3FOQ0J2?=
- =?utf-8?B?NVJzRDZSYXBxNmlOQkJpZlh5U1RJMEl2WS9xN0k3MG15U2R5b2ptQnNwd291?=
- =?utf-8?B?VjZnbDh1K3lOanEyNUdiaS9KWVpRVkhVS2RPb3ljdFlXY20xUk5jMWtPRlRu?=
- =?utf-8?B?WStTdHVZSE84dkYvU1pqbTJBdlJMcFhCMi92eVVlSWNqRXQ0RWZyRTFTYnlk?=
- =?utf-8?B?b1VZWTI4L3pJWmlkenAwbzVlbGk4RUtqSmlMaXJvbDBOM05QaC9kMnpFS1pE?=
- =?utf-8?B?b2lnR1NvcDE1UWVtSE52UXViV1p1NFZvMk15N0NsVzNGbXJydmJ1ZW1ldkhB?=
- =?utf-8?B?OURJTmczS2UycVp2VUdVQnUydVh2NmNQZVFNRGdZTVo2Y1hyKzhHNytCdUZx?=
- =?utf-8?B?cHovV0piMmdhQlFFMExKTXZqb0JpSG52SUZMdm45bXpHVTh6c0xvK3BPSnZx?=
- =?utf-8?B?NTR2REt3WXpVWWwvVHJVazBqUjRDSUo2alovQm9BcEFYNDVQWllqL2xkZ2Zm?=
- =?utf-8?B?SCtWMkZqLzRocVJZaFJrRjFZVFBGY1pGQ0lJMndDZ0cwdVlpUnV1d0h0U2Z1?=
- =?utf-8?Q?bF5aTqsO0FTWto2FCf8kewSq2YPa8yLT8DgAD7TQOcMa?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0265f383-73da-471d-58d5-08de1604ec2c
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR12MB7277.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Oct 2025 09:32:33.3042
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: LJhQXJ4SVoHXA+7CoLPPtYF0lYeEg2HAogK9Z75wYVZxvblCknPKgv6CW39eAXCjHOKSK9W3oG15CpA4KPgNPQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7478
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 164F21C0011
-X-Stat-Signature: 61oppcd4oyg7mot7cy3xz5wowutowjce
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm/ksm: recover from memory failure on KSM page by
+ migrating to healthy duplicate
+To: Longlong Xia <xialonglong2025@163.com>, linmiaohe@huawei.com,
+ lance.yang@linux.dev
+Cc: markus.elfring@web.de, nao.horiguchi@gmail.com,
+ akpm@linux-foundation.org, wangkefeng.wang@huawei.com, qiuxu.zhuo@intel.com,
+ xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>
+References: <20251016101813.484565-1-xialonglong2025@163.com>
+ <20251016101813.484565-2-xialonglong2025@163.com>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ qIws/H2t
+In-Reply-To: <20251016101813.484565-2-xialonglong2025@163.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: epJ_tpb9yPRRvBUbobwkkBHT1Xc5dZAsPvgcRaINzLE_1761644680
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: odqhqf79ndy8onwiq5n3d7xw6oeic6oj
+X-Rspamd-Queue-Id: BE7404000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761643957-116929
-X-HE-Meta: U2FsdGVkX18Nwh4GsBo0lN+5yy9sgShqwndqa/JvgermtzKeQRB6nIpag+Z/Y2JZqNgti4y9qzKJeFXFNKT8l//vsMrlOiCNb0Zd73EIp210u0boiAVCYHUPptAG9jLkC2gud2qb0q24Vr+1JN30/8qAyG+NzMjwENINIkoTei3WDNdL7NoxbVsYc7UvrETN1jQm0hV89RQ8yB+rj9elm8gMko5odgLGdrBgWnWk2IhJ/4kGvgD9WZI0AMtHYuttNmEtjZpxN+EyLZxyO8mu8EHAKcardjqajYw6836NRKia1ejjodPvU1RX7LqEbX3QOF5+2wDORGILQ2WuJWAZz7c2RYGf7yEXKOYKLTQk9IzTSJLMTftQiFPCizs7mAsJW7bxQMajtTAPuwghVW0rhaRdfOIiw9tQAMtuwR00qpR7B4Ku7kO5xjyxoJhaLx+9+m8WLfye5aJyJ0CiG6bR6pet4fb0etSFQFl586MCjcuBe93OLMhpHi62vGka2tKX4o2uBJDCnfY66/HPzi01BnHU6ImbX8pZHr7Wl9dKTrWTI7TEeLMckpjwcYUMZkOW4usYuDxeAn3Ilc6IBFW1WkyizQXm/eJlDe7HeT/X9j5zBAwgXKMA3YRmb/BDdpjqotcCVIb7inHYmSXt3tC1pzZzdp7cvr2fb/xD3bnzr/7hUFdVwWRj3fGD2knm9NoYR6W8hT1Be5qfnJEf1wSLTFazgYK6cmfTL4q46zDKM35SCERhYHD+XYimyGxHq/0KmDQMsL59qaUZXVu07pKMfNE+GHx9vlJI4M2ijt9PylPLLPAqOApPhjvl+Mx9Gl6qj9mJVGRvIJDbRrdIq2BeCUp+PcGOaUWuGZYCu7xPQekTGQpBFud3wvKOJaaxecDgxzaeS/VzpQRs204jEg1FOiWhDVfgVItlSdYeL7NNJyiIJwdxyjji+vxTGo1+E866FuuW3xQFmw/SOnpCeh0
- RRb9J8Zw
- iJXZMhBINkeDuTzhWEGDC0ox37nXFbnSlb3ZVQ1JIuygOoLs4mloNu5TkipvFNxMVj51dh6BmqdxE3P9mYFJHeZOv+KXLXHP/Pdg5FDPq8bplc96/zAJale6cfmu3YIlA5VKVoaqVwwELIOyqoFsniEZT0n9bkosOgnNq8eYtGzXyHMBuOfr8VQIYwT8Gn2SDbPxK450q4C3ofAz2BU0/NnBcDVR54N4RNtYCIiE15UYzYDJ3W+HxKP4QQ88LY8yaOPypVkoLUp02DOwHIwd3GmBRy8M7DgI+u12SOC1WfiQASRKQERDUcRMIb6O/AgRXkO905nR5V5uK5jeLDUM7NTdzyiLopQH2BOl+FfGj0j1vJ1eeoawFsogP83XYJF1/5jwRMRQ5XTqgrqJKFzytCkmrMxbrcnBj6/DkV8v8aNehw8sp2uQ/J55d8Fzv89JCQnapkzD53PCB8J3YVgSsF15V4esDDGnipdGxfc+zEa0Q/BKlnvNz07u0pQnPfljWKNmMCM11n0stIR8+qAjnZ1AU4Q==
+X-HE-Tag: 1761644683-157204
+X-HE-Meta: U2FsdGVkX1+ENog+rpzXtwAFLSSXFUICOH7RujYpL7agXGRC3fcwRPJPO2BcCoqy1nzmJJta/YAhvL4s5CrniYCG6VbrKCjAEoWNWlCk1CIERbBDJJEg+BWSCcEoVjh8uItMhe5koYisTY5v8UlscJYkwWI/UTfL1Pd1UDrWypQwDbBeoU4YeQ8T0Y7QiTz5fVpfsrdkyV9sxKbFFNNpBIMB9DEiKeB8AaH0dprMcfDQBiH0bA+eEmmk3Zxl9b8E3IxuH+wFBRYZTlMDHy+6jaMpGWC1AHdNj211WDxKY6UBIiG6Z2/Kaa5owN/TZOQOm2r54yNnujiXQgywJUc6zdX2Gx2s0E+f5STJy12iM57SrrKHB0pWCsfdXQ11xSWxvwck67aE9nD80GQ+encgpf/VdTGo20kfrUPfOa6Pxlb4vcQbO8lfRpLlYkY3inUD81eFkY/oelkWQWgi9ZvDQEx0I3ZNSrJXXfdPumRzek44d7s9bwZ1nhwaYsDNqPCicD/W7br4yEJGjvp83JTKIIGz7AaaEbjXETYie04j13JAgNCxRIRVQsXraGEoVBB5Xl4ey7UVAmUHs1iDr3dEmvr306V6siBgN5gSCGGiUkbEclrH4LwqFDNchWxPeGinYmgk/2Gxyha6s/4I0OrWOyhGHjcou5cLsFysEFbvPY4Z7h6zsXYl2ZjTjAucq0lyybN9OW3nBlH70gkWcE+zEPHM/nm4A4FQ2/7BNawAUxh5/wbo4iI8oSxZYVVrGv6BkKwxJdJgwcnRmApMzpst929mps1twhFfYrwZAHxN3G5+WtmkCaAjF3Vmx8EfR/ceaseFVou/jC5h+WGjsycRkcCh89vuCbcd/z6pMkbJy34C4AiZGCdXvvP0dnd10V3pwwdfx8C7jpBFrcwIV1JEjuIwBNDCIL5aNRpbkqPVP9LsboG3wJX8epS1dZzEc1TuUbMvrj9C3NMtmOHFvHb
+ j8OtWXZi
+ uHT0ScoaCLxcxlSVrZQJjvrIHHAYkqnk2/u6H+9NxOeaQvOwa9+ryOU6KnbuGZxvP9dK2v92+trKSGuImxQD/cnol/tgtANwcjS9iSVGIQtZY0yn3TbEN3oQ4xLKysJYQW4P9PDymkecjGGID6P2T/PhAL8vYyhmVuFQROzZg6Dku8b93EROXSrU0oWdoezMeFKCCF7DxcYEopfHdYO+mj3yQIuz9lSt2iWH+FTCOMPGR8OdMSnPpNkWW4wEj8/yHP5ZTq9zULapWQ3nj0RPpOX1k2l0onGO79FpQw0CoeaMYIO2g2taZ/MaTQA3C3fUJ3Pg2Dt1JWwp6jlwklNxLO1CeA/QG1pYsWg0RflsYLJeH+OV6cid4BPn+qjinKEbhpIzC52XtEJ6H+f0h+fHokcKDkkQ2NP+cT41Pm+DnXMeBMxxI3pQGTTMEGhVSITo/pbvHozAoM79game8/dHyTKRLzyxfriHqRFhR2+1E0oBCZl4N2qBXiDzOjC0AnrHRc/qugkidD8nce3Iv89OUYwBLuQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -224,249 +181,305 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/23/25 02:26, Zi Yan wrote:
-> On 22 Oct 2025, at 3:16, Balbir Singh wrote:
+On 16.10.25 12:18, Longlong Xia wrote:
+> From: Longlong Xia <xialonglong@kylinos.cn>
 > 
->> On 10/22/25 13:59, Zi Yan wrote:
->>> On 21 Oct 2025, at 17:34, Balbir Singh wrote:
->>>
->>>> On 10/20/25 09:59, Zi Yan wrote:
->>>>> On 19 Oct 2025, at 18:49, Balbir Singh wrote:
->>>>>
->>>>>> On 10/19/25 19:19, Wei Yang wrote:
->>>>>>> On Wed, Oct 01, 2025 at 04:57:02PM +1000, Balbir Singh wrote:
->>>>>>> [...]
->>>>>>>> static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>> 		struct page *split_at, struct page *lock_at,
->>>>>>>> -		struct list_head *list, bool uniform_split)
->>>>>>>> +		struct list_head *list, bool uniform_split, bool unmapped)
->>>>>>>> {
->>>>>>>> 	struct deferred_split *ds_queue = get_deferred_split_queue(folio);
->>>>>>>> 	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
->>>>>>>> @@ -3765,13 +3757,15 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>> 		 * is taken to serialise against parallel split or collapse
->>>>>>>> 		 * operations.
->>>>>>>> 		 */
->>>>>>>> -		anon_vma = folio_get_anon_vma(folio);
->>>>>>>> -		if (!anon_vma) {
->>>>>>>> -			ret = -EBUSY;
->>>>>>>> -			goto out;
->>>>>>>> +		if (!unmapped) {
->>>>>>>> +			anon_vma = folio_get_anon_vma(folio);
->>>>>>>> +			if (!anon_vma) {
->>>>>>>> +				ret = -EBUSY;
->>>>>>>> +				goto out;
->>>>>>>> +			}
->>>>>>>> +			anon_vma_lock_write(anon_vma);
->>>>>>>> 		}
->>>>>>>> 		mapping = NULL;
->>>>>>>> -		anon_vma_lock_write(anon_vma);
->>>>>>>> 	} else {
->>>>>>>> 		unsigned int min_order;
->>>>>>>> 		gfp_t gfp;
->>>>>>>> @@ -3838,7 +3832,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>> 		goto out_unlock;
->>>>>>>> 	}
->>>>>>>>
->>>>>>>> -	unmap_folio(folio);
->>>>>>>> +	if (!unmapped)
->>>>>>>> +		unmap_folio(folio);
->>>>>>>>
->>>>>>>> 	/* block interrupt reentry in xa_lock and spinlock */
->>>>>>>> 	local_irq_disable();
->>>>>>>> @@ -3925,10 +3920,13 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>>
->>>>>>>> 			next = folio_next(new_folio);
->>>>>>>>
->>>>>>>> +			zone_device_private_split_cb(folio, new_folio);
->>>>>>>> +
->>>>>>>> 			expected_refs = folio_expected_ref_count(new_folio) + 1;
->>>>>>>> 			folio_ref_unfreeze(new_folio, expected_refs);
->>>>>>>>
->>>>>>>> -			lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>>>>> +			if (!unmapped)
->>>>>>>> +				lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>>>>>
->>>>>>>> 			/*
->>>>>>>> 			 * Anonymous folio with swap cache.
->>>>>>>> @@ -3959,6 +3957,8 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>> 			__filemap_remove_folio(new_folio, NULL);
->>>>>>>> 			folio_put_refs(new_folio, nr_pages);
->>>>>>>> 		}
->>>>>>>> +
->>>>>>>> +		zone_device_private_split_cb(folio, NULL);
->>>>>>>> 		/*
->>>>>>>> 		 * Unfreeze @folio only after all page cache entries, which
->>>>>>>> 		 * used to point to it, have been updated with new folios.
->>>>>>>> @@ -3982,6 +3982,9 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>>>>>
->>>>>>>> 	local_irq_enable();
->>>>>>>>
->>>>>>>> +	if (unmapped)
->>>>>>>> +		return ret;
->>>>>>>
->>>>>>> As the comment of __folio_split() and __split_huge_page_to_list_to_order()
->>>>>>> mentioned:
->>>>>>>
->>>>>>>   * The large folio must be locked
->>>>>>>   * After splitting, the after-split folio containing @lock_at remains locked
->>>>>>>
->>>>>>> But here we seems to change the prerequisites.
->>>>>>>
->>>>>>> Hmm.. I am not sure this is correct.
->>>>>>>
->>>>>>
->>>>>> The code is correct, but you are right in that the documentation needs to be updated.
->>>>>> When "unmapped", we do want to leave the folios locked after the split.
->>>>>
->>>>> Sigh, this "unmapped" code needs so many special branches and a different locking
->>>>> requirement. It should be a separate function to avoid confusions.
->>>>>
->>>>
->>>> Yep, I have a patch for it, I am also waiting on Matthew's feedback, FYI, here is
->>>> a WIP patch that can be applied on top of the series
->>>
->>> Nice cleanup! Thanks.
->>>
->>>>
->>>> ---
->>>>  include/linux/huge_mm.h |   5 +-
->>>>  mm/huge_memory.c        | 137 ++++++++++++++++++++++++++++++++++------
->>>>  mm/migrate_device.c     |   3 +-
->>>>  3 files changed, 120 insertions(+), 25 deletions(-)
->>>>
->>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->>>> index c4a811958cda..86e1cefaf391 100644
->>>> --- a/include/linux/huge_mm.h
->>>> +++ b/include/linux/huge_mm.h
->>>> @@ -366,7 +366,8 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
->>>>
->>>>  bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
->>>>  int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->>>> -		unsigned int new_order, bool unmapped);
->>>> +		unsigned int new_order);
->>>> +int split_unmapped_folio_to_order(struct folio *folio, unsigned int new_order);
->>>>  int min_order_for_split(struct folio *folio);
->>>>  int split_folio_to_list(struct folio *folio, struct list_head *list);
->>>>  bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->>>> @@ -379,7 +380,7 @@ int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
->>>>  static inline int split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
->>>>  		unsigned int new_order)
->>>>  {
->>>> -	return __split_huge_page_to_list_to_order(page, list, new_order, false);
->>>> +	return __split_huge_page_to_list_to_order(page, list, new_order);
->>>>  }
->>>>
->>>>  /*
->>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>>> index 8c82a0ac6e69..e20cbf68d037 100644
->>>> --- a/mm/huge_memory.c
->>>> +++ b/mm/huge_memory.c
->>>> @@ -3711,7 +3711,6 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->>>>   * @lock_at: a page within @folio to be left locked to caller
->>>>   * @list: after-split folios will be put on it if non NULL
->>>>   * @uniform_split: perform uniform split or not (non-uniform split)
->>>> - * @unmapped: The pages are already unmapped, they are migration entries.
->>>>   *
->>>>   * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
->>>>   * It is in charge of checking whether the split is supported or not and
->>>> @@ -3727,7 +3726,7 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->>>>   */
->>>>  static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>  		struct page *split_at, struct page *lock_at,
->>>> -		struct list_head *list, bool uniform_split, bool unmapped)
->>>> +		struct list_head *list, bool uniform_split)
->>>>  {
->>>>  	struct deferred_split *ds_queue;
->>>>  	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
->>>> @@ -3777,14 +3776,12 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>  		 * is taken to serialise against parallel split or collapse
->>>>  		 * operations.
->>>>  		 */
->>>> -		if (!unmapped) {
->>>> -			anon_vma = folio_get_anon_vma(folio);
->>>> -			if (!anon_vma) {
->>>> -				ret = -EBUSY;
->>>> -				goto out;
->>>> -			}
->>>> -			anon_vma_lock_write(anon_vma);
->>>> +		anon_vma = folio_get_anon_vma(folio);
->>>> +		if (!anon_vma) {
->>>> +			ret = -EBUSY;
->>>> +			goto out;
->>>>  		}
->>>> +		anon_vma_lock_write(anon_vma);
->>>>  		mapping = NULL;
->>>>  	} else {
->>>>  		unsigned int min_order;
->>>> @@ -3852,8 +3849,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>  		goto out_unlock;
->>>>  	}
->>>>
->>>> -	if (!unmapped)
->>>> -		unmap_folio(folio);
->>>> +	unmap_folio(folio);
->>>>
->>>>  	/* block interrupt reentry in xa_lock and spinlock */
->>>>  	local_irq_disable();
->>>> @@ -3954,8 +3950,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>  			expected_refs = folio_expected_ref_count(new_folio) + 1;
->>>>  			folio_ref_unfreeze(new_folio, expected_refs);
->>>>
->>>> -			if (!unmapped)
->>>> -				lru_add_split_folio(folio, new_folio, lruvec, list);
->>>> +			lru_add_split_folio(folio, new_folio, lruvec, list);
->>>>
->>>>  			/*
->>>>  			 * Anonymous folio with swap cache.
->>>> @@ -4011,9 +4006,6 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>
->>>>  	local_irq_enable();
->>>>
->>>> -	if (unmapped)
->>>> -		return ret;
->>>> -
->>>>  	if (nr_shmem_dropped)
->>>>  		shmem_uncharge(mapping->host, nr_shmem_dropped);
->>>>
->>>> @@ -4057,6 +4049,111 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>>>  	return ret;
->>>>  }
->>>>
->>>> +/*
->>>> + * This function is a helper for splitting folios that have already been unmapped.
->>>> + * The use case is that the device or the CPU can refuse to migrate THP pages in
->>>> + * the middle of migration, due to allocation issues on either side
->>>> + *
->>>> + * The high level code is copied from __folio_split, since the pages are anonymous
->>>> + * and are already isolated from the LRU, the code has been simplified to not
->>>> + * burden __folio_split with unmapped sprinkled into the code.
->>>
->>> I wonder if it makes sense to remove CPU side folio from both deferred_split queue
->>> and swap cache before migration to further simplify split_unmapped_folio_to_order().
->>> Basically require that device private folios cannot be on deferred_split queue nor
->>> swap cache.
->>>
->>
->> This API can be called for non-device private folios as well. Device private folios are
->> already not on the deferred queue. The use case is
->>
->> 1. Migrate a large folio page from CPU to Device
->> 2. SRC - CPU has a THP (large folio page)
->> 3. DST - Device cannot allocate a large page, hence split the SRC page
+> When a hardware memory error occurs on a KSM page, the current
+> behavior is to kill all processes mapping that page. This can
+> be overly aggressive when KSM has multiple duplicate pages in
+> a chain where other duplicates are still healthy.
 > 
-> Right. That is what I am talking about, sorry I was not clear.
-> I mean when migrating a large folio from CPU to device, the CPU large folio
-> can be first removed from deferred_split queue and swap cache, if it is there,
-> then the migration process begins, so that the CPU large folio will always
-> be out of deferred_split queue and not in swap cache. As a result, this split
-> function does not need to handle these two situations.
+> This patch introduces a recovery mechanism that attempts to
+> migrate mappings from the failing KSM page to a newly
+> allocated KSM page or another healthy duplicate already
+> present in the same chain, before falling back to the
+> process-killing procedure.
+> 
+> The recovery process works as follows:
+> 1. Identify if the failing KSM page belongs to a stable node chain.
+> 2. Locate a healthy duplicate KSM page within the same chain.
+> 3. For each process mapping the failing page:
+>     a. Attempt to allocate a new KSM page copy from healthy duplicate
+>        KSM page. If successful, migrate the mapping to this new KSM page.
+>     b. If allocation fails, migrate the mapping to the existing healthy
+>        duplicate KSM page.
+> 4. If all migrations succeed, remove the failing KSM page from the chain.
+> 5. Only if recovery fails (e.g., no healthy duplicate found or migration
+>     error) does the kernel fall back to killing the affected processes.
+> 
+> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> ---
+>   mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>   1 file changed, 246 insertions(+)
+> 
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 160787bb121c..9099bad1ab35 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -3084,6 +3084,246 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>   }
+>   
+>   #ifdef CONFIG_MEMORY_FAILURE
+> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
+> +{
+> +	struct ksm_stable_node *stable_node, *dup;
+> +	struct rb_node *node;
+> +	int nid;
+> +
+> +	if (!is_stable_node_dup(dup_node))
+> +		return NULL;
+> +
+> +	for (nid = 0; nid < ksm_nr_node_ids; nid++) {
+> +		node = rb_first(root_stable_tree + nid);
+> +		for (; node; node = rb_next(node)) {
+> +			stable_node = rb_entry(node,
+> +					struct ksm_stable_node,
+> +					node);
 
-It leads to more specialization for LRU and zone device-private folios.
-I looked at giving it a go and ended up with some amount of duplication, with
-taking the lock, freezing the refs and then prior to that finding the
-extra_refs with can_split_folio()
+Put that into a single line for readability, please.
 
-Balbir Singh
+You can also consider factoring out this inner loop in a helper function.
+
+> +
+> +			if (!is_stable_node_chain(stable_node))
+> +				continue;
+> +
+> +			hlist_for_each_entry(dup, &stable_node->hlist,
+> +					hlist_dup) {
+
+Single line, or properly indent.
+
+> +				if (dup == dup_node)
+> +					return stable_node;
+> +			}
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static struct folio *find_healthy_folio(struct ksm_stable_node *chain_head,
+> +		struct ksm_stable_node *failing_node,
+> +		struct ksm_stable_node **healthy_dupdup)
+> +{
+> +	struct ksm_stable_node *dup;
+> +	struct hlist_node *hlist_safe;
+> +	struct folio *healthy_folio;
+> +
+> +	if (!is_stable_node_chain(chain_head) || !is_stable_node_dup(failing_node))
+> +		return NULL;
+> +
+> +	hlist_for_each_entry_safe(dup, hlist_safe, &chain_head->hlist, hlist_dup) {
+> +		if (dup == failing_node)
+> +			continue;
+> +
+> +		healthy_folio = ksm_get_folio(dup, KSM_GET_FOLIO_TRYLOCK);
+> +		if (healthy_folio) {
+> +			*healthy_dupdup = dup;
+> +			return healthy_folio;
+> +		}
+> +	}
+> +
+> +	return NULL;
+> +}
+> +
+> +static struct page *create_new_stable_node_dup(struct ksm_stable_node *chain_head,
+> +		struct folio *healthy_folio,
+> +		struct ksm_stable_node **new_stable_node)
+> +{
+> +	int nid;
+> +	unsigned long kpfn;
+> +	struct page *new_page = NULL;
+> +
+> +	if (!is_stable_node_chain(chain_head))
+> +		return NULL;
+> +
+> +	new_page = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_ZERO);
+> +	if (!new_page)
+> +		return NULL;
+> +
+> +	copy_highpage(new_page, folio_page(healthy_folio, 0));
+> +
+> +	*new_stable_node = alloc_stable_node();
+> +	if (!*new_stable_node) {
+> +		__free_page(new_page);
+> +		return NULL;
+> +	}
+> +
+> +	INIT_HLIST_HEAD(&(*new_stable_node)->hlist);
+> +	kpfn = page_to_pfn(new_page);
+> +	(*new_stable_node)->kpfn = kpfn;
+> +	nid = get_kpfn_nid(kpfn);
+> +	DO_NUMA((*new_stable_node)->nid = nid);
+> +	(*new_stable_node)->rmap_hlist_len = 0;
+> +
+> +	(*new_stable_node)->head = STABLE_NODE_DUP_HEAD;
+> +	hlist_add_head(&(*new_stable_node)->hlist_dup, &chain_head->hlist);
+> +	ksm_stable_node_dups++;
+> +	folio_set_stable_node(page_folio(new_page), *new_stable_node);
+> +	folio_add_lru(page_folio(new_page));
+
+There seems to be a lot of copy-paste. For example, why no reuse 
+stable_node_chain_add_dup()?
+
+Or why not try to reuse stable_tree_insert() in the first place?
+
+Try to reuse or factor out instead of copy-pasting, please.
+
+> +
+> +	return new_page;
+> +}
+> +
+> +static int replace_failing_page(struct vm_area_struct *vma, struct page *page,
+> +		struct page *kpage, unsigned long addr)
+> +{
+> +	struct folio *kfolio = page_folio(kpage);
+> +	struct mm_struct *mm = vma->vm_mm;
+> +	struct folio *folio = page_folio(page);
+> +	pmd_t *pmd;
+> +	pte_t *ptep;
+> +	pte_t newpte;
+> +	spinlock_t *ptl;
+> +	int err = -EFAULT;
+> +	struct mmu_notifier_range range;
+> +
+> +	pmd = mm_find_pmd(mm, addr);
+> +	if (!pmd)
+> +		goto out;
+> +
+> +	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, mm, addr,
+> +			addr + PAGE_SIZE);
+> +	mmu_notifier_invalidate_range_start(&range);
+> +
+> +	ptep = pte_offset_map_lock(mm, pmd, addr, &ptl);
+> +	if (!ptep)
+> +		goto out_mn;
+> +
+> +	folio_get(kfolio);
+> +	folio_add_anon_rmap_pte(kfolio, kpage, vma, addr, RMAP_NONE);
+> +	newpte = mk_pte(kpage, vma->vm_page_prot);
+> +
+> +	flush_cache_page(vma, addr, pte_pfn(ptep_get(ptep)));
+> +	ptep_clear_flush(vma, addr, ptep);
+> +	set_pte_at(mm, addr, ptep, newpte);
+> +
+> +	folio_remove_rmap_pte(folio, page, vma);
+> +	if (!folio_mapped(folio))
+> +		folio_free_swap(folio);
+> +	folio_put(folio);
+> +
+> +	pte_unmap_unlock(ptep, ptl);
+> +	err = 0;
+> +out_mn:
+> +	mmu_notifier_invalidate_range_end(&range);
+> +out:
+> +	return err;
+> +}
+
+This is a lot of copy-paste from replace_page(). Isn't there a way to 
+avoid this duplication by unifying both functions in some way?
+
+> +
+> +static void migrate_to_target_dup(struct ksm_stable_node *failing_node,
+> +		struct folio *failing_folio,
+> +		struct folio *target_folio,
+> +		struct ksm_stable_node *target_dup)
+> +{
+> +	struct ksm_rmap_item *rmap_item;
+> +	struct hlist_node *hlist_safe;
+> +	int err;
+> +
+> +	hlist_for_each_entry_safe(rmap_item, hlist_safe, &failing_node->hlist, hlist) {
+> +		struct mm_struct *mm = rmap_item->mm;
+> +		unsigned long addr = rmap_item->address & PAGE_MASK;
+
+Can be const.
+
+> +		struct vm_area_struct *vma;
+> +
+> +		if (!mmap_read_trylock(mm))
+> +			continue;
+> +
+> +		if (ksm_test_exit(mm)) {
+> +			mmap_read_unlock(mm);
+> +			continue;
+> +		}
+> +
+> +		vma = vma_lookup(mm, addr);
+> +		if (!vma) {
+> +			mmap_read_unlock(mm);
+> +			continue;
+> +		}
+> +
+> +		if (!folio_trylock(target_folio)) {
+
+Can't we leave the target folio locked the whole time? The caller 
+already locked it, why not keep it locked until we're done?
+
+> +			mmap_read_unlock(mm);
+> +			continue;
+> +		}
+> +
+> +		err = replace_failing_page(vma, &failing_folio->page,
+> +				folio_page(target_folio, 0), addr);
+> +		if (!err) {
+> +			hlist_del(&rmap_item->hlist);
+> +			rmap_item->head = target_dup;
+> +			hlist_add_head(&rmap_item->hlist, &target_dup->hlist);
+> +			target_dup->rmap_hlist_len++;
+> +			failing_node->rmap_hlist_len--;
+> +		}
+> +
+> +		folio_unlock(target_folio);
+> +		mmap_read_unlock(mm);
+> +	}
+> +
+> +}
+> +
+> +static bool ksm_recover_within_chain(struct ksm_stable_node *failing_node)
+> +{
+> +	struct folio *failing_folio = NULL;
+> +	struct ksm_stable_node *healthy_dupdup = NULL;
+> +	struct folio *healthy_folio = NULL;
+> +	struct ksm_stable_node *chain_head = NULL;
+> +	struct page *new_page = NULL;
+> +	struct ksm_stable_node *new_stable_node = NULL;
+
+Only initialize what needs initialization (nothing in here?) and combine 
+where possible.
+
+Like
+
+	struct folio *failing_folio, *healthy_folio;
+
+
+> +
+> +	if (!is_stable_node_dup(failing_node))
+> +		return false;
+> +
+> +	guard(mutex)(&ksm_thread_mutex);
+> +	failing_folio = ksm_get_folio(failing_node, KSM_GET_FOLIO_NOLOCK);
+> +	if (!failing_folio)
+> +		return false;
+> +
+> +	chain_head = find_chain_head(failing_node);
+> +	if (!chain_head)
+> +		return NULL;
+> +
+> +	healthy_folio = find_healthy_folio(chain_head, failing_node, &healthy_dupdup);
+> +	if (!healthy_folio) {
+> +		folio_put(failing_folio);
+> +		return false;
+> +	}
+> +
+> +	new_page = create_new_stable_node_dup(chain_head, healthy_folio, &new_stable_node);
+
+Why are you returning a page here and not a folio?
+
+
+-- 
+Cheers
+
+David / dhildenb
 
 
