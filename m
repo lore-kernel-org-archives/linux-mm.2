@@ -4,101 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4515ACCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 10:34:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 51076CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 11:13:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7401080137; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
+	id 01B2980138; Tue, 28 Oct 2025 07:13:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6F05A80131; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
+	id F35AA80131; Tue, 28 Oct 2025 07:13:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5DF0B80137; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
+	id E71E280138; Tue, 28 Oct 2025 07:13:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 469DF80131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D72EC87E97
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:34:49 +0000 (UTC)
-X-FDA: 84047164698.20.5FAFFDE
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id ECF98180002
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:34:47 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761647688; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D4CE080131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:13:24 -0400 (EDT)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78A23160413
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:13:24 +0000 (UTC)
+X-FDA: 84047261928.25.A0B27AB
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 00B0510000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:13:20 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=HO7joC8n;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761650002; a=rsa-sha256;
 	cv=none;
-	b=5bleclP8vGmBlNSTQwg5VvGKBghEBW2Mio65eQMQhPYa1OWEBlorg847WVb7miOBaYUqDh
-	47Xgo0+u/ihZuUN2+NUrc9MP+o0JSNGNs1HZNndOkjm9Aau52BUgfmAhwwUFin+er6H51t
-	aswL866XwOQ/aFM5VKHeqtkSnytmdXQ=
+	b=TtiHFHzOj6ZX2vFEfj3Pt7DBtApiSRGtAPCfNVgCyJ0KhUMgEpyQvEGSrZ2VB7LnnS3kWP
+	GrRFsvnniAbP8MfziU/Bdk7gJQ9m05+UxyzOO6khOXSyD8u8MZk0nHPOI4IMvOpWFUdMtP
+	VPAIezVemGEmKSiw9cf6dUndujrB194=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	imf14.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=HO7joC8n;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf14.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761647688;
+	s=arc-20220608; t=1761650002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=5HaFRhf1AjitWDNq9/FJXcfd6yha35h050b//Tq74Pw=;
-	b=WfpC8sxBusrMy5p4zCinrWpNxBRcUZf17bg/9omUZc01uh3EHC86bc5UigV9BrGPO7bPdD
-	l/xHF6oY8DDNj6wftF0WEkxjwbsoinZj5x+H05RvBj/r2Z0iurXUymSxh0n28hfQZ5PIpV
-	5Jbrp3V+A7ogQrSpaqz5RMFuFbV7se0=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07A50106F;
-	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
-Received: from [10.44.160.74] (unknown [10.44.160.74])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3597D3F63F;
-	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
-Message-ID: <f3b8a71c-7698-4918-99d1-36e97bded97c@arm.com>
-Date: Tue, 28 Oct 2025 11:34:34 +0100
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=IruZ6tsBVucJWwjqgHjIbPoWLccutkeIxO4pOhVzLak=;
+	b=C3OnIqqndVRzG5NMt1+VDsOTuUYFGHCk8qISTxQ+cBGqi1Aod3WhUe/CweW9Gi5k12SnLT
+	WKUzlQJu73Lr2tPvfcVu+TJf7kLZHDQWW0Mv9wVTtdqzGPhMu3b/dQY4iT71149WBX4BfX
+	V86Hc3ToU1bWJ5Y4oQoATB5eJK+jaw0=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=IruZ6tsBVucJWwjqgHjIbPoWLccutkeIxO4pOhVzLak=;
+	b=HO7joC8nay2zm7gfgvo3nT4alXc9FalA+xPchBjsCjATqUI2d12omH8t3KByJQDv29FvDJP5y
+	yZ5JyzoEkqFlkubOk8LCise9PxMgp5XjNoiXmtYnCE33B393RBvGAeZR0noGRtP7YRDl03NXlGz
+	YP0JqVX0+6NToW2WH1J8E1c=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cwnm01D7cz1prLt;
+	Tue, 28 Oct 2025 19:12:48 +0800 (CST)
+Received: from dggpemf200009.china.huawei.com (unknown [7.185.36.246])
+	by mail.maildlp.com (Postfix) with ESMTPS id DDD6A180237;
+	Tue, 28 Oct 2025 19:13:16 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (7.185.36.8) by
+ dggpemf200009.china.huawei.com (7.185.36.246) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Oct 2025 19:13:16 +0800
+Received: from dggpemf500012.china.huawei.com ([7.185.36.8]) by
+ dggpemf500012.china.huawei.com ([7.185.36.8]) with mapi id 15.02.1544.011;
+ Tue, 28 Oct 2025 19:13:16 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"david@redhat.com" <david@redhat.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Wangkefeng (OS Kernel Lab)"
+	<wangkefeng.wang@huawei.com>, Sunnanyong <sunnanyong@huawei.com>
+Subject: Re: [RFC PATCH 2/3] mm/mincore: Use can_pte_batch_count() in
+ mincore_pte_range() for pte batch mincore_pte_range()
+Thread-Topic: [RFC PATCH 2/3] mm/mincore: Use can_pte_batch_count() in
+ mincore_pte_range() for pte batch mincore_pte_range()
+Thread-Index: AdxH+5T+8zk9AGSdQ5COU3ncduDLzg==
+Date: Tue, 28 Oct 2025 11:13:16 +0000
+Message-ID: <29d2ad2f81b14c8384bd0a7d8d60ef62@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.174.177.115]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
-To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
- <20251015082727.2395128-7-kevin.brodsky@arm.com>
- <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
- <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
- <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
- <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
- <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-Stat-Signature: erz5yhjf3zeihrqwbpuzegxddbhq6kuf
+X-Rspamd-Queue-Id: 00B0510000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: ECF98180002
-X-Stat-Signature: wk1di9ykrf8rt5f6chmgokeao6p7ihto
-X-HE-Tag: 1761647687-619183
-X-HE-Meta: U2FsdGVkX1/Vwnz+5uLlnwRXUkjLsEj59QLC7y7QvYUxlIAlcXFWfvX9umachwy2YIRU+17Og8AGwGM7DorRB77udlUtcRNz9qYdeCscd+oz91BxTP7xEhp4u7PIPI1mgWNDgF0LGwRlONNf6+EP8PFEJibbm3mdiiC99MGey0YxBHwNvM4Tl62eNThNIcWLAJyi9/anIwGG3JA/g2fhyZBPxFxt8ycdtZMpwixH1/W2MxfN78e7zr7T87gWI98j0sSF7deIm90VVmWjAh9PslEMwFx4XXWwHVEiVzrtp2hJaVNbEOdMeibR/S4lJTg5ONuD+ej3KSqeeOpPRzUC19Cyrsbyeij1J0QLsz8/flk/Aaodtn5ZrhKJXoRo5sBGO1qBojPi6YoORwf7X7OIg09AkV0buvThP5iZ+VWMC5UKkjOG7IuS3iCHo+txgvVatxosD1rKYe8U+n02Fp6JFzpdzg3V8z+pLO5Qr1/7sfte1KGe2cZKy2u8VQdG977dEhEZ9dWNkmP4tM9JtvyHH4k776LS6IkJ4olesqBmogI2onMy4mh4nGEO1YA4ExLzAO+AEJHMc81kkraiMqWcRhzvy//8l+ZbmvdCFzSyKUN9i9VuCG+3AN6KCMB4VYy4vtkrdmw2ba3p568nTuzn+gmMXp5Q9ydRrcnorbeadWy8aDlynx7ywW34ibHrKyMzUAfnOY9ero6FEJFeSy96nZ7ZkkcAHUo+Jf/0P+tiIZibJUfk2ARGKsWeydlb+AafkbJZ0py7xp7o+TV3K/9+W2SJ//HfFCW6YHVHIRHw8dxL8oW8uau0FMWYmNQbgEcjHXMZn48jd9REm7KdNN5CRqqQ9bo8V8Fxn2ZHS+MB7hXonlv4v3T2fnymeMZVxi/pWeE9SjTruzA=
+X-HE-Tag: 1761650000-176039
+X-HE-Meta: U2FsdGVkX1/Ns2rgexwGCfANGfTAJNkHGUOZHOYMhHHH8cxkpnAE0rWhJMoXrc53FCeUQ4yqMgqdY792CulnGebPA/iTqHaGilHs48hFWhoqpF4HK3Goe8FZfSqH3J6ev1XeRq6PMSc0l46/jcz0VDun3wnsHpCRQ+/b4339f0OTcTXY1UJSRuNU+I4Pmi5LwetI2oj+d0rps355bexjs1E0vtIOuR7EEYA65wBP8NvERS28boY/HhpLGkHC/eUBECMmaXVkZYJwoiDbYIVL7gNulRcOD5ON7lOqaY21iDD7d2F8z5JSskUSThyUK9QY6mXSGcG2ERl+mxMER2kAlsqlMCK0XocB82T4mR1+UNZ37YYuW6FNV1x4nsgy6dNfdszaBPJE2CCySokKFykE40adcZw7pIAx23qb0cd7mIXFjSxnzvBFbpVSo4QSOuQx9znXboPV19isTNikAvLww2k9s/6Lb/FqSnHWHAocW3Rip7y5PbAkEKAOJaG31u6YtNdiPmDLXCXSeB2tWJcsB1j+UdthLlRQgNmijs0LFyjXAl33FwTStdXKJVRZ1qTNJJm5SECfOd5O5GSK/8SXGnbKfyyoQV08KP2JacUoDQ7gTiRhwNeD5poYGIIfhuZMYF23RW2n65H7fUGaE0pyxQOHLhzhuswuqNmKZq/Z2Uq53hR+9gRRNY6+rAnTQSG77p5OE0NEASyXD/BNzhAO6Qv6QAwKZNXhfNJuOAMAPpBBN/zkHcLu9ieL7Hm7v/xBrWiSydmrYUV+lXRVFmo/tnSpgfWxTkn8sP1jyQ1LV55cpF3a8AsuSR/zJJSahNsZJX7wYUOpDYAkFNjoqK/tCSFDLQ2ltt+OkDVNYLKaBap2w845gh1qUI+Ke01Xi1zvB+bC993YoiCy5R2CVd3QbtlP/lLuPWSBblm71vxF9WujArLGlteFPNJXHWOA5dlcIBZ3zDmYVqaj/16nbEJ
+ eWi8UYOU
+ GKTIETv8gxRgctqf6BSrGq3UiysvHu7T9aR/ODwqJoH51HlO90g5Ce5GSSnlg2VHfkZrc0QUQ13fmfhjB3KTPeA+ccp2FbfnI1qBXHBveCo1v6iNZPSQu463jYvfQbMCZgJaq+cZMXtI6iLb+c3uKTtE88PQBVQ6udhaweUdEPTSH9u6xMksx8SYLMfow492P5gd8/0seRELn8YTqprEE/DK9miVR1hKsN85q5YHBZTEbysIuRfyAIOciH/CV27EKg6F59O6IjnGObkjET758C9qc8z8UdvrY8BwNTBitV++KzlXpp0WMlQuqm0VeCCsrFqoqo++DVS62M7EC9KCxZ6AZHYtkZVsMJ7EJmrSUsUjRt9PdLDm4WYE4S9NB/q/F2BjUAYvFC86NV6JhPh0Ljh93Uvz8LPR8EQGrGF+ltd8u1B0yQpiyUH+O54T3F1qYdy3CJ74KWvkIkZp2jrZlPlvKrZgEY30QWYmefGrQjleH4VIbEuRnM1oBsw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,96 +110,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 27/10/2025 17:24, David Hildenbrand wrote:
-> On 24.10.25 16:32, Kevin Brodsky wrote:
->> On 24/10/2025 15:27, David Hildenbrand wrote:
->>> On 24.10.25 14:13, Kevin Brodsky wrote:
->>>> On 23/10/2025 21:52, David Hildenbrand wrote:
->>>>> On 15.10.25 10:27, Kevin Brodsky wrote:
->>>>>> [...]
->>>>>>
->>>>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
->>>>>>      followed by an immediate exit/rescheduling and some followed
->>>>>> by a
->>>>>>      conditional exit. These functions assume that they are called
->>>>>>      with lazy MMU disabled and we cannot simply use
->>>>>> pause()/resume()
->>>>>>      to address that. This patch leaves the situation unchanged by
->>>>>>      calling enable()/disable() in all cases.
->>>>>
->>>>> I'm confused, the function simply does
->>>>>
->>>>> (a) enables lazy mmu
->>>>> (b) does something on the page table
->>>>> (c) disables lazy mmu
->>>>> (d) does something expensive (split folio -> take sleepable locks,
->>>>>       flushes tlb)
->>>>> (e) go to (a)
->>>>
->>>> That step is conditional: we exit right away if pte_offset_map_lock()
->>>> fails. The fundamental issue is that pause() must always be matched
->>>> with
->>>> resume(), but as those functions look today there is no situation
->>>> where
->>>> a pause() would always be matched with a resume().
->>>
->>> We have matches enable/disable, so my question is rather "why" you are
->>> even thinking about using pause/resume?
->>>
->>> What would be the benefit of that? If there is no benefit then just
->>> drop this from the patch description as it's more confusing than just
->>> ... doing what the existing code does :)
->>
->> Ah sorry I misunderstood, I guess you originally meant: why would we use
->> pause()/resume()?
->>
->> The issue is the one I mentioned in the commit message: using
->> enable()/disable(), we assume that the functions are called with lazy
->> MMU mode is disabled. Consider:
->>
->>    lazy_mmu_mode_enable()
->>    madvise_cold_or_pageout_pte_range():
->>      lazy_mmu_mode_enable()
->>      ...
->>      if (need_resched()) {
->>        lazy_mmu_mode_disable()
->>        cond_resched() // lazy MMU still enabled
->>      }
->>
->> This will explode on architectures that do not allow sleeping while in
->> lazy MMU mode. I'm not saying this is an actual problem - I don't see
->> why those functions would be called with lazy MMU mode enabled. But it
->> does go against the notion that nesting works everywhere.
->
-> I would tackle it from a different direction: if code calls with lazy
-> MMU enabled into random other code that might sleep, that caller would
-> be wrong.
->
-> It's not about changing functions like this to use pause/resume.
->
-> Maybe the rule is simple: if you enable the lazy MMU, don't call any
-> functions that might sleep.
+ On Mon, Oct 27, 2025 at 10:03:14PM +0800, Zhang Qilong wrote:
+> > In current mincore_pte_range(), if pte_batch_hint() return one pte,
+> > it's not efficient, just call new added can_pte_batch_count().
+> >
+> > In ARM64 qemu, with 8 CPUs, 32G memory, a simple test demo like:
+> > 1. mmap 1G anon memory
+> > 2. write 1G data by 4k step
+> > 3. mincore the mmaped 1G memory
+> > 4. get the time consumed by mincore
+> >
+> > Tested the following cases:
+> >  - 4k, disabled all hugepage setting.
+> >  - 64k mTHP, only enable 64k hugepage setting.
+> >
+> > Before
+> >
+> > Case status | Consumed time (us)  |
+> > ----------------------------------|
+> > 4k          | 7356                |
+> > 64k mTHP    | 3670                |
+> >
+> > Pathed:
+> >
+> > Case status | Consumed time (us)  |
+> > ----------------------------------|
+> > 4k          | 4419                |
+> > 64k mTHP    | 3061                |
+> >
+> > The result is evident and demonstrate a significant improvement in the
+> > pte batch. While verification within a single environment may have
+> > inherent randomness. there is a high probability of achieving positive
+> > effects.
+>=20
+> Recent batch PTE series seriously regressed non-arm, so I'm afraid we can=
+'t
+> accept any series that doesn't show statistics for _other platforms_.
+>=20
+> Please make sure you at least test x86-64.
 
-You're right, this is a requirement for lazy MMU. Calling enable() then
-disable() means returning to the original state, and if the function
-sleeps at that point then the caller must not itself enable lazy MMU.
+OK, I will have  a  test on x86-64 as soon and it may yield unexpected resu=
+lts.
 
-I mixed up that case with the original motivation for pause()/resume(),
-which is to temporarily pause any batching. This is considered an
-implementation detail and the caller isn't expected to be aware of it,
-hence the need for that use-case to work regardless of nesting.
+>=20
+> This code is very sensitive and we're not going to accept a patch like th=
+is without
+> _being sure_ it's ok.
 
-> Maybe we could support that later by handling it before/after
-> sleeping, if ever required?
+Year, it's a hot path, we should be extremely cautious.
 
-Indeed, pause()/resume() could be used to allow functions that sleep to
-be called with lazy MMU enabled. But that's only a hypothetical use-case
-for now.
+>=20
+> >
+> > Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+> > ---
+> >  mm/mincore.c | 10 +++-------
+> >  1 file changed, 3 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/mm/mincore.c b/mm/mincore.c index
+> > 8ec4719370e1..2cc5d276d1cd 100644
+> > --- a/mm/mincore.c
+> > +++ b/mm/mincore.c
+> > @@ -178,18 +178,14 @@ static int mincore_pte_range(pmd_t *pmd,
+> unsigned long addr, unsigned long end,
+> >  		/* We need to do cache lookup too for pte markers */
+> >  		if (pte_none_mostly(pte))
+> >  			__mincore_unmapped_range(addr, addr + PAGE_SIZE,
+> >  						 vma, vec);
+> >  		else if (pte_present(pte)) {
+> > -			unsigned int batch =3D pte_batch_hint(ptep, pte);
+> > -
+> > -			if (batch > 1) {
+> > -				unsigned int max_nr =3D (end - addr) >>
+> PAGE_SHIFT;
+> > -
+> > -				step =3D min_t(unsigned int, batch, max_nr);
+> > -			}
+> > +			unsigned int max_nr =3D (end - addr) >> PAGE_SHIFT;
+> >
+> > +			step =3D can_pte_batch_count(vma, ptep, &pte,
+> > +						   max_nr, 0);
+> >  			for (i =3D 0; i < step; i++)
+> >  				vec[i] =3D 1;
+> >  		} else { /* pte is a swap entry */
+> >  			*vec =3D mincore_swap(pte_to_swp_entry(pte), false);
+> >  		}
+> > --
+> > 2.43.0
+> >
 
-> Or am I missing something regarding your point on pause()/resume()?
-
-Doesn't sound like it :) I'll remove that paragraph from the (already
-long) commit message. Thanks!
-
-- Kevin
 
