@@ -4,117 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A3D0DCCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:22:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68F12CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:27:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0A40C80144; Tue, 28 Oct 2025 09:22:55 -0400 (EDT)
+	id B844480145; Tue, 28 Oct 2025 09:27:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 07BC68013F; Tue, 28 Oct 2025 09:22:55 -0400 (EDT)
+	id B5C6A8013F; Tue, 28 Oct 2025 09:27:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ED40A80144; Tue, 28 Oct 2025 09:22:54 -0400 (EDT)
+	id A717780145; Tue, 28 Oct 2025 09:27:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id DAC4D8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:22:54 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 898F0140454
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:22:54 +0000 (UTC)
-X-FDA: 84047588268.20.FBA107C
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A8F5F1C0004
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:22:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fnZ9TBl/";
-	spf=pass (imf21.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9607F8013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:27:18 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6B24D12A991
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:27:18 +0000 (UTC)
+X-FDA: 84047599356.14.D15B375
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 4C869120005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:27:14 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vOqZ7CBl;
+	spf=pass (imf29.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761658036; a=rsa-sha256;
+	cv=none;
+	b=k0CYY5ITYpalhURvIQVQhZqAwYzFPzmG00DD93M/8XYXwFNKacULh9kLa3BHoH7WQSlwcH
+	a69ns9Ex0dDhMBHoZJEybMNGZNwkoNBlo9STeD4AjiigkKVH2LSMJenDiL+DppuhPJzfzG
+	4mAPC38+M7c8bzj39pCbz3KCiAZMiEQ=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vOqZ7CBl;
+	spf=pass (imf29.hostedemail.com: domain of zhangqilong3@huawei.com designates 113.46.200.227 as permitted sender) smtp.mailfrom=zhangqilong3@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761657772;
+	s=arc-20220608; t=1761658036;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r8hdoqzDw0ciKJ5R5py/N5NF6XV/5atOOkFGVbOI51o=;
-	b=lRQqjs15pIoMJ4jq1JyNGA6UWS++nZu1iUhtku5xm8IK694qxRTCFsfkoM625i0ikWg61F
-	rFdE0X9iomAzMzYudascYSs5NJs6NhymaUEYCkwqQGEoGesAhBGSZQ7dY295BeXebtUak/
-	Y2uqoeH8c8BP2rXJ1YDfHYdG0nPTzMA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761657772; a=rsa-sha256;
-	cv=none;
-	b=wKQ4M4w7gmAlL2UybSK7usWMaoyNYk8X5xQrnjyJ4lek7wXFQJKM74MCCgpjHa6LkAW7wy
-	Xxs7GJ9rMThnml82wWmTWbLfsgls/OT/QyldGIvjg2H+oE+4qd9RhwYycYCQQcTIrk4Wzu
-	iiG3cCvUpyrNb0zHgVKBE9HutAMF13Q=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="fnZ9TBl/";
-	spf=pass (imf21.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.214.179 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-290dc63fabbso57684595ad.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:22:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761657771; x=1762262571; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=r8hdoqzDw0ciKJ5R5py/N5NF6XV/5atOOkFGVbOI51o=;
-        b=fnZ9TBl/bFK5fvBc18J/p9zVHXF/sF6wQJNh3yNT9kAbGWiEX0PwikOFiVw6laCp0w
-         iVAmLU86kkC0LaEqoRSeLZT+HIv1Ls7o2iNXErn6jBKn71C88lxw9qJFzOwp3S5Fj89g
-         ZMdtaa2HYXHmYdzs6yD6pxXPEupySfR4pygH8UxNQefSQcFz2hM9blsXBB9zp/7f+wgH
-         +698JAywmZKqkk6NEqh8WLIFJs5vdgqZs/f+ubNU2PoVUHaYPhxJOACK4VCxrxoUzf5a
-         igs5Xhl4x5gshicy8wtap5qKYHS2N9IdT3kvvekQ0GI4mBI/Fyuv/eTCynzrrSGSdM7l
-         nfzA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761657771; x=1762262571;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=r8hdoqzDw0ciKJ5R5py/N5NF6XV/5atOOkFGVbOI51o=;
-        b=UnP6yH4zNYPauCzeY4M7XglcfpCnSzOUKWySZwKAR1CPC9zLAxsSaBe294ZtwfmcEo
-         vDd5wkflIVpbUD8oUlnp5i6+1kxCN+msoMlWf8lt//fTXwCaKUMWVQmkNYUS/DZycLk3
-         M2alGqArZW/HIxabrYnmayrQFpTz4QNHfM/8Su18p7eWAoMEnWM1O/3r+arHxfRDV+eJ
-         PZp7SmVEZAYdo19eKB/uWYDU9cCVpUdAMQI7+elyscoHUAfRlVNFvm5I/+3OtXi40J4B
-         srDiiZaD2LWS0OakcwKFeM9V2Ocd8yWOwxEYJlhiTFo8Xltxzr+tZ7UZaRhlh1Ml0c/r
-         RwWg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuWvnwBEx1E2d06Z/Vz1SKf1s67Kl2hzpDVN+E+rACn+jHaJPO09KvAoQUPOXPW3eISws50vcvCw==@kvack.org
-X-Gm-Message-State: AOJu0Yxx610DPDOJDFEBYoXpZMBsUHxXOc9Iq3hh8ufJZhmZXJUkJVH6
-	zlfOWpP3B3N3GPVyJSYf1GykuJNoYAG9wcTXMGdGrod1HpRbRX1q9vvnEzuf4zmP
-X-Gm-Gg: ASbGncupBnRSqV/xnYwdesUgGghZfQBsVVJm3KnuhXkSEdCjOlmqhor6iIzuUAWoTpI
-	YP46qWQlja9NKvSrxQZ7HfnrOn14lM+sMozCvTXJ4OqqhbJeq7EUDRRFFNsr+CILFe5ji2TiNcN
-	nprU3LdDwB3MQgWzBOxbYu3RcatHwC5v9YVUgXjnqatWRglG/Ya5Jt4YOZoG+Lxtorvo4RWNgLE
-	D49cXOORwedYO2eBi8ku5Q6JrcjTG+2v7Gw82N+j3UXvJ8QDWOXx1OB4DZE18bVv/1x2toGgAU7
-	TUw5MVjHhpjy1KC2wXXabjWy8ny6EkurwtAXKKAn+NleVnCpRVOgR6yN6pt7kyhI2a37Wt4GT3g
-	4B90k26Lt6519UEPVRzA64raHTzsmlQQhLuV0ZUbADt1nzuT27g5CHkyFJrMCy0tpT7/q+t+YqK
-	3+K/BWC8SclNPyDviy5fneBQMS
-X-Google-Smtp-Source: AGHT+IGvfrMDVGrg441E1EtxSS6ZivFeFQGgm+/YRUqoXlfT71nRhB4BmF1WcXFrbzSBiX2fpHfJEA==
-X-Received: by 2002:a17:903:2f0e:b0:290:c0d7:237d with SMTP id d9443c01a7336-294cb50e4bbmr45976505ad.36.1761657771357;
-        Tue, 28 Oct 2025 06:22:51 -0700 (PDT)
-Received: from weg-ThinkPad-P16v-Gen-2.. ([177.73.136.69])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498d0c6eesm117446235ad.42.2025.10.28.06.22.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 06:22:49 -0700 (PDT)
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-To: David Hildenbrand <david@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Subject: [PATCH 3/3] ksm: replace function unmerge_ksm_pages with break_ksm
-Date: Tue, 28 Oct 2025 10:19:45 -0300
-Message-ID: <20251028131945.26445-4-pedrodemargomes@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251028131945.26445-1-pedrodemargomes@gmail.com>
-References: <20251028131945.26445-1-pedrodemargomes@gmail.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=CGynThmWgqkc/pLRI/6X+ARzDe79YUlv0PioPW+llWE=;
+	b=sB6h/JUTScYTfJs9g6a/YI+1OZHyXFoZQ8HR0/7X8fcbtRv/dFLjk4mCwLmSMfr7V63Yl7
+	rh+ljcP/6V4UtZhW+BPzIoLTU9FIlUICE7Clso0ThVR+Am9iofjRaCe0cuSyZfnzJN+qUR
+	Ih66+N6TbMPF0ivwvCz7QnxR0bi1o60=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=CGynThmWgqkc/pLRI/6X+ARzDe79YUlv0PioPW+llWE=;
+	b=vOqZ7CBlO4peHO6+2xrvniiAJ6L+N9x4g+hLqNyez9wMLOZEZ+rVjym0lpE2lWLD0mVDPNur/
+	NEq7lI+8CLZH4laP89Lynt3FGQih4O54neJQS9gc2VJy/f1jmMBxJJrIl8jxXrnato9nZc3FlLa
+	jsVnUZTOYwLriEbBjTWM6go=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4cwrkJ3lKGznTVF;
+	Tue, 28 Oct 2025 21:26:32 +0800 (CST)
+Received: from dggpemf200007.china.huawei.com (unknown [7.185.36.2])
+	by mail.maildlp.com (Postfix) with ESMTPS id 351401402C4;
+	Tue, 28 Oct 2025 21:27:10 +0800 (CST)
+Received: from dggpemf500012.china.huawei.com (7.185.36.8) by
+ dggpemf200007.china.huawei.com (7.185.36.2) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 28 Oct 2025 21:27:09 +0800
+Received: from dggpemf500012.china.huawei.com ([7.185.36.8]) by
+ dggpemf500012.china.huawei.com ([7.185.36.8]) with mapi id 15.02.1544.011;
+ Tue, 28 Oct 2025 21:27:09 +0800
+From: zhangqilong <zhangqilong3@huawei.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+CC: "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"david@redhat.com" <david@redhat.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>, "linux-mm@kvack.org"
+	<linux-mm@kvack.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "Wangkefeng (OS Kernel Lab)"
+	<wangkefeng.wang@huawei.com>, Sunnanyong <sunnanyong@huawei.com>
+Subject: Re: [RFC PATCH 3/3] mm/mremap: Use can_pte_batch_count() instead of
+ folio_pte_batch() for pte batch
+Thread-Topic: [RFC PATCH 3/3] mm/mremap: Use can_pte_batch_count() instead of
+ folio_pte_batch() for pte batch
+Thread-Index: AdxIDDiulwIESNrFTrCD1E5/3V9Now==
+Date: Tue, 28 Oct 2025 13:27:09 +0000
+Message-ID: <8dc1d253056848dba950e74bed8218bd@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.174.177.115]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 4tb14rccufocrg561iqcqtespyq69nzs
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A8F5F1C0004
-X-HE-Tag: 1761657772-509758
-X-HE-Meta: U2FsdGVkX1/8a1wflAdlsKJRjjenxAD73qjwYhnMSpAVVWOAnr6XIBw292yWZcP2httl+3KFwuPIwwN+zoUnbufhTtXmZExQcKiaYSa0bbGcK/1I8JT/4efIQbq6c+o3OyPNVMjWd26x9pkKehkWVJg6aQXBW41j5LJo37MpvzeK3yGj+AFb5hyqOX/DOnCkpjSc/lFQsuL6+efIcLIjizQVditmeBIYCSinIf8E+BJBeybpfptjJELXHC4FaNZJbU3JkaEo/oIOx9vDFhKyWRQM+ZLw6hNFp2pw+XcW7xv75jPTQtv6hPNVctgClIErtF2LDKu7DMyo5jKkVk6LAiPymmAkqMH+oXVFmLFxvvh+s1zzosC0kQaNABC7eFomaabhBLMq/0KRXIOfjqr9hKbhyZymPyuTDuedy2Vg0FFH+rgM2+9eeL8rtsQ9UIeCPCBeXiu3Od+2mmrBhKMbYE5LPsjU5MRTFwskvMC0MO8ZnDckt0dbeE8P4+masZtn9tw/DFrMWHmtBiURkRPqSAbjiNfCw07ML8ADTRbr439ytJEZVsq3jKvnf/WR5KXsPjFqsWvq7jJEfAJP3/gK68mfYKP4iH0KU7gH1LjbX6gXKZBoVyI5pGihYQsm/5EeWZSx0lvINdj9kxJje1wOmZfCFiRCO+L87ZdOfJ81xGmJtIz+r4GjypLj8WR7acLK8Ucs1W4C8NHTYakFUQDCiH0xegd5Z3j8U85oBKjeTiQhPzQgpjExcpVy3JPfmUa73XAPJrDKuVDOBRpbOVU1hmtKK/0MZnh7oHbQI72cjUIO9xbgWq6PNte5496YJOraB9YMV6W+qUgSl/nplcwHSLvHPpDbnVfD1g1zIFoXwci+wlA/EKy6HQ3pgOBxHZypvr7YNYQ2S9RPPRSds2wgrANlHsR+4XI7QZXaT8cymxpYaz3BKh5s9gwTfMLW5O/9BotO5kL1ig1+LE1TPg6
- bXf0+cLh
- LNBrHpO3qxFAX4Hu+pNFLBlBlzDpjuNIjVxmdEMKkdQ9JKtVlRl5zw7QkRKHcmgYznmKSNziTYyFtQhEOn8Sqzc3p8rnq8cyc0oVSlTQR4xvQeeiwSm4nCVbyJHnSeE893UX6RNQ3gbzRuNxn1oEK4TrH4stvLCS40SJIJmf0WagQfFbTHUp1f0x4HUcvFEbnOuWPehCxIE8rRqG5PAlAIW1y4W/15HXm0874WM0ntf5ye9M7JPdPJaACqzQEElidXLjFbNC55okYsSQA7TkdmC/oJqUP9mdgpXwP4Xo/owcgZrqONVBdZLT31+iq3AqEbOijMVufdQ+D2aLYcWnrXtlf9h36dcrwIGk91kOZccIHe/alarpS1mILWmHvlhSteL6P6izpM8YI20laNWF6eUOsqV26qslkVjvLnb6FeP0UioFjYpELc/IfoWQHOIrHYG34lDleou2TL+K+mgbCvkX30s+OkypnciCt2dJzvt5mQk0=
+X-Stat-Signature: hxs8sx7rsrokwb93ramnqtir6ynk1c6r
+X-Rspamd-Queue-Id: 4C869120005
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761658034-954046
+X-HE-Meta: U2FsdGVkX185EnV7YYMNqKklurbc4YgVgbOH7Ysv0xU+bQnjzYGt58mP3MmeU82+x4TFaRvPpwlHTu3t4voyG1fddTjpPfd5Vu1nHF8uL8cmVLW+dHNPmbKdCW4IZPqaOS/MrTv37E0m8GGIJgwrx2W4G4AJbQjnv5F6ecUx4U/q6H/yfEFB5DpXg2mt84/bO2wOoV9g9awliTUsKxMJgYuDnC1i6US8OdASvWBXxzUwuHP8KSexNyvvEamb2D6DFCXpMYMjsiNYzaR5XzEX7PH6npIG1b2vhh9/Sq2LBSCqcUbQIHgClvI9poMbZaeeEkK6Rd5yw/HaJme+7PIbS2R4z1gbJHlvRu1vsKt1mkxD4qzp/DIkXsszEJOCWz/HU2nHZcN9fldEpheUxOFriAQ2uhvxSrx/6OJigXnLfTK7QeHWaVXq68HLJb/pw+XOd0EYJgfWmLtWLYNF/e8viXTD0RtpmlGOTWb9PT2hqbawq9XmYYpzTBM7Cyl/TvpAA6+1qu+HqwloeC+DgnR0/apQ9mbChxbd3VBheV9tV1XLqtUJqYRxthHcPWNF80ZQM0+6rpexG35Do+K5nrFde2CZC4sEtSYzkwrIbwwYyEzJf2MldRjpFbZrG7AxekWORSql/o7cfSFuIh2TS2O3zNUMSp9/T/SEP9TGe0ZUlfUf5IImWYDTlwenr6W2Y916P3fP3/7C74+W8OkqBpRW8naayFi80j1TnJ6hGMPXHzY+6PTGxjufj81A+2GbI2a+KubHN0wpc5BWQoiVrD/1ALrpRhgMdcLPU9nJ6Pe04VfrMfhjnxMxTxx3kN+mA8AgkgzuacYTGQJKPT1xiO/uy9PjmODzLAhwwNfF8KEdrnKib5XfbJQmQ12AmvYbA1r3mGA/zVVpQ7qDGS8hKVDqN2lVJV42I1oumDkl7jI3qB1UMxGLcti9IXIIukPGcGKwgbMQ/segjhNY2/KcO7F
+ hMagEExx
+ BnjKLqDVYSNOSyhShN4LA38hFor9+MvqLbxOZsM2iWSd4StnivVDg1d2DAx32xEWzL7CiaIHydIQOSf76wmL/9PU2ukKcx0ks1UJSUTkTwn6P+QudbR5bEi+qOA8PMELHTHOuud8EqKxp6cjxzU72MirC0xFe6QEas4nSgXmIaofpOSGdRWaP+pSvfAh0kaBWJL0RJraV4vfRljaOkZsR8OLIKIrHmRHSZiYNPUyaGJvNIOG4LbMc4PQye5cE4jMSz25JCAKRO2wlaRvPFtm4kfKbHAr8DGNnqrL6jXsQG5GMkhSmseiG2MBC/+9fJEZ8bje83kY9jncseZ9acH7FRsA3KUvwnv1FUTUVVrvdk+Y/uSsCH7m0lij4+Kj99I+IdkxUoXmS2n5b4tBn5kjkjaGCs1qo9cixEU7D+Gku+TFpOlZzN17OsEqEvJNx1IE+rTRrk8fqpU+LcV//vv3IJq+wSNDQ3g1CMZxnA7C7yW937hS8O0SRHBX7AA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,101 +110,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Function unmerge_ksm_pages() is unnecessary since now break_ksm() walks
-an address range. So replace it with break_ksm().
+> On Mon, Oct 27, 2025 at 10:03:15PM +0800, Zhang Qilong wrote:
+> > In current mremap_folio_pte_batch(), 1) pte_batch_hint() always return
+> > one pte in non-ARM64 machine, it is not efficient. 2) Next,
+>=20
+> Err... but there's basically no benefit for non-arm64 machines?
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
----
- mm/ksm.c | 39 ++++++++++++++++-----------------------
- 1 file changed, 16 insertions(+), 23 deletions(-)
+It except have benefit in non-arm64 machines. In non-arm64 machine,
+pte_batch_hint always return one although a folio are mapped by multiple
+PTEs.=20
 
-diff --git a/mm/ksm.c b/mm/ksm.c
-index 1d1ef0554c7c..18c9e3bda285 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -669,6 +669,18 @@ static const struct mm_walk_ops break_ksm_lock_vma_ops = {
- };
- 
- /*
-+ * Though it's very tempting to unmerge rmap_items from stable tree rather
-+ * than check every pte of a given vma, the locking doesn't quite work for
-+ * that - an rmap_item is assigned to the stable tree after inserting ksm
-+ * page and upping mmap_lock.  Nor does it fit with the way we skip dup'ing
-+ * rmap_items from parent to child at fork time (so as not to waste time
-+ * if exit comes before the next scan reaches it).
-+ *
-+ * Similarly, although we'd like to remove rmap_items (so updating counts
-+ * and freeing memory) when unmerging an area, it's easier to leave that
-+ * to the next pass of ksmd - consider, for example, how ksmd might be
-+ * in cmp_and_merge_page on one of the rmap_items we would be removing.
-+ *
-  * We use break_ksm to break COW on a ksm page by triggering unsharing,
-  * such that the ksm page will get replaced by an exclusive anonymous page.
-  *
-@@ -1077,25 +1089,6 @@ static void remove_trailing_rmap_items(struct ksm_rmap_item **rmap_list)
- 	}
- }
- 
--/*
-- * Though it's very tempting to unmerge rmap_items from stable tree rather
-- * than check every pte of a given vma, the locking doesn't quite work for
-- * that - an rmap_item is assigned to the stable tree after inserting ksm
-- * page and upping mmap_lock.  Nor does it fit with the way we skip dup'ing
-- * rmap_items from parent to child at fork time (so as not to waste time
-- * if exit comes before the next scan reaches it).
-- *
-- * Similarly, although we'd like to remove rmap_items (so updating counts
-- * and freeing memory) when unmerging an area, it's easier to leave that
-- * to the next pass of ksmd - consider, for example, how ksmd might be
-- * in cmp_and_merge_page on one of the rmap_items we would be removing.
-- */
--static int unmerge_ksm_pages(struct vm_area_struct *vma,
--			     unsigned long start, unsigned long end, bool lock_vma)
--{
--	return break_ksm(vma, start, end, lock_vma);
--}
+>=20
+> The key benefit is the mTHP side of things and making the underlying arch=
 -
- static inline
- struct ksm_stable_node *folio_stable_node(const struct folio *folio)
- {
-@@ -1233,7 +1226,7 @@ static int unmerge_and_remove_all_rmap_items(void)
- 		for_each_vma(vmi, vma) {
- 			if (!(vma->vm_flags & VM_MERGEABLE) || !vma->anon_vma)
- 				continue;
--			err = unmerge_ksm_pages(vma,
-+			err = break_ksm(vma,
- 						vma->vm_start, vma->vm_end, false);
- 			if (err)
- 				goto error;
-@@ -2861,7 +2854,7 @@ static int __ksm_del_vma(struct vm_area_struct *vma)
- 		return 0;
- 
- 	if (vma->anon_vma) {
--		err = unmerge_ksm_pages(vma, vma->vm_start, vma->vm_end, true);
-+		err = break_ksm(vma, vma->vm_start, vma->vm_end, true);
- 		if (err)
- 			return err;
- 	}
-@@ -3013,7 +3006,7 @@ int ksm_madvise(struct vm_area_struct *vma, unsigned long start,
- 			return 0;		/* just ignore the advice */
- 
- 		if (vma->anon_vma) {
--			err = unmerge_ksm_pages(vma, start, end, true);
-+			err = break_ksm(vma, start, end, true);
- 			if (err)
- 				return err;
- 		}
-@@ -3395,7 +3388,7 @@ static int ksm_memory_callback(struct notifier_block *self,
- 		 * Prevent ksm_do_scan(), unmerge_and_remove_all_rmap_items()
- 		 * and remove_all_stable_nodes() while memory is going offline:
- 		 * it is unsafe for them to touch the stable tree at this time.
--		 * But unmerge_ksm_pages(), rmap lookups and other entry points
-+		 * But break_ksm(), rmap lookups and other entry points
- 		 * which do not need the ksm_thread_mutex are all safe.
- 		 */
- 		mutex_lock(&ksm_thread_mutex);
--- 
-2.43.0
+> specific code more efficient right?
+
+Yes, we except it could benefit from mTHP, and not just for arm64.
+
+>=20
+> And again you need to get numbers to demonstrate you don't regress non-
+> arm64.
+
+Yes, I will have a test on x86-64, non-contiguous folios or non-contiguous-=
+folio
+should not cause regression. Thanks for your kind reminder.
+
+>=20
+> > it need to acquire a folio to call the folio_pte_batch().
+> >
+> > Due to new added can_pte_batch_count(), we just call it instead of
+> > folio_pte_batch(). And then rename mremap_folio_pte_batch() to
+> > mremap_pte_batch().
+> >
+> > Signed-off-by: Zhang Qilong <zhangqilong3@huawei.com>
+> > ---
+> >  mm/mremap.c | 16 +++-------------
+> >  1 file changed, 3 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/mm/mremap.c b/mm/mremap.c index
+> > bd7314898ec5..d11f93f1622f 100644
+> > --- a/mm/mremap.c
+> > +++ b/mm/mremap.c
+> > @@ -169,27 +169,17 @@ static pte_t move_soft_dirty_pte(pte_t pte)
+> >  		pte =3D pte_swp_mksoft_dirty(pte);
+> >  #endif
+> >  	return pte;
+> >  }
+> >
+> > -static int mremap_folio_pte_batch(struct vm_area_struct *vma,
+> > unsigned long addr,
+> > +static int mremap_pte_batch(struct vm_area_struct *vma, unsigned long
+> > +addr,
+> >  		pte_t *ptep, pte_t pte, int max_nr)  {
+> > -	struct folio *folio;
+> > -
+> >  	if (max_nr =3D=3D 1)
+> >  		return 1;
+> >
+> > -	/* Avoid expensive folio lookup if we stand no chance of benefit. */
+> > -	if (pte_batch_hint(ptep, pte) =3D=3D 1)
+> > -		return 1;
+>=20
+> Why are we eliminating an easy exit here and instead always invoking the =
+more
+> involved function?
+>=20
+> Again this has to be tested against non-arm architectures.
+>=20
+> > -
+> > -	folio =3D vm_normal_folio(vma, addr, pte);
+> > -	if (!folio || !folio_test_large(folio))
+> > -		return 1;
+> > -
+> > -	return folio_pte_batch(folio, ptep, pte, max_nr);
+> > +	return can_pte_batch_count(vma, ptep, &pte, max_nr, 0);
+>=20
+> This is very silly to have this function now ust return another function =
++ a trivial
+> check that your function should be doing...
+>=20
+> >  }
+> >
+> >  static int move_ptes(struct pagetable_move_control *pmc,
+> >  		unsigned long extent, pmd_t *old_pmd, pmd_t *new_pmd)
+> { @@ -278,11
+> > +268,11 @@ static int move_ptes(struct pagetable_move_control *pmc,
+> >  		 * make sure the physical page stays valid until
+> >  		 * the TLB entry for the old mapping has been
+> >  		 * flushed.
+> >  		 */
+> >  		if (pte_present(old_pte)) {
+> > -			nr_ptes =3D mremap_folio_pte_batch(vma, old_addr,
+> old_ptep,
+> > +			nr_ptes =3D mremap_pte_batch(vma, old_addr, old_ptep,
+> >  							 old_pte,
+> max_nr_ptes);
+> >  			force_flush =3D true;
+> >  		}
+> >  		pte =3D get_and_clear_ptes(mm, old_addr, old_ptep, nr_ptes);
+> >  		pte =3D move_pte(pte, old_addr, new_addr);
+> > --
+> > 2.43.0
+> >
 
 
