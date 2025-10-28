@@ -4,102 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD69CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:31:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5D66CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:43:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8BE4380107; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
+	id 1D58080108; Mon, 27 Oct 2025 23:43:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 820C0800E4; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
+	id 1AC46800E4; Mon, 27 Oct 2025 23:43:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 69A6080107; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
+	id 0EA1280108; Mon, 27 Oct 2025 23:43:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 54074800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EDE4CC0396
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:37 +0000 (UTC)
-X-FDA: 84046098234.16.B5EDCF0
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 80B801C000C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:36 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KSdnFP3U;
-	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id EB740800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:43:45 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9565D14037E
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:43:45 +0000 (UTC)
+X-FDA: 84046128810.27.0E70F6E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A57E740005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:43:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hbMPaWyT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761622296;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761623024;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=;
-	b=NpbKTR4DGm85sT2l9pQ+W1TBC3m8hig9qaOJU1GYg3UfGLl3Ak51xo56eS95QK1iWqM/yu
-	ypwYLOIGu7+9GZHaVQR8KRmlloptN+ahC96WXJMqMHtgLtV/mxRnI1DLfsqng4tyfrwb/1
-	Xt4gR57Wle7WAWgPOpRGGxpp3Np+/YA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KSdnFP3U;
-	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761622296; a=rsa-sha256;
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=TV/OgoscSdsYdzZZTvXxbqPnbI3vY6nI+YdCenpStKs=;
+	b=L9Jwj1Awbo0L2FPHOB4Rw/U4lkA+02Jk4Xl5WEi/TxaffnlfG13/JlbxmAd4rmz/PH2cPf
+	A5uwZSwi/Okljee7ICsN4lTaV7xff5LgcF6womYro7Ni/HlbfoaRFM/Qj7azxSwOftylmo
+	O+1oBP41jJ9x+JTs1k4qKKeLGM2/FJU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761623024; a=rsa-sha256;
 	cv=none;
-	b=Q3e7aH2TG6SeNjVXm+O1ASgwFob8XTmA396QjOSLhmoy8H8eBO1vT668jvpoDdOpRL63WX
-	MbHdYamuWIuO7YFgpAAbgFcwSgOKsbTjqeu4kSQXT2OcZPXzWa9Yn2qW7dJQDzGW+ggP4J
-	JZjSeyDBa332ElIP92BaLmcdFQ8Ex+A=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=; b=KSdnFP3Uf3Gc2L4P8+gVMs6NaY
-	8h5KjzipOzsvfCYyKmYQWnr1215L9QiltbKbSAfCPYdtlxMvACmdkXsIgY0pjbW9IlTCw7R5euqlf
-	g4OjTenHpmrfytwtkD3r6u1UwgCJ5oZSi9cPTgRBCQE1gyYExNmDo7jRg3oVBxODuZVblG2gX8XBd
-	ycgKmhaVVXcLZm3EiuzHfXap48uE3rSIXV1wfdda5TIC/DQ33D1NhmBAYzICXl85XUA5Wg4ACHEud
-	WW48GlAeR1l8HYwngXSXiHsEkgHl1SZtGhWagy+xkzsAjw6/nrvDLptr4d60gllKfhf1mfy78zba7
-	IJmWfHYw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqv-00000001ens-15Pf;
-	Tue, 28 Oct 2025 00:46:21 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v2 46/50] convert rust_binderfs
-Date: Tue, 28 Oct 2025 00:46:05 +0000
-Message-ID: <20251028004614.393374-47-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	b=lx8En3wkNxie4U42CFBtKIfknVnMovsP5nqrpw2DgAtcloJaDjxXknt15WVgYwg7YuG40f
+	9qLO6bggqXzzhVyK5cwD+zML3woFyCD9a9X3cXJW6cfjZxMAJlMs5juFsL4KLrRykl4s1g
+	N6q/sibJZLOHSAXaOkrClTgrqwR8WaE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=hbMPaWyT;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf01.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761623022;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=TV/OgoscSdsYdzZZTvXxbqPnbI3vY6nI+YdCenpStKs=;
+	b=hbMPaWyT+uFn7x5a9qas9dYuNGB1t1ftTuEsKYBCb3tE2aRxUc/TmUJCKKUhNKwvvXnHHp
+	1BzuYrKyIMUr50aIkn8yCBmeeCngWK96vxkoyzhiPpYcTNTKgmcqq4oc6KG6Nv0sacjL8V
+	sbASx2xpdwv1phxKi2eiAZS3WHxf10k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-348-7RdlUc29PrmaRR3vuQtkyw-1; Mon,
+ 27 Oct 2025 23:43:39 -0400
+X-MC-Unique: 7RdlUc29PrmaRR3vuQtkyw-1
+X-Mimecast-MFC-AGG-ID: 7RdlUc29PrmaRR3vuQtkyw_1761623018
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2F0B51808972;
+	Tue, 28 Oct 2025 03:43:37 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.212])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4ADCA1800298;
+	Tue, 28 Oct 2025 03:43:31 +0000 (UTC)
+From: Baoquan He <bhe@redhat.com>
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	chrisl@kernel.org,
+	youngjun.park@lge.com,
+	kasong@tencent.com,
+	baohua@kernel.org,
+	shikemeng@huaweicloud.com,
+	nphamcs@gmail.com,
+	Baoquan He <bhe@redhat.com>
+Subject: [PATCH v5 mm-new 0/2] mm/swapfile.c: select swap devices of default priority round robin
+Date: Tue, 28 Oct 2025 11:43:06 +0800
+Message-ID: <20251028034308.929550-1-bhe@redhat.com>
 MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 4egC8HYj-r-AoFJhQHD2dFKyckvtjiBARYfw5Qw8Xv4_1761623018
+X-Mimecast-Originator: redhat.com
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: rwywbn37mdyhs5387m5wuxacsb3pj7oy
-X-Rspamd-Queue-Id: 80B801C000C
+X-Rspamd-Server: rspam01
+X-Stat-Signature: jsrqgxo6wx7ww9zu633175b5p9b3zdtp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761622296-423998
-X-HE-Meta: U2FsdGVkX18lgvwowzmvkGzWjkH+243nK0qBnQnPCa6Rm5h2mgPco6sUvDS7DkSMn9q5SAEQ70fRfFDLS2Mm//OHQuf4P4omHxw2wdLNXQizCd+tpj8VhOCx96mfgpNBFergoNy0KXoJEQoPg7vYGyBV4e+Clu7J33yv2L40T6vCea61VEmdjulcPfroPUTKFWfblzFaElPjKu0eIzaR4aoyviYoccrSgPbf0G1yHToMY5qu/czL9yO0FY6iEZ2lyFzqwdk3voVnnC3M5v3m5su1QXd+o7wXXqUBFDb9sPdDoO0/lfyt7BvOncXd5fIbaiLlTgzRbkmexRG0BOBRx1wXka8+dR/Pcig3vlAFTs4LT6UXeab7jGPBQyrjHXci+HmGVE6MDlSPxj3ZZDLeAAXH49EBFx3JC1LYWsyQXTmN8CiFBV/kVJF64WnxGmUaH73o5YV6QLtFnfU2xHB/thEqhSevJSWniXdruDQHhxBPnVr0ZytE74vsW9gwN/oiaVHOQtftVSGGgbzA+r5F7+7Ei7mCF1Y6vatx9G2pS5nVEqPrMBtXTkPdn2voakW+7uOE9hY8s63eL67vhafb2mW6OdK2a8I70vU7vgdHyC9Kr5yjcNb5mVRQ7bkAAb0LFc41tiOS53UCU1g/KOd5OLwdazUtQlUrwNygJGASTN1zKZk5a3uo2DFh8iXiVEbL+5CKhMrNpvU9QrQoiruVuLjbbDIhZe1O5EsbkN+nekv02EodhRDqJVHb4+KNJW0C3jkohkY6dLRP8LXVlKZaSvqDONY1pS8BDv9AAEc6EaGeCz51QdT2LloiB+1Y5n+j9OYFYU2rfxj6hC8U3j1xFiucEwPb7x0XBLuKY4jTupek/3UDGKwwPCP8m2bfEolbX0Z3ax296umQPE0TRtKDSqB0hBlGgmEw0Mxyp1c6fP3ByC/dnVkk6EFJu6qPIfmI/qD9qoDLXj+yU72J/1K
- ARPKgVUd
- zlm1iBu8FN6KWwbfwVtcxaXmz8QlQfGmPpAIls3Pswtp5l+lygI2P+1fc5PIyh9fnpC0/oRuuq8rvmqVsq7c2XOvFCL4DFmdeG0oc/qmGangCtjpdhLc5oOdiodFD6MLe0bhLeyCSDBEWFZXwrZjUNjulZVOi6UpJih7D
+X-Rspamd-Queue-Id: A57E740005
+X-HE-Tag: 1761623023-980512
+X-HE-Meta: U2FsdGVkX18rnn0hYN6n/2AEEz+YRVtUEDcCh8E0ktsH1gvnkIJlsNky2PWhAJu0WwiWOX6L+9nyo+7N6fhNjNHMXIG/tO4bHvuSgqgP/bmtWqveftUAVTxyHqQW8T6f83rRPVk4/fOINjx0EhMW/TGQIXTs+EZC6WqnXX6v2pHAdCHEmjPEtUnBA6JdkZ/EbChnwCEoz1+84w3ryNYhnboAiHPMSLzYwKz2fTYPBWooSHiyxD2/irM3VYSDDeHe1kRFHi4joC5dXd7ZdG00xwLrlsxvLqlQKePCVlm6dNsB5YGQ1QG5DFsyBz32ZHrPwO7Cu+Km48dkzWpfzrIzYZFVnMRLNS2g24yomxf8bmWA4bp6R3FAVAfnF0mmFv/N/osokSyL+DTlF7s9PjI7g6soGDlR1kSSzN/GAOUpY5wy97S/22Fw58A4USTJzx0gPSj8j+watJSkW8z0SYZBMz9RzhwM2hsIpTeQyI8+Tul5QqJC43pitCOTPlcv8YDHvPIaFcch7loXiDV8Sy6Os1kSNLSKbQIeIkSDJbDABdyLYJ/dCBuvPWOdcKkEYJiDfecFoEWjLcmjetR4ZJkxucP7qS0r61ENpUoqZyv9bI/w7iWf2YY6uL9/q356PvY0T3uvsJ0FuWwTIt+XQIwyglo2dHpJWgd3kgiuVNONl4pJ9gHRpfG+rMccYWzlnpmvKSHOBlZnKCz7rw+pG1Q40IO7OEEb/H/jsJX8RJwal4WTHMsqM30DgbgggWdLbd4EIV3/UZJGqiJFdcLUcJluUvRYC/XfWZQKk6dkFzOUBogC8LPo+eWUd4KXt9yZupaQP0SHe+gG3GR1/CrkPueP4G6F3cmWuTXMZRf2skLrOq0uVa9S4lAp1WIDvQkUOGZFpl2zzW6OQfFBa0YRp3jd16w0VwU0kVYuCvQvwAU3hiJKEn1UHmVcZg97nYHdlVKYaxbJB4/aoTpWcM4sVWv
+ kxOOVHYJ
+ HLQU+jy/gdI4V1+GcTcMbXI0nXzE/XUTMRysmeL0Vj9NKYtZXahsY3tkUgQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,198 +109,157 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Parallel to binderfs stuff:
-	* use simple_start_creating()/simple_done_creating()/d_make_persistent()
-instead of manual inode_lock()/lookup_noperm()/d_instanitate()/inode_unlock().
-	* allocate inode first - simpler cleanup that way.
-	* use simple_recursive_removal() instead of open-coding it.
-	* switch to kill_anon_super()
+Currently, on system with multiple swap devices, swap allocation will
+select one swap device according to priority. The swap device with the
+highest priority will be chosen to allocate firstly.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- drivers/android/binder/rust_binderfs.c | 121 +++++++------------------
- 1 file changed, 33 insertions(+), 88 deletions(-)
+People can specify a priority from 0 to 32767 when swapon a swap device,
+or the system will set it from -2 then downwards by default. Meanwhile,
+on NUMA system, the swap device with node_id will be considered first
+on that NUMA node of the node_id.
 
-diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
-index 6b497146b698..c69026df775c 100644
---- a/drivers/android/binder/rust_binderfs.c
-+++ b/drivers/android/binder/rust_binderfs.c
-@@ -178,28 +178,17 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
- 	}
- 
- 	root = sb->s_root;
--	inode_lock(d_inode(root));
--
--	/* look it up */
--	dentry = lookup_noperm(&QSTR(req->name), root);
-+	dentry = simple_start_creating(root, req->name);
- 	if (IS_ERR(dentry)) {
--		inode_unlock(d_inode(root));
- 		ret = PTR_ERR(dentry);
- 		goto err;
- 	}
- 
--	if (d_really_is_positive(dentry)) {
--		/* already exists */
--		dput(dentry);
--		inode_unlock(d_inode(root));
--		ret = -EEXIST;
--		goto err;
--	}
--
- 	inode->i_private = device;
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
-+
- 	fsnotify_create(root->d_inode, dentry);
--	inode_unlock(d_inode(root));
-+	simple_done_creating(dentry);
- 
- 	return 0;
- 
-@@ -472,37 +461,9 @@ static struct inode *binderfs_make_inode(struct super_block *sb, int mode)
- 	return ret;
- }
- 
--static struct dentry *binderfs_create_dentry(struct dentry *parent,
--					     const char *name)
--{
--	struct dentry *dentry;
--
--	dentry = lookup_noperm(&QSTR(name), parent);
--	if (IS_ERR(dentry))
--		return dentry;
--
--	/* Return error if the file/dir already exists. */
--	if (d_really_is_positive(dentry)) {
--		dput(dentry);
--		return ERR_PTR(-EEXIST);
--	}
--
--	return dentry;
--}
--
- void rust_binderfs_remove_file(struct dentry *dentry)
- {
--	struct inode *parent_inode;
--
--	parent_inode = d_inode(dentry->d_parent);
--	inode_lock(parent_inode);
--	if (simple_positive(dentry)) {
--		dget(dentry);
--		simple_unlink(parent_inode, dentry);
--		d_delete(dentry);
--		dput(dentry);
--	}
--	inode_unlock(parent_inode);
-+	simple_recursive_removal(dentry, NULL);
- }
- 
- static struct dentry *rust_binderfs_create_file(struct dentry *parent, const char *name,
-@@ -510,31 +471,23 @@ static struct dentry *rust_binderfs_create_file(struct dentry *parent, const cha
- 						void *data)
- {
- 	struct dentry *dentry;
--	struct inode *new_inode, *parent_inode;
--	struct super_block *sb;
--
--	parent_inode = d_inode(parent);
--	inode_lock(parent_inode);
--
--	dentry = binderfs_create_dentry(parent, name);
--	if (IS_ERR(dentry))
--		goto out;
--
--	sb = parent_inode->i_sb;
--	new_inode = binderfs_make_inode(sb, S_IFREG | 0444);
--	if (!new_inode) {
--		dput(dentry);
--		dentry = ERR_PTR(-ENOMEM);
--		goto out;
--	}
-+	struct inode *new_inode;
- 
-+	new_inode = binderfs_make_inode(parent->d_sb, S_IFREG | 0444);
-+	if (!new_inode)
-+		return ERR_PTR(-ENOMEM);
- 	new_inode->i_fop = fops;
- 	new_inode->i_private = data;
--	d_instantiate(dentry, new_inode);
--	fsnotify_create(parent_inode, dentry);
- 
--out:
--	inode_unlock(parent_inode);
-+	dentry = simple_start_creating(parent, name);
-+	if (IS_ERR(dentry)) {
-+		iput(new_inode);
-+		return dentry;
-+	}
-+
-+	d_make_persistent(dentry, new_inode);
-+	fsnotify_create(parent->d_inode, dentry);
-+	simple_done_creating(dentry);
- 	return dentry;
- }
- 
-@@ -556,34 +509,26 @@ static struct dentry *binderfs_create_dir(struct dentry *parent,
- 					  const char *name)
- {
- 	struct dentry *dentry;
--	struct inode *new_inode, *parent_inode;
--	struct super_block *sb;
--
--	parent_inode = d_inode(parent);
--	inode_lock(parent_inode);
--
--	dentry = binderfs_create_dentry(parent, name);
--	if (IS_ERR(dentry))
--		goto out;
-+	struct inode *new_inode;
- 
--	sb = parent_inode->i_sb;
--	new_inode = binderfs_make_inode(sb, S_IFDIR | 0755);
--	if (!new_inode) {
--		dput(dentry);
--		dentry = ERR_PTR(-ENOMEM);
--		goto out;
--	}
-+	new_inode = binderfs_make_inode(parent->d_sb, S_IFDIR | 0755);
-+	if (!new_inode)
-+		return ERR_PTR(-ENOMEM);
- 
- 	new_inode->i_fop = &simple_dir_operations;
- 	new_inode->i_op = &simple_dir_inode_operations;
- 
--	set_nlink(new_inode, 2);
--	d_instantiate(dentry, new_inode);
--	inc_nlink(parent_inode);
--	fsnotify_mkdir(parent_inode, dentry);
-+	dentry = simple_start_creating(parent, name);
-+	if (IS_ERR(dentry)) {
-+		iput(new_inode);
-+		return dentry;
-+	}
- 
--out:
--	inode_unlock(parent_inode);
-+	inc_nlink(parent->d_inode);
-+	set_nlink(new_inode, 2);
-+	d_make_persistent(dentry, new_inode);
-+	fsnotify_mkdir(parent->d_inode, dentry);
-+	simple_done_creating(dentry);
- 	return dentry;
- }
- 
-@@ -802,7 +747,7 @@ static void binderfs_kill_super(struct super_block *sb)
- 	 * During inode eviction struct binderfs_info is needed.
- 	 * So first wipe the super_block then free struct binderfs_info.
- 	 */
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 
- 	if (info && info->ipc_ns)
- 		put_ipc_ns(info->ipc_ns);
+In the current code, an array of plist, swap_avail_heads[nid], is used
+to organize swap devices on each NUMA node. For each NUMA node, there
+is a plist organizing all swap devices. The 'prio' value in the plist
+is the negated value of the device's priority due to plist being sorted
+from low to high. The swap device owning one node_id will be promoted to
+the front position on that NUMA node, then other swap devices are put in
+order of their default priority.
+
+E.g I got a system with 8 NUMA nodes, and I setup 4 zram partition as
+swap devices.
+
+Current behaviour:
+their priorities will be(note that -1 is skipped):
+NAME       TYPE      SIZE USED PRIO
+/dev/zram0 partition  16G   0B   -2
+/dev/zram1 partition  16G   0B   -3
+/dev/zram2 partition  16G   0B   -4
+/dev/zram3 partition  16G   0B   -5
+
+And their positions in the 8 swap_avail_lists[nid] will be:
+swap_avail_lists[0]: /* node 0's available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:1     prio:3     prio:4     prio:5
+swap_avali_lists[1]: /* node 1's available swap device list */
+zram1   -> zram0   -> zram2   -> zram3
+prio:1     prio:2     prio:4     prio:5
+swap_avail_lists[2]: /* node 2's available swap device list */
+zram2   -> zram0   -> zram1   -> zram3
+prio:1     prio:2     prio:3     prio:5
+swap_avail_lists[3]: /* node 3's available swap device list */
+zram3   -> zram0   -> zram1   -> zram2
+prio:1     prio:2     prio:3     prio:4
+swap_avail_lists[4-7]: /* node 4,5,6,7's available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:2     prio:3     prio:4     prio:5
+
+The adjustment for swap device with node_id intended to decrease the
+pressure of lock contention for one swap device by taking different
+swap device on different node. The adjustment was introduced in commit
+a2468cc9bfdf ("swap: choose swap device according to numa node").
+However, the adjustment is a little coarse-grained. On the node, the swap
+device sharing the node's id will always be selected firstly by node's CPUs
+until exhausted, then next one. And on other nodes where no swap device
+shares its node id, swap device with priority '-2' will be selected firstly
+until exhausted, then next with priority '-3'.
+
+This is the swapon output during the process high pressure vm-scability
+test is being taken. It's clearly showing zram0 is heavily exploited until
+exhausted.
+
+===================================
+[root@hp-dl385g10-03 ~]# swapon
+NAME       TYPE      SIZE  USED PRIO
+/dev/zram0 partition  16G 15.7G   -2
+/dev/zram1 partition  16G  3.4G   -3
+/dev/zram2 partition  16G  3.4G   -4
+/dev/zram3 partition  16G  2.6G   -5
+
+The node based strategy on selecting swap device is much better then the
+old way one by one selecting swap device. However it is still unreasonable
+because swap devices are assumed to have similar accessing speed if no
+priority is specified when swapon. It's unfair and doesn't make sense just
+because one swap device is swapped on firstly, its priority will be higher
+than the one swapped on later.
+
+So in this patchset, change is made to select the swap device round robin
+if default priority. In code, the plist array swap_avail_heads[nid] is replaced
+with a plist swap_avail_head which reverts commit a2468cc9bfdf. Meanwhile,
+on top of the revert, further change is taken to make any device w/o
+specified priority get the same default priority '-1'. Surely, swap device
+with specified priority are always put foremost, this is not impacted. If
+you care about their different accessing speed, then use 'swapon -p xx' to
+deploy priority for your swap devices.
+
+New behaviour:
+
+swap_avail_list: /* one global available swap device list */
+zram0   -> zram1   -> zram2   -> zram3
+prio:1     prio:1     prio:1     prio:1
+
+This is the swapon output during the process high pressure vm-scability
+being taken, all is selected round robin:
+=======================================
+[root@hp-dl385g10-03 linux]# swapon
+NAME       TYPE      SIZE  USED PRIO
+/dev/zram0 partition  16G 12.6G   -1
+/dev/zram1 partition  16G 12.6G   -1
+/dev/zram2 partition  16G 12.6G   -1
+/dev/zram3 partition  16G 12.6G   -1
+
+With the change, we can see about 18% efficiency promotion as below:
+
+vm-scability test:
+==================
+Test with:
+usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
+                           Before:          After:
+System time:               637.92 s         526.74 s      (lower is better)
+Sum Throughput:            3546.56 MB/s     4207.56 MB/s  (higher is better)
+Single process Throughput: 114.40 MB/s      135.72 MB/s   (higher is better)
+free latency:              10138455.99 us   6810119.01 us (low is better)
+
+Changelog:
+==========
+v4->v5:
+------
+- Rebase on the latest mm-new;
+- Clean up the relics of swap_numa in Documentation/admin-guide/mm/index.rst.
+
+v3->v4:
+------
+- Rebase on the latest mm-new;
+- Add Chris's Suggested-by and Acked-by.
+
+v2->v3:
+-------
+- Split the v2 patch into two parts, one is reverting commit
+  a2468cc9bfdf, the 2nd is making change to set default priority as -1
+  for all swap devices which makes swapping out select swap device round
+  robin. This eases patch reviewing which is suggested by Chris, thanks.
+- Fix a LKP reported issue I mistakenly added other debugging code into
+  v2 patch. clean that up.
+
+v1->v2:
+-------
+- Remove Documentation/admin-guide/mm/swap_numa.rst;
+- Add back mistakenly removed lockdep_assert_held() line;
+- Remove the unneeded code comment in _enable_swap_info().
+  Thanks a lot for careful reviewing from Chris, YoungJun and Kairui.
+
+Baoquan He (2):
+  mm/swap: do not choose swap device according to numa node
+  mm/swap: select swap device with default priority round robin
+
+ Documentation/admin-guide/mm/index.rst     |   1 -
+ Documentation/admin-guide/mm/swap_numa.rst |  78 ---------------
+ include/linux/swap.h                       |  11 +--
+ mm/swapfile.c                              | 106 ++++-----------------
+ 4 files changed, 17 insertions(+), 179 deletions(-)
+ delete mode 100644 Documentation/admin-guide/mm/swap_numa.rst
+
 -- 
-2.47.3
+2.41.0
 
 
