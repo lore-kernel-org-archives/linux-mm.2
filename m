@@ -4,83 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8DBD3CCF9E5
-	for <linux-mm@archiver.kernel.org>; Mon, 27 Oct 2025 23:57:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56B75CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:02:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7EE3800CF; Mon, 27 Oct 2025 19:57:25 -0400 (EDT)
+	id 8E562800D0; Mon, 27 Oct 2025 20:02:41 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E2F23800C9; Mon, 27 Oct 2025 19:57:25 -0400 (EDT)
+	id 8951A800C9; Mon, 27 Oct 2025 20:02:41 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D45C6800CF; Mon, 27 Oct 2025 19:57:25 -0400 (EDT)
+	id 75C33800D0; Mon, 27 Oct 2025 20:02:41 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id BD98B800C9
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 19:57:25 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7881C13A662
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:57:25 +0000 (UTC)
-X-FDA: 84045558450.08.784BB48
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf11.hostedemail.com (Postfix) with ESMTP id D1DBE40009
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:57:23 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lJ/KUmyJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6028C800C9
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:02:41 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0FBE51402B7
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:02:41 +0000 (UTC)
+X-FDA: 84045571722.05.B9D1CB6
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 09A51100003
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:02:38 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=K4USA5my;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761609444;
+	s=arc-20220608; t=1761609759;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SBcTEbh6LBWBMX/1jLebgchnOPrKDD8CYHCrLKdcQow=;
-	b=VXljvwnHvnlrRpWd5NUoAbOaNGumkCJtW3+BCFhv9K3GCHGcAcieSshSv2iS6dzULFfw79
-	apclJmPhyCPUtiboDvQx8oBHXKpppHXciTC17P0BA25SdDbRGIWpDgcjWHv3O7Wf7o1a6S
-	vloBuAcE2TdTscNsIHjp1N8tkgTQk8U=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761609444; a=rsa-sha256;
-	cv=none;
-	b=v0ney8RInD3E8T10v5VwFbop8w4w/2L1Jlll7pktYqV84RKqDUiXGscE0RiU9W9YJWk7D5
-	HjnZDgbBaxyeW0Dz1FVIasKPdYcYyr3m81YgGkpkyPPZ8gIePQFQiHsbfCMlQOihIcOAel
-	/vPZuUSR5EvDGAxleLFA1ySakHOwF+I=
+	bh=fRrW1VGqQYsOj9O2IaLW2NSKFc6wcY6W7P8omZBsZSQ=;
+	b=CRMXAOr6QTE377+KNaXLqkRKIzJb/yBQ0TzWTaRVHLiTauEUvBaTzGXXz0g+srWqcxbalR
+	ZfxFWxSn4FP6CCdKCc6ddOhe0BtBm/QtWWq+AtzOoUupMCJjJmVQjCR4VAVKsjjHRUfz2B
+	wXcWiqDS3XuiYJgneSA5q7rCdDdpWLU=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="lJ/KUmyJ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 036CC451C8;
-	Mon, 27 Oct 2025 23:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1076EC4CEFB;
-	Mon, 27 Oct 2025 23:57:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761609442;
-	bh=jXLAtIGL3t3Eeivlb10T/oIzaKMtHVUOwyi8U5Ge+jA=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=lJ/KUmyJsclpDQQ2M+QMnXvOZZC6krQiFKX8sOxfOpoaqG4LjkXXRw347U0yA/XVL
-	 Rey0uasO7GpRSs56MfV8SO/NJ2mhK21qIXIQDLmbdzJ2+MjYXzmAD2ySoASlOgr5WZ
-	 qI6vVen1gQRkaKqCiQHBrMuinOcBpybHtrxPdFPBA5k84RpmR84/2G2c3NfktLDXQj
-	 fL5lj8pzXbT6Q5LPKIkdl4K4tCUYoR3e3CDY/Sukgi/Pg7WcUvXpgtx3WwcOAY7S9H
-	 Gl8/cAJIBIOuHsiYgiz1WYIYG0ofPZnG52T6c3hXqIEUHthM1bXhSA6SkrY2an/ZhX
-	 IoAhcgPK/opuw==
-Content-Type: multipart/mixed; boundary="===============5693088593246735983=="
+	imf05.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=K4USA5my;
+	spf=pass (imf05.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761609759; a=rsa-sha256;
+	cv=none;
+	b=HUJISIvIDFQjQNyP62fyIBIwiU/1twvOdMkdfUyCV7psrDg15wWkAzfrcSNrJYwDZiliZz
+	IQb5x/fsq3wKtnCHvkPF1eH4Y9q86zrD514f8nSaaiA9Qmru44SJEMYru8/5ijpk3hhH67
+	+l1rPFKvsqBsJfj5Zxv2PHL9nVmthMU=
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-63d6ee383bdso11429762a12.2
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 17:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1761609757; x=1762214557; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fRrW1VGqQYsOj9O2IaLW2NSKFc6wcY6W7P8omZBsZSQ=;
+        b=K4USA5mysbt/4RvcOyoH7ncQQtco4xr9bkfqvWeBEwTTJli956BzLl011Rrcvn4iiW
+         T8xMyb09I1NqulQ/Z0F0a/hdPzpVNhSJOYHXZuq3vAzGfJhNHU5Vqnh97IdBCDF4jQhi
+         3tGQuUEvnwJt1nJmHBRQzNyY8+WIdSZq2mJ1GdB3AT/bDfj69hsXmzS8oVr6hCLo1ldk
+         gkVPcTPkGYC71TTH++D/jl5+bKJ221ndksUbQkOYfTrvNUaFMjqLrMVDXHTcv/6elxbL
+         aDI+hTXcOIrfpRw5GWBZdloBBjScBQSMxAvLSqyy1u9ItMqmhT/s3Bql9B5BR4ohmNKp
+         Un9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761609757; x=1762214557;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fRrW1VGqQYsOj9O2IaLW2NSKFc6wcY6W7P8omZBsZSQ=;
+        b=FmIsoTvqiNzVRE7tNK4X3wH6rexG8xlPyQEjyGx+PZ/Of/dmhJGRjvmTBkSTUKg1sq
+         nLMUr7hUPsBCgx4MX7JwsIfsqOQgXZdkOB+bqCxnJ10Fuc5UbjCqMd76W8AKMOqr7r8L
+         HD6iV/oNHWsy1G67a2FNS9gvxiKJ/tnbNpdImJVkfvpmec5VNpkNz7GjbjAB2X7/iOmr
+         mteO5UjJvdDLOuAtCn3afHmmmNXfSINO1X+K8By8U43nrn3E1dMwuEkh1g5CG8zVzaR3
+         qGdvAfjhqoFLjBkad1bTtO8vDFApkJpvlLMMh6afq0Wq2BiPEzcKV1WuiyQMQ5uAOiDq
+         xRgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVkR9Vx8pVjMUfDCaqkVEmNW6YWTS+bd1KFg2kI/UYToovcSSsKwfr2iam/Ajp+CPfKBWwAFRI2hg==@kvack.org
+X-Gm-Message-State: AOJu0YxZrbwUOGF0uLlX90GfJ20F15M2XVk6GMqRNTESYYy6YMGTc+Am
+	Qi6G8haSDoaKReb/UyX6X0nH9uZ51AJ64Yf00nOcJbCo2+VLffZwbcvd3/3cn/+Isjyf0EE5vyC
+	pxA3x8cMqMr56XirWYADm79zONkU056+YIfhl8mYDHg==
+X-Gm-Gg: ASbGncuHSd0sIgyOD6oiNHdfUoHhNKhetnL6Gp+wDKYC1ahpx0FCB5y/L12oOYkrp2G
+	7uwYOI76A8jp979dCIcqruvkf3lgkTu1MT23VWJYL+NnrURdB6jel3YAr085JPb9Rg9IvGS2QRp
+	c3Oph7V7rYeNjiRnFeNOFxOeloBp3vMZU/LE/5s4cdziGha1lvRRh+guP2n+a2zJQSpDMhQyI0e
+	QOTUCMJP47Oea2axn433RFmaoEeH26PqLz9eACHAxBVkHUz0F7VtViNMQ==
+X-Google-Smtp-Source: AGHT+IE0d8IR6rsEgJJ5sEY6LIPZwkDDtyCP7uhxPzIsZylx0Ljo5I5H+E2VC1AYiZBzamjHuFflAzaW25Tk+RHARQ0=
+X-Received: by 2002:a05:6402:2811:b0:62a:a4f0:7e4f with SMTP id
+ 4fb4d7f45d1cf-63ed849802fmr1583600a12.29.1761609757208; Mon, 27 Oct 2025
+ 17:02:37 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <2b04ce21d82f2118c291c49ace22d685bcbbd45d203b2f676556d3e5a90eebd1@mail.kernel.org>
-In-Reply-To: <20251027232206.473085-3-roman.gushchin@linux.dev>
-References: <20251027232206.473085-3-roman.gushchin@linux.dev>
-Subject: Re: [PATCH v2 13/23] mm: introduce bpf_out_of_memory() BPF kfunc
-From: bot+bpf-ci@kernel.org
-To: roman.gushchin@linux.dev,akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,ast@kernel.org,surenb@google.com,mhocko@kernel.org,shakeel.butt@linux.dev,hannes@cmpxchg.org,andrii@kernel.org,inwardvessel@gmail.com,linux-mm@kvack.org,cgroups@vger.kernel.org,bpf@vger.kernel.org,martin.lau@kernel.org,song@kernel.org,memxor@gmail.com,tj@kernel.org,roman.gushchin@linux.dev,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Mon, 27 Oct 2025 23:57:21 +0000 (UTC)
-X-Rspamd-Server: rspam01
-X-Stat-Signature: rdeihgxgqmp9ddpyix8carafjs6bp6r8
+References: <20251021000852.2924827-1-pasha.tatashin@soleen.com>
+ <20251021000852.2924827-2-pasha.tatashin@soleen.com> <CALzav=egQiF6tanYxR9Tow7TnT_UK9bNAR_4DQ2P=2EJ+H4ZJA@mail.gmail.com>
+In-Reply-To: <CALzav=egQiF6tanYxR9Tow7TnT_UK9bNAR_4DQ2P=2EJ+H4ZJA@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Mon, 27 Oct 2025 20:01:59 -0400
+X-Gm-Features: AWmQ_bmk9AWMUDPf-FAMZS-KNcWHzhS4VhXBKhx2xU2ISRIlSsLkq3B9EbQYovg
+Message-ID: <CA+CK2bAibAPzTq+edRTXS9g7Cs0w-zCiSSrXUkoFAHe7=3C0QA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/3] liveupdate: kho: warn and fail on metadata or
+ preserved memory in scratch area
+To: David Matlack <dmatlack@google.com>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net, 
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org, 
+	ojeda@kernel.org, pratyush@kernel.org, rdunlap@infradead.org, rppt@kernel.org, 
+	tj@kernel.org, jasonmiu@google.com, skhawaja@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 09A51100003
+X-Stat-Signature: mm8dsjw57h4c8bmqqcpj1qoajoi3kqs8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D1DBE40009
-X-HE-Tag: 1761609443-473607
-X-HE-Meta: U2FsdGVkX19AzryFHXJjqsMgPtQvZQCZ65esoWIMu0Aa2oIx7yhD26cNwg4L8ocPeLgLm5GKVMZyOtyXKWNqKmBWU1sMI50hEemk/oz/t7twMr8EzFAaW18o115yx7HSgZh2zi2DXuuxKBSkip/3r5bHxjltG8gfhBySJWEx48ve890ESTPQxIIJCe0PUTDKpGAk3GeVwrIDtJRiIbuTl2pOdxbxxrtN8GUSRc3UcfRoTeUzRcscdKXQiNtDUKzRkHK01niEAtU6LyaXQ+ozpibbAKhiveOPL0y9vKo7+Mz78L8mar7vD/R/zOl4HxZNgDFxwAU93v6RJqe6IMZZGJY5wKLrKt5el8mvf3pNHFCiP0FusKZsoE4qA7GEfBVNN3FGO4u97PaqeJZhD9VSVXaGTJlBywUuPidfb3sQPoSpz/mvh+OJXnefkZ7OdKEi+lKbEUty+ESXfT8LvC1MQcMjMyapBQucbNxdSMApWyvXxlBo2Si6ffVaZAgtII72WW2g61E8zLE9QC06t1Z19exjP5xubX79bkZoGnboSldRV+JehEEY7rI+fS++Pbfy9xhQbebGaN8DrVl9Q8QSNJmkqmzR06nfzjZ+SUBMfIjbptJ7R9yMb6d/jfpiWRfKrpv1JmE+TitCWtYx+hVeprmLbPjcF3Zdh9ZFVvIz+uMNv2ptKfN34B/nJIo+I3oSSwGP70JYMUmder+kSllLRccjotuveLP0FmF1Bouyihbbfv7WIuNBEspGHO0CqrwF3BG3PoWngKrx2uN5rH7tBIH42XJDzgecywWSwR1/xIqzUvtXns+Ig8WOEmTh08GUnHyOSevC1yd3Jxnwds/mdeFKYmm1dbA10GIz+nq3Dmx38ko8bnTvVrSAe8dzd+/EUPwbS6PiMLEGXixk07hFWet7CzODg6yzz/5vlb6lEriQoKLumhJCfdZ7yF/cVgrMSrwKU6XSaDYjqcI80wf
- YEDJXeN0
- hzflZ/YNmmmI6MidJgYYHh5w5cIB/GSrN/X0HQugT+1mKwv+K0DQObtYE2OzW/8QaIHKHHg2FXgEIY/AlkvkDGs5DdtLPxU69sumnHlXzr/ZXOGTYC5jgh2+P6bzsjBl91EyUe1IYusJDI0FU1kFD37bvuKfpUEyYmKQXk64RI9y27rMUy+Vh22Y6LVZO0e02vL2sRVkuGA0ai+x/Uab8SyySaYH+pF4TXzKdzCkvnKuvPhqN+OkBxx2v6BnEQg3d1eEhssU6NBnOPIzEtx6TqJqGTTTE7Hw40Yqhr6Ko6w9xlUGFUy48P7IaN/pDTV7zPiWJ7fJJerxuSoFlSQA6ilY8fMVbX5PUMW5eoG4bfj5W/XxC5fR0eer0jNrtNMJlV+Ylc2mlM2GqF3z8ypI5PXeZPDOPTwE2shz4
+X-HE-Tag: 1761609758-19054
+X-HE-Meta: U2FsdGVkX18PFDeNJOkb7AMnnDWWmAD8FNGqnYVUcZMVet4KNBRqZ4xQVK+kliomoXuUZVrrsziqjOAOETMhuSQohAajQ1iRKN72qYxZI7xNrZ0cXHlFtMFlfQaCFyNmRqdq0nQ4gP0+G+G02pcsA5jyUDemkQHyYPohIxYTBRMHIcUIn+gLWlgZTylJWW5bXmuYGj03vIeGH3rXBz63YWJOpKjmPR8VmdKuneeF9DJZhX/9UWmZCb5MEcZ2XOWTn2BH4WW1DaBWF7Xc0vwWJo/qDVwy4m1k4ry/GL989wYKueWk7hdM6MdP8Ke/W3AK60zBU1HArGpUv87109x9lDCENbJMQ+3oJ/Ggzi1mWNfCdN6xd8ZLLVCqPfQmEO4V/966MyYSyHszj9Xwb91ny+bgoDyZWlIzEZH8I5So9SsZVyOHsR7Qt/+mcsIb228wmDXjmMytn8HH9k7SBj9iyX2k0FIjpjT6mWytaKXNxHqs4f/Pd7mSnE3poiCatf7zOrbDs990JgcnEJVJohRsd/Ic+udeONlBO+sd3sbn8wFV0pIQN8PmDG7e9p4vtCmLi7rJh4/fl/ipJozvuAFhkjTo+RtMxp0MA/ucFxz022Ey7NiEFud6ETPvpTzY1913nxRJbThDwGxz3MkUeA7pAU2+37EkMRtPE/9diD7B0/FA02CVhLydxtX69GYEc4GB0h14VSJEIWqa4fPWotHTV/APY5tHM9ORNAFMRmg5XBJNW7P9buKieRHaJKzsgeRbF1AzT5ZjCY1n8upSj4qfXVybGRbr/UcFXT5FuPqoQKPwgdKSg4QRFPtEyQ5bUW8T/gp3ngYJ75XyM2iC37Vcodb8l2CZTtr7MtSzKMwh/BSl4xmiWuqG422Xk5fxG+pf7MHB8IjGKdjNdC27IwcIFt14kNBsphmibrNvEbvl3Q1GomHuZpVopwiXhFYTp6ipM3zg/vfk+5jAqscXYoK
+ f7XrHPH7
+ Uo6E0DBF4oWD9QKpM+6RKJa4/8UpjVZ5aWaWL+CndFpf19paHUW0avx5Tm9qryq+Ld9C0GoSj2DMtIBDyW73xbkut8LHzVizOh/YJldl8nZsZ4rVdmaBTTJKGR+QJa/F/qWgIZJPI4Ay8r2tHGy/urRpcmGPkNpHy4l2geKin08tj/Q9japcqXadoMaSTRZrabhMzbl2qj0brthMNob8PBe1LI5M/SMWsooYmvi5RL9VBRs+sQlC1ZgOdmSEfHHYmx3xQqSRT09iADcUHVgulusEQZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,127 +121,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============5693088593246735983==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-```
-commit bce57b9b96e05731a14c7e10a364fdd9b733cda2
-Author: Roman Gushchin <roman.gushchin@linux.dev>
-
-mm: introduce bpf_out_of_memory() BPF kfunc
-
-This patch introduces bpf_out_of_memory() BPF kfunc to allow BPF programs
-to declare OOM events and trigger the kernel OOM handling mechanism. The
-function accepts a nullable memcg pointer for system-wide or memcg-scoped
-OOMs.
-
-> diff --git a/include/linux/oom.h b/include/linux/oom.h
-> index 721087952..3cbdcd013 100644
-> --- a/include/linux/oom.h
-> +++ b/include/linux/oom.h
-> @@ -21,6 +21,11 @@ enum oom_constraint {
->  	CONSTRAINT_MEMCG,
->  };
+On Mon, Oct 27, 2025 at 6:29=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
 >
-> +enum bpf_oom_flags {
-> +	BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK = 1 << 0,
-> +	BPF_OOM_FLAGS_LAST = 1 << 1,
-> +};
-> +
->  /*
->   * Details of the page allocation that triggered the oom killer that are used to
->   * determine what should be killed.
-> diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-> index 3c86cd755..d7fca4bf5 100644
-> --- a/mm/oom_kill.c
-> +++ b/mm/oom_kill.c
+> On Mon, Oct 20, 2025 at 5:08=E2=80=AFPM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+> >
+> > It is invalid for KHO metadata or preserved memory regions to be locate=
+d
+> > within the KHO scratch area, as this area is overwritten when the next
+> > kernel is loaded, and used early in boot by the next kernel. This can
+> > lead to memory corruption.
+> >
+> > Adds checks to kho_preserve_* and KHO's internal metadata allocators
+> > (xa_load_or_alloc, new_chunk) to verify that the physical address of th=
+e
+> > memory does not overlap with any defined scratch region. If an overlap
+> > is detected, the operation will fail and a WARN_ON is triggered. To
+> > avoid performance overhead in production kernels, these checks are
+> > enabled only when CONFIG_KEXEC_HANDOVER_DEBUG is selected.
+>
+> How many scratch regions are there in practice? Checking
+> unconditionally seems like a small price to pay to avoid possible
+> memory corruption. Especially since most KHO preservation should
+> happen while the VM is still running (so does not have to by
+> hyper-optimized).
 
-[ ... ]
+The debug option can be enabled on production system as well, we have
+some debug options enabled, but I do not see a reason to make this a
+fixed cost that can add up; the runtime cost scares me, as we might be
+using KHO preserve/unpreserve often once stateless KHO + slab
+preservation is implemented during some allocations paths. Let's keep
+it optional.
 
-> +/**
-> + * bpf_out_of_memory - declare Out Of Memory state and invoke OOM killer
-> + * @memcg__nullable: memcg or NULL for system-wide OOMs
-> + * @order: order of page which wasn't allocated
-> + * @flags: flags
-> + * @constraint_text__nullable: custom constraint description for the OOM report
-> + *
-> + * Declares the Out Of Memory state and invokes the OOM killer.
-> + *
-> + * OOM handlers are synchronized using the oom_lock mutex. If wait_on_oom_lock
-> + * is true, the function will wait on it. Otherwise it bails out with -EBUSY
-> + * if oom_lock is contended.
-> + *
-> + * Generally it's advised to pass wait_on_oom_lock=false for global OOMs
-> + * and wait_on_oom_lock=true for memcg-scoped OOMs.
-> + *
-> + * Returns 1 if the forward progress was achieved and some memory was freed.
-> + * Returns a negative value if an error occurred.
-> + */
-> +__bpf_kfunc int bpf_out_of_memory(struct mem_cgroup *memcg__nullable,
-> +				  int order, u64 flags)
-> +{
-> +	struct oom_control oc = {
-> +		.memcg = memcg__nullable,
-> +		.order = order,
-> +	};
+>
+> >  static void *xa_load_or_alloc(struct xarray *xa, unsigned long index, =
+size_t sz)
+> >  {
+> > -       void *elm, *res;
+> > +       void *res =3D xa_load(xa, index);
+> >
+> > -       elm =3D xa_load(xa, index);
+> > -       if (elm)
+> > -               return elm;
+> > +       if (res)
+> > +               return res;
+> > +
+> > +       void *elm __free(kfree) =3D kzalloc(sz, GFP_KERNEL);
+>
+> nit: This breaks the local style of always declaring variables at the
+> beginning of blocks.
 
-Can bpf_out_of_memory() work correctly for system-wide OOMs with
-uninitialized gfp_mask?
+I think this suggestion came from Mike, to me it looks alright, as it
+is only part of the clean-up path.
 
-Looking at out_of_memory():
-
-    if (!(oc->gfp_mask & __GFP_FS) && !is_memcg_oom(oc))
-        return true;
-
-With gfp_mask=0 and memcg=NULL (system-wide OOM), this evaluates to:
-!(0 & __GFP_FS) && !false = true, causing an early return without
-invoking the OOM killer. The comment in out_of_memory() explains this
-check is about allocation context: "The OOM killer does not compensate
-for IO-less reclaim."
-
-All other callers of out_of_memory() initialize gfp_mask:
-- mm/page_alloc.c: .gfp_mask = gfp_mask
-- mm/memcontrol.c: .gfp_mask = gfp_mask
-
-For memcg OOMs, the code works because is_memcg_oom(oc) is true,
-bypassing the check. But for system-wide OOMs (NULL memcg), won't this
-cause the function to return immediately without killing any process?
-
-> +	int ret;
-> +
-> +	if (flags & ~(BPF_OOM_FLAGS_LAST - 1))
-> +		return -EINVAL;
-> +
-> +	if (oc.order < 0 || oc.order > MAX_PAGE_ORDER)
-> +		return -EINVAL;
-> +
-> +	if (flags & BPF_OOM_FLAGS_WAIT_ON_OOM_LOCK) {
-> +		ret = mutex_lock_killable(&oom_lock);
-> +		if (ret)
-> +			return ret;
-> +	} else if (!mutex_trylock(&oom_lock))
-> +		return -EBUSY;
-> +
-> +	ret = out_of_memory(&oc);
-> +
-> +	mutex_unlock(&oom_lock);
-> +	return ret;
-> +}
-
-[ ... ]
-
-
-```
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-In-Reply-To-Subject: `mm: introduce bpf_out_of_memory() BPF kfunc`
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18859027430
-
---===============5693088593246735983==--
+Pasha
 
