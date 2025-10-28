@@ -4,107 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD244CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:43:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 140FECCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:51:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 495B38010A; Mon, 27 Oct 2025 23:43:57 -0400 (EDT)
+	id 6C9398010B; Mon, 27 Oct 2025 23:51:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 46C2B800E4; Mon, 27 Oct 2025 23:43:57 -0400 (EDT)
+	id 6A170800E4; Mon, 27 Oct 2025 23:51:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30CB68010A; Mon, 27 Oct 2025 23:43:57 -0400 (EDT)
+	id 5B6858010B; Mon, 27 Oct 2025 23:51:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1EE66800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:43:57 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id A6880160210
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:43:56 +0000 (UTC)
-X-FDA: 84046129272.02.F66E849
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id B5989A000C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:43:54 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h5aBxcAQ;
-	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AD36800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:51:33 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EB5C514039F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:51:32 +0000 (UTC)
+X-FDA: 84046148424.13.220778A
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2E0E440004
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:51:30 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="SPeaTw/n";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761623034;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761623491;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VRkPfGqvOn/0+N8GQL6/hUa8S4ruDLqceo5D9dfxni8=;
-	b=AAzDON6tVbMXLcspXPakQi0J6/M4BLCplSEUx+GkAsJptF67ygugz+7mYhPJY7BlH75qVT
-	ftE4Ibd906qSocvy/NPS9SaiFoQvbuHn155tGwThRI0bNANBknSjQ9MibA2+S3Jnr4XCfi
-	m/N+EGKeaDnzmJn2tBD/MIQsgk9GJ6M=
+	bh=PO4orcfvZ5bdsI3sMLWcxolNLwtTITE6PBUvAzByvrw=;
+	b=hd6A4qfXHpbaeMYqGQMdH3yBfLPymW0/J+5EAnNwLsdmCGEvK73MDPT1fVf3AH5bBsMcXw
+	p6/ouaUwV1wkXyt3srCahkeh9FxvbDZ5dUObDNESUSkanVb6VHsQ48zWzjne/nELRo2PYA
+	PXJE50VRiSpI7WR4GjbWk1nys3Ya3BQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=h5aBxcAQ;
-	spf=pass (imf15.hostedemail.com: domain of bhe@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=bhe@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761623034; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b="SPeaTw/n";
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf17.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761623491; a=rsa-sha256;
 	cv=none;
-	b=e5cRlCXku2PK7aU771P7qSA0tbnbw1ziBkpob4PM+QV0Fi4n9wMEm4DaQYz3tInKqMFZL1
-	eMC9i/bzjn0r9Jc1xL1+AWnN3Qm0Ul9RHwJ5KQ5/UCxWZhFAHnSP+sUH4mPaQtfeZTXQrJ
-	H3Nomh3NnEEpAi3a2SSmvElhbNwnT3A=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761623034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VRkPfGqvOn/0+N8GQL6/hUa8S4ruDLqceo5D9dfxni8=;
-	b=h5aBxcAQhJVmHsdimaCzhniX3LdM1CGKIU+2EFP9yeQhg8TY+slkSE/f8TL0suQjLPW1+u
-	f+iUXbqX9cqj1i6/SQUS5PZh9HSOOpdGoMjyEW5z9C5C9NTYwl9AQ3Sgf56ZtJu1b2CHBv
-	jH22MPvmmrDl9J0yAybStQoipu+fosg=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-558-AQ7v-yUOOxi4qlAldFGw4Q-1; Mon,
- 27 Oct 2025 23:43:50 -0400
-X-MC-Unique: AQ7v-yUOOxi4qlAldFGw4Q-1
-X-Mimecast-MFC-AGG-ID: AQ7v-yUOOxi4qlAldFGw4Q_1761623029
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id E8C8519539A9;
-	Tue, 28 Oct 2025 03:43:48 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (unknown [10.72.112.212])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0C5281800298;
-	Tue, 28 Oct 2025 03:43:43 +0000 (UTC)
-From: Baoquan He <bhe@redhat.com>
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	chrisl@kernel.org,
-	youngjun.park@lge.com,
-	kasong@tencent.com,
-	baohua@kernel.org,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	Baoquan He <bhe@redhat.com>
-Subject: [PATCH v5 mm-new 2/2] mm/swap: select swap device with default priority round robin
-Date: Tue, 28 Oct 2025 11:43:08 +0800
-Message-ID: <20251028034308.929550-3-bhe@redhat.com>
-In-Reply-To: <20251028034308.929550-1-bhe@redhat.com>
-References: <20251028034308.929550-1-bhe@redhat.com>
+	b=C1vLinDGbmQX4cn9S/UhYuMjhm3LlVNF3TG2ojUmN41ACQ7EtljhA2dKKzRGKihlqQa3Ts
+	T+lWpYe6r0ielGUkgbWSuVT7oHZj+Rqj0/99hbTqcj5aRuI6rI3A0/sBfMTF9iQr+F9Lrs
+	/gBU5qrDmX6O77DxZLrK0gLbvVjZSX8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=PO4orcfvZ5bdsI3sMLWcxolNLwtTITE6PBUvAzByvrw=; b=SPeaTw/nyjy3X7eXKJP1Yo2DDc
+	jxAU9ebxyJ3uqAioCRXsinsP4hdXnSK3EBdjRepJJQR+F0qsa9cA2+iyil7m/n/jWSTG+5EfoaFW6
+	3W1BW+l4ukWVCnJ8XZNfX8T3/UynVZqDhn3SmVZ/PBeouHxFvuj1V5NHmO9KZdX3+9NwzvW5toQdh
+	PPm0f7c5Ez/cGTPblxxIPh32lwIB2chNg/QWjqUsDl9iWHNtSsArJfPm463zB2zC4AGxCCPQunfJy
+	RCt1ieimN4BBWxdLwb1cd4Ur3mANf8ET7t1DGQaj097pZoNIm9Nge12OX4v7vdzJAkmL849PqvYK7
+	rZfs28jg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDXqv-00000001eo9-1VvL;
+	Tue, 28 Oct 2025 00:46:21 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v2 47/50] get rid of kill_litter_super()
+Date: Tue, 28 Oct 2025 00:46:06 +0000
+Message-ID: <20251028004614.393374-48-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: aHb5Zxsei3vUjQUNMQMPL9UJi6jr-PieEP_krXaXCcE_1761623029
-X-Mimecast-Originator: redhat.com
-Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: wkq7sfg6gpmrskyzg3me9fcusaw7caup
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: B5989A000C
-X-HE-Tag: 1761623034-546681
-X-HE-Meta: U2FsdGVkX1+l81rsYPVGWM8O6w2y7dm1iMvRG266+kLI+ipjq6exRCayNf6cjOidsLvjfmiqabrKPZ/k/NouM64sq4etpZeEXNV4IBwXNX01uhwTIg4jTUHT09kseibFDB3BPo666VHyhY7Yz/xjJVbWtdsd/fgnYSiTM07T2F/6OJ2nwQtVyjTd832Qeq2MQ78Tp8+WdL/hmTDAxhCbgHhtIR9T2srUz7dndaREXprfiiMviom5PQnj9HpkgXnzi99Npo4szbNk05lTPCEjCsEkbl/PTUzSZAPxy2Jm9suLqjnd2AGNaoMfHdcmBdQCKHO7o4PfhhnXtZFAmgLznXd5eX3vZ+LW62L+xOUyeUphZDlilYnZTk8PFJvNQL4PTQ5KHG6tGEeA9tyZK6IdH6eqe/stpMkY+1ZGRSqctABg7Cp7l30D/v+qVRNxBgNE/xfW8xIYcVbAV+YZIyTJxUKg5PchIBr2OMmZAxcP2A/QKYrkrNRjrOlQl292hSVc+sQ5kN/Hspq6LkcL+nARqLeZHuUcZ12t9e6gflNWkjrAIu1pZPrL/2laC//YD0xxba7Sxp/+rd2cLLmRM4QeTMbEFhVCA40Xk8JERniGmObL6rZECSnY/Zc7f05sCn/jHlombKHv3Zy+WMnDA2UybyPdXxM0bz3Jnc+6NhFtiKhGz/o6jxWdTvtXOJkaBzLCxYkmC9Xjev8eOIb8A0YsWjYqxm9Nj7e/LzKZKIGTgoOmd9sLNrdbniMh7joKfvLhp62d254wjq1OEup7zY3hKqGvBlnQVbZWAeT0oSJIjXl3TxJKpLl/Us1XcFVDhwWpPXJJD74p3Ty69CU+wbT4uqruyPRweE4cuqhHoG7izMr2O7L9yMyLL7P6DE6ZxoYkB02cjQRlK8RtTpmYYX0EF+BolInLkkOWM+tl8zAwb50LL8VntfSKxBc2CgM5EeiVfheQMnaL4pgdCJCsz3y
- 5N2W/a/C
- iRwBGXBebxiFNLNlUPTYrf0XvjDyIxEeEWIY0EF/lgaWgd2ZIynDOPVWo7q3ZaF0X3h40+gBdaPhgPgALHesB7iAWQ4kVIRrRUOKCSJutZhB6udnrwR4HWhPhVdheusU0zXcBA76LAnVft4uhtPNdoSzPx4mjOs3PLFb4uxbjqB5UaMkNglgYLtXCWValptecK3kcAdOjukpQVkFjzlf9pn3Ch6cYaL8+Xz3xUWAP5Ms6t9kBHu4DQkNjptt2xLCpri8GYCgYcEAIh99LH6axOWVWgSMdbrk3XeQ3nkV54nePw1RT14aiP4VzUf61D9yh+tNRrq5w+w2zYeKlQ8L2801FEwaBps6USIl8U5JBA1yRsQ3xEFs7zn7Z6VLOI55FPwy3QTmKzOMSO+g=
+X-Rspamd-Queue-Id: 2E0E440004
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 8a5set64bhmoj5s3xxkt9gkp9u1dm6r1
+X-HE-Tag: 1761623490-99545
+X-HE-Meta: U2FsdGVkX18EA+Q4KR1EW5P4Z/y/IHIJ2i5zWZR9KYAuUFmJJRL1rYXlhxHvxu5Qfh3N6eXvjsAfaDyuqpN40dWh+Cw6X2Aezh6mNvES7v2q/9SekDEror7e70f2EWPYYZ2ISXah6UwS9ubWQn5/0QsHquInM1XkuZpqUNIYpr3SrMcrzavGUuC6po9XTA1EHz50aHsxQTPr7/giTdnGKVMJicZxcnE5V5Uqc83oU65AAXZ64q981lQ+4wkVQisjApX9CemHjrNLWuYpwFPWbIDESAcwJUvZVUWCRKh/sErle+DMlsQuoKCFCdJcII5Y36BE+YtV9fzv1JYZwQboWxEw+B6FTdFmjQ7msbDyRnRSFVWqkjyFvtZe/6Iiqhmctk5z1z84ycon7ObnzvyL1/ZwM5srIfwt/fo+taRJ1KktwpptZRTgzfUrmniTgwRTuBvvls0VQK8sD2Elt0W2krwS7IO3HJFjmitUMSyIRuJJKcW6QzGenpXLYOOHg2Bgmlmc2RNanppC0EWTd8Zyo9Jbc2lPSItDmVxy2Q/H2BLVKbK4xVrnAqxfMYz5xSlC4vY32JjyPMRsNUQHa5giltGcar1oaZKBguMcfpPkpEqFE0VCV0DoC/8rBk0RaHOdxWbysIcNNsr+vwyS0YmigCc3phlkqCuPjNR0eDaXw7C7+mN79GmZ2Rgg8QZngHsQo9YXNOb9WmUMjC9kem3LblOY2Dh8eds7m0uw8Qbo7kQkIgZHIcQK3YxKkfcbnJ++C3Wx86I7ELlTNCN2qtueQLH5yAIUa6Cnfp5kNEMVGS/7JbNfqjAADSf4WOaQSZAIrxxhojL9fzsuiO+vIyE5FUKvumO5AYIgW/tQJ47RIwPTMGcHoBW2MhdKZWGYSG+2hiY5x8ekVAt9qRxOa3jP26rk/dDmU3+qy+ZrXa/As9rYdUmJBTNIxaYO86qZr6ze+N2rTX049K2iCSVtdL8
+ ZUbcdaof
+ kyZeRekbgOwzH9EXNtKeHPiF3oHX6y3HvoOlVXF+Nyn20AU5+z6OaVZjoThKnchZ9ssUlcpMl3Y0yiiRpnRTXs3YHO5hyyavjfJzVdOxBixX3sbp+lSU8UF4ebA/7GpCG+6zWKquaRnUfUeuhHJg37TT8BT5vI+54uwtKaO7noU3GJzSk5g+9X7Kj0IVjYN0p7kfjYbq2iTwMa9tVqpp3h/Zc81BnkOqTecwLMN/QBYN8Y+REaM3fasWxn0nzCO/1G6VWx3BKnQXV3G/uBTzc8HUtdbKpkFHSSA88KU8df78Kc3iRPbPm0Zb6F/enm1qCYmYqlZsLL2Ii8e9Swe68rmSEPUuyWvyyWqbGpSged3BQ6lxAhrAXY4znarkeFYOC1kY29arbx6Kgw8/6mHvITKAXcW8vPJzq+AFecuLANljtDV21lCZEUZokyejPlL1eHX/olK3ar05zbGPVGYNta8QW77E0cR4RIQxUIo5fJS0Ciumdqpb2Pl2XDw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,141 +108,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Swap devices are assumed to have similar accessing speed when swapon
-if no priority is specified. It's unfair and doesn't make sense just
-because one swap device is swapped on firstly, its priority will be
-higher than the one swapped on later.
+Not used anymore.
 
-Here, set all swap devicess to have priority '-1' by default. With this
-change, swap device with default priority will be selected round robin
-when swapping out. This can improve the swapping efficiency a lot among
-multiple swap devices with default priority.
-
-Below are swapon output during the processes when high pressure vm-scability
-test is being taken:
-
-1) This is pre-commit a2468cc9bfdf, swap device is selectd one by one by
-   priority from high to low when one swap device is exhausted:
-------------------------------------
-[root@hp-dl385g10-03 ~]# swapon
-NAME       TYPE      SIZE   USED PRIO
-/dev/zram0 partition  16G    16G   -1
-/dev/zram1 partition  16G 966.2M   -2
-/dev/zram2 partition  16G     0B   -3
-/dev/zram3 partition  16G     0B   -4
-
-2) This is behaviour with commit a2468cc9bfdf, on node, swap device
-   sharing the same node id is selected firstly until exhausted; while
-   on node no swap device sharing the node id it selects the one with
-   highest priority until exhaustd:
-------------------------------------
-[root@hp-dl385g10-03 ~]# swapon
-NAME       TYPE      SIZE  USED PRIO
-/dev/zram0 partition  16G 15.7G   -2
-/dev/zram1 partition  16G  3.4G   -3
-/dev/zram2 partition  16G  3.4G   -4
-/dev/zram3 partition  16G  2.6G   -5
-
-3) After this patch applied, swap devices with default priority are selectd
-   round robin:
-------------------------------------
-[root@hp-dl385g10-03 block]# swapon
-NAME       TYPE      SIZE USED PRIO
-/dev/zram0 partition  16G 6.6G   -1
-/dev/zram1 partition  16G 6.6G   -1
-/dev/zram2 partition  16G 6.6G   -1
-/dev/zram3 partition  16G 6.6G   -1
-
-With the change, about 18% efficiency promotion relative to node based
-way as below. (Surely, the pre-commit a2468cc9bfdf way is the worst.)
-
-vm-scability test:
-==================
-Test with:
-usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
-                            one by one:      node based:      round robin:
-System time:                1087.38 s        637.92 s         526.74 s     (lower is better)
-Sum Throughput:             2036.55 MB/s     3546.56 MB/s     4207.56 MB/s (higher is better)
-Single process Throughput:  65.69 MB/s       114.40 MB/s      135.72 MB/s  (high is better)
-free latency:               15769409.48 us   10138455.99 us   6810119.01 us(lower is better)
-
-Suggested-by: Chris Li <chrisl@kernel.org>
-Acked-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Baoquan He <bhe@redhat.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- mm/swapfile.c | 30 ++++--------------------------
- 1 file changed, 4 insertions(+), 26 deletions(-)
+ Documentation/filesystems/porting.rst |  7 +++++++
+ fs/dcache.c                           | 21 ---------------------
+ fs/internal.h                         |  1 -
+ fs/super.c                            |  8 --------
+ include/linux/dcache.h                |  1 -
+ include/linux/fs.h                    |  1 -
+ 6 files changed, 7 insertions(+), 32 deletions(-)
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ce3580e2f4f4..c35bb8593f50 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -74,7 +74,7 @@ atomic_long_t nr_swap_pages;
- EXPORT_SYMBOL_GPL(nr_swap_pages);
- /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
- long total_swap_pages;
--static int least_priority;
-+#define DEF_SWAP_PRIO  -1
- unsigned long swapfile_maximum_size;
- #ifdef CONFIG_MIGRATION
- bool swap_migration_ad_supported;
-@@ -2707,10 +2707,7 @@ static void setup_swap_info(struct swap_info_struct *si, int prio,
- 			    struct swap_cluster_info *cluster_info,
- 			    unsigned long *zeromap)
- {
--	if (prio >= 0)
--		si->prio = prio;
--	else
--		si->prio = --least_priority;
-+	si->prio = prio;
- 	/*
- 	 * the plist prio is negated because plist ordering is
- 	 * low-to-high, while swap ordering is high-to-low
-@@ -2728,16 +2725,7 @@ static void _enable_swap_info(struct swap_info_struct *si)
- 	total_swap_pages += si->pages;
+diff --git a/Documentation/filesystems/porting.rst b/Documentation/filesystems/porting.rst
+index 7233b04668fc..4921b3b0662a 100644
+--- a/Documentation/filesystems/porting.rst
++++ b/Documentation/filesystems/porting.rst
+@@ -1309,3 +1309,10 @@ a different length, use
+ 	vfs_parse_fs_qstr(fc, key, &QSTR_LEN(value, len))
  
- 	assert_spin_locked(&swap_lock);
--	/*
--	 * both lists are plists, and thus priority ordered.
--	 * swap_active_head needs to be priority ordered for swapoff(),
--	 * which on removal of any swap_info_struct with an auto-assigned
--	 * (i.e. negative) priority increments the auto-assigned priority
--	 * of any lower-priority swap_info_structs.
--	 * swap_avail_head needs to be priority ordered for folio_alloc_swap(),
--	 * which allocates swap pages from the highest available priority
--	 * swap_info_struct.
--	 */
+ instead.
 +
- 	plist_add(&si->list, &swap_active_head);
++---
++
++**mandatory**
++
++kill_litter_super() is gone; convert to DCACHE_PERSISTENT use (as all
++in-tree filesystems have done).
+diff --git a/fs/dcache.c b/fs/dcache.c
+index 3e26039ceca1..a7fab68fb4c9 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -3159,27 +3159,6 @@ bool is_subdir(struct dentry *new_dentry, struct dentry *old_dentry)
+ }
+ EXPORT_SYMBOL(is_subdir);
  
- 	/* Add back to available list */
-@@ -2887,16 +2875,6 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	}
- 	spin_lock(&p->lock);
- 	del_from_avail_list(p, true);
--	if (p->prio < 0) {
--		struct swap_info_struct *si = p;
+-static enum d_walk_ret d_genocide_kill(void *data, struct dentry *dentry)
+-{
+-	struct dentry *root = data;
+-	if (dentry != root) {
+-		if (d_unhashed(dentry) || !dentry->d_inode ||
+-		    dentry->d_flags & DCACHE_PERSISTENT)
+-			return D_WALK_SKIP;
 -
--		plist_for_each_entry_continue(si, &swap_active_head, list) {
--			si->prio++;
--			si->list.prio--;
--			si->avail_list.prio--;
+-		if (!(dentry->d_flags & DCACHE_GENOCIDE)) {
+-			dentry->d_flags |= DCACHE_GENOCIDE;
+-			dentry->d_lockref.count--;
 -		}
--		least_priority++;
 -	}
- 	plist_del(&p->list, &swap_active_head);
- 	atomic_long_sub(p->pages, &nr_swap_pages);
- 	total_swap_pages -= p->pages;
-@@ -3607,7 +3585,7 @@ SYSCALL_DEFINE2(swapon, const char __user *, specialfile, int, swap_flags)
- 	}
+-	return D_WALK_CONTINUE;
+-}
+-
+-void d_genocide(struct dentry *parent)
+-{
+-	d_walk(parent, parent, d_genocide_kill);
+-}
+-
+ void d_mark_tmpfile(struct file *file, struct inode *inode)
+ {
+ 	struct dentry *dentry = file->f_path.dentry;
+diff --git a/fs/internal.h b/fs/internal.h
+index 9b2b4d116880..144686af6c36 100644
+--- a/fs/internal.h
++++ b/fs/internal.h
+@@ -227,7 +227,6 @@ extern void shrink_dcache_for_umount(struct super_block *);
+ extern struct dentry *__d_lookup(const struct dentry *, const struct qstr *);
+ extern struct dentry *__d_lookup_rcu(const struct dentry *parent,
+ 				const struct qstr *name, unsigned *seq);
+-extern void d_genocide(struct dentry *);
  
- 	mutex_lock(&swapon_mutex);
--	prio = -1;
-+	prio = DEF_SWAP_PRIO;
- 	if (swap_flags & SWAP_FLAG_PREFER)
- 		prio = swap_flags & SWAP_FLAG_PRIO_MASK;
- 	enable_swap_info(si, prio, swap_map, cluster_info, zeromap);
+ /*
+  * pipe.c
+diff --git a/fs/super.c b/fs/super.c
+index 5bab94fb7e03..ee001f684d2a 100644
+--- a/fs/super.c
++++ b/fs/super.c
+@@ -1284,14 +1284,6 @@ void kill_anon_super(struct super_block *sb)
+ }
+ EXPORT_SYMBOL(kill_anon_super);
+ 
+-void kill_litter_super(struct super_block *sb)
+-{
+-	if (sb->s_root)
+-		d_genocide(sb->s_root);
+-	kill_anon_super(sb);
+-}
+-EXPORT_SYMBOL(kill_litter_super);
+-
+ int set_anon_super_fc(struct super_block *sb, struct fs_context *fc)
+ {
+ 	return set_anon_super(sb, NULL);
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index 6ec4066825e3..20a85144a00e 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -198,7 +198,6 @@ enum dentry_flags {
+ 	DCACHE_REFERENCED		= BIT(6),	/* Recently used, don't discard. */
+ 	DCACHE_DONTCACHE		= BIT(7),	/* Purge from memory on final dput() */
+ 	DCACHE_CANT_MOUNT		= BIT(8),
+-	DCACHE_GENOCIDE			= BIT(9),
+ 	DCACHE_SHRINK_LIST		= BIT(10),
+ 	DCACHE_OP_WEAK_REVALIDATE	= BIT(11),
+ 	/*
+diff --git a/include/linux/fs.h b/include/linux/fs.h
+index f5037c556f61..95933ceaae51 100644
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2728,7 +2728,6 @@ void retire_super(struct super_block *sb);
+ void generic_shutdown_super(struct super_block *sb);
+ void kill_block_super(struct super_block *sb);
+ void kill_anon_super(struct super_block *sb);
+-void kill_litter_super(struct super_block *sb);
+ void deactivate_super(struct super_block *sb);
+ void deactivate_locked_super(struct super_block *sb);
+ int set_anon_super(struct super_block *s, void *data);
 -- 
-2.41.0
+2.47.3
 
 
