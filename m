@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22713CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:02:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2EAB6CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:02:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7B8148014C; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
+	id 8C97A8014D; Tue, 28 Oct 2025 10:02:12 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 741D88013F; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
+	id 8532D8013F; Tue, 28 Oct 2025 10:02:12 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 609AE8014C; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
+	id 71B968014D; Tue, 28 Oct 2025 10:02:12 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 490D08013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7B32494B4
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:04 +0000 (UTC)
-X-FDA: 84047686968.10.668E6C7
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 944234002C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:02 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv6x6GDA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 597628013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:02:12 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id F0EA087D05
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:11 +0000 (UTC)
+X-FDA: 84047687262.13.4E363CE
+Received: from out-179.mta0.migadu.com (out-179.mta0.migadu.com [91.218.175.179])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 226E0C0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:09 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m5pB3ZWQ;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761660123;
+	s=arc-20220608; t=1761660130;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=8HLDo8n6coWUrWdqlQjN8qAiPeJQK26USUMmC8y9OKQ=;
-	b=Ydv5nsRfqrKyF8v/Ol78O9EmlMCMcW+giPhdzj3Dxis6JfiFnlvMzCrW2ygJNxZXs0DH0C
-	pHNgsYGSnhBCMU/lsdax1g7spvLydqdd6ObgNPxnkpI5zWw9ok8gZOOTHPifcrklrUFgVY
-	FVWJldv2DcCW5MXoEZNqhxrOzagvZvI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761660123; a=rsa-sha256;
-	cv=none;
-	b=Z/kf/r0bF7li0AeBjWOQtAs2dGriBOTzcBtUIqeFPbkSmV55/8EPflyQRGqhTcxh1js1j5
-	vbDG0OJ0P7oGkaEQEmGEAJJncFheuNCJd5DbNKWulYy4ednZCprhOIQBeKqCOY5BAgHeVH
-	LS0SdxqzwlZr30d6fc1vO9jWAgfqDVk=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=moQWsyM34kheODhB4m6le5EmBuxmXNZC4RNHBl5yhm4=;
+	b=bYmpBT9AO4VRAbar7mYvs6PgU4QoK6lNtmIU+bgC88K+IRIYohwR7VtCvOCFKYUf2/MN0e
+	A3vYWnz+1g6kU7wXTP5z91661lEcp+JcciwC364GgkN/LOGfRIg+6bck82LvZtD7qQy2sr
+	Eqv3A/yIPcA5kpPGDowhDedui9AR7pg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv6x6GDA;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=m5pB3ZWQ;
+	spf=pass (imf28.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.179 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761660130; a=rsa-sha256;
+	cv=none;
+	b=kzAN6VBH92gygdbkJwhJHhCz+WEZemRCChvSkFGXl9wFadRvlsaIVmnwqQT8l3K1Y3m9Po
+	DAve2IZjeAQ8LAiiuxnTkgJ8T3iqwq9oHDR4JTNw1tcCD9rQh7kerMSGO7C2i+X84mTRYw
+	F9heZ6gwZKV1Ie6ssMKuuwruxCKX5ZU=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761660119;
+	t=1761660126;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=8HLDo8n6coWUrWdqlQjN8qAiPeJQK26USUMmC8y9OKQ=;
-	b=Tv6x6GDAu6ty+Y6P8qlVzDiLQ+tdMFZ85wcxZ9qX6iiFWS45iB+Kt4UVSDQZ3CRi6wczLH
-	oaPoIRqMaIdEzYwyyNDfYz76VUSwt+xk2zKcS/ug38emiAeNnfsuzEisrQ2i5P5VbVkVvh
-	gV18JBY4odaD6/ihxL5yuVChikMG1KQ=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=moQWsyM34kheODhB4m6le5EmBuxmXNZC4RNHBl5yhm4=;
+	b=m5pB3ZWQxP+sPvfEGsIWUd01+4Ud8CDRin+yJXxv+vXSeS/tvgW6+9V1cnAIEUEP3kL5MZ
+	RaHdbjXmDsivF+rDsb1cYJID3SmV1vSRE9OWuD5IA/+/ky8Jp1kroJNOvTdF4t7i7+aH52
+	RZkxvRVNH2wWtx9OLxFAJtiTkeNOIqU=
 From: Qi Zheng <qi.zheng@linux.dev>
 To: hannes@cmpxchg.org,
 	hughd@google.com,
@@ -78,21 +79,24 @@ To: hannes@cmpxchg.org,
 Cc: linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org,
 	cgroups@vger.kernel.org,
+	Muchun Song <songmuchun@bytedance.com>,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v1 00/26] Eliminate Dying Memory Cgroup
-Date: Tue, 28 Oct 2025 21:58:13 +0800
-Message-ID: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v1 01/26] mm: memcontrol: remove dead code of checking parent memory cgroup
+Date: Tue, 28 Oct 2025 21:58:14 +0800
+Message-ID: <b13ff669bc3f52922e97fa0cc99e54df05585810.1761658310.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 226E0C0005
+X-Stat-Signature: wmnj3jefn6u8a18aetssgidnxfeyacc7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 944234002C
-X-Rspamd-Server: rspam02
-X-Stat-Signature: j4ojfi8sae5ihxbpcczzzfo6dhzwhaga
-X-HE-Tag: 1761660122-204739
-X-HE-Meta: U2FsdGVkX1+ukTqZMFhtCtFQzhwoHG1C8z54WfbX91PU7TmJniZWFpkv4JFgMYR0bdqN3CyzQGeGvQHjTYVZGWO9a99BgHFLRlyQw2Ufyvet0/QQir1iEq3CEzLriQTcLjsOEQuCLcThgF7dFoUKHIyNaN36SkPPrQIH/YpZRNuvoSqWc8vb3V8dxc5pdxtiHkS4IhjRguxJ3siruDhXvkKrL1PR44L95iuKJOkqqTF3Iaf6aiT9+s8VMKmSRXoY9KOV7egBhCq95h/g8OLgcGiED3KMGYczRZ1B1nvHQoVuTP9oLZv5k5xm9XC+6FKOvMSzc/k/6xsMrwMuaNXTG/+BFhPoiep31cY2qTmtsE94j92qLyjHrwxJgivZu73PDrdLo9ebA3cFpoACarQn1bLG0mG4HudCfbT1fhlvOhJBLM8G2r6Ibkwtq+7wrj1DajWAefy4v6Er21/HHl85g/+LhkgxbzSTLRtSQ07MbEDd8rToPaCs28sPbGMvvjRpTLRFF7L+vyD4GIUOqOh24XSXCbQNLYEG0LloEyf2u5ibHXgfMzXgYD0cM1em9rrEDzwifZUPJjsd+XNzMYSpcS2cj0xrHx+2n25vjO4q+qSzMSR13qnGH5QOvvjyPyBY6pn2eSgVUCqXvIJuOuYIwHPK4Mr7kwbxOVuKDclH+toIC2p1hOvO02Nz0hVjCGC1G69ERl0/s/fkTqrf3+r0Pe0csZfC95Lz/JeTqwRJHjztqqTCaMhKtKZ/qr6KNKfWrFCeXdoZhcY2GLFdcmdd8IYxqYmknI1v7OX97VBxTs6aH0aYCJ8kMmGkfP180+jNRmpY08CxR3ZNADBEw3WCx6A4MKNpFOyum/cD8eRPPqIF7x4ZVIW2OYmsy+meptnjsHffpE3CHSOqTz/NPbpZHDr4DTwGMGZzF7IYWO/2qdxTgNt+9O3Wl6lMrR0ibRUN2wlyv/NIkigqd96b+SO
- P4UVZQ36
- SVOVLNiHdG0GlnhMRzomcszpSFX9gBayx7G136G24UOvedri0sMeOH89w3E4fZ+X90W6/7Vdgks8mT3qiXQWH/TEG5ohrAdZZTjBE/4LCyu8S0w5HOhwfqggh9Z9sgsVxaHXMS50SIGQBUvrg67hiyxcqrBiKbLuRCRFC6qwuYd74qnUZilj4sLZJlsjAId+JSE7XSyO36itF2S/7Wv9qRGXExkXm3SCd//beDWO+VEZ9sIl8iNODTYm7pw==
+X-HE-Tag: 1761660129-36823
+X-HE-Meta: U2FsdGVkX1+iWIS+yxAywo5esyQgV+mQC4jbirFh1Egcb4WpR0kQP36KCFWZgjzEHGlWxQlAwmyJKEDMzUVS5UXceSwriHkAmL1QvCrtAp07nIIElOdDmDjBG66DmcDQVc4VW6AQX6mk2HGh6InYjd0qj0igIwg98xncsHp4Ifw3oDrDi8/We4S/QGueVAjmNjUjY+1BwePInXZ5wJTabr2UC1qJhPMLX4D97jQ9TLqq2DpXuH7eS90qH5kpXZUMeROZXjhg8WdgaPFKOl5m9j95b/dgwbiTby3yO2w8YkpAn+oMv69aHr85/owPeI9gIaCs5yh1yfSZmsCzqSX+kuBKx2TewsieBAi5w8qbbtQzKrJoprwA91O+VY9DGvvRZGQBGWPG6n3MtiBswT3LOeuSSWXSfN+DF09Gix7RVB/LzmsTH5py6ccx7VCcXiPYJyO5VyMLSdTDzYkDHS3Ikk2iJe7OlQB1+Y4LMAzTaFZM7ANXj1psKDpaBNizxCRwypuO22IQQXAngRn22GlzL6gvBSO5170kOdX99MOyfiN5quWOeh/RrzKLS1+MjWpG+UmoPT866rpF6hAGLsUb43UmCQ/QfoF+VykOJrlCwGh63yo8dkt4Wkjdk+kS9gbKpj8OmHZIKzDLN9esZuk+QMSG6q9hMDI4B0e/SphvN60nZMQmHBwbG/20OWa2sqMrdLfRq65pQK/LAWvlEmLggRKJfquoAkfbSN52Mi659UZYUfrVx4PJGuk8m/yfyGSal9z8cJfpQ/+/X0ivn8yoSqxf47HDX5ZdKcawB8aNQcrWwqmul1Z2Bu1/oa65AgObskYDO/uuZac/UXDVaBIgCwtMJUAsgQHehoEA2Te+eRCTzAkzk17BuCTcL2sHxK6mV/MYY2VNElqvdFfreiMH1PxUu2WO5cQxqueWPHUDcE9HeEsw5zBeyJDh/bv9iyEU66TPmEmqvxl+tL7Nj23
+ jbgM66VB
+ 2WNhxACd63Z/mYAqpwFi1hQ7qrrvCiBORmegaQcTcuR39Ou66UaU2rNZqrAAjmPXVhGaOs02wy1/yQLZnHbc1KI4jx4+G+eSC9bpf2QBCZSD2CvFp7t1OAxGO3cZPk64Bnylx6Hy9knEdDAfKSFtCNgo1uHJ36mfKFFGazZuniSJJxZP9qWEr7DgIXfTo36F/2dkmxwQomLZ9FoEh4fSIMB2CEY8plMYKLuRfVDqiT2T9ytjyTj++LyV7cA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,92 +105,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Qi Zheng <zhengqi.arch@bytedance.com>
+From: Muchun Song <songmuchun@bytedance.com>
 
-Hi all,
+Since the no-hierarchy mode has been deprecated after the commit:
 
-This series aims to eliminate the problem of dying memory cgroup. It completes
-the adaptation to the MGLRU scenarios based on the Muchun Song's patchset[1].
+  commit bef8620cd8e0 ("mm: memcg: deprecate the non-hierarchical mode").
 
-The adaptation method was discussed with Harry Yoo. For more details, please
-refer to the commit message of [PATCH v1 23/26].
+As a result, parent_mem_cgroup() will not return NULL except when passing
+the root memcg, and the root memcg cannot be offline. Hence, it's safe to
+remove the check on the returned value of parent_mem_cgroup(). Remove the
+corresponding dead code.
 
-The changes are as follows:
- - drop [PATCH RFC 02/28]
- - drop THP split queue related part, which has been merged as a separate
-   patchset[2]
- - prevent memory cgroup release in folio_split_queue_lock{_irqsave}() in
-   [PATCH v1 16/26]
- - Separate the reparenting function of traditional LRU folios to [PATCH v1 22/26]
- - adapted to the MGLRU scenarios in [PATCH v1 23/26]
- - refactor memcg_reparent_objcgs() in [PATCH v1 24/26]
- - collect Acked-bys and Reviewed-bys
- - rebase onto the next-20251028
+Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+---
+ mm/memcontrol.c | 5 -----
+ mm/shrinker.c   | 6 +-----
+ 2 files changed, 1 insertion(+), 10 deletions(-)
 
-Comments and suggestions are welcome!
-
-Thanks,
-Qi
-
-[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
-[2]. https://lore.kernel.org/all/cover.1760509767.git.zhengqi.arch@bytedance.com
-
-Muchun Song (22):
-  mm: memcontrol: remove dead code of checking parent memory cgroup
-  mm: workingset: use folio_lruvec() in workingset_refault()
-  mm: rename unlock_page_lruvec_irq and its variants
-  mm: vmscan: refactor move_folios_to_lru()
-  mm: memcontrol: allocate object cgroup for non-kmem case
-  mm: memcontrol: return root object cgroup for root memory cgroup
-  mm: memcontrol: prevent memory cgroup release in
-    get_mem_cgroup_from_folio()
-  buffer: prevent memory cgroup release in folio_alloc_buffers()
-  writeback: prevent memory cgroup release in writeback module
-  mm: memcontrol: prevent memory cgroup release in
-    count_memcg_folio_events()
-  mm: page_io: prevent memory cgroup release in page_io module
-  mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
-  mm: mglru: prevent memory cgroup release in mglru
-  mm: memcontrol: prevent memory cgroup release in
-    mem_cgroup_swap_full()
-  mm: workingset: prevent memory cgroup release in lru_gen_eviction()
-  mm: workingset: prevent lruvec release in workingset_refault()
-  mm: zswap: prevent lruvec release in zswap_folio_swapin()
-  mm: swap: prevent lruvec release in swap module
-  mm: workingset: prevent lruvec release in workingset_activation()
-  mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
-  mm: memcontrol: eliminate the problem of dying memory cgroup for LRU
-    folios
-  mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
-
-Qi Zheng (4):
-  mm: thp: prevent memory cgroup release in
-    folio_split_queue_lock{_irqsave}()
-  mm: vmscan: prepare for reparenting traditional LRU folios
-  mm: vmscan: prepare for reparenting MGLRU folios
-  mm: memcontrol: refactor memcg_reparent_objcgs()
-
- fs/buffer.c                      |   4 +-
- fs/fs-writeback.c                |  22 +-
- include/linux/memcontrol.h       | 159 ++++++------
- include/linux/mm_inline.h        |   6 +
- include/linux/mmzone.h           |  20 ++
- include/trace/events/writeback.h |   3 +
- mm/compaction.c                  |  43 +++-
- mm/huge_memory.c                 |  18 +-
- mm/memcontrol-v1.c               |  15 +-
- mm/memcontrol.c                  | 405 ++++++++++++++++++-------------
- mm/migrate.c                     |   2 +
- mm/mlock.c                       |   2 +-
- mm/page_io.c                     |   8 +-
- mm/percpu.c                      |   2 +-
- mm/shrinker.c                    |   6 +-
- mm/swap.c                        |  20 +-
- mm/vmscan.c                      | 198 ++++++++++++---
- mm/workingset.c                  |  26 +-
- mm/zswap.c                       |   2 +
- 19 files changed, 612 insertions(+), 349 deletions(-)
-
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 93f7c76f0ce96..d5257465c9d75 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -3339,9 +3339,6 @@ static void memcg_offline_kmem(struct mem_cgroup *memcg)
+ 		return;
+ 
+ 	parent = parent_mem_cgroup(memcg);
+-	if (!parent)
+-		parent = root_mem_cgroup;
+-
+ 	memcg_reparent_list_lrus(memcg, parent);
+ 
+ 	/*
+@@ -3632,8 +3629,6 @@ struct mem_cgroup *mem_cgroup_id_get_online(struct mem_cgroup *memcg)
+ 			break;
+ 		}
+ 		memcg = parent_mem_cgroup(memcg);
+-		if (!memcg)
+-			memcg = root_mem_cgroup;
+ 	}
+ 	return memcg;
+ }
+diff --git a/mm/shrinker.c b/mm/shrinker.c
+index 4a93fd433689a..e8e092a2f7f41 100644
+--- a/mm/shrinker.c
++++ b/mm/shrinker.c
+@@ -286,14 +286,10 @@ void reparent_shrinker_deferred(struct mem_cgroup *memcg)
+ {
+ 	int nid, index, offset;
+ 	long nr;
+-	struct mem_cgroup *parent;
++	struct mem_cgroup *parent = parent_mem_cgroup(memcg);
+ 	struct shrinker_info *child_info, *parent_info;
+ 	struct shrinker_info_unit *child_unit, *parent_unit;
+ 
+-	parent = parent_mem_cgroup(memcg);
+-	if (!parent)
+-		parent = root_mem_cgroup;
+-
+ 	/* Prevent from concurrent shrinker_info expand */
+ 	mutex_lock(&shrinker_mutex);
+ 	for_each_node(nid) {
 -- 
 2.20.1
 
