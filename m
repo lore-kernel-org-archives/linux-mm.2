@@ -4,94 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE812CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:08:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 56A46CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:14:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B1028E000B; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
+	id 82C968E000C; Tue, 28 Oct 2025 17:14:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 361C48E0005; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
+	id 804D58E0005; Tue, 28 Oct 2025 17:14:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 24FF58E000B; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
+	id 71A5D8E000C; Tue, 28 Oct 2025 17:14:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 0E2458E0005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A0206140588
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:08:18 +0000 (UTC)
-X-FDA: 84048761076.17.C9B1E08
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id A07A5C000B
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:08:16 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ksb5g8Zr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761685697; a=rsa-sha256;
-	cv=none;
-	b=7D42GGi5WCjreRZbOcysFq8nysbaCyqgHWjEvu6X3XfBrOIBklV4A4tAw1K0VhQI2JoF/h
-	qo2GQhrj9GjzIUZkuonIGy+rflfJm5Kq9TItoHnb/Mpn291EaPvkPg4cVEOUMVKh/Fjxzk
-	kaMcXFLc3Z0Q8W+Dwaj5S+lZKnuMbcg=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ksb5g8Zr;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F7C28E0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:14:52 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1AF08BA33A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:14:52 +0000 (UTC)
+X-FDA: 84048777624.21.12AF0B6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id C946B180002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:14:49 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DrP7iokd;
+	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761685697;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761686090;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KlTwB+1F+PugnwlBKmbzqaDoi+J+L/6Td5vFafDz7aQ=;
-	b=KKiR+sUpeEbTqvJFCthl0cyFI1THN+ysTJl3/ubXXMZculF/NiJnOC25RyM7a7E7N2nLg+
-	OoS7gFPTddQPwNlFOCl93epJHt9ugrX3STMZcqptow2pX0psljPtBjwz53ikmSjIkw9mxX
-	iUU1pwTZErr/ui0ixJ/yvg6DnNDiRBI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KlTwB+1F+PugnwlBKmbzqaDoi+J+L/6Td5vFafDz7aQ=; b=Ksb5g8ZrVafnbFuTRxbUrPhDBj
-	VSOMEinbRhfNMqbf8zNwa4y+4w91yeN1ZkolOTq7QHfZv9jbf9wzwIgjoyGXNTLzmtCmiuSlsuFQY
-	I2duEP0tPN70bNXR+5LqqotswpJ2viRu62H7osNC8PUSJSrQulUJeNM/ANyqo1gLANZ82mjExXHlj
-	1F+kesXVgTzno6Sx7Se5kMbenDUUhlD1xSwZGEI1aNvuxQWH0jGuFuiDJKw286315kfeqCsz/8rE+
-	ioRQsGUqL6ZTFGl0vQ2Ve+T2xs0+XXea6lOfg9yJCHsRQXsmQJWUMV9NmpQEVchINZrcmNhueZ2ko
-	8V7lMBVw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDqvF-0000000FqQ8-4BSQ;
-	Tue, 28 Oct 2025 21:08:06 +0000
-Date: Tue, 28 Oct 2025 21:08:05 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251028210805.GP2441659@ZenIV>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk>
- <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV>
+	bh=4HrvyEcRFoneqk86qrnzAoo3f6d+zdXeHYtZ1JCa9Ps=;
+	b=hwKbVwBzTiCIvH9j7UJUnHRp4I8oBAO9N5S6xY1l5X7kxwy97uQQKLEnkgMGRi0smj4DG2
+	YdZRWd/2xGRkZeIVryNx76YEtZLJ4I0+VIJqO2NxZv2nYzNoesZfDIKBDIOvY7F8Rt7FQB
+	e3xumdzZtm7m6sm0MyTv37emQ4cFIV4=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DrP7iokd;
+	spf=pass (imf24.hostedemail.com: domain of luizcap@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761686090; a=rsa-sha256;
+	cv=none;
+	b=e5BRs1rZhRkU8ikwn3KkiJcPdEbB2wJ+rtiQdnBC/y681ibLw8JWD8mqokPxIOJEhdvqUi
+	dFveOCBDy/iyp8WAb4al57itPkbVdGyaG6j8bDEvTp6Q6NNHuAFzVz58WCaGSnBU1MgVoG
+	jLlcRD4kjydjH+JNCZUtUau2/xXGsbw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761686089;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4HrvyEcRFoneqk86qrnzAoo3f6d+zdXeHYtZ1JCa9Ps=;
+	b=DrP7iokdscZHCVhRXbjQ+4XSO3Pkl7bjW0wPc/2xUNJqfaq6Nausw8CX7RFcp3LAe85Oy3
+	okQxmPel2+5NWTgzgq7I3M+PEcDkaxoBHqxNDzy0//yZkoaV9WSJmKjjmLP9y5DD8qP1Sm
+	lCrJQwITRkIfEe2Fc3+0xPh4zNZMUK8=
+Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
+ [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-52AXL2fjP62zSZqBhITZ3Q-1; Tue, 28 Oct 2025 17:14:47 -0400
+X-MC-Unique: 52AXL2fjP62zSZqBhITZ3Q-1
+X-Mimecast-MFC-AGG-ID: 52AXL2fjP62zSZqBhITZ3Q_1761686087
+Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-8a27ed89773so899257685a.2
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:14:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761686087; x=1762290887;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4HrvyEcRFoneqk86qrnzAoo3f6d+zdXeHYtZ1JCa9Ps=;
+        b=HvtwoYlFviI9kY6vY9OyA4xrNyfaK205EUXkmj8nX+dqdbq5SRPd/wYd9Y8HA5z5Au
+         h+aJhvTct90RU4qDl2PSRv6fMUARyBgTWgTJx2sd/KQDYUrXHNfAjtHq1jcv/ZrRlA22
+         DDtgWL8IOA2JDaqpfrJXrBzfEOBiCtxfAq77XIcFnw9t5ng8X73oPTj1NGmJwMthIIrS
+         lukdqdOhHOf+EJxaOSg9BRuvY47HHPUim2bm2BpFIJBbyplO92tJNwHpRD1BPDGeLxmJ
+         7InZn51cjoXOQyT2DgAK82VW1OozswnZWSxIKETYJHbSilvQ5dbALFf1JxPSpZ7+Dota
+         IX5A==
+X-Forwarded-Encrypted: i=1; AJvYcCWroxNmVAlzGguz/XlP6dJwI1qlax/jeySOh+RO32vwtAgF+dx0se0vrZOd7TDaBkJAcEM1ASu2eQ==@kvack.org
+X-Gm-Message-State: AOJu0Yx2m38D9B0BvHvxHNpHy8mUQ36X/9Pjvcra/Zs28IZwtP8rQQlW
+	CksC2EwU8k6XEOn+IjRKVs+TDuE+GcQenwhHqsXm3jVj4OZ5aMb8Smi2+o+DzATYVqvWhv2EfT2
+	hBsscQsFvKhcC9wsawk6hV3WGLws1/f0FfWdg3MqOjBjWh+WGUZ0s
+X-Gm-Gg: ASbGncstjC2RamvzPY0YNnklvFakyDIiphnyFYRUXiGcGbzpLrAN5qq+OS9OxBKu1fv
+	O+XaCUQu7CbFXZrVer2FObyMwpqsPbVI1A6cwhz7SHssmWz+u1eKn8hP10LcYEI6z2dn/9Y86B4
+	d6W9tm4r37OmUXtEpcEleqtxv6nAHKuOSDoamEi/r0l0eFbnSigEmW9ZWMmfwwOr8OXdaHfl/pR
+	pKpFFE1n67qjlh3Jr5rS0N0Uk+trk2Pvivo6T7sUot8lHLhZv27LA8CSto1AQ4Sb0KdrgkwQE/E
+	TWkshPa8+kMRlcG0I8yDRF7hQpAOkDwFzTf9fLq2+0B8Z2UEwLr+xHamjW4t/kTSTf/LutVwFZm
+	a2Q==
+X-Received: by 2002:a05:620a:192a:b0:7f7:8271:1a77 with SMTP id af79cd13be357-8a8e426cda9mr126340785a.13.1761686087105;
+        Tue, 28 Oct 2025 14:14:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE8D9LTgZgrHHdWeOYc+DL8B2sdCN5Uw6C+NWfSsJhoUGyXAHdeOuejLijrW6CXCNixE1Fy2g==
+X-Received: by 2002:a05:620a:192a:b0:7f7:8271:1a77 with SMTP id af79cd13be357-8a8e426cda9mr126337685a.13.1761686086724;
+        Tue, 28 Oct 2025 14:14:46 -0700 (PDT)
+Received: from [192.168.2.110] ([70.49.125.126])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f254a297dsm929505785a.28.2025.10.28.14.14.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Oct 2025 14:14:46 -0700 (PDT)
+Message-ID: <5cc06269-5a6e-4874-bf68-fa4790f22bc2@redhat.com>
+Date: Tue, 28 Oct 2025 17:14:35 -0400
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028174540.GN2441659@ZenIV>
-X-Stat-Signature: kxjkak7q8tp8r9wihnc4odxobjh6uwdz
-X-Rspamd-Queue-Id: A07A5C000B
-X-Rspamd-Server: rspam06
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: hugetlb: fix HVO crash on s390
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Joao Martins <joao.m.martins@oracle.com>, osalvador@suse.de,
+ akpm@linux-foundation.org, david@redhat.com, aneesh.kumar@kernel.org,
+ borntraeger@linux.ibm.com, mike.kravetz@oracle.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>,
+ Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>
+References: <20251028153930.37107-1-luizcap@redhat.com>
+ <50d815a1-8384-4eaa-8515-19d6c92425b3@oracle.com>
+ <20251028161426.35377Af6-hca@linux.ibm.com>
+ <5c72e064-9298-490e-b05a-16be6b5590b7@oracle.com>
+ <20251028170251.11688Aa3-hca@linux.ibm.com>
+ <4f522b65-1ab8-4725-8da7-3f071e7919c1@redhat.com>
+ <20251028193708.7213A7e-hca@linux.ibm.com>
+From: Luiz Capitulino <luizcap@redhat.com>
+In-Reply-To: <20251028193708.7213A7e-hca@linux.ibm.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: oe2Rx7rKp5jadQiaeGMuPuH4LggjRUfpkF7EwRaLPhI_1761686087
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, en-CA
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: swukdc4obrjpzht43z5b1abbbg75eojn
+X-Rspamd-Queue-Id: C946B180002
 X-Rspam-User: 
-X-HE-Tag: 1761685696-159054
-X-HE-Meta: U2FsdGVkX19I3SssUAuhxreK0Zw4ocIjQPUsnJit+85OQpHwnyuhhYaKlJDS+7R6H0ywvQ+XuoOdmpARb5YHfUKxA9MzBEYQD6HBs9eV8PKKMol1/OTI0ntiwOQR93tynQl2YJYhnqmuhfeJASOxIWFEf6R7FCNd+rdDPBbO9OlbUVDiS74jaSUeGiz79VD/r1VT4JEE8iBBPcfFzJnMkuT6roM2eTL93rZoq2Yvv1C4GAHP4SQpOl4l1oZ84m/aLMjrC5ANgIOVHOPzXuivN7IO4TxFJox2nuvErQR6sKmHd65TazjKcX9F3MaEsxdInpysSfuBJLWZ6Rnp+MO1rKJJw/OEFqxFAnLJNg98cWWFo8flveYmwn6HPRtB0VYjwgAe+KeEM71UBnF+L+nlb2w+nFmKt+hoNDY57Xybb5eHpAGLi88YMIy/YIBi7y9srPDYP3A1uHuk9kJ/lgKbgck6wR24byZUcgtbP6A1iGfzHIxnIYCKUm8BaawLc6Mh1S0eOhzwpQLLzrMgAbfek/dWc1jxT6wkNwtRgrfynFJGpzpUV/kIh4Z5eWIEaQ+DRdQXgyXgXs34SNs/8sZzPqJ6rHT0vPqwFWOejNiTY9HTuJZAIzSjyYcW0iosT+KaUrN/B0EP8qzLNT5qQC/B23uMWqqkRomFM5sM2mY25twlvvQLextZ2eTGOQrV05kpiG0OAQLOPzv8ln6iMZBFvZ7Qxk4qEmcVnKYIGLmbZV1bacernUYoFGXOACEKo1YVB1o4pywQ+FnyuT0B+A3lPOO9v2u4D3Omwx1s8I+JDW5zCPt5oyvL/GKRfYVRBYJdp2DKroF93abDklMvYRUlgurCnNDfghTy8RwbDDDcKBD2qTpopSBBSm5F0TG3w/b0tupqTcSoGvSA12aqJ6hCOZqZGAGqhy1cDkgGx2Q7w9nmNGxT23P3cYOmWWZg4WO/zb0poU9bvNOKEmwqckG
- Nftp8u4E
- 6ZQBXqnkROtWG0gkHcGnNLM4lobDW4CuRHXgJLO2P+ZPcz38GPUDrmgQ1gJPJRDDCieandvZ1jIdbPsbViXV4QjRFTMhjWr2pXwhE6bqisgUe8Gt02nLrI6oaPMez5cQz+CFDTiSSlICYu4KMF5R1TAou14Q56xxZVCHc7qL56WLZqtW9xZN8HtY0g5xt8xi2H8wjno4/cyKUAOuNcSk9uKmyMCg1lV9kPgYm3gVilDXwD4CZfWpb5XdE5I5FE6AvaOAEanNfGPCtqLsVbLFClPKNYIl/A5FehHnjjKWTIz5yVxb+PWYHOF7vo9+mrIhUtLQeY0f5TtIolIc5YQen+9kn5hdaDHoSV5xx0DkA0eY5NkFywc47FCLPyScC+EATf0Q3nDZOLgW3kjterQQ28FbMeLLKlS9iMGG6m3eep3VoK57o2TJzcEr6yFbpzf6pIK1F
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761686089-446
+X-HE-Meta: U2FsdGVkX19eZd6mxW0GKePlfObOjE2x+dtkACGbWbXyW3qyk1QBL6oCdVN7Vz0kKinb5dEJfFUNi5B8IRZHlH7cTH1B3BpRIJKUEtiTuUr05ybc9uzP1uSNpvfedCIFcA1fPZy7ZaQR+I6Zw/aM5sYydSonpyP/RqltKKqKO0XbGh9H8JC8W8BWOm5jHjUnQDn5VnywgZAX3xtds8ACAAr2T/4Ggxkgg6PJVMHDtxFsFCoPQj8R6DKV7J+P74fkwvvQ031pnw/sv4LoZUfxO5BftFXlpWBTejXq7IC//kULsssHLAM8nEHXQrTDDU/Z5KOF5d3MDWhUJ1VsOyObh/JnbY8bLKM/gKKnz3XG+iesPIvZjkQMJWDAD4TmUMLiOPxRunwIh/aKwy6ylNQAPLb8J+atFnzZ4ttb9F2UYmp7ech8AV5UBF/PnMr2YC+DmY2Oq4NobgoWFu2hw37x2blCD/sqo/LqmB0VChv3zpFq2on9jQEYWjY5kDVtAob5EG85rJAWlrUL8aZLgYoMEIACCfbI6Tv4taAyfWEWKLK57D2XfhBhJdjGB8zAef63z3Z9Nj8AkrHEFOyJ+yFkp9Zg+rhsiFhbbtpeyEcTTZwk/4rl6LsNOZjb+E8uUhOQFQfp+IB3bh/wVfO6O9PGgca5kVxU8zWEoKKC0kiQ4zUkswVhu+0uEsD/EcAji0RFpitTd1n3l4cLqgEi4YC4mnGsSZXNw6Ej3C12K4HzayE3LElynwW1RxOJBUtheUnt8AWLKNG5AS1gEpStr5k3GPJ+brJraX9EjN9fwPibuXVnan5MWnlNYL8JRTw/3ENFgd9QIRjIKF6wVY6QKIBpAkUZWwekr1O+CDQK4VOziZpmbarjqV4wrqRaYUeJCMw1FZ7ivjJ4jCsTO49czmmcYOo9xvu/j4522QsNS2AdutQP/GZohs+hFoE6lzefeLnYqPyVI/+PsslYGxM6I8Y
+ 5RPnmezJ
+ yHDXpmvDekhYhcZ6rksBHY5fvEiozfTtU+H+P1gIoy0KIm0VkUWbN9b6ISN3kkzO3na943/VjUMVfdsxjzEPe18ly3D7vjswNz2xcjvApWWQz+K3pW6tMBms2SKaL0h54BucfINxY4RWlJfg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,270 +142,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 05:45:40PM +0000, Al Viro wrote:
+On 2025-10-28 15:37, Heiko Carstens wrote:
+> On Tue, Oct 28, 2025 at 01:15:57PM -0400, Luiz Capitulino wrote:
+>>>> flush_tlb_all() however is the *closest* equivalent to this that's behind an
+>>>> arch generic API i.e. flushing kernel address space on all CPUs TLBs. IIUC, x86
+>>>> when doing flush_tlb_kernel_range with enough pages it switches to flush_tlb_all
+>>>> (these days on modern AMDs it's even one instruction solely in the calling CPU).
+>>>
+>>> Considering that flush_tlb_all() should be mapped to __tlb_flush_global()
+>>> and not __tlb_flush_kernel() on s390.
+>>
+>> You're right.
+>>
+>>> However if there is only a need to flush tlb entries for the complete(?)
+>>> kernel address space, then I'd rather propose a new tlb_flush_kernel()
+>>> instead of a big hammer. If I'm not mistaken flush_tlb_kernel_range()
+>>> exists for just avoiding that. And if architectures can avoid a global
+>>> flush of _all_ tlb entries then that should be made possible.
+>>
+>> Should we take a v2 doing your suggestion above for now and work on
+>> the tlb_flush_kernel() idea as a follow up improvement? At least we
+>> go from crashing to flushing more than we should...
+> 
+> That's of course fine. I guess for stable backports a small fix is the
+> best way forward anyway.
 
-> FWIW, having a special path for "we are in foofs_fill_super(), fuck
-> the locking - nobody's going to access it anyway" is not a great
-> idea, simply because the helpers tend to get reused on codepaths
-> where we can't cut corners that way.
+Exactly. I'll also see if I can find time to explore your API
+improvement suggestion. I'll send v2 shortly.
 
-	BTW, looking through efivarfs codebase now... *both* callers
-of efivarfs_create_dentry() end up doing dcache lookups, with variously
-convoluted call chains.  Look: efivarfs_check_missing() has an explicit
-try_lookup_noperm() before the call of efivarfs_create_dentry().
-efivarfs_callback() doesn't, but it's called via
-	efivar_init(efivarfs_callback, sb, true)
-and with the last argument being true efivar_init() will precede the call
-of the callback with efivarfs_variable_is_present().  Guess what does that
-thing (never used anywhere else) do?  Right, the call of try_lookup_noperm().
-
-Why do we bother with that?  What's wrong with having efivarfs_create_dentry()
-returning -EEXIST in case of dentry already being there and turning the
-chunk in efivar_init() into
-			err = func(variable_name, vendor_guid,
-				   variable_name_size, data);
-			if (err == -EEXIST) {
-				if (duplicate_check)
-					dup_variable_bug(variable_name,
-							 &vendor_guid,
-							 variable_name_size);
-				else
-					err = 0;
-			}
-			if (err)
-				status = EFI_NOT_FOUND;
-Note that both possible callbacks become almost identical and I wouldn't
-be surprised if that "almost" is actually "completely"...  <checks> yep.
-
-So I'm not sure we want that callback to be an argument, but that's
-a separate followup.  For now, do you see any problems with the following
-patch?  [Completely untested, on top of the posted series]
-
-diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
-index f913b6824289..045d53fd0f3c 100644
---- a/fs/efivarfs/internal.h
-+++ b/fs/efivarfs/internal.h
-@@ -55,8 +55,6 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
- bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
- 				  size_t len);
- char *efivar_get_utf8name(const efi_char16_t *name16, efi_guid_t *vendor);
--bool efivarfs_variable_is_present(efi_char16_t *variable_name,
--				  efi_guid_t *vendor, void *data);
- 
- extern const struct file_operations efivarfs_file_operations;
- extern const struct inode_operations efivarfs_dir_inode_operations;
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 298ab3c929eb..80ed81bbd4a5 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -189,52 +189,6 @@ static const struct dentry_operations efivarfs_d_ops = {
- 	.d_hash = efivarfs_d_hash,
- };
- 
--static struct dentry *efivarfs_alloc_dentry(struct dentry *parent, char *name)
--{
--	struct dentry *d;
--	struct qstr q;
--	int err;
--
--	q.name = name;
--	q.len = strlen(name);
--
--	err = efivarfs_d_hash(parent, &q);
--	if (err)
--		return ERR_PTR(err);
--
--	d = d_alloc(parent, &q);
--	if (d)
--		return d;
--
--	return ERR_PTR(-ENOMEM);
--}
--
--bool efivarfs_variable_is_present(efi_char16_t *variable_name,
--				  efi_guid_t *vendor, void *data)
--{
--	char *name = efivar_get_utf8name(variable_name, vendor);
--	struct super_block *sb = data;
--	struct dentry *dentry;
--
--	if (!name)
--		/*
--		 * If the allocation failed there'll already be an
--		 * error in the log (and likely a huge and growing
--		 * number of them since they system will be under
--		 * extreme memory pressure), so simply assume
--		 * collision for safety but don't add to the log
--		 * flood.
--		 */
--		return true;
--
--	dentry = try_lookup_noperm(&QSTR(name), sb->s_root);
--	kfree(name);
--	if (!IS_ERR_OR_NULL(dentry))
--		dput(dentry);
--
--	return dentry != NULL;
--}
--
- static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
- 				  unsigned long name_size, efi_guid_t vendor,
- 				  char *name)
-@@ -244,7 +198,7 @@ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
- 	struct dentry *dentry, *root = sb->s_root;
- 	unsigned long size = 0;
- 	int len;
--	int err = -ENOMEM;
-+	int err = 0;
- 	bool is_removable = false;
- 
- 	/* length of the variable name itself: remove GUID and separator */
-@@ -253,41 +207,36 @@ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
- 	if (efivar_variable_is_removable(vendor, name, len))
- 		is_removable = true;
- 
-+	dentry = simple_start_creating(root, name);
-+	if (IS_ERR(dentry)) {
-+		err = PTR_ERR(dentry);
-+		goto out_name;
-+	}
-+
- 	inode = efivarfs_get_inode(sb, d_inode(root), S_IFREG | 0644, 0,
- 				   is_removable);
--	if (!inode)
--		goto fail_name;
-+	if (unlikely(!inode)) {
-+		err = -ENOMEM;
-+		goto out_dentry;
-+	}
- 
- 	entry = efivar_entry(inode);
- 
- 	memcpy(entry->var.VariableName, name16, name_size);
- 	memcpy(&(entry->var.VendorGuid), &vendor, sizeof(efi_guid_t));
- 
--	dentry = efivarfs_alloc_dentry(root, name);
--	if (IS_ERR(dentry)) {
--		err = PTR_ERR(dentry);
--		goto fail_inode;
--	}
--
- 	__efivar_entry_get(entry, NULL, &size, NULL);
- 
--	/* copied by the above to local storage in the dentry. */
--	kfree(name);
--
- 	inode_lock(inode);
- 	inode->i_private = entry;
- 	i_size_write(inode, size + sizeof(__u32)); /* attributes + data */
- 	inode_unlock(inode);
- 	d_make_persistent(dentry, inode);
--	dput(dentry);
--
--	return 0;
- 
--fail_inode:
--	iput(inode);
--fail_name:
-+out_dentry:
-+	simple_done_creating(dentry);
-+out_name:
- 	kfree(name);
--
- 	return err;
- }
- 
-@@ -407,42 +356,6 @@ static const struct fs_context_operations efivarfs_context_ops = {
- 	.free		= efivarfs_free,
- };
- 
--static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
--				  unsigned long name_size, void *data)
--{
--	char *name;
--	struct super_block *sb = data;
--	struct dentry *dentry;
--	int err;
--
--	if (guid_equal(&vendor, &LINUX_EFI_RANDOM_SEED_TABLE_GUID))
--		return 0;
--
--	name = efivar_get_utf8name(name16, &vendor);
--	if (!name)
--		return -ENOMEM;
--
--	dentry = try_lookup_noperm(&QSTR(name), sb->s_root);
--	if (IS_ERR(dentry)) {
--		err = PTR_ERR(dentry);
--		goto out;
--	}
--
--	if (!dentry) {
--		/* found missing entry */
--		pr_info("efivarfs: creating variable %s\n", name);
--		return efivarfs_create_dentry(sb, name16, name_size, vendor, name);
--	}
--
--	dput(dentry);
--	err = 0;
--
-- out:
--	kfree(name);
--
--	return err;
--}
--
- static struct file_system_type efivarfs_type;
- 
- static int efivarfs_freeze_fs(struct super_block *sb)
-@@ -493,7 +406,7 @@ static int efivarfs_unfreeze_fs(struct super_block *sb)
- 		}
- 	}
- 
--	efivar_init(efivarfs_check_missing, sb, false);
-+	efivar_init(efivarfs_callback, sb, false);
- 	pr_info("efivarfs: finished resyncing variable state\n");
- 	return 0;
- }
-diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
-index 6edc10958ecf..d893e928891a 100644
---- a/fs/efivarfs/vars.c
-+++ b/fs/efivarfs/vars.c
-@@ -407,6 +407,8 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 		case EFI_SUCCESS:
- 			variable_name_size = var_name_strnsize(variable_name,
- 							       variable_name_size);
-+			err = func(variable_name, vendor_guid,
-+				   variable_name_size, data);
- 
- 			/*
- 			 * Some firmware implementations return the
-@@ -416,18 +418,16 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
- 			 * we'll ever see a different variable name,
- 			 * and may end up looping here forever.
- 			 */
--			if (duplicate_check &&
--			    efivarfs_variable_is_present(variable_name,
--							 &vendor_guid, data)) {
--				dup_variable_bug(variable_name, &vendor_guid,
--						 variable_name_size);
--				status = EFI_NOT_FOUND;
--			} else {
--				err = func(variable_name, vendor_guid,
--					   variable_name_size, data);
--				if (err)
--					status = EFI_NOT_FOUND;
-+			if (err == -EEXIST) {
-+				if (duplicate_check)
-+					dup_variable_bug(variable_name,
-+							 &vendor_guid,
-+							 variable_name_size);
-+				else
-+					err = 0;
- 			}
-+			if (err)
-+				status = EFI_NOT_FOUND;
- 			break;
- 		case EFI_UNSUPPORTED:
- 			err = -EOPNOTSUPP;
 
