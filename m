@@ -4,102 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 565DFCCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 11:44:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94642CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 11:49:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C64C8013A; Tue, 28 Oct 2025 07:43:59 -0400 (EDT)
+	id DB0D58013B; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 676F180131; Tue, 28 Oct 2025 07:43:59 -0400 (EDT)
+	id D885F80131; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58C818013A; Tue, 28 Oct 2025 07:43:59 -0400 (EDT)
+	id CC5338013B; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 461BC80131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:43:59 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 92D1714041E
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:43:58 +0000 (UTC)
-X-FDA: 84047338956.27.56B34E6
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 534CF1C0007
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:43:56 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761651836; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BA07380131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:49:02 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4E13914041D
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:49:02 +0000 (UTC)
+X-FDA: 84047351724.14.379835D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf10.hostedemail.com (Postfix) with ESMTP id F062EC0008
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:48:59 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761652140; a=rsa-sha256;
 	cv=none;
-	b=ninwd9bE+o6q2C7jNwifAlX16WifUFxiHSLoadJ+wzOBiTlpF0MxgObdg1SdGI87n2XpcS
-	hmbs7x/wVBjbgXijfXVDsb5a79zT9dwLdc58IWIOIbJUC2ksQOR45MhRy7DSEkotPDD/oR
-	y76Hi0IqmqCEcku/qmkpr8dq/CMcPjs=
+	b=RX0e76HwTFvntRwWRtZGDbfQwMxA5HtqzlRk5LtN0v5P/Ti7/AzB3VAoe+H6QzaA3cd34a
+	ewApV6Eg806kDAxxDWSoa718xIVPOqW1WEV1WVC9kUqZPk3e3U30axDS+gZqPZ6ij1WSnL
+	ZMgnYdUWwf/C+2F9ogXUWb3q3Mya1tg=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	spf=pass (imf20.hostedemail.com: domain of jonathan.cameron@huawei.com designates 185.176.79.56 as permitted sender) smtp.mailfrom=jonathan.cameron@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=oHisylFD;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=sd5JUpjC;
+	spf=pass (imf10.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761651836;
+	s=arc-20220608; t=1761652140;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
+	b=ttzhCw60j0HyY1YG9AWzG/ObjnvBPnr03qMlUBZDZkhyFgdDsaQeigan3bCurvm7RnjNOI
+	QUI7q+gMxTXlZYdkrUL61E0DtVw9mi2zpswpKzLbyhS9t+HASa/fyFFOGQhCXve1DOs/Yd
+	mGMDCyAViskf+M/aduqpQKNHMzm5YvQ=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 291FC21A49;
+	Tue, 28 Oct 2025 11:48:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6RBxOpQwM9ZQILp1LIjr5FHqyEz/6xG2wfXnnp3R8PE=;
-	b=aDZINsj9BWEOcbetviY8r1kxsbXAJs/1iz0lc7k2oQV9hICKFPyMjntVLanuxHDG/YMRX8
-	zP0HWXIg+mOzCWcr2vE5JOmueoMw+C0fBqd5k/sNGde7wX074EFYPyE3diwiCVxxU0WDJd
-	6ekhxwvM7sHKam/ouheLXA7ZMg64QVI=
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4cwpMp484kz6L4yt;
-	Tue, 28 Oct 2025 19:40:22 +0800 (CST)
-Received: from dubpeml100005.china.huawei.com (unknown [7.214.146.113])
-	by mail.maildlp.com (Postfix) with ESMTPS id 3FC4C1400D3;
-	Tue, 28 Oct 2025 19:43:52 +0800 (CST)
-Received: from localhost (10.203.177.15) by dubpeml100005.china.huawei.com
- (7.214.146.113) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 28 Oct
- 2025 11:43:50 +0000
-Date: Tue, 28 Oct 2025 11:43:48 +0000
-From: Jonathan Cameron <jonathan.cameron@huawei.com>
-To: Arnd Bergmann <arnd@arndb.de>
-CC: Conor Dooley <conor@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>,
-	<linux-cxl@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	Linux-Arch <linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, Dan Williams
-	<dan.j.williams@intel.com>, "H. Peter Anvin" <hpa@zytor.com>, "Peter
- Zijlstra" <peterz@infradead.org>, James Morse <james.morse@arm.com>, Will
- Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	<linuxarm@huawei.com>, Yushan Wang <wangyushan12@huawei.com>, "Lorenzo
- Pieralisi" <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Dave
- Hansen <dave.hansen@linux.intel.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	<x86@kernel.org>, Andy Lutomirski <luto@kernel.org>, "Dave Jiang"
-	<dave.jiang@intel.com>, Krzysztof Kozlowski <krzk@kernel.org>, Alexandre
- Belloni <alexandre.belloni@bootlin.com>, Linus Walleij
-	<linus.walleij@linaro.org>, Drew Fustini <fustini@kernel.org>
-Subject: Re: [PATCH v4 0/6] Cache coherency management subsystem
-Message-ID: <20251028114348.000006ed@huawei.com>
-In-Reply-To: <fe57097b-1817-4428-9940-477c3f36cafb@app.fastmail.com>
-References: <20251022113349.1711388-1-Jonathan.Cameron@huawei.com>
-	<20251022122241.d2aa0d7864f67112aa7691bf@linux-foundation.org>
-	<20251022-harsh-juggling-2d4778b0649e@spud>
-	<20251023174026.00005b42@huawei.com>
-	<fe57097b-1817-4428-9940-477c3f36cafb@app.fastmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
+	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
+	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
+	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
+	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761652138;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
+	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
+	VA+fmGcg/MJ8dvBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1761652138; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
+	b=oHisylFDAuZV7QpEp9sT3pOu7poBnog3qCyORDuUTdG+ynWHjNS7PQ0KlqQlu4iHxsRiX4
+	D4lqUwf0IeeFjI54ZAQV9KAsXpD3fiDajoSApMpqDKQe9F8+6/reXn4Or9d4qkMyjBv3kC
+	sFOFa+WANwi38fkkkCP3r1igwdg+qUI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1761652138;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EEDsYxFkkJHUjGWGL4EddzX8EcwO4m2OW9aFt7wKD4w=;
+	b=sd5JUpjCNPXFTvsLJDmZNd9p5AGpi7UtozPA5+iU1ir/e/GNibMP4ynI7wbKF7Wl39SJP2
+	VA+fmGcg/MJ8dvBw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B57313A7D;
+	Tue, 28 Oct 2025 11:48:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wJN7FqmtAGlAegAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Tue, 28 Oct 2025 11:48:57 +0000
+Date: Tue, 28 Oct 2025 11:48:51 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Dev Jain <dev.jain@arm.com>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	David Hildenbrand <david@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Barry Song <baohua@kernel.org>, 
+	"open list:MEMORY MAPPING" <linux-mm@kvack.org>
+Subject: Re: [PATCH] mm/mremap: Honour writable bit in mremap pte batching
+Message-ID: <jmxnalmkkc5ztfhokqtzqihsdji2gprnv5z4tzruxi6iqgfkni@aerronulpyem>
+References: <20251028063952.90313-1-dev.jain@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.203.177.15]
-X-ClientProxiedBy: lhrpeml500012.china.huawei.com (7.191.174.4) To
- dubpeml100005.china.huawei.com (7.214.146.113)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028063952.90313-1-dev.jain@arm.com>
 X-Rspam-User: 
-X-Stat-Signature: ioj3etd6sekn7gogb7bm5qrhf8ezh9gy
-X-Rspamd-Queue-Id: 534CF1C0007
+X-Stat-Signature: wbfaxm8ojafxua8b6xn9w6b5maifcj9d
+X-Rspamd-Queue-Id: F062EC0008
 X-Rspamd-Server: rspam09
-X-HE-Tag: 1761651836-479289
-X-HE-Meta: U2FsdGVkX19v5+g9YvZ5U1Ut/66drtrNVMYRWY1yf5BUrLFaySg+RF3ig7SM6wrqglpdG9q7gyLu2joNfnvo5pr7UIfDxoiizT1L96oEjko+fCGzP9zYoqsSPFDz8UnuOYaQAp2X+yh/9/QImhvXORaJfz0XvJlBIW6Qer2xqsf3qAdiI/coY2WnvnSODugql6/apD6ZVzvf5+m23cweHaiFH3OJCql99w26QPyP51P8ZLZ2HeCJhnLJK4lkfIeexmGTr+4kmL7m4wsk8avw9qNl3nDptmQ8RBW1dF+msI2jXo0ArzVzOPJObYzdEeeCGUIcpc6jCVkL88KMndxV7hbIDEQOXDMrs22UJU6Ta8rWfwM3Q/9Ev+hCtTD3Awp3ZIgeO2pjdp52nsGI/96/T6ueoe+RLmIqCXbFjS4yz5zaVCBrEnUmD9GJaHqVk4z5c2Fo+9kgkcsVXn3NlBp/l96+s/O+KmhhGJI4dLGi4362xQYCqQ0KV76v8ijYMN0tdCOG8u8W7xsHdExkI7vJG3x9bOnd8JWne5NxT/5Pfwe5kam0PmyhZ+C9/uTnvXmh5+q65Tprl/7E4mwYr32eLHfBhglr1UoHVpkJQ9ZS5h2m2WARohq/m+gxy+9nQFOSqJIvt2xEt0tE05+fXlVhslZiHg53aqYLCOtgWAxnpEVGyiuEXlLpYc2IZkA74m4m9x/KLOiHuuCtjAIVOLEWWplcAeGLYXs9tiMpzjnzOJdO1vRAoHOxiPCIHXH315x6oYDpoMOK/TcWOTCrVlmSvnB9Nf9bO3p0iCUMf+vGEfuS2yvr8YCf/5fftag/4biyY0WHhLTw7eo9mhmypWEsgJ1Th7JND/64N8wczpBokVwaY5wdMDsaIoxZXeXUPosjB3u9mJKGrqoeCkJ0XgkiHiaIhbyeLYRxK2rEf4yBt3ftwJYCxQweFZH9/EsoxeMX8hoyaJWmtsa1wbJzxHC
- 6iAUk9Hu
- nuWXTvFvuBrviwpBTcFJszWPkO6V+8Z9x1kC9nFwcCjFvTf8K0raH+PU/lQdiU7uvJpGUnsizqW4BAW4cetorLnqPwyUNXHNWVvvfxEAgnOh9FGdWDWcnfp6aeUW6bSnkoWt/GINcAiDTmvJ0gT1S+uSgdtgq3S58GN7D2cn9hsGPKBrzLkvGvRWE4iU6WQGyq65svIbFNa+7c3XVL3QM//XJw6opug9JYOZ1Rywqr4o++JreTu8YUGXNNg==
+X-HE-Tag: 1761652139-789436
+X-HE-Meta: U2FsdGVkX19AsCi6elY5xJJw4BkdvfYHKvQmUTUbKc8BKrZwHzu/68ZkdUWlgHxRuYiT3BTWWt3K2LCJideUiEA9uz+lj1Lzrkum59nb9ZYtLnVuQJtz3l6zsuZsJ4PYmM1xd5fy36Puc0Ob6roSWvDKuNZZfSGL0HE0PDAys3h2lcYpcI4qHrDWeAVmnKdtUp61mwOmjByDbno7sWlLmXcltd21jC8qtEogRU0/0mRT2zJ5na8X4awK8/mLiYXrFVcEfRqPNcHKO4uMaqxIZs6EAoWNs/g2PQKp/2HIwZ35CRIYaR2pFmBuBnP6KTevxuSbh5NI5sJtfafsBZ6Aqg5q8TRr5ChS8cvjFXqE2wRGxK5odFpTnLqJGbOCTmGRvRCOSgbAkDEAleK09qyZtz1E42BILGMp5B9pOXJRmN4GwnIofXAh7aueVDsTdEzi8a9A6dPBvj27RA0lsiPOZL/ugIeMXIbfF+PIIbP+UGwi9pQZj8QGjpmBd5s12rwicxNDpOWXT04Bpy0yPjuS9wjnP7c3uamSpbn/VO+xxMl4AFgjjMDhLsw3KXKZbGXxkxxLgXHXXIrBO+7mh2MiItA98oVlSA9Wu1yWAbkgjSJL2yck5cG3k0irC6W0ldn5C/Vt6v5afthaqs2Q6ZH/5vRYM5r9rWS5nq6A4ck63EQjnuD2+xflvGfOisL5l1TadMBnyblFhESJxSsdFqpL7bIkzH2dvToHuggVIGvWGgPkIoJaqQoq3YW1RG/uDvPwcvqug+lS/MyMlBirccIP/G69IHqh/osjZRM3PsYBqxHFgLbXcoTGDk5SrhA4qIC/Wd6RqEqnubIyCFWbXfLfOaTeuC0qB7ZnFtFTXjv5033rlE+rh6YmZ/+3cjnKl8b2dK1qojBbNca56OJd10MzDlrkppYCowZo7kCdeWeOzJDsmc3xeuYKJZxuVJ20524UgD/+jP8h5zAbOuYDt8p
+ YZ+tM5Dy
+ 3iZ+dblocAygcQy/IHT1rSUHdcaGuFbruTdkIPupswLEkGI0rZEB2MGtLtFN1gOCymfDTSDDLXrVwV8cGnTbhPskRKtFAFVIyz1YWHK2aWGF5X0fqFr9Ls1Wh5Oau0ssQGG8QaFaac1gIzraMbGC5rHyVP94dP9M6m9EMewCj14ILk/pU0bj/xuh9cy+RAOD5PqBP71PWUJ5Gmdz/5Wc/qsvqb9H+B6/DYco9dodXuSXQKuvC4H+5k6nn6ckP6fCk+ox6yDlx7dYNcljKs5eeAeaHUSdZdXtAsEC83JMSCpaseE5htC3+i+no2AE5D2s8UoJJexReB0vzIDrHOK01LIe60uKHVQ2zL/hwn49SCcGqVrrmpJeRb8Sbl1jFouZWBb6fIs9boMjDRbSKtweie8zfkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,148 +133,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Oct 2025 10:44:03 +0100
-"Arnd Bergmann" <arnd@arndb.de> wrote:
+On Tue, Oct 28, 2025 at 12:09:52PM +0530, Dev Jain wrote:
+> Currently mremap folio pte batch ignores the writable bit during figuring
+> out a set of similar ptes mapping the same folio. Suppose that the first
+> pte of the batch is writable while the others are not - set_ptes will
+> end up setting the writable bit on the other ptes, which is a violation
+> of mremap semantics. Therefore, use FPB_RESPECT_WRITE to check the writable
+> bit while determining the pte batch.
+>
 
-> On Thu, Oct 23, 2025, at 18:40, Jonathan Cameron wrote:
-> > On Wed, 22 Oct 2025 21:47:21 +0100 Conor Dooley <conor@kernel.org> wrote:  
-> 
-> > On CXL discord, some reasonable doubts were expressed about justifying
-> > this to Linus via CXL. Which is fair given tiny overlap from a 'where
-> > the code is' point of view and also it seems I went too far in trying to
-> > avoid people interpreting this as affecting x86 systems (see earlier
-> > versions for how my badly scoped cover letter distracted from what this
-> > was doing) and focus in on what was specifically being enabled rather
-> > than the generic bit. Hence it mentions arm64 only right now and right
-> > at the top of the cover letter.
-> >
-> > Given it's not Arm architecture (hence just one Kconfig line in Arm
-> > specific code) I guess alternative is back to drivers/cache and Conor which
-> > I see goes via SoC (so +CC SoC tree maintainers).  
-> 
-> I tried to understand the driver from the cover letter and the
-> implementation, but I think I still have some fundamental questions
-> about which parts of the system require this for coherency with
-> one another.
-> 
-> drivers/cache/* is about keeping coherency between DMA masters
-> that lack support for snooping the CPU caches on low-end SoCs.
-> Does the new code fit into the same category?
+Hmm, it seems to be like we're doing the wrong thing by default here?
+I must admit I haven't followed the contpte work as much as I would've
+liked, but it doesn't make much sense to me why FPB_RESPECT_WRITE would
+be an option you have to explicitly pass, and where folio_pte_batch (the
+"simple" interface) doesn't Just Do The Right Thing for naive callers.
 
-Hi Arnd,
+Auditing all callers:
+ - khugepaged clears a variable number of ptes
+ - memory.c clears a variable number of ptes
+ - mempolicy.c grabs folios for migrations
+ - mlock.c steps over nr_ptes - 1 ptes, speeding up traversal
+ - mremap is borked since we're remapping nr_ptes ptes
+ - rmap.c TTU unmaps nr_ptes ptes for a given folio
 
-Sort of if you squint a bit.  The biggest difference is every architecture
-has to do something explicit and often that's different from what it would
-do for local (same host) non coherent DMA. In some cases it's a CPU
-instruction (x86 - which this patch set doesn't touch) in others an MMIO
-interface (all known arm64 implementations today).
+ so while the vast majority of callers don't seem to care, it would make
+ sense that folio_pte_batch() works conservatively by default, and
+ folio_pte_batch_flags() would allow for further batching (or maybe
+ we would add a separate folio_pte_batch_clear() or
+ folio_pte_batch_greedy() or whatnot).
 
-The closest to your question that this comes is if we do end up using this
-for the multi host non-coherent shared memory case.
+> Cc: stable@vger.kernel.org #6.17
+> Fixes: f822a9a81a31 ("mm: optimize mremap() by PTE batching")
+> Reported-by: David Hildenbrand <david@redhat.com>
+> Debugged-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-Before I expand on this, note it is very doubtful this use case
-of the patch set here will be realized as the performance will
-be terrible unless the change of ownership is very very rare.
+But the solution itself looks okay to me. so, fwiw:
 
-In that case you could conceive of it being a bit like two symmetric
-DMA masters combined with CPUs. From viewpoint of each host the other one
-is the DMA master that doesn't support snooping.
- 
-View from Host A... Host B looks like non coherent DMA
- ________                            ________
-|        |                          |        |
-| Host A |                          | Host B |
-|  CPU   |---------- MEM -----------|  (CPU) |
-| (DMA)  |                          |  DMA   | 
-|________|                          |________|
+Acked-by: Pedro Falcato <pfalcato@suse.de>
 
-View from Host B... Host A looks like non coherent DMA
- ________                            ________
-|        |                          |        |
-| Host A |                          | Host B |
-| (CPU)  |---------- MEM -----------|  CPU   |
-|  DMA   |                          | (DMA)  | 
-|________|                          |________|
-
-In my opinion, new architecture is needed to make fine grained sharing
-without hardware coherency viable. Note that CXL supports fully hardware
-coherent multi host shared memory which resolves that problem but doesn't
-cover the hotplug aspect as the device won't flush out lines it never
-knew the host cached (before it was hot plugged!)
-
-Use case that matters is much closer to flushing because memory hotplug
-occurred - something hosts presumably do, but hide in firmware when it's
-physical DDR hotplug).  Arguably you could conceive of persistent memory
-hotplug as being non coherent DMA done by some host at an earlier time
-that is then exposed to the local host by the hotplug event.   Kind of
-a stretch though.
-
-> Or is this about flushing cacheable mappings on CXL devices
-> that are mapped as MMIO into the CPU physical address space,
-> which sounds like it would be out of scope for drivers/cache?
-
-Not MMIO. The memory in question is mapped as normal RAM - just the same
-as DDR DIMM or similar.
-
-As above, the easiest thing to think of it is as is memory hotplug where
-the memory may contain data (so could think of it as similar to
-hotplugging possibly persistent memory).
-
-Before the memory is there you can be served zeros (or poison) and when
-the memory is plugged in you need to make sure those zeros are not in
-cache.  More complex sequences of removing memory then putting other
-memory back at the same PA are covered as well.
-
-> 
-> If it's the first of those two scenarios, we may want to
-> generalize the existing riscv_nonstd_cache_ops structure into
-> something that can be used across architectures.
-
-There are some strong similarities, hence very similar function prototype
-for wbinv().  We could generalize that infrastructure and a) make it handle
-multiple (heterogeneous) flushing agents b) polling for completion c)
-late arrival of those agents which is a problem for anything that can't
-be made to wait by user space (not a problem for use cases I need this
-for, userspace is always in the loop for policy decisions anyway).
-
-The hard part would be that we'd have to add infrastructure to distinguish
-when the operation should be called and that the level of flush will be
-dependent on that.  An example is the use of the riscv ops in
-arch_invalidate_pmem(). That's used for clearing poison for example.
-
-On x86 the implementation of that is clflush_cache_range() whereas today
-the implementation we are replacing here is the much heavier WBINVD
-(whether we could use clflush is an open question that was discussed in
-earlier versions of this patch set - not in scope here though).
-On arm64 for this case today dcache_inval_poc() is enough as long as
-we are dealing with a single host (as those code paths are). If this
-flush did go far enough I believe a secondary issue is we would have to
-jump through hoops to create a temporary VA to PA mapping to memory
-that doesn't actually exist at some points in time where we flush/
-
-On arm64 at least, the Point of Coherence is currently a single host thing
-so not guaranteed to write far enough for the 'hotplug' of memory case
-(and does not do so on some existing hardware as for fully coherent
-single hosts this is a noop).
-
-Also the DMA use cases of the existing riscv ops are not applicable here
-at all as when DMA is going on we'd better be sure the memory remains
-available and doesn't need any flushes.
-
-Longer term I can see we might want to combine the two approaches or
-(this patch set and the existing riscv specific infrastructure), but
-I have little idea on how to do that with the usecases we have
-visibility of today.  This stuff is all in kernel so I'm not that worried
-about getting everything perfect first time.
-
-The drivers/cache placement was mostly about finding a place where
-we'd naturally see exactly the sort of overlap you've drawn attention to.
-
-Thanks,
-
-Jonathan
-
-> 
->      Arnd
-
+-- 
+Pedro
 
