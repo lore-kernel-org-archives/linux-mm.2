@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4608DCCF9EE
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 09:17:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CA44CCF9EF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 09:17:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F8908E0141; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
+	id B25CE8E018E; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EF9B8E018C; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
+	id AFC428E018C; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 705F58E0141; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
+	id 9279A8E018E; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 57E5F8E0006
+	by kanga.kvack.org (Postfix) with ESMTP id 73EEC8E0006
 	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:17:23 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D8C181A040F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:17:22 +0000 (UTC)
-X-FDA: 84046969524.13.78E76BF
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3F21612A593
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:17:23 +0000 (UTC)
+X-FDA: 84046969566.02.7C12D99
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2E0651A0014
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:17:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=U+a6P211;
-	spf=pass (imf19.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+	by imf30.hostedemail.com (Postfix) with ESMTP id 85CB280007
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:17:21 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=n3Cna5cw;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
+	spf=pass (imf30.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761643041;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ooKBC1eDKfdKcleVvvkixZdpBL8Ich2YbLbfX/B4glQ=;
-	b=3J3YDLxGJSMwpjXThAMIktDVdJwnBqShr21I8KZeMFa6Cqn/8TjS5OF0BOopfWgagyWVyI
-	hqld0cnAklgVXcT55BP1vIMsh7t4QNYSRbvRlT6PG9q/YEyTgeYeCtgI8SJL/s+hJprMu3
-	+FQfm4E8sA0HzT1KmUt0Jqa/nDPDgs4=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=weissschuh.net header.s=mail header.b=U+a6P211;
-	spf=pass (imf19.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net;
-	dmarc=pass (policy=quarantine) header.from=weissschuh.net
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=noNlmxCJE3KO/lPWg5rcvAC/N6+hMXNKqLIKFsG5DTo=;
+	b=Od1ctZ6O3SPsxmnQOrPAGYKeq67sNGiNccpEpHrLLrI4r+VFlVxW6tFzEfSnXj0GX5PwhG
+	6RPpE/otO5JSn8KNLocBHMg8GXKpMMeq7KI/qm+01gicrH4oCdvVPyMXyZfcTlLkrh0Yjc
+	vTXWm+YHYK/mOgNRlc3MCaswbr70TFM=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761643041; a=rsa-sha256;
 	cv=none;
-	b=AdpKXPnr0EmwqyquXAjyi70Y0OnFW7UhQkYig/cP8gUJqpWnrgP0jGGwQGDjrNZYXTz0xN
-	iVUUQoof+Fvk/0KAAKWCS2QEziWIGDTOVTAjE6tQs9qxNBuTELcqaXtCkuVLdCSoIDfBr7
-	PuIqsLwvI1DOkx4oy1IDbgHDCmfV+PY=
+	b=aTQXw6810BsVgz5+7NtfJmuBwqtosdv8rp7KXV0ElilaFpmrl7WWS0Xx/ouhL8HiKdnc/M
+	lXxWKjHcLcwn7UnOI5009nwaop4vmum7CP+oHBXKei7eJ27Vl9l0y+Pvj57hhzhpt818Px
+	75SC6li2oD74IFqJcFlI27i9zEJmqD0=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=weissschuh.net header.s=mail header.b=n3Cna5cw;
+	dmarc=pass (policy=quarantine) header.from=weissschuh.net;
+	spf=pass (imf30.hostedemail.com: domain of linux@weissschuh.net designates 159.69.126.157 as permitted sender) smtp.mailfrom=linux@weissschuh.net
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1761643037;
-	bh=pLpK9WMmHxQL+UmXL2BRNL9YHlr3HJAmGpPpWZh9za0=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=U+a6P211/4XvUxWAKsYQOUFks4HNaWzQk8OLSQf9m41OMxtrAQAM4Bw89Ces0WUiX
-	 v0AHKlr7R/J5zIR02pXLsR95jwlpU7cs9/lmyuvXp6pFW5X9JIFdzeidNG9xyOlrHO
-	 2uNN9h3tYOgq87JRV/pzbYC8noegWMFq7VlBTxdE=
+	bh=xB7h3ce2gbt35UPG3jOGIq2cIVnYk+vgnnNmKPQ3hUc=;
+	h=From:Subject:Date:To:Cc:From;
+	b=n3Cna5cwrHoFXFZwXsYyr7xr8U1JWDVfqk8mrpEf4PO2s+yHzfo9ae9GaHIoF8OAT
+	 pZxv9lkhfM75w4QdyKXmE+mYxFbn4uRlRg22lrILG3xbdF/DL60Hb0d1d53sXXv02R
+	 62OfOdhoO6A1fBQUiI+iFw7EzH6AhO4EqQgAt/tg=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Tue, 28 Oct 2025 10:15:38 +0100
-Subject: [PATCH 03/10] um: Split out default elf_aux_hwcap
+Subject: [PATCH 00/10] um: remove vDSO passthrough on 32bit x86
+Date: Tue, 28 Oct 2025 10:15:35 +0100
+Message-Id: <20251028-uml-remove-32bit-pseudo-vdso-v1-0-e930063eff5f@weissschuh.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20251028-uml-remove-32bit-pseudo-vdso-v1-3-e930063eff5f@weissschuh.net>
-References: <20251028-uml-remove-32bit-pseudo-vdso-v1-0-e930063eff5f@weissschuh.net>
-In-Reply-To: <20251028-uml-remove-32bit-pseudo-vdso-v1-0-e930063eff5f@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIALeJAGkC/x3MQQ6CMBAF0KuQWTtJHQHRqxAWYL8wiVDSgcaEc
+ Hcbl2/zDjJEhdGzOCgiqWlYMq6Xgl5Tv4xg9dkkTir3kIr3+cMRc0jgmwy68WrYfeDkLXAzOLl
+ LiaaWmnKxRrz1++/b7jx/CUHeqW4AAAA=
+X-Change-ID: 20250925-uml-remove-32bit-pseudo-vdso-8b02724e8626
 To: Richard Weinberger <richard@nod.at>, 
  Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
  Johannes Berg <johannes@sipsolutions.net>, 
@@ -76,19 +77,21 @@ Cc: linux-um@lists.infradead.org, linux-kernel@vger.kernel.org,
  linux-mm@kvack.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1761643036; l=941;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1761643036; l=1974;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=pLpK9WMmHxQL+UmXL2BRNL9YHlr3HJAmGpPpWZh9za0=;
- b=O5gJ+jOwEsAHrk5KZPP4TwQau/fdz95vgKIKxfOYVp6/PV/ok0lwndsYaEsJfWY4HcGigVgsg
- LyWjDLG7c/TBFz9ODtVE6y69f4yeLZPtk2aonTCktjVxwFlAwClOMI2
+ bh=xB7h3ce2gbt35UPG3jOGIq2cIVnYk+vgnnNmKPQ3hUc=;
+ b=fy3Gznoqa4idS4vD+Qw7c736OSjfulXJWRQdumuwvFU5YCVJrhuicwaakAQoBCgYhdehVlJzU
+ ntwkq3FfWbvCXZdNvbbkRNDKA4+YT8j8iaJXv5Yyc1gTYwqKH/G2rWl
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Stat-Signature: 5mddwrewfhrgd93o4ez3t6h4bo4599df
-X-Rspamd-Queue-Id: 2E0651A0014
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761643040-516852
-X-HE-Meta: U2FsdGVkX1+gUBolMZttF4Z6wDmYtZxq26YRreVyKSwONleVUtQ8QjLtUcImDtUJkWPWq4LFFmbtPJgtr3C96sG7odQZWhkBPNao7tLGcHhg7he6HskOBM//WFfZlY2R1l+aP6WTikGd6FZNo8JhHooIaX5wboqOZKhLzxjCzl6WUzWzjbWiYiTzmDUBobezLv6u6TaTY3yqt6HjYQoYNXwQQwyX369kQy3JblGBuL0yPkzTTI2+VXMWf5vqEzFCIxb+wRb8IEtcErfL2J8S8sbo/RhEBnz+CNWucPlqzE3UXS8JnAfqTGo7pI9TIwoSZB0a9S69LlY72p/9Nv4xuJ5Yix5GD3kzy8iTGdl9yBxJSxxF25gmNB+iPIEyJF25g5SjuAFmkqJ23sbz7eHHB04xuW58M9cue75eqjIU2zMv6z4lM/NE73IOjUL/gLhsyfXk/sLFrfLF+vme1YOtRjqLZDnkjuZ1veJTStOGlUZ+V/u+3DqGpalYqqJjsPSeoljZGjxQXC+ATo06WhWKQ6wmfqfRwILuhHn5Aifj2r6swWhWtZPb/TbfCQZt/ULQX2kuPagea0R22kn+THznmZ4bLnLEkV7NuQgA834A0tGOa3ziz1eILGQnQbDBotDS5b3AJFTAc2LFV3ntwJpNVHzzi6UeikXhPlYkC1GeqttTL/rjTeIeCohxBVaf3UtzF+/jZlus3ExzgaTneBJ2sNcTsFWq3myPhiDqyTK0yW12yLcKNdVvBxNxLN0S3x0MQ4JQVj3GzFMdpfiWlqfuST/Npafs6Mz75V9G+5+kPac4mgzRK1hkumqg/sRlOXOVQDe699G9NUdZOPnsC3TftY/7OnWRF6PhQb0IF0z9nlrzhJqz976ys/bO98/X/m9JkakdB5z3ShY=
+X-Rspamd-Queue-Id: 85CB280007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: nw4rmh3iyuxgdbdjq653k9r41actijng
+X-HE-Tag: 1761643041-285623
+X-HE-Meta: U2FsdGVkX1+vSOcIPj9s4K/9r90/SupKp+9un9v7n5IJULLnZH3bjFPZoVeQDSkdfoLmPL0hmhLIKcoWP+6w/M5yUdA/pBmr8Ks13BwbfRgGVvXwtZHmCw9/OgER5HwRbWXUygfF8NEOBddRPnjOZXXLgi47KqVVinyzxdE2rKN43uT8q1djeXh6UPxxxJwmnUUY1VAymSxQ8P0N8QPRiotOtCu4JL82Zl9gZ3v7QFzlzAas3PgdQtVkvZeD4LqYZ8fz1ZeRTi41fAGRZQTV6mGai7U5ZQg+OvybP8fnYygBNGnc5exq4+4YFdoMdA7qcnN6yI+wfrCgjYPPyzm/nu8KIso5UzvNxeTAUNOVcKf6j+IUOwOVkaUgpjA2tQDbCNPrlxIrECdtw3um/53rOuM6yzE0hp0A4Kb7OJU7/339AK6E4/wuI8Ftaa3OOud5nPhH1zdw+1Bcsf5LVkCal+4rhMMooE3ZO1SR27Ml+6sWvKAzcauNNH+ajfFCvheJfxbjL8l3jWbVJ8xZpwT3cSELe8iWP+GfJ5uSzflXZFFv1jBUTeZfPHWXDCRlushdsRAlIfk7/RmP2hySpiw5noZqMsxC6yRzNd6DNKlEu6vyV608iTVTzZMfQwmdIptpIzjB8+hnFv3pFMCKtpTE47a/EHvbGwTs/iRzqTtSLcHI82OuXof5SiWPU6dGAHwc9UrwtNfgMgz/giaT14GYcPDrMDjVvQ0Rsb4vdnE5jT6wy2wgNJ+PaiAQS7X0Fv5DR/eirwUC4FRMZoI9OA+CMqkeOqZEaxopMm4UQty0HxtsW2LtGs50RCQDQ1jQKPAGPNVVw+tTt6BA1w7ntiuIQtiXtbEgFpkDCohu0OutN4IuOH6pQ2svUaZ+F82SA2IHe0E0uLghVrKi1xXIGHpk2Vj2Jn5RK3ybYNrlm9kp7fBfX9a+4O9fEzPRcGEpLPO7bDhMksm0qu4eVw4VPON
+ yOHOHvgt
+ ZbxaWu3bAiNE6YExeaQArEqO3vItPEh6vSsq4mX8Z+z/wr6roj0PtfPrvWOyWWPZ4uz7kpEHWZcRMNXN9CPYNaCVH4A+6ykmsZOqJAMPQkme5Ud6i7n5UT4kKNUxfBWSn8rDdBMfpMbEWn6wVqPxc2F7JQU4B0ZOYg2gzVP0gN9Q1IXw30Yoo2+9xXDTeeLmvLq+HLp/qvP/dRypsnQjiU5FB2V7ZYF9rbUizGqkZjk7Laqbs2Mr/2BsC1A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,35 +100,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Setting all auxiliary vector values to default values if one of them
-was not provided by the host will discard perfectly fine values.
+Inheriting the vDSO from the host is problematic. The values read
+from the time functions will not be correct for the UML kernel.
+Furthermore the start and end of the vDSO are not stable or
+detectable by userspace. Specifically the vDSO datapages start
+before AT_SYSINFO_EHDR and the vDSO itself is larger than a single page.
 
-Remove the elf_aux_platform fallback from the vDSO ones.
-As zero is the correct fallback anyways, don't create a new conditional.
+This codepath is only used on 32bit x86 UML. In my testing with both
+32bit and 64bit hosts the passthrough functionality has always been
+disabled anyways due to the checks against envp in scan_elf_aux().
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- arch/um/os-Linux/elf_aux.c | 2 --
- 1 file changed, 2 deletions(-)
+Thomas Weißschuh (10):
+      um: Split out default elf_aux_platform
+      x86/um: Move ELF_PLATFORM fallback to x86-specific code
+      um: Split out default elf_aux_hwcap
+      x86/um: Do not inherit vDSO from host
+      x86/um: Drop gate area handling
+      um: Remove fixaddr_user_init()
+      um: Remove redundant range check from __access_ok_vsyscall()
+      um: Remove __access_ok_vsyscall()
+      x86/um: Remove FIXADDR_USER_START and FIXADDR_USE_END
+      um: Always set up AT_HWCAP and AT_PLATFORM
 
-diff --git a/arch/um/os-Linux/elf_aux.c b/arch/um/os-Linux/elf_aux.c
-index 4aadb9ea5ae3..9ee0e3199790 100644
---- a/arch/um/os-Linux/elf_aux.c
-+++ b/arch/um/os-Linux/elf_aux.c
-@@ -62,11 +62,9 @@ __init void scan_elf_aux( char **envp)
- 		}
- 	}
- 	if ( ! __kernel_vsyscall || ! vsyscall_ehdr ||
--	     ! elf_aux_hwcap ||
- 	     ! page_size || (vsyscall_ehdr % page_size) ) {
- 		__kernel_vsyscall = 0;
- 		vsyscall_ehdr = 0;
--		elf_aux_hwcap = 0;
- 	}
- 	else {
- 		vsyscall_end = vsyscall_ehdr + page_size;
+ arch/um/include/asm/page.h    |   4 --
+ arch/um/include/asm/uaccess.h |   9 +---
+ arch/um/kernel/mem.c          | 107 ------------------------------------------
+ arch/um/os-Linux/Makefile     |   4 +-
+ arch/um/os-Linux/elf_aux.c    |  37 +++------------
+ arch/um/os-Linux/main.c       |   4 --
+ arch/um/os-Linux/user_syms.c  |   6 ---
+ arch/x86/um/Kconfig           |   4 --
+ arch/x86/um/Makefile          |   5 +-
+ arch/x86/um/asm/elf.h         |  39 ++-------------
+ arch/x86/um/elfcore.c         |  78 ------------------------------
+ arch/x86/um/mem_32.c          |  50 --------------------
+ 12 files changed, 15 insertions(+), 332 deletions(-)
+---
+base-commit: 83e4187d1b952c36ffc2d01a2e532ad8a9e80a76
+change-id: 20250925-uml-remove-32bit-pseudo-vdso-8b02724e8626
 
+Best regards,
 -- 
-2.51.1.dirty
+Thomas Weißschuh <linux@weissschuh.net>
 
 
