@@ -4,97 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0148CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:26:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BBF5BCCF9E5
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:41:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19CEF800D4; Mon, 27 Oct 2025 20:26:26 -0400 (EDT)
+	id BA7CB800D5; Mon, 27 Oct 2025 20:41:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1267D800C9; Mon, 27 Oct 2025 20:26:26 -0400 (EDT)
+	id B7F23800C9; Mon, 27 Oct 2025 20:41:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0155A800D4; Mon, 27 Oct 2025 20:26:25 -0400 (EDT)
+	id ABCA4800D5; Mon, 27 Oct 2025 20:41:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id DE627800C9
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:26:25 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6EBA813A71B
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:26:25 +0000 (UTC)
-X-FDA: 84045631530.22.724BAD0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id BC6E0C0006
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:26:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HVHUBUje;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 9AA19800C9
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:41:04 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45632B7CC1
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:41:04 +0000 (UTC)
+X-FDA: 84045668448.05.3232D33
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 621E010000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:41:02 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=auJ1dV7k;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of krishnagopi487@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=krishnagopi487@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761612062; a=rsa-sha256;
+	cv=none;
+	b=ViGXCCeMc3EMxiPpbRfVcSTQ9qMJyyzkwosb5woK8JdTFFfGLyhpNExwEhLR6RME4jFepq
+	2QKyPVQi0gmeTceSvn8KuG/6kPtrZ+g5I1ejkszCul3ltdn+OA9Zb2ngeMVpjyh0LXwpCZ
+	cTLq8hdemWU3ywo+S1lIGi3vpISwg9E=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=auJ1dV7k;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of krishnagopi487@gmail.com designates 209.85.210.170 as permitted sender) smtp.mailfrom=krishnagopi487@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761611183;
+	s=arc-20220608; t=1761612062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AvP5sA9aOHD93fv3CeXWa2cweMcNxslCQn0oWh8x4E8=;
-	b=K5SU/dpzEnQTNG9optdwjnyAHHD21bSoTuJemklf3RSehUVpeIBgxtxI3Dwc/N3L0u6ITa
-	OteLPyrDHrfKXzvDcNIbzKdvu7dMmFRNhyY03rb2o/DjTA10EcKr+StEBS/pF9bHHOW4hW
-	AI61EGbCcdXKaNiQo/tLUmLWFQzJC/k=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=HVHUBUje;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761611183; a=rsa-sha256;
-	cv=none;
-	b=YyTrNVNK4QHljm+xu6ExyK4z/taF81+ZYn9cOLXdszM2Kw3wzGjFAJ6zddZdeTXLQIWSEt
-	J6tiF28yaT5HfwiLQ/85bJwklYVN530n58dZeG4cJeaIWaL+oaoXdC4lazTiiKyA1J1pkt
-	GUpU+rCMFfHPAIcx6+gLm3FvAVWlKlQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id CE49F602DE;
-	Tue, 28 Oct 2025 00:26:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE4EC4CEF1;
-	Tue, 28 Oct 2025 00:26:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761611182;
-	bh=03OjAGrl9Ce/K7jq0kNHfmZRLQY0iB8bbCx2CK6fD4s=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=HVHUBUjezRvJcZmKT1mk7OhneauH29p/qrVO4e2mCpCeGowlb7n+7PIoWHCmgPwVp
-	 cGWdtpvpmgPv8LCLCDA+/sQBYoVF8rwrHZBJUczjUqqrFJ3YEU94X0MniJ2Zuwlaod
-	 uf2xiA/fC7qtULW2v3xM5g7PPCDVdKpuqd4Xx2qE=
-Date: Mon, 27 Oct 2025 17:26:20 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: <ankita@nvidia.com>
-Cc: <aniketa@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
- <mochs@nvidia.com>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
- <nao.horiguchi@gmail.com>, <david@redhat.com>,
- <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
- <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
- <tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
- <guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
- <kevin.tian@intel.com>, <alex@shazbot.org>, <cjia@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiw@nvidia.com>,
- <dnigam@nvidia.com>, <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-edac@vger.kernel.org>,
- <Jonathan.Cameron@huawei.com>, <ira.weiny@intel.com>,
- <Smita.KoralahalliChannabasappa@amd.com>, <u.kleine-koenig@baylibre.com>,
- <peterz@infradead.org>, <linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v4 2/3] mm: handle poisoning of pfn without struct pages
-Message-Id: <20251027172620.d764b8e0eab34abd427d7945@linux-foundation.org>
-In-Reply-To: <20251026141919.2261-3-ankita@nvidia.com>
-References: <20251026141919.2261-1-ankita@nvidia.com>
-	<20251026141919.2261-3-ankita@nvidia.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: BC6E0C0006
-X-Stat-Signature: nnowsbr87twtd5mjjugrk43wuy5q9ftq
+	bh=oTZKuu154COSpnPLl48ObswEBLGYmmXP2lWfLIZHQnI=;
+	b=pVJJa1FQwzQYHh77ACwOfM5RwpARCHe46HGNv2mWZmI9uFs8TDsR7GWaYtUfdf3j6/Kms2
+	PL/bnfJHHOygkxBpcr1EtMMfLOPlbtUMxLMeHXMy52HOeDpM5RGE378hK7lvoVwDRQ6tVA
+	2akxPUdiaUyz6E9QlHlnpBfqXpxhTrw=
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7a27c67cdc4so4067996b3a.3
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 17:41:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761612061; x=1762216861; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=oTZKuu154COSpnPLl48ObswEBLGYmmXP2lWfLIZHQnI=;
+        b=auJ1dV7kkY1tnTYkf8Dtn8kj0f1G2tSn9zXpY+i6piinTaVpppnwwekr0nkEB7eveE
+         iWlRg+sCe/KsBTA9gcqBBABgCIUh/r2NuAP6ZIrGh9MPJiYaw2h9hM+umGaxFVEBZ5it
+         ig4sb48f997wO3dil7oZWOa2N9vqRLzxbOPa0v9abueaEtJ8PSlsCsNIJnbypsMrOoBh
+         5PpdD1ACZ46/vSxkICc5TOnI0GgtcM+R+6o96JPlw9TBjgvDMJRGxNiBq4hlF+q/xBbP
+         ATtFiG5ukKdmMNZ6GhuWONMw6jCFatZcost+tjNvYnCbqPlR6xgbZ2iSkQgjMyXFRCtC
+         O+VA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761612061; x=1762216861;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oTZKuu154COSpnPLl48ObswEBLGYmmXP2lWfLIZHQnI=;
+        b=ZHYVggHV7FFnygjahAzzk57Qs8f8dudkPStxVAQ40I5gbztmsEDqbKleLomwYcucZv
+         InpZVV2E3maVchxfaNBGwO6/Tbow3dCIVem1R99J+novzy+BfqcZu2FRVzFDLSvP/XNw
+         2XGDzqjKsaY5aAjTNymTNh29X0N2AHJQ1rEX8g0muO2JXZTES3LhxS09mbdFeAn7qcRn
+         bjXMKMjPbujeFDsIGYOU8u5ntiO7pLMTXr/5A+cmcPfIlcg88H+wn7b4j1vF4jNon+R9
+         R9OoveYC4nho9oPMA3aEu2cEuNV1mpDMNTM6UdeQWwoKMuSxroGnT8oGQKOXca2khRDg
+         eWFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVNsBcNHTUPLoSG10S3DwT86E4SgIAzNJqxfC61p7csfQxycz5az3qD3DYofoMo4MZze/Z7vpCBgA==@kvack.org
+X-Gm-Message-State: AOJu0YzU9Xa21EQefXZqVlM2FfuJSja5XVifa1K86Q2VtxwjIgEJOjk+
+	CKFjmUkWGNPfoT0XDHIkYsFAORqQdLs0FnxTeofNudmUtJjsd7FOul90
+X-Gm-Gg: ASbGncuhH3iGx78QJcq3BxNDoN08XqdiqKA/gRbX6hTQ4Hk8HFvuP8fFvseOXfiKVVS
+	v/M8A3N5v6uT1OW+Rfz00sSc24Amy/SY2Wx55pI7skLzkYv3vFx+JCoYmJi9mscAT57dI667Ra+
+	3Qa40+AvJZeKY64+oLkTqfwVUmUMuKmSmyUmfH2kuj+sqQ6QOt3S010RM1svyTqCSTAN36CEakh
+	GKKe1BMUfYIq34auMJloYDmLKmsGGt3DGpxDgfBKsAkpavoMLF6LWZjEpObc+e9ZegkjKBzzyFx
+	liE2dnCOAyFchSErVSF9IAsf+s5WNE5I4E12dLEC6MhE47MnUcWltIe8nL6U5fx6NlRzghXgm+w
+	ae4NTmZdUWsN2IOW79TNWkJmulAD8CigFaEdmLO1AUMRz8tLQO9jm1JjVTILAQJkukYnCgp5pyP
+	97eiQ=
+X-Google-Smtp-Source: AGHT+IFmsoh3DyzGhCitu8owq5rBNWE8sw68jDqRcZrbgvaDViF9SipBAufhFBd1b7TwfZB4Yh4BiA==
+X-Received: by 2002:a05:6a20:4321:b0:342:a7cd:9221 with SMTP id adf61e73a8af0-344d228acadmr1888008637.20.1761612060915;
+        Mon, 27 Oct 2025 17:41:00 -0700 (PDT)
+Received: from localhost ([103.70.166.143])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b71268bdb2dsm8846839a12.5.2025.10.27.17.40.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 17:41:00 -0700 (PDT)
+Date: Tue, 28 Oct 2025 06:10:57 +0530
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+To: syzbot <syzbot+a894fe5447d0543e89c9@syzkaller.appspotmail.com>
+Cc: akpm@linux-foundation.org, apopple@nvidia.com, byungchul@sk.com, 
+	david@redhat.com, gourry@gourry.net, joshua.hahnjy@gmail.com, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, matthew.brost@intel.com, rakie.kim@sk.com, 
+	syzkaller-bugs@googlegroups.com, ying.huang@linux.alibaba.com, ziy@nvidia.com
+Subject: Re: [syzbot] [mm?] WARNING in raw_alloc_io_data
+Message-ID: <szusm242ai65p5eox3sblk225p6njf4kfahcgn4hkocwwvzh7l@3pfzgljcwzll>
+References: <68ffe1a8.050a0220.3344a1.03a0.GAE@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <68ffe1a8.050a0220.3344a1.03a0.GAE@google.com>
+X-Stat-Signature: 76qkyx8hfq86qtzuoeh4irzh4ye1c5xd
+X-Rspamd-Queue-Id: 621E010000A
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761611183-408296
-X-HE-Meta: U2FsdGVkX18mbgRxnUBnO+lW0EZhOgOcNQ653GE4ivj/vSboTdTGX+qVqqR1zWhy9mKE/eJNCkOCqkG2SgDT0bJf6iI/3eD6QfWPDngzn2DqCfSWQYJjt527RPKmPlWlpR0DU0e5koVeQRfng1DBXGsiejZ08iDhqixFhBYBcY1xsruVtLZZ1L44L9/FdWiy6LxlKLFXamj4Qdi9CA+giYnUnXoi9UQW/Xxk3RNI0lPrFonBUrc4+frVdGBMjok42nRG9sVv9aRuJZ/OO8rRJtNGR49fgbkYfu7UUurPHPg8eV4lDPEbRcOOKtfCWbj/zWHl0IbNkL9hb99l4IcKAG8/7tV0NKxF8EmXL4IzNRFNq0TrfaQJ3Ce4LCp72PRy9qVYlBM1OLQFIriCQczHpL5nYB+/GRHAJ4caOE+PZrlif3u5SqMqaZrB2gX+VedxShRzajh80niRh3CxW+THF0YyRBYIvYrEPP+gfagm1ujiSVcSACVeJ9snCwrQIlXenouCwNZTNbDliQsRJq6+VUftSb2n/ELnac3kduw4rS1chUnKb1LBwTzhsmkznlT/4rtkEWySpaHDJ3M72yuvtEvKggcAdxOg9PxHRf5DAG2on+vWuu6yB4zQg3u4YVlxqoUqpWw1KhGFVUXGhBf7+HySq2/QlDUkINqWiQ0G4/ewhpFyix0xT6TbX3/Wexl3rCB4xhbVqIw24rMRcVaLCjTGlCOB5IymxkVM3OhINHDED27/orOWX2NVzFdBGs8CDSi3eZbHUNhm8QiClX5tCePMsWbJ9ugPEXZDmh1L32g3SdbnVWZar6PkkNou8d0iibr9CDeVpZ+h4G0W1Y4JW02NYhHm+8TthWHYhgpVOdajuCBunhCpmMS5kp4cyivHLdMoJDaNlSUw+TONVE3VdYgBcAOHPTRpJpmrje6jsOeBiSrSwsH5eXgf095D3d7ao4ng9EBNnDam/aaKKsa
- nCUVxJhn
- sCk4drKXh+b9CBny2iewaWmemtYYnYNwYAZj2x06Yor1rDUxxZILlDOzT6E34fBAhMbHoK/s41+JChDvJmx6qKqAs8dIjbAYDVsNq0/37SLaII5JA335+xMRVxHKXVc1er/aFTZz1cj04898hVpsc0tX6nQoY7Lwa/blm9uLZ15qER1p6A5HQ6NTHL6v28KIN1tvgTKiZlvCH5ASXAT7wMAwRaKNFzWoXy2vfkCiBvP06nYK/v7gYR4YPKda74DKIibO1R36w5bhny/MQ3p1pfzfRXMG6AVE5NKWxB2Z58V1lVMYeCd75lBYDmlaJRTQGLvvCyB/dOjkrru32TYdNjxP0wA==
+X-HE-Tag: 1761612062-406265
+X-HE-Meta: U2FsdGVkX19i3mx/L14TgWN9INIn6pxd6MIXCQAqkTD6MYEazcKcrX5S02lanklkdI5yXEohYzBCVQhU/y9IBi64g5Y6oHuU9Cgv2UDGKL/mS9821gaY5cmSuocAwnaw1x7xJ6d35Vrsocw5fFwwH69kWpSmVLhx04wI4Tj/Q7GVZVHfUrvcdsYIoW2PzqHqR5n+vgRj4GUYnrtDgYOR8Te1H+1qurloFtfq347LV/zFLr5oM3IZSc2BEYDM8pIdEdDQ7dRZuSsYhIpzIgkkwOEO0C5AJvp91D4CGWd4iOsjchsqTkMAU5/jRUFJD+WYmL7cqzCt+pyvLfXuLIJeOVr+ai+aBW23YRU5BNPibsbRWEkovIjs632chHggSvj5fnVqwFoPxYh2f1OR2LZBAHoWOHsig5t7wZ/6f50f081oaGxItErNisjjQ87gmBMYGpNY9y0xiqhYl8Mav/ZttaRRBhXIIiTa3UD7wEeBocqMfr9tNG48FkjueBab1ik8VsKpjHzl7+zSbuMPoe5H1GdBoBYjsoxKambOYB4cpj5A1ckITcUX6YzcdakdakZEmLkB2U3IMunizuMyyTt45YtkuXhvLmRfo9Y9JkVlwJIxiWOlRvj3t03w5UjH5PnMZ6Iv8tNiGKQME7GXsUn06J3ZxGQHq8H1aCA+owihk+DD1lxkKJ1glVx6S4+lpCCOmhHyQCJtGdUbQqA0JTI1qWDGeHV12EYtxUBJSVsjOxtUlWYOKfCTPGDblTGpFCtb6veuQ0W275ThtnIDW+pSC5hX/7bcGZYbOwvCPvFZOmDNAOLsvqdWsKOO+5xNn4v5XBR7ktjLKp5Sywp1vmu/aZa8EvHKpR0IkiDFv+prOmjwUjEHiqbpUcgNWmPkll5068Zs+10kpA5SYGpegwpjzHFu1XRt//dY9+Rv++ksMdbwf4mLljU5ovFabqM8wxA8mppmRXWbMuWcQQn/5Mg
+ H/MPHEl+
+ CL07FEylVOaN68/kOhSXUCKvSIL0/dHVAdncF75EDOq6RYYoOb4cYqBnBBtVYyQ8/8Rh6ClnJit6LY0Q3od/mUJ8JsuvRim5+GW9oK+6QkLY25USKCZpem/3KA7xwuOPyyjIrnBvbO/fZ8MTr63c3sujOAWY9nRyI6oZEhvXi3M5OlJITKbMFDc+zV/8GFK5jkI0lf/NYOcKXCOqzfsoK+KmeoqqrTeBDlAdr/v9bSwQ5tT/3URFc8/42cE1XAKK99MkdlC6AwAlcdGMYz/SFfqkkbVeGlOkeLJ5axDKMzVwcvI/JZY0mNcaKy/RI4ln7tI+0E147wxdNinggWQcD8TNIbYatmtryhh30bbSHKTjWMJE3t4e0U8owTWSlUsspeMIVuQkfmL1R3RjZrDJmLLUVoXqxpDGewAqQSmv/vYE9WoUiJJOsffonmZKkSCMIlb5xpP9IxvdM2eaMLwiN9PZknHvuDgjJnyj54RBRscHiG1WRP9M37EZIF/izpPhz7dENKW+1dl2fVvkq5udxjTFBQdZ7vthqMCbFe0/mxU+npPHdfhqj+qxFTMo7h+cddtYJvwzS6x5UN4Kq5qXUVF3BewccgIQeLUA3DutXt3gtq9q7gmKfh81Kr4l9diihh9icn9SkxsRh7oBe6Ks1A/wUWzk6tXXiPWntAOfmMr2tjH5Y/ZL8NG8RleM7ZXlBiC8weRKH5UElqP6ZEQWTh0lXROqfedvbouLAG9/BRX9aLsfoc/HTtfeEpkIt9ebPtqNLM+zM0B5C03X1bLX+dyKIZ8ATvfZpz8RHGT2ilKlGf4/qanx11ltNWpXzh4wtL2lmJKErT2wfE4mbP+NF+jJCZdjdXe7te5MDctpvaGDpgaY7EfP+PbWQkQCthrTBBE5qt1kqHouqR3HRKOx49uLwSYDzkzRVszZWn/3JI2DjowO0eNjfg7+WoGGRzV6uO1AkkWlxIO04ieFlwBfkiu7WYWEc
+ TpPfmQ7/
+ 9HWMY75vawF5YKjpMsAWRR0zj4BddoA4aCLnLMtLwhHAkcdUNrHz5it7WU2SPVQmpqE1zd4sl+IS2gT41dFOd/Mdd6VWiLMMFeCmqwZJ/iz6N7d9wgDRCLMmWrkmrvg977p3CtNzs9zzqH2SvplUqgD7+em3AvjvP9xeT5f0bjQ3yIdkxeedw3zp8tTvKFxWHvZYZiLgKUq+gdCBl4JoTTOC/pfopHRRa8XZr6/wltoXOpekpCpBA/b+UCd1UK803rbqtpihIZm7tvD4z4I9ILtxEVsx8AgrkCVvV4mCsql+aVgXp8X6KXm1VavibxIfdzhOLJ7MIEC0MiEAhLJRWok/Ib9Mas0o
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,197 +122,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 26 Oct 2025 14:19:18 +0000 <ankita@nvidia.com> wrote:
+On Mon, Oct 27, 2025 at 02:18:32PM -0700, syzbot wrote:
 
-> From: Ankit Agrawal <ankita@nvidia.com>
+> Hello,
 > 
-> Poison (or ECC) errors can be very common on a large size cluster.
-> The kernel MM currently does not handle ECC errors / poison on a memory
-> region that is not backed by struct pages. If a memory region mapped
-> using remap_pfn_range() for example, but not added to the kernel, MM
-> will not have associated struct pages. Add a new mechanism to handle
-> memory failure on such memory.
+> syzbot found the following issue on:
 > 
-> Make kernel MM expose a function to allow modules managing the device
-> memory to register the device memory SPA and the address space associated
-> it. MM maintains this information as an interval tree. On poison, MM can
-> search for the range that the poisoned PFN belong and use the address_space
-> to determine the mapping VMA.
+> HEAD commit:    dcb6fa37fd7b Linux 6.18-rc3
+> git tree:       upstream
+> console output: https://syzkaller.appspot.com/x/log.txt?x=160597e2580000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=609c87dcb0628493
+> dashboard link: https://syzkaller.appspot.com/bug?extid=a894fe5447d0543e89c9
+> compiler:       gcc (Debian 12.2.0-14+deb12u1) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=11af27e2580000
+> C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=11c2d614580000
 > 
-> In this implementation, kernel MM follows the following sequence that is
-> largely similar to the memory_failure() handler for struct page backed
-> memory:
-> 1. memory_failure() is triggered on reception of a poison error. An
-> absence of struct page is detected and consequently memory_failure_pfn()
-> is executed.
-> 2. memory_failure_pfn() collects the processes mapped to the PFN.
-> 3. memory_failure_pfn() sends SIGBUS to all the processes mapping the
-> faulty PFN using kill_procs().
+> Downloadable assets:
+> disk image (non-bootable): https://storage.googleapis.com/syzbot-assets/d900f083ada3/non_bootable_disk-dcb6fa37.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/61176fd888a1/vmlinux-dcb6fa37.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/84e7e9924c22/bzImage-dcb6fa37.xz
 > 
-> Note that there is one primary difference versus the handling of the
-> poison on struct pages, which is to skip unmapping to the faulty PFN.
-> This is done to handle the huge PFNMAP support added recently [1] that
-> enables VM_PFNMAP vmas to map at PMD or PUD level. A poison to a PFN
-> mapped in such as way would need breaking the PMD/PUD mapping into PTEs
-> that will get mirrored into the S2. This can greatly increase the cost
-> of table walks and have a major performance impact.
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+a894fe5447d0543e89c9@syzkaller.appspotmail.com
 > 
-> ...
->
-> @@ -2216,6 +2222,136 @@ static void kill_procs_now(struct page *p, unsigned long pfn, int flags,
->  	kill_procs(&tokill, true, pfn, flags);
->  }
->  
-> +int register_pfn_address_space(struct pfn_address_space *pfn_space)
-> +{
-> +	if (!pfn_space)
-> +		return -EINVAL;
+> ------------[ cut here ]------------
+> WARNING: CPU: 3 PID: 6091 at mm/page_alloc.c:5159 __alloc_frozen_pages_noprof+0x309/0x2470 mm/page_alloc.c:5159
+> Modules linked in:
+> CPU: 3 UID: 0 PID: 6091 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+> Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+> RIP: 0010:__alloc_frozen_pages_noprof+0x309/0x2470 mm/page_alloc.c:5159
+> Code: f0 5b 5d 41 5c 41 5d 41 5e 41 5f c3 cc cc cc cc 83 fe 0a 0f 86 0c fe ff ff 80 3d d4 63 52 0e 00 75 0b c6 05 cb 63 52 0e 01 90 <0f> 0b 90 45 31 f6 eb 81 4d 85 f6 74 22 44 89 fa 89 ee 4c 89 f7 e8
+> RSP: 0018:ffffc9000371f9f8 EFLAGS: 00010246
+> RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000000
+> RDX: 0000000000000000 RSI: 0000000000000014 RDI: 0000000000040cc0
+> RBP: 0000000000000014 R08: 0000000000000005 R09: 0000000000000009
+> R10: 0000000000000014 R11: 0000000000000001 R12: 0000000000040cc0
+> R13: 1ffff920006e3f55 R14: ffffffff9ab2c464 R15: 0000000000000014
+> FS:  000055557bf92500(0000) GS:ffff8880d6d0a000(0000) knlGS:0000000000000000
+> CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> CR2: 00007f84d9710300 CR3: 0000000032452000 CR4: 0000000000352ef0
+> Call Trace:
+>  <TASK>
+>  alloc_pages_mpol+0x1fb/0x550 mm/mempolicy.c:2416
+>  ___kmalloc_large_node+0xed/0x160 mm/slub.c:5583
+>  __kmalloc_large_node_noprof+0x1c/0x70 mm/slub.c:5614
+>  __do_kmalloc_node mm/slub.c:5630 [inline]
+>  __kmalloc_noprof.cold+0xc/0x62 mm/slub.c:5654
+>  kmalloc_noprof include/linux/slab.h:961 [inline]
+>  raw_alloc_io_data drivers/usb/gadget/legacy/raw_gadget.c:673 [inline]
+>  raw_alloc_io_data+0x12c/0x1a0 drivers/usb/gadget/legacy/raw_gadget.c:659
+>  raw_ioctl_ep0_read drivers/usb/gadget/legacy/raw_gadget.c:776 [inline]
+>  raw_ioctl+0x1397/0x2c30 drivers/usb/gadget/legacy/raw_gadget.c:1313
+>  vfs_ioctl fs/ioctl.c:51 [inline]
+>  __do_sys_ioctl fs/ioctl.c:597 [inline]
+>  __se_sys_ioctl fs/ioctl.c:583 [inline]
+>  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+>  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+>  do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+>  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> RIP: 0033:0x7f84d938efc9
+> Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+> RSP: 002b:00007ffe768729f8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> RAX: ffffffffffffffda RBX: 00007f84d95e5fa0 RCX: 00007f84d938efc9
+> RDX: 0000200000000080 RSI: 00000000c0085504 RDI: 0000000000000006
+> RBP: 00007f84d9411f91 R08: 0000000000000000 R09: 0000000000000000
+> R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+> R13: 00007f84d95e5fa0 R14: 00007f84d95e5fa0 R15: 0000000000000003
+>  </TASK>
+> 
+> 
+> ---
+> This report is generated by a bot. It may contain errors.
+> See https://goo.gl/tpsmEJ for more information about syzbot.
+> syzbot engineers can be reached at syzkaller@googlegroups.com.
+> 
+> syzbot will keep track of this issue. See:
+> https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+> 
+> If the report is already addressed, let syzbot know by replying with:
+> #syz fix: exact-commit-title
+> 
+> If you want syzbot to run the reproducer, reply with:
+> #syz test: git://repo/address.git branch-or-commit-hash
+> If you attach or paste a git patch, syzbot will apply it before testing.
+> 
+> If you want to overwrite report's subsystems, reply with:
+> #syz set subsystems: new-subsystem
+> (See the list of subsystem names on the web dashboard)
+> 
+> If the report is a duplicate of another one, reply with:
+> #syz dup: exact-subject-of-another-report
+> 
+> If you want to undo deduplication, reply with:
+> #syz undup
 
-I suggest this be removed - make register_pfn_address_space(NULL)
-illegal and let the punishment be an oops.
-
-> +	scoped_guard(mutex, &pfn_space_lock) {
-> +		if (interval_tree_iter_first(&pfn_space_itree,
-> +					     pfn_space->node.start,
-> +					     pfn_space->node.last))
-> +			return -EBUSY;
-> +
-> +		interval_tree_insert(&pfn_space->node, &pfn_space_itree);
-> +	}
-> +
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_GPL(register_pfn_address_space);
-> +
-> +void unregister_pfn_address_space(struct pfn_address_space *pfn_space)
-> +{
-> +	guard(mutex)(&pfn_space_lock);
-> +
-> +	if (pfn_space &&
-> +	    interval_tree_iter_first(&pfn_space_itree,
-> +				     pfn_space->node.start,
-> +				     pfn_space->node.last))
-> +		interval_tree_remove(&pfn_space->node, &pfn_space_itree);
-> +}
-> +EXPORT_SYMBOL_GPL(unregister_pfn_address_space);
-> +
-> +static void add_to_kill_pfn(struct task_struct *tsk,
-> +			    struct vm_area_struct *vma,
-> +			    struct list_head *to_kill,
-> +			    unsigned long pfn)
-> +{
-> +	struct to_kill *tk;
-> +
-> +	tk = kmalloc(sizeof(*tk), GFP_ATOMIC);
-> +	if (!tk)
-> +		return;
-
-This is unfortunate.  GFP_ATOMIC is unreliable and we silently behave
-as if it worked OK.
-
-> +	/* Check for pgoff not backed by struct page */
-> +	tk->addr = vma_address(vma, pfn, 1);
-> +	tk->size_shift = PAGE_SHIFT;
-> +
-> +	if (tk->addr == -EFAULT)
-> +		pr_info("Unable to find address %lx in %s\n",
-> +			pfn, tsk->comm);
-> +
-> +	get_task_struct(tsk);
-> +	tk->tsk = tsk;
-> +	list_add_tail(&tk->nd, to_kill);
-> +}
-> +
-> +/*
-> + * Collect processes when the error hit a PFN not backed by struct page.
-> + */
-> +static void collect_procs_pfn(struct address_space *mapping,
-> +			      unsigned long pfn, struct list_head *to_kill)
-> +{
-> +	struct vm_area_struct *vma;
-> +	struct task_struct *tsk;
-> +
-> +	i_mmap_lock_read(mapping);
-> +	rcu_read_lock();
-> +	for_each_process(tsk) {
-> +		struct task_struct *t = tsk;
-> +
-> +		t = task_early_kill(tsk, true);
-> +		if (!t)
-> +			continue;
-> +		vma_interval_tree_foreach(vma, &mapping->i_mmap, pfn, pfn) {
-> +			if (vma->vm_mm == t->mm)
-> +				add_to_kill_pfn(t, vma, to_kill, pfn);
-> +		}
-> +	}
-> +	rcu_read_unlock();
-
-We could play games here to make the GFP_ATOMIC allocation unnecessary,
-but nasty.  Allocate the to_kill* outside the rcu_read_lock, pass that
-pointer into add_to_kill_pfn().  If add_to_kill_pfn()'s
-kmalloc(GFP_ATOMIC) failed, add_to_kill_pfn() can then consume the
-caller's to_kill*.  Then the caller can drop the lock, allocate a new
-to_kill* then restart the scan.  And teach add_to_kill_pfn() to not
-re-add tasks which are already on the list.  Ugh.
-
-At the very very least we should tell the user that the kernel goofed
-and that one of their processes won't be getting killed.
-
-> +	i_mmap_unlock_read(mapping);
-> +}
-> +
-> +/**
-> + * memory_failure_pfn - Handle memory failure on a page not backed by
-> + *                      struct page.
-> + * @pfn: Page Number of the corrupted page
-> + * @flags: fine tune action taken
-> + *
-> + * Return:
-> + *   0             - success,
-> + *   -EBUSY        - Page PFN does not belong to any address space mapping.
-> + */
-> +static int memory_failure_pfn(unsigned long pfn, int flags)
-> +{
-> +	struct interval_tree_node *node;
-> +	LIST_HEAD(tokill);
-> +
-> +	scoped_guard(mutex, &pfn_space_lock) {
-> +		bool mf_handled = false;
-> +
-> +		/*
-> +		 * Modules registers with MM the address space mapping to the device memory they
-> +		 * manage. Iterate to identify exactly which address space has mapped to this
-> +		 * failing PFN.
-
-We're quite lenient about >80 columns nowadays, but overflowing 80 for
-a block comment is rather needless.
-
-> +		for (node = interval_tree_iter_first(&pfn_space_itree, pfn, pfn); node;
-> +		     node = interval_tree_iter_next(node, pfn, pfn)) {
-> +			struct pfn_address_space *pfn_space =
-> +				container_of(node, struct pfn_address_space, node);
->
-> +			collect_procs_pfn(pfn_space->mapping, pfn, &tokill);
-> +
-> +			mf_handled = true;
-> +		}
-> +
-> +		if (!mf_handled)
-> +			return action_result(pfn, MF_MSG_PFN_MAP, MF_IGNORED);
-> +	}
-> +
-> +	/*
-> +	 * Unlike System-RAM there is no possibility to swap in a different
-> +	 * physical page at a given virtual address, so all userspace
-> +	 * consumption of direct PFN memory necessitates SIGBUS (i.e.
-> +	 * MF_MUST_KILL)
-> +	 */
-> +	flags |= MF_ACTION_REQUIRED | MF_MUST_KILL;
-> +
-> +	kill_procs(&tokill, true, pfn, flags);
-> +
-> +	return action_result(pfn, MF_MSG_PFN_MAP, MF_RECOVERED);
-> +}
-> +
-
+#syz dup: [syzbot] [mm?] WARNING in raw_ioctl 
 
