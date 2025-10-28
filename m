@@ -4,83 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5659CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 01:15:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33E7FCCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 01:25:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E4CB800F5; Mon, 27 Oct 2025 21:15:44 -0400 (EDT)
+	id 92C44800F6; Mon, 27 Oct 2025 21:25:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 194C2800E4; Mon, 27 Oct 2025 21:15:44 -0400 (EDT)
+	id 903D5800E4; Mon, 27 Oct 2025 21:25:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AAA9800F5; Mon, 27 Oct 2025 21:15:44 -0400 (EDT)
+	id 819D0800F6; Mon, 27 Oct 2025 21:25:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E7B6F800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 21:15:43 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 86DE0C02DF
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:15:43 +0000 (UTC)
-X-FDA: 84045755766.03.5F4E5DF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id D6BFD18000C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:15:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D6YozAOS;
-	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AD17800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 21:25:57 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EA0F987BCC
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:25:56 +0000 (UTC)
+X-FDA: 84045781512.24.0BF1EC4
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 1B158A0012
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:25:54 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kUDTTYFA;
+	spf=pass (imf25.hostedemail.com: domain of almasrymina@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761614142;
+	s=arc-20220608; t=1761614755;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bOQ1Ne0AqDDrph5fTBEt5Su6YDHYv0+Dldqs58lMnUg=;
-	b=e6SLLrAQvSdc+JBaE0BmIZRlm+pXhYmex/ka6J5l6EFOWxt1Yt2qmCJ8hVoOC1b2dl1hc2
-	fOE0ch+9ZSWiVCi9W6QnsKQA1wmw1InwE5TTzMY6htYJl8BnHCj1ObGpMT8sbphmfFfuER
-	kHecURPUilw+aI9XdrstFv6SiS63vAw=
+	bh=6+IhRzMSNfrWbx9v4qoylhMH03PgpLB+fsJBfp3BHIo=;
+	b=zupPNW45HFiGJyHLREKql3IvMPnkxIkTd9+hFD2fYekSmb4L2QUXOXk4oBzsUY9eCE4kqI
+	kvS0MF65Gy/OzXyggnDQSY7fLyLtMifwZ/ZTnhJUIVUQp1HvVt3AUl/FOkS8Wi0vNv49pb
+	wgw5KD5AwGo7VQh1+E3KNMBH7KFkUEI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=D6YozAOS;
-	spf=pass (imf06.hostedemail.com: domain of bot+bpf-ci@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=bot+bpf-ci@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761614142; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=kUDTTYFA;
+	spf=pass (imf25.hostedemail.com: domain of almasrymina@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=almasrymina@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761614755; a=rsa-sha256;
 	cv=none;
-	b=RYIS1Y3L+2yTJfJxOwdfsFazNtqq19wDHpaPfiCatqrjDYXCwjYennWdlTdRRhS3nDdmIM
-	8/7Ma2bpaTbzT+LFTSrdCpAW06wnHhht1sy64WSQFgKJO4mIi7WV3FV1t/CgX/ekw/xuTE
-	esNBlcsg8INtHJmgSgDpgkEx7xTkHmg=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 97D8843D32;
-	Tue, 28 Oct 2025 01:15:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D295C4CEF1;
-	Tue, 28 Oct 2025 01:15:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761614140;
-	bh=hZMNoT84NWTUnJ7xeU4dTqY3HFxtGS2LILZkNTb0rRQ=;
-	h=In-Reply-To:References:Subject:From:To:Cc:Date:From;
-	b=D6YozAOSL4ftkP1327QSAIyotS32B0Q61n32u8VQuijuZFU6ZGCDkPw9rpPPx2X/d
-	 jPdBfxTrUvESTVDaPBpKoau0kghcyTvqfhAUE3k343cWjmoS8FFpTh9ENMdhx9nay3
-	 DpIjPkZUoV0H561FWIL4G9bQoY03UPf13yRixAe5Zt9eMV8Gg9vBvvlEJs3R6mVNCO
-	 cVvt8FKZ0wSlX84xMC2Q/FN0g9SoZSGxUOEDkrBpSJf4YjLIn2OLuu/+O+RjNnQS67
-	 Nrcaqwl12T0AYIYui6OyoRJCoaCd+Bb4jdUMSvGLZiwMDSCkJ2jeFyQBv/NGmnACJ0
-	 z5mJ/sXQZgy2A==
-Content-Type: multipart/mixed; boundary="===============3821749126373374714=="
+	b=PZHM6wQUI47loD8n0MMo9KA6i1nX3zuj8s2H+DeSn+3Nb9Iw/ir37+kz58JNhz0Dh5cSq7
+	x9H5XRwE5Qwht1V03pMfsoKqmNib1AzSMXxz/Bd+/lBOQ8yGQLqbVPGaJtjy8+u/RsXEya
+	Lepavx1zbg1Wq3jFmTY7a+zqGTVRpvk=
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ea12242d2eso119411cf.1
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 18:25:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761614754; x=1762219554; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6+IhRzMSNfrWbx9v4qoylhMH03PgpLB+fsJBfp3BHIo=;
+        b=kUDTTYFA78Mla6su5F0yIyyvuLm4rfaVBE3B3DS6oM8IMyR027mYkxNy5Ny4BY/J4c
+         crzgiY9NEGgZEzWzPOv01+3YZ4cat0mQ7/WbyZTobhwwNgINvQK0sNHzsiE+bouG7Eu+
+         7M+3NcX+tSSPRyXHLnOFfyHS5TZPCYaEzpkC/D+Df0ghEKydkFQV2mhRrxTL3q8pjA4g
+         tpUUS9HsyxOhokk0zasmzGIPh+MAGDEPy7pA3o9AVkWQwaap43O+RNnDlM+ulnWbbCwd
+         NYRrOhZWxvuwmJf22oC99RmIvnvH08uU3hJLnNrBfdxq5r9HpXGMRR1HyJo9bpCVcsS3
+         RGZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761614754; x=1762219554;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6+IhRzMSNfrWbx9v4qoylhMH03PgpLB+fsJBfp3BHIo=;
+        b=giQxQ7ss3suUG+6tVE5JiF4UY0jBFBpLRcHr/qymV2GjLIpYR9mH+zgu4T+VnnlDwr
+         xWCaXT9EHws3yFj9ZV8MRmo9T4nSnVLl7yJE7d8ltgn2Q2kOR+k9Fk7BluH1g8CSH6l3
+         M6ATcZIPcPve9nh6NdqLtejo8emjCrG8Kr9TZzJCo4nkwE+55QfqiPog3ntOR6x1KXUE
+         1iW8THf+LIyYrzZvQMYU8BuPz/oq44xkyRr9OgwsRUbzEoWgGllG83hXhak1srQo8wHC
+         YX1xdFp6PE8Jr9OQVkYNk4HDfdRc2y9t5zhHKHMExy7w56HtCwQ0UOqF8t/vaKBN+9Xx
+         g0lg==
+X-Gm-Message-State: AOJu0YyEYLve8idYAEd1Zwxqry0Jnuf14R+KCKaWT2h5wY7xUIMQDLsm
+	hEhkWaWSrPS/3h4EoVM4KABzgVQ7Aa6kYDvB6rEZEMjfS2d3hgbn3hdR/jqCzvgSG8MAHh802xC
+	Kv7B3raAcwlSavp/sMYZN/bNDXxpXuJPxQtRb8Yma
+X-Gm-Gg: ASbGnctYp6P2wc5CkG7yMDKTptvbpf8qG2rDMJxcr+GiJVWK75VMvk8rPTTO5LyO4+I
+	EUtzRujaEBgAvScHH51gWGd39/1LeiirizbeLq5kH+Uk8mz0lNO1ZCbfMuin8W1InE8ey8OZiJ1
+	L9Jxzputs1nferv/pJdK12hmO85jQTaRXk0H0shN1vg+yb1dO9zB7Mn8Rc+q+PZJ/0yfziWLDQ+
+	L3w1RnsKr5Sj+OiTx57SR6z3TJueqQ79amn5LbNjnoSiu2Sfgt1XQeeGcbU
+X-Google-Smtp-Source: AGHT+IGZpu7KbnVsM8kZ0fYv9D1RFyxoo19HTWIE9dDLgf5qw+saPGsXAmE1ImayYWVIS9arkPI85hHzY2/USWHgdZE=
+X-Received: by 2002:a05:622a:190c:b0:4e4:d480:ef3a with SMTP id
+ d75a77b69052e-4ed09f734c9mr2176101cf.13.1761614753768; Mon, 27 Oct 2025
+ 18:25:53 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <022fbcc8127b3bcf15731de7956ca892619da224487161febb9ef1ed4c71597a@mail.kernel.org>
-In-Reply-To: <20251028004614.393374-24-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-24-viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v2 23/50] convert spufs
-From: bot+bpf-ci@kernel.org
-To: viro@zeniv.linux.org.uk,linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,brauner@kernel.org,jack@suse.cz,raven@themaw.net,miklos@szeredi.hu,neil@brown.name,a.hindborg@kernel.org,linux-mm@kvack.org,linux-efi@vger.kernel.org,ocfs2-devel@lists.linux.dev,kees@kernel.org,rostedt@goodmis.org,gregkh@linuxfoundation.org,linux-usb@vger.kernel.org,paul@paul-moore.com,casey@schaufler-ca.com,linuxppc-dev@lists.ozlabs.org,john.johansen@canonical.com,selinux@vger.kernel.org,borntraeger@linux.ibm.com,bpf@vger.kernel.org,ast@kernel.org,andrii@kernel.org,daniel@iogearbox.net,martin.lau@kernel.org,eddyz87@gmail.com,yonghong.song@linux.dev,clm@meta.com,ihor.solodrai@linux.dev
-Date: Tue, 28 Oct 2025 01:15:38 +0000 (UTC)
-X-Stat-Signature: unmihq4nmudd6upe5mbhjud7o9h4t5rq
+References: <20251023074410.78650-1-byungchul@sk.com> <20251023074410.78650-2-byungchul@sk.com>
+In-Reply-To: <20251023074410.78650-2-byungchul@sk.com>
+From: Mina Almasry <almasrymina@google.com>
+Date: Mon, 27 Oct 2025 18:25:38 -0700
+X-Gm-Features: AWmQ_bltJKoIWK6cFNZ6Knu_i6BSq0jOkYeTZTTOB6G8J-1_KJrKj4k-v2-ULKU
+Message-ID: <CAHS8izPM-s2sL_KyGyUyv37PfZxNLf029DrXpQe8fo637Rn+rw@mail.gmail.com>
+Subject: Re: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to
+ confirm its usage as pp for net_iov
+To: Byungchul Park <byungchul@sk.com>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	kernel_team@skhynix.com, harry.yoo@oracle.com, ast@kernel.org, 
+	daniel@iogearbox.net, davem@davemloft.net, kuba@kernel.org, hawk@kernel.org, 
+	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, 
+	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch, 
+	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, 
+	vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com, 
+	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, 
+	ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org, 
+	kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com, 
+	baolin.wang@linux.alibaba.com, toke@redhat.com, asml.silence@gmail.com, 
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, 
+	dw@davidwei.uk, ap420073@gmail.com, dtatulea@nvidia.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 1B158A0012
+X-Stat-Signature: 74d6um9qiqdh8nhn8843ggeynjimqqra
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D6BFD18000C
-X-HE-Tag: 1761614141-75885
-X-HE-Meta: U2FsdGVkX18Y99qi0jh22r9KKakgoYDjC0TDuszEMKvRxYIfpdE8FXfHQbbfpkS1Tqe41ibMxBKfZAmtfSe73qsd4ZGa/IqYCXfTiEvaFWJH/kAmDadqswf1jOX48iTohywGijr612kHK0I4AJiQSn+uqB4VNxGrXMNfkJYSObn+Xa9cHWPyd0uio/65nUZEKPYpzM6RwfigaMkGp0H94OrPedePenALMeRlWVeyxboAGSmaUhgbd93C6k2KqmgLYPq4vbWGgYveZ092jiE2So9hPkCQYTBgfjzP+IzbVjeAQBmZ3JBcqFA4jgJDcc5F8ygADEHaSpOpJlGcOJVTaga8eTBh/AmWIhtToVgIvW252iay3GkLOOyYKksPdMYb+AVW7Pje9MMFbWCcP1et12zRfc0BK4jpIDqKl88yfo8hD7LzXVio8xn361JfFCLugqpqw7K/QK2aAHptNr4Tt1JwxLO5U9W2LL5MzzB0cTmpa9J78bRsybscQqDStunv2FgmZ8eqKveKgEg+m2qmDkJrdz+ktbdHrPtMB5r+w0/IaaaFb7laPptwhFycjT46ioj4vz+TMQHT48a+76sIf2FiL6i4VTxNuf1wip7k1OcmOZBvzCalDd5Ws0FR0IvJjmDP6Fa3P4l9Rs5CsDcRFSMU5Vesxk2UjRGr+78/++JN0j5B08X2YpqEXvxxC/1vewIjT+ny3fuSL98OMqFDkS2x10ekgNLy+T0Jhd+JmtO9lkPwbJ99Lq2vznLt6exGq4hN5AM8EunrYakYanLsvFWJyN8pbHulVSLS3uRSNsdH1IMMBNm5oHx3vS/Nq/9xnH92FsPg9wkGdACAZcq5W1EhHEGmGcpSKdydTxGKbCz6L/ATetDqM6DuwBEIpNtcbTzRORGjvHOmKDEwpI8psxdVsWy491eHp9X1JzNkSIj2Oa9QpgklYl6aE3ezS9rFEdPBJ6qgscZ28eFV40e
- SK5ACyu9
- W8tdiQvGaN2CRXZ7wQMZT/c5PrnXOmkMjpiVsCzURM/92jTuEKu8l4G0+JrmK1C/AQE+sijSbxtDPYiPP6FnBXjGafpUpWssk4t2dDD86Bbm3DHlK9O/70zrLXcyM/EK0C9TBR8D1JnbGcWLOoQDOw4sa2sTi5UQOiJomy60VQ9QZA8s+5jomIpuWuv2XQ2DMAvFy+vLe7m/SmVe7fRXKnmYuxsXilLcSygap1XmMtH5GAcNew6/wAc6dPPdvYcWrtB7q+xtR2WkDsYDM3ORha46/dCQZwHTuVOhZAasMEbBC+XfU1pw8O1mHAwA8EB+HU/VE2QD0rao7WTYtBu5HYJS6p9iP866fJJLt1jrk5B24I1RmUau+LkgZPKNuPQvLQervvxxwmcfFhfB7fMVOofnzWCqkwTHaFk2tA+CEBDs2ZOM=
+X-HE-Tag: 1761614754-317531
+X-HE-Meta: U2FsdGVkX1/WcdMEcpDeYYzCIqkULnyadat+o4U5EYsbF0WB5ZcBwXCV4D35jpyerRwUjKpjKhu3ps8yNlxEudMAhDWzRvkAi2fqZ/NiXMwDHTaRT96x7ozBeFw6+/fWt/K3P14sIyPMkxC3bzClHyTzGD7SG1dMzZKEY8O420xDUaW6yI+ETxlXCSL0XtELul/rZ/gfcPZJPmRzlNssZVRxqVEHnX2plegSgPYqRGx4W1C2twfTYuGHKO7hVSyNwrL2Aqmz/w7xvJi9/GHKm6CbO6bjRIvA1xQulUH/iiiZznIGJKbYPNnTfBfRGgcjM7dg8HLq/Jj+0+X2UcpP8dhc6OKMKtgWRMhn16e8lKe9iseFSxact4GlGMqK4AcghrF8Ga8rCvgIdPtLB3FimidT0lRoUtrMS60obhFHGUwjfWY9yprDF+4R35z9IlodpBkxvgISVGvUW/oCO+gIIl2TkGihphTL4TELL9U5AYE3PK5H+u20SN7eENmOVYj08G5CmR013d/nPDAz4gCjFTvCIOnV+jxI0jzVwtMpE/pM7IjSDB3YRHiyWcr8UpG9FC0PEXSjsYuVDblM6BPMic7LHElgngtLMk0FUCyXK6yoNsnRcQbAlR0Ff89MXhPfJcAV+UL56TJfZuH2sNd8q7pvVU9UjtUHbabZUfvEwn7weRuDdxHMUNGSAEMMtbbVsR42URhUStbq17XFu36kcA+D2QQxYDF2uZqGCNvlYhiFpOwC5UB8s2ep62GIUgsjRdVxctN4+mLPytj+McMnUQIroclocbwdh4hlJ5fawtF3K4yfHHpTz4+7O+MpR/oPzkrTjaa6BENgzQjLm5YyiCFQL2PnDOmMKNUvuy5W8h2jD/8ixfaO2mKBP4a8Q9FofDOwpPb5F3Mho0qidlfO5VATRIP87z+1mjU2VLZNNVJT6HLB1X+UN0GrPnxXVuI9To5DHckBFwzgCfgEpfq
+ ocTWy0Ma
+ qZvWlxdcpQdUnKGANFIfKd5/XBYAP/7pcYRhSvewSxGaH9iyg3vnXCLCQ3lxTfc7Uwrigz/rT9P4X9/5Awo+E8RiShpTD+IDfDRKjm8g9KqMXJyPW9O4wlmeNXdqSYbi7/H/JdbCg952OzmtAp6Zui+cEurzZWr91aGRcKOAqJ3mpRyivnHtmoeNCCWQAljvQqsf49suXdt6QQif7oZRzLy7+fQuicSKguFmIz5q0Vcb5EPZRhtXVh28Rs0BVINufVhbfAKlido4XKswkl5ZL9cYspkW1lD0tSHfi/qezRd5FBopYG8/5s8lHeIfhdzEBng2km3oWZwPM2cQf7iGbT+g02L9DQRZ2BLPsymbFD6KYy/zmci25lLRK28R+98DdNzsBoW8M5Wu4UOEeLOGTVQB7qNK3JAE/UcgD0xw/iVce4pUkxemdtdAnXDkIE30ap5NEw12gCoYOTT9m9lHHtd4cbWU2U4zz2bMC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,73 +128,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---===============3821749126373374714==
-Content-Type: text/plain; charset="us-ascii"
-MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-
-
-```
-commit 0e359e5d712e3abcf8056b43da12f092c37e9f21
-Author: Al Viro <viro@zeniv.linux.org.uk>
-
-convert spufs
-
-This commit converts spufs to use d_make_persistent() instead of d_add()
-and d_instantiate(). The conversion includes making dput() unconditional
-in callers and changing from kill_litter_super to kill_anon_super.
-
-> diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-> index 7ec60290a..f21f7a76e 100644
-> --- a/arch/powerpc/platforms/cell/spufs/inode.c
-> +++ b/arch/powerpc/platforms/cell/spufs/inode.c
-
-[ ... ]
-
-> @@ -241,11 +240,10 @@ spufs_mkdir(struct inode *dir, struct dentry *dentry, unsigned int flags,
+On Thu, Oct 23, 2025 at 12:44=E2=80=AFAM Byungchul Park <byungchul@sk.com> =
+wrote:
 >
->  	inode_lock(inode);
+> ->pp_magic field in struct page is current used to identify if a page
+> belongs to a page pool.  However, ->pp_magic will be removed and page
+> type bit in struct page e.g. PGTY_netpp should be used for that purpose.
 >
-> -	dget(dentry);
->  	inc_nlink(dir);
->  	inc_nlink(inode);
+> As a preparation, the check for net_iov, that is not page-backed, should
+> avoid using ->pp_magic since net_iov doens't have to do with page type.
+> Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
+> page pool, by making sure nmdesc->pp is NULL otherwise.
 >
-> -	d_instantiate(dentry, inode);
-> +	d_make_persistent(dentry, inode);
-
-[ ... ]
-
-> @@ -479,10 +477,9 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
->  	inode->i_op = &simple_dir_inode_operations;
->  	inode->i_fop = &simple_dir_operations;
+> For page-backed netmem, just leave unchanged as is, while for net_iov,
+> make sure nmdesc->pp is initialized to NULL and use nmdesc->pp for the
+> check.
 >
-> -	d_instantiate(dentry, inode);
-> -	dget(dentry);
->  	inc_nlink(dir);
->  	inc_nlink(d_inode(dentry));
-> +	d_make_persistent(dentry, inode);
->  	return ret;
+> Signed-off-by: Byungchul Park <byungchul@sk.com>
+> ---
+>  net/core/devmem.c      |  1 +
+>  net/core/netmem_priv.h |  8 ++++++++
+>  net/core/page_pool.c   | 16 ++++++++++++++--
+>  3 files changed, 23 insertions(+), 2 deletions(-)
+>
+> diff --git a/net/core/devmem.c b/net/core/devmem.c
+> index d9de31a6cc7f..f81b700f1fd1 100644
+> --- a/net/core/devmem.c
+> +++ b/net/core/devmem.c
+> @@ -291,6 +291,7 @@ net_devmem_bind_dmabuf(struct net_device *dev,
+>                         niov =3D &owner->area.niovs[i];
+>                         niov->type =3D NET_IOV_DMABUF;
+>                         niov->owner =3D &owner->area;
+> +                       niov->desc.pp =3D NULL;
 
-In spufs_mkgang(), can this call inc_nlink(d_inode(dentry)) before
-d_make_persistent() instantiates the dentry? The dentry is not
-instantiated until d_make_persistent() is called, so d_inode(dentry)
-returns NULL here.
+Don't you also need to =3D NULL the niov allocations in io_uring zcrx,
+or is that already done? Maybe mention in commit message.
 
-In the old code, d_instantiate() was called first, then
-inc_nlink(d_inode(dentry)). For comparison, spufs_mkdir() uses
-inc_nlink(inode) directly instead of inc_nlink(d_inode(dentry)).
+Other than that, looks correct,
 
-[ ... ]
-
-
-```
-
----
-AI reviewed your patch. Please fix the bug or email reply why it's not a bug.
-See: https://github.com/kernel-patches/vmtest/blob/master/ci/claude/README.md
-
-In-Reply-To-Subject: `convert spufs`
-CI run summary: https://github.com/kernel-patches/bpf/actions/runs/18860600716
-
---===============3821749126373374714==--
+Reviewed-by: Mina Almasry <almasrymina@google.com>
 
