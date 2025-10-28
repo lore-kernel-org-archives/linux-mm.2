@@ -4,115 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CE91CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:26:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D94CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:34:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8E4FE8E0196; Tue, 28 Oct 2025 17:26:29 -0400 (EDT)
+	id 489868E0197; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8BC838E0005; Tue, 28 Oct 2025 17:26:29 -0400 (EDT)
+	id 43A488E0005; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F9E48E0196; Tue, 28 Oct 2025 17:26:29 -0400 (EDT)
+	id 328EE8E0197; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 6F0918E0005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:26:29 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3EEB813B4D5
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:26:29 +0000 (UTC)
-X-FDA: 84048806898.17.26BE6A8
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7C79D4000E
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:26:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DClOFroa;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3AjUBaQsKCL8pfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3AjUBaQsKCL8pfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 1B9818E0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE92EBA3A8
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:58 +0000 (UTC)
+X-FDA: 84048825756.18.E61D5C0
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf18.hostedemail.com (Postfix) with ESMTP id A9CE11C000B
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:56 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmrTVky;
+	spf=pass (imf18.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761687236; a=rsa-sha256;
+	cv=none;
+	b=b0YfyATXtcY+4djLtbKGjDGPIUcvzYlc9FQEEDRiS6Uh9/QjbF/3+ExinFMBudFKfgdz65
+	vL76ZOguSwiOeES2QS5R4CaG32s4fLmRRKZolUi3hYENMpJ1nD2xAbJg2Dl5VP5HsL4wi6
+	yGnz3OnCDLx3q/hzcH+yW6G+NbYGCkQ=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmrTVky;
+	spf=pass (imf18.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761686787;
+	s=arc-20220608; t=1761687236;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rT6L9Wf8vYbbxkXQC/mV6lXNvx+aGP0etQXMbdvClGk=;
-	b=5It0N2c28Q+MxQay1/Cvb7LhJZtw3JKnwvckO/ielHXXL5RFAEcI2P+rdPySAi7P8KNCWw
-	1IkDJy9fjCIUJaNNSrPPY1d2X6W2ZqIEoGETBkyXNH80ZmMugK4XDr1mae1oZu02UHvpXB
-	7IPySCYsmfv2uw3WWz8sIXBbwdpQYiw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761686787; a=rsa-sha256;
-	cv=none;
-	b=CsCcaOfoHL7OlCemFX1laj5sYc/WAWMdPXTr2R6X2vnQrudnUQsCuEUaPe4EJL/oxxM53z
-	yuRGgFsUdEntd0nR4iLZ6XRnJcsfeEy2xEvLkGezRxnsJdElKKgOV4GSaBn64ynyQUAL5z
-	CdnXDdhGL+nZqmsUMz0OmrsaaaKqsSA=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=DClOFroa;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf27.hostedemail.com: domain of 3AjUBaQsKCL8pfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com designates 209.85.215.202 as permitted sender) smtp.mailfrom=3AjUBaQsKCL8pfqjxmxnslmlttlqj.htrqnsz2-rrp0fhp.twl@flex--kaleshsingh.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-b6ce1b57b9cso4332007a12.1
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761686786; x=1762291586; darn=kvack.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rT6L9Wf8vYbbxkXQC/mV6lXNvx+aGP0etQXMbdvClGk=;
-        b=DClOFroaNbKKjno0CdulCNuwKmQkn9J7MFdSFvKVPHaBAwJScxSx2nq/o06FxYDQuD
-         FtBkVeARnJLl7zakC6gJ7vEq/H+NwMsGFsR4uC3AbSfnQIwQfliBCJKQHxQrfiZNwvyx
-         leyMrGfA2dAwVU36dIXkWV2s0pz3RAQUt2qJGB4tgmwJ+nMmozpBbSPGrfSKT7XHnoUJ
-         Y2CaJAkuURrRGcwL0qRcxYmzc72b7CxzSoW7C6VbYyk3JgMURlZv9UpvQO5ui+3xG+P6
-         ye5a/kEg0i5pPV2HmCV0gG3kwPJ4JodjON82mWXrHReLZogMPCM4lj5pg3xIeFyurpRj
-         X4Ng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761686786; x=1762291586;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rT6L9Wf8vYbbxkXQC/mV6lXNvx+aGP0etQXMbdvClGk=;
-        b=lE4NW+33g+odFeqGuKa1JX2hAnptFgKpsgEyPnnPZYPXLyrgRXlQ2L30w8c8zqZFOW
-         Ygxk+pv/nTaiY58CJJsSEZo5v3bprvAsXopDdscqB3yiuvdWidUj4nNqyvwacVEoVIN5
-         M3evIkyNjVEGpNVhw300ASFQQ0hD1dL1TBIh+ms0nTPcYe+0X+SP00W8cGLGBkDEMhee
-         VhvZMIHJYsfQSTNgWFxh9WIJE86aQFMwIFdv7laSjYg1/y3fZSab7fXm+FllND07X/5b
-         9DHgykqVCRLe23MMSlQTIb1lfKy2TMYD1OFXV1KjSCOGqWJ8ogkffkQ0sJhJmk5lX4XP
-         AEGw==
-X-Forwarded-Encrypted: i=1; AJvYcCXJgz2bG1hFkgChGKmRjDDVdeW7lSdkVBPHfLM9UPrd9plvqQzqZmXQbQNMssf9LT2Ym7pyHIgcjg==@kvack.org
-X-Gm-Message-State: AOJu0YyxqHNkYqk3YoDG7QOaUMSMODDGKO5O7FtcsFYefPgkofdyP8Jq
-	hUauP1D0Huav5Lgn2O57pdEihD9Wp76Kvi55g7JSzxNCBsm1LcGUOcF9Thuj5XN/5oZKwTQYXxr
-	VJqhKFFsgpaUQ2rLn3vgyNPO2mw==
-X-Google-Smtp-Source: AGHT+IFi6r0zdzbXdNzU52THvRuL2ZA/3vJbtaWuyVKp1vecZPNJs9dG6E1pIVYt/viPctamQhX27/sMjMfGtOyTrQ==
-X-Received: from pldv19.prod.google.com ([2002:a17:902:ca93:b0:290:28e2:ce4c])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:c1c9:b0:249:3efa:3c99 with SMTP id d9443c01a7336-294def30f8cmr3834515ad.61.1761686786161;
- Tue, 28 Oct 2025 14:26:26 -0700 (PDT)
-Date: Tue, 28 Oct 2025 14:24:36 -0700
-In-Reply-To: <20251028212528.681081-1-kaleshsingh@google.com>
-Mime-Version: 1.0
-References: <20251028212528.681081-1-kaleshsingh@google.com>
-X-Mailer: git-send-email 2.51.1.851.g4ebd6896fd-goog
-Message-ID: <20251028212528.681081-6-kaleshsingh@google.com>
-Subject: [PATCH v4 5/5] mm/tracing: introduce trace_mm_insufficient_vma_slots event
-From: Kalesh Singh <kaleshsingh@google.com>
-To: akpm@linux-foundation.org, minchan@kernel.org, lorenzo.stoakes@oracle.com, 
-	david@redhat.com, Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
-Cc: rostedt@goodmis.org, hughd@google.com, kernel-team@android.com, 
-	android-mm@google.com, Kalesh Singh <kaleshsingh@google.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Jann Horn <jannh@google.com>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
-	Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall <bsegall@google.com>, 
-	Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>, 
-	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
+	bh=QH//50JL9r5vlgYsJZ4OaxQcxUqHTRxV5sbtAPYHsOY=;
+	b=HEpL53sEFmgqxAEvRP0cZGxx+IGmtytxW3BlqtsGysW7P/dJZWNYIGShQ0UiPwmkAPyzps
+	XjNInW9vPM9JrPM12qhx6/nZcxymC3eGsrI8b/oCCflz2JUUIfBh8ChEYsiqsVC5cMc0Xs
+	uNh3qF0TLJw+X2VIFjUb2UcPNRLIK04=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 80F6749141
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62157C19425
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761687235;
+	bh=iFWP7xxMJgkbRCwFD/Ow8yzZAuMAdW311BwnuPvp2SA=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=phmrTVkyk/RJJ+EFRqA64SJtzZw1RrTXF0Jy7f1CXc/pvZLehllXnDr4sgfEh9lXA
+	 2/twG9h2eNIdBfauTgXEQuIRcS4YaIBUHDFnASGVKVGIr9PViTjDz3uHg1aUHndGnm
+	 JfmMrIDVcmMtfhGvsEaRyHNrcNHVVSFVyWqW7mc2lxSIew6H7Ge6bK3IDkKkVZFTE+
+	 ckLbL07VYqopMUKqVW/aEdK3rZ1Vhdn7Jx2oYQrh9yRmC9zb2iiksD6jhqrAr/U6XF
+	 BoaOIR9Ixch8dADOEBUFirZRLio3iFt5cOVoN7gFFs9TvytO8YcKQnFMJVdWxBjyCE
+	 nG+tulYpts/hw==
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-87dfba1b278so68400386d6.1
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:33:55 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU+xGKYt4RcowIm98b00/t24JAsgQysQumMY0pMittutlhPVOl6EdrbxXjwdbKqSVoE23k020KEMA==@kvack.org
+X-Gm-Message-State: AOJu0YyOGn8eKi1JcVFSh5a9uiAR+UrxZnp9O2+NOVB31zx3L120fCCa
+	6lcgQTglZWEpGmPSSMieidSZcRqQNqdty0Y0jZl9PT3I6ge5zTtkcD3KZxI31S7rMvO3mfcne0D
+	4TWnRjTD5kN3f/+RO6ROepcNaJsAwyUA=
+X-Google-Smtp-Source: AGHT+IESUEc3eeZzEWwxs00NmoTrW71KQg0jPt0Nsondh+RQEdb4dLarCNV80h0sV/jj5ri8Uz9bMzHY51U++MLe3GA=
+X-Received: by 2002:a05:6214:2129:b0:807:ca4f:5666 with SMTP id
+ 6a1803df08f44-88009ad0903mr10291646d6.2.1761687234390; Tue, 28 Oct 2025
+ 14:33:54 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251027231727.472628-1-roman.gushchin@linux.dev> <20251027231727.472628-7-roman.gushchin@linux.dev>
+In-Reply-To: <20251027231727.472628-7-roman.gushchin@linux.dev>
+From: Song Liu <song@kernel.org>
+Date: Tue, 28 Oct 2025 14:33:43 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_vrNZpEbBuHLhHwHaGzLaF3QEeKWz-VikCm0bYrFBq4UA@mail.gmail.com>
+X-Gm-Features: AWmQ_bn4FJi2CLDbiuBc051gpuUbvflP1rY5GJvh4T7UtMPVn-sJ9ZXRwYG7Zb8
+Message-ID: <CAHzjS_vrNZpEbBuHLhHwHaGzLaF3QEeKWz-VikCm0bYrFBq4UA@mail.gmail.com>
+Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Song Liu <song@kernel.org>, 
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7C79D4000E
-X-Rspamd-Server: rspam02
-X-Stat-Signature: fjhs9j8qa4wuyazohqw438jasozi7im1
-X-HE-Tag: 1761686787-245490
-X-HE-Meta: U2FsdGVkX1+Vy35JXEv3uLk5zvpekKgBRl0bPnSgtpeWe+E0jdtyabo5Aid85O62zRFZFWwMMO9vVvBpQyVdESYi92XTPeGTeKBGtj4/H2Dpt113o+m0KmTu8AQtII6NgkCdfdODxTjTk1NgaBaWODnrGmvq7+8roR7kEKpZ9ktHNjtFUMdWy4b8D85Vs6PzwC1eBILM6fxZdQZNKPp85f3yiDsK2xdlfV0u7DZ36rJgL8bt4dM9Al1FSF+pttcYlbiYr4wcTGmQ+CnJ5zxqAkUUTeSSF5041sbcMwUbZlFx2Ma8mDGQ7FHTWbnPWov+J2PeJvRQsTu0sQ6HqSj74C946XlZUIeonpnk331gtYDZZJWQS3SShiQKCteyw6zuX4HdPOeNXfVgxuPmN6KvUuVE1Z4k7nZ/0o556yareg/jQyoNErPUDuvmpM0WCErfHi4fyDNi8Z9WF6ywBJMeeFIRt2760bUozbm3Tnr1Ofo3VBVl0+uTxZBaU/cHwrc6gMVGYW+000XQhuY3U3981eq4ojYBKo40h8vXoRckaywHi73HHCJ2WlzGyxe5bBZ4JZdGeNL11SA9+hOUzo83khpcnmoLIxXSw33NuJD21HcA/cJUuRXYsRjcIOWLnb8wLJW/0NvsWjlmlYHUNQhB0IfAJ7aTzcrGpxxj6eNCTFBwKVbpATyNdMqPiYOSSwUhSj0n1TqJMF+u8beG+RR97TaBE6UioKdiSnb7MkLZ50+uSYW9ydIjfbmJhEYtBxYO0b8J7TMiZvXs7bnYQ7BGJG+cf2HZ+m9BiZ6GA1OufWZLHtODEq8KNGZ/z8ic69Q1iyjksZ/PBj3J3rUi07Wg0uSEJooVPfH3c0sD7G4JtkUtY2gtcpaVADbAcEnF4kT07XjsUDs5oTyA766gTWggdvni6wCQnDwF2FuWfGU0gelFLKRNf1EDyPe3X9oZAE+N+MJK/jdsTyWhRBcTX/e
- MdX+I+oN
- y7c1CkaROTq8bdhGQQ76lfjeMC9WjYAKa9FnKy64v2uocEGxKAISMUjgTLtX8xNdyvt+7D+/UCnky5y3SLo1sDMlNzXrRDNe6rlrHQI8VWuxj7KTYNH+l/ITrKdQKhkCWhQO1NEkXx7buPv9yEBBoeWCAl3eDAsbFlIAVqkVnvywaDxzGTB5lawUNkUoxI37chzFiQs+QuNKJeUJFzZa6Fe+iSPow27tSYl+Vq7msHhDxKmLNcEVOaQD8WFflG/4qqCLIOgrew0Ngs8m1cTtjN5G7DoZTyRomlKoLCsVM5sM1uel0SbRbT6EcCagBN4ATUyxx1Zuc8xuMxtaroBV92HTB17gNuHgEAFudIpwf/SOLQl+589QL7gMpj8on+5DuaRdEdzETTRU21MGLyMzbNY47yY+SnKW3MFEeHaxPTam1l6KosHvZwYcGeEH0sPNFmdjXwVnJvU94tVp9wnl/4fjh68Iu/9SCjwNxpVL+v2FYg+/yb1dWmACLN4nur3tDjqp1CD0VWCamgb2sq/1NIlg0a808j6U++nBIeBuoscXdutJ8G5wzKDUUeR5LqIz+O2vtGv7Krn3SFNAHq+XTuLpfeZtfCQyphACnB+Gibg39xI6PQl04opYYs9Fp6dCiGbT3d69K8NETt3vxVy940jM22ABdMoW5Vv0ic6RINKqfOdIQq3oLkk3rAxeWJdgycVwbDwJP2A3ZXGnbYmzoYjr6At6RklawHsPlbvYQ6dkf7mqH1LVgm5cRipjfkm3QNJMN2hlY0yDaYSkJ4bwbs9JRojGG4rGP7KDwjXyscvaYGr+D+cSVMW+k1WgWHoecFA9BqPoiLbE+D0S3hOYP2K8O3PjDq0+SekIG
+X-Stat-Signature: s8d85isnxyu6u7f6qhd93txmstbdzyte
+X-Rspamd-Queue-Id: A9CE11C000B
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761687236-918878
+X-HE-Meta: U2FsdGVkX1+2KAxOOLdIxHk7IDNi8EoZTDRVrc1nAGoC0xuR3AII5OB2bTNKhkA21pk7Mtr7bZqzE2kSRz0qagUglCLWl9M3vRSkXWGQxKXx1sx8hfGivwn7Z5ShNN0oH1FNSoMWUhwWfXCUaRyqBPHkjN3rdLn24H07ix3a8ZFVhLmIWYhDcC2HuOsudrHSjfZJrBXJbECvD+mnO6CfvcELkLqPKd3DoiRqE1zF8Pw6vc5jhPccBpOwCg1FeuVZtuGVlhgZMic3/sNKSlA1OFkks3sthHWAABFryR/taPC+rviRPkxBkNOVh8aW2z5B80cxrtGiMPpiLFAqO/Huc/tcYxiUup2/h3w/wtHNsacagzH5OPAUEDjqR9o3FDwgi6DeC5lj4AfInjAakpqJOYLEKe05nI8oj/m26NbWOCSIVVgqcbn9wOAczNLNvK/cjcfWzoXJ/KBgVwkpoFyihyBNa7Fg5BzBC36EXWAZh4zkRaMD7H+Ae2ik+IYNJdICQmDxxN5JiBFYTdTRYgPrSEonH8My2vWCfUcBVfp6vXSEQrmXDkyF8EjZZHnm4XPIUP6Ep0WSrP/bzh/A0VSsTDisq1XVe1z69ZKZLvNc+lriG3W0MKD7uIaX4oiRfykD4dgFF4/AUUCkRdLkuig455tH9Cx1o0Z4jouywIESvjIyZxchln4AHYZBkP3A8TafHts1uv+zuNDhzYt1IkSejODRxClDKjQxiVcJU2r/3rowy2+Qz5wkZU5x3+Mw5IXuWAu56IzSQMi6OtxeBJeuZ/w0+CbjaYB6su2KqIs2zD4fnePOIOl9eQyTNe/oZ3R4a34VRiwOSxAOdJJgkxMiU1F0fALA9g8P8F65C7UC0Vz2qietVb2WG1DlLoyC0sOofTWRHj0mtz9TuiB45KD5yn4dIjRqe+/4a8WHDzKzv8YkWqyB6fvlGFN+wFsyhG1DyZo7P+SlESbFIxxCL2e
+ nAAc0aAT
+ 7cSTRj0bInnNf/Yv4zWMY/0D1ZvMAghCPjXu7urNgYLKBcv5OqD74+0K6EufUfTVCJ+J+/m3dcYkWKFYHD9ZDBMuxz7M/Jczq4OoD4NfnHoLCl7LZOO8/IM+mZL4mt1gy7G9L5caZYnGvkg/dV4ezWYzLxp4l4qxQuGGV6bYcQxuD2wlyxr27ZxnPRzNrHwdFbE0K4f2Ysvr2negLL7l+I9egt6DVVnpNaRWtP4uBYI4esrC+ZqumMRJ5wNQSB02jtEVU5bk/BTrOou0tfzmOUgiJSXVXuMbVa+Uj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,211 +109,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Introduce the trace_mm_insufficient_vma_slots tracepoint to improve
-observability of VMA allocation failures.
+On Mon, Oct 27, 2025 at 4:18=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
+x.dev> wrote:
+[...]
+> +
+> +struct bpf_oom_ops {
+> +       /**
+> +        * @handle_out_of_memory: Out of memory bpf handler, called befor=
+e
+> +        * the in-kernel OOM killer.
+> +        * @ctx: Execution context
+> +        * @oc: OOM control structure
+> +        *
+> +        * Should return 1 if some memory was freed up, otherwise
+> +        * the in-kernel OOM killer is invoked.
+> +        */
+> +       int (*handle_out_of_memory)(struct bpf_oom_ctx *ctx, struct oom_c=
+ontrol *oc);
+> +
+> +       /**
+> +        * @handle_cgroup_offline: Cgroup offline callback
+> +        * @ctx: Execution context
+> +        * @cgroup_id: Id of deleted cgroup
+> +        *
+> +        * Called if the cgroup with the attached bpf_oom_ops is deleted.
+> +        */
+> +       void (*handle_cgroup_offline)(struct bpf_oom_ctx *ctx, u64 cgroup=
+_id);
 
-This event fires when an operation is about to fail because it requires
-more VMA slots than are currently available, according to the
-sysctl_max_map_count limit. This is a preemptive check that occurs in
-call paths like mmap(), mremap(), and split_vma() before they attempt
-to create new VMAs.
+handle_out_of_memory() and handle_cgroup_offline() takes bpf_oom_ctx,
+which is just cgroup_id for now. Shall we pass in struct mem_cgroup, which
+should be easier to use?
 
-This tracepoint can be used with event-driven telemetry, such as BPF
-programs, to collect data from devices in the field with minimal
-overhead.
+Thanks,
+Song
 
-The tracepoint captures the mm_struct pointer and the current vma_count
-at the time of failure. This allows for observing the distribution of
-these events to determine if there are legitimate bugs or if an increase
-to the limit is warranted.
-
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Pedro Falcato <pfalcato@suse.de>
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
----
-
-Changes in v4:
- - Update commit description to accurately reflect the trace event's
-   parameters.
-
-Changes in v3:
- - capture the mm pointer as the unique identifier and capture
-   the vma_count as well, instead of current task tgid, per Steve
- - Add include/trace/events/vma.h to MEMORY MAPPING section in
-   MAINTAINERS, per Lorenzo
- - rename trace_max_vma_count_exceeded() to
-   trace_mm_insufficient_vma_slots(), since this is a preemptive
-   check, per Lorenzo
- - Fix tools/testing/vma build errors, per Lorenzo
-
- MAINTAINERS                      |  1 +
- include/trace/events/vma.h       | 32 ++++++++++++++++++++++++++++++++
- mm/mmap.c                        |  5 ++++-
- mm/mremap.c                      | 10 ++++++++--
- mm/vma.c                         |  4 +++-
- mm/vma_internal.h                |  2 ++
- tools/testing/vma/vma_internal.h |  5 +++++
- 7 files changed, 55 insertions(+), 4 deletions(-)
- create mode 100644 include/trace/events/vma.h
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 66f7ca5b01ad..223124cb7d21 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16567,6 +16567,7 @@ S:	Maintained
- W:	http://www.linux-mm.org
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
- F:	include/trace/events/mmap.h
-+F:	include/trace/events/vma.h
- F:	mm/interval_tree.c
- F:	mm/mincore.c
- F:	mm/mlock.c
-diff --git a/include/trace/events/vma.h b/include/trace/events/vma.h
-new file mode 100644
-index 000000000000..4540fa607f66
---- /dev/null
-+++ b/include/trace/events/vma.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM vma
-+
-+#if !defined(_TRACE_VMA_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_VMA_H
-+
-+#include <linux/tracepoint.h>
-+
-+TRACE_EVENT(mm_insufficient_vma_slots,
-+
-+	TP_PROTO(struct mm_struct *mm),
-+
-+	TP_ARGS(mm),
-+
-+	TP_STRUCT__entry(
-+		__field(void *,	mm)
-+		__field(int,	vma_count)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->mm		= mm;
-+		__entry->vma_count	= mm->vma_count;
-+	),
-+
-+	TP_printk("mm=%p vma_count=%d", __entry->mm, __entry->vma_count)
-+);
-+
-+#endif /*  _TRACE_VMA_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 647a676c0ab4..3ebe9d5f7dfe 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -56,6 +56,7 @@
- 
- #define CREATE_TRACE_POINTS
- #include <trace/events/mmap.h>
-+#include <trace/events/vma.h>
- 
- #include "internal.h"
- 
-@@ -383,8 +384,10 @@ unsigned long do_mmap(struct file *file, unsigned long addr,
- 	 * sysctl_max_map_count limit by one. This behavior is preserved to
- 	 * avoid breaking existing applications.
- 	 */
--	if (max_vma_count() - mm->vma_count < 0)
-+	if (max_vma_count() - mm->vma_count < 0) {
-+		trace_mm_insufficient_vma_slots(mm);
- 		return -ENOMEM;
-+	}
- 
- 	/*
- 	 * addr is returned from get_unmapped_area,
-diff --git a/mm/mremap.c b/mm/mremap.c
-index 4874729cd65c..dfb481c5bfb1 100644
---- a/mm/mremap.c
-+++ b/mm/mremap.c
-@@ -30,6 +30,8 @@
- #include <asm/cacheflush.h>
- #include <asm/tlb.h>
- 
-+#include <trace/events/vma.h>
-+
- #include "internal.h"
- 
- /* Classify the kind of remap operation being performed. */
-@@ -1040,8 +1042,10 @@ static unsigned long prep_move_vma(struct vma_remap_struct *vrm)
- 	 * We'd prefer to avoid failure later on in do_munmap:
- 	 * which may split one vma into three before unmapping.
- 	 */
--	if (max_vma_count() - current->mm->vma_count < 4)
-+	if (max_vma_count() - current->mm->vma_count < 4) {
-+		trace_mm_insufficient_vma_slots(current->mm);
- 		return -ENOMEM;
-+	}
- 
- 	if (vma->vm_ops && vma->vm_ops->may_split) {
- 		if (vma->vm_start != old_addr)
-@@ -1814,8 +1818,10 @@ static unsigned long check_mremap_params(struct vma_remap_struct *vrm)
- 	 * the threshold. In other words, is the current map count + 6 at or
- 	 * below the threshold? Otherwise return -ENOMEM here to be more safe.
- 	 */
--	if (max_vma_count() - current->mm->vma_count < 6)
-+	if (max_vma_count() - current->mm->vma_count < 6) {
-+		trace_mm_insufficient_vma_slots(current->mm);
- 		return -ENOMEM;
-+	}
- 
- 	return 0;
- }
-diff --git a/mm/vma.c b/mm/vma.c
-index fbb8d1a0449d..2c35c3d008bc 100644
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -594,8 +594,10 @@ __split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- static int split_vma(struct vma_iterator *vmi, struct vm_area_struct *vma,
- 		     unsigned long addr, int new_below)
- {
--	if (max_vma_count() - vma->vm_mm->vma_count < 1)
-+	if (max_vma_count() - vma->vm_mm->vma_count < 1) {
-+		trace_mm_insufficient_vma_slots(vma->vm_mm);
- 		return -ENOMEM;
-+	}
- 
- 	return __split_vma(vmi, vma, addr, new_below);
- }
-diff --git a/mm/vma_internal.h b/mm/vma_internal.h
-index 2f05735ff190..86823ca6857b 100644
---- a/mm/vma_internal.h
-+++ b/mm/vma_internal.h
-@@ -52,4 +52,6 @@
- 
- #include "internal.h"
- 
-+#include <trace/events/vma.h>
-+
- #endif	/* __MM_VMA_INTERNAL_H */
-diff --git a/tools/testing/vma/vma_internal.h b/tools/testing/vma/vma_internal.h
-index d89b26e81679..0fdde2eb5a57 100644
---- a/tools/testing/vma/vma_internal.h
-+++ b/tools/testing/vma/vma_internal.h
-@@ -1497,4 +1497,9 @@ static int max_vma_count(void)
- 	return sysctl_max_map_count;
- }
- 
-+/* Stub for trace_mm_insufficient_vma_slots */
-+static inline void trace_mm_insufficient_vma_slots(struct mm_struct *mm)
-+{
-+}
-+
- #endif	/* __MM_VMA_INTERNAL_H */
--- 
-2.51.1.851.g4ebd6896fd-goog
-
+> +
+> +       /**
+> +        * @name: BPF OOM policy name
+> +        */
+> +       char name[BPF_OOM_NAME_MAX_LEN];
+> +};
+> +
+> +#ifdef CONFIG_BPF_SYSCALL
+> +/**
+> + * @bpf_handle_oom: handle out of memory condition using bpf
+> + * @oc: OOM control structure
+> + *
+> + * Returns true if some memory was freed.
+> + */
+> +bool bpf_handle_oom(struct oom_control *oc);
+> +
 
