@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93F68CCF9EB
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 17:22:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29237CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 17:24:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00A4D8018F; Tue, 28 Oct 2025 13:22:41 -0400 (EDT)
+	id 84B3D80190; Tue, 28 Oct 2025 13:24:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F24448013F; Tue, 28 Oct 2025 13:22:40 -0400 (EDT)
+	id 7FB388013F; Tue, 28 Oct 2025 13:24:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E61528018F; Tue, 28 Oct 2025 13:22:40 -0400 (EDT)
+	id 6EA7180190; Tue, 28 Oct 2025 13:24:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CED4A8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:22:40 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8D60E592E1
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:22:40 +0000 (UTC)
-X-FDA: 84048192480.14.BCE3B1A
-Received: from mail-qt1-f172.google.com (mail-qt1-f172.google.com [209.85.160.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 67E7DC000C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:22:38 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dVZSKhho;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 594608013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:24:25 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2AFC8594FE
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:24:25 +0000 (UTC)
+X-FDA: 84048196890.21.07AEC25
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 3EA964000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:24:23 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lR83Ydtj;
+	spf=pass (imf12.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761672158;
+	s=arc-20220608; t=1761672263;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WXkInKYza36OKEjDJ9gQla/X4/pbEXOW59mglWVYVe0=;
-	b=ytUXQe8yfYLX/kirgroBk88sPJNRzYYljPDp6otomsjywke6a2GQx6xCgTgegNk72qGkbg
-	s6BtwI0wT5EdeakgdUsXRDxH0Q0o4TVj3ZDXt4LNemsZjqOyl4C6r04rcVCmBa4l5jAUwq
-	+uupuP1BwKpYSPAdgjyz40jnhsgjTfU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761672158; a=rsa-sha256;
-	cv=none;
-	b=ldgxQfkoxLX9T13y37tj3GAdXmCA9vkUhtRz0tBZcxoaw7MznEVulkRm5cQjs7qgPWuHB/
-	nljkCBDsRezusonOyeRgxCNZ1eNwuPnfE1J5YxFto8h6N4xeE6rw3/obkj3vJklKyzaCRD
-	LsIY2z25TEnM8nifjbP0L9xed8MlR9M=
+	bh=tljGKA799ISeHe7sJ8nVq9wgNoDMbrBY6ATHrDEAPsw=;
+	b=Sh0v8CGtRai9Hn0Mtg8jrIY0S8WYqH46TaQRrbPK7XYZt6JjmjZRP7tKsi7TftD+DJRv5o
+	tZKMTuqHzQ9a7epOYgbRdp4p73e5fDaU+mT2qQX0+BrehzaN0pxZfp3wZKj6n1piFES9Xx
+	0+Z+Yv66gWb12uPupQG96M1lmCAFcHQ=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dVZSKhho;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.172 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-qt1-f172.google.com with SMTP id d75a77b69052e-4ed0c8e4dbcso23081cf.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:22:38 -0700 (PDT)
+	imf12.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lR83Ydtj;
+	spf=pass (imf12.hostedemail.com: domain of andrii.nakryiko@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=andrii.nakryiko@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761672263; a=rsa-sha256;
+	cv=none;
+	b=r8yFauv5R3l4e1J/8W/rYN8xZb0D5o0vZfgjumC0mpvyjpmWxjrfN0WnuF0NhxKG6h8lFx
+	OND/wkym/1e4epgdfP0x2wK+A1sCP1eyDtSwqPgaD/Y2kCUQirv+g1yIa/gFmKdNCYEKIN
+	VkpHsDP4Ia7/3WLOd8zbqb7TU5/Co8c=
+Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-33e27cda4d7so138513a91.0
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:24:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761672157; x=1762276957; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761672262; x=1762277062; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WXkInKYza36OKEjDJ9gQla/X4/pbEXOW59mglWVYVe0=;
-        b=dVZSKhhob8fGZl2D4apWYczDT5XDGa40uy5AHaIsU5QLLVKF5Ich51QBoco+LQdvCx
-         GsUBZG1gXbFbtYuhP0wf8Kcn+rtD0B7iYKG78VT3llOnQAdGS9ID4QA0nrrrjVUeubWo
-         +gzcrutvBOdiKrK91ipt9AwoCF83I9eHYfZf18gAq6CitPtG9jsEVC3FSaOxKIsylXvI
-         Fh+On6uEBkDW/uHH2DCMPno8BzBj/jCEa1Fdkr39WXdDakcTD08+8vdamzo4pn9uVv+h
-         SWhl/uJTuia1kLT93OH78mxHt0tF4NkJOOMwHBSCSfSYFSIxTVHG9I9YP/ZNo2BEceWG
-         oFcQ==
+        bh=tljGKA799ISeHe7sJ8nVq9wgNoDMbrBY6ATHrDEAPsw=;
+        b=lR83YdtjH0f+ig2hz9nOwUaGPsKDY6kEoJy1o5sRWrp0oltruxMugsKvzpgOCGV63B
+         cCNOHbQIWg82I5nKJ58knAo+E8gkoVAIMB4DDgx+Dk1g3dEHTx/BFsAQMTJF/+fudW7T
+         KsOoFcJufIJWivuC6ddc28TnR4VMt+7iJAD7WaL/kKGZfZy6BstZmfLGXwMGjyf+iD45
+         vJK3SSsh3PRETnV3VEKw6b9Zkr5uqud1bEFZcKgH8wxv9JdA5IT6NW6okCZPRZUied2R
+         V8y9Aoo4E5AxK+NyThV8ValhntWRWdkOgxhFI2M8aL84alu/At2aqfLrPIxSJefcoqbB
+         rECw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761672157; x=1762276957;
+        d=1e100.net; s=20230601; t=1761672262; x=1762277062;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WXkInKYza36OKEjDJ9gQla/X4/pbEXOW59mglWVYVe0=;
-        b=snfxtqD6wUmGadFkdTSJGs68jAoffhcO/8ICwdmAxIaoKZ+zfITP/fBLnLOuLTIy/q
-         TCfbZFCnGxSzcFrOINwZuWnA5Zw7H0a1RJ+XBzA24Ejh9T1Y5fdlcoZ2mhqTzNr0xjwn
-         gHgTZVvqYXWJq8X1du3fCai3Mp0+dyaE3RH8hbKyZcYOa4mNGnvX/3Fr5kG4dGXovUYD
-         xcu+woGVeWfxGnhe5LiJAn53DaL0HBjS9vrwcCREYeLfBmNTAnrbo7mFcPrNSXN8vX1X
-         f7D3lkvucZco3w8rJf6+6vA+S4q3Cwz4eY6w+xBS/coQnMud2teI5zTnkfpdkCmBjpHo
-         ImYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWFZp3mN9N74VOm6MLhKfam9IiNRUJfs3KrlHmiAybOBip40ddnpnquSwIVhIkCP8dTio+1YJ4hyQ==@kvack.org
-X-Gm-Message-State: AOJu0Yye0LXi6xFXscanJ+z/Yq+l2bXnmU0knVHzE6ZzowzHto/WQhp/
-	BHF1JHoasG9CNgzbVW6sfMXN5RXZ6qcZYrrDPCT7//vh7UvcClHomIcHJ3Gn+4KZfDeSDMRUuo9
-	utjEy/vm00cpQuKSZeE0psDBj22PYZFlyeNEWPjFj
-X-Gm-Gg: ASbGncupHv1cCt1xX6yWwTnT2GHzNo8tKmMkGWf+0nFVFGYYEUY37tyUWUU4IASbj1M
-	YkKMiwFSX0DRbWN5cJOIR6UH8NQYENNm/FEDl6b3TRvGcdsDBblfnGB6x4WWYRYpJYRdbsanWAv
-	N2bwuYQ4hH6fX9JM1/Un7h+kPEddfqgzQeYTKym9/t7y6kNCtQZcHjxk09QXqP+iA5NR9BufZK8
-	/5NtOZRp4DRkAr2T7wItt4E2E8gDsY5u2TZSKVd+6nbNVjjbef1urvIhP+M8U3GJCmxOU1MvxlK
-	UcxvK/SfsCG8tWYZokqRd3Abyw==
-X-Google-Smtp-Source: AGHT+IHn/oTfm/JuwLti1FuzoxQ+/oX/hUBOtVlQ025ocwE7vk9a+/tdWJJNQoH1S/B6JBQomz11gO7zAkAgU9yuzGA=
-X-Received: by 2002:a05:622a:244d:b0:4b7:9b06:ca9f with SMTP id
- d75a77b69052e-4ed157de56amr256901cf.2.1761672157120; Tue, 28 Oct 2025
- 10:22:37 -0700 (PDT)
+        bh=tljGKA799ISeHe7sJ8nVq9wgNoDMbrBY6ATHrDEAPsw=;
+        b=YK9j/XtRxP3GDV40dJKuQ8d1M5nTdXnOM08taWYeD/71XO1pdOh9hWsJjjKnU1kKrn
+         KVGVWU8rjxBrs4mSOI/5zmTGtKSb/ARf4Ry6JTK0B9aW73sjko3ksijnOhKTynq8gqov
+         QqqXKgJLrabnISLiG3lQb/xO5DKFJ5HVSAWQd+iy6nIJa7a/PaDuvY9X9aU0qtnmDVZI
+         i1jfxHEuQsI0ExTHbUTYeQTSQ8H11PxWr7B1V9ytS2GGrR9u2Npv+Io/bGbcXE5ZlFJ/
+         QjcLDNfB7MHSfwLFqwESgIdjKUgd5aYkD21zT+V9bSKvsldqKJvy9FvoeLOg0u/pD6xt
+         XO+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVCd28YKyblEN2Ya5Ozd3q/0NC9kdwI0KsRavyVdte/WJbA7wrQI931v04OT/0tJT+W4vZjc7YUXA==@kvack.org
+X-Gm-Message-State: AOJu0YzQotfWus6gCG7DPlTtyHlu3j2lnzxadiJ5c657Q4Cov5r2MsWG
+	cFsrP1JB7V6AwQMEsvErbHw5K0r5BH+qWVENgLoBOIK2aBt335raZJv0mvFnGoKefb4NndKtaym
+	LIq/szqSnEoebbuWvjtIp2ZzsRQt+kLU=
+X-Gm-Gg: ASbGncutHX9uc3nM7z/51ipntTqYHKEQQju3Tw+brKa6k8sXiY7HLCyIwQtaKOTT8TJ
+	1nUjm2bk4EYR7I3c5/+qqFReeZfSn5/HZUON9CXb5pS8HyWQJX87aUVEQVdR30ROxNKt/iwcw8V
+	00IjoTBa43h6C/nzZSIt0YNKx0aXqIAPKp8M6GFlo0sIEOysKpO0OcwOt7HUq/JwtcRvOZvwxPx
+	zs9YUdG6psOpiS0BecHLSXV0XupnJqtda1qjkwL1NGY1bX3ol2fQ+0tQkUfR+v2weubJB3OqSUr
+X-Google-Smtp-Source: AGHT+IFyyusQp9jVxJoqbcKJt1LGrdYEflLMuoSJ8Py8QQQ6PdrknVOCcNvnUgVhWXQIoX5kkVhJPU1j59NfN4UGYKI=
+X-Received: by 2002:a17:90a:e7c9:b0:32d:e309:8d76 with SMTP id
+ 98e67ed59e1d1-340396c8960mr41024a91.10.1761672262000; Tue, 28 Oct 2025
+ 10:24:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-3-harry.yoo@oracle.com>
-In-Reply-To: <20251027122847.320924-3-harry.yoo@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Tue, 28 Oct 2025 10:22:24 -0700
-X-Gm-Features: AWmQ_blgmjSynkbbdCoPvFJY7HzNhE5kHecWMsBfPzVUZdQoPVaPzHQJsWkzclk
-Message-ID: <CAJuCfpGo=m9vdRQCqa-2MtAb9GBNsF4+6YXm7vzGFYtqsOzq1A@mail.gmail.com>
-Subject: Re: [RFC PATCH V3 2/7] ext4: specify the free pointer offset for ext4_inode_cache
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
-	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
-	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20251027232206.473085-6-roman.gushchin@linux.dev>
+ <5e97ecea6574f100385cb21507076c6efb2667eb9def24f322306be038e98165@mail.kernel.org>
+ <87o6pruf9j.fsf@linux.dev>
+In-Reply-To: <87o6pruf9j.fsf@linux.dev>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Tue, 28 Oct 2025 10:24:05 -0700
+X-Gm-Features: AWmQ_bk6C1eqilbaEGQX1H9gGHgUPIMiUUod78Q2POZa47mMAp7WiEEcnvZm4YA
+Message-ID: <CAEf4BzZu_mmUa6n=kKJBgivKpKh3R3c8TcKwGnKdAV1WenuUAA@mail.gmail.com>
+Subject: Re: [PATCH v2 16/23] libbpf: introduce bpf_map__attach_struct_ops_opts()
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: bot+bpf-ci@kernel.org, akpm@linux-foundation.org, 
+	linux-kernel@vger.kernel.org, ast@kernel.org, surenb@google.com, 
+	mhocko@kernel.org, shakeel.butt@linux.dev, hannes@cmpxchg.org, 
+	andrii@kernel.org, inwardvessel@gmail.com, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, martin.lau@kernel.org, 
+	song@kernel.org, memxor@gmail.com, tj@kernel.org, daniel@iogearbox.net, 
+	eddyz87@gmail.com, yonghong.song@linux.dev, clm@meta.com, 
+	ihor.solodrai@linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam01
-X-Stat-Signature: qh5e13nkg5j776tcdxkagqhbfr78u8no
+X-Rspamd-Queue-Id: 3EA964000A
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67E7DC000C
-X-HE-Tag: 1761672158-735939
-X-HE-Meta: U2FsdGVkX1+7ggCW3J3XD25ZbGvZLy5PxJRphzKZGnEV/gL3pi6FQ50bpqaJkxbb9VIxDUEx6aZ1+TMN57blN2wYhuWCQbS8IyWdAVZLXXE7dMBhJsLm1cAOLOkkUf71MBUDezEhUQfxTyzmv3mOOsM+jAWD9VFdECAXFrbErW0Ws4aLdwHGOj4beZuZG91mTICgRsqf5vJT8NToYAr1d/N3oWU5vdGreLaAdYxoQ8BkvmxDEGvgzWr7ePa4L0oI0BI31ithitXH1Ux7zGcxWy0DlKQOyH/I+i12pSBpB5VCct+YwrNghZjA/V8SSG4JDWiJBdN97JrHVbM+CrOtY/2f208A4GPTSlcLUdfgd2xjEHmhSvxohHUJdoCzMsIr1Hc0FhYWaJF4MP/ye6daa56pTHANNbRZrv3m+p24uu1Fjop4Eb4YxG6JSiJr7Of7TW6tIHXvsZ3bUv0+QhPqcCiijrhzlU12WXgz3qeM1xjfCU6Uvr+3nPfoGVTSBPce36aKrXHmv15a6SaKiHImjbjTgvl7+bSghyruVXj5sftHCjizQQxU/+fU0ATwf49WYoUh4Uvw2k/pFyjB0SNiONoCX6AJrqa0Sxk9skK7YaRua1nplz6Pt2s4hWS6Htv+f7FfJ2J0hbqpaqftnmOF7yWlj/WeuiqXQAmtBPsJYkWCgP4sQL5+yYV9uAqSdTFCjfNOnnsMClpaT8lFUskeo48gKSbGqeWLG7eODLP/DrwV3ef8NzZBePWlE79bkfTvzgb73SdI6Iz0X3k9gKgWzyqibUMruO03x+0O5TOQmon2PV+v86i29qzsCJu9QtX2xkE3QniGJkQAmr4/P7OeecAhcqubZ/UkNOUhBL29qdF5RU4v0Tubu7h1cWP9uzK6nRiqnssFhRxg9rwPsC8P6g99cAicFz2M+B4CRItBloaTk38+OfusWIQyFEonhmZpmvk1BOvDcbDXL9gduTZ
- T6WboqYV
- X/UKo/1XcQMkCzC0qYjSdc1OwfUTsQk3lo61oETDZUQ65vkD7urIuz2tgGnxeNoII+kIJGq9rWcCWMYwHffN8Bm06l9nR8Tk3PewB6w9WLY9vSD4OE3d//6u5hFowToiT4fRZm/gBfAcj9cdp78YSghjHlsT6wP1FiQHWtIqu+365201xm9kSluTe3pGoT+naRQwqmaSJ77S81mjAhuOhIca37chb0esQXLpYd4dj0c5XQtB9NJodMdqA/HrI+WGUnYHMzd/DOOPKGGM9cC9cYGsI3prK59FNhWZ4KQUiL95ue7TG9imoryory6YhQAUpRaFpFkGW2lo6SEesyq2Aol0BeSI5Xv7Jh3IUOYmdziYPhwvBxhqHzu4p95jedRvSy3y4+p4TttRtAM4=
+X-Stat-Signature: w5e5qemjxeryip7tpwd9ds3if4fp6mcr
+X-HE-Tag: 1761672263-557485
+X-HE-Meta: U2FsdGVkX18oeDbWlKCD7k0hZcnm7sVicZpqciFFG+pGna20n25rxhXcEfa4rpZUDUcldQPUNQs+2hA5sus5NI0Y17HW7lmbW0FIAGe1JER7iVSzoq/2cEbwTqfaAq8fAE/4egxFV4hFcWA8xT1beNUVDD/8Kisx6uQww5IRZDRt+1nIq9vR+dxRuwQA5B/OCbkUP5otf0/3VTL3mI8qg/bm8D8uq1D2MwtviGjkSfKT8HaNVLVprZgLnD4ENnpOUf2wAmPPdnfO+Plvf+liUvdExzihM/1lzOj8Z9fGi+anFw2UYbKoFQv9CxmPw+t7aiiYgkFJMt6otJY0szQLc8xvjsAx7a1RwfDaD8XvbQuQ1cGHiEPucfO34TV4LgLOGpbJ81sY5wctyFjO3lXKV8THqjBPsYnAtiyxBgaPVIYtvLP7cA/fThbyGq5JX6wcGbXb7YOqUh5IJdhkEu54cZeGwlQaj2RBLyXBEjtL6MEObrRBBUD1ipIM42PsLDY8H/lK9uVqMzJBD5t0x9hJvcqzrIZvp9hJEIvE16eF0WHOqzyG/zx/xJnk4N9VdYsi6yth8Gg30H1g4332eqr+hNW3alkLdKsCxhyCzoMbVG53e27Kkb+BOiIQmN1Y4YGgEEoIANl4WCxPF65fPy8e8BkrSxBF0RhpQfmkznE6vj8EFwtSkY4xguLKBG8mMp/IJiBWEYAnhKROZA45W29fkOkuMBHen/gJuchz66eM1weIsxV6IRmBXkdeAPH9bOhTUYQGG6boPEDHIv6Th4G7ZqjbsVbeYq5cJ9YYD0w2QdIAGwKTJT3k310AB8NtFRm5uWFrnnutetZ7W7drrYC7+KnPuJK4ioyy/zcYPFksgEkpW8MDac0ALpr+Qpk1QtPiM+rfzxKaO3o2j+KgpvUmVu7EM7qm9zRXQ9DDxKzfiKBBMuJRYPLwd6Vzl8C1syEBaI87/GX7vuEF6CKOKma
+ YeoRwyMc
+ cGHNWDg3lpXbpIW7LuVcfz/okUwynAxdBuCTXs8Flps2ps4Bxd4huWe/IYrST0GQVQ1l0FIu1GKRC79yuVfTlQgSlWNwilyv2hFQ1D9UNefdtKcK0tlnGDoA2tmO2JzWvbrZEwAc+OIqSLWZTlFuWjRFzVCuWaa1wbbR5Vdrh9ThtIYIXGgwKIV+0HVntNKYcgTWeobztB6RUQSMz/eAlYkjF7tl51H1v6I9KAODTn3J4whbc/deJUJwIdwH6Sj1OFJDXuMyT7txpqdia0AhPJUvWddW/AydM844h+/CzulU0PXHTVs8rAsdqiZEDgBx4Y4T4i2Dcl+aN14/r4e7FHZ9JVO2hTja98WjakXeLVOMjEkLoABml0cbil7mXGNoVH+Y6ibdaEOi/PkMV0TiAQ2AqWBlV7ZTQXbz6tVxXVLqSzdKI6g6bxWUoVn+oX2iPdSHhJdOFslCmUjdp2UeD0wkAHhwIqvP4pNy+Pkf3ZYCYEtH54avyWGKhxYZE7hvn383bY6u1trS/XMQyRoCoSun4JuDmowDCOER79W3UZq/01jX24rXQ0vkNMWNrE1/1DPDB
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,72 +124,98 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
+On Tue, Oct 28, 2025 at 10:07=E2=80=AFAM Roman Gushchin
+<roman.gushchin@linux.dev> wrote:
 >
-> Convert ext4_inode_cache to use the kmem_cache_args interface and
-> specify a free pointer offset.
+> bot+bpf-ci@kernel.org writes:
 >
-> Since ext4_inode_cache uses a constructor, the free pointer would be
-> placed after the object to overwriting fields used by the constructor.
-> However, some fields such as ->i_flags are not used by the constructor
-> and can safely be repurposed for the free pointer.
+> > ```
+> > commit b58d54ed56054e3a550e02c324982feb20a2671e
+> > Author: Roman Gushchin <roman.gushchin@linux.dev>
+> >
+> > libbpf: introduce bpf_map__attach_struct_ops_opts()
+> >
+> > This commit introduces a new API function that extends the existing
+> > bpf_map__attach_struct_ops() to accept additional options, specifically
+> > allowing attachment of struct_ops maps to cgroups via a relative_fd.
+> >
+> >> diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+> >> index b90574f39..be56a5dee 100644
+> >> --- a/tools/lib/bpf/libbpf.c
+> >> +++ b/tools/lib/bpf/libbpf.c
+> >> @@ -13196,12 +13196,19 @@ static int bpf_link__detach_struct_ops(struc=
+t bpf_link *link)
+> >>      return close(link->fd);
+> >>  }
+> >>
+> >> -struct bpf_link *bpf_map__attach_struct_ops(const struct bpf_map *map=
+)
+> >> +struct bpf_link *bpf_map__attach_struct_ops_opts(const struct bpf_map=
+ *map,
+> >> +                                             const struct bpf_struct_=
+ops_opts *opts)
+> >>  {
+> >> +    DECLARE_LIBBPF_OPTS(bpf_link_create_opts, link_opts);
+> >>      struct bpf_link_struct_ops *link;
+> >>      __u32 zero =3D 0;
+> >>      int err, fd;
+> >>
+> >> +    if (!OPTS_VALID(opts, bpf_struct_ops_opts)) {
+> >> +            pr_warn("map '%s': invalid opts\n", map->name);
+> >> +            return libbpf_err_ptr(-EINVAL);
+> >> +    }
+> >> +
+> >>      if (!bpf_map__is_struct_ops(map)) {
+> >>              pr_warn("map '%s': can't attach non-struct_ops map\n", ma=
+p->name);
+> >>              return libbpf_err_ptr(-EINVAL);
+> >
+> > [ ... ]
+> >
+> >>      link =3D calloc(1, sizeof(*link));
+> >>      if (!link)
+> >>              return libbpf_err_ptr(-EINVAL);
+> >
+> > Should this return -ENOMEM instead of -EINVAL? All other calloc failure=
+s
+> > in libbpf.c return -ENOMEM (see lines 11006, 11802, 12288, 12746, 12829=
+,
+> > 12891, 13089, 13129 in the same file).
 >
-> Specify the free pointer offset at i_flags to reduce the object size.
->
-> Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> ---
->  fs/ext4/super.c | 20 ++++++++++++++------
->  1 file changed, 14 insertions(+), 6 deletions(-)
->
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 699c15db28a8..2860e0ee913f 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -1474,12 +1474,20 @@ static void init_once(void *foo)
->
->  static int __init init_inodecache(void)
->  {
-> -       ext4_inode_cachep =3D kmem_cache_create_usercopy("ext4_inode_cach=
-e",
-> -                               sizeof(struct ext4_inode_info), 0,
-> -                               SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT,
-> -                               offsetof(struct ext4_inode_info, i_data),
-> -                               sizeof_field(struct ext4_inode_info, i_da=
-ta),
-> -                               init_once);
-> +       struct kmem_cache_args args =3D {
-> +               .align =3D 0,
-> +               .useroffset =3D offsetof(struct ext4_inode_info, i_data),
-> +               .usersize =3D sizeof_field(struct ext4_inode_info, i_data=
-),
-> +               .use_freeptr_offset =3D true,
-> +               .freeptr_offset =3D offsetof(struct ext4_inode_info, i_fl=
-ags),
+> This code was introduced by e9fc3ce99b34 ("libbpf: Streamline error
+> reporting for high-level APIs"), so it's new. I agree that ENOMEM is
+> correct, however it might be too late to fix. I'll let libbpf
+> maintainers to decide.
 
-Hi Harry,
-AFAIK freeptr_offset can be used only with SLAB_TYPESAFE_BY_RCU caches
-(see https://elixir.bootlin.com/linux/v6.18-rc3/source/include/linux/slab.h=
-#L302)
-and check at https://elixir.bootlin.com/linux/v6.18-rc3/source/mm/slab_comm=
-on.c#L234
-should fail otherwise. The cache you are changing does not seem to
-have this flag set.
-Thanks,
-Suren.
+yeah, let's fix this to return -ENOMEM
 
-> +               .ctor =3D init_once,
-> +       };
-> +
-> +       ext4_inode_cachep =3D kmem_cache_create("ext4_inode_cache",
-> +                               sizeof(struct ext4_inode_info),
-> +                               &args,
-> +                               SLAB_RECLAIM_ACCOUNT | SLAB_ACCOUNT);
-> +
->         if (ext4_inode_cachep =3D=3D NULL)
->                 return -ENOMEM;
->         return 0;
-> --
-> 2.43.0
 >
+> >
+> > [ ... ]
+> >
+> >> -    fd =3D bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, NULL);
+> >> +    link_opts.cgroup.relative_fd =3D OPTS_GET(opts, relative_fd, 0);
+> >> +
+> >> +    fd =3D bpf_link_create(map->fd, 0, BPF_STRUCT_OPS, &link_opts);
+> >
+> > Is the expected_revision field being propagated correctly? The new
+> > bpf_struct_ops_opts structure includes an expected_revision field
+> > (see libbpf.h), and bpf_link_create() with BPF_STRUCT_OPS reads
+> > opts->cgroup.expected_revision (see bpf.c line 889), but this code only
+> > sets relative_fd in link_opts. Should it also include:
+> >
+> >     link_opts.cgroup.expected_revision =3D OPTS_GET(opts,
+> >     expected_revision, 0);
+>
+> Correct, fixed.
+
+I haven't looked at the rest of patches, but this use of relative_fd
+seems wrong. relative_fd/relative_id and expected_version are there
+for ordering of programs within the same attach target (e.g., same
+cgroup). If you just want to specify cgroup to attach to, I think you
+should use attr.link_create.target_fd (which is already handled a bit
+lower generically)
+
+>
+> Thanks!
 
