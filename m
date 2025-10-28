@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB828CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 20:58:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE812CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:08:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC2968E000A; Tue, 28 Oct 2025 16:58:36 -0400 (EDT)
+	id 3B1028E000B; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A638E0005; Tue, 28 Oct 2025 16:58:36 -0400 (EDT)
+	id 361C48E0005; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BD8EA8E000A; Tue, 28 Oct 2025 16:58:36 -0400 (EDT)
+	id 24FF58E000B; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AA7688E0005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:58:36 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A11DC0539
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 20:58:36 +0000 (UTC)
-X-FDA: 84048736632.23.6050AA1
-Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 84271160010
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 20:58:34 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of 3eS4BaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3eS4BaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761685114; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 0E2458E0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:08:19 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A0206140588
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:08:18 +0000 (UTC)
+X-FDA: 84048761076.17.C9B1E08
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf10.hostedemail.com (Postfix) with ESMTP id A07A5C000B
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:08:16 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ksb5g8Zr;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761685697; a=rsa-sha256;
 	cv=none;
-	b=iY7D+r8X7ejpgRgG3UbH9cAbbVWAuSAktfHp5eFWkJLCMCjmXQysPqzW+CbCcZSrxOWSxL
-	/yYlmHEXlDwylytAa9LnDqEZZ16b5HDnH3HSrrAuf11hLcshkfsid+9fh6lqr4K21k2d1g
-	w84ecKKvJJchVcZCllvHT4Vepqo13vk=
+	b=7D42GGi5WCjreRZbOcysFq8nysbaCyqgHWjEvu6X3XfBrOIBklV4A4tAw1K0VhQI2JoF/h
+	qo2GQhrj9GjzIUZkuonIGy+rflfJm5Kq9TItoHnb/Mpn291EaPvkPg4cVEOUMVKh/Fjxzk
+	kaMcXFLc3Z0Q8W+Dwaj5S+lZKnuMbcg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf08.hostedemail.com: domain of 3eS4BaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3eS4BaQkbACoYefQGRRKXGVVOJ.MUUMRKaYKXIUTZKTZ.IUS@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=Ksb5g8Zr;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761685114;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761685697;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references;
-	bh=d8Q6xMc7Ndu8q4AA2QZ12NoLPaoVzQEf+yv3C2w/BPw=;
-	b=XEh+TdehkzM3DI8MdXnPXpEKIaOZkk316KeY/XvmIgvK9I/XLvZ7eLDnUvIvCwIGtkVuss
-	D3Qq6a6plhMcjfSRKKlqdZvSogHfukcqQMDC3XvAOdUNP6l2l9xw2IpLJAMRL3RDz7EWlC
-	Menifo2S9Hhe4RLsMUM03UIUI08zCsY=
-Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-430b3c32f75so68671865ab.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:58:34 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761685113; x=1762289913;
-        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=d8Q6xMc7Ndu8q4AA2QZ12NoLPaoVzQEf+yv3C2w/BPw=;
-        b=kIlmOztAwldD+iuIOPm02vqkZQ039BGuNesjlizdDf3uy6afkTf1EjQOdVOfbdENhG
-         GcCbk0fi1vfZfXkemOFyte1QDXyqnP7lzbkyBr0nAfYpsOpdHCDc2KMRV6lMTd3XLn3i
-         BadMo3r6IFdXJQnx7jmdct90IH6uNpWn9SFtOY07IJVaKwBdJS+3Yw5XWpfiDjbGEqLP
-         XD4St1y2xnjk4grSwPvo0OdqQx05tEz0jr/l8f9p3eHTW5YfK3JDZBoHUke9EGntK6mX
-         we3EbuLscJYSSc5VQ5GSdrXD2S7JR2wzDHI9hNNoFyXgTq3TmNdFGFS4sdYCy6H1n/Jv
-         GYHw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRN5YDX0NpH5hTvEIGm8eh2p34DNgz0qEcVT3/rXp7s8kvR0Z2S81y9reWMWpnqjku0EKlYxz0Rw==@kvack.org
-X-Gm-Message-State: AOJu0YxN25jBZ09NV9I86+JAlNg2Rs2GHxXtVz2K9fX9h4ub8SCOUrHh
-	E4ecE52/AvaiQ2qTbUUwxfqcKo0eucsiqPX3wydt2rtcOIvPNIEwZ4Muo9MVW4vW/jm29sf1qTe
-	lu0/WTdNcmbJ9IT2DxympK36pzdSccNpalo8yAulQAcNSASOu2FQEMksw7Pk=
-X-Google-Smtp-Source: AGHT+IFDFBbc8Cb1UY0q9NJksMCDOPUyRjNT8FEq3e2eFa+YqZJej0oEiYsoupU3doybBUYAA/Hw2lsuh3cPLS+djdwOlI5htbTy
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KlTwB+1F+PugnwlBKmbzqaDoi+J+L/6Td5vFafDz7aQ=;
+	b=KKiR+sUpeEbTqvJFCthl0cyFI1THN+ysTJl3/ubXXMZculF/NiJnOC25RyM7a7E7N2nLg+
+	OoS7gFPTddQPwNlFOCl93epJHt9ugrX3STMZcqptow2pX0psljPtBjwz53ikmSjIkw9mxX
+	iUU1pwTZErr/ui0ixJ/yvg6DnNDiRBI=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=KlTwB+1F+PugnwlBKmbzqaDoi+J+L/6Td5vFafDz7aQ=; b=Ksb5g8ZrVafnbFuTRxbUrPhDBj
+	VSOMEinbRhfNMqbf8zNwa4y+4w91yeN1ZkolOTq7QHfZv9jbf9wzwIgjoyGXNTLzmtCmiuSlsuFQY
+	I2duEP0tPN70bNXR+5LqqotswpJ2viRu62H7osNC8PUSJSrQulUJeNM/ANyqo1gLANZ82mjExXHlj
+	1F+kesXVgTzno6Sx7Se5kMbenDUUhlD1xSwZGEI1aNvuxQWH0jGuFuiDJKw286315kfeqCsz/8rE+
+	ioRQsGUqL6ZTFGl0vQ2Ve+T2xs0+XXea6lOfg9yJCHsRQXsmQJWUMV9NmpQEVchINZrcmNhueZ2ko
+	8V7lMBVw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDqvF-0000000FqQ8-4BSQ;
+	Tue, 28 Oct 2025 21:08:06 +0000
+Date: Tue, 28 Oct 2025 21:08:05 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: James Bottomley <James.Bottomley@hansenpartnership.com>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
+	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
+	linux-mm@kvack.org, linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
+	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
+	paul@paul-moore.com, casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251028210805.GP2441659@ZenIV>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk>
+ <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV>
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3003:b0:42f:94fd:318f with SMTP id
- e9e14a558f8ab-432f8fac67bmr9677295ab.9.1761685113513; Tue, 28 Oct 2025
- 13:58:33 -0700 (PDT)
-Date: Tue, 28 Oct 2025 13:58:33 -0700
-In-Reply-To: <cover.1761658310.git.zhengqi.arch@bytedance.com>
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69012e79.050a0220.3344a1.03ee.GAE@google.com>
-Subject: [syzbot ci] Re: Eliminate Dying Memory Cgroup
-From: syzbot ci <syzbot+cie7d8f1fc805fcd7a@syzkaller.appspotmail.com>
-To: akpm@linux-foundation.org, axelrasmussen@google.com, 
-	cgroups@vger.kernel.org, chengming.zhou@linux.dev, david@redhat.com, 
-	hannes@cmpxchg.org, harry.yoo@oracle.com, hughd@google.com, 
-	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, lorenzo.stoakes@oracle.com, 
-	mhocko@suse.com, muchun.song@linux.dev, nphamcs@gmail.com, qi.zheng@linux.dev, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, songmuchun@bytedance.com, 
-	weixugc@google.com, yuanchu@google.com, zhengqi.arch@bytedance.com, 
-	ziy@nvidia.com
-Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028174540.GN2441659@ZenIV>
+X-Stat-Signature: kxjkak7q8tp8r9wihnc4odxobjh6uwdz
+X-Rspamd-Queue-Id: A07A5C000B
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 84271160010
-X-Stat-Signature: gf4h363hc6di78rhuhoc5t8afn9szc8x
-X-HE-Tag: 1761685114-29504
-X-HE-Meta: U2FsdGVkX19VkecDE+elwH0xAZ2jiD7e6nW8M6k7dqV796p8rDbuCQ+9VX3bMh6JOL1lE6pr32b8CXVct80QDvBEhnRZY5zpthLlRq1UhL6isFgkXqEa4WE2CwQ6dt+Xqbnwjr3HlTSa90D9rT4oILjKOg4ApBdv9oYLMgsaFDAEBZ/9mVnkGg1I1zzOaZKl9dV+6byHlXDgzY46pW/3EJK9ehJXO/b2fV4tS0uqa9v1Hol6KZ43yEv4q/z8wZLmNfJMdLfF+PWX3P7+cXgclCtDTQgapiOaKCM5je2a1T63e8jhZfYaDSX1E5x9ZlBtOfABjGaQbihBnZQ/BdAcP8cU/oJpFkQ8VAhMjH1zBN8buaKNW0iV0we6ecnA7Q36woF368KvaKNEiql3Ztnacnw8qFdV+8pAB6X33+GJEh2FGdnueHxRlEN1B+ZSrYaSzYbaMyx611cw4M37VMMS9kj8wzOyjPEf4gfObBQ5Le4TCI1INVdnu0W9ZyIwNC+3QhFnbYzvlXdY7R+U+vSaeN2317A+5WgjNhMC2O8FFYsdZP2ZmbNupdAKALNogaQ8pdDMD3NOsQES6h4RbDHlMwiXd3Bh5hz7fJ5vKlny5B7PSyaO3Lv1MW6FvRe/Enb+d7LCWRV8kjSzOQblvG5drZZZIvXIfy8rIFf0jdnMNXp3iWQalZA+4p0KwMUGmn84iGbPecbxMbYLSNg881QXNIk6OPId3GtoIBYxXr3d3uvdF2qkBmKJrJfkgJonTCDtrNfznYuzU1tbGaAH5IRG+X3utkL4dYiXSHxKYV8CGYrbtMlqV0pU9q9bC8pzDEsXqLfb4AqP5hLCJiiy5p8tA4nrrIZ226jaVAY1DdFcZENbDUE6pcJgyL0bhaRd0NCIsu12X9DwPewR0nFHOObIKSpGVyWOXC2CcNgkj60HR3SSBIFHIyfVG79gWRDNjwLYBpNZg6H5iw6jYAYf3Nx
- mKjEQFXs
- J9GvMlYKL4RN+M2eh41y1FbiHZx839rH2bkrrmI9mTsZmZ1zNnYp5/inH+I9nSzB8keH1rC+Vcea+Ej9vAxP7K/NbmQv1MBZ9ZBncuU8RKpry3vy+odQYrzAPbdIdT7186/yvaG8ghR6syjFwdmpWe3hfAuz8k7AJviUopyWlEyVYpZCK2VyIe4n8QI7E9/jvczLJETHRzJWBtatFXHixI1+eo/Yeg/ZToKu5lyZYmVhXFBeMdF81UbZkuqabHVIYDKFXeeoXpKE8m5dQqPWKRcuktO/s41wUOtsP2iS8HC64v0aQk1LS2EIgPVzsk4ULCZC0VzHbL6t1Yeo/8Bd7ClfZBq7Y4dA0BxjNItATnBA0PhrpXNIb5Mp7D+OXLJ646FlLRT2SH1EZrZYb3gGoEcHAFrHLwVu646GnUX/qJPt1ThRr0k9z1zXhJM11d/zSMV+Cl6F8jm+qz+K3f7YS09X698TwE3dunMNl3NqLUrTxwreXKFOgfJT0T6uNNGSwWLvYrNSwNlUKUI8h7LWZS4r14MturR5CcaNxxW3++yop7iLqT+3sPW7BsC/DVoDju7HqwEpWVm8SbSs6wqo6Rj1ooi1aqZS3K/vlSB+8qS9SXrTw4zmVvFWqGl4jWyLs1rHHOjJFO0MSU2NWNwLNHosf7Csq5RnpyN1mvDC2KKD/fRQFoeHL5XOFef+kE2Clsk/ag2yBiNvI+f0fPplpKhXmJH/AtFNfkiAfCvehLS2Gu8FkvuR61Hhf1nYGe09g5rGURFD21icUFMr6ME/pbGvWtOxeY8L/2ZPAhzfeFKF2CvKOM9Vyar4umS/+uCQ4R6OSIN6haV0N6KuxxG2JLH799sGfwnKKSWd//EKdd07tyO36LwHCLBy9+y/HVgfPXEhm7L/zgCT9CTrjSIm7zCnISEzdJSC/HYi2+WBbKvR5R6y9XQgA0Z63p2AQhqck8wCejEqLuFtA1bEnVHyu747PO1Jr
- ruXVgUrg
- FZfnf8Y8MoILZEPnkiqvXPH18JWWLWQ+
+X-HE-Tag: 1761685696-159054
+X-HE-Meta: U2FsdGVkX19I3SssUAuhxreK0Zw4ocIjQPUsnJit+85OQpHwnyuhhYaKlJDS+7R6H0ywvQ+XuoOdmpARb5YHfUKxA9MzBEYQD6HBs9eV8PKKMol1/OTI0ntiwOQR93tynQl2YJYhnqmuhfeJASOxIWFEf6R7FCNd+rdDPBbO9OlbUVDiS74jaSUeGiz79VD/r1VT4JEE8iBBPcfFzJnMkuT6roM2eTL93rZoq2Yvv1C4GAHP4SQpOl4l1oZ84m/aLMjrC5ANgIOVHOPzXuivN7IO4TxFJox2nuvErQR6sKmHd65TazjKcX9F3MaEsxdInpysSfuBJLWZ6Rnp+MO1rKJJw/OEFqxFAnLJNg98cWWFo8flveYmwn6HPRtB0VYjwgAe+KeEM71UBnF+L+nlb2w+nFmKt+hoNDY57Xybb5eHpAGLi88YMIy/YIBi7y9srPDYP3A1uHuk9kJ/lgKbgck6wR24byZUcgtbP6A1iGfzHIxnIYCKUm8BaawLc6Mh1S0eOhzwpQLLzrMgAbfek/dWc1jxT6wkNwtRgrfynFJGpzpUV/kIh4Z5eWIEaQ+DRdQXgyXgXs34SNs/8sZzPqJ6rHT0vPqwFWOejNiTY9HTuJZAIzSjyYcW0iosT+KaUrN/B0EP8qzLNT5qQC/B23uMWqqkRomFM5sM2mY25twlvvQLextZ2eTGOQrV05kpiG0OAQLOPzv8ln6iMZBFvZ7Qxk4qEmcVnKYIGLmbZV1bacernUYoFGXOACEKo1YVB1o4pywQ+FnyuT0B+A3lPOO9v2u4D3Omwx1s8I+JDW5zCPt5oyvL/GKRfYVRBYJdp2DKroF93abDklMvYRUlgurCnNDfghTy8RwbDDDcKBD2qTpopSBBSm5F0TG3w/b0tupqTcSoGvSA12aqJ6hCOZqZGAGqhy1cDkgGx2Q7w9nmNGxT23P3cYOmWWZg4WO/zb0poU9bvNOKEmwqckG
+ Nftp8u4E
+ 6ZQBXqnkROtWG0gkHcGnNLM4lobDW4CuRHXgJLO2P+ZPcz38GPUDrmgQ1gJPJRDDCieandvZ1jIdbPsbViXV4QjRFTMhjWr2pXwhE6bqisgUe8Gt02nLrI6oaPMez5cQz+CFDTiSSlICYu4KMF5R1TAou14Q56xxZVCHc7qL56WLZqtW9xZN8HtY0g5xt8xi2H8wjno4/cyKUAOuNcSk9uKmyMCg1lV9kPgYm3gVilDXwD4CZfWpb5XdE5I5FE6AvaOAEanNfGPCtqLsVbLFClPKNYIl/A5FehHnjjKWTIz5yVxb+PWYHOF7vo9+mrIhUtLQeY0f5TtIolIc5YQen+9kn5hdaDHoSV5xx0DkA0eY5NkFywc47FCLPyScC+EATf0Q3nDZOLgW3kjterQQ28FbMeLLKlS9iMGG6m3eep3VoK57o2TJzcEr6yFbpzf6pIK1F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,125 +100,270 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-syzbot ci has tested the following series
+On Tue, Oct 28, 2025 at 05:45:40PM +0000, Al Viro wrote:
 
-[v1] Eliminate Dying Memory Cgroup
-https://lore.kernel.org/all/cover.1761658310.git.zhengqi.arch@bytedance.com
-* [PATCH v1 01/26] mm: memcontrol: remove dead code of checking parent memory cgroup
-* [PATCH v1 02/26] mm: workingset: use folio_lruvec() in workingset_refault()
-* [PATCH v1 03/26] mm: rename unlock_page_lruvec_irq and its variants
-* [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
-* [PATCH v1 05/26] mm: memcontrol: allocate object cgroup for non-kmem case
-* [PATCH v1 06/26] mm: memcontrol: return root object cgroup for root memory cgroup
-* [PATCH v1 07/26] mm: memcontrol: prevent memory cgroup release in get_mem_cgroup_from_folio()
-* [PATCH v1 08/26] buffer: prevent memory cgroup release in folio_alloc_buffers()
-* [PATCH v1 09/26] writeback: prevent memory cgroup release in writeback module
-* [PATCH v1 10/26] mm: memcontrol: prevent memory cgroup release in count_memcg_folio_events()
-* [PATCH v1 11/26] mm: page_io: prevent memory cgroup release in page_io module
-* [PATCH v1 12/26] mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
-* [PATCH v1 13/26] mm: mglru: prevent memory cgroup release in mglru
-* [PATCH v1 14/26] mm: memcontrol: prevent memory cgroup release in mem_cgroup_swap_full()
-* [PATCH v1 15/26] mm: workingset: prevent memory cgroup release in lru_gen_eviction()
-* [PATCH v1 16/26] mm: thp: prevent memory cgroup release in folio_split_queue_lock{_irqsave}()
-* [PATCH v1 17/26] mm: workingset: prevent lruvec release in workingset_refault()
-* [PATCH v1 18/26] mm: zswap: prevent lruvec release in zswap_folio_swapin()
-* [PATCH v1 19/26] mm: swap: prevent lruvec release in swap module
-* [PATCH v1 20/26] mm: workingset: prevent lruvec release in workingset_activation()
-* [PATCH v1 21/26] mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
-* [PATCH v1 22/26] mm: vmscan: prepare for reparenting traditional LRU folios
-* [PATCH v1 23/26] mm: vmscan: prepare for reparenting MGLRU folios
-* [PATCH v1 24/26] mm: memcontrol: refactor memcg_reparent_objcgs()
-* [PATCH v1 25/26] mm: memcontrol: eliminate the problem of dying memory cgroup for LRU folios
-* [PATCH v1 26/26] mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+> FWIW, having a special path for "we are in foofs_fill_super(), fuck
+> the locking - nobody's going to access it anyway" is not a great
+> idea, simply because the helpers tend to get reused on codepaths
+> where we can't cut corners that way.
 
-and found the following issue:
-WARNING in folio_memcg
+	BTW, looking through efivarfs codebase now... *both* callers
+of efivarfs_create_dentry() end up doing dcache lookups, with variously
+convoluted call chains.  Look: efivarfs_check_missing() has an explicit
+try_lookup_noperm() before the call of efivarfs_create_dentry().
+efivarfs_callback() doesn't, but it's called via
+	efivar_init(efivarfs_callback, sb, true)
+and with the last argument being true efivar_init() will precede the call
+of the callback with efivarfs_variable_is_present().  Guess what does that
+thing (never used anywhere else) do?  Right, the call of try_lookup_noperm().
 
-Full report is available here:
-https://ci.syzbot.org/series/0d48a77a-fb4f-485d-9fd6-086afd6fb650
+Why do we bother with that?  What's wrong with having efivarfs_create_dentry()
+returning -EEXIST in case of dentry already being there and turning the
+chunk in efivar_init() into
+			err = func(variable_name, vendor_guid,
+				   variable_name_size, data);
+			if (err == -EEXIST) {
+				if (duplicate_check)
+					dup_variable_bug(variable_name,
+							 &vendor_guid,
+							 variable_name_size);
+				else
+					err = 0;
+			}
+			if (err)
+				status = EFI_NOT_FOUND;
+Note that both possible callbacks become almost identical and I wouldn't
+be surprised if that "almost" is actually "completely"...  <checks> yep.
 
-***
+So I'm not sure we want that callback to be an argument, but that's
+a separate followup.  For now, do you see any problems with the following
+patch?  [Completely untested, on top of the posted series]
 
-WARNING in folio_memcg
-
-tree:      mm-new
-URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
-base:      b227c04932039bccc21a0a89cd6df50fa57e4716
-arch:      amd64
-compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-config:    https://ci.syzbot.org/builds/503d7034-ae99-44d1-8fb2-62e7ef5e1c7c/config
-C repro:   https://ci.syzbot.org/findings/880c374a-1b49-436e-9be2-63d5e2c6b6ab/c_repro
-syz repro: https://ci.syzbot.org/findings/880c374a-1b49-436e-9be2-63d5e2c6b6ab/syz_repro
-
-exFAT-fs (loop0): failed to load upcase table (idx : 0x00010000, chksum : 0xe5674ec2, utbl_chksum : 0xe619d30d)
-exFAT-fs (loop0): failed to load alloc-bitmap
-exFAT-fs (loop0): failed to recognize exfat type
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 5965 at ./include/linux/memcontrol.h:380 obj_cgroup_memcg include/linux/memcontrol.h:380 [inline]
-WARNING: CPU: 1 PID: 5965 at ./include/linux/memcontrol.h:380 folio_memcg+0x148/0x1c0 include/linux/memcontrol.h:434
-Modules linked in:
-CPU: 1 UID: 0 PID: 5965 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
-RIP: 0010:obj_cgroup_memcg include/linux/memcontrol.h:380 [inline]
-RIP: 0010:folio_memcg+0x148/0x1c0 include/linux/memcontrol.h:434
-Code: 48 c1 e8 03 42 80 3c 20 00 74 08 48 89 df e8 5f c8 06 00 48 8b 03 5b 41 5c 41 5e 41 5f 5d e9 cf 89 2a 09 cc e8 a9 bb a0 ff 90 <0f> 0b 90 eb ca 44 89 f9 80 e1 07 80 c1 03 38 c1 0f 8c ef fe ff ff
-RSP: 0018:ffffc90003ec66b0 EFLAGS: 00010293
-RAX: ffffffff821f4b57 RBX: ffff888108b31480 RCX: ffff88816be91d00
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: 0000000000000000 R08: ffff88816be91d00 R09: 0000000000000002
-R10: 00000000fffffff0 R11: 0000000000000000 R12: dffffc0000000000
-R13: 00000000ffffffe4 R14: ffffea0006d5f840 R15: ffffea0006d5f870
-FS:  000055555db87500(0000) GS:ffff8882a9f35000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000001b2ee63fff CR3: 000000010c308000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- zswap_compress mm/zswap.c:900 [inline]
- zswap_store_page mm/zswap.c:1430 [inline]
- zswap_store+0xfa2/0x1f80 mm/zswap.c:1541
- swap_writeout+0x6e8/0xf20 mm/page_io.c:275
- writeout mm/vmscan.c:651 [inline]
- pageout mm/vmscan.c:699 [inline]
- shrink_folio_list+0x34ec/0x4c40 mm/vmscan.c:1418
- reclaim_folio_list+0xeb/0x500 mm/vmscan.c:2196
- reclaim_pages+0x454/0x520 mm/vmscan.c:2233
- madvise_cold_or_pageout_pte_range+0x1974/0x1d00 mm/madvise.c:565
- walk_pmd_range mm/pagewalk.c:130 [inline]
- walk_pud_range mm/pagewalk.c:224 [inline]
- walk_p4d_range mm/pagewalk.c:262 [inline]
- walk_pgd_range+0xfe9/0x1d40 mm/pagewalk.c:303
- __walk_page_range+0x14c/0x710 mm/pagewalk.c:410
- walk_page_range_vma+0x393/0x440 mm/pagewalk.c:717
- madvise_pageout_page_range mm/madvise.c:624 [inline]
- madvise_pageout mm/madvise.c:649 [inline]
- madvise_vma_behavior+0x311f/0x3a10 mm/madvise.c:1352
- madvise_walk_vmas+0x51c/0xa30 mm/madvise.c:1669
- madvise_do_behavior+0x38e/0x550 mm/madvise.c:1885
- do_madvise+0x1bc/0x270 mm/madvise.c:1978
- __do_sys_madvise mm/madvise.c:1987 [inline]
- __se_sys_madvise mm/madvise.c:1985 [inline]
- __x64_sys_madvise+0xa7/0xc0 mm/madvise.c:1985
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fccac38efc9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd9cc58708 EFLAGS: 00000246 ORIG_RAX: 000000000000001c
-RAX: ffffffffffffffda RBX: 00007fccac5e5fa0 RCX: 00007fccac38efc9
-RDX: 0000000000000015 RSI: 7fffffffffffffff RDI: 0000200000000000
-RBP: 00007fccac411f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fccac5e5fa0 R14: 00007fccac5e5fa0 R15: 0000000000000003
- </TASK>
-
-
-***
-
-If these findings have caused you to resend the series or submit a
-separate fix, please add the following tag to your commit message:
-  Tested-by: syzbot@syzkaller.appspotmail.com
-
----
-This report is generated by a bot. It may contain errors.
-syzbot ci engineers can be reached at syzkaller@googlegroups.com.
+diff --git a/fs/efivarfs/internal.h b/fs/efivarfs/internal.h
+index f913b6824289..045d53fd0f3c 100644
+--- a/fs/efivarfs/internal.h
++++ b/fs/efivarfs/internal.h
+@@ -55,8 +55,6 @@ bool efivar_validate(efi_guid_t vendor, efi_char16_t *var_name, u8 *data,
+ bool efivar_variable_is_removable(efi_guid_t vendor, const char *name,
+ 				  size_t len);
+ char *efivar_get_utf8name(const efi_char16_t *name16, efi_guid_t *vendor);
+-bool efivarfs_variable_is_present(efi_char16_t *variable_name,
+-				  efi_guid_t *vendor, void *data);
+ 
+ extern const struct file_operations efivarfs_file_operations;
+ extern const struct inode_operations efivarfs_dir_inode_operations;
+diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
+index 298ab3c929eb..80ed81bbd4a5 100644
+--- a/fs/efivarfs/super.c
++++ b/fs/efivarfs/super.c
+@@ -189,52 +189,6 @@ static const struct dentry_operations efivarfs_d_ops = {
+ 	.d_hash = efivarfs_d_hash,
+ };
+ 
+-static struct dentry *efivarfs_alloc_dentry(struct dentry *parent, char *name)
+-{
+-	struct dentry *d;
+-	struct qstr q;
+-	int err;
+-
+-	q.name = name;
+-	q.len = strlen(name);
+-
+-	err = efivarfs_d_hash(parent, &q);
+-	if (err)
+-		return ERR_PTR(err);
+-
+-	d = d_alloc(parent, &q);
+-	if (d)
+-		return d;
+-
+-	return ERR_PTR(-ENOMEM);
+-}
+-
+-bool efivarfs_variable_is_present(efi_char16_t *variable_name,
+-				  efi_guid_t *vendor, void *data)
+-{
+-	char *name = efivar_get_utf8name(variable_name, vendor);
+-	struct super_block *sb = data;
+-	struct dentry *dentry;
+-
+-	if (!name)
+-		/*
+-		 * If the allocation failed there'll already be an
+-		 * error in the log (and likely a huge and growing
+-		 * number of them since they system will be under
+-		 * extreme memory pressure), so simply assume
+-		 * collision for safety but don't add to the log
+-		 * flood.
+-		 */
+-		return true;
+-
+-	dentry = try_lookup_noperm(&QSTR(name), sb->s_root);
+-	kfree(name);
+-	if (!IS_ERR_OR_NULL(dentry))
+-		dput(dentry);
+-
+-	return dentry != NULL;
+-}
+-
+ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
+ 				  unsigned long name_size, efi_guid_t vendor,
+ 				  char *name)
+@@ -244,7 +198,7 @@ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
+ 	struct dentry *dentry, *root = sb->s_root;
+ 	unsigned long size = 0;
+ 	int len;
+-	int err = -ENOMEM;
++	int err = 0;
+ 	bool is_removable = false;
+ 
+ 	/* length of the variable name itself: remove GUID and separator */
+@@ -253,41 +207,36 @@ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
+ 	if (efivar_variable_is_removable(vendor, name, len))
+ 		is_removable = true;
+ 
++	dentry = simple_start_creating(root, name);
++	if (IS_ERR(dentry)) {
++		err = PTR_ERR(dentry);
++		goto out_name;
++	}
++
+ 	inode = efivarfs_get_inode(sb, d_inode(root), S_IFREG | 0644, 0,
+ 				   is_removable);
+-	if (!inode)
+-		goto fail_name;
++	if (unlikely(!inode)) {
++		err = -ENOMEM;
++		goto out_dentry;
++	}
+ 
+ 	entry = efivar_entry(inode);
+ 
+ 	memcpy(entry->var.VariableName, name16, name_size);
+ 	memcpy(&(entry->var.VendorGuid), &vendor, sizeof(efi_guid_t));
+ 
+-	dentry = efivarfs_alloc_dentry(root, name);
+-	if (IS_ERR(dentry)) {
+-		err = PTR_ERR(dentry);
+-		goto fail_inode;
+-	}
+-
+ 	__efivar_entry_get(entry, NULL, &size, NULL);
+ 
+-	/* copied by the above to local storage in the dentry. */
+-	kfree(name);
+-
+ 	inode_lock(inode);
+ 	inode->i_private = entry;
+ 	i_size_write(inode, size + sizeof(__u32)); /* attributes + data */
+ 	inode_unlock(inode);
+ 	d_make_persistent(dentry, inode);
+-	dput(dentry);
+-
+-	return 0;
+ 
+-fail_inode:
+-	iput(inode);
+-fail_name:
++out_dentry:
++	simple_done_creating(dentry);
++out_name:
+ 	kfree(name);
+-
+ 	return err;
+ }
+ 
+@@ -407,42 +356,6 @@ static const struct fs_context_operations efivarfs_context_ops = {
+ 	.free		= efivarfs_free,
+ };
+ 
+-static int efivarfs_check_missing(efi_char16_t *name16, efi_guid_t vendor,
+-				  unsigned long name_size, void *data)
+-{
+-	char *name;
+-	struct super_block *sb = data;
+-	struct dentry *dentry;
+-	int err;
+-
+-	if (guid_equal(&vendor, &LINUX_EFI_RANDOM_SEED_TABLE_GUID))
+-		return 0;
+-
+-	name = efivar_get_utf8name(name16, &vendor);
+-	if (!name)
+-		return -ENOMEM;
+-
+-	dentry = try_lookup_noperm(&QSTR(name), sb->s_root);
+-	if (IS_ERR(dentry)) {
+-		err = PTR_ERR(dentry);
+-		goto out;
+-	}
+-
+-	if (!dentry) {
+-		/* found missing entry */
+-		pr_info("efivarfs: creating variable %s\n", name);
+-		return efivarfs_create_dentry(sb, name16, name_size, vendor, name);
+-	}
+-
+-	dput(dentry);
+-	err = 0;
+-
+- out:
+-	kfree(name);
+-
+-	return err;
+-}
+-
+ static struct file_system_type efivarfs_type;
+ 
+ static int efivarfs_freeze_fs(struct super_block *sb)
+@@ -493,7 +406,7 @@ static int efivarfs_unfreeze_fs(struct super_block *sb)
+ 		}
+ 	}
+ 
+-	efivar_init(efivarfs_check_missing, sb, false);
++	efivar_init(efivarfs_callback, sb, false);
+ 	pr_info("efivarfs: finished resyncing variable state\n");
+ 	return 0;
+ }
+diff --git a/fs/efivarfs/vars.c b/fs/efivarfs/vars.c
+index 6edc10958ecf..d893e928891a 100644
+--- a/fs/efivarfs/vars.c
++++ b/fs/efivarfs/vars.c
+@@ -407,6 +407,8 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 		case EFI_SUCCESS:
+ 			variable_name_size = var_name_strnsize(variable_name,
+ 							       variable_name_size);
++			err = func(variable_name, vendor_guid,
++				   variable_name_size, data);
+ 
+ 			/*
+ 			 * Some firmware implementations return the
+@@ -416,18 +418,16 @@ int efivar_init(int (*func)(efi_char16_t *, efi_guid_t, unsigned long, void *),
+ 			 * we'll ever see a different variable name,
+ 			 * and may end up looping here forever.
+ 			 */
+-			if (duplicate_check &&
+-			    efivarfs_variable_is_present(variable_name,
+-							 &vendor_guid, data)) {
+-				dup_variable_bug(variable_name, &vendor_guid,
+-						 variable_name_size);
+-				status = EFI_NOT_FOUND;
+-			} else {
+-				err = func(variable_name, vendor_guid,
+-					   variable_name_size, data);
+-				if (err)
+-					status = EFI_NOT_FOUND;
++			if (err == -EEXIST) {
++				if (duplicate_check)
++					dup_variable_bug(variable_name,
++							 &vendor_guid,
++							 variable_name_size);
++				else
++					err = 0;
+ 			}
++			if (err)
++				status = EFI_NOT_FOUND;
+ 			break;
+ 		case EFI_UNSUPPORTED:
+ 			err = -EOPNOTSUPP;
 
