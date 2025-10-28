@@ -4,123 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36178CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:49:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D7F5CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 15:36:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C2418016B; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
+	id 22AF28016C; Tue, 28 Oct 2025 11:36:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 899868013F; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
+	id 202498013F; Tue, 28 Oct 2025 11:36:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7D5A18016B; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
+	id 13FE98016C; Tue, 28 Oct 2025 11:36:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6BC7F8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB9EDC04CB
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:49:19 +0000 (UTC)
-X-FDA: 84047806038.05.4D74F1B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2029D40002
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:49:17 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huHQXCvp;
-	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id F3C538013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 11:36:48 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 97C7F1A0373
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:36:48 +0000 (UTC)
+X-FDA: 84047925696.06.A8913E0
+Received: from relay.hostedemail.com (unirelay08 [10.200.18.71])
+	by imf16.hostedemail.com (Postfix) with ESMTP id B91CB18000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:36:46 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761662958;
+	s=arc-20220608; t=1761665806;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iMhlL+awlNfW9A5jmBo0UeSJ8e6xIZTWAHrMjd5ojNE=;
-	b=idKlVrWM/3cqiTNdQPpqszmpPaY+1VeMrENoxb/ANyZrHNU9fa1RzYwY7DB6ykvFdhhX8w
-	YMl7nBXDRXNkNcYfCdPecnOVcVzg93TZQuCWz74NC63ZAuEp5BMZk4lkfdIp7rmIwP7ZMA
-	NuEKBzj4qrN3seXThVy5CdcVqkzBIcs=
+	 in-reply-to:in-reply-to:references:references;
+	bh=Dn+J543PaE9pTtS4VYTKUNcdwvzPCZNgqy59cfgNWrQ=;
+	b=yvGvZXX05jKQ9tGK7PIbbUMhcFabsBrsT1sc3PAN4DP1JflI2+VLEk2WNgXzdnpb1GJUY5
+	zDKLKsL26EEvRsHw0E2T/ekUfQxqBltMVL8nM+L4FEZUR5M0i0KycknkxbFakuEprJ4X9M
+	vaUfoY9+YAwrhd8C/rT/iz6nSrm0ImY=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huHQXCvp;
-	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761662958; a=rsa-sha256;
+	imf16.hostedemail.com;
+	none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761665806; a=rsa-sha256;
 	cv=none;
-	b=hLGVVg+ct2bc5QGvqBi3S+s7j3pP9xUlI1Yfp4V4sp3CkKike6H12Q35o0VKp2pBznrd/a
-	HZmyPLAW9S1Ls4bfCGEoxUlVZfbPqHE0RxwgjKEhMtU0XtJzpaakZMtTMUOg61m+pk5+vM
-	UcMY1qdhpnmpnwX/8LBpjqEGyKgoz0k=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0969A45F05;
-	Tue, 28 Oct 2025 14:49:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64951C4CEE7;
-	Tue, 28 Oct 2025 14:49:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761662956;
-	bh=/YcbY6Xd39AsABVLZZYIvhdW8ivhFU4lURFGb2RCZr8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=huHQXCvp0W/S5F1ENdurMkw2WwJZbMBNDXAh91iSKf/vrNDl1NLBkoXJdUx/C19Qv
-	 Z4qNcGgTCDjqG04Q8z3Gw4n7Ol2Hs4TiC0IGtfV35bwyLcbAG4VH3lZOOkEdiJR4uv
-	 98GKb95kopcHzMuvU3H2025SulpKC226+6+rZMUmhwVvLSkelVU5+Fv/hfF6vOYswZ
-	 XcZScHHzyBVq+mz32oPgQ0NUDZQKpY6cLjssBtvUS7RZby1k7TivV6VhaUkRZyqa69
-	 4+Ez+WRvhuVyLYG73RXpS/ughenkh3oUdmNmmth4K/glGp+Eu28p8jOe+6mgl5gPer
-	 pCdjOFhzrTR8g==
-Date: Tue, 28 Oct 2025 15:49:14 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
-	x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Subject: Re: [PATCH v6 24/29] context_tracking,x86: Defer kernel text
- patching IPIs
-Message-ID: <aQDX6hHV3b1-_wuF@localhost.localdomain>
-References: <20251010153839.151763-1-vschneid@redhat.com>
- <20251010153839.151763-25-vschneid@redhat.com>
+	b=vIYPVnSmnN7cFI1SXFnHHGS/FAtJN/8QMUtQ6Jklf3jYOTdYSsf7RwAOefSlGiTWoxx4D1
+	J7+5DwBfSBgePkdQeLpGBqXIwgcq9mS9pRc2lfb5Eyfa1Xur+VFo9dbY1ww3zqzApk5Flc
+	9Va8s4/wZGcVXyu0ExtgCB1n2AbwZZ4=
+Received: from omf08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 3CD0C1404A9;
+	Tue, 28 Oct 2025 15:36:44 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: rostedt@goodmis.org) by omf08.hostedemail.com (Postfix) with ESMTPA id A321A2002A;
+	Tue, 28 Oct 2025 15:36:39 +0000 (UTC)
+Date: Tue, 28 Oct 2025 11:37:17 -0400
+From: Steven Rostedt <rostedt@goodmis.org>
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+ brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu,
+ neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org,
+ linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, paul@paul-moore.com,
+ casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+ john.johansen@canonical.com, selinux@vger.kernel.org,
+ borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 19/50] convert tracefs
+Message-ID: <20251028113717.2154482d@gandalf.local.home>
+In-Reply-To: <20251028004614.393374-20-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	<20251028004614.393374-20-viro@zeniv.linux.org.uk>
+X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251010153839.151763-25-vschneid@redhat.com>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 2029D40002
-X-Stat-Signature: qxttbujxu6ut56uwmsx1jbhhhugfnkgq
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Session-Marker: 726F737465647440676F6F646D69732E6F7267
+X-Session-ID: U2FsdGVkX1+s7gR+r9niKNL07T0pO7ukE0upf2CD5vI=
+X-HE-Meta: U2FsdGVkX19g0bbaz2RZh320ocW7TSQSsOT9nF8qHkd5qWlBifJ/KGtfmWtsv1mzJP9ht/c5mZRt/OtFwhvV0nurLgOmsL+MgJEwJdQoabvLgqWyyWgPOtUtslgD012XhVqixajC5WLifrc/mNIrsi899n45JcxWb92Q20WFBPjq9fbMnMjzm49UpPMD39et9NXHIuTp+8ue8LHJcfY24Tb39Ouk2tY7I25w4L+/k2xiNhHBjQibW0Hpw7CZthMHcDOEtP04RbMR+7OcgsAvcilq3cwXqyvP6wxxoNA77oyga0E0P4NCRNz/Jj7XTabrxjt2M47rWHelMrTtE3Ho2LOneBwKq0YQxYsBKf09n05la3UZdYBsNJsEB3vTPECvtqDSIEN0Vv1VQdzkGQVHiqH5dArBachPtpebDDmuJAfLPjsP32VD10VFGrg/VDlo
 X-Rspam-User: 
-X-HE-Tag: 1761662957-222751
-X-HE-Meta: U2FsdGVkX18tLWQjnWrMroQB5lMAS6MWfQsn/yZsBKipAZgXHu9OdmyHABa1jLAtLgxJOWxkr9Shvo2EX6I5IEgc1zhEfWV4LfRLoel0IurzGgXjATKuqVBuk5HJpptlbdNdMA4OME5ffhEHiYA6eMaqy8FWfmUxsOuQ4BgwKyyr/cnJocNGfH92hEYHbuWVDyV3/XH8mPb8k+q5Z5Pp3ZMkfBQnlH9BXS9vHD4jQchqYQO+oI9csV8YaUS/bQKHaglwQ+r+VpQ+g9J2g2+o1pA4e6bMgRlyBgGJyT5aAEIj3NtqHYfo3Zhz4y7sqf4hcfQcUYXg6xOI2o0rprqU4dkC5nY23dTdEKT14ukhv4AMMtZIwQm1eAr/D6Wnj+2ra9QVyYu7GSNW5Uc7JBrQhIchAoX5tlKaZ/iPOrX1SjkzJdx2cnfNvCaF+9gF02N8yUxfGnYmo8mqhVg6BI1syd8sK1i23WEtWMp+l1lTul76zUdyQ35Q2VCLpmYwgzfwsfI0LcWqyopUR/0C3fw0xdO3TDcPixHIoo32C4+OOIJk0hTV0MmSOWLB349smd7JfpDnjDHbt4Rhjympd2hdBGfSBqRzORqUUzFtbbkF82PFQG1Lk0dUiiXw82HeQVbFiTqSaSCs4cAiaAf1QypFj4twhvrN1EFcxhaIjFRB17a1XSFr+iYWHFJgMljjBkaMrTF41TOHiojQDZh8hm/18fFCAwLs1Y8FLc9WPKJS4FyNz0QF6Myq6l8Ay2ktK8F9iFxB9nuW6p/E9pVEyqQhZ2oAr7RmxlFtDJAX9VHMHYh2D1Iq69T2BSBq0Dm3awmhYjHFWUufkdiP2dVUHenVP/Pn5fH/lz2BrudElPr4GJqtQ1prqZjoBOAhFfxIjklcEDsl3G7kxZNPB30ucQeugOGrSP3Rx20Mhi7Msix5qjrE7HiYgFCAV5phxdz0ozk7Puf980OtPmqCjlp1iqx
- UlgbWQCu
- N6C9lV/Yty3h8NIOXDo0m8I7fSAoCikFxnDbkneATIY8V8VZ9UlS1XllJCN708VrUjUAK5NIBpaTrbvDebUVzJOZlnhyl4ZhYGnwNYoNzlDRdrwLnO4M4G/TaOcbSxpuFxx2PAHrkDl9/IuGzNF49JqgjjddWSGgQq2aRc0xpOwDB6ngQfS/uuG3Za0o87GF6+VFOIaYe2YwgcmRVRFgWraxqxBYCjNQ+Ip8xnMpgpaQdOCCKqXoIt2P5/Qdo0PRihaaHl4PWMD9vWP4iCOKFJhD0iir8cRv6eIh8QSv/RU5ttuCI9v9B5mBalx3apL98umXXFxBfwPhI9/j7EayjH2L12/AspEVvPAtAeRGoo+2gChtScHnRt3jt1x6WgAb4c8UfsdrNciSCCDa1777rMyzFldUGQIYMLMpaRUiyeY83do4IVq0Tnp/GDWMlJFiEMvXTKsPqxmYMd9QI6jJP4qfFgA==
+X-HE-Tag-Orig: 1761665799-59606
+X-Rspamd-Queue-Id: B91CB18000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: wwtgrwiok7ucj6dfj48fehgm57npxp5o
+X-HE-Tag: 1761665806-170732
+X-HE-Meta: U2FsdGVkX19YNQXh8q1QgS/GYb8JsJW794V4cU6O7Z47csY9+sVFZm5i3Fn+/kJkd3hvUL62lt4OpH8jqE7EeIGchhiJyiLpnCJR5fbkLT4junf4MrGRIXYxiGiQ09XUR67qscfgfy+n4yHfG1R1U8Hzeqkpl9UcraaunwrThBBW5t4cBaxGLiA7+wYRA8IcXN3+dztJkzSQCSLj5xuOSmrcn1rXl1RLYFffOy2bse0OSRvvNMgZ+3emhbtyGJFE1JZuiOAjUbyNJxylRipKrQlbQzJjo/aaQ5nX1rUoe/U8M4FT4HX3eAz8da9e+CraTc31Y7T0Rytyb9p95vmsBTMYhLjGf/MDVw+PSMTh6xK3crm96MCO6el1uIGL7gpNCGJzujgfeychb2w+oTh2ia5Nbc50dK7MasdPdJPT4uO7VW2r2Fh2kNClaAwYhOD0sgVhTZsdWgVWBX0378pnbQvQ5OZfM1CPns5qJImMDeEEh17sEFO8fcDgs5hp9U9r//UAoJBnpozpZG0HH6Xwjc2/xw1WFcx5VtenutCWvyi1FVPEQLB7lKlL5gdNqAwN/bXc2xLBklW0FOC1c0GBIzk3PvjT6gYFKIsEj3wlxw3ZSgvzArI/wCQf30xasRe5iQ5JwgcC//jNjaEYGP5AcbjhzQaHnS7AWCT5TptbWrX7M/6i9uOFzgW34fvuB29sw59wbnO/RTyCegbOnh3Q5XADKdelxMdxw3Cw6k/TG/ilWF+IJKwU+ckIOIRwikdoaIZZyw5A+6lup4K8AqamrpJMi71uSg2P6WFet/rwEd+G19zrizZ5MPSF3jox6guLkFPIoKRfNkMqfPV8RftQrHp/DevYMcj56ZaNEN8U21hb+VAJYBYqhVRla7+VzFVwnOhKNJdTCueBi+NYzV8hiA91OXsVvJ5ZDP1pMTIAUb5pTExMFbxhpLNQAG10wHXdc1MAo+dAwc1vASlD9vy
+ YQA2eBBf
+ KWr68Uaxdpq/XU9Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,56 +90,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Fri, Oct 10, 2025 at 05:38:34PM +0200, Valentin Schneider a écrit :
-> text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
-> them vs the newly patched instruction. CPUs that are executing in userspace
-> do not need this synchronization to happen immediately, and this is
-> actually harmful interference for NOHZ_FULL CPUs.
-> 
-> As the synchronization IPIs are sent using a blocking call, returning from
-> text_poke_bp_batch() implies all CPUs will observe the patched
-> instruction(s), and this should be preserved even if the IPI is deferred.
-> In other words, to safely defer this synchronization, any kernel
-> instruction leading to the execution of the deferred instruction
-> sync (ct_work_flush()) must *not* be mutable (patchable) at runtime.
-> 
-> This means we must pay attention to mutable instructions in the early entry
-> code:
-> - alternatives
-> - static keys
-> - static calls
-> - all sorts of probes (kprobes/ftrace/bpf/???)
-> 
-> The early entry code leading to ct_work_flush() is noinstr, which gets rid
-> of the probes.
-> 
-> Alternatives are safe, because it's boot-time patching (before SMP is
-> even brought up) which is before any IPI deferral can happen.
-> 
-> This leaves us with static keys and static calls.
-> 
-> Any static key used in early entry code should be only forever-enabled at
-> boot time, IOW __ro_after_init (pretty much like alternatives). Exceptions
-> are explicitly marked as allowed in .noinstr and will always generate an
-> IPI when flipped.
-> 
-> The same applies to static calls - they should be only updated at boot
-> time, or manually marked as an exception.
-> 
-> Objtool is now able to point at static keys/calls that don't respect this,
-> and all static keys/calls used in early entry code have now been verified
-> as behaving appropriately.
-> 
-> Leverage the new context_tracking infrastructure to defer sync_core() IPIs
-> to a target CPU's next kernel entry.
-> 
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+On Tue, 28 Oct 2025 00:45:38 +0000
+Al Viro <viro@zeniv.linux.org.uk> wrote:
 
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
+> A mix of persistent and non-persistent dentries in there.  Strictly
+> speaking, no need for kill_litter_super() anyway - it pins an internal
+> mount whenever a persistent dentry is created, so at fs shutdown time
+> there won't be any to deal with.
+> 
+> However, let's make it explicit - replace d_instantiate() with
+> d_make_persistent() + dput() (the latter in tracefs_end_creating(),
+> where it folds with inode_unlock() into simple_done_creating())
+> for dentries we want persistent and have d_make_discardable() done
+> either by simple_recursive_removal() (used by tracefs_remove())
+> or explicitly in eventfs_remove_events_dir().
+> 
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
--- 
-Frederic Weisbecker
-SUSE Labs
+I ran the tracing selftests and some other tests I have against this and
+nothing interesting happened. I didn't run my full test suite, but it looks
+sane to me.
+
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+
+-- Steve
 
