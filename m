@@ -4,124 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 522F0CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 07:28:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60C3CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 07:55:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F8B78012A; Tue, 28 Oct 2025 03:28:15 -0400 (EDT)
+	id E19968012B; Tue, 28 Oct 2025 03:55:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A914800E4; Tue, 28 Oct 2025 03:28:15 -0400 (EDT)
+	id DC994800E4; Tue, 28 Oct 2025 03:55:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 597818012A; Tue, 28 Oct 2025 03:28:15 -0400 (EDT)
+	id CB85A8012B; Tue, 28 Oct 2025 03:55:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 451B7800E4
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:28:15 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id EA1A4C03FB
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:28:14 +0000 (UTC)
-X-FDA: 84046694508.18.0EA018F
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 1E84E18000A
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:28:12 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P61fK48B;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761636493; a=rsa-sha256;
-	cv=none;
-	b=FwDXRasaXWyGC/Pf1UdCCgkCpMMmj074C4sQFL5iVnl8fw3gJbZZZhPAiPmXEvyBvsHqlV
-	nGmvvooRXTTY93XYzhDYul5U8sXFNXHfJZ++rURZy7Ec/PWXnGw6ejsjMsfPJ22Nqqfby5
-	N3enQ9N3wHGCXfC64K9kTE0nr+zKKPI=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=P61fK48B;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf16.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.214.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B11D2800E4
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:55:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 402DD16032A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:55:02 +0000 (UTC)
+X-FDA: 84046762044.15.CBCD00C
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 9B46140002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 07:54:59 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FG4TqO9O;
+	spf=pass (imf04.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761636493;
+	s=arc-20220608; t=1761638100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nktWl2QE6KyxknjQKQbtrA/rvCmzEXqRlRqq7ZLB0co=;
-	b=4JbvYV8mlC4nSghKO2r50eKvb6V8NwR3xVIz3YXY0TZ6Z1um6DSNir0iMJ2weNWZ5VZ7ZP
-	4TNp1VieztUqWu3i2oiWhJIDuzkT0qXxdIaGLnky8eXdGfYi3vujlrTQe1ilSduuCsZQzc
-	9zAKRG4PLNTtUiWXH/R42ng/oJVxREY=
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-290b48e09a7so67877255ad.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:28:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761636492; x=1762241292; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nktWl2QE6KyxknjQKQbtrA/rvCmzEXqRlRqq7ZLB0co=;
-        b=P61fK48BWv4EFmfG3gc6GStD2dmpUVsj6xDsheJOabD9sdWgk/awTbloxahA0jLcIW
-         O8urPIDslx1TOc/oyQA/Qxo9xPYFoHYL1Ob8HZ3DTtFrGVsbLFiW6tXs9hCD6cGxXyqb
-         lQv9wKz1NpzkH3DRZJRnJ5u1PENuix8JSTmKgmV+ncKmtqYKi5QW4rl4mDX0LDqYv0Z1
-         3TYoEG8WvUf1mGSrL8ma2p/F7Zq4mDa/WCKslN/iHi86mNkXhvnFIJm5z66BagUng0Ow
-         5uRPYIejK914lkea8G/nhVO+cHAQMcqg77myeRs2Fuu7S7HnwRDKWcF2cO7uVPOjf2Qk
-         c/Kg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761636492; x=1762241292;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nktWl2QE6KyxknjQKQbtrA/rvCmzEXqRlRqq7ZLB0co=;
-        b=Q40dnGM0re3SDP1U1tsUyQAmZ9e7G3d+Oc+UrwfpAmrsgARppNtQRxl/QgRBXgVQ1p
-         BWLyuQvsgMSCEBfjdIN5Y/MI48HEme9fEsr4sn6HKCA+UVQzPYc7mtT8labSdOFyrA2q
-         +5wCPB/eZePd1NrySHbgITJeOqjHMFTayp7Rv9XsLVx17mo1+k/l1EteL6YgThpAbC0S
-         VODKxJ6MJOTn2eBH3FCti2IH7TRwElfgEVnQELammYrlKUMI40P9TbsFLWdeyRcC2Ehg
-         QiiRWxgsm87vVnRYgmTrZnwpYm9hi/goWM+jT9GJdv29gQFl/y82AJuGNpgTkH1Ji8MH
-         frtw==
-X-Forwarded-Encrypted: i=1; AJvYcCV2JQGGa/vR7uI+QNJIi6UO3rB4R8oEhe5OjqPXOK7dYmEgK9WdNc5ulxLhzxrzkU57FoUsZz/ngw==@kvack.org
-X-Gm-Message-State: AOJu0YwCioUE9TYr0Ww/8FVvMw5CNuVPdci2RN7g153dpAJ8QRNBqIRY
-	kdIQZ3POIQ+cyjGJ6wvNT0g3d1TdketAR7uAcRFPbH8GTND7wnscFrT+
-X-Gm-Gg: ASbGncv418AzGu1X1d6bflEL699TToUuvZ5igOf3/UdMFHf1SugTlQoybBrgApwPaoF
-	HJo3LU2oZ5/diXSjbkMmyuNARWNC3S0IMicAMCDt+DOePEzFFSq541/FT7Oajy4jAf/O9Aloz0n
-	bkLOsTfgKqy+CBDr6/htUooLruzsEn+HeE1J2QSUQABmQwXUYEwzCax3rOhV+/t7ul3j+21j6ZM
-	DW8ul+qws8TrmjSclzq7Uo7rnqs9Hha3j2dm9c7YkzfMdBtYJ2yQjnhMwgsKt3kThAPHql7GKo2
-	AFq6kPVV//D3DMZPcqZtdw/ptc7Mcx+UlleRJYEPMlbtnsxnKJpNcDbXCAIvUdCmqqAp9cTs3IN
-	kaTwpAV8rbB87KNXh1A8QNygWMYwV9pd6AdYZp0hQOfRshCrvbEtFvS+UpChQlrbxzPEU883uC6
-	iM/leMTKxtKg28oA==
-X-Google-Smtp-Source: AGHT+IEKTiLgH0R/bRPXbcPiopPoUMdKq0Is+SUv85mcT1iNGvD0tY2fXA7nq6m7Ri3Uue3XCkC79Q==
-X-Received: by 2002:a17:902:dac2:b0:27e:ed0d:f4ef with SMTP id d9443c01a7336-294cb51ac17mr34713495ad.41.1761636491819;
-        Tue, 28 Oct 2025 00:28:11 -0700 (PDT)
-Received: from localhost.localdomain ([240f:34:212d:1:7224:bdaa:f2c:3fc8])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b7128e41c01sm9400361a12.23.2025.10.28.00.28.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Oct 2025 00:28:11 -0700 (PDT)
-From: Akinobu Mita <akinobu.mita@gmail.com>
-To: akinobu.mita@gmail.com
-Cc: linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	hannes@cmpxchg.org,
-	david@redhat.com,
-	mhocko@kernel.org,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	lorenzo.stoakes@oracle.com
-Subject: Re: oom-killer not invoked on systems with multiple memory-tiers
-Date: Tue, 28 Oct 2025 16:27:36 +0900
-Message-ID: <20251028072736.10455-1-akinobu.mita@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20251022135735.246203-1-akinobu.mita@gmail.com>
-References: <20251022135735.246203-1-akinobu.mita@gmail.com>
+	bh=RvDfdfVwPI3rmFbI6RAyNTD6PKhxg4VhIHjaKX4vR7o=;
+	b=8OYMeW4JN3wY9QCDITyN6WZPSMdqsVVeF5i4uYY2/8t1XnyzE67lE7Qja4fOEIa9+pjOZE
+	iXyVHTQ5vZziSQ7bKlajsHmRGjWum2qhX35piQ/1kvLVMGlefdQYT0jNofMgQtQWlvmAI5
+	xFikSdH0vKjv/TgjLyszh8d1zHEJcK8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=FG4TqO9O;
+	spf=pass (imf04.hostedemail.com: domain of xialonglong2025@163.com designates 117.135.210.4 as permitted sender) smtp.mailfrom=xialonglong2025@163.com;
+	dmarc=pass (policy=none) header.from=163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761638100; a=rsa-sha256;
+	cv=none;
+	b=THiEvVKoxKSED8qjI9SVKEYP1tBG7/q1dawJNv+yF+gxKHxlpP6h6Y8BO2Jkv5WtC9Sy5B
+	j12vzt04Hptt4W8PNqnM7BEni6glhurv5xYzmqxJA46Xz2qqI23FQ7mqDR9ofEvMy2dTjh
+	L93SD7Izu6CX+xWUUFHWKvLP/h+UAy4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=RvDfdfVwPI3rmFbI6RAyNTD6PKhxg4VhIHjaKX4vR7o=;
+	b=FG4TqO9Oza6WsPF/ug+8/UY2MoPvbGBiHUI0uyaYLAI7wscqwecL153tU0uiI/
+	Qsd+6oOjZLuyN/vI6T9/2zcEXP3mZY667kvlPgDhajq7ya2vEGVYbWW7TjCUHwso
+	3vqF//xiTYzgGDUv2Im0SogKIcKZg8toLJ5Ml0SIk40/c=
+Received: from [IPV6:240e:46d:1600:3a33:4534:428:f0d0:76ae] (unknown [])
+	by gzga-smtp-mtada-g1-2 (Coremail) with SMTP id _____wCXHfXGdgBpUeIwDQ--.19073S2;
+	Tue, 28 Oct 2025 15:54:48 +0800 (CST)
+Message-ID: <7c069611-21e1-40df-bdb1-a3144c54507e@163.com>
+Date: Tue, 28 Oct 2025 15:54:46 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/1] mm/ksm: recover from memory failure on KSM page by
+ migrating to healthy duplicate
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: markus.elfring@web.de, nao.horiguchi@gmail.com,
+ akpm@linux-foundation.org, wangkefeng.wang@huawei.com, qiuxu.zhuo@intel.com,
+ xu.xin16@zte.com.cn, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Longlong Xia <xialonglong@kylinos.cn>, david@redhat.com, lance.yang@linux.dev
+References: <20251016101813.484565-1-xialonglong2025@163.com>
+ <20251016101813.484565-2-xialonglong2025@163.com>
+ <af769443-e855-81d0-a44a-d5890f5d1d2f@huawei.com>
+From: Long long Xia <xialonglong2025@163.com>
+In-Reply-To: <af769443-e855-81d0-a44a-d5890f5d1d2f@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wCXHfXGdgBpUeIwDQ--.19073S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3GFy8uw1kXF4ftry3uF47CFg_yoW3KF45pF
+	y0krZ0krW8Jry8Wr1Iqw409rySqw4ktr4UtFyfCa1Ik3Z0vrZ2gFW8W3y7GFyrAF4UGa1F
+	vF4jqrnxGws5trDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07jxl1kUUUUU=
+X-Originating-IP: [240e:46d:1600:3a33:4534:428:f0d0:76ae]
+X-CM-SenderInfo: x0ldz0pqjo00rjsqjki6rwjhhfrp/xtbBgBn0+GkAdUIh0gAAs4
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 9B46140002
+X-Stat-Signature: jeaw1kjoi7rpuzzdb7mm3zbinepsuhto
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 1E84E18000A
-X-Stat-Signature: ruy71arwxph7u3t8pbrzbqyykfukx7f5
-X-HE-Tag: 1761636492-897074
-X-HE-Meta: U2FsdGVkX1+Z4RHgLIxSYJoEp8XSXAfW5MD4UJgXpkq01jcKVt+GWAAk4AGQf4HQ2YRrQvHaBEi1WznqLcV3gBt4+Tismq9f459/CIXwJIim5oSSyutJvXaK4L/5S3PnAtaiiGZNyFUrxbuYZ1/igDUWkqJjjZDxoVCaW7F5e9p37GYysrNkZ2iDmAuwMYz+9Yg052nQ2uvOErGpm8a0j1+ExN8xxGIim2GOKC1ZGP56TwwUoSCLTtKNO/Ip/IkoyslV3R3E9IUCELahWwZdkaeiT0hruK7y75LdMQyI1pHfQGpMV8VsmwpovUWkeZhgpYaQuiNhYeBrGS1hc+tbqr9kVs1FR89luy3me4m/7ahnBX5pfse9P9+REYovfq1yX0srZAq0GNEcBRhCeh1mZCZ/AkBrelPakqPI00v5qdLWJN7+tB9Sj9J1Es9rnO9lYUlkEhZoNhzJvjn0tIPMDpkfz5KS1wZfN54d8YG9C05gKEGZeWAUFUYzdhizPRdKyntfUCd2YNS5hUg/aoyyvS1Hgm3h7j+TX1JmysZZjcaBAU9JJhdEupTm8Lh8qdXW3AAwd/pblwAf/P1w9lJWbFSJ1IldWqIRDkIPeeJ30Aj6JCUYB+FAZ4WMgs9ZPDdD9ZlJfs4k+FXFRbzEW9SjFClQsyZihFuYzav9CbwB86FS0L50GzaEazKpNC4gr0rrSbvmiNYrwZYYmwRYhZnQvck4gFase8w5QrPXIvHAl2Rxx8H4kr0vIQaxXinq9Rp2Q+KPtUeXb8nakh4FCVAzG9pWeVBL6bgO9HLucKBnd2z40x7DxJHWuPvRX5E3MweFOs9GHF27HJQpVYyOqGJVhraxRHET7MJWO5KaqM84O1oJqJlVVH+s+2ijzAoM5feMzO2LTQWVRulCVEr4ojaBYhNciGgdEc3/HklQQy+vwTSpAO7XXW2wHKC7ZyyAMnMNmCTQCHHzcVCTyeSeB+j
- f7h5ZnwF
- J6CjrmQfWFt6L09rG3Gdad+JTf90Q/cUr9wNoPS6KSUD4UO7LjUxDhBfiIaSy1u7o5MLG2Za+4ALDndNuD1yw9l5Z98wU1NMC74LmHIzEkhQNQ1XGUcWlId9k4SfH7VZ60mUhT9tirWjHiKv+IfXY+9oC25+MfTFy8e429ERw0pHLUw7lK1P3X7quYGNa0e8/PhCaUCpNy/26tDtfRpnv0bqlPvTYCilaLQwJVDJYmbvMmA/fww4h7Y3FxgocMTI3hbPNJ1tgR5PKwsUqKLHkhWKH0ji2qZ2EFvqs5d5SD+KJOyxBuYNGgClHWR+ic79YRl45yjq7kfuuhexl/0njhTcfVRZ4S9uNxZByyDxBRfnycknUCR3+UN+YKsiGsuZ10X9ZCZB8uX67y8JR8z3rjg5AqdDvsCxgR0KLeVyrUHeJcFvTQXdPcBiAUS5aGaiWHIB9KsqauOCTepyQpKR7uohhGz1EBjbAQnOkvQZzqSVXgKTh0rFPUbhyEvK3VjGtNvwBu/7rhDXk89TVb1n9dHfhBTHWn7wUrOQ1QLmcZva5vXE=
+X-HE-Tag: 1761638099-306258
+X-HE-Meta: U2FsdGVkX1/BUtgCvlpibnnaKjGTeW+2NQhx4YokZtN4NaWHV9sO1psxls+btpnJ+GUwj3JD6kBeNSHTDRlADS1AsplLjYorhBm9L4xqeomVhXMDSJvVL6UmQFOQkwD3nyRHDzm6GesNzrAnJx1W3PAZAvUCjAVmPRm+lVGPEr68HdYsKyPYszWG2qSFwGtvrkb9+QcYf6fBs1w/IuD+VBe1/zsWpcNZE1sxlIXmZPu9tSxe3Da1GtFcUotRzbz6avBiOJaenGs7Hn2LNgwMFXK87dt8i1GDosDXK6Dun9Xbqrp62hCq+SInpdSkX4PLD7z27/6ZCjokOWWJ/yEPPyCmBHsAtsWaCjR+lRbRU8jBizXBnw5lHwh/kWwgnx71bqbYGNWKVlzW4o3+iU1W1iPj++8PoB8f/9ZgE2pc4QS/cUJ6D+gqZZsY6rTlznH6ybqq5x/94gvb4GorKzNsvJ8jruzpD50JdTj5Kut2ttMtDnhjcQjSaMBieuCoaEhXKcQV2lckQ50B+y58cbLZBHWLbuFsisHgLkID+GtWd4NcyQ/ZDxLJp3GKmxW0ZB9AWDinwNyF30hMQ+UqH9LuzKt9mjlc5fMzPjAs9p7f5ZQo6YCCkq8ZzyAqEzMfq1QD2PtCrPX6tm5sVNimEgRzb7/9PvQihXERhQqOUgOSpiMPhip1BsMs1iwvGrEIzNqdf77WgNF52wxp4Yt/CKW83Om6/XTGsG2OD5KrVqyWsYc/Oux14989T6X2vNcEeW2W0lnwKt8Cw6qBZMfs7sDQ+PWrGSVW+bLrcRGNQVVpXu9yw/6fRgDesUQ3mF60iTJCDObs5WjMPFoCIyZxdvRU+NrAH/mzGQ4uzrHJw3wPnvhFfwektO3Q9+zKaY64nCGSlrN1DgwZzszj7KEMdsoNBKg92gJoBm8slDp3zHeJKqSR/mTc53xV9bZzSsgMOVqsJTaYkfpaF7norBdKNGy
+ TgdrdrdP
+ j7YOb8NbKCndXzXdocURXbwq7puCp2vxF3B/ZCQwn0mQm5mxKMGuC3dpyurXEywGImfjA5MMnvd5shEEvH8TdvNdO2q/G0rT7UQh4l7X1CYKG+q27pzBv5SG7LN9cAbB9h1xZ6mOlLzpJ2QUMKPeJt4qeHFDEj/OjxdZpiHfs9e54CpVXrHa4cniamQHEu0Yiuh8z1sW96F6OsXSx11zrlEDuM2QYPPy7z8OUBa/TFPxUjyKnABmQdHrKcIlUyb9T2pk8dZMw/du6fYfXgskPcU+AREAo3V3BV7MSfkFCOk8E00O1E7TkgNj70/964SzQ72xVS3i/woe3dYbJnSO6oWKuG/4r3Si+6ebb7hUzF8HiG9pVtPUFVhSJsTxtBcnDeUtJdQIBbJwSnQKhyE9hQplRlKTs7zob10IDPnV05nktI/9A+Qlh2Bfi2REch2YhxUFhb3h0VsqK6IzaWW9crQqc1icS5/16MknMZPyYbK4n78ieWOQUIaN+ZCtp5kQUllgkC2ykeVABjWE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,38 +99,285 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-lru_gen_age_node() checks the reclaimability of a node using
-lruvec_is_reclaimable() when min_ttl_ms is non-zero, but if min_ttl_ms
-is zero, it unconditionally determines that the node is reclaimable.
+Thanks for the reply.
 
-I think we should still call lruvec_is_reclaimable() to check
-reclaimability even if min_ttl_ms is zero.
-Otherwise, we'll miss the opportunity to trigger an OOM kill in
-lru_gen_age_node(), which will cause the problem I reported.
+在 2025/10/23 19:54, Miaohe Lin 写道:
+> On 2025/10/16 18:18, Longlong Xia wrote:
+>> From: Longlong Xia <xialonglong@kylinos.cn>
+>>
+>> When a hardware memory error occurs on a KSM page, the current
+>> behavior is to kill all processes mapping that page. This can
+>> be overly aggressive when KSM has multiple duplicate pages in
+>> a chain where other duplicates are still healthy.
+>>
+>> This patch introduces a recovery mechanism that attempts to
+>> migrate mappings from the failing KSM page to a newly
+>> allocated KSM page or another healthy duplicate already
+>> present in the same chain, before falling back to the
+>> process-killing procedure.
+>>
+>> The recovery process works as follows:
+>> 1. Identify if the failing KSM page belongs to a stable node chain.
+>> 2. Locate a healthy duplicate KSM page within the same chain.
+>> 3. For each process mapping the failing page:
+>>     a. Attempt to allocate a new KSM page copy from healthy duplicate
+>>        KSM page. If successful, migrate the mapping to this new KSM page.
+>>     b. If allocation fails, migrate the mapping to the existing healthy
+>>        duplicate KSM page.
+>> 4. If all migrations succeed, remove the failing KSM page from the chain.
+>> 5. Only if recovery fails (e.g., no healthy duplicate found or migration
+>>     error) does the kernel fall back to killing the affected processes.
+>>
+>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
+> Thanks for your patch. Some comments below.
+>
+>> ---
+>>   mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 246 insertions(+)
+>>
+>> diff --git a/mm/ksm.c b/mm/ksm.c
+>> index 160787bb121c..9099bad1ab35 100644
+>> --- a/mm/ksm.c
+>> +++ b/mm/ksm.c
+>> @@ -3084,6 +3084,246 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
+>>   }
+>>   
+>>   #ifdef CONFIG_MEMORY_FAILURE
+>> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
+>> +{
+>> +	struct ksm_stable_node *stable_node, *dup;
+>> +	struct rb_node *node;
+>> +	int nid;
+>> +
+>> +	if (!is_stable_node_dup(dup_node))
+>> +		return NULL;
+>> +
+>> +	for (nid = 0; nid < ksm_nr_node_ids; nid++) {
+>> +		node = rb_first(root_stable_tree + nid);
+>> +		for (; node; node = rb_next(node)) {
+>> +			stable_node = rb_entry(node,
+>> +					struct ksm_stable_node,
+>> +					node);
+>> +
+>> +			if (!is_stable_node_chain(stable_node))
+>> +				continue;
+>> +
+>> +			hlist_for_each_entry(dup, &stable_node->hlist,
+>> +					hlist_dup) {
+>> +				if (dup == dup_node)
+>> +					return stable_node;
+>> +			}
+>> +		}
+>> +	}
+> Would above multiple loops take a long time in some corner cases?
 
-https://lore.kernel.org/linux-mm/20251022135735.246203-1-akinobu.mita@gmail.com/
+Thanks for the concern.
 
-The attached patch made the changes mentioned above and worked around
-the problem.
+I do some simple test。
 
----
- mm/vmscan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Test 1: 10 Virtual Machines (Real-world Scenario)
+Environment: 10 VMs (256MB each) with KSM enabled
 
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index c922bad2b8fd..e1a88ed4e0b0 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4148,7 +4148,7 @@ static void lru_gen_age_node(struct pglist_data *pgdat, struct scan_control *sc)
- {
- 	struct mem_cgroup *memcg;
- 	unsigned long min_ttl = READ_ONCE(lru_gen_min_ttl);
--	bool reclaimable = !min_ttl;
-+	bool reclaimable = false;
- 
- 	VM_WARN_ON_ONCE(!current_is_kswapd());
- 
--- 
-2.43.0
+KSM State:
+pages_sharing: 262,802 (≈1GB)
+pages_shared: 17,374 （≈68MB）
+pages_unshared = 124,057 (≈485MB)
+total ≈1.5GB
+chain_count = 9, not_chain_count = 17152
+Red-black tree nodes to traverse:
+17,161 (9 chains + 17,152 non-chains)
+
+Performance:
+find_chain: 898 μs (0.9 ms)
+collect_procs_ksm: 4,409 μs (4.4 ms)
+Total memory failure handling: 6,135 μs (6.1 ms)
+
+
+Test 2: 10GB Single Process (Extreme Case)
+Environment: Single process with 10GB memory,
+1,310,720 page pairs (each pair identical, different from others)
+
+KSM State:
+pages_sharing: 1,311,740 （≈5GB)
+pages_shared: 1,310,724 （≈5GB)
+pages_unshared = 0
+total ≈10GB
+Red-black tree nodes to traverse:
+1,310,721 (1 chain + 1,310,720 non-chains)
+
+Performance:
+find_chain: 28,822 μs (28.8 ms)
+collect_procs_ksm: 45,944 μs (45.9 ms)
+Total memory failure handling: 46,594 μs (46.6 ms)
+
+Summary:
+The find_chain function shows approximately linear scaling with the 
+number of red-black tree nodes.
+With a 76x increase in nodes (17,161 → 1,310,721), latency increased by 
+32x (898 μs → 28,822 μs).
+representing 62% of total memory failure handling time (46.6ms).
+However, since memory failures are rare events, this latency may be 
+acceptable
+as it does not impact normal system performance and only affects error 
+recovery paths.
+
+
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>> +static struct folio *find_healthy_folio(struct ksm_stable_node *chain_head,
+>> +		struct ksm_stable_node *failing_node,
+>> +		struct ksm_stable_node **healthy_dupdup)
+>> +{
+>> +	struct ksm_stable_node *dup;
+>> +	struct hlist_node *hlist_safe;
+>> +	struct folio *healthy_folio;
+>> +
+>> +	if (!is_stable_node_chain(chain_head) || !is_stable_node_dup(failing_node))
+>> +		return NULL;
+>> +
+>> +	hlist_for_each_entry_safe(dup, hlist_safe, &chain_head->hlist, hlist_dup) {
+>> +		if (dup == failing_node)
+>> +			continue;
+>> +
+>> +		healthy_folio = ksm_get_folio(dup, KSM_GET_FOLIO_TRYLOCK);
+>> +		if (healthy_folio) {
+>> +			*healthy_dupdup = dup;
+>> +			return healthy_folio;
+>> +		}
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>> +static struct page *create_new_stable_node_dup(struct ksm_stable_node *chain_head,
+>> +		struct folio *healthy_folio,
+>> +		struct ksm_stable_node **new_stable_node)
+>> +{
+>> +	int nid;
+>> +	unsigned long kpfn;
+>> +	struct page *new_page = NULL;
+>> +
+>> +	if (!is_stable_node_chain(chain_head))
+>> +		return NULL;
+>> +
+>> +	new_page = alloc_page(GFP_HIGHUSER_MOVABLE | __GFP_ZERO);
+> Why __GFP_ZERO is needed?
+Thanks for pointing this out. I'll remove it.
+
+>> +	if (!new_page)
+>> +		return NULL;
+>> +
+>> +	copy_highpage(new_page, folio_page(healthy_folio, 0));
+>> +
+>> +	*new_stable_node = alloc_stable_node();
+>> +	if (!*new_stable_node) {
+>> +		__free_page(new_page);
+>> +		return NULL;
+>> +	}
+>> +
+>> +	INIT_HLIST_HEAD(&(*new_stable_node)->hlist);
+>> +	kpfn = page_to_pfn(new_page);
+>> +	(*new_stable_node)->kpfn = kpfn;
+>> +	nid = get_kpfn_nid(kpfn);
+>> +	DO_NUMA((*new_stable_node)->nid = nid);
+>> +	(*new_stable_node)->rmap_hlist_len = 0;
+>> +
+>> +	(*new_stable_node)->head = STABLE_NODE_DUP_HEAD;
+>> +	hlist_add_head(&(*new_stable_node)->hlist_dup, &chain_head->hlist);
+>> +	ksm_stable_node_dups++;
+>> +	folio_set_stable_node(page_folio(new_page), *new_stable_node);
+>> +	folio_add_lru(page_folio(new_page));
+>> +
+>> +	return new_page;
+>> +}
+>> +
+> ...
+>
+>> +
+>> +static void migrate_to_target_dup(struct ksm_stable_node *failing_node,
+>> +		struct folio *failing_folio,
+>> +		struct folio *target_folio,
+>> +		struct ksm_stable_node *target_dup)
+>> +{
+>> +	struct ksm_rmap_item *rmap_item;
+>> +	struct hlist_node *hlist_safe;
+>> +	int err;
+>> +
+>> +	hlist_for_each_entry_safe(rmap_item, hlist_safe, &failing_node->hlist, hlist) {
+>> +		struct mm_struct *mm = rmap_item->mm;
+>> +		unsigned long addr = rmap_item->address & PAGE_MASK;
+>> +		struct vm_area_struct *vma;
+>> +
+>> +		if (!mmap_read_trylock(mm))
+>> +			continue;
+>> +
+>> +		if (ksm_test_exit(mm)) {
+>> +			mmap_read_unlock(mm);
+>> +			continue;
+>> +		}
+>> +
+>> +		vma = vma_lookup(mm, addr);
+>> +		if (!vma) {
+>> +			mmap_read_unlock(mm);
+>> +			continue;
+>> +		}
+>> +
+>> +		if (!folio_trylock(target_folio)) {
+> Should we try to get the folio refcnt first?
+
+Thanks for pointing this out. I'll fix it.
+
+>> +			mmap_read_unlock(mm);
+>> +			continue;
+>> +		}
+>> +
+>> +		err = replace_failing_page(vma, &failing_folio->page,
+>> +				folio_page(target_folio, 0), addr);
+>> +		if (!err) {
+>> +			hlist_del(&rmap_item->hlist);
+>> +			rmap_item->head = target_dup;
+>> +			hlist_add_head(&rmap_item->hlist, &target_dup->hlist);
+>> +			target_dup->rmap_hlist_len++;
+>> +			failing_node->rmap_hlist_len--;
+>> +		}
+>> +
+>> +		folio_unlock(target_folio);
+>> +		mmap_read_unlock(mm);
+>> +	}
+>> +
+>> +}
+>> +
+>> +static bool ksm_recover_within_chain(struct ksm_stable_node *failing_node)
+>> +{
+>> +	struct folio *failing_folio = NULL;
+>> +	struct ksm_stable_node *healthy_dupdup = NULL;
+>> +	struct folio *healthy_folio = NULL;
+>> +	struct ksm_stable_node *chain_head = NULL;
+>> +	struct page *new_page = NULL;
+>> +	struct ksm_stable_node *new_stable_node = NULL;
+>> +
+>> +	if (!is_stable_node_dup(failing_node))
+>> +		return false;
+>> +
+>> +	guard(mutex)(&ksm_thread_mutex);
+>> +	failing_folio = ksm_get_folio(failing_node, KSM_GET_FOLIO_NOLOCK);
+>> +	if (!failing_folio)
+>> +		return false;
+>> +
+>> +	chain_head = find_chain_head(failing_node);
+>> +	if (!chain_head)
+>> +		return NULL;
+> Should we folio_put(failing_folio) before return?
+
+Thanks for pointing this out. I'll fix it.
+
+> Thanks.
+> .
+Best regards,
+Longlong Xia
+
+
 
 
