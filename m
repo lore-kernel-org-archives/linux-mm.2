@@ -4,109 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6021CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:51:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D20CDCCF9E5
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 01:11:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D8EAB800F0; Mon, 27 Oct 2025 20:49:20 -0400 (EDT)
+	id 165BF800F3; Mon, 27 Oct 2025 21:11:33 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1818800E4; Mon, 27 Oct 2025 20:49:20 -0400 (EDT)
+	id 13CDC800E4; Mon, 27 Oct 2025 21:11:33 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BB87F800F0; Mon, 27 Oct 2025 20:49:20 -0400 (EDT)
+	id 052CA800F3; Mon, 27 Oct 2025 21:11:33 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9A035800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:49:20 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6FDBE1A0305
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:49:20 +0000 (UTC)
-X-FDA: 84045689280.09.271002A
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	by imf07.hostedemail.com (Postfix) with ESMTP id C5FB34000E
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:49:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=geG+Uqpk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id E9404800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 21:11:32 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 8EF6EC02EC
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:11:32 +0000 (UTC)
+X-FDA: 84045745224.29.FB99E54
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E70541C0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:11:30 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=D9zO8tc5;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761612558;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761613891;
+	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sCvXsZaHI1SIHLVxQNQkHzVv1jTQnPjDd1JLHsOJetk=;
-	b=gQR6U6OH7tUIxNW2yj3ypRFHY9o5xsuxaF6nYegXpCXorTkKG6z/7lYfmcG1Ku/4qeQqr6
-	kE/mfHc9CiT2/3iDIujf9j68XOZ0vnRHvvY319Yj3PqSu5GXZImKe9zGSENG0hmlYoEKXA
-	jjgOmeAFCtTlZuczkxfTS7lyhpDZBYU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761612558; a=rsa-sha256;
+	bh=fTvrbo3mOzTGCel3agLEDWiwlpX39p3niSGJ7gA+srw=;
+	b=nIYvawQWsHkLPa4xGnvlNWUDTBsq+6GB9VaVQwyN9i8R6Lp5xBUqVnQ6K3sJoD6P8TdmVT
+	EsTtN3MUJA+RCnYEc19oF0lM6EkisSRBUOUE7Gj3oJrkTLzRtKB6zRnMuceT65EhX/93Ki
+	LBNqltZg6riaF9gzcGa/nLKkX1FEk1g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761613891; a=rsa-sha256;
 	cv=none;
-	b=0aX2RNPCp6hKDObDUsuCGWVs/JpZW9FHOGpM9auRYBeLY/vFcfGVDxKtbD4SK4wlYv8kVg
-	dRFVyCHGJcWLRf4Wt0WOVSNThqKixBmVVZ/8UV/2tR/JxosQuzE+GtOiLGjD8eO2CQAeZn
-	mz//EhNxhyBXRN0hOsFASJphqLyorkE=
+	b=myqZ5wF+vBGtdVOKBzUmPnuUSEeA6Vz8uLF+trlAUaZ9fM9otXFQuKDvPxI/EimT6RNG0g
+	b5j2NwEHMTJqwdpxuGd+/g7A//IfzB/ycQKg/RYBBKjO80HhVe/aVqFGblMGvbU+vd9KZo
+	bAvfvVMuEWROnS88zbaoWtl6K21JqE0=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=geG+Uqpk;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf07.hostedemail.com: domain of surenb@google.com designates 209.85.160.170 as permitted sender) smtp.mailfrom=surenb@google.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4ea12242d2eso109581cf.1
-        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 17:49:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761612558; x=1762217358; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sCvXsZaHI1SIHLVxQNQkHzVv1jTQnPjDd1JLHsOJetk=;
-        b=geG+UqpkEVfYesMvRXvotg81HYsqYSUGeqQw8DNbxDSOhTsiC33kzR5md2b6zphfKB
-         Ei/DYr8Lfjng30Dv8g+OVFtX37MQseD+WsXNk7WZ0CFSvClouGLrTc40X/gBJI4IKODk
-         rrh8TTNLLa21NgB0i/LjrnFmr8huLqwXPE5YbXkib8E/QLcPz4YkwBUyTXaQJn7sQexj
-         mHtfcagnZ+SmPj5dEq74aAuTNuxdNphpR5S2l6iSuPjkNN+D2rHQcJI5dvR2BgcQfskL
-         DkSS85E/SiSCxaEtw/3Dlz2lhjqTl2zWplfXWrQY2fcAwFcZQrMBPSpSNV0JdOtp9zyS
-         3Nvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761612558; x=1762217358;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sCvXsZaHI1SIHLVxQNQkHzVv1jTQnPjDd1JLHsOJetk=;
-        b=CfNQnNxMmARsdftF4I0Gn/7r7+MnJWOxlZYcTQtW2wbaw5BKe2tzKP/jj3rvmXkO5Y
-         yPEqVhnZmdoZ0ExRZ78LKL4ITDD1FitKY9HXfLPUQ9iwE6Yi895PrbbOzwTUwvEQ8Vt4
-         lYFn2Ko58vfwDXZWy99uTqBVg0EU99BPXGv6TUKQGztF/SI86edIXzXnNIbPKdZu/XQy
-         8DEL9MsJgzcyI6K0xgzzFryuaZuY+diperZtvWek9kVQT0RzuXcdVbnN+YsPfliVpUWC
-         MOOc7JJA1xjabUHEdKyaC7lXQ0bKOLWU1mx/SL6aCNtvUIZiF/CIGQgw+fzQgeE9qx0F
-         JMbw==
-X-Forwarded-Encrypted: i=1; AJvYcCWJ2uA0XPh/QsGEvXcZ5degSIDa9dsDCfWdErHFMLkXeAEjrZgVWq8FmRafcHKlkkXr5qrIDWQFsA==@kvack.org
-X-Gm-Message-State: AOJu0YwVDPYjemlqwIy2MNwMYKBKBdngxyQrVhonRM+16cISTvszMsNt
-	jjacx0m+GR6UO4DDGFkDHIipgx/nksUQtzpmbkGsbB6UQbBmD8Vga7adoDJcLSSRX0JjsKZXWAF
-	QEMLRy10gEgkZsJ4d6WWROFjpZ7i8xIGi79y3gUrg
-X-Gm-Gg: ASbGnct4mbFrhyCnynxgsGr/ZF5JT35QcO0gUGzFor04qzyrt7cDMxoScz5ky0FdpLJ
-	iR9L3xjHWtDeJ8rMUJ4S7/UCr65tsh+KJ54aYHUUwyhn1OkJXzWFjxjL6jKefBFNWVXJ6f7SxMa
-	yTrs/e/qvK2wwTF/ws7XarT4v+3+Xer83vXJZRP7Prs/QQyEqu4TgrzoxzJhMzsi9QL/hNlRAbV
-	enEX/gqWxiTm3cZLkZybUaB+uL59pJckt7cTAnKAzyOz8JYxgtiwxRUuvw=
-X-Google-Smtp-Source: AGHT+IEorvkOTXjQ2KD2Ost4McwQpoPr3o5PCGxowyBvDtZaGkaLLqZcQVCC+mQgIYrmlP9rxCJ4mPNNjDyS4LIvTSo=
-X-Received: by 2002:ac8:7d02:0:b0:4b7:9a9e:833f with SMTP id
- d75a77b69052e-4ed09f3da7bmr2104801cf.7.1761612557521; Mon, 27 Oct 2025
- 17:49:17 -0700 (PDT)
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=D9zO8tc5;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description;
+	bh=fTvrbo3mOzTGCel3agLEDWiwlpX39p3niSGJ7gA+srw=; b=D9zO8tc5gojcx+KHqFNaPkoIH8
+	HHaK8RJUotq8p63zU0QdQ5l1ibCN6Gm+22L9dMB5TkqU1nZ+tDpYqqhLAtKmjrRudjrwZCbnoOPUl
+	N+/rvq82fBDxKGh37AshE2wlhJuVmZbGrCR5QtNrDJ4w8e3Y/ftwwStw5Ci9oczcUTw1154zUxnyf
+	PFvA5o6gQl6XTCnHGwwYFLFzcz/V/fKUDTVoOYLlGCEtsMICFNt18/QgY8poJTlBG+s1sivhMjmz+
+	Yx61PgGITTnRXu4wk6RCB+rsG5gHe67UU88g86eccy6z129G1NC12olc7ywZCmrRufHifBOW+gTXJ
+	SUgUxRxQ==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vDXqp-00000001eXB-40ia;
+	Tue, 28 Oct 2025 00:46:15 +0000
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org,
+	brauner@kernel.org,
+	jack@suse.cz,
+	raven@themaw.net,
+	miklos@szeredi.hu,
+	neil@brown.name,
+	a.hindborg@kernel.org,
+	linux-mm@kvack.org,
+	linux-efi@vger.kernel.org,
+	ocfs2-devel@lists.linux.dev,
+	kees@kernel.org,
+	rostedt@goodmis.org,
+	gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	paul@paul-moore.com,
+	casey@schaufler-ca.com,
+	linuxppc-dev@lists.ozlabs.org,
+	john.johansen@canonical.com,
+	selinux@vger.kernel.org,
+	borntraeger@linux.ibm.com,
+	bpf@vger.kernel.org
+Subject: [PATCH v2 13/50] convert hugetlbfs
+Date: Tue, 28 Oct 2025 00:45:32 +0000
+Message-ID: <20251028004614.393374-14-viro@zeniv.linux.org.uk>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
-References: <20251024090902.1118174-1-lorenzo.stoakes@oracle.com>
-In-Reply-To: <20251024090902.1118174-1-lorenzo.stoakes@oracle.com>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Mon, 27 Oct 2025 17:49:06 -0700
-X-Gm-Features: AWmQ_bltDXnsUE1AyN7X4o_jxjknljjL692Itljid0i8j3vBpWBt3HxocYIVeB0
-Message-ID: <CAJuCfpG2f40hosmWVcgTs7O5jSgLNp8w4Mt50N2+t1k9CLLMtQ@mail.gmail.com>
-Subject: Re: [PATCH] mm/vma: small VMA lock cleanups
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: o7m79foncumq9gq9f3ydw35jrjnsb8k5
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C5FB34000E
-X-Rspamd-Server: rspam02
-X-Stat-Signature: s6wmzphffzh6kf4ajs5ob9ossujjg6ds
-X-HE-Tag: 1761612558-559245
-X-HE-Meta: U2FsdGVkX19CXmjDns8iSz90tl7qb4QBwPwUI6vMVuWr5TcR8pDPKeZKj1cKhIe9yAPusWmdP2eoFzH08bK1YutlMak8Pl9Ie3UUX/NI9DfYKtZgCAkLi9+6d6QsF9tQxfJixnGRBqXGbwh55XQ5x+3M2+7I7V0WqPK9Zx3oDF5Ywfxz14zS4ISX88gIMVyfff1J5+KipRcJ7Ym2XoOqnSVqGldZIdYCL6mEElMyejxdAU30HT4W82ZTOIi69dnw3VSSTEKC5L7/IieqANJsvRIclhTOTGyhTpFgJ8ZBAdZpGuJTIA1zHDDtzE+2EUbvIoEkIlxVsOG0Qq0f/j7kyqnMp3p3LamSxgwWYKwYI66esKHyxgCLfNcDbSdXYKeNaHYPrKRc9amBSKgD9uKH4zSzQPssvndF+RzVW7ixKHKPKJFm6qe8bRgdGavbTSmJxvfpptShHdi7scp8yjsXnYpOQePt8aRCGmhWfTstTtUXd9kJdfPf5Yk85ICH2AElkLj1bOdIvcxCi5iUfKShK75V6y4FGE9171d4z+28UafUPH0hbabTSSE75sHhK7msdbDQnRg3XmuoWQNM+fEzWzJ5uK9QOl2FfWfn+hik6ugmS8qDnKVTsa1lKZOd7nqVr2DVlMPg//3bGULI+OsgsUCwr5ql8rGOI1mGXZi8WW0gYKODXfIM/o4vkGxIfPJlvZLq1/3ntKSkIVwpW22yyLgJzNvMdxAOsqBGeuHWZONqB2nquKARsplf9gzvATda7OXKCIlk/ai7KDgndAFrQ6o2krIrTZQTVxI3i3jvhBotUZRrmWj8bDa1PkliZDio+mopHcx3dDVYZUO78Il0ezOj8jOz/QgmR4wBvNMxS5hPTUptiSh/QSZfZEh7mHoLwgGkuvlyxgCpA0zJ4m465Sxi5m0YTcBDVCxQKmyZk6ukrSmp/joSw6TXuss1v/f7
+X-Rspamd-Queue-Id: E70541C0005
+X-HE-Tag: 1761613890-450909
+X-HE-Meta: U2FsdGVkX1/AXo/dy6FCopWz0Ho70NKwdBzEaLS4pQNyKWEtjg8AYWyHChjiSVTwV4DXzycbPEXdFQsdKfDgh78ztBboRdFDzLzTzDNF3AvnXsfTb0hZtWtg5v9BlpObuH5c/RTCXd/Y16rBsWNKAVKqQOxM5dci+09X2V77gngUkRrf4flis54SflHXPykHe8SYeZZZoLhA3ud6FDenG9hFb9Au1eE6WNfi7e7TABgN9N+pcEvb8R/SorjBoEgHKNFOqn9gaZfahuugDLdayXmssiQWvIHI3M5zW+d2v7JhiVKLj1M9BN8fTLeFDeiKPMxC2xGu8FX551mE+uKRIIbnPSjFLT71IpcSFeeC/Rldv3Ds4E8QCx2LCgAKlhO+KcKYaWB0CctdcTE46klAc5n1P99KyFkitFGNUc2wqVrmvMD/GcfyUuqEW25GwkSJxPPsYEGaeqVE1Ei1HpRh2oljz36JNMaryEPwwp6y7wR7NsG/iLsOJswpfURj+fBSg88Gf9y0mhU2Gt2r7mmr5FWO40Sz5LwBNYn2olQIRMPOOwZK5R9DCn5D8qBBGths5FsHP4YQQm1dtSw+YYDAE0C/FpxOqg+BGKbm/BsoiVEUihPOvmMqH+pEVmPyYMaS4dLGgIRrS0rxafT4toyelScvYk4MewZLdoBgf0Jyle/N8zPVVXWCkKyAQLNMKgJWyP1jDARPqQ6lmahLkcbNtiGYlay8iurj0VdxUkkFmBi5VtyQzsqWZMuVV2tkHPb6/1KW6asW8k6UpQLXE/z22eoBQ+gE4BapxZClP4lrUzOWF9Qhd+kpmPHQOdMPL2tBKUtOG44VIF8xhtZmaRFt7f4GsDJEMW5xMWw/KLNhkWwI9tB3PAUkVi9x85NDFCQRxpkTo/YaZ7PguPWTSLCNZ0XlBZyKX+pYz7S1mvr8mhWHW06UcNW65Vaej3NyOE/6mWpwuoE9WnLmqpUS8C4
+ /SiMGQAF
+ 8/pjIouTAXrbx3xX/4xS44PmL710bCZWBGMAW/j0ywRdDwyF7RNnlg8sn16g5Ctv4mvpGvM9J0PmfKaaYtfrlkr8ZPWsbuK/hcND+WeAFQkqO91rBY5LEkjhkDaHjTTE307rJD8CJDbQgP/kLzQilvvAIFSFdRgQjadRI5WkmdG5Kaj/7OrRW6Jrkc1+OUukfYIZASjh08mgtL5OIcCB1Wd/Ep56/NrOsGczOFmyiTzHfnSRnFucNM6zooJ19IHDy47e7sbG8UtCyd5vFaMjGyN4o3G2LnxRUd8K2Skgezl2nDpAbquzTKXDhe+3qUSCxBs0+BtE4iv5ksl5es3bk4MKBQJJwEu+ACDLswcARQExzMr7U++f9A+EiQbhy3jb8s/8PB04QCQsjFPA+1GBVPOGT0LOlEPtfr4/5q6XvUE80SPyObW1ia2sv5ETi7hdA+YKUfv6R5lUigwI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,75 +108,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 2:09=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> We declare vma_start_read() as a static function in mm/mmap_lock.c, so
-> there is no need to provide a stub for !CONFIG_PER_VMA_LOCK.
->
-> __is_vma_write_locked() is declared in a header and should therefore be s=
-tatic
-> inline.
->
-> Put parens around (refcnt & VMA_LOCK_OFFSET) in is_vma_writer_only() to m=
-ake
-> precedence clear.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Very much ramfs-like; dget()+d_instantiate() -> d_make_persistent()
+(in two places) is all it takes.
 
-Thanks for cleaning this up!
+NB: might make sense to turn its ->put_super() into ->kill_sb().
 
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+---
+ fs/hugetlbfs/inode.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
-> ---
->  include/linux/mmap_lock.h | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
->
-> diff --git a/include/linux/mmap_lock.h b/include/linux/mmap_lock.h
-> index 2c9fffa58714..e05da70dc0cb 100644
-> --- a/include/linux/mmap_lock.h
-> +++ b/include/linux/mmap_lock.h
-> @@ -130,7 +130,7 @@ static inline bool is_vma_writer_only(int refcnt)
->          * a detached vma happens only in vma_mark_detached() and is a ra=
-re
->          * case, therefore most of the time there will be no unnecessary =
-wakeup.
->          */
-> -       return refcnt & VMA_LOCK_OFFSET && refcnt <=3D VMA_LOCK_OFFSET + =
-1;
-> +       return (refcnt & VMA_LOCK_OFFSET) && refcnt <=3D VMA_LOCK_OFFSET =
-+ 1;
->  }
->
->  static inline void vma_refcount_put(struct vm_area_struct *vma)
-> @@ -183,7 +183,7 @@ static inline void vma_end_read(struct vm_area_struct=
- *vma)
->  }
->
->  /* WARNING! Can only be used if mmap_lock is expected to be write-locked=
- */
-> -static bool __is_vma_write_locked(struct vm_area_struct *vma, unsigned i=
-nt *mm_lock_seq)
-> +static inline bool __is_vma_write_locked(struct vm_area_struct *vma, uns=
-igned int *mm_lock_seq)
->  {
->         mmap_assert_write_locked(vma->vm_mm);
->
-> @@ -281,9 +281,6 @@ static inline bool mmap_lock_speculate_retry(struct m=
-m_struct *mm, unsigned int
->         return true;
->  }
->  static inline void vma_lock_init(struct vm_area_struct *vma, bool reset_=
-refcnt) {}
-> -static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm=
-,
-> -                                                   struct vm_area_struct=
- *vma)
-> -               { return NULL; }
->  static inline void vma_end_read(struct vm_area_struct *vma) {}
->  static inline void vma_start_write(struct vm_area_struct *vma) {}
->  static inline void vma_assert_write_locked(struct vm_area_struct *vma)
-> --
-> 2.51.0
->
+diff --git a/fs/hugetlbfs/inode.c b/fs/hugetlbfs/inode.c
+index f42548ee9083..83273677183d 100644
+--- a/fs/hugetlbfs/inode.c
++++ b/fs/hugetlbfs/inode.c
+@@ -975,8 +975,7 @@ static int hugetlbfs_mknod(struct mnt_idmap *idmap, struct inode *dir,
+ 	if (!inode)
+ 		return -ENOSPC;
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+-	d_instantiate(dentry, inode);
+-	dget(dentry);/* Extra count - pin the dentry in core */
++	d_make_persistent(dentry, inode);
+ 	return 0;
+ }
+ 
+@@ -1023,10 +1022,9 @@ static int hugetlbfs_symlink(struct mnt_idmap *idmap,
+ 	if (inode) {
+ 		int l = strlen(symname)+1;
+ 		error = page_symlink(inode, symname, l);
+-		if (!error) {
+-			d_instantiate(dentry, inode);
+-			dget(dentry);
+-		} else
++		if (!error)
++			d_make_persistent(dentry, inode);
++		else
+ 			iput(inode);
+ 	}
+ 	inode_set_mtime_to_ts(dir, inode_set_ctime_current(dir));
+@@ -1483,7 +1481,7 @@ static struct file_system_type hugetlbfs_fs_type = {
+ 	.name			= "hugetlbfs",
+ 	.init_fs_context	= hugetlbfs_init_fs_context,
+ 	.parameters		= hugetlb_fs_parameters,
+-	.kill_sb		= kill_litter_super,
++	.kill_sb		= kill_anon_super,
+ 	.fs_flags               = FS_ALLOW_IDMAP,
+ };
+ 
+-- 
+2.47.3
+
 
