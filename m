@@ -4,175 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F230ACCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:06:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42331CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:11:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5C92280172; Tue, 28 Oct 2025 12:06:30 -0400 (EDT)
+	id 647D180173; Tue, 28 Oct 2025 12:11:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 579EA8013F; Tue, 28 Oct 2025 12:06:30 -0400 (EDT)
+	id 61FC48013F; Tue, 28 Oct 2025 12:11:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 468E180172; Tue, 28 Oct 2025 12:06:30 -0400 (EDT)
+	id 55C8980173; Tue, 28 Oct 2025 12:11:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 34CAA8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:06:30 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C5E6D13B110
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:06:29 +0000 (UTC)
-X-FDA: 84048000498.22.ABEA4C7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 3AB368000B
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:06:27 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BI6Oyx+O;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 473108013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:11:02 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 12B2712AB77
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:11:02 +0000 (UTC)
+X-FDA: 84048011964.15.034579E
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 59909180002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:11:00 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SyxgsjzA;
+	spf=pass (imf06.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761667587;
+	s=arc-20220608; t=1761667860;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7fEiTV8vRb6ThfDpOr4lY+uCNfpmz0C8bm6VrusAPB8=;
-	b=ZGrLCphOFbyVyPotuusIeOJBGEBIHp6errAdZdsNYgJC2wc0STwU4/9CccS0yo/Oc83Dnv
-	xt8rzGvU/IOQTfVdE6mjs+ZCjaFlLQJsAH5VFeHXF8obHYTsmwrxGEc0bgQ53Kb8KGHe79
-	UrssuBjynpMpLXsfpkaVTbun5+BlsFY=
+	bh=D4PZj+Z/AUd5TD2H5mliXY1n/lg/WeR66f3O6rTVgL0=;
+	b=6wj34v88tqP+79YQTPSss7zQ9GaDFt/xvmalpRQfABSAl+3g07w8WlFE1V14DWuGbD/uSf
+	Mq05MlAW/GKqKZHwJXzlPHMY5QYuLwgOsstA4icf/ed29wNNaEOQ8heOzPKXcRhXFnKe9Z
+	H3cQcfaLza/IyXdmircMOuOPIiI0D0E=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=BI6Oyx+O;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf30.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761667587; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=SyxgsjzA;
+	spf=pass (imf06.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.178 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761667860; a=rsa-sha256;
 	cv=none;
-	b=htQ+XS+8d+6DH7IGFNu3YL6/RHdQoIKaAbHortHXDl8W9VkhpLxQ95fYkHp3eZTiW6dzB0
-	Y19h3Y/FLMj6xr/y6z3hmJW2MogXuILsCPvXiQxzGMxIXDMZvG0ppIWYbjreJLdg0FCGGS
-	CZMJ8SUQH67vMW2zX2XHIx5YNmmNYAM=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761667586;
+	b=mJetJcBUujQT6DUKwXAeqzX9DI6+9kzYxI3wQZMS3seYu2Cps9uRYmSHSaPx586kO29JA5
+	Ac28v29+OnVSMhYDfSJrxlxHf7TjqlkJ5iIbSz5CH3xulz/a99V/QZ0B30DsrKCDJbiGaf
+	oPilYyDWNDIR3hvwCu1j8CShrkdk8vA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761667858;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7fEiTV8vRb6ThfDpOr4lY+uCNfpmz0C8bm6VrusAPB8=;
-	b=BI6Oyx+OfhabXhkBY4FiABlRGffeDDssJSTgwHbO+shLCf/bWK0VHicrsaJN8ohv/agZ+V
-	1/jTFDyqFrl6GgWvfq68Kvn7nQZuA2JAUpXuHJw2H1SFeD4X0x+A4MCWLmAYnYT4Q/LKvW
-	LyQ6T1yjhi0T7wXD8ibEv9M7cQ0C/PM=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-614-5QrENtdbO4qYL5kNWiMzHQ-1; Tue, 28 Oct 2025 12:06:20 -0400
-X-MC-Unique: 5QrENtdbO4qYL5kNWiMzHQ-1
-X-Mimecast-MFC-AGG-ID: 5QrENtdbO4qYL5kNWiMzHQ_1761667579
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4770c37331fso17136485e9.3
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:06:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761667579; x=1762272379;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7fEiTV8vRb6ThfDpOr4lY+uCNfpmz0C8bm6VrusAPB8=;
-        b=f8CD7X8wqvVPpLyj4Ik0Gcukkea882tUYzM76sJsVHtGnXY3/gzvFFDdadZkvYpH3K
-         PnwfpdE32j/J0SZ3VvKfHJRH8s4K9EI9bmUBummPQ6wehpAvXhLHQGg9oErPDRD9L351
-         FiyQCkcRj9c5fD9vFwIbqHMS/OKxT5zK4kJL1RbmWnRWI0KhhiLJ5Awzmn5DGMkW7uue
-         ozCEnKRN+nD78+IdeXqvHNvwmLj3glfWa4H+0ME2WzWdqcstOav9Q6oE/yWksiac0WMx
-         3ox1K3bhajpcR+xLyWRYJ4er+bLlLMVLdUxGljqQQCOGuYK8wwNp0AHCSRP6F9Bq68IR
-         CjPg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ34sOfkdGE4swNC2xdJbhFgKxj1zLHdtD97dxFnyiucPr3mfoucxGhYbnOKf3cKI0iM1qw9VK4Q==@kvack.org
-X-Gm-Message-State: AOJu0YwqZzjDuu9pFiaJMPOX/xmQmFskoLCq9fCwbE25OBdD/p02GVD2
-	CnNGV3mrUXdg5pq4X/VZPdwFESJbdC6MfKNn6DKK9749TWzhHWOd7A/lAL432tXFLQJhj/vuWwG
-	xmUPSEa/SWj1v2IjBC+pEAsG0BGlIM7bsuq/mDCWoNhB4EPjbY1jz
-X-Gm-Gg: ASbGncvSX8lmn1DZY6kEAH+SOc2Jt1r7V3u0UP1u5ZNgHvWGa3WB2XbOXgEcJ+uzLNZ
-	AyToBII28W+SH46VITYYQVfBsMWzmdacNbuyFIY02HzXphDsFjVnb6huJ6umxlySXraQnSFL2SB
-	gyfM2XQZmmdJkWdC7UnCO6Op6SX3Zey7Cbb1jA4CpzkKrK52SeZFxk7uVDMIo7rVXf3k0R2lon9
-	w143/8A6HZRcLOFwPUY/G+gMlLeKXK74w2A4Tqwao0Amr5kVjZpkPc2QUjrKwpFYk+SNxcr8dFi
-	kR8ndhpMvnnOvYE6CmFoH9DDraPPSBWqAX0tuFDknLBPn0jKl9N2XU4T/qyRLn6tRMwQKglUbQq
-	s/NBzZQODtc6Urs5v1jEMvLWFIOGKzlGp
-X-Received: by 2002:a05:600c:3510:b0:46f:b42e:e394 with SMTP id 5b1f17b1804b1-47717e7a904mr28298515e9.41.1761667579318;
-        Tue, 28 Oct 2025 09:06:19 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFXT5BB0dlLpX7heAZB79STVaY/doPErnydPItM+XhQvOUsNw5gcKnIBB8PLR6EDjE/Vkd2kw==
-X-Received: by 2002:a05:600c:3510:b0:46f:b42e:e394 with SMTP id 5b1f17b1804b1-47717e7a904mr28298285e9.41.1761667578841;
-        Tue, 28 Oct 2025 09:06:18 -0700 (PDT)
-Received: from ?IPV6:2a09:80c0:192:0:5dac:bf3d:c41:c3e7? ([2a09:80c0:192:0:5dac:bf3d:c41:c3e7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-475dd4a36easm204397805e9.10.2025.10.28.09.06.17
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Oct 2025 09:06:18 -0700 (PDT)
-Message-ID: <b40b7eb6-4e15-475b-9a74-c3ca1560fd38@redhat.com>
-Date: Tue, 28 Oct 2025 17:06:17 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=D4PZj+Z/AUd5TD2H5mliXY1n/lg/WeR66f3O6rTVgL0=;
+	b=SyxgsjzAaP3eQ9upztzSYWfJ4WsFRqyGC+WNAlDIHsVjNFkuLy+80+fxZhJbxoF71KM/Sb
+	2dXtGFR0Z9YliT37NCbk2o9jgMkSzntlWrQPUd9ujQ4NC2Ewk5O6GCMZUgB8sGf6/K33Ov
+	Tv8wxDHZwyaHL5z9MiCmBhWGX4QJh9c=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: bot+bpf-ci@kernel.org
+Cc: akpm@linux-foundation.org,  linux-kernel@vger.kernel.org,
+ ast@kernel.org, surenb@google.com, mhocko@kernel.org,
+ shakeel.butt@linux.dev, hannes@cmpxchg.org, andrii@kernel.org,
+ inwardvessel@gmail.com, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ bpf@vger.kernel.org, martin.lau@kernel.org, song@kernel.org,
+ memxor@gmail.com, tj@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+ yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
+Subject: Re: [PATCH v2 08/23] mm: introduce BPF kfuncs to deal with memcg
+ pointers
+In-Reply-To: <2c91977fcab04be6305bf4be57e825f7e84005d16667adcdfad0585be506537c@mail.kernel.org>
+	(bot's message of "Mon, 27 Oct 2025 23:48:21 +0000 (UTC)")
+References: <20251027231727.472628-9-roman.gushchin@linux.dev>
+	<2c91977fcab04be6305bf4be57e825f7e84005d16667adcdfad0585be506537c@mail.kernel.org>
+Date: Tue, 28 Oct 2025 09:10:47 -0700
+Message-ID: <87ldkv57nc.fsf@linux.dev>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm: Convert memory block states (MEM_*) macros to enum
-To: Omar Sandoval <osandov@osandov.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Israel Batista <linux@israelbatista.dev.br>, akpm@linux-foundation.org,
- linux-mm@kvack.org, linux-debuggers@vger.kernel.org
-References: <20251026162156.12141-1-linux@israelbatista.dev.br>
- <811fd675-b231-45e4-b9d5-636fe63bde6b@redhat.com>
- <aP-2x314BKks2_N9@telecaster>
- <3d3bfa52-3e13-4d23-8ef7-6cb8b1ab7d79@lucifer.local>
- <aQABhaMC8xfO2Vem@telecaster>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aQABhaMC8xfO2Vem@telecaster>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: R46-NaW1biTtMNhXdJr9J2PN-Iw5vQYOkAVk9nvYZXs_1761667579
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 59909180002
+X-Stat-Signature: ju9mermpid6b5ai5d7pnq8j49nnomenj
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3AB368000B
-X-Rspamd-Server: rspam03
-X-Stat-Signature: q397foiz9juuqx5kd8gfcr69exe6h8ax
-X-HE-Tag: 1761667587-764197
-X-HE-Meta: U2FsdGVkX1/80o4tJo3IXZ2T1OuucoEBrPv0NR87bPV8jQ0D+G9IKwXiifmnpunGh9t/akHzOrPccUWiAw6rSYteRkL8eNmlgo7oOVTlzmni6HYN2fo3eUEycGOEtA95yOXn7isV44Kmy2qkQsmwsu/TlHhDDXM5ihU8axK3Qo7SIt8IpZvpK/8iysAGo7icskJyoyg2DoFRWisU2Rb0YsdfcOcAyIFayn863KPmbE/0Kd7sG9qcVw9W5GG/WzxAaXkdeYBXWIoWGPmmBTZy7cGfjfqYrX63H7zLQM1k5urUyK2c2JyzctebS24kNpr9ceG0xjmzQOzJmAHoe4c4BP+xDGACeZTAwKmtx22/Z4Ec4EdmMw+w5mAL8syG1oJ30QgbyYX5DV05z2u2lLh/Wdtd84M9Y6kJqnQqbrcnGONK39RKoyknmnE3zPR1afn47VKsiI7JvUVtmygdjwQRm39abMefDjFHHGrzxnuHT91izvXROtz5ToMmbyS2CmY78psoNAg6am7vIBMl87t2ypIcA76VK6Q4eOk7JXR3oSnfNoEPk+9aFFi7pNoVT0rbM+Fo/GgO/z77GnByKqVwF+fwiHi0upsnkKWDMSlfiQme+FNObP5RBM1L2M17PR/XMBmkHIxvCt7U93adENdCjzTjoHixjVmeWctpZXKtR21ympApJ3zB7uJilqS8TY8+M49rvkXClkWURXVoMGR1nDb1/XSWtqD3x9eV/+PTIHmK+q40aJoW5nk4FqobZbu59JRg8MhE9hiprjeIqE8/lMU7DFgGDNtwrKH56FB11GTLeyoDyc/0g8qO6ZPHNCahgFwAIUYph4vIDfmaKPhLCApWkW1Fs8hyekU/ks7K+hPU0zdYbclrtL/vu9MsuP/WtgiD8C7pZi2xcHXouBcB1RWtn5O+F5Sikr7xY93dmOAeLpVozcflUn5mUiHYTGjiwcvIHKfxA+FUOGheIUo
- EgA+rXGA
- cyK8tm6qVtjJQCfARGxc5M1DJBXzAwGTR01uiQu0Qwu3HgAZgZTOshZY4GQJPB4gkxvVJgzWTdM6uk1O/qWZ39nkWj694auJU27CjHmXBlxyh5b9QWTO5ejtoie3s5iTLCF8TFpD/AIewXiGD0oXmABZRRQXz4v6jiXED8+0tmcL7O6G4OJJJsMNbml5YIfYQz++010LFZrtdt0VtsvAFOYTwVOQzxalFBTi3k/CoOHy+4O0dkOwroPGq7FuXI/pt61/SscNhwB2Mt2Pq8UYhOkxBzY564nXkhepdBDjTFQJpBFZlMbOgDu0NWUzrsZcaVS8qCIhHZLOBkj/Jg1XShF11DgdSDupmTMXFe5/xDrnDtQgbNMhl6mgF3yvZ0s+26a1kdslc9gEU+Pl4x89WKJAO8Tw5itL3zbbbpkiQ4KYTP9m1R0dp1x6oAziA0rKcCd95MKoVoVTct5p+1tKEorh5W6m6yJ/zYoLqnJaShmjnYZvsyjePwiPrbLf3pzgyrPJSrOmM4t9VqsC+SPUGWvVMQfiZ38iTQsMdlfZ5sZfp9y//zGMGrU13ppsDwLOoSLSCTUrGDeggsYdswcUShGbcEotUczgVueSo8TrO5d8VlwLBYGeW/QMy4A==
+X-HE-Tag: 1761667860-804939
+X-HE-Meta: U2FsdGVkX18g/YZtDOYCqjJx6AWmJBO31YicRhTAnjtQEGfrWO5No8qj3Ea74yxukfHifBLTv77vwsPXKmKPvrnEC5868th4L6AlGkBfltqjKMrlyQ0xvbayiYap8aywl8knijCbX3zm4fp6KWiS2olANif2yJrqna1dPeVBwHCw0UlwzeptJFVyI48Ibf40CGrKmtrWKnFRN6zDw+dHt4l7dvs/86/zK1JTeSYnhJWh51NaNjKilIH6is/4KqrIo4dn4FVPX/399eCw1rpPSKAaebammru7MIikppXgR5sSsFt+5cvKclySBv/LZRPE3qsCu99w4SdajNQitbGf51eU6GDFcs48tfU/xhqEK2rBweh0JEg44z07ra9l/pjhgpKXPD4RzqswIKymlCD1zB7jKMb5lllIN1BtE+FwHy/cVa87TrnFgUFooEHEy40xA/zm8cQx77rTzWwNE8ITUXef/0wzRBaHGsacKsjcBnOu/LVufv0oFKx/cehdqbMy3RZ3416UE9Tf8bCgvuT+ezZI3COVWkyvYokqCeH6xS3RMjHmHNQaOTEIKmo8lARXGYGj3T7P03DLWLqL5Y+59Cvf7WLoHXqXLAnDOs28lwTYWWHbOQx7QczvJrac6gsEYd2j/y6E+n/bgwekLh3LrH3oQ8U2hm3u5XltcfiVMKrWPudM7EqiQtlH5VE4QYEP5bK4DWGKdaawCbVXT5NAnZdP5Cze1GV20SIN+jHVFFeiHhw6qlURIRwyHlT/nNw4o9TtDWXPNU2l8tJBtVQ85YmZz6mcjDTrJ69iFrBUw9w1d8GzuFxRq5H7iAKa46t+4Yra1uXD0DBYH+5vBs2wzBnii/0A26L6bNUBfkSMWrSY5nXgqhICAHTrM9Gfj5HFz8OwPWkBwkDQVIlOKpsrIzpnaHo/RMm7V6xPGsojCBwoGLCDeP6PcXXbWP5Ju99a
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,26 +92,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> I read
-> https://lore.kernel.org/all/809f552d-3282-4746-ba49-066d2bd8d44f@lucifer.local/
-> ("it's not valid to have flag values as an enum") as a claim that this
-> was invalid at the language level, but it sounds like your objection is
-> more of a personal style preference. Which is totally fine, the MM
-> subsystem can have whatever rules it wants.
-> 
-> To play devil's advocate, using a named enum for flags makes it easy to
-> document what flags are used for a given field
+bot+bpf-ci@kernel.org writes:
 
-A current best practice for flags is to use a __bitwise typedef. That 
-way, sparse will be able to make sure that people are not using other 
-random values.
+> ```
+> commit ec8e2e1769704b4f69261f36e6aaf035d47c5f0f
+> Author: Roman Gushchin <roman.gushchin@linux.dev>
+>
+> mm: introduce BPF kfuncs to deal with memcg pointers
+>
+> This commit introduces two new BPF kfuncs for converting css pointers
+> to memcg pointers with proper reference counting: bpf_get_mem_cgroup()
+> and bpf_put_mem_cgroup().
+>
+>> diff --git a/mm/Makefile b/mm/Makefile
+>> index 051e88c69..2d8f9beb3 100644
+>> --- a/mm/Makefile
+>> +++ b/mm/Makefile
+>> @@ -107,6 +107,7 @@ obj-$(CONFIG_MEMCG) += swap_cgroup.o
+>>  endif
+>>  ifdef CONFIG_BPF_SYSCALL
+>>  obj-y += bpf_oom.o
+>> +obj-$(CONFIG_MEMCG) += bpf_memcontrol.o
+>>  endif
+>>  obj-$(CONFIG_CGROUP_HUGETLB) += hugetlb_cgroup.o
+>>  obj-$(CONFIG_GUP_TEST) += gup_test.o
+>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>> new file mode 100644
+>> index 000000000..1e4609774
+>> --- /dev/null
+>> +++ b/mm/bpf_memcontrol.c
+>> @@ -0,0 +1,88 @@
+>> +// SPDX-License-Identifier: GPL-2.0-or-later
+>> +/*
+>> + * Memory Controller-related BPF kfuncs and auxiliary code
+>> + *
+>> + * Author: Roman Gushchin <roman.gushchin@linux.dev>
+>> + */
+>> +
+>> +#include <linux/memcontrol.h>
+>> +#include <linux/bpf.h>
+>> +
+>> +__bpf_kfunc_start_defs();
+>> +
+>> +/**
+>> + * bpf_get_mem_cgroup - Get a reference to a memory cgroup
+>> + * @css: pointer to the css structure
+>> + *
+>> + * Returns a pointer to a mem_cgroup structure after bumping
+>> + * the corresponding css's reference counter.
+>> + *
+>> + * It's fine to pass a css which belongs to any cgroup controller,
+>> + * e.g. unified hierarchy's main css.
+>> + *
+>> + * Implements KF_ACQUIRE semantics.
+>> + */
+>> +__bpf_kfunc struct mem_cgroup *
+>> +bpf_get_mem_cgroup(struct cgroup_subsys_state *css)
+>> +{
+>> +	struct mem_cgroup *memcg = NULL;
+>> +	bool rcu_unlock = false;
+>> +
+>> +	if (!root_mem_cgroup)
+>> +		return NULL;
+>> +
+>> +	if (root_mem_cgroup->css.ss != css->ss) {
+>                                             ^^^^^^^
+>
+> Can this dereference a NULL css pointer?  The function checks css for
+> NULL at line 42 with "if (css && css_tryget(css))", which suggests css
+> can be NULL.  If a BPF program calls this function with a NULL css,
+> wouldn't it crash here before reaching that check?
 
-We don't make use of that everywhere yet, of course. FOLL_ flags are 
-still wrapped in an enum, for example.
+Here css passed as an argument to bpf_get_mem_cgroup() can't be NULL,
+because the BPF verifier guarantees that it's a valid css pointer.
 
--- 
-Cheers
-
-David / dhildenb
-
+However the result of rcu_dereference_raw(cgroup->subsys[ssid]) can be
+NULL, this is why the "if (css && css_tryget(css))" check is required
+down below.
 
