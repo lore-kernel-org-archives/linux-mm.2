@@ -4,102 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C98A2CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 05:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A888CCF9EA
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 05:32:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00AA780118; Tue, 28 Oct 2025 01:31:33 -0400 (EDT)
+	id 8982080119; Tue, 28 Oct 2025 01:32:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F249D800E4; Tue, 28 Oct 2025 01:31:32 -0400 (EDT)
+	id 86F93800E4; Tue, 28 Oct 2025 01:32:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E60CB80118; Tue, 28 Oct 2025 01:31:32 -0400 (EDT)
+	id 7AC8D80119; Tue, 28 Oct 2025 01:32:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D5050800E4
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:31:32 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8767E12A914
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:31:32 +0000 (UTC)
-X-FDA: 84046400424.25.6973FB0
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf11.hostedemail.com (Postfix) with ESMTP id DDEE140004
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:31:30 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=EWfgXsdi;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 69668800E4
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 01:32:36 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EADD6884FB
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:32:35 +0000 (UTC)
+X-FDA: 84046403070.18.C8A98B7
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf01.hostedemail.com (Postfix) with ESMTP id B3E864000E
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 05:32:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761629491;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761629554;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PCYFuUAfEyL0H++y1+uBZz/Bn18lJwb1nrzO1KgbXu4=;
-	b=aNsmqUo2A3L8+RPyTo9RPMaKWVsRyJwPXEaFy+Ej74ZZamTq7+tJB31e3QhYFfV6Ec6jjg
-	Mp4EbyAtV+r1B4SNzWNDoQCVtWVPJLDlrS/dSfTLLmdEgIrp0DfHPesPkzgmryXw5LgJlU
-	Wjh8HQPpirQQj0eeIVpLAunI6h9iSas=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GulUICq4jAWNx6Vs5eauM734TVexWxc+kWU09F/NxKg=;
+	b=fcIa9t0K3CuTfLQI986YCRw16wl+wrDaMJWFlbbysuhGlL+Pjx0rkLXuZwj6wBimXk0NiY
+	zcuaE9JgEm1YBzFE6OHQhYS+YfroULSsbZcQRY0hedQQ9C4md8IMRSBR8h3mssiZlVq41D
+	yAfm5vxJkTtFECOPdLIdwykGdsqOJmI=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=EWfgXsdi;
-	spf=none (imf11.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761629491; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761629554; a=rsa-sha256;
 	cv=none;
-	b=v68z1XaX0ZeKPjrvqeWtwBxsCjLuHyOkbwajr2EY/pGhdBMcuo7enP9KqLHwb5AwsuNG3d
-	3lqh+oLtg35FKd2jexmC4iVIMf6gk1k+kdj+b6Ft4cc8MCfmKQyw7AtWuxYe41DO3YIFQe
-	Vif4KoXsH2rXsDhFU0urQ990UMPuesM=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=PCYFuUAfEyL0H++y1+uBZz/Bn18lJwb1nrzO1KgbXu4=; b=EWfgXsdiG3Fd92lYkqqo2qv86G
-	VSuEIsAE3FCOGUjNJxAqt736qqVNAh1feZmW0K78PLH+93EYeUBDi1Xo4NzkphpULJWarhu9Oqrby
-	pl/UZgIXr1W+2G5w/nMVZArRc7KcmUfNCfdq132QezWSLreZgiT2O+z3rW+qSNg88h4YVAyOKJk1k
-	CxGSjVSLupRybFCX39EZff2pJknmU1Pf76gNozocEtWsm6ln0DjNrub4OI2ZwF1En+Jd3/MmNGXlz
-	c4wZPg1r+A42g75MPjf1P4AKIc6OloMhv0P8DZccF6CGOiJ3b0QjBGhDWHq5pAJ98lhyAlfNWeLJD
-	Jx20imGA==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqq-00000001eYP-45Hh;
-	Tue, 28 Oct 2025 00:46:16 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v2 22/50] convert efivarfs
-Date: Tue, 28 Oct 2025 00:45:41 +0000
-Message-ID: <20251028004614.393374-23-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	b=4oCUThDTt5g2iiubRxHb6eJgRUSxznyaeb02/11Rg4JWgiS/FH2uE0Ue3jfxfOQLu+Mohb
+	FUFC23s4yFU0mTpeL0V9z9aIjJoH4g2okZDmvFvQ8dylNd2ntEzHAnPeVl0zEn3/ijP2Gv
+	h9thfn7j5HzatL6n3gP8jfWi3YpX7QU=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D18A41688;
+	Mon, 27 Oct 2025 22:32:24 -0700 (PDT)
+Received: from [10.166.150.28] (Mac.noida.arm.com [10.166.150.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7EC253F66E;
+	Mon, 27 Oct 2025 22:32:25 -0700 (PDT)
+Message-ID: <92327ea4-cd11-41d4-9a72-7040281e12af@arm.com>
+Date: Tue, 28 Oct 2025 11:02:22 +0530
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] mm: Optimize mremap() by PTE batching
+To: David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org
+Cc: Liam.Howlett@oracle.com, lorenzo.stoakes@oracle.com, vbabka@suse.cz,
+ jannh@google.com, pfalcato@suse.de, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, peterx@redhat.com, ryan.roberts@arm.com,
+ mingo@kernel.org, libang.li@antgroup.com, maobibo@loongson.cn,
+ zhengqi.arch@bytedance.com, baohua@kernel.org, anshuman.khandual@arm.com,
+ willy@infradead.org, ioworker0@gmail.com, yang@os.amperecomputing.com,
+ baolin.wang@linux.alibaba.com, ziy@nvidia.com, hughd@google.com
+References: <20250610035043.75448-1-dev.jain@arm.com>
+ <20250610035043.75448-3-dev.jain@arm.com>
+ <726dcb51-82a7-49a7-a8e5-49bc3eb05dcf@redhat.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <726dcb51-82a7-49a7-a8e5-49bc3eb05dcf@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: p4fa8q8ffgbby83igntq93qyax98cq8s
+X-Stat-Signature: dgdabx5jj45u3ci58rfr7c75wnwbwjjb
+X-Rspamd-Queue-Id: B3E864000E
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: DDEE140004
-X-HE-Tag: 1761629490-760319
-X-HE-Meta: U2FsdGVkX1+V+cbvlj1GFJYqEzazUQsxwEuM6q1SzVmjLZQhwGS9mqnbBh73EkktEDx6NiQXAfPtWAjnI0beBuRt7Dn2P8Y7ScLYsCKTeGXcP9ltc8zvGF8b75QuAIJnRYNXIPQ/bZYxjOchDENcO0EdR7yjk9/+Tf7sFZ7EbPakUK9oTvmItDaV2AfKc/AMHQSwwc2fe8FXVjSLgEEXvo/KDoNkBmiWeLbbusy9iXeeTFhxvHZvi+ennoIPFeMlfpC+hj2ehtDJwi01CFdxHUxgqD6CxazHpcxFVjTFwbi84lzvQxWX3NAKUbyPbRWD+dXMzial23xnMW4ozNq/J18TynpBfExaC5GhRuGkCyYXCgJcMG22jJKd/4JTchoNGW5v9FaYt7Hv3Tr32OBh42/DV0tazc9nxiqAZYoFH924w6fJv/OKR+4ptsrIfzLDjyjYtbVYb91+o1iLMKPrrZlZkTesl4xIgSvEdsw35dUJ18cWM7/iy7tfpvWE0s3HyOxLK015I2GQlQ0Ivvf/Vl8t6C0sGYSNWVDR7jvo8ZpVnlPoUjSW4j2uo1KP1FzqlaISkU9aMlAX8i5h4qOQzKpWmd2q8AL3Nbm5KxXce5L6iH7Z2R8yGtP7DxvHoRuBrMUbChqDJZm1TWWyPgcAFBVic4Ytasj8yslPSZ/Hq71KDAFiBhi4G40NXlHM34mzVeQxmOYIxpm30Szl21a3P/zCB2eQGUlCWl7PKvqTbj2kEyPSj/Zj7BKbEZ8aaPpuhhBaDt/mLQpkaO+Osq+xbJPHluJlQAJQcnkH8Xzn4CJJs6sZiqpW666bTtGFZLyZGny0+FGmDU+T0IuejFIQzI7atq7cQhMPAbOfdSgWbrTBSGI3F3Nlu/T4iHNlUuPKUzJS28mEZe9ClygQihIU745DH7RDZIpJluC3BtjYSeJYN5Eu+IxdMWRTqHNCBwN1h8hklMlPOVrhJ+8Vzej
- m3ynX1Tl
- XlGNwTuUDTnv08QKLiqt+vXrNtuUzJqSQJT5LsyAkrR8omZqOncl6CzHMS9PRF5RUbdhjLIo1apDZIbXUC0Ov7wKugziohpI0RARDE9kMvPDOEYJAoI8IcKAi1GmsaRo/tB+wmK1FEMgsxc+LMrIUDlz60AxhuazXj2Z2xuUZ21ULX0XjHSy+6lqpwokSZCRTs87Cv+5kZsgMZ3LdkQZswwtyniGaE+ASxPNRn5V5AlyRNlUe4V2E7XkFR0rJnnZG6CM6bXxDcTnag01RsDn+ft7qLE/oEvxAzOZgw8YAB1jg9aCFCPcbHM+N2OGhBEsEM5/0Fuc748IZaqVtAjltKMiBhdS26NC3kmUW2FwJQuS1uoK0TP1U7OwSh4rZxW26LFm2zYTQGaK1rvYShfJKziMI5286ap+0jmiy0VYHFMKiK7AWHT3DDzTU5zkv3OUrhirmgZlj6fp/B0Y=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761629553-522404
+X-HE-Meta: U2FsdGVkX1+nm9tpCRP8NXnwGGaVQKWRtSwek0ay1dC+fP5osjikeDaNgfi4C8fWol3SbqLIdYZDxDvsiUZ+os73M4ad2ykEUHFP5roxdIyhLWOOeV0+e64vcTYY4TlO3tAbP9v7QaP7hdES1qcy5enTCDW5WHwA/D4j2hENhq8uWfHdKLnqiGRbiqGyM0oZ8RmGbZ6ErPGz+NA2pkEGyMJEKX+D2Wr0yIAZS9ecgRDuwB3YZ0ItDlaFBNNnQJnBHJYiXQ0B5SaN146Y+CXP8Zt4+efg5k8c6aXMcnNYDr4JpYDIt9qQ8k/6/OoUBSdtRc0Q0OZSxGw1zhtqJ4WdY9YfwSg5AYw0YCrtMRWSX8PpojswG8CzYgaJDrcH3dsOP+icYinHzPZB5KwLsPhh55fsiiR0a6NPB0olFGQFAaWVHT7j5VW2OWCAHcUfC/kMtvZWMvEW16Ts4GZvZvZeSJtb7SOEvVqeU0naRnM0uVOs/vGb9ovxQtbKAa5o7AN4yuJ0o2eAjHC9mPlu9znuabEVvRPgGqiG/fVDJwy3vFyBh3xNOljdBnQwsB1yH6QE/RlPwMk/3Yl0XHlkd4OLp+VaJZb9n0+eQOiDl2m+D8dm1TPZVIzahQkScKAHOa6BhhdjTIvNCg4QIRhuZF9e+RIumLSENEvzE1cF3Vqwi7lbhcg9PSDji2GayTgICVvwPbHWIE6fjaD1GNIqlvaXnHAor0MJoMjIvW3SBRFri4xW8dBhVb1jw6wqTH3IPAJGc+WPflk7tzmurkgbbj54e4hNDQg74bNhuLfbf9fePBsUk9GiaQVb+sG2jHxNcixxkyuyQPfd6zRFS/QCaJZ/8W+861YOjDohrPQX4WOMYhHAwf49VPmf3CCR0iLc+BOn0pbVPoQm7MZx6x4GXNFrcBf/PUkL2tD899FAKJ4jd84AeeJggBp7bHIiCb6A7KnsorMv23tpiy2NL+q4h/7
+ Q9Q4Jiw2
+ cZ9Uhxbr4OGakEFOo2I6yAXFec8k0FS0g7SXkd9xzwQnBk7AdspQQydHxv82qLuEYnrIk6yziElMlRfsA1LMwTfaRN0c6u8v8Keg9t2K6CWk6nytRn4p1Seb133jY9XCyCB6WGK0Y3nyoT6hKqk1jN7z8Y0AX/sgKy5PLQeKqV8te9cwMTW5r95Eu5Q7PIMuLzg8PC2GTArxIvkwnwq1vXD6FlOoZALSrKisj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,67 +92,236 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Initially filesystem is populated with d_alloc_name() + d_add().
-That becomes d_alloc_name() + d_make_persistent() + dput().
-Dynamic creation is switched to d_make_persistent();
-removal - to simple_unlink() (no point open-coding it in
-efivarfs_unlink(), better call it there)
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/efivarfs/inode.c | 7 ++-----
- fs/efivarfs/super.c | 5 +++--
- 2 files changed, 5 insertions(+), 7 deletions(-)
+On 28/10/25 3:10 am, David Hildenbrand wrote:
+> On 10.06.25 05:50, Dev Jain wrote:
+>> Use folio_pte_batch() to optimize move_ptes(). On arm64, if the ptes
+>> are painted with the contig bit, then ptep_get() will iterate through 
+>> all 16
+>> entries to collect a/d bits. Hence this optimization will result in a 
+>> 16x
+>> reduction in the number of ptep_get() calls. Next, ptep_get_and_clear()
+>> will eventually call contpte_try_unfold() on every contig block, thus
+>> flushing the TLB for the complete large folio range. Instead, use
+>> get_and_clear_full_ptes() so as to elide TLBIs on each contig block, 
+>> and only
+>> do them on the starting and ending contig block.
+>>
+>> For split folios, there will be no pte batching; nr_ptes will be 1. For
+>> pagetable splitting, the ptes will still point to the same large folio;
+>> for arm64, this results in the optimization described above, and for 
+>> other
+>> arches (including the general case), a minor improvement is expected 
+>> due to
+>> a reduction in the number of function calls.
+>>
+>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>> ---
+>>   mm/mremap.c | 39 ++++++++++++++++++++++++++++++++-------
+>>   1 file changed, 32 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/mm/mremap.c b/mm/mremap.c
+>> index 180b12225368..18b215521ada 100644
+>> --- a/mm/mremap.c
+>> +++ b/mm/mremap.c
+>> @@ -170,6 +170,23 @@ static pte_t move_soft_dirty_pte(pte_t pte)
+>>       return pte;
+>>   }
+>>   +static int mremap_folio_pte_batch(struct vm_area_struct *vma, 
+>> unsigned long addr,
+>> +        pte_t *ptep, pte_t pte, int max_nr)
+>> +{
+>> +    const fpb_t flags = FPB_IGNORE_DIRTY | FPB_IGNORE_SOFT_DIRTY;
+>> +    struct folio *folio;
+>> +
+>> +    if (max_nr == 1)
+>> +        return 1;
+>> +
+>> +    folio = vm_normal_folio(vma, addr, pte);
+>> +    if (!folio || !folio_test_large(folio))
+>> +        return 1;
+>> +
+>> +    return folio_pte_batch(folio, addr, ptep, pte, max_nr, flags, NULL,
+>> +                   NULL, NULL);
+>> +}
+>
+> Dev, I think there is another bug hiding in here. That function ignores
+> the writable bit, which is not what you need here, in particular for
+> anonymous folios in some cases.
+>
+> Later set_ptes() could end up marking ptes writable that were not 
+> writable
+> before, which is bad (at least for anonymous folios, maybe also for 
+> pagecache
+> folios).
+>
+> I think you really must respect the writable bit through something like
+> FPB_RESPECT_WRITE.
+>
+> I patched out the "pte_batch_hint(ptep, pte) == 1" check we have upstream
+> to make it reproduce on x86_64, but the following reproducer should 
+> likely
+> reproduce on aarch64 without further kernel modifications.
 
-diff --git a/fs/efivarfs/inode.c b/fs/efivarfs/inode.c
-index 2891614abf8d..95dcad83da11 100644
---- a/fs/efivarfs/inode.c
-+++ b/fs/efivarfs/inode.c
-@@ -113,8 +113,7 @@ static int efivarfs_create(struct mnt_idmap *idmap, struct inode *dir,
- 
- 	inode->i_private = var;
- 
--	d_instantiate(dentry, inode);
--	dget(dentry);
-+	d_make_persistent(dentry, inode);
- 
- 	return 0;
- }
-@@ -126,9 +125,7 @@ static int efivarfs_unlink(struct inode *dir, struct dentry *dentry)
- 	if (efivar_entry_delete(var))
- 		return -EINVAL;
- 
--	drop_nlink(d_inode(dentry));
--	dput(dentry);
--	return 0;
-+	return simple_unlink(dir, dentry);
- };
- 
- const struct inode_operations efivarfs_dir_inode_operations = {
-diff --git a/fs/efivarfs/super.c b/fs/efivarfs/super.c
-index 1f4d8ce56667..298ab3c929eb 100644
---- a/fs/efivarfs/super.c
-+++ b/fs/efivarfs/super.c
-@@ -278,7 +278,8 @@ static int efivarfs_create_dentry(struct super_block *sb, efi_char16_t *name16,
- 	inode->i_private = entry;
- 	i_size_write(inode, size + sizeof(__u32)); /* attributes + data */
- 	inode_unlock(inode);
--	d_add(dentry, inode);
-+	d_make_persistent(dentry, inode);
-+	dput(dentry);
- 
- 	return 0;
- 
-@@ -522,7 +523,7 @@ static void efivarfs_kill_sb(struct super_block *sb)
- 	struct efivarfs_fs_info *sfi = sb->s_fs_info;
- 
- 	blocking_notifier_chain_unregister(&efivar_ops_nh, &sfi->nb);
--	kill_litter_super(sb);
-+	kill_anon_super(sb);
- 
- 	kfree(sfi);
- }
--- 
-2.47.3
+You are right. Thanks! I recall during the mremap/mprotect stuff I had 
+completely
 
+forgotten that batching by default ignores the writable bit and 
+remembered it during
+
+the last version of mprotect series :(
+
+
+Thanks for giving a reproducer; for some reason I am unable to reproduce 
+on my machine as-is.
+
+In any case the bug is obvious and I'll send out a patch.
+
+
+>
+>
+> # ./mremap
+> BUG: Memory modified
+>
+>
+> #define _GNU_SOURCE
+> #include <stdint.h>
+> #include <string.h>
+> #include <stdbool.h>
+> #include <x86intrin.h>
+> #include <stdio.h>
+> #include <sys/mman.h>
+> #include <unistd.h>
+> #include <errno.h>
+> #include <signal.h>
+> #include <fcntl.h>
+> #include <sys/wait.h>
+>
+> static size_t pagesize;
+> static size_t thpsize;
+> static int pagemap_fd;
+>
+> static uint64_t pagemap_get_entry(int fd, char *start)
+> {
+>         const unsigned long pfn = (unsigned long)start / getpagesize();
+>         uint64_t entry;
+>         int ret;
+>
+>         ret = pread(fd, &entry, sizeof(entry), pfn * sizeof(entry));
+>         if (ret != sizeof(entry)) {
+>                 perror("reading pagemap failed");
+>                 exit(-1);
+>         }
+>         return entry;
+> }
+>
+> static bool pagemap_is_populated(int fd, char *start)
+> {
+>         return pagemap_get_entry(fd, start) & ((1ULL << 62) | (1ULL << 
+> 63));
+> }
+>
+> unsigned long pagemap_get_pfn(int fd, char *start)
+> {
+>         uint64_t entry = pagemap_get_entry(fd, start);
+>
+>         /* If present (63th bit), PFN is at bit 0 -- 54. */
+>         if (entry & (1ULL << 63))
+>                 return entry & 0x007fffffffffffffull;
+>         return -1ul;
+> }
+>
+> int main(void)
+> {
+>         char *mem, *mmap_mem, *tmp, *mremap_mem = MAP_FAILED;
+>         size_t size, mmap_size;
+>         int ret;
+>
+>         pagesize = getpagesize();
+>         thpsize = 2 * 1024 * 1024ul;
+>         pagemap_fd = open("/proc/self/pagemap", O_RDONLY);
+>         if (pagemap_fd < 0) {
+>                 perror("opening pagemap failed");
+>                 return -1;
+>         }
+>
+>         /* For alignment purposes, we need twice the thp size. */
+>         mmap_size = 2 * thpsize;
+>         mmap_mem = mmap(NULL, mmap_size, PROT_READ | PROT_WRITE,
+>                         MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>         if (mmap_mem == MAP_FAILED) {
+>                 perror("mmap() failed");
+>                 return -1;
+>         }
+>
+>         /* We need a THP-aligned memory area. */
+>         mem = (char *)(((uintptr_t)mmap_mem + thpsize) & ~(thpsize - 1));
+>
+>         ret = madvise(mem, thpsize, MADV_HUGEPAGE);
+>         if (ret) {
+>                 perror("MADV_HUGEPAGE failed");
+>                 return -1;
+>         }
+>
+>         /*
+>          * Try to populate a THP. Touch the first sub-page and test if 
+> we get
+>          * another sub-page populated automatically.
+>          */
+>         mem[0] = 0;
+>         if (!pagemap_is_populated(pagemap_fd, mem + pagesize)) {
+>                 perror("Did not get a THP populated");
+>                 return -1;
+>         }
+>
+>         /* Share only the first page of the THP. */
+>         if (madvise(mem, pagesize, MADV_DONTFORK)) {
+>                 perror("MADV_DONTFORK failed");
+>                 return -1;
+>         }
+>
+>         ret = fork();
+>         if (ret < 0) {
+>                 perror("fork() failed");
+>                 return -1;
+>         } else if (!ret) {
+>                 while (true) {
+>                         char c = *((volatile char *)(mem + pagesize));
+>
+>                         if (c) {
+>                                 fprintf(stderr, "BUG: Memory 
+> modified\n");
+>                                 exit(-2);
+>                         }
+>                 }
+>         }
+>
+>         /* Merge VMAs again. */
+>         if (madvise(mem, pagesize, MADV_DOFORK)) {
+>                 perror("MADV_DONTFORK failed");
+>                 return -1;
+>         }
+>
+>         /* Mremap multiple pages. */
+>         mremap_mem = mmap(NULL, 2 * pagesize, PROT_NONE,
+>                           MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+>         if (mem == MAP_FAILED) {
+>                 perror("mmap() failed");
+>                 return -1;
+>         }
+>         tmp = mremap(mem, 2 * pagesize, 2 * pagesize, MREMAP_MAYMOVE | 
+> MREMAP_FIXED,
+>                      mremap_mem);
+>         if (tmp != mremap_mem) {
+>                 perror("mremap() failed");
+>                 return -1;
+>         }
+>
+>         /* Write into both pages. The child should never see these 
+> updates. */
+>         memset(mremap_mem, 1, 2 * pagesize);
+>
+>         pause();
+> }
+>
 
