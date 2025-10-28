@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FF0DCCF9E5
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 02:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697CDCCF9E5
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 02:31:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB16C80100; Mon, 27 Oct 2025 22:31:35 -0400 (EDT)
+	id BDE1F80101; Mon, 27 Oct 2025 22:31:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D617C800E4; Mon, 27 Oct 2025 22:31:35 -0400 (EDT)
+	id B3E9D800E4; Mon, 27 Oct 2025 22:31:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2A1880100; Mon, 27 Oct 2025 22:31:35 -0400 (EDT)
+	id A2ECE80101; Mon, 27 Oct 2025 22:31:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id AC48E800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 22:31:35 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 91AC0800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 22:31:38 -0400 (EDT)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 466C9C02E2
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:31:35 +0000 (UTC)
-X-FDA: 84045946950.10.487B95A
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 458FCB7FF9
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:31:38 +0000 (UTC)
+X-FDA: 84045947076.10.098CCAE
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A0D02120002
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:31:33 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZZi6wMhZ;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by imf02.hostedemail.com (Postfix) with ESMTP id A61D78000E
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 02:31:36 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TfdF7U5F;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761618693;
+	s=arc-20220608; t=1761618696;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8VEUlF9JhG6FP5SEDR4ze5YZGwCC3RxL0G6kDzkTUDE=;
-	b=bsUGkwPi26V3JNwtRTF13OvyuG1mEsXl+7PSPkwade3yFuWcX5FKpGtrChGUVi67g2q7+n
-	a22+J5YjEZtvB1IGWM2TVPb+5H5UbFBLpNElNCP9Bdn4ITKeGZZfX4Y1iq1OHDd0kdVsju
-	Gc7i2jLpuJUd4KdSB9lK1Ehw/nElHNU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761618693; a=rsa-sha256;
+	bh=X0Qrr7Pik3tDoVKCVmiI21jyafwT3CSaV2KUBw4Cb78=;
+	b=kvY2O4eXAETSkD379ftuYLhsAGVCc92HUsilKccpnnHBXFHYsyd4RBLWL8nkde3GnbPl7T
+	0b+Vwkiw/u3sqH3G6qYvgEcBC1VkS3DoTCoGf3Q3T3BEHnO5kUbQTgZ3JSnzuFEJOlEnRl
+	GX9ppj3A33ecz0+eEV+2pNvsSxXO940=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761618696; a=rsa-sha256;
 	cv=none;
-	b=WEEM1D/15BySJOGReXLEoQ2K/ppI51jF4zsphLjmCQos52Uo/TUXoeMFfu0y9yC8Xd6xWX
-	JP9+9uYopcGq40fVEK+SN3diIwvj6bSxkxeR9Eez4tbxrswfyID99WO/mHgeWTyZIHI9nM
-	fEyH3K7kyUHMk3oQRVpTgvtZBgAmbh4=
+	b=bkBh37g5Kkm5OZ7roHm8ij6KuBVlsfKI1twjUe6keuVk2cQ44Qb+HDsVFvj0x1KXqQ4dbw
+	hYGnYLUKIWqusF4yLZCaHHawbvDX0JyCfWwDuUKcffqZ+NS9aNMW6Y/jFcLt4m6RkOcXWl
+	FcKjFHfmZdCM/rYpPovoHacGd6t8dik=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=ZZi6wMhZ;
-	spf=none (imf29.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	imf02.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=TfdF7U5F;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
+	spf=none (imf02.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=8VEUlF9JhG6FP5SEDR4ze5YZGwCC3RxL0G6kDzkTUDE=; b=ZZi6wMhZQmOlamZhoVFAN+5wJ0
-	qn7ptGF3nnBZELZTTvCHFFxYcyQgGikSFr87FwlVC5rFdSl1je3r4NZeExdiMFlJV9n0UnLtoZBls
-	kJ2JzKacJBnLvr916Buge0/yhNbkk6VrPnenxxNfx6fCM0XLYKHa1IG5Ay/kr/rNPylYz59mv9uCK
-	2cdxz1Q7sCiwTvSQS8ZJMncDcPDgt8uvmVTJQhwonNzSEVJZ+Oeqc5iDEV16aWIXzYYba9BAWVzR4
-	MUj1iEnBoNRgiAyJQZKdSLapuYAl2mILpO8J8AZsNBTUWcHHG/1Ladu85KDWZJ9kTw0PoK6gtQTD0
-	z49FPwWg==;
+	bh=X0Qrr7Pik3tDoVKCVmiI21jyafwT3CSaV2KUBw4Cb78=; b=TfdF7U5FZWDvRf8GETUZzVqWWu
+	wA194I96ofrhzs3/DXQNgszGrSIWpNBJmOFPnDq63XnTCdNJPlCWF83PhIn9G/VBfkftY6vAxNo2w
+	HHk2fUI58Sze6ljbIxIJizvPCVFYoBsKdbvnYFFOywc/5sjV9EnF+//kMe37DzwRse8nYx/aKmE06
+	wu+frj4dpmNZ1+zeRtANettaZeP2ym04EphAQIEozI9YGi/JlwxU2fUxXCqwhxaw61n54T8WuZrZc
+	/q+nmqdF0mDkzCTsfBjf37HdN/ilOzb6oFMCwn0v8v8pjDvHPHZO2hF6ffl4j1a/6vfeVr4RDnIH1
+	9D32fM2g==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqp-00000001eWf-2Y4n;
-	Tue, 28 Oct 2025 00:46:15 +0000
+	id 1vDXqs-00000001eZl-001h;
+	Tue, 28 Oct 2025 00:46:18 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v2 09/50] procfs: make /self and /thread_self dentries persistent
-Date: Tue, 28 Oct 2025 00:45:28 +0000
-Message-ID: <20251028004614.393374-10-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 33/50] selinuxfs: don't stash the dentry of /policy_capabilities
+Date: Tue, 28 Oct 2025 00:45:52 +0000
+Message-ID: <20251028004614.393374-34-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: xye5aqtjra77rosgnumdb6xx417w1uog
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A0D02120002
-X-HE-Tag: 1761618693-102460
-X-HE-Meta: U2FsdGVkX1+yIMaXqZchkQWo90i1ObjMFnGM+U2aHbU4TWUInPjIZ/N5dNKMS4bt7V3JO8tsj69k7Nyzy74+qZmub8RJ/JfXCqopB1uGeeytq2F5d/uANTS29Y3lQf5Nqa5IDRxum67DB2mSKikokQtgS6Wtql5U0n6c3uxKOmkpWuxoDdkrwafwPx+KaVjA1ybPqIbtwONHF78Y+HiU6qrJMneqSSM1NI6rO7wOnOeh72SY4qtkqX7gOVvlNBGNLYIHSJk/g7l4E1fv6aw/k650VB/LH4ImCj+sf9CeRxl/JADNg3xE2Z4yvYhcKAYVZMPV/ZRrkkglNgaoC9Pu+hRYFzWwOReX04/zdvy1QYBFHPTC0Aq6RYDVbt66HtUZCIDpD4oTtYqGLC+K1u8u1Hsq7y6jYQL1aymnJ5pxBpDPGYQpPEQlELnXj7mmlzMKaMhQekDsNyNqAVt48QFElywbEiBgeCzMSI+xpyG8P9KNRSSqEvSFwVeV5LUke7YkDJq89BdYBr5/1b96z7kzU3t+aQFKBm02mBsxFf9JKGF5noshj4gQvyFzWap+4R/Zxfcie7XRi1xFq1TiqSD3lTj5v9kUXdbmswROiFlKZiOsyWK2FGqJS2D7FQG7+dNjXJs2Mep95O+CHBSSbCKW6u0tXPDo2FouvUBzv0A+GfaAWMstzqrCqZCAQ197SaJs5vmGRitb6z1SLsFDwiq55km8VaWxIz1gVh5uU3jAF5Znnvna1OHv0OTS3AUFtpyHzA+Kt6Z73bMbisM4pb3XMYyR5CIu2qxlcbdnm80Bh6Xuql6ktYEFL8pI8Z8Cj5CC/hQmRsTB83WIeHTbudaxw6lpJwqvJEHElBVJ4nqklu+NaOhpB/SOwRudgwwOLgPqMl1hzzy/ZB2L8p7uHA5jn8OKqhdg82vRH42bhMvriPl2lTU8MutnLrLgxeb1g1JVp8DuHfbFE0JFnPDFlXw
- Z1udmADE
- 9Zc7z4CegyodyDdS68g5mkOrJVXoADkEjD58kpc3ULrUGJK9V+tdF3pZ1vQM3MQdoaGj57qegrsM2hMNZ2GewNZn8Z2vpwOzpNXajT2E25qhfVwbxilo5i7k7tsiMrXKTL/ikAFANuJ1jn+jfrmFW3GrS/CwhU4floYV8T+9/5d0DQ/jv7xWufYRhZyIO+uJWY2hgqBY36FzsmPjit69p1DKnQkGxd6nelVuS33Z+66XWy4Ws5rdjyD2d89wryyQBD2Bs447a6De0l2Ah8Mjnlh257RZY31vuKFdKFFKM8bLo95ZurvF4ZXvuGemtSPsKk2suL00Wrlu0ooY+uoHBC1/EdT3D3nVhTdIMuXtQYFe578SjlZ5BoWvY6SvjuxxfIz5MRBHr4JprIriay2FLdnTotZGXVye49NPiAB7OC9puQlZX6TRH9mXtO88kzuJWGBrDjEbjjkdTdWa7ECxM+lR8BrR+xvnY9GcQuA+Ule+w6VHYtIIt7aBxjw==
+X-Rspamd-Queue-Id: A61D78000E
+X-Rspamd-Server: rspam02
+X-Stat-Signature: fooc9kwdwi3583dw6ehmkeh9ziob9e17
+X-HE-Tag: 1761618696-559922
+X-HE-Meta: U2FsdGVkX19TJNDY/5d2s7qZ1c4Q+ORDCXqglz4KXOmt4rQHg637fuJJA15wlbpFAgeIqfAIsQTAVJ6dz5Rcww9l6oqgF+kJNr4xb23VM/7U28fbTnau6sM5xdubWODTnWA8chI1CGq6xoJIcJ84RLOr/53687yOthuLWMTyJRG+6ZFzKE3jbcxO3KaanOFJbnqScNWOAjmAiKxEN4z2hIHzo+tETJejl8IjWl41XmECvNlNxoYI1m+m+38h3Tggk3IZLokgUDPF0/Xopl6lzAKyfWl4wLxE4tBEA3l7lAzKNY3Y1RPbYzYvfD7HYFCN0uwT1TN4VjFsMlR1a6ZqOT+Xz5cl7AXUrIn1j8/TNRLP5szc/GVjXD0Wa45ilSHwY5gQDbNfybtdf8bZsFJyhgooDMoNasYBZ3OfWph6rvUM2TgzVPeZxUaJKfhamAePFXhzw99W0DZWGs7DYo/P6zbigUgKaRoo5Ijmj1V2d7zhiq9XAIzYOV+KwOgPeTkLmCuehypzntDs6KsGenwpMsD3RG6gs21OvGcpmdT1wbZALKo/w/ELRUeSituZjBJs7YFFVT1sgOXaFg3yl7iBu7jm2TDYEGgVfq3J0Rhf3da/13dN/k9R9mKL/nM4oiSblR6lrMcKc6nRLC0apBmDDJK/InWzyBybGsCIZST86ODHc8rw/J5TcFZhMdP0TW7fu8krmNjvm+cU+3q5diLMoxzMJIgHyH3noshSAb91mmaaiOvB33LwUcYqSC4VVaCRE5lYDfXzzcv9dMoT23VJORtAsAMxsd5DQ+PAu+ZoBvEro5ogHaxpqUAQtuwCl4gJimF6+1l+3NE5hewWF0lISHOsYxpK7dXJuHtcqiccfOYJ27TM5z2gs06mEdvEHQkpKAvMHM92yfACdFVj3xOxOqzsKbNBbZLD1y/Dz7SQPja1Zhn+FQL9n4sduLCz0i0a69JS/vuLikf9tSOXJPG
+ V56/gyzs
+ O83C/wzU0cW6ECJ44hkAinkaTYSe0tgpCI9IC0C1S8bVE5FlCpZunejUSiEtbGum1j3/7ngvzO8UVtxei5FXNpy1Ow+s66vQyyKp8RKjOa0nPl/YSoe/vPU8u3saPl+jDWSWQC3mQdGsgim1ePZQg9QJX/FBKg0ZXuX11+EDp2YBUg6Vxa02faHyyLLl5CbQuXWI0hQCtPdNSHBWpVot/Q8Zo4AdHcH5Ly37/OJBTzWB+I5uHV4K9y7CU0ZJ/Q1lky6Sh1yH50fjv6fYzf7vJqDmYW/Lk4XooYgW1ACZbkne1pK1JhVw3vMFYM9q8lwKOeXJ5Xr+Mql25qhOnQvicSY3e97Jyt3h206r+QbIKMEL/3kyAc/1X24FvacaLQJb8Cof5XTm9+HrZUmcF5hIT2W2id3d8aNhjOTDCH5WF8fcygOONshE3Dc5EBgHBBJsfqZ80n1atRIvyd5BmCG4A0EfN+w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,172 +108,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-... and there's no need to remember those pointers anywhere - ->kill_sb()
-no longer needs to bother since kill_anon_super() will take care of
-them anyway and proc_pid_readdir() only wants the inumbers, which
-we had in a couple of static variables all along.
+Don't bother to store the dentry of /policy_capabilities - it belongs
+to invariant part of tree and we only use it to populate that directory,
+so there's no reason to keep it around afterwards.
+
+Same situation as with /avc, /ss, etc.  There are two directories that
+get replaced on policy load - /class and /booleans.  These we need to
+stash (and update the pointers on policy reload); /policy_capabilities
+is not in the same boat.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- fs/proc/base.c          |  6 ++----
- fs/proc/internal.h      |  1 +
- fs/proc/root.c          | 14 ++++----------
- fs/proc/self.c          | 10 +++-------
- fs/proc/thread_self.c   | 11 +++--------
- include/linux/proc_fs.h |  2 --
- 6 files changed, 13 insertions(+), 31 deletions(-)
+ security/selinux/selinuxfs.c | 21 +++++++++------------
+ 1 file changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/fs/proc/base.c b/fs/proc/base.c
-index 6299878e3d97..869677a26332 100644
---- a/fs/proc/base.c
-+++ b/fs/proc/base.c
-@@ -3585,14 +3585,12 @@ int proc_pid_readdir(struct file *file, struct dir_context *ctx)
- 		return 0;
- 
- 	if (pos == TGID_OFFSET - 2) {
--		struct inode *inode = d_inode(fs_info->proc_self);
--		if (!dir_emit(ctx, "self", 4, inode->i_ino, DT_LNK))
-+		if (!dir_emit(ctx, "self", 4, self_inum, DT_LNK))
- 			return 0;
- 		ctx->pos = pos = pos + 1;
- 	}
- 	if (pos == TGID_OFFSET - 1) {
--		struct inode *inode = d_inode(fs_info->proc_thread_self);
--		if (!dir_emit(ctx, "thread-self", 11, inode->i_ino, DT_LNK))
-+		if (!dir_emit(ctx, "thread-self", 11, thread_self_inum, DT_LNK))
- 			return 0;
- 		ctx->pos = pos = pos + 1;
- 	}
-diff --git a/fs/proc/internal.h b/fs/proc/internal.h
-index d1598576506c..c1e8eb984da8 100644
---- a/fs/proc/internal.h
-+++ b/fs/proc/internal.h
-@@ -373,6 +373,7 @@ static inline void proc_tty_init(void) {}
- extern struct proc_dir_entry proc_root;
- 
- extern void proc_self_init(void);
-+extern unsigned self_inum, thread_self_inum;
- 
- /*
-  * task_[no]mmu.c
-diff --git a/fs/proc/root.c b/fs/proc/root.c
-index 1e24e085c7d5..d8ca41d823e4 100644
---- a/fs/proc/root.c
-+++ b/fs/proc/root.c
-@@ -347,17 +347,11 @@ static void proc_kill_sb(struct super_block *sb)
- {
- 	struct proc_fs_info *fs_info = proc_sb_info(sb);
- 
--	if (!fs_info) {
--		kill_anon_super(sb);
--		return;
--	}
--
--	dput(fs_info->proc_self);
--	dput(fs_info->proc_thread_self);
--
- 	kill_anon_super(sb);
--	put_pid_ns(fs_info->pid_ns);
--	kfree_rcu(fs_info, rcu);
-+	if (fs_info) {
-+		put_pid_ns(fs_info->pid_ns);
-+		kfree_rcu(fs_info, rcu);
-+	}
- }
- 
- static struct file_system_type proc_fs_type = {
-diff --git a/fs/proc/self.c b/fs/proc/self.c
-index b46fbfd22681..62d2c0cfe35c 100644
---- a/fs/proc/self.c
-+++ b/fs/proc/self.c
-@@ -31,12 +31,11 @@ static const struct inode_operations proc_self_inode_operations = {
- 	.get_link	= proc_self_get_link,
+diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
+index 232e087bce3e..b39e919c27b1 100644
+--- a/security/selinux/selinuxfs.c
++++ b/security/selinux/selinuxfs.c
+@@ -75,7 +75,6 @@ struct selinux_fs_info {
+ 	struct dentry *class_dir;
+ 	unsigned long last_class_ino;
+ 	bool policy_opened;
+-	struct dentry *policycap_dir;
+ 	unsigned long last_ino;
+ 	struct super_block *sb;
  };
+@@ -117,7 +116,6 @@ static void selinux_fs_info_free(struct super_block *sb)
  
--static unsigned self_inum __ro_after_init;
-+unsigned self_inum __ro_after_init;
+ #define BOOL_DIR_NAME "booleans"
+ #define CLASS_DIR_NAME "class"
+-#define POLICYCAP_DIR_NAME "policy_capabilities"
  
- int proc_setup_self(struct super_block *s)
- {
- 	struct inode *root_inode = d_inode(s->s_root);
--	struct proc_fs_info *fs_info = proc_sb_info(s);
- 	struct dentry *self;
- 	int ret = -ENOMEM;
- 
-@@ -51,18 +50,15 @@ int proc_setup_self(struct super_block *s)
- 			inode->i_uid = GLOBAL_ROOT_UID;
- 			inode->i_gid = GLOBAL_ROOT_GID;
- 			inode->i_op = &proc_self_inode_operations;
--			d_add(self, inode);
-+			d_make_persistent(self, inode);
- 			ret = 0;
--		} else {
--			dput(self);
- 		}
-+		dput(self);
- 	}
- 	inode_unlock(root_inode);
- 
- 	if (ret)
- 		pr_err("proc_fill_super: can't allocate /proc/self\n");
--	else
--		fs_info->proc_self = self;
- 
- 	return ret;
- }
-diff --git a/fs/proc/thread_self.c b/fs/proc/thread_self.c
-index 0e5050d6ab64..d6113dbe58e0 100644
---- a/fs/proc/thread_self.c
-+++ b/fs/proc/thread_self.c
-@@ -31,12 +31,11 @@ static const struct inode_operations proc_thread_self_inode_operations = {
- 	.get_link	= proc_thread_self_get_link,
- };
- 
--static unsigned thread_self_inum __ro_after_init;
-+unsigned thread_self_inum __ro_after_init;
- 
- int proc_setup_thread_self(struct super_block *s)
- {
- 	struct inode *root_inode = d_inode(s->s_root);
--	struct proc_fs_info *fs_info = proc_sb_info(s);
- 	struct dentry *thread_self;
- 	int ret = -ENOMEM;
- 
-@@ -51,19 +50,15 @@ int proc_setup_thread_self(struct super_block *s)
- 			inode->i_uid = GLOBAL_ROOT_UID;
- 			inode->i_gid = GLOBAL_ROOT_GID;
- 			inode->i_op = &proc_thread_self_inode_operations;
--			d_add(thread_self, inode);
-+			d_make_persistent(thread_self, inode);
- 			ret = 0;
--		} else {
--			dput(thread_self);
- 		}
-+		dput(thread_self);
- 	}
- 	inode_unlock(root_inode);
- 
- 	if (ret)
- 		pr_err("proc_fill_super: can't allocate /proc/thread-self\n");
--	else
--		fs_info->proc_thread_self = thread_self;
--
- 	return ret;
+ #define TMPBUFLEN	12
+ static ssize_t sel_read_enforce(struct file *filp, char __user *buf,
+@@ -1871,23 +1869,24 @@ static int sel_make_classes(struct selinux_policy *newpolicy,
+ 	return rc;
  }
  
-diff --git a/include/linux/proc_fs.h b/include/linux/proc_fs.h
-index f139377f4b31..19d1c5e5f335 100644
---- a/include/linux/proc_fs.h
-+++ b/include/linux/proc_fs.h
-@@ -66,8 +66,6 @@ enum proc_pidonly {
+-static int sel_make_policycap(struct selinux_fs_info *fsi)
++static int sel_make_policycap(struct dentry *dir)
+ {
++	struct super_block *sb = dir->d_sb;
+ 	unsigned int iter;
+ 	struct dentry *dentry = NULL;
+ 	struct inode *inode = NULL;
  
- struct proc_fs_info {
- 	struct pid_namespace *pid_ns;
--	struct dentry *proc_self;        /* For /proc/self */
--	struct dentry *proc_thread_self; /* For /proc/thread-self */
- 	kgid_t pid_gid;
- 	enum proc_hidepid hide_pid;
- 	enum proc_pidonly pidonly;
+ 	for (iter = 0; iter <= POLICYDB_CAP_MAX; iter++) {
+ 		if (iter < ARRAY_SIZE(selinux_policycap_names))
+-			dentry = d_alloc_name(fsi->policycap_dir,
++			dentry = d_alloc_name(dir,
+ 					      selinux_policycap_names[iter]);
+ 		else
+-			dentry = d_alloc_name(fsi->policycap_dir, "unknown");
++			dentry = d_alloc_name(dir, "unknown");
+ 
+ 		if (dentry == NULL)
+ 			return -ENOMEM;
+ 
+-		inode = sel_make_inode(fsi->sb, S_IFREG | 0444);
++		inode = sel_make_inode(sb, S_IFREG | 0444);
+ 		if (inode == NULL) {
+ 			dput(dentry);
+ 			return -ENOMEM;
+@@ -2071,15 +2070,13 @@ static int sel_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		goto err;
+ 	}
+ 
+-	fsi->policycap_dir = sel_make_dir(sb->s_root, POLICYCAP_DIR_NAME,
+-					  &fsi->last_ino);
+-	if (IS_ERR(fsi->policycap_dir)) {
+-		ret = PTR_ERR(fsi->policycap_dir);
+-		fsi->policycap_dir = NULL;
++	dentry = sel_make_dir(sb->s_root, "policy_capabilities", &fsi->last_ino);
++	if (IS_ERR(dentry)) {
++		ret = PTR_ERR(dentry);
+ 		goto err;
+ 	}
+ 
+-	ret = sel_make_policycap(fsi);
++	ret = sel_make_policycap(dentry);
+ 	if (ret) {
+ 		pr_err("SELinux: failed to load policy capabilities\n");
+ 		goto err;
 -- 
 2.47.3
 
