@@ -4,135 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FDD1CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:57:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E973CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:00:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDB028014A; Tue, 28 Oct 2025 09:57:45 -0400 (EDT)
+	id 0B0338014B; Tue, 28 Oct 2025 10:00:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E64708013F; Tue, 28 Oct 2025 09:57:45 -0400 (EDT)
+	id 060988013F; Tue, 28 Oct 2025 10:00:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7A828014A; Tue, 28 Oct 2025 09:57:45 -0400 (EDT)
+	id EB82B8014B; Tue, 28 Oct 2025 10:00:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id C7D1D8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:57:45 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70AB514043C
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:57:45 +0000 (UTC)
-X-FDA: 84047676090.08.66D35EA
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf12.hostedemail.com (Postfix) with ESMTP id E947540010
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:57:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ilq1sMQj;
-	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id D71D18013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:00:36 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9030CC0488
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:00:36 +0000 (UTC)
+X-FDA: 84047683272.29.25152D6
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9218B100024
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:00:34 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NBRPGeiy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761660034; a=rsa-sha256;
+	cv=none;
+	b=bVX0PyLmEVv7/AeGN6b7pAjL4mqh6jFKhuQTEBSDTYRz1Uj1yNTQTPVJP0hRhnpJH2T7iz
+	mfbYEWQoYtntYUhSrJLJzYmMKiEpJzzL6Oz75UbVnmVuzaFLVyu/v1Y6QKk6/xgJJCTZWC
+	V9v7s9f9MZZxcc/2woLqBifkM9TmSXg=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NBRPGeiy;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761659863;
+	s=arc-20220608; t=1761660034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1hqcLTFSFJa32UdZBca8XVOOo6ca/YUGze1PkGPNkVo=;
-	b=hXyDr0azfN6hg47AztnhRJhJ2WvG18iy1XA7j5J/pO7DEjYSY/tTR1WUPvDcwzQ+JOiPzy
-	jhMRfqdwND5OlqIGIoXXX1bK6XcwKJNRSWKwqq2wrp8sS25/cZdUGLQDUcHkeQOEj00F/Z
-	ZCmEJuHo7WIk/4oRme5oenSuLzn+xKY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=ilq1sMQj;
-	spf=pass (imf12.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761659863; a=rsa-sha256;
-	cv=none;
-	b=gwu6Hc6MZHp9el2/ySMhIr+unWE3ycCNmMQshQn7/CNVfFtldRJ7V0/cIrU/JnuF1vSo0g
-	rYI6zTNwDhCxlbptQB6aKsrKB2KYS9APtvqcWwYq3iRAMX2wfeKe48hZfDna5lzckIfoHB
-	wHvzemHlNU9+haWYOyx2Nd06Ogqybpw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761659862;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=1hqcLTFSFJa32UdZBca8XVOOo6ca/YUGze1PkGPNkVo=;
-	b=ilq1sMQjzDxxv0FTTVTpZ/G/WqzhAuiq5Vd/a/WjEm5evM8e1cACrPq7M3/jKyHqzsNlnT
-	Dx/2+dy7eQqIUl123ctFjHeB4R8YJ1r6WEmOZLTo3nbsF2ai7WmLiZAfPEoEMzl7Nbll50
-	7s7Z0jEVc1EPIKojp3Xj0ptk9Mck81A=
-Received: from mail-yx1-f71.google.com (mail-yx1-f71.google.com
- [74.125.224.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-463-GSNM6wNvNa2QP_Jc22NcCQ-1; Tue, 28 Oct 2025 09:57:40 -0400
-X-MC-Unique: GSNM6wNvNa2QP_Jc22NcCQ-1
-X-Mimecast-MFC-AGG-ID: GSNM6wNvNa2QP_Jc22NcCQ_1761659860
-Received: by mail-yx1-f71.google.com with SMTP id 956f58d0204a3-63e1a3f7635so7709332d50.2
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:57:40 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761659860; x=1762264660;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1hqcLTFSFJa32UdZBca8XVOOo6ca/YUGze1PkGPNkVo=;
-        b=QuxY+eb8mlZO3UBEfEtafCyricnpy00DDfBWjDYi+QtE1/if0QjgEAfVbaTh6WFfDA
-         7adzDxNKz+u3wwgh4l1O+u0NDAAS9/LbaXlbbXYln7n3nqK20rhfOnrAAAPduyoJBoyl
-         BBRRTtrl7RoflFKUYIwdp+lX4Ml1aBYM9YSGxeyEr8EoaRGpwhV32hUgYe0KcoXZBYh4
-         4fb37fJ0WfkpQtsUcSm9B+eobetN9o5xZkbtei1M25zKVI0NXMSyBLOw+lMY3BWpBd9P
-         7vAtQ6X5XS6prRUZMLKRu50DuPErQCVamBjRA2IIYzF7yXcWpz3ieez1xtl7pbSu59d8
-         btOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTmwEpCEkX/PUsONL4s3HKW6xZoVcugsKP3u9Ew6dxPeYVT7SAvdGf4Ic7hpGSTw+z5+ksWJ9jOA==@kvack.org
-X-Gm-Message-State: AOJu0Yz04h846j1H2wDCtSG/8DctZf/5BWCV0GoFO2t8yFV7K0ffiY7k
-	mMxn9JPO5S+5sN3FKBzywN8ZJDE45OtWvhYN1jkqJDkohGMt0T05wX3Q0dOw3VX3j9iOHeVwVU5
-	CLeTAgC6RRICKq6ZMDDJlnNGl0U8ZZB3zOgYDC/148DHlGM9Aa8rpTilrLMEjc4bzAGG4GuP8r2
-	yKVBRsg0AEITUdeoeWGynpYIyP+k4=
-X-Gm-Gg: ASbGnct0fmDfZ59qHHHpbRaLcGLODoiP45jrrH/r3gV6UxL8DVBAIKiH8CejfHLFDyU
-	bo/p+/crIAO/R82MFH8+uhiPcmkTaYYQ4iute27WrN6fuFqRH+odBfUpYkhxYwVAKVhZqGE3fmY
-	zalNPremduPWyATGsmjR4pDqGh/pygt1uC7k9CuWUxS9cBR7m7gXqSF97rCJ6P0he5ADxs9w==
-X-Received: by 2002:a05:690e:1517:b0:63c:e930:e37 with SMTP id 956f58d0204a3-63f6b85dae6mr3191137d50.0.1761659860153;
-        Tue, 28 Oct 2025 06:57:40 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7wQtO7p9XKAJbsCFFUBPJozNFYSEBLszufJXdBbxLP1xoSCnNfIuAIoiYmgpey11vqdoL8hFkGT/3VWWSKMQ=
-X-Received: by 2002:a05:690e:1517:b0:63c:e930:e37 with SMTP id
- 956f58d0204a3-63f6b85dae6mr3191107d50.0.1761659859403; Tue, 28 Oct 2025
- 06:57:39 -0700 (PDT)
+	bh=lwEvUQvD2SOjdx94xPite5icB9pZBzBE1kFycvnRD9o=;
+	b=D0Ie1eWJ/IHklNKYISVXHwZCKbAwzlngqcnvcDjWrxBx2/PLkLHX6P81DACU0oavz4iUOA
+	gds6pJjiV+MRGrT64vkbJXPVcQgRwJIyluNT2Nru4Nq98Lk/MggzLu9DESTyJQvau0YB9c
+	TEsn1FDUNBCcDx8mfqi2qqOKgbQKEDc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 71DA444D38;
+	Tue, 28 Oct 2025 14:00:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9390C116C6;
+	Tue, 28 Oct 2025 14:00:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761660033;
+	bh=MF/2zsZwtCVjQVdBsn7UVVx9xBhDIK+KrSqUNMSbxwQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NBRPGeiy1Xn7eADQ9yFvkjIS2p83OMRe4k2CO4ITc0ALWFN0ZWRqZGjvsq0KHLGHX
+	 9cLYR4EEJw7n2OOILsuLBxlnyUxNKQ48TBEmQOfsOJWlMu7MQczs8PAvuoeQ7dv4ga
+	 VOOh+zSbwQI9UVXLYMTTaAF8VC5Qe0AH08UMx6o59oif+TOluzOhoNUJlPqWrkWdWa
+	 F3YMSrmA8q04Tc3o7V5G0rOnVvXrSlmYuCHYUdaC1/9bEi1kSPQjNs6B/CMP7UMuA7
+	 kBZG8J5QQqHSS4JWOSkiN2pZrTn7EOaJWqEI8O7YB913GvijwyU/Jjvqzu6dZc0XeA
+	 6pjFmq9Y38R2g==
+Date: Tue, 28 Oct 2025 15:00:30 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Valentin Schneider <vschneid@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+	x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [PATCH v6 23/29] context-tracking: Introduce work deferral
+ infrastructure
+Message-ID: <aQDMfu0tzecFzoGr@localhost.localdomain>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <20251010153839.151763-24-vschneid@redhat.com>
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-7-npache@redhat.com>
- <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local> <063f8369-96c7-4345-ab28-7265ed7214cb@linux.alibaba.com>
-In-Reply-To: <063f8369-96c7-4345-ab28-7265ed7214cb@linux.alibaba.com>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 28 Oct 2025 07:57:13 -0600
-X-Gm-Features: AWmQ_bmAeiF43OuC22PnYol5XtlIdWxaxVwsbCB3sXR0PVz85j57-tCDcLiOmdI
-Message-ID: <CAA1CXcCvOM+ddk1-d=8d7aFG0ZZ+shKhNCa6ppewSxS8BHW0OA@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/15] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-doc@vger.kernel.org, david@redhat.com, ziy@nvidia.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: HKWy7ZuLgO0vgmXWm5-MhNw12Jww5pzZ2KVl6xKfNRE_1761659860
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E947540010
-X-Stat-Signature: oh6s9bnxand37t48168uswybzqutp6t3
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251010153839.151763-24-vschneid@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1761659862-60750
-X-HE-Meta: U2FsdGVkX1+ceP+tw+mY5RtoDk3PgMzvmkCqXK/k+22R8wwn5HxDtBo2ASJgc0MCveXXgOh7wKuDdRi2xODMurus9TxADPI4QSdCHZXplo5cxBXbboabGY3HfdNP5KbmCGmhjJT40elbcKv4l0nCfqs+CE2e/U/+ZEWlcz/JYEgw4SHQ8+pACcBODlHzd3dXbhWUL6J1UvqWzJexErBiEp77g+nDqAmCjAJNbEWwj0maTEVG+zi4lZGQpxdfHi3fjAZ0sDxBfFpWt3vs+rci0egkYMwHGppCCzJU72NkdMz1UVoOIwIMAvQJNuuSgcDRSmQ/da9MteZKfeyNkrF7WfkfD2gulFtZGw9vCRQHoMgcVRdIkejdjVxFrIz4Wj00ltpAj6ZmzXamD7YY4lrYbJYLxhcr8Sv3S24XnKyZ0eGrxnbnliibTzDbODOJWWEAdlJ+QqyON50tRn7ofFCtFX4c8/CU36/pT+yFdXmU2E8KNsnXyzqEoIu6Bs6jH5Idgp5Y+FrfZvBxwFO7r/5PfkLlGo1fKeMZ1QF2GuzTkkF6EzSvzsdlqXLgaIicahKHjitnjeG9HcN3dFPKE0HgDP3Snb3RlYChKFVki7wnXi2iTbP3OLoievgFy7mts7Q9qLkrHtAGoJUX04z0liPB3uEKwulcLOC6LdziUC5q8O2dOSY99swmpsrB3e3bCGGGHu6wXTI0U9UL8vP1r9Nz+7piisIkLXQNeub7lCvHAOV++HkjYdACwF88OHMAP51JLlxoE9ykmEa/cDcznxTJ9E8blW+bgXefKjq+oKqxPbat8ufsMjBdHNJ+OLLAGlV9ZumS2v78KQipWYVvtQ6SQeADAWivK49q2s57GbHxSRxHvY7RSZ1xgu7o4thuKbtVgaFqz5wXpL6dKS4T0Czogvp50QNSIrEevXisScMahxcsNeCVmgYZB2n8VDZqwqjJG3xHbROQRi7vnJjvRZh
- QIxidqX1
- AzHmAMKV1daxiZPTCI5h6oDgvnWJ03E3lAgghSyLxO4Ro8kVkcYn5JgUE84zG/KBi4oJwDjclu549cbn2tam1xCFh7+UmgxFmY0Hey3HANRpLi6Em0DlN2mcyoVQEJpO5N2GZVXtm5k81eHJ92Kap+q5voMR1HdJpAVYYs9hpc98e32rFGOJd4QzPvcw5qB9U5CCoq3AolClfzGm77bt/mJkMEN3iucOL68hZpnMql/zIDqH8ptkgPsfTskl3KrecGdKiyADAQk8frvv1tdTbz2n0tY6eaSqJ3FhWz8faeJvTrHamVarO4Z7s8Xrj7xGL3OZpyPhTfqyP/uTwk0coYYxwOK6sKEo54LDfoEOI5h14bQ7oIQT5+DJPbG9HrEAal2hPud3D20qQ2XjjWeVJ2oEUWhHwHqlZym0d6eyx8HgKi6s=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 9218B100024
+X-Stat-Signature: 5kz3o44irgggfxsf4sqc3ij3rpbmf8ah
+X-HE-Tag: 1761660034-976506
+X-HE-Meta: U2FsdGVkX18clyqIaSrZtVs/5IirfAbnHD9+FsGElbJeE2dpygWL5qd9S5Ukae9As+XfNHAC9ANHwStV/8jEMzAHh09wLEmtUE/AqL1djk2ZU3Wu1imgifBgyuyN73sXc5E+WCXUciYkpEaOKzk5RLGNji5L025/bjA3DTypOGjnrXoZj1adVTz/+IKLcuysbUoF3fTVLgYYP/TG/qa0zKt7NHJB9iNeE1on8jP6XDKcCaA4QGcBfbWEYrYC3pe0TYDLubJp2dbtAByIZWBPHnx8xepO2ffZC0g3vomS6ZwBD3fT6vS+EwNZdN4ghOhH8PgclsjfdkmRRXzqdWLYiJSpayygXNT5G6XhRffCPGUzRckBAQpb382kq2SQHnqVAfQxWvcI0CHzylbVqG42iv4HjekxdeLp3PgmqpnjH33GIJctbX84bDvi/JnJeE+/pAk3Lu2e4RNVvWlRuTuir/yLg+0/xwqXV+STC4ejEsFnypJC1zirLyLNdleKcalJnGqx2o9ED32rkwiXuL+UuTiY3CggT+0TBVO1S8eLgrBFPOEGi2rcl5Ez84R1g8NYjiSJLLrzi2x0eDy7YqWr51k60eRHVQIeXoqm+HTENInptc2enGP9KmKZ95cr++/3nGHdbhBiXXQzSPp+XxSei45ib9GmNhZHWeGTi49LGuearN5EGTD72tNZHq1wXETZBwLCyYCZIljZUiMpTBJ8lMNxfcoC5kjwjHUW86h6CK/b60zGvFfrxccKn2ZoULl3shH6AaRWGyGh89fr0UDoyQhCDoy3OyDiWrO1EpBogmswNvKZH5khbzjZ/o8OhaV7OSgVQqU2eQOIxJbdNFXzHHsV5X+2PhBoLpAPMSW6+042Hvn7tIkViwn0k+ULmop6P6zddlhp6SLhUJjaK21Z8HoUm0MsExyfiY1djA+Ehe8FsoRewVfLxF5FeUyJdgO96pKNrV6jfVqme9lgUa/
+ pwF7HzEP
+ zCUfA1rUT9mcJvc1dO/4X56odQU8N5SeF66Hxd0SnN2j7zsHcc12/b3HXkXThl+55JJcl2v+o8DBV2tlhACPnwFE64vOlm8Amn2YjvygwtxMKrruu0Go/yTaaJVCSs33PM+nwTC5aS2bzi+YQcNx5rNrO4gCDy0gOuNOGYHl/SCsDkYMLyg+3hFW1ftb4i0SijdjHqtQH8qosytAg+6dpYSfxQhIKOhBGbwS9PqZETaP8yQRnBeIMvl9Z0YFTXNyXQbu6Iqx4U95VmDduwvmro8RQ9wslopxg4H+opyPtM1j6LBgIG5dXg6F8pOz7OlkObhqk4PrU16HTZHA7YxhMztDxClFEYQNy31D4LTK2zBushOqC4MBIHYTgtzWcjWSN625t93YOroouf2uXMWrlBeBWUAeqlurzhvMSzIXmJLnSAO+Zd/XfVLvQ9OHdwGhY83Sy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,193 +129,373 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 4:10=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
->
->
->
-> On 2025/10/28 01:53, Lorenzo Stoakes wrote:
-> > On Wed, Oct 22, 2025 at 12:37:08PM -0600, Nico Pache wrote:
-> >> The current mechanism for determining mTHP collapse scales the
-> >> khugepaged_max_ptes_none value based on the target order. This
-> >> introduces an undesirable feedback loop, or "creep", when max_ptes_non=
-e
-> >> is set to a value greater than HPAGE_PMD_NR / 2.
-> >>
-> >> With this configuration, a successful collapse to order N will populat=
-e
-> >> enough pages to satisfy the collapse condition on order N+1 on the nex=
-t
-> >> scan. This leads to unnecessary work and memory churn.
-> >>
-> >> To fix this issue introduce a helper function that caps the max_ptes_n=
-one
-> >> to HPAGE_PMD_NR / 2 - 1 (255 on 4k page size). The function also scale=
-s
-> >> the max_ptes_none number by the (PMD_ORDER - target collapse order).
-> >>
-> >> The limits can be ignored by passing full_scan=3Dtrue, this is useful =
-for
-> >> madvise_collapse (which ignores limits), or in the case of
-> >> collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
-> >> collapse is available.
-> >>
-> >> Signed-off-by: Nico Pache <npache@redhat.com>
-> >> ---
-> >>   mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
-> >>   1 file changed, 34 insertions(+), 1 deletion(-)
-> >>
-> >> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> >> index 4ccebf5dda97..286c3a7afdee 100644
-> >> --- a/mm/khugepaged.c
-> >> +++ b/mm/khugepaged.c
-> >> @@ -459,6 +459,39 @@ void __khugepaged_enter(struct mm_struct *mm)
-> >>              wake_up_interruptible(&khugepaged_wait);
-> >>   }
-> >>
-> >> +/**
-> >> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for =
-collapse
-> >> + * @order: The folio order being collapsed to
-> >> + * @full_scan: Whether this is a full scan (ignore limits)
-> >> + *
-> >> + * For madvise-triggered collapses (full_scan=3Dtrue), all limits are=
- bypassed
-> >> + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
-> >> + *
-> >> + * For PMD-sized collapses (order =3D=3D HPAGE_PMD_ORDER), use the co=
-nfigured
-> >> + * khugepaged_max_ptes_none value.
-> >> + *
-> >> + * For mTHP collapses, scale down the max_ptes_none proportionally to=
- the folio
-> >> + * order, but caps it at HPAGE_PMD_NR/2-1 to prevent a collapse feedb=
-ack loop.
-> >> + *
-> >> + * Return: Maximum number of empty PTEs allowed for the collapse oper=
-ation
-> >> + */
-> >> +static unsigned int collapse_max_ptes_none(unsigned int order, bool f=
-ull_scan)
-> >> +{
-> >> +    unsigned int max_ptes_none;
-> >> +
-> >> +    /* ignore max_ptes_none limits */
-> >> +    if (full_scan)
-> >> +            return HPAGE_PMD_NR - 1;
-> >> +
-> >> +    if (order =3D=3D HPAGE_PMD_ORDER)
-> >> +            return khugepaged_max_ptes_none;
-> >> +
-> >> +    max_ptes_none =3D min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - =
-1);
-> >
-> > I mean not to beat a dead horse re: v11 commentary, but I thought we we=
-re going
-> > to implement David's idea re: the new 'eagerness' tunable, and again we=
-'re now just
-> > implementing the capping at HPAGE_PMD_NR/2 - 1 thing again?
-> >
-> > I'm still really quite uncomfortable with us silently capping this valu=
-e.
-> >
-> > If we're putting forward theoretical ideas that are to be later built u=
-pon, this
-> > series should be an RFC.
-> >
-> > But if we really intend to silently ignore user input the problem is th=
-at then
-> > becomes established uAPI.
-> >
-> > I think it's _sensible_ to avoid this mTHP escalation problem, but the =
-issue is
-> > visibility I think.
-> >
-> > I think people are going to find it odd that you set it to something, b=
-ut then
-> > get something else.
-> >
-> > As an alternative we could have a new sysfs field:
-> >
-> > /sys/kernel/mm/transparent_hugepage/khugepaged/max_mthp_ptes_none
-> >
-> > That shows the cap clearly.
-> >
-> > In fact, it could be read-only... and just expose it to the user. That =
-reduces
-> > complexity.
-> >
-> > We can then bring in eagerness later and have the same situation of
-> > max_ptes_none being a parameter that exists (plus this additional read-=
-only
-> > parameter).
->
+Le Fri, Oct 10, 2025 at 05:38:33PM +0200, Valentin Schneider a écrit :
+> smp_call_function() & friends have the unfortunate habit of sending IPIs to
+> isolated, NOHZ_FULL, in-userspace CPUs, as they blindly target all online
+> CPUs.
+> 
+> Some callsites can be bent into doing the right, such as done by commit:
+> 
+>   cc9e303c91f5 ("x86/cpu: Disable frequency requests via aperfmperf IPI for nohz_full CPUs")
+> 
+> Unfortunately, not all SMP callbacks can be omitted in this
+> fashion. However, some of them only affect execution in kernelspace, which
+> means they don't have to be executed *immediately* if the target CPU is in
+> userspace: stashing the callback and executing it upon the next kernel entry
+> would suffice. x86 kernel instruction patching or kernel TLB invalidation
+> are prime examples of it.
+> 
+> Reduce the RCU dynticks counter width to free up some bits to be used as a
+> deferred callback bitmask. Add some build-time checks to validate that
+> setup.
+> 
+> Presence of CT_RCU_WATCHING in the ct_state prevents queuing deferred work.
+> 
+> Later commits introduce the bit:callback mappings.
+> 
+> Link: https://lore.kernel.org/all/20210929151723.162004989@infradead.org/
+> Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> ---
+>  arch/Kconfig                                 |  9 +++
+>  arch/x86/Kconfig                             |  1 +
+>  arch/x86/include/asm/context_tracking_work.h | 16 +++++
+>  include/linux/context_tracking.h             | 21 ++++++
+>  include/linux/context_tracking_state.h       | 30 ++++++---
+>  include/linux/context_tracking_work.h        | 26 ++++++++
+>  kernel/context_tracking.c                    | 69 +++++++++++++++++++-
+>  kernel/time/Kconfig                          |  5 ++
+>  8 files changed, 165 insertions(+), 12 deletions(-)
+>  create mode 100644 arch/x86/include/asm/context_tracking_work.h
+>  create mode 100644 include/linux/context_tracking_work.h
+> 
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index d1b4ffd6e0856..a33229e017467 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -968,6 +968,15 @@ config HAVE_CONTEXT_TRACKING_USER_OFFSTACK
+>  	  - No use of instrumentation, unless instrumentation_begin() got
+>  	    called.
+>  
+> +config HAVE_CONTEXT_TRACKING_WORK
+> +	bool
+> +	help
+> +	  Architecture supports deferring work while not in kernel context.
+> +	  This is especially useful on setups with isolated CPUs that might
+> +	  want to avoid being interrupted to perform housekeeping tasks (for
+> +	  ex. TLB invalidation or icache invalidation). The housekeeping
+> +	  operations are performed upon re-entering the kernel.
+> +
+>  config HAVE_TIF_NOHZ
+>  	bool
+>  	help
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 05880301212e3..3f1557b7acd8f 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -222,6 +222,7 @@ config X86
+>  	select HAVE_CMPXCHG_LOCAL
+>  	select HAVE_CONTEXT_TRACKING_USER		if X86_64
+>  	select HAVE_CONTEXT_TRACKING_USER_OFFSTACK	if HAVE_CONTEXT_TRACKING_USER
+> +	select HAVE_CONTEXT_TRACKING_WORK		if X86_64
+>  	select HAVE_C_RECORDMCOUNT
+>  	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
+>  	select HAVE_OBJTOOL_NOP_MCOUNT		if HAVE_OBJTOOL_MCOUNT
+> diff --git a/arch/x86/include/asm/context_tracking_work.h b/arch/x86/include/asm/context_tracking_work.h
+> new file mode 100644
+> index 0000000000000..5f3b2d0977235
+> --- /dev/null
+> +++ b/arch/x86/include/asm/context_tracking_work.h
+> @@ -0,0 +1,16 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_X86_CONTEXT_TRACKING_WORK_H
+> +#define _ASM_X86_CONTEXT_TRACKING_WORK_H
+> +
+> +static __always_inline void arch_context_tracking_work(enum ct_work work)
+> +{
+> +	switch (work) {
+> +	case CT_WORK_n:
+> +		// Do work...
+> +		break;
+> +	case CT_WORK_MAX:
+> +		WARN_ON_ONCE(true);
+> +	}
+> +}
+> +
+> +#endif
+> diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
+> index af9fe87a09225..0b0faa040e9b5 100644
+> --- a/include/linux/context_tracking.h
+> +++ b/include/linux/context_tracking.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/sched.h>
+>  #include <linux/vtime.h>
+>  #include <linux/context_tracking_state.h>
+> +#include <linux/context_tracking_work.h>
+>  #include <linux/instrumentation.h>
+>  
+>  #include <asm/ptrace.h>
+> @@ -137,6 +138,26 @@ static __always_inline unsigned long ct_state_inc(int incby)
+>  	return raw_atomic_add_return(incby, this_cpu_ptr(&context_tracking.state));
+>  }
+>  
+> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
+> +static __always_inline unsigned long ct_state_inc_clear_work(int incby)
+> +{
+> +	struct context_tracking *ct = this_cpu_ptr(&context_tracking);
+> +	unsigned long new, old, state;
+> +
+> +	state = arch_atomic_read(&ct->state);
+> +	do {
+> +		old = state;
+> +		new = old & ~CT_WORK_MASK;
+> +		new += incby;
+> +		state = arch_atomic_cmpxchg(&ct->state, old, new);
+> +	} while (old != state);
+> +
+> +	return new;
+> +}
+> +#else
+> +#define ct_state_inc_clear_work(x) ct_state_inc(x)
+> +#endif
+> +
+>  static __always_inline bool warn_rcu_enter(void)
+>  {
+>  	bool ret = false;
+> diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
+> index 0b81248aa03e2..d2c302133672f 100644
+> --- a/include/linux/context_tracking_state.h
+> +++ b/include/linux/context_tracking_state.h
+> @@ -5,6 +5,7 @@
+>  #include <linux/percpu.h>
+>  #include <linux/static_key.h>
+>  #include <linux/context_tracking_irq.h>
+> +#include <linux/context_tracking_work.h>
+>  
+>  /* Offset to allow distinguishing irq vs. task-based idle entry/exit. */
+>  #define CT_NESTING_IRQ_NONIDLE	((LONG_MAX / 2) + 1)
+> @@ -39,16 +40,19 @@ struct context_tracking {
+>  };
+>  
+>  /*
+> - * We cram two different things within the same atomic variable:
+> + * We cram up to three different things within the same atomic variable:
+>   *
+> - *                     CT_RCU_WATCHING_START  CT_STATE_START
+> - *                                |                |
+> - *                                v                v
+> - *     MSB [ RCU watching counter ][ context_state ] LSB
+> - *         ^                       ^
+> - *         |                       |
+> - * CT_RCU_WATCHING_END        CT_STATE_END
+> + *                     CT_RCU_WATCHING_START                  CT_STATE_START
+> + *                                |         CT_WORK_START          |
+> + *                                |               |                |
+> + *                                v               v                v
+> + *     MSB [ RCU watching counter ][ context work ][ context_state ] LSB
+> + *         ^                       ^               ^
+> + *         |                       |               |
+> + *         |                  CT_WORK_END          |
+> + * CT_RCU_WATCHING_END                        CT_STATE_END
+>   *
+> + * The [ context work ] region spans 0 bits if CONFIG_CONTEXT_WORK=n
+>   * Bits are used from the LSB upwards, so unused bits (if any) will always be in
+>   * upper bits of the variable.
+>   */
+> @@ -59,18 +63,24 @@ struct context_tracking {
+>  #define CT_STATE_START 0
+>  #define CT_STATE_END   (CT_STATE_START + CT_STATE_WIDTH - 1)
+>  
+> -#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_STATE_WIDTH)
+> +#define CT_WORK_WIDTH (IS_ENABLED(CONFIG_CONTEXT_TRACKING_WORK) ? CT_WORK_MAX_OFFSET : 0)
+> +#define	CT_WORK_START (CT_STATE_END + 1)
+> +#define CT_WORK_END   (CT_WORK_START + CT_WORK_WIDTH - 1)
+> +
+> +#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_WORK_WIDTH - CT_STATE_WIDTH)
+>  #define CT_RCU_WATCHING_WIDTH     (IS_ENABLED(CONFIG_RCU_DYNTICKS_TORTURE) ? 2 : CT_RCU_WATCHING_MAX_WIDTH)
+> -#define CT_RCU_WATCHING_START     (CT_STATE_END + 1)
+> +#define CT_RCU_WATCHING_START     (CT_WORK_END + 1)
+>  #define CT_RCU_WATCHING_END       (CT_RCU_WATCHING_START + CT_RCU_WATCHING_WIDTH - 1)
+>  #define CT_RCU_WATCHING           BIT(CT_RCU_WATCHING_START)
+>  
+>  #define CT_STATE_MASK        GENMASK(CT_STATE_END,        CT_STATE_START)
+> +#define CT_WORK_MASK         GENMASK(CT_WORK_END,         CT_WORK_START)
+>  #define CT_RCU_WATCHING_MASK GENMASK(CT_RCU_WATCHING_END, CT_RCU_WATCHING_START)
+>  
+>  #define CT_UNUSED_WIDTH (CT_RCU_WATCHING_MAX_WIDTH - CT_RCU_WATCHING_WIDTH)
+>  
+>  static_assert(CT_STATE_WIDTH        +
+> +	      CT_WORK_WIDTH         +
+>  	      CT_RCU_WATCHING_WIDTH +
+>  	      CT_UNUSED_WIDTH       ==
+>  	      CT_SIZE);
+> diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
+> new file mode 100644
+> index 0000000000000..c68245f8d77c5
+> --- /dev/null
+> +++ b/include/linux/context_tracking_work.h
+> @@ -0,0 +1,26 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _LINUX_CONTEXT_TRACKING_WORK_H
+> +#define _LINUX_CONTEXT_TRACKING_WORK_H
+> +
+> +#include <linux/bitops.h>
+> +
+> +enum {
+> +	CT_WORK_n_OFFSET,
+> +	CT_WORK_MAX_OFFSET
+> +};
+> +
+> +enum ct_work {
+> +	CT_WORK_n        = BIT(CT_WORK_n_OFFSET),
+> +	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
+> +};
+> +
+> +#include <asm/context_tracking_work.h>
+> +
+> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
+> +extern bool ct_set_cpu_work(unsigned int cpu, enum ct_work work);
+> +#else
+> +static inline bool
+> +ct_set_cpu_work(unsigned int cpu, unsigned int work) { return false; }
+> +#endif
+> +
+> +#endif
+> diff --git a/kernel/context_tracking.c b/kernel/context_tracking.c
+> index fb5be6e9b423f..3238bb1f41ff4 100644
+> --- a/kernel/context_tracking.c
+> +++ b/kernel/context_tracking.c
+> @@ -72,6 +72,70 @@ static __always_inline void rcu_task_trace_heavyweight_exit(void)
+>  #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
+>  }
+>  
+> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
+> +static noinstr void ct_work_flush(unsigned long seq)
+> +{
+> +	int bit;
+> +
+> +	seq = (seq & CT_WORK_MASK) >> CT_WORK_START;
+> +
+> +	/*
+> +	 * arch_context_tracking_work() must be noinstr, non-blocking,
+> +	 * and NMI safe.
+> +	 */
+> +	for_each_set_bit(bit, &seq, CT_WORK_MAX)
+> +		arch_context_tracking_work(BIT(bit));
+> +}
+> +
+> +/**
+> + * ct_set_cpu_work - set work to be run at next kernel context entry
+> + *
+> + * If @cpu is not currently executing in kernelspace, it will execute the
+> + * callback mapped to @work (see arch_context_tracking_work()) at its next
+> + * entry into ct_kernel_enter_state().
+> + *
+> + * If it is already executing in kernelspace, this will be a no-op.
+> + */
+> +bool ct_set_cpu_work(unsigned int cpu, enum ct_work work)
+> +{
+> +	struct context_tracking *ct = per_cpu_ptr(&context_tracking, cpu);
+> +	unsigned int old;
+> +	bool ret = false;
+> +
+> +	if (!ct->active)
+> +		return false;
+> +
+> +	preempt_disable();
+> +
+> +	old = atomic_read(&ct->state);
+> +
+> +	/*
+> +	 * The work bit must only be set if the target CPU is not executing
+> +	 * in kernelspace.
+> +	 * CT_RCU_WATCHING is used as a proxy for that - if the bit is set, we
+> +	 * know for sure the CPU is executing in the kernel whether that be in
+> +	 * NMI, IRQ or process context.
+> +	 * Set CT_RCU_WATCHING here and let the cmpxchg do the check for us;
+> +	 * the state could change between the atomic_read() and the cmpxchg().
+> +	 */
+> +	old |= CT_RCU_WATCHING;
 
-Hey Baolin,
+Most of the time, the task should be either idle or in userspace. I'm still not
+sure why you start with a bet that the CPU is in the kernel with RCU watching.
 
-> We all know that ultimately using David's suggestion to add the
-> 'eagerness' tunable parameter is the best approach, but for now, we need
-> an initial version to support mTHP collapse (as we've already discussed
-> extensively here:)).
->
-> I don't like the idea of adding another and potentially confusing
-> 'max_mthp_ptes_none' interface, which might make it more difficult to
-> accommodate the 'eagerness' parameter in the future.
->
-> If Nico's current proposal still doesn't satisfy everyone, I personally
-> lean towards David's earlier simplified approach:
->         max_ptes_none =3D=3D 511 -> collapse mTHP always
->         max_ptes_none !=3D 511 -> collapse mTHP only if all PTEs are non-=
-none/zero
->
-> Let's first have an initial approach in place, which will also simplify
-> the following addition of the 'eagerness' tunable parameter.
->
-> Nico, Lorenzo, and David, what do you think?
+> +	/*
+> +	 * Try setting the work until either
+> +	 * - the target CPU has entered kernelspace
+> +	 * - the work has been set
+> +	 */
+> +	do {
+> +		ret = atomic_try_cmpxchg(&ct->state, &old, old | (work << CT_WORK_START));
+> +	} while (!ret && !(old & CT_RCU_WATCHING));
 
-I still believe capping it at PMD_NR/2 provides the right mix between
-preventing the undesired behavior, and keeping some degree of
-tunability, as the admin guides suggests max_ptes_none should be used.
-I would be willing to compromise and take this other approach until
-the "eagerness" is in place. However, I do believe David's idea for
-eagerness is to also cap the max_ptes_none at PMD_NR/2 for the second
-to highest eagerness level (ie, 511, 255, ...). So in practice, we
-won't see any behavioral changes when that series comes around;
-whereas setting max_ptes_none=3D0 for mTHP initially, then adding
-eagerness will result in a change in behavior from the initial
-implementation.
+So this applies blindly to idle as well, right? It should work but note that
+idle entry code before RCU watches is also fragile.
 
-With that said, Lorenzo, David, What's the final verdict?
+The rest looks good.
 
--- Nico
+Thanks!
 
->
-> Code should be:
-> static unsigned int collapse_max_ptes_none(unsigned int order, bool
-> full_scan)
-> {
->          unsigned int max_ptes_none;
->
->          /* ignore max_ptes_none limits */
->          if (full_scan)
->                  return HPAGE_PMD_NR - 1;
->
->          if (order =3D=3D HPAGE_PMD_ORDER)
->                  return khugepaged_max_ptes_none;
->
->          /*
->           * For mTHP collapse, we can simplify the logic:
->           * max_ptes_none =3D=3D 511 -> collapse mTHP always
->           * max_ptes_none !=3D 511 -> collapse mTHP only if we all PTEs
-> are non-none/zero
->           */
->          if (khugepaged_max_ptes_none =3D=3D HPAGE_PMD_NR - 1)
->                  return khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER -
-> order);
->
->          return 0;
-> }
-Side note: Thank you Baolin for your review/testing of the V12 :)
->
 
+> +
+> +	preempt_enable();
+> +	return ret;
+> +}
+> +#else
+> +static __always_inline void ct_work_flush(unsigned long work) { }
+> +static __always_inline void ct_work_clear(struct context_tracking *ct) { }
+> +#endif
+> +
+>  /*
+>   * Record entry into an extended quiescent state.  This is only to be
+>   * called when not already in an extended quiescent state, that is,
+> @@ -88,7 +152,7 @@ static noinstr void ct_kernel_exit_state(int offset)
+>  	rcu_task_trace_heavyweight_enter();  // Before CT state update!
+>  	// RCU is still watching.  Better not be in extended quiescent state!
+>  	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !rcu_is_watching_curr_cpu());
+> -	(void)ct_state_inc(offset);
+> +	(void)ct_state_inc_clear_work(offset);
+>  	// RCU is no longer watching.
+>  }
+>  
+> @@ -99,7 +163,7 @@ static noinstr void ct_kernel_exit_state(int offset)
+>   */
+>  static noinstr void ct_kernel_enter_state(int offset)
+>  {
+> -	int seq;
+> +	unsigned long seq;
+>  
+>  	/*
+>  	 * CPUs seeing atomic_add_return() must see prior idle sojourns,
+> @@ -107,6 +171,7 @@ static noinstr void ct_kernel_enter_state(int offset)
+>  	 * critical section.
+>  	 */
+>  	seq = ct_state_inc(offset);
+> +	ct_work_flush(seq);
+>  	// RCU is now watching.  Better not be in an extended quiescent state!
+>  	rcu_task_trace_heavyweight_exit();  // After CT state update!
+>  	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !(seq & CT_RCU_WATCHING));
+> diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+> index 7c6a52f7836ce..1a0c027aad141 100644
+> --- a/kernel/time/Kconfig
+> +++ b/kernel/time/Kconfig
+> @@ -181,6 +181,11 @@ config CONTEXT_TRACKING_USER_FORCE
+>  	  Say N otherwise, this option brings an overhead that you
+>  	  don't want in production.
+>  
+> +config CONTEXT_TRACKING_WORK
+> +	bool
+> +	depends on HAVE_CONTEXT_TRACKING_WORK && CONTEXT_TRACKING_USER
+> +	default y
+> +
+>  config NO_HZ
+>  	bool "Old Idle dynticks config"
+>  	help
+> -- 
+> 2.51.0
+> 
+
+-- 
+Frederic Weisbecker
+SUSE Labs
 
