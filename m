@@ -4,102 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 08083CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:11:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B6D9CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:31:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1FAE580103; Mon, 27 Oct 2025 23:11:33 -0400 (EDT)
+	id 8704E80104; Mon, 27 Oct 2025 23:31:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D239800E4; Mon, 27 Oct 2025 23:11:33 -0400 (EDT)
+	id 82034800E4; Mon, 27 Oct 2025 23:31:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10F8F80103; Mon, 27 Oct 2025 23:11:33 -0400 (EDT)
+	id 70FD880104; Mon, 27 Oct 2025 23:31:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F1F70800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:11:32 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6A01A160369
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:11:32 +0000 (UTC)
-X-FDA: 84046047624.24.D98D67C
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C9AE020007
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:11:30 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=N1HyiXqW;
-	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761621090;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LZ6yrPf10XyjUbpb0uoz9zDvZV76d0sxqTJxoq2o+VY=;
-	b=lQaLGDZcFDqh9Z6ODUxmBbILjsWmJX8NJX8fxCvveWOp3M12XA+lS0+UTFrCrZSPiqveaF
-	0FxkCbVEDWEuLkwtEfhul1bRcxJ0A5wPlOvmdHx9CxC3v1hDTpOO3Jnq65RVUYEesB0Zei
-	cjewKzXov0RBDwJ0Var4lWqaSmFZTI0=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=N1HyiXqW;
-	spf=none (imf13.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761621090; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5A5F1800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:31:24 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 13FF6490D5
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:24 +0000 (UTC)
+X-FDA: 84046097688.07.8D8B298
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 2DB8A1C000B
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:21 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Hrs7mGz0;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761622282; a=rsa-sha256;
 	cv=none;
-	b=FrIzzaZYPykk/a6Ce/qMulpY94r1CD6GL5RDj0ZrcCPjTVfhGoh3z8CwXvp9BlNIl9G0rb
-	xeiPYRLeGqXqeoBAarvZPSSDT+a4YhhjkLQ+kpvfB5F+aD2G/yMLF2PcCRgxEGo2eE7NQY
-	efaxt1aojDAahcy1RIUkMdkNuY2CLZ0=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=LZ6yrPf10XyjUbpb0uoz9zDvZV76d0sxqTJxoq2o+VY=; b=N1HyiXqWvHuK6eYbHoqjsKF4yS
-	sRZR3R+AAf6swru+RmI/QN/YSkxT19z6dcL9RxoRt93tDwIfw8aweTO/4iA9n9JU+jR603TVBSnk+
-	Q2YJ74xC/uQLAY75lEg1xiQjThGulXfxJPHOqIx4++XcFlGut3/cwxrsMFTf0DgAoU4re6hB8TA1M
-	3D10mdbSmAzj5Eoeu/6TEUA1WUtGct5NSYbTRd/fYRips79EkV3WYcVtfDidNQWbDxf0wxBszRyaY
-	S8UHHm0pO8PDTgf+NmR2oCic03QfrrrZZGr2Mr642AXlexwRwbP3JkXztjANyhVSGqgVHU/kqDZ6X
-	WD2OlCNw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqq-00000001eYF-3cOg;
-	Tue, 28 Oct 2025 00:46:16 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: linux-fsdevel@vger.kernel.org
-Cc: torvalds@linux-foundation.org,
-	brauner@kernel.org,
-	jack@suse.cz,
-	raven@themaw.net,
-	miklos@szeredi.hu,
-	neil@brown.name,
-	a.hindborg@kernel.org,
-	linux-mm@kvack.org,
-	linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,
-	kees@kernel.org,
-	rostedt@goodmis.org,
-	gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	paul@paul-moore.com,
-	casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org,
-	john.johansen@canonical.com,
-	selinux@vger.kernel.org,
-	borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: [PATCH v2 21/50] debugfs: remove duplicate checks in callers of start_creating()
-Date: Tue, 28 Oct 2025 00:45:40 +0000
-Message-ID: <20251028004614.393374-22-viro@zeniv.linux.org.uk>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+	b=O3gO7mevOvAtzRcjUSw7riY/sg9YRXyXXsgt0wkk7FWb7HiycQE2wqRqmjIMG+Y6T+/9TR
+	fYRJFVr9++oLEFlG0odnt52Gerjp9SUQzBuDn3+AdqwHAePkmlS9z9gHFQYJ/GNLzlfC0a
+	ELs1PvhsabrVRAm/1+BAfnCZ5CcwfbU=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=chromium.org header.s=google header.b=Hrs7mGz0;
+	dmarc=pass (policy=none) header.from=chromium.org;
+	spf=pass (imf18.hostedemail.com: domain of senozhatsky@chromium.org designates 209.85.215.176 as permitted sender) smtp.mailfrom=senozhatsky@chromium.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761622282;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/WJvY11yZe5DNuh0SmLl84KhyrfL2n7Y6FVCkvFsiMg=;
+	b=7qZeICLC1U5EFAyY0vvNFOY87QwswlWV8U5aa37uB46Fn1g7qEUMGEDVOl9UJKpCaVg0qU
+	fw6Xe3OeF9nBI3HdE28bHjTo01HGQmzSQp/kD0tG0GarlmwyDunHSiQNLKan2Z0OROR/Ta
+	x0d7RvUGsS2mQRN21YzYJH14Cs1Yw7k=
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b6a225b7e9eso3933474a12.0
+        for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:31:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1761622281; x=1762227081; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/WJvY11yZe5DNuh0SmLl84KhyrfL2n7Y6FVCkvFsiMg=;
+        b=Hrs7mGz0uG+ZAA+u8cE3IInD1selUGuFil9NVfYRXX+QLtt5EsB/szuFnVv4ClIVZj
+         CaA3m8UhsUE+l/zsgvUK1qNW3oWvEqrCqOva72k5na8jm+fkVS6VT0byGApwsZzbqEfC
+         KxWH+DirrOuCmSePAMV++/d6aAuR++PuTvwyc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761622281; x=1762227081;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/WJvY11yZe5DNuh0SmLl84KhyrfL2n7Y6FVCkvFsiMg=;
+        b=JWcnFbdltuyiekJR2H/a+1Wz6DgQFZ7MfPqOZb8m3KLkHH7nTfd6SqwUfcgzZqHxfW
+         7803al31k2cvRYmgptYvgGH+UTjuTiEyisJDojYSRi+ZXkCBd+MH4w6Xme56BiQlzQ39
+         z5TjiZXhnayK5j6UwIETPW0bKwg1bBlt9FWbKVXF3cH0hOmhmbQwS86aR0RNmT9cjL7A
+         Bi9rk3QPk0NKmOvNQl/uTqqo/c8N0ZQEv6qQu/NuL4P+YDVkP8ApyuIEU/sri8sA95lW
+         yTCWHyKNHCQactx0SQtwdmCESy9KeKvhDjyWsOfWB0pblWpkbqG1r7MqZn5C5TLvXMON
+         64ww==
+X-Forwarded-Encrypted: i=1; AJvYcCXsN7DjR89AUHUr8DXYJpfnZJMCJ6xi4NN9pT3dKdr99y8Bx8DaYRz3jz1HnZpBATcObj1hrAKQMA==@kvack.org
+X-Gm-Message-State: AOJu0YwbJnvygHFOEs8tr8aflWPFy7p66a7NH9xacMFQ7ycWSCLoyfez
+	WtvdvyWN5Xx9nghNQFUwVyJTaaSPYOMNdKnRT2Xwc+oPuq/su+GK7ee6Q6fBD+iRGg==
+X-Gm-Gg: ASbGncvvXKNTJl5zfTWFPSwsbGPGcmNJU5iZytNN4HQWL0iSw0M6GfljoIVITiFZari
+	y+G0dMapgA2b8xZD71ElHLf3Xa7TVin4VGyz2t5xNT6fkPRMCrEyzzN3lhMN5GOlXiKe4w9g8x6
+	YHoDuoc3CATRqlz0QUyEtM543enPXKxBHQR8C1GIXrM72vQqv28I8kfADYr05Bo+39q8pQCfRNb
+	pG8uoHzarfShYHSXLEbHGW4XTopmi7RDEQ7Gq5qkrXoQZoZlRj4UGM1m8MeJTiS4aIgzl4FjIxc
+	cmqALSVvFgyGZT2ERXwOv02JwV8WFP1Lw/R+LF+DYFwJvPntIAs4kdwQqy+YZk01FVEeRTkxcdD
+	jD/VLP9AiaM7FR/cKdKKao5TcDTAfdx107qRtG43AspbY9OoqbqqE675J4h05qFBe1656DJItIE
+	rdiI6D
+X-Google-Smtp-Source: AGHT+IG4vfR0LE0WG8LCYJmEN31gkl7hCsYmhmgxpsNHn1XBOsYb/cbkA/Iv5cZPqQ3IQLRXV2PyoQ==
+X-Received: by 2002:a17:902:dacd:b0:290:af0e:1183 with SMTP id d9443c01a7336-294cb6746c8mr22090685ad.51.1761622280960;
+        Mon, 27 Oct 2025 20:31:20 -0700 (PDT)
+Received: from google.com ([2401:fa00:8f:203:2c65:61c5:8aa8:4b47])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29498cf4a53sm100342125ad.6.2025.10.27.20.31.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 27 Oct 2025 20:31:20 -0700 (PDT)
+Date: Tue, 28 Oct 2025 12:31:12 +0900
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+To: Nhat Pham <nphamcs@gmail.com>
+Cc: jinji zhong <jinji.z.zhong@gmail.com>, minchan@kernel.org, 
+	senozhatsky@chromium.org, philipp.reisner@linbit.com, lars.ellenberg@linbit.com, 
+	christoph.boehmwalder@linbit.com, corbet@lwn.net, tj@kernel.org, hannes@cmpxchg.org, 
+	mkoutny@suse.com, axboe@kernel.dk, mhocko@kernel.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, akpm@linux-foundation.org, terrelln@fb.com, dsterba@suse.com, 
+	muchun.song@linux.dev, linux-kernel@vger.kernel.org, drbd-dev@lists.linbit.com, 
+	linux-doc@vger.kernel.org, cgroups@vger.kernel.org, linux-block@vger.kernel.org, 
+	linux-mm@kvack.org, zhongjinji@honor.com, liulu.liu@honor.com, feng.han@honor.com, 
+	YoungJun Park <youngjun.park@lge.com>
+Subject: Re: [RFC PATCH 0/3] Introduce per-cgroup compression priority
+Message-ID: <4tqwviq3dmz2536eahhxxw6nj24tbg5am57yybgmmwcf4vtwdn@s7f4n2yfszbe>
+References: <cover.1761439133.git.jinji.z.zhong@gmail.com>
+ <CAKEwX=MqsyWki+DfzePb3SwXWTZ_2tcDV-ONBQu62=otnBXCiQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: C9AE020007
-X-Stat-Signature: keeo645dwi9ijdwh9ekfh7ainwomtsqz
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAKEwX=MqsyWki+DfzePb3SwXWTZ_2tcDV-ONBQu62=otnBXCiQ@mail.gmail.com>
 X-Rspam-User: 
-X-HE-Tag: 1761621090-566459
-X-HE-Meta: U2FsdGVkX1/2V9vrp5+v7sU2fGp1RhGf7u/q4ty7ioWSy4SxrlnWvJ/qloYiyGMtbM8VYPrwP0WBHaKPx+H/iFzc2XIlUX0fHXjbOPm14HGFRuhsZc6YRmjyHBH7LdhIDZfvfMptYvQzBIJra5fjRatESJOA//I1YuGGI6UOvBmenA50RZR1fYV6i+qQMoRWsa21fxzfIhsFZncuTiCs+Axh1yb6te9SVJvWt5U9O3XYheLxuwDmBrcNnboOjRAes2eLdt8f7F/oKcyktSAV6k0JlXb5MaPC8ESCiHCTpsT+Oebw6vF2KUSx3IjwOqBNO9Bo3fpWaE59nJtke4+zLV4QwX7WKF2pOZB2i/sEsY8lyvc+5rBpH8bV4IvhmREyf0PQ9f3+6JTE+YvuwTwbwFYbhGCYe8DT4IavUyXYPDXkwJ2TAJdSoUW2hzZJXXF5B3BbFzpUIGwMzAHy5KRHc9det09Ir7a7YLYKvJyd2eM+MoC6wbvw+siH8TEOYkrw7pRMIUxfsg2iZOTxOQJBe80KfhsSgCUO1V9vGjSPBh4x1Y+N7lmVuJSPuZhnv1DiGFyM9H6lBl/J0o1c3odn8ESXsZQH2po7tAdjgCvtN0r0JHQCo3vxwobsP4sLsJTV2Mh8Dl0SCqcJMjUTyRBNNqeX4sBOwJn5OSAvGROUZfjJa/5fud+V3KFbYm2AlvBVua6Syz6HuQrrt6Cit00RNsyreroB9i4s69nKnZBh1eE1ZpSFtPFFd60mnYEhrW/ZQ1Eg5vncKFf7Agbueh1cruVn7hMhplNWhs+W7zThID36JQDvKerxlO1OY43KRgb/IugcNQHRByLf77RStOGr5CAROq2j//zEDe8JzUWUz1UXQbQ95YcgorcABwLHydOJsmvr3zM8LOoeiVTSszMiNt6VRqNHWO+lhMgZxNLAh3kZzwfyCSsRDdqYMG1nlygdn66atF3vtiXExqbXvyw
- /BCvSygo
- i8Zws9Mv9+uqlh7L6+L96rKtvsLbEJayqxeTL3eFiiikWa36jueFAw23pI7d8wwCeZdfvcxpikaPXxH78i2167RsezKRDOnfX0lg3Go5L+gg1vzlQ8ZmSRrKDhQsatLOs7rcl1POrEgKe0utVYcR74FXyUpxncshV/azYZvPdn39UJOct6HGddOEiLkKuhGXZaW/qDtni0q0MS2x1f52uoOqVTxrEeaNVAcJHnzAMULt/7/hS0ZGGbDj2sg0Ttdezo7ZC6JD6HZndcmiZFriQVds+hMnqEmBoSGLxWCdcuRrY+hNCufpBypmiV9qtj1gH/cPM5ILcGbxxlcAQ6J6SFcRPO6Ymd350sWF9j/5/rSeC5GGhLXPIXxaZbntykGCiXTXvAwucvjlFNIJBlq+JLg6qZvK/76Du2USrVJsEvTd5pPdOFZ/4ePVOcD18FbeHQYeWZVki1zVgDw/ei2ptuyR/41lO9ajdeRqmSHpyzCvD5IpsFqItt4ZruLS1madEOItpLFrdx8tlrYyzkHWwh2j5QQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 2DB8A1C000B
+X-Stat-Signature: rqan4izecz6oghssmwaww8d3b6hp931d
+X-HE-Tag: 1761622281-500524
+X-HE-Meta: U2FsdGVkX1+W9IxdCLpowQSxcyTPMceQZSvsENdY6zt98CbdypK1TfOJ0nltMSJEkJeoR1Gy0YYGi4lTZ6b4ccAUN9x3ClOgiMcy25bPGhJz9fEO5gOrgEFxUg+JDi5vRc2dUzeSc2NiUu5tISEM1g1h+b9FJ8HP2+/0ihmFoaQ0hwlMamWiQh6nyRda+SSB7QrR578b1QhFL84r71WuvDCHhhIZWMuP8U03vDVLDsmAqBLLBSALGzPZZRepBWbHsA8RAV5c83D9ZSAGUC0MsqvZa5fb5gmCP6A3uS8ovnAWiRNdSUfT3HdtIekvhQb0h4CFQaOPukwHbNWvWzRXlHjMirh4iTb+ANgTTiPAgYVXRtroq096oNQ21JPKT/eLgcdbo/tGcQfaO8B6f+3Y4HEeBnxX4mbE0JUzi5quQxuBiZBWZUdIbPcrm1CHHHol/wyBhYc2V37S8WDWib6kQJ97K1uXgNkVfOgufXSwtL9mU2qT7NvAXk6dsJxsCqOKGZp5CkRcoaVwncNHx82nN8P2/rakG0sUIx86iwaIRQrgg17ZYWkvCSpDNAnZytA7Lpt/RmR2vtNcch/Y5GJD/crh3QiNDvjTiftMTWR0SNvL3jJTpQjPJ/TOu/QSrq+BrRcgH59fuhCi1Gd7EvAVGNAJEFz3H2khjPOHPCH+iulBp92WyOpCAyGV82/q1dgbD3Y5Mh9Feo5RQjLX9+qRWXFxaRJsIckX73+9065WXikozevLQqJxCdJDvKVDQkPw06uwOBXpHsGCehBGrkQOr8smMaUpIHtKU9EGm/MbwEDnAvMLrjgrZe5wXrssi2Z9+HRpn9Wk9v+eBVtHjbQOCqr8r+nzgWjlc02c5XPPd4dPorNcT+556pbJkTNu2WmCFiUsMOX1sLDD5fyScqd1ns3i2TwVJvfzbyFktm06XFEA9lbCB8kzJcRGVk6wBVtXltJWTQMZVrjOzz8/pus
+ BMk93UZU
+ mBqiCfo+Aaa1Ba8KgKFRXWTcs2zF00cvSKz5CmrRQxAchGl3BkmJLNkVMwv3y+qecwVcw+0at84lFGaLbEK4nVKAPCUyoVJ6gcWGGR0ILPl0DqKkC/nQ2EXB011/P0K+dVYbQpXX2ZN7chxZrJ920Jw0EaIsNtFFWLvjYqqxDQBTF2vf6j7uRHr7uZdeXvRa2BtXKAhqLrlW77vrQ8K24wxK5cD4IIQkXVhC8/ajZVDwfaNAbHUZR6YfkI/Qty+Y/HHBnDelNyb0gqyXnimS2zOSutVR6ghbGRTBUHuHbwTCNj3xaLZPia8lD10nJTCwJTseH89uh8WWVM6HfqVCIxvJUH4Myfhqgcg3Z60yLAnQG44jaOmwekxpk8jYxoezuKuM4agqwpv+xvj0EBdb0crVr1mI5HP+mKu51gbydSHhygfs/YcrZUgiGvA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,56 +123,12 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-we'd already verified that DEBUGFS_ALLOW_API was there in
-start_creating() - it would've failed otherwise
+On (25/10/27 15:46), Nhat Pham wrote:
+> Another alternative is to make this zram-internal, i.e add knobs to
+> zram sysfs, or extend the recomp parameter. I'll defer to zram
+> maintainers and users to comment on this :)
 
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
----
- fs/debugfs/inode.c | 15 ---------------
- 1 file changed, 15 deletions(-)
-
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 682120fdbb17..25a554331ac4 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -433,11 +433,6 @@ static struct dentry *__debugfs_create_file(const char *name, umode_t mode,
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
--	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
--		failed_creating(dentry);
--		return ERR_PTR(-EPERM);
--	}
--
- 	inode = debugfs_get_inode(dentry->d_sb);
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create file '%s'\n",
-@@ -583,11 +578,6 @@ struct dentry *debugfs_create_dir(const char *name, struct dentry *parent)
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
--	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
--		failed_creating(dentry);
--		return ERR_PTR(-EPERM);
--	}
--
- 	inode = debugfs_get_inode(dentry->d_sb);
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create directory '%s'\n",
-@@ -630,11 +620,6 @@ struct dentry *debugfs_create_automount(const char *name,
- 	if (IS_ERR(dentry))
- 		return dentry;
- 
--	if (!(debugfs_allow & DEBUGFS_ALLOW_API)) {
--		failed_creating(dentry);
--		return ERR_PTR(-EPERM);
--	}
--
- 	inode = debugfs_get_inode(dentry->d_sb);
- 	if (unlikely(!inode)) {
- 		pr_err("out of free dentries, can not create automount '%s'\n",
--- 
-2.47.3
-
+I think this cannot be purely zram-internal, we'd need some "hint"
+from upper layers which process/cgroup each particular page belongs
+to and what's its priority.
 
