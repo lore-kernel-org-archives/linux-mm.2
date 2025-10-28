@@ -4,98 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E718CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:47:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6027ACCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:57:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8A74C80148; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
+	id 95BB880149; Tue, 28 Oct 2025 09:57:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 857A68013F; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
+	id 933528013F; Tue, 28 Oct 2025 09:57:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76DF380148; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
+	id 86FDE80149; Tue, 28 Oct 2025 09:57:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 622078013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D9B85873D
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:47:05 +0000 (UTC)
-X-FDA: 84047649210.16.1EAD3DD
-Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 0AC1320010
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:47:00 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yZD3TcbU;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A24A8013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:57:16 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1ECB1493E8
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:57:16 +0000 (UTC)
+X-FDA: 84047674872.30.2CC3885
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 38478120010
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:57:13 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=efrqwEo9;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf29.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761659222;
+	s=arc-20220608; t=1761659834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SdP4P384sbs4h39646JsReKLjr8gZ9zv4XENPQNf9Lk=;
-	b=cK9beK05uACddEINl1CtwVfHCNqa33IALLHAPw7SPsOuODsbx3UJn7KB93uEp8YtXw1Vgh
-	GYtVD/lbRqfSUc6vw0mHzQAgtWJAzy2CujUFSAbtKUrW2KYLaj5GKnvqfAeE0VKLzL8r1N
-	3+tS+JD3vQ0fY70+17bxbMcF3TlGczA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761659222; a=rsa-sha256;
+	bh=Bu9Jr2dam06sl63fQm0tPkTHNuZQtbs/dlOpqYwRSNE=;
+	b=ceiuxvVTFfS9MW7ICYLl3LT+imeWiCkaNyI4LR/QFtHG0/NKvokuCnBOVLOA/AaNQ4RzT1
+	O+Hww8TMGZXZi9aa7a5ZmxXfTujwE4eMh3e0lRUrkEzHFCTAt2uOsnNqmy9SMNQD8JoT/i
+	NhU+ZPlYXAmEjuC+Ee3jwagoZ2sqsFk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761659834; a=rsa-sha256;
 	cv=none;
-	b=IGCjW0zpsYmSsRnEb7zxq7Iw0ms8AjALhe1V71jJKJ8LxGJrnrCrPfHXqrTNxkPLIYn0GP
-	63NOwl7fWzOm1CRE2s/lmjYqaVZlwzyhaSHEZBZtkiraWkLqBPfemej5oPlahqe68fE/X2
-	2cDZ/rIQsyKWdrIdy9EOr9JPPLqvAmQ=
+	b=DsIgeonFv6e15oYQrnRaQpUzoNf3dGo0QXyk7HVA0dGpbAOWKxUDFNavbxzdIk1xF4MVbJ
+	5yZ8qe4ofT9hDgY6G2mV3EMYrVyc3YyyHWua8ojYB4R9WSZi3fchb7ef7b8jxzcJA9+AbK
+	vhM8acg82iWFM+GxwXlZQJ5dZYpUv/s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yZD3TcbU;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf13.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761659216; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=SdP4P384sbs4h39646JsReKLjr8gZ9zv4XENPQNf9Lk=;
-	b=yZD3TcbU4iXD+wMzZjH4GR5HiKt7xEU8lon77KFyyc7pq/xmTJvvCG9KF4Yn4wDeylPMs5DxpmC1gEowCmgQWE/aAmqD21s2ZsxhyNbJqOD//Reu1PSu3DdD2PY+xsQtsVMYuvnUYOyT5gy3vhlcgobiO68Q01ePHTQWIpCa7gU=
-Received: from 30.246.176.102(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WrCJu3H_1761659211 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Oct 2025 21:46:52 +0800
-Message-ID: <0d95b8af-97e4-43b6-a35a-aa3ce153f0ee@linux.alibaba.com>
-Date: Tue, 28 Oct 2025 21:46:51 +0800
+	imf29.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=efrqwEo9;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf29.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id EF1B840E0225;
+	Tue, 28 Oct 2025 13:57:10 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id 1_nsMwL3qR96; Tue, 28 Oct 2025 13:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761659827; bh=Bu9Jr2dam06sl63fQm0tPkTHNuZQtbs/dlOpqYwRSNE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=efrqwEo9LcJeGn3Hp3jgS8IGZBBajA6sljLj7pC3IXfRxaIRC1IPE/zSM61vuj0lF
+	 GHgpbzAdYeu8OJMqOok/GadSfjYgZf/aEMjpTwliPBEj7ctTmXpfWeF7cPLTF4Lc/c
+	 plznYjbyLE9p0TNCRj8Srqri+MkwbTkp7iCPXsUx0xhZTFf89eJIMgucTTZaU8JRLs
+	 kLHkhPL/fBE7940uAoc2g6JJfDVAgYOzttpih3lWkVsEIjMqDBYjTc8EsDiQiJ+DGk
+	 lUoBcQ8MionCKQQeETUXNhK2znD3yZALyP0NJHWJNzXnDJwznbuOHRbwOSjD1TOhEu
+	 Uay+B7NjUvlXgPM6QPPyXWojsGSuulnTEpno0Tw5nb/+joejPo3QnaWODsBim0wew7
+	 g3Oo87lnimQYvf7IvbkW00qy0tApDI6UDgVtSuyNKghV0VH1cfFA/fjppDMai0z6rQ
+	 gyLN9nygh8LPRE4ZiVEGnhqWvSpFVHyCo1oo60zHrqSbuFsdSJUvkKRaiRouHUOtCV
+	 So119eeWpoaGbEBdaDqMTfvzFvSqo/xsPpfCpP2PXKaegEe9ItDsQCjxb0pL19YN2j
+	 fPrDxHv9oBv4w4UeZ2iyfyo39t39g0hl+RRya6z2Pqhz/0UzGpWNqpr0t93djBWMfN
+	 a2E0Plm2ZYfSbsJi21O9atLk=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 3570940E00DA;
+	Tue, 28 Oct 2025 13:56:48 +0000 (UTC)
+Date: Tue, 28 Oct 2025 14:56:40 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	akpm@linux-foundation.org, david@redhat.com,
+	dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
+	mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+	acme@kernel.org, namhyung@kernel.org, tglx@linutronix.de,
+	willy@infradead.org, raghavendra.kt@amd.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v8 5/7] x86/clear_page: Introduce clear_pages()
+Message-ID: <20251028135640.GBaQDLmHzCQDegBHd6@fat_crate.local>
+References: <20251027202109.678022-1-ankur.a.arora@oracle.com>
+ <20251027202109.678022-6-ankur.a.arora@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
- regions
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>,
- Alex Williamson <alex.williamson@redhat.com>,
- Leon Romanovsky <leonro@nvidia.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
- kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- Logan Gunthorpe <logang@deltatee.com>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
- <20251022125012.GB244727@nvidia.com>
- <3db524e7-b6ce-4652-8420-fdb4639ac73a@linux.alibaba.com>
- <20251027120904.GA896317@nvidia.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20251027120904.GA896317@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20251027202109.678022-6-ankur.a.arora@oracle.com>
 X-Rspamd-Server: rspam01
-X-Stat-Signature: 3ny74ad5tbtz4tt38u4tgp9zsryaofoi
+X-Stat-Signature: 77zzfjkpnf5qtr6h93etbur5eqxdzhtz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0AC1320010
-X-HE-Tag: 1761659220-666992
-X-HE-Meta: U2FsdGVkX1+oSfJ3V/SDXpFvUkSrwJinAff/l+1n2CvjsUHctfcJm6J+x96d5DLDIPTl7afq0AenaY+5AnZ3x3XKsjUa1zoJPSnLHon+MWMJ7KejW+0OfsKA1xvFPDmwbJ/BgCQ124CnanX/7Qs1bcvNUBclSl1aIVUdhOhN1Tcte5Ap+49QESRp5BZK1o7w8mZlLdSByGGEikd3Fo3purcdRTn9Xwx7iwQ6vI/nZ00xhpGI8BWp6/RF3Mf3azr+OOAojpxOhc9Ubc2uuIUaSd5bjeTju1YcjYQ4IvHG0BSVHAJB15687qXkEe/Ky+VZeUddvpZqrhMu0MreaM47o/JAZ7FhmczLnkhdlXjbBAsEhv5p3WErNfmR140///tauTBkd06qUoGx599G+ACMt0Pt/50uhsmjamGYMkP8bsRmgeJRs0MiTQ110OjGR1ClXS2YW/hugZElbgZg6x617KKci2eXQ8hiQPJSzcf1+wOyp7agDJnS/LW9aTAUtsFBUjdD4OWNNPO1gmMfDtb8kSCjSWAPaljGXiQo6C0cBLf4rdrNvkODvx2KgkfOZXXwqb2DlqSccWGHij7ybHHHKL87Esb/dGNJvpEAkpv58Wp8IwFa/Z14flOHYtFT4q7a+bg0zUQdyARwF5Lt7FDB9JyQNQ31YbZAck3tqWLCZ1orOEmBuTvT2LOpUyUXFhMX9ghKRhruMRrXzZVNFkQFG96+9N86kSCf6GVy8IkXvqviLRzaqywiWAe01OHsV16dEOJG3h8FPl1LZpqJbfr/nKyQ1WpauhkoAxD1DfKcYbXD8vtzKVhO0q3uZ0NmlQwryTGFT8Q/0vDUOKc/5INjcbt42K4Uc3Z2XLUtwkyMQwu2tKRZ4/6y1cS6+y7lXs8l5QlxpJ6V6bNp/KHcHTntF7B+xEV2HoOwI2nNCb6s+43XyOF4nTIUsDaR34bzZxNNI1dwv3xVhzGY+hD2kBh
- B20CMcWQ
- esvqzATdDxHytDjyd4FFeJGBUprPZOf6hA9uZrj0H1ov1DfZLKVspdy6g2k+pb2fLgAQtf1RkayqR8u+jUKQ/JUCSBgVh/UHUgNccr4koDNQhBUUvQk2x6OQ6u87kVveG5eDz7g+2vw5NO4VYVKMeGVQ4kuhFnD7K2BDgvBNTu3HkKwI4YUQp1LrIXoqnO4K14BwnDzCT/OkXJ20w7FxuTkG2RBu0YKIj1tlnq4dCNCUwpjGh958QPJ4S1pJ9nbPvQ1yg/cOGd24hm+qm+UxqcajRwYkOBhDPHAMDUY1c43YZ9yGfqMQf5aG2e7MLVDVM4YMA
+X-Rspamd-Queue-Id: 38478120010
+X-HE-Tag: 1761659833-912869
+X-HE-Meta: U2FsdGVkX19lq/JgYkzJCZtkn7MeBnXpCUeHPwxTAQfJjI0X9PmcL9jocEslPxBvIe0BowhpYJ9TZcZbu+PY6fKHXYr/cbKzxwyfKMxxic3MawuexrWBIDvFGnhPLfIk154+GCqCEzdJUvMakgEDz/NJnI3q+2lBsCb3D8SF4KoI0rT1Vg/197uGaUgQjh2X+X4h6UGyfL64dDDxV1T6eObyyHLLjuAGW8dCZlYg9t7tJU6/k54iQWXVTGFdNAGbJoPZn8r7aA3apQCJ+s0+LLlKr0IP4Iqiqw+ko9jnIIj5yYI0BTecD5ssxGVFC92FIEA1NQCv28TPJ6Jm/+WlBa+joc7vG3/ucueYeJCd3Rp7tAeP4SrCEqDCmObcHLrH3q/Wi2SuCuk+zyggiEdrfy01enOzZIUKJnrOnDECUXu2YCcfDSU2W7ysZt+uOnZyQnObZn/E4flmCAld2O6h5t35PQvyHuURP2SeWT65LTau9VLSStruen3qVMmBs/j2sCtfApcISF/NR6VnsHNA3IEQOLQCSckZ0XKKhTUAVU2aDtFZ7S+SWkXUEUcpTxwb9VPn0yj3CxfOt1OnU4DJz/APIkNviVDviV+ocd8RNl9Gml0KiBVwNUISy4Dy099ytF4PtbCqPalOzJSHLNBLOLJY4FK1dSFMaIEar4jUkvp0/9UGS0OUBwVFtZaB0CUoa6Dz0debWwiSjNRYsFCF2g/l+/BdqG6IogJeAqH4TIKVLe1TYinib4vvroVrL8BQYkCd1NL4UCccXubx6LSN9PNh9juW959dIsRRNuCh13D1Ao6YYUT+BUuIqQ3XivYaVVxqNrM2C/uWr6ZXD3+43kV7vi0Vl+vMXQAvCUG/Wp+iCAPvi5QtTa63k7EvsxiFyIyiMCBzD7r7K5DxthHdLFu5mUi78G25MWBrWUE6xu5xk1fdcuq1Hr0TkuVacQhrdqsDlC/RQYbwEsgEL5s
+ kCFR3U7O
+ xUp9H4noWKXHxHsIcBBamofzQzvUfb3GC77TK/+YvesDvhgsJ7kbJxtqUd4US5h8g/f2mev49QfxzKMn8AIP3NeF3Qwm3HVkc8qfBZ/leySxqW7bZV26MA9haEpg3ok5GIzZaDeea18mY9TH13HjPAB//uIEDzwxthBvlIw/W3e1QNP56vypFfl6o5wo9BA4ZG7rJDuOV5MQzEV+3vfL4sm0CzJHvf4S/42w+qUOWzd/ohPM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,72 +109,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Oct 27, 2025 at 01:21:07PM -0700, Ankur Arora wrote:
+> Also define ARCH_PAGE_CONTIG_NR to specify the maximum contiguous page
+> range that can be zeroed when running under cooperative preemption
+> models. This limits the worst case preemption latency.
 
+Please do not explain what the patch does in the commit message - that should
+be clear from the diff itself. Rather, concentrate on why this patch exists.
 
-在 2025/10/27 20:09, Jason Gunthorpe 写道:
-> On Sun, Oct 26, 2025 at 03:55:04PM +0800, Shuai Xue wrote:
->>
->>
->> 在 2025/10/22 20:50, Jason Gunthorpe 写道:
->>> On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
->>>> From: Leon Romanovsky <leonro@nvidia.com>
->>>>
->>>> Add support for exporting PCI device MMIO regions through dma-buf,
->>>> enabling safe sharing of non-struct page memory with controlled
->>>> lifetime management. This allows RDMA and other subsystems to import
->>>> dma-buf FDs and build them into memory regions for PCI P2P operations.
->>>>
->>>> The implementation provides a revocable attachment mechanism using
->>>> dma-buf move operations. MMIO regions are normally pinned as BARs
->>>> don't change physical addresses, but access is revoked when the VFIO
->>>> device is closed or a PCI reset is issued. This ensures kernel
->>>> self-defense against potentially hostile userspace.
->>>
->>> Let's enhance this:
->>>
->>> Currently VFIO can take MMIO regions from the device's BAR and map
->>> them into a PFNMAP VMA with special PTEs. This mapping type ensures
->>> the memory cannot be used with things like pin_user_pages(), hmm, and
->>> so on. In practice only the user process CPU and KVM can safely make
->>> use of these VMA. When VFIO shuts down these VMAs are cleaned by
->>> unmap_mapping_range() to prevent any UAF of the MMIO beyond driver
->>> unbind.
->>>
->>> However, VFIO type 1 has an insecure behavior where it uses
->>> follow_pfnmap_*() to fish a MMIO PFN out of a VMA and program it back
->>> into the IOMMU. This has a long history of enabling P2P DMA inside
->>> VMs, but has serious lifetime problems by allowing a UAF of the MMIO
->>> after the VFIO driver has been unbound.
->>
->> Hi, Jason,
->>
->> Can you elaborate on this more?
->>
->>  From my understanding of the VFIO type 1 implementation:
->>
->> - When a device is opened through VFIO type 1, it increments the
->>    device->refcount
->> - During unbind, the driver waits for this refcount to drop to zero via
->>    wait_for_completion(&device->comp)
->> - This should prevent the unbind() from completing while the device is
->>    still in use
->>
->> Given this refcount mechanism, I do not figure out how the UAF can
->> occur.
-> 
-> A second vfio device can be opened and then use follow_pfnmap_*() to
-> read the first vfio device's PTEs. There is no relationship betweent
-> the first and second VFIO devices, so once the first is unbound it
-> sails through the device->comp while the second device retains the PFN
-> in its type1 iommu_domain.
-> 
-> Jason
+> +/*
+> + * When running under cooperatively scheduled preemption models limit the
+> + * maximum contiguous extent that can be cleared to pages worth 8MB.
 
-I see.
+Why?
 
-Thanks.
+> + *
+> + * With a clearing BW of ~10GBps, this should result in worst case scheduling
 
-Best Regard,
-Shuai
+This sounds like you have this bandwidth (please write it out - we have more
+than enough silly abbreviations) on *everything* x86 the kernel runs on. Which
+simply ain't true.
 
+> + * latency of ~1ms.
+> + */
+> +#define ARCH_PAGE_CONTIG_NR (8 << (20 - PAGE_SHIFT))
+
+And so this looks like some magic number which makes sense only on some
+uarches but most likely it doesn't on others.
+
+Why isn't this thing determined dynamically during boot or so, instead of
+hardcoding it this way and then having to change it again later when bandwidth
+increases?
+
+Hmm, weird.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
