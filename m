@@ -4,98 +4,139 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0EBFCCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 10:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE7F0CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 10:23:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E2CC780135; Tue, 28 Oct 2025 06:09:54 -0400 (EDT)
+	id BDEEC80136; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDD4680131; Tue, 28 Oct 2025 06:09:54 -0400 (EDT)
+	id BB68280131; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA45280135; Tue, 28 Oct 2025 06:09:54 -0400 (EDT)
+	id ACC1380136; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B53BF80131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:09:54 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9BB1280131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
 Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5BCDE14032D
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:09:54 +0000 (UTC)
-X-FDA: 84047101908.02.8C0FE4D
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 063A14000D
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:09:50 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LmHqZsio;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761646192; a=rsa-sha256;
-	cv=none;
-	b=qRCG3ErYYV+g6slmXCwYynhjspKNv+QpED2TgPAlcrgejcWL6+LjelDyKq1elVcv77LeSM
-	NdaMFBOPUbe0bQfnAhdivS8ALW8iUWf1hp2MOoUzuAPhf4efsFQpBDdQwhiFh3kS11YEkq
-	PuK4cc3kmPUoiZ9Bg2mGIgmIdTw7row=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=LmHqZsio;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf17.hostedemail.com: domain of baolin.wang@linux.alibaba.com designates 115.124.30.133 as permitted sender) smtp.mailfrom=baolin.wang@linux.alibaba.com
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31BE413A92A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:23:38 +0000 (UTC)
+X-FDA: 84047136516.02.EBA3039
+Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 1D4771C000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:23:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O yq2398";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aeNQs7Ux;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761646192;
+	s=arc-20220608; t=1761647016;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D1ryY5baZqSqiYaszWAZLXVQIoYi/aODofY8GTd3HL8=;
-	b=X2A6xrDH0yyVzxKuO5aEjxn6FMr5plNrL4PymsVbcNt7aSTUGev8V7TqyE3cfbwZH3smEu
-	xmzcBqmQuNVWHqrZQMb2a7UtddjxGrJmqWVu6PpDHoS4jxM3w9U6oFXgkeAhEi2ZiJ6+GM
-	FbuhmEzZ/qbRvT3HaTTLDZaaGsoAyAM=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1761646187; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=D1ryY5baZqSqiYaszWAZLXVQIoYi/aODofY8GTd3HL8=;
-	b=LmHqZsio4ScuDC8HoUt3WmJLAE9p7urcQcY8O2yU3lGGO9woHpAC3SKoSENiaakWRZzje97DK0bUpEe/lDwDNQWDVmQCZG4KdT1ydy0SrLFwJ6N6jEAPGCEfDQS51nnimwRC+XzHUQvEqOkaGBw+g32chbEOpFaytQck1dMBtL8=
-Received: from 30.74.144.127(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0WrBnYT2_1761646184 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 28 Oct 2025 18:09:45 +0800
-Message-ID: <063f8369-96c7-4345-ab28-7265ed7214cb@linux.alibaba.com>
-Date: Tue, 28 Oct 2025 18:09:43 +0800
+	bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uzfy7TYG8U=;
+	b=4KPU6v9VJwPMe6WNw3X0JwBUIzMoFQBkUIFdEYrmxWy9OzZZxPuff1WxiBeFscIBBlBF6E
+	fXvs+QKeKHBsCbpTiekiTHwR3mprg1kGNAJDC8XvbJm1JCR0n0HgluH146JzYAeu/a9uVh
+	OjiMrgNL/F6CZBXm1Jnr+DYEzVEZc54=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O yq2398";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aeNQs7Ux;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761647016; a=rsa-sha256;
+	cv=none;
+	b=4aTQUFi1pMMCqKKytPDKPMOTozK4r/oR/HfJOqcZYCMj9qCDre/Jxis2p55v4qO2Di12QF
+	szftOc7jANd2fojW3Tz61tWCqdRG2v5911wpA51rm2brdBS0Ro59uvFjIQreXPLrlrolnV
+	1RAoOgecmRG6EVrT5qiVzG5fDcsMmiM=
+Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
+	by mailflow.phl.internal (Postfix) with ESMTP id 5AD1C13804E9;
+	Tue, 28 Oct 2025 06:23:35 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Tue, 28 Oct 2025 06:23:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1761647015; x=
+	1761654215; bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uzfy7TYG8U=; b=O
+	yq2398ecmmEuY3UtO8v4pVZOsMw+yhMLoegZU4hLWk11TkY/gqsHOQ88s2w0IfZJ
+	tTlo/xf7YkKlurbMt1ddus4f6CtbmZPrVSTbpazCNqoQzH0RCawN5E6OBmJSdc4K
+	SvlQeYYqqhkBbG24J6jGiAf3El4r5Gj5ltbwsS6vNUyYt9tRJ2poCTlRPnc+wpTw
+	S8mqE8i1nk5e2F5yvLQZZ5v41eDvZVXl9aBmRgEb2hTlHQoMYSeMlEiLDeW9PR2A
+	NVotO2dDnjvDMAa39/IQPwHL2AxThZ8rkVfgO1kOj9sBJ7mwFSVo7BgoxmNJl9Ly
+	2FHpMtpLP332NCe5/0l9Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1761647015; x=1761654215; bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uz
+	fy7TYG8U=; b=aeNQs7Uxdv25R8tKlW04ilnqa5rPAHwr4fcUjxCwJvVP1ad8qj2
+	1z85/e4syV2HzFJK+ALQ/aUegRZviRFaoEPNjJZw5TVbx7yr6X8mhMaZKe+uHJCy
+	Sdcoy8ZcbwSBDYMz9i8Mh/aB3FsRtPg/luWgu5otcE2PnmNifIJYraFHdleMXHiW
+	v29Rrp+xy3+W8xRoT//lGNQPWv2btp3ZxMPBcCiA7HHe/i7Q7PULVXn2llfMc4Ad
+	n1Vl0qFLKkkltWiwGyI7iKLELxhhzPL6vin42vmiXTknkQhntvyH4NT7Mjg9ry20
+	OqEzOy/UFaFLGPx00wvfPdrs7VPIETQp02g==
+X-ME-Sender: <xms:pZkAafIf2z9PVZDiPFfpzMGBxMOfTPNX51G3oFci-vv5Ey9b5N6uFg>
+    <xme:pZkAacMbioO9zVqztgLKA3TFWp99m5nzxX951njeqyGQNrDUTUOyfn7EyBPFtJimY
+    eGw0c-kIqZFeAR1RZ8bkh30YgYbjWaN-9pVZ0WSNsL30yff3baP2Es>
+X-ME-Received: <xmr:pZkAaaoaJLt-OhH12Rhvmumgke5P8QJd0NMn2tsHV0YrOXnzbjOoAaKTdm3PEQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduiedtiedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfoh
+    hunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifih
+    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
+    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:pZkAaVcmuoFOvpGn3Uz-xLEZc1b_jDMyz64KfQDHAR1DXH-3MKRbLQ>
+    <xmx:pZkAaTYCkg2qKMGZ2THGUM8vd79QZcQ0YzJ8J6Bd6MDHRD1e-6il5g>
+    <xmx:pZkAaYDejv_qtoU15rmab71AbT-j3eES7oTYbfrSLWotLGLj1yHZtg>
+    <xmx:pZkAaeBxk3_GzD-n6Gd3d__P3Y6pW2xbGQf4bWFXxOH3ng6K2eIaVQ>
+    <xmx:p5kAaVDfUtv4zhKA7dAX3VaSUQU0e1M0bHcFyALgEp1w2qPlYhc91wix>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 28 Oct 2025 06:23:33 -0400 (EDT)
+Date: Tue, 28 Oct 2025 10:23:31 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+Message-ID: <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
+References: <20251027115636.82382-1-kirill@shutemov.name>
+ <20251027115636.82382-2-kirill@shutemov.name>
+ <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v12 mm-new 06/15] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
- ziy@nvidia.com, Liam.Howlett@oracle.com, ryan.roberts@arm.com,
- dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org,
- mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
- baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
- wangkefeng.wang@huawei.com, usamaarif642@gmail.com, sunnanyong@huawei.com,
- vishal.moola@gmail.com, thomas.hellstrom@linux.intel.com,
- yang@os.amperecomputing.com, kas@kernel.org, aarcange@redhat.com,
- raquini@redhat.com, anshuman.khandual@arm.com, catalin.marinas@arm.com,
- tiwai@suse.de, will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
- cl@gentwo.org, jglisse@google.com, surenb@google.com, zokeefe@google.com,
- hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
- rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
- lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
- pfalcato@suse.de
-References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-7-npache@redhat.com>
- <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 063A14000D
-X-Stat-Signature: f9usbiaynpa4jm8qdcqu4jmpkyfarbbd
-X-HE-Tag: 1761646190-709510
-X-HE-Meta: U2FsdGVkX1/RUWE3xXotjbtZ8UqVqe3r5vSs74wyuiQT9wGoSciyoVhyER3W2FaVKsoXhES6PauHLftqSzb0DD4lq/xfnWkAY/BQK68b8NwC+A1E0HrNOmAH82W+r8a5pDLDvwmmXY9lg8p/72TRKyVamIw9vVeSKiGmi1AJoQE6uZC8TpzdUM+2YHov3gyvQgJFAcOFhE8ZU+hdFHL0mSwQz+ZloXR1fLodSQ7SPBx9iuvVPg4na+itR2RGnrfsFWjNtE6K8SQLScQ4puDH9Co5yU2gMn4e901AaE8m00rha+bfmJWk2xnFUO0XiN1fTr39Uk+On5qdIbdbmUuQ+wJjsFovghK8pPwTHqJBpZHdIaKJ4e7AMgiCeB5E63f04Sohx4o9yDsfyNIPIiQVA2giNyabKDGIBvJ4V2qcoRfAcO0sebl+Fr74CNRmNglsX7/uUrBXCXAyyK2xlPtKwPV2HMgZyFzCbG41u0ONQpwa7R55jJh1OckIVrkEk5veLkggxk5XpjyfkpktfXKkKvRdLGcGk9cJK+XM2BNeBbfOLhy/M6+UrzvV4QSZv6cRkmS0isFCJlJJPBCfHHqGZUK9aY1mHUl9ZujKR0cC266zKhRe6o2+43OrI9o5GiU0W66oP4FDsP8x37jeY/I+uFDmnA6EfqohvKEurNWW/RutxvZwZoNpN1ljfh+a12cEnwOx+pOnXKhX4ZIEc2E9sqiuANa04ZLlnX/MQV+tOy4DOLz7sVg1kYdkMh4dauHX3gL5nTzS5SI0nWoFwZXs//yN8DfMc84nYP1MXvHqFFl8htZ9xOUmQFQ1b+qNsmvWebXaxAbN+ZFg5BHGrluUI/L0/UelSpT8NXPywM90lf8iA0cnnfMBiQZNOHGe5d5Bc05psx6VcyozkCWD3h5+7qD1GmG3D7d24x9SJNit+2wzP24xkWxA+Da7XsBaQ7huhTxGObuxrcJl2G11CjY
- bsH+ZBEx
- 9e+JFJkDhvfs0yOon1PObE9OlHLXS/IW9O3jb1UGGN01xubpwnIFFQlL6tffTPL4e3o0cfCgXnL2cRKCkuFdRmEMDEoOKXegbSEnNyPVPmEaeNfXqXGW35oR/z0fasjLC0X5aEr5Q4GNwDt3PeVaZ+EAysRC5d753MiWnppAIpopYCQqRznRk6Kzpd9kvLDxptkXzjR/egN92ot2tk8kKrvY1ItCTEvK9vjoAlLVFpxH45ce1DuRcgr9ujE3ZbxnaW4nfJYephTApqL/ROG1kz0DYtAfx4u8/5bbUq+W1mLGekYbC3ocD/H8bIxSVAUTrG1AIrhmaU/tAgpS7NhzJaOYMoJf/Ld7T+7SHX0KwHOowFoa4ymNWEeDEPbgozHjtTX3aGMhUdGkSt6DUPCFNpnUXLF6M9Liwg8d6cPB1YpXfEAIEvMk2CDrvbgWLWI33WHOXF+K3dyGvk2I=
+X-Rspamd-Queue-Id: 1D4771C000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 7xr81g74xkgc5u1zodd63pfazh3htn7u
+X-HE-Tag: 1761647015-135102
+X-HE-Meta: U2FsdGVkX18YF6yay89rKcoLoLHRm1NSqyxvv+eycQ57CzJzD3UgTA3Jx4OuKauvO2UsDlg+fDzp6qF7XCTuRUpAEYUvZZ/Y6L9L4gZq5mAtm/96KlNKErUA7PrXSMEF9auiU/31xg+gjP0U8HRWL4IbVjMF1sDcEpFvcb1PbgGOyTX4rfrNYr64MOvWKiCISnUN04C77UbUr565OzSQwEIY3Jlm+4nQtOtZaaIFwGvhsVA4t+Xj7RgP+mIVRnPK6uW3MNTcUPkgdyczKTYxx2gVn37vo/CAY5v0vD3zJBZ7WwktaER5I8JVftq3otF4ktyIG1ossAIMuMtV3/t1AoCfI5qrFsy3Nh4/dmfou6+HFKvWFwdes2IQ3X7xnEV/ooUgo0CsJt55dB1yuVZAl5ICZG3Bj0ylSlnzXoxjCi2cPn8BFTIHKxS7ePdj8yskSUBrEquUx/ntElguAdLxKoH5bm19iQMIsVSSuThBvpWceCRRJpVGHU6swGi2iL9Wjm0ILHIdgQMauo95c3JhJeXrlbNdRiNOYWrgdhyHdSBoMJs2FqR8ZtH9EsHRjhUahMhrq2y4V7BcmXThg9vneI7kh+hPh3aMQvm15ZlSLVgZxz6yMKt4OkG6MotxR9CDibPegg0i0atOdvqvLtugYEcTN7TQACxi5UnhZyq9/uPBp2ZEt6IATbfDe3I6h9DxEwDp4yK5OZPnJQfoR3nJHmdsPwNJRK3L/VVkt7VtNo1bNyNlETdA7+D2tKs/2pdX7LyVPCK8Vd69NFAAz/F9g3lPLdVUsEUoVBo2k1oMCea0y+oNIa0mDUhMJaojEP+A73oe76slbnW4xX5SEpo4T+YW8Fopuc/ZYfkCeKPAtXHlnPxmOG7XNBLCAfgZMFNfhC0uES+I3QIrOnZfpAaRBrbH9QGWDc2cfn4rWXIduSh3wyT7Y9Ka1NabexNaPpql3gL4rpfUJJ0P6NGv778
+ clRDjJFV
+ MFaIujqP0gWlmYMVS5f0xiex/sr8Yeuo0qqqcbA4Lqke1nwGIANdpEgYrWg4lXtY1j9pfG5e0mSWDEWJa6kIyQ6trrvvQpKwR5afHylQI0MHkUEdJ6+751WX4SHEjRlkjvZ6ar9JNOY2mxrUNVZSjKco8dZ0fMYalQH2kC8pDKAwppVe99lkH/+qPBzK5Ptlgf4ZICXhJSu2Yoh67/pfZis0WfoKRzP+3uB3FeKB7/y171BfUjHgUDxWfv72euUzCiGEj/7xewXeiGvzSIn2g6Bax27cZg/ioATpxL25H/BPvHCnIlc7C4g/oA5yC5kLuEqOjcvFWG2D5s3ChKeJxrxizP+rIqFPMWg2t52DHh3cUN7gVGllxmLOTqmPrCCgNIPB7ntXBC2d5Q3djqNAukJXffamWN9TeLr07UXimTF8a+qKFUqKE24z44458ZIVcLSXAIb1XrBzOrNGfDuq9Ir4vUJjor2rzU7dtAJqa/OdFwctyjYZb+Pe5VUc+ktQKy1XRhAaubwwrN8M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,143 +145,57 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/10/28 01:53, Lorenzo Stoakes wrote:
-> On Wed, Oct 22, 2025 at 12:37:08PM -0600, Nico Pache wrote:
->> The current mechanism for determining mTHP collapse scales the
->> khugepaged_max_ptes_none value based on the target order. This
->> introduces an undesirable feedback loop, or "creep", when max_ptes_none
->> is set to a value greater than HPAGE_PMD_NR / 2.
->>
->> With this configuration, a successful collapse to order N will populate
->> enough pages to satisfy the collapse condition on order N+1 on the next
->> scan. This leads to unnecessary work and memory churn.
->>
->> To fix this issue introduce a helper function that caps the max_ptes_none
->> to HPAGE_PMD_NR / 2 - 1 (255 on 4k page size). The function also scales
->> the max_ptes_none number by the (PMD_ORDER - target collapse order).
->>
->> The limits can be ignored by passing full_scan=true, this is useful for
->> madvise_collapse (which ignores limits), or in the case of
->> collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
->> collapse is available.
->>
->> Signed-off-by: Nico Pache <npache@redhat.com>
->> ---
->>   mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
->>   1 file changed, 34 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->> index 4ccebf5dda97..286c3a7afdee 100644
->> --- a/mm/khugepaged.c
->> +++ b/mm/khugepaged.c
->> @@ -459,6 +459,39 @@ void __khugepaged_enter(struct mm_struct *mm)
->>   		wake_up_interruptible(&khugepaged_wait);
->>   }
->>
->> +/**
->> + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for collapse
->> + * @order: The folio order being collapsed to
->> + * @full_scan: Whether this is a full scan (ignore limits)
->> + *
->> + * For madvise-triggered collapses (full_scan=true), all limits are bypassed
->> + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
->> + *
->> + * For PMD-sized collapses (order == HPAGE_PMD_ORDER), use the configured
->> + * khugepaged_max_ptes_none value.
->> + *
->> + * For mTHP collapses, scale down the max_ptes_none proportionally to the folio
->> + * order, but caps it at HPAGE_PMD_NR/2-1 to prevent a collapse feedback loop.
->> + *
->> + * Return: Maximum number of empty PTEs allowed for the collapse operation
->> + */
->> +static unsigned int collapse_max_ptes_none(unsigned int order, bool full_scan)
->> +{
->> +	unsigned int max_ptes_none;
->> +
->> +	/* ignore max_ptes_none limits */
->> +	if (full_scan)
->> +		return HPAGE_PMD_NR - 1;
->> +
->> +	if (order == HPAGE_PMD_ORDER)
->> +		return khugepaged_max_ptes_none;
->> +
->> +	max_ptes_none = min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - 1);
+On Mon, Oct 27, 2025 at 03:33:23PM -0700, Andrew Morton wrote:
+> On Mon, 27 Oct 2025 11:56:35 +0000 Kiryl Shutsemau <kirill@shutemov.name> wrote:
 > 
-> I mean not to beat a dead horse re: v11 commentary, but I thought we were going
-> to implement David's idea re: the new 'eagerness' tunable, and again we're now just
-> implementing the capping at HPAGE_PMD_NR/2 - 1 thing again?
+> > From: Kiryl Shutsemau <kas@kernel.org>
+> > 
+> > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+> > supposed to generate SIGBUS.
+> > 
+> > Recent changes attempted to fault in full folio where possible. They did
+> > not respect i_size, which led to populating PTEs beyond i_size and
+> > breaking SIGBUS semantics.
+> > 
+> > Darrick reported generic/749 breakage because of this.
+> > 
+> > However, the problem existed before the recent changes. With huge=always
+> > tmpfs, any write to a file leads to PMD-size allocation. Following the
+> > fault-in of the folio will install PMD mapping regardless of i_size.
+> > 
+> > Fix filemap_map_pages() and finish_fault() to not install:
+> >   - PTEs beyond i_size;
+> >   - PMD mappings across i_size;
+> > 
+> > Make an exception for shmem/tmpfs that for long time intentionally
+> > mapped with PMDs across i_size.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+> > Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
+> > Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
 > 
-> I'm still really quite uncomfortable with us silently capping this value.
+> Multiple Fixes: are confusing.
 > 
-> If we're putting forward theoretical ideas that are to be later built upon, this
-> series should be an RFC.
-> 
-> But if we really intend to silently ignore user input the problem is that then
-> becomes established uAPI.
-> 
-> I think it's _sensible_ to avoid this mTHP escalation problem, but the issue is
-> visibility I think.
-> 
-> I think people are going to find it odd that you set it to something, but then
-> get something else.
-> 
-> As an alternative we could have a new sysfs field:
-> 
-> /sys/kernel/mm/transparent_hugepage/khugepaged/max_mthp_ptes_none
-> 
-> That shows the cap clearly.
-> 
-> In fact, it could be read-only... and just expose it to the user. That reduces
-> complexity.
-> 
-> We can then bring in eagerness later and have the same situation of
-> max_ptes_none being a parameter that exists (plus this additional read-only
-> parameter).
+> We have two 6.18-rcX targets and one from 2020.  Are we asking people
+> to backport this all the way back to 2020?  If so I'd suggest the
+> removal of the more recent Fixes: targets.
 
-We all know that ultimately using David's suggestion to add the 
-'eagerness' tunable parameter is the best approach, but for now, we need 
-an initial version to support mTHP collapse (as we've already discussed 
-extensively here:)).
+Okay, fair enough.
 
-I don't like the idea of adding another and potentially confusing 
-'max_mthp_ptes_none' interface, which might make it more difficult to 
-accommodate the 'eagerness' parameter in the future.
+> Also, is [2/2] to be backported?  The changelog makes it sound that way,
+> but no Fixes: was identified?
 
-If Nico's current proposal still doesn't satisfy everyone, I personally 
-lean towards David's earlier simplified approach:
-	max_ptes_none == 511 -> collapse mTHP always
-	max_ptes_none != 511 -> collapse mTHP only if all PTEs are non-none/zero
+Looking at split-on-truncate history, looks like this is the right
+commit to point to:
 
-Let's first have an initial approach in place, which will also simplify 
-the following addition of the 'eagerness' tunable parameter.
+Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
 
-Nico, Lorenzo, and David, what do you think?
+It moves split logic from shmem-specific to generic truncate.
 
-Code should be:
-static unsigned int collapse_max_ptes_none(unsigned int order, bool 
-full_scan)
-{
-         unsigned int max_ptes_none;
+As with the first patch, it will not be a trivial backport, but I am
+around to help with this.
 
-         /* ignore max_ptes_none limits */
-         if (full_scan)
-                 return HPAGE_PMD_NR - 1;
-
-         if (order == HPAGE_PMD_ORDER)
-                 return khugepaged_max_ptes_none;
-
-         /*
-          * For mTHP collapse, we can simplify the logic:
-          * max_ptes_none == 511 -> collapse mTHP always
-          * max_ptes_none != 511 -> collapse mTHP only if we all PTEs 
-are non-none/zero
-          */
-         if (khugepaged_max_ptes_none == HPAGE_PMD_NR - 1)
-                 return khugepaged_max_ptes_none >> (HPAGE_PMD_ORDER - 
-order);
-
-         return 0;
-}
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
