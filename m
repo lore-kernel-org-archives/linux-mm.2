@@ -4,130 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 278C0CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:14:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 28BEBCCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 16:16:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C12480176; Tue, 28 Oct 2025 12:14:37 -0400 (EDT)
+	id 8780880177; Tue, 28 Oct 2025 12:16:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 84A568013F; Tue, 28 Oct 2025 12:14:37 -0400 (EDT)
+	id 828528013F; Tue, 28 Oct 2025 12:16:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7398C80176; Tue, 28 Oct 2025 12:14:37 -0400 (EDT)
+	id 73D6780177; Tue, 28 Oct 2025 12:16:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5CFDE8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:14:37 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 140E2883FB
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:14:37 +0000 (UTC)
-X-FDA: 84048020994.18.07A24C8
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf01.hostedemail.com (Postfix) with ESMTP id D283040010
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:14:34 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=aLTbcXzc;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761668075; a=rsa-sha256;
-	cv=none;
-	b=dPnIfy/aENlLY8UCwZG3WNfs20eVFhFvnWfkiItT8VyLnMYxAZaC5OF8B1J+vrnwo4VMPH
-	k8KDOXYioRWtI6RUBluqtgeMwsqzZEQ60WuHuowzX8IeDKDrNbOcM+VlK9Ls2i3wROrcrZ
-	QIR/IiVJX9zzWbjgFJOKCE/x0+F8kXY=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=aLTbcXzc;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf01.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=hca@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 5E0688013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:16:40 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 140AC160512
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:16:40 +0000 (UTC)
+X-FDA: 84048026160.08.1DD177B
+Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 56BEF20019
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 16:16:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mN8LxUn5;
+	spf=pass (imf13.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761668075;
+	s=arc-20220608; t=1761668198;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3XIzNoQ5RCEgQQp0zWyk+dkyklSOKQ/ufsdyjhxnvVY=;
-	b=A1UtE3W9c7Z9XZ4JOowds5LalxbYoUwReDamkFAg4FJd1I5EVlYYTDuhBXAWXCnsWIYcOo
-	WcviHaoEqPgbRNdNrg2G6JOT0htB1mHcJAUMMAqfROpFi2uuYKDxUZpZCND+865U6iQyzu
-	zKkhNL4NAZCX4b0TxHBMCs3M5koceVk=
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SD9pGB021233;
-	Tue, 28 Oct 2025 16:14:31 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=3XIzNoQ5RCEgQQp0zWyk+dkyklSOKQ
-	/ufsdyjhxnvVY=; b=aLTbcXzcBLgz15HZYNZbGhutYYE7YyTQ8tfo1i3DmCZVS5
-	g8zqZ2ZLbRXJfYIDxJ1qPPUZbbOVOYwfgckplK0ZD50svB28tHsAPD/fntRlNk6i
-	o7Tufm/OKo41uCYSXdVJaump+KAaAncvpjDYfMdd2GrZXadpaWJ4vtbYcUjdZP9U
-	67UGnREt5eg5nD0vwiW9HGX6mYRWdN+EIHRzEnFc0jU7LUtE3xTvmP29IBwZ/zlm
-	vwiKUyC6A3jCGhoacKJf6tC6PQBaFgPycHBllgLJwbs5AhKqpF75KZA7ck+LZy3a
-	fIKgRkUB4yRI7xov1WHvVZVT16CugKwv2QNvH1lw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a0p81wetu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 16:14:30 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59SFefYn009411;
-	Tue, 28 Oct 2025 16:14:29 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a1b3j3nb6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Oct 2025 16:14:29 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59SGESqD57475398
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Oct 2025 16:14:28 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 277D520043;
-	Tue, 28 Oct 2025 16:14:28 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D92FB20040;
-	Tue, 28 Oct 2025 16:14:27 +0000 (GMT)
-Received: from osiris (unknown [9.155.211.25])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 28 Oct 2025 16:14:27 +0000 (GMT)
-Date: Tue, 28 Oct 2025 17:14:26 +0100
-From: Heiko Carstens <hca@linux.ibm.com>
-To: Joao Martins <joao.m.martins@oracle.com>
-Cc: Luiz Capitulino <luizcap@redhat.com>, osalvador@suse.de,
-        akpm@linux-foundation.org, david@redhat.com, aneesh.kumar@kernel.org,
-        borntraeger@linux.ibm.com, mike.kravetz@oracle.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH] mm: hugetlb: fix HVO crash on s390
-Message-ID: <20251028161426.35377Af6-hca@linux.ibm.com>
-References: <20251028153930.37107-1-luizcap@redhat.com>
- <50d815a1-8384-4eaa-8515-19d6c92425b3@oracle.com>
+	bh=1ftyXtMKJiXGvCol0LZq8LgVSc8+XJJVccDr9V2Jw64=;
+	b=vEr3GNFyPabqN7Cd7L5et0vxrt3aLClEDvsThett1QgGQyFqVfEBU4Tt1LyC0Awg4qvbci
+	ZWo3rmoHT8bFEClcRcL1RETSzuUqq3QrU+CVTJ1R0+fjPqG+p0vUP4urwsgC8lw7CsvV+Y
+	EnI2jXi/bkHKcQTbJag8QwpQ2q3glow=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761668198; a=rsa-sha256;
+	cv=none;
+	b=vtiCF1CnPBBSOmb19seZgcQvl6nDV/8hhHtER5DnrVIFnwuZLQaEQEk/6m+GLuETW4W/gR
+	cKYtUERTN//8CVu/D1gjGuwdRDrx4bYp//bOIeIfP+hzUo6pt/qf+Os3hWbHSEZoc7jPqx
+	9Mb851O8oPSEPeGXbiw6qOyXgQq5+hg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=mN8LxUn5;
+	spf=pass (imf13.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761668192;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1ftyXtMKJiXGvCol0LZq8LgVSc8+XJJVccDr9V2Jw64=;
+	b=mN8LxUn58/1ZZZ/JYFD69p+VTvbUvckaGk22+fnxe34+5t8PYP10haz/y/SISWoUsxA52i
+	u2y1/eANPZbA7rvm3e3BNQsgR1RxKB6lu7ZYWnW4DAGhlmqfK0IzwereJpZoSEIvhmA+1m
+	D30KR/rPZMO1xkVGtlPFPmVGFEUYDMw=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: bot+bpf-ci@kernel.org
+Cc: akpm@linux-foundation.org,  linux-kernel@vger.kernel.org,
+ ast@kernel.org, surenb@google.com, mhocko@kernel.org,
+ shakeel.butt@linux.dev, hannes@cmpxchg.org, andrii@kernel.org,
+ inwardvessel@gmail.com, linux-mm@kvack.org, cgroups@vger.kernel.org,
+ bpf@vger.kernel.org, martin.lau@kernel.org, song@kernel.org,
+ memxor@gmail.com, tj@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+ yonghong.song@linux.dev, clm@meta.com, ihor.solodrai@linux.dev
+Subject: Re: [PATCH v2 10/23] mm: introduce BPF kfuncs to access memcg
+ statistics and events
+In-Reply-To: <45ee5e2e857a2e4022eb380f854d2a7cf27f3ec97d75a0200b46be95ae921d3b@mail.kernel.org>
+	(bot's message of "Mon, 27 Oct 2025 23:48:14 +0000 (UTC)")
+References: <20251027231727.472628-11-roman.gushchin@linux.dev>
+	<45ee5e2e857a2e4022eb380f854d2a7cf27f3ec97d75a0200b46be95ae921d3b@mail.kernel.org>
+Date: Tue, 28 Oct 2025 09:16:23 -0700
+Message-ID: <87cy6757e0.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <50d815a1-8384-4eaa-8515-19d6c92425b3@oracle.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=fIQ0HJae c=1 sm=1 tr=0 ts=6900ebe6 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=cXYDuvELUoMafkmudakA:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: t1jWPofHSTzi3Zc35SfGVCvcTD7gq-84
-X-Proofpoint-GUID: t1jWPofHSTzi3Zc35SfGVCvcTD7gq-84
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI1MDAyNCBTYWx0ZWRfX8UTXR0KaqSdI
- 79JMtu0fTtaWbYbUXLBgLHFX/fb81KT9lAFgjU/gMYe3RqpmLVpX5b0kumFEd0FMumefdjP5h7S
- xOOerJJs4DhZ9V6UTTGHFhWtRSuqIx7RjjhwMYJpKGByz1YFd0FIWUazj1/PectAPNgJ3FG/DA6
- e4EQQ7QoluBVzkNS1LRZb801Mn9r7VEvUWsf1CYGOGlVMyhv9GRT2ZKPaMLRoWzFkCzox/x3gV/
- R4GPoYUwECeEZuoicl8GNBtiIdx7hbqBONvsM+gua12HcIDHsF5UIMQdxVBsazdFIhb+rg0MFpB
- +OSNQOtbr2rRHXH2Eu4EL8Nlw+YtceY1blrxYdQ/RJKr4vs/1yI77AJE6/6h1ybYp1YS2iwFGKf
- XMPV9y4uVpxOPnMaCQEfANnSzJuxtw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-28_06,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
- clxscore=1011 bulkscore=0 lowpriorityscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510020000 definitions=main-2510250024
-X-Stat-Signature: 9rm1a58sh76g5rge7t4s53u1ypje65q8
-X-Rspamd-Queue-Id: D283040010
-X-Rspamd-Server: rspam06
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: fof4fyz4bo4qmtu6xhhco5fnc7g9f3e1
 X-Rspam-User: 
-X-HE-Tag: 1761668074-897850
-X-HE-Meta: U2FsdGVkX1+/3CPJ4fmS+AYEXDaKIj+OdBhrDzpIT1eBL3JFzcfKyRSGpD27SakXOQjGOj9G8+mCAyRDb3w1xOEqbjwXVbGx1z/K6OpL2DslHMpudZvPQTeQoix2C3fREWE34OeeIVWY/JwD93xlvpSCDEit3QMFD1JQg2951fAkSDp6/mp5tonOP55dTAoKp+k+yB338IM46hryoO43D/8W+NIY/BtjMNlGdgAwHlYsTSXlE/RKzl87ngkeM/xge3mG8FVw6pcaZDFEJ3kSFWS5a0QxSR2hKfyJvJc5E1W4jtxUN3b9a0+e4sfJsfgmNhtqPwny+dAEbr/ncPXWy4ZPPeYT5ttjzOkDPgsA5r64NeItrKgwnuH4tRJXZBbwoExuX/D/eEnGr53r6bvdQIKlf5mrAyRo4yzKuv+1MfOeozmWkw4/qRw3hhRxVE/QwlZ4msVNpyqKIS0YGrHAsVCKNlANTpu0WyFKRY7sfqDSgODswsXjzDaOm0YAfo8vwD8bszNq/PG0o32pg+uTVvpveSpuDnQhKsZNSt9mHmf3PdegnNSMav/i6Odr/A0puaRTZ6pM6GeBLva7F4ws3FhV1VDfbxg25BsoaOncMr2HvQyrn4LY8k8/MhuQHkW8wJzBBLcW2q8XlBszU5tDWSbHJswpGcwjOQaQAhT77F9Ox8nJaDVqRSYeW2qHzyGx3VgORXcwPN8kztPFzHzl98/15auTgKVD5TncEuNU7vf/zeyeMZ4yyQpRnbM44H3JzzbXglPHU23m4+kwSFueTrRHiKP3GsSS2GO82scatKJD2w2vGPjvDD25HS6l+w9S+w0ctOkFUTYj0UpovUrTqZCjPtKm6v9BUbXLk32s/dr7FQ5XSWby6U9ljtd+pYswnE629yZ3pTVPROTJf9poTdPNtA6w4rkrxxAGxbIn09r2Ow189qL3Ut9o84yeT+0b/vl6UYe3G3s=
+X-Rspamd-Queue-Id: 56BEF20019
+X-HE-Tag: 1761668198-60038
+X-HE-Meta: U2FsdGVkX18kHqNCz7M0rTGr6l5Qeb1Vqeg6Zzvueve/HiPBBD8KfkL5VSg4o2jWsdkeMW5SMQrMjH/a694I3udj+waeEcoFf1XwQx/oRhUN86Xw6QllOJ34cWWlwz7FcpUuoyBMXod/S/I1DNjcU8AgzXj7tk0lD9G1va9k4YpruV1l3qWfw1errfU36OT9QguoK8APvGKfQrfmZTWogArz5PW0Bn+mvNTBYYU/OQXYiZ+eCEwdFSG7TaPpc6GkWE+bs+s3mi0hu6Ae0CC4czQVuR0nsj8mKd6EC/SaxIckKjVhtOzvuqNqOG8EAUI3C5oAov62Pq3cOn3auZ1z4LwG+vMgO7UF1WImC/Rri15zc0N9klnqkO5iVNxi3o4mjlfqAqr/UIdUrRqPPIl4f0/0NDd0fPliq/20cKpoQerwYIjBvLdHxKA6xb2mtNYpvIPJnY/Os5lLR3RTQR0WSEeSQJv3/CfK/ickidglbMLvpqUifVhYmdLrGuecWm+cAz4DTMGXf65a0PWWHJvSe77XoQt42MQklnSuKWkxM7zyFgipldFO+TsJ6ywgeOl3pQ8SspApmeeQLGBGgnJNYegrggAWVhJ16TrslqFpw12O2tjdX406zQZ3TK4S+CapmDanOwuLq1MfmBrjgjsw93wRvlNQuWdFSZQoOHSwgv5p1s6XU6h7L4SWY4lbrPXLbSDCDUMQPHbsLI2+rJ4ORlH/3RBLzNpHljKNlHQRi3htj6HmC+dD1VFY/G5LX1AFJMkGQM4198hBYN7kMNnLIKzBgwmRHnjbAKiarD3bfB/okYE84xc1z+5NnCZGYrjqPND6ncxiAmRRP4xKuRyvnrcW3WeQ9B0G5Xnt/O9N2EYNTnDyV7PoOk5y//Ojsex93GoRzLx3+f1K9kXoYgqc0nQWlsGpOZfCPWgOdT78W32oTzKy5HaXQp2+Kt2oW1iousz4ZeJS54Euwt+Qm2/
+ XHlNGlju
+ wIgTiSRRhDQjGQ3HPLxj8TeGt+XeoASNIbxZg8Z1nbWgiMPRe/YMmLbDzmsh5C2i+Pk02z5aGF2Em4Du3aNaDVkayJRg6oeew4SCeZN1FnZBU6JQYq4mtsfT2l/BlVkIkMc07pmuorTUH19036sxiiph+bqEE9K82UyH/h6lYyvY0Bj78s0hydXKs7O/LiDWOdLpugcj3fbJN4yLA6oWpJGxjvu/XwcmALOhqNsVKaM8t5vMXQqVFe/667FfZt30mjxhjzROz8uXLKl65PxGcPQ3M6IUr9wCVYi+xRnt3HomgiYY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,32 +94,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 04:05:45PM +0000, Joao Martins wrote:
-> > diff --git a/mm/hugetlb_vmemmap.c b/mm/hugetlb_vmemmap.c
-> > index ba0fb1b6a5a8..5819a3088850 100644
-> > --- a/mm/hugetlb_vmemmap.c
-> > +++ b/mm/hugetlb_vmemmap.c
-> > @@ -48,6 +48,15 @@ struct vmemmap_remap_walk {
-> >  	unsigned long		flags;
-> >  };
-> >  
-> > +static inline void vmemmap_flush_tlb_all(void)
-> > +{
-> > +#ifdef CONFIG_S390
-> > +	__tlb_flush_kernel();
-> > +#else
-> > +	flush_tlb_all();
-> > +#endif
-> > +}
-> > +
-> 
-> Wouldn't a better fix be to implement flush_tlb_all() in
-> s390/include/asm/tlbflush.h since that aliases to __tlb_flush_kernel()?
+bot+bpf-ci@kernel.org writes:
 
-The question is rather what is flush_tlb_all() supposed to flush? Is
-it supposed to flush only tlb entries corresponding to the kernel
-address space, or should it flush just everything?
+> ```
+> commit 96abfe0549713749f00e32bff919a759db284a58
+> Author: Roman Gushchin <roman.gushchin@linux.dev>
+>
+> mm: introduce BPF kfuncs to access memcg statistics and events
+>
+> This patch adds four new BPF kfuncs for accessing memory cgroup statistics
+> and events, making them available to all BPF program types for implementing
+> OOM policies and accelerating memcg data access.
+>
+>> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+>> index 39a6c7c87..b9e08dddd 100644
+>> --- a/include/linux/memcontrol.h
+>> +++ b/include/linux/memcontrol.h
+>
+> [ ... ]
+>
+>> diff --git a/mm/bpf_memcontrol.c b/mm/bpf_memcontrol.c
+>> index 76c342318..387255b8a 100644
+>> --- a/mm/bpf_memcontrol.c
+>> +++ b/mm/bpf_memcontrol.c
+>
+> [ ... ]
+>
+>> @@ -75,6 +75,56 @@ __bpf_kfunc void bpf_put_mem_cgroup(struct mem_cgroup *memcg)
+>>  	css_put(&memcg->css);
+>>  }
+>>
+>> +/**
+>> + * bpf_mem_cgroup_vm_events - Read memory cgroup's vm event counter
+>> + * @memcg: memory cgroup
+>> + * @event: event id
+>> + *
+>> + * Allows to read memory cgroup event counters.
+>> + */
+>> +__bpf_kfunc unsigned long bpf_mem_cgroup_vm_events(struct mem_cgroup *memcg,
+>> +						enum vm_event_item event)
+>> +{
+>> +	return memcg_events(memcg, event);
+>> +}
+>> +
+>> +/**
+>> + * bpf_mem_cgroup_usage - Read memory cgroup's usage
+>> + * @memcg: memory cgroup
+>> + *
+>> + * Returns current memory cgroup size in bytes.
+>> + */
+>> +__bpf_kfunc unsigned long bpf_mem_cgroup_usage(struct mem_cgroup *memcg)
+>> +{
+>> +	return page_counter_read(&memcg->memory);
+>> +}
+>      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>
+> The documentation says this returns bytes, but page_counter_read() returns
+> pages. In mm/memcontrol-v1.c, the existing mem_cgroup_usage() function's
+> return value is multiplied by PAGE_SIZE to convert to bytes:
+>
+>     return (u64)mem_cgroup_usage(memcg, false) * PAGE_SIZE;
+>
+> Should this function multiply the result by PAGE_SIZE to match its
+> documentation, or should the documentation be updated to say it returns
+> pages?
 
-Within this context it looks like only tlb flushing for the kernel
-address space is required(?)
+Yep, correct, fixed.
 
