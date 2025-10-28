@@ -4,103 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19D94CCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:34:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A9CCCCF9EA
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 21:35:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 489868E0197; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
+	id C7B3E8E0013; Tue, 28 Oct 2025 17:35:08 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43A488E0005; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
+	id C2C9A8E0005; Tue, 28 Oct 2025 17:35:08 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 328EE8E0197; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
+	id B1B9D8E0013; Tue, 28 Oct 2025 17:35:08 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 1B9818E0005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:33:59 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id AE92EBA3A8
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:58 +0000 (UTC)
-X-FDA: 84048825756.18.E61D5C0
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9A92A8E0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:35:08 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 526E31605DE
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:35:08 +0000 (UTC)
+X-FDA: 84048828696.28.4B5E79F
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf18.hostedemail.com (Postfix) with ESMTP id A9CE11C000B
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:56 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmrTVky;
-	spf=pass (imf18.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761687236; a=rsa-sha256;
-	cv=none;
-	b=b0YfyATXtcY+4djLtbKGjDGPIUcvzYlc9FQEEDRiS6Uh9/QjbF/3+ExinFMBudFKfgdz65
-	vL76ZOguSwiOeES2QS5R4CaG32s4fLmRRKZolUi3hYENMpJ1nD2xAbJg2Dl5VP5HsL4wi6
-	yGnz3OnCDLx3q/hzcH+yW6G+NbYGCkQ=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=phmrTVky;
-	spf=pass (imf18.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 46F6910000F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:35:06 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r93s37by;
+	spf=pass (imf14.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761687236;
+	s=arc-20220608; t=1761687306;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QH//50JL9r5vlgYsJZ4OaxQcxUqHTRxV5sbtAPYHsOY=;
-	b=HEpL53sEFmgqxAEvRP0cZGxx+IGmtytxW3BlqtsGysW7P/dJZWNYIGShQ0UiPwmkAPyzps
-	XjNInW9vPM9JrPM12qhx6/nZcxymC3eGsrI8b/oCCflz2JUUIfBh8ChEYsiqsVC5cMc0Xs
-	uNh3qF0TLJw+X2VIFjUb2UcPNRLIK04=
+	bh=LDsqZFSQoDFk6Jgv3OgSzqGmp9ygmJ1z30XLWqHxNxA=;
+	b=p2P6qZ/jNgpgzjAqIbPZ0pKHPxrkgghwDtjtOPxjy+rIKIezIN/82wVImSwRhnLEJ6G4dz
+	OQdTFAAWHQHY35ar4gzkKEFIxhuVdjvjGLVrBEIjA/ArfSl/zLOQEHoxV0dfaR5VXQt1pg
+	Psl86FFHMoYkHTWrJ5RthK8qlAg3z0c=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r93s37by;
+	spf=pass (imf14.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761687306; a=rsa-sha256;
+	cv=none;
+	b=L0feIIz9dm27rFMTyALgadIOMYDUbdjzHL5q9CjbBmlmCbBTYQ3xpUgs17BeKe8MbxgTiC
+	Uvz91bmKbu+NIv+yEB0/ltKhuwEwONzC8v7x6bowGHKszsAgQIeDZtJ+2FF+Gh5BDrwhF+
+	AQ/rur2vHjn8ahr7mHNd7t4D3lv5X9I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 80F6749141
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62157C19425
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:55 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6DFBA49161
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:35:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4830BC2BC86
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761687235;
-	bh=iFWP7xxMJgkbRCwFD/Ow8yzZAuMAdW311BwnuPvp2SA=;
+	s=k20201202; t=1761687305;
+	bh=R2i31H9vGUKt8c9pEDO8kNOSs2JZfSsFlvxECOPAMbQ=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=phmrTVkyk/RJJ+EFRqA64SJtzZw1RrTXF0Jy7f1CXc/pvZLehllXnDr4sgfEh9lXA
-	 2/twG9h2eNIdBfauTgXEQuIRcS4YaIBUHDFnASGVKVGIr9PViTjDz3uHg1aUHndGnm
-	 JfmMrIDVcmMtfhGvsEaRyHNrcNHVVSFVyWqW7mc2lxSIew6H7Ge6bK3IDkKkVZFTE+
-	 ckLbL07VYqopMUKqVW/aEdK3rZ1Vhdn7Jx2oYQrh9yRmC9zb2iiksD6jhqrAr/U6XF
-	 BoaOIR9Ixch8dADOEBUFirZRLio3iFt5cOVoN7gFFs9TvytO8YcKQnFMJVdWxBjyCE
-	 nG+tulYpts/hw==
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-87dfba1b278so68400386d6.1
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:33:55 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU+xGKYt4RcowIm98b00/t24JAsgQysQumMY0pMittutlhPVOl6EdrbxXjwdbKqSVoE23k020KEMA==@kvack.org
-X-Gm-Message-State: AOJu0YyOGn8eKi1JcVFSh5a9uiAR+UrxZnp9O2+NOVB31zx3L120fCCa
-	6lcgQTglZWEpGmPSSMieidSZcRqQNqdty0Y0jZl9PT3I6ge5zTtkcD3KZxI31S7rMvO3mfcne0D
-	4TWnRjTD5kN3f/+RO6ROepcNaJsAwyUA=
-X-Google-Smtp-Source: AGHT+IESUEc3eeZzEWwxs00NmoTrW71KQg0jPt0Nsondh+RQEdb4dLarCNV80h0sV/jj5ri8Uz9bMzHY51U++MLe3GA=
-X-Received: by 2002:a05:6214:2129:b0:807:ca4f:5666 with SMTP id
- 6a1803df08f44-88009ad0903mr10291646d6.2.1761687234390; Tue, 28 Oct 2025
- 14:33:54 -0700 (PDT)
+	b=r93s37byBu5Kqu2QNWAApFRsKMEiKn+rnGBu28Yh213bmXlXtpGYHy6Md1GZVj5bM
+	 s5vnSo0yrYRMDPmHpEUorqNbrzfUbLmxqipY4eXZSatd2x/wYVLZWkfxLbVUyrJnqB
+	 qzzqP0cqOIMCM1+yieYa4Jpw8ExK8yVQ10CoTtDy/YpQpSoWeYoXUNtfhEmCx16Hlx
+	 hAutjjpMeCNc9SkrGfI4cOnOn4oU/nFvmIHsnMpTitKiMXtsQmuipZbmLKSEJQNkuU
+	 lggI9QCrsvI59YWcEgE4fHKT+JxK/C1s0+GH6Knmt4VFXcIEFUXIvCxgclL3uQke9v
+	 P+fvzMKknG1XA==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-592f5736693so6849181e87.1
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:35:05 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXa9hBfaj9vT+rfzIiAA+LaqKO3k3wu6QBhMSdwsC0dpCAum29iO+gR5LLdI2QlZV5paOdAK3sw9g==@kvack.org
+X-Gm-Message-State: AOJu0YxH7pxDNhNKOY3K+pqwchX1+OHVlGBioQIZ4m+JF9ed3ysDwTqv
+	4NsF/RAbWodS01kpl9fcYVhvD2MRBwLna+6Un0mMR6GTu+R/pLMAOpQraAeo72Oe3UFMgQVlEZ2
+	Vz1JWVH561KOd2kiJKtOuZic7CYGRIOE=
+X-Google-Smtp-Source: AGHT+IEUgTLUAIKN7pUG+BuUf5d2rQVkYmo1LrGvDv+SiZ+/7mc0PZPnIKuDcBIJFaSVmyoUk9OgmOBn+4n7FgjOtLw=
+X-Received: by 2002:a05:6512:3b0c:b0:592:fce6:9054 with SMTP id
+ 2adb3069b0e04-594128c4f37mr242551e87.52.1761687303564; Tue, 28 Oct 2025
+ 14:35:03 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev> <20251027231727.472628-7-roman.gushchin@linux.dev>
-In-Reply-To: <20251027231727.472628-7-roman.gushchin@linux.dev>
-From: Song Liu <song@kernel.org>
-Date: Tue, 28 Oct 2025 14:33:43 -0700
-X-Gmail-Original-Message-ID: <CAHzjS_vrNZpEbBuHLhHwHaGzLaF3QEeKWz-VikCm0bYrFBq4UA@mail.gmail.com>
-X-Gm-Features: AWmQ_bn4FJi2CLDbiuBc051gpuUbvflP1rY5GJvh4T7UtMPVn-sJ9ZXRwYG7Zb8
-Message-ID: <CAHzjS_vrNZpEbBuHLhHwHaGzLaF3QEeKWz-VikCm0bYrFBq4UA@mail.gmail.com>
-Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Song Liu <song@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
+In-Reply-To: <20251028210805.GP2441659@ZenIV>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Tue, 28 Oct 2025 22:34:51 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+X-Gm-Features: AWmQ_bkR_zy3h447gWqfy_yWS54Z8UsgWDqAQbawTspKnXeI6tlX292HDo0fyss
+Message-ID: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, 
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 46F6910000F
+X-Stat-Signature: 6buhbktxktt6r5ototymosyznbeqynyz
 X-Rspam-User: 
-X-Stat-Signature: s8d85isnxyu6u7f6qhd93txmstbdzyte
-X-Rspamd-Queue-Id: A9CE11C000B
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761687236-918878
-X-HE-Meta: U2FsdGVkX1+2KAxOOLdIxHk7IDNi8EoZTDRVrc1nAGoC0xuR3AII5OB2bTNKhkA21pk7Mtr7bZqzE2kSRz0qagUglCLWl9M3vRSkXWGQxKXx1sx8hfGivwn7Z5ShNN0oH1FNSoMWUhwWfXCUaRyqBPHkjN3rdLn24H07ix3a8ZFVhLmIWYhDcC2HuOsudrHSjfZJrBXJbECvD+mnO6CfvcELkLqPKd3DoiRqE1zF8Pw6vc5jhPccBpOwCg1FeuVZtuGVlhgZMic3/sNKSlA1OFkks3sthHWAABFryR/taPC+rviRPkxBkNOVh8aW2z5B80cxrtGiMPpiLFAqO/Huc/tcYxiUup2/h3w/wtHNsacagzH5OPAUEDjqR9o3FDwgi6DeC5lj4AfInjAakpqJOYLEKe05nI8oj/m26NbWOCSIVVgqcbn9wOAczNLNvK/cjcfWzoXJ/KBgVwkpoFyihyBNa7Fg5BzBC36EXWAZh4zkRaMD7H+Ae2ik+IYNJdICQmDxxN5JiBFYTdTRYgPrSEonH8My2vWCfUcBVfp6vXSEQrmXDkyF8EjZZHnm4XPIUP6Ep0WSrP/bzh/A0VSsTDisq1XVe1z69ZKZLvNc+lriG3W0MKD7uIaX4oiRfykD4dgFF4/AUUCkRdLkuig455tH9Cx1o0Z4jouywIESvjIyZxchln4AHYZBkP3A8TafHts1uv+zuNDhzYt1IkSejODRxClDKjQxiVcJU2r/3rowy2+Qz5wkZU5x3+Mw5IXuWAu56IzSQMi6OtxeBJeuZ/w0+CbjaYB6su2KqIs2zD4fnePOIOl9eQyTNe/oZ3R4a34VRiwOSxAOdJJgkxMiU1F0fALA9g8P8F65C7UC0Vz2qietVb2WG1DlLoyC0sOofTWRHj0mtz9TuiB45KD5yn4dIjRqe+/4a8WHDzKzv8YkWqyB6fvlGFN+wFsyhG1DyZo7P+SlESbFIxxCL2e
- nAAc0aAT
- 7cSTRj0bInnNf/Yv4zWMY/0D1ZvMAghCPjXu7urNgYLKBcv5OqD74+0K6EufUfTVCJ+J+/m3dcYkWKFYHD9ZDBMuxz7M/Jczq4OoD4NfnHoLCl7LZOO8/IM+mZL4mt1gy7G9L5caZYnGvkg/dV4ezWYzLxp4l4qxQuGGV6bYcQxuD2wlyxr27ZxnPRzNrHwdFbE0K4f2Ysvr2negLL7l+I9egt6DVVnpNaRWtP4uBYI4esrC+ZqumMRJ5wNQSB02jtEVU5bk/BTrOou0tfzmOUgiJSXVXuMbVa+Uj
+X-HE-Tag: 1761687306-32312
+X-HE-Meta: U2FsdGVkX18ApIe1oh9n0QSi9Dv82x3FiKFaOFZCh1pvzIdhzSFAPfhRWv748C2xD+PGPcH6Mp3Rh5HzW4ybXpsJpUJKTtRntpzr2qrb7gd9PZWoiEZ3qNDfMvkEWCMw2sI9nCCjFSCjJydnSrY/fwubl+jVr6m+oy1xSQGrmglzrGzhiRZwLGls+7eShXqKYRoJXQeqkfvpbZQOEcn9sX/aZsH5foe9sRdxhQsYPBmzoH7LxMlhW/egQIV4THb4wy99JME+cl2PnaVxm9xjHgCVp8h3cpVOK146eM9d/eh5obbEUQP2Mq+k9Og9bhubK0Una+6srtRNQMCcDRrBonTmVbC2WgyOWFLqTb44AqyqISqMD54Kv8r4bDMeEoOY7WSSnImk0/Vetq4jRtCWnAnLo4B/ZiNGrylfmd3FFX0q4p6LHjkRq8xq6sFK7BKR/cAucK2b5UqqTm9zxGhXUaVe6lB9rMvOWM6VUaaHSU3lzPOsZIUDdxHDqE748l6bl4RJmoLeC4BzHXv8rc5mf5AdczOcdho/7p5/eEJzQcQOKZLq20Uv4x1LuQQN2Ji0yk81o5Nr66S/PfHUP+8UIOKscOljGQ4q+jHSKU/W8mN07G4EOAomw3FXxpYRvHMXCjA1j65P3OkrXq+3dSdHBa1x3qVkofqn9qONz9buUpD1SgFOCF+XbQABjZ2PWipyCpdIvPwIWO3p2+PwTGpaer0Q5qOxJ72mnX786dt/p2DeFun7FH6vWhSuYvCQflfoIl9FBs4/rugtH1pbZmon5HtYSLlORw3H37CBHxvfji05bexxTkRtWuu8aUlzrmmRrYhSd9kzTahVpb5lZ5es5NqA2l9oD0igODwh7w0nZ/Q8Ydy43+19sc6Kj3mYVD08AzHSATTQcd+MbmgLQ1/abVf+jV7/M55/DjL1urosRAivDsP/Epkvzx9cqQymiuLqBOZ7i+KyQwdwHCEvdjF
+ HTe0WCm3
+ 6TSNUFydAnr8q8zHd90TQnfZpQ0dG9zX+1XYZc4aplyYiTaKQ68BPWBXl7pcDZnsp4mtBMeOnmnK6awhdU2nOpnD4O9V+ohmawpswSDfKn3AdEP0EvHk7uu51m1bTNy98WfmVDP8tRG881dV+BeDUsvQ4WuZwImkqjxXeXJMRdDGdr2HbOZoxy+2r9tqpfbbw/9xgxA58y1uNjLKHqKz8J71/6ejG41kyMUNF9mcghfS/5JQDNvxDvIMZvejhLPgFs1Yp7rwCUgJ/zQCljB1V0A4PIh2NruuTpfpJEY3roDL4bWmuGtPvBEWOyZ4rbTWZSDPX2mAf9lqUFHT7tV0uZRANMd1iLqXJfvby8fzMfpOUyoj9xI1EPPlQDg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,55 +110,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 4:18=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
-[...]
-> +
-> +struct bpf_oom_ops {
-> +       /**
-> +        * @handle_out_of_memory: Out of memory bpf handler, called befor=
-e
-> +        * the in-kernel OOM killer.
-> +        * @ctx: Execution context
-> +        * @oc: OOM control structure
-> +        *
-> +        * Should return 1 if some memory was freed up, otherwise
-> +        * the in-kernel OOM killer is invoked.
-> +        */
-> +       int (*handle_out_of_memory)(struct bpf_oom_ctx *ctx, struct oom_c=
-ontrol *oc);
-> +
-> +       /**
-> +        * @handle_cgroup_offline: Cgroup offline callback
-> +        * @ctx: Execution context
-> +        * @cgroup_id: Id of deleted cgroup
-> +        *
-> +        * Called if the cgroup with the attached bpf_oom_ops is deleted.
-> +        */
-> +       void (*handle_cgroup_offline)(struct bpf_oom_ctx *ctx, u64 cgroup=
-_id);
+On Tue, 28 Oct 2025 at 22:08, Al Viro <viro@zeniv.linux.org.uk> wrote:
+>
+> On Tue, Oct 28, 2025 at 05:45:40PM +0000, Al Viro wrote:
+>
+> > FWIW, having a special path for "we are in foofs_fill_super(), fuck
+> > the locking - nobody's going to access it anyway" is not a great
+> > idea, simply because the helpers tend to get reused on codepaths
+> > where we can't cut corners that way.
+>
+>         BTW, looking through efivarfs codebase now... *both* callers
+> of efivarfs_create_dentry() end up doing dcache lookups, with variously
+> convoluted call chains.  Look: efivarfs_check_missing() has an explicit
+> try_lookup_noperm() before the call of efivarfs_create_dentry().
+> efivarfs_callback() doesn't, but it's called via
+>         efivar_init(efivarfs_callback, sb, true)
+> and with the last argument being true efivar_init() will precede the call
+> of the callback with efivarfs_variable_is_present().  Guess what does that
+> thing (never used anywhere else) do?  Right, the call of try_lookup_noperm().
+>
+> Why do we bother with that?  What's wrong with having efivarfs_create_dentry()
+> returning -EEXIST in case of dentry already being there and turning the
+> chunk in efivar_init() into
+>                         err = func(variable_name, vendor_guid,
+>                                    variable_name_size, data);
+>                         if (err == -EEXIST) {
+>                                 if (duplicate_check)
+>                                         dup_variable_bug(variable_name,
+>                                                          &vendor_guid,
+>                                                          variable_name_size);
+>                                 else
+>                                         err = 0;
+>                         }
+>                         if (err)
+>                                 status = EFI_NOT_FOUND;
+> Note that both possible callbacks become almost identical and I wouldn't
+> be surprised if that "almost" is actually "completely"...  <checks> yep.
+>
 
-handle_out_of_memory() and handle_cgroup_offline() takes bpf_oom_ctx,
-which is just cgroup_id for now. Shall we pass in struct mem_cgroup, which
-should be easier to use?
+I'll let James respond to the specifics of your suggestion, but I'll
+just note that this code has a rather convoluted history, as we used
+to have two separate pseudo-filesystem drivers, up until a few years
+ago: the sysfs based 'efivars' and this efivarfs driver. Given that
+modifications in one needed to be visible in the other, they shared a
+linked list that shadowed the state of the underlying variable store.
+'efivars' was removed years ago, but it was only recently that James
+replaced the linked list in this driver with the dentry cache as the
+shadow mechanism.
 
-Thanks,
-Song
+Relying on the -EEXIST return value to detect duplicates, and
+combining the two callbacks seem like neat optimizations to me, so
 
-> +
-> +       /**
-> +        * @name: BPF OOM policy name
-> +        */
-> +       char name[BPF_OOM_NAME_MAX_LEN];
-> +};
-> +
-> +#ifdef CONFIG_BPF_SYSCALL
-> +/**
-> + * @bpf_handle_oom: handle out of memory condition using bpf
-> + * @oc: OOM control structure
-> + *
-> + * Returns true if some memory was freed.
-> + */
-> +bool bpf_handle_oom(struct oom_control *oc);
-> +
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+
+but I have to confess I am slightly out of my depth when it comes to VFS stuff.
 
