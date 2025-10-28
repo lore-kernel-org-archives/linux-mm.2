@@ -4,135 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0FE1DCCF9EE
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:37:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E718CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 13:47:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5F7E180147; Tue, 28 Oct 2025 09:37:29 -0400 (EDT)
+	id 8A74C80148; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 57F368013F; Tue, 28 Oct 2025 09:37:29 -0400 (EDT)
+	id 857A68013F; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 421CC80147; Tue, 28 Oct 2025 09:37:29 -0400 (EDT)
+	id 76DF380148; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 271DB8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:37:29 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id E27F613B087
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:37:28 +0000 (UTC)
-X-FDA: 84047624976.02.E183C2C
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8B45E100003
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:37:26 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U5LQPyNS;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 622078013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 09:47:05 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0D9B85873D
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:47:05 +0000 (UTC)
+X-FDA: 84047649210.16.1EAD3DD
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 0AC1320010
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 13:47:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yZD3TcbU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761658646;
+	s=arc-20220608; t=1761659222;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=391BPTjMq7U4Si7/L0Y5C310VmT6EKvmZL7j8j+OpFA=;
-	b=b1U7IZr2cT0aOyhikczvUE0EfyLGRs4liyLgNa4J0fDdS9kA4O8vK7mg5Q3X/aLPOyBqRU
-	uYem1eCbxSTzTKdgYEnRE//acR9PmZOW6dlNDioQVCeJFyv4NvSEgrXGpvvWkkeBL8X+dy
-	1/4jhL6lTVYOi2I2ElwcHc/gducJwa8=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=U5LQPyNS;
-	spf=pass (imf05.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761658646; a=rsa-sha256;
+	bh=SdP4P384sbs4h39646JsReKLjr8gZ9zv4XENPQNf9Lk=;
+	b=cK9beK05uACddEINl1CtwVfHCNqa33IALLHAPw7SPsOuODsbx3UJn7KB93uEp8YtXw1Vgh
+	GYtVD/lbRqfSUc6vw0mHzQAgtWJAzy2CujUFSAbtKUrW2KYLaj5GKnvqfAeE0VKLzL8r1N
+	3+tS+JD3vQ0fY70+17bxbMcF3TlGczA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761659222; a=rsa-sha256;
 	cv=none;
-	b=xC5fhZH45dr0FTovVFvW5a5WkYzivs6rYV0b6ucgEuxfDFVXg7AyyChK8WL1T3VFHLnkyQ
-	0QTvvZ9bbLKs8KDCpw27FUtfbAWADCNdjigRpyUNJJ19Bwa0Uw748B+3NU/txBMl9SyckG
-	MwNFNMWinoLa8G+WlEZx51KOAkNeL5M=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761658645;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=391BPTjMq7U4Si7/L0Y5C310VmT6EKvmZL7j8j+OpFA=;
-	b=U5LQPyNSOX7qdyvJia9PCLe5vWIuqJY21YwN0igFTOTah1vObfvqTzJxVNExH9VWGzAbQx
-	aeyHJ7fZivL0VtbEin+bpdZnO0sQS2U8jqDWr2FEAOhcdkFVs4lklhgs81rfB0dQ77SoRc
-	YihrePvL04P0iv3K2PTV1PJFROEmpQI=
-Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
- [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-347-kc4VmQ_jNUO2CLdSlOR8tw-1; Tue, 28 Oct 2025 09:37:23 -0400
-X-MC-Unique: kc4VmQ_jNUO2CLdSlOR8tw-1
-X-Mimecast-MFC-AGG-ID: kc4VmQ_jNUO2CLdSlOR8tw_1761658643
-Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-782c219f163so83192887b3.3
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:37:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761658643; x=1762263443;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=391BPTjMq7U4Si7/L0Y5C310VmT6EKvmZL7j8j+OpFA=;
-        b=bPrNCeihQhT9/TCAJofKm3+rVnbr+rGWQLmggEyCmrXqxoysw7YAksmdx64Ps8gDjS
-         xtHriEiwen5Z+iWdWC5ZmX/ls2fkUNhfxXVXYYXnFgWJgQCVsDoPcKHtzVQ8uG55Spxo
-         VSiPkP/3c1dgkbQHr9tmRzNf1IAe/+TyZubWJmV+xmHz49ajOR9De9nWXD5Ql6VgfJEU
-         /BH/j60gKsEBIydfGgLzS54qIlvl1XxydnYgr9rrMwwI9NZC7Bq6RyqJ2n7rx3djef8J
-         k5InyJLagdVAA9YFNdfVWJJONooigXLqDjSnxsXxgczqpTOxEiN5L5SOch4uoy1GbdNT
-         NQvg==
-X-Forwarded-Encrypted: i=1; AJvYcCVicdEvg/zcIJ8IYONz7hHaS0qCd96OaAgq401yuryXOMXl5Z2C2TwbxOi3S0prFhnz1TfmdmYq9Q==@kvack.org
-X-Gm-Message-State: AOJu0Yx3hPyPOmjhPntr+jWkgRLQQSvXkdD6RXMA+v74W5UiJIe1CCPa
-	W9adj39Cubf3yqMMQatwBoy+UjEmgiKI2L4fZ4BNyzQd3yX5vaD42aqDqnP8PUC+GH1knMz94Pj
-	6kBwxlyYYmb+94x9+zQkPkfoYl9z5120+5+plRCxLGigFoCyjw4yVwDWmBNlqECzyxdJNcPlNLC
-	Q9tW1WWq3ePw7COPxScalEBgansJM=
-X-Gm-Gg: ASbGncseUGx1QIldwNqEqmw+DFKEqlAH+y/1MMwLZ8SRAbzSauQxI80XqW4/aLQjNpP
-	0nYr33bNOGGC0xjwnTGH2wOjeRdPDbsGRz3R6IlUzTKC1B7l4OY4pfWUo/resHU9Ux86quGVgum
-	535fP//5t2B5LBx+oZxN26z+aapvntgUDtPpExDWopy2n58VAwusTrPl8rALkMr/F2oK4MzA==
-X-Received: by 2002:a53:cd41:0:b0:63c:f5a6:f2ef with SMTP id 956f58d0204a3-63f6bab5662mr2132917d50.65.1761658641282;
-        Tue, 28 Oct 2025 06:37:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHI5+9/fHp4gwqVR+X5FCEMvrHe+GcwlBX4w2Wql+/7C/fl5yLGrv62o9V5yeHttxzVZEf22GwHT7NBFpcz7XM=
-X-Received: by 2002:a53:cd41:0:b0:63c:f5a6:f2ef with SMTP id
- 956f58d0204a3-63f6bab5662mr2132906d50.65.1761658640837; Tue, 28 Oct 2025
- 06:37:20 -0700 (PDT)
+	b=IGCjW0zpsYmSsRnEb7zxq7Iw0ms8AjALhe1V71jJKJ8LxGJrnrCrPfHXqrTNxkPLIYn0GP
+	63NOwl7fWzOm1CRE2s/lmjYqaVZlwzyhaSHEZBZtkiraWkLqBPfemej5oPlahqe68fE/X2
+	2cDZ/rIQsyKWdrIdy9EOr9JPPLqvAmQ=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=yZD3TcbU;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf13.hostedemail.com: domain of xueshuai@linux.alibaba.com designates 115.124.30.118 as permitted sender) smtp.mailfrom=xueshuai@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1761659216; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=SdP4P384sbs4h39646JsReKLjr8gZ9zv4XENPQNf9Lk=;
+	b=yZD3TcbU4iXD+wMzZjH4GR5HiKt7xEU8lon77KFyyc7pq/xmTJvvCG9KF4Yn4wDeylPMs5DxpmC1gEowCmgQWE/aAmqD21s2ZsxhyNbJqOD//Reu1PSu3DdD2PY+xsQtsVMYuvnUYOyT5gy3vhlcgobiO68Q01ePHTQWIpCa7gU=
+Received: from 30.246.176.102(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WrCJu3H_1761659211 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 28 Oct 2025 21:46:52 +0800
+Message-ID: <0d95b8af-97e4-43b6-a35a-aa3ce153f0ee@linux.alibaba.com>
+Date: Tue, 28 Oct 2025 21:46:51 +0800
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-7-npache@redhat.com>
- <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local>
-In-Reply-To: <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local>
-From: Nico Pache <npache@redhat.com>
-Date: Tue, 28 Oct 2025 07:36:55 -0600
-X-Gm-Features: AWmQ_bmW8XylmR-fGz7b8D2DLOax1IHPOfKa83653zAJ0iAfVZ2XGu7NC_3nK0A
-Message-ID: <CAA1CXcA4AcHrw18JfAoVygRgUZW3EzsN6RPZVrC=OJwSNu_9HA@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/15] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
-	peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com, 
-	sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Sx65V21TPohkUIYgbdQU03OrMWr6WOh5ruvE6w5Yhlc_1761658643
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 8B45E100003
-X-Stat-Signature: gr5gcjfg5cw6gy8jg4zqbbzhheqxjoqn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Leon Romanovsky <leonro@nvidia.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ Jens Axboe <axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+ kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ Logan Gunthorpe <logang@deltatee.com>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Robin Murphy <robin.murphy@arm.com>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>, Will Deacon <will@kernel.org>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <20251022125012.GB244727@nvidia.com>
+ <3db524e7-b6ce-4652-8420-fdb4639ac73a@linux.alibaba.com>
+ <20251027120904.GA896317@nvidia.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20251027120904.GA896317@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 3ny74ad5tbtz4tt38u4tgp9zsryaofoi
 X-Rspam-User: 
-X-HE-Tag: 1761658646-398349
-X-HE-Meta: U2FsdGVkX1+ORytJfdYmqaDUA+Ydbz1uEOdPLR4YVRCaPX18dqwlwiJjT146pvXPX/JkW/AemN7OHBtGWEylbKqBkiRSlPzctvsVzUyo5JyqwJQBBSzkGOnlLBoDbZDmDZbHNC0S5UE0OoB4CumuOG/Vb6hSvPO3TXv2aCChN811jK0LU2Nat6FXCo/6Lfsm4r7hohM+R4om6Wgww8GFpgGbivapM3WkyDWfGM9uf4h7HM6XIqGTocFG/CoYqgUX4+m9pFZFYcCv4wQkgGt9s6P396B1j97o1RlqYlOFHgGm9xz3JyM+1PfD0kpDO2pqOQlo6qdLXaacjFY5IEcTdspG07sGZ9OvcB4HGHGCZaCNqH22vCyB0XyDFRNOcfTe6xKXI/zf/262q23fRHUmvdwMlG2BOTmALvKoMMFm9du6riIq2HjW9rztNGx4vIASqyStAThBJc31rIgdC7pKv+ivo0M+prwYWP7PyRMeGYXGeUZSQXggqIhDuJ2gnnNnF0D5wRGF5yzf7fM24PcEhirR12FxRXLlx79otyFDje1+hlTRtpNdaH98SlMmgblBQyXsuCE0fN8OCCQf09m2FvqYYys3zI5GgwT18AzflKU7TkuJjqr640LHdMjsfMgocbfFiExnr4jIm48zvjN+qAdO84HdaQUILe5IKBA9dPXm/wLlt+wZj1vEGzMLVji0rr5yzmP64ChEjz2NaKmzZUt7fh20PWPMDoBvibaD0+AgXQcdcZkTLqjGUzpSZjSphP7sl7JvV0en8jPozGeAkUL3+YPI8RPvUTu/6B3tmE0ojw5c0er+GT9Hk0ogmJou6vt1G3mvea/YbNp5rIeEBfIZIsa4u6wpbSWDbHQIQqFNzgeebWephoi3ro6xXpAv+EKsAi7rGhAAtziJK8bQjjFxW9q9e50i6B83UhoLRuV3jgCKCFFD7nGcuLaR51C1OOPFx4OdI1GmTbcvnd2
- 8lZR9XOY
- kyCDH6gFNMwX73K1s6yapFmrRJuhptLvZNSXRIqaJXBfFWZVtHZ3wx/RH2eYo+l4/NxlCePUKKzIBJ35bdqQO6kJoAbSYTu8BHeLEzCqNuyqmwqxPM5/2VYuuQdZU0WpPrpmIciha5vHEoyaUZnXP93ANfA9sQBWwrCYHawI31lCVebdpWpjTx5N63FYNroS4hjhLBvfv4B30ICiW27lBmcrfsxRh61lF2F/zlGtiySbtF5eGQdfwNcGTwQseT5GkOtjJqU0eaYhiL9MNuYZ8hh8cO6EI8z7nu9jWZkF2wcSjDBfu3dSwqDFDUnBTW0YL3BDASU+u1bVkPUcJHSH0Zta7bXp0YMx8Mu7SCZ0FAgjcO5Xg6gGMR71Q0Ll6Y7tPDx/YNNK55/FtcLQqOTeK7FnHt44rzPaOpzv8QfZ1wIlI8o8=
+X-Rspamd-Queue-Id: 0AC1320010
+X-HE-Tag: 1761659220-666992
+X-HE-Meta: U2FsdGVkX1+oSfJ3V/SDXpFvUkSrwJinAff/l+1n2CvjsUHctfcJm6J+x96d5DLDIPTl7afq0AenaY+5AnZ3x3XKsjUa1zoJPSnLHon+MWMJ7KejW+0OfsKA1xvFPDmwbJ/BgCQ124CnanX/7Qs1bcvNUBclSl1aIVUdhOhN1Tcte5Ap+49QESRp5BZK1o7w8mZlLdSByGGEikd3Fo3purcdRTn9Xwx7iwQ6vI/nZ00xhpGI8BWp6/RF3Mf3azr+OOAojpxOhc9Ubc2uuIUaSd5bjeTju1YcjYQ4IvHG0BSVHAJB15687qXkEe/Ky+VZeUddvpZqrhMu0MreaM47o/JAZ7FhmczLnkhdlXjbBAsEhv5p3WErNfmR140///tauTBkd06qUoGx599G+ACMt0Pt/50uhsmjamGYMkP8bsRmgeJRs0MiTQ110OjGR1ClXS2YW/hugZElbgZg6x617KKci2eXQ8hiQPJSzcf1+wOyp7agDJnS/LW9aTAUtsFBUjdD4OWNNPO1gmMfDtb8kSCjSWAPaljGXiQo6C0cBLf4rdrNvkODvx2KgkfOZXXwqb2DlqSccWGHij7ybHHHKL87Esb/dGNJvpEAkpv58Wp8IwFa/Z14flOHYtFT4q7a+bg0zUQdyARwF5Lt7FDB9JyQNQ31YbZAck3tqWLCZ1orOEmBuTvT2LOpUyUXFhMX9ghKRhruMRrXzZVNFkQFG96+9N86kSCf6GVy8IkXvqviLRzaqywiWAe01OHsV16dEOJG3h8FPl1LZpqJbfr/nKyQ1WpauhkoAxD1DfKcYbXD8vtzKVhO0q3uZ0NmlQwryTGFT8Q/0vDUOKc/5INjcbt42K4Uc3Z2XLUtwkyMQwu2tKRZ4/6y1cS6+y7lXs8l5QlxpJ6V6bNp/KHcHTntF7B+xEV2HoOwI2nNCb6s+43XyOF4nTIUsDaR34bzZxNNI1dwv3xVhzGY+hD2kBh
+ B20CMcWQ
+ esvqzATdDxHytDjyd4FFeJGBUprPZOf6hA9uZrj0H1ov1DfZLKVspdy6g2k+pb2fLgAQtf1RkayqR8u+jUKQ/JUCSBgVh/UHUgNccr4koDNQhBUUvQk2x6OQ6u87kVveG5eDz7g+2vw5NO4VYVKMeGVQ4kuhFnD7K2BDgvBNTu3HkKwI4YUQp1LrIXoqnO4K14BwnDzCT/OkXJ20w7FxuTkG2RBu0YKIj1tlnq4dCNCUwpjGh958QPJ4S1pJ9nbPvQ1yg/cOGd24hm+qm+UxqcajRwYkOBhDPHAMDUY1c43YZ9yGfqMQf5aG2e7MLVDVM4YMA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,164 +104,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 11:54=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> On Wed, Oct 22, 2025 at 12:37:08PM -0600, Nico Pache wrote:
-> > The current mechanism for determining mTHP collapse scales the
-> > khugepaged_max_ptes_none value based on the target order. This
-> > introduces an undesirable feedback loop, or "creep", when max_ptes_none
-> > is set to a value greater than HPAGE_PMD_NR / 2.
-> >
-> > With this configuration, a successful collapse to order N will populate
-> > enough pages to satisfy the collapse condition on order N+1 on the next
-> > scan. This leads to unnecessary work and memory churn.
-> >
-> > To fix this issue introduce a helper function that caps the max_ptes_no=
-ne
-> > to HPAGE_PMD_NR / 2 - 1 (255 on 4k page size). The function also scales
-> > the max_ptes_none number by the (PMD_ORDER - target collapse order).
-> >
-> > The limits can be ignored by passing full_scan=3Dtrue, this is useful f=
-or
-> > madvise_collapse (which ignores limits), or in the case of
-> > collapse_scan_pmd(), allows the full PMD to be scanned when mTHP
-> > collapse is available.
-> >
-> > Signed-off-by: Nico Pache <npache@redhat.com>
-> > ---
-> >  mm/khugepaged.c | 35 ++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 34 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 4ccebf5dda97..286c3a7afdee 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -459,6 +459,39 @@ void __khugepaged_enter(struct mm_struct *mm)
-> >               wake_up_interruptible(&khugepaged_wait);
-> >  }
-> >
-> > +/**
-> > + * collapse_max_ptes_none - Calculate maximum allowed empty PTEs for c=
-ollapse
-> > + * @order: The folio order being collapsed to
-> > + * @full_scan: Whether this is a full scan (ignore limits)
-> > + *
-> > + * For madvise-triggered collapses (full_scan=3Dtrue), all limits are =
-bypassed
-> > + * and allow up to HPAGE_PMD_NR - 1 empty PTEs.
-> > + *
-> > + * For PMD-sized collapses (order =3D=3D HPAGE_PMD_ORDER), use the con=
-figured
-> > + * khugepaged_max_ptes_none value.
-> > + *
-> > + * For mTHP collapses, scale down the max_ptes_none proportionally to =
-the folio
-> > + * order, but caps it at HPAGE_PMD_NR/2-1 to prevent a collapse feedba=
-ck loop.
-> > + *
-> > + * Return: Maximum number of empty PTEs allowed for the collapse opera=
-tion
-> > + */
-> > +static unsigned int collapse_max_ptes_none(unsigned int order, bool fu=
-ll_scan)
-> > +{
-> > +     unsigned int max_ptes_none;
-> > +
-> > +     /* ignore max_ptes_none limits */
-> > +     if (full_scan)
-> > +             return HPAGE_PMD_NR - 1;
-> > +
-> > +     if (order =3D=3D HPAGE_PMD_ORDER)
-> > +             return khugepaged_max_ptes_none;
-> > +
-> > +     max_ptes_none =3D min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - =
-1);
->
 
-Hey Lorenzo,
 
-> I mean not to beat a dead horse re: v11 commentary, but I thought we were=
- going
-> to implement David's idea re: the new 'eagerness' tunable, and again we'r=
-e now just
-> implementing the capping at HPAGE_PMD_NR/2 - 1 thing again?
+在 2025/10/27 20:09, Jason Gunthorpe 写道:
+> On Sun, Oct 26, 2025 at 03:55:04PM +0800, Shuai Xue wrote:
+>>
+>>
+>> 在 2025/10/22 20:50, Jason Gunthorpe 写道:
+>>> On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
+>>>> From: Leon Romanovsky <leonro@nvidia.com>
+>>>>
+>>>> Add support for exporting PCI device MMIO regions through dma-buf,
+>>>> enabling safe sharing of non-struct page memory with controlled
+>>>> lifetime management. This allows RDMA and other subsystems to import
+>>>> dma-buf FDs and build them into memory regions for PCI P2P operations.
+>>>>
+>>>> The implementation provides a revocable attachment mechanism using
+>>>> dma-buf move operations. MMIO regions are normally pinned as BARs
+>>>> don't change physical addresses, but access is revoked when the VFIO
+>>>> device is closed or a PCI reset is issued. This ensures kernel
+>>>> self-defense against potentially hostile userspace.
+>>>
+>>> Let's enhance this:
+>>>
+>>> Currently VFIO can take MMIO regions from the device's BAR and map
+>>> them into a PFNMAP VMA with special PTEs. This mapping type ensures
+>>> the memory cannot be used with things like pin_user_pages(), hmm, and
+>>> so on. In practice only the user process CPU and KVM can safely make
+>>> use of these VMA. When VFIO shuts down these VMAs are cleaned by
+>>> unmap_mapping_range() to prevent any UAF of the MMIO beyond driver
+>>> unbind.
+>>>
+>>> However, VFIO type 1 has an insecure behavior where it uses
+>>> follow_pfnmap_*() to fish a MMIO PFN out of a VMA and program it back
+>>> into the IOMMU. This has a long history of enabling P2P DMA inside
+>>> VMs, but has serious lifetime problems by allowing a UAF of the MMIO
+>>> after the VFIO driver has been unbound.
+>>
+>> Hi, Jason,
+>>
+>> Can you elaborate on this more?
+>>
+>>  From my understanding of the VFIO type 1 implementation:
+>>
+>> - When a device is opened through VFIO type 1, it increments the
+>>    device->refcount
+>> - During unbind, the driver waits for this refcount to drop to zero via
+>>    wait_for_completion(&device->comp)
+>> - This should prevent the unbind() from completing while the device is
+>>    still in use
+>>
+>> Given this refcount mechanism, I do not figure out how the UAF can
+>> occur.
+> 
+> A second vfio device can be opened and then use follow_pfnmap_*() to
+> read the first vfio device's PTEs. There is no relationship betweent
+> the first and second VFIO devices, so once the first is unbound it
+> sails through the device->comp while the second device retains the PFN
+> in its type1 iommu_domain.
+> 
+> Jason
 
-I spoke to David and he said to continue forward with this series; the
-"eagerness" tunable will take some time, and may require further
-considerations/discussion.
+I see.
 
->
-> I'm still really quite uncomfortable with us silently capping this value.
->
-> If we're putting forward theoretical ideas that are to be later built upo=
-n, this
-> series should be an RFC.
->
-> But if we really intend to silently ignore user input the problem is that=
- then
-> becomes established uAPI.
->
-> I think it's _sensible_ to avoid this mTHP escalation problem, but the is=
-sue is
-> visibility I think.
->
-> I think people are going to find it odd that you set it to something, but=
- then
-> get something else.
+Thanks.
 
-The alternative solution is to not support max_ptes_none for mTHP
-collapse and not allow none/zero pages. This is essentially "capping"
-the value too.
-
->
-> As an alternative we could have a new sysfs field:
->
-> /sys/kernel/mm/transparent_hugepage/khugepaged/max_mthp_ptes_none
->
-> That shows the cap clearly.
->
-> In fact, it could be read-only... and just expose it to the user. That re=
-duces
-> complexity.
-
-I agree with Baolin here; adding another tunable will only increase
-the complexity for our future goals, and also provides needless
-insight into the internals when they can not be customized.
-
-Cheers,
--- Nico
-
->
-> We can then bring in eagerness later and have the same situation of
-> max_ptes_none being a parameter that exists (plus this additional read-on=
-ly
-> parameter).
->
-> > +
-> > +     return max_ptes_none >> (HPAGE_PMD_ORDER - order);
-> > +
-> > +}
-> > +
-> >  void khugepaged_enter_vma(struct vm_area_struct *vma,
-> >                         vm_flags_t vm_flags)
-> >  {
-> > @@ -546,7 +579,7 @@ static int __collapse_huge_page_isolate(struct vm_a=
-rea_struct *vma,
-> >       pte_t *_pte;
-> >       int none_or_zero =3D 0, shared =3D 0, result =3D SCAN_FAIL, refer=
-enced =3D 0;
-> >       const unsigned long nr_pages =3D 1UL << order;
-> > -     int max_ptes_none =3D khugepaged_max_ptes_none >> (HPAGE_PMD_ORDE=
-R - order);
-> > +     int max_ptes_none =3D collapse_max_ptes_none(order, !cc->is_khuge=
-paged);
-> >
-> >       for (_pte =3D pte; _pte < pte + nr_pages;
-> >            _pte++, addr +=3D PAGE_SIZE) {
-> > --
-> > 2.51.0
-> >
->
+Best Regard,
+Shuai
 
 
