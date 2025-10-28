@@ -4,139 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BE7F0CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 10:23:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4515ACCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 10:34:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BDEEC80136; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
+	id 7401080137; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BB68280131; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
+	id 6F05A80131; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACC1380136; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
+	id 5DF0B80137; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 9BB1280131
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:23:38 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 31BE413A92A
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:23:38 +0000 (UTC)
-X-FDA: 84047136516.02.EBA3039
-Received: from flow-a2-smtp.messagingengine.com (flow-a2-smtp.messagingengine.com [103.168.172.137])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 1D4771C000A
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:23:35 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O yq2398";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aeNQs7Ux;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 469DF80131
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 06:34:50 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D72EC87E97
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:34:49 +0000 (UTC)
+X-FDA: 84047164698.20.5FAFFDE
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id ECF98180002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:34:47 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761647688; a=rsa-sha256;
+	cv=none;
+	b=5bleclP8vGmBlNSTQwg5VvGKBghEBW2Mio65eQMQhPYa1OWEBlorg847WVb7miOBaYUqDh
+	47Xgo0+u/ihZuUN2+NUrc9MP+o0JSNGNs1HZNndOkjm9Aau52BUgfmAhwwUFin+er6H51t
+	aswL866XwOQ/aFM5VKHeqtkSnytmdXQ=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf16.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761647016;
+	s=arc-20220608; t=1761647688;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uzfy7TYG8U=;
-	b=4KPU6v9VJwPMe6WNw3X0JwBUIzMoFQBkUIFdEYrmxWy9OzZZxPuff1WxiBeFscIBBlBF6E
-	fXvs+QKeKHBsCbpTiekiTHwR3mprg1kGNAJDC8XvbJm1JCR0n0HgluH146JzYAeu/a9uVh
-	OjiMrgNL/F6CZBXm1Jnr+DYEzVEZc54=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="O yq2398";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=aeNQs7Ux;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.137 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761647016; a=rsa-sha256;
-	cv=none;
-	b=4aTQUFi1pMMCqKKytPDKPMOTozK4r/oR/HfJOqcZYCMj9qCDre/Jxis2p55v4qO2Di12QF
-	szftOc7jANd2fojW3Tz61tWCqdRG2v5911wpA51rm2brdBS0Ro59uvFjIQreXPLrlrolnV
-	1RAoOgecmRG6EVrT5qiVzG5fDcsMmiM=
-Received: from phl-compute-08.internal (phl-compute-08.internal [10.202.2.48])
-	by mailflow.phl.internal (Postfix) with ESMTP id 5AD1C13804E9;
-	Tue, 28 Oct 2025 06:23:35 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-08.internal (MEProxy); Tue, 28 Oct 2025 06:23:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1761647015; x=
-	1761654215; bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uzfy7TYG8U=; b=O
-	yq2398ecmmEuY3UtO8v4pVZOsMw+yhMLoegZU4hLWk11TkY/gqsHOQ88s2w0IfZJ
-	tTlo/xf7YkKlurbMt1ddus4f6CtbmZPrVSTbpazCNqoQzH0RCawN5E6OBmJSdc4K
-	SvlQeYYqqhkBbG24J6jGiAf3El4r5Gj5ltbwsS6vNUyYt9tRJ2poCTlRPnc+wpTw
-	S8mqE8i1nk5e2F5yvLQZZ5v41eDvZVXl9aBmRgEb2hTlHQoMYSeMlEiLDeW9PR2A
-	NVotO2dDnjvDMAa39/IQPwHL2AxThZ8rkVfgO1kOj9sBJ7mwFSVo7BgoxmNJl9Ly
-	2FHpMtpLP332NCe5/0l9Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1761647015; x=1761654215; bh=UK17jhjkP7w/Yhqq+kaU6aiIJY1JQ7Cu6uz
-	fy7TYG8U=; b=aeNQs7Uxdv25R8tKlW04ilnqa5rPAHwr4fcUjxCwJvVP1ad8qj2
-	1z85/e4syV2HzFJK+ALQ/aUegRZviRFaoEPNjJZw5TVbx7yr6X8mhMaZKe+uHJCy
-	Sdcoy8ZcbwSBDYMz9i8Mh/aB3FsRtPg/luWgu5otcE2PnmNifIJYraFHdleMXHiW
-	v29Rrp+xy3+W8xRoT//lGNQPWv2btp3ZxMPBcCiA7HHe/i7Q7PULVXn2llfMc4Ad
-	n1Vl0qFLKkkltWiwGyI7iKLELxhhzPL6vin42vmiXTknkQhntvyH4NT7Mjg9ry20
-	OqEzOy/UFaFLGPx00wvfPdrs7VPIETQp02g==
-X-ME-Sender: <xms:pZkAafIf2z9PVZDiPFfpzMGBxMOfTPNX51G3oFci-vv5Ey9b5N6uFg>
-    <xme:pZkAacMbioO9zVqztgLKA3TFWp99m5nzxX951njeqyGQNrDUTUOyfn7EyBPFtJimY
-    eGw0c-kIqZFeAR1RZ8bkh30YgYbjWaN-9pVZ0WSNsL30yff3baP2Es>
-X-ME-Received: <xmr:pZkAaaoaJLt-OhH12Rhvmumgke5P8QJd0NMn2tsHV0YrOXnzbjOoAaKTdm3PEQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduiedtiedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfoh
-    hunhgurghtihhonhdrohhrghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtgho
-    mhdprhgtphhtthhopehhuhhghhgusehgohhoghhlvgdrtghomhdprhgtphhtthhopeifih
-    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
-    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:pZkAaVcmuoFOvpGn3Uz-xLEZc1b_jDMyz64KfQDHAR1DXH-3MKRbLQ>
-    <xmx:pZkAaTYCkg2qKMGZ2THGUM8vd79QZcQ0YzJ8J6Bd6MDHRD1e-6il5g>
-    <xmx:pZkAaYDejv_qtoU15rmab71AbT-j3eES7oTYbfrSLWotLGLj1yHZtg>
-    <xmx:pZkAaeBxk3_GzD-n6Gd3d__P3Y6pW2xbGQf4bWFXxOH3ng6K2eIaVQ>
-    <xmx:p5kAaVDfUtv4zhKA7dAX3VaSUQU0e1M0bHcFyALgEp1w2qPlYhc91wix>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 28 Oct 2025 06:23:33 -0400 (EDT)
-Date: Tue, 28 Oct 2025 10:23:31 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
-	Matthew Wilcox <willy@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Christian Brauner <brauner@kernel.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-Message-ID: <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
-References: <20251027115636.82382-1-kirill@shutemov.name>
- <20251027115636.82382-2-kirill@shutemov.name>
- <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=5HaFRhf1AjitWDNq9/FJXcfd6yha35h050b//Tq74Pw=;
+	b=WfpC8sxBusrMy5p4zCinrWpNxBRcUZf17bg/9omUZc01uh3EHC86bc5UigV9BrGPO7bPdD
+	l/xHF6oY8DDNj6wftF0WEkxjwbsoinZj5x+H05RvBj/r2Z0iurXUymSxh0n28hfQZ5PIpV
+	5Jbrp3V+A7ogQrSpaqz5RMFuFbV7se0=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 07A50106F;
+	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
+Received: from [10.44.160.74] (unknown [10.44.160.74])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3597D3F63F;
+	Tue, 28 Oct 2025 03:34:39 -0700 (PDT)
+Message-ID: <f3b8a71c-7698-4918-99d1-36e97bded97c@arm.com>
+Date: Tue, 28 Oct 2025 11:34:34 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 06/13] mm: introduce generic lazy_mmu helpers
+To: David Hildenbrand <david@redhat.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>, "H. Peter Anvin" <hpa@zytor.com>,
+ Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
+ Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
+ <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251015082727.2395128-1-kevin.brodsky@arm.com>
+ <20251015082727.2395128-7-kevin.brodsky@arm.com>
+ <73b274b7-f419-4e2e-8620-d557bac30dc2@redhat.com>
+ <390e41ae-4b66-40c1-935f-7a1794ba0b71@arm.com>
+ <f8d22ae0-4e36-4537-903f-28164c850fdb@redhat.com>
+ <28bf77c0-3aa9-4c41-aa2b-368321355dbb@arm.com>
+ <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <14030818-52e7-41eb-8ad7-602f3476d448@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 1D4771C000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7xr81g74xkgc5u1zodd63pfazh3htn7u
-X-HE-Tag: 1761647015-135102
-X-HE-Meta: U2FsdGVkX18YF6yay89rKcoLoLHRm1NSqyxvv+eycQ57CzJzD3UgTA3Jx4OuKauvO2UsDlg+fDzp6qF7XCTuRUpAEYUvZZ/Y6L9L4gZq5mAtm/96KlNKErUA7PrXSMEF9auiU/31xg+gjP0U8HRWL4IbVjMF1sDcEpFvcb1PbgGOyTX4rfrNYr64MOvWKiCISnUN04C77UbUr565OzSQwEIY3Jlm+4nQtOtZaaIFwGvhsVA4t+Xj7RgP+mIVRnPK6uW3MNTcUPkgdyczKTYxx2gVn37vo/CAY5v0vD3zJBZ7WwktaER5I8JVftq3otF4ktyIG1ossAIMuMtV3/t1AoCfI5qrFsy3Nh4/dmfou6+HFKvWFwdes2IQ3X7xnEV/ooUgo0CsJt55dB1yuVZAl5ICZG3Bj0ylSlnzXoxjCi2cPn8BFTIHKxS7ePdj8yskSUBrEquUx/ntElguAdLxKoH5bm19iQMIsVSSuThBvpWceCRRJpVGHU6swGi2iL9Wjm0ILHIdgQMauo95c3JhJeXrlbNdRiNOYWrgdhyHdSBoMJs2FqR8ZtH9EsHRjhUahMhrq2y4V7BcmXThg9vneI7kh+hPh3aMQvm15ZlSLVgZxz6yMKt4OkG6MotxR9CDibPegg0i0atOdvqvLtugYEcTN7TQACxi5UnhZyq9/uPBp2ZEt6IATbfDe3I6h9DxEwDp4yK5OZPnJQfoR3nJHmdsPwNJRK3L/VVkt7VtNo1bNyNlETdA7+D2tKs/2pdX7LyVPCK8Vd69NFAAz/F9g3lPLdVUsEUoVBo2k1oMCea0y+oNIa0mDUhMJaojEP+A73oe76slbnW4xX5SEpo4T+YW8Fopuc/ZYfkCeKPAtXHlnPxmOG7XNBLCAfgZMFNfhC0uES+I3QIrOnZfpAaRBrbH9QGWDc2cfn4rWXIduSh3wyT7Y9Ka1NabexNaPpql3gL4rpfUJJ0P6NGv778
- clRDjJFV
- MFaIujqP0gWlmYMVS5f0xiex/sr8Yeuo0qqqcbA4Lqke1nwGIANdpEgYrWg4lXtY1j9pfG5e0mSWDEWJa6kIyQ6trrvvQpKwR5afHylQI0MHkUEdJ6+751WX4SHEjRlkjvZ6ar9JNOY2mxrUNVZSjKco8dZ0fMYalQH2kC8pDKAwppVe99lkH/+qPBzK5Ptlgf4ZICXhJSu2Yoh67/pfZis0WfoKRzP+3uB3FeKB7/y171BfUjHgUDxWfv72euUzCiGEj/7xewXeiGvzSIn2g6Bax27cZg/ioATpxL25H/BPvHCnIlc7C4g/oA5yC5kLuEqOjcvFWG2D5s3ChKeJxrxizP+rIqFPMWg2t52DHh3cUN7gVGllxmLOTqmPrCCgNIPB7ntXBC2d5Q3djqNAukJXffamWN9TeLr07UXimTF8a+qKFUqKE24z44458ZIVcLSXAIb1XrBzOrNGfDuq9Ir4vUJjor2rzU7dtAJqa/OdFwctyjYZb+Pe5VUc+ktQKy1XRhAaubwwrN8M=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: ECF98180002
+X-Stat-Signature: wk1di9ykrf8rt5f6chmgokeao6p7ihto
+X-HE-Tag: 1761647687-619183
+X-HE-Meta: U2FsdGVkX1/Vwnz+5uLlnwRXUkjLsEj59QLC7y7QvYUxlIAlcXFWfvX9umachwy2YIRU+17Og8AGwGM7DorRB77udlUtcRNz9qYdeCscd+oz91BxTP7xEhp4u7PIPI1mgWNDgF0LGwRlONNf6+EP8PFEJibbm3mdiiC99MGey0YxBHwNvM4Tl62eNThNIcWLAJyi9/anIwGG3JA/g2fhyZBPxFxt8ycdtZMpwixH1/W2MxfN78e7zr7T87gWI98j0sSF7deIm90VVmWjAh9PslEMwFx4XXWwHVEiVzrtp2hJaVNbEOdMeibR/S4lJTg5ONuD+ej3KSqeeOpPRzUC19Cyrsbyeij1J0QLsz8/flk/Aaodtn5ZrhKJXoRo5sBGO1qBojPi6YoORwf7X7OIg09AkV0buvThP5iZ+VWMC5UKkjOG7IuS3iCHo+txgvVatxosD1rKYe8U+n02Fp6JFzpdzg3V8z+pLO5Qr1/7sfte1KGe2cZKy2u8VQdG977dEhEZ9dWNkmP4tM9JtvyHH4k776LS6IkJ4olesqBmogI2onMy4mh4nGEO1YA4ExLzAO+AEJHMc81kkraiMqWcRhzvy//8l+ZbmvdCFzSyKUN9i9VuCG+3AN6KCMB4VYy4vtkrdmw2ba3p568nTuzn+gmMXp5Q9ydRrcnorbeadWy8aDlynx7ywW34ibHrKyMzUAfnOY9ero6FEJFeSy96nZ7ZkkcAHUo+Jf/0P+tiIZibJUfk2ARGKsWeydlb+AafkbJZ0py7xp7o+TV3K/9+W2SJ//HfFCW6YHVHIRHw8dxL8oW8uau0FMWYmNQbgEcjHXMZn48jd9REm7KdNN5CRqqQ9bo8V8Fxn2ZHS+MB7hXonlv4v3T2fnymeMZVxi/pWeE9SjTruzA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,57 +107,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 03:33:23PM -0700, Andrew Morton wrote:
-> On Mon, 27 Oct 2025 11:56:35 +0000 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> 
-> > From: Kiryl Shutsemau <kas@kernel.org>
-> > 
-> > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
-> > supposed to generate SIGBUS.
-> > 
-> > Recent changes attempted to fault in full folio where possible. They did
-> > not respect i_size, which led to populating PTEs beyond i_size and
-> > breaking SIGBUS semantics.
-> > 
-> > Darrick reported generic/749 breakage because of this.
-> > 
-> > However, the problem existed before the recent changes. With huge=always
-> > tmpfs, any write to a file leads to PMD-size allocation. Following the
-> > fault-in of the folio will install PMD mapping regardless of i_size.
-> > 
-> > Fix filemap_map_pages() and finish_fault() to not install:
-> >   - PTEs beyond i_size;
-> >   - PMD mappings across i_size;
-> > 
-> > Make an exception for shmem/tmpfs that for long time intentionally
-> > mapped with PMDs across i_size.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
-> > Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
-> > Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
-> 
-> Multiple Fixes: are confusing.
-> 
-> We have two 6.18-rcX targets and one from 2020.  Are we asking people
-> to backport this all the way back to 2020?  If so I'd suggest the
-> removal of the more recent Fixes: targets.
+On 27/10/2025 17:24, David Hildenbrand wrote:
+> On 24.10.25 16:32, Kevin Brodsky wrote:
+>> On 24/10/2025 15:27, David Hildenbrand wrote:
+>>> On 24.10.25 14:13, Kevin Brodsky wrote:
+>>>> On 23/10/2025 21:52, David Hildenbrand wrote:
+>>>>> On 15.10.25 10:27, Kevin Brodsky wrote:
+>>>>>> [...]
+>>>>>>
+>>>>>> * madvise_*_pte_range() call arch_leave() in multiple paths, some
+>>>>>>      followed by an immediate exit/rescheduling and some followed
+>>>>>> by a
+>>>>>>      conditional exit. These functions assume that they are called
+>>>>>>      with lazy MMU disabled and we cannot simply use
+>>>>>> pause()/resume()
+>>>>>>      to address that. This patch leaves the situation unchanged by
+>>>>>>      calling enable()/disable() in all cases.
+>>>>>
+>>>>> I'm confused, the function simply does
+>>>>>
+>>>>> (a) enables lazy mmu
+>>>>> (b) does something on the page table
+>>>>> (c) disables lazy mmu
+>>>>> (d) does something expensive (split folio -> take sleepable locks,
+>>>>>       flushes tlb)
+>>>>> (e) go to (a)
+>>>>
+>>>> That step is conditional: we exit right away if pte_offset_map_lock()
+>>>> fails. The fundamental issue is that pause() must always be matched
+>>>> with
+>>>> resume(), but as those functions look today there is no situation
+>>>> where
+>>>> a pause() would always be matched with a resume().
+>>>
+>>> We have matches enable/disable, so my question is rather "why" you are
+>>> even thinking about using pause/resume?
+>>>
+>>> What would be the benefit of that? If there is no benefit then just
+>>> drop this from the patch description as it's more confusing than just
+>>> ... doing what the existing code does :)
+>>
+>> Ah sorry I misunderstood, I guess you originally meant: why would we use
+>> pause()/resume()?
+>>
+>> The issue is the one I mentioned in the commit message: using
+>> enable()/disable(), we assume that the functions are called with lazy
+>> MMU mode is disabled. Consider:
+>>
+>>    lazy_mmu_mode_enable()
+>>    madvise_cold_or_pageout_pte_range():
+>>      lazy_mmu_mode_enable()
+>>      ...
+>>      if (need_resched()) {
+>>        lazy_mmu_mode_disable()
+>>        cond_resched() // lazy MMU still enabled
+>>      }
+>>
+>> This will explode on architectures that do not allow sleeping while in
+>> lazy MMU mode. I'm not saying this is an actual problem - I don't see
+>> why those functions would be called with lazy MMU mode enabled. But it
+>> does go against the notion that nesting works everywhere.
+>
+> I would tackle it from a different direction: if code calls with lazy
+> MMU enabled into random other code that might sleep, that caller would
+> be wrong.
+>
+> It's not about changing functions like this to use pause/resume.
+>
+> Maybe the rule is simple: if you enable the lazy MMU, don't call any
+> functions that might sleep.
 
-Okay, fair enough.
+You're right, this is a requirement for lazy MMU. Calling enable() then
+disable() means returning to the original state, and if the function
+sleeps at that point then the caller must not itself enable lazy MMU.
 
-> Also, is [2/2] to be backported?  The changelog makes it sound that way,
-> but no Fixes: was identified?
+I mixed up that case with the original motivation for pause()/resume(),
+which is to temporarily pause any batching. This is considered an
+implementation detail and the caller isn't expected to be aware of it,
+hence the need for that use-case to work regardless of nesting.
 
-Looking at split-on-truncate history, looks like this is the right
-commit to point to:
+> Maybe we could support that later by handling it before/after
+> sleeping, if ever required?
 
-Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+Indeed, pause()/resume() could be used to allow functions that sleep to
+be called with lazy MMU enabled. But that's only a hypothetical use-case
+for now.
 
-It moves split logic from shmem-specific to generic truncate.
+> Or am I missing something regarding your point on pause()/resume()?
 
-As with the first patch, it will not be a trivial backport, but I am
-around to help with this.
+Doesn't sound like it :) I'll remove that paragraph from the (already
+long) commit message. Thanks!
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+- Kevin
 
