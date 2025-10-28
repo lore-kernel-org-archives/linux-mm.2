@@ -4,119 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CAD1CCF9EA
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 22:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763BECCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 22:34:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43CD68E0198; Tue, 28 Oct 2025 18:08:05 -0400 (EDT)
+	id 735C68E0005; Tue, 28 Oct 2025 18:34:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3EC6D8E0005; Tue, 28 Oct 2025 18:08:05 -0400 (EDT)
+	id 6E6B98E0015; Tue, 28 Oct 2025 18:34:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28DAD8E0198; Tue, 28 Oct 2025 18:08:05 -0400 (EDT)
+	id 628F68E0005; Tue, 28 Oct 2025 18:34:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 167318E0005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 18:08:05 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id AD3301605E3
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:08:04 +0000 (UTC)
-X-FDA: 84048911688.21.3609A22
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
-	by imf03.hostedemail.com (Postfix) with ESMTP id C467920005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:08:02 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c9iy4V9p;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4907D8E0005
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 18:34:20 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B08AA59BBB
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:34:19 +0000 (UTC)
+X-FDA: 84048977838.22.8E4C2A6
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	by imf26.hostedemail.com (Postfix) with ESMTP id EDA55140006
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:34:17 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YLQg+gN4;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 36EQBaQsKCMUlnvp2wp94yrrzzrwp.nzxwty58-xxv6lnv.z2r@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36EQBaQsKCMUlnvp2wp94yrrzzrwp.nzxwty58-xxv6lnv.z2r@flex--ackerleytng.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761690858; a=rsa-sha256;
+	cv=none;
+	b=x4lADK86G1tNn1PhIPK8svWX6PqGnNSp8I0q99tVKOoE+BFbi9uUUNAZpxb3FX0wikHtpe
+	f7dnbGNYMkScX+/BU7kk3e8I0hQITW2WQvEe423a4dDAcd0+0YbsC2A1+o+JC7YYG8FHJ5
+	XGJDtzaETy/0YUaNzcEuKprrlcntE24=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=YLQg+gN4;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf26.hostedemail.com: domain of 36EQBaQsKCMUlnvp2wp94yrrzzrwp.nzxwty58-xxv6lnv.z2r@flex--ackerleytng.bounces.google.com designates 209.85.210.202 as permitted sender) smtp.mailfrom=36EQBaQsKCMUlnvp2wp94yrrzzrwp.nzxwty58-xxv6lnv.z2r@flex--ackerleytng.bounces.google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761689282;
+	s=arc-20220608; t=1761690858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7V+762A1daN4J9oNjmmT69+inXV9phu8pPtP3M7FAMM=;
-	b=u41RfsZvcZLT6K7ChINmuFYEkuwbWF2hZB+A60BcNrIP4cAKeQFqWsDI3HkxxIvsUcRmsw
-	gD3YHZcWsPk2mfTJqxF6Dnr9kly9BQUZBkqr+hGcLPvjmO4A29J+D+xBaKdee2N6OnEADa
-	HngxOmdC3Vdgt3qRMeKevBhd/O1+CS8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=c9iy4V9p;
-	spf=pass (imf03.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.47 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761689282; a=rsa-sha256;
-	cv=none;
-	b=rWLiA62Lu3RUR/lp6Voi6f2CVDRc8tViCW4CfTgC8BqqBEk2ntEOE/P9C3+GqVEH0m8tpv
-	+iod4/ztI8+OpLyfZDLZUpDvCT21IEZcNm+//iukBzFHwferXH4hTB0ybOkOsSrFQjWGrB
-	fG8X974vQUZNRb6JGLQhW+uaguSHQLY=
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3ee12807d97so6120540f8f.0
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:08:02 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=82B/e5OUffQkDxAP5PsiVgukJ2nGDysFGKTvJ7FhReA=;
+	b=A7AovEiNas5kMl/Zebm9SDt+H6l5NzSodoI6BIZ+1CqAZ/4LWC/ZbveGiKx5vw7Ipk9SEK
+	mB6ybpyUKWhws3x7dfp9u2932RqmFZIaVn1+aUfFv0zrZN4T1OFA0ftj6oj9m/ad61Dou0
+	qyNYZ10eXrv+Ku8O9fQ0RLjwMJgv3is=
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-782063922ceso5389463b3a.0
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:34:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761689281; x=1762294081; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7V+762A1daN4J9oNjmmT69+inXV9phu8pPtP3M7FAMM=;
-        b=c9iy4V9pnCa8ww21FJJM9xIdcqan41/+RpO1VbXFk49eE+vhAFqnUapIUlSlz64VP+
-         lVoTggodHoV23iHhKZ5OjFtZvFatkywVPmf3AvT8PfDGhRdXn8cKEzspHiNJ7y52+4Wu
-         4or1MvxOIN4Sf/s2ERMbnIlWCOycU0XsHCGfWQF5gOR1n2vOor/dgKMU+s0At/AHcJSg
-         CWYicA/lWLWShzTecsNS8AmZgsqpmKKPfo9L++GLEL70c+IS8JVIKKeusRmg6MUrDZZp
-         vdYB96F8QmeLhjBbRAjluyoETO83GU9CCxOSS4ndz28GcwncOwyl0WtNS7Zmd0tLoKDS
-         rBqA==
+        d=google.com; s=20230601; t=1761690857; x=1762295657; darn=kvack.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=82B/e5OUffQkDxAP5PsiVgukJ2nGDysFGKTvJ7FhReA=;
+        b=YLQg+gN43wHxwmYBQCAUEmSdHb6XlzUZDvYkbMqk1vtze3SjPrR+XBqVqE/iGRLxCh
+         LuSDlE1VPuRH8fCPoysDTIFGiMlV5ddniF/w2aOKL9nCbhzmkwvyHUTcN9O8n6EHdpiP
+         WMcFReI37Vb7Jwfi/hfE1Tfspgmcin02zv4kUtZ7HOBOUTQe1GUZTN5FwVYl5JGvFlGW
+         hw/I3firLL29Tme9aKop9VJTRc/nrn/TQEZ5+dYoogRcuNlPPYxnlvNAMsDWIa+uB9Pt
+         opXvwoDA/WU/nt71iFvU5bf8xNaEb9tBpXS4q0VIr65ubSJA+QIoQzK24s3134AiRabX
+         dAXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761689281; x=1762294081;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7V+762A1daN4J9oNjmmT69+inXV9phu8pPtP3M7FAMM=;
-        b=QDmREJj+tc5lLq+v5ZJo5cmsOQtMjoP6WMNIvRHRJJNZNCiQyKu3vdxLFKoDPB9iqg
-         7jdTD6KFR/cMGypWa2EC6ZygfdT6fvkYkM8IJajPWAvTkn6YoKOaI7mxUuw+RskvoEMI
-         I+iHUM/+7xCWxwPLBtkBPGs44tsahcgdTEyzR6hRu8s1bX4YacE1ETTEhIvNxFwrym+W
-         FsVV04HmtWqeP1YulpM+QqWzZQFcweVKRujNNQcUzKe1Y6RsuYieHQ2OYGn7LkTOqqUx
-         uA+PiDDQ9ps1DVHdAdUZAZtCb5vB20NvhU4YNUODA8KzBybKkHmUJ4g8DZLV7LhG7Bs8
-         TjUg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRDAbKvmskhsxvdCyYYYQNTxpP/uRtKpcYf0BgdPuvhZ9F9LIPnNUanoW+HTJs1e7FlUrkuREVRA==@kvack.org
-X-Gm-Message-State: AOJu0YzVoE/avvYxMmYHxCoS1i5GUT/BgpDrRvbA+/RLGo1XilOyJGKc
-	HuJjhrPr95byWHYDpxujL0E0N0Haf67fpXy52JkPbfPwH8R2QnLQ6FKULM6rdARIkG2UaINdLzJ
-	ttCb1KWSKgpqIezVne4h0sTM47hUx+2w=
-X-Gm-Gg: ASbGncuiX8shCQ+MdCqBKHVVLvRAoZL4AOxjU0dpHRATRsc9Fkcs5wQHQA/D1Mtwsta
-	zcLejb67zrO6nvHgxvoFOxQjzdk0VmJAR1mWDxiJ75cnNA6uiC8jMVn3OR8gyliqkL81K+8GUgk
-	E+AVzsOIj/egPVOV6l8OTTrl/Dtv9ChnIF4uFqLO6Au7d78QqAkFrp/D1cHukp2gOUlLVgs4m4g
-	GN4tkf8g5Oa1l1Fqb5JvIIsFJLmt73OpikFyeg25pLp6C9X14043kPflXQnHzyf5Rv3oECLWYQs
-	sUWLPW/V3r9S6bsL6w==
-X-Google-Smtp-Source: AGHT+IGICaO3BvlkXeLb+EbVNUOXQ0U63xZwGPTFrBoahOPE5MZiS6EG5jxPBtr1ZSjP3nUamu+JhVo3r42lsbR/Cqg=
-X-Received: by 2002:a5d:5849:0:b0:426:ff7c:86d3 with SMTP id
- ffacd0b85a97d-429aef78c90mr552970f8f.13.1761689280869; Tue, 28 Oct 2025
- 15:08:00 -0700 (PDT)
-MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-7-roman.gushchin@linux.dev> <CAADnVQKWskY1ijJtSX=N0QczW_-gtg-X_SpK_GuiYBYQodn5wQ@mail.gmail.com>
- <87qzumq358.fsf@linux.dev>
-In-Reply-To: <87qzumq358.fsf@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Tue, 28 Oct 2025 15:07:49 -0700
-X-Gm-Features: AWmQ_bn1qYp03A-J3vHinawzwNNuHcAYrjS8vVp0NbrkX9UuC4qoOTSYxLLTXTE
-Message-ID: <CAADnVQ+iEcMaJ68LNt2XxOeJtdZkCzJwDk9ueovQbASrX7WMdg@mail.gmail.com>
-Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Song Liu <song@kernel.org>, 
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+        d=1e100.net; s=20230601; t=1761690857; x=1762295657;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=82B/e5OUffQkDxAP5PsiVgukJ2nGDysFGKTvJ7FhReA=;
+        b=s4T2bhzHDhkNPqymCiQ8zOMsO3yFTcs39g5ioLCtml9g8bgpaD3oZ6/Z3VR2JpuZDM
+         TscpRP04KUzqWHTfcrsbeLx2mXfgANcdmakoArVjxKr1yWZYWtOsqorBdStHN0ZweqCH
+         +q2368+BzlzDWE/RpltSeux27mRb6PombIYLJb3sKlCiUi4PaTq280Fr0q/fMAYOp7vp
+         dyXJReKsBPxqkif93sXVM9gWK4FpmADRQvuE1qEb2K/LuPmC8DxeDz/PtxIf9PQbZHWM
+         YqSYq8dXH2Cr/v9iGk1NSO7PM5oRfpjyguEVgSYetlyqHXZuECJzSkJ139DGd6hs+pxi
+         boSw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGhhjpKS87PF8LgdMrmqbAVs1XjyRaK7jEPRrDrU5YA7qrXoHJWa4Iq9Kj3sTKcPoVzAURukRktg==@kvack.org
+X-Gm-Message-State: AOJu0YwJFQfByu/DqR0Qn1XeaC4qUlAXUMSeInMPzC5Y32+Qwbk/WrAt
+	Wmj42T4vD4szGEMG14WYX0niYE7Mwg5kLLTJangWG1J3hkl3p3ogPyTmH6eyueJU8IzZ+JE7GN/
+	VsyUz4QpyTQiOlk4RCveOt0YRAQ==
+X-Google-Smtp-Source: AGHT+IF/qfPNoL6JkiLjO359CkzK4oS1vbBtwFq+LTrilAHtRFpRVvqvS8ZuclUXWTGo1CNzmGf9dAahO2M+QJlTeQ==
+X-Received: from pjph17.prod.google.com ([2002:a17:90a:9c11:b0:32d:7097:81f1])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:12c9:b0:334:a784:3046 with SMTP id adf61e73a8af0-34653146b07mr765020637.38.1761690856743;
+ Tue, 28 Oct 2025 15:34:16 -0700 (PDT)
+Date: Tue, 28 Oct 2025 15:34:14 -0700
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
+Message-ID: <20251028223414.299268-1-ackerleytng@google.com>
+Subject: Hit an assertion within lib/xarray.c from lib/test_xarray.c, would
+ like help debugging
+From: Ackerley Tng <ackerleytng@google.com>
+To: willy@infradead.org, akpm@linux-foundation.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org
+Cc: david@redhat.com, michael.roth@amd.com, vannapurve@google.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C467920005
-X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: an6s84gmxxomc4os6kki534ohb3gozxa
-X-HE-Tag: 1761689282-284600
-X-HE-Meta: U2FsdGVkX19oLFJCasdAPOsU9R5u/SLWzNbd7zrqenHKMKpqhCdntElbQKqQ2cziWD1bXfz9V3eqij1QgQxZSdt8HB2M6Zm0SMKbq05RBAEsF/hyp+zUsi9PNPD7w2LWEYqVBuJFrAN95F9liAVKAWlKrtc/E1frRgWvf7oU+EeArA7eCX+wQjvJn1JRb0Kx+u9BXwMVaNM7JZESAW3CLougUaTLKu9hPkNz54nHvYT3SrP26B3PVMzFtvAWjoy4amSF5SXFol5Ay98vwItozZ2HWp6+dLEhqFDjiCQZlN4gqgSgbb6BUgGF8nz1rrZG5n7c0/ugoROJZ38NL6JyAdrQ54b7npn29AMLPiSBOIvfoY0OkznaMJlsTF1Rubx8DIglgA2hrVc0WPCUR2H2I777qW4S95s6I0QnSBeg8/xZKpwNBZQWQom3MJyxIyM40cI/sQqG9QbFclqjoCbSWR79CgWOxb529/HbwUct2KK3ijlb1++mB5layZPuthdF+g2kmS0sUn71/9knbNF/g+aTbDpBqMAzgQSKDdrpwGtrOuG4nfx+k14eKJXg2TPVIw0nbFqJ49+LbKEbmunDuHHeJuWDcqrg5b+BC/+gkWGDUbJRg8C0F6aeoJBvisZnoJ3I/uMdOa5E+wcIrRHO2slqbSfpoE56ugkwYju4iquY+yA/fGI1vbGXwz6STHjs2Ej5gQY6QJ7KJYAamIPgbgzFMXYvK/n/4vLOplAQWSzcv2pyw/1dtzzAyfdF8IHWPtkQImqhiRfVysrgm9J+3t1MPv7fmelqIEldRIoxfNPFUSNXXVf2CO1SbPLuSAOCfawwuBkCHEX4xnFdhYUhp5yyvtKTFIjliHlUsxxMiY+QNSbI0lW6mtyP0aqVIAQeb/9nZVz3ytYA7pzeH9w+RAJUjN6kdWgoIG+mYcbm0E8abYTfNQeV2uoAGwzhkPF1A4F3ltUASQZ05Np4GUl
- RoQcw/dt
- 4HBZflCepysEtNxml10fs4+nHvLTaK9/L1nrbHjyFZHlJZ/XeCqs02dpv/vGG2xtwNGZ7liEnphZ9TuDBi51iZoSdN+oi2ZNOmzBQH4aoItGBycbl2p/Trft1sMXjfjnhpejMMuxRtgWjcmkJymiaYtdx+7mhEES4n1x6q4ErZkQtzrjxZnCXgrfyWS8CUKgKjIgq/rpZ7AeBHFX0PNFX/ysjNRHlA0uOw6xvqGpTX9DGGHk0N+N6ObpIQAJ/kVMw4Qmq/XmUiYK/Pa0+O0Y4QVF+ov5UaJ/0eFl/g2XAt1BbjQnc6aUtD8t4LGG2oPIN/8SAKSSgCtkKQwrOECF/dz2jbXmpqbf79Dw2NNcqeKkEiZ8LNA5MgvQ4D+pwWewUwosstXIQPtNleS+4G7MFeQ/pbYaQYSfqvjK0
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: EDA55140006
+X-Stat-Signature: 6wec31ugizto46cgt3bys5t5sqetxd6e
+X-HE-Tag: 1761690857-843380
+X-HE-Meta: U2FsdGVkX1/ATTZutkoRI2PsFStxDZAumAnoVc+RBb3p4pBnxjEHWMaJHvlQReSTAcG1SMZWdC2dkuTx0jSptawrqFJdl5WdwC1ODtF1avjrfeKkDxe5Cc0WdtgwFSzDqzpBq5y8F9puBOUnNbq7l90JdLk0DGEmO3tMus3qOkFO0IQLD/S0IXmvgxadAD2uwbyqr/2/dkYAO6yDmebNDvvJ27CAjE5cTPyrhq+XFX79LO1rgpSSyqDHN5HOPH3DNzhAL9vgHk5ILYk0KTFlphGh4FvrVzwLfQTg+Vx1MGYai1EQrNPi4Y7V4THE7pqvOh6HCoBOLWQBxyBSCA5VH0OniXDZnjFfZgWRxE4kq4ICEiETChzsIXkQv7KgczAJJE/q7cjL+OI5JUjj8ZxYG/uWOT6kpKJLJVA07mEi5NH8S+sqD0wwLePbQtz03joc3dmqXT/mYu3XUXxZ2lV0OSAI1KW2m/s3Xe9hwvJi2lSpEzsOaauOSmSgUB9i64j2/e+vxXOSUKzzc0Z2l8RGhXSYQfWMzHhBwgidwf8E0BS+XV7VZ+YxM1U2NN7dNsKa0e2NvL0uPhu8gn0Ssr1kPS68ajBg8sLOtrDVmc51Re3fxpI5yGUlIfjceaQlqgiOyyHtFxQhy68BdEdLpT0TkZHB+hGfcIEanaqlg2Sfe/4iK8BZZe0a146ic7VAOHfLvwKfF2MOlrRhL/gYfJ/WxCotjBcY5PKVJvlKboG1ry0eM7mcsg72mJhNkfdD/bO88XvuL84eV8kz46jOltvwqhKu5goZhjTRPxQ66DCVFk30wN9puMgXtAIVcVzmF3f5FMVqTLAWKbmpyqUY3EZEQQvGwZ2LdhzP7tB43LB5loE6DQSH7hfe29KX9rfxtWqvfK+klb2VFGeUI/dZ6fw2BOnOCYXv3dcyz1cVwvpy/FkKNiCJotfp3b/bLW4Rz6AumHIRm6od4ZNGrQxNJWN
+ wKof7JRB
+ c1AxuHpHTMZSUctQ14E5RYNg5MixZqv45S54/ok5th3bm6V4ytCgGeLy0OAoW8sJZXdL6nCosC+2LVJPfN6ZpsChdF0mUpdg3KxMBPURpdluEU/45BfXpfwXTqb8IZwxABp5WiJC5F4fySDC3LZEz9oBpPfYmJegAcNobJJA7tvAyYt0WIBMgeoNKwRiLZSd4HgUwUSVz4i98uFP+aOmVtkzd3RkZ3/584+KdXFJPz+sWJ9KJcN1WAX0cqqcShVLEytKBhXsQvZwE2vY08MfDwq1iAPCjkZL77ccsYfLeLomi5se0p74gZ5BTqgbBj8iIURx887Kkm4a6UDZYMRAXpp+tbc+JlmN4t6Zx1Fekx0KIE4tqApxSwoMSnAejIDIbLiM6iTiawoysxHIl6DJnFvsy0FBlwIgHc5Cc+jSDB7p2L6sm2I9Rtd77TdGlNHt3A6oZ1Abm8MC9CyOulxA7w0j5XSG+zpy1tpd+RSROM2rN4Y8CKKPXnTxU8GaBekFklkKRgBYnP0rJ4liwJN23oyc7p+2nFvcsw7Gwzb0+OeKNyiLl2cfM1SpUvy9wec71BzEyqrgAOlmilkmfgXixkXPQl0+bJsG9AKVt8EXGC4MWSp1y+S0iFXnhceen8qViqmKE18jvG6cs//c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,112 +108,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 11:42=E2=80=AFAM Roman Gushchin
-<roman.gushchin@linux.dev> wrote:
->
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
->
-> > On Mon, Oct 27, 2025 at 4:18=E2=80=AFPM Roman Gushchin <roman.gushchin@=
-linux.dev> wrote:
-> >>
-> >> +bool bpf_handle_oom(struct oom_control *oc)
-> >> +{
-> >> +       struct bpf_oom_ops *bpf_oom_ops =3D NULL;
-> >> +       struct mem_cgroup __maybe_unused *memcg;
-> >> +       int idx, ret =3D 0;
-> >> +
-> >> +       /* All bpf_oom_ops structures are protected using bpf_oom_srcu=
- */
-> >> +       idx =3D srcu_read_lock(&bpf_oom_srcu);
-> >> +
-> >> +#ifdef CONFIG_MEMCG
-> >> +       /* Find the nearest bpf_oom_ops traversing the cgroup tree upw=
-ards */
-> >> +       for (memcg =3D oc->memcg; memcg; memcg =3D parent_mem_cgroup(m=
-emcg)) {
-> >> +               bpf_oom_ops =3D READ_ONCE(memcg->bpf_oom);
-> >> +               if (!bpf_oom_ops)
-> >> +                       continue;
-> >> +
-> >> +               /* Call BPF OOM handler */
-> >> +               ret =3D bpf_ops_handle_oom(bpf_oom_ops, memcg, oc);
-> >> +               if (ret && oc->bpf_memory_freed)
-> >> +                       goto exit;
-> >> +       }
-> >> +#endif /* CONFIG_MEMCG */
-> >> +
-> >> +       /*
-> >> +        * System-wide OOM or per-memcg BPF OOM handler wasn't success=
-ful?
-> >> +        * Try system_bpf_oom.
-> >> +        */
-> >> +       bpf_oom_ops =3D READ_ONCE(system_bpf_oom);
-> >> +       if (!bpf_oom_ops)
-> >> +               goto exit;
-> >> +
-> >> +       /* Call BPF OOM handler */
-> >> +       ret =3D bpf_ops_handle_oom(bpf_oom_ops, NULL, oc);
-> >> +exit:
-> >> +       srcu_read_unlock(&bpf_oom_srcu, idx);
-> >> +       return ret && oc->bpf_memory_freed;
-> >> +}
-> >
-> > ...
-> >
-> >> +static int bpf_oom_ops_reg(void *kdata, struct bpf_link *link)
-> >> +{
-> >> +       struct bpf_struct_ops_link *ops_link =3D container_of(link, st=
-ruct bpf_struct_ops_link, link);
-> >> +       struct bpf_oom_ops **bpf_oom_ops_ptr =3D NULL;
-> >> +       struct bpf_oom_ops *bpf_oom_ops =3D kdata;
-> >> +       struct mem_cgroup *memcg =3D NULL;
-> >> +       int err =3D 0;
-> >> +
-> >> +       if (IS_ENABLED(CONFIG_MEMCG) && ops_link->cgroup_id) {
-> >> +               /* Attach to a memory cgroup? */
-> >> +               memcg =3D mem_cgroup_get_from_ino(ops_link->cgroup_id)=
-;
-> >> +               if (IS_ERR_OR_NULL(memcg))
-> >> +                       return PTR_ERR(memcg);
-> >> +               bpf_oom_ops_ptr =3D bpf_oom_memcg_ops_ptr(memcg);
-> >> +       } else {
-> >> +               /* System-wide OOM handler */
-> >> +               bpf_oom_ops_ptr =3D &system_bpf_oom;
-> >> +       }
-> >
-> > I don't like the fallback and special case of cgroup_id =3D=3D 0.
-> > imo it would be cleaner to require CONFIG_MEMCG for this feature
-> > and only allow attach to a cgroup.
-> > There is always a root cgroup that can be attached to and that
-> > handler will be acting as "system wide" oom handler.
->
-> I thought about it, but then it can't be used on !CONFIG_MEMCG
-> configurations and also before cgroupfs is mounted, root cgroup
-> is created etc.
+Hi!
 
-before that bpf isn't viable either, and oom is certainly not an issue.
+I'm trying to use multi-index xarrays and I was experimenting with
+test_xarray.c.
 
-> This is why system-wide things are often handled in a
-> special way, e.g. in by PSI (grep system_group_pcpu).
->
-> I think supporting !CONFIG_MEMCG configurations might be useful for
-> some very stripped down VM's, for example.
+I'm trying to use xa_erase() on every index after splitting the entry in the
+xarray. (and I commented out every other test case just to focus on this test)
 
-I thought I wouldn't need to convince the guy who converted bpf maps
-to memcg and it made it pretty much mandatory for the bpf subsystem :)
-I think the following is long overdue:
-diff --git a/kernel/bpf/Kconfig b/kernel/bpf/Kconfig
-index eb3de35734f0..af60be6d3d41 100644
---- a/kernel/bpf/Kconfig
-+++ b/kernel/bpf/Kconfig
-@@ -34,6 +34,7 @@ config BPF_SYSCALL
-        select NET_SOCK_MSG if NET
-        select NET_XGRESS if NET
-        select PAGE_POOL if NET
-+       depends on MEMCG
-        default n
+Should erasing every index within the xarray after splitting be a supported use
+case?
 
-With this we can cleanup a ton of code.
-Let's not add more hacks just because some weird thing
-still wants !MEMCG. If they do, they will survive without bpf.
+Here's the diff:
+
+  diff --git i/lib/test_xarray.c w/lib/test_xarray.c
+  index 5ca0aefee9aa5..fe74f44bbbd92 100644
+  --- i/lib/test_xarray.c
+  +++ w/lib/test_xarray.c
+  @@ -1868,6 +1868,9 @@ static void check_split_1(struct xarray *xa, unsigned long index,
+   	rcu_read_unlock();
+   	XA_BUG_ON(xa, found != 1 << (order - new_order));
+
+  +	for (i = 0; i < (1 << order); i++)
+  +		xa_erase(xa, index + i);
+  +
+   	xa_destroy(xa);
+  }
+
+And made a call to
+
+  check_split_1(xa, 0, 3, 2);
+
+Here's the assertion I hit:
+
+  node 0x7c4de89e01c0x offset 0 parent 0x7c4de89e0100x shift 0 count 4 values 254 array 0x55edd2dd8940x list 0x7c4de89e01d8x 0x7c4de89e01d8x marks 0 10 0
+  xarray: ../shared/../../../lib/xarray.c:764: update_node: Assertion `!(1)' failed.
+
+
+I think I've narrowed down the issue to the for (;;) loop in xas_store(), which
+I believe isn't counting the `values` to be updated in update_node() correctly.
+
+Is `values += !xa_is_value(first) - !value;` intended to compute the increase in
+number of values with replacement of every slot being iterated by the new entry?
+
+Why does the computation of `count` involve next and entry, and why does the
+computation for `values` only statically depend on the initial value of entry,
+and on first instead of next?
+
+Thanks,
+
+
+Ackerley
 
