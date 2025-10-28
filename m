@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 590CBCCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:50:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9EB37CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 00:51:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 154FA800EC; Mon, 27 Oct 2025 20:46:29 -0400 (EDT)
+	id 2DC82800E1; Mon, 27 Oct 2025 20:46:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE4F800E1; Mon, 27 Oct 2025 20:46:28 -0400 (EDT)
+	id 9DB61800EF; Mon, 27 Oct 2025 20:46:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 487AE800D7; Mon, 27 Oct 2025 20:46:28 -0400 (EDT)
+	id 5710A800D9; Mon, 27 Oct 2025 20:46:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AA14800EC
+	by kanga.kvack.org (Postfix) with ESMTP id 345FA800D9
 	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 20:46:26 -0400 (EDT)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D7A8C12A61E
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id EC5EC13A083
 	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:46:25 +0000 (UTC)
-X-FDA: 84045681930.25.C1FAE26
+X-FDA: 84045681930.16.C39B08E
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 14118C000B
+	by imf12.hostedemail.com (Postfix) with ESMTP id CDFB340008
 	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 00:46:23 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=f4JAKTKO;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761612384; a=rsa-sha256;
-	cv=none;
-	b=ZbmicAGo/Zr2cEAXcde/jSylO7zSpSkym75VdLwNFTne/t8I15nN78FlKUtegUPyquzMh6
-	ZaRnTXti0BXqdMan03SkwS0OvVpGSJzuoGWUV3z1rx73ZAuL4aaJePwykmSKGyDrFgves+
-	CyL+4h934HAwXt+ECtidFvxIvU2h9eU=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=f4JAKTKO;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf10.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=q74Ernaa;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761612384;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wxn4MG/UuDcxk84tNsHI6sa3Q9kQYypoP2eBG9UjNw0=;
-	b=Ss4rUGZHxl/Vdcra8YkqlisKz7gFD//JbOt/ceGKu8/I5rRrqxx1A/kT4Cj5uXcGh1vy7I
-	ihCHEpJs5a0YUBJ0TUYaQzNdqyRo0I76rCY0sjmGwfQVlNQi2ZrwqYa3ESLls7Ca6IPF1p
-	7KFBROa33uoAujR/WxN05L6ApRfnoTU=
+	bh=7CVyMMSGpWWe9qxlGuUIv4nZNRk8bTkfMsk1yIBX5YM=;
+	b=mzBdzhCmWNaWXkngc3AAKT3dbjU4miCPTXbYsUTMWLzF7YTeAckXmSSGP6n2aQUGo45TH9
+	bxguoHbUPXUCYQEx6g1hF0c+GcVI6EyJuaSiK30OjupHY6Vji+CEjnFGn158+uRrfBBNF6
+	wvhQE5dSEu+WUwuybXwfe57+ouNYCqY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761612384; a=rsa-sha256;
+	cv=none;
+	b=VTUiy54TD0c8mJWLyD4SxPKruU1gErWcx0cf42u+FzZY79bruR/3SV0va1wQwSRbjmSexk
+	NZyvvy1xLMJchzvBK1H1etTixhHrRqLGR8ecNiqFKakUin3S0rC8nN0iDiaiQZAvR5prpp
+	fJ8lhReIp2xycjmLooIXeJBTt6l8U7Q=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=q74Ernaa;
+	spf=none (imf12.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=wxn4MG/UuDcxk84tNsHI6sa3Q9kQYypoP2eBG9UjNw0=; b=f4JAKTKOyUvAjdLI7hZUAhoUfo
-	Umj1X11GLfW5MbBiC38ur+8xzYipcDH16+43VSUxKfs/lHaISaeSkVzRaNpFTfyFUYCY+KdHM7KhI
-	vD1SFb1t0huHy5LzNuaYBee+aQ8MI356K8GTabzz8vwPsHYG8ARquVPAV0jwve8cZLy6+IaB33B/a
-	vx+dI7d90jzzbg/JvrMvk8K3ehJlOqP7J33X9UucwIFiY8i8I80AxuBEIDHDi4WAk1toaAkb+9/68
-	MB4VBC0i7KQg5RZoG7H1S/o1eUUEBvKV8dC1zGT/SYE4rP1NzvzsSmrHwljXjO/LoS0yILwrLxu0O
-	+p944aPg==;
+	bh=7CVyMMSGpWWe9qxlGuUIv4nZNRk8bTkfMsk1yIBX5YM=; b=q74Ernaa6Vz0JzQmiS0FDEAt8j
+	kBck1RKqVwdal7HJjQCcaOsEZPY5G7j3uep4wdUix9V3Z5GahrT6a+KN8LvIZXQEgWWSPJ5vJi0KW
+	9OUmKcXsAHigqIDku9/TVRMW+IS/OquuipUdkitBRNj3Tey+pbGzLlqHeN+XsVBONm182L8ophRJR
+	h7iStQrTjUP7C7DKvvYrkrNqCpRbrhUCgOMMnpVIsCHZ6iXSeDNZ4UHmO4CnXCFQpsdLx3xFW5jEv
+	K6oo6NNc88cxIJvbzkSKly6rCngbmBvrDa0F2ad02gJA+SFzIi296I0IhhF7a+KvUaZ0wn3GAW7Wg
+	gd8e/cXg==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqr-00000001eYS-0CJN;
-	Tue, 28 Oct 2025 00:46:17 +0000
+	id 1vDXqp-00000001eW2-0x14;
+	Tue, 28 Oct 2025 00:46:15 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v2 23/50] convert spufs
-Date: Tue, 28 Oct 2025 00:45:42 +0000
-Message-ID: <20251028004614.393374-24-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 06/50] primitives for maintaining persisitency
+Date: Tue, 28 Oct 2025 00:45:25 +0000
+Message-ID: <20251028004614.393374-7-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: sc6d71qxsdp9y4x5yrhq8mxxaakyypjh
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 14118C000B
-X-Stat-Signature: 4cbifs7tgcjzqb8dem8h36tzrnh4u7yj
-X-HE-Tag: 1761612383-89673
-X-HE-Meta: U2FsdGVkX1/wlU0RrevnMrSUE3sJ7N1E520jb1esA6pol4oPHOzfONmsRDvwtO3/szcMYZr4Y4R6iUAeJbalrshvzdBGqBRnREyV8ckrUVhNItWUiR+szM/10Gtyu253lUjQH8z/6lLDYOh89Ag3iQP4X3cWQH1zpfHtOlC3Hs9qGa4UVLiQJkrkUdKkLtBhdWXtP1TLcDOku1kq1X8NDsbxuxK3q/XqTSJBukvmsnQNPriGp7ZFiz/g5nXaoSYL3MGOIOfPHtp/YZBHbMQwIAlnlOib0WdTDSXQkvh4bfCua59rw7fQkGo7YS4SqLnR6WkaCxQkrMOKkw4soREYBmnEZaqTAmzq3Zmfan0YdW+c5zz31EZAjKKGX/6B16/0kNy+JQxLKy+7mfofj572VOGTNiYoL9VCUqvp0xS3EmhA0v1MN3pt2NS1Nz2+3mmRB2dYs9FZCicjWkksg8mH5N4GC7rskp4rYkreG/U2AuHmeOBEbulZ3jXxqQmsXMz4l+5FyYHzWumD2lUnZYzw7XFf8rmr+xPVZx/O2FXLKe1xe4dGIPIq6UMD6j5IJzRIbcwxoQWMatYRyAp7PSP2hy9JmcG5CkO02J8tEkRl/N/KbmNZMFAi8/UmUozW/7cAxpeAyxTHZqhqrTeGLchjIVXw85n/VrWyc+fNfaMH0EdFRzZ7pj3cQDsxBBxAoZ1NEGjeNKhZJJkC8RRyW3odAJYIJ6zo5zHdEz/c27bF8tKA1gDLfV5qVkFXuJzbsuh0VzzuLo0UgMVf87LgBtZC06gjPk/fnjMEcmgArcrJO53In4YXYrcdpfN8v0clN/83RNOXhBfd84+w9FES5AAMk34ZXVHd0ScfDb77do/mQA432nuo8g9UugJJN6+KjF8R9G+6p3F1keRA5aLYR8bNkUJzxuJQaDExdInm5qEEM/AEFQ8T7V6weFTINSPsto2VwIG0YBqXACkri26Onr6
- RIBC93BO
- DWnmVEwCdq0ZK8jsZUh/wl7z8Huxm+JTa2ZquSflx2chWGpCwugYDD2vXt8zu3y/iJnAgBkQQi7BY0zs/VRjNwzXJymBVJ6VWJknO5UCr5zU2CM75/umDOYzUISYRq0hpr/4Rx0GMmvDLGUH01L1msgcw9hoCmvbkVedDfA0QRE4gMXsBy+MILPHLxCvh30//wVmgyPQUkDq7OYq0EO46MfHCQkAiwhGmgdirWPW5ioH7xXn8RKG3J0WVZWg4sjvmq3E8fhFQodWu8ZMoCvdgp+FO4PRuNxOYjimprrMDU0vaFLjvt80ufie8vY1/LALGLEEhVqUePPRaF3cEEk5/josKWwhDJMJ8rpsUO6J/7BTrnJaLLESm6rrug0HjJy1yBCYFnEaP4jJ+tjFC1XjIxbCx1vyXcI5SlH2H
+X-Rspamd-Queue-Id: CDFB340008
+X-HE-Tag: 1761612383-303040
+X-HE-Meta: U2FsdGVkX19Ehq8cdyoqC0Ge2F8ukGu5ySdVZYT0Pa/FgBn7SG2HBJ1PlWnDTMva/gp0GE/hILq9TVVmqqPls2Tee77Nm1duoUA8lvLZz/LQttDx9ytufsuMY5041R1DITMrh/4qwAjKkN3Eo5vVgqZtmzrukpCipm1zYAZf25C6We/d7E6dlKS9VKZkWRnJ7Kxmytr+DT14y8hROtQpYSyoCukgo0D7cUZL3Q53zg+OT1+EwxGosRnh6z0xZboZ3WH4o93h/yXjOnnVtu07BgnLJjOOK6/5IJ/zc03pJFjY6iY8N96LrWAKTtkSLtT8BIqEBe8GHg6G9I73bSaHfsucFjr4Jk8RJo18/vb70qXby7XZQaTAZ2ycBgpJxQlB1qIwg8aVV692uTMpkiAdk2a2rqllTNUWO84po4cPpUDArw1bsan8zEGj8lQrwULGJ+z1CYJATYw6nhFXMO8Pw/tdHF1pm2mRVQmyeuBCtx7/5fOsHuhiVWAQrIGpU2w2DS+rfNt9qBkCkD2e3YdknDuOq2KJym3jFQzMPS7hHLRBuvzav3yO1NVsJVJZFBKm13ZkaWAWdcJ1UDb3Ujd4mtqfPOMz5jfeX7ZML9WfHf9F7v4FFA9lrfHZTSIooi7rbHvxCRr9nxu/kJ7mv7GyC0UWh4LSdb7voalJMjxCx5RJHT0fmbDQ5WvvrO3zPjn8oT57Z/t+6z3Ppz0y0CijnAEgoaux/+ETwyXIvuvFBqlNTaTqM67A/rqt/evoFE1MyvC8t7JT9NSHFouJ8VvsSn8Gk/yBznqCG9C5afVp5M8xccIJ9rbeJ4ncc59XncdUcqjcKXsjB9q0t02vTbRx1qxyIl7eZFW2rM6qSI9tv4zlWyFD1mN3MYLO7eDUaTDJzZI+xW0Z2kFwKlqmfmySJ3zfrp4oloNfRwHEfRVTL//vYFAu6Gw/js8ETLNzCysr8ObUmRUwWBqMu6jM/kp
+ SpEfPd0A
+ Gh3uuZyA4v5wJXx1IagXixoajpOlPTheB5YEyWo7KEu08eFtuVofHcIeXEIxeqc6HYCUJOo9w18DsQXE/UcOY+gA0o1ZDQ5o9zKv3nK9AkWRiVbhKcf+gW3z4X3iQ4YXcRlWeCZNkwsU3PmPUqOjY/YgNVXtZ7lYHvFOkjWUqSlGMezAGETjDDMmD04r4Ikw2FcLVDTbn26t1W8Wjhl2FNCgaDX9qzYPhE6l8s69YP0SJJCT27k5FQAdtTlpSI0LV9CC9Fx9gOe14HILP+qqsRURp7pWMszB3APpUQYVAq77KYK9IjnZMVpmBoTT2E7YjjcKpip5Wls0K0HNBpyIjpByCl4y8iXSw2Y+40w21k3eK+clzUinT6TJj8OSoWOQe8Htq+ogGZ+2rnsvrhmtFZFyNgeaBSe95QQDjUjGLPSYnEfYmU54wZZFuU45MnQfSrOOlvcHMvfWJ5CI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,75 +108,170 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-have spufs_new_file() use d_make_persistent() instead of d_add() and
-do an uncondition dput() in the caller; the rest is completely
-straightforward.
+* d_make_persistent(dentry, inode) - bump refcount, mark persistent and
+make hashed positive.  Return value is a borrowed reference to dentry;
+it can be used until something removes persistency (at the very least,
+until the parent gets unlocked, but some filesystems may have stronger
+exclusion).
+
+* d_make_discardable() - remove persistency mark and drop reference.
+
+d_make_persistent() is similar to combination of d_instantiate(), dget()
+and setting flag.  The only difference is that unlike d_instantiate()
+it accepts hashed and unhashed negatives alike.  It is always called in
+strong locking environment (parent held exclusive, or, in some cases,
+dentry coming from d_alloc_name()); if we ever start using it with parent
+held only shared and dentry coming from d_alloc_parallel(), we'll need
+to copy the in-lookup logics from __d_add().
+
+d_make_discardable() is eqiuvalent to combination of removing flag and
+dput(); since flag removal requires ->d_lock, there's no point trying
+to avoid taking that for refcount decrement as fast_dput() does.
+The slow path of dput() has been taken into a helper and reused in
+d_make_discardable() instead.
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- arch/powerpc/platforms/cell/spufs/inode.c | 15 ++++++---------
- 1 file changed, 6 insertions(+), 9 deletions(-)
+ fs/dcache.c            | 66 ++++++++++++++++++++++++++++++++----------
+ include/linux/dcache.h |  2 ++
+ 2 files changed, 53 insertions(+), 15 deletions(-)
 
-diff --git a/arch/powerpc/platforms/cell/spufs/inode.c b/arch/powerpc/platforms/cell/spufs/inode.c
-index 7ec60290abe6..f21f7a76ef0b 100644
---- a/arch/powerpc/platforms/cell/spufs/inode.c
-+++ b/arch/powerpc/platforms/cell/spufs/inode.c
-@@ -127,7 +127,7 @@ spufs_new_file(struct super_block *sb, struct dentry *dentry,
- 	inode->i_fop = fops;
- 	inode->i_size = size;
- 	inode->i_private = SPUFS_I(inode)->i_ctx = get_spu_context(ctx);
--	d_add(dentry, inode);
-+	d_make_persistent(dentry, inode);
- out:
- 	return ret;
+diff --git a/fs/dcache.c b/fs/dcache.c
+index f2c9f4fef2a2..3e26039ceca1 100644
+--- a/fs/dcache.c
++++ b/fs/dcache.c
+@@ -869,6 +869,24 @@ static inline bool fast_dput(struct dentry *dentry)
+ 	return false;
  }
-@@ -163,10 +163,9 @@ static int spufs_fill_dir(struct dentry *dir,
- 			return -ENOMEM;
- 		ret = spufs_new_file(dir->d_sb, dentry, files->ops,
- 					files->mode & mode, files->size, ctx);
--		if (ret) {
--			dput(dentry);
-+		dput(dentry);
-+		if (ret)
- 			return ret;
--		}
- 		files++;
+ 
++static void finish_dput(struct dentry *dentry)
++	__releases(dentry->d_lock)
++	__releases(RCU)
++{
++	while (lock_for_kill(dentry)) {
++		rcu_read_unlock();
++		dentry = __dentry_kill(dentry);
++		if (!dentry)
++			return;
++		if (retain_dentry(dentry, true)) {
++			spin_unlock(&dentry->d_lock);
++			return;
++		}
++		rcu_read_lock();
++	}
++	rcu_read_unlock();
++	spin_unlock(&dentry->d_lock);
++}
+ 
+ /* 
+  * This is dput
+@@ -906,22 +924,20 @@ void dput(struct dentry *dentry)
+ 		rcu_read_unlock();
+ 		return;
  	}
- 	return 0;
-@@ -241,11 +240,10 @@ spufs_mkdir(struct inode *dir, struct dentry *dentry, unsigned int flags,
+-	while (lock_for_kill(dentry)) {
+-		rcu_read_unlock();
+-		dentry = __dentry_kill(dentry);
+-		if (!dentry)
+-			return;
+-		if (retain_dentry(dentry, true)) {
+-			spin_unlock(&dentry->d_lock);
+-			return;
+-		}
+-		rcu_read_lock();
+-	}
+-	rcu_read_unlock();
+-	spin_unlock(&dentry->d_lock);
++	finish_dput(dentry);
+ }
+ EXPORT_SYMBOL(dput);
  
- 	inode_lock(inode);
++void d_make_discardable(struct dentry *dentry)
++{
++	spin_lock(&dentry->d_lock);
++	dentry->d_flags &= ~DCACHE_PERSISTENT;
++	dentry->d_lockref.count--;
++	rcu_read_lock();
++	finish_dput(dentry);
++}
++EXPORT_SYMBOL(d_make_discardable);
++
+ static void to_shrink_list(struct dentry *dentry, struct list_head *list)
+ __must_hold(&dentry->d_lock)
+ {
+@@ -1939,7 +1955,6 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
+ 	unsigned add_flags = d_flags_for_inode(inode);
+ 	WARN_ON(d_in_lookup(dentry));
  
--	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(inode);
+-	spin_lock(&dentry->d_lock);
+ 	/*
+ 	 * The negative counter only tracks dentries on the LRU. Don't dec if
+ 	 * d_lru is on another list.
+@@ -1952,7 +1967,6 @@ static void __d_instantiate(struct dentry *dentry, struct inode *inode)
+ 	__d_set_inode_and_type(dentry, inode, add_flags);
+ 	raw_write_seqcount_end(&dentry->d_seq);
+ 	fsnotify_update_flags(dentry);
+-	spin_unlock(&dentry->d_lock);
+ }
  
--	d_instantiate(dentry, inode);
-+	d_make_persistent(dentry, inode);
+ /**
+@@ -1976,7 +1990,9 @@ void d_instantiate(struct dentry *entry, struct inode * inode)
+ 	if (inode) {
+ 		security_d_instantiate(entry, inode);
+ 		spin_lock(&inode->i_lock);
++		spin_lock(&entry->d_lock);
+ 		__d_instantiate(entry, inode);
++		spin_unlock(&entry->d_lock);
+ 		spin_unlock(&inode->i_lock);
+ 	}
+ }
+@@ -1995,7 +2011,9 @@ void d_instantiate_new(struct dentry *entry, struct inode *inode)
+ 	lockdep_annotate_inode_mutex_key(inode);
+ 	security_d_instantiate(entry, inode);
+ 	spin_lock(&inode->i_lock);
++	spin_lock(&entry->d_lock);
+ 	__d_instantiate(entry, inode);
++	spin_unlock(&entry->d_lock);
+ 	WARN_ON(!(inode->i_state & I_NEW));
+ 	inode->i_state &= ~I_NEW & ~I_CREATING;
+ 	/*
+@@ -2754,6 +2772,24 @@ void d_add(struct dentry *entry, struct inode *inode)
+ }
+ EXPORT_SYMBOL(d_add);
  
- 	if (flags & SPU_CREATE_NOSCHED)
- 		ret = spufs_fill_dir(dentry, spufs_dir_nosched_contents,
-@@ -479,10 +477,9 @@ spufs_mkgang(struct inode *dir, struct dentry *dentry, umode_t mode)
- 	inode->i_op = &simple_dir_inode_operations;
- 	inode->i_fop = &simple_dir_operations;
++struct dentry *d_make_persistent(struct dentry *dentry, struct inode *inode)
++{
++	WARN_ON(!hlist_unhashed(&dentry->d_u.d_alias));
++	WARN_ON(!inode);
++	security_d_instantiate(dentry, inode);
++	spin_lock(&inode->i_lock);
++	spin_lock(&dentry->d_lock);
++	__d_instantiate(dentry, inode);
++	dentry->d_flags |= DCACHE_PERSISTENT;
++	dget_dlock(dentry);
++	if (d_unhashed(dentry))
++		__d_rehash(dentry);
++	spin_unlock(&dentry->d_lock);
++	spin_unlock(&inode->i_lock);
++	return dentry;
++}
++EXPORT_SYMBOL(d_make_persistent);
++
+ static void swap_names(struct dentry *dentry, struct dentry *target)
+ {
+ 	if (unlikely(dname_external(target))) {
+diff --git a/include/linux/dcache.h b/include/linux/dcache.h
+index 94b58655322a..6ec4066825e3 100644
+--- a/include/linux/dcache.h
++++ b/include/linux/dcache.h
+@@ -611,5 +611,7 @@ static inline struct dentry *d_next_sibling(const struct dentry *dentry)
+ }
  
--	d_instantiate(dentry, inode);
--	dget(dentry);
- 	inc_nlink(dir);
- 	inc_nlink(d_inode(dentry));
-+	d_make_persistent(dentry, inode);
- 	return ret;
+ void set_default_d_op(struct super_block *, const struct dentry_operations *);
++struct dentry *d_make_persistent(struct dentry *, struct inode *);
++void d_make_discardable(struct dentry *dentry);
  
- out_iput:
-@@ -780,7 +777,7 @@ static struct file_system_type spufs_type = {
- 	.name = "spufs",
- 	.init_fs_context = spufs_init_fs_context,
- 	.parameters	= spufs_fs_parameters,
--	.kill_sb = kill_litter_super,
-+	.kill_sb = kill_anon_super,
- };
- MODULE_ALIAS_FS("spufs");
- 
+ #endif	/* __LINUX_DCACHE_H */
 -- 
 2.47.3
 
