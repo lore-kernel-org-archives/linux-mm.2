@@ -4,63 +4,63 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96EBCCCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:31:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CD69CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 03:31:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E152180106; Mon, 27 Oct 2025 23:31:35 -0400 (EDT)
+	id 8BE4380107; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC57E800E4; Mon, 27 Oct 2025 23:31:35 -0400 (EDT)
+	id 820C0800E4; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C8D6280106; Mon, 27 Oct 2025 23:31:35 -0400 (EDT)
+	id 69A6080107; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B2DE3800E4
-	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:31:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4F2ED12A62F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:35 +0000 (UTC)
-X-FDA: 84046098150.30.107F11B
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 54074800E4
+	for <linux-mm@kvack.org>; Mon, 27 Oct 2025 23:31:38 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EDE4CC0396
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:37 +0000 (UTC)
+X-FDA: 84046098234.16.B5EDCF0
 Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf01.hostedemail.com (Postfix) with ESMTP id AF1F840005
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=cWKXwiJR;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761622293; a=rsa-sha256;
-	cv=none;
-	b=Cze4RXhYeKLxpUFoi8YiDGbpqh58/04dasNPwWjnusrCm01DEqYzxNbPmoIuQ4WxnCm6wx
-	XmqLem02hD59AoluqyU251FVlTrSRG4DOC3YWGTRHT5/ZqkqtXNCT+m4rQBw3gyGvPmH74
-	xl8wJRebZRpx9RWNmbqWzAPAPaX9G6Q=
-ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=cWKXwiJR;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf01.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	by imf20.hostedemail.com (Postfix) with ESMTP id 80B801C000C
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 03:31:36 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KSdnFP3U;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761622293;
+	s=arc-20220608; t=1761622296;
 	h=from:from:sender:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eoHAGF5loUqH0LAFPRC8F4kXyPuIEz0vDtopK5rWb5o=;
-	b=la8P/gH3VMBqf0UuOJcsv1+j9VpKIlXT6xF6cR/252jtTVpiH/dWUJ7gcvHD5KYMlKG9Is
-	Af4eF/8OyZSUUQVlmAhkIOfGJpCC5VrUdLqaUQFwWwhjJWxRj8F7KWPWjLCO+jWzNTF6u3
-	N188rgmf1HsZ/ckxHZQq2fQg5pdDFz8=
+	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=;
+	b=NpbKTR4DGm85sT2l9pQ+W1TBC3m8hig9qaOJU1GYg3UfGLl3Ak51xo56eS95QK1iWqM/yu
+	ypwYLOIGu7+9GZHaVQR8KRmlloptN+ahC96WXJMqMHtgLtV/mxRnI1DLfsqng4tyfrwb/1
+	Xt4gR57Wle7WAWgPOpRGGxpp3Np+/YA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=KSdnFP3U;
+	spf=none (imf20.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
+	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761622296; a=rsa-sha256;
+	cv=none;
+	b=Q3e7aH2TG6SeNjVXm+O1ASgwFob8XTmA396QjOSLhmoy8H8eBO1vT668jvpoDdOpRL63WX
+	MbHdYamuWIuO7YFgpAAbgFcwSgOKsbTjqeu4kSQXT2OcZPXzWa9Yn2qW7dJQDzGW+ggP4J
+	JZjSeyDBa332ElIP92BaLmcdFQ8Ex+A=
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=linux.org.uk; s=zeniv-20220401; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=eoHAGF5loUqH0LAFPRC8F4kXyPuIEz0vDtopK5rWb5o=; b=cWKXwiJRgmyUaWc4btZ5WzGz3e
-	P1d4pU2PnDGwHyXYYC3Sgwm/WPpNg6KTwV5sROPVde7FceyNHhhUc0N4X81SxgJMRZaYvSs5qCoF/
-	0usQSfZLUxv2nUlR2Jfp5JWmBh+5fu1PIOG0mXjNiaHsbpZuvnuCBQsXL9AKNKoUcXX02D2qMvWqk
-	qnAOvMK+sofvaE+oth2FQB23/OCTjk4qP5LStexB4zj8DV7NnUUQGzcMZAJfRFTfyrPeKSt6B6Q3u
-	q06p5RvGSDJEqongOiLQqYlkX46ecZiHjCeRWGwudoHTsnkOUbcR71MM5KOW07SuplgdFJG4EF3Ct
-	Kh0HmJcQ==;
+	bh=nhVZHCo/8A/9+8ahzyAjs/jwjY1fv4im71qjOl+I68U=; b=KSdnFP3Uf3Gc2L4P8+gVMs6NaY
+	8h5KjzipOzsvfCYyKmYQWnr1215L9QiltbKbSAfCPYdtlxMvACmdkXsIgY0pjbW9IlTCw7R5euqlf
+	g4OjTenHpmrfytwtkD3r6u1UwgCJ5oZSi9cPTgRBCQE1gyYExNmDo7jRg3oVBxODuZVblG2gX8XBd
+	ycgKmhaVVXcLZm3EiuzHfXap48uE3rSIXV1wfdda5TIC/DQ33D1NhmBAYzICXl85XUA5Wg4ACHEud
+	WW48GlAeR1l8HYwngXSXiHsEkgHl1SZtGhWagy+xkzsAjw6/nrvDLptr4d60gllKfhf1mfy78zba7
+	IJmWfHYw==;
 Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDXqr-00000001eZ5-2N4G;
-	Tue, 28 Oct 2025 00:46:17 +0000
+	id 1vDXqv-00000001ens-15Pf;
+	Tue, 28 Oct 2025 00:46:21 +0000
 From: Al Viro <viro@zeniv.linux.org.uk>
 To: linux-fsdevel@vger.kernel.org
 Cc: torvalds@linux-foundation.org,
@@ -84,22 +84,22 @@ Cc: torvalds@linux-foundation.org,
 	selinux@vger.kernel.org,
 	borntraeger@linux.ibm.com,
 	bpf@vger.kernel.org
-Subject: [PATCH v2 28/50] binderfs_binder_ctl_create(): kill a bogus check
-Date: Tue, 28 Oct 2025 00:45:47 +0000
-Message-ID: <20251028004614.393374-29-viro@zeniv.linux.org.uk>
+Subject: [PATCH v2 46/50] convert rust_binderfs
+Date: Tue, 28 Oct 2025 00:46:05 +0000
+Message-ID: <20251028004614.393374-47-viro@zeniv.linux.org.uk>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: rwywbn37mdyhs5387m5wuxacsb3pj7oy
+X-Rspamd-Queue-Id: 80B801C000C
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AF1F840005
-X-Stat-Signature: 6nbxihi5gwy6jgcrkybu4654y9cgm7b6
-X-HE-Tag: 1761622293-908687
-X-HE-Meta: U2FsdGVkX1/9cyvqURQoWOKoZPzJ5NJcc4aEANpNPAQ8SM+k9pUPGR4ysqoRs+UbdBtApM3QVP66ss9mcZCg6kz3y7eJVTfSVhikKU6Hxv1K7+ZsAtVLbicff/J8Nk85VONWRB5ILHwGr9BZiEgV0e5n9LzWIdoWs1G7W0fs1tVOEU2pyRWbUlBWGd2aot5ybGfKO9DPy+ixpR5KXsyeKQfqWI43TD9ZVTjipCtmAiCLfNlCDW3SQ0vHrPkHFB20mMo8/ZPwiNlAj2all0vaWvLPRSGZ1RtvIHqNV2z3HM/kvD/1Yf+k2XjOXdmfl2twBOuzZIEw9zQQ0jLMSykN00CaEQVDzYHam8aRAmp/KTZawPTBA9oTphkOeW3/X1FpgKerdspltwd+HlCdNUWKB4GGJsEil8q3/CG2soAUPx5lmpAUdbZA5MGKUfziRxNeTgOVot+6XPxlEocghDUH1L4Xu8SuDZGjs/uLRZoFFEPDKG0vcYxHqozJmoYbm+xCxEd4DGhOaTZ10QqFNGqlP7OOzBS3ITaKJKJ+KZKVFLfmNm+ERuFO5Z+yViHPZJrqaC37VbuzTqIIlFxRrEJ3ARu5hWoC/m2NbBqR/Lv5pK6DimIiQxdJ/Ii07r7S4NZtuHo7H16Yjjym8QJ82q0RNWwk2DGgioUC4NkvCboYMSWRpms1J8ylzei5faY/048EqOgOJmqWk10mhlV+Fo2D4E1zLmsJ5aGph6EsTu/la2qEs7+qmvz+bI5WQugspA/SO1TZV2D9XHSe2yiD9kVAFQBtwJcE0WxrdXedcGMCksJQdmd+Ib+ltAl6rGlYGouPVr3x0qjswajzX+DCWychDnBWaNv/7ptCOwEh7Mry2bFdl+TCCZkg15GA+JzvsjuDEcwPAxKs75mByGLmc95qRp2pszmO8Ir0mn9fgTvGTBNAXXlFGQgN1Dbm+HfaOxCnh+hYf83hYeozyp3Jd06
- AZA3Bsr1
- r5o86XzxIDEt0JbIcGcKVZG/WaVj00OKrMOkiU2NCOojlRhI7rx1eXISFZObnzmm53lq5cvuSryEMWa8dCLYpacdI2OEtxfDGzQjsDvB0WyaOmxVqmJlh54hrzzBQFetOlgps632MHJiTJ9MU2NvVNh4pYaJVRXeSpVUI3kJfsBy/gMkWaIixl6+LfsPxQZD6e/UhUcAUkrHC5dOOlVh4sJtIfB1CIR3qHG4aqnMD5Nj7lvzRt8dfNPax0of0OXpNTIbzHEaF19U8xKSuIUvtspJHcuV6vjozj1G7CDEX0WVqP8wC5F/ALhreN+NeEno+pYOSBdZn9qAn747Pia6hpdwLcxtPZvRuXRCXw51s8ohzdTjrMZAS2AriKWLITWvV9u5BOLZsGh62431TwIsVu4ZXlQzboVlYc3KDN5MthjvGlZ4b685T2uY7Rn0O9+NtwnZH/ayKsZfvgVVza92jmF2JeizfW0u7Hhvtpof0MBIhCS0=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761622296-423998
+X-HE-Meta: U2FsdGVkX18lgvwowzmvkGzWjkH+243nK0qBnQnPCa6Rm5h2mgPco6sUvDS7DkSMn9q5SAEQ70fRfFDLS2Mm//OHQuf4P4omHxw2wdLNXQizCd+tpj8VhOCx96mfgpNBFergoNy0KXoJEQoPg7vYGyBV4e+Clu7J33yv2L40T6vCea61VEmdjulcPfroPUTKFWfblzFaElPjKu0eIzaR4aoyviYoccrSgPbf0G1yHToMY5qu/czL9yO0FY6iEZ2lyFzqwdk3voVnnC3M5v3m5su1QXd+o7wXXqUBFDb9sPdDoO0/lfyt7BvOncXd5fIbaiLlTgzRbkmexRG0BOBRx1wXka8+dR/Pcig3vlAFTs4LT6UXeab7jGPBQyrjHXci+HmGVE6MDlSPxj3ZZDLeAAXH49EBFx3JC1LYWsyQXTmN8CiFBV/kVJF64WnxGmUaH73o5YV6QLtFnfU2xHB/thEqhSevJSWniXdruDQHhxBPnVr0ZytE74vsW9gwN/oiaVHOQtftVSGGgbzA+r5F7+7Ei7mCF1Y6vatx9G2pS5nVEqPrMBtXTkPdn2voakW+7uOE9hY8s63eL67vhafb2mW6OdK2a8I70vU7vgdHyC9Kr5yjcNb5mVRQ7bkAAb0LFc41tiOS53UCU1g/KOd5OLwdazUtQlUrwNygJGASTN1zKZk5a3uo2DFh8iXiVEbL+5CKhMrNpvU9QrQoiruVuLjbbDIhZe1O5EsbkN+nekv02EodhRDqJVHb4+KNJW0C3jkohkY6dLRP8LXVlKZaSvqDONY1pS8BDv9AAEc6EaGeCz51QdT2LloiB+1Y5n+j9OYFYU2rfxj6hC8U3j1xFiucEwPb7x0XBLuKY4jTupek/3UDGKwwPCP8m2bfEolbX0Z3ax296umQPE0TRtKDSqB0hBlGgmEw0Mxyp1c6fP3ByC/dnVkk6EFJu6qPIfmI/qD9qoDLXj+yU72J/1K
+ ARPKgVUd
+ zlm1iBu8FN6KWwbfwVtcxaXmz8QlQfGmPpAIls3Pswtp5l+lygI2P+1fc5PIyh9fnpC0/oRuuq8rvmqVsq7c2XOvFCL4DFmdeG0oc/qmGangCtjpdhLc5oOdiodFD6MLe0bhLeyCSDBEWFZXwrZjUNjulZVOi6UpJih7D
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,34 +108,197 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-It's called once, during binderfs mount, right after allocating
-root dentry.  Checking that it hadn't been already called is
-only obfuscating things.
-
-Looks like that bogosity had been copied from devpts...
+Parallel to binderfs stuff:
+	* use simple_start_creating()/simple_done_creating()/d_make_persistent()
+instead of manual inode_lock()/lookup_noperm()/d_instanitate()/inode_unlock().
+	* allocate inode first - simpler cleanup that way.
+	* use simple_recursive_removal() instead of open-coding it.
+	* switch to kill_anon_super()
 
 Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 ---
- drivers/android/binderfs.c | 6 ------
- 1 file changed, 6 deletions(-)
+ drivers/android/binder/rust_binderfs.c | 121 +++++++------------------
+ 1 file changed, 33 insertions(+), 88 deletions(-)
 
-diff --git a/drivers/android/binderfs.c b/drivers/android/binderfs.c
-index a7b0a773d47f..8253e517ab6c 100644
---- a/drivers/android/binderfs.c
-+++ b/drivers/android/binderfs.c
-@@ -397,12 +397,6 @@ static int binderfs_binder_ctl_create(struct super_block *sb)
- 	if (!device)
- 		return -ENOMEM;
+diff --git a/drivers/android/binder/rust_binderfs.c b/drivers/android/binder/rust_binderfs.c
+index 6b497146b698..c69026df775c 100644
+--- a/drivers/android/binder/rust_binderfs.c
++++ b/drivers/android/binder/rust_binderfs.c
+@@ -178,28 +178,17 @@ static int binderfs_binder_device_create(struct inode *ref_inode,
+ 	}
  
--	/* If we have already created a binder-control node, return. */
--	if (info->control_dentry) {
--		ret = 0;
--		goto out;
+ 	root = sb->s_root;
+-	inode_lock(d_inode(root));
+-
+-	/* look it up */
+-	dentry = lookup_noperm(&QSTR(req->name), root);
++	dentry = simple_start_creating(root, req->name);
+ 	if (IS_ERR(dentry)) {
+-		inode_unlock(d_inode(root));
+ 		ret = PTR_ERR(dentry);
+ 		goto err;
+ 	}
+ 
+-	if (d_really_is_positive(dentry)) {
+-		/* already exists */
+-		dput(dentry);
+-		inode_unlock(d_inode(root));
+-		ret = -EEXIST;
+-		goto err;
 -	}
 -
- 	ret = -ENOMEM;
- 	inode = new_inode(sb);
- 	if (!inode)
+ 	inode->i_private = device;
+-	d_instantiate(dentry, inode);
++	d_make_persistent(dentry, inode);
++
+ 	fsnotify_create(root->d_inode, dentry);
+-	inode_unlock(d_inode(root));
++	simple_done_creating(dentry);
+ 
+ 	return 0;
+ 
+@@ -472,37 +461,9 @@ static struct inode *binderfs_make_inode(struct super_block *sb, int mode)
+ 	return ret;
+ }
+ 
+-static struct dentry *binderfs_create_dentry(struct dentry *parent,
+-					     const char *name)
+-{
+-	struct dentry *dentry;
+-
+-	dentry = lookup_noperm(&QSTR(name), parent);
+-	if (IS_ERR(dentry))
+-		return dentry;
+-
+-	/* Return error if the file/dir already exists. */
+-	if (d_really_is_positive(dentry)) {
+-		dput(dentry);
+-		return ERR_PTR(-EEXIST);
+-	}
+-
+-	return dentry;
+-}
+-
+ void rust_binderfs_remove_file(struct dentry *dentry)
+ {
+-	struct inode *parent_inode;
+-
+-	parent_inode = d_inode(dentry->d_parent);
+-	inode_lock(parent_inode);
+-	if (simple_positive(dentry)) {
+-		dget(dentry);
+-		simple_unlink(parent_inode, dentry);
+-		d_delete(dentry);
+-		dput(dentry);
+-	}
+-	inode_unlock(parent_inode);
++	simple_recursive_removal(dentry, NULL);
+ }
+ 
+ static struct dentry *rust_binderfs_create_file(struct dentry *parent, const char *name,
+@@ -510,31 +471,23 @@ static struct dentry *rust_binderfs_create_file(struct dentry *parent, const cha
+ 						void *data)
+ {
+ 	struct dentry *dentry;
+-	struct inode *new_inode, *parent_inode;
+-	struct super_block *sb;
+-
+-	parent_inode = d_inode(parent);
+-	inode_lock(parent_inode);
+-
+-	dentry = binderfs_create_dentry(parent, name);
+-	if (IS_ERR(dentry))
+-		goto out;
+-
+-	sb = parent_inode->i_sb;
+-	new_inode = binderfs_make_inode(sb, S_IFREG | 0444);
+-	if (!new_inode) {
+-		dput(dentry);
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
++	struct inode *new_inode;
+ 
++	new_inode = binderfs_make_inode(parent->d_sb, S_IFREG | 0444);
++	if (!new_inode)
++		return ERR_PTR(-ENOMEM);
+ 	new_inode->i_fop = fops;
+ 	new_inode->i_private = data;
+-	d_instantiate(dentry, new_inode);
+-	fsnotify_create(parent_inode, dentry);
+ 
+-out:
+-	inode_unlock(parent_inode);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry)) {
++		iput(new_inode);
++		return dentry;
++	}
++
++	d_make_persistent(dentry, new_inode);
++	fsnotify_create(parent->d_inode, dentry);
++	simple_done_creating(dentry);
+ 	return dentry;
+ }
+ 
+@@ -556,34 +509,26 @@ static struct dentry *binderfs_create_dir(struct dentry *parent,
+ 					  const char *name)
+ {
+ 	struct dentry *dentry;
+-	struct inode *new_inode, *parent_inode;
+-	struct super_block *sb;
+-
+-	parent_inode = d_inode(parent);
+-	inode_lock(parent_inode);
+-
+-	dentry = binderfs_create_dentry(parent, name);
+-	if (IS_ERR(dentry))
+-		goto out;
++	struct inode *new_inode;
+ 
+-	sb = parent_inode->i_sb;
+-	new_inode = binderfs_make_inode(sb, S_IFDIR | 0755);
+-	if (!new_inode) {
+-		dput(dentry);
+-		dentry = ERR_PTR(-ENOMEM);
+-		goto out;
+-	}
++	new_inode = binderfs_make_inode(parent->d_sb, S_IFDIR | 0755);
++	if (!new_inode)
++		return ERR_PTR(-ENOMEM);
+ 
+ 	new_inode->i_fop = &simple_dir_operations;
+ 	new_inode->i_op = &simple_dir_inode_operations;
+ 
+-	set_nlink(new_inode, 2);
+-	d_instantiate(dentry, new_inode);
+-	inc_nlink(parent_inode);
+-	fsnotify_mkdir(parent_inode, dentry);
++	dentry = simple_start_creating(parent, name);
++	if (IS_ERR(dentry)) {
++		iput(new_inode);
++		return dentry;
++	}
+ 
+-out:
+-	inode_unlock(parent_inode);
++	inc_nlink(parent->d_inode);
++	set_nlink(new_inode, 2);
++	d_make_persistent(dentry, new_inode);
++	fsnotify_mkdir(parent->d_inode, dentry);
++	simple_done_creating(dentry);
+ 	return dentry;
+ }
+ 
+@@ -802,7 +747,7 @@ static void binderfs_kill_super(struct super_block *sb)
+ 	 * During inode eviction struct binderfs_info is needed.
+ 	 * So first wipe the super_block then free struct binderfs_info.
+ 	 */
+-	kill_litter_super(sb);
++	kill_anon_super(sb);
+ 
+ 	if (info && info->ipc_ns)
+ 		put_ipc_ns(info->ipc_ns);
 -- 
 2.47.3
 
