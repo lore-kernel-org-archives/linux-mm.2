@@ -4,79 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1CEF0CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 19:54:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29FA4CCD1BF
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 19:56:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C6EB8E0009; Tue, 28 Oct 2025 15:54:41 -0400 (EDT)
+	id 7F3448E0194; Tue, 28 Oct 2025 15:56:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 79E2C8E0008; Tue, 28 Oct 2025 15:54:41 -0400 (EDT)
+	id 7A3748E0008; Tue, 28 Oct 2025 15:56:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6B4758E0009; Tue, 28 Oct 2025 15:54:41 -0400 (EDT)
+	id 693D28E0194; Tue, 28 Oct 2025 15:56:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 58B1D8E0008
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:54:41 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id ECD8A88A95
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:54:40 +0000 (UTC)
-X-FDA: 84048575520.03.4EDC1A4
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 5A578160002
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:54:39 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HS45+suS;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 54BDA8E0008
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 15:56:44 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D5AF814056A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:56:43 +0000 (UTC)
+X-FDA: 84048580686.15.6513317
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 00648C000A
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:56:41 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D5dgUg4j;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761681279;
+	s=arc-20220608; t=1761681402;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Bb0C3VyuAmSiKsi2qlBRx/pFXIP36IO29vP/bFyjw0g=;
-	b=st6LRlcIoWIMes2givN7iO2jicF4MYeIbeU6bkHpkRngSV6d3q00II3oU+Jn8biDbFTYRd
-	t+A87yxAqRtQ7t2CIQ0ga2RjUlsujP7aHY7a8Gf0YWsUczbwbgIURsl3cdgKc07vEvowCB
-	PjkT+kF+5N5JS5xztE3L/IKMAeYT7s8=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=HS45+suS;
-	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761681279; a=rsa-sha256;
+	bh=3Usl2MxJgf75ZtIXA3HYGIOIjCa964SgbdX/Oqx8od4=;
+	b=Q0GsuCIUp4HXTMaxEQP8QP7UB3BYgIisnbBiW87nz6AKTg5TyDi0w3dsjdyF8+Fi/IQeAP
+	GHRtzA47OBWX+jOTRoNPvzibTboQb8xY/vQlym7hdbROTA3BW7HHx6bq17DRzX1gEUTPdE
+	kOCZMKRiZpBKKoEqIlMk8peOUBs+PIM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761681402; a=rsa-sha256;
 	cv=none;
-	b=du3ZZX8/5+nEsPntXYSCA6m7l+OmYiY6PExUuKlO9ePyPBpyoal/PocNJlY4aAafex8keq
-	mHJduc60C0cQZ7nGDfbebCUdis4ab5ft4G9IDhgIJa+2N+++jOmKFrw2vYhrBBPbtTKOL3
-	g7N+TuXQcQJaYuvUQzob5HlW+BOYZ6Y=
-Date: Tue, 28 Oct 2025 12:54:29 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761681277;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Bb0C3VyuAmSiKsi2qlBRx/pFXIP36IO29vP/bFyjw0g=;
-	b=HS45+suSm2rzrJQMMkE+ycYcgEd0ql+2mj/3Lex3TN7T7ZQvpXI25hP3pXR3WsB0zcaUNK
-	uiEipqPSyA+Q2udnhlpK792HxTJ2Mp/Q/kHXIOwPZubUX60qkv7f5jqoZbW18g6cQajOUP
-	D0wHWOIWHS9q0agqXQNk/58Ej7bERuk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Akinobu Mita <akinobu.mita@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-cxl@vger.kernel.org, 
-	linux-mm@kvack.org
-Subject: Re: oom-killer not invoked on systems with multiple memory-tiers
-Message-ID: <o3gxx5uipm53gccoccjjdvtvv6gkyx4r7qexzdkg3uqtqc7wsv@yd3rqfsy2bpz>
-References: <20251022135735.246203-1-akinobu.mita@gmail.com>
+	b=TUDD0tT4BLxW98r3xLYckEfnEhpjetaKjM7LHxQCnCGjEjYLW+UWjO3gFhmF+ofXyNYrsf
+	QAth841yoR13wMtxCiuSAkNpPAMoZc7KqY1UWLvtgR0IzlJ8lmS1K66PTrG6B+8U7hxcd+
+	9AqiigXbgHxyE7F1NZyQWeNUpJiXBgI=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D5dgUg4j;
+	spf=pass (imf28.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-46e6a689bd0so64013265e9.1
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 12:56:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761681400; x=1762286200; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3Usl2MxJgf75ZtIXA3HYGIOIjCa964SgbdX/Oqx8od4=;
+        b=D5dgUg4j7dli//5fhyMBy+QHFIX2MpA+WHz+Vjipu8HU6p2djaFiWF+PLf2kcIAG2I
+         TAP+8BtbtaljtMiAMoVYRs4WUpKAP4Alqja+nqKEUVLK70mNH17VTqwmX5+BsCG6xNOK
+         Nm39Nhf+g/TUTupPgCZ995cPjmIOve//sG/tiUSVr1jMtpJ4PQZ+Dm8ncUEU94fW0/7U
+         gVMe+joTKxOfN80TkxasGr3/Hx2ZehU2Nfl9CIx9pt83JVQMxw4o94z56DkaF3io+7Ii
+         6MgDH455G+DxccpqVQg8p2zaOuXYCXfThvJxyoo+bNARmM/7ozE+srY0v5d3fYu8QDRM
+         ibkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761681400; x=1762286200;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3Usl2MxJgf75ZtIXA3HYGIOIjCa964SgbdX/Oqx8od4=;
+        b=qvjVL+yA5EKrcZJqEj8VGcHsOVsFiZVIV5n6Ik+cAoUQpEbZLvyK6a44Utn+XPQ7yM
+         fTJ6ZBPb+N+LhGYpX3+r8ir/P66GYeJL71b5JbRbpeI004oRJvIsLB056WJ768YPYGZr
+         69xqUJRXVJKDGRkMx+8qHohd8yuQsvXAk5kZnIZToiYUAeRc2D5ayq56TT56YwybzQIF
+         IvUzh2XqOBKNJiB9nKFS3lpvgwr80TXjO2gm7lAB49eRrnKa7TOl5t53Yed3v7LHG6tz
+         sSuTmkn+S6kkhdjKvt6vJwwH7Dgybsow7BUIuuVIkfQw9IykXXb8hDWIX3l0hj6XiFWI
+         qGgw==
+X-Gm-Message-State: AOJu0YyYD/Xh6to6rrntEFmdQANDG9ljVPkmPr8falRIVLBQuxaepTCc
+	quoQmVg5ZSHP4v5sskVJFb+JNcBuk+Q+U4Via83Aa4oiDgMGEIXJxArAbNJ73R9MAynsD2fohc4
+	T0XPZV3Mdulz5cGlMQQNfovXvSziPr0s=
+X-Gm-Gg: ASbGncv5oGZ2ltKwb1wBBGUxS8cC1A8QvmFuBzUB/besWBEk5wGHTHIlmoU7Mdx/4Sr
+	WlKqBE1dcrMLH9ZtJqpAXN6d5thC1dVNIX3HOWSVTbJzaoHIgrGj8+JFaCQ3x4vuPAKnkLtxg+4
+	EmI31ICWr4AGAfKgek09qS+Kc+u+Y5VcI4VgBz2IpwbjtGp2/C+a9NzQAm2GSHkDskLES7wlet3
+	MjA7LH8hJ7SCnL7wdGXOqSIAxpN7hJ3dNsPeziYqpMiDPaLCOeu16kygA==
+X-Google-Smtp-Source: AGHT+IHpcn+eKk7XEoX7aUKCVR8RC7VrOxB+A/nsWUVptSZDoAunp24lGEpEiln9XZ4xk7g/xSicMHFuYPSNsvfuSts=
+X-Received: by 2002:a05:600c:3511:b0:46e:428a:b4c7 with SMTP id
+ 5b1f17b1804b1-4771e1caca2mr5555895e9.23.1761681400086; Tue, 28 Oct 2025
+ 12:56:40 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022135735.246203-1-akinobu.mita@gmail.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 5A578160002
-X-Stat-Signature: n1qo5qc8tmhknuepgbh4ckm9hek56crt
+References: <20251028034308.929550-1-bhe@redhat.com> <20251028034308.929550-3-bhe@redhat.com>
+In-Reply-To: <20251028034308.929550-3-bhe@redhat.com>
+From: Nhat Pham <nphamcs@gmail.com>
+Date: Tue, 28 Oct 2025 12:56:28 -0700
+X-Gm-Features: AWmQ_bmOuBXACtD1EpZ1FFWt5uI8t6B14R06sXXZZmSea8TeOEwh8DbHgD1FFPU
+Message-ID: <CAKEwX=O3VkZx=4uD2o7dvrv_SdKsD9fcpUyS2YoR7xrdwqjywQ@mail.gmail.com>
+Subject: Re: [PATCH v5 mm-new 2/2] mm/swap: select swap device with default
+ priority round robin
+To: Baoquan He <bhe@redhat.com>
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, chrisl@kernel.org, 
+	youngjun.park@lge.com, kasong@tencent.com, baohua@kernel.org, 
+	shikemeng@huaweicloud.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 9x4ejwtf74defqgyarufniibf5q771s1
 X-Rspam-User: 
-X-HE-Tag: 1761681279-514250
-X-HE-Meta: U2FsdGVkX19kzo2FI37qZu8ItAi+4C9PaMXx3YhnzTsuAG6y5KIoIN8VSzqd9Cm4LpXOS4pLrmJNjAS6YbAo7ifH1b+QZZPdr8hQjjSK0B89EDu+RHCELU1/dPPHeq0mElKKh/GOf1l4R6vbHJOCqE5rn90xzzr2Y1Lto70CYsQWl6vGWSnBGeyk+VMxnbuO9tFR0Pn3+DtNjQRll+dnslyGZSXPKFBjdA/SZVrh8Q6FKu5GKEKlco4HZoKeJkrVntjY0b2mfszF2xGfwIHwxgY/46E912p2Gofv7vfpeh0O19VeJ/i+c7743RDZ4y1kWX4P23jFJBSGofl9pZmUF/lLo+pV9ivA4eoj2uXr+32le8OjaOgzGfsiOZVfT7+iTy2Lr2zcn6X1QV6plShKCher76okQIbX+ghj8Dd9kQypmfiwBbHvCg0QWgtsScYQDFpef+bP0R7bji+VUZZ8BYGPgjxA4oKcuakuinIzbq+vWBWSaiLoI1+WJjmPiVZf6L6705RjYSYuAEdinpYe+hnOiOn/k84POGplLwQoBtzHoQ/32wMDacYRpA44++hd7M6KCuIFp2V2JW/UUkCknO2p5abG7Ha+C1IjjLEcJ64NxvGxybN9xoh+U3UNLqyvUKEkRddI7KP7cqIUlWAoVPdRCEPFyfUWz1RDGYIwzHyuwHpQmol9Ujnu1L0d1oAgXWDBjHZW10rEpjhkieDPuqw5DvLN7nT8E4s/1W5FgdT4a4Y8kWdEy4tPFSNUxU6MLyj0zGTSMO2hnK2bKK7uXetXfN9hlFlda8/a7f0SGhBQuqKPVoOtz6c5Zn0MHzf5J0ASYMzWcbcJ3m3C3ymNhgp7T/yfwBptxSi4qtRmf99KAkxW1s1wNda0aKongP7AS79dLeYa53Q=
+X-Rspamd-Queue-Id: 00648C000A
+X-HE-Tag: 1761681401-165604
+X-HE-Meta: U2FsdGVkX1/X461IdOOFHk40fn7gXPMnffCUNZsIYqhkHbhMYjOq6aD1htjCiWTIqXV84iWx+HIsluLwsSaPUJNIsKpVlOMltEUV3Pxpxhsq2eCYEjDNWqtJ4gMbM8+BVeVkrhHEInsUPijFiRo8fptsIvysahp0gb31GluEAwR8QWgZwLH9Ksb/BJNT4udTEAPhQRbdRho20GGArG1JRTyhgUGA14ZH5TS48EGZRK1j6TQqPVcoGoHxcnpYEGZzpYlsX/gSeedF+WGl1L2TCWFGsYpgEcX8/fOc+qvIvJ7qrEMXRF2EC4xLZhjmSm6m2LKWzXQ9EeZ9Mr/VIpfIer+jQVttK8INHFbyMRXBWkaujRN2k2rTiFEkIgoGAWTOvhLzf8M/4cjrPCXdH8+dJY2DbLV4ZDjaOx0QB9pnWWjpB00soFyh0aUZhyrP64jDCvAgLFvGn0JG46vtOucSthLBi+PZ9MjJvZy2DcbmdXVeH6HKFRcstk1Z7akHrwzmSnyJ/Xu3qG0t4tX63G7uXRTZ2+s5d3qYTK1OiYcuPqEryXdfmGailElkRIOZ4lz8BH60sOz3gJHshTxFbCpmtkrFQRkOf58jnNy3lEvtjlcogBxh35IShaCM6fJJsMQcwREv/QZp0kNo/nFR4sw4mM9NgYDdBEu+V7//uKD60I3mWgCIgejscx3Sn+IJuvVZt0km4mjAKbcsNMFVzjjOPJktv7lVQoUfgUIz4u8Pw1G9sXuW2lUXT2tJ/EHFMYkv8ftA0NRSQG89JdhKPSZysolZ1/JShSzq8PtnG5OALv2TK5ei5L86BVXVWdjUWU84FpQHQ5UNS4hAe8nTFU+gvUGwxftzdYmg7OIfuO5BZywA8qwlxWjMjCMdUkWLRvMRmpRfZLARJUxqX/DUwJKFeL3jbRcoA9QSKD+1jUfDu1QKW0C+CUjH0tt7rQroJtBlI5LMz1lzGPeNuHM1e73
+ yOslOjtf
+ tvABZkUp88HMtx2v18iFFPs6lNxYafwG27vk5V7HF8egLItZ5p/X0kmVXmhjx9gx/1dgCCQoT9cSfDuuD/4WFZtj0DewrYRCC2kUnFAfStz8XRcW1qz/4jVDAyOInJkc9xPb8AvL2q68Ltfx2BbBXkCBjRh6KGR5mmeX/efSGN89XJyLSren65JLS3Xs+gEAvV73zXkMSx7z+lvkg/BYyhKagnm6at6tIkIykQLFLVlan9rAVXB4C7ZCU1HvZ38lCQYyaeV9QC1uPgPMlocT+SmpxovdPAI01RVO8FC72w66639wmuqg6p+2ap3dDApzl6l3FmwFf75TEhtHbdJfCNhstqGRECh6VGyZ1po+FeFvwwiwiv1jkN14/eyLOhEI+N6jnPPbFjAZJNqFzj24egphJPMoyXCkMiDnvE1f8dwMk3lI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -85,51 +117,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Akinobu,
+On Mon, Oct 27, 2025 at 8:43=E2=80=AFPM Baoquan He <bhe@redhat.com> wrote:
+>
+> Swap devices are assumed to have similar accessing speed when swapon
+> if no priority is specified. It's unfair and doesn't make sense just
+> because one swap device is swapped on firstly, its priority will be
+> higher than the one swapped on later.
+>
+> Here, set all swap devicess to have priority '-1' by default. With this
+> change, swap device with default priority will be selected round robin
+> when swapping out. This can improve the swapping efficiency a lot among
+> multiple swap devices with default priority.
 
-On Wed, Oct 22, 2025 at 10:57:35PM +0900, Akinobu Mita wrote:
-> On systems with multiple memory-tiers consisting of DRAM and CXL memory,
-> the OOM killer is not invoked properly.
-> 
-> Here's the command to reproduce:
-> 
-> $ stress-ng --oomable -v --memrate 20 --memrate-bytes 10G \
->     --memrate-rd-mbs 1 --memrate-wr-mbs 1
-> 
-> The memory usage is the number of workers specified with the --memrate
-> option multiplied by the buffer size specified with the --memrate-bytes
-> option, so please adjust it so that it exceeds the total size of the
-> installed DRAM and CXL memory.
-> 
-> If swap is disabled, you can usually expect the OOM killer to terminate
-> the stress-ng process when memory usage approaches the installed memory size.
-> 
-> However, if multiple memory-tiers exist (multiple
-> /sys/devices/virtual/memory_tiering/memory_tier<N> directories exist),
-> and /sys/kernel/mm/numa/demotion_enabled is true and
-> /sys/kernel/mm/lru_gen/min_ttl_ms is 0, the OOM killer will not be invoked
-> and the system will become inoperable.
-> 
-> If /sys/kernel/mm/numa/demotion_enabled is false, or if demotion_enabled
-> is true but /sys/kernel/mm/lru_gen/min_ttl_ms is set to a non-zero value
-> such as 1000, the OOM killer will be invoked properly.
-> 
-> This issue can be reproduced using NUMA emulation even on systems with
-> only DRAM. However, to configure multiple memory-tiers using fake nodes,
-> you must apply the attached patch.
-> 
-> You can create two-fake memory-tiers by booting a single-node system with
-> the following boot options:
-> 
-> numa=fake=2
-> numa_emulation.default_dram=1,0
-> numa_emulation.read_latency=100,1000
-> numa_emulation.write_latency=100,1000
-> numa_emulation.read_bandwidth=100000,10000
-> numa_emulation.write_bandwidth=100000,10000
-> 
+Yeah, I agree. In a set up with multiple swap devices, this can spread
+out the swap writes, potentially improving throughput.
 
-Thanks for the report. Can you try to repro this with traditional LRU
-i.e. not MGLRU? I just want to see if this is MGLRU only issue or more
-general.
+>
+> Below are swapon output during the processes when high pressure vm-scabil=
+ity
+> test is being taken:
+>
+> 1) This is pre-commit a2468cc9bfdf, swap device is selectd one by one by
+>    priority from high to low when one swap device is exhausted:
+> ------------------------------------
+> [root@hp-dl385g10-03 ~]# swapon
+> NAME       TYPE      SIZE   USED PRIO
+> /dev/zram0 partition  16G    16G   -1
+> /dev/zram1 partition  16G 966.2M   -2
+> /dev/zram2 partition  16G     0B   -3
+> /dev/zram3 partition  16G     0B   -4
+>
+> 2) This is behaviour with commit a2468cc9bfdf, on node, swap device
+>    sharing the same node id is selected firstly until exhausted; while
+>    on node no swap device sharing the node id it selects the one with
+>    highest priority until exhaustd:
+> ------------------------------------
+> [root@hp-dl385g10-03 ~]# swapon
+> NAME       TYPE      SIZE  USED PRIO
+> /dev/zram0 partition  16G 15.7G   -2
+> /dev/zram1 partition  16G  3.4G   -3
+> /dev/zram2 partition  16G  3.4G   -4
+> /dev/zram3 partition  16G  2.6G   -5
+>
+> 3) After this patch applied, swap devices with default priority are selec=
+td
+>    round robin:
+> ------------------------------------
+> [root@hp-dl385g10-03 block]# swapon
+> NAME       TYPE      SIZE USED PRIO
+> /dev/zram0 partition  16G 6.6G   -1
+> /dev/zram1 partition  16G 6.6G   -1
+> /dev/zram2 partition  16G 6.6G   -1
+> /dev/zram3 partition  16G 6.6G   -1
+>
+> With the change, about 18% efficiency promotion relative to node based
+> way as below. (Surely, the pre-commit a2468cc9bfdf way is the worst.)
+>
+> vm-scability test:
+> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> Test with:
+> usemem --init-time -O -y -x -n 31 2G (4G memcg, zram as swap)
+>                             one by one:      node based:      round robin=
+:
+> System time:                1087.38 s        637.92 s         526.74 s   =
+  (lower is better)
+> Sum Throughput:             2036.55 MB/s     3546.56 MB/s     4207.56 MB/=
+s (higher is better)
+> Single process Throughput:  65.69 MB/s       114.40 MB/s      135.72 MB/s=
+  (high is better)
+> free latency:               15769409.48 us   10138455.99 us   6810119.01 =
+us(lower is better)
+>
+> Suggested-by: Chris Li <chrisl@kernel.org>
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Signed-off-by: Baoquan He <bhe@redhat.com>
+
+Acked-by: Nhat Pham <nphamcs@gmail.com>
 
