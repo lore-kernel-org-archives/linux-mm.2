@@ -4,99 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5558ACCD1BF
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:44:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 36178CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:49:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61DDD8016A; Tue, 28 Oct 2025 10:44:11 -0400 (EDT)
+	id 8C2418016B; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CE338013F; Tue, 28 Oct 2025 10:44:11 -0400 (EDT)
+	id 899868013F; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E42D8016A; Tue, 28 Oct 2025 10:44:11 -0400 (EDT)
+	id 7D5A18016B; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CF3D8013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:44:11 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BDADBC030D
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:44:10 +0000 (UTC)
-X-FDA: 84047793060.23.B5C35D9
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8CAE3120006
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:44:06 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=An+Zqd66;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761662648; a=rsa-sha256;
-	cv=none;
-	b=gXmQMUloNmgSvkX1FUyQAfpmMqwmC/NDAPdgemrHSxza+iMLMYEMXTv2szfeXSnIdn2qKL
-	u1XBDj+qtwBScJdV2BrZFKjHpMQph6Tg9HwXn/ogCRfL77acFF4FnNoOTssEioN9ZeTxgk
-	SnEvJ2srPyC5fW318MNE7fNQC3VKDNo=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=An+Zqd66;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf29.hostedemail.com: domain of lkp@intel.com designates 192.198.163.18 as permitted sender) smtp.mailfrom=lkp@intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6BC7F8013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:49:20 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EB9EDC04CB
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:49:19 +0000 (UTC)
+X-FDA: 84047806038.05.4D74F1B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 2029D40002
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:49:17 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huHQXCvp;
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761662648;
+	s=arc-20220608; t=1761662958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=aMaPSgtiIkXN74/+21i5RXAJZTQVebCGb8wY9MOKc00=;
-	b=uNo86zN1k6r4z+m4JbyQ8DirXLo0bG5QRcLd7VkusidOGyiVYh486iYVVEH8J5YR4PY7bm
-	bulTeR5Ee+MNMi7Z9P3axVTkAKD6D5T1uRQSLh8fCYKbtNHcehOOJFA1sqCy6rPWkPZ2Dw
-	lGDWFdsonX7i1K2XWOxtwRSduZWFevA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1761662647; x=1793198647;
-  h=date:from:to:cc:subject:message-id:mime-version;
-  bh=i+/55yq8l96pCeA4jXotYrENEKRas3j7JLXo9bI31oc=;
-  b=An+Zqd668CGWbxjiLea5jOD8boSs5URIN0lI72nguXo1ie2kTe+tBirv
-   +RhVWYikSeQqo/1IAe618IG7+5S+WCLsRG7tzjBRlaQAGhNSyScLMgwh5
-   iOPnskS/84T1NjrbaaQJ1PSGtgdDgmeffqSZ4mER2g5hhdnKYzi88i0Im
-   YjGsBUJE058fV1aFZfLor5o7K63M0mKUi2Wq44Fx9e2O6ERtUDpDIOmYm
-   AvuAFhd/vwbpoazRzIs2fpOvYW4CdmGzCGxrbiX4xtl5lxzPWlbo97amd
-   rClDpt23MqtW8cwkccXllbKNlEVedm8JCU7DarjBcFNl7bzDKjovVw2M8
-   w==;
-X-CSE-ConnectionGUID: FcTaTyOxTpyiLGUjDsM6Eg==
-X-CSE-MsgGUID: KQxT8LtrQAG+PAKtR+4Acg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11586"; a="62968670"
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="62968670"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Oct 2025 07:44:05 -0700
-X-CSE-ConnectionGUID: v4soSnUuTDO5AemsuCRpww==
-X-CSE-MsgGUID: HgJ9Jq07TTCqrSIx/wv4bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,261,1754982000"; 
-   d="scan'208";a="185254463"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 28 Oct 2025 07:44:04 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vDkvZ-000JFn-1o;
-	Tue, 28 Oct 2025 14:44:01 +0000
-Date: Tue, 28 Oct 2025 22:43:29 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ye Bin <yebin10@huawei.com>
-Cc: oe-kbuild-all@lists.linux.dev,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=iMhlL+awlNfW9A5jmBo0UeSJ8e6xIZTWAHrMjd5ojNE=;
+	b=idKlVrWM/3cqiTNdQPpqszmpPaY+1VeMrENoxb/ANyZrHNU9fa1RzYwY7DB6ykvFdhhX8w
+	YMl7nBXDRXNkNcYfCdPecnOVcVzg93TZQuCWz74NC63ZAuEp5BMZk4lkfdIp7rmIwP7ZMA
+	NuEKBzj4qrN3seXThVy5CdcVqkzBIcs=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=huHQXCvp;
+	spf=pass (imf01.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761662958; a=rsa-sha256;
+	cv=none;
+	b=hLGVVg+ct2bc5QGvqBi3S+s7j3pP9xUlI1Yfp4V4sp3CkKike6H12Q35o0VKp2pBznrd/a
+	HZmyPLAW9S1Ls4bfCGEoxUlVZfbPqHE0RxwgjKEhMtU0XtJzpaakZMtTMUOg61m+pk5+vM
+	UcMY1qdhpnmpnwX/8LBpjqEGyKgoz0k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 0969A45F05;
+	Tue, 28 Oct 2025 14:49:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64951C4CEE7;
+	Tue, 28 Oct 2025 14:49:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761662956;
+	bh=/YcbY6Xd39AsABVLZZYIvhdW8ivhFU4lURFGb2RCZr8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=huHQXCvp0W/S5F1ENdurMkw2WwJZbMBNDXAh91iSKf/vrNDl1NLBkoXJdUx/C19Qv
+	 Z4qNcGgTCDjqG04Q8z3Gw4n7Ol2Hs4TiC0IGtfV35bwyLcbAG4VH3lZOOkEdiJR4uv
+	 98GKb95kopcHzMuvU3H2025SulpKC226+6+rZMUmhwVvLSkelVU5+Fv/hfF6vOYswZ
+	 XcZScHHzyBVq+mz32oPgQ0NUDZQKpY6cLjssBtvUS7RZby1k7TivV6VhaUkRZyqa69
+	 4+Ez+WRvhuVyLYG73RXpS/ughenkh3oUdmNmmth4K/glGp+Eu28p8jOe+6mgl5gPer
+	 pCdjOFhzrTR8g==
+Date: Tue, 28 Oct 2025 15:49:14 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Valentin Schneider <vschneid@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+	x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: [linux-next:master 4143/4376] drivers/acpi/x86/s2idle.c:165:51:
- warning: '%s' directive argument is null
-Message-ID: <202510282238.oRKSLKUV-lkp@intel.com>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [PATCH v6 24/29] context_tracking,x86: Defer kernel text
+ patching IPIs
+Message-ID: <aQDX6hHV3b1-_wuF@localhost.localdomain>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <20251010153839.151763-25-vschneid@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251010153839.151763-25-vschneid@redhat.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2029D40002
+X-Stat-Signature: qxttbujxu6ut56uwmsx1jbhhhugfnkgq
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8CAE3120006
-X-Stat-Signature: p4tdxhozwb664wszpktrtdqjfq8dsigb
-X-HE-Tag: 1761662646-112238
-X-HE-Meta: U2FsdGVkX1+MfQ7MmuZ0km7YQ/NhGXQcP1VmGRo166IAgTxaK/uBv+PMfRG877PeVWPeORgdK/bZy1MjDcXgGr9e+OfpT/Q67DsbbOZpaw1E7jTtSDZv4dyv4JtzdJLUHfymvRflM+3WjRZkwwjS4GeNowb9slkGJ4mniCxyLYnVGl3Ex1v3sth2G/MqfjQ84YnizjkzPLxEktWkmj9EM3truwpdyTQe9jw0iAcog+2J3rnOCcoSvjCw3kz+hLdi7mLdc0gGIlemBpp9wew/oheLEKeOwcsn2+KPdnGQE2yMlu1UPCtOo3sgkbQqIX8vYGD5PVUxFPWn4OliHSpU1YydFui5ZksDO7YBx31Z5Qw7QYyLrrQQ6svCF4ueG+h3oldOS1A5SsvmOU9+RWxL3YIZ+n5pLGQtBvliy9RFPNCYPBoKFXfUAugOMpGSlni4vg+zVN15YQzHVXzuTdX3znWeYOA4vEK1DaaX2pVjseQKNz201oCzZl+yNi7CHWNFc5jV/5wrT4JNZFHfBNnB8VVixWhbeJsDvCX1rh3SBhWFYk9ELYnkMX0qi83dTK0uvlYWoWJni9YzQvMVPx6/HO5Eb9FIiZ6ru62OjpueVFbXZvV+3pesGw5kgbcZZYpbGB1uDxP/torvj11nBdGi7qnK59JMIwZ+twYrpTgFAg4MTUSwQiLmIz3WEl7oxbOHNrLLzbOYr3g2IKduQ5BPOWx0MkOI+HV8CyY+H5WnN9yzHEyj8rkxbNRbDRm/yQmvARitdyTuwmRS1yQ/Pl1Op5WqKKoAIqSzhbhYJHLaRAut7hwkWbo2beQt2dDUgp/9XOtgyPt0Q8i9br1nmus8+l363riQKppnniklAkVJKlTxbvFXbd7+8FkkAMugWw8mpo7bc6CwqG/4ikPmgBK9AXXA5m6GYIF1lJLWnLb40QFrdvGvahy1k1DgJMkErO0HVOVv1QKwr11Bzat/lLO
- ne4Tv0bx
- 7lYqMb0JJqtlcjcOzYMS6Oj1DL2skS14z1AVieChXojDsRrN1WFDYdg4XckKR69QsJ970OOKb7u+/CdgXLUTK6QVa9mR9eL8I0Z/SYbMIwQn7eM+boa088uiaxPT6BggGmvzyzLAqLjTzuHRgNBIqnzOdiPKTGfCqnw8e5k71wMNdpJTjpFI7L58MvEvddS6ib5DH7WKYeGkUGxKyd4qjDAZbFV+D4MWUeh1cmO0tnpTitxfYqhZX4sd0Z2XfPTTLwRMDwXqDWU7vAfxmyecUGsgeINYuCmtGiSuRjvfWpIYe7DloU3VrRZ0Wu0giAHin49bsK+ZNXiIIT9X/b4uQrgyLP5/wzhD4nGTu
+X-HE-Tag: 1761662957-222751
+X-HE-Meta: U2FsdGVkX18tLWQjnWrMroQB5lMAS6MWfQsn/yZsBKipAZgXHu9OdmyHABa1jLAtLgxJOWxkr9Shvo2EX6I5IEgc1zhEfWV4LfRLoel0IurzGgXjATKuqVBuk5HJpptlbdNdMA4OME5ffhEHiYA6eMaqy8FWfmUxsOuQ4BgwKyyr/cnJocNGfH92hEYHbuWVDyV3/XH8mPb8k+q5Z5Pp3ZMkfBQnlH9BXS9vHD4jQchqYQO+oI9csV8YaUS/bQKHaglwQ+r+VpQ+g9J2g2+o1pA4e6bMgRlyBgGJyT5aAEIj3NtqHYfo3Zhz4y7sqf4hcfQcUYXg6xOI2o0rprqU4dkC5nY23dTdEKT14ukhv4AMMtZIwQm1eAr/D6Wnj+2ra9QVyYu7GSNW5Uc7JBrQhIchAoX5tlKaZ/iPOrX1SjkzJdx2cnfNvCaF+9gF02N8yUxfGnYmo8mqhVg6BI1syd8sK1i23WEtWMp+l1lTul76zUdyQ35Q2VCLpmYwgzfwsfI0LcWqyopUR/0C3fw0xdO3TDcPixHIoo32C4+OOIJk0hTV0MmSOWLB349smd7JfpDnjDHbt4Rhjympd2hdBGfSBqRzORqUUzFtbbkF82PFQG1Lk0dUiiXw82HeQVbFiTqSaSCs4cAiaAf1QypFj4twhvrN1EFcxhaIjFRB17a1XSFr+iYWHFJgMljjBkaMrTF41TOHiojQDZh8hm/18fFCAwLs1Y8FLc9WPKJS4FyNz0QF6Myq6l8Ay2ktK8F9iFxB9nuW6p/E9pVEyqQhZ2oAr7RmxlFtDJAX9VHMHYh2D1Iq69T2BSBq0Dm3awmhYjHFWUufkdiP2dVUHenVP/Pn5fH/lz2BrudElPr4GJqtQ1prqZjoBOAhFfxIjklcEDsl3G7kxZNPB30ucQeugOGrSP3Rx20Mhi7Msix5qjrE7HiYgFCAV5phxdz0ozk7Puf980OtPmqCjlp1iqx
+ UlgbWQCu
+ N6C9lV/Yty3h8NIOXDo0m8I7fSAoCikFxnDbkneATIY8V8VZ9UlS1XllJCN708VrUjUAK5NIBpaTrbvDebUVzJOZlnhyl4ZhYGnwNYoNzlDRdrwLnO4M4G/TaOcbSxpuFxx2PAHrkDl9/IuGzNF49JqgjjddWSGgQq2aRc0xpOwDB6ngQfS/uuG3Za0o87GF6+VFOIaYe2YwgcmRVRFgWraxqxBYCjNQ+Ip8xnMpgpaQdOCCKqXoIt2P5/Qdo0PRihaaHl4PWMD9vWP4iCOKFJhD0iir8cRv6eIh8QSv/RU5ttuCI9v9B5mBalx3apL98umXXFxBfwPhI9/j7EayjH2L12/AspEVvPAtAeRGoo+2gChtScHnRt3jt1x6WgAb4c8UfsdrNciSCCDa1777rMyzFldUGQIYMLMpaRUiyeY83do4IVq0Tnp/GDWMlJFiEMvXTKsPqxmYMd9QI6jJP4qfFgA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,158 +129,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
-head:   f7d2388eeec24966fc4d5cf32d706f0514f29ac5
-commit: eed2866c987bf054b9a1ffc0acb89cdf4d422c73 [4143/4376] dynamic_debug: add support for print stack
-config: x86_64-randconfig-007-20250922 (https://download.01.org/0day-ci/archive/20251028/202510282238.oRKSLKUV-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251028/202510282238.oRKSLKUV-lkp@intel.com/reproduce)
+Le Fri, Oct 10, 2025 at 05:38:34PM +0200, Valentin Schneider a écrit :
+> text_poke_bp_batch() sends IPIs to all online CPUs to synchronize
+> them vs the newly patched instruction. CPUs that are executing in userspace
+> do not need this synchronization to happen immediately, and this is
+> actually harmful interference for NOHZ_FULL CPUs.
+> 
+> As the synchronization IPIs are sent using a blocking call, returning from
+> text_poke_bp_batch() implies all CPUs will observe the patched
+> instruction(s), and this should be preserved even if the IPI is deferred.
+> In other words, to safely defer this synchronization, any kernel
+> instruction leading to the execution of the deferred instruction
+> sync (ct_work_flush()) must *not* be mutable (patchable) at runtime.
+> 
+> This means we must pay attention to mutable instructions in the early entry
+> code:
+> - alternatives
+> - static keys
+> - static calls
+> - all sorts of probes (kprobes/ftrace/bpf/???)
+> 
+> The early entry code leading to ct_work_flush() is noinstr, which gets rid
+> of the probes.
+> 
+> Alternatives are safe, because it's boot-time patching (before SMP is
+> even brought up) which is before any IPI deferral can happen.
+> 
+> This leaves us with static keys and static calls.
+> 
+> Any static key used in early entry code should be only forever-enabled at
+> boot time, IOW __ro_after_init (pretty much like alternatives). Exceptions
+> are explicitly marked as allowed in .noinstr and will always generate an
+> IPI when flipped.
+> 
+> The same applies to static calls - they should be only updated at boot
+> time, or manually marked as an exception.
+> 
+> Objtool is now able to point at static keys/calls that don't respect this,
+> and all static keys/calls used in early entry code have now been verified
+> as behaving appropriately.
+> 
+> Leverage the new context_tracking infrastructure to defer sync_core() IPIs
+> to a target CPU's next kernel entry.
+> 
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202510282238.oRKSLKUV-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   In file included from include/asm-generic/bug.h:22,
-                    from arch/x86/include/asm/bug.h:108,
-                    from arch/x86/include/asm/alternative.h:9,
-                    from arch/x86/include/asm/barrier.h:5,
-                    from include/linux/list.h:11,
-                    from include/linux/resource_ext.h:9,
-                    from include/linux/acpi.h:13,
-                    from drivers/acpi/x86/s2idle.c:18:
-   drivers/acpi/x86/s2idle.c: In function 'lpi_device_get_constraints_amd':
->> drivers/acpi/x86/s2idle.c:165:51: warning: '%s' directive argument is null [-Wformat-overflow=]
-     165 |                                                   "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-         |                                                   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/printk.h:402:21: note: in definition of macro 'pr_fmt'
-     402 | #define pr_fmt(fmt) fmt
-         |                     ^~~
-   include/linux/dynamic_debug.h:259:9: note: in expansion of macro '__dynamic_func_call_cls'
-     259 |         __dynamic_func_call_cls(__UNIQUE_ID(ddebug), cls, fmt, func, ##__VA_ARGS__)
-         |         ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/dynamic_debug.h:261:9: note: in expansion of macro '_dynamic_func_call_cls'
-     261 |         _dynamic_func_call_cls(_DPRINTK_CLASS_DFLT, fmt, func, ##__VA_ARGS__)
-         |         ^~~~~~~~~~~~~~~~~~~~~~
-   include/linux/acpi.h:1268:9: note: in expansion of macro '_dynamic_func_call'
-    1268 |         _dynamic_func_call(fmt, __acpi_handle_debug,                    \
-         |         ^~~~~~~~~~~~~~~~~~
-   drivers/acpi/x86/s2idle.c:164:33: note: in expansion of macro 'acpi_handle_debug'
-     164 |                                 acpi_handle_debug(lps0_device_handle,
-         |                                 ^~~~~~~~~~~~~~~~~
-   drivers/acpi/x86/s2idle.c:165:57: note: format string is defined here
-     165 |                                                   "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-         |                                                         ^~
-
-
-vim +165 drivers/acpi/x86/s2idle.c
-
-fef98671194be0 Rafael J. Wysocki  2020-12-17   96  
-41233988112f0f Andy Shevchenko    2023-08-18   97  #define for_each_lpi_constraint(entry)						\
-41233988112f0f Andy Shevchenko    2023-08-18   98  	for (int i = 0;								\
-41233988112f0f Andy Shevchenko    2023-08-18   99  	     entry = &lpi_constraints_table[i], i < lpi_constraints_table_size;	\
-41233988112f0f Andy Shevchenko    2023-08-18  100  	     i++)
-41233988112f0f Andy Shevchenko    2023-08-18  101  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  102  static void lpi_device_get_constraints_amd(void)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  103  {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  104  	union acpi_object *out_obj;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  105  	int i, j, k;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  106  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  107  	out_obj = acpi_evaluate_dsm_typed(lps0_device_handle, &lps0_dsm_guid,
-904d4a6c074b9d Pratik Vishwakarma 2021-06-17  108  					  rev_id, ACPI_LPS0_GET_DEVICE_CONSTRAINTS,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  109  					  NULL, ACPI_TYPE_PACKAGE);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  110  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  111  	acpi_handle_debug(lps0_device_handle, "_DSM function 1 eval %s\n",
-fef98671194be0 Rafael J. Wysocki  2020-12-17  112  			  out_obj ? "successful" : "failed");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  113  
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  114  	if (!out_obj)
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  115  		return;
-4a012dc82d504f Pratik Vishwakarma 2021-06-17  116  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  117  	for (i = 0; i < out_obj->package.count; i++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  118  		union acpi_object *package = &out_obj->package.elements[i];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  119  
-aa7a1bb02bb443 Rafael J. Wysocki  2021-01-05  120  		if (package->type == ACPI_TYPE_PACKAGE) {
-883cf0d4cf2883 Mario Limonciello  2023-08-18  121  			if (lpi_constraints_table) {
-883cf0d4cf2883 Mario Limonciello  2023-08-18  122  				acpi_handle_err(lps0_device_handle,
-883cf0d4cf2883 Mario Limonciello  2023-08-18  123  						"Duplicate constraints list\n");
-883cf0d4cf2883 Mario Limonciello  2023-08-18  124  				goto free_acpi_buffer;
-883cf0d4cf2883 Mario Limonciello  2023-08-18  125  			}
-883cf0d4cf2883 Mario Limonciello  2023-08-18  126  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  127  			lpi_constraints_table = kcalloc(package->package.count,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  128  							sizeof(*lpi_constraints_table),
-fef98671194be0 Rafael J. Wysocki  2020-12-17  129  							GFP_KERNEL);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  130  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  131  			if (!lpi_constraints_table)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  132  				goto free_acpi_buffer;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  133  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  134  			acpi_handle_debug(lps0_device_handle,
-fef98671194be0 Rafael J. Wysocki  2020-12-17  135  					  "LPI: constraints list begin:\n");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  136  
-3c6b1212d20bbb Mario Limonciello  2023-08-18  137  			for (j = 0; j < package->package.count; j++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  138  				union acpi_object *info_obj = &package->package.elements[j];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  139  				struct lpi_device_constraint_amd dev_info = {};
-fef98671194be0 Rafael J. Wysocki  2020-12-17  140  				struct lpi_constraints *list;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  141  				acpi_status status;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  142  
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  143  				list = &lpi_constraints_table[lpi_constraints_table_size];
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  144  
-3c6b1212d20bbb Mario Limonciello  2023-08-18  145  				for (k = 0; k < info_obj->package.count; k++) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  146  					union acpi_object *obj = &info_obj->package.elements[k];
-fef98671194be0 Rafael J. Wysocki  2020-12-17  147  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  148  					switch (k) {
-fef98671194be0 Rafael J. Wysocki  2020-12-17  149  					case 0:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  150  						dev_info.enabled = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  151  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  152  					case 1:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  153  						dev_info.name = obj->string.pointer;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  154  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  155  					case 2:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  156  						dev_info.function_states = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  157  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  158  					case 3:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  159  						dev_info.min_dstate = obj->integer.value;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  160  						break;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  161  					}
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  162  				}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  163  
-a879058d01e2f6 Mario Limonciello  2023-08-18  164  				acpi_handle_debug(lps0_device_handle,
-a879058d01e2f6 Mario Limonciello  2023-08-18 @165  						  "Name:%s, Enabled: %d, States: %d, MinDstate: %d\n",
-a879058d01e2f6 Mario Limonciello  2023-08-18  166  						  dev_info.name,
-a879058d01e2f6 Mario Limonciello  2023-08-18  167  						  dev_info.enabled,
-a879058d01e2f6 Mario Limonciello  2023-08-18  168  						  dev_info.function_states,
-a879058d01e2f6 Mario Limonciello  2023-08-18  169  						  dev_info.min_dstate);
-a879058d01e2f6 Mario Limonciello  2023-08-18  170  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  171  				if (!dev_info.enabled || !dev_info.name ||
-fef98671194be0 Rafael J. Wysocki  2020-12-17  172  				    !dev_info.min_dstate)
-fef98671194be0 Rafael J. Wysocki  2020-12-17  173  					continue;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  174  
-9cc8cd086f05d9 Mario Limonciello  2023-08-18  175  				status = acpi_get_handle(NULL, dev_info.name, &list->handle);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  176  				if (ACPI_FAILURE(status))
-fef98671194be0 Rafael J. Wysocki  2020-12-17  177  					continue;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  178  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  179  				list->min_dstate = dev_info.min_dstate;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  180  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  181  				lpi_constraints_table_size++;
-fef98671194be0 Rafael J. Wysocki  2020-12-17  182  			}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  183  		}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  184  	}
-fef98671194be0 Rafael J. Wysocki  2020-12-17  185  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  186  	acpi_handle_debug(lps0_device_handle, "LPI: constraints list end\n");
-fef98671194be0 Rafael J. Wysocki  2020-12-17  187  
-fef98671194be0 Rafael J. Wysocki  2020-12-17  188  free_acpi_buffer:
-fef98671194be0 Rafael J. Wysocki  2020-12-17  189  	ACPI_FREE(out_obj);
-fef98671194be0 Rafael J. Wysocki  2020-12-17  190  }
-fef98671194be0 Rafael J. Wysocki  2020-12-17  191  
-
-:::::: The code at line 165 was first introduced by commit
-:::::: a879058d01e2f6e324cc98ff2ffbe4f574c100a6 ACPI: x86: s2idle: Add more debugging for AMD constraints parsing
-
-:::::: TO: Mario Limonciello <mario.limonciello@amd.com>
-:::::: CC: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Frederic Weisbecker
+SUSE Labs
 
