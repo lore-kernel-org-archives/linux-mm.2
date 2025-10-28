@@ -4,123 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E973CCF9E0
-	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:00:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22713CCF9E0
+	for <linux-mm@archiver.kernel.org>; Tue, 28 Oct 2025 14:02:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0B0338014B; Tue, 28 Oct 2025 10:00:37 -0400 (EDT)
+	id 7B8148014C; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 060988013F; Tue, 28 Oct 2025 10:00:37 -0400 (EDT)
+	id 741D88013F; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EB82B8014B; Tue, 28 Oct 2025 10:00:36 -0400 (EDT)
+	id 609AE8014C; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D71D18013F
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:00:36 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 9030CC0488
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:00:36 +0000 (UTC)
-X-FDA: 84047683272.29.25152D6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9218B100024
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:00:34 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NBRPGeiy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761660034; a=rsa-sha256;
-	cv=none;
-	b=bVX0PyLmEVv7/AeGN6b7pAjL4mqh6jFKhuQTEBSDTYRz1Uj1yNTQTPVJP0hRhnpJH2T7iz
-	mfbYEWQoYtntYUhSrJLJzYmMKiEpJzzL6Oz75UbVnmVuzaFLVyu/v1Y6QKk6/xgJJCTZWC
-	V9v7s9f9MZZxcc/2woLqBifkM9TmSXg=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NBRPGeiy;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 490D08013F
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 10:02:05 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D7B32494B4
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:04 +0000 (UTC)
+X-FDA: 84047686968.10.668E6C7
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 944234002C
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 14:02:02 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv6x6GDA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761660034;
+	s=arc-20220608; t=1761660123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lwEvUQvD2SOjdx94xPite5icB9pZBzBE1kFycvnRD9o=;
-	b=D0Ie1eWJ/IHklNKYISVXHwZCKbAwzlngqcnvcDjWrxBx2/PLkLHX6P81DACU0oavz4iUOA
-	gds6pJjiV+MRGrT64vkbJXPVcQgRwJIyluNT2Nru4Nq98Lk/MggzLu9DESTyJQvau0YB9c
-	TEsn1FDUNBCcDx8mfqi2qqOKgbQKEDc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 71DA444D38;
-	Tue, 28 Oct 2025 14:00:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9390C116C6;
-	Tue, 28 Oct 2025 14:00:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761660033;
-	bh=MF/2zsZwtCVjQVdBsn7UVVx9xBhDIK+KrSqUNMSbxwQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NBRPGeiy1Xn7eADQ9yFvkjIS2p83OMRe4k2CO4ITc0ALWFN0ZWRqZGjvsq0KHLGHX
-	 9cLYR4EEJw7n2OOILsuLBxlnyUxNKQ48TBEmQOfsOJWlMu7MQczs8PAvuoeQ7dv4ga
-	 VOOh+zSbwQI9UVXLYMTTaAF8VC5Qe0AH08UMx6o59oif+TOluzOhoNUJlPqWrkWdWa
-	 F3YMSrmA8q04Tc3o7V5G0rOnVvXrSlmYuCHYUdaC1/9bEi1kSPQjNs6B/CMP7UMuA7
-	 kBZG8J5QQqHSS4JWOSkiN2pZrTn7EOaJWqEI8O7YB913GvijwyU/Jjvqzu6dZc0XeA
-	 6pjFmq9Y38R2g==
-Date: Tue, 28 Oct 2025 15:00:30 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
-	x86@kernel.org, linux-arm-kernel@lists.infradead.org,
-	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	Nicolas Saenz Julienne <nsaenzju@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Subject: Re: [PATCH v6 23/29] context-tracking: Introduce work deferral
- infrastructure
-Message-ID: <aQDMfu0tzecFzoGr@localhost.localdomain>
-References: <20251010153839.151763-1-vschneid@redhat.com>
- <20251010153839.151763-24-vschneid@redhat.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=8HLDo8n6coWUrWdqlQjN8qAiPeJQK26USUMmC8y9OKQ=;
+	b=Ydv5nsRfqrKyF8v/Ol78O9EmlMCMcW+giPhdzj3Dxis6JfiFnlvMzCrW2ygJNxZXs0DH0C
+	pHNgsYGSnhBCMU/lsdax1g7spvLydqdd6ObgNPxnkpI5zWw9ok8gZOOTHPifcrklrUFgVY
+	FVWJldv2DcCW5MXoEZNqhxrOzagvZvI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761660123; a=rsa-sha256;
+	cv=none;
+	b=Z/kf/r0bF7li0AeBjWOQtAs2dGriBOTzcBtUIqeFPbkSmV55/8EPflyQRGqhTcxh1js1j5
+	vbDG0OJ0P7oGkaEQEmGEAJJncFheuNCJd5DbNKWulYy4ednZCprhOIQBeKqCOY5BAgHeVH
+	LS0SdxqzwlZr30d6fc1vO9jWAgfqDVk=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=Tv6x6GDA;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf01.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761660119;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=8HLDo8n6coWUrWdqlQjN8qAiPeJQK26USUMmC8y9OKQ=;
+	b=Tv6x6GDAu6ty+Y6P8qlVzDiLQ+tdMFZ85wcxZ9qX6iiFWS45iB+Kt4UVSDQZ3CRi6wczLH
+	oaPoIRqMaIdEzYwyyNDfYz76VUSwt+xk2zKcS/ug38emiAeNnfsuzEisrQ2i5P5VbVkVvh
+	gV18JBY4odaD6/ihxL5yuVChikMG1KQ=
+From: Qi Zheng <qi.zheng@linux.dev>
+To: hannes@cmpxchg.org,
+	hughd@google.com,
+	mhocko@suse.com,
+	roman.gushchin@linux.dev,
+	shakeel.butt@linux.dev,
+	muchun.song@linux.dev,
+	david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	harry.yoo@oracle.com,
+	imran.f.khan@oracle.com,
+	kamalesh.babulal@oracle.com,
+	axelrasmussen@google.com,
+	yuanchu@google.com,
+	weixugc@google.com,
+	akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	cgroups@vger.kernel.org,
+	Qi Zheng <zhengqi.arch@bytedance.com>
+Subject: [PATCH v1 00/26] Eliminate Dying Memory Cgroup
+Date: Tue, 28 Oct 2025 21:58:13 +0800
+Message-ID: <cover.1761658310.git.zhengqi.arch@bytedance.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251010153839.151763-24-vschneid@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 9218B100024
-X-Stat-Signature: 5kz3o44irgggfxsf4sqc3ij3rpbmf8ah
-X-HE-Tag: 1761660034-976506
-X-HE-Meta: U2FsdGVkX18clyqIaSrZtVs/5IirfAbnHD9+FsGElbJeE2dpygWL5qd9S5Ukae9As+XfNHAC9ANHwStV/8jEMzAHh09wLEmtUE/AqL1djk2ZU3Wu1imgifBgyuyN73sXc5E+WCXUciYkpEaOKzk5RLGNji5L025/bjA3DTypOGjnrXoZj1adVTz/+IKLcuysbUoF3fTVLgYYP/TG/qa0zKt7NHJB9iNeE1on8jP6XDKcCaA4QGcBfbWEYrYC3pe0TYDLubJp2dbtAByIZWBPHnx8xepO2ffZC0g3vomS6ZwBD3fT6vS+EwNZdN4ghOhH8PgclsjfdkmRRXzqdWLYiJSpayygXNT5G6XhRffCPGUzRckBAQpb382kq2SQHnqVAfQxWvcI0CHzylbVqG42iv4HjekxdeLp3PgmqpnjH33GIJctbX84bDvi/JnJeE+/pAk3Lu2e4RNVvWlRuTuir/yLg+0/xwqXV+STC4ejEsFnypJC1zirLyLNdleKcalJnGqx2o9ED32rkwiXuL+UuTiY3CggT+0TBVO1S8eLgrBFPOEGi2rcl5Ez84R1g8NYjiSJLLrzi2x0eDy7YqWr51k60eRHVQIeXoqm+HTENInptc2enGP9KmKZ95cr++/3nGHdbhBiXXQzSPp+XxSei45ib9GmNhZHWeGTi49LGuearN5EGTD72tNZHq1wXETZBwLCyYCZIljZUiMpTBJ8lMNxfcoC5kjwjHUW86h6CK/b60zGvFfrxccKn2ZoULl3shH6AaRWGyGh89fr0UDoyQhCDoy3OyDiWrO1EpBogmswNvKZH5khbzjZ/o8OhaV7OSgVQqU2eQOIxJbdNFXzHHsV5X+2PhBoLpAPMSW6+042Hvn7tIkViwn0k+ULmop6P6zddlhp6SLhUJjaK21Z8HoUm0MsExyfiY1djA+Ehe8FsoRewVfLxF5FeUyJdgO96pKNrV6jfVqme9lgUa/
- pwF7HzEP
- zCUfA1rUT9mcJvc1dO/4X56odQU8N5SeF66Hxd0SnN2j7zsHcc12/b3HXkXThl+55JJcl2v+o8DBV2tlhACPnwFE64vOlm8Amn2YjvygwtxMKrruu0Go/yTaaJVCSs33PM+nwTC5aS2bzi+YQcNx5rNrO4gCDy0gOuNOGYHl/SCsDkYMLyg+3hFW1ftb4i0SijdjHqtQH8qosytAg+6dpYSfxQhIKOhBGbwS9PqZETaP8yQRnBeIMvl9Z0YFTXNyXQbu6Iqx4U95VmDduwvmro8RQ9wslopxg4H+opyPtM1j6LBgIG5dXg6F8pOz7OlkObhqk4PrU16HTZHA7YxhMztDxClFEYQNy31D4LTK2zBushOqC4MBIHYTgtzWcjWSN625t93YOroouf2uXMWrlBeBWUAeqlurzhvMSzIXmJLnSAO+Zd/XfVLvQ9OHdwGhY83Sy
+X-Rspamd-Queue-Id: 944234002C
+X-Rspamd-Server: rspam02
+X-Stat-Signature: j4ojfi8sae5ihxbpcczzzfo6dhzwhaga
+X-HE-Tag: 1761660122-204739
+X-HE-Meta: U2FsdGVkX1+ukTqZMFhtCtFQzhwoHG1C8z54WfbX91PU7TmJniZWFpkv4JFgMYR0bdqN3CyzQGeGvQHjTYVZGWO9a99BgHFLRlyQw2Ufyvet0/QQir1iEq3CEzLriQTcLjsOEQuCLcThgF7dFoUKHIyNaN36SkPPrQIH/YpZRNuvoSqWc8vb3V8dxc5pdxtiHkS4IhjRguxJ3siruDhXvkKrL1PR44L95iuKJOkqqTF3Iaf6aiT9+s8VMKmSRXoY9KOV7egBhCq95h/g8OLgcGiED3KMGYczRZ1B1nvHQoVuTP9oLZv5k5xm9XC+6FKOvMSzc/k/6xsMrwMuaNXTG/+BFhPoiep31cY2qTmtsE94j92qLyjHrwxJgivZu73PDrdLo9ebA3cFpoACarQn1bLG0mG4HudCfbT1fhlvOhJBLM8G2r6Ibkwtq+7wrj1DajWAefy4v6Er21/HHl85g/+LhkgxbzSTLRtSQ07MbEDd8rToPaCs28sPbGMvvjRpTLRFF7L+vyD4GIUOqOh24XSXCbQNLYEG0LloEyf2u5ibHXgfMzXgYD0cM1em9rrEDzwifZUPJjsd+XNzMYSpcS2cj0xrHx+2n25vjO4q+qSzMSR13qnGH5QOvvjyPyBY6pn2eSgVUCqXvIJuOuYIwHPK4Mr7kwbxOVuKDclH+toIC2p1hOvO02Nz0hVjCGC1G69ERl0/s/fkTqrf3+r0Pe0csZfC95Lz/JeTqwRJHjztqqTCaMhKtKZ/qr6KNKfWrFCeXdoZhcY2GLFdcmdd8IYxqYmknI1v7OX97VBxTs6aH0aYCJ8kMmGkfP180+jNRmpY08CxR3ZNADBEw3WCx6A4MKNpFOyum/cD8eRPPqIF7x4ZVIW2OYmsy+meptnjsHffpE3CHSOqTz/NPbpZHDr4DTwGMGZzF7IYWO/2qdxTgNt+9O3Wl6lMrR0ibRUN2wlyv/NIkigqd96b+SO
+ P4UVZQ36
+ SVOVLNiHdG0GlnhMRzomcszpSFX9gBayx7G136G24UOvedri0sMeOH89w3E4fZ+X90W6/7Vdgks8mT3qiXQWH/TEG5ohrAdZZTjBE/4LCyu8S0w5HOhwfqggh9Z9sgsVxaHXMS50SIGQBUvrg67hiyxcqrBiKbLuRCRFC6qwuYd74qnUZilj4sLZJlsjAId+JSE7XSyO36itF2S/7Wv9qRGXExkXm3SCd//beDWO+VEZ9sIl8iNODTYm7pw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,373 +101,93 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Fri, Oct 10, 2025 at 05:38:33PM +0200, Valentin Schneider a écrit :
-> smp_call_function() & friends have the unfortunate habit of sending IPIs to
-> isolated, NOHZ_FULL, in-userspace CPUs, as they blindly target all online
-> CPUs.
-> 
-> Some callsites can be bent into doing the right, such as done by commit:
-> 
->   cc9e303c91f5 ("x86/cpu: Disable frequency requests via aperfmperf IPI for nohz_full CPUs")
-> 
-> Unfortunately, not all SMP callbacks can be omitted in this
-> fashion. However, some of them only affect execution in kernelspace, which
-> means they don't have to be executed *immediately* if the target CPU is in
-> userspace: stashing the callback and executing it upon the next kernel entry
-> would suffice. x86 kernel instruction patching or kernel TLB invalidation
-> are prime examples of it.
-> 
-> Reduce the RCU dynticks counter width to free up some bits to be used as a
-> deferred callback bitmask. Add some build-time checks to validate that
-> setup.
-> 
-> Presence of CT_RCU_WATCHING in the ct_state prevents queuing deferred work.
-> 
-> Later commits introduce the bit:callback mappings.
-> 
-> Link: https://lore.kernel.org/all/20210929151723.162004989@infradead.org/
-> Signed-off-by: Nicolas Saenz Julienne <nsaenzju@redhat.com>
-> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
-> ---
->  arch/Kconfig                                 |  9 +++
->  arch/x86/Kconfig                             |  1 +
->  arch/x86/include/asm/context_tracking_work.h | 16 +++++
->  include/linux/context_tracking.h             | 21 ++++++
->  include/linux/context_tracking_state.h       | 30 ++++++---
->  include/linux/context_tracking_work.h        | 26 ++++++++
->  kernel/context_tracking.c                    | 69 +++++++++++++++++++-
->  kernel/time/Kconfig                          |  5 ++
->  8 files changed, 165 insertions(+), 12 deletions(-)
->  create mode 100644 arch/x86/include/asm/context_tracking_work.h
->  create mode 100644 include/linux/context_tracking_work.h
-> 
-> diff --git a/arch/Kconfig b/arch/Kconfig
-> index d1b4ffd6e0856..a33229e017467 100644
-> --- a/arch/Kconfig
-> +++ b/arch/Kconfig
-> @@ -968,6 +968,15 @@ config HAVE_CONTEXT_TRACKING_USER_OFFSTACK
->  	  - No use of instrumentation, unless instrumentation_begin() got
->  	    called.
->  
-> +config HAVE_CONTEXT_TRACKING_WORK
-> +	bool
-> +	help
-> +	  Architecture supports deferring work while not in kernel context.
-> +	  This is especially useful on setups with isolated CPUs that might
-> +	  want to avoid being interrupted to perform housekeeping tasks (for
-> +	  ex. TLB invalidation or icache invalidation). The housekeeping
-> +	  operations are performed upon re-entering the kernel.
-> +
->  config HAVE_TIF_NOHZ
->  	bool
->  	help
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 05880301212e3..3f1557b7acd8f 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -222,6 +222,7 @@ config X86
->  	select HAVE_CMPXCHG_LOCAL
->  	select HAVE_CONTEXT_TRACKING_USER		if X86_64
->  	select HAVE_CONTEXT_TRACKING_USER_OFFSTACK	if HAVE_CONTEXT_TRACKING_USER
-> +	select HAVE_CONTEXT_TRACKING_WORK		if X86_64
->  	select HAVE_C_RECORDMCOUNT
->  	select HAVE_OBJTOOL_MCOUNT		if HAVE_OBJTOOL
->  	select HAVE_OBJTOOL_NOP_MCOUNT		if HAVE_OBJTOOL_MCOUNT
-> diff --git a/arch/x86/include/asm/context_tracking_work.h b/arch/x86/include/asm/context_tracking_work.h
-> new file mode 100644
-> index 0000000000000..5f3b2d0977235
-> --- /dev/null
-> +++ b/arch/x86/include/asm/context_tracking_work.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_CONTEXT_TRACKING_WORK_H
-> +#define _ASM_X86_CONTEXT_TRACKING_WORK_H
-> +
-> +static __always_inline void arch_context_tracking_work(enum ct_work work)
-> +{
-> +	switch (work) {
-> +	case CT_WORK_n:
-> +		// Do work...
-> +		break;
-> +	case CT_WORK_MAX:
-> +		WARN_ON_ONCE(true);
-> +	}
-> +}
-> +
-> +#endif
-> diff --git a/include/linux/context_tracking.h b/include/linux/context_tracking.h
-> index af9fe87a09225..0b0faa040e9b5 100644
-> --- a/include/linux/context_tracking.h
-> +++ b/include/linux/context_tracking.h
-> @@ -5,6 +5,7 @@
->  #include <linux/sched.h>
->  #include <linux/vtime.h>
->  #include <linux/context_tracking_state.h>
-> +#include <linux/context_tracking_work.h>
->  #include <linux/instrumentation.h>
->  
->  #include <asm/ptrace.h>
-> @@ -137,6 +138,26 @@ static __always_inline unsigned long ct_state_inc(int incby)
->  	return raw_atomic_add_return(incby, this_cpu_ptr(&context_tracking.state));
->  }
->  
-> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
-> +static __always_inline unsigned long ct_state_inc_clear_work(int incby)
-> +{
-> +	struct context_tracking *ct = this_cpu_ptr(&context_tracking);
-> +	unsigned long new, old, state;
-> +
-> +	state = arch_atomic_read(&ct->state);
-> +	do {
-> +		old = state;
-> +		new = old & ~CT_WORK_MASK;
-> +		new += incby;
-> +		state = arch_atomic_cmpxchg(&ct->state, old, new);
-> +	} while (old != state);
-> +
-> +	return new;
-> +}
-> +#else
-> +#define ct_state_inc_clear_work(x) ct_state_inc(x)
-> +#endif
-> +
->  static __always_inline bool warn_rcu_enter(void)
->  {
->  	bool ret = false;
-> diff --git a/include/linux/context_tracking_state.h b/include/linux/context_tracking_state.h
-> index 0b81248aa03e2..d2c302133672f 100644
-> --- a/include/linux/context_tracking_state.h
-> +++ b/include/linux/context_tracking_state.h
-> @@ -5,6 +5,7 @@
->  #include <linux/percpu.h>
->  #include <linux/static_key.h>
->  #include <linux/context_tracking_irq.h>
-> +#include <linux/context_tracking_work.h>
->  
->  /* Offset to allow distinguishing irq vs. task-based idle entry/exit. */
->  #define CT_NESTING_IRQ_NONIDLE	((LONG_MAX / 2) + 1)
-> @@ -39,16 +40,19 @@ struct context_tracking {
->  };
->  
->  /*
-> - * We cram two different things within the same atomic variable:
-> + * We cram up to three different things within the same atomic variable:
->   *
-> - *                     CT_RCU_WATCHING_START  CT_STATE_START
-> - *                                |                |
-> - *                                v                v
-> - *     MSB [ RCU watching counter ][ context_state ] LSB
-> - *         ^                       ^
-> - *         |                       |
-> - * CT_RCU_WATCHING_END        CT_STATE_END
-> + *                     CT_RCU_WATCHING_START                  CT_STATE_START
-> + *                                |         CT_WORK_START          |
-> + *                                |               |                |
-> + *                                v               v                v
-> + *     MSB [ RCU watching counter ][ context work ][ context_state ] LSB
-> + *         ^                       ^               ^
-> + *         |                       |               |
-> + *         |                  CT_WORK_END          |
-> + * CT_RCU_WATCHING_END                        CT_STATE_END
->   *
-> + * The [ context work ] region spans 0 bits if CONFIG_CONTEXT_WORK=n
->   * Bits are used from the LSB upwards, so unused bits (if any) will always be in
->   * upper bits of the variable.
->   */
-> @@ -59,18 +63,24 @@ struct context_tracking {
->  #define CT_STATE_START 0
->  #define CT_STATE_END   (CT_STATE_START + CT_STATE_WIDTH - 1)
->  
-> -#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_STATE_WIDTH)
-> +#define CT_WORK_WIDTH (IS_ENABLED(CONFIG_CONTEXT_TRACKING_WORK) ? CT_WORK_MAX_OFFSET : 0)
-> +#define	CT_WORK_START (CT_STATE_END + 1)
-> +#define CT_WORK_END   (CT_WORK_START + CT_WORK_WIDTH - 1)
-> +
-> +#define CT_RCU_WATCHING_MAX_WIDTH (CT_SIZE - CT_WORK_WIDTH - CT_STATE_WIDTH)
->  #define CT_RCU_WATCHING_WIDTH     (IS_ENABLED(CONFIG_RCU_DYNTICKS_TORTURE) ? 2 : CT_RCU_WATCHING_MAX_WIDTH)
-> -#define CT_RCU_WATCHING_START     (CT_STATE_END + 1)
-> +#define CT_RCU_WATCHING_START     (CT_WORK_END + 1)
->  #define CT_RCU_WATCHING_END       (CT_RCU_WATCHING_START + CT_RCU_WATCHING_WIDTH - 1)
->  #define CT_RCU_WATCHING           BIT(CT_RCU_WATCHING_START)
->  
->  #define CT_STATE_MASK        GENMASK(CT_STATE_END,        CT_STATE_START)
-> +#define CT_WORK_MASK         GENMASK(CT_WORK_END,         CT_WORK_START)
->  #define CT_RCU_WATCHING_MASK GENMASK(CT_RCU_WATCHING_END, CT_RCU_WATCHING_START)
->  
->  #define CT_UNUSED_WIDTH (CT_RCU_WATCHING_MAX_WIDTH - CT_RCU_WATCHING_WIDTH)
->  
->  static_assert(CT_STATE_WIDTH        +
-> +	      CT_WORK_WIDTH         +
->  	      CT_RCU_WATCHING_WIDTH +
->  	      CT_UNUSED_WIDTH       ==
->  	      CT_SIZE);
-> diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
-> new file mode 100644
-> index 0000000000000..c68245f8d77c5
-> --- /dev/null
-> +++ b/include/linux/context_tracking_work.h
-> @@ -0,0 +1,26 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _LINUX_CONTEXT_TRACKING_WORK_H
-> +#define _LINUX_CONTEXT_TRACKING_WORK_H
-> +
-> +#include <linux/bitops.h>
-> +
-> +enum {
-> +	CT_WORK_n_OFFSET,
-> +	CT_WORK_MAX_OFFSET
-> +};
-> +
-> +enum ct_work {
-> +	CT_WORK_n        = BIT(CT_WORK_n_OFFSET),
-> +	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
-> +};
-> +
-> +#include <asm/context_tracking_work.h>
-> +
-> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
-> +extern bool ct_set_cpu_work(unsigned int cpu, enum ct_work work);
-> +#else
-> +static inline bool
-> +ct_set_cpu_work(unsigned int cpu, unsigned int work) { return false; }
-> +#endif
-> +
-> +#endif
-> diff --git a/kernel/context_tracking.c b/kernel/context_tracking.c
-> index fb5be6e9b423f..3238bb1f41ff4 100644
-> --- a/kernel/context_tracking.c
-> +++ b/kernel/context_tracking.c
-> @@ -72,6 +72,70 @@ static __always_inline void rcu_task_trace_heavyweight_exit(void)
->  #endif /* #ifdef CONFIG_TASKS_TRACE_RCU */
->  }
->  
-> +#ifdef CONFIG_CONTEXT_TRACKING_WORK
-> +static noinstr void ct_work_flush(unsigned long seq)
-> +{
-> +	int bit;
-> +
-> +	seq = (seq & CT_WORK_MASK) >> CT_WORK_START;
-> +
-> +	/*
-> +	 * arch_context_tracking_work() must be noinstr, non-blocking,
-> +	 * and NMI safe.
-> +	 */
-> +	for_each_set_bit(bit, &seq, CT_WORK_MAX)
-> +		arch_context_tracking_work(BIT(bit));
-> +}
-> +
-> +/**
-> + * ct_set_cpu_work - set work to be run at next kernel context entry
-> + *
-> + * If @cpu is not currently executing in kernelspace, it will execute the
-> + * callback mapped to @work (see arch_context_tracking_work()) at its next
-> + * entry into ct_kernel_enter_state().
-> + *
-> + * If it is already executing in kernelspace, this will be a no-op.
-> + */
-> +bool ct_set_cpu_work(unsigned int cpu, enum ct_work work)
-> +{
-> +	struct context_tracking *ct = per_cpu_ptr(&context_tracking, cpu);
-> +	unsigned int old;
-> +	bool ret = false;
-> +
-> +	if (!ct->active)
-> +		return false;
-> +
-> +	preempt_disable();
-> +
-> +	old = atomic_read(&ct->state);
-> +
-> +	/*
-> +	 * The work bit must only be set if the target CPU is not executing
-> +	 * in kernelspace.
-> +	 * CT_RCU_WATCHING is used as a proxy for that - if the bit is set, we
-> +	 * know for sure the CPU is executing in the kernel whether that be in
-> +	 * NMI, IRQ or process context.
-> +	 * Set CT_RCU_WATCHING here and let the cmpxchg do the check for us;
-> +	 * the state could change between the atomic_read() and the cmpxchg().
-> +	 */
-> +	old |= CT_RCU_WATCHING;
+From: Qi Zheng <zhengqi.arch@bytedance.com>
 
-Most of the time, the task should be either idle or in userspace. I'm still not
-sure why you start with a bet that the CPU is in the kernel with RCU watching.
+Hi all,
 
-> +	/*
-> +	 * Try setting the work until either
-> +	 * - the target CPU has entered kernelspace
-> +	 * - the work has been set
-> +	 */
-> +	do {
-> +		ret = atomic_try_cmpxchg(&ct->state, &old, old | (work << CT_WORK_START));
-> +	} while (!ret && !(old & CT_RCU_WATCHING));
+This series aims to eliminate the problem of dying memory cgroup. It completes
+the adaptation to the MGLRU scenarios based on the Muchun Song's patchset[1].
 
-So this applies blindly to idle as well, right? It should work but note that
-idle entry code before RCU watches is also fragile.
+The adaptation method was discussed with Harry Yoo. For more details, please
+refer to the commit message of [PATCH v1 23/26].
 
-The rest looks good.
+The changes are as follows:
+ - drop [PATCH RFC 02/28]
+ - drop THP split queue related part, which has been merged as a separate
+   patchset[2]
+ - prevent memory cgroup release in folio_split_queue_lock{_irqsave}() in
+   [PATCH v1 16/26]
+ - Separate the reparenting function of traditional LRU folios to [PATCH v1 22/26]
+ - adapted to the MGLRU scenarios in [PATCH v1 23/26]
+ - refactor memcg_reparent_objcgs() in [PATCH v1 24/26]
+ - collect Acked-bys and Reviewed-bys
+ - rebase onto the next-20251028
 
-Thanks!
+Comments and suggestions are welcome!
 
+Thanks,
+Qi
 
-> +
-> +	preempt_enable();
-> +	return ret;
-> +}
-> +#else
-> +static __always_inline void ct_work_flush(unsigned long work) { }
-> +static __always_inline void ct_work_clear(struct context_tracking *ct) { }
-> +#endif
-> +
->  /*
->   * Record entry into an extended quiescent state.  This is only to be
->   * called when not already in an extended quiescent state, that is,
-> @@ -88,7 +152,7 @@ static noinstr void ct_kernel_exit_state(int offset)
->  	rcu_task_trace_heavyweight_enter();  // Before CT state update!
->  	// RCU is still watching.  Better not be in extended quiescent state!
->  	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !rcu_is_watching_curr_cpu());
-> -	(void)ct_state_inc(offset);
-> +	(void)ct_state_inc_clear_work(offset);
->  	// RCU is no longer watching.
->  }
->  
-> @@ -99,7 +163,7 @@ static noinstr void ct_kernel_exit_state(int offset)
->   */
->  static noinstr void ct_kernel_enter_state(int offset)
->  {
-> -	int seq;
-> +	unsigned long seq;
->  
->  	/*
->  	 * CPUs seeing atomic_add_return() must see prior idle sojourns,
-> @@ -107,6 +171,7 @@ static noinstr void ct_kernel_enter_state(int offset)
->  	 * critical section.
->  	 */
->  	seq = ct_state_inc(offset);
-> +	ct_work_flush(seq);
->  	// RCU is now watching.  Better not be in an extended quiescent state!
->  	rcu_task_trace_heavyweight_exit();  // After CT state update!
->  	WARN_ON_ONCE(IS_ENABLED(CONFIG_RCU_EQS_DEBUG) && !(seq & CT_RCU_WATCHING));
-> diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
-> index 7c6a52f7836ce..1a0c027aad141 100644
-> --- a/kernel/time/Kconfig
-> +++ b/kernel/time/Kconfig
-> @@ -181,6 +181,11 @@ config CONTEXT_TRACKING_USER_FORCE
->  	  Say N otherwise, this option brings an overhead that you
->  	  don't want in production.
->  
-> +config CONTEXT_TRACKING_WORK
-> +	bool
-> +	depends on HAVE_CONTEXT_TRACKING_WORK && CONTEXT_TRACKING_USER
-> +	default y
-> +
->  config NO_HZ
->  	bool "Old Idle dynticks config"
->  	help
-> -- 
-> 2.51.0
-> 
+[1]. https://lore.kernel.org/all/20250415024532.26632-1-songmuchun@bytedance.com/
+[2]. https://lore.kernel.org/all/cover.1760509767.git.zhengqi.arch@bytedance.com
+
+Muchun Song (22):
+  mm: memcontrol: remove dead code of checking parent memory cgroup
+  mm: workingset: use folio_lruvec() in workingset_refault()
+  mm: rename unlock_page_lruvec_irq and its variants
+  mm: vmscan: refactor move_folios_to_lru()
+  mm: memcontrol: allocate object cgroup for non-kmem case
+  mm: memcontrol: return root object cgroup for root memory cgroup
+  mm: memcontrol: prevent memory cgroup release in
+    get_mem_cgroup_from_folio()
+  buffer: prevent memory cgroup release in folio_alloc_buffers()
+  writeback: prevent memory cgroup release in writeback module
+  mm: memcontrol: prevent memory cgroup release in
+    count_memcg_folio_events()
+  mm: page_io: prevent memory cgroup release in page_io module
+  mm: migrate: prevent memory cgroup release in folio_migrate_mapping()
+  mm: mglru: prevent memory cgroup release in mglru
+  mm: memcontrol: prevent memory cgroup release in
+    mem_cgroup_swap_full()
+  mm: workingset: prevent memory cgroup release in lru_gen_eviction()
+  mm: workingset: prevent lruvec release in workingset_refault()
+  mm: zswap: prevent lruvec release in zswap_folio_swapin()
+  mm: swap: prevent lruvec release in swap module
+  mm: workingset: prevent lruvec release in workingset_activation()
+  mm: memcontrol: prepare for reparenting LRU pages for lruvec lock
+  mm: memcontrol: eliminate the problem of dying memory cgroup for LRU
+    folios
+  mm: lru: add VM_WARN_ON_ONCE_FOLIO to lru maintenance helpers
+
+Qi Zheng (4):
+  mm: thp: prevent memory cgroup release in
+    folio_split_queue_lock{_irqsave}()
+  mm: vmscan: prepare for reparenting traditional LRU folios
+  mm: vmscan: prepare for reparenting MGLRU folios
+  mm: memcontrol: refactor memcg_reparent_objcgs()
+
+ fs/buffer.c                      |   4 +-
+ fs/fs-writeback.c                |  22 +-
+ include/linux/memcontrol.h       | 159 ++++++------
+ include/linux/mm_inline.h        |   6 +
+ include/linux/mmzone.h           |  20 ++
+ include/trace/events/writeback.h |   3 +
+ mm/compaction.c                  |  43 +++-
+ mm/huge_memory.c                 |  18 +-
+ mm/memcontrol-v1.c               |  15 +-
+ mm/memcontrol.c                  | 405 ++++++++++++++++++-------------
+ mm/migrate.c                     |   2 +
+ mm/mlock.c                       |   2 +-
+ mm/page_io.c                     |   8 +-
+ mm/percpu.c                      |   2 +-
+ mm/shrinker.c                    |   6 +-
+ mm/swap.c                        |  20 +-
+ mm/vmscan.c                      | 198 ++++++++++++---
+ mm/workingset.c                  |  26 +-
+ mm/zswap.c                       |   2 +
+ 19 files changed, 612 insertions(+), 349 deletions(-)
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+2.20.1
+
 
