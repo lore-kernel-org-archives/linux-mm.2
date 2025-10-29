@@ -4,114 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6CE95CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:39:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39CF8CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:45:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 083688E00F8; Wed, 29 Oct 2025 16:37:21 -0400 (EDT)
+	id 266498E00F9; Wed, 29 Oct 2025 16:44:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 032EE8E00B2; Wed, 29 Oct 2025 16:37:20 -0400 (EDT)
+	id 2170F8E00B2; Wed, 29 Oct 2025 16:44:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E65C78E00F8; Wed, 29 Oct 2025 16:37:20 -0400 (EDT)
+	id 1062C8E00F9; Wed, 29 Oct 2025 16:44:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D350A8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:37:20 -0400 (EDT)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 836951A0454
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:37:20 +0000 (UTC)
-X-FDA: 84052311840.08.01BA609
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf06.hostedemail.com (Postfix) with ESMTP id C6160180003
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:37:18 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n09xHDXm;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id F387C8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:44:27 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A71E1A6194
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:44:27 +0000 (UTC)
+X-FDA: 84052329774.04.AB1809C
+Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+	by imf08.hostedemail.com (Postfix) with ESMTP id B206916000F
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:44:25 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=af099qNV;
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770665; a=rsa-sha256;
+	cv=none;
+	b=z8XKMxF3ElqWILdhTu+UXmEPxC3lVtGBsIUu5bvxnDXUkbq1PC3DOWXrI4HI2rP/cO9Hy4
+	5wXBd/czD/1rDRoldSSIy8B59E0KMKhQ/4E4fb09JGx8P1MiGSX6w2YuIMICF4kSdClv0a
+	JidW4ycXUAy0bpv8xhqr/ALlgWoMcIE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=af099qNV;
+	spf=pass (imf08.hostedemail.com: domain of dmatlack@google.com designates 209.85.208.182 as permitted sender) smtp.mailfrom=dmatlack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761770238;
+	s=arc-20220608; t=1761770665;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NIPSWLPCR2Jm8kTQ0SAvYTxm9JVxRWM8IgFinS+qmxQ=;
-	b=2qleW+6FbCRPp3DcEEXJbRKvnQXauVMjK/2g2JbhFujouesy0j7fVv1Mz4bm3RmK3oB0bk
-	7EcPBDtYUPv29GT7wi+MGqpZVq6wb2RX9NlTiZ5n5vlOo6Zm/Lckk9YQVVhcdJoMDYpNt7
-	pewzuBaPCyGOZpbt3dEwuNinOhC7Ry8=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=n09xHDXm;
-	spf=pass (imf06.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770238; a=rsa-sha256;
-	cv=none;
-	b=6fZbu4DXNzCVIqzXPxXJ8iGxAnlXpomffTqyBPZSy1iY7dCZ31mVpue7RN1iCDaaK9B2Bs
-	pz50sZUdxGZVeDTNiwTaAjrLqkKpJtNnlJLMLoQ/1P6DxxHeIHYTd2kZ7DazD40FgBVVj3
-	tpdDRRAvEna/yqbjEmWi5Yqu0iV8Um8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D5DFA4098F;
-	Wed, 29 Oct 2025 20:37:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0922EC4CEF7;
-	Wed, 29 Oct 2025 20:37:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761770237;
-	bh=IpX/Efp/7aa50ROsEckRQKklVIBMT4CdHzNQdUOYZSM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=n09xHDXm0NQvt/2Ihe4zZw4wfbyxmW01sr5F8oIz0+NnVpvOvmas9ZSUBNZuoBGN8
-	 yEUJexJrt6G+WaI+v6LoH9gHjUpBA5BgORDfuZmGBbK3TrpvucNv6D2Vzm5utrHI4q
-	 pBUL8cT3REaEsOervShr6BCXoflf/q4Zf7hRGKWQfXn9qeY6JQuwrG/JnTCqUmOgc5
-	 hT3dN0/xAkSwkHPBtLgg673vpsvLCHWXvgFnnNtDwNVoukqqWeY37QF3Bn8d4S9NOe
-	 mYI5z05LwzeakeUjJcmVfE5NKNLhG1ADoKaEcjy+z5rYJLGUcRLtFsViiwUYIno+Xw
-	 B2KC49VWJpNWw==
-From: Pratyush Yadav <pratyush@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org,  jasonmiu@google.com,  graf@amazon.com,
-  changyuanl@google.com,  rppt@kernel.org,  dmatlack@google.com,
-  rientjes@google.com,  corbet@lwn.net,  rdunlap@infradead.org,
-  ilpo.jarvinen@linux.intel.com,  kanie@linux.alibaba.com,
-  ojeda@kernel.org,  aliceryhl@google.com,  masahiroy@kernel.org,
-  akpm@linux-foundation.org,  tj@kernel.org,  yoann.congal@smile.fr,
-  mmaurer@google.com,  roman.gushchin@linux.dev,  chenridong@huawei.com,
-  axboe@kernel.dk,  mark.rutland@arm.com,  jannh@google.com,
-  vincent.guittot@linaro.org,  hannes@cmpxchg.org,
-  dan.j.williams@intel.com,  david@redhat.com,  joel.granados@kernel.org,
-  rostedt@goodmis.org,  anna.schumaker@oracle.com,  song@kernel.org,
-  zhangguopeng@kylinos.cn,  linux@weissschuh.net,
-  linux-kernel@vger.kernel.org,  linux-doc@vger.kernel.org,
-  linux-mm@kvack.org,  gregkh@linuxfoundation.org,  tglx@linutronix.de,
-  mingo@redhat.com,  bp@alien8.de,  dave.hansen@linux.intel.com,
-  x86@kernel.org,  hpa@zytor.com,  rafael@kernel.org,  dakr@kernel.org,
-  bartosz.golaszewski@linaro.org,  cw00.choi@samsung.com,
-  myungjoo.ham@samsung.com,  yesanishhere@gmail.com,
-  Jonathan.Cameron@huawei.com,  quic_zijuhu@quicinc.com,
-  aleksander.lobakin@intel.com,  ira.weiny@intel.com,
-  andriy.shevchenko@linux.intel.com,  leon@kernel.org,  lukas@wunner.de,
-  bhelgaas@google.com,  wagi@kernel.org,  djeffery@redhat.com,
-  stuart.w.hayes@gmail.com,  lennart@poettering.net,  brauner@kernel.org,
-  linux-api@vger.kernel.org,  linux-fsdevel@vger.kernel.org,
-  saeedm@nvidia.com,  ajayachandra@nvidia.com,  jgg@nvidia.com,
-  parav@nvidia.com,  leonro@nvidia.com,  witu@nvidia.com,
-  hughd@google.com,  skhawaja@google.com,  chrisl@kernel.org,
-  steven.sistare@oracle.com
+	bh=/nRyrHH69bDwdkUwV+ZvUiMlkERSxLC5qY0L4yNkpAA=;
+	b=4kNIyAzijiM9bj1rIX/vmOgYhe/+rJZNxCIhqpbAmelTqUrivXVTMVN0u13PensEcvbnMZ
+	zJTQd9Zv0VnfilquRlwFYUhzeiAODXVZLf7xjrDCf+XE73xKBDrJ0y7G9L+PUs9Ns4tbFL
+	uFEbGlRURU9B5pC1IYftLo3AKgGeemI=
+Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-378f010bf18so14819081fa.1
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:44:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761770664; x=1762375464; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/nRyrHH69bDwdkUwV+ZvUiMlkERSxLC5qY0L4yNkpAA=;
+        b=af099qNVi7VyJ2WAsA48Ek8Yrt0xLMF1rRiZL6d9gew47Giu46NkVTc4DlylKsG8gt
+         ZfrCRemLnv9CZJD0+ZaiVhzXOH6BQKVjfVzDp1TUxlEBrcbJ6Uc8coFLmIBLKrH/LajZ
+         +yuBPcLNeUZOyvr4G6tk9AUO8EmvUUscnyoXJPc06jVOwgm+88NORIl8doeXc0ZP15SE
+         xVeDJDUSA9EiV+hjaWeSOBfxwmgqfFUTjQ8l7Xr6y2h0MJQek8u1qFmeik9YKY2dDBuN
+         rQ9mR//UQqsFdWa2OATrZUwr2atQU8neK/sHRpwIfmRnIjrDStDO7eXH016Q+0vdTeKU
+         Dhng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761770664; x=1762375464;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/nRyrHH69bDwdkUwV+ZvUiMlkERSxLC5qY0L4yNkpAA=;
+        b=R1einTramAUQ3t87cp+S0hY3SUHsarCoUjsznDGSbQ1BnwNAm048i92AlgW0tkrjhi
+         Cvw2IryuoP0ymuYwygubq/uW8kBqZem64WbQduergszGgdtOBYJ04phIOjm0ZxLCcL3J
+         nIW+AYyc+wLnG6oHUGPdfTecVSDZbRJ7Q7CqfPewW14q4cCLzLsLgfWq3GztIfJR3mKz
+         0DuBl/tqZGGbOFPQqs/ulFXLpm12fMxSpWWmQPV9QCb5GSnUiLrGYhHxvx44xyxUWCpv
+         C2VvFM1yxsTUUsRfbbyJHIqsLZY3zg9ERiIC9ABUyILdb7up6mFbQjtI/zJ/zgLaCrtz
+         2s9g==
+X-Forwarded-Encrypted: i=1; AJvYcCUCFgzARVeMPwzwoqxS7oL88/E+B7iZHHD5grIdOMH3Y4FhZNVstIxAJlZIqXg5JtV8MaYouhfdWw==@kvack.org
+X-Gm-Message-State: AOJu0YzASpXiHXmr+V22NCwR3thLZxYy3cfYKiG+ayYGdoSPKuN824wY
+	IyZWe5t/37Utue3+8v9nYbO4zmqBsXSVgI4wYSTgT/IfvYlvG1gsS6sffg77jejYwLEBaiM/8xp
+	SNtzw8jHuJr+2oGs739ciullegdcqmY8X+CL5UL+I
+X-Gm-Gg: ASbGncvtJyuFM6NVmZacSbCQXL7Cl321hIs5MJDjv5cldS2e2iq4VK79QtPChKE2h/A
+	mKq3yZIIU1Hf9xeTplrunJg7bOBjpAG8dC7zJam5LWJT2tu+hCxVvdOywLjS+7/VdT04VygdKVf
+	UFUzC3kct5+RGRCre2w+dkQpOeRGE0ShynF17Ym0VDGKN3IRQEMN+lTm4cn/4Fm6nFyvT6w2dSt
+	zXUOobzb6fR5/QzgswozhIAB+/3Xe2B00CJRxguahut37sEEyn1SM/xlKBC
+X-Google-Smtp-Source: AGHT+IFRYtH5XfTJnxxGfkJO0Gi6f1H2nFBXWvOk+OBKFsn98ppWQIAtWYQQwdGEa9VK8XbxcXnwXcPQMdyC3mUpVtI=
+X-Received: by 2002:a05:651c:32a6:b0:378:d020:b6b3 with SMTP id
+ 38308e7fff4ca-37a1068ccefmr2106821fa.7.1761770663502; Wed, 29 Oct 2025
+ 13:44:23 -0700 (PDT)
+MIME-Version: 1.0
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <20250929010321.3462457-15-pasha.tatashin@soleen.com> <mafs0tszhcyrw.fsf@kernel.org>
+ <CA+CK2bBVSX26TKwgLkXCDop5u3e9McH3sQMascT47ZwwrwraOw@mail.gmail.com>
+In-Reply-To: <CA+CK2bBVSX26TKwgLkXCDop5u3e9McH3sQMascT47ZwwrwraOw@mail.gmail.com>
+From: David Matlack <dmatlack@google.com>
+Date: Wed, 29 Oct 2025 13:43:56 -0700
+X-Gm-Features: AWmQ_blzsfm8AU4aSmOo38Baxqd-QolYtNvPxHfj3yJKEB0u3KTJVZdMqBMfTX4
+Message-ID: <CALzav=d_Gmb8xKCwWCGsQQrdxHJrnk5VP-8hvO6FugUP7_ukAw@mail.gmail.com>
 Subject: Re: [PATCH v4 14/30] liveupdate: luo_session: Add ioctls for file
  preservation and state management
-In-Reply-To: <20250929010321.3462457-15-pasha.tatashin@soleen.com> (Pasha
-	Tatashin's message of "Mon, 29 Sep 2025 01:03:05 +0000")
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
-	<20250929010321.3462457-15-pasha.tatashin@soleen.com>
-Date: Wed, 29 Oct 2025 21:37:06 +0100
-Message-ID: <mafs0pla5cuml.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Rspamd-Queue-Id: C6160180003
-X-Rspamd-Server: rspam11
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org, 
+	steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: sk867ttmxxhwfninab5pndsunayp46gj
-X-HE-Tag: 1761770238-433439
-X-HE-Meta: U2FsdGVkX1+yzwCwdK83x/j6fY0xvo/vIB2LsXfAQXcbe2Nex5kj7hzZfzuGEVtlPJmSCcdK+p4xh5hPYCq01x0hKvFTnsHCNXv7gfiA2Uto5DXlY7xJZdIHF3D3li101TXHyY7DeApZmMzWf6O3rWBq+mBpeQUQYRK23We8hdILBDtMBKET6zReaeb/ciYKWjLqliRK75fWzZacH8zF0Gp7wPGWVpUzR25o6A29lThefPqxxOKlx4nHR2HZQNn/9Fqb/OC4kiYZ1dt9bdlY/kMZx9aYbVSNFohFr+Sp/WivgOaM6tGiJ4uBUVzxX2Mo0TXS+lWUyYQqZiGe6FnviyiDss80arUt2w40n+x2VaGXngXSgdANw3UrfxU1VW7DCuFx8OlIwsH0KGbeb5G2reUgWY00v6jCl0+UeNT1Bu/rnPwVnS7gbykzDqgxEnuNKUIVU7VZh+Ju84O1gw/5FIUr5DC6MvROj4w8R67efFKVUdkKkBnesoMPg+MXJdIT89jkGrdd6D9QACLZ7SG+Qjh2bfIdn1xB8P6Yp8o9d6uTstjkd/Q1eGCvk90g0UZKiOEFFBCgQEy5X3eefItkVel8qR0gB/2ufnU6EuRLWwM9oc25qQdcrc7jwykyvRmilXaWxiUw0Za5wozm1rysvfiNIlC0JBgqyobjS/GGTVydgwy0VHyAe+v3cIik/FMBLjoDMavh/gynq56a9Tn6TyODSMFfTUxS8mnOMETktHiIb78uce56TpeL6tYd0O2fI9A1+acR3AccftdJcZlQTu5iQtp/IkQpO0eXP525OeKIivYomt8xSLE+9uiG2JRqtQSOX5RADFRAVl8z0vhUR7lVwsKZzBQUnwWZQh5YwsONGhaUoPB4vWd2EWt8+IZZ0fKWclmOz9f5QVsIoOJj+mKduPhKN+w7/q3vPwesBU8gzYcDxxhSMfa98ymsqpZwquHLnoz6rBl0CD6kMO2
- JQa5OaFD
- iFwN8Rb1O7daucL+i0Xq0zn2TBlgiBAOv6GYj5uVwjpyST1zxsN8zTSDPCQd15c62FcO8Ui2CGNa2EKr67ikQNAbM9zLnxXexEsD9NS7OE+lgPHTOlixplm8FB/icpqE8ysQZMmNgun7KJREUKtGB4GXE55Nm4e9GDsQxK4kgSiUsqMDKRiLqC7ZrweC2GK68lY+8h7+0EJufvwReH/lgWaBvH5XD/YSn9AFcHLBJst4hhWt24lqTHlw0ls3XxWELrW9uTu/oK2gi97zkLi+U9gkhyoXfh7aeafCzZf9ojcy5qJlfGyaqDPUr/f+AgcpJEtlnGYH0nRFe4soD61E2NC0NCRuXtWWF+1yU
+X-Stat-Signature: c47pi61w8yh5uwqmnqhjfo1osxuaq97s
+X-Rspamd-Queue-Id: B206916000F
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761770665-244135
+X-HE-Meta: U2FsdGVkX18c8oKC5ExZxQo/eL1ExLtIqIIP8CJrnB7/UPpBYT+1NAa0BnS9ljgVt/oOSw3IMMekzdKxvism+KeXVcA9a/zrsZEG89c23S9x6qM3dfKiPJwS/6vEEchIwfwd+TxKVpRjQr/H5CeTZyqKfS+QR/hK03p5C+1l4Eht4s0xVGlzARtFugqL6Y1aEkP3bWzgVFt6I9PcmLazIr60QkVR6CKb3qO84oDm8eC8936T1KGH+h3BAE7gSqOSCxjRUt6L7H3Hzejdx8JjZmIReVeYASXICuYqdMrhtAUNKp2eipXmhiGvETbZzM3iYKL6EMhevwJUU4guLNQ0yN6JqcQP1WHKas/gn/cTaWJRJ1EoKaCA+vJPN8albnv/ZxZDXUufBu1sZIxgFHSI5tHl+/zivomQOJd4+P9jiEKBudN2Qy16wMF+GR8rg8PAnfU33Jg7hZdSXLyP162oySrewcsv57KIGFWayih8XgUn0ZIkXVo6EkSOX5LbCO2aRU30bGJJuR2sW0UWHOeUKxMcs+y9wGLtdWDGke1kgUH4uQsmjQTgsqoFGia5aK0KLq+EaUNZQVSVaMNOIlIaQtKZKjLppmIO93aoojpIV7GYwXrIzf2fKcmqKaSsduX6ewByS3v2zy/gjkTEMd6FG3KuyTkjK8BL1Z0OwWBY4fe1M3dmEyajgipU3QDv0UwOX5QPOFGuTVyc9tiip2cVEJTs8YEC5R3R9smTGZsruAzW4jvd3UYUFtpN/3Yn3Nu2YrM4msNc2cWXSHvl70kM9ilYb6JSK7/XqW30E8QGOYjK8UjWpkkKuWreYUubfjJ0Pg9Et8iJL/Cl0JN4DYoya4DxlbCBG/5Har0bu4rLy7u0yo49gYctM5OVkdnycLFUwVe+W3e7YmRECsHjq5UfG5xZB9+dM6Nfb1tMx4oN7Sj7qBUxCsQH5UdMFFEth1eur0M3SSMYMjpY5GX6HLI
+ OTX66MOD
+ RpSh/AS2p3QnIpvrvQq21HMO5iIdjNCWQFD3QZnStCa2VLtwu8ohlziFYya+3Is35RcMPzJUQmdBwazI0/eo8jXmANL3cZxttTS7/mg8BSzbzQJR+ro5LO8m42aNBAcUDDYrPKcbhDSdH/Fhn7hlgLxjo3KXsejmibLgt4FZYOv3Rp68V4p8aCP747dAC4Tx0dzSA97biAdRcZMiQ65ooAUuuhgxgna8Zy8SxPjjKnsBLZizldtV+ufWaZiyD0ep9lTmw0j99FEcuF/y/tB0OONMVcfIed0g6tsFErWAXOue92wGQ/h2ECMmm4ZQ+AAjkZ0tB4S9ppLi7rW+EWiHAk7vKSUo1dHyvuXJnthmj3QLSf4cyG5gZ3dNbI/0qw0oEFewRCAaeqyOjKow=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,106 +141,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Pasha,
-
-On Mon, Sep 29 2025, Pasha Tatashin wrote:
-
-> Introducing the userspace interface and internal logic required to
-> manage the lifecycle of file descriptors within a session. Previously, a
-> session was merely a container; this change makes it a functional
-> management unit.
+On Wed, Oct 29, 2025 at 1:13=E2=80=AFPM Pasha Tatashin
+<pasha.tatashin@soleen.com> wrote:
+> On Wed, Oct 29, 2025 at 3:07=E2=80=AFPM Pratyush Yadav <pratyush@kernel.o=
+rg> wrote:
+> > Also, I think the model we should have is to only allow new sessions in
+> > normal state. Currently luo_session_create() allows creating a new
+> > session in updated state. This would end up mixing sessions from a
+> > previous boot and sessions from current boot. I don't really see a
+> > reason for that and I think the userspace should first call finish
+> > before starting new serialization. Keeps things simpler.
 >
-> The following capabilities are added:
+> It does. However, yesterday Jason Gunthorpe suggested that we simplify
+> the uapi, at least for the initial landing, by removing the state
+> machine during boot and allowing new sessions to be created at any
+> time. This would also mean separating the incoming and outgoing
+> sessions and removing the ioctl() call used to bring the machine into
+> a normal state; instead, only individual sessions could be brought
+> into a 'normal' state.
 >
-> A new set of ioctl commands are added, which operate on the file
-> descriptor returned by CREATE_SESSION. This allows userspace to:
-> - LIVEUPDATE_SESSION_PRESERVE_FD: Add a file descriptor to a session
->   to be preserved across the live update.
-> - LIVEUPDATE_SESSION_UNPRESERVE_FD: Remove a previously added file
->   descriptor from the session.
-> - LIVEUPDATE_SESSION_RESTORE_FD: Retrieve a preserved file in the
->   new kernel using its unique token.
+> Simplified uAPI Proposal
+> The simplest uAPI would look like this:
+> IOCTLs on /dev/liveupdate (to create and retrieve session FDs):
+> LIVEUPDATE_IOCTL_CREATE_SESSION
+> LIVEUPDATE_IOCTL_RETRIEVE_SESSION
 >
-> A state machine for each individual session, distinct from the global
-> LUO state. This enables more granular control, allowing userspace to
-> prepare or freeze specific sessions independently. This is managed via:
-> - LIVEUPDATE_SESSION_SET_EVENT: An ioctl to send PREPARE, FREEZE,
->   CANCEL, or FINISH events to a single session.
-> - LIVEUPDATE_SESSION_GET_STATE: An ioctl to query the current state
->   of a single session.
->
-> The global subsystem callbacks (luo_session_prepare, luo_session_freeze)
-> are updated to iterate through all existing sessions. They now trigger
-> the appropriate per-session state transitions for any sessions that
-> haven't already been transitioned individually by userspace.
->
-> The session's .release handler is enhanced to be state-aware. When a
-> session's file descriptor is closed, it now correctly cancels or
-> finishes the session based on its current state before freeing all
-> associated file resources, preventing resource leaks.
->
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> ---
-[...]
-> +static int luo_session_restore_fd(struct luo_session *session,
-> +				  struct luo_ucmd *ucmd)
-> +{
-> +	struct liveupdate_session_restore_fd *argp = ucmd->cmd;
-> +	struct file *file;
-> +	int ret;
-> +
-> +	guard(rwsem_read)(&luo_state_rwsem);
-> +	if (!liveupdate_state_updated())
-> +		return -EBUSY;
-> +
-> +	argp->fd = get_unused_fd_flags(O_CLOEXEC);
-> +	if (argp->fd < 0)
-> +		return argp->fd;
-> +
-> +	guard(mutex)(&session->mutex);
-> +
-> +	/* Session might have already finished independatly from global state */
-> +	if (session->state != LIVEUPDATE_STATE_UPDATED)
-> +		return -EBUSY;
-> +
-> +	ret = luo_retrieve_file(session, argp->token, &file);
+> IOCTLs on session FDs:
+> LIVEUPDATE_CMD_SESSION_PRESERVE_FD
+> LIVEUPDATE_CMD_SESSION_RETRIEVE_FD
+> LIVEUPDATE_CMD_SESSION_FINISH
 
-The retrieve behaviour here causes some nastiness.
+Should we drop LIVEUPDATE_CMD_SESSION_FINISH and do this work in
+close(session_fd)? close() can return an error.
 
-When the session is deserialized by luo_session_deserialize(), all the
-files get added to the session's files_list. Now when a process
-retrieves the session after kexec and restores a file, the file
-handler's retrieve callback is invoked, deserializing and restoring the
-file. Once deserialization is done, the callback usually frees up the
-metadata. All this is fine.
+I think this cleans up a few parts of the uAPI:
 
-The problem is that the file stays on on the files_list. When the
-process closes the session FD, the unpreserve callback is invoked for
-all files.
-
-The unpreserve callback should undo what preserve did. That is, free up
-serialization data. After a file is restored post-kexec, the things to
-free up are different. For example, on a memfd, the folios won't be
-pinned anymore. So invoking unpreserve on a retrieved file doesn't work
-and causes UAF or other invalid behaviour.
-
-I think you should treat retrieve as a unpreserve as well, and remove
-the file from the session's list.
-
-Side note: I see that a lot of code in luo_file.c works with the session
-data structures directly. For example, luo_file_deserialize() adds the
-file to session->files_list. I think the code would be a lot cleaner and
-maintainable if the concerns were clearly separated.
-luo_file_deserialize() should focus on deserializing a file given a
-compatible and data, and all the dealing with the session's state should
-be done by luo_session_deserialize().
-
-luo_file_deserialize() is just an example, but I think the idea can be
-applied in more places.
-
-[...]
-
--- 
-Regards,
-Pratyush Yadav
+ - One less ioctl.
+ - The only way to get an outgoing session would be through
+LIVEUPDATE_IOCTL_CREATE_SESSION. The kernel does not have to deal with
+an empty incoming session "becoming" an outgoing session (as described
+below).
+ - The kernel can properly leak the session and its resources by
+refusing to close the session file.
 
