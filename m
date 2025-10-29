@@ -4,137 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10293CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:21:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF200CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:26:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F4B88E00C6; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
+	id 502208E00C7; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CC358E00B2; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
+	id 4E0408E00B2; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E2308E00C6; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
+	id 4177A8E00C7; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 495FC8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE2001408FF
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:21:45 +0000 (UTC)
-X-FDA: 84051970170.01.01352F3
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 307CC8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8FA713BDF4
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:17 +0000 (UTC)
+X-FDA: 84051981594.20.5E1DFE2
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf29.hostedemail.com (Postfix) with ESMTP id DF78B120011
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:21:43 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gFW23Htf;
-	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id D4B7CA000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:15 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndpPn+k4;
+	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761762104;
+	s=arc-20220608; t=1761762376;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vF99+toDZDdN2wOCemWCahItQlBdLScG3Tc4V8O6SNI=;
-	b=toXDbu7Q6NTlbFJ2mfEZStCzIfSY+NJBs7WDv5EG/OvEIXfpmRD9KHAkR9yXJSVyMcmu+W
-	CRyyDIvrFisJWX7VYEd3tlo9i9RppuTiBc9HdJkdclKjjTaHhCnWsZCinHt6SPqYoVAVTZ
-	M/BfJTCTEI8zRqiu6Qu/Q0SIla4Dt3Q=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gFW23Htf;
-	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761762104; a=rsa-sha256;
+	bh=2z56nIm+5e1IvigR9gpmQ54kGrlw/bMFXbXEDGYlOqE=;
+	b=up9s/y8B+SP7aelh6hygJlo7l7hJ1gpYwZt/n2XN++Amgcmyyg5Qg5xGQ6OsKjLm+UmnGS
+	bqHRsHHEW2GalgigvFWusHf8aHSmYLD/C3TSlnbz7dmKFCtFqHMCNBtKPh4WPN39bPuvcE
+	h+SAji3QVhzaqrHSs4+sun8sEQP/YJM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761762376; a=rsa-sha256;
 	cv=none;
-	b=iI7unfQbNPl+mdqjOkC8hf4IFTjp5PiS8Z2N/ZxGewIj0CJF50L1+3nLoBs++Z2eyxoTrW
-	EP/vk+oro6YPCUeWNDj3sIJJHz95P/lhX0a4Q2/ATP5fbhn2clopXJjMVYMsU1MQna6Cxd
-	KMWLwPQMiaSzPuYZHIxiqScb9Ax24Vk=
+	b=g5L27hFYEdVzNQxRLTzJXYhYHKuKUJfmPtIBFdTTWo51hiAb0lhemxqbNtLpI0g+Thw/FA
+	JCywaczS0lvEqOFP0l6If1ZLhzI1/xjKZIUEnnR5+QZzg2WeLT6Tig5ymTk3l4yJeOFy0z
+	LGLfku9x2vrSV5i24HOrwAUEtWn3VuU=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndpPn+k4;
+	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 8A61D418E1;
-	Wed, 29 Oct 2025 18:21:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F3CC4CEF7;
-	Wed, 29 Oct 2025 18:21:41 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 00D3348CB4
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BB4C19421
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761762102;
-	bh=DPpnCMRM2ONFlhs5+vFfnp4TspRDpdDt+xZVOrOrXxE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=gFW23Htfob9JVF7Tkn4OSf9AnrApu+I6w/WwRAqodqNSJgWV3LvyyA301zt0Uc/34
-	 x6/VtvfQztzfWNSs4dCB24QCQ92FaoC3Ir0q1XCVKjJFK0mda3xuB3/1XZaRMFNUXz
-	 eKchmNDyoozyoZ1HDSmEvBNDfCzBEX/JM9hSKH1faPH+eCNjYzQ8eolkTg1SxEnsuN
-	 OiYGqp9kql+IT4pn3GRuJtUrP7KVnTg8oBjrsKkvR1gl2P1VWZJ1WaGGmovzTOQ08j
-	 00jFA5M5GT40p+AGKTcPdvEO7j6lNxIAKnKsXGXjkZV2+V5oKvWkiHqhIxIa5TZ/hr
-	 O23qaAx/QhODA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id EBBEDF40069;
-	Wed, 29 Oct 2025 14:21:40 -0400 (EDT)
-Received: from phl-imap-08 ([10.202.2.84])
-  by phl-compute-04.internal (MEProxy); Wed, 29 Oct 2025 14:21:40 -0400
-X-ME-Sender: <xms:NFsCaVDOQpzKD7wTZgNCCgPb13e9mhCbRK36w5KK5UL_6Vz3kfOqqg>
-    <xme:NFsCaeWLHPtpKhKZrslQ2gjrJtZvmfWKaeB-BNH71AIRQgkZgmY6dvyy7h1hVLqQY
-    7vQeI-WSHuXH29wxJ06dzec-n0tAu4pMEPndl_0A5NlTk476sEDng0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeggeefucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfnfgvohhn
-    ucftohhmrghnohhvshhkhidfuceolhgvohhnsehkvghrnhgvlhdrohhrgheqnecuggftrf
-    grthhtvghrnhepjeevffelgfelvdfgvedvteelhefhvdffheegffekveelieevfeejteei
-    leeuuedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    eplhgvohhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdeftdehfeel
-    keegqddvjeejleejjedvkedqlhgvohhnpeepkhgvrhhnvghlrdhorhhgsehlvghonhdrnh
-    hupdhnsggprhgtphhtthhopedvgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
-    jhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopegthhhrihhsthhirghnrdhkoh
-    gvnhhighesrghmugdrtghomhdprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghr
-    mhdrtghomhdprhgtphhtthhopehlohhgrghnghesuggvlhhtrghtvggvrdgtohhmpdhrtg
-    hpthhtoheprghmrghsthhrohesfhgsrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehvihhvvghkrdhkrghsihhrvgguugihse
-    hinhhtvghlrdgtohhmpdhrtghpthhtoheprgigsghovgeskhgvrhhnvghlrdgukhdprhgt
-    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:NFsCaUzjtyzcUVu3XHD3WVhral27CzlLF39AneDrzievZ37OsGY-GA>
-    <xmx:NFsCaRUFAQz6l_v7A2JkDReVdjjdcI-Y2IcFNcrwrHcfSX10RiJcNQ>
-    <xmx:NFsCafZkyPDABk8DELRQCYDmg48L5nSl4vq1dKK-pP8IizJlTTWYMg>
-    <xmx:NFsCaeR_shcDrhZPGvArnf4UbT0ylRaXp3-PRr2Wr-isMOf0OBIlZw>
-    <xmx:NFsCafRS72r3S4Uq0J_JrwdIdBgQm6Y4YZw8AGtHru_SaMGZiKXRtxaV>
-Feedback-ID: i927946fb:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id B52662CE0071; Wed, 29 Oct 2025 14:21:40 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=k20201202; t=1761762374;
+	bh=SOFE0nE/iwywHZBzY2PA6i2R26wO5/VtY5Jl8lJ4X0I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ndpPn+k4EfUaw6fNwY0zWNL1ecVLo8aBHRZnSz07kFgD/dq8DvyELXxj76gXV4oVi
+	 ktU0XjzrjKbY7uijyq0vT7UtIcjyb/ND1tDToftHHtDIAiRt0YVm3arL2lh8baMuAI
+	 +vz8+RoK0Jww3pqJv+AvrM17kvv5Zn3eqLes/WMlFA/6VE5WWXYm60bfEKGra5Xg6r
+	 thZTXHsYe14mAvd0C1rleJrkFPDe0BuI4HmI2JV5mxGnO4BhQlXQdt5qvo6Gy0KBaT
+	 P6l6n7spmgQ3gWjfr6j6dtYxaD0JXVPuWt+vLn28H15m5YyfxxytbyH5B0vKNTckDF
+	 7LduBId0jKXTw==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3737d0920e6so1273571fa.1
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:26:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXBCBV2jVNHimeWHGYqUR7yhnesh27oGLwFfHJx24ZWp4v+xUTTvGMUi6cVQDLBFp0bwDo3+vd56Q==@kvack.org
+X-Gm-Message-State: AOJu0YxFMC+yS8ZXWrvEj0KkbplQChD8rLC9gBiZ0yyBPJci2jRl25q5
+	xunI0mVhw9P+KDm/GLYZgAH+vpODy8PSpNX9rhwM5lAZxHLKndmnQWd7sLlTu6pD1QBH1iYZKMO
+	lMqqvcVYuKQLjUts/P+4ttUMn+7W2ufU=
+X-Google-Smtp-Source: AGHT+IGWFfmJwHuAqzPgZNMRZ1ozVQDIzy88Y1FgQVzyMri4R3xOByg4mInRl7CgPci19RHNrfDbNPxS6PSkoSTGQDU=
+X-Received: by 2002:a05:651c:1986:b0:365:b79:8845 with SMTP id
+ 38308e7fff4ca-37a023ba9e9mr11427831fa.10.1761762372950; Wed, 29 Oct 2025
+ 11:26:12 -0700 (PDT)
 MIME-Version: 1.0
-X-ThreadId: AwB0iom3SqON
-Date: Wed, 29 Oct 2025 20:21:20 +0200
-From: "Leon Romanovsky" <leon@kernel.org>
-To: "Alex Mastro" <amastro@fb.com>
-Cc: "Alex Williamson" <alex.williamson@redhat.com>,
- "Leon Romanovsky" <leonro@nvidia.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
- "Andrew Morton" <akpm@linux-foundation.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
- "Jens Axboe" <axboe@kernel.dk>, "Joerg Roedel" <joro@8bytes.org>,
- kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
- linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
- "Logan Gunthorpe" <logang@deltatee.com>,
- "Marek Szyprowski" <m.szyprowski@samsung.com>,
- "Robin Murphy" <robin.murphy@arm.com>,
- "Sumit Semwal" <sumit.semwal@linaro.org>,
- "Vivek Kasireddy" <vivek.kasireddy@intel.com>,
- "Will Deacon" <will@kernel.org>
-Message-Id: <275a5a94-1c69-4eb0-a9d0-4b397073555f@app.fastmail.com>
-In-Reply-To: <aQJF1wiWWWoIgHI0@devgpu015.cco6.facebook.com>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
- <aQJF1wiWWWoIgHI0@devgpu015.cco6.facebook.com>
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO regions
-Content-Type: text/plain
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: DF78B120011
-X-Stat-Signature: 7sr9i5gbkzozfxb4rpizjdyxg6fxif7a
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com> <20251029180835.GT2441659@ZenIV>
+In-Reply-To: <20251029180835.GT2441659@ZenIV>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Wed, 29 Oct 2025 19:26:01 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bl33W7u9Z27QoRt9V2mEw_lUKBXPTlGyVImKaOffP2I82t-eoqvuUfjNRY
+Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+To: Al Viro <viro@zeniv.linux.org.uk>
+Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, 
+	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
+	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
+	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
+	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
+	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6fie61a3pdxyt6yhecdo5g7i8pz45f9s
 X-Rspam-User: 
-X-HE-Tag: 1761762103-12647
-X-HE-Meta: U2FsdGVkX19ooyNETNYvVjL461Ct1nUK5bzWSovzEp7w8eSILFvxOaWzKkp+8nUKoLVUYVVBJsIeaP2Nu+5lWL6v1S4T+thSeMWL8cJh+uPJr27+L+iXoWYiGIvePEJut+oBY9M0YrKmIRtPFZQupU10+YZzkC4ndh0H9ilrpW/0fCiUDQkK8tEaKmLI3m/c/zR0jnZxjDo/2keIr+QqB3tX11oh1/K/cW2s+r4i4dbPrXZD+Z4+BO+b8ECk4JCvbbzIw3978JsnB7v/xZJs16eiUOqLu7E59p9vyP4tlkgAB/4W1OaWGD3CdYX6tqvY+9WMemThcpIBiUto3XDwZDzmcdmGS3kG6u6FWPVHdVUzmxikXLNWn2Bz5kleU19aH/unkppa+e0yxsLirUtYP4+zIrdElSz4MtArniT6k/B2oS+2pL1kdS3YmtSD07Ktga0w5uOPR0C+RSi1AyGz4tkWt3NnN691RjbLnTxgmrfIZrXt7bvqz8LkIE2h9SWif9/hG+AfclHu+DWy1SAiZASiiJ9XzvjuBCJlITYwtdMf8E9uutz8rOrSRDUfvu3qqC2lsNYYen9XvAfMlPjgcSYaILdT70fjq6jAxI6tV6zS5yA1VSXCmVgKoECNJmoUiN2wnwv//hzy69D2oJviqueHn4J/c65I6SbSkVo5Duqfe+76lTCAJP9zEiv5pVZX/Dhsow7uST7g8B125uuKUysbG6O5PKfT8Z090EkA91FjGf/pdfMbq5q+KZO+SxDsUdRXue6Co4EMLPYeStWZVsN8hHE48o5vMeFvSpCHajT1cZ7iX3/V90JSHFC81jmKZMRiuvZHa1DGwH7oNkihGTLU/H+/s1KiY2fW55fcTshjjw+Q0XBivg+vDU2H9pPcEIRwta3BjEuHTKhIQ/Jh340o5pzs2YMPu75c9/bKBFKS4NdjdaBXHERZX/SRNKog5+NoJx7CTf1K9WZCpKL
- 2/Eta+Ar
- zQ0O09LcEvKkmB5cXgjhb6LBhc/gr62Gj1nK8HisH6akdZXgbEFBROZBTwcpT4bPh7ujGphMoSp0YG4g6XEAjiekKX8RQQNo9B4cBT7DjDL/BrZzA5/98eNZ5nfrTt9byv0BPwhZSPaJPlUBXSwjKDvnVMAIw/8gvsGEP
+X-Rspamd-Queue-Id: D4B7CA000C
+X-HE-Tag: 1761762375-909871
+X-HE-Meta: U2FsdGVkX180F8Uo1MrZlhLi1T2F/mI59iS/48Fuvr1vvUq1HEx3WnuO9T8Axj59XjuCWxh+f3AnNevMAqHmYZB5wuLAAZpErRN+VLmmQ5hA4Ehdrh4S59QDhy2WTPjlZFUhRz080YyT7uVsP2pyiw2v7OZxkzAhI1fHh2oXMX0hqftfWErwsBpnBNRmV4GQCdPjE/EihjZ66yYTboBGkHrUMEFsqXoKxD4dSHapJQ3BZHx41CM7QZgirp6hmGX0CynN2skE8ki3MHG/psunJJr3ecYUvw/pl7Rq+mpGINxr4BLdchGOypDcX6Wf9Y5ZghOn86c/lkx7wgGCJdiFUTc3Xtl48EFa3o2lHhWr7fKYw921lLyQEUgAp++0+UmNtVT2KHhvpBc2d9Or6zeX0fs+MHUq5MYWxXedpmZyUIy8J2bp0fhSurUMJ/So3G9Gud90bMHmgFlHraF+ciVlMT8tWVvMbvcLWd3GPSdIxMdN5A5VS/YcFh2YX5fNbK5s1ZNqR+SdItRQFCbIlD8ExV6KClEKKXYyAH8v3bVIfnqbzmSQs79os8EHx8M30QqBHaeEpMwWlXO92tj+QX/d1FOk+SQrkyhoXTzkOdypW7C075H1HM4dILJx5LjYbasTcJtiYnxKlu1zGbKzR6+eOqtG9BDwWbCX3iMxSjXphQXAkeEntjT7On8wLvMuqdzMlxZ+wAxQsmNhQMOVUm9EODqHgEOn5UnnXjbLCaj3S6CSm3ZrQm45fz4lX/JeSq1WRtk5I1MlaWwOPQdK02FiQo3xaFdLUj+evl017fbhfWcII80Sgf7hfQJgos7YJ5/874t64hXGMKoTS13KlCXitxesqZ/FRbNu1fU/5hcgTa17pIffcpy7MFVBhgnqgCCcvVwj5KKD1CA3jyLCji4NJNXHl4umhOAPnXS1laktJDV1rsBMQtfV2g2HRo0KsBTYCYn2PI7gw9YgOXBpCJV
+ oJnYVhLO
+ /NYPm05PZ+MQBhVIhbfWatc8GaTNZPsIxbTWulF2gern0RU3HxNP1OClfGrLLImfNWWzIY1SIFTcrOGoxiEfrHJAmUB6fYYH+hNn2YG4ct8BqasbHzW4xMe0YyTq46l8QAc3VkegWzlUFKwtuGnc6LPIvvV3qJcvY5DEQ3hfusbdGKWKQXKKu+3l0XJDNqw/OQzIt5lWlhnNkiUnaJs4sNCk9uPDLNbfmP3+crUBG68mKKSYwVyUtLuOstAMIpjh0AbXY/JOA1a2bCnD9qwdKoimyfojMPgsVhxhuwOwBNe3VecRNH3kTKQFZZKq+d5r3Va2cHcfxZUKzjZYsHoLDmU0Omw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,33 +111,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On Wed, Oct 29, 2025, at 18:50, Alex Mastro wrote:
-> On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
->> +	/*
->> +	 * dma_buf_fd() consumes the reference, when the file closes the dmabuf
->> +	 * will be released.
->> +	 */
->> +	return dma_buf_fd(priv->dmabuf, get_dma_buf.open_flags);
+On Wed, 29 Oct 2025 at 19:08, Al Viro <viro@zeniv.linux.org.uk> wrote:
 >
-> I think this still needs to unwind state on fd allocation error. Reference
-> ownership is only transferred on success.
-
-Yes, you are correct, i need to call to dma_buf_put() in case of error. I will fix.
-
-Thanks
-
+> On Tue, Oct 28, 2025 at 10:34:51PM +0100, Ard Biesheuvel wrote:
 >
->> +
->> +err_dev_put:
->> +	vfio_device_put_registration(&vdev->vdev);
->> +err_free_phys:
->> +	kfree(priv->phys_vec);
->> +err_free_priv:
->> +	kfree(priv);
->> +err_free_ranges:
->> +	kfree(dma_ranges);
->> +	return ret;
->> +}
+> > I'll let James respond to the specifics of your suggestion, but I'll
+> > just note that this code has a rather convoluted history, as we used
+> > to have two separate pseudo-filesystem drivers, up until a few years
+> > ago: the sysfs based 'efivars' and this efivarfs driver. Given that
+> > modifications in one needed to be visible in the other, they shared a
+> > linked list that shadowed the state of the underlying variable store.
+> > 'efivars' was removed years ago, but it was only recently that James
+> > replaced the linked list in this driver with the dentry cache as the
+> > shadow mechanism.
+>
+> Hmm...  Another question about that code: is efivar_get_variable()
+> safe outside of efivar_lock()?
+
+Not according to its kerneldoc
+
+/*
+ * efivar_get_variable() - retrieve a variable identified by name/vendor
+ *
+ * Must be called with efivars_lock held.
+ */
+
+But actually, I'm not convinced this is accurate. The reason for
+locking at this level is mainly to ensure that a SetVariable() call
+does not interfere with an ongoing enumeration calling
+GetNextVariable() in a loop. The individual EFI runtime calls are
+still serialized at a lower level, given that the firmware is not
+reentrant, and so holding efivars_lock does not provide anything
+meaningful for a GetVariable() call.
 
