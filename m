@@ -4,104 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B766CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 22:53:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A32B1CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 22:57:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E3B6C8E0114; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
+	id EE1EE8E0115; Wed, 29 Oct 2025 18:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E13678E0106; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
+	id E91FB8E0106; Wed, 29 Oct 2025 18:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D4FF38E0114; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
+	id DCF2D8E0115; Wed, 29 Oct 2025 18:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C3BEC8E0106
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6771213A498
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:53:28 +0000 (UTC)
-X-FDA: 84052654896.22.DBD84E9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 92677180015
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:53:26 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNSYdcVI;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CC73F8E0106
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:57:50 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6E5EDBB2C6
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:57:50 +0000 (UTC)
+X-FDA: 84052665900.28.C2B25BD
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E464610000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:57:47 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=i9xG7JtT;
+	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761778406;
+	s=arc-20220608; t=1761778668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ywJC3icbH1rJTbtfxjNg7bAjByQB/Wtaz4snpYmxsdU=;
-	b=pxR/AzDXh+5mqGuY4pizTOiGZc0HhZJileNUq3Xj91t1T8ciKElRmT8HktY/HeZfS9FK3b
-	wzczjE+MJQi1lUH/h9r2ybz6FOwf6hr38f9W8188rFh3vMCTgAHweWRcI/NkBKdTNJal64
-	wEx0VGn0vSrsRFLit/83sEnVH7mncGA=
+	bh=yGi8oB3x6eaPWyZqlAg1aSVhthOKt0dYgRp5suIsMiY=;
+	b=PHx7ogyMOisYJwwVywIH8vbpl75uMkxg7IRXCdl8knvKv0fc850ppGzJRwaAjo6v5PiIx5
+	PymN0GL9TAowBEliX8ACw6/3WkCIQn0L3XTAQNQBrZP/HjLe3A8r/JDy8VvxHQ3ohBTUuI
+	L6Ucmy3hRGdpc1VkULNE7zP+DN+eedI=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNSYdcVI;
-	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761778406; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=i9xG7JtT;
+	spf=pass (imf14.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761778668; a=rsa-sha256;
 	cv=none;
-	b=QQCFox1y3Gz0r3Af+PnlDJpJH9iWgZsU2PD+duVr2Y3xMqStJeo37AFKM9tFoxzUIzC5uP
-	ppYNomim+QA1seNL0xF4kdf3nf4tDL0rdU2PTPLUNc6+qn8PbOHvPytcxo5RY4aUGPmIwX
-	GiXziOPR/B5o1rSDq56V0eODjKRVJPs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D9D9760273;
-	Wed, 29 Oct 2025 22:53:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631A7C4CEF7;
-	Wed, 29 Oct 2025 22:53:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761778405;
-	bh=yggvcjk/2WC81qOKt/PWdb/tjbxgvfTjTX2rpHVXUJg=;
+	b=5m6T5CgPeCo1x4pt9PJ8YbGuVi2KcePhHVTtpWrgvuR0Qkou21Qt/RD4mdcosxVOcXjG0b
+	JszIiblcvuqdxf5WfkdJQCziyTwjTCf5K0lj5ujQmQub2AP/s03FESwXCr4m7nQBvQS2ex
+	BNpwd5ELSuJyrdeSZnkVnBZfxg9M9T8=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id DD44C40E016E;
+	Wed, 29 Oct 2025 22:57:43 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id CgoJpOv9t2OZ; Wed, 29 Oct 2025 22:57:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1761778660; bh=yGi8oB3x6eaPWyZqlAg1aSVhthOKt0dYgRp5suIsMiY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vNSYdcVIlQppVl9XK6Hmux4x204Rz0Mjmv+zw+0fcgfwr2x5GT4uX2JIaJmKiL//X
-	 +aVu/bx794bAn1J5gyNKRxxVz0q+8aZp9uL5cv8EqLQOy8Lyt/hP6VcqQBR/FvyaY/
-	 /QeBzY8X2r50hITutJxTZGLKOmj5UHqgcGJXQu1/XGEaqCUzqPwlFf7hYBuQgTOnvI
-	 36PMZHtc6/ylag+OHYh+k+JFW56ct0PXqZZzkrq9q1+pn8B5JxaHI58umNFDsW2n2V
-	 wOBsUqUMv5PrXWZdrlXBAU1YQZC0UIRB+gnQWHO5sJEmr/2Sxzfw9OChifWcsUkMGI
-	 9D4KgdYDIKG4Q==
-Date: Wed, 29 Oct 2025 12:53:24 -1000
-From: Tejun Heo <tj@kernel.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, Song Liu <song@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@kernel.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-mm <linux-mm@kvack.org>,
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
-	bpf <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops
- to cgroups
-Message-ID: <aQKa5L345s-vBJR1@slm.duckdns.org>
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-3-roman.gushchin@linux.dev>
- <aQJZgd8-xXpK-Af8@slm.duckdns.org>
- <87ldkte9pr.fsf@linux.dev>
- <aQJ61wC0mvzc7qIU@slm.duckdns.org>
- <CAHzjS_vhk6RM6pkfKNrDNeEC=eObofL=f9FZ51tyqrFFz9tn1w@mail.gmail.com>
- <871pmle5ng.fsf@linux.dev>
- <CAADnVQJ+4a97bp26BOpD5A9LOzfJ+XxyNt4bdG8n7jaO6+nV3Q@mail.gmail.com>
+	b=i9xG7JtTzTIMH+0L+VH1+dUYv2KyyT3avj/0+p9Xjsy7u2sY8njasttXNJ4JF/QvE
+	 hXhQPge9pgGOyrlUNmd7EU2+NdfR8shMpCKkUr5gqDw0ixj99E8rFZZtMWAMe+w5EJ
+	 Cx2Iq6hNXAGXYVq/do/gTO9vC5TBVigZhn0MLrGFgpwEVZeWmKftRgN3MSd07+HjeW
+	 wDSLnT8cVeOdB5LyBAMtBqL3WiPLfGauv1BGSuyUoQrTSJWOjN0q4zHVtnfD59p6Nx
+	 xfMln3auw9bY/TkJ7QqwpHm9aJHR4Lu5mrAFiwPASRj1rEe+VyWa8qr5PG7CRQgkGG
+	 hN7jhsMHgvr53xpri79mCQOexdffhwsY88WeLoK7MvqvAsnOsoMVnqMpCkZKtTsFTE
+	 8L7NqKweHjdVofADyvG7n3d4w33d/DVO+1XmupwbmE7f61CG09+wQ6FchHRlWdQaeN
+	 3FoBeAjRevTuGgzYLXRoVukGgyXk/iSMvgsTPJpB33no+Y2hdoBZpozWRoUbGUdj7J
+	 qCos2vcuz1p+UEPmczOFu/UrBXZnFATwfxV0yBxEmaSUQ+A1OzBQYp7+T17Z2NLNcP
+	 osoR+pO/e1kDfjpu4dH/uTt8RJZm9yE+n21CIzuSQk2Ndrpo+uQa+DT9VN1LiOaa/7
+	 naS3Mf9kob0taM78946kAS4Q=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C120A40E0200;
+	Wed, 29 Oct 2025 22:57:20 +0000 (UTC)
+Date: Wed, 29 Oct 2025 23:57:14 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Ankur Arora <ankur.a.arora@oracle.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
+	akpm@linux-foundation.org, david@redhat.com,
+	dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
+	mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org,
+	acme@kernel.org, namhyung@kernel.org, tglx@linutronix.de,
+	willy@infradead.org, raghavendra.kt@amd.com,
+	boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+Subject: Re: [PATCH v8 5/7] x86/clear_page: Introduce clear_pages()
+Message-ID: <20251029225714.GIaQKbytWNKuQC5TNu@fat_crate.local>
+References: <20251027202109.678022-1-ankur.a.arora@oracle.com>
+ <20251027202109.678022-6-ankur.a.arora@oracle.com>
+ <20251028135640.GBaQDLmHzCQDegBHd6@fat_crate.local>
+ <874iriq2pw.fsf@oracle.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <CAADnVQJ+4a97bp26BOpD5A9LOzfJ+XxyNt4bdG8n7jaO6+nV3Q@mail.gmail.com>
-X-Stat-Signature: 7kdwi9en18nimziojjmmzhhr8abuyr6h
-X-Rspamd-Queue-Id: 92677180015
+In-Reply-To: <874iriq2pw.fsf@oracle.com>
+X-Rspamd-Queue-Id: E464610000C
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761778406-47938
-X-HE-Meta: U2FsdGVkX1+oDuVJshMUUPMNCBzkDNWRh87mB0Gq1Mabi65Y2ISXaCN8Z+2urFKjEnUFZB+DjSCG+DfHRcinDL1MtloscnVo4+ECw020nOAhxw4SNKnrE06jHjc55WU1jqBBrFkru4nIzmdQmg4Damhji+07UdOw/xbo2/1lgTLsA5dmUrPVVm413TakdaHeOu6LxStwoWsygKN59SYvHtwdL7C8vFFCJU76Q/umzFlAlZYDOg0R5m+qOkpkB//7R2SyDmF16I9GMfqZhjqbnMDGwp8xsk/FMYlJtAwm9prkZrq0/M9NCAH1N5ch2EX5oM/mfSAoTmivqsw30PocIjdaOtbbx8M9fKdVg5k4AknKtzjHIf3Aft+Z0ORgqBG1Mf7GMb4vizOqo2QDqkKvfPSq+MDA9pufZUwIqfZTQQh+2JoErdFPB+ccpvkygC09ZrHqVxwYhh+Ig7U58be7u1XqOyp5dTwFLneLq6uIpNw8tgg/uzuDJEUfvoLujpb79z3jAYhB0Z5YelEsTyb9VJDVww/E2huDLZOMptVwxCd8wOL6sbqR2RJmW9VfLfM+sx3y/G0I49GTUNj6h1B28wddwUL4F2cGt7P3VkPCCX6HAaFniUWuq8ZwtPGfj01x5jwqFGv+Q7WrL5QNR8c32oeVy5+RXsbaVGVz2SGMZr9AUHECarQE9FxIn/lVJsoC5reHxVzd81UPNp1rE3SsK4tWwGkmANhuuuFB0NdyIRLIbqXUpBCyEaWi8DnRyb1tje1jN0ccjO1Qtxpr3IJ0pPbQZ6CEDgPXJLI1WOfpGzeLbK1XId5AQ4bFX2oDi07GaL9ZmWpOQwwPzL3H1zcqsECJSixdAAINElwpwxLn3BkYzdebZB1opaR0Hb23roefJHi84ju7KspsCu4g5bOWpu5nNjdS/yUdE2nRMC21Wlhh8nDhTcqqYxP+Vi+Ipdblq8A32S792qMTUrIGj3U
- 7+MoeMot
- 9ttQENiufAWpSB1bERb2mNTtTnbhe1NzhHTbEiaOSY0b+KuuEiiQ379jppHe2c2aHE8aLy/wTR0/4q4a9MztNFYTkNdkUUomXj0UktkW1mkOS8preuQOw7Ph47DwsQ8me9QHAy+eOQNVgG/ETN8xlurfMfO6UFWnSD6gh5U6ed0BS5H+HzOKnCtOUHXIMYlFHvvyBd84JkGMqg9l8wW3ihaLZHhfTHbpUQwMiK9CC+Xl2GHz5KHhrhLnGZ39Jb73/7Yd6/rPWjJnfVtKmuwGXMILxt8y4heTmvwSK
+X-Stat-Signature: rfwdbkuxxqj93xxmsu1r3fqwpfdjg5q1
+X-HE-Tag: 1761778667-320005
+X-HE-Meta: U2FsdGVkX18SWuanAYB5sSoohn0Vb6W1ObFKlp5uu/cV4Ua7VfBgY4hoL4sfuLisqW/RNNl5dkdKmYqSFAfxTzLVq+tqKoBOHjQyq4NZltfgqgU2wTxTJbmrnUCASHv9YY80j0M0TrrdysBO4kCnZCiw1DT02Ige/2zi9xRjNEe2yZaAiUNiFQq52rdk6ViIevZrvzjr5gJ+WsKuNl2zKO82TMnz0XogzMHdC4vUV8x0hYEcLvi3bfUTyY/tbWDIbEa/iBf5pU2YIG8JKyVmHOfVHEG3l6aWYXDly7A9lywPdtjvPyfl3Khb8E3HpmjYs+2k8FTve9zJajB7oeIXXHhMHThEvWjvqwApeqsZ3qey5OGJ/8OQNqMq5GVmj8IXeXOWiT686Zxm75DhgvUmkTGJLwslUZSwDZTuV9OQGouKOJ/XpbjZv2XQJdxOLDVYnjnHkISDiqBwzrt7sTIXdJFM6cUnU83RQf6L1yIvzvSi9/MNLn1i7HS4mqBw8B3DJqmrxuy2vhMy1dwRF7GFWtfl7oiGO8DbjRBbTjo3JI7ZXE5wVLzFXfVgCT2mjYko9h2YAOeC2RbTHi/Zgzw7MVqrkHj98kKlsz/6+xs6p+EQuxj09ZPB3VOANbDfbbKf/cA5QU9d+m7fAbHb7wxc8MRZFSQJ+IjjxH8JmuCxPqDwEgStue48hbWlz67gD9lftg33Pj8QnjIw0xMFctC+hXklLOi3aBtrl+fB1qSco7faUIrURO3vYtScJeZzx/5XoFlo5tQ0p/7oQz69tzKhugWBhjTwZq0ztLHbThQ6zFCguTCf2/HZJeD3jQfNwUMxDd94lEiKDr+ximdyQMu2OiHu8R5EeSWhN8vabMrbZybjhoUPcllvchu+p57rlS3VpySnjLN804O3JkbBZJOLT909Po3XuIoybQL4EpRo7S1Dkyv8FP6PbOioiczq3VRX2JRWIWtRDmCq4/xoIQF
+ m6J+PiyY
+ l4oC5Fhc3k7LAAmFxKTOo6ddho0LEo2Ib2mVnPuqHCBLqxtmVZB2cjZmylHM45kPxmbnFRytcDmrJQ7DiY4r7OGJ8HizNwDov2abuL0LkX+8KjynW+Cvqpywyk9d6h5PNW6+ycRxTfyArpPeAPC+KcDirFn/6oJ1DzYb/GbsKTo6kkY7rvyUenpGQnTSyMTIQcLmBOsfYT+VZGobVgiy0NSZ/YRaHrHeIwBIt6EPWs+IwlE48gycaeDIJ4WNESDV45yBgAJy8siPC0s+n8E0zj8sKAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,31 +111,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On Tue, Oct 28, 2025 at 11:51:39AM -0700, Ankur Arora wrote:
+> The intent was to use a large enough value that enables uarchs which do
+> 'REP; STOS' optimizations, but not too large so we end up with high
+> preemption latency.
 
-On Wed, Oct 29, 2025 at 03:43:39PM -0700, Alexei Starovoitov wrote:
-...
-> I think the general bpf philosophy that load and attach are two
-> separate steps. For struct-ops it's almost there, but not quite.
-> struct-ops shouldn't be an exception.
-> The bpf infra should be able to load a set of progs (aka struct-ops)
-> and attach it with a link to different entities. Like cgroups.
-> I think sched-ext should do that too. Even if there is no use case
-> today for the same sched-ext in two different cgroups.
+How is selecting that number tied to uarches which can do REP; STOSB? I assume
+you mean REP; STOSB where microcode magic glue aggregates larger moves than
+just u64 chunks but only under certain conditions and so on..., and not
+REP_GOOD where the microcode doesn't have problems with REP prefixes...
 
-I'm not sure it's just that there's no use case.
+> > Why isn't this thing determined dynamically during boot or so, instead of
+> > hardcoding it this way and then having to change it again later when bandwidth
+> > increases?
+> 
+> I thought of doing that but given that the precise value doesn't matter
+> very much (and there's enough slack in it in either direction) it seemed
+> unnecessary to do at this point.
+> 
+> Also, I'm not sure that a boot determined value would really help given
+> that the 'REP; STOS' bandwidth could be high or low based on how
+> saturated the bus is.
+> 
+> Clearly some of this detail should have been in my commit message.
 
-- How would recursion work with private stacks? Aren't those attached to
-  each BPF program?
+So you want to have, say, 8MB of contiguous range - if possible - and let the
+CPU do larger clears. And it depends on the scheduling model. And it depends
+on what the CPU can do wrt length aggregation. Close?
 
-- Wouldn't that also complicate attributing kfunc calls to the handle
-  instance? If there is one struct_ops per cgroup, the oom kill kfunc can
-  look that up and then verify that the struct_ops has authority over the
-  target process. Multiple attachments can work too but that'd require
-  iterating all attachments, right?
+Well, I would like, please, for this to be properly documented why it was
+selected this way and what *all* the aspects were to select it this way so
+that we can know why it is there and we can change it in the future if
+needed.
 
-Thanks.
+It is very hard to do so if the reasoning behind it has disappeared in the
+bowels of lkml...
+
+Thx.
 
 -- 
-tejun
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
