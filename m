@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22225CCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 00:08:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A94CCCD1BF
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 00:10:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E44F8E001C; Tue, 28 Oct 2025 20:08:22 -0400 (EDT)
+	id 500EF8E001D; Tue, 28 Oct 2025 20:10:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5BBF68E0015; Tue, 28 Oct 2025 20:08:22 -0400 (EDT)
+	id 4B05E8E0015; Tue, 28 Oct 2025 20:10:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F9648E001C; Tue, 28 Oct 2025 20:08:22 -0400 (EDT)
+	id 39FB88E001D; Tue, 28 Oct 2025 20:10:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 421078E0015
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 20:08:22 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D40EAC05E1
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 00:08:21 +0000 (UTC)
-X-FDA: 84049214802.06.2B027A0
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1BB1CC000C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 00:08:19 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=FtrGRdHK;
-	spf=pass (imf22.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2172B8E0015
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 20:10:45 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id A66F259E26
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 00:10:44 +0000 (UTC)
+X-FDA: 84049220808.10.4F853C2
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	by imf08.hostedemail.com (Postfix) with ESMTP id C06A5160008
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 00:10:42 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=BPRMgUVL;
+	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
 	dmarc=pass (policy=none) header.from=paul-moore.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761696500;
+	s=arc-20220608; t=1761696642;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
-	b=C0c1sRegqOSyhII/hiJI8/7PNKMThp6kzkHMINNb65l+Q2mS7YcJo5lVEkOWQbR6Lc5z+Z
-	GTIeUij0hITW+RxYcR5ewWIEg6ez3mWHYYl88xwzRP9F+o5Mczf/44Hysj4qU1plEaWWBC
-	TsRE9A/Y5ep2IUwT+SM2d0rOecnn1l0=
+	bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
+	b=djA7BVvXJjFka5h5SCVMjCYb5rVP5I++JLdo/9/lcU/eg/P4LiLw8T7YDkgw7zXEAcNoH9
+	AfIhJ8HdNRTv4ZwQaA2UcMk6Z3/IXb5P4K57YXFKajDdpDp6eGLnF/MJ7zdfBkmdNJfEMu
+	Ix3MzAw0dIzRxvbTword4uVeTgWu9KU=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=paul-moore.com header.s=google header.b=FtrGRdHK;
-	spf=pass (imf22.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
+	imf08.hostedemail.com;
+	dkim=pass header.d=paul-moore.com header.s=google header.b=BPRMgUVL;
+	spf=pass (imf08.hostedemail.com: domain of paul@paul-moore.com designates 209.85.216.51 as permitted sender) smtp.mailfrom=paul@paul-moore.com;
 	dmarc=pass (policy=none) header.from=paul-moore.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761696500; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761696642; a=rsa-sha256;
 	cv=none;
-	b=0pNae2K3gQwdAunk2Z/pOw2wouniMvLSH+2C2P1OjxCj4IHkcJRs5TkVaf+W7WlIRZiJ/W
-	JoX2Ap/hGuEvgko+9bj6SFEO1vEhY+qRBioRcIs7pzAi9KcT+BWrQqhoNZlHafBqcbuIc2
-	U+mVSeUdPTSE4zavHWFEbnH6+TPuom8=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34029c5beabso1686977a91.1
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:08:19 -0700 (PDT)
+	b=FsdvlxBZmaXLJjs0XoVMGKjzo3cd3NiMzjDQNv4cni11o52miaUgdYfYxp8dDT79KH6GAt
+	revUtoN8oc2kPLnTY7zYo0Vb9dCb/JBJR17hl/5ypmmvv/HgxYaDxIfj5TvXlBufLmrFOu
+	dY96zfyrbV1As71f9Ek5dmoylagS+NA=
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-32ec291a325so5118050a91.1
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 17:10:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1761696499; x=1762301299; darn=kvack.org;
+        d=paul-moore.com; s=google; t=1761696642; x=1762301442; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
-        b=FtrGRdHKxTm0AhfxMzV/TdhSMhQFTYNPI9cbFITfkmq+qbXJ1vMGXxd8p9hEbtd7j6
-         bXc2yEGM9PNNhtp5ethzfyE4BQBort9HyX1MWAJtGJPrwCVKBNiCNr0jl9/ihmV8tLbs
-         uJpQ6pCLToHT9pu0kgHngGceRVZkqIG14e9tbws9AyQknoNvTwziVyL81t9u6iiOsvE3
-         2yEZQzTWipcSU82uAPV462B6T9TsIV6rDxhX1kmu40Aej4gUa8rlbZJNQ+hrThEnuYv4
-         NLHTt4MPdVzpk7DSjV7qDPwpvwwZi3XKwujASBNgmUBlZqlB82gfTnf8uhASPpo9wSwG
-         ub6A==
+        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
+        b=BPRMgUVLWVmE25iJQpIm2/oKStlcJENsznl4MxG11oOii5SKFPoMj4OxxAL0lkYXfO
+         mFVpxP/uwIniE/Nbg8iCJgaorDa12Go5Xf9NwEUY2gvYNXaeau70nXblfIdQVnqt+nAh
+         DDcv+cPjtZ27y6XXly9orXjt4VMeIiw6eoAGIOICn6O9AAzuqdYdTa3n0Wtu6286Iv31
+         bGKH7UaXxga6updOkrh6qWDZ3edcgmXKsYm9CCTXlWtC3bwA9aTNVZYGpmgaG7ay/VaN
+         dEsL91RgrTn05QdMUEHoDbHdQ0PFDVCdG6g+8XSWhyD05jGRCCUnr+5DJQHhQiifiRF3
+         rnuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761696499; x=1762301299;
+        d=1e100.net; s=20230601; t=1761696642; x=1762301442;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cZjzJP5BDJixdHcjsD4MEtXcdIeCfYM/75TifkWeDww=;
-        b=h3RuFyrYDaSTe0fwC4B/QMWiOIQOzsW0XYm5MY+LHl2D+HSlNXXTgf0CmV9gw9mGaG
-         AsEJCT8yqGDy3tyQaNpHzYjUyA0eSESaZE4X2zxmQEMvAi1lnxG+HZQ6/5iTRBv/gMES
-         QbLmTTSA1O0xD0mVYga0wXSmj48DsfTsgHUWuMDGXmRPinzdUweLdjXFIQrSDUzckH5J
-         2uE2Si55zpUR/7r6URUI0YbLqABeL4/NOfxietts74SswRgLFxkR2v9kVV6fYqkltwR0
-         becU6/4F5h6RGk9M9eB79P7pU5LA+myKm7u4Z2mLLTftK6eqXfY46WG/UkmdHXcFC/BY
-         +esQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV36XPvDlVn8P9Vtc1FwG6NoLY+VOeNPb1CBuZZTtYCIMoj4CCjkDLWLLU3ZMIWZuwkKG2RlmHwOQ==@kvack.org
-X-Gm-Message-State: AOJu0YymNONaBXX96MhqguN/8Y9VQF4dgKqWSQAHf7FzwTXG8h8TzuTT
-	i6li9JsIh+Qeecg9CnA6fTpUbLBKUPeSzJMiZmTokkXhNHVM0Dv771khqAVP5mNNdlQr6AXWLIN
-	+XzrdFt49rAB/CwlGGB37jKti32SAPteY3MV1Cx/I
-X-Gm-Gg: ASbGncvhaNpMlAR9uWkUS2TP7qjDKPb1j7aPnChKrQCBF9EOGR1fquRWDQk2RJc8ldz
-	2dnbgpCF+wlprUEgAWe/KF91BV24i5FcyijbD9U7rgep+FlkmL6fQOK1JrAHQqBUjkclboHGPfY
-	L7cF67/b5qbvWehAV7ePkUCPvC0BDWm2sTqcVfwSqhNvottnG4YEZ7+s8X6MFyj+1s+SoZPL+0S
-	YJGRJYjNX17YZDbsHCeikjxMAQMJmy6YXDPShzWS4c0juPLhvrbL//LP8hM
-X-Google-Smtp-Source: AGHT+IGEKRPFq5L2rd6w/ubcuTn//BXhetf/wOj9xAOGHPjYYno+UXGan0WlvoJBaoZ1JF4tIK0SCxZjeiDlUqLjb6g=
-X-Received: by 2002:a17:90b:4a05:b0:339:ef05:3575 with SMTP id
- 98e67ed59e1d1-3403a294f2fmr971614a91.26.1761696498871; Tue, 28 Oct 2025
- 17:08:18 -0700 (PDT)
+        bh=OAeYT3sIf5J+urxpWRZdGCYWbbcmjWbjfXki2vhXqBo=;
+        b=eryGQh22QfXldJOD1DTzHaOhVKYPIRx9+fdOiQPPEGqIriGPzUSRZlt2hss1KKiHag
+         5u3ttSwLrTUUOUY6V44eQZNnPqT2epO+dkRxPbRzfMp6zxky6hk7hH9OhA9f9rqedGMW
+         DQhOvnUXxvWwjPdR4ttvqmI3KX5JJGcJq0G+YQyTG1AGx1JfrTh0/32chbJe6OY9UmXK
+         ZFaMc+N9ESF+q7OVoreZ/GXdTd2ji4hXtCW874phePg1i19FMnqPWUOPcj0gei8JOfbk
+         4o13rhe+bTu0vt/U2Azojj9tdHdLMfrlylVvtf3rQ+W8/urtoe/REazN9ohbR2UOv5/2
+         RM4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVLu9PK+w08fqRXykatU8Mu4wxzKnvXbSigc6xYppcD4EdT6duoAJqcmg4hyIjMvMRqDOrP1gQIlQ==@kvack.org
+X-Gm-Message-State: AOJu0Yzzcnu0iIrKaeuBkyhthWStffPtUioB+NxO95hsULrclUjaGK2o
+	XbSv1LZl5IoP2uAIcBynsgTxnudu20W9SSoABr/b+950oda7zJ0WSjikTZzOduRzSkqM9wKBJBG
+	VcbtvAGiKiglHI9jlENt+GPb0OYSuXcHpxlXMv/Z7
+X-Gm-Gg: ASbGncu3SZkL1cwA7+ec92DeVK1WvF03qkGsXo2Sw1+PvaBxGEenqJRacWdwbkmAUWZ
+	5mV9w48Cyj2X3S8rstZdpnnroRefpFF5gBT8DpkhY4QeTD2GSymgQAHhzzLgRUj2zQED51tC5US
+	da40ROyVPntKvEQh8pJeowOw6RGRmuL0oJxhu5W/2tZmfJXmzAFVU2hN3q4QuiiHiZ/71edFmPJ
+	shlf6DGETBKI9ViqHE7Ljk1ZIBnClTt5RGwBuwfStiUMc/X8CKnfLHtHd+X
+X-Google-Smtp-Source: AGHT+IGhjs8q4GiygXwr6DCqhQXMqWhNs5oaPfnq5KAn4id0agHe+xmdqRLWlZPNOFZ/N+dUgAnaM8QQHq+RXzkh3rE=
+X-Received: by 2002:a17:90b:4c8c:b0:32e:d600:4fdb with SMTP id
+ 98e67ed59e1d1-3403a2a1014mr987268a91.18.1761696641654; Tue, 28 Oct 2025
+ 17:10:41 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-34-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251028004614.393374-34-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-49-viro@zeniv.linux.org.uk>
+In-Reply-To: <20251028004614.393374-49-viro@zeniv.linux.org.uk>
 From: Paul Moore <paul@paul-moore.com>
-Date: Tue, 28 Oct 2025 20:08:07 -0400
-X-Gm-Features: AWmQ_blBn2fdqYcxKi_H91_QLngZD09fAUzDyH5oMtRPekpRq9pqWMOuQKzGUHw
-Message-ID: <CAHC9VhSeiK=qqLMUDAKRTgS5EEHdVvLD7-afuDqJWYFindvfUA@mail.gmail.com>
-Subject: Re: [PATCH v2 33/50] selinuxfs: don't stash the dentry of /policy_capabilities
+Date: Tue, 28 Oct 2025 20:10:29 -0400
+X-Gm-Features: AWmQ_bnyVa46lrJnSEC4p7b8a6-fhgKBPo6xvMl8XVNnPJL6uMjYjs2dxSO45Ps
+Message-ID: <CAHC9VhRX6kqFbbKuOoKOLLve6c+7TN3=fXHrtXyj=osfNYd+2A@mail.gmail.com>
+Subject: Re: [PATCH v2 48/50] convert securityfs
 To: Al Viro <viro@zeniv.linux.org.uk>
 Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
 	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
@@ -106,14 +106,15 @@ Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
 	borntraeger@linux.ibm.com, bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1BB1CC000C
-X-Stat-Signature: 1xgzpuyhwjxrp9uscde13zgpfczwkitk
+X-Stat-Signature: 7rgd6szu3wygc4q5k75d5zrt1rdxgm5r
 X-Rspam-User: 
-X-HE-Tag: 1761696499-69609
-X-HE-Meta: U2FsdGVkX18JwUVdSffQhdvv1BhTqNWyaNQ9FMjguUPxb2boxZE0fXmJFdKJayu3EKJy0ir0rokbtNupPq+8zTimgazdCd1cNCzZXfepTd+lMOdhU+KYC+tWowlXuR+Hi+hUmfowmHCp3omR8lu+yAb5Eh1pPYFuCZZDDeV7r0TmBhr48xq4+pg5BPcGEo/hK0f6y3SC5GBl2930Ctt0L8Tflw7UnyW0vmmsyP4fgGdxg58pbRU7hw6n1pwxb17jqCbJ9xExKGT8KmIG5us64R6JXdinGEqBkXcpFJ6amEWJoJWzMtIMEWx0FFSAxn6c7vC+EEvCuB5XSazsU6FHWhT+T2GbrolOpPEkYS5bR/cRK/ghU8UWKf1cQnfl7FsAbvLEVlpKN+ziXoYQG1TZzuUIXMdHuQTvzq9tHSDQoD1z0IHcC+Iv3Y8tpOZ841cPekJ8doc/Pyfag2LHhivp8ke2v4aqnSpjc1LUWZR1RO+sUMX8GTEHFqv4Rl9MpU75GYsP0jpEMjEFcjUB8tU5mD9twCkUPJ2PUqfQHzQDeGhJQKEnqw2MMZj8/1vzl+IqbbfjK7p9YOozS5zuxq4T4YJzxneoMfnBnsyhmX3nV0RDsM0QCsF88BYNetIapUhxV8veUA6v/3/i/hXDLgF0pMCKLYCXEHrIV+pICMNyR0pM7AhsrzbcEoda+5iKJFI2dSEfTx03wz061nZY6hbeDM/T26JLGX+YZrVeAihjBSKBX/0v0c7HwhAV/hReVJFrTfg9ZBa8V82yEdfeOPWoV/USmCWuY7W57Xo5pGu0kOVefNity//L5L3BS3Lqit9ZDYOLD3BHw6nIuUb05Uhxh/5pXZRfwFT31aKBmlR8nuTka66rNXlWFYMzXRRMhO4TSlKBP0QMdBlHpU5Ycu3Bu59eyHLVcck9laFkkwZN7gAhHEDpSQMhr1qIhuJ/LekSt07S2HlQuNkFtqThrLS
- QRw==
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: C06A5160008
+X-HE-Tag: 1761696642-30247
+X-HE-Meta: U2FsdGVkX18ZhDbcDiO2HfYNL6tOcUd4cLf7NnS3+X0wN+xxooTQDtv8tIApIwadsXulgtlY6sMfEtRkBon0lgVEbAEWwBl+VYuwwaSL5HMOXaFJXo+3pMCgkEM7zZjkkj8fS5HRCbRSfZQ6noAk7sOXxy0JHzyRzFN87ubX9vYOqqPiGRSPhoznPUfGUrGQjKY6yf5TNU0feVJaXpvsrKyGhW08ObPMLPTANbyCgjCYtJ4IixiyMI+Lti9BVbEF46iQRXb1LTjeiAZYQ6FHu7SGiNHdL6vTk11n6jXcBcpKnaA0Zn+DCJFo20ly4HTF4MCvNAMoBOlP1lovGNAiQUqpYjoCZwoYrYQjnwNjsfsA2iBomrfGGPlb1w2UPXUCQW6IYVEy7LLPBy8xERpdqmGQU9idRX7ZULwjp+JY2fkHB00bs3Gs0/qMGZq011L6WYdNwlidaNmMAzWwhztvhmtwt5PyAq0rBqQFLUAY2LOUw2sICs5LG430j181GC7dxW6bZ9L8/+ZU+ZdzrG+LuLUllmezW2V2WEbRK2OzJyzbHMrFt8vif83UpPpDnXD2Bnep07+1mgO+kTKdPDGD7eaImLyvibTXrYRQ1xoclgt8LAwH5lX3vmYh8/P89zZwV+LNNVvi2I5Ama7PHtxzUITIGg4iys89Pl15pwEzmrgQIRPr3q8ai01bivZKleqb5SSt1VQ1803iaN5SegVpGLn+F4Q1ZZU3VUR9jyHXJZNDQig1lbTJLSOa4xpLmYK/wnYQUCYLi2IqB4cqmk3hG7D2XYq/wJv1h9vKF0DsGQL5d8XK2OZ4L3x8LnqHMtrLcdntAb6HSr1PsFKIQDRWWnOgpGqsOS0TYeq4xqkrvex0pklpcmKuAu7DUu7ZD5VsGk99VKR+hHKkQEE4Iy1n28tk+IYh72WYTQSVEXOCs8fji6K6Kcwi1GgRxV09V8KzZ5ctVVYvVlUi6yQeaef
+ ZSdo3LRe
+ ro2DPH3bYgENyY827tG5mq/PMKWf5DPDXWa3Xy+T3Qj8lKB3HmUYmLxKUjH4psTs5XJ5moNtzKBS3GN4RhIIEQ3TITarpURo2ZudqLhnY+TfGTY0fTofK8COEiqrhC1AwZtljHeVlf3jWR3w4PMC5t95GGztWqEzF66zvmmKx7+7m3GKVKtEU9EoICgtcqjZq9iy20BcUF9Wb5mBtSWcfpuvEu2xrg94WKVnFaa1PDKwD5+gbLljjczG/zbz1RtQHruDPjak+r0wcCU7ss7YgdvlLgGOcyx5ptoi0AfdxlAjNQw04L+MlhCMQhiuE2C4vAf27pNtiZH2z1yvEOFmDfa8Z916HPxcHTegg
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000364, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -124,19 +125,22 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On Mon, Oct 27, 2025 at 8:46=E2=80=AFPM Al Viro <viro@zeniv.linux.org.uk> w=
 rote:
 >
-> Don't bother to store the dentry of /policy_capabilities - it belongs
-> to invariant part of tree and we only use it to populate that directory,
-> so there's no reason to keep it around afterwards.
+> securityfs uses simple_recursive_removal(), but does not bother to mark
+> dentries persistent.  This is the only place where it still happens; get
+> rid of that irregularity.
 >
-> Same situation as with /avc, /ss, etc.  There are two directories that
-> get replaced on policy load - /class and /booleans.  These we need to
-> stash (and update the pointers on policy reload); /policy_capabilities
-> is not in the same boat.
+> * use simple_{start,done}_creating() and d_make_persitent(); kill_litter_=
+super()
+> use was already gone, since we empty the filesystem instance before it ge=
+ts
+> shut down.
 >
 > Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 > ---
->  security/selinux/selinuxfs.c | 21 +++++++++------------
->  1 file changed, 9 insertions(+), 12 deletions(-)
+>  security/inode.c | 33 ++++++++++++---------------------
+>  1 file changed, 12 insertions(+), 21 deletions(-)
+
+Much cleaner now.
 
 Acked-by: Paul Moore <paul@paul-moore.com>
 
