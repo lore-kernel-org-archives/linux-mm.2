@@ -4,139 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F324CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 19:59:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0404ECCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:06:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A602D8E00E8; Wed, 29 Oct 2025 15:56:43 -0400 (EDT)
+	id 45B328E00E9; Wed, 29 Oct 2025 16:06:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9C24A8E00B2; Wed, 29 Oct 2025 15:56:43 -0400 (EDT)
+	id 432C78E00B2; Wed, 29 Oct 2025 16:06:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72AB48E00E8; Wed, 29 Oct 2025 15:56:43 -0400 (EDT)
+	id 3212A8E00E9; Wed, 29 Oct 2025 16:06:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 587598E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:56:43 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0A4125BB7A
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:56:43 +0000 (UTC)
-X-FDA: 84052209486.07.0222FA3
-Received: from purple.birch.relay.mailchannels.net (purple.birch.relay.mailchannels.net [23.83.209.150])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 70E761A0007
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:56:40 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=BtIQ9oLP;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.209.150 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761767800;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1E36F8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:06:15 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CEBE5BC1C3
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:06:14 +0000 (UTC)
+X-FDA: 84052233468.22.713E7B2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 380FF4000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:06:11 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XesAeEvE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ApPLo/gT";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XesAeEvE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ApPLo/gT";
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761768372;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WolUbWMYhTKtGWyaFGgWLL2fNJKOm0lY0CYaviwkYk8=;
-	b=bIGlEUJ/5K2hEgi5XQgtH9WKHaCqSRDeNo+jzzEd7Y/3wVDJXjsx9D/h7N7d4gND66C9Vl
-	Es0v0ejKBDIqPJkPz1BzWajFUdDTK6aPH5q3dUlSOe767YyOnCI/Mffx+Yw+FShs0qhCy6
-	83TiBFrwXcKL4cUKNx5HFGAJn832kio=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=BtIQ9oLP;
-	dmarc=none;
-	spf=pass (imf19.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.209.150 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
-	arc=pass ("mailchannels.net:s=arc-2022:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761767800; a=rsa-sha256;
-	cv=pass;
-	b=lB8vhw9Kwc4ZnADgkOq5nTwq0RAjiQERGa8wwzo9nYlRXC6u9HVK5XbGtMU1K5iPMzwddk
-	qWqBuo1dm6PFdyWObnprB/kfYjntLegYZq8J/2xNrzchzYNvt5XJWlGNLcXA252UH3MugI
-	JCCvXQ0i0Bl9u42xV7/kJ9lVwlNJuoo=
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-Received: from relay.mailchannels.net (localhost [127.0.0.1])
-	by relay.mailchannels.net (Postfix) with ESMTP id 10EA68C21F0;
-	Wed, 29 Oct 2025 19:56:39 +0000 (UTC)
-Received: from fr-int-smtpout17.hostinger.io (trex-green-1.trex.outbound.svc.cluster.local [100.121.87.108])
-	(Authenticated sender: hostingeremail)
-	by relay.mailchannels.net (Postfix) with ESMTPA id 8DC438C1D5C;
-	Wed, 29 Oct 2025 19:56:37 +0000 (UTC)
-ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761767798; a=rsa-sha256;
-	cv=none;
-	b=LD0/tOlrd5/2wZtAA84S/iugi6j8Z3jhVxibKSDgfSHSb0anzag2xZ4cEVgGXN3QAchfEV
-	5AV50+BPVkIQfovk+55Hoh5qyL6P8V/NOx77qy7bvYcWnnT4ytv4cfWLxAoPt1Lbu832sw
-	y2q1IejGPeu7gzfhaHSSgjwDWVP46HLmlZ7BYErpvDXzXZfqJt8ssn0ky2bgqY9OruXI27
-	OMVJNtdw6Hnx5udPrG0il5GFdyplTyVSEc/QK+KwdvrD6A+0Ff30Y4IXxO3mGQqfWaN/+l
-	NyujdabCkB3eFZwcGbKlq5vkyloVC6yQEG3K2dNuKAv3qfHKPuhCsiLMUOoNBQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
- d=mailchannels.net;
-	s=arc-2022; t=1761767798;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WolUbWMYhTKtGWyaFGgWLL2fNJKOm0lY0CYaviwkYk8=;
-	b=zjGorpWpXKAhJQ/kB77E6L58byi9x8pCb9r/VHoPmZu8VjkPKXHpZc6g4CMCO0s6J5KfdG
-	fBr8YTIMoHY/rfipqxNAUnWTQewB/+XeyY6jGyAZl1sOArydF5+rBCT+HM81dWdaKNilof
-	3THXVBYSDstTShU2QlL0evpMqyb+25srygeV7sAVJqYl02I/9vXry8QSf8mHuo+rLfcns6
-	ege4X5gYFm0CxEhwiMopEeB8vh3KICp/bgCw+GC2Wz5ewk55x9UCdTaIiGm1CPz/5XEB1T
-	Gt2hHoVSOLlEhSIy1w7S4H1hqEzCBG2jdTd1Wa8+CMhGzHy3qjrq0qnVUq2TzA==
+	bh=1K2si2V9W9zo0go0yDRYK2pKFo0UoWxQ6EW/yImCMlg=;
+	b=24483+7s5jEItWWuNvV5BiFQKDMIBae+3sYRpLm0bdHs8M3CkZ+y0zB/crDRqIOgQ+yYky
+	8AaEtOhtEAsxbKFbKaHNL5Qs8IcEGOYZDzt0fFxM0B50uAQTYjTlV4yK0WhlMAQTs96O0g
+	b/GAm8OeOV4Jwh3zFXeHA1liXv0TclA=
 ARC-Authentication-Results: i=1;
-	rspamd-77bb85d8d5-gc7jm;
-	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
-X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MC-Relay: Neutral
-X-MailChannels-SenderId:
- hostingeremail|x-authuser|contato@israelbatista.dev.br
-X-MailChannels-Auth-Id: hostingeremail
-X-Ski-Tank: 63c1d51e1a5db1a2_1761767798943_4097797406
-X-MC-Loop-Signature: 1761767798943:2569415482
-X-MC-Ingress-Time: 1761767798942
-Received: from fr-int-smtpout17.hostinger.io (fr-int-smtpout17.hostinger.io
- [148.222.54.37])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
-	by 100.121.87.108 (trex/7.1.3);
-	Wed, 29 Oct 2025 19:56:38 +0000
-Received: from fedora.tail0cc0bf.ts.net (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
-	(Authenticated sender: contato@israelbatista.dev.br)
-	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cxdKr2GMCz1yFv;
-	Wed, 29 Oct 2025 19:56:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
-	s=hostingermail-a; t=1761767793;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
+	imf17.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XesAeEvE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ApPLo/gT";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=XesAeEvE;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ApPLo/gT";
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768372; a=rsa-sha256;
+	cv=none;
+	b=QoxdVT2jLZ9YlINJnOXvC2AVxMmVk9tWkPYo3j483PgTWLrtpf1ECrE6FXXgtaSo241hqJ
+	Ez60Tc5LUhrG4RZy2w2aF1hWCCzRrTOBlqP4ciB0ykc2wyQ1ZpuyfI3jVzLoEjwzHzLNBe
+	J6zzcZg6/WgJEhRDFACd71XIEG/QmPE=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4DF833462A;
+	Wed, 29 Oct 2025 20:06:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761768370; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WolUbWMYhTKtGWyaFGgWLL2fNJKOm0lY0CYaviwkYk8=;
-	b=BtIQ9oLPkSMCQUMn2Rasyp+Elzoia/7ILPsjLO1XJKaUm+6TgsLElJHY3ksH6oeHLaRyRE
-	40OoGh3gXemrXGLDcWoUkUClds/zvFj4RwP61a369RkGSZ0MnkwHg6NYdLMuG8cPuPpyhJ
-	O7OgKca5BYNaNXz80WZWMXUzYoIkHMgewEbyL8mCjRc80nKAmqwAksqPIRF3o1vYAFo4GE
-	hkrQ06TorJCyuj2nK60EJIfWsV8/+kDDwNrrBhPgI1K9EEgm+LgcfKXWdXlhKxsNCkqg9E
-	+D+r9v7m0PhxmybYIYH7gxgadJq5SCzAGExKp6gxNmPyypmdqeoViTL9m5eynw==
-From: Israel Batista <linux@israelbatista.dev.br>
-To: david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: osandov@osandov.com,
-	linux-debuggers@vger.kernel.org
-Subject: [PATCH v2 3/3] mm: change type of parameter for memory_notify
-Message-ID: <20251029195617.2210700-4-linux@israelbatista.dev.br>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251029195617.2210700-1-linux@israelbatista.dev.br>
-References: <20251029195617.2210700-1-linux@israelbatista.dev.br>
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1K2si2V9W9zo0go0yDRYK2pKFo0UoWxQ6EW/yImCMlg=;
+	b=XesAeEvEBcp2wZCBnHcDJOOrn8ta5ZEKToqcvnOK4EbRi/n1GznqYIxQpgM+AGijZDoK4l
+	nDtZEffLTm0L7cTZEpz/x7JgmX2PudsUZodblxeHUsbW4CYWVoiMQa1yRYA++yR1wJyNSK
+	95LInYV7bNTlEtEqFnrAB0Not6zXUj8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761768370;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1K2si2V9W9zo0go0yDRYK2pKFo0UoWxQ6EW/yImCMlg=;
+	b=ApPLo/gTIjc2TE/w6BQHdAVKefWoMh2AwUICgu2zdSw/lJ+74fyyGNsNe0ZTwALQdKRacg
+	IKg35NXPDwRdhkAQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761768370; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1K2si2V9W9zo0go0yDRYK2pKFo0UoWxQ6EW/yImCMlg=;
+	b=XesAeEvEBcp2wZCBnHcDJOOrn8ta5ZEKToqcvnOK4EbRi/n1GznqYIxQpgM+AGijZDoK4l
+	nDtZEffLTm0L7cTZEpz/x7JgmX2PudsUZodblxeHUsbW4CYWVoiMQa1yRYA++yR1wJyNSK
+	95LInYV7bNTlEtEqFnrAB0Not6zXUj8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761768370;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1K2si2V9W9zo0go0yDRYK2pKFo0UoWxQ6EW/yImCMlg=;
+	b=ApPLo/gTIjc2TE/w6BQHdAVKefWoMh2AwUICgu2zdSw/lJ+74fyyGNsNe0ZTwALQdKRacg
+	IKg35NXPDwRdhkAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D8A0D1349D;
+	Wed, 29 Oct 2025 20:06:09 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id XH2dM7FzAmnXfAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 20:06:09 +0000
+Message-ID: <982967fc-5636-46dc-83a1-ed3f4d98c8ae@suse.cz>
+Date: Wed, 29 Oct 2025 21:06:09 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Date: Wed, 29 Oct 2025 19:56:32 +0000 (UTC)
-X-CM-Analysis: v=2.4 cv=Lflu6Sfi c=1 sm=1 tr=0 ts=69027171 a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=3FHmPtoGU__ThbcyW-YA:9 a=TWtOS45hTxhqQf3p7L_t:22
-X-CM-Envelope: MS4xfOr2t4fMGbO1cIbv2cvqJNLlyQEhTM+BFZcrKeoDHbHRbE+TTAeQFMMS+2KXyLL80hLnV+W5WR0jPz9UJKmC84B2p8uRTCytNPyHKLxSJLaNhlyesGo+ Fx6pnnWk9I7DRuEPBa1zAwLpFIlTsA9y+yh83SQT9egmbM7TuqCsU4GkataESsjIubNi7zhgbFBegwAKt8CMmsH8qxXozWyCXgsfZ6Uxe7r0BluX/Dl8TFWi FiXLxHf0cFAlvoe2SUHNGvFhb+bxDsPuml8AcQkdzX1qbMdS2l6olnw78E21xH3SxmWfj9K4St9ZDwBFPDdtbjbTbf+2xRiuE43ES5lmiMS+tQujkxRnNfcR huaWFY2RQSXjpUR5Mr1K9aIoKAxs7RkEuoIr1rqg6JOK7nRkrJbLvgY2NeGBwEedRfj6LMCwdWxSKiV4U5YQMJM3k8n6fNU1pGO62MdtvybT/rofLp0=
-X-AuthUser: contato@israelbatista.dev.br
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 08/19] slab: handle kmalloc sheaves bootstrap
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-8-6ffa2c9941c0@suse.cz>
+ <aP8NMX48FLn8FPZD@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aP8NMX48FLn8FPZD@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: t9efsjzgku1tp8hjiobrwiejbtawpj7g
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 70E761A0007
-X-Rspamd-Server: rspam03
-X-Stat-Signature: i1pznk8yp17jn74iwupu15ci98c4nmmj
-X-HE-Tag: 1761767800-878258
-X-HE-Meta: U2FsdGVkX1/C4F0dxPZy6Kd+iRAn4RTE5f9gpj8roayQUHFg2osQThHxe+USkH3ZmbqX/h0e1ag2SsJlFvNbIqwXXDK0yijYMViq5D4bcal5EuTYjU4AgvV8zvV7rZIZCu5VGmAyGDobqMjwIcRI7isJAkSVOVuP5kLp0kKPaUsxjp/wsrvWyKtuvp88Uyl+xbAHW30WjCM/Rg1xfptejXLfYwQVm4C89l/kshnFPfoGbdzdDpzxS81XxiT7NcW7HavxjXoHZBqp9YOQSZONGMB/Gn7rHVi0Bomf/LjgqqkUZ7jnslNro9reCIbgdgM4hXKrNy/dnxi9sr5DAMyCmkrAvQS0veSId9yJrgONhm6MD9fwbdPyghAQWkL+z3KgnU6y9lhM6XEFTWRLZEidpUECWS73GSoMtB7Qbf1xgH/fgUdSwju8QFR9DWAQ98BdJSUMnhAdPwr4jMIZpDmc/X320I0hNb9B/YO//4JAPspuO6Plb3wuIs7trgRI9dclphsCuHEl+XknMDeU7jsdYT1CsHYmU5x+bGKdtFrOJ7y32UUCsscnwXmSMyo134V6dmzr/PJgZVmL7emA1N1WQOXiEcemVc/DaFkp40bQCpmE8U2xzRkG6+3xVSNCqnpZyfQIaWf9e6NCwcGODx8BUwF1s3JtRn9G84DgJ0PMbLavyG4gC7/+ztKtLtCjER6mKhS8Zmwd+aDeq8t4o0ufjP+a4+eRcKq676D4eA45ttz6dkEPEahTUOOcMxRLiUGLW5y2st8v/phczKO0TexqhXu0F7eDH6MNiK9xZthDluXJ7rdwgxD6IWS7TPBXCtNU5FgLv0WcgbuuQAglf9WszU8dumwzS9/gqBKRSpAmgnGs9Tr2TOSLozhTD1nNZ3VFtNOqQ9/fmpazq0ihoxPq1Ut+TQ6t4VdtqSUMxigacHtL3mdQkjr3JIC1XCYK2iln9E/Q2jc714ziZfY9N0i
- msIWHq6S
- Kepmyl8kSkpdzXONFk2Mcukthx3s6nKDgQ8eoSsu8hFatG5dbqyn6kl+YBSsxmcDOxrD6ZMCVtMCaa1hsNj+gbFFZxexH19rZJ7XfdKE6UWg9H0ao/0XPHhQc45/dnIIszs4LR4P+DKiC5tmTXZ6qATE9VImLJSYlgPDjdEqv2b4JJKDkrqtEi3Nfb5lNNHaiJ/IpoBTZORI/qr3aiSo85Pc6NJzYfT7OYAuc1Yr2YbOKTvNvU4h28nBneqMxiivkyBJ0vsp04MjeukLauOwoHOcfFkfp7FGfwVP6cCitF5L7NqUEzn0cHlmsuCjWuLMSxs1dPWBb4gGY+xKrDytStLggD4PIx5dkyTslybykZYeu5lmwQcnfBAHwlXzO1qnq61Zd
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000061, version=1.2.4
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 380FF4000C
+X-HE-Tag: 1761768371-53929
+X-HE-Meta: U2FsdGVkX19Mgh+GtCSdobjF0PMRHEjd4iV86vXMoBs6N6jywR6yjIw0vVI8ouY4L4xcdLZyduSFp3LdFXVehHixpqeMmNPLZevNVGEkeTFEuudIFjzCtdAT9WBl7en0Z+si646PHbq8ubFOJLj32Vq9z6A2Ilvn4LJNLSRLrFqqxnwSshsDHLGcVXYFaq+I/WzYMAFQ0PryeINaikajyo9zrSwPz2BDzT0QeoabaXnHrryOmlIx4Eou7s2xAzBvihC6C8Q9tu7Mu7GhJuOlSHC9Pv379Rnc2iDjII2WgErdTg0+Xg8wZgPod6TiAShhHt6Lz76Sd3jixl6k9F/LTGHQGhXsp/CVIuzfaRuDaxx4XeqlKoXYQlCQXHW1MaszVIHtEdY53aUeIqi0fzb7Ms8s/pioxPeINEhHQd3ljOtBl1WnrFcLrW//f4QvqTQo4yNAZHKOJkDSnOgRVfyveaxpqcPsby93Vwok4HEjAd5rrEWVxd3mr0P6Hka4sjRW+2s2+2n+Ttr749tLg9wN0PyrJl9dX7LMPkVbud6oi77Rl119NXenM/x/Nm9Dc08vJLIvCfvq5GnLsNtWtMIxqUY45XnYxY/zLvugxsreGsm1gbjHu8iJT9kbMz126AdHlyusyFRx0gnqwv9XVaugPyzsySSihZv5f6pvVsowCyljJdgaj35jed93NvRZ+v6Qn46iaToGK4Ofm/nvDZZzcGbwAvJiNRutXc6HavCnjJrVFvDLEJxmHxd3wM3Gai/R1aJ5IBun5hGjkWjA+t9NAHpfkrX8nfEw7NsUQuXWSxsuOzIFaBotMig8Ypt8wv/+ExfiM3kOZQZsPTsxq230/SeuLOCGSBFUfA9+PzWEH05PQpOJk8bFniV0FzvBfNKHq+jw+GwP8olFaOz/1vbUx4KsylZLPLI/37Ua/s/ah5V/l2Nczx3WRu5Nh7b3yqUOhawEt4Z9v8hojdjG7YS
+ 2ZyixQNC
+ XdphCeFbUhuE/SiUOO1A5XBj3z6aSlbIjRxetbsfXIeh19iHH+D0rAcgCzRIrai5IJ4dlAEQrPA1hGcw8r4iR+J1nW9CRnl97KNWqV5MPu/04K/8HXAqUwsudvCDwbBa3+CyRjJ8SOp2UZF/VktvqfmRuFH919Rib5nz99hnD7iKT6FJiJsnSRqtfwYopxOsPSYuaHAEETOX58DK/9JKZN03SYcqOjwN2IMk9I6UPwaKqqMUTcG6O5yPz1tImgFWP3aB0Bro/eaIawqfVYqJda5SrNj/jSN74OGdQ
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -144,57 +187,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The memory_notify function is responsible for sending events related to
-memory hotplugging to a notification queue. Since all the events must
-match one of the values from the enum memory_block_state, it is
-appropriate to change the function parameter type to make this
-condition explicit at compile time.
+On 10/27/25 07:12, Harry Yoo wrote:
+>> @@ -8549,6 +8559,74 @@ static struct kmem_cache * __init bootstrap(struct kmem_cache *static_cache)
+>>  	return s;
+>>  }
+>>  
+>> +/*
+>> + * Finish the sheaves initialization done normally by init_percpu_sheaves() and
+>> + * init_kmem_cache_nodes(). For normal kmalloc caches we have to bootstrap it
+>> + * since sheaves and barns are allocated by kmalloc.
+>> + */
+>> +static void __init bootstrap_cache_sheaves(struct kmem_cache *s)
+>> +{
+>> +	struct kmem_cache_args empty_args = {};
+>> +	unsigned int capacity;
+>> +	bool failed = false;
+>> +	int node, cpu;
+>> +
+>> +	capacity = calculate_sheaf_capacity(s, &empty_args);
+>> +
+>> +	/* capacity can be 0 due to debugging or SLUB_TINY */
+>> +	if (!capacity)
+>> +		return;
+> 
+> I think pcs->main should still be !NULL in this case?
 
-Signed-off-by: Israel Batista <linux@israelbatista.dev.br>
----
- drivers/base/memory.c  | 4 ++--
- include/linux/memory.h | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/base/memory.c b/drivers/base/memory.c
-index 3d17dd774947..c03f3b5e5e6f 100644
---- a/drivers/base/memory.c
-+++ b/drivers/base/memory.c
-@@ -204,9 +204,9 @@ static ssize_t state_show(struct device *dev, struct device_attribute *attr,
- 	return sysfs_emit(buf, "%s\n", output);
- }
- 
--int memory_notify(unsigned long val, void *v)
-+int memory_notify(enum memory_block_state state, void *v)
- {
--	return blocking_notifier_call_chain(&memory_chain, val, v);
-+	return blocking_notifier_call_chain(&memory_chain, state, v);
- }
- 
- #if defined(CONFIG_MEMORY_FAILURE) && defined(CONFIG_MEMORY_HOTPLUG)
-diff --git a/include/linux/memory.h b/include/linux/memory.h
-index 36d733283329..6a2456686bf4 100644
---- a/include/linux/memory.h
-+++ b/include/linux/memory.h
-@@ -141,7 +141,7 @@ static inline int register_memory_notifier(struct notifier_block *nb)
- static inline void unregister_memory_notifier(struct notifier_block *nb)
- {
- }
--static inline int memory_notify(unsigned long val, void *v)
-+static inline int memory_notify(enum memory_block_state state, void *v)
- {
- 	return 0;
- }
-@@ -165,7 +165,7 @@ int create_memory_block_devices(unsigned long start, unsigned long size,
- 				struct memory_group *group);
- void remove_memory_block_devices(unsigned long start, unsigned long size);
- extern void memory_dev_init(void);
--extern int memory_notify(unsigned long val, void *v);
-+extern int memory_notify(enum memory_block_state state, void *v);
- extern struct memory_block *find_memory_block(unsigned long section_nr);
- typedef int (*walk_memory_blocks_func_t)(struct memory_block *, void *);
- extern int walk_memory_blocks(unsigned long start, unsigned long size,
--- 
-2.51.0
-
+It will remain to be set to bootstrap_sheaf, and with s->sheaf_capacity
+things will continue to work.
 
