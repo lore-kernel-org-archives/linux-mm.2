@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3E2BCCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:08:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 181FCCCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:08:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 745108E00EC; Wed, 29 Oct 2025 16:07:51 -0400 (EDT)
+	id 8CD058E00ED; Wed, 29 Oct 2025 16:08:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4D2D98E00B2; Wed, 29 Oct 2025 16:07:51 -0400 (EDT)
+	id 7E1138E00B2; Wed, 29 Oct 2025 16:08:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C2858E00EC; Wed, 29 Oct 2025 16:07:51 -0400 (EDT)
+	id 6A9138E00ED; Wed, 29 Oct 2025 16:08:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 183028E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:07:51 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A6A5CBC1A9
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:07:50 +0000 (UTC)
-X-FDA: 84052237500.17.B0B6677
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	by imf21.hostedemail.com (Postfix) with ESMTP id AFD661C0005
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:07:48 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=bjmx3g8O;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 587508E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:08:30 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3D5412B12B
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:08:29 +0000 (UTC)
+X-FDA: 84052239138.12.3F4B76A
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 30288140008
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:08:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=f1ahGvJ8;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf23.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761768469;
+	s=arc-20220608; t=1761768508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=h7bOmcRxuqO6z3MZPe9zBvs6V2vz8fOGqA1RpHhG/FE=;
-	b=zOWQJESslUxnwRHhDshFU5yRphTYWEj9rfhCr4RHMhnHmw+zIiPBTMCFsKfB0qBmz4Mjy2
-	WReputigXXnZyqPfE749aakj05+sm5EYVpd7S9Qf4dSZwdmoGS/E5iyi+iBkCQ9Eti4Nx1
-	oM+3dnMxY5+C8HQWuzsddHp5zdthkX0=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=bjmx3g8O;
-	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768469; a=rsa-sha256;
+	bh=Ye8tYnzEiAyAJOizOqIrcZYSk2K1DbVUwkfvl955amo=;
+	b=qxPD7d2UKqU/k+wPt9UniuMfxcIb+Ln9ursOSn91HvCM49g6FE6V8M1v9xghrxprKHa/fn
+	0iZeAdkI/0rEjVz+xcWJv+mm/zMm0KdMRuB026OAKRi9vmKczSS5n34STTz0Xg6yJcMfdO
+	bJMBErP2xHEJ68ArYV9FB4FvMzG8rjM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768508; a=rsa-sha256;
 	cv=none;
-	b=PXQ9WIaBODJijJALn8CRgShv4wxG7R1hYGdFrJuTPYxcWo0J1UG0dTnAhtwdvEnsscCgPb
-	9SvIc0PaXGpyp10yWVf9Q7mh9luML8Fwu26pKsJU0N8RdkBTpXoKJD7Fmi0kn8qLfdbzSy
-	heZ4WS87skVYn4buTXZQXdEFGNxqHNM=
+	b=tjFDU1l9U4CU8xiPi/KLTPY74dwz07SQMDiSeciWfb5IjJlEY7kcIDeD/CHAL1mKXjTxjj
+	1fgT0Ge+I3LItUHFhm61JXhK1c+nzYzq3tK/WJPxWe/+BcLOMxj929VOFEBYz8ZYhoxf6+
+	MJFu/T0BdT1tAFnjdGUFCM2KpJ0KrMg=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=f1ahGvJ8;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf23.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1761768465; x=1762027665;
-	bh=h7bOmcRxuqO6z3MZPe9zBvs6V2vz8fOGqA1RpHhG/FE=;
+	s=protonmail3; t=1761768504; x=1762027704;
+	bh=Ye8tYnzEiAyAJOizOqIrcZYSk2K1DbVUwkfvl955amo=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=bjmx3g8OlacQX7FEB7CB4gFpPcUTD0I5Kc1p43/y9uXqIMVnKJWIWOuru2SF/QQfu
-	 6AiAPDukFzXStuxWTR5WDI0wUwQ3jAjKxjVKN/rW5W4cFnmYpLhh/SnXC+CNzfiPNN
-	 yCU0Y0WKKnfImz6JKMr3Dj0qQjo+Mp/U3OEVrV6kaX0VUG3dIxPsjjzPd48CTfn+MD
-	 HpUu7+z+rhYq8apG5mFFr/w3+YtjPLc59AwJlIe7QmemdTNU+aT/cA3JtTnT2ge0If
-	 nWKsUZ1l87vhw5I/ZZHp5y2xOcPYMO6CexFWC9kS9HmKpnu1vWPf8OvbB4AV2iSubm
-	 Hlcw1buJNqcCg==
-Date: Wed, 29 Oct 2025 20:07:38 +0000
+	b=f1ahGvJ8GYmWSAN4yQvaJJ8AMmaQXPPMzcKSaz6Xrvq0aoFjM/UK6qEVGIKRCoLqb
+	 5LIptGgTqr85HdCtdsCnnkULneMU0vlAU6dQciyV6UUzUvyMy/kCVMmX+/4xr6YHW/
+	 +oMozIC9BWSxBmEgcmmyjZZG3vnN+B3w2jxVYTdAYKkzhqe2taxX2Pl6kthj9hres/
+	 YBb4kjMyUMhTGxyvSz8vda/30rOZZimxFRxQD0jyouhiV9xwy9nfBkUN6uEXRd/Z/X
+	 euFq5/cNqoY3dnXuBokf29Dwc8D5+0mx1I6WMSm4ouiysMLrt2mGdvalln0qeq9P+o
+	 sDufRjOTA1fvw==
+Date: Wed, 29 Oct 2025 20:08:18 +0000
 To: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com,
 	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
 Cc: kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v6 11/18] x86/kasan: KASAN raw shadow memory PTE init
-Message-ID: <f533bb094a566242ec196afbde222796c6d6c084.1761763681.git.m.wieczorretman@pm.me>
+Subject: [PATCH v6 12/18] x86/mm: LAM compatible non-canonical definition
+Message-ID: <56d9203b1fcb6281b0d29b44bc181530e5c72327.1761763681.git.m.wieczorretman@pm.me>
 In-Reply-To: <cover.1761763681.git.m.wieczorretman@pm.me>
 References: <cover.1761763681.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 388931058df330f6e092950b7ef3ba7585e70752
+X-Pm-Message-ID: 015c7fdaea374a790951b755b565538ef4bdd04b
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: AFD661C0005
-X-Stat-Signature: urpd6f4he59icf1gmeafrghku1eo11fd
 X-Rspam-User: 
-X-HE-Tag: 1761768468-450598
-X-HE-Meta: U2FsdGVkX19vbzkfDIQVv+YBmxc3BUd6nZuEKZOnFTG7rhSDIZPMdUbW22qFXTGfnbJk6xW4QxH3GsJp096RhFw3IDsTa5TyqRczmDkUgn7s7U+nf4CQI6WXAdguIVVv/KKZCfIAlbNFqeiptTsjpx56waQQLnlc5ng1pWFcDJONhS999G8xUIe9mFzoCczkY08TaAiIHwcOxqsqfBXECkZY5gZ1SP47JHQwGCYZklzUKkCo29C7jatliSUfCNVp8imzo/3F6fsRge+pgV9Cp83TvQ2XVAp1zw8DLipIm3ZAo2HLB/DV+hoSf9X7mUYeZDxmvLPQcfmtTkXZvATAIbtkx1Haiir2Qzh8MnVgWjuZpRCqaJc0UGuaAZlxjA3PiA8jYMM7XWJ3vIQGBFx6FEfDYquEeEP1iJ37KqNXZtjyzFAYQOKewCUY/HCUeFWfYsFGwXNivHfsG/+ygDTzrZQoCRNnVHjX7tW6GgI4GiTLS+cUL4svlAxxwOAT7c4HqGoN6iG24vg0k2lmI7SQJMEedydLiq1n6n3lnD6SON44JgDfiFMO4wfM7GWSOPoddk1oDIJqDHQFZycaM4+kJqObRGGWi9wzReHQnCueg1xoctcPRM6dGfLXbgGlKytHwLYANJR4mQCDK6AxtdXdfu7lo7p7Bxxg80kvG2zbLrV5Hi5sic/Jt7Zk+7q/33AoqLAS/YAVVWCEonBBP5N6LW0p4vyHuHnghSl1Lbcw/SbuvNZjzFo1pa7XWc9PXgojCprT+jj804mfO1vfC0wCyEyLzkS3M3YZr63HfAA3asrErmOt4SqvSbGE6XSqGlvVtUaTvDGShfDSokKUOndsrMNf1tBg6yPgg285MWmMt9tqMLSH7+TvHar7drvSrjt8Qvjh8U29pMcilE7U2x1q/O3vQDhIqclCkfZN1lkVN90c2YK6rMJKC6wFkM2vZvu3T4rmF5UKK6i7MFU9HoF
- S88PDIy/
- qHNZRjBRJNyC0NZWgVCenlAtiMSNyFoI8IQI114TnxWr0Gsk0RYBCfrhMQDobCqtN5UpVDpppUCiKGVrxRgh59DwadV9n5I3rdB3ztrnMEfOXtYB8eXxouNCF4mg8G8OlSJ9aVA6C5Y6TufZOVIs+YVeRAALuXkcf3Tif3p4g0z+XWWJ/Vo9vfvFj9QWG7204maonx9lPI9eG+l6j8gvuTOvNpVh04+hz9Snd4ANL5mbB1MGA0bkkaEPrxTvi4spRGAXkKf2o0fDXPgaKvrIVOgvN7JgZK1ZwLy1ZVIM9bxqe0UsFld0z4eYL9A==
+X-Rspamd-Queue-Id: 30288140008
+X-Rspamd-Server: rspam02
+X-Stat-Signature: wizaafdtdp7fe531iagkgn9tcziwxwhy
+X-HE-Tag: 1761768507-292809
+X-HE-Meta: U2FsdGVkX1+EYypoSdSdWrTfdA+58rrTbq0EvPt8hB72bWRIOpBRiwBYGrFIwbFXXyKayY3ib1ysvzzxNfZvKc9PL2ZFEeuq3relbosVPay0wcL/9n1g/Qb3hau1Poq5M2mNkawaOSH0AMrLCp6U4zR+flcQKY3YAsdv8I9iqNu7YyX/3LjIYvRGtLEZ2DmI8rwsB6wyHH+YXY9Dyu/rnpGabmTPPuDcNpYUIFn2OuaKXouN/IdETXQyIqchj6SugRd5NXcnqKkQZHC6s2OOe6KcyefgQC8CTBVWb1f91Cf6OCacpecRqgZ9YhSuGWop4Zlr1uHvs0PkqdqG3I4EiIpShK54vDyn7oFUmV+E0TMyvv3GiPF+fV7qMFtVTIAU6tMBwF6Y4FRyk3v6QQvXU1qeYoMraDxJoDt1BYaKdQah3e7ntYwkBsn2ovwFmoJMpiko5FqpJ1mQh9bnoQpwfPhIt0MZq8uh5T7PTZha9J1bZ4X7qdbRQeRGHT81qwMWFdMQ+K7zcmeOkQn+DFrqJGGOCqkfLZJxvMjzIYS1Zlr0ZjQ5o0mSgJl9hBlL/EVXZ0Q0TqnXWuCzYZueg6nLThR66OlIZlYbqGz3GgPpkSBkAnUW7qo5en6p2jG1gDAEPIqQCJStcLN7fFW34u6WjfWGsW6PF5cxlJBkErkrXcNu8imvUrBK94THN8y+UtklXuplVZO3wvEXA4uZbq+r8aW8JwbQH1P2byIpGEx4gW9MdlQHgzHgTIBuY/NX6udd5R7jmw2idM9mtN7x3xuRulDi3KCO/TggNlGBaOV9k45I/kIl+2lNfsgq4df4PFi2JfvWpwE+IItkbDsurqy52rHx/yvr+SULw+zI6lZ8tB9qn6KQiA8ZX+WufGPpCMhxWDK7QGeZXOFjoqofxlcU149eYLJOWBxoZymZJ6NkjSL2FcsHC/gRTDwMyrt6UlZ2qsRvsYreIfN3aKueUCl
+ i41Kpebc
+ sEZAm5wBieuJdGuNuubEgAdo3PH9pZYca9md8yUztouiM7CnJbrQiQTLbS6yXaRBzt7Lgg9HPjc8JI6+5J0oNrdVOXJI0a2vYylqjvHTgBMsyFcopYv5du9NAK6JNXAZWEV1Z15CUZADqzDBZm2Q3TBssvXwZYw9O06/5sl3sK9KTd7lrnNiOvQFSlb4bndEP7sxtIajVIanGkH1J8oj5GXdMDXh8Vqg4H3gO28p4UZXMDWBfGJ3KlX8ZH+3Q3syH8EbKHj47gOz8erCY4yyBbRP4d+iHbBcK6tIc2hbgQY5mnGGXv6oV/QA/Dg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,75 +93,78 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-In KASAN's generic mode the default value in shadow memory is zero.
-During initialization of shadow memory pages they are allocated and
-zeroed.
+For an address to be canonical it has to have its top bits equal to each
+other. The number of bits depends on the paging level and whether
+they're supposed to be ones or zeroes depends on whether the address
+points to kernel or user space.
 
-In KASAN's tag-based mode the default tag for the arm64 architecture is
-0xFE which corresponds to any memory that should not be accessed. On x86
-(where tags are 4-bit wide instead of 8-bit wide) that tag is 0xE so
-during the initializations all the bytes in shadow memory pages should
-be filled with it.
+With Linear Address Masking (LAM) enabled, the definition of linear
+address canonicality is modified. Not all of the previously required
+bits need to be equal, only the first and last from the previously equal
+bitmask. So for example a 5-level paging kernel address needs to have
+bits [63] and [56] set.
 
-Use memblock_alloc_try_nid_raw() instead of memblock_alloc_try_nid() to
-avoid zeroing out the memory so it can be set with the KASAN invalid
-tag.
+Change the canonical checking function to use bit masks instead of bit
+shifts.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 ---
-Changelog v2:
-- Remove dense mode references, use memset() instead of kasan_poison().
+Changelog v6:
+- Use bitmasks to check both kernel and userspace addresses (Dave Hansen
+  and Samuel Holland).
 
- arch/x86/mm/kasan_init_64.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+Changelog v4:
+- Add patch to the series.
 
-diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-index 998b6010d6d3..e69b7210aaae 100644
---- a/arch/x86/mm/kasan_init_64.c
-+++ b/arch/x86/mm/kasan_init_64.c
-@@ -34,6 +34,18 @@ static __init void *early_alloc(size_t size, int nid, bo=
-ol should_panic)
- =09return ptr;
+ arch/x86/include/asm/page.h | 25 ++++++++++++++++++++++++-
+ 1 file changed, 24 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/page.h b/arch/x86/include/asm/page.h
+index bcf5cad3da36..df2c93b90a6b 100644
+--- a/arch/x86/include/asm/page.h
++++ b/arch/x86/include/asm/page.h
+@@ -82,14 +82,37 @@ static __always_inline void *pfn_to_kaddr(unsigned long=
+ pfn)
+ =09return __va(pfn << PAGE_SHIFT);
  }
 =20
-+static __init void *early_raw_alloc(size_t size, int nid, bool should_pani=
-c)
++/*
++ * CONFIG_KASAN_SW_TAGS requires LAM which changes the canonicality checks=
+.
++ */
++#ifdef CONFIG_KASAN_SW_TAGS
++static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
 +{
-+=09void *ptr =3D memblock_alloc_try_nid_raw(size, size,
-+=09=09=09__pa(MAX_DMA_ADDRESS), MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+
-+=09if (!ptr && should_panic)
-+=09=09panic("%pS: Failed to allocate page, nid=3D%d from=3D%lx\n",
-+=09=09      (void *)_RET_IP_, nid, __pa(MAX_DMA_ADDRESS));
-+
-+=09return ptr;
++=09return (vaddr | BIT_ULL(63) | BIT_ULL(vaddr_bits - 1));
 +}
-+
- static void __init kasan_populate_pmd(pmd_t *pmd, unsigned long addr,
- =09=09=09=09      unsigned long end, int nid)
++#else
+ static __always_inline u64 __canonical_address(u64 vaddr, u8 vaddr_bits)
  {
-@@ -63,8 +75,9 @@ static void __init kasan_populate_pmd(pmd_t *pmd, unsigne=
-d long addr,
- =09=09if (!pte_none(*pte))
- =09=09=09continue;
-=20
--=09=09p =3D early_alloc(PAGE_SIZE, nid, true);
--=09=09entry =3D pfn_pte(PFN_DOWN(__pa(p)), PAGE_KERNEL);
-+=09=09p =3D early_raw_alloc(PAGE_SIZE, nid, true);
-+=09=09memset(p, PAGE_SIZE, KASAN_SHADOW_INIT);
-+=09=09entry =3D pfn_pte(PFN_DOWN(__pa_nodebug(p)), PAGE_KERNEL);
- =09=09set_pte_at(&init_mm, addr, pte, entry);
- =09} while (pte++, addr +=3D PAGE_SIZE, addr !=3D end);
+ =09return ((s64)vaddr << (64 - vaddr_bits)) >> (64 - vaddr_bits);
  }
-@@ -436,7 +449,7 @@ void __init kasan_init(void)
- =09 * it may contain some garbage. Now we can clear and write protect it,
- =09 * since after the TLB flush no one should write to it.
- =09 */
--=09memset(kasan_early_shadow_page, 0, PAGE_SIZE);
-+=09memset(kasan_early_shadow_page, KASAN_SHADOW_INIT, PAGE_SIZE);
- =09for (i =3D 0; i < PTRS_PER_PTE; i++) {
- =09=09pte_t pte;
- =09=09pgprot_t prot;
++#endif
++
++#ifdef CONFIG_KASAN_SW_TAGS
++#define CANONICAL_MASK(vaddr_bits) (BIT_ULL(63) | BIT_ULL(vaddr_bits - 1))
++#else
++#define CANONICAL_MASK(vaddr_bits) GENMASK_ULL(63, vaddr_bits)
++#endif
+=20
+ static __always_inline u64 __is_canonical_address(u64 vaddr, u8 vaddr_bits=
+)
+ {
+-=09return __canonical_address(vaddr, vaddr_bits) =3D=3D vaddr;
++=09unsigned long cmask =3D CANONICAL_MASK(vaddr_bits);
++
++=09/*
++=09 * Kernel canonical address & cmask will evaluate to cmask while
++=09 * userspace canonical address & cmask will evaluate to zero.
++=09 */
++=09u64 result =3D (vaddr & cmask) =3D=3D cmask || !(vaddr & cmask);
++=09return result;
+ }
+=20
+ #endif=09/* __ASSEMBLER__ */
 --=20
 2.51.0
 
