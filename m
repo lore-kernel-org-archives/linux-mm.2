@@ -4,117 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146BBCCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 17:30:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6AF7FCCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 17:46:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 60B4F8E00B6; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
+	id 67E5C8E00B7; Wed, 29 Oct 2025 13:46:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5E34E8E00B2; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
+	id 655AA8E00B2; Wed, 29 Oct 2025 13:46:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D18F8E00B6; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
+	id 5441C8E00B7; Wed, 29 Oct 2025 13:46:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A4648E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCA7512B32D
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:30:04 +0000 (UTC)
-X-FDA: 84051839928.24.D6CC69A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 4B07B180010
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:30:02 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 435BE8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:46:13 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0F0871A0910
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:46:13 +0000 (UTC)
+X-FDA: 84051880626.14.D3D90C2
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 816752000D
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:46:10 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y0vqg8o/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIYQS9PU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KxFlbH0u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PVXWs+Ih;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761759002;
+	s=arc-20220608; t=1761759971;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
-	b=dPRI+dAv4kwTEDToi1MT+xUSphEpjx1FqTwAMknYzlB9+xObyo/3LbCyADyxnK2TsdNB2c
-	3A6YgVFroHFGf9IVHC+rVlYezBPw8uqlkvtGucKH8K8NtsRAtiBg5kVM+EVQj7snsXKxaB
-	tyFGM/ilUyXZZjIhMhQL7UYElclKqHw=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
-	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761759002; a=rsa-sha256;
+	bh=F0sZF9w7yuT5ed92au3G/YD+ry/VcKsoeWBjNEV7kJ8=;
+	b=he1LIJeEYQoNkZ/ezugylsr8G1TyApu8DEncHVJxtndSPHJblbxRaqcECNvNtOHKdb5CU9
+	tnB+cdFRs7qsb8tKCd7+wbxj9ezEqU2V7WUDJl/Tq/1ukNpt7qroz/QclYLR6TJGT7MKjI
+	VuURZYy+OIijGkDAuEMSsVfbh4J1VtA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761759971; a=rsa-sha256;
 	cv=none;
-	b=bc1SRF/5pBUTwOAbUvFpYgnHnq6s2/wg8BTas40+c/omyg9Ca5gdqVkNWkiS8mD2LOliHY
-	t9Np5SM0AhkA+7SuQsCcL+vPestSCJd2lqhnv/mkUEecnDLF6RTrkz9IzjkP6PbCC54DUy
-	iPDDIOXUlLlCGOPbcip8OWIcLi4DEUk=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=Rtt3/jNf1kBKEe0B87r8FXvYasB12sCYF3BUNzYWHjjZiw/bes3LR4iFa2zTuvQg9rZuvh
+	Pb3Iq4KZS9zfLUHLL+mvb7G6JqEsbHPNBXP5EKll3YFMnsIyOmtJEddYVGHUR9JVBM/O8q
+	bSOncVe5Ixz2VRrgiHYqZ9AeYeJaHhw=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Y0vqg8o/";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TIYQS9PU;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KxFlbH0u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=PVXWs+Ih;
+	dmarc=none;
+	spf=pass (imf13.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C6873410D;
-	Wed, 29 Oct 2025 17:30:00 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id E93E85C054;
+	Wed, 29 Oct 2025 17:46:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761759000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761759969; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
-	b=LVEIVOaQiQihyyVUrP032S89inzygkFWyPglGyhCVKJys7tNMO6HUJzV4u69AGh6ilDhGs
-	MkzoCxej3zPDuphsnF+Hp1VA2ZsYuV14fngmFbHOhu0qDjTL0mVq3oUguLEh8loNejGcqJ
-	0G9uHfoch0uFMiMIsjFJtTWHalG0q0I=
+	bh=F0sZF9w7yuT5ed92au3G/YD+ry/VcKsoeWBjNEV7kJ8=;
+	b=Y0vqg8o/+/JbOnAy7svA98jCfAtDVcIrVWZGFjaXE8C4I+ZvMjDT7ao6pUJwf9KavZ6Cb3
+	mTeY37WqnScNB/L0wHpY9X94kxAg1diT43U2uMqUOHp6BayROLRQkQ1+kcchJUMR8DjWoh
+	NZW8S7ze1m4IRguBVr2+xmC8QnEPntA=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761759000;
+	s=susede2_ed25519; t=1761759969;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
-	b=ctF9xyK7ak253elPpv+mWxgHFLYAJ390A0negsSyH/lt8REDr2T6ttS1j2ikK1D5xSvd54
-	AiwoEjokQlAAJLDQ==
+	bh=F0sZF9w7yuT5ed92au3G/YD+ry/VcKsoeWBjNEV7kJ8=;
+	b=TIYQS9PUIs1pZ7o1xAwcHj1o6+c8sDTqcE6W5rRJKR3na5DMmv+8e3CbSDsSDrG1NVgc+0
+	d/LL5SWPJt3P11Dw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761759000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761759968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
-	b=LVEIVOaQiQihyyVUrP032S89inzygkFWyPglGyhCVKJys7tNMO6HUJzV4u69AGh6ilDhGs
-	MkzoCxej3zPDuphsnF+Hp1VA2ZsYuV14fngmFbHOhu0qDjTL0mVq3oUguLEh8loNejGcqJ
-	0G9uHfoch0uFMiMIsjFJtTWHalG0q0I=
+	bh=F0sZF9w7yuT5ed92au3G/YD+ry/VcKsoeWBjNEV7kJ8=;
+	b=KxFlbH0uPFeacv9q3oLovNmzHznYMCZOPW1+LmEWFYVDf0X0f3EYn8DM6GB06jVj1YUsBS
+	Y8SzKaSOGQtXlXdUBLA/Z/1jxVcbAU+ubbwGsC1VtE9ad1GmaRQH27JL/89Sxhg/PfMT4a
+	l5z1AirgWqvhEZfVINX1UDLwSSN2hGI=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761759000;
+	s=susede2_ed25519; t=1761759968;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
-	b=ctF9xyK7ak253elPpv+mWxgHFLYAJ390A0negsSyH/lt8REDr2T6ttS1j2ikK1D5xSvd54
-	AiwoEjokQlAAJLDQ==
+	bh=F0sZF9w7yuT5ed92au3G/YD+ry/VcKsoeWBjNEV7kJ8=;
+	b=PVXWs+IhvehSNLG3C6mqLJFVOi0uWoPLEMmeFLIIr/HvNWban7eV+VWnNlMqp2VPVTz/ro
+	LsRw6EJxaCP6oeAQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E70C1396A;
-	Wed, 29 Oct 2025 17:30:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BA1A61349D;
+	Wed, 29 Oct 2025 17:46:08 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sfBnHhhPAml+ZwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 17:30:00 +0000
-Message-ID: <1e4e6ddd-e4a4-4f3a-ae47-93b69d25ff88@suse.cz>
-Date: Wed, 29 Oct 2025 18:30:00 +0100
+	id RUQaLeBSAmkkdwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 17:46:08 +0000
+Message-ID: <8a8271f1-a695-4eeb-9a98-3d6268ed0d45@suse.cz>
+Date: Wed, 29 Oct 2025 18:46:08 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH RFC 07/19] slab: make percpu sheaves compatible with
  kmalloc_nolock()/kfree_nolock()
 Content-Language: en-US
-To: Chris Mason <clm@meta.com>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+ Chris Mason <clm@meta.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
  Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
@@ -122,10 +123,12 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
  "Liam R. Howlett" <Liam.Howlett@oracle.com>,
  Suren Baghdasaryan <surenb@google.com>,
  Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20251024140416.642903-1-clm@meta.com>
+ Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>,
+ LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev,
+ bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-7-6ffa2c9941c0@suse.cz>
+ <CAADnVQLAFkYLLJbMjEyzEu=Q7aJSs19Ddb1qXqEWNnxm6=CDFg@mail.gmail.com>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -166,17 +169,18 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20251024140416.642903-1-clm@meta.com>
+In-Reply-To: <CAADnVQLAFkYLLJbMjEyzEu=Q7aJSs19Ddb1qXqEWNnxm6=CDFg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4B07B180010
-X-Rspamd-Server: rspam11
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-Stat-Signature: y8sp8tysi5ifk59byzoc9m1m9tayzhfx
-X-HE-Tag: 1761759002-563546
-X-HE-Meta: U2FsdGVkX18I7huFFXtnHI8R4rcJF9KIu2F23P+9hQYTdMzarnHipLLTAWZVbk2bh809Pgd2APMXGIY26mN5AAyqu+UZuEpAwqngGeLx+cc9rffwn3ZSU7D8XE+SZ/sxhXE94Rp5ATU2HjtQG95paggbBbmVbXRoPuQPXMz7tIDj3bqenuAQVKdc6N+/gRBSXjM/Lo44sZi3WZpA4vg8f1nwkOpvDlEmqM8nmtMSxvcsmnb9VoQLmHTQ2SJvA1Hnh79kQui8XIQHG1cB6Bg+7gGnW9dT09uYObDWciS9FDEvAqLt4d09vtqiPnqcA7OOqCyBQcCAJzGP1RiKHkiUU8v9XDeQ/M21LbpSr927xamTdkCUFSQKkvANc9gIqkX6J9fW61JxCF5fFYVBtYswh2PO+PZ6kePjr3nLCk1mlSqGv6bPM5BSR2fb4ET8wMhdILNDRsLul3oLfaFN8KNL33P0phvIFuDRshApZYGIyvOeYGPq/zbz4P7ORBVu0Pvk9EioIYAu56Pui1UmFgYZ2FD7fxdmgSlqGxg9HyhIeHmJn8Cu/PGx7mK4mj94psDBb98gGh0GIwjllggO9akkffy5ofLuoZS8lF19svthYXaMke/rOhkuwYrZ/FznBSczoFpD+A3naZaDfwAVV2A3VSCe8i4f7SrqT3t6yf9E1nzObEvxQ8pOgI4CXO5riYRkPlAw5gXTmcJ0p81bwlkhMeR+Q3yFx2zMbPdVYzhIULDHpjdERf7gEcKZTUXphqt71QwmYAv+Xxs553K8w0F+tj31lOn1Ie8S7BQzJT/V5e03rd+xXYA84xt1fv/fA73H51ctdelqSJmpgki/gTMrP85dAkbqIfGDsJUjgqqgNU27pw3f1sM0Dbr+1lPSd3CrRIwJdKofxUkGOaDtUAgaJf+M9rC5DskcT07LHcckom6WhD1Ec/2pvqOf1RyYqDIPSKwF0WDNo+g2klFJKqC
- X25Nokx+
- U3WQzQ8bVRy7rrE2sT36z/6LVUcS+sbl409zpC+ZM3ARe3s5gE9kgHjrX4/HNDkXt9eCmipbvGkmbjnFT2dw78oxG6dp7KbRSQJH4QSLQ2X7C6ztj0vBzPbnSiKwgUP0IRsOyDL7Rpe7dbsnu9hCdEK2Thm8fGo2cH5I5SeU5qRHDl9fEAFkqgaKwYDvhKaM7LfT6xYLg0Q6n2KsPkCtET1kH/wALedw5Hnx5nLPp29iX2ow0yQpHHyeHvdlrFYeJDVU0VEvvHrclexBEJxzjQfzPE5flSiXdPQA8cD129T0cqq1bQl1yyampFokFuEl0pFN6fannilOu8tA=
+X-Rspamd-Queue-Id: 816752000D
+X-Rspamd-Server: rspam02
+X-Stat-Signature: karmnj5ff7pu96ce9nu4ueutgzoxghbd
+X-HE-Tag: 1761759970-157300
+X-HE-Meta: U2FsdGVkX18ZkbhBRPwbpSyL+JOxqikGv7txK9rzjLip4PvE0bYn1Kwl2vEOR0y2FFUQUgDyLegCETnvmgT/ii4l9XvOTYL24RzE3fofucmrbHFRQIqNNo1vMThAsJWPQkLZhjW8IHIAPDAvhc3bx9TcmZoLjVVIteS3wUwake+Cz9htyDVD89uDpk752aiU7EEh8iFnS6cQWlZ3ZzclCPZfp1yrD7qsRyVVQ5zdSF3xZigymbzVuITbAXeDjExwjfUbyEAiU0zV10MF7RzSyPju/WF0I40RgyoAQGTzIDvJQD2QrruoUQ420m5ez2amgUoxTCACVnaq1qgfGJX+3woGcQoFp9xJk0a3/C+gpgbyGSlvHHw+KCIGRx7+1w1ew6ynxNEOgAOHU2yUSUcVKvBOuM54/jv4Fug882pBouK2qOp9TSKKWu946gbA0c4Yx2n/5F8apmhILOSxlMes825RDny0pEDmBmLxd+4xoX8nxTJ+vpOtjSL7NYs1dVgUHVT1cUx+b+OFy0xVjFjee0EOwtHM5OtlhscFFhR3tF50nnlvEhmtsDmRKc0awSLtEtq/PfmBB/ZI73DsBWpHgmPxSgKlKJJOBqmOxKV2zbWrC0CAWN3+W70c9QQanJl0A2SSSr6r0Qm1usrJlaLRkOzXEMTImpzFSIYPhg7sR7ghzE0fISbGnKndNZWBise/5BXAQMX0DU+fwF4IbgiCrx61I8t+SpOd89DzTTgVjID5IupZeY7HR2JBUUvcYKa383bYq8CWtBCyqFGIgSv0ieyAywDG30f9R53nAItIPlo8MbTlyPBJexcEtoaQIdchp0f80hf/WvndbzSsA9KgQmsTAvycBu+CATF9g+FiZq4grp0XoNlNfBDU87AfTByamPn80s/KvhSpNqztCVO42gKoklozpApptWePnJtpIhJcwwooNPN6bSHywG+4pzfRblersMgqBsAJOOvqcJI
+ LG5dawfC
+ lj6s1yMTEd8JWTU2lLoRccbRY6uAgDGcPtFC9vLTVStnxFeK4Lavx4jG7AqrpVSJ2Gy7PU759DCUGR5lWDy4QWj02M2E9QWS+QfUItgG2mhEkHDgySOxDrMyNCAchqzf3vCK87VTDoqdLRbj9p/Zu//C0C1+/6GgyXSpPPpn4NvwdbfMEbR5jIdzrnaAaEN2C0SrU0FGNLYV5pdTbT7FQvNRLe27pi2gm05yM5nGwuq8mx3vDmINLIbpQ5ZJike3CLpw+jgP+j8EeW2/s3NKdXd19IlEB2HuWQJDYcAYuK2LqyiwAvA4mbzUh85liQFicfKZ54DcfmOFyscoY8l4y5w341PgWLbcPV6TnPpMjSybEiQZb4It3AiBbWPOep4t0VJLYth9JaLJqLE1k/IY6K37pEeZf/w3hTzjRLvyJhF7Uss8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -185,63 +189,142 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/24/25 16:04, Chris Mason wrote:
-> On Thu, 23 Oct 2025 15:52:29 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
-> 
+On 10/24/25 21:43, Alexei Starovoitov wrote:
+> On Thu, Oct 23, 2025 at 6:53 AM Vlastimil Babka <vbabka@suse.cz> wrote:
+>>
 >> Before we enable percpu sheaves for kmalloc caches, we need to make sure
 >> kmalloc_nolock() and kfree_nolock() will continue working properly and
 >> not spin when not allowed to.
->> 
+>>
 >> Percpu sheaves themselves use local_trylock() so they are already
 >> compatible. We just need to be careful with the barn->lock spin_lock.
 >> Pass a new allow_spin parameter where necessary to use
 >> spin_trylock_irqsave().
->> 
+>>
 >> In kmalloc_nolock_noprof() we can now attempt alloc_from_pcs() safely,
 >> for now it will always fail until we enable sheaves for kmalloc caches
 >> next. Similarly in kfree_nolock() we can attempt free_to_pcs().
 >>
-> 
-> Hi Vlastimil,
-> 
-> We're trying out the AI patch review automation on the BPF commits and it had
-> some questions about a few of these.  Since the goal is to actually test the
-> automation, I'm putting them in unedited, but I did try and make sure they
-> were valid before sending.
-> 
-> This one is a little verbose for s/NULL/ERR_PTR/ suggestions, but:
-> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index ecb10ed5acfe..5d0b2cf66520 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
-> 
-> [ ... ]
-> 
->> @@ -2990,7 +2998,8 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
->>   * barn. But if there are too many full sheaves, reject this with -E2BIG.
->>   */
->>  static struct slab_sheaf *
->> -barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
->> +barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full,
->> +			bool allow_spin)
->>  {
->>  	struct slab_sheaf *empty;
->>  	unsigned long flags;
->> @@ -3001,7 +3010,10 @@ barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
->>  	if (!data_race(barn->nr_empty))
->>  		return ERR_PTR(-ENOMEM);
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+...>> @@ -5720,6 +5735,13 @@ void *kmalloc_nolock_noprof(size_t size, gfp_t
+gfp_flags, int node)
+>>                  */
+>>                 return NULL;
 >>
->> -	spin_lock_irqsave(&barn->lock, flags);
->> +	if (likely(allow_spin))
->> +		spin_lock_irqsave(&barn->lock, flags);
->> +	else if (!spin_trylock_irqsave(&barn->lock, flags))
->> +		return NULL;
+>> +       ret = alloc_from_pcs(s, alloc_gfp, node);
+>> +
 > 
-> barn_replace_full_sheaf() now returns NULL when the trylock fails, in
-> addition to its existing ERR_PTR(-ENOMEM) and ERR_PTR(-E2BIG) returns.
+> I would remove the empty line here.
 
-Good catch, cool it can find such bugs.
-I'll return ERR_PTR(-EBUSY) which should be compatible with the callers.
+Ack.
+
+>> @@ -6093,6 +6117,11 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+>>                 return pcs;
+>>         }
+>>
+>> +       if (!allow_spin) {
+>> +               local_unlock(&s->cpu_sheaves->lock);
+>> +               return NULL;
+>> +       }
+> 
+> and would add a comment here to elaborate that the next
+> steps like sheaf_flush_unused() and alloc_empty_sheaf()
+> cannot handle !allow_spin.
+
+Will do.
+>> +
+>>         if (PTR_ERR(empty) == -E2BIG) {
+>>                 /* Since we got here, spare exists and is full */
+>>                 struct slab_sheaf *to_flush = pcs->spare;
+>> @@ -6160,7 +6189,7 @@ __pcs_replace_full_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs)
+>>   * The object is expected to have passed slab_free_hook() already.
+>>   */
+>>  static __fastpath_inline
+>> -bool free_to_pcs(struct kmem_cache *s, void *object)
+>> +bool free_to_pcs(struct kmem_cache *s, void *object, bool allow_spin)
+>>  {
+>>         struct slub_percpu_sheaves *pcs;
+>>
+>> @@ -6171,7 +6200,7 @@ bool free_to_pcs(struct kmem_cache *s, void *object)
+>>
+>>         if (unlikely(pcs->main->size == s->sheaf_capacity)) {
+>>
+>> -               pcs = __pcs_replace_full_main(s, pcs);
+>> +               pcs = __pcs_replace_full_main(s, pcs, allow_spin);
+>>                 if (unlikely(!pcs))
+>>                         return false;
+>>         }
+>> @@ -6278,7 +6307,7 @@ bool __kfree_rcu_sheaf(struct kmem_cache *s, void *obj)
+>>                         goto fail;
+>>                 }
+>>
+>> -               empty = barn_get_empty_sheaf(barn);
+>> +               empty = barn_get_empty_sheaf(barn, true);
+>>
+>>                 if (empty) {
+>>                         pcs->rcu_free = empty;
+>> @@ -6398,7 +6427,7 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+>>                 goto no_empty;
+>>
+>>         if (!pcs->spare) {
+>> -               empty = barn_get_empty_sheaf(barn);
+>> +               empty = barn_get_empty_sheaf(barn, true);
+> 
+> I'm allergic to booleans in arguments. They make callsites
+> hard to read. Especially if there are multiple bools.
+> We have horrendous lines in the verifier that we still need
+> to clean up due to bools:
+> check_load_mem(env, insn, true, false, false, "atomic_load");
+> 
+> barn_get_empty_sheaf(barn, true); looks benign,
+> but I would still use enum { DONT_SPIN, ALLOW_SPIN }
+> and use that in all functions instead of 'bool allow_spin'.
+
+I'll put it on the TODO list. But I think it's just following the pattern of
+what you did in all the work leading to kmalloc_nolock() :)
+And it's a single bool and for internal function with limited exposure, so
+might be an overkill. Will see.
+
+> Aside from that I got worried that sheaves fast path
+> may be not optimized well by the compiler:
+> if (unlikely(pcs->main->size == 0)) ...
+> object = pcs->main->objects[pcs->main->size - 1];
+> // object is accessed here
+
+only by virt_to_folio() which takes a const void *x and is probably inlined
+anyway...
+
+> pcs->main->size--;
+> 
+> since object may alias into pcs->main and the compiler
+> may be tempted to reload 'main'.
+
+Interesting, it wouldn't have thought about the possibility.
+
+> Looks like it's fine, since object point is not actually read or written.
+
+Wonder if it figures that out or just assumes it would be an undefined
+behavior (or would we need strict aliasing to allow the assumption?). But
+good to know it looks ok, thanks!
+
+> gcc15 asm looks good:
+>         movq    8(%rbx), %rdx   # _68->main, _69
+>         movl    24(%rdx), %eax  # _69->size, _70
+> # ../mm/slub.c:5129:    if (unlikely(pcs->main->size == 0)) {
+>         testl   %eax, %eax      # _70
+>         je      .L2076  #,
+> .L1953:
+> # ../mm/slub.c:5135:    object = pcs->main->objects[pcs->main->size - 1];
+>         leal    -1(%rax), %esi  #,
+> # ../mm/slub.c:5135:    object = pcs->main->objects[pcs->main->size - 1];
+>         movq    32(%rdx,%rsi,8), %rdi   # prephitmp_309->objects[_81], object
+> # ../mm/slub.c:5135:    object = pcs->main->objects[pcs->main->size - 1];
+>         movq    %rsi, %rax      #,
+> # ../mm/slub.c:5137:    if (unlikely(node_requested)) {
+>         testb   %r15b, %r15b    # node_requested
+>         jne     .L2077  #,
+> .L1954:
+> # ../mm/slub.c:5149:    pcs->main->size--;
+>         movl    %eax, 24(%rdx)  # _81, prephitmp_30->size
 
 
