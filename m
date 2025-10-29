@@ -4,124 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0016BCCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:19:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 10293CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:21:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 31F618E00C5; Wed, 29 Oct 2025 14:19:43 -0400 (EDT)
+	id 6F4B88E00C6; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2D0168E00B2; Wed, 29 Oct 2025 14:19:43 -0400 (EDT)
+	id 6CC358E00B2; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BF1C8E00C5; Wed, 29 Oct 2025 14:19:43 -0400 (EDT)
+	id 5E2308E00C6; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A2968E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:19:43 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A7E9112B0C0
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:19:42 +0000 (UTC)
-X-FDA: 84051965004.12.1A48DD5
-Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9E6954000C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:19:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ia73V3f6;
-	spf=pass (imf04.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 495FC8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:21:46 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE2001408FF
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:21:45 +0000 (UTC)
+X-FDA: 84051970170.01.01352F3
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf29.hostedemail.com (Postfix) with ESMTP id DF78B120011
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:21:43 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gFW23Htf;
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761761980;
+	s=arc-20220608; t=1761762104;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wthfBbpE09QD/RVLl7/O7vaLWiSY5lI9YfKCDOez+Hk=;
-	b=ZDZNZZ/4ayNHyAZL2ZyreRTuQIpiP8ngeVgX9RndBwyqFt6Qin32B/PRqeAYG6HypQHJA4
-	cQ4QnNU74dvY6t6ZMD3YneMFahRem3H9XzsthNqfeN5aExV1fMNuXbPCCKoD6rj6lC4j6t
-	7LlIbb5TRlLX87ESN3rhnkZZb3ADGfI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761761980; a=rsa-sha256;
-	cv=none;
-	b=8at3DLXews1ezmNKU9uurQh09F6lnvM5BQiYHuiHeJEDfstnAtt8KcV6RDX/w7R8Ic9KMN
-	wTPI8BRAXSLYdwYixKRtqgk7mMkZslbTHYSvJpH3QJk4a4wbBgG24CfjUnWdvft9+09wvH
-	+oYfQZUdVlaNJeVoDFVryu/HlsXS4EM=
+	bh=vF99+toDZDdN2wOCemWCahItQlBdLScG3Tc4V8O6SNI=;
+	b=toXDbu7Q6NTlbFJ2mfEZStCzIfSY+NJBs7WDv5EG/OvEIXfpmRD9KHAkR9yXJSVyMcmu+W
+	CRyyDIvrFisJWX7VYEd3tlo9i9RppuTiBc9HdJkdclKjjTaHhCnWsZCinHt6SPqYoVAVTZ
+	M/BfJTCTEI8zRqiu6Qu/Q0SIla4Dt3Q=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ia73V3f6;
-	spf=pass (imf04.hostedemail.com: domain of ryabinin.a.a@gmail.com designates 209.85.167.41 as permitted sender) smtp.mailfrom=ryabinin.a.a@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-592fac6c37fso15444e87.2
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:19:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761761979; x=1762366779; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=wthfBbpE09QD/RVLl7/O7vaLWiSY5lI9YfKCDOez+Hk=;
-        b=ia73V3f6JlCxwHi1wdirxljY/76FY54NstInNB1okb3HtQFjDI5PXKLcC4gV2PIkov
-         pJXsqBdNEnPiFs4VJQcG2CYp9tJMuOGmomVsNCLPAgt0Q3hGE6Ri3N3Qp3vAVH+7U1kj
-         qq5mvCg+NgEi/dn6AOFC+DnhohTCaVVy5UwH3cZRM0nb3HwxK8gRy1JIeUIK9JSPAj6H
-         iDXiZviRq7art3M3xl0EV9xxBKkZuTayGSuV/y+v9Mrfsq0gPkJOLZbtzfFWua9DLvv0
-         44IqDPY92s2l2M3OZBqZVHfMoa9CN+DwOKj/kqyNTKcDr8T1A9jHrzr2jfCk6BATyRP/
-         gTBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761761979; x=1762366779;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wthfBbpE09QD/RVLl7/O7vaLWiSY5lI9YfKCDOez+Hk=;
-        b=dgNLI5BU/38FfDLWI6jIfbOJ4rmV6LFN1WRQ4nR9BBFgFWC0n1YT2SeX95hhVhExIh
-         lWZhWvVUGRbcOBn+djGY3t3UO0y5pZFqJCHeOTRo3jjWqYbYVZ750H5lsidY+D06RYo3
-         fVAj4wpylyTOSW2GvuHhalRTyPUPLQ8lFe/Z1vTRkC33N2Y6K0Z2JAqxgbDCRs1LNGYw
-         nfpRU9Nse2M+CK2YC3kZ+EII0Fv41dAWI6BOZK3utY16Q1E0fbzExvAEYUbWER5Z5ikb
-         iQwlNgcTJzWDFygWZXOKJKSA6Wd6wIHoQHnb9zCqUPKQOXDNOMHp2UofUc6XsmemsYXl
-         kEEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXnk+yb8ShTOqy4KKytvlNjb8Li8hMJHIC45D09JufIwGhVQzRX0243cziqlIlqqaGOpEK8+9cYuw==@kvack.org
-X-Gm-Message-State: AOJu0Yxxs3HvPu1laJpo7uornrmToxmYYxZvnJE513Oj1m/3a6u0Fp9O
-	mL65Ftx24kJvoW6kl1P49mY1cMLsiJbwTtGZWIefqBG9c/V7zkSYmmE+
-X-Gm-Gg: ASbGncuGhjxRaNp4x6KvWBP5o15bmnsO8/qcuJWSVnJSdczJ7z3qKAkuZe7jiHZHlKv
-	eXF9QDTHA01nG7er6oJLzCjdyPgcrbt6rv9Z4OEY8BOd/F+6QmsRBrb50OPQ21fAJAIMFlpgvg7
-	7eMA+TZnBdKq9xxnjZ+MEfgkHbJ6+i2UKlU01r6+n/QkWVPC8pGekwrOnyofGzY7kUVBhcPVYVc
-	MaufahajLddSRyVfzTn2Dsb1fGdgnkCSakQkKwkqh77/c64h16AdzU9kVvQLazUdimxOkWu6E7+
-	Ptslvro9tLe21A2xqvC/mlvAEkexzOE05mLH3XvaRZH95jLmsmCyIVlwgST//BElMvcQr2GX1xK
-	UUVtFRpcP0nPRbPZiTGLgqFzpe4WP71lQ75PLK+K7mqM+bSYhI9mwTuxBEvFnm9mzaa1AKZVHys
-	3KJhFVHw==
-X-Google-Smtp-Source: AGHT+IGcxS2YrYY8mFvpyEsx2SVVvK+7CqZdpGtyuXWAue61BYvtDz5UP3WnSAs93IWo51I4vfsEFQ==
-X-Received: by 2002:a05:6512:2390:b0:581:8db3:d5fe with SMTP id 2adb3069b0e04-594128657dfmr849225e87.2.1761761978381;
-        Wed, 29 Oct 2025 11:19:38 -0700 (PDT)
-Received: from [10.214.35.248] ([80.93.240.68])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-593ecdb604bsm963255e87.5.2025.10.29.11.19.35
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 11:19:37 -0700 (PDT)
-Message-ID: <bf8f2ed4-0b3b-4ddc-9ce9-0d0b1a64c914@gmail.com>
-Date: Wed, 29 Oct 2025 19:19:29 +0100
+	imf29.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gFW23Htf;
+	spf=pass (imf29.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761762104; a=rsa-sha256;
+	cv=none;
+	b=iI7unfQbNPl+mdqjOkC8hf4IFTjp5PiS8Z2N/ZxGewIj0CJF50L1+3nLoBs++Z2eyxoTrW
+	EP/vk+oro6YPCUeWNDj3sIJJHz95P/lhX0a4Q2/ATP5fbhn2clopXJjMVYMsU1MQna6Cxd
+	KMWLwPQMiaSzPuYZHIxiqScb9Ax24Vk=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8A61D418E1;
+	Wed, 29 Oct 2025 18:21:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F3CC4CEF7;
+	Wed, 29 Oct 2025 18:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761762102;
+	bh=DPpnCMRM2ONFlhs5+vFfnp4TspRDpdDt+xZVOrOrXxE=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=gFW23Htfob9JVF7Tkn4OSf9AnrApu+I6w/WwRAqodqNSJgWV3LvyyA301zt0Uc/34
+	 x6/VtvfQztzfWNSs4dCB24QCQ92FaoC3Ir0q1XCVKjJFK0mda3xuB3/1XZaRMFNUXz
+	 eKchmNDyoozyoZ1HDSmEvBNDfCzBEX/JM9hSKH1faPH+eCNjYzQ8eolkTg1SxEnsuN
+	 OiYGqp9kql+IT4pn3GRuJtUrP7KVnTg8oBjrsKkvR1gl2P1VWZJ1WaGGmovzTOQ08j
+	 00jFA5M5GT40p+AGKTcPdvEO7j6lNxIAKnKsXGXjkZV2+V5oKvWkiHqhIxIa5TZ/hr
+	 O23qaAx/QhODA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id EBBEDF40069;
+	Wed, 29 Oct 2025 14:21:40 -0400 (EDT)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-04.internal (MEProxy); Wed, 29 Oct 2025 14:21:40 -0400
+X-ME-Sender: <xms:NFsCaVDOQpzKD7wTZgNCCgPb13e9mhCbRK36w5KK5UL_6Vz3kfOqqg>
+    <xme:NFsCaeWLHPtpKhKZrslQ2gjrJtZvmfWKaeB-BNH71AIRQgkZgmY6dvyy7h1hVLqQY
+    7vQeI-WSHuXH29wxJ06dzec-n0tAu4pMEPndl_0A5NlTk476sEDng0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieeggeefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfnfgvohhn
+    ucftohhmrghnohhvshhkhidfuceolhgvohhnsehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepjeevffelgfelvdfgvedvteelhefhvdffheegffekveelieevfeejteei
+    leeuuedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eplhgvohhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdeftdehfeel
+    keegqddvjeejleejjedvkedqlhgvohhnpeepkhgvrhhnvghlrdhorhhgsehlvghonhdrnh
+    hupdhnsggprhgtphhtthhopedvgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
+    jhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopegthhhrihhsthhirghnrdhkoh
+    gvnhhighesrghmugdrtghomhdprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghr
+    mhdrtghomhdprhgtphhtthhopehlohhgrghnghesuggvlhhtrghtvggvrdgtohhmpdhrtg
+    hpthhtoheprghmrghsthhrohesfhgsrdgtohhmpdhrtghpthhtohepsghhvghlghgrrghs
+    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehvihhvvghkrdhkrghsihhrvgguugihse
+    hinhhtvghlrdgtohhmpdhrtghpthhtoheprgigsghovgeskhgvrhhnvghlrdgukhdprhgt
+    phhtthhopeifihhllheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:NFsCaUzjtyzcUVu3XHD3WVhral27CzlLF39AneDrzievZ37OsGY-GA>
+    <xmx:NFsCaRUFAQz6l_v7A2JkDReVdjjdcI-Y2IcFNcrwrHcfSX10RiJcNQ>
+    <xmx:NFsCafZkyPDABk8DELRQCYDmg48L5nSl4vq1dKK-pP8IizJlTTWYMg>
+    <xmx:NFsCaeR_shcDrhZPGvArnf4UbT0ylRaXp3-PRr2Wr-isMOf0OBIlZw>
+    <xmx:NFsCafRS72r3S4Uq0J_JrwdIdBgQm6Y4YZw8AGtHru_SaMGZiKXRtxaV>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id B52662CE0071; Wed, 29 Oct 2025 14:21:40 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH V3 7/7] mm/slab: place slabobj_ext metadata in unused
- space within s->size
-To: Harry Yoo <harry.yoo@oracle.com>, akpm@linux-foundation.org,
- vbabka@suse.cz
-Cc: andreyknvl@gmail.com, cl@linux.com, dvyukov@google.com,
- glider@google.com, hannes@cmpxchg.org, linux-mm@kvack.org,
- mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com,
- roman.gushchin@linux.dev, shakeel.butt@linux.dev, surenb@google.com,
- vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu,
- adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251027122847.320924-1-harry.yoo@oracle.com>
- <20251027122847.320924-8-harry.yoo@oracle.com>
-Content-Language: en-US
-From: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-In-Reply-To: <20251027122847.320924-8-harry.yoo@oracle.com>
-Content-Type: text/plain; charset=UTF-8
+X-ThreadId: AwB0iom3SqON
+Date: Wed, 29 Oct 2025 20:21:20 +0200
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Alex Mastro" <amastro@fb.com>
+Cc: "Alex Williamson" <alex.williamson@redhat.com>,
+ "Leon Romanovsky" <leonro@nvidia.com>, "Jason Gunthorpe" <jgg@nvidia.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Bjorn Helgaas" <bhelgaas@google.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ dri-devel@lists.freedesktop.org, iommu@lists.linux.dev,
+ "Jens Axboe" <axboe@kernel.dk>, "Joerg Roedel" <joro@8bytes.org>,
+ kvm@vger.kernel.org, linaro-mm-sig@lists.linaro.org,
+ linux-block@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ "Logan Gunthorpe" <logang@deltatee.com>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Robin Murphy" <robin.murphy@arm.com>,
+ "Sumit Semwal" <sumit.semwal@linaro.org>,
+ "Vivek Kasireddy" <vivek.kasireddy@intel.com>,
+ "Will Deacon" <will@kernel.org>
+Message-Id: <275a5a94-1c69-4eb0-a9d0-4b397073555f@app.fastmail.com>
+In-Reply-To: <aQJF1wiWWWoIgHI0@devgpu015.cco6.facebook.com>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <aQJF1wiWWWoIgHI0@devgpu015.cco6.facebook.com>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO regions
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: e7nxo5qm138c3okmrp8fzit5g5pwdixr
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: DF78B120011
+X-Stat-Signature: 7sr9i5gbkzozfxb4rpizjdyxg6fxif7a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9E6954000C
-X-HE-Tag: 1761761980-934492
-X-HE-Meta: U2FsdGVkX1/PdkvmWXL5ugqM/RvgU/5b5c7AuTOsdxEJMe3LCcaRmt6J0fSurJxcwn9jUlFTGQ17E1KNroa8AZMF55ukesIyc3zghV22KXU+ciVrFRTN5MhvPns+cJkMVwG6qRUoyhy97mDpeWvFPPM85JBDlcLaYDqRQWrXEunLz80yCn6IUNxKEBNuTEoUy30duyQ1NMa/w8rgwngd2kZmcCLV4s0ZlPKcWo5uF5Y/WxjgC4a8rkbupf1P8FuzQe+sTXBNW0I8wS+amq+ia+hSw+pe1Rz2rTv5PQYF7GhMrcTJm1Vk0TbYi16Xzf+1nkJ6f+omu2kv+EKU4uIwXU4+Baqg+Py1Hc/DycSQ5r0VMJUn7B6ZI+6tW0r7o/Bo+yW+JEWzT8M6o1m6356GJ+cGgsLTyogKk6TSpDlPg9WATK4G/DPCyB3E+rDXbahPdNMgwd/lTIMrqJZohVVvUR8XqoLjeSX7bP1kSNw7ftmtZyQNh1pQXUyQAT+Y6935Ps2O9zXRdLsOwfV79dgJua2Ra0ZPCC8WfnM6Vpf+I4wOomBxkyGMjTq4iIk5tpKoYGJ2a07nkBYOIOeSBXKYDZDmJmDi0Ift+mbRZVkKIicFfiQSBwi2IDLcK//VqGPJrB6FL/VYOv2jPSuouERCbC+KMpgQXtc3p2oNEjPUW7QVgpVDznHhydou4mmqG3EiuB9LBQBQaPoDsuggAwRERZA+pfdwb0A7p8JlS9oR8rZxvOrr4jvlqL8k5/Q0VUAYaOb/zvkkLmD/cjuK9psKYBX4CanCUGGyEbcSoSggasAoN+9yJ1kZ8HCkPlbroxHpcdc9+8Dfvp3xmGr+KxkvV6yq5x255y0vXHCfPHDSl62i2BDMPsHltDR7Wn/X10/XgSySFtkFZStoL6C1wd7Jh+UuIAK1RYzIDZw36tZHde8U/Kn/gGb2nx7TqEkJ1j854E/OXetpDl9kmjefKIQ
- dA16VSs6
- nEGSXSmuwC35Ipt+bcNoQxL6rDr4XwJL5rrK7Pd8xPYyzV3oMynOPfGT0lfwxTQkE9lXesbJufYJRsOKzjU5EQmyuaQcgfAktjESDLz57zerbIZGEU3RmmhEZCKha2ab+L05xGj1W697CwyTwWwf8UmaLcVR5vjQQw9anQO0uebyV0jjuKJ6rcskr1/PG3Pr4eOUz0O97X6ujgdvnY8DcFyOHvAJ7XEPCwxWJrAnYbn5uTfUP84r0THWIMoaspOLoXDZNlrrfdS9N+nI/Za052vVWhmKLwi36LnXAPJWcN50dQs7MCAwW7hqnWSoTuMP+ujDXIbQgjd2BQrgKtVY8IJRYIV/EY4eASLU2IRX3BMLLsUuU+ThFDOMUiAhAHMGiFP5SIIcjeSkDwCD07EQs+xSNOWMS0q5awRd+Jc07LSznOImPCprZ+3XZwshVT+s4TdcSCAaG2A2uXDmkw8gSWFc1q7PZJ/dwaff4Dw+fKS15TvmQaH2o+t/j0IxA6pmlBaLDyCg7ZC3u6HQ=
+X-HE-Tag: 1761762103-12647
+X-HE-Meta: U2FsdGVkX19ooyNETNYvVjL461Ct1nUK5bzWSovzEp7w8eSILFvxOaWzKkp+8nUKoLVUYVVBJsIeaP2Nu+5lWL6v1S4T+thSeMWL8cJh+uPJr27+L+iXoWYiGIvePEJut+oBY9M0YrKmIRtPFZQupU10+YZzkC4ndh0H9ilrpW/0fCiUDQkK8tEaKmLI3m/c/zR0jnZxjDo/2keIr+QqB3tX11oh1/K/cW2s+r4i4dbPrXZD+Z4+BO+b8ECk4JCvbbzIw3978JsnB7v/xZJs16eiUOqLu7E59p9vyP4tlkgAB/4W1OaWGD3CdYX6tqvY+9WMemThcpIBiUto3XDwZDzmcdmGS3kG6u6FWPVHdVUzmxikXLNWn2Bz5kleU19aH/unkppa+e0yxsLirUtYP4+zIrdElSz4MtArniT6k/B2oS+2pL1kdS3YmtSD07Ktga0w5uOPR0C+RSi1AyGz4tkWt3NnN691RjbLnTxgmrfIZrXt7bvqz8LkIE2h9SWif9/hG+AfclHu+DWy1SAiZASiiJ9XzvjuBCJlITYwtdMf8E9uutz8rOrSRDUfvu3qqC2lsNYYen9XvAfMlPjgcSYaILdT70fjq6jAxI6tV6zS5yA1VSXCmVgKoECNJmoUiN2wnwv//hzy69D2oJviqueHn4J/c65I6SbSkVo5Duqfe+76lTCAJP9zEiv5pVZX/Dhsow7uST7g8B125uuKUysbG6O5PKfT8Z090EkA91FjGf/pdfMbq5q+KZO+SxDsUdRXue6Co4EMLPYeStWZVsN8hHE48o5vMeFvSpCHajT1cZ7iX3/V90JSHFC81jmKZMRiuvZHa1DGwH7oNkihGTLU/H+/s1KiY2fW55fcTshjjw+Q0XBivg+vDU2H9pPcEIRwta3BjEuHTKhIQ/Jh340o5pzs2YMPu75c9/bKBFKS4NdjdaBXHERZX/SRNKog5+NoJx7CTf1K9WZCpKL
+ 2/Eta+Ar
+ zQ0O09LcEvKkmB5cXgjhb6LBhc/gr62Gj1nK8HisH6akdZXgbEFBROZBTwcpT4bPh7ujGphMoSp0YG4g6XEAjiekKX8RQQNo9B4cBT7DjDL/BrZzA5/98eNZ5nfrTt9byv0BPwhZSPaJPlUBXSwjKDvnVMAIw/8gvsGEP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,29 +145,31 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 10/27/25 1:28 PM, Harry Yoo wrote:
+On Wed, Oct 29, 2025, at 18:50, Alex Mastro wrote:
+> On Mon, Oct 13, 2025 at 06:26:11PM +0300, Leon Romanovsky wrote:
+>> +	/*
+>> +	 * dma_buf_fd() consumes the reference, when the file closes the dmabuf
+>> +	 * will be released.
+>> +	 */
+>> +	return dma_buf_fd(priv->dmabuf, get_dma_buf.open_flags);
+>
+> I think this still needs to unwind state on fd allocation error. Reference
+> ownership is only transferred on success.
 
->  			slab->obj_exts |= MEMCG_DATA_OBJEXTS;
->  		slab_set_stride(slab, sizeof(struct slabobj_ext));
-> +	} else if (obj_exts_in_object(s)) {
-> +		unsigned int offset = obj_exts_offset_in_object(s);
-> +
-> +		slab->obj_exts = (unsigned long)slab_address(slab);
-> +		slab->obj_exts += s->red_left_pad;
-> +		slab->obj_exts += obj_exts_offset_in_object(s);
-> +		if (IS_ENABLED(CONFIG_MEMCG))
-> +			slab->obj_exts |= MEMCG_DATA_OBJEXTS;
-> +		slab_set_stride(slab, s->size);
-> +
-> +		for_each_object(addr, s, slab_address(slab), slab->objects) {
-> +			kasan_unpoison_range(addr + offset,
-> +					     sizeof(struct slabobj_ext));
+Yes, you are correct, i need to call to dma_buf_put() in case of error. I will fix.
 
-Is this leftover from previous version? Otherwise I don't get why we unpoison this.
+Thanks
 
-> +			memset(addr + offset, 0, sizeof(struct slabobj_ext));
-> +		}
->  	}
->  	metadata_access_disable();
->  }
+>
+>> +
+>> +err_dev_put:
+>> +	vfio_device_put_registration(&vdev->vdev);
+>> +err_free_phys:
+>> +	kfree(priv->phys_vec);
+>> +err_free_priv:
+>> +	kfree(priv);
+>> +err_free_ranges:
+>> +	kfree(dma_ranges);
+>> +	return ret;
+>> +}
 
