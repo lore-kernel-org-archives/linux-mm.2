@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D94CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:09:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8575DCCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:10:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3CFBB8E004E; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
+	id CD11E8E004F; Wed, 29 Oct 2025 06:09:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3A7AE8E0045; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
+	id CA82A8E0045; Wed, 29 Oct 2025 06:09:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E4418E004E; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
+	id BE5BE8E004F; Wed, 29 Oct 2025 06:09:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DB148E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id D48E349E1B
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:54 +0000 (UTC)
-X-FDA: 84050730708.29.04B458D
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AC6738E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:09:59 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 42F0E5B757
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:59 +0000 (UTC)
+X-FDA: 84050730918.09.A34B408
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id B8AE21C0010
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:52 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
+	by imf29.hostedemail.com (Postfix) with ESMTP id B32BB120005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:57 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761732593;
+	s=arc-20220608; t=1761732597;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=bJfGjK3V1rq/s5b4GkcHwtkSApbbfKZmiwKdVtvTU7o=;
-	b=xsu1SFIDjX18gL/CVpnvqxnCzOy9RHVkj2KLMjYtdKro5GX3NZQzxcUVZCG92d64ywXzmG
-	/LuxAIr3JgZxfwdyAeerS5Qid7iqOHy5dgUFsqAYyQPUNcGVatL2sBEbHdz67gCZC1Ycyl
-	mO1jkGJJU+P5ysdMpEajyFikXts8BNo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732593; a=rsa-sha256;
-	cv=none;
-	b=sM2QAv5sRfnZ/vHmxg/z3WNRsD7XQT/vSXn2OD2JA28p8ymQXo7ytyJJ5sT8+GGXAAhTbN
-	jGhjxdHIuuYozaKpgef7opUNUw2PfzLw+2rGmocfC2Su+MWIXt/scNGlwHT+QbQljJh3k3
-	PiK6azt+HdYuxF9OeJEFi9G1c+wo+bU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8WHCaovUK1tAmmBOna7zcDZNEBmhR0O3PHJco7p6IsI=;
+	b=XEaoG5Gpk6ASl0UCNLzTkiiDCzfeCJvAWcWsIin8q7AmKTLIcZXXCTGCqOiVku8SQcVnY2
+	syUw+yEDTV8sOZtjBcdhsG+FFu7bDAI1tBG85p2280V/b64rn0veAeu5yy+DQWycmq6yh8
+	ApeXcvs6pgd2ZX3i5jMS405G1mvJMgk=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf29.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf29.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732597; a=rsa-sha256;
+	cv=none;
+	b=V1LiuwSALctNXUOZfIxYb+Tqu4L6kou1XRS1HFHa1sdygEiTz4lvdjICr4sDGrDVqZPROc
+	Q0r/vn4+ufu7uJurPJxZpUukfIX1hZYFn6wkahNExjSpdwfB3yQvmdRNDoFItDdfEX9W1i
+	oMcEkTxBkYf3RO8+e85DIGOXpiWaIX4=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5A201AC1;
-	Wed, 29 Oct 2025 03:09:43 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 12B101C2B;
+	Wed, 29 Oct 2025 03:09:49 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC8B73F66E;
-	Wed, 29 Oct 2025 03:09:46 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 012083F66E;
+	Wed, 29 Oct 2025 03:09:51 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -92,21 +92,20 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v4 00/12] Nesting support for lazy MMU mode
-Date: Wed, 29 Oct 2025 10:08:57 +0000
-Message-ID: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+Subject: [PATCH v4 01/12] powerpc/64s: Do not re-activate batched TLB flush
+Date: Wed, 29 Oct 2025 10:08:58 +0000
+Message-ID: <20251029100909.3381140-2-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: dhioswn673ojra8jiu44nxtn3a8e7iqj
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: B32BB120005
+X-Stat-Signature: dpxd3urq4ufn89z1qg4pi56rhc8b1zuc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B8AE21C0010
-X-HE-Tag: 1761732592-109527
-X-HE-Meta: U2FsdGVkX1/MSEfGf64WiZKaw8i6JEJhP7ZkqD1LumKUnxZifhb5RM8y2O3fOA5nQDolxnHIqP2g6p0hEyZedbWA2yTPgNqM7HK32W0kiiTH3mqCiMXfP4pQxE0F2h8w0LHJqlHrltZfw4CDCFYjiiiQ2SJEFMn1yNntl6mg/3T2uREY3lu/NqTqOQY6QrnAf27y280Fx5JmO5jmvboQ3cu4e1fWaRDBiIzM/JHE3XhM7+kfANi0oPN+nTKAT1agywoi4a7cvnC/VWFd5yfklb1Dlb4TCkrrC4VmNRMDXBlJ/036dEuVcn/6pYPb4C0LL+iT7YFCnePeC1pAMGhWiwHcg8TpyQtpPXdUtMQ5lMwO942k9yATuNpqULyn3NMlF2m6TwfoyhYh4h7+NlFYtA5gGt8fSyUOsSINkSC2v5t9qEE8rDKvKybFts7VE2IRkpHCqW0TURntoiikeBkR4p+48EDbwO/3m3LhbksS+b9WvoZejDXz7QSDbM56A7S23bAipy3yWf3dqJERxx1Rx/ikYHYdC/YmD66lmyQNopHaQJoaCryxvnARNFyDVxM2QqTHH2nlzg7XltKzHyTHJUVggLdE6QxpK93xGTmN1jl5/UUGkUQHn9duRnEPQiuLVahFW/7MDjssJX07qmYEUOHtd7zm0c8TgQyNrb7KuB+QLeZ80K4pnhRXOp78VUKZHLtRWtuhLAw6UWWBxXzFykBTSMg9Bnhf7iE+pxfpMLoLvZrfR767fCJFA0uXcB1dZynacs0lZgFsp7k3LPeSl1/uQpxHtiaedchhtQfVr9+B+o2qidlCpslcmehTtFHK/YvTfUErwHMYcUsgu6zdfU5DOPuemI3REUV8/XstNp5DiRSavn7kHCWEIcnbSOPTf4pUdQ2zclUhr15BdO6TuWHY88hNNN7SxTWbWC47/pVwRYJ9EVFVBt88b5hCeu9x1XFQKvqMfUNwDTL833R
- YOlugYhd
- Bsk1AaHytZUOOXs5I9S5BO4D+ggIG0sYuTqMypZK7wpX4FT7Hmf2DvCvtNMAIBhjg2kxh8J2nLcWTfKsH4kFhi2+eIbSMKz+jVFcmIHipmc8BTp2cz5ZbwPCEV+URDZZ4dPrRwLbGpIGfAZfEuzrsH3HHLw/JXtTdYyOUb9T6H0zyKVecDKRdSrsRLzGnZVQkMqSQZOKsvFpth63wP05HB0wpBbmRj1SAQxID19HULYrjV/AZy2RTkD/90Ysr5CU0wJG6p4lhQFatUDvz2xP9m6n3ZevbRtR7CXxQWglIW6e6SoCVN8a9y280wM2TtHoq1cSrJ6mcjlcRRkZr7BkQzlmC2xyq+egy3XVVyfsrM/ZX+ioHX/N2f1CDXzFVEutgR0m4aueudAiVgKRRiak8Uly0zH5GUUnrWCCVvnqLucFln1g6DQuHVaZgBkDGV1ebbLtN9grEs9eWt/PBeohr8x7dgt7wuXxTo/QrMNuY1FGDbst4nCa1+pEppPwfoGulxUKSzjkDs1PVTMQId9vCW+Oc6RruABHWduXzqh3fHlAIOWrhPMPSUBkwZ5/dQoaoWw7KFZH2U/sJNq2+I5iZ0ljFVvvQPMg0KLt69Mt5ejrBHSXCzCxjrYaBROZ/F8iu3gYyD5Ecd3T8fxck4ho/E1PlG75oc6ExagcDTm32ccY643t9R5ix8V+z2QXLZs15Mhtpv2/k7pDZhbL/XC6DBrSBgakOZTTiVhONbjtsUO5XgVHaLPRxvKV5zYvwbsxRk4x9Y+cT6NV5uoEAzxpQuQ6vgQd+WAyFOPEm7UE2FnFDoMvqz9Z0u8e4IiHTPgULaFNowNyiiN8LyXz1w/RaHnfWEczDAC+r1v5zVO9CVk1LIrs=
+X-HE-Tag: 1761732597-608098
+X-HE-Meta: U2FsdGVkX1+tdPkH8u4jxS1gyqJf6fM6R0mJuioIycCD43Pa1Ehbka0m39eElhg4uIxdbao3QYRJh/uJ6baI1J4MyHSYma6oGuqzDL8wV8a28u2euCtOk1jtgO6gUUPuXrTnYiUrrhgF5JFSFup73/wY6/WEZBDAvk/n3z1uIyWLBapWYk8Vs6n9O4BqccY9GEalgW+CheCTV7apYKqHeAGhj2eQWYccLyLyQ9C1BFpVLBVKpHEY/cpe+xoOGW+rG5XUwvkROqO3+2ZOGIbVP+s0qAS+SHLmvMxymdiV3+IZCzwmV7WKbNpiMzOj705IzbESjNmLFwTpGILX7SZ0vmP0DD1LMOIVSP2VPh6lS2Ep8I5d5z8k3mSY6P9MkncKvCfW3iaxvNlNwj8P4rpTCHK7ICJhR7BofZ2B/QIm3t1wx95EfBUr4oV1sEJ9rGZzfMQtYqAm7QHvyC9y3vHb3lwufx38PwPzPWg+pZ+9LIvSitxpxrMKbtGzdAIZstCx/FyB7UybsO4eZz0XUGRC5879RH40iX3FohePOMuLDXXLYLBAT1UjPGUygQVmlnrRBkpb73g3o3LVsxmsup4GRpuJdMTCThA/ALT9JhR/5r9rdymNfdv+G1Ms8gveJAz3GdvNkiPSEfM9ikymJPiMemwUblNPrAf8NTJ2fxClOkMKU4EV5lF03eNtZ4ZBVxZhhpr+8S2evJDvOa90Z1twnvOOTxSzwv9KlXXFPM7apbvjDj6nkJeA6O/U0v+szby6eyHSm/303xfs77cUc2KbD+2WNQLlHx9rnKO9VALUJbg1ySidjEI0UQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,210 +114,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-When the lazy MMU mode was introduced eons ago, it wasn't made clear
-whether such a sequence was legal:
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-	arch_enter_lazy_mmu_mode()
-	...
-		arch_enter_lazy_mmu_mode()
-		...
-		arch_leave_lazy_mmu_mode()
-	...
-	arch_leave_lazy_mmu_mode()
+Since commit b9ef323ea168 ("powerpc/64s: Disable preemption in hash
+lazy mmu mode") a task can not be preempted while in lazy MMU mode.
+Therefore, the batch re-activation code is never called, so remove it.
 
-It seems fair to say that nested calls to
-arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
-architectures never explicitly supported it.
-
-Nesting does in fact occur in certain configurations, and avoiding it
-has proved difficult. This series therefore enables lazy_mmu sections to
-nest, on all architectures.
-
-Nesting is handled using a counter in task_struct (patch 7), like other
-stateless APIs such as pagefault_{disable,enable}(). This is fully
-handled in a new generic layer in <linux/pgtable.h>; the arch_* API
-remains unchanged. A new pair of calls, lazy_mmu_mode_{pause,resume}(),
-is also introduced to allow functions that are called with the lazy MMU
-mode enabled to temporarily pause it, regardless of nesting.
-
-An arch now opts in to using the lazy MMU mode by selecting
-CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
-generic API, especially with state conditionally added to task_struct.
-
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
+ arch/powerpc/include/asm/thread_info.h |  2 --
+ arch/powerpc/kernel/process.c          | 25 -------------------------
+ 2 files changed, 27 deletions(-)
 
-Background: Ryan Roberts' series from March [1] attempted to prevent
-nesting from ever occurring, and mostly succeeded. Unfortunately, a
-corner case (DEBUG_PAGEALLOC) may still cause nesting to occur on arm64.
-Ryan proposed [2] to address that corner case at the generic level but
-this approach received pushback; [3] then attempted to solve the issue
-on arm64 only, but it was deemed too fragile.
-
-It feels generally difficult to guarantee that lazy_mmu sections don't
-nest, because callers of various standard mm functions do not know if
-the function uses lazy_mmu itself.
-
-The overall approach in v3/v4 is very close to what David Hildenbrand
-proposed on v2 [4].
-
-Unlike in v1/v2, no special provision is made for architectures to
-save/restore extra state when entering/leaving the mode. Based on the
-discussions so far, this does not seem to be required - an arch can
-store any relevant state in thread_struct during arch_enter() and
-restore it in arch_leave(). Nesting is not a concern as these functions
-are only called at the top level, not in nested sections.
-
-The introduction of a generic layer, and tracking of the lazy MMU state
-in task_struct, also allows to streamline the arch callbacks - this
-series removes 72 lines from arch/.
-
-Patch overview:
-
-* Patch 1: cleanup - avoids having to deal with the powerpc
-  context-switching code
-
-* Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
-  generic layer (patch 7)
-
-* Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
-
-* Patch 7: nesting support
-
-* Patch 8-12: move as much handling as possible to the generic layer
-
-This series has been tested by running the mm kselfetsts on arm64 with
-DEBUG_VM, DEBUG_PAGEALLOC and KFENCE. It was also build-tested on other
-architectures (with and without XEN_PV on x86).
-
-- Kevin
-
-[1] https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/
-[2] https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/
-[3] https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
-[4] https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.com/
----
-Changelog
-
-v3..v4:
-
-- Patch 2: restored ordering of preempt_{disable,enable}() [Dave Hansen]
-- Patch 5 onwards: s/ARCH_LAZY_MMU/ARCH_HAS_LAZY_MMU_MODE/ [Mike Rapoport]
-- Patch 7: renamed lazy_mmu_state members, removed VM_BUG_ON(),
-  reordered writes to lazy_mmu_state members [David Hildenbrand]
-- Dropped patch 13 as it doesn't seem justified [David H]
-- Various improvements to commit messages [David H]
-
-v3: https://lore.kernel.org/all/20251015082727.2395128-1-kevin.brodsky@arm.com/
-
-v2..v3:
-
-- Full rewrite; dropped all Acked-by/Reviewed-by.
-- Rebased on v6.18-rc1.
-
-v2: https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
-
-v1..v2:
-- Rebased on mm-unstable.
-- Patch 2: handled new calls to enter()/leave(), clarified how the "flush"
-  pattern (leave() followed by enter()) is handled.
-- Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
-  suggestion].
-- Added Mike Rapoport's Acked-by.
-
-v1: https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com/
----
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: David Woodhouse <dwmw2@infradead.org>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Juergen Gross <jgross@suse.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yeoreum Yun <yeoreum.yun@arm.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: sparclinux@vger.kernel.org
-Cc: xen-devel@lists.xenproject.org
-Cc: x86@kernel.org
----
-Alexander Gordeev (1):
-  powerpc/64s: Do not re-activate batched TLB flush
-
-Kevin Brodsky (11):
-  x86/xen: simplify flush_lazy_mmu()
-  powerpc/mm: implement arch_flush_lazy_mmu_mode()
-  sparc/mm: implement arch_flush_lazy_mmu_mode()
-  mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
-  mm: introduce generic lazy_mmu helpers
-  mm: enable lazy_mmu sections to nest
-  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
-  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
-  sparc/mm: replace batch->active with in_lazy_mmu_mode()
-  x86/xen: use lazy_mmu_state when context-switching
-  mm: bail out of lazy_mmu_mode_* in interrupt context
-
- arch/arm64/Kconfig                            |   1 +
- arch/arm64/include/asm/pgtable.h              |  46 +-------
- arch/arm64/include/asm/thread_info.h          |   3 +-
- arch/arm64/mm/mmu.c                           |   4 +-
- arch/arm64/mm/pageattr.c                      |   4 +-
- .../include/asm/book3s/64/tlbflush-hash.h     |  22 ++--
- arch/powerpc/include/asm/thread_info.h        |   2 -
- arch/powerpc/kernel/process.c                 |  25 -----
- arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
- arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
- arch/powerpc/platforms/Kconfig.cputype        |   1 +
- arch/sparc/Kconfig                            |   1 +
- arch/sparc/include/asm/tlbflush_64.h          |   5 +-
- arch/sparc/mm/tlb.c                           |  14 +--
- arch/x86/Kconfig                              |   1 +
- arch/x86/boot/compressed/misc.h               |   1 +
- arch/x86/boot/startup/sme.c                   |   1 +
- arch/x86/include/asm/paravirt.h               |   1 -
- arch/x86/include/asm/pgtable.h                |   3 +-
- arch/x86/include/asm/thread_info.h            |   4 +-
- arch/x86/xen/enlighten_pv.c                   |   3 +-
- arch/x86/xen/mmu_pv.c                         |   6 +-
- fs/proc/task_mmu.c                            |   4 +-
- include/linux/mm_types_task.h                 |   5 +
- include/linux/pgtable.h                       | 104 +++++++++++++++++-
- include/linux/sched.h                         |  19 ++++
- mm/Kconfig                                    |   3 +
- mm/kasan/shadow.c                             |   8 +-
- mm/madvise.c                                  |  18 +--
- mm/memory.c                                   |  16 +--
- mm/migrate_device.c                           |   4 +-
- mm/mprotect.c                                 |   4 +-
- mm/mremap.c                                   |   4 +-
- mm/userfaultfd.c                              |   4 +-
- mm/vmalloc.c                                  |  12 +-
- mm/vmscan.c                                   |  12 +-
- 36 files changed, 213 insertions(+), 166 deletions(-)
-
-
-base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
+diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
+index b0f200aba2b3..97f35f9b1a96 100644
+--- a/arch/powerpc/include/asm/thread_info.h
++++ b/arch/powerpc/include/asm/thread_info.h
+@@ -154,12 +154,10 @@ void arch_setup_new_exec(void);
+ /* Don't move TLF_NAPPING without adjusting the code in entry_32.S */
+ #define TLF_NAPPING		0	/* idle thread enabled NAP mode */
+ #define TLF_SLEEPING		1	/* suspend code enabled SLEEP mode */
+-#define TLF_LAZY_MMU		3	/* tlb_batch is active */
+ #define TLF_RUNLATCH		4	/* Is the runlatch enabled? */
+ 
+ #define _TLF_NAPPING		(1 << TLF_NAPPING)
+ #define _TLF_SLEEPING		(1 << TLF_SLEEPING)
+-#define _TLF_LAZY_MMU		(1 << TLF_LAZY_MMU)
+ #define _TLF_RUNLATCH		(1 << TLF_RUNLATCH)
+ 
+ #ifndef __ASSEMBLER__
+diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
+index eb23966ac0a9..9237dcbeee4a 100644
+--- a/arch/powerpc/kernel/process.c
++++ b/arch/powerpc/kernel/process.c
+@@ -1281,9 +1281,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
+ {
+ 	struct thread_struct *new_thread, *old_thread;
+ 	struct task_struct *last;
+-#ifdef CONFIG_PPC_64S_HASH_MMU
+-	struct ppc64_tlb_batch *batch;
+-#endif
+ 
+ 	new_thread = &new->thread;
+ 	old_thread = &current->thread;
+@@ -1291,14 +1288,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
+ 	WARN_ON(!irqs_disabled());
+ 
+ #ifdef CONFIG_PPC_64S_HASH_MMU
+-	batch = this_cpu_ptr(&ppc64_tlb_batch);
+-	if (batch->active) {
+-		current_thread_info()->local_flags |= _TLF_LAZY_MMU;
+-		if (batch->index)
+-			__flush_tlb_pending(batch);
+-		batch->active = 0;
+-	}
+-
+ 	/*
+ 	 * On POWER9 the copy-paste buffer can only paste into
+ 	 * foreign real addresses, so unprivileged processes can not
+@@ -1369,20 +1358,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
+ 	 */
+ 
+ #ifdef CONFIG_PPC_BOOK3S_64
+-#ifdef CONFIG_PPC_64S_HASH_MMU
+-	/*
+-	 * This applies to a process that was context switched while inside
+-	 * arch_enter_lazy_mmu_mode(), to re-activate the batch that was
+-	 * deactivated above, before _switch(). This will never be the case
+-	 * for new tasks.
+-	 */
+-	if (current_thread_info()->local_flags & _TLF_LAZY_MMU) {
+-		current_thread_info()->local_flags &= ~_TLF_LAZY_MMU;
+-		batch = this_cpu_ptr(&ppc64_tlb_batch);
+-		batch->active = 1;
+-	}
+-#endif
+-
+ 	/*
+ 	 * Math facilities are masked out of the child MSR in copy_thread.
+ 	 * A new task does not need to restore_math because it will
 -- 
 2.47.0
 
