@@ -4,94 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06D68CCF9EA
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 01:32:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E793CCF9EA
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 01:33:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2D1E28E0021; Tue, 28 Oct 2025 21:32:48 -0400 (EDT)
+	id 4A7418E0022; Tue, 28 Oct 2025 21:33:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 282338E0015; Tue, 28 Oct 2025 21:32:48 -0400 (EDT)
+	id 457A18E0015; Tue, 28 Oct 2025 21:33:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 14B308E0021; Tue, 28 Oct 2025 21:32:48 -0400 (EDT)
+	id 31FE78E0022; Tue, 28 Oct 2025 21:33:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 008B68E0015
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:32:47 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8F27249A95
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:32:47 +0000 (UTC)
-X-FDA: 84049427574.21.2FE933A
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf25.hostedemail.com (Postfix) with ESMTP id A40E7A0008
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:32:44 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BiChO3hh;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761701565; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BE3B8E0015
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:33:07 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id DAA86140655
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:33:06 +0000 (UTC)
+X-FDA: 84049428372.10.761B74E
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf20.hostedemail.com (Postfix) with ESMTP id F0D091C0002
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:33:04 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Oi8G2uti;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761701585; a=rsa-sha256;
 	cv=none;
-	b=zFFUjkbHmuWg8AUvEW53TmRSA6P5B/Brwm+E7OBIdKYlDZQ2sE+01JnL/QNXlRRsA1SFc3
-	CuSmHQDR9t7iE9FfCZBwsnN1hPUSq4Pp18zMSAc51IjGBFNrf3uPUm1kXYA2g/pyHeggI8
-	2qCXbdmxm5FYmVorZZCGGZi9t0KCrI0=
+	b=4H2+xNVe9ZvdXKnpJnzOFwvW4yIwxvWxXUXqg3SziRu3UCWiAT6QFxSUgNr17PTxigg4oy
+	9pK7FxcoPi/eB9JaV6EWzJ0z7t53clMgUHe8Vc4CxcI9jeKuxAxe/RLaJkxV5UVngAYLpO
+	ai+7ahKaffRWbjroNiTjODcQvMY9zVw=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=BiChO3hh;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf25.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Oi8G2uti;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761701565;
+	s=arc-20220608; t=1761701585;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a3RjBt8zeIPQKLHLasDxZWnu3ZJLAQippsYalBaaCdQ=;
-	b=8lnxlu5p3BdHnzLo+dJzsmh4iXDWC8qHzxMNX6BuUNbkH4hyntqpq+shrnzU0/+98muZbJ
-	GP1J1jqtJ6cyGyOq/u1buoiwU/+Spo/LTc5MpEUlOapxi0T772kW7+Ps+zFpRiEYJGQBYd
-	umkVEgvJICn7iMBs++h0r8IP8MSnmTY=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=a3RjBt8zeIPQKLHLasDxZWnu3ZJLAQippsYalBaaCdQ=;
-	b=BiChO3hhDBOjuIKhCpJghRePDqtttnYUvUpE52W8IFnSvPGwZhRJnTtdpVy0kOmulbf/qnd0D
-	nrBjV4OmRCd1q0MsXF6n5bSUS9osinJi8dQQl+cTt0JjmbtK/lkGco3ZCv22akfkjlI4lQkYxFm
-	+X0RQNoSUqwIZeQgzWscvZE=
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4cx8qb2VKxzmV6g;
-	Wed, 29 Oct 2025 09:32:11 +0800 (CST)
-Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
-	by mail.maildlp.com (Postfix) with ESMTPS id F06FF1A0188;
-	Wed, 29 Oct 2025 09:32:39 +0800 (CST)
-Received: from [10.174.177.149] (10.174.177.149) by
- dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Oct 2025 09:32:39 +0800
-Message-ID: <19e22163-39b4-42f8-99b8-1be9ffb1589b@huawei.com>
-Date: Wed, 29 Oct 2025 09:32:38 +0800
+	bh=NZgb8HNWg7Vp1KBGuTQoK7+25dHkAhI3MFTK1ft779c=;
+	b=WU/DwYvjOERLueCaJizLIg+5VxHbhUqbSQCmTqaI8p/X01m3jbPV7SRdgWWKyRZDPt/Sd9
+	JY9RIBDd42OlVaKmTi5OYX3TPOenFyMFhO2h9qOTLsino8LfLjtxN6QAALNftWN+Xdjffx
+	sJ48m8z5yBvDV1uwJBLhuRFcOdcayKQ=
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3ece1102998so4766780f8f.2
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 18:33:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761701583; x=1762306383; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NZgb8HNWg7Vp1KBGuTQoK7+25dHkAhI3MFTK1ft779c=;
+        b=Oi8G2utiVt5uIoqR2/3LBRP78bYtpBHEYauN11t7iM1VRfRlaRSGcxB/yZUTrIacaf
+         og2WaDVMzjPqcqurYFQj1J3GEMshKb6d7iv6SmKfL1Ml0WNyZu2GrK1LFh4qYhi96jSV
+         iwSZRflcQiPj/jX+6Un7nAWlXyV6T6ls2gG93yCw4bVYobXtM4QuOKvBaVoLUwzx48Ah
+         OJXd0cnO14C7ocriJxb8KUmQmY8PLFUB7Os0GR0cpzEx45wXq362JvBJPrAD+FGVrkQ8
+         jfYPp0sdHCo/o98Jpok3NsfU61YFDQzM2uOO2s6eAHDxGln1G4gK8BlIy/WM8wLVb/NC
+         Ef1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761701583; x=1762306383;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NZgb8HNWg7Vp1KBGuTQoK7+25dHkAhI3MFTK1ft779c=;
+        b=dGs63fAtrhhhE4nyj6J8IQwf09HbGKo9I2wXqBD4fbMfgEjDLgRp9VJbOJ791rmDAX
+         3fUPXD6VMIb3z/JJmzZRSbgIBhnwcahSPkt9GIhGC/eAz9mRr1OCN4AffpEWu1SVGPCp
+         SmlEywnxsLWaekY+/MljiSZBoBa8c2aIrTc1q3CvPP1as6ATQC1TqRxPq3KPFOqno2gY
+         QVNGmKrQ0i1V5Zj2jp26XevfDti15XpCf35R4uSXo00m139i5s6jooTs8ascE0MocDBF
+         MOoleV7rUx4UabmavInrqfO0TV+yAFNmILQQLDfsgrAP3DgpH26rZc9GBaePFhE1UBCI
+         ZgvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW0gPgaNYQGSv8eF76IaPTJmbQhE9QNuVAH/DRYyu8vCJ3kCtEuRM58TC0dZEuutKJnkAArQ+sVtA==@kvack.org
+X-Gm-Message-State: AOJu0Yy2NGg64XLgFOdl3HM75jSl4UhZw59gIJIUSDme4DKSJjaH1S5n
+	IJIFcOPAEWf/l6s8D2eVbWP9vYmA+2PpU4PLqfKLLFrfBt7lFU4fpyyXoBjm4TPYTpXtnj3mXPQ
+	3gTHPOX25r4stQ5OlZ4ZC/wFk3rWGbOY=
+X-Gm-Gg: ASbGncuNj9Ixyt3Jr0QQWlBsTta+X0CGHxEISxrsWJAEZkIFcjBpdRPg389Zamw6+NI
+	31jzqLP9ki9NUV5LKHOn1ODDxztIy0MMZtLObOmYOknIYf+IpuPKNgNP3Iq+vUf7hVCmx48xQ9x
+	gPDaIbWQfK+DYXZOP3vUc8RDALGyBr3y1E9sZ2Zz32GZjl8R1j0yg/PINw4hrKW2lM3Z8jsxtT+
+	s9Y0vw6DKH7x/m9I4vOMiMXv3CJg5a69/mYhBIWAuyzxI8Ihj8BcvrbbxACceR60x7jZVuld+DL
+	4UCxo7LH5r+H847BVw==
+X-Google-Smtp-Source: AGHT+IGTMzuv/ArJ+OYA4q54z3AmWM67z6gdganGyzk1cdUdXR07L641GaC7I+IwWt6JzcrPAq7tGRPMfDWEY1QXS5M=
+X-Received: by 2002:a05:6000:26c2:b0:427:880:9538 with SMTP id
+ ffacd0b85a97d-429aefbde03mr708524f8f.45.1761701583059; Tue, 28 Oct 2025
+ 18:33:03 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/damon/stat: set last_refresh_jiffies to jiffies at
- startup
-To: SeongJae Park <sj@kernel.org>
-CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
-References: <20251028141915.49989-1-sj@kernel.org>
-From: Quanmin Yan <yanquanmin1@huawei.com>
-In-Reply-To: <20251028141915.49989-1-sj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.149]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf200018.china.huawei.com (7.185.36.31)
+References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-7-laoar.shao@gmail.com>
+In-Reply-To: <20251026100159.6103-7-laoar.shao@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Tue, 28 Oct 2025 18:32:51 -0700
+X-Gm-Features: AWmQ_bntzSgbNvji5U8WdqIphFhfm5XUNy_QTFtw53IwUs3LIlTTv2I1GT8Ge5E
+Message-ID: <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
+Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
+To: Yafang Shao <laoar.shao@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
+	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
+	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
+	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
+	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
+	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
+	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A40E7A0008
-X-Stat-Signature: qhf31b7xgetxcjxui9pir97ewiea6f45
-X-HE-Tag: 1761701564-224888
-X-HE-Meta: U2FsdGVkX19NGvUE+WmmkNxFM+xl3IP8Jl8JSoOKTDC8aF7CLCPF9rPaPiOQgV1lsaStx76R1eYK7FDwabF8DjOQ4gouvjN2heEIVoqP9LEhjdtg3gIgIzwNcfJBchy9d0p+lE1m2Ror7jAZrjljvLtO6V/EHKlItmGHQfmXp2yfYX5TqBiOznYmPWoKrI4Kmge1AoDDAqMHcgoUcGVTa3s74AMOxARPMBJH9r4wZe8HKHf3cM0zyKBqgZXBZsLMNPf8jpGEoY19F9Eg2lzUbIKt9GjiB2U/LSVssFtIxCAvkt16f4lcMqcJOvEcvZH3Chz+9taOGxwxitS2W/qHrLSgoI0DdYpVXsjGuAuoy+U7ZN5FAIBUj6FU3snqE9/1Yq/+F6Tp75dbpTbGhS4YI7enlWfKUnUIgTWDvrTGAJ+cYk3S+mguwsOYtVNUF2IURaPlRtlJYjtAGvMweLfdBVv8KjRcB6Zp7dnEUlU4gBOHBolqupHdpaOS9wpaWTX0OX8HogMuU1+wi9jWVrx7tRVOvoFY5Zx0xNITgJSHfJ3y8TsIKRqCHa2bzalGuuVv7bSZtNBkw9KipgtiufaqkgKxNhO242ERZjmxKC8GKpSXJNfZZE9w447UEqiApG1XUDy4ycNphfKxFzz4y+r7zlI1OTlGnxR09Dwj3dCyN4HFLWzCn1lQID2KqsUUflpLBdqFdSqn+Cqm1MFays0/a1JbIMqZmTLoSMmGnM8kP0qevRe+znL9M+xTbjWfI+fU6K/8oAVi+i20afXUlOCMhqv75RLSGhAze1luAr8vzV1SmXVBbVWfD+wPvRPcD6x4J6tSvWY/fb+w6bLBOUn4Zzo50GV6Ic48fn4aP0SOc2cXCHN2f+bYBx3H9+n/sBjMq7jNnDgh+E8LsC+tFqznp+Rv7dBH126oiO45bePfp1f7og4TL2c4cds5yfp5b9TrJCumcRGMd1tFp3mgvzS
- jukf5nVJ
- Cs6JrV5FEbmihWasj+iuNmG1p7Br4uv4j4dj0kjoahqD7f9Mee6e3ii5rnsefcHZp5dkrqcT31gwRbh7JKrcr3gJHYJSpn1L3C7MnHX4CMP24psTFv8WQ1rt3CCbi2A1tDH9I+/CmtLRTePuxsSllprYMliRNK8l1MU4yB88LOJaFHF5KtMM1OxMLgHEbnQANHc+RorqYe+aG3L863vP6p8L5FoxTXnP5/ziieKeY9i71x+kww55rlGFfNVyV3tE6YMJE5elgeNvMX905A/RvE6wAUlQM2bmMft0Fj76WV/lN1yodevbvke+izfpiOOGI7CxvwtX5AQQpEkODspKYq0KX9EF60YEUf8dTkgfLNAWT8CBNGKks5Rrvit7pnVa1BaZBXkvuGu5HcgKHEHcfyEGM3Kq8dTlCYzD4+ODZtO4/pN7F4QfcIhHq/2fJY48OOzeHeFD6XNPVxOM=
+X-Rspamd-Queue-Id: F0D091C0002
+X-Stat-Signature: r9pfrcap7egr3wrz54csd8d7pb1wah66
+X-HE-Tag: 1761701584-97669
+X-HE-Meta: U2FsdGVkX1/Xv7evVGeSxIaTDT0f1b/f0W2F9KTYpS0+acoRsfrniDbmkdYkU4DfrWJZSYJb+WXVHbK0OK91CnVcUfltk4vfCw4MFKR0R7UtsbvU6c2caBmIvyglW3Ojm54gr0LbnOLRi+hExIud6A5AIB/jxVHSnC0HT40wppi2mPIPn/GraSs8TMKvUVb7TPfxk46IpC/Fak3g+eD7JkZpg+DrdYbXtMv2X4CCi10xwMk6OKhdpp9+wp8n2jQ8OCuf/om7Gxt8DB+F6Ifwu2A24J4hn62ogynjgPiXdDIu5u9kP9S1/VXbwU4WdehFIapX2/PTbq8BX4xSlZo+LjgvJ/e9QVZU6AaKZVj9HQkRiYnS5NPXXx55pJSbJbFK9I3ffZURXTKv8kpFQ75lrqQQM4scTDmYdrjKP3kJkzl7UJPAfzUSS80gzON90y3OxlcDUXtraM+Wf6gG0Lqui9BSsSKjSE12NDrIv0zbrwUT4Jt+Ew/gIAx46e7D3zSMs8t0tBOg4f+2ZxAgETXYeZz/q7hKy9/cVw4TUpOe96qJGrZ49ooVTcgeZlXkGMlhWH2CWyYMC8VRp1jVSciXSJ7xPHcLXGnwFScgmQMZq5apFr6Hz0K7E2w7Jkpe5oVjSAjVVIjjHs7sCAQXq7By79rXsdpMqYPoeEKgUWRWoDp+v8+gAZXLx0balLEkp58WDlt/wqvLRQ/QK/ptxNQrkoXVcDPRwPsa/8Mbrqftk/PjNKn9jQrCfgRLZDClTpgpMeY5ZMEalmsF2OgODp6uUBQRYcliPrApHvDU7MzIGTAgOiu3fDFfKGkWmcVC9qfGWP71c5kCLax+bRzY0mRvKCEQ4ukAWfi5uXlzz0OIonDv4jxqU2gG8x/q5XnSvdLgsxhxK7F9vgPm8rf9cponZkywky0FnosrKlsv+k9MGNPx+mGUdlepCdYul+OkueE9TOLVP9WhmJ2A1eOoTip
+ 8uTuWzTa
+ iuHEbtU9McNMXe1Ffd4npjyBldsIY4czYptCWIL3dn5ELrSS1nf8td7QfH6oO/Z3QNoAWJiJwWtwjjj+Dm9UKZs65fzFui5IS0+xqEDxiUg7yeEOw/aRHwlqWba+2+iIi/viq3DD9yGzEYdMlPd4U5jkfqK1cWvYD5hsEbO/jkne02K8iHAHMpICO9ZTIUq09Ij8+3y7WrDDAHjclkzvoQB4mOGjfxyDYsfnP+PGcpFkx5jRDbHMHc/LPem6u9UjEQ/3oBkRI4t5dWN781nDOSdjgTWmnkKdw3wtL+J8QE1SlXNFS5E66KFnnKonLBe961YboXcm9iYZcWbwDIgnjoGsamDIJkBjHrMT8tMBR/tx38groQPazKgbMhycipmyAT7wicIEVdPll2MCE/+KPBAs7HvsR5XUOq/QD4eHxYcoP6EdM8KKqihlKS7qxnanWNJ3qXOt4/KwpQ9rPYoP6Y1zegw07ZfUB6bCbdmF7T8pmasK1ok9X9yfRoHYuhMBxJDsP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,60 +130,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-在 2025/10/28 22:19, SeongJae Park 写道:
-
-> On Tue, 28 Oct 2025 14:19:27 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+On Sun, Oct 26, 2025 at 3:03=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com> =
+wrote:
 >
->> In DAMON_STAT's damon_stat_damon_call_fn(), time_before_eq() is used to
->> avoid unnecessarily frequent stat update.
->>
->> On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
->> jiffies wrap bugs appear earlier. However, this causes time_before_eq()
->> in DAMON_STAT to unexpectedly return true during the first 5 minutes
->> after boot on 32-bit systems (see [1] for more explanation, which fixes
->> another jiffies-related issue in DAMON). As a result, DAMON_STAT does not
->> update any monitoring results during that period, which can be more
->> confusing when DAMON_STAT_ENABLED_DEFAULT is enabled.
->>
->> Fix it by setting last_refresh_jiffies to jiffies at startup.
-> Nice catch, thank you for this patch!
+> The per-process BPF-THP mode is unsuitable for managing shared resources
+> such as shmem THP and file-backed THP. This aligns with known cgroup
+> limitations for similar scenarios [0].
 >
->> [1] https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
->>
->> Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
->> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
->> ---
->>   mm/damon/stat.c | 3 +++
->>   1 file changed, 3 insertions(+)
->>
->> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
->> index 6c4503d2aee3..6dc3e18de910 100644
->> --- a/mm/damon/stat.c
->> +++ b/mm/damon/stat.c
->> @@ -132,6 +132,9 @@ static int damon_stat_damon_call_fn(void *data)
->>   	struct damon_ctx *c = data;
->>   	static unsigned long last_refresh_jiffies;
->>   
->> +	if (unlikely(!last_refresh_jiffies))
->> +		last_refresh_jiffies = jiffies;
->> +
-> How about doing the initialization together with the declaration?  E.g.,
+> Introduce a global BPF-THP mode to address this gap. When registered:
+> - All existing per-process instances are disabled
+> - New per-process registrations are blocked
+> - Existing per-process instances remain registered (no forced unregistrat=
+ion)
 >
->   static int damon_stat_damon_call_fn(void *data)
->   {
->          struct damon_ctx *c = data;
-> -       static unsigned long last_refresh_jiffies;
-> +       static unsigned long last_refresh_jiffies = jiffies;
->
-Thank you for your suggestion. Well, I actually tried that before, but
-found that jiffies is not a compile-time constant,|it| is set at runtime,
-while static initializers must use constant expressions, that's why the
-current patch is modified this way.
+> The global mode takes precedence over per-process instances. Updates are
+> type-isolated: global instances can only be updated by new global
+> instances, and per-process instances by new per-process instances.
 
+...
 
-Thanks,
-Quanmin Yan
+>         spin_lock(&thp_ops_lock);
+> -       /* Each process is exclusively managed by a single BPF-THP. */
+> -       if (rcu_access_pointer(mm->bpf_mm.bpf_thp)) {
+> +       /* Each process is exclusively managed by a single BPF-THP.
+> +        * Global mode disables per-process instances.
+> +        */
+> +       if (rcu_access_pointer(mm->bpf_mm.bpf_thp) || rcu_access_pointer(=
+bpf_thp_global)) {
+>                 err =3D -EBUSY;
+>                 goto out;
+>         }
 
-[...]
+You didn't address the issue and instead doubled down
+on this broken global approach.
 
+This bait-and-switch patchset is frankly disingenuous.
+'lets code up some per-mm hack, since people will hate it anyway,
+and I'm not going to use it either, and add this global mode
+as a fake "fallback"...'
+
+The way the previous thread evolved and this followup hack
+I don't see a genuine desire to find a solution.
+Just relentless push for global mode.
+
+Nacked-by: Alexei Starovoitov <ast@kernel.org>
+
+Please carry it in all future patches.
 
