@@ -4,174 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 551D0CCF9F1
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:58:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 927B6CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:59:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B7EAF8E0092; Wed, 29 Oct 2025 11:58:48 -0400 (EDT)
+	id DEFF68E0093; Wed, 29 Oct 2025 11:59:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B56A78E0045; Wed, 29 Oct 2025 11:58:48 -0400 (EDT)
+	id DC7258E0045; Wed, 29 Oct 2025 11:59:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6C638E0092; Wed, 29 Oct 2025 11:58:48 -0400 (EDT)
+	id D05168E0093; Wed, 29 Oct 2025 11:59:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 9122C8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:58:48 -0400 (EDT)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2F42113BE79
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:58:48 +0000 (UTC)
-X-FDA: 84051609936.19.848BB08
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf23.hostedemail.com (Postfix) with ESMTP id CBC47140009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:58:45 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTCWRDKh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761753526; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C01D08E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:59:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 6BC131A08B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:59:00 +0000 (UTC)
+X-FDA: 84051610440.20.49F7FDE
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 85C7FC000D
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:58:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a/A97KCd";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761753538; a=rsa-sha256;
 	cv=none;
-	b=CAlwvfH+hOlyVb+ZNqQixeCjp1mEttNVeokU8Yj7yMnR8AZktiSvM7PgL9ms+HIgiXPdOm
-	CZ4iFOqnePfg2CuogAQcVg3Xw5BXpEB8Ly7IkVGOG0+DP33IuUrFL0EBEeb2aGSQV/5GWq
-	uCsj71Cw/7SrVyb8uMNjKhH+c5dzjM0=
+	b=rTCXY1kTUjyWUCIaazg9Y+H8367761aWpkmYjxtPuVKM54plCcyopxVhApZAP08hGr6dOE
+	w1i/rRGMbLPuAKngGRIKIBFoHnDDnBncFpVm0+bi3g7GwxtblBiVJ7acYmvaPQzLtqRu/I
+	kcqtMed7R3PMQZXeM8DCSSML/M6xHB0=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=fTCWRDKh;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf23.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="a/A97KCd";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf10.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761753526;
+	s=arc-20220608; t=1761753538;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
-	b=xhfOiFiJ5xkiqxIdnz6LW9szQZxQWP/xiQFUHbk+Yxe476Z8r2Mq77urBBSdo1jH8yfcjD
-	VI7VmnqP3rv0Iqvs/PlhJcTY7hpm0pISGcjElgDRuB3thObMTsHwP3HkDJf25PE6TPXCW/
-	hps+cbvFuJS0Wy7RudIHVBr82IQrJgU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761753525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
-	b=fTCWRDKh88AgI7/JqOF5qTtYjrwyOxxZFlRUbLOc+o/Cel1r8f2AbbSqfpjoNvW0T18fjj
-	yzbDusVW6knOsIBkQ+UmMkckleQA81vbZWgQDcP+7QIpWiS9fCOEwacvrFUL4euYqNVCrv
-	pXlqm/LgpTB7LtLEaTzjYKngpC3AEoM=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-mFb2GML9PN6dwd10A0vfvQ-1; Wed, 29 Oct 2025 11:58:41 -0400
-X-MC-Unique: mFb2GML9PN6dwd10A0vfvQ-1
-X-Mimecast-MFC-AGG-ID: mFb2GML9PN6dwd10A0vfvQ_1761753519
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-475e032d81bso35717775e9.3
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:58:40 -0700 (PDT)
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Rp6UONa4RQroT/DFseWBOqeBQbwX964QzeqYggw97rk=;
+	b=ABv3A4GPgJI1DcMSsu9qWEaCRsCmRxx8PFci1ZFCWHblnegcg+85q4/N55BD+Uw/ZsnPAY
+	GwyH7vtOtYstfzUCOYbERNZjaQXDKBLQo8Me6VoF8gPgNTm2wxnu2TFb4A5Uu/Mvh6UzRK
+	MSPI+2lrRD/4/Wy9FQGzKz2Mf+9+DNI=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-32ec291a325so63521a91.1
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:58:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761753537; x=1762358337; darn=kvack.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Rp6UONa4RQroT/DFseWBOqeBQbwX964QzeqYggw97rk=;
+        b=a/A97KCdaJ9InPTDb2HPJJS2pdzVYmJTaqljQDMJrxAoTSvBFNBamog0+404jdH2xE
+         Z8X/imgmA2XyI/BKFff4H/9tTX+A1o6n2LRXo9BEF2n18iF/A5FtQmjkFX7rYrCy5rat
+         l6kH3KQCYgL/aT1lMWltgrAySxr5JeircF7hyVnxVsKtS4Eo8KktxFW/6S9G+AWRe3PR
+         mYF39Z39TTBeoWOFvx2eIHTPpajmwfAYiBgx2+PEM+IOpemSL3Mh0vzERiCeFh6LvhG1
+         yuo61S9basNlrIJUvfCheNCEXCRwR3CuFvGioz3EzD0CeRQ9Y833rcfVPAPcQjRhx35R
+         66BA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761753519; x=1762358319;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1761753537; x=1762358337;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=7MTuw2M4w+7icp1v9w2NHA+FuLFUpMlcJ3+bxm+0QA8=;
-        b=FghLocYb4iPlc5Wb31Se225p0jPZU+ZyN1uJpb8SDNtoqLqTItHxq6X2VrTZPBeoyk
-         8Q9p0o71kW2Ol3IM8tComOqWc90bUybXLPHMfWbXiBXX4517Fz70BfextTsgMlZDwVXp
-         0130exxobFoGAhqmuD9CQcajRZEW81ZIDJcfHiv+k3+grDJChHAVnNXMKaFMRxjKq7T1
-         s6L9OG3o4XkRWHqiP/Io5JJF/l5mEMhnE6aJ6ezs9QwhP+Bbg62Ze+8ZStjgbity9iXF
-         1pC1u0iNg/Hrc9Wht/GdHm07E/TetnjlLJwqYETsvYB2ADt0hvhMJK3bEt4RUmM0opGN
-         FQmw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4SF2MWVPMYScd+QIX3ytw327jWlG699YulrVpHOs6sMs5BcukytsnCshws+4DmJ0+QHufNIsEYw==@kvack.org
-X-Gm-Message-State: AOJu0YzOfySPcGqaaKcotbJUYf0CE3TiVqZalRiyXo59ybXjfh0OmgL9
-	5wqxJSW65mx4OstX/cHWmqE/qI3kjej4cNbkjoIh1+x1Ct31lDC4DRFS7+gpTr8EJMhjjItQamD
-	t7OPV9DwMhQaxhI91uKZxAj77Vgg4CU6T/mcP7wYRD0YdRifLvBA3
-X-Gm-Gg: ASbGncuCzc3Lx/1SAKx1HlPa9W/ofKBV64fDJjvZmixq/AihMFqYPdIiCWLD2T2Co+9
-	P7ex9RzqCOt03Z9MelPHnZoxq+5SyGXYQrwbAWNkzIWx+zatiBzJx/KWm3eXPxMGeS8c4ZBblvk
-	2zVbqSK/OJdWxlhtWunzWIs8GWuR38iejcHuc1uniNUOHrGD35Ij6SvXCpsTRe6u0xBrOlmeEA3
-	IIDkBMxONUi2iKKUrFYC7r+N6MS4FETPK5bCcFQJlpI8ziytmiPEiM+teLcWJyXjvxp0es6qYuw
-	WFnI0odafXA0KL9IJNma3RO4MlbSFy5BKVRLOOsU8SiLvuKG7a3NDP4RBpAF21A8nyPBRFD60hH
-	xFqe4omyXRaLLyjs+pLDrIg==
-X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441765e9.4.1761753519400;
-        Wed, 29 Oct 2025 08:58:39 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFBUfbQXjSUBfZ5yGMdw13PwBGP5RPGg4Gjem7sfzzIH+QoMvfQEwhbQ98KDi2IbIS3+g/TEQ==
-X-Received: by 2002:a05:600c:a087:b0:477:58:7cf4 with SMTP id 5b1f17b1804b1-4771e16e3a3mr32441575e9.4.1761753518936;
-        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952df682sm26817699f8f.43.2025.10.29.08.58.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 08:58:38 -0700 (PDT)
-Message-ID: <b13bf4ce-a6fb-491e-a8c7-ecce0d4d87d2@redhat.com>
-Date: Wed, 29 Oct 2025 16:58:37 +0100
+        bh=Rp6UONa4RQroT/DFseWBOqeBQbwX964QzeqYggw97rk=;
+        b=r2RKKJHwOl0fePszVqA3H73aa4xLbkIXNppws/yrDAGWK2grFV/tATXSt1f0QCjl+l
+         jq+JSb5ialc/xvTQZEG2FKlM5OBRAH8r5pQf1Wk2Ek3PgNS7J0ms/+lH5Zid29Zm8qxP
+         YcCWmeJwm5oSywokYlzUD7csx3RYeJtt82aXRsChcuOHoA6OnrxHtFjA8CuiX8dZXsH5
+         zlLgdnOcPL7W610/n27XY8pqwksaLk1ZRbW4a/L0GQfXduLVI+qRDUL8DygEqDrvhuRs
+         wJCLLhiu47aYfoKezBO/z1RHQqvCY5j6jUJrJW7eY2bmFHlAqqL0UZ85Be3bUb6Mh1uU
+         G5rw==
+X-Gm-Message-State: AOJu0YxQjacDu6+lQVcsuXuohfNldMTqOsQ62crpl3r+i+9auyBzQrGv
+	LmvDqBrnps/DdSbGHEHItaiWIYqCvfT9pkJJO1csFq3P6bpITX2lAGm4
+X-Gm-Gg: ASbGncvXL4dexTm5REIGCcxIi4PLNsuEOAXojPF1G6SYQ7+Tm/tnYxv3uZzFLHO8kxa
+	v/Rh1CosAGPhI315zxZz5CAcVn9RNfyNrQ5BYqtwjoIR9W/eSY4JHYkmw5Y3NPNGZJ7kG6Azf0l
+	/vW6TvOTNRyL2nn7eWzxp7vhn9pMyq9nS4cJ0kvtrTE2N1C4CXo5r5XgmItjQbOo6VJOHRBx+sv
+	0ZFbDhgSfVUoqEpGwihT0Z9h1VuV+zF8/nwnF1Yw2Vc6G445I1jYbytQQ1YfME7+Q5BsfapWROE
+	YJ491CdL1sGNL5IBkpoUVgRoVbpsYFg2b6UfNzy06DuOunMUIwfB4+wVzwFZhJiK1aR3EabFVel
+	qmlrl5ERKmPURFd3l+iYBZ8V3b/6QSCavnNw8IfiBNTzwNhNwLml2ltTmEayqzRpgTXlsUFI53t
+	qbPQmCm+bO6Q==
+X-Google-Smtp-Source: AGHT+IENxrO2rFfWZghD173MYTy/76Go4Z1vLaGV7TWb3mCr4J57kgcgIdVFq3BvAFIGNQG/Gx7HsQ==
+X-Received: by 2002:a17:90b:2dc9:b0:33b:bf8d:616f with SMTP id 98e67ed59e1d1-3403a2a202bmr4241835a91.20.1761753537047;
+        Wed, 29 Oct 2025 08:58:57 -0700 (PDT)
+Received: from [127.0.0.1] ([101.32.222.185])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7e95aasm16087366a91.8.2025.10.29.08.58.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 08:58:56 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+Subject: [PATCH 00/19] mm, swap: never bypass swap cache and cleanup flags
+ (swap table phase II)
+Date: Wed, 29 Oct 2025 23:58:26 +0800
+Message-Id: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
- alloc_large_system_hash()
-To: Isaac Manjarres <isaacmanjarres@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, stable@vger.kernel.org,
- kernel-team@android.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251028191020.413002-1-isaacmanjarres@google.com>
- <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
- <aQI3z0x0gZ3T1fij@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <aQI3z0x0gZ3T1fij@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: BR7Z0MjcIfM7NpmIcuXCL_lAz8MlcdZgS_ITcZwlIN4_1761753519
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAKI5AmkC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDI1NDAwNz3eLyxALdksSknFTdAiNd8xRjAwuzVNNkY4tEJaCegqLUtMwKsHn
+ RsbW1ANdUNh5fAAAA
+X-Change-ID: 20251007-swap-table-p2-7d3086e5c38a
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+ Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+ Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@redhat.com>, 
+ Youngjun Park <youngjun.park@lge.com>, Hugh Dickins <hughd@google.com>, 
+ Baolin Wang <baolin.wang@linux.alibaba.com>, 
+ "Huang, Ying" <ying.huang@linux.alibaba.com>, 
+ Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+ linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+X-Mailer: b4 0.14.3
+X-Stat-Signature: qp4msbse41kbjdj4n33zqoozpap1sahr
+X-Rspamd-Queue-Id: 85C7FC000D
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: CBC47140009
-X-Stat-Signature: 4x5oqwnbhoj43e3uqjswynent8w6dwn5
-X-HE-Tag: 1761753525-873162
-X-HE-Meta: U2FsdGVkX1+zxaDTiHqQ9O7KKXPF8TCoEB/aX2wnxBz6a2Q8AH7GWC0IvtOnENEm8V8Z/rqm8/i0o4UxmoxSyfXusMgRhfhmnvADM8eXL6oP19IVlIlrQE3cz2k6B5Qp/mJXYXKzZyVczW3qGGVl5ErPNhsdQKlu6pNPffdkinAhkCqaVnzcnntBPG1lyvGVxKFboPQ9PvEKiKF0Kr0ipGS8MH1v97dCIJGa6s/BqTVPTvf1SonD75wxGPoXOFu7n8b5qX+neTc5t+afKynTGlxI/n4L7hg4wTBuDKyCnmJVoWpdVc8SrKGR0IZ91kJksIfkMHU+oEqYcPuoP07CZbV8hQwvF30FAI1u3MFY/1vhxyvzN1TY99tyUFxojf7NeXdAmfoiLklLNHapMLASe7O5ztobxOeE7U5J9+zoYPOWVjujmCw/GoFyT0QUir2PEVCoqhP5gByNkkYcBtwTZDeNQj6MFkggk05hRZjVx+hO7vw4xJJWZStCR2kxLgo/EL9fylRme4284XKhfsb1KAjLwHL6VtV6Z65zS99E8rY6PF/eJkRE85dg8B2hgP6E8vhTpOvBrNvrfaDNC0Lntj7qbQbVlboaWrweFZ/hv7AkWWFkXZzSXOi1Tp6gJ82MNLtBW76q0Ri5H1MEdnuibH7/awbDNp9U/yVYMmuDBvPYsmz2OIWUawR6CAcnZJoGyuCIL1MOzK5RhwgAp3wlSIxnxCGvRyTvtcnYPrvImw6z3x9B84kwHwWsbM2FkPnGsYQmo0QqeIUM+XZChErI6QjWnPbbv4PIzYyRe1sikcb8bbDyqwZBHPuURmM0ZS03PhxN+9nvoePqtmtv3cOQp+/hrUu+eMJKjupRtUbyi8uUdCxETP/GCv77h/MBIAbjzFvhybBTuxxXIoxle6HnU1CBBQBVPlkiU/eFvRZK96twLIzTWAh3Kg2+lhiQnh1vLH3GGTJT5Jb2ht8TyFD
- WXB5w8/F
- DxbG4aRDXu5ZP/JHPNEaoSP1oKfErr6jYcXQj+Ve7c4tBbx4+YgoUiVVto2VWfK7UJsg1rEQWVmw6El2UYFwGzj+X7R+VxKacDdUoIexsu3ZmkgKSBUynWMLPa040+8JMJArBT0qw0I4WN5jnN5BUcZ5rUCEK2lv5pkUXhW0+5bAIiIXky4ly+fxJqnhaXzKvlzD27hTtcYzSlYSXh7TdlhWEdA==
+X-HE-Tag: 1761753538-169271
+X-HE-Meta: U2FsdGVkX19kLMhrGQRvLBUsCl/EGzTpgd5f2emxoVgppHtWJXVEOug6LWKYA1zljtjcIRKTH6aPCUhlGo7ypbwb1J4IerZAtQgpIY62ESCYeERylY2ocKXrA13KNMKg+/GKvWyRKT0slQ0Kii1L/pCRZQm+PUpodDI3s1les/f4j4KP4Ekg23n3vp0I2IwLYwqypSoCzA1WMGyyEdNow9AvvD57FOsJx6hnyEUwBD7yk6OqY6CiDx11KKIg3Rl+juicrztp2J2qoX06h5NPWtk8CdgppZ4FeJ9o2SBfWGPunuYHPfOsYMunGFRH69o2ihmrYp9AMKDHCoP8Uolq6Mz0ydDxxaGLMlgiCD16zXvHkM+lsLQTEGpRces2AthWxVIor+jXOAeSpsjs5dpmBzZX8aovNkC/xTnWDz6dVRXUJyZx60mCzd0l0lcKU/GWNyjG9Kuz3M1pHj9PQbAcdKjvnTpv9+RgIQwPQDTmy64pVhjZWH+KZHlxEQZQaK1YUT/AogncPtHXj/RL4o+HeUqzd0jqhgWYZgmA1DFRdjK4fxflfPCKoDCquPA4v+oD7QOJaTQWWdXMKUK++tINzWTqWKR9eQlMiY8OOvlQoFhzEWSdzApWRf8cjJNh3HqYkZIhWGu971hjK1m2ijpdNTUfGLeuLvp21BxTy0CuBhPyhSwuHim90kRVBXLLF5mHW4pGs5Nn0vrLcgTL4exyj6kbDPSqsrrj0UA8bAW/fdQF3BaCrSdEoSB5FHq4hQ25FV1qXw1SHu2sbmAHp2mPn3SQrzfM0MJ9AU2+z/ivAQ2ANA8qNFRzEBrG5oauKbaPfpJBK1icFY48WgFHAVs5q87ZKQesvqlNFLzq8ZC+N8el7ICjPLR7iUQiXjJ7whsoA4eOTK672y+dCVGlQWZVULmaemLBTVgcHRQPdIXmuo82atVjbZ5JpIVBWSloYgjeyRMHWurrYXsX1dBETk1
+ CMzua6s/
+ 0g+Cws1whu8Q4oKKUds9oVDP71OflUxSNLezxbew18ska6K4DX1DjdEWaBEgN+cAv9HbvgL6sbZ9/dcWLS+V5b5hmqvElQKOM/1gunJhLYmO5ydsUjnMmHxWGh6PrR7Ms5JJcSLx+wAXHLbSyV0xrTSYKRB4JafXu5ASjpI9F8thjDQt7wfd7ruWOgPjJWQ1pd9+G3UBn1sTHvvoirLerpCd8QO1XcSnIN4e3WRo62hdDvy6cq/NoxgbB4IWHwc6qCadce6DjM+1Ocfftr1cOJ2UjDkyUaSRxhQIaeyDksoiyIbtYRLlVE0yuiF9HhzMjshsP091/xhZIXAtKtV+SPqUxIBatd+25vjiq5dGRTYPIU3NaSBhbyBBsLEaoRB2es5EZBEZGZIdnnOlsiP+pjYGS//O7z2hums5fnTzeL8nt8zejd7FTiSoJtzMRHS6YuAe56fRkNh6ZRYTk5CKROsotQQNYfhcu8BTQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -180,54 +130,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 29.10.25 16:50, Isaac Manjarres wrote:
-> On Wed, Oct 29, 2025 at 11:03:18AM +0100, David Hildenbrand wrote:
->> On 28.10.25 20:10, Isaac J. Manjarres wrote:
->>> When emitting the order of the allocation for a hash table,
->>> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
->>> log base 2 of the allocation size. This is not correct if the
->>> allocation size is smaller than a page, and yields a negative value
->>> for the order as seen below:
->>>
->>> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
->>> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
->>>
->>> Use get_order() to compute the order when emitting the hash table
->>> information to correctly handle cases where the allocation size is
->>> smaller than a page:
->>>
->>> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
->>> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
->>>
->>> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
->>> Cc: stable@vger.kernel.org # v5.4+
->>
->> This is a pr_info(), why do you think this is stable material? Just curious,
->> intuitively I'd have said that it's not that critical.
->>
-> 
-> Hi David,
-> 
-> Thank you for taking the time to review this patch! I was just under the
-> impression that any bug--even those for informational logging--should be
-> sent to stable as well.
+This series removes the SWP_SYNCHRONOUS_IO swap cache bypass code and
+special swap bits including SWAP_HAS_CACHE, along with many historical
+issues. The performance is about ~20% better for some workloads, like
+Redis with persistence. This also cleans up the code to prepare for
+later phases, some patches are from a previously posted series.
 
-See https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+Swap cache bypassing and swap synchronization in general had many
+issues. Some are solved as workarounds, and some are still there [1]. To
+resolve them in a clean way, one good solution is to always use swap
+cache as the synchronization layer [2]. So we have to remove the swap
+cache bypass swap-in path first. It wasn't very doable due to
+performance issues, but now combined with the swap table, removing
+the swap cache bypass path will instead improve the performance,
+there is no reason to keep it.
 
-In particular:
+Now we can rework the swap entry and cache synchronization following
+the new design. Swap cache synchronization was heavily relying on
+SWAP_HAS_CACHE, which is the cause of many issues. By dropping the usage
+of special swap map bits and related workarounds, we get a cleaner code
+base and prepare for merging the swap count into the swap table in the
+next step.
 
-"
-It fixes a problem like an oops, a hang, data corruption, a real 
-security issue, a hardware quirk, a build error (but not for things 
-marked CONFIG_BROKEN), or some “oh, that’s not good” issue.
+Test results:
 
-Serious issues as reported by a user of a distribution kernel may also 
-be considered if they fix a notable performance or interactivity issue. ...
-"
+Redis / Valkey bench:
+=====================
 
+Testing on a ARM64 VM 1.5G memory:
+Server: valkey-server --maxmemory 2560M
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 460475.84 RPS               311591.19 RPS
+After:  451943.34 RPS (-1.9%)       371379.06 RPS (+19.2%)
+
+Testing on a x86_64 VM with 4G memory (system components takes about 2G):
+Server:
+Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
+
+        no persistence              with BGSAVE
+Before: 306044.38 RPS               102745.88 RPS
+After:  309645.44 RPS (+1.2%)       125313.28 RPS (+22.0%)
+
+The performance is a lot better when persistence is applied. This should
+apply to many other workloads that involve sharing memory and COW. A
+slight performance drop was observed for the ARM64 Redis test: We are
+still using swap_map to track the swap count, which is causing redundant
+cache and CPU overhead and is not very performance-friendly for some
+arches. This will be improved once we merge the swap map into the swap
+table (as already demonstrated previously [3]).
+
+vm-scabiity
+===========
+usemem --init-time -O -y -x -n 32 1536M (16G memory, global pressure,
+simulated PMEM as swap), average result of 6 test run:
+
+                           Before:         After:
+System time:               282.22s         283.47s
+Sum Throughput:            5677.35 MB/s    5688.78 MB/s
+Single process Throughput: 176.41 MB/s     176.23 MB/s
+Free latency:              518477.96 us    521488.06 us
+
+Which is almost identical.
+
+Build kernel test:
+==================
+Test using ZRAM as SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1379.91s          1364.22s (-0.11%)
+
+Test using ZSWAP with NVME SWAP, make -j48, defconfig, on a x86_64 VM
+with 4G RAM, under global pressure, avg of 32 test run:
+
+                Before            After:
+System time:    1822.52s          1803.33s (-0.11%)
+
+Which is almost identical.
+
+MySQL:
+======
+sysbench /usr/share/sysbench/oltp_read_only.lua --tables=16
+--table-size=1000000 --threads=96 --time=600 (using ZRAM as SWAP, in a
+512M memory cgroup, buffer pool set to 3G, 3 test run and 180s warm up).
+
+Before: 318162.18 qps
+After:  318512.01 qps (+0.01%)
+
+In conclusion, the result is looking better or identical for most cases,
+and it's especially better for workloads with swap count > 1 on SYNC_IO
+devices, about ~20% gain in above test. Next phases will start to merge
+swap count into swap table and reduce memory usage.
+
+One more gain here is that we now have better support for THP swapin.
+Previously, the THP swapin was bound with swap cache bypassing, which
+only works for single-mapped folios. Removing the bypassing path also
+enabled THP swapin for all folios. It's still limited to SYNC_IO
+devices, though, this limitation can will be removed later. This may
+cause more serious thrashing for certain workloads, but that's not an
+issue caused by this series, it's a common THP issue we should resolve
+separately.
+
+Link: https://lore.kernel.org/linux-mm/CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+2i_mhuP5CQPSOPrmQ@mail.gmail.com/ [1]
+Link: https://lore.kernel.org/linux-mm/20240326185032.72159-1-ryncsn@gmail.com/ [2]
+Link: https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmail.com/ [3]
+
+Suggested-by: Chris Li <chrisl@kernel.org>
+Signed-off-by: Kairui Song <kasong@tencent.com>
+---
+Kairui Song (18):
+      mm/swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+      mm, swap: split swap cache preparation loop into a standalone helper
+      mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
+      mm, swap: always try to free swap cache for SWP_SYNCHRONOUS_IO devices
+      mm, swap: simplify the code and reduce indention
+      mm, swap: free the swap cache after folio is mapped
+      mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
+      mm, swap: swap entry of a bad slot should not be considered as swapped out
+      mm, swap: consolidate cluster reclaim and check logic
+      mm, swap: split locked entry duplicating into a standalone helper
+      mm, swap: use swap cache as the swap in synchronize layer
+      mm, swap: remove workaround for unsynchronized swap map cache state
+      mm, swap: sanitize swap entry management workflow
+      mm, swap: add folio to swap cache directly on allocation
+      mm, swap: check swap table directly for checking cache
+      mm, swap: clean up and improve swap entries freeing
+      mm, swap: drop the SWAP_HAS_CACHE flag
+      mm, swap: remove no longer needed _swap_info_get
+
+Nhat Pham (1):
+      mm/shmem, swap: remove SWAP_MAP_SHMEM
+
+ arch/s390/mm/pgtable.c |   2 +-
+ include/linux/swap.h   |  77 ++---
+ kernel/power/swap.c    |  10 +-
+ mm/madvise.c           |   2 +-
+ mm/memory.c            | 270 +++++++---------
+ mm/rmap.c              |   7 +-
+ mm/shmem.c             |  75 ++---
+ mm/swap.h              |  69 +++-
+ mm/swap_state.c        | 341 +++++++++++++-------
+ mm/swapfile.c          | 849 +++++++++++++++++++++----------------------------
+ mm/userfaultfd.c       |  10 +-
+ mm/vmscan.c            |   1 -
+ mm/zswap.c             |   4 +-
+ 13 files changed, 840 insertions(+), 877 deletions(-)
+---
+base-commit: f30d294530d939fa4b77d61bc60f25c4284841fa
+change-id: 20251007-swap-table-p2-7d3086e5c38a
+
+Best regards,
 -- 
-Cheers
-
-David / dhildenb
+Kairui Song <kasong@tencent.com>
 
 
