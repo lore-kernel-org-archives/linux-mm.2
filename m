@@ -4,98 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D6A4CCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 06:09:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12CEBCCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 06:18:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7F89B8E0035; Wed, 29 Oct 2025 02:09:36 -0400 (EDT)
+	id 1316A8E0036; Wed, 29 Oct 2025 02:18:57 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CFE18E0015; Wed, 29 Oct 2025 02:09:36 -0400 (EDT)
+	id 1098B8E0015; Wed, 29 Oct 2025 02:18:57 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E64B8E0035; Wed, 29 Oct 2025 02:09:36 -0400 (EDT)
+	id 0461C8E0036; Wed, 29 Oct 2025 02:18:57 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DEBA8E0015
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:09:36 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E0A9C5A1C7
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:09:35 +0000 (UTC)
-X-FDA: 84050125110.15.E198E5B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 26B2E1A0007
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:09:34 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jv8axgsk;
-	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761718174; a=rsa-sha256;
-	cv=none;
-	b=w4aMWOwiukm2nyLmMBnOJseYMFKyDV54dnYNOhqB6rumyp9m+1vqemtPyS+Uqs3bNmoLBQ
-	16wVSMEjRg/Ivv9IiDMWYY4MWlhKuTaZvmEu3A9xJ4sArSlq/ticR02vIhd+S3a5QHgzJw
-	yiYl/HnVzet0I2lV2f0ohITixbZggj0=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Jv8axgsk;
-	spf=pass (imf19.hostedemail.com: domain of djwong@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=djwong@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id E52D18E0015
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:18:56 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7FF4913B599
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:18:56 +0000 (UTC)
+X-FDA: 84050148672.30.DEB8D54
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id DC1BC40005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:18:54 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rk+6qLII;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761718174;
+	s=arc-20220608; t=1761718735;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Q2S7P56jzAj0RQfiBXUJ1E/mSO50DPnJhIS/kgymulE=;
-	b=NpkTMxOXLfHsOKfYI6THhPRGKR0Ts0dZpvEbxms5FI2sMTNUW2polcIc5n3ulmIT9CkEqx
-	ZKtXISmYBb8SScw2s5m2rtmDjL2X/BTk6hs16Gxqbeh4jWtK0S9kZBim0t8QHR5AVfv/jW
-	QbDmj9jsr4aY6NmpciNjyq9FDXuiNgA=
+	bh=sNwUDE3GpjZgRRxK39FIaAoWLzOItBsyKBeQQ57qbFM=;
+	b=BMqUHTQE2h1qlZ2xxRj5CFOyCiDVPZ3H56srArFZuLEhyK/PZyB38oRJFoefklI+lnogRD
+	UW3PmqammVuE85Hge5PiixdgvP56E7kdrsw/O0/YCnfnDwFl44DvZdD0Za+XxtwD6WRoYo
+	gCqCW0eaKApoNiV5We0GPxjc89eD138=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Rk+6qLII;
+	spf=pass (imf17.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761718735; a=rsa-sha256;
+	cv=none;
+	b=CoFkfBW8vPFg2m7+I47rNyEz1hu0x2D9d3Wrk4bYlx/wOPqOuNUlifJGQqjcJDX2fo/t7q
+	lXoBLT3NKnvm/gzwNjuiVtuEmP9jLuezQQVzskeN4SNsDpf3hhrgtEPZ2yBFQ+C+HQmf2q
+	5ToSCjjNLjTpyEeg9C+MPfkpiRUu5Qc=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 5256C605CC;
-	Wed, 29 Oct 2025 06:09:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AD4C4CEF7;
-	Wed, 29 Oct 2025 06:09:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9D28244AB0;
+	Wed, 29 Oct 2025 06:18:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92541C4CEF7;
+	Wed, 29 Oct 2025 06:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761718173;
-	bh=KhUCwoEAjcKURljQn6Z5eULKXiBUNQeiGlQ0+eSZ1+g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Jv8axgsk0a3r/K6s7anKOkdMHyoV9M9ohNLW6Pl1/bQB2ujsqML/NoQhhejBmqaK3
-	 86Xp9WXDrWll1/0uizzBMXVWnxjT6M1yQXWhR/dtFAgXer1cs0/+gCJokbdV+U+R7j
-	 rh+bSqMZejs5VHCLhtFXE+64+ISmcgtS1QgL9x108T5fFxUd17eLyFDWoTYmrq7fm/
-	 VeqiahI9+MlKVwQ85vBqNlyTiOFo7DuhfqFp7iQWb7Tzt1SRshl6CLVMWIgK5bNXru
-	 C3dGfWC2R7UhQIz7c+PDEO0phQxrW7dVvcP9VhkDolbrbTYJpovNOzg2NZKZDgxt/m
-	 /E7EbpFdhc1wg==
-Date: Tue, 28 Oct 2025 23:09:32 -0700
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>, Dave Chinner <david@fromorbit.com>,
-	jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu,
-	agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
-	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
-	clm@meta.com, amir73il@gmail.com, axboe@kernel.dk,
-	ritesh.list@gmail.com, dave@stgolabs.net, wangyufei@vivo.com,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Message-ID: <20251029060932.GS4015566@frogsfrogsfrogs>
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
- <20251014120845.2361-1-kundan.kumar@samsung.com>
- <aPa7xozr7YbZX0W4@dread.disaster.area>
- <20251022043930.GC2371@lst.de>
- <e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com>
+	s=k20201202; t=1761718733;
+	bh=sNwUDE3GpjZgRRxK39FIaAoWLzOItBsyKBeQQ57qbFM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Rk+6qLII7dhXKc90DR7x0yOEvODjOW/vGOClfgVuFKE3QWXEzLxdfMqDCeOj2aCQC
+	 Af7tFpcn1bA5YqBuP1vrNitK3sm7hW3KrYUEiQ3uUVlPgDiReiQJI+4PU5WchW6eKG
+	 /h6vzvh0y93wx4HdCp/Guuc6ZBoGwAMJ5nQwd9g2jF4j4MbCDnBXz63JsAb0YVujnH
+	 RPaDTnOSvsJkgMOZTcApLHzlog5soPtmuQGsnj9HF4Ql6o+0V30MAVN0BZ3P8otsW+
+	 JyjsA3LXvuXmXdm+mAmvjC3CctniwC/hpFVHFmdzVIxYrqzOgGJawmQ9zcv0wDagWd
+	 vR1pv53KN6RGw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org
+Cc: torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz,
+ raven@themaw.net, miklos@szeredi.hu, neil@brown.name, linux-mm@kvack.org,
+ linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org,
+ rostedt@goodmis.org, gregkh@linuxfoundation.org,
+ linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com,
+ linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
+ selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 10/50] configfs, securityfs: kill_litter_super() not
+ needed
+In-Reply-To: <20251028004614.393374-11-viro@zeniv.linux.org.uk>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <iNj77i-tfrdVv9HEpIj_AzJNAUOKdPKNfNsGxMAfclR7sy-qVQBLpolv7Wgpmckad9w4QJXyH36_g88ejY-xpg==@protonmail.internalid>
+ <20251028004614.393374-11-viro@zeniv.linux.org.uk>
+Date: Wed, 29 Oct 2025 07:18:29 +0100
+Message-ID: <87v7jyfcy2.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com>
+Content-Type: text/plain
+X-Stat-Signature: o1eheh6386ekperufdzp41iihbbkbibd
+X-Rspamd-Queue-Id: DC1BC40005
 X-Rspam-User: 
-X-Stat-Signature: u99o7cjg9qnowuerghobu1xi3gmsncig
-X-Rspamd-Queue-Id: 26B2E1A0007
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761718174-67139
-X-HE-Meta: U2FsdGVkX1/ipY6QgPO3aajvAdGhzSU9scGUR/eTHlx3JhtvoVIUEA5q+sgitAMUmOAsx5SyIGdGH25G1CcDQsnUpn0AM4zwVfa5WPLfWH00H9xgGLCV9WvQPWo3DDCxc4+XEU8iTkiB9TGoRTekm23fXUU+2UU1XIrKiF6IB8B0nwnSqyU8NnlPxUYF3qvu3U38q91IGBUTwE+J16ce4z/ia1m2sLBJy0EkMew19EQM/NobTpCE5KdtWctX57YhtChgGM08UNx9bqBkrZ1fQ/ChkHkTnS7ut29e9fbZkDSkGZ+jnLk3ghzipkPzTAkrs2roQVFdBgUBgG5dHEi7IualfRUIWMUBtBmEcPqhWGExQtOG9h5gioeKob7e7qdFuf1dLcqvPzO0BF75P44fN+XHV5Rkk1y3rYduOq7FjvkIPfOCZLDkTQVHl6bbHIiFb99UTJqQmAf4iMyFlFvFxJ4I6U+VztoQ4awq7kxidn+KTsmC+SVaEba5dTUPQ3rofGLuls3xs05+2KfdRFq0oMMNonXfjLoNQkad1eM0Mi6zekU2DGhJ/jiSG5RzzsKw2vVfuil1EuYkhFxZGyTp5AO5RSHNxpJGvI8CuIkc8JPTJYKKBfAfTVXostm8O2yt0yDt42jfvFFu8MJAYd6ooHOVYq2k9KuAyItMKtS2T6lP2XVmtEj0xuSEojDUUHKmjJTrDflOiDi65A3T+hc++uB0DEemC+VUOsw289Ehq4ESXO0jXVNNdwWx7t5rnJUKQuyJV4FywTW51Fg2ex+Sw53TUtjirYEgCC4IzNFQiZneCBU7GjRf0+YBFTVqlpC9wVdeB1zDFNjpjDvt3DJRx4QwN7c+499FP/Fv9+Y6ZUdJgjqnGa9+P0xS7d16BU7lGzW7ggn+Bm+1TP5BhOkbv+dhg/NBna98jEPRX8pQc1qJwWu627U8z1NPWBaNShev50pRTyONNe1RWrNigTV
- aEpc7nHD
- 1oRFubJHXhxNQYztkEjfu7OWax5Jhy0cHbiXRJSwOPSiVxM53UtnOjLiiq3zAkTYT20llAEqz+sPDsbMcCmK5i2L6wokeJUcOP68tWErJHgPdkdSVx+lkKqwED99/sg+wTe48oVXTr/xdWtGOHtKTYOCaewKEZ7fXUAaSclw9S51/ikN7eI69FiEyI/h4WEuTM4+GZodHpzdqjeXOLC2kbg48EHBRl7AZMjr60Ro2+mAAypVKjQ8DEUFLFdWdiA4VAU0lBkK7CVVAsEhrmb5Iy68erD7cZmdE+rXtvm+xy0J+s0ABKPbzmbhQBkO3WQUYn39w
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761718734-24513
+X-HE-Meta: U2FsdGVkX19tPwk2rhwvnRK8Y38UGzaX1eOuuUP01fJBcxW2GZN/Xdgf26vir1fC0RKLNs5SC4vbN9pUbl1WvbZrSira8KJxMm6xYu6Brry1ZrpA9mOUDsfKHU/riApffZ7CUYiwzO9tI/9txesGttXMk2vkvvShL3zfJx9oWmcU0EaOItRpxhexgZUTBLXolmJR+lcIGo60Keupnja4/z84exJirC9bjK3Uqy9BLBMuRunv3uPWDYAvhJ8fMGbZWrI0242KklsashssToCrnsFEZ5K7F/3eaa18A04vYxz9qDgwlxDmqM1C72sK6/aXXTrVpgUnywq/89sdpSo06d5owXRUXvHpMBHa+OLDAD4VDd87lCxqKkogCgSSUKGS15A3VOf+QrgZnfUZROfm9ZUFnJtUeiwv20xI1NuZyo096mwDtUE69NiFtmgsZlSWGezUt8VE6dUXOBxEljWJC4PT2FZzi5do63Jg3mhig+MV1It86xxrhSHItYTzWQ4l6XKmnMR9PIZN2NjPe9PVv04SYgSQsHSSNYU4TJnDFuxG6zpNnjtdMmq4zduHmK8Fjg4v74cHyC9TFGf1+3RPTFzmaHiR2qXNfrg7YcqI+jXVBKmSj+0xYFwO14gChMtDehI1EqBTNb1fZjMLrtEb8NxqwGfUMFV7QgOof5rZjxi80S/Dx8HfkmpLgcmSI4rFEpzhlRmiZNAsYpLcUYPsBRPR0Corjk/qI98p/Ae264kbNPQy/LvHHK8rQ00Cx9xUbEE16+USqGYSh78rQGTvJg0mds3CjLIKgSZps1RX5LEvn+RP4VBOhwTm2QRLGb5kwx9QpPqSrNgNR7C7QlxlIa8dgRN3hOKqBV1ikCEOPXnjzazQgyHoS6RdX7TES1pbDg8E6XIJlgXzFC4BRGGwA19G3CAzsGAf4JBxJ/hlF0KOL7LpqjwmJldExB2cDpxG4woDtSvwV22k8doX8cS
+ a1f5XgL4
+ Xi6HpapuF/lHtQhbmPzHdVlGCFyOTJHJ6xf+2sW7EXJ/yvEL89zXKFa/nSXHYLI8RPHbT+scyCJeGM/lEoEDsLUznlRmWz41jECEGXc4JDDA1bSsVgToF73t7mjQoQUV+4zj+5WAlfMjzZW0HMAsvYTtkFKBJRTfn4317rOvbigkWqZ6pQKV30cCGuzep7DsBCI4MaNc64TETvZasStbhU2QjdETQ90u1GjyPlly1rql7sTymyIt+mKXNfsEIze3EUJy4sw03xbklpZaGIwQG3t9hOrPSTu+ajcQPv4q3Of0eYakczN395wkxEIIXq/Yjv/rnAVN1mr/Xz7IQLZ+mkoFmY/taZ/fGSE+t
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,31 +98,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 11:35:21AM +0530, Kundan Kumar wrote:
-> On 10/22/2025 10:09 AM, Christoph Hellwig wrote:
-> > On Tue, Oct 21, 2025 at 09:46:30AM +1100, Dave Chinner wrote:
-> >> Not necessarily. The allocator can (and will) select different AGs
-> >> for an inode as the file grows and the AGs run low on space. Once
-> >> they select a different AG for an inode, they don't tend to return
-> >> to the original AG because allocation targets are based on
-> >> contiguous allocation w.r.t. existing adjacent extents, not the AG
-> >> the inode is located in.
-> > 
-> > Also, as pointed out in the last discussion of this for the RT
-> > subvolume there is zero relation between the AG the inode is in
-> > and the data placement.
-> > 
-> > 
-> I evaluated the effect of parallel writeback on realtime inodes and
-> observed no improvement in IOPS. We can limit writes for realtime
-> inodes to utilize a single default (0) writeback context. Do you
-> see it differently?
+"Al Viro" <viro@zeniv.linux.org.uk> writes:
 
-Was that with or without rtgroups?  metadir/rtgroups aren't enabled by
-default yet so you'd have to select that manually with mkfs.xfs -m
-metadir=1.
+> These are guaranteed to be empty by the time they are shut down;
+> both are single-instance and there is an internal mount maintained
+> for as long as there is any contents.
+>
+> Both have that internal mount pinned by every object in root.
+>
+> In other words, kill_litter_super() boils down to kill_anon_super()
+> for those.
+>
+> Reviewed-by: Joel Becker <jlbec@evilplan.org>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-(and you might still not see much change because of what hch said)
+Acked-by: Andreas Hindborg <a.hindborg@kernel.org> (configfs)
 
---D
+Best regards,
+Andreas Hindborg
+
+
+
+
+
 
