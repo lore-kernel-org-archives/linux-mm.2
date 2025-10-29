@@ -4,138 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0B315CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:46:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0C4CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:49:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A70A8E00FA; Wed, 29 Oct 2025 16:46:12 -0400 (EDT)
+	id ECCBF8E00FB; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 17F1A8E00B2; Wed, 29 Oct 2025 16:46:12 -0400 (EDT)
+	id E7C398E00B2; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 095738E00FA; Wed, 29 Oct 2025 16:46:12 -0400 (EDT)
+	id D44678E00FB; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id E785F8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:46:11 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 915E413BF0E
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:46:11 +0000 (UTC)
-X-FDA: 84052334142.24.899C163
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 210FC80006
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:46:08 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dhjUqb6m;
-	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770769; a=rsa-sha256;
-	cv=none;
-	b=CA5/QOdDMxAm5POjb+sTbcxzMyePu0+YuYc9NSlHFCeZGq7AV7FWLVsDyRBYB+lPMErfP6
-	/lx9Md/JWQN1hxh67IxMvTW4GXC8MJwIjNJ0yXVwLAhUD+r+GJ3fYnOLlGbR01uNgfRc2l
-	0CoDUpb/yuh/lwz7sDaZstgopsPfNzE=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=dhjUqb6m;
-	spf=pass (imf02.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by kanga.kvack.org (Postfix) with ESMTP id C24358E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A7891608F8
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:48:31 +0000 (UTC)
+X-FDA: 84052340022.14.34E5C64
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 150C2180009
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:48:28 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761770769;
+	s=arc-20220608; t=1761770909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Oc7TviWFReNwMnSXKOGb/n3L3/gUc3bxbMJqDDekPOM=;
-	b=26qdbqotPPBKIeA6ofeckiqC1XE0boG57NWHGVTVTpEX4nyAhhVqsjmyhgsgx/iBOsts7n
-	d7X7bwPXKNHxxZVBbbWVcwud5yjIX4gQ1g7NFT62qmAGGVVry9hyyU3vXth6u6n4tOeHLK
-	PdpHEzYphufs0lcrqXSU3IccZ/mBnxI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761770768;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
+	b=ZFhT5KXg8rF/S1O/4oOBwl71/vnTlUCoHL10Zw5CMu6pESo7gbTBY6yS4oYvVh9Cflihe7
+	HbFRKU7tVAFKnl6jJxbuO+u1wes44OrD+ldUY5he4Wbu/Xl0Zt1FhPR+PXQMKbdbL9TdZu
+	sLHsQY+ZmT0FfsmL7WA77Z4YqnuDuUA=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
+	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770909; a=rsa-sha256;
+	cv=none;
+	b=unbkPVDimuj3WK6jYX23XNOUTWYKjlpsjbbT9i62ImD9gF0ln9mdSjcS9xyb9msnxUUcI1
+	0E99vX040vck3cdw6SdDJzAnP4Mv0QQFeiNlOzvk/vi5zc4+zcu/0MQlpKjUFLYTcblSbW
+	OA4Ref2rU02kSHzu6aZSccrvzuwZXJY=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D1095C797;
+	Wed, 29 Oct 2025 20:48:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761770907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Oc7TviWFReNwMnSXKOGb/n3L3/gUc3bxbMJqDDekPOM=;
-	b=dhjUqb6mg0S1cykpQw2fBRWlpR3VEz/ZswOPNMZ1NzaUfycq49TqZSm2rbcF5rWLC+6968
-	u8yCJTSMLUwqwCaaK5kBDxuAYhik0GOnO559ub8WxtTmazPpTI1Zuox9M8dUZ4hOPLczSF
-	0G5mgIucCMTFfkvSNahlE0NyNHURZsU=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-425-jdPjoNbGO5SoJvOTVLrzMA-1; Wed, 29 Oct 2025 16:46:07 -0400
-X-MC-Unique: jdPjoNbGO5SoJvOTVLrzMA-1
-X-Mimecast-MFC-AGG-ID: jdPjoNbGO5SoJvOTVLrzMA_1761770766
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-591ead2ba5fso146764e87.1
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:46:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761770766; x=1762375566;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Oc7TviWFReNwMnSXKOGb/n3L3/gUc3bxbMJqDDekPOM=;
-        b=aAS2+QwOBCNfcjlvCpy8ojJ5FtmCHcOGAmhzXsbFT5WBn2FC7VwpkBrEgD+ZOQQw6Z
-         akbvRFxLiq05pUrTya7r9Wco+6yID8sN4IMvRmYthmUUkmcMaAJUGMIYMCgMep3nwI9+
-         +/iOna/ZTFMkoFS3L0MJ95V3OmarTODCWH48O1W8W3WKQR5ebwSkRVZgnDI4E5JNUIu+
-         G9Aa1QDPuF0/zgbyI9/FWgMIDlKUwvaOMsrdxmc/8ho2pyqTrEmzbH5YhlOKKY8x1RXA
-         4V/4OLPBQ755PDANDbWiX1q8zzSokkL57zRsdaBwBDE2WwtUD167xi3HJ/ehe5uzNKS0
-         KxaQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW/u1ewjW2aH1ZCFdN6drHhU6E0WVu0eCovhLx3ANznct58Ri3yUhEVhmEbIKlnAdDvE1JbODstvQ==@kvack.org
-X-Gm-Message-State: AOJu0YwXHLIFRbsOk4ZwwaqjJMU2dEWU7VIHkKwfhcs+s4h/DDK4LAJ7
-	hXb4vwl7rvVXoKu2dleV1dPzHqkdXdJzY69b0qvGoSB55avXz8FzThBIKj113T4r/MpD7SpN6hx
-	gQfgPV2dVpzJbC8ED6K6Rgov0Ok0bq/T9oPYz1k/dVCn4EFSx5YP3M7gLJgirvLblywYioIdxe2
-	hwAoI3/xFHmD+uk5+CE5DaYnttCx4=
-X-Gm-Gg: ASbGnctOdpYbHjDL9tTqJ6/qbv9J6U0PI9IdyKBIVj43LjdU5CsGS+bdFuIOncIfgjR
-	doXFKdGAIuzvk8A+G0Bmt2A48u7f63CQN1I9LKUenqXDBAwAQCeQdWEEyhbpfPPC+AFyBU3EfHF
-	yRiA3JMmJnbkiiJGb2i4a5ER1YdVT57lqcBYX8Ae+qMOmMxvgpZGpx6ApPj6BE+GwPd47Cvw==
-X-Received: by 2002:a05:6512:b20:b0:592:f263:a8be with SMTP id 2adb3069b0e04-5941287135emr1435955e87.17.1761770765575;
-        Wed, 29 Oct 2025 13:46:05 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IESQyEgec9ex4Rpf1NItxvzspecqCkRicn0v9c5QWtVC9BBjbVp+t2j6z7oKTbm0IWm6xmKhy+0SdXD0hdMpZU=
-X-Received: by 2002:a05:6512:b20:b0:592:f263:a8be with SMTP id
- 2adb3069b0e04-5941287135emr1435937e87.17.1761770765022; Wed, 29 Oct 2025
- 13:46:05 -0700 (PDT)
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
+	b=FX/p9nMPP4ug6Jsu/qy7odhm6sWqHzogKL/CxbhcQP3Q8U5iSySGa39tQJxpIha3tMgcUl
+	NHIJtg3T2g3B+q5OtTTnphmmII9/R2QAubj1VsgCoiARgpaEvdRtHIKz8upfvx5iOCxNL7
+	3dYC5PgQadjsbOYESpkSSaNX68o0GYk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761770907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
+	b=ZjokwtAsPjTgKPciEs3bMK5UID67Ixhyh/hEk3sgPaEQ+CImR8iyzR6Mo0hW6L5V/6RBXH
+	FzyIe2x5AAWJ/RCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761770907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
+	b=FX/p9nMPP4ug6Jsu/qy7odhm6sWqHzogKL/CxbhcQP3Q8U5iSySGa39tQJxpIha3tMgcUl
+	NHIJtg3T2g3B+q5OtTTnphmmII9/R2QAubj1VsgCoiARgpaEvdRtHIKz8upfvx5iOCxNL7
+	3dYC5PgQadjsbOYESpkSSaNX68o0GYk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761770907;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
+	b=ZjokwtAsPjTgKPciEs3bMK5UID67Ixhyh/hEk3sgPaEQ+CImR8iyzR6Mo0hW6L5V/6RBXH
+	FzyIe2x5AAWJ/RCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5083E1396A;
+	Wed, 29 Oct 2025 20:48:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wxFIE5t9AmkgJgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 20:48:27 +0000
+Message-ID: <113a75f7-6846-48e4-9709-880602d44229@suse.cz>
+Date: Wed, 29 Oct 2025 21:48:27 +0100
 MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-7-npache@redhat.com>
- <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local> <063f8369-96c7-4345-ab28-7265ed7214cb@linux.alibaba.com>
- <9a3f2d8d-abd1-488c-8550-21cd12efff3e@lucifer.local> <e2a89e74-1533-4a83-8d0f-3f4821750e25@redhat.com>
- <64b9a6cd-d2e4-4142-bf41-abe80bf1f61a@lucifer.local> <dc002ef9-53ee-4466-b963-baadfd5162b7@redhat.com>
- <a97780ab-6256-43b7-8c0a-80ecbdc3d52d@lucifer.local> <2d8ed924-6d06-42e4-a876-381fb331f926@redhat.com>
-In-Reply-To: <2d8ed924-6d06-42e4-a876-381fb331f926@redhat.com>
-From: Nico Pache <npache@redhat.com>
-Date: Wed, 29 Oct 2025 14:45:37 -0600
-X-Gm-Features: AWmQ_bm4p9MBC5sUu8O6J9Sn0293VN6CpobZZzMQVEnRiyb3Ke7AEB3M45KqdEg
-Message-ID: <CAA1CXcBi8N2a3b4uEKQ8mzGWTiUEVuPDXx3vonDyBDakjd9bHw@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/15] khugepaged: introduce
- collapse_max_ptes_none helper function
-To: David Hildenbrand <david@redhat.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, ziy@nvidia.com, 
-	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
-	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
-	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
-	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: topwDytSy8_pDr0_d1-TMpR5JooMt1lJXsUDo11kRW4_1761770766
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 09/19] slab: add optimized sheaf refill from partial
+ list
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-9-6ffa2c9941c0@suse.cz>
+ <aP8dWDNiHVpAe7ak@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aP8dWDNiHVpAe7ak@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 150C2180009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: n36upuijxq8dpizdgwujknenifq3x3q5
-X-Rspamd-Queue-Id: 210FC80006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761770768-22751
-X-HE-Meta: U2FsdGVkX18Z2SONF2qoEn+0haT2HPnGIrVbF/n7/k5y6Wbiorf930gFCQeLE5wAErjbuLp2LCz3bjJVTXc5BUkF0ZQAaEx56dxKD1E4f9A1L0j4179ATNB4mYJMjpAGLr51fAkYiezVbZ1ZkseSmAj0rachXyM6lWZPaaVSkHXlHw9OZKacj/E7kgzzDsAAJQdTPWRvRQx6m/mGabUhXTedAf7cvuIEk4O6wvfbEg4GN1lsCSfo5v0rePJroUHL94IPW/2q6sn/b+rpE64zk41TOI9XIJxd2jzGoxBL3CWDi9KFJCrB5djh49jqvrUD6sBfb+fnSHIrACLQBhuyUsR8D1YH5j2UBvF0utQgSaVE5wtWvZhn50peU4khNITzBcwkicrAyPyE3vRyw9CyjhKlqork4EVZdXru2k4+CI9MWzXPnGfCwWv+9r8O4rTs3wC79HGqOFFjH1RrNdqDcKkVqUlEzS3QhVqbEYbvERWKGdToTMT8z8xB+b8NRAKwn2KnyrQ3dgwCGJeRGcsYhOoS8pbTP2nxy7SRe4wyV8ggGRGowRQIb/+b+0JoAnotYdea8CIPKiVFaZbs5TyEeuv9/Atje2aO2TnMMTAoY8fmD/zurI6Th3GIial4vTWPcs4aZ56VVrleozuOLbXxFZO+sLa/rogz5cCjuZBJURYr8cJPEJWjcqQmpN+fbjoW3ooWP3rP/6ZgSl8Uz1DcX6AFX5kY1qjMUPyagWu0OC+PV+Xd4O+woWYzxpcL3OI+1WHPB0oqs5x+pTa0eNdZief7/gfRHElmsWXzDucI7qKWTZ9rjYduIQRYe0pCpP59hbG0lCVO8kEVHvDb69N16mVQccYEgq8F23zkQobbC88nTSfWtl0sZXvq+V81Qgo+F/rYQiwyde8zAS3+3qhIZU3bJ9GydOxIO/GFMZR0xOI9wzSJ4YWa/80kL5vPE/UIlLWY06gbxGdlkFTAaE8
- MomCnLtO
- YPTKeFW6H1N7iMo7i1mlNwc+0uc8oNDAPA9KXWPq3aZqZVRkkyKvJYktqDKOI1v2UwpAl2wC/JmThOK+/j1fGg0HuUjelmvd6NYU2PTEfYOZ1Wzdq7TYLsTO94IiE4N09a0XRjxnpHc80y6qCa/jocwHBPtPnmewE7q6v5y74ZT4s0Z2d/TXfVNrIuZN5gCx/yh+cs++hCHuq6Pd3bVbLk7NFRleYHfOLyIKXdWSFcQqfy+0jlgIZFendM4XWqGF4OdVA1Myj2bnUO7sQGJcc3jx2H0v1NRK9+GhjW+tkFJj1fg8ZpPDm6kVGfZQOp8qAH3sXtFmYrgq1vCnSba+P4H4iR5Iu9Bhj1H4CScGFrDb9T++vZufo+FRhcACFF0uTfv+tSp7vgAh82Bc=
+X-Stat-Signature: hzctc9ijsjiegjawjh853e31td8xbwam
+X-HE-Tag: 1761770908-374461
+X-HE-Meta: U2FsdGVkX194mVhXmo92E2H99x508IUm3mxAQsiu4iZUG6I0drXzG7R8eu8YmV8nvGBPN+mEewOAySnOwA0aV5mIjEm7XQLXhYVRLrzFfRcy1UODICleemozjpJBm4QyutLHhK+Qf9uR/SM2YJ7rcSk7gBBrZsUs7bNigaFwy4DwaouO8W0GjWIjM4HNGmxoGaUM+hBSDBy6s+eVApjusmoOi2L85b1YyTLqnw7Zg8MAlRl82/P25CTlgkUIfoH6Iv6jctXyIJJ39eUcRqMbwet3PssLHo1Uzk1ceDOA1PA+62DLP1zomQWLIuIlLXEPHLG9FJGtbWz2qMqQk/STlYqNEh4YxZtPFAdO5UHspENFI7MfHcbsSmCm5dkXryshuT7KAPTue0pgQXMTJHwi5T//OJBJGwQwZY+aqpESs59vQdhFWdb7AhA5jgMlFKekJa+O4rBRYTUsfJlremdmMXKbA4hFI+l3X+id9IoRx4AGZ6cSbOGVvOzDrIcoU8gXBKbWxDQjabGu6A3S/YbppuO3oPGBn4ZmcGq6f4gkszTNlWqAkoSNZbMnLAbDD+2YqB3QmEkkctLfOt2u2smXlti/ZotI6y9PIksC6tIGE96QFnt7G3JdoAtz9eXQTOnsXqDoFv7HeS5kGXBEghOy2xTTMfjr8SBgt8EIkh7xn5gIf4Xn63v1e0ygmqudpHdvdiT80/Ay/Vb4oYUxOSv0U9bzdhaDpwtgiRMagK9yQXiO1mSyFFnXYA5hC9SNm3UJKGPunofBNf18wSiKakLNZP0QXjUSvq5t+aZA9+zd4LmR/TYLpJeaVEIxTU1DJg0BQiRELaj7rRQ387fJoMfJEzj45ml9YCReSU5lHrA8qY5gP6H6nVkzcFf7jZdt4nPZifnBxVrxYhzbkOdeBpKfdrfxGPlKE8VUH1VGzj7zi+uyhAm3OsWM6jQ7le5ODJ7sO7akyWT7+BczhlcCsFQ
+ 1R5PoUhG
+ p309wSSzUu3fCjD0t/+DzW0MBL80gHyTa7DjQOVXnOZ4iOxDuFeldZYvF4+QRzx+penr+Vb9inPg4z/OztW6sSoeypsYXo8GJ+U3X8SwznTBdJp0GkJ94z4q6aFgwyUwCYH0dq3Qe4pgUMdBcldEuUUE50BBAO+kdPvV+CHoj0TsWmFc24McykhwynTD83QTA8h2rzHumwiq55bShZ9oHvSidfQJZi7qgizxSIVRChNHpTGLi34E0PxmTy2SjcHbOWTfcVKlXKHdRq7t9bGlDg+ajDkEXQQrEVWaU
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,154 +187,228 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 9:04=E2=80=AFAM David Hildenbrand <david@redhat.com=
-> wrote:
->
-> >>
-> >> No creep, because you'll always collapse.
-> >
-> > OK so in the 511 scenario, do we simply immediately collapse to the lar=
-gest
-> > possible _mTHP_ page size if based on adjacent none/zero page entries i=
-n the
-> > PTE, and _never_ collapse to PMD on this basis even if we do have suffi=
-cient
-> > none/zero PTE entries to do so?
->
-> Right. And if we fail to allocate a PMD, we would collapse to smaller
-> sizes, and later, once a PMD is possible, collapse to a PMD.
->
-> But there is no creep, as we would have collapsed a PMD right from the
-> start either way.
->
-> >
-> > And only collapse to PMD size if we have sufficient adjacent PTE entrie=
-s that
-> > are populated?
-> >
-> > Let's really nail this down actually so we can be super clear what the =
-issue is
-> > here.
-> >
->
-> I hope what I wrote above made sense.
->
-> >
-> >>
-> >> Creep only happens if you wouldn't collapse a PMD without prior mTHP
-> >> collapse, but suddenly would in the same scenario simply because you h=
-ad
-> >> prior mTHP collapse.
-> >>
-> >> At least that's my understanding.
-> >
-> > OK, that makes sense, is the logic (this may be part of the bit I haven=
-'t
-> > reviewed yet tbh) then that for khugepaged mTHP we have the system wher=
-e we
-> > always require prior mTHP collapse _first_?
->
-> So I would describe creep as
->
-> "we would not collapse a PMD THP because max_ptes_none is violated, but
-> because we collapsed smaller mTHP THPs before, we essentially suddenly
-> have more PTEs that are not none-or-zero, making us suddenly collapse a
-> PMD THP at the same place".
->
-> Assume the following: max_ptes_none =3D 256
->
-> This means we would only collapse if at most half (256/512) of the PTEs
-> are none-or-zero.
->
-> But imagine the (simplified) PTE layout with PMD =3D 8 entries to simplif=
-y:
->
-> [ P Z P Z P Z Z Z ]
->
-> 3 Present vs. 5 Zero -> do not collapse a PMD (8)
->
-> But sssume we collapse smaller mTHP (2 entries) first
->
-> [ P P P P P P Z Z ]
->
-> We collapsed 3x "P Z" into "P P" because the ratio allowed for it.
->
-> Suddenly we have
->
-> 6 Present vs 2 Zero and we collapse a PMD (8)
->
-> [ P P P P P P P P ]
->
-> That's the "creep" problem.
+On 10/27/25 08:20, Harry Yoo wrote:
+> On Thu, Oct 23, 2025 at 03:52:31PM +0200, Vlastimil Babka wrote:
+>> At this point we have sheaves enabled for all caches, but their refill
+>> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
+>> slabs - now a redundant caching layer that we are about to remove.
+>> 
+>> The refill will thus be done from slabs on the node partial list.
+>> Introduce new functions that can do that in an optimized way as it's
+>> easier than modifying the __kmem_cache_alloc_bulk() call chain.
+>> 
+>> Extend struct partial_context so it can return a list of slabs from the
+>> partial list with the sum of free objects in them within the requested
+>> min and max.
+>> 
+>> Introduce get_partial_node_bulk() that removes the slabs from freelist
+>> and returns them in the list.
+>> 
+>> Introduce get_freelist_nofreeze() which grabs the freelist without
+>> freezing the slab.
+>> 
+>> Introduce __refill_objects() that uses the functions above to fill an
+>> array of objects. It has to handle the possibility that the slabs will
+>> contain more objects that were requested, due to concurrent freeing of
+>> objects to those slabs. When no more slabs on partial lists are
+>> available, it will allocate new slabs.
+>> 
+>> Finally, switch refill_sheaf() to use __refill_objects().
+>> 
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>>  mm/slub.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
+>>  1 file changed, 230 insertions(+), 5 deletions(-)
+>> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index a84027fbca78..e2b052657d11 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -3508,6 +3511,69 @@ static inline void put_cpu_partial(struct kmem_cache *s, struct slab *slab,
+>>  #endif
+>>  static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
+>>  
+>> +static bool get_partial_node_bulk(struct kmem_cache *s,
+>> +				  struct kmem_cache_node *n,
+>> +				  struct partial_context *pc)
+>> +{
+>> +	struct slab *slab, *slab2;
+>> +	unsigned int total_free = 0;
+>> +	unsigned long flags;
+>> +
+>> +	/*
+>> +	 * Racy check. If we mistakenly see no partial slabs then we
+>> +	 * just allocate an empty slab. If we mistakenly try to get a
+>> +	 * partial slab and there is none available then get_partial()
+>> +	 * will return NULL.
+>> +	 */
+>> +	if (!n || !n->nr_partial)
+>> +		return false;
+>> +
+>> +	INIT_LIST_HEAD(&pc->slabs);
+>> +
+>> +	if (gfpflags_allow_spinning(pc->flags))
+>> +		spin_lock_irqsave(&n->list_lock, flags);
+>> +	else if (!spin_trylock_irqsave(&n->list_lock, flags))
+>> +		return false;
+>> +
+>> +	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
+>> +		struct slab slab_counters;
+>> +		unsigned int slab_free;
+>> +
+>> +		if (!pfmemalloc_match(slab, pc->flags))
+>> +			continue;
+>> +
+>> +		/*
+>> +		 * due to atomic updates done by a racing free we should not
+>> +		 * read garbage here, but do a sanity check anyway
+>> +		 *
+>> +		 * slab_free is a lower bound due to subsequent concurrent
+>> +		 * freeing, the caller might get more objects than requested and
+>> +		 * must deal with it
+>> +		 */
+>> +		slab_counters.counters = data_race(READ_ONCE(slab->counters));
+>> +		slab_free = slab_counters.objects - slab_counters.inuse;
+>> +
+>> +		if (unlikely(slab_free > oo_objects(s->oo)))
+>> +			continue;
+>> +
+>> +		/* we have already min and this would get us over the max */
+>> +		if (total_free >= pc->min_objects
+>> +		    && total_free + slab_free > pc->max_objects)
+>> +			continue;
 
-I'd like to add a little to this,
+Hmm I think I meant to have break; here. Should deal with your concern below?
 
-The worst case scenario is all mTHP sizes enabled and a value of 256.
-A 16kb collapse would then lead all the way up to a PMD collapse,
-stopping to collapse at each mTHP level on each subsequent scan of the
-same PMD range. The larger the max_pte_none value is, the less "stops"
-it will make before reaching a PMD size, but it will ultimately creep
-up to a PMD. Hence the cap. At 511, a single pte in a range will
-always satisfy the PMD collapse, so we will never attempt any other
-orders (other than in the case of the collapse failing, which David
-explains above).
+>> +		remove_partial(n, slab);
+>> +
+>> +		list_add(&slab->slab_list, &pc->slabs);
+>> +
+>> +		total_free += slab_free;
+>> +		if (total_free >= pc->max_objects)
+>> +			break;
+> 
+> It may end up iterating over all slabs in the n->partial list
+> when the sum of free objects isn't exactly equal to pc->max_objects?
 
-Hopefully that helps give some more insight to the creep problem.
+Good catch, thanks.
 
-Cheers
--- Nico
+>> +	}
+>> +
+>> +	spin_unlock_irqrestore(&n->list_lock, flags);
+>> +	return total_free > 0;
+>> +}
+>> +
+>>  /*
+>>   * Try to allocate a partial slab from a specific node.
+>>   */
+>> @@ -4436,6 +4502,38 @@ static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
+>>  	return freelist;
+>>  }
+>>  
+>>  /*
+>>   * Freeze the partial slab and return the pointer to the freelist.
+>>   */
+>> @@ -5373,6 +5471,9 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
+>>  	return ret;
+>>  }
+>>  
+>> +static int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
+>> +				   size_t size, void **p);
+>> +
+>>  /*
+>>   * returns a sheaf that has at least the requested size
+>>   * when prefilling is needed, do so with given gfp flags
+>> @@ -7409,6 +7510,130 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
+>>  }
+>>  EXPORT_SYMBOL(kmem_cache_free_bulk);
+>>  
+>> +static unsigned int
+>> +__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
+>> +		 unsigned int max)
+>> +{
+>> +	struct slab *slab, *slab2;
+>> +	struct partial_context pc;
+>> +	unsigned int refilled = 0;
+>> +	unsigned long flags;
+>> +	void *object;
+>> +	int node;
+>> +
+>> +	pc.flags = gfp;
+>> +	pc.min_objects = min;
+>> +	pc.max_objects = max;
+>> +
+>> +	node = numa_mem_id();
+>> +
+>> +	/* TODO: consider also other nodes? */
+>> +	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
+>> +		goto new_slab;
+>> +
+>> +	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
+>> +
+>> +		list_del(&slab->slab_list);
+>> +
+>> +		object = get_freelist_nofreeze(s, slab);
+>> +
+>> +		while (object && refilled < max) {
+>> +			p[refilled] = object;
+>> +			object = get_freepointer(s, object);
+>> +			maybe_wipe_obj_freeptr(s, p[refilled]);
+>> +
+>> +			refilled++;
+>> +		}
+>> +
+>> +		/*
+>> +		 * Freelist had more objects than we can accomodate, we need to
+>> +		 * free them back. We can treat it like a detached freelist, just
+>> +		 * need to find the tail object.
+>> +		 */
+>> +		if (unlikely(object)) {
+>> +			void *head = object;
+>> +			void *tail;
+>> +			int cnt = 0;
+>> +
+>> +			do {
+>> +				tail = object;
+>> +				cnt++;
+>> +				object = get_freepointer(s, object);
+>> +			} while (object);
+>> +			do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
+>> +		}
+> 
+> Maybe we don't have to do this if we put slabs into a singly linked list
+> and use the other word to record the number of objects in the slab.
 
->
-> >
-> >>
-> >>>
-> >>>> max_ptes_none =3D=3D 0 -> collapse mTHP only if all non-none/zero
-> >>>>
-> >>>> And for the intermediate values
-> >>>>
-> >>>> (1) pr_warn() when mTHPs are enabled, stating that mTHP collapse is =
-not
-> >>>> supported yet with other values
-> >>>
-> >>> It feels a bit much to issue a kernel warning every time somebody twi=
-ddles that
-> >>> value, and it's kind of against user expectation a bit.
-> >>
-> >> pr_warn_once() is what I meant.
-> >
-> > Right, but even then it feels a bit extreme, warnings are pretty seriou=
-s
-> > things. Then again there's precedent for this, and it may be the least =
-worse
-> > solution.
-> >
-> > I just picture a cloud provider turning this on with mTHP then getting =
-their
-> > monitoring team reporting some urgent communication about warnings in d=
-mesg :)
->
-> I mean, one could make the states mutually, maybe?
->
-> Disallow enabling mTHP with max_ptes_none set to unsupported values and
-> the other way around.
->
-> That would probably be cleanest, although the implementation might get a
-> bit more involved (but it's solvable).
->
-> But the concern could be that there are configs that could suddenly
-> break: someone that set max_ptes_none and enabled mTHP.
->
->
-> I'll note that we could also consider only supporting "max_ptes_none =3D
-> 511" (default) to start with.
->
-> The nice thing about that value is that it us fully supported with the
-> underused shrinker, because max_ptes_none=3D511 -> never shrink.
->
-> --
-> Cheers
->
-> David / dhildenb
->
+You mean we wouldn't have to do the counting? I think it wouldn't help as
+the number could become stale after we record it, due to concurrent freeing.
+Maybe get_freelist_nofreeze() could return it together with the freelist as
+it can get both atomically.
+However the main reason for the loop is is not to count, but to find the
+tail pointer, and I don't see a way around it?
+
+>> +
+>> +		if (refilled >= max)
+>> +			break;
+>> +	}
+>> +
+>> +	if (unlikely(!list_empty(&pc.slabs))) {
+>> +		struct kmem_cache_node *n = get_node(s, node);
+>> +
+>> +		spin_lock_irqsave(&n->list_lock, flags);
+> 
+> Do we surely know that trylock will succeed when
+> we succeeded to acquire it in get_partial_node_bulk()?
+> 
+> I think the answer is yes, but just to double check :)
+
+Yeah as you corrected, answer is no. However I missed that
+__pcs_replace_empty_main() will only let us reach here with
+gfpflags_allow_blocking() true in the first place. So I didn't have to even
+deal with gfpflags_allow_spinning() in get_partial_node_bulk() then. I think
+it's the simplest solution.
+
+(side note: gfpflags_allow_blocking() might be too conservative now that
+sheafs will be the only caching layer, that condition could be perhaps
+changed to gfpflags_allow_spinning() to allow some cheap refill).
 
 
