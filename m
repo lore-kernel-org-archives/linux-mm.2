@@ -4,156 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E76BCCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:21:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0A8BCCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:22:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2ACF8E005F; Wed, 29 Oct 2025 06:21:02 -0400 (EDT)
+	id 5235A8E0060; Wed, 29 Oct 2025 06:22:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DAF28E0045; Wed, 29 Oct 2025 06:21:02 -0400 (EDT)
+	id 4D3E48E0045; Wed, 29 Oct 2025 06:22:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A2E98E005F; Wed, 29 Oct 2025 06:21:02 -0400 (EDT)
+	id 39C4A8E0060; Wed, 29 Oct 2025 06:22:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 75BA18E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:21:02 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 262CD1606F6
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:21:02 +0000 (UTC)
-X-FDA: 84050758764.18.21FBB96
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 98463140004
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:20:59 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="CxvCE/I+";
-	spf=pass (imf23.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 252338E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:22:00 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D4729140611
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:21:59 +0000 (UTC)
+X-FDA: 84050761158.20.0A2A60E
+Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
+	by imf15.hostedemail.com (Postfix) with ESMTP id E69ACA0003
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:21:57 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="c 55cm50";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=i9JbQrZh;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761733259;
+	s=arc-20220608; t=1761733318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8C3xo7d6IbVEJTrFBvgh0IG4wFajk7Jzk1+en8wFBE=;
-	b=XmvZTSPLTqy/c2Y0wtorsb/zpV2sP/qH19BMX0kS52c2auRWzCTttT7eeN5egCnP/NDsiN
-	sZx4J73Biq1GyLbR+3E+qRiGELv+CdX1/vSOhfA7fdMz2eZN342V9KCbe1BSv9556Uc3ei
-	OTy/rR+/zUKEl0iOe61QY7AKXWlsBpM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761733259; a=rsa-sha256;
-	cv=none;
-	b=jzYURPD14w6+BoiwgVUqWpWPew2BMdabKUfb/3rjLDUgwFEBgmaXmVwLq4xkDQybIsYOBV
-	wBTdEXV82L2HUirJwgiyOFCsM+9eLPLymcquiVOCEmPjdJMrB8c4IWLyTmfVyejxbqPsFc
-	m9WLytTcld5TujjfQZLX22ui3jEqiV8=
+	bh=IjPlh4vPDtY5DoDvg9FkkduZZQivHp+ZM+sz98NMyF4=;
+	b=aRAp6CbbnOlGY8luX8tdJ61F3/R5j0EgLEny7TJqTE3iaRjuWboo4ku0EP0UFTAFUqM3gy
+	WAYS1FEnmka7tXJI1FBuHuqm2aUTWSpfWoE0YJwMNFoueTiwqDQAbpMkbKkxKSx+0f8Ypo
+	Ta/JEAwVY72ulpsurYtrJEou6RC09Mg=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b="CxvCE/I+";
-	spf=pass (imf23.hostedemail.com: domain of imbrenda@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=imbrenda@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59SJmGuE008719;
-	Wed, 29 Oct 2025 10:20:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=a8C3xo
-	7d6IbVEJTrFBvgh0IG4wFajk7Jzk1+en8wFBE=; b=CxvCE/I+LSKtS0sazC2Nc6
-	bp3whjjsUFd21k1GJtSj8Kdf+0EYFLgg9hz5DsiSTDo3LI6+WJtiqJCc8ga16KYl
-	GrLdc/7dCYmzZXNGnTZ0dcP4KKPpr4c/7+qmGDhPtvndPENgvpcBsZK0SpBxiBXJ
-	N2aQJfPj8xygiw9XjB6IZHNd+nANVczXQlzLweaAA7NYKpgT6TGc1NLtxpBztram
-	828uKIXNKsXePgmptKTEKYlbA4DNUzfB6gKhoTFtaMOw9FrsvEBlUa4O3itHPa2F
-	9F2XAxIjRcNT3QRLLEyioxafoUYAQbCB8jqk3oJnHK2G38bH8FWWpJ3snC8QWNhw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afapvj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Oct 2025 10:20:51 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59TAK2Li031504;
-	Wed, 29 Oct 2025 10:20:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afapuw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Oct 2025 10:20:50 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59T9vZLR027516;
-	Wed, 29 Oct 2025 10:20:44 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33w2jqxs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Oct 2025 10:20:44 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59TAKcdE39977418
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Oct 2025 10:20:38 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 65AC52004F;
-	Wed, 29 Oct 2025 10:20:38 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4F4BD2005A;
-	Wed, 29 Oct 2025 10:20:36 +0000 (GMT)
-Received: from p-imbrenda (unknown [9.87.139.129])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Wed, 29 Oct 2025 10:20:36 +0000 (GMT)
-Date: Wed, 29 Oct 2025 11:20:33 +0100
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, balbirs@nvidia.com, borntraeger@de.ibm.com,
-        Liam.Howlett@oracle.com, airlied@gmail.com, apopple@nvidia.com,
-        baohua@kernel.org, baolin.wang@linux.alibaba.com, byungchul@sk.com,
-        dakr@kernel.org, dev.jain@arm.com, dri-devel@lists.freedesktop.org,
-        francois.dugast@intel.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        lorenzo.stoakes@oracle.com, lyude@redhat.com, matthew.brost@intel.com,
-        mpenttil@redhat.com, npache@redhat.com, osalvador@suse.de,
-        rakie.kim@sk.com, rcampbell@nvidia.com, ryan.roberts@arm.com,
-        simona@ffwll.ch, ying.huang@linux.alibaba.com, ziy@nvidia.com,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-next@vger.kernel.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com
-Subject: Re: [PATCH v1 1/1] KVM: s390: Fix missing present bit for gmap puds
-Message-ID: <20251029112033.23b3ee87@p-imbrenda>
-In-Reply-To: <db143076-afa0-4129-b5b0-eab85ec54aac@redhat.com>
-References: <d4a09cc8-84b2-42a8-bd03-7fa3adee4a99@linux.ibm.com>
-	<20251028130150.57379-1-imbrenda@linux.ibm.com>
-	<20251028130150.57379-2-imbrenda@linux.ibm.com>
-	<db143076-afa0-4129-b5b0-eab85ec54aac@redhat.com>
-Organization: IBM
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.49; x86_64-redhat-linux-gnu)
+	imf15.hostedemail.com;
+	dkim=pass header.d=shutemov.name header.s=fm1 header.b="c 55cm50";
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=i9JbQrZh;
+	spf=pass (imf15.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761733318; a=rsa-sha256;
+	cv=none;
+	b=lyX8cGkkTpzRBy8zFZ6sP8MgKwwxP24jSj7U2sF72D/6wA5SlocAdGmwitTAnM7h8N1K76
+	ghmN6WIVwuHZxLK7RRBzXiatVUQiBZGpJCEGieilSf54zvOyZOrFuLvk3QN08WmjNN2nYL
+	v0YAskZ1X1qMVwejDRzmTb7dGeNER/I=
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.phl.internal (Postfix) with ESMTP id 4FB5C13800EC;
+	Wed, 29 Oct 2025 06:21:57 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Wed, 29 Oct 2025 06:21:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm1; t=1761733317; x=
+	1761740517; bh=IjPlh4vPDtY5DoDvg9FkkduZZQivHp+ZM+sz98NMyF4=; b=c
+	55cm50oklPwOjk9DkdI/bM8yFEQbGwn/K/8ghiVrCZVJngXm1qK8CcMsuwP1veTB
+	PX5EhQ694qIQH47nh8wpfFJZDXbPCbpGUyaK4HAKH6GSr2tCS7XGdBVra64X5wIV
+	Pr2TCI4pswlJ0LUqK/pO73khpgiBq0mX0AugBqTHBrcWlCcB7rdSHsiDYGT6p7ZK
+	+AeBonwr25hyCBiDj3We5HXoJYxPAJwbtJSdAwy/Eny49KZ08WDRclzFYEvCeScl
+	r12wUGZ+52DghWuTDYFs2rUDaRqgj9mzKkO/aPAfvmbynyaWFT8dleE07v8pNLmj
+	CNaUPh3K/8gLTW5aDEhMw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1761733317; x=1761740517; bh=IjPlh4vPDtY5DoDvg9FkkduZZQivHp+ZM+s
+	z98NMyF4=; b=i9JbQrZhAzMnl2+U+McrmCMks9t7FgRB70Kdy0r6X3KlXI4pr01
+	O7zS+zM8/l9xplrJRJvf+pH9MSCC5uL/LuyxSRfBrxcA+yhxQl74QkaUAS6i+Cad
+	wtRkntu5imMfyfFQHfl+SpcAU35bXC1DJyUiDb27+eXI5G9U/KLSjFaNPTHeybVq
+	BujZGcBkLzjBR0+FighbU2LNJ510AVfVlcyOHdvOiZt0Icug+hFZtXXKq8A966cU
+	dny35j18vZPpvrLwXMyrxbamkvAxHX/lTd7sATOSMUrl59LSNTn1stgF824a+j3O
+	wSfcbdExlXH5MbRULfFqsZbzev1B1MWoEjA==
+X-ME-Sender: <xms:w-oBaV0vFJQXaGhtxf8pfyWicN2LNVegwRhMj0Mm7EZLUyzOIAmadg>
+    <xme:w-oBaY7Ij-E7oY3rYUL5TyQsTVQRJ4ULEN2m-xDFgXmSn3qRWOGBiY6IkO6w5GHIf
+    -mQ70XsF1MSNZlvCE6THy2CGBcdTsM2jkxflMNekaTd8H8cDjAx8E0>
+X-ME-Received: <xmr:w-oBaaF9-QcR4Xxgik7Pld_HbkFReNnorRP-A4NpV8DyuYCmBj1B3CSA0tHgWg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieefgeekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
+    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
+    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
+    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
+    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhhughhhugesghhoohhglhgvrd
+    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
+    ghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtthhopeifih
+    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
+    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
+    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
+    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
+    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
+X-ME-Proxy: <xmx:w-oBaQ-NJCdN2gljACnnW5K0wD9ePLkZYot84PFz5dPDHveZJD2b2w>
+    <xmx:w-oBacM-98Jo0IefxgIP4l7EOAlOUB04h8ZRu569jq_iXc0ZTTnjFg>
+    <xmx:w-oBaczFvGlwacveAMRFJg2OWwAZgnb6Kpuu3yda9ZJ7ogdHEIRG2Q>
+    <xmx:w-oBaet86LLJKmh4LN_G65totUPRz7ivebBwXLJ9V56OogLp_gqo-Q>
+    <xmx:xeoBaQF2PDgL6VeZdTV0YBCLE7XIIANhPP4wdjno2bJA118g8Ye95dMu>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 29 Oct 2025 06:21:55 -0400 (EDT)
+Date: Wed, 29 Oct 2025 10:21:53 +0000
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: Hugh Dickins <hughd@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
+	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 2/2] mm/truncate: Unmap large folio on split failure
+Message-ID: <xsjoxeleyacvqxmxmrw6dxzvo7ilfo7uuvlyli5kohfy4ay6uh@hsrz5jtkgpzp>
+References: <20251023093251.54146-1-kirill@shutemov.name>
+ <20251023093251.54146-3-kirill@shutemov.name>
+ <9c7ae4c5-cc63-f11f-c5b0-5d539df153e1@google.com>
+ <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
+ <eaa8023f-f3e1-239d-a020-52f50df873e7@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: iCCZHicpewE1nEEK0Th6TZo8jyCZ_lKE
-X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=6901ea83 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=20KFwNOVAAAA:8 a=TqUBss7doubTCnVJSwQA:9
- a=CjuIK1q_8ugA:10 a=nl4s5V0KI7Kw-pW0DWrs:22 a=pHzHmUro8NiASowvMSCR:22
- a=xoEH_sTeL_Rfw54TyV31:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX2SsWkX+TbQmr
- 2+aNTSE9EGTlVJFFPDNI6EvdJ/0NfLidif5XzlmHYduy5nfQecT+UYgBSNmL6XNqDkbQj/eqN+Z
- Aj3pDYE10hsg5ntFoqFViDE3Q5xO1GDKNGiZzWFDGbKvvuJKoQtcaFta8VzlvDgHz1bdD+6dW+A
- pCJjPzQks6en4f7qgaW5s26I9ftRLR5WqIr+sWqJzNBKkHOjDa23cObi9I8Ht558wHkgPC0fZv1
- LLBy4oHH0ig79qC3Raez+ML1eHMuj4KSAahnKAS7A+jqSFjkGr2UHtjWkInx/zsx05E7/VYjqIR
- 3FQZTJCSdFfVUlzkLcj50LiZuToa1+MV63UUsB7dx5IlB8eZozqV4iaQsE9UsfuLjrJyb4Qwk43
- Ms1L5rM7zV9X+fse4/06Kz7/8zx0MA==
-X-Proofpoint-ORIG-GUID: wKqPvWninnMRfuPgoIUz0EKbJo7AbSs7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
- definitions=2025-10-29_04,2025-10-22_01,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
- impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
- priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2510280166
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 84c35ygbug6cte3pcmse7nddue7q765c
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eaa8023f-f3e1-239d-a020-52f50df873e7@google.com>
+X-Rspamd-Queue-Id: E69ACA0003
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 98463140004
-X-HE-Tag: 1761733259-449419
-X-HE-Meta: U2FsdGVkX18KZawwMFZkBlbxpi8SwN899IwjUJTVelykqcTb1zStuIYRiUgOA0dQtLUYGxZq7Zgw41ZnY39QmX5Wh6QsnGgFv0X4tuP7PFQIEPfKBsD+TFXQh1SXYCrOiIPFkZKkOZc99t48q3XETjSDH5sbwuFMtwpUrvmYUyuLSjHdx+yqfVchoMf8eowv9i2eCQM+L0LFTiXTMZFCNcfZ63Ye9GBmc+MOmtCPVMHFVnqsIQT9OT9Y332W4R5FWwKTRm/pNJffnpWYPVLDQlB81Bh37o3G16A8dkvbtE97bODNWjKDBIPfcDfhtO3yBsvCuEsS0xkLTTXmyhUoekali9pGrULgpTeRDhigbILBMVL25JEThUp5tBKMBW/LJxgXX7qK6YDZb0TnSGheQQNQL6BiFTV2gM74qdJ29DMcLLCR7iHihfVcH64QvQSSuVx55Y3U/MKjCpqMSKa9O6c13N+SdDcwK/rlWMPQi1pG120bNQTHTmzGIAvM6rxz5VaS0bf3vG+KzBHE/DBP5x1C19sd1wG9D5LuuFpiWZ4XVa+lC+74w92mQ+BYIFX0rMOdnAEGL5ZgnUaG9AeouOy9Cn/t0WzqS0wM6mFKKefLnkYA7cdnCLcbB86P5yORkGL/wReMe1rfBpsmBdIgVL7utAWY46ZIntebJiJAAucK7nRW7rA6v5N04nlx6Ym5F42ZQr6nNxbaUiRrN+vnb+ba+kvrREgT07RdRUqoeAHhMh6R9QRkxy7lB3zJYan7H8sXjKnzlEoOxZvFafrylgfry9MtIot+LXYVrAlVUR/HppJVUVeLFvWA5gNfZTyNJUjc5GGRks+vdhqpuEmcwkPaIrNYKxPDdK8thAO1714AorVmrm4hSWPMlIBjGB4YOw5OiRg5Ki1icwsN98wYr/RUShatPFRrzlrmTfvcpDKmia+dIOlZLfhR6/OTUdxXxjMQcXin6K2UzNeNBrd
- wZzBHbL0
- tEA0ttA2gGfHQdc3EYMCIzdUo3UoS6kbzewc/8z10xFdmc6llnCtchFUeWz2Uavat64MXE+DLhI5/w7cDEq5t4ipCqWXBzG8Tf9VcOpA4Gif3MhqG384xe1kOy7QJNBMOs9M5Abndve6Pr4xk+agee9v7Wl+mHFEmRyJah4Wd9HX3sWkLNZD0j3t2TjoeL2RNrtEMfFv+lJ0kV2r++FjCk20mCsLSLtdOksCQZAnACPH74owI5sfi1Eu8BVJPUU1Wj8EKaK4sWNtJBE0GkW/LG6yNRipS6SA3H5FzDcSeC/RFbgIVqzZS190fLrSswxI3VpfUkCb8bGgFhX7bxFRU8rwOZ9+GjpiwNp3gTvWRd0WgXrSyAYjAvb1zhirUDT/xTJDKx26UdKDfinpYE8fwIb1FWSedVX4L3VNY7rFcvTfM5HPSC3WucQzlYKo9CEJ2+Pu/SopC0AUoZes=
+X-Stat-Signature: qb5yshhct1omi8ftskfkjq4ye1etjz6r
+X-HE-Tag: 1761733317-421051
+X-HE-Meta: U2FsdGVkX1+/nCO4i6iD6t7lP2G2ZJTqd7QFStgI1yRGQBbhqMPAALospxw+hGzxML0ZHW1Zqsl7PDmRUSWLzSDepxwnncJmLVqYffgC1c5wF589+LJx0NOM6CoD8UbJoIvnu2Xc9AXKRWcMk5Kt5UG6qPNEuNTm8PHCrZU6WRaeWOAmupoDMEyJ95FmAiWm6B0r1b19C4z+7CvBCOAFoEvy0OBfH0YrlACd8FoHUeszB3LY6psRz+BRft0zdi7nenjlzAk4eC0BD7/AFfE0dJXZ9G1dk6haRjGNEXaR5ap8hSQscv6le8802Bp9VDsMmNWex2HxqEU3ngZhyAoEAhpnvrfKcaw+IWXsUE/EQ0iNJxcYJ9d3nC5pAD25zQmvVGJo5H/KrbJ8q0TcL+mAxBjBoPQ9e40/7aISSw9tt6Z7RoN8XiB/UE1YiHRL8yeiSQvaKILgILbgYwpfnWfHV6NU+DbkX5pQn0cIU4T45pdnhD+C9tyuf8gNPDUCRP5TIQFPviGIsmI3YS9NGNcl/Ia7z5CwPjyFb96pNHzB0GnaxVHiDwB8u8SdnrRzsODZT84vB6pHYB6weMxfFjAdVB9FdJeOn5OUDD9bDYwEOkav4walXZd6PO8ruKwUI8tk3kG684+vB7bfihhh2nektTjQtQ4EInsGvfHEBMQ1Xk9LSO5PYXi8Jj3XeP3E5r9i+DIGxdBVJRmSRzpR0SgMpJmMNwWygGnTRM2beYbbr5tCKcLPIdkTeb0TBE/FoimGGT350Ad/0iHhhdLPdIbEN2crLMFzvl5Z65WlA+F+UcGyh90HgaFvzsX27v4tRerP3jVP35wGuFJf6zgEpaJ64Zi197BupoBpDjcLm8FftfEvfEB75Dm+/493VlaLgii5k954LQD55Svbn/2Ojz5Y/nobKRydP9Ue5TFl8MqDNtccLgAzD2UBk+A7e9oPAYN+HXMZxCyqokWTKawRc8i
+ RqfIjhph
+ Udx1jnveM0C+ZWMkuBg3CBp6jr6L6GuLcgpj64WIGm2vFPAhXq1dDWaWDi11EMJR6AEmutrXdUxIJQpJrqd/M/G8utn1mljPipw/8R6OojBgJ5D/OqMPxIf0LEeshEIHl4Pd9I9LJ2ZeebhULbYCWsFbK0jPexRuuuZKxtlvO40q1dzmZGtKMUC2VI2f5/xrev+xCj50jurLIfNJ59nrLS6BC5QvMi1eWsM2bNsNxShnWY3ttsF09bzOXa7etSXATQXJ9wLoiIcKKC6tZB+QqllLnJreqGA2I5Uyd7i9X+BfOTjX4Aom9DkkPHySFTycec2PbW9GjIrztYTN2oJJabiQ8Z6DjQDEJvt2mslc1sjDP8+zAz45SAENeLe4P8nemi7XCaiQk/koj+op6LEbgkcic71v5bmc56s9aTKw9jz4+VLUC7UpJY1frlWB+wyHQamPl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -162,54 +146,38 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Oct 2025 11:00:14 +0100
-David Hildenbrand <david@redhat.com> wrote:
-
-> On 28.10.25 14:01, Claudio Imbrenda wrote:
-> > For hugetlbs, gmap puds have the present bit set. For normal puds
-> > (which point to ptes), the bit is not set. This is in contrast to the
-> > normal userspace puds, which always have the bit set for present pmds.
+On Wed, Oct 29, 2025 at 02:12:48AM -0700, Hugh Dickins wrote:
+> On Mon, 27 Oct 2025, Kiryl Shutsemau wrote:
+> > On Mon, Oct 27, 2025 at 03:10:29AM -0700, Hugh Dickins wrote:
+> ...
 > > 
-> > This causes issues when ___pte_offset_map() is modified to only check
-> > for the present bit.
+> > > Aside from shmem/tmpfs, it does seem to me that this patch is
+> > > doing more work than it needs to (but how many lines of source
+> > > do we want to add to avoid doing work in the failed split case?):
+> > > 
+> > > The intent is to enable SIGBUS beyond EOF: but the changes are
+> > > being applied unnecessarily to hole-punch in addition to truncation.
 > > 
-> > The solution to the problem is simply to always set the present bit for
-> > present gmap pmds.
+> > I am not sure much it should apply to hole-punch. Filesystem folks talk
+> > about writing to a folio beyond round_up(i_size, PAGE_SIZE) being
+> > problematic for correctness. I have no clue if the same applies to
+> > writing to hole-punched parts of the folio.
 > > 
-> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> > Link: https://lore.kernel.org/lkml/20251017144924.10034-1-borntraeger@linux.ibm.com/
-> > Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> > Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> > ---
-> >   arch/s390/mm/gmap.c | 5 +++--
-> >   1 file changed, 3 insertions(+), 2 deletions(-)
+> > Dave, any comments?
 > > 
-> > diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> > index 8ff6bba107e8..22c448b32340 100644
-> > --- a/arch/s390/mm/gmap.c
-> > +++ b/arch/s390/mm/gmap.c
-> > @@ -599,8 +599,9 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
-> >   					| _SEGMENT_ENTRY_GMAP_UC
-> >   					| _SEGMENT_ENTRY;
-> >   			} else
-> > -				*table = pmd_val(*pmd) &
-> > -					_SEGMENT_ENTRY_HARDWARE_BITS;  
+> > Hm. But if it is problematic it has be caught on fault. We don't do
+> > this. It will be silently mapped.
 > 
-> I'd add a comment here like
-> 
-> /* Make sure that pmd_present() will work on these entries. */
+> There are strict rules about what happens beyond i_size, hence this
+> patch.  But hole-punch has no persistent "i_size" to define it, and
+> silently remapping in a fresh zeroed page is the correct behaviour.
 
-the whole file is going away very soon anyway
+I missed that we seems to be issuing vm_ops->page_mkwrite() on remaping
+the page, so it is not completely silent for filesystem and can do its
+thing to re-allocate metadata (or whatever) after hole-punch.
 
-> 
-> > +				*table = (pmd_val(*pmd) &
-> > +					_SEGMENT_ENTRY_HARDWARE_BITS)
-> > +					| _SEGMENT_ENTRY;
-> >   		}
-> >   	} else if (*table & _SEGMENT_ENTRY_PROTECT &&
-> >   		   !(pmd_val(*pmd) & _SEGMENT_ENTRY_PROTECT)) {  
-> 
-> Reviewed-by: David Hildenbrand <david@redhat.com>
-> 
+So, I see unmap on punch-hole being justified.
 
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
