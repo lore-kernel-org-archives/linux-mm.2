@@ -4,124 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55909CCF9EA
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 02:14:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B683DCCD1BF
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 02:47:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A049A8E0029; Tue, 28 Oct 2025 22:14:16 -0400 (EDT)
+	id 71C3A8E002A; Tue, 28 Oct 2025 22:47:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9DC2F8E0015; Tue, 28 Oct 2025 22:14:16 -0400 (EDT)
+	id 6F3C48E0015; Tue, 28 Oct 2025 22:47:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F1E58E0029; Tue, 28 Oct 2025 22:14:16 -0400 (EDT)
+	id 609218E002A; Tue, 28 Oct 2025 22:47:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 7FDA28E0015
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:14:16 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 4FAED12AE75
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:14:16 +0000 (UTC)
-X-FDA: 84049532112.09.817872E
-Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 7540A80004
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:14:14 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dxGU5LMB;
-	spf=pass (imf30.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 50D2F8E0015
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:47:45 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B12461A06B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:47:44 +0000 (UTC)
+X-FDA: 84049616448.11.E3D9A81
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 445AE1C0009
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:47:42 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KXtujlG2;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761704054;
+	s=arc-20220608; t=1761706062;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1vPGYW3pX+7b1B0RO8MNUWDpnqr51YW+OGVAApLwa9M=;
-	b=s3Po5Q78+QIVpYR6rzWd+9dOClxcbSrwfo8tF+G3qOQus9Ocwx1Br5vz/M+/caFWckBhYw
-	7ivNY5sJ9Vt226IuN/0hZkTrdz4FI4hUkZKtNp37obtQ5Y6WGqtLjght8vPBL1crp1pqkh
-	N+gRi3KHIRlo0ZRtbDuNiR3m2zo7+HM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761704054; a=rsa-sha256;
-	cv=none;
-	b=v17l14t+lAlkGBZ1xYiU3aZCGoz15rDtxvXhCQwUq6XHg75BrSPunyPEf0k4/6AWbKtkHR
-	/qiYAlR4amlwQ2Q/NOOxYdQ3kDWdiN+gjvdPbfAgbHwgX4BtF2qdoEpKQrf1xEVJq0FvuF
-	AiQu/npQ5bgoLraSivDYYFMrY34wJG8=
+	bh=tV6geqkUC9yszulriWkMA/zBhhS+rMg3DhyWlFe+W7k=;
+	b=LR6UgkDPB0yGm5G4xlLABhy3EPC3vCQHHeY2p9CsIkxaJamnD3JQsrYm9BEPjiTs5JwvMn
+	sB45xoCWVGK9Lgy6o+/K0MRjmrGuQHd5AV43DCr9WpHsOqkoTbsjyHhRSxdJ3/L8UPgGdd
+	XiWOxGY3nL5l0zH2wsapnxrfaHb2rWA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=dxGU5LMB;
-	spf=pass (imf30.hostedemail.com: domain of laoar.shao@gmail.com designates 209.85.128.180 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-7832691f86cso92677837b3.1
-        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761704053; x=1762308853; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1vPGYW3pX+7b1B0RO8MNUWDpnqr51YW+OGVAApLwa9M=;
-        b=dxGU5LMBAqcSBKLnHaHN7xJq//d4pdVJLCR5XRMqM9jfVdBeCGfqkCgLecaToeILp0
-         8soI5sk9ibABdJeeynbJVLmzMG8uBMJ2MXbhI13Mb28tiQNYCGZPzC//1Snp2z1+PqMR
-         y28c4TL82Mxc9j1QtLETBXRYVxtrI5Aqc8MFE+jSu+70KT5g+EWU6CyDleG6kbtt5deF
-         sKUjAA9pP7Z+GvKmZVlt/bjy3xYgceVQA5x7r+g/nbKpFIP1MPSWfd5woCL3EhI37lmm
-         PCd1fmzoZYwisugYtOPna9bYbHeJYsJgJQ0TcV//mEaWJ5CAtx59+BiELQFUN47K4U8N
-         KKOA==
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=KXtujlG2;
+	spf=pass (imf18.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761706062; a=rsa-sha256;
+	cv=none;
+	b=RD2/uwwCS2mltH4A44qGbFCKt8XCpJ+N4e1gMahTLU68mXk9ZPbTxzXEj6zpHKB74reV8X
+	6NJFnh8ojhjGT4y8je+mndB66xNUwuLxymTqs5y/P6eDxdBu35YwJICzueFQGJT5pXULG7
+	a+2tPnIGubIjCsg/EDHMcAj6vGZdAfQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761706061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=tV6geqkUC9yszulriWkMA/zBhhS+rMg3DhyWlFe+W7k=;
+	b=KXtujlG2hWlQ+HCw3xDDABfIVJ9yCiEtImQfjLLo1bMoWVvm/Ia5OBbP/3YlONAeDmOcCA
+	4lFa1hGnq0HrG5g3Al7fxSlDtv6AbsR4LBfUhNgNHcJsWFWtJOXh6AGf3D+R1xkuHX+Rg2
+	nas8sADJtvFcrkHnQwqVfi34UbS9ksU=
+Received: from mail-yx1-f69.google.com (mail-yx1-f69.google.com
+ [74.125.224.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-365-xwsy1GmtPjG_fhEaPFscmw-1; Tue, 28 Oct 2025 22:47:40 -0400
+X-MC-Unique: xwsy1GmtPjG_fhEaPFscmw-1
+X-Mimecast-MFC-AGG-ID: xwsy1GmtPjG_fhEaPFscmw_1761706060
+Received: by mail-yx1-f69.google.com with SMTP id 956f58d0204a3-63e37c94219so1051699d50.0
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 19:47:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761704053; x=1762308853;
+        d=1e100.net; s=20230601; t=1761706059; x=1762310859;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1vPGYW3pX+7b1B0RO8MNUWDpnqr51YW+OGVAApLwa9M=;
-        b=QGPQrsybIomF7SMNCfwbwl5//ZnnmMEFFsGxm9+Dt10sQ1CwYIkPEv6xGZYq5OUB17
-         d7OSkPb/XSUYOXOUHHvSiQkX6I/48PpR+JlWN6dt5gSQoSVJpW4MEqFKcza7u7DrRRnD
-         jFc2iAABqhpV9/3VYUHO0AcyyqaZoVO6b3efqUX0H2o4cU6lsLN4L4+rMTq3WelS9E31
-         h2/pmoLWQRCcM65EJ4tFADy7PbIh1qDF619B3Tg/A39tpRB+Zc6w0gj/++mdcqUvEBZx
-         gauHZ8EryiLHKlthvkTxB61Kl+6EXPP035AIxDuodNIqYt1a7CmjD8GJMKaKlHZ+okLU
-         xmCA==
-X-Forwarded-Encrypted: i=1; AJvYcCXWOm6glbMKO651nqfdS4LsVOyRiaVYX8l+7G4DsLlTbeUAD+sgtP9yI1gxJ04xQirdeadPjKDusg==@kvack.org
-X-Gm-Message-State: AOJu0YztldmLzW7lmh1Wp0FNDjsP2izhkR230XR2E3DDm7wf7RI0XzI4
-	OYUL4UCkkw5ov3yuaWrowYgJPg1unFW60izleqpqHaUpLa0VX3js8xrHRGM+b/Sjgkvt3lnKGMq
-	Wx6YujqE4KUCol5vINC+WkYjfTXNlXbo=
-X-Gm-Gg: ASbGnct+0EkG22BIN6dzbRdeRKwsn2F8+PvRI24r5NcCj0VlOKoJdq9mgbyj73FYq1d
-	QtMHCNanLo7DcfngcEeKjDISJX3jn/V9Vz9hu6igxdubvgVkRMr4sOEvCKecAEwYIYT9BE2pwHG
-	fA3NeFVtY7YsANkfbDcop3nGWeuj4y6uOFBy2+DMKHp/CH9NsCtKe+0M8wq8us2AyFZqgF4g7i6
-	w31r9Ud132JtbunVuFFfreK3d4L1cxaDfOYm0QOkYQE1akZIEXewSsRW+efoJJak9yqnjFV
-X-Google-Smtp-Source: AGHT+IGAN6hw0WwRvKtq3B1y0SiTrVIZoYnrx0iULGRASJtLgN5JvkICVwdenSNU90hNH8FkNZBvjoCAptWUticznOo=
-X-Received: by 2002:a05:690c:6289:b0:76c:b76c:ddaf with SMTP id
- 00721157ae682-78628e24788mr15670597b3.5.1761704053447; Tue, 28 Oct 2025
- 19:14:13 -0700 (PDT)
+        bh=tV6geqkUC9yszulriWkMA/zBhhS+rMg3DhyWlFe+W7k=;
+        b=HMT56S42oetduwvbnrvDumdzqbKKIixtCtIDs7hpdv3MvDxdj3D5gGUFXR1aYpOSpO
+         0xZdxGavYs243E+DSqRcLExZHlxiy7YBfwcRFyg2ksuqiv1cwAwgJKeWPWHexdWVslhH
+         c+jladCZqmVDFQq77iP/rP3Qk9R08ESmyxo7+vSjioHvmBN0XUw6JvaBqBujCOrWcNFm
+         ZT+1Ee8GUa+vzikkC/R4S4dmozoskz9hrnDhr6+442Q/9bcNV2iyJ5822zOf5ZgEjfnm
+         8jPBDcVQWlTLAEoGghI47XNNZmugz2de0MOPe2bug9upmA+nw0gv01Y/lB0w0aoT3bjd
+         KHrg==
+X-Forwarded-Encrypted: i=1; AJvYcCWXxjl/PRtM4L42UiYJgIToZI9G3H46Ll6MBomaJuIDHZ0mofZ8HGf9uVggOKlLxzEgho5u0ATtUQ==@kvack.org
+X-Gm-Message-State: AOJu0YxH6fh3nXVfa8XIad05YFRb9aUMPsbrLhqmEEjtckrfMmWfPeYC
+	8NPu36qK1ikG8rGBBrJrtwZQdBRcquTMeGLH2agDlVNLPNT0tZzBOBJf576+D2Ge+Txsuh1AWPy
+	mqS4Oio3F/0icWr3JSJna2lZjq49X0b3ZhfqJZPuBrQEqDaRfB2nHQSdZOaTgrAaQrMQnQoYeA6
+	ewCzgtMjATw2MVTkw7oq8vqMGMnCY=
+X-Gm-Gg: ASbGncuoR+Ot+llloXM+wZfQYwLeEWD+6Lt5wMsPiJMu4/ZzxJRhevOwh4VVPycJCez
+	lmt0pDkAOXY7qyzRxENjK2TGAZT4bg7nMUAjcpee8+zP+obLiSadXl3vTsIczD7PpiDkqGaLBEG
+	wdJWxbA+oMpJngyv4hxc4MhLJjizdy/7lysenDVG+u/DHGLbHQCk+nOBMMum0kp56OGZyKoQ==
+X-Received: by 2002:a05:690e:1405:b0:63c:f5a6:f308 with SMTP id 956f58d0204a3-63f6c6be3edmr4184094d50.31.1761706059373;
+        Tue, 28 Oct 2025 19:47:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFVsJq5W8R7sT70TPYovDlqz+rtyyBJ9vZ8itjbDB85MOT0ZftJAHwTGtjUh24PfkoVwi9hTpXPs7aXJ7Jzq6g=
+X-Received: by 2002:a05:690e:1405:b0:63c:f5a6:f308 with SMTP id
+ 956f58d0204a3-63f6c6be3edmr4184060d50.31.1761706058849; Tue, 28 Oct 2025
+ 19:47:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251026100159.6103-1-laoar.shao@gmail.com> <20251026100159.6103-7-laoar.shao@gmail.com>
- <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
-In-Reply-To: <CAADnVQKziFmRiVjDpjtYcmxU74VjPg4Pqn2Ax=O2SsfjLLy5Zw@mail.gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Wed, 29 Oct 2025 10:13:37 +0800
-X-Gm-Features: AWmQ_bl6ri9Brpc7kQ08rlFDC7Zg4B3FVd1R7XVe5An1qRSKX_V24AXUbVkKMWI
-Message-ID: <CALOAHbD+9gxukoZ3OQvH2fNH2Ff+an+Dx-fzx_+mhb=8fZZ+sw@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 06/10] mm: bpf-thp: add support for global mode
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Alexei Starovoitov <ast@kernel.org>, 
-	Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko <andrii@kernel.org>, 
-	David Hildenbrand <david@redhat.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Martin KaFai Lau <martin.lau@linux.dev>, Eduard <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Zi Yan <ziy@nvidia.com>, 
-	Liam Howlett <Liam.Howlett@oracle.com>, npache@redhat.com, ryan.roberts@arm.com, 
-	dev.jain@arm.com, Johannes Weiner <hannes@cmpxchg.org>, usamaarif642@gmail.com, 
-	gutierrez.asier@huawei-partners.com, Matthew Wilcox <willy@infradead.org>, 
-	Amery Hung <ameryhung@gmail.com>, David Rientjes <rientjes@google.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Barry Song <21cnbao@gmail.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>, lance.yang@linux.dev, 
-	Randy Dunlap <rdunlap@infradead.org>, Chris Mason <clm@meta.com>, bpf <bpf@vger.kernel.org>, 
-	linux-mm <linux-mm@kvack.org>
+References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-7-npache@redhat.com>
+ <5f8c69c1-d07b-4957-b671-b37fccf729f1@lucifer.local> <CAA1CXcA4AcHrw18JfAoVygRgUZW3EzsN6RPZVrC=OJwSNu_9HA@mail.gmail.com>
+ <e69acbc5-0824-4b07-8744-8d5145e2580b@redhat.com> <e66b671f-c6df-48c1-8045-903631a8eb85@lucifer.local>
+ <74583699-bd9e-496c-904c-ce6a8e1b42d9@redhat.com> <3dc6b17f-a3e0-4b2c-9348-c75257b0e7f6@lucifer.local>
+In-Reply-To: <3dc6b17f-a3e0-4b2c-9348-c75257b0e7f6@lucifer.local>
+From: Nico Pache <npache@redhat.com>
+Date: Tue, 28 Oct 2025 20:47:12 -0600
+X-Gm-Features: AWmQ_bnjuph0S2IHnCzLzLvJQtkBH9xEZPK558u1lNAN1P5WHxCGuxiWYNQMh8o
+Message-ID: <CAA1CXcD1YDAbYzdYfchOWbmUasa3tN55AYroOLJb2EqoQfibvw@mail.gmail.com>
+Subject: Re: [PATCH v12 mm-new 06/15] khugepaged: introduce
+ collapse_max_ptes_none helper function
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-doc@vger.kernel.org, ziy@nvidia.com, baolin.wang@linux.alibaba.com, 
+	Liam.Howlett@oracle.com, ryan.roberts@arm.com, dev.jain@arm.com, 
+	corbet@lwn.net, rostedt@goodmis.org, mhiramat@kernel.org, 
+	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org, baohua@kernel.org, 
+	willy@infradead.org, peterx@redhat.com, wangkefeng.wang@huawei.com, 
+	usamaarif642@gmail.com, sunnanyong@huawei.com, vishal.moola@gmail.com, 
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
+	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
+	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
+	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
+	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
+	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
+	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
+	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: wip6Z6eLHaaYfLwfoNlAbVYHa9azK5f-Sle7diFzpVo_1761706060
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qu5f7drrgp5mxqrcea5sbamwwwjoo816
+X-Stat-Signature: 6kn9czs43erab1c6e1jngcwdz3fm6864
+X-Rspamd-Queue-Id: 445AE1C0009
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7540A80004
-X-HE-Tag: 1761704054-230883
-X-HE-Meta: U2FsdGVkX1/8TBButHcGMX4yq2HfLBLC00UuTvsZju0Sk3FuKx79vTZMxqni7uPY6MmcdzDov97CV+BirziHEv8QHJ9ZOC7mrYvAmOyKypzNCkAdwgIHyu2gMj5wN6xBxNbilasPQI459siB0MTyhfEL0Bu1Jdg2xQ2t75TKpOLBKAVakn/20367TVib0B3WTSaBtU6RhujJrwFThlanECrB+3XPbZOYgMWifvSMplJTU53BnsHdX0wdmr2znxBLH5qTSRWB6Te3Tc7okcs6tqGMktxWytj6WjN0kDM+XfQs5iAP8GVQTAZehMTe+NLG+sQesLTO+g+KHqq1+waT6AOQFqcMfUlYrLtvQ/eqnhF+fmlHpCd2G5/OOmmyQN110XIDpK8f8AJw1p3zVzpKEGlFW2ho3VzdMroRK/e/EaTWDUESt6Bsab6sJPHwDh2kPuWtuRkwhz/EAP6ZOMc4fAcWkkRxO8MLegJR44dquq6AUoV8rWNqDp59F6XyzuA9ALVapuvi7qI0h4RMHHVpDCyCVtqTR9oTjCyoZm2ZC/1XRXsMNJ0c7QxGzaUBbawACtldTxcn1rUAXu3VbfN/9PwT8dXu0hL8qwgMSeJXtDlkavx1dpjTU8Cnun4+UZzBIqThZN45K1bllcyKReAwT5dpEh/8CEby7OLynxsWP68eDdXFnzFTTC1T32xc/eQkwre7i3n2e0eFTyJToUl22UWsqlGIBUpjCE1XIUB3AeKn1b/JrFa/e3SEkkRIwM5Nf5IjIZqqix3Z8093QRDl1okWBFGUe5AHucXjp0/R8/tIcjYbaleO2GR7EvHx+zESVl6LJj7dM4IqMbUU1giqLXWTr6NpPNn84wqqHbp+VlRRVwvvHXGSsfNVPxHgGY2QCPvCpjXOrOrXnSD3fSBUnEaUMacB3Zyx+6flUSQYbcbzMZuN79xdsFwjY+NgNEyMrs2M/LR9t32gNiY967G
- V+qJDNOz
- I+hnfBJtXtvQCauNCPzW20Sae/4KZf101Yz3YhV1dyw+b1SfGEnZ2RrAiyjtJoS3TDdri/BYMxchB7Bwi4EbG/CkNFJxqGp0fTZv4vURti/ZaplsmGd8Elrl/cvcSe3Hy/kjq35MVPkOTZmZhw/youVaGyn4xFRdE8yE3g1y5NUCqyvH2ZodzhNS5kRia/2HiXfUuttLDjT0jO49qWJpHYtDNt4Y6D/O/Fggvlx0pc2iXNv3iQc4eZf09llfIgWAKA/lcEFl7Pi7OMKEZxt/UM8IKqwEulcTI32t5YNtUxySdQFT4DOVQ0qfabTvP5UKlprlGnVIsdMTVRb9gXelFV5M4UhsnvYfmj/kqtxycAnbMmRNE4c4J1xk4E505Qt7AYge3UUmqXHBhoPfBKiKs+PqqZqyOFW26GCj4QR5643SBXhAjxuOFjuJ80euwESMoyMsDnS+5/vNnrsdZiPQj0WFq6lNMno4tgGzIhvSsjINuREktHH4iKPDOhQyxi0mQ73Kc
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761706062-344955
+X-HE-Meta: U2FsdGVkX19nYpDSOAvg531fxw50Z8wKwRENxjewLBxsMxuIVuoD/1+bBaW1HzaeSJLZPdUYPsAWSwGJ4WThA26iJWGKflajQ6aWZI+PSLlWpz2CnwTbutTF3PcIJZn/XWcTA5aIDKWbywnO3HNh5TK540iAr04OgheXGknQTa21tatdpLC59OxMr8wIWtkVv26SjQkz2GtjTRcisa7U2guHh0ju76hCV4+HNewsCNtXpr7E9wdpYai2eBNWQ/l1CNsE46btaa9/gMGsHDOYDvXzBh6dru2+MET1WiIhosoWRRKyJ9GsQQqRwA+HUAd6NBU2a9NQ0A0W7fiGkJ0hzwnevUbdmVonttcR8g3Hchx6DtnIeaCKiXMSxEc/2X6dXfsgOaVB7haC2W54r3JfUJ69sMP3ajrS+InNj13ZZDi+RJ9NtXxdPcV616qfMj4GsHh2jPG0BvA7KbKWpa0XgH7ltMt3Ksgx1n9UwEynbqQYlqfaygdIMcBdoB+Y17X21j0ADbjTokQSgJTwE6V2W2dQuMZ7DatYplc8psAR/dmrH9kCaTLjLRFxeR3ccbqBQurqouPKPFwlOgNLd8BImHDzzzvRdjS06JDuDGxvWNq42uuJ0Ue/Nc/2izB06ZFPFhto2rDEnjxG4NhbAgCA9QiI68Zv4mphr13oc7BafJNn7fACHcJ79E/r16TAP0gyfOB9keHVvWtxQnnS0iQycRcQMjoxsWvjO+U/sLcmjxt+aNxmVQ9eOsUQrWkWphWBYZZBZhHbjEEdQ2l07LBH6TbO0pEqeGMiNoURm1+BNv+aL7gTy4sHsrPnjWXWMFU8WNf+q5m4QjqqPKS8l/X+bKEz4ZSJAD/6e6MacNiaLZzSs26j9DE8MY8Vu23biJTIzfOQej4govzN+hcxecKCU+CVrPDpM8FfTARfLqQnVOu7W9CBKb7iAmeeD6eWAhTw/1mfyK/DB8z6NxtwZsa
+ 9Y3V2/XV
+ oPn1zzZsRa5iyPwCqauTAxnyC+fVJhiKbC+fAo/dTVH+74rthF7nN+vA1D2KaObhPTqUJCe5/BBXdmmJmG8CEXovnUnImeSOQ6HlXCaXTDCa+mIFXG2QH5fpMhplivFj2ZFa4GRIo1sqUV4C/g3hkD/vvMN0t4uifwvWNN97FCLnVHFPQZffJKxlkQdyEgaSTXLfsP4hy+9qY+YABEwBxVOJwy9gmth2MAylQb1+C+jk453x5SxuYRuulFc8/mj4cSKhpj5JspwONX7PlpI7LVyn/LfieVHcBr6iCUzkyXuHjU34TBgqrt8SJ5f/0B07FUJ8PdD04CTU9u6iCcsAGmEGN6JLmoruhD/L9dq31+/acshXnc6n2yXLxGOQmMxwoLOzQUBDHPT4MGeMMeJbXrZ65Bu+BeXfAG541721+eU1HFmtaks2qDGTswxx3OeYZQ9Qj4xYQFDCvyVASSxAd/6wJYeFyZxZi3bLyoWwkG0ZFd39OtwEHMCqkCHd8O37DxZasdpaCbjNkx/A=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,65 +143,332 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 9:33=E2=80=AFAM Alexei Starovoitov
-<alexei.starovoitov@gmail.com> wrote:
+On Tue, Oct 28, 2025 at 1:00=E2=80=AFPM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
 >
-> On Sun, Oct 26, 2025 at 3:03=E2=80=AFAM Yafang Shao <laoar.shao@gmail.com=
-> wrote:
+> On Tue, Oct 28, 2025 at 07:08:38PM +0100, David Hildenbrand wrote:
 > >
-> > The per-process BPF-THP mode is unsuitable for managing shared resource=
-s
-> > such as shmem THP and file-backed THP. This aligns with known cgroup
-> > limitations for similar scenarios [0].
+> > > > > Hey Lorenzo,
+> > > > >
+> > > > > > I mean not to beat a dead horse re: v11 commentary, but I thoug=
+ht we were going
+> > > > > > to implement David's idea re: the new 'eagerness' tunable, and =
+again we're now just
+> > > > > > implementing the capping at HPAGE_PMD_NR/2 - 1 thing again?
+> > > > >
+> > > > > I spoke to David and he said to continue forward with this series=
+; the
+> > > > > "eagerness" tunable will take some time, and may require further
+> > > > > considerations/discussion.
+> > > >
+> > > > Right, after talking to Johannes it got clearer that what we envisi=
+oned with
+> > >
+> > > I'm not sure that you meant to say go ahead with the series as-is wit=
+h this
+> > > silent capping?
 > >
-> > Introduce a global BPF-THP mode to address this gap. When registered:
-> > - All existing per-process instances are disabled
-> > - New per-process registrations are blocked
-> > - Existing per-process instances remain registered (no forced unregistr=
-ation)
+> > No, "go ahead" as in "let's find some way forward that works for all an=
+d is
+> > not too crazy".
+>
+> Right we clearly needed to discuss that further at the time but that's mo=
+ot now,
+> we're figuring it out now :)
+>
 > >
-> > The global mode takes precedence over per-process instances. Updates ar=
+> > [...]
+> >
+> > > > "eagerness" would not be like swappiness, and we will really have t=
+o be
+> > > > careful here. I don't know yet when I will have time to look into t=
+hat.
+> > >
+> > > I guess I missed this part of the converastion, what do you mean?
+> >
+> > Johannes raised issues with that on the list and afterwards we had an
+> > offline discussion about some of the details and why something unpredic=
+table
+> > is not good.
+>
+> Could we get these details on-list so we can discuss them? This doesn't h=
+ave to
+> be urgent, but I would like to have a say in this or at least be part of =
+the
+> converastion please.
+>
+> >
+> > >
+> > > The whole concept is that we have a paramaeter whose value is _abstra=
+cted_ and
+> > > which we control what it means.
+> > >
+> > > I'm not sure exactly why that would now be problematic? The fundament=
+al concept
+> > > seems sound no? Last I remember of the conversation this was the case=
+.
+> >
+> > The basic idea was to do something abstracted as swappiness. Turns out
+> > "swappiness" is really something predictable, not something we can rand=
+omly
+> > change how it behaves under the hood.
+> >
+> > So we'd have to find something similar for "eagerness", and that's wher=
+e it
+> > stops being easy.
+>
+> I think we shouldn't be too stuck on
+>
+> >
+> > >
+> > > >
+> > > > If we want to avoid the implicit capping, I think there are the fol=
+lowing
+> > > > possible approaches
+> > > >
+> > > > (1) Tolerate creep for now, maybe warning if the user configures it=
+.
+> > >
+> > > I mean this seems a viable option if there is pressure to land this s=
+eries
+> > > before we have a viable uAPI for configuring this.
+> > >
+> > > A part of me thinks we shouldn't rush series in for that reason thoug=
+h and
+> > > should require that we have a proper control here.
+> > >
+> > > But I guess this approach is the least-worst as it leaves us with the=
+ most
+> > > options moving forwards.
+> >
+> > Yes. There is also the alternative of respecting only 0 / 511 for mTHP
+> > collapse for now as discussed in the other thread.
+>
+> Yes I guess let's carry that on over there.
+>
+> I mean this is why I said it's better to try to keep things in one thread=
+ :) but
+> anyway, we've forked and can't be helped now.
+>
+> To be clear that was a criticism of - email development - not you.
+>
+> It's _extremely easy_ to have this happen because one thread naturally le=
+ads to
+> a broader discussion of a given topic, whereas another has questions from
+> somebody else about the same topic, to which people reply and then... you=
+ have a
+> fork and it can't be helped.
+>
+> I guess I'm saying it'd be good if we could say 'ok let's move this to X'=
+.
+>
+> But that's also broken in its own way, you can't stop people from replyin=
+g in
+> the other thread still and yeah. It's a limitation of this model :)
+>
+> >
+> > >
+> > > > (2) Avoid creep by counting zero-filled pages towards none_or_zero.
+> > >
+> > > Would this really make all that much difference?
+> >
+> > It solves the creep problem I think, but it's a bit nasty IMHO.
+>
+> Ah because you'd end up wtih a bunch of zeroed pages from the prior mTHP
+> collapses, interesting...
+>
+> Scanning for that does seem a bit nasty though yes...
+>
+> >
+> > >
+> > > > (3) Have separate toggles for each THP size. Doesn't quite solve th=
 e
-> > type-isolated: global instances can only be updated by new global
-> > instances, and per-process instances by new per-process instances.
+> > > >      problem, only shifts it.
+> > >
+> > > Yeah I did wonder about this as an alternative solution. But of cours=
+e it then
+> > > makes it vague what the parent values means in respect of the individ=
+ual levels,
+> > > unless we have an 'inherit' mode there too (possible).
+> > >
+> > > It's going to be confusing though as max_ptes_none sits at the root k=
+hugepaged/
+> > > level and I don't think any other parameter from khugepaged/ is expos=
+ed at
+> > > individual page size levels.
+> > >
+> > > And of course doing this means we
+> > >
+> > > >
+> > > > Anything else?
+> > >
+> > > Err... I mean I'm not sure if you missed it but I suggested an approa=
+ch in the
+> > > sub-thread - exposing mthp_max_ptes_none as a _READ-ONLY_ field at:
+> > >
+> > > /sys/kernel/mm/transparent_hugepage/khugepaged/max_mthp_ptes_none
+> > >
+> > > Then we allow the capping, but simply document that we specify what t=
+he capped
+> > > value will be here for mTHP.
+> >
+> > I did not have time to read the details on that so far.
 >
-> ...
+> OK. It is a bit nasty, yes. The idea is to find something that allows the
+> capping to work.
 >
-> >         spin_lock(&thp_ops_lock);
-> > -       /* Each process is exclusively managed by a single BPF-THP. */
-> > -       if (rcu_access_pointer(mm->bpf_mm.bpf_thp)) {
-> > +       /* Each process is exclusively managed by a single BPF-THP.
-> > +        * Global mode disables per-process instances.
-> > +        */
-> > +       if (rcu_access_pointer(mm->bpf_mm.bpf_thp) || rcu_access_pointe=
-r(bpf_thp_global)) {
-> >                 err =3D -EBUSY;
-> >                 goto out;
-> >         }
+> >
+> > It would be one solution forward. I dislike it because I think the whol=
+e
+> > capping is an intermediate thing that can be (and likely must be, when
+> > considering mTHP underused shrinking I think) solved in the future
+> > differently. That's why I would prefer adding this only if there is no
+> > other, simpler, way forward.
 >
-> You didn't address the issue and instead doubled down
-> on this broken global approach.
+> Yes I agree that if we could avoid it it'd be great.
 >
-> This bait-and-switch patchset is frankly disingenuous.
-> 'lets code up some per-mm hack, since people will hate it anyway,
-> and I'm not going to use it either, and add this global mode
-> as a fake "fallback"...'
+> Really I proposed this solution on the basis that we were somehow ok with=
+ the
+> capping.
 >
-> The way the previous thread evolved and this followup hack
-> I don't see a genuine desire to find a solution.
-> Just relentless push for global mode.
+> If we can avoid that'd be ideal as it reduces complexity and 'unexpected'
+> behaviour.
 >
-> Nacked-by: Alexei Starovoitov <ast@kernel.org>
+> We'll clarify on the other thread, but the 511/0 was compelling to me bef=
+ore as
+> a simplification, and if we can have a straightforward model of how mTHP
+> collapse across none/zero page PTEs behaves this is ideal.
 >
-> Please carry it in all future patches.
+> The only question is w.r.t. warnings etc. but we can handle details there=
+.
+>
+> >
+> > >
+> > > That struck me as the simplest way of getting this series landed with=
+out
+> > > necessarily violating any future eagerness which:
+> > >
+> > > a. Must still support khugepaged/max_ptes_none - we aren't getting aw=
+ay from
+> > >     this, it's uAPI.
+> > >
+> > > b. Surely must want to do different things for mTHP in eagerness, so =
+if we're
+> > >     exposing some PTE value in max_ptes_none doing so in
+> > >     khugepaged/mthp_max_ptes_none wouldn't be problematic (note again=
+ - it's
+> > >     readonly so unlike max_ptes_none we don't have to worry about the=
+ other
+> > >     direction).
+> > >
+> > > HOWEVER, eagerness might want want to change this behaviour per-mTHP =
+size, in
+> > > which case perhaps mthp_max_ptes_none would be problematic in that it=
+ is some
+> > > kind of average.
+> > >
+> > > Then again we could always revert to putting this parameter as in (3)=
+ in that
+> > > case, ugly but kinda viable.
+> > >
+> > > >
+> > > > IIUC, creep is less of a problem when we have the underused shrinke=
+r
+> > > > enabled: whatever we over-allocated can (unless longterm-pinned etc=
+) get
+> > > > reclaimed again.
+> > > >
+> > > > So maybe having underused-shrinker support for mTHP as well would b=
+e a
+> > > > solution to tackle (1) later?
+> > >
+> > > How viable is this in the short term?
+> >
+> > I once started looking into it, but it will require quite some work, be=
+cause
+> > the lists will essentially include each and every (m)THP in the system =
+...
+> > so i think we will need some redesign.
+>
+> Ack.
+>
+> This aligns with non-0/511 settings being non-functional for mTHP atm any=
+way.
+>
+> >
+> > >
+> > > Another possible solution:
+> > >
+> > > If mthp_max_ptes_none is not workable, we could have a toggle at, e.g=
+.:
+> > >
+> > > /sys/kernel/mm/transparent_hugepage/khugepaged/mthp_cap_collapse_none
+> > >
+> > > As a simple boolean. If switched on then we document that it caps mTH=
+P as
+> > > per Nico's suggestion.
+> > >
+> > > That way we avoid the 'silent' issue I have with all this and it's an
+> > > explicit setting.
+> >
+> > Right, but it's another toggle I wish we wouldn't need. We could of cou=
+rse
+> > also make it some compile-time option, but not sure if that's really an=
+y
+> > better.
+> >
+> > I'd hope we find an easy way forward that doesn't require new toggles, =
+at
+> > least for now ...
+>
+> Right, well I agree if we can make this 0/511 thing work, let's do that.
 
-To move forward, I'm happy to set the global mode aside for now and
-potentially drop it in the next version. I'd really like to hear your
-perspective on the per-process mode. Does this implementation meet
-your needs?
+Ok, great, some consensus! I will go ahead with that solution.
+
+Just to make sure we are all on the same page,
+
+the max_ptes_none value will be treated as 0 for anything other than
+PMD collapse, or in the case of 511. Or will the max_ptes_none only
+work for mTHP collapse when it is 0.
+
+static unsigned int collapse_max_ptes_none(unsigned int order, bool full_sc=
+an)
+{
+unsigned int max_ptes_none;
+
+/* ignore max_ptes_none limits */
+if (full_scan)
+return HPAGE_PMD_NR - 1;
+
+if (order =3D=3D HPAGE_PMD_ORDER)
+return khugepaged_max_ptes_none;
+
+if (khugepaged_max_ptes_none !=3D HPAGE_PMD_NR - 1)
+return 0;
+
+return max_ptes_none >> (HPAGE_PMD_ORDER - order);
+}
+
+Here's the implementation for the first approach, looks like Baolin
+was able to catch up and beat me to the other solution while I was
+mulling over the thread lol
+
+Cheers,
+-- Nico
 
 
---
-Regards
-Yafang
+>
+> Toggle are just 'least worst' workarounds on assumption of the need for c=
+apping.
+>
+> >
+> > --
+> > Cheers
+> >
+> > David / dhildenb
+> >
+>
+> Thanks, Lorenzo
+>
+
 
