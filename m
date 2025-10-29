@@ -4,85 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A97CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:12:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8AF53CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:14:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 810628E00F3; Wed, 29 Oct 2025 16:11:34 -0400 (EDT)
+	id D93D38E00F4; Wed, 29 Oct 2025 16:13:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E8108E00B2; Wed, 29 Oct 2025 16:11:34 -0400 (EDT)
+	id D6BC88E00B2; Wed, 29 Oct 2025 16:13:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6D7398E00F3; Wed, 29 Oct 2025 16:11:34 -0400 (EDT)
+	id C81988E00F4; Wed, 29 Oct 2025 16:13:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4FA0C8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:11:34 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 030D91A0454
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:11:33 +0000 (UTC)
-X-FDA: 84052246908.05.9252293
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 1EF4F1C0009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:11:31 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=cXdMGkjY;
-	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+	by kanga.kvack.org (Postfix) with ESMTP id B74448E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:13:55 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 7B74C89105
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:13:55 +0000 (UTC)
+X-FDA: 84052252830.16.4965802
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 65FAC14000A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:13:53 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OoPRWTha;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768833; a=rsa-sha256;
+	cv=none;
+	b=pBfZwyyx+iTcm3vSzxBR9exGmWWRqI5etn23pNWE7tvsJYPEqNKZ3FDyFXOLZr6EkNYixm
+	zTo2C5uTGlf4x9cq769Iufz/CS8onhyF4aX31r1Kp+mVOXpLDQXtZo5ecXG2GdsO5NkJ78
+	dZAp1WiE3Unm2xGyzgi1XEr468wv5qw=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=OoPRWTha;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761768692;
+	s=arc-20220608; t=1761768833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=801m/BDnq+4IDZrRjH01sT6fZRZq5h0m340QBaMU7xk=;
-	b=EAoHHfS+B2NJlZBEhHAREwwsLYi16Ip+Rw1zbX8Oy64wE82BuMZbIjBLhRyxR8Xchmsnpl
-	Eh4jUD49sodCPwCJjxYk2RjL1IB3zkhXJdZBQuZTAGI74zt2dkQSkU049hCQMd4tMCgWT2
-	7A7Og0rRVkzNNsapXXxu1gizjMCW6/U=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=cXdMGkjY;
-	spf=pass (imf18.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768692; a=rsa-sha256;
-	cv=none;
-	b=xQrsUiA8I66u2rRJiAO4IVQnexI6KWvR6PDPt3ON+bJ+Ce8PNnwYcWP2nUJSehrDmDaAZR
-	skkUGJpvwLioVb1jNDFUv9TX7XcvwY9w5c8CnKV76qE9ikURsnaiIiSH+9D8uE+jYg6p39
-	aEfIMC0eTQhrsvc3tge1V1GMgTcLvho=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1761768688; x=1762027888;
-	bh=801m/BDnq+4IDZrRjH01sT6fZRZq5h0m340QBaMU7xk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=cXdMGkjYQPcz0Nv21dBbiab8WuIQ4hr8ZJRQqwUepbPD1rbiz/vhDeUFcNs+IGjar
-	 od6iv3/pch7jNVp38Q2cmI4VQR0pGdQZyx7xwgvOjcMGXYKinHJUeISc801+Y8WgrO
-	 SCNfKcZPXZtF2+rk0dIn06Lyyoiy42cPczWw1N9Ui8kQDW0LXKyASTAfV23YHt8/QB
-	 FHk6Lay8dA8JodN9I7Vt57QyS2WDP7aNMHr/4vq1HuuEYHnPPI3dMERBgdU9EwiM+L
-	 Mj22z+1Gh8UFKiZFiqV8G56jWG5bH3ehdlP3bMiXUuyMKOD3PJOh+zXTgfnU3nZFJH
-	 7Bb570r+dWC+Q==
-Date: Wed, 29 Oct 2025 20:11:22 +0000
-To: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com,
-	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v6 18/18] x86/kasan: Make software tag-based kasan available
-Message-ID: <d98f04754c3f37f153493c13966c1e02852f551d.1761763681.git.m.wieczorretman@pm.me>
-In-Reply-To: <cover.1761763681.git.m.wieczorretman@pm.me>
-References: <cover.1761763681.git.m.wieczorretman@pm.me>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: f951758d099748a231d1551fe212ba144d88e29b
+	bh=fxNKUqsLJOnot7UUBS6WN0bVpwUbu+IjTrx41B9jW8k=;
+	b=1ILHJkaU5ZMX5fnZJyK4pEYglrVL0a+QCQHOAJj8RkczE0EJRHh2o3zH3lBYBaMKMSIzzx
+	MSAOxHj+sgBbTFLLbKavjgBG0yDjktN36FhAkKc2LqtkOHJL3+FFUqQQwi6ePPoMIk6Mqw
+	UEGt+l/KkWIGBQ/ZVhaOpscmBoMLNW0=
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b5e19810703so40963166b.2
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:13:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1761768832; x=1762373632; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fxNKUqsLJOnot7UUBS6WN0bVpwUbu+IjTrx41B9jW8k=;
+        b=OoPRWThaRnoRIBhpNBWAwhNSJQl8r0iUFfv8XC69wWatXHR+OMEANFlPsYK/AoYQ8V
+         2dOXX8lTda8i1PoNzVEYzTYj1w5R7XoyWEn/USuXxYEh4t/Yosl5bdE9QPCZ0avikxU9
+         pNJa0gWQ6lhxzsPjBhRuNs/FY/8+jojokOF6fOUU+GjZD6jqh26CJKDuez58NJvmV4PP
+         bBvyPzp8Zvv5DiSCwf7pSaDs+ieSpNOMyhvbaGQwwU4QO7oZGipFHNG8B7jCzlJOn4BA
+         V7R/+mVYjWjydWbD2eokPUp9p/hQwcL8t9WiSYUBixlOKZNXOPw1OGI3oVdjF3Q7T1Ma
+         gzRg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761768832; x=1762373632;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fxNKUqsLJOnot7UUBS6WN0bVpwUbu+IjTrx41B9jW8k=;
+        b=SnI/7xgMTne4cLDBJrltwrLiLVG3Yz+NfLxdb7Nrsk2683mOpMZYXI3ZTxfHjiRHXT
+         sr98G476g4rnik+e3ajRagD35eVG68L3g8xmf7T0AKiHIVXd3HLkDWp51nguZ3lWfr2Z
+         1zRLqfgSNArWEINCePBSVHCf+XN0YIfYwzLQv6NBV3JbIBFCVC3ED3lcsk5/fO93gUVB
+         7RaYJHkEsZOGWbymNEp9vOwoODk9OCvfbynAJkfq1NnTEsYFrPAKXXat8b9nz46kMbXl
+         jgO5a1HgQIDy/m0JKxptVPnp0zJhIx0aX+/R59WNypsl9kvPaKo9brLHFiiuwItCavE2
+         9sZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVXVOxUmcPCtAp16dfBGVB5rRVPeKAdrMvTauJnCCXnxEBLRRno4mrgghUVxhfFSWPbY/8UonnoXg==@kvack.org
+X-Gm-Message-State: AOJu0Yw1unaXOhXeS7VhNF/AT4jOcZZIHfFIIBU/7am6vUJx3TeQV1xk
+	clEjwN7VUWVP97JZxq9b98s8DEt9q9N+8PDXoPitHOO6dsYjPLElrbbQc7BmsRGb1Lxg4Lk71Px
+	mAjBUZNyYReyfAmmmbcDrWBgYOEn5pMDRqPkRALoXBg==
+X-Gm-Gg: ASbGncuwK/wXbDe4DNiBDL1rERVKHaY/Y4aa4YCARy9+zn/SWsaDcQw3rmO8xjze5W2
+	j+WuGQO9eIpOZ6/XWXvwTQ7LCHWM8xtmlIzD1edRbvy8magXuWxzjUje7jP2NW3jSKJqbM9DAly
+	NJQNR88Ff+IM7nxcZGe1fwpshcXLVBxig1iWQcbegDz8xZdpDC50ZnNAy7REHs5P4pdxow5DYRz
+	DVEbaZq0WfjcYrfYzh1fOUz//Eyz0Rbne/zVpNbQXrKL25UKqrjstmIUUFoi8ue6GCc
+X-Google-Smtp-Source: AGHT+IGrqbF9PW88BwcvYbeFbvOXRwoCun/iE1ZSEaorTMP1Ihb1MtG0h6t2CJQLQRZKh3kqkmFzEpEHa7ehLYOu0M8=
+X-Received: by 2002:a17:907:72c4:b0:b45:60ad:daf9 with SMTP id
+ a640c23a62f3a-b7053b0cf7amr50121266b.3.1761768831381; Wed, 29 Oct 2025
+ 13:13:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <20250929010321.3462457-15-pasha.tatashin@soleen.com> <mafs0tszhcyrw.fsf@kernel.org>
+In-Reply-To: <mafs0tszhcyrw.fsf@kernel.org>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 29 Oct 2025 16:13:14 -0400
+X-Gm-Features: AWmQ_bnKVfAOoreyDJlaPrAp9h8ss-TNKXA3PtoSrf7r-Gv5W7RZKx9AA8z_D0k
+Message-ID: <CA+CK2bBVSX26TKwgLkXCDop5u3e9McH3sQMascT47ZwwrwraOw@mail.gmail.com>
+Subject: Re: [PATCH v4 14/30] liveupdate: luo_session: Add ioctls for file
+ preservation and state management
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: jasonmiu@google.com, graf@amazon.com, changyuanl@google.com, 
+	rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org, 
+	steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 1EF4F1C0009
-X-Stat-Signature: gg7ynw5n57p4obkryix3r7biadwpkiqt
 X-Rspam-User: 
-X-HE-Tag: 1761768691-561650
-X-HE-Meta: U2FsdGVkX1+BGe2bV+F9gfApP1lXbttrLg7Vjxc0vsLpwAphn6rOI8P/8iqDo6v2dCx8bq5p05oM7xltxYSS6PobyjueiDrJ2LjZOpeHSRL9EWkZLr8tU4tGWW9UoBgJcL5xfPxhJgG2pJ6RZ787+5U4ja/c3w6EvEGrfliFDKuFVM1n/+9ZPJnoYuYveLIVYggKHKxrDPU57q8btRv/XRRSXCLlrgMZxA1s0grmqi6nZUSXNyLZhEJnZjYUegXv0VEKKEv1ejwGJGyQEQHA9LB17qIpgGOn7sxa8tKtDTKTUXCoToBK/+86aXQvIeqdh0B1CpQAQc2JtAYPCp4GpElkIUmGN7dMGzUozRvArwEBi9J9PynaalZEns9m7U263Yz5bgCRqI0rIRg2ykVrnARGw96pFbhmr0xC6Vl1PHd3BP0D/JvgMbHNf4Yb05XZ5Mn13iC71myYYvRPdPl5yK5nY7i+wQano14KYqMuOzb4oEsUyj1rXwSa2sm22bKUB4oH9xTx4xmHQ3Yr8CAxgjlyKKYS2EKh8blHry2s9wkWdkkWZQJDbhyYxL/z8GCtzkzw+1pn7ddH76JwFYRBpqbdi3h9ZbqnTycXi5S8rUJj2EXyhTGzPSdZPFUnRXk/yGRHBjFdqVwOGEpN3v+L4r82+RY3mNLJfnYbCQ6rlBMn7equD5vf52U3oVvIURXqd1XavFaYMbXtGqL/2HvjF4B8Zso2lsIhEE+EZrne3KaU9hp6t45j50SKF9/UDAPJwT/aQP3B96FlOsCY91SIx3fI4dFgjEPFQB4jXlIDPwJblNb8OFTdn2rnlXWKXFfFqdcuAlSgdulvpyRmupHCEBbqp8RJocKoiEYRoreDXoff51dgcFMQWyF2ZrjKnn6q7tkpcxAs+4cK6g2Luj3wIlkT59+SDGv+1UxUKb4qsdD7EGJjUic8INwyfvKNUvc6ToyfETSF+lWziQoEtHn
- juW4XsLJ
- sAVs2K3I16hD3eWcjSS2xUcYBn5BrkGTfdJKUIJIxm9HyXSIzLSZ8zyJGy8ODczpd38VMy1W5Qkqv0V9mJ8S8e2KhZebpGlrKSIa8JFcumP1onfaDxZA7jqXsV+UKkTaJTcZ2IvHGMLnE9bt21LhuwgKko9gMqPlsymOl+mh5AIN4jrSQTLpKs0UKja2jqlCXoTBstduAmrvzirg5tJswMuUqhUdXilwRkoHM49d/k9o+/a7gdQPjeZezJZXMoIf7HVcygVUTGr67gEkSjseoC0JaI0B1yp9cHHFsZflryGzKoY3GcDfSLs0UqQ==
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 65FAC14000A
+X-Stat-Signature: 1c9q9cceiribfu37sgnhsun1dpzmd663
+X-HE-Tag: 1761768833-549735
+X-HE-Meta: U2FsdGVkX19Ih1pr/ZyiWmQw29wEEE8y43WajhMMSk1hS7aC3cz92Xbp9kOySLO1DQy0YzdRdAY260AvFebVHmhhe4h5mHdRE5vlZzWzMde4dLOvc3Aob79GbdWMbs4lkpvHlaCQwO4/s6LQD+AgTctkfl87dl6bP65mMOnhLKQGac+TMpsTW7ok86frPZq59uPGSgtGhTwUKyJ6cAvzvBcXclGLQMaAgtTBJ4pg/KfP+3TyaL5s3m9rnnc9g3qmpazouuOqh9hav5MD2jMcZqtIAgLl9GyjuqLyCHKN/YQKP7fA7ciO74US3yGxT6+i0OLrcNOhP67FW32CVUk3wFs3iN7R52pdhrH6c6IW0BgTpb/WNfiRnsswNznHeavNHscLYbL59USRj6PUNW2EvX9Xsoa88eri3mCM1lW4a217tgrNjpHu1+gADRdYweydLPFPzemmjvPtj1ZBTcZPKkFpCwEc48Wdr+4ogiaruNsgvyvphe565L9OtSKsTRqC3up9SZkXZuIz4RlxX1c5W2IWfV4BBo6GjO1ChDXw4SyHf0SK7ndj/dCBwPYGG9AiNOIZSujH0qfupCuzCRa63qSEZt7nl4zZ8hcGWeX2YG6TeVnkAGcx2fU75Nll1U9tAAF77DFUGem66dyUP3/CrL8KI2twD6vZCU7T3vESLNjtPz2Ew/XykvmJTKWMVW2NOIchmSPeIqobW8xX5bRD0Y7gBGSBpFW1AE2nzwcGAfqFbQaXu6InxODrZ6wfbQLlR/m6lH+yBWDtmihZXmiR5oUsaL6LcR9183PjH7jxxmkQ9tzF94CeYGiXogvcvp/CClIkArZHMGm9sCJWxAUS8j4C/7qEFUzfW+qH2i6n4VEisOIRgfo12LB8enzyyQNQpIFuStzm3vMh9czBj8A7ekLF+yvc2u3QQz38pvycu0+gmDu24e5szvQY3toLt0WI4k/SZp6ffBqp2Qjahxk
+ pZiQ8U8B
+ 56eN7wHaqd4IGt14KCZgu0pWI4HMGU1HjOdX15I8DEcXku8/3Q6VkOevhIMYYropLC2OCLL0iSkqswL3CQvk5ZKPODvfqiA/m+2pvecNmAfU8w2k2/KAxx8LCfZfgVxBLun3rXVbmJRgymDqa0ak7R72GwlmlZUXYjxooQ3cW2pHBZYQtdWX/qZEOctf7q1v+BPkyBoNnVx+r6keovPyGTEFTSlbsxMmiGNyrAxQuD3j7ewJG6EzaRq1irXI0UMbDmhzn6BG09c/jVXUgm5jzUpQUW6HAUgyuwt4ZBpvY/R51RWte46uuTr5cC2ScC67S4S1VdSsMu7GwyrKnlZO/CbPpTV7ZKMaCrqBG+dfIPx8249lpWRDdqs8p5/isDWqU+Txz3JjkPSOBBI0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,198 +140,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+On Wed, Oct 29, 2025 at 3:07=E2=80=AFPM Pratyush Yadav <pratyush@kernel.org=
+> wrote:
+>
+> Hi Pasha,
+>
+> On Mon, Sep 29 2025, Pasha Tatashin wrote:
+>
+> > Introducing the userspace interface and internal logic required to
+> > manage the lifecycle of file descriptors within a session. Previously, =
+a
+> > session was merely a container; this change makes it a functional
+> > management unit.
+> >
+> > The following capabilities are added:
+> >
+> > A new set of ioctl commands are added, which operate on the file
+> > descriptor returned by CREATE_SESSION. This allows userspace to:
+> > - LIVEUPDATE_SESSION_PRESERVE_FD: Add a file descriptor to a session
+> >   to be preserved across the live update.
+> > - LIVEUPDATE_SESSION_UNPRESERVE_FD: Remove a previously added file
+> >   descriptor from the session.
+> > - LIVEUPDATE_SESSION_RESTORE_FD: Retrieve a preserved file in the
+> >   new kernel using its unique token.
+> >
+> > A state machine for each individual session, distinct from the global
+> > LUO state. This enables more granular control, allowing userspace to
+> > prepare or freeze specific sessions independently. This is managed via:
+> > - LIVEUPDATE_SESSION_SET_EVENT: An ioctl to send PREPARE, FREEZE,
+> >   CANCEL, or FINISH events to a single session.
+> > - LIVEUPDATE_SESSION_GET_STATE: An ioctl to query the current state
+> >   of a single session.
+> >
+> > The global subsystem callbacks (luo_session_prepare, luo_session_freeze=
+)
+> > are updated to iterate through all existing sessions. They now trigger
+> > the appropriate per-session state transitions for any sessions that
+> > haven't already been transitioned individually by userspace.
+> >
+> > The session's .release handler is enhanced to be state-aware. When a
+> > session's file descriptor is closed, it now correctly cancels or
+> > finishes the session based on its current state before freeing all
+> > associated file resources, preventing resource leaks.
+> >
+> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> [...]
+> > +/**
+> > + * struct liveupdate_session_get_state - ioctl(LIVEUPDATE_SESSION_GET_=
+STATE)
+> > + * @size:     Input; sizeof(struct liveupdate_session_get_state)
+> > + * @incoming: Input; If 1, query the state of a restored file from the=
+ incoming
+> > + *            (previous kernel's) set. If 0, query a file being prepar=
+ed for
+> > + *            preservation in the current set.
+>
+> Spotted this when working on updating my test suite for LUO. This seems
+> to be a leftover from a previous version. I don't see it being used
+> anywhere in the code.
 
-Make CONFIG_KASAN_SW_TAGS available for x86 machines if they have
-ADDRESS_MASKING enabled (LAM) as that works similarly to Top-Byte Ignore
-(TBI) that allows the software tag-based mode on arm64 platform.
+thank you will remove this.
 
-Set scale macro based on KASAN mode: in software tag-based mode 16 bytes
-of memory map to one shadow byte and 8 in generic mode.
+> Also, I think the model we should have is to only allow new sessions in
+> normal state. Currently luo_session_create() allows creating a new
+> session in updated state. This would end up mixing sessions from a
+> previous boot and sessions from current boot. I don't really see a
+> reason for that and I think the userspace should first call finish
+> before starting new serialization. Keeps things simpler.
 
-Disable CONFIG_KASAN_INLINE and CONFIG_KASAN_STACK when
-CONFIG_KASAN_SW_TAGS is enabled on x86 until the appropriate compiler
-support is available.
+It does. However, yesterday Jason Gunthorpe suggested that we simplify
+the uapi, at least for the initial landing, by removing the state
+machine during boot and allowing new sessions to be created at any
+time. This would also mean separating the incoming and outgoing
+sessions and removing the ioctl() call used to bring the machine into
+a normal state; instead, only individual sessions could be brought
+into a 'normal' state.
 
-Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
----
-Changelog v6:
-- Don't enable KASAN if LAM is not supported.
-- Move kasan_init_tags() to kasan_init_64.c to not clutter the setup.c
-  file.
-- Move the #ifdef for the KASAN scale shift here.
-- Move the gdb code to patch "Use arithmetic shift for shadow
-  computation".
-- Return "depends on KASAN" line to Kconfig.
-- Add the defer kasan config option so KASAN can be disabled on hardware
-  that doesn't have LAM.
+Simplified uAPI Proposal
+The simplest uAPI would look like this:
+IOCTLs on /dev/liveupdate (to create and retrieve session FDs):
+LIVEUPDATE_IOCTL_CREATE_SESSION
+LIVEUPDATE_IOCTL_RETRIEVE_SESSION
 
-Changelog v4:
-- Add x86 specific kasan_mem_to_shadow().
-- Revert x86 to the older unsigned KASAN_SHADOW_OFFSET. Do the same to
-  KASAN_SHADOW_START/END.
-- Modify scripts/gdb/linux/kasan.py to keep x86 using unsigned offset.
-- Disable inline and stack support when software tags are enabled on
-  x86.
+IOCTLs on session FDs:
+LIVEUPDATE_CMD_SESSION_PRESERVE_FD
+LIVEUPDATE_CMD_SESSION_RETRIEVE_FD
+LIVEUPDATE_CMD_SESSION_FINISH
 
-Changelog v3:
-- Remove runtime_const from previous patch and merge the rest here.
-- Move scale shift definition back to header file.
-- Add new kasan offset for software tag based mode.
-- Fix patch message typo 32 -> 16, and 16 -> 8.
-- Update lib/Kconfig.kasan with x86 now having software tag-based
-  support.
+Happy Path
+The happy path would look like this:
+- luod creates a session with a specific name and passes it to the vmm.
+- The vmm preserves FDs in a specific order: memfd, iommufd, vfiofd.
+(If the order is wrong, the preserve callbacks will fail.)
+- A reboot(KEXEC) is performed.
+- Each session receives a freeze() callback to notify it that
+mutations are no longer possible.
+- During boot, liveupdate_fh_global_state_get(&h, &obj) can be used to
+retrieve the global state.
+- Once the machine has booted, luod retrieves the incoming sessions
+and passes them to the vmms.
+- The vmm retrieves the FDs from the session and performs the
+necessary IOCTLs on them.
+- The vmm calls LIVEUPDATE_CMD_SESSION_FINISH on the session. Each FD
+receives a finish() callback in LIFO order.
+- If everything succeeds, the session becomes an empty "outgoing"
+session. It can then be closed and discarded or reused for the next
+live update by preserving new FDs into it.
+- Once the last FD for a file-handler is finished,
+h->ops->global_state_finish(h, h->global_state_obj) is called to
+finish the incoming global state.
 
-Changelog v2:
-- Remove KASAN dense code.
+Unhappy Paths
+- If an outgoing session FD is closed, each FD in that session
+receives an unpreserve callback in LIFO order.
+- If the last FD for a global state is unpreserved,
+h->ops->global_state_unpreserve(h, h->global_state_obj) is called.
+- If freeze() fails, a cancel() is performed on each FD that received
+freeze() cb, and reboot(KEXEC) returns a failure.
+- If an incoming session FD is closed, the resources are considered
+"leaked." They are discarded only during the next live-update; this is
+intended to prevent implementing rare and untested clean-up code.
+- If a user tries to finish a session and it fails, it is considered
+the user's problem. This might happen because some IOCTLs still need
+to be run on the retrieved FDs to bring them to a state where finish
+is possible.
 
- Documentation/arch/x86/x86_64/mm.rst | 6 ++++--
- arch/x86/Kconfig                     | 4 ++++
- arch/x86/boot/compressed/misc.h      | 1 +
- arch/x86/include/asm/kasan.h         | 4 ++++
- arch/x86/mm/kasan_init_64.c          | 5 +++++
- lib/Kconfig.kasan                    | 3 ++-
- 6 files changed, 20 insertions(+), 3 deletions(-)
+This would also mean that subsystems would not be needed, leaving only
+FLB (File-Lifecycle-Bound Global State) to use as a handle for global
+state. The API I am proposing for FLB keeps the same global state for
+a single file-handler type. However, HugeTLB might have multiple file
+handlers, so the API would need to be extended slightly to support
+this case. Multiple file handlers will share the same global resource
+with the same callbacks.
 
-diff --git a/Documentation/arch/x86/x86_64/mm.rst b/Documentation/arch/x86/=
-x86_64/mm.rst
-index a6cf05d51bd8..ccbdbb4cda36 100644
---- a/Documentation/arch/x86/x86_64/mm.rst
-+++ b/Documentation/arch/x86/x86_64/mm.rst
-@@ -60,7 +60,8 @@ Complete virtual memory map with 4-level page tables
-    ffffe90000000000 |  -23    TB | ffffe9ffffffffff |    1 TB | ... unused=
- hole
-    ffffea0000000000 |  -22    TB | ffffeaffffffffff |    1 TB | virtual me=
-mory map (vmemmap_base)
-    ffffeb0000000000 |  -21    TB | ffffebffffffffff |    1 TB | ... unused=
- hole
--   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN shad=
-ow memory
-+   ffffec0000000000 |  -20    TB | fffffbffffffffff |   16 TB | KASAN shad=
-ow memory (generic mode)
-+   fffff40000000000 |   -8    TB | fffffbffffffffff |    8 TB | KASAN shad=
-ow memory (software tag-based mode)
-   __________________|____________|__________________|_________|___________=
-_________________________________________________
-                                                               |
-                                                               | Identical =
-layout to the 56-bit one from here on:
-@@ -130,7 +131,8 @@ Complete virtual memory map with 5-level page tables
-    ffd2000000000000 |  -11.5  PB | ffd3ffffffffffff |  0.5 PB | ... unused=
- hole
-    ffd4000000000000 |  -11    PB | ffd5ffffffffffff |  0.5 PB | virtual me=
-mory map (vmemmap_base)
-    ffd6000000000000 |  -10.5  PB | ffdeffffffffffff | 2.25 PB | ... unused=
- hole
--   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN shad=
-ow memory
-+   ffdf000000000000 |   -8.25 PB | fffffbffffffffff |   ~8 PB | KASAN shad=
-ow memory (generic mode)
-+   ffeffc0000000000 |   -6    PB | fffffbffffffffff |    4 PB | KASAN shad=
-ow memory (software tag-based mode)
-   __________________|____________|__________________|_________|___________=
-_________________________________________________
-                                                               |
-                                                               | Identical =
-layout to the 47-bit one from here on:
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fa3b616af03a..7c73a2688172 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -67,6 +67,7 @@ config X86
- =09select ARCH_CLOCKSOURCE_INIT
- =09select ARCH_CONFIGURES_CPU_MITIGATIONS
- =09select ARCH_CORRECT_STACKTRACE_ON_KRETPROBE
-+=09select ARCH_DISABLE_KASAN_INLINE=09if X86_64 && KASAN_SW_TAGS
- =09select ARCH_ENABLE_HUGEPAGE_MIGRATION if X86_64 && HUGETLB_PAGE && MIGR=
-ATION
- =09select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64
- =09select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
-@@ -196,6 +197,8 @@ config X86
- =09select HAVE_ARCH_JUMP_LABEL_RELATIVE
- =09select HAVE_ARCH_KASAN=09=09=09if X86_64
- =09select HAVE_ARCH_KASAN_VMALLOC=09=09if X86_64
-+=09select HAVE_ARCH_KASAN_SW_TAGS=09=09if ADDRESS_MASKING
-+=09select ARCH_NEEDS_DEFER_KASAN=09=09if ADDRESS_MASKING
- =09select HAVE_ARCH_KFENCE
- =09select HAVE_ARCH_KMSAN=09=09=09if X86_64
- =09select HAVE_ARCH_KGDB
-@@ -406,6 +409,7 @@ config AUDIT_ARCH
- config KASAN_SHADOW_OFFSET
- =09hex
- =09depends on KASAN
-+=09default 0xeffffc0000000000 if KASAN_SW_TAGS
- =09default 0xdffffc0000000000
-=20
- config HAVE_INTEL_TXT
-diff --git a/arch/x86/boot/compressed/misc.h b/arch/x86/boot/compressed/mis=
-c.h
-index db1048621ea2..ded92b439ada 100644
---- a/arch/x86/boot/compressed/misc.h
-+++ b/arch/x86/boot/compressed/misc.h
-@@ -13,6 +13,7 @@
- #undef CONFIG_PARAVIRT_SPINLOCKS
- #undef CONFIG_KASAN
- #undef CONFIG_KASAN_GENERIC
-+#undef CONFIG_KASAN_SW_TAGS
-=20
- #define __NO_FORTIFY
-=20
-diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
-index 2372397bc3e5..8320fffc71a1 100644
---- a/arch/x86/include/asm/kasan.h
-+++ b/arch/x86/include/asm/kasan.h
-@@ -7,6 +7,7 @@
- #include <linux/types.h>
- #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
-=20
-+#ifdef CONFIG_KASAN_SW_TAGS
- /*
-  * LLVM ABI for reporting tag mismatches in inline KASAN mode.
-  * On x86 the UD1 instruction is used to carry metadata in the ECX registe=
-r
-@@ -24,7 +25,10 @@
- #define KASAN_ECX_WRITE=09=090x10
- #define KASAN_ECX_SIZE_MASK=090x0f
- #define KASAN_ECX_SIZE(ecx)=09(1 << ((ecx) & KASAN_ECX_SIZE_MASK))
-+#define KASAN_SHADOW_SCALE_SHIFT 4
-+#else
- #define KASAN_SHADOW_SCALE_SHIFT 3
-+#endif
-=20
- /*
-  * Compiler uses shadow offset assuming that addresses start
-diff --git a/arch/x86/mm/kasan_init_64.c b/arch/x86/mm/kasan_init_64.c
-index e69b7210aaae..4a5a4a4d43db 100644
---- a/arch/x86/mm/kasan_init_64.c
-+++ b/arch/x86/mm/kasan_init_64.c
-@@ -465,4 +465,9 @@ void __init kasan_init(void)
-=20
- =09init_task.kasan_depth =3D 0;
- =09kasan_init_generic();
-+
-+=09if (boot_cpu_has(X86_FEATURE_LAM))
-+=09=09kasan_init_sw_tags();
-+=09else
-+=09=09pr_info("KernelAddressSanitizer not initialized (sw-tags): hardware =
-doesn't support LAM\n");
- }
-diff --git a/lib/Kconfig.kasan b/lib/Kconfig.kasan
-index a4bb610a7a6f..d13ea8da7bfd 100644
---- a/lib/Kconfig.kasan
-+++ b/lib/Kconfig.kasan
-@@ -112,7 +112,8 @@ config KASAN_SW_TAGS
-=20
- =09  Requires GCC 11+ or Clang.
-=20
--=09  Supported only on arm64 CPUs and relies on Top Byte Ignore.
-+=09  Supported on arm64 CPUs that support Top Byte Ignore and on x86 CPUs
-+=09  that support Linear Address Masking.
-=20
- =09  Consumes about 1/16th of available memory at kernel start and
- =09  add an overhead of ~20% for dynamic allocations.
---=20
-2.51.0
+Pasha
 
-
+> > + * @reserved: Must be zero.
+> > + * @state:    Output; The live update state of this FD.
+> > + *
+> > + * Query the current live update state of a specific preserved file de=
+scriptor.
+> > + *
+> > + * - %LIVEUPDATE_STATE_NORMAL:   Default state
+> > + * - %LIVEUPDATE_STATE_PREPARED: Prepare callback has been performed o=
+n this FD.
+> > + * - %LIVEUPDATE_STATE_FROZEN:   Freeze callback ahs been performed on=
+ this FD.
+> > + * - %LIVEUPDATE_STATE_UPDATED:  The system has successfully rebooted =
+into the
+> > + *                               new kernel.
+> > + *
+> > + * See the definition of &enum liveupdate_state for more details on ea=
+ch state.
+> > + *
+> > + * Return: 0 on success, negative error code on failure.
+> > + */
+> > +struct liveupdate_session_get_state {
+> > +     __u32           size;
+> > +     __u8            incoming;
+> > +     __u8            reserved[3];
+> > +     __u32           state;
+> > +};
+> > +
+> > +#define LIVEUPDATE_SESSION_GET_STATE                                 \
+> > +     _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_STATE)
+> [...]
+>
+> --
+> Regards,
+> Pratyush Yadav
 
