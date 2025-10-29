@@ -4,123 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE5CCCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:12:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7F4CCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2DB08E0047; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
+	id 69CC58E0048; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A05868E0045; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
+	id 674BA8E0045; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 91CA38E0047; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
+	id 5B1A88E0048; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 805EE8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 4EAE88E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
 Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2FC3988F08
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:12:55 +0000 (UTC)
-X-FDA: 84050587110.24.FD27199
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 59A708000C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:12:53 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0pswya5+;
-	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761729173; a=rsa-sha256;
-	cv=none;
-	b=XoPkpbNrB2Yn78Rio1zTaSOAy+QgKYsn+rCYTfEOjnqOqcWAOr+6BdZECZ4ZBANQB5rB9x
-	19+DCL/8q35XCJN2Rmbh5aKl85yBUKBepUMSTQ660/Hi1NX/GUY54DAdjKEcfqORZ/jBFl
-	lPoI8a6/V+kddwdLxwj6h/p+ht5/F8Y=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=0pswya5+;
-	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF51649796
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:23:54 +0000 (UTC)
+X-FDA: 84050614788.24.2F56A7B
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 20A7D4000D
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:23:51 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GA03knUk;
+	spf=none (imf04.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761729173;
+	s=arc-20220608; t=1761729833;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
-	b=nOp+bHtJ7nEt5LxWZrTD4Nqp2Q2U3o+fjSlgqHmrdzffl1Uqaalq7qj2CF4jEycdvwGFG4
-	4FvVGC/GdndpZoQbbWqr9dG1I8qW16LhOrioyImGYzvE+Z94gDvQ7Sw02Dnx0SrUJSehOU
-	VndiQTik6yRRFoJxQoCfDQsoNnrne/0=
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63f533fbfd0so3346698d50.3
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:12:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761729172; x=1762333972; darn=kvack.org;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
-        b=0pswya5+mMNkqnrednw1eCFiMcUwz0IZdD6MrZXU9qpWZWbnaNMK7phSRRpAKuYOkM
-         wgM6Z3HFrM/+IZhmifp6WIJYPZ/tWFOeDsKEtcKqzQfTKLPLP/md4d5+PPw962zqGmyi
-         AMJXV6VpyevJUQJtOwUroqlu0gl236bWUnNCiACTmbI3zvd4f11pXY3pQKqX6YaNgeKW
-         yKqhocKMF+umnXYRpv2JUTzZYci9XboYJ3OOYIE8joqaXNGsFZP6ysWRDpcUsYqw+t9w
-         R6bFASn2/yzZ08GzM+NhfzrDDmJeE0/S53cnsXPi2Ect6UrFH0Mf7M10A5I3lwHjA1VW
-         KFkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761729172; x=1762333972;
-        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
-        b=fwkUF+uHqvyddvFWV1sI11/FZF+CXdo+052GI8hnkn3ZrXAfM+FJw9CP1QF5G7dIqY
-         M8BD4i4zyCm3C4xjXVXrRdio2rvxd0wGjYa99r9jf/4hF6ZOa8NNJ5ffCWmWZe9r76Gi
-         Hhw3bxWc56EXaGwMy0UW6fs6gromNtHFyDryI57d3IaAWq5Wgs1g8yJl1DVAm4X3Hy9N
-         RGEBrZ0MCUoh68pEpZIKVPs3LSH1Y3mOnQUNydkPfToBJn+7SKrdIE+pln+xneMZQz1x
-         XMuugl21v8+oGwugdkFBgwJtKTYI243vfcjpP0tv2GTSBPBGHqg2H3H0elYW7f07IT6O
-         Q5zg==
-X-Forwarded-Encrypted: i=1; AJvYcCWCFTOASQ2w/bIXcLp6wUhrI79UXsxRKLraCqNTWUErR1sgAsaHKLmNWYNlhbgJ1Vn9biX3/XZwpw==@kvack.org
-X-Gm-Message-State: AOJu0YyM/glhyP75TVCJi+RocpAj30p/4CF0BtFGv6sji3yx7l/7Qi6T
-	2sTqG5WPkNKZ5vLuy6wn8GCvS7ETCE7jCgwWlqTba0j46dB0Kubxb2a2A0Mq/9hnFQ==
-X-Gm-Gg: ASbGncsnVLQVjBxTalKNmkZwaWNRA2TUloFnjIYQ8x+O/TqJynW4Ob6y2SS6VY61ERT
-	YR0PAOUA6H2Vu8PApdTIRP+vMX1dGuKQOigLSuxL7LowZxPZZS+/lwuFdjbsEdcPgtMkF8kn2Z0
-	ZSmw7ZMbK3Scn0NZkUVlhVtU5o2ejr1WWbeXLU6lnf3GMc6Xy65Ha4QNS+Bxm/1+iqDGnKrrhLf
-	m9ujsZXQuCm2HgIDTLbpPuJdQ6pGJpHKmqG1g9RgbJBgGM0tLdXEu8jnrkOWNssA969z90oq+a8
-	eFa5Gj7UBozqgY1rIvY+hvto9is7POESCjG6qp3GfeApxOm18ETNv7OEC4PgKSEyRm7BUp9SEFo
-	oKHkOURCrEJcRGjByCcw817E43lISs5DJhxyRtRNBZpn/ZKZCIR6vt6oWnuT6vnBr1OhoIMvxja
-	zHolJWOfUgtrOePzhFbWkL0ZqfDyxMYwuQKx86p30j+T7qqcwqMAGyG+vvVUGX
-X-Google-Smtp-Source: AGHT+IEUyMs7bw/KHzPZ51AbmO3wPAApjy9icdxMigxwWyr9bCi7kzw4YLn0xUhUa4b2Nc69MgGvKQ==
-X-Received: by 2002:a53:cdcc:0:b0:63e:187b:f383 with SMTP id 956f58d0204a3-63f76dced0dmr1569801d50.52.1761729172087;
-        Wed, 29 Oct 2025 02:12:52 -0700 (PDT)
-Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed198ef9sm34560117b3.24.2025.10.29.02.12.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 02:12:51 -0700 (PDT)
-Date: Wed, 29 Oct 2025 02:12:48 -0700 (PDT)
-From: Hugh Dickins <hughd@google.com>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-    David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-    Alexander Viro <viro@zeniv.linux.org.uk>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-    Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
-    Johannes Weiner <hannes@cmpxchg.org>, 
-    Shakeel Butt <shakeel.butt@linux.dev>, 
-    Baolin Wang <baolin.wang@linux.alibaba.com>, 
-    "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
-    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
-    linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv2 2/2] mm/truncate: Unmap large folio on split failure
-In-Reply-To: <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
-Message-ID: <eaa8023f-f3e1-239d-a020-52f50df873e7@google.com>
-References: <20251023093251.54146-1-kirill@shutemov.name> <20251023093251.54146-3-kirill@shutemov.name> <9c7ae4c5-cc63-f11f-c5b0-5d539df153e1@google.com> <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
+	bh=3Ih05HK+8ZsKOo5cQ+utqVaq+hUnBg4xFJaxP/XkN4A=;
+	b=62y9zNcM98psE037YVSlbcIRRnUBI0yG0+KuwUxObVpgkAXvOO9wdiLu6Nj77AJAeFnHC6
+	pTUVsfSaJi1bjkeU7XR/sOb0YTk1wwaXQ4Kd9wSX71j8mHmLkET1XcimisTe+XJfnjv87o
+	JmbjiyPWfUGNzV55ni1UmnUWLtLJSjE=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GA03knUk;
+	spf=none (imf04.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761729833; a=rsa-sha256;
+	cv=none;
+	b=xh08rqOuldT+jAahdVRHQMKGu8C0xA73xlZAC7+l9VloRW3as4nNES47c8gzfAJG/za2RR
+	oww1OC7WL6UGxFCxqGwvFw+4HCcODI6y3KH2VMhSnAZKsC0ZVMRgho7TK4pRS0A5HLaZHX
+	nKMPabfH5E/HVv7w7oQGcONFWa76jm8=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=3Ih05HK+8ZsKOo5cQ+utqVaq+hUnBg4xFJaxP/XkN4A=; b=GA03knUksWMuLiHmkDJ5EtiFSg
+	wtcTt2zLP5rdVxMJlL5t+2bQPR9r1FAu+7TxdPT1FZoVd+9zZqS8DvVU3U58tlcANQo3Ijlxm29r6
+	BIL1s0m3nl0Oj5zeyYWGYkRZrAQgYCgg7EwQeFKub1LK86Uy5OSqSsuBN38/AYPS3gZpPXq24K0x0
+	9hFELXTlQiy0mJ1/LIvBFNKdrwvGhc6WAtCupQZEw8eVo10iVBdtQ2tvC/JcnCTHrsd578Gj8mAoI
+	DiiBs5ov9+QgkPuCXSJMAiWBqFr+vrzwt270IQq6w3w9rvz7L7t9vBla6YL+/OiGk39CXMbQYj+eu
+	RZXfs7tg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vE2P5-00000000TeR-1TcB;
+	Wed, 29 Oct 2025 09:23:39 +0000
+Date: Wed, 29 Oct 2025 02:23:39 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: Christoph Hellwig <hch@infradead.org>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com,
+	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com,
+	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, willy@infradead.org,
+	m.szyprowski@samsung.com, robin.murphy@arm.com, hannes@cmpxchg.org,
+	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
+	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+	minchan@kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev
+Subject: Re: [PATCH v2 0/8] Guaranteed CMA
+Message-ID: <aQHdG_4yk0-o0iEY@infradead.org>
+References: <20251026203611.1608903-1-surenb@google.com>
+ <aP8XMZ_DfJEvrNxL@infradead.org>
+ <CAJuCfpH1Nmnvmg--T2nYQ4r25pgJhDEo=2-GAXMjWaFU5vH7LQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJuCfpH1Nmnvmg--T2nYQ4r25pgJhDEo=2-GAXMjWaFU5vH7LQ@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 20A7D4000D
+X-Stat-Signature: 531i9rs6u4oy3k5foga4zb1bjzytfod7
 X-Rspam-User: 
-X-Stat-Signature: nq1ccg3z9tt1a6ffxfua87hpm6b6x4bf
-X-Rspamd-Queue-Id: 59A708000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761729173-894959
-X-HE-Meta: U2FsdGVkX19xI//V+Izc61UBDTYVNkJmpcEp5vlFXjEdEactIBw7S4F6Zit9+mGbmRolYSe8sthiePC5eVhvNQHrpaMIfKu98fi3xh65e+82S8SjPe2TWCBTeCOJe/yxqQ2/Z3tPDGHjBSEat8lkNwRosM/w5tolO6fN7PGvfuD0Fjj7UqHV06tgiyvMidNIIKaQgrIACcf3SQgWahJN9S8uOOI29I4k1ua0pgrvE6fuAfwU19OSqBNZInDvRj5XJISFGtOYZBiBLOLFtov0khqh0uvpJzuD2B2q2yLaudKLAgARlVb9DL64ZapEMJDpWx/P4WjFp3arI96QvTFwqyRTWJZA/o7218ht7mo9ixvlF5BHp46VkOPc9ikGHkEQEHyFYXkV4rPxGLhSupPElLkklTPPPezo9GZa1j/dHWBgXVSvq6lI7XwLT7FOE/drzJKLD9EEHwODXOErCZJWJ4KLu9mKT2+z1+wBQ8VeL6ALXdrjhgs0xUbJKySs43dNncLDkNTciKaDhfUhmPsSxfP3a/8Vy8wAmF+tFIzMd9usHkwWIfhfCynjuxcYEfqregku5FieaZxNIA6RFtwrTRIs5lBnC4Ljj7O3DuPcvKY2EAwEMIt7sqZm4MCesyADMpoJpN6DWR4LZDvfq1M1QKFXeDx4rdivmfrbVOsGdK5Z0ldkwPgKH+/hZBtSDeqh1N+haWjDF7J3jnXp5EakULFuOsAoxHBN54XGahmOsDhSQq1NjUeBLXjkS96z8HHgTVU3Y+aWqtcqkQgVrklzqU90Q4+pcdhfDUsUelJFhQvxvy7hjtwH/tOHB1XX+72H4VirklRRhaEEJ0eU7bhMW8Pg5oswkT4NzjzSRd2yAsToiTE+51Hnx82HQ8QSOUxa8DvqGNOO6L38G0ftfggWGWD24cvJnDLyn3qaBWsv2qBiAY3Ms3NEUF4s5e01m1PjNfcRD2I/ERGaY9KzLcT
- yqmDGYcR
- T55PSLleobDMnuWK+xNJDLC4lUO7ar4/fO6YJ8rnUG0JPAS/LdJlEk20Fx8nH2I2tN39ChibweomX91sL9M9dL+/zM3yunVO7d48eKeYJWTLEqWnE+Q51hDlAFvQHUR2gsD4MmupQp/EzP1kq6Skc9ol5TT69MY9eqNu6ArRBAnFV1cy0ZOzivoRPMPpuRSgxbrS30/xrFVG7yDaQzjptGwtfe5cmp57Jzz+Ud39ckeli5RO3HamFzWiYfWgFX/YygHQ7DFLEK09CC2t3ZwRn83bq0N/wUTWbRceyp7oKqdvAv7jaCF8SZ3Nl3RkhocLk/nV2NnKMI1DF5Gpcy+1FxExbP6cIMxiQeisGdkLWGNBStL0=
+X-HE-Tag: 1761729831-763998
+X-HE-Meta: U2FsdGVkX1+0e9mM9GLQtymcTzsG2A9rfjOdX+Yb5NGQ35rrYamTiDy3Jp3rgMzIb3KOeZi7Vm9FFcPFTI2KzrDg2lTGoqsygKs0fQ1izZZ1nPlUpmw9nMZRp1oE6j5d1DIZ0DCX1BJbSaWam39gIeRu2es1wLbNLKhk1EnUbVaxbyf94hqsatp8Z+Dcb2yGIUuOYfZ/jzRqDeA9WWnyPPxUHgwhqouscMjnSgCZnk5kVvBSybsTbBGJDrk5ng1iAtt3sacLBE2l5+0HtXQ/KSG4IdmY+YITylA1XHCenYToU5qoEZOSIjHbiv4OPp4Ju4NqF60avMpo+4OzTI9D39xSmoDn8s/MOhZX9a5EEF1oOUEsOW3L8smvGva9jipGbfyShpuMeDHB4gJ2fi6/Kl7882uKoWyRBZug+w1WG/xpzbgdN3OGN2zZbMCFhKcIGRDJL5g5Dyl99XRD+M65gHYlc/GYu1ztf2stvC9/qqcxFS73pksSD7r9B81nOBRw1KOxrI7usNZua6iWEIc/JNzVTJ/XVqH+SlXx+3R8iS2499qO/UKBRpX+pLGR957oqElmBH8PYRK0EeFifBg5j+FGksMbKreYnV2S1z2Y7vxBHhDAfCimyrFFP51OkVoNVJAMf/StZdS9AR5WbX5BVXogm7YvTMrvtBT1K4KxsRoFq/p/t2lTBLth/QqxIG/Afg8FaBJ0WzAtQNwwpfqMDcwO7oJC3p7Oe6dI/eNs08YsWVAdcGydoJx96QUA1l+v8eaNG4wBD6xn8aYGrh52wZnBJrApih9EI4BdxXOesfPO9TY9uCEfsU0mIgLnrBnkD1TKcmhajIy+/wouS1g4s7KrEFn23QCd/a8xjfPdva10YLxaLiam3tgoVWbIDALo6PTPajfP9SxQkdX3EpVhMJzqJ4yq4xx6iI2j+GjlZPf41FT3dPMWGe2LD4EkakWAv2VYSfyCmShVxUKMkFu
+ 0K3euXvf
+ gduAkY6IiiF9Z79ZPJpfh7TQOiw8S/8htQs2J3tB5GEEtmBpA274OdV31/AfyDjhthAyKqmKSHwFFuQ/t68g1zxKEC9adpeDQBc9ovFoLV7viDyhEKKeiJXKGqufCdXlvzQMp7NTexk33oJTX41SEGZ89wtyU94tNM15z1cM87bMZ6Ae8ufupXtkj9QatX3sIcDt0iVvJ+KREBBmFA4cLgQ1VJ75VzLCmDg+lLxN9dsuqIsweAhuYyMyUxH4t3CDukimWE7sD6tk1OJnJnNJgG1Ud5MIpwF6bBhOmvrJhjO7pILFDqGxBoIajVxp8RCB64ygc5S3Q2Oo7C40MLjClRzFEfU2jxNzdnZ6P4Ng+pI8dBpyRE6CiW+/FlJMaeiWzhR6nUKaZCSoOXaKLnOayPwcjQFQDAZrzI8P6o7eeHhsqnsLettFKVOkrt9R7fBnm8VEd1D8Ff4lkBnIP7hhKJJkpXfP9M1AzvkXiY/wWWD9Zs0TIYnmDjn/mbtbl7QxznXrtuToIjNTW15lWJ6UYMkrXHf31dyuFSBj+Zqr4Bb/5ibw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,48 +102,13 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Oct 2025, Kiryl Shutsemau wrote:
-> On Mon, Oct 27, 2025 at 03:10:29AM -0700, Hugh Dickins wrote:
-...
-> 
-> > Aside from shmem/tmpfs, it does seem to me that this patch is
-> > doing more work than it needs to (but how many lines of source
-> > do we want to add to avoid doing work in the failed split case?):
-> > 
-> > The intent is to enable SIGBUS beyond EOF: but the changes are
-> > being applied unnecessarily to hole-punch in addition to truncation.
-> 
-> I am not sure much it should apply to hole-punch. Filesystem folks talk
-> about writing to a folio beyond round_up(i_size, PAGE_SIZE) being
-> problematic for correctness. I have no clue if the same applies to
-> writing to hole-punched parts of the folio.
-> 
-> Dave, any comments?
-> 
-> Hm. But if it is problematic it has be caught on fault. We don't do
-> this. It will be silently mapped.
+On Mon, Oct 27, 2025 at 12:51:17PM -0700, Suren Baghdasaryan wrote:
+> I'm guessing you missed my reply to your comment in the previous
+> submission: https://lore.kernel.org/all/CAJuCfpFs5aKv8E96YC_pasNjH6=eukTuS2X8f=nBGiiuE0Nwhg@mail.gmail.com/
+> Please check it out and follow up here or on the original thread.
 
-There are strict rules about what happens beyond i_size, hence this
-patch.  But hole-punch has no persistent "i_size" to define it, and
-silently remapping in a fresh zeroed page is the correct behaviour.
+I didn't feel to comment on it.  Please don't just build abstractions
+on top of abstractions for no reason.  If you later have to introduce
+them add them when they are actually needed.
 
-So the patch is making more work than is needed for hole-punch.
-
-But I am thinking there of the view from above, from userspace.
-If I think of the view from below, from the filesystem, then I'm
-not at all sure how a filesystem is expected to deal with a failed
-folio_split - and that goes beyond this patch, and therefore I
-don't think it should concern you in this patch.
-
-If a filesystem is asked to punch a hole, but mm cannot split the
-folio which covers that hole, then page cache and filesystem are
-left out of synch?  And if filesystem thinks one block has been
-freed, and it's the last block in that filesystem, and it's then
-given out to someone else, then our unsplit folio hides an ENOSPC?
-
-Maybe this has all been well thought out, and each large folio
-filesystem deals with it appropriately somehow; but I wouldn't
-know, since a tmpfs is simply backed by its page cache.
-
-Hugh
 
