@@ -4,93 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2399ACCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 05:11:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CFA28CCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 06:05:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506D58E0033; Wed, 29 Oct 2025 01:11:05 -0400 (EDT)
+	id B71718E0034; Wed, 29 Oct 2025 02:05:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DF968E0015; Wed, 29 Oct 2025 01:11:05 -0400 (EDT)
+	id B22918E0015; Wed, 29 Oct 2025 02:05:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 41B7F8E0033; Wed, 29 Oct 2025 01:11:05 -0400 (EDT)
+	id A38138E0034; Wed, 29 Oct 2025 02:05:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2F5A38E0015
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:11:05 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BB6F449D45
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:11:04 +0000 (UTC)
-X-FDA: 84049977648.17.AEDA39D
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F116B40002
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:11:02 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=E4trfwDo;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761714663; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 8F0FA8E0015
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:05:54 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3115AC06AB
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:05:54 +0000 (UTC)
+X-FDA: 84050115828.02.85AEA68
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 7173510000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:05:51 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vbuEe17m;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf14.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761717952; a=rsa-sha256;
 	cv=none;
-	b=ziAQA+kkMIq36WT1xoxJuPTcGzn1GS05J7RUUPTf642omdoQvYrbfnxZoKOvTfce16JXnh
-	blqScfZ7Tl+pnDaBD3quAEvzBAqapDKJKZwt5od7G6+iapexlJv6/HLPy1j7L/f1ONC9mY
-	C9dWSEpuABuyeh5nQk87hpKDGfpO6wU=
+	b=pGAfsPop0bvNtEbBjYBHovuOH/4rrCxo5wLBb7LPJMWcWWY8pR4yisWr+P8vk3QZDD65T8
+	eihtpdCMF3dD2AGVDW3Sjnl6bEFEUxmHAf6ygQPSUjgNhlvXX56H9cLTpBPqWkxOxspBWF
+	QqthE5pvfJq8/CZzze9jqH47F5lt/VM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=E4trfwDo;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk
+	imf14.hostedemail.com;
+	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=vbuEe17m;
+	dmarc=pass (policy=none) header.from=samsung.com;
+	spf=pass (imf14.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.25 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761714663;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761717952;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/BYNoVmF3YbRiY0Hi/9O43xTzLl3/EW8MXOY/56GuA0=;
-	b=ibkzpx5M7+Th3xE0mxu8NF2Ax0VlUMyG+hyV8Io2uLfrUhLQ0clUPKWHMZ7usl8RkqLUCV
-	ZGxHwjFpkCzem2CgpwHqkKxf55RkTdOBH9DtSPlYjiALL3nnplR91LntRN5EsoYzSH3uKA
-	6GGXfB9a9HHVpOJBZ7qEF+DMgKRDHuA=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/BYNoVmF3YbRiY0Hi/9O43xTzLl3/EW8MXOY/56GuA0=; b=E4trfwDo1S01UKwsa2CrgAOcSE
-	ptoeCiFK8So4wlImp/8pjz/VBvtXHnB8B5MDyRYvg1yqGLdg6Tf92LaQjfNi1cdedAP3agZ1WbcNp
-	Toh2ZJ7N4fK8LWTgaEb9En4+6sGHZB9iL6nmh7258KhX1IkLOZPj8HC/XgwqzmmEtafzypODzG5bt
-	fwomHrB116rASJMqP4x4UdJNY2tD4SGar04GPmSHSEnVu+68QC/yQYWY/mzF2frEWxOl8gDK0uEy9
-	OVrO/Ud3CraTGrePIC97bq2rxP3pXsm5U9cT7uuVndAVbke/jLFpn9/5dW08qyUL1FvIPrqIxPapE
-	7bfmXpZQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vDySS-00000000Yic-41sk;
-	Wed, 29 Oct 2025 05:10:53 +0000
-Date: Wed, 29 Oct 2025 05:10:52 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
-Message-ID: <20251029051052.GR2441659@ZenIV>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-7-viro@zeniv.linux.org.uk>
- <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
+	bh=bBJQp7PbGMd1XdhUFl5A/6fLfmccB/IWy8yXpsj4CGc=;
+	b=2HXH/Hp44gy6uvC4XQpTEF5ebx2pwq9pns370PA/lzRZlkRZFQhrrnQPw5ADOQPu+veV3l
+	RhbpIyGc9ALn38NlhTLhSEfq+p0Lrv7ppYTGgtnoxDcQvlbm3BLUEf0TuY3v83eecOOK18
+	rq7vrLOENv+I36GZpJUTUXZtaWVZAqo=
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20251029060548epoutp021b9ed9da2dd2f59252f8ce8b2be3f9d5~y4SPfvgjD2182121821epoutp02O
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:05:48 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20251029060548epoutp021b9ed9da2dd2f59252f8ce8b2be3f9d5~y4SPfvgjD2182121821epoutp02O
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1761717948;
+	bh=bBJQp7PbGMd1XdhUFl5A/6fLfmccB/IWy8yXpsj4CGc=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=vbuEe17mTF2terd1TQ+gi3mkaNQ+gSv01pyxt704vlOpbeMh20OJKRtvhq38wKJpB
+	 EhIkFmb17+oJbYcYDLRELStbMI/9A8fc5xYMpoyix3uXeCtTFBV9Z8hbDh4jiRgzsx
+	 fbXRyG0udW3HlL/1jfZBTSVcOwcrY1cBEG0kndv0=
+Received: from epsnrtp03.localdomain (unknown [182.195.42.155]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
+	20251029060547epcas5p3b81b402ebdb14361658a0a9d1625f9a1~y4SPBxYRj0475104751epcas5p3j;
+	Wed, 29 Oct 2025 06:05:47 +0000 (GMT)
+Received: from epcas5p2.samsung.com (unknown [182.195.38.88]) by
+	epsnrtp03.localdomain (Postfix) with ESMTP id 4cxGvG5lFcz3hhT3; Wed, 29 Oct
+	2025 06:05:46 +0000 (GMT)
+Received: from epsmtip1.samsung.com (unknown [182.195.34.30]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20251029060545epcas5p491529ef7b75758f4d8bc82f4da1b9976~y4SM_VznG0334003340epcas5p4Y;
+	Wed, 29 Oct 2025 06:05:45 +0000 (GMT)
+Received: from [107.111.86.57] (unknown [107.111.86.57]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20251029060524epsmtip1c2db16f0f541ef4f1bd12a548aa4a54d~y4R5nnv-B1497914979epsmtip18;
+	Wed, 29 Oct 2025 06:05:24 +0000 (GMT)
+Message-ID: <e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com>
+Date: Wed, 29 Oct 2025 11:35:21 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, Dave Chinner <david@fromorbit.com>
+Cc: jaegeuk@kernel.org, chao@kernel.org, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
+	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
+	willy@infradead.org, mcgrof@kernel.org, clm@meta.com, amir73il@gmail.com,
+	axboe@kernel.dk, ritesh.list@gmail.com, djwong@kernel.org,
+	dave@stgolabs.net, wangyufei@vivo.com,
+	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
+	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+	gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com,
+	joshi.k@samsung.com
+From: Kundan Kumar <kundan.kumar@samsung.com>
+In-Reply-To: <20251022043930.GC2371@lst.de>
+Content-Transfer-Encoding: 7bit
+X-CMS-MailID: 20251029060545epcas5p491529ef7b75758f4d8bc82f4da1b9976
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+cpgsPolicy: CPGSC10-542,Y
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9
+References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
+	<20251014120845.2361-1-kundan.kumar@samsung.com>
+	<aPa7xozr7YbZX0W4@dread.disaster.area> <20251022043930.GC2371@lst.de>
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F116B40002
-X-Stat-Signature: 3rkuszbinc9kxnxrwkmfuzjqqwypwdn6
-X-HE-Tag: 1761714662-690060
-X-HE-Meta: U2FsdGVkX19jtMeDYhAujn9PoQyZavUyGOWyijrAC/w05hOYjGObbvuKLpitxc63xBlOYRx5MHS/pPNhll2jdjmNvopISAupvH4W8rkfoNyIciuEG2ryAYtDkYisfnVm+OzB4jWvsUHZ3IBgSafR/Bxvhubfe2PX1mqvWjGfvooAG8tbahQyzC6CHHLiO/TGirPmFuP7Xko2uM/uN/OZz5xLmnXPxF/qKyUEvPm4Vx04BRpmTD8miJ1s9KnfPAsYgBLsTGeyqgr2PsYQX7oDlTDsstG4rz2Nsu3fwBaPJt81pcPIYn4yomViPBwjpLoUeviBGLPQbEDmIp3kqxi4cBIoLjbZr9DCaqmT2jCW4Kj3RyOU+aWCSK07lGouqCPB6H12yq4N1z8C8BV4pfEkgNBeZzKHHcaavjDrqBY1o3LjK4+sMlR7fuVg1hTTknecpmJghVDlwy46Z1LnIesaRicFHeklE615dv/iKflv28ZGAlR3kKmxH+Mbnt1d6+4+y2b9Fam59AHG37xkWD8zdDXIpklbIY1LsR56Vi1m/wqbGshoXO682htaJcQvPhOvjbrxkDtQ9XaKX5UZMkTwTkrFgIcyhPAJC0sMufobFvmcECq+LAzmNxJ2ZjXkca8H+uK16tGS1qvLHZ0pUepvqXNJy5UWjr4q7PypNYCCGa3b14/vAp4BF+QSNdeW2+ySpVlPuOotm7bG1v3ol6oT8CG9vpKiDgRcwPTHVLbQH+rylz3r7V9Hh5DFZAf1T2RhElkp2yRaH+wMvhB6pHPwRDxo5EXauC3bIygDKaQhU1bFPiREY1zX+crWPzc3r3Z9T8Q3D6vYAooXJNzfl3DrvTpnp1utrwj1qNpOQ5e0i85Jfj0EOtNpU3UzbqgUn6LPO4y8533oG++/TIqlJybrNsT8ViHzP/F+NWZb4obqiolO9S/RWFsXLEYCZSBIyBWJnMScBXyAvmEFU5Maqd1
- KePDgkxy
- /LInq9JnMAlhcQ0h+Xe8rujqgpWnVhuZZx1/nQ+YP+R9LBx8veOFHCAHTtNlUai2PsE+Zc90PxjM0Lh173tdVLTF17HK8jR/M95WsMY3J3o0ClEVGs9gMnkKpqmwWFuL6Rs2SE48BKqHhr4iSrxUojxQlhKCDAz142xBaRqpYffkLXC5V/FTZtdxq5X9YNFuHuYzjbXQqpkxMEpy14tv95qkHZxXrhr/PnTLipOUCjMJGuzYadcZyS2Z9gdZsaJedKkfPSyw7OR5dSx3+XS4fbvegd9kqwncr4Sql7EZ2FfCAfYU9kCRDLsahVr6ftJeG66yyg4W4f8HMX6LDynUvD+0MLKv6YLznea2/Wew18fXhcAgX773HjnifucjJolIKX4iYwYnRc0u+74Np6LbjZkf4RWHkNpn+L9svjAelXH1gjqC1J8Mo5J+BaWn4X7D5kXWO
+X-Rspamd-Queue-Id: 7173510000C
+X-Stat-Signature: 754w5gn59surpujbyd1rbzn89q19xjri
+X-HE-Tag: 1761717951-780174
+X-HE-Meta: U2FsdGVkX185ZcnGAVfRW0T+ktsmoNS38syIR021kkekOV8PKUKdtmOEPp7+F+LrwZqlCrSkCHWEgisH7qJ0794Cn4Sizj8/eb7MsyHeFeEELTnozIdH1FwP3QUbA8lZE12SDhaeHzeU+wsaVzIahb0JVWR5nbrN/eOZG2b+0+Tb0IDgmmhEWkwSJ9Jv8/VEspZyapWpzkO3hMr0/NM1Aie7KUUw0Odw3SK0nh7kLnUl8R0ZkY1ynop3FKdQUn05wrXAZj0KDreCgCUGwH04mIIeLEhuQ5L4zNVdSvbzW0p3Mw748qVlxhHoI5Fj8VVPpZABs/NCOWk7tvaKFIASXxlKyYRjJ+3nlFelT60ArtKcR3z96ovxKerUKNtqfu2Hp50NR9IQDwQxuSfhE691NrqCe4C/dugjpR6QlyBESAnRJ9lW4igq57CvD/xGixXrOQsS3D8DzlDjFfu0kFeqQ20pDtca9EDN6iAkAAg0i08miSGmHo3JVqA/LG1fdKduCAM4yQFNgo+LTUTqI93FDBeXm6N3ueGxZtDaVwscPJih3AJ1ZZ/nZ2vBzw5kt5DBeq4GnbSK07qb3smwDlHHy3gpjRrO8zxSlfgqJpGP4RNS+o+7meBxp6o9X32tZvI4pH+8FOnq+LHtv6q95hdOgs4pSLQx/y77CpWftwffqvGj/eWGUZsw2wlBIOHIpQo7cj5djzhQxD3ZG7zON1IpY8hgyn78fesFNAMT4dDTUnukTPZGhGRn54JHVNRLeWh0vD9Pcy5r7BjcPiP740Kt4nEDTxIcIZ1rwEQ1CpIYi80mtKiQSOiZt+Jo2eWyvHvQG6MWZ5wvGzEYRfD9l181tOpSbDxCR0lg1prTC6AVV+ziP4in7URLq4NfqEverQrxLDq2jsX9uivNLjK1bVPqCMxE3JzJuN5QI0a+5H/3cLZXloykWvePlJHYLLVlS+th1/h6ie52SqqdkhWLukZ
+ ZTwV8v6f
+ 0hsL8tD1GaTnvcXFRsV1Q8MVKqxnj+MF33W9kVXj0KYILbOyrcjWCfsXrAHCSbb4ROZSyfHULCuv1Cj12qg9EbsdcTf3uMF04fvsmJESPCdw7/2jMDZBExIzseXkujlWivo4bBZV/ALsIMVG2xl0Sa+3PNoVOeADvz85DfPEquFJJFzNfhWI4xLKqrOLM4Wbw79pmZYvfGh3JUWo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,45 +121,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 08:38:00AM -0400, James Bottomley wrote:
-> On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-> [...]
-> > +void d_make_discardable(struct dentry *dentry)
-> > +{
-> > +	spin_lock(&dentry->d_lock);
-> > +	dentry->d_flags &= ~DCACHE_PERSISTENT;
-> > +	dentry->d_lockref.count--;
-> > +	rcu_read_lock();
-> > +	finish_dput(dentry);
-> > +}
-> > +EXPORT_SYMBOL(d_make_discardable);
+On 10/22/2025 10:09 AM, Christoph Hellwig wrote:
+> On Tue, Oct 21, 2025 at 09:46:30AM +1100, Dave Chinner wrote:
+>> Not necessarily. The allocator can (and will) select different AGs
+>> for an inode as the file grows and the AGs run low on space. Once
+>> they select a different AG for an inode, they don't tend to return
+>> to the original AG because allocation targets are based on
+>> contiguous allocation w.r.t. existing adjacent extents, not the AG
+>> the inode is located in.
 > 
-> I was going to ask why you don't have a WARN_ON if the dentry is not
-> persistent here.  Fortunately I read the next patch which gives the
-> explanation and saw that you do do this in patch 50.  For those of us
-> who have a very linear way of reading and responding to patches, it
-> would have been helpful to put a comment at the top saying something
-> like persistency will be checked when all callers are converted, which
-> you can replace in patch 50.
-
-Point...  How about
-void d_make_discardable(struct dentry *dentry)
-{
-	spin_lock(&dentry->d_lock);
-	/*
-	 * By the end of the series we'll add 
-	 * WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT);
-	 * here, but while object removal is done by a few common helpers,
-	 * object creation tends to be open-coded (if nothing else, new inode
-	 * needs to be set up), so adding a warning from the very beginning 
-	 * would make for much messier patch series.  
-	 */
-	dentry->d_flags &= ~DCACHE_PERSISTENT;
-	dentry->d_lockref.count--;
-	rcu_read_lock();  
-	finish_dput(dentry);
-}
-
-at that point of the series, with comment replaced with WARN_ON() in
-#50?
+> Also, as pointed out in the last discussion of this for the RT
+> subvolume there is zero relation between the AG the inode is in
+> and the data placement.
+> 
+> 
+I evaluated the effect of parallel writeback on realtime inodes and
+observed no improvement in IOPS. We can limit writes for realtime
+inodes to utilize a single default (0) writeback context. Do you
+see it differently?
 
