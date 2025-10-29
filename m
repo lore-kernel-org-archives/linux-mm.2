@@ -4,111 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78659CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:25:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1F9CCF9F0
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:29:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D53E48E0089; Wed, 29 Oct 2025 11:25:55 -0400 (EDT)
+	id 545EE8E008A; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDE068E0045; Wed, 29 Oct 2025 11:25:55 -0400 (EDT)
+	id 51D518E0045; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C1A3E8E0089; Wed, 29 Oct 2025 11:25:55 -0400 (EDT)
+	id 45A698E008A; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B3BF48E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:25:55 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 712BBBB2C6
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:25:55 +0000 (UTC)
-X-FDA: 84051527070.15.DF1BE68
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 817A5180002
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:25:53 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=AKrVdB+L;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com;
-	spf=pass (imf24.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 34A808E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA6612B15F
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:29:12 +0000 (UTC)
+X-FDA: 84051535344.23.F0F7524
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 0C667180012
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:29:10 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dymG3BvV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751751; a=rsa-sha256;
+	cv=none;
+	b=1ZsHDdceU2HjEjmpY4klbKujizUe5ifU7DEcuvISbLd0bU7Kiv5T9D2Xzg1GRorOeTG/QQ
+	POiJG+6we64zn6zk9DuoYOn+Zct0J/CBxpSbMQj2j3s46JieJBsygC+tNvrAY4wuIpfY9F
+	RoPeO7TiC2GMbHFE7ENlxmN0JmdQ9fU=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=dymG3BvV;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761751553;
+	s=arc-20220608; t=1761751751;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n6qKJbKuHYSk8HgjepchHn9EgAwiaNMDM1wLPj3sTFo=;
-	b=62eGG6YxUghwEYaW8hwbUoFwQSHusM9tQDj59D9gPK1Y9pZtkXQNWpREpE7cHzaMvKj7Eh
-	jrfw7dkjKRgwxxdsDCAuLhM4hsipAKMazu5bW0c1zQoTw+sdB2Gj+pJfNA6OUGyO+Yi4Yk
-	NSlkXxs88a9zKZ1VdCgceGD6O2jHfyw=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=AKrVdB+L;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com;
-	spf=pass (imf24.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751553; a=rsa-sha256;
-	cv=none;
-	b=KwpK5QLVzWr9fx4c+0htFvn9YUOPT/3REjVXv5NJeNd4NsxDKupG5GQBprxo1g3YKXLOZO
-	+cAFSvdl4rvjIywO+TBLwU9kBLVq57QJNBdpIEhvczu1jCK9iwyFQ5iZkqmSGfNHjzGRJ3
-	sbaQQ8wdTgFaMlr624MUwVhoBexEY0g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1761751551;
-	bh=IvEixQumTxnRX9aSpywag7pfHqtg6+Oey+PcXbpcqS8=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=AKrVdB+LCGcRlcbz+lLJNGFTrhKCcSbmArsPEfxfeuvv01sKe1gAYtMfTJicge48b
-	 Um8sArH3CypcxXnxAXkedfVeVZYqufgWoe3bYpt7L3tOObDqgUF62OuKSbM3kM8uGQ
-	 81aKzSrAIpxWM1GcOjH0zUN9Gc7Y0TU9ctmMc788=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 4C7D21C02FB;
-	Wed, 29 Oct 2025 11:25:51 -0400 (EDT)
-Message-ID: <9f2217dc2cd3fa5975c38d874a32bb7f4c5414c9.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 06/50] primitives for maintaining persisitency
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
- brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
- neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
- linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
- rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-  paul@paul-moore.com, casey@schaufler-ca.com,
- linuxppc-dev@lists.ozlabs.org,  john.johansen@canonical.com,
- selinux@vger.kernel.org, borntraeger@linux.ibm.com,  bpf@vger.kernel.org
-Date: Wed, 29 Oct 2025 11:25:50 -0400
-In-Reply-To: <20251029051052.GR2441659@ZenIV>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
-	 <20251028004614.393374-7-viro@zeniv.linux.org.uk>
-	 <6d69842d102a496a9729924358c0267f00b170f3.camel@HansenPartnership.com>
-	 <20251029051052.GR2441659@ZenIV>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIB
- wMCAQYVC
-	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAV
- QEEwEIAD
-	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9
- D9OOU8qB
-	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTV
- YG5zyLRi
-	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZ
- uorhFE06
-	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xj
- WKAB6OII
-	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvC
- W2e4dAlG
-	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
+	bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
+	b=zyfWOAPjWrT6+SnUNiCImqz5IJvQWXqRl/CN7e+c5K4CvwcUbLFrPf7cExpmNAZR4DtoQz
+	k0LrRnYKIExapmsJ6FF5hD745Iumujq/Z6Ztrwj9QiKicImwd55g7ZB+oUn0XIXe135nbF
+	9ZZRriJ6V7t6P0eq/yIo89M0LMM4Jsw=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63c44ea68f6so12931a12.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:29:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761751749; x=1762356549; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
+        b=dymG3BvVNY4eh2+8YaH6at+d2/kHNZRypArirKlTyVmKCrMcoiiqPPN8rl4N/HBmf9
+         fBKKxu4w8oEXajN+a7bbfmVMRi0iuD3RedQH/5rkI5sNCVJm6vvHZC3VG3nB2b1dZmYV
+         No36TVcaKZfdc9DPSrHpcxn6zj6wyCH3GOECBy/Ix9v5HoM/wEbN//lEgdCcfSNf+crD
+         6g8WgFyLU2rKqT6AQg0aSo7pORjCPgef2uGn9ik6NtcXoqlDNLcv1XgoQ1L2XDu7qJ+n
+         t8yiLCYwknbcCuWUClMjDV/LHC/BSEXkvkl7VTU1PJst0NASeePqRuQYMGppGRfVUwUF
+         sXJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761751749; x=1762356549;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
+        b=ccDHaTpjatBwB3HBOP8Vi/LA4H+UuERZZE98WLVR7PmNExO17HriNLV7/b/GqbNdux
+         kexy/JjB+8CkLktna9k6o4KFQVUCmkOyKvJGdnciAI8MI31kkL5SEfDQ3wUrMHOnqcnF
+         S1hWfL9CbKlbtAxBCnR5wJY0W0jyq8aThWpTCUSy+OI/w0Yd4VGIGta1KVpNZIHFda9z
+         a9ZyusIiTSThCe0BQ9trsivDvOH1lvPcCas7cLQfe942yHjFpOUM8md5BIDimRZKC5Mk
+         IdXHxzsnWXA5AKuS9hGY+P/FQWyWpU1GiCfpHmuFhPuG6R/30bYbOmSeesGnnYQR8g5N
+         5DcA==
+X-Forwarded-Encrypted: i=1; AJvYcCWDDT3K2Bnf+576DkZ7TCD+NYeilh5Oy8WPYZrhF/56N3zemMT1J+84CRDX+5E5YKp0DigL5D+j0Q==@kvack.org
+X-Gm-Message-State: AOJu0Yyonr/b4xmS453UP1ty9tydoa748+HU1IIh2KGk8tevwcnJgGlC
+	9+N94l31aOBHr7+ftTV1/3fVrHBL4f4O7znKxVZ5LAimRfvF9EjNT7I0WN6lxA6hlZtttH62b2B
+	U59k5RK4QRa2Q9lZU0xyQFmOsi3mJ4et45nmZaunf
+X-Gm-Gg: ASbGncu9YBSn+rNO4tONaCud5tgQMtXSTfGeaWo4GDuydDZ24w1rUg+RfODIeMOZLlG
+	GSjNxyn+3UwwhutcF0KFamvaXUQGPVoKgc/emhQoUsRB1zs4XO+NjTW3KnH7qUi70FaY4sDsMT7
+	zgXKIXCCQIl9tTOCmjvPc6y+hBEQVNqFfglKX6LgP/PGrMVkvEAQqyzdgSEo1VBtnP3rBfWyl/k
+	hkT8oPIIYLVShKe5le0tKfH29MEwsGgUvHhVRvjdmGD3Sa5NFkbySKJ7APTdNZ9GGAi/sBkM196
+	j+7X3HlBnGcQbDM=
+X-Google-Smtp-Source: AGHT+IGJr15cLDbC+fbHSXbTnzvTz28tTliyWmFftwEcXMbXCQuxnWdN03oQ6RERl24adkiisnp+L7hn3wCKpUANYfE=
+X-Received: by 2002:a05:6402:713:b0:63e:11ae:ff2e with SMTP id
+ 4fb4d7f45d1cf-6404519b54emr90964a12.3.1761751749371; Wed, 29 Oct 2025
+ 08:29:09 -0700 (PDT)
+MIME-Version: 1.0
+References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-6-harry.yoo@oracle.com>
+ <CAJuCfpG=Lb4WhYuPkSpdNO4Ehtjm1YcEEK0OM=3g9i=LxmpHSQ@mail.gmail.com> <aQHLDTwwEuswvNWv@hyeyoo>
+In-Reply-To: <aQHLDTwwEuswvNWv@hyeyoo>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 29 Oct 2025 08:28:56 -0700
+X-Gm-Features: AWmQ_bmezBnR6pc25_StLvVfGCVbr2qQzQa79QlxZjsxwYQHjSt8eI_UKHmKW6w
+Message-ID: <CAJuCfpERqLpAkbK-+X32s9o2udOfLtqeoU5=9BykbucFePv7Ww@mail.gmail.com>
+Subject: Re: [RFC PATCH V3 5/7] mm/memcontrol,alloc_tag: handle slabobj_ext
+ access under KASAN poison
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
+	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
-MIME-Version: 1.0
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 817A5180002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 7q7qeh6k4bfqs565sskw6tu9ecfx6qo5
-X-HE-Tag: 1761751553-194189
-X-HE-Meta: U2FsdGVkX19EpkcccLWJwJNiL2+ywf+jZbOh+uB20ANpntuv53uWO2X66gvE/L3I47M8T71vp4wauXfhdFeOmSvqYEH6fOKoYVC3R3rTFQwv45QpGGNHlLTu8eKGZAJ6/kABN36ggE0BdGrfM/JVQqE9HKtsP9aaBheQm0S/ssIsA3VDADJRFqcN38c+AlAqVYatuvoofYbrdbvqmOex/k7yvs5LlH0E82uAm7cCS59jIzQO3wMqoDUQa4lgl9nw+MD19uqlBxQQZi5zo9VVkzlYWsAo863nZdoSpZGf7FjuAkIHPesiptX6n473aeUAHPeBoviFalQ9uI51sSLWuRVGX4JhRTfPUhPW7mwa99wPxvpqhgMl3HQmaUPKesgGbBE1tylQMhhc79MLRHEF/zpVzX9l6qx9fGIJgwEf62lnYuarZPEBOpXOCCDY/as77Bdc8JrgqnZIhiKgqUmmzJgkZNuZalbExBW3EpHuIr2UehZHoVscS6V08kVzhdGAtxlYLwlT/bDV+5vcAloEKygILtB/qnXDsTejE8w0AqHexS2RL5YdR0rvrAyhlPRLP032LZaiwFrzkaodc/QwfowJCTMqPe57UvgMSk4deC2svKNkfTkPMm6WLcUCAtCl8WVSCckBOndm1zINIxsIx/zHW7loHrGBrDBpARdZ9uCocXx1brUJLLEh1kKbmDwC7kcEbgs/XCWSeTdDKU8ZyiGFTAaUeAdqF857TOMwbcQxv5xwNyXPP26577F/+ciLnKIjLhW8L252bL1FQeFnsqFvPpt6LdOIFRHhlYZ6jQyckbgh22h8EVJaKwoU03GSda/jrgBlO3UD8KO6fbBSIUqX/Y/1a9iqxqXwiCI80roQjyMNwC4bJ4ESuXcN7FfZ0N4Cwd1oTvCEl+Agm9ETL0+BAdtdbFU3B9DkK0pubL1ZByGBM4x2W2N6KE+LEuh5QqgKMdt9wYD2sOgt+18
- uiJsc8/J
- mw1zl53Vi/IPJKwBIPYLVlbDmjHH5a7DOLSbh88Mx9uKpxCAVM58mooEwep/K1DCoWlDO/HIYZnUxTYwrLLQalc49A/YcgRwXYfRMLsn54S1fFEtVhU3uZLdYesvYU6Z13XaUIhQ7E1mAUFknuifTw7yb7Wq528Lu/0zVSA0wBU/4hgR5mrI6zkCh+KgIyOIo3nX7qubcf2uCJg+m7me2VtH48d0G+glBr/yXQ85jrWIeWDLz7N9adVU7/xNrW1XqoJtiGbwCfvhsICdWmIgzRDtw/GrhmIpAsTGsfEfy6ovUU361EwjTH1rGI7HquLzlSgED/nfka5UJIGF2CBmUe3iiyFvUJgVtT5V5UuXkssD2vheE6bQeJ6mFnsGNbE7U08Wy
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 0C667180012
+X-Stat-Signature: iwmtxjoqeionus58no3knin59aetsshh
+X-HE-Tag: 1761751750-670663
+X-HE-Meta: U2FsdGVkX1/xn7YTyd4ZgKJBMvEdAtNygbLVjhI/pFmdNxsp9vjne34VhRmAmEZi4zHH5EbAAQf8JVR6TYYfwfxoNhBlrA5dG3y/QoLTEN/3XtxzhZf98oC4zP2jlvLI/J7CFED87YPvF9SKXHkTpibT8mzFQeKQ73X0pz3zcaTrShSnH4nE+VnKDcii8erAulQATccGGlu3sbFO9pVTHCnIKLqK3KAAcP/3Pq5AGKjqPqjREDEzO+8ab31VLDolJ+6XEzvffk7/ZukY5mq7Q+JzHhbgXDTRmei8CGqHwTbyBmjaM6P5wkmbNVE0JRvpidXv6dadPaO0y1Wz8GMmucDXWwvSh4KDEb1ZVVkxXEEXJhW+cM/e3ohu3Y4hXHXdNVLhEEVqWiWj/D17pMpeOej9PcSmHfR/i0E8UOgDAgdDQHaXmqgZiGxAQGyoqOycGnipT3NY6i36SHtM3ADXssauPKCWSQhlXHtGgx7zJCn9eCkxOEj34vhhNfq5jTwn8Y21TSX6XSclbnpb9eC5YsUpPfK+57NbYuvs35elUtjiy4KsLjFdOcU/NFHag3FHptxm4rkvgpuvoeoZBp3iGBKI8jIzW2Mgog4qOTXMZxRYf10uZ7pV42ilfMyxbGzXSjNTeZnKAkIr3dcZnY9F8yGjr9JMuTqVdv2OlDqjIaoS9+KkJxXOgNe2btoC9t+M5punhjN2VfLk+rMgbIjklzhAvL7kwHdb7dQ+RhtmWYQtgVc58guUYDGaMCyouJ5bW3mEqQ4d7Q3H2idEhdLCDszbL1ONxDcRxPux2+Z5qLTB+NpYgxqej9k+cUB0ZUN+ovE6XWGI3AeMEgqrEvRddavSjn7F4LErgOQlihJJKn0Wba0vCUwXw+k2fz6dt7A2aNfazUE61ljH5LeiZdcMs8ohEHpWk2xUnbfAat1jUGurk//b/SUHq/edFUbtGDZSHZYlApGPfaZmqqUKYYm
+ /O0BkwVo
+ Ts3eRiKLKp/J/YuPZyheFsmg++lfna9aDC3Wte8Px0SniXUOrCS0dF3cl5347TRD20AsZ8BNeS17q7b7xT/aGRJu6T+cA8imsu6/xsfROO6N0O6xbYsACtGLcV2IET4whpxchX7x+TMas1dxd3SwCgIlzPGKYZqZAI/a51BrYIASkva/uENKDkiC/HM4t1xANXtcQAMUB+rm/y6UlcXDXM/r8OfLRuP0yyn+q3zvidRTVSYxRsxR8lCF6kqNKeEMgDq8kGhhaCLDP2bKwJPHDWd6CBRDXJZVo6pBXu26EL2utZ6QUgFNFmmjy9hQAC7gYOKD24a/RoI5U2hIlb8frfrEQ0iFhJmqlOys4I0btHnHpXAY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,61 +124,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2025-10-29 at 05:10 +0000, Al Viro wrote:
-> On Tue, Oct 28, 2025 at 08:38:00AM -0400, James Bottomley wrote:
-> > On Tue, 2025-10-28 at 00:45 +0000, Al Viro wrote:
-> > [...]
-> > > +void d_make_discardable(struct dentry *dentry)
-> > > +{
-> > > +	spin_lock(&dentry->d_lock);
-> > > +	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> > > +	dentry->d_lockref.count--;
-> > > +	rcu_read_lock();
-> > > +	finish_dput(dentry);
-> > > +}
-> > > +EXPORT_SYMBOL(d_make_discardable);
-> >=20
-> > I was going to ask why you don't have a WARN_ON if the dentry is
-> > not
-> > persistent here.=C2=A0 Fortunately I read the next patch which gives th=
-e
-> > explanation and saw that you do do this in patch 50.=C2=A0 For those of
-> > us
-> > who have a very linear way of reading and responding to patches, it
-> > would have been helpful to put a comment at the top saying
-> > something
-> > like persistency will be checked when all callers are converted,
-> > which
-> > you can replace in patch 50.
->=20
-> Point...=C2=A0 How about
-> void d_make_discardable(struct dentry *dentry)
-> {
-> 	spin_lock(&dentry->d_lock);
-> 	/*
-> 	 * By the end of the series we'll add=20
-> 	 * WARN_ON(!(dentry->d_flags & DCACHE_PERSISTENT);
-> 	 * here, but while object removal is done by a few common
-> helpers,
-> 	 * object creation tends to be open-coded (if nothing else,
-> new inode
-> 	 * needs to be set up), so adding a warning from the very
-> beginning=20
-> 	 * would make for much messier patch series.=C2=A0=20
-> 	 */
-> 	dentry->d_flags &=3D ~DCACHE_PERSISTENT;
-> 	dentry->d_lockref.count--;
-> 	rcu_read_lock();=C2=A0=20
-> 	finish_dput(dentry);
-> }
->=20
-> at that point of the series, with comment replaced with WARN_ON() in
-> #50?
+On Wed, Oct 29, 2025 at 1:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
+>
+> On Tue, Oct 28, 2025 at 04:03:22PM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com=
+> wrote:
+> > >
+> > > In the near future, slabobj_ext may reside outside the allocated slab
+> > > object range within a slab, which could be reported as an out-of-boun=
+ds
+> > > access by KASAN. To prevent false positives, explicitly disable KASAN
+> > > and KMSAN checks when accessing slabobj_ext.
+> >
+> > Hmm. This is fragile IMO. Every time someone accesses slabobj_ext they
+> > should remember to call
+> > metadata_access_enable/metadata_access_disable.
+>
+> Good point!
+>
+> > Have you considered replacing slab_obj_ext() function with
+> > get_slab_obj_ext()/put_slab_obj_ext()? get_slab_obj_ext() can call
+> > metadata_access_enable() and return slabobj_ext as it does today.
+> > put_slab_obj_ext() will simple call metadata_access_disable(). WDYT?
+>
+> I did think about it, and I thought introducing get and put helpers
+> may be misunderstood as doing some kind of reference counting...
 
-Ack.  Works for me.
+Maybe there are better names but get/put I think are appropriate here.
+get_cpu_ptr()/put_cpu_ptr() example is very similar to this.
 
-Regards,
+>
+> but yeah probably I'm being too paranoid and
+> I'll try this and document that
+>
+> 1) the user needs to use get and put pair to access slabobj_ext
+>    metadata, and
+>
+> 2) calling get and put pair multiple times has no effect.
 
-James
+Yes, I think this would be less error-prone.
 
+>
+> > > While an alternative approach could be to unpoison slabobj_ext,
+> > > out-of-bounds accesses outside the slab allocator are generally more
+> > > common.
+> > >
+> > > Move metadata_access_enable()/disable() helpers to mm/slab.h so that
+> > > it can be used outside mm/slub.c. Wrap accesses to slabobj_ext metada=
+ta
+> > > in memcg and alloc_tag code with these helpers.
+> > >
+> > > Call kasan_reset_tag() in slab_obj_ext() before returning the address=
+ to
+> > > prevent SW or HW tag-based KASAN from reporting false positives.
+> > >
+> > > Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > > ---
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
 
