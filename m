@@ -4,96 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D7F4CCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B379CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:46:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69CC58E0048; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
+	id 5BC7B8E0049; Wed, 29 Oct 2025 05:46:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674BA8E0045; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
+	id 5945D8E0045; Wed, 29 Oct 2025 05:46:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B1A88E0048; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
+	id 4AA808E0049; Wed, 29 Oct 2025 05:46:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4EAE88E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:23:55 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EF51649796
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:23:54 +0000 (UTC)
-X-FDA: 84050614788.24.2F56A7B
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 20A7D4000D
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:23:51 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GA03knUk;
-	spf=none (imf04.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A498E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:46:00 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8F31D5B698
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:45:59 +0000 (UTC)
+X-FDA: 84050670438.14.A661382
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+	by imf17.hostedemail.com (Postfix) with ESMTP id AAEB640005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:45:57 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZYWlO6L8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=hughd@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761731157; a=rsa-sha256;
+	cv=none;
+	b=CSWL04Wt4QH5Ke/5Bdr7plibrmaqP10oisMZHOxmx0nmjCfNl4NC9HxA9O3KFb/lHP63Vh
+	ROX5gE7hOOn2rGm4JrjBGO27HkM/d+w5mOK3vFDDchsCrknyJGXcO5gKTk0HbzzwYlKWYL
+	HjWpSgVzwMlpJDNdnC4y8/UHt/t7hic=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=ZYWlO6L8;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf17.hostedemail.com: domain of hughd@google.com designates 209.85.128.175 as permitted sender) smtp.mailfrom=hughd@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761729833;
+	s=arc-20220608; t=1761731157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3Ih05HK+8ZsKOo5cQ+utqVaq+hUnBg4xFJaxP/XkN4A=;
-	b=62y9zNcM98psE037YVSlbcIRRnUBI0yG0+KuwUxObVpgkAXvOO9wdiLu6Nj77AJAeFnHC6
-	pTUVsfSaJi1bjkeU7XR/sOb0YTk1wwaXQ4Kd9wSX71j8mHmLkET1XcimisTe+XJfnjv87o
-	JmbjiyPWfUGNzV55ni1UmnUWLtLJSjE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=GA03knUk;
-	spf=none (imf04.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761729833; a=rsa-sha256;
-	cv=none;
-	b=xh08rqOuldT+jAahdVRHQMKGu8C0xA73xlZAC7+l9VloRW3as4nNES47c8gzfAJG/za2RR
-	oww1OC7WL6UGxFCxqGwvFw+4HCcODI6y3KH2VMhSnAZKsC0ZVMRgho7TK4pRS0A5HLaZHX
-	nKMPabfH5E/HVv7w7oQGcONFWa76jm8=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3Ih05HK+8ZsKOo5cQ+utqVaq+hUnBg4xFJaxP/XkN4A=; b=GA03knUksWMuLiHmkDJ5EtiFSg
-	wtcTt2zLP5rdVxMJlL5t+2bQPR9r1FAu+7TxdPT1FZoVd+9zZqS8DvVU3U58tlcANQo3Ijlxm29r6
-	BIL1s0m3nl0Oj5zeyYWGYkRZrAQgYCgg7EwQeFKub1LK86Uy5OSqSsuBN38/AYPS3gZpPXq24K0x0
-	9hFELXTlQiy0mJ1/LIvBFNKdrwvGhc6WAtCupQZEw8eVo10iVBdtQ2tvC/JcnCTHrsd578Gj8mAoI
-	DiiBs5ov9+QgkPuCXSJMAiWBqFr+vrzwt270IQq6w3w9rvz7L7t9vBla6YL+/OiGk39CXMbQYj+eu
-	RZXfs7tg==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vE2P5-00000000TeR-1TcB;
-	Wed, 29 Oct 2025 09:23:39 +0000
-Date: Wed, 29 Oct 2025 02:23:39 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Christoph Hellwig <hch@infradead.org>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, alexandru.elisei@arm.com,
-	peterx@redhat.com, sj@kernel.org, rppt@kernel.org, mhocko@suse.com,
-	corbet@lwn.net, axboe@kernel.dk, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, jack@suse.cz, willy@infradead.org,
-	m.szyprowski@samsung.com, robin.murphy@arm.com, hannes@cmpxchg.org,
-	zhengqi.arch@bytedance.com, shakeel.butt@linux.dev,
-	axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
-	minchan@kernel.org, linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev
-Subject: Re: [PATCH v2 0/8] Guaranteed CMA
-Message-ID: <aQHdG_4yk0-o0iEY@infradead.org>
-References: <20251026203611.1608903-1-surenb@google.com>
- <aP8XMZ_DfJEvrNxL@infradead.org>
- <CAJuCfpH1Nmnvmg--T2nYQ4r25pgJhDEo=2-GAXMjWaFU5vH7LQ@mail.gmail.com>
+	bh=7/9ZZO0rhubaMghlPDWYbVAhM+q6Jydtc36d3XX5xX8=;
+	b=Z8PNhaG8oPz/8GYuYEXT0U/G6FQWG312pZD9oe+mW4M+avQmjfS8T5ngg5YdbAhLFMhS7k
+	RPzUxdl5ny8a89iA5yF+n+QZ1Wtg8vLX2yj8zOTptvpPVYYJOJYqLtYbrRxHDF+sR+ug4P
+	dRsj6RkiRFngg6VQ0a+ulrPzH7rDxHQ=
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-780fe76f457so70725417b3.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:45:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761731157; x=1762335957; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7/9ZZO0rhubaMghlPDWYbVAhM+q6Jydtc36d3XX5xX8=;
+        b=ZYWlO6L8AEfsPRhJEI2B5n21jsePg0qJ0tKObnv3FLHt0nNT3frGXpNRwiC+Nqx8cs
+         auymkD7HVD1EMwFpkSO/mDfPZiek36THplhEdILB7WFr0TYtbwgJVuUF2IbzKWOYPwFG
+         t5+Ixe5zBM6cUfi4/kvnEAsaBoe3UH9fYxnrICcm+UDPisvTAXiPF1/wEJUhDbJZKWu5
+         0m2/qBPahBVnKPkeyAAJ7eDzeTIxH7R4XB6dW2pf1R4al3UDKQshG4qP9h+YFfV4dPDY
+         eT6QrFsBFnycLpB3OaTqYmOL9D/+iniM2AP7PlA/dTcM6PZ0nA4jrswGIRQnAlD7QiSZ
+         qhxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761731157; x=1762335957;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7/9ZZO0rhubaMghlPDWYbVAhM+q6Jydtc36d3XX5xX8=;
+        b=pYfDz8rPW/yBQyjvGpjc71l8LYme0Vu1eBMXJdcA8KrhlcJPC01xFQjCQPWbGISTdN
+         qqOlYjZMaL+Dgl0XKk9A1Nj1wfuk5Kco8YmxEqMbM08KhLWepv/jIh+lraiAq5FPO+vT
+         pUV02G8FTn8ejuolGZeloEGFtWsx9LyQntgzQcmQyV1YHMKevWPbBbofLwIwSs9sZkZO
+         FQBN0NQN0HaUKJYTgCUV7InG3PosxUGpBav/IckauxGqvd0QRCPzLlbzFb3AHAgm9cho
+         MaLW334wXz7EaeFNHEign0nHpg5i1zJa9OJrFbN8HEqpLJgNcqCHkux9U2CXREB4DQXq
+         96WA==
+X-Forwarded-Encrypted: i=1; AJvYcCWSdOCrOasTsMPaAO4NIS1zGah7vyvlXT4hFyAc6c8SRyGlBR4Ctm6N0hxbLJMKdXCnWR15gbOkGA==@kvack.org
+X-Gm-Message-State: AOJu0Yz/ja0qhiN5o0PFKZEaMg+tjvWoHP9K+1pflbem0rFBj2HJJgbE
+	hnJV/w7YvWJEj0Q+B508Vdu7hJiL95+b2WxqiBZmJLSSaB48kmomJyHtzl04ve0LVQ==
+X-Gm-Gg: ASbGncs1kevE+DlKtRMjLmpEeQhPCscyQP7XlLJWFa+YK4q46cYsSu4BJ4MeUi/n+ds
+	f6UTM1YlDZbzNDzASHfRyQnej6AkJEy+2Y/MysXzk/1dTq/B77VV1UoEdOuE6BZ6FmVhefccVhi
+	tRm0t2rRTSRj24wKq5kSTHVKntV0ODoCBaOqnR7afLgKJZMQzGGcZt09znqjK5Wr6srg7HQhnle
+	jYU9z8vEzB/FFh3KrawI/X4ZbnETu48Dc2zCM5b6BgnI1KU352WcrNdFl0Z80D4nbVM0Vqtr1XW
+	7z8egqwEOvwonxVrRn3sSm5jO+BVJ5SZFPpJcIxG7eJNKFs2zUtf2lJVaw5lot/ZX+XPzdb64fd
+	AB36XdLBzJ08WtqXcfCFqOjiH2u3ZZWPOOotFuM5rl9GJZRREEPjYnIP7As7k/ddNhxRYkrI4fq
+	vPeit0Fx22Ex+D2+DlFBFl7wGLELnyZrMTSSmTTwCQWancYMekQpzvt43DtcjB
+X-Google-Smtp-Source: AGHT+IEeP09fuX5a6/tVT4haAmvdF3K7vyTy354JjeQP1tfCemInfRx1yyo5g0HaztI92HwXX6vV3g==
+X-Received: by 2002:a05:690c:4a05:b0:783:7081:c479 with SMTP id 00721157ae682-786293b13admr37307107b3.65.1761731156381;
+        Wed, 29 Oct 2025 02:45:56 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed199f95sm34481207b3.28.2025.10.29.02.45.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 02:45:55 -0700 (PDT)
+Date: Wed, 29 Oct 2025 02:45:52 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+cc: Andrew Morton <akpm@linux-foundation.org>, 
+    David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+    Matthew Wilcox <willy@infradead.org>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+    Johannes Weiner <hannes@cmpxchg.org>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
+ beyond i_size
+In-Reply-To: <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
+Message-ID: <9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
+References: <20251027115636.82382-1-kirill@shutemov.name> <20251027115636.82382-2-kirill@shutemov.name> <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org> <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpH1Nmnvmg--T2nYQ4r25pgJhDEo=2-GAXMjWaFU5vH7LQ@mail.gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 20A7D4000D
-X-Stat-Signature: 531i9rs6u4oy3k5foga4zb1bjzytfod7
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: pw5dnyrz9u84ddtjnnixhhue1qz3mt41
+X-Rspamd-Queue-Id: AAEB640005
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761729831-763998
-X-HE-Meta: U2FsdGVkX1+0e9mM9GLQtymcTzsG2A9rfjOdX+Yb5NGQ35rrYamTiDy3Jp3rgMzIb3KOeZi7Vm9FFcPFTI2KzrDg2lTGoqsygKs0fQ1izZZ1nPlUpmw9nMZRp1oE6j5d1DIZ0DCX1BJbSaWam39gIeRu2es1wLbNLKhk1EnUbVaxbyf94hqsatp8Z+Dcb2yGIUuOYfZ/jzRqDeA9WWnyPPxUHgwhqouscMjnSgCZnk5kVvBSybsTbBGJDrk5ng1iAtt3sacLBE2l5+0HtXQ/KSG4IdmY+YITylA1XHCenYToU5qoEZOSIjHbiv4OPp4Ju4NqF60avMpo+4OzTI9D39xSmoDn8s/MOhZX9a5EEF1oOUEsOW3L8smvGva9jipGbfyShpuMeDHB4gJ2fi6/Kl7882uKoWyRBZug+w1WG/xpzbgdN3OGN2zZbMCFhKcIGRDJL5g5Dyl99XRD+M65gHYlc/GYu1ztf2stvC9/qqcxFS73pksSD7r9B81nOBRw1KOxrI7usNZua6iWEIc/JNzVTJ/XVqH+SlXx+3R8iS2499qO/UKBRpX+pLGR957oqElmBH8PYRK0EeFifBg5j+FGksMbKreYnV2S1z2Y7vxBHhDAfCimyrFFP51OkVoNVJAMf/StZdS9AR5WbX5BVXogm7YvTMrvtBT1K4KxsRoFq/p/t2lTBLth/QqxIG/Afg8FaBJ0WzAtQNwwpfqMDcwO7oJC3p7Oe6dI/eNs08YsWVAdcGydoJx96QUA1l+v8eaNG4wBD6xn8aYGrh52wZnBJrApih9EI4BdxXOesfPO9TY9uCEfsU0mIgLnrBnkD1TKcmhajIy+/wouS1g4s7KrEFn23QCd/a8xjfPdva10YLxaLiam3tgoVWbIDALo6PTPajfP9SxQkdX3EpVhMJzqJ4yq4xx6iI2j+GjlZPf41FT3dPMWGe2LD4EkakWAv2VYSfyCmShVxUKMkFu
- 0K3euXvf
- gduAkY6IiiF9Z79ZPJpfh7TQOiw8S/8htQs2J3tB5GEEtmBpA274OdV31/AfyDjhthAyKqmKSHwFFuQ/t68g1zxKEC9adpeDQBc9ovFoLV7viDyhEKKeiJXKGqufCdXlvzQMp7NTexk33oJTX41SEGZ89wtyU94tNM15z1cM87bMZ6Ae8ufupXtkj9QatX3sIcDt0iVvJ+KREBBmFA4cLgQ1VJ75VzLCmDg+lLxN9dsuqIsweAhuYyMyUxH4t3CDukimWE7sD6tk1OJnJnNJgG1Ud5MIpwF6bBhOmvrJhjO7pILFDqGxBoIajVxp8RCB64ygc5S3Q2Oo7C40MLjClRzFEfU2jxNzdnZ6P4Ng+pI8dBpyRE6CiW+/FlJMaeiWzhR6nUKaZCSoOXaKLnOayPwcjQFQDAZrzI8P6o7eeHhsqnsLettFKVOkrt9R7fBnm8VEd1D8Ff4lkBnIP7hhKJJkpXfP9M1AzvkXiY/wWWD9Zs0TIYnmDjn/mbtbl7QxznXrtuToIjNTW15lWJ6UYMkrXHf31dyuFSBj+Zqr4Bb/5ibw=
+X-HE-Tag: 1761731157-290614
+X-HE-Meta: U2FsdGVkX1/8WPGPMu9e1NR9tuFk1VcZXAV9PhqaWASlETwRQKTMhlv0Lt1wE2jxFDLzIkKIMPmB4kIM9Fcrz4UOJzcq99aWgRPR620YtQflmANLRdpybdIycE8Se01Gvi5cpQx1LUr4YYwisP5K2ZPhoN8C0mf3POOlqMM0w2HlmesaqHI34LYMBNpEF8Cju3hAu5Ah1geh56TtbnRUruqbmALGQWai69GYru3wt+YfVEGvPX66T3FRud4R0diKsOLfYGUxVW8dGYOuWTb/nZw7iqregbB55HFEQHxEdLYWvXUTX0nO/7/JxYaRtVpuwCpxw7tuBoOv/r9fH45Sche7QtbJQAklX3m4eiswrDs1YYvexcEGNzo8/Xh/F1E+/qcDfnG30gzJXjIXMcRk2+y8GXRMUKJc1ZSG+18Q3IrVR2eMHYA78vo2tTNMa7eFD4bBAWXKeuEbbAY4KgQe6vz64hfnvNffYFFTh8uEeFUOD01d6uzchHyiW6a04ZXeshImLVtPY5v5VttxvkLsGyPqPUcfunH9Q0OfTAkOREUMOCksfxn4btF5dfgJ0ERkZ0N7yf/+jELQX0geCpvV7tSQvHnK6fxvVjXyMwR5BnoOx73zH0cPf3UMC8kCwitcM2DMObF2DqHNKmkBTqAmkkoeIuGrFu1kg6vfaBo3j9CVEPS0F380tBTghvV0YtGf1SgTaG6wBU7YOoo+2RihLofmi247A3annhp8W0vlOeOrvIA5rzA2uyKrg9jpFFCIEI0xa3VS3ytnhBENarEgaJC++qVP3hfYjUk9pAMg2h3HUVCfMX1NoTSWfIpBRWfQo+T2BIcKkXyjfX95XntpTCfith5KbKN+TTWbgIpBKWSCQLfQs5KqLhJ9r9Nn2GBkv+wHUfLaj+UvF98Xf9GdIgoVimif3XP3lMWv+ndkgYp9yO1kHNE45H3V7ejW5YvKvWid+RwzMN2titmzzFL
+ doH0J2CV
+ I9e1p9TZcEIF/3JVOhjJKnQHUoSQCd/E9GCj4jkzSwe6RGnI6ZAWIpOzf+GfCnH+yxWF1NNZ6pbdh+Y91iWuKPt9TWZ4Gx8SPVTE3l4hqCpBhuNTeLNurgDECGM3MVifFTpd33joOJo2QsXMLBeKXQEyRhj/aTbI/cYkdkZte4OJ+uKApmm1SZNmTUUZ2euRBpC2+hnI34mfFF6FvgFNtYHO3QAhJuHcK657jHfV5E3+p87WpJXkmM5powzf5AA4mlA55RI4nIM69bVHvK7KkVwaPaYpHdaQMpsxyYA0Y1iiFRH7RHh208siO7UAoXAqO+IviyMaWVDJ8TA9CWsinaXT9499ZQXaOUs5LibdBd5Z7z8lKG+J4qg5DbC1ZwJ1m4zNMnseIyCoLl9YOR+/HDsKCofzbkDx68iVhkxF0QCawSY60Rxc8kaA+Tw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,13 +131,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 12:51:17PM -0700, Suren Baghdasaryan wrote:
-> I'm guessing you missed my reply to your comment in the previous
-> submission: https://lore.kernel.org/all/CAJuCfpFs5aKv8E96YC_pasNjH6=eukTuS2X8f=nBGiiuE0Nwhg@mail.gmail.com/
-> Please check it out and follow up here or on the original thread.
+On Tue, 28 Oct 2025, Kiryl Shutsemau wrote:
+> On Mon, Oct 27, 2025 at 03:33:23PM -0700, Andrew Morton wrote:
+> > On Mon, 27 Oct 2025 11:56:35 +0000 Kiryl Shutsemau <kirill@shutemov.name> wrote:
+> > 
+> > > From: Kiryl Shutsemau <kas@kernel.org>
+> > > 
+> > > Accesses within VMA, but beyond i_size rounded up to PAGE_SIZE are
+> > > supposed to generate SIGBUS.
+> > > 
+> > > Recent changes attempted to fault in full folio where possible. They did
+> > > not respect i_size, which led to populating PTEs beyond i_size and
+> > > breaking SIGBUS semantics.
+> > > 
+> > > Darrick reported generic/749 breakage because of this.
+> > > 
+> > > However, the problem existed before the recent changes. With huge=always
+> > > tmpfs, any write to a file leads to PMD-size allocation. Following the
+> > > fault-in of the folio will install PMD mapping regardless of i_size.
+> > > 
+> > > Fix filemap_map_pages() and finish_fault() to not install:
+> > >   - PTEs beyond i_size;
+> > >   - PMD mappings across i_size;
+> > > 
+> > > Make an exception for shmem/tmpfs that for long time intentionally
+> > > mapped with PMDs across i_size.
 
-I didn't feel to comment on it.  Please don't just build abstractions
-on top of abstractions for no reason.  If you later have to introduce
-them add them when they are actually needed.
+Thanks for the v3 patches, which do now suit huge tmpfs.
+Not beautiful, but no longer regressing.
 
+> > > 
+> > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > > Fixes: 19773df031bc ("mm/fault: try to map the entire file folio in finish_fault()")
+> > > Fixes: 357b92761d94 ("mm/filemap: map entire large folio faultaround")
+> > > Fixes: 01c70267053d ("fs: add a filesystem flag for THPs")
+> > 
+> > Multiple Fixes: are confusing.
+> > 
+> > We have two 6.18-rcX targets and one from 2020.  Are we asking people
+> > to backport this all the way back to 2020?  If so I'd suggest the
+> > removal of the more recent Fixes: targets.
+> 
+> Okay, fair enough.
+> 
+> > Also, is [2/2] to be backported?  The changelog makes it sound that way,
+> > but no Fixes: was identified?
+> 
+> Looking at split-on-truncate history, looks like this is the right
+> commit to point to:
+> 
+> Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+
+I agree that's the right Fixee for 2/2: the one which introduced
+splitting a large folio to non-shmem filesystems in 5.17.
+
+But you're giving yourself too hard a time of backporting with your
+5.10 Fixee 01c70267053d for 1/2: the only filesystem which set the
+flag then was tmpfs, which you're now excepting.  The flag got
+renamed later (in 5.16) and then in 5.17 at last there was another
+filesystem to set it.  So, this 1/2 would be
+
+Fixes: 6795801366da ("xfs: Support large folios")
+
+> 
+> It moves split logic from shmem-specific to generic truncate.
+> 
+> As with the first patch, it will not be a trivial backport, but I am
+> around to help with this.
+> 
+> -- 
+>   Kiryl Shutsemau / Kirill A. Shutemov
 
