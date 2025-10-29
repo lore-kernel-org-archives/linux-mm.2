@@ -4,172 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19838CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:03:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D7D94CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:09:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6F5E68E004D; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
+	id 3CFBB8E004E; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6CD3B8E0045; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
+	id 3A7AE8E0045; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 594D28E004D; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
+	id 2E4418E004E; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 45A3D8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D91CD140805
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:03:27 +0000 (UTC)
-X-FDA: 84050714454.09.C2BF448
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 567E640011
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:03:25 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VYEceeTV;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 1DB148E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:09:55 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D48E349E1B
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:54 +0000 (UTC)
+X-FDA: 84050730708.29.04B458D
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf21.hostedemail.com (Postfix) with ESMTP id B8AE21C0010
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:09:52 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761732205;
+	s=arc-20220608; t=1761732593;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
-	b=Ruxb3KRkTuwcsSfvcPIJDw6Dyht/5a0Zf6bkMbeQdA8zds9/2TCL/esYVpgfVZulgAZZhS
-	1VU3LqRSyaXKwbCyIxYxrAXH6dU6eLcPQ6cj7DTYm5LMj5dxT173cfvmp7hD89VJMxHJBM
-	nMywWQYNkjdAd1iWYNQ+DrK/fEsNRso=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VYEceeTV;
-	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732205; a=rsa-sha256;
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references; bh=bJfGjK3V1rq/s5b4GkcHwtkSApbbfKZmiwKdVtvTU7o=;
+	b=xsu1SFIDjX18gL/CVpnvqxnCzOy9RHVkj2KLMjYtdKro5GX3NZQzxcUVZCG92d64ywXzmG
+	/LuxAIr3JgZxfwdyAeerS5Qid7iqOHy5dgUFsqAYyQPUNcGVatL2sBEbHdz67gCZC1Ycyl
+	mO1jkGJJU+P5ysdMpEajyFikXts8BNo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732593; a=rsa-sha256;
 	cv=none;
-	b=xXS/ASEx7xS5Ihckgop3TtETGQX19mJrxyGxCzqzhnvEMoZMT4x4xEpL0G1vGZYh4G+8vW
-	f2u463UPJoezJougDIC+VQ0xoCzjrlF6jFtVpTODjZd+Cgmok8qjSopEIdsJI8e1vQ/JfH
-	YyzmdUUIS/Y7PIbFhQSlbA6JBjTorRQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761732204;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
-	b=VYEceeTVRV65mF3O2GENFPIlY6jh+L9pF8cB53BRxWC3iNsHBszOuxc54uNTvLA13qtwjV
-	1HojKZaC1RLZgNecLh+sv6RYdB4dkRkFg2OGsc89HdpwaRrU6yWoipDO9vxYfYKfJYFGJJ
-	VO3UkADmVpg5UG07HnYgP5swsrbr8xQ=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-500-7ljYW8UmPhyXjLe-D8_u1Q-1; Wed, 29 Oct 2025 06:03:22 -0400
-X-MC-Unique: 7ljYW8UmPhyXjLe-D8_u1Q-1
-X-Mimecast-MFC-AGG-ID: 7ljYW8UmPhyXjLe-D8_u1Q_1761732201
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-427015f62a7so3302567f8f.0
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 03:03:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761732201; x=1762337001;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
-        b=U6dPKS6BXyBV4QZNXDahyoAPQqdoayeiNg5ktZPbTM01pdajzfCUNEA9jycH7KGFux
-         UuRKSGFw+jmZhgmkKLSnLUn1fojIgkKxrlpX4AQp9yqZuzXUaUbvZlSApMrR8uLTT5tc
-         0BZIlwTofhaH2VlL5gdb+P8lP9YwYa9qRPVdQ02tpq21rxVuSS1/5D0RURl78Y1pKoP9
-         nTTwdquBk3uYUdXKDb3XpAY6M925PM0Fu+MlPEXwdtVLN/QcVZwtarSCctZWnm08+HSW
-         Wp2eYBdmcusx8BTFb1yACyaCAjf7Zzql0aUTBotSRjkt/svOsS8RrNH60qX2PZZuT/S7
-         YkRw==
-X-Forwarded-Encrypted: i=1; AJvYcCUANGq7c9Us8CIqpvRm6nLHfEQvB5IucUqsYgrKuRhaOh4cZLk55I/43zubsGMcyTPDSQ+yPjg6tg==@kvack.org
-X-Gm-Message-State: AOJu0YwyM1Zb3sdi0Sf5xYO8x/yfLExUSkPjWiVpJXmlDZbO3I2HDlWY
-	SnzufYVkrYTuq/AsrT7wO9nZ+sW9yCwPrSOtT4rXHlnNcxB9NqPy8Kl1kdI3vO/XKf5Sh+UIAI0
-	WS0qXbAb7FdvahiYYOz2fNN4PyqN4rQaGQbZNT5BV3Wa2Q8KJ88B3
-X-Gm-Gg: ASbGncswWx6xprjR377h2JSZo7eRbQsUH1DNUZ+sBAs43hw1zPhDBiOCy/84iTJgbUp
-	g9qWFbInPC7m2gaZOwBa9X3NAlGKAftW8s0a7o/pzqisVrXD4trmA5q37bMneFwLREHgUlyC4dn
-	zEMb9IfRLs2/xLGpw6EW26YcTYdP8Pfs6o/cqmZnN45u3lbGx2pRTsGihVK2mQRpHbmjVpqgCFY
-	IKgmasyHsOPllL1dM9wkak9IHrigWmDNuHf0/vNQV6wBn/s06h7yl5ji0v8S/PxeOgtENkbJBmJ
-	CnjdKhQOuTrlP+z/JKiYlY3SclYXa3azeHwKk0iFx1Qse5L9DjkUy167ihIkOEdddRCc8V4Px9t
-	kBUUhnqhcln0tS/tlDijl2w==
-X-Received: by 2002:a05:6000:401e:b0:429:66bf:1463 with SMTP id ffacd0b85a97d-429aefcf5a7mr1864160f8f.44.1761732201082;
-        Wed, 29 Oct 2025 03:03:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEhljWIvbjQXrTT0ZcTSN+ZEGtAmVQa0mTp2gcq9/yltWmwcEjiu9nE5kn8XdaFT0qYfkxXUw==
-X-Received: by 2002:a05:6000:401e:b0:429:66bf:1463 with SMTP id ffacd0b85a97d-429aefcf5a7mr1864123f8f.44.1761732200603;
-        Wed, 29 Oct 2025 03:03:20 -0700 (PDT)
-Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952db964sm25517336f8f.33.2025.10.29.03.03.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 03:03:20 -0700 (PDT)
-Message-ID: <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
-Date: Wed, 29 Oct 2025 11:03:18 +0100
+	b=sM2QAv5sRfnZ/vHmxg/z3WNRsD7XQT/vSXn2OD2JA28p8ymQXo7ytyJJ5sT8+GGXAAhTbN
+	jGhjxdHIuuYozaKpgef7opUNUw2PfzLw+2rGmocfC2Su+MWIXt/scNGlwHT+QbQljJh3k3
+	PiK6azt+HdYuxF9OeJEFi9G1c+wo+bU=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	spf=pass (imf21.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D5A201AC1;
+	Wed, 29 Oct 2025 03:09:43 -0700 (PDT)
+Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC8B73F66E;
+	Wed, 29 Oct 2025 03:09:46 -0700 (PDT)
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+To: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	David Woodhouse <dwmw2@infradead.org>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jann Horn <jannh@google.com>,
+	Juergen Gross <jgross@suse.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Hocko <mhocko@suse.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Will Deacon <will@kernel.org>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	sparclinux@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
+	x86@kernel.org
+Subject: [PATCH v4 00/12] Nesting support for lazy MMU mode
+Date: Wed, 29 Oct 2025 10:08:57 +0000
+Message-ID: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+X-Mailer: git-send-email 2.47.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
- alloc_large_system_hash()
-To: "Isaac J. Manjarres" <isaacmanjarres@google.com>,
- Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: stable@vger.kernel.org, kernel-team@android.com, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251028191020.413002-1-isaacmanjarres@google.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- qIws/H2t
-In-Reply-To: <20251028191020.413002-1-isaacmanjarres@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lVRGnFe0EQ62TbMcUixJLkA5VnujwlPhqH8YKZsq0LI_1761732201
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 567E640011
-X-Stat-Signature: mcujp1hq5w7mo3txk15wfddqcejrx5ba
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: dhioswn673ojra8jiu44nxtn3a8e7iqj
 X-Rspam-User: 
-X-HE-Tag: 1761732205-738811
-X-HE-Meta: U2FsdGVkX1+yKdntLrDQPr1mvem97lvD/cP4P69WR/oUYxXV4DVrl2Z+HrVWr+ExPD9rIcbOzr3SbLKYkeTZc0C6gFhaR6caG67JV1RFSWt4oiY4jQsClS5yQ2vryzP32LQm3uunguh76FCtOSHjLO0Jb7LyYF28Gl43i1Dq4TlBs/Lp8QqS6Lk3D/bAMBkHqagCKhF7+DdnM15/mhKcN+W8awzdXqbzVbkjzZA6Fafg8MJN6GmujCEFNMgz03RqbA8z+blo+Ch/Sew9cMSlVzRA94geOKG1kNyXEpD+KYSHLi8Dd+Xfvj1Nn0NVCWqpHxvGlouhrNpqHwD+Z1sXKD1cyiI9GSHTgRC8vuESAVtSEA/VrE7MLXl8D0s5Tp8Y19JKFwUfe8KMOusCLQiECNoiEXwGRJqkw/ohcyvJ7Hf1i4aGqYYbub+TVK+vEAQeHmvHKbbKP8WCV9y+FQLncS0oOXMUnPlmsjBPfG3NE3wyMkkDMWRFjs1xE0gV1ak+jpyvRjso+tdbyoCGp8xwt4NdM+XzNlBt4+sKb5DoBvWK/dTXNcz5U9kqGe5uTMOFpxxUKhCyPbRaSB2t5i8J5gp3VDEJRh1J0yTgby3xc5634mxJWWyZpxa7Ijqh0d2OH1N2fGIiGCra0fnD5AR8fgfjdEm/fivUZ8R6G7o44RrSg3cTsvxEiRkrpqZLPqAYeh/xv4ZjttlnR9Zwdma3f09kr4/LGEL1M/cIjg2UBQwbmH1uhK9gZ0ycuQpS6QpHztW5QyMaGmYS3pJuAfVaovTo5Yr6tmbkn9jfJwcjP669G2hX3cLs//GBIEpwyGr3+UFz4nctBu1U+XacYHcIyI0k5pcdiO9jmAvtnORvU+fpPe5hdn7JRP2YYGCwPefBTwvS9rEMTWiqpsbFW3KkDXYa8sC6Z2+uO/BwhrvZOsyw/eOWNlhDi9O7ks8YYvQEsSnUI2HlC6igDig9sF6
- CpMk3Tzc
- CUb9Ew0yfqW8f/OkGEBoy8CIjBPLJIfT29+rvYgdlTcJtfznXMuVNGEnFMhyHIJDXjcpSCki/q3c6b2IbE+5t4UDf5Z2dQTALsWwcj5QikfW2idNXjqtYigngZwkL+QR/K61LJszgOb3GiARpRJ+uhRYwz3fBNlDCeaLJZXE9OWB4VhaeFxaFvUrnsfwoBBswakG8mmylszfSfcqYvVN9q7+YwUUN5reTxbZI2xXfMplyigAr6FsFExqiN9hr4zs5PTmMA0d92vHvbNNMsedltKx8zGtVerKEW/L4VD/poPBq7teDZluLeWReMG772ALUMGRups6ePYsYS73pDaE5BVDPkaRte9wCzRI/itV5734ul1s0UA94kqe6wVoMWmdeVO5b5ldy3ytgzjqCNHNO3OPpuZq/MnVZSqRJVzMQjIFfxTYyextYznUlgOgv5feA0aRZ77dfghY1K7aZ9tL5QWYeLqttKDoV1qIZY5Vdl5ICl0nPdMi1GU7RTTDZEAg1z5Aiz5iiJJY5pjlqt/Tnq2znbk4Ulye8hGq6Bn1dgzUN818+yTswmwco2VbfRT7ql3iyUjThtMfSpvvTkad8Hg5m2yOiwLjUwPxuy0jFVUSedqu9P06fEibBOA==
+X-Rspamd-Queue-Id: B8AE21C0010
+X-HE-Tag: 1761732592-109527
+X-HE-Meta: U2FsdGVkX1/MSEfGf64WiZKaw8i6JEJhP7ZkqD1LumKUnxZifhb5RM8y2O3fOA5nQDolxnHIqP2g6p0hEyZedbWA2yTPgNqM7HK32W0kiiTH3mqCiMXfP4pQxE0F2h8w0LHJqlHrltZfw4CDCFYjiiiQ2SJEFMn1yNntl6mg/3T2uREY3lu/NqTqOQY6QrnAf27y280Fx5JmO5jmvboQ3cu4e1fWaRDBiIzM/JHE3XhM7+kfANi0oPN+nTKAT1agywoi4a7cvnC/VWFd5yfklb1Dlb4TCkrrC4VmNRMDXBlJ/036dEuVcn/6pYPb4C0LL+iT7YFCnePeC1pAMGhWiwHcg8TpyQtpPXdUtMQ5lMwO942k9yATuNpqULyn3NMlF2m6TwfoyhYh4h7+NlFYtA5gGt8fSyUOsSINkSC2v5t9qEE8rDKvKybFts7VE2IRkpHCqW0TURntoiikeBkR4p+48EDbwO/3m3LhbksS+b9WvoZejDXz7QSDbM56A7S23bAipy3yWf3dqJERxx1Rx/ikYHYdC/YmD66lmyQNopHaQJoaCryxvnARNFyDVxM2QqTHH2nlzg7XltKzHyTHJUVggLdE6QxpK93xGTmN1jl5/UUGkUQHn9duRnEPQiuLVahFW/7MDjssJX07qmYEUOHtd7zm0c8TgQyNrb7KuB+QLeZ80K4pnhRXOp78VUKZHLtRWtuhLAw6UWWBxXzFykBTSMg9Bnhf7iE+pxfpMLoLvZrfR767fCJFA0uXcB1dZynacs0lZgFsp7k3LPeSl1/uQpxHtiaedchhtQfVr9+B+o2qidlCpslcmehTtFHK/YvTfUErwHMYcUsgu6zdfU5DOPuemI3REUV8/XstNp5DiRSavn7kHCWEIcnbSOPTf4pUdQ2zclUhr15BdO6TuWHY88hNNN7SxTWbWC47/pVwRYJ9EVFVBt88b5hCeu9x1XFQKvqMfUNwDTL833R
+ YOlugYhd
+ Bsk1AaHytZUOOXs5I9S5BO4D+ggIG0sYuTqMypZK7wpX4FT7Hmf2DvCvtNMAIBhjg2kxh8J2nLcWTfKsH4kFhi2+eIbSMKz+jVFcmIHipmc8BTp2cz5ZbwPCEV+URDZZ4dPrRwLbGpIGfAZfEuzrsH3HHLw/JXtTdYyOUb9T6H0zyKVecDKRdSrsRLzGnZVQkMqSQZOKsvFpth63wP05HB0wpBbmRj1SAQxID19HULYrjV/AZy2RTkD/90Ysr5CU0wJG6p4lhQFatUDvz2xP9m6n3ZevbRtR7CXxQWglIW6e6SoCVN8a9y280wM2TtHoq1cSrJ6mcjlcRRkZr7BkQzlmC2xyq+egy3XVVyfsrM/ZX+ioHX/N2f1CDXzFVEutgR0m4aueudAiVgKRRiak8Uly0zH5GUUnrWCCVvnqLucFln1g6DQuHVaZgBkDGV1ebbLtN9grEs9eWt/PBeohr8x7dgt7wuXxTo/QrMNuY1FGDbst4nCa1+pEppPwfoGulxUKSzjkDs1PVTMQId9vCW+Oc6RruABHWduXzqh3fHlAIOWrhPMPSUBkwZ5/dQoaoWw7KFZH2U/sJNq2+I5iZ0ljFVvvQPMg0KLt69Mt5ejrBHSXCzCxjrYaBROZ/F8iu3gYyD5Ecd3T8fxck4ho/E1PlG75oc6ExagcDTm32ccY643t9R5ix8V+z2QXLZs15Mhtpv2/k7pDZhbL/XC6DBrSBgakOZTTiVhONbjtsUO5XgVHaLPRxvKV5zYvwbsxRk4x9Y+cT6NV5uoEAzxpQuQ6vgQd+WAyFOPEm7UE2FnFDoMvqz9Z0u8e4IiHTPgULaFNowNyiiN8LyXz1w/RaHnfWEczDAC+r1v5zVO9CVk1LIrs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -178,52 +115,211 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.10.25 20:10, Isaac J. Manjarres wrote:
-> When emitting the order of the allocation for a hash table,
-> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
-> log base 2 of the allocation size. This is not correct if the
-> allocation size is smaller than a page, and yields a negative value
-> for the order as seen below:
-> 
-> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
-> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
-> 
-> Use get_order() to compute the order when emitting the hash table
-> information to correctly handle cases where the allocation size is
-> smaller than a page:
-> 
-> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
-> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
-> 
-> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-> Cc: stable@vger.kernel.org # v5.4+
+When the lazy MMU mode was introduced eons ago, it wasn't made clear
+whether such a sequence was legal:
 
-This is a pr_info(), why do you think this is stable material? Just 
-curious, intuitively I'd have said that it's not that critical.
+	arch_enter_lazy_mmu_mode()
+	...
+		arch_enter_lazy_mmu_mode()
+		...
+		arch_leave_lazy_mmu_mode()
+	...
+	arch_leave_lazy_mmu_mode()
 
-> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
-> ---
->   mm/mm_init.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/mm_init.c b/mm/mm_init.c
-> index 3db2dea7db4c..7712d887b696 100644
-> --- a/mm/mm_init.c
-> +++ b/mm/mm_init.c
-> @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
->   		panic("Failed to allocate %s hash table\n", tablename);
->   
->   	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
-> -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
-> +		tablename, 1UL << log2qty, get_order(size), size,
+It seems fair to say that nested calls to
+arch_{enter,leave}_lazy_mmu_mode() were not expected, and most
+architectures never explicitly supported it.
 
-So in case it's smaller than a page we now correctly return "0".
+Nesting does in fact occur in certain configurations, and avoiding it
+has proved difficult. This series therefore enables lazy_mmu sections to
+nest, on all architectures.
 
-Reviewed-by: David Hildenbrand <david@redhat.com>
+Nesting is handled using a counter in task_struct (patch 7), like other
+stateless APIs such as pagefault_{disable,enable}(). This is fully
+handled in a new generic layer in <linux/pgtable.h>; the arch_* API
+remains unchanged. A new pair of calls, lazy_mmu_mode_{pause,resume}(),
+is also introduced to allow functions that are called with the lazy MMU
+mode enabled to temporarily pause it, regardless of nesting.
 
+An arch now opts in to using the lazy MMU mode by selecting
+CONFIG_ARCH_LAZY_MMU; this is more appropriate now that we have a
+generic API, especially with state conditionally added to task_struct.
+
+---
+
+Background: Ryan Roberts' series from March [1] attempted to prevent
+nesting from ever occurring, and mostly succeeded. Unfortunately, a
+corner case (DEBUG_PAGEALLOC) may still cause nesting to occur on arm64.
+Ryan proposed [2] to address that corner case at the generic level but
+this approach received pushback; [3] then attempted to solve the issue
+on arm64 only, but it was deemed too fragile.
+
+It feels generally difficult to guarantee that lazy_mmu sections don't
+nest, because callers of various standard mm functions do not know if
+the function uses lazy_mmu itself.
+
+The overall approach in v3/v4 is very close to what David Hildenbrand
+proposed on v2 [4].
+
+Unlike in v1/v2, no special provision is made for architectures to
+save/restore extra state when entering/leaving the mode. Based on the
+discussions so far, this does not seem to be required - an arch can
+store any relevant state in thread_struct during arch_enter() and
+restore it in arch_leave(). Nesting is not a concern as these functions
+are only called at the top level, not in nested sections.
+
+The introduction of a generic layer, and tracking of the lazy MMU state
+in task_struct, also allows to streamline the arch callbacks - this
+series removes 72 lines from arch/.
+
+Patch overview:
+
+* Patch 1: cleanup - avoids having to deal with the powerpc
+  context-switching code
+
+* Patch 2-4: prepare arch_flush_lazy_mmu_mode() to be called from the
+  generic layer (patch 7)
+
+* Patch 5-6: new API + CONFIG_ARCH_LAZY_MMU
+
+* Patch 7: nesting support
+
+* Patch 8-12: move as much handling as possible to the generic layer
+
+This series has been tested by running the mm kselfetsts on arm64 with
+DEBUG_VM, DEBUG_PAGEALLOC and KFENCE. It was also build-tested on other
+architectures (with and without XEN_PV on x86).
+
+- Kevin
+
+[1] https://lore.kernel.org/all/20250303141542.3371656-1-ryan.roberts@arm.com/
+[2] https://lore.kernel.org/all/20250530140446.2387131-1-ryan.roberts@arm.com/
+[3] https://lore.kernel.org/all/20250606135654.178300-1-ryan.roberts@arm.com/
+[4] https://lore.kernel.org/all/ef343405-c394-4763-a79f-21381f217b6c@redhat.com/
+---
+Changelog
+
+v3..v4:
+
+- Patch 2: restored ordering of preempt_{disable,enable}() [Dave Hansen]
+- Patch 5 onwards: s/ARCH_LAZY_MMU/ARCH_HAS_LAZY_MMU_MODE/ [Mike Rapoport]
+- Patch 7: renamed lazy_mmu_state members, removed VM_BUG_ON(),
+  reordered writes to lazy_mmu_state members [David Hildenbrand]
+- Dropped patch 13 as it doesn't seem justified [David H]
+- Various improvements to commit messages [David H]
+
+v3: https://lore.kernel.org/all/20251015082727.2395128-1-kevin.brodsky@arm.com/
+
+v2..v3:
+
+- Full rewrite; dropped all Acked-by/Reviewed-by.
+- Rebased on v6.18-rc1.
+
+v2: https://lore.kernel.org/all/20250908073931.4159362-1-kevin.brodsky@arm.com/
+
+v1..v2:
+- Rebased on mm-unstable.
+- Patch 2: handled new calls to enter()/leave(), clarified how the "flush"
+  pattern (leave() followed by enter()) is handled.
+- Patch 5,6: removed unnecessary local variable [Alexander Gordeev's
+  suggestion].
+- Added Mike Rapoport's Acked-by.
+
+v1: https://lore.kernel.org/all/20250904125736.3918646-1-kevin.brodsky@arm.com/
+---
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andreas Larsson <andreas@gaisler.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: David Woodhouse <dwmw2@infradead.org>
+Cc: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Juergen Gross <jgross@suse.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yeoreum Yun <yeoreum.yun@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: xen-devel@lists.xenproject.org
+Cc: x86@kernel.org
+---
+Alexander Gordeev (1):
+  powerpc/64s: Do not re-activate batched TLB flush
+
+Kevin Brodsky (11):
+  x86/xen: simplify flush_lazy_mmu()
+  powerpc/mm: implement arch_flush_lazy_mmu_mode()
+  sparc/mm: implement arch_flush_lazy_mmu_mode()
+  mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
+  mm: introduce generic lazy_mmu helpers
+  mm: enable lazy_mmu sections to nest
+  arm64: mm: replace TIF_LAZY_MMU with in_lazy_mmu_mode()
+  powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+  sparc/mm: replace batch->active with in_lazy_mmu_mode()
+  x86/xen: use lazy_mmu_state when context-switching
+  mm: bail out of lazy_mmu_mode_* in interrupt context
+
+ arch/arm64/Kconfig                            |   1 +
+ arch/arm64/include/asm/pgtable.h              |  46 +-------
+ arch/arm64/include/asm/thread_info.h          |   3 +-
+ arch/arm64/mm/mmu.c                           |   4 +-
+ arch/arm64/mm/pageattr.c                      |   4 +-
+ .../include/asm/book3s/64/tlbflush-hash.h     |  22 ++--
+ arch/powerpc/include/asm/thread_info.h        |   2 -
+ arch/powerpc/kernel/process.c                 |  25 -----
+ arch/powerpc/mm/book3s64/hash_tlb.c           |  10 +-
+ arch/powerpc/mm/book3s64/subpage_prot.c       |   4 +-
+ arch/powerpc/platforms/Kconfig.cputype        |   1 +
+ arch/sparc/Kconfig                            |   1 +
+ arch/sparc/include/asm/tlbflush_64.h          |   5 +-
+ arch/sparc/mm/tlb.c                           |  14 +--
+ arch/x86/Kconfig                              |   1 +
+ arch/x86/boot/compressed/misc.h               |   1 +
+ arch/x86/boot/startup/sme.c                   |   1 +
+ arch/x86/include/asm/paravirt.h               |   1 -
+ arch/x86/include/asm/pgtable.h                |   3 +-
+ arch/x86/include/asm/thread_info.h            |   4 +-
+ arch/x86/xen/enlighten_pv.c                   |   3 +-
+ arch/x86/xen/mmu_pv.c                         |   6 +-
+ fs/proc/task_mmu.c                            |   4 +-
+ include/linux/mm_types_task.h                 |   5 +
+ include/linux/pgtable.h                       | 104 +++++++++++++++++-
+ include/linux/sched.h                         |  19 ++++
+ mm/Kconfig                                    |   3 +
+ mm/kasan/shadow.c                             |   8 +-
+ mm/madvise.c                                  |  18 +--
+ mm/memory.c                                   |  16 +--
+ mm/migrate_device.c                           |   4 +-
+ mm/mprotect.c                                 |   4 +-
+ mm/mremap.c                                   |   4 +-
+ mm/userfaultfd.c                              |   4 +-
+ mm/vmalloc.c                                  |  12 +-
+ mm/vmscan.c                                   |  12 +-
+ 36 files changed, 213 insertions(+), 166 deletions(-)
+
+
+base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
 -- 
-Cheers
-
-David / dhildenb
+2.47.0
 
 
