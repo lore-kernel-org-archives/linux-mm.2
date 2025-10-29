@@ -4,81 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8DC8CCF9F5
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 08:57:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7CE5CCCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:12:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 891B38E0041; Wed, 29 Oct 2025 04:57:08 -0400 (EDT)
+	id A2DB08E0047; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 720A78E0045; Wed, 29 Oct 2025 04:57:08 -0400 (EDT)
+	id A05868E0045; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4AFBA8E0047; Wed, 29 Oct 2025 04:57:08 -0400 (EDT)
+	id 91CA38E0047; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B3E68E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 04:57:08 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05817BB5C8
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:57:08 +0000 (UTC)
-X-FDA: 84050547336.26.9EE9790
-Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf18.hostedemail.com (Postfix) with ESMTP id E7E261C000B
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:57:05 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 805EE8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:12:55 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2FC3988F08
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:12:55 +0000 (UTC)
+X-FDA: 84050587110.24.FD27199
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 59A708000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:12:53 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0pswya5+;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761729173; a=rsa-sha256;
+	cv=none;
+	b=XoPkpbNrB2Yn78Rio1zTaSOAy+QgKYsn+rCYTfEOjnqOqcWAOr+6BdZECZ4ZBANQB5rB9x
+	19+DCL/8q35XCJN2Rmbh5aKl85yBUKBepUMSTQ660/Hi1NX/GUY54DAdjKEcfqORZ/jBFl
+	lPoI8a6/V+kddwdLxwj6h/p+ht5/F8Y=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=0pswya5+;
+	spf=pass (imf02.hostedemail.com: domain of hughd@google.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761728226;
+	s=arc-20220608; t=1761729173;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZBLXFa6uBZrOJOz/lWKg5GO5329xohg8x3u1k8fsbno=;
-	b=U0/C3+QRkDh9nezSUptdkWXcJiCKGH4TXiJI7RUpojv0Ql79LDVmdLY+c7n4QPmVsHN+t2
-	MoXaYLjw05EiD56rYDt0TQC5UGVNJJU+jbVMA05mR7L9F//aig1/0p+fozuAEK53h6oe5i
-	x6p54EJlW8KPew47emql6hhYYUd2L0A=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf18.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761728226; a=rsa-sha256;
-	cv=none;
-	b=bolMf0Wom87stCtg2YqKMHFZppojY0e5yPP+QvG9tAYXUZmIqXaQU17CqdBmzO/9611LgP
-	y6kAwTlKR6iHkhdzA6zQ2+s8sqKm3w3sOiaa+l8XSbXI3JcQSeHRpIfSPacRGWX+DBUIWJ
-	RUJzKWZFrLcATj7oBbfWY1aKkDVaDn4=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 29 Oct 2025 17:57:03 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: akpm@linux-foundation.org
-Cc: linux-mm@kvack.org,
-	shikemeng@huaweicloud.com,
-	kasong@tencent.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	chrisl@kernel.org,
-	youngjun.park@lge.com,
-	gunho.lee@lge.com
-Subject: [PATCH 5/5] mm: swap: remove scan_swap_map_slots() references from comments
-Date: Wed, 29 Oct 2025 17:56:59 +0900
-Message-Id: <20251029085659.2005942-6-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251029085659.2005942-1-youngjun.park@lge.com>
-References: <20251029085659.2005942-1-youngjun.park@lge.com>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
+	b=nOp+bHtJ7nEt5LxWZrTD4Nqp2Q2U3o+fjSlgqHmrdzffl1Uqaalq7qj2CF4jEycdvwGFG4
+	4FvVGC/GdndpZoQbbWqr9dG1I8qW16LhOrioyImGYzvE+Z94gDvQ7Sw02Dnx0SrUJSehOU
+	VndiQTik6yRRFoJxQoCfDQsoNnrne/0=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63f533fbfd0so3346698d50.3
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:12:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761729172; x=1762333972; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
+        b=0pswya5+mMNkqnrednw1eCFiMcUwz0IZdD6MrZXU9qpWZWbnaNMK7phSRRpAKuYOkM
+         wgM6Z3HFrM/+IZhmifp6WIJYPZ/tWFOeDsKEtcKqzQfTKLPLP/md4d5+PPw962zqGmyi
+         AMJXV6VpyevJUQJtOwUroqlu0gl236bWUnNCiACTmbI3zvd4f11pXY3pQKqX6YaNgeKW
+         yKqhocKMF+umnXYRpv2JUTzZYci9XboYJ3OOYIE8joqaXNGsFZP6ysWRDpcUsYqw+t9w
+         R6bFASn2/yzZ08GzM+NhfzrDDmJeE0/S53cnsXPi2Ect6UrFH0Mf7M10A5I3lwHjA1VW
+         KFkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761729172; x=1762333972;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BBqHz8cFPV9OUQwbjare8Pel7U5XHqHAeYtuall28CQ=;
+        b=fwkUF+uHqvyddvFWV1sI11/FZF+CXdo+052GI8hnkn3ZrXAfM+FJw9CP1QF5G7dIqY
+         M8BD4i4zyCm3C4xjXVXrRdio2rvxd0wGjYa99r9jf/4hF6ZOa8NNJ5ffCWmWZe9r76Gi
+         Hhw3bxWc56EXaGwMy0UW6fs6gromNtHFyDryI57d3IaAWq5Wgs1g8yJl1DVAm4X3Hy9N
+         RGEBrZ0MCUoh68pEpZIKVPs3LSH1Y3mOnQUNydkPfToBJn+7SKrdIE+pln+xneMZQz1x
+         XMuugl21v8+oGwugdkFBgwJtKTYI243vfcjpP0tv2GTSBPBGHqg2H3H0elYW7f07IT6O
+         Q5zg==
+X-Forwarded-Encrypted: i=1; AJvYcCWCFTOASQ2w/bIXcLp6wUhrI79UXsxRKLraCqNTWUErR1sgAsaHKLmNWYNlhbgJ1Vn9biX3/XZwpw==@kvack.org
+X-Gm-Message-State: AOJu0YyM/glhyP75TVCJi+RocpAj30p/4CF0BtFGv6sji3yx7l/7Qi6T
+	2sTqG5WPkNKZ5vLuy6wn8GCvS7ETCE7jCgwWlqTba0j46dB0Kubxb2a2A0Mq/9hnFQ==
+X-Gm-Gg: ASbGncsnVLQVjBxTalKNmkZwaWNRA2TUloFnjIYQ8x+O/TqJynW4Ob6y2SS6VY61ERT
+	YR0PAOUA6H2Vu8PApdTIRP+vMX1dGuKQOigLSuxL7LowZxPZZS+/lwuFdjbsEdcPgtMkF8kn2Z0
+	ZSmw7ZMbK3Scn0NZkUVlhVtU5o2ejr1WWbeXLU6lnf3GMc6Xy65Ha4QNS+Bxm/1+iqDGnKrrhLf
+	m9ujsZXQuCm2HgIDTLbpPuJdQ6pGJpHKmqG1g9RgbJBgGM0tLdXEu8jnrkOWNssA969z90oq+a8
+	eFa5Gj7UBozqgY1rIvY+hvto9is7POESCjG6qp3GfeApxOm18ETNv7OEC4PgKSEyRm7BUp9SEFo
+	oKHkOURCrEJcRGjByCcw817E43lISs5DJhxyRtRNBZpn/ZKZCIR6vt6oWnuT6vnBr1OhoIMvxja
+	zHolJWOfUgtrOePzhFbWkL0ZqfDyxMYwuQKx86p30j+T7qqcwqMAGyG+vvVUGX
+X-Google-Smtp-Source: AGHT+IEUyMs7bw/KHzPZ51AbmO3wPAApjy9icdxMigxwWyr9bCi7kzw4YLn0xUhUa4b2Nc69MgGvKQ==
+X-Received: by 2002:a53:cdcc:0:b0:63e:187b:f383 with SMTP id 956f58d0204a3-63f76dced0dmr1569801d50.52.1761729172087;
+        Wed, 29 Oct 2025 02:12:52 -0700 (PDT)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-785ed198ef9sm34560117b3.24.2025.10.29.02.12.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 02:12:51 -0700 (PDT)
+Date: Wed, 29 Oct 2025 02:12:48 -0700 (PDT)
+From: Hugh Dickins <hughd@google.com>
+To: Kiryl Shutsemau <kirill@shutemov.name>
+cc: Hugh Dickins <hughd@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+    David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+    Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+    Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+    Johannes Weiner <hannes@cmpxchg.org>, 
+    Shakeel Butt <shakeel.butt@linux.dev>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, 
+    linux-mm@kvack.org, linux-fsdevel@vger.kernel.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv2 2/2] mm/truncate: Unmap large folio on split failure
+In-Reply-To: <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
+Message-ID: <eaa8023f-f3e1-239d-a020-52f50df873e7@google.com>
+References: <20251023093251.54146-1-kirill@shutemov.name> <20251023093251.54146-3-kirill@shutemov.name> <9c7ae4c5-cc63-f11f-c5b0-5d539df153e1@google.com> <qte6322kbhn3xydiukyitgn73lbepaqlhqq43mdwhyycgdeuho@5b6wty5mcclt>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E7E261C000B
-X-Stat-Signature: syk1oe1s3343nysmgq38ege1ucow1f9j
+Content-Type: text/plain; charset=US-ASCII
 X-Rspam-User: 
-X-HE-Tag: 1761728225-829494
-X-HE-Meta: U2FsdGVkX19BLCtbydBlkPLN7iezs+TV/w3ksucxuzCEUjtcFcK64JRYkYUu2ktB1blOPzmtF9roD3Ktcfphh7LemzQAAHlYG6vq+lBceJhZ4a7fyk/T534dv5M6GmGieEW01TLTSiC0Wv0AyE6PD0Dl7Vnlm6dvuYX1rm3YWeF5caa2I3u6yS/ZV6GhH4ck+vTeZWE/aB8zWc//CKHJJ/yP6ZH4ulL5IazUgrHq9pOdp5k2KbepS8odQbOWmIaXMVt0n04fSfEleFHit9G3bZ3ijPhi7+HAN5nyqCuG6m6N1UdjFDJKxa9HKEskMkBwF0zQq6983P8R5hdfEXBSVGUidi+03SGtJIObwNugZQ+uoiBGnMhIp2IJ5ZqpceKoX8YZ+gZpR3QWfvRvnuS3Ni0bCVh5KdoJx0dL7cY1a6pxtKULFo7eWo4iVw9X3TeAtkXSLdDhUhuZCfeiqieT2n0U8EJQSVq86F26xspZkfNYy7lGxUTsYueXqXcjgewjLkxfD0XlKluCPMZbA8klpUG0Ewnw7xD5qpH6hjVv0CRGh7xInACTONvdUDx+cgnZEMdGCiqHFoN/ICEuBGRpAiEYJC8eb0kqlN0wAD2YNuVrRdpUZecgQGutVmFme8Uh4g76PyC1lvlHGq3sTp3wiuF24TGHAq6rG08Ax/zhxfh9s27AFCyI7Uv1XF50z26em00xTC7aDXzps2cdxFT0PZKk9e96Lquv63oE8/O+rRnj1uN8w5lbEB3BXOzdfD3UXjyuRE/AkGciPLeHJkVULc6q5bJd5q0UjpnXYMknf7+tpPXXuLpEByp3/b2Tl0161ldXV6Oe6x5w87pRQWktvxq8Feuey/7/Ud9NxFE6d6aNpf2IjB5k46UIoixZSpZhDfPDCuyvRD+sZlo+V9N5cmyAaWtUIpjmRebmb/MjX53wcNA6GLVMfIThmO//1bK64IIqu1DxIZ1tsoTp98y
- YXWeKzsT
- wpWewBIt7yuBNt4shBnw45JUfLuNrIHlgj3XPVo3E0nijkD183+pzwOowFN4rS2W4qT4pMaaKKyxHbkQ0KNmbjcBWp+Lla1DoJ4DCrSt/pPLGRGK75KUSj8JXWHCc28nOfyqUykt55bXSHPuoip/PBUYkeEPPWcUt0R8sE2vsWhb9SPCYFGiklNyqY+BtjsEP6zRV+WGh59tVk/U=
+X-Stat-Signature: nq1ccg3z9tt1a6ffxfua87hpm6b6x4bf
+X-Rspamd-Queue-Id: 59A708000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761729173-894959
+X-HE-Meta: U2FsdGVkX19xI//V+Izc61UBDTYVNkJmpcEp5vlFXjEdEactIBw7S4F6Zit9+mGbmRolYSe8sthiePC5eVhvNQHrpaMIfKu98fi3xh65e+82S8SjPe2TWCBTeCOJe/yxqQ2/Z3tPDGHjBSEat8lkNwRosM/w5tolO6fN7PGvfuD0Fjj7UqHV06tgiyvMidNIIKaQgrIACcf3SQgWahJN9S8uOOI29I4k1ua0pgrvE6fuAfwU19OSqBNZInDvRj5XJISFGtOYZBiBLOLFtov0khqh0uvpJzuD2B2q2yLaudKLAgARlVb9DL64ZapEMJDpWx/P4WjFp3arI96QvTFwqyRTWJZA/o7218ht7mo9ixvlF5BHp46VkOPc9ikGHkEQEHyFYXkV4rPxGLhSupPElLkklTPPPezo9GZa1j/dHWBgXVSvq6lI7XwLT7FOE/drzJKLD9EEHwODXOErCZJWJ4KLu9mKT2+z1+wBQ8VeL6ALXdrjhgs0xUbJKySs43dNncLDkNTciKaDhfUhmPsSxfP3a/8Vy8wAmF+tFIzMd9usHkwWIfhfCynjuxcYEfqregku5FieaZxNIA6RFtwrTRIs5lBnC4Ljj7O3DuPcvKY2EAwEMIt7sqZm4MCesyADMpoJpN6DWR4LZDvfq1M1QKFXeDx4rdivmfrbVOsGdK5Z0ldkwPgKH+/hZBtSDeqh1N+haWjDF7J3jnXp5EakULFuOsAoxHBN54XGahmOsDhSQq1NjUeBLXjkS96z8HHgTVU3Y+aWqtcqkQgVrklzqU90Q4+pcdhfDUsUelJFhQvxvy7hjtwH/tOHB1XX+72H4VirklRRhaEEJ0eU7bhMW8Pg5oswkT4NzjzSRd2yAsToiTE+51Hnx82HQ8QSOUxa8DvqGNOO6L38G0ftfggWGWD24cvJnDLyn3qaBWsv2qBiAY3Ms3NEUF4s5e01m1PjNfcRD2I/ERGaY9KzLcT
+ yqmDGYcR
+ T55PSLleobDMnuWK+xNJDLC4lUO7ar4/fO6YJ8rnUG0JPAS/LdJlEk20Fx8nH2I2tN39ChibweomX91sL9M9dL+/zM3yunVO7d48eKeYJWTLEqWnE+Q51hDlAFvQHUR2gsD4MmupQp/EzP1kq6Skc9ol5TT69MY9eqNu6ArRBAnFV1cy0ZOzivoRPMPpuRSgxbrS30/xrFVG7yDaQzjptGwtfe5cmp57Jzz+Ud39ckeli5RO3HamFzWiYfWgFX/YygHQ7DFLEK09CC2t3ZwRn83bq0N/wUTWbRceyp7oKqdvAv7jaCF8SZ3Nl3RkhocLk/nV2NnKMI1DF5Gpcy+1FxExbP6cIMxiQeisGdkLWGNBStL0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -87,57 +129,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The scan_swap_map_slots() helper has been removed, but several comments
-still referred to it in swap allocation and reclaim paths. This patch
-cleans up those outdated references and reflows the affected comment
-blocks to match kernel coding style.
+On Mon, 27 Oct 2025, Kiryl Shutsemau wrote:
+> On Mon, Oct 27, 2025 at 03:10:29AM -0700, Hugh Dickins wrote:
+...
+> 
+> > Aside from shmem/tmpfs, it does seem to me that this patch is
+> > doing more work than it needs to (but how many lines of source
+> > do we want to add to avoid doing work in the failed split case?):
+> > 
+> > The intent is to enable SIGBUS beyond EOF: but the changes are
+> > being applied unnecessarily to hole-punch in addition to truncation.
+> 
+> I am not sure much it should apply to hole-punch. Filesystem folks talk
+> about writing to a folio beyond round_up(i_size, PAGE_SIZE) being
+> problematic for correctness. I have no clue if the same applies to
+> writing to hole-punched parts of the folio.
+> 
+> Dave, any comments?
+> 
+> Hm. But if it is problematic it has be caught on fault. We don't do
+> this. It will be silently mapped.
 
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- mm/swapfile.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
+There are strict rules about what happens beyond i_size, hence this
+patch.  But hole-punch has no persistent "i_size" to define it, and
+silently remapping in a fresh zeroed page is the correct behaviour.
 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 89eb57eee7f7..1dace4356bd1 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -236,11 +236,10 @@ static int __try_to_reclaim_swap(struct swap_info_struct *si,
- 	ret = -nr_pages;
- 
- 	/*
--	 * When this function is called from scan_swap_map_slots() and it's
--	 * called by vmscan.c at reclaiming folios. So we hold a folio lock
--	 * here. We have to use trylock for avoiding deadlock. This is a special
--	 * case and you should use folio_free_swap() with explicit folio_lock()
--	 * in usual operations.
-+	 * We hold a folio lock here. We have to use trylock for
-+	 * avoiding deadlock. This is a special case and you should
-+	 * use folio_free_swap() with explicit folio_lock() in usual
-+	 * operations.
- 	 */
- 	if (!folio_trylock(folio))
- 		goto out;
-@@ -1365,14 +1364,13 @@ static void swap_alloc_slow(swp_entry_t *entry,
- 		spin_lock(&swap_avail_lock);
- 		/*
- 		 * if we got here, it's likely that si was almost full before,
--		 * and since scan_swap_map_slots() can drop the si->lock,
- 		 * multiple callers probably all tried to get a page from the
- 		 * same si and it filled up before we could get one; or, the si
--		 * filled up between us dropping swap_avail_lock and taking
--		 * si->lock. Since we dropped the swap_avail_lock, the
--		 * swap_avail_head list may have been modified; so if next is
--		 * still in the swap_avail_head list then try it, otherwise
--		 * start over if we have not gotten any slots.
-+		 * filled up between us dropping swap_avail_lock.
-+		 * Since we dropped the swap_avail_lock, the swap_avail_list
-+		 * may have been modified; so if next is still in the
-+		 * swap_avail_head list then try it, otherwise start over if we
-+		 * have not gotten any slots.
- 		 */
- 		if (plist_node_empty(&si->avail_list))
- 			goto start_over;
--- 
-2.34.1
+So the patch is making more work than is needed for hole-punch.
 
+But I am thinking there of the view from above, from userspace.
+If I think of the view from below, from the filesystem, then I'm
+not at all sure how a filesystem is expected to deal with a failed
+folio_split - and that goes beyond this patch, and therefore I
+don't think it should concern you in this patch.
+
+If a filesystem is asked to punch a hole, but mm cannot split the
+folio which covers that hole, then page cache and filesystem are
+left out of synch?  And if filesystem thinks one block has been
+freed, and it's the last block in that filesystem, and it's then
+given out to someone else, then our unsplit folio hides an ENOSPC?
+
+Maybe this has all been well thought out, and each large folio
+filesystem deals with it appropriately somehow; but I wouldn't
+know, since a tmpfs is simply backed by its page cache.
+
+Hugh
 
