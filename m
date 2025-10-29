@@ -4,100 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46505CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 19:50:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D8B1CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 19:56:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2AF68E00E4; Wed, 29 Oct 2025 15:50:29 -0400 (EDT)
+	id 5CC388E00E5; Wed, 29 Oct 2025 15:56:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A029D8E00B2; Wed, 29 Oct 2025 15:50:29 -0400 (EDT)
+	id 57C008E00B2; Wed, 29 Oct 2025 15:56:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 93FB78E00E4; Wed, 29 Oct 2025 15:50:29 -0400 (EDT)
+	id 41DCA8E00E5; Wed, 29 Oct 2025 15:56:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 833AA8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:50:29 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1C4DA12B41C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:50:29 +0000 (UTC)
-X-FDA: 84052193778.14.A4E92FC
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 7D1431C0014
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:50:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IaH0WiB+;
-	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761767427;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 29A2B8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:56:37 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id D0A8012AF7A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:56:36 +0000 (UTC)
+X-FDA: 84052209192.27.73547D9
+Received: from bumble.maple.relay.mailchannels.net (bumble.maple.relay.mailchannels.net [23.83.214.25])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 1A95A40004
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 19:56:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=GsLDk9BX;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.214.25 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761767794;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ywMRa9td/qLYvz0QLFt/dHlJeUkQz4iWrYlNlCayuSE=;
-	b=nDZXHCW4b2/y3VagzT7eyv5tjZXf086lSPQNBxnZsrLHKBEEyOLuefAykqGJbiPLIgRF2L
-	3jBE3TvHfsiEs8D6z2zKzH1/qu/GCvmuzivltd68Xoc/sJyEIbjtYWA+3uPxlqYN4/JM1c
-	QZne8pvW3lBlzEW+Kh9KONsf/ivQU1w=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=IaH0WiB+;
-	spf=none (imf21.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761767427; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iOVpfpUU/b66Q7BqV2Y7FdOoApZw5OhJbALf+kfwupU=;
+	b=pKsveGMfp6swsI3tkUFl8L7aE3VJoNo6pfLX0ngfu55k8HCPZIwc1UGaDQYh/yDWGji4kV
+	hIXSu/KOXY8EjfqGjMg7HzoLmktvqcXjCqTBXwReeNItd/BTZlWg2gITLxvBOD/pgi1XYP
+	PPvoDI6j7YRINCOttdZ+TPZfDYBX+QY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761767794; a=rsa-sha256;
+	cv=pass;
+	b=YfTTueze/fDGye9wDfP11nW9Cu6aVJ2GeuFdPCM0Lyhw0cFdLda+C8CxTeQ4rjC/xasvZV
+	Gms4IjJW/vU1uaQfK2C1iHJxBqvliNVUpN4d71MijlTV0gBuRXL/mWPW/4Qk72tlHL8f8J
+	BogcelD/hekrH7BDnant1a0CL9h+gAk=
+ARC-Authentication-Results: i=2;
+	imf12.hostedemail.com;
+	dkim=pass header.d=israelbatista.dev.br header.s=hostingermail-a header.b=GsLDk9BX;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of linux@israelbatista.dev.br designates 23.83.214.25 as permitted sender) smtp.mailfrom=linux@israelbatista.dev.br;
+	arc=pass ("mailchannels.net:s=arc-2022:i=1")
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+Received: from relay.mailchannels.net (localhost [127.0.0.1])
+	by relay.mailchannels.net (Postfix) with ESMTP id 16BE780181C;
+	Wed, 29 Oct 2025 19:56:32 +0000 (UTC)
+Received: from fr-int-smtpout17.hostinger.io (trex-green-4.trex.outbound.svc.cluster.local [100.123.213.201])
+	(Authenticated sender: hostingeremail)
+	by relay.mailchannels.net (Postfix) with ESMTPA id 155518018F0;
+	Wed, 29 Oct 2025 19:56:29 +0000 (UTC)
+ARC-Seal: i=1; s=arc-2022; d=mailchannels.net; t=1761767791; a=rsa-sha256;
 	cv=none;
-	b=UJQ+JerzHORVf9j3En65TgV8dfLbQqJNrOsPhGmpyh9AXJFQADG9x+c9pYRMitBwwm9YBC
-	5IdIZ2hSpY9f+J8TL6yDqsnE94Fm/xwWBLy2nVIE+fcjMpE0H59UrAE332CjPgScQjG3Ln
-	l5j+GXmyCyY0/L7Gci/BFGiwM0KLBuQ=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=ywMRa9td/qLYvz0QLFt/dHlJeUkQz4iWrYlNlCayuSE=; b=IaH0WiB+Bb8bae/n25tIQisGQE
-	EwhH0nUvAY0WF68tV+bqAjeM5vt1+TFM+p9SWhDN7SSKHd71InQaX+spzoIsKsfRnYzLiPymBfv8b
-	G0YUSVRmmHR72tbVjz7S1JCp1h94cR+krcxjkfnjWvoj0qzTCwutfhbayHRtPzVCrp4DBQP6QMP7E
-	/5l7sL8Z4TbLmfGLBzrYSVUcbZopibwGw10l95Xv2hyvw2OljCjZDfVaA7JzI0kxcTG+eF758lStl
-	ZwIQstpTPU88RRMUCb5P0e0hsxC1roRLf9JTHYYZ9gSRvYXs7n8ZIZ62F6HWHDjILexzwXgNL7cbg
-	SLWmox1g==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vECBX-00000002fGY-0vOJ;
-	Wed, 29 Oct 2025 19:50:19 +0000
-Message-ID: <6c273611-e815-4a4a-822d-f6e55cec3810@infradead.org>
-Date: Wed, 29 Oct 2025 12:50:18 -0700
+	b=hsSyeLyAZUaUqvhEKqGttZ7Um/HsYAE4yqF969AJkZqanc7BToc8amJ1MOkOYP3XNuyeRi
+	rxFCtwMpVnFvk6S1tB1igzfqObrE7FUV+ocmnVTNzjSTY/RMw+rK1+gr52U3SZhdSYK4nO
+	ZPMu9HC7lIBGoiV+9vrKHLICLAMaajYr2lP/OgKFnLFiqP4r7yDtFaFvcd37ZQbK4WdmSl
+	TMmEUuzSKwtpMLBdN3VYBy7/WAMUgHWIkS4pvxXf3Yzcx6VLhwGGOIEoc4yUtSsbu0co8Z
+	DXFjjGRVI1kcu+gHepEd7vnHTfFOMdJsF7q/1ueTS0ZakdBwebujs24Y6OS3ng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=mailchannels.net;
+	s=arc-2022; t=1761767791;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:dkim-signature;
+	bh=iOVpfpUU/b66Q7BqV2Y7FdOoApZw5OhJbALf+kfwupU=;
+	b=W+12k5+UkM8ggnAhjEtIiEuFX2sUJRlzMOs/lalnz4dwulYdJblDUKuAlV7FZk9f54vPCw
+	2LXsqlzKsg9UpnCia+wS1JuxmOBpf/K6Fh3qLGLsWe46Y/rDU3JmfO78rqVGjmyqaSUNHg
+	8hfNRLbM8P8y1CloCbq3lltiGoZvFSxvagq5I0Pe1hc/pCzLel7RXmbTmdm1OMKh4OuZoF
+	JKLZ3jbISpulcR9/ZhGXcqoe8dlBPDjqfO9WsjLvBfXdxQId586UAmoxUBj40OOViWiihv
+	pCD+PB8DbjJ7/QPlaptRsOPdxVloQpbxU9XxBySWS7vctd65TvAwDmQ2IFHcXA==
+ARC-Authentication-Results: i=1;
+	rspamd-77bb85d8d5-gc7jm;
+	auth=pass smtp.auth=hostingeremail smtp.mailfrom=linux@israelbatista.dev.br
+X-Sender-Id: hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MC-Relay: Neutral
+X-MailChannels-SenderId:
+ hostingeremail|x-authuser|contato@israelbatista.dev.br
+X-MailChannels-Auth-Id: hostingeremail
+X-Bottle-Hook: 46cbbf2f0f33f695_1761767791681_4186826510
+X-MC-Loop-Signature: 1761767791680:2911721417
+X-MC-Ingress-Time: 1761767791680
+Received: from fr-int-smtpout17.hostinger.io (fr-int-smtpout17.hostinger.io
+ [148.222.54.37])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384)
+	by 100.123.213.201 (trex/7.1.3);
+	Wed, 29 Oct 2025 19:56:31 +0000
+Received: from fedora.tail0cc0bf.ts.net (unknown [IPv6:2804:d59:8970:3b00:5f26:e2da:68e6:2358])
+	(Authenticated sender: contato@israelbatista.dev.br)
+	by smtp.hostinger.com (smtp.hostinger.com) with ESMTPSA id 4cxdKk2Nyzz1yHN;
+	Wed, 29 Oct 2025 19:56:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=israelbatista.dev.br;
+	s=hostingermail-a; t=1761767788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=iOVpfpUU/b66Q7BqV2Y7FdOoApZw5OhJbALf+kfwupU=;
+	b=GsLDk9BXD0DAIKMCyZAXDIPKc5byJHUhByzbQMTeB4/lL/ysOOs31jMNDCT1YJeVfdTBww
+	tFbKodL5ZOA1ixUNBBqkBqnN2OMnugNBJD/Msd4YbE9uUsS4Shbc+/ViRPR9ha7BifoRZx
+	HOZ590hshoEErbbyDtQsW6TyyP0dufSALLV9JrBIWAv2PEvfqWV9iAzcerVlk1VQa90YoU
+	H8ZpG0W+7gf6CNG6rVN5entYy5FQhuJtt1c4Td8v4JlFVQrjgMMuwo7FyioxVHFND9QPXD
+	4T9TJrtD3hv20CSNuvhC9mFQB7Xg7T4nrppSWw69xbdZGs6z8DFF0DJXiFrOlA==
+From: Israel Batista <linux@israelbatista.dev.br>
+To: david@redhat.com,
+	lorenzo.stoakes@oracle.com,
+	akpm@linux-foundation.org,
+	linux-mm@kvack.org
+Cc: osandov@osandov.com,
+	linux-debuggers@vger.kernel.org
+Subject: [PATCH v2 0/3] mm: Convert memory block states (MEM_*) macros to
+Message-ID: <20251029195617.2210700-1-linux@israelbatista.dev.br>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
- guard regions
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Andrei Vagin <avagin@gmail.com>
-References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
- <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: wdk95qdonft8wq7zf7xm6ph9jqq6831g
-X-Rspamd-Queue-Id: 7D1431C0014
+Content-Transfer-Encoding: 8bit
+Date: Wed, 29 Oct 2025 19:56:26 +0000 (UTC)
+X-CM-Envelope: MS4xfNxB7is5iVJ4cDdISjM3VWYEsNwLgsLtk8I0VrOBFCLj1TyKUdfKYGYLaaQHqti+vLQksoTwYQrvC3kd/xW9BA8anZxFlE4hQLQbfeoQ+EAnxbJNqmlj FObSoFjqidIq+I4o1ziwqxLqSUb1G/V33dDH4YhIYK9Dnzx+RpQ8R4lgcdBkptqz/Vj4f1QKFai7fyW1kGv0Nqnr+474Plje5y0YrAHVt7+NL670+u3Kn+ig bCsLRc8CZVKO567CJFpAMyGzILjRPLf4D5FV1tU313RgypcshLnvLcZKRJy/G3/ZdlIQ0hjYU8R0zPNebdeQK/CemEOJtoodEr3sKf9c7QA52AILpx828xym 3wF9JNv98F6DVam4Qyl0YB8rnObjXpmz7SNdtT+3PairXzja18b7HJ+ed7R4hv3qmh9ejS+KqlBHBUrpxXMUy9j/sQ7Vlq2XUaHoeq/vqjvhdNd/vLI=
+X-CM-Analysis: v=2.4 cv=Lflu6Sfi c=1 sm=1 tr=0 ts=6902716b a=WIeu/gG1zxr2CnNbFFeIHA==:617 a=xqWC_Br6kY4A:10 a=VwQbUJbxAAAA:8 a=GX0AQbHyn9vrm7BpF5cA:9 a=TWtOS45hTxhqQf3p7L_t:22
+X-AuthUser: contato@israelbatista.dev.br
+X-Rspamd-Server: rspam01
+X-Stat-Signature: sa5b9geq1yygci8eicnia1xkams1pdy7
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761767426-785192
-X-HE-Meta: U2FsdGVkX18p0S61so96UcGMu5rY7Kpb22Jl5FOR6XYGPYvmkLElnQLycd2xmx208ynU0eE5tjMoy1f8tjTcXH/JhdJnIPzL+NcaCpcZX/Tu+wEkVTTNUE97GWUydZjBhnFeQH34bV43Bpq4jxOOkNivktmSge6Init6Sxdic7nHrTG7V16k6zANrekRpwLhS2In5uqC6vrDfKVgemTieDDEDWlzB/I1KZuc2y5R23koXlctrFuttapIvRXg95vLkq42ZSFmyJHwLVJ14k10Gx1EIK3WXJxyI0ty0oKU7c54uO7LNTPrghMpGe4ukX/b/X/DF57zIOBoXy4GXijSPvAsdsVxQQ5CEYTVoahn00I18nLCVGqiHEFe4zlgJeba6D2lccEZQ9808nTdnIRQS++kW/Mp2jP1sNOsvPvpXiu9X/iwva57bwhjSEJqd3dW0RFlr5g1zoMcHYUr6tnfcwl3meSE3BzRVc532xiUImy1yADqup8YxHTaaMY/S/4TwRGNNtCvki1sxUlqGOTi0wrNgFLWHpyCC3yZbxki+OzQmNR5MDEk+dX6n7YmlE3BsAKntjOui3GHqR21NxiQzuTREBHlOvv0Kx85kw1MEVUsR2iAxrEkhu4trIhLbzwpYz/RdpyDdlAwBmFLB4T+5ZsTHRAuGhRRBtOmEtgNRGjywkxTlR7XvIDiycMecmwLB0lKhZjLqnbSB3tpzqYwZeYW/K3i3Z1HuzFX48SODDGb0WKZphcWak7XVif2ckNzlDsdmnA7mnmeqpvj6v8zIn3WUVeD5yv1ywgMNDIHTKmzS47hmlF2++XMqMnEFUK4QhFhvXrBGdP+4uMwP3+OgI/spuxoOuK5rLeOg0QOJ1lHQXW2QbElxU/4iq3q4eHDMU/rchfvDI65vtEKdpGmbweAmMeo4ZEu36HdTMPdPhDKKD+H+LRhz/hnqZyM4gTFyy70r3cABaw3mp9r5ce
- VXOx1uoA
- Yv0mjTdnasiJsdjAxiQ1d14ecdqneVNG8f9Bgr9huHQMqdv+Mi5Kw/22hYYpTN30PE4yvdpV9liQvV6pVNaTogsM/g00lu56uoL2o+zAFGCzR/qDn45eD+Wdh7C87TkYXD+GMgJU/TfHP4Z8nhDfSa7+tCvUWKH1nW5YV4dCUD1Rrf7BFi/JMIfTf3SDVdI+AvL8K3hKpQGNwyrPqf7FbcmLrY1r489NBgwr+Q5qT4lHQVqguoAW7g6joiVvsERIjylBhu1wELGJdCF9XmoPVakxYKxdrQfMTCuA7jKsz+r6X4lur9neYFtPWWJZW6y5hlLzmSQFyliZbnW7hbjbE3lQJjp80rBcf60ZU1bErKw3evQnW5D+Rjk8DC95OJve1dhL/
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-Rspamd-Queue-Id: 1A95A40004
+X-HE-Tag: 1761767793-164050
+X-HE-Meta: U2FsdGVkX1+nw8Cgc8WeWIdy/Fij4ynuYkd42V0l04TeDUWDTBIBAtBQ3x14VJxi0n9LgDRIJVYgoiSgh89J8rMhe6p/MxR7ZTkk1s9XAoR2mQU/gjQ92/lOymeivuXsV9sxPa7OUnGF8Als4Ym8jI4PSonsgZ4w6mcPzaQLIQhzLiwe11v0QdFjEV7kBkONVG+039Bgi309ZawO9H1vUYJn682WDgGTIr34U9Pgv3X6r8itTiX3zcCFOu2H1QQ48WjW8MrLsYgZHbLMIDGBhFAAN0qN3modWuaAwTSjG6SbmTWyomKlZwRlFcnxuf7TY33Yu7MzSYLnb+j2f5lblm7TPBtfgRokkNI5/zInLjuFPbTmmQqTcZcj5PsgjfZeKAQIvLZ1+3FeOdKMDF1pHEeSJwsMK1kZoDPltqSLzcoyYLKoPqqExkDgSN+iisLl79vjmguOIUMdz/cMFrRcSGIOr6MwuduukQXr/r2Yl5xJFm5JxtUzqpvCFqHWf8IHYx5+k5004b6K5YNt6aAhCW7WSML1iILvl1ygq24ES42v0dYF90v7+o2rBslZ3pJpzsfBM+DU2UE4bfNVNEMXWz/3jCCgj2UCfwEx4IcX3QjliFIHQdMoAWpPpzAzvMrmtfW/4n5zKpU65PohCqUzaJOiS00J5dWBP5H2CZdPjEefCB3AjGxz4MFqS/8hZWjATNulq4VaRs0KAILeTfYEobtre/zA7JrtDMpt6VIT9s4cqA2BvRY7DeCK1aKoU9EIcYFOvOwugX/gPS3vxGItPR3UOea4x6goiPrOXEUxenUemOqSuDtOqIYlOqq8Nj2SvB/p2lbD4se5uHzTU8zsAgY+HRGxPO6dReiUZZ2UXL7CkoBY0wmpR/EF+PyheITN6RZYLkWIAhtwb7fL3+MlUyRJCR7eB2wKSqoXso1S1/Ai8VZV+8N+KnTU+6FU/gpDHpuwkXyGo0Q442MCXh+
+ rgodiowh
+ LsTlMRbInJ/IB4U55hsAmE+W6x6u5cSIxvvy75ZbHlajL3umnO3IdNsluiRMHxQkJGSLuy1uKiAnVVeDuI4TJLz+/9XmYI9pRGOPqhj/o8j0XYzO9Z8GsrE54FbhYbxe3tXM5kO2ddzfODavf9AjWbwfKPIx3fztHEiwuVEUAFXDQiHPe6o188QXrGncBGHjvLT30R+I6wVJG9RlOzixqMsFhn6cRz+AcumlixxrPIxoMztiGfUiA9Dza0JmUWx49e6rOje1RtwW2Un7o1z8R27m4hXseOfv8kYIny5GG00dVv5BRJ78ejfC2yZNMA0Ju8xXJ9vYrTe5StpNGCK5ATzeLv2RfzXwJkAYjw1qdBiHzen5n6TEFFNXvBg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000001, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -105,28 +140,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+The MEM_* constants indicating the state of a memory block are
+currently defined as macros, meaning their definitions will be omitted
+from the debuginfo on most kernel builds. This makes it harder for
+debuggers to correctly map the block state at runtime, which can be
+quite useful when analysing errors related to memory hot plugging and
+unplugging with tools such as drgn.
 
-On 10/29/25 9:50 AM, Lorenzo Stoakes wrote:
+Converting the constants to an enum would ensure the correct information
+is emitted by the compiler and available for the debugger, without needing
+to hard-code them into the debugger and track their changes.
 
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 4c3a7e09a159..a2c79ee43d68 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -1478,6 +1478,10 @@ vma_needs_copy(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma)
->  	if (src_vma->anon_vma)
->  		return true;
->  
-> +	/* Guard regions have momdified page tables that require copying. */
+This patch series aims to replace the current macros with a newly
+created enum named memory_block_state, while also taking advantage of
+the compile time guarantees that we get when using enums.
 
-	                      modified
+The first patch does the conversion of the macros to an enum, while the
+2nd and 3rd patches use this enum to clean up some type declarations and
+make sure that only valid values are used.
 
-> +	if (src_vma->vm_flags & VM_MAYBE_GUARD)
-> +		return true;
-> +
->  	/*
->  	 * Don't copy ptes where a page fault will fill them correctly.  Fork
->  	 * becomes much lighter when there are big shared or private readonly
+---
+
+Link: https://lore.kernel.org/linux-mm/20251026162156.12141-1-linux@israelbatista.dev.br/ [v1]
+
+v1 -> v2
+- Rename the enum to make it more descriptive.
+- Let the enum auto-generate the values, as the (1<<X) pattern could be
+  misleading and they're not exposed to userspace.
+- Change the type signature from unsigned long to enum memory_block_state
+  where suitable.
+
+Thanks to everyone who took their time to review the first version.
+
+This patch series applies to commit: f30d294530d9 (mm-new)
+
+Israel Batista (3):
+  mm: convert memory block states (MEM_*) macros to enum
+  mm: change type of state in struct memory_block
+  mm: change type of parameter for memory_notify
+
+ drivers/base/memory.c  |  6 +++---
+ include/linux/memory.h | 28 +++++++++++++++-------------
+ 2 files changed, 18 insertions(+), 16 deletions(-)
+
 -- 
-~Randy
+2.51.0
 
 
