@@ -4,121 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BAD9CCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 01:56:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E1EDACCD1BF
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 02:03:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8D1628E0025; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
+	id 1134E8E0026; Tue, 28 Oct 2025 22:03:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85B468E0015; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
+	id 0EBEE8E0015; Tue, 28 Oct 2025 22:03:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 723028E0025; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
+	id 027C88E0026; Tue, 28 Oct 2025 22:03:09 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5DE688E0015
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03B561A0696
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:56:18 +0000 (UTC)
-X-FDA: 84049486878.22.3906AEF
-Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 6CC19180003
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:56:16 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id E09658E0015
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 22:03:09 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 8FAC5160637
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:03:09 +0000 (UTC)
+X-FDA: 84049504098.06.231F3E9
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 2762F40016
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:03:05 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ykAmuVZh;
+	spf=pass (imf11.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761702977;
+	s=arc-20220608; t=1761703387;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zwplIuk/MRGEYW4X8ivRoUc70BXAw+JZdbjEk+Wsuxc=;
-	b=ph/1JRxOHZPpnv4e1mp6WG8wJ4qM8PpUEWM/gpw1K8mR8icUBT3o8s8kw2kS5ksBgBTdm/
-	dryfe/UkDEMAyzh4BWo1DzgYTpZiUg5nDNA59A5o1iuexD9YHCKy5t/FODm1hmAGthI2ED
-	y7K/z700/eW9xlAWcCyff4/Yt1nZ4YY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761702977; a=rsa-sha256;
-	cv=none;
-	b=FKNynK3v47S+yZ6jgOSZCFxlsvVzhkDu03KnTVcUqs7chBQlAYYEYilKdWh9FvznGVK3Mu
-	LINqpilwd1221bFxjbttvuRntCyC1eTKCCz05aH9N/4UvcAZPUZuPAPBm4gRSTT19gqm0j
-	2xZNwdGF04K1PYZa0/KgGx8BHfFXe1Y=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=+eK4vDSuRTOhJF4MJ84IKuDsgIzYi81R9gWmu7j/t3U=;
+	b=ovMw6R7lNn7p2Dc/hEZ8FxH+XQqJKsu9DQ9FXfDsLms0kjFlYk0sGyzxGQmy+FOlN1NzDC
+	qZVt5Yo2+LfN2zcqeaR3qhLt/72hnMTl/ZodSi0pYycWYrKcQj3suUXIoKWkO7n3Xo6954
+	HYuMVR3uCosrXVp8mqSltfZTS4HvN5s=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=none;
-	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
-	dmarc=none
-X-AuditID: a67dfc5b-c45ff70000001609-f7-6901743d1673
-Date: Wed, 29 Oct 2025 10:56:08 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
-	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
-	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
-	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, horms@kernel.org,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
-	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: Re: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to
- confirm its usage as pp for net_iov
-Message-ID: <20251029015608.GA37879@system.software.com>
-References: <20251023074410.78650-1-byungchul@sk.com>
- <20251023074410.78650-2-byungchul@sk.com>
- <20251028183356.29601348@kernel.org>
+	imf11.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=ykAmuVZh;
+	spf=pass (imf11.hostedemail.com: domain of yanquanmin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=yanquanmin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761703387; a=rsa-sha256;
+	cv=none;
+	b=cuYi+n0j+1Z+oLB8dlkT9yKSwtYyIsujgJG0KgTUv7Gn5g5JZRmCirT7mxDnRybDiYrfxl
+	yJ1sRR0tNbBL9pljn6urKrEgKUUBj/C8Ydv4bCQ14RcsjFAOfr8yqbzHeHCkAbsHI1khDZ
+	rbxudoYEJ8To5nf5bKjCspVSIVfuaZE=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=+eK4vDSuRTOhJF4MJ84IKuDsgIzYi81R9gWmu7j/t3U=;
+	b=ykAmuVZhMSyM5Iky45LoxzvpXZJ3wHa2hOshvGtKHvA2nQyir2aHEYnSo1IehVSuXBgb7m4Ew
+	QChnPxMkYaJStFl+t5lShcqGvdSKsYce4XNF/VuOJiWpx+jtbDPn8J7Q/MpQDTjS9JWZWFPh1Eb
+	4cm+bG+sHj81lHDuPuyQGjQ=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4cx9Tx4Cxsz1T4HJ;
+	Wed, 29 Oct 2025 10:01:57 +0800 (CST)
+Received: from dggpemf200018.china.huawei.com (unknown [7.185.36.31])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0E4F6180B67;
+	Wed, 29 Oct 2025 10:03:01 +0800 (CST)
+Received: from [10.174.177.149] (10.174.177.149) by
+ dggpemf200018.china.huawei.com (7.185.36.31) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 29 Oct 2025 10:03:00 +0800
+Message-ID: <75364faa-4cce-4e0b-ae43-dc725e6918da@huawei.com>
+Date: Wed, 29 Oct 2025 10:02:59 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251028183356.29601348@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH99zn9t5LY81dBXmmm3GdZoYEBILmbEHDzBKfDyok+mXMZDb2
-	blTbYlpeTVyqYhQjlSEqLSwDjbzWsJWNvgTMVqCAmM1UwetgoPhCVECCiPIi2GrM/PbLOf/z
-	O+fDEbC6R7FC0JuyJLNJa9BwSlY5tqQqdlMW0sc/7l4HFY1ODhpe5kHNHY8CZpwjDFTUNyOY
-	munnYbE1gOBZeycHT9omEVysmsZQ8U8BC88bZzF4fSMIHpdd5uBBYJiHBtd2GKp+yELLcTeG
-	4dNdHBQVzGFonRnn4YinNiRusvJwvdmmgNLZSxjc1js83PBVcDDoXFTAQ38RC92OOhYmzrZj
-	GLKlQKByOUz3jCJob3QzMH3qZw567T4G/mjt5eFMsJKDewVDCIJtwyycnT/BQflhG4K5lyHl
-	ePGUAso7BvmUOHpYljnaNvoU09/rbjO0r+wnlspXrjLU6/iPp5WubNpUG0NPykFMXfWFHHVN
-	lvB0oK+Fo11lcyz13v2Cej3PGFp0dJxLi0pXJuskgz5HMq/fvEeZ8cpn4w4EFXkNVX8jK3Kz
-	J1GEQMQkci101Ds+d+T8G2bFtcR3vFQRZk78nMjyDA5zpLiGFDTZQxmlgMUJnpTJg6GQICwT
-	jaSj1xjOqEQgiy/qcTijFk8g0ubtZd42PiTd9vtvFmAxhsgLj5jwLBZXkpoFIVyOEBOIvfoC
-	F+Yo8TPyZ3MnE/YQcUogo4XX8NtDPyJ/1cpsMRId72kd72kd/2srEa5Har0px6jVG5LiMvJN
-	+ry4vZlGFwq9WPWh+W89aPL6Tj8SBaRZooq/8IFerdDmWPKNfkQErIlUjZ4OlVQ6bf5ByZz5
-	nTnbIFn8aKXAaqJVidO5OrX4gzZL2i9JByTzuy4jRKywovMls/ZF54ODxbryru9tm+qid3nu
-	5+7QrS10zKcNDJiTTQmfXKI/Pi3eMpt3c9mtY6WuuaHUX9PZWNfwwpUNO7Y4X/TYU5N2GwKJ
-	W0sDzC8l+RtTsrdZ+hOqc79aerfT/Y1nbNXXp2K/3DdiDc4n7mlUGVb3J+8aW9OS+vHF35pv
-	fur/V8NaMrQJMdhs0b4Gq9SA+l4DAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUhTcRjG+5//Of9zthyczOxUdtEqpEEfRtHbJ14EHYoiuonqQtc65HBb
-	taloFCwbZZbTPiy3ZkwlLbWEWepGVmxmWdGHpp2o1OzDPsSkzHLmbCui7h6e5/c8783L4ehL
-	zFROb0qTzCatQU2UtHLD8oNzV6Yh/QJvLg+ummoCVT8yoaK7gYHh6l4KXJV1CAaHn7Mw1tiM
-	4GvTbQKfAl8QlJUMYXA9tNHwrSaIwevrRfCx6BKBt809LFR51kNX+Tsarh2ux9CTf4dAnm0E
-	Q+NwPwvZDRfCw7VWFgLFLQw8qrMzcCp4HkO9tZuFNp+LQGf1GAPv/Hk0tDgv0jBQ2IShy54I
-	ze5YGLrXh6Cppp6CoWPFBNodPgquNrazcLLVTeC1rQtBa6CHhsKfOQTOHrAjGPkRnuwvGGTg
-	7K1ONnG+eECWiRjo+4zFKxefUWJH0XFalK/fpUSv8yUruj3pYu0FjZgrt2LRU3mEiJ4vJ1jx
-	Rcc1It4pGqFF76ulorfhKyXmHewnG2O3KlfskAz6DMk8f1WyMmXUZye7W5nMqpIHyIrq6Vyk
-	4AR+kXA6+8xvTfOzBd/hU0xEEz5ekOVhHNEx/CzBVusIM0oO8wOsUCR3hiGOm8gbhVvtxgij
-	4kEY+16JI0w0n4OEgLed+hNMEFocb34fwLxGkEMfqEgX89OEihAXsRV8guAoLyURPYmfKdys
-	u00VIJXzv7bzv7bzX9uNcCWK0ZsyjFq9YfE8S2pKlkmfOU+3y+hB4Scq3//zeAMabFvjRzyH
-	1FGqBaXj9NGMNsOSZfQjgcPqGFVffthS7dBm7ZXMu5LM6QbJ4kfTOFo9WbV2s5Qcze/Upkmp
-	krRbMv9NKU4x1Yq6O3XeMWaKYU1B/uWOwkMz6kYSEzRRtn56TvrCh0/8CteS6Sv7NOMLXsXH
-	jeriP0PbfeK4Ejq6ddU5zdOBM8GPul5tRtU63Z4cHbW5efEbU1KNNVNxQ97HrzOPixNWV9i3
-	LMl/v6yMCXY8z45NjQps2p6b/DipJy748sXT16Fto2rakqJN0GCzRfsLmdJKBkADAAA=
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam05
-X-Stat-Signature: owi3m73qzdpohuxtgrhdgk11kg6t8iqz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/damon/stat: set last_refresh_jiffies to jiffies at
+ startup
+To: SeongJae Park <sj@kernel.org>
+CC: <akpm@linux-foundation.org>, <damon@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<wangkefeng.wang@huawei.com>, <zuoze1@huawei.com>
+References: <20251029013038.66625-1-sj@kernel.org>
+From: Quanmin Yan <yanquanmin1@huawei.com>
+In-Reply-To: <20251029013038.66625-1-sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.177.149]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ dggpemf200018.china.huawei.com (7.185.36.31)
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 2762F40016
+X-Stat-Signature: jwupx1hxrfmc3i7iju4xk54k8s9bx7ay
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6CC19180003
-X-HE-Tag: 1761702976-456601
-X-HE-Meta: U2FsdGVkX184B6IUdCCMAfR3W+JsQbYuUkIIgyw9gm8hWU6HhWNFE3KTzl8Z1pqBi1GJsM+g8gM3ybVD+78twEMAqz1rrAvtrZvEUjO5+vnICm1hMDBiCwZiZTL8QLhOOnb5yLxejZZILEDl9DhI2U8maq1KBMjU7P04hD+CtYMk8N8anWy+0Lh8AzirwUmFSR9QOL9QSd2g0JYthO0NgYIQ70Zvv7LrsjiMve+J+wvIVfWh0q8/n2hdlRGYFJAR6nRaDtYEgPeIALBmQjnOcCIpNM5b2yUBIVE1fT7lBegE54NQ2jUCZXkiIv3xG41nlc+A0MnOPZakEXzsI6qdZ/lNDX2Bl29ERTI1fRDwyMozh4afU9XONJdBVCFC7Ueq3iem9KkB6Hdu5fl0vAjc0iFups/pA0Zv4YQ6hlB/3gH5NvClQEyYGUxBLCdS+0n2cnQQBFJ5hMhecj1xQ6M7gnkTKIaagvwZLcMMju8jfiyHA2QJKZfJLTr2rR+HZzh65F2z6vVqEHBfjZTJEkt6Roqahc1ONsZ2t25REvnqYoqx8oCrkJRFi8fiVCxkwShWoB9ByehKfORmKPxmbcN6Q20/TOIu09rVd260KlqkMdTOtRypDq2E6e4vj+XfU0K7x0K6KO5ny2rrPRIU7Yow15Ld2cOjljQzhSi/Q77PpRZbJRvRQdP6ON+njEmKNUZ8l+RBzFXGRD35gyd3s/xHPPDsNZ1Yed+SdJ+M7yKVy4TqPiIGUr5FHbpeRppYbh8FOquj9cr1WQl1A5vwjmuxSKtDk1uhNy/Kfv4M6OljGu67vFQKfuHhoMMcPxHIjvXXM4LgdbaXXSitaAGcJDA0yfxe7XmDQE1zTTNxtdXo9c6v51A421eSzUDHu/5hCdDvHORcAsnoJcvbHnbo9hv1yeqfyCjm5nlkEuxg9Alp6B9/A7H6hsEePadJ2b243qptDJqPUGZCiTlzzpDWhma
- lgU/Pls8
- NW43D6OXfh9GxyO27gIKNd2wv83zmVE35hHoh8jHhOtYmV9P5ejtYF/aJM9Kw5YzINcwVF80beN9/vL5HaSY2flCgmMGunHxWgTCDuFA8NhgjHPznEjJFfBSeer+23nwvEtcOdH8rhCCFipA=
+X-HE-Tag: 1761703385-19660
+X-HE-Meta: U2FsdGVkX18lp/W5Psq+tgT6jYNOMUSN6wXfJOc3zKFlywTGNOMQksh8rOjqoMa8VzCvzW858Uv+gpiBCZgjBO+1eUXWODN/jEpS65/suDDTV5qxxM+G4GPTUSb5czaB7cOU83hpghCvFYNYywVw3aPxXE6ZgrDmBVUnNh8i39mynJ+lEMJ0Pp2bLKX6G0ndkg8ViqfF1NoUM9RMVSiHjrm4B6zUm8lK2n53JVRsGPnSlNRfguOWtkQrxSMQtuIBN4o6tgGYjLP2jjdGejhkLg0XVAWzHU98K/JCVfTvBZ4XVlvd9jkK87mCgkdPuSVPIqjErBxOzhmaGeSvaNzUllAa7vXn98Y0eo/9PX3Je+MgjyDD6FR0XfM8ejUcVVeFqMNO84p2C+rL34otaqFHup1ZAH9dH6ZcawkNuh3SkqdS0aBMDgMTn0QeXar4b5cpVE+NMsxXmgjZ+M49JTmsnObOYAPAI76L/r5arU+CK9iFjAfqnN7ku4OEHRK9xSaX5Nwci2/USUQiDqXQvXhur0jS2Toa00pxF9cZumOg56v/42YcaWHxmLUdOjxY4NVDbmOlEzKvpD74bl9J/OQ3NERvgitGWatIBeanSIQikHsgRUaitRQ/X4skD9RjZF4WIuNAwJRKg5rqdSaQP8Y5W/mlB8ykLAkd+p12YZayLOclkYdr5/jN5JYQ4X1m0C5xq1TMBUHPjO2dVaBYL3Y9wNNKkaYGxZDUCLgBWXTr21dNmsTtVbMLYlZbWeYNpfAlaH2Stx8Hrs/o4ouxKnUoPlz5rh76kElrtRzOsUXlA/xO5yBkgiXn+fk9dPUT9hAYvUVvtkkYvgmTnhs8cwQdijY3cw14b+JuDjsD4hAZwf1icKGNlYs+Hco5Ces3qvbbrxnbuAOWI2roFfg4gvUs1xkHPbGMaUEamh2Z77bexzNwOSB6PQHiL3TZdN/yTgDZfqiZhklF7kIxgVysxsl
+ MBBPQrpX
+ /7SUU06083xEj8TSP4vzFJFOSvLbiQj/Xpy822OhAd1F50//mP1ySVHNpG/k0HRdlEecrDLJlDfHFeg9j0dRKsz9xSNdYRvw6Ct2ersL7BW12MUXeTnuj2QZapmu90FxB8TFxJg5rVPmUy7wKcs2x/Eg5BC6Liap1wlqsIWiMxFjXdaqwjNiarAvESev/0KmKZJl5ty6p4HeE2J13anFKF5xIExs0Y55hqqfrE6R1HquxanbeXHw8bzB6Nubg59Nli/+29VXSe4S1c6xI69hJTG7zwBRtyR3cdVcT/UOsb6JLXIPWA+Vqia0rc3WCheoKcKVGF+xS0DjhCUjQo2IihfeYkd2zSxspJqSwJP21gK4sN3TF7hFJevvHdbe+WaSYQJ/eJdqMJXDFwDq75d90+bUoeOWueJrGjIBqAi5XwCKEewpKDgosZoDBT76OVTpMxF9IQt/tIOcKxUg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,21 +100,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 06:33:56PM -0700, Jakub Kicinski wrote:
-> On Thu, 23 Oct 2025 16:44:09 +0900 Byungchul Park wrote:
-> > As a preparation, the check for net_iov, that is not page-backed, should
-> > avoid using ->pp_magic since net_iov doens't have to do with page type.
-> 
-> doesn't
-> 
-> > Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
-> > page pool, by making sure nmdesc->pp is NULL otherwise.
-> 
-> Please explain in the commit message why the new branch in
-> netmem_is_pp() is necessary. We used to identify the pages based
-> on PP_SIGNATURE, now we identify them based on page_type.
 
-Yes, I will.  It'd be much better.  Thank you very much for the comment.
+在 2025/10/29 9:30, SeongJae Park 写道:
+> On Tue, 28 Oct 2025 07:32:49 -0700 SeongJae Park <sj@kernel.org> wrote:
+>
+>> On Tue, 28 Oct 2025 07:19:14 -0700 SeongJae Park <sj@kernel.org> wrote:
+>>
+>>> On Tue, 28 Oct 2025 14:19:27 +0800 Quanmin Yan <yanquanmin1@huawei.com> wrote:
+>>>
+>>>> In DAMON_STAT's damon_stat_damon_call_fn(), time_before_eq() is used to
+>>>> avoid unnecessarily frequent stat update.
+>>>>
+>>>> On 32-bit systems, the kernel initializes jiffies to "-5 minutes" to make
+>>>> jiffies wrap bugs appear earlier. However, this causes time_before_eq()
+>>>> in DAMON_STAT to unexpectedly return true during the first 5 minutes
+>>>> after boot on 32-bit systems (see [1] for more explanation, which fixes
+>>>> another jiffies-related issue in DAMON). As a result, DAMON_STAT does not
+>>>> update any monitoring results during that period, which can be more
+>>>> confusing when DAMON_STAT_ENABLED_DEFAULT is enabled.
+>>>>
+>>>> Fix it by setting last_refresh_jiffies to jiffies at startup.
+>>> Nice catch, thank you for this patch!
+>>>
+>>>> [1] https://lkml.kernel.org/r/20250822025057.1740854-1-ekffu200098@gmail.com
+>>>>
+>>>> Fixes: fabdd1e911da ("mm/damon/stat: calculate and expose estimated memory bandwidth")
+>>>> Signed-off-by: Quanmin Yan <yanquanmin1@huawei.com>
+>>>> ---
+>>>>   mm/damon/stat.c | 3 +++
+>>>>   1 file changed, 3 insertions(+)
+>>>>
+>>>> diff --git a/mm/damon/stat.c b/mm/damon/stat.c
+>>>> index 6c4503d2aee3..6dc3e18de910 100644
+>>>> --- a/mm/damon/stat.c
+>>>> +++ b/mm/damon/stat.c
+>>>> @@ -132,6 +132,9 @@ static int damon_stat_damon_call_fn(void *data)
+>>>>   	struct damon_ctx *c = data;
+>>>>   	static unsigned long last_refresh_jiffies;
+>>>>   
+>>>> +	if (unlikely(!last_refresh_jiffies))
+>>>> +		last_refresh_jiffies = jiffies;
+>>>> +
+>>> How about doing the initialization together with the declaration?  E.g.,
+>>>
+>>>   static int damon_stat_damon_call_fn(void *data)
+>>>   {
+>>>          struct damon_ctx *c = data;
+>>> -       static unsigned long last_refresh_jiffies;
+>>> +       static unsigned long last_refresh_jiffies = jiffies;
+> Please ignore the above suggestion.  It will even not build, like below...
+>
+> .../mm/damon/stat.c: In function ‘damon_stat_damon_call_fn’:
+> .../mm/damon/stat.c:133:53: error: initializer element is not constant
+>    133 |         static unsigned long last_refresh_jiffies = jiffies;
+>        |                                                     ^~~~~~~
+>
+>> Actually, a similar issue can happen again if DAMON_STAT is stopped and
+>> restarted by user.  That is, if user stops DAMON_STAT just after
+>> last_refresh_jiffies is updated, and restart it after 5 seconds or more, the
+>> time_before_eq() on damon_call_fn() will return true, so stat updates will
+>> happen earlier than expected.  Shouldn't be a real problem, but better to avoid
+>> if possible.
+>>
+>> How about making last_refresh_jiffies a global variable and initialize it on
+>> damon_stat_start()?  To avoid unnecessary name conflicts, the variable name
+>> would also better to be changed, e.g., damon_stat_last_refresh_jiffies.
+> But, please consider the above one.
+>
+> And I just realized a similar issue exist for next_update_jiffies in
+> mm/damon/sysfs.c file.  Please feel free to send a patch for that if you
+> willing to.
+>
+OK, I’ll review all these issues and send a new patch set once everything
+is ready.🙂
 
-	Byungchul
+Thanks,
+Quanmin Yan
+
+[...]
+
 
