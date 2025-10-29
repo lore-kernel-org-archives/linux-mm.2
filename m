@@ -4,118 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A1F9CCF9F0
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:29:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6E103CCF9F0
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:30:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 545EE8E008A; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
+	id C748D8E008B; Wed, 29 Oct 2025 11:30:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51D518E0045; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
+	id C4C808E0045; Wed, 29 Oct 2025 11:30:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 45A698E008A; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
+	id B896D8E008B; Wed, 29 Oct 2025 11:30:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 34A808E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:29:13 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id EDA6612B15F
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:29:12 +0000 (UTC)
-X-FDA: 84051535344.23.F0F7524
-Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0C667180012
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:29:10 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dymG3BvV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751751; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A91F98E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:30:42 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 59D9912B1E1
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:30:42 +0000 (UTC)
+X-FDA: 84051539124.01.BF03E5A
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 81F791A0013
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:30:40 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=JQSPcrDv;
+	spf=pass (imf19.hostedemail.com: domain of elver@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751840; a=rsa-sha256;
 	cv=none;
-	b=1ZsHDdceU2HjEjmpY4klbKujizUe5ifU7DEcuvISbLd0bU7Kiv5T9D2Xzg1GRorOeTG/QQ
-	POiJG+6we64zn6zk9DuoYOn+Zct0J/CBxpSbMQj2j3s46JieJBsygC+tNvrAY4wuIpfY9F
-	RoPeO7TiC2GMbHFE7ENlxmN0JmdQ9fU=
+	b=MqZG7tE0wYU1vGGkT1VOMm31qU/0pHmkm1R1teKcx2gBH5XmFB+0mrBaKqknJAhjMv32Ni
+	Hn61ANZEQZDby+U0Lt7ZwdfTvkEp9UsXTT9H2zGATkJyEjQMurnM2x1BTs9xWuc3C/fYjq
+	WAWDb+eqLtw+ZUjpsYU000vV7HYDF7w=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=dymG3BvV;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=surenb@google.com
+	imf19.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=JQSPcrDv;
+	spf=pass (imf19.hostedemail.com: domain of elver@google.com designates 209.85.215.178 as permitted sender) smtp.mailfrom=elver@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761751751;
+	s=arc-20220608; t=1761751840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
-	b=zyfWOAPjWrT6+SnUNiCImqz5IJvQWXqRl/CN7e+c5K4CvwcUbLFrPf7cExpmNAZR4DtoQz
-	k0LrRnYKIExapmsJ6FF5hD745Iumujq/Z6Ztrwj9QiKicImwd55g7ZB+oUn0XIXe135nbF
-	9ZZRriJ6V7t6P0eq/yIo89M0LMM4Jsw=
-Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63c44ea68f6so12931a12.0
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:29:10 -0700 (PDT)
+	bh=a/Chhgm7KMivLaP7UfXKsNLQx2xR5ZnzWFQSYqKYSi8=;
+	b=bQ7jqsxK19H1Zq1MUjltNGV8LH/1gBC7WwnxziJuRlHXyvdnOpiSbexHsxZqd9IjdiPoBp
+	YeHHilGdV0jqkTHpyDH7ZF1wiFaHR0AmngHjPQvPcITp6WHyAjY+f+ek4+fiTWvK43bRvw
+	LKvkb9p3OJ5ws7ZH5jKCo9CZ5hnfKnI=
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-b6cea3f34ebso5247781a12.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:30:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761751749; x=1762356549; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
-        b=dymG3BvVNY4eh2+8YaH6at+d2/kHNZRypArirKlTyVmKCrMcoiiqPPN8rl4N/HBmf9
-         fBKKxu4w8oEXajN+a7bbfmVMRi0iuD3RedQH/5rkI5sNCVJm6vvHZC3VG3nB2b1dZmYV
-         No36TVcaKZfdc9DPSrHpcxn6zj6wyCH3GOECBy/Ix9v5HoM/wEbN//lEgdCcfSNf+crD
-         6g8WgFyLU2rKqT6AQg0aSo7pORjCPgef2uGn9ik6NtcXoqlDNLcv1XgoQ1L2XDu7qJ+n
-         t8yiLCYwknbcCuWUClMjDV/LHC/BSEXkvkl7VTU1PJst0NASeePqRuQYMGppGRfVUwUF
-         sXJQ==
+        d=google.com; s=20230601; t=1761751839; x=1762356639; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=a/Chhgm7KMivLaP7UfXKsNLQx2xR5ZnzWFQSYqKYSi8=;
+        b=JQSPcrDvLPIC0RzSawGC+e0XM34HM4MT1hTTIdHyZcp7fX3THjbk4cx7/eKz3ZE1Nx
+         jIagh2XaNYVWCbvsoJU3nfbG4R6tyo+Kakdht4avo/vYjZtXzXNSNqA34lOEzuEqpePT
+         Im9P+xvc8m3dDayJMwYa0by+bICZTLWJSO0gTy7sc2WSKbNHjq2hEexhaLJjMzdvrN3F
+         LaqS5sHN+QInEMbk8bnI/EHdXTI9OYdtAudaB73qqFChHKJ8DznWLy0jbRDtHXdkG0Nw
+         I6zxsii/WaYeQzjL5cPmdLeF6Px9+xhkke0KqQYs+fZA8MomL15OOb0Q5TvnTJQTPXj9
+         fsQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761751749; x=1762356549;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=f625dWb+wusHB9zK0OBpFfEoYrOJJpBna/xRpvKUY48=;
-        b=ccDHaTpjatBwB3HBOP8Vi/LA4H+UuERZZE98WLVR7PmNExO17HriNLV7/b/GqbNdux
-         kexy/JjB+8CkLktna9k6o4KFQVUCmkOyKvJGdnciAI8MI31kkL5SEfDQ3wUrMHOnqcnF
-         S1hWfL9CbKlbtAxBCnR5wJY0W0jyq8aThWpTCUSy+OI/w0Yd4VGIGta1KVpNZIHFda9z
-         a9ZyusIiTSThCe0BQ9trsivDvOH1lvPcCas7cLQfe942yHjFpOUM8md5BIDimRZKC5Mk
-         IdXHxzsnWXA5AKuS9hGY+P/FQWyWpU1GiCfpHmuFhPuG6R/30bYbOmSeesGnnYQR8g5N
-         5DcA==
-X-Forwarded-Encrypted: i=1; AJvYcCWDDT3K2Bnf+576DkZ7TCD+NYeilh5Oy8WPYZrhF/56N3zemMT1J+84CRDX+5E5YKp0DigL5D+j0Q==@kvack.org
-X-Gm-Message-State: AOJu0Yyonr/b4xmS453UP1ty9tydoa748+HU1IIh2KGk8tevwcnJgGlC
-	9+N94l31aOBHr7+ftTV1/3fVrHBL4f4O7znKxVZ5LAimRfvF9EjNT7I0WN6lxA6hlZtttH62b2B
-	U59k5RK4QRa2Q9lZU0xyQFmOsi3mJ4et45nmZaunf
-X-Gm-Gg: ASbGncu9YBSn+rNO4tONaCud5tgQMtXSTfGeaWo4GDuydDZ24w1rUg+RfODIeMOZLlG
-	GSjNxyn+3UwwhutcF0KFamvaXUQGPVoKgc/emhQoUsRB1zs4XO+NjTW3KnH7qUi70FaY4sDsMT7
-	zgXKIXCCQIl9tTOCmjvPc6y+hBEQVNqFfglKX6LgP/PGrMVkvEAQqyzdgSEo1VBtnP3rBfWyl/k
-	hkT8oPIIYLVShKe5le0tKfH29MEwsGgUvHhVRvjdmGD3Sa5NFkbySKJ7APTdNZ9GGAi/sBkM196
-	j+7X3HlBnGcQbDM=
-X-Google-Smtp-Source: AGHT+IGJr15cLDbC+fbHSXbTnzvTz28tTliyWmFftwEcXMbXCQuxnWdN03oQ6RERl24adkiisnp+L7hn3wCKpUANYfE=
-X-Received: by 2002:a05:6402:713:b0:63e:11ae:ff2e with SMTP id
- 4fb4d7f45d1cf-6404519b54emr90964a12.3.1761751749371; Wed, 29 Oct 2025
- 08:29:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761751839; x=1762356639;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=a/Chhgm7KMivLaP7UfXKsNLQx2xR5ZnzWFQSYqKYSi8=;
+        b=wjf/Se41tRWz3NTqTVBNTt+dg3csECkfgMy+2g7ur0q3rZuhQJltYMJGGAHSZk065+
+         x3gsCnh1g5tyvnQsR63h8Eh3b4z/a0x4u5QHF+crrkmyRTLB+53NyhjTZti6JZWgFZW9
+         HoADXEOIrbXycO3YbP8US/lqo2x0EAvbiOIucTUHNjX6w13vTTJ30CNYJhBDn71Ny2j/
+         ENl/FcImPhjdAc40KQQKmS5/O7e5+IvJ/zGIw0OPFA9l9TDp8E4Msni2WYrVNYUaSm0D
+         dghTJUOpGf58hks5IGR7ZBbl/zr9/jbx39fiHAh2YVTbVw0vrx2BxL3CWtJ0Mw/QEO4p
+         LhhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdv0oaJ2w2i7+lnR751zgCtd9BtolcSYWqUo6XfeRuurqecnyJk06dd53T5DfEmhqVTTDIj4JbAw==@kvack.org
+X-Gm-Message-State: AOJu0YwuyrDjZuGwG/2+ARLxHdI3QU+c6F53PbQ5790eGX6JQmKs7B+f
+	eQr4/DelOHGAqnYtSRbwv6ZpWJV8p1wLRXvbgFWmHNa8fDT865srQzymGZheoofYLnOl+ILXiTT
+	RikVmSgaWKxHgB1m4PK/G/UILdhcDXBDb+NiHicZT
+X-Gm-Gg: ASbGncv3/dkr78j8Fi25T1vUUEbRxUBF5Bx4PQ7zY3vkMiGPsxe0tBKrwP2pksnW1jN
+	KvxO4LB9kmCqCpCkhucgxyet8qwQuceD5d0hEDFgdv6eiyY5rxnXesTf3piTrJhsohCISrO+lbI
+	jolX65AA+0W9iv7YG5y7IggqMnXk/E3hZhvgxNALi2HUjO1OhAX28sx9b0ONnof4wwG82rbCrYl
+	uz1chnTRj2Aqy6aTWJyRFPv5BGzgBBqqQsRTJWLc4Ua54eHJ538hEbhTIl5uiRcfObq+d+SvUef
+	loHZWRLV0TbQhJrY+E54KUcr5w==
+X-Google-Smtp-Source: AGHT+IH8xvowD+kYXQ7z5quxP2h2xDBqXwlebiin7tKEs9t726w7tT592s456fkeCdpk2YUZnOu4Up+XSy1ZFsm9bRU=
+X-Received: by 2002:a17:902:d4ce:b0:28c:2db3:b9ab with SMTP id
+ d9443c01a7336-294dee25ef7mr46936785ad.26.1761751838802; Wed, 29 Oct 2025
+ 08:30:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-6-harry.yoo@oracle.com>
- <CAJuCfpG=Lb4WhYuPkSpdNO4Ehtjm1YcEEK0OM=3g9i=LxmpHSQ@mail.gmail.com> <aQHLDTwwEuswvNWv@hyeyoo>
-In-Reply-To: <aQHLDTwwEuswvNWv@hyeyoo>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Wed, 29 Oct 2025 08:28:56 -0700
-X-Gm-Features: AWmQ_bmezBnR6pc25_StLvVfGCVbr2qQzQa79QlxZjsxwYQHjSt8eI_UKHmKW6w
-Message-ID: <CAJuCfpERqLpAkbK-+X32s9o2udOfLtqeoU5=9BykbucFePv7Ww@mail.gmail.com>
-Subject: Re: [RFC PATCH V3 5/7] mm/memcontrol,alloc_tag: handle slabobj_ext
- access under KASAN poison
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
-	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
-	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
-	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
-	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-1-6ffa2c9941c0@suse.cz> <CANpmjNM06dVYKrraAb-XfF02u8+Jnh-rA5rhCEws4XLqVxdfWg@mail.gmail.com>
+ <0f630d2a-3057-49f7-a505-f16866e1ed08@suse.cz>
+In-Reply-To: <0f630d2a-3057-49f7-a505-f16866e1ed08@suse.cz>
+From: Marco Elver <elver@google.com>
+Date: Wed, 29 Oct 2025 16:30:01 +0100
+X-Gm-Features: AWmQ_bkcozjdjluUvttU4Roh8Mm8XDdSh0qCy1zW1YFReOaqG1YdYoXpHqK6R8Y
+Message-ID: <CANpmjNOtocYUyX4HEB9GELeDVb1LbgESea98+UH5LCuYVoZbCw@mail.gmail.com>
+Subject: Re: [PATCH RFC 01/19] slab: move kfence_alloc() out of internal bulk alloc
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
+	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Harry Yoo <harry.yoo@oracle.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+	bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 0C667180012
-X-Stat-Signature: iwmtxjoqeionus58no3knin59aetsshh
-X-HE-Tag: 1761751750-670663
-X-HE-Meta: U2FsdGVkX1/xn7YTyd4ZgKJBMvEdAtNygbLVjhI/pFmdNxsp9vjne34VhRmAmEZi4zHH5EbAAQf8JVR6TYYfwfxoNhBlrA5dG3y/QoLTEN/3XtxzhZf98oC4zP2jlvLI/J7CFED87YPvF9SKXHkTpibT8mzFQeKQ73X0pz3zcaTrShSnH4nE+VnKDcii8erAulQATccGGlu3sbFO9pVTHCnIKLqK3KAAcP/3Pq5AGKjqPqjREDEzO+8ab31VLDolJ+6XEzvffk7/ZukY5mq7Q+JzHhbgXDTRmei8CGqHwTbyBmjaM6P5wkmbNVE0JRvpidXv6dadPaO0y1Wz8GMmucDXWwvSh4KDEb1ZVVkxXEEXJhW+cM/e3ohu3Y4hXHXdNVLhEEVqWiWj/D17pMpeOej9PcSmHfR/i0E8UOgDAgdDQHaXmqgZiGxAQGyoqOycGnipT3NY6i36SHtM3ADXssauPKCWSQhlXHtGgx7zJCn9eCkxOEj34vhhNfq5jTwn8Y21TSX6XSclbnpb9eC5YsUpPfK+57NbYuvs35elUtjiy4KsLjFdOcU/NFHag3FHptxm4rkvgpuvoeoZBp3iGBKI8jIzW2Mgog4qOTXMZxRYf10uZ7pV42ilfMyxbGzXSjNTeZnKAkIr3dcZnY9F8yGjr9JMuTqVdv2OlDqjIaoS9+KkJxXOgNe2btoC9t+M5punhjN2VfLk+rMgbIjklzhAvL7kwHdb7dQ+RhtmWYQtgVc58guUYDGaMCyouJ5bW3mEqQ4d7Q3H2idEhdLCDszbL1ONxDcRxPux2+Z5qLTB+NpYgxqej9k+cUB0ZUN+ovE6XWGI3AeMEgqrEvRddavSjn7F4LErgOQlihJJKn0Wba0vCUwXw+k2fz6dt7A2aNfazUE61ljH5LeiZdcMs8ohEHpWk2xUnbfAat1jUGurk//b/SUHq/edFUbtGDZSHZYlApGPfaZmqqUKYYm
- /O0BkwVo
- Ts3eRiKLKp/J/YuPZyheFsmg++lfna9aDC3Wte8Px0SniXUOrCS0dF3cl5347TRD20AsZ8BNeS17q7b7xT/aGRJu6T+cA8imsu6/xsfROO6N0O6xbYsACtGLcV2IET4whpxchX7x+TMas1dxd3SwCgIlzPGKYZqZAI/a51BrYIASkva/uENKDkiC/HM4t1xANXtcQAMUB+rm/y6UlcXDXM/r8OfLRuP0yyn+q3zvidRTVSYxRsxR8lCF6kqNKeEMgDq8kGhhaCLDP2bKwJPHDWd6CBRDXJZVo6pBXu26EL2utZ6QUgFNFmmjy9hQAC7gYOKD24a/RoI5U2hIlb8frfrEQ0iFhJmqlOys4I0btHnHpXAY=
+X-Stat-Signature: o1za8nt3ny6ypkp4tnfdz59m6xrxa97h
+X-Rspamd-Queue-Id: 81F791A0013
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761751840-799579
+X-HE-Meta: U2FsdGVkX1/eNWYoDMbAO/1EWf5gtifuHP0vsERTP4HQJup4cQx1zK+pHMfqH/d0QFg0LP9gD80OnZ3mw1bwQAEPtoMex8vj+W9jrysJ3L6JH0H+PaV2sdT4Gev9ur74VX8y6MtgHkuCyTtF74l5N8VLmDqF3Cd0qP6ESbGvvAFvpJJohsb6z+fPCzEHciZ/xGf8R+35YJ9RrJ6Aq9MLUsP0F4pfCBZK2eWz1ZGywOtroVzmeQjNo4LrsGQsiazavl58q2g5KMvjMtE6KqOU4jNNqtWFjzwhsFjLuvTcwal3siD351nWZQtoU6QpXssb2Ycr9XBPnTIG0r019qy2pqdvlYQRs4NZl/Gh8blDgnVCo+vIYazAO/sNzGwZ01Rk6w2SfZSrL/GdI8lmLvIQpK4QxqR+5yANhd84J1kmkwkl91tESWMypCRI8KreJl3l5vTdE9Jg2Oq/XISG2FpYwmHfT7oh29UJCMdSZcWIwUSGz3v+xf9dUzjWUwJbXZsYl3+YQRJNliFzbRXKXIbKQHisg9COhNlPolksLteW1BTiqmsf0hyLd1Ul57FPipI2ddWyDi8YTMNevlGaSsKvS+yuq1ZDhgNwr0rwXB9K+5l3gJHsbJD0vVty62QQZlTAS5HZxOZhvo/gB6s1LY/uhJiijumGJCEC86+oQASaTFx3f0wuqTx7dWrG4ARYg6aPsLuKWkZJQSxHbzqCpmfIzwRiyyzTxkTYzO7SJxmfu3ZKQiOPL8uZV4mPvSN+/S3KAIgV3xI9Y5UcNg4BZeN5xbBqx610hexaNoLsJNXGxMT9DNDxWnjyk45t4XxNK3+wa9oRK0PQ+bd1zbR/f6L/Z9g2IDDhFuS8aq1LcisEDvyMAJl/zPc8FoOuXTImVb3D+NnIEzutPX2BerG+1CgfS1R63s5rL40OsKhBG7kjEZz+ssN+SKp3PMZiPiYpvC8OObNtyMYOkfUHn+4xY0U
+ YqSwOwUl
+ W+JpaguD1UnEvzMaL9WBvOtmjfD6iDRN6pE73M1KK+sM2EidLXgWpbIJlAh84lvKeFeExWwdRvruc14PGKWEg0CRp0oCWIR8WEKQyNO8kO0nJpRR5YkCoNjswKNE9c/XMjV3T4yOXNE9Ef/wyualtkqJmUXpAQc+umTElDSQecb/x1r9OPnde4huodM4+JtKhakoRD9yD+KoFupKoihoMeLKVIfpu2Y0BNI1PVyQ3NF7KZ7Dqeel6elpUBk5XczFVvM7PoQXgXviFRBc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,66 +122,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 1:06=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
-ote:
+On Wed, 29 Oct 2025 at 15:38, Vlastimil Babka <vbabka@suse.cz> wrote:
 >
-> On Tue, Oct 28, 2025 at 04:03:22PM -0700, Suren Baghdasaryan wrote:
-> > On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com=
-> wrote:
-> > >
-> > > In the near future, slabobj_ext may reside outside the allocated slab
-> > > object range within a slab, which could be reported as an out-of-boun=
-ds
-> > > access by KASAN. To prevent false positives, explicitly disable KASAN
-> > > and KMSAN checks when accessing slabobj_ext.
+> On 10/23/25 17:20, Marco Elver wrote:
+> > On Thu, 23 Oct 2025 at 15:53, Vlastimil Babka <vbabka@suse.cz> wrote:
+> >>
+> >> SLUB's internal bulk allocation __kmem_cache_alloc_bulk() can currently
+> >> allocate some objects from KFENCE, i.e. when refilling a sheaf. It works
+> >> but it's conceptually the wrong layer, as KFENCE allocations should only
+> >> happen when objects are actually handed out from slab to its users.
+> >>
+> >> Currently for sheaf-enabled caches, slab_alloc_node() can return KFENCE
+> >> object via kfence_alloc(), but also via alloc_from_pcs() when a sheaf
+> >> was refilled with KFENCE objects. Continuing like this would also
+> >> complicate the upcoming sheaf refill changes.
+> >>
+> >> Thus remove KFENCE allocation from __kmem_cache_alloc_bulk() and move it
+> >> to the places that return slab objects to users. slab_alloc_node() is
+> >> already covered (see above). Add kfence_alloc() to
+> >> kmem_cache_alloc_from_sheaf() to handle KFENCE allocations from
+> >> prefilled sheafs, with a comment that the caller should not expect the
+> >> sheaf size to decrease after every allocation because of this
+> >> possibility.
+> >>
+> >> For kmem_cache_alloc_bulk() implement a different strategy to handle
+> >> KFENCE upfront and rely on internal batched operations afterwards.
+> >> Assume there will be at most once KFENCE allocation per bulk allocation
+> >> and then assign its index in the array of objects randomly.
+> >>
+> >> Cc: Alexander Potapenko <glider@google.com>
+> >> Cc: Marco Elver <elver@google.com>
+> >> Cc: Dmitry Vyukov <dvyukov@google.com>
+> >> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> >> ---
+> >> @@ -7457,6 +7458,20 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
+> >>         if (unlikely(!s))
+> >>                 return 0;
+> >>
+> >> +       /*
+> >> +        * to make things simpler, only assume at most once kfence allocated
+> >> +        * object per bulk allocation and choose its index randomly
+> >> +        */
+>
+> Here's a comment...
+>
+> >> +       kfence_obj = kfence_alloc(s, s->object_size, flags);
+> >> +
+> >> +       if (unlikely(kfence_obj)) {
+> >> +               if (unlikely(size == 1)) {
+> >> +                       p[0] = kfence_obj;
+> >> +                       goto out;
+> >> +               }
+> >> +               size--;
+> >> +       }
+> >> +
+> >>         if (s->cpu_sheaves)
+> >>                 i = alloc_from_pcs_bulk(s, size, p);
+> >>
+> >> @@ -7468,10 +7483,23 @@ int kmem_cache_alloc_bulk_noprof(struct kmem_cache *s, gfp_t flags, size_t size,
+> >>                 if (unlikely(__kmem_cache_alloc_bulk(s, flags, size - i, p + i) == 0)) {
+> >>                         if (i > 0)
+> >>                                 __kmem_cache_free_bulk(s, i, p);
+> >> +                       if (kfence_obj)
+> >> +                               __kfence_free(kfence_obj);
+> >>                         return 0;
+> >>                 }
+> >>         }
+> >>
+> >> +       if (unlikely(kfence_obj)) {
 > >
-> > Hmm. This is fragile IMO. Every time someone accesses slabobj_ext they
-> > should remember to call
-> > metadata_access_enable/metadata_access_disable.
+> > Might be nice to briefly write a comment here in code as well instead
+> > of having to dig through the commit logs.
 >
-> Good point!
->
-> > Have you considered replacing slab_obj_ext() function with
-> > get_slab_obj_ext()/put_slab_obj_ext()? get_slab_obj_ext() can call
-> > metadata_access_enable() and return slabobj_ext as it does today.
-> > put_slab_obj_ext() will simple call metadata_access_disable(). WDYT?
->
-> I did think about it, and I thought introducing get and put helpers
-> may be misunderstood as doing some kind of reference counting...
+> ... is the one above enough? The commit log doesn't have much more on this
+> aspect. Or what would you add?
 
-Maybe there are better names but get/put I think are appropriate here.
-get_cpu_ptr()/put_cpu_ptr() example is very similar to this.
+Good enough - thanks.
 
+> > The tests still pass? (CONFIG_KFENCE_KUNIT_TEST=y)
 >
-> but yeah probably I'm being too paranoid and
-> I'll try this and document that
->
-> 1) the user needs to use get and put pair to access slabobj_ext
->    metadata, and
->
-> 2) calling get and put pair multiple times has no effect.
+> They do.
 
-Yes, I think this would be less error-prone.
+Great.
 
->
-> > > While an alternative approach could be to unpoison slabobj_ext,
-> > > out-of-bounds accesses outside the slab allocator are generally more
-> > > common.
-> > >
-> > > Move metadata_access_enable()/disable() helpers to mm/slab.h so that
-> > > it can be used outside mm/slub.c. Wrap accesses to slabobj_ext metada=
-ta
-> > > in memcg and alloc_tag code with these helpers.
-> > >
-> > > Call kasan_reset_tag() in slab_obj_ext() before returning the address=
- to
-> > > prevent SW or HW tag-based KASAN from reporting false positives.
-> > >
-> > > Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
-> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-> > > ---
->
-> --
-> Cheers,
-> Harry / Hyeonggon
+Thanks,
+-- Marco
 
