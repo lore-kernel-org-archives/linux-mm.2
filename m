@@ -4,94 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EE8A4CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:28:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5029ECCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:36:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 610D48E00F6; Wed, 29 Oct 2025 16:27:13 -0400 (EDT)
+	id 8BF4F8E00F7; Wed, 29 Oct 2025 16:36:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C1748E00B2; Wed, 29 Oct 2025 16:27:13 -0400 (EDT)
+	id 86F3E8E00B2; Wed, 29 Oct 2025 16:36:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D77B8E00F6; Wed, 29 Oct 2025 16:27:13 -0400 (EDT)
+	id 736F88E00F7; Wed, 29 Oct 2025 16:36:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 381D18E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:27:13 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id AA74989020
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:27:12 +0000 (UTC)
-X-FDA: 84052286304.11.CBBD87F
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf17.hostedemail.com (Postfix) with ESMTP id D1F7240010
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:27:10 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uDvBTjFN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761769631; a=rsa-sha256;
-	cv=none;
-	b=YJDLU+YuNkbd8sRFPh1oGE/mQjnrKZ3QEXyNz/p32DOwqFxqmsxSFTWG+OtWkryFqVndFm
-	+mMcCcOWNOe4G07dTemqr/tBl9QTiCuPB/U9ONJDIaMEL6ENpsHJqRnLjAh/zEYMOvrAjz
-	1OPuYyo5JF7IKqjzaivKJNBMTY7L3a4=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=uDvBTjFN;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 62D1E8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:36:44 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 263144A218
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:36:44 +0000 (UTC)
+X-FDA: 84052310328.17.985AA07
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 8670F10000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:36:42 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DrC5gWSU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761769631;
+	s=arc-20220608; t=1761770202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=L5vmLW+oATPFNaWdtHY1yVME8el6pZeETE8QCtK8TCA=;
-	b=hSWPFl3tSN11DAx5akH2W5stFR+eBWK0rQGBR236FnqDBzriplkhmgBPhH1HJ0rJxIjsQR
-	2MyYj/+7bg6fKqePt+RawW7z4BNT8Zps6nfZrJ1mzqto3SFFQMD3mG9nZfF+SQ7wFPRsgJ
-	9pgqlWlz9jqf1L5ciJmxuMN2bMZqmNk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761769626;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L5vmLW+oATPFNaWdtHY1yVME8el6pZeETE8QCtK8TCA=;
-	b=uDvBTjFNloStyK5QFb/yoXxdR2x9MXtvvx+VlwjlfcjJkJJCF/u4jP8Z1O8uvzIJVQei7i
-	DLMoZGz0HxN1qz2OYh0rxnJZijSp4ZzRT5ISRcNxuFsImqMhMXzbscUzEIQ+vEupnezkGS
-	jrYIMHJUDg0Es/IWmxMEqmpTQ0M5jVI=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Song Liu <song@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
- <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,  Johannes
- Weiner <hannes@cmpxchg.org>,  Andrii Nakryiko <andrii@kernel.org>,  JP
- Kobryn <inwardvessel@gmail.com>,  linux-mm@kvack.org,
-  cgroups@vger.kernel.org,  bpf@vger.kernel.org,  Martin KaFai Lau
- <martin.lau@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-  Tejun Heo <tj@kernel.org>
+	bh=LEUcmXJTUfdquMyF/tYPWzyIMDRJzVNKX+sXv4F6gUg=;
+	b=wn55VneErcCrmg5nA4hSZzqAkz0vVkoNPQcH+T1vvvg1ElQqdhlFlUSuFBmRGGkmMiyKXj
+	+B9yw+e/wyOHlr+4mLMeqOu9Rrtv6x74FG88MQgmKwZIgnHeyDBQ9DRpv7GaD2u5e34D2g
+	F1Y7aY/MFhoxryTz8S/4y7QApmUe58I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770202; a=rsa-sha256;
+	cv=none;
+	b=AWtDvCgsJyLcEs/DAh0GXmAH7rXthsFtIqvKP1VhzJJVfbxAbsSlTEkhh5lr7r1lIzJYsf
+	+bK90ojXuqDOkC6K4NFsrnFcHVzaSW1yOCiFdOU7F27VT9eI75AnpC8xAzMNgLewLkI8OB
+	qkpIlpxIK0bztWkyx41+4V6tAn/Gs3Y=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DrC5gWSU;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of tj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=tj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 38DE843D2D;
+	Wed, 29 Oct 2025 20:36:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E19A6C4CEF7;
+	Wed, 29 Oct 2025 20:36:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761770201;
+	bh=iOgHS+eZEE/s/+7/l6K7Sr/3V+3Pj70ijnv3Cvpoook=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DrC5gWSUJMcUvoYLDXbfHIwK1tb2VBfHwJxQHwh7TzSL5xh8sdvcpQx06xLCpGTzD
+	 6QQbbuzI+A/83Qlo+5BQGNuXpAkQyO09qgmnhxbREexwqrM9/pbeWYilD3XQafjfXD
+	 HLxEIloCvEhH93/Qn0m2ZleVlXUNdrWWQldZwdOuIPMn2PXL+rj2ACGEwkcb3AhzfC
+	 8VL8fzNYLHsdvEe95oaGzi6RelBNNgGhKSWy70B1SDCA6SFjt2zL0ax7ezldRCYICq
+	 v5gj8faxK3Pe1LhmNADlsWAcETHsfwvDKTaSu7gFesptWU5Y/ZMOVqtl5nwTqZCsqJ
+	 P7/gghhtBrsOw==
+Date: Wed, 29 Oct 2025 10:36:39 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
 Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops
  to cgroups
-In-Reply-To: <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
-	(Song Liu's message of "Wed, 29 Oct 2025 11:01:00 -0700")
+Message-ID: <aQJ61wC0mvzc7qIU@slm.duckdns.org>
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
-	<20251027231727.472628-3-roman.gushchin@linux.dev>
-	<CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
-Date: Wed, 29 Oct 2025 13:26:59 -0700
-Message-ID: <87cy65e9nw.fsf@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev>
+ <aQJZgd8-xXpK-Af8@slm.duckdns.org>
+ <87ldkte9pr.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ldkte9pr.fsf@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D1F7240010
-X-Stat-Signature: 5ikowjjd6bqnpijzds1sjtxoqn8rhtkg
-X-HE-Tag: 1761769630-937292
-X-HE-Meta: U2FsdGVkX19yu6z9o7c/6SIRnJdgNBCfA/URb0V5OVQm0bt2+qkT9ZUIjt1fKIlNiJ0J4rUB/HOJriP2JQOzuvFgK17hFMB7BwS+liTH68ueINGwfBKAcay14FLATQYgbbrM0K7Ko6/ev38VrSU04h9GhEVKoceXArJQ729r0M2QL90+1dlu1KF4fWwafcSAO35M0a7plfqF81otazrbCkvrMsK0/AaCJyTaQEzhJwjZvBO8C1FyoVkdJ64XHoEMH/rezxrTnyYwuST+Jv9jJDC7kyNaycEYge3oOT+F/q2WnSGfOwymLt4gBPaGtCRFSWPxhqRCZ7Z2uYoTshiPcZwSN/WAgML1nvTQd2KG7Lk3zVYtHI8vz2HNV0ftdKCZEx6ulSQBAVzXz6BaIjN4W9+owUZhGXNvE3KOLTivuxH5T38gtEOoAK/C9KlKbbJ6bsBIgG8fCd3An01TQ/48HUZNRtqhjpSmNofS5xnHZohHbDQDLXX7wd7BnbJR9Ycz0U2u6fEta2+W02xzOfQl80UJpws0RMfAHZKElTdKxhckRu0CFdCKRV4YZqeCQmOazMKt8CWUxfSoPqWEXpMglc0PJbDQAuEVs+n7OSwR6Fs3artdkZgk2dFfMst0kOf8aN38G34Y3Nrh/iTjKbrcrgd9zwsHzX6+dTmOiIcJT3ezGlIk9QBlSDkOHQVArUwJceR5A7/i3rM8e8W2UlDqZmBkcmCgVeSqLG/Th1tr4EXbmC+CYk62FNLAicUua1A2klBEZoKEsTiC4CIFv/bhXZjcaEC6nvk2hKjgf17M4Y6FZF0bSs6CKuxr1ZVoxBDCWSg8o2f4boiDCkCyFbAwdLNnqdBtMgqv73NuEW+IfVp94JcLT4Jrm6KkqbJJ6+Ajbdgvbl96g/s+2sSDGYA3hQzlOz6gpt96u9lbY6rfAaAnRNbmpTOY503DxDWB2vT23Am/tIXuSY0ldePzpf7
- x5ut/16q
- fVv4pmA5IHPu8G5xEDyp3HtRnxigOqPYX9jtr0k1RELKHAds5oqy22zE/Eam6A3VEr13tt90BzddZahwXKEqDtM3OZUa9QuXIhdUid6Sb3zoO8k71w4qEeEaOz7B2GwJSYECQgLHm6amJbT5KI8bO6D85Al6TdwDZrGf5XulgKGbcF7nJC+a3X+6WRxeX3KqFJ9pnu/ZD5+GFMukfTyGjbsyUr87wETgK7ptzEkAXqmo+o50=
+X-Rspamd-Queue-Id: 8670F10000C
+X-Rspamd-Server: rspam02
+X-Stat-Signature: i7dxozjnf9pzrgwihd6mnrqdegunbnhi
+X-HE-Tag: 1761770202-82583
+X-HE-Meta: U2FsdGVkX19nR18ear9kDuJcs/EwfeCwQDzuEA+A+9f7obq/hNpCX8iRv8p9J7KQ1bb2aNkbBaMs9Zux54ozY1UfegP9m2Jbxvfiaw65AfM0RGZIl57n0qWUcReKUTwxuHMN31oQ/nxUt2gsI68lrQYX3ip6Fj1s09utXX2rDu6jDJRdn1+7h5oFu8DIbOE9MscFVlh9OhOt66ZPNQ1xnXvDtod7WHsWgv6M0ktJaH7TREw3vy7AVL2TDuEUSOuuASd1E5j0DbwemflUbDuyxDE/3ZuFIF8OGtlb1dfNvrlKqqP16Qi+VOCF/MkDEMVQrxULWVJeb5ZjNxlN9xmarRYkoUYwjTAKGhTA5BQzsRjTiWAmZCRKKldcH9NinDJ4t4VXfpKC8o7Ug0TJ4U4IdfxgZwnOJ+bPOgTxJc8HxN7U8B3yQeIHjeCwK737TXbLl/XuoPR1/tFNEnVKeBv+GJ1XOFhafHB6lmKtCIH2yIrmEW9ntoKutwsxqFRrRjR7J4Eoeo1Rdp0WqMjY3WgZK0zrjJ+jn3pYJeIxW/CYEH06XFvpwjTp2VwaCIh0DmJvfTrZQmi2R8/WfdRqzuoRG5Q3NbWqq6rPYNq60HUh3570QLmlRUF24M7m+9otz1fdiCWSFS0xfCElOiW54HZ9FOfFUr8z29dOD9If7uwctsaLXQrooYZbOvk9j6Ghhz0ZT3oIsQmBHghUDj5wuppXe8QRpChziQx2W67GK4M9ya3g0zzshKsUhmd9K0vxuMhyzeoQLtKk+L9SE1vYrYn7QnrVjIiVB6PUK4+If5AGjmDAZyEXCqHPsLqVqAK3FpkR4gzlx6jL/+h85Q7/64ubBgCY7aoCoQArMPZV591D1AdmIHtJW9Gy1p8MbNRrpB7CH/Ep3XVuB9qKB3DYZID6cssAJKmGJEa7WKNK1tdKsEYaRw+achJ14u8bAmJDjUgqeYFJz42GCk+zwVmhzho
+ ueLPO4pP
+ DW80YSrxB74jT5peKqsJC1DZDocWcvXh3bnUduVL9GOWxtyCl1L3iD1nKko6yIdJ/MOyGWyto+hafqozTFGuiyhow8FrJlowDgwx1r0VAWqb8kj8jFiYMS9msqiejpnSi6d+dmqcxTWm0euYeCozJAUsVYSfG3T+GL1T8Q1dXt7j8cz4Rkcy+CrhKCFfUCagdX3eN1sEe/LA3W83h/CYABAAgsA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,35 +105,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Song Liu <song@kernel.org> writes:
+On Wed, Oct 29, 2025 at 01:25:52PM -0700, Roman Gushchin wrote:
+> > BTW, for sched_ext sub-sched support, I'm just adding cgroup_id to
+> > struct_ops, which seems to work fine. It'd be nice to align on the same
+> > approach. What are the benefits of doing this through fd?
+> 
+> Then you can attach a single struct ops to multiple cgroups (or Idk
+> sockets or processes or some other objects in the future).
+> And IMO it's just a more generic solution.
 
-> On Mon, Oct 27, 2025 at 4:17=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
-nux.dev> wrote:
-> [...]
->>  struct bpf_struct_ops_value {
->>         struct bpf_struct_ops_common_value common;
->> @@ -1359,6 +1360,18 @@ int bpf_struct_ops_link_create(union bpf_attr *at=
-tr)
->>         }
->>         bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS, &bpf_struct=
-_ops_map_lops, NULL,
->>                       attr->link_create.attach_type);
->> +#ifdef CONFIG_CGROUPS
->> +       if (attr->link_create.cgroup.relative_fd) {
->> +               struct cgroup *cgrp;
->> +
->> +               cgrp =3D cgroup_get_from_fd(attr->link_create.cgroup.rel=
-ative_fd);
->
-> We should use "target_fd" here, not relative_fd.
+I'm not very convinced that sharing a single struct_ops instance across
+multiple cgroups would be all that useful. If you map this to normal
+userspace programs, a given struct_ops instance is package of code and all
+the global data (maps). ie. it's not like running the same program multiple
+times against different targets. It's more akin to running a single program
+instance which can handle multiple targets.
 
-Ok, thanks!
+Maybe that's useful in some cases, but that program would have to explicitly
+distinguish the cgroups that it's attached to. I have a hard time imagining
+use cases where a single struct_ops has to service multiple disjoint cgroups
+in the hierarchy and it ends up stepping outside of the usual operation
+model of cgroups - commonality being expressed through the hierarchical
+structure.
 
->
-> Also, 0 is a valid fd, so we cannot use target_fd =3D=3D 0 to attach to
-> global memcg.
+Thanks.
 
-Yep, switching to using root_memcg's fd instead.
-
-Thanks!
+-- 
+tejun
 
