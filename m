@@ -4,141 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 910EFCCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:23:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18907CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:31:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F11E78E0061; Wed, 29 Oct 2025 06:23:12 -0400 (EDT)
+	id 64AE58E0062; Wed, 29 Oct 2025 06:31:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EC3038E0045; Wed, 29 Oct 2025 06:23:12 -0400 (EDT)
+	id 5FBF98E0045; Wed, 29 Oct 2025 06:31:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB1ED8E0061; Wed, 29 Oct 2025 06:23:12 -0400 (EDT)
+	id 4EAD38E0062; Wed, 29 Oct 2025 06:31:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C4E298E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:23:12 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7D0DC49E46
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:23:12 +0000 (UTC)
-X-FDA: 84050764224.13.014B36E
-Received: from flow-a6-smtp.messagingengine.com (flow-a6-smtp.messagingengine.com [103.168.172.141])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 8AF2F100009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:23:10 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Q vtZDDQ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eEIX6CxS;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761733390; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3AE6E8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:31:40 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id CAC27BB89A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:31:39 +0000 (UTC)
+X-FDA: 84050785518.05.6272AC9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 04848100010
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:31:37 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mQHpiMhH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761733898; a=rsa-sha256;
 	cv=none;
-	b=AmPf3tRhVr/nNkO4DS+PAWzDAyWGONTOdsrIPVHD8v4Yq5thB4jV/GsAoiPstBkNS0ZMPF
-	wDQS8je9nfl+YpaOONzrFJx1KZHXEQqoOwi4gr9xdayfOP3YZJBM68FaAL6ulZGHvUqdwf
-	8VSEKhYf9SgKkeeqdiVimHOCteLMH14=
+	b=T4CCk9A/4hi8G5pCIAwg8wcwX2uEobG7TPidDyg2bHPVVHWl1G9aouKCuaqHGwasr0JTs8
+	RBwO+V6tDuEAn5kztpNehUF383oIe6rpUmTZefdCNQBUEScMuc+9SZ4KnU7L28qjZoLjCy
+	zcoZUQmduCJKI9kDBwRhrEzRy9bzuAA=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=shutemov.name header.s=fm1 header.b="Q vtZDDQ";
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b=eEIX6CxS;
-	dmarc=none;
-	spf=pass (imf05.hostedemail.com: domain of kirill@shutemov.name designates 103.168.172.141 as permitted sender) smtp.mailfrom=kirill@shutemov.name
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=mQHpiMhH;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf14.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761733390;
+	s=arc-20220608; t=1761733898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+FDSli0Ph+bdYBu+TscfPXcdJYFYx/LYMRlry+8ZbcE=;
-	b=upuoXSijd5cuMPDX+Ugmkg9C8x3c+HBjjxv+d4ygYdPomYWaTuZbIzCI967UwOFhMVHvma
-	bxFr0+t2KdR8KWwdf3g7d8jAgtDjGE46P3BE0/ePmjXwFUJic2TtaF1ObRhTQ7fHKsXnBS
-	t2GBZ7Y7Jl/Dz2Hk/Uh1T5J5WdadCqY=
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailflow.phl.internal (Postfix) with ESMTP id EE62313800EC;
-	Wed, 29 Oct 2025 06:23:09 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Wed, 29 Oct 2025 06:23:09 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm1; t=1761733389; x=
-	1761740589; bh=+FDSli0Ph+bdYBu+TscfPXcdJYFYx/LYMRlry+8ZbcE=; b=Q
-	vtZDDQW9pEdBAuAXgxnvLXFet8BhgvMj64eAfEieZJsGSKfdggXQ7Lu8rUVMZ9ED
-	xxh8p3vftnb1d+RKtJ00wNKNNQ0uxcodP8zZjkA1FuoOJZ0M3rL1HOQ/oiO21WBX
-	ORLwZuW8xKFdHsXX0nj/jYSMyGICCpPIkYYJW/lNSdzMvQB7BLQ8YOSLQVV8I0jl
-	HOxp+ZhIXHdEFparR6fH9KHl0dCRSM+KLFA9dC2OUFEgeXLENp1dO1tBnKFc78+n
-	XKGy8zr5F5VF00EkYSl8KqApFNKvO3iPZIaJAIXPhQp8L0K4AZoSYCLxk/TXrJ7y
-	3GTTFfONQZloJiUj33tmg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1761733389; x=1761740589; bh=+FDSli0Ph+bdYBu+TscfPXcdJYFYx/LYMRl
-	ry+8ZbcE=; b=eEIX6CxSlpYir8DMLvaYZs9klDBDvzZvWOTeqamZTjxt84uch//
-	Sigb37GvtiqfVsapAg630PZZtxhnFR9ePvo18FrUeCdqf+dKxiH/+kCHYFcvxxjD
-	oOiUTNdsFZHex8hu+ik65LxyAmayASorUBnvDC/iEA4kazibr9TKIsSGcqu/EAlz
-	gqkf+1GrCeLQnBFk86AEy08TU3a63O4eB9bWl62b/Sii27aTiF2fpiCLRvuGg3VE
-	w6tVBKSwtCFqIEeT5eVlq9v6yVBMEh+phG5KqFbMw1+iB2EexD70HeINaPDhpGqI
-	onMpfg4RIRdsl1MltbyIVF9aUjUS4sVchrg==
-X-ME-Sender: <xms:DesBafCIr96SHdLVEP-ppkZ3zTrNQkKQKZ_xZNORbigQMXDEqOk3pg>
-    <xme:DesBadMEptUA5BbMaWv_gNgntmKBdjc7ZIjQHe3-4yKcLOqMwRzJfVzMDKz_SqpO5
-    kKVJp9Xb293Aviz96fkaNq_rVnG3d-lomT6aBpjPHBGH1ZYVBLGGYA>
-X-ME-Received: <xmr:DesBacyvN--A9IoQ57sFmqxDSjn4H-0uH_c6qjNoY1cw_qGlb4Z7_amF8iwGMw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduieefgeekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtsfdttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkihhrihhllhesshhhuhhtvghmohhvrdhnrghmvgeqnecugg
-    ftrfgrthhtvghrnhepjeehueefuddvgfejkeeivdejvdegjefgfeeiteevfffhtddvtdel
-    udfhfeefffdunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeg
-    gedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohephhhughhhugesghhoohhglhgvrd
-    gtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhr
-    ghdprhgtphhtthhopegurghvihgusehrvgguhhgrthdrtghomhdprhgtphhtthhopeifih
-    hllhihsehinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepvhhirhhoseiivghnihhv
-    rdhlihhnuhigrdhorhhgrdhukhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehlohhrvghniihordhsthhorghkvghssehorhgrtghlvgdr
-    tghomhdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesohhrrggtlhgvrdgtohhmpd
-    hrtghpthhtohepvhgsrggskhgrsehsuhhsvgdrtgii
-X-ME-Proxy: <xmx:DesBaQenYKO6Awlcf2f2OqlDhXwNlTwpYzafHsuzytn6ICrcPt-i-g>
-    <xmx:DesBaX3RSp8lRmYJbORMxetuIv3d2yE2gpXvSv-IIGHRthCf5-Wgrg>
-    <xmx:DesBaZk1Jcbo1zuURKahglAfAx4dFiFC6ySlby_1BDGjODtKhSMWrw>
-    <xmx:DesBaeoiWzHVKzLEnt3Da9gb5QZDUceAejk8QwX9E27L_5PJs24VPg>
-    <xmx:DesBaZs429W1TDgPTtOCx6BEsoyjQs5VmQv18QKCZj6li8Y3JSHbml6->
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 29 Oct 2025 06:23:08 -0400 (EDT)
-Date: Wed, 29 Oct 2025 10:23:06 +0000
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Hugh Dickins <hughd@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	David Hildenbrand <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, 
-	Harry Yoo <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-Message-ID: <l264zv6qfnvzhfdiwe3nzjydqz7w4t3ddumntopdq6qmyx4ktk@svdhieca6abe>
-References: <20251027115636.82382-1-kirill@shutemov.name>
- <20251027115636.82382-2-kirill@shutemov.name>
- <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
- <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
- <9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
+	bh=CTXnL9UXH/iauUvH958Y5ZTz4Dt6IJaJSNAQ122UEVg=;
+	b=nDQDgor0xgOxrAdl+n56lFFqY80KA3dMG5iZGsPBif21snyHZNniwIbyqG5TyT/v51+6Sz
+	DwpPzIeh2QjtjMdFY2bg52crWOBX62W+ozJ726w4VwMQhV22uLK6s77LFjk6wl2S4N+vMx
+	b5N9oDkNrTDsKfBKhNVA/XBFoo6dXZs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 09C6443A44;
+	Wed, 29 Oct 2025 10:31:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4DAC116D0;
+	Wed, 29 Oct 2025 10:31:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761733896;
+	bh=Kk/z5xbjPIxTq926BScJO1YbAE6B21A/nQcvL+Stxjo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mQHpiMhHIipyykg71nO9gr0ccOWvAw3jtxADhT6O9/iW0PpIiw/qmz5zVTUW3oo0Y
+	 Yq4gg7lmHuk8qvkB8w7kGP3dJ/Es/yfXH9Z/5NpT3GdhmC3rdV4d9InuM6AE6YDHuy
+	 66y1CBVkVJ47bCQATzwguaNY0rGy4czAnJJf2Xq0+TNv8MsAXP6t2uwOLwNqTFFpSC
+	 b93q4JO88FSbhgGajCQoNTlTc5GzNikQEX4E8U13MGQNOniIiwlNgiHYmZ4xaVekC8
+	 PXMEnG8bUYp8VmovluQl1CaebknBe933wtZ0M/W93tFXssHpX/nRz8xuoWt5VU0UOX
+	 RCaW/NJFhcGtw==
+Date: Wed, 29 Oct 2025 11:31:34 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Valentin Schneider <vschneid@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+	x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+	loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Jason Baron <jbaron@akamai.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
+	Joel Fernandes <joelagnelf@nvidia.com>,
+	Josh Triplett <josh@joshtriplett.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
+	Jann Horn <jannh@google.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Yair Podemsky <ypodemsk@redhat.com>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [RFC PATCH v6 27/29] x86/mm/pti: Implement a TLB flush
+ immediately after a switch to kernel CR3
+Message-ID: <aQHtBudA4aw4a3gT@localhost.localdomain>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <20251010153839.151763-28-vschneid@redhat.com>
+ <aQDoVAs5UZwQo-ds@localhost.localdomain>
+ <xhsmh3472qah4.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <xhsmh3472qah4.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+X-Stat-Signature: p9hpbqf9mk975tmfs49jb8nb7aykktnt
+X-Rspamd-Queue-Id: 04848100010
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 8AF2F100009
-X-Stat-Signature: kem65u76i77bd3kwxq7k4x5o5obmwjei
-X-HE-Tag: 1761733390-83701
-X-HE-Meta: U2FsdGVkX1+HWlpCFz552cWNaNP7Uuv21X545bXP7rASuTSITO8uwtldc+LykmbadVpQ7r6FEIa0a/gZVyFiyFAiathwZR4QV5I/8F0oVvayE5D0gf8f4lvq5rxWDwPBH4FlzD7VDH2aFSUFfKcUTc49GNq5EjFLOvafXXnli2iLFTVdP9gWfARHAx7uB/0Q4C+aqAU+Kzp7yLjfySUQQ4GvcQbMf6EF98NGDpYuEZDPENbjuEEqsVCPqqnIPY1MRAM7K9/q9R4UzZ09FUPeS8nhbCeDSg2yoD9Wmbjh38529KGtKzAlAffwbXTat79YnQftMlddroGL60ZFh8Hi9J+lEETUx5zsUaJ4CUUDsuZR53F2SBinDNVINtJLsr/WIZTd6aYk5yKsg7ntnuz3Q6FOmVI6fpqKw4Up7NVb7J66cKns7PtxzFeQumgSXuxIzb3BElgskKwjtob8lDF3b6eWj4bRMSTTu12SNwZN/Jrjfn1kOVM8R14JUPeJfe2wOXsoU7U3uxFndj/19iVI2dkWmtiLPg/+TphpjsL5lMSSbBWmsV/XN5DhGsbfdclNpK09ocy+cmonXPI6k8hoZMYjyIPWYrBn+o81aSrqWc9y5cGRDH0ho9F+MpD9rTiO+tgaQ+TcrUhj8kz0tWSqCEenMPRtHdqe9i9pbeM6yAH9g8jwl3WGlHy/S1s/KKm/QJrOAVFYq9IhA/HONm55RK6WYa3zbSOBTZLh5JZDbChzY/HoQA62nBa2jDJiHICDe3yrsFV8gon76kCndtaMs3n6AqrkoRfYI/BczT89mkYAQoubWc0Ap4sfs4cYkua3pmO7sDdFQB6GDpcUbFV5YO7cVkfG2l9iQcgTazKBHubAjCdXNK3b1mCRUtMSGQ2o2EMucgKX+LoRc8Hz9E/uEMQkCqEhRIeB5obS/17lFGy1o1aj0COSI/2dboSWGyXNIL4zo0HroyErfuLZQlv
- hb8iT1tV
- AtWel4xA868q3jJPgrOBEK4ZKFFjJBK1I+giJVD5ELZ0OjuLjkOVkLkQAacg/d1U1eg34MmKzXPOxthWCY/eJcPzvjA8b+gght8lrNxozDr54zXaVoUG6PwJSQw7JSnjytoLu+i1AFBpZ8RD0FsS8bxsLZERvMBQDGBcaIZ7ZEzw1Gn3WubwE+eVGtL3cJ60tCluQ+//dFLKbEX6Czppq4RsDqWgFukQOZ2pAylPVCysUQVMX1aXARLqR5xttP7Fh1dMFD+n2L3mXRFVG23Ev8ZxJVzrMVaF7RNOlpie/3Rd/EU6lKGWgBEngNQPHtpsRcKiKjOlYlgeQMFyFhD5zj6DQDImCF63OsZj4HVCTqI+ThhX1nlyUbv2ayC0HqM5O/8ecg/KAYCAcuaBc8I67QV3w3MG0yfjVwgx2ZhvTPPjThLk8CCfIOVqCXVWjkQGJYPUElCF5qZ0S6MVWtlI5AgsdV/lozKvkIviqhryk0WvWDRE=
+X-HE-Tag: 1761733897-88143
+X-HE-Meta: U2FsdGVkX1+laRumYajQGYd180Zla+CkEgcJHsdCQMu9Lk8KG+PzS7boG7wy3qFiRLkhKI5dt2QQLIupc+soCgf1VE5HBkXBCYDOmEss1nfKjqL3mxrY00KPOvM0dM2PIfbDQ+XhyAOssd+BxFgrTRaol0rT89RtIig1lMTUvlOiCagZ+d6P9TpBvQHWaXIjgJqmo8w+Drg4eyOeubEiiie8GQN1sP2Yu6KckHefapn5nF4YX9FBN6NApnN9UVY3zFDQcWMnR+cFZquZkFTT9Mpez+69LGbRSfJRv6pm/TAsyK7FLCVxhUP6NkL4hPY4VxtRC/F6p2+Nt8PhsPI5BVXlajwJ8ewHSFaNzSA1Yc1MlIwWh7ZteYc72g+ifQyI92VWlmjN8E0mphyzl5zp8GOdPgiSTzwlSyhw3+328Y/+lrguAWAZ6SB+yT15TsXuaQNpejVaUVpgUxDXJZpKlcuL7KYY9suibSmwFhAJ/fD/huT6ans1HNcsd9TcePCCIUSPNh7SzEPNUksFjOydkWlPA9SvJ39a2pHc93zcXDqATyBMHW0VnYEZv1weGInFu+UdyextZYpE5koTrjrrpeY2Di7ry4N0rM+ajfzmN48paS8swTttzkzXg0BaxzwM3kfcSZ4blANhtIei0xjwJ8Zf7g5J66CDlXLWXQcfURI+cz3r6RNm0PFlUVt86iSezc95UccXvKKYmb63aSolpJGrluCBpmNFJDC7kdlgOJp0FFr6PL0dm32RK/7k2TXqtWbKMP5W9uq+dWNqcSlGUkuVdkPk+X+zb31aITxZ2T+2LdXZ+A+l6rvbwJfb6ezlWeXxTaPGDyegTikBnBIo8O0boUXRH9YbOCbJusObOK3iThvZDzXSS41nQXK9K9kJLgyjAW2jrl/UWUyswFQt9ixYIrHW/MFzWWwN2ykL/uc4b+h7ly6b9S4nn1ctulGrOL6Rb7fXnS2V/hfBnEp
+ uqf847Zr
+ PMw6M4iWe2UnfhcA0AKyLdDNwTQUWTRzavMSzQ5xAGUoNh/u8805o8HBifD7Lnjlvmogbe6bTHqwlaFaVJ/tUueAYSXArf2tEP0PPq3cazPAko7UzwpIJ5I1ckVqwX1JoKkMYyDXzTusB+KoW9Km2xxN6QyYBTWwSgaZx5qFZFLGnKjaVbHYHtB7rTeUyLTW8rlJJb08WIxUw8clEPA/adNufjDJYgCM94BJsazF1cHUn7jQKfgwtXhfcqhJqsrSJx73Hr2TIMEkV//KtGa7dq6pL2Te0bCnIYRaNl5rUIG8nHK2ooXD0oM7WCA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,30 +130,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 02:45:52AM -0700, Hugh Dickins wrote:
-> On Tue, 28 Oct 2025, Kiryl Shutsemau wrote:
-> > 
-> > > Also, is [2/2] to be backported?  The changelog makes it sound that way,
-> > > but no Fixes: was identified?
-> > 
-> > Looking at split-on-truncate history, looks like this is the right
-> > commit to point to:
-> > 
-> > Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
+Le Wed, Oct 29, 2025 at 11:16:23AM +0100, Valentin Schneider a écrit :
+> On 28/10/25 16:59, Frederic Weisbecker wrote:
+> > Le Fri, Oct 10, 2025 at 05:38:37PM +0200, Valentin Schneider a écrit :
+> >> @@ -171,8 +172,27 @@ For 32-bit we have the following conventions - kernel is built with
+> >>      andq    $(~PTI_USER_PGTABLE_AND_PCID_MASK), \reg
+> >>  .endm
+> >>
+> >> -.macro COALESCE_TLBI
+> >> +.macro COALESCE_TLBI scratch_reg:req
+> >>  #ifdef CONFIG_COALESCE_TLBI
+> >> +	/* No point in doing this for housekeeping CPUs */
+> >> +	movslq  PER_CPU_VAR(cpu_number), \scratch_reg
+> >> +	bt	\scratch_reg, tick_nohz_full_mask(%rip)
+> >> +	jnc	.Lend_tlbi_\@
+> >
+> > I assume it's not possible to have a static call/branch to
+> > take care of all this ?
+> >
 > 
-> I agree that's the right Fixee for 2/2: the one which introduced
-> splitting a large folio to non-shmem filesystems in 5.17.
+> I think technically yes, but that would have to be a per-cpu patchable
+> location, which would mean something like each CPU having its own copy of
+> that text page... Unless there's some existing way to statically optimize
 > 
-> But you're giving yourself too hard a time of backporting with your
-> 5.10 Fixee 01c70267053d for 1/2: the only filesystem which set the
-> flag then was tmpfs, which you're now excepting.  The flag got
-> renamed later (in 5.16) and then in 5.17 at last there was another
-> filesystem to set it.  So, this 1/2 would be
+>   if (cpumask_test_cpu(smp_processor_id(), mask))
 > 
-> Fixes: 6795801366da ("xfs: Support large folios")
+> where @mask is a boot-time constant (i.e. the nohz_full mask).
 
-Good point.
+Or just check housekeeping_overriden static key before everything. This one is
+enabled only if either nohz_full, isolcpus or cpuset isolated partition (well,
+it's on the way for the last one) are running, but those are all niche, which
+means you spare 99.999% kernel usecases.
+
+Thanks.
+
+> 
+> > Thanks.
+> >
+> > --
+> > Frederic Weisbecker
+> > SUSE Labs
+> 
+> 
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Frederic Weisbecker
+SUSE Labs
 
