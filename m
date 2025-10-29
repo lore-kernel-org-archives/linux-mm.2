@@ -4,103 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DB199CCF9F7
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 14:37:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 15DA3CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 14:38:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A5C38E0075; Wed, 29 Oct 2025 10:37:22 -0400 (EDT)
+	id 766A38E0076; Wed, 29 Oct 2025 10:38:22 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 47DC48E0045; Wed, 29 Oct 2025 10:37:22 -0400 (EDT)
+	id 73DE58E0045; Wed, 29 Oct 2025 10:38:22 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 398AC8E0075; Wed, 29 Oct 2025 10:37:22 -0400 (EDT)
+	id 67B4A8E0076; Wed, 29 Oct 2025 10:38:22 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 23CCE8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:37:22 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E272A12AB44
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:37:21 +0000 (UTC)
-X-FDA: 84051404682.10.3BB115F
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 795AA100014
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:37:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=JzV5Lfwn;
-	spf=pass (imf14.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 575648E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:38:22 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 100925B8F5
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:38:22 +0000 (UTC)
+X-FDA: 84051407244.24.B0AC7F2
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 42827140005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:38:19 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="GEuqbie/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf23.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761748640;
+	s=arc-20220608; t=1761748700;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QGcswXRVbhQ1LyEBlNcfoiqv+Nc2O8kRex4L8HOu5WM=;
-	b=05hdFejM50ZwDlRpaTxBKWdehVf6eWjlzhsoGElM+Rrf3Yx4BULGSOmuuQjpuuQ5gKFoCV
-	Qr7VvANBKR0qZKEI39JORE4IAHnVgw3dPggZf8Jnogyd0GI+a5Veptt0AkelbhTzol8s9P
-	tCMdhC14et3TSq3GB/wQsL5Dzm7KPqo=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=fail ("headers rsa verify failed") header.d=zytor.com header.s=2025102301 header.b=JzV5Lfwn;
-	spf=pass (imf14.hostedemail.com: domain of hpa@zytor.com designates 198.137.202.136 as permitted sender) smtp.mailfrom=hpa@zytor.com;
-	dmarc=pass (policy=none) header.from=zytor.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761748640; a=rsa-sha256;
+	bh=ZSNefP3kGlhfDPKLLTZZZwOAu0fb7rvyzu/Kl7KhTYU=;
+	b=8O+s+AfdcK57NECY1wgQSsVAYlZsYfOBhg5XGCSiNUEGD4+Km3yVsQrEZV3o6LGlrVFIFX
+	JDJ8ZgyTRk61hxrR+Odg8o5fUB05Vp9BL3N6+o3PsB9r/UPN29g4sIqIUpZfyVCAdohHG4
+	3MJCNlt1wNUEP9EwoQF4VfNnPzwNO+E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761748700; a=rsa-sha256;
 	cv=none;
-	b=gkvADBJdTzDS9ODejQFPQggB6hFyprhhuoDTSsny/orjFPQiJvpeSvUPvk8LyqRQguk+N1
-	UaZsJPdLzOF2sfygsygHxs3u160XnfiM+BeCOT3QEtZq0DNrs3MDdKc3WVE+kgKm1MajJ/
-	Jym1eAXe08HBwI/mXXERnnMYT4RF+7U=
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 59TEaGje2114125
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Wed, 29 Oct 2025 07:36:17 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 59TEaGje2114125
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2025102301; t=1761748578;
-	bh=QGcswXRVbhQ1LyEBlNcfoiqv+Nc2O8kRex4L8HOu5WM=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=JzV5LfwnaN3YZoFEcXJk0aEuwVs0R3X1Jp6aHvdg9ZA4jAWacYgpv5erHYC8fGgNz
-	 qM8H9VJj1Eu/OZ1kncOGWS8TjnPZ/acfmL6StOoysolsmfax3vxC6ilFAfkGh42AoH
-	 jKURrsIkh/da3GgaUpXxxNBWQnDJJlVEx5gb3GcDEl28Z9oM/7Sag9QUUixtWPhZAs
-	 NEELTtRrsbxx1GdoudZogM4z2TBbUWVGsqwFz1kMB8I8SMjJPDdhU4NysyIPkjVlFa
-	 Nc6LoiVA5GI2RnRf/WVHZ4t884R2kX6+PYN5cKbVg4Fr5OAoyHMxkVcDe3WIrhNb+U
-	 3o/zm49rbPppA==
-Date: Wed, 29 Oct 2025 07:36:17 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Brian Gerst <brgerst@gmail.com>
-CC: "Jason A. Donenfeld" <Jason@zx2c4.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Theodore Ts'o" <tytso@mit.edu>,
-        =?ISO-8859-1?Q?Thomas_Wei=DFschuh?= <thomas.weissschuh@linutronix.de>,
-        Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>,
-        Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, James Morse <james.morse@arm.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>,
-        Nam Cao <namcao@linutronix.de>, Oleg Nesterov <oleg@redhat.com>,
-        Perry Yuan <perry.yuan@amd.com>, Thomas Gleixner <tglx@linutronix.de>,
-        Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-sgx@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH 3/6] x86/entry/vdso32: remove int80_landing_pad
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAMzpN2g1G9Jc6eL4L+Rq3kGvKALt-tuaA3NKUuZ-jJXeaKuPRA@mail.gmail.com>
-References: <20251026221208.1938173-1-hpa@zytor.com> <20251026221208.1938173-4-hpa@zytor.com> <CAMzpN2g1G9Jc6eL4L+Rq3kGvKALt-tuaA3NKUuZ-jJXeaKuPRA@mail.gmail.com>
-Message-ID: <AC974749-2246-4F2C-96CC-B2CACE054C2E@zytor.com>
+	b=WDeSwip8C23IO7mplpNpTDHBeYfEqE3LjzsjwplJa/ZvGF2q6HmXh+WV/qTHzN128Eibj8
+	QAM5Hl4qIrY4+T+NUwbm9WrteqndCChxtwGlXscPYj1aeoSkBi/6r6qte5Q05HdAygvIMb
+	n2/RgSPY1xLOWeCPpWwsHzL/eS7W1FM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="GEuqbie/";
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf23.hostedemail.com: domain of BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+a01530d85467cd1df9ce+8102+infradead.org+hch@bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=ZSNefP3kGlhfDPKLLTZZZwOAu0fb7rvyzu/Kl7KhTYU=; b=GEuqbie/FD8XRtOvpksnrYmVM/
+	yxBYrL3OAGeTQjnvYE8lWldox55/VPUDo9bbo1GS/N63U9F8V1KN/y+de3zS+l34ZZ03nWBteFZf7
+	DMo3ovFyKPDMV9Q+jJqEW5TtTYwBtOrXcu2CkMdedFvHOJYFYA0QU4HSxPXmAPQjp70karpYHfF4O
+	nqq9/8I505ZPmHqy0s/iYCPoIpcCrpUjAP5mLXSWZ9Frnp5NhnbQ6ph6uxqUu3PaXLSQWfAtupK5+
+	hqOpHXJS4gGOGpyAUHrK8m1Pr/s3mdU+EyQQCElhMSxXXZ+fs9CJo/mdnfHuAYJD1R7FpPyQ2fBBj
+	2g12CylA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vE7JV-00000001cIo-3QHR;
+	Wed, 29 Oct 2025 14:38:13 +0000
+Date: Wed, 29 Oct 2025 07:38:13 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Mikulas Patocka <mpatocka@redhat.com>,
+	Askar Safin <safinaskar@gmail.com>, linux-mm@kvack.org,
+	linux-pm@vger.kernel.org, linux-block@vger.kernel.org,
+	linux-crypto@vger.kernel.org, linux-lvm@lists.linux.dev,
+	lvm-devel@lists.linux.dev, linux-raid@vger.kernel.org,
+	DellClientKernel <Dell.Client.Kernel@dell.com>,
+	dm-devel@lists.linux.dev, linux-btrfs@vger.kernel.org,
+	Nhat Pham <nphamcs@gmail.com>, Kairui Song <ryncsn@gmail.com>,
+	Pavel Machek <pavel@ucw.cz>,
+	Rodolfo =?iso-8859-1?Q?Garc=EDa_Pe=F1as?= <kix@kix.es>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Lennart Poettering <mzxreary@0pointer.de>,
+	Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Milan Broz <milan@mazyland.cz>
+Subject: Re: [PATCH] pm-hibernate: flush block device cache when hibernating
+Message-ID: <aQIm1bfwKlwaak52@infradead.org>
+References: <20251023112920.133897-1-safinaskar@gmail.com>
+ <4cd2d217-f97d-4923-b852-4f8746456704@mazyland.cz>
+ <03e58462-5045-e12f-9af6-be2aaf19f32c@redhat.com>
+ <CAJZ5v0gcEjZPVtKrysS=ek7kHpH3afinwY-apKm3Yd4PmKDHdA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: kj3imifqi8n9auokf3m6om9rdjp57aed
-X-Rspamd-Queue-Id: 795AA100014
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAJZ5v0gcEjZPVtKrysS=ek7kHpH3afinwY-apKm3Yd4PmKDHdA@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Rspamd-Server: rspam01
+X-Stat-Signature: so53ctsi1p41x1961j8r989n6ubtjo3o
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761748639-470774
-X-HE-Meta: U2FsdGVkX1/OCug2z9Muq6oF9Py72756i+aNQZS6Q3nsxQbwB8LYPYyc6iDTpR3m3JfGE2Fd38ANXJMFqMrnkTAzNJpHL4VG9OkMwD/4oO/UrO+i0I5h3vQtmDq4qSpaQVbf5p11cL+fdLs8Oyv17qByNfvVSBDBt3sCb7sr3Pe1kulKJY0u1YbgOF8u98qrMbggjnu+6Zt10/PtCVLxhtCFdwmj8T9WBgyNmVhjGsD2Yi4Q93C6kTFdARmyN/XKUh3joDVE3UyNQhJoaIulXCH/FFmRBB8I8rvYiTtgisHhYU1e8hysxhGeSNUCvcX0uatJHrr5BOTaXSkl2RglRbsZ7lgAELarWvHDxydlKbFORGdzcmVD0mzkHJOX3XbPVff2t3+jx2XM1W1kC2AVvj/X5mVl7fnbIjDn7brWWrOG+atBvvyQEQHPPvGpI36b2fy4yAiGo15bj86xTXpME2FdMljh7zPGxYjtUb/9MfgoZBx0CUjaysrAYJSPVIautHdbNVF/WpQ6TEJfn8TsqIcwT6g5Lvady5KbQYCs8Fo/gd1Jb8gZ6s2cDo9I8wffZsEBpR5li5OqgROryckCK2NezU6u7ucFNQNmIn2v3SklUuvwCQxmLyWt8iup2AJYPVzp1TaNRUFgK5iQkkrOCxTy1dfAmuzb1dyUlyrH5T6OqNrhl69A7ZQoXOsu9cMTOfN/4BtgOz8dcsZ/CYLqfi3JBaKHrNFLAAWPzjasTlLGTyvCFphhJ5MIO2I8GUsKgrLTXzWT7WItXIn74U4+G7eSeUHsgh+IR+d9qctPLJIMQ7esqXok6i+P6x7s5t+q4MfWTQh3y9FgboUHqDOxcEgbBY1C2jFp8EZ0+bUHFOVQIU11lB6vl+yEIk1yoJI7vNQZxo0uJ0oI+F5Uwm2jUYQp/jhkqZ8BPoFMGwNKfs4/rXLzAAm0rc2O32935GnYHABGBzVckBGqjGDCgaS
- 1eSUXBtm
- O2w0olSwT77Wn+rzDtS8pN+cn6AaqR8YR/rpnr7nTsqDyvm9rStIjS9HTUtsI/PvqgxDJ/Ke8pgzNSWvwBS/rmXUWAXA06yOk9p/vnxoNUFWIyGn8u5GcBxW2MO2DkMPldVjRVIyVCpZ9cmG1i71nA1LzmGvMeMhNbv87zN1h3ps6X7OtDBPNcM959aQJ+I/KXpr4sN8VJ+hx0FLuoNjPM7iZli1V8YLMoJb5NtDDM5qLucQGbhZJ2RkiKOOuwjFixlOU/yMfRvH0N8Zdcc4mmlMHioskAX/kIFY8CZ0uOfONHZX+0EQfHojLV1/Q6s+VgLV9KJpiGRy9J5vuy2MCyQj6BLURfYh3a2ioojyVaV/cbKzkTf8ItTk6/0ff65WmBDpD3xEYXY+h34plWMU0u/AsMPML5+ksHZxtxvqp1vqxx2j9D2YCTCGcsQ==
+X-Rspamd-Queue-Id: 42827140005
+X-HE-Tag: 1761748699-59763
+X-HE-Meta: U2FsdGVkX1+vGduoNob1WrdsMrBLhW4aMyqeLxyq/KWFG3Zl1dcHYPMvtmFrw54ME0r+lrj5nnwUB+4+ZjaJDxIqJwjbVhVw0PrLuEy3BzWsVVwot/icdWa43SHQnp9oZIBhXMnDzuimnNYzLCnK9KXr/PucpSezlPork734IglUai0+2MUAaEqHpY1RmOgbldkXpwlmKD70Vjd6ghYh4JnoYW6+BIqrkiK0CMu6j+ZozDvJQo1VDjD+LvMEZRZ4jMxOMCyeFFexGEqbpWR34sLGo1o8Hh6uVKsJ8dEBLveqLIBlT4H5tRF9NnkUDAt5kzRMDvYAzM5n8zc4gtnhaKUhwYhU6cslVnd0Q9BwsQgzcPLENFiVZKPQp2P5cBoNjN3Hsm3cV7ajvHuaNIGSco+oweApTZ49JOTbm6vVd4jD9Lhj1zPKEleJI6uUc7Ss59WCKuAOnEbGCm7LoAPIAEiJbReqRopraWmhqmDaBG/EH1qE2xl1iRilkRbhMMY9N8uHLIV/q9w+Jh8s91hwAuS4Fg3ljkyCH+njIJAzI0lJU7R60RYTqSodT05VVxHYWVnPZiucN48URAZUiOsVOV3x1rxynbgeoXci+3Nck5/KbzpRBOHWb17fdJMIV1KiSMFXe0lXACKR/nxOxzbfgmyQor4TZnxius7qb+k2lOUfvz9aUXkGfVJpWUC9vUg+Qfkhb91SOEYLBZ/i+hKo0K4XdfSfnBazh8bU0F/cwdZMzy7gvr9hoX/kiAu7AClPoGgVyeqtYRaXaGknTbrx0PtQP/2iP3PDG8NTCshnl6MNqufLB+k/9SmBc0Ic0DKGq0OibykPi40WpTcpWUbmgNBu9Rumim7/udgcGaCKosvwRwUuUcpjWSndTVYRmXl1gD4BgfEIuGeuYZUon/F6Es7sexLp27G6g1qGAQq2fLGe1YRD+BhpJ/PDrGc6O4VX8BE/SpIJlHD01v0+YhC
+ ujkl0KeS
+ mzD8isPzzX7sJNvrnw4C05zE0fHx4Q1O1fjCiHhoLjbSrvvlkRq7j8ZJvJkbt0Gz4FKrlYwEOTgW1hv5N2Fosok7xDvB05ejQ/tBjfFro5/4o8xIj8hr1s3HZ9xfmxIgEzTu9MQyIUiHOrB69iA+fsU5vn/FeOGrvQfY07Al9ZhfeIQR6PsP+/w+zLQvE6eiVQrqQ0pk9NAtQw0hVGm0f1oiurXUqQySughL8Zd8nwb69o3+EjQtsdbbOQOEDWy5jbklC7rUB+DzyrBcJYtTWr0IIvHU0gzU3qWcEKoSn0STVbf/oetKSxsLKe1Xti9E4lOJvK7tzbhKHpP09qO45OXQbKQJ2PPaz2ITUQW+tgz0M+pMf9F518L618Q68ly7O3h1x9ifGL2rWxnzoRElTJHe9bsYzM0JMb9OVC4nWpkWAEyIODpUujLMXNEcOjQhLWbtZQ2U4nv50bx7MnSNrzZlGJopVx+DqG1wsElNksyo3ggZYO/Cjp23BGrsdbhncUWXlQJVOVmT9q73+NGwEq5DIkQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -109,51 +106,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On October 28, 2025 11:54:43 PM PDT, Brian Gerst <brgerst@gmail=2Ecom> wrot=
-e:
->On Sun, Oct 26, 2025 at 6:12=E2=80=AFPM H=2E Peter Anvin <hpa@zytor=2Ecom=
-> wrote:
->>
->> There is no fundamental reason for the int80_landing_pad symbol=2E If i=
-p
->> falls within the vdso, and the vdso is moved, we should change the ip
->> accordingly, regardless of mode or location within the vdso=2E This
->> *currently* can only happen on 32 bits, but there isn't any reason not
->> to do so generically=2E
->>
->> Note that if this is ever possible from a vdso-internal call, then the
->> user space stack will also needed to be adjusted (as well as the
->> shadow stack, if enabled=2E) Fortunately this is not currently the case=
-=2E
->>
->> At the moment, we don't even consider other threads when moving the
->> vdso=2E The assumption is that it is only used by process freeze/thaw
->> for migration, where this is not an issue=2E
->>
->> Signed-off-by: H=2E Peter Anvin (Intel) <hpa@zytor=2Ecom>
->> ---
->>  arch/x86/entry/vdso/vdso32/system_call=2ES |  1 -
->>  arch/x86/entry/vdso/vma=2Ec                | 16 ++++++----------
->>  arch/x86/tools/vdso2c=2Ec                  |  1 -
->>  3 files changed, 6 insertions(+), 12 deletions(-)
->>
->> diff --git a/arch/x86/entry/vdso/vdso32/system_call=2ES b/arch/x86/entr=
-y/vdso/vdso32/system_call=2ES
->> index 2a15634bbe75=2E=2Ed14eca4403c5 100644
->> --- a/arch/x86/entry/vdso/vdso32/system_call=2ES
->> +++ b/arch/x86/entry/vdso/vdso32/system_call=2ES
->> @@ -62,7 +62,6 @@ __kernel_vsyscall:
->>
->>         /* Enter using int $0x80 */
->>         int     $0x80
->> -SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
->
->This is still needed by do_fast_syscall_32()=2E
->
->
->Brian Gerst
->
+On Wed, Oct 29, 2025 at 02:31:05PM +0100, Rafael J. Wysocki wrote:
+> > This commit fixes the suspend code so that it issues flushes before
+> > writing the header and after writing the header.
+> 
+> Hmm, shouldn't it flush every time it does a sync write, and not just
+> in these two cases?
 
-Yeah, that was a complete brainfart on my part=2E I'm already reworking th=
-e patchset, fixing this and adding more improvements=2E=20
+It certainly should not use the PREFLUSH flag that flushes before
+writing, as the cache will be dirty again after that.
+
+I'd expect a single blkdev_issue_flush after all writing is done,
+under the assumption that the swsusp swap writing doesn't have
+transaction integrity for individual writes anyway.
 
