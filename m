@@ -4,83 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8E1C2CCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 08:55:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BCEECCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 08:57:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EC1C08E003F; Wed, 29 Oct 2025 04:55:35 -0400 (EDT)
+	id B45198E0043; Wed, 29 Oct 2025 04:57:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E98E38E0002; Wed, 29 Oct 2025 04:55:35 -0400 (EDT)
+	id AF3D08E0041; Wed, 29 Oct 2025 04:57:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFCB78E003F; Wed, 29 Oct 2025 04:55:35 -0400 (EDT)
+	id 8CFF68E0043; Wed, 29 Oct 2025 04:57:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CF4618E0002
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 04:55:35 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 72F1449D6F
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:55:35 +0000 (UTC)
-X-FDA: 84050543430.01.F5B8991
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 904B3140003
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:55:33 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 783518E0040
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 04:57:07 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2EDA713BB85
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:57:07 +0000 (UTC)
+X-FDA: 84050547294.17.DA2D981
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf28.hostedemail.com (Postfix) with ESMTP id F3969C0008
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:57:03 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761728225; a=rsa-sha256;
+	cv=none;
+	b=2OdFHyNVbTmUeSE15SKmO0dQHfitopKbGVfA0cLHHK9i3ahxhPy94jMPsR0DETqQm3Tuvs
+	fv1XlTugtNUV3BBNo0CKwWe484Xb7du+p1Jr35rdFWRxh6Snjz/n1Kcja/ZhrxnRzEAtmg
+	rdLUZLl0bk/XCSmxbKX1HRFrv8bvZ4A=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761728134;
+	s=arc-20220608; t=1761728225;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xT4pORLfqaLby9rFuKhU+xXPmsubSSO5lJI7u2+zXvQ=;
-	b=B/BDvv+UGEJagh88BZ0j82FwZbpb/EkvK/qRZZVLNnl0v4VlvH7UIIBQ6ACrCLQm172isN
-	D6wjAp/f+QBmuhqQrpIyuLKU6ZL2uvOI47hxWoXRQtpEz9Jp6DmwS60VaNnMFNpNX41bcW
-	7Z+94GBkydl3NcdrQHZNWIhX1yY4DEg=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lst.de;
-	spf=pass (imf09.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761728134; a=rsa-sha256;
-	cv=none;
-	b=bjJ7WTGjDyCA5axCjBVy9qF8IcAJzJXFiHDkigRQ/jgPd8FIb8OSDN/QVcwBCKQtwYF5V2
-	QQMre1v9FpLwJzmb+bMjTlSFon+czyRX69ovtw6m7aZd/StMW/iuMeRLRld1NQ7qyX96Ac
-	BQCqc2c431TIlWcrZSTi3Drx4Af7uUQ=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id AEDD8227A88; Wed, 29 Oct 2025 09:55:26 +0100 (CET)
-Date: Wed, 29 Oct 2025 09:55:26 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: "Darrick J. Wong" <djwong@kernel.org>
-Cc: Kundan Kumar <kundan.kumar@samsung.com>, Christoph Hellwig <hch@lst.de>,
-	Dave Chinner <david@fromorbit.com>, jaegeuk@kernel.org,
-	chao@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	amir73il@gmail.com, axboe@kernel.dk, ritesh.list@gmail.com,
-	dave@stgolabs.net, wangyufei@vivo.com,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Message-ID: <20251029085526.GA32407@lst.de>
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com> <20251014120845.2361-1-kundan.kumar@samsung.com> <aPa7xozr7YbZX0W4@dread.disaster.area> <20251022043930.GC2371@lst.de> <e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com> <20251029060932.GS4015566@frogsfrogsfrogs>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=QSdveRWM+Umrd/EdORAvvnsQmRNZ4hgpved4j+J6jWA=;
+	b=Y1Td7PlfOmBEiDlWgnjXpOt2oJJQoSJAPKuWiddmOwl6nn8DK23POgUHmpkegFkKPhfXZN
+	gC3F0soWLui5XFPaCXw4P/IDZcQRZ6Z6RFiQvuH+jk3iTNP4otcLe8tPuOzbOVop57TDEe
+	wweWFQ7XRaHkm6NeBNdo2/zkMYG8lEw=
+Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 29 Oct 2025 17:57:00 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+From: Youngjun Park <youngjun.park@lge.com>
+To: akpm@linux-foundation.org
+Cc: linux-mm@kvack.org,
+	shikemeng@huaweicloud.com,
+	kasong@tencent.com,
+	nphamcs@gmail.com,
+	bhe@redhat.com,
+	baohua@kernel.org,
+	chrisl@kernel.org,
+	youngjun.park@lge.com,
+	gunho.lee@lge.com
+Subject: [PATCH 0/5] mm: swap: small fixes and comment cleanups
+Date: Wed, 29 Oct 2025 17:56:54 +0900
+Message-Id: <20251029085659.2005942-1-youngjun.park@lge.com>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029060932.GS4015566@frogsfrogsfrogs>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Stat-Signature: igf74myuzcx3sqtfdquwrb4czd94pr85
-X-Rspamd-Queue-Id: 904B3140003
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761728133-913733
-X-HE-Meta: U2FsdGVkX1/ntoOwECWh6NFZqD/NoQFgLtnjrjz4wAYxhIx7BquaXJcuBsbR6jklQD07efL07+Eog41wqo/2zDy3RtTElWZDQadgnNtVE1ydp60htHQ+rpwCL+wI2UlOxBqvNi9y62nYPvl62UOVX05s80URM098m2vdUfNJE8sSqgI6C6GSdpVm043ef5VobuhQk7pJ9RydPRG4Dr5WyJib4+0wKk5Ha4M/z3NdLPWNrk0+YK6z0+EMTDFT6aNtdiLqYbmDNkdeRqq0L4kZ4vERAL3ZGGyMTYMUJ8UmWMT7e/3vtAnk8bm/V9Vubs8eYsIkmJcLPPf1PTSgE/6TONdNp2xIH9tpd/EaXk4rczqloy4M1M5Y9etxQ5LFkL6xswTD5uFBZekfvmBaTSmp92aeKFClmkjb6w3pKyFKHkcPSC/p86cRRZD2fcF34NKhdP3NWLFz/BW9nB8e32MIrfqx6bAjIRmMENqI/DMz2+U5Vbqye6gxfTTz2OhL/xcrsj5XAtXXXscqIV1FuLg+n3sLMm8S+7YFEBbsBhrefY57I7lA90sf3r4ZtfPfVIgGppjroaWMDzzlkfRBpYyRJU6JlAyfZoDB7/R0p7Msn7sVi/6dgoAycl8cmS6olN55u9z3FeXIBADaAvTmERyY9VGIvAdJal5o7Qn66xvztQ9BJ149btGkWkFRvRcCRuJZbyYHGs5F4nIhJrrVaH7Jf3v1kjVRQCpQPgUXjOr7tOksoRoPkoBuHTCm6FHf2uIfwSdw/KsI19vcpHgors64u9lOiH3nMBhd9riY0JCKgBgBApM76zQQBxHx7PuNCo2NAACU/fcYUZAvvOkIwziIRfoqnqwaoYPVPW3yiewhbCYnf743tJHcuhWzyknLuOtLEDk9nca4eWT1LxbjWEDOYf1n5fifsbSf/BMI8JS2jNzCkpy6pILeS3sH+Gp9B9+EComtemSK1yb1YCSr+4N
- Oe/DljJn
- qX0uTuT9UOKCGRnafMOZPYRndb79/azM0NjSD5TMCqgfZ9vGLEVFLBCge7j78EGb3wpO0Q8PPr3qVy3obzcBWSQiOR3RZWkz/BnGnWxzruV1ewmVlR996HP/RKzBUAFZNATjtciGQ3aXbC5y9YccIEQl2TlolmDK7PKQ7CjHb5bgFAr4=
+X-Stat-Signature: 5j88skagruwkqb4kzpfnjd4ptojcn8p9
+X-Rspamd-Queue-Id: F3969C0008
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761728223-969640
+X-HE-Meta: U2FsdGVkX18Vh/2phxfTKTcghtWw1lKfNeMzmKNfpta1BwjuPNJJ66QrN9m+fGgDonFLoTkBDe23AbsNnUGr2aEYBVbttZjirtGc7zs5sc5kLnZ4qtVkRStCC4V8AHFV9nLQp1+QrtZKuEQMD+dDeXbL7UcgPxVhWoovnjyDd2yfksrF0isxjvCoL0AhLh8BNlTm2pwBACqvZjyqN7jBeziPl31FEkvTxsMCa8OqljW4S3ZvkXpzSdLRvPsAM/thwAcYJqtxHeNVoJtum5Cft8Jw1+WpRy+xlyIyeN/ptzYSGp1TQ1X5T6DXKKU/N3xaynEnbSuINdAe7rsjLTkeUACfgGM2iKuXYZ7x7Sp2rAInYZSlV2bfnPi8hGxUI9saawvXiGfY+K1LPdnKvSqoW1lndwk2qMggNsb7NUDjUZtQIdLZB79n0KQWZtI+nP0EUWqnA+oZfNZx9dIyQ59tG87DYkOCtn9vabc+TNOa0jJqfGcIRjxsCrbtTUwdqDjQbqJEoAC/Stba6+EIRwYaawLdGm6OP7dsgYsI2wOy4SKbpxk9JxxYcoRioIk+IXh+aEque46bU5ZTDMEn+0AGfqvRvybW7EboWuplpObP7xBZHzJDlTxtUQ1KC6+Z3Snn88FPIrBbzAiHg5NJf00QyPSAsjKB4N8n+z+aHqhYTG9VJqQnNeRt54HlWklHgGtznJH0K45DERdELuFwV2r+PV8Xfz5ZixrWM3loa4pSJa08XK6/CqN5Q44c06ba/8dzVrFM9BRcyjojPyD8p3fFl+feywL8Nx9FXSe52Fv3I5V/JuIgPy4MSC74JIaHLfscFv2rNauS6JgblUGovufKQ5cgOjO/PSO9Uysd6OSQpJvsdIz2bvQfd4EVVlB9xJF4AI8bPIjwxDmIvXNEyfgf/koxOv5InRYxJEM0+nNMSLtPQ0a06ViTdJnZ5EtXR8hAHrcY1hWUcikKnc/iapz
+ jSKfbHbl
+ 5snyGx6Dk6ESzJG9RTUdTvobp0Uw8y5qvhrUdkCvKiHPCRaSNgBapnuXqF+oNZ376ffe4RUGsykQdyh/g2j1njTMwS76ogt2+Q9Pq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,24 +84,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 11:09:32PM -0700, Darrick J. Wong wrote:
-> Was that with or without rtgroups?  metadir/rtgroups aren't enabled by
-> default yet so you'd have to select that manually with mkfs.xfs -m
-> metadir=1.
-> 
-> (and you might still not see much change because of what hch said)
+Hello,
+This patch series contains small fixes and cleanups in the swap code.
 
-The real problem here is that even the inode number to AG association
-is just a hint, and will often go wrong on an aged file system.
+It includes:
+ - A memory leak fix on the error path
+ - Minor logic adjustments
+ - Removal of redundant or outdated comments
 
-Now for the zoned RT device we could probably do a thread per open
-zone, as that is a very logical association.  The problem with that
-right now is that we only pick the zone to write to once doing
-writeback, but there might be ways to lift it up.  Then again
-zoned writeback is so little code that I can't see how it would
-saturate a single thread.
+Thank you,
+Youngjun Park
+                                  
+Youngjun Park (5):
+  mm, swap: Fix memory leak in setup_clusters() error path
+  mm, swap: Use SWP_SOLIDSTATE to determine if swap is rotational
+  mm, swap: Remove redundant comment for read_swap_cache_async
+  mm: swap: change swap_alloc_slow() to void
+  mm: swap: remove scan_swap_map_slots() references from comments
 
-> 
-> --D
----end quoted text---
+ mm/swap_state.c |  4 ----
+ mm/swapfile.c   | 35 ++++++++++++++++-------------------
+ 2 files changed, 16 insertions(+), 23 deletions(-)
+
+base-commit: f30d294530d939fa4b77d61bc60f25c4284841fa (mm-new)
+-- 
+2.34.1
+
 
