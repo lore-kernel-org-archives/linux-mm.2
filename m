@@ -4,122 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C74CCCF9F6
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:00:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19838CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:03:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9870D8E004C; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
+	id 6F5E68E004D; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 937908E0045; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
+	id 6CD3B8E0045; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7FF008E004C; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
+	id 594D28E004D; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AFD08E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 129FA49E1C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:00:24 +0000 (UTC)
-X-FDA: 84050706768.16.D3BE417
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 45A3D8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:03:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D91CD140805
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:03:27 +0000 (UTC)
+X-FDA: 84050714454.09.C2BF448
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 4F0451A000A
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:00:21 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bl6nJXM+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	by imf07.hostedemail.com (Postfix) with ESMTP id 567E640011
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:03:25 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VYEceeTV;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761732021;
+	s=arc-20220608; t=1761732205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
-	b=NNdNvX/pVFCSOs44pRulZPVCPNl/2gKQJNPk6NQPdAMCW/4020xhW01lVnEvRIGmiCpwHt
-	mfxb6Ev9DSiIhiLdqvmgzRr6dJqlOZcMFJyfGTHe5AqM4LkheLeh0VjKn/VnM40vU0ieDL
-	UOrF5k6klKjJSRKVkNJS7YLdobW9Wn0=
+	bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
+	b=Ruxb3KRkTuwcsSfvcPIJDw6Dyht/5a0Zf6bkMbeQdA8zds9/2TCL/esYVpgfVZulgAZZhS
+	1VU3LqRSyaXKwbCyIxYxrAXH6dU6eLcPQ6cj7DTYm5LMj5dxT173cfvmp7hD89VJMxHJBM
+	nMywWQYNkjdAd1iWYNQ+DrK/fEsNRso=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bl6nJXM+;
-	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732021; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VYEceeTV;
+	spf=pass (imf07.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732205; a=rsa-sha256;
 	cv=none;
-	b=QPg8LiQg5ENz5OulISt6ztxq10rawiqqe7d3WcC0xN2GHIL3wsVxEWEpwu36XO/TNybStp
-	kCdfwZqyln5C8AoofIUn3Epw3m26mcf5hO2mUtzPkynihrm7Ujmtc9F2LGx+LA5C95KfUk
-	KSp6Y1RwTOGQnXlPD7YnrgGqijL7dIs=
+	b=xXS/ASEx7xS5Ihckgop3TtETGQX19mJrxyGxCzqzhnvEMoZMT4x4xEpL0G1vGZYh4G+8vW
+	f2u463UPJoezJougDIC+VQ0xoCzjrlF6jFtVpTODjZd+Cgmok8qjSopEIdsJI8e1vQ/JfH
+	YyzmdUUIS/Y7PIbFhQSlbA6JBjTorRQ=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761732020;
+	s=mimecast20190719; t=1761732204;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
-	b=Bl6nJXM+2Bt0zK3cy5OzjYqWxx9/97RvTYbUdHAaFxcYXoV4o6Ln5LpX6TjaNBiYhM7nhs
-	ZVfWPsAi1Xpc91lkNLD6aqsyCA1mDYGZ3oEpOXcann4daFp9LX3vTj4Glj0Sk9y+CwpbQx
-	CYXuHDaA5RJFdsGhVOGSZbVwlP1EaUI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
+	b=VYEceeTVRV65mF3O2GENFPIlY6jh+L9pF8cB53BRxWC3iNsHBszOuxc54uNTvLA13qtwjV
+	1HojKZaC1RLZgNecLh+sv6RYdB4dkRkFg2OGsc89HdpwaRrU6yWoipDO9vxYfYKfJYFGJJ
+	VO3UkADmVpg5UG07HnYgP5swsrbr8xQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-hOv2DilUOTyDrO1Pc3Wv7A-1; Wed, 29 Oct 2025 06:00:18 -0400
-X-MC-Unique: hOv2DilUOTyDrO1Pc3Wv7A-1
-X-Mimecast-MFC-AGG-ID: hOv2DilUOTyDrO1Pc3Wv7A_1761732017
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-470fd92ad57so83484225e9.3
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 03:00:18 -0700 (PDT)
+ us-mta-500-7ljYW8UmPhyXjLe-D8_u1Q-1; Wed, 29 Oct 2025 06:03:22 -0400
+X-MC-Unique: 7ljYW8UmPhyXjLe-D8_u1Q-1
+X-Mimecast-MFC-AGG-ID: 7ljYW8UmPhyXjLe-D8_u1Q_1761732201
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-427015f62a7so3302567f8f.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 03:03:22 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761732017; x=1762336817;
+        d=1e100.net; s=20230601; t=1761732201; x=1762337001;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
-        b=eOTj2be75T+7wmKLe1YOcybrGzdAybilgnomKYSKo8reaG6+rWSwhoAWcLLHGWCzrr
-         f4YtJjtCoMk21Lh5IKIjudTVobW+rUsmbzMqDrSX1REDTKyBb/rKFZoM2/myHFeztutG
-         oEc1PefICBCP4bZU6EcvK7MetsAlZHncSO79AcHE1n6fDLsOHNgjUhJyLB4ZrEUKZ17J
-         rVmTwAXSCPTeeMgQEcHVvVvFhE4W53c19f8Mz7Q9q0lis+TnpsRISD7Agrm3SgCNMKEE
-         sj8Ubdo8VWYCY7U6Zo3Lau0OSe0V2P+s6+h9KbkNCNDC+dAOYz8O7DPkIRUvDCZm+azP
-         xMtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZzTpg2yeiOBZMP4jXHJUjiSsThV4E3G4AYWVNU7kYRpWYWWb+NBY3T33YbXkw7ome7ForDPum+Q==@kvack.org
-X-Gm-Message-State: AOJu0YyckgmXHHu33b69rS0DWuJxL/wgsNh2SLTBvR/n5ToBtPlE4BvG
-	PIcDTM5NA9umHbpqCAZwL008Z/AV29i2v+CfLdt/pCmMrLVxttzI+RcLpIe6uSMTuW3I5RLS4L+
-	PRBKz4wrDPHPV22lXQw7MkG4FoVYgWVkD2uWLrt02olFJdZP/f002
-X-Gm-Gg: ASbGncuFyhLoVjhHcN/NEa3zok8nNi6rrEbgV5uVk0zsDRbRRGKwjbBGjp+Jbqb1ixz
-	MJuy20eR/16GOucy7VTKj+pNW63UCrv0uzHjBbE9MXci02onJfcLOwR+6nAR8JGO9VvrsNMS1Eh
-	wUsP0S+9JRRL2Rh0VMndjtA65LK94fvvFGTCX+TVLD8djWskQAyZQ5togxsMDVkgcI9jLaiR90F
-	9FGtA/SowYMK6Lnab2Ei0Hg5N968biy05CN7xDqXFQkK5zciQuq4jlEc9FymYubUL07BgFwPnTp
-	m6FnDsBfzwZooYUWdl2J+41DZ+b67EJ0zQCG2DJLNDrjKZMs4aQ5JJh6WWNz70+Z3+zqlQksSkA
-	9aoSySKtbvRby7bOCzXkk7w==
-X-Received: by 2002:a05:600d:4398:b0:475:dae5:d972 with SMTP id 5b1f17b1804b1-4771e85156emr12759395e9.23.1761732016767;
-        Wed, 29 Oct 2025 03:00:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFnA3IRpFHhYsZzK6qc9l0qizFN8SkkYYfFwlHAG+3t4PNESgPO0z5ya7ZscSCTji9s1WIskA==
-X-Received: by 2002:a05:600d:4398:b0:475:dae5:d972 with SMTP id 5b1f17b1804b1-4771e85156emr12758875e9.23.1761732016284;
-        Wed, 29 Oct 2025 03:00:16 -0700 (PDT)
+        bh=y/FcJHpggx8mhqHuRDKjQ5iwsuQXd8X9W9pn2zrK9qs=;
+        b=U6dPKS6BXyBV4QZNXDahyoAPQqdoayeiNg5ktZPbTM01pdajzfCUNEA9jycH7KGFux
+         UuRKSGFw+jmZhgmkKLSnLUn1fojIgkKxrlpX4AQp9yqZuzXUaUbvZlSApMrR8uLTT5tc
+         0BZIlwTofhaH2VlL5gdb+P8lP9YwYa9qRPVdQ02tpq21rxVuSS1/5D0RURl78Y1pKoP9
+         nTTwdquBk3uYUdXKDb3XpAY6M925PM0Fu+MlPEXwdtVLN/QcVZwtarSCctZWnm08+HSW
+         Wp2eYBdmcusx8BTFb1yACyaCAjf7Zzql0aUTBotSRjkt/svOsS8RrNH60qX2PZZuT/S7
+         YkRw==
+X-Forwarded-Encrypted: i=1; AJvYcCUANGq7c9Us8CIqpvRm6nLHfEQvB5IucUqsYgrKuRhaOh4cZLk55I/43zubsGMcyTPDSQ+yPjg6tg==@kvack.org
+X-Gm-Message-State: AOJu0YwyM1Zb3sdi0Sf5xYO8x/yfLExUSkPjWiVpJXmlDZbO3I2HDlWY
+	SnzufYVkrYTuq/AsrT7wO9nZ+sW9yCwPrSOtT4rXHlnNcxB9NqPy8Kl1kdI3vO/XKf5Sh+UIAI0
+	WS0qXbAb7FdvahiYYOz2fNN4PyqN4rQaGQbZNT5BV3Wa2Q8KJ88B3
+X-Gm-Gg: ASbGncswWx6xprjR377h2JSZo7eRbQsUH1DNUZ+sBAs43hw1zPhDBiOCy/84iTJgbUp
+	g9qWFbInPC7m2gaZOwBa9X3NAlGKAftW8s0a7o/pzqisVrXD4trmA5q37bMneFwLREHgUlyC4dn
+	zEMb9IfRLs2/xLGpw6EW26YcTYdP8Pfs6o/cqmZnN45u3lbGx2pRTsGihVK2mQRpHbmjVpqgCFY
+	IKgmasyHsOPllL1dM9wkak9IHrigWmDNuHf0/vNQV6wBn/s06h7yl5ji0v8S/PxeOgtENkbJBmJ
+	CnjdKhQOuTrlP+z/JKiYlY3SclYXa3azeHwKk0iFx1Qse5L9DjkUy167ihIkOEdddRCc8V4Px9t
+	kBUUhnqhcln0tS/tlDijl2w==
+X-Received: by 2002:a05:6000:401e:b0:429:66bf:1463 with SMTP id ffacd0b85a97d-429aefcf5a7mr1864160f8f.44.1761732201082;
+        Wed, 29 Oct 2025 03:03:21 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEhljWIvbjQXrTT0ZcTSN+ZEGtAmVQa0mTp2gcq9/yltWmwcEjiu9nE5kn8XdaFT0qYfkxXUw==
+X-Received: by 2002:a05:6000:401e:b0:429:66bf:1463 with SMTP id ffacd0b85a97d-429aefcf5a7mr1864123f8f.44.1761732200603;
+        Wed, 29 Oct 2025 03:03:20 -0700 (PDT)
 Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771902fa8dsm39879465e9.8.2025.10.29.03.00.14
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952db964sm25517336f8f.33.2025.10.29.03.03.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 03:00:15 -0700 (PDT)
-Message-ID: <db143076-afa0-4129-b5b0-eab85ec54aac@redhat.com>
-Date: Wed, 29 Oct 2025 11:00:14 +0100
+        Wed, 29 Oct 2025 03:03:20 -0700 (PDT)
+Message-ID: <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
+Date: Wed, 29 Oct 2025 11:03:18 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 1/1] KVM: s390: Fix missing present bit for gmap puds
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>, akpm@linux-foundation.org
-Cc: balbirs@nvidia.com, borntraeger@de.ibm.com, Liam.Howlett@oracle.com,
- airlied@gmail.com, apopple@nvidia.com, baohua@kernel.org,
- baolin.wang@linux.alibaba.com, byungchul@sk.com, dakr@kernel.org,
- dev.jain@arm.com, dri-devel@lists.freedesktop.org,
- francois.dugast@intel.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- lorenzo.stoakes@oracle.com, lyude@redhat.com, matthew.brost@intel.com,
- mpenttil@redhat.com, npache@redhat.com, osalvador@suse.de, rakie.kim@sk.com,
- rcampbell@nvidia.com, ryan.roberts@arm.com, simona@ffwll.ch,
- ying.huang@linux.alibaba.com, ziy@nvidia.com, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-next@vger.kernel.org, hca@linux.ibm.com,
- gor@linux.ibm.com, agordeev@linux.ibm.com
-References: <d4a09cc8-84b2-42a8-bd03-7fa3adee4a99@linux.ibm.com>
- <20251028130150.57379-1-imbrenda@linux.ibm.com>
- <20251028130150.57379-2-imbrenda@linux.ibm.com>
+Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
+ alloc_large_system_hash()
+To: "Isaac J. Manjarres" <isaacmanjarres@google.com>,
+ Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org, kernel-team@android.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251028191020.413002-1-isaacmanjarres@google.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -165,21 +155,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251028130150.57379-2-imbrenda@linux.ibm.com>
+In-Reply-To: <20251028191020.413002-1-isaacmanjarres@google.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ePYaNTTs1E1xlilIIIHU7qNtnc1B7ZrA5kNr38GCa6o_1761732017
+X-Mimecast-MFC-PROC-ID: lVRGnFe0EQ62TbMcUixJLkA5VnujwlPhqH8YKZsq0LI_1761732201
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 567E640011
+X-Stat-Signature: mcujp1hq5w7mo3txk15wfddqcejrx5ba
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4F0451A000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: zfm88zuiwmx9h7r5ynr1f3occndg8cua
-X-HE-Tag: 1761732021-519218
-X-HE-Meta: U2FsdGVkX19zec7RUGvuYAQ2wRqj+d4/G+eSbuIL1FurpKDkm29NZcuQLQ2MitTNJJM93ayRLOLKnJtYKJ8gjYsX3QlMb8cHmJUHTGIyNECK43d/zIJ61LRw+pqnCjXnMKJogMwJ20qceiCX81dvVqs/BCuchN/sjzR/kuPV4uKFRRtWSbwOEo1tezCYerWoXjoWxrlrdwkKUKg+mTloecRK3uHTO7GDqWBMYDCWw/Ydbp6la/6VscAXESzIQ5Wgm+74sm08QnOkgaM92LW90b/ubgbJzNbrhOFrqvO752zKihUhwr2wjRUlh8KypvJCiJqiYgU1ZnSugWnFEw90OETThiHM6ubZMHmrYycHlDWtXE9OGUnCF+JC+liPhQcLuNVz5u8CdFIHHF4yeCihckfQ5R/4FHtny1Z9ka3sbEfH3pkzkYSBxEg1stdv9RM7Vl41z3EslhtqNGinIwwNamx1ZkB3ni2CHw5PwUVH6T0WjMbH4ojUueIJ6SY0ViQPB8dvYawb026Xzzg+XaJPXqDgEV7Ks0i2ZJd2D/Be+YwrAHnNKV9EDmBsHS+Vo5nMhzVGy+l1Zu2IBo8/mnYHPNQZhQmwnwSLdvwKtHAkDzs7DhjO3TzYOlUpf3zIbB4LINnS8TiyNkm+HdZJROiZYUILRnIjyxkzkkynsPzNgHw0eWjFGppNzY748sAFWu/ReDWiEfHBGMQdP7VDVLETbUfRLY5TE2wvh2x2LGbpyrXQ7rN3zIjK/JLNigAINX9EbBRl322+YlLNPPw5I5MtM3KJCYuQS32hABaW258vlIv9w4TDVh7ObnnD7P+b6fvJrKjCmhp6AuPjJLQZrXzaAAnM7XfSyCTnwmLjYn5kRRlZKOeU2x+VO7AEnLpweRh4PRI4+py0pWw7pD/oyqXZl00famz/Q8dmEfu+EYGTkHHItyjhRESxwnbXFOencwtgEmmgPaFWn9VPhBgYdSO
- 7OmkUzAw
- z5T/hFh34fq0ZxTnT1V4HToZjtL3/Lx/N5sL+/JGrDeFvQf7HW6Zb+eBBI282gZLlPb5mjqX8MA8ZI2Eqs/i5MXQUUGZNOcyqb5j2LE7bmFfnFx0ESGHeOyuDz++ndcqk1WxQlYKUpzivIPmNHRVhu7PkTauo/o11lvFXelDRsku8xzZKHhmJNSQA8KrGRGl/rIOyp0ymIcARH/to9pDQb2VUHq1YAAEY/am3i2emxyJS8ELdJjc1oTlL6/mKs3voyjhXZb3jZeFnQTThfcWJBYxEtehlyAOP0WF39LoXSYh/Fwam1bjf5u1L8evezCQNbG2s+iHbXN66YRogRNOy4SjzQRH+LfWjmKbU7uJ/RDa6dCefWytvuCvD8Dx9DWvK/4tltZwrVhf1gI1MS+0ZGNMfM7cLieBGzF7nPztKHZgrkaVkwTXS/X/2gAzFTogZ0XW/CS3kmlG5sHk3a4ZhPtzx1LdGHb1nHxAqIeUiaGGN79RqJAIJj5Jc9oD6NMTJxcGVVNxFqFWx7oiCnN54et3I/ESMytwEqcSmMns9X3xc4PIYfwDjhUpfArZ73PcvEL/C6WcNasCHJE1LGgvd6fRQ+g2/X40KsguvMObcaQmGdOo=
+X-HE-Tag: 1761732205-738811
+X-HE-Meta: U2FsdGVkX1+yKdntLrDQPr1mvem97lvD/cP4P69WR/oUYxXV4DVrl2Z+HrVWr+ExPD9rIcbOzr3SbLKYkeTZc0C6gFhaR6caG67JV1RFSWt4oiY4jQsClS5yQ2vryzP32LQm3uunguh76FCtOSHjLO0Jb7LyYF28Gl43i1Dq4TlBs/Lp8QqS6Lk3D/bAMBkHqagCKhF7+DdnM15/mhKcN+W8awzdXqbzVbkjzZA6Fafg8MJN6GmujCEFNMgz03RqbA8z+blo+Ch/Sew9cMSlVzRA94geOKG1kNyXEpD+KYSHLi8Dd+Xfvj1Nn0NVCWqpHxvGlouhrNpqHwD+Z1sXKD1cyiI9GSHTgRC8vuESAVtSEA/VrE7MLXl8D0s5Tp8Y19JKFwUfe8KMOusCLQiECNoiEXwGRJqkw/ohcyvJ7Hf1i4aGqYYbub+TVK+vEAQeHmvHKbbKP8WCV9y+FQLncS0oOXMUnPlmsjBPfG3NE3wyMkkDMWRFjs1xE0gV1ak+jpyvRjso+tdbyoCGp8xwt4NdM+XzNlBt4+sKb5DoBvWK/dTXNcz5U9kqGe5uTMOFpxxUKhCyPbRaSB2t5i8J5gp3VDEJRh1J0yTgby3xc5634mxJWWyZpxa7Ijqh0d2OH1N2fGIiGCra0fnD5AR8fgfjdEm/fivUZ8R6G7o44RrSg3cTsvxEiRkrpqZLPqAYeh/xv4ZjttlnR9Zwdma3f09kr4/LGEL1M/cIjg2UBQwbmH1uhK9gZ0ycuQpS6QpHztW5QyMaGmYS3pJuAfVaovTo5Yr6tmbkn9jfJwcjP669G2hX3cLs//GBIEpwyGr3+UFz4nctBu1U+XacYHcIyI0k5pcdiO9jmAvtnORvU+fpPe5hdn7JRP2YYGCwPefBTwvS9rEMTWiqpsbFW3KkDXYa8sC6Z2+uO/BwhrvZOsyw/eOWNlhDi9O7ks8YYvQEsSnUI2HlC6igDig9sF6
+ CpMk3Tzc
+ CUb9Ew0yfqW8f/OkGEBoy8CIjBPLJIfT29+rvYgdlTcJtfznXMuVNGEnFMhyHIJDXjcpSCki/q3c6b2IbE+5t4UDf5Z2dQTALsWwcj5QikfW2idNXjqtYigngZwkL+QR/K61LJszgOb3GiARpRJ+uhRYwz3fBNlDCeaLJZXE9OWB4VhaeFxaFvUrnsfwoBBswakG8mmylszfSfcqYvVN9q7+YwUUN5reTxbZI2xXfMplyigAr6FsFExqiN9hr4zs5PTmMA0d92vHvbNNMsedltKx8zGtVerKEW/L4VD/poPBq7teDZluLeWReMG772ALUMGRups6ePYsYS73pDaE5BVDPkaRte9wCzRI/itV5734ul1s0UA94kqe6wVoMWmdeVO5b5ldy3ytgzjqCNHNO3OPpuZq/MnVZSqRJVzMQjIFfxTYyextYznUlgOgv5feA0aRZ77dfghY1K7aZ9tL5QWYeLqttKDoV1qIZY5Vdl5ICl0nPdMi1GU7RTTDZEAg1z5Aiz5iiJJY5pjlqt/Tnq2znbk4Ulye8hGq6Bn1dgzUN818+yTswmwco2VbfRT7ql3iyUjThtMfSpvvTkad8Hg5m2yOiwLjUwPxuy0jFVUSedqu9P06fEibBOA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,46 +178,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.10.25 14:01, Claudio Imbrenda wrote:
-> For hugetlbs, gmap puds have the present bit set. For normal puds
-> (which point to ptes), the bit is not set. This is in contrast to the
-> normal userspace puds, which always have the bit set for present pmds.
+On 28.10.25 20:10, Isaac J. Manjarres wrote:
+> When emitting the order of the allocation for a hash table,
+> alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
+> log base 2 of the allocation size. This is not correct if the
+> allocation size is smaller than a page, and yields a negative value
+> for the order as seen below:
 > 
-> This causes issues when ___pte_offset_map() is modified to only check
-> for the present bit.
+> TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
+> TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
 > 
-> The solution to the problem is simply to always set the present bit for
-> present gmap pmds.
+> Use get_order() to compute the order when emitting the hash table
+> information to correctly handle cases where the allocation size is
+> smaller than a page:
 > 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Link: https://lore.kernel.org/lkml/20251017144924.10034-1-borntraeger@linux.ibm.com/
-> Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
+> TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+> 
+> Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> Cc: stable@vger.kernel.org # v5.4+
+
+This is a pr_info(), why do you think this is stable material? Just 
+curious, intuitively I'd have said that it's not that critical.
+
+> Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
 > ---
->   arch/s390/mm/gmap.c | 5 +++--
->   1 file changed, 3 insertions(+), 2 deletions(-)
+>   mm/mm_init.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-> index 8ff6bba107e8..22c448b32340 100644
-> --- a/arch/s390/mm/gmap.c
-> +++ b/arch/s390/mm/gmap.c
-> @@ -599,8 +599,9 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
->   					| _SEGMENT_ENTRY_GMAP_UC
->   					| _SEGMENT_ENTRY;
->   			} else
-> -				*table = pmd_val(*pmd) &
-> -					_SEGMENT_ENTRY_HARDWARE_BITS;
+> diff --git a/mm/mm_init.c b/mm/mm_init.c
+> index 3db2dea7db4c..7712d887b696 100644
+> --- a/mm/mm_init.c
+> +++ b/mm/mm_init.c
+> @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+>   		panic("Failed to allocate %s hash table\n", tablename);
+>   
+>   	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
+> -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
+> +		tablename, 1UL << log2qty, get_order(size), size,
 
-I'd add a comment here like
-
-/* Make sure that pmd_present() will work on these entries. */
-
-> +				*table = (pmd_val(*pmd) &
-> +					_SEGMENT_ENTRY_HARDWARE_BITS)
-> +					| _SEGMENT_ENTRY;
->   		}
->   	} else if (*table & _SEGMENT_ENTRY_PROTECT &&
->   		   !(pmd_val(*pmd) & _SEGMENT_ENTRY_PROTECT)) {
+So in case it's smaller than a page we now correctly return "0".
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
