@@ -4,180 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8198CCCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:42:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4992CCCF9F0
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:50:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D056C8E008F; Wed, 29 Oct 2025 11:42:45 -0400 (EDT)
+	id AA9FA8E0090; Wed, 29 Oct 2025 11:50:49 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDD598E0045; Wed, 29 Oct 2025 11:42:45 -0400 (EDT)
+	id A81678E0045; Wed, 29 Oct 2025 11:50:49 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCCCF8E008F; Wed, 29 Oct 2025 11:42:45 -0400 (EDT)
+	id 9703E8E0090; Wed, 29 Oct 2025 11:50:49 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A6A858E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:42:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5C97F140869
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:42:45 +0000 (UTC)
-X-FDA: 84051569490.12.9EA07CE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D04F9A0016
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:42:42 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yYmcDfKv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rMSzVuNq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yYmcDfKv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rMSzVuNq;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 859FE8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:50:49 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id E6F5A88E2B
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:50:48 +0000 (UTC)
+X-FDA: 84051589776.09.221B55D
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	by imf26.hostedemail.com (Postfix) with ESMTP id F1DC6140005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:50:46 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=usl1uaDi;
+	spf=pass (imf26.hostedemail.com: domain of isaacmanjarres@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761752563;
+	s=arc-20220608; t=1761753047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Rrj//QFmpN6e/2LkQmU6PX1hLwcBM+04iiPMvPfmFWQ=;
-	b=OjxmuGyCySQydMpDKE7YlI0iTfOHlLXR8N9exKkHowFKYbkTuVXKU253WfvphPnzC3rC3e
-	edKJSyrICBYM6sbWw1Y8cyZBQAX264Ani/AlqLQvwXTDt3oNDuR9v8YguUA4aChtdZCiDl
-	NSoPnpU/oOV05LFG//MAsIjqw93q6ZA=
+	bh=XLSSejf9Ov/rf2h/EN+lGG7qdblHRyA6VuFB4BW8g0E=;
+	b=tv5FEZsoNeE2PtZMvN4z3I/gOZUFfyAJ9CfvZwlUcOUkdk3Rsfx/wRugi7mfpJRVhkVVkv
+	2opLNaO1iFY7fS8mOEPApqFoxAtAtCdD/TeHNToKndCl0GWIdAz5wSJLLb74GwGZ78f9tF
+	WmYWXE9NuxjvkTfB6RAOdG5dX9NWaiQ=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yYmcDfKv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rMSzVuNq;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=yYmcDfKv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rMSzVuNq;
-	spf=pass (imf15.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761752563; a=rsa-sha256;
+	imf26.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=usl1uaDi;
+	spf=pass (imf26.hostedemail.com: domain of isaacmanjarres@google.com designates 209.85.214.176 as permitted sender) smtp.mailfrom=isaacmanjarres@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761753047; a=rsa-sha256;
 	cv=none;
-	b=NiRz1ztB5jDbPd87ryCEBBQprpXjj2R9T1Q5UjQDx4LngK8hl52OhiUtA5qew8cjrCbZTy
-	nJVxYUkXGubd/OZQTmXCOq+tDnOKrdu5ne5p7gmuKQkwzxfzowp3VZS7Z04QaeO8fbf0Ji
-	0WUXoske9INNPMuoXqlQ4EDl4C/slrE=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 2A47A2290B;
-	Wed, 29 Oct 2025 15:42:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761752561; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rrj//QFmpN6e/2LkQmU6PX1hLwcBM+04iiPMvPfmFWQ=;
-	b=yYmcDfKvpvor1cFqUi7M94+YrkX/7tR+ZjhtJtMc5fq6Un41MBt2YaTwurPKbIbT0exOY0
-	q6dQWoFtogJ55kWq4O70ZepzAzyyg61lvsJVI+k0AWsZZt6cCaspKQdXuhDdfTyp/ASpVe
-	cV/0PJXQ0Fkxc4QO/ef0ibImx/oEJy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761752561;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rrj//QFmpN6e/2LkQmU6PX1hLwcBM+04iiPMvPfmFWQ=;
-	b=rMSzVuNqjNdpyyXyHIX1h9Vq3zw7qPmSFUVbfP+wLAVnv73CnJ0+0Ymhy5hJ84P+9l0pjx
-	kyZNbxQjx2wDv5Bg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761752561; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rrj//QFmpN6e/2LkQmU6PX1hLwcBM+04iiPMvPfmFWQ=;
-	b=yYmcDfKvpvor1cFqUi7M94+YrkX/7tR+ZjhtJtMc5fq6Un41MBt2YaTwurPKbIbT0exOY0
-	q6dQWoFtogJ55kWq4O70ZepzAzyyg61lvsJVI+k0AWsZZt6cCaspKQdXuhDdfTyp/ASpVe
-	cV/0PJXQ0Fkxc4QO/ef0ibImx/oEJy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761752561;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Rrj//QFmpN6e/2LkQmU6PX1hLwcBM+04iiPMvPfmFWQ=;
-	b=rMSzVuNqjNdpyyXyHIX1h9Vq3zw7qPmSFUVbfP+wLAVnv73CnJ0+0Ymhy5hJ84P+9l0pjx
-	kyZNbxQjx2wDv5Bg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 103DA1349D;
-	Wed, 29 Oct 2025 15:42:41 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id cbeoA/E1AmmafQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 15:42:41 +0000
-Message-ID: <d70962f3-37c4-4410-9cfb-2c0f5c85470e@suse.cz>
-Date: Wed, 29 Oct 2025 16:42:40 +0100
+	b=0YfvULYpNmBv5a66t201d2/Nt/baBVA1ENDMJQOXQWXDldYiA+xizCTmfKfFc9PES21oWv
+	u3C49aYI/N+ZGTLIQyYMw5Y9qnAFrErxc93Yl2biLOj9vwszYi29+31tjaoj/3tAkOR6nG
+	y4BUQrJGtzNBGE3M/NC8n+3rJizYh1s=
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-27eeafd4882so252335ad.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:50:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761753046; x=1762357846; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=XLSSejf9Ov/rf2h/EN+lGG7qdblHRyA6VuFB4BW8g0E=;
+        b=usl1uaDi2r3Wje9XneH0zfTX1yYTpWPl1fX8ZDa+nlgqgH8PJVTNaNvQbuBpAbPzny
+         buRG4B3B2XbBBq1JQ7sKaYDsK2ifgtacmgLFtfQatMEqkgZNSu+bECD7kz6gUUssT2wA
+         paz9I1LmrGpyqWO1GMR6Cc3ZXdSv1bSTSnkAFjSQk/XseZrGsMbTxuWGQLJYbQcC1gpU
+         eIUkpv/q+58rGjpogYcmOw9xj5Z3Qs6ovE/JU+Gnft6zMLdMi2Ix3y/CtroJJi/ScZcA
+         NI3V1QSyPAsS8/MKn/vdrA5bOQCC7+v979AzAud9dRVTP7083CURRwS57oHvQJJl6m8w
+         DuKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761753046; x=1762357846;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XLSSejf9Ov/rf2h/EN+lGG7qdblHRyA6VuFB4BW8g0E=;
+        b=JJQce/Jdh3X9b98xVJj5wu9SipnZYvEyRxhBtYuTfcpICagbbJNIQ91TS8A2Eo5/q9
+         NU+0MbnYU9jpElly/lIxL7Ilu1/XfCzilPGVScg027jWfaYZyYyH8Eq8yUNe+DygzcX3
+         qYCxvlqVkDi0kaksO/nNRtQJGW29cTKV2Mpc6xG3LhCxI0OuF+qp0UzyJPBrgwcf73N5
+         WHRYJf1cl7Ndnlzz9alaiMJvCTjCU44r87TFj8v2qbgCEcynZgzFFQCAxAmDSfOYxWg8
+         SI/l89YVGl3pMtSxKHaB9+WpZn6pI3ytUKKzSs3tCdC2avsMF+Lh6p6Tl/O/n/np+7jh
+         /2oA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWPowvlH7s5jv7HkGzyGOjvg69XCsp0lpae++d+UAyRFUyqJsZnumUuAai6aTQHl08oieNQh57Qg==@kvack.org
+X-Gm-Message-State: AOJu0YySOQX5KHS3Vvrg5m2hVtvDcMYppw615BclLKxk1p9m6IqFxYH0
+	R5BWZmI/cmX2yZxQ/RHxrIU1TZ9rwNDhDAyx2UgJ+tfAZeM1A5QM3wG3Ml81yNywbg==
+X-Gm-Gg: ASbGnctOGuGkElmG3zj/RpphdxMFjzZfSqhfBk/V39+GxHL3OGzld/D0wRKmsCpeCu3
+	LM7hyXiith6G4T93xKlbF9E7brl8U2pjIod/B0+DIwp6IzyWbOWVFqxVM72UNQusI6NjkT6Tu5n
+	hyKmxcB9NWh2RbuQq1Dm/CyPkzjcZYoKOj/Tjb8YYAllAv14AIslucxqUziPa72Sad1blniqSLb
+	J4neXKBzluAQx+KHsFTTfiQwNwiTlXTcqu/EJEkbcciySegEu6POLAi/YRlkVvkQDwDXX3YwX3E
+	kQzznY0Z+eVkhNMsLQDwtbsKWl7ih7JvKLJoMnHkeiPZDJtOGW0zd8Ypzbb/tgzfNLbsjui3f04
+	BUZY2CtK0EZZjuUeY99tmbZVafDe/uJNSQNUFs+XsBrc6aoFsZSlezpzfJxe+ANfNj2gOnzCJnv
+	QC4PQDayWDJJouOoHXVMpk+tykBzv6wiPnUzIpgRxLLsj9k80a6oaY
+X-Google-Smtp-Source: AGHT+IGKPx3RLfl6Sze4h/1XGsrW5jd0bsQlcCb4PLueO0OQww5kd42KAzAHDNBGaMp7vPiY2Mr9QA==
+X-Received: by 2002:a17:902:e783:b0:294:e585:1f39 with SMTP id d9443c01a7336-294e5852cfdmr2782045ad.14.1761753045254;
+        Wed, 29 Oct 2025 08:50:45 -0700 (PDT)
+Received: from google.com ([2a00:79e0:2e51:8:9ab7:9682:d77a:f311])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a41403fa75sm15654178b3a.28.2025.10.29.08.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Oct 2025 08:50:44 -0700 (PDT)
+Date: Wed, 29 Oct 2025 08:50:39 -0700
+From: Isaac Manjarres <isaacmanjarres@google.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+	kernel-team@android.com, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/mm_init: Fix hash table order logging in
+ alloc_large_system_hash()
+Message-ID: <aQI3z0x0gZ3T1fij@google.com>
+References: <20251028191020.413002-1-isaacmanjarres@google.com>
+ <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 05/19] slab: add sheaves to most caches
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
- <20251023-sheaves-for-all-v1-5-6ffa2c9941c0@suse.cz>
- <aP67sQ2dD73iXubl@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aP67sQ2dD73iXubl@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: fc8tcokxgxhzrpdh5pku4rnobx1156eg
-X-Rspamd-Queue-Id: D04F9A0016
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dcceca48-bbdc-4318-8c07-94bb7c2f75ff@redhat.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: F1DC6140005
+X-Stat-Signature: ju6fp4jcqxegpzg7aazgofdkaoienxo1
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761752562-566178
-X-HE-Meta: U2FsdGVkX18DJlmIDBCu+DpHGia+SpXmoymuWlziee1bKWOszK8YDYbmQTpFqC/IUGeCJlG87Q0ijuUEsFsSdVFEFCXLCWwtI3GALgIbaD1eHXA4yMTQWva9JgXv0jzE/7m8dmulXw13/8sGK3KNaj/qNOskqZAaXoT7AmdpBnjbGTUnNqxSC23+VI8QbPahvN9pnNMcWAKvK4sjOo96PG22LTuTzyII4TwiHaznDzG3RnKt46DtdMVsU9O/cNGXpQZPuKSec7kE/5c9R+ja2dB2+ORJY/YE+P80/aF+mRDL7gnQKeZwwQTJnkcmmTVecXGS2XHworsTND8Z7xC/oJ+mdxqjRqUg+UmeotGaqfG3V/Ai9YMZyxENU/ZJqVS4oMO5bauNeoqg0aP+06R5ZmUIh24OyDdrIm2Jw0JkKmbKVNMNSZtrsDMujHbhebOUveFP8/WgA6/+3nAX6bw+WPxZ2NyQuLUYU0bNTosvelR9TdxfAyvOcJu/VVll4YVU+EPQG/NaSErLTYF40w+pOLO1VVQ+tUfIttFE9zdjVwgCvQ9ildRLrEfONBw4LAlZpiPTvs6Be8zmBdxWOPx2qBuE0BQQEFK9lBDOKCMJNs2uOPvkkNCWM397mA/L8/X2zrG92Hgv6K1rpqswsEkzfeoW3yAb38a5jajdc+NpBKmfDqNdAzyCeB+EeSpek+ypiCUyQVTG/Zmk96fB3Z17SVe/w2/5ZdzAM/jN2k25nlfUG8atO0MdR25bjbGD4nd+GjVNWer9NVNODBdu1biuBAi3CMkjU9ut3S2bDXLYZ+3VR0FOKbIJhAz4YPMiiWflelDxaFOZTKgNfwp8abItjhEIFBA3T1GZyCT7gAVuxTmcSAICERDegLY7VuzWIdr2UUrXi420XhwDV5eaMZbjBQptO+aEyTpSmfFFYyOBdHbaEwK1WEc0LqgrQETbD5FH1xHr0ZhR+RyE+d8Ievy
- NZarxYC2
- iiKkfseJpJMd7tXnyfeEh5VOy7RTVITHOE2XboiuPxpwaOfC0rFOMejhO8prCDVM9BGRHxPtDnVjOTlIFIXdVAFTuFQ1ZJRwHRIlqA9W2kjp2YS3Lhsh0BgbHi/0XqqYnG9fPPnhHz1iWYOTM+j5mdCaoqwpzGrx2gP7B0nbbfSA1gQYDZsIzdqnWgKxlwCbddLshJdV1hLhHcmL3mtgZMxeBxc+0qCYBfLiWGrpO8Ii8bC/aoX49GyNFknfQj0LGLpxr86NBCjgyWWIilP72TfchWd2KqVCzpyS+
+X-HE-Tag: 1761753046-80862
+X-HE-Meta: U2FsdGVkX19Z+5acaNLJvnX4mrun5tGUYnb087/Pmaxex5xUUSvpEnwTBeSRH+7wiSu+H0vHmVN5g+GxYYfYKLKtQDtyF2rh7IJXRSip6K90J31l9B9nnbZYsvVwXqwcUW+0A/XVqvLjy+EGr4blbyIFs/TBo8VHAssjvmz6xzSfS9myC3ZIJx/tWHe2rwqYoY8VeQxh39+ocguzIe4b4ae9e3XQhaN258ztNPbErrN1fbfABp99TH2UTV6xzOsGH66UCH09FeQNjuTVYOF91yx50JgH/+cL22vkg4XZYsOSD+QPhhCAWBv5HEFolPC+bCg3dVj8OSMx4QeLvkFnEd74wZUmK4Wvud6gVEwtPY7sWS5VbX0bjlyMJxeTrkqvLxRvoO8fmo7xRfvRCh2cNpsPsWHyA6/jgXZqYWZh/4uAF1HWisDFaqCFGO4HcgInZsY3DFdPUk3paDoPQ005pB34h8jQKfrfcosYKBE4078rxNKQDLK6gPYk7B69Ay9LlSZu4e2GlYj+dzFbNmKU7Fj7oMKGnn28wPDYTnQfpADM6/E9HHJj2NbWTEESfqPeU2oNxIIvDkPNZhTlwK9L1feWhxoac0A76NUP/x4QoHsSHaNU5dz5thfVgWD4iHtshNfODQRiahW6PvuT55QV8j27DNma7w2RNGVHuqCEQgcHz44HhFHeQQi7aC6xCaJNhlKSb6P0J2Yw+iLgsa5QDwFXwDr6gJXZoIaIjMOJpAefKhHMIDy/AZFKQHhv7H1J44WkUO8UpuuRR24j9qbxriKRez3mzJzAQRfs/OAsEzEYJ3KtusOurH1vAJHhhDH5SXOg2GPmivjXmatFjZcczOQUMc/+uUEUczFGsit4AQ/W65/yo50mdFWX/VzeGuNIYIgiX4CvAZ3t7dbECHDghxjYWKWYfxvFNuEtgbxQIAwWzCCX6Ifip+XEUg6usM9ICrBouZhDZ85qmr38td6
+ FeRGGEmR
+ gAUrBj9IGctAUottkhmNpITK6w9jCSjQW8KcHUGW/sXbBHkAUTv1JTYFYWYgnvN0gEUbISMgkwd9AwWNn+tcc0YHyqT+TDsyBiKJax0y0gSpmTvsd2WzbCPPgyMLreEK0O7q4Nlg5uiTTZwaIO74dYrfkfVNp6OpdT5r0lzfzLA3XtRIU/yt+lOdqsN3hfhCLE55QYVXd3uUuIH8cpqDkf3Wyek6OFLTaXTNFWNe/JQkmOGenXQ7sUyY5Xp9uaHkDqz9TQSQ2GglDkzXBO+SrLvh0OPmfaAsoAxe/MBrE3sQTXnXh5HlZGgUeUQE6qLnjhf080gSTnc40Jace9LnX3F6CX0IhFnuCmR86A+P8KiZIyfiEyQpxX0ZaC16BSJy1LnkLDjfJtUCv37IgJ5amvE+bADCfKdyAUtiPMgJ9YrFnsIcXw83JxFlFswt71i6ekQ/UnyXVc6b4GTE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,30 +122,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/27/25 01:24, Harry Yoo wrote:
-> On Thu, Oct 23, 2025 at 03:52:27PM +0200, Vlastimil Babka wrote:
->> In the first step to replace cpu (partial) slabs with sheaves, enable
->> sheaves for almost all caches. Treat args->sheaf_capacity as a minimum,
->> and calculate sheaf capacity with a formula that roughly follows the
->> formula for number of objects in cpu partial slabs in set_cpu_partial().
+On Wed, Oct 29, 2025 at 11:03:18AM +0100, David Hildenbrand wrote:
+> On 28.10.25 20:10, Isaac J. Manjarres wrote:
+> > When emitting the order of the allocation for a hash table,
+> > alloc_large_system_hash() unconditionally subtracts PAGE_SHIFT from
+> > log base 2 of the allocation size. This is not correct if the
+> > allocation size is smaller than a page, and yields a negative value
+> > for the order as seen below:
+> > 
+> > TCP established hash table entries: 32 (order: -4, 256 bytes, linear)
+> > TCP bind hash table entries: 32 (order: -2, 1024 bytes, linear)
+> > 
+> > Use get_order() to compute the order when emitting the hash table
+> > information to correctly handle cases where the allocation size is
+> > smaller than a page:
+> > 
+> > TCP established hash table entries: 32 (order: 0, 256 bytes, linear)
+> > TCP bind hash table entries: 32 (order: 0, 1024 bytes, linear)
+> > 
+> > Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+> > Cc: stable@vger.kernel.org # v5.4+
 > 
-> Should we scale sheaf capacity not only based on object size but also
-> on the number of CPUs, like calculate_order() does?
-
-We can try that as a follow-up, right now it's trying to roughly match the
-pre-existing amount of caching so that bots hopefully won't report
-regressions just because it became smaller (like we've already seen for
-maple nodes).
-
->> This should achieve roughly similar contention on the barn spin lock as
->> there's currently for node list_lock without sheaves, to make
->> benchmarking results comparable. It can be further tuned later.
->> 
->> Don't enable sheaves for kmalloc caches yet, as that needs further
->> changes to bootstraping.
->> 
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
+> This is a pr_info(), why do you think this is stable material? Just curious,
+> intuitively I'd have said that it's not that critical.
 > 
 
+Hi David,
+
+Thank you for taking the time to review this patch! I was just under the
+impression that any bug--even those for informational logging--should be
+sent to stable as well.
+
+> > Signed-off-by: Isaac J. Manjarres <isaacmanjarres@google.com>
+> > ---
+> >   mm/mm_init.c | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/mm/mm_init.c b/mm/mm_init.c
+> > index 3db2dea7db4c..7712d887b696 100644
+> > --- a/mm/mm_init.c
+> > +++ b/mm/mm_init.c
+> > @@ -2469,7 +2469,7 @@ void *__init alloc_large_system_hash(const char *tablename,
+> >   		panic("Failed to allocate %s hash table\n", tablename);
+> >   	pr_info("%s hash table entries: %ld (order: %d, %lu bytes, %s)\n",
+> > -		tablename, 1UL << log2qty, ilog2(size) - PAGE_SHIFT, size,
+> > +		tablename, 1UL << log2qty, get_order(size), size,
+> 
+> So in case it's smaller than a page we now correctly return "0".
+
+Correct.
+
+> Reviewed-by: David Hildenbrand <david@redhat.com>
+> 
+> -- 
+> Cheers
+> 
+> David / dhildenb
+
+Thanks!
+Isaac
 
