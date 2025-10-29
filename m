@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28E9CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:08:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 529BBCCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:14:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F16D8E00C3; Wed, 29 Oct 2025 14:08:43 -0400 (EDT)
+	id 92E2B8E00C4; Wed, 29 Oct 2025 14:14:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8208E00B2; Wed, 29 Oct 2025 14:08:43 -0400 (EDT)
+	id 8DE778E00B2; Wed, 29 Oct 2025 14:14:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3056B8E00C3; Wed, 29 Oct 2025 14:08:43 -0400 (EDT)
+	id 81B728E00C4; Wed, 29 Oct 2025 14:14:29 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 22EF68E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:08:43 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id D79D712B131
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:08:42 +0000 (UTC)
-X-FDA: 84051937284.27.F59E1F5
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 15D7840002
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:08:40 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qstw6GBW;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
+	by kanga.kvack.org (Postfix) with ESMTP id 733BC8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:14:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 2DAB1C0730
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:14:29 +0000 (UTC)
+X-FDA: 84051951858.22.3D71E70
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 9108514000A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:14:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tj2Sop8s;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761761321;
-	h=from:from:sender:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761761667;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=IRO5/rJhd7y6qAbtBBfOnyjO73djps2jbwQIhCfiClo=;
-	b=1AXolsce+fdC3hz4Se1PaTpT5i1OAuo/l4bRpfU5Qmg+GrVsO38ZNHXnz0WoO2EY6qywjA
-	SxKKZCn/OlPRjl8F2NPdVsH4vx8bQe5Pf44VhOE44ycOYlw4Rh2Znrw/kykV5I20jSYFwi
-	FbR87A20qDgrcCHemIVclRJyg4xkc2Y=
+	bh=hv/0bffyIQDUSuNV2r16Rzj+mh8NfZ7idCVtnStQ8tk=;
+	b=DW1Srbf4BW5b4DQaZcwhpz+2CHWDNhjtxz2TFmhibFvGEjcwWjTfatE3BNcgyE9FDJ7HJM
+	N9xMJb4CYy5bfYPmd2ahqa9nlh2FBMD6GbRnc374llWPCkJphyG+916C+0LQ/vcq5yYMIB
+	rtNM+4PfuJNJgFuZePRU5lnHzh9jkMM=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux.org.uk header.s=zeniv-20220401 header.b=qstw6GBW;
-	spf=none (imf04.hostedemail.com: domain of viro@ftp.linux.org.uk has no SPF policy when checking 62.89.141.173) smtp.mailfrom=viro@ftp.linux.org.uk;
-	dmarc=pass (policy=none) header.from=zeniv.linux.org.uk
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761761321; a=rsa-sha256;
+	imf23.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tj2Sop8s;
+	spf=pass (imf23.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761761667; a=rsa-sha256;
 	cv=none;
-	b=5UB5LFJzG0FgBOewS6207+ht9CmKytJAGkX36TU+l3U5Ue22vVGijelxGEafqitm3/fkqN
-	m/0PWFGOpMDrm0Mv+2Nh014X4BLjwv63DqwsN3F/gAacfdSlD4q0JT2ET22NINPnKJYa35
-	8sXQh6FXvo0AlVDarxlVHH17/l1RURI=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=IRO5/rJhd7y6qAbtBBfOnyjO73djps2jbwQIhCfiClo=; b=qstw6GBW0gz7l6/NIZ98+H0BuC
-	LPcTpqbv6qZwuSaVXzFp5+8p3uItulr9RO1wyw6k1QzQVAfHUp/CtKNeZtDmZSm+sgFarRadUCpBK
-	QZrzf7l+w0/cYrUWCRtQcOPwVpTXfR6WfE4DMsjuxuOQV+z0xqou2NBsCOGqqoMuLcuomyEM5NJXa
-	RJQMFf1J+khB5G8o/qb4hoF8XxOYm1SETmvEkodR0rT9kGWkPtyAGI//REIRqkdUm4sCbPWkkDpIi
-	qeQgTiYS1sVVgCHccSx1/k4oTcfdfgLL7bzYX5FyStzF5GG23KhpEBcGZmGVQXrQATbM/9H02+9/9
-	Dy4tNtaQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vEAb5-0000000DNn5-15k7;
-	Wed, 29 Oct 2025 18:08:35 +0000
-Date: Wed, 29 Oct 2025 18:08:35 +0000
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>,
-	linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net,
-	miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org,
-	linux-mm@kvack.org, linux-efi@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org,
-	gregkh@linuxfoundation.org, linux-usb@vger.kernel.org,
-	paul@paul-moore.com, casey@schaufler-ca.com,
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com,
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com,
-	bpf@vger.kernel.org
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251029180835.GT2441659@ZenIV>
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk>
- <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV>
- <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+	b=yOpMrHMuBSATBgkdLWcEKTSSU6MFOdUsPF8fJ3sPIqJnLGR4lLigVqGCXEEVQUzg+sBnoZ
+	TtdIYf6H5AWFIEus0IRWsZ09LevnZk8JbVl4Jy1nAu75vZXjBobFvS1FqWDifb7E0zvjGi
+	vTitRAXMDKco/soLTGl2VjLZaGNmDwU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C311061DB5;
+	Wed, 29 Oct 2025 18:14:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4485EC4CEF7;
+	Wed, 29 Oct 2025 18:14:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761761666;
+	bh=kY1V/QJFs1h44N/K6efseCUY65CASyAedOZu2/bpKm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tj2Sop8sSHOaqPkc3ZcouOA0BeyHTP/TNIJPDnKa6OL1M1cai0IJ12t6rUPYhMo5f
+	 aQ3nH2Yw94Jwug09AOD/tfVe3pKBeC/FCu84k6NzjnZwashb3wRtAKjpa3GP/XYHlS
+	 kzgxg0AZsJVSe/bGBGAt+mn8DNraSO0xzFSsLN/CYYqvlTTJHcwNPcMf+jVzseNy2N
+	 Dqeff1I9EkAZDxmvMxCjL8X6erqZTxddlEl+VwvhBEtus7/b6vjybe+uHIMe6rSgNm
+	 6xOPif8V1incnhlbEZa6wBVHpQarnjv9J0wWGVYLVYkJbvXRrCAZ/TOi4TmrR1tEry
+	 IAUdfrT8XT33w==
+Date: Wed, 29 Oct 2025 08:14:25 -1000
+From: Tejun Heo <tj@kernel.org>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops
+ to cgroups
+Message-ID: <aQJZgd8-xXpK-Af8@slm.duckdns.org>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
-X-Rspamd-Queue-Id: 15D7840002
-X-Rspamd-Server: rspam11
+In-Reply-To: <20251027231727.472628-3-roman.gushchin@linux.dev>
+X-Stat-Signature: 4yrz8wzkn7kmw816f5ecx9ka13hhzdj5
+X-Rspamd-Queue-Id: 9108514000A
 X-Rspam-User: 
-X-Stat-Signature: o6exy78pwbp7iht1i58nsx1acpq95b8b
-X-HE-Tag: 1761761320-763218
-X-HE-Meta: U2FsdGVkX1+zi9lCfSGokX7907Qlbm966Us5k0xdoFuiqzexC7h9MYtHpMEYWTzTFdyJzmInKNloJJoIuoqUKpBZhpeJM7BAHgft45UhThttzgguIVvaSNouqcPwt2zJf0oT10BipUwchdS8yA6somn2dsJsBdwY6orvCqJAldWNJXEAlesutUn8lABUdVxRJe4I59vGbK1dMcvU/nyVwypPy1LLPS2kI5klilZWsh6deDRAfPrqKhaM6bAtRalvYZvV6ccoiFSjMPLU7WK26HekbV2QU+yoj/mZdjeccSB6UuDnOoudl0+qEbSlHkgGmRb60EtkcYuqpqllvuaE2P1maNJX0sduT6uLVkQ/zFOvQoGhdmCdMqMQhSscoofySZmtvrSk8HGRu/8bkhnQBEoZHt0Gbm9ePIqFuqsTKQQ5Y62AvSMqJEirXsDPwDVoYQkkSxpXyR2FpyeeXiztwvRGj/bUhwZfCKm2mdS9D89Ht2rZxrLGe6KFBXZdlT+JK9Aa9+ZEt0exMhBwgyGUjHs55vLqsu/rn/4qeJbwFjtKu/HkEpqJXElXVdfGGZrm0fDMMvF4ziNnwhRFwghaDhJBWOyXczLmPXafo0htDxO5Ge7rZ4kaqvloLnO0HD6+Zdwe9SYJL/h6XL3T1zGnvuXVA0uoq+svkQMyYNUJ9vSrfxkrdJPHAvGmMH2qPX+FM8EwpX8YC/kQa+gQgJyD216hgmhEJ6ZrIyPwZr+pF3pvasN9S7PsjYW5gJLcKkDHqzvwk+TLhAgV6CFZE/sQ6cxcFDgMrIzylClPGRAa/milu7zhrTYlQcVIteJw2dhA0wVunAzh2O8Eslqm8FHQNZsV4lQK3NyK3P3BHk3Q9ii26fETWblLwh+7H9p+hUREEBZoz43u/Brmf3oO6NlKXEgvGAKgjPinlwwpj1xDvtQGdKFls/uXYqWeVDhvWdoCMqrsQiwKcm4fYmOUhs4
- yDsPo9od
- WLJWJLKaEakL3ljRwhXiMKs3nbGVEi2f5pGCsTmak7rPJWzWFeQ6ZoapoSLfI2IK7vKGQA/GUGo5E2IZoey3ACBoOzQiS+gRMteGauC1UfGnZKDG59oiZFVfbUW9uRdnEhAcS7A8aC7IFp9Y+QNXZc8Z6tywwmGRVYJk/ODiq1xV0y1L1BFLMh4fkjB6r06gPkcPMlBOz74uQxD6o9bjQI0YjW1ichJ7B/wAdEfA6JJMiNmMtLVK7WXqd5ZBD0peiR2Cpha+1hEopy1d6ss3tc0zdrWCIxkIjjADAW5YNcVRqU7WhPRz2rfqS2ct776NU+MZ6wTcLDJ395VdHFWJaSUnKqyDPxXgi9fOy++0UGIkraBP43n5hE/Sz39GeEzovT3/svHkTSh8EdC4MKCgp6jyfiLOOrczzt68KzVvMRVtz2sS2n0Xelyul2WIIuJ/uzEQM
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761761667-553804
+X-HE-Meta: U2FsdGVkX184UfwmI3KybsE9sp+fQxvwcv47pdOJAD4c0fH13YOS84LHQcAdu85wqzetEU3WnXtxLpOjmU7QNWsAt/gJQr5ZVta9SFWlm/RprwskujtXJx8r93qVkYuCiKC+3sV2SnbKGHUGXG/axRACINqJnMdkkNyz4HHX2X1Wh7pXLK4/zZdhhSHW900OY865rxz9TduuifTkb/Wlg3DFTOa6NFuxywaP2NARzY0Y4PT60VmSavzD5y8HYtLNxnQlfhWIw/Imp7/SIMVl+tMcYYRLQ8SWDA9ShOAjpP721aTuH99c/mei0CgHABbxIaRfTNvgr5Nv7FGlGDnwnhWqi56GH4jiGyOjXDIxkvqanhW0QUWXm2fSlttX9Ha161/Qoswa6TCR8S1oZFhUTWQD5KzpOofMvlTTojhJax1y3NBO81+xV6lYNJzJxqJWlLdPmdvp4I7XQlWsxxx7XSo+XgstSNwLsrUPyAuGllG0diNF6iWOOIIxpo4n4gzRQCBTJZanMYwFOKPELnyPxRXyNbGtXaeOux6mytwzZ4k71jMLnS9+7xhe8voYs/NUh+mgHFitnls4/jOJTjhZEzRj6a0RV8rblSnxNQDrTt/5yNnrMbkDPVvZQS999dq6dLnhSn8V77jYMMqTNbZkU3EN3m/DrXNHuEPkniuDmq53j4u5Nar1vUZAXHms02rwFXk9lxqRg1KF5BSmXrdXuoIaH3uqnVcGS3puQvd9eOteJcNb7D/K3n7zy2+iKT+S0DwnyKj9f1IONU+vNpOkoP0BSseAVQ96JYTh844Mjqy2IBOLkMl9trXmxsSE4fgXOUofpDytt1+vhAEbLwgbkVIWKNkN/6kRH2eHaUtDxPegIVj1YHnexUSG9mR48DZ3wHXOiGHqZQiEgTzDktALmQt1jcKTTUQS0a2haeKAm09iXJ8LUgwBlOpNB3H5D6m35/p0qbt4sWiP5GpNHIm
+ 9c1LXR3c
+ DMDv+76+CIxFwFSXq98NZbHcU/BQGzcyMfemdyQ+czUq0VXWQoo8j+EVittD4NpwtK9xCMlgezoCjFHu/0Eos5+rZThLmkVhf5QRNQggCT1nl5cio/FSFmvwJWivtHO6w9a0x4F9m3xyVtT1ELqSECuUZq34/UQj9NiuTBycaLCYKJX9CBmSb9ITz6oIXBcp7z7+ixp/dq+qBItDYb0VWRHjnN4OH060WUube3YaSUeUGtyY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,18 +103,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 10:34:51PM +0100, Ard Biesheuvel wrote:
+Hello,
 
-> I'll let James respond to the specifics of your suggestion, but I'll
-> just note that this code has a rather convoluted history, as we used
-> to have two separate pseudo-filesystem drivers, up until a few years
-> ago: the sysfs based 'efivars' and this efivarfs driver. Given that
-> modifications in one needed to be visible in the other, they shared a
-> linked list that shadowed the state of the underlying variable store.
-> 'efivars' was removed years ago, but it was only recently that James
-> replaced the linked list in this driver with the dentry cache as the
-> shadow mechanism.
+On Mon, Oct 27, 2025 at 04:17:05PM -0700, Roman Gushchin wrote:
+> @@ -1849,6 +1849,7 @@ struct bpf_struct_ops_link {
+>  	struct bpf_link link;
+>  	struct bpf_map __rcu *map;
+>  	wait_queue_head_t wait_hup;
+> +	u64 cgroup_id;
+>  };
 
-Hmm...  Another question about that code: is efivar_get_variable()
-safe outside of efivar_lock()?
+BTW, for sched_ext sub-sched support, I'm just adding cgroup_id to
+struct_ops, which seems to work fine. It'd be nice to align on the same
+approach. What are the benefits of doing this through fd?
+
+Thanks.
+
+-- 
+tejun
 
