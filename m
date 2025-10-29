@@ -4,56 +4,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0A82CCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:10:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2614CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:10:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 445C58E0052; Wed, 29 Oct 2025 06:10:10 -0400 (EDT)
+	id 4BB948E0053; Wed, 29 Oct 2025 06:10:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 41D588E0045; Wed, 29 Oct 2025 06:10:10 -0400 (EDT)
+	id 492EE8E0045; Wed, 29 Oct 2025 06:10:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 35B588E0052; Wed, 29 Oct 2025 06:10:10 -0400 (EDT)
+	id 3CF888E0053; Wed, 29 Oct 2025 06:10:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 243758E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:10:10 -0400 (EDT)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CDE8B88F54
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:10:09 +0000 (UTC)
-X-FDA: 84050731338.10.5DE146B
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 267CA8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:10:15 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D7B1788F70
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:10:14 +0000 (UTC)
+X-FDA: 84050731548.17.35FD5B0
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 2573B40017
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:10:07 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
+	by imf17.hostedemail.com (Postfix) with ESMTP id 48DEA40005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:10:13 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761732608;
+	s=arc-20220608; t=1761732613;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kvvX36phAp+peVOlxruWBCxwtzwfFIHoLx/bWBK6XQw=;
-	b=vnP8TX+bofNyV63QdTy6Vp19e3IfiTda+v94rIgGUGqtHMIodgw1we1in/Vfu++JDMxxim
-	QspzrLoyR/V7Wla/4bdi86sZDRmMpiYbz4j3Vs/cjzIOpaA4gqWjPDeBbjO6+X2dNvgK5b
-	bxTpuQ/eUZqBzjFNjEsXXXIZMqzv5UY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732608; a=rsa-sha256;
+	bh=CzAmB3+ul/4CB3IEehlTd1PyNa8/CZkGLN+5p5/HgHs=;
+	b=tMkozjFRfbj2E/XVxcZ0AUQ/XFZWSQvPiHvC/J13Qp2QbDJex+5FMbXPosvGM7ZS0KjPzU
+	/ALRuZzH9MYdf9xMXdMUUzvzvPloANrbryLTmtXc9YKJl/k8q9nPRHIfo2CypbDQ2Ai9Kz
+	XQH1B82+xnRM1DQ2VM1kcZucTCKhqxg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732613; a=rsa-sha256;
 	cv=none;
-	b=mj2s/ngdBmeL+/PJWsuPNApKQCwrjD89AogFS1haRJ3yqvzd4fAnN/oMVQgeb0qpAy26bX
-	+KVy8Yv9V5rV9I/fCcfkA+qONBZWfAy1Lw8DVnTzWQ7x9cw4VRGsn4jAtMfvvSz/gARNuY
-	CFJH4y6LwkiWqU9X825y6i0yVBJYvQc=
+	b=QDTyrHp5RM1Sg9MfjSu4/VpnuM4Hfq6W/jTr72flSyTI0dEpzARVdt5FCbbiSos3m3C7QH
+	ZY6xw3prwkE1VJlXDxAYUrXJ9c5szxTFR9/mt4blXaauIG3acUhbYYROBwMcGHYjn6TKG9
+	RmMRUkD0ikHZxdTaOdzKtoJD2VCDnrg=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
+	imf17.hostedemail.com;
 	dkim=none;
 	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf01.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+	spf=pass (imf17.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 809B12BCC;
-	Wed, 29 Oct 2025 03:09:59 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B6C832BCD;
+	Wed, 29 Oct 2025 03:10:04 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6BA203F66E;
-	Wed, 29 Oct 2025 03:10:02 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A153E3F66E;
+	Wed, 29 Oct 2025 03:10:07 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -92,22 +92,22 @@ Cc: linux-kernel@vger.kernel.org,
 	sparclinux@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	x86@kernel.org
-Subject: [PATCH v4 03/12] powerpc/mm: implement arch_flush_lazy_mmu_mode()
-Date: Wed, 29 Oct 2025 10:09:00 +0000
-Message-ID: <20251029100909.3381140-4-kevin.brodsky@arm.com>
+Subject: [PATCH v4 04/12] sparc/mm: implement arch_flush_lazy_mmu_mode()
+Date: Wed, 29 Oct 2025 10:09:01 +0000
+Message-ID: <20251029100909.3381140-5-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20251029100909.3381140-1-kevin.brodsky@arm.com>
 References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2573B40017
+X-Rspamd-Queue-Id: 48DEA40005
 X-Rspamd-Server: rspam02
-X-Stat-Signature: 1gsbc78ykpnasgq5png6jqjwfgrreby8
-X-HE-Tag: 1761732607-142303
-X-HE-Meta: U2FsdGVkX18+/PJ6mKkFy56GMno3yqIrelV/88eyGVJH1huQoxLJGMqONs0dY9vIprSmD48jCEtUrhKcE0SDxz8H+sADehw0XP0e0lOyvQH3EG9j3Hzly8Z6FpKm2h28/pFe1QpOpLBKN6MuVi3xIigl+UjeEyAQZTi7GQQXK98npYk7hO+ymCnpvCqhHaJuCkhiQrtXo0hi9Objg3Tc+Kiksn/0WlTcu9U9rA5rfgEtOIicXsVgejI5/1PePqAIpaj22hj2dTZU9x9opKYchPGNy762W/JcUk7cc1rUQVeGiP70wEp/UwRYAHc5SIMp5nEYu6RmSIJVtCypwTq9u0xYa/gCBxQv6q6MmYUr+A+UPtCUGwEjXD4s/QGZjVGN0gXw14KSpnKfP5mm6j1at9Zubm7f8BQArcWVwOL44CN8t5lPmC3O3MpyHIzK+R0CgFzjbLvrXiMx/qh0dhwdEVMOyH9gkFZeK2i38BfDXXuphoPu9w58sArJ5p8W8PMbSKQNDC1l6frePwdNk2Kbx8QkcPK5cPX0SNqiLp1CtKCm8kUZDGC7NgNky1VdtevGNH+HbeePs905VhQaprmb2EggAHlPTRjQUORtMh5JFW0Xugfjyy1BYbL0ytM2lr6WuiGlZftiS2RvbHiklUul9zBD1PYs9CWgkFA75VCfUeKGJNRaZ5zKvEtft4viVIkGa1M6HX4k1emir27XOUcoLyigj+htY+hvxwa96NgLcgLHQYSh9yQwKsR0tlmaeKtyWVq8Ec4w4gR4gFou8V8ahFVVD2QXiCTOFG85b7IiJRcy/SnKjKIxTzzQPAkPY45+Fw1K2X5VeeZ/eCMFnfgwld1ygvO90BMEMpe9AqyE73gVI5KRDf5D/rar6K09rgBftbzEcl/txdXMg0Fx+45IfqydcNBes6+Oh3LuQ/5sO8vxPtUyuuyxRKcm/Equ6rOQgiCn76Amu8PnMnvfAF+
- jt7piU14
- ZK9q8L/qNWHKhmoqIUMXwC6SHU8lcPeneV8AemImYEPs35SNrGG/Di8C30NJT1FDsNMKLGiIMmNh5ZcHAwWKDab4/xaOjmjcU3s2R7Sf9yf5OTIkefi79q2ySLHXjrFSaYtlftnznmxCwg20yWdQjt9+HDlmu4CWRPYtoUxDcfF+C+NDwtaW5y6qTjee4L7gGC36FfetlrHMKiFU/EG3AH3sM09ZtxkreLGp0u2cOsYcHPJg=
+X-Stat-Signature: 5r38r4rbf7qhsi5rzmp3t9q3rpdycrr5
+X-HE-Tag: 1761732613-677770
+X-HE-Meta: U2FsdGVkX19fJcAHa4qpuOgmRCIS7h+qJIx587tUiWk6duo+4ybqrPPjuzyadZTJuTMTJuU384S5qbDU9yiRVC32K1qULsOlD/71jEtkb4fzfWxiVkXJLMphlTItNKjJtQI0cxQir/d/2G7QNK3LE47deM1lszux3krmSccBufFAUyXV1LpMHQkE7b1umDeVl0gj1J4jWHc7Oj6cQZQQMt3W9lbPppxHvT4BAbvOo/OyCWD7X1azEiSIS3B6GKcgpY+bfXMQ5S53DnAU+tk78yJU6R0xXUuxnfLox4Nx6stKl9gh95sfpZJxw5JRMqVEkpGBbmXxgApIg2BLSAikxpyinlITSbG3Pv6YuB9NaOZRyZZcqav9tDRqWfM83NEwmuulL2Y895l+5oHObng19a7jL+2VheIoCO9GtqP9KV5kP0H+WDzIdyFmXucUhoYDjHDb1B1CCLi7LWo5fHtLcuiVayJ8+pp5StMNulqcvBASyj7uh8c4h8vLkJrk+a6Uxpi3VaUKZVic2mNwLmYHwgu/HIU4PfCbZjXgR3Jo1ne+fPaWWm1AN3pz86KqL08m5aX3dTV1cBeNQOFm+Go7WtQG0wjnNJ8TUpuMIVLl5rAAyW53+dxPkl8j/+B6va8eLqBvKht08m9ndM2UvA76efSBA27Zhgqgy5PI103vqxM+/w1Xg38gTMyf1yse7i9QH2A4mQ/nfangbJFqwaRHhdYzfdnZh2R7qBWEarkLo4ueXssa6gEqb9rW87dcJ6EmEdbwDNv8bqmg34fBGsAvy57t5WLeEGRjtt7kn9cDA092nJRXd8cKauyObegQfHjFllIbXYXzAuSzazPcQSJjeuTZpdGUgSoJ9ssYhu34H85SDtbT/i2pPPAPpHinzkl3yA4bBcbq84pkzFSXptWoprfWbnKk/i+CLV8oZDmFdbkWZ4hRPpcr8S+qVG7KcuaTmMFwVOF2wh51Db+wWBZ
+ o6QxzLGL
+ iPn108zA1CMQ38ZvEeZSEH788qREzEs1/UuhVcJjJpvTOD5YYKao8XXqSHQzOVXtQd553+AAEXtC/mFTYt/47V5NHhyPiWUBrCI6AlHDho3a/NTy3jl8Rhc0SMhnjPUvaVxeUJG260wHG7cFAmLFzDiohcmZHW+61x8Y/O3O6Wye/16d/DaL/nLBXBmvBO3EpFFnBNpcPfXXcSGQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,46 +129,49 @@ patch.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- .../powerpc/include/asm/book3s/64/tlbflush-hash.h | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/sparc/include/asm/tlbflush_64.h | 2 +-
+ arch/sparc/mm/tlb.c                  | 9 ++++++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-index 146287d9580f..7704dbe8e88d 100644
---- a/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-+++ b/arch/powerpc/include/asm/book3s/64/tlbflush-hash.h
-@@ -41,6 +41,16 @@ static inline void arch_enter_lazy_mmu_mode(void)
- 	batch->active = 1;
+diff --git a/arch/sparc/include/asm/tlbflush_64.h b/arch/sparc/include/asm/tlbflush_64.h
+index 8b8cdaa69272..925bb5d7a4e1 100644
+--- a/arch/sparc/include/asm/tlbflush_64.h
++++ b/arch/sparc/include/asm/tlbflush_64.h
+@@ -43,8 +43,8 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end);
+ 
+ void flush_tlb_pending(void);
+ void arch_enter_lazy_mmu_mode(void);
++void arch_flush_lazy_mmu_mode(void);
+ void arch_leave_lazy_mmu_mode(void);
+-#define arch_flush_lazy_mmu_mode()      do {} while (0)
+ 
+ /* Local cpu only.  */
+ void __flush_tlb_all(void);
+diff --git a/arch/sparc/mm/tlb.c b/arch/sparc/mm/tlb.c
+index a35ddcca5e76..7b5dfcdb1243 100644
+--- a/arch/sparc/mm/tlb.c
++++ b/arch/sparc/mm/tlb.c
+@@ -59,12 +59,19 @@ void arch_enter_lazy_mmu_mode(void)
+ 	tb->active = 1;
  }
  
-+static inline void arch_flush_lazy_mmu_mode(void)
-+{
-+	struct ppc64_tlb_batch *batch;
-+
-+	batch = this_cpu_ptr(&ppc64_tlb_batch);
-+
-+	if (batch->index)
-+		__flush_tlb_pending(batch);
+-void arch_leave_lazy_mmu_mode(void)
++void arch_flush_lazy_mmu_mode(void)
+ {
+ 	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
+ 
+ 	if (tb->tlb_nr)
+ 		flush_tlb_pending();
 +}
 +
- static inline void arch_leave_lazy_mmu_mode(void)
- {
- 	struct ppc64_tlb_batch *batch;
-@@ -49,14 +59,11 @@ static inline void arch_leave_lazy_mmu_mode(void)
- 		return;
- 	batch = this_cpu_ptr(&ppc64_tlb_batch);
- 
--	if (batch->index)
--		__flush_tlb_pending(batch);
++void arch_leave_lazy_mmu_mode(void)
++{
++	struct tlb_batch *tb = this_cpu_ptr(&tlb_batch);
++
 +	arch_flush_lazy_mmu_mode();
- 	batch->active = 0;
+ 	tb->active = 0;
  	preempt_enable();
  }
- 
--#define arch_flush_lazy_mmu_mode()      do {} while (0)
--
- extern void hash__tlbiel_all(unsigned int action);
- 
- extern void flush_hash_page(unsigned long vpn, real_pte_t pte, int psize,
 -- 
 2.47.0
 
