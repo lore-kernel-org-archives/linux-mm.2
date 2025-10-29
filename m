@@ -4,89 +4,253 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 894EFCCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 08:05:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CF70CCF9F0
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 08:07:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CF1A6801BC; Wed, 29 Oct 2025 04:05:34 -0400 (EDT)
+	id 68B8D801B9; Wed, 29 Oct 2025 04:07:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCB91801BB; Wed, 29 Oct 2025 04:05:34 -0400 (EDT)
+	id 6449A80199; Wed, 29 Oct 2025 04:07:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C06DB801BC; Wed, 29 Oct 2025 04:05:34 -0400 (EDT)
+	id 49096801B9; Wed, 29 Oct 2025 04:07:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B0FE7801BB
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 04:05:34 -0400 (EDT)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 5B3DC1A07D1
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:05:34 +0000 (UTC)
-X-FDA: 84050417388.27.3144DB7
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6E0FC4000A
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:05:32 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=POB69esF;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761725132;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 2EFD480199
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 04:07:02 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8E76BB590
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:07:01 +0000 (UTC)
+X-FDA: 84050421042.30.3DCF32B
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 837CC4000F
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:06:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G7Xwjq48;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=x8lQUFOt;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761725218; a=rsa-sha256;
+	cv=pass;
+	b=MY48Bdxkwc3btubsG2XN3XpMXJ/OTaOj42znWgmPUR4CW6Ms8emEyujoFz1LXxRhAAhWyq
+	uheYOWxjK4Lxv/nl8hmg/Grg5YNiiCihqxritXuQI7Zy4zbnJnIvY9ls7CAV+pTrO+wbKS
+	XzhzTUwWRrPsxtFm27VPksrtzK0pgRI=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=G7Xwjq48;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=x8lQUFOt;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761725218;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yk4PUhjFL395TmYOv7gltb3HHECw/EBab++L+Zsd2s8=;
-	b=ewdwxp+BAwY8zVmNi20px3cLANpNQ6BKPGrZAdzEBQNmDuNuliPwMcPqFb68JHvIF5b6ei
-	zjH97Njb+Meowcj7xJDe89gCWH7aybuImsUXpZk5B7oN+B/yZdPMrCqctbZARX4BwFzadJ
-	r3kqSObM5ayfa3PqUZNATBbMVko8R2c=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=POB69esF;
-	spf=pass (imf12.hostedemail.com: domain of qi.zheng@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761725132; a=rsa-sha256;
-	cv=none;
-	b=eLhJ4CGVGxYz76T4gDNXOICBZ49mvPvptcCIa/3C+Kwm3oyxUsjAou8b38mo7ruuBwFLyE
-	IHqQYsRfUvJ4diRlEXcWgQdsVi/NRogssebxUw4Iy6t+CPnD2Q2GloSgm9X02g1kKRZLxZ
-	sTdXuES4DWFyY0xxKpA3/BSIbsyZnCM=
-Message-ID: <8edf2f49-54f6-4604-8d01-42751234bee9@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761725127;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yk4PUhjFL395TmYOv7gltb3HHECw/EBab++L+Zsd2s8=;
-	b=POB69esFKG9kb3n4mSAV3U7Ka6U9jKsTmiynTZND0fdm2hrV6tVNyeIb094iW12aUZujcS
-	ylMz9tnF41HneC7z9bYAyXQrHBjjjpAHrjeEDn+JmZDTUagUtNklDvY/fNbEsXOcB4KJi6
-	k9MDji9FBdRnuSToM6Y1FHFq9d1uLPE=
-Date: Wed, 29 Oct 2025 16:05:16 +0800
+	bh=LSKkJS2Ut4xWhx54pWxyWxj63VOr0CHW9wUEScsKvLw=;
+	b=Crg+lslGO534Z+/PeSV4jJre6uDX01hUFG0sfUkA3JWkIA8ycPo1MGJohlansqkQEk+Rcc
+	jKpd+wO+6s6uGCJAhJS2DPyHz6w0cJ6hmiE8Ck09KApM9GMghnXVfsUgwsUp8fPWsEyllD
+	KA/bkQnQdV24uUobTga76INq2H2Qryk=
+Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59T7gDjQ025222;
+	Wed, 29 Oct 2025 08:06:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=LSKkJS2Ut4xWhx54pWxyWxj63VOr0CHW9wUEScsKvLw=; b=
+	G7Xwjq483GdRAe+ihaRk9eSIxqVNcvHZuZOtoIlc0MQpdhcS2IUThlLNifA6JImH
+	Pi2uEXYCwGPHCWvkr6GZOA3Vw1duxiWTy9OgtYTWzexvDQsDpWWM0cVq6rKGzuq/
+	UYsBRylhZJtpoTsy2vC12hJUQYTaT1brS/YszfqWlhgvVpcxQWtpEtLLiHahOxLR
+	la/2yVgQ3DXIof6TlFY5peSWJqD/z3jXiDhxTGmc2YHmk+qyGiFp7v83LoLCeaJX
+	5UK4gpIsrXBnZNP+9yA5o3shMYX34GE/lohGAqZ5x6EdjH2JmcieWG0fC6/zPjOd
+	RIfzSd0NO39FURB//5Aunw==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a33vw92cg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Oct 2025 08:06:49 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59T6RPq7011315;
+	Wed, 29 Oct 2025 08:06:48 GMT
+Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011033.outbound.protection.outlook.com [40.93.194.33])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a33vwvypg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Oct 2025 08:06:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pAvqvNhQaJOG88PTZgcxGCKcbKiRMGPd1HjMFASj4RpKkB5EHoJ4rFMdr73ooMLe16eaBraBKYIw9sTqkXqqLLHlAsko4/DxZ8J5dj9MPC3/eRPsikuMKr8Y9nuaXIJrAcVwrgZdPEMSXjlI6p8AWn3Mej6zGhAVM0oWyDSr6fDFvVIZ77yXGET2n+7ZVVFD5F4NeUliSKS+LD9CPTZaU6gDkVBAIXx78ZaUCjK5mgOf6VTJH8biDpgWXofBOswqlXFvt/UWpvyWF2AhoY7sFDEx4dunTOZznCXC92vQ/eD4deTX0K5W0+edaGFcysLxc1WRQd6hYoR9DXLJbQAWEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LSKkJS2Ut4xWhx54pWxyWxj63VOr0CHW9wUEScsKvLw=;
+ b=G1uc7iOypZJ+sRDV9KBBnfb9khy9vYW0NOEzgSpZrZJP2/rLofZhqS8kqU/mblHSX0TwQq8kZoU1GwS3jBtH7mxrcNbiqhkAdQO6z/a2M+hivd0O5KF70uJtP6iyJNB5rt2kVBevC9IG6AR/sIIt/XjJ7yQqXBkcUGROjuBrMiM6UF9reQ38w3rXLskBUTWrfL1pSFWFtvc2UiJoWGTFrZkVaardBHN64IWyULPifREGv87YSY8Gs8BS5zw7HbiM5VwbIagZoGyl5SarhZdubIJXTGsXR7MOl4RAXKyxR3oD4FK88J2MnjgIfSXsi9+sVI2W0CVVUCss7UjLwAL30g==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LSKkJS2Ut4xWhx54pWxyWxj63VOr0CHW9wUEScsKvLw=;
+ b=x8lQUFOtPTkLPWf8ZH6tgxx7ObNYR+XG7BOAr2b+vYp4MNoB1qmRPk/8dXNrYqW/aEJe6/t7CZYpb8WW0TNSkFs0OZRrap7ywp4VZoHDse37uv5g/nfkGpNRwJGhvSjFzXnuj6jRmUc98EI9OPDaXl8hGli0sBL9sARjC7yZoZs=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by PH7PR10MB6309.namprd10.prod.outlook.com (2603:10b6:510:1b0::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.18; Wed, 29 Oct
+ 2025 08:06:45 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9275.013; Wed, 29 Oct 2025
+ 08:06:45 +0000
+Date: Wed, 29 Oct 2025 17:06:37 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com,
+        cl@linux.com, dvyukov@google.com, glider@google.com,
+        hannes@cmpxchg.org, linux-mm@kvack.org, mhocko@kernel.org,
+        muchun.song@linux.dev, rientjes@google.com, roman.gushchin@linux.dev,
+        ryabinin.a.a@gmail.com, shakeel.butt@linux.dev,
+        vincenzo.frascino@arm.com, yeoreum.yun@arm.com, tytso@mit.edu,
+        adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V3 5/7] mm/memcontrol,alloc_tag: handle slabobj_ext
+ access under KASAN poison
+Message-ID: <aQHLDTwwEuswvNWv@hyeyoo>
+References: <20251027122847.320924-1-harry.yoo@oracle.com>
+ <20251027122847.320924-6-harry.yoo@oracle.com>
+ <CAJuCfpG=Lb4WhYuPkSpdNO4Ehtjm1YcEEK0OM=3g9i=LxmpHSQ@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJuCfpG=Lb4WhYuPkSpdNO4Ehtjm1YcEEK0OM=3g9i=LxmpHSQ@mail.gmail.com>
+X-ClientProxiedBy: SEWP216CA0100.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2bb::14) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
 MIME-Version: 1.0
-Subject: Re: [PATCH v1 00/26] Eliminate Dying Memory Cgroup
-To: Michal Hocko <mhocko@suse.com>
-Cc: hannes@cmpxchg.org, hughd@google.com, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, david@redhat.com,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, harry.yoo@oracle.com,
- imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
- axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
- akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org
-References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
- <aQHIDWDx3puT5XZd@tiehlicka>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Qi Zheng <qi.zheng@linux.dev>
-In-Reply-To: <aQHIDWDx3puT5XZd@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: wdsfbz1soz4zxinqjerkrxmijjsju3j7
-X-Rspamd-Queue-Id: 6E0FC4000A
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|PH7PR10MB6309:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0fa63364-ffde-4022-2c8a-08de16c21a1e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?T2lzbDRiaDlSNkdZRTFkUDVhMWZIMkRISWovc09vMjZMQ0lhNjVQblVua0Z0?=
+ =?utf-8?B?eEUza1RsN3NGVnZ6ZzRrTWhXSVhkS1B1eXpieGxWQlRhMmxZTWRocnR5dzQ2?=
+ =?utf-8?B?cG5WcmpUR1NwdHAvcWRjWGxPUzl3NFlIbFNKbno5bFk2QnhkbGhCS3c5TURU?=
+ =?utf-8?B?eTBLcHUza1JISHJoVERQWUVVUTU3c0QrWlNiaG41MUxtNlZxUkRSTGliMTA4?=
+ =?utf-8?B?SXBTNEFuYTJLRllGMjZrdDRkNzV4ZVIxNDFRTU9mWXN4L0l6Y3NwazVwUGNU?=
+ =?utf-8?B?U05rNndnQnc5aFBTUFA5aTVEYnBVc25XVHY5SzZwODFmS0diN2Y4bDJqbmdM?=
+ =?utf-8?B?TFV3NnY4ZDFKR2hKalhhem5sMHhJckUvbU9wc1BmanUzOUpGV28xUjQwSGI2?=
+ =?utf-8?B?UmVjSFlGMDUvR2NqMGFaVGc2TWp5QXhFaE9USHFoMWNjKytIRUJqcFV2TEV6?=
+ =?utf-8?B?QjJOZnFJL0p2bUNsRWJNdVN2aUJiQ0dBRXE4RjY1aFl6dWwvS3QrVlFMUkRa?=
+ =?utf-8?B?N1l2SEtjdDdlWU1CL3VVYWJFSG5ydGJyTm82UFphRGNZSURiY0V2WlczSUpB?=
+ =?utf-8?B?T1kydVVtaUhYWmd2aHFLYzVybFg3Z295dWFENE9hQjd2T0tKdE42bEVudHpG?=
+ =?utf-8?B?bmUxOXA5ZnI5RHFyTmlDQS9IV3VyNW9tWm4zVGNaZUNIRUFJSGNJTVFORjZ2?=
+ =?utf-8?B?Q3g3UGlmbi93Ri9MMTh1cmlRYnhhTzAxdFREWGdKYXlpSzMrQkoyVXRwcWlO?=
+ =?utf-8?B?UXFxRDhLYVA5Y0wrR05td0hzeEh0dDUxZkRjNWFvSmxZL3oyM0JrZ29ZMXI2?=
+ =?utf-8?B?RHhISGc4RnlrS1JTSjNucEV5RWdGSUh4ZEt0TzF2VzZBRkhCMEJRNnU3U2U4?=
+ =?utf-8?B?VlJDM0RidFlUYXNWd2ZJMFF0NldRZVZoZnFrMVhnc1l0NWZGazBzMVBBVC9w?=
+ =?utf-8?B?aDU1OENVNTdQemNRWGJvYUZZakh1OGJMOGY3SkpvbE1CZGpWU2o4TjVPOURU?=
+ =?utf-8?B?bENyN0kxcnhid1VwRmtzek9tbERrZG9SNWtzcG9WSG9hL0N2T1ltb1V1bkdz?=
+ =?utf-8?B?T0VaNC9vMER2cGdwblFib3pobGpDSFJaTFdIeVZDZkJxeE1KZlo3N3JYSFhJ?=
+ =?utf-8?B?UXlWSUhpNTV0RWF2N0RJN0ZOK0ExM3REcTFnU09aeFd2VHl2Y2d2aGIrZFEw?=
+ =?utf-8?B?NGFrUy94aUl4NXBMTlp3VCs3RGJmR1piS1pSN0JKdk12djZIRTBiVlZJM1gv?=
+ =?utf-8?B?YlFwNW5lUk1xZVpmaG9ndUwwTUZQWStMSGhUSDcwU0tTN3Zlc0NtQVc5R3Bh?=
+ =?utf-8?B?UnN4dGx6NDd0RVVsRjhRSVpLaTdKK3U3SDhHL2F3TStaZ041Y0c5K21tYUE4?=
+ =?utf-8?B?bDRnTkloQVRRRFczN09qbnlqdVZKQTdhdVpWRmFDZ1BtUDlLbEREbTdPUEs2?=
+ =?utf-8?B?QW5UOHhTTHF3MGxvRVNiSStLVlpBa0hjYU02b2RoQ1h5UnFjSWpXSlVscEd6?=
+ =?utf-8?B?Z0wxNEcvVEtvczRVb25ZZ1E2RWZVenQraEN4c2xyb3RVQmlRd0oyanJzSldD?=
+ =?utf-8?B?L0NwUUFXVDB2azJtSkpvQ2lXODhBUW1NZlU2bU5qaWhvNWg0dFFvVjhjNk9r?=
+ =?utf-8?B?V2R5TUdNcTRjcFdod1JPdTg2RG53WTF2VXhxcUFvUUVjV2tyY2d6RG0vOXFr?=
+ =?utf-8?B?TEVWWTJSWWs5TUFYZnluR0dBWmZOTXV4YlVYTmNyWGlzR1BMSExuY3JkU0JF?=
+ =?utf-8?B?dUVuclRWQjhCcjRTME5PV2V4NFpLaEVReVRVbE5wN1hvM04vbmNZa21ZRWtP?=
+ =?utf-8?B?dVEwWWcxeERUS25PS0dHMkpsRnV4cnhZTnhIdUhwem1HMDRuUkNMdHlMZ2g3?=
+ =?utf-8?B?cEFRVDRrTDIyTG43OXNuaUxMeExmc1pZWGVFaXV0VHFhcGRkOWEvUnZvQkZK?=
+ =?utf-8?Q?3ip5KKB78DI/2hTE9jcRgG1XPAgdIy2C?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dnBpQW11a1crajU5Q0t6NlJ3eEM2K1J5WS9TbFNmaUovdVo2U2t0YzVCSDk2?=
+ =?utf-8?B?ZkM0bnNGaWpDZFNzeWNnb2RTUWtwN1ArekJBY3JiSFJINnE1K2pKZUxYM3RH?=
+ =?utf-8?B?Um14QlA3dXovclZLZTdkMVNwV3I3MGRxTldwbW5kQlFtOVk1MkwvQ1RSR0FW?=
+ =?utf-8?B?Uk5aR0hLdDlEcjZ1enVUM1JqQndldGhEeERQakYzQ0xrMkREcXdxMS9YRXRR?=
+ =?utf-8?B?M1Y4TVB6VklIelJyUlJzN09tTVRSSVFrRjg3QnArSDU5NVZERTYveklFT1NK?=
+ =?utf-8?B?RTJDcHV1aEluL2gwTUVIeXRGU04xSnNwanVzTFhDSXZrckVPMjZUL25Uam9l?=
+ =?utf-8?B?S2tpVTlHRkdQd21TZFJrSlRNY3pqYithZzRqOXNYb01wTW91R0FIcFNuYVBz?=
+ =?utf-8?B?UHl4Vkhib05TdWh5dU5ZakRwMXRCSmdndVpqMlpocDgyNVlaZTdYMDJxVzZV?=
+ =?utf-8?B?Tmk5LzNOQVlLY3lKL3huNk0xR1VrQWVMbnJUQjdNanBkVEc0T2JvSVNnbFoy?=
+ =?utf-8?B?WjJmUTdzMzhqRm9qRU1TSkpBRzNYQkErd0JwMFNyL24vdTZNc2FZRURaaW9s?=
+ =?utf-8?B?ZWIyeEhtWEpUVUw2Ty9VUEt6YjJHM0RQanh2RUNRVmtKK2pJdVJvQmlRNjJi?=
+ =?utf-8?B?eHBRUGtKY21RVndMNzRDUTh4NitXMU4zVE5wSEdGOGZiYlZiWjByNzRyQ1Ft?=
+ =?utf-8?B?SWllcHFhNTdXRGJWVUhqdnozTHhLUmZadlFXYVhVSDZqZm1aQ2tQZERISUNr?=
+ =?utf-8?B?MGtJY0dNNGlITHJOcUNtRkR6aGZBdURiRzlUV1FyMk1Td2dMMUlVcDBleTNm?=
+ =?utf-8?B?ZnZ3dnMxcEJMa2IyL3p1ZWNKY2pFL1BJZXlHbk9sWEdma0NvbmExYTlhYWFl?=
+ =?utf-8?B?a3Z0YmV5enZ5dDB1S2tKa2xoNC9BYlVPdDBsMThhNUVMY2Y2SmpuRWM0MUQy?=
+ =?utf-8?B?bDQvVGV6VGtpZ1g1WGFheG9pd2s2Tk1jSUJ2dVlCTjlxWHFITDgzSDRXWkUw?=
+ =?utf-8?B?REFJMnZNMkxZaXFBYitWN2VubzM2bThIc1JKZU1vaFFhKzYvdHFZenAwQTUv?=
+ =?utf-8?B?RWZ5eEJEa1dldXRPZXc5RjRKU2dFeDRjNGdLVjBaTmhONzhZQm9BMVhUQXlr?=
+ =?utf-8?B?UmdxR1lTUlhGa1hBMlh2aGs5NGNEbjFPdkVDbmRjWkFtVjdVaHY1QmJncUEw?=
+ =?utf-8?B?aGR5KzBucEhlQUp6cm1TUmhiSXdTTEY4dW9XWkJqMlUrQnRLSkkyUndmRHVX?=
+ =?utf-8?B?S3B1WEsvRHhMaTRUTXRYWWVtd2JpblE1M0FtbkJvcytWTG94d0FNREpNQ0x2?=
+ =?utf-8?B?b3hOaTZvZWxhSlFQcnhQUWFvK3dsc2xwTXhOZ1Bxem5TSEQrN2RUUHpNeUJL?=
+ =?utf-8?B?ajcyNC95NDJNemNDRUp5aG5LSGVscWVPNWtNWEVzNUxNWU95eDlGQTJRcnJ3?=
+ =?utf-8?B?L2Q3cFcyT0RFSmNDUjdySG1kRWV6bTBXMG1BbkVnbU5EUGlKMVRmZVp3OXNM?=
+ =?utf-8?B?OHROTHg3TlZXcE80U1dQbyt5OUQxNkRxdkpORHNJZW81TVZKTnBTZWZCKzds?=
+ =?utf-8?B?cXU3SmxTVmlXdGpCaWVQY0Zka0RMSjF0WlBQVXVweUtoNXFwSTNDTTVxYUNG?=
+ =?utf-8?B?OXloWTVhMFVPLzc4Vi8xbjJaTXRrYktPeTNCTUpaVjhOQVIzRkRrcDNpQnNu?=
+ =?utf-8?B?U1FYY1kvcUxSQUJtbWJibEFaSzc0am12Ty9MTWk4R0ZUSFlYZ2pKMlRvRjRT?=
+ =?utf-8?B?NjFtakVUSEsyZTlxUitUdWttVVc2eHJrSTNyeDcrSm5JcFRLWFZybUVXOFVI?=
+ =?utf-8?B?bnBmVDhlZWVDQk5KbTI4RXI3c0hQbXNtbzVIdTN3QWYwRmxzSkl4QVJrc1Zr?=
+ =?utf-8?B?SGYyNG0yalNTdlRNSndiUC96Uk03eUh5Q29TL2ErZXJCdTdCZElmMFp5ZEhK?=
+ =?utf-8?B?RFJmdDhSUUVyQnBqQ3VsVlA0aVRhZlpraktPb3F3MG12WjdFRG1oVlVxc0E5?=
+ =?utf-8?B?b0d3WGNETkRFa1dRcjd0OWtGb0R0Q3VsQzJveXFvb3B0aERaKzNPbS90TEd3?=
+ =?utf-8?B?WGlvUXI2akNvTlAzWTBIOHNBeEY5NmhZbFlkTmhqM21qcExDdnJNR0ROdENi?=
+ =?utf-8?Q?l7/8MU/b8GGnZn0bBeXm+LIVZ?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	o74spH8dgKJJumQKSmh2faBlH69WfgN1Pu3eJySNf3HWW1TtyAeyq7nrsg1Ad8bHTj4/VlbYpHsOhQprOlVqJPX2vuvLkq3S/UPlM14oTciOAZqEnN4En7EZ5hfOSbSI5wSF2wJpTJNrKTRFSukX0pwPEuxMe/a5w/Jh99YWRHNHAhHNtWTmFW7FnBodio9Zwyqw5mKf1vH5d4TjM4G/kJZaQsjdxl/axNfYODWH+vWWt+E6hSxmioSDkiedhjar+94jqcfNFq1cI8CSNKXRLnh0nf3MsTJuBPmAHJszdGwgTB8dAR5DLAvcdGMfUxyz8E2k974Rj1ezYSmKBkCi8WhgbncZYZtgKshzg/khlREzhcRDSJQ69TseEppfG0jx4k37T4FsZK7bRgXiVOIY1Hc2cnDBwwhTPfCOXPFUEbq2CMgVRxKmHwtrpW8rAE7xUq1IczSbU8DFCWwZMKg49f9Tq0OZp79Dm0EI+kGi9ALddKAKfclxZUSJ4NN+1/rM5EmaW/50lyor2wJTLFhIf2qgiKIilcAeBR71CansUQWq/vF18M1MaoFdzGnz1X4MxLz6WewNkebvm7OAZx7SVATf9QQUHP32iiaWbdgXs9k=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0fa63364-ffde-4022-2c8a-08de16c21a1e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Oct 2025 08:06:45.2925
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hnemt8Hw05iEUWgqUrMykSEl+Up9M9ZQO7fL3dFI/nB7TKhVv3mivNKQepvygA4aWLN3sQsACClFM61aitazIA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6309
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.80.40
+ definitions=2025-10-29_03,2025-10-22_01,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2510290058
+X-Proofpoint-GUID: yGiMhOYzXwRsmI0OOJhPHaeS6JMozDFl
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2MiBTYWx0ZWRfX3K4V/JPMVowS
+ eDE5rKGMi02ez8jp+PwXgerCRDMMj0WL6tXAfMjCDvZKUYEmCDNOwu1z7UCDLc4y4RYZTnztHEV
+ lun98bleVdkLewjhSR4qjhGv30EJntiNUWKOcNt2TKP1OI84z9kWMcG8CKDpKNgD8KMA7qwyIrD
+ Hw1b9Pq5U0RYcX7oJrOfbm8YCxFNWGj5gUhRk92bJYs8wtrEVXX0Jg+LdrZwZY8A3aw/7QnCLJJ
+ q8hHmSXnJXoeNGquhOyKyyOClLO5lJneUEnx3rJ2DmNvooqu1jVf94BL6D8FxsYAuDuNMkRISS2
+ oKvOJixnBQ6+K31PJsA8UqiEazQYvuoUk7CaVbsw1N8ggYulbBLyojxhZgIur1t46YjOzNrySqo
+ J8fnF1rbIEVOK2RAKGQDzvzGFYcsgw==
+X-Authority-Analysis: v=2.4 cv=Uslu9uwB c=1 sm=1 tr=0 ts=6901cb19 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=yPCof4ZbAAAA:8 a=pGLkceISAAAA:8 a=xE4oD7gpLml0SneWzaoA:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: yGiMhOYzXwRsmI0OOJhPHaeS6JMozDFl
+X-Stat-Signature: 96ntt6a9ubqwfa8ntdnorwdi63a4cs4t
+X-Rspamd-Queue-Id: 837CC4000F
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761725132-805106
-X-HE-Meta: U2FsdGVkX18Qv2/k1ajVjHtIlayAELqZyXf2K3fQeWrr2QL1Xt0qlfsY6A5zGJFCVMbAezN7jQIEsQg8CvVJHWgGsc7DIcMmJ7BES3TsTvGb9Ni+gao9Oz1urRVxhckPz78m39dB9xuTuf99pqJArv9hV4wkCslx4uWSOudVdu1pcCKqnfXfsMTvH6jyZJWg/3ekBqt+Ssr5YpN2X2lR+stasOZxtr1sQ/vkcgA1YI/Y4ryD9DCg9m4tQDgr2DbWw+xyxB+XbgYUhbXu1v6hOjPYdqpH4Q0ZuwyejNFKBHv2ocTHadxwnz9ZiD/pOXpdlh7vNcPy04oCugBx5b2iaSXpzoJcChnk/i52z3LPO6V9Xb/l5tcA1CarLOeiXXrZ1yTFfO+C/Hxwdi3cVJbSHeHMfRYYjgQNrGmhsvlrFVmZS/p2DiuYitVE5rlNVLEz10HbdK5Ng8FP3b1XOb7m+vxvAY5TBnL1Cntm+IYWEankWlgJcdvpoy++DQGJoVW+DJh+5uhz+WF7Cftqm87dgSxyiSl/YKcCqkE/6Qxv7Untoc0fa5OhMBO7wEhKr+17UmbWHxt5zQFRpYl+r1LH7/UPdSQBJx4lGfqXycFKg34wiMq084UjnRH1Jn5qCDb0jsi5LpcbbUw+S19WmhkxlC5Qo55SCmNuRRXhD4ww8aGYOFL87FpgbfdiF7FrMEFG0ChIF+VLQcC9e/k/IUZJGYh5kETfHr8XdH7ed+5PBRHgwNxp6MUsHRMOjm0DrO6QF7zPh3Z+HnUAWrJJFIkwpZRoa1/Y6S55y2hxIOkX0h8LYFQR0Y9w6akRp1RY+oYQ76t1J5e5nRKfkJxN7HFctLHXyiKDw/jqSiE/AN8ud53+28fHLDL6UykvZGPsOIJf158ZhhiAJ59BCeXDBY3D/5lsmXcjQ5fu4gjw0pYZb8UxKbp1Nejn8mj3AAXgyR1sYoIwDpjS7nXqWRva25b
- sfLpdoEB
- Eeaeon5lZgv+UDAIMNfMEpnUXPe/LyNTVhnnQEJIy7k1mttMErjlguNNPqjmexyqUPuwj4bIFrTjexLjraE7busDjK5X2z0nVmbSvS3XQPzq7rl9ZNxjMaavemslhH/ZTLXEQRf/h3cbNbUku/sZvQNB+9pgO5lGXbn55/CoxK+Rxe2vt3edWw0PKNNmZgag+zYk5
+X-HE-Tag: 1761725218-437182
+X-HE-Meta: U2FsdGVkX1/7q+H0hP+tsulCrh6tKYZ5w0s37NwhtTNHqBWQJjppwgIu1BJa5aV5ZRrU/FR4E2FZtHTVq7SUD3unbHttSutC1HrDz3027HPN1LQGTWwQfzkUqKX8+9tbcxIC/UQ6BavgqTrJgntVC15J9od7l5Cays0pSw0tMNMO2vSusNxmrH5r2c05jXT/gRmUekQwNMEZG9ExIssdnI41rVbNMQbTkhlUXEmyoMmkReGSImLSMA2E0DmYqf5xR+LWlE4KjZk/9lX9tI4ZCBTK9ppr9w5D5Jj27bxF2iPK4pyabGeyLVMk4baTVZiD9/QcC9MRGLoXyPUHd3xBtcHu73gEJY5olbTjbnqqT92pFWVIqthPwR9WHyjjzw4ioakTY+8rKzJxDUsnZU50GgzQW2C+7Ir4Ru+SYbO2Kln1ZcS6tG0aCYu2ivFWntO+Jh4mlmCPELDDCtQDeK/iVhOnj+/vbilC9SEr/f0XWM5tu46BSx1D3VYQYVssOecyF2Rxt7aeiStk9+Nrmp4sol9oT8jFF/IObmqpocCqUXXcT/JqKQPfGu7NYF0O4VrYtPLiw9GJIomsxNRdcxLTUgrrLtWkCxeZKYzlxABGSDO/PCEydJ4oJIo3odkiXbdpeQh558d0sDzpLxi9AScO9fvtWHtT1GNfkhXWMIo8TRKS90R1lI9OTISvx56Vy6+Q6L/UaK8F3KG+1J5vM+lIElp7O92CDhV4xabo5VlnlXCTYalaF9kak6dOHqb0571J9f96bZ2KJX/jrWCScYi3HMyjmyHvXqOgCNKPO0B7r1IFimI34F7DohAtlSANxlzTaBQ5EV1oIv9mfWHwH3YreYOqUb6ky/y8PToSt0E50mDzBaXWkQuoU0vZXDjdahIQydrA7ZkFNlZeqvORwBw9Vbwc9E/S4q8eAPzsQur8QrLEE2w1g62xw7UTCVDNlqsb8c7I9C5CLsxZePvn69I
+ gQaxDu8a
+ cEJiPqp8g04wXSZqG0VnPspK0oxexhVn7CCZtNcBHJ9wkWpJTzlY48J+Oa+P3P6cliRcMwL1DNKyvOLOvrDP50/4LNMl7o++4Vjkfgpu+Y2Fs4G+RZHTVYq71DIw6W8GqhRcFwNb2x5z5WXqPQgDbQ9DdX7cEAcLuamkKUX6yYNyUdmtWObRr4FmSQPGdxd6AwqSmtxO5ldfhA6rqoFJqaSWphH1fZhHlqPAuIHw8Nf4Ic3t6VlRjt6tsoZEVMAfMslcbrVvcouLwcXexdgTydPmKnRKdyip6Ae2XNHafMUvvJpvb0E4ZDB9FMQi9paSbeH0ek8VglpoaNg4QMup4XriaECbuW3QGMcGL2M4DPu2YWLO1r3MeDOg7iWyqN2tYlLo3nH0ZIzjjBJoJnfSPNy2UkJAdOlsFbTA33oDQ2+XT4N0SGWt9UN9rOv7zWnD786s+xlSZeBWxRva/G9qWEU41zWd2G/fW3k1qXDU+WfZcPDxwf/TcPGgAFo5s4g1Rb3cbHjR2Ertt6gob8Lf8xPMbUbWTfth94yOgkZ/M4+f4ZT9igJDEcnIvVwlDlh89yglMxz7Rb67D6zoRUMww+bWTW6h64beofh7gUqZi4GthY+pJYbaQi+7aw0W+xCb3KjdrA7PMVkMkO/zGOQwseAljF/pRvawWaaAYS2zgxdibVv7krk8svRDPcDFl3IWNmBZRbznFPCSVtqea/SpWsKtDiu8YZQIm50izNqODTo0Vw+wSiyjvSq8D2kyUHwM73im8h4WwAasV8AJA1o6Cj8afIku15BdDXRccvmmb/jPGI97yaKREhmGrjll3kGkQD+rnXpoNaNzaXp272tW1QG6me6Wx35zDCmtS
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,161 +259,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Michal,
-
-On 10/29/25 3:53 PM, Michal Hocko wrote:
-> On Tue 28-10-25 21:58:13, Qi Zheng wrote:
->> From: Qi Zheng <zhengqi.arch@bytedance.com>
->>
->> Hi all,
->>
->> This series aims to eliminate the problem of dying memory cgroup. It completes
->> the adaptation to the MGLRU scenarios based on the Muchun Song's patchset[1].
+On Tue, Oct 28, 2025 at 04:03:22PM -0700, Suren Baghdasaryan wrote:
+> On Mon, Oct 27, 2025 at 5:29 AM Harry Yoo <harry.yoo@oracle.com> wrote:
+> >
+> > In the near future, slabobj_ext may reside outside the allocated slab
+> > object range within a slab, which could be reported as an out-of-bounds
+> > access by KASAN. To prevent false positives, explicitly disable KASAN
+> > and KMSAN checks when accessing slabobj_ext.
 > 
-> I high level summary and main design decisions should be describe in the
-> cover letter.
+> Hmm. This is fragile IMO. Every time someone accesses slabobj_ext they
+> should remember to call
+> metadata_access_enable/metadata_access_disable.
 
-Got it. Will add it in the next version.
+Good point!
 
-I've pasted the contents of Muchun Song's cover letter below:
+> Have you considered replacing slab_obj_ext() function with
+> get_slab_obj_ext()/put_slab_obj_ext()? get_slab_obj_ext() can call
+> metadata_access_enable() and return slabobj_ext as it does today.
+> put_slab_obj_ext() will simple call metadata_access_disable(). WDYT?
 
-```
-## Introduction
+I did think about it, and I thought introducing get and put helpers
+may be misunderstood as doing some kind of reference counting...
 
-This patchset is intended to transfer the LRU pages to the object cgroup
-without holding a reference to the original memory cgroup in order to
-address the issue of the dying memory cgroup. A consensus has already been
-reached regarding this approach recently [1].
+but yeah probably I'm being too paranoid and
+I'll try this and document that
 
-## Background
+1) the user needs to use get and put pair to access slabobj_ext
+   metadata, and
 
-The issue of a dying memory cgroup refers to a situation where a memory
-cgroup is no longer being used by users, but memory (the metadata
-associated with memory cgroups) remains allocated to it. This situation
-may potentially result in memory leaks or inefficiencies in memory
-reclamation and has persisted as an issue for several years. Any memory
-allocation that endures longer than the lifespan (from the users'
-perspective) of a memory cgroup can lead to the issue of dying memory
-cgroup. We have exerted greater efforts to tackle this problem by
-introducing the infrastructure of object cgroup [2].
+2) calling get and put pair multiple times has no effect.
 
-Presently, numerous types of objects (slab objects, non-slab kernel
-allocations, per-CPU objects) are charged to the object cgroup without
-holding a reference to the original memory cgroup. The final allocations
-for LRU pages (anonymous pages and file pages) are charged at allocation
-time and continues to hold a reference to the original memory cgroup
-until reclaimed.
+> > While an alternative approach could be to unpoison slabobj_ext,
+> > out-of-bounds accesses outside the slab allocator are generally more
+> > common.
+> >
+> > Move metadata_access_enable()/disable() helpers to mm/slab.h so that
+> > it can be used outside mm/slub.c. Wrap accesses to slabobj_ext metadata
+> > in memcg and alloc_tag code with these helpers.
+> >
+> > Call kasan_reset_tag() in slab_obj_ext() before returning the address to
+> > prevent SW or HW tag-based KASAN from reporting false positives.
+> >
+> > Suggested-by: Andrey Konovalov <andreyknvl@gmail.com>
+> > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > ---
 
-File pages are more complex than anonymous pages as they can be shared
-among different memory cgroups and may persist beyond the lifespan of
-the memory cgroup. The long-term pinning of file pages to memory cgroups
-is a widespread issue that causes recurring problems in practical
-scenarios [3]. File pages remain unreclaimed for extended periods.
-Additionally, they are accessed by successive instances (second, third,
-fourth, etc.) of the same job, which is restarted into a new cgroup each
-time. As a result, unreclaimable dying memory cgroups accumulate,
-leading to memory wastage and significantly reducing the efficiency
-of page reclamation.
-
-## Fundamentals
-
-A folio will no longer pin its corresponding memory cgroup. It is necessary
-to ensure that the memory cgroup or the lruvec associated with the memory
-cgroup is not released when a user obtains a pointer to the memory cgroup
-or lruvec returned by folio_memcg() or folio_lruvec(). Users are required
-to hold the RCU read lock or acquire a reference to the memory cgroup
-associated with the folio to prevent its release if they are not concerned
-about the binding stability between the folio and its corresponding memory
-cgroup. However, some users of folio_lruvec() (i.e., the lruvec lock)
-desire a stable binding between the folio and its corresponding memory
-cgroup. An approach is needed to ensure the stability of the binding while
-the lruvec lock is held, and to detect the situation of holding the
-incorrect lruvec lock when there is a race condition during memory cgroup
-reparenting. The following four steps are taken to achieve these goals.
-
-1. The first step  to be taken is to identify all users of both functions
-    (folio_memcg() and folio_lruvec()) who are not concerned about binding
-    stability and implement appropriate measures (such as holding a RCU read
-    lock or temporarily obtaining a reference to the memory cgroup for a
-    brief period) to prevent the release of the memory cgroup.
-
-2. Secondly, the following refactoring of folio_lruvec_lock() demonstrates
-    how to ensure the binding stability from the user's perspective of
-    folio_lruvec().
-
-    struct lruvec *folio_lruvec_lock(struct folio *folio)
-    {
-            struct lruvec *lruvec;
-
-            rcu_read_lock();
-    retry:
-            lruvec = folio_lruvec(folio);
-            spin_lock(&lruvec->lru_lock);
-            if (unlikely(lruvec_memcg(lruvec) != folio_memcg(folio))) {
-                    spin_unlock(&lruvec->lru_lock);
-                    goto retry;
-            }
-
-            return lruvec;
-    }
-
-    From the perspective of memory cgroup removal, the entire reparenting
-    process (altering the binding relationship between folio and its memory
-    cgroup and moving the LRU lists to its parental memory cgroup) should be
-    carried out under both the lruvec lock of the memory cgroup being 
-removed
-    and the lruvec lock of its parent.
-
-3. Thirdly, another lock that requires the same approach is the split-queue
-    lock of THP.
-
-4. Finally, transfer the LRU pages to the object cgroup without holding a
-    reference to the original memory cgroup.
-```
-
-And the details of the adaptation are below:
-
-```
-Similar to traditional LRU folios, in order to solve the dying memcg
-problem, we also need to reparenting MGLRU folios to the parent memcg when
-memcg offline.
-
-However, there are the following challenges:
-
-1. Each lruvec has between MIN_NR_GENS and MAX_NR_GENS generations, the
-    number of generations of the parent and child memcg may be different,
-    so we cannot simply transfer MGLRU folios in the child memcg to the
-    parent memcg as we did for traditional LRU folios.
-2. The generation information is stored in folio->flags, but we cannot
-    traverse these folios while holding the lru lock, otherwise it may
-    cause softlockup.
-3. In walk_update_folio(), the gen of folio and corresponding lru size
-    may be updated, but the folio is not immediately moved to the
-    corresponding lru list. Therefore, there may be folios of different
-    generations on an LRU list.
-4. In lru_gen_del_folio(), the generation to which the folio belongs is
-    found based on the generation information in folio->flags, and the
-    corresponding LRU size will be updated. Therefore, we need to update
-    the lru size correctly during reparenting, otherwise the lru size may
-    be updated incorrectly in lru_gen_del_folio().
-
-Finally, this patch chose a compromise method, which is to splice the lru
-list in the child memcg to the lru list of the same generation in the
-parent memcg during reparenting. And in order to ensure that the parent
-memcg has the same generation, we need to increase the generations in the
-parent memcg to the MAX_NR_GENS before reparenting.
-
-Of course, the same generation has different meanings in the parent and
-child memcg, this will cause confusion in the hot and cold information of
-folios. But other than that, this method is simple enough, the lru size
-is correct, and there is no need to consider some concurrency issues (such
-as lru_gen_del_folio()).
-```
-
-Thanks,
-Qi
-
-> 
-> Thanks!
-
+-- 
+Cheers,
+Harry / Hyeonggon
 
