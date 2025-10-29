@@ -4,101 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21052CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:59:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA58CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:59:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 677648E009A; Wed, 29 Oct 2025 11:59:34 -0400 (EDT)
+	id 0F9478E009B; Wed, 29 Oct 2025 11:59:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5DA3C8E0045; Wed, 29 Oct 2025 11:59:34 -0400 (EDT)
+	id 082A78E0045; Wed, 29 Oct 2025 11:59:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C8A18E009A; Wed, 29 Oct 2025 11:59:34 -0400 (EDT)
+	id EDAD58E009B; Wed, 29 Oct 2025 11:59:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 3C9228E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:59:34 -0400 (EDT)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 0932314081D
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:59:34 +0000 (UTC)
-X-FDA: 84051611868.03.05A3191
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 19C60140012
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:59:31 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IR0aKc3F;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761753572; a=rsa-sha256;
-	cv=none;
-	b=0peYBVtwxCNia74LBj7QCjzUcSPPNvro4gKT9mhpVXKAdSqfEjR1MlLcmi/A9R892N+Hsb
-	OgsHFtr2j6D7oLx6HNjcoB38/yM03bbexylYBH7ewTbALScObn/6oGCexHIR8ex3qKAhET
-	2YCUt7KJqIlSp8u98f1L8+qmyIbvuAs=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IR0aKc3F;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf09.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.214.174 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DC40C8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:59:38 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id B02E41A08E0
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:59:38 +0000 (UTC)
+X-FDA: 84051612036.02.4D559E2
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	by imf19.hostedemail.com (Postfix) with ESMTP id CAA051A0005
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:59:36 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gA3W098d;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761753572;
+	s=arc-20220608; t=1761753576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=//x7l/ZVG5GFT0i4YAgVrYYCeiDcBTswgh555TzkaWQ=;
-	b=aUrGifqlZLrpPCQyIdFw7+KmAeoITYLsjKMeZTlnD/0WZesP/KhFu9p9XEEdZ4c2vfeDFk
-	Bu5wv/dcRoXARniu/o3D7cQ3e3DbKjmwGCy/SfLQx9vqmPxczZwxS7o+XDluRFloy4wQSX
-	GSWPVJRiEVjUA5S+N6vwZx3PjoS7eWc=
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-290ac2ef203so71465135ad.1
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:59:31 -0700 (PDT)
+	bh=1touJCt8Ij13wXVlFKC93n8YCKM/wZXGXqqqq+QSOpw=;
+	b=cVItJY/6CwV57XJMGeConGmSxMS8JiTrzEhr5IMGxQMvoUg2xR7TGTbv4IfqM+w0fV+8Yt
+	qP+XPRrYh/cM0kxoEHQFp8pokVrtimKGYdyTIFj29T7n8HK6VMSrzIc8/FZ4orn/ll7EF6
+	9O5MaOeX0hlzH+KZwacUw8zhYW4dWrQ=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gA3W098d;
+	spf=pass (imf19.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.215.171 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761753576; a=rsa-sha256;
+	cv=none;
+	b=rAtIiFUEe1vNFwUGwwV2xkHrfcoQaWG8yXVcoNRMYlkSfdCTg4YA5DesEckbUpJP813B+Y
+	uWilulhNUjdNXkWabuYQNlAxN/qYjnpa0MzAc39P/ckl0w8JjeKqAKeslmwNqDiWFoEDsr
+	xtyPYUI8wYIu9mb+SFxjTb1zqcAkeUI=
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-b679450ecb6so5632141a12.2
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:59:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761753571; x=1762358371; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761753576; x=1762358376; darn=kvack.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=//x7l/ZVG5GFT0i4YAgVrYYCeiDcBTswgh555TzkaWQ=;
-        b=IR0aKc3Fllk4Lz7bKo3kfkRR7N7teI3U+e4pY0qZja2qOFRCQagaw8BwNCdLPF8NAC
-         yJL2o0KicYmfml2AIVaReKUuZ0VqeCp35MD2c1G9ikKjqDQP2GTcblfFXIVyByMbjhwm
-         IgXMzbil3nfAMG1tkSePflLiUV8uLVZMiA2NGzTsutWh0MapnUyxTul++vIznkfV6xIf
-         mTx9+VuA8khH+xhmkB8qnoRZTIpQItUBb3xQK5Rv3eUuFR3wqIx+UfTPc7bQ70mCJTyu
-         W6fQqR+VPpQY4MYmu+Z8M9olglNVGJQoQTOpEWD3fSDi+QmnC1TaKf4cJTYHsz4dGa1O
-         1rtA==
+        bh=1touJCt8Ij13wXVlFKC93n8YCKM/wZXGXqqqq+QSOpw=;
+        b=gA3W098d6D4e9uHtFrsb+tlDlJ0I3iOJZZcQ7R2YeN4SF022AdhUgaTYDMWwWFVwTU
+         /Rz/7Ze3auQeNCF0k8QXYMOFxKWCiZwJhAe37ZMigt544HmKXL1xtYbxvffUTQ0uFt5Q
+         nrNFtbk9oJiGuuBOIsMBLciyxJCUsFgDgADYVvLgyEAQyHCvFTChaTl1IorB3B6QxnDW
+         TbtALTNI8LC9OwByS9VPDHfAv862gfnHRn+yCV82rRCstLlqDkjM+wfmU1mxo8gh+vaP
+         HpUfx828Rz1YA3/ZFo5dVZ7hBcwbL4ukfKQYxmVqJ4mSdtQGQeoZWyeqXeMzCe+oj2XC
+         hrrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761753571; x=1762358371;
+        d=1e100.net; s=20230601; t=1761753576; x=1762358376;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=//x7l/ZVG5GFT0i4YAgVrYYCeiDcBTswgh555TzkaWQ=;
-        b=tm4/tVfEHReJmNtLo46eOKHU2R3v6ya/gfXlbPvhDlzbbAHyBgRDlUhFKrSb3nB/Nc
-         h3wpToHmpvV0+CoKXzuHeE8VKgott4vvSiR5drBkbKMtE2VmLwjlF/cb5ihS2D1DDH7n
-         T3/X9z2T2cLFpXgLkxGLU+1tG8wrFeTplTrwMjQ5J2NgVM9ts6HXq0yPpEaUsfZAphS/
-         zxfkXM+37yfKLP8FJFm2ZQf7kbQCtsduY6b7RQ5Jla1p5fjQ27Niiw7qSDfongtk43i5
-         DOXG7YMm078UT5GSY1t/bdqOLvvXuc2334kSeesGNX/FeG9OFu8uoQdx5AMsctviwEsH
-         9mvA==
-X-Gm-Message-State: AOJu0Yypu+pRdwpHp0xzSTXQEzbM5IgM7VE3h242TFWAZmJRZT8qMGPG
-	ttKeiFG3A8AduICkgO7oJ3ue5PFKQN94vberkQtwAs44MOVUKmYZmQKP
-X-Gm-Gg: ASbGncugw2OR35Up3pP7uOJdtfeUFz5HEiCQPFDZX6dknTpdbKD/SdXBrhqpt4NIDAf
-	UomDmudphJr5nqeCPrag6aNgHpxR8nz7/diDXsbeq4NUDQx9L1etNRGALw+X5Eedmh0j75hLgfB
-	ct+xwusZdAYl7A/BfxS4HnJd5AZBErN5xfHhup/qy2aip0esptw6UKchUWI+EXrrSOKBITXWQdf
-	sgnczGgBiDgcbkhiSB9voJgXdnCGsJAopouMd2Zedi9ElZrGpKRY33IZG3hAZhMt+7OYHLvKFho
-	1mbfWk0gDpglIz4GfHTqOIdFpafLYmVy7wc3zxqea2FElmWu2bKuY6vfo4eWgNuhHm2EZZB5LXL
-	olMnwTck6fnthgNum9jGDeWLJTNdaJJSmJKP7msBHa81gwtPeUhf7MkjEjqQLIeujDjcqGiVIlx
-	7zV3tCNXQPbjMmw9SAx4pC
-X-Google-Smtp-Source: AGHT+IEWtY10yvvY4Cp0RzOTU6HW9O3cstRaZVUbKF1PyT4VABvIddsgFxCghFW1F8bVuzsAePb2qg==
-X-Received: by 2002:a17:902:ec81:b0:268:1034:ac8b with SMTP id d9443c01a7336-294dee334b3mr41546155ad.26.1761753570876;
-        Wed, 29 Oct 2025 08:59:30 -0700 (PDT)
+        bh=1touJCt8Ij13wXVlFKC93n8YCKM/wZXGXqqqq+QSOpw=;
+        b=dqR9wrsLbu4ycr5wK7Gtj3kH8MTC4OdT1mWG7HmHMMWL12NZXFE+Kn/BoOikwDVHLD
+         rFSCACVG5gtkKkiygnltPw37Yp5oEkbzL3hekDm7Wv+kNJX57HGoEFZO9XOUSh2siM8s
+         GTnoe0r+tApptmwhbAMoFUoYoMwD6mc1+kdBIYRyF6ihGJvCvr1K7Lm88VPOJUCLeXT1
+         /5egXc2FzIaha2z5WI72Ev8Jm7vLhDK69tmQ/gA+9f9RsirUt1n/stDngjjzOEcAueMC
+         /R43Fl50sFhPn5xdi7MEtdd6hGnwBuQIkTKEDtiRGA0h959TeifbvoSDuugZgAqLSKqt
+         A0pg==
+X-Gm-Message-State: AOJu0YwtpBojQknPnnYPsx18gVn25f4EgrEpJuf07nVtTomTa1iQqY01
+	0AJ0nL+uqaMY9XinVQ2uF56I5CQmWXbGnLzuxvQW1LUF+i03D4v9CsSf
+X-Gm-Gg: ASbGncuNtQIDTCDJmrdznL7QI3yPITL9Ho8q8lBiqoq3tEr9+1fUKnFdeO0h+N8YCFa
+	Kto8S/eDu8sNcwCsMzmc4x+ErpVi+iyRqfjxJiObrHyAa6IV+rRuZKTZlIxmnHPL2qF8eAeZhPd
+	ddAg427QZoKKtiWPAiNgXdj43df+zb2H3iYAxACYAyhfoiVcE8GC1mUuwgNzsH95KZyhQLFtlkH
+	QEnG8YAppLIYl1rmKdwtMljrSw86ACMxrX2Fs+8el0aORSsmHkP68Pa/7JQXqPzx4iy75uaFg56
+	9PTXA0/cuYDlQvz3dhowYoEjxIPv/GE+rcbC/8e0KslSP/k6TDJ350e6EqSt6Rv8a6Q3R7+IelL
+	t8kHTJOLH4mTGZCyux09TvCRKfrzqiCsxHJCqC7Bbb4sjqZrm5MQ1gIIlZF6+Cmzg2AmwFy7ce1
+	D0uIWGcO09gatwugXT/xEi
+X-Google-Smtp-Source: AGHT+IFHuFprzRWbK9qS6JvIV2N1AbXu0GbLXktN8sr1Qqk543SOL3MlPU4u1zXhTQjIeIb0517XQQ==
+X-Received: by 2002:a17:902:ced2:b0:290:dc5d:c0d0 with SMTP id d9443c01a7336-294def36255mr40105735ad.49.1761753575586;
+        Wed, 29 Oct 2025 08:59:35 -0700 (PDT)
 Received: from [127.0.0.1] ([101.32.222.185])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7e95aasm16087366a91.8.2025.10.29.08.59.26
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-33fed7e95aasm16087366a91.8.2025.10.29.08.59.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Oct 2025 08:59:30 -0700 (PDT)
+        Wed, 29 Oct 2025 08:59:35 -0700 (PDT)
 From: Kairui Song <ryncsn@gmail.com>
-Date: Wed, 29 Oct 2025 23:58:33 +0800
-Subject: [PATCH 07/19] mm/shmem: never bypass the swap cache for
- SWP_SYNCHRONOUS_IO
+Date: Wed, 29 Oct 2025 23:58:34 +0800
+Subject: [PATCH 08/19] mm/shmem, swap: remove SWAP_MAP_SHMEM
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251029-swap-table-p2-v1-7-3d43f3b6ec32@tencent.com>
+Message-Id: <20251029-swap-table-p2-v1-8-3d43f3b6ec32@tencent.com>
 References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
 In-Reply-To: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
 To: linux-mm@kvack.org
@@ -114,14 +113,14 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>,
  "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
  linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
 X-Mailer: b4 0.14.3
-X-Stat-Signature: 4jgoun1gzuf8yth4ctko87c4ac4j7od1
-X-Rspamd-Queue-Id: 19C60140012
-X-Rspamd-Server: rspam06
+X-Stat-Signature: 7jgq8cgnfjgmixa164snshfq79iqqgj6
 X-Rspam-User: 
-X-HE-Tag: 1761753571-155675
-X-HE-Meta: U2FsdGVkX1+XOC+Om3v2j7eIFdZq6l2ag2Auwk9oCmr3F37WxLHmUwiC6bp9LuIfJJYNzKbKPvuWbnp/Y3gVPsePZGnRfQ5mDk0lpL/JM6Pv+ygQofyizhm6TuDU12PHu2rMkMdUW/eQ4MP7nbomtQpgPuDH8XONs0hT0RnhFiFSMupcbfAOCzc/gezM9OemlpXEzskwIzRyjb+J3wnhMwCufNflUIRtwjzWr0EWDgZbZKzQrwKI+2JaGAax/QLRuxQgzDLI6WLDu1pP0P4WTfufg5P8zdlvvyJ8i26zwrLJRqXHgSpIGd9vsFGoBqSj/Z2GdzJ96M5H1Wqc56akVFa8HXgYe544ltDj3wtfY0V6psB+4wpQ9fnbedQhuWl07ZK5Hf2TIdvU3L3kEPTK2WAGnnqb5k3hY6iBn1sYj2dRYFMr0VdEAmp0rbN9mYt/TEos3Ag5YHUO/W7PuOyh49u42aZb3RnB4KYp4aXl13G4uztbYnsgDGn7xu2YoJLYiFBP0BbvA5KclnE1Dak1G8LTZ4q1KJa2BYauKFv9ifOrgoxMRUh597SLYeXpb9RETAt9ZXMhQiJp00liY9m22Z1cLdTJkqMCyWKdv6NJTdy9l4iWatdmPqqjXch0/E05I9ZdYRDEKQFns0G8TwdO/1+GZ24T201lT/tJ6pOe8jslgqIVQAULhhLFCQHgE5QNFxI0JMlh010b8bZSeWLcloHGu7RdoXjVyFXzwiR2QR8l+mNfdJ8UoQPf9yflwQidKutHhuDI58BRC0GXyxQg6qB0YX7GMELYxLGwXXeYL9P86S1mNlJp0D80QBckfFZS3/+/hcGlhfsM3lTVEVs34ZSwjG3XiD8grrPuJl3OnHVePyBuCLDfDDs4veeczNi+hVxUY22MCRCbOGzBzxp+TqYUHUwoRCiyt5uIK9klFpCHaYXd6qYzQR9QGWeFW1bQiXfyetjmF+o64wOJ0GZ
- wY9siOmS
- 3uoJTeWPDGT0OR58n6fM3TXxtB/Yh2MLReDy9dQOWQrwJX2Cbz2X08joH23ZpiBJfsQ7lwF+meo680bbK8Yq2JJ0rpVt8kUZRiuOV/89R2hqfuv3QF14eD8UiRW7gXNeSBFDPpzllXZ9CHaxzj4FPSCSOLBbG3mVmNRhlqfZ4YWXlW2YBTDUEbZNPselWaJHHoJlpvrhEtNHnSPBbzhSnkGvUdLs4iIyqzv/+F2okEInaJnlt/WHn/gYHSekTzD/VWbrzVzM8qm1D2jO72HMlnYo4mgqBPEp4PhQyv59ayaLzT0UVDq6nggQLhtSPXcImkRcnFSE+v+j7oJmQgIQpDRXMeaCcceY9dg+U9NjcrS5kMrBWCSOmb0vdsynH26bVSIv6ETltxQRTc7o4Ym4NLk7sJMFpjjr93HDHqGaTUveusab9ffZoaLey+CgXSgWNjWEC
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: CAA051A0005
+X-HE-Tag: 1761753576-837208
+X-HE-Meta: U2FsdGVkX1+EqwiA2InVYkKc74bHfawdPRvigFa7JY+paPAlwY5dfJ0Aumhbw28JuYuV31sP4rfOrNMosdYrn0L3PUQRJ0ywOX2cAaNOl47//85ikF/qVhE7Kc2rs1dZd9R80sIW1+fNWJyt3UDtW+lJ7h4xfckiHZ820jh1hdR43zIiE6nCerJ0Glvkx1HdLkw+0hXcHKmK/4YF6tNMVgYdfr/cqHe01b89vfuayQ6xgYVTQSlVODlECK/J11edC9VzCL6V46tGsg6DWGrsPj5jdWi4tS+yiJyfJRob6uaBFSNF0sAI6yIEmRnKD9mPHJaoekkI0k5PYj6d8Pa0wccfH9LQcFo9aBdnjdhvE4uTC37fdv95qWb4mVVIqbTkyfOVp2Z9cAlT7jjBKmCuueCYP2hr32mpoFcie4e+o+dkJSeuTbrXclljftpKJi0xUwZMUbiGA/JFFO8JeaAKz/PjgX+H8iGoHOEo6SAthIKBkDaNOf/NhOHbOrqtJY3XWalbQN2zcK/6DvqSdWK9m+qwBSJHCQ8hyKsMxvsJJXNvQ+T6TK6bWAgPs56cCgOygeGz1+QHLrxb/3ImXmZZo2z1b9zKn3zOyBuyIzBjOTcFZBX4/e9hpxg9XXINISSfTq3ymn8AlJmcwAtA7PU20GUuk0x6BLn2p07JSjr5pMJowAlK6sXbV1s0cBdhEiW/zvelXio6Vs+Hk/y/8OZNy0965cEBAGOg8UhHubvCTDx08r29U05dsGfnjrYLY+zZ9leFXxGa6QcocuRj+dYP269tbMtZr4hjBMV5/PUQlwdPskJJvz2ATTcJuMG9ryHxi526BRFVTuAddstmSHGpyecP2wdB4KAH43HpH+lHS8ecL5jsJSo8mKiELF/z3jOhgOILLP55uRZ75JFZ7MfjfBZFw7+eTqdlyCc7McVTeu/C4MgKqaLSj0hm/KJi6D3sbQbcdqQ4R9XXCoqADKI
+ lub8fB9J
+ GfDal107w98wzNYf7eKwKR0yxWI2qYMfT4Lnb2YXJpdschi2C8vomL17gTiLmO/2wAscWwS6C7PK/ThZmxYmTtAHhIp3zTm43TFAfHt3zSlTM6ip0XK6V9aHMBL5u3fE9IBX6KvK+URbFBbR0FKYVxtvzw6ovF/zkB0cnXTcwPSbsV13k931xvtEt3HxJ/sS0Rkj9K1t8wEM/vaZohbif7nRbFi6rvtAHm2dZBin+rIH7MCQbz1gKWo+ERCQ1hwdqtEkeLCtWnubgKkrN7OwkMCMBUPsVjDAwxaoOZQIBTgOo392PUx0a7Pfz7Ku6fcRqJhORkuYFXUtY11QZT8ltZMlSLh9A1rD4P0EnOYNhelGb7wWqMRTzkWvDvYthbiD9MsY00RV/+Pd6RZLUW5u3Re7eOrzza0V7V/JQm24lwQIYiA3GdO8bsSuiM4LdLXViyll0hpt0h8qalTAZTRm3NNKVUyl6HqeW4ihS6Lsw4VJi5EwzLalzrJmYRaZtgot78GcFsMrFkNvSzyvAA9Ykdo4M38uma1Zu2mbC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,242 +129,195 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Kairui Song <kasong@tencent.com>
+From: Nhat Pham <nphamcs@gmail.com>
 
-Now the overhead of the swap cache is trivial to none, bypassing the
-swap cache is no longer a valid optimization.
+The SWAP_MAP_SHMEM state was introduced in the commit aaa468653b4a
+("swap_info: note SWAP_MAP_SHMEM"), to quickly determine if a swap entry
+belongs to shmem during swapoff.
 
-We have removed the cache bypass swapin for anon memory, now do the same
-for shmem. Many helpers and functions can be dropped now.
+However, swapoff has since been rewritten in the commit b56a2d8af914
+("mm: rid swapoff of quadratic complexity"). Now having swap count ==
+SWAP_MAP_SHMEM value is basically the same as having swap count == 1,
+and swap_shmem_alloc() behaves analogously to swap_duplicate(). The only
+difference of note is that swap_shmem_alloc() does not check for
+-ENOMEM returned from __swap_duplicate(), but it is OK because shmem
+never re-duplicates any swap entry it owns. This will stil be safe if we
+use (batched) swap_duplicate() instead.
 
+This commit adds swap_duplicate_nr(), the batched variant of
+swap_duplicate(), and removes the SWAP_MAP_SHMEM state and the
+associated swap_shmem_alloc() helper to simplify the state machine (both
+mentally and in terms of actual code). We will also have an extra
+state/special value that can be repurposed (for swap entries that never
+gets re-duplicated).
+
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
 Signed-off-by: Kairui Song <kasong@tencent.com>
 ---
- mm/shmem.c    | 65 +++++++++++++++++------------------------------------------
- mm/swap.h     |  4 ----
- mm/swapfile.c | 35 +++++++++-----------------------
- 3 files changed, 27 insertions(+), 77 deletions(-)
+ include/linux/swap.h | 15 +++++++--------
+ mm/shmem.c           |  2 +-
+ mm/swapfile.c        | 42 +++++++++++++++++-------------------------
+ 3 files changed, 25 insertions(+), 34 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index 6580f3cd24bb..759981435953 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -2012,10 +2012,9 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
- 		swp_entry_t entry, int order, gfp_t gfp)
- {
- 	struct shmem_inode_info *info = SHMEM_I(inode);
-+	struct folio *new, *swapcache;
- 	int nr_pages = 1 << order;
--	struct folio *new;
- 	gfp_t alloc_gfp;
--	void *shadow;
+diff --git a/include/linux/swap.h b/include/linux/swap.h
+index 38ca3df68716..bf72b548a96d 100644
+--- a/include/linux/swap.h
++++ b/include/linux/swap.h
+@@ -230,7 +230,6 @@ enum {
+ /* Special value in first swap_map */
+ #define SWAP_MAP_MAX	0x3e	/* Max count */
+ #define SWAP_MAP_BAD	0x3f	/* Note page is bad */
+-#define SWAP_MAP_SHMEM	0xbf	/* Owned by shmem/tmpfs */
  
- 	/*
- 	 * We have arrived here because our zones are constrained, so don't
-@@ -2055,34 +2054,19 @@ static struct folio *shmem_swap_alloc_folio(struct inode *inode,
- 		goto fallback;
- 	}
- 
--	/*
--	 * Prevent parallel swapin from proceeding with the swap cache flag.
--	 *
--	 * Of course there is another possible concurrent scenario as well,
--	 * that is to say, the swap cache flag of a large folio has already
--	 * been set by swapcache_prepare(), while another thread may have
--	 * already split the large swap entry stored in the shmem mapping.
--	 * In this case, shmem_add_to_page_cache() will help identify the
--	 * concurrent swapin and return -EEXIST.
--	 */
--	if (swapcache_prepare(entry, nr_pages)) {
-+	swapcache = swapin_folio(entry, new);
-+	if (swapcache != new) {
- 		folio_put(new);
--		new = ERR_PTR(-EEXIST);
--		/* Try smaller folio to avoid cache conflict */
--		goto fallback;
-+		if (!swapcache) {
-+			/*
-+			 * The new folio is charged already, swapin can
-+			 * only fail due to another raced swapin.
-+			 */
-+			new = ERR_PTR(-EEXIST);
-+			goto fallback;
-+		}
- 	}
--
--	__folio_set_locked(new);
--	__folio_set_swapbacked(new);
--	new->swap = entry;
--
--	memcg1_swapin(entry, nr_pages);
--	shadow = swap_cache_get_shadow(entry);
--	if (shadow)
--		workingset_refault(new, shadow);
--	folio_add_lru(new);
--	swap_read_folio(new, NULL);
--	return new;
-+	return swapcache;
- fallback:
- 	/* Order 0 swapin failed, nothing to fallback to, abort */
- 	if (!order)
-@@ -2172,8 +2156,7 @@ static int shmem_replace_folio(struct folio **foliop, gfp_t gfp,
- }
- 
- static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
--					 struct folio *folio, swp_entry_t swap,
--					 bool skip_swapcache)
-+					 struct folio *folio, swp_entry_t swap)
- {
- 	struct address_space *mapping = inode->i_mapping;
- 	swp_entry_t swapin_error;
-@@ -2189,8 +2172,7 @@ static void shmem_set_folio_swapin_error(struct inode *inode, pgoff_t index,
- 
- 	nr_pages = folio_nr_pages(folio);
- 	folio_wait_writeback(folio);
--	if (!skip_swapcache)
--		swap_cache_del_folio(folio);
-+	swap_cache_del_folio(folio);
- 	/*
- 	 * Don't treat swapin error folio as alloced. Otherwise inode->i_blocks
- 	 * won't be 0 when inode is released and thus trigger WARN_ON(i_blocks)
-@@ -2289,7 +2271,6 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	swp_entry_t swap, index_entry;
- 	struct swap_info_struct *si;
- 	struct folio *folio = NULL;
--	bool skip_swapcache = false;
- 	int error, nr_pages, order;
- 	pgoff_t offset;
- 
-@@ -2332,7 +2313,6 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 				folio = NULL;
- 				goto failed;
- 			}
--			skip_swapcache = true;
- 		} else {
- 			/* Cached swapin only supports order 0 folio */
- 			folio = shmem_swapin_cluster(swap, gfp, info, index);
-@@ -2388,9 +2368,8 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	 * and swap cache folios are never partially freed.
- 	 */
- 	folio_lock(folio);
--	if ((!skip_swapcache && !folio_test_swapcache(folio)) ||
--	    shmem_confirm_swap(mapping, index, swap) < 0 ||
--	    folio->swap.val != swap.val) {
-+	if (!folio_matches_swap_entry(folio, swap) ||
-+	    shmem_confirm_swap(mapping, index, swap) < 0) {
- 		error = -EEXIST;
- 		goto unlock;
- 	}
-@@ -2422,12 +2401,7 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	if (sgp == SGP_WRITE)
- 		folio_mark_accessed(folio);
- 
--	if (skip_swapcache) {
--		folio->swap.val = 0;
--		swapcache_clear(si, swap, nr_pages);
--	} else {
--		swap_cache_del_folio(folio);
--	}
-+	swap_cache_del_folio(folio);
- 	folio_mark_dirty(folio);
- 	swap_free_nr(swap, nr_pages);
- 	put_swap_device(si);
-@@ -2438,14 +2412,11 @@ static int shmem_swapin_folio(struct inode *inode, pgoff_t index,
- 	if (shmem_confirm_swap(mapping, index, swap) < 0)
- 		error = -EEXIST;
- 	if (error == -EIO)
--		shmem_set_folio_swapin_error(inode, index, folio, swap,
--					     skip_swapcache);
-+		shmem_set_folio_swapin_error(inode, index, folio, swap);
- unlock:
- 	if (folio)
- 		folio_unlock(folio);
- failed_nolock:
--	if (skip_swapcache)
--		swapcache_clear(si, folio->swap, folio_nr_pages(folio));
- 	if (folio)
- 		folio_put(folio);
- 	put_swap_device(si);
-diff --git a/mm/swap.h b/mm/swap.h
-index 214e7d041030..e0f05babe13a 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -403,10 +403,6 @@ static inline int swap_writeout(struct folio *folio,
+ /* Special value in each swap_map continuation */
+ #define SWAP_CONT_MAX	0x7f	/* Max count */
+@@ -458,8 +457,7 @@ bool folio_free_swap(struct folio *folio);
+ void put_swap_folio(struct folio *folio, swp_entry_t entry);
+ extern swp_entry_t get_swap_page_of_type(int);
+ extern int add_swap_count_continuation(swp_entry_t, gfp_t);
+-extern void swap_shmem_alloc(swp_entry_t, int);
+-extern int swap_duplicate(swp_entry_t);
++extern int swap_duplicate_nr(swp_entry_t entry, int nr);
+ extern int swapcache_prepare(swp_entry_t entry, int nr);
+ extern void swap_free_nr(swp_entry_t entry, int nr_pages);
+ extern void free_swap_and_cache_nr(swp_entry_t entry, int nr);
+@@ -514,11 +512,7 @@ static inline int add_swap_count_continuation(swp_entry_t swp, gfp_t gfp_mask)
  	return 0;
  }
  
--static inline void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int nr)
+-static inline void swap_shmem_alloc(swp_entry_t swp, int nr)
 -{
 -}
 -
- static inline struct folio *swap_cache_get_folio(swp_entry_t entry)
+-static inline int swap_duplicate(swp_entry_t swp)
++static inline int swap_duplicate_nr(swp_entry_t swp, int nr_pages)
  {
- 	return NULL;
+ 	return 0;
+ }
+@@ -569,6 +563,11 @@ static inline int add_swap_extent(struct swap_info_struct *sis,
+ }
+ #endif /* CONFIG_SWAP */
+ 
++static inline int swap_duplicate(swp_entry_t entry)
++{
++	return swap_duplicate_nr(entry, 1);
++}
++
+ static inline void free_swap_and_cache(swp_entry_t entry)
+ {
+ 	free_swap_and_cache_nr(entry, 1);
+diff --git a/mm/shmem.c b/mm/shmem.c
+index 759981435953..46d54a1288fd 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -1665,7 +1665,7 @@ int shmem_writeout(struct folio *folio, struct swap_iocb **plug,
+ 			spin_unlock(&shmem_swaplist_lock);
+ 		}
+ 
+-		swap_shmem_alloc(folio->swap, nr_pages);
++		swap_duplicate_nr(folio->swap, nr_pages);
+ 		shmem_delete_from_page_cache(folio, swp_to_radix_entry(folio->swap));
+ 
+ 		BUG_ON(folio_mapped(folio));
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 849be32377d9..3898c3a2be62 100644
+index 3898c3a2be62..55362bb2a781 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -1613,22 +1613,6 @@ struct swap_info_struct *get_swap_device(swp_entry_t entry)
- 	return NULL;
+@@ -201,7 +201,7 @@ static bool swap_is_last_map(struct swap_info_struct *si,
+ 	unsigned char *map_end = map + nr_pages;
+ 	unsigned char count = *map;
+ 
+-	if (swap_count(count) != 1 && swap_count(count) != SWAP_MAP_SHMEM)
++	if (swap_count(count) != 1)
+ 		return false;
+ 
+ 	while (++map < map_end) {
+@@ -1522,12 +1522,6 @@ static unsigned char swap_entry_put_locked(struct swap_info_struct *si,
+ 	if (usage == SWAP_HAS_CACHE) {
+ 		VM_BUG_ON(!has_cache);
+ 		has_cache = 0;
+-	} else if (count == SWAP_MAP_SHMEM) {
+-		/*
+-		 * Or we could insist on shmem.c using a special
+-		 * swap_shmem_free() and free_shmem_swap_and_cache()...
+-		 */
+-		count = 0;
+ 	} else if ((count & ~COUNT_CONTINUED) <= SWAP_MAP_MAX) {
+ 		if (count == COUNT_CONTINUED) {
+ 			if (swap_count_continued(si, offset, count))
+@@ -1625,7 +1619,7 @@ static bool swap_entries_put_map(struct swap_info_struct *si,
+ 	if (nr <= 1)
+ 		goto fallback;
+ 	count = swap_count(data_race(si->swap_map[offset]));
+-	if (count != 1 && count != SWAP_MAP_SHMEM)
++	if (count != 1)
+ 		goto fallback;
+ 
+ 	ci = swap_cluster_lock(si, offset);
+@@ -1679,12 +1673,10 @@ static bool swap_entries_put_map_nr(struct swap_info_struct *si,
+ 
+ /*
+  * Check if it's the last ref of swap entry in the freeing path.
+- * Qualified value includes 1, SWAP_HAS_CACHE or SWAP_MAP_SHMEM.
+  */
+ static inline bool __maybe_unused swap_is_last_ref(unsigned char count)
+ {
+-	return (count == SWAP_HAS_CACHE) || (count == 1) ||
+-	       (count == SWAP_MAP_SHMEM);
++	return (count == SWAP_HAS_CACHE) || (count == 1);
  }
  
--static void swap_entries_put_cache(struct swap_info_struct *si,
--				   swp_entry_t entry, int nr)
--{
--	unsigned long offset = swp_offset(entry);
--	struct swap_cluster_info *ci;
--
--	ci = swap_cluster_lock(si, offset);
--	if (swap_only_has_cache(si, offset, nr)) {
--		swap_entries_free(si, ci, entry, nr);
--	} else {
--		for (int i = 0; i < nr; i++, entry.val++)
--			swap_entry_put_locked(si, ci, entry, SWAP_HAS_CACHE);
--	}
--	swap_cluster_unlock(ci);
--}
--
- static bool swap_entries_put_map(struct swap_info_struct *si,
- 				 swp_entry_t entry, int nr)
- {
-@@ -1764,13 +1748,21 @@ void swap_free_nr(swp_entry_t entry, int nr_pages)
- void put_swap_folio(struct folio *folio, swp_entry_t entry)
- {
- 	struct swap_info_struct *si;
-+	struct swap_cluster_info *ci;
-+	unsigned long offset = swp_offset(entry);
- 	int size = 1 << swap_entry_order(folio_order(folio));
+ /*
+@@ -3672,7 +3664,6 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
  
- 	si = _swap_info_get(entry);
- 	if (!si)
- 		return;
+ 	offset = swp_offset(entry);
+ 	VM_WARN_ON(nr > SWAPFILE_CLUSTER - offset % SWAPFILE_CLUSTER);
+-	VM_WARN_ON(usage == 1 && nr > 1);
+ 	ci = swap_cluster_lock(si, offset);
  
--	swap_entries_put_cache(si, entry, size);
-+	ci = swap_cluster_lock(si, offset);
-+	if (swap_only_has_cache(si, offset, size))
-+		swap_entries_free(si, ci, entry, size);
-+	else
-+		for (int i = 0; i < size; i++, entry.val++)
-+			swap_entry_put_locked(si, ci, entry, SWAP_HAS_CACHE);
-+	swap_cluster_unlock(ci);
- }
- 
- int __swap_count(swp_entry_t entry)
-@@ -3778,15 +3770,6 @@ int swapcache_prepare(swp_entry_t entry, int nr)
- 	return __swap_duplicate(entry, SWAP_HAS_CACHE, nr);
+ 	err = 0;
+@@ -3732,27 +3723,28 @@ static int __swap_duplicate(swp_entry_t entry, unsigned char usage, int nr)
+ 	return err;
  }
  
 -/*
-- * Caller should ensure entries belong to the same folio so
-- * the entries won't span cross cluster boundary.
+- * Help swapoff by noting that swap entry belongs to shmem/tmpfs
+- * (in which case its reference count is never incremented).
 - */
--void swapcache_clear(struct swap_info_struct *si, swp_entry_t entry, int nr)
+-void swap_shmem_alloc(swp_entry_t entry, int nr)
 -{
--	swap_entries_put_cache(si, entry, nr);
+-	__swap_duplicate(entry, SWAP_MAP_SHMEM, nr);
 -}
 -
- /*
-  * add_swap_count_continuation - called when a swap count is duplicated
-  * beyond SWAP_MAP_MAX, it allocates a new page and links that to the entry's
+-/*
+- * Increase reference count of swap entry by 1.
++/**
++ * swap_duplicate_nr() - Increase reference count of nr contiguous swap entries
++ *                       by 1.
++ *
++ * @entry: first swap entry from which we want to increase the refcount.
++ * @nr: Number of entries in range.
++ *
+  * Returns 0 for success, or -ENOMEM if a swap_count_continuation is required
+  * but could not be atomically allocated.  Returns 0, just as if it succeeded,
+  * if __swap_duplicate() fails for another reason (-EINVAL or -ENOENT), which
+  * might occur if a page table entry has got corrupted.
++ *
++ * Note that we are currently not handling the case where nr > 1 and we need to
++ * add swap count continuation. This is OK, because no such user exists - shmem
++ * is the only user that can pass nr > 1, and it never re-duplicates any swap
++ * entry it owns.
+  */
+-int swap_duplicate(swp_entry_t entry)
++int swap_duplicate_nr(swp_entry_t entry, int nr)
+ {
+ 	int err = 0;
+ 
+-	while (!err && __swap_duplicate(entry, 1, 1) == -ENOMEM)
++	while (!err && __swap_duplicate(entry, 1, nr) == -ENOMEM)
+ 		err = add_swap_count_continuation(entry, GFP_ATOMIC);
+ 	return err;
+ }
 
 -- 
 2.51.1
