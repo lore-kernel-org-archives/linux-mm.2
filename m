@@ -4,181 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50E9DCCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 22:44:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8B766CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 22:53:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA4D28E0113; Wed, 29 Oct 2025 18:44:38 -0400 (EDT)
+	id E3B6C8E0114; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A7C6D8E0106; Wed, 29 Oct 2025 18:44:38 -0400 (EDT)
+	id E13678E0106; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 96BC98E0113; Wed, 29 Oct 2025 18:44:38 -0400 (EDT)
+	id D4FF38E0114; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 84B148E0106
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:44:38 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4C290140942
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:44:38 +0000 (UTC)
-X-FDA: 84052632636.24.7FD921A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D1BFEC0006
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:44:35 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuE6dmbh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rrpE4k7p;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuE6dmbh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rrpE4k7p;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C3BEC8E0106
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:53:28 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6771213A498
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:53:28 +0000 (UTC)
+X-FDA: 84052654896.22.DBD84E9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 92677180015
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:53:26 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNSYdcVI;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761777876;
+	s=arc-20220608; t=1761778406;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=nGeK7bx3Hm62BR80qyLU/cEzRG1dQ+GIaNgmFFG3WZk=;
-	b=LmC8F64yHDrGn3CrX4vPBA1CIVf8O16gEy6j0ZyKgA5yuRFI4XjiuX0tvwYU/8pveUNMMo
-	jbXBqp/WyjMr/GOYpyS4eFTaX3dOrTXwLaDeqlmhLaS+mKwsJHYpkQYffzdyiv7jVLjePk
-	1p5tfov3hTBWbxEwSVuUGXAXd28rj7I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761777876; a=rsa-sha256;
-	cv=none;
-	b=Ritddx56EeI9iXq5CFUkXiJ3wOyvFa5gVWnENUwcp7V+YfkKTV5nzPdroqZrZk92B8AREg
-	dLqYS2BhkksQiFopQv4IUljSj8T/ypPhen2dGFTRh8qIeTbL98Qp0MXUxsVPK5R+X0Ecpz
-	z037r7HtW/GDj1WuxX2d9CjOYRRNObw=
+	bh=ywJC3icbH1rJTbtfxjNg7bAjByQB/Wtaz4snpYmxsdU=;
+	b=pxR/AzDXh+5mqGuY4pizTOiGZc0HhZJileNUq3Xj91t1T8ciKElRmT8HktY/HeZfS9FK3b
+	wzczjE+MJQi1lUH/h9r2ybz6FOwf6hr38f9W8188rFh3vMCTgAHweWRcI/NkBKdTNJal64
+	wEx0VGn0vSrsRFLit/83sEnVH7mncGA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuE6dmbh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rrpE4k7p;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuE6dmbh;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=rrpE4k7p;
-	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id F1EC322809;
-	Wed, 29 Oct 2025 22:44:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761777874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nGeK7bx3Hm62BR80qyLU/cEzRG1dQ+GIaNgmFFG3WZk=;
-	b=KuE6dmbhj3b4/ZjtupyKEiIeT4ZjL+cZZgw2VyuQrj+ANCIYosjf7UNZe+PTbnLl6NVuTs
-	/5E3V0pItQqNqQDwpwRfZ4shHI0yGaKaKsH0M+TjWp/XOc1/PsIwa6d22FdhSu3LNGkZCZ
-	rCPGXFKmwtdJto6uv6bqUqGsLzdF6kw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761777874;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nGeK7bx3Hm62BR80qyLU/cEzRG1dQ+GIaNgmFFG3WZk=;
-	b=rrpE4k7pcP11GeKmOrNuaHpgSCvtvT1MmCr56Q/kxNqL8uSFkgzBdPOWdCpSjUvhCTZWHL
-	YMzANhVFXuX0dlAg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761777874; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nGeK7bx3Hm62BR80qyLU/cEzRG1dQ+GIaNgmFFG3WZk=;
-	b=KuE6dmbhj3b4/ZjtupyKEiIeT4ZjL+cZZgw2VyuQrj+ANCIYosjf7UNZe+PTbnLl6NVuTs
-	/5E3V0pItQqNqQDwpwRfZ4shHI0yGaKaKsH0M+TjWp/XOc1/PsIwa6d22FdhSu3LNGkZCZ
-	rCPGXFKmwtdJto6uv6bqUqGsLzdF6kw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761777874;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=nGeK7bx3Hm62BR80qyLU/cEzRG1dQ+GIaNgmFFG3WZk=;
-	b=rrpE4k7pcP11GeKmOrNuaHpgSCvtvT1MmCr56Q/kxNqL8uSFkgzBdPOWdCpSjUvhCTZWHL
-	YMzANhVFXuX0dlAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D52821396A;
-	Wed, 29 Oct 2025 22:44:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6jm4M9GYAmlwFAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 22:44:33 +0000
-Message-ID: <a110ffdb-1e87-4a5a-b01b-2e7b0658ae33@suse.cz>
-Date: Wed, 29 Oct 2025 23:44:33 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 12/19] slab: remove the do_slab_free() fastpath
-Content-Language: en-US
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=vNSYdcVI;
+	spf=pass (imf24.hostedemail.com: domain of tj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=tj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761778406; a=rsa-sha256;
+	cv=none;
+	b=QQCFox1y3Gz0r3Af+PnlDJpJH9iWgZsU2PD+duVr2Y3xMqStJeo37AFKM9tFoxzUIzC5uP
+	ppYNomim+QA1seNL0xF4kdf3nf4tDL0rdU2PTPLUNc6+qn8PbOHvPytcxo5RY4aUGPmIwX
+	GiXziOPR/B5o1rSDq56V0eODjKRVJPs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D9D9760273;
+	Wed, 29 Oct 2025 22:53:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631A7C4CEF7;
+	Wed, 29 Oct 2025 22:53:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761778405;
+	bh=yggvcjk/2WC81qOKt/PWdb/tjbxgvfTjTX2rpHVXUJg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vNSYdcVIlQppVl9XK6Hmux4x204Rz0Mjmv+zw+0fcgfwr2x5GT4uX2JIaJmKiL//X
+	 +aVu/bx794bAn1J5gyNKRxxVz0q+8aZp9uL5cv8EqLQOy8Lyt/hP6VcqQBR/FvyaY/
+	 /QeBzY8X2r50hITutJxTZGLKOmj5UHqgcGJXQu1/XGEaqCUzqPwlFf7hYBuQgTOnvI
+	 36PMZHtc6/ylag+OHYh+k+JFW56ct0PXqZZzkrq9q1+pn8B5JxaHI58umNFDsW2n2V
+	 wOBsUqUMv5PrXWZdrlXBAU1YQZC0UIRB+gnQWHO5sJEmr/2Sxzfw9OChifWcsUkMGI
+	 9D4KgdYDIKG4Q==
+Date: Wed, 29 Oct 2025 12:53:24 -1000
+From: Tejun Heo <tj@kernel.org>
 To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev,
- bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
- <20251023-sheaves-for-all-v1-12-6ffa2c9941c0@suse.cz>
- <CAADnVQ+nAA5OeCbjskbrtgYbPR4Mp-MtOfeXoQE5LUgcZOawEQ@mail.gmail.com>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <CAADnVQ+nAA5OeCbjskbrtgYbPR4Mp-MtOfeXoQE5LUgcZOawEQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Stat-Signature: fmoppadgp4puatsittr9dqsnpyeu8r8o
+Cc: Roman Gushchin <roman.gushchin@linux.dev>, Song Liu <song@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	LKML <linux-kernel@vger.kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@kernel.org>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm <linux-mm@kvack.org>,
+	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>,
+	bpf <bpf@vger.kernel.org>, Martin KaFai Lau <martin.lau@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops
+ to cgroups
+Message-ID: <aQKa5L345s-vBJR1@slm.duckdns.org>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev>
+ <aQJZgd8-xXpK-Af8@slm.duckdns.org>
+ <87ldkte9pr.fsf@linux.dev>
+ <aQJ61wC0mvzc7qIU@slm.duckdns.org>
+ <CAHzjS_vhk6RM6pkfKNrDNeEC=eObofL=f9FZ51tyqrFFz9tn1w@mail.gmail.com>
+ <871pmle5ng.fsf@linux.dev>
+ <CAADnVQJ+4a97bp26BOpD5A9LOzfJ+XxyNt4bdG8n7jaO6+nV3Q@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAADnVQJ+4a97bp26BOpD5A9LOzfJ+XxyNt4bdG8n7jaO6+nV3Q@mail.gmail.com>
+X-Stat-Signature: 7kdwi9en18nimziojjmmzhhr8abuyr6h
+X-Rspamd-Queue-Id: 92677180015
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D1BFEC0006
-X-HE-Tag: 1761777875-499508
-X-HE-Meta: U2FsdGVkX1/iecFEopYf9JtE1Rjak4W5lIMIj6KyfdpXhsHBsoJBd6aNuboImh6RbLTWpQMlMUgbFjTGsZ3sVTyEok4K/jy4C6gwldY1BNUoooOZjjDONv+mctYDeMNiCMryVN6fndPvCGx/RDa8ca1zLOuAjBUmzMqwXKGYn4RuXQQDt87sPPSK2HXBqWDINSRmMJX6ncSQ5vnpTNuqpkXxJn3tPjK6PJHOygeAnxfLec1QG+F0lp0/zdBML7ELHdAfEg8R0TVU5HEN6PyOIQLY4Picnq6r3EDY9Awbrlot8du5qwr+x9dmGd35J3OgAQfuRQlSKLMsPppfQcpBvgjI3oIeI0uMQCZxYf6S8pEOXOmZi2K8YbsHmG1XC7zHkcxN4im2Y3mNneHVbg5rGvii+dg7a6p/hQ2PJMfeSHVAb8KtdWSJ8pfZKnvIUQtnCy/9ETYuDi0q0CEYqQQKqQdg5QFpI4dgxqknh16hjl8pRiPMiVn21zdLDZjnl0MTcB+NC2yZi+/Kxuzj/YEKntBX6hQQMo+oDlwiaEBH2bQR+zPcBgk2l7uMuob4VODDWUmZc6F2PfNJd8BovKVJhp9kZ5IlLCmfBIE4hiwi3MzQTk8GI/2v/NgWLFn3H78zeT2GLMuByHZkTNshVsNmyGvztfbPOxfK3nz7MRyai5c7BK8yV8CZ+ytK792W2ksE34gBqgnRQChLb0OW1yTrIWep/Dc58js/typuc8z5poFpTONGh4ce16rSJdUoDgjISkhIufCqsE97PrdDYEmFWeGymTKv0kM1XRrb2+jjrA06HMYilksSdq6HPIdl6qcz9ft5IF8G860NwtiLiRjY+JKz8+Lc+29HfoHIDGteV0GXUYTRWLwxxApvx5Dwa8bAJTb0MJYVRXo106iKnsVx37Pw9cvy/kt1h+QxHOmu6zVgGoshYqXBkJ2qa7rIZp7kQ3sWawleaq8k60SXdm4
- LjjZ1SW8
- hiPUulJwx2J4kBBKP0hRkKbHIsk4F4eVQn7ST2rq9KeVHk25nqQ/ZsPpBzTDR63KOCZTpwwe5x+Dj18Zz6ZSBKw3wQG1b22qMvXIdqfFL0UZtomC6tjoovchivhqj/DXLnr1uDyn9WKA1M10wB3BIf+XfQx5+IM0wcV0JProy6Nil8oFzSHCzOr7xgr8z/rKvvsgosd9PlNXxoYWK7Wvu/hCS8imyCDpGmFsqPORbTTU/dxqikO0KVAhTPYMSCnsdS/QUEkZO6Vf/yTcZ4nOPYPs8xuRc4sok/rzxV0VpGNO+Lw144xWU0JgPj4TZ8CT/w5Clzj9wzV4HwLS51VbtByAwb+6WWISPmJftslnh+854TAIthecUV6XEu2UJylfOhXhqxz8iTSQLFpTmmp2YXIv7kdZsUQJJlk7H0MnfLW7cpNU=
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761778406-47938
+X-HE-Meta: U2FsdGVkX1+oDuVJshMUUPMNCBzkDNWRh87mB0Gq1Mabi65Y2ISXaCN8Z+2urFKjEnUFZB+DjSCG+DfHRcinDL1MtloscnVo4+ECw020nOAhxw4SNKnrE06jHjc55WU1jqBBrFkru4nIzmdQmg4Damhji+07UdOw/xbo2/1lgTLsA5dmUrPVVm413TakdaHeOu6LxStwoWsygKN59SYvHtwdL7C8vFFCJU76Q/umzFlAlZYDOg0R5m+qOkpkB//7R2SyDmF16I9GMfqZhjqbnMDGwp8xsk/FMYlJtAwm9prkZrq0/M9NCAH1N5ch2EX5oM/mfSAoTmivqsw30PocIjdaOtbbx8M9fKdVg5k4AknKtzjHIf3Aft+Z0ORgqBG1Mf7GMb4vizOqo2QDqkKvfPSq+MDA9pufZUwIqfZTQQh+2JoErdFPB+ccpvkygC09ZrHqVxwYhh+Ig7U58be7u1XqOyp5dTwFLneLq6uIpNw8tgg/uzuDJEUfvoLujpb79z3jAYhB0Z5YelEsTyb9VJDVww/E2huDLZOMptVwxCd8wOL6sbqR2RJmW9VfLfM+sx3y/G0I49GTUNj6h1B28wddwUL4F2cGt7P3VkPCCX6HAaFniUWuq8ZwtPGfj01x5jwqFGv+Q7WrL5QNR8c32oeVy5+RXsbaVGVz2SGMZr9AUHECarQE9FxIn/lVJsoC5reHxVzd81UPNp1rE3SsK4tWwGkmANhuuuFB0NdyIRLIbqXUpBCyEaWi8DnRyb1tje1jN0ccjO1Qtxpr3IJ0pPbQZ6CEDgPXJLI1WOfpGzeLbK1XId5AQ4bFX2oDi07GaL9ZmWpOQwwPzL3H1zcqsECJSixdAAINElwpwxLn3BkYzdebZB1opaR0Hb23roefJHi84ju7KspsCu4g5bOWpu5nNjdS/yUdE2nRMC21Wlhh8nDhTcqqYxP+Vi+Ipdblq8A32S792qMTUrIGj3U
+ 7+MoeMot
+ 9ttQENiufAWpSB1bERb2mNTtTnbhe1NzhHTbEiaOSY0b+KuuEiiQ379jppHe2c2aHE8aLy/wTR0/4q4a9MztNFYTkNdkUUomXj0UktkW1mkOS8preuQOw7Ph47DwsQ8me9QHAy+eOQNVgG/ETN8xlurfMfO6UFWnSD6gh5U6ed0BS5H+HzOKnCtOUHXIMYlFHvvyBd84JkGMqg9l8wW3ihaLZHhfTHbpUQwMiK9CC+Xl2GHz5KHhrhLnGZ39Jb73/7Yd6/rPWjJnfVtKmuwGXMILxt8y4heTmvwSK
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,45 +110,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/25/25 00:32, Alexei Starovoitov wrote:
-> On Thu, Oct 23, 2025 at 6:53 AM Vlastimil Babka <vbabka@suse.cz> wrote:
->> @@ -6444,8 +6316,13 @@ void kfree_nolock(const void *object)
->>          * since kasan quarantine takes locks and not supported from NMI.
->>          */
->>         kasan_slab_free(s, x, false, false, /* skip quarantine */true);
->> +       /*
->> +        * __slab_free() can locklessly cmpxchg16 into a slab, but then it might
->> +        * need to take spin_lock for further processing.
->> +        * Avoid the complexity and simply add to a deferred list.
->> +        */
->>         if (!free_to_pcs(s, x, false))
->> -               do_slab_free(s, slab, x, x, 0, _RET_IP_);
->> +               defer_free(s, x);
-> 
-> That should be rare, right?
-> free_to_pcs() should have good chances to succeed,
-> and pcs->spare should be there for kmalloc sheaves?
+Hello,
 
-Yes.
+On Wed, Oct 29, 2025 at 03:43:39PM -0700, Alexei Starovoitov wrote:
+...
+> I think the general bpf philosophy that load and attach are two
+> separate steps. For struct-ops it's almost there, but not quite.
+> struct-ops shouldn't be an exception.
+> The bpf infra should be able to load a set of progs (aka struct-ops)
+> and attach it with a link to different entities. Like cgroups.
+> I think sched-ext should do that too. Even if there is no use case
+> today for the same sched-ext in two different cgroups.
 
-> So trylock failure due to contention in barn_get_empty_sheaf()
-> and in barn_replace_full_sheaf() should be rare.
+I'm not sure it's just that there's no use case.
 
-Yeah, while of course stress tests like will-it-scale can expose nasty
-corner cases.
+- How would recursion work with private stacks? Aren't those attached to
+  each BPF program?
 
-> But needs to be benchmarked, of course.
-> The current fast path cmpxchg16 in !RT is very reliable
-> in my tests. Hopefully this doesn't regress.
+- Wouldn't that also complicate attributing kfunc calls to the handle
+  instance? If there is one struct_ops per cgroup, the oom kill kfunc can
+  look that up and then verify that the struct_ops has authority over the
+  target process. Multiple attachments can work too but that'd require
+  iterating all attachments, right?
 
-You mean the one that doesn't go the "if (unlikely(slab != c->slab))" way?
-Well that unlikely() there might be quite misleading. It will be true when
-free follows shortly after alloc. If not, c->slab can be exhausted and
-replaced with a new one. Or the process is migrated to another cpu before
-freeing. The probability of slab == c->slab staying true drops quickly.
+Thanks.
 
-So if your tests were doing frees shortly after alloc, you would be indeed
-hitting it reliably, but is it representative?
-However sheaves should work reliably as well too with such a pattern, so if
-some real code really does that significantly, it will not regress.
+-- 
+tejun
 
