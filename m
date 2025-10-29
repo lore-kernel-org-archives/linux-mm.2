@@ -4,105 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF200CCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:26:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D030CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 18:37:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 502208E00C7; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
+	id AE8978E00C8; Wed, 29 Oct 2025 14:37:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E0408E00B2; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
+	id A99178E00B2; Wed, 29 Oct 2025 14:37:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4177A8E00C7; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
+	id 987A28E00C8; Wed, 29 Oct 2025 14:37:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 307CC8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:26:18 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id C8FA713BDF4
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:17 +0000 (UTC)
-X-FDA: 84051981594.20.5E1DFE2
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf15.hostedemail.com (Postfix) with ESMTP id D4B7CA000C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:15 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndpPn+k4;
-	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 86BA58E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 14:37:42 -0400 (EDT)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 37FFA13BE68
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:37:42 +0000 (UTC)
+X-FDA: 84052010364.21.8597410
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 56D77C000C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:37:40 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hyte+UfG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761763060; a=rsa-sha256;
+	cv=none;
+	b=7tlGG5ZKNwbmwBkc63+FYNY9TXKVnZ2z4wYklYhO+/ADpgg4nQPziFwH+ci/FyvgQFY0UB
+	oHbD2HgNGwa0dmloj5bprSN2cJZwX3m1QgME4FDm33q9DdU74Xbu1ACRjnjNfmO8R0RpPY
+	vkFrkuGtBXP8UJbMyQskMYjQohhVb0Q=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=hyte+UfG;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf10.hostedemail.com: domain of surenb@google.com designates 209.85.160.176 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761762376;
+	s=arc-20220608; t=1761763060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2z56nIm+5e1IvigR9gpmQ54kGrlw/bMFXbXEDGYlOqE=;
-	b=up9s/y8B+SP7aelh6hygJlo7l7hJ1gpYwZt/n2XN++Amgcmyyg5Qg5xGQ6OsKjLm+UmnGS
-	bqHRsHHEW2GalgigvFWusHf8aHSmYLD/C3TSlnbz7dmKFCtFqHMCNBtKPh4WPN39bPuvcE
-	h+SAji3QVhzaqrHSs4+sun8sEQP/YJM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761762376; a=rsa-sha256;
-	cv=none;
-	b=g5L27hFYEdVzNQxRLTzJXYhYHKuKUJfmPtIBFdTTWo51hiAb0lhemxqbNtLpI0g+Thw/FA
-	JCywaczS0lvEqOFP0l6If1ZLhzI1/xjKZIUEnnR5+QZzg2WeLT6Tig5ymTk3l4yJeOFy0z
-	LGLfku9x2vrSV5i24HOrwAUEtWn3VuU=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ndpPn+k4;
-	spf=pass (imf15.hostedemail.com: domain of ardb@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ardb@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 00D3348CB4
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BB4C19421
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 18:26:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761762374;
-	bh=SOFE0nE/iwywHZBzY2PA6i2R26wO5/VtY5Jl8lJ4X0I=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=ndpPn+k4EfUaw6fNwY0zWNL1ecVLo8aBHRZnSz07kFgD/dq8DvyELXxj76gXV4oVi
-	 ktU0XjzrjKbY7uijyq0vT7UtIcjyb/ND1tDToftHHtDIAiRt0YVm3arL2lh8baMuAI
-	 +vz8+RoK0Jww3pqJv+AvrM17kvv5Zn3eqLes/WMlFA/6VE5WWXYm60bfEKGra5Xg6r
-	 thZTXHsYe14mAvd0C1rleJrkFPDe0BuI4HmI2JV5mxGnO4BhQlXQdt5qvo6Gy0KBaT
-	 P6l6n7spmgQ3gWjfr6j6dtYxaD0JXVPuWt+vLn28H15m5YyfxxytbyH5B0vKNTckDF
-	 7LduBId0jKXTw==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-3737d0920e6so1273571fa.1
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:26:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXBCBV2jVNHimeWHGYqUR7yhnesh27oGLwFfHJx24ZWp4v+xUTTvGMUi6cVQDLBFp0bwDo3+vd56Q==@kvack.org
-X-Gm-Message-State: AOJu0YxFMC+yS8ZXWrvEj0KkbplQChD8rLC9gBiZ0yyBPJci2jRl25q5
-	xunI0mVhw9P+KDm/GLYZgAH+vpODy8PSpNX9rhwM5lAZxHLKndmnQWd7sLlTu6pD1QBH1iYZKMO
-	lMqqvcVYuKQLjUts/P+4ttUMn+7W2ufU=
-X-Google-Smtp-Source: AGHT+IGWFfmJwHuAqzPgZNMRZ1ozVQDIzy88Y1FgQVzyMri4R3xOByg4mInRl7CgPci19RHNrfDbNPxS6PSkoSTGQDU=
-X-Received: by 2002:a05:651c:1986:b0:365:b79:8845 with SMTP id
- 38308e7fff4ca-37a023ba9e9mr11427831fa.10.1761762372950; Wed, 29 Oct 2025
- 11:26:12 -0700 (PDT)
+	bh=W9Ey8iYhsNV4DmLuQuvf3CrjlZXkohripqbrbq2UPM8=;
+	b=Rp6HOaBR96okXDZ+aCdfSfeEKyHG5LSOh+r7hvv26/QtkonHq5HZs6pHnar7bdZJpuMI/L
+	NlJrxu1k4iCGzjaGo1sTionbxKJyeh6x0xXg65KPza5Y36v4p9YMKDdzNbNN/q7nDwiqe1
+	4JcWZ+u8blxCgTVUl7dMGwpUlyhlfLQ=
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-4ed0c8e4dbcso57651cf.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:37:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1761763059; x=1762367859; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=W9Ey8iYhsNV4DmLuQuvf3CrjlZXkohripqbrbq2UPM8=;
+        b=hyte+UfGeJqMSPCyjbYzTmk/pO4M0Wj8vjT3MU/ue8GJc1AMpOBUZHd0dSITNtrie5
+         aqy+EaTECDidkCyupcS3vPiE9WauawDrZ1gAAdbd3vSWo5XEbDaiNAw9UJOtMUdOnJkI
+         st/TlHRJWBfTZs2NhFg9u5tueVhpYI7qO2/0J3BmE9KUNM0Od+om58QNJ9rFcY43G8+q
+         /YXnwrzPyFya30+5tCuCiiu5W9t6UtaxuxXF6E8GlVUs71ywRqb9ZN9YMOr9UirxJO4s
+         3IjgNwa3ZBNgKIVg0Js1wXEDeP2uc+aabp341+7tSAbPhv4Z4y4UAQLTyisCtLTeLzQk
+         xLPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761763059; x=1762367859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=W9Ey8iYhsNV4DmLuQuvf3CrjlZXkohripqbrbq2UPM8=;
+        b=uqlb23AM5YC4MGZk/XmiKzJDk2OjsjSMosBK0ZZ7nS6q2aSPnARVUu4oPICNUc3vg6
+         mb8cQLBuw82kXi52lCO9ASq9dH9XvFFcACfPsVDeEL6dXSOTS3ziYkyHiU0hDzHnGNjA
+         vL5IIIYUvKBEHbOVFxTMh4X4cpbI1wpOlBfxkys6bJmrxIWOeC14NuaidKcrZ/2NbYf/
+         jK2pdxT1dOnTun75GBXi2bwuTp5Xe5aTFp6zVQEhono8qQWu1iz8+k0t3oo7paS/5SDw
+         cTpYHiNFQsFrUE8iEJJJdBCQoaUfNTG8lu1gm33EUPonLW4Hm9q+6gIKTpj89gWHW1ut
+         Ho9w==
+X-Forwarded-Encrypted: i=1; AJvYcCWew2h/HHd5FKVgWj7VbGYOBMXjleWT9B30ScNFBeqjNf+QaPsvteLBx4GsGeXz2jX+Q7EdUuDjxA==@kvack.org
+X-Gm-Message-State: AOJu0YwoGzr3467tTaFl/PjxZg+ixFjIsh8NGJIunb0VVxTubo1gChfO
+	NznYl4PbDQG2AQl3tjD07b1bH50pwV/+Xl0tnvPx68m4k0NriABC4ie9Yltwt+pSuaYGzc2t3TO
+	s/MEl/OBUuxGv30c2jaInI+myJAvAnr0U29VOO9MI
+X-Gm-Gg: ASbGncvVfPGxybwsV7Vj/emfItp8+61pJDUkm4ErzApAi5EQ8Egdeo1EiQVEn1OqWJj
+	HxJkMU/zbJ6vhSvn8h5tPU/DlMshuwPNBHLg9OVJjTPDhQo8l4YLeN2mEp1WR4D+zdgEHieZvvP
+	+rmd8YDrLpgacv6/p57brlIcUMJs2U/Akp/XmZGWV2gAygax6pXI9IyHhXOQdpcvfJPuL9HI1Cu
+	CgQrIplAuvS4D6SfuLQW9nqNOR8kbtzu0Befy+kXGjBSLKWkHc0Ykr8h6UOj/QqzYlQHEAB1hgB
+	X0guotfQClmixXs=
+X-Google-Smtp-Source: AGHT+IH8IJb4mdzugiyUJiKdhE834SZN43FZI5L8PRxmHgVcBPjtH4b1oNSC1LgJcs2h4W7p2Gjsrm8SLTOCSL+1dcU=
+X-Received: by 2002:a05:622a:1a10:b0:4e6:e07f:dc98 with SMTP id
+ d75a77b69052e-4ed225a220fmr699031cf.9.1761763058976; Wed, 29 Oct 2025
+ 11:37:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk> <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com> <20251029180835.GT2441659@ZenIV>
-In-Reply-To: <20251029180835.GT2441659@ZenIV>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 29 Oct 2025 19:26:01 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bl33W7u9Z27QoRt9V2mEw_lUKBXPTlGyVImKaOffP2I82t-eoqvuUfjNRY
-Message-ID: <CAMj1kXEB+W6wNDUnWeaeiuRqR-AKDwNhsoCAXokAEqRjSt7v7Q@mail.gmail.com>
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: James Bottomley <James.Bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, 
-	torvalds@linux-foundation.org, brauner@kernel.org, jack@suse.cz, 
-	raven@themaw.net, miklos@szeredi.hu, neil@brown.name, a.hindborg@kernel.org, 
-	linux-mm@kvack.org, linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, 
-	kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
-	selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
+References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-7-harry.yoo@oracle.com>
+ <CAJuCfpGY0h2d6VEAEa4kjH2yUMGDdke_QTFt6d+gb+kH=rnXyQ@mail.gmail.com> <aQHJfyoUN-tbnVFr@hyeyoo>
+In-Reply-To: <aQHJfyoUN-tbnVFr@hyeyoo>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 29 Oct 2025 11:37:27 -0700
+X-Gm-Features: AWmQ_bnE1BJ3ZIc4019sKWySDFgx82v_dnppIEExUnniJ2zZNGhyRwNQFzNWTEQ
+Message-ID: <CAJuCfpFhaPTqtKbjrigptPJ-9kKJB--mPnicBzN1=rfJxhN3PQ@mail.gmail.com>
+Subject: Re: [RFC PATCH V3 6/7] mm/slab: save memory by allocating slabobj_ext
+ array from leftover
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
+	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6fie61a3pdxyt6yhecdo5g7i8pz45f9s
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: zpzrqfk38ust616re4598q955yiia16q
+X-Rspamd-Queue-Id: 56D77C000C
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D4B7CA000C
-X-HE-Tag: 1761762375-909871
-X-HE-Meta: U2FsdGVkX180F8Uo1MrZlhLi1T2F/mI59iS/48Fuvr1vvUq1HEx3WnuO9T8Axj59XjuCWxh+f3AnNevMAqHmYZB5wuLAAZpErRN+VLmmQ5hA4Ehdrh4S59QDhy2WTPjlZFUhRz080YyT7uVsP2pyiw2v7OZxkzAhI1fHh2oXMX0hqftfWErwsBpnBNRmV4GQCdPjE/EihjZ66yYTboBGkHrUMEFsqXoKxD4dSHapJQ3BZHx41CM7QZgirp6hmGX0CynN2skE8ki3MHG/psunJJr3ecYUvw/pl7Rq+mpGINxr4BLdchGOypDcX6Wf9Y5ZghOn86c/lkx7wgGCJdiFUTc3Xtl48EFa3o2lHhWr7fKYw921lLyQEUgAp++0+UmNtVT2KHhvpBc2d9Or6zeX0fs+MHUq5MYWxXedpmZyUIy8J2bp0fhSurUMJ/So3G9Gud90bMHmgFlHraF+ciVlMT8tWVvMbvcLWd3GPSdIxMdN5A5VS/YcFh2YX5fNbK5s1ZNqR+SdItRQFCbIlD8ExV6KClEKKXYyAH8v3bVIfnqbzmSQs79os8EHx8M30QqBHaeEpMwWlXO92tj+QX/d1FOk+SQrkyhoXTzkOdypW7C075H1HM4dILJx5LjYbasTcJtiYnxKlu1zGbKzR6+eOqtG9BDwWbCX3iMxSjXphQXAkeEntjT7On8wLvMuqdzMlxZ+wAxQsmNhQMOVUm9EODqHgEOn5UnnXjbLCaj3S6CSm3ZrQm45fz4lX/JeSq1WRtk5I1MlaWwOPQdK02FiQo3xaFdLUj+evl017fbhfWcII80Sgf7hfQJgos7YJ5/874t64hXGMKoTS13KlCXitxesqZ/FRbNu1fU/5hcgTa17pIffcpy7MFVBhgnqgCCcvVwj5KKD1CA3jyLCji4NJNXHl4umhOAPnXS1laktJDV1rsBMQtfV2g2HRo0KsBTYCYn2PI7gw9YgOXBpCJV
- oJnYVhLO
- /NYPm05PZ+MQBhVIhbfWatc8GaTNZPsIxbTWulF2gern0RU3HxNP1OClfGrLLImfNWWzIY1SIFTcrOGoxiEfrHJAmUB6fYYH+hNn2YG4ct8BqasbHzW4xMe0YyTq46l8QAc3VkegWzlUFKwtuGnc6LPIvvV3qJcvY5DEQ3hfusbdGKWKQXKKu+3l0XJDNqw/OQzIt5lWlhnNkiUnaJs4sNCk9uPDLNbfmP3+crUBG68mKKSYwVyUtLuOstAMIpjh0AbXY/JOA1a2bCnD9qwdKoimyfojMPgsVhxhuwOwBNe3VecRNH3kTKQFZZKq+d5r3Va2cHcfxZUKzjZYsHoLDmU0Omw==
+X-HE-Tag: 1761763060-380309
+X-HE-Meta: U2FsdGVkX18bZ2GIJR5gRs/VF3emi5Gs7U2o9LtbcLgjz+fBZpSM+PWLc1hrDNJusJ0L32wv0MI+CK5rxebP207JR/3Yrz+0tFEj0roES/Q+DFb8GuxtnlejwGvlL1jjHHuNk3X7F7QA4TlZI4u7g9do33qLgJowEDYa0RokJ62GMc1+Yma17JyqxmLkDiVQ/hdmz1bT6mB4WYyNY3ljrnB5fFeXWiVjhJi0Efyjnqs1A2xI2ZcAHmcLPjnEIj0tNtEwIlFxiNZKd1hKIvjfEZJxvlsisJWsrrrNQK5CiOoK+1fK9Oz7Yf9WJ2uXguGQnbF09zfSle61CvQT+nLz89qvo6RB/ZZwVhDATE1OwCQOZeYFMwimcUYxeM6ks8aFG+ke/Ns2O1PbgmHkegQwbsXwpc9tMe6EzuzQKw5CSKSVANt4mTgnEh2kP/Z+FJ8CA/cUAPvlKvbIIGo/4agczbpZ8AEK5YRbgvLt7GGwoZzOQ5vojHcEeIvbP2Z6Ukgjximr1snhXUP7QoT0lXj4EBbIhi6RB52N/aSsuWmhTG4YSsoAlg6DZCMl6nSiEnRzKhf02WpjCZ2gXlfveqk1ddQUhQLtnfPMmY0ZpAwJ8pJLqNBatnbmfTMGoTVnbmE4fT7qB8UDRC/d6/QnjT9Eaem0S83DljQh1zep9XjK0klOR3hxI/yvDMZ5A/WsmBJn7YUyqwtvsMls5bgSizIBUJ1aHmlwuSidOwu1a7kLQOyDFcs/zpfDfucXdZB+jbTZ3zhlq4a3+4aPZioIHJ9w4b60ecywb5ctJT3mnME7wqTreZ1HclbtJjF0tlTemaqC1HXLKBTvkicxFnE6yoiGINOT0aniTJRnYnh2AI73HCL3lM9CkHJEO4iHN7f2w+Z3DWyER485/9edwVVJ83uwZNpRp9ZbbWhFGCG0QrzTTP7WRzxMh+jUrUpuzF3Cj663cOGnaMSESxuzurHGfJg
+ gcLbN7me
+ oxQEzk3MFIOQ6oWcjqj86vq9pSvzXtarEQeqfSaMBgDaJrGTj4Sv2fpZkVe5YESP+0O2m03yPQZtIfam/YEwUMwYtQMDiF1EwLlWCfLbT9cmmS+rXnZxj/zeG2LSYC5pd8+D+Biq3NxxEKcdaPSxoQpK6bRN1/lx36cCnCoy6VIln4Hlo9kQnoCUk3Eer5SXEcvgseT+ymEy4tIJzB+4fHZHC8fO1oilAn8Li2PbCQOKeMcYi/rIfrGj5A1aTsNYraBlUz/vXHyAdeSEzETdtqhzfJ9D6L/J9pHAJJr5W7M8NhJUjLKh0AiaSzyUrI91bOJqwmU56TSP6nfbb9lYKtzOrVQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,36 +124,192 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Oct 2025 at 19:08, Al Viro <viro@zeniv.linux.org.uk> wrote:
+On Wed, Oct 29, 2025 at 1:00=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
 >
-> On Tue, Oct 28, 2025 at 10:34:51PM +0100, Ard Biesheuvel wrote:
+> On Tue, Oct 28, 2025 at 08:07:42PM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com=
+> wrote:
+> > >
+> > > The leftover space in a slab is always smaller than s->size, and
+> > > kmem caches for large objects that are not power-of-two sizes tend to=
+ have
+> > > a greater amount of leftover space per slab. In some cases, the lefto=
+ver
+> > > space is larger than the size of the slabobj_ext array for the slab.
+> > >
+> > > An excellent example of such a cache is ext4_inode_cache. On my syste=
+m,
+> > > the object size is 1144, with a preferred order of 3, 28 objects per =
+slab,
+> > > and 736 bytes of leftover space per slab.
+> > >
+> > > Since the size of the slabobj_ext array is only 224 bytes (w/o mem
+> > > profiling) or 448 bytes (w/ mem profiling) per slab, the entire array
+> > > fits within the leftover space.
+> > >
+> > > Allocate the slabobj_exts array from this unused space instead of usi=
+ng
+> > > kcalloc(), when it is large enough. The array is always allocated whe=
+n
+> > > creating new slabs, because implementing lazy allocation correctly is
+> > > difficult without expensive synchronization.
+> > >
+> > > To avoid unnecessary overhead when MEMCG (with SLAB_ACCOUNT) and
+> > > MEM_ALLOC_PROFILING are not used for the cache, only allocate the
+> > > slabobj_ext array only when either of them are enabled when slabs are
+> > > created.
+> > >
+> > > [ MEMCG=3Dy, MEM_ALLOC_PROFILING=3Dn ]
+> > >
+> > > Before patch (creating 2M directories on ext4):
+> > >   Slab:            3575348 kB
+> > >   SReclaimable:    3137804 kB
+> > >   SUnreclaim:       437544 kB
+> > >
+> > > After patch (creating 2M directories on ext4):
+> > >   Slab:            3558236 kB
+> > >   SReclaimable:    3139268 kB
+> > >   SUnreclaim:       418968 kB (-18.14 MiB)
+> > >
+> > > Enjoy the memory savings!
+> > >
+> > > Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
+> > > ---
+> > >  mm/slub.c | 147 ++++++++++++++++++++++++++++++++++++++++++++++++++++=
+--
+> > >  1 file changed, 142 insertions(+), 5 deletions(-)
+> > >
+> > > diff --git a/mm/slub.c b/mm/slub.c
+> > > index 13acc9437ef5..8101df5fdccf 100644
+> > > --- a/mm/slub.c
+> > > +++ b/mm/slub.c
+> > > +static inline bool obj_exts_in_slab(struct kmem_cache *s, struct sla=
+b *slab)
+> > > +{
+> > > +       unsigned long obj_exts;
+> > > +
+> > > +       if (!obj_exts_fit_within_slab_leftover(s, slab))
+> > > +               return false;
+> > > +
+> > > +       obj_exts =3D (unsigned long)slab_address(slab);
+> > > +       obj_exts +=3D obj_exts_offset_in_slab(s, slab);
+> > > +       return obj_exts =3D=3D slab_obj_exts(slab);
+> >
+> > You can check that slab_obj_exts(slab) is not NULL before making the
+> > above calculations.
 >
-> > I'll let James respond to the specifics of your suggestion, but I'll
-> > just note that this code has a rather convoluted history, as we used
-> > to have two separate pseudo-filesystem drivers, up until a few years
-> > ago: the sysfs based 'efivars' and this efivarfs driver. Given that
-> > modifications in one needed to be visible in the other, they shared a
-> > linked list that shadowed the state of the underlying variable store.
-> > 'efivars' was removed years ago, but it was only recently that James
-> > replaced the linked list in this driver with the dentry cache as the
-> > shadow mechanism.
+> Did you mean this?
 >
-> Hmm...  Another question about that code: is efivar_get_variable()
-> safe outside of efivar_lock()?
+>   if (!slab_obj_exts(slab))
+>       return false;
 
-Not according to its kerneldoc
+Yes but you can store the returned value to reuse later in the last
+"return obj_exts =3D=3D slab_obj_exts(slab);" expression.
 
-/*
- * efivar_get_variable() - retrieve a variable identified by name/vendor
- *
- * Must be called with efivars_lock held.
- */
 
-But actually, I'm not convinced this is accurate. The reason for
-locking at this level is mainly to ensure that a SetVariable() call
-does not interfere with an ongoing enumeration calling
-GetNextVariable() in a loop. The individual EFI runtime calls are
-still serialized at a lower level, given that the firmware is not
-reentrant, and so holding efivars_lock does not provide anything
-meaningful for a GetVariable() call.
+>
+> If so, yes that makes sense.
+>
+> > > @@ -2185,6 +2311,11 @@ static inline void free_slab_obj_exts(struct s=
+lab *slab)
+> > >  {
+> > >  }
+> > >
+> > > +static inline void alloc_slab_obj_exts_early(struct kmem_cache *s,
+> > > +                                                      struct slab *s=
+lab)
+> > > +{
+> > > +}
+> > > +
+> > >  #endif /* CONFIG_SLAB_OBJ_EXT */
+> > >
+> > >  #ifdef CONFIG_MEM_ALLOC_PROFILING
+> > > @@ -3155,7 +3286,9 @@ static inline bool shuffle_freelist(struct kmem=
+_cache *s, struct slab *slab)
+> > >  static __always_inline void account_slab(struct slab *slab, int orde=
+r,
+> > >                                          struct kmem_cache *s, gfp_t =
+gfp)
+> > >  {
+> > > -       if (memcg_kmem_online() && (s->flags & SLAB_ACCOUNT))
+> > > +       if (memcg_kmem_online() &&
+> > > +                       (s->flags & SLAB_ACCOUNT) &&
+> > > +                       !slab_obj_exts(slab))
+> > >                 alloc_slab_obj_exts(slab, s, gfp, true);
+> >
+> > Don't you need to add a check for !obj_exts_in_slab() inside
+> > alloc_slab_obj_exts() to avoid allocating slab->obj_exts?
+>
+> slab_obj_exts() should have returned a nonzero value
+> and then we don't call alloc_slab_obj_exts()?
+
+Sorry, I mean that you would need to check
+obj_exts_fit_within_slab_leftover() inside alloc_slab_obj_exts() to
+avoid allocating the vector when obj_exts can fit inside the slab
+itself. This is because alloc_slab_obj_exts() can be called from other
+places as well. However, from your next comment, I realize that your
+intention might have been to keep those other callers intact and
+allocate the vector separately even if the obj_exts could have been
+squeezed inside the slab. Is that correct?
+
+>
+> > >         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+> > > @@ -3219,9 +3352,6 @@ static struct slab *allocate_slab(struct kmem_c=
+ache *s, gfp_t flags, int node)
+> > >         slab->objects =3D oo_objects(oo);slab_obj_exts
+> > >         slab->inuse =3D 0;
+> > >         slab->frozen =3D 0;
+> > > -       init_slab_obj_exts(slab);
+> > > -
+> > > -       account_slab(slab, oo_order(oo), s, flags);
+> > >
+> > >         slab->slab_cache =3D s;
+> > >
+> > > @@ -3230,6 +3360,13 @@ static struct slab *allocate_slab(struct kmem_=
+cache *s, gfp_t flags, int node)
+> > >         start =3D slab_address(slab);
+> > >
+> > >         setup_slab_debug(s, slab, start);
+> > > +       init_slab_obj_exts(slab);
+> > > +       /*
+> > > +        * Poison the slab before initializing the slabobj_ext array
+> > > +        * to prevent the array from being overwritten.
+> > > +        */
+> > > +       alloc_slab_obj_exts_early(s, slab);
+> > > +       account_slab(slab, oo_order(oo), s, flags);
+> >
+> >  alloc_slab_obj_exts() is called in 2 other places:
+> > 1. __memcg_slab_post_alloc_hook()
+> > 2. prepare_slab_obj_exts_hook()
+> >
+> > Don't you need alloc_slab_obj_exts_early() there as well?
+>
+> That's good point, and I thought it's difficult to address
+> concurrency problem without using a per-slab lock.
+>
+> Thread A                    Thread B
+> - sees slab->obj_exts =3D=3D 0
+>                             - sees slab->obj_exts =3D=3D 0
+>                             - allocates the vector from unused space
+>                               and initializes it.
+>                             - try cmpxchg()
+> - allocates the vector
+>   from unused space and
+>   initializes it.
+>   (the vector is already
+>    in use and it's overwritten!)
+>
+> - try cmpxchg()
+>
+> But since this is slowpath, using slab_{lock,unlock}() here is probably
+> fine. What do you think?
+
+Ok, was your original intent to leave these callers as is and allocate
+the vector like we do today even if obj_exts fit inside the slab?
+
+>
+> --
+> Cheers,
+> Harry / Hyeonggon
 
