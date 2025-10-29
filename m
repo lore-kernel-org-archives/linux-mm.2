@@ -4,87 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24FD2CCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 01:44:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2BAD9CCD1BF
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 01:56:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 535BA8E0024; Tue, 28 Oct 2025 21:44:25 -0400 (EDT)
+	id 8D1628E0025; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4E68A8E0015; Tue, 28 Oct 2025 21:44:25 -0400 (EDT)
+	id 85B468E0015; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 423F18E0024; Tue, 28 Oct 2025 21:44:25 -0400 (EDT)
+	id 723028E0025; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 30BA58E0015
-	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:44:25 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D0C13BA869
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:44:24 +0000 (UTC)
-X-FDA: 84049456848.18.07AB5D7
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 15F5280009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:44:22 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="YNccw/Br";
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761702263; a=rsa-sha256;
-	cv=none;
-	b=eHKgvEnSZ6+5Q69Pml3kID8oXfObLd03J7LXO50XAC1AHhhk3BZ+sS0dOzSn6ewxMmSWCW
-	Fz8el/ObKFqaLgusv9r47FGyGmgbDtD9FeUQLurvOcRBweC3F54cAY7Irk7UgnAxmR0t/5
-	/ZDn35mt8kjVDP0REix2HwF5xjYFjv8=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="YNccw/Br";
-	spf=pass (imf30.hostedemail.com: domain of hao.ge@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=hao.ge@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 5DE688E0015
+	for <linux-mm@kvack.org>; Tue, 28 Oct 2025 21:56:19 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 03B561A0696
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:56:18 +0000 (UTC)
+X-FDA: 84049486878.22.3906AEF
+Received: from invmail4.hynix.com (exvmail4.hynix.com [166.125.252.92])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 6CC19180003
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 01:56:16 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761702263;
+	s=arc-20220608; t=1761702977;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=aM/F09QVx4GPfPIsMF79qJ9NKFno9SfH3yZf/+Wb3Q4=;
-	b=8SDOIRzwnTqnQFpSmK3QBmuADcD8C9guH0DjXrlh0PK4zzIf6qgpEpskH1Cc1gr3R5NAlc
-	5yXpBLj+6KkArp70ufktXUOwsimlaUHffCqJxegi+idHCEFX1vCuTGNl3aVMEKK/d3HlnP
-	IQeE3h0nirGndMolExCr6JohxQTKtOE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761702260;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aM/F09QVx4GPfPIsMF79qJ9NKFno9SfH3yZf/+Wb3Q4=;
-	b=YNccw/Brrj60Ymznhn+quzxsoksok+V00LoQGOyoH4Q+qtEC4B97JrnW1LVOha4EqiDScG
-	1MVaXdaSs4/R7NQO5tEvxYNdP9zpKJ/mPP1+IU0mbH6fnOHXni5Db0Gb4Lc4vWLTiopCiX
-	JZzA/4kwYSLhZy5w8E9niBLNXtimJMg=
-From: Hao Ge <hao.ge@linux.dev>
-To: Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Hao Ge <gehao@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] codetag: debug: handle existing CODETAG_EMPTY in mark_objexts_empty for slabobj_ext
-Date: Wed, 29 Oct 2025 09:43:17 +0800
-Message-Id: <20251029014317.1533488-1-hao.ge@linux.dev>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zwplIuk/MRGEYW4X8ivRoUc70BXAw+JZdbjEk+Wsuxc=;
+	b=ph/1JRxOHZPpnv4e1mp6WG8wJ4qM8PpUEWM/gpw1K8mR8icUBT3o8s8kw2kS5ksBgBTdm/
+	dryfe/UkDEMAyzh4BWo1DzgYTpZiUg5nDNA59A5o1iuexD9YHCKy5t/FODm1hmAGthI2ED
+	y7K/z700/eW9xlAWcCyff4/Yt1nZ4YY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761702977; a=rsa-sha256;
+	cv=none;
+	b=FKNynK3v47S+yZ6jgOSZCFxlsvVzhkDu03KnTVcUqs7chBQlAYYEYilKdWh9FvznGVK3Mu
+	LINqpilwd1221bFxjbttvuRntCyC1eTKCCz05aH9N/4UvcAZPUZuPAPBm4gRSTT19gqm0j
+	2xZNwdGF04K1PYZa0/KgGx8BHfFXe1Y=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	spf=pass (imf24.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-f7-6901743d1673
+Date: Wed, 29 Oct 2025 10:56:08 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
+	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
+	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: Re: [RFC mm v4 1/2] page_pool: check if nmdesc->pp is !NULL to
+ confirm its usage as pp for net_iov
+Message-ID: <20251029015608.GA37879@system.software.com>
+References: <20251023074410.78650-1-byungchul@sk.com>
+ <20251023074410.78650-2-byungchul@sk.com>
+ <20251028183356.29601348@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251028183356.29601348@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SbUxTZxTH99zn9t5LY81dBXmmm3GdZoYEBILmbEHDzBKfDyok+mXMZDb2
+	blTbYlpeTVyqYhQjlSEqLSwDjbzWsJWNvgTMVqCAmM1UwetgoPhCVECCiPIi2GrM/PbLOf/z
+	O+fDEbC6R7FC0JuyJLNJa9BwSlY5tqQqdlMW0sc/7l4HFY1ODhpe5kHNHY8CZpwjDFTUNyOY
+	munnYbE1gOBZeycHT9omEVysmsZQ8U8BC88bZzF4fSMIHpdd5uBBYJiHBtd2GKp+yELLcTeG
+	4dNdHBQVzGFonRnn4YinNiRusvJwvdmmgNLZSxjc1js83PBVcDDoXFTAQ38RC92OOhYmzrZj
+	GLKlQKByOUz3jCJob3QzMH3qZw567T4G/mjt5eFMsJKDewVDCIJtwyycnT/BQflhG4K5lyHl
+	ePGUAso7BvmUOHpYljnaNvoU09/rbjO0r+wnlspXrjLU6/iPp5WubNpUG0NPykFMXfWFHHVN
+	lvB0oK+Fo11lcyz13v2Cej3PGFp0dJxLi0pXJuskgz5HMq/fvEeZ8cpn4w4EFXkNVX8jK3Kz
+	J1GEQMQkci101Ds+d+T8G2bFtcR3vFQRZk78nMjyDA5zpLiGFDTZQxmlgMUJnpTJg6GQICwT
+	jaSj1xjOqEQgiy/qcTijFk8g0ubtZd42PiTd9vtvFmAxhsgLj5jwLBZXkpoFIVyOEBOIvfoC
+	F+Yo8TPyZ3MnE/YQcUogo4XX8NtDPyJ/1cpsMRId72kd72kd/2srEa5Har0px6jVG5LiMvJN
+	+ry4vZlGFwq9WPWh+W89aPL6Tj8SBaRZooq/8IFerdDmWPKNfkQErIlUjZ4OlVQ6bf5ByZz5
+	nTnbIFn8aKXAaqJVidO5OrX4gzZL2i9JByTzuy4jRKywovMls/ZF54ODxbryru9tm+qid3nu
+	5+7QrS10zKcNDJiTTQmfXKI/Pi3eMpt3c9mtY6WuuaHUX9PZWNfwwpUNO7Y4X/TYU5N2GwKJ
+	W0sDzC8l+RtTsrdZ+hOqc79aerfT/Y1nbNXXp2K/3DdiDc4n7mlUGVb3J+8aW9OS+vHF35pv
+	fur/V8NaMrQJMdhs0b4Gq9SA+l4DAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SXUhTcRjG+5//Of9zthyczOxUdtEqpEEfRtHbJ14EHYoiuonqQtc65HBb
+	taloFCwbZZbTPiy3ZkwlLbWEWepGVmxmWdGHpp2o1OzDPsSkzHLmbCui7h6e5/c8783L4ehL
+	zFROb0qTzCatQU2UtHLD8oNzV6Yh/QJvLg+ummoCVT8yoaK7gYHh6l4KXJV1CAaHn7Mw1tiM
+	4GvTbQKfAl8QlJUMYXA9tNHwrSaIwevrRfCx6BKBt809LFR51kNX+Tsarh2ux9CTf4dAnm0E
+	Q+NwPwvZDRfCw7VWFgLFLQw8qrMzcCp4HkO9tZuFNp+LQGf1GAPv/Hk0tDgv0jBQ2IShy54I
+	ze5YGLrXh6Cppp6CoWPFBNodPgquNrazcLLVTeC1rQtBa6CHhsKfOQTOHrAjGPkRnuwvGGTg
+	7K1ONnG+eECWiRjo+4zFKxefUWJH0XFalK/fpUSv8yUruj3pYu0FjZgrt2LRU3mEiJ4vJ1jx
+	Rcc1It4pGqFF76ulorfhKyXmHewnG2O3KlfskAz6DMk8f1WyMmXUZye7W5nMqpIHyIrq6Vyk
+	4AR+kXA6+8xvTfOzBd/hU0xEEz5ekOVhHNEx/CzBVusIM0oO8wOsUCR3hiGOm8gbhVvtxgij
+	4kEY+16JI0w0n4OEgLed+hNMEFocb34fwLxGkEMfqEgX89OEihAXsRV8guAoLyURPYmfKdys
+	u00VIJXzv7bzv7bzX9uNcCWK0ZsyjFq9YfE8S2pKlkmfOU+3y+hB4Scq3//zeAMabFvjRzyH
+	1FGqBaXj9NGMNsOSZfQjgcPqGFVffthS7dBm7ZXMu5LM6QbJ4kfTOFo9WbV2s5Qcze/Upkmp
+	krRbMv9NKU4x1Yq6O3XeMWaKYU1B/uWOwkMz6kYSEzRRtn56TvrCh0/8CteS6Sv7NOMLXsXH
+	jeriP0PbfeK4Ejq6ddU5zdOBM8GPul5tRtU63Z4cHbW5efEbU1KNNVNxQ97HrzOPixNWV9i3
+	LMl/v6yMCXY8z45NjQps2p6b/DipJy748sXT16Fto2rakqJN0GCzRfsLmdJKBkADAAA=
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam05
+X-Stat-Signature: owi3m73qzdpohuxtgrhdgk11kg6t8iqz
 X-Rspam-User: 
-X-Stat-Signature: 8zq9idna1tb4y7nwr7mrs9c4asrs1s35
-X-Rspamd-Queue-Id: 15F5280009
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761702262-26538
-X-HE-Meta: U2FsdGVkX18r3J9PIBurXweY54XVkXEer1yrTIMdbqb3DPsmThkbpBdm+UUOe7xvPMgahkRD0OM4KRbAiQCzNKaBx6Ga+41BxhbFtZPvO6ndv+sLuValEuBDoN9ltrMXsr+lNXnz6ubJfN6NAoCt8zuvOu9ho/J3S9bMVeB81/rU/ugqM350jNh2WmRDSAA6k48Xct1W/Xxx5hDa0l/87GEmIDcdZao/GOPhwoe5A9oclWiZm7V6VfSM5h2UvK6YFfoUJK7nGlrfA8QE8mfgO3sLww14bjIREZ3x0dsS1Gyy8r7CshSiKdkUKykYUF5wv+bHd5QzmHIbBt6NMX+GCBsEvQXck/7rE8sESznfJZgqztOwkt5hpR4wHAcihV7FqMXapwm71HpQxt8BknXxvQopvChyCU/e4sHSERKFJXXAgRwK/H5/QMuReweLj7A6h4c8C9ahtEPOCKbGruHoFMBvZWJDDvi2dIvZxP2jAotiWWzLnTFBh/MRJQWq48JCSqLx9HntoesjZqC/7RxHMveynB8NvJV81fZbSl6e0n+gB2tFiOuh390mCq7XZqRV6isoXDQYnc3HAaG1Or2wIvtei3z4tK9duNiPlxZCI4wE9WMgNMJOIuF7OmpgJfU18lioGxJAXrmNFI440PTx+JlVCXkc+6mi274NwpucgruDrykJml2P7LptucRJwUDeHiaRHnKskjlicO0PYZkqMBnR2jx3k5s1djWH3o7/mJvOj5GOlE8nGeFcOZbc3mVwQTZ3YLCJVmIfNg3IozAZpojQPhSWJbtlbaGx0Q88nXarlTpi+KiaXrTIimBzzTOhDFJju9x4YVPMFBnyCfPl1Ws3B0IoiZ7fiY6bvjNxMWiJapv9Iv8loDtpBPt6fWnjhh1anfZPl6yfeVj2jLT1r4idY8XR1Vj4RP/74zFEiRM1o5z+BQ/gTikgHRMueVZZrdpDU3SJUmHNQcPyKMm
- q8lX2eJK
- 2X4uCvlpogTMMLm7naLmj7qctYliEh8dAZbG3e9Bm+Al8V4F/RlgbUfw8cb4gFVsdmBMmvSRCt5OdqoAwwSNM7rLjwbqog3HyvgJAa4/aaidyvaC82cmr7Jvjet44kYyhUfJTwQvSL483L9nALhpv9vHWVVD0I64Ms1vRJUCC/TcW6MAsqoRFQSJp96nNyDVilva0HyrkmHg39isWbVrJu4t02PV6IdJPPYyud3pmMXZmDRASSXikyUViMF0F7b3EhMBblAxasX7NSWI=
+X-Rspamd-Queue-Id: 6CC19180003
+X-HE-Tag: 1761702976-456601
+X-HE-Meta: U2FsdGVkX184B6IUdCCMAfR3W+JsQbYuUkIIgyw9gm8hWU6HhWNFE3KTzl8Z1pqBi1GJsM+g8gM3ybVD+78twEMAqz1rrAvtrZvEUjO5+vnICm1hMDBiCwZiZTL8QLhOOnb5yLxejZZILEDl9DhI2U8maq1KBMjU7P04hD+CtYMk8N8anWy+0Lh8AzirwUmFSR9QOL9QSd2g0JYthO0NgYIQ70Zvv7LrsjiMve+J+wvIVfWh0q8/n2hdlRGYFJAR6nRaDtYEgPeIALBmQjnOcCIpNM5b2yUBIVE1fT7lBegE54NQ2jUCZXkiIv3xG41nlc+A0MnOPZakEXzsI6qdZ/lNDX2Bl29ERTI1fRDwyMozh4afU9XONJdBVCFC7Ueq3iem9KkB6Hdu5fl0vAjc0iFups/pA0Zv4YQ6hlB/3gH5NvClQEyYGUxBLCdS+0n2cnQQBFJ5hMhecj1xQ6M7gnkTKIaagvwZLcMMju8jfiyHA2QJKZfJLTr2rR+HZzh65F2z6vVqEHBfjZTJEkt6Roqahc1ONsZ2t25REvnqYoqx8oCrkJRFi8fiVCxkwShWoB9ByehKfORmKPxmbcN6Q20/TOIu09rVd260KlqkMdTOtRypDq2E6e4vj+XfU0K7x0K6KO5ny2rrPRIU7Yow15Ld2cOjljQzhSi/Q77PpRZbJRvRQdP6ON+njEmKNUZ8l+RBzFXGRD35gyd3s/xHPPDsNZ1Yed+SdJ+M7yKVy4TqPiIGUr5FHbpeRppYbh8FOquj9cr1WQl1A5vwjmuxSKtDk1uhNy/Kfv4M6OljGu67vFQKfuHhoMMcPxHIjvXXM4LgdbaXXSitaAGcJDA0yfxe7XmDQE1zTTNxtdXo9c6v51A421eSzUDHu/5hCdDvHORcAsnoJcvbHnbo9hv1yeqfyCjm5nlkEuxg9Alp6B9/A7H6hsEePadJ2b243qptDJqPUGZCiTlzzpDWhma
+ lgU/Pls8
+ NW43D6OXfh9GxyO27gIKNd2wv83zmVE35hHoh8jHhOtYmV9P5ejtYF/aJM9Kw5YzINcwVF80beN9/vL5HaSY2flCgmMGunHxWgTCDuFA8NhgjHPznEjJFfBSeer+23nwvEtcOdH8rhCCFipA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,53 +127,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Hao Ge <gehao@kylinos.cn>
+On Tue, Oct 28, 2025 at 06:33:56PM -0700, Jakub Kicinski wrote:
+> On Thu, 23 Oct 2025 16:44:09 +0900 Byungchul Park wrote:
+> > As a preparation, the check for net_iov, that is not page-backed, should
+> > avoid using ->pp_magic since net_iov doens't have to do with page type.
+> 
+> doesn't
+> 
+> > Instead, nmdesc->pp can be used if a net_iov or its nmdesc belongs to a
+> > page pool, by making sure nmdesc->pp is NULL otherwise.
+> 
+> Please explain in the commit message why the new branch in
+> netmem_is_pp() is necessary. We used to identify the pages based
+> on PP_SIGNATURE, now we identify them based on page_type.
 
-When alloc_slab_obj_exts() fails and then later succeeds in allocating
-a slab extension vector, it calls handle_failed_objexts_alloc() to
-mark all objects in the vector as empty. As a result all objects in
-this slab (slabA) will have their extensions set to CODETAG_EMPTY.
-Later on if this slabA is used to allocate a slabobj_ext vector for
-another slab (slabB), we end up with the slabB->obj_exts pointing to a
-slabobj_ext vector that itself has a non-NULL slabobj_ext equal to
-CODETAG_EMPTY. When slabB gets freed, free_slab_obj_exts() is called
-to free slabB->obj_exts vector. free_slab_obj_exts() calls
-mark_objexts_empty(slabB->obj_exts) which will generate a warning
-because it expects slabobj_ext vectors to have a NULL obj_ext, not
-CODETAG_EMPTY.
+Yes, I will.  It'd be much better.  Thank you very much for the comment.
 
-Modify mark_objexts_empty() to skip the warning and setting the
-obj_ext value if it's already set to CODETAG_EMPTY.
-
-Fixes: 09c46563ff6d ("codetag: debug: introduce OBJEXTS_ALLOC_FAIL to mark failed slab_ext allocations")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
----
-v2: Update the commit message and code comments for greater accuracy,
-    incorporating Suren's suggestions.
-    Thanks for Suren's help.
----
- mm/slub.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/mm/slub.c b/mm/slub.c
-index d4367f25b20d..589c596163c4 100644
---- a/mm/slub.c
-+++ b/mm/slub.c
-@@ -2046,7 +2046,11 @@ static inline void mark_objexts_empty(struct slabobj_ext *obj_exts)
- 	if (slab_exts) {
- 		unsigned int offs = obj_to_index(obj_exts_slab->slab_cache,
- 						 obj_exts_slab, obj_exts);
--		/* codetag should be NULL */
-+
-+		if (unlikely(is_codetag_empty(&slab_exts[offs].ref)))
-+			return;
-+
-+		/* codetag should be NULL here */
- 		WARN_ON(slab_exts[offs].ref.ct);
- 		set_codetag_empty(&slab_exts[offs].ref);
- 	}
--- 
-2.25.1
-
+	Byungchul
 
