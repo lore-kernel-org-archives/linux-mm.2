@@ -4,181 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC0C4CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:49:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61250CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:50:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ECCBF8E00FB; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
+	id 13B408E00FC; Wed, 29 Oct 2025 16:50:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E7C398E00B2; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
+	id 0EB8A8E00B2; Wed, 29 Oct 2025 16:50:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D44678E00FB; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
+	id F1CE58E00FC; Wed, 29 Oct 2025 16:50:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C24358E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:48:31 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9A7891608F8
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:48:31 +0000 (UTC)
-X-FDA: 84052340022.14.34E5C64
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 150C2180009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:48:28 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DBFFA8E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:50:17 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 950D0BC243
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:50:17 +0000 (UTC)
+X-FDA: 84052344474.02.2BFA096
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id C807CA0008
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:50:15 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtIYnx4r;
+	spf=pass (imf25.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761770909;
+	s=arc-20220608; t=1761771015;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
-	b=ZFhT5KXg8rF/S1O/4oOBwl71/vnTlUCoHL10Zw5CMu6pESo7gbTBY6yS4oYvVh9Cflihe7
-	HbFRKU7tVAFKnl6jJxbuO+u1wes44OrD+ldUY5he4Wbu/Xl0Zt1FhPR+PXQMKbdbL9TdZu
-	sLHsQY+ZmT0FfsmL7WA77Z4YqnuDuUA=
+	bh=B0dPJi9FlptGKYmLv+RcyZQ0YTeIDo55wXk15M/Ikyw=;
+	b=sVpCbYtvndpZLMeKBlXSIhmhbg4B6W9bMab57LvQRpnRgUmtLKWJwVgBjiQX8mF2EVo6OM
+	hyyupW791lIBaGbxNLXzZhkSOfzpgF88JtbpoRr9FfhEGKR9viVQ/8KpmMfoGnaywHXAIt
+	zmYeDOjvyNC8NHBHiMIIjg0g/+uAIOg=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="FX/p9nMP";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZjokwtAs;
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761770909; a=rsa-sha256;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtIYnx4r;
+	spf=pass (imf25.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761771016; a=rsa-sha256;
 	cv=none;
-	b=unbkPVDimuj3WK6jYX23XNOUTWYKjlpsjbbT9i62ImD9gF0ln9mdSjcS9xyb9msnxUUcI1
-	0E99vX040vck3cdw6SdDJzAnP4Mv0QQFeiNlOzvk/vi5zc4+zcu/0MQlpKjUFLYTcblSbW
-	OA4Ref2rU02kSHzu6aZSccrvzuwZXJY=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6D1095C797;
-	Wed, 29 Oct 2025 20:48:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761770907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
-	b=FX/p9nMPP4ug6Jsu/qy7odhm6sWqHzogKL/CxbhcQP3Q8U5iSySGa39tQJxpIha3tMgcUl
-	NHIJtg3T2g3B+q5OtTTnphmmII9/R2QAubj1VsgCoiARgpaEvdRtHIKz8upfvx5iOCxNL7
-	3dYC5PgQadjsbOYESpkSSaNX68o0GYk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761770907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
-	b=ZjokwtAsPjTgKPciEs3bMK5UID67Ixhyh/hEk3sgPaEQ+CImR8iyzR6Mo0hW6L5V/6RBXH
-	FzyIe2x5AAWJ/RCg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761770907; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
-	b=FX/p9nMPP4ug6Jsu/qy7odhm6sWqHzogKL/CxbhcQP3Q8U5iSySGa39tQJxpIha3tMgcUl
-	NHIJtg3T2g3B+q5OtTTnphmmII9/R2QAubj1VsgCoiARgpaEvdRtHIKz8upfvx5iOCxNL7
-	3dYC5PgQadjsbOYESpkSSaNX68o0GYk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761770907;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=xXMm+8rNL3B9SMoW6XqHW2hL2qMAKNxXr/FwREZjE5o=;
-	b=ZjokwtAsPjTgKPciEs3bMK5UID67Ixhyh/hEk3sgPaEQ+CImR8iyzR6Mo0hW6L5V/6RBXH
-	FzyIe2x5AAWJ/RCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5083E1396A;
-	Wed, 29 Oct 2025 20:48:27 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wxFIE5t9AmkgJgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 20:48:27 +0000
-Message-ID: <113a75f7-6846-48e4-9709-880602d44229@suse.cz>
-Date: Wed, 29 Oct 2025 21:48:27 +0100
+	b=EXZ2RrXQ7UGb7aE/wYbb3YDYe6KiAm/BPL/xWjxJJgIM3UyXI3gdeP1TFCq9QrSvkTzssI
+	84EJA5TH7WhkkR5bxupzgZghMXP+RnhsMcvVHt6qMhosFdKRH+xPhhNyDQWBVMRCwvUKEN
+	sLX8Pgi1ojgIMGHtaie3hOsE4TTE+8w=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BCBDB43249;
+	Wed, 29 Oct 2025 20:50:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4CCC4CEF7;
+	Wed, 29 Oct 2025 20:50:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761771014;
+	bh=96hBjYLO6glNXMiHV19oAbp9mY8tSD04EESQaBrsYGQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jtIYnx4rKzS5Bl2pKNUBoXggwIkSEPJ20qORAwi8XgSuMhop9kCpgPAP4uCBnDpSS
+	 8upNL5V9ae3o52mouS6XP6vACLE0cDIF+vqa5rH1P4gxqGvzaXWUItmCpLxm6oZwh9
+	 1MSmgPrq67XZB/tXpobO4z4t29HH8Rm4QygRDJYJt0hqc0zd41fOKLt9m7q+Pl/SnA
+	 ORGC38bLTG6T4PLTmw4CqkRrFrQMSL61rrk3m/xLuxdzy8Z0I+0OzaSV55PXQaUQis
+	 YKBWaKAw+lVT/HipXyztgC57/7/xUVVSAMuUT9eF0otIWvzdtmY7+xUm8noF00j+R1
+	 vm1oTFnB1gDfg==
+Date: Wed, 29 Oct 2025 16:50:13 -0400
+From: Mike Snitzer <snitzer@kernel.org>
+To: Zorro Lang <zlang@redhat.com>
+Cc: linux-nfs@vger.kernel.org, linux-mm@kvack.org,
+	linux-xfs@vger.kernel.org
+Subject: Re: [Bug report][xfstests generic/751] hang on nfs writeback
+Message-ID: <aQJ-BfBblQ5hlgm1@kernel.org>
+References: <20251021051408.lv7dye5wywxhl3dg@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
+ <aPkFLDsQ71BrTXt7@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC 09/19] slab: add optimized sheaf refill from partial
- list
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
- <20251023-sheaves-for-all-v1-9-6ffa2c9941c0@suse.cz>
- <aP8dWDNiHVpAe7ak@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aP8dWDNiHVpAe7ak@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 150C2180009
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aPkFLDsQ71BrTXt7@kernel.org>
+X-Rspamd-Queue-Id: C807CA0008
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: hzctc9ijsjiegjawjh853e31td8xbwam
-X-HE-Tag: 1761770908-374461
-X-HE-Meta: U2FsdGVkX194mVhXmo92E2H99x508IUm3mxAQsiu4iZUG6I0drXzG7R8eu8YmV8nvGBPN+mEewOAySnOwA0aV5mIjEm7XQLXhYVRLrzFfRcy1UODICleemozjpJBm4QyutLHhK+Qf9uR/SM2YJ7rcSk7gBBrZsUs7bNigaFwy4DwaouO8W0GjWIjM4HNGmxoGaUM+hBSDBy6s+eVApjusmoOi2L85b1YyTLqnw7Zg8MAlRl82/P25CTlgkUIfoH6Iv6jctXyIJJ39eUcRqMbwet3PssLHo1Uzk1ceDOA1PA+62DLP1zomQWLIuIlLXEPHLG9FJGtbWz2qMqQk/STlYqNEh4YxZtPFAdO5UHspENFI7MfHcbsSmCm5dkXryshuT7KAPTue0pgQXMTJHwi5T//OJBJGwQwZY+aqpESs59vQdhFWdb7AhA5jgMlFKekJa+O4rBRYTUsfJlremdmMXKbA4hFI+l3X+id9IoRx4AGZ6cSbOGVvOzDrIcoU8gXBKbWxDQjabGu6A3S/YbppuO3oPGBn4ZmcGq6f4gkszTNlWqAkoSNZbMnLAbDD+2YqB3QmEkkctLfOt2u2smXlti/ZotI6y9PIksC6tIGE96QFnt7G3JdoAtz9eXQTOnsXqDoFv7HeS5kGXBEghOy2xTTMfjr8SBgt8EIkh7xn5gIf4Xn63v1e0ygmqudpHdvdiT80/Ay/Vb4oYUxOSv0U9bzdhaDpwtgiRMagK9yQXiO1mSyFFnXYA5hC9SNm3UJKGPunofBNf18wSiKakLNZP0QXjUSvq5t+aZA9+zd4LmR/TYLpJeaVEIxTU1DJg0BQiRELaj7rRQ387fJoMfJEzj45ml9YCReSU5lHrA8qY5gP6H6nVkzcFf7jZdt4nPZifnBxVrxYhzbkOdeBpKfdrfxGPlKE8VUH1VGzj7zi+uyhAm3OsWM6jQ7le5ODJ7sO7akyWT7+BczhlcCsFQ
- 1R5PoUhG
- p309wSSzUu3fCjD0t/+DzW0MBL80gHyTa7DjQOVXnOZ4iOxDuFeldZYvF4+QRzx+penr+Vb9inPg4z/OztW6sSoeypsYXo8GJ+U3X8SwznTBdJp0GkJ94z4q6aFgwyUwCYH0dq3Qe4pgUMdBcldEuUUE50BBAO+kdPvV+CHoj0TsWmFc24McykhwynTD83QTA8h2rzHumwiq55bShZ9oHvSidfQJZi7qgizxSIVRChNHpTGLi34E0PxmTy2SjcHbOWTfcVKlXKHdRq7t9bGlDg+ajDkEXQQrEVWaU
+X-Stat-Signature: wfp8piwxxiyuwyjdxs6rha1nppr14oum
+X-HE-Tag: 1761771015-621142
+X-HE-Meta: U2FsdGVkX1/b5D1QCJMMMSeaB9bTO0RotUEls7nc5v6ZeTmrTv0kyh3QOE78NuoqDQ7J7beD9tXI3ItKEIt014UE90Sl4iIkKt3jQ4DoPIyl61gshxAoN5Vi6DJCisFL53fn+4iI66ZZjbiazw4zRuTJeKhi3jbAs60enYPuGC0TZKgjL1WWdgOo9ocPtkzlGb/Loqv08VtiKM3YsUEo7MKQhh51r7RdBEbpDwRt0h6NF8rZ6YeJpwyaqXwgquRY5wXGfNMuytL5c5gDMR3oxCLqBCR2sFETfIVEzaNcYkCjf2J4CGu4KA0TBiX7k4XcuFSf/3PlSIFWwW8FyveJa//AP/zy+8GqgJb46MZzrWQfYQ3961564zJikcYC8DF5NyLLGMksCS2al29mBd7Yd+WejI6E41RECRHn8xUKGqy9KaVXyh5iuSbY8X1C5e2dUwAX/h4MEADlMJjHl27FoFC+7En63qXpVfDi6OGfv3XIPFkD9wLbTTetRM9N2IRz5VDT69QrL0pxaWSRwRlbAYD+7sTs+anVHlqqx4TqVjQW1US09KkZM4F7rEOJW45jQUlj6JdnDUsGdGuZ0cm2Z+XNL85tFeUBm+DEB05K/ge5jayZQ3EcNqMn9ZKqePowUo8Tijw+JzsWehxSZJrEowttl8eG4NMtTSYcqqICYF4rDkKXt22DYl+Zhf9zzFALNRQkj7L9EBGeSvHN2A7hXVhu7xIlKDauh/OD7fcYQnVVWsxS4ikebpl5V++L2nfan4dhQ5hr2RDPi4Kxokmy80C7E+INFlCy/XCcIMnAnAAFm8IT216vYT1OsWcB9tjQdRAjYSyVf7MbKRUFsWm6ZHdg8Hf22k7MqernJ7iSxYbXgU5ek6y0FXgM71Zs67ZdKCWvdg+8Xfn/55cGQ5Wtrj5Bxhc65mdSChbUGkPJIx5hUkImeKmO+esDdWKZxMDXiXki0BKpgcDFRQL+Q6o
+ /6vEekUV
+ btSlR9egwsEOghIlVndPOEnjeWF4SAr6MIXDQOQUVlfSR7K9zdQDX66ijG8OvVTzYnC8GNGBtzuV4qt+4wVMPOuITkbJ4YYAR1jFLwPUoQ9SklwFRjq8htUIwnz8enZ6LWU/1t9re7DMU/AsABxAM9l1N0vKiCF/Rv7SIBXwoF+YCsv45LR/XywJIpBKeBLjMZHLaMMSCREaSygKe3kXEDxUBykJsih5ZEW8WnGnqtPQ72ZIMyPE17ogmGFlPJD6UU6/YXP7u81ca6APIOz7ABjGqDBmqiKEQel1bg4ggdNz+1epRnBnKUG5gqr6BFssu2PkValNSienJwVBxh3BLnuLptINp56/17HmcqcqZJmNgNfvgbCtil3EqjZy3OBRG6Nx+RotfLmDa7740AF3xKHlLZA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,228 +92,218 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/27/25 08:20, Harry Yoo wrote:
-> On Thu, Oct 23, 2025 at 03:52:31PM +0200, Vlastimil Babka wrote:
->> At this point we have sheaves enabled for all caches, but their refill
->> is done via __kmem_cache_alloc_bulk() which relies on cpu (partial)
->> slabs - now a redundant caching layer that we are about to remove.
->> 
->> The refill will thus be done from slabs on the node partial list.
->> Introduce new functions that can do that in an optimized way as it's
->> easier than modifying the __kmem_cache_alloc_bulk() call chain.
->> 
->> Extend struct partial_context so it can return a list of slabs from the
->> partial list with the sum of free objects in them within the requested
->> min and max.
->> 
->> Introduce get_partial_node_bulk() that removes the slabs from freelist
->> and returns them in the list.
->> 
->> Introduce get_freelist_nofreeze() which grabs the freelist without
->> freezing the slab.
->> 
->> Introduce __refill_objects() that uses the functions above to fill an
->> array of objects. It has to handle the possibility that the slabs will
->> contain more objects that were requested, due to concurrent freeing of
->> objects to those slabs. When no more slabs on partial lists are
->> available, it will allocate new slabs.
->> 
->> Finally, switch refill_sheaf() to use __refill_objects().
->> 
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
->>  mm/slub.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++--
->>  1 file changed, 230 insertions(+), 5 deletions(-)
->> 
->> diff --git a/mm/slub.c b/mm/slub.c
->> index a84027fbca78..e2b052657d11 100644
->> --- a/mm/slub.c
->> +++ b/mm/slub.c
->> @@ -3508,6 +3511,69 @@ static inline void put_cpu_partial(struct kmem_cache *s, struct slab *slab,
->>  #endif
->>  static inline bool pfmemalloc_match(struct slab *slab, gfp_t gfpflags);
->>  
->> +static bool get_partial_node_bulk(struct kmem_cache *s,
->> +				  struct kmem_cache_node *n,
->> +				  struct partial_context *pc)
->> +{
->> +	struct slab *slab, *slab2;
->> +	unsigned int total_free = 0;
->> +	unsigned long flags;
->> +
->> +	/*
->> +	 * Racy check. If we mistakenly see no partial slabs then we
->> +	 * just allocate an empty slab. If we mistakenly try to get a
->> +	 * partial slab and there is none available then get_partial()
->> +	 * will return NULL.
->> +	 */
->> +	if (!n || !n->nr_partial)
->> +		return false;
->> +
->> +	INIT_LIST_HEAD(&pc->slabs);
->> +
->> +	if (gfpflags_allow_spinning(pc->flags))
->> +		spin_lock_irqsave(&n->list_lock, flags);
->> +	else if (!spin_trylock_irqsave(&n->list_lock, flags))
->> +		return false;
->> +
->> +	list_for_each_entry_safe(slab, slab2, &n->partial, slab_list) {
->> +		struct slab slab_counters;
->> +		unsigned int slab_free;
->> +
->> +		if (!pfmemalloc_match(slab, pc->flags))
->> +			continue;
->> +
->> +		/*
->> +		 * due to atomic updates done by a racing free we should not
->> +		 * read garbage here, but do a sanity check anyway
->> +		 *
->> +		 * slab_free is a lower bound due to subsequent concurrent
->> +		 * freeing, the caller might get more objects than requested and
->> +		 * must deal with it
->> +		 */
->> +		slab_counters.counters = data_race(READ_ONCE(slab->counters));
->> +		slab_free = slab_counters.objects - slab_counters.inuse;
->> +
->> +		if (unlikely(slab_free > oo_objects(s->oo)))
->> +			continue;
->> +
->> +		/* we have already min and this would get us over the max */
->> +		if (total_free >= pc->min_objects
->> +		    && total_free + slab_free > pc->max_objects)
->> +			continue;
-
-Hmm I think I meant to have break; here. Should deal with your concern below?
-
->> +		remove_partial(n, slab);
->> +
->> +		list_add(&slab->slab_list, &pc->slabs);
->> +
->> +		total_free += slab_free;
->> +		if (total_free >= pc->max_objects)
->> +			break;
+On Wed, Oct 22, 2025 at 12:24:12PM -0400, Mike Snitzer wrote:
+> On Tue, Oct 21, 2025 at 01:14:08PM +0800, Zorro Lang wrote:
+> > Hi,
+> > 
+> > When I did xfstests regression test on nfs, it hang on generic/751 many times,
+> > refer to [1](on x86_64) and [2](on aarch64). I've hit it 8 times until now.
 > 
-> It may end up iterating over all slabs in the n->partial list
-> when the sum of free objects isn't exactly equal to pc->max_objects?
-
-Good catch, thanks.
-
->> +	}
->> +
->> +	spin_unlock_irqrestore(&n->list_lock, flags);
->> +	return total_free > 0;
->> +}
->> +
->>  /*
->>   * Try to allocate a partial slab from a specific node.
->>   */
->> @@ -4436,6 +4502,38 @@ static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
->>  	return freelist;
->>  }
->>  
->>  /*
->>   * Freeze the partial slab and return the pointer to the freelist.
->>   */
->> @@ -5373,6 +5471,9 @@ static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
->>  	return ret;
->>  }
->>  
->> +static int __kmem_cache_alloc_bulk(struct kmem_cache *s, gfp_t flags,
->> +				   size_t size, void **p);
->> +
->>  /*
->>   * returns a sheaf that has at least the requested size
->>   * when prefilling is needed, do so with given gfp flags
->> @@ -7409,6 +7510,130 @@ void kmem_cache_free_bulk(struct kmem_cache *s, size_t size, void **p)
->>  }
->>  EXPORT_SYMBOL(kmem_cache_free_bulk);
->>  
->> +static unsigned int
->> +__refill_objects(struct kmem_cache *s, void **p, gfp_t gfp, unsigned int min,
->> +		 unsigned int max)
->> +{
->> +	struct slab *slab, *slab2;
->> +	struct partial_context pc;
->> +	unsigned int refilled = 0;
->> +	unsigned long flags;
->> +	void *object;
->> +	int node;
->> +
->> +	pc.flags = gfp;
->> +	pc.min_objects = min;
->> +	pc.max_objects = max;
->> +
->> +	node = numa_mem_id();
->> +
->> +	/* TODO: consider also other nodes? */
->> +	if (!get_partial_node_bulk(s, get_node(s, node), &pc))
->> +		goto new_slab;
->> +
->> +	list_for_each_entry_safe(slab, slab2, &pc.slabs, slab_list) {
->> +
->> +		list_del(&slab->slab_list);
->> +
->> +		object = get_freelist_nofreeze(s, slab);
->> +
->> +		while (object && refilled < max) {
->> +			p[refilled] = object;
->> +			object = get_freepointer(s, object);
->> +			maybe_wipe_obj_freeptr(s, p[refilled]);
->> +
->> +			refilled++;
->> +		}
->> +
->> +		/*
->> +		 * Freelist had more objects than we can accomodate, we need to
->> +		 * free them back. We can treat it like a detached freelist, just
->> +		 * need to find the tail object.
->> +		 */
->> +		if (unlikely(object)) {
->> +			void *head = object;
->> +			void *tail;
->> +			int cnt = 0;
->> +
->> +			do {
->> +				tail = object;
->> +				cnt++;
->> +				object = get_freepointer(s, object);
->> +			} while (object);
->> +			do_slab_free(s, slab, head, tail, cnt, _RET_IP_);
->> +		}
+> You've hit it 8 times, all on the same kernel?  Any idea if this is a
+> regression specific to 6.18-rc1 and later?
+>  
+> > I tested on latest linux v6.18-rc2. My underlying test device isn't loopback device,
+> > it's general disk, and make xfs on it:
+> >   meta-data=/dev/sda5              isize=512    agcount=4, agsize=983040 blks
+> >            =                       sectsz=4096  attr=2, projid32bit=1
+> >            =                       crc=1        finobt=1, sparse=1, rmapbt=1
+> >            =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
+> >            =                       exchange=0   metadir=0
+> >   data     =                       bsize=4096   blocks=3932160, imaxpct=25
+> >            =                       sunit=0      swidth=0 blks
+> >   naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
+> >   log      =internal log           bsize=4096   blocks=54324, version=2
+> >            =                       sectsz=4096  sunit=1 blks, lazy-count=1
+> >   realtime =none                   extsz=4096   blocks=0, rtextents=0
+> >            =                       rgcount=0    rgsize=0 extents
+> >            =                       zoned=0      start=0 reserved=0
+> > 
+> > Two xfs are mounted on /mnt/xfstests/test and /mnt/xfstests/scratch seperately,
+> > then export as:
+> >   # cat /etc/exports
+> >   /mnt/xfstests/test/nfs-server *(rw,insecure,no_root_squash)
+> >   /mnt/xfstests/scratch/nfs-server *(rw,insecure,no_root_squash)
+> > 
+> > The nfs mount option is only "-o vers=4.2". BTW, nfs server and client are
+> > in same machine/system.
 > 
-> Maybe we don't have to do this if we put slabs into a singly linked list
-> and use the other word to record the number of objects in the slab.
-
-You mean we wouldn't have to do the counting? I think it wouldn't help as
-the number could become stale after we record it, due to concurrent freeing.
-Maybe get_freelist_nofreeze() could return it together with the freelist as
-it can get both atomically.
-However the main reason for the loop is is not to count, but to find the
-tail pointer, and I don't see a way around it?
-
->> +
->> +		if (refilled >= max)
->> +			break;
->> +	}
->> +
->> +	if (unlikely(!list_empty(&pc.slabs))) {
->> +		struct kmem_cache_node *n = get_node(s, node);
->> +
->> +		spin_lock_irqsave(&n->list_lock, flags);
+> Being that NFS client and server are on the same localhost, I see
+> NFS's LOCALIO is being used (nfslocaliod mentioned in "locks held"
+> section, so IO is bypassing going over the wire to NFSD and is instead
+> being issued directly from NFS client through LOCALIO workqueue and
+> then down to XFS).
 > 
-> Do we surely know that trylock will succeed when
-> we succeeded to acquire it in get_partial_node_bulk()?
+> I'll try to make sense of the locking (reported below) but this will
+> take some time.
 > 
-> I think the answer is yes, but just to double check :)
+> Cc'ing XFS list because this is NFS LOCALIO ontop of XFS, could be
+> there is something fundamental in LOCALIO's nfslocaliod workqueue that
+> is setting us up for deadlock if XFS takes a specific path...
+> 
+> NOTE: fs/nfs/inode.c:nfsiod_start(), XFS's nature has influenced
+> LOCALIO workqueue config hacks already.. could be dragons lurking:
+> 
+> /*
+>  * Start the nfsiod workqueues
+>  */
+> static int nfsiod_start(void)
+> {
+>         dprintk("RPC:       creating workqueue nfsiod\n");
+>         nfsiod_workqueue = alloc_workqueue("nfsiod", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
+>         if (nfsiod_workqueue == NULL)
+>                 return -ENOMEM;
+> #if IS_ENABLED(CONFIG_NFS_LOCALIO)
+>         /*
+>          * localio writes need to use a normal (non-memreclaim) workqueue.
+>          * When we start getting low on space, XFS goes and calls flush_work() on
+>          * a non-memreclaim work queue, which causes a priority inversion problem.
+>          */
+>         dprintk("RPC:       creating workqueue nfslocaliod\n");
+>         nfslocaliod_workqueue = alloc_workqueue("nfslocaliod", WQ_UNBOUND, 0);
+>         if (unlikely(nfslocaliod_workqueue == NULL)) {
+>                 nfsiod_stop();
+>                 return -ENOMEM;
+>         }
+> #endif /* CONFIG_NFS_LOCALIO */
+>         return 0;
+> }
+> 
+> Mike
+> 
+>  
+> > # cat local.config
+> > export FSTYP=nfs
+> > export TEST_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/test/nfs-server
+> > export TEST_DIR=/mnt/xfstests/test/nfs-client
+> > export SCRATCH_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/scratch/nfs-server
+> > export SCRATCH_MNT=/mnt/xfstests/scratch/nfs-client
+> > export MOUNT_OPTIONS="-o vers=4.2"
+> > export TEST_FS_MOUNT_OPTS="-o vers=4.2"
+> > 
+> > 
+> > [1]
+> > [23369.572660] run fstests generic/751 at 2025-10-20 23:15:24 
+> > [-- MARK -- Tue Oct 21 03:20:00 2025] 
+> > [-- MARK -- Tue Oct 21 03:25:00 2025] 
+> > [-- MARK -- Tue Oct 21 03:30:00 2025] 
+> > [-- MARK -- Tue Oct 21 03:35:00 2025] 
+> > [-- MARK -- Tue Oct 21 03:40:00 2025] 
+> > [25069.500900] INFO: task kworker/u9:73:825900 blocked for more than 122 seconds. 
+> > [25069.501484]       Not tainted 6.18.0-rc2 #1 
+> > [25069.501822] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
+> > [25069.502385] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
+> > [25069.503258] Workqueue: writeback wb_workfn (flush-0:48) 
+> > [25069.782725] Call Trace: 
+> > [25069.787191]  <TASK> 
+> > [25069.787368]  __schedule+0x838/0x1890 
+> > [25069.799533]  ? __pfx___schedule+0x10/0x10 
+> > [25069.799852]  ? __blk_flush_plug+0x27b/0x4d0 
+> > [25069.800617]  ? find_held_lock+0x32/0x90 
+> > [25069.801292]  ? __lock_release.isra.0+0x1a4/0x2c0 
+> > [25069.801639]  schedule+0xd4/0x260 
+> > [25069.801902]  io_schedule+0x8f/0xf0 
+> > [25069.802162]  folio_wait_bit_common+0x2d9/0x780 
+> > [25069.802919]  ? folio_wait_bit_common+0x1dd/0x780 
+> > [25069.803324]  ? __pfx_folio_wait_bit_common+0x10/0x10 
+> > [25069.803684]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
+> > [25069.804254]  ? __pfx_wake_page_function+0x10/0x10 
+> > [25069.804602]  ? __pfx___might_resched+0x10/0x10 
+> > [25069.805160]  writeback_get_folio+0x3f9/0x500 
+> > [25069.806221]  writeback_iter+0x136/0x720 
+> > [25069.806628]  nfs_writepages+0x4f8/0x9b0 [nfs] 
+> > [25069.807100]  ? mark_held_locks+0x40/0x70 
+> > [25069.807403]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
+> > [25069.807846]  ? virtqueue_notify+0x68/0xc0 
+> > [25069.808346]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
+> > [25069.808925]  ? __lock_acquire+0x57c/0xbd0 
+> > [25069.809295]  do_writepages+0x21f/0x560 
+> > [25069.809576]  ? __pfx_do_writepages+0x10/0x10 
+> > [25069.809953]  ? rcu_is_watching+0x15/0xb0 
+> > [25069.810587]  __writeback_single_inode+0xe2/0x5f0 
+> > [25069.810982]  ? __lock_release.isra.0+0x1a4/0x2c0 
+> > [25069.811373]  ? __pfx___writeback_single_inode+0x10/0x10 
+> > [25069.811815]  ? writeback_sb_inodes+0x416/0xd00 
+> > [25069.812194]  writeback_sb_inodes+0x535/0xd00 
+> > [25069.812533]  ? __pfx_stack_trace_save+0x10/0x10 
+> > [25069.814193]  ? local_clock_noinstr+0xd/0xe0 
+> > [25069.814506]  ? __pfx_writeback_sb_inodes+0x10/0x10 
+> > [25069.814910]  ? __lock_release.isra.0+0x1a4/0x2c0 
+> > [25069.815407]  ? lock_acquire+0x10b/0x150 
+> > [25069.815703]  ? down_read_trylock+0x4b/0x60 
+> > [25069.816077]  __writeback_inodes_wb+0xf4/0x270 
+> > [25069.816441]  ? __pfx___writeback_inodes_wb+0x10/0x10 
+> > [25069.816864]  ? queue_io+0x329/0x510 
+> > [25069.817148]  wb_writeback+0x70a/0x9c0 
+> > [25069.817448]  ? __pfx_wb_writeback+0x10/0x10 
+> > [25069.817831]  ? get_nr_dirty_inodes+0xcb/0x180 
+> > [25069.818264]  wb_do_writeback+0x5d4/0x8e0 
+> > [25069.818575]  ? __pfx_wb_do_writeback+0x10/0x10 
+> > [25069.818975]  ? set_worker_desc+0x16e/0x190 
+> > [25069.819313]  ? __pfx_set_worker_desc+0x10/0x10 
+> > [25069.819669]  wb_workfn+0x7c/0x200 
+> > [25069.819997]  process_one_work+0xd8b/0x1320 
+> > [25069.820342]  ? __pfx_process_one_work+0x10/0x10 
+> > [25069.820694]  ? assign_work+0x16c/0x240 
+> > [25069.821053]  worker_thread+0x5f3/0xfe0 
+> > [25069.821364]  ? __pfx_worker_thread+0x10/0x10 
+> > [25069.821697]  kthread+0x3b4/0x770 
+> > [25069.822122]  ? kvm_sched_clock_read+0x11/0x20 
+> > [25069.822457]  ? local_clock_noinstr+0xd/0xe0 
+> > [25069.822790]  ? __pfx_kthread+0x10/0x10 
+> > [25069.823079]  ? __lock_release.isra.0+0x1a4/0x2c0 
+> > [25069.823430]  ? rcu_is_watching+0x15/0xb0 
+> > [25069.823729]  ? __pfx_kthread+0x10/0x10 
+> > [25069.824035]  ret_from_fork+0x393/0x480 
+> > [25069.864794]  ? __pfx_kthread+0x10/0x10 
+> > [25069.865076]  ? __pfx_kthread+0x10/0x10 
+> > [25069.865371]  ret_from_fork_asm+0x1a/0x30 
+> > [25069.879905]  </TASK> 
+> > [25069.880145]  
+> > [25069.880145] Showing all locks held in the system: 
+> > [25069.889550] 1 lock held by khungtaskd/37: 
+> > [25069.889886]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
+> > [25069.890603] 2 locks held by 751/825733: 
+> > [25069.890942]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
+> > [25069.891589]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
+> > [25069.892449] 3 locks held by kworker/u9:73/825900: 
+> > [25069.892818]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
+> > [25069.893530]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
+> > [25069.894333]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
+> > [25069.895056] 2 locks held by kworker/u10:2/826054: 
+> > [25069.895418]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
+> > [25069.896123]  #1: ffffc90001e1fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
+> > [25069.896952]  
+> > [25069.897085] ============================================= 
 
-Yeah as you corrected, answer is no. However I missed that
-__pcs_replace_empty_main() will only let us reach here with
-gfpflags_allow_blocking() true in the first place. So I didn't have to even
-deal with gfpflags_allow_spinning() in get_partial_node_bulk() then. I think
-it's the simplest solution.
+I was able to test xfstests generic/751 on a server in the Red Hat
+lab, but I used a different baseline kernel so far (its 6.12.53-based
+but has all of NFSD, NFS and SUNRPC changes from 6.18-rc1 backported).
 
-(side note: gfpflags_allow_blocking() might be too conservative now that
-sheafs will be the only caching layer, that condition could be perhaps
-changed to gfpflags_allow_spinning() to allow some cheap refill).
+The test runs without deadlock but there is one lockdep splat due to
+missing this commit:
 
+commit 45f69d091bab64a332fe751da9829dcd136348fd
+Author: Long Li <leo.lilong@huawei.com>
+Date:   Sat Jun 22 16:26:31 2024 +0800
+
+    xfs: eliminate lockdep false positives in xfs_attr_shortform_list
+
+    xfs_attr_shortform_list() only called from a non-transactional context, it
+    hold ilock before alloc memory and maybe trapped in memory reclaim. Since
+    commit 204fae32d5f7("xfs: clean up remaining GFP_NOFS users") removed
+    GFP_NOFS flag, lockdep warning will be report as [1]. Eliminate lockdep
+    false positives by use __GFP_NOLOCKDEP to alloc memory
+    in xfs_attr_shortform_list().
+
+    [1] https://lore.kernel.org/linux-xfs/000000000000e33add0616358204@google.com/
+
+    Reported-by: syzbot+4248e91deb3db78358a2@syzkaller.appspotmail.com
+    Signed-off-by: Long Li <leo.lilong@huawei.com>
+    Reviewed-by: Dave Chinner <dchinner@redhat.com>
+    Signed-off-by: Carlos Maiolino <cem@kernel.org>
+
+After applying that commit, a generic/751 retest comes up clean. I'll
+now switch to testing latest v6.18-rcX kernel.
+
+Mike
 
