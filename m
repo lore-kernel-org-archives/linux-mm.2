@@ -4,113 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2125DCCF9E9
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 09:57:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C74CCCF9F6
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 10:00:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6250B8E004B; Wed, 29 Oct 2025 05:57:24 -0400 (EDT)
+	id 9870D8E004C; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5FC8B8E0045; Wed, 29 Oct 2025 05:57:24 -0400 (EDT)
+	id 937908E0045; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4C4188E004B; Wed, 29 Oct 2025 05:57:24 -0400 (EDT)
+	id 7FF008E004C; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 360AE8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 05:57:24 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D634CBB736
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:57:23 +0000 (UTC)
-X-FDA: 84050699166.02.4309282
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 47097C0006
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 09:57:21 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YfW2UM64;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6AFD08E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:00:24 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 129FA49E1C
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:00:24 +0000 (UTC)
+X-FDA: 84050706768.16.D3BE417
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 4F0451A000A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 10:00:21 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bl6nJXM+;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761731841;
+	s=arc-20220608; t=1761732021;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qqgl0WoEbTgKKe2Gmw+CbLcc1Ynjine2xgmP5Tg3jQI=;
-	b=TmCQZYdKTeLNuKSqcFDdgpXTG1IDOz2a05ideA7oJYIWvVtK0Ex3Gd7PiaRxGOLjqnDZC/
-	nk7TzeyymX6Ch2Jl/vi1g8BQlAo6GTDU2m+F4dkHzICNcnuLgsmerPTPwZpN9iDaylgxbJ
-	zlyrPcCn2GGsOghvCdfMfGufR3cQPiY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761731841; a=rsa-sha256;
-	cv=none;
-	b=XsrGNuWrYNGUqnzG19oKXav7b5q0NPl2Pr6jldhPvp3LSrlQufCNVEzLipQdZbF59VxIEM
-	kcqvKbG3gIbmboj1y7kXG57+vZ0sj7/fPioYdhwqNDyUkO30cY2ZSwcKZGdxheoQNDqAfV
-	zXpO/o0Cmj6F3zeyA3smdZDi2fa/1GM=
+	bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
+	b=NNdNvX/pVFCSOs44pRulZPVCPNl/2gKQJNPk6NQPdAMCW/4020xhW01lVnEvRIGmiCpwHt
+	mfxb6Ev9DSiIhiLdqvmgzRr6dJqlOZcMFJyfGTHe5AqM4LkheLeh0VjKn/VnM40vU0ieDL
+	UOrF5k6klKjJSRKVkNJS7YLdobW9Wn0=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YfW2UM64;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Bl6nJXM+;
 	dmarc=pass (policy=quarantine) header.from=redhat.com;
-	spf=pass (imf22.hostedemail.com: domain of david@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=david@redhat.com
+	spf=pass (imf19.hostedemail.com: domain of david@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=david@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761732021; a=rsa-sha256;
+	cv=none;
+	b=QPg8LiQg5ENz5OulISt6ztxq10rawiqqe7d3WcC0xN2GHIL3wsVxEWEpwu36XO/TNybStp
+	kCdfwZqyln5C8AoofIUn3Epw3m26mcf5hO2mUtzPkynihrm7Ujmtc9F2LGx+LA5C95KfUk
+	KSp6Y1RwTOGQnXlPD7YnrgGqijL7dIs=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761731840;
+	s=mimecast20190719; t=1761732020;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qqgl0WoEbTgKKe2Gmw+CbLcc1Ynjine2xgmP5Tg3jQI=;
-	b=YfW2UM64wxSK1R0Wcz9n6lL2iJYnc8SfZinuUbfN9QKfzfrMDfcjSXNk69Ss8VpV8pmCRV
-	sDqoDATH7xNvWBqsrALSPVxvinZwZgUKrQahjG31DwaKSyueaPisg3Pb0/2LYJwraRyGBz
-	jkjTz97A+5NMVfC3qgZJLYi6g2iKUQI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
+	b=Bl6nJXM+2Bt0zK3cy5OzjYqWxx9/97RvTYbUdHAaFxcYXoV4o6Ln5LpX6TjaNBiYhM7nhs
+	ZVfWPsAi1Xpc91lkNLD6aqsyCA1mDYGZ3oEpOXcann4daFp9LX3vTj4Glj0Sk9y+CwpbQx
+	CYXuHDaA5RJFdsGhVOGSZbVwlP1EaUI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-175-MpZ1YfKiOviHi_mr9Fkhqg-1; Wed, 29 Oct 2025 05:57:19 -0400
-X-MC-Unique: MpZ1YfKiOviHi_mr9Fkhqg-1
-X-Mimecast-MFC-AGG-ID: MpZ1YfKiOviHi_mr9Fkhqg_1761731838
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4298da9fc21so2340657f8f.1
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:57:18 -0700 (PDT)
+ us-mta-636-hOv2DilUOTyDrO1Pc3Wv7A-1; Wed, 29 Oct 2025 06:00:18 -0400
+X-MC-Unique: hOv2DilUOTyDrO1Pc3Wv7A-1
+X-Mimecast-MFC-AGG-ID: hOv2DilUOTyDrO1Pc3Wv7A_1761732017
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-470fd92ad57so83484225e9.3
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 03:00:18 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761731838; x=1762336638;
+        d=1e100.net; s=20230601; t=1761732017; x=1762336817;
         h=content-transfer-encoding:in-reply-to:autocrypt:content-language
          :from:references:cc:to:subject:user-agent:mime-version:date
          :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qqgl0WoEbTgKKe2Gmw+CbLcc1Ynjine2xgmP5Tg3jQI=;
-        b=q01GcilANYoMyBh1n64w3K8ui0u1XQ1q/4mX3SjdbYGMwIJ3AuVi0vUMeAWgUVRGf1
-         mEJmcMKqJ+VEWCvU5wsymc95ptfIJlK1OJaUUoTjZTsknBEjIoqorwOjxim5UA40Bk8A
-         ElEXL3pk1rT7dNvNIuktbTn4MjCiBy37tQtQei4YLpG2IvvxGl57w8ZtcL/iKCROrcyI
-         xxeVJxJykytUy1aYLk1hlkjKiF48Tl2ciKF8+whlzAQWmh3Jfrp763pumtet3NjHd/FE
-         144ravbFoY8iNtKUGQ4yI5ShjhPNgcUOIpVMC032EGwqLYXFgwUAfjWEAeacr+3i7roN
-         CSSw==
-X-Forwarded-Encrypted: i=1; AJvYcCUcm812tRe0JQ5/2tppCZuwySkx7LuzuQMaghsM5G9jJCWPq4ev7lHHQvYmAqlux4ONbm6trynevA==@kvack.org
-X-Gm-Message-State: AOJu0YxSozh4h0+jCGe7xqkkdQeF2M7K1ZdZOHxXS19Tdg91zIrpq2vn
-	JoQPOqnNvR35rjQyCGQpjpxzj1LnftIk5OAI0OGzG4JFMNHlIcPAm9IpUF057ykdjbn5Fz/XS/L
-	dnjfLtTVL5/cvuQGLy+varSylBM19ZHAEpqYdkT7JxBEXH/xSKN7U
-X-Gm-Gg: ASbGncvg1f/9TkqUYdy0HT95zI1TrEFih9xN0viIK4zjlEIo9/AgtUZcBl97wkPiysw
-	YYnd8qbgiVIB1fHgWZ+JGJFi83BEJhANCTdFRH87ya/M5ST2tVgIppDH4HQWh7asbzFiXMaZvRN
-	QBuKfdzV0QAm2otbNW3HHMeHLTMd/PLw7bfQmQJwuIwKF3w0c6LXL4PGYPIxGlA2XaTyWj6levD
-	4VtQzU75+A++gu2iF5+SfE4P742m4u79QQH10ydQpWPfqD0Tvlvm/KDFXpEySLH5pR9j9dYauLX
-	+UNfkIcCV5+uPG+/fIFbLand/0mDfacsB62I16BTaUTe+ZqDCNrKCHsuiYgPws855Lz74xXDOsg
-	GmSQWHjKZSp5q8Z4iUopNhg==
-X-Received: by 2002:a05:6000:4382:b0:3d1:8d1e:8e9 with SMTP id ffacd0b85a97d-429aefbdfe9mr1681127f8f.32.1761731837809;
-        Wed, 29 Oct 2025 02:57:17 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IExZbPXgteVglylVVAK83EpEE4FYesirV3Lvw5YT039orgd8FXfS/PEHBhcvC3TGm9e0tm7bw==
-X-Received: by 2002:a05:6000:4382:b0:3d1:8d1e:8e9 with SMTP id ffacd0b85a97d-429aefbdfe9mr1681104f8f.32.1761731837363;
-        Wed, 29 Oct 2025 02:57:17 -0700 (PDT)
+        bh=hEtH/DOi8ufPul8rQIFdoeVO4A7KFJe7+IrA/7Qq9Tk=;
+        b=eOTj2be75T+7wmKLe1YOcybrGzdAybilgnomKYSKo8reaG6+rWSwhoAWcLLHGWCzrr
+         f4YtJjtCoMk21Lh5IKIjudTVobW+rUsmbzMqDrSX1REDTKyBb/rKFZoM2/myHFeztutG
+         oEc1PefICBCP4bZU6EcvK7MetsAlZHncSO79AcHE1n6fDLsOHNgjUhJyLB4ZrEUKZ17J
+         rVmTwAXSCPTeeMgQEcHVvVvFhE4W53c19f8Mz7Q9q0lis+TnpsRISD7Agrm3SgCNMKEE
+         sj8Ubdo8VWYCY7U6Zo3Lau0OSe0V2P+s6+h9KbkNCNDC+dAOYz8O7DPkIRUvDCZm+azP
+         xMtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWZzTpg2yeiOBZMP4jXHJUjiSsThV4E3G4AYWVNU7kYRpWYWWb+NBY3T33YbXkw7ome7ForDPum+Q==@kvack.org
+X-Gm-Message-State: AOJu0YyckgmXHHu33b69rS0DWuJxL/wgsNh2SLTBvR/n5ToBtPlE4BvG
+	PIcDTM5NA9umHbpqCAZwL008Z/AV29i2v+CfLdt/pCmMrLVxttzI+RcLpIe6uSMTuW3I5RLS4L+
+	PRBKz4wrDPHPV22lXQw7MkG4FoVYgWVkD2uWLrt02olFJdZP/f002
+X-Gm-Gg: ASbGncuFyhLoVjhHcN/NEa3zok8nNi6rrEbgV5uVk0zsDRbRRGKwjbBGjp+Jbqb1ixz
+	MJuy20eR/16GOucy7VTKj+pNW63UCrv0uzHjBbE9MXci02onJfcLOwR+6nAR8JGO9VvrsNMS1Eh
+	wUsP0S+9JRRL2Rh0VMndjtA65LK94fvvFGTCX+TVLD8djWskQAyZQ5togxsMDVkgcI9jLaiR90F
+	9FGtA/SowYMK6Lnab2Ei0Hg5N968biy05CN7xDqXFQkK5zciQuq4jlEc9FymYubUL07BgFwPnTp
+	m6FnDsBfzwZooYUWdl2J+41DZ+b67EJ0zQCG2DJLNDrjKZMs4aQ5JJh6WWNz70+Z3+zqlQksSkA
+	9aoSySKtbvRby7bOCzXkk7w==
+X-Received: by 2002:a05:600d:4398:b0:475:dae5:d972 with SMTP id 5b1f17b1804b1-4771e85156emr12759395e9.23.1761732016767;
+        Wed, 29 Oct 2025 03:00:16 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFnA3IRpFHhYsZzK6qc9l0qizFN8SkkYYfFwlHAG+3t4PNESgPO0z5ya7ZscSCTji9s1WIskA==
+X-Received: by 2002:a05:600d:4398:b0:475:dae5:d972 with SMTP id 5b1f17b1804b1-4771e85156emr12758875e9.23.1761732016284;
+        Wed, 29 Oct 2025 03:00:16 -0700 (PDT)
 Received: from [10.32.64.156] (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429952d5768sm26116915f8f.24.2025.10.29.02.57.16
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4771902fa8dsm39879465e9.8.2025.10.29.03.00.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Oct 2025 02:57:16 -0700 (PDT)
-Message-ID: <6bbdf4ce-10e3-429b-89fc-ef000f118fec@redhat.com>
-Date: Wed, 29 Oct 2025 10:57:15 +0100
+        Wed, 29 Oct 2025 03:00:15 -0700 (PDT)
+Message-ID: <db143076-afa0-4129-b5b0-eab85ec54aac@redhat.com>
+Date: Wed, 29 Oct 2025 11:00:14 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] s390: fix HugeTLB vmemmap optimization crash
-To: Luiz Capitulino <luizcap@redhat.com>, hca@linux.ibm.com,
- borntraeger@linux.ibm.com, joao.m.martins@oracle.com,
- mike.kravetz@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-s390@vger.kernel.org, gor@linux.ibm.com,
- gerald.schaefer@linux.ibm.com, agordeev@linux.ibm.com
-Cc: osalvador@suse.de, akpm@linux-foundation.org, aneesh.kumar@kernel.org
-References: <20251028211533.47694-1-luizcap@redhat.com>
+Subject: Re: [PATCH v1 1/1] KVM: s390: Fix missing present bit for gmap puds
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>, akpm@linux-foundation.org
+Cc: balbirs@nvidia.com, borntraeger@de.ibm.com, Liam.Howlett@oracle.com,
+ airlied@gmail.com, apopple@nvidia.com, baohua@kernel.org,
+ baolin.wang@linux.alibaba.com, byungchul@sk.com, dakr@kernel.org,
+ dev.jain@arm.com, dri-devel@lists.freedesktop.org,
+ francois.dugast@intel.com, gourry@gourry.net, joshua.hahnjy@gmail.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, lyude@redhat.com, matthew.brost@intel.com,
+ mpenttil@redhat.com, npache@redhat.com, osalvador@suse.de, rakie.kim@sk.com,
+ rcampbell@nvidia.com, ryan.roberts@arm.com, simona@ffwll.ch,
+ ying.huang@linux.alibaba.com, ziy@nvidia.com, kvm@vger.kernel.org,
+ linux-s390@vger.kernel.org, linux-next@vger.kernel.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com
+References: <d4a09cc8-84b2-42a8-bd03-7fa3adee4a99@linux.ibm.com>
+ <20251028130150.57379-1-imbrenda@linux.ibm.com>
+ <20251028130150.57379-2-imbrenda@linux.ibm.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -156,21 +165,21 @@ Autocrypt: addr=david@redhat.com; keydata=
  3iyY2Nsd7JxfKu1PRhCGwXzRw5TlfEsoRI7V9A8isUCoqE2Dzh3FvYHVeX4Us+bRL/oqareJ
  CIFqgYMyvHj7Q06kTKmauOe4Nf0l0qEkIuIzfoLJ3qr5UyXc2hLtWyT9Ir+lYlX9efqh7mOY
  qIws/H2t
-In-Reply-To: <20251028211533.47694-1-luizcap@redhat.com>
+In-Reply-To: <20251028130150.57379-2-imbrenda@linux.ibm.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 8aVEdvII0sZTWQXsvu8_KvjMHNzj362PkSIsmG6vyio_1761731838
+X-Mimecast-MFC-PROC-ID: ePYaNTTs1E1xlilIIIHU7qNtnc1B7ZrA5kNr38GCa6o_1761732017
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: sraesti9x5cfdq9pfbhow3ppdufkhcpg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 47097C0006
-X-HE-Tag: 1761731841-480065
-X-HE-Meta: U2FsdGVkX1+pNV0LHzxkedl+m7lcmRseW+lavrXBikmlwLuzLhpgf8GZpn6bejVbyMLe/ROMlfla1FTmCi57s+j54r5WrbDen0zDIEZl0KuzOAa7jrx+iINIba5ny0s8HpBSiRm07LtHTEDI2WZ9j7dVZpkWEdI0LtRwy6FssC6W44c/RdKItz+hRzJKP1sJxwW2e7awDQDniOx3W8EkFA7IzyWUIXUl6o8qNFx4Km5JEJ8GP6lz3y4doERRPIZkutq428aS+onVfECeADAd1uiY4tkldebTrx/2h365McqQYVqkx1mvJhvpKy7rRK70kgKER5/+9RKLuJBsmpq95/VdRtny3gqeF+OmHBA61Mak0hUd1pTsxdy3RpH1GzLL3Xs5USDk9zYirWsPvUHitm/kb+MYRWfNgVWkeXfQkuz/m84pU+bpvFcSr9OEMLBnjUNBIMMiOLwvS5YQIBOlOB8Fxa6j7rFBhpdFTO9X8xuZgMVh4xatBT0kp/nZUxg5cXLZP5uZj4iJcAVlAZ3CvByM4QBg7LeQ1u1LdFDnjF1tViEWk8f4oILKHyhmZ5SVW2ax5Pbzw9Lo3xdp3kxDY3H18hLlB2nZyhyGMclgl7aaJvXVoh63X7+va514HNLepy9uHU4Acfp80yGWczcFfBKuCRBFDLJhkgu5wgpZNl5CbuYwD4bizCMmGBF7j0hEE283M+etzGiz87mgBeXrMC19+5Rmi9vFyx7NcvpyytZZEQ6UVSjdoeQGRcWqW/MP1nDYkdR+UIV2/sFF/fgYrYhEpaEfRJ7c/ZeEwDR99rTQusdOHTldctU3kAQTnczjH88Sd9D5mnJgLq7C5J+EGgcTqWphRRpYcXmD461DnDjURQW+lBGPEQOE4Ff86kVJUB+FtWXEGe4EN5J0paU6dwjcJjAvULBC6Fa4l6Ky1hxDH76aYXSNPcRxoEZ4FNHIRD+mAvcuaxFIiJsJTUB
- KxlFdWCZ
- JEXcYo8pe/mfxIUzLW4QR+cmDcENUpgTVvxUcFnkVEocADbWSPZwEqGyD1mbQ5eDsnzhlLhe0e8ga/zKHmvOMK145UO4E+sJKoLsfwuCcSqZxvf5s4zpt2n5nljQE7ngEbNdLbkRnK0OUoz4Vne340AVljm3sKcIJm0aB1w2wwEfUYwJNysjzZDT8urnIGyo6YE1VxcWVEp0D6Qa4MrLtizATm9LIF9sUV3UuLmFJJSpal2RF+7kd/s1X00RofvKULkJoli9TvaPYLM5HEHguHyYAefJKygnruIpUrZK8OA5uwdZcOUmMMJjAEDvJaLqQfmU2d1yETZ0LNbEy7GW4mw79H6vl9SuIPtCLtXMsQ3L1ikPkpPvBcrpN4ig4PPwCDtIGF3go8poMw54lBNDBQTv87iPpMvt2LnI4/HfLGNLBdNfLWMZbecCqo3NQ43+R9HkTe3/+O/B4Nvt8U6oYlIs6rch0yX7rH+nFuUIYi/Khv/j1VDQj08cITA==
+X-Rspamd-Queue-Id: 4F0451A000A
+X-Rspamd-Server: rspam03
+X-Stat-Signature: zfm88zuiwmx9h7r5ynr1f3occndg8cua
+X-HE-Tag: 1761732021-519218
+X-HE-Meta: U2FsdGVkX19zec7RUGvuYAQ2wRqj+d4/G+eSbuIL1FurpKDkm29NZcuQLQ2MitTNJJM93ayRLOLKnJtYKJ8gjYsX3QlMb8cHmJUHTGIyNECK43d/zIJ61LRw+pqnCjXnMKJogMwJ20qceiCX81dvVqs/BCuchN/sjzR/kuPV4uKFRRtWSbwOEo1tezCYerWoXjoWxrlrdwkKUKg+mTloecRK3uHTO7GDqWBMYDCWw/Ydbp6la/6VscAXESzIQ5Wgm+74sm08QnOkgaM92LW90b/ubgbJzNbrhOFrqvO752zKihUhwr2wjRUlh8KypvJCiJqiYgU1ZnSugWnFEw90OETThiHM6ubZMHmrYycHlDWtXE9OGUnCF+JC+liPhQcLuNVz5u8CdFIHHF4yeCihckfQ5R/4FHtny1Z9ka3sbEfH3pkzkYSBxEg1stdv9RM7Vl41z3EslhtqNGinIwwNamx1ZkB3ni2CHw5PwUVH6T0WjMbH4ojUueIJ6SY0ViQPB8dvYawb026Xzzg+XaJPXqDgEV7Ks0i2ZJd2D/Be+YwrAHnNKV9EDmBsHS+Vo5nMhzVGy+l1Zu2IBo8/mnYHPNQZhQmwnwSLdvwKtHAkDzs7DhjO3TzYOlUpf3zIbB4LINnS8TiyNkm+HdZJROiZYUILRnIjyxkzkkynsPzNgHw0eWjFGppNzY748sAFWu/ReDWiEfHBGMQdP7VDVLETbUfRLY5TE2wvh2x2LGbpyrXQ7rN3zIjK/JLNigAINX9EbBRl322+YlLNPPw5I5MtM3KJCYuQS32hABaW258vlIv9w4TDVh7ObnnD7P+b6fvJrKjCmhp6AuPjJLQZrXzaAAnM7XfSyCTnwmLjYn5kRRlZKOeU2x+VO7AEnLpweRh4PRI4+py0pWw7pD/oyqXZl00famz/Q8dmEfu+EYGTkHHItyjhRESxwnbXFOencwtgEmmgPaFWn9VPhBgYdSO
+ 7OmkUzAw
+ z5T/hFh34fq0ZxTnT1V4HToZjtL3/Lx/N5sL+/JGrDeFvQf7HW6Zb+eBBI282gZLlPb5mjqX8MA8ZI2Eqs/i5MXQUUGZNOcyqb5j2LE7bmFfnFx0ESGHeOyuDz++ndcqk1WxQlYKUpzivIPmNHRVhu7PkTauo/o11lvFXelDRsku8xzZKHhmJNSQA8KrGRGl/rIOyp0ymIcARH/to9pDQb2VUHq1YAAEY/am3i2emxyJS8ELdJjc1oTlL6/mKs3voyjhXZb3jZeFnQTThfcWJBYxEtehlyAOP0WF39LoXSYh/Fwam1bjf5u1L8evezCQNbG2s+iHbXN66YRogRNOy4SjzQRH+LfWjmKbU7uJ/RDa6dCefWytvuCvD8Dx9DWvK/4tltZwrVhf1gI1MS+0ZGNMfM7cLieBGzF7nPztKHZgrkaVkwTXS/X/2gAzFTogZ0XW/CS3kmlG5sHk3a4ZhPtzx1LdGHb1nHxAqIeUiaGGN79RqJAIJj5Jc9oD6NMTJxcGVVNxFqFWx7oiCnN54et3I/ESMytwEqcSmMns9X3xc4PIYfwDjhUpfArZ73PcvEL/C6WcNasCHJE1LGgvd6fRQ+g2/X40KsguvMObcaQmGdOo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,82 +188,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 28.10.25 22:15, Luiz Capitulino wrote:
-> A reproducible crash occurs when enabling HugeTLB vmemmap optimization (HVO)
-> on s390. The crash and the proposed fix were worked on an s390 KVM guest
-> running on an older hypervisor, as I don't have access to an LPAR. However,
-> the same issue should occur on bare-metal.
+On 28.10.25 14:01, Claudio Imbrenda wrote:
+> For hugetlbs, gmap puds have the present bit set. For normal puds
+> (which point to ptes), the bit is not set. This is in contrast to the
+> normal userspace puds, which always have the bit set for present pmds.
 > 
-> Reproducer (it may take a few runs to trigger):
+> This causes issues when ___pte_offset_map() is modified to only check
+> for the present bit.
 > 
->   # sysctl vm.hugetlb_optimize_vmemmap=1
->   # echo 1 > /proc/sys/vm/nr_hugepages
->   # echo 0 > /proc/sys/vm/nr_hugepages
+> The solution to the problem is simply to always set the present bit for
+> present gmap pmds.
 > 
-> Crash log:
-> 
-> [   52.340369] list_del corruption. prev->next should be 000000d382110008, but was 000000d7116d3880. (prev=000000d7116d3910)
-> [   52.340420] ------------[ cut here ]------------
-> [   52.340424] kernel BUG at lib/list_debug.c:62!
-> [   52.340566] monitor event: 0040 ilc:2 [#1]SMP
-> [   52.340573] Modules linked in: ctcm fsm qeth ccwgroup zfcp scsi_transport_fc qdio dasd_fba_mod dasd_eckd_mod dasd_mod xfs ghash_s390 prng des_s390 libdes sha3_512_s390 sha3_256_s390 virtio_net virtio_blk net_failover sha_common failover dm_mirror dm_region_hash dm_log dm_mod paes_s390 crypto_engine pkey_cca pkey_ep11 zcrypt pkey_pckmo pkey aes_s390
-> [   52.340606] CPU: 1 UID: 0 PID: 1672 Comm: root-rep2 Kdump: loaded Not tainted 6.18.0-rc3 #1 NONE
-> [   52.340610] Hardware name: IBM 3931 LA1 400 (KVM/Linux)
-> [   52.340611] Krnl PSW : 0704c00180000000 0000015710cda7fe (__list_del_entry_valid_or_report+0xfe/0x128)
-> [   52.340619]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-> [   52.340622] Krnl GPRS: c0000000ffffefff 0000000100000027 000000000000006d 0000000000000000
-> [   52.340623]            000000d7116d35d8 000000d7116d35d0 0000000000000002 000000d7116d39b0
-> [   52.340625]            000000d7116d3880 000000d7116d3910 000000d7116d3910 000000d382110008
-> [   52.340626]            000003ffac1ccd08 000000d7116d39b0 0000015710cda7fa 000000d7116d37d0
-> [   52.340632] Krnl Code: 0000015710cda7ee: c020003e496f	larl	%r2,00000157114a3acc
->             0000015710cda7f4: c0e5ffd5280e	brasl	%r14,000001571077f810
->            #0000015710cda7fa: af000000		mc	0,0
->            >0000015710cda7fe: b9040029		lgr	%r2,%r9
->             0000015710cda802: c0e5ffe5e193	brasl	%r14,0000015710996b28
->             0000015710cda808: e34090080004	lg	%r4,8(%r9)
->             0000015710cda80e: b9040059		lgr	%r5,%r9
->             0000015710cda812: b9040038		lgr	%r3,%r8
-> [   52.340643] Call Trace:
-> [   52.340645]  [<0000015710cda7fe>] __list_del_entry_valid_or_report+0xfe/0x128
-> [   52.340649] ([<0000015710cda7fa>] __list_del_entry_valid_or_report+0xfa/0x128)
-> [   52.340652]  [<0000015710a30b2e>] hugetlb_vmemmap_restore_folios+0x96/0x138
-> [   52.340655]  [<0000015710a268ac>] update_and_free_pages_bulk+0x64/0x150
-> [   52.340659]  [<0000015710a26f8a>] set_max_huge_pages+0x4ca/0x6f0
-> [   52.340662]  [<0000015710a273ba>] hugetlb_sysctl_handler_common+0xea/0x120
-> [   52.340665]  [<0000015710a27484>] hugetlb_sysctl_handler+0x44/0x50
-> [   52.340667]  [<0000015710b53ffa>] proc_sys_call_handler+0x17a/0x280
-> [   52.340672]  [<0000015710a90968>] vfs_write+0x2c8/0x3a0
-> [   52.340676]  [<0000015710a90bd2>] ksys_write+0x72/0x100
-> [   52.340679]  [<00000157111483a8>] __do_syscall+0x150/0x318
-> [   52.340682]  [<0000015711153a5e>] system_call+0x6e/0x90
-> [   52.340684] Last Breaking-Event-Address:
-> [   52.340684]  [<000001571077f85c>] _printk+0x4c/0x58
-> [   52.340690] Kernel panic - not syncing: Fatal exception: panic_on_oops
-> 
-> This issue was introduced by commit f13b83fdd996 ("hugetlb: batch TLB
-> flushes when freeing vmemmap"). Before that change, the HVO
-> implementation called flush_tlb_kernel_range() each time a vmemmap
-> PMD split and remapping was performed. The mentioned commit changed this
-> to issue a few flush_tlb_all() calls after performing all remappings.
-> 
-> However, on s390, flush_tlb_kernel_range() expands to
-> __tlb_flush_kernel() while flush_tlb_all() is not implemented. As a
-> result, we went from flushing the TLB for every remapping to no flushing
-> at all.
-> 
-> This commit fixes this by implementing flush_tlb_all() on s390 as an
-> alias to __tlb_flush_global(). This should cause a flush on all TLB
-> entries on all CPUs as expected by the flush_tlb_all() semantics.
-> 
-> Fixes: f13b83fdd996 ("hugetlb: batch TLB flushes when freeing vmemmap")
-> Signed-off-by: Luiz Capitulino <luizcap@redhat.com>
+> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Link: https://lore.kernel.org/lkml/20251017144924.10034-1-borntraeger@linux.ibm.com/
+> Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+> Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
 > ---
+>   arch/s390/mm/gmap.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
+> index 8ff6bba107e8..22c448b32340 100644
+> --- a/arch/s390/mm/gmap.c
+> +++ b/arch/s390/mm/gmap.c
+> @@ -599,8 +599,9 @@ int __gmap_link(struct gmap *gmap, unsigned long gaddr, unsigned long vmaddr)
+>   					| _SEGMENT_ENTRY_GMAP_UC
+>   					| _SEGMENT_ENTRY;
+>   			} else
+> -				*table = pmd_val(*pmd) &
+> -					_SEGMENT_ENTRY_HARDWARE_BITS;
 
-Nice finding!
+I'd add a comment here like
 
-Makes me wonder whether the default flush_tlb_all() should actually map 
-to a BUILD_BUG(), such that we don't silently not-flush on archs that 
-don't implement it.
+/* Make sure that pmd_present() will work on these entries. */
+
+> +				*table = (pmd_val(*pmd) &
+> +					_SEGMENT_ENTRY_HARDWARE_BITS)
+> +					| _SEGMENT_ENTRY;
+>   		}
+>   	} else if (*table & _SEGMENT_ENTRY_PROTECT &&
+>   		   !(pmd_val(*pmd) & _SEGMENT_ENTRY_PROTECT)) {
 
 Reviewed-by: David Hildenbrand <david@redhat.com>
 
