@@ -4,90 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A56FCCF9EB
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 12:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 731D6CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 12:50:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3B2298E0069; Wed, 29 Oct 2025 08:32:13 -0400 (EDT)
+	id 428CE8E006A; Wed, 29 Oct 2025 08:50:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 33B798E0045; Wed, 29 Oct 2025 08:32:13 -0400 (EDT)
+	id 3FFC08E0045; Wed, 29 Oct 2025 08:50:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2037E8E0069; Wed, 29 Oct 2025 08:32:13 -0400 (EDT)
+	id 315BB8E006A; Wed, 29 Oct 2025 08:50:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 08BBC8E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:32:13 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id AF2CA5A20D
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 12:32:12 +0000 (UTC)
-X-FDA: 84051089304.02.35DF802
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id D7E32C000E
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 12:32:10 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FJgv2viE;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 204668E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:50:05 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id A9AF113BD4B
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 12:50:04 +0000 (UTC)
+X-FDA: 84051134328.16.68580F5
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 998AA100010
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 12:50:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GowXhPmN;
+	spf=pass (imf14.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761741131;
+	s=arc-20220608; t=1761742202;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=63Hr9geJeZINSi0+iZx5lG4HnJMwESbGP4GJKJg5SkA=;
-	b=GSsmZrzIVWib6v2Gow9I6ssCdOmivgYDu6yLhHhrUq/ejOshwh96THBxQkKQBAYIlIgrN2
-	tZrxbYleMEDi5jdDC99rwIdafrG/MQO7y8wjud8phy27Jaua6csiIeUF3nW2auIgahvK08
-	+VnYdXPeCf3WMOVaoJRiglATa0yChM0=
+	bh=KAgBTvcu80fXe1fwekyVRC1/bvwUvUT01UOXn7IaFcw=;
+	b=fKulHTrNnddKZnJjbaU+V3+jSElM3d8xUx88qeyevKX/GdDr0e0wEYb1YGmttpL4j+O/jM
+	gjuSim3JBJC+3Xzn+7OGkmtbleV6WYz+Z7FbGEkvUCS3G9H8LOkr/jk3ugYR5rg5gSWZbd
+	GVLGDL3wQX+Qvsm7TOJdDnwTMJhGT6U=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FJgv2viE;
-	spf=pass (imf28.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761741131; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=GowXhPmN;
+	spf=pass (imf14.hostedemail.com: domain of hca@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=hca@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761742202; a=rsa-sha256;
 	cv=none;
-	b=rknXOIv1OPXn2vmAo+RhC6VlAOGFdX0ntEM8OBQK81IgStgPAEhlWv+XbUgn6g/xYH7W9X
-	3htfU6CDlUI/A8Gqe/Q8/eSKW2lf4Ndwk0T/8nCjP8eOvGxvy1n6RTBy81r3M+XPrw5Unq
-	3cMM8+j6QupkM/1abSnRf86W6k68t+Q=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9448142B62;
-	Wed, 29 Oct 2025 12:32:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71C35C4CEF7;
-	Wed, 29 Oct 2025 12:32:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761741129;
-	bh=bwJ2LDA4HRhC+HobQk4QKdidu746ps7rOg5uVjEgqro=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FJgv2viE4T0S7HMJU6Yh7xCC80x72PQjEKuQzhXPuI+TXewfU5c5NVc/W52pu7PQ7
-	 e5k/ft0v6KR0Wb16oe7Q37oPx+ZQEeGi6s/xnccQrVaKwi91vkHYJXFRUReY/IZ3nc
-	 4T97Tr1tWM9CQOEhIqJfxhtbk/zLt8h/HLZx2l64WfT7BRo8ZITf3nhN7slWoTc8dt
-	 oNjOLZpMChg/E6wI6M2RLrWSalIRfMVI6zvruFfFi5MDVHjLMgws2oM92LLZVguItY
-	 uScNW57JyDgVNiPgPx/zywwoqvGhxQ/EvK2QveGnFjEJ4jUyqupUot16mS9/hUiRZe
-	 sv6QR5mXH2ACw==
-Date: Wed, 29 Oct 2025 13:32:04 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Joanne Koong <joannelkoong@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, Brian Foster <bfoster@redhat.com>, 
-	linux-xfs@vger.kernel.org, linux-mm@kvack.org, hch@infradead.org, djwong@kernel.org, 
-	willy@infradead.org
-Subject: Re: [PATCH v5 0/7] iomap: zero range folio batch support
-Message-ID: <20251029-entrichten-anrollen-b9eb57a2914f@brauner>
-References: <20251003134642.604736-1-bfoster@redhat.com>
- <20251007-kittel-tiefbau-c3cc06b09439@brauner>
- <CAJnrk1Yp-z8U7WjH81Eh3wrvuc5erZ2fUjZZa2urb-OhAe_nig@mail.gmail.com>
+	b=Prvhdqp+vkFG6ds4mYb6AwiFm4E0CxHOUarBVKMGfLZt3GnRK/gdwevTIg2A3azwQ/FSp9
+	s6/deqspnFRWMS10BkirJgFCsGS1hptEm6ABU80aXV8TXlaG8FGE53IhC1WmS7nAn2meos
+	MYNpOqWRSnphEvKAkvzy0xYkczVsGlI=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59TBHOBO026005;
+	Wed, 29 Oct 2025 12:49:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=KAgBTvcu80fXe1fwekyVRC1/bvwUvU
+	T01UOXn7IaFcw=; b=GowXhPmN50B8D8idGyqNnq9J0FAlWPYP7kD2Rmh4Q5NETS
+	derlG0pNjxRp1uOkOd++Up22tK2CrDqEQpb5fxpCV6OD4Q4Fng9RQmeK+qZVh1bA
+	0hqpIczKCgL1O6IzzGIrZR8GmN1M5vY29O2iUOVu+eb4nif2WoW7LeuoFPCnKKe4
+	yvOhdBTq9H9BZowPTjxlcS4ablwmRkITvbQrXBJrZ7NQwnPkpFf86e8jVHMyOsAW
+	oU8DVPrGXqDWnwzBD33HBO78MUxOHoPqLIM/jPMklwsvGyy14vjb5QxPIi4iOaUz
+	1s3AMTuTp0uzu8d5Seg/DiJCLCiAG+x3lkQOPtMw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34aak487-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 12:49:59 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59T9kxoN030747;
+	Wed, 29 Oct 2025 12:49:59 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33wwkb0g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Oct 2025 12:49:58 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59TCntFQ44433838
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Oct 2025 12:49:55 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DC9020040;
+	Wed, 29 Oct 2025 12:49:55 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B0CFC20043;
+	Wed, 29 Oct 2025 12:49:54 +0000 (GMT)
+Received: from osiris (unknown [9.155.211.25])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 29 Oct 2025 12:49:54 +0000 (GMT)
+Date: Wed, 29 Oct 2025 13:49:53 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: Luiz Capitulino <luizcap@redhat.com>, borntraeger@linux.ibm.com,
+        joao.m.martins@oracle.com, mike.kravetz@oracle.com,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-s390@vger.kernel.org, gor@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, agordeev@linux.ibm.com,
+        osalvador@suse.de, akpm@linux-foundation.org, aneesh.kumar@kernel.org
+Subject: Re: [PATCH v2] s390: fix HugeTLB vmemmap optimization crash
+Message-ID: <20251029124953.8393Cc7-hca@linux.ibm.com>
+References: <20251028211533.47694-1-luizcap@redhat.com>
+ <6bbdf4ce-10e3-429b-89fc-ef000f118fec@redhat.com>
+ <20251029104457.8393B96-hca@linux.ibm.com>
+ <9a8254b9-92f8-4530-88e8-fca3b7465908@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJnrk1Yp-z8U7WjH81Eh3wrvuc5erZ2fUjZZa2urb-OhAe_nig@mail.gmail.com>
-X-Rspamd-Queue-Id: D7E32C000E
-X-Rspamd-Server: rspam11
+In-Reply-To: <9a8254b9-92f8-4530-88e8-fca3b7465908@redhat.com>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=ALkgKXG8 c=1 sm=1 tr=0 ts=69020d77 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jL9k_VB0GEcHRAsgpWwA:9 a=CjuIK1q_8ugA:10 a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-ORIG-GUID: d7fou95aMW-uoHoBvQs44vXWPA3v3hlP
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX/oTo6Xh50MtI
+ tyftiHDyPqefL6i4ewtPwSFaHIfzYG5hcU61cVUCmE90icNKNJPTPq2CeETrBXDHeI0rfosiAQy
+ K6ZTRo5A7we91nVh7IppPMSZN8yrpEPNjTjmrsrK28U9Xgz4MO2dRmcScvGoQx0iHbFV8ABTarp
+ odLOX8K8D+KdOEOSAlIm2XNTojsSqNjGYdiCQOX7+GmbYtyHz0AnRA4jiGZ5u5KBbpTBWKEcgVn
+ Zn7Bkm78kGwYsfxNvb/77vQlYtBAgylrI//8hvqa916XjUWCSw7QwYAw+cdvxUvYX+CI5G9jgnv
+ OK2GtuYXvZhVIT81bggT50K+vpwF85EZ8LUrZ/Dx8caprN82Fr8OnUromFPNKBb27BB6p37t/TC
+ N3kUgCnqtPVrQ5t7cUHB4gB/Jke0Iw==
+X-Proofpoint-GUID: d7fou95aMW-uoHoBvQs44vXWPA3v3hlP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-29_05,2025-10-29_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 impostorscore=0 lowpriorityscore=0
+ clxscore=1015 adultscore=0 bulkscore=0 malwarescore=0 phishscore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 998AA100010
+X-Stat-Signature: ugk5z57t5dcbogz6ebc8fs4a5xn3qw34
 X-Rspam-User: 
-X-Stat-Signature: 1xzbts8optb4ojesat593tmmy43uwm9e
-X-HE-Tag: 1761741130-170245
-X-HE-Meta: U2FsdGVkX19uevPjy+aXiH/V89iO5MbscqIM8CnLuXdZRRH37AT4CO9g8Yzbas/Lz7VkISS0msHIQVNsn7stDWLQnNh5vQ2bWFURoZlexUIMCQvASEtd6NNbYcjPDKNt9bHp0SahsjKg8U8JAXbFS/lqzYjWYYLd7OdcgUArAWdUzz7JiNe2whD9WHCCXb69kr6xXKpMHophaKkYDhEcDOj37LEfltaIqlz9T0gjnmezqwHm1YcW7dOsgCY4iZphxfsjLacZms5M37aPP0SO8dN8kmSTJaFKi49qVm55MBUeR2DEyVjkAlAtHE7c2L7CgcrGh0CC1zquzt+iL3CRrk4PUsKnwXPMg3/sLNrgqyxK3DIFxBdNFUAgN+51UWQySXJxMtXZFhCKMO0MMHwibO48Jb1qq6DLa+uG5idq/whH33ny0uolVNJc3Qt8cg2nUe1Aawzy/0+fQ4PAPbL5s5Bd1/he0G0Hfz0+y5uFj6rjbF2UnOlVEperMZZwej4g5dIWXn6R/uZGaWxxPg1+MDODfc6B+lkXHkN04iS7L6dno8mTDwGJD2sdt//7VpByiCoLrAF5DenfY8ZJmBP2+PFozovKwmMThChks3Kg1TfD+9ulmc3eHaRTd3DYljnn8V96xzPuEqd0RiFz1nz1fD1zvT+0NvP/YD+IfU/ssO06E09wAEDK377XB4qE6sHicoJJ+F7W3PihtlL3I0O50S/8MpF7U/XWQe7dYDg++qfAyC5kuuF+OUO+GAddrkya9/s/E2CXKU3F4U/mDwbGpHubTND9V/Sj3yNuZMCSsfzCwWzu/dRI6i3LPCPzaA8L897agGJdFl47PSdxcNfbqrnkiPbZ4WCAefqmS5j1Mh2DUiOjlYVyvnxoE6/+yFVqkfRdUl0cm3Qfula6WrO7qtbYUsXit2rQx79ZNVU92uTDSIy5wzOTZPNgsC65lNaPhc12ocHp18TteetuK14
- gSWPyI1Z
- BNZEr4rA7tMgMNlyNFPsZsTjhn4yXTCYTRsBBnotm50ice3cJbFmx5/Vp8HbvbEflChm7PI/msiY3JD+yEw1cXx/pbV/UnDwNNBgXyfmkZIPId8Pj3g05kebdvlrak6Ua0beiV0Ltn5KtbI0IxVkbBeZTYYPbx7Yah3dTGV0qwcqOczlgJQMN2DCifCPmQkHmbPv3TBuhAygEYjQ0J4KHKgNdH4JnFiMfUwz3AA2zAzvQCkMW27nRXppSvgfOkVNCBAawa2JmfpqhcxpWUaHxoM77VyBRWPchq6QcERGZmHy/SHXTdH0aVRsq9AV6McllZZBOGi1F1Ea5rC55p+qlcMHO7HgKsKUOlk+o
+X-HE-Tag: 1761742202-790984
+X-HE-Meta: U2FsdGVkX19ftLHKW3u1Q/+/NwZhpqhaszaTrzrKPDKaNzB3PDvvl4PSLHbYoI2bUz2C321YbzXzY8aCCrQsei6zd0Cms2SWKG41b7JvecHqgKtwSO9UCJUpljQvEmvPU/wdeDHGATFriSwdUovziys/MvJyz86xmG/d5oB5YGDDFC+A+0nYYweeHccCkFCmM/aZ6+tVDDbF2Hz6462AEwXR4ltlsWjxt2QwDrnXvexny8Lz4B3pB71n51QMU010sQbUhOb6GgLsu25Z0E/ZZPn9EDirYRna4GhheP3tI7dj2LQYk4PODNKdgEc0S6LPpzDDlR2Bz/sghWX3JRd6gjc2YXmH5VzQECrJJ8HHlpnaViIUjN5+rYyMaiy9lFxYWaFfVgAsVewtAfPCfl6YbdF9qTTBAqQn/u05qkegesxrZ3vwR6dFU98XzvzRJ+EuH/n9+Fd3zmDHZCYWwJtCzkPDT2UQxOa28u1zxMq7NlCuLHrU8dbYIiZaD8xY43u2vg7IUc/EfE11Kq09p3a3L+uzQ84jEc7YYURodGWCXdo+AGxyvnSMkFuIPNfoSx/f0zmM2mYivLRrDhdIZHKC02nN26BKnd3sugrcay6QAXg0ywlQcIYl46FohqpXG4JQZHrXamEDkX/bRaIcRmpJLuX+Hdhon/BGFg2aJP35PppAkjPj7S7z/XbGidEOCOxhKYwxbDJY74KVptuIsGOzyIEgz5rWuhR6nBr+d8gqDOB/UpDmzhecUhx1craxGlj5JCztLDzV2al+e2vKfzAzT0Lro4ujOR0UQq9wET+DMHlwRvzFGgpW334CSXP55cfAdXjfcEQ/xT+XZzkmnpaFF4Ux4NCXQtTlaYVsm6FZStA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,67 +140,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 20, 2025 at 05:14:07PM -0700, Joanne Koong wrote:
-> On Tue, Oct 7, 2025 at 4:12 AM Christian Brauner <brauner@kernel.org> wrote:
-> >
-> > On Fri, 03 Oct 2025 09:46:34 -0400, Brian Foster wrote:
-> > > Only minor changes in v5 to the XFS errortag patch. I've kept the R-b
-> > > tags because the fundamental logic is the same, but the errortag
-> > > mechanism has been reworked and so that one needed a rebase (which turns
-> > > out much simpler). A second look certainly couldn't hurt, but otherwise
-> > > the associated fstest still works as expected.
-> > >
-> > > Note that the force zeroing fstests test has since been merged as
-> > > xfs/131. Otherwise I still have some followup patches to this work re:
-> > > the ext4 on iomap work, but it would be nice to move this along before
-> > > getting too far ahead with that.
-> > >
-> > > [...]
-> >
-> > Applied to the vfs-6.19.iomap branch of the vfs/vfs.git tree.
-> > Patches in the vfs-6.19.iomap branch should appear in linux-next soon.
-> >
-> > Please report any outstanding bugs that were missed during review in a
-> > new review to the original patch series allowing us to drop it.
-> >
-> > It's encouraged to provide Acked-bys and Reviewed-bys even though the
-> > patch has now been applied. If possible patch trailers will be updated.
-> >
-> > Note that commit hashes shown below are subject to change due to rebase,
-> > trailer updates or similar. If in doubt, please check the listed branch.
-> >
-> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-> > branch: vfs-6.19.iomap
-> >
-> > [1/7] filemap: add helper to look up dirty folios in a range
-> >       https://git.kernel.org/vfs/vfs/c/757f5ca76903
-> > [2/7] iomap: remove pos+len BUG_ON() to after folio lookup
-> >       https://git.kernel.org/vfs/vfs/c/e027b6ecb710
-> > [3/7] iomap: optional zero range dirty folio processing
-> >       https://git.kernel.org/vfs/vfs/c/5a9a21cb7706
-> 
-> Hi Christian,
-> 
-> Thanks for all your work with managing the vfs iomap branch. I noticed
-> for vfs-6.19.iomap, this series was merged after a prior patch in the
-> branch that had changed the iomap_iter_advance() interface [1]. As
-> such for the merging ordering, I think this 3rd patch needs this minor
-> patch-up to be compatible with the change made in [1], if you're able
-> to fold this in:
-> 
-> diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-> index 72196e5021b1..36ee3290669a 100644
-> --- a/fs/iomap/buffered-io.c
-> +++ b/fs/iomap/buffered-io.c
-> @@ -867,7 +867,8 @@ static int iomap_write_begin(struct iomap_iter *iter,
->         if (folio_pos(folio) > iter->pos) {
->                 len = min_t(u64, folio_pos(folio) - iter->pos,
->                                  iomap_length(iter));
-> -               status = iomap_iter_advance(iter, &len);
-> +               status = iomap_iter_advance(iter, len);
-> +               len = iomap_length(iter);
->                 if (status || !len)
->                         goto out_unlock;
+On Wed, Oct 29, 2025 at 01:15:44PM +0100, David Hildenbrand wrote:
+> BTW, I'm staring at s390x's flush_tlb() function and wonder why that one is
+> defined. I'm sure there is a good reason ;)
 
-Thank you! Folded as requested!
+Yes, I stumbled across that yesterday evening as well. I think its only
+purpose is that it wants to be deleted :). I just didn't do it yet since I
+don't want to see a merge conflict with this patch.
+
+I also need to check if the only usage of flush_tlb_page(), which is also a
+no-op for s390, in mm/memory.c is not indicating a problem too.
+
+> > Changing active entries without the detour over an invalid entry or using
+> > proper instructions like crdte or cspg is not allowed on s390. This was solved
+> > for other parts that change active entries of the kernel mapping in an
+> > architecture compliant way for s390 (see arch/s390/mm/pageattr.c).
+> 
+> Good point. I recall ARM64 has similar break-before-make requirements
+> because they cannot tolerate two different TLB entries (small vs. large) for
+> the same virtual address.
+> 
+> And if I rememebr correctly, that's the reason why arm64 does not enable
+> ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP just yet.
+
+Ok, let's wait for Gerald. Maybe there is a non-obvious reason why this works
+anyway.
 
