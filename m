@@ -4,105 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21EF5CCD1BF
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 06:40:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4EFBECCF9E9
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 06:55:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6949A8E0037; Wed, 29 Oct 2025 02:40:24 -0400 (EDT)
+	id 9228A8E01A0; Wed, 29 Oct 2025 02:55:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66BFF8E0015; Wed, 29 Oct 2025 02:40:24 -0400 (EDT)
+	id 8F9FF8E0015; Wed, 29 Oct 2025 02:55:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A92E8E0037; Wed, 29 Oct 2025 02:40:24 -0400 (EDT)
+	id 7C7988E01A0; Wed, 29 Oct 2025 02:55:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 46A818E0015
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:40:24 -0400 (EDT)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id D401B14078B
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:40:23 +0000 (UTC)
-X-FDA: 84050202726.05.6858DB5
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf19.hostedemail.com (Postfix) with ESMTP id A494F1A0009
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:40:20 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=IpMOnKmo;
-	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id 64D868E0015
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 02:55:00 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 05A0B5B37A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:55:00 +0000 (UTC)
+X-FDA: 84050239560.29.0AEEABC
+Received: from mail-lf1-f44.google.com (mail-lf1-f44.google.com [209.85.167.44])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 0C1E74000A
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 06:54:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UE82q54L;
+	spf=pass (imf07.hostedemail.com: domain of brgerst@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761720022;
+	s=arc-20220608; t=1761720898;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R2FdD5J/Lr6BnGwMKRTDIEW2p4Dh3z/n14/cPtSxKg4=;
-	b=g7mBGoXMR8YMHNnJHv1L5tgrV6ffOSP25hSSOX3Egc6dhytnVdrC69uwoH+JAvcuvhMy+C
-	b6Dw8O5wBprW+h58aufMVgtxlDZZKaDy9CCaFKJdQPs0p2Vgu1+yXGa521w18e9x0+WL7n
-	PpNr6UVJO2rN+xEEH0Cv8ZjrJS7zQ6M=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=IpMOnKmo;
-	spf=pass (imf19.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761720022; a=rsa-sha256;
+	bh=GDqF9BgrJ7R48G+OSHsQqZ22RHXmw3YvmJtykHqVDo8=;
+	b=oIHrTwfNeVdYgiwcd73uWFGKJ7xEvtkoV+t+dDfEZHHassJzY0YC+NRrCdIU0rSEpAtaOB
+	V8pfVTCAwt1boktsj40eyq7aIQIdocUBl4dGpG7aWYGjy+df19Lkn+jR0I5fUnAciee8zk
+	uQkWAH/opuKVCtn38zjj15OmWb7/284=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761720898; a=rsa-sha256;
 	cv=none;
-	b=TPShehj7DfHZab/gt4xoeLrQ2gd/tj3kqXLFXOTXXEWHtO/UPSCe1+D9w9pgPfhqHqWu9Y
-	GESihtWoO1zbWO1Idf4+xVagQXeTWQlfwuYO/YyxIrEe3ylCtH4Lk+dPoYD+ITQiKJhbVW
-	SGItmV6mh8z3wYNXN0bguKTqtBi4G8E=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=R2FdD5J/Lr6BnGwMKRTDIEW2p4Dh3z/n14/cPtSxKg4=;
-	b=IpMOnKmoS6zK+4EVtk8S3WHaTh5AL00RQBseN5kgB2Ev70POZb4Je5zUJWtprvuJpp47OgMEq
-	MOXFez0vV1bPbCJ4ziREV4gK0zcNxU3m1eII/EP21O++DpFU7LSEZsnLYqk6jaxqESBjosdlxTd
-	uSlw04DKUcdrRNDy8XH4TYQ=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cxHfV2CvBz1prQ0;
-	Wed, 29 Oct 2025 14:39:46 +0800 (CST)
-Received: from dggemv706-chm.china.huawei.com (unknown [10.3.19.33])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8643D18048D;
-	Wed, 29 Oct 2025 14:40:15 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv706-chm.china.huawei.com (10.3.19.33) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Oct 2025 14:40:15 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 29 Oct 2025 14:40:14 +0800
-Subject: Re: [PATCH v2 1/1] mm/ksm: recover from memory failure on KSM page by
- migrating to healthy duplicate
-To: Long long Xia <xialonglong2025@163.com>
-CC: <markus.elfring@web.de>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <wangkefeng.wang@huawei.com>,
-	<qiuxu.zhuo@intel.com>, <xu.xin16@zte.com.cn>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, Longlong Xia
-	<xialonglong@kylinos.cn>, <david@redhat.com>, <lance.yang@linux.dev>
-References: <20251016101813.484565-1-xialonglong2025@163.com>
- <20251016101813.484565-2-xialonglong2025@163.com>
- <af769443-e855-81d0-a44a-d5890f5d1d2f@huawei.com>
- <7c069611-21e1-40df-bdb1-a3144c54507e@163.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <db70f612-bbb1-0f9a-3dd6-884b1d64ab61@huawei.com>
-Date: Wed, 29 Oct 2025 14:40:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	b=PCOMubSp/mzOku/gSe49xrQgFrdmQjxhatmSyDDbtXb44HobK9xkdysIQY7bHwpI7sHdjr
+	OuUvZoHs6M8nDKXjH+sWqNUOaSywDdePL3AVZd6vjF4293Xb5NYbz3XDfOFkw/OJmzmw/C
+	JvFWuW5PtkgOubXs+F5JlXXP5GezRNU=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UE82q54L;
+	spf=pass (imf07.hostedemail.com: domain of brgerst@gmail.com designates 209.85.167.44 as permitted sender) smtp.mailfrom=brgerst@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lf1-f44.google.com with SMTP id 2adb3069b0e04-59310014b8eso1825808e87.3
+        for <linux-mm@kvack.org>; Tue, 28 Oct 2025 23:54:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761720896; x=1762325696; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GDqF9BgrJ7R48G+OSHsQqZ22RHXmw3YvmJtykHqVDo8=;
+        b=UE82q54LJKyIO1XAK3ym4eoG4HBLeDiGE7DHeJEdMZ0BxZ4dxG2Z6YawfAkbTHCDqH
+         NgJGLV1x66bWD7MSomEMP9SB37Cdcs/Qb4QTd5Q00fBGfHsF//vlbSEoODepfUF550jy
+         GYCEdxW+/kvKkq5CwI8Y7nlnBx9mi3SO7JD/zWnacCn6urRnnkV+5qi2My79h765lDl1
+         NoT8pO11AGLk5UnvxaXEjUSqd0fSIV/kXMZ/Wvc4WWdsT+EG47gn+7kBOsIKgy9G5GHz
+         +1VwWC8mMQyvOL8QPhiwreJpOPOk2PGnUjSENANWEJD6QpCaCIyZzJrUTh3dB6G5tCls
+         Targ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761720896; x=1762325696;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GDqF9BgrJ7R48G+OSHsQqZ22RHXmw3YvmJtykHqVDo8=;
+        b=dAiFrdQOQWXzTfVfHxsod3bP6DQ17qIzgwoon2BO2jTNseosiJ7MwBZBeQsKTtJFfN
+         oVGHhvNJtoTOQxzxOAeDpBDMrP09f1liLweHKrPjrgQAYmQFhLslXeBaqQhzkoOl7srp
+         14lRT56EoFDVF66r0IdwNC3S/hvsIyT0wAgWMeuv49Ib0VfrpUfxn2x/0j/A+smP3j2Q
+         ZrmmOIy22q9/csg49Ie6wv0AvKmlo3Msq0NNItEfbsQLYkNqBHYZ4Sn3igrhrPVzWkmf
+         XuVdRNpZf7ji2TimrTSfbHaCckNf6cMflOJ7ueIrVC8RYYkapBd825VFfqvthMTQKaY6
+         i2nw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKKVRc56ydvT2zjay5hBpxJJZWpFbjB32xlmrOxYvHfR1n8wzrgBQtJmTSY9KCrYjdbTrVpVGm9w==@kvack.org
+X-Gm-Message-State: AOJu0YzNlwrH2Z2Lt2+KRRR0inoHpRnpZsi+bZJqG2GivYzVqgRRnhTc
+	EctkufvlAil9dnR3LdTIfkFan4UVRRKNXxzBs+Yd82R+nPH2bY5GlldaojdC5Zy+n0xpWrvQR7h
+	c0BvJ8Ei63w8YHCSDdSHMz/MaBRIlSQ==
+X-Gm-Gg: ASbGnct+nyyzLsgY1AK6Q6qUsBxnVn6XvurMIzcAs09oqtQonlxewZyN4pY3lkHXqgv
+	E83Nz1Hu9C2ViGZcGd7IfQkDHM7FQaRUOTAdTfkdKT98PbD9NWe9w+jKT0pwT6WmszziKUlu+Ho
+	/droAwXKghh3Z6gg3h/AQWMpbjLVrBPZGPOVwIXFwC15Q6JrH01u7FyL+QPJuvfUY5poemLoXUr
+	mbGSfDiv/fI2id2f1zTJeJ0ki5IYBurvnher6ytgZ7dgUClmL4I4vZX7o19bDUW+BbqdAV895k=
+X-Google-Smtp-Source: AGHT+IGEuL5EZ1//R48jmqcfeWhsVo1m8oxthAF3NZBoYhNUuWGZKmZifPFDiAMnhMvwmoelT2mK6IbqIEbGCeJQ3WQ=
+X-Received: by 2002:a05:6512:6c9:b0:57a:311:3234 with SMTP id
+ 2adb3069b0e04-594128e9881mr684224e87.55.1761720895815; Tue, 28 Oct 2025
+ 23:54:55 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <7c069611-21e1-40df-bdb1-a3144c54507e@163.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: xypsdszqttptw8d54jpfdz6stojfar3t
+References: <20251026221208.1938173-1-hpa@zytor.com> <20251026221208.1938173-4-hpa@zytor.com>
+In-Reply-To: <20251026221208.1938173-4-hpa@zytor.com>
+From: Brian Gerst <brgerst@gmail.com>
+Date: Wed, 29 Oct 2025 02:54:43 -0400
+X-Gm-Features: AWmQ_bmfiyfREKo0e-gaQFIywqypW-gaTtMVt4rv1DnveKwp_KlVvqDZ1gAvjyk
+Message-ID: <CAMzpN2g1G9Jc6eL4L+Rq3kGvKALt-tuaA3NKUuZ-jJXeaKuPRA@mail.gmail.com>
+Subject: Re: [PATCH 3/6] x86/entry/vdso32: remove int80_landing_pad
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, "Theodore Ts'o" <tytso@mit.edu>, 
+	=?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+	Xin Li <xin@zytor.com>, Andrew Cooper <andrew.cooper3@citrix.com>, 
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Ingo Molnar <mingo@redhat.com>, 
+	James Morse <james.morse@arm.com>, Jarkko Sakkinen <jarkko@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Kees Cook <kees@kernel.org>, Nam Cao <namcao@linutronix.de>, 
+	Oleg Nesterov <oleg@redhat.com>, Perry Yuan <perry.yuan@amd.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Thomas Huth <thuth@redhat.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-sgx@vger.kernel.org, 
+	x86@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: jjn8m57tsbohq8jbwkhht1urcwnch1qz
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: A494F1A0009
-X-HE-Tag: 1761720020-442591
-X-HE-Meta: U2FsdGVkX1/nJflsxM9MZL+HaE8JO4VfwVHhzFq+FG9cwck24BotAg7NcDQtEBsxktL7R9HLraXihTtGekW9iC/zUeu1kA1Yjp0XUyCHE+hZU6YZ32Jz0nwbpx0YqVuB8bjc1VUi7qMsOCL1w7/enjVQdsdb+EiDMeFwCxq9iDOpkqZk1klt2mOu1g4iZ5C03wNaT2rP1b0P9LF/Kl6cVjBSaGGnAsopkqMT4RqldxiQMg+CIdZ74OjOr/4OxOhfrLMBYBHHiFukVC8d4VptExPsFvzFaBiQBNx6UdNTgynHO4ER5YdvBs2Xb7UV4aMVSxKykUDvMDJZUAenjTdkIWRp76/CVW8sRY85QhNElSUEzOvBoZ/WwI0nOAfbIzlWe1nuQdz9Zi15e6Aih2i4nICy9z0EE7w/EOLiZWwJCZjGYdfzwmq5ufMFEdsyrYpxctz0Dx9HNbcdD0/ZBPUk1CtfMkj/rvOabDptXQ4cMEa9B/AYQLw01IRIJ8BA8I/NuZEV9LQvltVPomVAcIBl4JteG7HV+j17nGzRfmeADV6MkzgKoEfttdZ2l+mV2bT5z7ReZNWh2Y9PkS9fJXiugdfK55DpWYrfVtakSKazv8/Z9TpdFvRwghAdRzxURna4Os8H8jHTklpLYovUvXpHwKr4TsBWbc8F6biTKRLOm7UFar3XLBqw+xwuqDIcAnkWXLS3SvSv/1ONJpeQIED93bPcQfGCyFLmU9XJwGXWZKPj+lk50WnufKC1wcNjU9WrrnAA4XhnsdjUHtbChHgW+Uf3R3nYO2mZqj1ynQ6dctmcCZ55ef4xfeOCUHO/oTuZiOqZLxcOlzyo7L922H4z1EeCG6GP1X9+RDDTSP3v/xrdKyvaul2sKmPQAaqXzlOyJ+vb4KRZXrcnn904T9ymX7KeZTqn2l3BdFrCeH7srlxMgfGyJd4dflv2eQv9gv+FiofDMGKKH3N5Vex0y7/
- HdOyP14H
- viiLm4xOg02UjJ08gnds5gSd3k/BfKRR1A/hKqvvZVw7Z9SnGu3PAr4L6srd26BRmtCxauHlDzvpE95ASVe4oWuscJq0QtmGcMBktFPxY0nJ5UBl8823xp1sA5ybJgUxtkuBf6XEXgr6C6HrLvrPiMcVx5ObGcpvdWBszjCF1F1xTOW9kGzwS6U+BUyg+GggXpoy7CL2dDR8BZ5DoSlr6vvN3ElzpBNXJFXuSjAjQe/YD1u9zqqziMZnX4asnS5LvpzkSF8hWBXfwTv1BmCzkutYSFiEwHY4GUSKOcsbUGqVCG8gmRfwwqkb6pp0YLwBQKxBmGndMN5aExzUDzfziWM3M/r+m52vzHn4KuD/XZS8Ao5uY7+7mZb6AVYi1YqwFhacQ9SFpAws+OzFzTQ0C8MHhEQ==
+X-Rspamd-Queue-Id: 0C1E74000A
+X-HE-Tag: 1761720897-368879
+X-HE-Meta: U2FsdGVkX1+Q5BApOXHYhEP08NpgxPRCnK+L5pn0k/bINTF5JRbWxCLB6G1cZS/pUhcD7Rp1JCTw2jGPvbFaUwrRJMubC38lLUbiffe94Mzn1lJO3PBZlFytQvlKQvJK7kjI2KE4D2AcvRrGO6RopAUqBkOjCl/gbtNkmVCyg8JVWsi26IHwA1VWZhTv7YpB6fJ5FNMJbP4xqkpX5DspUdUMiteo3KshZK/WZx28UBuOm/oLSB2C4Y8yz7Jjo0qHAThiSQGKh06hknQD03P0qmFuK5SPZnuZEakNbYFfh6A6fWPB7yaZ6z62AlaNZahp5eLDw0SyrZrQEZFfQQzOkpZTYbnqtNeHQwJ+FO4uwcKI9IyTdyHiFeGxdz2er5s046SNZ0auheVyQxnbRW9OGS8y2ilFTvlIXiNXS8IvTF8gKyclwfnb1/MnxyzWMyuwTfYqyH5qQfnjxNa5XJiPNAdXwBFkehCvPu5ijfYwagge949FKzc2BLjjG4YcwikP11LJ16dCaYlLVoKWJaENVy3bWnWx19T7Z9yJ4zF8xohXoTn+SONkgGGCjfzU1oliHaWRbP13psoNX9L3TOiDqOYLhC6im1dfdcp/Du9lG7MglqNN2R6eRL5dIAAeAyZiauxEpJSJa+2G3F9jtkRkVepkk/72iMNY+IW66evGhA3/OO+sU5PjwEXwmjKwpWaOdyxUoWPwcwzBEcpWg+nGDcghaU1Y6MAVqXnskRBKurrCOeF5bYicHMCjZ5TdSCGiPtXbs7hcHC6m+qg0V4QhDq5Fmxl5hXM6EHdvl3Ey17FO32oEL2l8QO+7NNw+q2uV/ak37+RjdsMhVXwzywN6Q5kg6V7rpxwdXuXfcQiugmWrfY6S6TMrKXvqrDid4BfY1qu0ZRxBef0nraSKkph73cA3AysObz3wLO5y6UkuGzlkz/zS4L+MygpidYbznhY8Uq/4VS6uO9V+OMsWNFe
+ y0zPK+Cx
+ V5MD9hHaNNVNe87Gye3GHc6aw6GhDaE/ZCc7K4yNXCVvXg2Ae+vjuB2taVrcS21oxyzVT5onH1K4y1D69VVV41YWIjZZ1A1aCDkBDpIvi3DcBXzfVyRLwHc5Z6FzuAWSbPPX0WPvRI0c1nnQ5uzcYZMCXYEmkHGotIKzwogGCZpgCjAiWggAKel73vB95gEZJS/0w95v4Xdbx/wYC900K5F8+tHWNQNfqknDR0dMO459fN7UoH/9D9wBdshpNRnQ4eh/9CitkyWcgp1+Tyd/Xd+s1K3Jx+Kaw28/lyu3s4B7Fj4y4JQbcSdONWlfJ8bT0+khcporD4/3Wc9tPPC3Fn5foog8b3lyZ4Si8Hp46N60hgrVcAjmMmR5MQLtFJiPVtJllR0s/b0U+kdd8EBezu3dhYZMGt2NySH+iPuwEj18b7XT2fY20zTNZTYGWcOwVk/PQC655AlPmLqBJDuiF4dBnkg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,132 +125,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/28 15:54, Long long Xia wrote:
-> Thanks for the reply.
-> 
-> 在 2025/10/23 19:54, Miaohe Lin 写道:
->> On 2025/10/16 18:18, Longlong Xia wrote:
->>> From: Longlong Xia <xialonglong@kylinos.cn>
->>>
->>> When a hardware memory error occurs on a KSM page, the current
->>> behavior is to kill all processes mapping that page. This can
->>> be overly aggressive when KSM has multiple duplicate pages in
->>> a chain where other duplicates are still healthy.
->>>
->>> This patch introduces a recovery mechanism that attempts to
->>> migrate mappings from the failing KSM page to a newly
->>> allocated KSM page or another healthy duplicate already
->>> present in the same chain, before falling back to the
->>> process-killing procedure.
->>>
->>> The recovery process works as follows:
->>> 1. Identify if the failing KSM page belongs to a stable node chain.
->>> 2. Locate a healthy duplicate KSM page within the same chain.
->>> 3. For each process mapping the failing page:
->>>     a. Attempt to allocate a new KSM page copy from healthy duplicate
->>>        KSM page. If successful, migrate the mapping to this new KSM page.
->>>     b. If allocation fails, migrate the mapping to the existing healthy
->>>        duplicate KSM page.
->>> 4. If all migrations succeed, remove the failing KSM page from the chain.
->>> 5. Only if recovery fails (e.g., no healthy duplicate found or migration
->>>     error) does the kernel fall back to killing the affected processes.
->>>
->>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
->> Thanks for your patch. Some comments below.
->>
->>> ---
->>>   mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>   1 file changed, 246 insertions(+)
->>>
->>> diff --git a/mm/ksm.c b/mm/ksm.c
->>> index 160787bb121c..9099bad1ab35 100644
->>> --- a/mm/ksm.c
->>> +++ b/mm/ksm.c
->>> @@ -3084,6 +3084,246 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->>>   }
->>>     #ifdef CONFIG_MEMORY_FAILURE
->>> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
->>> +{
->>> +    struct ksm_stable_node *stable_node, *dup;
->>> +    struct rb_node *node;
->>> +    int nid;
->>> +
->>> +    if (!is_stable_node_dup(dup_node))
->>> +        return NULL;
->>> +
->>> +    for (nid = 0; nid < ksm_nr_node_ids; nid++) {
->>> +        node = rb_first(root_stable_tree + nid);
->>> +        for (; node; node = rb_next(node)) {
->>> +            stable_node = rb_entry(node,
->>> +                    struct ksm_stable_node,
->>> +                    node);
->>> +
->>> +            if (!is_stable_node_chain(stable_node))
->>> +                continue;
->>> +
->>> +            hlist_for_each_entry(dup, &stable_node->hlist,
->>> +                    hlist_dup) {
->>> +                if (dup == dup_node)
->>> +                    return stable_node;
->>> +            }
->>> +        }
->>> +    }
->> Would above multiple loops take a long time in some corner cases?
-> 
-> Thanks for the concern.
-> 
-> I do some simple test。
-> 
-> Test 1: 10 Virtual Machines (Real-world Scenario)
-> Environment: 10 VMs (256MB each) with KSM enabled
-> 
-> KSM State:
-> pages_sharing: 262,802 (≈1GB)
-> pages_shared: 17,374 （≈68MB）
-> pages_unshared = 124,057 (≈485MB)
-> total ≈1.5GB
-> chain_count = 9, not_chain_count = 17152
-> Red-black tree nodes to traverse:
-> 17,161 (9 chains + 17,152 non-chains)
-> 
-> Performance:
-> find_chain: 898 μs (0.9 ms)
-> collect_procs_ksm: 4,409 μs (4.4 ms)
-> Total memory failure handling: 6,135 μs (6.1 ms)
-> 
-> 
-> Test 2: 10GB Single Process (Extreme Case)
-> Environment: Single process with 10GB memory,
-> 1,310,720 page pairs (each pair identical, different from others)
-> 
-> KSM State:
-> pages_sharing: 1,311,740 （≈5GB)
-> pages_shared: 1,310,724 （≈5GB)
-> pages_unshared = 0
-> total ≈10GB
-> Red-black tree nodes to traverse:
-> 1,310,721 (1 chain + 1,310,720 non-chains)
-> 
-> Performance:
-> find_chain: 28,822 μs (28.8 ms)
-> collect_procs_ksm: 45,944 μs (45.9 ms)
-> Total memory failure handling: 46,594 μs (46.6 ms)
+On Sun, Oct 26, 2025 at 6:12=E2=80=AFPM H. Peter Anvin <hpa@zytor.com> wrot=
+e:
+>
+> There is no fundamental reason for the int80_landing_pad symbol. If ip
+> falls within the vdso, and the vdso is moved, we should change the ip
+> accordingly, regardless of mode or location within the vdso. This
+> *currently* can only happen on 32 bits, but there isn't any reason not
+> to do so generically.
+>
+> Note that if this is ever possible from a vdso-internal call, then the
+> user space stack will also needed to be adjusted (as well as the
+> shadow stack, if enabled.) Fortunately this is not currently the case.
+>
+> At the moment, we don't even consider other threads when moving the
+> vdso. The assumption is that it is only used by process freeze/thaw
+> for migration, where this is not an issue.
+>
+> Signed-off-by: H. Peter Anvin (Intel) <hpa@zytor.com>
+> ---
+>  arch/x86/entry/vdso/vdso32/system_call.S |  1 -
+>  arch/x86/entry/vdso/vma.c                | 16 ++++++----------
+>  arch/x86/tools/vdso2c.c                  |  1 -
+>  3 files changed, 6 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/x86/entry/vdso/vdso32/system_call.S b/arch/x86/entry/vd=
+so/vdso32/system_call.S
+> index 2a15634bbe75..d14eca4403c5 100644
+> --- a/arch/x86/entry/vdso/vdso32/system_call.S
+> +++ b/arch/x86/entry/vdso/vdso32/system_call.S
+> @@ -62,7 +62,6 @@ __kernel_vsyscall:
+>
+>         /* Enter using int $0x80 */
+>         int     $0x80
+> -SYM_INNER_LABEL(int80_landing_pad, SYM_L_GLOBAL)
 
-Thanks for your test.
+This is still needed by do_fast_syscall_32().
 
-> 
-> Summary:
-> The find_chain function shows approximately linear scaling with the number of red-black tree nodes.
-> With a 76x increase in nodes (17,161 → 1,310,721), latency increased by 32x (898 μs → 28,822 μs).
-> representing 62% of total memory failure handling time (46.6ms).
-> However, since memory failures are rare events, this latency may be acceptable
-> as it does not impact normal system performance and only affects error recovery paths.
-> 
 
-IMHO, the execution time of a kernel function must not be too long without any scheduling points.
-Otherwise it may affect the normal scheduling of the system and leads to something like performance
-fluctuation. Or am I miss something?
-
-Thanks.
-.
+Brian Gerst
 
