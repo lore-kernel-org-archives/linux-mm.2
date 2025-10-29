@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D508CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:09:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 18947CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:10:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 28DB98E00EF; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
+	id 638CA8E00F0; Wed, 29 Oct 2025 16:10:03 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23E438E00B2; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
+	id 6101C8E00B2; Wed, 29 Oct 2025 16:10:03 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 12F888E00EF; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
+	id 526098E00F0; Wed, 29 Oct 2025 16:10:03 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id ED5D28E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:09:39 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id BADC012B43E
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:09:39 +0000 (UTC)
-X-FDA: 84052242078.30.C03F5B5
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	by imf24.hostedemail.com (Postfix) with ESMTP id D3A75180003
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:09:37 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=GiO+NP1C;
-	spf=pass (imf24.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 401658E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:10:03 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 17FC41A0981
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:10:03 +0000 (UTC)
+X-FDA: 84052243086.20.047E60C
+Received: from mail-10629.protonmail.ch (mail-10629.protonmail.ch [79.135.106.29])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 182C91C0019
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:10:00 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=pBdq+49r;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.29 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761768578;
+	s=arc-20220608; t=1761768601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9kO+NK4R04JM70PmVsjA3ThrFoFrY2dEYZyEQtxD9Gc=;
-	b=nGJklTLQMBEK3L722gwadcOcUjODcu+wsZYstmhOg6FgPoDZ7zFzGycWwE2h4OqYmLMO3X
-	8k2K8vh28x1Le7huqdEs3AZVZ2XQIpTILYuxK/qToFK+2G4FXviCHwEhXS9YuOqbp8zXB/
-	mRpBzNzJO9uUHMuW/B4PmNTX3Iz3orE=
+	bh=IfDaBLNxvsgHIrxT5fF1MIs0svV8id6MA4rHYub5Mv4=;
+	b=HCO5vuJFaOtBFq5qwLBTpPj+FhU8k4fCpKFkSKaXw1ZLNWQWQqXJ+FHMxhfOLPxz7xsgR0
+	hbOE3cuDixhZxllLC4Ud+FYt1ELq35/3V4VZeR+GMQ/1S6OtmGMYUtLcyOvvFVWEXB6ySK
+	jSuc72JrgE8OYC5Fh9c0fGwW5PllYKM=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=GiO+NP1C;
-	spf=pass (imf24.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
-	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768578; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=pBdq+49r;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf21.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.29 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768601; a=rsa-sha256;
 	cv=none;
-	b=tU7cG7CShK3BYEfBPsRWOU74neYNyzL//3eWNAbz59A0Gos6NB4euepS3GDQaZvOD9OCZu
-	MIpaVo8oPlPLL2eo+eQZSr/v0saDY5DwG0QBX7vFLjCEAwxB3TQ1H12cxi6G1Y3grJqQ/P
-	pQVThITrN6uYSbEf4A7t0AvttNCKNCc=
+	b=pYt9r1WTFo6C1ajYPo8DHZSr5WohdR9VaaNTBFRqq2J2JbNSZ4nJKewM7umNHYZ5DCE4wX
+	gPoaMaWFwaP7QzYbv1Mu8SDnsZrvLSCZqVoImo5Lhyn1yUrbpvFT2K1EYPtMff3jrEdFxf
+	q3+FxyS3Y0PnCX2O3St7SwUv+v8JiKg=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1761768575; x=1762027775;
-	bh=9kO+NK4R04JM70PmVsjA3ThrFoFrY2dEYZyEQtxD9Gc=;
+	s=protonmail3; t=1761768596; x=1762027796;
+	bh=IfDaBLNxvsgHIrxT5fF1MIs0svV8id6MA4rHYub5Mv4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=GiO+NP1Cl8/oha+EezztD/oioG80KLBwC09Ce0/RmuvQMCBBOpsvpeyrM1SYKP380
-	 L55FlMbYoS9vvMYp6u+V/7HJh5NlPM25E3S/mc7Yo6015R0C0GV6qsbAZ0uhT1F7A0
-	 mpcNgf97G1MEObQ5l3M7Y1fy71MJY1hXHoqBjAcP6kuvTg7wW06FUUqhHu+0cQ9ob4
-	 74pYfXnPEt5uOz28lW7xSav9FPCJaxYHlp/8fDhgCMIbN9UWvw5d+D8fOPV6TBll7J
-	 Dzv2hAiwmoltCsMMbtVmhyUxeYuIifVpZya2+ANHr1l0hRf1ny1I1hgtqU13yTLAP8
-	 uD8Rn3tilxeaA==
-Date: Wed, 29 Oct 2025 20:09:28 +0000
+	b=pBdq+49rTHNOBK233h+hE/8kgDm119V2Cyxh6x3CJfUMZgrImJKljJzkL1rJ7FpqB
+	 oGMZ1cBZqpXVXJeKUzdFZqImw5pwDEW+1z5wCJPnEHS7j4lEg1vdCjyI/cvYqUJuMo
+	 9T8x43dN+CeMwlYtpVk04VWb2INWjgDZeF+hJggjQ/XfdfovcfacS5HJQor96976tN
+	 zvdFuxv3E95MUK8nGO6R/5N7r2oC8TGp5QLzX5KaAhpJPaYXTlr0MKSh/ikIdguoT/
+	 L/3HACO477GDPSw6c54QqDArd+BB1hZxgTw0xETeO0yJRwxcwh9nAkRfr621JKAlIN
+	 2B4VfucEgl9IQ==
+Date: Wed, 29 Oct 2025 20:09:51 +0000
 To: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com,
 	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
 Cc: kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v6 14/18] x86: Minimal SLAB alignment
-Message-ID: <0ca5d46e292e5074c119c7c58e6ec9901fb0ed73.1761763681.git.m.wieczorretman@pm.me>
+Subject: [PATCH v6 15/18] x86/kasan: Handle UD1 for inline KASAN reports
+Message-ID: <8b0daaf83752528418bf2dd8d08906c37fa31f69.1761763681.git.m.wieczorretman@pm.me>
 In-Reply-To: <cover.1761763681.git.m.wieczorretman@pm.me>
 References: <cover.1761763681.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: bb212e55891aa41be391c49c804782cab1b9ead2
+X-Pm-Message-ID: db233bf96a7423ff32d19231938d1a80a3e5afe6
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: xbjqhuheofp37kujateeujsdcj66twyr
-X-Rspamd-Queue-Id: D3A75180003
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761768577-213185
-X-HE-Meta: U2FsdGVkX19Sd5jO/yFw9rpNGXtrFB41qUbvpIHyewtVXTdjCKq6kBPxG+k2fVYI2MngYb19ouhzAyijbwyqc8QSgRNGtjwjTe2H3UrIazv7zHeL8VEFrC7MjCDDloSXTpHeAzx84mzAgDC4SkS0DYTqRd12hmajWAATE2Xl9KYNVu9MgszJXyFdq/fHB+SfqIrSm0McMqO6JHGvdE3Zr0yYOnw3oM7OqyGAiN1FHw5XepqWjlUxtc3mkfDOOr1mSMiklyW7FYbYMJqOz0m3FUpiG+KvbVY52vdRF6ZkGL3APLjPiGcRj6KZCEGpFA+w2X2CT7+MIoHN/jbcsZc5QSvkHr5n2fAPpCvEA1rHNuldbtAWrjQ44DzO2FQwfYaU6UBUKOx0Ku+vS7kFLn9TRrrLgg91dlfHcmTsFu+IJvMISNjPT+z2S7nBZpJACwfscdAsQAE3Bduwa40bZHESbpw6+Z3IjLC8ToZr76ga1m9LtNi5yFdGffohAoZrXxN1piVWqhQNkGtkTB7KgGSz7NGsrSHcZvstm6mnPgHR9cpjeLiyyKLYFScbVLMl+e2NAguWsvdUfks1rQPr02kCkZ1dDi5fmILEEbBRWaEAapDJE0/r4/G3OksruE5YtFLQ70r5c8xkOhMvq4ST2DA/A92de4AxzQ8Yu8WTsHtCvtmpc7d+cQs3H1NfK5dNB121OzY4Uh3jJhQrrgdDYeFxsqnU2B9+QW4zytNpPGRvEQzqlfwcbEN9mduK08GHpQt1z9v4iWHYeWpLI6atUuits5TZOtVOqd1CYo9yhdwNTH8MQA8OEMfl3Dfn2Gn2QcdEJsQfy8qx/uRA8G+L3shLBojtyjwdcRIgMZbtJFlrL/fHvXZsohrnvcZjDowzWncZhOfMXvdKpp/a0cbhKccAoCY8w0GDUL/Kkh2UuOBW1YidfqxE/ASMnWcX7sdq1WJ+BrcPJpOjgXqSkkcZieV
- ZkQBjNaC
- iNRGgi0tG7Ak9PP+h94kVHZ8DW9xUd3N7VyZOfAVP43f55csfjoXAOtjQiMd2iMLrGk2XheQLx513OS3rgnT2BgkYJ20DAmzq8qWyuDnPR05HSQwRJRvf7bpJSybDZLmHd3awzIhZpXcg5CPFwGiR+3nlQMf/yrOrSw3vceN4d1hqAlK6YUQmdLPozFapoQGIGuLRge8w+O5gT2D3Ock2XtYar3H2fQkSKMvbCf4kqwuDJPehywTMQ5oxEwjzgveRg63d1KSFehNx/f6Nljggthqd2U61Ulpr+06w1hsDglb1NlLFmBxD3v3MmIvF3GZL+bW2IjXfsBf6ZcE=
+X-Rspamd-Queue-Id: 182C91C0019
+X-Rspamd-Server: rspam03
+X-Stat-Signature: bis9dj1tgtrydaami9mpygsfye7uofry
+X-HE-Tag: 1761768600-742328
+X-HE-Meta: U2FsdGVkX18+j3MKfkvLY4DC/76aYvgdA1hWqsj7yIpuxc+HQmjPgM0Ev7TNwIMzzjbtYoCzP4qjB4wWhixMTjpUR2yhtEX5yfpLQHUt8fPvt7TmV7F4f6deajvRvMm1ZnOs9uXHLLECe2MabSGNjZfuAUBowkFTrA0afK8uXV3Rxyb2uZzc+vfKxkcemuIGOKZb7UaFf9E5iZAwhSfPsoWCRi9xXORBlgDJHI/Jn/bD+cFhH9NqB+GfBZvJ5+uevMrXSnD1BxJyfL+XCogyO4RFUaewa9f56flGE9x7+1AGLr6iaPNyPReSlt5wawm0HGjSWSdkV6VnM4Km8OJZNTc+UrEgL48VLAUt1cc+UTXr6MAYbf5zzpbnLxLtofhl2dp5U/7dDqDpM8AG+in2w7YnU9fKI9hfeYwgVpuOGigrPCCrT/aG0X6u9dw+o7piaDFjHrY5/6LWSXQRzNemzdiaohjM4Kq65io9axk6ifsR1NhC6e142WyPLDt8MY5hf8kEEm/a7tMGEPtLOmZbiiLFZgnpAaN52obTuC7/2h8xTIHMbtbHkASVtS7ezxvhv4g6bNAKUZroctN7KlctzzIkicZ884izRQotLHauD9ibN1D5VMO1z81N7xLyVgQKTCPSHO+qRd30RyXMGGGOT036IRkihJEsZL3a0ugs+2Q8NQDZ8GqCWxiktblWgjbxSjm58xH39QnASJv34mqjKtiBxxPjXQOnIRdcp4bup5mPY63kG4IGVn7UKo5sCt6tnKdK4YWaWaih0dmF22KKtNfxTVL2lMpktGPB0dHRQRHrH2aCcjEGXDcgOU2mvbFW5EewXvrD7083A+nKDeCOZQ+wPBW9aHZlVv84NmPH0mQVihiLbBUtdx5S/bRC4s01CeQeLhWy7xHY2nPAh23euHUTebDzmnO2cUZBKZLsOls8twzCg+/SEqjYfG/dA2q0nLcVwHhB2Uq0vBQUDdD
+ MJf6kzEO
+ Dtatv0ukQk9ZI00+vv+nVIHeB0stZ130gQ5+9e/vDeDd/THaW3G11BYowYW51EDuSwssHPxLOgRT6X146MjP+sqMhdKh/v18PCkU/U5Ox2m9hryJx7YAl3rsdolvMicQzyycPw/11Pc1iccw2x3PenapZtDeZ+C7vreXmIC6CbJeQwd2ANp6euLu/JYY2Gaawh1Pr85LiUS/jpUhZXB5G9NMb1O6U1aqRoFB//i5kPpct1ETmYnfkauO4Ts1lLzOVVvfc5p/tvREWruXoNVqX7E/2WfkQ8H39NUxV1cHJntldYaJm+HMcUrtVQ4ybgVKaKuaTJb7yXAXFF84=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,51 +93,220 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-8 byte minimal SLAB alignment interferes with KASAN's granularity of 16
-bytes. It causes a lot of out-of-bounds errors for unaligned 8 byte
-allocations.
+Inline KASAN on x86 should do tag mismatch reports by passing the
+metadata through the UD1 instruction and the faulty address through RDI,
+a scheme that's already used by UBSan and is easy to extend.
 
-Compared to a kernel with KASAN disabled, the memory footprint increases
-because all kmalloc-8 allocations now are realized as kmalloc-16, which
-has twice the object size. But more meaningfully, when compared to a
-kernel with generic KASAN enabled, there is no difference. Because of
-redzones in generic KASAN, kmalloc-8' and kmalloc-16' object size is the
-same (48 bytes). So changing the minimal SLAB alignment of the tag-based
-mode doesn't have any negative impact when compared to the other
-software KASAN mode.
+The current LLVM way of passing KASAN software tag mode metadata is done
+using the INT3 instruction. However that should be changed because it
+doesn't align to how the kernel already handles UD1 for similar use
+cases. Since inline software tag-based KASAN doesn't work on x86 due to
+missing compiler support it can be fixed and the INT3 can be changed to
+UD1 at the same time.
 
-Adjust x86 minimal SLAB alignment to match KASAN granularity size.
+Add a kasan component to the #UD decoding and handling functions.
+
+Make part of that hook - which decides whether to die or recover from a
+tag mismatch - arch independent to avoid duplicating a long comment on
+both x86 and arm64 architectures.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 ---
 Changelog v6:
-- Add Andrey's Reviewed-by tag.
+- Change the whole patch from using INT3 to UD1.
+
+Changelog v5:
+- Add die to argument list of kasan_inline_recover() in
+  arch/arm64/kernel/traps.c.
 
 Changelog v4:
-- Extend the patch message with some more context and impact
-  information.
+- Make kasan_handler() a stub in a header file. Remove #ifdef from
+  traps.c.
+- Consolidate the "recover" comment into one place.
+- Make small changes to the patch message.
 
-Changelog v3:
-- Fix typo in patch message 4 -> 16.
-- Change define location to arch/x86/include/asm/cache.c.
+ MAINTAINERS                  |  2 +-
+ arch/x86/include/asm/bug.h   |  1 +
+ arch/x86/include/asm/kasan.h | 20 ++++++++++++++++++++
+ arch/x86/kernel/traps.c      |  8 ++++++++
+ arch/x86/mm/Makefile         |  2 ++
+ arch/x86/mm/kasan_inline.c   | 21 +++++++++++++++++++++
+ include/linux/kasan.h        | 23 +++++++++++++++++++++++
+ 7 files changed, 76 insertions(+), 1 deletion(-)
+ create mode 100644 arch/x86/mm/kasan_inline.c
 
- arch/x86/include/asm/cache.h | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
-index 69404eae9983..3232583b5487 100644
---- a/arch/x86/include/asm/cache.h
-+++ b/arch/x86/include/asm/cache.h
-@@ -21,4 +21,8 @@
- #endif
- #endif
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 53cbc7534911..a6e3cc2f3cc5 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -13422,7 +13422,7 @@ S:=09Maintained
+ B:=09https://bugzilla.kernel.org/buglist.cgi?component=3DSanitizers&produc=
+t=3DMemory%20Management
+ F:=09Documentation/dev-tools/kasan.rst
+ F:=09arch/*/include/asm/*kasan*.h
+-F:=09arch/*/mm/kasan_init*
++F:=09arch/*/mm/kasan_*
+ F:=09include/linux/kasan*.h
+ F:=09lib/Kconfig.kasan
+ F:=09mm/kasan/
+diff --git a/arch/x86/include/asm/bug.h b/arch/x86/include/asm/bug.h
+index 880ca15073ed..428c8865b995 100644
+--- a/arch/x86/include/asm/bug.h
++++ b/arch/x86/include/asm/bug.h
+@@ -31,6 +31,7 @@
+ #define BUG_UD2=09=09=090xfffe
+ #define BUG_UD1=09=09=090xfffd
+ #define BUG_UD1_UBSAN=09=090xfffc
++#define BUG_UD1_KASAN=09=090xfffb
+ #define BUG_UDB=09=09=090xffd6
+ #define BUG_LOCK=09=090xfff0
+=20
+diff --git a/arch/x86/include/asm/kasan.h b/arch/x86/include/asm/kasan.h
+index 396071832d02..375651d9b114 100644
+--- a/arch/x86/include/asm/kasan.h
++++ b/arch/x86/include/asm/kasan.h
+@@ -6,6 +6,24 @@
+ #include <linux/kasan-tags.h>
+ #include <linux/types.h>
+ #define KASAN_SHADOW_OFFSET _AC(CONFIG_KASAN_SHADOW_OFFSET, UL)
++
++/*
++ * LLVM ABI for reporting tag mismatches in inline KASAN mode.
++ * On x86 the UD1 instruction is used to carry metadata in the ECX registe=
+r
++ * to the KASAN report. ECX is used to differentiate KASAN from UBSan when
++ * decoding the UD1 instruction.
++ *
++ * SIZE refers to how many bytes the faulty memory access
++ * requested.
++ * WRITE bit, when set, indicates the access was a write, otherwise
++ * it was a read.
++ * RECOVER bit, when set, should allow the kernel to carry on after
++ * a tag mismatch. Otherwise die() is called.
++ */
++#define KASAN_ECX_RECOVER=090x20
++#define KASAN_ECX_WRITE=09=090x10
++#define KASAN_ECX_SIZE_MASK=090x0f
++#define KASAN_ECX_SIZE(ecx)=09(1 << ((ecx) & KASAN_ECX_SIZE_MASK))
+ #define KASAN_SHADOW_SCALE_SHIFT 3
+=20
+ /*
+@@ -34,10 +52,12 @@
+ #define __tag_shifted(tag)=09=09FIELD_PREP(GENMASK_ULL(60, 57), tag)
+ #define __tag_reset(addr)=09=09(sign_extend64((u64)(addr), 56))
+ #define __tag_get(addr)=09=09=09((u8)FIELD_GET(GENMASK_ULL(60, 57), (u64)a=
+ddr))
++void kasan_inline_handler(struct pt_regs *regs);
+ #else
+ #define __tag_shifted(tag)=09=090UL
+ #define __tag_reset(addr)=09=09(addr)
+ #define __tag_get(addr)=09=09=090
++static inline void kasan_inline_handler(struct pt_regs *regs) { }
+ #endif /* CONFIG_KASAN_SW_TAGS */
+=20
+ #ifdef CONFIG_64BIT
+diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
+index 6b22611e69cc..40fefd306c76 100644
+--- a/arch/x86/kernel/traps.c
++++ b/arch/x86/kernel/traps.c
+@@ -179,6 +179,9 @@ __always_inline int decode_bug(unsigned long addr, s32 =
+*imm, int *len)
+ =09if (X86_MODRM_REG(v) =3D=3D 0)=09/* EAX */
+ =09=09return BUG_UD1_UBSAN;
+=20
++=09if (X86_MODRM_REG(v) =3D=3D 1)=09/* ECX */
++=09=09return BUG_UD1_KASAN;
++
+ =09return BUG_UD1;
+ }
+=20
+@@ -357,6 +360,11 @@ static noinstr bool handle_bug(struct pt_regs *regs)
+ =09=09}
+ =09=09break;
+=20
++=09case BUG_UD1_KASAN:
++=09=09kasan_inline_handler(regs);
++=09=09handled =3D true;
++=09=09break;
++
+ =09default:
+ =09=09break;
+ =09}
+diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
+index 5b9908f13dcf..1dc18090cbe7 100644
+--- a/arch/x86/mm/Makefile
++++ b/arch/x86/mm/Makefile
+@@ -36,7 +36,9 @@ obj-$(CONFIG_PTDUMP)=09=09+=3D dump_pagetables.o
+ obj-$(CONFIG_PTDUMP_DEBUGFS)=09+=3D debug_pagetables.o
+=20
+ KASAN_SANITIZE_kasan_init_$(BITS).o :=3D n
++KASAN_SANITIZE_kasan_inline.o :=3D n
+ obj-$(CONFIG_KASAN)=09=09+=3D kasan_init_$(BITS).o
++obj-$(CONFIG_KASAN_SW_TAGS)=09+=3D kasan_inline.o
+=20
+ KMSAN_SANITIZE_kmsan_shadow.o=09:=3D n
+ obj-$(CONFIG_KMSAN)=09=09+=3D kmsan_shadow.o
+diff --git a/arch/x86/mm/kasan_inline.c b/arch/x86/mm/kasan_inline.c
+new file mode 100644
+index 000000000000..65641557c294
+--- /dev/null
++++ b/arch/x86/mm/kasan_inline.c
+@@ -0,0 +1,21 @@
++// SPDX-License-Identifier: GPL-2.0
++#include <linux/kasan.h>
++#include <linux/kdebug.h>
++
++void kasan_inline_handler(struct pt_regs *regs)
++{
++=09int metadata =3D regs->cx;
++=09u64 addr =3D regs->di;
++=09u64 pc =3D regs->ip;
++=09bool recover =3D metadata & KASAN_ECX_RECOVER;
++=09bool write =3D metadata & KASAN_ECX_WRITE;
++=09size_t size =3D KASAN_ECX_SIZE(metadata);
++
++=09if (user_mode(regs))
++=09=09return;
++
++=09if (!kasan_report((void *)addr, size, write, pc))
++=09=09return;
++
++=09kasan_die_unless_recover(recover, "Oops - KASAN", regs, metadata, die);
++}
+diff --git a/include/linux/kasan.h b/include/linux/kasan.h
+index 3c0c60ed5d5c..9bd1b1ebd674 100644
+--- a/include/linux/kasan.h
++++ b/include/linux/kasan.h
+@@ -679,4 +679,27 @@ void kasan_non_canonical_hook(unsigned long addr);
+ static inline void kasan_non_canonical_hook(unsigned long addr) { }
+ #endif /* CONFIG_KASAN_GENERIC || CONFIG_KASAN_SW_TAGS */
 =20
 +#ifdef CONFIG_KASAN_SW_TAGS
-+#define ARCH_SLAB_MINALIGN (1ULL << KASAN_SHADOW_SCALE_SHIFT)
++/*
++ * The instrumentation allows to control whether we can proceed after
++ * a crash was detected. This is done by passing the -recover flag to
++ * the compiler. Disabling recovery allows to generate more compact
++ * code.
++ *
++ * Unfortunately disabling recovery doesn't work for the kernel right
++ * now. KASAN reporting is disabled in some contexts (for example when
++ * the allocator accesses slab object metadata; this is controlled by
++ * current->kasan_depth). All these accesses are detected by the tool,
++ * even though the reports for them are not printed.
++ *
++ * This is something that might be fixed at some point in the future.
++ */
++static inline void kasan_die_unless_recover(bool recover, char *msg, struc=
+t pt_regs *regs,
++=09unsigned long err, void die_fn(const char *str, struct pt_regs *regs, l=
+ong err))
++{
++=09if (!recover)
++=09=09die_fn(msg, regs, err);
++}
 +#endif
 +
- #endif /* _ASM_X86_CACHE_H */
+ #endif /* LINUX_KASAN_H */
 --=20
 2.51.0
 
