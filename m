@@ -4,86 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 61250CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:50:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E226CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:58:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13B408E00FC; Wed, 29 Oct 2025 16:50:18 -0400 (EDT)
+	id 718138E00FD; Wed, 29 Oct 2025 16:57:50 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0EB8A8E00B2; Wed, 29 Oct 2025 16:50:18 -0400 (EDT)
+	id 6A1F38E00B2; Wed, 29 Oct 2025 16:57:50 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F1CE58E00FC; Wed, 29 Oct 2025 16:50:17 -0400 (EDT)
+	id 542548E00FD; Wed, 29 Oct 2025 16:57:50 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DBFFA8E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:50:17 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 950D0BC243
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:50:17 +0000 (UTC)
-X-FDA: 84052344474.02.2BFA096
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf25.hostedemail.com (Postfix) with ESMTP id C807CA0008
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:50:15 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtIYnx4r;
-	spf=pass (imf25.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 405918E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:57:50 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id D2677C0793
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:57:49 +0000 (UTC)
+X-FDA: 84052363458.03.25C4305
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf06.hostedemail.com (Postfix) with ESMTP id DB4BC180003
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:57:47 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AyUCI3ej;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761771015;
+	s=arc-20220608; t=1761771468;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=B0dPJi9FlptGKYmLv+RcyZQ0YTeIDo55wXk15M/Ikyw=;
-	b=sVpCbYtvndpZLMeKBlXSIhmhbg4B6W9bMab57LvQRpnRgUmtLKWJwVgBjiQX8mF2EVo6OM
-	hyyupW791lIBaGbxNLXzZhkSOfzpgF88JtbpoRr9FfhEGKR9viVQ/8KpmMfoGnaywHXAIt
-	zmYeDOjvyNC8NHBHiMIIjg0g/+uAIOg=
+	bh=CuiAC7OKtA+UPyYMr+UMd+A8BNjdLWXyrqC7LzVZISg=;
+	b=QoHrNdMUAgtt31eoh/kCsT1gEQjbqTFrZOKhsNR1NbJlOJlfvtB3RZrnsPI3aIV6jpRCnX
+	rYWsOURoTU175QGsA+jVkiReVq/KeuUyX1fXNO0hnTIfy3Uevwt1ln2gOJMP2vbi9FsHX9
+	atJGxa+O5I91BjeVhqxBpCqUbN1gYxQ=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jtIYnx4r;
-	spf=pass (imf25.hostedemail.com: domain of snitzer@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=snitzer@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761771016; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=AyUCI3ej;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf06.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761771468; a=rsa-sha256;
 	cv=none;
-	b=EXZ2RrXQ7UGb7aE/wYbb3YDYe6KiAm/BPL/xWjxJJgIM3UyXI3gdeP1TFCq9QrSvkTzssI
-	84EJA5TH7WhkkR5bxupzgZghMXP+RnhsMcvVHt6qMhosFdKRH+xPhhNyDQWBVMRCwvUKEN
-	sLX8Pgi1ojgIMGHtaie3hOsE4TTE+8w=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BCBDB43249;
-	Wed, 29 Oct 2025 20:50:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4CCC4CEF7;
-	Wed, 29 Oct 2025 20:50:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761771014;
-	bh=96hBjYLO6glNXMiHV19oAbp9mY8tSD04EESQaBrsYGQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jtIYnx4rKzS5Bl2pKNUBoXggwIkSEPJ20qORAwi8XgSuMhop9kCpgPAP4uCBnDpSS
-	 8upNL5V9ae3o52mouS6XP6vACLE0cDIF+vqa5rH1P4gxqGvzaXWUItmCpLxm6oZwh9
-	 1MSmgPrq67XZB/tXpobO4z4t29HH8Rm4QygRDJYJt0hqc0zd41fOKLt9m7q+Pl/SnA
-	 ORGC38bLTG6T4PLTmw4CqkRrFrQMSL61rrk3m/xLuxdzy8Z0I+0OzaSV55PXQaUQis
-	 YKBWaKAw+lVT/HipXyztgC57/7/xUVVSAMuUT9eF0otIWvzdtmY7+xUm8noF00j+R1
-	 vm1oTFnB1gDfg==
-Date: Wed, 29 Oct 2025 16:50:13 -0400
-From: Mike Snitzer <snitzer@kernel.org>
-To: Zorro Lang <zlang@redhat.com>
-Cc: linux-nfs@vger.kernel.org, linux-mm@kvack.org,
-	linux-xfs@vger.kernel.org
-Subject: Re: [Bug report][xfstests generic/751] hang on nfs writeback
-Message-ID: <aQJ-BfBblQ5hlgm1@kernel.org>
-References: <20251021051408.lv7dye5wywxhl3dg@dell-per750-06-vm-08.rhts.eng.pek2.redhat.com>
- <aPkFLDsQ71BrTXt7@kernel.org>
+	b=Yh/psIxh7lJTAmUOP9IPf/zE7vGssMurQo58P5gak2VZCK08tfdtkl54w6HUlPDP1LquQK
+	V5XXECrkmkzJimMmO5lUIryu5rZz5/7I6w7BSF5PP3th30N/ZRGlciKmXfdYKYiN5Pc9Kq
+	g0/TcudLH3uXayNonnzf4RBmpPvYCik=
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63bad3cd668so525075a12.3
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:57:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1761771466; x=1762376266; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CuiAC7OKtA+UPyYMr+UMd+A8BNjdLWXyrqC7LzVZISg=;
+        b=AyUCI3ej92/2NO5mUm5BCoZPwQzuO5oFpytc+1GBO454TgTX62fg8Cbtfuz2mqheV7
+         iih95tTZ5GEB1Il/C3dVkZ2A01dqzPQaTC5HKQ44HH++uTg8RrbZ8roNRH4NHY2e6fqM
+         WK9SpAyFzejjX2bMrq36KufenGCx2DtwhKfIFtCv/QOWKx9gD3alVFpyZlMJxBEQ7thP
+         anT7eJ461a1ur6ha+mmnvPfOQgMaecHffTVVHC1l0I2EW54Mzog53XeTqboaibNXOcfK
+         0gJSDU5kGzpOdeI9jvX+O7mxx5rMiU6nj4I41SGetgM+9F1fdmQq5haf1vuAazcDfmC1
+         XPcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761771466; x=1762376266;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CuiAC7OKtA+UPyYMr+UMd+A8BNjdLWXyrqC7LzVZISg=;
+        b=icGDwRsBk4F2KLjkrhUObuh38Wc6jTsIDwUj9d/xWMuPubPEYY816MMcJpSkLAH7sO
+         1KhZjzbdNPRJyQ90L1TRgrKs5JOF2MLB5xVfsqgixalk7nYwQRf8fyQBsdZKSMOmnthL
+         W7zUKymSrzc8x/jVzBJ8fXLUhq0ELe4B/mB79l8mwAVV5wwGypcVByT5uTGeqsaRI2+m
+         lJ7fExqnJr42JpmwNTdQ5/o/9gTUAdr0CgI39LcHVWCYMUvCaYORoZjPzRc5U4RMhB+5
+         QbZQdRj9jA+KRBppfuoinkGMfkvymDxxvfbpJopBgUDbP1uSKMvlzeh8kIGzgf0T37qC
+         FWeA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6UjMLzw/el1PNmxTfjPNGM6qqYLWKThYFV23J1wP26gjrtlnohIbJH74isRh77NH2/MKmtJr3KQ==@kvack.org
+X-Gm-Message-State: AOJu0YwJiN+VOIYluTkzXMSO24wiA4HR8ADrQg4Km9UQ55tBmTt2LDw6
+	oQscIfIBwiowxZDqZ125ZC0Uhx++v7/I21AKppu4ERUoDFcxE5BMfyUVrVy4NZ3PhWQjUOhhlkM
+	keZOKauSNYa1PcHjUWhuBosP5911+bMsFOOF5Ge/8EA==
+X-Gm-Gg: ASbGnctEoBMjFhqFdczHZXGj4weWxZKWCU55qRWma9qIPe+SZZrD+kQPkgUMjV2QGk3
+	So4J5rIPLuUIZxQX3HQpeuDIonJWG9jt0UwqzljHel8dEEPvPTFeiPcpSQkX9JGBdgRsfgz9CYe
+	wwipG2i/CHuLLLv1DwuROFzXWBtF/G0I4BuifrrWZmYRBd80NI0uO1Bwhf9q9XRPzvB+miC2x9G
+	Mz+AiURkayIla2HEW2wozkzG5DBN2eq6zqvX5Z5qip7KkRsiQs/2p88MA==
+X-Google-Smtp-Source: AGHT+IG1L1CklcYrT3HJAsT3NVI2g7bIUPxqqj/65m77k2dZAOZ3fC4M2LmVzxUPHERR8OTwMl8fTbOBKlBu6jPbapM=
+X-Received: by 2002:a05:6402:43cc:b0:63c:84e:614f with SMTP id
+ 4fb4d7f45d1cf-64044254e3emr3585778a12.18.1761771466076; Wed, 29 Oct 2025
+ 13:57:46 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aPkFLDsQ71BrTXt7@kernel.org>
-X-Rspamd-Queue-Id: C807CA0008
-X-Rspamd-Server: rspam11
+References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
+ <20250929010321.3462457-15-pasha.tatashin@soleen.com> <mafs0tszhcyrw.fsf@kernel.org>
+ <CA+CK2bBVSX26TKwgLkXCDop5u3e9McH3sQMascT47ZwwrwraOw@mail.gmail.com> <CALzav=d_Gmb8xKCwWCGsQQrdxHJrnk5VP-8hvO6FugUP7_ukAw@mail.gmail.com>
+In-Reply-To: <CALzav=d_Gmb8xKCwWCGsQQrdxHJrnk5VP-8hvO6FugUP7_ukAw@mail.gmail.com>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Wed, 29 Oct 2025 16:57:09 -0400
+X-Gm-Features: AWmQ_bmg8lfgTlZTUn7wdsm2doiok4izVO4pilRQtGY6Hx2FX2qYt9rGJfmSrxU
+Message-ID: <CA+CK2bDMcCtDom1XQOx0U6yTg3Azr4jzSTpUo=WKgvTVOh5oog@mail.gmail.com>
+Subject: Re: [PATCH v4 14/30] liveupdate: luo_session: Add ioctls for file
+ preservation and state management
+To: David Matlack <dmatlack@google.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com, graf@amazon.com, 
+	changyuanl@google.com, rppt@kernel.org, rientjes@google.com, corbet@lwn.net, 
+	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
+	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
+	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
+	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
+	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
+	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
+	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
+	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
+	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
+	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
+	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
+	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
+	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
+	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
+	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
+	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
+	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
+	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
+	witu@nvidia.com, hughd@google.com, skhawaja@google.com, chrisl@kernel.org, 
+	steven.sistare@oracle.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Stat-Signature: wfp8piwxxiyuwyjdxs6rha1nppr14oum
-X-HE-Tag: 1761771015-621142
-X-HE-Meta: U2FsdGVkX1/b5D1QCJMMMSeaB9bTO0RotUEls7nc5v6ZeTmrTv0kyh3QOE78NuoqDQ7J7beD9tXI3ItKEIt014UE90Sl4iIkKt3jQ4DoPIyl61gshxAoN5Vi6DJCisFL53fn+4iI66ZZjbiazw4zRuTJeKhi3jbAs60enYPuGC0TZKgjL1WWdgOo9ocPtkzlGb/Loqv08VtiKM3YsUEo7MKQhh51r7RdBEbpDwRt0h6NF8rZ6YeJpwyaqXwgquRY5wXGfNMuytL5c5gDMR3oxCLqBCR2sFETfIVEzaNcYkCjf2J4CGu4KA0TBiX7k4XcuFSf/3PlSIFWwW8FyveJa//AP/zy+8GqgJb46MZzrWQfYQ3961564zJikcYC8DF5NyLLGMksCS2al29mBd7Yd+WejI6E41RECRHn8xUKGqy9KaVXyh5iuSbY8X1C5e2dUwAX/h4MEADlMJjHl27FoFC+7En63qXpVfDi6OGfv3XIPFkD9wLbTTetRM9N2IRz5VDT69QrL0pxaWSRwRlbAYD+7sTs+anVHlqqx4TqVjQW1US09KkZM4F7rEOJW45jQUlj6JdnDUsGdGuZ0cm2Z+XNL85tFeUBm+DEB05K/ge5jayZQ3EcNqMn9ZKqePowUo8Tijw+JzsWehxSZJrEowttl8eG4NMtTSYcqqICYF4rDkKXt22DYl+Zhf9zzFALNRQkj7L9EBGeSvHN2A7hXVhu7xIlKDauh/OD7fcYQnVVWsxS4ikebpl5V++L2nfan4dhQ5hr2RDPi4Kxokmy80C7E+INFlCy/XCcIMnAnAAFm8IT216vYT1OsWcB9tjQdRAjYSyVf7MbKRUFsWm6ZHdg8Hf22k7MqernJ7iSxYbXgU5ek6y0FXgM71Zs67ZdKCWvdg+8Xfn/55cGQ5Wtrj5Bxhc65mdSChbUGkPJIx5hUkImeKmO+esDdWKZxMDXiXki0BKpgcDFRQL+Q6o
- /6vEekUV
- btSlR9egwsEOghIlVndPOEnjeWF4SAr6MIXDQOQUVlfSR7K9zdQDX66ijG8OvVTzYnC8GNGBtzuV4qt+4wVMPOuITkbJ4YYAR1jFLwPUoQ9SklwFRjq8htUIwnz8enZ6LWU/1t9re7DMU/AsABxAM9l1N0vKiCF/Rv7SIBXwoF+YCsv45LR/XywJIpBKeBLjMZHLaMMSCREaSygKe3kXEDxUBykJsih5ZEW8WnGnqtPQ72ZIMyPE17ogmGFlPJD6UU6/YXP7u81ca6APIOz7ABjGqDBmqiKEQel1bg4ggdNz+1epRnBnKUG5gqr6BFssu2PkValNSienJwVBxh3BLnuLptINp56/17HmcqcqZJmNgNfvgbCtil3EqjZy3OBRG6Nx+RotfLmDa7740AF3xKHlLZA==
+X-Rspamd-Queue-Id: DB4BC180003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: i1bp6fzzqxah8txcmqc5owhbdieappow
+X-HE-Tag: 1761771467-47586
+X-HE-Meta: U2FsdGVkX185PG5rbKUXQLXuRwteD5i7JfrQ0A+nJP1RfUnH314pLyHb8rYcuN38BD0yEt1sWDhZm2Fcyc8/t3xSReNP7+kUH/bnFVGjBzHljjs82A8NiGm7Ls2O14sczmBzYi+gwkXMR/JqME/2jzRfGQr19s2/7YHLbAQI1pfNp0HMjcOlHN1hx4k3EvVXxMJo6yqFJfGnnCinnuuS1XRonCbNWgChJw+qxIBEUyqU++reVZdKDozZOmFqckCb+gpLVbggbliOV7c530QEy+N6nq5x58RR1S/XIAOTb1LORykvztCZecDUc6SYuZ1AdM9gN2ErrXS+zrQXp9pVPl+9AoTtCc0Sv5UKcIsVQp235JV8XI/exDB7pXwaZYXsXlIt/N2/G5c8J4jot2zVrCYp+FSds5ymha6lv7wqXOKTXkbm55CxWzj8T7K7P2ANRqFV+s+wvpf4rQFVmU+Uq4oOyeLUEuUuzX68acNCkS2s0MVeTJYyyWakfxoAhBcXIC34qbihvkibmihmkkq0RCq9UzQlk5h8N6JHX+p9OYyHQayI201eG6BAK18gEH+G1Cg2FvwlIHa079qdLd4D/1EuhwJkurDDkWmJFNdFRfTDs802GA5nKMVWSil+ZFgrS7fH0nigg1wraQlm2if1qw5EYAW/v13Zcd4kPWVFU3SIv0PLXjKCxK10M9ePwp/lVijPEo6sd/3BPYzigJlxxrDv048lfnccpJRVJm5FmVAA4OEcBuXFMGjA/eYAbXhaD/sYdi4FlIvWmNqjzUYT+RQ7IxlDISAdsEYqXi7aVGETv5WQpN3IGESeuoO7JXPzD77qzZjRfD28aD/eQgsvUSebLlMrWsVZqMujJou0vculZsntze5HfMl0kw/yLMNnx+qPAviIZsRgzPavt+NS6N6IaCIkKMGXGJnVXl+/AEqDIspIEKwZmgP6GvD82iaA5alczhAumka3UPcW285
+ fhZgKp0j
+ CNmjVwNAm1T7++ivaMQ1NhReWBQ4bNPdnVnWtSgv0u4q49yZv3+OtzwDSdaR5yzJjT5wuvVj1CdeRLBYbdhG344ZG8iH8YoLd65IYEDteEwfinbHRwB40hzDYomFnbdxp6BBOqHPPr9KsrVqI3/FY7iS3/Z0C/xupKnNjrATzqQVc8HHtHIT+Z3MEZcn8kblHcHCr58yVd7m3ns31RbEb7swQMvbd4XovaQxZDrYA2qIHarZpHRDl1qIxrBeUgT4L5PJe89T5dJlLPiUejNj5diVHMxwRK7kdOvcxvVzORoESd20GxNuINunpEIT/WLHMLbTLCF1CmgUbO9GpX3KHcahXpQUhcJpOLBnlDpIG3sqO7P55IGSdmmrTlsaSv2ymS/MDqVRtbU8hnZB0bvWqXikRKbjbHwtk+VY3
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,218 +141,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 12:24:12PM -0400, Mike Snitzer wrote:
-> On Tue, Oct 21, 2025 at 01:14:08PM +0800, Zorro Lang wrote:
-> > Hi,
-> > 
-> > When I did xfstests regression test on nfs, it hang on generic/751 many times,
-> > refer to [1](on x86_64) and [2](on aarch64). I've hit it 8 times until now.
-> 
-> You've hit it 8 times, all on the same kernel?  Any idea if this is a
-> regression specific to 6.18-rc1 and later?
->  
-> > I tested on latest linux v6.18-rc2. My underlying test device isn't loopback device,
-> > it's general disk, and make xfs on it:
-> >   meta-data=/dev/sda5              isize=512    agcount=4, agsize=983040 blks
-> >            =                       sectsz=4096  attr=2, projid32bit=1
-> >            =                       crc=1        finobt=1, sparse=1, rmapbt=1
-> >            =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
-> >            =                       exchange=0   metadir=0
-> >   data     =                       bsize=4096   blocks=3932160, imaxpct=25
-> >            =                       sunit=0      swidth=0 blks
-> >   naming   =version 2              bsize=4096   ascii-ci=0, ftype=1, parent=0
-> >   log      =internal log           bsize=4096   blocks=54324, version=2
-> >            =                       sectsz=4096  sunit=1 blks, lazy-count=1
-> >   realtime =none                   extsz=4096   blocks=0, rtextents=0
-> >            =                       rgcount=0    rgsize=0 extents
-> >            =                       zoned=0      start=0 reserved=0
-> > 
-> > Two xfs are mounted on /mnt/xfstests/test and /mnt/xfstests/scratch seperately,
-> > then export as:
-> >   # cat /etc/exports
-> >   /mnt/xfstests/test/nfs-server *(rw,insecure,no_root_squash)
-> >   /mnt/xfstests/scratch/nfs-server *(rw,insecure,no_root_squash)
-> > 
-> > The nfs mount option is only "-o vers=4.2". BTW, nfs server and client are
-> > in same machine/system.
-> 
-> Being that NFS client and server are on the same localhost, I see
-> NFS's LOCALIO is being used (nfslocaliod mentioned in "locks held"
-> section, so IO is bypassing going over the wire to NFSD and is instead
-> being issued directly from NFS client through LOCALIO workqueue and
-> then down to XFS).
-> 
-> I'll try to make sense of the locking (reported below) but this will
-> take some time.
-> 
-> Cc'ing XFS list because this is NFS LOCALIO ontop of XFS, could be
-> there is something fundamental in LOCALIO's nfslocaliod workqueue that
-> is setting us up for deadlock if XFS takes a specific path...
-> 
-> NOTE: fs/nfs/inode.c:nfsiod_start(), XFS's nature has influenced
-> LOCALIO workqueue config hacks already.. could be dragons lurking:
-> 
-> /*
->  * Start the nfsiod workqueues
->  */
-> static int nfsiod_start(void)
-> {
->         dprintk("RPC:       creating workqueue nfsiod\n");
->         nfsiod_workqueue = alloc_workqueue("nfsiod", WQ_MEM_RECLAIM | WQ_UNBOUND, 0);
->         if (nfsiod_workqueue == NULL)
->                 return -ENOMEM;
-> #if IS_ENABLED(CONFIG_NFS_LOCALIO)
->         /*
->          * localio writes need to use a normal (non-memreclaim) workqueue.
->          * When we start getting low on space, XFS goes and calls flush_work() on
->          * a non-memreclaim work queue, which causes a priority inversion problem.
->          */
->         dprintk("RPC:       creating workqueue nfslocaliod\n");
->         nfslocaliod_workqueue = alloc_workqueue("nfslocaliod", WQ_UNBOUND, 0);
->         if (unlikely(nfslocaliod_workqueue == NULL)) {
->                 nfsiod_stop();
->                 return -ENOMEM;
->         }
-> #endif /* CONFIG_NFS_LOCALIO */
->         return 0;
-> }
-> 
-> Mike
-> 
->  
-> > # cat local.config
-> > export FSTYP=nfs
-> > export TEST_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/test/nfs-server
-> > export TEST_DIR=/mnt/xfstests/test/nfs-client
-> > export SCRATCH_DEV=xxxx-xxx-xxxx.xxxx.xxx.xxx:/mnt/xfstests/scratch/nfs-server
-> > export SCRATCH_MNT=/mnt/xfstests/scratch/nfs-client
-> > export MOUNT_OPTIONS="-o vers=4.2"
-> > export TEST_FS_MOUNT_OPTS="-o vers=4.2"
-> > 
-> > 
-> > [1]
-> > [23369.572660] run fstests generic/751 at 2025-10-20 23:15:24 
-> > [-- MARK -- Tue Oct 21 03:20:00 2025] 
-> > [-- MARK -- Tue Oct 21 03:25:00 2025] 
-> > [-- MARK -- Tue Oct 21 03:30:00 2025] 
-> > [-- MARK -- Tue Oct 21 03:35:00 2025] 
-> > [-- MARK -- Tue Oct 21 03:40:00 2025] 
-> > [25069.500900] INFO: task kworker/u9:73:825900 blocked for more than 122 seconds. 
-> > [25069.501484]       Not tainted 6.18.0-rc2 #1 
-> > [25069.501822] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message. 
-> > [25069.502385] task:kworker/u9:73   state:D stack:24712 pid:825900 tgid:825900 ppid:2      task_flags:0x4208060 flags:0x00080000 
-> > [25069.503258] Workqueue: writeback wb_workfn (flush-0:48) 
-> > [25069.782725] Call Trace: 
-> > [25069.787191]  <TASK> 
-> > [25069.787368]  __schedule+0x838/0x1890 
-> > [25069.799533]  ? __pfx___schedule+0x10/0x10 
-> > [25069.799852]  ? __blk_flush_plug+0x27b/0x4d0 
-> > [25069.800617]  ? find_held_lock+0x32/0x90 
-> > [25069.801292]  ? __lock_release.isra.0+0x1a4/0x2c0 
-> > [25069.801639]  schedule+0xd4/0x260 
-> > [25069.801902]  io_schedule+0x8f/0xf0 
-> > [25069.802162]  folio_wait_bit_common+0x2d9/0x780 
-> > [25069.802919]  ? folio_wait_bit_common+0x1dd/0x780 
-> > [25069.803324]  ? __pfx_folio_wait_bit_common+0x10/0x10 
-> > [25069.803684]  ? nfs_page_clear_headlock+0x31/0x80 [nfs] 
-> > [25069.804254]  ? __pfx_wake_page_function+0x10/0x10 
-> > [25069.804602]  ? __pfx___might_resched+0x10/0x10 
-> > [25069.805160]  writeback_get_folio+0x3f9/0x500 
-> > [25069.806221]  writeback_iter+0x136/0x720 
-> > [25069.806628]  nfs_writepages+0x4f8/0x9b0 [nfs] 
-> > [25069.807100]  ? mark_held_locks+0x40/0x70 
-> > [25069.807403]  ? __pfx_nfs_writepages+0x10/0x10 [nfs] 
-> > [25069.807846]  ? virtqueue_notify+0x68/0xc0 
-> > [25069.808346]  ? virtio_queue_rq+0x2b1/0x650 [virtio_blk] 
-> > [25069.808925]  ? __lock_acquire+0x57c/0xbd0 
-> > [25069.809295]  do_writepages+0x21f/0x560 
-> > [25069.809576]  ? __pfx_do_writepages+0x10/0x10 
-> > [25069.809953]  ? rcu_is_watching+0x15/0xb0 
-> > [25069.810587]  __writeback_single_inode+0xe2/0x5f0 
-> > [25069.810982]  ? __lock_release.isra.0+0x1a4/0x2c0 
-> > [25069.811373]  ? __pfx___writeback_single_inode+0x10/0x10 
-> > [25069.811815]  ? writeback_sb_inodes+0x416/0xd00 
-> > [25069.812194]  writeback_sb_inodes+0x535/0xd00 
-> > [25069.812533]  ? __pfx_stack_trace_save+0x10/0x10 
-> > [25069.814193]  ? local_clock_noinstr+0xd/0xe0 
-> > [25069.814506]  ? __pfx_writeback_sb_inodes+0x10/0x10 
-> > [25069.814910]  ? __lock_release.isra.0+0x1a4/0x2c0 
-> > [25069.815407]  ? lock_acquire+0x10b/0x150 
-> > [25069.815703]  ? down_read_trylock+0x4b/0x60 
-> > [25069.816077]  __writeback_inodes_wb+0xf4/0x270 
-> > [25069.816441]  ? __pfx___writeback_inodes_wb+0x10/0x10 
-> > [25069.816864]  ? queue_io+0x329/0x510 
-> > [25069.817148]  wb_writeback+0x70a/0x9c0 
-> > [25069.817448]  ? __pfx_wb_writeback+0x10/0x10 
-> > [25069.817831]  ? get_nr_dirty_inodes+0xcb/0x180 
-> > [25069.818264]  wb_do_writeback+0x5d4/0x8e0 
-> > [25069.818575]  ? __pfx_wb_do_writeback+0x10/0x10 
-> > [25069.818975]  ? set_worker_desc+0x16e/0x190 
-> > [25069.819313]  ? __pfx_set_worker_desc+0x10/0x10 
-> > [25069.819669]  wb_workfn+0x7c/0x200 
-> > [25069.819997]  process_one_work+0xd8b/0x1320 
-> > [25069.820342]  ? __pfx_process_one_work+0x10/0x10 
-> > [25069.820694]  ? assign_work+0x16c/0x240 
-> > [25069.821053]  worker_thread+0x5f3/0xfe0 
-> > [25069.821364]  ? __pfx_worker_thread+0x10/0x10 
-> > [25069.821697]  kthread+0x3b4/0x770 
-> > [25069.822122]  ? kvm_sched_clock_read+0x11/0x20 
-> > [25069.822457]  ? local_clock_noinstr+0xd/0xe0 
-> > [25069.822790]  ? __pfx_kthread+0x10/0x10 
-> > [25069.823079]  ? __lock_release.isra.0+0x1a4/0x2c0 
-> > [25069.823430]  ? rcu_is_watching+0x15/0xb0 
-> > [25069.823729]  ? __pfx_kthread+0x10/0x10 
-> > [25069.824035]  ret_from_fork+0x393/0x480 
-> > [25069.864794]  ? __pfx_kthread+0x10/0x10 
-> > [25069.865076]  ? __pfx_kthread+0x10/0x10 
-> > [25069.865371]  ret_from_fork_asm+0x1a/0x30 
-> > [25069.879905]  </TASK> 
-> > [25069.880145]  
-> > [25069.880145] Showing all locks held in the system: 
-> > [25069.889550] 1 lock held by khungtaskd/37: 
-> > [25069.889886]  #0: ffffffffa29309e0 (rcu_read_lock){....}-{1:3}, at: rcu_lock_acquire.constprop.0+0x7/0x30 
-> > [25069.890603] 2 locks held by 751/825733: 
-> > [25069.890942]  #0: ffff888101e36440 (sb_writers#16){.+.+}-{0:0}, at: ksys_write+0xf9/0x1d0 
-> > [25069.891589]  #1: ffffffffa2b97fd0 (split_debug_mutex){+.+.}-{4:4}, at: split_huge_pages_write+0x124/0x430 
-> > [25069.892449] 3 locks held by kworker/u9:73/825900: 
-> > [25069.892818]  #0: ffff8881029df958 ((wq_completion)writeback){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-> > [25069.893530]  #1: ffffc9000ad9fd10 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-> > [25069.894333]  #2: ffff88810b1480e8 (&type->s_umount_key#68){++++}-{4:4}, at: super_trylock_shared+0x1c/0xa0 
-> > [25069.895056] 2 locks held by kworker/u10:2/826054: 
-> > [25069.895418]  #0: ffff888103ec2158 ((wq_completion)nfsiod){+.+.}-{0:0}, at: process_one_work+0x7f5/0x1320 
-> > [25069.896123]  #1: ffffc90001e1fd10 ((work_completion)(&ctx->work)){+.+.}-{0:0}, at: process_one_work+0xd3f/0x1320 
-> > [25069.896952]  
-> > [25069.897085] ============================================= 
+On Wed, Oct 29, 2025 at 4:44=E2=80=AFPM David Matlack <dmatlack@google.com>=
+ wrote:
+>
+> On Wed, Oct 29, 2025 at 1:13=E2=80=AFPM Pasha Tatashin
+> <pasha.tatashin@soleen.com> wrote:
+> > On Wed, Oct 29, 2025 at 3:07=E2=80=AFPM Pratyush Yadav <pratyush@kernel=
+.org> wrote:
+> > > Also, I think the model we should have is to only allow new sessions =
+in
+> > > normal state. Currently luo_session_create() allows creating a new
+> > > session in updated state. This would end up mixing sessions from a
+> > > previous boot and sessions from current boot. I don't really see a
+> > > reason for that and I think the userspace should first call finish
+> > > before starting new serialization. Keeps things simpler.
+> >
+> > It does. However, yesterday Jason Gunthorpe suggested that we simplify
+> > the uapi, at least for the initial landing, by removing the state
+> > machine during boot and allowing new sessions to be created at any
+> > time. This would also mean separating the incoming and outgoing
+> > sessions and removing the ioctl() call used to bring the machine into
+> > a normal state; instead, only individual sessions could be brought
+> > into a 'normal' state.
+> >
+> > Simplified uAPI Proposal
+> > The simplest uAPI would look like this:
+> > IOCTLs on /dev/liveupdate (to create and retrieve session FDs):
+> > LIVEUPDATE_IOCTL_CREATE_SESSION
+> > LIVEUPDATE_IOCTL_RETRIEVE_SESSION
+> >
+> > IOCTLs on session FDs:
+> > LIVEUPDATE_CMD_SESSION_PRESERVE_FD
+> > LIVEUPDATE_CMD_SESSION_RETRIEVE_FD
+> > LIVEUPDATE_CMD_SESSION_FINISH
+>
+> Should we drop LIVEUPDATE_CMD_SESSION_FINISH and do this work in
+> close(session_fd)? close() can return an error.
+>
+> I think this cleans up a few parts of the uAPI:
+>
+>  - One less ioctl.
+>  - The only way to get an outgoing session would be through
+> LIVEUPDATE_IOCTL_CREATE_SESSION. The kernel does not have to deal with
+> an empty incoming session "becoming" an outgoing session (as described
+> below).
+>  - The kernel can properly leak the session and its resources by
+> refusing to close the session file.
 
-I was able to test xfstests generic/751 on a server in the Red Hat
-lab, but I used a different baseline kernel so far (its 6.12.53-based
-but has all of NFSD, NFS and SUNRPC changes from 6.18-rc1 backported).
 
-The test runs without deadlock but there is one lockdep splat due to
-missing this commit:
-
-commit 45f69d091bab64a332fe751da9829dcd136348fd
-Author: Long Li <leo.lilong@huawei.com>
-Date:   Sat Jun 22 16:26:31 2024 +0800
-
-    xfs: eliminate lockdep false positives in xfs_attr_shortform_list
-
-    xfs_attr_shortform_list() only called from a non-transactional context, it
-    hold ilock before alloc memory and maybe trapped in memory reclaim. Since
-    commit 204fae32d5f7("xfs: clean up remaining GFP_NOFS users") removed
-    GFP_NOFS flag, lockdep warning will be report as [1]. Eliminate lockdep
-    false positives by use __GFP_NOLOCKDEP to alloc memory
-    in xfs_attr_shortform_list().
-
-    [1] https://lore.kernel.org/linux-xfs/000000000000e33add0616358204@google.com/
-
-    Reported-by: syzbot+4248e91deb3db78358a2@syzkaller.appspotmail.com
-    Signed-off-by: Long Li <leo.lilong@huawei.com>
-    Reviewed-by: Dave Chinner <dchinner@redhat.com>
-    Signed-off-by: Carlos Maiolino <cem@kernel.org>
-
-After applying that commit, a generic/751 retest comes up clean. I'll
-now switch to testing latest v6.18-rcX kernel.
-
-Mike
+I was considering this. But, in AFAIK even if close() fails, the FD is
+still closed, therefore, I am not aware of any existing api that
+relies on close() to fail. The finish or (set event if we decide to
+expands events in the future) should be a separate ioctl() and close()
+should release FD unconditionally as it still would do even if return
+failure from release()
 
