@@ -4,124 +4,179 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1C99CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 17:15:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 146BBCCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 17:30:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E1DD8E00B5; Wed, 29 Oct 2025 13:15:24 -0400 (EDT)
+	id 60B4F8E00B6; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0BA3C8E00B2; Wed, 29 Oct 2025 13:15:24 -0400 (EDT)
+	id 5E34E8E00B2; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F116E8E00B5; Wed, 29 Oct 2025 13:15:23 -0400 (EDT)
+	id 4D18F8E00B6; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DFD088E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:15:23 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6D37988DAD
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:15:23 +0000 (UTC)
-X-FDA: 84051802926.23.BCDC029
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf20.hostedemail.com (Postfix) with ESMTP id C25C01C0011
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:15:21 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCctPaF/";
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A4648E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 13:30:05 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id DCA7512B32D
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:30:04 +0000 (UTC)
+X-FDA: 84051839928.24.D6CC69A
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 4B07B180010
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 17:30:02 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761758121;
+	s=arc-20220608; t=1761759002;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wzfQKL/P74birS3vfbaJ1tu9wIsMCQCjuGD1SWeA7uE=;
-	b=QXWOlNd++5MG4ALCjNj7HVCApcBSFxGRsy3Unz2GotpgCDHBgRoj9RdOxZfSy9srkyczzY
-	McqbqyY7bfFUFplRnTgzuBygBRd9lPahTkywZEKsFOYwHK8vBC6Rxq3sDhl7OlkrlPQqvC
-	2VNzn/sWjlRjDnF2hFSxJHUjoOAXFkI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761758121; a=rsa-sha256;
-	cv=none;
-	b=7NEE3bn/+y8M/qZcF61jaYL5PqPF6LFSgXTYIg+bYvTeJ+xvs7GHKty/XzAGXVjwRryKBC
-	eed0KRsPow8CgByj7owGRFsHrdnQQFYymo5TUHtSRNlm12o65Fj+S1HzZbwWdVg2Q5HA/L
-	qgvhCC0V+m4VLwI6ssi0uxrz945pSFA=
+	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
+	b=dPRI+dAv4kwTEDToi1MT+xUSphEpjx1FqTwAMknYzlB9+xObyo/3LbCyADyxnK2TsdNB2c
+	3A6YgVFroHFGf9IVHC+rVlYezBPw8uqlkvtGucKH8K8NtsRAtiBg5kVM+EVQj7snsXKxaB
+	tyFGM/ilUyXZZjIhMhQL7UYElclKqHw=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="mCctPaF/";
-	spf=pass (imf20.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 374136149D;
-	Wed, 29 Oct 2025 17:15:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35E0DC4CEF7;
-	Wed, 29 Oct 2025 17:15:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761758120;
-	bh=t3ByI2ggpnXN7fpU/j1XfFuDuzjdaTgYJk3bPpbYU5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mCctPaF/s4Ej/qaUy9NBWjZ4tFp0QCR0mZ6Q58I4iogldTOoS12UFHS0vHbG0DSph
-	 227Cm4eZbmJrh0L/NPvh44Kt43N6IyuWC/KldVbmCoiLr50mqPOn4lsXsfukXT9u+K
-	 SBwatwsBkUUf9NSOFWQllmDLp942vZS35JrPpXugYhl3MQY2Z3swCE0Lc1cVMzrOLm
-	 q+hyKGuAJkkwhVPyyL8Zd0mjnzZC9T1HST0yNNQxlFzyBGHCKafdtiPPmxzYYRh5+I
-	 K8ivV6rg0eGcNpXKcdo4UXxI0eBtAIghhVlnwJJpy2Ww7H0rESJJHmDQURxNbt0Hv7
-	 4WzSv5OBoFaLQ==
-Date: Wed, 29 Oct 2025 18:15:17 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: Phil Auld <pauld@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rcu@vger.kernel.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Subject: Re: [PATCH v6 00/29] context_tracking,x86: Defer some IPIs until a
- user->kernel transition
-Message-ID: <aQJLpSYz3jdazzdb@localhost.localdomain>
-References: <20251010153839.151763-1-vschneid@redhat.com>
- <aQDuY3rgOK-L8D04@localhost.localdomain>
- <xhsmhzf9aov51.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	imf16.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=LVEIVOaQ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ctF9xyK7;
+	spf=pass (imf16.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761759002; a=rsa-sha256;
+	cv=none;
+	b=bc1SRF/5pBUTwOAbUvFpYgnHnq6s2/wg8BTas40+c/omyg9Ca5gdqVkNWkiS8mD2LOliHY
+	t9Np5SM0AhkA+7SuQsCcL+vPestSCJd2lqhnv/mkUEecnDLF6RTrkz9IzjkP6PbCC54DUy
+	iPDDIOXUlLlCGOPbcip8OWIcLi4DEUk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 9C6873410D;
+	Wed, 29 Oct 2025 17:30:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761759000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
+	b=LVEIVOaQiQihyyVUrP032S89inzygkFWyPglGyhCVKJys7tNMO6HUJzV4u69AGh6ilDhGs
+	MkzoCxej3zPDuphsnF+Hp1VA2ZsYuV14fngmFbHOhu0qDjTL0mVq3oUguLEh8loNejGcqJ
+	0G9uHfoch0uFMiMIsjFJtTWHalG0q0I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761759000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
+	b=ctF9xyK7ak253elPpv+mWxgHFLYAJ390A0negsSyH/lt8REDr2T6ttS1j2ikK1D5xSvd54
+	AiwoEjokQlAAJLDQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761759000; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
+	b=LVEIVOaQiQihyyVUrP032S89inzygkFWyPglGyhCVKJys7tNMO6HUJzV4u69AGh6ilDhGs
+	MkzoCxej3zPDuphsnF+Hp1VA2ZsYuV14fngmFbHOhu0qDjTL0mVq3oUguLEh8loNejGcqJ
+	0G9uHfoch0uFMiMIsjFJtTWHalG0q0I=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761759000;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oRycsl2hppTtVF2hMtZZwaQ8XfejV47sf0TtOJTd2k4=;
+	b=ctF9xyK7ak253elPpv+mWxgHFLYAJ390A0negsSyH/lt8REDr2T6ttS1j2ikK1D5xSvd54
+	AiwoEjokQlAAJLDQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E70C1396A;
+	Wed, 29 Oct 2025 17:30:00 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id sfBnHhhPAml+ZwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 29 Oct 2025 17:30:00 +0000
+Message-ID: <1e4e6ddd-e4a4-4f3a-ae47-93b69d25ff88@suse.cz>
+Date: Wed, 29 Oct 2025 18:30:00 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <xhsmhzf9aov51.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: qfmfa1r1oyqjfdkgem1xm9hc9wixoj5k
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC 07/19] slab: make percpu sheaves compatible with
+ kmalloc_nolock()/kfree_nolock()
+Content-Language: en-US
+To: Chris Mason <clm@meta.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com
+References: <20251024140416.642903-1-clm@meta.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251024140416.642903-1-clm@meta.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 4B07B180010
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C25C01C0011
-X-HE-Tag: 1761758121-138440
-X-HE-Meta: U2FsdGVkX183vOEAsWwo4DE/IBfunNonh/5O42ehmnqKV1lGqekMbB6FrPGqFFHX46kAIlgeq29cQA10fBHr01beX0+rgZSfFBLhpdUcZqbjJwuG3H9fQ0FXDx1lkAeAPgTXDAmgLzIKe6fj00k/JNPR21aE+GwOThY2JIKlTleemDmBDeDBl57y5M0k6dOyQj6H23e9taFdYAZ+w0iYXx1aBiTr3gLmpM/0ooakJ76d02rGCUz6PmFwoDxsHkKxgRplBME4naqjvssZvwJNRw1JGw8Zw82T/mLcHVjy9FmKs0V+Sb1iBJiaZRv56lmVMIG/kSLHBQZBM6AQ/FC8krndvpi4FeWxTDjd1h4W9/3KqLNck1ehXYqbDTYRb/vBgrKRdOONKkS4EvLgNKvs+HZm2ijcHpXIMYEWwEaSAP3gUPHR+DQfh1iHlCCTzoOCy5dSIg0Klnu5++ct+qvY58t2eCZixU0uzkntA4dOyP27Vd8JGRi3fVLAogLMfKSkIg4BMEBYpw92DkiZ9aieTsIvcSE+FwJ+QJgrJuYnzPdFdVfoikw/ZdOJ4FllQOi9PFPefLnOIbNds2aX0COvfC7ILfqcV+x0fLnnyQrsaewnsKGLJguwbo8PpTwolHK7gZRXUx4o+S41YS4tutvEIS3exri0r+PS7Fzu5EUotWo23/XnViwncmcUi1A+pREc05Z14HgjmW8t8fZKDQYrCmcFe0OKs5MGiESyVPS6k08dXtTYSPf1ps/IYGAGpInwN4o+f9IlitURBupBne3R6isHIsHu6Cz7bRmWrfJ2j6bno98YWEJCEr0LbIE1CjoEyZZOwmfbAB0tCiFfio5P2F1kFn35NS8DQWMYbN1cFAUnKwFwkAgat2Gc7oiq4fWAdrXWgXh8tSA01A8gdj5AP+5AWzDsIZ9Jgj1o1Z5gYdptmA/bnbruDVSpvIkFrizaskbOgZvAZSNiayOVjZ5
- 5XBftKnk
- FfdaCIggPwuUNflV8mCJOs5BaBodgD4XPgcSy89THQPzoAh0Rc3FnbRDhd9pxDORGrbwWrHj5iIVYkz1RYaCyDpLpoP5bwo8d6NcnxL+D6v3K9KMpfHv/l5V8K5R8T14BXjmmB/XQ+08Mcps6F6wvM4TmpifMqGB8voPYsLOv5s0nonbipZbizcI6bfcMmV8CSBhqkKtfdfUYmmT1q+oIhwiVa0FxEub5v/u3V5KjDKMdUeSQKCnd/mpSGnMxbRDf7IiDQ8fuMmzQlhBxJ3nRpVUeoDlRlhrTAsZvWdMP/l6HbOhP7qENVxrskzNdUOz5TOQV7b8GBRfKj7d74yFPJuwWCFhmFqDKuNAPVp5jhoOckF0GCdbLZLFk4lXkWzVw77h+PA5uILZpxW8=
+X-Stat-Signature: y8sp8tysi5ifk59byzoc9m1m9tayzhfx
+X-HE-Tag: 1761759002-563546
+X-HE-Meta: U2FsdGVkX18I7huFFXtnHI8R4rcJF9KIu2F23P+9hQYTdMzarnHipLLTAWZVbk2bh809Pgd2APMXGIY26mN5AAyqu+UZuEpAwqngGeLx+cc9rffwn3ZSU7D8XE+SZ/sxhXE94Rp5ATU2HjtQG95paggbBbmVbXRoPuQPXMz7tIDj3bqenuAQVKdc6N+/gRBSXjM/Lo44sZi3WZpA4vg8f1nwkOpvDlEmqM8nmtMSxvcsmnb9VoQLmHTQ2SJvA1Hnh79kQui8XIQHG1cB6Bg+7gGnW9dT09uYObDWciS9FDEvAqLt4d09vtqiPnqcA7OOqCyBQcCAJzGP1RiKHkiUU8v9XDeQ/M21LbpSr927xamTdkCUFSQKkvANc9gIqkX6J9fW61JxCF5fFYVBtYswh2PO+PZ6kePjr3nLCk1mlSqGv6bPM5BSR2fb4ET8wMhdILNDRsLul3oLfaFN8KNL33P0phvIFuDRshApZYGIyvOeYGPq/zbz4P7ORBVu0Pvk9EioIYAu56Pui1UmFgYZ2FD7fxdmgSlqGxg9HyhIeHmJn8Cu/PGx7mK4mj94psDBb98gGh0GIwjllggO9akkffy5ofLuoZS8lF19svthYXaMke/rOhkuwYrZ/FznBSczoFpD+A3naZaDfwAVV2A3VSCe8i4f7SrqT3t6yf9E1nzObEvxQ8pOgI4CXO5riYRkPlAw5gXTmcJ0p81bwlkhMeR+Q3yFx2zMbPdVYzhIULDHpjdERf7gEcKZTUXphqt71QwmYAv+Xxs553K8w0F+tj31lOn1Ie8S7BQzJT/V5e03rd+xXYA84xt1fv/fA73H51ctdelqSJmpgki/gTMrP85dAkbqIfGDsJUjgqqgNU27pw3f1sM0Dbr+1lPSd3CrRIwJdKofxUkGOaDtUAgaJf+M9rC5DskcT07LHcckom6WhD1Ec/2pvqOf1RyYqDIPSKwF0WDNo+g2klFJKqC
+ X25Nokx+
+ U3WQzQ8bVRy7rrE2sT36z/6LVUcS+sbl409zpC+ZM3ARe3s5gE9kgHjrX4/HNDkXt9eCmipbvGkmbjnFT2dw78oxG6dp7KbRSQJH4QSLQ2X7C6ztj0vBzPbnSiKwgUP0IRsOyDL7Rpe7dbsnu9hCdEK2Thm8fGo2cH5I5SeU5qRHDl9fEAFkqgaKwYDvhKaM7LfT6xYLg0Q6n2KsPkCtET1kH/wALedw5Hnx5nLPp29iX2ow0yQpHHyeHvdlrFYeJDVU0VEvvHrclexBEJxzjQfzPE5flSiXdPQA8cD129T0cqq1bQl1yyampFokFuEl0pFN6fannilOu8tA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,185 +185,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, Oct 29, 2025 at 11:32:58AM +0100, Valentin Schneider a écrit :
-> I need to have a think about that one; one pain point I see is the context
-> tracking work has to be NMI safe since e.g. an NMI can take us out of
-> userspace. Another is that NOHZ-full CPUs need to be special cased in the
-> stop machine queueing / completion.
+On 10/24/25 16:04, Chris Mason wrote:
+> On Thu, 23 Oct 2025 15:52:29 +0200 Vlastimil Babka <vbabka@suse.cz> wrote:
 > 
-> /me goes fetch a new notebook
+>> Before we enable percpu sheaves for kmalloc caches, we need to make sure
+>> kmalloc_nolock() and kfree_nolock() will continue working properly and
+>> not spin when not allowed to.
+>> 
+>> Percpu sheaves themselves use local_trylock() so they are already
+>> compatible. We just need to be careful with the barn->lock spin_lock.
+>> Pass a new allow_spin parameter where necessary to use
+>> spin_trylock_irqsave().
+>> 
+>> In kmalloc_nolock_noprof() we can now attempt alloc_from_pcs() safely,
+>> for now it will always fail until we enable sheaves for kmalloc caches
+>> next. Similarly in kfree_nolock() we can attempt free_to_pcs().
+>>
+> 
+> Hi Vlastimil,
+> 
+> We're trying out the AI patch review automation on the BPF commits and it had
+> some questions about a few of these.  Since the goal is to actually test the
+> automation, I'm putting them in unedited, but I did try and make sure they
+> were valid before sending.
+> 
+> This one is a little verbose for s/NULL/ERR_PTR/ suggestions, but:
+> 
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index ecb10ed5acfe..5d0b2cf66520 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+> 
+> [ ... ]
+> 
+>> @@ -2990,7 +2998,8 @@ barn_replace_empty_sheaf(struct node_barn *barn, struct slab_sheaf *empty)
+>>   * barn. But if there are too many full sheaves, reject this with -E2BIG.
+>>   */
+>>  static struct slab_sheaf *
+>> -barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
+>> +barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full,
+>> +			bool allow_spin)
+>>  {
+>>  	struct slab_sheaf *empty;
+>>  	unsigned long flags;
+>> @@ -3001,7 +3010,10 @@ barn_replace_full_sheaf(struct node_barn *barn, struct slab_sheaf *full)
+>>  	if (!data_race(barn->nr_empty))
+>>  		return ERR_PTR(-ENOMEM);
+>>
+>> -	spin_lock_irqsave(&barn->lock, flags);
+>> +	if (likely(allow_spin))
+>> +		spin_lock_irqsave(&barn->lock, flags);
+>> +	else if (!spin_trylock_irqsave(&barn->lock, flags))
+>> +		return NULL;
+> 
+> barn_replace_full_sheaf() now returns NULL when the trylock fails, in
+> addition to its existing ERR_PTR(-ENOMEM) and ERR_PTR(-E2BIG) returns.
 
-Something like the below (untested) ?
+Good catch, cool it can find such bugs.
+I'll return ERR_PTR(-EBUSY) which should be compatible with the callers.
 
-diff --git a/arch/x86/include/asm/context_tracking_work.h b/arch/x86/include/asm/context_tracking_work.h
-index 485b32881fde..2940e28ecea6 100644
---- a/arch/x86/include/asm/context_tracking_work.h
-+++ b/arch/x86/include/asm/context_tracking_work.h
-@@ -3,6 +3,7 @@
- #define _ASM_X86_CONTEXT_TRACKING_WORK_H
- 
- #include <asm/sync_core.h>
-+#include <linux/stop_machine.h>
- 
- static __always_inline void arch_context_tracking_work(enum ct_work work)
- {
-@@ -10,6 +11,9 @@ static __always_inline void arch_context_tracking_work(enum ct_work work)
- 	case CT_WORK_SYNC:
- 		sync_core();
- 		break;
-+	case CT_WORK_STOP_MACHINE:
-+		stop_machine_poll_wait();
-+		break;
- 	case CT_WORK_MAX:
- 		WARN_ON_ONCE(true);
- 	}
-diff --git a/include/linux/context_tracking_work.h b/include/linux/context_tracking_work.h
-index 2facc621be06..b63200bd73d6 100644
---- a/include/linux/context_tracking_work.h
-+++ b/include/linux/context_tracking_work.h
-@@ -6,12 +6,14 @@
- 
- enum {
- 	CT_WORK_SYNC_OFFSET,
-+	CT_WORK_STOP_MACHINE_OFFSET,
- 	CT_WORK_MAX_OFFSET
- };
- 
- enum ct_work {
--	CT_WORK_SYNC     = BIT(CT_WORK_SYNC_OFFSET),
--	CT_WORK_MAX      = BIT(CT_WORK_MAX_OFFSET)
-+	CT_WORK_SYNC         = BIT(CT_WORK_SYNC_OFFSET),
-+	CT_WORK_STOP_MACHINE = BIT(CT_WORK_STOP_MACHINE_OFFSET),
-+	CT_WORK_MAX          = BIT(CT_WORK_MAX_OFFSET)
- };
- 
- #include <asm/context_tracking_work.h>
-diff --git a/include/linux/stop_machine.h b/include/linux/stop_machine.h
-index 72820503514c..0efe88e84b8a 100644
---- a/include/linux/stop_machine.h
-+++ b/include/linux/stop_machine.h
-@@ -36,6 +36,7 @@ bool stop_one_cpu_nowait(unsigned int cpu, cpu_stop_fn_t fn, void *arg,
- void stop_machine_park(int cpu);
- void stop_machine_unpark(int cpu);
- void stop_machine_yield(const struct cpumask *cpumask);
-+void stop_machine_poll_wait(void);
- 
- extern void print_stop_info(const char *log_lvl, struct task_struct *task);
- 
-diff --git a/kernel/stop_machine.c b/kernel/stop_machine.c
-index 3fe6b0c99f3d..8f0281b0db64 100644
---- a/kernel/stop_machine.c
-+++ b/kernel/stop_machine.c
-@@ -22,6 +22,7 @@
- #include <linux/atomic.h>
- #include <linux/nmi.h>
- #include <linux/sched/wake_q.h>
-+#include <linux/sched/isolation.h>
- 
- /*
-  * Structure to determine completion condition and record errors.  May
-@@ -176,6 +177,68 @@ struct multi_stop_data {
- 	atomic_t		thread_ack;
- };
- 
-+static DEFINE_PER_CPU(int, stop_machine_poll);
-+
-+void stop_machine_poll_wait(void)
-+{
-+	int *poll = this_cpu_ptr(&stop_machine_poll);
-+
-+	while (*poll)
-+		cpu_relax();
-+	/* Enforce the work in stop machine to be visible */
-+	smp_mb();
-+}
-+
-+static void stop_machine_poll_start(struct multi_stop_data *msdata)
-+{
-+	int cpu;
-+
-+	if (housekeeping_enabled(HK_TYPE_KERNEL_NOISE))
-+		return;
-+
-+	/* Random target can't be known in advance */
-+	if (!msdata->active_cpus)
-+		return;
-+		
-+	for_each_cpu_andnot(cpu, cpu_online_mask, housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)) {
-+		int *poll = per_cpu_ptr(&stop_machine_poll, cpu);
-+
-+		if (cpumask_test_cpu(cpu, msdata->active_cpus))
-+			continue;
-+
-+		*poll = 1;
-+
-+		/*
-+		 * Act as a full barrier so that if the work is queued, polling is
-+		 * visible.
-+		 */
-+		if (ct_set_cpu_work(cpu, CT_WORK_STOP_MACHINE))
-+			msdata->num_threads--;
-+		else
-+			*poll = 0;
-+	}
-+}
-+
-+static void stop_machine_poll_complete(struct multi_stop_data *msdata)
-+{
-+	int cpu;
-+
-+	if (housekeeping_enabled(HK_TYPE_KERNEL_NOISE))
-+		return;
-+
-+	for_each_cpu_andnot(cpu, cpu_online_mask, housekeeping_cpumask(HK_TYPE_KERNEL_NOISE)) {
-+		int *poll = per_cpu_ptr(&stop_machine_poll, cpu);
-+
-+		if (cpumask_test_cpu(cpu, msdata->active_cpus))
-+			continue;
-+		/*
-+		 * The RmW in ack_state() fully orders the work performed in stop_machine()
-+		 * with polling.
-+		 */
-+		*poll = 0;
-+	}
-+}
-+
- static void set_state(struct multi_stop_data *msdata,
- 		      enum multi_stop_state newstate)
- {
-@@ -186,10 +249,13 @@ static void set_state(struct multi_stop_data *msdata,
- }
- 
- /* Last one to ack a state moves to the next state. */
--static void ack_state(struct multi_stop_data *msdata)
-+static bool ack_state(struct multi_stop_data *msdata)
- {
--	if (atomic_dec_and_test(&msdata->thread_ack))
-+	if (atomic_dec_and_test(&msdata->thread_ack)) {
- 		set_state(msdata, msdata->state + 1);
-+		return true;
-+	}
-+	return false;
- }
- 
- notrace void __weak stop_machine_yield(const struct cpumask *cpumask)
-@@ -240,7 +306,8 @@ static int multi_cpu_stop(void *data)
- 			default:
- 				break;
- 			}
--			ack_state(msdata);
-+			if (ack_state(msdata) && msdata->state == MULTI_STOP_EXIT)
-+				stop_machine_poll_complete(msdata);
- 		} else if (curstate > MULTI_STOP_PREPARE) {
- 			/*
- 			 * At this stage all other CPUs we depend on must spin
-@@ -615,6 +682,8 @@ int stop_machine_cpuslocked(cpu_stop_fn_t fn, void *data,
- 		return ret;
- 	}
- 
-+	stop_machine_poll_start(&msdata);
-+
- 	/* Set the initial state and stop all online cpus. */
- 	set_state(&msdata, MULTI_STOP_PREPARE);
- 	return stop_cpus(cpu_online_mask, multi_cpu_stop, &msdata);
 
