@@ -4,116 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34606CCF9F0
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:22:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 944B2CCF9EB
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 15:24:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 908578E0087; Wed, 29 Oct 2025 11:22:34 -0400 (EDT)
+	id F000F8E0088; Wed, 29 Oct 2025 11:24:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8DF2E8E0045; Wed, 29 Oct 2025 11:22:34 -0400 (EDT)
+	id EB0B98E0045; Wed, 29 Oct 2025 11:24:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7F52C8E0087; Wed, 29 Oct 2025 11:22:34 -0400 (EDT)
+	id DEDEA8E0088; Wed, 29 Oct 2025 11:24:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6D5598E0045
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:22:34 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C14CEBAF71
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:22:32 +0000 (UTC)
-X-FDA: 84051518544.28.2C85BAE
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C9719C000C
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:22:30 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IMiOJ2KR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751350; a=rsa-sha256;
-	cv=none;
-	b=XL2gcTHXgih7KCkebPjf68GOOx1Ce0zDfndHygKcjpyKXDi53R4OJekzwuvz515bmMwEc+
-	2jp0zJva9RnDWLmS2KNuj+ZQEJrD3KJcd60BsME4ovwrkwYeD0EQe/kPuckoQy2on0bYcL
-	GMI2Iiwx2SHBIxdfhWRr8Un+i7D7yTc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=IMiOJ2KR;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf22.hostedemail.com: domain of stephen.smalley.work@gmail.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=stephen.smalley.work@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CD50D8E0045
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 11:24:52 -0400 (EDT)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 70D8E5A0E5
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:24:52 +0000 (UTC)
+X-FDA: 84051524424.10.2A3C23B
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 800A9180006
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 15:24:50 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IUA9VMgi;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761751350;
+	s=arc-20220608; t=1761751490;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5uEf7AWHW2EFfq5FisNeu+6YzxFXhNgGD2IsXcF2IXA=;
-	b=n0yTVk1vo+irMi6oBhn0MjmJAf/lSnUiidUpBwxP3xglMJ80YFWRbnEJABHwf36lGJs3g6
-	PVFxvTBAr/hvBdNw/tAMwlxwtb+NFkfCJ5jR5pV2MGyfCMb+XlcA+zNq3H8gw3CfF4cKSg
-	WY3iD+3EWL3vy4tO7MxqnVRgIDQtacw=
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-3304dd2f119so23519a91.2
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:22:30 -0700 (PDT)
+	bh=L2iJ+gYl0WvAKtN7IryWto0AZlGcZPV36GKYmbq25K0=;
+	b=nBXA/pTsFvBurp9aWKmykmCufSYBeU0R+y2sKYcthNdxh/+w2xFOxpkiQqBOzgbiMkFUrS
+	e/pQYyV9MvGi53/tPXgx4IxbXDQQGzS5njfU1tp8x0/qh1T3UTNWFg4Bm5jPmxd7gjMCF2
+	0DAepHyk4IYjeCo5jvmL8opj3yVzzgk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=IUA9VMgi;
+	spf=pass (imf16.hostedemail.com: domain of surenb@google.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=surenb@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761751490; a=rsa-sha256;
+	cv=none;
+	b=HcoGYjOOM4LawwcIA0UOso/JqWdOmT7RT2fJOc1vlf0tfgY3Cs6E5EW9UeK+e7gC0FvuVP
+	ZBewLWT2e0WugFsK2REceT6F6cbP+MWGUz8MZQXqlArHnR9LknXzXowuyl5xoDPurdgPXY
+	6HdNTKtBFRB08pEwNGHz4n9Ar5eAdnI=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-63c44ea68f6so12826a12.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 08:24:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761751350; x=1762356150; darn=kvack.org;
+        d=google.com; s=20230601; t=1761751489; x=1762356289; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5uEf7AWHW2EFfq5FisNeu+6YzxFXhNgGD2IsXcF2IXA=;
-        b=IMiOJ2KRUbJi0nqkSI6hq5UAamrbAMJdT+2KBUGi544Atv6z0/vnGPR1JiumXtVsOF
-         E0BaO0GG0aTpnT1xRSxk1SFu4Qghi7lbkBen7F1PL+uSrhoHVdomEg+3LwULnhzCZplC
-         o8Ch2ntSC9EBRkQUGQO+/nS/lwKnUoYbZjgtm3763NXiqT7BkPH+Yk/bKsra4NUz8eiV
-         Gsp39Ed7TRTNpGSMRbt+8SfT/p2O58n3nfara8RpnaJkxbGPfZFYY6Yl61LFpZGZ4iK7
-         T/W8kLzc+Dg2qEdqQv9lBb0+IpGAGq3Nekg8wB7PLLo443p+BoWI24a+DBtWRfCwFE6l
-         Ou0w==
+        bh=L2iJ+gYl0WvAKtN7IryWto0AZlGcZPV36GKYmbq25K0=;
+        b=IUA9VMgieSpj9TicV5TTgX5RXiip80leMyPT3gHXcrAJCKEX3shz93Y1K9pE+eFquD
+         TV9dVIpS4JW8Vred74gOt+BiiytRW2Q2aOq3I4ahczhF4mYJbnppWNfuDlNJVFZ3cWyS
+         iZ1gVedxnxK3dRkJ7qGTQoNDE9qYX4h7btHG/1mijhbe0ynNA9/Br9n6/dJ2LHX55xAI
+         4t+yf4Az7hv6Xk44J7Y/ur4ZMgOmL274la6N9oKTk2omSzIYHAIBVwkSRxbboko2lVQT
+         pnYVUTFFQ7iNrMsZy6+YhSJIIU1Ily7hR4WYihnjsHX2zsKfbrXCsQGspRF0IPEFvGBg
+         o7jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761751350; x=1762356150;
+        d=1e100.net; s=20230601; t=1761751489; x=1762356289;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5uEf7AWHW2EFfq5FisNeu+6YzxFXhNgGD2IsXcF2IXA=;
-        b=qwpGWnk7u/58in1dS1VJJDJq2YmdcifsBXi/87ApQUW+gZNFE0mRD9lpVBQzq3Gf82
-         uRm5+aqfPzCnZkb6lt0yoOzEooZKNlwUSqyybAmeIzFWuatj/qMQdKJlb4iC00bVyoNY
-         JY6CTMoVSnV3ma8XHZ7To13JgOvnztjV8dENuYSqlwOZptMitGNlKGAKYdBlVG7nru0N
-         MO8vE8ah9d9KpagsKBA+tTIwXHtGXxsNUOhpv+Yt70ltsMjr4oH65o9CzO3G/ri/hQbp
-         MArD6Imne4+tG++APXPlEQasNy0o16xq+vUtbVkDchtjF/JYTsNKBrUEksT39HKtbWdd
-         Do9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVt3bvL50QEp0sshkgeUX0CzndP3D4vz+ze3vbVhcG+Rx8IFpRqZJznJJeWXsvLgUPDudHGxpIr+Q==@kvack.org
-X-Gm-Message-State: AOJu0YxxMDI30uRAroml9OQ/yPlofH/dvHaKEJWuiN0EJ/cGglHzwoly
-	BPjfH11w0623ISeZvnQn+DCOhf/jmF1Gltz9k52N47zaS2VL0bV8pQqvHka2NxXXdarRzPyJW3D
-	uO1lrZL4VHLAEaQ3TNJgg/1eLu9qWAYE=
-X-Gm-Gg: ASbGncveiOOgWikP0+qck5Pmlzi8HBdmmqy7t++Ej267LJcMtmsSNJ0TmvFV68UTXO5
-	PkiYH4PArzg/HfL9IZAMoV2cmOoKXNIk97WVTNRotQu7oJGpgQizr4aW3tqjab/kodRgxnpXygT
-	x5KrNZIeMXN9fRy8VljlYQV+Cede4IaNS3jU6QAwbFhL4m03pDp6ebwnpvYRNLKuFYrLAtIRYm9
-	8hlXsE+skgs7QoR2pOSK6sN5m7LMCo/NUWctG1HWHdN1R9VYNfAFlhEwyXKMkQ61iVhKZI=
-X-Google-Smtp-Source: AGHT+IHauJsAd7JkZgiXBb1QwsQmdX1F9k4bjlfRe5Ruq2nxIy/MOGpvFoFrg1ywX5/XWt4Wu3tgzcE+Da4joovTwjA=
-X-Received: by 2002:a17:90b:3ec4:b0:33b:b020:5968 with SMTP id
- 98e67ed59e1d1-3403a2a2304mr4383659a91.21.1761751349618; Wed, 29 Oct 2025
- 08:22:29 -0700 (PDT)
+        bh=L2iJ+gYl0WvAKtN7IryWto0AZlGcZPV36GKYmbq25K0=;
+        b=uVSIgZYJQpb7C8qwRgIg/8YV59oYv/spRLMhHZ4EYNlZkQr+gLac35XDYHeuSoZiXw
+         14JmdtjDe7+L9OLg5L260ToxKjAaBhyP/2X6qqIz1F6xw9FMQS2chqyzDrLJedXOFbaX
+         vhzuU4zIUSUsJSZjns2r6ROPk/M+zQEWJU9KTgyYCEa2R5D5Br5luZi2OlTBli+5INE7
+         kvPNfbmONs97saoHuXfwXvOe1eXLCp8Un/TOG9YAGq+quwT/fBFlWGmfpYysGc8LNEM7
+         zlH8aBC+sRM/YVAxajB63LLoFYI2AJS2CJBM1eRp8Hao/D2Q5/zAyJL5OuPc4TMOif5D
+         gEkA==
+X-Forwarded-Encrypted: i=1; AJvYcCWuU6JSVC6u8HotNaANIq/X0t74zdug9ZlNC6Inu/iSKIDXeSQGcqSpPsasm+ZZ4gwjUGRFtnbVNA==@kvack.org
+X-Gm-Message-State: AOJu0YwpHoE6L48D9QmUCwVodT4Q8fR06gKYe/wZmSxGx56HA5s46eCd
+	YIkKhYYuhMqn7jHKg6jbruKFBpehgXkBnYm3bPQIzAq7v4p7F+FYs3WySgyfomtyfzX2s3TBzBX
+	Pcd2O5DcSZMTF5iDs4g+3q4J3P8fmZWinHvdI0Tbp
+X-Gm-Gg: ASbGncv6j92ggCxnYs0wD1uLe/xNKjr5dGLEZH9y8ku7WAyfKK2cO4vR0nOYDIXeuQS
+	IdOu0OipjCk6QCL8hIU9TtngTZKloipBTZimTdrxw4Tz1anqazcwSinBKf4jEOojiqNACH+/+cG
+	WNA8VnqNHA3WTsiotdIjFPsXD01CLESviKHpVRC7MumwYNMP/w3QUv0cWKLv/YL4ZOiAOsrGeu3
+	Lujqzb69mE9EmvcIaVHHWa2EkU6peXjncsGYnI9n+oJjQUnKe8mq4HnlY5/mCpmgPgLBVYwW6z+
+	3OXrhrNZNgrr0/mFsFdMTHPTzw==
+X-Google-Smtp-Source: AGHT+IGU+esMxf3ccvuz4aU0iKC9IRrUhCYYRzaNs+SjfV5pALSJtfH3UmgORTtgzOclQeamunCFAq3K9fIJ6y1muIQ=
+X-Received: by 2002:a05:6402:24c9:b0:634:90ba:2361 with SMTP id
+ 4fb4d7f45d1cf-640452b67b6mr123042a12.7.1761751488647; Wed, 29 Oct 2025
+ 08:24:48 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251028004614.393374-1-viro@zeniv.linux.org.uk> <20251028004614.393374-35-viro@zeniv.linux.org.uk>
-In-Reply-To: <20251028004614.393374-35-viro@zeniv.linux.org.uk>
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
-Date: Wed, 29 Oct 2025 11:22:18 -0400
-X-Gm-Features: AWmQ_bmyeQMYjDS06AWxBfYb9-0R5GZ19KU4TCXUFH7N6Zg4orJWZ7Jju9hX1JU
-Message-ID: <CAEjxPJ6nF1fooxn4XaW1_OcAT46Uh+p4dD5-+uKjWv3EbfvoOg@mail.gmail.com>
-Subject: Re: [PATCH v2 34/50] selinuxfs: new helper for attaching files to tree
-To: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
-	brauner@kernel.org, jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, 
-	neil@brown.name, a.hindborg@kernel.org, linux-mm@kvack.org, 
-	linux-efi@vger.kernel.org, ocfs2-devel@lists.linux.dev, kees@kernel.org, 
-	rostedt@goodmis.org, gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
-	paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org, 
-	john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+References: <20251027122847.320924-1-harry.yoo@oracle.com> <20251027122847.320924-4-harry.yoo@oracle.com>
+ <CAJuCfpE9PRvd1Tsm6gAvxKvPFgVt640q3vSbt0wAWOa3G4tnfA@mail.gmail.com> <aQHVB_8NVMZ2cuvh@hyeyoo>
+In-Reply-To: <aQHVB_8NVMZ2cuvh@hyeyoo>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Wed, 29 Oct 2025 08:24:35 -0700
+X-Gm-Features: AWmQ_blnOhRrDyAN8bKG9PnCSCcBONfyThj1KPKRqtofem1VL-BK-gJoV4GKMAw
+Message-ID: <CAJuCfpGFPuoUceB7SvAJPtVvzOOCzqS50yCcjbuMxV2a0e0KWA@mail.gmail.com>
+Subject: Re: [RFC PATCH V3 3/7] mm/slab: abstract slabobj_ext access via new
+ slab_obj_ext() helper
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
+	cl@linux.com, dvyukov@google.com, glider@google.com, hannes@cmpxchg.org, 
+	linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev, 
+	rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, 
+	shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
+	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 800A9180006
+X-Stat-Signature: bqytrnuagp9pw633mjj36w4rjjzidnt8
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C9719C000C
-X-Stat-Signature: n3xtbug34mdenj3dzsxyospsudsxjrud
-X-HE-Tag: 1761751350-703383
-X-HE-Meta: U2FsdGVkX18IGNgvXc0rdVRubK63MQHUPX6JCJhk4rNjgCFFrc9eZXt5NQkRXIF5K8SL65VPU+1mw8pnH0zDTwxpsox9CpVa/hd8BqkpfqJ1O7oXu+IXiuWonXijc7PJgx/9iA4LCRwdPNk/1TNE53OAIhF8NTGZMx3OwM5efIXFIYmQOmtHToWArZKxZ+jcDLSsfmldw6xmLhGE72ndQCazV0JJX2WhIimVTFXRPLISLKWEJBo80Cnv8QmDhi+uizrM38VwSLeKrmI8I/ZALrKvgpN/3myYLbC4UIsZaImgtOrDSSjQkoSBag7Bfp4GcjhzrUqCYpxMGtnoLClBnTFa2Z63yzSIPR/sc1W5f5wU0c6woUjILAnhBDdCdLftLqyalQIno2nYkDNxw/uUAo+7ezMGYh4UKUAVaJmIjwkhBoV6XGHkcOklfIHY09cnQdarMBnhBYpAhHS97XupDVuC69BnZ066t93h+CtVt1f+11/Xue4zUu0/UtrEGkFxoKOdhD+lYBFiTAksBATMqBt6GihWvFn5PEbDIvwCAbr83KKA75AB1chx71ztqZEmJCPxs5LDeTQyzWQRuAz7gi04U2lRsfqMbCn51cGyG7fhgcC7f02boq5zEXv9Z49yERZXRXtlxg5P4lSN/9b52sqM3MS9mW/4JCBF8fP0WGs9xZyctorI3UdTLvjOplXLV6rqi/DvWNRgftnImvb+JCwIXHCJ7q0miNcC+R41F00utAj05nyaiEUqGYn4SB4d8xoSYUZ6DwE2GiDnTZXp/YrW6JsHPfYOUWHrHavLktm6Hv8K2TJERNo0MpJ0PFhbHDJG+Yq/UPZdGmH9CtvAcIufb7P9mWbGyXKgFro5rBbuWuCrwgEZKZfEUC8QLXDWmptQ9UFxPQDLaUhcmnAPW17Vr9B39sgKwWevo5rkfc0eNeS9CzgVNJCGVBxWFOoip8U2CAFjuHCEWYndDF4
- Cpas29jp
- Q7iP8qKwawC2RBa23ORKrc4SloKeq9+oj63Wy3tCFbiGcAyfmmNcBqVgHvBo0/J6WIjVkpRrWzdHhRQD+uGnchDAh95cTRG2FoS/Q6cRUGiZ0WeWQZG7PQ7N0KmvZtSbptphbLSgYxPQvMm/488u2DFlsNHAob2Y5HuJetYQRvU1GtZwNtpJx8tdt3tLoFhQAzvzWk42J3hrLkhYQNwh1CmlgHDS5AuFjcDNgeIHMK4NNnREpLd5ENzWEkKhYDzYeoyVVfeJ0Oa8PEI4vc14JS+AocWyMAX7CFrwmQEjLSoHrureJjsNyOC0lVOc3NedIZ/UwuCsgtZDv8CanOYfIgKL/VWFieoKzJWCY4+TIlvk94iG3LxO/kQ5PfvPF24lWMGWKkCR16CvLw7OJ6xk+ism52mNKmyvncaAbixFujpUBrEgpyK9DIY+9JWIj+YbhAB5GIKJM6sRwpGMSln8CGGSwBg==
+X-HE-Tag: 1761751490-710735
+X-HE-Meta: U2FsdGVkX181IAOZV7De5JCbczTlZFVYJNXVvg7UGBKB30iy++jcITxht9lYN/epCm4ItHkBxxllTTzZmHK3fHB7ZQl28gG1MTsUZA0n8gH2pOk4OM+V2UiAsHvLFt2ScaAAr5xX90BX3n8QRlQ76G6LztGuEhZXOPeTTvyTZMticl1vA0wB1oc9i9uTbd88P09D5o5v1DaaWvLIICYs/kh+Y6qzS2FjSUK+Jf/3lh0eNtBkoAQs0U6LARcGdAlqrSjadKOS7N966tgjuXCn63t8jN3q/ngk7B34F7RbWqY1Se8sheqhuImzrkCSyhLlDk5IcNmohuB2Enz/3tk1J9tfhn1hAO/zJkwD/mlR5ZETfSgCojs5hpTS/EZASi7C6nbgRDTzAbp4lXyFqUbUaiFkGN6GE8k6y5iwfR5x3b67DPNJn11QKog6FerZXa8kXz2lBdXC+zJ5Od0zCXKApybJSwxSIwqBpm/NnK/8/FFoN6r3UmrbluZTclAQ8LRvTmbuONWe6QHJrOOMifqdPYht4vFmpBBpPPcS7axWeI5dwIHL/aMv6TQhiYf044bTCacRpOkM03hwLKBDgSmWzvA6owzFVHv/RidI4uEa8OmX/FasNaAOJ84tFQbuWlUKOmHurUwYysUOSt4nZZxOCDAWpoVHIYlb8/1mCWuM70RkIc0Qyqv58hOniI8wB4CMGG1pXFQNRbm95mJGmu/z/HSALWIPO50pqSE9TJ+dMR0+s/Tw9O2x4GTZGtDiq+l3cb/oG9Tvu0/5zT1K33GG56m1POOAXGPIaUmBIt4Z+X+i4Hk4cN59u16YHpn8qm2WFz+bzl8WNpTV1HbGhWl3bbuTa0EgWWv3I1hGtCh7sE+I5mLnyOJLes30exNFGKvpSg2oSDKoUURKfmcX0jmQcze98n1P0CRflB7irkGqCNOco+F4GD1eduuji/4OwnFUsribPSrdvpwn6BAbUx+
+ xXPNAaOV
+ ORDOMef76CdA37QbclLT6HOUtstY1l6rIA+xKRZhSz+1E1u2lpZ6F6b+G8hDjNVHgS23mgZ6m1jaK9guP4AgO5j/26moROufDH0HJH5F1Ro5Ax+Y+SDxgxKmhbWLPe8uMv54+SzUB1AmCIvw0Y7Gl3q+YyobPKJ62TwNSuR1y+pirQL/HDOg1zWytwlJebVmXGDwnWgQUberf/mLVkJLxdPhvISwn6zS9/DBrAeHo1miwbLy1aqhEsoXt3TZkBh3yzeJblcU4QpJYcpN3mf/rXNbI25skD9BkdKckwwuAHMHllj6E0IX0BTRlerJZVNfNq8tVBJl51HocqrvWzfQ+N9bBXw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,384 +124,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Oct 28, 2025 at 3:56=E2=80=AFAM Al Viro <viro@zeniv.linux.org.uk> w=
-rote:
+On Wed, Oct 29, 2025 at 1:49=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com> wr=
+ote:
 >
-> allocating dentry after the inode has been set up reduces the amount
-> of boilerplate - "attach this inode under that name and this parent
-> or drop inode in case of failure" simplifies quite a few places.
+> On Tue, Oct 28, 2025 at 10:55:39AM -0700, Suren Baghdasaryan wrote:
+> > On Mon, Oct 27, 2025 at 5:29=E2=80=AFAM Harry Yoo <harry.yoo@oracle.com=
+> wrote:
+> > >
+> > > Currently, the slab allocator assumes that slab->obj_exts is a pointe=
+r
+> > > to an array of struct slabobj_ext objects. However, to support storag=
+e
+> > > methods where struct slabobj_ext is embedded within objects, the slab
+> > > allocator should not make this assumption. Instead of directly
+> > > dereferencing the slabobj_exts array, abstract access to
+> > > struct slabobj_ext via helper functions.
+> > >
+> > > Introduce a new API slabobj_ext metadata access:
+> > >
+> > >   slab_obj_ext(slab, obj_exts, index) - returns the pointer to
+> > >   struct slabobj_ext element at the given index.
+> > >
+> > > Directly dereferencing the return value of slab_obj_exts() is no long=
+er
+> > > allowed. Instead, slab_obj_ext() must always be used to access
+> > > individual struct slabobj_ext objects.
+> >
+> > If direct access to the vector is not allowed, it would be better to
+> > eliminate slab_obj_exts() function completely and use the new
+> > slab_obj_ext() instead. I think that's possible. We might need an
+> > additional `bool is_slab_obj_exts()` helper for an early check before
+> > we calculate the object index but that's quite easy.
 >
-> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+> Good point, but that way we cannot avoid reading slab->obj_exts
+> multiple times when we access slabobj_ext of multiple objects
+> as it's accessed via READ_ONCE().
 
-Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+True. I think we use slab->obj_exts to loop over its elements only in
+two places: __memcg_slab_post_alloc_hook() and
+__memcg_slab_free_hook(). I guess we could implement some kind of
+slab_objext_foreach() construct to loop over all elements of
+slab->obj_exts?
 
-> ---
->  security/selinux/selinuxfs.c | 160 +++++++++++++++--------------------
->  1 file changed, 66 insertions(+), 94 deletions(-)
 >
-> diff --git a/security/selinux/selinuxfs.c b/security/selinux/selinuxfs.c
-> index b39e919c27b1..f088776dbbd3 100644
-> --- a/security/selinux/selinuxfs.c
-> +++ b/security/selinux/selinuxfs.c
-> @@ -1197,6 +1197,25 @@ static struct inode *sel_make_inode(struct super_b=
-lock *sb, umode_t mode)
->         return ret;
->  }
->
-> +static struct dentry *sel_attach(struct dentry *parent, const char *name=
-,
-> +                                struct inode *inode)
-> +{
-> +       struct dentry *dentry =3D d_alloc_name(parent, name);
-> +       if (unlikely(!dentry)) {
-> +               iput(inode);
-> +               return ERR_PTR(-ENOMEM);
-> +       }
-> +       d_add(dentry, inode);
-> +       return dentry;
-> +}
-> +
-> +static int sel_attach_file(struct dentry *parent, const char *name,
-> +                          struct inode *inode)
-> +{
-> +       struct dentry *dentry =3D sel_attach(parent, name, inode);
-> +       return PTR_ERR_OR_ZERO(dentry);
-> +}
-> +
->  static ssize_t sel_read_bool(struct file *filep, char __user *buf,
->                              size_t count, loff_t *ppos)
->  {
-> @@ -1356,8 +1375,7 @@ static int sel_make_bools(struct selinux_policy *ne=
-wpolicy, struct dentry *bool_
->         *bool_num =3D num;
->         *bool_pending_names =3D names;
->
-> -       for (i =3D 0; i < num; i++) {
-> -               struct dentry *dentry;
-> +       for (i =3D 0; !ret && i < num; i++) {
->                 struct inode *inode;
->                 struct inode_security_struct *isec;
->                 ssize_t len;
-> @@ -1368,15 +1386,9 @@ static int sel_make_bools(struct selinux_policy *n=
-ewpolicy, struct dentry *bool_
->                         ret =3D -ENAMETOOLONG;
->                         break;
->                 }
-> -               dentry =3D d_alloc_name(bool_dir, names[i]);
-> -               if (!dentry) {
-> -                       ret =3D -ENOMEM;
-> -                       break;
-> -               }
->
->                 inode =3D sel_make_inode(bool_dir->d_sb, S_IFREG | S_IRUG=
-O | S_IWUSR);
->                 if (!inode) {
-> -                       dput(dentry);
->                         ret =3D -ENOMEM;
->                         break;
->                 }
-> @@ -1394,7 +1406,8 @@ static int sel_make_bools(struct selinux_policy *ne=
-wpolicy, struct dentry *bool_
->                 isec->initialized =3D LABEL_INITIALIZED;
->                 inode->i_fop =3D &sel_bool_ops;
->                 inode->i_ino =3D i|SEL_BOOL_INO_OFFSET;
-> -               d_add(dentry, inode);
-> +
-> +               ret =3D sel_attach_file(bool_dir, names[i], inode);
->         }
->  out:
->         free_page((unsigned long)page);
-> @@ -1579,6 +1592,7 @@ static int sel_make_avc_files(struct dentry *dir)
->         struct super_block *sb =3D dir->d_sb;
->         struct selinux_fs_info *fsi =3D sb->s_fs_info;
->         unsigned int i;
-> +       int err =3D 0;
->         static const struct tree_descr files[] =3D {
->                 { "cache_threshold",
->                   &sel_avc_cache_threshold_ops, S_IRUGO|S_IWUSR },
-> @@ -1588,26 +1602,20 @@ static int sel_make_avc_files(struct dentry *dir)
->  #endif
->         };
->
-> -       for (i =3D 0; i < ARRAY_SIZE(files); i++) {
-> +       for (i =3D 0; !err && i < ARRAY_SIZE(files); i++) {
->                 struct inode *inode;
-> -               struct dentry *dentry;
-> -
-> -               dentry =3D d_alloc_name(dir, files[i].name);
-> -               if (!dentry)
-> -                       return -ENOMEM;
->
->                 inode =3D sel_make_inode(dir->d_sb, S_IFREG|files[i].mode=
-);
-> -               if (!inode) {
-> -                       dput(dentry);
-> +               if (!inode)
->                         return -ENOMEM;
-> -               }
->
->                 inode->i_fop =3D files[i].ops;
->                 inode->i_ino =3D ++fsi->last_ino;
-> -               d_add(dentry, inode);
-> +
-> +               err =3D sel_attach_file(dir, files[i].name, inode);
->         }
->
-> -       return 0;
-> +       return err;
->  }
->
->  static int sel_make_ss_files(struct dentry *dir)
-> @@ -1615,30 +1623,25 @@ static int sel_make_ss_files(struct dentry *dir)
->         struct super_block *sb =3D dir->d_sb;
->         struct selinux_fs_info *fsi =3D sb->s_fs_info;
->         unsigned int i;
-> +       int err =3D 0;
->         static const struct tree_descr files[] =3D {
->                 { "sidtab_hash_stats", &sel_sidtab_hash_stats_ops, S_IRUG=
-O },
->         };
->
-> -       for (i =3D 0; i < ARRAY_SIZE(files); i++) {
-> +       for (i =3D 0; !err && i < ARRAY_SIZE(files); i++) {
->                 struct inode *inode;
-> -               struct dentry *dentry;
-> -
-> -               dentry =3D d_alloc_name(dir, files[i].name);
-> -               if (!dentry)
-> -                       return -ENOMEM;
->
->                 inode =3D sel_make_inode(dir->d_sb, S_IFREG|files[i].mode=
-);
-> -               if (!inode) {
-> -                       dput(dentry);
-> +               if (!inode)
->                         return -ENOMEM;
-> -               }
->
->                 inode->i_fop =3D files[i].ops;
->                 inode->i_ino =3D ++fsi->last_ino;
-> -               d_add(dentry, inode);
-> +
-> +               err =3D sel_attach_file(dir, files[i].name, inode);
->         }
->
-> -       return 0;
-> +       return err;
->  }
->
->  static ssize_t sel_read_initcon(struct file *file, char __user *buf,
-> @@ -1666,30 +1669,25 @@ static const struct file_operations sel_initcon_o=
-ps =3D {
->  static int sel_make_initcon_files(struct dentry *dir)
->  {
->         unsigned int i;
-> +       int err =3D 0;
->
-> -       for (i =3D 1; i <=3D SECINITSID_NUM; i++) {
-> -               struct inode *inode;
-> -               struct dentry *dentry;
-> +       for (i =3D 1; !err && i <=3D SECINITSID_NUM; i++) {
->                 const char *s =3D security_get_initial_sid_context(i);
-> +               struct inode *inode;
->
->                 if (!s)
->                         continue;
-> -               dentry =3D d_alloc_name(dir, s);
-> -               if (!dentry)
-> -                       return -ENOMEM;
->
->                 inode =3D sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
-> -               if (!inode) {
-> -                       dput(dentry);
-> +               if (!inode)
->                         return -ENOMEM;
-> -               }
->
->                 inode->i_fop =3D &sel_initcon_ops;
->                 inode->i_ino =3D i|SEL_INITCON_INO_OFFSET;
-> -               d_add(dentry, inode);
-> +               err =3D sel_attach_file(dir, s, inode);
->         }
->
-> -       return 0;
-> +       return err;
->  }
->
->  static inline unsigned long sel_class_to_ino(u16 class)
-> @@ -1771,29 +1769,21 @@ static int sel_make_perm_files(struct selinux_pol=
-icy *newpolicy,
->         if (rc)
->                 return rc;
->
-> -       for (i =3D 0; i < nperms; i++) {
-> +       for (i =3D 0; !rc && i < nperms; i++) {
->                 struct inode *inode;
-> -               struct dentry *dentry;
->
-> -               rc =3D -ENOMEM;
-> -               dentry =3D d_alloc_name(dir, perms[i]);
-> -               if (!dentry)
-> -                       goto out;
-> -
-> -               rc =3D -ENOMEM;
->                 inode =3D sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
->                 if (!inode) {
-> -                       dput(dentry);
-> -                       goto out;
-> +                       rc =3D -ENOMEM;
-> +                       break;
->                 }
->
->                 inode->i_fop =3D &sel_perm_ops;
->                 /* i+1 since perm values are 1-indexed */
->                 inode->i_ino =3D sel_perm_to_ino(classvalue, i + 1);
-> -               d_add(dentry, inode);
-> +
-> +               rc =3D sel_attach_file(dir, perms[i], inode);
->         }
-> -       rc =3D 0;
-> -out:
->         for (i =3D 0; i < nperms; i++)
->                 kfree(perms[i]);
->         kfree(perms);
-> @@ -1808,20 +1798,18 @@ static int sel_make_class_dir_entries(struct seli=
-nux_policy *newpolicy,
->         struct selinux_fs_info *fsi =3D sb->s_fs_info;
->         struct dentry *dentry =3D NULL;
->         struct inode *inode =3D NULL;
-> -
-> -       dentry =3D d_alloc_name(dir, "index");
-> -       if (!dentry)
-> -               return -ENOMEM;
-> +       int err;
->
->         inode =3D sel_make_inode(dir->d_sb, S_IFREG|S_IRUGO);
-> -       if (!inode) {
-> -               dput(dentry);
-> +       if (!inode)
->                 return -ENOMEM;
-> -       }
->
->         inode->i_fop =3D &sel_class_ops;
->         inode->i_ino =3D sel_class_to_ino(index);
-> -       d_add(dentry, inode);
-> +
-> +       err =3D sel_attach_file(dir, "index", inode);
-> +       if (err)
-> +               return err;
->
->         dentry =3D sel_make_dir(dir, "perms", &fsi->last_class_ino);
->         if (IS_ERR(dentry))
-> @@ -1873,58 +1861,47 @@ static int sel_make_policycap(struct dentry *dir)
->  {
->         struct super_block *sb =3D dir->d_sb;
->         unsigned int iter;
-> -       struct dentry *dentry =3D NULL;
->         struct inode *inode =3D NULL;
-> +       int err =3D 0;
-> +
-> +       for (iter =3D 0; !err && iter <=3D POLICYDB_CAP_MAX; iter++) {
-> +               const char *name;
->
-> -       for (iter =3D 0; iter <=3D POLICYDB_CAP_MAX; iter++) {
->                 if (iter < ARRAY_SIZE(selinux_policycap_names))
-> -                       dentry =3D d_alloc_name(dir,
-> -                                             selinux_policycap_names[ite=
-r]);
-> +                       name =3D selinux_policycap_names[iter];
->                 else
-> -                       dentry =3D d_alloc_name(dir, "unknown");
-> -
-> -               if (dentry =3D=3D NULL)
-> -                       return -ENOMEM;
-> +                       name =3D "unknown";
->
->                 inode =3D sel_make_inode(sb, S_IFREG | 0444);
-> -               if (inode =3D=3D NULL) {
-> -                       dput(dentry);
-> +               if (!inode)
->                         return -ENOMEM;
-> -               }
->
->                 inode->i_fop =3D &sel_policycap_ops;
->                 inode->i_ino =3D iter | SEL_POLICYCAP_INO_OFFSET;
-> -               d_add(dentry, inode);
-> +               err =3D sel_attach_file(dir, name, inode);
->         }
->
-> -       return 0;
-> +       return err;
->  }
->
->  static struct dentry *sel_make_dir(struct dentry *dir, const char *name,
->                         unsigned long *ino)
->  {
-> -       struct dentry *dentry =3D d_alloc_name(dir, name);
->         struct inode *inode;
->
-> -       if (!dentry)
-> -               return ERR_PTR(-ENOMEM);
-> -
->         inode =3D sel_make_inode(dir->d_sb, S_IFDIR | S_IRUGO | S_IXUGO);
-> -       if (!inode) {
-> -               dput(dentry);
-> +       if (!inode)
->                 return ERR_PTR(-ENOMEM);
-> -       }
->
->         inode->i_op =3D &simple_dir_inode_operations;
->         inode->i_fop =3D &simple_dir_operations;
->         inode->i_ino =3D ++(*ino);
->         /* directory inodes start off with i_nlink =3D=3D 2 (for "." entr=
-y) */
->         inc_nlink(inode);
-> -       d_add(dentry, inode);
->         /* bump link count on parent directory, too */
->         inc_nlink(d_inode(dir));
->
-> -       return dentry;
-> +       return sel_attach(dir, name, inode);
->  }
->
->  static int reject_all(struct mnt_idmap *idmap, struct inode *inode, int =
-mask)
-> @@ -2012,17 +1989,10 @@ static int sel_fill_super(struct super_block *sb,=
- struct fs_context *fc)
->                 goto err;
->         }
->
-> -       ret =3D -ENOMEM;
-> -       dentry =3D d_alloc_name(sb->s_root, NULL_FILE_NAME);
-> -       if (!dentry)
-> -               goto err;
-> -
->         ret =3D -ENOMEM;
->         inode =3D sel_make_inode(sb, S_IFCHR | S_IRUGO | S_IWUGO);
-> -       if (!inode) {
-> -               dput(dentry);
-> +       if (!inode)
->                 goto err;
-> -       }
->
->         inode->i_ino =3D ++fsi->last_ino;
->         isec =3D selinux_inode(inode);
-> @@ -2031,7 +2001,9 @@ static int sel_fill_super(struct super_block *sb, s=
-truct fs_context *fc)
->         isec->initialized =3D LABEL_INITIALIZED;
->
->         init_special_inode(inode, S_IFCHR | S_IRUGO | S_IWUGO, MKDEV(MEM_=
-MAJOR, 3));
-> -       d_add(dentry, inode);
-> +       ret =3D sel_attach_file(sb->s_root, NULL_FILE_NAME, inode);
-> +       if (ret)
-> +               goto err;
->
->         dentry =3D sel_make_dir(sb->s_root, "avc", &fsi->last_ino);
->         if (IS_ERR(dentry)) {
 > --
-> 2.47.3
->
->
+> Cheers,
+> Harry / Hyeonggon
 
