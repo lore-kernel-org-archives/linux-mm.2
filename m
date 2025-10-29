@@ -4,83 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88F14CCF9EE
-	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:09:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D508CCF9EE
+	for <linux-mm@archiver.kernel.org>; Wed, 29 Oct 2025 20:09:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AA2A58E00EE; Wed, 29 Oct 2025 16:08:56 -0400 (EDT)
+	id 28DB98E00EF; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A531B8E00B2; Wed, 29 Oct 2025 16:08:56 -0400 (EDT)
+	id 23E438E00B2; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9462D8E00EE; Wed, 29 Oct 2025 16:08:56 -0400 (EDT)
+	id 12F888E00EF; Wed, 29 Oct 2025 16:09:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 787E78E00B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:08:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 1EDA45BBC8
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:08:56 +0000 (UTC)
-X-FDA: 84052240272.24.ADCF423
-Received: from mail-24418.protonmail.ch (mail-24418.protonmail.ch [109.224.244.18])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5C53FC0002
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:08:54 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=f2ixPvRO;
-	spf=pass (imf22.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id ED5D28E00B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 16:09:39 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id BADC012B43E
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:09:39 +0000 (UTC)
+X-FDA: 84052242078.30.C03F5B5
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by imf24.hostedemail.com (Postfix) with ESMTP id D3A75180003
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:09:37 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=GiO+NP1C;
+	spf=pass (imf24.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
 	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761768534;
+	s=arc-20220608; t=1761768578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+vFEd2i7cGwKfB76083zqMnaJRzsau0IVtzvsF2hHkA=;
-	b=IIIxFKB/ctHUDA4A6EWXNdl0MDBPVGASSVlJuzeraY0QfuK2ikMxJ7lmlVCnHl1qIytOGe
-	j2R4U1sNVaw0f5Zqoy0nBtdDrZEHgP3OEJcQDAShZAUyOMioKC6yLcYEgJvo4qyN6TOTra
-	fZER9B5y1rjUmVSqY/fMj0v62i+vM9w=
+	bh=9kO+NK4R04JM70PmVsjA3ThrFoFrY2dEYZyEQtxD9Gc=;
+	b=nGJklTLQMBEK3L722gwadcOcUjODcu+wsZYstmhOg6FgPoDZ7zFzGycWwE2h4OqYmLMO3X
+	8k2K8vh28x1Le7huqdEs3AZVZ2XQIpTILYuxK/qToFK+2G4FXviCHwEhXS9YuOqbp8zXB/
+	mRpBzNzJO9uUHMuW/B4PmNTX3Iz3orE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=f2ixPvRO;
-	spf=pass (imf22.hostedemail.com: domain of m.wieczorretman@pm.me designates 109.224.244.18 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	imf24.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=GiO+NP1C;
+	spf=pass (imf24.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
 	dmarc=pass (policy=quarantine) header.from=pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768534; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761768578; a=rsa-sha256;
 	cv=none;
-	b=SzStXeZXBNhygwQaRCpGDlL8H7sid8nDgOPQ896/tguMuKqjGOpZUJj5q4qEYqVvFMnT1F
-	hTFwpzAUDnOgKQq8zL7KkMqb7AxfPCCx5LUYZec1dVvZTyqMOZgs3SrsDbYnt/Oy5v1GOJ
-	ZKXEaFJ5GlE1xuL1jq2Zb7FvU7yaoFg=
+	b=tU7cG7CShK3BYEfBPsRWOU74neYNyzL//3eWNAbz59A0Gos6NB4euepS3GDQaZvOD9OCZu
+	MIpaVo8oPlPLL2eo+eQZSr/v0saDY5DwG0QBX7vFLjCEAwxB3TQ1H12cxi6G1Y3grJqQ/P
+	pQVThITrN6uYSbEf4A7t0AvttNCKNCc=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1761768530; x=1762027730;
-	bh=+vFEd2i7cGwKfB76083zqMnaJRzsau0IVtzvsF2hHkA=;
+	s=protonmail3; t=1761768575; x=1762027775;
+	bh=9kO+NK4R04JM70PmVsjA3ThrFoFrY2dEYZyEQtxD9Gc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=f2ixPvROXBBe3oYcnt46ZpuoD3whpqDkx+uWuzdhIU+YPbduMbbLBUYy3V19N8DdT
-	 lJCQaItYc4V04frYC10Qp8vC4v6QealyZOWFQ9x+4qrE9lklIogwUqZ4H130zyymmQ
-	 QuU0Jp39WS7X0fe1Z0N55I/Nb2bcW5EMWiLI8MAIscT6weHJpTE4qsZY5FWESEyQBa
-	 XhAFbluJjDjJ4OVPWlAMCFRWCe1eIQ5pzDu9nHbw1L5wWjcHpVsCvn8VHSo6rvjAi8
-	 DZuZbhfARnsZ1Xh2scxFMiBarfrU81v14JAR7983upQVZyAIOMSBej2abjtKpLwF5M
-	 HwEJuccHvAyqQ==
-Date: Wed, 29 Oct 2025 20:08:43 +0000
+	b=GiO+NP1Cl8/oha+EezztD/oioG80KLBwC09Ce0/RmuvQMCBBOpsvpeyrM1SYKP380
+	 L55FlMbYoS9vvMYp6u+V/7HJh5NlPM25E3S/mc7Yo6015R0C0GV6qsbAZ0uhT1F7A0
+	 mpcNgf97G1MEObQ5l3M7Y1fy71MJY1hXHoqBjAcP6kuvTg7wW06FUUqhHu+0cQ9ob4
+	 74pYfXnPEt5uOz28lW7xSav9FPCJaxYHlp/8fDhgCMIbN9UWvw5d+D8fOPV6TBll7J
+	 Dzv2hAiwmoltCsMMbtVmhyUxeYuIifVpZya2+ANHr1l0hRf1ny1I1hgtqU13yTLAP8
+	 uD8Rn3tilxeaA==
+Date: Wed, 29 Oct 2025 20:09:28 +0000
 To: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, akpm@linux-foundation.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com,
 	ardb@kernel.org, Liam.Howlett@oracle.com, nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org
 From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
 Cc: kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org, m.wieczorretman@pm.me
-Subject: [PATCH v6 13/18] x86/mm: LAM initialization
-Message-ID: <96559d5a8e897f97879259bad3117db617e21377.1761763681.git.m.wieczorretman@pm.me>
+Subject: [PATCH v6 14/18] x86: Minimal SLAB alignment
+Message-ID: <0ca5d46e292e5074c119c7c58e6ec9901fb0ed73.1761763681.git.m.wieczorretman@pm.me>
 In-Reply-To: <cover.1761763681.git.m.wieczorretman@pm.me>
 References: <cover.1761763681.git.m.wieczorretman@pm.me>
 Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 0e1842514ef97eaa33355f60d534577848d5c6b8
+X-Pm-Message-ID: bb212e55891aa41be391c49c804782cab1b9ead2
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5C53FC0002
-X-Stat-Signature: cm7g71qapben717emz1if173fjw86sa6
+X-Stat-Signature: xbjqhuheofp37kujateeujsdcj66twyr
+X-Rspamd-Queue-Id: D3A75180003
 X-Rspam-User: 
-X-HE-Tag: 1761768534-273141
-X-HE-Meta: U2FsdGVkX18uhsEOUE4ITuApEre+lFEgzkoU81xT7xK6NhUMv28foqgPK5AoCnJjXjWWr2GZJYQrCOSrUZmrSYNS7+d8CItvYsmg4ULTWp6FNpO+SOWREpoTNighif0c6SKaHXWFLuueqmuoEjyFFG8qwtpf13OrAGrI+r435pI5whmooQNLEv5POELACE+QiiSQUfdkOeX77fbPN2+rz4CeqlAfK2Sg27B/SV6zpiDCTvtZUic8o5rfvmZL4JwUHnERCws/2jICv79/OaX4MMDtHHtPKByOLFq9FQoyteZmMy8MqcRadGuen2F518HxBkOgwsS8y8Mzm9FxuYGhzTxoARGqgT+Aa6VsXn0APUXuf8GJ216K5ICtPXm/XCRSC0YwlN15wkriA8ARNkdJTeSIGOrBByBlk2eVWT3X55zojnGzYwqDvVBuw5OHxhHJW31fqmljV6mRuFq4TnJGUFPcG7fTI8JLiUfyt+DJmiVlg0fT+Cm5T2M09C5aCSAVOhQ6DbLUNxj4Fb6oYqHj0Flw4Qe5io2UoKEsET6y8VfGsaWunlfMO8XbKIhkw7NS9FnEWNbePFUiGEfXW9xmwY14r5xWsIXAw73OrgExZr/8f1saTTfjSQR4G7SrEOkomlxg7v888QIMZfqutMdKQQJFBgg+opDDn4qh6sItWSj79qU44bMCg3MzChu9bU3Q17fKjvJeGpo4TzBHpzMQaAI2xPRyqq/DJbbxKp6NoRI2RyIc9154MT6NpFYiGTNNUl7dC6qVxJ7GhNK385MUH8ua4/ezCqkmIo1mWLMmUsvHIGwXx3A/jYfD+l1tYXBFdmM3+W1dhCrmJZlUE2/hAXUvbpVKySfC1HbUfXrpaQbZ+LfnXm+wE6DhRX5D79uKFCAe59FXCi7t6BhGrUEv4csW2c1xgf88
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761768577-213185
+X-HE-Meta: U2FsdGVkX19Sd5jO/yFw9rpNGXtrFB41qUbvpIHyewtVXTdjCKq6kBPxG+k2fVYI2MngYb19ouhzAyijbwyqc8QSgRNGtjwjTe2H3UrIazv7zHeL8VEFrC7MjCDDloSXTpHeAzx84mzAgDC4SkS0DYTqRd12hmajWAATE2Xl9KYNVu9MgszJXyFdq/fHB+SfqIrSm0McMqO6JHGvdE3Zr0yYOnw3oM7OqyGAiN1FHw5XepqWjlUxtc3mkfDOOr1mSMiklyW7FYbYMJqOz0m3FUpiG+KvbVY52vdRF6ZkGL3APLjPiGcRj6KZCEGpFA+w2X2CT7+MIoHN/jbcsZc5QSvkHr5n2fAPpCvEA1rHNuldbtAWrjQ44DzO2FQwfYaU6UBUKOx0Ku+vS7kFLn9TRrrLgg91dlfHcmTsFu+IJvMISNjPT+z2S7nBZpJACwfscdAsQAE3Bduwa40bZHESbpw6+Z3IjLC8ToZr76ga1m9LtNi5yFdGffohAoZrXxN1piVWqhQNkGtkTB7KgGSz7NGsrSHcZvstm6mnPgHR9cpjeLiyyKLYFScbVLMl+e2NAguWsvdUfks1rQPr02kCkZ1dDi5fmILEEbBRWaEAapDJE0/r4/G3OksruE5YtFLQ70r5c8xkOhMvq4ST2DA/A92de4AxzQ8Yu8WTsHtCvtmpc7d+cQs3H1NfK5dNB121OzY4Uh3jJhQrrgdDYeFxsqnU2B9+QW4zytNpPGRvEQzqlfwcbEN9mduK08GHpQt1z9v4iWHYeWpLI6atUuits5TZOtVOqd1CYo9yhdwNTH8MQA8OEMfl3Dfn2Gn2QcdEJsQfy8qx/uRA8G+L3shLBojtyjwdcRIgMZbtJFlrL/fHvXZsohrnvcZjDowzWncZhOfMXvdKpp/a0cbhKccAoCY8w0GDUL/Kkh2UuOBW1YidfqxE/ASMnWcX7sdq1WJ+BrcPJpOjgXqSkkcZieV
+ ZkQBjNaC
+ iNRGgi0tG7Ak9PP+h94kVHZ8DW9xUd3N7VyZOfAVP43f55csfjoXAOtjQiMd2iMLrGk2XheQLx513OS3rgnT2BgkYJ20DAmzq8qWyuDnPR05HSQwRJRvf7bpJSybDZLmHd3awzIhZpXcg5CPFwGiR+3nlQMf/yrOrSw3vceN4d1hqAlK6YUQmdLPozFapoQGIGuLRge8w+O5gT2D3Ock2XtYar3H2fQkSKMvbCf4kqwuDJPehywTMQ5oxEwjzgveRg63d1KSFehNx/f6Nljggthqd2U61Ulpr+06w1hsDglb1NlLFmBxD3v3MmIvF3GZL+bW2IjXfsBf6ZcE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,53 +93,51 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
 
-To make use of KASAN's tag based mode on x86, Linear Address Masking
-(LAM) needs to be enabled. To do that the 28th bit in CR4 has to be set.
+8 byte minimal SLAB alignment interferes with KASAN's granularity of 16
+bytes. It causes a lot of out-of-bounds errors for unaligned 8 byte
+allocations.
 
-Set the bit in early memory initialization.
+Compared to a kernel with KASAN disabled, the memory footprint increases
+because all kmalloc-8 allocations now are realized as kmalloc-16, which
+has twice the object size. But more meaningfully, when compared to a
+kernel with generic KASAN enabled, there is no difference. Because of
+redzones in generic KASAN, kmalloc-8' and kmalloc-16' object size is the
+same (48 bytes). So changing the minimal SLAB alignment of the tag-based
+mode doesn't have any negative impact when compared to the other
+software KASAN mode.
 
-When launching secondary CPUs the LAM bit gets lost. To avoid this add
-it in a mask in head_64.S. The bitmask permits some bits of CR4 to pass
-from the primary CPU to the secondary CPUs without being cleared.
+Adjust x86 minimal SLAB alignment to match KASAN granularity size.
 
 Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
 ---
 Changelog v6:
-- boot_cpu_has() -> cpu_feature_enabled()
+- Add Andrey's Reviewed-by tag.
 
- arch/x86/kernel/head_64.S | 3 +++
- arch/x86/mm/init.c        | 3 +++
- 2 files changed, 6 insertions(+)
+Changelog v4:
+- Extend the patch message with some more context and impact
+  information.
 
-diff --git a/arch/x86/kernel/head_64.S b/arch/x86/kernel/head_64.S
-index 21816b48537c..c5a0bfbe280d 100644
---- a/arch/x86/kernel/head_64.S
-+++ b/arch/x86/kernel/head_64.S
-@@ -209,6 +209,9 @@ SYM_INNER_LABEL(common_startup_64, SYM_L_LOCAL)
- =09 *  there will be no global TLB entries after the execution."
- =09 */
- =09movl=09$(X86_CR4_PAE | X86_CR4_LA57), %edx
-+#ifdef CONFIG_ADDRESS_MASKING
-+=09orl=09$X86_CR4_LAM_SUP, %edx
-+#endif
- #ifdef CONFIG_X86_MCE
- =09/*
- =09 * Preserve CR4.MCE if the kernel will enable #MC support.
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 8bf6ad4b9400..a8442b255481 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -764,6 +764,9 @@ void __init init_mem_mapping(void)
- =09probe_page_size_mask();
- =09setup_pcid();
+Changelog v3:
+- Fix typo in patch message 4 -> 16.
+- Change define location to arch/x86/include/asm/cache.c.
+
+ arch/x86/include/asm/cache.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/x86/include/asm/cache.h b/arch/x86/include/asm/cache.h
+index 69404eae9983..3232583b5487 100644
+--- a/arch/x86/include/asm/cache.h
++++ b/arch/x86/include/asm/cache.h
+@@ -21,4 +21,8 @@
+ #endif
+ #endif
 =20
-+=09if (cpu_feature_enabled(X86_FEATURE_LAM) && IS_ENABLED(CONFIG_KASAN_SW_=
-TAGS))
-+=09=09cr4_set_bits_and_update_boot(X86_CR4_LAM_SUP);
++#ifdef CONFIG_KASAN_SW_TAGS
++#define ARCH_SLAB_MINALIGN (1ULL << KASAN_SHADOW_SCALE_SHIFT)
++#endif
 +
- #ifdef CONFIG_X86_64
- =09end =3D max_pfn << PAGE_SHIFT;
- #else
+ #endif /* _ASM_X86_CACHE_H */
 --=20
 2.51.0
 
