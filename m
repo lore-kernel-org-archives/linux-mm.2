@@ -4,140 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2165ECCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 21:13:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F212CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 21:26:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 02E7B8E01E0; Thu, 30 Oct 2025 17:13:48 -0400 (EDT)
+	id B21BE8E01E1; Thu, 30 Oct 2025 17:26:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 006578E009F; Thu, 30 Oct 2025 17:13:47 -0400 (EDT)
+	id AD2E38E009F; Thu, 30 Oct 2025 17:26:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E5E4B8E01E0; Thu, 30 Oct 2025 17:13:47 -0400 (EDT)
+	id A0FE78E01E1; Thu, 30 Oct 2025 17:26:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CF1248E009F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:13:47 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7F93616027F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:13:47 +0000 (UTC)
-X-FDA: 84056032494.26.7BA7BC1
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 37E574000C
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:13:45 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iARlgBDn;
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8D1048E009F
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:26:01 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BDEE13A662
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:26:01 +0000 (UTC)
+X-FDA: 84056063322.08.F9B3E3C
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 45E944000F
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:25:58 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gEZTFOgV;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761858825;
+	s=arc-20220608; t=1761859559;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2qSMd9AkD4Z7b3gNm80YcCcg0oGBGt0b/as95bErXJ4=;
-	b=L7uEofwmqjOnuuhSb1v54G5itjVxsrNL2XfMOZEDAG4QM/inoxEtMIr8CPqpYmS08MYG9h
-	xw7X4JxcU4ZmyQ5IkssDhjCjrEnRmyGyQFDTzUwxyYws1ht7MObIuA/xAxX2FjfFPbyE/2
-	15oxg6ESSpH7J9k6DVgrqaVI++Wm+5E=
+	bh=WQjgh76ocKn6tEir5dlln+rELO/KQ8E5wii4qcczHPc=;
+	b=QqMqFamxE63CVyvyPAvAfDexdJHrRV/c+elz+xbih2Rj9s+nztQ8dSVdSiFX6WKuRngHdR
+	uFUaRf0L9bcsYnaLXK2HPApwfZtN7pdoUvgKbRLgTB8q430RBSif7Mk/E/PtA+yuwWUGjQ
+	t9mpNu7Jn+GZQMsM27aWvk9/xJLr6uk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=iARlgBDn;
-	spf=pass (imf07.hostedemail.com: domain of peterx@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761858825; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=gEZTFOgV;
+	spf=none (imf12.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761859559; a=rsa-sha256;
 	cv=none;
-	b=e+9oBdFE5yf6lpiZSGt4ZKiPhX/Pkrvx2TVPhp7naq0Cvs3EZ937qBej2odO8B8rQFoHhF
-	bHTYksi9rKk4+Y+LPkNX3GTHBwP0o6I40fX9AkTFM0G830jhMKxcCnAwMJ7Kwk5KcCpnsq
-	5d1vKjvv3MU7nZoFJcqIzzx5T2d36o8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761858824;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=2qSMd9AkD4Z7b3gNm80YcCcg0oGBGt0b/as95bErXJ4=;
-	b=iARlgBDnfgv9nvyr4WstLEi1qwrkvWrKFmkabFrdxpP1SrJe6ZyPcvEps+iqj2PjOjVEYe
-	F24iCcQvvAsfpKX+pZjtuTVqqJ3cSbJ7muXHkdtzzJlTgt4MyZzJSWqxdyZoCIzWMkRGCF
-	jTtKe5lAPyQRf/ieY9e5qIqO38B5ij8=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-437-XMBYqyc9Pl-Tfvi-G0FWuA-1; Thu, 30 Oct 2025 17:13:35 -0400
-X-MC-Unique: XMBYqyc9Pl-Tfvi-G0FWuA-1
-X-Mimecast-MFC-AGG-ID: XMBYqyc9Pl-Tfvi-G0FWuA_1761858815
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-87c6f88fda2so58632576d6.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:13:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761858815; x=1762463615;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2qSMd9AkD4Z7b3gNm80YcCcg0oGBGt0b/as95bErXJ4=;
-        b=QyZqbbxD7lmv+hSApZa2zjCLaa/VEdNYLunsILXjWPQgQZCJpj/3n43Bq5fFjQ/Nh3
-         Z7Xj36b5hg+lVp2j8oaFzoSBh78Tv2Hts3o47jTpaWMjHhY4po9YLBMtYpwrsU1/AfSk
-         egBsrAxqp/CZzlFZzVe/nXjr13qZEbwrZYig1CBHPz5M460sfo8m7OwYmDgTVi6rBqen
-         DrZkSK3uc5H76UGnF8wqSo0ZyGxkrdUxkSwr1OaZX2KnOakEKsRBxPzUKliYNJ4erJvQ
-         GRMh3CbcOdfxMsEvdLQUmp1qQMAYVKhHFKvM8JILEzW5TLFljuNft1aUKLPlABjBsbfS
-         tx2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVI4jUjMFsvShIbl2QfzUP++5Hvpo7bO5RWwLxjqHXzZMB07dpor+s3spSznbExge3C3LIOKYOAsA==@kvack.org
-X-Gm-Message-State: AOJu0Yxg0T8hIIbmsPjDDAw+NKamdsz3nIINmQTWjBKcod5x/+Dkiixh
-	/UTL3JiIa0UwJxkMPfwWj7QKPcSzJBy5go/O+p09gQxb+4ZvAfyEBe5BB4xvPHKVni6HmRqr942
-	GB08+cUzL0KYgR1uKnc/ahouanrr2HOFMHHRO8Vr5D4hkg6fH6PkE
-X-Gm-Gg: ASbGnctLaohTSCLhAlMpcavNn8RGTwkIQUZzHljmxMQpDb1N1t64dZu3RKeXwpANRQo
-	qgRhW50eOfncUVp28nRDRLDJoqPuHDVTQ8xvDbAj1DV3zCM02KPdfQaFHDiAyR5DSFJ1wXudln4
-	CtlO4ScMhiQwLEET6SmAMfTeERh39c7NgjVulFqR2ohAHcBbmZs38TwoNkISIQSDo4euAnwd0gM
-	BZLjGRB9LUG1fhAgRJmYOkWBI/AXx/QlzOCSr8INjLVpTNaT607YlS7N6dwf/0bG1rTes5kdDJ8
-	pjGKN5DYEgqVk6b/lAKD+DfPzNrr8kZfc3F9vLk3N02GBI4/OYRShqmggA6SDysjmak=
-X-Received: by 2002:ad4:5f45:0:b0:772:45a0:4e28 with SMTP id 6a1803df08f44-8802cec2b96mr17784276d6.5.1761858815212;
-        Thu, 30 Oct 2025 14:13:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHy39LrKID+rYZSIuDUuhKO4bD0gQsxxZgkOrydITJ3UUu9nNWFlxRyOoHC0FWqEtv02hCdfw==
-X-Received: by 2002:ad4:5f45:0:b0:772:45a0:4e28 with SMTP id 6a1803df08f44-8802cec2b96mr17783756d6.5.1761858814718;
-        Thu, 30 Oct 2025 14:13:34 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-87fc49817f0sm125018546d6.47.2025.10.30.14.13.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 14:13:33 -0700 (PDT)
-Date: Thu, 30 Oct 2025 17:13:30 -0400
-From: Peter Xu <peterx@redhat.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>, conduct@kernel.org
-Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
-Message-ID: <aQPU-tyo_w68cnKK@x1.local>
-References: <20251014231501.2301398-1-peterx@redhat.com>
- <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
- <aPZDVuscFsYSlQjI@x1.local>
- <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
- <aPe0oWR9-Oj58Asz@x1.local>
- <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
- <aQO3Zko6Qrk7O96u@x1.local>
- <aQPCwFZqNd_ZlZ0S@x1.local>
- <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
+	b=KdRoWOFb7jV+ldptOpVRSewBaVvn9un7kl8+VOuTrMqrfRmclAn1AqRmqi2JUQZM8xGRJl
+	6sgPKWEXk1u8xZEyFApajrbwG3gaAq/NAwD/2VkoXmxgqO3Iv+lP6z6xs+7cWZSQqrudxD
+	T+dcYIY5N6+BdnBKTxEU2BNPTWnGS9c=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WQjgh76ocKn6tEir5dlln+rELO/KQ8E5wii4qcczHPc=; b=gEZTFOgVBA16zievEla5GynjUp
+	PEyXMVqR2EUv2ROto/2cPQtzxjiwuSYjvtOdbriPADtwgo/DJXnzw3GqWRYCYX3+RMz5uMXbLbvRh
+	9MinJUfmF9NsJsCBcRXCVwy95RGgFj9/wcDpiihdiDg50G1dkgoKMrlNMAji2QFNgffZdrBmd1RJi
+	tWhDGBcPuHOJUSa28y/bIXNJvdcZ6Ol5atWR2O+pMM2XlD5Yc/vbnWqrAkLVMcYsSkQABgJl8/Uiv
+	pLaf2suQ1vhKrtY3/ttlmI3WVsAOIn7iCFhO55ouG3KVBrvhXiXOM1RKpJW3lQU5jWPfLNR7iuXUy
+	AY0QM0eg==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vEa9P-0000000DkEe-3SJR;
+	Thu, 30 Oct 2025 21:25:43 +0000
+Date: Thu, 30 Oct 2025 21:25:43 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: Baokun Li <libaokun@huaweicloud.com>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-ext4@vger.kernel.org,
+	tytso@mit.edu, adilger.kernel@dilger.ca, jack@suse.cz,
+	linux-kernel@vger.kernel.org, kernel@pankajraghav.com,
+	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org, yi.zhang@huawei.com, yangerkun@huawei.com,
+	chengzhihao1@huawei.com, libaokun1@huawei.com
+Subject: Re: [PATCH 22/25] fs/buffer: prevent WARN_ON in
+ __alloc_pages_slowpath() when BS > PS
+Message-ID: <aQPX1-XWQjKaMTZB@casper.infradead.org>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-23-libaokun@huaweicloud.com>
+ <aPxV6QnXu-OufSDH@casper.infradead.org>
+ <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
 MIME-Version: 1.0
-In-Reply-To: <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6tdtUd35Xkj851PStoi0MKTrdm0TvQ-rINGzjwqzKTM_1761858815
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Stat-Signature: etn3r54xhdjc1sxx97ycyo57xw68rzrt
+In-Reply-To: <adccaa99-ffbc-4fbf-9210-47932724c184@huaweicloud.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 45E944000F
+X-Stat-Signature: qg9g9o5nfydq999gxmipnnxypotj18wy
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 37E574000C
-X-HE-Tag: 1761858825-787488
-X-HE-Meta: U2FsdGVkX1+x24g8tlRInB1aN8Z8ljRUqSJPMwMvcsnh/7YKWHGzmP92DVOEpA7G1/4kWwf2W6h/4cWlBjIFw8YsAdBWuerWgk7y0JhU+A6C/Zd4Whql4T+RCIRTkVjAKqXtKRTzjXs34HYGztm0zFpKEYTkjMRefeaWHME5xnJPwWPXjJFcTzRIO1/o+pwZ3o/HQVD8WExVIHCyesfQo3ASD+At22Nt3A5glQTJhHQQDPf3yZdbUFjEYEx0zbVH/yeFsGJyTnBwtapESNdBmKls4H3LcRwZ8GXe4piRXfd9BJAk5qq06EhhSNVjC4dhG3OL3AM1HhpOK9DO6ZbzOyevGZZzDHj5Hhk1fdb9SDV3ZMBe0LYcNvTbux0eYHHUIhSaXsIfD3CuKTPaGQ4onWRvcMbLiozkmEg2675xVO1YTo5rHkNajYPAhDdSsUFCqMTgQmJkmYxNC5wQ8K3nbiliUdXJ4zoV80XX8fuczPK8wCCAEAWtV2kXaOlA9LCUNLY1OIhPCWvnH8PtvEbMxXwnYVkERd69ZJj7FwsOryYbac+hk/958C+0UmxfAWkMGmDjbx1+0jM6YSMI8EbDwnpzM/orJPLCBqAFeVNWhGRstUJuM11st++CaDEzf9/diOT1AmFdXsQOYrgkFuFbs8MnwU9RZmFCT7nKICBAkDsYgeCDqA8uEQZiuabYL4YI2eNX2vv9AxcSq+RW+08u1rvZZ1wD6ImSyTu+sTEF10ZGlEAZt6rJgDtswv99tC+hUZ/1GsyCDZ9ZwPFfjfZMi8jDOTxBjrzcBksJFP1T76OterZ0rs67hchBosM7YDUQPW5Msl/autAXhZMhqgUUHK865sCqz7FItENzNyADvn5Pqhxx+q9v8LlNSgkVCHO5ZsS5oLA68a3Ku8/NbNTWPnEvVwTwBdJ3z1OiHU0n3IupgIVum2cblJAmiPhOcUYftDOVaxl4zAlrBDUKDTj
- FIW/g4kr
- DrVXHNdDnBavZ4eT1ODT3Seld6nqLND73wUaEdMNS7ocjpXl5koyskCyk/i9pa5LDrjqHmlvD77Z7uBXdi+jeT44IgN9x3+sq8BdYUo4mPSuACtPZv6qBTzTAV1bnqcTL//j60xa/xNkua5U3r1qv9u5IOJaB9Qe/xyq4G7zBnm1zIjlEFNx3U+wnmOToSuylVzgeT2Fck53kPym43URaquM1J5Fq9l7EDEdSdV1JUtBNMDJD1wUMmGML8nSM1LoBH4R3OJJmbGMFZUG5zn7p3j3uz7XBPO+qVG+SyIyEQPCXqnfWfJvlW5/vewrATMsZeNVNComW0lGO4vZwzpNuWpJn991AYmgCD9k0W7kexsdUj9txwmZ+xxV2ttTZS0Q/tyrb5CpLVajXfhDhwZQ0MrPXbwh6Np/2nT61j+CJMsMOQ42eo9Y8QvEhqmUlQoISFrsLGpaHl5qCmfd2nU8uRjJWit0ZNymysKZUEzuEROpqVZx7epCCdoWBoQ==
+X-HE-Tag: 1761859558-450083
+X-HE-Meta: U2FsdGVkX18ytCKvOQdSCp20ovvSS/3pAZ+WoAJaOUtxZNCDapr3KV1hF9pPMJfJhDhyOavY+fj2ocMlDldjKCVUe+RtZKNu7lZBgE2yPAMOGfINTcy/IjeKSqIfX0pQV1Afvl9Kdp5lOKPcU8eGr+sZ7IdsueINSCnKBk8Df/q05hINhHacLX934uwYUMj0LhMsHrARnZ953Fgh692Tauf9rimhK9zZBVun0EaOYX7xmAgHEaYYSlpU6D1vXvXFEHHJ6wypA7Yh815Y1KY5c4Qb0yQafroZp24o6S/uP7c8xSQe3Z4WdyjLOeGIXSQJM2+WJl/RXz68FT/QAppQpWHTegLGYd/Lh2xlX2N39RFc2EAYKR4gkwsnXPtfi5TiVdJiCX5xtBrNdG4Xe6O4qo+EICR53WA7S8ftaHFseEcLvryYIiS58VrBqigDGZuta9yDqOAvr8qKDwXQhn9am63kZ+BOozCWf9fXySgCtXtrE8qpYUIEbOmvWl6WaGj4OuPnZaTj3KN7mTr01tYr4N+aUTwt/w5L0AgKf9UV+Va+P5LVWpyngHzi5mH4cLsOwBfQqRuiMCshiX8746NjArE9jfMcwPf2opqXP1mNaUwyS/Fj1vlvSv4ju7BcfDdy+SuU+PMBQE+/I4q/HbW0BdNsRolp2dEQZ2rgd3koGAeEjagWi2Ct+HlK70CXhhlcRXUfHrOSOUr5CypZcwJovvAow4UdwLmoQBHAig8qB9XdQi+PkKWbLzc0z/a0nU+J2DJHckvwbk1ywLnlN/U/7o5+zdjvx3FSlwr3AJ0/5ezsGK6vngUq4maVvWUspPnhQlM7URMg+LScxh5cVN4TwmXfflvK7CRXEdNBxflTAjmBiZ3o8NWEl6uoxLxXBiXNDArD/xGFsxSOzMLc0MPxG4yx0gU8N+ubpdrTz58/Xx+QSyUxCovYJ0HN2EKVLXk4X4RYjVUgtUOC39GuPM0
+ UjzrO/G/
+ G/spf5eJrRg7l/eigx9YvQ/Prko/zdUx01QL9yO1iKn+G9ixnd8lRprzg8wIUTSrVv46qguA+9Dnd2RzDR+ze+nMViJAliN8/VDeqtXtZ2F4eSE1hsC3DSTmOeNvl/McU10Okx25V2qYxibyiFa06YpjzBD0n2gBPyN1B2Rlsy5iUD563tQN4gQNuR2d0ZL8DCMfqQs5HLQHChOgY4MoCYh4uIWK6dycPmbGD7N2Gei5pKvhMdEQU1GdjgXM+KwDYLAuubqbIAm86LqKVlbmUs3ttYviCdVp/Kb+fhXE0jOnG9Uc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,56 +97,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 08:23:03PM +0000, Lorenzo Stoakes wrote:
-> +cc CoC
+On Sat, Oct 25, 2025 at 02:32:45PM +0800, Baokun Li wrote:
+> On 2025-10-25 12:45, Matthew Wilcox wrote:
+> > No, absolutely not.  We're not having open-coded GFP_NOFAIL semantics.
+> > The right way forward is for ext4 to use iomap, not for buffer heads
+> > to support large block sizes.
 > 
-> Peter,
+> ext4 only calls getblk_unmovable or __getblk when reading critical
+> metadata. Both of these functions set __GFP_NOFAIL to ensure that
+> metadata reads do not fail due to memory pressure.
 > 
-> I'm sorry but your reply here is completely out of line.
-> 
-> I know tensions can run high sometimes, but this is a _good faith_ effort to try
-> to find a way forward.
-> 
-> Please take a step back and show some respect for the fact that Liam has put
-> VERY significant effort in preparing this after you _repeatedly_ asked him to
-> show him code.
-> 
-> I am starting to worry that your approach here is to bat off criticism by trying
-> to wear reviewers down and that's really not a good thing.
-> 
-> Again, this is _good faith_. Nobody is trying to unreasonably push back on these
-> changes, we are just trying to find the best solution possible.
-> 
-> Comments like:
-> 
-> 'Your code allows to operate on pmd* in a module??? That's too risky and mm can
-> explode!  Isn't it?'
-> 
-> and 'that's the wrong way to go. I explained to you multiple times.'
-> 
-> and 'I'm pretty sure my code introduce zero or very little bug, if there's one, I'll
-> fix it, but really, likely not, because the changes are straightforward.'
-> 
-> vs. 'Your changes are huge.  I would not be surprised you break things here and
-> there.  I hope at least you will be around fixing them when it happens, even if
-> we're not sure the benefits of most of the changes.'
-> 
-> are just _entirely_ unhelpful and really unacceptable.
-> 
-> I have an extremely heavy workload at the moment anyway, but honestly
-> interactions like this have seriously put me off being involved in this review
-> personally.
-> 
-> Do we really want this to be how review in mm or the kernel is?
-> 
-> Is that really the culture we want to have here?
+> Both functions eventually call grow_dev_folio(), which is why we
+> handle the __GFP_NOFAIL logic there. xfs_buf_alloc_backing_mem()
+> has similar logic, but XFS manages its own metadata, allowing it
+> to use vmalloc for memory allocation.
 
-Gosh.. Seriously?
+In today's ext4 call, we discussed various options:
 
-I'm ok if this needs to be audited.  I have all the previous discussions in
-the cover letter as links.
+1. Change folios to be potentially fragmented.  This change would be
+ridiculously large and nobody thinks this is a good idea.  Included here
+for completeness.
 
--- 
-Peter Xu
+2. Separate the buffer cache from the page cache again.  They were
+unified about 25 years ago, and this also feels like a very big job.
 
+3. Duplicate the buffer cache into ext4/jbd2, remove the functionality
+not needed and make _this_ version of the buffer cache allocate
+its own memory instead of aliasing into the page cache.  More feasible
+than 1 or 2; still quite a big job.
+
+4. Pick up Catherine's work and make ext4/jbd2 use it.  Seems to be
+about an equivalent amount of work to option 3.
+
+5. Make __GFP_NOFAIL work for allocations up to 64KiB (we decided this was
+probably the practical limit of sector sizes that people actually want).
+In terms of programming, it's a one-line change.  But we need to sell
+this change to the MM people.  I think it's doable because if we have
+a filesystem with 64KiB sectors, there will be many clean folios in the
+pagecache which are 64KiB or larger.
+
+So, we liked option 5 best.
 
