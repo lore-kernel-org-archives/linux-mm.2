@@ -4,138 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97520CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 22:29:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35E0CCCF9F0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 22:42:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B8A648E01E7; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
+	id 5AF138E009F; Thu, 30 Oct 2025 18:42:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B13758E009F; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
+	id 586EF8E006B; Thu, 30 Oct 2025 18:42:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9B43E8E01E7; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
+	id 4C3D88E009F; Thu, 30 Oct 2025 18:42:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 84D6B8E009F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7E7612A9A4
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:29:06 +0000 (UTC)
-X-FDA: 84056222292.18.6AEA63B
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf07.hostedemail.com (Postfix) with ESMTP id BD0E94000D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:29:04 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=epe5O20x;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=73982f053d=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=73982f053d=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761863345; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 369388E006B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:42:27 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id BC3A1140298
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:42:26 +0000 (UTC)
+X-FDA: 84056255892.01.9DAE439
+Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 000BE80008
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:42:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w4Dw2W0B;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of martin.lau@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=martin.lau@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761864145; a=rsa-sha256;
 	cv=none;
-	b=VQ0zpI0GPVBKNeN85gnBSWZ4c9UgTkg5aOd3/S70fuf+oRE2hbe0q4/NLYF3JPPguwQh2V
-	QLogHxvYCrmEvX1PpXfanCE4RKPkWOkvqiwmw1PoBvRyiMSB6Z8CshWarJZ63jTMQG8Mf3
-	Gt6/tBBY3HM0ZyxgGz3I26j6MS08OAc=
+	b=JhixjA5u7zJOJdL6Th+o0iPcYfanUQ+KtOVQL1FMXyrRF3iE8k/kEWt0nTE9MgOVJsM65A
+	sPIcSZLOMcW7aM+E1XOxk/dLxsjuNyvNF7Hw3bobBnRZ3xcFbC+wyiM+0PdiZ9vXN9JmMi
+	3jcb1sG/JGrn9WPKYKliWZiCd5ycnMk=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=epe5O20x;
-	spf=pass (imf07.hostedemail.com: domain of "prvs=73982f053d=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=73982f053d=amastro@meta.com";
-	dmarc=pass (policy=reject) header.from=fb.com
+	imf30.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=w4Dw2W0B;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf30.hostedemail.com: domain of martin.lau@linux.dev designates 91.218.175.185 as permitted sender) smtp.mailfrom=martin.lau@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761863345;
+	s=arc-20220608; t=1761864145;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=60MefK3DxP+BN/HIANh8ofusObRmU+P87CCGRx3MEO0=;
-	b=YgiVYJAAFYewCysJULtpEuYxun7oBMefDVd5mGEJWufVfp5QNpTzXqZmAhtFJNwuoHBy2t
-	9RSoTIicMaQU2GGe7Yo78R2agPYr8oaHTXeIsYsIDzXoXbwLpUNo4Xm4mcCSV2ZdgiuDqg
-	2ZqdSENnY67gdefkwONanQat9V+x8xA=
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59UM3pna1895091;
-	Thu, 30 Oct 2025 15:28:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=60MefK3DxP+BN/HIANh8ofusObRmU+P87CCGRx3MEO0=; b=epe5O20xyR3j
-	YqdW4KFFW/hKSzMmP6zxpSgyY+iAjdoiRJ/+1fZ+wpMdqBODgMbL3NtPVqIm9fXn
-	x8KD+nhge1tAFU+UM7ib57i84EfUejMrkp4ywkavIftCYdfYPL+rg5TyuM4egAxp
-	v730WeuN1y8ewqJYkdxzs+vF0OKA/mBfAZff8Mdlq8EyvuSoLvqO75SdNAY16w6j
-	uZbkq8Y021f4I7CD+rct0ho/uS5M6fGUedgN4CujHW513K4iArOZm0gmlsx+gPqZ
-	Qi8bw00rL9JiY8406oULQSWADhgiBvzYco4K9/0e4d4uZWV47Eh97AQSmjhfQ0Yg
-	vjFgzZ4jXg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a4aakbt30-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 30 Oct 2025 15:28:47 -0700 (PDT)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:1b::8e35) by
- mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Thu, 30 Oct 2025 22:28:44 +0000
-Date: Thu, 30 Oct 2025 15:28:39 -0700
-From: Alex Mastro <amastro@fb.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: David Matlack <dmatlack@google.com>,
-        Alex Williamson
-	<alex.williamson@redhat.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Andrew Morton
-	<akpm@linux-foundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
-        Jens Axboe
-	<axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
-        <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
-        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <linux-mm@kvack.org>,
-        <linux-pci@vger.kernel.org>, Logan Gunthorpe
-	<logang@deltatee.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Robin
- Murphy <robin.murphy@arm.com>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Vivek
- Kasireddy <vivek.kasireddy@intel.com>,
-        Will Deacon <will@kernel.org>
-Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <aQPmlwaoqPPFeyN/@devgpu015.cco6.facebook.com>
-References: <cover.1760368250.git.leon@kernel.org>
- <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
- <CALzav=cj_g8ndvbWdm=dukW+37cDh04k1n7ssFrDG+dN3D+cbw@mail.gmail.com>
- <20251028120207.GQ12554@unreal>
+	bh=v6Vi5Tt+I174+kjp03D2P+wbVEq5YpTLLn5FP5kOQX8=;
+	b=CenH0p7PyyfkHjwUdjmkdxJOBH8vUpZW4SJqgvewGqfU2SmPMNoFQg4DsVxBG6QamBEuGh
+	8HWv6D43zCwOeOei7bUewwvcWEbHiwS2TLPB/yKm7Xugr8OjAEKH120ZIoBSoZxKEJXu/3
+	M/RyuxIsv2kaBHh6KAkqxDs1rz2oigw=
+Message-ID: <e027a330-8d51-44e5-badc-7c3ec4d41e23@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761864139;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=v6Vi5Tt+I174+kjp03D2P+wbVEq5YpTLLn5FP5kOQX8=;
+	b=w4Dw2W0BopQE6NK2KmOiFVG+F56rU0LbOgjR3js4+CdAu537cuAGApUf4DYOLlL9zRo8we
+	cQeDGnzMfDQQIM9Mj5dgPvp9rD9tkmXzDkIlj4SxX23PqXXqYpnOKXLmajRX5+Of+uBcwt
+	tJqXv97s/MFUkJnqiGdMXKUmBi8A4Nw=
+Date: Thu, 30 Oct 2025 15:42:12 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops to
+ cgroups
+To: Song Liu <song@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Amery Hung <ameryhung@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+ Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@kernel.org>, Shakeel Butt <shakeel.butt@linux.dev>,
+ Johannes Weiner <hannes@cmpxchg.org>, Andrii Nakryiko <andrii@kernel.org>,
+ JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+ cgroups@vger.kernel.org, bpf@vger.kernel.org,
+ Martin KaFai Lau <martin.lau@kernel.org>,
+ Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev>
+ <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
+ <87zf98xq20.fsf@linux.dev>
+ <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
+ <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
+ <877bwcus3h.fsf@linux.dev>
+ <CAHzjS_u5oqD3Dsk9JjK942QBL8UOMkqdM23xP0yTEb+MMuOoLw@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Martin KaFai Lau <martin.lau@linux.dev>
+In-Reply-To: <CAHzjS_u5oqD3Dsk9JjK942QBL8UOMkqdM23xP0yTEb+MMuOoLw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20251028120207.GQ12554@unreal>
-X-Originating-IP: [2620:10d:c0a8:1b::8e35]
-X-Proofpoint-GUID: 0ZpO7X-t6Kgi2VjTgweWDl_lcxnq2iwh
-X-Authority-Analysis: v=2.4 cv=MKVtWcZl c=1 sm=1 tr=0 ts=6903e69f cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=7nlfRzPPCwOAtMVn9e4A:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=nl4s5V0KI7Kw-pW0DWrs:22
- a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
-X-Proofpoint-ORIG-GUID: 0ZpO7X-t6Kgi2VjTgweWDl_lcxnq2iwh
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDE5MCBTYWx0ZWRfX9llSfoX60trR
- mXbkBVBl55Urqb11S4qwjm/pObJY1X+1S60diRRsEHth5MOf7IKq4Czoup72ugb8Fl7vtg6Umws
- T0wR1zGVKO57L2GHA+0qVpD49RE7de+O2DlACYm/FDEOQ+atQFmHmE8OEvSGvK9Gg4KMjnnZt8P
- 9eo89vLlcLa+5jC4ltXqN6ZnruT3+bwwmAoV+36wLcYx0ULiPIRAKmAFs3n7/cl40zFJ4huLoWi
- lhzkX2aFxuaPfA92Kwt7K+H/vFc1bREnntF0tAc+FIeWaqYsNtchscW+GO7K0feCvrH6ojQzyNc
- 9LmYvsWx+Z1+kjfzugACbFQ5EapodjjO8oosw2rM7ft6LeldzwV/2j0JbuFgschcLfnZT3p4l5a
- f0vHibOGQ5TJGIf/lMEHHGx/tX27mA==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_07,2025-10-29_03,2025-10-01_01
+X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Stat-Signature: bze1pet7w4ng6pkej1xe1fwy185goa9g
-X-Rspamd-Queue-Id: BD0E94000D
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761863344-532096
-X-HE-Meta: U2FsdGVkX18s5rz8g6eWeWRLN25iyogmGVaPU3Pccp8la1xnAjXt65citFSEF43ZqxcmCVXLFepMFAU8Vlxi/xN6u5fDwy3l0ZY1H0e+JnQqC9p1gqNrGDPqrMlZF4BkxEMabZw+rNId5wvh6p6K7NUlV1YZSscphZ4h2wLrBBIFKAZAn/8vLlOjHZN6oNt8EzrvM9+gTsqpaLH0vTYRMGSdOMQoqhk2h+L5AuH1HJZS3d9dJuUc7/NXPg2phvZkQZAuxKCfkSTKmKMEheUjFi3qh72IbeQ2MyKE7+xe1OHrpHGy//x8EJCSFGCXfKOCV5KyRryD+A/qq6wKS1NYP8tt6pBYNHb0anUieQUnCY6o9EP9FCQoai+pH8G5FdRyIB56WnTtuWt10zWqOoxVSSDaAm3794qCLRGarbTTIo/vdgsH2rRblyfo3Zp8EkNrfVyklx2br5hx7livWyAotxjhk9X5kal2lMc2Yyi5BFYTxHcveNWuB0gCf9WfqaK4Xzju8e+PW0J3Wk5Nc9UxQZHi94qoAHLcUKm2U0iUlj6jqCLhGiT492w0GxQ7JdTGfiuLZf7L3VsZAri7DTgAXvwWmhIPimJbnxkGzXX5PtFIsN/mnLYL555FnTn5o+ZtIhNaZ1X2XTgcyMOSodrUlSS117WWdy0HItjvarRsqqDhrRK6d8hFVgILUbfQAyvVifEYzIqwx0IV63BztNCgd4Ey0o6rfhxXYOyQAuC9gBhnQrfpTyDWFsioEFLdm48kxUI7ekg6vKHrsT/EXyaq5uWCB5petx+UExWrNZTMt88BU+nk9ziR+iWGSnwCrd/oDvdbu2BXqSimP9W9ivtY3N/I9UnkFnLHkmGI5QDebXK4I+IVT+IJ8vG8LAuCAyB+KIgnt4Xx+D2s5GhtzuGtb8HI6P+AoNUJVXRacKUQWUZl0i4y4i6LkY++8iroL0kkdYpKLMrN3jRyrnsWQLJ
- A4tdJYyA
- IM7/Qx9bnD45aazZKTtNImi2ozOd4wAWyFeSNi9NWVBNDKcqcKXmG02nppub6l+DDtTrpgl0p45LyN9lYflhUMV6NHNGIsVvo5a4yfUKRsIFLb1dfbloJtllLwJ1njCCWN1qQIyqP3KlNaMXvP6UuTABFSTKVBz1331i8SXYpJ5dhfPTxwFJR+ZsXUF8m+hxGVdCg4pBOr/lxaTJFqhSACSKKDgQi46/7s1sknKeB809nto+kQNsAqr9Y8FkhLsdeikWDHT2INSIf3O3slX6m7jNCB4+1HMbL2jE7ETeJOXbCZ1qWVdG/wknqAzM7M8Tr1GpkZD22UjpOpq40blHG6TGZLOWQG3RBkcYj+eUt64sVOT1YFGf/52PpXxTuok7kwWgB7t8Tt+Ugxv0orvMXMSxvRYpZNw5evuVN3b6W89FRn8prdsezvt4PiuFK2ZDUAnMEir3WVX1pu98veht/zChrwV+B+Fvj7JyvRiGabbIksXS5XRYFctfwSljBAJFFwT5JupgeXdlu4cQ=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 000BE80008
+X-Stat-Signature: d3m4pt7zcepttyki11c8bc8x4p6q8dcr
+X-HE-Tag: 1761864142-178778
+X-HE-Meta: U2FsdGVkX18mp5BoDmo5onotOHQVHFS77pxAPHaxd86qwyXdOY/88/LelnKRbQBlNp2z2C9INpcS6DujsLLiEtL1V9m7ESwGpF27mpBkwAJAH5puHXjBgpPPe+HcW+xQPb0fJ/9RzlxgbBTz2fsrhhVK/W5BKQIkrSW3/OUL27k0REjTcQSMrCeG9+O0DOHbFxFVe9lMmGFJKoSkUmiGQbBM+2zS4meF+6plGptnahW4+AJd+e4hsJGGU9cEMIJ7TP+kfNsONr33d6a5AX+M438Fd65M9thJSGacWz2FysQJZuH9CAzP8YBhbPkotBmehE6+4KPb4Ke1VeI8b2sBbhmMGDjh/hj7wCCiAJYbixo6R6kKygyFmsXYm5OuyPCt+dE41F+55TapG3ZffbKYhigxJ8FUnt+mUujRStnHTJeQRyjlfo/ALUBOvo40VtRT5pzdLEqzeFeXiHv2o18g/yUgrO2JhAT8IvfrrFgPh/AlCpLO6PO/NmtH/HeDqrDwEqXXqguXr8TYiysU+5mImGwlOTZ1XjiW6L56M1vQRtanqXFCeJgMknNvXRJAUt23N65C3+lmeaidUNNmjy9xStO6xKrXxk77trWoQjU/QtH+/07UrphM5Y5yhDaOonnJAQ2QZTj2VGNYII54IyLYhksHeaBdwHRQ8bdD9h+tuj+hUepLpVIuQ8BX59oVkqa9l/NSc9oaREq96HyjwBBNTIdskDPPvGHk7D40X84v4rzVpCs/qtM/bCABYvEhEMv5BaWNvAYb/rJ7JhRG9aRYwv0+pfGBtWkZs6ahEI6feI7JHIFLd0nx3zL2QKT5/n6mKuXwn/pjQtC14eYaI1RcRFgUtY6GX3yanZVQBClGdsgY3MRi04fYm1eBCxO2WSq1kRRzUZxmBaqFp0VTFQ4cxGgGryMI1ZRb2mOdqP9Z3sUvZpfZcWeD0ifRq3UFIDsL4ZCLx4+AXgEjAop2NdF
+ Q/v+1Nxa
+ K5eyQ6KiSYFntFrWecyzwxm3nSy+bTlQYiEZPVQjuRQnQFrJnX3dnkuMhpoXoa3gp9j3o1OemlCoYItLYVysOEVwo6KyEtdfdhwlr61YoME6fwRNNmrYaT64AMF61xKfzjk1G8FrdtgrjkApkl4f6OTWeoFDuhGvvalYxnqOfFyMD3F/7fnmxhNjk4YKCC9HBv6wSsp9OaAodG7+haeTxB9iriV7XcQtWGMkN3+1tvB7ja1xz0Pzt6660PgGqHI04FOXI9IFIAPH2TWlg0gn9L9jfXx3pfcx1l80X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,18 +105,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Mon, Oct 27, 2025 at 04:13:05PM -0700, David Matlack wrote:
-> > On Mon, Oct 13, 2025 at 8:44 AM Leon Romanovsky <leon@kernel.org> wrote:
-> > This uAPI would be a good candidate for a VFIO selftest. You can test
-> > that it returns an error when it's supposed to, and a valid fd when
-> > it's supposed to. And once the iommufd importer side is ready, we can
-> > extend the test and verify that the fd can be mapped into iommufd.
+
+
+On 10/30/25 2:34 PM, Song Liu wrote:
+> Hi Roman,
 > 
-> No problem, I'll add such test, but let's focus on making sure that this
-> series is accepted first.
+> On Thu, Oct 30, 2025 at 12:07 PM Roman Gushchin
+> <roman.gushchin@linux.dev> wrote:
+> [...]
+>>> In TCP congestion control and BPF qdisc's model:
+>>>
+>>> During link_create, both adds the struct_ops to a list, and the
+>>> struct_ops can be indexed by name. The struct_ops are not "active" by
+>>> this time.
+>>> Then, each has their own interface to 'apply' the struct_ops to a
+>>> socket or queue: setsockopt() or netlink.
+>>>
+>>> But maybe cgroup-related struct_ops are different.
+>>
+>> Both tcp congestion and qdisk cases are somewhat different because
+>> there already is a way to select between multiple implementations, bpf
+>> just adds another one. In the oom case, it's not true. As of today,
+>> there is only one (global) oom killer. Of course we can create
+>> interfaces to allow a user make a choice. But the question is do we want
+>> to create such interface for the oom case specifically (and later for
+>> each new case separately), or there is a place for some generalization?
+> 
+> Agreed that this approach requires a separate mechanism to attach
+> the struct_ops to an entity.
+> 
+>> Ok, let me summarize the options we discussed here:
+> 
+> Thanks for the summary!
+> 
+>>
+>> 1) Make the attachment details (e.g. cgroup_id) the part of struct ops
+>> itself. The attachment is happening at the reg() time.
+>>
+>>    +: It's convenient for complex stateful struct ops'es, because a
+>>        single entity represents a combination of code and data.
+>>    -: No way to attach a single struct ops to multiple entities.
+>>
+>> This approach is used by Tejun for per-cgroup sched_ext prototype.
+>>
+>> 2) Make the attachment details a part of bpf_link creation. The
+>> attachment is still happening at the reg() time.
+>>
+>>    +: A single struct ops can be attached to multiple entities.
+>>    -: Implementing stateful struct ops'es is harder and requires passing
+>>       an additional argument (some sort of "self") to all callbacks.
+>> I'm using this approach in the bpf oom proposal.
+>>
+> 
+> I think both 1) and 2) have the following issue. With cgroup_id in
+> struct_ops or the link, the cgroup_id works more like a filter. The
+> cgroup doesn't hold any reference to the struct_ops. The bpf link
+> holds the reference to the struct_ops, so we need to keep the
+> the link alive, either by keeping an active fd, or by pinning the
+> link to bpffs. When the cgroup is removed, we need to clean up
+> the bpf link separately.
 
-Along similar lines, perhaps adding vfio as src/vfio_memory.c dmabuf provider
-to perftest [1] could be useful for low-level end-to-end validation.
+The link can be detached (struct_ops's unreg) by the user space.
 
-https://github.com/linux-rdma/perftest
+The link can also be detached from the subsystem (cgroup) here.
+It was requested by scx:
+https://lore.kernel.org/all/20240530065946.979330-7-thinker.li@gmail.com/
+
+Not sure if scx has started using it.
+
+> 
+>> 3) Move the attachment out of .reg() scope entirely. reg() will register
+>> the implementation system-wide and then some 3rd-party interface
+>> (e.g. cgroupfs) should be used to select the implementation.
+>>
+>>    +: ?
+>>    -: New hard-coded interfaces might be required to enable bpf-driven
+>>       kernel customization. The "attachment" code is not shared between
+>>       various struct ops cases.
+>>       Implementing stateful struct ops'es is harder and requires passing
+>>       an additional argument (some sort of "self") to all callbacks.
+>>
+>> This approach works well for cases when there is already a selection
+>> of implementations (e.g. tcp congestion mechanisms), and bpf is adding
+>> another one.
+> 
+> Another benefit of 3) is that it allows loading an OOM controller in a
+> kernel module, just like loading a file system in a kernel module. This
+> is possible with 3) because we paid the cost of adding a new select
+> attach interface.
+> 
+> A semi-separate topic, option 2) enables attaching a BPF program
+> to a kernel object (a cgroup here, but could be something else). This
+> is an interesting idea, and we may find it useful in other cases (attach
+> a BPF program to a task_struct, etc.).
+
+Does it have plan for a pure kernel module oom implementation?
+I think the link-to-cgrp support here does not necessary stop the
+later write to cgroupfs support if a kernel module oom is indeed needed
+in the future.
+
+imo, cgroup-bpf has a eco-system around it, so it is sort of special. bpf user
+has expectation on how a bpf prog is attached to a cgroup. The introspection,
+auto detachment from the cgroup when the link is gone...etc.
+
+If link-to-cgrp is used, I prefer (2). Stay with one way to attach
+to a cgrp. It is also consistent with the current way of attaching a single
+bpf prog to a cgroup. It is now attaching a map/set of bpf prog to a cgroup.
+The individual struct_ops implementation can decide if it should
+allow a struct_ops be attached multiple times.
 
