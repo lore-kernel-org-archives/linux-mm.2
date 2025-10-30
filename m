@@ -4,121 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 44446CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 22:19:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97520CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 22:29:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6985D8E00D3; Thu, 30 Oct 2025 18:19:26 -0400 (EDT)
+	id B8A648E01E7; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 649188E009F; Thu, 30 Oct 2025 18:19:26 -0400 (EDT)
+	id B13758E009F; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55E338E00D3; Thu, 30 Oct 2025 18:19:26 -0400 (EDT)
+	id 9B43E8E01E7; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 461F58E009F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:19:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 84D6B8E009F
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:29:07 -0400 (EDT)
 Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E626A1A0196
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:19:25 +0000 (UTC)
-X-FDA: 84056197890.18.74854F2
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 0B07E14000B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:19:23 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTEDGeVK;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id E7E7612A9A4
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:29:06 +0000 (UTC)
+X-FDA: 84056222292.18.6AEA63B
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BD0E94000D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:29:04 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=epe5O20x;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=73982f053d=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=73982f053d=amastro@meta.com";
+	dmarc=pass (policy=reject) header.from=fb.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761863345; a=rsa-sha256;
+	cv=none;
+	b=VQ0zpI0GPVBKNeN85gnBSWZ4c9UgTkg5aOd3/S70fuf+oRE2hbe0q4/NLYF3JPPguwQh2V
+	QLogHxvYCrmEvX1PpXfanCE4RKPkWOkvqiwmw1PoBvRyiMSB6Z8CshWarJZ63jTMQG8Mf3
+	Gt6/tBBY3HM0ZyxgGz3I26j6MS08OAc=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=epe5O20x;
+	spf=pass (imf07.hostedemail.com: domain of "prvs=73982f053d=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=73982f053d=amastro@meta.com";
+	dmarc=pass (policy=reject) header.from=fb.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761862764;
+	s=arc-20220608; t=1761863345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wwT0gzXBjfVIjqUHMyMXwgTVGE+oE1n+ZnWlhE9CZ5U=;
-	b=GDg9cqz7bOXjz/lda9LqWqFAWx8YqoKAimdNR72Sv5wTA4z2pkrz3VBljDOcCaFesEeJVy
-	RJadnvqaN91+hBnRk97406fddqXS0WpRup1I7ysOrGXQ6ZGLYHmBXaDsH8jCtjJlxbhP5S
-	ddZv7hD5ANDV6IYL8XnSWNmLVy0DcpA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761862764; a=rsa-sha256;
-	cv=none;
-	b=vDA1lrOGzOXtstTWag65i/sYN8T7yVU2r/WFZpOFlxhUUOK0Q04d+4KKjYDkBm897wOzdu
-	F2OYs7Pb8fYF0ZHxFt4yvkyRmMcRJzspoCbLOgPCINqbQ89GC6xHZD9wlXm51/0nDJIcIX
-	iEZbjN+MObkWs1Y56Fytp8cL+VbARAw=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YTEDGeVK;
-	spf=pass (imf23.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4710683a644so15034675e9.0
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:19:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761862762; x=1762467562; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wwT0gzXBjfVIjqUHMyMXwgTVGE+oE1n+ZnWlhE9CZ5U=;
-        b=YTEDGeVKxA2b0eqnf3cMTOiKYRBodaBbUXn6w1rqtwP9CXXostlv/BGN5XM7aj+VVv
-         MtI4tYJLcCc8jG6IBYb7vs/x3cJr6Rw09rBNw9wWZ4rekpdc0jZIHpRF3sK6Ks7/7LEQ
-         RhknGizCfpKq8BU7+yiKpHfQdsA8kecsfSDN/GeO7qnNYyFSbe4gQMwKi2wbZU4GI4xC
-         pK4w3s8CBywrYTV475RmGlNEzypaLJL4f1V+gD4vdR0LWN9T7Pe2hiQVDr0776VRhL5V
-         /pRpupk4JHQUxLrE3t+GT6dru632nGChvhZKvZbz59XI8OKIagcmlvDhr5DWYe7yknCo
-         VMUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761862762; x=1762467562;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wwT0gzXBjfVIjqUHMyMXwgTVGE+oE1n+ZnWlhE9CZ5U=;
-        b=R79gdrIP1mVHumfNnkn7VWsBNkyj7IRoE0Q4sfe95bszvEqNocupU3PidSCggZuH11
-         EnS/DU1PP7FOWtFLOjDkbgaL/n60g/nUoVoHhPo8lOyrGSA0MVRkMpxwgT4IahQ2hcBr
-         QxQs1kZONvEk2hCcl/Rmg6pdUSfOdtxEGd1F1dFizudf8nC4zhpm+VWoSpXZ5u+XujmW
-         RGiMmNNTh50u/OxbJJO2RdjFUQ5AX/+jcV594QlqEe0IKP3adilSYIlPcHuIprRHuwlN
-         hbqYqHZR29j4BPsa9M0gtRKkIVk88/KJFbvsLCDgDW8TXtCuSk7EobIxD+txUiNAp9ej
-         Q/eQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0SDd07Lr/YQ/0teMWUlutm6CX1M30dkC/7gqSzZkA3fkgZrUkdY/j/ePQ5QshKEosafUgeD9iUQ==@kvack.org
-X-Gm-Message-State: AOJu0YxZKUEmYFHp5Ofqiewi93gKLwmSuxXWvAltF6zDLgmfeKrT2M2G
-	GN4KwwCJitPY0XHfX3vakvr1A8DLUcVWJB1BVtuMkDso79svgGNZ3otHNLME7TW/2eT+tmuDCG/
-	V2vZ1iGd4OuwdfhMCoUb3nNKZqmnCrzo=
-X-Gm-Gg: ASbGncsqzVxDM5yAzDa9NnH3w+WSxzYbMp5PK7dX6Co0NEGbqUgF4oeGNyFmj817wwF
-	IhCqLLNA0Q5cdPVZ8ToFsnoaiJcqYxVSKqOZYcaqbyFztv3vi7OmTaSjjw2jNVe6n4tnfyL8U1k
-	jK0mZi92uGHZvOwEyJOjof1Yds/KV0vkYP2KFTaVSE20c5UjhwiWlHswS5tq+b4vgkPBoCS+Tma
-	Gm2WWKwnIb7kvWlnhAlZYr9a4cINU7HRcZCtMOXzw6vAvqGFEUeAngdMkzwgvMUt6nrpw0yT2EH
-	PcVMudulJgZQaDLXUfl1idWHVYgG
-X-Google-Smtp-Source: AGHT+IFiyX3dJnURSNNpVr0vY2zqjAiRZhDfNNfk8vGHPMc1PF33QyAD/7tk5XU1FaTuD+gAkKoljP+gHiDD9PWESHk=
-X-Received: by 2002:a05:600c:8189:b0:475:de75:84c6 with SMTP id
- 5b1f17b1804b1-477262a941emr44348555e9.12.1761862762377; Thu, 30 Oct 2025
- 15:19:22 -0700 (PDT)
+	bh=60MefK3DxP+BN/HIANh8ofusObRmU+P87CCGRx3MEO0=;
+	b=YgiVYJAAFYewCysJULtpEuYxun7oBMefDVd5mGEJWufVfp5QNpTzXqZmAhtFJNwuoHBy2t
+	9RSoTIicMaQU2GGe7Yo78R2agPYr8oaHTXeIsYsIDzXoXbwLpUNo4Xm4mcCSV2ZdgiuDqg
+	2ZqdSENnY67gdefkwONanQat9V+x8xA=
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 59UM3pna1895091;
+	Thu, 30 Oct 2025 15:28:47 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=60MefK3DxP+BN/HIANh8ofusObRmU+P87CCGRx3MEO0=; b=epe5O20xyR3j
+	YqdW4KFFW/hKSzMmP6zxpSgyY+iAjdoiRJ/+1fZ+wpMdqBODgMbL3NtPVqIm9fXn
+	x8KD+nhge1tAFU+UM7ib57i84EfUejMrkp4ywkavIftCYdfYPL+rg5TyuM4egAxp
+	v730WeuN1y8ewqJYkdxzs+vF0OKA/mBfAZff8Mdlq8EyvuSoLvqO75SdNAY16w6j
+	uZbkq8Y021f4I7CD+rct0ho/uS5M6fGUedgN4CujHW513K4iArOZm0gmlsx+gPqZ
+	Qi8bw00rL9JiY8406oULQSWADhgiBvzYco4K9/0e4d4uZWV47Eh97AQSmjhfQ0Yg
+	vjFgzZ4jXg==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a4aakbt30-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Thu, 30 Oct 2025 15:28:47 -0700 (PDT)
+Received: from devgpu015.cco6.facebook.com (2620:10d:c0a8:1b::8e35) by
+ mail.thefacebook.com (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.20; Thu, 30 Oct 2025 22:28:44 +0000
+Date: Thu, 30 Oct 2025 15:28:39 -0700
+From: Alex Mastro <amastro@fb.com>
+To: Leon Romanovsky <leon@kernel.org>
+CC: David Matlack <dmatlack@google.com>,
+        Alex Williamson
+	<alex.williamson@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Andrew Morton
+	<akpm@linux-foundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Christian
+ =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+        <dri-devel@lists.freedesktop.org>, <iommu@lists.linux.dev>,
+        Jens Axboe
+	<axboe@kernel.dk>, Joerg Roedel <joro@8bytes.org>,
+        <kvm@vger.kernel.org>, <linaro-mm-sig@lists.linaro.org>,
+        <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-media@vger.kernel.org>, <linux-mm@kvack.org>,
+        <linux-pci@vger.kernel.org>, Logan Gunthorpe
+	<logang@deltatee.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin
+ Murphy <robin.murphy@arm.com>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Vivek
+ Kasireddy <vivek.kasireddy@intel.com>,
+        Will Deacon <will@kernel.org>
+Subject: Re: [PATCH v5 9/9] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <aQPmlwaoqPPFeyN/@devgpu015.cco6.facebook.com>
+References: <cover.1760368250.git.leon@kernel.org>
+ <72ecaa13864ca346797e342d23a7929562788148.1760368250.git.leon@kernel.org>
+ <CALzav=cj_g8ndvbWdm=dukW+37cDh04k1n7ssFrDG+dN3D+cbw@mail.gmail.com>
+ <20251028120207.GQ12554@unreal>
 MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-3-roman.gushchin@linux.dev> <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
- <87zf98xq20.fsf@linux.dev> <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
- <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com> <877bwcus3h.fsf@linux.dev>
-In-Reply-To: <877bwcus3h.fsf@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 30 Oct 2025 15:19:11 -0700
-X-Gm-Features: AWmQ_bncjILdks5wFOJTGOLbyWVnc9Lf7_PQRe6yc5ZnQYFFDm9_YYMU7X8G_V0
-Message-ID: <CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com>
-Subject: bpf_st_ops and cgroups. Was: [PATCH v2 02/23] bpf: initial support
- for attaching struct ops to cgroups
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Amery Hung <ameryhung@gmail.com>, Song Liu <song@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Stat-Signature: xdyfn4iftji51ygu3uz3j9i98gaps1rc
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251028120207.GQ12554@unreal>
+X-Originating-IP: [2620:10d:c0a8:1b::8e35]
+X-Proofpoint-GUID: 0ZpO7X-t6Kgi2VjTgweWDl_lcxnq2iwh
+X-Authority-Analysis: v=2.4 cv=MKVtWcZl c=1 sm=1 tr=0 ts=6903e69f cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=IkcTkHD0fZMA:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=NEAV23lmAAAA:8 a=VwQbUJbxAAAA:8 a=7nlfRzPPCwOAtMVn9e4A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=zZCYzV9kfG8A:10 a=nl4s5V0KI7Kw-pW0DWrs:22
+ a=pHzHmUro8NiASowvMSCR:22 a=xoEH_sTeL_Rfw54TyV31:22
+X-Proofpoint-ORIG-GUID: 0ZpO7X-t6Kgi2VjTgweWDl_lcxnq2iwh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDE5MCBTYWx0ZWRfX9llSfoX60trR
+ mXbkBVBl55Urqb11S4qwjm/pObJY1X+1S60diRRsEHth5MOf7IKq4Czoup72ugb8Fl7vtg6Umws
+ T0wR1zGVKO57L2GHA+0qVpD49RE7de+O2DlACYm/FDEOQ+atQFmHmE8OEvSGvK9Gg4KMjnnZt8P
+ 9eo89vLlcLa+5jC4ltXqN6ZnruT3+bwwmAoV+36wLcYx0ULiPIRAKmAFs3n7/cl40zFJ4huLoWi
+ lhzkX2aFxuaPfA92Kwt7K+H/vFc1bREnntF0tAc+FIeWaqYsNtchscW+GO7K0feCvrH6ojQzyNc
+ 9LmYvsWx+Z1+kjfzugACbFQ5EapodjjO8oosw2rM7ft6LeldzwV/2j0JbuFgschcLfnZT3p4l5a
+ f0vHibOGQ5TJGIf/lMEHHGx/tX27mA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_07,2025-10-29_03,2025-10-01_01
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0B07E14000B
-X-HE-Tag: 1761862763-38070
-X-HE-Meta: U2FsdGVkX18vRQP1hNgKKdj9y0xCIhUvMMkceeM0z3QrV0TUcWN65t2xAwbVZ/YQJDeHokcTX4KyfvZBpL1/8r41eYy+kZ05KexjP8Ps0Xa3D2PwI/k4awZuq0NsUXUJBA6paKc8N/WFPxbBkIQ/+NW3RaJJB3QroKF4aQkf82FQlGB8eh59loabuvYoChvqWMlouwd4BSUTaKfpsle1ETCqWYkQRMRaJUJOvaYqu1sTIs95cFRzQozYk2SZA0w5QWsTLficy5T8ZaSz6Nx9YZC10wZNhfNABE/Z03UxoIBX+YaVXw6hKITpl1rt/bBB9GkdHDIv/O357WVio+LpxH+usNcWpv7J7OIAW2U5jphIVKkeKd/pMMJY0CMCiJramfuA7erHEUhxx2mZ91r3C0GvHGbjQhvfDHMmO5QTZii3k9lhQMLLyBOjIPHmdro5945wzByWslfq3/TDtUNm79JiukB/S858nmYvG6ovFg2tc0DZBUgJkpsgbLECFQhoOM2PDUvgDddQvLNGS2aHMeHqjYUxBv7ChrNntur9frISGndUMHS259VLrZeXm8l9e9ICvTxuxXp7SlIMyTx24ukShA6qToMW3cepeWwLJd8tA35JqTJaD4vjtSZ+6tu0vfR/bvOKJgGEBq4ATdRpSsn1Px1V7GAu9q2aHLDOKr7U0lYoFFks3qaSHOnBxlfhG6klhL4k31sTugeXSFADZ2a+SXurGN9aesStBWajxK69Ss3O9sWEm3hBiI7eneuoPLeGPkj8X4bzaxq3mtIhBfqD0znFJOI50Uoxs0nGMO6IQFi5WtoL+HvmrMaZXYSmim1PyEoQvcpu4CY/8SmMWo727laA9ZcDQ6BoGDBw0t4fVrNKRUm17K1Ouo8C3Hu093ynHOQKv4Of83n03qGdAGHLsln7INLku9lo5spHZDB4HGFoNu7Ryk3Yu11OfWLgWxB2kblksnXLiNzUwb6
- TYQ/GW52
- ETbPe8C37guLe3Pec7gRx3YkZ5lbHm+Nix6pcbY5hjgk4/IPFs3jYivgHrgcJSwO6IenS2cxILK4Ni+S/gJRuYkhQwCHZFlfznB969zNt4POmnYvLnIxIPuygqGw37M+H6a602znY17F2nNuMAlQpnP7GtOgMmuG8Di+IEVtLH5PZzII5uYo6n3hCszPfbPjLgZDY3orK1m1a91FeYJFlGduRZ75dzBYtmRvBI84ZY4PXq8t9zTu4C+RSzrtr3yc+MJRDF0Jqg6pVKZ0WgHe+6yuOCq8lRRPmZu/jT+i0kbJ0IJrDDaBbEh+iJjywWhDKBdBj9Z5YegbCIMuchUaXFCvTibUxKWUfYHFgKM1ntp45oL2BGFtWVNcY8OKdsikt6NhrmUD1Wuh6B06HTzqcFSSiWdKRpFr2zlIjtJ2rhWdnuVL1Nx6r9PCzSw==
+X-Stat-Signature: bze1pet7w4ng6pkej1xe1fwy185goa9g
+X-Rspamd-Queue-Id: BD0E94000D
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761863344-532096
+X-HE-Meta: U2FsdGVkX18s5rz8g6eWeWRLN25iyogmGVaPU3Pccp8la1xnAjXt65citFSEF43ZqxcmCVXLFepMFAU8Vlxi/xN6u5fDwy3l0ZY1H0e+JnQqC9p1gqNrGDPqrMlZF4BkxEMabZw+rNId5wvh6p6K7NUlV1YZSscphZ4h2wLrBBIFKAZAn/8vLlOjHZN6oNt8EzrvM9+gTsqpaLH0vTYRMGSdOMQoqhk2h+L5AuH1HJZS3d9dJuUc7/NXPg2phvZkQZAuxKCfkSTKmKMEheUjFi3qh72IbeQ2MyKE7+xe1OHrpHGy//x8EJCSFGCXfKOCV5KyRryD+A/qq6wKS1NYP8tt6pBYNHb0anUieQUnCY6o9EP9FCQoai+pH8G5FdRyIB56WnTtuWt10zWqOoxVSSDaAm3794qCLRGarbTTIo/vdgsH2rRblyfo3Zp8EkNrfVyklx2br5hx7livWyAotxjhk9X5kal2lMc2Yyi5BFYTxHcveNWuB0gCf9WfqaK4Xzju8e+PW0J3Wk5Nc9UxQZHi94qoAHLcUKm2U0iUlj6jqCLhGiT492w0GxQ7JdTGfiuLZf7L3VsZAri7DTgAXvwWmhIPimJbnxkGzXX5PtFIsN/mnLYL555FnTn5o+ZtIhNaZ1X2XTgcyMOSodrUlSS117WWdy0HItjvarRsqqDhrRK6d8hFVgILUbfQAyvVifEYzIqwx0IV63BztNCgd4Ey0o6rfhxXYOyQAuC9gBhnQrfpTyDWFsioEFLdm48kxUI7ekg6vKHrsT/EXyaq5uWCB5petx+UExWrNZTMt88BU+nk9ziR+iWGSnwCrd/oDvdbu2BXqSimP9W9ivtY3N/I9UnkFnLHkmGI5QDebXK4I+IVT+IJ8vG8LAuCAyB+KIgnt4Xx+D2s5GhtzuGtb8HI6P+AoNUJVXRacKUQWUZl0i4y4i6LkY++8iroL0kkdYpKLMrN3jRyrnsWQLJ
+ A4tdJYyA
+ IM7/Qx9bnD45aazZKTtNImi2ozOd4wAWyFeSNi9NWVBNDKcqcKXmG02nppub6l+DDtTrpgl0p45LyN9lYflhUMV6NHNGIsVvo5a4yfUKRsIFLb1dfbloJtllLwJ1njCCWN1qQIyqP3KlNaMXvP6UuTABFSTKVBz1331i8SXYpJ5dhfPTxwFJR+ZsXUF8m+hxGVdCg4pBOr/lxaTJFqhSACSKKDgQi46/7s1sknKeB809nto+kQNsAqr9Y8FkhLsdeikWDHT2INSIf3O3slX6m7jNCB4+1HMbL2jE7ETeJOXbCZ1qWVdG/wknqAzM7M8Tr1GpkZD22UjpOpq40blHG6TGZLOWQG3RBkcYj+eUt64sVOT1YFGf/52PpXxTuok7kwWgB7t8Tt+Ugxv0orvMXMSxvRYpZNw5evuVN3b6W89FRn8prdsezvt4PiuFK2ZDUAnMEir3WVX1pu98veht/zChrwV+B+Fvj7JyvRiGabbIksXS5XRYFctfwSljBAJFFwT5JupgeXdlu4cQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,65 +144,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 12:06=E2=80=AFPM Roman Gushchin
-<roman.gushchin@linux.dev> wrote:
->
-> Ok, let me summarize the options we discussed here:
->
-> 1) Make the attachment details (e.g. cgroup_id) the part of struct ops
-> itself. The attachment is happening at the reg() time.
->
->   +: It's convenient for complex stateful struct ops'es, because a
->       single entity represents a combination of code and data.
->   -: No way to attach a single struct ops to multiple entities.
->
-> This approach is used by Tejun for per-cgroup sched_ext prototype.
+> On Mon, Oct 27, 2025 at 04:13:05PM -0700, David Matlack wrote:
+> > On Mon, Oct 13, 2025 at 8:44 AM Leon Romanovsky <leon@kernel.org> wrote:
+> > This uAPI would be a good candidate for a VFIO selftest. You can test
+> > that it returns an error when it's supposed to, and a valid fd when
+> > it's supposed to. And once the iommufd importer side is ready, we can
+> > extend the test and verify that the fd can be mapped into iommufd.
+> 
+> No problem, I'll add such test, but let's focus on making sure that this
+> series is accepted first.
 
-It's wrong. It should adopt bpf_struct_ops_link_create() approach
-and use attr->link_create.cgroup.relative_fd to attach.
-At that point scx can enforce that it attaches to one cgroup only
-if it simplifies things for sched-ext. That's fine.
-But api must be link based.
-Otherwise cgroup_id inside st_ops all the way from bpf prog
-will not be backward compatible if/when people would want
-to attach the same sched-ext to multiple cgroups.
+Along similar lines, perhaps adding vfio as src/vfio_memory.c dmabuf provider
+to perftest [1] could be useful for low-level end-to-end validation.
 
-> 2) Make the attachment details a part of bpf_link creation. The
-> attachment is still happening at the reg() time.
->
->   +: A single struct ops can be attached to multiple entities.
->   -: Implementing stateful struct ops'es is harder and requires passing
->      an additional argument (some sort of "self") to all callbacks.
-
-sched-ext is already suffering from lack of 'this'.
-The current workarounds with prog_assoc and aux__prog are not great.
-We should learn from that mistake instead of repeating it with bpf-oom.
-
-As far as 'this' I think we should pass
-'struct bpf_struct_ops_link *' to all callbacks.
-This patch is proposing to have cougrp_id in there.
-It can be a pointer to cgroup too. This detail we can change later.
-
-We can brainstorm a way to pass 'link *' in run_ctx,
-and have an easy way to access it from ops and from kfuncs
-that ops will call.
-The existing tracing style bpf_set_run_ctx() should work for bpf-oom,
-and 'link *'->cgroup_id->cgrp->memcg will be there for ops
-and for kfuncs, but it doesn't quite work for sched-ext as-is
-that wants run_ctx to be different for sched-ext-s
-attached at different levels of hierarchy.
-Maybe additional bpf_set_run_ctx() while traversing
-hierarchy will do the trick?
-Then we might not even need aux_prog and kf_implicit_args that much.
-Though they may be useful on their own though.
-
-> I'm using this approach in the bpf oom proposal.
->
-> 3) Move the attachment out of .reg() scope entirely. reg() will register
-> the implementation system-wide and then some 3rd-party interface
-> (e.g. cgroupfs) should be used to select the implementation.
-
-We went that road with ioctl-s and subsystem specific ways to attach.
-All of them sucked. link_create is the only acceptable approach
-because it returns FD.
+https://github.com/linux-rdma/perftest
 
