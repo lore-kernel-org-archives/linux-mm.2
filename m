@@ -4,137 +4,242 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6FBCCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 19:07:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B24ACCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 19:17:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 382738E01D9; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
+	id 9DC6D8E0084; Thu, 30 Oct 2025 15:17:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 359DE8E0084; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
+	id 9B4188E01DA; Thu, 30 Oct 2025 15:17:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 270238E01D9; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
+	id 880CB8E0084; Thu, 30 Oct 2025 15:17:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 110728E0084
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CABC81A025D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:07:27 +0000 (UTC)
-X-FDA: 84055714134.23.48BFBDD
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 7C270120004
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:07:25 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HnD6wWTB;
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761851245;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B1C68E0084
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:17:26 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 09B8957339
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:17:26 +0000 (UTC)
+X-FDA: 84055739292.04.C893E7D
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 933F280011
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:17:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ZQSVpKIn;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Vh4hursM;
+	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761851842;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
-	b=xLWEfhIpK05KWy0E8151HY6QqXjIeugkOo5xg//cvLVqx64uhNObkAUntMLfKKRuYC2yXF
-	JdgAn2U51qCRLUAVorFujzHj+dlT3IGcIoqJCvQU1YDPUaISpo8eN7atQnemci6BGbfFip
-	TLjFv9MlaN2QUEeMrhGqUAeRr6BiQVE=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HnD6wWTB;
-	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761851245; a=rsa-sha256;
-	cv=none;
-	b=4Y7W5/qCEqSx+CLnzH9oBpTzCVKEN6rpnpvrs2ciA5mlmS3qVEQZztnkj9pPvTrzN7k/Zs
-	UtHzy4twrGExGaXg49vBOJhQryMovVkOiecPkGbawF6fdM53tR8/8qH0lRGmvf/dnDw67n
-	MWoDG+601WnuNMr6yVKtzSWspDSzHzk=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761851244;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
-	b=HnD6wWTBuKVuB+CvbcKv97XxfK8wwM12EaFBwBM2BzqomM+GlPBRuMzpU1FMCMyOslx6jc
-	n34dyYu5M6CAebJi1z/4cDiPRXyFnIY8HrxHnJbXD3j7BPBG8GvSlqh7Dvf64ZdN5HAzS/
-	rWmHbouFwE8dDaSlvNC7tCQGYj/6zQA=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-78-pHSRsqieMp6E3RE7EI6DFg-1; Thu, 30 Oct 2025 15:07:23 -0400
-X-MC-Unique: pHSRsqieMp6E3RE7EI6DFg-1
-X-Mimecast-MFC-AGG-ID: pHSRsqieMp6E3RE7EI6DFg_1761851243
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-880047f8636so40991996d6.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:07:23 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761851243; x=1762456043;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
-        b=QQ+xdpmAhQAl+YzUSZViKQuxwPEw4Az7ulT8PVujJZ9Q08MFjQ4EY562rT73u00mdh
-         HK8eJ3O930P8kbtat2Wp20Ol1/mlXjqC7Dhc+uL0LUIlWeE18LxcW5ika9uLo6YPo2Dl
-         jQMb6T7BaRnncw2BgWw9rBXgTwVjFvZO6G+HG0SiGElhETvv8/WGnQo+1HfzankOdoZV
-         LJ+oV8PHC3GhoDCdmQ2559HMR67DGd+n+/Igf/7EZPg0peTKbfwPFpl3GxPBB9EYOWl7
-         UbViaNuizBo0vu9YYKLeUzmSSveTWzU/3iwUG/KZNZYTTX23pXocHjhqPVdah4ByxgeU
-         QS8A==
-X-Forwarded-Encrypted: i=1; AJvYcCXYWjVDecaNIy4con2XH77M4NjT4MhzH0LFx6ES0Ibli/eMbx3eBofeb7Q/SF/LzzTZ7xPW0+Jw/A==@kvack.org
-X-Gm-Message-State: AOJu0Ywh7yqWkKJWbPTfV7x6v06XTLHVnxfhCmp1W4JCjo55ZvfIq5SQ
-	yg2V2zetUPMKm1PLpjGgR7iYNvnx6lu/elZAZ4Rg3yjJMYQckVkLDw47XzjW/zaXq8uuEJAo+77
-	JQ3ObdV4IC3jietBzUDv28mAWPIsxNaA8214LH16H2eA8csSIzAXq
-X-Gm-Gg: ASbGncuh2LQL6Pn70lJKCyA97T6EhDqrt2XNWTQxHj5UR3lUahsCqVTijnciP7uon6/
-	ICSbhsVwtUdnUUu0peCls+DOOgQesN9ZM/XJP5yZODizebjCbUev64AKPTtnu24QpYn0ew6L1a6
-	Uaev16BIETkBLIaZavm1hmXgpfyQba8PF1RcBZLz+V9WElVNOGSz7E2GRzaJnDAEeq4lQC7qVy3
-	hObEy/N5GFzVKwdnDK69Gw6WsPEFzw8FxvCrBXdct682P8k2hizgfTYktiLbFKIHELAPIyK+P1h
-	oQpicBIzxE4E3OfrmE4Z67Vc8wNQ/VPreImCZj2GW9ZceYXs6RxKNtQgIY6qJfAM/GA=
-X-Received: by 2002:a05:620a:4410:b0:884:bea2:f01f with SMTP id af79cd13be357-8ab9afd1550mr60941085a.58.1761851242581;
-        Thu, 30 Oct 2025 12:07:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHagFIkBv4J+3JA0af8KFwdWyaUAnlJH88LcP/SWIKEfGEGCPpq1Uvsvq9Iaf4DVL5Sxox3rA==
-X-Received: by 2002:a05:620a:4410:b0:884:bea2:f01f with SMTP id af79cd13be357-8ab9afd1550mr60932985a.58.1761851241805;
-        Thu, 30 Oct 2025 12:07:21 -0700 (PDT)
-Received: from x1.local ([142.188.210.50])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba3863cc2sm113652571cf.32.2025.10.30.12.07.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 12:07:21 -0700 (PDT)
-Date: Thu, 30 Oct 2025 15:07:18 -0400
-From: Peter Xu <peterx@redhat.com>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
-Message-ID: <aQO3Zko6Qrk7O96u@x1.local>
-References: <20251014231501.2301398-1-peterx@redhat.com>
- <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
- <aPZDVuscFsYSlQjI@x1.local>
- <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
- <aPe0oWR9-Oj58Asz@x1.local>
- <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
-MIME-Version: 1.0
-In-Reply-To: <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 2ty7h8RP1om0eGdGTsGNzs-SwzdBZPT5NPzyf0YkBIk_1761851243
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+	bh=LHU20p0tGIlmhPXcSI1HYTTNj6QJsmjEp6Cg2DhyG+4=;
+	b=sZpm2neFtKgmuqR8cX32/v8yRncWr5zEkJh16RHRQ2Xs19KCJZNVEuwUhc27QyrN7SDPbi
+	kpD7J5ubLjs5xIsr0mvTF7AJRI5G9zs/Y9hxOt7EbgGf0kVNBNrjxE08lEVy3lP0+/zM4P
+	/lcJBQUK7tH9ey4GmbCxI4rdpMaqe7Q=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ZQSVpKIn;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Vh4hursM;
+	spf=pass (imf30.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761851842; a=rsa-sha256;
+	cv=pass;
+	b=eXbCfbWkVyP+Kl1yiQzOBY5kFIq8/mmC0wJsbVHEYgDr2spfjj7vw7G7/RfgnNPWDNpJYH
+	vb2hvDaMWdEWFh9RaaWr2L7G+KjHbLV+164h+5Zk+aWcSnpSglRtM7XjqTFjspDUtu/QGb
+	8Pwnqf1zk1Boasckxkzy6S/7qH61sg4=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UIK1j2025280;
+	Thu, 30 Oct 2025 19:17:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=LHU20p0tGIlmhPXcSI
+	1HYTTNj6QJsmjEp6Cg2DhyG+4=; b=ZQSVpKInochPVp+gZFiJu2pR2+Z3rcguqO
+	cwXLiSViucuye0S1F8tIgjaEAL7/C8fM4JzXgenseAG26c57P//dMTz73NDa4FD7
+	ujmvRmowLbIj14HsqbHWkpNg037JgxDGlL5l4eiDaQcx5jhvLm0ZY6ZnTD8Q2e/J
+	+/p9PBL+MSh3OIjPA5Azr6tvxgRfR4Ko1nHT8+ObmFvK6hTM9X4DcEzAguSUSiVg
+	B6P+QoDy+d7sJEss1K6NY4h/dZWHmlUZy+5Zf4lNiGhwjk2w8b9Iu7aRD41kMnty
+	HcPC50pCeieeqB/5g2gvSY5WfdkYghSF5QrFY2hHFKLwL5/gUR2A==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a4d6q04f6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Oct 2025 19:17:09 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59UIGTD1023479;
+	Thu, 30 Oct 2025 19:17:08 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010062.outbound.protection.outlook.com [52.101.85.62])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a33w02xgt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Oct 2025 19:17:08 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XmOghS9re65ZURrfJxYM7xhhJCbG/ojFEJAI5S/CLSWcVf8mT3f/Iqw90F5KOwQVU8mBkIs/9JWhyQcisFbcLdfpPOc31o/LoAEKzF8p7XbzbmbrDkaagIrraW0Bfc/y23wBA7ApLAt6zvhFZ4tyAFUjmf75EiqUfBn6TAlq46fYqAqxpSh6XE+hNQSipImqpc9XNbWceo/HgAaT3Pv0f/eCMvi0L/c7wiWCRQmW4F46u+Wq4KE8Ih7NRnot/twGt9Neyyuge9Bn4nqLjwpjMJXdifYe8HOA81hFel2beciRwn7XLcfgjxcKRjuuE2c7wYG9rviZVW4lsxSpKxeR+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=LHU20p0tGIlmhPXcSI1HYTTNj6QJsmjEp6Cg2DhyG+4=;
+ b=Oh7nrX0VyUa/aXvN2Zy84415+iiNqaY2tXAZzgbgF4vNEdvCdGViP/Pcjeav9nivnZhDLLLNG67MpNv/CDiRjcJCa8TETgeRcl8Rpa8/qDbNqokJ0MHIifyEPSSxjk9sqd/Yk1yiAHSNxqC/SQ3+cDiOCvKga3hcYXyT/rLfXRUzzFy3JWCZYxPjzhI3WPzgsfrLE7eVhqFdZnQEIRT+YLiZtK+WZKwR418KP+PLwhJWbUlj4f6j1JFVzaNzxreFY1K4p5UKJ2WrR9Hi34oFU9TZE1BIhqwUNxFm0q/xcm9ecorvuSAkMe657wI6cQElTayzig83FyGWRtlTMFvR+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=LHU20p0tGIlmhPXcSI1HYTTNj6QJsmjEp6Cg2DhyG+4=;
+ b=Vh4hursMDmN7vTk3KyUmpjS6yR/mMkxxhr/MDtc3LRrjiG09CBisiKPyERu1gdRs+yGcCXFAH9p2aLfSDM3ruXZA1e96iaBbAdWUjHewvV4ajiBSBUjdL6dmeRYjhx5BRoBb4+T79lgD+KfH0ulH+vDNRZMvDdrknL/GiLpPMR4=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by DS0PR10MB6030.namprd10.prod.outlook.com (2603:10b6:8:ce::9) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.12; Thu, 30 Oct 2025 19:16:59 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9253.018; Thu, 30 Oct 2025
+ 19:16:59 +0000
+Date: Thu, 30 Oct 2025 19:16:56 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
+        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>,
+        Barry Song <21cnbao@gmail.com>
+Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
+ guard regions
+Message-ID: <6334993b-ead7-472f-bb82-bb7d6f15f3ef@lucifer.local>
+References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
+ <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
+ <xnsn5rfqigbm5ryjtbf2rtfotneiwygzesvyfdxiqrzlyzljdr@tmbht4ggnjcv>
+ <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local>
+ <c736tssdw3z57kamh6eqc23gr575q375n2o2nnszih64afnaf7@zwbqremsbhwf>
+ <053f3a04-9195-4f8d-8959-42e0c3ba077b@lucifer.local>
+ <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Rspamd-Queue-Id: 7C270120004
+In-Reply-To: <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
+X-ClientProxiedBy: LO6P123CA0031.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:2fe::11) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|DS0PR10MB6030:EE_
+X-MS-Office365-Filtering-Correlation-Id: 5d01796b-bbc1-4e42-0e7f-08de17e8e5d8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?kv8HqkXJ9/WUIZj9kfi+ELHqmtZTBMkUR1eeWk+CnX/4fyUnMXG/5E/BhcYq?=
+ =?us-ascii?Q?JPlFAg+EJxr73OJRIVsPDXdtt9TonG2Z1F16rlUZnb73x97LnDVor5d3JAV5?=
+ =?us-ascii?Q?5MR5E3CI1vmH6Pi6mBWlnQgzwduLSKTuNez2v1BQx6JA96eFbH1RfIuP7SiW?=
+ =?us-ascii?Q?GTClR2VNUgahMCbd8erd995EvJR2BSru8Yb0Lf5fohBuyx/SDD39lTe9JuYj?=
+ =?us-ascii?Q?eoTLiuYe8krgPq/pYnmuqYVABHIjLphR/sI59T6FjLgao6Hm9NGTbr8qlBc+?=
+ =?us-ascii?Q?Cf6sM30uA5+z0u65fRjsY9Al2WwicZ0j2KyQFnuSv45q+/lZcj/1Jo0Lg32Y?=
+ =?us-ascii?Q?ynQLKhYeQOu+FeyPjwfVqmW5FKGUeZ24n3AWetGQxN05w0niYXeV76Gk3YHH?=
+ =?us-ascii?Q?Amas2LH3iWOSWSwpwDcuzvTIIjYQTDIIss+qrv3jZIzAAVPsLCVohP4TsRL0?=
+ =?us-ascii?Q?nHB8b2HAg03YFgnX21t14MnDtVLSMDSuZeoVjSE4meaLTtc1yOAqJbOrqVa0?=
+ =?us-ascii?Q?E6T8dlqN2qqGGQ5HKIg7kwqLmp0d9ivnDEceTzdI2q/VowRljL06BL/sBMrW?=
+ =?us-ascii?Q?46v3cZHTHUC6djbsJdbCCy7QDtziC7FRDY1iwRZ/cj3HW/9HkycCmZic+ytE?=
+ =?us-ascii?Q?MfsYIt2Ez7sBn1TrR5l4Um+Shcun0OIuy8SEfNDpYOEWPWLslcAAeg57WLqX?=
+ =?us-ascii?Q?9ysX6eXGqCr7N41cB83v2a1q6kZRvQJ8GFHMjfYhEfVTNJH00l3H+ksVDmNb?=
+ =?us-ascii?Q?QFv0wAcOY/Rr7Gm3++JJrYlQVbRDSdXv6cWRIe2awNfWcCvZjh9K0xrM4rMX?=
+ =?us-ascii?Q?H3ufbGudSXyLIAWb7IUAN1R9G4Dx9b47ZOQUvcmEwATghd+FFk1eHapN7Du8?=
+ =?us-ascii?Q?OlwRuJPL9dKVmEqtYxvrXw2mAEZ1bx2iZA4H6P0WmoNZbrpdFy1MLQyDsVvo?=
+ =?us-ascii?Q?3j9AY1maEfoGReKbTz2vO7NWIGEua0ZpUxnmhDjXZEJtim6RauezrxQlgLaj?=
+ =?us-ascii?Q?qHWtiVNbWPB0fjsfFoWVXDjBYVHaksCeScRWp95LuH/d6EP+CAkrhKdVi/oC?=
+ =?us-ascii?Q?Jz3pLPzpnJ5vGHQhx0dipaBazHfN7KzLVmRvFta8kGMUNBRep1+6+7WwMkdx?=
+ =?us-ascii?Q?Af/G3hvt8Ubjm+RT152QEgtfGOrE3YzzKbRgRprl+Newfz/mWLXm+vLgxAJe?=
+ =?us-ascii?Q?mauOeCn4iJWjkVmN/NSe7MEFITJOO3CYp7Hda0IXeXFRRi7ERftBnPnZ4ntl?=
+ =?us-ascii?Q?XTyaZn+PAsnqsACDuGfo4aUDdPxFvepliQR8Gin8xoTE3er+oFTEEx6aIqMy?=
+ =?us-ascii?Q?GWWQpj6Ia1eA8AT9Z9jI4R85ljXJSpRz6bMIsYmXwVEr35vVbWluvDxuC8iv?=
+ =?us-ascii?Q?PSrKXVL3KxQgeILZntqOPxhHfY2/Oh0D+qNmAOVwI8oaeZeKFzBgbKbM0QKR?=
+ =?us-ascii?Q?3ECEUVC+w5Ax2hnw8ChqzVE9niOh43Or?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?njMzN0uDGjSqGFsPKhpHWYHecc+S60W+gaB68kUHGnqorT5c56PYn+ERhnEc?=
+ =?us-ascii?Q?iH2ruxuc8MN8Wl543zxKBZC3muf62xC9VZQQeVVzG+tT4fu1IEKab0pIKNUn?=
+ =?us-ascii?Q?uesosCxlmKQ7/08jHOxE5CyuB1BMEy/RhH9Iwn4D6cH4Q2Yy9FA7CabBEvF2?=
+ =?us-ascii?Q?yetjeZn/n7lMoZwlunQ1T6JSTV9DL+Bm8RTmA+0wQaI3NewwwthNtvHB2uHr?=
+ =?us-ascii?Q?QfnfIK8X3XB8TsCqKnv8INct/fdd4YmbYUHm0QECLiuwL6RrVbZn4NCmY095?=
+ =?us-ascii?Q?1chsbzXbf/aH1kKD6I9YD/fCemTkDbO7EhfxLon9x7fQJK29sJkp7B1MBuuO?=
+ =?us-ascii?Q?Gj5Sz7myWF+u0rGpQR9o/7L5X24Tiw4svC//zyEu7AT+rpRQ+fEvO5e3ZodH?=
+ =?us-ascii?Q?GfrsNv5rrn8e+irg8lkjX7jQZbtYHv9V9arFkGquLv76mHOW4KqwR3Af4Fmi?=
+ =?us-ascii?Q?ESzBF6xVY9QQ1wfmHR0SRwH+DDndTC3h7R6MxP2LC0JoSG14KL7O2RkKMKt/?=
+ =?us-ascii?Q?dGEhTFF4cQ/zJPu9v48pZKAiix5A3m6PyH3ZnidTW77Cj3BuTbrOvksVxG7y?=
+ =?us-ascii?Q?IhiqmnfKjPmT6EJvcO1CDZRjmjkPxFjnusYL12w3PO/ousQ1esGRMiXWJ/X9?=
+ =?us-ascii?Q?xYXdMz/FxUhXodcYap/i+s8RfiRClgU7+tClrvcbT2eOZ6QGXGfG/KoDn5wn?=
+ =?us-ascii?Q?FA3jVWA8QSGeRTxROv2Ps7mIiX5kgQFaQIJ8EjehHvkIs8o2z4PB81+kGgBA?=
+ =?us-ascii?Q?vIOJwB/Mlnv2UMiOnBNbduN1IJi8zJ6HIs67CeRHBXaEIMLXiBrNhtaawRjq?=
+ =?us-ascii?Q?74zo+i7Iwc9O2dGuZ1biwRxszocQm9JeFopoDoYEi/3Zv6jNWXWe7ihDs+yX?=
+ =?us-ascii?Q?S/izHJpNQEv1zhqnpgIJ0Hzp/ua7/IFXtujkOL3VjVMkmsQuYePsNJZLk//v?=
+ =?us-ascii?Q?sqxNKQlNFFQojptwchSVP8sLMj2xbNGvsq5xMDz63Ng4pWjilxlpCRqlLjD9?=
+ =?us-ascii?Q?NoVq+R2rG0m+mhGuwYA5wXvoUn3zfRDcr/SOqctsWZFEFbA+v065zDq1Mnd2?=
+ =?us-ascii?Q?Vb/42zcnkhSw20pLlQQrRsgfzKOTV7n2GVWfNKXhpbIn2Mw5qlCJsdjuAIUS?=
+ =?us-ascii?Q?dUEhOg/Azl+sp0Ih8s4ETilvHmei8Jn/Di/CG8vt+nHqe3zM/PNPBSVAvhae?=
+ =?us-ascii?Q?T03UYFYP2Rxi1S9oyurpfbG9Jxu8Q+rTz1HIHomWTAZF4R3vpwyp3bfUKf29?=
+ =?us-ascii?Q?D9+bYmH7W30ANq/G60PMSx/k5PQFU8Xlt73JtPeZnaUPlxeCPfOd1Mw6jmFl?=
+ =?us-ascii?Q?p6RDFpBBvewjD+c5o3qwTnxecVIZcHvyEKegzlCsHlaGaEerQ5qSOZtLvs3P?=
+ =?us-ascii?Q?0rt0YduAOoCGOD5rh4gJ5OExtPi5n8zBqBx5pQnW93IOMYMJtcEYk7qLwQq4?=
+ =?us-ascii?Q?jpFrI9PuzpPmHO7riCVtsbV4o9/9sFCFrk3c8aSFmc+TbtWVfBLcdFNa6tOY?=
+ =?us-ascii?Q?hh2tvGZzM7haevx1CYbPDiCsOEQDyNldoppj8/fGjnEUUuz30T6x1WMGoW6v?=
+ =?us-ascii?Q?kyqsRMnYkVMgFxAurW50X8HkpJr3S8tTeteY2ztcmETn5d5wqYe72tj+mgol?=
+ =?us-ascii?Q?GQ=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	BSII1m3R8ZwI2aeptqmuVm3rog9rFl6uI6c4Ia+pJd/yi/3Yb41V+WblhI0Wb8ZkqLqfnrR9ffYONIBsRL2gVjx6vq03VrpJj175iWysHr82rrs07KtJ8lz6ke8S/dtowuUKtxr7Nj6peyS2AhRBG0GCc51OLA44E2VcNv9fs0ClZO4PYBNe9sXe9i/+R4RhGvREUc6frdEdVNYNXcHr7Iqz9cue5pqaQEKRI9Fz8OzGqRvamFizP9yzq+8aEvW1jHlCnODEpimE2j/t8D0ckokjyUp40P6ByW7Yzqkx9hoNnW9W5A3lEmiVOL5QiE8JlsSDgfVUYnJd88zI3HzjLaqbSd6FxJdwk5OPT50Nxfc3KYCazvh0rQtgHDFrXVmUtOjYYev75Rs6g/bW4Z8oTFzi18gwFLDH+AxfRGD7mwWEo5CR191WwbhOd6otQ4GejXeIdVOU+3XBhp0IqdHZTqF4759IBPaW0Qmz2GvYJBJReT8uA83VW53n1kD+U9wfK7grKBSVh8QHxh0jyzdWqCFwBBAzsZRU2b4ePU13ee9L5AU8LuE8rd6LGjcnydOiHO0/Sn5Bz4uJnCcULGI7pYBq2lABoTWwaqS8Yl88zVE=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5d01796b-bbc1-4e42-0e7f-08de17e8e5d8
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 19:16:59.0928
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: bfD8dckB5loCYyrKSpldkA8x+8xMHR5+WSFOmBm16d0B/6dqOSWVaw5xmf3A5Ml1iezSEYcijS/5vLizWCYdSB7MrOH5falqx4I5mr5HPJg=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6030
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_06,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 bulkscore=0
+ mlxscore=0 adultscore=0 suspectscore=0 spamscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2510300161
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDE1MiBTYWx0ZWRfX+WUxPd/bo4a8
+ buvugtdD3YKWBlkJ9VFpozMXKXgqhywEWeeiSBtFBHlACK51j5nriUqJ3Yljm1VM6YIzBab44lD
+ EQvi56R6037itkhSexmQc+wi0bwluGjbYsaby66OvL2k1lzYkA1WETqK3O9HI3hrjqvYjSWBiQd
+ H4Liv5i0ROdBXDLKRV6ZdQDQPM6UNonIAQOzFTrUSuVbaUmf7B0DHHFPbbA2p6NGmCSQSkrYw0v
+ dY82V+OesXnSAV3e526LR8TRHgk88q30iBmaCetPIBeeHVWVi5aeVd/IUh2g7aCb/e9UxYsiwcQ
+ eulKE/86S5cB0Rb/scC/WS6aT+3lXY5qAS1gVIFuf+3YPOmQSkT2ofnFVpThPw/Y2HD2+oB0c1M
+ FksE6yZVnVKVy6ta3tc0erkLqfSn0A==
+X-Proofpoint-GUID: 4nwq5WcHNZEHnw7O8kb-gJRzgiTzjsEH
+X-Authority-Analysis: v=2.4 cv=bLob4f+Z c=1 sm=1 tr=0 ts=6903b9b5 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=bxkbsJtV4hA7KuL9enYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: 4nwq5WcHNZEHnw7O8kb-gJRzgiTzjsEH
+X-Rspamd-Queue-Id: 933F280011
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: acjhajpukbnze3uroghwoh7k3jmsax9s
-X-HE-Tag: 1761851245-95659
-X-HE-Meta: U2FsdGVkX19uX2rnpYdX8yFN7XX55Mh3I8XLqrMJZfjj6Z6MPwnW3HysF2bvtZKK3SjONsJ8fshVG6wIsBMv1lvji33ZvZRcxkjNeebzmSfShF4vC+9FpWwBUG9PU+mLKSqQJ0s/7Oon9QkeBpKrksQq7ItDAJLUXkiCLeUbuDi/BeMlQaOU1y36irue0LhiV6UlZaRcTBv8BK2RwewAcJG/loKCKFpm9/q5mKmwlNj1Mk10oCj9VbA/hK3wymmZuBZ1WTPGmR1aKjWpRjuhdBBm3I9eJEilBQvyeqe9Q95kCK5msWtYVSPFZYRnCmPCa1ufodOEj4+Hs5mUiNzr+tbl+gXKuzsVeTZbtuVSp19Q3vb3i84VZFRrmudj9iTbliAAK8HrOmlQn5CAXwjVAe6tXWW/JyEELrCDYO6gbVd6g8HBw9Cp09UIw0FlHisduUzs9Pdk+2HMZ+CpfnMI+8aJa8v8ukU5aBggYwNeTMaAbtZ29s8q7L6MwddehZTxKAKpPILHWayEu5gL80tf55eypGIt2ci9u8Oi9o3yQrJSwU+qWxE3+ItrQNItW7ohPGgoYBxtrwVy7RzBB9okAgk+as0TKCA2jFXyv0E8oRjdKwJ8RLH+2TAz+98Xa3EPPzXg83vLKhCXAOGsDGGnrOm+2R8PqXKHNALYeH08iDpW3RyVpmZue04v2+pvVvvzQh3SO4q//ePfaTMo1vmBGEN7vtePWb4CvRIfW/zu52FrHmc6RBZEPwKMf3I8ZBNESjmUrJKRD0ccWQ4l5v5+r9R5/ayE8MXL8Hx1Ew63Ht1DBlBdQUKhrMYJtixfaDW8ExRtemU1DCWfxDvbSunUzy2hBd4R/5A/QODp/e5l5fwe6hQljIF2kLWuwougYCTa/8TNReSpiwfwGhpQE+mZaP3BmSzp6Ol8D5PKoCCPRxRlaEIUh8v7Gx8qpl3QwEH+WtVMd4KERBBgNFGIFTv
- pRYzNl3z
- eXQ4NLmkEbuoke3cbSsIgpkaOUoN+nT9TdBmulYnqN9G+9N/3HMKuDulUsk4Cp0XhGkfTb0oNjG+ktOt24fyRvZUqXyO5SuSGP+pEdfiy717c3RIHldF3TqtW8rVK4NYBQ0gP8/jrzJgAbZsLCOUae4DhSgWp70fePy5X9xgFAiU0PbKXiz7+TmFHjt6AwiAGvJtPrXCcnDnThrLY4WF9+o/iK+cCF2+GXYaNSldVJW2+w/x8ZhxeQRueeb+CV48fg7jdOLxRHyVmvYYgxyt8hhArGThlVDf/E7ULZRIO/JnG7N/78LcXhrJJeI9QHm3dByh46L4PWLDKHmkRKS9gV776eybp09lSmWowSvgqORGpTrm4u7XgHxy/NpejLzHU8Ci5XCPAS5wqDUc7q2WgBCoE58wrCiwec30z9PDDpS82Ud9RiRiJEEbbKtJK9biqExzmniM7VTQO62b9mbMWxbxu/tLO7YGuzPRX+X4qtvK2VI0LECOZ21ByUlaYlBLHcgO11JNB/60Tfz6vYDxl8naXei4M9VIhmt5mEe0uB1MjwOLxJwiQXyio4Geqtv1hrJppdhqTBSpQ/9Y=
+X-Stat-Signature: 8yt8fg5pomwykbwz5xs7jpdgxijh49gq
+X-HE-Tag: 1761851842-163088
+X-HE-Meta: U2FsdGVkX1/kAA5Z7ZszZlEusEKVuFd7yyjI4KNpkTR5xcYQ94FdmCPHskrF9jSYs4SOKa9MFEphftMXRNjWqkZt/G1tZNlz1JPPyeK3W6+rhslkFLIUwfFrRLd00MutimtJUhy/tUODnYhlxC0F/AF07PcXLLkexUqVszOUq/btxY1t3bo5V/vm4fTrorJEyd4eUJJ+hPMhIpWDPrk3xpTq8QS+KpFmOm9gIzz4XDrZR+F8b0AP6A+quVBIXGr1hwEIdW8QeD0UI5gfvvZjLiiqcjwgMSonRSVl7yZqgh2oVEs3HeCDtnczzdTuTnxD6/G8ZXYSYh4Vl+lsZBradNSscjEfBHo61F2PBswLw01AFagYj4lHp2yyGrGoUGESnqDmkRGGlosDdnv3vpmtlrFO0vCi4qU35ZvjiccLqObEwEPlpgF4z1t+sXnySwfZw9cXpjGpNX2Gj+mk16dyxalIvLtXhjTLRoNczjx6Lr9IsBNoeUVuGTn95PemUcJSzfL4Sn4MQy+/67VhvPUCCir60gmwQSJ4UwdGyl/h/xl82GZMqnS334u9yk/F/ytydq9hAwL5YZbjV9sEx1/Hyo9Gjc6839sqKfNNdYtVbisk1dP+I7s5y8MyQiLDGDzmzjiyJxh1cnSS/n1tUXvBfmkNu7wMF2CTuGWO2P6Kf5mZFiSFJumG6AhTc2001B/bvPfOwunr1UxlND/i1KwJCNu7aSjmYrMOB/NOUztU841fHPNqpiDVL6Yro3ua+Kc2Yk43XzlqVaw6T+S3xQcOXc8hbXTeANUiN/aqNezb7pdfXl7Q2wS+7Y/92Hbg1UysXELXkI6mBtwgfun1rk7DPmVHGPOlSrFRnu3P0HpEfEOxrmz2gjb5NY1jR2vEnVzmCTDB2KCcz39jBax2XL9mZBG6w5jbkchVwrg60AGoEBJBZ+7ebCSbHOsPMNcPqWmj5QURqvP6ayQ1c0+G4TL
+ eg48C1yk
+ +g+9aNmmBn7q07Mu+AxHRG0JRAIWZtMEoYI1aPhF7QEZrAeO1hs4N43FYsDcaN8xE2wdHHjol8XpFtE94+JY40H1vAnM/KUA/br1KSbqiqTVnPcITX4gE/5a/Z2iDXDaiICS3clzR3Cet5xnJl4CiD8RPyQAF4efuGkxndtdn5IdMwE2BbrJ60kZkr77xeYi8ImaNV6EhtZIBiqBbLgye1yBHAByk1lRE99/f9kQOj3L6x6avmrB7hYKjetv0QTtwrCDsRo0pQceBvsRtN0XTh76HJDCjnA3sGbyEaPXDn7bjoFgVuQ5kuT4Lqpw46Rq0zsJMRPoQGXVI/PjSGk3S5jVNeFQ0pWG/JbzgkL5sTkmtKKC+W3y22PilJVzFFqh1twfGCuBMYKJSbI8r/4D91IXo+HXaqRPAM4q5XE3c/Ngg+lm3N6/OnmrJbBXHZNTkRYJ5aXEdnuypDStmgGFupr2C7TZf9S5z4t3VnZ7zagmyXPUCrC626OM8snVTM4zESpj6UfRH2B4rW+eGJnbB6w+9PdIk+Veya3Fb6GjKCddltIsB/xjip69Gw1KDjlL0glIU7QGHxP6huDIqYUmn0GwqQLhlmHSdiArkg0UaNKagAVOcI+Q0vLz8BnbQein+At399orgbW11tjC3pytuku4EzdTAbuOk+TtVwvFCz5O8bW0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -143,313 +248,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 01:13:24PM -0400, Liam R. Howlett wrote:
-> * Peter Xu <peterx@redhat.com> [251021 12:28]:
-> 
-> ...
-> 
-> > Can you send some patches and show us the code, help everyone to support
-> > guest-memfd minor fault, please?
-> 
-> Patches are here:
-> 
-> https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/modularized_mem
-
-Great!  Finally we have something solid to discuss on top.
-
-Yes, I'm extremely happy to see whatever code there is, I'm happy to review
-it.  I'm happy to see it rolling.  If it is better, we can adopt it.
-
-> 
-> This is actually modularized memory types.  That means there is no
-> hugetlb.h or shmem.h included in mm/userfaultfd.c code.
-> 
-> uffd_flag_t has been removed.  This was turning into a middleware and
-> it is not necessary.  Neither is supported_ioctls.
-> 
-> hugetlb now uses the same functions as every other memory type,
-> including anon memory.
-> 
-> Any memory type can change functionality without adding instructions or
-> flags or anything to some other code.
-> 
-> This code passes uffd-unit-test and uffd-wp-mremap (skipped the swap
-> tests).
-> 
-> guest-memfd can implement whatever it needs to (or use others
-> implementations), like shmem_uffd_ops here:
-
-I didn't look at the patches in details, however I already commented
-previously on a similar comment you left.  Since you have solid code this
-time, let me ask one by one clearly this time inline:
-
-> 
-> static const struct vm_uffd_ops shmem_uffd_ops = {
->         .copy                   =       shmem_mfill_atomic_pte_copy,
-
-This is optional, if you did the convertion it's perfect (though it's buggy
-right now, more below).  Yes, UFFDIO_COPY might be a good fit for a global
-API like this, however that's the least useful, as I mentioned, I do not
-expect a new user..
-
-It means, what you did on this may not grow any user.  The whole change may
-not be useful to anyone..
-
-Then I see what you introduced as the API:
-
-struct vm_uffd_ops {
-	int (*copy)(struct uffd_info *info);
-	int (*zeropage)(struct uffd_info *info);
-	int (*cont)(struct uffd_info *info);
-	int (*poison)(struct uffd_info *info);
-	int (*writeprotect)(struct uffd_info *info);
-	/* Required features below */
-	ssize_t (*is_dst_valid)(struct vm_area_struct *dst_vma,
-				unsigned long dst_start, unsigned long len);
-	unsigned long (*increment)(struct vm_area_struct *vma);
-	ssize_t (*failed_do_unlock)(struct uffd_info *info);
-	unsigned int (*page_shift)(struct vm_area_struct *src_vma);
-	void (*complete_register)(struct vm_area_struct *vma);
-};
-
-The copy() interface (and most of the rest) takes something called
-uffd_info*.  Then it looks like this:
-
-struct uffd_info {
-	unsigned long dst_addr;			/* Target address */
-	unsigned long src_addr;			/* Source address */
-	unsigned long len;			/* Total length to copy */
-	unsigned long src_last;			/* starting src_addr + len */
-	unsigned long dst_last;			/* starting dst_addr + len */
-	struct folio *foliop;			/* folio pointer for retry */
-	struct userfaultfd_ctx *ctx;		/* The userfaultfd context */
-
-	struct vm_area_struct *dst_vma;		/* Target vma */
-	unsigned long increment;		/* Size of each operation */
-	bool wp;				/* Operation is requesting write protection */
-	const struct vm_uffd_ops *uffd_ops;	/* The vma uffd_ops pointer */
-	int (*op)(struct uffd_info *info);	/* The operation to perform on the dst */
-	long copied;
-};
-
-You went almost mad when I introduced uffd_copy() in v1.  It might be
-because there used to have pmd* and something around pgtables.  However
-I'll still need to question whether this is a better and easier to adopt
-interface if a mem type wants to opt-in any uffd features.
-
-So are you happy yourself now with above complicated struct that memtype
-needs to implement and support?
-
->         .zeropage               =       shmem_mfill_atomic_pte_zeropage,
-
-Why a memory type needs to provide a separate hook to inject a zeropage?
-It should almost always be the same of UFFDIO_COPY except copying.
-
->         .cont                   =       shmem_mfill_atomic_pte_continue,
-
-It's OK to have it.  However said that, what we really need is "fetching a
-cache folio".  I'll need to check how you exposed the userfaultfd helpers
-so that it will support mem types to opt-in this.  To me, this is really an
-overkill.
-
-Shmem impl:
-
-static int shmem_mfill_atomic_pte_continue(struct uffd_info *info)
-{
-	struct vm_area_struct *dst_vma = info->dst_vma;
-	struct inode *inode = file_inode(dst_vma->vm_file);
-	pgoff_t pgoff = linear_page_index(dst_vma, info->dst_addr);
-	pmd_t *dst_pmd;
-	struct folio *folio;
-	struct page *page;
-	int ret;
-
-	ret = uffd_get_dst_pmd(dst_vma, info->dst_addr, &dst_pmd);
-	if (ret)
-		return ret;
-
-	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
-	/* Our caller expects us to return -EFAULT if we failed to find folio */
-	if (ret == -ENOENT)
-		ret = -EFAULT;
-	if (ret)
-		goto out;
-	if (!folio) {
-		ret = -EFAULT;
-		goto out;
-	}
-
-	page = folio_file_page(folio, pgoff);
-	if (PageHWPoison(page)) {
-		ret = -EIO;
-		goto out_release;
-	}
-
-	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, info->dst_addr,
-				       page, false, info->wp);
-	if (ret)
-		goto out_release;
-
-	folio_unlock(folio);
-	ret = 0;
-out:
-	return ret;
-out_release:
-	folio_unlock(folio);
-	folio_put(folio);
-	goto out;
-}
-
-So are you sure this is better than the oneliner?
-
-In your new API, the driver also needs to operate on pmd*.  Is it a concern
-to you?  Maybe you don't think it's a concern now, even if you used to
-think uffd_copy() has concerns exposing pmd* pointers?
-
-The current series I proposed is not only simpler, but only expose folio*.
-That's at least safer at least from your theory, is that right?
-
->         .poison                 =       mfill_atomic_pte_poison,
-
-Why this is needed if UFFDIO_POISON should exactly do the same thing for
-each memory type?
-
->         .writeprotect           =       uffd_writeprotect,
-
-Same question.  Wr-protect over a pagecache folio should really behave the
-same.  Why do you need to introduce it?
-
-After all, even in your branch you reused change_protection(), where the
-hugetlb special operations reside.  I don't see much point on why it's
-needed.
-
->         .is_dst_valid           =       shmem_is_dst_valid,
-
-It's definitely not obvious what this is for.
-
-Looks like it's trying to verify vma validity.  However then I see shmem
-impl has this:
-
-static ssize_t shmem_is_dst_valid(struct vm_area_struct *dst_vma,
-		unsigned long dst_start, unsigned long len)
-{
-	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
-	    return -EINVAL;
-
-	return 0;
-}
-
-Why shmem allows anon vma?
-
->         .increment              =       mfill_size,
-
-This is almost only useful for hugetlbfs, same to page_shift and
-complete_register.
-
-It's ok if you want to clean hugetlbfs.  But if we want to fetch the
-granule of the folios inside a vma, IMHO we should make it a vma attribute,
-not something special to userfaultfd.
-
->         .failed_do_unlock       =       uffd_failed_do_unlock,
-
-You'd better at least change the name of it.  It so far unlocks some
-misterious locks then try to copy the folio without mmap/vma lock.
-
-inline ssize_t
-uffd_failed_do_unlock(struct uffd_info *info)
-{
-	ssize_t err;
-	void *kaddr;
-
-	up_read(&info->ctx->map_changing_lock);
-	uffd_mfill_unlock(info->dst_vma);
-	VM_WARN_ON_ONCE(!info->foliop);
-
-	kaddr = kmap_local_folio(info->foliop, 0);
-	err = copy_from_user(kaddr, (const void __user *) info->src_addr,
-			     PAGE_SIZE);
-	kunmap_local(kaddr);
-	if (unlikely(err))
-		return -EFAULT;
-
-	flush_dcache_folio(info->foliop);
-	return 0;
-}
-
-How do the mem type know what locks to unlock if they do not lock it first
-themselves?
-
->         .page_shift             =       uffd_page_shift,
->         .complete_register      =       uffd_complete_register,
-
-Hugetlbfs specific hooks.  It's OK if you prefer rewritting code for
-hugetlbfs.  I don't have objections.
-
-> };   
-> 
-> Where guest-memfd needs to write the one function:
-> guest_memfd_pte_continue(), from what I understand.
-
-You did mention what is required in your new API:
-
-	/* Required features below */
-	ssize_t (*is_dst_valid)(struct vm_area_struct *dst_vma,
-				unsigned long dst_start, unsigned long len);
-	unsigned long (*increment)(struct vm_area_struct *vma);
-	ssize_t (*failed_do_unlock)(struct uffd_info *info);
-	unsigned int (*page_shift)(struct vm_area_struct *src_vma);
-	void (*complete_register)(struct vm_area_struct *vma);
-
-So guest-memfd needs to implement these 6 APIs to support minor fault.
-
-> 
-> Obviously some of the shmem_ functions would need to be added to a
-> header, or such.
-> 
-> And most of that can come from shmem_mfill_atomic_pte_continue(), from
-> what I understand.  This is about 40 lines of code, but may require
-> exposing some shmem functions to keep the code that compact.
-> 
-> So we don't need to expose getting a folio to a module, or decode any
-> special flags or whatever.  We just call the function that needs to be
-
-I didn't reply before, but I don't think supported_ioctls is special flags
-or magic values.  They're simply flags showing what the mem type supports
-on the ioctls.  One can set it wrong, but I don't think what you proposed
-with above 6 APIs would be easier to get right.  Any module can also make
-things wrong in any of above.
-
-UFFDIO_CONTINUE itself is definitely getting much more complicated, it used
-to only set a flag in supported_ioctls, provide a oneliner to fetch a
-cache.  Now it needs all above 6 APIs, one of them taking uffd_info* which
-further contains 10+ fields to process.
-
-> called on the vma that is found.
-> 
-> If anyone has tests I can use for guest-memfd and instructions on
-> guest-memfd setup, I'll just write it instead of expanding the
-> userfaultfd middleware.
-
-Personally, this whole thing is an overkill to me:
-
-$ git diff --stat 63f84ba525ea04ef376eac851efce2f82dd05f21..HEAD
- fs/userfaultfd.c              |  14 +--
- include/linux/hugetlb.h       |  21 ----
- include/linux/mm.h            |  11 ++
- include/linux/shmem_fs.h      |  14 ---
- include/linux/userfaultfd_k.h | 108 ++++++++++------
- mm/hugetlb.c                  | 359 +++++++++++++++++++++++++++++++++++++++++++++--------
- mm/shmem.c                    | 245 ++++++++++++++++++++++++------------
- mm/userfaultfd.c              | 869 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------------------------------------
- 8 files changed, 962 insertions(+), 679 deletions(-)
-
-I can wait for some second opinions, but if you are confident this will be
-welcomed by others, I suggest you prepare a minimum changeset preparing
-support for guest-memfd minor fault, then post it formally upstream.
-
-Thanks,
-
--- 
-Peter Xu
-
+On Thu, Oct 30, 2025 at 07:31:26PM +0100, Vlastimil Babka wrote:
+> On 10/30/25 17:43, Lorenzo Stoakes wrote:
+> > On Thu, Oct 30, 2025 at 04:31:56PM +0000, Pedro Falcato wrote:
+> >> On Thu, Oct 30, 2025 at 04:23:58PM +0000, Lorenzo Stoakes wrote:
+> >> > On Thu, Oct 30, 2025 at 04:16:20PM +0000, Pedro Falcato wrote:
+> >> > > On Wed, Oct 29, 2025 at 04:50:31PM +0000, Lorenzo Stoakes wrote:
+> >> > > > Currently, if a user needs to determine if guard regions are present in a
+> >> > > > range, they have to scan all VMAs (or have knowledge of which ones might
+> >> > > > have guard regions).
+> >> > > >
+> >> > > > Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
+> >> > > > pagemap") and the related commit a516403787e0 ("fs/proc: extend the
+> >> > > > PAGEMAP_SCAN ioctl to report guard regions"), users can use either
+> >> > > > /proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
+> >> > > > operation at a virtual address level.
+> >> > > >
+> >> > > > This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
+> >> > > > that guard regions exist in ranges.
+> >> > > >
+> >> > > > This patch remedies the situation by establishing a new VMA flag,
+> >> > > > VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
+> >> > > > uncertain because we cannot reasonably determine whether a
+> >> > > > MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
+> >> > > > additionally VMAs may change across merge/split).
+> >> > > >
+> >> > > > We utilise 0x800 for this flag which makes it available to 32-bit
+> >> > > > architectures also, a flag that was previously used by VM_DENYWRITE, which
+> >> > > > was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
+> >> > > > bee reused yet.
+> >> > > >
+> >> > > > The MADV_GUARD_INSTALL madvise() operation now must take an mmap write
+> >> > > > lock (and also VMA write lock) whereas previously it did not, but this
+> >> > > > seems a reasonable overhead.
+> >> > >
+> >> > > Do you though? Could it be possible to simply atomically set the flag with
+> >> > > the read lock held? This would make it so we can't split the VMA (and tightly
+> >> >
+> >> > VMA flags are not accessed atomically so no I don't think we can do that in any
+> >> > workable way.
+> >> >
+> >>
+> >> FWIW I think you could work it as an atomic flag and treat those races as benign
+> >> (this one, at least).
+> >
+> > It's not benign as we need to ensure that page tables are correctly propagated
+> > on fork.
+>
+> Could we use MADVISE_VMA_READ_LOCK mode (would be actually an improvement
+> over the current MADVISE_MMAP_READ_LOCK), together with the atomic flag
+> setting? I think the places that could race with us to cause RMW use vma
+
+I mean, I just spoke about why I didn't think introducing an entirely new
+(afaik) one-sided atomic VMA flag write, so maybe deal with that first before
+proposing something new...
+
+We probably can use VMA read lock (actually introduced _after_ I introduced
+guard regions I believe) if we do not need the write lock.
+
+But I need to hear a compelling non-hand waving reason for introducing an
+entirely new mechanism like that which is going to violate an assumption we have
+about VMA flags everywhere...
+
+> write lock so that would be excluded. Fork AFAICS unfortunately doesn't (for
+> the oldmm) and it probably would't make sense to start doing it. Maybe we
+
+I mean, the entire point is fork behaviour, so that makes this a non-starter...
+
+> could think of something to deal with this special case...
+
+If we implemented that I guess we'd have to atomically read the VMA flag,
+but a race between the two would be very problematic.
+
+Note that we'd also have to have a new mechanism for writing a VMA flag
+(this is entirely novel now) because vm_flags_set() itself _literally_ has
+vma_start_write() in it.
+
+We'd also have to audit any and all cases where VMA flags are accessed to
+ensure that this new novel method does not cause any issues.
+
+We're also inviting others to do this kind of thing (e.g. drivers).
+
+Seems dangerous in itself.
+
+In any case, since you're now asking for something entirely novel, you
+really have to provide a compelling argument as to why we can't write lock.
+
+We can't allow races there or we break forking.
+
+>
+> >>
+> >> > I also don't think it's at all necessary, see below.
+> >> >
+> >> > > define what "may have a guard page"), but it sounds much better than introducing
+> >> > > lock contention. I don't think it is reasonable to add a write lock to a feature
+> >> > > that may be used by such things as thread stack allocation, malloc, etc.
+> >> >
+> >> > What lock contention? It's per-VMA so the contention is limited to the VMA in
+> >> > question, and only over the span of time you are setting the gaurd region.
+> >>
+> >> Don't we always need to take the mmap write lock when grabbing a VMA write
+> >> lock as well?
+> >
+> > Yup. But at the same time you're doing the kind of operations that'd use this
+> > you'd already be taking the lock anyway.
+> >
+> > You don't hold it for long and you won't be doing this any more often than you'd
+> > be doing other write operations, which you're also not going to be holding up
+> > faults on other VMAs either (they can access other VMAs despite mmap write lock
+> > being held), so I don't think there's ay issue here.
+> >
+> >>
+> >> > When allocating thread stacks you'll be mapping things into memory which... take
+> >> > the write lock. malloc() if it goes to the kernel will also take the write lock.
+> >> >
+> >>
+> >> But yes, good point, you're already serializing anyway. I don't think this is
+> >> a big deal.
+> >
+> > Indeed
+>
+> Besides thread stacks, I'm thinking of the userspace allocators usecase
+
+Thread stacks require mmap/VMA write lock to establish no?
+
+> (jemalloc etc) where guard regions were supposed to allow a cheap
+> use-after-free protection by replacing their existing
+> MADV_DONTNEED/MADV_FREE use with MADV_GUARD_INSTALL.
+
+First I'm hearing of this as far as I can recall... maybe worth mentioning
+at the time?
+
+> Now MADV_DONTNEED/MADV_FREE use MADVISE_VMA_READ_LOCK, and guard regions
+> moves from (worse but still reasonable) MADVISE_MMAP_READ_LOCK to the heavy
+
+I think you're hand waving a lot here, do you have data to back anything up
+here?
+
+Be good to get some timings with the different locks and some indication that
+the contention is meaningful or that this installation is in a hot-path.
+
+Are these users not in any way manipulating VMAs (seems odd for a malloc but
+anyway)? Because then you're already having to take the write lock to do so.
+
+process_madvise() can be used to hold the lock over the whole operation
+more efficiently for multiple guard region installations.
+
+> MADVISE_MMAP_WRITE_LOCK. I'm afraid this might be too heavy price for that
+> usecase :(
+
+Based on what? Provide some data or argument to back this up please. Since
+you're essentially asking me to either throw away my series or implement a
+risky novel means of manipulating VMA flags I think you're going to have to
+do better than hand waving.
+
+Thanks.
 
