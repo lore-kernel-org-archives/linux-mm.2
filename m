@@ -4,162 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B93F5CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 17:54:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 926ACCCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 17:57:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1E9C8E0122; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
+	id D25188E0130; Thu, 30 Oct 2025 13:57:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCF2C8E0089; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
+	id CFCC38E0089; Thu, 30 Oct 2025 13:57:01 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBE708E0122; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
+	id C12628E0130; Thu, 30 Oct 2025 13:57:01 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AA2F18E0089
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 439F656B64
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:54:26 +0000 (UTC)
-X-FDA: 84055530132.04.90BD0F3
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 465B7160013
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:54:24 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ioAoAJ0j;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B00718E0089
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 13:57:01 -0400 (EDT)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5EE7314021E
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:57:01 +0000 (UTC)
+X-FDA: 84055536642.05.AFB0E71
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 724661C0002
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:56:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bNy1TNIH;
+	spf=pass (imf20.hostedemail.com: domain of song@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761847019; a=rsa-sha256;
+	cv=none;
+	b=KFnso2z5cSEVVDY0XAMB/VB+uvwfH309hVIRYxQcmMXpZBdOXq+9pGHO05fxUDeDQE1Pnt
+	/6lwMpxicPPqPInP7L8Z0NtKEys2mOBpYyUbxzAYlBr+Ln9SWDL+GGIhzFIi/oIMUkGSO4
+	aTWnxe4F3wl5GhlvQrPe9HLFCG/HEZ0=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bNy1TNIH;
+	spf=pass (imf20.hostedemail.com: domain of song@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761846864;
+	s=arc-20220608; t=1761847019;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
-	b=0DhWsoBAwjuWAfUpVoBhSco4XW8L7Utm/lhId/DBoFPEBA2565D8BDlsBOj/XcQUVuREhe
-	19Y+DyIPX/lmKICiWGvrVbaHdqMvf/5HnckIB3lLQHTvq8yoxPaoEmv+wAiTYStwPt4mO4
-	sm6E99QKPoQUUdsXUnyE3nJvrLorjJc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761846864; a=rsa-sha256;
-	cv=none;
-	b=MIijt0gwJTA98orF7u59FgJGshVQ4eFROCWWyp+VyVMPwguBlHEGuahvqUTq0lUNidXBWE
-	hyoJM/IEiDWKw+y4n3F45hC6GXOMItBoUu5jrdGnKeWfwTIjWxqGoZdwJhWEBbtXO8laa1
-	MSo2CUY9CdF2HVQ2uDH/cbW4UJHKXr0=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=ioAoAJ0j;
-	dmarc=none;
-	spf=pass (imf08.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-7ea50f94045so24911036d6.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:54:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1761846863; x=1762451663; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
-        b=ioAoAJ0j8p1pFF45PLwAJxzhfnQ3mBnZoavX8/Qf3B74Lqu8dYec0H+4FvQoMrdDaf
-         7dAiBEyMbdoYMICXf1vKMrUabrUM7Jho/vdP4tWYH1MNbXARlhv6aekIXYLN+L3OzMRG
-         h8ePGvCby0/JrfoIr54ffx0FZIwIWElmV7xDQdstMI5dBB3bkenEsfVbpOCPqxLeGboF
-         66wjcgYgwocXvU+b1Gtxs57VszwK/bRvJNw34ffltfypLohxzJ+nLBIKb1nUU2g6naRV
-         ffLWENmE5a9MLP5BuZ6YTGNZMk1OzUrva3hke0WDz/3du/JW48lu7QPFgzTyYC82+jyv
-         jtzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761846863; x=1762451663;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
-        b=iy3EN5U7iSINX8BiqYVsm5L1osTJS9m4a5pB89I6DKjukKqegqdGJMvjdFa7eHPcpg
-         VEKUZGo35rL5flHoOfkxbYKHCt/EnYKDm/qOC0I8tB4sCHOM8ZUjUbGzo1zW5ui+R48Z
-         cmKEx/DufTq9eoaUBRve/tPsBkuruJlalRIKROwYyYMBUzFq3UyP2xqOLD4q/YC9PqSQ
-         eL6H29FzfJ6hGMoMce+MIzM2f/U6PvgXy+nIJvGTD0oLMPTc1C2Xp6/+fHMOIBG+uz8l
-         QAOOx3K+XnW8YXzffje5jrctRvGGLgchzk/33vFQyRNDzCfj3VooV8wnfy0gwhBKX3r0
-         TKlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWghpS020ia5TfFdrHrjDvbdFnHIEehZm+Re7nbv4Fnn+g56oq/iyOgt41dFlPxHdyF0lvvZhT02Q==@kvack.org
-X-Gm-Message-State: AOJu0YzTexnwmhhnzVW7lbnQ2JaSc900xEHEkTLTgxD8ptdatoG2PzCF
-	raqbzY1cUgPyZMQLbc1LKeG8SJu5h/nbuQdwOv+p+viP7DBKZrqryg53CZQKRU8wG2U=
-X-Gm-Gg: ASbGncv3E2zIJIzskvFuPMYWq7z3WOUF+URO6sxwD2U/kH9RxDRoO+ZowBLTyA2Y+Xy
-	HXN6RK7rGkHzmLUm6W7RBpl3vIaPAOUmBffJc7V81tSknFH/ggViu77LYkP8Xhm/CLy+namJnr0
-	4DFY06PPIVWCRxSs5Bp3MFwlrdRJ03UZxQElMnyDl/vSGYJuS+5qTGW59P7xiPAjVm/665AtE1S
-	uWJqNY9rOyt8Wfl6FJHUU+WYMZmiU42p/YVhGaBGhWRAKWxV0dRp4screUQxBURAEgYPsGsyxHK
-	Fbylok+PG3EmVjQgsbWVZScQyJIxkPNirNf9XM/eyBarZWBRoQvWKToC3TkupQeSCH4TVUNZ+vJ
-	qwkWvWi58df1CGGiDx3CmrnsEKLfin5d6A7vq5ZlEJGmqy3Ux1+i6xz+CccDgybqj2aUyQ0aCQp
-	0dx3R8PO1lYE1sY7d2suIGnF24mu3gehXFcx4fub61mKhM+g==
-X-Google-Smtp-Source: AGHT+IFT5Fmbku/PhtCEDW1KeFw5jyVfP+ejaWvNde5H/+ME0TqKpHB8wRouWON1EINpWnQqdBBBmg==
-X-Received: by 2002:ad4:5ca5:0:b0:87c:2095:c582 with SMTP id 6a1803df08f44-8801aca0a1bmr63713946d6.18.1761846863017;
-        Thu, 30 Oct 2025 10:54:23 -0700 (PDT)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba387a61bsm115313061cf.36.2025.10.30.10.54.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 10:54:22 -0700 (PDT)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vEWqr-00000005AuU-2aX4;
-	Thu, 30 Oct 2025 14:54:21 -0300
-Date: Thu, 30 Oct 2025 14:54:21 -0300
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jann Horn <jannh@google.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	David Rientjes <rientjes@google.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH 4/4] mm: introduce and use VMA flag test helpers
-Message-ID: <20251030175421.GC1204670@ziepe.ca>
-References: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
- <c038237ee2796802f8c766e0f5c0d2c5b04f4490.1761757731.git.lorenzo.stoakes@oracle.com>
- <20251029192214.GT760669@ziepe.ca>
- <0dd5029f-d464-4c59-aac9-4b3e9d0a3438@lucifer.local>
- <20251030125234.GA1204670@ziepe.ca>
- <a7161d7d-7445-4015-8821-b32c469d6eaf@lucifer.local>
+	bh=4R81vMmD74JblHD6qEjugpyOXos54O6IHtUH422ALuY=;
+	b=y8vueULBzroRCVvVEuG2v6i7ikPv41+aeSd95u+ExJwlmEBEUioxDAdKXeo6cSs2yIpAV5
+	6nXRFcT7ncSBVbCEb6S/CTMpQtKni/er1/PXeaqVniRwndWXHOnupvhBhnFh/oKKy+UzjG
+	AdEjExLeP6WY8OFjPQ56fs4WZjnDIN0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B9B8362119
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:56:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3380DC4AF09
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:56:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761847018;
+	bh=L4e38dPwrZFuVUdrOXcK15IuGB2HADfsVSi/LH7EXVY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=bNy1TNIHT4oh1zNcC8sVErbqeUGH0NdpOLL23T5ZLdkao4z9GIIVqIiseSkcpwvnR
+	 ODrApNwOMu49aC8f4/Ay41C2Z5Rl/jRXuTbwc9uutwpuYKYafqz0lfzpHPZaFkjPBq
+	 /Gv6wJwGllB3EB5b7c/8Udarnxn4FJqQmba34/yh/jurgpBWzaUJ4WEGVxChmZmPJy
+	 Lbw1PHiI9glZW16qK1noe35LNZQ++1PZHp+hRcUyFMgZh4Ha0OmebYoBHW3ZaQiJcs
+	 pGoSX9w/5hQsrXHv9WVMNE0RFVMjDdhb6XaZv79XOUPhKxk0fCz2g8LLZt+FKlZGZT
+	 lHoN6TphqhRWw==
+Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-87c1f607e72so17106906d6.0
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:56:58 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVzY7fEA3FAWDiOS87tYrI0nJMhNYRU6USGgTMwbCvoKPXPYiimr6PmG9hNzQC4jpWDpVeWq/AWbQ==@kvack.org
+X-Gm-Message-State: AOJu0YyFgk9QQvHRV6yuyr/qrkNVfdXZFcfUBgy3Fl5T0UrLyXGxtwqv
+	axT0n2sPFHHhb7C2DBK0HDW2c0t3wguiPKywGbL9M+pPhiZUYMN8vpEk04lNkxlyP7OPMPzeqdB
+	4/IYobBV+8Sm3N7BORxKrIxdoI/DziLc=
+X-Google-Smtp-Source: AGHT+IGYyUVn099A8jUIhDfDtH7YzdBkaylMEjjWSMZn4ZGTG4lQaMNVRWm1lO7yUAm0bhxQuqgolicbaQLQisRUzJg=
+X-Received: by 2002:ad4:5e87:0:b0:87c:2405:5d93 with SMTP id
+ 6a1803df08f44-8801ace00d3mr46673516d6.26.1761847017110; Thu, 30 Oct 2025
+ 10:56:57 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a7161d7d-7445-4015-8821-b32c469d6eaf@lucifer.local>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 5dipdhiy47my7iz3d8bxj8t4c64ao59m
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev> <aQJZgd8-xXpK-Af8@slm.duckdns.org>
+ <87ldkte9pr.fsf@linux.dev> <aQJ61wC0mvzc7qIU@slm.duckdns.org>
+ <CAHzjS_vhk6RM6pkfKNrDNeEC=eObofL=f9FZ51tyqrFFz9tn1w@mail.gmail.com>
+ <aQKGrqAf2iKZQD_q@slm.duckdns.org> <CAHzjS_tEYA2oboJ-SPq5wJLJTpJDNiA2Fk1wMRgyEpH0gjZRJw@mail.gmail.com>
+ <aQKLCuX5v5aO3fDa@slm.duckdns.org> <CAHzjS_uqFLEzvU0PTQiXajdFDsjC4gfk0Z4qMoiRQJ2uVPw6BA@mail.gmail.com>
+ <aQOOxybyymnUk8fr@slm.duckdns.org>
+In-Reply-To: <aQOOxybyymnUk8fr@slm.duckdns.org>
+From: Song Liu <song@kernel.org>
+Date: Thu, 30 Oct 2025 10:56:46 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_vp3xpCx8w9k7ct1RHOLnwu5og59Uxqs9DE_Ye06x3m4w@mail.gmail.com>
+X-Gm-Features: AWmQ_bkz9aBpQvreSJqyHHlBR3lFj06W4EhoUxVWBl9_g8_PXU87iBGP0a7GP5w
+Message-ID: <CAHzjS_vp3xpCx8w9k7ct1RHOLnwu5og59Uxqs9DE_Ye06x3m4w@mail.gmail.com>
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops to cgroups
+To: Tejun Heo <tj@kernel.org>
+Cc: Song Liu <song@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 465B7160013
-X-HE-Tag: 1761846864-516327
-X-HE-Meta: U2FsdGVkX1/Zz7tmiYDvq8W07y1BiKLGK3n3K39z5C+Hn62c4V+x4XYOc8bOa9i4qdSdhGIVy52qrKhY8IisHUDSuH/0DpggDVxRbv8aqKdPG92X1OzhJAsN798uJ6DbDlOTHLFG5xcYdvm+bdCzuXE5GP3tj0JpOTGcO5nJ6Z2clDJnafBpJ6twQh2m0DDuqF8iD/QG6E6YH/8rZmiYj/wP14XN+DEkVyz6ivg1F0vsmCwxq3wpq1nRyGeNLP1Eo25pCBAxpIj7BkmqGDsF6nG6hT3iT+O3Dp7ALtUJ73t66naIu519kpHTXK+iiIY6vuCcLkG3uc2EDM9EFV/nJm2OJeo6GqUazCUHlBdzPB89DzegqxqjxCTiNAEw4odaEB7pwFBC7UXDvadDjUvb9dnN9FMi/fJBxbJQKXIOLu9wKAIyb34AexzXbwE5oV2WgvoJ0lZ+mU3qHVUHH7Mkncwde+gjcKF8fzOi95kWIKhNPqBuN7ATOPpsRGMNnyz/fp7Dh29QIfzeigknFcLDPD2p5vA+epYhoX8lA7vNO/58VlWnssadRjE9kPs56cibD5fYM73jE1vyUGdvYjuor+WWQ7B5C9TI6zJx2m3iBW0DUJreZyyixmDTmHcaoQ276b738slBvkkC+fYJ4+/DO82wGiennqpnkflSkfZ9fxJa+KVUUGDAh8Fxv+yQ9fy9eJBLdMXa9LqM7IhCHYnqm1ujkSE06bcuUyF9XxauETg7H/Ezr3flUqviDcf7F03KeiMF+H5TIKeOluOIgbRG0MbY8DAiAC/uNESsn9VaMbNw4+i+c4f/YJO9PKkejGQKSgbC21BAZlVG/fRpD1x35QYGgHaV9wqnSWfy3kVgU79HqzkaInUn9Ox3uwdEcP13U/sCKzrAIFU06xlYIpc+QqeP+KvrVH509OqNkgIjZ6zEgIGP+o/9en8QYgtEPDo98C6s+r9YqPFVyzjRaRd
- 1Ls1KchR
- uL4gxKdNFpPjRfYHeOlA/w4Szr5lcOY3jRv+/FfdMMe6NU5kDvrZm5PfZ8SiCF1N62vVx6/F1TRfhS4825KYfWaKUy9flQAB6WJhLsCGgYMOcwOk3GM1z/D3tJD2o6fIqvkNPprySjdb2kzbhI1P5zfbWFOdE0UY5C9DlqlBNbdhOamrF7JRVny3DO1YdrDdjIL0pcLBqrG/KbB+0ZoQqEsuI+VEN1llOIS+CddxJRMGFbxtE90jU8ViI7PEWtxxvwg8xYsmEjt1MzKg+ky7/fiXOrihOw25O1xLMc64Cg9mgGVpCSFr/n1HPP5gaKcJlQL5fEa9b4L0e/6U4tFdTX9tuqpRM8Va4ycR65ncxtYe3ihvamyQfp0i0obK27m+NC5f2
+X-Stat-Signature: iffag8ta6an9kt8pbduez7rs1esazb3c
+X-Rspamd-Queue-Id: 724661C0002
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761847019-378631
+X-HE-Meta: U2FsdGVkX1+aaK2u5k3dqQHeViP09Ytq0044fNXltWI9X+Uub6zNwWfB2ME/+f4eADPFoCnd0nq/b8w6DbPX5Puk+91NCqYthw0AdJESsqkdEmOViZh4ikxqsazHBK1rDMBWLDIAlPqdDV7WCO2hiXOAINj1qSLZr2534Tpuyt7Nvk7aiX+UHXuKxb73JEkq/gD8Bd2VyaxvK1JOomLi5CjtJLfmPStf1PFmnvLNJirF8lr9+e9ndNQfeuk8wsritezCqrrgrudqDeEv0WKy4GESRNzT3+kjEbiMz0elhqVlU7dH/SE70NrxWpjv2/ymxFxXeakjvMDrsFTJcPynfLcq29CpT3GlVeeIg4NPFkMXBJsoEJx9Go0quKhcYctDqX5jLGhbfGkjir5yZWQ4J7Vx42ayViEQmN2MtHQI69nZpH6LohnGvl7Hr//4/7NbfWDSQ73XYEt4Bzv4SxjXsjxnZ+WwHK8pQqTKdXSTzXe6i1Q1VYE5F260NOy+YPcnRmJ18ata34r51/Bi77/R9meNfj1r4TijdKDjKGk0NmlKCWyb22Utw3mqE5DY2EmFdtdnEU/0ZpY4lfTPP7or8E9m88ZfDy/T0OWMMaxZqWejCw8zR3kDyfK89p/M52AmOhfY2PlcSbyX382D1180ExFHv9TZJqddK3BGtOIS7GUmlrKCwcUnB1AGchuU7v/aCwWIf0nhwulu6qlSP0aYJPjWCrj5dqiC7GfMjqKq0i0jpS8f+HxyVWFLfeH2rwTklgmxf3SP32LhifGWCxag5hdbTLLHU3e3neiPInUNwpD1NcRrUe5JEGWCm8PGyVmcyLv6By4qXFZLAJZw9ZgE3PdQFxWy+X+bG4WThQUqO69k8a2hoFbn7g+15SlLgqpQ1W6tC1RRsYaeER53qWpT47KpjNM3XYzr5m64Iz5cI2hv9l7a1DFBz5dweSELtc7whcyOTMK1iGWUD5W+Xve
+ 7dvAvQix
+ ZDPceQhg78MJH+hekZ3i7ayC1PtcTCW3W3vXReX+9/VxQcZznJhwYg2w21DCCT/RmEcsFhodZ+Tl5PwX8dYDiqvG5xWPHS0f8Q3/zVsTObwNhowEGNx/3y3dUDvmFczyp5F2bkxqslSAJC5JEH6woTui387PvbGHX06WsNswRY6Jp4jL1Nme9CXhMERLyNJnSC205lTtMptkBKoxfY0go04RqEYaprxR32uwf9R1EWpZPZJVpl9+xnPCIMBTIaqxsM3kUwUh0PYLtvZZqenWbW1Bv4HwDp8Ziae8j4CseeeeWpW+23GMfvs0x+A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -168,26 +115,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 02:03:02PM +0000, Lorenzo Stoakes wrote:
+On Thu, Oct 30, 2025 at 9:14=E2=80=AFAM Tejun Heo <tj@kernel.org> wrote:
+>
+> Hello,
+>
+> On Wed, Oct 29, 2025 at 09:32:44PM -0700, Song Liu wrote:
+> > If the use case is to attach a single struct_ops to a single cgroup, th=
+e author
+> > of that BPF program can always ignore the memcg parameter and use
+> > global variables, etc. We waste a register in BPF ISA to save the point=
+er to
+> > memcg,  but JiT may recover that in native instructions.
+> >
+> > OTOH, starting without a memcg parameter, it will be impossible to allo=
+w
+> > attaching the same struct_ops to different cgroups. I still think it is=
+ a valid
+> > use case that the sysadmin loads a set of OOM handlers for users in the
+> > containers to choose from is a valid use case.
+>
+> I find something like that being implemented through struct_ops attaching
+> rather unlikely. Wouldn't it look more like the following?
+>
+> - Attach a handler at the parent level which implements different policie=
+s.
+>
+> - Child cgroups pick the desired policy using e.g. cgroup xattrs and when
+>   OOM event happens, the OOM handler attached at the parent implements th=
+e
+>   requested policy.
 
-> Yeah, OK well your point has been made here, the compiler _is_ smart enough
-> to save us here :)
-> 
-> Let's avoid this first word stuff altogether then.
+OK, using xattrs is another way to achieve this.
 
-I suggest to add some helpers to the general include/linux/bitmap.h
-"subsystem" that lets it help do this:
+> - If further customization is desired and supported, it's implemented
+>   through child loading its own OOM handler which operates under the
+>   parent's OOM handler.
+>
+> > Also, a per cgroup oom handler may need to access the memcg information
+> > anyway. Without a dedicated memcg argument, the user need to fetch it
+> > somewhere else.
+>
+> An OOM handler attached to a cgroup doesn't just need to handle OOM event=
+s
+> in the cgroup itself. It's responsible for the whole sub-hierarchy. ie. I=
+t
+> will need accessors to reach all those memcgs anyway.
+>
+> Another thing to consider is that the memcg for a given cgroup can change=
+ by
+> the controller being enabled and disabled. There isn't the one permanent
+> memcg that a given cgroup is associated with.
 
-#define BITMAP_OR_BITS(type, member, bit1, bit2, bit3) 
+In the current version, bpf_oom_ops is attached to the memcg. As long as
+we feed a pointer to memcg to all struct_ops functions, these functions
+can be implemented in a stateless way. I think having the option to do
+this stateless implementation will help us in the long term.
 
-returns a type with the bitmap array member initialized to those bits
-
-Then some other bitmap helpers that are doing the specific maths you
-want..
-
-* bitmap_and_eq(src1, src2, src3, nbits)  true if *src1 & *src2 == *src3
-* bitmap_and_eq_zero(src1, src2, nbits)   true if *src1 & *src1 == 0
-etc
-
-Jason
+Thanks,
+Song
 
