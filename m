@@ -4,116 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E5C06CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 18:31:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 099A0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 18:47:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12EFA801BB; Thu, 30 Oct 2025 14:31:33 -0400 (EDT)
+	id 52AE88E0154; Thu, 30 Oct 2025 14:47:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DFA78E0153; Thu, 30 Oct 2025 14:31:33 -0400 (EDT)
+	id 4FF3C8E0153; Thu, 30 Oct 2025 14:47:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EC1E2801BB; Thu, 30 Oct 2025 14:31:32 -0400 (EDT)
+	id 3EE6D8E0154; Thu, 30 Oct 2025 14:47:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id D401B8E0153
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:31:32 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5EABC16025B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:31:32 +0000 (UTC)
-X-FDA: 84055623624.26.07C5F1D
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 0B4AB1C000E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:31:29 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=04iKfcY+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=igiB3ZOL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mlpd7JOu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GmhOIcfd;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2C6F08E0153
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:47:39 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B982256A47
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:47:38 +0000 (UTC)
+X-FDA: 84055664196.18.5A24BB2
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 44B801C000F
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 18:47:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ql+Zolia;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JBkvUAc9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ql+Zolia;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JBkvUAc9;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761850056; a=rsa-sha256;
+	cv=none;
+	b=pZeYqy2xSFW/GpOMxWGE6goO6ZNYMs3KmUKif9p1omijOmrts0nIf1VqL4B0uBFXdlaKVT
+	MG4PUSDKuyYPqPIFNK89YSX4ltTeK1zNpKeEY5UpRRzsDQgWjPbJS6Tl+xQBKIaeW3XBB9
+	y34v24utsO3W8wpExTk1SZ964vk2iaA=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ql+Zolia;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JBkvUAc9;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ql+Zolia;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=JBkvUAc9;
+	dmarc=none;
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761849090;
+	s=arc-20220608; t=1761850056;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6wu4JmqRSVUxmPY+orKabgdgbl+cS4T0hGW38ZUO13k=;
-	b=IU5TjbONPUWT1wKk1/GAljLPVKiu8BnuS1luLdZ9aUyVjlulu7bVvsNVISXtHxzMEkd3ww
-	7N+xm49Egoo6QrdGXAgg1BWEKBLwmaL2vG6hVcbiPkQpnk8vpXLgSdQ/GjBHlUrw/MJaci
-	aWgwB9DZlynxTxtQIVYGFiy0Ybv7M70=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=04iKfcY+;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=igiB3ZOL;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mlpd7JOu;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GmhOIcfd;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761849090; a=rsa-sha256;
-	cv=none;
-	b=LD0cAv+DlMyOobL+P4WPEZ6/uTcftwLg1f7Oyp5Lfp0D/zU+AuVGckJ06nPBT3IqqmTlZ0
-	6FKGYmoLBgGyDR/AzF3zJGQH+1ZapW+0+CkDuQP8Im0wRQQXAjoL2kaJauIklW8/c4wDXq
-	aS4N1iISD+4fb7VInxcfwFpYyWJjvXI=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	bh=XwKcvH7H5RjQ5NOkIESnmuW0yiV4zx44hpfwDwJ0RnU=;
+	b=KfwNCzqMRd9q1oE4sLg3jcAJ2CZ7slEV9dyStQCW/aFlFLgJ7D+q6IUDcFd1bi3QDfvg/Z
+	yTX7j7CQ9CF/cPxBYtpeP8U3n7xCUDFOAqDDxP2xm/jnNDce39Go4A45UYfCCN7ZNgGU4J
+	ZZovz9AT5j7gohs8ErJD7q8dm8hhlvg=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 3B17C1F7E9;
-	Thu, 30 Oct 2025 18:31:27 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B2BBD3377A;
+	Thu, 30 Oct 2025 18:47:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761849088; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761850054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6wu4JmqRSVUxmPY+orKabgdgbl+cS4T0hGW38ZUO13k=;
-	b=04iKfcY+8o345QvLdxK+8oF7FhJiB0XDldbfDAiAl0jZ4VaoiZvrNtEHan+PaeD/xhTF1j
-	GpmNSFoStNkWN1jlQvUAqY2TwQNLr/xz1tZCUjkOlMmvK23o3wXZIDA3F4UtLHN5/FN4s2
-	NauW7M4wxlJoBhzTeku2jasERYu1zUU=
+	bh=XwKcvH7H5RjQ5NOkIESnmuW0yiV4zx44hpfwDwJ0RnU=;
+	b=Ql+Zolia4G8HK4Bop0o2jNKk73XtHsb3KNFZVfTQHgJv+rRoEiaW+5M9OkI7LVy2ZTBrMz
+	f9SOv9IAItf8kpBT+S5w5POb+A2VFMK5Fe2ZvrOPvPXKXTlmBIc+UE09irhdhMc9zGZbWQ
+	MCPMoSw4xLG9WGSNutfUasuH4UU6fR4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761849088;
+	s=susede2_ed25519; t=1761850054;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6wu4JmqRSVUxmPY+orKabgdgbl+cS4T0hGW38ZUO13k=;
-	b=igiB3ZOLI2thR8FkcmqQPe6l/YOut6/JPYEn+tQf6klzCNm5kalB2NQN61wUoQO3xzI9VU
-	BqiapvgDytjtuVBA==
+	bh=XwKcvH7H5RjQ5NOkIESnmuW0yiV4zx44hpfwDwJ0RnU=;
+	b=JBkvUAc96P9Nuspqriu6psbMpOpsFBClWJBfD0wmNpZNthlMoWIGmV2spYikjFJ37v1I5Y
+	/kly+jzE6ku88eDA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761849087; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1761850054; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6wu4JmqRSVUxmPY+orKabgdgbl+cS4T0hGW38ZUO13k=;
-	b=mlpd7JOuWnxP0St5rlvOV0Zge6C5xx8yJb3s2cjWIzGAIF4S2yMRa4tluRM1q3i6GtodMP
-	Wj5dolx60AfeL8fKPlQSxrxCh/ivkhIGbCxWw5oeOVSjBd0QGVM8M3onUHT1fwK3KHzMdT
-	LxnlzVOtjBQ66tgtH4VAXSweC3BL7Uw=
+	bh=XwKcvH7H5RjQ5NOkIESnmuW0yiV4zx44hpfwDwJ0RnU=;
+	b=Ql+Zolia4G8HK4Bop0o2jNKk73XtHsb3KNFZVfTQHgJv+rRoEiaW+5M9OkI7LVy2ZTBrMz
+	f9SOv9IAItf8kpBT+S5w5POb+A2VFMK5Fe2ZvrOPvPXKXTlmBIc+UE09irhdhMc9zGZbWQ
+	MCPMoSw4xLG9WGSNutfUasuH4UU6fR4=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761849087;
+	s=susede2_ed25519; t=1761850054;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=6wu4JmqRSVUxmPY+orKabgdgbl+cS4T0hGW38ZUO13k=;
-	b=GmhOIcfdkM15lOi69HROnP/YEjeeZx8cWYET42jL9w0FjbY4oMmy0dkO2hedguRWguaKDx
-	JCckn0bfHOKGsMBg==
+	bh=XwKcvH7H5RjQ5NOkIESnmuW0yiV4zx44hpfwDwJ0RnU=;
+	b=JBkvUAc96P9Nuspqriu6psbMpOpsFBClWJBfD0wmNpZNthlMoWIGmV2spYikjFJ37v1I5Y
+	/kly+jzE6ku88eDA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 13B0813393;
-	Thu, 30 Oct 2025 18:31:27 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8791F13393;
+	Thu, 30 Oct 2025 18:47:34 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id PO8xBP+uA2k5EAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 30 Oct 2025 18:31:27 +0000
-Message-ID: <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
-Date: Thu, 30 Oct 2025 19:31:26 +0100
+	id 9AZwIMayA2keHwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 30 Oct 2025 18:47:34 +0000
+Message-ID: <3ae457cd-6c18-4870-a617-7f937b107cb4@suse.cz>
+Date: Thu, 30 Oct 2025 19:47:34 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
  guard regions
 Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
 To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Pedro Falcato <pfalcato@suse.de>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -134,7 +135,7 @@ References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
  <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local>
  <c736tssdw3z57kamh6eqc23gr575q375n2o2nnszih64afnaf7@zwbqremsbhwf>
  <053f3a04-9195-4f8d-8959-42e0c3ba077b@lucifer.local>
-From: Vlastimil Babka <vbabka@suse.cz>
+ <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -174,18 +175,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <053f3a04-9195-4f8d-8959-42e0c3ba077b@lucifer.local>
+In-Reply-To: <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 0B4AB1C000E
-X-Stat-Signature: 7sfan59i5mbexbm8tp4x7rgydk7ftf73
+X-Stat-Signature: ypn1wb918ntwd5tkqed3wki9fancmwys
+X-Rspamd-Queue-Id: 44B801C000F
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761849089-942547
-X-HE-Meta: U2FsdGVkX1+92KJPWSE494fCK9LF+JMkkd9zzZYOMhvZb8czgguYLmZE6eUxeCc4b0gTdnUc1583CAbia2McLyfpZx24VV0bFKCOcxHpJTw+mWIilPaQhqqHmkTSEu5Z0ifgxCVpFpUsHPVolwOdiykkdpwYFrVan7LS5wGmxHZdhI/yl1fMDn5aTwzIFXf5C7HkjyJhaJkml5w1+WY4rKEKTXymr9JNtfzIax9Zb0YA9L2m6j+Ltz+5c/9AQGvLT79f42iHFTWT3js4JUtkmUYVdXhyJEsUmI0DvFCjsUnc68vsKzVxcUp3y1g0ihRehpxfudVVfBh4cHNbthzrpZgbaby2iqEpaHUos6RYdBCVX6A5/XaoPOt/N6UaCgPVGH+I840BI57UdeN9PVW+YkMkrxhK7/BKG5IczKWEiK88Z4l0g0F/m0krWA1wO84zyCi0sVJoNeJNeR0KxcmBYT0AaGu6btDreTXggpL4+txR+dFeo+WnP6H31evABbnQLZUbUpPpHNLvaglIxG0DeebIyCn8fvO7Aby1dmgs3z1gd8Za+X67udFR3XFx7yaGbHdBVzIbHFAwhdLdBjoA3PXiXIrSQSwBAv80PiTCVGBX07MZnxpBDvBOEGOvyr5gUrtSDZQejsjdaVSi64DRiZSSM9cyp/2A6yRm3KXIVUPONeoECDzuTRb7bir+MeefC9P9C+Kbk/6apmb64rF12ITBfUOYrz9SMEPyQc8sKe4Vsx5NPvgo2tPqdPog57Yw6644uVlocYK8I3HSmn2ZF/FXORLeiqZ66+ol4CwQJj+jQI1Pouz4Fhb6FT+siP5pYDvxw9IszJcW6HNQlSTam/Dkhpb2gxrV+oVO94/d2BiD7y9M5mphDsfpDogDr28wiRh37Df2/7lIs8wxa285Q0DSAW8wuDzuThteEpnIeHqynt88YJIStsG4SBGQiN/vGbdGmD8Cr1mLEK/Vc7/
- 2DmNSfv9
- 2Xg10ZY8ICJRdamA=
+X-HE-Tag: 1761850056-886375
+X-HE-Meta: U2FsdGVkX1+Qd7Oc9QyptSPY0ND/mB9g3RI5JVorNe5jDc/Nzfl1C6hSe6i7GkTkiEpd4gpbVGVIKP3CcoMajXABpswW6vIeeRh2abdjTn3TOerg9xVpBXNienMmZC2wjSoDdzxPwGY5CjG/jH1wNrt/Py8/Fgz41/DpfzqyCj5SZgZFsqdLJDlIxpFT2OAS5jAidW6r7j4elENpUJOTL2y7iUu82x3FDyr6bk8IvOlQOm/wkOGrnXhKVmM70Ybrx/dUo87N0Z395+PqH98sItXvmWJhgSv9eH6Oyi76GTjr+rZ+WxNA8IzET/lZwLrCyCZ13WE5Ui+m+QXvCF7RjxMBPHNFRKSVzCJP64stxuCl3+JMPldh38oHf6HiRSjOTcecbJC/rmPHL1Ckqcgx+yGTBAkqy87h8dBGq/WskgYanm3Vfqtes0b9Ds74A3+65ITx7hnX+maAn8dvBkG4MLfIMZ1btJP/ZKp4BllaR+gPypt/1xmNqmM8JmDmS7witw9Jaxzr6QobfaD3Q5b8C1sq3j0oPOhsmgJAJok4ZGU+uhr87v9axcYRP8I7n44/6vKq0n8jWADr3Vi3fUkAJONHc4Iv8AH1RClWtAlp5V7h7teWJr0CZL37+Rcy2wfVjF3zonvn1dWWKm/wL4MjqrGJBEz9xgF/XN8CXufV27tWmaKcMkGgTGvEdiogihzYRR4js/YXH+uGVuW9S5pNjaShgZL4WdfrECDMSzOp7f55KWFBeJYTcAKPAQVUr6CLgAAb3kJkI2n4X4irZK5a2ysDLh+ZEbj+avhAbyAOpDflNbaY7nOGe6rBxCz2/6jMtVOyhzebTB3KCXt5aiZk4MOhSFiUcpUgRacQMbGCW5vMVhEK28XfxcvACfwoJbqECXCg6mRlwdzZ/Sy17ihU85536wV1+9GrtEevq5n6w2DtPxIwLKuKaPbXxH6vc/CE6jUPGlDEiawtUXbM4Cg
+ 1ym6sm0j
+ GmLHEV4Dt9FcfWIWbpZFS3SYodCGKISNzDzLAUS9MU2q+a6GgUGAPYleRPq6n2ySBFTmrGyhRSqOyOBOgRDvfl2szvIXwdK2kjqdkbcEKB81UfmlQhaJCtlOnFK0i5/Lv3bbzO1WrFKWFSFh0ARc83s3g6zeIlkPHjZL0w8CMz4eHenOkk+TcvEnC9JTDAD9CchQgM8Co/skyvoLyXwgxwa8zdtKOcjRaDPbxc+SW1FxNY4WUmJAAwNpJrPTLGVWusBXgqfzCR65cLa/2GMh91mveohmSbz+xfarKoCD3q5RW28q0JeuIcq0789dvZoym20VVmBouPGwsWgU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -194,115 +194,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/30/25 17:43, Lorenzo Stoakes wrote:
-> On Thu, Oct 30, 2025 at 04:31:56PM +0000, Pedro Falcato wrote:
->> On Thu, Oct 30, 2025 at 04:23:58PM +0000, Lorenzo Stoakes wrote:
->> > On Thu, Oct 30, 2025 at 04:16:20PM +0000, Pedro Falcato wrote:
->> > > On Wed, Oct 29, 2025 at 04:50:31PM +0000, Lorenzo Stoakes wrote:
->> > > > Currently, if a user needs to determine if guard regions are present in a
->> > > > range, they have to scan all VMAs (or have knowledge of which ones might
->> > > > have guard regions).
->> > > >
->> > > > Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
->> > > > pagemap") and the related commit a516403787e0 ("fs/proc: extend the
->> > > > PAGEMAP_SCAN ioctl to report guard regions"), users can use either
->> > > > /proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
->> > > > operation at a virtual address level.
->> > > >
->> > > > This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
->> > > > that guard regions exist in ranges.
->> > > >
->> > > > This patch remedies the situation by establishing a new VMA flag,
->> > > > VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
->> > > > uncertain because we cannot reasonably determine whether a
->> > > > MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
->> > > > additionally VMAs may change across merge/split).
->> > > >
->> > > > We utilise 0x800 for this flag which makes it available to 32-bit
->> > > > architectures also, a flag that was previously used by VM_DENYWRITE, which
->> > > > was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
->> > > > bee reused yet.
->> > > >
->> > > > The MADV_GUARD_INSTALL madvise() operation now must take an mmap write
->> > > > lock (and also VMA write lock) whereas previously it did not, but this
->> > > > seems a reasonable overhead.
->> > >
->> > > Do you though? Could it be possible to simply atomically set the flag with
->> > > the read lock held? This would make it so we can't split the VMA (and tightly
->> >
->> > VMA flags are not accessed atomically so no I don't think we can do that in any
->> > workable way.
->> >
->>
->> FWIW I think you could work it as an atomic flag and treat those races as benign
->> (this one, at least).
+On 10/30/25 19:31, Vlastimil Babka wrote:
+> On 10/30/25 17:43, Lorenzo Stoakes wrote:
+>> On Thu, Oct 30, 2025 at 04:31:56PM +0000, Pedro Falcato wrote:
+>>> On Thu, Oct 30, 2025 at 04:23:58PM +0000, Lorenzo Stoakes wrote:
+>>> > On Thu, Oct 30, 2025 at 04:16:20PM +0000, Pedro Falcato wrote:
+>>> > > On Wed, Oct 29, 2025 at 04:50:31PM +0000, Lorenzo Stoakes wrote:
+>>> > > > Currently, if a user needs to determine if guard regions are present in a
+>>> > > > range, they have to scan all VMAs (or have knowledge of which ones might
+>>> > > > have guard regions).
+>>> > > >
+>>> > > > Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
+>>> > > > pagemap") and the related commit a516403787e0 ("fs/proc: extend the
+>>> > > > PAGEMAP_SCAN ioctl to report guard regions"), users can use either
+>>> > > > /proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
+>>> > > > operation at a virtual address level.
+>>> > > >
+>>> > > > This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
+>>> > > > that guard regions exist in ranges.
+>>> > > >
+>>> > > > This patch remedies the situation by establishing a new VMA flag,
+>>> > > > VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
+>>> > > > uncertain because we cannot reasonably determine whether a
+>>> > > > MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
+>>> > > > additionally VMAs may change across merge/split).
+>>> > > >
+>>> > > > We utilise 0x800 for this flag which makes it available to 32-bit
+>>> > > > architectures also, a flag that was previously used by VM_DENYWRITE, which
+>>> > > > was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
+>>> > > > bee reused yet.
+>>> > > >
+>>> > > > The MADV_GUARD_INSTALL madvise() operation now must take an mmap write
+>>> > > > lock (and also VMA write lock) whereas previously it did not, but this
+>>> > > > seems a reasonable overhead.
+>>> > >
+>>> > > Do you though? Could it be possible to simply atomically set the flag with
+>>> > > the read lock held? This would make it so we can't split the VMA (and tightly
+>>> >
+>>> > VMA flags are not accessed atomically so no I don't think we can do that in any
+>>> > workable way.
+>>> >
+>>>
+>>> FWIW I think you could work it as an atomic flag and treat those races as benign
+>>> (this one, at least).
+>> 
+>> It's not benign as we need to ensure that page tables are correctly propagated
+>> on fork.
 > 
-> It's not benign as we need to ensure that page tables are correctly propagated
-> on fork.
+> Could we use MADVISE_VMA_READ_LOCK mode (would be actually an improvement
+> over the current MADVISE_MMAP_READ_LOCK), together with the atomic flag
+> setting? I think the places that could race with us to cause RMW use vma
+> write lock so that would be excluded. Fork AFAICS unfortunately doesn't (for
+> the oldmm) and it probably would't make sense to start doing it. Maybe we
+> could think of something to deal with this special case...
 
-Could we use MADVISE_VMA_READ_LOCK mode (would be actually an improvement
-over the current MADVISE_MMAP_READ_LOCK), together with the atomic flag
-setting? I think the places that could race with us to cause RMW use vma
-write lock so that would be excluded. Fork AFAICS unfortunately doesn't (for
-the oldmm) and it probably would't make sense to start doing it. Maybe we
-could think of something to deal with this special case...
+During discussion with Pedro off-list I realized fork takes mmap lock for
+write on the old mm, so if we kept taking mmap sem for read, then vma lock
+for read in addition (which should be cheap enough, also we'd only need it
+in case VM_MAYBE_GUARD is not yet set), and set the flag atomicaly, perhaps
+that would cover all non-bening races?
 
->>
->> > I also don't think it's at all necessary, see below.
->> >
->> > > define what "may have a guard page"), but it sounds much better than introducing
->> > > lock contention. I don't think it is reasonable to add a write lock to a feature
->> > > that may be used by such things as thread stack allocation, malloc, etc.
->> >
->> > What lock contention? It's per-VMA so the contention is limited to the VMA in
->> > question, and only over the span of time you are setting the gaurd region.
->>
->> Don't we always need to take the mmap write lock when grabbing a VMA write
->> lock as well?
-> 
-> Yup. But at the same time you're doing the kind of operations that'd use this
-> you'd already be taking the lock anyway.
-> 
-> You don't hold it for long and you won't be doing this any more often than you'd
-> be doing other write operations, which you're also not going to be holding up
-> faults on other VMAs either (they can access other VMAs despite mmap write lock
-> being held), so I don't think there's ay issue here.
-> 
->>
->> > When allocating thread stacks you'll be mapping things into memory which... take
->> > the write lock. malloc() if it goes to the kernel will also take the write lock.
->> >
->>
->> But yes, good point, you're already serializing anyway. I don't think this is
->> a big deal.
-> 
-> Indeed
-
-Besides thread stacks, I'm thinking of the userspace allocators usecase
-(jemalloc etc) where guard regions were supposed to allow a cheap
-use-after-free protection by replacing their existing
-MADV_DONTNEED/MADV_FREE use with MADV_GUARD_INSTALL.
-Now MADV_DONTNEED/MADV_FREE use MADVISE_VMA_READ_LOCK, and guard regions
-moves from (worse but still reasonable) MADVISE_MMAP_READ_LOCK to the heavy
-MADVISE_MMAP_WRITE_LOCK. I'm afraid this might be too heavy price for that
-usecase :(
-
->>
->> > So I think you're overly worried about an operation that a. isn't going to be
->> > something that happens all that often, b. when it does, it's at a time when
->> > you'd be taking write locks anyway and c. won't contend important stuff like
->> > page faults for any VMA other than the one having the the guard region
->> > installed.
->>
->> Yep, thanks.
-> 
-> No problemo, you can get yourself into sticky situations with lock contention
-> but I think this is not one! :)
-> 
->>
->> --
->> Pedro
-> 
-> Cheers, Lorenzo
 
 
