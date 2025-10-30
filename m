@@ -4,181 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4589ECCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 16:33:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B7683CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 16:34:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 99C5F280014; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
+	id 224C2280015; Thu, 30 Oct 2025 12:34:38 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 97366280003; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
+	id 1D543280003; Thu, 30 Oct 2025 12:34:38 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 863FE280014; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
+	id 0EB10280015; Thu, 30 Oct 2025 12:34:38 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 70113280003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F5421401D2
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:33:35 +0000 (UTC)
-X-FDA: 84055326390.30.388AD7A
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 9E76D1C000A
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:33:32 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id F2B96280003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:34:37 -0400 (EDT)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id BE7CBC01D8
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:34:37 +0000 (UTC)
+X-FDA: 84055328994.28.AC2C86C
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 7DE681C000D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:34:35 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Br1VD/7Y";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761842013;
+	s=arc-20220608; t=1761842075;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
-	b=TPA769DmONIndFxH3POxcon64hef+YSHwtnqoVsDXe+wr/wkl8Z+JnkCo+BD0PulyOB8JY
-	Ukn9iKX29SwtLFzJzeU22I87rrwwUo4f3mxQlvq3kfPbQ7/JgWkY26ju8uspuLRjaIdi8B
-	bryI75j8EQt1hRiyjCxCyU+2qlj1DDk=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
-	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761842013; a=rsa-sha256;
+	bh=q8xDSEzqv0eO+i7RNgUG5zHxJFTihDqYuVwJgL1tFaw=;
+	b=jR5ssPQXKd8BS1rOVpZjTjnp0hEpOkFYtO3a4xADi2riQzEJIds0aTGdHkLkvzrWSNbbAm
+	EWpicrICRfG6Y9zJ6KvyVQq53AVSwASLnbJaaDvmITq4sZ0yeD0R2LaeGhkX6pCN626+u9
+	Rtf+3uNFxqIbUZ3tyfBMVJE9PVPW+tg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761842075; a=rsa-sha256;
 	cv=none;
-	b=CXjFcr8kkw41WnWYBKH+0b4sn0bNGmJQiB+sVsc+eJLXrbmNG5OI/6rzSgVRUVLegI0ESP
-	GeVbPy7OZv6hv0x/B9DwG1WpfX+0CtJG73nQDHIKaAIAlDR/ltbH74bj9JlB0TOCli9Ap4
-	LMDlAs8R4LZ48sLO0IuxDF99+H6s3Lg=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1DDB633867;
-	Thu, 30 Oct 2025 16:33:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761842011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
-	b=AJdIHbZdawoM+1A/v9u8T0d7Msg2ILyQl8XxcWcItctZTw8FgguWL2PfBAE8SjSTufGCTf
-	q9C/So9D5aMj82QZswDDkc6MMQ6PUxczFTMrefq3d2GxU1SFiP+PSx/5JKRVDey4n+F5Lj
-	OudNDsQFbMc33WpQHV2ZopI3prg4V5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761842011;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
-	b=SK/u9tLAwmSDCXlgXCdvED/60dBowSj/1i2dtbni5TwltEQ4sQGwJ8vqJzJk7UglQ57wWG
-	2qhkO4hFqhHVAOCQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1761842011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
-	b=AJdIHbZdawoM+1A/v9u8T0d7Msg2ILyQl8XxcWcItctZTw8FgguWL2PfBAE8SjSTufGCTf
-	q9C/So9D5aMj82QZswDDkc6MMQ6PUxczFTMrefq3d2GxU1SFiP+PSx/5JKRVDey4n+F5Lj
-	OudNDsQFbMc33WpQHV2ZopI3prg4V5w=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1761842011;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
-	b=SK/u9tLAwmSDCXlgXCdvED/60dBowSj/1i2dtbni5TwltEQ4sQGwJ8vqJzJk7UglQ57wWG
-	2qhkO4hFqhHVAOCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECEEF13393;
-	Thu, 30 Oct 2025 16:33:30 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id X0eHOVqTA2msHQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 30 Oct 2025 16:33:30 +0000
-Message-ID: <48029aab-20ea-4d90-bfd1-255592b2018e@suse.cz>
-Date: Thu, 30 Oct 2025 17:33:30 +0100
+	b=npncYUcH93cVwlHY+s1vpB+MqeNxRi+Xck1G7WcIMPIJYJDvzgOplxUytf5o/0NnXeFRiF
+	k5CwfF7nx4fDWuJCaeXG0mg7XBEPFogYZI9pLgz/KXmdGEt+xnthJb3+sITuR016ktGv3+
+	MOtt/9vyALu6wQKqgQXqOgT7EzyE6PA=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="Br1VD/7Y";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf20.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UDJBKn025673;
+	Thu, 30 Oct 2025 16:34:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=q8xDSEzqv0eO+i7RNgUG5zHxJFTihD
+	qYuVwJgL1tFaw=; b=Br1VD/7YTed3oUT2iUZzltz2mPXnVAxgbDNLxlg7erZO0Q
+	ndcdnpWoXHoUFilySRRpGIi+3NdaYZvtdrCuNelAEGAtrGqT/WKWkRG0++hqoaLl
+	U3DO7TF4/SHlyudz6Ux33YMvs4FeaMwoobkrdswr1iH3NTBoydfGcStuaVfZdbDE
+	P4zDXX/kY8AqU9LgWKdjwtpl3Llgg9/j/U/Of4egne0bsg/u40oDkXOy3QPdZquQ
+	y0CFgu0n6tzgnJiezISNhw7bNixMWitpOdspE2bn/qlvp7I9fj9I5uAhF0vbAX/g
+	Yc4wda7lBmeChb4Nq2HY0X5WFh+YjgYS56JDSgYQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhj8k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Oct 2025 16:34:06 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 59UGNfcW026454;
+	Thu, 30 Oct 2025 16:34:05 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34afhj8g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Oct 2025 16:34:05 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59UGGqRH023873;
+	Thu, 30 Oct 2025 16:34:04 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a33vx9rqq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Oct 2025 16:34:04 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59UGY24U58196474
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 30 Oct 2025 16:34:02 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 510842004B;
+	Thu, 30 Oct 2025 16:34:02 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9ABBB20043;
+	Thu, 30 Oct 2025 16:34:01 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 30 Oct 2025 16:34:01 +0000 (GMT)
+Date: Thu, 30 Oct 2025 17:34:00 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Message-ID: <46d9bb24-1603-4c75-8723-84a821b3c46c-agordeev@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+ <ef0cd4bc-1a37-4755-8957-d8a7e5c4564e-agordeev@linux.ibm.com>
+ <d0767b70-5686-4f6e-8ca4-10b3f3ff3991@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH V3 6/7] mm/slab: save memory by allocating slabobj_ext
- array from leftover
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, cl@linux.com,
- dvyukov@google.com, glider@google.com, hannes@cmpxchg.org,
- linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
- rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com,
- shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
- tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20251027122847.320924-1-harry.yoo@oracle.com>
- <20251027122847.320924-7-harry.yoo@oracle.com>
- <CAJuCfpGY0h2d6VEAEa4kjH2yUMGDdke_QTFt6d+gb+kH=rnXyQ@mail.gmail.com>
- <aQHJfyoUN-tbnVFr@hyeyoo>
- <CAJuCfpFhaPTqtKbjrigptPJ-9kKJB--mPnicBzN1=rfJxhN3PQ@mail.gmail.com>
- <aQK0Bj8DL21WJ0gq@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aQK0Bj8DL21WJ0gq@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: as1o8tq1skpnrp84g4e8we6amu9nhtz6
-X-Rspamd-Queue-Id: 9E76D1C000A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d0767b70-5686-4f6e-8ca4-10b3f3ff3991@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9WxMyXTitAyuhGu3vYNyzE5CUF2jkm71
+X-Authority-Analysis: v=2.4 cv=WPhyn3sR c=1 sm=1 tr=0 ts=6903937e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=I6XwYfBBfidvHYRsdD8A:9 a=CjuIK1q_8ugA:10 a=DXsff8QfwkrTrK3sU8N1:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX7zpOZgRsm3FF
+ 8AnOBLOsvxptlWohzuosbbLPCFjAwF3xq2alPUZgZex8RCwqzG9eoZNV4NIOfsWBFJyYD+ygoAE
+ rnoEx4aGNakZqeQ2SGwR0YJxSMuQm2OcteBULwoWnfyU/cMHNt88ZmCD4rU2jE3gxNJmWV7x33E
+ oHSSsHXc4rB3cfyO0+d5kIH2YG18f2CCBQDyLSWgcAzaycIeZ5ROXf5OKaBsuvDDXGa4alxNW1z
+ RdE+6Uxgxxzst1nDzVaufGD9/ZfHUthevkdMD9SntX+m955wZ+COJtAyQIs64arQ+vraDde5COT
+ gqRLVlcqhoG5cbLpwOoCe3250RDdwFTHwZZLlnTZaB4WOK93liI9EHtPlX5NXI4lD6dhjalTaMQ
+ w9GXLDeLcNNdyMoMeG4ROtBVzLwnYQ==
+X-Proofpoint-ORIG-GUID: 98PgicvhjO7U-L0VCM0jVX32GpXzOiLG
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-10-30_05,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 malwarescore=0 suspectscore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2510280166
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761842012-705510
-X-HE-Meta: U2FsdGVkX1/GxG3tX8elaIv0yCfTKf2gIbK5f4O9GcMcdjfNChO/CB2lYS3hvpiW9RLkChaFtUqqNft7Liq0ho7pGn8mmoywxW9kKTkYgEG1Pqot54AhtCG4sniHnxaQ53+zOH9A6kQnx1HZi9YkaAcDUttM02qvAxdSiqOZPrD5BPFsdrWFr9xLFNuzCCwLKklB2xrYIoU4K/qrey0YAKKk3+iUoy79We6dR4T3Co50DKBqO0BdJbS1tAk5uet577kjlC6fJ6isHZOBGYKblFYbDn11S4H+d7WXvViQv1BCaOoLvAX1kxifN1GlBNm35IwR9X21mpTbENuvqtyT/Uc1E3FmviRaYKen1au5GERi+utUe2KEGbMCaNjI/qrcP+eRlrWV4kNepzQnsP8G+iHGwJFnc6dXvUScRlK6E7VX+Iy/MhFH72BeptoP26BDb+2SXi83mab+QVdK0j1qx41WKTAAdewsCAldWSfMbhIreStAC9ziNrnL+Xb1U+83yxELvf3JFAZKzjRemASZoJ71EMMw8h3FTJk5jWgxO+Qh3MkJ0UMewzLpmOCghcUSRiN16eJke8Ekl7L+D7/AXBEn3Fim0hEBFXAYPTNqR1rfy2AVRVWEg+aS5F2ZL1LpLXvger+069savMrbQC9GxS+lYVtxgNOKnILcQiiFSg1n7NNchLFSYMBOZZRJ9I6ALbxhAImMZwdVbl+eBkfnrFJzTzI7ywnt1xzQyJuDzTe2MpRwRTjai+0JTI3MIjZdFcpAoB8wvRr8vxL0TVjkovnFrgbS9UR7cTAI3YtRdb96FmSPr2/P84QWnmLHaUo+x9CZtn4McnHONNYDqFcq2GheNaioYhtrLhucO9p7hdbXPA5ONSKUq7oykdH4tYckGQPuFxSsctJT7UsA5opiAPxNb8AbFYmwpzXu+mHArNgTJ55lgJY2PHRwt0ASfm9NbSUSSDRlQI0ZgiIeK3f
- Al9udLLx
- xdvUY81l6wUGkEmT5ab4q996JFigEwc8xu86XGXXg2Zx4rsS7uf2BKQsRSfY78hy09tZgAZyg2vddon8mX+J2zQv7lcOu6Vv5yGNtjWbaP5zR7njIPNBVHj8JO61A4s7OvW1Su104xtQnZADJBz9MCPy0zNEBGAvVuLTG90S6ofL+ATXItejmStT1yYG8kc8lPXsH4cbj2i/9pPHJoR9MuNQcNZE4wFBYDoshBaxE7BuYb8Qf6noqPVZNqoaqDOmEvGcQhW3X5N5vbINvZcOmRBotBMcuFOj4VsE0rilzrSz6pxK4SU82+LYuhPqmPvDrODztuiGdp3n+65an3SnwjPUUgK0rBMvn2iFIdGnfn7dR7BZvHlvJYTyrhtQ8EeOEbSn/RqMQOGhXswoEUJDbhwPmKQ==
+X-Rspamd-Queue-Id: 7DE681C000D
+X-Rspamd-Server: rspam02
+X-Stat-Signature: g1f3jabf77jm7k1ddhw1f6o1s59pms66
+X-HE-Tag: 1761842075-65971
+X-HE-Meta: U2FsdGVkX18K5nXlLgYd9jE9q3vKEraVHDYdHj0cSdW7ZOj46CtCv36Qr2ShV/uayOT0hXU5A92Vp4tP/RRpoH6HcisQrEfeJI4BFwrmnxOLA4H06cO62Rn0JEYY/0bZ6kBLksSPLr1C8/VBhTdL6mApDeXYp+uavSvS497AOIoLBtj0WcRZWb5cGy7dmy++McHgNpSq2D/ctXj64fESLcI5lNc+ELBaiCtcVW+JIvnlOPAkehSiAgXT8JYkkNwJBQmjOF79G2GzuICdXUNtG2zfgv3iGgBGWKvrxHYPuYuEUD6533rz3npGjU6AIzbHz73joDl6NntGbF69lmgBir7T7iHspwNKEpqcqiylhWb7I6rpgC6lAopVm1ghRa3ZOyR+3ERWNV5F7quyIJMyvJlDkY67t0YYYCAQF3NADL8DWxe1UtIaNO4L6bsnAf/KvCV7uHG3xv7+WdwzxQqAPeVwPIE5uJJodx3Juwp0v27sKqPr/OVcMKNDaE6xP+wTAU96iAEesma2IH0aeRNuHtmlOAHupnuuEv4MrvN6zPqRZCaYaldCInTJsApl7ZWxiBaLFYtMDXHlRyC6hbCYAAuI1wE/yeBk1S0qYbZMHS3b9fl3qun0HqKfLPPRjrb13qeLUMtRzvL4mftGU4s98/DFOHBjQ3mF0LVDHC3n+VJEK3ii2s9oyykCjfLCDcoYXr23Stn4399WKeSRyEH+T2P7rCzr1VfjYw9ynKMQSlSTiVAZeVjDJWj0NefpTAmBqANV8LrIRRuJrmFi85RLP0Fh//9vGat8efRVDc6EbiWwtfpY1RvsW04k6yguYUcFAZY1OaKToplgB8foAMzTRgfpvtePxcckNrlU6fwvpaFAd/JZpljS3IwXN1YUl+oWQAfybP3WnMcIKx+RxeNB84aar7arxm4t
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -187,72 +168,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/30/25 01:40, Harry Yoo wrote:
-> On Wed, Oct 29, 2025 at 11:37:27AM -0700, Suren Baghdasaryan wrote:
->> > > >         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
->> > > > @@ -3219,9 +3352,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
->> > > >         slab->objects = oo_objects(oo);slab_obj_exts
->> > > >         slab->inuse = 0;
->> > > >         slab->frozen = 0;
->> > > > -       init_slab_obj_exts(slab);
->> > > > -
->> > > > -       account_slab(slab, oo_order(oo), s, flags);
->> > > >
->> > > >         slab->slab_cache = s;
->> > > >
->> > > > @@ -3230,6 +3360,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
->> > > >         start = slab_address(slab);
->> > > >
->> > > >         setup_slab_debug(s, slab, start);
->> > > > +       init_slab_obj_exts(slab);
->> > > > +       /*
->> > > > +        * Poison the slab before initializing the slabobj_ext array
->> > > > +        * to prevent the array from being overwritten.
->> > > > +        */
->> > > > +       alloc_slab_obj_exts_early(s, slab);
->> > > > +       account_slab(slab, oo_order(oo), s, flags);
->> > >
->> > >  alloc_slab_obj_exts() is called in 2 other places:
->> > > 1. __memcg_slab_post_alloc_hook()
->> > > 2. prepare_slab_obj_exts_hook()
->> > >
->> > > Don't you need alloc_slab_obj_exts_early() there as well?
->> >
->> > That's good point, and I thought it's difficult to address
->> > concurrency problem without using a per-slab lock.
->> >
->> > Thread A                    Thread B
->> > - sees slab->obj_exts == 0
->> >                             - sees slab->obj_exts == 0
->> >                             - allocates the vector from unused space
->> >                               and initializes it.
->> >                             - try cmpxchg()
->> > - allocates the vector
->> >   from unused space and
->> >   initializes it.
->> >   (the vector is already
->> >    in use and it's overwritten!)
->> >
->> > - try cmpxchg()
->> >
->> > But since this is slowpath, using slab_{lock,unlock}() here is probably
->> > fine. What do you think?
->> 
->> Ok, was your original intent to leave these callers as is and allocate
->> the vector like we do today even if obj_exts fit inside the slab?
+On Thu, Oct 30, 2025 at 11:28:53AM +0100, Kevin Brodsky wrote:
+> On 29/10/2025 17:41, Alexander Gordeev wrote:
+> > On Wed, Oct 29, 2025 at 10:09:04AM +0000, Kevin Brodsky wrote:
+> >
+> > Hi Kevin,
+> >
+> >> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> >> +static inline bool in_lazy_mmu_mode(void)
+> >> +{
+> >> +	return current->lazy_mmu_state.active;
+> > Whether (nesting_level > 0) is more correct check?
+> > Otherwise, it returns false while in paused mode.
 > 
-> Yes that's what I intended, and maybe later we could allocate the vector
-> from the unused space even after the slab is allocated, as long as
-> it doesn't hurt performance.
-
-It would be nice. I guess what can happen is there's a cache without
-SLAB_ACCOUNT but then some allocations from that will use __GFP_ACCOUNT and
-we need to allocate obj_exts on-demand, right?
-
->> >
->> > --
->> > Cheers,
->> > Harry / Hyeonggon
+> That's exactly the intention. Lazy MMU is disabled while paused. The
+> users of that helper want to know if lazy MMU is currently enabled (to
+> decide whether to batch updates for instance); whether this is because
+> we are paused or not in any lazy_mmu section (nesting_level == 0) makes
+> no difference.
 > 
+> > May be check both nesting_level and active and also introduce
+> > in_lazy_mmu_paused_mode() right away to avoid any confusion?
+> 
+> Can you think of any situation where a caller would specifically want to
+> know that lazy MMU is paused?
 
+I thought I do, but in_lazy_mmu_mode() alone works just fine,
+as you described (at least for now).
+
+> - Kevin
+
+Thanks!
 
