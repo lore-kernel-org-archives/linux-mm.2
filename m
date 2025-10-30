@@ -4,120 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A5D6CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 15:59:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 71804CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 16:05:11 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 66DFF28000D; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
+	id BCFA228000F; Thu, 30 Oct 2025 12:05:10 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64576280003; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
+	id BA668280003; Thu, 30 Oct 2025 12:05:10 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55AF328000D; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
+	id ABC3828000F; Thu, 30 Oct 2025 12:05:10 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 43E33280003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D41AC1601D0
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:59:29 +0000 (UTC)
-X-FDA: 84055240458.06.F295E1F
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf16.hostedemail.com (Postfix) with ESMTP id CB7D9180004
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:59:27 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fMLPh+rC;
-	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 94797280003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:05:10 -0400 (EDT)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3EF121601D0
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:05:10 +0000 (UTC)
+X-FDA: 84055254780.18.EB7CD66
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 471E4A000C
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:05:08 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=TGXhdMas;
+	spf=pass (imf15.hostedemail.com: domain of 3sowDaQgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3sowDaQgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761839967;
+	s=arc-20220608; t=1761840308;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
-	b=LcWpg0Y4qXVWG+1OULYmhHsUocrmfvKitfWtVtLcCbhidtSUSXLpSn01a3zoehmv1jsTav
-	hZmg4Ntbycc9rxw6YNwY3BT6xth/DD5iZTKswpyiMC69q+OX2tvXlZibFM6rDdgK5Sx4rd
-	aQNjvQ9TwhNbD3HYvPoAfeLcjYu++S0=
+	bh=c9b8XC/fH65U9UHUGq3SmXgvpJYhZ/Lo5B2qlcSERQ0=;
+	b=WoYQQYUEtqdg/sN3s/kWvYFU2K6zG+PQIq9EzCBQJ5FVZWisvpA4KtNf73o/gRhTA1Le4y
+	ADGtWjTxp+hUMMUPYxeM8c/Whdu6otagoxMAUxyJPdgCm/6FqJjp8G9CiuBxXesmQ5Eg2F
+	EKwyXnHq34uoIDPOKOGd8OSHnglM5oc=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=fMLPh+rC;
-	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761839967; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=TGXhdMas;
+	spf=pass (imf15.hostedemail.com: domain of 3sowDaQgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com designates 209.85.221.74 as permitted sender) smtp.mailfrom=3sowDaQgKCCkOFHPRFSGLTTLQJ.HTRQNSZc-RRPaFHP.TWL@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761840308; a=rsa-sha256;
 	cv=none;
-	b=t7nOGQutduqDNSGCDC2M5H+kssvGdswID/zjxsaucqWhqREBfm1p4dHqkB2stj428sGUTh
-	QAtCOA77Rh2zYDk9ZB3rt6uDh0gAx1r6VOZwuAXhOSawo0dt6MGDlhEeOdBcRKFD55hxP/
-	jHSxL7rnDpSmnwUPF0rGVntFnRofvIA=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d5b756284so314093166b.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:59:27 -0700 (PDT)
+	b=TGEyfncwXp0juc4Clj7fUZAACFSpxLWzhvyyFVW6QyOP2dBwSDX1aBBESjvPAJ4ODV4ZYl
+	gibhc8ww2JL9GPuihkjN4cOwlNskxarGG+osf7HieVpLTNE+F/F+UUwV29H6GbrEviWvBu
+	mQxD4vqTkvDXfiQv48m4/rt6dRexA+k=
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-42705afbf19so743800f8f.1
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 09:05:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761839966; x=1762444766; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
-        b=fMLPh+rCewM0kKCnmZS6GZUM8kG76NswqEGestFyuCZuMKa1JfzHBljb47T1wpqQMU
-         m0UFs1vdYsFw3xyAlg3TNE86V3X4rUKpbcJaJj//vCb9m2Rgs7FOKToRdW0NLNCxk1rp
-         TqhFR/Cj9yATCEkqlsV2h7ZkI5j9pG4DrBb0Kys8JlfS1amFvzbgXzTQpsmOXhEJkrU+
-         FpnSlygL8aMjoGETj4MXAmTp+5Az8C8KGLXrjfuzu3H0LW7XJj+xagGeUKnl0XyBfNLh
-         bToyf/Z44i9utab/McRHRV3zB1qkiG2Zi8tDqQdocIDvKRBb931FzfWPgPVE/A1THNx3
-         YzGg==
+        d=google.com; s=20230601; t=1761840307; x=1762445107; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c9b8XC/fH65U9UHUGq3SmXgvpJYhZ/Lo5B2qlcSERQ0=;
+        b=TGXhdMasSD0qiPBmLIj1f2XR78B/qS1hFAC4tRPlYWkv+e/ImV7eZ81HjeSe6Yo/V7
+         aZFMpWFw3wOQW1Zb/8P+vUjxzD29rLhRnbEcvsEyNO0tWyXZzws5k7+DUD4WL7d2HnsD
+         8pDNMhb+iGx4+egpwGmyPCbs3i38opIlBtWBfCQDIzcDg3IS94CW0xKRk0PMUM5up8gU
+         Qlo/e8N9Ce7kdYnfM8l1FNCOXtQIPM7m2nufbCSm7NrjHDo3KoJ2KpVs7LX/zjjab/mX
+         Mor+FbnaKn9pfGokpUqr23b293S4wt9q3VY9xYdVRHMcXWbdV5PNalor0ixpBlAdjyWa
+         k1ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761839966; x=1762444766;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
-        b=GI/vcocad9w5QhQ4rw9cRv/PvnpYpYseS9PhaywGLTqIrh2rPh3JQg48MMLFZQ16SR
-         kbuWgUA8iSEaImUihITRtX+fwYv6FQ5bEvjkSnxVjbecDgAbRLuGrjz6zVNS9HreIuxh
-         cI6tbLJLdyNunPb8u1Sq7Wcu7ipfI/ihHeUSh448jBvMEnh6V74xI3GGe7HRz+GO3IR2
-         QXPdBQgfM2ffBsDLiFzBsJKPRFSuXXAtOkVOWYsJxIva1uhfThKnUq6LdXXSQOkd5+9k
-         LGeFR4lkA1XCQdaGtrDzdFqRJLscD7scQtascyz8mLwuTWwbA/c2jiwVH/IojyFXEpUp
-         nPZw==
-X-Forwarded-Encrypted: i=1; AJvYcCVTuzKA8MqU1y0c5vDNulzYe8/v8cYNBjR3amdohDoqd6PuPuxL4Pmde+AgBesMl6oR63fFc1j5aw==@kvack.org
-X-Gm-Message-State: AOJu0YxFM9bKLvfxGc0XPcyH5Tc1x07+m6opYKV2bNT0fuOctKvdvnsc
-	HvF+VSucugIUQ72eZrdkXDfTytaMx3ntwEFp0X0U3LKCv8JNbGnNU8+WpCqCFge1hWUr0BUI1jV
-	0OEtAl8/VBc7LV6dYrsxDJJqxevotJTE=
-X-Gm-Gg: ASbGncuSH/yXNDrpoo6fPlE3KN/ECC+wunCqHbAs/CmAsGm3KWhDGO14T+0rhTuki+2
-	yHgoIbpyVyhNJfxxwW5Q+qysRPy5rbyVlnk/GCeOJIZlfevcIuoXltZGHsg4iwhIkFFOgpx/ZKl
-	aJ01rE0CkumxCfe76y9SVm5QOs163niHbN9nJj53BkfWKxQGBxRBkufpymlt7SU/ghUvkoouQP9
-	MXZv63W8Bk5KEpJgCiaMnP/mcFxQOFpas/QGFeQyaPuWJNh1iKbIoi6AQQXYeG5tDetP/+PM6DL
-	RMLDWt0LbvY=
-X-Google-Smtp-Source: AGHT+IGNEehD/IbzmT/eYnqMidws6XqejIuodVpG5l4cgolJSh8b964GFDYeXBLMdMY3NgBpsNfX2tZZfLZTiPrySFg=
-X-Received: by 2002:a17:907:7f22:b0:b0c:b51b:81f6 with SMTP id
- a640c23a62f3a-b7053e45459mr371911866b.43.1761839965702; Thu, 30 Oct 2025
- 08:59:25 -0700 (PDT)
-MIME-Version: 1.0
-References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
- <20251023-sheaves-for-all-v1-10-6ffa2c9941c0@suse.cz> <aQLqZjjq1SPD3Fml@hyeyoo>
- <06241684-e056-40bd-88cc-0eb2d9d062bd@suse.cz> <CAADnVQ+K-gWm6KKzKZ0vVwfT2H1UXSoaD=eA1aRUHpA5MCLAvA@mail.gmail.com>
- <5e8e6e92-ba8f-4fee-bd01-39aacdd30dbe@suse.cz>
-In-Reply-To: <5e8e6e92-ba8f-4fee-bd01-39aacdd30dbe@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 30 Oct 2025 08:59:14 -0700
-X-Gm-Features: AWmQ_bkWAOmvQoKcQyr_zcqHDGMRrBlm9dDGveiPgB0Mj-QwDfGlE8jGMTlojF0
-Message-ID: <CAADnVQJ_yzOGAT__EG=eBTHbWeiFgEZ--fHFQNprsX9o0vEQkA@mail.gmail.com>
-Subject: Re: [PATCH RFC 10/19] slab: remove cpu (partial) slabs usage from
- allocation paths
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, 
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev, 
-	bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
+        d=1e100.net; s=20230601; t=1761840307; x=1762445107;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c9b8XC/fH65U9UHUGq3SmXgvpJYhZ/Lo5B2qlcSERQ0=;
+        b=r/8L4IxNnsizWuMQcMeLvxOmeuMa2xsNGCHBwTMMGVBOFvWUzNoOwTzSKotZe1igfw
+         NT9eI++Q4/uwzcMUfC3LIheXCKQjvInOC3oQD3B7hRdC9FD2Z9KlXwT/9sDYhmaBfYqQ
+         eqVIvoaOuzEa7Wxk3QbcBUJ4cT+3GVT0VOTrMUxhcrO822kRLTdeCqPwMVZkMzcA0J8J
+         oW2NFMZH6cgbYr9Dc3RsFKt+YYj0durwsK/GXb6zu6IpFzL6O9/exsjWcAGcoI4+uDVC
+         EEgG2y48vMNnHOMf94IGG6dy4gfN9KO6tVtMCXwE6CgJEocOl8eHVA/Rl37yJmsMH9UL
+         N/aA==
+X-Forwarded-Encrypted: i=1; AJvYcCWzbH5ekeeyrwda3a5OO0kTD/3OTW6PHpJbPcGx+3isOD61qQ6K0BglKjdaHvVtTnI6RsfUCM9TDw==@kvack.org
+X-Gm-Message-State: AOJu0Yy67jOkz3YCAk6qM8v1QH/nDfTrMkSSlpsBSHX4X9eqMXwfZonG
+	/QG/Z/Yz0CcdzFZBO7SUUNhRxoyiwHdsTSOnBhM/255WAvqYBpMr416oX+Shr4Ip1iizgtXyPl9
+	10NMhUGKsvwEhig==
+X-Google-Smtp-Source: AGHT+IHjMaURNuY5ADspjcwjcl/WRoZFYO9bioemMflpQGaxNDVvaG4JDdR/nXAPdbz/Yfz+Utvfc7Y4KaunSA==
+X-Received: from wmbz6.prod.google.com ([2002:a05:600c:c086:b0:471:6089:1622])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2408:b0:429:8b8a:c32b with SMTP id ffacd0b85a97d-429b4c83176mr3266075f8f.22.1761840306279;
+ Thu, 30 Oct 2025 09:05:06 -0700 (PDT)
+Date: Thu, 30 Oct 2025 16:05:05 +0000
+In-Reply-To: <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+Mime-Version: 1.0
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk> <20250924152214.7292-3-roypat@amazon.co.uk>
+ <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DDVS9ITBCE2Z.RSTLCU79EX8G@google.com>
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
+ TLB flushing
+From: Brendan Jackman <jackmanb@google.com>
+To: Dave Hansen <dave.hansen@intel.com>, "Roy, Patrick" <roypat@amazon.co.uk>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net" <corbet@lwn.net>, 
+	"maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, 
+	"joey.gouly@arm.com" <joey.gouly@arm.com>, "suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, 
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>, 
+	"will@kernel.org" <will@kernel.org>, "tglx@linutronix.de" <tglx@linutronix.de>, 
+	"mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org" <luto@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "willy@infradead.org" <willy@infradead.org>, 
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "david@redhat.com" <david@redhat.com>, 
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>, 
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>, 
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>, "mhocko@suse.com" <mhocko@suse.com>, 
+	"song@kernel.org" <song@kernel.org>, "jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>, 
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org" <andrii@kernel.org>, 
+	"martin.lau@linux.dev" <martin.lau@linux.dev>, "eddyz87@gmail.com" <eddyz87@gmail.com>, 
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>, 
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>, 
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>, "jgg@ziepe.ca" <jgg@ziepe.ca>, 
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>, "peterx@redhat.com" <peterx@redhat.com>, 
+	"jannh@google.com" <jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, 
+	"shuah@kernel.org" <shuah@kernel.org>, "seanjc@google.com" <seanjc@google.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, 
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>, 
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Cali, Marco" <xmarcalx@amazon.co.uk>, 
+	"Kalyazin, Nikita" <kalyazin@amazon.co.uk>, "Thomson, Jack" <jackabt@amazon.co.uk>, 
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>, "tabba@google.com" <tabba@google.com>, 
+	"ackerleytng@google.com" <ackerleytng@google.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: CB7D9180004
-X-Rspamd-Server: rspam11
+X-Stat-Signature: qkdcka5tujeabdbio7ub8ya81wxxu8um
 X-Rspam-User: 
-X-Stat-Signature: jcr761qg9mu4zc4e94zm3difrkof5eyw
-X-HE-Tag: 1761839967-339837
-X-HE-Meta: U2FsdGVkX18enQVyc1wZP+nckTuHrBgYwUEUML4iMpLxz//gMdCvH92w5aaGTIhyhAJtR0qPgWsgTbswCrCaEskEjDygwpQsJMLzevtPNi+XIEy2aRTXoQHrQeD7gmL/jT/wQ/CKtV/UZ6a9aVG3z4L4YtaGGS1nVXl8v6wiEm1vVyYDH2m13Ea+9XR3nN9kCBSg8YXU7tnPaFuPb0+bwHLHQtshksJ9oFUgeyXQ1HsTvLw3fn71dQgr3Juv03kW0w4LFGL6HPg601uZV43501j3Kz1EiVt2DyGJYDaPeccGH75OYGyoxIW4IRfCfcHQ7/hV8onUkrY0eeKpvch5zHlGRwtO9X7C69ZZY/ihim4LCv7AnROEPZO5EEtO06+ZjkRlg0G3S+lYrHwFf+MOHsE96+gk/QCBRc+cuTnAVQWTCyt6ds0a8FBate3/EBpUDsiGmm8T49jtp483vtYsRMgKU5enWhiQLkmdQoobxTbCRR5QhgdqbZ7qRo+wfbIeq78O/secP+Z+KkgX8EuADEcFVnWMIiGhtHlwtf4F81ylAKKG3WDk1/AzEWi2/9vywvlRfCyl4c2bxK+/1zVIAMK/s3TgHSoegzlphB5S/XO9PpcL2wkXz9lcfm2S5ivXOTDC1fe0vmvnZoBjVYcHwh41klWBLAMMMlE/fy/pZT4i7SmP4F9aQFA72k1vpEBMjGTIbYRu4BALLq4qm6+MO/isqu8B6TUkZyxwPcz4ORhmhsbsuZ6HdB8CkjJ/KF8gwDQOTe+J3rP2vqX25FjqP6prTH3AxtzaINUR9pJXrC8M9XJSdMCnWY1QBhWf/E5lRYhzqTcVw/85kqiBmDi7r4gWgITBrduTzLMbhE+TZbyft7flpiOcdT8AvDmLQRI4JO0O0jtkzHRBiqSVufEWxux4iAtpKvW7poY/1nVWNzc4ySTX9tnDhmbk1klyUDmUHz7GBOI9G2uYFcBr+P3
- AG1aDjyr
- c8Sp0x1QHUmEu2bVZz5O04agcCDwIevHUfpCERTsPHuh837/uD5ilQ2/ya2HxT69xjPXnYJDpmbVGdfbJYsjORk1qKdbtoPEGpiUh3ahCMeuy4/fUdwkavKJxc0zWrn9qNdV76mULXQHLz5Ns411oqzywpfqLcRr/4HmfSRum/bgiWO6MOUstCPVU/oy6r6845k3eq7fNiELf7ga0h42PvP2UmZbDfG1W6g/3uOxylEvLeymhb+K/OvFAadiTa3SD1hMgVDomPqLUKdxKIsmrBfRiimApndVhRNg8E/c8kAu4ajaY6wfv/hvLmPduUQwqGPZRrFk3Qm2V4TIR/TJb7D58hbGuunlHuuFXeHSfdFwKzT2OAWiri237UnSnF7RmSNackUtxciqKfhM=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 471E4A000C
+X-HE-Tag: 1761840308-106526
+X-HE-Meta: U2FsdGVkX18fOOY0P4XzeiEEquSyBTMYEoIbGROjmPS9/cLN8ajK6P8X4K3Cd9arfe9jIa815lK93MpijhKx0eqc+nUb18HCLVqnx1RtwDrXsYfKHFKaweZKV7rpRq21GF5cRkvC2W0wjk11gdKT/0o/zOlwZSb/rT7Z9CYoKFyRq7PGRRsyBhDGotZlh3eWx7JBdkqrF77u4gdWSXxBqR0IbT5mnGhC2+dztREjqIFlEbIjlMFfEgzmm1AuppNE8azqrDHAtEz9/XJpr1PpFV4LS9K6nhWAow1KgPL/+567JiRL6dwQ+LUEG7cNeMnSJSxyKRBmZzjAEXKlcFKb4Ckg69uLe6pf+upRiP3gaKc0HDn6ginWQEkTGWeJ6IcOLjw2Jx/1bTiy4H88lgKkWygNtJh92NAbRKs4qEoIm3PtVjeg52FzPdR9TUjm8bDenj3fxwsXnHGYQAc5bJviTc45bMOjesnmeMg6e9kesaeiN9gSFk8nLspwysWbYVvdh0XMrSptG7odw5xq8J6ZKZc6c3zzwkeQPs4v+xtuCNDmbGtoA+iNkTLBcPZGBYEMtsb3Xk6dpNCMK77O6eHOdh/OVQ4KP6Impwabe2+4PmXzcnG80FGPdO/BdVuqh2rvEoAq9kROzRLTb9i3UyuiylKEeWTetx3XJ+vzY16d0kkn1P/rxn1+meXhOX/6zzvhPaZA9wHbJRnF2NOx4E4bofvtwjFrFLgWuEiF2U11IBdC6ugAfFGe9LLLn+J5Jv6PlG3Dm90CleswW6F/UI160jbRNHLAJL0as4v35cSWAWo9KR6j92SDZflBXwX4qrWUEEA2dktsBIa6O+ZntYx1G+mxIcHdaOKMlJAmecxV54R0bFqFdAcc4Tm9VV/qvbaJ8BEmJ9hfffhNxtObYKLJ4irq13LSt5Aid+ER6JpynTUe0Ji73VNLgLB4kC9sw0cfo/MI5VGcZ8q2WqrNyrF
+ +c4khKJC
+ ijbd54jlQCQdVRuYW7lSl9ZcUv1Vo/NddDXqIze6EXJye1tPiZmBHfHmKSs0gb3k82ZsLtS/DQedVUs8AYuqcZcZCgIeZF4AeM95nNEyYXkLtuygD61IafEw21kyFgentMopzk+25pnjBzatCHIsBqPPd1p4XMH08aZcP+aY7EMWEaK63fXV2S3SQvH28Jf12CzaUk+qj8RHv33nl/fRoxCnEoVekeqdPj9Sl4bQomdUatn/7zkOs9Iigpy09T/nTC20rIRyXPmBnVbDexzOW9+TDlhS9jpN5VCFnblDH0cahEKPWSbnj0pr4WQFXJiigmfA93R/o7/eSHLnJLGYK7JPCGx23qJOTDwRlK48SXhzaq78r3yVLjA3Y7TkzJivuC8eahhECeiXnO3Cz62dR0teBPOzfvnpAwuotGrXSNWihvGhLEQdYC0S6RAFinqkmlcrcv4g1/8irKqpnxmtghqpSGeOIWwlCSoBuS3Juencwrc0BxXKujVS/zogYTKtskInFsRQcn6wJZ0QSQCg9X0ewhxlf+0C6V2dyjq4as9hjnN/gzza7jnDaYyNH+Zy0xPk7/+bYIJ6ZzGr/ZFSDxrvC4lfhg9g5R5uJbGYeT5CGnWYfpQdKBTxso7fBsH1cCcArFMjdkG7+piE/Angs562kDwHEIIUUnV577NhSPPkZFLhKoR+iOROlKhrEhM52d4pqMge3/IQndMopOuywR/niPmGix5WY7HyOvTA+VoorLwdEUTPPpUqy76Id8Lvz7CNSJhQsaixCN9rCx+F56JD1P79RbM9v+ccCiskZP9xCgzOfwUXb2dAYcHqv4CZW6X8gEXd15b60x2n36+1PDwheFHyzOP2FDgxQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,112 +143,48 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 8:35=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
+On Thu Sep 25, 2025 at 6:27 PM UTC, Dave Hansen wrote:
+> On 9/24/25 08:22, Roy, Patrick wrote:
+>> Add an option to not perform TLB flushes after direct map manipulations.
 >
-> On 10/30/25 16:27, Alexei Starovoitov wrote:
-> > On Thu, Oct 30, 2025 at 6:09=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz=
-> wrote:
-> >>
-> >> On 10/30/25 05:32, Harry Yoo wrote:
-> >> > On Thu, Oct 23, 2025 at 03:52:32PM +0200, Vlastimil Babka wrote:
-> >> >> diff --git a/mm/slub.c b/mm/slub.c
-> >> >> index e2b052657d11..bd67336e7c1f 100644
-> >> >> --- a/mm/slub.c
-> >> >> +++ b/mm/slub.c
-> >> >> @@ -4790,66 +4509,15 @@ static void *___slab_alloc(struct kmem_cach=
-e *s, gfp_t gfpflags, int node,
-> >> >>
-> >> >>      stat(s, ALLOC_SLAB);
-> >> >>
-> >> >> -    if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
-> >> >> -            freelist =3D alloc_single_from_new_slab(s, slab, orig_=
-size, gfpflags);
-> >> >> -
-> >> >> -            if (unlikely(!freelist))
-> >> >> -                    goto new_objects;
-> >> >> -
-> >> >> -            if (s->flags & SLAB_STORE_USER)
-> >> >> -                    set_track(s, freelist, TRACK_ALLOC, addr,
-> >> >> -                              gfpflags & ~(__GFP_DIRECT_RECLAIM));
-> >> >> -
-> >> >> -            return freelist;
-> >> >> -    }
-> >> >> -
-> >> >> -    /*
-> >> >> -     * No other reference to the slab yet so we can
-> >> >> -     * muck around with it freely without cmpxchg
-> >> >> -     */
-> >> >> -    freelist =3D slab->freelist;
-> >> >> -    slab->freelist =3D NULL;
-> >> >> -    slab->inuse =3D slab->objects;
-> >> >> -    slab->frozen =3D 1;
-> >> >> -
-> >> >> -    inc_slabs_node(s, slab_nid(slab), slab->objects);
-> >> >> +    freelist =3D alloc_single_from_new_slab(s, slab, orig_size, gf=
-pflags);
-> >> >>
-> >> >> -    if (unlikely(!pfmemalloc_match(slab, gfpflags) && allow_spin))=
- {
-> >> >> -            /*
-> >> >> -             * For !pfmemalloc_match() case we don't load freelist=
- so that
-> >> >> -             * we don't make further mismatched allocations easier=
-.
-> >> >> -             */
-> >> >> -            deactivate_slab(s, slab, get_freepointer(s, freelist))=
-;
-> >> >> -            return freelist;
-> >> >> -    }
-> >> >> +    if (unlikely(!freelist))
-> >> >> +            goto new_objects;
-> >> >
-> >> > We may end up in an endless loop in !allow_spin case?
-> >> > (e.g., kmalloc_nolock() is called in NMI context and n->list_lock is
-> >> > held in the process context on the same CPU)
-> >> >
-> >> > Allocate a new slab, but somebody is holding n->list_lock, so tryloc=
-k fails,
-> >> > free the slab, goto new_objects, and repeat.
-> >>
-> >> Ugh, yeah. However, AFAICS this possibility already exists prior to th=
-is
-> >> patch, only it's limited to SLUB_TINY/kmem_cache_debug(s). But we shou=
-ld fix
-> >> it in 6.18 then.
-> >> How? Grab the single object and defer deactivation of the slab minus o=
-ne
-> >> object? Would work except for kmem_cache_debug(s) we open again a race=
- for
-> >> inconsistency check failure, and we have to undo the simple slab freei=
-ng fix
-> >>  and handle the accounting issue differently again.
-> >> Fail the allocation for the debug case to avoid the consistency check
-> >> issues? Would it be acceptable for kmalloc_nolock() users?
-> >
-> > You mean something like:
-> > diff --git a/mm/slub.c b/mm/slub.c
-> > index a8fcc7e6f25a..e9a8b75f31d7 100644
-> > --- a/mm/slub.c
-> > +++ b/mm/slub.c
-> > @@ -4658,8 +4658,11 @@ static void *___slab_alloc(struct kmem_cache
-> > *s, gfp_t gfpflags, int node,
-> >         if (kmem_cache_debug(s)) {
-> >                 freelist =3D alloc_single_from_new_slab(s, slab,
-> > orig_size, gfpflags);
-> >
-> > -               if (unlikely(!freelist))
-> > +               if (unlikely(!freelist)) {
-> > +                       if (!allow_spin)
-> > +                               return NULL;
-> >                         goto new_objects;
-> > +               }
-> >
-> > or I misunderstood the issue?
->
-> Yeah that would be the easiest solution, if you can accept the occasional
-> allocation failures.
+> I'd really prefer this be left out for now. It's a massive can of worms.
+> Let's agree on something that works and has well-defined behavior before
+> we go breaking it on purpose.
 
-yeah. not worried about the slub debug case.
-Let's reassess when sheav conversion is over.
+As David pointed out in the MM Alignment Session yesterday, I might be
+able to help here. In [0] I've proposed a way to break up the direct map
+by ASI's "sensitivity" concept, which is weaker than the "totally absent
+from the direct map" being proposed here, but it has kinda similar
+implementation challenges.
+
+Basically it introduces a thing called a "freetype" that extends the
+idea of migratetype. Like the existing idea of migratetype, it's used to
+physically group pages when allocating, and you can index free pages by
+it, i.e. each freetype gets its own freelist. But it can also encode
+other information than mobility (and the other stuff that's encoded in
+migratetype...).
+
+Could it make sense to use that logic to just have entire pageblocks
+that are absent from the direct map? Then when allocating memory for the
+guest_memfd we get it from one of those pageblocks. Then we only have to
+flush the TLB if there's no memory left in pageblocks of this freetype
+(so the allocator has to flip another pageblock over to the "no direct
+map" freetype, after removing it from the direct map).
+
+I haven't yet investigated this properly, I'll start doing that now.
+But I thought I'd immediately drop this note in case anyone can
+immediately see a reason why this doesn't work.
+
+[0] https://lore.kernel.org/all/20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com/T/#t
+
+BTW, I think if the skip-flush flag is the only thing blocking this
+patchset, it would be great to merge it without it. Even if that means
+it's no use for Firecracker usecases that doesn't mean the underlying
+feature isn't valuable for _someone_. Then we can figure out how to make
+it work for Firecracker afterwards, one way or another.
+
+(Just to be transparent: my nefarious ulterior motive is that it would
+give me an angle to start merging code that will eventually support ASI.
+But, I'm serious that there are probably users who would like this
+feature even if it's slow!)
 
