@@ -4,106 +4,190 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22A40CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 21:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 50434CCF9F0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 21:48:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 828DD8E0108; Thu, 30 Oct 2025 17:34:26 -0400 (EDT)
+	id 6269C8E01E5; Thu, 30 Oct 2025 17:48:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 800F98E009F; Thu, 30 Oct 2025 17:34:26 -0400 (EDT)
+	id 5FDAB8E009F; Thu, 30 Oct 2025 17:48:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 73DB78E0108; Thu, 30 Oct 2025 17:34:26 -0400 (EDT)
+	id 4ED2E8E01E5; Thu, 30 Oct 2025 17:48:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 64A018E009F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:34:26 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E55412A94B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:34:26 +0000 (UTC)
-X-FDA: 84056084532.09.437D646
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id D23CA1C0005
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:34:23 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NVkgTo8z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761860064; a=rsa-sha256;
-	cv=none;
-	b=WC6gFeX41yZYLy1hACdWYtbkjgoq6I1iVbpPnce2f84fXxmak8lOaiGERq46u/9LGLSMCJ
-	CWw74DSmMRvMXaPQ067ZzQLFdTEE/RLP+3VtLWLDuic8cYiJQDPO6cxVk0uWlRvakxL49N
-	b35A4W1zma2I5oXbXhOR0mB+9S9sxYc=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=NVkgTo8z;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 3DC758E009F
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:48:25 -0400 (EDT)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id D092A13A574
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:48:24 +0000 (UTC)
+X-FDA: 84056119728.19.2B6E2F5
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5187D8000A
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:48:22 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CWwi1ZN2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IHT2QUyE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pHrXAb92;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gl2zaOn8;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761860064;
+	s=arc-20220608; t=1761860902;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YguSVADbTYC009fNcBqxs+hQWIvB3UNV/r/h9UqkYik=;
-	b=lq7kR+lZ8RPdzrBIj/ADWhQuQ7PIqqcHKMGwSmiVxO1EZg4TWOHcJXCGF5kgH1lpuhznMP
-	Zh8REPhLrYJfoladP37LIN9Vg75maJ01ThxmUFcqnHM2efXVKu4DtMy7uLmpc9tcTD8tLU
-	2XBoLz5Mo22G/hgrTIr4DWbh0/hs0g8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 87D0E448A7
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C819C4AF0B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:34:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761860062;
-	bh=vA3cQcFFKPHYjkv/o095+U48maXEWxIDrmI8GV0FkR8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=NVkgTo8zsh/oLtwCRGHu02MRlHkXjU+0bxw2XcUHuagq5PJLN22kQBFZbdeMY7efS
-	 2MTJdgK0VYBtO97xuZ0uisPN4RrlxI/WvEcHqfuhrvNI/Y5a97boExAn4Ycg6oVNob
-	 c02S5GXecCSsPAreWAfcsKrMVgQHvlf4rczHVAD6J79JtcmY7HPuo3NeP/vRGVLLEz
-	 s4gfZsgjB54VRsiZrOJ1pViSDlr3dOfKN7Lk3KIpofVaxxCTc4e7BeCm9SUcQFrJyp
-	 3NLPq2OIweWu/X2DT2D4jEpFhoyzaTcyKLubXPmJ4jVQBZUGX2dSXTf/JHgC7QaGFz
-	 krQmQNvq4YLtA==
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-87dfd3c24ddso23211776d6.0
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:34:22 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXVhJmr/NHXFvlkuf/ibHwr4f+QTeYRF3JpufttwnmEFckaHw0IbcS3WSvixlse7SwLcFMl4qYpcg==@kvack.org
-X-Gm-Message-State: AOJu0YzM33HecyC4fNXA2Bm9eJf1PSJI68mLbIdnVfMa5StYgPcMlW4C
-	VWXoclu9YEX0JNRZhoB2Eo1g/tmLqhUqJ1aMnn4pPQd13zvAjkQpP3IvyCK/a04QEzzieMsx2BN
-	75tVUWo6LQpq+jHHcNL6WWCiyIwD7qls=
-X-Google-Smtp-Source: AGHT+IHMkX2vgEpmo54ScXG2z+0WIl2vpMLiW/fIKrF0LrJBFRJd62XKtruZSD0g4dhRrF2T+Nff4509mwhwddlY7x4=
-X-Received: by 2002:a05:6214:21e2:b0:87f:c009:79cc with SMTP id
- 6a1803df08f44-8802f4db53cmr14665996d6.51.1761860061351; Thu, 30 Oct 2025
- 14:34:21 -0700 (PDT)
+	bh=tuaScIMcrrhodAsQYWR/pzyJZ/yPqkjuHeawwOY4OSs=;
+	b=GytKwRBkbkcBolOyJvGiuX44ariqOelfwr9SUG8lAprkMB8Sh1ZoqZWE7OpwaNjvP6tkoQ
+	Ntul3FXCmOl5aiIAyUVJUHGkN/QrjGCgx8EVnH002wVtGGW2LXggeFt+lVTkBXoW8qCSol
+	QumRoAYMC9MmCuxpwljfIocbfmkqEus=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=CWwi1ZN2;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IHT2QUyE;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pHrXAb92;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=gl2zaOn8;
+	spf=pass (imf30.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761860902; a=rsa-sha256;
+	cv=none;
+	b=wkTSSwZJm2C46n82Yq3pjjyIO1MzZ06Y+5qyk62+eXqe4Ln6m5UcAEKWQ9mX72WeXxzouf
+	SmANFOiM8D1ryrkPa0i3+NAiFYpJVXMjocYGeJo/jp7GlwM7zGLqhjlWCOSz+Asn1ZsCjP
+	GG1jYZfEtTHcyBYYXbm6Qn233BZdk4I=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 79F683371B;
+	Thu, 30 Oct 2025 21:48:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761860900; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tuaScIMcrrhodAsQYWR/pzyJZ/yPqkjuHeawwOY4OSs=;
+	b=CWwi1ZN2PDFTwP6IG3/nrXaAJ4+t4nINrmYrPNce6qBHL0J2iVx7lxhLCq9GpNTRyIAJ6A
+	rJpbQA71fT3UkIT3Kq7DpQEPWdmSTxinb+bcWNmNp6yRx7qwmE/+QBNUJk26hx1Q1t4/YT
+	LLZzlYgDgu5ahbs0fhUaGjAoYFfgYTk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761860900;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tuaScIMcrrhodAsQYWR/pzyJZ/yPqkjuHeawwOY4OSs=;
+	b=IHT2QUyEiqcakoGIjbGocHiZwUydx5+Eftk69hpX7lktrin2a0GX2AzuLVKaOVqsyiSOL2
+	v1K/wZXNT3OMWIBw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761860899; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tuaScIMcrrhodAsQYWR/pzyJZ/yPqkjuHeawwOY4OSs=;
+	b=pHrXAb92ICzphAPnxytqi+TmNeixgbqlmWbEUBPedD0pzqam8mFVRPFGYI0xWMyOfmvo5L
+	AFetASCK7mKdCXhPIa09XQO3R0PbqOD0ojy5XMEmH3Q4A561bqvFJi0+hr7uYLgFnsRLX5
+	H94/KWFjSOO2d2uByy9iRE3gKP8Sqe0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761860899;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=tuaScIMcrrhodAsQYWR/pzyJZ/yPqkjuHeawwOY4OSs=;
+	b=gl2zaOn8cwauq+PDCyUPOt26ZhOcJQ4sHH+24gTF7XlOpzPxeDtZGDf2UPPB6wAD2f9e/B
+	6C+tam/btvjyRbDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 489591396A;
+	Thu, 30 Oct 2025 21:48:19 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DvAFESPdA2mQSQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 30 Oct 2025 21:48:19 +0000
+Message-ID: <a3bcac19-78b7-4918-81b3-641a65a19a9d@suse.cz>
+Date: Thu, 30 Oct 2025 22:48:18 +0100
 MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-3-roman.gushchin@linux.dev> <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
- <87zf98xq20.fsf@linux.dev> <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
- <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com> <877bwcus3h.fsf@linux.dev>
-In-Reply-To: <877bwcus3h.fsf@linux.dev>
-From: Song Liu <song@kernel.org>
-Date: Thu, 30 Oct 2025 14:34:10 -0700
-X-Gmail-Original-Message-ID: <CAHzjS_u5oqD3Dsk9JjK942QBL8UOMkqdM23xP0yTEb+MMuOoLw@mail.gmail.com>
-X-Gm-Features: AWmQ_bk7HNuiosItrXA1dyLcCJexg7C-WNSjzhjZ-UrPmMqZcQrRacrRjcLhdZg
-Message-ID: <CAHzjS_u5oqD3Dsk9JjK942QBL8UOMkqdM23xP0yTEb+MMuOoLw@mail.gmail.com>
-Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops to cgroups
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Amery Hung <ameryhung@gmail.com>, Song Liu <song@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
-	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
+ guard regions
+Content-Language: en-US
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Pedro Falcato <pfalcato@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>,
+ David Hildenbrand <david@redhat.com>,
+ "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
+ <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
+ Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>,
+ Barry Song <21cnbao@gmail.com>
+References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
+ <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
+ <xnsn5rfqigbm5ryjtbf2rtfotneiwygzesvyfdxiqrzlyzljdr@tmbht4ggnjcv>
+ <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local>
+ <c736tssdw3z57kamh6eqc23gr575q375n2o2nnszih64afnaf7@zwbqremsbhwf>
+ <053f3a04-9195-4f8d-8959-42e0c3ba077b@lucifer.local>
+ <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
+ <3ae457cd-6c18-4870-a617-7f937b107cb4@suse.cz>
+ <88b72728-fa3f-4a70-9ea2-40ff50673047@lucifer.local>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <88b72728-fa3f-4a70-9ea2-40ff50673047@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 5187D8000A
+X-Stat-Signature: n84c6ctfrj1yztkfkb3ac6m1dm3y8tpg
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: D23CA1C0005
-X-Stat-Signature: d4m57rmi1bb3kebhjx71qifxkhnk1mqs
-X-HE-Tag: 1761860063-676630
-X-HE-Meta: U2FsdGVkX1/U3siizUVKdwQxcyUBLp3nfEf9dQehowHmqZEwn7S28CGK85bfjuH9uapMZnslIwC7kwvcyDG8swUmSRQUtSk0i9jwpnwbIV9gyWqvaEBWnQn8eqHzRDHDuX7mDBlCAGJ28s+dHhiqFn5cviJJfk6+vm2HAyynRBXs6khrimBRgHNLNkBuhgkz3aDkC5tEUPwIxp3TmB2cPhMERCP3A18Y20pX/P7peOr/1ZdKGveusJ8Fh+7j2XZg8eRG1dNNGLHGTnxI1/LDB/RWZu+C6U9ex2CuNqWP30DsN36Z6RP1Q11iCgMHMmJB8113WVGa52xre6dI/FRvnIbW7LRsAvO7U//6J3R2fHamwNMqx/hrpyhh6P6lMDwxwac3YpF1mvNZx+6JqNoIbZZY4QxdWVW8NQVW+4qfCqq1jDjhCWaq0jlpeBuCddaQO46cdu1wo89NKe/iq5tNgMIOqG9zYGs6fWrBydRfchxtpp8ufqtNY43SyWlB0J/DZ6V2mW3wFh9vzosCPIn2XA6wyiHHhuXLS70YhAqCGx6v7FlhGb2gLV1lfSaLT7tCEK+dcWezzATQmpLOnKXYDlouKWV0jPI7uFBIcUOQ4jHxLIBn0/UuRKB9r4ZtAG7QjN9C4dToLqk+dFZIjDwZcJZfEqkZ8XDugLi245R2M1sbMxx7kpWjtT1O+bPiEYQGKjqfFlmsMTzkraudZiLdxTyBaBZMTUIXo7Z/t11mhiLtbHZvQ31tnrYj4ppDb5GyJ7guDU3EU3xtNgJ/tPWFOz2JpndnkJJRFM2Lv3wI2U7PonJULvrk668YWopL7//3uhDWYPm4qAUqRFZlekhejq6jsU+TVkNqhdiGtLn43goYaqmjRpMSpU7wnfbtHgfTrAhkG1W4UiL+xv0t4N8AwK0KH9sZR8wNnCSLfrgjeIhU+oO+RLgnlLpdpOX9tG+7ZX1OU+iiT/ODThLw5I/
- 5YKrFFHb
- 47G+IVII0EJRXccqeFx1SP3z6NKj9vRwA02WY+ZH60BB9t5HYD0eEbfhALowfBGVqPKj+dmzUEYImissHdlIMpioqKD+7+Y5FK0LFEC0a3oXWHcrvrBQxuj8ZtDnrItpshIVL6aw23Ar6PQUayZyRAw4epJgvDDXTHuH1YDs0ryCk7XMZr41fwsrZhjdr4O0iYPu/9sk+vPvSTVlJP/oCPw2Q5aXf+ZBVNgZnPJ462E0puNNF+/adLp2EPHN6r8XHH2NAy8NyBgfwnvNv5Ny9pj7HtF3RWjGsaOdy
+X-HE-Tag: 1761860902-625946
+X-HE-Meta: U2FsdGVkX18jBi3J/gVqIRxfE3Y4R5Z5LuMWdVTm4TViKXehc3w2EathNS4/hssfv1D7eDCbRtrdWIlubGwV1GNsvBJsds1k3QoZjBxv6WWvBHkPknEOyiH7GapnSkjAu5e31xBn8suHV0wkRzIF8/Y+dmbdKZzQXWoLavCA7KJzHEJRcjlNqXTRRVrE/nF+tFE0e48Zllwd3NSfl+TSxt+gtGkePNylLz+2CvexfGoFs5qqn1+VaX9k84nFFIIPfgOewb6DVfrn4+DqVNTuw6nFWI2TVXgX7pFf2o1oddnBD6XhejLddJnVc9kGzx8D83bqWnpcqHHUR1adhWpk+XoOzrMeoOfLe+/fPCbC/m6frsSONZh2O7jaxOuC7GjGIOzJlVOxW/9zweAlCn0xRQNBp0Zg+hNOeOiTnMzFNviwRWM5mB/DbTZ+1wwdg6tuRO/Y52dRH5olpsjHeibQ3JLtbmJZnbQ58gu9/nbYx/9r895SKVpa/FvgNDKEOoEM1buly8aUS/oqo2+ALTPon/MG7/cKVMbxygjKbQg7lJOw+IY65HuuiTw7VtQdlnliERWeXCPiEBSp7mG94SZAtT7VfhntO3follgRu4ZfqrvGryUqV6hIC17lcs6+e4VQrDuBr1lZ4pzv4eVY3qIJ2Hhip1yXYWtAvKO4P9NR6HL+vLy6G4J0EufPCzlPWdFczUbpkKeJJ+PQiWKNw1Alk5WpHs+OBEaW0lOJWMDcAXmV0hpPYSspTCo6flseIWyIkKNQNvi24PJeavGyrQgBPoshkZH08/pBvyL4Vk+pWlU9ZOC+ki78+ha8NpzxXdQ01DZY0LlHpFtOXLCMUOFZ+WSHTXh7ud31qDnijr0G/ZUVebuV+9AbCkjHQkao/x+hb8I5cms3VDKmYhQgi6q2EZ/aLBTvTJiM04YU9q6XvsQejaeMn1YlRC7PshypXwq/QyBhQsigY6uXWyLdTzT
+ QUz6xMFm
+ LmV26+Ywfjdrmw08MJ5xHxwxk51Z+ijvVYRifPNcMBCv4TcAOdJotq6zwiJtPpoTpdlPOtBvbEYL4JB9b/yTLEiohud/ttpHjmnO9SgFSczua1UHGbwXbOf0g4N2p9+wdVd+pB1jYYdiRvyfdWEaUtS59jg7yjjNYEkBPctv0Ji8/9Bt7n+HTena41C6dIDgWToicDTfUiXwmPixBRjvAbEtybUiMBlFIgGwMp8PjXUsRdiSlYGiwJ4MRYTUk7eqxmpw9aff5VbmwgNbJNTRNfsNkn2QuIm1VVM42/T2lJCvm8tjxLNsixs8mhHpdp3MyrKFwjLbw/ARuI0y0OhEKQRJELQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,88 +196,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Roman,
+On 10/30/25 20:47, Lorenzo Stoakes wrote:
+> On Thu, Oct 30, 2025 at 07:47:34PM +0100, Vlastimil Babka wrote:
+>> >
+>> > Could we use MADVISE_VMA_READ_LOCK mode (would be actually an improvement
+>> > over the current MADVISE_MMAP_READ_LOCK), together with the atomic flag
+>> > setting? I think the places that could race with us to cause RMW use vma
+>> > write lock so that would be excluded. Fork AFAICS unfortunately doesn't (for
+>> > the oldmm) and it probably would't make sense to start doing it. Maybe we
+>> > could think of something to deal with this special case...
+>>
+>> During discussion with Pedro off-list I realized fork takes mmap lock for
+>> write on the old mm, so if we kept taking mmap sem for read, then vma lock
+>> for read in addition (which should be cheap enough, also we'd only need it
+>> in case VM_MAYBE_GUARD is not yet set), and set the flag atomicaly, perhaps
+>> that would cover all non-bening races?
+>>
+>>
+> 
+> We take VMA write lock in dup_mmap() on each mpnt (old VMA).
 
-On Thu, Oct 30, 2025 at 12:07=E2=80=AFPM Roman Gushchin
-<roman.gushchin@linux.dev> wrote:
-[...]
-> > In TCP congestion control and BPF qdisc's model:
-> >
-> > During link_create, both adds the struct_ops to a list, and the
-> > struct_ops can be indexed by name. The struct_ops are not "active" by
-> > this time.
-> > Then, each has their own interface to 'apply' the struct_ops to a
-> > socket or queue: setsockopt() or netlink.
-> >
-> > But maybe cgroup-related struct_ops are different.
->
-> Both tcp congestion and qdisk cases are somewhat different because
-> there already is a way to select between multiple implementations, bpf
-> just adds another one. In the oom case, it's not true. As of today,
-> there is only one (global) oom killer. Of course we can create
-> interfaces to allow a user make a choice. But the question is do we want
-> to create such interface for the oom case specifically (and later for
-> each new case separately), or there is a place for some generalization?
+Ah yes I thought it was the new one.
 
-Agreed that this approach requires a separate mechanism to attach
-the struct_ops to an entity.
+> We take the VMA write lock (vma_start_write()) for each mpnt.
+> 
+> We then vm_area_dup() the mpnt to the new VMA before calling:
+> 
+> copy_page_range()
+> -> vma_needs_copy()
+> 
+> Which is where the check is done.
+> 
+> So we are holding the VMA write lock, so a VMA read lock should suffice no?
 
-> Ok, let me summarize the options we discussed here:
+Yeah, even better!
 
-Thanks for the summary!
+> For belts + braces we could atomically read the flag in vma_needs_copy(),
+> though note it's intended VM_COPY_ON_FORK could have more than one flag.
+> 
+> We could drop that for now and be explicit.
 
->
-> 1) Make the attachment details (e.g. cgroup_id) the part of struct ops
-> itself. The attachment is happening at the reg() time.
->
->   +: It's convenient for complex stateful struct ops'es, because a
->       single entity represents a combination of code and data.
->   -: No way to attach a single struct ops to multiple entities.
->
-> This approach is used by Tejun for per-cgroup sched_ext prototype.
->
-> 2) Make the attachment details a part of bpf_link creation. The
-> attachment is still happening at the reg() time.
->
->   +: A single struct ops can be attached to multiple entities.
->   -: Implementing stateful struct ops'es is harder and requires passing
->      an additional argument (some sort of "self") to all callbacks.
-> I'm using this approach in the bpf oom proposal.
->
-
-I think both 1) and 2) have the following issue. With cgroup_id in
-struct_ops or the link, the cgroup_id works more like a filter. The
-cgroup doesn't hold any reference to the struct_ops. The bpf link
-holds the reference to the struct_ops, so we need to keep the
-the link alive, either by keeping an active fd, or by pinning the
-link to bpffs. When the cgroup is removed, we need to clean up
-the bpf link separately.
-
-> 3) Move the attachment out of .reg() scope entirely. reg() will register
-> the implementation system-wide and then some 3rd-party interface
-> (e.g. cgroupfs) should be used to select the implementation.
->
->   +: ?
->   -: New hard-coded interfaces might be required to enable bpf-driven
->      kernel customization. The "attachment" code is not shared between
->      various struct ops cases.
->      Implementing stateful struct ops'es is harder and requires passing
->      an additional argument (some sort of "self") to all callbacks.
->
-> This approach works well for cases when there is already a selection
-> of implementations (e.g. tcp congestion mechanisms), and bpf is adding
-> another one.
-
-Another benefit of 3) is that it allows loading an OOM controller in a
-kernel module, just like loading a file system in a kernel module. This
-is possible with 3) because we paid the cost of adding a new select
-attach interface.
-
-A semi-separate topic, option 2) enables attaching a BPF program
-to a kernel object (a cgroup here, but could be something else). This
-is an interesting idea, and we may find it useful in other cases (attach
-a BPF program to a task_struct, etc.).
-
-Thanks,
-Song
+Great!
 
