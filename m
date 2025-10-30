@@ -4,263 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68513CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 08:34:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ECDE3CCF9F5
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 09:00:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98308E0136; Thu, 30 Oct 2025 04:34:06 -0400 (EDT)
+	id 1A66E8E0137; Thu, 30 Oct 2025 05:00:27 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6F238E0112; Thu, 30 Oct 2025 04:34:06 -0400 (EDT)
+	id 17DA38E0112; Thu, 30 Oct 2025 05:00:27 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B36CB8E0136; Thu, 30 Oct 2025 04:34:06 -0400 (EDT)
+	id 0BAE78E0137; Thu, 30 Oct 2025 05:00:27 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9458A8E0112
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:34:06 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3F7DE49DFE
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:34:06 +0000 (UTC)
-X-FDA: 84054118092.14.BC37DF0
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C3F7520007
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:34:02 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bXVMBkDm;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=cvQlmqj0;
-	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761813243;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DF7918E0112
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 05:00:26 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 6CF9F8930C
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 09:00:26 +0000 (UTC)
+X-FDA: 84054184452.16.21787B4
+Received: from mail-il1-f207.google.com (mail-il1-f207.google.com [209.85.166.207])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 6F4CB1C000D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 09:00:24 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 3JykDaQkbANQIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3JykDaQkbANQIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761814824; a=rsa-sha256;
+	cv=none;
+	b=GSweOiA+uuc8kb2bZwXK4qkWEY2jBw3ZBOZ1LXsea7JeYvBuN9jJz5dZVTikKIgd3R6nJa
+	QQTTGc+18lph75zoMIak4Qqv4VkZuofd9B7P3vuCN4c2fS9jzcF/ajO9yMbB6iAfwTNwqP
+	XEN9bkn0/GQa80EjpNgBY8N4TSAJHcM=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
+	spf=pass (imf18.hostedemail.com: domain of 3JykDaQkbANQIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.207 as permitted sender) smtp.mailfrom=3JykDaQkbANQIOPA0BB4H0FF83.6EE6B4KI4H2EDJ4DJ.2EC@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761814824;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6mGMeWxCKzMyTyZkIQ8IRl2aYIN2SyIba6dBMlskJJc=;
-	b=BC9b17OxdheGTBkhb5M294MPR8NXra0KAqLIaZyW05CcAJBXSIzmsxWcCGV/Obq/wI5LqG
-	kYjOjk3YJXQXi5xhaMTSQJdBD3X2kMm7uIXBsgoS4glrtcbxPbNd5CkbHjo09ysjUwt4oh
-	WaMYR4xiqJZluwpo4ZQzCt7/FHVtEnQ=
-ARC-Authentication-Results: i=2;
-	imf13.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=bXVMBkDm;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=cvQlmqj0;
-	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761813243; a=rsa-sha256;
-	cv=pass;
-	b=RdFfy/6rlU1cO2/77jAzIqYQvxfA82PBm2OPBghMdRlf/98kEkh4cZkZ1VrOcbGxyk0/jo
-	W5TJbTVUBDgZaIlXYJNEWovzrNCvtJ60x9g0lsgCX2SlruIqM8iq5XeGorCDlTYJrwoqih
-	LilBlqzFUyBGKp4T2K6T0tZcdk3JNz0=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59U8TxiJ003133;
-	Thu, 30 Oct 2025 08:33:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=6mGMeWxCKzMyTyZkIQ
-	8IRl2aYIN2SyIba6dBMlskJJc=; b=bXVMBkDmPU4BZqvxvPUhCSrndZG06qPAKj
-	Y0wBYFiyPZ3QgD1ijWC4hp9Kyy4iI65TSb7UYUPvxctFo8zFAi9eZo4do90lY7Gm
-	9OVvAvgeLwV7OmHHLgjaMHX+mgRFTiXwKsvty95TNRlz9FofboW213+MGGGDIYwt
-	xQTbKedndUwbe2k0bZdtJDcU5LDCPqeCpRo4E4qLXSB0IeyWjHwAiyOk0SawhFdF
-	KOSLPf4Mv+zxMto//8iMy0Vk+bYrwYTC2W0DrKG+5MgeCv7G87MZQ+2By9uKIaES
-	p5ydjELjUN8DJ3MUrN0kAzpCB54ooVkJKekTxT+ILmNdXVHgLUMQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a44j6g081-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 08:33:33 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 59U6n6vp023002;
-	Thu, 30 Oct 2025 08:33:33 GMT
-Received: from sn4pr2101cu001.outbound.protection.outlook.com (mail-southcentralusazon11012011.outbound.protection.outlook.com [40.93.195.11])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a33y0ax3w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 08:33:33 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h1dOsk1Fm1FnkAaCwPt5JbMhcAuASSQ8rE50ntFXpViI4mz3AU9uWHNSuXu/NvTDBRhnjSEMOU3tx1McZj79GbBwaUmUzz7bTCVs2G+gGZgpFD152Y1U7kXQ5YZD8t+DIdyAeCcasVqXbpjCzFh5bwmZ41eW5KYRPK11NCbGBDK7P3ITk+q9t7d1SsaB16gpFgxB9pFEiRU/LasvNgxBrIweffKEddIFpuHRjFOkFV9bSzNJtGJ27wicCddu5wQ2iioqE1tyFV+BoZbSe5ZrlALnnpQsWb9u3RNId87NdYDbZWqDWELVXQzxO7vp/38/BswjxxlEULtBK7tZ2NuMEQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6mGMeWxCKzMyTyZkIQ8IRl2aYIN2SyIba6dBMlskJJc=;
- b=AzuvHM3GsJW3HsldZceZdie7vfZ9IaOerANyBEMlgRURiFMbxoDeAqJ0AOy8w+uEi33BbCz3Wiya655BXpsMTIIg5ckrQaRZ5E7+Knq09NRDzNomPaPoOssVnOmaUILpjzWyl0EbeFrE9jXXauIsKjdEx0mFCKvbBBNryccDOkRG3+KOHjgCVcz6WbxYsOqRG+xBEYNg+GN99wRuopMQMpNVjL2ZnrKsbTlptRnPiZcmAJH0HpGy7MiDWR4dEwv5Fhxrmp+oN5RO2L63d9LBjex6hMIUUZwCX4wIB9pBSYUBes3s7CjjfMSQtpUgiX0Di8kTQ7PuFo9vedzP4NLuAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6mGMeWxCKzMyTyZkIQ8IRl2aYIN2SyIba6dBMlskJJc=;
- b=cvQlmqj0uE3CyhbycrIfGD9C6k4aub/25Dmrl0meNIEzq1pm8ChcKK+bCeullHUGp9Qlhw9mg+71tTdN0BkqVJZT7NAXp1aVaf7+wES4/PMucj4jwj/5Bb0201EWDPb1s0VlKoRXNBh9T0eE6O6EQ+x9HrrE+8MuaD00I8sHXxE=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SN7PR10MB7104.namprd10.prod.outlook.com (2603:10b6:806:343::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9253.12; Thu, 30 Oct
- 2025 08:33:12 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%2]) with mapi id 15.20.9253.018; Thu, 30 Oct 2025
- 08:33:12 +0000
-Date: Thu, 30 Oct 2025 08:33:10 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Nico Pache <npache@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>,
-        David Hildenbrand <david@redhat.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
-        Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>,
-        Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
-        Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-        Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>, Pedro Falcato <pfalcato@suse.de>,
-        Shakeel Butt <shakeel.butt@linux.dev>,
-        David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>,
-        Harry Yoo <harry.yoo@oracle.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-        Johannes Weiner <hannes@cmpxchg.org>,
-        Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH 0/4] initial work on making VMA flags a bitmap
-Message-ID: <4e6d3f7b-551f-4cbf-8c00-2b9bb1f54d68@lucifer.local>
-References: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
- <CAA1CXcCiS37Kw78pam3=htBX5FvtbFOWvYNA0nPWLyE93HPtwA@mail.gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAA1CXcCiS37Kw78pam3=htBX5FvtbFOWvYNA0nPWLyE93HPtwA@mail.gmail.com>
-X-ClientProxiedBy: LO2P265CA0506.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:13b::13) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references; bh=oAXnFKVGkjCBGElDSK9+UPI3E+qrPmrN+/Ky3nzJInU=;
+	b=UNDo9KuwygOk47kAgKYTWzc4YhTT2CdSvPyg2dNqHrM7fNf0i5ImPl5KXNjD4XXiaGgx3d
+	wzDQEWlc3USUy6m76FTTTXB8a9cFLLmFIf+Qc4GfQ5YfW46CN8+ZK8HGQoW+00cWXgKL13
+	ebGRTs1DMOP89pPXUK1DzPiEf9L+oZE=
+Received: by mail-il1-f207.google.com with SMTP id e9e14a558f8ab-430b0adb3e2so12281065ab.0
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 02:00:24 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761814823; x=1762419623;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=oAXnFKVGkjCBGElDSK9+UPI3E+qrPmrN+/Ky3nzJInU=;
+        b=VPlwfte+uqu2hEOuW2OvqQTD1jmpydHc7OoCVWkl/olRiTrS3Xqp1b9sfkNcT84JCs
+         AIUcOnZszO4NU9bYxXWCedCvbWeRQIRNnXLeEuWWJdsvfZ5KfeGalP/6+S9ki/nMvkcV
+         +yeipWf5F43s2ITFdT7FkScVZvOU2kRsWQvoxtQTyNHgAbgKjNqO20FIO0UFtiF+0ja9
+         991x7tYHR4MxcxXGkdza1baRa92h4L2WPxv6/8De+Bf7GD440EQjWDCNSxCrNNiI/fWO
+         E93gGNg7H+j5/oBX3oRqjGhgoxfquuSxszJWncEIiR/Cxq0EhtChEfeLSabUF0uTlre4
+         TsiA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRNxl6R9Nd+gvH3JSuVqtm1lnXS6fz381U2dT8zAQyFERoBXDL1+AjMnb4WbdtRxQXMmAzXo+Cwg==@kvack.org
+X-Gm-Message-State: AOJu0YzSv8zKILcCvSFADhEVjBIiMowbGmjTdLXLA0sbaNObUzygpq4Y
+	wBNE7J19l4fFiKAhTsGtgrp5XRzuTW1kTQ7nbBo4P5EfW6zPh0qDThkDDP9AYUO5fJjUBQK9S5H
+	ksCYjrbPpMqfD3WqTrfcSiJdTxf2mNL984lyDMrLgb5bdN7j3Cb+hPm4RUro=
+X-Google-Smtp-Source: AGHT+IG1QRW9boT2a3Fkq1fUjCGza5c6f1ooy4dnHlmKtFFzp1OnU0W8pMbSZuggZ0TRb2MrkFZOTsVYkUL7/2XgXXRzF406b5u6
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SN7PR10MB7104:EE_
-X-MS-Office365-Filtering-Correlation-Id: 647eac9a-2dbf-4d13-08a0-08de178ef66d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SUlNgfg+iwvo7kKhteYg0y2CdKXgZUTzrEqMKDb18rm1xwmjGS3WQwGbVLxs?=
- =?us-ascii?Q?G2TP/tzxuPxClHQq+RH9YzSw9pieM7cYknXDYcTJGoQjO4RX4WxPp+spNfAu?=
- =?us-ascii?Q?zPybER9y+QAKgu5C211lZVo5gr1lpGxZsdnjCYaEkKLRvljyAJt7Ce+vZd0r?=
- =?us-ascii?Q?s+BZV7wDI0ItrPuIKqzTWAkM0ovHAtSc/VqrbQT0ndLnTT1OxaT/Ku4ep5ln?=
- =?us-ascii?Q?ikLbfa/kEBnG2vrC0/gSCVeq66n2QJpKnFUq2XCkc1Mox5WVuDmqfuTcSE4Z?=
- =?us-ascii?Q?mYg2nAWi57X715cU3ndlpcbCAB0zkvTxorBQQganEwBarpooft085BPXgwYu?=
- =?us-ascii?Q?To3AsS6PC9W0Ha0k+fiXE8+jVzLcVcDJ+RIDcgI5JLWkscO+lZ3LGPvQJxyF?=
- =?us-ascii?Q?y7+7hNIfZ1fN/gr6DXSnv8EMbPs602srbehJwH4fiwylHJdmJCusq4cF0kEC?=
- =?us-ascii?Q?WzD+bcw0tdbv1gla2PP3NBDrMCCv+xq3rCes5jDvjhRLn90O1hdL5v/id1uM?=
- =?us-ascii?Q?gFDFaP6Ax5qGfObZEIUfr0k86LHOO8458iStm0oihjzuK99B8/xf+fZfVe6O?=
- =?us-ascii?Q?+CdMuTXpruXM0oiJ4bSybKrsMWaAzlSQJDTGlMKkT5vIEnmLgcbpprbUSvhB?=
- =?us-ascii?Q?lBo0sM4+CGfi9oSzjluXVTYVYfDCPfNqIZM99J4a26CaUvXhQ+MdgE814ERu?=
- =?us-ascii?Q?JycEwjSZMoqm12u84GB1UUDsWQbl1kykJxzgd48TsYGg0AuDJSfglDieA8fi?=
- =?us-ascii?Q?Cb24XxMDF2SpMbQXJPZJAxtXPdMtcopJt5l/w7CrcPEotjI7j1lYH+KoNqkG?=
- =?us-ascii?Q?9UXLPS5gdh1AvGCkcopSh6my+q4752p1ER3ODHZYXz8uO7Hfq3NyARUP3LHr?=
- =?us-ascii?Q?9jHZKgpL3K2DbvOdNnrKkACaDYhlwhfiynezp9yNYPa09RhqET40p+ZzLXpS?=
- =?us-ascii?Q?kS1KCo7pWxVNyuEJmhKhP5t6WKuAdwTVKbq4Jv2LAc8M0JuYEgJKbxjkXSF5?=
- =?us-ascii?Q?AASeev+J7yp7HoSOFv6D9ZfQS2u6VbTYlUTkxD4cU2nSU3lq5mhiNIdiOqNv?=
- =?us-ascii?Q?O0iCEHG/ChG7DhxlcBwSAvRi9fQVw5z+daMMakGl5r71pq7WwkUxXXV7c0RY?=
- =?us-ascii?Q?GdIuYds08CzfYaMMeRa5L0LYrp8Gc2HWEIFHI1x80wyVvEA0wbGc97br5NT4?=
- =?us-ascii?Q?6Z6S2FCQdwmesDJahVIp49daIQIwZMqCpSHTrj0h0YQOX1RTw+Dz1Nnb5L/x?=
- =?us-ascii?Q?7EBYc7E9NgGpGwvH/WB/CMR/C58tSp1gLMiCWAuDlxPWP7DmE5FrfVPBDdkE?=
- =?us-ascii?Q?NlwS5DXuRfTW800WRiktw0+IIDpE6kZKpj2lSP8MPqYcqnficUcpz7P+gfhz?=
- =?us-ascii?Q?8lYPSPwJWBnoyMlvP52+Ci9ZJfqDuxOvYBM7mIkWJg7krb+Uy0bh3ZLr1oqv?=
- =?us-ascii?Q?hRrLuQQHNhs=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?TaC/xrXD+8OJEPfbwBm0IHFYz4EkAZ3sG741vh8wTm+19lx/uCAqlxpfRAJ5?=
- =?us-ascii?Q?8UJ45njUjN1FFBI0c9GeMsB5Meu5+WRapqRL33RUocpxftivnfotZ6sN7m+b?=
- =?us-ascii?Q?dBriL7S7hnRo/wRZkpZi79hTyttaPb3trzZ2weU+ztQeDn5wIseOxBlPPC4A?=
- =?us-ascii?Q?PTds9bdmm3dyGyynPJOeuVmtsAVGlRx80ZxtMm3fuqjcfyKreSs2Tn3d5lmn?=
- =?us-ascii?Q?dURVjkMvJJCPZ0+6zxL6GbOwjoyGsPFTApeOSZpFrPZstpJSPQ0ZbEMKxjWc?=
- =?us-ascii?Q?4w81iqO1UpVz7SQftRZgviZCg0gf28mlRRIoQKdyWKgxJdHWb1RJ46jtclxF?=
- =?us-ascii?Q?DRuROMa6wUr4PP2VN7fAxz3M2qsdFKBZhswaM4+VDBKyUJNqJX5hozkOPEzD?=
- =?us-ascii?Q?/JIzvJtBn9PYTP9hnL63yrUzLUDp6mTYGwRoruwwLwTYbRupR282HLLJU517?=
- =?us-ascii?Q?QsdlyVIEVN5OIGDFhX8AcEq+kTOLqHhm6uLV8SSWMilO61kSvJwxYJ5ghLc4?=
- =?us-ascii?Q?eXTNgpjeYzgbl61N7uqLjIzvILOhl5/11ytRhEP0jyFcdnTwxHDDiPTwBYpX?=
- =?us-ascii?Q?qwMbL+NH8KlXA+klkoihhPeNAvk7YgbXdn+oWkuIJgMyLLiv8wnO/+cx6o42?=
- =?us-ascii?Q?v4IVijwNrXLPQ9Btpyyp8mE3U3OE2ud56v7TLd8ytK1EIzkPiBjnxUsY+tth?=
- =?us-ascii?Q?uGXnFn8kTBJdlAr4gSPNkOKwWeABuNcEUY36XqLWPuL5v1H7C347sN7LxOrR?=
- =?us-ascii?Q?dsNdNX37QjKnDKrNJ1MRDuzhO9QE4blbcmU7u4BiCsaugT6dM0G9HEgclhKH?=
- =?us-ascii?Q?JZVeU5RJBuf55QrX4hbResGFKDuha3Lahxu70RDnmDlsvS8Ke6M1GlA7dt/P?=
- =?us-ascii?Q?+8R586Z8omwmUEVx3k+m0UMNEBKLQRL+x8WBHXmjLHBn2ctGs8F69sXhhRUj?=
- =?us-ascii?Q?hyAX1bjY8FzyEaM+Tt8fv7sA0pi4DfhEg+lP/WGJqBXOWgrdlTDTwgKV/IV7?=
- =?us-ascii?Q?M0ShPzpD1Q4MNwQrXQl7aR3Nv0PzfUkxhRr4WFBJ0RZej5BhtwgVQuwI3obK?=
- =?us-ascii?Q?6Adamhm8+yQ+DKAihBq8nRuxlZ3w5YEdf6nTlEjrMLduF11KCOXfh6/itF4d?=
- =?us-ascii?Q?d351qrUIdop91bib3xgBWo1TMZA7OYLrKDTayQSczrRrej7Fr9IXKLwJ0Inz?=
- =?us-ascii?Q?+gDCVebnG3+5IGMmvIRmrIXmKc9o+iJHvlXN4JTY9etzRck3Bj0jbYd+vOci?=
- =?us-ascii?Q?OGfBJ6ZRPGNRlbfZqzD1m47in5BFg1a6qOyvuqcmMuWeAQCyaB4tq3facWBc?=
- =?us-ascii?Q?LLq/IxY7kUwp8QGt0ih4EhTdmMo2OCe9FYvHwSqiCUB6K4Bp6s/L5TVOidj4?=
- =?us-ascii?Q?T0Xs1gXF5Kg4MTgHmyF/DkkQg/Xx9Xp5jG6FVlXSvIhPSP5XBka7rBqTIWGp?=
- =?us-ascii?Q?iSOSDp/FlIsJocbex1mNTtKz77L/6+A34d7dEdIxdpbOXtoR/BqrmacgSVWs?=
- =?us-ascii?Q?gZmIQ52hTu71mM4qwK/4A/Y33SjIb64l788xnSAzfx+XFLajCJJnDmhEcFz9?=
- =?us-ascii?Q?t3zg21HzPVzhG7rmjj5CWtHEmMSDSorswsxNGhxVl3H/+qY1PutJdmYofdMW?=
- =?us-ascii?Q?7g=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	oaPgvXkOrxViLR6bTqHI7KYyA+crmTIu9KahH/3kcYwykpKJ1EKGcIirNzEw1d0iar66cBgnPF4UB4otARtObKQlZl6xAUr4JFR5wN21e3uWlgTIqtkhkyFR9KgcrEYgj8uzNjUJ0assYHEcOyfXRjdUqthGiW6lSFyp8WzLTfqfYW20dzl2ZNpZZZ+IQNbrWnp6CxwRB1ZDVa3BNe+DP/cJsOTuhTNvR6EWsUqQQQuhCBFNKDBQypoq4ckfbjNap1WYWTzJ03w4GwFjJhsN8CIpn273xXeMLPXq9TUUCcnV5SqhMkMt/GIjRZSq2PrJN1sp753Gi7BQqXWwtJmA7o4LndXq4edCKH2g2caOwEAvxMgvfMLOn5I0pKPOqS1bXRpawX2ynLTmFTRby9GFCCu2nRHfd+9oLydWyof5+6PfHoYUnNsfSREdhimrWu9MNN2owkfGr3JT+K7uLA0NqrUxWMgVHIznXZ7QfTtquOs7YTFrwtvP5SjrlZf3PHZvLCSxMbE9RoritAQRnHQu0q0wdgdvQfhDj0MAxLA5G8mbO6zbhIIqZvVXcaU49UN8jzomr6wiCy79vNWBaHYNfWY6Bmti7Ky0qQ0SHrypZyg=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 647eac9a-2dbf-4d13-08a0-08de178ef66d
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Oct 2025 08:33:12.1193
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zjrQkyygF+8eYdbvzqQnMydYSojXEDHBK6MhkvXiTneTZprxl4o33Clz/miJO1E1k18tHQzV18emHxjQAXHc3mOuuf4CevhqJ028Au96eTE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR10MB7104
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_02,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0 mlxscore=0
- adultscore=0 mlxlogscore=715 suspectscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2510300069
-X-Authority-Analysis: v=2.4 cv=JJI2csKb c=1 sm=1 tr=0 ts=690322dd cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=x6icFKpwvdMA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=vTr9H3xdAAAA:8 a=NEAV23lmAAAA:8 a=8-9y-Zw0JUOsBIgKVpQA:9 a=CjuIK1q_8ugA:10
- a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=QOGEsqRv6VhmHaoFNykA:22
-X-Proofpoint-ORIG-GUID: jJiYEABZVGVUxr5IBzuwEcl3XJ7YSe5A
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDMwMDA2OCBTYWx0ZWRfX8rN9e+YX824z
- oWaKQcvTEjxEXw1DAyg/dTthx0HKXST/POTHOS4TJ9tlooUK1YUmFYrBm1F9nnkwVLsiRM/RXyK
- EVvhhwOxvVVH3mi7NZDj7aB3SmHFwN9JKPRRfh0ltJE/g1dquvjd58TfS/+WjSER0Rd9Lkn4KCQ
- awbAEn055kRAdVCYAcNW+JSVnpzkfrMZu3BjBFJSe1hOtkAkV37Scue57neTqU2XaDtffNB0hlc
- VCrgPQpCKuoFqT01+j69mPUPqINVMhPlapoCFsS1wDwVBZbq/en2Ks4l92In33GSrWQ33hJ1pRJ
- ssoBI0PLMTj4HUzI7nOi4WV55bXVggH+iJ16Tg1CQ6rOwl065GrcpE1lUY1ySi3u49278W/hgfj
- +6lQ08+v39/XU8cEW+yPbW9KNfUq9Q==
-X-Proofpoint-GUID: jJiYEABZVGVUxr5IBzuwEcl3XJ7YSe5A
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C3F7520007
-X-Stat-Signature: 5d56iw96oijc11qiepins7ozqpdofeau
+X-Received: by 2002:a05:6e02:1c23:b0:430:b2a8:a9eb with SMTP id
+ e9e14a558f8ab-433011d6fcbmr35273825ab.1.1761814823515; Thu, 30 Oct 2025
+ 02:00:23 -0700 (PDT)
+Date: Thu, 30 Oct 2025 02:00:23 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69032927.050a0220.32483.022a.GAE@google.com>
+Subject: [syzbot] [btrfs] possible deadlock in page_cache_ra_unbounded (3)
+From: syzbot <syzbot+d7230f03206380ea0908@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, clm@fb.com, dsterba@suse.com, 
+	josef@toxicpanda.com, linux-btrfs@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, syzkaller-bugs@googlegroups.com, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1761813242-460773
-X-HE-Meta: U2FsdGVkX1/w/l1KWtRVE23+sNsCNX8kxr1vHogmYfF1I5gaj/4QyVn2rNk1Yusy3bXLlUtFehzrP6mp61CGUFKEdi83jOT8zW/Dc079IOsrkppZWYOLxbji7EkKCGnC1/d+GVooXzEDNk4birAnm9EbKzLr23AU3zJ0dYaIxJHjSZs9DQfafy3yf+VjZKC3J20LPQuHLWFQ9X8xcJQiu2zeuuL2UOD31JFhNc/o1s3s5JVt4MZYaBZyrG9doOy8fuIQ79cNMhitaXZvAO1rUOfNLGYAXFoNz/8pAf2cCbe7oiUeXRk10nDmBFeNPbL+t0jt0/c1mN3PraiZd0dEYjJ2Fbf9Xbz/URKrV6Ms/bhf/hoMiLliVaN8j9cV8vbJOlNUJKSu80vh/MV9B7z32i9FyxR8XUKwKQnFheHaKUjx0x1kJ49HOFI946cdV6dd66vYEPloqTvbajgTZtSqoqg6On9fUvZG/Rcjcsbwnrb0/q6WdWPDrrMIWpW5gxzW4RU1fhQ3ExUYfRwwKGQJWpYd+zo/379qHnugjNnVUntimQRF9OtRWS0u/j0PMKoAEJVwrJS0gHxF9Y66MvGu1/aMslP3l6oXcSJUErAOYVegVjISXX1HKcYDpMUoj3qSWh6NNXqyKeM1cYsOgYSMfrzBi4AILl56QDYC3dBgNk7qhxIfVCj9mIj+5K9a13d6P0vKndGp0WS3YAYcudwKiwE83GOdOV33dMS5ClxEPFsKyj05vHgoQnc7N4F0WfeU24RuMmrjXkCxEWz8VQEk1xfRbTuklAb3fs6n1zQWxWtB1mQt0MvzQkomfDqC692iG+VZm53EvDaVm3uC9chB7upD5qDTno0DKmvrFSdRXnApljCwTOPhSpZyBkQ+n5enpyWNx9dMx7T08qu0hvbNRt9tdV+0zjOXUwfA+dnhwy+mcDIj2F+ks7LLMVioLfX08C6STlgZY4tcvArhFK7
- zC/qMuxF
- pYhBzG6bWVtHBUaYL6/gHyP+/vWhgFSdJSn5DuGKeRRyn3j/L0ge0iagU0Tq9V/st6kHbLx+sn8gq2LI2+TacHOpxIUnqrv0xAoWAjrpf5PZvn+4LOL5P7dHjxOGh+XwD1LAZ/a92xQyoi591MvDihZtYdXvFL7+Hh70AqaKgkyP8jy8AZ+SW9FAQo2AXELTaD2VlObg+Eg2oDQhPRTTdA0UUCyJrO+KIEEr3Bfu35pOXG7W1AIQxvB3aIGzGU4PYQBdWIUPGQ/ctC3Vi7Al3EsMBNbm43AX6U+bveWwUe4DMTbnrZqEsR1iTW0v8+zDOrQY3lzcahZvD7B2H8dydRVQxSu/h4WXqD21aMQoWU8zpkV2Kndw4pSddXHElhulTBQNh0PK0wRKejP9SErPep9xLQpatuyd/C8HbzeTLxd5jJ9wnHlVJ7zEHmWka6XbXOuRP27FxhynIlGZNl7bSBNMyZUENSp3x3GQdx7tzgfmPYS7fnOFY9jg2xsCvzN7tiChPwjgd1E/mowsUZZjDd0FNdf3am3V1x/kvDHLjcf9lEUoJXJZwusWAnckk3pUkJH1W7oxhCFZ/IaAXCUAPzszirOS3JtBDYUMIk2Gik5Q1NZ/lAmh6/j36EN/YD2fNlbPeEYVHNIS8mEHIS2kkSImR20oadYOhHiYjMvrns+xnM+/YCzPs8sTiPwLtR28wpQ1BnGsiym3RBeI=
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 6F4CB1C000D
+X-Stat-Signature: aoswuej9ses5eomgypxkizkua6hdr3fk
+X-HE-Tag: 1761814824-473154
+X-HE-Meta: U2FsdGVkX1/OCYXWvD4Z4f+rmWx2RY2N1dsHES4o5w1VYlgJEW3Jc8JwTICzdIkoCqiiZw3zz8h73EY5AFFhfN7PnuhW8Fd+0gTZxVvCA/P8hKEYXpJhZ2eJlspwvD1RLaEW/EAaxMj+RdQOQgHa3ZLsYb1KGHvX4l7CfP+582bQJVnLSz/JFW9Y4GVgH82PUztqLWpSEu1y3o4JUDXtQgw7Oyqa4+ECxYeUzFqYWTZ9uZZW1MEAqNsP+xI6z2+DIicW1YPIi9S12UF/90ur5bBM6N5WYu/Z34C9mbQnX4J4g5tOc2eolMLJyjE419E5tB2uzPaimPA0Y0PAT4BZisSb3VNlM/83M5GowTilya9im5SsaE1UKrsmRvGGiDlTC7FGXNlaE8mdVSj1mvZesT0Fm5uWUwLamk6ckERB4rnSzqynlA5pbqvVkCo0vj25RCX2UWtPuRBpqvlFpQoDgwz2lDlVxODTDdLuvinBefR7PXkD2e6a9gDz5Kb84XrETLoEgys2fnvkrPITzbxXeo/uXMWMDScCdRwVPO+Zm1n4S5+0UwtzLcxjvZ2EIVwfeuOIvrHgoj4PYTxCNwKTHwdzanueQ8k77U0MlPdj451LZ/BPHF5mja3YxOn3AEOloPaLpA0sjGfmmZzNyLcH/6Fk+FPFqqTgjxiyGQ0lspQkxBxbiovK7SegMV6NxRu0NOuAmf5TMdWwtIDtLzUsxOwWwCiVQQJzz3gZBgX1Jx1oBzridYm9FvX+EwFOb+6+zSPaPZWg6dCWeiAI2At/O0gpnedj6/5mX5B0xoivGE2u6Uh5wpQI3hr3tTdXUEo5L7eXiZ74thXbOebSUllt1qMrviGJUchi91Yw3zwreUt0GIGTP+NpXimw2LiAu1MJo9aoi9RiXYAUBTfqNzzGpCKY/Cwy+sCh/SnTNGetG9RFaLbeUkZ3KF0a+UDEvYEc6TmOvuIbtCl272JIrHO
+ SINCDD8G
+ Y8QjGZ5eaB8HlFTJzkC1vWELQcCYDesWl+TZ1X/pYAm1i9517+GBd7NoZfXaToMilUIXiDcXhkby/QviRuupQ4ZQclOOwFcKo9MAnX31TSIkpzosqJ41dQybrQFfvn1AUjqlLs7+PiX0yKchYCOGrXpCryJ73ALSDQ0FvdRnuV1v0RuWEeRufqeqhzgs8L9X15HIPYW+/VSUtcGEQJrK2UCS5LmYeUjCCaAdLkSUxUdw26MA34Qd/VaUy5uQEcfMTpKlxerdyJDeRNN8/DpZWsYL3pT/C8wnZugSN1Qn5KltrEzjuJSEOOrkLzOPt1jR8Aqe0mpQp65ogrHSaI6GjgNKn7SXTKByVAWyuOBxNU5h2rkYmy24GegpuGECgv98LCPmNLc3qPp0EhUMRmHIV9QvPBee0s9cRVY78mKtoYOtfhHjozxmHGL/E3Jy8n7/xq5YKFmyhSAFlisxefc1dFNOBmj7r0Pjkd3NHn8uuFisrseDIQByvRluQwGF8tkAA0Ic8nEGk3LQxEwUFnbVIwX+VnrE9iUchft1cKMbW0ltInVVVEzt8koGfgqC4mkF7jovQZgvHjbFJkngX786lF+i7Rsz8NtH1k/wuOaSleZokgu+hT/m9wP/fYJCvtOgEZ4TCAEoC6jkxYu/Z8twekzPVteEv2uRHB1Tgdt3iLxgTbci8mGsJ8bEJXn7hzBwfCx5WvOyC/mdzcK3H959VEfoKW23g/s3PsjirEATqOCrDBZYb2mV0TkNXSaKfXNiFn/zyMCgcg6eRpG757RKIKYrzA4RrzoiZm3msU+ZUbf5rKPuKhvd5xOdhKE6effzqGEbfeWPuhcOWgLLA2Jiw5ktfe4nkmMGOqpy7hzu9XjuHh2L2yxqVqR8xA0KxubBRczJWAQSAXchchBwG8UuqS9ywOGfdqoiQWm6uFGxgkvH5WhwAuWsBJ2LcYTgCo9vcZEizGILTQVTs2JKULLoETYZHobhA
+ h1meWWxd
+ GDROdD1PDZtoYTMka4I8fVhewVWedapTnc/SeCPMEFPC4z+prE8VXYgLGzTgi1/idiU6Kar+EN+UMiN5yuyDB8B9CLXTkX74GAnk20IlUMvIsZG6Hc0bQhIys9PDd092dLhM1Dbbee3Sgx5mmm9oITRXJsyJTgGs8ask5tG1rsvbkPDJWaActmfBXmkDwhghTx0/qsvZcnvxkley/BYNzGaBi+jYrJLbjnpoqbfhm4tF/SM/8Y/Kx22pqxIhvYhz6Fe7paJJdoCMt10k/K3o/gTJI5RSiRv556zBb2I2jtNNy0/yQYoxsVU5CCu4bPRuy+v7p7p0DgPAuDpl/JbEAlHCLKB+63I9sOe2ayUfg0cCocFZa8vDrS1zszMlWfHXh6/ih55CLTsmd9ZxFd6qPaM9yG9KNzDTvNcNDTn6DDv+cQJ1480bpbiHCdtv37Y81i4m4Pkk1sNJ5e83huUk/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -269,69 +98,289 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+cc Alice - could you help look at this? It seems I have broken the rust
-bindings here :)
+Hello,
 
-Thanks!
+syzbot found the following issue on:
 
-On Wed, Oct 29, 2025 at 09:07:07PM -0600, Nico Pache wrote:
-> Hey Lorenzo,
->
-> I put your patchset into the Fedora Koji system to run some CI on it for you.
->
-> It failed to build due to what looks like some Rust bindings.
->
-> Heres the build: https://koji.fedoraproject.org/koji/taskinfo?taskID=138547842
->
-> And x86 build logs:
-> https://kojipkgs.fedoraproject.org//work/tasks/7966/138547966/build.log
->
-> The error is pretty large but here's a snippet if you want an idea
->
-> error[E0425]: cannot find value `VM_READ` in crate `bindings`
->    --> rust/kernel/mm/virt.rs:399:44
->     |
-> 399 |     pub const READ: vm_flags_t = bindings::VM_READ as vm_flags_t;
->     |                                            ^^^^^^^ not found in `bindings`
-> error[E0425]: cannot find value `VM_WRITE` in crate `bindings`
->    --> rust/kernel/mm/virt.rs:402:45
->     |
-> 402 |     pub const WRITE: vm_flags_t = bindings::VM_WRITE as vm_flags_t;
->     |                                             ^^^^^^^^ not found
-> in `bindings`
-> error[E0425]: cannot find value `VM_EXEC` in crate `bindings`
->      --> rust/kernel/mm/virt.rs:405:44
->       |
->   405 |     pub const EXEC: vm_flags_t = bindings::VM_EXEC as vm_flags_t;
->       |                                            ^^^^^^^ help: a
-> constant with a similar name exists: `ET_EXEC`
->       |
->      ::: /builddir/build/BUILD/kernel-6.18.0-build/kernel-6.18-rc3-16-ge53642b87a4f/linux-6.18.0-0.rc3.e53642b87a4f.31.bitvma.fc44.x86_64/rust/bindings/bindings_generated.rs:13881:1
->       |
-> 13881 | pub const ET_EXEC: u32 = 2;
->       | ---------------------- similarly named constant `ET_EXEC` defined here
-> error[E0425]: cannot find value `VM_SHARED` in crate `bindings`
->    --> rust/kernel/mm/virt.rs:408:46
->     |
-> 408 |     pub const SHARED: vm_flags_t = bindings::VM_SHARED as vm_flags_t;
->     |                                              ^^^^^^^^^ not found
-> in `bindings`
->
-> In the next version Ill do the same and continue with the CI testing for you!
+HEAD commit:    72761a7e3122 Merge tag 'driver-core-6.18-rc3' of git://git..
+git tree:       upstream
+console output: https://syzkaller.appspot.com/x/log.txt?x=123dee7c580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=8345ce4ce316ca28
+dashboard link: https://syzkaller.appspot.com/bug?extid=d7230f03206380ea0908
+compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
 
-Thanks much appreciated :)
+Unfortunately, I don't have any reproducer for this issue yet.
 
-It seems I broke the rust bindings (clearly), have pinged Alice to have a
-look!
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/733feb854771/disk-72761a7e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/94891a491db1/vmlinux-72761a7e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/1dc1e26ee843/bzImage-72761a7e.xz
 
-May try and repro my side to see if there's something trivial that I could
-take a look at.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+d7230f03206380ea0908@syzkaller.appspotmail.com
 
-I ran this through mm self tests, allmodconfig + a bunch of other checks
-but ofc enabling rust was not one, I should probably update my scripts [0]
-to do that too :)
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.7.719/14515 is trying to acquire lock:
+ffff88805d893bd8 (mapping.invalidate_lock#3){.+.+}-{4:4}, at: filemap_invalidate_lock_shared include/linux/fs.h:1045 [inline]
+ffff88805d893bd8 (mapping.invalidate_lock#3){.+.+}-{4:4}, at: page_cache_ra_unbounded+0x1a3/0x8e0 mm/readahead.c:233
 
-Cheers, Lorenzo
+but task is already holding lock:
+ffff88813ff74238 (&root->kernfs_rwsem){++++}-{4:4}, at: kernfs_fop_readdir+0x267/0x870 fs/kernfs/dir.c:1893
 
-[0]:https://github.com/lorenzo-stoakes/review-scripts
+which lock already depends on the new lock.
+
+
+the existing dependency chain (in reverse order) is:
+
+-> #5 (&root->kernfs_rwsem){++++}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       down_write+0x3a/0x50 kernel/locking/rwsem.c:1590
+       kernfs_add_one+0x41/0x520 fs/kernfs/dir.c:791
+       kernfs_create_dir_ns+0xde/0x130 fs/kernfs/dir.c:1093
+       sysfs_create_dir_ns+0x123/0x280 fs/sysfs/dir.c:59
+       create_dir lib/kobject.c:73 [inline]
+       kobject_add_internal+0x5a5/0xb50 lib/kobject.c:240
+       kobject_add_varg lib/kobject.c:374 [inline]
+       kobject_init_and_add+0x125/0x190 lib/kobject.c:457
+       btrfs_sysfs_add_qgroups+0x111/0x2b0 fs/btrfs/sysfs.c:2645
+       btrfs_quota_enable+0x25d/0x2920 fs/btrfs/qgroup.c:1022
+       btrfs_ioctl_quota_ctl+0x186/0x1c0 fs/btrfs/ioctl.c:3667
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #4 (&fs_info->qgroup_ioctl_lock){+.+.}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       __mutex_lock_common kernel/locking/rtmutex_api.c:535 [inline]
+       mutex_lock_nested+0x5a/0x1d0 kernel/locking/rtmutex_api.c:547
+       btrfs_quota_enable+0x29c/0x2920 fs/btrfs/qgroup.c:1051
+       btrfs_ioctl_quota_ctl+0x186/0x1c0 fs/btrfs/ioctl.c:3667
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #3 (btrfs_trans_num_extwriters){++++}-{0:0}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       join_transaction+0x1a4/0xca0 fs/btrfs/transaction.c:321
+       start_transaction+0x6b6/0x1620 fs/btrfs/transaction.c:705
+       btrfs_dirty_inode+0x9f/0x190 fs/btrfs/inode.c:6270
+       inode_update_time fs/inode.c:2117 [inline]
+       touch_atime+0x2f9/0x6d0 fs/inode.c:2190
+       file_accessed include/linux/fs.h:2673 [inline]
+       filemap_read+0x100b/0x11a0 mm/filemap.c:2820
+       __kernel_read+0x4d8/0x970 fs/read_write.c:530
+       integrity_kernel_read+0x89/0xd0 security/integrity/iint.c:28
+       ima_calc_file_hash_tfm security/integrity/ima/ima_crypto.c:480 [inline]
+       ima_calc_file_shash security/integrity/ima/ima_crypto.c:511 [inline]
+       ima_calc_file_hash+0x86a/0x1700 security/integrity/ima/ima_crypto.c:568
+       ima_collect_measurement+0x42e/0x900 security/integrity/ima/ima_api.c:293
+       process_measurement+0x112d/0x1a40 security/integrity/ima/ima_main.c:405
+       ima_file_check+0xd7/0x120 security/integrity/ima/ima_main.c:633
+       security_file_post_open+0xbb/0x290 security/security.c:3199
+       do_open fs/namei.c:3977 [inline]
+       path_openat+0x2f32/0x3840 fs/namei.c:4134
+       do_filp_open+0x1fa/0x410 fs/namei.c:4161
+       do_sys_openat2+0x121/0x1c0 fs/open.c:1437
+       do_sys_open fs/open.c:1452 [inline]
+       __do_sys_openat fs/open.c:1468 [inline]
+       __se_sys_openat fs/open.c:1463 [inline]
+       __x64_sys_openat+0x138/0x170 fs/open.c:1463
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #2 (btrfs_trans_num_writers){++++}-{0:0}:
+       reacquire_held_locks+0x127/0x1d0 kernel/locking/lockdep.c:5385
+       __lock_release kernel/locking/lockdep.c:5574 [inline]
+       lock_release+0x1b4/0x3e0 kernel/locking/lockdep.c:5889
+       percpu_up_read include/linux/percpu-rwsem.h:112 [inline]
+       __sb_end_write include/linux/fs.h:1911 [inline]
+       sb_end_intwrite+0x26/0x1c0 include/linux/fs.h:2028
+       __btrfs_end_transaction+0x248/0x640 fs/btrfs/transaction.c:1076
+       btrfs_finish_one_ordered+0x139a/0x21a0 fs/btrfs/inode.c:3236
+       btrfs_work_helper+0x39b/0xc00 fs/btrfs/async-thread.c:312
+       process_one_work kernel/workqueue.c:3263 [inline]
+       process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
+       worker_thread+0x8a0/0xda0 kernel/workqueue.c:3427
+       kthread+0x711/0x8a0 kernel/kthread.c:463
+       ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
+       ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+
+-> #1 (btrfs_ordered_extent){++++}-{0:0}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       btrfs_start_ordered_extent_nowriteback+0x39c/0x6e0 fs/btrfs/ordered-data.c:896
+       lock_extents_for_read+0x151/0xb50 fs/btrfs/extent_io.c:1314
+       btrfs_readahead+0x183/0x730 fs/btrfs/extent_io.c:2686
+       read_pages+0x17a/0x580 mm/readahead.c:163
+       page_cache_ra_unbounded+0x699/0x8e0 mm/readahead.c:302
+       page_cache_sync_readahead include/linux/pagemap.h:1379 [inline]
+       defrag_one_cluster fs/btrfs/defrag.c:1313 [inline]
+       btrfs_defrag_file+0xa02/0x2eb0 fs/btrfs/defrag.c:1455
+       btrfs_ioctl_defrag+0x389/0x490 fs/btrfs/ioctl.c:2572
+       btrfs_ioctl+0xbe2/0xd00 fs/btrfs/ioctl.c:-1
+       vfs_ioctl fs/ioctl.c:51 [inline]
+       __do_sys_ioctl fs/ioctl.c:597 [inline]
+       __se_sys_ioctl+0xff/0x170 fs/ioctl.c:583
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+-> #0 (mapping.invalidate_lock#3){.+.+}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       down_read+0x97/0x1f0 kernel/locking/rwsem.c:1537
+       filemap_invalidate_lock_shared include/linux/fs.h:1045 [inline]
+       page_cache_ra_unbounded+0x1a3/0x8e0 mm/readahead.c:233
+       do_sync_mmap_readahead+0x554/0x670 mm/filemap.c:3340
+       filemap_fault+0x6c2/0x12c0 mm/filemap.c:3489
+       __do_fault+0x138/0x390 mm/memory.c:5280
+       do_shared_fault mm/memory.c:5762 [inline]
+       do_fault mm/memory.c:5836 [inline]
+       do_pte_missing mm/memory.c:4361 [inline]
+       handle_pte_fault mm/memory.c:6177 [inline]
+       __handle_mm_fault mm/memory.c:6318 [inline]
+       handle_mm_fault+0x117f/0x3400 mm/memory.c:6487
+       do_user_addr_fault+0x764/0x1380 arch/x86/mm/fault.c:1387
+       handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+       exc_page_fault+0x82/0x100 arch/x86/mm/fault.c:1532
+       asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+       filldir+0x2b6/0x6c0 fs/readdir.c:295
+       dir_emit include/linux/fs.h:3986 [inline]
+       kernfs_fop_readdir+0x53a/0x870 fs/kernfs/dir.c:1910
+       iterate_dir+0x3a5/0x580 fs/readdir.c:108
+       __do_sys_getdents fs/readdir.c:326 [inline]
+       __se_sys_getdents+0xe4/0x250 fs/readdir.c:312
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+other info that might help us debug this:
+
+Chain exists of:
+  mapping.invalidate_lock#3 --> &fs_info->qgroup_ioctl_lock --> &root->kernfs_rwsem
+
+ Possible unsafe locking scenario:
+
+       CPU0                    CPU1
+       ----                    ----
+  rlock(&root->kernfs_rwsem);
+                               lock(&fs_info->qgroup_ioctl_lock);
+                               lock(&root->kernfs_rwsem);
+  rlock(mapping.invalidate_lock#3);
+
+ *** DEADLOCK ***
+
+3 locks held by syz.7.719/14515:
+ #0: ffff888050799528 (&f->f_pos_lock){+.+.}-{4:4}, at: fdget_pos+0x253/0x320 fs/file.c:1232
+ #1: ffff88806622d3f8 (&type->i_mutex_dir_key#4){++++}-{4:4}, at: iterate_dir+0x29e/0x580 fs/readdir.c:101
+ #2: ffff88813ff74238 (&root->kernfs_rwsem){++++}-{4:4}, at: kernfs_fop_readdir+0x267/0x870 fs/kernfs/dir.c:1893
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 14515 Comm: syz.7.719 Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
+ check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+ __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ down_read+0x97/0x1f0 kernel/locking/rwsem.c:1537
+ filemap_invalidate_lock_shared include/linux/fs.h:1045 [inline]
+ page_cache_ra_unbounded+0x1a3/0x8e0 mm/readahead.c:233
+ do_sync_mmap_readahead+0x554/0x670 mm/filemap.c:3340
+ filemap_fault+0x6c2/0x12c0 mm/filemap.c:3489
+ __do_fault+0x138/0x390 mm/memory.c:5280
+ do_shared_fault mm/memory.c:5762 [inline]
+ do_fault mm/memory.c:5836 [inline]
+ do_pte_missing mm/memory.c:4361 [inline]
+ handle_pte_fault mm/memory.c:6177 [inline]
+ __handle_mm_fault mm/memory.c:6318 [inline]
+ handle_mm_fault+0x117f/0x3400 mm/memory.c:6487
+ do_user_addr_fault+0x764/0x1380 arch/x86/mm/fault.c:1387
+ handle_page_fault arch/x86/mm/fault.c:1476 [inline]
+ exc_page_fault+0x82/0x100 arch/x86/mm/fault.c:1532
+ asm_exc_page_fault+0x26/0x30 arch/x86/include/asm/idtentry.h:618
+RIP: 0010:filldir+0x2b6/0x6c0 fs/readdir.c:296
+Code: 87 73 02 00 00 0f 01 cb 0f ae e8 48 8b 44 24 50 49 89 44 24 08 48 8b 4c 24 08 48 8b 44 24 58 48 89 01 48 8b 04 24 8b 54 24 1c <66> 89 41 10 80 e2 0f 41 89 c7 42 88 54 39 ff 49 63 ee c6 44 29 12
+RSP: 0018:ffffc9001aed7c58 EFLAGS: 00050283
+RAX: 0000000000000020 RBX: ffffc9001aed7e38 RCX: 0000200000001ff0
+RDX: 0000000000000004 RSI: 0000200000001fd8 RDI: 0000200000002010
+RBP: 00007ffffffff000 R08: 0000000000000000 R09: 0000000000000000
+R10: dffffc0000000000 R11: ffffed100a568001 R12: 0000200000001fd8
+R13: ffffffff8aea35e0 R14: 0000000000000006 R15: 0000200000002010
+ dir_emit include/linux/fs.h:3986 [inline]
+ kernfs_fop_readdir+0x53a/0x870 fs/kernfs/dir.c:1910
+ iterate_dir+0x3a5/0x580 fs/readdir.c:108
+ __do_sys_getdents fs/readdir.c:326 [inline]
+ __se_sys_getdents+0xe4/0x250 fs/readdir.c:312
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f45faaaefc9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f45f08cc038 EFLAGS: 00000246 ORIG_RAX: 000000000000004e
+RAX: ffffffffffffffda RBX: 00007f45fad06180 RCX: 00007f45faaaefc9
+RDX: 0000000000000117 RSI: 0000200000001fc0 RDI: 000000000000000c
+RBP: 00007f45fab31f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f45fad06218 R14: 00007f45fad06180 R15: 00007ffe1c9c7da8
+ </TASK>
+----------------
+Code disassembly (best guess):
+   0:	87 73 02             	xchg   %esi,0x2(%rbx)
+   3:	00 00                	add    %al,(%rax)
+   5:	0f 01 cb             	stac
+   8:	0f ae e8             	lfence
+   b:	48 8b 44 24 50       	mov    0x50(%rsp),%rax
+  10:	49 89 44 24 08       	mov    %rax,0x8(%r12)
+  15:	48 8b 4c 24 08       	mov    0x8(%rsp),%rcx
+  1a:	48 8b 44 24 58       	mov    0x58(%rsp),%rax
+  1f:	48 89 01             	mov    %rax,(%rcx)
+  22:	48 8b 04 24          	mov    (%rsp),%rax
+  26:	8b 54 24 1c          	mov    0x1c(%rsp),%edx
+* 2a:	66 89 41 10          	mov    %ax,0x10(%rcx) <-- trapping instruction
+  2e:	80 e2 0f             	and    $0xf,%dl
+  31:	41 89 c7             	mov    %eax,%r15d
+  34:	42 88 54 39 ff       	mov    %dl,-0x1(%rcx,%r15,1)
+  39:	49 63 ee             	movslq %r14d,%rbp
+  3c:	c6                   	.byte 0xc6
+  3d:	44 29 12             	sub    %r10d,(%rdx)
+
+
+---
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
+
+syzbot will keep track of this issue. See:
+https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
+
+If the report is already addressed, let syzbot know by replying with:
+#syz fix: exact-commit-title
+
+If you want to overwrite report's subsystems, reply with:
+#syz set subsystems: new-subsystem
+(See the list of subsystem names on the web dashboard)
+
+If the report is a duplicate of another one, reply with:
+#syz dup: exact-subject-of-another-report
+
+If you want to undo deduplication, reply with:
+#syz undup
 
