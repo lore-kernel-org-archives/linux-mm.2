@@ -4,118 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1517CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 11:36:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A12FCCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 11:43:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2BFDD8E01BD; Thu, 30 Oct 2025 07:36:18 -0400 (EDT)
+	id A93438E01BE; Thu, 30 Oct 2025 07:43:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 270B08E007D; Thu, 30 Oct 2025 07:36:18 -0400 (EDT)
+	id A6A7D8E007D; Thu, 30 Oct 2025 07:43:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 15F0D8E01BD; Thu, 30 Oct 2025 07:36:18 -0400 (EDT)
+	id 980968E01BE; Thu, 30 Oct 2025 07:43:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 01DFF8E007D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 07:36:17 -0400 (EDT)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B849C12B7DD
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:36:17 +0000 (UTC)
-X-FDA: 84054577194.07.12A58CA
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 93ED94000E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:36:15 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XSuWC1xZ;
-	spf=pass (imf01.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8424A8E007D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 07:43:30 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 244B189393
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:43:30 +0000 (UTC)
+X-FDA: 84054595380.14.B3905CB
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 50EF51C0014
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:43:28 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lDOcF7uN;
+	spf=pass (imf21.hostedemail.com: domain of 3Xk8DaQkKCFk1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3Xk8DaQkKCFk1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761824175;
+	s=arc-20220608; t=1761824608;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bK+xN2oi25pfNhkbHeqP+Lhc4lHkzppS0DihgpAOqTw=;
-	b=XaEC41sGDxBTWXed9YSOH3BwsP3TsmXnk3gE0mZJwG2Qx7iS1GOj8RieQjcpciFm+pYSeK
-	fMJGJCeqpq6/s/nE9+kDsVw/TTa4TwcTSuCrclWa7Y3tNJSP/3bfgat21R1QOgWKaZirj6
-	Fh3xHNCZU04FQ9iVmMr4Hc28T/4RKAo=
+	bh=nDSI58A/HQKOUf6eeXjJJOZLO/JqDx1ROCyXyTZAY7w=;
+	b=kOIJMiVo49ivY7vrE5k9xp8sLdr6il7binFRJMsS2aVDkSi+fsZ83g5n46+flOdWfEFQLY
+	+rMlf/m21K1ch6h2nOVAeUSsnKU6nUEm4Tu4cBjrX+vF4/V/ppgIl+CT2fKA+dYW2x2oZm
+	IEyLDE/OeeqrPZlb32Wleay1rY5Eo04=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XSuWC1xZ;
-	spf=pass (imf01.hostedemail.com: domain of ptesarik@suse.com designates 209.85.218.50 as permitted sender) smtp.mailfrom=ptesarik@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761824175; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=lDOcF7uN;
+	spf=pass (imf21.hostedemail.com: domain of 3Xk8DaQkKCFk1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3Xk8DaQkKCFk1C935IP8C7FF7C5.3FDC9ELO-DDBM13B.FI7@flex--aliceryhl.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761824608; a=rsa-sha256;
 	cv=none;
-	b=dXmCH3fleT8hahIdBkBLf/bOxgcg4HJIoj4yXvAdxZhjhMqFPVfxfrqpOG19EAXH7PUs7W
-	AapUq6uq9MyHYZdc0ee/cRRkVdCt1qziXhOc+SsBtuewA/4zZFmiw/Cgnod+Y7qEQ+sQwZ
-	ohlb4CQRc+IkFADMk8oXIRMYxNOO1mQ=
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-b6d4e877915so13414766b.0
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:36:15 -0700 (PDT)
+	b=OoSYtauqAaWPppyg00dLPjIt3mrVkxt2Btj9bAzAq948hr5mjeg0NZZCLlMY5MwAGpSvNJ
+	56GpYkVihoRC+XfS0UxxwR1edEfNOcH2ZJ3omGyD4q85RfhAhLE3Lu7e3SEMjJtiX+7c28
+	1EmozkIvti+AJ20cqpsLm6e2npHAp14=
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-427a125c925so460644f8f.2
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761824174; x=1762428974; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bK+xN2oi25pfNhkbHeqP+Lhc4lHkzppS0DihgpAOqTw=;
-        b=XSuWC1xZyazisacY80r35oc1LuDZfTXMMtUQUiAXpFYmIAF10YYNk7YNCnHWHPma4p
-         n/4UpUGDEg/IaQTZM43Xpy1Uhf+es3aazf7Tp7ijT884y6NvEH2sByMxe9IG8EnPO8tN
-         7OR2/pDGfDuPXvtWPKChZFqQANLN1/35QhscBt1o653zfmphCIHjVatrb5xka7/Ldy3N
-         jtcQwParWx1Zbk9ubVyjsaDGdDtLodRibONvxlRcY9UyjJfEk+IEwTbzRMF8acr/x1Xe
-         TzVNeLNlCHAuzNUIa1XNjcepr010v+9RK5DDznhzrGu9jT2Z0vyen9uPl+KuthzStccc
-         ZmWg==
+        d=google.com; s=20230601; t=1761824607; x=1762429407; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nDSI58A/HQKOUf6eeXjJJOZLO/JqDx1ROCyXyTZAY7w=;
+        b=lDOcF7uNBihkZBkqi1zEFIppknqbN4CdsWbJQIKBsPNRYQvX/8X6QWGSeydvhlM0hD
+         pmDTktCUhw+5zuiRTKt59UV+PxSgSBbJF7k3hjZwDhcnPnaa/wbzUECweJelfeqC9GBX
+         kpQ3BpDN0qozc/XIwer4c5MS6gBna+PppmhsOfYU6tq/RNqtQXHBvICzV4risau4T5cQ
+         2XlA7g9ooJy6jaZ5ONtKHBV0eBvVypYRFJgHaxhRJgqHsDzXWbls4cNzhaPWvusOhP/h
+         JoA+kAULJil6D+o7BZUiH3xmonDjytOTOlsK9gW4aUqlJI/h8ROpdF7BpqUFUCVZ+jLt
+         dwmw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761824174; x=1762428974;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bK+xN2oi25pfNhkbHeqP+Lhc4lHkzppS0DihgpAOqTw=;
-        b=nVc6S7bjfZevEhTEvN+O4s2G34dc1AmIBvSjbsAcgcbUDcxO7KV5pOFP1FkyRsWcMT
-         7d4TkxMGKa7PsFSJAFFpm1kQ4DWj8BqqYo/xcNUzRx/r9cwcLzzs3QBxk6skwLMcwE3h
-         2v+85JGAXZno2d9aVzMDbz5Dbi6dW2P3JKiOLHbWdy0J4G4+PtBrzWO1zJb066H3pGU9
-         Wr3xlBx0yiny6X9rmuuy3MuL6g7mBov1QLF/SwUNpIZ8Vrl/5meCpFc7Tby5Q74FqXqY
-         B8QCsiSA0PFEwM4l70dod/RXCRa1z8rpRNipVkxV7xIsPEGGabcssiFiISHNBcoPwT3p
-         Ppxw==
-X-Forwarded-Encrypted: i=1; AJvYcCW7JxeVsBkMI/5GxUzW566P043tuoyw6lKdaoZo5yKzyiaygPdEmAUWGm4W6PxpL71swfJ/LqLpLg==@kvack.org
-X-Gm-Message-State: AOJu0Yy34cpPxCRcHllvq4VphUnpimcLUfmbKahF1RC51+pNluioODiq
-	2auvFa1dMyEFOSpz6AEEZmcTPtvMWqAupc6fE8nz5Q+XrKc+dyuuz7RcwPdG0qYnN00=
-X-Gm-Gg: ASbGncvf7nkXKJBjGGY7B9t1CtVNdlp3LoyapUIJu5KX7FAecuULTtCwzIizgIOBNI3
-	MJ+yZw1rdePUMhZyrVGpc1GVaanQ0u6W9oJ7ybNCL+sOS43GHxyzEIC6lVCD2ocWLYj3iWkmtIC
-	KOzuiomcn9mmBaImKQ5Lw4KtgSpTn33TFRegeiieFJsAuhtI7rsEpiBi5h4aHYWpYGqqNGrMV1G
-	H65BASEJAU0HgMys/WYYkGunXe194teM/M/RB40cB2OVus3ZmZYWk0mDstqqSoM1It5GnxcAJ6B
-	CnlEKIYv+WkxissezW5IOoNGW2xf3PmvsgMbJIxPP1zl8zBmwx/+Rzw3lTCg0kplxsRsHGtR5EF
-	N+Aln7IhwO+gwpudqijfTPMRou024Bv8tjneB3Sfu5WS+zXddFRPseibW4SQGQqgx8xdljBafsQ
-	4TK8e9W8XIDZO/PNrbGbyvOaMUNqFp0A6EA/62LlN7I1e4jOqFP2G/oBJt/kHeEdAf4Q==
-X-Google-Smtp-Source: AGHT+IFj9ZpM2DdqZcpwsXqHdAysTt/TBVGsjkwzkXEBmVWTbZUal3znf8YBaAwZI6eMSQW9iDxpEA==
-X-Received: by 2002:a05:6402:518c:b0:639:e56a:86e3 with SMTP id 4fb4d7f45d1cf-64043f48007mr2792028a12.0.1761824173886;
-        Thu, 30 Oct 2025 04:36:13 -0700 (PDT)
-Received: from mordecai (dynamic-2a00-1028-83b8-1e7a-3010-3bd6-8521-caf1.ipv6.o2.cz. [2a00:1028:83b8:1e7a:3010:3bd6:8521:caf1])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-63e7efd116asm14938765a12.33.2025.10.30.04.36.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 04:36:13 -0700 (PDT)
-Date: Thu, 30 Oct 2025 12:36:07 +0100
-From: Petr Tesarik <ptesarik@suse.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>, Roman Gushchin
- <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/3] slab: switch away from the legacy param parser
-Message-ID: <20251030123607.714bbaa7@mordecai>
-In-Reply-To: <2236fdb6-4616-4b9f-82c9-eba3ce5d371f@suse.cz>
-References: <cover.1761324765.git.ptesarik@suse.com>
-	<2236fdb6-4616-4b9f-82c9-eba3ce5d371f@suse.cz>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.50; x86_64-suse-linux-gnu)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: c1gpkrwhsn8g613j5biurirtx4mx6xhh
+        d=1e100.net; s=20230601; t=1761824607; x=1762429407;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nDSI58A/HQKOUf6eeXjJJOZLO/JqDx1ROCyXyTZAY7w=;
+        b=oGqCllYAhs+h9joIk1kjbirWptSc17USZqwZVdo4VV9EXn/NujIL4IRXwy7+BxCzD0
+         3Z8nEt8gfx5Op35WhEXLqKa9gUEBiVePkiPdKWUiBIwe7WcddUo3YK2T6TFJFFZT+FIJ
+         UeCZy5DHaMr5V2RzWADETyTEGYutGgXbZcXnZkiC9NaAq4jQklArnI67AhTEcz/3urrX
+         bWH0WG98PXjBNrs4WT0KukVYU6IOrfDwm97vzf8tLOHFjbdaWOyX7tuu3TZ5EqkB4MJ8
+         PvzPccz/cik1N2+KTiNG94kiKdlyFexWdW/xuIagJsgss0RkMrksRj1REwHQRW18DehD
+         iltw==
+X-Forwarded-Encrypted: i=1; AJvYcCVnce4iUxaeDd2H/rGWFH6BpsrNmvYL+aF7Mk5w/SgdDrfVPQP4djC8fy4xhvAQUGpXc8Xtu85GOw==@kvack.org
+X-Gm-Message-State: AOJu0Ywj3uN32pMpkhh8GGdw8LkRCGWvCaunqr2ziM84+opsdbgR6if4
+	SFFw9g/pe8bI9xgiYcZAsjd8Q+bZWA3X5C6wczHSFuxQwmjEqTSLGXaD5BqcRrfkSd8Vt2qMH6a
+	FW9embeaHpGvH9Ib5gQ==
+X-Google-Smtp-Source: AGHT+IHzjpoD898gBgMNPMdZP5uEYogpZiJA8uErDROog5MEOI5DpnJbAzYLVH3kmqrIf4gyzUsqqY51Um1rkCk=
+X-Received: from wrme11.prod.google.com ([2002:adf:e38b:0:b0:3ec:e23c:988f])
+ (user=aliceryhl job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:290f:b0:429:58f:325 with SMTP id ffacd0b85a97d-429aef830c6mr5166773f8f.24.1761824606490;
+ Thu, 30 Oct 2025 04:43:26 -0700 (PDT)
+Date: Thu, 30 Oct 2025 11:43:25 +0000
+In-Reply-To: <4e6d3f7b-551f-4cbf-8c00-2b9bb1f54d68@lucifer.local>
+Mime-Version: 1.0
+References: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
+ <CAA1CXcCiS37Kw78pam3=htBX5FvtbFOWvYNA0nPWLyE93HPtwA@mail.gmail.com> <4e6d3f7b-551f-4cbf-8c00-2b9bb1f54d68@lucifer.local>
+Message-ID: <aQNPXcxcxcX3Lwv0@google.com>
+Subject: Re: [PATCH 0/4] initial work on making VMA flags a bitmap
+From: Alice Ryhl <aliceryhl@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Nico Pache <npache@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, 
+	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Peter Xu <peterx@redhat.com>, 
+	Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Juri Lelli <juri.lelli@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, 
+	Dietmar Eggemann <dietmar.eggemann@arm.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="utf-8"
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 50EF51C0014
+X-Stat-Signature: fgopco1pswee5rqtibtdm6oc8of8f4tr
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 93ED94000E
-X-HE-Tag: 1761824175-264630
-X-HE-Meta: U2FsdGVkX18wjUKgeJJ09r6r3DQvB8uPqN+55XcG95HzxfcM/f5sctmTEsJQjxPh0ZkQWiHzu1OxRAiB9W85efgkihO+0gNEXJSO6fUktpJCSewZhJW9QqqOjpnNkACheJpBgyArjobdtwharxifWYERabsZujwbFQzsVHl0a9Hay/5zEh0xE1JpNVZtwQ3JWoTVvksdcQSNnM0hP2JymoNVe01dAdRWGFJgw7ENtwWZN2zhrrXzTN/Df1AmU6CBfap5rGhRuVXMMyk9HJstw5RW0IH/ZJXAbXd4IFZJmsip+5gsV+RG00SwKfeiWo3tx/fqKwrvBtw/xzAmgzDcxOmrqtFO1ulbimZKP7bFbl0HNWqXCLdt2qGS4nrAEClWF9BfylHPqP/boxLfDlKuJNN/n8kh43oGDbIQnPFHINEWVFOv17GlNtOD6rrm3hl79VCl4npBQp225IrdNMhzm0L9W46es4Q8LwM25dTR73v+5AsHqmEk07Tyl8zxhZ0QKrU7tRXoBFwSmKlE8ZFP75jfImbseeeajjlxVEYB4hk5cj2WZBYxNNIGes+M5GvJgkaH1vd6HDudAqjNnyoh5nKFjPNjrU+RKaY3WLK3wf/0sphCSWndTiGG6X91cJrv5ILRZdR/x3Pc3dKp6KFntWXyiib1Liud4EjaxB0dL31NoPD10znaf1L1kZj4CkLqSo53ziH7ziM0Z1fLeY61PJwc+yX6ziwIDWHW2+1NLxgaOUd9bCRJv/3PfKs/Q/ZHdemkjDcItQ9+5Xm9jRgGBEvxlC7Mg1dj//1rhS5RRa+okJuS80voXYOCbRmYn0J+0OjgGbguzwPQ1s0kQUZNWcqoQCHC+ajr8AnRtA3KefPTcJQZXZ/V8lbohlOhT0u4XSlvVsc5wOE/DTj7JDkEAGoiOoyZ6uDMFkZuaRmm++zZ4mo/QT+cJXQ5tNyg5XyP3A8ffFSV8J0O+fVbtH+
- VKKWHc/B
- fFV9R2Pvzha4DtjNzf4wUn4hUiXW7k2wZynZzh1WSVWqXvF68/5UlatS1ipx1unawumFbL4bYbPV2iHgzN+7PSaQQ2eqqDJb51GpwX0QqyCFgwahDHYZko/xWDdOTJCq9jVTVjejM7FKAq3WPjCotHTJ2oRwFgntZWak4Fx7TsIImqbPNJBdRwdQFQv6F45b+YSb/gvsiasU9qObP+locWmYMkfMJGga+FhiTmtefmME8p9tgTyq5qtwIAYIZjgrge5Cnyx6mYb1HpP3/6LMgsAgUYQ==
+X-HE-Tag: 1761824608-231463
+X-HE-Meta: U2FsdGVkX1/PzrnhonuDRzVQeTi9RYw7rFW1Ch13u1xivzwNasC4Ms5Q6GILvXvrm2E6g89tcV/bqFtgnGUWIi4Al4PCjv+VdXgUxEwTQN7jzB0DuiF2q1ImS9QVuGKfVI+jMss7YE0Gnj/Knw5btkf1lrXZX1wqBCXs5nMRJ1XEGRvDPqizluZ7VLtXdPfeAGCvvuMWrwqJlACxcQOTgAwAPjrL9Hcl0d9lZp/s49sXdUrn87oN1z1WcRrNAN0ye+ozO9/H+5kp0WFv+o9rG659QATaByjnUG1RUjkNSWvrEkAANOi4GQFDAtGx/rnERImS3YfWLAB28dPIbf46C3G89jlCr7PUQ8Spb6jXlEKiK8guIRAHVIH9TbnUM9e+Bi7gmQKyrqgr9y5zqgicxIXe06xFGESqR/XJRzTL4vP5VHx2zKW8c2L63GwIjJucgRYI/dM8Qx+Z8FdJCRhrR4kzs+zzQjx+0i5G+hfRFjFJebxRabGTZyihThahl982yx+OWErF9dfrrJ88AmWuGP1StP/ci+hVk9UZEbB4jYO/EPXvVBzMfo0r/viV2yHY71oXzaNHHIPes/LU9ro/vPT1uwvFeN5dX87U/E9Br4BYXaFjlhp1oqC9RCHgqFRCmiUv0QQwRdVW5sdihvzfouVhwsTO3ZLw8LQ/wX64lHJ0FuXIJ4/4jQXXUsPMdO3/tk7HHZi/EkgfUWSrnbuQuGsvtokmsRiS6ElM0/tRK0uew57FW91YHHPG08Ioo2eaX2JR+m4uiDQkUy+XsIGaka1UJYF+Vw+LrfOGIUhCoFN52wr+bRElO0evMM7lI1XUh1FkarYYFX7liYphM05q/VeOdmGJMHR0kibv5oroVbg+zTmcP0au+8vQtsoy+Bduu4oDCHBGnAYPnRT3yWB8AXKAOCCKzaS08APRaLbMUaozsPP09Fl32TmBqzNiQ6zO3R8fGu5NQEvfgGHUr6i
+ QhB/0UmB
+ SEzlKjESA42F1d5odvQ69T/oLxX/sZ2o6eMd47dRmtNS31CeGAbBAiNUcsBdEZ5CWA3DNHyk/LE8vrlgyESQJaIvy/Y5ggSB2Atc5+7IXdODgBJvHbmI5XHdEUzuDpdvbXp4eDg0HoF0/++j+t5lfBqxG35B/kPLl+20deyTnqyLAi8HA12llrrEmcrjTTF6EuAbluxxHBw0HGD3u/OsurBHSn4RlDkQqF7IU1Mrh00tNDdE1JD55lX7k/mpfmHi7FbRcL9uokFdZAJRUVNh9ts1DfeDUcNYycDsGATSX4WDw8ix3zppXt1HZgbr9Y9Sufgci+G3jqDIXnEtA5hkdlangUbcyCnsPaJ1HB+VQxgwtG+VSBXhbyRXfL9w6OCCtTF95CjBy6ChC787DU1t0dpfihKxH5Oc7lUZDIeAKI2HqFiQhItx8+Q5Zn0O80auFg0vhQbyq/vY9r8wJFGbDdVvHE48dwKvvevc6roxWiyiPB64u2G3c1186tB08YMQJ5qGOcGqlDvP9hJJazARB7sVHeocJczgWbT5B9JAD2vwtaT8PMdgQpgWpEDTPeovnNmOZdH+vj6cfEC0YSUOl1qr2BsmSK4LcuHhX2KlQeO8sBSC9tcxuRbXD3s2bjdLA1NWxFQVkEMD/MzQrkY/aBVGiTTbUMbuF0kxD1amBeAWDcdyWF+usXCXXol7srfrFAYLX+W45elMov00rYNn6gLAvaTmflODDqatW
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,21 +134,78 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 27 Oct 2025 16:06:21 +0100
-Vlastimil Babka <vbabka@suse.cz> wrote:
-
-> On 10/24/25 19:06, Petr Tesarik wrote:
-> > The handling of legacy __setup() parameters has some confusing quirks.
-> > Instead of fixing them, convert the code to struct kerenel_param, which
-> > is a saner API.
-> > 
-> > Note that parameters defined with core_param() and __core_param_cb() are
-> > parsed early in start_kernel(). Do not confuse them with core_param_cb(),
-> > which are processed at a later stage.  
+On Thu, Oct 30, 2025 at 08:33:10AM +0000, Lorenzo Stoakes wrote:
+> +cc Alice - could you help look at this? It seems I have broken the rust
+> bindings here :)
 > 
-> Thanks! Added to slab/for-next
+> Thanks!
+> 
+> On Wed, Oct 29, 2025 at 09:07:07PM -0600, Nico Pache wrote:
+> > Hey Lorenzo,
+> >
+> > I put your patchset into the Fedora Koji system to run some CI on it for you.
+> >
+> > It failed to build due to what looks like some Rust bindings.
+> >
+> > Heres the build: https://koji.fedoraproject.org/koji/taskinfo?taskID=138547842
+> >
+> > And x86 build logs:
+> > https://kojipkgs.fedoraproject.org//work/tasks/7966/138547966/build.log
+> >
+> > The error is pretty large but here's a snippet if you want an idea
+> >
+> > error[E0425]: cannot find value `VM_READ` in crate `bindings`
+> >    --> rust/kernel/mm/virt.rs:399:44
+> >     |
+> > 399 |     pub const READ: vm_flags_t = bindings::VM_READ as vm_flags_t;
+> >     |                                            ^^^^^^^ not found in `bindings`
+> > error[E0425]: cannot find value `VM_WRITE` in crate `bindings`
+> >    --> rust/kernel/mm/virt.rs:402:45
+> >     |
+> > 402 |     pub const WRITE: vm_flags_t = bindings::VM_WRITE as vm_flags_t;
+> >     |                                             ^^^^^^^^ not found
+> > in `bindings`
+> > error[E0425]: cannot find value `VM_EXEC` in crate `bindings`
+> >      --> rust/kernel/mm/virt.rs:405:44
+> >       |
+> >   405 |     pub const EXEC: vm_flags_t = bindings::VM_EXEC as vm_flags_t;
+> >       |                                            ^^^^^^^ help: a
+> > constant with a similar name exists: `ET_EXEC`
+> >       |
+> >      ::: /builddir/build/BUILD/kernel-6.18.0-build/kernel-6.18-rc3-16-ge53642b87a4f/linux-6.18.0-0.rc3.e53642b87a4f.31.bitvma.fc44.x86_64/rust/bindings/bindings_generated.rs:13881:1
+> >       |
+> > 13881 | pub const ET_EXEC: u32 = 2;
+> >       | ---------------------- similarly named constant `ET_EXEC` defined here
+> > error[E0425]: cannot find value `VM_SHARED` in crate `bindings`
+> >    --> rust/kernel/mm/virt.rs:408:46
+> >     |
+> > 408 |     pub const SHARED: vm_flags_t = bindings::VM_SHARED as vm_flags_t;
+> >     |                                              ^^^^^^^^^ not found
+> > in `bindings`
+> >
+> > In the next version Ill do the same and continue with the CI testing for you!
+> 
+> Thanks much appreciated :)
+> 
+> It seems I broke the rust bindings (clearly), have pinged Alice to have a
+> look!
+> 
+> May try and repro my side to see if there's something trivial that I could
+> take a look at.
+> 
+> I ran this through mm self tests, allmodconfig + a bunch of other checks
+> but ofc enabling rust was not one, I should probably update my scripts [0]
+> to do that too :)
+> 
+> Cheers, Lorenzo
+> 
+> [0]:https://github.com/lorenzo-stoakes/review-scripts
 
-Thank you! Appreciated.
+I can help convert the Rust bindings to work with this approach. I see
+there is a nice and simple vma_test() method for checking a flag, but I
+don't see any equivalent method for setting or unsetting a given bit.
+What would be the best function for Rust to call to set or unset a given
+bit in the vma flags?
 
-Petr T
+Alice
 
