@@ -4,86 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11AE2CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:57:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66968CCF9FF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:57:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6C785280001; Thu, 30 Oct 2025 10:57:42 -0400 (EDT)
+	id C4551280002; Thu, 30 Oct 2025 10:57:51 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 69EC68E007D; Thu, 30 Oct 2025 10:57:42 -0400 (EDT)
+	id C1CC78E007D; Thu, 30 Oct 2025 10:57:51 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B4578E01D8; Thu, 30 Oct 2025 10:57:42 -0400 (EDT)
+	id B33588E01D8; Thu, 30 Oct 2025 10:57:51 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4BE928E007D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:57:42 -0400 (EDT)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E178AC0132
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:57:41 +0000 (UTC)
-X-FDA: 84055084722.04.9E55FAA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 58081A0012
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:57:40 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qyOcKUG6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761836260; a=rsa-sha256;
-	cv=none;
-	b=N2deSYK6Ff+FEuQshES3BfxMcm1WPEVvE7frm7IwR9hqZB2sT3NqtjIowg7SHvLDSfpkvn
-	6HHgmRYEubKXIm5ZWhAzimPq7BPJye/MB3ZZebPaI4DQ0hnkYMxv6yLSkheWQ5d7YYTSZy
-	Zh1+DdGgK8Woss/jozjjm1kTC/QlYtk=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=qyOcKUG6;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf15.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 9F77B8E007D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:57:51 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 75754B698E
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:57:51 +0000 (UTC)
+X-FDA: 84055085142.07.A356CA1
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id D7D67C000C
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:57:49 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NZ/8uG9s";
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761836260;
+	s=arc-20220608; t=1761836270;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0TKgFNg44NDxjhDB9aJngB9wyPtxG2nTi09h/aKk880=;
-	b=IOxWFWX2j7una9/7RWi2cueJv2q5zLMdc5h/bXTaSVaIUYQA/LZPh4zFihKcUru8dGi0Q0
-	BzfDNw2b9JqaK4SGPKmhpkOEXEk+cg4X9waLbsuSjhjEC4VecyeVBmaTE3l/ZsIkbgtfKV
-	YnBD/Jvj4xu/srg9WWjRkg44brG1mZ8=
+	bh=MPH444EZaU6hB0oe8fwJQJCQuWbHbzn+g5+EsUVpY/8=;
+	b=M+c7YHyZ+2OhDYUEiD/vYJupYgqxyAFj6AjQKA0e9WQcxFlePKTabsbpj1u9sIq/vzNLJw
+	7xdMCttpmLBgBVfXU7y/w7y9IDaO76dKb3v2U612+SUPoyRbSviaa+RbfqoYi3U6R0dQXu
+	HhWUQM4LE7YXh81N0+xjsEBQvlTfBjs=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NZ/8uG9s";
+	spf=pass (imf22.hostedemail.com: domain of a.hindborg@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761836270; a=rsa-sha256;
+	cv=none;
+	b=dIiiFRuo6czVem/lzjVPflRGy+m8TnTYBB+1HZjb4eiewwVOaCmcMdBMo30vIMSMtJHsjx
+	g8vVHmoThjeTLHiFdTzCxTRLIRJKMq+iUo5O5Efy8R0U5HI/nc872x1yKitnXp5U6z89kl
+	hlH27tFDbMEcyWIBD0B1aPdpfe1plU8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B20FA61E2A;
-	Thu, 30 Oct 2025 14:57:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43774C4CEF8;
-	Thu, 30 Oct 2025 14:57:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id A82B943898;
+	Thu, 30 Oct 2025 14:57:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D33C4CEF8;
+	Thu, 30 Oct 2025 14:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761836259;
-	bh=Lxi83mnenqLXD/dEkFyBMrWO5ZOIAm9IWeX/LclGy1s=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qyOcKUG62E+yPf6Qu8h8SVxChOl/54Ncxu1UhBo6qIUcWOg7Tfm8PKDrSR8u0wcFW
-	 AXPERmKPm8Jyf2jMk2J5PMehc9X4/UxiYGfpAq8yYv3DcbUFQdQxO1Mj23g4F750++
-	 Ll+Nuq5E3vn6qgR2A1homCiXBPQJj1uL2lJE/bJlCD37mZsQAwO2NRnSZIvgZ1qCW3
-	 ps+PUo2j+Z6eSFxSPYeCkxaNHqlcAgdMo78VKk8YW1SOnnHmRFeZtj+/uGpjGECNk4
-	 MeCGUp1yFJa9spTLErk+XJRiNI0Vesz42IuV13X/HCJHV7a0v3MGK1vZkDMZn+aVNo
-	 tH6vfNMzDLX9Q==
-Date: Thu, 30 Oct 2025 16:57:33 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Israel Batista <linux@israelbatista.dev.br>
-Cc: david@redhat.com, lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
-	linux-mm@kvack.org, osandov@osandov.com,
-	linux-debuggers@vger.kernel.org
-Subject: Re: [PATCH v2 0/3] mm: Convert memory block states (MEM_*) macros to
-Message-ID: <aQN83UYU60nVnEcc@kernel.org>
-References: <20251029195617.2210700-1-linux@israelbatista.dev.br>
+	s=k20201202; t=1761836268;
+	bh=MPH444EZaU6hB0oe8fwJQJCQuWbHbzn+g5+EsUVpY/8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=NZ/8uG9sgSxgb3j2CP8YltLWsQB47scQpxGKcbR+MrBAvSTgaYZddAH9NvQVGxgCw
+	 jMpUMahh2MOfXnnLoIWYFzo/z5SUQWH6OtWirV1MskoUFnhA0Lw3LEVhTLAJ4ge2sB
+	 EaW7Xt7Ts72Nt2tAEOjVuHrEoE4oiAUc53DYyXuydo3/t8rkO7kS4zaierKba829eG
+	 lTVRQZtleWTO1rimqLOyp5tt4yk56zMv3caXQ/wkevBe5n0RkWPmE2h5jGuWpQ60AL
+	 gx4egPU999DB+RUobTImD6plP3mbmCWsKA1FWaCseeITaGgey0cf7mVcCxCSzZaRaR
+	 zCQ0turLOoXvg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno
+ Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
+ <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd
+ <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Asahi Lina
+ <lina+kernel@asahilina.net>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Oliver Mangold
+ <oliver.mangold@pm.me>
+Subject: Re: [PATCH v12 2/4] `AlwaysRefCounted` is renamed to `RefCounted`.
+In-Reply-To: <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
+References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+ <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
+Date: Thu, 30 Oct 2025 15:57:35 +0100
+Message-ID: <87sef08mjk.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029195617.2210700-1-linux@israelbatista.dev.br>
+Content-Type: text/plain
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: D7D67C000C
+X-Stat-Signature: udciceeymkpn1du3pwo9gsfu9ywmaadt
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 58081A0012
-X-Stat-Signature: ha1odafjweaaogr84zjhgjktndu1kyhr
-X-HE-Tag: 1761836260-197871
-X-HE-Meta: U2FsdGVkX19+ruqibpGWy22ChKpo+owwEzVqTJPW/fppw0//PV4BTF7Zn54qVZYyF9aFPxoHMIuD3WvdQLF+NPt6gPoCIKGMov/5Wz/bnOznn7mpYYk/U5ANrfI9+E3dw4/Ikr1uLLH8hEYuayhlltUzTksGb5aZQDKDmP8icI6/z6/Hjo1qP/GkoP9AixS20G19OX9VozNMyEH+GwXHBycgXlzw3qet9U0dk86itFusvnitXb3ABlYuEaKYQM7rmvmRwrsJwTzB+Kk7ojt+28mxMOXu4pb5JJGvj3cVYc8Tc176caAoVdjoPPEvFTsOHyJHdTfmfpgNlOX5sc3aUi/z2mCtGiqwAw//RprY7dahs3psVqkAAYi5t2/c6v6eDdbOgKEzFPSL2XoQiY1sJvQ/MHhS0S1oGLxoYz69aZrS4MvdT2HEYUO/xG0/Vyze4LvGBB4QnnF426H5Dnm/j+gUm2n81x23hHHomD2oeyLzRVeytuuf3hoA28bIeM6341EpdpkSHFl3smVV+11f+ZigQ8QXdvkStdsk2/cRHvMix561VrDAaG8iknrPFMbrPHmajvbZ8WSCeHGCmMI0xxLGVqigrRfJnBhLZ2WmhXbh9LtXXLRTlZy07zHNnQpjz8QpT4daPAbZZpsiRlWU8xOfhhuHU58kunltUSuNuy3iQu9Q7H2AZBaAntwUyBMLrESwcxPy8AkhC4dz5PCNkZ42yXhs0br2LPvO5H7z9xhsYJF+dbztsKyD0njzLn6C46F1z7QruRiUTCpz30QJw4WAd9QOfogrhmKkEYDoG4LRGAN/PZZb8aOncDYPdhdFjrIH5i7RKR/Ln6S8xVLesj7U5OgLYM44S2NQNLcLsrLAGLYZOQ+mnX2xdhHp6NWIEVay15G+YWlEhzD1Dqobtuun4R4wRDqGHJoT71X+eZL1y09epXZ6R4t49YH+/eklCXqJk/lvI6YmrAv6Go+
- TekFEnpz
- OdkiVX/MT9JrFTmBKVoepPBNy0cIDclrc+6fZptteWeMEUPsKbsYfLS53J1xhyMgMdzVDwj2g2KppPWG3WUg20CUMYt0f47/0nfy4s91LYimSCbR4+v8N4u4zHmWA7fUEdFlDO+Y5HtWoQOrrYhhQOG/klwzW5x/wvv2eQnbzx3opdA9QlpmwBqQUiKLfYlof53vG4oD1Qv4sICwb3I5w0GZ5JHo2cuMPJx2Km6IaDFCu6/gvbHiRP4WuD83dYfNLqAdEszAdnDIuF8P89e67Y97eYiQiP/Gok6ytbbhCRKPExSgcMAowU83CQCJvV3qbgnij
+X-HE-Tag: 1761836269-583008
+X-HE-Meta: U2FsdGVkX1/OOrT4K12PgOtgYEbVSsHMq8Mfn8C8lllh7pa0IaT5zi5xjtTJF34r1TBuhzlEzdjVNYqQcYFvbFl3G2FU4bgewFspqRx00T5nrElJkPsDOJCBnQWle3mN6FYiibp9o4chfdVhXDpNBQ8dK8fqwt0P5yCBPfoJX02LUTeTmNB9/ZYhnhZRWgXKQy7vrIUN2q5Ku9KANd5Re8fG92S/2fWcMqWYxzEi5BVtTLHAmZlI1U6OVIcu9hXprUX55bVKC6+LTBzMW+rm0ew4vSl0T67e2NfcUgM2Aw4vKbo8SD3GA9L4t/H94TqZCJC8dLlVKUtZPJ1D3wuhfMFAYnw5pes8V4DWkH1pPY1KjgcJkWcPRkBjq5aSHp7s4ZwsmRyA4KFxotyTm+rpL2zW1/9A8QWwO9vDeOIHtGCFVHOvSSAYevnZD3yXbxEGsZhVXoQ5DP+VbllF8pTo86lBOqLOdcQW3WFBxCpVynW0DPUdWj12Fg/NO7scRAWT3Aby0Kop/LHVjGrpdj4yzUmcynsBV+xlWsY/Mf8vdND0MjdxybYRIyjktZ8AEqLcOSyrBX5xi1cwpdIol18K4MVWwtr32+Qst3+smtxm3H0V3QnASeg0n8b8+KMC6m9xLEy2Ry1oz/Bw30JROAgY+y02m8YzgSn/k9sOiwfRBpfiSSAGfcZvF6/J5ewrqXTmCo+tCwK+OMe/N4A2Eiuyq76m9UBzq/YQxsp5NbhRFLjP6Ze/cPVoqwPGaQZ6w7135U6XE3TWUIcIEkgYlmFNFX5XN0IF1NU5KBhByw1NYoFoNTR2RLRctPqGx2ITfLVe18squNprSRCx4AjgeQ0tRFadD408BY9JO7o0u5LWLD8/u3qhblBKAKB+jspX7QJhlSlDGoW2/1tF2N0msaps1HkM2CSqTszAxL8O7Cr2mKDcpdSj7B4KnnxsFWE13t3isSTO76i19k+EcW8snLV
+ vig0wUqK
+ pLuzgi3GHKzHad2XUBW7++yazxIa3xqFoUvM+rtp3NlM+9tB27ZXOFJujT9Dbhfjx9EJ0L/YK8y1kwxMeHMeOgPYKtK2SyHY8K29drbHKKlhc1kRWQcg2SfSqMegamNd0EQj63BJrerOb+chWVRJBl0do4Qbrij4KNASxWapXsrPr/KGpThd9dgpbWavgpNpfv2eGDapYUKAkdtte/JU9BxhgwKcDRFNYjvnxU1cQpZqSEhZ0LJs/ZIMBvk7nPW/0LhA4NbRLV7MLme7CFNTv1gLKuyGOQ9oBcRLJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,59 +112,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 07:56:26PM +0000, Israel Batista wrote:
-> The MEM_* constants indicating the state of a memory block are
-> currently defined as macros, meaning their definitions will be omitted
-> from the debuginfo on most kernel builds. This makes it harder for
-> debuggers to correctly map the block state at runtime, which can be
-> quite useful when analysing errors related to memory hot plugging and
-> unplugging with tools such as drgn.
-> 
-> Converting the constants to an enum would ensure the correct information
-> is emitted by the compiler and available for the debugger, without needing
-> to hard-code them into the debugger and track their changes.
-> 
-> This patch series aims to replace the current macros with a newly
-> created enum named memory_block_state, while also taking advantage of
-> the compile time guarantees that we get when using enums.
-> 
-> The first patch does the conversion of the macros to an enum, while the
-> 2nd and 3rd patches use this enum to clean up some type declarations and
-> make sure that only valid values are used.
-> 
-> ---
-> 
-> Link: https://lore.kernel.org/linux-mm/20251026162156.12141-1-linux@israelbatista.dev.br/ [v1]
-> 
-> v1 -> v2
-> - Rename the enum to make it more descriptive.
-> - Let the enum auto-generate the values, as the (1<<X) pattern could be
->   misleading and they're not exposed to userspace.
-> - Change the type signature from unsigned long to enum memory_block_state
->   where suitable.
-> 
-> Thanks to everyone who took their time to review the first version.
-> 
-> This patch series applies to commit: f30d294530d9 (mm-new)
-> 
-> Israel Batista (3):
->   mm: convert memory block states (MEM_*) macros to enum
->   mm: change type of state in struct memory_block
->   mm: change type of parameter for memory_notify
-> 
->  drivers/base/memory.c  |  6 +++---
->  include/linux/memory.h | 28 +++++++++++++++-------------
->  2 files changed, 18 insertions(+), 16 deletions(-)
+Oliver Mangold <oliver.mangold@pm.me> writes:
 
-I wonder if we need three patches for this, but regardless
+> `AlwaysRefCounted` will become a marker trait to indicate that it is
+> allowed to obtain an `ARef<T>` from a `&T`, which cannot be allowed for
+> types which are also Ownable.
+>
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
- 
-> -- 
-> 2.51.0
-> 
+Please update the title to
 
--- 
-Sincerely yours,
-Mike.
+ rust: rename `AlwaysRefCounted` to `RefCounted`
+
+No period in the summary line.
+
+With that, you can add my review tag.
+
+Reviewed-by: Andreas Hindborg <a.hindborg@kernel.org>
+
+Since this patch touches so many moving parts of the rust tree, it is
+going to be a cat and mouse game regarding rebasing this thing. It also
+touches a lot if peoples code. I am not sure how something like this
+would merge. Do we need ACK from everyone @Miguel?
+
+Best regards,
+Andreas Hindborg
+
+
+
 
