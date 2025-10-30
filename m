@@ -4,97 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CF827CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 19:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA6FBCCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 19:07:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E084E8E0153; Thu, 30 Oct 2025 15:06:56 -0400 (EDT)
+	id 382738E01D9; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DDFAE8E0084; Thu, 30 Oct 2025 15:06:56 -0400 (EDT)
+	id 359DE8E0084; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D1CF18E0153; Thu, 30 Oct 2025 15:06:56 -0400 (EDT)
+	id 270238E01D9; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id BF61F8E0084
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:06:56 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3E3E2B762E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:06:56 +0000 (UTC)
-X-FDA: 84055712832.24.A736686
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 3C96820015
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:06:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D5LxtFEq;
-	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+	by kanga.kvack.org (Postfix) with ESMTP id 110728E0084
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:07:28 -0400 (EDT)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CABC81A025D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:07:27 +0000 (UTC)
+X-FDA: 84055714134.23.48BFBDD
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 7C270120004
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:07:25 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HnD6wWTB;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761851214;
+	s=arc-20220608; t=1761851245;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lhWnjZelzOe9tyVT1vIXYOQef+bxuvWza/B/Vqmbb0E=;
-	b=5Q3tnVNio/E3Zhufox4WeaXd2jfYvePsyZHcMT3RovwnSWL/ECm3z8RlhlIo0IOFmOFMbK
-	fB0NGMQ5mBdbbBvTc1ajbmN6M9MZO/50Q8L1v/BN20mj+kr9tf/ElCpyzZM6jAeVdeM4dD
-	kC7ZzgWBa5mZYFouLrh3NIjuuZH2JGU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761851214; a=rsa-sha256;
-	cv=none;
-	b=rhoA/N5IBduNsFCPo4A52H3cPJQShDt9hm/mlm4NuErt8WlDSQpqEAAT0QA3V0ZqjnY6+7
-	qk8vEZvVvFee+36krFBoMJZuSGll1q2FNUNtmYmEHa1oEaDlJy+QbkwyDfRZy8GI0+L6O0
-	U8O0kEu6K9KhL+U2dQXZ6hR72a/mOPw=
+	bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
+	b=xLWEfhIpK05KWy0E8151HY6QqXjIeugkOo5xg//cvLVqx64uhNObkAUntMLfKKRuYC2yXF
+	JdgAn2U51qCRLUAVorFujzHj+dlT3IGcIoqJCvQU1YDPUaISpo8eN7atQnemci6BGbfFip
+	TLjFv9MlaN2QUEeMrhGqUAeRr6BiQVE=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=D5LxtFEq;
-	spf=pass (imf03.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.182 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761851211;
+	imf29.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=HnD6wWTB;
+	spf=pass (imf29.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761851245; a=rsa-sha256;
+	cv=none;
+	b=4Y7W5/qCEqSx+CLnzH9oBpTzCVKEN6rpnpvrs2ciA5mlmS3qVEQZztnkj9pPvTrzN7k/Zs
+	UtHzy4twrGExGaXg49vBOJhQryMovVkOiecPkGbawF6fdM53tR8/8qH0lRGmvf/dnDw67n
+	MWoDG+601WnuNMr6yVKtzSWspDSzHzk=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761851244;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=lhWnjZelzOe9tyVT1vIXYOQef+bxuvWza/B/Vqmbb0E=;
-	b=D5LxtFEqxG8uDpVpfZvPERxoVNSJiF5uGU4oYINjPif2JtMGmAip97OZ2emrzwdh9rmuPr
-	zfbLXebyjkLvy30tZWWZvZRv53ViAXmBpNtraVpi+xfXfAFkgtbzag9VuBr6g2fsHssdFU
-	gx6K61ctconfr5Y5vdelplfWzEfFt8U=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Amery Hung <ameryhung@gmail.com>
-Cc: Song Liu <song@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Michal Hocko
- <mhocko@kernel.org>,  Shakeel Butt <shakeel.butt@linux.dev>,  Johannes
- Weiner <hannes@cmpxchg.org>,  Andrii Nakryiko <andrii@kernel.org>,  JP
- Kobryn <inwardvessel@gmail.com>,  linux-mm@kvack.org,
-  cgroups@vger.kernel.org,  bpf@vger.kernel.org,  Martin KaFai Lau
- <martin.lau@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-  Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops
- to cgroups
-In-Reply-To: <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
-	(Amery Hung's message of "Thu, 30 Oct 2025 11:19:52 -0700")
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
-	<20251027231727.472628-3-roman.gushchin@linux.dev>
-	<CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
-	<87zf98xq20.fsf@linux.dev>
-	<CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
-	<CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
-Date: Thu, 30 Oct 2025 12:06:42 -0700
-Message-ID: <877bwcus3h.fsf@linux.dev>
+	bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
+	b=HnD6wWTBuKVuB+CvbcKv97XxfK8wwM12EaFBwBM2BzqomM+GlPBRuMzpU1FMCMyOslx6jc
+	n34dyYu5M6CAebJi1z/4cDiPRXyFnIY8HrxHnJbXD3j7BPBG8GvSlqh7Dvf64ZdN5HAzS/
+	rWmHbouFwE8dDaSlvNC7tCQGYj/6zQA=
+Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
+ [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-78-pHSRsqieMp6E3RE7EI6DFg-1; Thu, 30 Oct 2025 15:07:23 -0400
+X-MC-Unique: pHSRsqieMp6E3RE7EI6DFg-1
+X-Mimecast-MFC-AGG-ID: pHSRsqieMp6E3RE7EI6DFg_1761851243
+Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-880047f8636so40991996d6.1
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:07:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761851243; x=1762456043;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9Y7S1Zgr4iVGtRsh64LfgvKoH0XA8jwp4qVFPtKmeeA=;
+        b=QQ+xdpmAhQAl+YzUSZViKQuxwPEw4Az7ulT8PVujJZ9Q08MFjQ4EY562rT73u00mdh
+         HK8eJ3O930P8kbtat2Wp20Ol1/mlXjqC7Dhc+uL0LUIlWeE18LxcW5ika9uLo6YPo2Dl
+         jQMb6T7BaRnncw2BgWw9rBXgTwVjFvZO6G+HG0SiGElhETvv8/WGnQo+1HfzankOdoZV
+         LJ+oV8PHC3GhoDCdmQ2559HMR67DGd+n+/Igf/7EZPg0peTKbfwPFpl3GxPBB9EYOWl7
+         UbViaNuizBo0vu9YYKLeUzmSSveTWzU/3iwUG/KZNZYTTX23pXocHjhqPVdah4ByxgeU
+         QS8A==
+X-Forwarded-Encrypted: i=1; AJvYcCXYWjVDecaNIy4con2XH77M4NjT4MhzH0LFx6ES0Ibli/eMbx3eBofeb7Q/SF/LzzTZ7xPW0+Jw/A==@kvack.org
+X-Gm-Message-State: AOJu0Ywh7yqWkKJWbPTfV7x6v06XTLHVnxfhCmp1W4JCjo55ZvfIq5SQ
+	yg2V2zetUPMKm1PLpjGgR7iYNvnx6lu/elZAZ4Rg3yjJMYQckVkLDw47XzjW/zaXq8uuEJAo+77
+	JQ3ObdV4IC3jietBzUDv28mAWPIsxNaA8214LH16H2eA8csSIzAXq
+X-Gm-Gg: ASbGncuh2LQL6Pn70lJKCyA97T6EhDqrt2XNWTQxHj5UR3lUahsCqVTijnciP7uon6/
+	ICSbhsVwtUdnUUu0peCls+DOOgQesN9ZM/XJP5yZODizebjCbUev64AKPTtnu24QpYn0ew6L1a6
+	Uaev16BIETkBLIaZavm1hmXgpfyQba8PF1RcBZLz+V9WElVNOGSz7E2GRzaJnDAEeq4lQC7qVy3
+	hObEy/N5GFzVKwdnDK69Gw6WsPEFzw8FxvCrBXdct682P8k2hizgfTYktiLbFKIHELAPIyK+P1h
+	oQpicBIzxE4E3OfrmE4Z67Vc8wNQ/VPreImCZj2GW9ZceYXs6RxKNtQgIY6qJfAM/GA=
+X-Received: by 2002:a05:620a:4410:b0:884:bea2:f01f with SMTP id af79cd13be357-8ab9afd1550mr60941085a.58.1761851242581;
+        Thu, 30 Oct 2025 12:07:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHagFIkBv4J+3JA0af8KFwdWyaUAnlJH88LcP/SWIKEfGEGCPpq1Uvsvq9Iaf4DVL5Sxox3rA==
+X-Received: by 2002:a05:620a:4410:b0:884:bea2:f01f with SMTP id af79cd13be357-8ab9afd1550mr60932985a.58.1761851241805;
+        Thu, 30 Oct 2025 12:07:21 -0700 (PDT)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba3863cc2sm113652571cf.32.2025.10.30.12.07.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 12:07:21 -0700 (PDT)
+Date: Thu, 30 Oct 2025 15:07:18 -0400
+From: Peter Xu <peterx@redhat.com>
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Houghton <jthoughton@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+Message-ID: <aQO3Zko6Qrk7O96u@x1.local>
+References: <20251014231501.2301398-1-peterx@redhat.com>
+ <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
+ <aPZDVuscFsYSlQjI@x1.local>
+ <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
+ <aPe0oWR9-Oj58Asz@x1.local>
+ <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
 MIME-Version: 1.0
+In-Reply-To: <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2ty7h8RP1om0eGdGTsGNzs-SwzdBZPT5NPzyf0YkBIk_1761851243
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: sxbroae5hwufed7e7zgwrkuaoh5cda3k
+Content-Disposition: inline
+X-Rspamd-Queue-Id: 7C270120004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3C96820015
-X-HE-Tag: 1761851214-861996
-X-HE-Meta: U2FsdGVkX1+VDi9ozuBHp7qJ0O9vgixeopvb4s3SKtFdFlfxg6E0vN4SufhLDnG7OVeCGtXsjFJaM8UfgBk3zEbE0TfMcEUHDtC55AZBB0xwW+Q0lp8wxl4/JvouvH6+V2p59V8f6oPLXbxgKSbeKZJafL10aWMBk+8eDzfbRFJse/zCSXGtPXwOGppHWi7aJYVH7zhVLMY904bzcgStkvNfn8aM+hsX5PDXJP4+Kok8iHtxytpOHSzTwSAw/WNVaoLwib4VkROv5XZV6oYpl5YOQDxNiCLd7/TjNhZP0bNg4H5hcNrKVNYacAfmDlaCGc9l/+ypYW7zWZd2hWRvBiXiDQADHgcdJYJFRKTI1eE/bX24UlK6qgobkepHfClix3JuYq9+A0TwJ2E+cZ3kHM67qw5n3aq2CxW0mGRLXM/h2nC8/fgxT1KINVtCsEKJrwzVdgdsp/W7Sy9z59soK2guMK9fomUrtNU0YeDAgByGv78TpHrGW2V+85i9MwAIoWdpjL0+HQ7PMRsGKPU6rrEuPrwaR4hD2iZDnvKIrQW7Wf+VaLjpfAQXOdZnAqZErScp7XKyZzh7hO3opoYtMQy7PNQl3znjmW+J4IrtBkxadQZk2gEhwHFRMii3ErRon8UJXhozWxCiD2tQ6hwioOLgJd5pONozDmMI8ynBHyTAXtPHqCiWqyO5/OqWMhLA+HDR4bKAQSH+8DkVWw5IZ1BsaV9GGr5JTLFWR9nKYoQgkYUxA3aGtefpA3pna8SNkL0YAievEhMNDRUpQ/2YCgt3zb99+2Bgty2wLglhyrbHxkUNK1Utc873YjzTigTCt/2/uhM1s0KCLvw1LNWCPnmeFD5f/U11ezmCz5W2IRnMw3y2wEfBYUWnjDcpTDTPtzUSi0nfmMbqSay98UZDRqtLT08LVrn84JdZ2Dy2o0bG7TJhp2wtPVYQQcF/Yza9KOq5UTONpW2rmEAXo7f
- keO8zVxP
- 1FboVMgv01m6pVyJozGZgxulo4Soun8WB5OdCZCOR2zovlZPS4O9ul1XXpnkkIGdneft/eue52QcJ/iW7Xs/rwZg3CTn/YTrazLqkg7D1WjAP11Oww4nEGsU2PvJOqV31w3RPJf32DBwzClwayGEBL9ZvHXmdkmiehitE/zNoikRouL2mdeZeT/JNbiivSt6Q2Md7anzLWOVg3tfBP1u2aKAfIPMb09Fs0E+4Q5jCS3cPwpsuWmwe5oQ8+S5/NCKeUVWI
+X-Stat-Signature: acjhajpukbnze3uroghwoh7k3jmsax9s
+X-HE-Tag: 1761851245-95659
+X-HE-Meta: U2FsdGVkX19uX2rnpYdX8yFN7XX55Mh3I8XLqrMJZfjj6Z6MPwnW3HysF2bvtZKK3SjONsJ8fshVG6wIsBMv1lvji33ZvZRcxkjNeebzmSfShF4vC+9FpWwBUG9PU+mLKSqQJ0s/7Oon9QkeBpKrksQq7ItDAJLUXkiCLeUbuDi/BeMlQaOU1y36irue0LhiV6UlZaRcTBv8BK2RwewAcJG/loKCKFpm9/q5mKmwlNj1Mk10oCj9VbA/hK3wymmZuBZ1WTPGmR1aKjWpRjuhdBBm3I9eJEilBQvyeqe9Q95kCK5msWtYVSPFZYRnCmPCa1ufodOEj4+Hs5mUiNzr+tbl+gXKuzsVeTZbtuVSp19Q3vb3i84VZFRrmudj9iTbliAAK8HrOmlQn5CAXwjVAe6tXWW/JyEELrCDYO6gbVd6g8HBw9Cp09UIw0FlHisduUzs9Pdk+2HMZ+CpfnMI+8aJa8v8ukU5aBggYwNeTMaAbtZ29s8q7L6MwddehZTxKAKpPILHWayEu5gL80tf55eypGIt2ci9u8Oi9o3yQrJSwU+qWxE3+ItrQNItW7ohPGgoYBxtrwVy7RzBB9okAgk+as0TKCA2jFXyv0E8oRjdKwJ8RLH+2TAz+98Xa3EPPzXg83vLKhCXAOGsDGGnrOm+2R8PqXKHNALYeH08iDpW3RyVpmZue04v2+pvVvvzQh3SO4q//ePfaTMo1vmBGEN7vtePWb4CvRIfW/zu52FrHmc6RBZEPwKMf3I8ZBNESjmUrJKRD0ccWQ4l5v5+r9R5/ayE8MXL8Hx1Ew63Ht1DBlBdQUKhrMYJtixfaDW8ExRtemU1DCWfxDvbSunUzy2hBd4R/5A/QODp/e5l5fwe6hQljIF2kLWuwougYCTa/8TNReSpiwfwGhpQE+mZaP3BmSzp6Ol8D5PKoCCPRxRlaEIUh8v7Gx8qpl3QwEH+WtVMd4KERBBgNFGIFTv
+ pRYzNl3z
+ eXQ4NLmkEbuoke3cbSsIgpkaOUoN+nT9TdBmulYnqN9G+9N/3HMKuDulUsk4Cp0XhGkfTb0oNjG+ktOt24fyRvZUqXyO5SuSGP+pEdfiy717c3RIHldF3TqtW8rVK4NYBQ0gP8/jrzJgAbZsLCOUae4DhSgWp70fePy5X9xgFAiU0PbKXiz7+TmFHjt6AwiAGvJtPrXCcnDnThrLY4WF9+o/iK+cCF2+GXYaNSldVJW2+w/x8ZhxeQRueeb+CV48fg7jdOLxRHyVmvYYgxyt8hhArGThlVDf/E7ULZRIO/JnG7N/78LcXhrJJeI9QHm3dByh46L4PWLDKHmkRKS9gV776eybp09lSmWowSvgqORGpTrm4u7XgHxy/NpejLzHU8Ci5XCPAS5wqDUc7q2WgBCoE58wrCiwec30z9PDDpS82Ud9RiRiJEEbbKtJK9biqExzmniM7VTQO62b9mbMWxbxu/tLO7YGuzPRX+X4qtvK2VI0LECOZ21ByUlaYlBLHcgO11JNB/60Tfz6vYDxl8naXei4M9VIhmt5mEe0uB1MjwOLxJwiQXyio4Geqtv1hrJppdhqTBSpQ/9Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,144 +143,313 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Amery Hung <ameryhung@gmail.com> writes:
+On Thu, Oct 30, 2025 at 01:13:24PM -0400, Liam R. Howlett wrote:
+> * Peter Xu <peterx@redhat.com> [251021 12:28]:
+> 
+> ...
+> 
+> > Can you send some patches and show us the code, help everyone to support
+> > guest-memfd minor fault, please?
+> 
+> Patches are here:
+> 
+> https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/modularized_mem
 
-> On Thu, Oct 30, 2025 at 11:09=E2=80=AFAM Song Liu <song@kernel.org> wrote:
->>
->> On Thu, Oct 30, 2025 at 10:22=E2=80=AFAM Roman Gushchin
->> <roman.gushchin@linux.dev> wrote:
->> >
->> > Song Liu <song@kernel.org> writes:
->> >
->> > > On Mon, Oct 27, 2025 at 4:17=E2=80=AFPM Roman Gushchin <roman.gushch=
-in@linux.dev> wrote:
->> > > [...]
->> > >>  struct bpf_struct_ops_value {
->> > >>         struct bpf_struct_ops_common_value common;
->> > >> @@ -1359,6 +1360,18 @@ int bpf_struct_ops_link_create(union bpf_att=
-r *attr)
->> > >>         }
->> > >>         bpf_link_init(&link->link, BPF_LINK_TYPE_STRUCT_OPS, &bpf_s=
-truct_ops_map_lops, NULL,
->> > >>                       attr->link_create.attach_type);
->> > >> +#ifdef CONFIG_CGROUPS
->> > >> +       if (attr->link_create.cgroup.relative_fd) {
->> > >> +               struct cgroup *cgrp;
->> > >> +
->> > >> +               cgrp =3D cgroup_get_from_fd(attr->link_create.cgrou=
-p.relative_fd);
->> > >
->> > > We should use "target_fd" here, not relative_fd.
->> > >
->> > > Also, 0 is a valid fd, so we cannot use target_fd =3D=3D 0 to attach=
- to
->> > > global memcg.
->> >
->> > Yep, but then we need somehow signal there is a cgroup fd passed,
->> > so that struct ops'es which are not attached to cgroups keep working
->> > as previously. And we can't use link_create.attach_type.
->> >
->> > Should I use link_create.flags? E.g. something like add new flag
->> >
->> > @@ -1224,6 +1224,7 @@ enum bpf_perf_event_type {
->> >  #define BPF_F_AFTER            (1U << 4)
->> >  #define BPF_F_ID               (1U << 5)
->> >  #define BPF_F_PREORDER         (1U << 6)
->> > +#define BPF_F_CGROUP           (1U << 7)
->> >  #define BPF_F_LINK             BPF_F_LINK /* 1 << 13 */
->> >
->> >  /* If BPF_F_STRICT_ALIGNMENT is used in BPF_PROG_LOAD command, the
->> >
->> > and then do something like this:
->> >
->> > int bpf_struct_ops_link_create(union bpf_attr *attr)
->> > {
->> >         <...>
->> >         if (attr->link_create.flags & BPF_F_CGROUP) {
->> >                 struct cgroup *cgrp;
->> >
->> >                 cgrp =3D cgroup_get_from_fd(attr->link_create.target_f=
-d);
->> >                 if (IS_ERR(cgrp)) {
->> >                         err =3D PTR_ERR(cgrp);
->> >                         goto err_out;
->> >                 }
->> >
->> >                 link->cgroup_id =3D cgroup_id(cgrp);
->> >                 cgroup_put(cgrp);
->> >         }
->> >
->> > Does it sound right?
->>
->> I believe adding a flag (BPF_F_CGROUP or some other name), is the
->> right solution for this.
->>
->> OTOH, I am not sure whether we want to add cgroup fd/id to the
->> bpf link. I personally prefer the model used by TCP congestion
->> control: the link attaches the struct_ops to a global list, then each
->> user picks a struct_ops from the list. But I do agree this might be
->> an overkill for cgroup use cases.
->
-> +1.
->
-> In TCP congestion control and BPF qdisc's model:
->
-> During link_create, both adds the struct_ops to a list, and the
-> struct_ops can be indexed by name. The struct_ops are not "active" by
-> this time.
-> Then, each has their own interface to 'apply' the struct_ops to a
-> socket or queue: setsockopt() or netlink.
->
-> But maybe cgroup-related struct_ops are different.
+Great!  Finally we have something solid to discuss on top.
 
-Both tcp congestion and qdisk cases are somewhat different because
-there already is a way to select between multiple implementations, bpf
-just adds another one. In the oom case, it's not true. As of today,
-there is only one (global) oom killer. Of course we can create
-interfaces to allow a user make a choice. But the question is do we want
-to create such interface for the oom case specifically (and later for
-each new case separately), or there is a place for some generalization?
+Yes, I'm extremely happy to see whatever code there is, I'm happy to review
+it.  I'm happy to see it rolling.  If it is better, we can adopt it.
 
+> 
+> This is actually modularized memory types.  That means there is no
+> hugetlb.h or shmem.h included in mm/userfaultfd.c code.
+> 
+> uffd_flag_t has been removed.  This was turning into a middleware and
+> it is not necessary.  Neither is supported_ioctls.
+> 
+> hugetlb now uses the same functions as every other memory type,
+> including anon memory.
+> 
+> Any memory type can change functionality without adding instructions or
+> flags or anything to some other code.
+> 
+> This code passes uffd-unit-test and uffd-wp-mremap (skipped the swap
+> tests).
+> 
+> guest-memfd can implement whatever it needs to (or use others
+> implementations), like shmem_uffd_ops here:
 
-Ok, let me summarize the options we discussed here:
+I didn't look at the patches in details, however I already commented
+previously on a similar comment you left.  Since you have solid code this
+time, let me ask one by one clearly this time inline:
 
-1) Make the attachment details (e.g. cgroup_id) the part of struct ops
-itself. The attachment is happening at the reg() time.
+> 
+> static const struct vm_uffd_ops shmem_uffd_ops = {
+>         .copy                   =       shmem_mfill_atomic_pte_copy,
 
-  +: It's convenient for complex stateful struct ops'es, because a
-      single entity represents a combination of code and data.
-  -: No way to attach a single struct ops to multiple entities.
+This is optional, if you did the convertion it's perfect (though it's buggy
+right now, more below).  Yes, UFFDIO_COPY might be a good fit for a global
+API like this, however that's the least useful, as I mentioned, I do not
+expect a new user..
 
-This approach is used by Tejun for per-cgroup sched_ext prototype.
+It means, what you did on this may not grow any user.  The whole change may
+not be useful to anyone..
 
-2) Make the attachment details a part of bpf_link creation. The
-attachment is still happening at the reg() time.
+Then I see what you introduced as the API:
 
-  +: A single struct ops can be attached to multiple entities.
-  -: Implementing stateful struct ops'es is harder and requires passing
-     an additional argument (some sort of "self") to all callbacks.
+struct vm_uffd_ops {
+	int (*copy)(struct uffd_info *info);
+	int (*zeropage)(struct uffd_info *info);
+	int (*cont)(struct uffd_info *info);
+	int (*poison)(struct uffd_info *info);
+	int (*writeprotect)(struct uffd_info *info);
+	/* Required features below */
+	ssize_t (*is_dst_valid)(struct vm_area_struct *dst_vma,
+				unsigned long dst_start, unsigned long len);
+	unsigned long (*increment)(struct vm_area_struct *vma);
+	ssize_t (*failed_do_unlock)(struct uffd_info *info);
+	unsigned int (*page_shift)(struct vm_area_struct *src_vma);
+	void (*complete_register)(struct vm_area_struct *vma);
+};
 
-I'm using this approach in the bpf oom proposal.
+The copy() interface (and most of the rest) takes something called
+uffd_info*.  Then it looks like this:
 
-3) Move the attachment out of .reg() scope entirely. reg() will register
-the implementation system-wide and then some 3rd-party interface
-(e.g. cgroupfs) should be used to select the implementation.
+struct uffd_info {
+	unsigned long dst_addr;			/* Target address */
+	unsigned long src_addr;			/* Source address */
+	unsigned long len;			/* Total length to copy */
+	unsigned long src_last;			/* starting src_addr + len */
+	unsigned long dst_last;			/* starting dst_addr + len */
+	struct folio *foliop;			/* folio pointer for retry */
+	struct userfaultfd_ctx *ctx;		/* The userfaultfd context */
 
-  +: ?
-  -: New hard-coded interfaces might be required to enable bpf-driven
-     kernel customization. The "attachment" code is not shared between
-     various struct ops cases.
-     Implementing stateful struct ops'es is harder and requires passing
-     an additional argument (some sort of "self") to all callbacks.
+	struct vm_area_struct *dst_vma;		/* Target vma */
+	unsigned long increment;		/* Size of each operation */
+	bool wp;				/* Operation is requesting write protection */
+	const struct vm_uffd_ops *uffd_ops;	/* The vma uffd_ops pointer */
+	int (*op)(struct uffd_info *info);	/* The operation to perform on the dst */
+	long copied;
+};
 
-This approach works well for cases when there is already a selection
-of implementations (e.g. tcp congestion mechanisms), and bpf is adding
-another one.
+You went almost mad when I introduced uffd_copy() in v1.  It might be
+because there used to have pmd* and something around pgtables.  However
+I'll still need to question whether this is a better and easier to adopt
+interface if a mem type wants to opt-in any uffd features.
 
-I personally lean towards 2), but I can easily implement bpf_oom with 1)
-and most likely with 3) too, but it's a bit more complicated.
+So are you happy yourself now with above complicated struct that memtype
+needs to implement and support?
 
-So I guess we all need to come to an agreement which way to go.
+>         .zeropage               =       shmem_mfill_atomic_pte_zeropage,
 
-Thanks!
+Why a memory type needs to provide a separate hook to inject a zeropage?
+It should almost always be the same of UFFDIO_COPY except copying.
+
+>         .cont                   =       shmem_mfill_atomic_pte_continue,
+
+It's OK to have it.  However said that, what we really need is "fetching a
+cache folio".  I'll need to check how you exposed the userfaultfd helpers
+so that it will support mem types to opt-in this.  To me, this is really an
+overkill.
+
+Shmem impl:
+
+static int shmem_mfill_atomic_pte_continue(struct uffd_info *info)
+{
+	struct vm_area_struct *dst_vma = info->dst_vma;
+	struct inode *inode = file_inode(dst_vma->vm_file);
+	pgoff_t pgoff = linear_page_index(dst_vma, info->dst_addr);
+	pmd_t *dst_pmd;
+	struct folio *folio;
+	struct page *page;
+	int ret;
+
+	ret = uffd_get_dst_pmd(dst_vma, info->dst_addr, &dst_pmd);
+	if (ret)
+		return ret;
+
+	ret = shmem_get_folio(inode, pgoff, 0, &folio, SGP_NOALLOC);
+	/* Our caller expects us to return -EFAULT if we failed to find folio */
+	if (ret == -ENOENT)
+		ret = -EFAULT;
+	if (ret)
+		goto out;
+	if (!folio) {
+		ret = -EFAULT;
+		goto out;
+	}
+
+	page = folio_file_page(folio, pgoff);
+	if (PageHWPoison(page)) {
+		ret = -EIO;
+		goto out_release;
+	}
+
+	ret = mfill_atomic_install_pte(dst_pmd, dst_vma, info->dst_addr,
+				       page, false, info->wp);
+	if (ret)
+		goto out_release;
+
+	folio_unlock(folio);
+	ret = 0;
+out:
+	return ret;
+out_release:
+	folio_unlock(folio);
+	folio_put(folio);
+	goto out;
+}
+
+So are you sure this is better than the oneliner?
+
+In your new API, the driver also needs to operate on pmd*.  Is it a concern
+to you?  Maybe you don't think it's a concern now, even if you used to
+think uffd_copy() has concerns exposing pmd* pointers?
+
+The current series I proposed is not only simpler, but only expose folio*.
+That's at least safer at least from your theory, is that right?
+
+>         .poison                 =       mfill_atomic_pte_poison,
+
+Why this is needed if UFFDIO_POISON should exactly do the same thing for
+each memory type?
+
+>         .writeprotect           =       uffd_writeprotect,
+
+Same question.  Wr-protect over a pagecache folio should really behave the
+same.  Why do you need to introduce it?
+
+After all, even in your branch you reused change_protection(), where the
+hugetlb special operations reside.  I don't see much point on why it's
+needed.
+
+>         .is_dst_valid           =       shmem_is_dst_valid,
+
+It's definitely not obvious what this is for.
+
+Looks like it's trying to verify vma validity.  However then I see shmem
+impl has this:
+
+static ssize_t shmem_is_dst_valid(struct vm_area_struct *dst_vma,
+		unsigned long dst_start, unsigned long len)
+{
+	if (!vma_is_anonymous(dst_vma) && !vma_is_shmem(dst_vma))
+	    return -EINVAL;
+
+	return 0;
+}
+
+Why shmem allows anon vma?
+
+>         .increment              =       mfill_size,
+
+This is almost only useful for hugetlbfs, same to page_shift and
+complete_register.
+
+It's ok if you want to clean hugetlbfs.  But if we want to fetch the
+granule of the folios inside a vma, IMHO we should make it a vma attribute,
+not something special to userfaultfd.
+
+>         .failed_do_unlock       =       uffd_failed_do_unlock,
+
+You'd better at least change the name of it.  It so far unlocks some
+misterious locks then try to copy the folio without mmap/vma lock.
+
+inline ssize_t
+uffd_failed_do_unlock(struct uffd_info *info)
+{
+	ssize_t err;
+	void *kaddr;
+
+	up_read(&info->ctx->map_changing_lock);
+	uffd_mfill_unlock(info->dst_vma);
+	VM_WARN_ON_ONCE(!info->foliop);
+
+	kaddr = kmap_local_folio(info->foliop, 0);
+	err = copy_from_user(kaddr, (const void __user *) info->src_addr,
+			     PAGE_SIZE);
+	kunmap_local(kaddr);
+	if (unlikely(err))
+		return -EFAULT;
+
+	flush_dcache_folio(info->foliop);
+	return 0;
+}
+
+How do the mem type know what locks to unlock if they do not lock it first
+themselves?
+
+>         .page_shift             =       uffd_page_shift,
+>         .complete_register      =       uffd_complete_register,
+
+Hugetlbfs specific hooks.  It's OK if you prefer rewritting code for
+hugetlbfs.  I don't have objections.
+
+> };   
+> 
+> Where guest-memfd needs to write the one function:
+> guest_memfd_pte_continue(), from what I understand.
+
+You did mention what is required in your new API:
+
+	/* Required features below */
+	ssize_t (*is_dst_valid)(struct vm_area_struct *dst_vma,
+				unsigned long dst_start, unsigned long len);
+	unsigned long (*increment)(struct vm_area_struct *vma);
+	ssize_t (*failed_do_unlock)(struct uffd_info *info);
+	unsigned int (*page_shift)(struct vm_area_struct *src_vma);
+	void (*complete_register)(struct vm_area_struct *vma);
+
+So guest-memfd needs to implement these 6 APIs to support minor fault.
+
+> 
+> Obviously some of the shmem_ functions would need to be added to a
+> header, or such.
+> 
+> And most of that can come from shmem_mfill_atomic_pte_continue(), from
+> what I understand.  This is about 40 lines of code, but may require
+> exposing some shmem functions to keep the code that compact.
+> 
+> So we don't need to expose getting a folio to a module, or decode any
+> special flags or whatever.  We just call the function that needs to be
+
+I didn't reply before, but I don't think supported_ioctls is special flags
+or magic values.  They're simply flags showing what the mem type supports
+on the ioctls.  One can set it wrong, but I don't think what you proposed
+with above 6 APIs would be easier to get right.  Any module can also make
+things wrong in any of above.
+
+UFFDIO_CONTINUE itself is definitely getting much more complicated, it used
+to only set a flag in supported_ioctls, provide a oneliner to fetch a
+cache.  Now it needs all above 6 APIs, one of them taking uffd_info* which
+further contains 10+ fields to process.
+
+> called on the vma that is found.
+> 
+> If anyone has tests I can use for guest-memfd and instructions on
+> guest-memfd setup, I'll just write it instead of expanding the
+> userfaultfd middleware.
+
+Personally, this whole thing is an overkill to me:
+
+$ git diff --stat 63f84ba525ea04ef376eac851efce2f82dd05f21..HEAD
+ fs/userfaultfd.c              |  14 +--
+ include/linux/hugetlb.h       |  21 ----
+ include/linux/mm.h            |  11 ++
+ include/linux/shmem_fs.h      |  14 ---
+ include/linux/userfaultfd_k.h | 108 ++++++++++------
+ mm/hugetlb.c                  | 359 +++++++++++++++++++++++++++++++++++++++++++++--------
+ mm/shmem.c                    | 245 ++++++++++++++++++++++++------------
+ mm/userfaultfd.c              | 869 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++---------------------------------------------------------------------
+ 8 files changed, 962 insertions(+), 679 deletions(-)
+
+I can wait for some second opinions, but if you are confident this will be
+welcomed by others, I suggest you prepare a minimum changeset preparing
+support for guest-memfd minor fault, then post it formally upstream.
+
+Thanks,
+
+-- 
+Peter Xu
+
 
