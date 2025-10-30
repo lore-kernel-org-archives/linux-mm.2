@@ -4,107 +4,143 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45EEDCCF9EE
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 02:56:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 637EBCCF9EB
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 03:07:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69AD88E01BA; Wed, 29 Oct 2025 22:56:50 -0400 (EDT)
+	id A58818E01BB; Wed, 29 Oct 2025 23:07:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 64A6B8E01B2; Wed, 29 Oct 2025 22:56:50 -0400 (EDT)
+	id A09348E01B2; Wed, 29 Oct 2025 23:07:40 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5870C8E01BA; Wed, 29 Oct 2025 22:56:50 -0400 (EDT)
+	id 8D1168E01BB; Wed, 29 Oct 2025 23:07:40 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 46A2C8E01B2
-	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 22:56:50 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CF724BB20E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 02:56:49 +0000 (UTC)
-X-FDA: 84053268138.12.922466D
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 508342000E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 02:56:45 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=07btWpbi;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761793008; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 748288E01B2
+	for <linux-mm@kvack.org>; Wed, 29 Oct 2025 23:07:40 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 0B0DD1A018A
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 03:07:40 +0000 (UTC)
+X-FDA: 84053295480.14.B66844E
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf21.hostedemail.com (Postfix) with ESMTP id ADBAA1C0007
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 03:07:37 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eaz064tm;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761793657; a=rsa-sha256;
 	cv=none;
-	b=02qFVYeJHR9JM3DFSGE+vrMD9pro43uJDmkmCq59YhxrX+ANcS4g1l/Ana0nwDnNIl08U2
-	B3uYEsAB6yNmIKvyRVH1HdTzdyU272IJkvzkcVXx7Xn7KH3x0GvRL8Lk6pD67nmgkNOpY3
-	B/nCUvCGu4YHlyV1uSDqKqjMKDUUSTU=
+	b=DwK6z9Zy94bYsF1wOfLiZOgyp3Az0Bk7hyetCva5/6r1gME2dx2T5MZk0pLnhDMp4L/bqB
+	hHfNgl1auvZMdzXopWQ7g+vxZrxzi2uL4McQLk6skcvEjn+YkrNvN38BEomv02Zp90Bg4e
+	pnrq3y2x9qTwzGkeMXGn395Cans6phI=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=07btWpbi;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=eaz064tm;
+	spf=pass (imf21.hostedemail.com: domain of npache@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761793008;
+	s=arc-20220608; t=1761793657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0hQRTMFxdEmNDfeGmLa4tp3RC8FcGsqNeLnBB5VEq1c=;
-	b=ex/EGv9F78tgsge23UqadQJBMjHNjIaHK179n1vQniVWBhtqeba9X2XiwjMjD4kzyiTCG3
-	qbqZDhysZb2NU5lU5d4iKGRH7FEl3GyEY18DjN8PhPnHlHQoZRr9tyREyTi9Lel0BGON1e
-	+4WoTnJppJsHe1IdtuEXaP1AgF2tq8w=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=0hQRTMFxdEmNDfeGmLa4tp3RC8FcGsqNeLnBB5VEq1c=;
-	b=07btWpbiNwohyHweI9wu3LKC7j9YqX14x1hnrhD1+fM4hQbECyJblJChg2G+DUQNOyPl1NO3a
-	+DhOrhcz9tOc0Af9ZY00AzcrDkVyplF1moRr/Up7Q8V067Tm13Y46+fC4fJqzhQd2YwVuikRMv3
-	FRrgWfU7FV8AfF/YLPrIiao=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cxpd00sztzcZyk;
-	Thu, 30 Oct 2025 10:55:16 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5014F1400CA;
-	Thu, 30 Oct 2025 10:56:41 +0800 (CST)
-Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Oct 2025 10:56:41 +0800
-Received: from [10.173.125.37] (10.173.125.37) by
- kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Oct 2025 10:56:40 +0800
-Subject: Re: [PATCH v2 1/1] mm/ksm: recover from memory failure on KSM page by
- migrating to healthy duplicate
-To: Long long Xia <xialonglong2025@163.com>
-CC: <markus.elfring@web.de>, <nao.horiguchi@gmail.com>,
-	<akpm@linux-foundation.org>, <wangkefeng.wang@huawei.com>,
-	<qiuxu.zhuo@intel.com>, <xu.xin16@zte.com.cn>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, Longlong Xia
-	<xialonglong@kylinos.cn>, <david@redhat.com>, <lance.yang@linux.dev>
-References: <20251016101813.484565-1-xialonglong2025@163.com>
- <20251016101813.484565-2-xialonglong2025@163.com>
- <af769443-e855-81d0-a44a-d5890f5d1d2f@huawei.com>
- <7c069611-21e1-40df-bdb1-a3144c54507e@163.com>
- <db70f612-bbb1-0f9a-3dd6-884b1d64ab61@huawei.com>
- <394cb428-c37b-44c7-8367-4f76514a6322@163.com>
-From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <64953691-ce0e-71d9-1ab3-7f8cefd6ace4@huawei.com>
-Date: Thu, 30 Oct 2025 10:56:39 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.6.0
+	bh=9wN0XWQ1N0rtxB4cj1GaEpvY3UQhVabXBsS/QmbEqpk=;
+	b=PrBsRtxGvBeiEF4WwNY+P7sZ8Awxf7oNaSsePluxVATKaYCY9onCGPSjqXqtEfihBa3/4F
+	OfjnNINzbf0kDjICpC9mTF+6j8eDKoylmyG3wtj3BD7OPUn1SOQvQaqXBnRwOFTd67Ir7z
+	tCHSgzb7z1RhKsM6swJvRlxV/7kqles=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761793657;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9wN0XWQ1N0rtxB4cj1GaEpvY3UQhVabXBsS/QmbEqpk=;
+	b=eaz064tm7hYNBF30k+bmcWVMkSqIpsiyOJ+nmTwIGUYBdXJ930DGjyjTJPakHuV9W5LZZt
+	tlSuho9V5X1DvpfwqnqkzTnd1ZhQz8wfF2Te04wt1MqpJxvWr3RROtyCGnW0ZTXprtZVSg
+	StefAhGuVfiMqRd7SGQYQLBcUHT9Pqo=
+Received: from mail-yw1-f200.google.com (mail-yw1-f200.google.com
+ [209.85.128.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-453-sNAlZ7QKMKOfyhr6X243_w-1; Wed, 29 Oct 2025 23:07:35 -0400
+X-MC-Unique: sNAlZ7QKMKOfyhr6X243_w-1
+X-Mimecast-MFC-AGG-ID: sNAlZ7QKMKOfyhr6X243_w_1761793653
+Received: by mail-yw1-f200.google.com with SMTP id 00721157ae682-7848b193cc5so32232077b3.0
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 20:07:33 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761793653; x=1762398453;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9wN0XWQ1N0rtxB4cj1GaEpvY3UQhVabXBsS/QmbEqpk=;
+        b=RXUV9Qck/FPRlg1OFylQzlPwP93FI7wkfNarpZ1nxs+qkMrFqpszchO0dlCyNZPkLg
+         MUSHXG2R/4xtwUQC3HN7YmWYfz2pQpxQBfvoyL6k407h5K1PTkdj3TP3FYMAsPlbLW0l
+         0KbddjeA75SdlNxYDGQ0IVHZqhCVuqovqAk4WljnBkrY0+T0Gndwpzu0W3Qh+l0FC4T5
+         tPsOsBjPUE8pCaXYR95XPC0T+dJbBfF+nv5NV2AjJpvkX1BxwVyiq9sH39pTQC/wJtKN
+         UYwwA0qDHT8agJZo/FIbxrKaVOtca07i9W7Et/x2DktWIs4yLYipO4Pe+PiYbe7cz1/b
+         k/6Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWwhgE0wI1jKinc3SNlEtDmEnmSJyzXgAK8LbTCibxktkpXk9LnBjXmL97PUsqRpOkcvgg+m9d/Zw==@kvack.org
+X-Gm-Message-State: AOJu0YzKZfwuOUZqfn5OdhazoRYsqpzDxyvQKbidB/gaZLRxsdjdi85U
+	J7S01uV0POyMURamt4R1+phOmIrZCjDRBFcBJHCmdI/3/AWC4YGAMSp74Vf55Yv4mwoaunMoqXv
+	WAzKlG0lHi4ETaH0nAa+pVnvdI+kvY+ncLmKYF0sRKed3hOVmBowR72yhSRUn8GiUSDfmr+GHWF
+	jr8V95SKS5DeNDiziW4bT5YrkVbjE=
+X-Gm-Gg: ASbGnctvqinBFLrWxXnmpylK/1WuhuhdxPtCbRHsax+JMSBK5duaDRMXarDc5NLOIzl
+	Qp/dmfVj+lXSDOqdis/RKyRDnA+9UOjUl6WoNjSY+cZ4CywRgO0w+Nlj8bQDTrPxOdqIZbg5jLw
+	hiCVULTB5VeDrbx1Zpus+Vf27Bc2ZyL+kQ2yJoEuYSmVSx0AIZJq48lOT1sqKhsbR55Z2N8A==
+X-Received: by 2002:a05:690e:1248:b0:63e:1521:c29f with SMTP id 956f58d0204a3-63f829a2809mr1659577d50.17.1761793653277;
+        Wed, 29 Oct 2025 20:07:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEC5CkcBnh/sb8uhkM3WgOJU7Y4/I4RGXP2TJxmJQ2XYo9gh6ekWqrMeIKQHHjyKjrwn97kwUnbrionRddMKeM=
+X-Received: by 2002:a05:690e:1248:b0:63e:1521:c29f with SMTP id
+ 956f58d0204a3-63f829a2809mr1659506d50.17.1761793652731; Wed, 29 Oct 2025
+ 20:07:32 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <394cb428-c37b-44c7-8367-4f76514a6322@163.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.173.125.37]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemq500010.china.huawei.com (7.202.194.235)
+References: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
+From: Nico Pache <npache@redhat.com>
+Date: Wed, 29 Oct 2025 21:07:07 -0600
+X-Gm-Features: AWmQ_bmIFH7DQx94H00ZendIrBM5Leqedwdezzz2vnEqWrhrlST8xh1cZBn-MjI
+Message-ID: <CAA1CXcCiS37Kw78pam3=htBX5FvtbFOWvYNA0nPWLyE93HPtwA@mail.gmail.com>
+Subject: Re: [PATCH 0/4] initial work on making VMA flags a bitmap
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Kees Cook <kees@kernel.org>, 
+	Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, John Hubbard <jhubbard@nvidia.com>, 
+	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+	Jann Horn <jannh@google.com>, Matthew Brost <matthew.brost@intel.com>, 
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+	Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	David Rientjes <rientjes@google.com>, Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-mm@kvack.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: R5mLtxWdlYJ7Kj1AmmxbFKjZq9KxJsGKxq6VTU3Yrlw_1761793653
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 508342000E
-X-Stat-Signature: fsqn1wiy5ytcz9iesddck75zchzbiz8d
-X-HE-Tag: 1761793005-135553
-X-HE-Meta: U2FsdGVkX18Wf3cXa77q75Yr9wOmSeqGIRkKHEVh6BpFn3tTsItY9CERemIWw1+RpzydZHV4JELw4XJOfNIJIbmvRiC3s/TJINjqAR4PlRyUEplzFsLKBPdprEUO+xS43IVnfHN4cG3fxlfWrtSu/XAFImF/M9a7AAeU/1RDcwNRB5eQ8o+1/FNaXwc6YJK0turySY+QoVttfitFT/suCsDIMyGEEputWr02yae0tBeIUVQpQ5FixH3EFSwmlFwlTg4FFJ7mHLBTWXBM4Hq7Al3Ln7Sd/XHLDf+hYpj1VIDz/jeOl2kW46IWw45G4saVX3X+CTmmi//CV2J3ImYeundKD4qQogjCWqlavfyQx/XAsS4jVn7941UIvFjVh6EWUjeWUDBtSgTClpe31bROWliC9jmK46ycLIOS+dnX2JcsbUvTDnax3m2UBGDAp5DSD0PSpd1b/AHJwbKfjE+h1b+bMJtScFWVU3kCKPwFWorJf19JBxv1XjGyIWEKQGy11JSp2zAh3q+91Mr4Ld1XVnTIR6WEqcOiLTEoZEYvv+Y38Vv+HSqqGD+uaccpwYGII0QK2jMBVVBAYE7l5vS3Ai4MZOgnjbRdJsQEvMiSlpBi9QLWa/VnSahAiSoLc5dwbMmxciIGYTBz0uHlEqgI6o7CHw3QEZqng2Up5PyzIILsqwDfDRUzIDkBU5VPAXkfMj7REoER9RlYSxdPCYelDDcclyFNiQg5/N96Krywm2ugzVtFoFJWtrSXfhb5tTMt/h0HZhxmk3f60qHMciz7zZ2pGo4Nkuta7HvOTiCQwgZfGHiQu0vwnVkr2I2Rj0jpEjuNigQmBfIHGgptPuhjDNLGcAJrwpfZQmvCmbNfnhV3OtYR7oIE1VkyviUxqa4hxFPO11qdUqJ8qLx+eswJ9r5amURB14lK3Nc6/fq63N2aKIiYhvBOdyLy1rb25i3H9V3dHIyvLXn7M0qvJVo
- ByH/kLn6
- HwAIxig8bbg5ad0fFt6ioxEkNi4dYD/VNcsAzhNSeMgx09tmEQxdqJeZY6twcfHgY83nHP3gnwCSTkVd2yuTublpI1YRVmMjETEI953QoY0kQMeJdbgXdp38H05X/Po5BcZiiDT4biezwjEjPcpfVjLmcHlpydeaVH0gexGi/hNHvnAjo5U9A1vxIXoRlQVamlpGlIflKVKO6SOxUXatU7EMt/+5AWqJ2BvnPQM4TQtUYGls1bZHshGnJQxz3rAxMxE9T2pFlnodf3Oqafl1P5A6Q7+awmIX9DyKeTDf9WReOmWk0uCWLAfc7Kh65lbm0IytT+1+t2QKSt5luXfsSrMH3e9rvaZ29dXYluNgdwh/QpZ7MpG+OjjrSFZP/uFGeApLD6TgTPiNd6rtSiqJojkIwZA==
+X-Stat-Signature: 7rh5ffh16yf8m7cb66nr48jx8psy4dsp
+X-Rspamd-Queue-Id: ADBAA1C0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761793657-281598
+X-HE-Meta: U2FsdGVkX19W3HaBm4dVImTaaN7DgCX5k0MXc5LUTz+QJxgdtxW97yT53DsU9wCPrgg6rWH/0PsJK95r03UoUHH3ywXIFEigq5vaxGu92dv1uFXMNdPv3Tr+XW55ORhZtoeK2jvgroPxw4G02Ja1gKkcp4rYN/uIcvN6LxrxENMxDYEecmYS96fy72pRm6qZY6zLAY9Smqa2vr2TWvH2TR+CiyGWDj3KUGgy0+2AXCW10XTeiXHpbjkl6/g+4zm+CMirsIOeJ4vARrSAnrWxBGeDGZ+VfOezZ8T7IyDOl39AuNwyGOrjXze70fkPXd5aAyrP2Xti9f5zk+dMpG1ZwfZwY1Yvdfdv896LfCzJN6y9X/Krxk2/dI+1pQQyxZXmedFgg1ZDpfKsREAg+946l0VdujRtPnby82iW/dm+IubHZiI42Vds/BIVl0SVWrKrUHhgOzcHsbubG3M7cPDHa/PqbW+4CSQMWWpdF8IJQcpbS8hmU4fiBoxFYC+DkR3FOfBpiL97G+ugJ1SjIeRzOeiYAWiudocCpRuC5+0QR0bC7rUWBWsJYOLFPBb4uRE9ut1lvClEehtAoe/S7ek9NXqM57m35CF2rtAhDubLXirFzNrjYSYoqN+G3dtElqSUNBSEt79kSAMF8nyN0Gi2mD9vVKX0GjOsHQ7cNusI5UXuqLKUKYLhtl1fqEBiidZBji6f3ckl2NC3X8C8RwKpl9U4iURQ/QIqlcCsrqFwrW0VMW8ymbwKzPjEmdELtkA/I2BolKhDgZliyHgWfBNG6AIz8FhYlcIAB0vriz2ml4SUXEvyzWHz2iGRCr4gmqDjKrbm2RWkJXy5IvoXBTtkZJC3PBThvOZerInW00BUNsnnfoGmhHxYuBURuvW9bCSHQg06J3eqJhbVMjGU83d4WTWLeNqd5p6JrKM2cBwURDYx2klshxZzM9UTj+JhG35Dt210ziwM8ycA75TJbuo
+ bGF8q7WG
+ pBbbTRGHKaSUn3Bb+hvUaTYUnp5Y8Cq3mrcJQ97SVIKNYJOPrQoMr2/EnhB/idBDqv6dGSGnOkDcg13R88Nki1PfvL1zy/E8xzR1uZp2aO+1eeCRkSkF9d/nOh3HQUMNWfbuWlVnS4L+CXoGhgs0HZPlcSGCkVMOWOU6HpJLM8lRPGwNQoY/ey5mU34UWzEUenea0sCjprQCGN4Fm0/mvzvxFgCxF7FIP1k+2W+mET74KLhKUVrvxWFBdJjGyLktrmk53Oq7xwv1QwUJKO8tcD50ANUoAAlTqcVOPkqDxCD9smdA7CFMu9mh3CNTw7EKatxvDh3bmMpGrxx/bFee71quVG7Ni8GRellewrcUkjrlnfXb1cgHKgC49d+7rueJvvKn7TnFq1iGr3gI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,141 +149,186 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025/10/29 15:12, Long long Xia wrote:
-> Thanks for the reply.
-> 
-> 
-> 在 2025/10/29 14:40, Miaohe Lin 写道:
->> On 2025/10/28 15:54, Long long Xia wrote:
->>> Thanks for the reply.
->>>
->>> 在 2025/10/23 19:54, Miaohe Lin 写道:
->>>> On 2025/10/16 18:18, Longlong Xia wrote:
->>>>> From: Longlong Xia <xialonglong@kylinos.cn>
->>>>>
->>>>> When a hardware memory error occurs on a KSM page, the current
->>>>> behavior is to kill all processes mapping that page. This can
->>>>> be overly aggressive when KSM has multiple duplicate pages in
->>>>> a chain where other duplicates are still healthy.
->>>>>
->>>>> This patch introduces a recovery mechanism that attempts to
->>>>> migrate mappings from the failing KSM page to a newly
->>>>> allocated KSM page or another healthy duplicate already
->>>>> present in the same chain, before falling back to the
->>>>> process-killing procedure.
->>>>>
->>>>> The recovery process works as follows:
->>>>> 1. Identify if the failing KSM page belongs to a stable node chain.
->>>>> 2. Locate a healthy duplicate KSM page within the same chain.
->>>>> 3. For each process mapping the failing page:
->>>>>      a. Attempt to allocate a new KSM page copy from healthy duplicate
->>>>>         KSM page. If successful, migrate the mapping to this new KSM page.
->>>>>      b. If allocation fails, migrate the mapping to the existing healthy
->>>>>         duplicate KSM page.
->>>>> 4. If all migrations succeed, remove the failing KSM page from the chain.
->>>>> 5. Only if recovery fails (e.g., no healthy duplicate found or migration
->>>>>      error) does the kernel fall back to killing the affected processes.
->>>>>
->>>>> Signed-off-by: Longlong Xia <xialonglong@kylinos.cn>
->>>> Thanks for your patch. Some comments below.
->>>>
->>>>> ---
->>>>>    mm/ksm.c | 246 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
->>>>>    1 file changed, 246 insertions(+)
->>>>>
->>>>> diff --git a/mm/ksm.c b/mm/ksm.c
->>>>> index 160787bb121c..9099bad1ab35 100644
->>>>> --- a/mm/ksm.c
->>>>> +++ b/mm/ksm.c
->>>>> @@ -3084,6 +3084,246 @@ void rmap_walk_ksm(struct folio *folio, struct rmap_walk_control *rwc)
->>>>>    }
->>>>>      #ifdef CONFIG_MEMORY_FAILURE
->>>>> +static struct ksm_stable_node *find_chain_head(struct ksm_stable_node *dup_node)
->>>>> +{
->>>>> +    struct ksm_stable_node *stable_node, *dup;
->>>>> +    struct rb_node *node;
->>>>> +    int nid;
->>>>> +
->>>>> +    if (!is_stable_node_dup(dup_node))
->>>>> +        return NULL;
->>>>> +
->>>>> +    for (nid = 0; nid < ksm_nr_node_ids; nid++) {
->>>>> +        node = rb_first(root_stable_tree + nid);
->>>>> +        for (; node; node = rb_next(node)) {
->>>>> +            stable_node = rb_entry(node,
->>>>> +                    struct ksm_stable_node,
->>>>> +                    node);
->>>>> +
->>>>> +            if (!is_stable_node_chain(stable_node))
->>>>> +                continue;
->>>>> +
->>>>> +            hlist_for_each_entry(dup, &stable_node->hlist,
->>>>> +                    hlist_dup) {
->>>>> +                if (dup == dup_node)
->>>>> +                    return stable_node;
->>>>> +            }
-> may I add cond_resched(); here ？
->>>>> +        }
->>>>> +    }
->>>> Would above multiple loops take a long time in some corner cases?
->>> Thanks for the concern.
->>>
->>> I do some simple test。
->>>
->>> Test 1: 10 Virtual Machines (Real-world Scenario)
->>> Environment: 10 VMs (256MB each) with KSM enabled
->>>
->>> KSM State:
->>> pages_sharing: 262,802 (≈1GB)
->>> pages_shared: 17,374 （≈68MB）
->>> pages_unshared = 124,057 (≈485MB)
->>> total ≈1.5GB
->>> chain_count = 9, not_chain_count = 17152
->>> Red-black tree nodes to traverse:
->>> 17,161 (9 chains + 17,152 non-chains)
->>>
->>> Performance:
->>> find_chain: 898 μs (0.9 ms)
->>> collect_procs_ksm: 4,409 μs (4.4 ms)
->>> Total memory failure handling: 6,135 μs (6.1 ms)
->>>
->>>
->>> Test 2: 10GB Single Process (Extreme Case)
->>> Environment: Single process with 10GB memory,
->>> 1,310,720 page pairs (each pair identical, different from others)
->>>
->>> KSM State:
->>> pages_sharing: 1,311,740 （≈5GB)
->>> pages_shared: 1,310,724 （≈5GB)
->>> pages_unshared = 0
->>> total ≈10GB
->>> Red-black tree nodes to traverse:
->>> 1,310,721 (1 chain + 1,310,720 non-chains)
->>>
->>> Performance:
->>> find_chain: 28,822 μs (28.8 ms)
->>> collect_procs_ksm: 45,944 μs (45.9 ms)
->>> Total memory failure handling: 46,594 μs (46.6 ms)
->> Thanks for your test.
->>
->>> Summary:
->>> The find_chain function shows approximately linear scaling with the number of red-black tree nodes.
->>> With a 76x increase in nodes (17,161 → 1,310,721), latency increased by 32x (898 μs → 28,822 μs).
->>> representing 62% of total memory failure handling time (46.6ms).
->>> However, since memory failures are rare events, this latency may be acceptable
->>> as it does not impact normal system performance and only affects error recovery paths.
->>>
->> IMHO, the execution time of a kernel function must not be too long without any scheduling points.
->> Otherwise it may affect the normal scheduling of the system and leads to something like performance
->> fluctuation. Or am I miss something?
->>
->> Thanks.
->> .
-> 
-> I will add cond_resched()in the loop of red-black tree to allow scheduling in find_chain(), may be it is enough?
-
-It looks work to me.
-
-Thanks.
+On Wed, Oct 29, 2025 at 11:50=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> We are in the rather silly situation that we are running out of VMA flags
+> as they are currently limited to a system word in size.
+>
+> This leads to absurd situations where we limit features to 64-bit
+> architectures only because we simply do not have the ability to add a fla=
+g
+> for 32-bit ones.
+>
+> This is very constraining and leads to hacks or, in the worst case, simpl=
+y
+> an inability to implement features we want for entirely arbitrary reasons=
 .
+>
+> This also of course gives us something of a Y2K type situation in mm wher=
+e
+> we might eventually exhaust all of the VMA flags even on 64-bit systems.
+>
+> This series lays the groundwork for getting away from this limitation by
+> establishing VMA flags as a bitmap whose size we can increase in future
+> beyond 64 bits if required.
+>
+> This is necessarily a highly iterative process given the extensive use of
+> VMA flags throughout the kernel, so we start by performing basic steps.
+>
+> Firstly, we declare VMA flags by bit number rather than by value, retaini=
+ng
+> the VM_xxx fields but in terms of these newly introduced VMA_xxx_BIT
+> fields.
+>
+> While we are here, we use sparse annotations to ensure that, when dealing
+> with VMA bit number parameters, we cannot be passed values which are not
+> declared as such - providing some useful type safety.
+>
+> We then introduce an opaque VMA flag type, much like the opaque mm_struct
+> flag type introduced in commit bb6525f2f8c4 ("mm: add bitmap mm->flags
+> field"), which we establish in union with vma->vm_flags (but still set at
+> system word size meaning there is no functional or data type size change)=
+.
+>
+> We update the vm_flags_xxx() helpers to use this new bitmap, introducing
+> sensible helpers to do so.
+>
+> We then provide vma_flags_test() and vma_test() to allow for testing of V=
+MA
+> flag bits, and utilise these across the memory management subsystem.
+>
+> Since it would be entirely inefficient to do away with the bitwise
+> operations used throughout the kernel with respect to VMA flags, we permi=
+t
+> these to exist, providing helpers for these operations against the new
+> bitmap.
+>
+> These operate on the assumption that such operations will only be require=
+d
+> for flags which can exist within a system word. This allows the fundament=
+al
+> flags to be used efficiently as before.
+>
+> This series lays the foundation for further work to expand the use of
+> bitmap VMA flags and eventually eliminate these arbitrary restrictions.
+>
+>
+> ANDREW/REVIEWS NOTES:
+>
+> Apologies, but the nature of this series is that it's going to be a littl=
+e
+> painful, I've based it on [0] to make life a bit easier. Let me know if y=
+ou
+> need rebases etc.
+
+Hey Lorenzo,
+
+I put your patchset into the Fedora Koji system to run some CI on it for yo=
+u.
+
+It failed to build due to what looks like some Rust bindings.
+
+Heres the build: https://koji.fedoraproject.org/koji/taskinfo?taskID=3D1385=
+47842
+
+And x86 build logs:
+https://kojipkgs.fedoraproject.org//work/tasks/7966/138547966/build.log
+
+The error is pretty large but here's a snippet if you want an idea
+
+error[E0425]: cannot find value `VM_READ` in crate `bindings`
+   --> rust/kernel/mm/virt.rs:399:44
+    |
+399 |     pub const READ: vm_flags_t =3D bindings::VM_READ as vm_flags_t;
+    |                                            ^^^^^^^ not found in `bind=
+ings`
+error[E0425]: cannot find value `VM_WRITE` in crate `bindings`
+   --> rust/kernel/mm/virt.rs:402:45
+    |
+402 |     pub const WRITE: vm_flags_t =3D bindings::VM_WRITE as vm_flags_t;
+    |                                             ^^^^^^^^ not found
+in `bindings`
+error[E0425]: cannot find value `VM_EXEC` in crate `bindings`
+     --> rust/kernel/mm/virt.rs:405:44
+      |
+  405 |     pub const EXEC: vm_flags_t =3D bindings::VM_EXEC as vm_flags_t;
+      |                                            ^^^^^^^ help: a
+constant with a similar name exists: `ET_EXEC`
+      |
+     ::: /builddir/build/BUILD/kernel-6.18.0-build/kernel-6.18-rc3-16-ge536=
+42b87a4f/linux-6.18.0-0.rc3.e53642b87a4f.31.bitvma.fc44.x86_64/rust/binding=
+s/bindings_generated.rs:13881:1
+      |
+13881 | pub const ET_EXEC: u32 =3D 2;
+      | ---------------------- similarly named constant `ET_EXEC` defined h=
+ere
+error[E0425]: cannot find value `VM_SHARED` in crate `bindings`
+   --> rust/kernel/mm/virt.rs:408:46
+    |
+408 |     pub const SHARED: vm_flags_t =3D bindings::VM_SHARED as vm_flags_=
+t;
+    |                                              ^^^^^^^^^ not found
+in `bindings`
+
+In the next version Ill do the same and continue with the CI testing for yo=
+u!
+
+Cheers,
+-- Nico
+
+>
+> [0]: https://lore.kernel.org/linux-mm/cover.1761756437.git.lorenzo.stoake=
+s@oracle.com/
+>
+> Lorenzo Stoakes (4):
+>   mm: declare VMA flags by bit
+>   mm: simplify and rename mm flags function for clarity
+>   mm: introduce VMA flags bitmap type
+>   mm: introduce and use VMA flag test helpers
+>
+>  fs/proc/task_mmu.c               |   4 +-
+>  include/linux/hugetlb.h          |   2 +-
+>  include/linux/mm.h               | 341 +++++++++++++-------
+>  include/linux/mm_inline.h        |   2 +-
+>  include/linux/mm_types.h         | 120 ++++++-
+>  include/linux/userfaultfd_k.h    |  12 +-
+>  kernel/fork.c                    |   4 +-
+>  mm/filemap.c                     |   4 +-
+>  mm/gup.c                         |  16 +-
+>  mm/hmm.c                         |   6 +-
+>  mm/huge_memory.c                 |  34 +-
+>  mm/hugetlb.c                     |  48 +--
+>  mm/internal.h                    |   8 +-
+>  mm/khugepaged.c                  |   2 +-
+>  mm/ksm.c                         |  12 +-
+>  mm/madvise.c                     |   8 +-
+>  mm/memory.c                      |  77 +++--
+>  mm/mempolicy.c                   |   4 +-
+>  mm/migrate.c                     |   4 +-
+>  mm/migrate_device.c              |  10 +-
+>  mm/mlock.c                       |   8 +-
+>  mm/mmap.c                        |  16 +-
+>  mm/mmap_lock.c                   |   4 +-
+>  mm/mprotect.c                    |  12 +-
+>  mm/mremap.c                      |  18 +-
+>  mm/mseal.c                       |   2 +-
+>  mm/msync.c                       |   4 +-
+>  mm/nommu.c                       |  16 +-
+>  mm/oom_kill.c                    |   4 +-
+>  mm/pagewalk.c                    |   2 +-
+>  mm/rmap.c                        |  16 +-
+>  mm/swap.c                        |   3 +-
+>  mm/userfaultfd.c                 |  33 +-
+>  mm/vma.c                         |  37 ++-
+>  mm/vma.h                         |   6 +-
+>  mm/vmscan.c                      |   4 +-
+>  tools/testing/vma/vma.c          |  20 +-
+>  tools/testing/vma/vma_internal.h | 536 +++++++++++++++++++++++++++----
+>  38 files changed, 1037 insertions(+), 422 deletions(-)
+>
+> --
+> 2.51.0
+>
+
 
