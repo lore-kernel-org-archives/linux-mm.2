@@ -4,74 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3E653CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 12:16:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 66E9ECCF9F0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 12:20:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 86C4C8E01C3; Thu, 30 Oct 2025 08:16:08 -0400 (EDT)
+	id BFA0F8E01C4; Thu, 30 Oct 2025 08:20:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 843A78E007D; Thu, 30 Oct 2025 08:16:08 -0400 (EDT)
+	id B82FD8E007D; Thu, 30 Oct 2025 08:20:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7805F8E01C3; Thu, 30 Oct 2025 08:16:08 -0400 (EDT)
+	id A23B38E01C4; Thu, 30 Oct 2025 08:20:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 692CB8E007D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:16:08 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 8701D8E007D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:20:46 -0400 (EDT)
 Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1430912B7FD
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:16:08 +0000 (UTC)
-X-FDA: 84054677616.23.3E6FB26
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 96DF51C001A
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:16:04 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ctW0uKYu;
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 389645C5C7
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:20:46 +0000 (UTC)
+X-FDA: 84054689292.23.0E186E3
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf28.hostedemail.com (Postfix) with ESMTP id C4B9BC000B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:20:43 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Loym6yJk;
 	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761826566; a=rsa-sha256;
-	cv=none;
-	b=CYEtnscaju1kRJY7Flu4VEj2eyYxdGaK/Qk9krsCLqlC7z3yeLLTjOEnxq7U5KSQ59b96h
-	OlvUIeawdH3FLyYxp1GB7lOw+R7YXAS2fVkHVGspnSpSc41GFPrG/crMcXqh7Ckn8YpsAv
-	MRFNH0ANIP8q0CaasV9WHR+H4qjGyZY=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=ctW0uKYu;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf21.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
+	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761826566;
+	s=arc-20220608; t=1761826844;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d+Vx3YdOyQTAap4dvbQCFkBJA4MCaz3tkdmY5eMqs/s=;
-	b=QicwyT/p2lPcND1rva2/IL0BMuMTHzg/rYxQaiQxsReQVa+7qlklzyxVAA9o3orqx+HZ4q
-	3c8qmdd+HBCC1GCXyTV0ifoc25bQkLKkuX6rR4iLBOxvIRwrVkzSCOgCV8wvFnDp2EUfZs
-	XrPthH8inMrTbuSIdbpyv0NAAe8d010=
+	bh=bcOo5smro3BBVFhgM9fw1MzLtV1oJ1QG7H2cNzOgLhc=;
+	b=ijM6LFGGSYHM+Ym1DNqsVUf1ZtA6v3fcbOyfcFu0l0iShiBU0sXeBEeig2BQ9pe8CyRdu8
+	FQ+HMhUp0DR6RNdEaj1w/l53o7DsmrH3hyPrYSDmmHvaafrLk0c39FC7lCu21qKIZG+sM2
+	9DB+1vFieMi46mrxO7Zn2qITWI3wZGM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761826844; a=rsa-sha256;
+	cv=none;
+	b=8rr1CZi5cxY3duaMhBXQbQbcdmCMEJF4mIt7I4oRxYb5Sv8rbYH1Bmq8Tivhcn1sA6qsDP
+	h0O1hgKzsewWG59hws+L+IFB999LjE9PxehbguRBFX+Urcvr1V66gTMSyZo/zcdquNMHti
+	qEdMZigK+B+ZNBIbq+ZXqPPc/FoEK4A=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=Loym6yJk;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf28.hostedemail.com: domain of linmiaohe@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=linmiaohe@huawei.com
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=d+Vx3YdOyQTAap4dvbQCFkBJA4MCaz3tkdmY5eMqs/s=;
-	b=ctW0uKYuEuqNTH08N25rcLPgjFdJdMsoFJvYYo0HhwMP8I1f7fEbBU6t6ajFd3ShcW6FG4YJa
-	cBDMN4cbf6SKbwlzuEVgw0peCcGnxfxGxQxhy6go8XXJwoU2RiuGYkRjfDuaRI3w1XtTV6QhQ0U
-	M/kjoMtnJ7vQpce2ZNeiXlc=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4cy32G5kMbzcZyk;
-	Thu, 30 Oct 2025 20:14:30 +0800 (CST)
-Received: from dggemv712-chm.china.huawei.com (unknown [10.1.198.32])
-	by mail.maildlp.com (Postfix) with ESMTPS id AD703140144;
-	Thu, 30 Oct 2025 20:15:56 +0800 (CST)
+	bh=bcOo5smro3BBVFhgM9fw1MzLtV1oJ1QG7H2cNzOgLhc=;
+	b=Loym6yJk7E7apAwTDq/cnmFCKi+7Jb4uT2TVtKOjlmsrJyP9tyJSz4yEQw0QP9sAlkwrp18lL
+	t3Fb4d/oSlol584j72OZJkje6xQ1qTXYvzVK1p4DDCjhIXrr1tMTus3UalpvnJeq49hNLQCAiE6
+	+B/Ytf1nRgBV+7Ct6r9W4Ug=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4cy38l739Lz1prQR;
+	Thu, 30 Oct 2025 20:20:07 +0800 (CST)
+Received: from dggemv705-chm.china.huawei.com (unknown [10.3.19.32])
+	by mail.maildlp.com (Postfix) with ESMTPS id F0D9318007F;
+	Thu, 30 Oct 2025 20:20:37 +0800 (CST)
 Received: from kwepemq500010.china.huawei.com (7.202.194.235) by
- dggemv712-chm.china.huawei.com (10.1.198.32) with Microsoft SMTP Server
+ dggemv705-chm.china.huawei.com (10.3.19.32) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Oct 2025 20:15:56 +0800
+ 15.2.1544.11; Thu, 30 Oct 2025 20:20:37 +0800
 Received: from [10.173.125.37] (10.173.125.37) by
  kwepemq500010.china.huawei.com (7.202.194.235) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 30 Oct 2025 20:15:55 +0800
-Subject: Re: [PATCH v4 2/3] mm/memory-failure: improve large block size folio
- handling.
+ 15.2.1544.11; Thu, 30 Oct 2025 20:20:36 +0800
+Subject: Re: [PATCH v4 3/3] mm/huge_memory: fix kernel-doc comments for
+ folio_split() and related.
 To: Zi Yan <ziy@nvidia.com>
 CC: <kernel@pankajraghav.com>, <akpm@linux-foundation.org>,
 	<mcgrof@kernel.org>, <nao.horiguchi@gmail.com>, Lorenzo Stoakes
@@ -84,28 +84,28 @@ CC: <kernel@pankajraghav.com>, <akpm@linux-foundation.org>,
 	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>, <david@redhat.com>,
 	<jane.chu@oracle.com>
 References: <20251030014020.475659-1-ziy@nvidia.com>
- <20251030014020.475659-3-ziy@nvidia.com>
+ <20251030014020.475659-4-ziy@nvidia.com>
 From: Miaohe Lin <linmiaohe@huawei.com>
-Message-ID: <68910328-ba58-0554-c961-6a4087c72354@huawei.com>
-Date: Thu, 30 Oct 2025 20:15:54 +0800
+Message-ID: <6e2c1fb1-8a22-d300-5b49-ed908e032a61@huawei.com>
+Date: Thu, 30 Oct 2025 20:20:36 +0800
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
  Thunderbird/78.6.0
 MIME-Version: 1.0
-In-Reply-To: <20251030014020.475659-3-ziy@nvidia.com>
+In-Reply-To: <20251030014020.475659-4-ziy@nvidia.com>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Originating-IP: [10.173.125.37]
 X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
  kwepemq500010.china.huawei.com (7.202.194.235)
-X-Stat-Signature: zotftjxwisyg5rch8n3h4um3a4ri67gs
-X-Rspamd-Queue-Id: 96DF51C001A
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 4sajqetqdkxi7ydtmad5ze5kbbscc119
 X-Rspam-User: 
-X-HE-Tag: 1761826564-295040
-X-HE-Meta: U2FsdGVkX19cjoZqiybJHzp+KVFGIReeUuwWh285YKoXQFgcfrmF2Jb0zds9xpfvydcuVGXesC2unexge6OBcDbgjdSDH7+fJLuW6QAtAVSGtbM2Ys3tH+zjhVdlC0HmzAo34yvSnwSNhwO/YD/I32+zGTDCV+Xdlv204PZCm49zEKWucKZ408HnvYkkcqnbzl+RA071zbKnXSAL10I+zCN6OYoNcXSP8Oj/Jd0PSq0YpMKr6k5ilpX1GAH+VG+Gb3vkX8MpF8kbcGrbRrMJ87i8ptk15gRgpn1Mm+a0OsYsN9qiafYbxBYCggFfvK/+BLkHF9+wUHw/DMQclb5H1MGwe0bLdo2awXiGL6myql6nsv4W15RcIvURizBKvlYc55+Nt1ksuQieddKhituv/jPBrSKj13z20pXX9Eux6POtesdW1aIExIoNtp17GkL6AJ91DVl5jBR0istzaHSZZtOEfgedk/hHkf3j3kJAo3k1+4oQHvLZiaugvFvHlf1sTYHKDJtqI+PL1AmLmbxp7ThOBhoDDahY7X9413LsS3xprIaQN4aLw/FHrDfasqIghnQex/7kSr9tVCnaE1L68auBQ386C3WJQ9s+bNmzykZQnG++HReDzmZwIpaW1FP3xDhoamBkN83kT/3FvbD9MlbZq8HJXEPWoAyAID2Fl0NbgogUDzWthR8zY6GGL4oDYzYiU0JctNBAWV7sLhhVqudFuELS53Iwt1+gmjwaLcSpkUX5PFPIzUxjxj+BBNJC68mTJ0rfZrIrJS7+1rXytK66atHWG3997P+MBRX2+kJO3O5ME08VbgKWx8yQ7yb7K/60yN+OmLAUXEv38nYxPZRFreaqaZ/g81n8HxaZuyVpUGemzoy+Fs6/bhZjrMmLmRbab5HsVm9WXh3bZDoo5rqhG/yfdBfcxKTm+DdQyjrMr3lhBu67ESQ14cpHS7M2+O581co3JJM8fto58cZ
- j22AkmL1
- o1weqr+IxRTdF1FFq0LxrJbi6/w==
+X-Rspamd-Queue-Id: C4B9BC000B
+X-HE-Tag: 1761826843-566149
+X-HE-Meta: U2FsdGVkX1/x3c4grtkhlPPrf5Y/4CEgRnqtIbjSEpCXPbsup4FAU+ZihnhOAWGuWYj6+mBvol9bkykk0EqJGrEfpvXuyaG1Q/CgCQEBGzDWQrgudthljBV7vvBqlrYOT4GFLc+eIPxugB/+Nzn3Z6X5G8IMcpmM15zXz0ypQjHZJiIXL3LA6ttXjznQAT3ZB/KDVcaJ0dV251K0Jq++HpBnLFiqyhTvhnfkmZYUFX11Ys27J7XkagXnadYqhj2hGBh1x911rGu0sMmfTlOwqSiobtsdzOh/a+9/oCSqvDQnbwi6ItSRTx6+GfR+i3Kv5oqcPBE0hIonl+cg6TFM7TdWRZVqN8HQIUnSDvqO+V/IUkKJgz7M2bivOHLyfzeM9En5Oah3S62aR1sLsvHSpDM9EmuFy9iYG2LIVtvttMUjqhEvek7VI5RVHW8Z6oKTFJgCS/qRNFos/8JfzX05g48rZQOEwjC+uZ+CLd9t49d6RhCoS2CRfYlPlFNUeZJNC2u0iwSM5q95VlAVefU8mrOKK8RVQJJxxHkh4ThQYMdvsPLPmrAewR7YhlM2BDhGNzWzLikXY6lK9s95gYMCInWhQQixSXJn3AT4r12WfczhWDb7MMFQgo4cLzCdMeW0lVAbZf/WMTil0lMUatSZuCtQan/Cl/7EMNPbJXJz4APSdOKW2zOKnmax3k1/rTNFeyVZtjrUjbHeVQURM1CPUXTogUNyUl3c2hSSJ6kIbTihdF4v+fFlUegWQUzmyEoHRtue6St45mV1+cfeVQFliolImy2WMo5M7h8z/gDLeveisfSoSwplsVxfFCwfuGVNpHXPS5g8KHrywMo/3pw4bjerYIG+LVvDGLRkFMACJsDbv1F8Bo4M8y5RMW29IUbz1qwxgeyf7OTkSqEI7VBAb1/NSCvQkw5WbTRs5Gad15gmlwOMh5vRtkQqlIlWnSGIhoGCaFee2iF9OHWnSr+
+ ynd93Xeq
+ 3ovh7mEQrepGEFCYsrk3KBovkmg9+TwudixWZOOypWVj6v/HFIGMFd4p9QedEvG2/1Rpyne5+JQlJpzlHRTheeRqr9jlN4gtxWWf9ccWVhUq6i67uTftriLEo6Ynic74e5WSvbib9D9V536WftdVGErdmIkgG8mf+9FzYQm1gXOfVP3VF9t1i81hudno2VZocuLQLPCBK8vEwMk3JxIqX1bn0fPb3LUQ9Umb72oQ6qfeJu+3Llh7f1r4XbnrWlPo8Wy8DYZOfx7l0fQcY96LCakFTSPncMe6B/3vGhQG6nyesMvQm7n4dnge3cuYjO5WS1ks+xmjLEtMGdPqg96iKz7K4pR9i9STdKTF8aUE93WSy3lAsacdQgC4T5p1GJMfS++fGDULDclo2fAZrs5keRo2MICzn3MRQ6rAunSxg62LIn0/djgx20AF0Zi3I3novKPq2iV+9GxzS6bnQygAx0eSbcpHLd87TVxQXpzs4+Yfx2h8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,23 +115,16 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 2025/10/30 9:40, Zi Yan wrote:
-> Large block size (LBS) folios cannot be split to order-0 folios but
-> min_order_for_folio(). Current split fails directly, but that is not
-> optimal. Split the folio to min_order_for_folio(), so that, after split,
-> only the folio containing the poisoned page becomes unusable instead.
+> try_folio_split_to_order(), folio_split, __folio_split(), and
+> __split_unmapped_folio() do not have correct kernel-doc comment format.
+> Fix them.
 > 
-> For soft offline, do not split the large folio if its min_order_for_folio()
-> is not 0. Since the folio is still accessible from userspace and premature
-> split might lead to potential performance loss.
-> 
-> Suggested-by: Jane Chu <jane.chu@oracle.com>
 > Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
 > Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Acked-by: David Hildenbrand <david@redhat.com>
 
 Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
 
 Thanks.
 .
-
 
