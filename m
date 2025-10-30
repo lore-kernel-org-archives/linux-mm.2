@@ -4,136 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D9C5FCCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:45:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E269CCF9FF
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:51:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 303E38E007F; Thu, 30 Oct 2025 10:45:48 -0400 (EDT)
+	id EA8558E01D6; Thu, 30 Oct 2025 10:51:55 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2B4978E007D; Thu, 30 Oct 2025 10:45:48 -0400 (EDT)
+	id E80238E007D; Thu, 30 Oct 2025 10:51:55 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 17D5C8E007F; Thu, 30 Oct 2025 10:45:48 -0400 (EDT)
+	id DBD518E01D6; Thu, 30 Oct 2025 10:51:55 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0108C8E007D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:45:47 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AAF321A0167
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:45:47 +0000 (UTC)
-X-FDA: 84055054734.13.A110C1A
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 96DE7A0018
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:45:45 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Jha3HIHm;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761835545; a=rsa-sha256;
-	cv=none;
-	b=ivMt3gjvKah0ibxmmxNjnrIjMlqOYL15dHS5Z03toS/hLUqfTKu51TnUR/BtE3Q4KRCE6x
-	GQ+47VQ3JICQGcpXjRfrAGAJsL/e0l67xXgWNgDWDEMfov93YEsQQD8E4yvcvjMJNsXEI0
-	u5FbA2b79K0GWtBjpKMKil4GBrmyICE=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=Jha3HIHm;
-	spf=pass (imf25.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id CAD398E007D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:51:55 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 698CA568AA
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:51:55 +0000 (UTC)
+X-FDA: 84055070190.09.E7FBABD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id DD70E4001B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:51:53 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eQk1KEPL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761835545;
+	s=arc-20220608; t=1761835913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+q1WnNkV6oI/Ffptxas5/IbEl8V9x7m1lbLHWaOLlOc=;
-	b=x71LgQqISbLfZW3MD1yJriH5Qo7X6wlnoJ1iRpnaVRQYKVDnIsXUcSNLoqGOfvUezwFW3a
-	2CuUQADVVTxfJKKFqMV9LHCsV94JFBVx5vuXeu8VErFW0INncNihvshZhsLOvtN/xX+AdU
-	yb2h8bqwsZ774/OS9FurTnnWrpAksNw=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-6399328ff1fso1976666a12.0
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 07:45:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1761835544; x=1762440344; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+q1WnNkV6oI/Ffptxas5/IbEl8V9x7m1lbLHWaOLlOc=;
-        b=Jha3HIHmWXopDF9R73wgIezA9y3dQlZk4QTaD6Jug73L+O2pPowmd3BPRVT0bk+5BD
-         wXX1onPZc7CDTu7BQirZEJ54+udFKxRqzRLxJ/bHGCn1p8mHVqrYDKqixjQvwEo5oWtk
-         hqGZgZqi7me/iqz2Uz5A+0m8zkiaFhArf3fUjvvWH1NX/5WECbANQLju2gtOoTucOvO2
-         TykBoCHu4H1XKn9rVGHqpVOKZE5+cJigB28dwvg2N08J+/U+VTTvYAOQMR6mCpGMeARZ
-         aaQhkh4o0LM7rqu1cqDUQDKE54muFhNoU7JER5q9JX8VlxBzcjmP0HV/hfSm5jQ/4OJe
-         30cw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761835544; x=1762440344;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+q1WnNkV6oI/Ffptxas5/IbEl8V9x7m1lbLHWaOLlOc=;
-        b=e7nKOBWV5yIXFZcW6BHMTXgVNupiX9loUeo9tL5mTXqI8U5diZMpcoPfurZjUUj3lt
-         phXFTMhrVTBcWbTi5Vefr7FhaipVpQmKOMGGG6a9tomtJlJF6Fhi7o5JhipeTQ7B38/l
-         /y+RYpsk5ZD36/7mUnrVO3lP0diCRpjcbCm3y7dhlUG2xI7fqRG0cxpNpayEribGlzse
-         UYcsl8Zm8z4PbRNfN8gEYdhMkZO+r7qDCfwEb/l2/MaMAAw+PaZVgl9aMXYo0/ug9/fI
-         sEx0hV/tdpRdkP0MLaQKps0XIrw6dAPPTpC1Sf3oHywoWTwr4j7Xb5i1aCO2fvvk0h5N
-         vuMw==
-X-Forwarded-Encrypted: i=1; AJvYcCW/2huHQAruCAAmpV2yrQ9Xm/6LXjBimjilP9BZfYSXeYA6ybblS5hBWQBbr6/FNE5rO3i25M8thg==@kvack.org
-X-Gm-Message-State: AOJu0YyE6Y5euktcQNS+8UKY/kavvix4wotigxLzgdS85GApwDf0mUrS
-	CwV4eGDGjiCGJg0OgNwmdCV5yvOG+aqXGa++aE+nKMjggFOFwI+WI1/DKgEZEq/VpiqK8IhHcbr
-	FPLZGS09dk7P/CiBmH3gU1B6dzqZ6W5z+c8/K4Owivg==
-X-Gm-Gg: ASbGnctfgQHAATTSEUyDSAbnIsWKQ1kOM6YrzJJsYA83PkArCcFlb93MVMKYAiQtwyZ
-	35PTFLjAS4sJf+IjcecXAYtsoYHMLzdf8we8CKkHaKxqyXj7NfKVuEXem1UmCihN2HhSFUx19CM
-	KvakfqGpwf+lnxJzseOlUf11bO1t0vtT5lGGg6AgKvlIL7lGe/L1yg9yrwmF8BonX1P5HDA0eTd
-	Olgx2pXTwGpxf45TU9pYW0bh38xyOhxoo3FrJ02zepb8obtRRu2WZ6v3sQ+8r/DApvp
-X-Google-Smtp-Source: AGHT+IGDU4/Gkv1R1qd17xLlVAOgOMmcUmYUsrlTksKyc7NoB+oWGvlCOuq9OeegwnOVOhMBaIm81jNVaYjX67APFf4=
-X-Received: by 2002:a05:6402:d08:b0:63c:2d72:56e3 with SMTP id
- 4fb4d7f45d1cf-64044252e1amr5523342a12.23.1761835543199; Thu, 30 Oct 2025
- 07:45:43 -0700 (PDT)
+	bh=WKwjBQEqXFPKO+WzYJAtU397ptDKk7qO+md5aDf4qeI=;
+	b=pVtMM5ZJeRLL+qGrDueZNnl8koGE41MYAfomJ4/HZuaheVVkNcvjDQTOqZ2eUzfANNZKUd
+	L+4GKB8SvTTNPx6117hICcMVhOnrMbCUr2CH6SykDtURI4zlIBhNgnHlAGpoC/loWgQ6BJ
+	btA06K7/Vsb3VY6oBfGWicoKcLTl4XM=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eQk1KEPL;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of a.hindborg@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=a.hindborg@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761835913; a=rsa-sha256;
+	cv=none;
+	b=Wv03+dgMAy03QmgYRbQ/1WfSofwywXRMK+FsPrWtsny4VzWdvL1DLVo9s9GKI9U4PA7F64
+	waRFez6q/HybQP/K0B/JgmrRGJXmZSkjNZ3KSn2rvh6KuOCetVqwgqwiSMLc42nDQtkU47
+	ao2+L/XyW15o/RqZG7aQuoOyhtahYFM=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 209D5611A5;
+	Thu, 30 Oct 2025 14:51:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A797C4CEF1;
+	Thu, 30 Oct 2025 14:51:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761835912;
+	bh=WKwjBQEqXFPKO+WzYJAtU397ptDKk7qO+md5aDf4qeI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=eQk1KEPLZSr8AEWd/EU8u+Rrrky9aVBOpC7OJb24MtNAy8lk0RV3tvhMD4m4ACHgr
+	 fMlATft9Er2BS36a8xMX9gPc8K4bBTSuSpOK5p3EBHonicaJ4mGIeI7f3kztqcEmTe
+	 SRD8UsdgXC55zByvBL2GPf9BGZR+5Z6bCWvWJ48Guof+RmgX8uZh/na2+7gRavwx5/
+	 5rqNlDqOvtDtHZ7DFY/4iS63rM4nUKvfa0DBlZL9xCA/LxOOXy0Wuh1dST1pH8CTe/
+	 Ds9vTfVN/js3WH8pZd2wSp+qSUJy5qicslENSC1jFjvj8vnfDDjb5Z40aSUNg9UkYL
+	 AfUfkjCtX7Bqg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Benno
+ Lossin <lossin@kernel.org>, Danilo Krummrich <dakr@kernel.org>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, Dave Ertman
+ <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>, Leon
+ Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
+ <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David
+ Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Alexander
+ Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>,
+ Jan Kara <jack@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Viresh Kumar
+ <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>, Stephen Boyd
+ <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, Krzysztof
+ =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Asahi Lina
+ <lina+kernel@asahilina.net>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-pm@vger.kernel.org, linux-pci@vger.kernel.org, Oliver Mangold
+ <oliver.mangold@pm.me>
+Subject: Re: [PATCH v12 0/4] New trait OwnableRefCounted for ARef<->Owned
+ conversion.
+In-Reply-To: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+Date: Thu, 30 Oct 2025 15:51:38 +0100
+Message-ID: <87v7jw8mth.fsf@t14s.mail-host-address-is-not-set>
 MIME-Version: 1.0
-References: <20250929010321.3462457-1-pasha.tatashin@soleen.com>
- <20250929010321.3462457-15-pasha.tatashin@soleen.com> <mafs0tszhcyrw.fsf@kernel.org>
- <CA+CK2bBVSX26TKwgLkXCDop5u3e9McH3sQMascT47ZwwrwraOw@mail.gmail.com> <CAAywjhTbBx+rYGpPGtTw_--9XhoYZBX8ase5ddM6rxmC5J-2JQ@mail.gmail.com>
-In-Reply-To: <CAAywjhTbBx+rYGpPGtTw_--9XhoYZBX8ase5ddM6rxmC5J-2JQ@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Thu, 30 Oct 2025 10:45:06 -0400
-X-Gm-Features: AWmQ_blojHtPMG7BDXtmPjNBm90NSboe9qJfp5atDPpsuilsmQAVEvUy6gel7ys
-Message-ID: <CA+CK2bC8Ge0WM84ei1JGpqTzsZXeP6B3VXbSiNW6ZmHmQsXHCg@mail.gmail.com>
-Subject: Re: [PATCH v4 14/30] liveupdate: luo_session: Add ioctls for file
- preservation and state management
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>, jasonmiu@google.com, graf@amazon.com, 
-	changyuanl@google.com, rppt@kernel.org, dmatlack@google.com, 
-	rientjes@google.com, corbet@lwn.net, rdunlap@infradead.org, 
-	ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, ojeda@kernel.org, 
-	aliceryhl@google.com, masahiroy@kernel.org, akpm@linux-foundation.org, 
-	tj@kernel.org, yoann.congal@smile.fr, mmaurer@google.com, 
-	roman.gushchin@linux.dev, chenridong@huawei.com, axboe@kernel.dk, 
-	mark.rutland@arm.com, jannh@google.com, vincent.guittot@linaro.org, 
-	hannes@cmpxchg.org, dan.j.williams@intel.com, david@redhat.com, 
-	joel.granados@kernel.org, rostedt@goodmis.org, anna.schumaker@oracle.com, 
-	song@kernel.org, zhangguopeng@kylinos.cn, linux@weissschuh.net, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	gregkh@linuxfoundation.org, tglx@linutronix.de, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org, 
-	cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com, 
-	Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com, 
-	aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, lennart@poettering.net, brauner@kernel.org, 
-	linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, 
-	ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, 
-	witu@nvidia.com, hughd@google.com, chrisl@kernel.org, 
-	steven.sistare@oracle.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: s3h6f43t8peiht3cijfxwnnwgeowp6da
-X-Rspamd-Queue-Id: 96DE7A0018
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761835545-722801
-X-HE-Meta: U2FsdGVkX185YgygKE5/1jMYGJMCHPoLmA4n/++zV4f9fTCn8tH3DBTH0pvC7Ntw7diiSrxg4zIPP1nHWZ4qlAN1V4NHsTBLvVwc/PzWXFHzCxMzVJ6KttilPUKenpOH6ErBdYzmQK3nHgXHMExouyT6YIrtUOu8wctuO4LGLbgv36EFPfG5rRiqvgoilKZC12bGHSme0lXEvH14hCvOm7selZtt3Q7SM2t67aMT3DqtDvYJIoLleCe+LnQKvwThMVzovg5glYii2gOXyPJZJdADo4nfbcWZpI3LBGlUbxoJrlrCZS+/3fYTNYp1PlVOLpt4vUA1LcZ+B5DS1gfPMLzKQ4GcIwJQSsvgEL8zOGoxCZmwcK6GBHtlc2igN9Wd2zN5IbeTW00Ad667gegtHJuX2cTcKoXjh2hxNdEQJnOpQJA0UERr+DREfAjFCQrLuEzGnVYyNqGaRjj/TGn9bhZlRiR1l43Z5HRzsPLnm7OUqKRjGT/gVv+CLmrxjsCzKWaHWGwnDChqwU9Rc8OPOq3uuREOs4C0se6NeBe21iqxWox8U8EoRy+EB1iXGUCk7je/yszgwQih6cJPWSHds2EeuC1IL3NsmsxpCwoU+PbQgVbbF6rqGx1exKrnULnhv2dcprpSgYAFESp7Snddf7hPwQF//EavoVPNTpiIeX22jnNbV43MMar+4VvD8IUPzVXnusVc05XoziYLh8hKjL1oDpTGtHAM1r+frj6RlgN/yrtQu13tOStg+bCDTxtvJU+1h0GEiArU+DogMs83Uii6PdCJSlAAOBnBGHpqpW7EfH/9CP6rTLXhGn/qKZo9vcxA8PEmcqz4A9QqAQcPgjFB4OP71rtssFoahNKheKYmmwojnpVUb9zZyDEKA+iNATo6M+HOqSsOwwEdeGIoKeZpfwEWkKucmUZJxxTwI/ljqfX0+X06ETKeVcHLfCQuQwA7ZMnbJS9jTakm/Wx
- CWp8V4iR
- Tdq/wLg49tM1OG2Im4KlXNqT/5Ecq4bXlk8/8fT7PChq/frQ9x2c3/DEo8OCTXlzUBZAPd9kd3DAMFTQSkRvkJ6IVM4o3KCRbVlw/KsqiFu/OF9RsTdMpbPLZ8V7UAgMU14rZEdTwsekTlMVNXxQ2slhG3JC29L41n4/Sc2aDN0C3nl0BgvJWBXTMRRE7TpExHkmUbqBm19zdhISw2nWhRzG/ZVbSbASPNOChGqA+kG7d9dc0t7NqJcpQIHgfcjsT/3M++5ZDBrbaYp5PGW6FmwzLUr6vee3dus4Cd8uGEkp9Hasl73cOmF5ED9pZ5qeDmjQJLiSg5lcwMc2s5G9W2o0NGGFRUE0svwk0LcBzaLw30DCzjUfDIztLZnjfJDuRavK5QSGqbLYyfw/GWZA2PlFTGdJm/Ito2Lk6
+X-Rspamd-Queue-Id: DD70E4001B
+X-Rspamd-Server: rspam03
+X-Stat-Signature: cigocnezoe7axrxq13rkkw3ryb8bq5rp
+X-HE-Tag: 1761835913-89397
+X-HE-Meta: U2FsdGVkX19UpW89lHQrxaECJQpbk7DEV43nYIDW8byiNgviQIznI/MWsoOxZX3foElsNjrbms1I78DgHvjtLJ72l2for5Bpakj7xtWpAMA+2RNFKSRNYwA7WleJRn0WlF0+DAPRnpZQMmLkGcExGgzrP+1RAxdw4wi5fTBjlvd8B6DuoI2emS68rq9iyCjGnWHhh0BsUZUi6I0OKe+nfekKZPEONxpwixJ1/h+WGCL7Tes1AnGmV+2iDjiiFrnnkS9d59qykN8nWRVXoFPpc4pu3QBdLxfIfbRE1Sn7wJmlUKns4XvDvYAuFNceIwROfgHllJD2AP3E4jGIVFOS3hhx9CX6swIXieo+Bcbo1KRbUfOG8ftJLLn1uvLzc0tvnj8AE9Dm6ouAlm0zKzfF5xIs03SvmatO2mh8TP1xVLV8BQexoFSnHbL10b7JHOstO8Eiqa9k0lzZMPlA3RdEA8l28yJkEWy5qSfGwSP2d+2/IPRmF9XZXhCT/NnfljFDvV93XMbk8Cq3c62OmPzKkelW4Y4kc5PAmd16FYG7kOisYLzeyzhf6KLRzHSi51GS5gvvEPXYAqyiYigVVtPul7ty6MDryYoAdQFg1ONEdqQ9INGqsDlH+6bP0WuQKb8SYpJ+fdOLIexaX9yK8cUv6hbaNUwq9aKWiOPVXPlV53YBvKftrtEBfSWhsNk2rN4pii5DZ72A/cRCB8iu12BOT3lbwFUqgRY/s6W2uJVTLWgfT44PiPvSKtZwRw67KvHXIQD0YzC8ZUXOzOUe3k4i5FtNV4uiUiBd9Ycj8LD0P0UuKCNa61dMptv2RwCftv+Pmv+hKvmiVOVVnxwqBNnGdGqK3y+xEIqAhEcn7yNS/6n4nnpB3il6r29zClz/x7GuSft2S+khL3qw+mo7yHKXyybqiub2Ft5fz9PRheAEaT3JHtjYGXFYPpBqGrn5fr8ZAMiyZ5kYTzKn3hT7OXH
+ zjfl65vi
+ zw7Mbc8A7nLF4UpKp5Gk6ji0W4CltmVrjzChkpRfhehXzAkFe9aoLUu+w3Tp5X7+an/uHsIi8YgzMBeDw5afY4O7HkiQqtmD20QBGv9Tk3Nee/R0qEegR59mscViXtEfY9nnVIJw3/o06rQBxZ3hrm2gGPEEru2ttD41ytJDVrby3HSsIIyGunDyXSJCfOxbgoGeuWzzAwRcKtybIPsZeNhsgowM+etQECc/U0n7PpXEwhU7FQIbejMa7pYekBl8rPaLHenmNff5QL9o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -142,202 +112,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 6:00=E2=80=AFPM Samiullah Khawaja <skhawaja@google.=
-com> wrote:
->
-> On Wed, Oct 29, 2025 at 1:13=E2=80=AFPM Pasha Tatashin
-> <pasha.tatashin@soleen.com> wrote:
-> >
-> > On Wed, Oct 29, 2025 at 3:07=E2=80=AFPM Pratyush Yadav <pratyush@kernel=
-.org> wrote:
-> > >
-> > > Hi Pasha,
-> > >
-> > > On Mon, Sep 29 2025, Pasha Tatashin wrote:
-> > >
-> > > > Introducing the userspace interface and internal logic required to
-> > > > manage the lifecycle of file descriptors within a session. Previous=
-ly, a
-> > > > session was merely a container; this change makes it a functional
-> > > > management unit.
-> > > >
-> > > > The following capabilities are added:
-> > > >
-> > > > A new set of ioctl commands are added, which operate on the file
-> > > > descriptor returned by CREATE_SESSION. This allows userspace to:
-> > > > - LIVEUPDATE_SESSION_PRESERVE_FD: Add a file descriptor to a sessio=
-n
-> > > >   to be preserved across the live update.
-> > > > - LIVEUPDATE_SESSION_UNPRESERVE_FD: Remove a previously added file
-> > > >   descriptor from the session.
-> > > > - LIVEUPDATE_SESSION_RESTORE_FD: Retrieve a preserved file in the
-> > > >   new kernel using its unique token.
-> > > >
-> > > > A state machine for each individual session, distinct from the glob=
-al
-> > > > LUO state. This enables more granular control, allowing userspace t=
-o
-> > > > prepare or freeze specific sessions independently. This is managed =
-via:
-> > > > - LIVEUPDATE_SESSION_SET_EVENT: An ioctl to send PREPARE, FREEZE,
-> > > >   CANCEL, or FINISH events to a single session.
-> > > > - LIVEUPDATE_SESSION_GET_STATE: An ioctl to query the current state
-> > > >   of a single session.
-> > > >
-> > > > The global subsystem callbacks (luo_session_prepare, luo_session_fr=
-eeze)
-> > > > are updated to iterate through all existing sessions. They now trig=
-ger
-> > > > the appropriate per-session state transitions for any sessions that
-> > > > haven't already been transitioned individually by userspace.
-> > > >
-> > > > The session's .release handler is enhanced to be state-aware. When =
-a
-> > > > session's file descriptor is closed, it now correctly cancels or
-> > > > finishes the session based on its current state before freeing all
-> > > > associated file resources, preventing resource leaks.
-> > > >
-> > > > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > > [...]
-> > > > +/**
-> > > > + * struct liveupdate_session_get_state - ioctl(LIVEUPDATE_SESSION_=
-GET_STATE)
-> > > > + * @size:     Input; sizeof(struct liveupdate_session_get_state)
-> > > > + * @incoming: Input; If 1, query the state of a restored file from=
- the incoming
-> > > > + *            (previous kernel's) set. If 0, query a file being pr=
-epared for
-> > > > + *            preservation in the current set.
-> > >
-> > > Spotted this when working on updating my test suite for LUO. This see=
-ms
-> > > to be a leftover from a previous version. I don't see it being used
-> > > anywhere in the code.
-> >
-> > thank you will remove this.
-> >
-> > > Also, I think the model we should have is to only allow new sessions =
-in
-> > > normal state. Currently luo_session_create() allows creating a new
-> > > session in updated state. This would end up mixing sessions from a
-> > > previous boot and sessions from current boot. I don't really see a
-> > > reason for that and I think the userspace should first call finish
-> > > before starting new serialization. Keeps things simpler.
-> >
-> > It does. However, yesterday Jason Gunthorpe suggested that we simplify
-> > the uapi, at least for the initial landing, by removing the state
-> > machine during boot and allowing new sessions to be created at any
-> > time. This would also mean separating the incoming and outgoing
-> > sessions and removing the ioctl() call used to bring the machine into
-> > a normal state; instead, only individual sessions could be brought
-> > into a 'normal' state.
-> >
-> > Simplified uAPI Proposal
-> > The simplest uAPI would look like this:
-> > IOCTLs on /dev/liveupdate (to create and retrieve session FDs):
-> > LIVEUPDATE_IOCTL_CREATE_SESSION
-> > LIVEUPDATE_IOCTL_RETRIEVE_SESSION
-> >
-> > IOCTLs on session FDs:
-> > LIVEUPDATE_CMD_SESSION_PRESERVE_FD
-> > LIVEUPDATE_CMD_SESSION_RETRIEVE_FD
-> > LIVEUPDATE_CMD_SESSION_FINISH
-> >
-> > Happy Path
-> > The happy path would look like this:
-> > - luod creates a session with a specific name and passes it to the vmm.
-> > - The vmm preserves FDs in a specific order: memfd, iommufd, vfiofd.
-> > (If the order is wrong, the preserve callbacks will fail.)
-> > - A reboot(KEXEC) is performed.
-> > - Each session receives a freeze() callback to notify it that
-> > mutations are no longer possible.
-> > - During boot, liveupdate_fh_global_state_get(&h, &obj) can be used to
-> > retrieve the global state.
-> > - Once the machine has booted, luod retrieves the incoming sessions
-> > and passes them to the vmms.
-> > - The vmm retrieves the FDs from the session and performs the
-> > necessary IOCTLs on them.
-> > - The vmm calls LIVEUPDATE_CMD_SESSION_FINISH on the session. Each FD
-> > receives a finish() callback in LIFO order.
-> > - If everything succeeds, the session becomes an empty "outgoing"
-> > session. It can then be closed and discarded or reused for the next
-> > live update by preserving new FDs into it.
-> > - Once the last FD for a file-handler is finished,
-> > h->ops->global_state_finish(h, h->global_state_obj) is called to
-> > finish the incoming global state.
-> >
-> > Unhappy Paths
-> > - If an outgoing session FD is closed, each FD in that session
-> > receives an unpreserve callback in LIFO order.
-> > - If the last FD for a global state is unpreserved,
-> > h->ops->global_state_unpreserve(h, h->global_state_obj) is called.
-> > - If freeze() fails, a cancel() is performed on each FD that received
-> > freeze() cb, and reboot(KEXEC) returns a failure.
->
-> nit: Maybe we can rename cancel to unfreeze. So it matches preserve/unpre=
-serve?
+Hi Oliver,
+Oliver Mangold <oliver.mangold@pm.me> writes:
 
-Sounds good, I will call it unfreeze() instead of cancel().
-
-> > - If an incoming session FD is closed, the resources are considered
-> > "leaked." They are discarded only during the next live-update; this is
-> > intended to prevent implementing rare and untested clean-up code.
+> This allows to convert between ARef<T> and Owned<T> by
+> implementing the new trait OwnedRefCounted.
 >
-> I am assuming the preserved folios will become unpreserved during
-> shutdown and in the next kernel those folios are free.
-
-That is right, KHO does not keep memory preserved for the next reboot.
-
-> > - If a user tries to finish a session and it fails, it is considered
-> > the user's problem. This might happen because some IOCTLs still need
-> > to be run on the retrieved FDs to bring them to a state where finish
-> > is possible.
+> This way we will have a shared/unique reference counting scheme
+> for types with built-in refcounts in analogy to Arc/UniqueArc.
 >
-> Sounds great.
-> >
-> > This would also mean that subsystems would not be needed, leaving only
-> > FLB (File-Lifecycle-Bound Global State) to use as a handle for global
-> > state. The API I am proposing for FLB keeps the same global state for
-> > a single file-handler type. However, HugeTLB might have multiple file
-> > handlers, so the API would need to be extended slightly to support
-> > this case. Multiple file handlers will share the same global resource
-> > with the same callbacks.
-> >
-> > Pasha
-> >
-> > > > + * @reserved: Must be zero.
-> > > > + * @state:    Output; The live update state of this FD.
-> > > > + *
-> > > > + * Query the current live update state of a specific preserved fil=
-e descriptor.
-> > > > + *
-> > > > + * - %LIVEUPDATE_STATE_NORMAL:   Default state
-> > > > + * - %LIVEUPDATE_STATE_PREPARED: Prepare callback has been perform=
-ed on this FD.
-> > > > + * - %LIVEUPDATE_STATE_FROZEN:   Freeze callback ahs been performe=
-d on this FD.
-> > > > + * - %LIVEUPDATE_STATE_UPDATED:  The system has successfully reboo=
-ted into the
-> > > > + *                               new kernel.
-> > > > + *
-> > > > + * See the definition of &enum liveupdate_state for more details o=
-n each state.
-> > > > + *
-> > > > + * Return: 0 on success, negative error code on failure.
-> > > > + */
-> > > > +struct liveupdate_session_get_state {
-> > > > +     __u32           size;
-> > > > +     __u8            incoming;
-> > > > +     __u8            reserved[3];
-> > > > +     __u32           state;
-> > > > +};
-> > > > +
-> > > > +#define LIVEUPDATE_SESSION_GET_STATE                              =
-   \
-> > > > +     _IO(LIVEUPDATE_IOCTL_TYPE, LIVEUPDATE_CMD_SESSION_GET_STATE)
-> > > [...]
-> > >
-> > > --
-> > > Regards,
-> > > Pratyush Yadav
+> Signed-off-by: Oliver Mangold <oliver.mangold@pm.me>
+
+I rebased your series on top of v6.18-rc3 and pushed it here [1]. I also
+added some commits with review feedback.
+
+Best regards,
+Andreas Hindborg
+
+[1] https://github.com/metaspace/linux/tree/ownable-v12
+
 
