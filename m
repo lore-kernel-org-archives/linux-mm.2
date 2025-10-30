@@ -4,135 +4,181 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D11ADCCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 16:32:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4589ECCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 16:33:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2939F280013; Thu, 30 Oct 2025 12:32:03 -0400 (EDT)
+	id 99C5F280014; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 26AD4280003; Thu, 30 Oct 2025 12:32:03 -0400 (EDT)
+	id 97366280003; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 180B1280013; Thu, 30 Oct 2025 12:32:03 -0400 (EDT)
+	id 863FE280014; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 071AD280003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:32:03 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id A573A139D20
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:32:02 +0000 (UTC)
-X-FDA: 84055322484.17.2C74EBC
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 70113280003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 12:33:35 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1F5421401D2
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:33:35 +0000 (UTC)
+X-FDA: 84055326390.30.388AD7A
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5E8F48000F
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:32:00 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0j9hU/Ts";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/4I74rDr";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0j9hU/Ts";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/4I74rDr";
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9E76D1C000A
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 16:33:32 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761841920;
+	s=arc-20220608; t=1761842013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LYxUqOLOyZrF6zpcmB2FMK7ECIXy7RwQ0ssrddYQtt4=;
-	b=C738es79Uckl3PKkEkFIOswE5NdxXYmFMZFAq/YCAHA2EJEkVsCFwqHQDcxr0+6bfmW5ap
-	h0vKuCt6bc5c2I2cQJ3WuTfJIcOygR5XNEpuDLlhfvbBUP/5LYk47lDTJfQStRwdFwH0fv
-	ptjYWO+VuvZh5PkAPTHypnYWKUURCP8=
+	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
+	b=TPA769DmONIndFxH3POxcon64hef+YSHwtnqoVsDXe+wr/wkl8Z+JnkCo+BD0PulyOB8JY
+	Ukn9iKX29SwtLFzJzeU22I87rrwwUo4f3mxQlvq3kfPbQ7/JgWkY26ju8uspuLRjaIdi8B
+	bryI75j8EQt1hRiyjCxCyU+2qlj1DDk=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0j9hU/Ts";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/4I74rDr";
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b="0j9hU/Ts";
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/4I74rDr";
-	spf=pass (imf02.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
-	dmarc=pass (policy=none) header.from=suse.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761841920; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=AJdIHbZd;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="SK/u9tLA";
+	spf=pass (imf21.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761842013; a=rsa-sha256;
 	cv=none;
-	b=UhvoUmzQXe9mGfCz3El5HIxyCSg2qa1mKPtoTNgWFuTND6kMj6rvEYKwvpJc7pfDDLMDDh
-	tU4zqrcfr3Y0PspiNBBVGmbqT6VNUhWJy1t18L7xPDKysRVwxHLjZp9jNTkrzobsn6M6IX
-	w58G+KJRSU1h+CF/wjCaYMzevHnHkic=
+	b=CXjFcr8kkw41WnWYBKH+0b4sn0bNGmJQiB+sVsc+eJLXrbmNG5OI/6rzSgVRUVLegI0ESP
+	GeVbPy7OZv6hv0x/B9DwG1WpfX+0CtJG73nQDHIKaAIAlDR/ltbH74bj9JlB0TOCli9Ap4
+	LMDlAs8R4LZ48sLO0IuxDF99+H6s3Lg=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id DC6B233734;
-	Thu, 30 Oct 2025 16:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761841918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1DDB633867;
+	Thu, 30 Oct 2025 16:33:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761842011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYxUqOLOyZrF6zpcmB2FMK7ECIXy7RwQ0ssrddYQtt4=;
-	b=0j9hU/Ts09qlAQwjbg9XzmffczV8JmPTLC5Tal5kBHOkxavC2/Hk/UWPigSPkRxQql3Sts
-	m/JuTTW+3nn/0tnzY4tVQfKVzW9d9u29lgLYrbbDh8mLJ0++SMk8ER8Rjt1Faf8L2KJk8R
-	A8pTuIrdTPliL9z3rj068Q60O4mKbbQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761841918;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
+	b=AJdIHbZdawoM+1A/v9u8T0d7Msg2ILyQl8XxcWcItctZTw8FgguWL2PfBAE8SjSTufGCTf
+	q9C/So9D5aMj82QZswDDkc6MMQ6PUxczFTMrefq3d2GxU1SFiP+PSx/5JKRVDey4n+F5Lj
+	OudNDsQFbMc33WpQHV2ZopI3prg4V5w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761842011;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYxUqOLOyZrF6zpcmB2FMK7ECIXy7RwQ0ssrddYQtt4=;
-	b=/4I74rDr2B/Kz3VDx5w+SlXMZ4BGPlIeQHP5WGXrGv/pd5Hck0KSYuZjRFzC7tIlVvc5/u
-	UIhBzgKIrxODdDCw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1761841918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
+	b=SK/u9tLAwmSDCXlgXCdvED/60dBowSj/1i2dtbni5TwltEQ4sQGwJ8vqJzJk7UglQ57wWG
+	2qhkO4hFqhHVAOCQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1761842011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYxUqOLOyZrF6zpcmB2FMK7ECIXy7RwQ0ssrddYQtt4=;
-	b=0j9hU/Ts09qlAQwjbg9XzmffczV8JmPTLC5Tal5kBHOkxavC2/Hk/UWPigSPkRxQql3Sts
-	m/JuTTW+3nn/0tnzY4tVQfKVzW9d9u29lgLYrbbDh8mLJ0++SMk8ER8Rjt1Faf8L2KJk8R
-	A8pTuIrdTPliL9z3rj068Q60O4mKbbQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1761841918;
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
+	b=AJdIHbZdawoM+1A/v9u8T0d7Msg2ILyQl8XxcWcItctZTw8FgguWL2PfBAE8SjSTufGCTf
+	q9C/So9D5aMj82QZswDDkc6MMQ6PUxczFTMrefq3d2GxU1SFiP+PSx/5JKRVDey4n+F5Lj
+	OudNDsQFbMc33WpQHV2ZopI3prg4V5w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1761842011;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LYxUqOLOyZrF6zpcmB2FMK7ECIXy7RwQ0ssrddYQtt4=;
-	b=/4I74rDr2B/Kz3VDx5w+SlXMZ4BGPlIeQHP5WGXrGv/pd5Hck0KSYuZjRFzC7tIlVvc5/u
-	UIhBzgKIrxODdDCw==
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=DWrK5CMDfQDYvJeMdC/0XNpGcRIzCb/z7YPeUhp9cn8=;
+	b=SK/u9tLAwmSDCXlgXCdvED/60dBowSj/1i2dtbni5TwltEQ4sQGwJ8vqJzJk7UglQ57wWG
+	2qhkO4hFqhHVAOCQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A3F6613393;
-	Thu, 30 Oct 2025 16:31:57 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ECEEF13393;
+	Thu, 30 Oct 2025 16:33:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EtDIJP2SA2mgHAAAD6G6ig
-	(envelope-from <pfalcato@suse.de>); Thu, 30 Oct 2025 16:31:57 +0000
-Date: Thu, 30 Oct 2025 16:31:56 +0000
-From: Pedro Falcato <pfalcato@suse.de>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
-Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
- guard regions
-Message-ID: <c736tssdw3z57kamh6eqc23gr575q375n2o2nnszih64afnaf7@zwbqremsbhwf>
-References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
- <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
- <xnsn5rfqigbm5ryjtbf2rtfotneiwygzesvyfdxiqrzlyzljdr@tmbht4ggnjcv>
- <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local>
+	id X0eHOVqTA2msHQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 30 Oct 2025 16:33:30 +0000
+Message-ID: <48029aab-20ea-4d90-bfd1-255592b2018e@suse.cz>
+Date: Thu, 30 Oct 2025 17:33:30 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5E8F48000F
-X-Stat-Signature: t6puhkru5psghn9gi7ocgq65ihrhgtbg
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH V3 6/7] mm/slab: save memory by allocating slabobj_ext
+ array from leftover
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, andreyknvl@gmail.com, cl@linux.com,
+ dvyukov@google.com, glider@google.com, hannes@cmpxchg.org,
+ linux-mm@kvack.org, mhocko@kernel.org, muchun.song@linux.dev,
+ rientjes@google.com, roman.gushchin@linux.dev, ryabinin.a.a@gmail.com,
+ shakeel.butt@linux.dev, vincenzo.frascino@arm.com, yeoreum.yun@arm.com,
+ tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20251027122847.320924-1-harry.yoo@oracle.com>
+ <20251027122847.320924-7-harry.yoo@oracle.com>
+ <CAJuCfpGY0h2d6VEAEa4kjH2yUMGDdke_QTFt6d+gb+kH=rnXyQ@mail.gmail.com>
+ <aQHJfyoUN-tbnVFr@hyeyoo>
+ <CAJuCfpFhaPTqtKbjrigptPJ-9kKJB--mPnicBzN1=rfJxhN3PQ@mail.gmail.com>
+ <aQK0Bj8DL21WJ0gq@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aQK0Bj8DL21WJ0gq@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: as1o8tq1skpnrp84g4e8we6amu9nhtz6
+X-Rspamd-Queue-Id: 9E76D1C000A
 X-Rspam-User: 
-X-HE-Tag: 1761841920-592657
-X-HE-Meta: U2FsdGVkX19fxQSld89ZBhO45S8EdMoRCMnjx34VKP6zCZDYXQ08lhQ+nEY5l13k4GuE8BOtuPqXMpRPLsNw9+Q0SMX9+ld+7gbEOWkLO+G6XEIuDWIycUMpqElZIr/RB/yZjwq3mPMQpVY3VlvAyOnBMWNA7psWCKZqTbUrecH4MKPSiciwGqByeosxLR9GezWundjh+j29xSFAwlwjivF7KU9+7H5PTtS/33zKjnsXdUwGM7gc61B7VnG5/3nP0uXoBFUN0BgzM8X3PihqKU0Y89ABaT2I7C+r1urclTOaXNFTmoaufdrok0iABUM+Yo5uE1vfVzPXy2Qzyfvy+MJ8kCBYj5P0oIjPP7ts+reAa0pD9SS46Xk699zIgEZsOdoarH1Bs38dUtwCbUmGCWmxcZKQ+E/1eknhojBnMzDvXn9Fl/rx0pKQQrg1c4MXqocr3SR3a/94mEb7I0g4grZwB3gETZox9MQ5Y4fhJHG/SGWBmsPbS/H9jSOVwXQL2n8MiNuWeHIwinsSpJJmTXOoNsy+qi+CrfbHla5LQ9QyTwHmqoTS/m2Qqx/gB1wLfyvbzwoykWwtUW3taQc7xXxvr5rnTxbgHxgAg5j8tkGvBJzVuRigzd8CkR+FDo1G3fC8710O85sGZBZ1Baq6hXpGpHQO/jLmwUwfxMTobLKrK1+k8DYgA50kLlC8FtLC8VMCeVit9VEk0hTS9dM94p9q2YqKaZ0fjaHtMBGm88X3YF0VQT5tdv3KRLeufz2zJsIpo57hvocfQZB0P6seFal8QczZE+KWIIIYYhWUpBviG1lO2YW2B+rWXJmSsETsbIzJGfp5jK94EljHJLOmYYfRaq6bNCAQMpTWU7NICWCvXoOvHMAEaNsnaLYM0k2Lf7+KIDWFdHbl0d7Nrrl1J8JhTy4uo9USVOqsIAR7AYo/EQEMddi8tJEhOeojrccVw5d1ptZCpN2eKR20nww
- k6CbDi6E
- GzupMxeSlKII+PTu0U/osqOkVqyDsues4TckovXeMD6VihIwF9O4MnEy6XV6RPxWskoyHu90xBPsOZGK2mPDMCwmDvDOg4FnLBIwnUzF8yM3VaaXyDjiK+rp2MYcvMgf9pEq7wRG+n437GZPmuc/izOFLUieu5iXmONDEyj8gkffwbtwV0Lq2CWhVwGYO6YcqcTmdZKeMAhJbD6J8+C5oFG5wo52NKW+BbqTElYM1p4NKGrqmRPRRWvTLFF8HvAvj5/G00FIJnmIJJjMwuAOnem1YYSKuGr03h4D8UbvKlt+6fQxaX40htGc+yRtDEIoyd1EG2EUAtO6KsB7jkpWQnaZuC7VBBUFhbx15
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761842012-705510
+X-HE-Meta: U2FsdGVkX1/GxG3tX8elaIv0yCfTKf2gIbK5f4O9GcMcdjfNChO/CB2lYS3hvpiW9RLkChaFtUqqNft7Liq0ho7pGn8mmoywxW9kKTkYgEG1Pqot54AhtCG4sniHnxaQ53+zOH9A6kQnx1HZi9YkaAcDUttM02qvAxdSiqOZPrD5BPFsdrWFr9xLFNuzCCwLKklB2xrYIoU4K/qrey0YAKKk3+iUoy79We6dR4T3Co50DKBqO0BdJbS1tAk5uet577kjlC6fJ6isHZOBGYKblFYbDn11S4H+d7WXvViQv1BCaOoLvAX1kxifN1GlBNm35IwR9X21mpTbENuvqtyT/Uc1E3FmviRaYKen1au5GERi+utUe2KEGbMCaNjI/qrcP+eRlrWV4kNepzQnsP8G+iHGwJFnc6dXvUScRlK6E7VX+Iy/MhFH72BeptoP26BDb+2SXi83mab+QVdK0j1qx41WKTAAdewsCAldWSfMbhIreStAC9ziNrnL+Xb1U+83yxELvf3JFAZKzjRemASZoJ71EMMw8h3FTJk5jWgxO+Qh3MkJ0UMewzLpmOCghcUSRiN16eJke8Ekl7L+D7/AXBEn3Fim0hEBFXAYPTNqR1rfy2AVRVWEg+aS5F2ZL1LpLXvger+069savMrbQC9GxS+lYVtxgNOKnILcQiiFSg1n7NNchLFSYMBOZZRJ9I6ALbxhAImMZwdVbl+eBkfnrFJzTzI7ywnt1xzQyJuDzTe2MpRwRTjai+0JTI3MIjZdFcpAoB8wvRr8vxL0TVjkovnFrgbS9UR7cTAI3YtRdb96FmSPr2/P84QWnmLHaUo+x9CZtn4McnHONNYDqFcq2GheNaioYhtrLhucO9p7hdbXPA5ONSKUq7oykdH4tYckGQPuFxSsctJT7UsA5opiAPxNb8AbFYmwpzXu+mHArNgTJ55lgJY2PHRwt0ASfm9NbSUSSDRlQI0ZgiIeK3f
+ Al9udLLx
+ xdvUY81l6wUGkEmT5ab4q996JFigEwc8xu86XGXXg2Zx4rsS7uf2BKQsRSfY78hy09tZgAZyg2vddon8mX+J2zQv7lcOu6Vv5yGNtjWbaP5zR7njIPNBVHj8JO61A4s7OvW1Su104xtQnZADJBz9MCPy0zNEBGAvVuLTG90S6ofL+ATXItejmStT1yYG8kc8lPXsH4cbj2i/9pPHJoR9MuNQcNZE4wFBYDoshBaxE7BuYb8Qf6noqPVZNqoaqDOmEvGcQhW3X5N5vbINvZcOmRBotBMcuFOj4VsE0rilzrSz6pxK4SU82+LYuhPqmPvDrODztuiGdp3n+65an3SnwjPUUgK0rBMvn2iFIdGnfn7dR7BZvHlvJYTyrhtQ8EeOEbSn/RqMQOGhXswoEUJDbhwPmKQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,74 +187,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 04:23:58PM +0000, Lorenzo Stoakes wrote:
-> On Thu, Oct 30, 2025 at 04:16:20PM +0000, Pedro Falcato wrote:
-> > On Wed, Oct 29, 2025 at 04:50:31PM +0000, Lorenzo Stoakes wrote:
-> > > Currently, if a user needs to determine if guard regions are present in a
-> > > range, they have to scan all VMAs (or have knowledge of which ones might
-> > > have guard regions).
-> > >
-> > > Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
-> > > pagemap") and the related commit a516403787e0 ("fs/proc: extend the
-> > > PAGEMAP_SCAN ioctl to report guard regions"), users can use either
-> > > /proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
-> > > operation at a virtual address level.
-> > >
-> > > This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
-> > > that guard regions exist in ranges.
-> > >
-> > > This patch remedies the situation by establishing a new VMA flag,
-> > > VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
-> > > uncertain because we cannot reasonably determine whether a
-> > > MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
-> > > additionally VMAs may change across merge/split).
-> > >
-> > > We utilise 0x800 for this flag which makes it available to 32-bit
-> > > architectures also, a flag that was previously used by VM_DENYWRITE, which
-> > > was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
-> > > bee reused yet.
-> > >
-> > > The MADV_GUARD_INSTALL madvise() operation now must take an mmap write
-> > > lock (and also VMA write lock) whereas previously it did not, but this
-> > > seems a reasonable overhead.
-> >
-> > Do you though? Could it be possible to simply atomically set the flag with
-> > the read lock held? This would make it so we can't split the VMA (and tightly
+On 10/30/25 01:40, Harry Yoo wrote:
+> On Wed, Oct 29, 2025 at 11:37:27AM -0700, Suren Baghdasaryan wrote:
+>> > > >         mod_node_page_state(slab_pgdat(slab), cache_vmstat_idx(s),
+>> > > > @@ -3219,9 +3352,6 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>> > > >         slab->objects = oo_objects(oo);slab_obj_exts
+>> > > >         slab->inuse = 0;
+>> > > >         slab->frozen = 0;
+>> > > > -       init_slab_obj_exts(slab);
+>> > > > -
+>> > > > -       account_slab(slab, oo_order(oo), s, flags);
+>> > > >
+>> > > >         slab->slab_cache = s;
+>> > > >
+>> > > > @@ -3230,6 +3360,13 @@ static struct slab *allocate_slab(struct kmem_cache *s, gfp_t flags, int node)
+>> > > >         start = slab_address(slab);
+>> > > >
+>> > > >         setup_slab_debug(s, slab, start);
+>> > > > +       init_slab_obj_exts(slab);
+>> > > > +       /*
+>> > > > +        * Poison the slab before initializing the slabobj_ext array
+>> > > > +        * to prevent the array from being overwritten.
+>> > > > +        */
+>> > > > +       alloc_slab_obj_exts_early(s, slab);
+>> > > > +       account_slab(slab, oo_order(oo), s, flags);
+>> > >
+>> > >  alloc_slab_obj_exts() is called in 2 other places:
+>> > > 1. __memcg_slab_post_alloc_hook()
+>> > > 2. prepare_slab_obj_exts_hook()
+>> > >
+>> > > Don't you need alloc_slab_obj_exts_early() there as well?
+>> >
+>> > That's good point, and I thought it's difficult to address
+>> > concurrency problem without using a per-slab lock.
+>> >
+>> > Thread A                    Thread B
+>> > - sees slab->obj_exts == 0
+>> >                             - sees slab->obj_exts == 0
+>> >                             - allocates the vector from unused space
+>> >                               and initializes it.
+>> >                             - try cmpxchg()
+>> > - allocates the vector
+>> >   from unused space and
+>> >   initializes it.
+>> >   (the vector is already
+>> >    in use and it's overwritten!)
+>> >
+>> > - try cmpxchg()
+>> >
+>> > But since this is slowpath, using slab_{lock,unlock}() here is probably
+>> > fine. What do you think?
+>> 
+>> Ok, was your original intent to leave these callers as is and allocate
+>> the vector like we do today even if obj_exts fit inside the slab?
 > 
-> VMA flags are not accessed atomically so no I don't think we can do that in any
-> workable way.
->
+> Yes that's what I intended, and maybe later we could allocate the vector
+> from the unused space even after the slab is allocated, as long as
+> it doesn't hurt performance.
 
-FWIW I think you could work it as an atomic flag and treat those races as benign
-(this one, at least).
+It would be nice. I guess what can happen is there's a cache without
+SLAB_ACCOUNT but then some allocations from that will use __GFP_ACCOUNT and
+we need to allocate obj_exts on-demand, right?
 
-> I also don't think it's at all necessary, see below.
+>> >
+>> > --
+>> > Cheers,
+>> > Harry / Hyeonggon
 > 
-> > define what "may have a guard page"), but it sounds much better than introducing
-> > lock contention. I don't think it is reasonable to add a write lock to a feature
-> > that may be used by such things as thread stack allocation, malloc, etc.
-> 
-> What lock contention? It's per-VMA so the contention is limited to the VMA in
-> question, and only over the span of time you are setting the gaurd region.
 
-Don't we always need to take the mmap write lock when grabbing a VMA write
-lock as well?
-
-> When allocating thread stacks you'll be mapping things into memory which... take
-> the write lock. malloc() if it goes to the kernel will also take the write lock.
->
-
-But yes, good point, you're already serializing anyway. I don't think this is
-a big deal.
-
-> So I think you're overly worried about an operation that a. isn't going to be
-> something that happens all that often, b. when it does, it's at a time when
-> you'd be taking write locks anyway and c. won't contend important stuff like
-> page faults for any VMA other than the one having the the guard region
-> installed.
-
-Yep, thanks.
-
--- 
-Pedro
 
