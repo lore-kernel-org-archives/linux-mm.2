@@ -4,102 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 80850CFC28D
-	for <linux-mm@archiver.kernel.org>; Fri, 21 Nov 2025 16:09:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 62761CCF9F6
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 05:31:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A6C256B0022; Fri, 21 Nov 2025 11:09:23 -0500 (EST)
+	id C35C68E012B; Thu, 30 Oct 2025 01:31:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A1D8E6B002B; Fri, 21 Nov 2025 11:09:23 -0500 (EST)
+	id C0D288E0112; Thu, 30 Oct 2025 01:31:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 90C6A6B002D; Fri, 21 Nov 2025 11:09:23 -0500 (EST)
+	id B49A18E012B; Thu, 30 Oct 2025 01:31:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B49B6B0022
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 11:09:23 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id B8A38130277
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:09:20 +0000 (UTC)
-X-FDA: 84135098880.23.2619746
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id DE7E0160015
-	for <linux-mm@kvack.org>; Fri, 21 Nov 2025 16:09:18 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXrPBIfz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1763741359; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A38B28E0112
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 01:31:36 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 56650140A2B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 05:31:36 +0000 (UTC)
+X-FDA: 84053658192.30.8F45BFA
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 5AF14140003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 05:31:34 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=Dmkbwjuj;
+	spf=pass (imf09.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761802294; a=rsa-sha256;
 	cv=none;
-	b=3jYSjHI8jBR89cKmO+w+Odim8r3v/FFFprFs2X1TJ7dggqfxW6cNHQe0jbSmTT7DO9UrnM
-	X+GUmB8jVFgJg1dzZSJx/DEBK/BF35z4ro4dBRIHqM5fyf45zVGWBybTGYsqXnJLz3ZlwH
-	g5dZCX4BAVDr1Z0qL5cnIF8dIm+0z3U=
+	b=vIDANmwEzHXFXm0W+JX31ve4r8E8ic35GgRy9CX5OMoANoCJDGsa4s726SPXMQtEO4lonm
+	pyhjw8kbH5jH4NfphQ9feREKFNIgEpVZfgcpvXc4B5k2v4mv9PgvCrGw9Q1DKGD4np6xzA
+	MMESOlCT1xF2Gir3J1xO3/fmd8RfsOM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=DXrPBIfz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+	imf09.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=Dmkbwjuj;
+	spf=pass (imf09.hostedemail.com: domain of m.wieczorretman@pm.me designates 185.70.43.22 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me;
+	dmarc=pass (policy=quarantine) header.from=pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1763741359;
+	s=arc-20220608; t=1761802294;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ePW388oklA7FMns8MHWa6eByXoeTMRetMmV1+DxnMiQ=;
-	b=absupK4IpOMU6DJi6ZmxyGee3O0g+UfX/cyO/7+P/+rYn1WYaNzpLNRltSPetwOx8rb+ji
-	jpdpMSEUBQJbVrdzjwsJ1eMSCEgVCsfhwfocAonkap4tKHQkuoG81jWTOAz6H3abu+ZCXp
-	ddMZJ+V+0AHzGMatDUq9yqz5KcVNtkI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 89BC843E4B;
-	Fri, 21 Nov 2025 16:09:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E86C4CEF1;
-	Fri, 21 Nov 2025 16:09:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1763741357;
-	bh=//OuOvMXeDV9xgqjwXYfwljPeKEYUBLLHfpTkq6K8+8=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=DXrPBIfzI0rxVmeV3dm4FH1BWca0aQOsApup4El5ebC7/Wnbgl4eKyhSn1TIGGat+
-	 vzz/NrU+jaItZ8HFmGhr86j1xgwmOSYZSNYke4wL/syHqsVWZQukAqEhNqa+YNeBPk
-	 31QsKCYCoAkM38ieBYVKK5PUc7SbGf1eklyzn4hbLVOVv03psyu/FsTvwpQUJc32fZ
-	 7tY90oZuYPnRk61KoNosla/msm9JvWELMKFOGQibL0zU59vuJTMgJueCkMx3/vpyuS
-	 7FE3P69FI738zFjFu+4J6UR3L8bSD7oVpcGOKZ1Fj9BmljA4Dxgutytafxy0PEhDdT
-	 FX70hzkqbeyzw==
-Message-ID: <f8669e93-24a8-47e1-9ba9-66df9627e998@kernel.org>
-Date: Fri, 21 Nov 2025 17:09:08 +0100
+	bh=SqB029SpVmJqfLswaEolkge/L1HE0Gdq54LxorgJlpY=;
+	b=iFeq8PXT51ZXq98ZGgvD7+32NTURiWbkxrtVnDhU3rRuVSNcDyRqy7D26bRmt31n8qE26M
+	hItC0IEeMXnawFlDJ5Ok6sayAX/7ZeWgtXx07fcy40ZhjOiia9S1m49Ciz1lVEtjXy5+C5
+	yxe0bc7BCBkqK/ZBDgdc2YyFskkWeW8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1761802290; x=1762061490;
+	bh=SqB029SpVmJqfLswaEolkge/L1HE0Gdq54LxorgJlpY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=DmkbwjujvK+EMhhVlhE633gtvTYp7stPsK2BPbKyUdMoaxnIplgzHAexjILc1xVuH
+	 gLXrpW1HyJwWmsjmp/lmf4wpRSDyWnYtEMKML6wW8rgghV+GnHSCpMrfmQbgODjtub
+	 tGyuGNNdhb/LVgZmJXqsvlvCEbLjmO+I8ggYJKeqgf3/xZCnBJg2qmYKYktt/n3rp4
+	 fpr+OFnZKCJlPrSvs9lPwCnKwXx5Pf/+vCoIGRyfV6DxVWk6i5QRjssG2k73Nt40UY
+	 eOQ6qpOuIco0pPKWj+Ilc/4BN3PBQx8nKwI+YZfggQVUW38eqxOLLul3nZsVeP7f6K
+	 Q7ALpWrEdqhMA==
+Date: Thu, 30 Oct 2025 05:31:22 +0000
+To: Andrew Morton <akpm@linux-foundation.org>
+From: =?utf-8?Q?Maciej_Wiecz=C3=B3r-Retman?= <m.wieczorretman@pm.me>
+Cc: xin@zytor.com, peterz@infradead.org, kaleshsingh@google.com, kbingham@kernel.org, nathan@kernel.org, ryabinin.a.a@gmail.com, dave.hansen@linux.intel.com, bp@alien8.de, morbo@google.com, jeremy.linton@arm.com, smostafa@google.com, kees@kernel.org, baohua@kernel.org, vbabka@suse.cz, justinstitt@google.com, wangkefeng.wang@huawei.com, leitao@debian.org, jan.kiszka@siemens.com, fujita.tomonori@gmail.com, hpa@zytor.com, urezki@gmail.com, ubizjak@gmail.com, ada.coupriediaz@arm.com, nick.desaulniers+lkml@gmail.com, ojeda@kernel.org, brgerst@gmail.com, elver@google.com, pankaj.gupta@amd.com, glider@google.com, mark.rutland@arm.com, trintaeoitogc@gmail.com, jpoimboe@kernel.org, thuth@redhat.com, pasha.tatashin@soleen.com, dvyukov@google.com, jhubbard@nvidia.com, catalin.marinas@arm.com, yeoreum.yun@arm.com, mhocko@suse.com, lorenzo.stoakes@oracle.com, samuel.holland@sifive.com, vincenzo.frascino@arm.com, bigeasy@linutronix.de, surenb@google.com, ardb@kernel.org, Liam.Howlett@oracl
+ e.com,
+	nicolas.schier@linux.dev, ziy@nvidia.com, kas@kernel.org, tglx@linutronix.de, mingo@redhat.com, broonie@kernel.org, corbet@lwn.net, andreyknvl@gmail.com, maciej.wieczor-retman@intel.com, david@redhat.com, maz@kernel.org, rppt@kernel.org, will@kernel.org, luto@kernel.org, kasan-dev@googlegroups.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-kbuild@vger.kernel.org, linux-mm@kvack.org, llvm@lists.linux.dev, linux-doc@vger.kernel.org
+Subject: Re: [PATCH v6 00/18] kasan: x86: arm64: KASAN tag-based mode for x86
+Message-ID: <ngwfbor66uhrgfe2g4nvziwqp3gtsbndlpnhnov7ew7535dysv@ieypsfjfmnlo>
+In-Reply-To: <20251029150806.e001a669d9dad6ff9167c1f0@linux-foundation.org>
+References: <cover.1761763681.git.m.wieczorretman@pm.me> <20251029150806.e001a669d9dad6ff9167c1f0@linux-foundation.org>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 22e7e1e747884a326f20da03a155c805b55537aa
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 4/9] mm: implement sticky VMA flags
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- Zi Yan <ziy@nvidia.com>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, linux-kernel@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
-References: <cover.1763460113.git.lorenzo.stoakes@oracle.com>
- <22ad5269f7669d62afb42ce0c79bad70b994c58d.1763460113.git.lorenzo.stoakes@oracle.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <22ad5269f7669d62afb42ce0c79bad70b994c58d.1763460113.git.lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: DE7E0160015
-X-Stat-Signature: jzb3ws3ywpx176j8gniwd76hprrkcant
-X-HE-Tag: 1763741358-452854
-X-HE-Meta: U2FsdGVkX1/lqDn7VCzJ/uAzBZH9oCHnmGOrk1GteLx1RV+Cw4yF90uiLwTrHkVDyWGO93bzkhv6HEDaaJ3JNiUjdaA8Y5el8YVGz3H51C3dUxhcof+hissLZ12h+NwWm4qRrofaQHBp3a8Wc20YnxFHRI0AJIzSZiRRnBnIcn9pCWn8idpFNcI7YKqtJkc31pAhhTydxILBYNb8heefH9Q+im2lGmcll8QxMriOPf445hflu2ifHM9sR1rxErYdcStAVWjDtwzOq8TYFd4daMunVcvSOIbiRdxxF81RVcyU78SI4ZFUL1NnUw6oEKJvHQ/M2pfO8o3764n0bwrCpnKqv2cDToPThGzNlyIphNoaQYLCs459cgq0Aoy3alVNZxazhEsdCZfLNYADlTFEvCCA93xRsL5vUB2A5J2q7X4BnHcR0v61ctn9sF6RBJrig5TXrBF/TLPLrp6Rf/Fum/edBnUO/jkOHI07RnkcPktSZzOb1KzSHqXhUhCFf8fcJsI4LZ2EstGii4WZI1KYNBr/95mnv12jj7LRlInFpnC/3CPqrJoIn3bWdIDotCCZyHEQ42R4gRN3ApMQYP8aK7F0r94SRRSllwhbxR3QZnsISRl96pgmhBRjMAi7XsVWMqvMNTVueohqgayJd1jyGOsZ2Gnm/qruiIBHnOecnwUOmMXrSDsOzOV3UzlUAj4SZ+9quVaFgKCHiarR/hR0QcnUHvh8BxKVeKSuG30SXpgD/ZwBDCLIa3wNazVKsfm1eQJSsgEKQJwUI17+U3vdHOHfLzuwA1UJm9iQJ9gpX5yn7jh1zcCx3QDjB2L6lrdgQiRJ/qsANjuOgmCPFzd4UpAi8PkTnOuldojVRQDZ+pi00teSCysNxvxxPrAL395hqR8Yx0Zcn8KDhFCN0y83P6tXvjldFHLCmlHUmDsMv8ESibqAgqAqZzZHn/dAp1c0gwHuIwCn+fQLcxqdN9K
- P3Oj7gms
- mY1LJwrNxVh5lSW6LoLHrYdoieFdc4JzLwEVDH0KoQiBaH5/Alz5iJ/g+PIJyml/DroEMveHmpd6sGx7r9+T0pgOb63aCPEMndQNeJzFYfkHvN1+5HLQPTe3aaIwhLe5p32JyPwevXvWmy1z2JJV707FciM2dMSHpz+Fz3LGoD2PI31OWPyf6UhwBm+Xp+zKa3xAHkY9hZUmjGFpl9qFpBs1w90/k+0oDMLmYaHOiaeixB3ao+xIWHjv8H/bindeULJyygvVfmvC7cMimjCFyoixJEDRCcan3jxrb7fRkDDgrqGcbjQK6rQMyBQ==
+X-Stat-Signature: 79ukdfjwshifg96sj9hta3dqmpesi46z
+X-Rspamd-Queue-Id: 5AF14140003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761802294-995608
+X-HE-Meta: U2FsdGVkX19nEtsmv8eXY/KGHkSNkW0JOktoI3h7lcGTt2kLsEA9yDdI9SFkJfZODEe9MhVewRvZn2IZ2IZU0nsyzH3ZRQ1Q9T4ds29hQvFbeNI81f5Klg5tXOcFZSBhEEddANKiBpCSLYlHiNikcl2pj9tIhKV3t4zgyw+7YR/1X+m00Gn6l+2OOB6PNdKF9i/PkegH+GRd2EBYxJa2KE9KUQkZqKD1aanl/wrdQ+c2Y3DzbNmTBeHp6GT7PEXtW83DLFYdwa47fa/qhvEW2ILg5vIGvBWewatNnP3VYn1GNYpwgOzZukJExgmwjs4+VsbrBMrRZbGXKCqHjOrr/+DT5o969EzBoQdNDIKWxL5dYjdnPdyH7MJGYssBwW71JqPpSRq8rs4ojC0WhJi4TAy1YGbOeSQLikEC0DSCgD8qQ3/We6rHkoeEf9KXCfjA/5itzEeG84yfeTSOrYdncp22W6xcaTLq+GlgCDX+Hn6lUiTUNfLz8cVqKQQcoaV7ubnUW5P2LfoUOlp8aqtL00Zr3dg5gJxr4cf2hAdsK358/w4G/p9YLBXSZKgO4PG3zMvcQxLA3Z9F2dYTxg+g3pibhJwGSpppYRlIaiNU0tSmem5BgIb5I/h0iWLurQm1fii4P6KGQi4u6LXhH2KAzDpK0TD2WgojCTHBF03qXlPZ6Qcu5KtW9yjsuf55MrxBsY2qhZZTqk1u8a6cPQO5ESWoA8W2iDkzVQSa8HPNZ0qU+1GHiKQcnmrabY9znFzvyjNOwuEv22TqMZf7Ed3z5tbkUTIIuAh34gap3l1zywYAPc3c40nx5Mm/J3fVHMM+wZFzIoSN1EzlomGxkc2VJL3oIBFm4Q58ivoMf7YVgRDPgCdI5ItIltRrjqjMbVDeYsHr72mS1+ev/HkHdlHNvICPUnrAhwjr6IHvuAccrp65uAP2TyVJ1hdH/xHMqikMuooYdA2Nkm+uLwcGC4d
+ 2Qre3b2H
+ Cl1Ewt5oKC70Lyj5i4+sb/p/k0+8x5cNiRGOo2CA795Pkj2waw/vkbMjvN4pzBt5bcorKf2Iq51kpELP4uDxAeMiuk+PWH4NgX1BbxQqLKhnxG/9XA0HzhZ6fisi4ijjvxD5IdyspZcZ1B3HhlOYbggRWdqD3YxTJr04/xvRyrYzB+UKMmKT+UcfJf+RRsJgXZGc+MylDXmVIIcCPVy6TadGlGFLCyWCh28PiTZW3O7vr1gO9EpQOSxD9+6YZ89ru5w+hFkMayAE9asgmeBXKmJVkueEcHCryk42nUNljWyM2/3sJjlz/aGQd0g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,49 +92,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/18/25 11:17, Lorenzo Stoakes wrote:
-> It is useful to be able to designate that certain flags are 'sticky', that
-> is, if two VMAs are merged one with a flag of this nature and one without,
-> the merged VMA sets this flag.
-> 
-> As a result we ignore these flags for the purposes of determining VMA flag
-> differences between VMAs being considered for merge.
-> 
-> This patch therefore updates the VMA merge logic to perform this action,
-> with flags possessing this property being described in the VM_STICKY
-> bitmap.
-> 
-> Those flags which ought to be ignored for the purposes of VMA merge are
-> described in the VM_IGNORE_MERGE bitmap, which the VMA merge logic is also
-> updated to use.
-> 
-> As part of this change we place VM_SOFTDIRTY in VM_IGNORE_MERGE as it
-> already had this behaviour, alongside VM_STICKY as sticky flags by
-> implication must not disallow merge.
-> 
-> Ultimately it seems that we should make VM_SOFTDIRTY a sticky flag in its
-> own right, but this change is out of scope for this series.
-> 
-> The only sticky flag designated as such is VM_MAYBE_GUARD, so as a result
-> of this change, once the VMA flag is set upon guard region installation,
-> VMAs with guard ranges will now not have their merge behaviour impacted as
-> a result and can be freely merged with other VMAs without VM_MAYBE_GUARD
-> set.
-> 
-> Also update the comments for vma_modify_flags() to directly reference
-> sticky flags now we have established the concept.
-> 
-> We also update the VMA userland tests to account for the changes.
-> 
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
+Thanks for taking a look at the series!
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+On 2025-10-29 at 15:08:06 -0700, Andrew Morton wrote:
+>On Wed, 29 Oct 2025 19:05:27 +0000 Maciej Wieczor-Retman <m.wieczorretman@=
+pm.me> wrote:
+>
+>> The patchset aims to add a KASAN tag-based mode for the x86 architecture
+>> with the help of the new CPU feature called Linear Address Masking
+>> (LAM). Main improvement introduced by the series is 2x lower memory
+>> usage compared to KASAN's generic mode, the only currently available
+>> mode on x86. The tag based mode may also find errors that the generic
+>> mode couldn't because of differences in how these modes operate.
+>
+>Thanks.  Quite a lot of these patches aren't showing signs of review at
+>this time, so I'll skip v6 for now.
+>
+>However patches 1&2 are fixes that have cc:stable.  It's best to
+>separate these out from the overall add-a-feature series please - their
+>path-to-mainline will be quite different.
 
--- 
-Cheers
+Okay, I'll send them separately
 
-David
+>I grabbed just those two patches for some testing, however their
+>changelogging isn't fully appropriate.  Can I ask that you resend these
+>as a two-patch series after updating the changelogs to clearly describe
+>the userspace-visible effects of the flaws which the patches fix?
+>
+>This is to help -stable maintainers understand why we're proposing the
+>backports and it is to help people to predict whether these fixes might
+>address an issue which they or their customers are experiencing.
+
+Sure, I'll also fixup that undefined symbol error that you mentioned in
+the second email.
+
+kind regards
+Maciej Wiecz=C3=B3r-Retman
+
 
