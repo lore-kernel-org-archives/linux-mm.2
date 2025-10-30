@@ -4,74 +4,120 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20ADDCCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 15:56:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0A5D6CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 15:59:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68FF628000C; Thu, 30 Oct 2025 11:56:26 -0400 (EDT)
+	id 66DFF28000D; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6400D280003; Thu, 30 Oct 2025 11:56:26 -0400 (EDT)
+	id 64576280003; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5569428000C; Thu, 30 Oct 2025 11:56:26 -0400 (EDT)
+	id 55AF328000D; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F673280003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:56:26 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 43E33280003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:59:30 -0400 (EDT)
 Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D0043856A0
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:56:25 +0000 (UTC)
-X-FDA: 84055232730.06.B32183A
-Received: from akranes.kaiser.cx (akranes.kaiser.cx [152.53.16.207])
-	by imf06.hostedemail.com (Postfix) with ESMTP id F3B6C180007
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:56:23 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	spf=pass (imf06.hostedemail.com: domain of postmaster@kaiser.cx designates 152.53.16.207 as permitted sender) smtp.mailfrom=postmaster@kaiser.cx
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761839784; a=rsa-sha256;
-	cv=none;
-	b=n0oanb+bZexipkpLWWC/TClszsOE+6ebfCTw6DQYV6WEzvXmFDLAg73k5dl14yDTdJpnVy
-	mCWkje0aWewhUDrx/a3bB4bsDuFDTXrrvxsRIsybTR2+4ldq1oMVFOSvLr1qjAKNIXxT2d
-	+rq/AYkyrS0G55ksP1b0fpP7HcAFpjo=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf06.hostedemail.com: domain of postmaster@kaiser.cx designates 152.53.16.207 as permitted sender) smtp.mailfrom=postmaster@kaiser.cx
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D41AC1601D0
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:59:29 +0000 (UTC)
+X-FDA: 84055240458.06.F295E1F
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
+	by imf16.hostedemail.com (Postfix) with ESMTP id CB7D9180004
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:59:27 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fMLPh+rC;
+	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761839784;
+	s=arc-20220608; t=1761839967;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=3WZkVwNh4oSD4qdsKRsgE30RmVLPPZlGnWQm5FqqgbY=;
-	b=ZTlNslEZI5OOeC8uwVxUYspj/LYgCdV8bqvxS8Sj7vrWKijZRxB6GPZ75ynVzkGVg+eLuQ
-	BPDSk6qyg+7Flnfc4nuCVGhhb3aWODNa5kk9CIVeTXO4bU+zg7YwR5SfdCNhz+4uJsYeUn
-	VvHNsX0l+hHRur3pMLfVS+EjBwQsJu8=
-Received: from ipservice-092-210-203-096.092.210.pools.vodafone-ip.de ([92.210.203.96] helo=martin-debian-3.kaiser.cx)
-	by akranes.kaiser.cx with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <martin@kaiser.cx>)
-	id 1vEV0H-005zMp-2O;
-	Thu, 30 Oct 2025 16:55:57 +0100
-From: Martin Kaiser <martin@kaiser.cx>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>
-Cc: maple-tree@lists.infradead.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	Martin Kaiser <martin@kaiser.cx>
-Subject: [PATCH] maple_tree: fix tracepoint string pointers
-Date: Thu, 30 Oct 2025 16:55:05 +0100
-Message-ID: <20251030155537.87972-1-martin@kaiser.cx>
-X-Mailer: git-send-email 2.43.7
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
+	b=LcWpg0Y4qXVWG+1OULYmhHsUocrmfvKitfWtVtLcCbhidtSUSXLpSn01a3zoehmv1jsTav
+	hZmg4Ntbycc9rxw6YNwY3BT6xth/DD5iZTKswpyiMC69q+OX2tvXlZibFM6rDdgK5Sx4rd
+	aQNjvQ9TwhNbD3HYvPoAfeLcjYu++S0=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=fMLPh+rC;
+	spf=pass (imf16.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761839967; a=rsa-sha256;
+	cv=none;
+	b=t7nOGQutduqDNSGCDC2M5H+kssvGdswID/zjxsaucqWhqREBfm1p4dHqkB2stj428sGUTh
+	QAtCOA77Rh2zYDk9ZB3rt6uDh0gAx1r6VOZwuAXhOSawo0dt6MGDlhEeOdBcRKFD55hxP/
+	jHSxL7rnDpSmnwUPF0rGVntFnRofvIA=
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b6d5b756284so314093166b.1
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:59:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761839966; x=1762444766; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
+        b=fMLPh+rCewM0kKCnmZS6GZUM8kG76NswqEGestFyuCZuMKa1JfzHBljb47T1wpqQMU
+         m0UFs1vdYsFw3xyAlg3TNE86V3X4rUKpbcJaJj//vCb9m2Rgs7FOKToRdW0NLNCxk1rp
+         TqhFR/Cj9yATCEkqlsV2h7ZkI5j9pG4DrBb0Kys8JlfS1amFvzbgXzTQpsmOXhEJkrU+
+         FpnSlygL8aMjoGETj4MXAmTp+5Az8C8KGLXrjfuzu3H0LW7XJj+xagGeUKnl0XyBfNLh
+         bToyf/Z44i9utab/McRHRV3zB1qkiG2Zi8tDqQdocIDvKRBb931FzfWPgPVE/A1THNx3
+         YzGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761839966; x=1762444766;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dtYLD87/tbnWpFhxZoXLkwutGQwHC9HiwVV2d797j9U=;
+        b=GI/vcocad9w5QhQ4rw9cRv/PvnpYpYseS9PhaywGLTqIrh2rPh3JQg48MMLFZQ16SR
+         kbuWgUA8iSEaImUihITRtX+fwYv6FQ5bEvjkSnxVjbecDgAbRLuGrjz6zVNS9HreIuxh
+         cI6tbLJLdyNunPb8u1Sq7Wcu7ipfI/ihHeUSh448jBvMEnh6V74xI3GGe7HRz+GO3IR2
+         QXPdBQgfM2ffBsDLiFzBsJKPRFSuXXAtOkVOWYsJxIva1uhfThKnUq6LdXXSQOkd5+9k
+         LGeFR4lkA1XCQdaGtrDzdFqRJLscD7scQtascyz8mLwuTWwbA/c2jiwVH/IojyFXEpUp
+         nPZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVTuzKA8MqU1y0c5vDNulzYe8/v8cYNBjR3amdohDoqd6PuPuxL4Pmde+AgBesMl6oR63fFc1j5aw==@kvack.org
+X-Gm-Message-State: AOJu0YxFM9bKLvfxGc0XPcyH5Tc1x07+m6opYKV2bNT0fuOctKvdvnsc
+	HvF+VSucugIUQ72eZrdkXDfTytaMx3ntwEFp0X0U3LKCv8JNbGnNU8+WpCqCFge1hWUr0BUI1jV
+	0OEtAl8/VBc7LV6dYrsxDJJqxevotJTE=
+X-Gm-Gg: ASbGncuSH/yXNDrpoo6fPlE3KN/ECC+wunCqHbAs/CmAsGm3KWhDGO14T+0rhTuki+2
+	yHgoIbpyVyhNJfxxwW5Q+qysRPy5rbyVlnk/GCeOJIZlfevcIuoXltZGHsg4iwhIkFFOgpx/ZKl
+	aJ01rE0CkumxCfe76y9SVm5QOs163niHbN9nJj53BkfWKxQGBxRBkufpymlt7SU/ghUvkoouQP9
+	MXZv63W8Bk5KEpJgCiaMnP/mcFxQOFpas/QGFeQyaPuWJNh1iKbIoi6AQQXYeG5tDetP/+PM6DL
+	RMLDWt0LbvY=
+X-Google-Smtp-Source: AGHT+IGNEehD/IbzmT/eYnqMidws6XqejIuodVpG5l4cgolJSh8b964GFDYeXBLMdMY3NgBpsNfX2tZZfLZTiPrySFg=
+X-Received: by 2002:a17:907:7f22:b0:b0c:b51b:81f6 with SMTP id
+ a640c23a62f3a-b7053e45459mr371911866b.43.1761839965702; Thu, 30 Oct 2025
+ 08:59:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz>
+ <20251023-sheaves-for-all-v1-10-6ffa2c9941c0@suse.cz> <aQLqZjjq1SPD3Fml@hyeyoo>
+ <06241684-e056-40bd-88cc-0eb2d9d062bd@suse.cz> <CAADnVQ+K-gWm6KKzKZ0vVwfT2H1UXSoaD=eA1aRUHpA5MCLAvA@mail.gmail.com>
+ <5e8e6e92-ba8f-4fee-bd01-39aacdd30dbe@suse.cz>
+In-Reply-To: <5e8e6e92-ba8f-4fee-bd01-39aacdd30dbe@suse.cz>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Thu, 30 Oct 2025 08:59:14 -0700
+X-Gm-Features: AWmQ_bkWAOmvQoKcQyr_zcqHDGMRrBlm9dDGveiPgB0Mj-QwDfGlE8jGMTlojF0
+Message-ID: <CAADnVQJ_yzOGAT__EG=eBTHbWeiFgEZ--fHFQNprsX9o0vEQkA@mail.gmail.com>
+Subject: Re: [PATCH RFC 10/19] slab: remove cpu (partial) slabs usage from
+ allocation paths
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Harry Yoo <harry.yoo@oracle.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Uladzislau Rezki <urezki@gmail.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Suren Baghdasaryan <surenb@google.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-rt-devel@lists.linux.dev, 
+	bpf <bpf@vger.kernel.org>, kasan-dev <kasan-dev@googlegroups.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: CB7D9180004
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: F3B6C180007
-X-Stat-Signature: j9ptcnqs9szu5ieznbd8urkihdyk3r1i
-X-HE-Tag: 1761839783-303747
-X-HE-Meta: U2FsdGVkX1+UrkYR9PaJXzjfOZQvS2O9dxgfu3QBPTIys07sOuFUd6207T7bxsig93Pe5AvWR7CZLUHDOOKiUJ2NZ77yEg6V39IbLsnUPz9+yy9BF878WTGXTR1B13eFOVYekRbrujVN/aRheOcNw7pbIRcGjq1eM9/Gtn2p2GmoBZT2BdsyDtNJHbZxOk8Jks5TvOcCUu1wsu5K+RR0QfUnAlPCx6dy1U45OHDakXzsDhHt0YfkLFLzO0W9UTkZIYpZaK6IPFap3wzUl5ksURCMoasZwcdIvvn/BrZjCYpMTdhOXd+PbfOQ9KAJCx7KMDePwP0mJCW2SXDRHiB9t3roub70tfosmi8ZVysRq8r2sHOxg3Zn+DPT8JK0mrdoSz7AAljRaAjA4vKvDk+RpGROoOw2IX2L+LujTVaLrpGpXpH8U6bGpv1T2PCtCUG4a1fahctHlKOl//gTfFL0FxMAZiimSnnQyU67JJyeh6aSaQjfVp4LfafhpkSj4UdqA+xxuwoIYkw5m5gdvrMth60wJwM7H8oilUWfYBUwc/BtyZ00WtOvEtMetd8ATdU39XQmKeMTTUkUsyC7ReUusyeFibH14UHNcyttgwUfG9gb/oorByCzHlivcEKlGCC9Ufipwog+s2Phg6BpflQrad1gH7DIz9R86oL5JFkOyPEBAuPe66G/PLKjl/HOCtLyuMFhZR5m7BAXlOP3NuoUePmw3gQTMXO41rk8gOE6tU1VMvhJu03sN6lC5EbTwCa9Utiy17/gbdURF7o0wUfjXxjMt/5WCG/9qbO+e7sM6IWW3vr/jS4KnBT88WmBJ+0KDsY2oOZ/lg6oZyCpRI7CDZl9NUSOUDm+bC9dMagtBkF+KQCHxmxJRTTyTbNPif5MAVPcQDDuIXhbk6Rq1Lj4lCIsyFIG911Qbbi9Tv7E0MXXetZ+tVXLjhfIuQPTX+THKApQHxOA+ELZhI3PcXj
- igDhlMsH
- AQ6qqyqOCEWFOuGclFgsSdKL3Qenl3g2Y9U/uLnTkOjfD//QIx+t9wQYtoq2Kr2A+Ar3bW3pnSnH7AZXnK4RGkAB9yNzrzgUel2cXNnxAQBAEoL0qOupdZNVxILfUYVgCSjFsz/DhukQR0vqV4RmYJ+x8zWtlvWwfWGuZvNx+vXuV5Vd8TIzl4JgpFXWDLXunA+wi4oeq5jDU8a4o7aM1GZ3jw5h3MzJ8UWQO4GFlvE4qY3s=
+X-Stat-Signature: jcr761qg9mu4zc4e94zm3difrkof5eyw
+X-HE-Tag: 1761839967-339837
+X-HE-Meta: U2FsdGVkX18enQVyc1wZP+nckTuHrBgYwUEUML4iMpLxz//gMdCvH92w5aaGTIhyhAJtR0qPgWsgTbswCrCaEskEjDygwpQsJMLzevtPNi+XIEy2aRTXoQHrQeD7gmL/jT/wQ/CKtV/UZ6a9aVG3z4L4YtaGGS1nVXl8v6wiEm1vVyYDH2m13Ea+9XR3nN9kCBSg8YXU7tnPaFuPb0+bwHLHQtshksJ9oFUgeyXQ1HsTvLw3fn71dQgr3Juv03kW0w4LFGL6HPg601uZV43501j3Kz1EiVt2DyGJYDaPeccGH75OYGyoxIW4IRfCfcHQ7/hV8onUkrY0eeKpvch5zHlGRwtO9X7C69ZZY/ihim4LCv7AnROEPZO5EEtO06+ZjkRlg0G3S+lYrHwFf+MOHsE96+gk/QCBRc+cuTnAVQWTCyt6ds0a8FBate3/EBpUDsiGmm8T49jtp483vtYsRMgKU5enWhiQLkmdQoobxTbCRR5QhgdqbZ7qRo+wfbIeq78O/secP+Z+KkgX8EuADEcFVnWMIiGhtHlwtf4F81ylAKKG3WDk1/AzEWi2/9vywvlRfCyl4c2bxK+/1zVIAMK/s3TgHSoegzlphB5S/XO9PpcL2wkXz9lcfm2S5ivXOTDC1fe0vmvnZoBjVYcHwh41klWBLAMMMlE/fy/pZT4i7SmP4F9aQFA72k1vpEBMjGTIbYRu4BALLq4qm6+MO/isqu8B6TUkZyxwPcz4ORhmhsbsuZ6HdB8CkjJ/KF8gwDQOTe+J3rP2vqX25FjqP6prTH3AxtzaINUR9pJXrC8M9XJSdMCnWY1QBhWf/E5lRYhzqTcVw/85kqiBmDi7r4gWgITBrduTzLMbhE+TZbyft7flpiOcdT8AvDmLQRI4JO0O0jtkzHRBiqSVufEWxux4iAtpKvW7poY/1nVWNzc4ySTX9tnDhmbk1klyUDmUHz7GBOI9G2uYFcBr+P3
+ AG1aDjyr
+ c8Sp0x1QHUmEu2bVZz5O04agcCDwIevHUfpCERTsPHuh837/uD5ilQ2/ya2HxT69xjPXnYJDpmbVGdfbJYsjORk1qKdbtoPEGpiUh3ahCMeuy4/fUdwkavKJxc0zWrn9qNdV76mULXQHLz5Ns411oqzywpfqLcRr/4HmfSRum/bgiWO6MOUstCPVU/oy6r6845k3eq7fNiELf7ga0h42PvP2UmZbDfG1W6g/3uOxylEvLeymhb+K/OvFAadiTa3SD1hMgVDomPqLUKdxKIsmrBfRiimApndVhRNg8E/c8kAu4ajaY6wfv/hvLmPduUQwqGPZRrFk3Qm2V4TIR/TJb7D58hbGuunlHuuFXeHSfdFwKzT2OAWiri237UnSnF7RmSNackUtxciqKfhM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -80,162 +126,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-maple_tree tracepoints contain pointers to function names. Such a pointer
-is saved when a tracepoint logs an event. There's no guarantee that it's
-still valid when the event is parsed later and the pointer is dereferenced.
-
-The kernel warns about these unsafe pointers.
-
-	event 'ma_read' has unsafe pointer field 'fn'
-	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
-
-Mark the function names as tracepoint_string() to fix the events.
-
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
----
- lib/maple_tree.c | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
-
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 39bb779cb311..5aa4c9500018 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -64,6 +64,8 @@
- #define CREATE_TRACE_POINTS
- #include <trace/events/maple_tree.h>
- 
-+#define TP_FCT tracepoint_string(__func__)
-+
- /*
-  * Kernel pointer hashing renders much of the maple tree dump useless as tagged
-  * pointers get hashed to arbitrary values.
-@@ -2756,7 +2758,7 @@ static inline void mas_rebalance(struct ma_state *mas,
- 	MA_STATE(l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	/*
- 	 * Rebalancing occurs if a node is insufficient.  Data is rebalanced
-@@ -2997,7 +2999,7 @@ static void mas_split(struct ma_state *mas, struct maple_big_node *b_node)
- 	MA_STATE(prev_l_mas, mas->tree, mas->index, mas->last);
- 	MA_STATE(prev_r_mas, mas->tree, mas->index, mas->last);
- 
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	mast.l = &l_mas;
- 	mast.r = &r_mas;
-@@ -3172,7 +3174,7 @@ static bool mas_is_span_wr(struct ma_wr_state *wr_mas)
- 			return false;
- 	}
- 
--	trace_ma_write(__func__, wr_mas->mas, wr_mas->r_max, entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, wr_mas->r_max, entry);
- 	return true;
- }
- 
-@@ -3416,7 +3418,7 @@ static noinline void mas_wr_spanning_store(struct ma_wr_state *wr_mas)
- 	 * of data may happen.
- 	 */
- 	mas = wr_mas->mas;
--	trace_ma_op(__func__, mas);
-+	trace_ma_op(TP_FCT, mas);
- 
- 	if (unlikely(!mas->index && mas->last == ULONG_MAX))
- 		return mas_new_root(mas, wr_mas->entry);
-@@ -3552,7 +3554,7 @@ static inline void mas_wr_node_store(struct ma_wr_state *wr_mas,
- 	} else {
- 		memcpy(wr_mas->node, newnode, sizeof(struct maple_node));
- 	}
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	mas_update_gap(mas);
- 	mas->end = new_end;
- 	return;
-@@ -3596,7 +3598,7 @@ static inline void mas_wr_slot_store(struct ma_wr_state *wr_mas)
- 		mas->offset++; /* Keep mas accurate. */
- 	}
- 
--	trace_ma_write(__func__, mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, 0, wr_mas->entry);
- 	/*
- 	 * Only update gap when the new entry is empty or there is an empty
- 	 * entry in the original two ranges.
-@@ -3717,7 +3719,7 @@ static inline void mas_wr_append(struct ma_wr_state *wr_mas,
- 		mas_update_gap(mas);
- 
- 	mas->end = new_end;
--	trace_ma_write(__func__, mas, new_end, wr_mas->entry);
-+	trace_ma_write(TP_FCT, mas, new_end, wr_mas->entry);
- 	return;
- }
- 
-@@ -3731,7 +3733,7 @@ static void mas_wr_bnode(struct ma_wr_state *wr_mas)
+On Thu, Oct 30, 2025 at 8:35=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wr=
+ote:
+>
+> On 10/30/25 16:27, Alexei Starovoitov wrote:
+> > On Thu, Oct 30, 2025 at 6:09=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz=
+> wrote:
+> >>
+> >> On 10/30/25 05:32, Harry Yoo wrote:
+> >> > On Thu, Oct 23, 2025 at 03:52:32PM +0200, Vlastimil Babka wrote:
+> >> >> diff --git a/mm/slub.c b/mm/slub.c
+> >> >> index e2b052657d11..bd67336e7c1f 100644
+> >> >> --- a/mm/slub.c
+> >> >> +++ b/mm/slub.c
+> >> >> @@ -4790,66 +4509,15 @@ static void *___slab_alloc(struct kmem_cach=
+e *s, gfp_t gfpflags, int node,
+> >> >>
+> >> >>      stat(s, ALLOC_SLAB);
+> >> >>
+> >> >> -    if (IS_ENABLED(CONFIG_SLUB_TINY) || kmem_cache_debug(s)) {
+> >> >> -            freelist =3D alloc_single_from_new_slab(s, slab, orig_=
+size, gfpflags);
+> >> >> -
+> >> >> -            if (unlikely(!freelist))
+> >> >> -                    goto new_objects;
+> >> >> -
+> >> >> -            if (s->flags & SLAB_STORE_USER)
+> >> >> -                    set_track(s, freelist, TRACK_ALLOC, addr,
+> >> >> -                              gfpflags & ~(__GFP_DIRECT_RECLAIM));
+> >> >> -
+> >> >> -            return freelist;
+> >> >> -    }
+> >> >> -
+> >> >> -    /*
+> >> >> -     * No other reference to the slab yet so we can
+> >> >> -     * muck around with it freely without cmpxchg
+> >> >> -     */
+> >> >> -    freelist =3D slab->freelist;
+> >> >> -    slab->freelist =3D NULL;
+> >> >> -    slab->inuse =3D slab->objects;
+> >> >> -    slab->frozen =3D 1;
+> >> >> -
+> >> >> -    inc_slabs_node(s, slab_nid(slab), slab->objects);
+> >> >> +    freelist =3D alloc_single_from_new_slab(s, slab, orig_size, gf=
+pflags);
+> >> >>
+> >> >> -    if (unlikely(!pfmemalloc_match(slab, gfpflags) && allow_spin))=
  {
- 	struct maple_big_node b_node;
- 
--	trace_ma_write(__func__, wr_mas->mas, 0, wr_mas->entry);
-+	trace_ma_write(TP_FCT, wr_mas->mas, 0, wr_mas->entry);
- 	memset(&b_node, 0, sizeof(struct maple_big_node));
- 	mas_store_b_node(wr_mas, &b_node, wr_mas->offset_end);
- 	mas_commit_b_node(wr_mas, &b_node);
-@@ -5062,7 +5064,7 @@ void *mas_store(struct ma_state *mas, void *entry)
- {
- 	MA_WR_STATE(wr_mas, mas, entry);
- 
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- #ifdef CONFIG_DEBUG_MAPLE_TREE
- 	if (MAS_WARN_ON(mas, mas->index > mas->last))
- 		pr_err("Error %lX > %lX " PTR_FMT "\n", mas->index, mas->last,
-@@ -5163,7 +5165,7 @@ void mas_store_prealloc(struct ma_state *mas, void *entry)
- 	}
- 
- store:
--	trace_ma_write(__func__, mas, 0, entry);
-+	trace_ma_write(TP_FCT, mas, 0, entry);
- 	mas_wr_store_entry(&wr_mas);
- 	MAS_WR_BUG_ON(&wr_mas, mas_is_err(mas));
- 	mas_destroy(mas);
-@@ -5882,7 +5884,7 @@ void *mtree_load(struct maple_tree *mt, unsigned long index)
- 	MA_STATE(mas, mt, index, index);
- 	void *entry;
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 	rcu_read_lock();
- retry:
- 	entry = mas_start(&mas);
-@@ -5925,7 +5927,7 @@ int mtree_store_range(struct maple_tree *mt, unsigned long index,
- 	MA_STATE(mas, mt, index, last);
- 	int ret = 0;
- 
--	trace_ma_write(__func__, &mas, 0, entry);
-+	trace_ma_write(TP_FCT, &mas, 0, entry);
- 	if (WARN_ON_ONCE(xa_is_advanced(entry)))
- 		return -EINVAL;
- 
-@@ -6148,7 +6150,7 @@ void *mtree_erase(struct maple_tree *mt, unsigned long index)
- 	void *entry = NULL;
- 
- 	MA_STATE(mas, mt, index, index);
--	trace_ma_op(__func__, &mas);
-+	trace_ma_op(TP_FCT, &mas);
- 
- 	mtree_lock(mt);
- 	entry = mas_erase(&mas);
-@@ -6485,7 +6487,7 @@ void *mt_find(struct maple_tree *mt, unsigned long *index, unsigned long max)
- 	unsigned long copy = *index;
- #endif
- 
--	trace_ma_read(__func__, &mas);
-+	trace_ma_read(TP_FCT, &mas);
- 
- 	if ((*index) > max)
- 		return NULL;
--- 
-2.43.7
+> >> >> -            /*
+> >> >> -             * For !pfmemalloc_match() case we don't load freelist=
+ so that
+> >> >> -             * we don't make further mismatched allocations easier=
+.
+> >> >> -             */
+> >> >> -            deactivate_slab(s, slab, get_freepointer(s, freelist))=
+;
+> >> >> -            return freelist;
+> >> >> -    }
+> >> >> +    if (unlikely(!freelist))
+> >> >> +            goto new_objects;
+> >> >
+> >> > We may end up in an endless loop in !allow_spin case?
+> >> > (e.g., kmalloc_nolock() is called in NMI context and n->list_lock is
+> >> > held in the process context on the same CPU)
+> >> >
+> >> > Allocate a new slab, but somebody is holding n->list_lock, so tryloc=
+k fails,
+> >> > free the slab, goto new_objects, and repeat.
+> >>
+> >> Ugh, yeah. However, AFAICS this possibility already exists prior to th=
+is
+> >> patch, only it's limited to SLUB_TINY/kmem_cache_debug(s). But we shou=
+ld fix
+> >> it in 6.18 then.
+> >> How? Grab the single object and defer deactivation of the slab minus o=
+ne
+> >> object? Would work except for kmem_cache_debug(s) we open again a race=
+ for
+> >> inconsistency check failure, and we have to undo the simple slab freei=
+ng fix
+> >>  and handle the accounting issue differently again.
+> >> Fail the allocation for the debug case to avoid the consistency check
+> >> issues? Would it be acceptable for kmalloc_nolock() users?
+> >
+> > You mean something like:
+> > diff --git a/mm/slub.c b/mm/slub.c
+> > index a8fcc7e6f25a..e9a8b75f31d7 100644
+> > --- a/mm/slub.c
+> > +++ b/mm/slub.c
+> > @@ -4658,8 +4658,11 @@ static void *___slab_alloc(struct kmem_cache
+> > *s, gfp_t gfpflags, int node,
+> >         if (kmem_cache_debug(s)) {
+> >                 freelist =3D alloc_single_from_new_slab(s, slab,
+> > orig_size, gfpflags);
+> >
+> > -               if (unlikely(!freelist))
+> > +               if (unlikely(!freelist)) {
+> > +                       if (!allow_spin)
+> > +                               return NULL;
+> >                         goto new_objects;
+> > +               }
+> >
+> > or I misunderstood the issue?
+>
+> Yeah that would be the easiest solution, if you can accept the occasional
+> allocation failures.
 
+yeah. not worried about the slub debug case.
+Let's reassess when sheav conversion is over.
 
