@@ -4,119 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77D49CCF9E5
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 04:01:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 923BACCF9EA
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 04:33:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C7DCB8E0121; Thu, 30 Oct 2025 00:01:57 -0400 (EDT)
+	id A2FC88E0124; Thu, 30 Oct 2025 00:33:00 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C2E048E0112; Thu, 30 Oct 2025 00:01:57 -0400 (EDT)
+	id A07428E0112; Thu, 30 Oct 2025 00:33:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF6E78E0121; Thu, 30 Oct 2025 00:01:57 -0400 (EDT)
+	id 8F6378E0124; Thu, 30 Oct 2025 00:33:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C5818E0112
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 00:01:57 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 791908E0112
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 00:33:00 -0400 (EDT)
 Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 30BD6C0A3D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:01:57 +0000 (UTC)
-X-FDA: 84053432274.17.018159F
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 5A28580003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:01:55 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=famcApw1;
-	spf=pass (imf02.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 21FC9140A1A
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:33:00 +0000 (UTC)
+X-FDA: 84053510520.17.9FB4297
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 1093A140003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:32:57 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WeJnR1uN;
+	spf=pass (imf09.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761798778; a=rsa-sha256;
+	cv=none;
+	b=bpZHKdibYcFNKa2DKgf/lYNLKDNgSgGIBinZo+JFng2nw/eRHiIlxasnsYsCHuAfDyEB2t
+	Ve65Gpjxjx6Qav1qesmV1mvOH5kHFdUeC3dPHKcLM4Gjh2BBDqbF8OeCwF8FNB+NdVYKzE
+	ehpwNZ4V5rixuX0J+JVXByxypZw6T7Q=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WeJnR1uN;
+	spf=pass (imf09.hostedemail.com: domain of song@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=song@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761796915;
+	s=arc-20220608; t=1761798778;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XvJh8DPPRrrqi4II6H64eXLOtWkRl/bvQSKOoolKeXQ=;
-	b=pAjZ6SMoeWgbcVstGiq56whOCrxOnBGbn2EUrVyCCBDm/76YS+sHH9OxhbQOIuWEDUTujE
-	jdzEvP61ZiAmqqTIyj1wiJxZO0obhS3Nf28feo1BiJKRpe69qmmifujtqxyEyZ3YJfTV92
-	yjJSFpZUEHU5c1kqmjHQYJQm9u4nCCA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=famcApw1;
-	spf=pass (imf02.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761796915; a=rsa-sha256;
-	cv=none;
-	b=2lFxDDb53ziDfNBv2U3CXGDNeEhOlx+Z0Cbtskz7CLuXLwhiu9jMgJUCeKVBU6garR8yKp
-	unNM6aOoB3/C5p4751rj2qPiY2uLWcX9vsGxm9FLdQrZaohXzpNOOqD0OypD5IAR/JBuUR
-	QJe3apVyboom6zyHxKTBQeCvxY5B898=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8a3eac7ca30so43573785a.2
-        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 21:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761796914; x=1762401714; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XvJh8DPPRrrqi4II6H64eXLOtWkRl/bvQSKOoolKeXQ=;
-        b=famcApw14bEtJyvg9Dn1MnAxuHpgrMktKHGKMl4pOzE0lA7Nxgi8KfTGX9eGrEIogX
-         i6gVA0R/1lDoLXBOQgSdRxvXopwj1wzMbWEQ6vFjhpR2mJd4NvqB7nUvaGMyYFpjunjr
-         RiksmYGV07txzS1wEQcjWy8wBFGs2gR7bYYHxV6M4pdhVJTFGrDNysAaeAFKtOVHe4HF
-         KCJkkVXFD5YFL0pfnrb1GADd6F1gSxr8DkYNGV23P8v+3mBP2vL/6QCOzhjvK+Wt/oJ0
-         l5xADmDewXNe0vUlWcIS5cdam7uCmHnvBp67gA+NNEnYPURb2ZOthMdTYaTm3IntKUti
-         3/Sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761796914; x=1762401714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XvJh8DPPRrrqi4II6H64eXLOtWkRl/bvQSKOoolKeXQ=;
-        b=UHEr2ZJlulGoSBra0YqlqWpucmQo8KUbEYzbGsxH5UK4vNPn8ZRrNLyjhu/AGotb1i
-         ELBXu9G4q3eD8dB1wg/CRt0PC37C4NXsQLUEU+pzNMyfUUlVQ5LR/QmfGveADp3Cn/am
-         UMcRLhFQU+2Q1dWfAXfKBOvzbLEJUKB8nvl7eIIN7uoIvQ9+qKXi5DhWG/KJZvf3KaGn
-         vYJI1YTWbh2GMhzYa6wdFmvccMVaq3hUpqAintOg8fh3NHN4Ct7jIv3+sJL72AJ6OuVL
-         Cj7xqChWg2sVELfVInnS528/PpX7Y8WtRA6ukHGRp2ha1ayYyipXhkT0Jpfhub1/I3Wk
-         tACg==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ5TGLziKLJNShAcgx7kFMlsixZkUnHzNzzcYx8v++TDBePt+8+EB68v4JlyaUwlRYxOXg8fDQIQ==@kvack.org
-X-Gm-Message-State: AOJu0YyaAGmVeFcDRSJSeCWp985K/JGat469ap2ginN/b1jES7puVRFs
-	yRLd/4/YRfRWGKoEl+1C7Lc4XzrKOkBVTA79kHeAOzebEGPP4/AHVN9AgULFIk5kAgQ5u/+OjOF
-	NLtcoBDIkm29jIr4nBqx6MFa4ZHnD6Xs=
-X-Gm-Gg: ASbGncv7wL9KQuvcIYCzOdhYrS/D5SvEl0zcXAv+7lYqkIId4TIyGbNuhlLuXLI2m4e
-	8gEM1qMsSldwEKe+9R+oAET7FR5adpbe6EfwTjQHvlUjWmnA9p5E5+sC/xRMOk733N/RbI3KMjU
-	CFCiwgCRrzAFpqu60kTe42MvthnMHQRC2Fa06cJugqDtgLK3WjTm9awd3PL1+pg7qy5UzvHy7hv
-	AOKcyZhnIdjW6omKeGwPOPQI4Zimml+D8IJPBoFhoqOOimsN9dsKfMhjFPRyNPYD+IXW1Wd+sVB
-	/Y06/d3keCRNqxaF
-X-Google-Smtp-Source: AGHT+IF48vQzRiKqweTZJJggP+JY0guU0TB/X2xEN3pnwgukLV9EXGhO/3BkSXX3dJXXucHnKD2G70eNio4983qJvIM=
-X-Received: by 2002:a05:620a:190a:b0:85e:24c3:a607 with SMTP id
- af79cd13be357-8aa2c658c8dmr223728585a.29.1761796914185; Wed, 29 Oct 2025
- 21:01:54 -0700 (PDT)
+	bh=/+z1T5qe0BEWsRnoExln/Z4hYxDSCgwcWhQEzRmDVBo=;
+	b=M4cqR+6cwTcXRZSHOcibeaTxpxdM20DlrQmAcyzCo945xx00H5X7sNMm+tLN0Uj9uOMClE
+	HiEG5nuJ1qmHZxBFSGYJqVx0YqrPI4Zj2Ok9zSwr9ouj+SAyll/EGAdG+ESyRNNqKi6AKl
+	ssQ90qBf80/m+A7/aq74CEf7/P/CS5s=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id BA39644F1E
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:32:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98ABBC116B1
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 04:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761798776;
+	bh=2+HmoIuuPHdF46s6IU1j+vbuARn+2oyq4R4SBJ4cmyM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WeJnR1uNJXyR/VIiggqLZKlHmEWtr8PryGvaMIFmduLJwWzm1WB3bNYZDNsL28ECc
+	 MhDcS0HqaDu4a+jGMxGWRcOc3a9c3WeORfl68Q8MIVrn/3glItC3V/l8jPsSnetLWV
+	 jgSiFHeJxzZfa4EdmfRpJBG4t0FtKzgdapHdkjBW7cXdWT+4JnANg3Y3vtkIsobS4G
+	 QRziJ5k7RnLY1yelWNmBiZBFq2AxEhu1fa7zdDP4W3M3oplHLpwgHXEML3DEnepGmx
+	 4+E3yX35xj2+E7UGfsPtOvB1r4EB9OTEHnDncfql3sxs+0VthaZ7+TzKGffw1AIwEf
+	 eXybCRuKBpJRA==
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-87c13813464so11125876d6.1
+        for <linux-mm@kvack.org>; Wed, 29 Oct 2025 21:32:56 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVDU9UYyIrgbvINDvBiN2ws5yI3kG89+r/ERzPNomik8Pm/iChGpDyh++I+oL8XMAVae3RvjWAd1Q==@kvack.org
+X-Gm-Message-State: AOJu0YxcBhee5fEjC4gWe5CUD0RX8vgEkAv8dnEsqzgJFwaTCjj76CXC
+	xSse8R0NvcAj5H9s+oFdXIFkxcFD8Jm9PErR+rjTjbL/GZ4AUMWu3yJwa8VXvDyLNgQhE6pEdPR
+	IWXlj5Eg9jUCA7iyA933qnihd4g207o8=
+X-Google-Smtp-Source: AGHT+IHloxlOPCQ2Ts01dfa61gbcBoNiGNoZLr759SYfOuTvCEnTg7bX+Fomvk0pFNs84BbMxKlEaTxyHv6uOFm83Y0=
+X-Received: by 2002:a05:6214:d4a:b0:798:95da:611f with SMTP id
+ 6a1803df08f44-880099a7c5amr62818076d6.0.1761798775656; Wed, 29 Oct 2025
+ 21:32:55 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251030014020.475659-1-ziy@nvidia.com> <20251030014020.475659-4-ziy@nvidia.com>
-In-Reply-To: <20251030014020.475659-4-ziy@nvidia.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Thu, 30 Oct 2025 12:01:42 +0800
-X-Gm-Features: AWmQ_bkyqj9_N4hgF69gIn9WT1YpTuvv0DmQVRfDzno9ZsTJybifNix7pDy5cOY
-Message-ID: <CAGsJ_4zgpMqVHix3faFHRarP4+o4cuPbyWd_oT0Ym2i40i1E7w@mail.gmail.com>
-Subject: Re: [PATCH v4 3/3] mm/huge_memory: fix kernel-doc comments for
- folio_split() and related.
-To: Zi Yan <ziy@nvidia.com>
-Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com, 
-	kernel@pankajraghav.com, akpm@linux-foundation.org, mcgrof@kernel.org, 
-	nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, 
-	Lance Yang <lance.yang@linux.dev>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
-	Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev> <aQJZgd8-xXpK-Af8@slm.duckdns.org>
+ <87ldkte9pr.fsf@linux.dev> <aQJ61wC0mvzc7qIU@slm.duckdns.org>
+ <CAHzjS_vhk6RM6pkfKNrDNeEC=eObofL=f9FZ51tyqrFFz9tn1w@mail.gmail.com>
+ <aQKGrqAf2iKZQD_q@slm.duckdns.org> <CAHzjS_tEYA2oboJ-SPq5wJLJTpJDNiA2Fk1wMRgyEpH0gjZRJw@mail.gmail.com>
+ <aQKLCuX5v5aO3fDa@slm.duckdns.org>
+In-Reply-To: <aQKLCuX5v5aO3fDa@slm.duckdns.org>
+From: Song Liu <song@kernel.org>
+Date: Wed, 29 Oct 2025 21:32:44 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_uqFLEzvU0PTQiXajdFDsjC4gfk0Z4qMoiRQJ2uVPw6BA@mail.gmail.com>
+X-Gm-Features: AWmQ_bl3_-nL5SrQXZYMREaXDnsMqEHzXuINIJP6UEpQTMQi_qleUcR8dgaKd7g
+Message-ID: <CAHzjS_uqFLEzvU0PTQiXajdFDsjC4gfk0Z4qMoiRQJ2uVPw6BA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops to cgroups
+To: Tejun Heo <tj@kernel.org>
+Cc: Song Liu <song@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 5A28580003
-X-Stat-Signature: b79r1efqjuybayd67h9dns3pbqwoytyy
 X-Rspam-User: 
-X-HE-Tag: 1761796915-59972
-X-HE-Meta: U2FsdGVkX1+9K8tozD24zgcUqpW5/8uId/P86dVKi3d5Uhc9/pL64poZzOy9YPHEszWht4zvGnFaQVRou7b8USVtTuPflyJOKWq3C5FAjeV5BQLe+tvywHStFdiYTXyPRm6blqH/16FwwbfjzrzoWV+Kta0889sm2ZYzM4+xmrXcQ3oEQCy8sZ8PvU+jTDIipuna0uXu4Vz9ZgNTdPbsXczbM0PZZ1pleD5o3hrDOr2/R1+XDgkkmms2kImMumvBoNnz+M+jFNINWmgdvkoRMJqRF8ngqItfWm8d7TU9E2R9ileCuIciwsznDP+jWFKSI7P7A3JnrG2FEnzzJpPvM5xyWqPJ9VH7u1WPRptvqat9zIQW6RYv8rohIyX4cCv5Aa/NiUbjii8OiDQYGhcHYkcUor+bAPZj4OPCwGHpe7ih5v1Hk0VmMLBdyqL51URok6tStcpnt4WILm/vOQH5l0XHkvrphaAwVoVbjmCHcPfCvv4+3EXn2YQNlNpcwtWGtkOPWGps0i9X574krGv5gaTHToin0nPzU81GfOwOOfhUcnz53UgyJBkX1B/kEIDZgXGxvD393wADeXgkSZfGp8H63hOg9FgqZkQU1MUNJkHKUTx+RaGgQGEySdg9RfSqQOHStfhkTvePUoN3KvGfYvI/WUKiJYgh2ERjZPWBdt+Urbq7BEEQDUdL15+HtYDK+Eb5ItWjRLmuP9troUrX5c9/nkM2sSYnOkfZCN3FjbTDZYB0uFuFKFygGYpLDUGoOOKx3dwBd0SqM1OuUZPsCkwDT+PvSNBOJGadQq2Z58ophcfSwkfc9PH/vswx5aTD3DPoiRptTkuwkBlZqPMxpCzLIymLMkxr2KNU76nK0uDlqQy9GeEUehW2vsjwaH+97ElmZBpU0tZw83SFSaI6gbnzoyaisefR+ehBbePOwCyqqCznGvvsX9sfPy1kmIaaOI78vu5CEQ0EIWyU2dV
- 79eeJVgV
- I15pghjG5QhfuK0L49rpCNv9RyWX7CQeuxH8tZYqdt7WSkjhv4DAPXdwBAGMBqSwb7dmpnJxA0sd03IY/EWciVLk1fY32oKwgPDMM6G41ze7fUoCYjP5B5MJSoHuBjGmgcQpM9vy+m9W3XoRkw1zgEWtBw3Bg6zE1UR0pG4PJGRmmmIwKrM4p7ESaAeEop/UT2WnfuC64NfMR42HW1VxE6EFb8zZ5aWmA1m8xUcIulvPnkh/KIUM/lRSO5eWDcJ9wiP2rJDt8qQ3jcqFCLsy/RBmfwLq8ofIANpWvm2mNe1EFNJO0AWdFqK5jgZrCAYsrmmj39ZyJVTNIG84pku2cWezC4ca1hCCmtX80g3fvE32rfijStgU25DYUOHRlFynb03bar/CdQ5uR16OzED8cqxXUegMF3pLEGmykpThdbRPwEd5I1JsaozAc5NrMaNS6zi1vW1k9LHLLHekSOrIJvWIyNYjnYcindwJUcR0OPCyrVNuPj/VZduimkv+aqcQdmGj5khqr2oeZHnCYl1CMvklFi9wDn7zSAwPnp3nKgnYS756fS4c8Nh3kccSxT6S2WKQd
+X-Stat-Signature: pbkmzq11kdy9s8ekk88rg5j6ifoir7nk
+X-Rspamd-Queue-Id: 1093A140003
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761798777-274827
+X-HE-Meta: U2FsdGVkX1+TWzoLqmm4LrFXG/Xd1h/VMeRM+AnLa2UD/6C09ZxW4YFSU3o/u3ZVh0BSxEIwsYaktrsMBRqB5W0sBbKgmowy+R8KYINpyFetboD4LdBM4dFR96w09xueCq0KmqoGA0yP9KUIS8BWUnGwUPlgIopqcpTRdKVcyTchi8CVHRO1tEDu1atpACrMOCT4r8GlIgQbtygICisc4Guw+li7x2I+0phDNhxgwxdlTYkNijmHQqY0L5rgEQXIgoIy3bJSmotyKakDJXk+LE/N1PFbbYzC6oDno9EOx5ywcl3bS1SwiySXZLIoDa7w3bVBLCTQnYZcSVjPG7w6w4yXdaFaU2t+HN0zKw95zYUxXnCRJJ8kWyS5A9jXPKf11T+B6tew+/vAEZIUWVbhVby9Lo2etUtLykgPfCue9KtOYj/XVgcZx9dP/1el0F/mNalxP3S3XGzXhE4WoFdhqh/vPuGLTVeh1AJeFl+eXGkuB50+Kmftza7yCcZ8AoES0jx6bJrR6nMt/NEJr2VTZqo7OEI1KU1aZ1eCkp7o84kT0xTiLUfoIye3JbIs26Jp4zouKFMk58k2Neqp+ZyvkvTX20HaZHpOydzglgGlYzbYF8FbIHSIyjl9mKKkIa0nnN8HQ3ZdJ97WciutFP8fAB/5fC8vZi8LoWhHHoX3Kcpo+0HTidAu4awh/X577z29t+e5r7TdO9K+mh7/F1o92hQkRLNwKMeUT08HzJJCvD5+GUjigKXKiDmwIlK9FmXrYVKjmPX8zvNKjTDeRNg5y27S4c6f9a1N3efYvFzGjDFM9aVe9cnm7jGpM26+D9KIN6gaBE9L+tn5MPrn0xv1vUbUeT66lGi0N9AkQuJ6oCSLCzN09W7JK7ZIkJHGIbN9m5mUrnMOq1tAv9BohFSxnuPzfl88RXA2EVktImQ2JHQYFCeMwBmZxgR97K3VhjO5v4BYvmT49rLzNdGLgE9
+ Ll1Ir8xu
+ L3C2wNKwNEDZRW4XWo3/Rh2PGnOyWuKMYpTR8KVLypT9PkL05+PEIGuiaB4M5R606g57ZzChBcmCkPZgdqrjBgiObuDea1P+2oJUk11LEHHqkX4yPTJuPSjlgohQ99lgNofYbbXSLFSkBSUP//AlPqMmSEypwh9tNTH85tGFo3U8lQs0tbQxgupLemMEVWOPRBRJEl97PdBr+44FrdfMHc3RYIrx+lYk3H9phKsi5QV+Bca2JLG/DSmy+moWztI1gFnMvtWcRoR2pdjf6s2lTpa1tgzJO5q/kKh/DxrWVGIoiE/S0pceN+b0dcA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,17 +114,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 9:40=E2=80=AFAM Zi Yan <ziy@nvidia.com> wrote:
+On Wed, Oct 29, 2025 at 2:45=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote:
 >
-> try_folio_split_to_order(), folio_split, __folio_split(), and
-> __split_unmapped_folio() do not have correct kernel-doc comment format.
-> Fix them.
+> Hello,
 >
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Acked-by: David Hildenbrand <david@redhat.com>
-> ---
+> On Wed, Oct 29, 2025 at 02:37:38PM -0700, Song Liu wrote:
+> > On Wed, Oct 29, 2025 at 2:27=E2=80=AFPM Tejun Heo <tj@kernel.org> wrote=
+:
+> > > Doesn't that assume that the programs are more or less stateless? Wou=
+ldn't
+> > > oom handlers want to track historical information, running averages, =
+which
+> > > process expanded the most and so on?
+> >
+> > Yes, this does mean the program needs to store data in some BPF maps.
+> > Do we have concern with the performance of BPF maps?
+>
+> It's just a lot more awkward to do and I have a difficult time thinking u=
+p
+> reasons why one would need to do that. If you attach a single struct_ops
+> instance to one cgroup, you can use global variables, maps, arena to trac=
+k
+> what's happening with the cgroup. If you share the same struct_ops across
+> multiple cgroups, each operation has to scope per-cgroup states. I can se=
+e
+> how that probably makes sense for sockets but cgroups aren't sockets. The=
+re
+> are a lot fewer cgroups and they are organized in a tree.
 
-LGTM,
-Reviewed-by: Barry Song <baohua@kernel.org>
+If the use case is to attach a single struct_ops to a single cgroup, the au=
+thor
+of that BPF program can always ignore the memcg parameter and use
+global variables, etc. We waste a register in BPF ISA to save the pointer t=
+o
+memcg,  but JiT may recover that in native instructions.
+
+OTOH, starting without a memcg parameter, it will be impossible to allow
+attaching the same struct_ops to different cgroups. I still think it is a v=
+alid
+use case that the sysadmin loads a set of OOM handlers for users in the
+containers to choose from is a valid use case.
+
+Also, a per cgroup oom handler may need to access the memcg information
+anyway. Without a dedicated memcg argument, the user need to fetch it
+somewhere else.
+
+Thanks,
+Song
 
