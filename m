@@ -4,142 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BEFCCCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:38:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D084CCF9E3
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 14:39:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A70958E01D4; Thu, 30 Oct 2025 10:38:19 -0400 (EDT)
+	id E45638E01D5; Thu, 30 Oct 2025 10:39:58 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A481C8E007D; Thu, 30 Oct 2025 10:38:19 -0400 (EDT)
+	id DF5BA8E007D; Thu, 30 Oct 2025 10:39:58 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 936958E01D4; Thu, 30 Oct 2025 10:38:19 -0400 (EDT)
+	id D0A908E01D5; Thu, 30 Oct 2025 10:39:58 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C33B8E007D
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:38:19 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 24C30139322
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:38:19 +0000 (UTC)
-X-FDA: 84055035918.09.E2C4485
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C44F6140010
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:38:16 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=XDF97jDZ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of gerald.schaefer@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=gerald.schaefer@linux.ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761835096; a=rsa-sha256;
-	cv=none;
-	b=ALIPrfFbbmWaoTfDqCgkryujQVjiAkpMSP5Ifu/MdlK2QQMb9onCQkmV6Xvq55OtBZKKpB
-	AZ6/7aAPPi6tCMqvMINYz8giX7yjHCQ2xIC9kUUk1PlKC055Djnn/H/Z6os4q0tDIV/N4u
-	0fS8PCoRyue1+K2bX9a8t7kzucAGZec=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=XDF97jDZ;
-	dmarc=pass (policy=none) header.from=ibm.com;
-	spf=pass (imf26.hostedemail.com: domain of gerald.schaefer@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=gerald.schaefer@linux.ibm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id C02278E007D
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:39:58 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 50A9DC01AC
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:39:58 +0000 (UTC)
+X-FDA: 84055040076.16.188FD33
+Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 2F4D7180002
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 14:39:54 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761835096;
+	s=arc-20220608; t=1761835196;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X3wOm+XTaMSSFq9MM5FtbFGRRF1GOZhVG/2eB+BlBK8=;
-	b=yK9sHvdlBxccbxuSHtpLtoQq2QyTzUPpj4k7tRkuIC1Qtz34tlMDfearq+PBxl1dHjYEhO
-	Mf9LknvCrUgCU047bhY0IghQ1v2mjE+XXhk74f5OkAVyor+yltFTZGpbYzNYGKHvyoCOmA
-	GZwV6gZ43bLhmo0nNq0tUiD3+lXFFCI=
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 59UD7Q7u019602;
-	Thu, 30 Oct 2025 14:38:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=X3wOm+
-	XTaMSSFq9MM5FtbFGRRF1GOZhVG/2eB+BlBK8=; b=XDF97jDZqAs0jU5ZPp2VFb
-	4wCpLp3dk830RGUD7kRk4p0FAmaadOWY7yJNuzbwSiDLqwBlWDn6HJb1hnvhghVR
-	h83RU33yi7UWrhDk1eOFr09C6PeYscI4GH7vWe3o0rzP1+PslqMVzXtiYFO5EK25
-	7ZBsiev4TFwmOyr67G864OQwEW/ZQZid5b0UsdreuDlcltyWN4VtbjJ+k0LWhfhJ
-	CzUYuAaZs7sz2qE0qZKCsARFlk3/HXw/uTdMR4fvGUX6GwMDmo7O9sgWka82bQrq
-	AN7JWVBGDp42Sgjj0LRLbuoy2wFEqGeUHaNVSrmlKNvCSb99Qc6VEAuBjl8x56Ow
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a34agrpqs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 14:38:13 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 59UDJ4iX027428;
-	Thu, 30 Oct 2025 14:38:12 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a33w2s5rv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Oct 2025 14:38:12 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 59UEc8gX59769240
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Oct 2025 14:38:09 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D88632004B;
-	Thu, 30 Oct 2025 14:38:08 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A1ECC20043;
-	Thu, 30 Oct 2025 14:38:08 +0000 (GMT)
-Received: from thinkpad-T15 (unknown [9.152.212.238])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Oct 2025 14:38:08 +0000 (GMT)
-Date: Thu, 30 Oct 2025 15:38:07 +0100
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: David Hildenbrand <david@redhat.com>,
-        Luiz Capitulino
- <luizcap@redhat.com>, borntraeger@linux.ibm.com,
-        joao.m.martins@oracle.com, mike.kravetz@oracle.com,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-s390@vger.kernel.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        osalvador@suse.de, akpm@linux-foundation.org, aneesh.kumar@kernel.org
-Subject: Re: [PATCH v2] s390: fix HugeTLB vmemmap optimization crash
-Message-ID: <20251030153807.0a835fee@thinkpad-T15>
-In-Reply-To: <20251029124953.8393Cc7-hca@linux.ibm.com>
-References: <20251028211533.47694-1-luizcap@redhat.com>
-	<6bbdf4ce-10e3-429b-89fc-ef000f118fec@redhat.com>
-	<20251029104457.8393B96-hca@linux.ibm.com>
-	<9a8254b9-92f8-4530-88e8-fca3b7465908@redhat.com>
-	<20251029124953.8393Cc7-hca@linux.ibm.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Tm2pzG46bgFpprAAwyY0eLFPUJp5ZCgFV3BeazrZuLI=;
+	b=EqRKzlo3QaNSF/nUttW1L7sZi++sItKEWMNXBFv5vRS/el7joHM5PfcyDl1Apq5DMCEWKK
+	t8+3z3UlHAC6f+WPyShMKvER1ZtzFP9xDAJiKEWB+oo3fZNlvdB4Hwe0TcHqCO8780wdni
+	DAXVdik4RBBMQuxs8v8H2zBGdsqPp60=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761835196; a=rsa-sha256;
+	cv=none;
+	b=swwcPhKxzqdb+blzATc8JaYQVSCT6GKCod9cp4sHYEglX16UET2YVF+b53EnK7An4fR9Ua
+	F+NoZ2lPqPfw3aOJzaVGQL2qSpdbopJ0al9OpH43q1r1TQjnFqCps5X8wJMirhbnm3Bw+7
+	QR8Zw/zCz3dpJiPJYpdYHF6qxae2z60=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf16.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.102 with ESMTP; 30 Oct 2025 23:39:49 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Thu, 30 Oct 2025 23:39:49 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org,
+	shikemeng@huaweicloud.com, kasong@tencent.com, nphamcs@gmail.com,
+	bhe@redhat.com, baohua@kernel.org, chrisl@kernel.org,
+	gunho.lee@lge.com
+Subject: Re: [PATCH 4/5] mm: swap: change swap_alloc_slow() to void
+Message-ID: <aQN4taRJX+Yms89U@yjaykim-PowerEdge-T330>
+References: <20251029085659.2005942-1-youngjun.park@lge.com>
+ <20251029085659.2005942-5-youngjun.park@lge.com>
+ <xgj3sxgxcwi6lflt6oy63ifq3b3bcle7l2543oa7aotw3qpm2y@cfqwh54n3737>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=K+gv3iWI c=1 sm=1 tr=0 ts=69037855 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=x6icFKpwvdMA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VnNF1IyMAAAA:8 a=7V4s7PEeRJvMkV0XkP4A:9 a=CjuIK1q_8ugA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: QuWdHNzaLPBwAGTt0znk4k51e_rz3lle
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMDI4MDE2NiBTYWx0ZWRfX8bMHmkGR/4De
- HYE1Z9xyBUD1Oj5iuMbBMNf4z5tHxtlTJgnaIzfPvHsa5JdD0dih2UUsIdBQBzC/2SMsTnAvQhg
- 6wEGVcjU9RRAQ044mvBwjir1bRub+rqfExF39fj4/LGt2bKX1a2i1BdxIJjR0BDVYiXT1/qdwps
- sEmf0mQZ4Ub9Z+BJNJOPwy5LLxN2jOrPniXGmLPPt50qBRe+2PFgtuG0Wyy9XX0mvYo6JLzCU/X
- uMi9fdc0PBQnDYrDf3/Ds7viihOOpm+SPBiX3j4FG4PU2ZzzOF3Bz0t0Hnmjlq0n5+Im8t+Hc1V
- 5NrSDR0m2KXgWcJ9UhOWdoCyEsSr7QXtcOzsctqol5ReplG+qCjcBedOGuXc/y6S+GOz+xA3orZ
- b1OFaHEQVkYs5Mlo+X5mu3vVxD0sag==
-X-Proofpoint-GUID: QuWdHNzaLPBwAGTt0znk4k51e_rz3lle
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-10-30_04,2025-10-29_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- adultscore=0 clxscore=1011 malwarescore=0 phishscore=0 spamscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
- definitions=main-2510280166
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <xgj3sxgxcwi6lflt6oy63ifq3b3bcle7l2543oa7aotw3qpm2y@cfqwh54n3737>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: C44F6140010
-X-Stat-Signature: i67qxdwgkkzuyu8mej5rmeh5qg4b1k8i
-X-HE-Tag: 1761835096-622374
-X-HE-Meta: U2FsdGVkX18QDJRsJMq63DlpprIfwT63H2gkzAouShw7XosvSHsk72d5Y2rybTF8/w4RwgE3Dsmk+7U69iF40QM2Sovn5o9TaSLXPdR63jWFoMLgvvaGay0fjUcf+Dh1ooGWFH7Kca7mjbmlaAoe4Y/lNEPYUaFdUwtIhukxauSL4YHVGo793QsI36aOyk9GsQDAM/hZNB8fk4sP2j/n5fATc3OkIF0bGTcCabGVVhDKrMnCNLT6s5bUV/S5Egw5wSbtyelI9GtcSAms4M+fKq88xeMkUFPMUGNvOHo1B9hudwL3h0wa7TIi4ikUSg3+S2zJDRulCtrjsjVpPLmQV4mAuQoBml2sgVhXq4u5uKMMZkzdjkAnCJxSG7kDWtGEd5za9cwRpDKlk36CURDyNUkU9l3E4M94BX3ChQWOH6NsDaYtgrrzwOP3CokxP7OO7kS4Nqx5Dv0OnS5rK1PWjKzI1P1JrzJ773tTR4LxoDWwGxUVo0vqZLZdxHfi5X51MGQ69McNqWMMc2kH+1lhdg/d1+wEbQCVPbz3P45fhoArtdc0mY84ca+W0e6cKAI38rObKiJWj0cYG6Wzscp++G4KfY0G5lW81ROzjckHncT0kY81oc6YFUwkf/JErsAx/QIv/C0vePBKlEXmZ0GbJTZzHIEE8CxGhyy9HHqfVs2Ik6i6qH8goTHTtwbMnx+YMALEdd6iYwotZZEmdz/slvEhOtGGG4ct/2P+PEbIW7rPil6poTAxrFou7X/UNvbjFIFf+5toaAGxOBkneDrpbKI/bcVnr6GqoD9oCxeMWW5DQ7DoSQ/YVr7RQoV//PmohuNEBFgSq0vtY7WU80Zm8D3TF1POfpadvRpdet2yKdsBD2AdR4cVEHFQqY3Tta2CwAj4zsuZifbwPp/AwB52Pz7AgaeG4O2aN3YnvY/+Xg13cvR19gHKQCkkuLqK1etqYX+GNsRGsGvGu9OZbRo
- h8SQmkot
- dAPrADL6A/DdE9Z89EFfrdTuT+mTj3iFYMowi2CpGUnNip0IUCKFbaE7Gc04CIrkpPkSvdZuER3yOlnY9sXQ431gm50ZEwTqin2WOklElJDYUAbPk/RkqibHYZu54TpyqqyJ+Zk7SVNdWKy2G2n8+zQP1zn9fqXO7nmn/K0iSofXmhZHH6UPIydGmL4BIFp6beWwA6zdLZwyBwH2nBtSFi7R5/HEhMWG3kVDR6N1ThFyTegdFz84/EBth6sEUWPBxzY8O79pTZDZfQwcN4PfxEoNAVdITfpEmK6pT6P/nrvgYtygxogh9Pb8/46tJvHYP72g7srI7frnL1ftIGXAYltUJMA==
+X-Rspamd-Queue-Id: 2F4D7180002
+X-Rspamd-Server: rspam02
+X-Stat-Signature: j5mgdmwwno8u8ec1dqtcsjfzexadm6kz
+X-HE-Tag: 1761835194-193665
+X-HE-Meta: U2FsdGVkX18/E6tL79//OHOrDwyoP/vaoPjRANLbu6bi2oO8DsUqo63XACpAhBr7RqPayVGs4IFJtrbecngA0GRY9OeO0B4L6b6CK9sfkunBKP2u2wPlabIjztCDVKzuKmDjgrrr9DGRRHRuQX1Wz5IiiPcVZ8oyQ+xwkfAD8ulFD2oQVzcqqD4gFzZ2TCfNm7FbtM8IhYV1IRRTYy6RoAwAzl9yUcPT9q3R0xuxKPHCUfy3ag7G5EWyCHxChVxP4shU8ZUfHkiNQ2rNlTR9sNoT6cGFHZsv3VG0EDbadMvBdXeXiSzX5z5FszIjklJF4K/V9pOHi0npuhsvV58LPWvyPseLD/UzrA+tvYmAjSnd8Eo2O52rkiQP6Nb38BoXL5Xxta9HcMFvxSEYW8/2oO+zrlltgwKOFJJihSa/HqCO/daWTeS8vc+NNKTuZZdAmiUp4ts91rbETIruVUDCHAHUolioZ8OXAAFPJLzypmTyeYQX/HmQH0ZxQO27iXQYxDxGMm055iWIFSq/3t/I7lDgzmSbVGlrkcsYW999v/oWCqsA0tnledizSrFeaWX2Si3rr2xsbuk7BkotIdbEMlyxO2nSaXq73CG69VQsMgRt1+hVv6PzbrkY0Eb9zduDFeEZHeLzCzYS+MgMuLl82hiNyiZbBBdW4VhipXJR1nPYvIw9eVqVxUdgGulXYAzFmQFoBoWyRlLCs0cpJJGWZ8lg5aHYQH2V18IP8YWkZhBoEaOdmpI5rtFjrFTos4l6tJPxf937u2jXV8LJlNSbCYqUaz6L0lM1EzhRtWllXY3OPI2g33mSOD74HpyDA6GPsmFb/t6D1oMR9f49B4FnynX8koUVjAATIEyv+TnKExIwXTN4GCI/ECUEiaaF/LnctYX6IvAHOGE6/HQztpYlFWr5Ae1a8gp5z/X8hLvmGE7stAb9vXwm/kKeZrrPIQ9CW3+/jxoHpXHPML5N6qw
+ Y1WC2uzq
+ xFeBaGPXcqySi5vmXYurqpO3xSvm2VSpXnPAaUm1tf9oFvW53Vt6ThmOsWrW3bH4SeJDHOk8KA9j6nNj2tEk9ifUs4ziQKKIxNVDrsNol6IIQtsCn5Z7Yj2lGxOsQtnzpxnl52P283yJsahEU1z/IG0wPbqEcnkZZoVxRoCd5G2iXC2vyyqPCeYUptua9LTEpCFLwLuKV8d6YGIuEnRKY68DAUzU/1S8jQ6wFmL3+62dVZO1nGk47CnL9Eb6mNzg5I7ErcUI0ywq0HPtwKFnCe5f+MEFI4pMHqIU+p950ihGMRNxQPZA2PGdMdlLfu7+Qjn0hbv37ZPchXlE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,43 +84,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Oct 2025 13:49:53 +0100
-Heiko Carstens <hca@linux.ibm.com> wrote:
-
-> On Wed, Oct 29, 2025 at 01:15:44PM +0100, David Hildenbrand wrote:
-> > BTW, I'm staring at s390x's flush_tlb() function and wonder why that one is
-> > defined. I'm sure there is a good reason ;)
-> 
-> Yes, I stumbled across that yesterday evening as well. I think its only
-> purpose is that it wants to be deleted :). I just didn't do it yet since I
-> don't want to see a merge conflict with this patch.
-> 
-> I also need to check if the only usage of flush_tlb_page(), which is also a
-> no-op for s390, in mm/memory.c is not indicating a problem too.
-> 
-> > > Changing active entries without the detour over an invalid entry or using
-> > > proper instructions like crdte or cspg is not allowed on s390. This was solved
-> > > for other parts that change active entries of the kernel mapping in an
-> > > architecture compliant way for s390 (see arch/s390/mm/pageattr.c).
+On Thu, Oct 30, 2025 at 12:13:20AM +0800, Kairui Song wrote:
+> On Wed, Oct 29, 2025 at 05:56:58PM +0800, Youngjun Park wrote:
+> > swap_alloc_slow() does not need to return a bool, as all callers
+> > handle allocation results via the entry parameter. Update the
+> > function signature and remove return statements accordingly.
 > > 
-> > Good point. I recall ARM64 has similar break-before-make requirements
-> > because they cannot tolerate two different TLB entries (small vs. large) for
-> > the same virtual address.
+> > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> > ---
+> >  mm/swapfile.c | 7 +++----
+> >  1 file changed, 3 insertions(+), 4 deletions(-)
 > > 
-> > And if I rememebr correctly, that's the reason why arm64 does not enable
-> > ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP just yet.
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index b5d42918c01b..89eb57eee7f7 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -1339,7 +1339,7 @@ static bool swap_alloc_fast(swp_entry_t *entry,
+> >  }
+> >  
+> >  /* Rotate the device and switch to a new cluster */
+> > -static bool swap_alloc_slow(swp_entry_t *entry,
+> > +static void swap_alloc_slow(swp_entry_t *entry,
+> >  			    int order)
+> >  {
+> >  	unsigned long offset;
+> > @@ -1356,10 +1356,10 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+> >  			put_swap_device(si);
+> >  			if (offset) {
+> >  				*entry = swp_entry(si->type, offset);
+> > -				return true;
+> > +				return;
+> >  			}
+> >  			if (order)
+> > -				return false;
+> > +				return;
+> >  		}
+> >  
+> >  		spin_lock(&swap_avail_lock);
+> > @@ -1378,7 +1378,6 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+> >  			goto start_over;
+> >  	}
+> >  	spin_unlock(&swap_avail_lock);
+> > -	return false;
+> >  }
+> >  
 > 
-> Ok, let's wait for Gerald. Maybe there is a non-obvious reason why this works
-> anyway.
+> Hi Youngjun,
+> 
+> Thanks for the patch.
+> 
+> I just found a patch from mine series is doing the same thing:
+> https://lore.kernel.org/linux-mm/20251029-swap-table-p2-v1-15-3d43f3b6ec32@tencent.com/
+> 
+> I'm fine merging your cleanup first, the conflict is really trivial and easy to resolve.
+> 
+> So:
+> 
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+> 
+ 
+Hello Kairui,
 
-No, using pmd_populate_kernel() on an active/valid PMD in vmemmap_split_pmd()
-should violate the architecture, as you described. So this would not work
-with current code, and also should not have worked when I did the change,
-or only by chance.
+Ah, I see you're working on the same area! Thanks for the review and
+for being flexible about the merge order. Much appreciated!
 
-Therefore, we should disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, for
-now. Doing it right would most likely require common code changes and
-CRDTE / CSPG usage on s390. Not sure if this feature is really worth the
-hassle, reading all the drawbacks that I mentioned in my commit 00a34d5a99c0
-("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP").
+Best,
+Youngjun Park
 
