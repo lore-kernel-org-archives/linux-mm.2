@@ -4,130 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2EB0CCF9E3
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 15:45:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7ACFDCCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 15:46:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 372F928000A; Thu, 30 Oct 2025 11:45:57 -0400 (EDT)
+	id D813528000B; Thu, 30 Oct 2025 11:46:35 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 345E5280003; Thu, 30 Oct 2025 11:45:57 -0400 (EDT)
+	id D58FE280003; Thu, 30 Oct 2025 11:46:35 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 25B3E28000A; Thu, 30 Oct 2025 11:45:57 -0400 (EDT)
+	id C966C28000B; Thu, 30 Oct 2025 11:46:35 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1587E280003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:45:57 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B20A71396C3
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:45:56 +0000 (UTC)
-X-FDA: 84055206312.18.EE1B5F8
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 218C0140023
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:45:53 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TwblnYxs;
-	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id B7F95280003
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 11:46:35 -0400 (EDT)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 845AD563A0
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:46:35 +0000 (UTC)
+X-FDA: 84055207950.16.45B18A9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf01.hostedemail.com (Postfix) with ESMTP id A468A40012
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 15:46:33 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o1SzNsdp;
+	spf=pass (imf01.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761839154;
+	s=arc-20220608; t=1761839193;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=T13UVO1/yPlQk6T2PfurpgHZxHJlbT6OmTkCB8QWscE=;
-	b=MZ9mBlKYhDY4dn7eH0TlFs7sXqJwu4uOE8ElFes+XBp64NNBpHedazUf3ZwxRZRbSACTxn
-	VsD5KK0w7fdXk0iuNyYl4d5vqCjDtLLCd/cgwG26l2XEG0douB72iLQzJR5bT2B9kjbH5l
-	jCjJKbW/c5Otu6D8i8oPB7KJCdr8H9c=
+	bh=+aCqPI9l9GA4fjyj7IKv+jGG9vbmuWle66wv3J/98NA=;
+	b=4ffs3w+7+eQuUxg+o9fPTGDnwlqT+VfxXXDH+Ay+4qY0POSev48peXU/yNpnAcANctLi9c
+	R0R4DZYRLz/ORZUJrvyOXPgJRfxlzlCmGmwuE900nylyb0pXFEyHGE7OZs67Ax9vJtBdTP
+	pS3iRzyobEdfTMsVkJ8mvTxY8hLeJdI=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=TwblnYxs;
-	spf=pass (imf09.hostedemail.com: domain of luizcap@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=luizcap@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761839154; a=rsa-sha256;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=o1SzNsdp;
+	spf=pass (imf01.hostedemail.com: domain of dakr@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=dakr@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761839193; a=rsa-sha256;
 	cv=none;
-	b=S2mylNEWeZLs3XdmmTbTCrRe1syQ6z+V5xdcuxrUqTwxKrZMbc0WO/HANOVL062XzIx68N
-	KRWsbBvgELWTnWjiKDVKLVO4xjh3Mt9gj5/k4YnOqoF+JWunlQZWUlQhGuop/ZjHDviPHH
-	pfZo1oOv+D0G5XWH8At+ZCvZ+4wEi18=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1761839153;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=T13UVO1/yPlQk6T2PfurpgHZxHJlbT6OmTkCB8QWscE=;
-	b=TwblnYxs17S14Fub6Z21eDwZVwSELZgpcy0h04DjAZHGHYvtfH6c2cCD0z/KcKPzuBP7SU
-	9R3SueY7hhNGZAJE4nOOR+53WKfb2oMJ136A08xmSZ3Gg+O0632lisgGbS+IySJm1fLIBa
-	EN3BrSGvGw4rx96zmpOjHPCu/O016wA=
-Received: from mail-qk1-f199.google.com (mail-qk1-f199.google.com
- [209.85.222.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-493-Kp8wjWWoN_S7SkcgUBgvBw-1; Thu, 30 Oct 2025 11:45:51 -0400
-X-MC-Unique: Kp8wjWWoN_S7SkcgUBgvBw-1
-X-Mimecast-MFC-AGG-ID: Kp8wjWWoN_S7SkcgUBgvBw_1761839151
-Received: by mail-qk1-f199.google.com with SMTP id af79cd13be357-89ee646359cso333958485a.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 08:45:51 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761839151; x=1762443951;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=T13UVO1/yPlQk6T2PfurpgHZxHJlbT6OmTkCB8QWscE=;
-        b=iQqbg3dCpjEsbaj7WM5EBiipLyKICiZr8SqcFNIAPj+chZ33sAefMrCkX7dfTdtW7g
-         f4z8XuJoC76REWliXWzSJWpfA+XBBFEguIhmFJDvdYwT1MxwNx0gUAUgXLQHJQ4sjadZ
-         m23yAx2voh3JoCXMRyv4hVdWipOAjhFRnHnEEhlmTqOGO29bo63R2vC0oxdKmt/o+NSF
-         DE2hScJJVHQ+9AuBhOsIRbS934/JQqzPWc+AdghwroOLyx1Rayf01ClFNGKutzSHf0Iw
-         OvAanb1L+uRR90eiYn4kBCmMFbKBirYNvZHu75bD5JC3WpC3ggvIelGILjVx1diRFtsX
-         CHRQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWZ/WppC6fbIuEnYw1qYConoUcirY1ighIE7FwU4aDCSbdZw6bcXIIbTQTSBqJSLOXhv9OUel62nA==@kvack.org
-X-Gm-Message-State: AOJu0Yw/amffdK4pmUEJLgqtqOgjE/tRjZT3rDvUzTKakAP+4mI9rn6E
-	XN2AXOfrcDCkMoaF6S74cVlMyOvDF4kwhgK1XujmVwE0eNYgqXA3j+OnBgSAc39gdbdiKEQ6Uh5
-	sNnKpZm2qMWZw2rAy//40mZl1JtmuGEyDFZgG+ExjsuPGqFCMS+ue
-X-Gm-Gg: ASbGncsUbhYzjjWk7aCnQPrRKW2t5LPTIPErl8I0xBgt443+I5TOUYPml0aFMcksvqP
-	J4qTgfb60WzFEAcsBpoNi4QFB+UPmaONSVkwuVrbznoWAuvVAmhsXLmawQYv1JNHkBW2E6zLL83
-	4IuX7bqnHKHP83hVJ80fK7oAjHFzAuC7fhvg8zMPB1ba73G3EQeuGTxuytxFIVyD7xFQSNHYfNO
-	hkZvieMycAol0MEDF4jMShh8zUQFSV/kIPZAexVcErRc1jzpIRd8Un9akhcswEgpQLXy/t4yVqQ
-	CT+OJUNCl7aiLySyQK6S2dQb7AJy5Lu8T3Wy6qLKqn3LwQTVHPQJq0Wo7vKk/tGVXJLlqyz9mCT
-	gGQ==
-X-Received: by 2002:a05:620a:2a07:b0:8a3:e51d:63c9 with SMTP id af79cd13be357-8aa2c659146mr496985785a.25.1761839151197;
-        Thu, 30 Oct 2025 08:45:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEOqRO+7KOnHpcS7rPlmfWuNX0n6FxKFT+Lt8fIFSIFDsOADI0AQRhPYfD/wI22ZJMDrMWM8w==
-X-Received: by 2002:a05:620a:2a07:b0:8a3:e51d:63c9 with SMTP id af79cd13be357-8aa2c659146mr496980385a.25.1761839150640;
-        Thu, 30 Oct 2025 08:45:50 -0700 (PDT)
-Received: from [192.168.2.110] ([70.49.125.126])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-89f2421fba6sm1289506585a.4.2025.10.30.08.45.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Oct 2025 08:45:50 -0700 (PDT)
-Message-ID: <d491b540-8984-4ffa-9a79-ad6855e9c883@redhat.com>
-Date: Thu, 30 Oct 2025 11:45:39 -0400
+	b=b68hx3Wu7YLxyoygex7UFx7hgu3vziOVWDACCAP3onMxiJqsCwQ0pLVvJ0sSeHPdyP4Ggv
+	SIx9RJDR3/n5o/70pb9EPMAArpGlbkY5KunQqcGXY8NHBzrRZ7Zu1ZiqIUdwhIa82W8B02
+	0lp7zQ345t9vltyOBMrvCzSac49tDc8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id A325B41AD1;
+	Thu, 30 Oct 2025 15:46:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFF2C4CEFF;
+	Thu, 30 Oct 2025 15:46:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761839192;
+	bh=O/MqUXCRBsW16T+2gZ3rWCpjPcBmGWYAl4TCaK+lbCg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=o1SzNsdp5hbJDctJABv9DD+krmMc+E7r+PzqKq+suUwPLPF2TnoDV97v51iZBhQQF
+	 edKwc1fRvaceCyNvbBbLZdP7MIEs0B4Mz2XmTMyL1k2yIlYW7kymvud3qbDnatsq31
+	 rGyz5mZOqxo94hgiBfIipp7MThtcOqLAY4AziBY1Ui61TZedHbo3buIszUfISRrUAv
+	 CdxUoLHzvsg5zhcm0JeesYZSAtHIpYBkK3AwdMVDIWu72EekccXSOERPt3oyEwmiWL
+	 +we2VxkBPIaV/T5/KRbYxQUsCqvk3nZFLhtYJ70Pofduob5Y8MTbffjVNLN5IdRqgS
+	 a+CdDxqxwa/Qw==
+Message-ID: <0fcabf65-e24e-4f7b-9217-15344c926dee@kernel.org>
+Date: Thu, 30 Oct 2025 16:46:24 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
-To: Heiko Carstens <hca@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>,
- David Hildenbrand <david@redhat.com>, osalvador@suse.de,
- aneesh.kumar@kernel.org, akpm@linux-foundation.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org
-References: <20251030145505.2764038-1-hca@linux.ibm.com>
-From: Luiz Capitulino <luizcap@redhat.com>
-In-Reply-To: <20251030145505.2764038-1-hca@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: lB7dSZ489B6Y_0iE5UAxyqKfRJpe0zpfd6mQfqtzKCo_1761839151
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, en-CA
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v12 2/4] `AlwaysRefCounted` is renamed to `RefCounted`.
+To: Oliver Mangold <oliver.mangold@pm.me>, Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>,
+ Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+ Benno Lossin <lossin@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dave Ertman <david.m.ertman@intel.com>, Ira Weiny <ira.weiny@intel.com>,
+ Leon Romanovsky <leon@kernel.org>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Viresh Kumar <vireshk@kernel.org>, Nishanth Menon <nm@ti.com>,
+ Stephen Boyd <sboyd@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+ =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+ Asahi Lina <lina+kernel@asahilina.net>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-pm@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20251001-unique-ref-v12-0-fa5c31f0c0c4@pm.me>
+ <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251001-unique-ref-v12-2-fa5c31f0c0c4@pm.me>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 218C0140023
-X-Stat-Signature: h6fgcj4z7ghis71f86s4dzctogngztoo
+X-Stat-Signature: jgk84q9fyxgpznqioco77qjcoduwfe5o
+X-Rspamd-Queue-Id: A468A40012
 X-Rspam-User: 
-X-HE-Tag: 1761839153-376091
-X-HE-Meta: U2FsdGVkX1/jeq3f907Yk+3Q0BRQ6RHJKhioHIuerWxYqm47im2juVZ4ObEnqDEdH1ZfnolwOxB+/6aok8WywoWx1kd7AjNiBJ+I95aPLa7u665UV/uX6EUqrvZvCNrM4bFg6eMIy7GGJZwxnUOtp/zP52/4k/djevxG54ylvblRKvUISuGVqY4lhe9LVtb1az9aPkO0MpizeW2tRQKq80xF+s62lkJ93TycCYXLIZdFJTPK6cYmOarC8oTR4FtKOm1ECuUEp+Awec1d+YllLMiIoMR88PlBE5dmm9B6+355Ol/HYbEUN+zMThBLOVfIBJTpXU2POXrN+1DmykaFRHvKNS2MjVBeeHESMyWBEGf6QMrEJ2jLUheXw/Y8Ajf/6Acrq6a7coo/CYZD7Wxkj93sETZCiPJuKf6mDOKGfDPtlpzVQEfKmRagUgGojWS4MVXN5bwEUELrGiewgJsit1xk6mBWyzWdT/gv4hG0Mj54GiDqDD9Pxa+HgK/rD1rFEsuLxRVwDeCNnmdTP8rwadCVgcstCKcAUIP4uVBLaD2quK29fTU5RjdPqS9/ZgIYgYpHbWaGjw0M8oUcwM15kpoVN87QhCgtTVJ4OsbLtLvBN6xtCc9qHP/Q5zFkspJHDL5rmnvQchGw+fcA+6fBAQbaI33nWdEMVPgE0d6j7ZKzU3jv6JejGcH+CD3cgU5nwOcMnt32RDJpCo3jRs85Oea6l7zNiUDpY+plpeciesfIieg2+3sISkXgjSP9HDyylnXd3YAIj47yDIXMDdjrUeP/QljnprwO+VCANRLIaOT3o4IW4PfExXWM0jq0ytePzHdczRdWkHfYA0u4I8iaZcdjMbFdIXSd0p4z0vFFLjQIVzOPXmaebg49/OC4cBSb45raMoQJOBNHZSXYkxiLqZKoRMom9nAP4VkA3LCalklQZEdg9ewArr/hiRvJi1WFoYSa8flxSOPAc6wcurK
- 2TUJ3fDX
- 0J+EkB5HGMauR8IxRcNk6JAO7ZGx0YSNM32Dk1GrvSFAHvVbmmeZaGWFa6ahPYmBjQvphSz0WsXtWNtx+T/zw0g5AuWShjNwdNsBD+0VOhIVX1q2YFvDpR8p0egcZe0t5vbetKCz+G//8L2Rgy5sXCsNn5FE2Fn33u7ZoedpzjJC/XHHX06J0O+8B4JBnTyHIlsPMipImXZrefNXXaw5kw5S/hhKfLFnUYcPPpI/lJWjYqR/+3IhTG5mA36rejRS1jK2BuDZpyHsEAPZEb3eswmehuyVP2RkmxKO1C3Z5Z1GWEr6ezik4b7P8/ChHysd3eoba2FcrpojZlJA+S81cOFbI1H7NSXqwqbZoAKYcfrEcKMDaxcggkAGCCva4PglMjY1bAxnr1MOov6Na468/S4P4x7shU9+359m6u4/MgeVoPJGt5WhH8mKQD0ZCNOmzeG90q3IoT5prOU6UUKZQdBw949HurbX5FWB28YSqUKKDR3UPh93jLAGlEHGcqvVE333+6rG0SlazBhwgDogaPvot0sev58Lf5L7+g07J45JHo1SyqyhvPK/7TQvCjeZ2qw5jIBfZuLIauUj8BMZ5XIAIP1JQ2lH/9iE+c7aC8o273DaRtl6WbyARaQ==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761839193-370987
+X-HE-Meta: U2FsdGVkX1/HQhow80o3cnhPjNE46+PoYJzofZRXWlHhCePwxlNotiwdUgiP4Ji8btnJuTM8exdus6AhsUUG/D2oHYRtbo9aZvEiBzJkc3ZwzxV3zm2zN/gR5xcI+WA0RIGcYyxC7Ou3g/zJVLcrSVGHq4DCCJwRvTTsjojwB2uzvU/dJ3aVGbOb6v1LfocOJRPX3r1pXa6UvWgTD8bwn1uItQovzVUo2gIBwbzWNbSzbInT3QHJppIuAvGSp+pIVbGbdu6Jz3ePlw+MQzBOvq3VzlqIThMm7Q9XDW4tNrEOUOJNApz4oxGcUGvrb1k1JWCxeAIGzdgxrzJuwQc+u29eQ7VKuZU1re9luld2qgo3WiuDUlrwnkRZKKPIIT+UIo3RgFj2AqOFPLYakROxE160QavhmkJ+Okb7Mk1tGMPFn1eEqY7uraKOnZaBye44PlIzUQV2tG7Bc456hIKLKiFhv+pxgO+MRooH6KHFIXOUEYUQBxxnoByKSMKByTfBEdMIJV7MFfbz+aEml0CaF/d8zHnG7ea5wryjJkC7TYON3P/Op3EMscqZ9FumJz1pXrZ7jKu41Gw5Runh1sm9Rtx2VXeyhysORdDPzNadcwhTAXJS+KDTFU1L19ws3m23Wy4RwF3F5NsBctdKLsyNt6Fb8+y7umkumS2IxSi6nXbTzSWfN4e8ETFGsnJYPwFfHSf+7hz//17CcC1qkRKIhYo/YTGShqKv+veiHW9YctKJAx4G0YoWbU8EO9sVsAFbkLun/bAZ1HsiHTiWkS2tqA8q/BynVgxnwlkUtG8z1A2X2Ae0ddxStN5GskQwMT2o5H/gUTCLKiwYKij3snlecTei1ETZov2aVj/a7gUnFRKUFvgoWlC89TS1/5GbnWwJDkAPH+BlXueBqOoKj2bR+FaOEl+wn/tqLlECQQbpxEzaxFlHHEYSkpIWXMQNQcFE8HunRHaX3kKLKEXy4dG
+ naVe3RIg
+ mnCsro7DNuqZJFgF+vAsbhQ+zrtcQYMcqQa88B8ipfkWtX/VTBQvZxO3JyLtQuJtggj6aC9j7iroMUQMUnpCy1j7rYPyFdZKSCgMaSEZNigKD5L38d213iQu0Ef+X+/FtmMrf0CWm5/RTlzzK7YS8Xs38bo+N9H6Wo2AKkhlWTSfKdmZfD/Yi0l6X960qvj2nXtXtXz+GAt9iCckZdzruqQC0DyrcnaGRTMKFtxvBO+UazB9M0zeNU1uYnrIMeS4SHICKQikmuwwNmXat5vrEbNo7zlwLf3H3V2W24qN73z3sW8FPQeFbnJvpVKAs4Nap3+WxcFieXD1pi4pEq9xUd/M87CzIrzfzNnqTZwGMy14V+ZI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,52 +115,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-10-30 10:55, Heiko Carstens wrote:
-> As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
-> crashes. The problem is that kernel page tables are modified without
-> flushing corresponding TLB entries.
-> 
-> Even if it looks like the empty flush_tlb_all() implementation on s390 is
-> the problem, it is actually a different problem: on s390 it is not allowed
-> to replace an active/valid page table entry with another valid page table
-> entry without the detour over an invalid entry. A direct replacement may
-> lead to random crashes and/or data corruption.
-> 
-> In order to invalidate an entry special instructions have to be used
-> (e.g. ipte or idte). Alternatively there are also special instructions
-> available which allow to replace a valid entry with a different valid
-> entry (e.g. crdte or cspg).
-> 
-> Given that the HVO code currently does not provide the hooks to allow for
-> an implementation which is compliant with the s390 architecture
-> requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
-> basically a revert of the original patch which enabled it.
-> 
-> Reported-by: Luiz Capitulino <luizcap@redhat.com>
-> Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
-> Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+On 10/1/25 11:03 AM, Oliver Mangold wrote:
+>  rust/kernel/auxiliary.rs        |  7 +++++-
+>  rust/kernel/device.rs           |  9 ++++++--
+>  rust/kernel/device/property.rs  |  7 +++++-
+>  rust/kernel/drm/device.rs       |  9 ++++++--
+>  rust/kernel/drm/gem/mod.rs      |  7 +++++-
+>  rust/kernel/pci.rs              |  7 +++++-
+>  rust/kernel/platform.rs         |  7 +++++-
 
-Obvious enough change, but FWIW:
+Acked-by: Danilo Krummrich <dakr@kernel.org>
 
-Tested-by: Luiz Capitulino <luizcap@redhat.com>
-
-> ---
->   arch/s390/Kconfig | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index c4145672ca34..df22b10d9141 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -158,7 +158,6 @@ config S390
->   	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->   	select ARCH_WANT_KERNEL_PMD_MKWRITE
->   	select ARCH_WANT_LD_ORPHAN_WARN
-> -	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
->   	select ARCH_WANTS_THP_SWAP
->   	select BUILDTIME_TABLE_SORT
->   	select CLONE_BACKWARDS2
-
+@Miguel: Please expect a minor conflict with the drm-rust tree for the DRM GEM
+changes.
 
