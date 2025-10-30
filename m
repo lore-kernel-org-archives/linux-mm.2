@@ -4,121 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D2641CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 17:29:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B93F5CCF9F0
+	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 17:54:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 392388E014F; Thu, 30 Oct 2025 13:29:04 -0400 (EDT)
+	id D1E9C8E0122; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 342C68E0089; Thu, 30 Oct 2025 13:29:04 -0400 (EDT)
+	id CCF2C8E0089; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2593D8E014F; Thu, 30 Oct 2025 13:29:04 -0400 (EDT)
+	id BBE708E0122; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 14AF18E0089
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 13:29:04 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B7E308726E
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:29:03 +0000 (UTC)
-X-FDA: 84055466166.18.C48D231
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	by imf28.hostedemail.com (Postfix) with ESMTP id C82BDC000A
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:29:01 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RSwr2HNa;
-	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id AA2F18E0089
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 13:54:26 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 439F656B64
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:54:26 +0000 (UTC)
+X-FDA: 84055530132.04.90BD0F3
+Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 465B7160013
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:54:24 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=ioAoAJ0j;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761845341;
+	s=arc-20220608; t=1761846864;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=duKu/8Ky/t6prpCzomheaKrWsLhN82XKAnG9GJbzgTM=;
-	b=3d9JpcVLhletwL9cqrsxnUz/PadPeuTOadHXQF67izjUl5YSJrEz4tF9X9pMc+9ueGK2fM
-	HV9QyvA/KAA5XRUXeXddpf/rFHbvs85sDFg6KOl+fLOmK9TePR4rrSsFulOZGO5NrBdXdB
-	gVnQpwuu6j/SmghdQjhHfLwUQ2zw53c=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RSwr2HNa;
-	spf=pass (imf28.hostedemail.com: domain of jiaqiyan@google.com designates 209.85.128.46 as permitted sender) smtp.mailfrom=jiaqiyan@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761845341; a=rsa-sha256;
+	bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
+	b=0DhWsoBAwjuWAfUpVoBhSco4XW8L7Utm/lhId/DBoFPEBA2565D8BDlsBOj/XcQUVuREhe
+	19Y+DyIPX/lmKICiWGvrVbaHdqMvf/5HnckIB3lLQHTvq8yoxPaoEmv+wAiTYStwPt4mO4
+	sm6E99QKPoQUUdsXUnyE3nJvrLorjJc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761846864; a=rsa-sha256;
 	cv=none;
-	b=XjGhup0LN0Ic4gJi+wjLmRatRdgPA8zqhRpubpmp+IDEVdF1Q5v6lCHXTzq1/ufunDT31r
-	9fPtWhEJBktDLXRWWu8N9FaqrlaEU8UQ4wMz2Bc5SXtMURft5fFZnpK4WqwcuspFcmOvV2
-	2apOeosxDgqUcuxM0PTTwCmp24Glf0g=
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4770d4df4deso3435e9.1
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:29:01 -0700 (PDT)
+	b=MIijt0gwJTA98orF7u59FgJGshVQ4eFROCWWyp+VyVMPwguBlHEGuahvqUTq0lUNidXBWE
+	hyoJM/IEiDWKw+y4n3F45hC6GXOMItBoUu5jrdGnKeWfwTIjWxqGoZdwJhWEBbtXO8laa1
+	MSo2CUY9CdF2HVQ2uDH/cbW4UJHKXr0=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=ioAoAJ0j;
+	dmarc=none;
+	spf=pass (imf08.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.219.50 as permitted sender) smtp.mailfrom=jgg@ziepe.ca
+Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-7ea50f94045so24911036d6.1
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 10:54:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761845340; x=1762450140; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=duKu/8Ky/t6prpCzomheaKrWsLhN82XKAnG9GJbzgTM=;
-        b=RSwr2HNaMEspCLgaYKuMr/sl8/MPpHD6oYmMwsEdT1h6avATWxAxhOiY5STDf/E6Q0
-         +tv4WEfOG2e06SLRamsaf/V64e4NTxn9T9lthS16BTBufQ4ym08c/GWbtzn9T/NmMe46
-         zgjEcfo4NIHhAVX+VKS/oTCGPG9od8FK5ABOBrpWn6UPfrknO74sTwcB+t7lWzimbCeH
-         awkURe7N0DWeRPf75lNM4wdCeA59q2fV2CmWDr+eZXBtXAJa2HyLsthqYs/lHKIXa8Cg
-         neRyUMad29qKwtHPtC85JIcS+yG8lRPdI+VzeW7wRqbZotk+B6vUkwFqvJ4N/pOP18AZ
-         qHrg==
+        d=ziepe.ca; s=google; t=1761846863; x=1762451663; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
+        b=ioAoAJ0j8p1pFF45PLwAJxzhfnQ3mBnZoavX8/Qf3B74Lqu8dYec0H+4FvQoMrdDaf
+         7dAiBEyMbdoYMICXf1vKMrUabrUM7Jho/vdP4tWYH1MNbXARlhv6aekIXYLN+L3OzMRG
+         h8ePGvCby0/JrfoIr54ffx0FZIwIWElmV7xDQdstMI5dBB3bkenEsfVbpOCPqxLeGboF
+         66wjcgYgwocXvU+b1Gtxs57VszwK/bRvJNw34ffltfypLohxzJ+nLBIKb1nUU2g6naRV
+         ffLWENmE5a9MLP5BuZ6YTGNZMk1OzUrva3hke0WDz/3du/JW48lu7QPFgzTyYC82+jyv
+         jtzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761845340; x=1762450140;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=duKu/8Ky/t6prpCzomheaKrWsLhN82XKAnG9GJbzgTM=;
-        b=JwGp0zK8h9NHbHnYHXE/NvNPlCY4UtNGNLi4CxUf1+KCBR6FjuJxgYOW1SErY0F034
-         5r1cjreOuK2BZLkt6ERYyJ2woMQ82eDqignw8gnC3QDltVpoAj/GbGYCueSijSeDYcmL
-         JK+XAqUBt3Stw6YH3tnl268GUxklVe5fAbihZE3Ol20RkEXFSUIBWRAB2+I8j9qWF0CD
-         Xd/i54Ub43irQhRUVUO7qYuyeS0hIZL87le6rPgwmrtSo43reX4EX6zKsRSiMVxuYTP1
-         59o2xhmNrXt2DsLk4K5vG0D0RnBdN1o0QRuv+ve6Fc0ViJOY9/p0KWXE60X505TBLelN
-         k6rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXT+vA3WrqkxdyZ2YBu2MeOYUgls6tELPRkai1SEVqBGQygusiSDwOqWJrlXCfRmQY0b5XS4184MQ==@kvack.org
-X-Gm-Message-State: AOJu0YxBLdk9FU16gRvC9v30z359NGs+nonzK7p6byFJdAYdG0/LwOsf
-	gMDGBtKp4tF7pD2YUyZEYJ8kO7+aG61jTtNYUF178sMdiDQ6M3QxW9dHLqD9IecCXDJmIlEWpbu
-	531nTFWRVYonQWZ+7RKorPOAmz3RGcqKqB+EAsEzl
-X-Gm-Gg: ASbGncvSfhRnXcRzCQMGitcMJgng/qEfe+s/7bo1fcxwrzLlpGxAvlrrC1yKPJ83+85
-	n5w467ngB/tasv6nuBJrB3yhbI+bYr1Wg8XNj+m5q0Bh1bJBJQjE4jMw8CgKsFjPR8y9Gq8OmwP
-	aMHgiiwQy6lhwLbB5cASYsLx5cBuBivDjfUekQ28KOk8rCuLAEoSg7rzf2jDemjlpVPV+0Ngk7j
-	RbPU/z2pf2MI6RNzUFYRGqhxWK6R5UVlKxrj4zWlVdkwFLOUSo9zF0JAQD06N8d2wu2eVuBeXrc
-	nLpJxljQ+MRLwFk=
-X-Google-Smtp-Source: AGHT+IFCRKDiV45j8nfSSPazMv37IGqBBffmdRw3pH4dGClMUS1sq6qT4CcfZSHTWT3SkuCeES6cEwuqbx88QSTv3rE=
-X-Received: by 2002:a05:600c:6207:b0:46f:a42d:41f0 with SMTP id
- 5b1f17b1804b1-477310e383cmr86755e9.0.1761845339767; Thu, 30 Oct 2025 10:28:59
- -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761846863; x=1762451663;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xnGHUYavdaKYzYofeQc3x2iVgQ4gD7UndQ+CtCjwQis=;
+        b=iy3EN5U7iSINX8BiqYVsm5L1osTJS9m4a5pB89I6DKjukKqegqdGJMvjdFa7eHPcpg
+         VEKUZGo35rL5flHoOfkxbYKHCt/EnYKDm/qOC0I8tB4sCHOM8ZUjUbGzo1zW5ui+R48Z
+         cmKEx/DufTq9eoaUBRve/tPsBkuruJlalRIKROwYyYMBUzFq3UyP2xqOLD4q/YC9PqSQ
+         eL6H29FzfJ6hGMoMce+MIzM2f/U6PvgXy+nIJvGTD0oLMPTc1C2Xp6/+fHMOIBG+uz8l
+         QAOOx3K+XnW8YXzffje5jrctRvGGLgchzk/33vFQyRNDzCfj3VooV8wnfy0gwhBKX3r0
+         TKlA==
+X-Forwarded-Encrypted: i=1; AJvYcCWghpS020ia5TfFdrHrjDvbdFnHIEehZm+Re7nbv4Fnn+g56oq/iyOgt41dFlPxHdyF0lvvZhT02Q==@kvack.org
+X-Gm-Message-State: AOJu0YzTexnwmhhnzVW7lbnQ2JaSc900xEHEkTLTgxD8ptdatoG2PzCF
+	raqbzY1cUgPyZMQLbc1LKeG8SJu5h/nbuQdwOv+p+viP7DBKZrqryg53CZQKRU8wG2U=
+X-Gm-Gg: ASbGncv3E2zIJIzskvFuPMYWq7z3WOUF+URO6sxwD2U/kH9RxDRoO+ZowBLTyA2Y+Xy
+	HXN6RK7rGkHzmLUm6W7RBpl3vIaPAOUmBffJc7V81tSknFH/ggViu77LYkP8Xhm/CLy+namJnr0
+	4DFY06PPIVWCRxSs5Bp3MFwlrdRJ03UZxQElMnyDl/vSGYJuS+5qTGW59P7xiPAjVm/665AtE1S
+	uWJqNY9rOyt8Wfl6FJHUU+WYMZmiU42p/YVhGaBGhWRAKWxV0dRp4screUQxBURAEgYPsGsyxHK
+	Fbylok+PG3EmVjQgsbWVZScQyJIxkPNirNf9XM/eyBarZWBRoQvWKToC3TkupQeSCH4TVUNZ+vJ
+	qwkWvWi58df1CGGiDx3CmrnsEKLfin5d6A7vq5ZlEJGmqy3Ux1+i6xz+CccDgybqj2aUyQ0aCQp
+	0dx3R8PO1lYE1sY7d2suIGnF24mu3gehXFcx4fub61mKhM+g==
+X-Google-Smtp-Source: AGHT+IFT5Fmbku/PhtCEDW1KeFw5jyVfP+ejaWvNde5H/+ME0TqKpHB8wRouWON1EINpWnQqdBBBmg==
+X-Received: by 2002:ad4:5ca5:0:b0:87c:2095:c582 with SMTP id 6a1803df08f44-8801aca0a1bmr63713946d6.18.1761846863017;
+        Thu, 30 Oct 2025 10:54:23 -0700 (PDT)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eba387a61bsm115313061cf.36.2025.10.30.10.54.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 30 Oct 2025 10:54:22 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vEWqr-00000005AuU-2aX4;
+	Thu, 30 Oct 2025 14:54:21 -0300
+Date: Thu, 30 Oct 2025 14:54:21 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
+	Peter Xu <peterx@redhat.com>, Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Kees Cook <kees@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Leon Romanovsky <leon@kernel.org>, Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>, Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	David Rientjes <rientjes@google.com>,
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>, linux-kernel@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH 4/4] mm: introduce and use VMA flag test helpers
+Message-ID: <20251030175421.GC1204670@ziepe.ca>
+References: <cover.1761757731.git.lorenzo.stoakes@oracle.com>
+ <c038237ee2796802f8c766e0f5c0d2c5b04f4490.1761757731.git.lorenzo.stoakes@oracle.com>
+ <20251029192214.GT760669@ziepe.ca>
+ <0dd5029f-d464-4c59-aac9-4b3e9d0a3438@lucifer.local>
+ <20251030125234.GA1204670@ziepe.ca>
+ <a7161d7d-7445-4015-8821-b32c469d6eaf@lucifer.local>
 MIME-Version: 1.0
-References: <20250118231549.1652825-1-jiaqiyan@google.com> <20250919155832.1084091-1-william.roche@oracle.com>
- <CACw3F521fi5HWhCKi_KrkNLXkw668HO4h8+DjkP2+vBuK-=org@mail.gmail.com>
- <aPjXdP63T1yYtvkq@hyeyoo> <CACw3F50As2jPzy1rRjzpm3uKOALjX_9WmKxMPGnQcok96OfQkA@mail.gmail.com>
- <aQBqGupCN_v8ysMX@hyeyoo> <d3d35586-c63f-c1be-c95e-fbd7aafd43f3@huawei.com>
-In-Reply-To: <d3d35586-c63f-c1be-c95e-fbd7aafd43f3@huawei.com>
-From: Jiaqi Yan <jiaqiyan@google.com>
-Date: Thu, 30 Oct 2025 10:28:48 -0700
-X-Gm-Features: AWmQ_bmYKY6ggj7beaUai29I-PXUvJIYK1duVN36KusJtjmgIEZDYv_nIrP-5Lg
-Message-ID: <CACw3F51qaug5aWFNcjB54dVEc8yH+_A7zrkGcQyKXKJs6uVvgA@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 0/3] Userspace MFR Policy via memfd
-To: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Harry Yoo <harry.yoo@oracle.com>, =?UTF-8?Q?=E2=80=9CWilliam_Roche?= <william.roche@oracle.com>, 
-	Ackerley Tng <ackerleytng@google.com>, jgg@nvidia.com, akpm@linux-foundation.org, 
-	ankita@nvidia.com, dave.hansen@linux.intel.com, david@redhat.com, 
-	duenwen@google.com, jane.chu@oracle.com, jthoughton@google.com, 
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, muchun.song@linux.dev, nao.horiguchi@gmail.com, 
-	osalvador@suse.de, peterx@redhat.com, rientjes@google.com, 
-	sidhartha.kumar@oracle.com, tony.luck@intel.com, wangkefeng.wang@huawei.com, 
-	willy@infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: C82BDC000A
-X-Rspamd-Server: rspam11
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a7161d7d-7445-4015-8821-b32c469d6eaf@lucifer.local>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 5dipdhiy47my7iz3d8bxj8t4c64ao59m
 X-Rspam-User: 
-X-Stat-Signature: 7bfcpqo1khu677yr8cc6ihg1uf5ysmk9
-X-HE-Tag: 1761845341-3307
-X-HE-Meta: U2FsdGVkX1+fWOhtq7U5ULplU/6IYmCVXgk9rIy6Wu3lu7R20/0nL7yuhAhFz7rUIdLa/qmKQ/SQWF1RhOQuG5RnI3omRmgxSdNFLhkeiEeUoBKegjsZvZNvp6HmA4dZNmJUntWVJSZclc5GalT1loF0O5hz9CokYI4TnkN54OX5MVk+0W2FmJRLn38goHvew5MU3o6dk8HKpoVFx0gM6HAzk/XBFJpX4v93avf3/vqxyYUghHXRs9cZn7adDeW1V0nZdinOz/qEwoq/w9FPk8WG3Elz/+3dVbCb0LKlFcTKfXsTGfP+Sw4gUsm9yT2+v1DOAGgqERs/qwflFAjCjDb1KM1qQ4rwxAXdwFTRogZW+fEZSGqhM3oFj5WxdpaK24hHzmPXSCuEYimaFXYGQg5h/pkHYMwToL+ssfOfR+anhNnyOCp7sKNDctLyLs2ZebSP1diaC9XuyEO8BlNHvNLTEEav+ekUKwJam+XgPraLq9eQdniWRA51Dx8aIjCuU2lXiPs4kB0SpND+Aqt9ijcTd+/iwX2Z+YjUlcVfUOss2fExtJDli6925ys8sZ0/ADoWs7IQuGgq/JHsTMP/oWNmCsngbGDV34acMVx3vP20xlO+WegjZBRxlP7re84n09MuC50AONQr79lohQmwg2kRnk9Hkhtz+TxMHBiMGBJeZFpPwbtHoexW3vYUqeG7qVbBAOqMj9txsdC1Z1ajwRbsBia2U87yBN7HCEry77ZWGzPa4J5j2D6jUp/86/AWdeuhUYcZBfVTaARFk9hfDn2KMkhYvH3nlnfZpx1hKzZElP7KvWMuRMoWpjqUyczzcdmfC0iLCke9YUolHsu9G3GuBmHXT6Bp2JbGydsTNoB5xlBAVEGpUsKughfHvRt5/Y1eoeC4pyMu3obQXn2TxLj2toeG+Jvs7JvSZugAWNpJnFsTlkDLUM90RHNWn0yGBpks/gEnhXFTX8g+dTC
- 1CSjQkKr
- FzUvDmY1OA2IOX4uFtOjFZtjF+1Px8YD/UtAc5BwVyUhIABy6IqDGLENDhuKk9n+xsJ25bXYYbvq0dhDTZ/YMafjIVlXtmNUTELY6cPSrPYdHuwp0yg6FFequ0rBuSRnCFokI52Ct1ROkDsPggl/dG9t96tep0gqxhmDAXxICt+u3Oy5vF2HTOe4e14cUdMuQHVMkWi53LH+ypztOza+xnvggR5YgLpVqQAsDfcxlN6RcVObkYIl/AzlLL+sdWnGqVBy+TS6Tqn3kFpZpPCHZDAVgpxTlQ6zS2oSBi1HCgnXWxZ+Q/V9HjKFRyHr8rvkYpF7JFqg+AAYk1YVs9n/LxiQ6hQ==
+X-Rspamd-Queue-Id: 465B7160013
+X-HE-Tag: 1761846864-516327
+X-HE-Meta: U2FsdGVkX1/Zz7tmiYDvq8W07y1BiKLGK3n3K39z5C+Hn62c4V+x4XYOc8bOa9i4qdSdhGIVy52qrKhY8IisHUDSuH/0DpggDVxRbv8aqKdPG92X1OzhJAsN798uJ6DbDlOTHLFG5xcYdvm+bdCzuXE5GP3tj0JpOTGcO5nJ6Z2clDJnafBpJ6twQh2m0DDuqF8iD/QG6E6YH/8rZmiYj/wP14XN+DEkVyz6ivg1F0vsmCwxq3wpq1nRyGeNLP1Eo25pCBAxpIj7BkmqGDsF6nG6hT3iT+O3Dp7ALtUJ73t66naIu519kpHTXK+iiIY6vuCcLkG3uc2EDM9EFV/nJm2OJeo6GqUazCUHlBdzPB89DzegqxqjxCTiNAEw4odaEB7pwFBC7UXDvadDjUvb9dnN9FMi/fJBxbJQKXIOLu9wKAIyb34AexzXbwE5oV2WgvoJ0lZ+mU3qHVUHH7Mkncwde+gjcKF8fzOi95kWIKhNPqBuN7ATOPpsRGMNnyz/fp7Dh29QIfzeigknFcLDPD2p5vA+epYhoX8lA7vNO/58VlWnssadRjE9kPs56cibD5fYM73jE1vyUGdvYjuor+WWQ7B5C9TI6zJx2m3iBW0DUJreZyyixmDTmHcaoQ276b738slBvkkC+fYJ4+/DO82wGiennqpnkflSkfZ9fxJa+KVUUGDAh8Fxv+yQ9fy9eJBLdMXa9LqM7IhCHYnqm1ujkSE06bcuUyF9XxauETg7H/Ezr3flUqviDcf7F03KeiMF+H5TIKeOluOIgbRG0MbY8DAiAC/uNESsn9VaMbNw4+i+c4f/YJO9PKkejGQKSgbC21BAZlVG/fRpD1x35QYGgHaV9wqnSWfy3kVgU79HqzkaInUn9Ox3uwdEcP13U/sCKzrAIFU06xlYIpc+QqeP+KvrVH509OqNkgIjZ6zEgIGP+o/9en8QYgtEPDo98C6s+r9YqPFVyzjRaRd
+ 1Ls1KchR
+ uL4gxKdNFpPjRfYHeOlA/w4Szr5lcOY3jRv+/FfdMMe6NU5kDvrZm5PfZ8SiCF1N62vVx6/F1TRfhS4825KYfWaKUy9flQAB6WJhLsCGgYMOcwOk3GM1z/D3tJD2o6fIqvkNPprySjdb2kzbhI1P5zfbWFOdE0UY5C9DlqlBNbdhOamrF7JRVny3DO1YdrDdjIL0pcLBqrG/KbB+0ZoQqEsuI+VEN1llOIS+CddxJRMGFbxtE90jU8ViI7PEWtxxvwg8xYsmEjt1MzKg+ky7/fiXOrihOw25O1xLMc64Cg9mgGVpCSFr/n1HPP5gaKcJlQL5fEa9b4L0e/6U4tFdTX9tuqpRM8Va4ycR65ncxtYe3ihvamyQfp0i0obK27m+NC5f2
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,202 +168,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 4:51=E2=80=AFAM Miaohe Lin <linmiaohe@huawei.com> w=
-rote:
->
-> On 2025/10/28 15:00, Harry Yoo wrote:
-> > On Mon, Oct 27, 2025 at 09:17:31PM -0700, Jiaqi Yan wrote:
-> >> On Wed, Oct 22, 2025 at 6:09=E2=80=AFAM Harry Yoo <harry.yoo@oracle.co=
-m> wrote:
-> >>>
-> >>> On Mon, Oct 13, 2025 at 03:14:32PM -0700, Jiaqi Yan wrote:
-> >>>> On Fri, Sep 19, 2025 at 8:58=E2=80=AFAM =E2=80=9CWilliam Roche <will=
-iam.roche@oracle.com> wrote:
-> >>>>>
-> >>>>> From: William Roche <william.roche@oracle.com>
-> >>>>>
-> >>>>> Hello,
-> >>>>>
-> >>>>> The possibility to keep a VM using large hugetlbfs pages running af=
-ter a memory
-> >>>>> error is very important, and the possibility described here could b=
-e a good
-> >>>>> candidate to address this issue.
-> >>>>
-> >>>> Thanks for expressing interest, William, and sorry for getting back =
-to
-> >>>> you so late.
-> >>>>
-> >>>>>
-> >>>>> So I would like to provide my feedback after testing this code with=
- the
-> >>>>> introduction of persistent errors in the address space: My tests us=
-ed a VM
-> >>>>> running a kernel able to provide MFD_MF_KEEP_UE_MAPPED memfd segmen=
-ts to the
-> >>>>> test program provided with this project. But instead of injecting t=
-he errors
-> >>>>> with madvise calls from this program, I get the guest physical addr=
-ess of a
-> >>>>> location and inject the error from the hypervisor into the VM, so t=
-hat any
-> >>>>> subsequent access to the location is prevented directly from the hy=
-pervisor
-> >>>>> level.
-> >>>>
-> >>>> This is exactly what VMM should do: when it owns or manages the VM
-> >>>> memory with MFD_MF_KEEP_UE_MAPPED, it is then VMM's responsibility t=
-o
-> >>>> isolate guest/VCPUs from poisoned memory pages, e.g. by intercepting
-> >>>> such memory accesses.
-> >>>>
-> >>>>>
-> >>>>> Using this framework, I realized that the code provided here has a =
-problem:
-> >>>>> When the error impacts a large folio, the release of this folio doe=
-sn't isolate
-> >>>>> the sub-page(s) actually impacted by the poison. __rmqueue_pcplist(=
-) can return
-> >>>>> a known poisoned page to get_page_from_freelist().
-> >>>>
-> >>>> Just curious, how exactly you can repro this leaking of a known pois=
-on
-> >>>> page? It may help me debug my patch.
-> >>>>
-> >>>>>
-> >>>>> This revealed some mm limitations, as I would have expected that th=
-e
-> >>>>> check_new_pages() mechanism used by the __rmqueue functions would f=
-ilter these
-> >>>>> pages out, but I noticed that this has been disabled by default in =
-2023 with:
-> >>>>> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
-> >>>>> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
-> >>>>
-> >>>> Thanks for the reference. I did turned on CONFIG_DEBUG_VM=3Dy during=
- dev
-> >>>> and testing but didn't notice any WARNING on "bad page"; It is very
-> >>>> likely I was just lucky.
-> >>>>
-> >>>>>
-> >>>>>
-> >>>>> This problem seems to be avoided if we call take_page_off_buddy(pag=
-e) in the
-> >>>>> filemap_offline_hwpoison_folio_hugetlb() function without testing i=
-f
-> >>>>> PageBuddy(page) is true first.
-> >>>>
-> >>>> Oh, I think you are right, filemap_offline_hwpoison_folio_hugetlb
-> >>>> shouldn't call take_page_off_buddy(page) depend on PageBuddy(page) o=
-r
-> >>>> not. take_page_off_buddy will check PageBuddy or not, on the page_he=
-ad
-> >>>> of different page orders. So maybe somehow a known poisoned page is
-> >>>> not taken off from buddy allocator due to this?
-> >>>
-> >>> Maybe it's the case where the poisoned page is merged to a larger pag=
-e,
-> >>> and the PGTY_buddy flag is set on its buddy of the poisoned page, so
-> >>> PageBuddy() returns false?:
-> >>>
-> >>>   [ free page A ][ free page B (poisoned) ]
-> >>>
-> >>> When these two are merged, then we set PGTY_buddy on page A but not o=
-n B.
-> >>
-> >> Thanks Harry!
-> >>
-> >> It is indeed this case. I validate by adding some debug prints in
-> >> take_page_off_buddy:
-> >>
-> >> [ 193.029423] Memory failure: 0x2800200: [yjq] PageBuddy=3D0 after dra=
-in_all_pages
-> >> [ 193.029426] 0x2800200: [yjq] order=3D0, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029428] 0x2800200: [yjq] order=3D1, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029429] 0x2800200: [yjq] order=3D2, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029430] 0x2800200: [yjq] order=3D3, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029431] 0x2800200: [yjq] order=3D4, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029432] 0x2800200: [yjq] order=3D5, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029434] 0x2800200: [yjq] order=3D6, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029435] 0x2800200: [yjq] order=3D7, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029436] 0x2800200: [yjq] order=3D8, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029437] 0x2800200: [yjq] order=3D9, page_order=3D0, PageBuddy(pa=
-ge_head)=3D0
-> >> [ 193.029438] 0x2800200: [yjq] order=3D10, page_order=3D10, PageBuddy(=
-page_head)=3D1
-> >>
-> >> In this case, page for 0x2800200 is hwpoisoned, and its buddy page is
-> >> 0x2800000 with order 10.
-> >
-> > Woohoo, I got it right!
-> >
-> >>> But even after fixing that we need to fix the race condition.
-> >>
-> >> What exactly is the race condition you are referring to?
-> >
-> > When you free a high-order page, the buddy allocator doesn't not check
-> > PageHWPoison() on the page and its subpages. It checks PageHWPoison()
-> > only when you free a base (order-0) page, see free_pages_prepare().
->
-> I think we might could check PageHWPoison() for subpages as what free_pag=
-e_is_bad()
-> does. If any subpage has HWPoisoned flag set, simply drop the folio. Even=
- we could
+On Thu, Oct 30, 2025 at 02:03:02PM +0000, Lorenzo Stoakes wrote:
 
-Agree, I think as a starter I could try to, for example, let
-free_pages_prepare scan HWPoison-ed subpages if the base page is high
-order. In the optimal case, HugeTLB does move PageHWPoison flag from
-head page to the raw error pages.
+> Yeah, OK well your point has been made here, the compiler _is_ smart enough
+> to save us here :)
+> 
+> Let's avoid this first word stuff altogether then.
 
-> do it better -- Split the folio and let healthy subpages join the buddy w=
-hile reject
-> the hwpoisoned one.
->
-> >
-> > AFAICT there is nothing that prevents the poisoned page to be
-> > allocated back to users because the buddy doesn't check PageHWPoison()
-> > on allocation as well (by default).
-> >
-> > So rather than freeing the high-order page as-is in
-> > dissolve_free_hugetlb_folio(), I think we have to split it to base page=
-s
-> > and then free them one by one.
->
-> It might not be worth to do that as this would significantly increase the=
- overhead
-> of the function while memory failure event is really rare.
+I suggest to add some helpers to the general include/linux/bitmap.h
+"subsystem" that lets it help do this:
 
-IIUC, Harry's idea is to do the split in dissolve_free_hugetlb_folio
-only if folio is HWPoison-ed, similar to what Miaohe suggested
-earlier.
+#define BITMAP_OR_BITS(type, member, bit1, bit2, bit3) 
 
-BTW, I believe this race condition already exists today when
-memory_failure handles HWPoison-ed free hugetlb page; it is not
-something introduced via this patchset. I will fix or improve this in
-a separate patchset.
+returns a type with the bitmap array member initialized to those bits
 
->
-> Thanks both.
+Then some other bitmap helpers that are doing the specific maths you
+want..
 
-Thanks Harry and Miaohe!
+* bitmap_and_eq(src1, src2, src3, nbits)  true if *src1 & *src2 == *src3
+* bitmap_and_eq_zero(src1, src2, nbits)   true if *src1 & *src1 == 0
+etc
 
-
-> .
->
-> >
-> > That way, free_pages_prepare() will catch that it's poisoned and won't
-> > add it back to the freelist. Otherwise there will always be a window
-> > where the poisoned page can be allocated to users - before it's taken
-> > off from the buddy.
-> >
->
+Jason
 
