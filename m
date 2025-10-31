@@ -4,108 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92648CCF9FF
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 09:18:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D28E0CCF9FF
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 09:31:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB8DF8E00C7; Fri, 31 Oct 2025 05:18:45 -0400 (EDT)
+	id 1A41A8E00A0; Fri, 31 Oct 2025 05:31:43 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D69638E0042; Fri, 31 Oct 2025 05:18:45 -0400 (EDT)
+	id 1547E8E0042; Fri, 31 Oct 2025 05:31:43 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CA6918E00C7; Fri, 31 Oct 2025 05:18:45 -0400 (EDT)
+	id 01C088E00A0; Fri, 31 Oct 2025 05:31:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B8E0E8E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:18:45 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1998816041A
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:18:45 +0000 (UTC)
-X-FDA: 84057859410.12.380CC58
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 38C2F20005
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:18:43 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761902323; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id DF9468E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:31:42 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 555B112AFA6
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:31:42 +0000 (UTC)
+X-FDA: 84057892044.29.2EE5DA7
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 4371C1C0007
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:31:40 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CU0PE6Ir;
+	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761903100; a=rsa-sha256;
 	cv=none;
-	b=jwkeIqGV0qtHDZV05di54z4imnypUO+WXHGH83Vgr+Z7FieHrovSlcUNjGHnxkvEnuwk0Q
-	ufA3kvUbJ1HotOFKH1RTQ3FbAvSTcZSSyGKunem7BGcFBHFe8WMChH9UIrDfEiIXG4RCl7
-	xRMAMiBEzI2MeRpbyFWfM56uYYnnbeE=
+	b=mmiev1InV7tVVGwW4vG9zr4sbKlwHZrbR9e9q5FJKJmJQ4O+0hb/QQTUxKSg1Ud63fn1yD
+	8TbPjNgPwneZeKAmY92uohMkunLrAFMo39xN8NHZnNsFQYDT8uWitb3cxE9UgvZCjjyDHD
+	lED/hVghw/xCZKlX/PpOSvKMmPTT1yg=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none);
-	spf=pass (imf03.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+	imf21.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=CU0PE6Ir;
+	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.49 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761902323;
+	s=arc-20220608; t=1761903100;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=W+NZHuy7slH1tEgRbDXmTQJQ+Q/vMpvRiCleu5bnlac=;
-	b=3Wgx4cuA0HTdBON4+YoGYiVzL4uF4Vv/W4wkm6JkPZCnMATpRDxSFqTyx29g2oAzZCnCNx
-	eldZpoxrwM6ZLQJfzRDNY1fegNA2JggUeuPqZsJEMeXeU4NvvhB8NhS2Bpd9A19VhO/qPE
-	hFwQpOI+BO9LQReIboStOduYpFwq3Vw=
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2953ad5517dso898525ad.0
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:18:42 -0700 (PDT)
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=eZqsIXX4i9fDMKAO6vBiIA93QUBSotAqCxkbGp8FfSY=;
+	b=p7xfRNAotX3htb18+EPzYPwlLcNDZq2pfc0KtshN8pyC6wiwA/CjlUxmpA65ug9OtSFZos
+	j9MLp9zDJg8Ob16O+n94UJO+/89onoK6u3n4BDKLmEM3NszjOvbpkGI6uVRBOXs+WPbezF
+	CvFTGrz2bMjZV6GIx4hRn5b2CxCgmYU=
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-421851bca51so1790864f8f.1
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:31:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1761903099; x=1762507899; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=eZqsIXX4i9fDMKAO6vBiIA93QUBSotAqCxkbGp8FfSY=;
+        b=CU0PE6Irj8xopgpcCw60CasIKW3URawaNP9uDMLvk+zBo5fZOynileBTkafipEqp/Y
+         y0ZJtAP5SM0xHASAIfFifT6DaxgIT/zjBLr0PBq5T2Ghr14tINfk92/45vWsZiQf8i1l
+         z0GRAGwliUp/seYq5YCjWSrZhUwRBnjfgG4GIEUlvkUezpB6jVg+EeLgqT3CBgzxWnLt
+         tsifgRNevCWdZJSSHtAbYJ/MYmmT1gB8oVygLrxxfA8YKRtp5sWem6rlthCPnped4jsJ
+         FTQArJWgfDstolXY+l9iMJhdaOJUlOhU4v8Iwm9OHzQANUD202a7eJaRv7YYhqvqLRLb
+         DI5w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761902322; x=1762507122;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W+NZHuy7slH1tEgRbDXmTQJQ+Q/vMpvRiCleu5bnlac=;
-        b=iTduroAHePseIZyoCDGrwDE0Q040mSqEfnCUnCMZzPuKTRU0CxofkItrke8BPhMhS2
-         L7ZL8vxdxDjW7ZnpRJKJNhXVO0/hwP3snIhnUIlU6JWp9Cxv++W0G0XcTdnm6FEbdsEs
-         0dppA+aKLCx10NO3v7VW3CAe5+F5vB77IRKJ81dDtaHwod/f1P3+H9xMHtOgDTmcAeq0
-         EPKrbhjTAffd6wE0p3fHiWwb7nnCAcvvVIQE3a/GLtHRD+73Cg2pZSH3My6zabFz3qjf
-         69NHVuafKoD3E/qts+hYtaxeIyQm8uI7tpFmaLiWThTCQlnLOz7kC0YPDPFhf9AHBxdu
-         E58Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU/r6ZP7wtLUtaSp0ZwBrRgB4kSPSoeBcsfgDyjtaSGHuF44w4KjOtLDPOBVGfCoid+X8vZDWXEOA==@kvack.org
-X-Gm-Message-State: AOJu0YwywKIKqoXKWDCNkWGSblKVsmyKZDFAHDlBra4pUbLqps9yuyNL
-	gXGnC3f1FxaD8/2XOfbqit8PoT60RLjNlY+GMrUZ56yZ+sHUZhaMEcyO
-X-Gm-Gg: ASbGncudzDLC2yuVw0EClY0vl4DMiIte4o2QJrKOedXNPdfrnjnldbqCBnIBbOEPTG9
-	s9cs5vpAtrmtzpQKLRcg8YS61tfquRtCgHFyvGwDLtZMqaQ7LwC6xkB7HcRLcHQfT+4bpPIQ5Oc
-	VSk4lgqDwNde7NW8VWA8mUuqfG6xg6KW/OtOITCu7UOF2yty1FDQJ97oNOEBrFPqDacsBnDZWNr
-	TJDYIlP2NFNKgI8jESB9HgqTm6WSKmiL1ap7qxl3taoaTODpzZCi40JYHE4jTtdNt8Z9lmoyWlZ
-	XMWbRE4AFY7w5qBD7EVApki9maH+hRX8q93GVLJcEbQFKQjgKHc6JvBfwl1PWot1nAcrSAH3AwL
-	1epvgdcDpFBb/w66NqmC4chTHSk6Vk3S2hEMZRJSc4UFD/yBsuLwak0O/ok5Vp9K9J6Ta1D+tHt
-	Daj7dmeKjsk0bQcI5ueq9633o=
-X-Google-Smtp-Source: AGHT+IGaY5+g1K6KFzwg6ulzp43eGNlMp6k/vOU+6dw4kyEoznXaP1AMdrHNLfDz0Nl70DbFrEP/Wg==
-X-Received: by 2002:a17:903:18a:b0:290:7803:9e8 with SMTP id d9443c01a7336-2951a48cf38mr43274965ad.48.1761902322016;
-        Fri, 31 Oct 2025 02:18:42 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([124.156.216.125])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3409288c7c0sm1524575a91.5.2025.10.31.02.18.38
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Oct 2025 02:18:41 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: big-sleep-vuln-reports@google.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	rppt@kernel.org,
-	willy@infradead.org,
-	david@redhat.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH 1/1] mm/secretmem: fix use-after-free race in fault handler
-Date: Fri, 31 Oct 2025 17:18:18 +0800
-Message-ID: <20251031091818.66843-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
-References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1761903099; x=1762507899;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eZqsIXX4i9fDMKAO6vBiIA93QUBSotAqCxkbGp8FfSY=;
+        b=PB+LkwB5AyvbFNo7oTQIdhnyY4R5nzflmG5OL3O/bMu7WXkEgVIADC+SSj9ukKM3Ae
+         Gobx34KV1idcPd0uTNqO3xagnof1MfaxwgPa8ikWAUHUOWDJ2KJwQxapSBMgwGoDo40k
+         at0NAAmpoLSqkW0VTLhjMaBLOVb/QvOL3gB8bG+nrh2+cGsHVUW8vmgmWWXsOK9pqqh0
+         MESW6GrRBVYAfdh6S64FYNxa0Q+gkMZtIgAGvfZweWaEAWuFF4BvayorHliWYubziCfh
+         aqGC7ioPyY6w/fN+ev9alenF9HGTKKtGz5LBzTregLFMBiwOn1lHR7kTvlaXm79cnywD
+         yB2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVquGtMjEq9R5seoDOH+yvlf6a6gFhw/tTNi3YXG6YPaxLLYepbqydaYHebeEllsZsH8M6QmSJPYw==@kvack.org
+X-Gm-Message-State: AOJu0YzdTSFmuYCGH2x0wLnvwf75BFrt57spdSCNPQkYNqHNhDyi4go9
+	1ZUFuiHPw5b2zkOq+p3D46TF0EcYgcwMIEWsGFDzCoObKVzQ0GA8obuzRhUxAn3y1Ao=
+X-Gm-Gg: ASbGncuSGv5bRwAPa1UgsI0zw+/9rNDj5YSzumfH2Qw1r2xPUHJ8smcGiM1dvka11kJ
+	Ix5ZS45EwPT2iL7gNaQanSle52GovIZv5orWYpEqaXvG2OkNToIobS922E2TxapGdogdDkJkOyD
+	TQf2duzfAKe2lffyLYT/tIYdYRue5o2vpV2xFcZJGBlUw1l3Nb4t5kA3E22SsqIfEVJh/eKBfnE
+	PAsLnl/m8cJ4Mtxr7jQ0Sxvn5K4s8cMkta3mHP4VUsvolNp+1wffLyFRuHtYQyQG5UJJztTyJoa
+	XrS3URMLZNF+ychw1W38ajicmIQEoYuXHUfaKOXENnAm/sClLd2/x6TUjERl0R3HxmPpFtQapQh
+	YcH0fXYbA9IUxWIsMbOLGEQjVtnB3NLZ79BulgxiP7u71vkbIWqcun7s3J9chJGXFnGqV/9RhrC
+	0CGjrXwCS91T+sUg==
+X-Google-Smtp-Source: AGHT+IG50zQtJd3CIUQKj9ncFkPdrH/t/rsOh53ftoZJnLGX9Bc7esexz1A2xxBb08Zp7FtUCXSR/Q==
+X-Received: by 2002:a5d:588a:0:b0:429:b52e:351c with SMTP id ffacd0b85a97d-429bd69ff31mr2719399f8f.38.1761903098515;
+        Fri, 31 Oct 2025 02:31:38 -0700 (PDT)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13edc36sm2536910f8f.37.2025.10.31.02.31.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 02:31:37 -0700 (PDT)
+Date: Fri, 31 Oct 2025 10:31:36 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 00/23] mm: BPF OOM
+Message-ID: <aQSB-BgjKmSkrSO7@tiehlicka>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027231727.472628-1-roman.gushchin@linux.dev>
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 38C2F20005
-X-Stat-Signature: 5qx59jes3qa1bhgqb1w7b9nsg1mbfbws
-X-HE-Tag: 1761902323-125233
-X-HE-Meta: U2FsdGVkX19HOdZYw2Hbi9ayxqj07RLKN0J/60FvaQ9xD8Ne3M3Q3joiKmt1R+gTp6u+XN05lP+44XU8Qpu91aTwPfQnCS6XGqTxPQMXxIBGOZ8FicWEGqmZAr7FTMr8nDl5G/AjU5/Bns95Yrr4pbtn3MvIsLKMujpWwgMJV3HjtY1jaHNafOMMRr2yuaX69s/au33DXfhU2RR4P8ZZ8d6brQt7LVnYSbcAo7NidM7VdMZHaLCwuEGRJga10XeuoPR8P8WipeNOpR4hG4txRYqiZ6YVIG5W7CfaqkHN3mzKkDu17u454tQduWwfrvmSDe+l53NG5AYvyilMOoIpzB4dvuHhXSWolBGSlTGxnSiJRpYHlkWHRPoL/mYVQ+jlRcijhW/JFxT89/l+sU48Kd92C9gYzpfuayVMlx4wxAj3t65byCO0MQy/XMWD9pkR4J3EeDSBXSHbVIB1T4FcbpnaAEu1UkF/W0Qd7vD1Yxy6j4R/oUF1GK+ODFvE2k3HAXLrR9/3/hu7vQgTJYPCDjNpAmVtSKYz3lImDCsFfoLnP+Grp4ZwP1RejUJr5+O3tBuhdpMcsTbhhmNpL4yLzWgQNxH0N0sDzBRvlyJj9weg0WPHKOjs+tow6YbWyvlr4KXhqlhqy3zYWZ8PWkvyaEDASEcqOawKnGDjapin+WhRPQI/RK5R1+IFnLa5PXkXSrhddFz/ohpC+QiC5mvB8RFiY2WvFlfycaItWY4IaWEHsOYLzWpf9xSRpNpGzrkenkI+584RjCStZ6cOtO4wkmKspz3K9nw6Mh90m8MS0GTxwu13JTInX+QjH+GJWOCN76j1pQ/w7J0t2gI3r3efF05iybwXmHQ/EDwOKfHUz1nLjpvwF3f1kuQOv9H8coiF4LTSRHCpdpSXVR/VXmdp1aBefCLv739pLQsEWNX276YkZrzriu31wQJAg0W4sUxIy2p8KbZNxJ+hp1R1np+
- citXlH7I
- H+S/J8huFFKHxADTIraTjwwUruEEMbcLt/Oaekuj4mYFk4DEmOXEeLv05amwWdCKKtyK1Jb0Zz88tx/l0XW1QTGQaJsrqvhXVAXUGJAH/iZzEh9FzghmSy0EfnMTK7exLAsm3zJjfRAQoGAmk+MCfgCw0kE60QI9vK7Y5+I1tunexfcERA9+wpBkuicoEOoTU6gwfzECvvmUE4y6MhLBeZlUrdzjLZ1vfwETDzSqxQ31nfYFPctL+4isbDUcACysRFRc9Uj1HTdurZE0H0oM/1g9HSHNHiiZ3tw3yYaMpsiFj5vKA4vSmyWpdCzSrn8BJs9ER7XFnFCytw+HtB67QLT0puuboiNxa1X0F8ABAg7YXbFOnFygro5MIdA6+LCFbiFmGvYAiCPf+jLnbLAmKDRO90N1WoxJmQDfFoHPtgvO8atkZR7yGLf1vjfRY0dmnesA0c+DzGqYy+DAnBPFF7eEFe0RDrRIP82PTJhokN0pD4zabX++Ld5ZGZICT86sTVZzt
+X-Stat-Signature: b1mu1oj5i68inrm45nec6qkf8y9syk5c
+X-Rspamd-Queue-Id: 4371C1C0007
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1761903100-656301
+X-HE-Meta: U2FsdGVkX1/1FltwKXtl4K8G0kB0COTJpFy4BSkrH5336l+3W3unJO8EVTN9NrEtmYmGywpsNO7ysLYfYQ0Um1ShLmgm9CiVVRiu5GHRxzdDBWfThclPqM1+8bOl7VhdwvW3Ueo6fL21/pADuQxoWlNGK2FngD5vL9GGelJ/499C2aA90acyRflM9LUiEvgfRP2QUUY6U3qLaxkN39dBcN8zbwVeIiv69hLVTA3f/bPg5eM+STbR/MH44Y7AVOgAeWVoYV3m7QPBsATXiw7AkWg+T869JJc8qzZQdLTbO+1WkNSnzkYyP5U2O1PTUNgdmWdJw2nsl9mYo0GMY5VSR2WI5h0OEmCB5hqymsJy2uVNkKI5UyiXd+QgGFXFLwOP9inPFHRr2Src860feItj8buGDeFgBKyqkqD0oChownPY9QMlGHs6CGhfHoy6f1l5tGbsUyPkpDl/RiQrWitWP/SXYU2XURfgulRHIcCcdEHPUnIulV0oyMUA0gx7ALFYW+o1QflZ19zsdJ5rnAsVislvBT8p8IrcXF9Heb20WjyAa3m9Bj9N1xx0GqTh+Ar0aOd2d8a8oapuEAHt0i5Sp91o0ZL2nATpOeeFcwvOxI9Mnexwq3dK852AGVe9lVHjDusnSVE4qpmwJRcWOy0NMWxg0y6Bf1HNM0r2czruc55JioYbcURTSHfZCieCVAFsVNahKYcGQ/592p8YOOPep6DKaR83cLwXwxH+spz4sa0nQTC4desULlElYSMdBTWmTjXC5mDeKGS9indfWp9kq6QJ0V+ELjCCZ+JdehcdrlH3AmEobilMRz8KyWm0pfhIaffylMfcG9HkJAEswLSDVZos5R4g/vkKwYDKnZXyvKeEa/yxWbxB+kvOEe9accmy2q50/tVL3u4upd3kzAMKzvNCs6Dce5AkfJ5e9m1mMllLIQFz0QhvNXb/GT9naOHiGELhBZtKFg344WyDzpN
+ sPg/+ENC
+ Qvrly/GCnWvWCDtbOXGLtPmb7mXidEaFEl6S/qnuCAFQnFGXgcZav1hRUDUZDON7/tHleDgr/ZOO8kZf4Vhy+CIv0MHHZlyirp7MnVNI6M98CNV7yNZXDmudYcAANZyWUlSoWABZMFiBBZB3VX2J87zO3Sobs2727Djs4uzMwz93cmJk5W6S8R5rq+unHXiK0VxFthUbrpdhyZcHP1xbRi7pMk7kGuNJ+r0h/VGNsOvNGKpY0789UOXG45xVEbyPxvxFfDs63UcAAJ0jwJ3k2iSraNkD4OZiq5s3vkVYjs6G5mKVyBgjc8UIpYiY/gcyn9PG83ntLZ3lO9QBjJ4K2xNlU5/5dgr5Uk8kZVpHjakkwwj0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,41 +128,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+On Mon 27-10-25 16:17:03, Roman Gushchin wrote:
+> The second part is related to the fundamental question on when to
+> declare the OOM event. It's a trade-off between the risk of
+> unnecessary OOM kills and associated work losses and the risk of
+> infinite trashing and effective soft lockups.  In the last few years
+> several PSI-based userspace solutions were developed (e.g. OOMd [3] or
+> systemd-OOMd [4]). The common idea was to use userspace daemons to
+> implement custom OOM logic as well as rely on PSI monitoring to avoid
+> stalls. In this scenario the userspace daemon was supposed to handle
+> the majority of OOMs, while the in-kernel OOM killer worked as the
+> last resort measure to guarantee that the system would never deadlock
+> on the memory. But this approach creates additional infrastructure
+> churn: userspace OOM daemon is a separate entity which needs to be
+> deployed, updated, monitored. A completely different pipeline needs to
+> be built to monitor both types of OOM events and collect associated
+> logs. A userspace daemon is more restricted in terms on what data is
+> available to it. Implementing a daemon which can work reliably under a
+> heavy memory pressure in the system is also tricky.
 
-The error path in secretmem_fault() frees a folio before restoring its
-direct map status, which is a race leading to a panic.
+I do not see this part addressed in the series. Am I just missing
+something or this will follow up once the initial (plugging to the
+existing OOM handling) is merged?
 
-Fix the ordering to restore the map before the folio is freed.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
- mm/secretmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index c1bd9a4b663d..37f6d1097853 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- 		__folio_mark_uptodate(folio);
- 		err = filemap_add_folio(mapping, folio, offset, gfp);
- 		if (unlikely(err)) {
--			folio_put(folio);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(folio_page(folio, 0));
-+			folio_put(folio);
- 			if (err == -EEXIST)
- 				goto retry;
- 
 -- 
-2.49.0
-
+Michal Hocko
+SUSE Labs
 
