@@ -4,123 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74B0FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 17:37:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337A3CCFA02
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 17:45:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C98DE8E00E5; Fri, 31 Oct 2025 13:37:35 -0400 (EDT)
+	id 707F48E0124; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C704F8E0068; Fri, 31 Oct 2025 13:37:35 -0400 (EDT)
+	id 6DFF58E0121; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B85A98E00E5; Fri, 31 Oct 2025 13:37:35 -0400 (EDT)
+	id 61D1D8E0124; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id A745B8E0068
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:37:35 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 5943D88ACB
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:37:35 +0000 (UTC)
-X-FDA: 84059116470.09.7F932C0
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 5A216100018
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:37:33 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PR+ENZTo;
-	spf=pass (imf14.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761932253; a=rsa-sha256;
-	cv=none;
-	b=K4DmmjEuZeXzC2eN1Dz9e5rwvhVUOp5KHdSd1nx8Jbg1rx7+hC+gmNhZWN4Qqv2BK4uI9u
-	bx5cSp3NblwxcPCz7Rf3FTOYkrtvNn0P79BpgC1WFqBMBiphXYRVc2SO3pzEnY3PGjKxeE
-	z/neXmFO40Ulp9iq+V7dRIUhKXpjUyk=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=PR+ENZTo;
-	spf=pass (imf14.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.128.44 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4D9918E0121
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D207F1A05AE
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:55 +0000 (UTC)
+X-FDA: 84059137470.15.A426FBB
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id F0214A0015
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Mm/enWZA";
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761932253;
+	s=arc-20220608; t=1761932754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=C5mV2w6my4c1PMfXawO9gB6t8vYeJrvxem9h0oKA3+w=;
-	b=hvS1g8cGuEsd0qMHu5k/Qke2odsr+1mtGsGpbB5+uMivgdnKcqxV8H6JS/hxv5wgS6wu4G
-	sJC+orPT3kgMRFinaTIGYNv7AS1tOBqe8vydKxXUn4V6D3P6dx+0+szai3Lk6hMQUcnVpG
-	pw3DkrFgxp8PwIm+GBQfQAZjlvA/j8s=
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-47118259fd8so19320215e9.3
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:37:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761932252; x=1762537052; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=C5mV2w6my4c1PMfXawO9gB6t8vYeJrvxem9h0oKA3+w=;
-        b=PR+ENZToFQ6sO8xXMVkZ0slOgOy35pVux2Y2HRG+KsGbyvMFEqFElFYFtKkq1ePqiw
-         A6R7YdxrB5tIMRvEqmUZbxm3+XOuXXarNUAjZhp5Kmd9jcoEdVNgKOIRbMNP9HqWrQad
-         /xSVOU4SGCdyo8VK2Q9EuqSKccz5BiR3g28s9JM0ImOBU3Q4LD2D8dtdJ/3LP4t8zMWJ
-         OxAj/Dz8ouvcMr5WBQJBtJSjMKlP2qTWlejz9pK1Zlk0KS9KzATccukaxb/B7qLLQPca
-         3JMZLXMdSj9eDif6LWpsGKxF/SCI8FE7mS9seq8h/+F5sIQ3LlwWph7OZAQO2TkWD5lf
-         PCiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761932252; x=1762537052;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C5mV2w6my4c1PMfXawO9gB6t8vYeJrvxem9h0oKA3+w=;
-        b=TIXM2CUjbWBg+58exhpYzXjVJjBEXaussnZMLgAybSq70gDqj1AlV+6V49B9Dh2IuL
-         2LauiTCrBivJEJcVKY7QipELFOrYnxfmGdgEdpPMHOpaXvTJCKlzNN9UkouF1fjm9EkH
-         VAVjEwARJb0gimUJFx2BTlM4CHC2NKHo651TURI1NlytKczq/AHslbHLSIcwHD/Rpaok
-         sL46yA8NGpF17ut2/C88mjMfIo+A+3kPgehPKI2hFzyO/mExBxIW5xjTJeT/VjhaqpuY
-         K1JE6pNUSMbsrbcUn2zUtSVTnEtD0RdRXq1ruAk0Jx4NJDqefJ64q4JZn1DDxOsVikqj
-         Yrpg==
-X-Forwarded-Encrypted: i=1; AJvYcCW3yurcZNMw44oa1rzldzf+sOMPoOIkiZPr5vIGjDQ4R4puoVvn25GNmYkL8UbYwVlohPZxSpu1Sw==@kvack.org
-X-Gm-Message-State: AOJu0YxwPTJ0TB09symwLU6s2oJounM0a8HkQ1PufqmeAzn1bKws62jl
-	jSoGm3u5E6Q8UF5mze8EOqYwJ2WB4C2iF4cXCwtJGtFqLmhStQH8u5Tmomv8UtYX3scJ6dzygFJ
-	7Ntpm+LLRqqWB0RGNMZa6cpzHco9IMCY=
-X-Gm-Gg: ASbGnctIA+B2e5aNxtJl0+K8FTz8gs1nIzCNzz4ixeVUkrB/6WUorBBwpF8nAz+CjJm
-	uBd9p++gsKyLt5cpomG3CG5/bYrR7jezeEwT+EX8oRpBvNRKDIdPBj4+BjHw4c9NO9XQEzRRgm6
-	JJ+tiQht3RBtq8yaxJgJalPUVSEViT6hwoVfj4ZI0Hcno9jgbHGT574UJKOhgV7/wg669zYHeeS
-	GhXrUkCjn/hqfOYLvhDgNMTy/uNyIQ5/1teBe34QUEyMLdscWTntA1kHMbM6J6elT05uB/HQ3CD
-	4dtF6eZZ/4lNxzBjvA==
-X-Google-Smtp-Source: AGHT+IHPMUcDW3YwpEvtBrlqSkWgH3dOQo9Kw9291NP88P35J7TeeNcT/Tu9V9VlCr57x5pMjLGDLOmypXe3JvzCues=
-X-Received: by 2002:a05:6000:2585:b0:428:3f7c:bcfe with SMTP id
- ffacd0b85a97d-429bd6c1ef3mr3470559f8f.57.1761932251229; Fri, 31 Oct 2025
- 10:37:31 -0700 (PDT)
+	bh=XhoQWpvolO9UzIYaw1w/vQ2jhQxqjKsuZQ7Kmxhov9U=;
+	b=e4Vw5VY1x/wyap7/qlEV34ad5lh4LaBzD/530A0/AHKGqrfsgmRwHl1siSrham/sj5ZmIL
+	Dha6aAzHmVeo+rh1n1u29yUo4cp2HS5ndSjcIaBqv1vga0XdqjQaEwoPuJ6NNdAwf19439
+	NOyYlEanV1sFoAdF/Owjp3hgobVmyEo=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Mm/enWZA";
+	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761932754; a=rsa-sha256;
+	cv=none;
+	b=rCadpmlnVcF6Mc2Owqzz0oIzpgxxHaAF9jOnmOtC9kyIoqJSLg6MycUxD57CKj3yKfl6ts
+	tnwH36c+JAsMZ0wL3izBxHG39F8e/8TsWQv8hgIbt7MvdAWLs0zYwT+w9reYIaDWo9iKrg
+	qk4lgUPFsGKYHVChXEc0DRnWZ7pWt7I=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 6389C601AC
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16647C116C6
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761932753;
+	bh=8Z5thQC+rZDV7YQzns00IgbOSJUd9ppvWPw+j4n6pWM=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Mm/enWZAWMDexVX/fM2kYROrmhHpBdzm8nbycEeWDHnO8PA6XXIyNOcJjSWX8bZqn
+	 2OdmViUgwKEHTRFYwD5BgZE10XvwxitQi0+ZD61Nzq8aRrVN2lMfT03tG+dKxr1NYQ
+	 K92snLHJa+AlDf0mSJvP6DfsWKAU1JkCDOWJF4f6IdAMKIjiKHTH1OLq/3cbELc3DJ
+	 wvZCVb1xLk7serWJIZ67u1/RPAd2BS9tZe3GOIFRxb/9dGq4FBY/c/d2Sdm4UkrBLG
+	 jF4OR3sbBwvEi1O9WI/OFg/DyDSuQWE5/dryDqJh6Zs3mEygo8hMwQ1rtwsGhBg/iR
+	 /i9CZ8dqZ4bkg==
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-786572c14e3so5321667b3.2
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:45:53 -0700 (PDT)
+X-Gm-Message-State: AOJu0YybdvXK5Y6tzan9gxQ8nP8mkA7NFv2XHJc8P7bf5qPLCoj+vDvu
+	ijDTOxEbs6RD7h20MwYM2fcdom8B3DgHGbeR9PbzJx5twZfUJrGz3tWQJUJNtaluzcejzYWedaE
+	pgJoE6STRmHSjKLXiJmye+tBbaGF7mCT09VZrV5HZ7Q==
+X-Google-Smtp-Source: AGHT+IFqrgTBfMBmVRiXWO3Rn5PwN2T0UvwtVFKxReo6CBC7EejYTOkW7+aB0EyRLa858pu/9lZjhalDMoVSb2xP8ow=
+X-Received: by 2002:a05:690c:dd5:b0:785:bfd8:c4c6 with SMTP id
+ 00721157ae682-78648526568mr44021407b3.49.1761932752205; Fri, 31 Oct 2025
+ 10:45:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-3-roman.gushchin@linux.dev> <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
- <87zf98xq20.fsf@linux.dev> <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
- <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
- <877bwcus3h.fsf@linux.dev> <CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com>
- <87bjloht28.fsf@linux.dev>
-In-Reply-To: <87bjloht28.fsf@linux.dev>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Fri, 31 Oct 2025 10:37:19 -0700
-X-Gm-Features: AWmQ_bk3MBgTJKB4MZUJUE5RMJOP5ctpuIVST3txj8WpDOUYgUkSaXNEbEZ7Ahg
-Message-ID: <CAADnVQLHT7DrqwNb_N_==vxCdtX3QvTyZKxZa4STw4cD-WKswQ@mail.gmail.com>
-Subject: Re: bpf_st_ops and cgroups. Was: [PATCH v2 02/23] bpf: initial
- support for attaching struct ops to cgroups
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Amery Hung <ameryhung@gmail.com>, Song Liu <song@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+References: <20251024-swap-clean-after-swap-table-p1-v2-0-c5b0e1092927@tencent.com>
+ <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
+In-Reply-To: <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 31 Oct 2025 10:45:40 -0700
+X-Gmail-Original-Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
+X-Gm-Features: AWmQ_bkBLbpzK-7LQwl8d_11rWtB-YUCktamd5vXceO5ofoa6GX9KxB-9BfXeC4
+Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] mm, swap: do not perform synchronous discard
+ during allocation
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
+	YoungJun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: j6gbx7ama5f5bg55pou9dbip8kxz8d8o
 X-Rspam-User: 
-X-Stat-Signature: 89rpxrxxk5xsyf74ru1hewut9wzt7uco
-X-Rspamd-Queue-Id: 5A216100018
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1761932253-897535
-X-HE-Meta: U2FsdGVkX1/IjjC4ajBjSGo3lRImarfwQ0WaHx7Z4yGhwdjdytZ6v6TFHkeuJwIS1opHAxWl8dOKicYI9Jyf42Qgw5FV1bjSZYc0Ga8390ZdQwrpu+bgUtM9ZGs0CtmzvJqzqDI37cB27zu5GMDEFf2KaG6SKYEepQKNnpzVdaJyyQYeFSEVhnMGJgAUBpjAhYQCDkh9vBV0pnoXtfnaKHuFvdZpv2w58D5o6DODIVEtxb6lb3NHx4T4fNw+3xsU/EiBtQEgmMudlyo5ygwGjPCFWC4pvJWewyoXMpnf2PDdtzWamIjxJvPu221VN2f7tD36OKVB9CoJoFpJtut33wMI2nIkxYAIoTWkuUl9PfE5W9oy24p+vTfOeWm/Gf9cDZ8oi/azd90QkttT/yPS7X56ugeoYSjANFuBJi/+g/Ifn3URz0OBbyR0pTnAzVn53dQUE4usGUZenNJ7rUvxHeYB3nYQkeie25bms00GikGSduY5fI+joT4kuUoRQ4EC0QL0siSecIPzhVn6Faies5EeYviuy7EJ7q3Ws0R2AhPaQeeI9K/wQRQ/eNWDy2e3KVTz/yWPmfTvArU0C0U8BG9rMcVrCpuPoIQ+CdXSNPol03bj024N2svdmjXeWMQVlNZDEFC1/KYMUk2b5h2vo4pISD9751sjHfqFtLNjYaVdh6CnvbVFLiX0MvtPRUQsHQ3Ywke86N6CWVsELlXksNgSp/mv603J3Bz7cRDy2BGKWqYO25WRoO3QQ5DFUvW4HUnJSZ+D3ZRZyj8NkPW3L8ganXRJ8+/yPE5Hw8zLaZQpi4Q6IN48/hGWBfUAcPQhTeOUMoUREOFxrJLog2eBKEPCOaYz2KCzSFSW9shrXM6EL0hTtkai7ilP6BU0+/j7UWZXjDq4zyXfQxcNdZ1e2y1+t9c7boVeuVcuEn2lR9c1WyqErws4GyMCzrWOKacIw/Cs78pJ+ppXt91fVTL
- Y5ZbkHtU
- aa2SmUaT6nrtEm87S0GGEHU4s2nra8e/Nieyn9tFQmNxoysdWogCA2DW3KXa3TPR8O3zg/yywtzAkXpSU+lgZl+9AbeOpp9OterKP4sYJ43WvJ9Bp1N81w4yS3liWFR+67dx/5RFgYzjsVvqkrJfl+BBR7M7KdSsC4KMjeJmL0M0vqWS3vXBiLbVfd0vbD6ar1DCQ9wlzb98D5h424ow9ciiwe6V/PGJJpkdWBd0XvC18oqkWiEFE+0AcXYvczz3zTtrhdI4XkGwdfJ/OVAFQgpJDMZYswNavP0WYDtteYCa1YkH2b/kKDNVXHCsJccGr4CKeicwNbSjIRgc5G23v5QqecrevaD8ycFRQvQhxRsqTExHjDcmQha8bg2oaPcMivAVGuF+aanYOoftKjDAmKjKPeZs8SnC6lE8rtTIERS/SOPs0+mDGLog6rDIH/YnKzpzGEH81Yb4hZGAOR2nzjL5WUE2tDrWRWxowrbh9NJ0FsJ5VwWGZFOBK8Q==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: F0214A0015
+X-HE-Tag: 1761932753-267332
+X-HE-Meta: U2FsdGVkX1+kdcSImkOXzwchnPMtcMGm/ldMqNP41NtHCrrdBW4V7CBpWA5s6Y5wPVgodN7KAl0LhJwvERvuDexqVLmd9SucSR6akXJf1pyzqMM+wDG75/ZsO33VGVW6G9wMFC+ory0klDd+CfKV5HeMzkNjyeY6SgpszjpYJkqQFmvYx09T0euO9DogADLTAZjymC37p50qpHMagvSwN9XnisFDu0kpBhePLJQr77cVph7XcNsON4a3fcbaRzWNly8lnzZ0ufZsyaCC7+zbJ2X3QhldSIBAhKlkjoeHfDwXfir0J0ZNrNMFTbz5wh9fPGLM8WfkZdgy9LqCfeQCJMHQv+7oo0axGruTXjNA8kGH6TEcp5CLIJimlTum2pSJXPn43ixg5QtufD4FTnSzB3AOFzluiyITg++2ACJF+bY39HOwQOu3jH/XQP88cfgq4ItFMTAUUarC/1lr5qezdgcJ/opsQ+UuogTGexQmvmq9EzxcBkU8gq2BmLN14BObaWD4X+V/Y7cB/yOqnNlZRi+onOw7hPX5RVPtqy393nVF8ElYNnRQZiNDfjOvuipFMFwdeDB2UVsbu5CS68k4cuArNWqsIet/NmAxx2dOOc6UNKCq685sEfv95zBpawZ1CVNVTIYuV5qsY/aIynHZ1xzt8zUz0OyxBI+aUc5IOVScyrJgLdpZ6MI7HybAYCQnCBN/y8aba9vTJQ9+7ehst2UxWpkV2sOqseq+ZZs4U4RNbhqsA92S0wxt+fnyOWEBcxbN5rrSDMGhQKi+YD590eJpoTLFapdTtpA7JzJwRQk1Tc47mZKAZqwZVNQYulcc+aHf1tW1e1DZGqDJPR7qTUUuHoGqWu7L3TwQ9E5sliMHuYOpnd3IU3BHDuhPsXsMiLGZj3ev5pMcVpvOc6uWMfDNMOSkMGMprdTIqhB6r5z1rOSG05Yd6iJSgVvtuNRURz03U35VwnACixMs5G2
+ IcgghioP
+ bQFPbWvRhg/23TR6kE9akk/33QvKlmpd05pyIEcyAqkOnM4spONBE+O1hHxEDZUEWsO+FXN762SDzG45ttY5FRHeDeIQerk33P/7On1mT/jSvh8yOh42s6tZKPDEIlarbla5BZT3MSWABqoSMlKJ6ZV3EeaTCHmuvDp59e0ruNFNk69EcRLY8dYQG2qbujLMIzgtOzx8eAW9VZQhme/VneSzA7wsGhXm9sec7+JFsRSUduAjt4uIgCpkAXfPySa9ENPfmicHnDrWlIaBlYxZLPJJ8ArFDKplcNdvHcSTwl7xYJqKXOCPr9qq688TQIX0aeuFIHdyIrOFqynmLVjDtRCkdSZtfmavBD6JN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,54 +110,141 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 4:24=E2=80=AFPM Roman Gushchin <roman.gushchin@linu=
-x.dev> wrote:
+On Thu, Oct 23, 2025 at 11:34=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
+te:
 >
-> Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
+> From: Kairui Song <kasong@tencent.com>
 >
-> > On Thu, Oct 30, 2025 at 12:06=E2=80=AFPM Roman Gushchin
-> > <roman.gushchin@linux.dev> wrote:
-> >>
-> >> Ok, let me summarize the options we discussed here:
-> >>
-> >> 1) Make the attachment details (e.g. cgroup_id) the part of struct ops
-> >> itself. The attachment is happening at the reg() time.
-> >>
-> >>   +: It's convenient for complex stateful struct ops'es, because a
-> >>       single entity represents a combination of code and data.
-> >>   -: No way to attach a single struct ops to multiple entities.
-> >>
-> >> This approach is used by Tejun for per-cgroup sched_ext prototype.
-> >
-> > It's wrong. It should adopt bpf_struct_ops_link_create() approach
-> > and use attr->link_create.cgroup.relative_fd to attach.
+> Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
+> fast path"), swap allocation is protected by a local lock, which means
+> we can't do any sleeping calls during allocation.
 >
-> This is basically what I have in v2, but Andrii and Song suggested that
-> I should use attr->link_create.target_fd instead.
+> However, the discard routine is not taken well care of. When the swap
+> allocator failed to find any usable cluster, it would look at the
+> pending discard cluster and try to issue some blocking discards. It may
+> not necessarily sleep, but the cond_resched at the bio layer indicates
+> this is wrong when combined with a local lock. And the bio GFP flag used
+> for discard bio is also wrong (not atomic).
+>
+> It's arguable whether this synchronous discard is helpful at all. In
+> most cases, the async discard is good enough. And the swap allocator is
+> doing very differently at organizing the clusters since the recent
+> change, so it is very rare to see discard clusters piling up.
+>
+> So far, no issues have been observed or reported with typical SSD setups
+> under months of high pressure. This issue was found during my code
+> review. But by hacking the kernel a bit: adding a mdelay(500) in the
+> async discard path, this issue will be observable with WARNING triggered
+> by the wrong GFP and cond_resched in the bio layer for debug builds.
+>
+> So now let's apply a hotfix for this issue: remove the synchronous
+> discard in the swap allocation path. And when order 0 is failing with
+> all cluster list drained on all swap devices, try to do a discard
+> following the swap device priority list. If any discards released some
+> cluster, try the allocation again. This way, we can still avoid OOM due
+> to swap failure if the hardware is very slow and memory pressure is
+> extremely high.
+>
+> This may cause more fragmentation issues if the discarding hardware is
+> really slow. Ideally, we want to discard pending clusters before
+> continuing to iterate the fragment cluster lists. This can be
+> implemented in a cleaner way if we clean up the device list iteration
+> part first.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation fast pa=
+th")
+> Acked-by: Nhat Pham <nphamcs@gmail.com>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
 
-Yes. Of course.
-link_create.cgroup.relative_fd actually points to a program.
-We will need it if/when we add support for mprog style attach.
+Acked-by: Chris Li <chrisl@kernel.org>
 
-> I have a slight preference towards attr->link_create.cgroup.relative_fd
-> because it makes it clear that fd is a cgroup fd and potentially opens
-> a possibility to e.g. attach struct_ops to individual tasks and
-> cgroups, but I'm fine with both options.
+Chris
 
-yeah. The name is confusing. It's not a cgroup fd.
 
-> Also, as Song pointed out, fd=3D=3D0 is in theory a valid target, so inst=
-ead of
-> using the "if (fd) {...}" check we might need a new flag. Idk if it
-> really makes sense to complicate the code for it.
-
-One option is to cgroup_get_from_fd(attr->link_create.target_fd)
-and if it's not a cgroup, just ignore it in bpf_struct_ops_link_create()
-But a new flag like BPF_F_CGROUP_FD maybe cleaner ?
-If we ever attach st_ops to tasks there will be another BPF_F_PID_FD flag ?
-Or we may try different supported kinds like bpf_fd_probe_obj() does
-and don't bother with flags.
-
-New attach_type-s are not necessary. The type of st_ops itself
-reflects the purpose and hook location.
+> ---
+>  mm/swapfile.c | 40 +++++++++++++++++++++++++++++++++-------
+>  1 file changed, 33 insertions(+), 7 deletions(-)
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index cb2392ed8e0e..33e0bd905c55 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_entry(stru=
+ct swap_info_struct *si, int o
+>                         goto done;
+>         }
+>
+> -       /*
+> -        * We don't have free cluster but have some clusters in discardin=
+g,
+> -        * do discard now and reclaim them.
+> -        */
+> -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(s=
+i))
+> -               goto new_cluster;
+> -
+>         if (order)
+>                 goto done;
+>
+> @@ -1394,6 +1387,33 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+>         return false;
+>  }
+>
+> +/*
+> + * Discard pending clusters in a synchronized way when under high pressu=
+re.
+> + * Return: true if any cluster is discarded.
+> + */
+> +static bool swap_sync_discard(void)
+> +{
+> +       bool ret =3D false;
+> +       int nid =3D numa_node_id();
+> +       struct swap_info_struct *si, *next;
+> +
+> +       spin_lock(&swap_avail_lock);
+> +       plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
+_lists[nid]) {
+> +               spin_unlock(&swap_avail_lock);
+> +               if (get_swap_device_info(si)) {
+> +                       if (si->flags & SWP_PAGE_DISCARD)
+> +                               ret =3D swap_do_scheduled_discard(si);
+> +                       put_swap_device(si);
+> +               }
+> +               if (ret)
+> +                       return true;
+> +               spin_lock(&swap_avail_lock);
+> +       }
+> +       spin_unlock(&swap_avail_lock);
+> +
+> +       return false;
+> +}
+> +
+>  /**
+>   * folio_alloc_swap - allocate swap space for a folio
+>   * @folio: folio we want to move to swap
+> @@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio, gfp_t g=
+fp)
+>                 }
+>         }
+>
+> +again:
+>         local_lock(&percpu_swap_cluster.lock);
+>         if (!swap_alloc_fast(&entry, order))
+>                 swap_alloc_slow(&entry, order);
+>         local_unlock(&percpu_swap_cluster.lock);
+>
+> +       if (unlikely(!order && !entry.val)) {
+> +               if (swap_sync_discard())
+> +                       goto again;
+> +       }
+> +
+>         /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
+IL. */
+>         if (mem_cgroup_try_charge_swap(folio, entry))
+>                 goto out_free;
+>
+> --
+> 2.51.0
+>
 
