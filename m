@@ -4,68 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3028DCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 19:48:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4595FCCFA02
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 20:07:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 69D268E0119; Fri, 31 Oct 2025 15:48:19 -0400 (EDT)
+	id 603F78E009A; Fri, 31 Oct 2025 16:07:42 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 674AF8E0068; Fri, 31 Oct 2025 15:48:19 -0400 (EDT)
+	id 5B48E8E0068; Fri, 31 Oct 2025 16:07:42 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 58A718E0119; Fri, 31 Oct 2025 15:48:19 -0400 (EDT)
+	id 47BB18E009A; Fri, 31 Oct 2025 16:07:42 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4718D8E0068
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:48:19 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 316018E0068
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:07:42 -0400 (EDT)
 Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 1A2C6C05BF
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 19:48:19 +0000 (UTC)
-X-FDA: 84059445918.22.DED1EC1
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 60ACC40007
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 19:48:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jhLrkMJ1;
-	spf=pass (imf12.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id A41A0C062B
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 20:07:41 +0000 (UTC)
+X-FDA: 84059494722.22.DEFAE60
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 113288000E
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 20:07:39 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eEbaFUeP;
+	spf=pass (imf30.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761940097;
+	s=arc-20220608; t=1761941260;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AOk5Yemoj/EUtBmuSqLXUFCB0md9XGn6wz8XL6oGqeo=;
-	b=esyfrgnKCy7yeniBqvnDjURipTL3Ram/ouifyeNuadGnNzvhLoSI8E6Vky8vXKf6eVW/ll
-	HOcHVAyiy0PcTX8seLAuK4acl2WvMN93N5IN8iHwQAh651D+amBK6PZxordMIVeB3How+v
-	OhRjIETZ3ZnfYwtUut81RnHA1vnI8hM=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jhLrkMJ1;
-	spf=pass (imf12.hostedemail.com: domain of pjw@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pjw@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761940097; a=rsa-sha256;
+	bh=gBCY1kTc2p+huwnbZSMFMRD57uR16hOAJcemNSqmBg4=;
+	b=0X4En7w9qyy5LO8ODCk6ei3igY2NOrchtydW1z11MdoUQ/UgKzVYBsYXOhxkiKe38PqbIl
+	5xLjH3rIh1Qbu3VLxXwxAfS9lh57UtwAe2Uwb/YcwxA4/dyDUKfdw1Jlao8zr61M+LxeCY
+	GToVio1XUUJJHpkyi4KIgdTAMqfOr4g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761941260; a=rsa-sha256;
 	cv=none;
-	b=NmQrOYkm5P37Gl9y/v3gkAd+h1U8MoQ4EU9wGU2LsC9EcpxdGH7aupTV1qCv53Zx3XPSrh
-	HhkBfrabeVN5YlodcdJ6gEoULM0Bhd4BASxST9WXNUTI18pbnz8sEcwQFzGWH36i7TVJF2
-	gFa5ABtwY9WBJ2SnEtKnorAQkIzlwcM=
+	b=HTDtHqzUTQP2uS+Ut3vwDGWavkxKvUGKCfb2xcqhU0Rs6o+KmiEJWgdBieFUDVAePOt5tm
+	/dYjBfNgGtvCWtccvVkgkfTY/5ZSvfsVDI4d/hKYf0O/XrciAcnOvEnz/n3v6+pucvDc/W
+	3+rbCZXuAOmZONJS00BWOsCGOhJP2dE=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eEbaFUeP;
+	spf=pass (imf30.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 30BF343F38;
-	Fri, 31 Oct 2025 19:48:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B39D8C4CEE7;
-	Fri, 31 Oct 2025 19:48:11 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 1627060235;
+	Fri, 31 Oct 2025 20:07:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC5FC4CEE7;
+	Fri, 31 Oct 2025 20:07:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761940096;
-	bh=3XMdMiV5/Fkf0a0hQ2bHKVTveLYXM6aobfgWUzIzlyM=;
+	s=k20201202; t=1761941258;
+	bh=wQet1zpVA979LHOCAKnvDe4vIz5lgogB/RiA4rvDzcE=;
 	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=jhLrkMJ1Xr02uFTfEx/frXtknVpDmVQfc9O4keDaTkipOQ9UC1Zl+VCqb/XHpjJHh
-	 lQQVWqtGbfmN+B56AGTydSbzItiFwivMka5zoMEb7wi2z26fZoRbHzGZY8u4dld9Od
-	 XVUCpBVPQH2+rCLmX2+N8eUbM4jMy9/KcKhLJMKbkftUEMt3kMETRqJ8HDQPt3XMdS
-	 hg6CyFsDb3ZDPaxbBhzVHVkM7RzbaYxsYNDtsNKPDiRl1ijnkAdS/KwKr8uh9QTXm8
-	 Rcpa0l5VB5wzJfKbLCJBlJ3G4CL7pI1J6FfYAXpE44Jurnor7XhX5BjXzbIDDZf5uy
-	 4J5wAbgnhUBeg==
-Date: Fri, 31 Oct 2025 13:48:10 -0600 (MDT)
+	b=eEbaFUePEqsqd1xqvFj6PfHBe6jOCi2lEMdH8TycHl0Q5Auluk8S2lpJXmv9TxFx6
+	 NusxPnTpJc0X0f0CeYGgWHWJPP+pm9H5h9r65gPGw/KCR077Hi6MKNwd20DNPMNN6b
+	 WeahrAxPZQa10FjP/DdR4c+HK/1h5x2nUAasMuSHcOITJAiV483CzwcXL5NGIqys+P
+	 mY145nVNkpzIC2zpwBWy190cfG4RZuldrQmgNpuR1kKC8i8XpoLRbm6nuQrl1TbMCc
+	 xrhLxkelxND1eIrhNaB+SV+lyaoUFqxJyBOJ8iEADXR4rSsgSzl+qs3Ga+6/bKM9QS
+	 dwrww+Tnxquiw==
+Date: Fri, 31 Oct 2025 14:07:32 -0600 (MDT)
 From: Paul Walmsley <pjw@kernel.org>
-To: Deepak Gupta <debug@rivosinc.com>
+To: Deepak Gupta <debug@rivosinc.com>, Andy Chiu <andybnac@gmail.com>
 cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
     Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
     x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -92,26 +92,27 @@ cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
     linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
     linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
     linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, andybnac@gmail.com, 
-    kito.cheng@sifive.com, charlie@rivosinc.com, atishp@rivosinc.com, 
-    evan@rivosinc.com, cleger@rivosinc.com, alexghiti@rivosinc.com, 
-    samitolvanen@google.com, broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org, Zong Li <zong.li@sifive.com>
-Subject: Re: [PATCH v22 10/28] riscv/mm: Implement map_shadow_stack()
- syscall
-In-Reply-To: <20251023-v5_user_cfi_series-v22-10-1935270f7636@rivosinc.com>
-Message-ID: <020e2f6e-9c1b-648e-3017-31eb8a89c493@kernel.org>
-References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-10-1935270f7636@rivosinc.com>
+    richard.henderson@linaro.org, jim.shu@sifive.com, 
+    Andy Chiu <andybnac@gmail.com>, kito.cheng@sifive.com, 
+    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+    broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
+ for signal
+In-Reply-To: <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com>
+Message-ID: <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 9ct6fuh3cr3k6ogfysjsrhmu9o1hrp16
+X-Rspamd-Server: rspam05
+X-Stat-Signature: tg73okybw1ikqaspigqcei433uohmd6a
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 60ACC40007
-X-HE-Tag: 1761940097-348133
-X-HE-Meta: U2FsdGVkX19hKxIuZh3uu4CeSKAe9Qtzpy7tkCcD7a81akoQfUR/JqnbWdwoGpzrSYfBKVoczusTM8XaRq+iKaqWYfN0gCBLWGQfGH6TNy0CDdWlzHbxlq85Jnr3KdOqdMbFGk39gHJLJBJkfdVFe+cNGYK8x/XlsWXrlnIqYORU6nMrAGGnCeLclJpJ+w7mpZGNpBYzxP+Em54xcP7JYqCuCidmGEO2TVrBdE1RW5lzj8Hylzs/JgtzD7Rcb+1HD0VPbIsSWiHMhacTsQmx7egtjbLxOeiYHlWofsYv+KvAcLAmUSUcf02QsfT3Ih9QX94DYD/abOyYMEuFOWBA0GLPqz28OC4XjN81w8CdyMRIp2dqJA/GHU6WrbYm/yOM3UrJBrzMNF6Yu21EOlfLJi+WkhVsiccYidFxNTvEzY1Sm4QEgOF/1IfKbvwbKAmdy/B4gEbCF9xQtKFWgCFBmUY8HndUjlKnUN74dPF0i2b192d3cJ2x8f8LtKfH25rQPl4VYX+DfRC01maJ8Ymr0RhrT5e68Mgk6TzYTVDuGGoC8ki82gZv5Uf8+Q6wVToO7qzJ1RqHm4VuYMgmwAQzggTKCaDlChwCnzGb1ExX+IU8Hy3GbDB9Ash9VQ9UctJTRVygIkqQ8MKtu8iQlS0bIylFdOiH6oQmnibrjO0AWwfLQXiLgwTS7QE/FhL/fQ43QJkL5H2G8J5/dKLMyEV8wn6mTwCw9XmklRhodlCejd/8plGCu5mwydymWN3buZkGvwAb+qPREOZ1V8Dnj05Yg+EQCeLJsutM7mHwUaXpR3St4g0cmQA6xndpH+Mc2FdSl6lBsNzkjHDDGShndcxpO+88oKp3CJM26ogn9sFnR4z6uI5DDBkhfadPmJRsvOKArWPGYY42voHfXUjDz7UOkS0/SUsN+x2BZxRkRolbIObTf2t9lGiGqWMvDBCqjEDss+OEio6F/A+/+1g3amZ
- ejySc4zq
- JyllbwDOTvFKSI+FRWoXB/SJQznAPKgvs49sAWwUXCbK2fF3g9YmGtg0oShyQQon3DOvJsHNILNIEbEoP7n8TTkzQGVqOJrWovPih0z5L+94IUXh88HIrAEnsa/eozWMHYFVT8nVqnW3pv/bPKHNWPzK12ZuKzTMArtvi3CD+hUVzeNjMnLWOwEvJilI76DXklEOgHk9uk7baxsj5WwPfmEv3CdSZFPVQxCmEtvn86/5NUJsfw8er0CdVyXU0IN61JYYRgBDijg08a3rr2SdZWCD8nO21L7ez9AYBFjVhfrAZ537i39z02MZufyid2/rhIaRAkiNJx9ONyWL0V76rXn8jx9ZyMZn2b6SIBfSTEXiskNtTeNwk4JZzE6yCa9O9jNxvyRq5JnjwSe7kvMbkgo8grLQOjrLEUlAzGVCdtfbmKhiEFRJZPGqnN62IafgrKVuDIFRztM41l25EexUMTXpGhloKbKM3tay+xJU/7EjNpRo=
+X-Rspamd-Queue-Id: 113288000E
+X-HE-Tag: 1761941259-109903
+X-HE-Meta: U2FsdGVkX18fULkTpo0yNwlKu4G3WrCMzYQOLmb9utZoGm3zyL/lli8oem1/gpsr76lCua8BlMQsC80jHiCN8iWvK5MVtdN6opOcnZXl4oRFoRIoe5gVoo9UMb4BKzswEwQvzmWL9W4EF+qPL1FdnfYkZO0Kkl/CVenw6UVCcdMZMOnJU1YetkfDiDFy9d312/iIF9W/jvjAhlOgeHTGEj31Yr307VaL1bJ9wS9VTdKlGTpnRMW9M1odAH7P+y45USsIJjHeElQnkHCNaewKIc4Bcw/6DXKDQMdlG5BICtVUePoLWcEewSyObpEAMSFDu+A/8UiNA7i8Y6M7nllqWm6nLAfF8sGPpaCBhPPzM8YKPw2yXUEo/ibYLPyVHGP9AaltuRzpBF3afar9X0soItMa0ynxDk7VMdQF8p6H6RXKAood2O4q/sIOqeqg3fNl4CIQkqljvA2UqDHGqpynDkKlTE8X7jL1h3E04qGbvdOXsZBqmkteudty2T3PoUyLAih9QcwoG3drBEzLbRExGHNeJbELHhPF1VDTsWru4GyUZJEhy8HLQaAZQGucJc4dvYf2xlJb6uySrpBI2ThsU7jsRM19mBk859HyHsxW1S5i8ffHiTAraZCf9dAbw+1JGG1Tm+t262yfNnkPs7WZdug0PG1qFmKgx2KWjwo4MAQKrpOCnTlaOClWrhPsqDmkU8LhtnVvVKCdCJYB3CJ5Ylz96e5f0lHNmI2B2ZBPc9L1XfXg5ls1snN/qKdBMAqQd3EdfurOvtlsUtCYv1G/SrcO0eeFTlN4s/XAokUq53hK1jSTQT2jMTxFDdOkiB+pc/N/BtESUUZG2ycdgXLbJCXU1wMaejlpcqL3MwcuZ4te1JspPViKyO6iK7wmPKXOdzy5hpgg5ySroNynFYswe2y3U2AFw/XJriV083suD8krAZguPSlkeKueG1mfjUWNR52tUB6AeiRLeqBpIk+
+ HYscmnnf
+ BvQlVZmnAk6X4J/3cw4hAV+DgwWtdJn4peWeRGF3l57oMNO9yEImSTYglFb48h0EO4/pdI4D8hbC/g2tSqEPYHx9cMoLQAjD0tb76NNJ+O4RcFJcsJettAQmIYIiemS5BeBb3hzKJZ2zseAtzmM3PGV98Sv1p1b0jJ6SUVA4zX8mYGt5uvou6GZfynIKxzs25sT9Dm9WOIifmzXVwf2bnyJ4gzEEUmv2voBurUn3zyB3Tj5vp5TbJKCM1Ymc/cBm2+TP7Or7xmKLsPzlihoRsLWP0EmBJrPNS+3/TeceF/QjQojbEfVSj8NfcrHcDQ2t3dwgrP1ZkeJPFbOxkXYaguB62AGGJ2WKk5aWzDHw8UKiYgefGP7pVXWftXmTuwqfWYYRyF580F6k8r2Ok/4Vw5Dwl/w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,33 +125,40 @@ On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
 
 > From: Deepak Gupta <debug@rivosinc.com>
 > 
-> As discussed extensively in the changelog for the addition of this
-> syscall on x86 ("x86/shstk: Introduce map_shadow_stack syscall") the
-> existing mmap() and madvise() syscalls do not map entirely well onto the
-> security requirements for shadow stack memory since they lead to windows
-> where memory is allocated but not yet protected or stacks which are not
-> properly and safely initialised. Instead a new syscall map_shadow_stack()
-> has been defined which allocates and initialises a shadow stack page.
+> Save shadow stack pointer in sigcontext structure while delivering signal.
+> Restore shadow stack pointer from sigcontext on sigreturn.
 > 
-> This patch implements this syscall for riscv. riscv doesn't require token
-> to be setup by kernel because user mode can do that by itself. However to
-> provide compatibility and portability with other architectues, user mode
-> can specify token set flag.
+> As part of save operation, kernel uses `ssamoswap` to save snapshot of
+> current shadow stack on shadow stack itself (can be called as a save
+> token). During restore on sigreturn, kernel retrieves token from top of
+> shadow stack and validates it. This allows that user mode can't arbitrary
+> pivot to any shadow stack address without having a token and thus provide
+> strong security assurance between signaly delivery and sigreturn window.
 > 
-> Reviewed-by: Zong Li <zong.li@sifive.com>
+> Use ABI compatible way of saving/restoring shadow stack pointer into
+> signal stack. This follows what Vector extension, where extra registers
+> are placed in a form of extension header + extension body in the stack.
+> The extension header indicates the size of the extra architectural
+> states plus the size of header itself, and a magic identifier of the
+> extension. Then, the extensions body contains the new architectural
+> states in the form defined by uapi.
+> 
+> Signed-off-by: Andy Chiu <andy.chiu@sifive.com>
 > Signed-off-by: Deepak Gupta <debug@rivosinc.com>
 
-This patch introduces a 'checkpatch.pl --strict' message:
+This patch causes some 'checkpatch.pl --strict' messages:
+
+CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
+#271: FILE: arch/riscv/kernel/usercfi.c:186:
++	if (saved_shstk_ptr == NULL)
 
 CHECK: Lines should not end with a '('
-#78: FILE: arch/riscv/kernel/usercfi.c:36:
-+	asm goto(
+#300: FILE: arch/riscv/kernel/usercfi.c:215:
++		pr_info_ratelimited(
 
-I'll fix it up here in the event that v22 goes in, but please do the same 
-on your side in case a new version is needed.
+I've fixed them up here in the event that v22 goes in, but please do the 
+same on your side in case a new version is needed.
 
-
-thanks,
 
 - Paul
 
