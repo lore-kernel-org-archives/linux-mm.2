@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1D8FCCFA00
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 08:32:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6113ACCF9FF
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 08:34:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C424C8E008A; Fri, 31 Oct 2025 04:32:41 -0400 (EDT)
+	id C1E928E0095; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF2568E0042; Fri, 31 Oct 2025 04:32:41 -0400 (EDT)
+	id BF5CD8E0042; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE1358E008A; Fri, 31 Oct 2025 04:32:41 -0400 (EDT)
+	id B329D8E0095; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 976198E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:32:41 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AFFC91A040B
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:32:40 +0000 (UTC)
-X-FDA: 84057743280.14.DCE25FC
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 9A848180002
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:32:38 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XQ9DFx0M;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A3FB18E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 390CA49C52
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:34:30 +0000 (UTC)
+X-FDA: 84057747900.30.D5CA0EC
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 3B21220009
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:34:27 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=McEkAoh+;
 	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761899558;
+	s=arc-20220608; t=1761899668;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4h4q0wa7BdASeLKkAa33sOr+LqpNtBVUob6S/qE5mOw=;
-	b=e5Gfh6PTMBl1HeHCbx3BE1qHnGkUmj6IZVsOLkVoYqMd62QALDLq7er+at4l+TLD5ontkd
-	3Zm5jd5bPh8tqvB6TlqcJUmXtjL8+Bct/sp8BDFirytfq43ZgUK0plwthCEMF20i55Sjo8
-	vqdpxOIF2CuxJqjIfvufSqK8nzvI/2Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761899558; a=rsa-sha256;
+	bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
+	b=rnrj8//ZTipnuvm2E4+pdHUds8vm5CQo210/mBS5ypUtKHbYY539j5fAbiP7tAsA0pNrrN
+	GjLs4PZFLKXNhLOYrjlblAbErlrNr/whKZqExqe36GiKbkGvrPRqMRW15pDMv0+A2CTDB3
+	4a07jlNdG4ID/3aVVrAr1u4n0a1JMjs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761899668; a=rsa-sha256;
 	cv=none;
-	b=w4BqGHhyVfPtUbQu2ixOt4E2ZAZ9KTxm56+X4OIH/8IJHnYUS4x0b/L0IFheK0QFBrROpN
-	T4Fh8dfLO3v+S06GIfPcno+zYVeWYgeQ14xCWrRIKjF7Hb8zckpVhOVGiSrRq0xHsR/vGU
-	tD+BnTy0M1vIVAfzu4pSUQzh5y/cqHM=
+	b=himt08bAYyrN8xV8Z1AqBt13TW8J6CHcMuTb5pXIyYmI+zZCre+IEO74T+q9qrNOZsBEAn
+	8zPkqJIa0KUgSahBt9+TNZK7swFmWu3Unq+CoK3kbFLoAbT7E2gpJ4oYNwU/T5DUoABExC
+	aBe5VGS/uGsj2INKAJMLm6an0V9kgt4=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=XQ9DFx0M;
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=McEkAoh+;
 	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf24.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.47 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-47117f92e32so16543605e9.1
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:32:38 -0700 (PDT)
+	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47728f914a4so9564625e9.1
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:34:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761899557; x=1762504357; darn=kvack.org;
+        d=suse.com; s=google; t=1761899667; x=1762504467; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=4h4q0wa7BdASeLKkAa33sOr+LqpNtBVUob6S/qE5mOw=;
-        b=XQ9DFx0MMDyUlirCbMoHhL6HM1GLTtJECDPbbm9ptCEtM7RNMGE16+f/LRJV7OiSlo
-         4Q4wqpzXrK+kbs95G8y5f3F8y/9lRX4f5hvoj/XxOcoPnUqU9tJSfeqQ2mrNgFAJnncK
-         p1bBbpz9b7i++IpeGdK4WCaauhwNVTS8ArIzUpmooTenU0+IA5EBwku9c5nQKuT9aqNf
-         EqTFrTefQNn84yH/wTQOlDE70Zb2glJ0loiy32GcTEOEagbSJ/kiEm0YsYbsMZvIyanc
-         HPuDWSmHo2DRnrP0/iQ7VwX6l00+nMPJ9lriJDS9seV1YTL3FgkFu4JLKeZv2OU9neky
-         3fnw==
+        bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
+        b=McEkAoh+jn5ZwX+9OfQK5b+CYBHhtcI8HHYFDMgBSSxz7JT/J4GwcCMN5lxmm17THd
+         ftdQQ2X6eM6bnesV+DVB4EPUSJLp+9HSYIttQuVhwFqPcgjCXQLJiuDfVntlvg0u9Fnv
+         zNl6DSbVisgMYVI/FPlhJ5YAEgqQs5PaDw8d0TYuM3sO5oO67a11d07dJHo7Z3+vIMyB
+         VB7Il+H1b/p7uyymPzn1ADwsIhUDkGRgXtaVLeb8VlUxx2fu8v6qT6ca5zgJuGoZBMEr
+         7e9q8o1XPflkM3nOAXwlPZO0gMXOxxmKI7vyauOBNn3ypnYU7AZJ/Vy5e/e6FCm0k3Rl
+         ym9w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761899557; x=1762504357;
+        d=1e100.net; s=20230601; t=1761899667; x=1762504467;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4h4q0wa7BdASeLKkAa33sOr+LqpNtBVUob6S/qE5mOw=;
-        b=gjZGnmeDgVMXgQPS8/LYjrL81zcHvEiNrBQpfy5oZXZn4oNM7H7VCt8eRggQpwQR9s
-         YAmmAeCtrx6mNkiKIP3Ou2AFnjU4cVmQwUknvmcamYQBjdbDUAorudFrEhizRpjjKeAo
-         HVgk49aqBnxWXZFzzmeseR0nqG5s9UTOc4xVvE2IqIdOgl4oe1qOiz1sTt4twRov1KCc
-         gA2DatdwjDKUmfYPm5BpvRF787ytEwVNaCZuxDJSE8Tz88wMHO1CaArt7mlsIo6QRVii
-         ZZfwbW5hqrkE6CZie8A8yjmqzBWA+xJonEUUroxUJlG8N7oQcoznXfhHpJ3Te+OGOArE
-         1Qng==
-X-Forwarded-Encrypted: i=1; AJvYcCVpIVyzplC/iuSeeyia4+SZvFxChodJ4Jxz0PaQ4i4XxPdb6u9XcYpuo0gew4kIrW9i1s8Oq71aUg==@kvack.org
-X-Gm-Message-State: AOJu0Ywip2N0qvaXk/d/pk6ai0Ns+GPgtBNgpKPcWUuLutuToTSfN1sQ
-	ZJ8E9/xcsPqz1+U70RvT5W+wHiJ9iNod7waqBqSbW8HZB6YUnbAc9gHZ2tlHoK1+oIw=
-X-Gm-Gg: ASbGncu/+zgfsA/2vKcNS81K0HUdB09QTwEk9do6JHPumO2lsFsQGIq3qKA78SrBm0b
-	0qg2ZWXU2ZX0bh0Ip/NtXnFPQD10JMZgKwOXHRH7Day0J4q4IWQY+JQvXI7+teWu4a0uS0rKjI9
-	NtCG3XXZHSbwC9z8XrUjvQ3ZK5G4PRS9MpMEyopBS4yDQQa1Lf+jJ9JO76AnDxrhGk4unuEZX8A
-	ytyWfz+02z3tNdZXlN6OPQvWCpt5J9IJUaBRcHTsMbl84HTLFSE3F8bX+TnIv0kHlfsVgQ0xD3y
-	aRI/uqCVqPe0LzErtyITY8qAFkIccKRyrM5XmYqpjE/mTOHsnoI0Wsixo4grQMtRBPrSOZMiS0K
-	oK+hSDS2j/FwpJ4H7wv7OUOSXFGGPZ3/o7AzUmKeVC+xaerQHGWX9FLyZDalRvlhTy14BB29jmf
-	rxvXgBn6QMmJ4R5A17nUS6KCvx
-X-Google-Smtp-Source: AGHT+IGfDhEwc+4540g9zxrsusq87Jw5oannsM7AsDgvzrefgTdYZ1mcnrXQoAnn7esV8SehlhvpnQ==
-X-Received: by 2002:a05:600c:1f91:b0:475:daba:d03c with SMTP id 5b1f17b1804b1-477307c51d5mr21021365e9.13.1761899556870;
-        Fri, 31 Oct 2025 01:32:36 -0700 (PDT)
+        bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
+        b=Wx2ECN8YMphcv6MpZFE+YVV0p0Uj9xcIdqvb5orUan70Kvh05ktcALdCVHM5RZ+4/M
+         TXj6e0DYA1wZrFr+B8zCYIQhcli2CnNIxJJYofokz3q75/XIDpPZ88VmQvfBTAixNyjy
+         9cd6pnDjS/MCbs3BrNmkbN2BuoSidkfzsomTDMVMQszYMNYef+fWXSp4hMj7J1I7ezfS
+         aoQSe5y5abhWwgx1LvPq0W3GuQ5FifcuGwYdBmVFzwPkotoRvWGem7ZI6dNrqq+QwQv6
+         EQcDyUoM9bEF+OIfzDE01bHw3mIFaF2BncEeqtzWWq3mctGuZ4C8ktQXch6QTyCJEzSB
+         +ggw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpoNqn/p1OCgEbpVTyocg6TdX8UXN/MywrMYwAWIMZtFjsKcyMH26LC5s/CyoqbMPgcATaUHct4w==@kvack.org
+X-Gm-Message-State: AOJu0Yzp6DyE1N0+iOTbe1fXcQefZ0jkS1TQsU0x0xMSx093aHc2HVYv
+	qsqd/l4gJfHanoxLtbz/ZE+XuClY+JnJEvXMRPY9k9y+z8oTj4f0sOHqybETuUZDLZ4=
+X-Gm-Gg: ASbGncs2scMEyORpu5JLwxngoUkCRnL56O4shjLTIuSFhj7jADZkYpspZwPB+80wO63
+	/yLEQFcBLOwxecG+MBew/66gW6AG8w1EU5I8W6CQqUZUkR7tDAPX35hqmoKhfh3gj02UztMi51R
+	GnK7W7f8tLFQCBgG2DyVyhlUmAVb+hLo66e0uLF9u7m/X5a5YEKabsbshYFYe7ndZny0AD0dLRc
+	YYVOdQy8WZIdkI15M3qu2THRFpEkaPOSZOwwfTPUW60yD1btioLQzhfEPua0LZ+JPomhgJMoj1w
+	tcEswIWrDg5gRtqY0TjB46b8j1no4YhMs4TcjCO8b6ngVpP5Iy4engSgn9XAudPuc/fb/RWnIcO
+	WIKpVQL6EVwK4pmeGOG/vtdtquRiVO3eoXTeWRVthZtOs2rtGcMG3ESobmh97A9nF6dSXhLaQHn
+	3Vz+yW4rbUY6ZSPQ==
+X-Google-Smtp-Source: AGHT+IEqeWzc1dYod8DDM80O+3DfRoIrCHAb+32/10VgcqcE8gyD3g3E2A+vxz5v6zZlDzTIz39ZaQ==
+X-Received: by 2002:a05:600c:34d0:b0:475:daa7:ec60 with SMTP id 5b1f17b1804b1-47730872dcamr20908505e9.21.1761899666777;
+        Fri, 31 Oct 2025 01:34:26 -0700 (PDT)
 Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47732cb7f41sm20722905e9.0.2025.10.31.01.32.36
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772fcf6c05sm17137655e9.4.2025.10.31.01.34.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 01:32:36 -0700 (PDT)
-Date: Fri, 31 Oct 2025 09:32:35 +0100
+        Fri, 31 Oct 2025 01:34:26 -0700 (PDT)
+Date: Fri, 31 Oct 2025 09:34:25 +0100
 From: Michal Hocko <mhocko@suse.com>
 To: Roman Gushchin <roman.gushchin@linux.dev>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
@@ -105,23 +105,23 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
 	Song Liu <song@kernel.org>,
 	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
 	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 04/23] mm: define mem_cgroup_get_from_ino() outside of
- CONFIG_SHRINKER_DEBUG
-Message-ID: <aQR0I9B9b1VvmYl2@tiehlicka>
+Subject: Re: [PATCH v2 05/23] mm: declare memcg_page_state_output() in
+ memcontrol.h
+Message-ID: <aQR0kf_g2e59JCmz@tiehlicka>
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-5-roman.gushchin@linux.dev>
+ <20251027231727.472628-6-roman.gushchin@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251027231727.472628-5-roman.gushchin@linux.dev>
+In-Reply-To: <20251027231727.472628-6-roman.gushchin@linux.dev>
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 3fsnwt1iz1mfezgdsd985nsdp4z65zmf
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9A848180002
-X-Rspamd-Server: rspam02
-X-Stat-Signature: cfux8ajmfraehjwi9h17x8rmbfrjp9ri
-X-HE-Tag: 1761899558-910052
-X-HE-Meta: U2FsdGVkX1/wrXlt0uGVfbuHA9DuNN04ujAdfY5gSZV1lXKEHuNaPUlON0BlgqPebha5IaLsZz4zc5JZhtmpGMyleWPv3hhy6KnXXMiZ/xq0aDuK/JV5Bmg3+5HrCVAC1ht2Q4GuQYBDD2IlW5p5EzoVTFiEUhq+m7b7s7G2lWg7nyRBGi8/eIAkPMiwauYMzQ52IeYSRVOQMtvop06/QfkpnJms3SqvroDJrBFSuSTiBuimZqyNBDM1bfYCGCrEBFcx0Wl5S7uDDOKVtHUwFGH2TlMxV7hQIATqFQYn/tjs9jmVfPopzQNhobeY+Pe3uobkBL75OtjdEsyiiThXjCsVOzox0dYj4kkbFk24D1YPMGQpPNLVUHcCK3DqjNp/kLXIG1GeCC3mihq9FVARkLt4d/XNw9goPR2FaVHQSWcOGJk4kSjemwPbjm2lq22EniIdZtUp7phCsOZWtBYojIgtWy6kRuQarUAPFQLGYnREhebA7sFlWqmnaD9Qv6dLIs+fcYPlSvr0ZvLd0fsQoQjL3piGik1eaBrcjNpNnzLY1OWibZuUsmhIpriK6P/ozgPtpcU25zWx1q8BQ1jYqabfkWzYYCReEM0zko7LEZaeJVKno1kOq9GarIqJF4rCm99Sx3CIBMVBTeq9CqFtT7jMlzjHRcDaOjDG09PLxzzGg+P2IdeDeinboel2Fxm2BPb8KYThBeCnFOUTvxHrikApkhQPAy2iIfQ3Kq+dcu9ZhIt6Y8PQoRMxq9KLj0Y2fzh3u+/a9IeghGOtgHjeC/mjR8S7bk3tTW+3R9+5TunpCx3Zsq50uvVGxu33AH5DnweaKRWYdqK2xT6Gft0Ny0ApX2747WpP7u1mPvO+GGblMkhOzw8uxG0ijjsod4prwB9ZFFy1INEXqumLK44uVfuG8ZvvpGdwNfcglas7skur/5KmAH2LHraKeDDdw/pe1gVppYziS+XifDG16rt
- M38LH+/M
- eY2YpRhoW9qCrYLDSNzCqXxaEP2juamk8ijQ7IwDq8Lxb+S5RzfWCMS7oQj1ixHks5TTxbf8dudkPzpscKeZjHODdvE5N9sRKaLRVB8F7IQ7x3cUrFCykkR7KpKu0H2jXVPGi7DvD8adlIDiDv1xzwxVm2EstU5MlPtZ+vCgLdO6RSeG9MucHesIJ+lRVLIs82m/GFg9pOnG/IF2XrOxJJ/54FoTB81DDdCAVhIyT55ecfg7rTezngud3YM5H9DCr0LtQj0ffxm4DjMqyNkR+7CjoazIoDCDfaKcTkNnNc8GD8r3ZvXgyxPorshJj3QglX27/wb//6c3i+27rmL9Q576QoJMik5yhWsLhght0EFQXSkXeM/M4XF/DEji4m5y7wLgqmijSa0S2sGS2scZ6jXyQ3di1+BbrFywCflQyAonr7lHd6uaR7q9iZ08K+09rALBYU44m8G6Q20362Zdx5+p3nq++6Zzienp8YsuCpAxAY/Rg7W7f2ez5Eg==
+X-Rspamd-Queue-Id: 3B21220009
+X-HE-Tag: 1761899667-298646
+X-HE-Meta: U2FsdGVkX1+Bd5Nz0MzMqmlrpRRFVjpzSMHGHNRTafffhGbJ1JtWCoHaI6XPmF/sPiYIOjerg9FnjJ3T0QbWq+FxulSyxLWpXeWME9V5seQ+dHV1Lh8cAdek8oJSuwCbE2edIWp7JO3ED6Ipt04zzH6Sf8Ymq41cSqYJTo4GN2r7INu/jBGkav4oqjT+yux5fpsNZGCY6U11Q01vPeSiJ0/o677Oc9JfLsd6FW3qCTdPDl8LLSUqReDaUVGKLsFySGsKUNn/Ifu0szvRkumBlyq9U9MlmQFMv0a+0QS0vMmu6GHdVkZ8vzjRmn5H+9Or5OsarJm5o7r2CsJ06jTDtZwRKxOjo/c4VOVA3yoZzihNLI9n5ymeWCbsdZgcmOERVJMi9OBA9KTuCsoWzG4jEnuqo+iSr1kcPkS0eJ6B99GA14EcD41Prvjz6GCjQ+muANkauGXEI42pQ7J/mCAzC4fRDMxvW8c/N4giRvteS0rNcF1hHT2Ol8OvcEzm/2xdtHmli7sUEVNrzdDE9dpeNgbOSczqXcG5BElugfHSy+iz6zRASjo2N9/eN30Z0UJUymY6ZxrvpX6xbKJB34sWqrhU3wn7FVUKx0h3DOwKDeWe+k4WKdSbOea5bGbQfGpThlTCG4112pCa3cfbfCXEzSQ4J+LdmNy/WCWHD+NQ1Wav0hsY3wI4Q4KYLpgFkzfUOonIKDpriBwb8btjlw7FC6Wxw2xXvTGwmsMpWt/LMyoxPJjeRXgDtXxi6/fMxM/Xz1stFJP45x9lFnDxPi1oxz7DHcydLevxdB9twCQJ98qOrXuNgMho1wmvkBChmBT6K5lB/MhRVw6MdYxtmPN+oyaGwgqbL2WrLS4KgwiCjF4LcOQ8MrsSb8C7AAj0ezTRovGQS6nOtYNicRqgqLeIZSa06Kfq//Nd44ASCBo98aRMyVgPC2mCHc/a8bD1/UlvWO7FGJfXijt15WgrCGt
+ Ze/TVKKJ
+ 7dej8Yq3f6WWoUp11Cqbt+LnGfsed36iEgzPl34gHHH2K4w4or/m5U1GmnaFRcgGKZWhU0Y9a8G8/M8O3VucoTh5gEfmd0wSuqgy5T0rIZDqzgq0Kvr5d2a0PaGfI7f617vx6mr6uMibagMq3ln+AwsB18uJlNcc5fsv/gLeT7Am3Aj/nu6y4jnKm9zMhvugsK7Cnkz1SU57zeBauSc9xHd92MHuZMtE0l13UAaEzz3YhbqamWCLunnb91tGCnpeFBaecoWIc3AJ9iRbi1UmFDkj/DhDIbBj/4pWhVrZidAJ1eHeBgja+OtilSFn8hD/4h2U5DX0odm0ttpQY7llWRAIbG1aiZlDn8iZ3EaVrZwFhZK23m1bSwKC9SEy1lrP1yELSI6QheEHdyILwfwGV9UUYJZRfsUU6vWWSQU2zzLzBx5+OZInWTwUyVP0uYzr9uqS5Q2UbhrsyA8FwK7M4Kvj+ZIZnKrMBQzXMGI4EV6Vt9cGuNRn9pmEjHQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,68 +130,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 27-10-25 16:17:07, Roman Gushchin wrote:
-> mem_cgroup_get_from_ino() can be reused by the BPF OOM implementation,
-> but currently depends on CONFIG_SHRINKER_DEBUG. Remove this dependency.
+On Mon 27-10-25 16:17:08, Roman Gushchin wrote:
+> To use memcg_page_state_output() in bpf_memcontrol.c move the
+> declaration from v1-specific memcontrol-v1.h to memcontrol.h.
 > 
 > Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 
 Acked-by: Michal Hocko <mhocko@suse.com>
 
 > ---
->  include/linux/memcontrol.h | 4 ++--
->  mm/memcontrol.c            | 2 --
->  2 files changed, 2 insertions(+), 4 deletions(-)
+>  include/linux/memcontrol.h | 1 +
+>  mm/memcontrol-v1.h         | 1 -
+>  2 files changed, 1 insertion(+), 1 deletion(-)
 > 
 > diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 873e510d6f8d..9af9ae28afe7 100644
+> index 9af9ae28afe7..50d851ff3f27 100644
 > --- a/include/linux/memcontrol.h
 > +++ b/include/linux/memcontrol.h
-> @@ -832,9 +832,9 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
->  {
->  	return memcg ? cgroup_ino(memcg->css.cgroup) : 0;
->  }
-> +#endif
->  
->  struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino);
-> -#endif
->  
->  static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
->  {
-> @@ -1331,12 +1331,12 @@ static inline unsigned long mem_cgroup_ino(struct mem_cgroup *memcg)
->  {
->  	return 0;
->  }
-> +#endif
->  
->  static inline struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
->  {
->  	return NULL;
->  }
-> -#endif
->  
->  static inline struct mem_cgroup *mem_cgroup_from_seq(struct seq_file *m)
->  {
-> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-> index 4deda33625f4..5d27cd5372aa 100644
-> --- a/mm/memcontrol.c
-> +++ b/mm/memcontrol.c
-> @@ -3618,7 +3618,6 @@ struct mem_cgroup *mem_cgroup_from_id(unsigned short id)
->  	return xa_load(&mem_cgroup_ids, id);
+> @@ -949,6 +949,7 @@ static inline void mod_memcg_page_state(struct page *page,
 >  }
 >  
-> -#ifdef CONFIG_SHRINKER_DEBUG
->  struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
->  {
->  	struct cgroup *cgrp;
-> @@ -3639,7 +3638,6 @@ struct mem_cgroup *mem_cgroup_get_from_ino(unsigned long ino)
+>  unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
+> +unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+>  unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
+>  unsigned long lruvec_page_state_local(struct lruvec *lruvec,
+>  				      enum node_stat_item idx);
+> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+> index 6358464bb416..a304ad418cdf 100644
+> --- a/mm/memcontrol-v1.h
+> +++ b/mm/memcontrol-v1.h
+> @@ -27,7 +27,6 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
+>  void drain_all_stock(struct mem_cgroup *root_memcg);
 >  
->  	return memcg;
->  }
-> -#endif
+>  unsigned long memcg_events(struct mem_cgroup *memcg, int event);
+> -unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+>  int memory_stat_show(struct seq_file *m, void *v);
 >  
->  static void free_mem_cgroup_per_node_info(struct mem_cgroup_per_node *pn)
->  {
+>  void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
 > -- 
 > 2.51.0
 
