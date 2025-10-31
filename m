@@ -4,114 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3726FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 15:36:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0678ACCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 15:36:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8091D8E00BD; Fri, 31 Oct 2025 11:36:07 -0400 (EDT)
+	id 4D6358E00D6; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7E1488E006C; Fri, 31 Oct 2025 11:36:07 -0400 (EDT)
+	id 4869F8E006C; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 71DA18E00BD; Fri, 31 Oct 2025 11:36:07 -0400 (EDT)
+	id 3C3AD8E00D6; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 62A688E006C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:36:07 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F18E612B45B
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:06 +0000 (UTC)
-X-FDA: 84058810332.09.17815D9
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 27EA340018
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:04 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bgZioyMf;
-	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B7108E006C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6ED78838D
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:29 +0000 (UTC)
+X-FDA: 84058811298.30.E0FE794
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
+	by imf16.hostedemail.com (Postfix) with ESMTP id BB00D180002
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:25 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="l8ORUx/7";
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761924965;
+	s=arc-20220608; t=1761924988;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=D7Rlp07E145mjICdfP0fMeKyTSRO79dBuZu7u2IiVMk=;
-	b=J9D0io3W/Kry11JsnTSgyNr3jtd56YnaiLFeBivmhuEqifQz1k0mTDqqdqWuYYBjWGa0Ep
-	W0ErWaWxZGvSwJQ3a6xz6C640tpoM/ncrblbEGPv3K2ozEWMTLEF5KMHKxUBMZbn+rz7dD
-	v+v/TxCWeJ/En4HZqQPu/h23H6DJlvE=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=bgZioyMf;
-	spf=pass (imf12.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761924965; a=rsa-sha256;
+	bh=7bCk+2TmNZusllnMtS41IqvcnVBVBQ9/CiQF7zZf5Vc=;
+	b=PvwIRldjQIUEibitiZzD8DdPWLJiKDyz2fEPQZqLdjY4uOAIAZk0vu1M94WldrA1BMyYde
+	B/l8jA6nIBazGia1LF2rKNgRXvlAm7MjVJNB3LeFQrfpWZR9VEG8FxPrVT2AQc6UFycvuj
+	yiIbCEv9wWzscdQHPdwwh7KqUL+gM8M=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761924988; a=rsa-sha256;
 	cv=none;
-	b=U2UFW81+VmTZeQ+nuUVV30pmPFXkM8aoAqEbigGylpWCfpc8oZh2D0e7wln9NulFJXvblc
-	Kjj829zg1VhM8gySGsiMMGGKOEBXSL2SgERe07oh6ArJaCFBlyLLq73zZoPD4TsO997o7c
-	BThtDzLV7/3H7E4kWRIvBKKAmDcL3s4=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 4EFF2601DC;
-	Fri, 31 Oct 2025 15:36:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3AEC4CEE7;
-	Fri, 31 Oct 2025 15:36:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761924964;
-	bh=f2kdcTzIgflTZpNVJcpB/wXw4Pn7v3oe8LGnD3Ghpv0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bgZioyMfejcWWV0MS6C05S2LbsEdxX50diKJLFbw9ByzTss1Ijd602OkOPk5VfJ9K
-	 BRKcnvMU8FhGuOYJD6IlhqxkvqA74T7C11v39u1D+WoQbt6yJqS7412XtCYdJe0PHy
-	 Ln62jNHD5VjGRqjBBZSBa4jUMaVRdwp5bzP89/ZWKaQCzVlnK86qZsU+w4X0SXlEbI
-	 lRkg7pYEBULQLbHiEuqIewp4ucaxmKc3j/liAl9yD7UK/IyLDT6JMbpqc1UA7U21O9
-	 xfmguuXRFsOBFWFtnYsZeHmVkddUjMRhYiHjr9QoNL/wS5AGPYJo2404lc9S1uCEeI
-	 AAsxziPBgXXWA==
-Date: Fri, 31 Oct 2025 16:36:01 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 05/33] sched/isolation: Save boot defined domain flags
-Message-ID: <aQTXYSyPS65nhkvl@localhost.localdomain>
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-6-frederic@kernel.org>
- <xhsmhecqtoc4b.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	b=mtoGqSEnCa4KbFlBbJTS+bYQVOA8OuaHBaSkbm7h20HboOKXN7TXDponw25rbQRNaeMuZi
+	+2FUny67exWUI1IKZ1jrq5n2d94Nm+gxuog7Rol1Yv6iTBBtLY++rbNDO2k2zRWEbpWH/z
+	mFXRUTu/0q3bt2hznduCYmOFvuvcv/4=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="l8ORUx/7";
+	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 31 Oct 2025 08:35:50 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761924981;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7bCk+2TmNZusllnMtS41IqvcnVBVBQ9/CiQF7zZf5Vc=;
+	b=l8ORUx/7Mi0smhRm+xHaR3mx/ktAWkoTlJ16+OPu6VoBiSSnK5QHFBzLN+bIc0j0e0E7ot
+	eKil38tggLwOnNfnIICY2dhStqWjdFJXZ2SULXCdkNq9cbQdxgqERp2XjVU8Yi2OoNYKZg
+	Ri918dNNGCyDdyI0hUKajLlkx4Dg43Q=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, 
+	libaokun@huaweicloud.com, linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com, 
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz, 
+	yi.zhang@huawei.com, yangerkun@huawei.com, libaokun1@huawei.com
+Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
+ BLK_MAX_BLOCK_SIZE to support LBS
+Message-ID: <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
+References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
+ <aQRkTKTm08lSJZZi@tiehlicka>
+ <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
+ <aQTHMI3t5mNXp0M1@casper.infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <xhsmhecqtoc4b.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 27EA340018
-X-Stat-Signature: ihdoqb7fuimxw1g14733k9omw9k18c77
+In-Reply-To: <aQTHMI3t5mNXp0M1@casper.infradead.org>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 1557hd1sjgbjsd8ziw1ieegjd8gfdew6
 X-Rspam-User: 
-X-HE-Tag: 1761924964-563433
-X-HE-Meta: U2FsdGVkX1+d4fWIsia3Q7B47wyRrn/CgF88nJ0Ok3mUmbxgV8HbSjQ8venjcMTatTP1BmqhtiEV7yag30OIh642esUBEbs2vDfAjpkRVI84xouqSWhcufJ3tnBymYCvbpkfrbWUDTu8fC94fzdBc3KYS9qR60Vv+jy824I4fN/NTu8mmbGGcB58ixs/9j1guTYuoIApQ+zUoJrgzJuW5cUPEF6psjM/vA7i6ukqhxFdSIzph3DPIunM/G6prpparpF1RQH535Z4i5SAII2CLo3/+d7wZzPdPCFaKULPLBbF1HZDMRFVGv4OWdO/0hnP8vubn0S4b77JGtpV6lbxbslUmU3PLYRHiOup6SwikziJnppy3Fid5JOdGQzI5SOziumkzWZqUVqiSNq5RgrLURLqsSkRi8rIworezWIxcCLzmVJW8O5pcvD+VSdvGcflHpfnZHpaAJooz0GDse9aD8vJ/zKjgckuAMZY3PPtqD+qSBp1xIOzdxhRFaD39eTRMyRIefNyGXYoGGk9RiKR6oeRKZvozFUC5FgeMrwhmA7lDpXTFVdzz7eRUkGIg3+pOrqLOMb/HOp0GMgNZ9CpX+GZQ1dhJLzXd6OWYfDewMSHAsDbTC4BI/PcHCXbbRogwa2XRCHG0xgwgVyaqC9r+4l+0F2v/vyp79L/WnnojbSi7y3fRjMQEpXtCpRM2w5EG8z3T25JwlPeQ4RqeAigRZ/b+cCF6U1hAEZWnVRniudnD4vOeYM9JMy712COKhoJCjlD1r6oJlkSVrwGv7ZjT3XEIhZrVjv3sSa/kYskVKD51b+0509Gph1E/CP3C7GjjXEKTtqx4OHxZ4fJvX2nDgMKN5mchBj3oWpAeVdLCVEpGCDS7woqR7ZaO6oSIUldR3bqSriugpkDyWZx014PX1/wkZzCf48VzFPm+nDIbhTPOR0iUTkoxeEbqIdplYg4E+2m5f6bd4f4uTO61FI
- yB/weMEf
- AQkVQQTrYtxyf/CbxSvUA5Sf4lgYVR6gAQtpomEypsUT4iX97gZQn/XxKGdDd7+020h5OhyoMY+Jccg1x7mOeRzOUCJKtwY0uGoOl92g3xgmSyn3EHJlQ8UKU/q65pKKTJW0fb9Khm5vlEyx+bKhhsxYnSeIvPFNVSMZAwKsUHn12zabyMC0+1Q/y4Et8NIk/2km8+xmegY4/XlO6TR+cs3MOb8AXwiURdBbQe9c2DHGvDLohXQd6q6Nyh8k32K3VQIMMH3+wGwmTaDn8LvqLeVr0sXqrdKrMTfl5cDUrkTU9iXqtNC3dKAhojjxnzGuKf8EA
+X-Rspamd-Queue-Id: BB00D180002
+X-HE-Tag: 1761924985-976748
+X-HE-Meta: U2FsdGVkX18gB/oFN9bmXFlea/GSYsy4oqdHCDLnP70gI0oQNXoIRt9CXwJkdtuX6znezCU6gOCJURqPQpB3x10dUaDgThyUJbcPbRftm4VMAmvV++QkiWW+8VBIipcAGMrefO74QXeHN8SG9fkWrlVEX/PaPTEuZ5+0nAiTfxeuP/hCizXsQZZUrb0b3GsdMQEYx26R6KcCUm7vsTkI/V9WpAOJ8z7OJQsrnm9DFi8X3/q1bHq6JrlCEhBfzH4/uvkEHjhetYH7Ese4CbBAHup3R8utBh4DJAf79t4oci+uA+DqBYrwIe3Do6DgggGeKqLuC1n/Q/cPhXB7X+XSb/3n+qvUsLVfiSNnzfdjxtZBBUEvPgsrjlCbLQ+5HxxOr9oNMWe+QWFtlOPLmnC9fLEoLLYZIpAtMHGwUHhTruXOIUFq3iBbi2EYUGbYSODrK6WXV2REaI+KHuI5nB8nAxHL2ngqlZKmz/yWB9BhAcSqUapshx4gV5drwHQoI+U/ZBxd0D8ZKMCwbRLjkYfptYEskPP/XR8JqJ1ptcSwpiOoJzhq55XHK9NUDmdgLE3E9dWRf36o9vzbxeNDX6NKJa+41fnrMbo+ydAuzYXBoqYGg2E+ALaQEfSDYKMTq6WdvoKckX3ZMot9S4UE8azEKHPX+qjqMszTUgxFuzx6/McK8yizNo6D2uk0Exmax3aZXGi6APvMC4GixmLJgyIx//1dwIH/Wp5tb37MVz1w7dgidtWY5Uc44P6UBZSxNRaVSfJpdh/bKOkxaEkn1OJJAIrS3ZcSWVuyWodAkvsyqg5h8H+ywxfRgHliof+E1MsPdXs86tZYEBohGMxJg7q0r3x4sQy0FvO6gbWa/OAcWogSsovw+HD9pz7a5lGx27VzaV+YCiExmHX+8N52SLo3ybE8QF3V3WW0UOyBnX9wyrlz7bjWXjdYk9uQrMG9eLRixlT+U1c7bquVZOyN2Em
+ gBBRC8AD
+ M98aYRWnUnjvKAG1PU/6TTfOo87hv3OpX0ZVa7AsN6P00eB/BUl4nmWxDfg6b3uZ49iyV9JWJId+tXjcrmuSIj3PnjMRvRbElsCiG7gW/ON2vrC+r/0ZZyyk1WpynGIKsq+zpZD16LBMk77RkulgfEvE4ANp8ajdSEra6K1GSpe5b9OGzyI7N8AsdSBpN7/DS9T22ZO9qEK+WFfTr/Kj1DhLAjKrWI6SAmG+LN9JcW3FpXgYSi5Nns7e//ORrssLr8EBuLLBHONAXL9wG0wFfhW4T0nMHSko6M/IrbQcNvxrlpUI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,99 +93,73 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Thu, Oct 23, 2025 at 05:45:40PM +0200, Valentin Schneider a écrit :
-> On 13/10/25 22:31, Frederic Weisbecker wrote:
-> > HK_TYPE_DOMAIN will soon integrate not only boot defined isolcpus= CPUs
-> > but also cpuset isolated partitions.
-> >
-> > Housekeeping still needs a way to record what was initially passed
-> > to isolcpus= in order to keep these CPUs isolated after a cpuset
-> > isolated partition is modified or destroyed while containing some of
-> > them.
-> >
-> > Create a new HK_TYPE_DOMAIN_BOOT to keep track of those.
-> >
-> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > Reviewed-by: Phil Auld <pauld@redhat.com>
-> > ---
-> >  include/linux/sched/isolation.h | 1 +
-> >  kernel/sched/isolation.c        | 5 +++--
-> >  2 files changed, 4 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-> > index d8501f4709b5..da22b038942a 100644
-> > --- a/include/linux/sched/isolation.h
-> > +++ b/include/linux/sched/isolation.h
-> > @@ -7,6 +7,7 @@
-> >  #include <linux/tick.h>
-> >
-> >  enum hk_type {
-> > +	HK_TYPE_DOMAIN_BOOT,
-> >       HK_TYPE_DOMAIN,
-> >       HK_TYPE_MANAGED_IRQ,
-> >       HK_TYPE_KERNEL_NOISE,
-> > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> > index a4cf17b1fab0..8690fb705089 100644
-> > --- a/kernel/sched/isolation.c
-> > +++ b/kernel/sched/isolation.c
-> > @@ -11,6 +11,7 @@
-> >  #include "sched.h"
-> >
-> >  enum hk_flags {
-> > +	HK_FLAG_DOMAIN_BOOT	= BIT(HK_TYPE_DOMAIN_BOOT),
-> >       HK_FLAG_DOMAIN		= BIT(HK_TYPE_DOMAIN),
-> >       HK_FLAG_MANAGED_IRQ	= BIT(HK_TYPE_MANAGED_IRQ),
-> >       HK_FLAG_KERNEL_NOISE	= BIT(HK_TYPE_KERNEL_NOISE),
-> > @@ -216,7 +217,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
-> >
-> >               if (!strncmp(str, "domain,", 7)) {
-> >                       str += 7;
-> > -			flags |= HK_FLAG_DOMAIN;
-> > +			flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
-> >                       continue;
-> >               }
-> >
-> > @@ -246,7 +247,7 @@ static int __init housekeeping_isolcpus_setup(char *str)
-> >
-> >       /* Default behaviour for isolcpus without flags */
-> >       if (!flags)
-> > -		flags |= HK_FLAG_DOMAIN;
-> > +		flags |= HK_FLAG_DOMAIN | HK_FLAG_DOMAIN_BOOT;
+On Fri, Oct 31, 2025 at 02:26:56PM +0000, Matthew Wilcox wrote:
+> On Fri, Oct 31, 2025 at 11:12:16AM +0100, Vlastimil Babka wrote:
+> > On 10/31/25 08:25, Michal Hocko wrote:
+> > > On Fri 31-10-25 14:13:50, libaokun@huaweicloud.com wrote:
+> > >> From: Baokun Li <libaokun1@huawei.com>
+> > >> 
+> > >> Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
+> > >> reads at critical points, since they cannot afford to go read-only,
+> > >> shut down, or enter an inconsistent state due to memory pressure.
+> > >> 
+> > >> Currently, attempting to allocate page units greater than order-1 with
+> > >> the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
+> > >> However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
+> > >> can easily require allocations larger than order-1.
+> > >> 
+> > >> As Matthew noted, if we have a filesystem with 64KiB sectors, there will
+> > >> be many clean folios in the page cache that are 64KiB or larger.
+> > >> 
+> > >> Therefore, to avoid the warning when LBS is enabled, we relax this
+> > >> restriction to allow allocations up to BLK_MAX_BLOCK_SIZE. The current
+> > >> maximum supported logical block size is 64KiB, meaning the maximum order
+> > >> handled here is 4.
+> > > 
+> > > Would be using kvmalloc an option instead of this?
+> > 
+> > The thread under Link: suggests xfs has its own vmalloc callback. But it's
+> > not one of the 5 options listed, so it's good question how difficult would
+> > be to implement that for ext4 or in general.
 > 
-> I got stupidly confused by the cpumask_andnot() used later on since these
-> are housekeeping cpumasks and not isolated ones; AFAICT HK_FLAG_DOMAIN_BOOT
-> is meant to be a superset of HK_FLAG_DOMAIN - or, put in a way my brain
-> comprehends, NOT(HK_FLAG_DOMAIN) (i.e. runtime isolated cpumask) is a
-> superset of NOT(HK_FLAG_DOMAIN_BOOT) (i.e. boottime isolated cpumask),
-> thus the final shape of cpu_is_isolated() makes sense:
+> It's implicit in options 1-4.  Today, the buffer cache is an alias into
+> the page cache.  The page cache can only store folios.  So to use
+> vmalloc, we either have to make folios discontiguous, stop the buffer
+> cache being an alias into the page cache, or stop ext4 from using the
+> buffer cache.
 > 
->   static inline bool cpu_is_isolated(int cpu)
->   {
->           return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN);
->   }
-
-Right, I get confused myself as well. I've been thinking several times about
-inverting those housekeeping masks to work instead with isolated masks. But I'm
-not sure that would make the APIs easier to use.
-
-> Could we document that to make it a bit more explicit? Maybe something like
+> > > This change doesn't really make much sense to me TBH. While the order=1
+> > > is rather arbitrary it is an internal allocator constrain - i.e. order which
+> > > the allocator can sustain for NOFAIL requests is directly related to
+> > > memory reclaim and internal allocator operation rather than something as
+> > > external as block size. If the allocator needs to support 64kB NOFAIL
+> > > requests because there is a strong demand for that then fine and we can
+> > > see whether this is feasible.
 > 
->   enum hk_type {
->         /* Set at boot-time via the isolcpus= cmdline argument */
->         HK_TYPE_DOMAIN_BOOT,
->         /*
->          * Updated at runtime via isolated cpusets; strict subset of
->          * HK_TYPE_DOMAIN_BOOT as it accounts for boot-time isolated CPUs.
->          */
->         HK_TYPE_DOMAIN,
->         ...
->   }
+> Maybe Baokun's explanation for why this is unlikel to be a problem in
+> practice didn't make sense to you.  Let me try again, perhaps being more
+> explicit about things which an fs developer would know but an MM person
+> might not realise.
+> 
+> Hard drive manufacturers are absolutely gagging to ship drives with a
+> 64KiB sector size.  Once they do, the minimum transfer size to/from a
+> device becomes 64KiB.  That means the page cache will cache all files
+> (and fs metadata) from that drive in contiguous 64KiB chunks.  That means
+> that when reclaim shakes the page cache, it's going to find a lot of
+> order-4 folios to free ... which means that the occasional GFP_NOFAIL
+> order-4 allocation is going to have no trouble finding order-4 pages to
+> satisfy the allocation.
+> 
+> Now, the problem is the non-filesystems which may now take advantage of
+> this to write lazy code.  It'd be nice if we had some token that said
+> "hey, I'm the page cache, I know what I'm doing, trust me if I'm doing a
+> NOFAIL high-order allocation, you can reclaim one I've already allocated
+> and everything will be fine".  But I can't see a way to put that kind
+> of token into our interfaces.
 
-I thought I did already but obviously not. Let me fix that...
+A new gfp flag should be easy enough. However "you can reclaim one I've
+already allocated" is not something current allocation & reclaim can
+take any action on. Maybe that is something we can add. In addition the
+behavior change of costly order needs more thought.
 
-Thanks.
-
--- 
-Frederic Weisbecker
-SUSE Labs
 
