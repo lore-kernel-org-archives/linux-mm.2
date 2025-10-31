@@ -4,94 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB492CCF9FF
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 09:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8FC0FCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 09:55:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 24B388E00F6; Fri, 31 Oct 2025 05:36:13 -0400 (EDT)
+	id DEA4A8E0086; Fri, 31 Oct 2025 05:55:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2229A8E0042; Fri, 31 Oct 2025 05:36:13 -0400 (EDT)
+	id DC1788E0042; Fri, 31 Oct 2025 05:55:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 138B38E00F6; Fri, 31 Oct 2025 05:36:13 -0400 (EDT)
+	id CD7148E0086; Fri, 31 Oct 2025 05:55:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id F03228E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:36:12 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id BCF0D1A0430
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:36:12 +0000 (UTC)
-X-FDA: 84057903384.22.C0E75E4
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 27D6C2000C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:36:10 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=cR8gyRvi;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf03.hostedemail.com: domain of BATV+f7946cdf28fe74239a26+8104+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f7946cdf28fe74239a26+8104+infradead.org+hch@bombadil.srs.infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761903371; a=rsa-sha256;
-	cv=none;
-	b=jT5IgV6vNBGhhONTcoNiDz+7yjqcsOI1RZ8SxYl8c8KN1XxatJJDMoDEdYf3cAHFRLPnnU
-	2vU7t17XVo+lhmg8CI7jqUNDtCb+oROmddqw+IQYvQrUqjL4/FWeZOxiXT+kC7A3cK4QUL
-	dXSAKfAxtRKF4Eyg1hPpxEGJIQF1TJw=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=cR8gyRvi;
-	dmarc=fail reason="No valid SPF, DKIM not aligned (relaxed)" header.from=lst.de (policy=none);
-	spf=none (imf03.hostedemail.com: domain of BATV+f7946cdf28fe74239a26+8104+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+f7946cdf28fe74239a26+8104+infradead.org+hch@bombadil.srs.infradead.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BD2858E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:55:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 64D4C16043B
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:55:47 +0000 (UTC)
+X-FDA: 84057952734.14.2DAB0F4
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 08442100009
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:55:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bpBBqzgz;
+	spf=pass (imf05.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761903371;
+	s=arc-20220608; t=1761904545;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wAylb0D6cMRFiTtOtljfzXlqGrVPob/jf/2jDFIsOSQ=;
-	b=Lz1wB1sirb5UUm+LUXAtldSs1zZLEw5b260U5f/FyMHh8ymiw84XG/YHJG0TCXRHDhadpw
-	Af6Q6OE1+AHhsvSbWAcjDeDWRRRcDb+Hxy1wZJGuhPVfQsqWPIFNFK3Zt2p5Zx2Pwyp17D
-	f053FgcZBw1L8l0BBf0k6ncIfCvYo/g=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender
-	:Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=wAylb0D6cMRFiTtOtljfzXlqGrVPob/jf/2jDFIsOSQ=; b=cR8gyRvic/ui/DEy2j6JZJjgqb
-	koZlP+rhGEHVJw278pizwXCpDr0qxKxM/N+B2BWiChuTizldoR4I7iaqaN2pPpGphC0il3ZekmM4e
-	WjZMM/GJad4al3Vxmi6ou6JDhPqXiJqEK/15u6LOyxrepYe36kQzWikRTVCKlE17fb7SwsZvwE9Ua
-	wBQ9oBOwOQ/ym95wjQd+KV5yVF3BRww1k9+GwcqtL6Jx8VCZomqWz7e2wVsKi453wCrKay9zxWdoF
-	6z4ywdyIkdg/sNTO62addxh0ClAirhABJALDs1JPnx2xUComewurIVbR1OAcijTlIjiNVVncnrr1B
-	GWwfQI4A==;
-Received: from [2001:4bb8:2dc:1001:a959:25cf:98e9:329b] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vElYG-00000005ou9-1GlQ;
-	Fri, 31 Oct 2025 09:36:08 +0000
-From: Christoph Hellwig <hch@lst.de>
-To: Jens Axboe <axboe@kernel.dk>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-fscrypt@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 9/9] blk-crypto: use mempool_alloc_bulk for encrypted bio page allocation
-Date: Fri, 31 Oct 2025 10:34:39 +0100
-Message-ID: <20251031093517.1603379-10-hch@lst.de>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251031093517.1603379-1-hch@lst.de>
-References: <20251031093517.1603379-1-hch@lst.de>
+	bh=3tkSelHNNZtYzi5EY8XsAlaXp+ewc844ITqqtJnf0nc=;
+	b=LbBBQAimXArZiGj9ZKwa91f0z1Z74k+hCmK1cKG55H6Hr5Nz9Il6H2lzNTKs8l6GR0RcLt
+	8QMzas5GtGqnRa5hYj6eVM/XP88X/Yd1D285NUKYaLHZmPXqvlOpt2Uwv9z3zAMwagGGxh
+	tX0oBzbPZt/oBptyjxI4YZHxurx/Wk0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761904545; a=rsa-sha256;
+	cv=none;
+	b=jAFC578IxVUr5Y2jREiH1IfrM6fSu93S1wQSitq1isgit9U5xQDZg85ohTsmvlyWFBNqlz
+	0HdhF2b9DMJGPd+8DFnxutvfNMlGn7OBD3BMDOzLOw60nwQBh2VYh5LjU+GduwOQbB3eBC
+	V7GgmBcbA/RUtHD3jlnudX5CIMCZeNM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=bpBBqzgz;
+	spf=pass (imf05.hostedemail.com: domain of vschneid@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761904544;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3tkSelHNNZtYzi5EY8XsAlaXp+ewc844ITqqtJnf0nc=;
+	b=bpBBqzgzyBPK/o1+KI7xY2Hdl23T1HrQlMCltBf2NUq8qpOltbMBUOS818/SuRG744qQZk
+	lokwwn0n59QrntvBa/EqWrwlnViS4Jh2FWjPSArTH54VrpG7sQgUw+KETRQR19jrY5p2Ur
+	PoMst+vhP6HzcM+zMnc/hQomP6p4GfA=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-693-ouv7bSCWMmGvRzoAdg2wDQ-1; Fri, 31 Oct 2025 05:55:40 -0400
+X-MC-Unique: ouv7bSCWMmGvRzoAdg2wDQ-1
+X-Mimecast-MFC-AGG-ID: ouv7bSCWMmGvRzoAdg2wDQ_1761904540
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-429a7f1ed1bso933029f8f.1
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:55:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761904539; x=1762509339;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kTCg+N3NYwBLqF+pIITZOoHrF01dYEOCOu0+H1nRDT0=;
+        b=fcciE3JIXS1vMsfxxNEG/67xeaUuWTnfYgtjXVQeQvkWaN+zLP9jMwJ3l+ytHgIHr/
+         7PhPB+YpFipxzZBQjooCBe7f8M178ozGMcn8P/0D14qNZHZxv/60lvLqvSdDctufwAjd
+         VQv/Ox8zh69TD2U6qfTZ/HdT85eXAthXNWlZ2tP8nMU16/FvwBXEP1rGRQGtStKKExnc
+         ax1PeY0oGcKeU4ZWwivJEb+SQkLBTJK+MhwZoWWcttV0e0leWPYBqCYtOnV0w36y8CYF
+         DpT5drL2Lcw5IJyv493V5CEJK5P8FuTfd6FNkWNumjsiJIugSePWBS/qWuwDF2eF7gvZ
+         Lt+w==
+X-Forwarded-Encrypted: i=1; AJvYcCVGeep9HHDe9pBK08x/5FX8oEZ5jh5tv0F6bCvz5LvItHVgqgCZSkxFcGDksT3b3VVGV5dtPf+afA==@kvack.org
+X-Gm-Message-State: AOJu0Yx4xN+6zcsZ906FeSR5qcHA8AoJVZtR3BV8qpSfsMLogQ8ONlHP
+	8Xlxm3oxtoqiuUL/h6HaSFRncQGn3eBJe5B78qcTDBFN6s8af6lZ3JoLx7iEz+I22vEJmKuX6tG
+	ebFbYfkpyl7a+KzJMwOvqS5CkRw+NIQJrVg/k8Z9q3w/AsmvMmWbi
+X-Gm-Gg: ASbGncssrvGGN+vWLb5G7jJDeDyLIn1cbb+m/aJZ8dCFqC25auOETHQ86wvLXg3Tose
+	hHYXNR/NmxNiQTJVYPur9WiMPDBD1nMjCe/ju6+91fwmczTBIa6WjbAKh/9cLpxTjAevsHESfwx
+	oW3v7XPo/IpwqWdvMOz/BqFeBI84k+tgWGSedZ7mNIbnp30xVFtFnHktc3K2JmSZ6uwEozl88Pg
+	SL2Pfg0oDy7Ox2SKo2H3axGtB2QtLv+AbO+AOvzYMxpMwznPvb5B7LzW83gmeZMu7h2TSWVP9rX
+	n1fxSvpInuqo4KIJpUtvPK8jjogqvp1lZeDQpAD2spqcizLxhh+xYmJs7QZqOXXcEqtbLOAYK4t
+	OWhDhl6rxVJhvd1UPmg9zN4HeyZuMr+tRc3QWgcXUyEqV8PRIo67mjPi7vShv
+X-Received: by 2002:a05:6000:310f:b0:40f:5eb7:f24a with SMTP id ffacd0b85a97d-429bd68869amr2437857f8f.12.1761904539545;
+        Fri, 31 Oct 2025 02:55:39 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGbUxApmJAOYlrcJigfNqaTRZ7Pz52J94NiUAhMgZ/Qwj+7BmCVMNCnPqwOLJ11D9kpjdgFWQ==
+X-Received: by 2002:a05:6000:310f:b0:40f:5eb7:f24a with SMTP id ffacd0b85a97d-429bd68869amr2437793f8f.12.1761904539055;
+        Fri, 31 Oct 2025 02:55:39 -0700 (PDT)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c1406a45sm2624895f8f.47.2025.10.31.02.55.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 02:55:38 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Thomas
+ Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Arnaldo Carvalho de Melo
+ <acme@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Jason Baron <jbaron@akamai.com>, Steven Rostedt
+ <rostedt@goodmis.org>, Ard Biesheuvel <ardb@kernel.org>, Sami Tolvanen
+ <samitolvanen@google.com>, "David S. Miller" <davem@davemloft.net>, Neeraj
+ Upadhyay <neeraj.upadhyay@kernel.org>, Joel Fernandes
+ <joelagnelf@nvidia.com>, Josh Triplett <josh@joshtriplett.org>, Boqun Feng
+ <boqun.feng@gmail.com>, Uladzislau Rezki <urezki@gmail.com>, Mathieu
+ Desnoyers <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>,
+ Andrew Morton <akpm@linux-foundation.org>, Masahiro Yamada
+ <masahiroy@kernel.org>, Han Shen <shenhan@google.com>, Rik van Riel
+ <riel@surriel.com>, Jann Horn <jannh@google.com>, Dan Carpenter
+ <dan.carpenter@linaro.org>, Oleg Nesterov <oleg@redhat.com>, Juri Lelli
+ <juri.lelli@redhat.com>, Clark Williams <williams@redhat.com>, Yair
+ Podemsky <ypodemsk@redhat.com>, Marcelo Tosatti <mtosatti@redhat.com>,
+ Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
+Subject: Re: [RFC PATCH v6 27/29] x86/mm/pti: Implement a TLB flush
+ immediately after a switch to kernel CR3
+In-Reply-To: <aQIpXyX-z8ltB1i5@localhost.localdomain>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <20251010153839.151763-28-vschneid@redhat.com>
+ <aQDoVAs5UZwQo-ds@localhost.localdomain>
+ <xhsmh3472qah4.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <aQHtBudA4aw4a3gT@localhost.localdomain>
+ <xhsmhwm4dpzh4.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+ <aQIpXyX-z8ltB1i5@localhost.localdomain>
+Date: Fri, 31 Oct 2025 10:55:36 +0100
+Message-ID: <xhsmhtszfpf8n.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: LcJQENY0ShfJDXvDbxM8YVOfzbVP68o4MLx0WRzN4ho_1761904540
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: nm614u47w66646w4mc8rkadhparm6j7m
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 27D6C2000C
-X-Stat-Signature: p98aik9r1n8z35w3bupmu38wa7ko4mm5
-X-HE-Tag: 1761903370-106163
-X-HE-Meta: U2FsdGVkX1/xZNZ1EnxB+s5E0hcgG4eQnNfPe+ApQPzetHO3GXHQ3rNIL+Fu/I9fD4tu2k1K2pbtFVubD3Xe/t0iR5Q02+J/cyijyYB9ZzwMZDyKatD20TLc8kKXH/YwkT64EqWF7+cm8+Yw7reweo7nTTQhCLFVAWT5BJ6l7BzxI/kVXIBClxjo5wjy0rqWXAbnHN8U07bz7RjMfdLCJTy/x7L41prqIHWp8tEOZiPCsq5k4D1/xbGBCnvve0dofsWJlSPxUMTUql2U+SQNEznFWZUsapuwQTLJwzgXu7IzHdiZWUlRMgoLPLHMQGPE/k/hbvELSb6M1YjQv6q0q7xxSqBMfHnjYwcIioLJ31nGR+Vzp4PBJ6VFHUJrNo4gliiOAcV3+pqUG+DlfR4K+YAC/3Q6KVZym1+beLnpqyahZfm79FTKiI9QhVGmB3iChsx0KU5SKyo1yTeoZoiPJ5fD7NiEbJUtymiWMcF5X1FIImzgSUd2PBF7gp16/sNhUhRiHoh04UmJxMoAjfL+dr64dYnKwRtFkaPA+c5SmpNHrAsNlEhToweJ3QOkrXO/l7pCXyVdKnJ7Pe27xnA7jCj+LaP2Yy313xz2xpxYWDxpwa64thfg1eBgfrqKoXBbivCIInOZ5BEtc0eexY257j/bXDG5hwI4hQCmMXDnKGJ0z/ZVRrD+uJM3Z28uRhJKGePslYa2qy1ZjYPLCk1JBfl6WFuPHCWKqggRvpu4JopMeZdU2/+kkl/3ktX1z5izTeChh/SdzHIKHL6qG8LLvo9sjc3TDXkoSXY1pm51+f3ibcbxNN3a0EHuF6D7mhPOU4ysgksfaCNiE1gKPgReanIUNtqs3HFJ8mam98ztbIWyabnkLhXAaRYx3vqd4A6hHXRVndbG3L3m8r43nnpU4nWNv+9BGDd6BzmS7Mw0VrY12o6Br02m8BBTFnTHYdT7itnr2uLFoLl4JUFOakg
- PziRcs2X
- 1VebgR/odxaXv6XqPWmA+nj2wXyBx3xAegsycsub7nscFwbIC6519SnZwmyW4B8eD18Wr0Zq7Np0M/Q6kZCSM0AnXlyrFvuUnfvfXWrilr3PDtbRLg+GOwA9DXu8CTzTGfC+bA8QsdNlhabTv/ZbMZnk1oM5g/HrIb5tvIPCE1uCukAcmh5vfBuxvcX+dpI/I3oR4HuWfSU/NPKhgdoF7pshsK+Y7HBkP2JR20z96nCWRIvUDE9pmd38HkrVW+jNoh/5g4wIlYT2UVrjgExtDeM23d4jWB9EoNFthqpqQveENReDH1Oyx6Aqqhe5tREPaldoF3J0NMi2n/1Wei356TtYOBmMHu7MUcxvH5DUbrzfJqglraiL6ZxKKGGCf6troZfkIsygrf2Y5gwxFa6kHLAnUWTvR5sE7+LLELd7Wx9hMrdy1JXc8b2Q4pKb9XqtoJ2o6ooihRLaFYIhozRAzv2l7vTInMGAmHTI2GP0zEYCwBRqknMBhQpSIPkYHND/tBTk3hKEwlNzOgKk+hYr+L882mlxdos1DWjOuKrQIsy2HbJ04fa/QDZ0DYSCSZfFK0AvrjWm3JdN9cf5H9s+kNfFA1pa4tN6CMG28
+X-Rspamd-Queue-Id: 08442100009
+X-HE-Tag: 1761904544-223961
+X-HE-Meta: U2FsdGVkX1/RPNCFS6fkckVOHx4g48ZQBwBpuHondbE+VYL0EScrjg9yQ8FrBKCIIzn+Y3ox5CGxRW1nHtGSmL9Wr1qYIm469Z05qGyBIBpArpAJr8tPER4vjW8kxjwxAvQl07V1ta3s6UD7MplGqV0+I/HSHHz6ue7gL3IWmGefdLxyF9Xgb7CwYm/EgAtwGuamnpa9ppVcaYquHLKEUkIhV1KIFox1Dy7QHOCm1c5KaHiuVHtkek4NxGzS+V7I2sxEytDEpitJFuUZVblaBp15YrhmYirtbFz/TdDmpzU7qwVDBssd2VWQq9h9ZA+3BrYyaUMxosgbVuhCFn+++9RIXAh++dHJqiyCvgbFbX5KJhaqipaW6Oq5ZUobf0N62NlNVnkj+IGiRYUfWRNordMd239e5KEwmwYUyxU8qWczLDlUUVOezo2qnt1svHqsD9Bk7JNkAT+FSDlMgoMhZ41vRnU4AoryVj4NHvyqNI4W+hlmS++PYqqvL7SHZvxnjMuP6ZFoD4TeF28fP09EGJoUI8xUHzjZGWK/1V0A8YJP9kuwBiFXVgIoZvh3VPZe0SfTh9b/lMIje1DXa2g5iSWn0lMyIbRPQq99z8J3HLt1fYXPvnFgqMQGx0acegLoLU1Z98ho8/evwkup1TzhFZrIbVIh3FFul6FFTSLNVXw/O5jcgCi8dgrQWX+NHEv+Do0/ZpkCQq932grk8iAQwLJHLscWmuk4V9p4kTrt6vaHK2CvuIce+awW5Y/wjtOpn68znwOkgA7qz6/v1DdOxrx34MEYC1l+VTZcOGEu/1wr0cA6qbM/evrllURdbfdvxTIl6b7E6597cvFX7IchgcxEBsfx/pi3S4cjJpEYcUvfWzdDAZTLapFFGfl4VA3kGTJESwbAObN3+XXlihSFa72o38/hfBXSGAfKpFfvkCbbcLm2tihGXpxdfrUC92+IeAWT1rbcAkTXHv5Q9wt
+ k+ifrr85
+ qQ2oqrwGdYTo8cKQ/1o88ZoLL6e6fGbljJGE7UAVQsl0mKHb9a2XE2+z2LszGaZQ3XZhOfR1YllB1w266VIR1rNFktaq4lyCbqfawYSuZSXxrnj5Twevz6qvRIoVVl5mziR7gS2qUUVS9J0O33UV7YIti1W3oDOn29bq4Q2+dAXM267jyLHXGNpo8BIgx4u4Qlok9xB2u4EW6m+DefXhvEqTuz1R4HTIF0aDSwpIFywh+06Q+4ps+3nHdgifqgfj1HGIojLFKI/y6qm9zC98UjwnlJx0AGi4LGH7CYNb1x/jlXiOuda6pyiG5UscocA/xLNZUb3Vi0itkHSfTsi5JJ4ZgzDGPTGwr9NjqtpYqkxTN/8nNMLY02Sz5aFUQTnaBMqcpwuwfORA76vVPDsOj5dut67d6bPQ0Av3OlgaSEP96MI2R/iFnScOvRw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,124 +158,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Calling mempool_alloc in a lot is not safe unless the maximum allocation
-size times the maximum number of threads using it is less than the
-minimum pool size.  Use the new mempool_alloc_bulk helper to allocate
-all missing elements in one pass to remove this deadlock risk.  This
-also means that non-pool allocations now use alloc_pages_bulk which can
-be significantly faster than a loop over individual page allocations.
+On 29/10/25 15:49, Frederic Weisbecker wrote:
+> Le Wed, Oct 29, 2025 at 03:13:59PM +0100, Valentin Schneider a =C3=A9crit=
+ :
+>> Given we have ALTERNATIVE's in there I assume something like a
+>> boot-time-driven static key could do, but I haven't found out yet if and
+>> how that can be shoved in an ASM file.
+>
+> Right, I thought I had seen static keys in ASM already but I can't find i=
+t
+> anymore. arch/x86/include/asm/jump_label.h is full of reusable magic
+> though.
+>
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
----
- block/blk-crypto-fallback.c | 54 ++++++++++++++++++++++++++++++-------
- 1 file changed, 45 insertions(+), 9 deletions(-)
+I got something ugly that /seems/ to work, now to spend twice the time to
+clean it up :-)
 
-diff --git a/block/blk-crypto-fallback.c b/block/blk-crypto-fallback.c
-index 33aa7b26ed37..2f78027f0cce 100644
---- a/block/blk-crypto-fallback.c
-+++ b/block/blk-crypto-fallback.c
-@@ -22,7 +22,7 @@
- #include "blk-cgroup.h"
- #include "blk-crypto-internal.h"
- 
--static unsigned int num_prealloc_bounce_pg = 32;
-+static unsigned int num_prealloc_bounce_pg = BIO_MAX_VECS;
- module_param(num_prealloc_bounce_pg, uint, 0);
- MODULE_PARM_DESC(num_prealloc_bounce_pg,
- 		 "Number of preallocated bounce pages for the blk-crypto crypto API fallback");
-@@ -164,11 +164,21 @@ static bool blk_crypto_fallback_bio_valid(struct bio *bio)
- static void blk_crypto_fallback_encrypt_endio(struct bio *enc_bio)
- {
- 	struct bio *src_bio = enc_bio->bi_private;
--	int i;
-+	struct page **pages = (struct page **)enc_bio->bi_io_vec;
-+	struct bio_vec *bv;
-+	unsigned int i;
- 
--	for (i = 0; i < enc_bio->bi_vcnt; i++)
--		mempool_free(enc_bio->bi_io_vec[i].bv_page,
--			     blk_crypto_bounce_page_pool);
-+	/*
-+	 * Use the same trick as the alloc side to avoid the need for an extra
-+	 * pages array.
-+	 */
-+	bio_for_each_bvec_all(bv, enc_bio, i)
-+		pages[i] = bv->bv_page;
-+
-+	i = mempool_free_bulk(blk_crypto_bounce_page_pool, (void **)pages,
-+			enc_bio->bi_vcnt);
-+	if (i < enc_bio->bi_vcnt)
-+		release_pages(pages + i, enc_bio->bi_vcnt - i);
- 
- 	src_bio->bi_status = enc_bio->bi_status;
- 
-@@ -176,9 +186,12 @@ static void blk_crypto_fallback_encrypt_endio(struct bio *enc_bio)
- 	bio_endio(src_bio);
- }
- 
-+#define PAGE_PTRS_PER_BVEC     (sizeof(struct bio_vec) / sizeof(struct page *))
-+
- static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
--		unsigned int nr_segs)
-+		unsigned int nr_segs, struct page ***pages_ret)
- {
-+	struct page **pages;
- 	struct bio *bio;
- 
- 	bio = bio_alloc_bioset(bio_src->bi_bdev, nr_segs, bio_src->bi_opf,
-@@ -192,6 +205,29 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
- 	bio->bi_write_stream	= bio_src->bi_write_stream;
- 	bio->bi_iter.bi_sector	= bio_src->bi_iter.bi_sector;
- 	bio_clone_blkg_association(bio, bio_src);
-+
-+	/*
-+	 * Move page array up in the allocated memory for the bio vecs as far as
-+	 * possible so that we can start filling biovecs from the beginning
-+	 * without overwriting the temporary page array.
-+	 */
-+	static_assert(PAGE_PTRS_PER_BVEC > 1);
-+	pages = (struct page **)bio->bi_io_vec;
-+	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
-+
-+	/*
-+	 * Try a bulk allocation first.  This could leave random pages in the
-+	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
-+	 *
-+	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
-+	 * any non-zero slot already contains a valid allocation.
-+	 */
-+	memset(pages, 0, sizeof(struct page *) * nr_segs);
-+	if (alloc_pages_bulk(GFP_NOFS, nr_segs, pages) < nr_segs) {
-+		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
-+				nr_segs, GFP_NOIO);
-+	}
-+	*pages_ret = pages;
- 	return bio;
- }
- 
-@@ -234,6 +270,7 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
- 	struct scatterlist src, dst;
- 	union blk_crypto_iv iv;
- 	struct bio *enc_bio = NULL;
-+	struct page **enc_pages;
- 	unsigned int nr_segs;
- 	unsigned int enc_idx = 0;
- 	unsigned int j;
-@@ -259,11 +296,10 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
- 
- 		if (!enc_bio) {
- 			enc_bio = blk_crypto_alloc_enc_bio(src_bio,
--					min(nr_segs, BIO_MAX_VECS));
-+					min(nr_segs, BIO_MAX_VECS), &enc_pages);
- 		}
- 
--		enc_page = mempool_alloc(blk_crypto_bounce_page_pool,
--				GFP_NOIO);
-+		enc_page = enc_pages[enc_idx];
- 		__bio_add_page(enc_bio, enc_page, src_bv.bv_len,
- 				src_bv.bv_offset);
- 
--- 
-2.47.3
+> Thanks.
+>
+> --
+> Frederic Weisbecker
+> SUSE Labs
 
 
