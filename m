@@ -4,132 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 68CF6CCF9EB
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 04:34:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5B3D6CCF9EE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 05:25:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4F2748E006D; Fri, 31 Oct 2025 00:34:10 -0400 (EDT)
+	id 28C188E0085; Fri, 31 Oct 2025 01:25:37 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4CA3B8E0045; Fri, 31 Oct 2025 00:34:10 -0400 (EDT)
+	id 263C08E0045; Fri, 31 Oct 2025 01:25:37 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3B8A48E006D; Fri, 31 Oct 2025 00:34:10 -0400 (EDT)
+	id 1A0E58E0085; Fri, 31 Oct 2025 01:25:37 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2A2478E0045
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:34:10 -0400 (EDT)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2A9888247
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:34:09 +0000 (UTC)
-X-FDA: 84057142218.12.165BBC9
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	by imf11.hostedemail.com (Postfix) with ESMTP id C703040003
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:34:07 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E7HsQp5I;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 05C9A8E0045
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:25:37 -0400 (EDT)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 92AE41A0388
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:25:36 +0000 (UTC)
+X-FDA: 84057271872.03.1AB6177
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 4118E100005
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:25:32 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761885247;
+	s=arc-20220608; t=1761888335;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=8oE9JQNdIr2S6AC34eXeEphVmop0Si1yVhh0HmwvbZ4=;
-	b=6OIpZXFcW+mhnygc0gPHx9+IN+kGvaMb99QJgLnHlIJ1QuB+ktTlENn5XinGO8eJVuvD7g
-	mGy2BDdEgZWfvQUzFB38HTekPNpf6882nsXx8334+2eyrJIQNTYnUkW+xGfAsU/5l1jY6I
-	juQypMSyoPm59kim2qAf5lau2pgD1rY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761885247; a=rsa-sha256;
-	cv=none;
-	b=0XshUcpw+KAhui8ByO+7v0Wdtp3NPoi4UOL+WnR+5tgjYNpvpzj2RkbRsEz0OfttKkmU59
-	5iBNhtA3B85nXE3R0yeiq5Adg1sp+G0gHDv3CIPWAWyrG8H1dvWvLXEgHNpmIdwg923gNa
-	X0rhslMbAtV8kYn6NZPQysYCIgPlEV8=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=iqAuPk2wUFafneP8EmOrowAVp/6+UHRr0Gjz+pCww50=;
+	b=VVD+AfKXb7eLKSyrz0tCR2zS+PU8uK3PyvPpRgLSOprQv9S2B8DIe/YRZ6fdpCmo2qLPn9
+	wgpPdotIDR+c1Er4dbWNpNbB4N+f2sjGzeSAfdETDJIUAnSnEumN0hBbKyWmC/fk6I5W9k
+	no8/7PPzLQ6wfORmwjHwj/xW8qSEePY=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=E7HsQp5I;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf11.hostedemail.com: domain of bagasdotme@gmail.com designates 209.85.210.171 as permitted sender) smtp.mailfrom=bagasdotme@gmail.com
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-782e93932ffso1830831b3a.3
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:34:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761885247; x=1762490047; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8oE9JQNdIr2S6AC34eXeEphVmop0Si1yVhh0HmwvbZ4=;
-        b=E7HsQp5Iuazsdm2lMoV6QdnFr3s5xvdBJuZy/ryEw/mSY7pkvCPLAmqiGLA6pN5OQ/
-         ROcOf3Zbag2H3RsvDjs8XSCu0WfM2lif4LlFkrPcokC/OodSWZb1pE81w2tIY3de1ucI
-         MA+Xna1GGCaPcVb0nB7DxcfJcR7zgcN6zcq53HprhnU3bpfaLL0bVW4A1x+ViXp7v3It
-         HS3r10tcWs86CIxe2pPykD/rzP8tx3U/8Iio7GzY4OFA7d61ddLlTY81SbxjTLnq85Bt
-         ZNXejr+F3khdCMHgdckCd1Rfse5kR+B9SuTBoIFPR8qL1RsnhZrZLPsyee33Br0bP3nx
-         FmsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761885247; x=1762490047;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8oE9JQNdIr2S6AC34eXeEphVmop0Si1yVhh0HmwvbZ4=;
-        b=nfT32InKg6mLb9S4fjnEP0hCb9xgwKa4WHpz0LVhQVQl/vrkv2iOZXLdc9uNc5BFw2
-         C8uwIP5y1pzt83IJOtjCUsB2FHTY3yAVKj7ZTGQGn+5DbAYPUk/X/lnHhK7Jeo1pG6ep
-         45rrgk7le4omk7Rs7aX9RuSL5G52+NifY99AItTB6DNj6jw9IkaLE5Y4HTcIH/kTvPaJ
-         qNN6/FR4u0kO41Y6l3ftXuHqBz3uIwbCiwOGNRKBbpX4TWVPZ2d6FhK8yjVKmyZ2cZrD
-         Z+lBLDxbJNHLFdnyDJUabEyIpRUTUuYxsLvI39xulMaD04Ux9VK2gy0ZMvpR/CNZG0JA
-         1WbA==
-X-Forwarded-Encrypted: i=1; AJvYcCVpBIdfgahAZ6pA7uFlYQuVMnBHJcwFkYXFesNeLx3kOmCzv3JiIYvw2Z4iE7jHVBeNby/4SerLFg==@kvack.org
-X-Gm-Message-State: AOJu0Yye6ix1XMkFtWcf0BI6CVITem93e8DQH37HEnnybtHW8IPV5MyP
-	EjEksV/BeLEbv/RWBQ0R/fhZNG+qB5BJfLjZGp+RBH86y7nRrt1prXVm
-X-Gm-Gg: ASbGncsBUbhGCpsGpPKEidhTA7TcL9l1jhGDFhMR4PXp9b1AJOUC+CAzuwgIRP1FMuw
-	lyRh/hBK1qNqXQ0ewkd0QYyH5xpcP4EBeyy3J2mGvkWrci26oU3aP2n8YuKypwbqHNHXKcWZ213
-	4Z2OXDgt7PLhLVRRNqUtqaoUrbB3yRxlYGX9y/aYaLiCeOQiOINA7GpH3nZOSvjNucn2VVG9yzw
-	8/Jg9xqWp7JLZMoR+Wi/gGiQmADkOyAAJHRDPaJDLMPpcSvV9PqZ/5T6nXa7qJosfXac4QqsJ9v
-	FthHZxarQir8xlhbheQCBwHuI+bltp9Nag9Mw0/wNw5Om9ZC5Hx7fuU+fMhKJVr89ANPQ96K2W3
-	QZf6DY1Os0CHBdxBgP2LGKx+fShLqwxrAuGUuyRJvxytkYK04AoZhLTWF0LptnE4Va7bqUywsii
-	PDpknZjxWL4/Q=
-X-Google-Smtp-Source: AGHT+IFcwgVexeB6wDVdvipHJTWCcrQS3UvBXAtf/Vakf7r8dXNqGnnrZhcup7mg4kDFjYS+86zxzQ==
-X-Received: by 2002:a05:6a00:92a4:b0:7a2:7157:6d95 with SMTP id d2e1a72fcca58-7a777952b44mr2476269b3a.14.1761885246480;
-        Thu, 30 Oct 2025 21:34:06 -0700 (PDT)
-Received: from archie.me ([210.87.74.117])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7d8d77930sm584989b3a.17.2025.10.30.21.34.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Oct 2025 21:34:05 -0700 (PDT)
-Received: by archie.me (Postfix, from userid 1000)
-	id F026E4209E4A; Fri, 31 Oct 2025 11:34:03 +0700 (WIB)
-From: Bagas Sanjaya <bagasdotme@gmail.com>
-To: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-	Linux Documentation <linux-doc@vger.kernel.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761888335; a=rsa-sha256;
+	cv=none;
+	b=W9Or8X0dsK4w/MwU80H/muLfxXWIgBFOwKGc0wBGDOAIBg5BLzWs1k5RB28zqUsHT2KuPJ
+	LUIAveA0KgyAa5ZEFnVHV18FXw/MFGdphKUmoB2Y8j8SBTKoBHzoEUyorjAbETyY8AOeyt
+	yKcgc4jkWneK9XSQ/HA+A3PyU4i5BTA=
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 31 Oct 2025 14:25:29 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Fri, 31 Oct 2025 14:25:12 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
 	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
 	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Alex Shi <alexs@kernel.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	Dongliang Mu <dzm91@hust.edu.cn>,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>
-Subject: [PATCH] Documentation: treewide: Replace marc.info links with lore
-Date: Fri, 31 Oct 2025 11:33:56 +0700
-Message-ID: <20251031043358.23709-1-bagasdotme@gmail.com>
-X-Mailer: git-send-email 2.51.1
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH 10/19] mm, swap: consolidate cluster reclaim and check
+ logic
+Message-ID: <aQRIOMsAkDciWFw/@yjaykim-PowerEdge-T330>
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-10-3d43f3b6ec32@tencent.com>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2729; i=bagasdotme@gmail.com; h=from:subject; bh=Bpl9bS/WVMWM/ICcHkLvzN+RyuexkmOEFpCdccFpZHQ=; b=owGbwMvMwCX2bWenZ2ig32LG02pJDJks1rZT02e6zayOFOtpuJjgkzZHMcOq/a96wr4t7hntb tKXriZ1lLIwiHExyIopskxK5Gs6vctI5EL7WkeYOaxMIEMYuDgFYCLhKYwMb7YIGGWvdzjbN/uF 9OfT+X35U619r/Q23E0VnNz2Z+VCoIrj24vv6qVO/1y9XfPF3amrmCWU5cu/typvCX936UBl/Do OAA==
-X-Developer-Key: i=bagasdotme@gmail.com; a=openpgp; fpr=701B806FDCA5D3A58FFB8F7D7C276C64A5E44A1D
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029-swap-table-p2-v1-10-3d43f3b6ec32@tencent.com>
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 4118E100005
+X-Stat-Signature: 95ycwat7s1i7eknau89ancpo5p13ykhm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C703040003
-X-Rspamd-Server: rspam02
-X-Stat-Signature: 7ufrc6ugnaibmxj6xzkn4zzkxij9mjg9
-X-HE-Tag: 1761885247-564129
-X-HE-Meta: U2FsdGVkX18HGI+Oo05Z6auHE+AyOPo9sfP+2oomy9t9TAb7ivnrght4seK8UXG3Qa/gB1XwFPpo6tfsg3aAv364APqKNLTWG0ElxYeetlaKBmmpb0qgghQWST4iINVi9EsXsg6hvXeTs02h2M47al6loJGnrDGM3+i/RUvtfkigVtZKhuSu6NEGmkUcCUD8RGbSzJ5vQc5EtNL2VmWd6nYnlsVZaaArf2hWB7eq72H5oHxCbNqLIH5UiaUbGe73hcxylQ+w9AMIVRGkX4/DBQmE5mLYkxUjE/K8IIcsdvn8jQibzio2f5vYtvIwiMP1YLPzlG88Q0lxkiIBPKrD+5QplX5KlZqa5ZaP6wqRsKoTtRNLcnrmsqL1Ya4Oy94TlfMPRw1EDApaMeUiyF5XyjxW5DbgR1t4JnX9cBaxnCghcKbzJyJxW/+rSOEbZ5m7SKsGx5GAPj3axdTGvYRlGdoWLR3FOdog7+RJkLnJqLWYwj4XcILiaf3gXusoF2eMAPFuQkRYeLFrLVs07tKXJFIh7ImW1MNtD3mLAMfXdxT8NjmrX0dQJCnuNZ4tdj5eJKPUY6Q0A+wT5xjNiJaa9M0/keQTezxLGV0f6Qs73uN49i7Egh2T2prvoBFVofsHRxlEWW6yjrwh3H1nIhzSncF+MCsPKaFC2j/2h2jQLDiI/JPVoopNyJIvPr1JhA5YmFVDw/Be8DNauAUNf2jPZ78JyYKxPBo5LkDVYPtqbT8Y+qqQGGjQECVLuulEykL1W2zNUIcCrWL45CioatGSWvXtUwsMTjoSDO0W58K9i4nzPFGNShCoVQqRnG0/A9ML02Sid7VYTERRdn8CMRxD7AAdoLxJvPmIMSf759hvlIl1I0x6kmv4xOQFLcV7z0KrVDp07jXIp9O0xaAeq3mj601RzEr5Bvg3/1qYLoKhUFN0d0Ih1zMYKC/XkpBvgmv+ZB26uGEip9cdp0uKh5n
- MOkOEiZZ
- ZlQ6kWAjXF8Mg5OHYa4UndxOKDp4qAP3DSePqdgq/qmZvqull2yHFy3yWca2aTZkwdbw6qZqIi7SCPJk67O0V4fH4OaMghlJ2twD/JXXGbe+/EsA35qtJttB9pbek6IqLaijCeoLdOxNl5LHrSzgqTWNUnYb7ukyuKpkkzo4lXLPxscpRYplJ31KTXhbwfndXmeXp9yPcB9abld3a7reKq/6ON9CyhxQEcwVLVnEzzSMclvPbzDa6EGrTtZeUYvBV/XbpXmJqSDeVia+cXC72smHSxVCT7Ayd5tpDUvJUYCL18dSJX1ophNiD4VbiSoVlj9jpnjgo/yqlSnKMUrAnFhWmK6RF3ivNZKPr26eW4hsOFsiSoxcgMHt9OeoLVhBDe4/Hbt+DUalM0EBY4LttNR1Nx8STdSXi3sQkipFi0U94yYXvOuZI23tSm0b6nZiKeAdcVSyVtPVRnOpkKlOeH8QnCUM+WF+Up4eud6FqnXj1jztfnFVvrJkWjvjZj7AqVrcDDOUh+RxR48zyzzz/WVeJPSoUBl3bnHniAJvvIIo2WROeIpAI+bX2U0MyBbt+1zYpVQr+LYxqL4Qsa5d/b0jA/k3d8YeMyfVXwxmCVRaJV57c5uDy9GfszUiqGrWGKnMqNQFmrhisKcvBWJZVh8t8FKJ+NFIsPZU6VeN0RTYQcgcjP0TGQd3B1geuDm0WL/xSxMcEOerAgbOdxhqPKelVHgQwP1sgN0961C4fP+UJMZ8=
+X-HE-Tag: 1761888332-70549
+X-HE-Meta: U2FsdGVkX1/dFKVPcBOiwWS7zBnqDY8TbEysKBN6ErHXkTTqZUR9FaSBPWdWZI6A7bjqVoPcxlN+/iBpr8SMD6r7UzJRmV7WHhO87cmDo0KL9cxLSGm0IQBO7KL2VP8mhNyIgys6g/9y99zhd7a8+MzGlH0vQOF/gs3dcqo2WyrrtVwAUP6HObBwdZoWZ2NBlMuLWJwPmyE9fSt71kM/6cUSMNXGyDF9pPFWfcjaajk0fz67kRX24EEe0u9zYTwbg3uwW+HacH1nONjfJTlL2HuMVcy37S+Iuk01E45QMNPju6qSnYgEQ1Hh19dpY1Lp/hhPcsQp3M9nb8CVIM0SEksxm/RcAYiP8tbuQMp5ox/i8xgD9e5cjzJRHBcwwf09SMFsxxj65U0kQfvceW5iJLmZlugitajHR20dFDcGDKfZ+ylSYbLjow36mJLvfWyWzIdz6bRy7C6G8sT5azszsank8Z3CsQDJeuK3W1NQnvhmdQAr/gbt22jVQFjClD5ECD/yRAxlHWvO+301tXxw4QfkfadfjYq2dlXd6oPbTBwrmYNS/QaHTMB2ulIDa1X1p/qqYwpMbqDWijhl7G8g1bRnhYnPDiMiNd6rZDzwqnjBAOt5uIPhYLQzWoNeLqZln63+dY7PNJ8S4ncqpcBAJAz3O8C03X3jqGSqZadpceq9drSq2D/P09QuGffnxxYXnTle32kltpIYX6JxOSSQ/T3qnc4o7w+/H3BDCLanwFVKKOmM3pmnWI6dozyWrE4zOqQW+EmSflg/sG8URkpTn0bktcxAoLqX7N0csvrg4z9yNv0rL7cfjoPOVvGvLqxY+aRIp7vy69mjPgig1TRoct+QCUVeDgS3E2e8lYIhlYaH2RKKmU3UP+aUXmdAlrDh2Up9L1fevZV29uHbd1nTbDm6QB+ub/F4o9CXgV1JSZAKK3Nm0ClFaLfJ3bECntXPeRj7QS87+23KV3y4Yhx
+ pX+oauN1
+ rsXxxRlEpEbc9d5zeK144JHV+4TE5bFDVcxytqMWYQWeXPvoa04pIxtLoiZIn6LFfZG+73SJ+zzKMrOk7aemOaW57E6HqWq7OlJSJgIlhamXQHa66vqcSStGzEBd4EOTu9LOvJKvpeu1cKVAwy5SXbN6eFmhDVWYEhB6zjm9UzPaI2HosIXeP19TibUsvz+tCee45Seds1WIxaeUiE4g+j05dibIvG8KLDfnwYIhg4gdJBN0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -138,60 +93,159 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-In the past, people would link to third-party mailing list archives
-(like marc.info) for any kernel-related discussions. Now that there
-is lore archive under kernel.org infrastructure, replace these marc
-links
+On Wed, Oct 29, 2025 at 11:58:36PM +0800, Kairui Song wrote:
 
-Note that the only remaining marc link is "Re: Memory mapping on Cirrus
-EP9315" [1] since that thread is not available at lore [2].
+> From: Kairui Song <kasong@tencent.com>
+> 
 
-[1]: https://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
-[2]: https://lore.kernel.org/linux-arm-kernel/?q=b%3A%22Re%3A+Memory+mapping+on+Cirrus+EP9315%22
+Hello Kairu, great work on your patchwork. :)                                    
+> Swap cluster cache reclaim requires releasing the lock, so some extra
+> checks are needed after the reclaim. To prepare for checking swap cache
+> using the swap table directly, consolidate the swap cluster reclaim and
+> check the logic.
+> 
+> Also, adjust it very slightly. By moving the cluster empty and usable
+> check into the reclaim helper, it will avoid a redundant scan of the
+> slots if the cluster is empty.
 
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
----
- Documentation/driver-api/usb/writing_musb_glue_layer.rst | 2 +-
- Documentation/mm/active_mm.rst                           | 2 +-
- Documentation/translations/zh_CN/mm/active_mm.rst        | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+This is Change 1
 
-diff --git a/Documentation/driver-api/usb/writing_musb_glue_layer.rst b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-index 0bb96ecdf527b4..b748b9fb1965af 100644
---- a/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-+++ b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-@@ -709,7 +709,7 @@ Resources
- 
- USB Home Page: https://www.usb.org
- 
--linux-usb Mailing List Archives: https://marc.info/?l=linux-usb
-+linux-usb Mailing List Archives: https://lore.kernel.org/linux-usb
- 
- USB On-the-Go Basics:
- https://www.maximintegrated.com/app-notes/index.mvp/id/1822
-diff --git a/Documentation/mm/active_mm.rst b/Documentation/mm/active_mm.rst
-index d096fc091e2330..60d819d7d0435a 100644
---- a/Documentation/mm/active_mm.rst
-+++ b/Documentation/mm/active_mm.rst
-@@ -92,4 +92,4 @@ helpers, which abstract this config option.
-  and register state is separate, the alpha PALcode joins the two, and you
-  need to switch both together).
- 
-- (From http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
-+ (From https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
-diff --git a/Documentation/translations/zh_CN/mm/active_mm.rst b/Documentation/translations/zh_CN/mm/active_mm.rst
-index b3352668c4c850..9496a0bb7d0705 100644
---- a/Documentation/translations/zh_CN/mm/active_mm.rst
-+++ b/Documentation/translations/zh_CN/mm/active_mm.rst
-@@ -87,4 +87,4 @@ Active MM
-  最丑陋的之一--不像其他架构的MM和寄存器状态是分开的，alpha的PALcode将两者
-  连接起来，你需要同时切换两者）。
- 
-- (文档来源 http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
-+ (文档来源 https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
+> And always scan the whole region during reclaim, don't skip slots
+> covered by a reclaimed folio. Because the reclaim is lockless, it's
+> possible that new cache lands at any time. And for allocation, we want
+> all caches to be reclaimed to avoid fragmentation. And besides, if the
+> scan offset is not aligned with the size of the reclaimed folio, we are
+> skipping some existing caches.
 
-base-commit: e5e7ca66a7fc6b8073c30a048e1157b88d427980
--- 
-An old man doll... just what I always wanted! - Clara
+This is Change 2
 
+> There should be no observable behavior change, which might slightly
+> improve the fragmentation issue or performance.
+> 
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/swapfile.c | 47 +++++++++++++++++++++++------------------------
+>  1 file changed, 23 insertions(+), 24 deletions(-)
+> 
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index d66141f1c452..e4c521528817 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swap_cluster_info *cluster_info,
+>  	return 0;
+>  }
+>  
+> -static bool cluster_reclaim_range(struct swap_info_struct *si,
+> -				  struct swap_cluster_info *ci,
+> -				  unsigned long start, unsigned long end)
+> +static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
+> +					  struct swap_cluster_info *ci,
+> +					  unsigned long start, unsigned int order)
+>  {
+> +	unsigned int nr_pages = 1 << order;
+> +	unsigned long offset = start, end = start + nr_pages;
+>  	unsigned char *map = si->swap_map;
+> -	unsigned long offset = start;
+>  	int nr_reclaim;
+>  
+>  	spin_unlock(&ci->lock);
+>  	do {
+>  		switch (READ_ONCE(map[offset])) {
+>  		case 0:
+> -			offset++;
+>  			break;
+>  		case SWAP_HAS_CACHE:
+>  			nr_reclaim = __try_to_reclaim_swap(si, offset, TTRS_ANYWAY);
+> -			if (nr_reclaim > 0)
+> -				offset += nr_reclaim;
+> -			else
+> +			if (nr_reclaim < 0)
+>  				goto out;
+>  			break;
+>  		default:
+>  			goto out;
+>  		}
+> -	} while (offset < end);
+> +	} while (++offset < end);
+
+Change 2
+
+>  out:
+>  	spin_lock(&ci->lock);
+> +
+> +	/*
+> +	 * We just dropped ci->lock so cluster could be used by another
+> +	 * order or got freed, check if it's still usable or empty.
+> +	 */
+> +	if (!cluster_is_usable(ci, order))
+> +		return SWAP_ENTRY_INVALID;
+> +	if (cluster_is_empty(ci))
+> +		return cluster_offset(si, ci);
+> +
+
+Change 1
+
+>  	/*
+>  	 * Recheck the range no matter reclaim succeeded or not, the slot
+>  	 * could have been be freed while we are not holding the lock.
+>  	 */
+>  	for (offset = start; offset < end; offset++)
+>  		if (READ_ONCE(map[offset]))
+> -			return false;
+> +			return SWAP_ENTRY_INVALID;
+>  
+> -	return true;
+> +	return start;
+>  }
+>  
+>  static bool cluster_scan_range(struct swap_info_struct *si,
+> @@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  	unsigned long start = ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+>  	unsigned long end = min(start + SWAPFILE_CLUSTER, si->max);
+>  	unsigned int nr_pages = 1 << order;
+> -	bool need_reclaim, ret;
+> +	bool need_reclaim;
+>  
+>  	lockdep_assert_held(&ci->lock);
+>  
+> @@ -913,20 +921,11 @@ static unsigned int alloc_swap_scan_cluster(struct swap_info_struct *si,
+>  		if (!cluster_scan_range(si, ci, offset, nr_pages, &need_reclaim))
+>  			continue;
+>  		if (need_reclaim) {
+> -			ret = cluster_reclaim_range(si, ci, offset, offset + nr_pages);
+> -			/*
+> -			 * Reclaim drops ci->lock and cluster could be used
+> -			 * by another order. Not checking flag as off-list
+> -			 * cluster has no flag set, and change of list
+> -			 * won't cause fragmentation.
+> -			 */
+> -			if (!cluster_is_usable(ci, order))
+> -				goto out;
+> -			if (cluster_is_empty(ci))
+> -				offset = start;
+> +			found = cluster_reclaim_range(si, ci, offset, order);
+>  			/* Reclaim failed but cluster is usable, try next */
+> -			if (!ret)
+
+Part of Change 1 (apply return value change)
+
+As I understand Change 1 just remove redudant checking.
+But, I think another part changed also.
+(maybe I don't fully understand comment or something)
+
+cluster_reclaim_range can return SWAP_ENTRY_INVALID
+if the cluster becomes unusable for the requested order. 
+(!cluster_is_usable return SWAP_ENTRY_INVALID)
+And it continues loop to the next offset for reclaim try.
+Is this the intended behavior?
+
+If this is the intended behavior, the comment:
+    /* Reclaim failed but cluster is usable, try next */
+might be a bit misleading, as the cluster could be unusable in this
+failure case. Perhaps it could be updated to reflect this? 
+Or I think any other thing need to be changed..? 
+(cluster_is_usable function name change etc)
+
+Thanks.
+Youngjun Park
 
