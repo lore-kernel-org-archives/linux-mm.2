@@ -4,121 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58F7ECCF9F0
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 00:47:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C907ECCF9F0
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 01:36:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 56B2D8E0092; Thu, 30 Oct 2025 20:47:04 -0400 (EDT)
+	id 8EF548E00B8; Thu, 30 Oct 2025 21:36:25 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5429A8E006B; Thu, 30 Oct 2025 20:47:04 -0400 (EDT)
+	id 878748E006B; Thu, 30 Oct 2025 21:36:25 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 459B88E0092; Thu, 30 Oct 2025 20:47:04 -0400 (EDT)
+	id 78DC88E00B8; Thu, 30 Oct 2025 21:36:25 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 30D348E006B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 20:47:04 -0400 (EDT)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id F3C8F12A9D5
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:47:03 +0000 (UTC)
-X-FDA: 84056569926.11.1F94457
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	by imf01.hostedemail.com (Postfix) with ESMTP id E657740009
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:47:01 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="c10/pLPE";
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 621A68E006B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 21:36:25 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id F2827C0349
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:36:24 +0000 (UTC)
+X-FDA: 84056694288.20.41AA14B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3BFDB18000D
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:36:23 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DyL9QH92;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761871622;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761874583;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5AQ8Z+tfOhuXO2xdxhxePQBTPs3FHNq4yg2hFuZgTZc=;
-	b=IWuryli2H3khJm8Z5sZ8SDxqr83b5RHSinQwcPCOriBFAEUPlBM8BcEQPEw6wHbVgHixs8
-	oymIF7+yQobydcQvpkuroWcQBulWYIHDaC4Osh8bQ3fWhPPCh6U8jengGm+84QoejBDa+3
-	FKStepoItu69xtJqiPKzLMXJx4GDYqU=
+	bh=YCm979f+J3jhIi23rQzAYF5awUaKneiA/jyLW1W4duk=;
+	b=wlp2r02q18B0Cz+fAe2pomTkuYWsx1rCPvG7EqjvQcv2GPcxn/MjM+lQFiMnBdoZt1spY9
+	XdYcfmTzkevtGp87363RJUlBCdHAgaRYuto01dT9fUkKKYXrsB7FnWKLNqceB8cFIg+xAQ
+	9qgXE8v7SelOlK1z17avz2rhmQl8U68=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="c10/pLPE";
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761871622; a=rsa-sha256;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=DyL9QH92;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761874583; a=rsa-sha256;
 	cv=none;
-	b=PHoon3+OOcH7XUqCUVIe9k+dcRoUIkOcFG2xMO3aPXwQgG5X6cffQUSGK2KRa+huEkHgDv
-	ket72wNIeK9FXslo06t/CrLrPNEyqMaqWCWScaXN7zq6B5cykRoPKRaNr4MH41By6L+/qH
-	eOPfiNy63TcKxeSvIuRXiXK9IETtpew=
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b6d3340dc2aso467377866b.0
-        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:47:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761871620; x=1762476420; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5AQ8Z+tfOhuXO2xdxhxePQBTPs3FHNq4yg2hFuZgTZc=;
-        b=c10/pLPEwKxkyVQ1qMQ5BdruN+P/jvk+MtEKYwiVwAFRb/+iJhI/EZELDAPdQgChSP
-         lQ95xiNyYC8hwbWWiAUjh1pJlMYARKZrTnzaNdx3Q83pqPABDj+1WQVZxToY4nZtOTWo
-         mDuc6u4y6vB99/6bAQ7BUGhtC2i5Z6EkM0Jl8JHIL2OuHkMZAKVwNABrz5QNUczuLpni
-         IbkYBUfCwUDoKXUa2lPBQmkUTmsT2hJIBbZ5rT73ciZuvgctD7Hr4dn3k/UkvcuyNsVp
-         xOVP0qgbjBtJrXbiKcZraoRV51jtSLSASgFbtRhps5EIsGxO+JS6B6B/gLoI9R5T+apw
-         wm+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761871620; x=1762476420;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5AQ8Z+tfOhuXO2xdxhxePQBTPs3FHNq4yg2hFuZgTZc=;
-        b=lC00Wwz7PGGHNyzCOjIb1m6uoQApnEoX9GEIKWHL4YvEs0jBn9nt6AjT0dosYGClYA
-         duCVn9NSZ8bSwuO6M0JaXKmza9VBR4X3OjK4qowHg5eMr+7UEnCHkAtFSuu8r5hGreK9
-         S7TqDW2BTl7mPcvIs/I2W50jKWKGyDgNthuxkYv/BzAyCPROh6iH24YddcAYOfRWGFjH
-         Q5xY3W6syWtiUcW6TxZCTwVISztqg00Gbbf6R4cazNdFGjBV0MrkwVlLQE3n58fq1E64
-         SswLlj6jKlieA671CvkPOmVOCcWCAfp1qjcmtBQnHemZ1H0X4BIpl6pV2AzOOqv8n4/b
-         6Maw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhhqCGmOD+3AiSYAkPpcJ2jAPi5qNilFpXygiM/U8VOcVAJ+DNx9DHlMJbVFbsJgdgWMYXm+E3Gw==@kvack.org
-X-Gm-Message-State: AOJu0YwvROXwLK/WHU/ooEausZCEJ3tpdlYc6Q7dkfimteOS8KzRkS5r
-	QsC/3DORN/hBix5S17Lvaj38SRwNFmS2bZ2xUIPO8EAC1KSXZWAwS1PW
-X-Gm-Gg: ASbGncvOpNzyFsIyCIzZ8E1Jc/tlzpeOgY3oMGXUPjXF+ywPluWYKcI2EPP9ublMYwp
-	2RJxumxHJAbJ07Yw2HP6JFSFbvVxGrjM79sIZTL3worevfWorYKDPxiGhYaB1Szdf4SdHY2rRY8
-	YKVCSqrfMFmKLTiA00nDueQ5++wOw3wvYllwydyCCTW2VFvktRC0VuicqAnF+2nKQQIs1pZzrKe
-	voFNS61EdUrDCUeEHgvYYMOfeQ2GBQLxUAG2szyC6Jlf0s+K44xIVgRu+bWZyu07cFQ2VfdMnJn
-	TldXwgI+Dw6p7lLf2zSBcSWlzikkorH5q+mXt4wjH5IKCJsswTZi/GG71Ig4dVU5gBP2iie9tr6
-	5VXx6jt2nfma2hDMRx8w8NQV+zAuONXC9e8ark1PgiDvJtBwsg/vOx0eVVsl3OUAfD9BwnuPx90
-	o=
-X-Google-Smtp-Source: AGHT+IHi6BEBy0AMxw54ueJJMwoRZIZT4u2PPJg8dmvIkuradAkKPXF2yoGfMmq/I6j1PpHGs/aFpQ==
-X-Received: by 2002:a17:907:6088:b0:b4c:629b:aa67 with SMTP id a640c23a62f3a-b70522030bfmr538023566b.32.1761871620011;
-        Thu, 30 Oct 2025 17:47:00 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b70779dc143sm26524466b.30.2025.10.30.17.46.59
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Thu, 30 Oct 2025 17:46:59 -0700 (PDT)
-Date: Fri, 31 Oct 2025 00:46:59 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
-	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
-	linux-mm@kvack.org, wang lian <lianux.mm@gmail.com>
-Subject: Re: [Patch v3 2/4] mm/huge_memory: update folio stat after
- successful split
-Message-ID: <20251031004659.xbtssliy6cfwxpo3@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251021212142.25766-1-richard.weiyang@gmail.com>
- <20251021212142.25766-3-richard.weiyang@gmail.com>
- <9d035053-d1ef-4284-9d27-fbc28cda26ad@lucifer.local>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d035053-d1ef-4284-9d27-fbc28cda26ad@lucifer.local>
-User-Agent: NeoMutt/20170113 (1.7.2)
+	b=aA1oWHeB5oIxtJq5xardJEy0uM3uKOYDQV6Mi14V5CgUhDMWx2x4XdB6BtU+4F4vMLo8cW
+	S+WQ6Errktf7c0sDErZbEzBDiCugGhggPO42+8OOgCZDnXaE0yxzWqSxPl5ap551ezmD6E
+	aH9nVVxxqTS6Jtmz6sIasTR8Bh+kEjs=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 034C040A73;
+	Fri, 31 Oct 2025 01:36:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A38F5C4CEFD;
+	Fri, 31 Oct 2025 01:36:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1761874581;
+	bh=4tm9pA2jShcu+N9lUPnseKrroHmNle8ZIjjmbwf9rlQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=DyL9QH92nFivkqSoVwg+5QuGmkfoNOkl8LqwiZfabUFEw78GFh5GqBly/EmJKKUuN
+	 cLySKH7548j4QUJf4/1UBcjPb1VIt3ull8LMTtN/1aSpzvtW22mFEo6Dzs4zbgPhQj
+	 xgDLkAYuKEzUz2HkckVkk/O0ggDj0BdumdxunLjA=
+Date: Thu, 30 Oct 2025 18:36:21 -0700
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Big Sleep <big-sleep-vuln-reports@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: Re: Oops in secretmem_fault()
+Message-Id: <20251030183621.39ea843ebba82ae133b2b38b@linux-foundation.org>
+In-Reply-To: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
+References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: E657740009
-X-Stat-Signature: inmsqcpjne9qe6gijas7qt8d5atbom4r
+X-Rspamd-Queue-Id: 3BFDB18000D
+X-Stat-Signature: ide9eu33dnpr59w4d31shkmfbf6fhxgh
 X-Rspam-User: 
-X-HE-Tag: 1761871621-740619
-X-HE-Meta: U2FsdGVkX1/OTui+aMCREWBJvKkrty732rBg2s1xWejPhE1NaFIdW2ppunpeL3nYNkPFVbfQ49bwrl6+ueJNOu2XWPYrmEuEyFkN8iLXafNvZ2RTC0cyibHfqTJ719OH/l1TG6iaqGBjAxIXqY3FxAIzXZgdtLN4vMdxOgOVIF/cz1Wk0SlfcG/CJ9MdaKmds6+BGzRV2Qb1zaJQwzgOZyAIh55EYmvwmg2UL9wzvyX6DjIiQ4NLxky/qUIsfBVdCTj297RZc6juthzbJIwhMTjX6bv3yt3gsTpW3zJSEZRJubti3KvY5H8FTQXZfq7vEsOzxZLu3w55MyqjSBHNBeyh1i/85UWkxgd4+jtWwfqpiXBsR2uAp7QZsS8MhbZ0C9nsy9GJCELpAVECfecXhL4p4YXEMJLUHT4WOtnaq3jcuXVPGRdCDYtZwSqONhK5RSmmM5tepHWTcEISu0QZlrLEGK+PUGM7WE+kG6KzVVCy9WaeE1C42xNkvDuEMthREBXzqYY4+T1bO5fACeYoiUBxnxwENv2vVf+fHptbJCgkEFyNMvOfcxNfJ4W3j3mGOKXNwRxaorMsxHKN8TLvJgJ4FQVoG0BZA8guhPz/Iqj06hxk9nHftcmBb6X4VEVKVfyQTfMGrESxYN+ZU9ozjylPsPYyEBJ9H3YUAmpnlg4ZDu85BSoJMKPWSXJfv9dJ0hdQJMm9oUj7KzQTvZueKmnNn2BUj3LMmBG521NHfT9TOAjqgmSAiw4mn3jFYzV9PfkEHqCu/pNn0q2Q6JaQnxl2pO8Cb6vdEFfjv4oX868ErPbtJddOAm2haSUF7hirAnip2dSnLNP+m5PeMCSLSo8EPZYVPBEZ942v2zXMFN3Y8b/6QywNcE7wYgOiWPIf0bufndAzR/CxQ9oPenP0YoLssTTQV1gKcghhOOrfa6sI0dhefyPFVBKNpGIn5aRdCT+4Nre6nLjq5+bbCIn
- iUUE0j0Q
- qMlGuSxHCRyJrNghc1FKOy6HO+U9kAT6EnTs8zndFpAdq69Nprnk7HTbhcauIoSwtA63kDJMrvgSC8m8alELX83EZeTvsCzc8pNNMsqOlewt67fcrXZpAkPbGIKU+NHy2BMgUyhLexq44kMqnXLcupZIbVek5zQ52iFbUGv3Wa3Z6tVvbWVKNoSD22SKAKFRR8jXrx55nALYdtaMPxZLfxfAmZ207odei38paYh/gX2oKv9VOVsnebCAMacUf4wpMUC+q+tqYXcu23811RYj1chTb/idb9liEShEzgsIx4CJVyrHnxaE3ihHSBI9mufZHXtFhUdnJd/Rct/lRKXZFpbIMpK+DksUvDN1Xx95qERxoeTlcZtDBaNfrLE6smPFkZu8D8pEI9i+0ROZng0jejMT/yeE83QhqrhyI10lON9tEecZvwdQgQL1gJL8Xm1HbX9alt7wuDNXpBt8WH4o7PJrp0hT2QiKG2dbE4jgOuoKs13OdGWu956SH97/9MyXEt+ADI3G2b6YFwy9hbPIJ7hl9T4o5KWZB6yxZtzliZu6hq/dfiXGTGFVmdx3+Bt9pXn/hSy2BEKP+sCeBJuIZEsuvcuqEvfPBpzhI7GyInOLgwg9ioBpgfas1eoNRV1/KD7bJdLeKArTV1AQZkwlrYZTO9s6WQ4hL7jPgP/qMjr2X6BStaQTmluZ+6YG8n86cevy4PJDWhkSsD5JTXl/omoN45ctlIe2+5QCQDroMmMQ7ieRe9Hpf3VRKMLT8fV5ijWwc
+X-HE-Tag: 1761874583-851096
+X-HE-Meta: U2FsdGVkX18FA8cy0PV9z7xRSy5Rv27Yt0nPxAlgOLfK7ViVe105V4ec/9wVviOvjkd3CMGITLqs38zSn2JTToE4Sc9BYwA+YnHT2nVtFvqF25W7POIxnopudRBP8ybYBKvLB9etFqi9gd1FKC6sjRvPTwucg6o66Iohq+hGhLyq7lvrA4M0WjWd9se3dY9dVjb5QH7QYs/rHtCGl6/Xjz44/+I5gqH8d4+2GxZiuBuEtrmG61DsenVEffdS5iSKcdOsYoJSoNs+O58NQqXZ9tWWL+v82iFg/PubMwZy1OgUeFWqv8OfiaHXGx4YlqZwshrkh4+GVzMATE/hrZpyP4VKphrstjR0cEse7vrBUU/ifvniG5gdSKPFE2A8F6um9tV3tG3co5MoJs7aJvc5IFEeGxBfr4ZTkB36tXE/zLuwDijs+HiZKC0MZFXSr4jzA3vdCRc4Ykahj+7aag6NMTnn2KZrvmor4d9Y1AyVO+4AqnOsEdEuMZXKNhJDaAkYv9Dz9q2HBuinMuFN61WQgv3KLAqe1Pv+VesMehD+EYFBdj327V+qenuFhnYMluMoCUrSO/leAnzPO4V+k9q9dO9eFzNzvZjKhlaQaDViQR8xdIwji1N4hz9U7kr1rbrJo8A4DGeJOT4nO/KUVVHNPb0m1C0dhvnmxsekFC9iZ/hru7TDv6lCazXmQYS31+1JJVS4vsCS70G39iIpYgztxHuYbvPbNv5dHf2BMYec9abtZk2aQCDgAb/LcP8zDk9WoXF93rDAvz4BZwkUHO5VWHdXKWnDCDTIxdH5tzUCB5GJ+WGFTBZoHyZmpnZl6q9IlnvO85LeAD1RMtOqWPWnJBP++KIOVXBCGvRJhTsVqoklWsXEUNLbZ2hxLUjJFot4fz+QV/0RgJbiAlaNdYGGFn5Z/QrvJiwnVSPBL42zjk/tzqcv/TtT1PHaLyiz1lyOfYTh+CPyVnQ7qtd81ih
+ XDxEVT7J
+ VHO0n1HDFlOWD+q0GDbAb+f/dZAd7itbkV2KE/NGtY9v9IfB6Ezzz7OTcUlQie3U7Z1nQoLBRVoBQmCecHL3MkdYToVyMhvBb9DyUTKoy6lkr2xQji3FqHx4S3dtUdDy9Ekk+5pgNgFuJOT8TIZtP9FS4HE/1a2dwxhZpLeJeNnldB63XboANVv6mvl5SkS/i3Ssx2p06cLsvYlB9oQPBw0sM3iAGHUrPyhZ9jaIcuXwuK3qS8m4rUtsBTtlST4o/xFkQmqvczSDNmKnR0vlL13kO62IT+CKc10b/1ie0bgDeuEwDPlYDNd3EUppzUl0nAJYuB9RA9qUGf8LXT470cnkyPHh3p9XI9HIh8Vx4m95H20EGMp9BEdh/HPIeRBkPc+l2RvolnjhkUrrPLDp8m4IzQ3MWfvG3QNMn8G8f6jqzaOYTGuXsQjAzD7MSr9lEa5jqKnvQ5cpLZ5Ew6Zly/5c6bioQeEhzKnFYK8WBI0xvqU9GMzhpG3HzGIVvyyOR7eThYSxX0OCTRk5siQskfXhmyT9zYUfsWFmQzHC+jbSBCgU7y0qUptf6dB2vXuzBIMnjIoxWV8BzOtNSBymCyl+aZw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,95 +91,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 24, 2025 at 03:32:42PM +0100, Lorenzo Stoakes wrote:
-[...]
->> @@ -3636,49 +3631,32 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  			else {
->>  				xas_set_order(xas, folio->index, split_order);
->>  				xas_try_split(xas, folio, old_order);
->> -				if (xas_error(xas)) {
->> -					ret = xas_error(xas);
->> -					stop_split = true;
->> -				}
->> +				if (xas_error(xas))
->> +					return xas_error(xas);
->>  			}
->>  		}
->>
->> -		if (!stop_split) {
->> -			folio_split_memcg_refs(folio, old_order, split_order);
->> -			split_page_owner(&folio->page, old_order, split_order);
->> -			pgalloc_tag_split(folio, old_order, split_order);
->> -
->> -			__split_folio_to_order(folio, old_order, split_order);
->> -		}
->> +		folio_split_memcg_refs(folio, old_order, split_order);
->> +		split_page_owner(&folio->page, old_order, split_order);
->> +		pgalloc_tag_split(folio, old_order, split_order);
->> +		__split_folio_to_order(folio, old_order, split_order);
->>
->> +		if (is_anon)
->> +			mod_mthp_stat(old_order, MTHP_STAT_NR_ANON, -1);
->>  		/*
->>  		 * Iterate through after-split folios and update folio stats.
->> -		 * But in buddy allocator like split, the folio
->> -		 * containing the specified page is skipped until its order
->> -		 * is new_order, since the folio will be worked on in next
->> -		 * iteration.
->>  		 */
->>  		for (new_folio = folio; new_folio != end_folio; new_folio = next) {
->>  			next = folio_next(new_folio);
->> -			/*
->> -			 * for buddy allocator like split, new_folio containing
->> -			 * @split_at page could be split again, thus do not
->> -			 * change stats yet. Wait until new_folio's order is
->> -			 * @new_order or stop_split is set to true by the above
->> -			 * xas_split() failure.
->> -			 */
->> -			if (new_folio == page_folio(split_at)) {
->> +			if (new_folio == page_folio(split_at))
->>  				folio = new_folio;
->> -				if (split_order != new_order && !stop_split)
+On Thu, 30 Oct 2025 16:34:29 +0100 Big Sleep <big-sleep-vuln-reports@google.com> wrote:
+
+> Hello Mike and Andrew,
+> 
+> we found a bug in secretmem_fault() - please see below for details!
+> 
+> --Google Big Sleep
+
+Didn't know about this - it looks neat.
+
+https://issuetracker.google.com/issues/430375499
+
+: Big Sleep is a collaboration between Google Project Zero and Google
+: DeepMind to build an agentic AI system to help automate software
+: vulnerability research
+
 >
->OK I guess we don't need this as in !uniform_split case we use
->xas_set_order() to set the order, then try to split, and if an error arose
->we already would have handled, so split_order == new_order is guaranteed at
->this point, right?
->
+> ## Reporter Credit
+> 
+> Google Big Sleep
+> 
 
-Sorry for the late reply, I was on travel.
+You might want to include a token here so we (you!) can track the
+report through to its resolution.  See what the sysbot people are
+doing.  For example,
 
-In non-uniform splitting, @split_order represents an intermediate step, with
-@new_order as the final target size. 
+https://lkml.rescloud.iu.edu/2408.2/07972.html included:
 
-The check for split_order != new_order is necessary for the final split
-iteration.
+: IMPORTANT: if you fix the issue, please add the following tag to the commit:
+: Reported-by: syzbot+5054473a31f78f735416@syzkaller.appspotmail.com
 
-If this check is absent, the logic that updates folio statistics for the newly
-split folios can be incorrectly bypassed when the !stop_split condition is
-met.
+and when Dmitry fixed this he included that info in the patch metadata:
 
-Not sure I get your point correctly.
+https://lore.kernel.org/all/20251028101447.693289-1-dmantipov@yandex.ru/T/#u
 
->> -					continue;
->> -			}
->>  			if (is_anon)
->>  				mod_mthp_stat(folio_order(new_folio),
->>  					      MTHP_STAT_NR_ANON, 1);
->>  		}
->>  	}
->>
->> -	return ret;
->> +	return 0;
->>  }
->>
->>  bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->> --
->> 2.34.1
->>
->>
+and that Reported-by: will be carried all the way into the mainline tree.
 
--- 
-Wei Yang
-Help you, Help me
+
+btw, it would be nice to Cc some human on these reports.  One cannot
+be very confident that emails sent to big-sleep-vuln-reports@google.com
+will actually be read by someone.
 
