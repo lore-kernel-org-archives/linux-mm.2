@@ -4,100 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45928CCFA00
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 08:46:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94766CCF9FF
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 09:02:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A38698E00A9; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
+	id CA6E68E00B1; Fri, 31 Oct 2025 05:02:26 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0FB28E0042; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
+	id C7E878E0042; Fri, 31 Oct 2025 05:02:26 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 925808E00A9; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
+	id B94598E00B1; Fri, 31 Oct 2025 05:02:26 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 7DD458E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32D5316034F
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:46:30 +0000 (UTC)
-X-FDA: 84057778140.02.BB23669
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 624A740006
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:46:28 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A73CE8E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:02:26 -0400 (EDT)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0297E58D9F
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:02:25 +0000 (UTC)
+X-FDA: 84057818292.20.FB177D1
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	by imf06.hostedemail.com (Postfix) with ESMTP id D8C7A180013
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:02:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OpY1qGxA;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761900388;
+	s=arc-20220608; t=1761901344;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7d2jDf+rNANjgdXJ9jgGNfHD9Jjf+8Cvrl1XyirvqFY=;
-	b=cbsAFkykV2mo9IvBg4HkMEKJmrtzi8MDcT6b91mGrQgD02sqkTeCK3lrJvY7H+muNHzumh
-	vwb+isJaqqcyd+budA6fOCg6nDggyyPuYplDfKT3J1JhX1PRjsfa3HqURXRezUaR1UMhgQ
-	4OCAAgDtdhRceZHc1FjcGSMTLC+aai4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761900388; a=rsa-sha256;
-	cv=none;
-	b=Ln8Rlg6AqoNQBM2jRL4xkbHip3zUcDpRZnd3oa6UfuGXCdcKPGCM0zj6ZTWp0UgznyYbmx
-	znbQmJappAsaRFlPcNwtEdsC1stBwzlY2FqJiE86a/ljqLGqNttpBbyj1HT5LmjUbH6nxy
-	GTnBViz/h+Xxi7Ld0dnNB7Ds4lmMjOw=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=riW5F2YSMNEn22/E8/Ov0+qACVsdJ9lrTJanAog9mm0=;
+	b=8Kx8+XkFvjUikbn+STMT+zoFtBr7uUVXbOjf7P+RqG2Ygar8xlZKreYxQ6NThWl1Uczzd7
+	b3fsWqzZP2fa98R7kMmAOAVtaSjdVK9BjD2zvOmpsb/A4Hmwj78D2x2gUzQiRNtmgOpqFA
+	V+NjZtTlE3BeA4OqXIApmy3Lj+Ikr/g=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=none;
-	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-33d463e79ddso2446399a91.0
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:46:28 -0700 (PDT)
+	imf06.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=OpY1qGxA;
+	spf=pass (imf06.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761901344; a=rsa-sha256;
+	cv=none;
+	b=QH6+zUjVAYVu8UUnIaRmK9mco13flMRsxV+DQ5Xftadi6koYMNtVIHI87FsOOUz2zk0iWb
+	jz83emKg5uIB5cMOOIoiK7529lCF00JXKA8vvRzyG21dSFcDbz6S782DOuaqaLdoCyLEps
+	4DApGd6qpaf1WiZJBKaOJqGL2fQwl44=
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47721743fd0so10567005e9.2
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1761901342; x=1762506142; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=riW5F2YSMNEn22/E8/Ov0+qACVsdJ9lrTJanAog9mm0=;
+        b=OpY1qGxATiiFpMeCJsstqimsFKP/yycHelAoxYnaD37EzL2ZqwCC1/cZIhfshV+ZtB
+         CwjwoupxIa1Vj3ssBmqZoJoAmkLY6deJrzA29lw0qQdGyk5waWJYVe37flojom0pnkJo
+         9iwWWppCWZHf3OkB7PDS9zxRB4wWV62F88C4p86ahW3I6psShGT5QZAk0VNcztjHGwGO
+         r4nrDG/nM6vDdEcOuKxCgD2MkKSEnr3oBWBqA/9pQLWXIdsprwcQFcVjKFsayLG02og7
+         qbNM1fofol6kWkEM+fpsZTVC3GCSoKvCtJHYXIKQUs2ccZXLCI1IG/SaOVCysXjuO77f
+         mb1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761900387; x=1762505187;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7d2jDf+rNANjgdXJ9jgGNfHD9Jjf+8Cvrl1XyirvqFY=;
-        b=XVXpN7w1eFsf1Q8TGJJ7rGrSTElTpWL7XNFtUaGRkVwzTHaqn0kR4OC0fEzsP29ReQ
-         o2sTcrAJqcs3Rpf9pEqTZvQtI0wFcnJwx/hq78McXjqfvvYMs0DedLspJKcgl1G4Ayo7
-         B7QE5HavY1eDJQwawQAeDefLfgOKRnxXIXjm7F0fv5OOGj5n3jYw9JEkUp9YmgF1++8E
-         0VXCbftmBFFmBwxgnNzzIdaDBfqq4WZDBjEPsFxOxQw01L+qD4qk+/F4NcL2UwXTfOZi
-         2XjJhYHSrI2Q4XsQXg4jshJ0z6qhV7LQjb4s7ie8w/O4MJh4Q5KlLpYlWhvPdCqm50ES
-         5HCQ==
-X-Gm-Message-State: AOJu0YwaWHIx/lFUIJHzTJD3mmOFygy8XRDbM5CdULwiy8EGMPKhGRmQ
-	M13CVWTTuTWmZqcQ5d4OXdvxFPa9xOmYQU6KHNKQcemN2tNMMm3rKG+95nfsXw==
-X-Gm-Gg: ASbGncsE5hNQ42GY8f237b9lLyiPjAHk3ShmJYq0d/krNvz1VBuFfz/XZhKIDi9XFqi
-	nDCP7H8e0dRNdlPShfEcMr0VFO8JMTG2g/E9jsumy05BkCSXQ3MkIknqETNvPYrxr3BNTfpxChC
-	7f5e8b7Sbs1n5oLbBNsKHcVwUZNqDu03APimybrgvIM1/fE4tml3XsSnYyc4G6nskYsTD67nKZV
-	D0xuQxXq4tFFw8NfZNczpitDswUFWpwTxEsrlWc44SK9cgnJznQ438GkK/Wjq1Dvx/dZAxoLrj1
-	rZHCMyHTK0U2Tjcfmjk9N2rdxtsvTRPV/2uR/bMG6x1WDAqQn3etCML7anM2FOgFMeBL78i9zDr
-	s5fSUGSIU2uyybv70iNgLkFx18eiXoCc3NyQSg1AkVDIFHbutivzZYXXzDRKbmDsFZmmnCqcjUN
-	zDrUQdv1aY4SIT5+jXypD1xxU=
-X-Google-Smtp-Source: AGHT+IG9MOSsDXHUjOBUeSNUFj7dBvuDkEH12Kq/Ecv5qWphiL900dFodWOVBiicFMyj2+J3dq64wg==
-X-Received: by 2002:a17:90b:54c6:b0:33e:2334:ef05 with SMTP id 98e67ed59e1d1-34083070a19mr3342121a91.28.1761900387243;
-        Fri, 31 Oct 2025 01:46:27 -0700 (PDT)
-Received: from EBJ9932692.tcent.cn ([124.156.216.125])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-340924a0e4bsm1415489a91.1.2025.10.31.01.46.25
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Oct 2025 01:46:26 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: adam.c.preble@intel.com
-Cc: linux-mm@kvack.org,
-	Lance Yang <ioworker0@gmail.com>
-Subject: Re: Accounting for vmap_area object growth when kmemleak doesn't notice any leaks
-Date: Fri, 31 Oct 2025 16:46:16 +0800
-Message-ID: <20251031084616.64054-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <PH7PR11MB6523C5200943207E879FB5CAA9F8A@PH7PR11MB6523.namprd11.prod.outlook.com>
-References: <PH7PR11MB6523C5200943207E879FB5CAA9F8A@PH7PR11MB6523.namprd11.prod.outlook.com>
+        d=1e100.net; s=20230601; t=1761901342; x=1762506142;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=riW5F2YSMNEn22/E8/Ov0+qACVsdJ9lrTJanAog9mm0=;
+        b=RgqZ0sV5YT37qgkF7cQ4lh8Rpkx7bJ3LC77uYXXvIQfldloBqM82Uvo+x2alJzZLRi
+         JtLGGg9dW+DpXwtrozbBUM1VVSDgM9ZJ7jLYZwYxQvbzyOpMa4towl1XBcYrTHoeD4EH
+         yykybIdnzCIcWnwdSBksDGaMhjQRE7E1eNaAIX0/OATFDg77Y1Ol7e0oDxDXIcoQkfxz
+         i55M0rRuM6FGFQCAO6k3lbFIpmDetZDJBUlFF2Wy0NM1HhLM0UAwRPhhwONhKR3YM9FZ
+         dBy9zP8GnBVZ8jkpKWKr00j0szGoVNMuTvGhwko0mkv9WSXIWVfD1owqmAhdZqHOvVTT
+         nPOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVk255j7Wcl+GZlnnbs8jlzomDz0mtFdVx7yPvWFZt1wnNedMpqSeW6dfM7jCgCERoxspb46GkiHA==@kvack.org
+X-Gm-Message-State: AOJu0YziubvggCg/eGTU5w6BxcacZ/RYXFVlIF3jJurRECLtpnAlSnKL
+	2kh9NA/RBJujOr3Y0MLI0hzykaQO9todwSPFxxRr+FJJ6Q26i8TSS7zTaJHedisDcew=
+X-Gm-Gg: ASbGncuYgNj6p8jv4j5eBdD5gAM5jGkDYmgJbNp7+ZGuK2fqPctK57niiDJHWoBDyH9
+	fnyNFIebvlo8DtrQEFL7zG8ljbp8Q8cm+4rtjLd3yf70HiNvzGlk1KSI3ezs9phao6lZM0/fWuX
+	KS/JxpQ4Rjc1B51Lwj51aVjIuR7tE35NyA1njVcqiKMIGw2hsfiB09bpHoScexrFcNzQmMRNb21
+	JwcTZvrD69YHP3HmrxTFp9heR0/9hBDqlSLYqiCUE68PxhRlxiz14y93+X3xNjTkiPEN1y5bj2c
+	tUw65VZenFUxW+TJYQWBwaxXyaAoSp5xEm4CZa31e6xslKMAPg8Y+jR6fsf3AEP3h6pbJh7+gyk
+	6LDs8574Cp/WHAxDWSAtWuvy+HqmyvqCykjsbwbWx/v3/ZuEeZZUvBq0+G9ai+yz1k3bDFynSxi
+	LaY/yZEWm95trWHX8xckBVGdhtAeGe+pSL+qE=
+X-Google-Smtp-Source: AGHT+IEfIG+L9PugHrFEoMpYM/xl7+uFJi6ldJ6zhfB62Pmwm0o3+Vbm3I+W0dyQ0yvCl4rrfOq5Ig==
+X-Received: by 2002:a05:600c:1d9b:b0:46d:996b:826a with SMTP id 5b1f17b1804b1-477308c8b64mr25548685e9.36.1761901342084;
+        Fri, 31 Oct 2025 02:02:22 -0700 (PDT)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772fd38c4esm16895485e9.12.2025.10.31.02.02.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 02:02:21 -0700 (PDT)
+Date: Fri, 31 Oct 2025 10:02:20 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
+Message-ID: <aQR7HIiQ82Ye2UfA@tiehlicka>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-7-roman.gushchin@linux.dev>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 6xg1hamyfyphyswgdy966jmfpk7ag7ni
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251027231727.472628-7-roman.gushchin@linux.dev>
+X-Rspamd-Queue-Id: D8C7A180013
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 624A740006
-X-HE-Tag: 1761900388-750756
-X-HE-Meta: U2FsdGVkX1/KJyCMDBlE1liFW22UM8sho/Uvai6VC97TBGYtq1tdAYOtRg97GEykxcnkMrjN4AkfVmZrAme17cPovI4pRkZ0S6dTsEAVon5CdUh0SflUf8saHjnNe0VS1i+vPiHV+e4UV4b2rDtJtVU3offJnE2hfrfc6FnXUrKXKJnJkomDFhXG5Knf8cs34SVZz6r0+gZdkojvVwHxdP+iZm8v73d039tKWes1SpbMjkjs4Pjy3uiMqklIoG+fBmtLvmkKgJb0J1+UHngUDuuHXqjDWw5xYjTrc9fmkTTLpZFpU6FbWBEUMwar5hDCrS/Go11bYhEGqwRxiLbuNb2o3QWT1l0UAEM1NLSSTDa3EGkuaVChfsiHUbHnyn1BQX6FvHz0zcy2mRZRwqtdASyqip8WrXKdiv+pFvEAoJt9MVDHO/kJDR2SBVbbDWo6bnjuja2lAhoUawt+64IVudk7ZblqCEX6GMh89hdSy/XwJ41znc4xgokSs9IK1HY9z3l7FirTeOBBoh9zAdO5pQmSNG+uBnDR3/OI72xihvS/DAy+Gs6Ux8diBh7WBw8XRoBJb18wRYqA1OBMFEan3xFlXdzv93YmMaPJx/TCOClMdN7e1I2oC+G/NYG0QtIL4YARAIuaYZwtsqXTnLwtoaoLRq3NlRE7Rl/zGF30ec7/U6p/2mnonAA7jwNl92eGyBmPeRZDY2CvwN32cnLHlV60u5Zi0kiBQmVMpBBE+wZoElWxVeM5WOZYshBIP0+f3A0H9vt/ojR7EzYunUJzM4gdw2zwi1zty03iJ2c7n5STZ9dm0rkcbXso3w35TRpjnOWVQGSxga17Y8PFWSi82xIFbX4dGMYtDGJRKMnE2kZW0EATHg8itJLgjB3HbcIDNA6hdQ3Cj3GHfgoyA62LFWMHpIEn3bH6Ud2AzGENpmWoD3I8Ly6ceoouL2qeJBuxzCW1oktH4IlRrAoyoJ7
- B4J3oRlG
- mcR9T7R5i92S0gGpz3LUruEq3B+SEoJCz6mTOp8aUrSr3KIwx5BlSS5SzwI33eXxYhSYmt314LDRHzTYmdsO6aRAjm+saDMbAz658ZGY3k+4ODYk7a3UZPkUfnCIeElSwYNKgfZdSLpj20j97h2JpVy9LBex1zo/3sQatX8R/Epsvvu5LXRKuvNe6gM9Tov9DkaGHaSqC3g/NRE/pPgl4SMAfCh1Q+Ix3w8J5Avfj5Aocz1rgKoaWiwYc3RRG+yZyXKCxYCHXkh6fd9q4XcufdRdcwZdAZXHkTZC3YaCcdqK+v8hThyQFjcVm0jL/ItxgXh0doDpoplBFh7UpYix1q+lmMjXtn8bTF7gz1ACilQBFTMKWl35NUzjY9ETt9NjaStGpC8brB8bngWl3p7stvui06azsflPJxXZ+Q2/pCukW964v3FEdyzXTdvzmvSRnF/64w+J3TCwDe39nF3DXkxFnk1QAU1d0sLv34IHjoaqetyx8zP1HMt7LYLVvFknBLij55c3cPMiPkfs=
+X-Stat-Signature: 4atzbzahgjws46hp7owojw95hrpnq7w4
+X-HE-Tag: 1761901343-706532
+X-HE-Meta: U2FsdGVkX19lMaoO6FNx+Ufp4lo0t7LhVC0qcgpFJXxfa68JvEPgPe0kW8JsUzu+UknVgpnPvievX+rVgYnGnOuKcRNqvT/hDPsEY1Co3bNsGxMao1YHnaF9bqAJau44MPsX8bI4dsXrkx6kuRo+i1/wifiLAs2Nm8wcu2zNloZLLJB9VFIeDXGPDi4XJ7Qux96bIV4hoZHJaIn9t/GJ6ecsssPP5/N7lGBqSn8tCLKLb6pXMWIrKR2Rhg2RxM1EmIL1uqFPF3fS1OPUFmuTsqGhygq6xDODiKejrvxqN8A2X8XuJhKSVua331zfbAFEctpsg3VEXOpiL+WC3taJDoJ+DS7yc1d6sd0c67d4Yqsdedfc9U6/0iqtSNGtjy385K9VCI1K4GdEe4SCCCqkrdlqsqX5exYmzz/zcthtmmiW4Kkuv58e30I6HWJHPNHwm7nQvGYdl0U1NuBbflHScpEdGEZ1dvHVApcLBwZQqJLj/v2YAmc5uMOLPmE6vNEKmAId0l4aX8qNN8ayAqA7fxLSVWYj2VNfYlq6odrFqTOiZ5jcxnEcmRHur9XRsRUCtvPa+0Kj59JnABo/JYJKv/13vftttgPWD306gUERSZBQrxyflv5QK/PI3t8v921r4YMoelqLjmYKnIVpwVdKRFyhhJtuyJ/pB1YvDRgBlet+OX1eJITOYDSMcrTj7CDmCJowfRvrlAdVcZ0agERLY1aM8UK7FZozZQkDqd33T0k4nfztad+CGkQkXPLxHxDJYiP+cgoOHpd2edGx5Sk60wy2bxCtXc6r17gqJz1WjP1WKHlHG3RjwTc619/7fA3u1iYlMqXrASoAp4fRiXNZVtfRkgbFy1UZQzVmthv4j1pFmqm5tyOULq17HB49A1S8BZRTUN9BrN9mNYrC10hSEZUM4Oc3dfj3/a16TiLNNZPYOBeXLm2ipoedjsUOI4fnxlC5xLScIRmNzWVYwR6
+ u1XptuEK
+ CS3GCjhnrm+fmnKTti7lH2+T5wfq+Qf3ueCA67uADcRgettRiAF1MATdlY9P6iBvyKpwVOfem3VNN8Ju1Y1QYUTFdN6l6+AlNXVf3bx3vJtL2Ugutc2MjA6guT+zUKZhbT2mULopXKD4d6FM38VCosp5HgxAL14omd2rG+XMJLcAEzlaC+V7SLR+CqAIYIwZjbu494v0DqlPm23Qh7NHf+mlmw+rBJu0Fx2P6X0rb8i9E5ws27BxPM9bdqjIYqWzp+Ew3qApiQhXO1+aNIvHDz64l6idaRmp2sd/5LptB0gX6j/Wgc+LCv7A3zhRx33181on1DmYlKDozp4rMdJsPOwdFWOgOVlC2BUAjYPu1P0xwzSo=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,15 +129,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <ioworker0@gmail.com>
+On Mon 27-10-25 16:17:09, Roman Gushchin wrote:
+> Introduce a bpf struct ops for implementing custom OOM handling
+> policies.
+> 
+> It's possible to load one bpf_oom_ops for the system and one
+> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
+> cgroup tree is traversed from the OOM'ing memcg up to the root and
+> corresponding BPF OOM handlers are executed until some memory is
+> freed. If no memory is freed, the kernel OOM killer is invoked.
 
-That's a tricky one. With kmemleak being clean, it seems like a logical leak.
+Do you have any usecase in mind where parent memcg oom handler decides
+to not kill or cannot kill anything and hand over upwards in the
+hierarchy?
 
-Might be worth enabling CONFIG_MEM_ALLOC_PROFILING[1], which is perfect for
-tracking down the call sites of allocations that are still live.
+> The struct ops provides the bpf_handle_out_of_memory() callback,
+> which expected to return 1 if it was able to free some memory and 0
+> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
+> field of the oom_control structure, which is expected to be set by
+> kfuncs suitable for releasing memory. If both are set, OOM is
+> considered handled, otherwise the next OOM handler in the chain
+> (e.g. BPF OOM attached to the parent cgroup or the in-kernel OOM
+> killer) is executed.
 
-[1] https://docs.kernel.org/mm/allocation-profiling.html
+Could you explain why do we need both? Why is not bpf_memory_freed
+return value sufficient?
 
-Cheers,
-Lance
+> The bpf_handle_out_of_memory() callback program is sleepable to enable
+> using iterators, e.g. cgroup iterators. The callback receives struct
+> oom_control as an argument, so it can determine the scope of the OOM
+> event: if this is a memcg-wide or system-wide OOM.
+
+This could be tricky because it might introduce a subtle and hard to
+debug lock dependency chain. lock(a); allocation() -> oom -> lock(a).
+Sleepable locks should be only allowed in trylock mode.
+
+> The callback is executed just before the kernel victim task selection
+> algorithm, so all heuristics and sysctls like panic on oom,
+> sysctl_oom_kill_allocating_task and sysctl_oom_kill_allocating_task
+> are respected.
+
+I guess you meant to say and sysctl_panic_on_oom.
+
+> BPF OOM struct ops provides the handle_cgroup_offline() callback
+> which is good for releasing struct ops if the corresponding cgroup
+> is gone.
+
+What kind of synchronization is expected between handle_cgroup_offline
+and bpf_handle_out_of_memory?
+ 
+> The struct ops also has the name field, which allows to define a
+> custom name for the implemented policy. It's printed in the OOM report
+> in the oom_policy=<policy> format. "default" is printed if bpf is not
+> used or policy name is not specified.
+
+oom_handler seems like a better fit but nothing I would insist on. Also
+I would just print it if there is an actual handler so that existing
+users who do not use bpf oom killers do not need to change their
+parsers.
+
+Other than that this looks reasonable to me.
+
+-- 
+Michal Hocko
+SUSE Labs
 
