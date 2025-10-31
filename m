@@ -4,97 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6249CCF9EE
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 07:02:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCB0ACCF9EB
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 07:11:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 081378E00C3; Fri, 31 Oct 2025 03:02:46 -0400 (EDT)
+	id 2650D8E00C8; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 052628E00A9; Fri, 31 Oct 2025 03:02:46 -0400 (EDT)
+	id 23C8F8E00A9; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EA9888E00C3; Fri, 31 Oct 2025 03:02:45 -0400 (EDT)
+	id 179248E00C8; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id D6D8D8E00A9
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 03:02:45 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 7A3F2497A0
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:02:45 +0000 (UTC)
-X-FDA: 84057516690.24.89C4256
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 9819A8000C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:02:43 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=C8roaXyX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 037948E00A9
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 791F512AA80
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:11:53 +0000 (UTC)
+X-FDA: 84057539706.01.706EDCB
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 9745C4000C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:11:51 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ECW+bIP7;
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761894163;
+	s=arc-20220608; t=1761894711;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=WhAeKXrpaYinKlRLqV0x2Ic6a8e7XLvoSE3cJgvPELQ=;
-	b=x3mCWIyPyC7Cj8fTrPHj1C02e13MNijgTird1YRptkN0oy1um4Jg0EmXYCUsB9FYVKutnG
-	Xf+x6ggWgnXi4UJhQ3pSrXJF8h1srFJKuQjjHCa0R3KM4vBuOalDhnQjGmCD76KScDubhe
-	YDqtdi9wU72sO6aIkoJ8BydZObhbMQk=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=C8roaXyX;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761894163; a=rsa-sha256;
+	bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
+	b=4coiMlBDCReq16H3jD6fyc3oqFgYDvmQ/6ZaYsss3myAFomcOHRlxeJMSJpgIjTNJuoP2y
+	tlQhuF1I8VVJDSU29975lwA//Ix93k8nOSqF8Q5Cl+5Bw4ykH0LNhHJ2myulL3r6bWqGKR
+	1/Q+r6Q76PwlSf/0e5x0qoLY0Td851Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761894711; a=rsa-sha256;
 	cv=none;
-	b=muRDeE1wpJtRk/6EqCRF8u1JI3l5vkbXf01XeUpvW9C9QcT9dhx5DfSwTdqrc1Hs53DtNk
-	nR9q6Uw7jpUA6KNuf49V9ctGkNtQjS5CoxbaWlUxuocCQ2927kQyJjTd0GqvijlpSmi+Go
-	D0qTH8x7aR5eSjKUu3IylmWKpHA8bgU=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b5b823b4f3dso331759966b.3
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:02:43 -0700 (PDT)
+	b=K1Ol5b173c81OQ7HbZl/cskin4EacU4IYCxxcrShXgdshtWCbCTfyoKXmClrQY48jg4XMa
+	nWZQ+m8xZSot2P3PdTfchVUezTDfFcMZyxi514RPdOK8VVQqrUmo8jGRHA/LpIx0I2Dqvh
+	aT7lR00hJ6m7czssKJhCJIABCGTjBBU=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ECW+bIP7;
+	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so332268a12.2
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:11:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761894162; x=1762498962; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1761894710; x=1762499510; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WhAeKXrpaYinKlRLqV0x2Ic6a8e7XLvoSE3cJgvPELQ=;
-        b=C8roaXyX3dT+MfomkA1P1Dd7M8ciXcZdBaJxrNKggGFQvW+lPh3QUuCrOV9gN5NXpy
-         /XL/BXSGIwQcFi/o9WBHkFVLfzWbSTSU/Lk3sMMDQDHibsrLpSSz+MM9QUHnXIcgRuNG
-         ZGe2jRVJceKSNdeZFug04II/VGCc/uNDJcxmybTruPSyJdTj+uzf4+Dae6bgyHnaiWjP
-         GZdmj2LS6BFejkLW0y6lbQplapra+cMc4m8N8aIz4bi4VqGP15nQrwz7VMqq1ZFfMVEo
-         sDujO58ESIv99kKT0M03u3VB7h4Z5DxKSxkl0AlB8l5mRXpV8AJIyD8hFQOFGBPssC0l
-         UMcQ==
+        bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
+        b=ECW+bIP7klX1NUCSfF9K5Pjx4tTKEy+Pxqd4kYcsxeG64ltqTbK/OIu9EWDRHJHXrk
+         5mbJhKme/ITG6SAaGK1tEK+OMtzGTNFlkezTvIkpxQBvlqIcHI+GP2p12H1MQ5/DsLJv
+         fyRvbxYttFSTZzWS+tYPdaKeI3zL/ubvBPTtv1p8ZOhj8oZi5RL4AzzpTFAk6sR1DY8y
+         +sFfRRrf9JiGojnrQHhJXbD2O9WkgfizgcwcX5v6NYlaDgHOVPf21KxZQ2s1jOUCLaSL
+         HzcV3w0/MULeJ39sqenrOoqoDbs+2DTUyyU3aduR282P2BNT2C4zK4Ai7k3+vH2Fujzl
+         nwvA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761894162; x=1762498962;
+        d=1e100.net; s=20230601; t=1761894710; x=1762499510;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WhAeKXrpaYinKlRLqV0x2Ic6a8e7XLvoSE3cJgvPELQ=;
-        b=ZCzUHARsmiEIozPkCVn8+VQBOhN823/JogTkX6dwJRKiYQWgvLaJ2uIvJ9Nd/Sl7Qk
-         ImiwgESMWLPHACgyb8E1I4W8zOFeeswbfUkRwcm5w0AHxThoAIojXiFGQIjija2VoMTH
-         UFcQLbgQwuazXg+EyUbMIyPJiUFLgPIqlTZoMGzYbQJmSWUXou7Y1BdIEkTzkgm/q1in
-         6AVVF+vmnKz6Xn6lTEEE0RHNQLIUQWNwZZD4iIZcAc+XyXFYl57Xq3QvwMrHO4Ji4aTT
-         d6TEQ5sFO0t4vNs3Bl75ThG+PIKHod+mOk6OE1VJ4knkKNXGoeZPt1vROCqlTWOhKaOj
-         x+3Q==
-X-Gm-Message-State: AOJu0Yy3lsFwYnrsLpFX4krF67LKSBA4F7IO1WbFGW07Z7HPiBU0FyI6
-	qf9u10t6bZGYblwp9LzPsRV0V8wSKHy4W2ce/cNEGq5xYa5yzlqHbzyVUFwfuiySl4HY9tHcuMm
-	XRm/1YYh2IAMEnqj+geBwMDU+EaT8Ax8=
-X-Gm-Gg: ASbGnctosG+hjfmytxMIVvJGTR5AX0DDlYcV0zwmJavZYtn+eSjUqBbRGenCCMOJ2w0
-	EyitAdi00BNa4uctD3ycL/Lk3OhgGcmivfUW01nJ/tmlMcb9D4uiMHDZOqKqlAODQnbmvTnr4/1
-	mSyLePOMVoiKMl+jrFWonxIEa5ZysLJimxATI8G5+0BI7C003LndgG0s5JG8wa2OGcHHGJTdJk3
-	jC4Qg8qJVnE8r8CyKdetyrkFjNDUBgGy7XhLCJhTsVKrrVtizpzOufL+6WV
-X-Google-Smtp-Source: AGHT+IFZjqoXBFAlCskVhv74Qiczd37Jbq68RIzzKDrsnIw2gYEJV4GzWhwphPsEr9Q6jQ41UmUSm4dBiWwOuSzsAr4=
-X-Received: by 2002:a17:907:60cd:b0:b3f:1028:a86a with SMTP id
- a640c23a62f3a-b70700d39cbmr242298666b.3.1761894161735; Fri, 31 Oct 2025
- 00:02:41 -0700 (PDT)
+        bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
+        b=WzjjN2qG/3ybQTfifeTkYwgcSk4Q5EaBrusCaUHTssSEvOKOT8d2SY3tuIcMOXg25r
+         bTah/EMhZXp5dmXnBLtrxhau4srtKlQYymJ0MDSQajytt63k3Vb82Bt0E0q+zXTXWRnk
+         P/dnq2UTENqXSUNDw2/uqn5m5NnqgU4+hzsn/aTGFB1ol9+du+HkJGTF2D1WHik405RZ
+         Ii6zS77RiNDnixkIKpi5r9Efyo/NXNE//fZjvpHzpdrXj9dh7eP6i3w6txopUmozvKA1
+         FJXk8RMFWYGeKQkRzSdFTZ6Fhin5/Hw5V1/D9WGzy+72l/CCP0SMod67W3Pj6TFLAMpl
+         /ypQ==
+X-Gm-Message-State: AOJu0YyejORIsiptXK0BhvJQP6jE46Csx0V3ykQXliZn475oXXzyZR9q
+	vrOWrOTnNZBJBWOO2u1ESjJIPwrsZIm6jbgMqMZ9OIT+Eez7+sI349W5CO8X2C9qO/i2K3JDwuZ
+	vHzpWQkDP6fRe2Rbj0oxaU1Sk4UMeqEuyhZtgSZQ=
+X-Gm-Gg: ASbGncuG7Qpx3r7eeLPbGqoOE7k8uCJrdKByxWTkk/k+8DcXe7xY75AFbFXnsmcBToi
+	x1LmDTHB54f1/JRZAkY4kp7A0XMFcpbs66RyKbgoNMReSY0HAFrqhLXyXAd9H88stSdZcR3g0Xw
+	OqlroUQ3RtPhdOXEDkNAFRaE9OYFMfCr8VAal0CC2sb7HSoNP438+8fOJTgvvdS5SFbqocSGMhs
+	+44oDF+lFYYUU8LOe6z1A6FFl3gZHhBBZxVrJr3EbPPaA5rf8s+i/X0HCb3
+X-Google-Smtp-Source: AGHT+IEa+rgq4Th4Ha/g3FBZ4FkmU4TjKVn+RGltX7Wmz1uoTotbPOvX8BJ4rCoXh+dAatlVRaYla2NKrWme3YUf5D0=
+X-Received: by 2002:a05:6402:51cf:b0:639:ffb5:3606 with SMTP id
+ 4fb4d7f45d1cf-6407703ef39mr1959342a12.33.1761894709939; Fri, 31 Oct 2025
+ 00:11:49 -0700 (PDT)
 MIME-Version: 1.0
 References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
- <20251029-swap-table-p2-v1-15-3d43f3b6ec32@tencent.com> <aQRPfIqCcMLyf6oX@yjaykim-PowerEdge-T330>
-In-Reply-To: <aQRPfIqCcMLyf6oX@yjaykim-PowerEdge-T330>
+ <20251029-swap-table-p2-v1-10-3d43f3b6ec32@tencent.com> <aQRIOMsAkDciWFw/@yjaykim-PowerEdge-T330>
+In-Reply-To: <aQRIOMsAkDciWFw/@yjaykim-PowerEdge-T330>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 31 Oct 2025 15:02:04 +0800
-X-Gm-Features: AWmQ_bnqHJRBw5VgM4IaGt3qE5NKaN--3DSsoGj--BQ80I3X1ms69ibY_wiId_Y
-Message-ID: <CAMgjq7A405kAAY80xzLxFHuKOcGt7iSYeYYv9G0iZaMHcwrWyA@mail.gmail.com>
-Subject: Re: [PATCH 15/19] mm, swap: add folio to swap cache directly on allocation
+Date: Fri, 31 Oct 2025 15:11:13 +0800
+X-Gm-Features: AWmQ_bkR65N4sXjn4E7jF7ZR-b0DRabhpr_6ttycSokgao5UgLF3qlUaZW0wRPk
+Message-ID: <CAMgjq7A2gs+CMRftP9r4Pt=GKDAO=NaZVuKFYBVkZZjgz8c96g@mail.gmail.com>
+Subject: Re: [PATCH 10/19] mm, swap: consolidate cluster reclaim and check logic
 To: YoungJun Park <youngjun.park@lge.com>
 Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
 	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
@@ -106,14 +106,14 @@ Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Stat-Signature: a8bguwa31ercy35socwtzi6w6jc5oe8h
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9819A8000C
-X-Rspamd-Server: rspam03
-X-Stat-Signature: mrag6rxffgnfwzfw5pgsm9kxi5d338yq
-X-HE-Tag: 1761894163-359461
-X-HE-Meta: U2FsdGVkX19eL+gyHj17aHYq8ceNTp/bpmNaFBMVQJ29gZ/m6QNCrARs/QrztcwSfWEtd65ETssR/TPG09/q3UTYpX96kvBzT0hTf6ZMd6jBEnamNX0cfYks4B6rXPgorDjEsYvXAX53sVDxPQcEXCp0UtssE4d6FGZoV/Zh/qK2YwQ2XMkh3jPFFk9MXhnG182zfG6nqU6YfujlfThcinFtd4eUXrerrqydX/sVjx7Y7eVNO+BMkAXg7y1FiDQIvewMzW7UdwhDw27CWnCMvsePWvDsfeeAxQrI/YI31fhB2Uzwmp8PtRjLEllMvF+62x6SsaYMdiFJVAvIpHYqF1id5fgAX0XKs10/jpfLyon5jcg3hRFhnzVBMb4/yvxT4znB272Z4rF4UgOTDE32B2QYEKyu8XbJExWDvwpEDCIUt1Vwv/YOZjjaaCfjYHIUtyYdKv6Xtv2Wj9cOFZblP3uWgcZie//VeDdt6u9hvdcHC1zKOrfdTEq+Q8MuFLnV4uUWeTV07Rbi5Tn6lrfvLJ6wJ7cKgKsulVgcXOWLD98Yw7t6HkppExc9fwcPzkW9axxW+TjLXDyeXIMQ0qzuXFwQ2xO3+ZX7YGyU5szVrEuIwa7u6X9nAbF9fgVoV1wOe8JCbXNergV7+9YugTuI5hjKUTxilQNmDz2OsZ/YokE/EJx7wmcLv8DBFAHFsUHQ8uSB3t/ZIppDu2Bsg+AtsrPG3JKQpPb1aaUzoZw7tiBwA9E4uDRqHRiWYs2B5LCtmAairOol0zusByf86aqd1tNdp6hp4TNu8+u4WXE4ipvUP5ZOLG5vMFGCzLTLFOBvKJbP9OOO0F5PZ2zllWJ3yoQGu+UKu3OkFQMoWKHfcli9xGrXBX5K2dgsLnt5GSGWZXqOq9rf3g3cSJq7B2ovgdg72LZZp0vQLbHvLsX3MsdX4YK9ilpkqt0JKqGa/TyG3HzWIQoB0uwdy5SLuMx
- vZ8cZkaj
- qbUn/VvlxdtiVZg08NKTimwcsPzhvhyeEhs07TdU8nReqgde/6VI/HObzUDb19LbsjEz0r0HCMW0ZcPyUlvtofY4/fKk6mel0JV+J4VplNfWWgpZFpAL3j89NXl4OrvcyaumV1yyD4LzzlMzFR0YxWBawlEka3zswBZaczKR52PeSHLfKPryITd7vYV5JChk72JELnGILRXee51va6wOI7Zgpvg5g3o57Pi+apdLQwFYvVYNji+pmQjzfOfFQPRThwRA6ZlyIzyNSvga4mEb8lFNgOm/lSRfzPV7mEhFRCCuf8yKmSGXZGRhIYXPGQD8rBOxRXP+5dHsREcNZR6tfSblwtmeoRXyxDZWhj7Za5owQTAR/mUOz43LuVUjRfR4B3Sbrjum/c7e/qxRt7Wt++VYOYg==
+X-Rspamd-Queue-Id: 9745C4000C
+X-HE-Tag: 1761894711-930192
+X-HE-Meta: U2FsdGVkX1/31NgfRgYIBAGDPkUst92TLcGoES9as+FzcXfXe2I+5ixKc0xN3lbv7VCAlNQvz2nJmdQvuvQuE90rVzTerGzWJDJkYcpuYpu/WxZ5wEywx7+K3KcrxGbHNPOiz2UGNHmyKg7S8JG5HTv/uDv35HsEP1jpJWBZIM9xV3WQ88zyc5KJpKPpS4aJOF/ngSd7Dqt/U4uGeQUMVUtHapRuD3oEppYMd8k9dUcplmWIT39SHP3m2sorz0DPzotz3afxXti1PkW7qbemkk4dbeDotXuzoiUMjkXR4vGWD9v0xNOAwPsN5nSOguooSVVEQgkInT12lfGKKKtp5A1Hz8EQ4qMWXIxp/MfOI9HYF7ey2UcWFQORlB+pW/wIlb0hxPVNLPm0BS1+kV/zyAbYZs5gQS7PC71k3jX8dS5/YEp4ZXQPAUf1z3vL+CCF0tIUhyFSSakKYl4VYmN55257tc+Cgf9AsYaFfferWG2vZTBG+JbG44mW+379c1AnXyo1kbcc9IwKNO/BNfc25lCVI+IgUc45o4YbBSo32LjBUz+ENO8h1Q9cqdTyvRejtve9301/Zusa6IWEa/wKwqTogAXqK37nBIKzRIzk4wFcDadSxF4Dkr1851c36xm31LPrrah+hdogjX94+kFVai+xb7cvOcFduOaXVfWdgTcEcZnGkLb2jJGBCzOGYX4hACPyHJbiGU0dSw1mglWmcC4joLrKFTEZmZwqpc7np5xEPKMg2ny6lUVzcf9oCynmmmYhz+/obNoYWiWAvh9LdFZWRCGFj2Reot70deD/If7kh6Y2YWnVrCWseZ8+bCcxGLlvXLtxHyo2kaSCwV4U0RnequJWIjQA4q5RhkBHzZhYo4FXyKl0FUdSyI2/hBtsLecd2ek6PB1gL5fH3qk8OShLQUC6l2zpuRkwfrmLfzpgXYN7o20OK+qba7KlZZ90wHuqMXU5OAq4RxkggYW
+ XaZLaaeJ
+ ouSryPvhvwqrw358tmqHIzVD3h7qp75ReECvXPGU3A/smE33NBBb67LXAKx5Ncg4d8kygmweqenD9LcZo5dUwQkbOHKtqZbNfRhRz55Mi9Bt0CcK2LdizIWuH4UAOZsdO4sbmXjuLquMEsV7J+M3P0iJ8lYI+51DmZG/NwIxbWaxlHVeZBEBrKIgwt3usSQLKKGaBuK7vlbQy1YYsLcCgBttOgPEttXQvQ6ebMJOc+1ygxnU0K8+qcZgl4lDDBpxrI5/PkJ7JsiCnXNLTRbWeecG7b7arpL3bGPjCFJ5QhHbK684kXyYVHEpcXkDPyn3KvMMTU5qfHxPlHTdBo1D/e3M+mVkUQ+SEmj/3mWpjE3UgBmT4uxs33J+Ryp6W0F1eJxf40S+ccz/yLRJMIaXq6P1m6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,169 +122,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 1:56=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
+On Fri, Oct 31, 2025 at 1:25=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
 m> wrote:
 >
-> On Wed, Oct 29, 2025 at 11:58:41PM +0800, Kairui Song wrote:
+> On Wed, Oct 29, 2025 at 11:58:36PM +0800, Kairui Song wrote:
+>
 > > From: Kairui Song <kasong@tencent.com>
->
-> Hello Kairui
->
-> > The allocator uses SWAP_HAS_CACHE to pin a swap slot upon allocation.
-> > SWAP_HAS_CACHE is being deprecated as it caused a lot of confusion.
-> > This pinning usage here can be dropped by adding the folio to swap
-> > cache directly on allocation.
 > >
-> > All swap allocations are folio-based now (except for hibernation), so
-> > the swap allocator can always take the folio as the parameter. And now
-> > both swap cache (swap table) and swap map are protected by the cluster
-> > lock, scanning the map and inserting the folio can be done in the same
-> > critical section. This eliminates the time window that a slot is pinned
-> > by SWAP_HAS_CACHE, but it has no cache, and avoids touching the lock
-> > multiple times.
+>
+> Hello Kairu, great work on your patchwork. :)
+> > Swap cluster cache reclaim requires releasing the lock, so some extra
+> > checks are needed after the reclaim. To prepare for checking swap cache
+> > using the swap table directly, consolidate the swap cluster reclaim and
+> > check the logic.
 > >
-> > This is both a cleanup and an optimization.
+> > Also, adjust it very slightly. By moving the cluster empty and usable
+> > check into the reclaim helper, it will avoid a redundant scan of the
+> > slots if the cluster is empty.
+>
+> This is Change 1
+>
+> > And always scan the whole region during reclaim, don't skip slots
+> > covered by a reclaimed folio. Because the reclaim is lockless, it's
+> > possible that new cache lands at any time. And for allocation, we want
+> > all caches to be reclaimed to avoid fragmentation. And besides, if the
+> > scan offset is not aligned with the size of the reclaimed folio, we are
+> > skipping some existing caches.
+>
+> This is Change 2
+>
+> > There should be no observable behavior change, which might slightly
+> > improve the fragmentation issue or performance.
 > >
 > > Signed-off-by: Kairui Song <kasong@tencent.com>
 > > ---
-> >  include/linux/swap.h |   5 --
-> >  mm/swap.h            |   8 +--
-> >  mm/swap_state.c      |  56 +++++++++++-------
-> >  mm/swapfile.c        | 161 +++++++++++++++++++++----------------------=
---------
-> >  4 files changed, 105 insertions(+), 125 deletions(-)
+> >  mm/swapfile.c | 47 +++++++++++++++++++++++------------------------
+> >  1 file changed, 23 insertions(+), 24 deletions(-)
 > >
-> > diff --git a/include/linux/swap.h b/include/linux/swap.h
-> > index ac3caa4c6999..4b4b81fbc6a3 100644
-> > --- a/include/linux/swap.h
-> > +++ b/include/linux/swap.h
-> > @@ -452,7 +452,6 @@ static inline long get_nr_swap_pages(void)
-> >  }
-> >
-> >  extern void si_swapinfo(struct sysinfo *);
-> > -void put_swap_folio(struct folio *folio, swp_entry_t entry);
-> >  extern int add_swap_count_continuation(swp_entry_t, gfp_t);
-> >  int swap_type_of(dev_t device, sector_t offset);
-> >  int find_first_swap(dev_t *device);
-> > @@ -534,10 +533,6 @@ static inline void swap_put_entries_direct(swp_ent=
-ry_t ent, int nr)
-> >  {
-> >  }
-> >
-> > -static inline void put_swap_folio(struct folio *folio, swp_entry_t swp=
-)
-> > -{
-> > -}
-> > -
-> >  static inline int __swap_count(swp_entry_t entry)
-> >  {
+> > diff --git a/mm/swapfile.c b/mm/swapfile.c
+> > index d66141f1c452..e4c521528817 100644
+> > --- a/mm/swapfile.c
+> > +++ b/mm/swapfile.c
+> > @@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swa=
+p_cluster_info *cluster_info,
 > >       return 0;
-> > diff --git a/mm/swap.h b/mm/swap.h
-> > index 74c61129d7b7..03694ffa662f 100644
-> > --- a/mm/swap.h
-> > +++ b/mm/swap.h
-> > @@ -277,13 +277,13 @@ void __swapcache_clear_cached(struct swap_info_st=
-ruct *si,
-> >   */
-> >  struct folio *swap_cache_get_folio(swp_entry_t entry);
-> >  void *swap_cache_get_shadow(swp_entry_t entry);
-> > -int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
-> > -                      void **shadow, bool alloc);
-> >  void swap_cache_del_folio(struct folio *folio);
-> >  struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_flag=
-s,
-> >                                    struct mempolicy *mpol, pgoff_t ilx,
-> >                                    bool *alloced);
-> >  /* Below helpers require the caller to lock and pass in the swap clust=
-er. */
-> > +void __swap_cache_add_folio(struct swap_cluster_info *ci,
-> > +                         struct folio *folio, swp_entry_t entry);
-> >  void __swap_cache_del_folio(struct swap_cluster_info *ci,
-> >                           struct folio *folio, swp_entry_t entry, void =
-*shadow);
-> >  void __swap_cache_replace_folio(struct swap_cluster_info *ci,
-> > @@ -459,8 +459,8 @@ static inline void *swap_cache_get_shadow(swp_entry=
-_t entry)
-> >       return NULL;
 > >  }
 > >
-> > -static inline int swap_cache_add_folio(struct folio *folio, swp_entry_=
-t entry,
-> > -                                    void **shadow, bool alloc)
-> > +static inline void *__swap_cache_add_folio(struct swap_cluster_info *c=
-i,
-> > +             struct folio *folio, swp_entry_t entry)
+> > -static bool cluster_reclaim_range(struct swap_info_struct *si,
+> > -                               struct swap_cluster_info *ci,
+> > -                               unsigned long start, unsigned long end)
+> > +static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
+> > +                                       struct swap_cluster_info *ci,
+> > +                                       unsigned long start, unsigned i=
+nt order)
 > >  {
-> >  }
+> > +     unsigned int nr_pages =3D 1 << order;
+> > +     unsigned long offset =3D start, end =3D start + nr_pages;
+> >       unsigned char *map =3D si->swap_map;
+> > -     unsigned long offset =3D start;
+> >       int nr_reclaim;
+> >
+> >       spin_unlock(&ci->lock);
+> >       do {
+> >               switch (READ_ONCE(map[offset])) {
+> >               case 0:
+> > -                     offset++;
+> >                       break;
+> >               case SWAP_HAS_CACHE:
+> >                       nr_reclaim =3D __try_to_reclaim_swap(si, offset, =
+TTRS_ANYWAY);
+> > -                     if (nr_reclaim > 0)
+> > -                             offset +=3D nr_reclaim;
+> > -                     else
+> > +                     if (nr_reclaim < 0)
+> >                               goto out;
+> >                       break;
+> >               default:
+> >                       goto out;
+> >               }
+> > -     } while (offset < end);
+> > +     } while (++offset < end);
 >
-> Just a nit,
-> void* return nothing.
+> Change 2
 >
-> changed to void (original function prototype is return void)
-> or how about just remove If this is not used on !CONFIG_SWAP
-
-Thanks! Yeah it can be just removed, no one is using it when
-!CONFIG_SWAP after this commit. Will clean it up.
-
+> >  out:
+> >       spin_lock(&ci->lock);
+> > +
+> > +     /*
+> > +      * We just dropped ci->lock so cluster could be used by another
+> > +      * order or got freed, check if it's still usable or empty.
+> > +      */
+> > +     if (!cluster_is_usable(ci, order))
+> > +             return SWAP_ENTRY_INVALID;
+> > +     if (cluster_is_empty(ci))
+> > +             return cluster_offset(si, ci);
+> > +
 >
-> > diff --git a/mm/swap_state.c b/mm/swap_state.c
-> > index d2bcca92b6e0..85d9f99c384f 100644
-> > --- a/mm/swap_state.c
-> > +++ b/mm/swap_state.c
-> > @@ -122,6 +122,34 @@ void *swap_cache_get_shadow(swp_entry_t entry)
-> >       return NULL;
+> Change 1
+>
+> >       /*
+> >        * Recheck the range no matter reclaim succeeded or not, the slot
+> >        * could have been be freed while we are not holding the lock.
+> >        */
+> >       for (offset =3D start; offset < end; offset++)
+> >               if (READ_ONCE(map[offset]))
+> > -                     return false;
+> > +                     return SWAP_ENTRY_INVALID;
+> >
+> > -     return true;
+> > +     return start;
 > >  }
 > >
-> > +void __swap_cache_add_folio(struct swap_cluster_info *ci,
-> > +                         struct folio *folio, swp_entry_t entry)
-> > +{
-> > +     unsigned long new_tb;
-> > +     unsigned int ci_start, ci_off, ci_end;
-> > +     unsigned long nr_pages =3D folio_nr_pages(folio);
-> > +
-> > +     VM_WARN_ON_ONCE_FOLIO(!folio_test_locked(folio), folio);
-> > +     VM_WARN_ON_ONCE_FOLIO(folio_test_swapcache(folio), folio);
-> > +     VM_WARN_ON_ONCE_FOLIO(!folio_test_swapbacked(folio), folio);
-> > +
-> > +     new_tb =3D folio_to_swp_tb(folio);
-> > +     ci_start =3D swp_cluster_offset(entry);
-> > +     ci_off =3D ci_start;
-> > +     ci_end =3D ci_start + nr_pages;
-> > +     do {
-> > +             VM_WARN_ON_ONCE(swp_tb_is_folio(__swap_table_get(ci, ci_o=
-ff)));
-> > +             __swap_table_set(ci, ci_off, new_tb);
-> > +     } while (++ci_off < ci_end);
-> > +
-> > +     folio_ref_add(folio, nr_pages);
-> > +     folio_set_swapcache(folio);
-> > +     folio->swap =3D entry;
-> > +
-> > +     node_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-> > +     lruvec_stat_mod_folio(folio, NR_SWAPCACHE, nr_pages);
-> > +}
-> > +
-> >  /**
-> >   * swap_cache_add_folio - Add a folio into the swap cache.
-> >   * @folio: The folio to be added.
-> > @@ -136,23 +164,18 @@ void *swap_cache_get_shadow(swp_entry_t entry)
-> >   * The caller also needs to update the corresponding swap_map slots wi=
-th
-> >   * SWAP_HAS_CACHE bit to avoid race or conflict.
-> >   */
-> > -int swap_cache_add_folio(struct folio *folio, swp_entry_t entry,
-> > -                      void **shadowp, bool alloc)
-> > +static int swap_cache_add_folio(struct folio *folio, swp_entry_t entry=
-,
-> > +                             void **shadowp)
+> >  static bool cluster_scan_range(struct swap_info_struct *si,
+> > @@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct =
+swap_info_struct *si,
+> >       unsigned long start =3D ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
+> >       unsigned long end =3D min(start + SWAPFILE_CLUSTER, si->max);
+> >       unsigned int nr_pages =3D 1 << order;
+> > -     bool need_reclaim, ret;
+> > +     bool need_reclaim;
+> >
+> >       lockdep_assert_held(&ci->lock);
+> >
+> > @@ -913,20 +921,11 @@ static unsigned int alloc_swap_scan_cluster(struc=
+t swap_info_struct *si,
+> >               if (!cluster_scan_range(si, ci, offset, nr_pages, &need_r=
+eclaim))
+> >                       continue;
+> >               if (need_reclaim) {
+> > -                     ret =3D cluster_reclaim_range(si, ci, offset, off=
+set + nr_pages);
+> > -                     /*
+> > -                      * Reclaim drops ci->lock and cluster could be us=
+ed
+> > -                      * by another order. Not checking flag as off-lis=
+t
+> > -                      * cluster has no flag set, and change of list
+> > -                      * won't cause fragmentation.
+> > -                      */
+> > -                     if (!cluster_is_usable(ci, order))
+> > -                             goto out;
+> > -                     if (cluster_is_empty(ci))
+> > -                             offset =3D start;
+> > +                     found =3D cluster_reclaim_range(si, ci, offset, o=
+rder);
+> >                       /* Reclaim failed but cluster is usable, try next=
+ */
+> > -                     if (!ret)
 >
-> It is also a small thing.
-> "alloc" parameter removed then the comment might be updated.
+> Part of Change 1 (apply return value change)
+>
+> As I understand Change 1 just remove redudant checking.
+> But, I think another part changed also.
+> (maybe I don't fully understand comment or something)
+>
+> cluster_reclaim_range can return SWAP_ENTRY_INVALID
+> if the cluster becomes unusable for the requested order.
+> (!cluster_is_usable return SWAP_ENTRY_INVALID)
+> And it continues loop to the next offset for reclaim try.
+> Is this the intended behavior?
 
-Nice suggestion, will cleanup the comment too.
-
->
-> Thanks,
-> Youngjun Park
->
+Thanks for the very careful review! I should keep the
+cluster_is_usable check or abort in other ways to avoid touching an
+unusable cluster, will fix it.
 
