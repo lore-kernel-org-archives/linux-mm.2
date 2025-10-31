@@ -4,113 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 132AFCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 11:48:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A978CCF9FA
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 11:53:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 263F68E00F4; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
+	id 99A778E015E; Fri, 31 Oct 2025 07:53:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23BD78E0042; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
+	id 94B4B8E0042; Fri, 31 Oct 2025 07:53:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 152158E00F4; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
+	id 861958E015E; Fri, 31 Oct 2025 07:53:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id F2ADA8E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:48:29 -0400 (EDT)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9322013B14D
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:48:29 +0000 (UTC)
-X-FDA: 84058236738.22.167E102
-Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
-	by imf27.hostedemail.com (Postfix) with ESMTP id A62C040010
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:48:27 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xozfIB49;
-	spf=pass (imf27.hostedemail.com: domain of gnoack@google.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=gnoack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 74A158E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:53:06 -0400 (EDT)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2B0661A04A1
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:53:06 +0000 (UTC)
+X-FDA: 84058248372.29.58CCBCC
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 96048C0005
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:53:02 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VLW/68ZH";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761911307;
+	s=arc-20220608; t=1761911584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
-	b=BhCRfgDLgLxeiH2F+3hYZp+9FdlrsZJGKRHOsOtLVkitQKYfn429I6YVrSIt+dDuRdRp1Q
-	eg4/LfWINOi66YL/j4Ez6f08CNhv8+oyL7B4NXSNJ3Y3nMWBKuLKQV2EfcteG9etdEsyEe
-	hKc+bOKnmUoBPxxHFDuBQ5KwaztzV9s=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=xozfIB49;
-	spf=pass (imf27.hostedemail.com: domain of gnoack@google.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=gnoack@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761911307; a=rsa-sha256;
+	bh=gTUIS93GUZsQyg4tbyddEkDWsI2/kBv/P3HZONFfij8=;
+	b=RQJ1zHhRNShuo6j/oE8kwJGNdmI/salltEu7ZIeYomjV2AK0HkdimTqeprMWa/WLaiqnbv
+	2nahpFMlatJ/GszvDxc76hUMs5RLvmaU8n/Vv2dYRxUeUmN7LpuB6rqC7h8s2mLJo6Gr53
+	tC0T0bZyA2TMMYl/mD8PGQaJpz6vZmE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761911584; a=rsa-sha256;
 	cv=none;
-	b=M84Z8SCLzCOl99KdWsSc/cX30vejmpB+O8Ak2ib9j/v+ktoG6EZikcj5LafvBqonYSDdDh
-	bHJS3IuKd36xFxt2ukxsnBBtWpC3WW7PI3pZmJje0YcUcbebl+MrOMB7eQuOZENc1qLQ6E
-	09UEfkgvx7sXCsQFMqW02X+irkDQmVc=
-Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-44da774cc9dso1253686b6e.3
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:48:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761911306; x=1762516106; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
-        b=xozfIB49sBQYr5ghIFycp4y76zRt/pRghOj8K9ghedbff/gp4JRZ4kUTG2CqCmQ5kW
-         8BFp+vJ1U6zXwlScxVaIacoLiZCTR7KZQM153OmXkUZqzAARwOmiX0SschjHx2u7yj9M
-         Q9sInrWHfxeruVzDVwqlaFRxT2xkLnodCtGIjYwxs2nOX+QNmVzi4+GiVbhCF8GMSTgo
-         RgyuUP87Lz6Gcd5mtlN5TjTn4MRKjcMJP9vjMOUmNUimWL4mSIHm055Zn5vhUtQQ5GGS
-         ETav9q9rd4EXTvegRYoszNEk2Nwb+41EtNh3l87jO2+9CKkIDbQQgnTVCQ+E6XjVnfZy
-         Sn6Q==
+	b=0RtzcMjr2AFXPrrHZQRyCNTSAODybXuLohL47+cb2/JilUTE2uV/ABJ8ZY+R1MEAc4/ZdX
+	x8judWrY9L7mQOqm3ySC8GRIli/GYmp+036X4ReDOPcZ7xfJIO1kortg97dyGtVN+aaFeD
+	K2ixoSmjM7iktRNLAhrCUrWKwE49Ogw=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="VLW/68ZH";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf10.hostedemail.com: domain of vschneid@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=vschneid@redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761911581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=gTUIS93GUZsQyg4tbyddEkDWsI2/kBv/P3HZONFfij8=;
+	b=VLW/68ZHSgBq5lCtIBt6zBfYUUL9IMbTYLjZAqwK/FhqjF+QAXx3GTgJuMBL3GSVIzTNtD
+	LkNkGQjSvlhnngMQwMoTJIMtampraNBpsyA+MGl4E7l8zOtU4XE6QYh/GSciXnW1xubfiQ
+	5jnxJTDgQ9z0DxI0INAjX7EOwrYO8QY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-512-fp6hzPqhN_umMNiGPUv1zA-1; Fri, 31 Oct 2025 07:53:00 -0400
+X-MC-Unique: fp6hzPqhN_umMNiGPUv1zA-1
+X-Mimecast-MFC-AGG-ID: fp6hzPqhN_umMNiGPUv1zA_1761911579
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-42814749a6fso1856542f8f.2
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:53:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761911306; x=1762516106;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
-        b=fF/bu1ecLVTJElM/VLndImWbdJVD6i4CC/Se5Na+oyAWnB8iQTcNvOPcT/cs+G9VNz
-         X1rzboxSTLNk+RSSrMq2IriUeiIQFc+erlZv2nGb07r9Xgn46dWTKtlxzmyTzNHdii69
-         u/inMnHnipCwEu5l8UrmclQdjUZhB/5mSmzHSeX360jQKKIMHV97Q/96RrdwemEzmTuJ
-         N4ioGF0CkO0WBSa1GfJwp8DoW2yvQZsYpccoVAp2eLJ7NKOJ+IjtRMnYfuKsyQwb44w5
-         dne8Ai1XiGar7W8Zsv8VzwY43E7YbXF7CVqCWTpIEGKdVLR7wPOFgsLDR0AM5VYsIt3A
-         LLKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXvjPTU5CAPQzKKwCy+k9aO6/Y/xrSEpgK2tjzDiUCWLGIF7ACIBUCkyflyx9DPrzVfxbvE/Pw/Rg==@kvack.org
-X-Gm-Message-State: AOJu0Yz6aQa3iYdofgYbZjdNfTorO3nfQb+zptietnTPr5yrG3wXtvHR
-	91OnKbe+1t5tUHa+/tP5hbGsqt0BIt/k1iqKxBzHJOJAuV4xbfAHp/8h9IQHRDotLyBaqHdYAtK
-	YlAsklmTU1GtSK20iSGFe33f4wR7IOELTR4x/ns+M
-X-Gm-Gg: ASbGncsUrE7OQd9qIAbyVSC6/jOnX2658nY6IkM7ZyWTv0Tz34iOEYqjRa0FQnNXLct
-	l1cawXtC7VsNcq9TUHzfyF1Bxc4blqcwBVMi6F9gpGmu9jJSn/0ys1ASzVRRC6Xed7T91QTlgyr
-	qHFL2LNO5PagesY66rmExr9/8rCc24k0UEls2Rw/212agEY/nhLwkETSRJcGs3BHH5K+xFI98Fb
-	XsedasYhl1+DC0r0/UERbGpnFm2D+//S44S4GDcjZqskXQc8XHYLeAldDocym9iz+2LpqLlA78f
-	y1cjI8nvZ/YnyYc=
-X-Google-Smtp-Source: AGHT+IFn+kdpOaxRHChvDDCOT/IzFOqf6Yuxb5QncITiTYgJQXvWtUAPFk1/Z9bVNPh2z8gErYmDPzmHey0AxrHVefg=
-X-Received: by 2002:a05:6808:218d:b0:441:8f74:f0d with SMTP id
- 5614622812f47-44f95fac413mr1322392b6e.55.1761911306379; Fri, 31 Oct 2025
- 04:48:26 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761911579; x=1762516379;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gTUIS93GUZsQyg4tbyddEkDWsI2/kBv/P3HZONFfij8=;
+        b=jiBqykjzKPb1VGrjTl3hJNAtqNezs6IFw4IWc6hvZHZxPuldnsYSDFUnBsNIDHiBMv
+         4ihwCPkq3v6hZWnqznPGBFY+NbDtqC1YjF0K3w2YiCPPI87dbEhOQnUaP7ui1oR0vKq4
+         CNcOT/lrk5Sr7Hwk8Rd8l+wQ+MM20r5amrkx71SVff9adNDVMVQvsA3XxyxnX0WGf0nQ
+         vv0IWKwyL5lvE4Fav9D/7DXFwMc2flO5h0ywMWWa3Llu4o/1UgkzJ5L4G1syGc+MdAAU
+         L0rp2lUWtZiPE6zfctIhTZbca1BF7dXSk6L23GIOB3s/eGQqvoe9AlOMydO9J+VFGWrb
+         hmTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVJ0YH+5E3jz79+g0VRnt4iceNaRUNcNu0Gh/yqJzrKkF8PqMRfEXmCvZIlG9JJxYxF7in6SchlTw==@kvack.org
+X-Gm-Message-State: AOJu0YwmMVsxx4Y070PmsbFhZpvcZZzB/yB7PlMYzAmiDBj8ess1NsD7
+	WvyqOukGKdmuC6vs9fEHiEAn+Nmq1F2bp3nFuGk6DGg39vBQeLT+YNCc0qEZd3UbN+syFr7tBNd
+	DYDe7omsYNu2ggquAeMcFtfV1sxpJaB2/y19okuq3D4j59j7SRtLa
+X-Gm-Gg: ASbGnctAJObJhG8axEMb6UAx+pj4XFnIREVB5TTAiW5s9WadcP7qwIKYlv2p7aezTkl
+	0bUg++VQexLm80JACYRHNiiY8tMiDpU0z42Udl+0jasREa7lEDNPdVjYPInL27SvZkU6g/SsxmK
+	kXaynhz9ikUnBzr3gbQ0GkRc/tvgh6xUl6aoKOmK14CwfNfzwXM9ZV4TN+J9Bz9HGP9gDJF3h0x
+	gdDAu7Au08vwBDCI5lHktDIeEY5ZjtotBR7FUDoEoJuqDg4eEsORxkvZia/3nAYVfbt0kPljvkZ
+	KghmhymdO3tHOiZPVkMko6sBQjwX0PZqh1Ir6zxqsHVmf9434r5Kbf3zv0Yrv+NRSY9kaBa61TU
+	PTxTMj0hPiQIoiNq2dJ3h5hyWEolLqnSl7eiAU13OUaVcJQfwFVsXdCK0mqKd
+X-Received: by 2002:a5d:5888:0:b0:3e9:3b91:e846 with SMTP id ffacd0b85a97d-429bd676a88mr2912809f8f.10.1761911579310;
+        Fri, 31 Oct 2025 04:52:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH1wuetlLZ34asXy13r1bfmujThSOSUu3cZmMHhgfxqrER8G1YsbbHDsXHGv7ziQ36i83pqkg==
+X-Received: by 2002:a5d:5888:0:b0:3e9:3b91:e846 with SMTP id ffacd0b85a97d-429bd676a88mr2912761f8f.10.1761911578857;
+        Fri, 31 Oct 2025 04:52:58 -0700 (PDT)
+Received: from vschneid-thinkpadt14sgen2i.remote.csb (213-44-135-146.abo.bbox.fr. [213.44.135.146])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c1142e7dsm3186896f8f.17.2025.10.31.04.52.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 04:52:58 -0700 (PDT)
+From: Valentin Schneider <vschneid@redhat.com>
+To: Petr Tesarik <ptesarik@suse.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, rcu@vger.kernel.org,
+ x86@kernel.org, linux-arm-kernel@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-riscv@lists.infradead.org,
+ linux-arch@vger.kernel.org, linux-trace-kernel@vger.kernel.org, Josh
+ Poimboeuf <jpoimboe@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>, Frederic Weisbecker
+ <frederic@kernel.org>, "Paul E. McKenney" <paulmck@kernel.org>, Jason
+ Baron <jbaron@akamai.com>, Steven Rostedt <rostedt@goodmis.org>, Ard
+ Biesheuvel <ardb@kernel.org>, Sami Tolvanen <samitolvanen@google.com>,
+ "David S.
+ Miller" <davem@davemloft.net>, Neeraj Upadhyay
+ <neeraj.upadhyay@kernel.org>, Joel Fernandes <joelagnelf@nvidia.com>, Josh
+ Triplett <josh@joshtriplett.org>, Boqun Feng <boqun.feng@gmail.com>,
+ Uladzislau Rezki <urezki@gmail.com>, Mathieu Desnoyers
+ <mathieu.desnoyers@efficios.com>, Mel Gorman <mgorman@suse.de>, Andrew
+ Morton <akpm@linux-foundation.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>, Jann Horn
+ <jannh@google.com>, Dan Carpenter <dan.carpenter@linaro.org>, Oleg
+ Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>, Clark
+ Williams <williams@redhat.com>, Yair Podemsky <ypodemsk@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, Daniel Wagner <dwagner@suse.de>
+Subject: Re: [PATCH v6 06/29] static_call: Add read-only-after-init static
+ calls
+In-Reply-To: <20251030112251.5afcf9ed@mordecai>
+References: <20251010153839.151763-1-vschneid@redhat.com>
+ <20251010153839.151763-7-vschneid@redhat.com>
+ <20251030112251.5afcf9ed@mordecai>
+Date: Fri, 31 Oct 2025 12:52:56 +0100
+Message-ID: <xhsmhqzujp9t3.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
 MIME-Version: 1.0
-References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
- <20251030183621.39ea843ebba82ae133b2b38b@linux-foundation.org>
-In-Reply-To: <20251030183621.39ea843ebba82ae133b2b38b@linux-foundation.org>
-From: Big Sleep <big-sleep-vuln-reports@google.com>
-Date: Fri, 31 Oct 2025 12:48:15 +0100
-X-Gm-Features: AWmQ_bllX8fiVQbcOAZy9XxrHCwkX9Mk1pssFOX_WeDNH-_wvRGsENq8nY9U520
-Message-ID: <CAEXGt5TEr353v7waAc8N68te4xLwCRE+RB2BWs5tFwMC1mQs9Q@mail.gmail.com>
-Subject: Re: Oops in secretmem_fault()
-To: big-sleep-vuln-reports@google.com
-Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	Lance Yang <lance.yang@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A62C040010
-X-Rspamd-Server: rspam11
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: axZaxTVr_dIUc0BHHHi8xQPz0UCLIGGWsK8-UsU-H_w_1761911579
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain
 X-Rspam-User: 
-X-Stat-Signature: pfnzyn97h66kz8miebbwfhzb1r5sq9aj
-X-HE-Tag: 1761911307-714938
-X-HE-Meta: U2FsdGVkX18/1yt0STBrqXU1aF7XrFIOwtEhXLGYZIzVRWxLg11IQudFrrnxoW97NaU973EIyDHeGoRMyTFRgtOdT9qt+Mxc1p+w+htNq91CftrAgjwmPObrmzXc+9Z4s9trSJe/CWJw60RVFm1DnIQEWF31indLTYtkT6D5hO/1rW+3KbU568kHi4MeNkvCR9WNJRdIk0JUnBcFsNi1negnj9Qt8fKxwGswkgZcCz7O3gqNYka+I6URX+6GNOM2opp3zNWlqahBHxCmytqynY/YRZZIltye9NuhPp6536vG7WrzBkkGMgTwXnXCqRDAIX9PudIk+BPBU4avAWGDgsEQGDBt3vE6zVullKix9NoDwQBC6wV4z0B92MXWJLKgCAS0zOvWDWlJAFE/BEiXSBrjnnuFJaakbm5VUuHVzL3uZYgwk1054DT+5elOT9LsK8UZyJMbOrxSyxIRIgzf1UNa0Fr9Kik2xtCD9jl0bq2FwjwQhhBQ/o2LFxhWHFaz1YuWXm/bfrWUWvGwXPkLqgvqMOq8jYNh5fc01hNT1rWIbpVKksJ5AlwSa94YBPXVBEhyDQb7UdQAvswyblfEtqCShBsZf5uPFyfldVHSn2K963uTCwnBYLc+zSArRu2ZpYRho+h3zf1FaH6zLssS9CRksFZAtdx7fUl1KMgLLQUACra//VFXbxk38s7vZ40AiUy4jkH76LgVvwyLKqrTzDTaQ6YY3nTI7t/DiyKdzAc0wXqCboKsjDyim+XIGV3VQV3c0W9tro9SslmszARlWiAAM58vtlE6Dpjb7jO+brnlEdFUCEx9xRTK/LSwwNsoFMQMHwIg/SgnfTu6RfjTgQNyuuSSJZr7yJX7xHn4sF9lC/3mE/yxFRv7w6LqFc2SgObSQmaXh1TJRf0/7IL+vJXnMBQBEasFvEuJvr853aPmdJsi1y3RYXQRSY85eWWanRrxo8ECZiMXk2lQzGn
- 4RC6AHSN
- l6S9MQfgGZMfvVX6pP54evcTa835vDKPdNKAok5QKipWFc1Fb82S/Nyi6Rf7I36K6XI5DR4mu034qOTOfl7OYyDgiSmJs8AQbokgK9x0QdK+RKdF/pxYfzhfZXyzmg5q+Ste8UyjrrYscJZxJKMzodqsunoGXDeyfItx2mSpB5IVs1JAQL178857KNun7w0W3Lv6hNnPvfdTIIT83rL4cA5eXVOKWsQ30jB2AsiGsxEKbRmkHtO3jx02avTMJexqwF86UPHl+OeWTqekriVOpRx+liSDlNTuJsaVO5J1o1lmIFbiv118pZo1JkJP9nxLTRIm+VraU0Jbi/8fmy1PiZMaUoWKMNvcaCeArmxxOw/8+fkdZURZf/VypeQ4srj6k/0X8lTtjPqn0JHEzHdw5K9ABSvC6WmyERsZNe8J21t6vqZaRZ4WkiIqUHwCjMIAhuN32ei4ogxez0d3jQJZ7f90+Qm2LG20vIzU3WHKshWezgFaIt4aTxEpPev5h/QPVLbCy5YSnYfrPHqnhS+AkMC/Y6/FVb4snTbQtjOjRhtHfVcW0GrsfvPTEjCN2qojEXWroKJzyz0xrm2NqUIFtk/5c1Qcmif5WkSaUqXoztsQyNer/N1mgb5d4B0iIFBmxQSn5XM9IIXBuaT6e7VgxwS3ohRMmNYy6O2KKobdJ4DVan69h4L5X97tR9EXxGx/7ndutwZ8Zd36lifVX5A2LJ+w4Lvj1ruJLm3iTMg7JYEoI01VTdvhpOzcY0J3PuGDkPZ4pVBwor6Ti+tU=
+X-Rspamd-Queue-Id: 96048C0005
+X-Rspamd-Server: rspam02
+X-Stat-Signature: mxqpb71djy3s9781pfa6q4c55fq6n96z
+X-HE-Tag: 1761911582-184819
+X-HE-Meta: U2FsdGVkX18wVxM6vzDbr8U8GXYmHsHAW5Dvn8PNA4H5NE4mrCu2BHtF9oZCfx+0jigr/rgv3NmQQih2QI+Sary0UoIfqpEnVqbfSyPlXoIM1fhSwaVDUf6+ieNFmxbOHPMlLbwmTWwtl9xyQ62NqpljQLu/3arHN3Ufh43/CQb4jNuzEsc6ylkbB4b8qKo5JhKIXTJzrNA9c65l9Td1fR8kuJZbtoP6Rrh/dzutiMRblztHjfZ5fL6xG1cRRBKvTtHui/2kcrfFtzy4XlYsugMvjfAkNlIkfuJdv9tSRdxkIb9EY757AUeHanR6GWrKZdZcNY17qmkt/bbDBpc0Bl8TrVEblFQleTaoYeMsljOh8ObJFWOgVqDwbihXziakIahtBM9lqzq7l5cdBRhYXCUAOg0M0wmyxGHQroCyUv3/RBIsCi9RgeFSwNfVWNjkBlywI0/ImNZQCMjx/LEqRV13uQ00+NedSNT8QkbzdYq3UDKmtOis5RA8ldCfrPFgs2Dz3wJULvEklt4Y0AOCC2aV/T9Va3RD1cP3ayW6cQJhDKfx0MxNurNx7IHpr5PQ9KWRzOZa8gygXA2js7UcHJshgvGeALvDhrGEC9fDS5Lf/rsOINSYEDu8jueVylGjbe17Bwus+MpzxZ3hw8d1Mg5jcPf+guYxxn4ADcZ809ueMVlDDwxSBIXDmWox9DcyOewg+doIaxZg/HoEVW6DwCfjMkIWINsftsKx0cs+8ylEBhqjK3ndkBOERfgWKlcMpJz/iKixQRAeWIKuddgP0r+4XCvB6bOHKcgsPQBjBjVKMmHAhjBCVHYpLs9GJXRUFdbeOO7MSJ28YQtzASTzgFelFD/TRsaeyo58AMU7DQ9W3pP4ZnZrVLhZ2JNTairRYv08qmTtQhxRApnnKbFSG5jLv+ezbmnMuf3bgnrW89tcsy9a/aLvqgx7roNhinvS1lgaOxN4fQ/HSXzbwE9
+ +Fif2iRX
+ BdCeGf8IzsbAj1KvwrniyATujmIDFphLjXU4kUNlX93YeANzUMWiqyL/6Dlpi9IqACJbvq+yi2+oc8Zs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,41 +151,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello Andrew!
-
-On Fri, Oct 31, 2025 at 2:36=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
-> On Thu, 30 Oct 2025 16:34:29 +0100 Big Sleep <big-sleep-vuln-reports@goog=
-le.com> wrote:
-> You might want to include a token here so we (you!) can track the
-> report through to its resolution.  See what the sysbot people are
-> doing.  For example,
+On 30/10/25 11:25, Petr Tesarik wrote:
+> On Fri, 10 Oct 2025 17:38:16 +0200
+> Valentin Schneider <vschneid@redhat.com> wrote:
 >
-> https://lkml.rescloud.iu.edu/2408.2/07972.html included:
+>> From: Josh Poimboeuf <jpoimboe@kernel.org>
+>>
+>> Deferring a code patching IPI is unsafe if the patched code is in a
+>> noinstr region.  In that case the text poke code must trigger an
+>> immediate IPI to all CPUs, which can rudely interrupt an isolated NO_HZ
+>> CPU running in userspace.
+>>
+>> If a noinstr static call only needs to be patched during boot, its key
+>> can be made ro-after-init to ensure it will never be patched at runtime.
+>>
+>> Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+>> ---
+>>  include/linux/static_call.h | 16 ++++++++++++++++
+>>  1 file changed, 16 insertions(+)
+>>
+>> diff --git a/include/linux/static_call.h b/include/linux/static_call.h
+>> index 78a77a4ae0ea8..ea6ca57e2a829 100644
+>> --- a/include/linux/static_call.h
+>> +++ b/include/linux/static_call.h
+>> @@ -192,6 +192,14 @@ extern long __static_call_return0(void);
+>>      };								\
+>>      ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func)
+>>
+>> +#define DEFINE_STATIC_CALL_RO(name, _func)				\
+>> +	DECLARE_STATIC_CALL(name, _func);				\
+>> +	struct static_call_key __ro_after_init STATIC_CALL_KEY(name) = {\
+>> +		.func = _func,						\
+>> +		.type = 1,						\
+>> +	};								\
+>> +	ARCH_DEFINE_STATIC_CALL_TRAMP(name, _func)
+>> +
+>>  #define DEFINE_STATIC_CALL_NULL(name, _func)				\
+>>      DECLARE_STATIC_CALL(name, _func);				\
+>>      struct static_call_key STATIC_CALL_KEY(name) = {		\
+>> @@ -200,6 +208,14 @@ extern long __static_call_return0(void);
+>>      };								\
+>>      ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+>>
+>> +#define DEFINE_STATIC_CALL_NULL_RO(name, _func)				\
+>> +	DECLARE_STATIC_CALL(name, _func);				\
+>> +	struct static_call_key __ro_after_init STATIC_CALL_KEY(name) = {\
+>> +		.func = NULL,						\
+>> +		.type = 1,						\
+>> +	};								\
+>> +	ARCH_DEFINE_STATIC_CALL_NULL_TRAMP(name)
+>> +
 >
-> : IMPORTANT: if you fix the issue, please add the following tag to the co=
-mmit:
-> : Reported-by: syzbot+5054473a31f78f735416@syzkaller.appspotmail.com
+> I think it would be a good idea to add a comment describing when these
+> macros are supposed to be used, similar to the explanation you wrote for
+> the _NOINSTR variants. Just to provide a clue for people adding a new
+> static key in the future, because the commit message may become a bit
+> hard to find if there are a few cleanup patches on top.
 >
-> and when Dmitry fixed this he included that info in the patch metadata:
->
-> https://lore.kernel.org/all/20251028101447.693289-1-dmantipov@yandex.ru/T=
-/#u
->
-> and that Reported-by: will be carried all the way into the mainline tree.
 
-Thank you for the suggestion!  We are not currently tracking reports
-which we categorize as having no security impact, but we will include
-a tagging scheme like this for future reports to the kernel which do
-have a security impact.
+I was about to write such a comment but I had another take; The _NOINSTR
+static key helpers are special and only relevant to IPI deferral; whereas
+the _RO helpers actually change the backing storage for the keys and as a
+bonus are used by the IPI deferral instrumentation.
 
-> btw, it would be nice to Cc some human on these reports.  One cannot
-> be very confident that emails sent to big-sleep-vuln-reports@google.com
-> will actually be read by someone.
+IMO it's the same here for the static calls, it makes sense to mark the
+relevant ones as _RO regardless of IPI deferral.
 
-We are monitoring and replying to our reports and the surrounding
-conversations from our project alias.  We'll try to clarify this on
-future reports.
+I could however add a comment to ANNOTATE_NOINSTR_ALLOWED() itself,
+something like:
 
---Google Big Sleep Team
+```
+/*
+ * This is used to tell objtool that a given static key is safe to be used
+ * within .noinstr code, and it doesn't need to generate a warning about it.
+ *
+ * For more information, see tools/objtool/Documentation/objtool.txt,
+ * "non-RO static key usage in noinstr code"
+ */
+#define ANNOTATE_NOINSTR_ALLOWED(key) __ANNOTATE_NOINSTR_ALLOWED(key)
+```
+
+> Just my two cents,
+> Petr T
+
 
