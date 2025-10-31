@@ -4,100 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83743CCF9F0
-	for <linux-mm@archiver.kernel.org>; Thu, 30 Oct 2025 23:24:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F02EDCCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 00:05:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B6B838E01E9; Thu, 30 Oct 2025 19:24:26 -0400 (EDT)
+	id 050218E0072; Thu, 30 Oct 2025 20:05:40 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B1B4D8E006B; Thu, 30 Oct 2025 19:24:26 -0400 (EDT)
+	id 0275D8E006B; Thu, 30 Oct 2025 20:05:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9E40B8E01E9; Thu, 30 Oct 2025 19:24:26 -0400 (EDT)
+	id EA64D8E0072; Thu, 30 Oct 2025 20:05:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 89B398E006B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:24:26 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1E4F21402B9
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 23:24:26 +0000 (UTC)
-X-FDA: 84056361732.30.89E727B
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 558E6100003
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 23:24:24 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mfyFjY+x;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id D8ABD8E006B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 20:05:39 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 50848B7FB7
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:05:39 +0000 (UTC)
+X-FDA: 84056465598.13.37C5521
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 43EDD140010
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:05:37 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S4LwM/Pa";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of song@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=song@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761869137; a=rsa-sha256;
+	cv=none;
+	b=Ei0BkTC93Rpyaat4hfIa5axX7CrBwGzJsEcCN5iS97TXlEydvQ4XArDwdciXFmBG6VjTU6
+	WDKte0iRB8Q9BYvG9wuH6VZu5Ym4eD42WO3vcNkTHm2i6UUDyrjfIU56XnifIXbj6Kz40I
+	Co+9xWnzZHRkGo4T8rv3hmH1NboDINU=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="S4LwM/Pa";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of song@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=song@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761866664;
+	s=arc-20220608; t=1761869137;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vFcFfa21Y8J0EvYjz5FYEa4biOxuGL1h90UpSLZ/vN0=;
-	b=mmONZjXYFcteF6WfWbd9Fvryo7x7pY1VQ0ep/0wKoAWlVWlfH5t5/aLl87QsQ0MR1a5UQU
-	QqbQYPfb0JEBvtLNaW80noKQnvjq3VzqtnuWcwKkC7odYnxip6HfgQQkK+rp1/fzJq0VEQ
-	TF7EPh1maBXWZ1TJ0OWBlcfpzEgL0aE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=mfyFjY+x;
-	dmarc=pass (policy=none) header.from=linux.dev;
-	spf=pass (imf14.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761866664; a=rsa-sha256;
-	cv=none;
-	b=NXzrPARJqBUAVnEmEX6d+btEzaCnSXJMatKDASLgQBQMq3ab5jYlnGsdIoZ204F7GybC9x
-	oRwOOKzjRfLD2/0j0xp+2TgMDB0UFry/61tsfqk8zTvPFbyPZKmA4cRYAkqFTn1c2BYbIU
-	CG31q2PqjUK2+W9jvbWAcdWieTW3zeQ=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761866662;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vFcFfa21Y8J0EvYjz5FYEa4biOxuGL1h90UpSLZ/vN0=;
-	b=mfyFjY+xuK5o/5m3QmAXgABGIwfeRaMj8f5cMWUmw2pAzfQT8LIKXkkjjjHK/fKnYyBZ7k
-	81yKYEXTIfVNFD686cdiGUOIO4/FODITODwT1oQm33mRZNioDP2jq5kO1hi2ljt7DmY/+x
-	d+7pG1L9EuwIC5HQqNbCGpdPnpfZspg=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Amery Hung <ameryhung@gmail.com>,  Song Liu <song@kernel.org>,  Andrew
- Morton <akpm@linux-foundation.org>,  LKML <linux-kernel@vger.kernel.org>,
-  Alexei Starovoitov <ast@kernel.org>,  Suren Baghdasaryan
- <surenb@google.com>,  Michal Hocko <mhocko@kernel.org>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrii
- Nakryiko <andrii@kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
-  linux-mm <linux-mm@kvack.org>,  "open list:CONTROL GROUP (CGROUP)"
- <cgroups@vger.kernel.org>,  bpf <bpf@vger.kernel.org>,  Martin KaFai Lau
- <martin.lau@kernel.org>,  Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-  Tejun Heo <tj@kernel.org>
-Subject: Re: bpf_st_ops and cgroups. Was: [PATCH v2 02/23] bpf: initial
- support for attaching struct ops to cgroups
-In-Reply-To: <CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com>
-	(Alexei Starovoitov's message of "Thu, 30 Oct 2025 15:19:11 -0700")
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
-	<20251027231727.472628-3-roman.gushchin@linux.dev>
-	<CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
-	<87zf98xq20.fsf@linux.dev>
-	<CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
-	<CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
-	<877bwcus3h.fsf@linux.dev>
-	<CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com>
-Date: Thu, 30 Oct 2025 16:24:15 -0700
-Message-ID: <87bjloht28.fsf@linux.dev>
+	bh=lL44yd5kym8YMQUQn8UATM02q+rFzlKezIb629r05+M=;
+	b=wT9yrmVTCKjoe+OoP6dz7XUsUVsIVvVS4DkXQ2R5Mo0zczprQS2h5Q+eF+9lhAGcS+4bwE
+	3cfV74sFIjOp49P7dPQA89ek5XIW/PMdmNrdAicJD45DtJAOvzkCB9GYjARWLEBYm7gfxX
+	gSRlAtHRTBI1pN7CUhBVsRComhGLfhQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5CE89600AE
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 023B3C19422
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:05:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1761869136;
+	bh=9VKqbvQ0H9Mj3WzCt4xuE6UVqwjCj2GDyeee2UsBLTE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=S4LwM/PacmjvNT/z+BGhXQR0bFJ/AA5NKaymAjclz9J7EzSpv+LW76C4QZcu470KF
+	 Wpp/feMOtLlKKVaQLHvyL1Nw6Yfqc3jWAY2q6ccxUV7ao9L4oa7kFRDIe5rgoxd4Q6
+	 9ZS/ZlWhsXw6bJkL75nXtbFGUqFdF4YbhGw37wTBuRuRHSFuQnvmR3eOkLmX7oz/dR
+	 zKZy2PQgCm3cfb/J84aEubqUhMShsFMkskGYMWuDafUlu+sjxMIpg5jGXsGAmHCBxC
+	 RH53HtgXAxUPYGHr+xZ2ce9gGpCfQgT8AYLMGEvnQXQIh626Hu/wb/FvOXp1bNYSDc
+	 yqYalBOOJWfEw==
+Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-87c13813464so25996126d6.1
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 17:05:35 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUzb2umAxZy4cWrgZ8l26nlLitwInz1C0FFEcK6LqqLk+M0EUeDu3UaGF6e1PKHs64kzVvd7D2KNQ==@kvack.org
+X-Gm-Message-State: AOJu0YwGH2/Y+G4ZYXCSZTIg7oDCKzg6J/9xtDWmosUf3yLgii8r0u4/
+	GMdiWfZcyoony1cXkVXJrr7S1Qij1m5OiwDDhhNSKGtYxEt/raCRHsv9gBsAo92UTs5vRcXpw93
+	GSwMXKyXkoIkZybt5+v8OkEkHGykJEDg=
+X-Google-Smtp-Source: AGHT+IGIzNtfwNoDxezTaQZKGKWrOwEoUfbbhhapkjPj6bQRt6E/XRKTdN4NkyT+j42m2qLXtYIu1gkkBiOYxBVeCbU=
+X-Received: by 2002:ad4:5bec:0:b0:87d:ff71:8fe6 with SMTP id
+ 6a1803df08f44-8802f2fe005mr17787766d6.24.1761869134901; Thu, 30 Oct 2025
+ 17:05:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-3-roman.gushchin@linux.dev> <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
+ <87zf98xq20.fsf@linux.dev> <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
+ <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
+ <877bwcus3h.fsf@linux.dev> <CAHzjS_u5oqD3Dsk9JjK942QBL8UOMkqdM23xP0yTEb+MMuOoLw@mail.gmail.com>
+ <e027a330-8d51-44e5-badc-7c3ec4d41e23@linux.dev>
+In-Reply-To: <e027a330-8d51-44e5-badc-7c3ec4d41e23@linux.dev>
+From: Song Liu <song@kernel.org>
+Date: Thu, 30 Oct 2025 17:05:23 -0700
+X-Gmail-Original-Message-ID: <CAHzjS_ub0KBECge8DhaEZts1aYL5bBFaU=fJ3U+ZV5XdSjq1WQ@mail.gmail.com>
+X-Gm-Features: AWmQ_bmvv5xFRVlfh5B0U--valCRYKaA4OXxb-nAPkWaZTi3-DVpvDlxN5zRvRE
+Message-ID: <CAHzjS_ub0KBECge8DhaEZts1aYL5bBFaU=fJ3U+ZV5XdSjq1WQ@mail.gmail.com>
+Subject: Re: [PATCH v2 02/23] bpf: initial support for attaching struct ops to cgroups
+To: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Song Liu <song@kernel.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Amery Hung <ameryhung@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	linux-kernel@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
+	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org, 
+	cgroups@vger.kernel.org, bpf@vger.kernel.org, 
+	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Migadu-Flow: FLOW_OUT
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 558E6100003
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qkk5du4a5iyd4b739znmq7gisszfc3qe
-X-HE-Tag: 1761866664-775897
-X-HE-Meta: U2FsdGVkX18W4hOIMtAiUdJeIC6OskpqgIkfTZ2MiWaa1zziesd9SIVi/87ThsWY9RoD/PtUTZWn2VAX3FhPXMp+33x0KLgfCHc7N/EtFzDxR9wVkDhIsq8btOdI6PWaZCZAIHzJPEgs+HUh9VGFTpJR8d+z38J1TYMyStuqMqezQkkH4LGt+S8cE65/VuIczD2LIkVQzsSSVMCnNw2GAeP/TIvi+IpwdfVlsVL3L3dhKeMAuiq6lXknCevSpT6BZ2+kmJtHVLKomSwDFLIlbvKUVkSY3gizfpMG9I/KTsW0VjLcNE5aK0OYcYpImYQMokCUvflblOxHko6GHUGt6prZLFqjYvDLa0y1S/1iwO2ue+pCx0uNNAGIOi9xF0J6bdH3J0Hrh/4WcXKugMQRNgudsEZD8EsmO8MSE03uBBIPtTeknkg7HZrKZZ60N17uaGu+hbgsgcLEz4G2/0QGULUPSCV9Wb7S0PLNvml5YGh/a0w6wvd8OYZPQID/5OnxL2eNjGRCdYRdhQriKuW+XGTd9UnSY737J6CpuabKDmixaraBkPYF7QyJRuXCj7L0pBkZcRgWhv6NMKc4P6osPq90UECzdihuWYJvcVcSa8Op9/oRmXH3ECiv/ZJ+3gIqyOHxhPk3jvyBp2RQMWkV6dYio6MdVvAJR4gWxEIlOFJebF8mdQDMdfZb1CbvHF/wUOjFDSCBh2OgoCTaHoQFvbLAyj9ulkIqzeCN9osmXx7jxbTsDQmrIL7r6Xm+3Xf54YSeeg7dMCoSfildr3X7P/ll85hyC9EY0QVhVz1nJKlTRWDBjSJlRIodLhagOghOYeOU+QzoBeeCqcAavU1hAPgupsga7ON8uWaGi4QrtF0CIPZP09q0XYuHz2SpS1D0h965b42DTH2YWFZt560j9qDlN5G0w0dHic9tcMT78gGKNdMGuuzeFFaEUMeFmrUSmwQZnGYIEDjlRLtG0a0
- eQ0lPkZL
- aGZtTHEf/fYEVIgE5R1I0yMoX/eKyAdrT1fax19ti2LsEYEE+UzgsJYB2SzhIFM7sCaJXY76+x1CVyexDNmitfkAFtYu95xF+pK1giur72CQWEXw4al4/rCLp85+fkpZ3cdP4gMcMS75Jl/0npb/yTrEo5VS3xR/+Jwpa2hoBvvmDcSmHW0ymLfNODyRO/SB56ODT2fUzxOkkAB2Fak+tKhiXj6JL7VgUnmSbMVU85UgXG3dlaupfCJsTEtcTvCR3oL6DTEFCR2JEUSx5Es9vKAJmA1oMsiiKwwjFlhz+07j+A3LhHrr3p44y6hQ5NuUn7Gu95tq4Qk81ijoixnJBmeH9Qcn/Y6uKyjNz
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 43EDD140010
+X-Stat-Signature: mnf71fteq3d53h4bbwr3pc3dkkkoao8a
+X-HE-Tag: 1761869137-402399
+X-HE-Meta: U2FsdGVkX19EO1JalG0CaUNa8VvY6FzqIOAqdYEccA/3FfKWkR/dwkF+AbxSqJJ0iXlvckFfCzQDai/rPd8S5mi4XUYN+cmOgvzg/2aUDPw0vZGdPmZOUGw2HjTpwHlrOXN2cMwzwWzTmd1o80paToACkLImVRc7VBZKYxWqki9YWFuoHr9zpeSmRTP2H35AIjxpI3F+3NvGzd81p3pqvjFWK0xk+IV4yh06/QMYFTbGK3CeJS88/QCBUknTKuT6GfYJ36cxEsijlAz68p21uqeqdOyvAUD8ygeWxdHkZxsXotCcx2vMefaLU+EEflE/jhnUMhim2Z2PwqwRaUjBtQbczq6u1C8/2Pzx3Wvhd+om4BlgO7Wd+VGR7SFlNzp9t1woEdPA4bFsxllpzGOoHj5dyJLu9ypdEk7Rmgnz9eALnOkqGjK0VkDqr2EydF8G/s4+TzUV4jhSJuaIfdGyeCCDQq7YMo/77+HiiIga/l1g5EJTLL80Js1P/I/gnyfXrhtaMUjxbcPyJVPORFtzS3780iw4YJ47Eo5fSvMmtwWEKh0OAFj998vkEaPtnCPklEJI1wnA0wgtCzLi2qWwZezM8/tC7Nts46e4gcX9PDiBv3a0v89oINpnjLz4HRf3HebFPQYoYXbMm+8l5TR3s745dGr2ELAs01jg/TwCu/7hNMKw3HnCgew7BrCqJ9mVq+octM2GDQdvgS0cW9UcS3ByGxniJ9JSiIuTJfYsI/XNjZzRSj2We+Bu9H/kU6BR7Iu39zCIHKu8usIhHUbCCnoIH5PwJKn9VqvV0j72AXm0ZX8r89OTjb4XlJW/WzqMMRMONy0bdZpRAy5LBvSlWKimGNWUuPyGFjetNnQ3fL95VoAa3KZdJKZxYOv/wDtEQnmkFAPucmakX9Jpp45vtaIC0EFBmj7sMCEWL3sr7HdeAZmkpiYdDpt1w+igB/qDlNwHzsEuEr8+E9oG6jZ
+ QNGsXKWm
+ DP1BVYcfmUAneiPPgZ1zziIA+vy4c3LdNI3AB9SScVHvnBLyfsXNJTqGRP4d6yCAhOCq5L6VB2+j7oqTT9yeG+0JuuLBywpz2tFRweWgGNDUl3QpMRoU5YPeiOnNui2ppWqyQ24aN2Dmo/nSG3M2wmrBx7UL57EshjVx/wr6/DD05r060TFSJM873VVa/XpS4KsrluHOILDf8njKuZvFRTC+8XxXHLuCh5gSy2AWP7vHZV26yOKFySjd56xfaGBws15RPz+qjsxPbwIJOQK7LpfsnGEteEJM1MUeAfzuDXzKay8LNIp6zUeuTvclu06L/wKFCUAXKE/r26mY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,37 +115,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-
-> On Thu, Oct 30, 2025 at 12:06=E2=80=AFPM Roman Gushchin
-> <roman.gushchin@linux.dev> wrote:
->>
->> Ok, let me summarize the options we discussed here:
->>
->> 1) Make the attachment details (e.g. cgroup_id) the part of struct ops
->> itself. The attachment is happening at the reg() time.
->>
->>   +: It's convenient for complex stateful struct ops'es, because a
->>       single entity represents a combination of code and data.
->>   -: No way to attach a single struct ops to multiple entities.
->>
->> This approach is used by Tejun for per-cgroup sched_ext prototype.
+On Thu, Oct 30, 2025 at 3:42=E2=80=AFPM Martin KaFai Lau <martin.lau@linux.=
+dev> wrote:
+[...]
 >
-> It's wrong. It should adopt bpf_struct_ops_link_create() approach
-> and use attr->link_create.cgroup.relative_fd to attach.
+> The link can be detached (struct_ops's unreg) by the user space.
+>
+> The link can also be detached from the subsystem (cgroup) here.
+> It was requested by scx:
+> https://lore.kernel.org/all/20240530065946.979330-7-thinker.li@gmail.com/
+>
+> Not sure if scx has started using it.
 
-This is basically what I have in v2, but Andrii and Song suggested that
-I should use attr->link_create.target_fd instead.
+I see. The user space can poll the link fd, and get notified when the
+cgroup is removed.
 
-I have a slight preference towards attr->link_create.cgroup.relative_fd
-because it makes it clear that fd is a cgroup fd and potentially opens
-a possibility to e.g. attach struct_ops to individual tasks and
-cgroups, but I'm fine with both options.
+> >
+> >> 3) Move the attachment out of .reg() scope entirely. reg() will regist=
+er
+> >> the implementation system-wide and then some 3rd-party interface
+> >> (e.g. cgroupfs) should be used to select the implementation.
+> >>
+> >>    +: ?
+> >>    -: New hard-coded interfaces might be required to enable bpf-driven
+> >>       kernel customization. The "attachment" code is not shared betwee=
+n
+> >>       various struct ops cases.
+> >>       Implementing stateful struct ops'es is harder and requires passi=
+ng
+> >>       an additional argument (some sort of "self") to all callbacks.
+> >>
+> >> This approach works well for cases when there is already a selection
+> >> of implementations (e.g. tcp congestion mechanisms), and bpf is adding
+> >> another one.
+> >
+> > Another benefit of 3) is that it allows loading an OOM controller in a
+> > kernel module, just like loading a file system in a kernel module. This
+> > is possible with 3) because we paid the cost of adding a new select
+> > attach interface.
+> >
+> > A semi-separate topic, option 2) enables attaching a BPF program
+> > to a kernel object (a cgroup here, but could be something else). This
+> > is an interesting idea, and we may find it useful in other cases (attac=
+h
+> > a BPF program to a task_struct, etc.).
+>
+> Does it have plan for a pure kernel module oom implementation?
+> I think the link-to-cgrp support here does not necessary stop the
+> later write to cgroupfs support if a kernel module oom is indeed needed
+> in the future.
 
-Also, as Song pointed out, fd=3D=3D0 is in theory a valid target, so instea=
-d of
-using the "if (fd) {...}" check we might need a new flag. Idk if it
-really makes sense to complicate the code for it.
+I am not aware of use cases to write OOM handlers in modules. Also
+agreed that adding attach to cgroup link doesn't stop us from using
+modules in the future.
 
-Can we, please, decide on what's best here?
+Thanks,
+Song
 
