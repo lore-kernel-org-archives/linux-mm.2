@@ -4,116 +4,191 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1EB18CCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 16:17:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7CD6CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 16:19:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 622338E0107; Fri, 31 Oct 2025 12:17:56 -0400 (EDT)
+	id E8B248E010B; Fri, 31 Oct 2025 12:19:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5D3028E006C; Fri, 31 Oct 2025 12:17:56 -0400 (EDT)
+	id E3B5D8E006C; Fri, 31 Oct 2025 12:19:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4E8628E0107; Fri, 31 Oct 2025 12:17:56 -0400 (EDT)
+	id D02E98E010B; Fri, 31 Oct 2025 12:19:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3CDC88E006C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:17:56 -0400 (EDT)
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id BB3A28E006C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:19:39 -0400 (EDT)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id DC1F814052A
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:17:55 +0000 (UTC)
-X-FDA: 84058915710.27.940F0A8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 3F7781C000A
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:17:54 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LiWXWfSA;
-	spf=pass (imf18.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761927474;
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 58B06BA00C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:19:39 +0000 (UTC)
+X-FDA: 84058920078.27.42C8CB3
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011020.outbound.protection.outlook.com [40.107.208.20])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 9FDAD1C0007
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:19:36 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RVeFHtgk;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761927576;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ARNtyTqKOv1sOOXJLSzeyKh+SwS+eVMiVKCIzaqdbbs=;
-	b=ivUBKF4GcYXxf0nx64SAtOzrQa3BfPlBBhsfIZeIV9qcscwnfEEX2HmajZLGyns46LprMd
-	xeSfj+UZ+o48yDPJRU61V7qkViUEAU4NKEVWqvvWONq49cMN5jOkG7zjcCbn2z9XdOb5Xr
-	/kt9FKzSaCSYGDTlM1fBTGsSWQhUjQY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LiWXWfSA;
-	spf=pass (imf18.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761927474; a=rsa-sha256;
-	cv=none;
-	b=hV05dfe5DWUZ/yEBI/QdJ4mgkE/jPryK96MxcCAh6om+GxfEvscYR82Mc7+PF2Ee0WfyLc
-	tIPEOMCdypt8iQQdAkerpIwtK5gcqVx59V8YNkrfCeRXq8DzgsBC7NbUrZNwKJZDlm+euC
-	7T4RIO9OaNSNjx9oSy0h4Jnnd+IbZkY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A584960239;
-	Fri, 31 Oct 2025 16:17:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2195C4CEE7;
-	Fri, 31 Oct 2025 16:17:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761927473;
-	bh=MCisfH3acRtFrLNHefz4zikdpHdC9jbdMpKg791fIZc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LiWXWfSAchMv0NVkEACJtLOjKhrkZPwNvymqs5x9dEqH/o4IJTAV5amrfBcl9nzO2
-	 NcnGwRVpd92omsqljHpB3H2VIiKgFfNumoi1VGg8s2eayufeb/DzXxR6LiL5XREzcQ
-	 AfaB8G3du2KDJoFkngXAq9c/pkgFwz9i9cu3GVwieU1ePTTg3LKnKTPOhNTVUMp6+e
-	 V9TqHoqEgeZxdgU4Kfbwrl4RqxxnCo5zK9uj4nXlM14mzvZX0zhyx0x6UYVt/9ZhIl
-	 z6+oEX6Dt0VD1X7AKp5ZbexWaalGlPA62vTu480wyMHEGc+GP8F4oG4PxJwoTnu1PR
-	 5da/DTEblE6ig==
-Date: Fri, 31 Oct 2025 17:17:50 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Waiman Long <llong@redhat.com>
-Cc: Chen Ridong <chenridong@huaweicloud.com>,
-	LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
-	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-block@vger.kernel.org, linux-mm@kvack.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org
-Subject: Re: [PATCH 12/33] sched/isolation: Convert housekeeping cpumasks to
- rcu pointers
-Message-ID: <aQThLsnmqu8Lor6c@localhost.localdomain>
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-13-frederic@kernel.org>
- <bb9a75dc-8c34-41da-b064-e31bf5fe6cb2@huaweicloud.com>
- <510b0185-51d6-44e6-8c39-dfc4c1721e03@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=B0owgORCxAgiUBrgTGnNI6IPdQS0LhWBrTv+cInHmrw=;
+	b=q9SKNdKT5aZqGKHBUCQDfSx7AZdsTFkc71BuMS+1dVs9hv13aMk9FlusQUjwhlMIYkOUtE
+	Wu/A5g11z/7h9Qr1MXh5D2aHZwEApzOsVUe8mZZFdr2QOfl47bhCP77iHZ8xUhRPKFzwJZ
+	ghcgHGmTqrHowmhi9ZAB0s9oTRAIQzg=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=RVeFHtgk;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf21.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.20 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761927576; a=rsa-sha256;
+	cv=pass;
+	b=qGme0rozeyAyUAdqpM0ifrSOzXfH01QMy7jWOMKXsvQ8YvFFNMCBZLhVaOyiR5IKqAcjcF
+	XA/Lzk6AAHgiueO8a3U1m7hRah5kGdT3CDPorUt7I9mVSBTsfvZq7dejkS+5eOayb1h8nm
+	Rf6K/tafEz64SJ0xMEbtVCslPCUvmFc=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wnCOepv5XmpmGle9wfpDLPI5u9IKhTRGmoN4PtKDAudTF6tKZNTBSsopEvI5KqxNunzgUlM7kSIUP8YaqkpMuSl3WlTO//B8d4qYgkgWJrfLmfwHOJkk3oLmxwkcVybN88RsJeTg29VnjhTj8Lx6Sa5XVvZSrg2T27z9JU6SDQAU3770pWJI5ks7fbxegDNto679iLB8rjSufPNnAjV8WkIB0nfqDnArXaSnWAvobGcysgh1GlcSIbX39BKp7CUj4myLG/0Yc70z+1Qk+NeEJvpa3go3od3UoC5qYe2c3RWHFTiHecvqq4okYXdW7PMokxkePbUHr1gbVJKZkdeDHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=B0owgORCxAgiUBrgTGnNI6IPdQS0LhWBrTv+cInHmrw=;
+ b=l28K1xg2KA7B8qd3izBvW5yE0nWh51ccqemWV/FwKzIHgbbbiFvrStIGqG4JGHKnOBeBSoNwsz3+LK+zCTtdhutERqLtvTsD5HHpMz+BR9MGhAh0vG2ULP503bWef08zcVVgyqOKwBvR6YZCYAgWdTTr95NHsPrx3MSzvqnqVe1IVYkB7QM/eK6mSYMLTJapBmllHmuajRG0vhjXPE/FvEcu4i1SxDRRKJsLSM5UjGDDaEsIq7HEG65exEq0wWJ6UReNLCaXbJqiXq0l93COvV3YMnxDG6IPW3c8/J5/nQ++wfqKJeoNsjoQ0o3XNP3+p/DrGPfda3homL0ammWF1Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=B0owgORCxAgiUBrgTGnNI6IPdQS0LhWBrTv+cInHmrw=;
+ b=RVeFHtgk5kcXqrJ3yw1gnXs8shpl+0oiK55MrSJb5BzHtvlXnL1Mn8dT3E7Qx9qI9P69FbSDRIZ/0em4Ftb2B3m0KvPIzCn/JF6FHdarFKYnE0G5b6CADuhp64To8VhFvwdulQWVUisZwdZ0kxBYhx3Xy9hFF7ClJ1R9edGmIl2vNTVRRg5nWfTWHnb9pbFfMhpd4yvw5LFYEskDV49mcLFtygVrR4QHpi+XcTumNsengn2bDjC0ZmuY0R3pw3gDSA9UiNO5v6JW8MM+1AvKEIZPZbxPlUhp8xd8OgmuefrXVSEjDC1zqnqfa26Pnfwq3hQ1PiWUG5AQz8kJRI4aEQ==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH7PR12MB8428.namprd12.prod.outlook.com (2603:10b6:510:243::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.14; Fri, 31 Oct
+ 2025 16:19:30 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9275.013; Fri, 31 Oct 2025
+ 16:19:30 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: linmiaohe@huawei.com,
+	david@redhat.com,
+	jane.chu@oracle.com
+Cc: kernel@pankajraghav.com,
+	ziy@nvidia.com,
+	akpm@linux-foundation.org,
+	mcgrof@kernel.org,
+	nao.horiguchi@gmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Yang Shi <shy828301@gmail.com>,
+	linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH v5 0/3] Optimize folio split in memory failure
+Date: Fri, 31 Oct 2025 12:19:58 -0400
+Message-ID: <20251031162001.670503-1-ziy@nvidia.com>
+X-Mailer: git-send-email 2.51.0
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <510b0185-51d6-44e6-8c39-dfc4c1721e03@redhat.com>
-X-Stat-Signature: 6i13ennat3ieuopastu5nsqugz4adik3
+Content-Type: text/plain
+X-ClientProxiedBy: BL1PR13CA0320.namprd13.prod.outlook.com
+ (2603:10b6:208:2c1::25) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB8428:EE_
+X-MS-Office365-Filtering-Correlation-Id: 234eba21-aa3b-4deb-d3b1-08de1899451a
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?JqsRRyW9x9AZDQ6xogKOwKf3DM1phsHEvgxr4t0qdHyjfhl1357jB4is8PnH?=
+ =?us-ascii?Q?El7ZGBd7Ntrro9pOZCrm4OerC9+OWmrT3pSMj8IMN4hML+SJJ9OMGUJiX6D4?=
+ =?us-ascii?Q?GLcxUn/nFFXyqdtNRcKawGUkpEiyH2IkgAsmcEwRE29jZcuAiFWIUNxodkNY?=
+ =?us-ascii?Q?THwdR5YnMipXqzUGtewKiqVuEkrXb0D2nzhIt/BMCB+hcPNfSJwhG3O6b4MR?=
+ =?us-ascii?Q?awJLqTVRoEUjB7NRnVIt0YB/daFo9/Bq3z/L/Rr1MyJq0/JOLGUR42kQNEdp?=
+ =?us-ascii?Q?iVxqfpIrdhA/2YLBUou+yLe6R/9R0WcPHT6kfIA2tdIH/03v82r2oCW/Ncej?=
+ =?us-ascii?Q?RV0hek5KCREUQNpU5CUXSJq76uKiwQ+DGT/BgyPCodWvmHZKTjBJ7x5LGitE?=
+ =?us-ascii?Q?JUrs/k9Hv1VP8ixOQiv5U4s/UrgVKVnyFHQidP7wRUg6yTesULIIz5PiWkyJ?=
+ =?us-ascii?Q?t0E5qWW8SseZ+Y9ZXBmO1Uy6kx2cET4mBo6dYQRlpO+6Vq9WFhqKXkvQTBAf?=
+ =?us-ascii?Q?pRz9u+OFxAtkt0Ik/zlW/u+kOqIQ5ZcuBv84bAOxobKXGHb2Ak+JOqHb7FEg?=
+ =?us-ascii?Q?eBUF1V0CK5KlP2JQmefVkSo9fHU3TLBhC+iiaB0sMzhVKFL+mh2ey+aSWVqj?=
+ =?us-ascii?Q?DDnYxcXJIog1gvTtNaL8vXnxm0GwmlxuU0UZO496FhNYUspCRYqVs2RZjZYH?=
+ =?us-ascii?Q?q41bmgRtdChTtI8KHsNPjGvLLGtKsCxfMwOlVHVARAN0moth4Jxys78wxdMY?=
+ =?us-ascii?Q?bZM9+YTjun7jUU2XaoDRYbhQ+RSM9DGbKKo5Re705e8gkwRNJ6M5fH1Y5QZz?=
+ =?us-ascii?Q?Kv8odao+pxKavGCGAfch9spjNonbKl+yWaBpCX/UqLxiD7H3UH3EV51TGQHx?=
+ =?us-ascii?Q?FYxUMbnjjF/oIYpN1rQk+d351CMzZ8520UGnTzvCYcrbFuZo0UsYRDVj4+rL?=
+ =?us-ascii?Q?Yx+t0UsN71W/ryowwL/Pr9MCRfhozC9VoXt2Xpp4Zla9kz4rjrQ+8WkpMhd0?=
+ =?us-ascii?Q?AEZpbE9sDBhuddatl7YKNcQ/naGQfaywNSnP/wh4jYczJi6hYRWVIz3J2l83?=
+ =?us-ascii?Q?hatqGtIcio7ScTWbXVVSA8OtG7ahORkULavyadiq+BAG9iTPfAL/C1t1b4At?=
+ =?us-ascii?Q?OH3jUzR3YCkTZtMvObM3291izpXa2oZrrmp16wijPVOYIVQArT3a0zxNXW4A?=
+ =?us-ascii?Q?vwTFBjDXVBvZvhPt8jTv82FFlQpmNcC2oa4JoMSXJYC+Men2wIgDplzRUavv?=
+ =?us-ascii?Q?ARSKLHiov3rjVoOiWhMehQ7vkMtjugNVt02ALV3aDB9+Nmf5t4Pocnr2V2qE?=
+ =?us-ascii?Q?mP0D/prqALLs9qVsWgrOCIwTv+0+Nor7c4eeyydw++/B6eqkLRCQh/dP+ZdL?=
+ =?us-ascii?Q?3yL3GUigObp05EnI6aux08J/XjdiB77K/+62tvYY/LsxkZuoIQp56ZO3O1ss?=
+ =?us-ascii?Q?Urm3mPye918/ew9g6vWmww4rPvA3WwCbFFb9I6C2qUzi6T4pxE10Ig=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?K9PLRukXK8uHBIGNYVA2gdlWruOrH2+m5pzmotopFLYSr+gCsfgsZd4bvGF2?=
+ =?us-ascii?Q?DNs0f0jJgjRFNqBtn260cuH07IAd/Hjiv1akuDR0uwXaFlokXoGchgSCvgbb?=
+ =?us-ascii?Q?JsjUoC/LOgn1zcVbmfQFFgmVynZfXFcB+NbKEJrZfX4dutaI7S986sjiXD/q?=
+ =?us-ascii?Q?tdzRDlhfIKrhWyZVThhntHPiGSgAwacm/fQfwCCInN0HCBE1sQ07XR9A5eUy?=
+ =?us-ascii?Q?4jrgwT8ZhLtRHQ3E+oxVpaHCKnfp0l5nc7IoK6onSDYJ/laHhf0s+RvJbxvc?=
+ =?us-ascii?Q?DfJNfHcxPwCXboy96UKunnbH2vizluj9N2WkLnjgG62+kBkIOXOpZz32gbwe?=
+ =?us-ascii?Q?xO9hCya6NKWcX+lOF7b2yZYdQqUAlkxzLWcQaP2bISxtn2bBd6E7cn3ErebL?=
+ =?us-ascii?Q?Q3skvuj5hP+34fGd1PAPb04eJDybxPXPot7ws0518OdSdgV0N73WXLSZCHAj?=
+ =?us-ascii?Q?b7j+c3H46+6CgIx0ed1E3GqRvFuJjfsol4R9NsIyX/wqcc3u08CTCszzqCh9?=
+ =?us-ascii?Q?nUQRHJ/m13FsR9dgj+ZfRaG9N+vcW+SmT8fXbkBSdhzrw1CPLt19UWlAT+jE?=
+ =?us-ascii?Q?xrUUIKczWRA+wKZHu1oCY5qMP72R/mSw9AEpNKu79jP324WKfsYz9prIJyNo?=
+ =?us-ascii?Q?1Z6lSVYbGAfj5qhl9oWjyrqljNDBe8hZk0qsfzh4lQBtIP9pNMibGc2KB2sI?=
+ =?us-ascii?Q?P9+oVX4R6pYxi3pwhw/ydU8b6tYk8mCJ4T/ZEArQyyThYG2bTHRngpf/7PVD?=
+ =?us-ascii?Q?YENqQ55S5aXNTX03CB5Fvgpy3Oad2arDsBH2dDRZFuSwvtyFlXJs2dJ7T139?=
+ =?us-ascii?Q?jawSjsVK2aeNZ+KdIf8jow+i2MbnzfGoQRlunjmUk4Fruu9DfOeS5VHZlD/h?=
+ =?us-ascii?Q?cEQLNd+wzMhopDtqQA0McId726/6j6vQC1zwCFPuSdi2S8c6jpDVpHWuF6PQ?=
+ =?us-ascii?Q?SHBnlBC8Lf4Qb4giwNGYszMV5o8sibm4qVx5v0t/NrofXQfFLW9vDU3GEmoC?=
+ =?us-ascii?Q?gsx+KaiNNzs2+FP5L7mhyGEOaSTYnoQOYEzVv6WrvJP92xwD1gVOga4x8xwz?=
+ =?us-ascii?Q?1bimXvM3DPoeRQQ6OIU8czR8iFNpnV+LdLfe9OhBYFTJRWWKlLvl0lxBNfao?=
+ =?us-ascii?Q?1enVMX2POHkrKJi7UzDzNBjAqVs6F4X7UQG/20xXjCB315M6TJrcb2ccdzb4?=
+ =?us-ascii?Q?vPwuE+IN+QV5f7koQyrrSUwQWDdVVs312aWdjkgHgG+0mQleTpBK0C+X1Zaq?=
+ =?us-ascii?Q?K1tYwwkdxNn3h84rqQwiVd3qa6njEkT6yCxGieXFp3BMqQAhcolk5TAmpA1n?=
+ =?us-ascii?Q?DfxpBLhwZDpRib1daEQEQCGQYyInxUIcmwcZHlB7RU0qP5zjib7KLJkVnCTB?=
+ =?us-ascii?Q?1BJd5gyDwQqpNeYxxDvNHZhj0GxNLKkgUklHLIxmc3u5OKcU4XFV8TLraHCh?=
+ =?us-ascii?Q?JhqmWZT2r6ZcfGG+ajV1boGDqImy6AG9YE8UHKi6YaFliIxXJp7TmEY2ilak?=
+ =?us-ascii?Q?q0ZeVL2g7w1HD+/B9q4bRhCKPYI1hV/sYz7ou+Q8cbXWMabZLxkqHBoKl0iL?=
+ =?us-ascii?Q?tRSVaATm3ntR5p6t/VtQVegKGJXTEg2O3flvHCKE?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 234eba21-aa3b-4deb-d3b1-08de1899451a
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 16:19:30.3007
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Hxb/+cfCrDOU78ymktO8Uz1bvpps8BdVmeTZM4fDKrBzSwA56CE4I8dP6hXZRYDN
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8428
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 3F7781C000A
-X-HE-Tag: 1761927474-156038
-X-HE-Meta: U2FsdGVkX1+oDQwU6+hjfywZpeHoubZD5MZo8/h+Kk+oYSk0dkxG6xym3mdsrPpPSrrYm0mz6l/Cocs7KdJNaTU6FoIaUW9rDqQroY3v9pKofh/BatqRp6lzTYWOWQenX3VKNKy5LpnvnmVe1h90b4tIGdwAfLKJO3CfvKFynyBV9FOmjxqA7zWM+gC/sZsqJAFBs2mf5vOE2Dn/0La/XbhM1Fgb9kBDn4fIbOedcRSOHwPuW8BTcNSPCLYbXAkBhb/GFcPCS/a5o63z8KxOICKalGxKf3qDNOfnvgd5dMOSzZ0DfH9VfFucSdVhZKH0XlbmOyVD8kGWw+65HP4vy7DGsMzU2ciOyyb9rsDXFERQ851QQZu32hRVKo4E0xcXVYiYU3SZzppJ2bcwiCIpkC0K43LTsVhBefEQqpRSBSJ032/JfFUo5eVB0mD5Soyly5RQVKb8+dCqAJPp7CSSPVf+z98RUnQUWUFJi0oiF0fthcQK8zxybSXtu+EYMTT38eQSAEARA5rtn0VEVK2jwTfNGeqvIduk2h0BrXpqyLAlrQ+5/4ni53AhApkJWylhuDKQR9oK3aqWjlgcMzl2AkoWx9IbcqWB82e1smUvnqbkNWo9kAHVQ3r4UlM2C/gimV3DbLOP7AeyPpDyWptvnd2JxCpu8TS4fr9wEEGNxSJTychi3srze3yaYP4ia+RIpsDl3yph4SqavkB/Pc+3chYUnBrPFrpqljVTQaoFDc6PzF1xen1TLleC+QqPRal0IDun6BewkPqCThIPLpDarDSTmCtK0cwv6USA/o06AuKuoKOsLuUt6WsFCseKcSgLV9lPcDki668C6kiLmm3akzQqDlmJod4/dF79zKCOdvNQtvmbvwk3ULfltOXC/gqxtllwIUQa4MF+X00Ay9iw6lE6mHNakW/k6ot+GqJPLMq8GBPjiBNcafTiU5etLaI8MCpDYJmi25shy5fnicU
- KBVq4go3
- FqaAaYgTeru/NMjZMbaePyHpZB6K54oF3z1du/HFkzKm+hID2ln9UXUh7w00jgVX4nCbgiyGdAL2PhlQnAnAU5dyFYyBa4cOhAIzDNgkkHFS10srjl/LjbYxCMFgt3jbRfcjD+FI1QPkG4iaCspORQBTfluVNrbAr1PB+EJFdQqNxdxwl+Oh5X1eeJytKtBYmHxoGs4aY1RuCw48YASP6otmMEcspios5ioCIpKDHI1ItnwLpa5V7ZNLgJR/XWbMoFd0L
+X-Rspamd-Queue-Id: 9FDAD1C0007
+X-Rspamd-Server: rspam03
+X-Stat-Signature: yd1h3az5fypkd1son1dpwj89y6ri883k
+X-HE-Tag: 1761927576-568995
+X-HE-Meta: U2FsdGVkX1+rTbEovCff9Ci1jKp5G/SJuj0vITAgi5Hq/YoqrQLA8hQE2iOhLyi2ghwoZHwHYCpSDHKbM+2CqvLlz9MtNcScgXsrRWYvbhu9osGuUYi3J7Na4xOK/aw20Jjr0Z7mjcxfKVRYwAqXjUyuAieFQ0cC1hOcSfxctgDvLG5EtAnY+KTMq+9R5PKATGtsMR+05zb2yyxE/8/BZ1bhge27+3zUeLQls3CaLTL3iyzn1+1DPsTTS0+oD1GhZnjUjOuWUZqTb1nG45hW9tD2dxtZMtDw0+Eyfwuklnc90oHvY8jX/aAFspeXp786mYuWEKGToT+GsZJn0HJkQzFZa7q907F7a92KNf8qKBGV2/M/4p3M+WI5DNS+b6MedLHoaINtWipM8qjlU2+cxvQbX+UPSs9SvuTxdE8tkM6x3uog/wV9nFNCP3H/YW1VNOrlOwBHcX97AU3fwf4MHInaGi7NXKDpTvaJp/PpOFP+2d5mSKeIE9cWTdw6ZWjGYLgDItwzxuVlEtCxFZK9cIJ8tMGN/LgEbmhwabUyvQgktJgL5Ef7cA8ci3+CMgpiW50kOJ67dVjzLBEuSXWAUK3XvwUz4Zy/bjVLi2z1aTBtcR+bUR/5N1bm+mf57U08ghTWahTpciWRB3/2+yyyA8oy9qV4PleoiowJxEdxAWn+Jhbz2GpZr1vePAD/9ADTbQ+VSyycfubyoutXiG36n5LlKAVTa6xTQ5CKkCtX18a1ikcreS5V3CatciiJS0+M8cNkHEyrWcJfux0QSAhs096NlR7l/JKUf3TzKUJaOO+TvE+QErpK1oK2dAt5buCqRnTIx32Tv8rvf/xxa7HLtzmnOQHeUbHkQ8OrxmPLu8ia015D/Q1nvvjjmj99B9+w6Y8CVdB2OP/ze4MZjY71tYefu5cHDT1A7MGCfGKo+GwiZgzApngf9DEbvwd+8r7E/JJW+QLGAg9+lOLbMfc
+ +WaKdtZa
+ ncWJmuUok6D0O57wIq5QNoB/1SSLK4cgAtP/gmz7LMeyyQJRCSDWwfRliSItVA9gnHLLWolkyqh2+MwehsOJDLxEgMz3dW+ZnCA/QNdJl7Hu16y/2xjl25uUQi3MJjDx8tmswkFrSTB7JC13gQ2/78toY+qvhwOy46X7xexPs/1GwllNK9DySrnzey7zAmybfkXJDIo+VKUpK99huPrWtm2YsuKo6tUWHKoQxMqP1TIdA9uUJwB9MVkjsfcFhyKQiEgehheNMxUjlHi7c8hoyzW0qKJzOtNMV1pYm82eZNxad/iP5ovWM7N/RgygOHRzZARNEOiSd5GfJULn2NcopXbZIATU+YAmirgQfltoa0XyvZnJk7IJ1w45JNXqPLL7YsXJT1CpCQHesforLJO/PyTQAx7tFE8CmPkPPbhtlbFrmpCI+hWMcFLS02+IVvr3J/HoNzn+1z8pBNUhb1GpAoBF7QswqPDOQt0AA
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,224 +197,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Tue, Oct 21, 2025 at 12:03:05AM -0400, Waiman Long a écrit :
-> On 10/20/25 9:46 PM, Chen Ridong wrote:
-> > 
-> > On 2025/10/14 4:31, Frederic Weisbecker wrote:
-> > > HK_TYPE_DOMAIN's cpumask will soon be made modifyable by cpuset.
-> > > A synchronization mechanism is then needed to synchronize the updates
-> > > with the housekeeping cpumask readers.
-> > > 
-> > > Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
-> > > cpumask will be modified, the update side will wait for an RCU grace
-> > > period and propagate the change to interested subsystem when deemed
-> > > necessary.
-> > > 
-> > > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > > ---
-> > >   kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
-> > >   kernel/sched/sched.h     |  1 +
-> > >   2 files changed, 37 insertions(+), 22 deletions(-)
-> > > 
-> > > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> > > index 8690fb705089..b46c20b5437f 100644
-> > > --- a/kernel/sched/isolation.c
-> > > +++ b/kernel/sched/isolation.c
-> > > @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
-> > >   EXPORT_SYMBOL_GPL(housekeeping_overridden);
-> > >   struct housekeeping {
-> > > -	cpumask_var_t cpumasks[HK_TYPE_MAX];
-> > > +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
-> > >   	unsigned long flags;
-> > >   };
-> > > @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(housekeeping_enabled);
-> > > +const struct cpumask *housekeeping_cpumask(enum hk_type type)
-> > > +{
-> > > +	if (static_branch_unlikely(&housekeeping_overridden)) {
-> > > +		if (housekeeping.flags & BIT(type)) {
-> > > +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
-> > > +		}
-> > > +	}
-> > > +	return cpu_possible_mask;
-> > > +}
-> > > +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
-> > > +
-> > >   int housekeeping_any_cpu(enum hk_type type)
-> > >   {
-> > >   	int cpu;
-> > >   	if (static_branch_unlikely(&housekeeping_overridden)) {
-> > >   		if (housekeeping.flags & BIT(type)) {
-> > > -			cpu = sched_numa_find_closest(housekeeping.cpumasks[type], smp_processor_id());
-> > > +			cpu = sched_numa_find_closest(housekeeping_cpumask(type), smp_processor_id());
-> > >   			if (cpu < nr_cpu_ids)
-> > >   				return cpu;
-> > > -			cpu = cpumask_any_and_distribute(housekeeping.cpumasks[type], cpu_online_mask);
-> > > +			cpu = cpumask_any_and_distribute(housekeeping_cpumask(type), cpu_online_mask);
-> > >   			if (likely(cpu < nr_cpu_ids))
-> > >   				return cpu;
-> > >   			/*
-> > > @@ -59,28 +70,18 @@ int housekeeping_any_cpu(enum hk_type type)
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(housekeeping_any_cpu);
-> > > -const struct cpumask *housekeeping_cpumask(enum hk_type type)
-> > > -{
-> > > -	if (static_branch_unlikely(&housekeeping_overridden))
-> > > -		if (housekeeping.flags & BIT(type))
-> > > -			return housekeeping.cpumasks[type];
-> > > -	return cpu_possible_mask;
-> > > -}
-> > > -EXPORT_SYMBOL_GPL(housekeeping_cpumask);
-> > > -
-> > >   void housekeeping_affine(struct task_struct *t, enum hk_type type)
-> > >   {
-> > >   	if (static_branch_unlikely(&housekeeping_overridden))
-> > >   		if (housekeeping.flags & BIT(type))
-> > > -			set_cpus_allowed_ptr(t, housekeeping.cpumasks[type]);
-> > > +			set_cpus_allowed_ptr(t, housekeeping_cpumask(type));
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(housekeeping_affine);
-> > >   bool housekeeping_test_cpu(int cpu, enum hk_type type)
-> > >   {
-> > > -	if (static_branch_unlikely(&housekeeping_overridden))
-> > > -		if (housekeeping.flags & BIT(type))
-> > > -			return cpumask_test_cpu(cpu, housekeeping.cpumasks[type]);
-> > > +	if (housekeeping.flags & BIT(type))
-> > > +		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
-> > >   	return true;
-> > >   }
-> > >   EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
-> > > @@ -96,20 +97,33 @@ void __init housekeeping_init(void)
-> > >   	if (housekeeping.flags & HK_FLAG_KERNEL_NOISE)
-> > >   		sched_tick_offload_init();
-> > > -
-> > > +	/*
-> > > +	 * Realloc with a proper allocator so that any cpumask update
-> > > +	 * can indifferently free the old version with kfree().
-> > > +	 */
-> > >   	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
-> > > +		struct cpumask *omask, *nmask = kmalloc(cpumask_size(), GFP_KERNEL);
-> > > +
-> > > +		if (WARN_ON_ONCE(!nmask))
-> > > +			return;
-> > > +
-> > > +		omask = rcu_dereference(housekeeping.cpumasks[type]);
-> > > +
-> > >   		/* We need at least one CPU to handle housekeeping work */
-> > > -		WARN_ON_ONCE(cpumask_empty(housekeeping.cpumasks[type]));
-> > > +		WARN_ON_ONCE(cpumask_empty(omask));
-> > > +		cpumask_copy(nmask, omask);
-> > > +		RCU_INIT_POINTER(housekeeping.cpumasks[type], nmask);
-> > > +		memblock_free(omask, cpumask_size());
-> > >   	}
-> > >   }
-> > >   static void __init housekeeping_setup_type(enum hk_type type,
-> > >   					   cpumask_var_t housekeeping_staging)
-> > >   {
-> > > +	struct cpumask *mask = memblock_alloc_or_panic(cpumask_size(), SMP_CACHE_BYTES);
-> > > -	alloc_bootmem_cpumask_var(&housekeeping.cpumasks[type]);
-> > > -	cpumask_copy(housekeeping.cpumasks[type],
-> > > -		     housekeeping_staging);
-> > > +	cpumask_copy(mask, housekeeping_staging);
-> > > +	RCU_INIT_POINTER(housekeeping.cpumasks[type], mask);
-> > >   }
-> > >   static int __init housekeeping_setup(char *str, unsigned long flags)
-> > > @@ -162,7 +176,7 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
-> > >   		for_each_set_bit(type, &iter_flags, HK_TYPE_MAX) {
-> > >   			if (!cpumask_equal(housekeeping_staging,
-> > > -					   housekeeping.cpumasks[type])) {
-> > > +					   housekeeping_cpumask(type))) {
-> > >   				pr_warn("Housekeeping: nohz_full= must match isolcpus=\n");
-> > >   				goto free_housekeeping_staging;
-> > >   			}
-> > > diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-> > > index 1f5d07067f60..0c0ef8999fd6 100644
-> > > --- a/kernel/sched/sched.h
-> > > +++ b/kernel/sched/sched.h
-> > > @@ -42,6 +42,7 @@
-> > >   #include <linux/ktime_api.h>
-> > >   #include <linux/lockdep_api.h>
-> > >   #include <linux/lockdep.h>
-> > > +#include <linux/memblock.h>
-> > >   #include <linux/minmax.h>
-> > >   #include <linux/mm.h>
-> > >   #include <linux/module.h>
-> > A warning was detected:
-> > 
-> > =============================
-> > WARNING: suspicious RCU usage
-> > 6.17.0-next-20251009-00033-g4444da88969b #808 Not tainted
-> > -----------------------------
-> > kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
-> > 
-> > other info that might help us debug this:
-> > 
-> > 
-> > rcu_scheduler_active = 2, debug_locks = 1
-> > 1 lock held by swapper/0/1:
-> >   #0: ffff888100600ce0 (&type->i_mutex_dir_key#3){++++}-{4:4}, at: walk_compone
-> > 
-> > stack backtrace:
-> > CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-next-20251009-00033-g4
-> > Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239
-> > Call Trace:
-> >   <TASK>
-> >   dump_stack_lvl+0x68/0xa0
-> >   lockdep_rcu_suspicious+0x148/0x1b0
-> >   housekeeping_cpumask+0xaa/0xb0
-> >   housekeeping_test_cpu+0x25/0x40
-> >   find_get_block_common+0x41/0x3e0
-> >   bdev_getblk+0x28/0xa0
-> >   ext4_getblk+0xba/0x2d0
-> >   ext4_bread_batch+0x56/0x170
-> >   __ext4_find_entry+0x17c/0x410
-> >   ? lock_release+0xc6/0x290
-> >   ext4_lookup+0x7a/0x1d0
-> >   __lookup_slow+0xf9/0x1b0
-> >   walk_component+0xe0/0x150
-> >   link_path_walk+0x201/0x3e0
-> >   path_openat+0xb1/0xb30
-> >   ? stack_depot_save_flags+0x41e/0xa00
-> >   do_filp_open+0xbc/0x170
-> >   ? _raw_spin_unlock_irqrestore+0x2c/0x50
-> >   ? __create_object+0x59/0x80
-> >   ? trace_kmem_cache_alloc+0x1d/0xa0
-> >   ? vprintk_emit+0x2b2/0x360
-> >   do_open_execat+0x56/0x100
-> >   alloc_bprm+0x1a/0x200
-> >   ? __pfx_kernel_init+0x10/0x10
-> >   kernel_execve+0x4b/0x160
-> >   kernel_init+0xe5/0x1c0
-> >   ret_from_fork+0x185/0x1d0
-> >   ? __pfx_kernel_init+0x10/0x10
-> >   ret_from_fork_asm+0x1a/0x30
-> >   </TASK>
-> > random: crng init done
-> > 
-> It is because bh_lru_install() of fs/buffer.c calls cpu_is_isolated()
-> without holding a rcu_read_lock. Will need to add a rcu_read_lock() there.
+This patchset optimizes folio split operations in memory failure code by
+always splitting a folio to min_order_for_split() to minimize unusable
+pages, even if min_order_for_split() is non zero and memory failure code
+would take the failed path eventually for a successfully split folio.
+This means instead of making the entire original folio unusable memory
+failure code would only make its after-split folio, which has order of
+min_order_for_split() and contains HWPoison page, unusable.
+For soft offline case, since the original folio is still accessible,
+no split is performed if the folio cannot be split to order-0 to prevent
+potential performance loss. In addition, add split_huge_page_to_order()
+to improve code readability and fix kernel-doc comment format for
+folio_split() and other related functions.
 
-But this is called within bh_lru_lock() which should have either disabled
-IRQs or preemption off. I would expect rcu_dereference_check() to automatically
-verify those implied RCU read-side critical sections.
+It is based on mm-new without V4 of this patchset.
 
-Let's see, lockdep_assert_in_rcu_reader() checks preemptible(), which is:
+Background
+===
 
-#define preemptible()	(preempt_count() == 0 && !irqs_disabled())
+This patchset is a follow-up of "[PATCH v3] mm/huge_memory: do not change
+split_huge_page*() target order silently."[1] and
+[PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split
+to >0 order[2], since both are separated out as hotfixes. It improves how
+memory failure code handles large block size(LBS) folios with
+min_order_for_split() > 0. By splitting a large folio containing HW
+poisoned pages to min_order_for_split(), the after-split folios without
+HW poisoned pages could be freed for reuse. To achieve this, folio split
+code needs to set has_hwpoisoned on after-split folios containing HW
+poisoned pages and it is done in the hotfix in [2].
 
-Ah but if !CONFIG_PREEMPT_COUNT:
+This patchset includes:
+1. A patch adds split_huge_page_to_order(),
+2. Patch 2 and Patch 3 of "[PATCH v2 0/3] Do not change split folio target
+   order"[3],
 
-#define preemptible()	0
 
-Chen did you have !CONFIG_PREEMPT_COUNT ?
+Changelog
+===
+From V4[5]:
+1. updated cover letter.
+2. updated __split_unmapped_folio() comment and removed stale text.
 
-Probably lockdep_assert_in_rcu_reader() should be fixed accordingly and consider
-preemption always disabled whenever !CONFIG_PREEMPT_COUNT. Let me check that...
+From V3[4]:
+1. Patch, mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split
+   to >0 order, is sent separately as a hotfix[2].
+2. made newly added new_order const in memory_failure() and
+   soft_offline_in_use_page().
+3. explained in a comment why in memory_failure() after-split >0 order
+   folios are still treated as if the split failed.
 
-Thanks.
+
+From V2[3]:
+1. Patch 1 is sent separately as a hotfix[1].
+2. set has_hwpoisoned on after-split folios if any contains HW poisoned
+   pages.
+3. added split_huge_page_to_order().
+4. added a missing newline after variable decalaration.
+5. added /* release= */ to try_to_split_thp_page().
+6. restructured try_to_split_thp_page() in memory_failure().
+7. fixed a typo.
+8. reworded the comment in soft_offline_in_use_page() for better
+   understanding.
+
+
+Link: https://lore.kernel.org/all/20251017013630.139907-1-ziy@nvidia.com/ [1]
+Link: https://lore.kernel.org/all/20251023030521.473097-1-ziy@nvidia.com/ [2]
+Link: https://lore.kernel.org/all/20251016033452.125479-1-ziy@nvidia.com/ [3]
+Link: https://lore.kernel.org/all/20251022033531.389351-1-ziy@nvidia.com/ [4]
+Link: https://lore.kernel.org/all/20251030014020.475659-1-ziy@nvidia.com/ [5]
+
+Zi Yan (3):
+  mm/huge_memory: add split_huge_page_to_order()
+  mm/memory-failure: improve large block size folio handling.
+  mm/huge_memory: fix kernel-doc comments for folio_split() and related.
+
+ include/linux/huge_mm.h | 22 ++++++++++++++------
+ mm/huge_memory.c        | 45 ++++++++++++++++++++++-------------------
+ mm/memory-failure.c     | 31 ++++++++++++++++++++++++----
+ 3 files changed, 67 insertions(+), 31 deletions(-)
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+2.51.0
+
 
