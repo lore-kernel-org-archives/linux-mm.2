@@ -4,104 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 337A3CCFA02
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 17:45:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D875FCCFA02
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 17:48:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 707F48E0124; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
+	id 1B7718E0126; Fri, 31 Oct 2025 13:48:36 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DFF58E0121; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
+	id 141008E0121; Fri, 31 Oct 2025 13:48:36 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61D1D8E0124; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
+	id 07E1D8E0126; Fri, 31 Oct 2025 13:48:36 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D9918E0121
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:45:56 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D207F1A05AE
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:55 +0000 (UTC)
-X-FDA: 84059137470.15.A426FBB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf25.hostedemail.com (Postfix) with ESMTP id F0214A0015
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Mm/enWZA";
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id EAA5D8E0121
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:48:35 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 8B6894A4BD
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:48:35 +0000 (UTC)
+X-FDA: 84059144190.04.D3DC980
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id B2A1F1C0008
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:48:33 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LXeiT/2b";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761932913; a=rsa-sha256;
+	cv=none;
+	b=AvOERga02tmx+DsenMrflUIV5e+jUR8iOnRhpIaRe/+ZzCFnQ85zUFG/M7is95hrQ/3hp6
+	LHpLudkREYWLEA8MaSDq7GXnGWLCCMW5Wv/JEkAtl8Me3eHJCRUWw7lwqBT7hgdJAMgOne
+	qBNq3ssLysbUlE1LvgCAMv29h0piqk0=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="LXeiT/2b";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf18.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761932754;
+	s=arc-20220608; t=1761932913;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XhoQWpvolO9UzIYaw1w/vQ2jhQxqjKsuZQ7Kmxhov9U=;
-	b=e4Vw5VY1x/wyap7/qlEV34ad5lh4LaBzD/530A0/AHKGqrfsgmRwHl1siSrham/sj5ZmIL
-	Dha6aAzHmVeo+rh1n1u29yUo4cp2HS5ndSjcIaBqv1vga0XdqjQaEwoPuJ6NNdAwf19439
-	NOyYlEanV1sFoAdF/Owjp3hgobVmyEo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="Mm/enWZA";
-	spf=pass (imf25.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761932754; a=rsa-sha256;
-	cv=none;
-	b=rCadpmlnVcF6Mc2Owqzz0oIzpgxxHaAF9jOnmOtC9kyIoqJSLg6MycUxD57CKj3yKfl6ts
-	tnwH36c+JAsMZ0wL3izBxHG39F8e/8TsWQv8hgIbt7MvdAWLs0zYwT+w9reYIaDWo9iKrg
-	qk4lgUPFsGKYHVChXEc0DRnWZ7pWt7I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6389C601AC
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16647C116C6
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:45:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1761932753;
-	bh=8Z5thQC+rZDV7YQzns00IgbOSJUd9ppvWPw+j4n6pWM=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Mm/enWZAWMDexVX/fM2kYROrmhHpBdzm8nbycEeWDHnO8PA6XXIyNOcJjSWX8bZqn
-	 2OdmViUgwKEHTRFYwD5BgZE10XvwxitQi0+ZD61Nzq8aRrVN2lMfT03tG+dKxr1NYQ
-	 K92snLHJa+AlDf0mSJvP6DfsWKAU1JkCDOWJF4f6IdAMKIjiKHTH1OLq/3cbELc3DJ
-	 wvZCVb1xLk7serWJIZ67u1/RPAd2BS9tZe3GOIFRxb/9dGq4FBY/c/d2Sdm4UkrBLG
-	 jF4OR3sbBwvEi1O9WI/OFg/DyDSuQWE5/dryDqJh6Zs3mEygo8hMwQ1rtwsGhBg/iR
-	 /i9CZ8dqZ4bkg==
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-786572c14e3so5321667b3.2
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:45:53 -0700 (PDT)
-X-Gm-Message-State: AOJu0YybdvXK5Y6tzan9gxQ8nP8mkA7NFv2XHJc8P7bf5qPLCoj+vDvu
-	ijDTOxEbs6RD7h20MwYM2fcdom8B3DgHGbeR9PbzJx5twZfUJrGz3tWQJUJNtaluzcejzYWedaE
-	pgJoE6STRmHSjKLXiJmye+tBbaGF7mCT09VZrV5HZ7Q==
-X-Google-Smtp-Source: AGHT+IFqrgTBfMBmVRiXWO3Rn5PwN2T0UvwtVFKxReo6CBC7EejYTOkW7+aB0EyRLa858pu/9lZjhalDMoVSb2xP8ow=
-X-Received: by 2002:a05:690c:dd5:b0:785:bfd8:c4c6 with SMTP id
- 00721157ae682-78648526568mr44021407b3.49.1761932752205; Fri, 31 Oct 2025
- 10:45:52 -0700 (PDT)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=098F261HYE62bz4EbLCakXKNMD6yEDzP+rbKPhuk2BI=;
+	b=NjOFpynfUNb99hctv2KKUQ6kbvbnrVs6tOQsBJqjIMimOjthj1Prm2Kj+R1CDexacRF4WV
+	7PLJiQNeq4S8H7yVgRevnNBNT+sV/qWcawCIyEklUsy8sCOTQaa3I5Ur1t7zB0KFJ1wez0
+	sexfW2BPYEkjigrGS7XyzhuYaOsYp94=
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-29509084e3bso16961935ad.1
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:48:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761932912; x=1762537712; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=098F261HYE62bz4EbLCakXKNMD6yEDzP+rbKPhuk2BI=;
+        b=LXeiT/2bGVf4/g6SZeGacPp+PdtSFXodOTGS5EHBr1ZZ1z8VrTnjQg5IktANaltB+a
+         XAYOKwXVUOfodzsyZm17R55DS2sq7VL7IX6LqKy+gbpmctbraJu8jHM/jpFqm16NCPwz
+         6Y9g/+r/LynuWfBaxAldDv7AA3tadS4L9ThzhhcSADaISWR9saXG+VgZBJMzeIz5la+T
+         1kwvxA6aQQe8M2poapmWeR50oo4SMEYteCWJl2VI6ynv+4/GLcwaWSnf00qQW3tvLVRh
+         vIHHyhsP+4/bEA+L/E7B95OJciBUWSg95J2iIukeQTmoWKbWqp8UkqWIlH5IRHs81LSI
+         9kag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761932912; x=1762537712;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=098F261HYE62bz4EbLCakXKNMD6yEDzP+rbKPhuk2BI=;
+        b=eCtJzZaa9FSPKcmGRqiCK41KEzHznmVSvq3Qt6BNNT5WBAXRcZQZipNiBDqL4U0NhL
+         XLjvb3IttDSryyd5pPyNuuSfS0yq0NgYWKXJ9MCwG/8gBhvvPKTCgzTfQUTZ7WrlqYlV
+         BrwXZUNgKhP44YIkWdG22viDcjSWtYJyr5CLIJwftHchN85D6IopWw2K0IZObME8WROa
+         c6zy0uuPdzIYqCIHNIznwXpfD3FquafL5xZ6DfqrWr4zayG+xW8qhyp5QZGT95T5niK3
+         etELySQd2rc0iHaiC5QF04OhDBlVRpjp5QGtKZV8BP9UwapB+h4aG0OkpcXJJ8j+Ogca
+         6bBA==
+X-Forwarded-Encrypted: i=1; AJvYcCXkZpEHXF7ASKG5llfsCZndE5bZyEzBubsyodjbcwdCqOn/lt2I9cXpMmUeodclZLg2BavKkzlLsg==@kvack.org
+X-Gm-Message-State: AOJu0YwN49rQ4PFnqV3pvKfa7RnC+fDNVebHKaJ3/Ab94kvGJv8rviFI
+	5JU+QeUsxQ5b4jd67tLBjMiMFZSmxDtRVgLev2i/o5RyR+6Wh4S85D4s
+X-Gm-Gg: ASbGncvxrQLKaqA7TJwJoqv7saOgyC2gacU/A96Dc1DVQgjdkOe+sJHkCwmtxS8P8MU
+	gz8OZ1Or4m571bJNbKlGtlXzZiRrKq4PO6jgomvuilO9XPgMJFh6FD/71li8rqrNZCESU/IwIoB
+	9VHZdQIZUovR4TmEsB70t5jrHJNQ3BtDcrj6/3GBizzpSwfYg05lR4mUusuXY3RYhpM69xtr8Zf
+	iOAxB9E7EVm8o7OJLLYUfZfL4DhH5n4A126RtEwk2UHM0gxu05vPGubtJSHUdtA8cRGJaLPhVl+
+	BWFAmlqPOxHu0EVhNhKC2J8O++rjiwvXIX0LKdTmDhFmKs3x88H2wKCWmKV+x5t3+b/raLEno2/
+	0o6lQd2JNAlwaUoVjwQ1nOHksQO6onKH6UQAqYJsLmIt9oYtp3tfXPPXs1tdT+Lam2PteYcwQnT
+	6RWWWY54Y/HkMCto2k6onrNd4GtzFZxRYmm4o=
+X-Google-Smtp-Source: AGHT+IE5ZC1i8KnkDoMeuHdmVM+WBof0Tvfw9Q+Bnfn74KlqAm8f7TNwkIf30NrJPjEKzPvI2EG3Fg==
+X-Received: by 2002:a17:902:f60d:b0:295:28a4:f0ba with SMTP id d9443c01a7336-29528a4f69cmr30095965ad.14.1761932912206;
+        Fri, 31 Oct 2025 10:48:32 -0700 (PDT)
+Received: from weg-ThinkPad-P16v-Gen-2.. ([177.73.136.69])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29526871693sm30113185ad.20.2025.10.31.10.48.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 10:48:31 -0700 (PDT)
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Subject: [PATCH v2 0/3] ksm: perform a range-walk to jump over holes in break_ksm
+Date: Fri, 31 Oct 2025 14:46:22 -0300
+Message-ID: <20251031174625.127417-1-pedrodemargomes@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-References: <20251024-swap-clean-after-swap-table-p1-v2-0-c5b0e1092927@tencent.com>
- <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
-In-Reply-To: <20251024-swap-clean-after-swap-table-p1-v2-1-c5b0e1092927@tencent.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 31 Oct 2025 10:45:40 -0700
-X-Gmail-Original-Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
-X-Gm-Features: AWmQ_bkBLbpzK-7LQwl8d_11rWtB-YUCktamd5vXceO5ofoa6GX9KxB-9BfXeC4
-Message-ID: <CACePvbVEaRzFet1_PcRP32MUcDs9M+5-Ssw04dYbLUCgMygBZw@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] mm, swap: do not perform synchronous discard
- during allocation
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@redhat.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Ying Huang <ying.huang@linux.alibaba.com>, 
-	YoungJun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: j6gbx7ama5f5bg55pou9dbip8kxz8d8o
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: f6d3gyfm9brcwmn6zu4bzw1jg4qoziqe
+X-Rspamd-Queue-Id: B2A1F1C0008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: F0214A0015
-X-HE-Tag: 1761932753-267332
-X-HE-Meta: U2FsdGVkX1+kdcSImkOXzwchnPMtcMGm/ldMqNP41NtHCrrdBW4V7CBpWA5s6Y5wPVgodN7KAl0LhJwvERvuDexqVLmd9SucSR6akXJf1pyzqMM+wDG75/ZsO33VGVW6G9wMFC+ory0klDd+CfKV5HeMzkNjyeY6SgpszjpYJkqQFmvYx09T0euO9DogADLTAZjymC37p50qpHMagvSwN9XnisFDu0kpBhePLJQr77cVph7XcNsON4a3fcbaRzWNly8lnzZ0ufZsyaCC7+zbJ2X3QhldSIBAhKlkjoeHfDwXfir0J0ZNrNMFTbz5wh9fPGLM8WfkZdgy9LqCfeQCJMHQv+7oo0axGruTXjNA8kGH6TEcp5CLIJimlTum2pSJXPn43ixg5QtufD4FTnSzB3AOFzluiyITg++2ACJF+bY39HOwQOu3jH/XQP88cfgq4ItFMTAUUarC/1lr5qezdgcJ/opsQ+UuogTGexQmvmq9EzxcBkU8gq2BmLN14BObaWD4X+V/Y7cB/yOqnNlZRi+onOw7hPX5RVPtqy393nVF8ElYNnRQZiNDfjOvuipFMFwdeDB2UVsbu5CS68k4cuArNWqsIet/NmAxx2dOOc6UNKCq685sEfv95zBpawZ1CVNVTIYuV5qsY/aIynHZ1xzt8zUz0OyxBI+aUc5IOVScyrJgLdpZ6MI7HybAYCQnCBN/y8aba9vTJQ9+7ehst2UxWpkV2sOqseq+ZZs4U4RNbhqsA92S0wxt+fnyOWEBcxbN5rrSDMGhQKi+YD590eJpoTLFapdTtpA7JzJwRQk1Tc47mZKAZqwZVNQYulcc+aHf1tW1e1DZGqDJPR7qTUUuHoGqWu7L3TwQ9E5sliMHuYOpnd3IU3BHDuhPsXsMiLGZj3ev5pMcVpvOc6uWMfDNMOSkMGMprdTIqhB6r5z1rOSG05Yd6iJSgVvtuNRURz03U35VwnACixMs5G2
- IcgghioP
- bQFPbWvRhg/23TR6kE9akk/33QvKlmpd05pyIEcyAqkOnM4spONBE+O1hHxEDZUEWsO+FXN762SDzG45ttY5FRHeDeIQerk33P/7On1mT/jSvh8yOh42s6tZKPDEIlarbla5BZT3MSWABqoSMlKJ6ZV3EeaTCHmuvDp59e0ruNFNk69EcRLY8dYQG2qbujLMIzgtOzx8eAW9VZQhme/VneSzA7wsGhXm9sec7+JFsRSUduAjt4uIgCpkAXfPySa9ENPfmicHnDrWlIaBlYxZLPJJ8ArFDKplcNdvHcSTwl7xYJqKXOCPr9qq688TQIX0aeuFIHdyIrOFqynmLVjDtRCkdSZtfmavBD6JN
+X-HE-Tag: 1761932913-996153
+X-HE-Meta: U2FsdGVkX1/WBhlrvUcluDTkcPURG5R1w67o0WQ6Hr99Tdb43Ud0Bx2rYNJQD4dNI6N47/LH/dr9vN3w3AeBa9VyPwM4n7HRNkl/c7IPyYCNX7RxLLZmgE1Ex3tJQkjTisTARhU+EIM3zKpfn+Qadw4SP9r3FsbuFpbNUI18zNReWiq5T+Zf2n2LXZVZShBmWUq+BO3d8x5IUkXomHqRH0qnu2O2e8i8rwm+Kcck28DUdx4XBjDYcDg0zuGzVGqwusKTigY7vH9cTZKicMDUtDZu/o9ObFE9oB70Ue+w3LhFemCw8zgvQ3nQdkJkS/2WO4uh4/ALsEHwLL04SslNxpdrcJRiuJDaRWt3QXlWtMk5sTDpS3TIl4E52VGQeE5GgLrlwe8gbqcAgkSn6reRL58XQUyhMzpiKxEEpVBS57LVStdDV0/llpDHIw1nbsGqbwMlquTERnjSFMVbMbnqOd3pKsKTcimg3WVf5KnArtchMbRAuAHC7b4SlGiUX0FTyoKyKuJJp/xXWYrI8FdsIWoIarwEF7efNQ+Z3gLEiNzXmrRsZIQZGdedmot6M0rZujBo5Dahi6jIDMxx77NSzLON9ynHTrWwnu+NlWYbERVYQELNtv2wx9MvT+l69DwPXaSxhkNwPg1zZsJJ41UEkH5qHRdalNrY8uOmPl14nSVnGzrSdHMpH065PZWnaXvIWdCkoW0AujbUunZ7cLfZhKf8izq1p4bP72pqW+C8G2Dzy92V5PEd2f7Ak7kIagNm15EXydFrKzF1aIXzZHJTzZT+4H7BWw1gBIpVg5MIPDnuUe9Hk9O3Y58aunf/9E68Bi7gP6pXuOr2gXKx4smU4QWNY7aKN1hbKex0abis2aiiZFnHviH58KlXpG1dzQgnxV/2viHzR68O7EuPIuIuVkkomjjGGG4HJVRIGQBCR1IsbtAhoOa8Cn5qk9d9TrQvfOSTWgxH5D8dCjfmD09
+ 1n8+tCKO
+ mVQ2+9qMBT2LBVgxmc6KrMfscV829HXz/VYIfeggO95INRGdT+2KGYhK/Di2MdMz34g37zqB9uF4dF7uU49WplFvyuo7k09WyU3945bFtfUNbtkKH6bFuJc9vwfUSzzN+x+e8F1HtjKjVDNGfeM3gVz9PTeTD1jPP/b5LbWH6elQ+ktzAdiMVU+mIeRzC07A5DncUiHy5P6KrwlFqPKEP7v9gO/gP+8N2ahTChcFIg/mkAFbZZLuf2SHQmP3xNKSlAeYrw3oT0JI64CNJRnV02agW/157FjVIXjyZOIsEWjmTwhGmfdpgQ6ipEnLQ5ztaKw3dnM9HtqF/zMwPk9h3Yz+LaUtWldvX/WzWt+OKrJ04E5L/ZpWtOSFGwkWOJSXFQYKxl0GhFwH9/MERHG5GZW/3678dd3shNAbRVabRL6VW3+HiZsRRegsmZQpkKzB3VQK8Q/J6Kylb31qnMOEHH3KTrg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,141 +120,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 23, 2025 at 11:34=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Since commit 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation
-> fast path"), swap allocation is protected by a local lock, which means
-> we can't do any sleeping calls during allocation.
->
-> However, the discard routine is not taken well care of. When the swap
-> allocator failed to find any usable cluster, it would look at the
-> pending discard cluster and try to issue some blocking discards. It may
-> not necessarily sleep, but the cond_resched at the bio layer indicates
-> this is wrong when combined with a local lock. And the bio GFP flag used
-> for discard bio is also wrong (not atomic).
->
-> It's arguable whether this synchronous discard is helpful at all. In
-> most cases, the async discard is good enough. And the swap allocator is
-> doing very differently at organizing the clusters since the recent
-> change, so it is very rare to see discard clusters piling up.
->
-> So far, no issues have been observed or reported with typical SSD setups
-> under months of high pressure. This issue was found during my code
-> review. But by hacking the kernel a bit: adding a mdelay(500) in the
-> async discard path, this issue will be observable with WARNING triggered
-> by the wrong GFP and cond_resched in the bio layer for debug builds.
->
-> So now let's apply a hotfix for this issue: remove the synchronous
-> discard in the swap allocation path. And when order 0 is failing with
-> all cluster list drained on all swap devices, try to do a discard
-> following the swap device priority list. If any discards released some
-> cluster, try the allocation again. This way, we can still avoid OOM due
-> to swap failure if the hardware is very slow and memory pressure is
-> extremely high.
->
-> This may cause more fragmentation issues if the discarding hardware is
-> really slow. Ideally, we want to discard pending clusters before
-> continuing to iterate the fragment cluster lists. This can be
-> implemented in a cleaner way if we clean up the device list iteration
-> part first.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 1b7e90020eb77 ("mm, swap: use percpu cluster as allocation fast pa=
-th")
-> Acked-by: Nhat Pham <nphamcs@gmail.com>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
+When unmerging an address range, unmerge_ksm_pages function walks every
+page address in the specified range to locate ksm pages. This becomes
+highly inefficient when scanning large virtual memory areas that contain
+mostly unmapped regions, causing the process to get blocked for several
+minutes.
 
-Acked-by: Chris Li <chrisl@kernel.org>
+This patch makes break_ksm, function called by unmerge_ksm_pages for
+every page in an address range, perform a range walk, allowing it to skip
+over entire unmapped holes in a VMA, avoiding unnecessary lookups.
 
-Chris
+As pointed by David Hildenbrand in [1], unmerge_ksm_pages() is called
+from:
+
+* ksm_madvise() through madvise(MADV_UNMERGEABLE). There are not a lot
+of users of that function.
+
+* __ksm_del_vma() through ksm_del_vmas(). Effectively called when
+disabling KSM for a process either through the sysctl or from s390x gmap
+code when enabling storage keys for a VM.
+
+Consider the following test program which creates a 32 TiB mapping in
+the virtual address space but only populates a single page:
+
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/mman.h>
+
+/* 32 TiB */
+const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
+
+int main() {
+        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
+                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
+
+        if (area == MAP_FAILED) {
+                perror("mmap() failed\n");
+                return -1;
+        }
+
+        /* Populate a single page such that we get an anon_vma. */
+        *area = 0;
+
+        /* Enable KSM. */
+        madvise(area, size, MADV_MERGEABLE);
+        madvise(area, size, MADV_UNMERGEABLE);
+        return 0;
+}
 
 
-> ---
->  mm/swapfile.c | 40 +++++++++++++++++++++++++++++++++-------
->  1 file changed, 33 insertions(+), 7 deletions(-)
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index cb2392ed8e0e..33e0bd905c55 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1101,13 +1101,6 @@ static unsigned long cluster_alloc_swap_entry(stru=
-ct swap_info_struct *si, int o
->                         goto done;
->         }
->
-> -       /*
-> -        * We don't have free cluster but have some clusters in discardin=
-g,
-> -        * do discard now and reclaim them.
-> -        */
-> -       if ((si->flags & SWP_PAGE_DISCARD) && swap_do_scheduled_discard(s=
-i))
-> -               goto new_cluster;
-> -
->         if (order)
->                 goto done;
->
-> @@ -1394,6 +1387,33 @@ static bool swap_alloc_slow(swp_entry_t *entry,
->         return false;
->  }
->
-> +/*
-> + * Discard pending clusters in a synchronized way when under high pressu=
-re.
-> + * Return: true if any cluster is discarded.
-> + */
-> +static bool swap_sync_discard(void)
-> +{
-> +       bool ret =3D false;
-> +       int nid =3D numa_node_id();
-> +       struct swap_info_struct *si, *next;
-> +
-> +       spin_lock(&swap_avail_lock);
-> +       plist_for_each_entry_safe(si, next, &swap_avail_heads[nid], avail=
-_lists[nid]) {
-> +               spin_unlock(&swap_avail_lock);
-> +               if (get_swap_device_info(si)) {
-> +                       if (si->flags & SWP_PAGE_DISCARD)
-> +                               ret =3D swap_do_scheduled_discard(si);
-> +                       put_swap_device(si);
-> +               }
-> +               if (ret)
-> +                       return true;
-> +               spin_lock(&swap_avail_lock);
-> +       }
-> +       spin_unlock(&swap_avail_lock);
-> +
-> +       return false;
-> +}
-> +
->  /**
->   * folio_alloc_swap - allocate swap space for a folio
->   * @folio: folio we want to move to swap
-> @@ -1432,11 +1452,17 @@ int folio_alloc_swap(struct folio *folio, gfp_t g=
-fp)
->                 }
->         }
->
-> +again:
->         local_lock(&percpu_swap_cluster.lock);
->         if (!swap_alloc_fast(&entry, order))
->                 swap_alloc_slow(&entry, order);
->         local_unlock(&percpu_swap_cluster.lock);
->
-> +       if (unlikely(!order && !entry.val)) {
-> +               if (swap_sync_discard())
-> +                       goto again;
-> +       }
-> +
->         /* Need to call this even if allocation failed, for MEMCG_SWAP_FA=
-IL. */
->         if (mem_cgroup_try_charge_swap(folio, entry))
->                 goto out_free;
->
-> --
-> 2.51.0
->
+Without this patch, this program takes 9 minutes to finish, while with
+this patch it finishes in less then 5 seconds.
+
+[1] https://lore.kernel.org/linux-mm/e0886fdf-d198-4130-bd9a-be276c59da37@redhat.com/
+
+Changelog:
+
+v2:
+  - Use folios in break_ksm_pmd_entry
+  - Pass address pointer to walk_page_range_vma private parameter
+    instead of struct break_ksm_arg
+  - Do not unnecessarily initialize start_ptep
+  - Order local variable declarations from longest to shortest line
+  - Improve patch 2 description (do not reference the cover letter)
+  - Quite a few styling fixes and improvements as suggested by reviewer
+
+v1: https://lore.kernel.org/all/20251028131945.26445-1-pedrodemargomes@gmail.com/
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+
+Pedro Demarchi Gomes (3):
+  Revert "mm/ksm: convert break_ksm() from walk_page_range_vma() to
+    folio_walk"
+  ksm: perform a range-walk in break_ksm
+  ksm: replace function unmerge_ksm_pages with break_ksm
+
+ mm/ksm.c | 141 +++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 86 insertions(+), 55 deletions(-)
+
+-- 
+2.43.0
+
 
