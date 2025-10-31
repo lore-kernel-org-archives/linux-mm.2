@@ -4,89 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93B41CCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 14:27:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF7B8CCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 14:42:45 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A5BAC8E0090; Fri, 31 Oct 2025 10:27:04 -0400 (EDT)
+	id CF4588E00DF; Fri, 31 Oct 2025 10:42:44 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0CA08E0042; Fri, 31 Oct 2025 10:27:04 -0400 (EDT)
+	id C7D518E00B2; Fri, 31 Oct 2025 10:42:44 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8FB728E0090; Fri, 31 Oct 2025 10:27:04 -0400 (EDT)
+	id B44788E00DF; Fri, 31 Oct 2025 10:42:44 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B5398E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:27:04 -0400 (EDT)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E84388B10
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 14:27:04 +0000 (UTC)
-X-FDA: 84058636368.17.197A9E0
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A736C80017
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 14:27:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ShMAqP/0";
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id A21898E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:42:44 -0400 (EDT)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 658EE16047F
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 14:42:44 +0000 (UTC)
+X-FDA: 84058675848.04.C3132EC
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
+	by imf22.hostedemail.com (Postfix) with ESMTP id B5C41C0002
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 14:42:42 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=o9I0mIXB;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761921762; a=rsa-sha256;
+	cv=none;
+	b=Zg9CNqrNlE/g5ggtLdFkmQzBXbE3NV2B2ZibBOGflIIUAIuNRVjo3y7afrtzy9G6/QcJZP
+	MWFTJBpZXeoH99FdYUrJDtJukR5dlk2Xp093m0uCW0xg2C7y+hJ9wYZnsr99chzZNW8j61
+	vzRCooAATjy+BtaeRS3AGv+rRrp/kI8=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=efficios.com header.s=smtpout1 header.b=o9I0mIXB;
+	dmarc=pass (policy=none) header.from=efficios.com;
+	spf=pass (imf22.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761920822;
+	s=arc-20220608; t=1761921762;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZJeznUxq3NqTvDD4ipQdXNOxRnNKyJPsZbGlCqhuxY=;
-	b=M87o6X1sNGm5iEYmmtHEWweawbxdY4F95BmR1T3eMeOTOOmQD2tWWeKwU+oEcAc7QMT99P
-	HZ3xBgmLmwl4d2YqGL1IYOzDccC4Zis+S57rvWTrMYtn1cMYoHGNuIx1rfaoLPhRaBw5TW
-	XwxbyWSpkBYGUxsyksjZzHlxcOKorMA=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b="ShMAqP/0";
-	spf=none (imf02.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761920822; a=rsa-sha256;
-	cv=none;
-	b=HK8pe4ILM51deISA73T30lMcy3oVbnjorZzkD34HyjnJIEBW8zO6sBJHil5fExgDIb8h4D
-	TyHvx+9osazPTl/ozzAZ3s8J3Ugdla/b9qlo+4sWzGlJtHQPrm0sBSURhB1ZuhF3Bzy6GH
-	wLg/iUgsaMrGiRA67DZP9t8dFpiI0Fo=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QZJeznUxq3NqTvDD4ipQdXNOxRnNKyJPsZbGlCqhuxY=; b=ShMAqP/0s6Ht4p7oYW0GtR03mk
-	PRXKme7ZLzQQRRBCwJjCLpV4PMv/C3APLzJrsQE0ZalCPQueNR6ho8rAzi8hCpoIvDm33eJatdgg8
-	cLF44Pn8t8Jqv4gt0ZLz9eff/jXKKsQMKO9nQj5k5qD6e2CEQ9yEU1mIWVs0Uz7560VvcxB7grPCh
-	7E5AJGxlWmkZGwHzbuAWEHxdi2coueojgTrpyKSDwQPQuEQooizeLdz2hzqIRtCVGK23Y8vqZKr8o
-	N4GzKafW1RuMQX5mIPnKcBtG/cyqhCv7aoA7YhY8XKeX/S4Lyc6+KvHQN0Q1P7WaAgWwfkbcjguas
-	vKdz5aSQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vEq5g-0000000HSEZ-1zCN;
-	Fri, 31 Oct 2025 14:26:56 +0000
-Date: Fri, 31 Oct 2025 14:26:56 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Michal Hocko <mhocko@suse.com>, libaokun@huaweicloud.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jack@suse.cz, yi.zhang@huawei.com, yangerkun@huawei.com,
-	libaokun1@huawei.com
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Message-ID: <aQTHMI3t5mNXp0M1@casper.infradead.org>
-References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
- <aQRkTKTm08lSJZZi@tiehlicka>
- <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
+	bh=qApuJyu4QGoKVJ2zHmgikkLddBCT3UrPtJ79qMUUETk=;
+	b=jnM7pU2DFqHN7eDMHmNNHHjlofXSIJyLE1zJ3VJ0iDZtrjKLOD58vunHO3lS4XsZ61i+6w
+	9VEw8lld37/l1Wy4qS1RraKlf5PnqACYoyhdkCk4ra7zACksnimx6ysheBkP+o0gAs0kO2
+	Q0HpgryVJ5rCtzbfNKUPfT8ZliSgGaU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1761921762;
+	bh=qApuJyu4QGoKVJ2zHmgikkLddBCT3UrPtJ79qMUUETk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=o9I0mIXBqRFknaIkfu1blNmJkATK18dekoZ0Rb3+TRz0vSwu8raZgPO17cT7NldR0
+	 /0uNZ28GdkndFyHrE7dB27C8OOF3dxzFzklql4oR2/+HcFAtWv0d/iiXIYDu4YEAVK
+	 XkvI6hRVU2TLApO/JgIiB57EOpCJZ6gqJBy92PXkenJkwO/g3Y96KUIMnoUZwXKJ4t
+	 ZiPC/AT2I2QAGq625z01c6vIV6M8U0mapZvmEt1d4MLezoDNLRQiXT8puAL9uLrxZf
+	 9Zar/vLRVb0+yZSJaF0TfAdBLpcRcKC8Q9ammNH+BTDCk1GKlH6ofIovK7HwKLdxso
+	 ho+HTz/60XHVg==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4cykGp0HSgzHZw;
+	Fri, 31 Oct 2025 10:42:42 -0400 (EDT)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Mateusz Guzik <mjguzik@gmail.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Sweet Tea Dorminy <sweettea@google.com>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large many-core systems
+Date: Fri, 31 Oct 2025 10:42:32 -0400
+Message-Id: <20251031144232.15284-3-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20251031144232.15284-1-mathieu.desnoyers@efficios.com>
+References: <20251031144232.15284-1-mathieu.desnoyers@efficios.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
-X-Stat-Signature: 95z6we5woiquzywxk47ojcir9i55n7mq
-X-Rspamd-Queue-Id: A736C80017
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: myug8fct3ok8rfrnq4836fjf9m4t6y86
+X-Rspamd-Queue-Id: B5C41C0002
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761920821-879778
-X-HE-Meta: U2FsdGVkX1/T/5kCMXYm0kZLtpLp6w3VQuyhksQTZAyw1U74jUBn1in+3zH/gPSX+JPcY+OpMQ/b413h+XwE7rEE9m2BadTmOcWOHPI31rzn3jYfnDWnYvwNQYX6Iu+n38kZNfy1JO7m+98dxad73wZmJt6TGKk+nBtoFupLXUsHUE2aVL10ssI9nLfukOy0IKkdOWQdNfpRK5pqq7/Yr0zFe63jX5D1hiuHrWg1HvG2NiQq9uFlb467JLXr7+Tpl4C+a3OggaJ0yY1EzkI+t32NTqneWvErM8WYd2dy/J2Z1YBlaoyHBrJerMFht1wWiJFomaNCxpajPp+QApbl2QauxtKeTvMTV42WBAdJpJOqCd5iZwE/QXy9f2GeGRJ0/mB3D/Q67VUe5BYQ+AbvZdrD4rVp/jvsTypljdLzYb1wL/2y8wnHiF2dThaCLC+WCNgs0sUpUXToTEhc3cfPVPMQiX/8yqeYE6iu8AJF1cvA1jhtPjt/j6RJ055cQhbYbgj00uAvGrEX8I78pU4osarDfOI/XQnJd0b3NgHLXizcAevCxZoGwCzOUoxD/hlLO9A8KaisT9jZhNfp+dvv4LD3mmcN5fLGhs35d/SMKBdDPPQmJ8MLm56JuaIlYKU5YrJQPwkbJqwfI9iAN++9tLUHqd2yWQwG9ou1Ld5dzs4T42I//XFbwzXiK9lYDZt7zB/WmKdboBZjsAJxeOTeUxKL2Ce1gM6WZ2yRkTLUnqHrzzMA/QwUIV34nIYU9uoujzTZ4kzEYk4V2YS1LG+PMC3QbIc+KEIBYUTfq56KAJ7xU2pn34g8oxgfBgbmULyc2xFXeNOofUC6Pci5PuYK4fjzO6q/9wHPxQMjx9k13aUT88aj97hX5zha3grSLcn62bTwf27VZ9lP8A0ZxXTa0tEgq9URLeqoNkWX5f58C2VGrNBc6m2bvMdQe9/aCiNPd06mR7FlcPe8d7ZiZtJ
- A4AQz3vP
- xtfpIy7SxsNlTFXP28Yd67wmTjMa+ype2440nEIdMx8hVqmFfdP/mczyeHTO4khsA+4TLTHqhi/5XhE4ygpQFzu/53JgqqL3j96iwGtSaQMJbFvoHnpWSSH+7Kkx9OGb3IEups2eTWIO7GhdOVELAWdNbTkaraUv0ruVWl7H/gjgKyN1nW1zbkq1dA0foXaNEgfB+LureL4Vryv9GXTljHOTRH82FV2KSVshSdYj95cmjkESOoGrQ1OBrlED6yW8+ySzgKr+nMBdmjx+mnbRW9j5tBpCKKCIic1yRtRtSeIuvVMNUIybx+byJHVpnEcxgc+ePTJclV0hLtGSlxzMsM1W93w==
+X-HE-Tag: 1761921762-437902
+X-HE-Meta: U2FsdGVkX1/dSw3uYUNhD9xU/e2ZZNmrv2OKWBg7yMNn8dd6PqEQKOeF/CzUVN18h7YKsgNfHqTVokhajRmUrmBfSnFyEto6rYOgvdq+Tr6AEJtQefJE7aap+D/cnaa0PKhkAoAmunU03EdHzDTfLCz1gfDNS2BU8b200LhvgJ0I0DAO/YKBM9LyK71QfUPpLcKF5ALj5DvCc8/s8lx99UxwwWotFU01bdOhLPmfQMNikVG9k/Za8lxu19xqwqKnMSFmPyUAMEFgKEnPiLzHrNgywr1JSK96kJFrEUXbw/97XBwl3L+hZGZmXlqUikJi1wJ+luvGx9JmVi8a7pQShjOKlyt40urp8T2N9w19afYhFEqKWmuZUSDXYRcmiWVhsTp6tVcCol9SrJiRJqmcXB5pd3qyTSubzDfaCYIwemkDBZMgANpt5/rj7SWO6bsqLJrRbNN9bDLZLZA/vrDFAWlzh+Tiyl7uBlwXC9QmiSAb9UqSwupo4oNpVXzXxcxNe/RwRqAgcmGVO1IOjpncfwKqDp65kXz+gS01FPocGTDE0aOjob59kBkbQdQU4WcdZOX5P6Jh/v7e3P23hneLJlvegI7NswrIMNQJmQ0krt9Qic2+FcEstU13DYHqHSu4yBUgOahvtVZVID/7YeF45ntFuLuhCCTh8W9906pI/1f3CwmutThSKVPYmMrMLvCFK0jNHEpuz43AEf9FQZFoDX3atoAqCHvSFh63iCUaUQYayeUbREHbYUBKj5nyEq7UNLZNWYhu42zFcK/dk1XWF6DtNB8arwefBtEhXfSc9KzE/bcJ0GbN2YCkjbDrc8VwvGvX7jsXtWiwlx9hWktguzMfbeR3Mhecey3o6uQntEJEEP2q4SVGcbIxSX/vctV+fYSDd0ppKAUmRhecsP8V1cn4K/hwAcCcYuTWIDjxrMVY19votqYji0TgTTwFxdEtk/U91YkAPVek5maMY/b
+ zWNIYmzB
+ f7e/hhZ/wItLP92USip9OiLAwzOYOKllnlmsN1gzbRz8R/jKTIO/eItd+ZwsXOQU37RwtKrXUj/Skj25HuwSIebl+sB0lWu7+m2AvOUvyKKt6givBjvpY9BpL/0KZYiABH1gRjC2OPlQfovSt5nPzNX7JylJzj9d8GJl5tlfDKvHDVpIlkQlj9nKHn9t5r4xn+UhZUsJWgUFF7cIPXEJ6gfjmrN4Z/Ih0OkD/vDl047lM5TTRrcC4C3Reivo0kjU3z5q57pyEMvoyCyBfC8kGVwL5x12BNw67xcztLsEtrgLu+gVFzv6KLacw6PMyKaJr7LaY7nXEUursqUaqn64LMloE6a56ROsl27Sw5WNZsRUADvweID8R/R9/Wi2MjAOXielAN+KV4YvMDUdp0l2Q1qHoScvBK+YjTkj3bTUcpr5/hzV/98Jq7ZHZR8x/rq+Vv4R8BLFl6rEEh3DM+2zrdwGOXCI/ix33zPPTK86hSVLGYi87wP8lLdkg9of9G2Ip3Hn+m+k/ONYOUJv/TXiv9NUgp/kGaZ21C/jyeA6/Qn8A91AE36TfIfsHskQWmnoe6EEoydexFJBvqk+zgLBBzZihnokwRl6+XExykCnu1cbJhYv0EFN6QY/3evM31OsbZrU/Crm/sKETRHGG3RxN/Y+JlPxU8NHHpbtq8ydK5nlqe8yi3AZD3fzHPkHhyiOy0XKqVCFU5io6JWyWh4JmDWo5NcHLFIqs98O3duIKF8dNt/J2IQvKyYTUkzSVRQGiPHOKY5627tNWiVwtH9DIBCg6sDtSVVkdfDbCsU/1xRW2rBm7wGQAJHPgzcwqfM/jg78Z5Z1DGJHKuHVPuh/z1gRs6XRpCtWfQW7sqjMm9zrAchqY14MOZiKLGw3T1KyIKNpmf10CdsaXfmdwU61CXtHIY14TN6ID8ukh/OcJjpWe6Vh2FLnGAmo0uby1C5B7Vx7QKXNcHeNEWM4LKhFpANMeodjo
+ nvP05AO8
+ rPFJd5SM0pdSsmDGl8dJKR0g2I9waU0nIH+6fl4TQktR80xb327nZhz1veuhXFRIEwLKr9uLwHDVGDgtw3IS7TSrm7Q2SDcUUMI4RkgD8LmGLuR3LZresg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,91 +123,277 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 11:12:16AM +0100, Vlastimil Babka wrote:
-> On 10/31/25 08:25, Michal Hocko wrote:
-> > On Fri 31-10-25 14:13:50, libaokun@huaweicloud.com wrote:
-> >> From: Baokun Li <libaokun1@huawei.com>
-> >> 
-> >> Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
-> >> reads at critical points, since they cannot afford to go read-only,
-> >> shut down, or enter an inconsistent state due to memory pressure.
-> >> 
-> >> Currently, attempting to allocate page units greater than order-1 with
-> >> the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
-> >> However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
-> >> can easily require allocations larger than order-1.
-> >> 
-> >> As Matthew noted, if we have a filesystem with 64KiB sectors, there will
-> >> be many clean folios in the page cache that are 64KiB or larger.
-> >> 
-> >> Therefore, to avoid the warning when LBS is enabled, we relax this
-> >> restriction to allow allocations up to BLK_MAX_BLOCK_SIZE. The current
-> >> maximum supported logical block size is 64KiB, meaning the maximum order
-> >> handled here is 4.
-> > 
-> > Would be using kvmalloc an option instead of this?
-> 
-> The thread under Link: suggests xfs has its own vmalloc callback. But it's
-> not one of the 5 options listed, so it's good question how difficult would
-> be to implement that for ext4 or in general.
+Use hierarchical per-cpu counters for rss tracking to fix the per-mm RSS
+tracking which has become too inaccurate for OOM killer purposes on
+large many-core systems.
 
-It's implicit in options 1-4.  Today, the buffer cache is an alias into
-the page cache.  The page cache can only store folios.  So to use
-vmalloc, we either have to make folios discontiguous, stop the buffer
-cache being an alias into the page cache, or stop ext4 from using the
-buffer cache.
+The following rss tracking issues were noted by Sweet Tea Dorminy [1],
+which lead to picking wrong tasks as OOM kill target:
 
-> > This change doesn't really make much sense to me TBH. While the order=1
-> > is rather arbitrary it is an internal allocator constrain - i.e. order which
-> > the allocator can sustain for NOFAIL requests is directly related to
-> > memory reclaim and internal allocator operation rather than something as
-> > external as block size. If the allocator needs to support 64kB NOFAIL
-> > requests because there is a strong demand for that then fine and we can
-> > see whether this is feasible.
+  Recently, several internal services had an RSS usage regression as part of a
+  kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
+  read RSS statistics in a backup watchdog process to monitor and decide if
+  they'd overrun their memory budget. Now, however, a representative service
+  with five threads, expected to use about a hundred MB of memory, on a 250-cpu
+  machine had memory usage tens of megabytes different from the expected amount
+  -- this constituted a significant percentage of inaccuracy, causing the
+  watchdog to act.
 
-Maybe Baokun's explanation for why this is unlikel to be a problem in
-practice didn't make sense to you.  Let me try again, perhaps being more
-explicit about things which an fs developer would know but an MM person
-might not realise.
+  This was a result of f1a7941243c1 ("mm: convert mm's rss stats into
+  percpu_counter") [1].  Previously, the memory error was bounded by
+  64*nr_threads pages, a very livable megabyte. Now, however, as a result of
+  scheduler decisions moving the threads around the CPUs, the memory error could
+  be as large as a gigabyte.
 
-Hard drive manufacturers are absolutely gagging to ship drives with a
-64KiB sector size.  Once they do, the minimum transfer size to/from a
-device becomes 64KiB.  That means the page cache will cache all files
-(and fs metadata) from that drive in contiguous 64KiB chunks.  That means
-that when reclaim shakes the page cache, it's going to find a lot of
-order-4 folios to free ... which means that the occasional GFP_NOFAIL
-order-4 allocation is going to have no trouble finding order-4 pages to
-satisfy the allocation.
+  This is a really tremendous inaccuracy for any few-threaded program on a
+  large machine and impedes monitoring significantly. These stat counters are
+  also used to make OOM killing decisions, so this additional inaccuracy could
+  make a big difference in OOM situations -- either resulting in the wrong
+  process being killed, or in less memory being returned from an OOM-kill than
+  expected.
 
-Now, the problem is the non-filesystems which may now take advantage of
-this to write lazy code.  It'd be nice if we had some token that said
-"hey, I'm the page cache, I know what I'm doing, trust me if I'm doing a
-NOFAIL high-order allocation, you can reclaim one I've already allocated
-and everything will be fine".  But I can't see a way to put that kind
-of token into our interfaces.
+Here is a (possibly incomplete) list of the prior approaches that were
+used or proposed, along with their downside:
 
-> >> +/*
-> >> + * We most definitely don't want callers attempting to
-> >> + * allocate greater than order-1 page units with __GFP_NOFAIL.
-> >> + *
-> >> + * However, folio allocations up to BLK_MAX_BLOCK_SIZE with
-> >> + * __GFP_NOFAIL should always be supported.
-> >> + */
-> >> +static inline void check_nofail_max_order(unsigned int order)
-> >> +{
-> >> +	unsigned int max_order = 1;
-> >> +
-> >> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> 
-> This is a bit confusing to me since we are talking about block size. Are
-> filesystems with these large block sizes only possible to mount with a
-> kernel with THPs?
+1) Per-thread rss tracking: large error on many-thread processes.
 
-For the moment, yes.  It's an artefact of how large folio support was
-originally developed.  It's one of those things that's only a problem for
-weirdoes who compile their own kernels because all distros have turned
-it on since basically forever.  Also some minority architectures don't
-support it yet.  Anyway, fixing this is on the todo list, but it's not
-a high priority.
+2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
+   increased system time in make test workloads [1]. Moreover, the
+   inaccuracy increases with O(n^2) with the number of CPUs.
+
+3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
+   error is high with systems that have lots of NUMA nodes (32 times
+   the number of NUMA nodes).
+
+The approach proposed here is to replace this by the hierarchical
+per-cpu counters, which bounds the inaccuracy based on the system
+topology with O(N*logN).
+
+commit 82241a83cd15 ("Baolin Wang <baolin.wang@linux.alibaba.com>")
+introduced get_mm_counter_sum() for precise /proc memory status queries.
+Implement it with percpu_counter_tree_precise_sum() since it is not a
+fast path and precision is preferred over speed.
+
+Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
+Link: https://lore.kernel.org/lkml/20250704150226.47980-1-mathieu.desnoyers@efficios.com/
+Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea@google.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
+---
+Changes since v6:
+- Rebased on v6.18-rc3.
+- Implement get_mm_counter_sum as percpu_counter_tree_precise_sum for
+  /proc virtual files memory state queries.
+
+Changes since v5:
+- Use percpu_counter_tree_approximate_sum_positive.
+
+Change since v4:
+- get_mm_counter needs to return 0 or a positive value.
+---
+ include/linux/mm.h          | 10 +++++-----
+ include/linux/mm_types.h    |  4 ++--
+ include/trace/events/kmem.h |  2 +-
+ kernel/fork.c               | 32 +++++++++++++++++++++-----------
+ 4 files changed, 29 insertions(+), 19 deletions(-)
+
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index d16b33bacc32..4f8f3118cfd3 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2679,33 +2679,33 @@ static inline bool get_user_page_fast_only(unsigned long addr,
+  */
+ static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_read_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
+ }
+ 
+ static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
+ {
+-	return percpu_counter_sum_positive(&mm->rss_stat[member]);
++	return percpu_counter_tree_precise_sum(&mm->rss_stat[member]);
+ }
+ 
+ void mm_trace_rss_stat(struct mm_struct *mm, int member);
+ 
+ static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
+ {
+-	percpu_counter_add(&mm->rss_stat[member], value);
++	percpu_counter_tree_add(&mm->rss_stat[member], value);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void inc_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_inc(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], 1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+ 
+ static inline void dec_mm_counter(struct mm_struct *mm, int member)
+ {
+-	percpu_counter_dec(&mm->rss_stat[member]);
++	percpu_counter_tree_add(&mm->rss_stat[member], -1);
+ 
+ 	mm_trace_rss_stat(mm, member);
+ }
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 90e5790c318f..adb2f227bac7 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -18,7 +18,7 @@
+ #include <linux/page-flags-layout.h>
+ #include <linux/workqueue.h>
+ #include <linux/seqlock.h>
+-#include <linux/percpu_counter.h>
++#include <linux/percpu_counter_tree.h>
+ #include <linux/types.h>
+ #include <linux/bitmap.h>
+ 
+@@ -1119,7 +1119,7 @@ struct mm_struct {
+ 		unsigned long saved_e_flags;
+ #endif
+ 
+-		struct percpu_counter rss_stat[NR_MM_COUNTERS];
++		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
+ 
+ 		struct linux_binfmt *binfmt;
+ 
+diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
+index 7f93e754da5c..91c81c44f884 100644
+--- a/include/trace/events/kmem.h
++++ b/include/trace/events/kmem.h
+@@ -442,7 +442,7 @@ TRACE_EVENT(rss_stat,
+ 		__entry->mm_id = mm_ptr_to_hash(mm);
+ 		__entry->curr = !!(current->mm == mm);
+ 		__entry->member = member;
+-		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
++		__entry->size = (percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member])
+ 							    << PAGE_SHIFT);
+ 	),
+ 
+diff --git a/kernel/fork.c b/kernel/fork.c
+index 3da0f08615a9..e3dd00809cf3 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -133,6 +133,11 @@
+  */
+ #define MAX_THREADS FUTEX_TID_MASK
+ 
++/*
++ * Batch size of rss stat approximation
++ */
++#define RSS_STAT_BATCH_SIZE	32
++
+ /*
+  * Protected counters by write_lock_irq(&tasklist_lock)
+  */
+@@ -583,14 +588,12 @@ static void check_mm(struct mm_struct *mm)
+ 			 "Please make sure 'struct resident_page_types[]' is updated as well");
+ 
+ 	for (i = 0; i < NR_MM_COUNTERS; i++) {
+-		long x = percpu_counter_sum(&mm->rss_stat[i]);
+-
+-		if (unlikely(x)) {
+-			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
+-				 mm, resident_page_types[i], x,
++		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
++			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%d Comm:%s Pid:%d\n",
++				 mm, resident_page_types[i],
++				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
+ 				 current->comm,
+ 				 task_pid_nr(current));
+-		}
+ 	}
+ 
+ 	if (mm_pgtables_bytes(mm))
+@@ -673,6 +676,8 @@ static void cleanup_lazy_tlbs(struct mm_struct *mm)
+  */
+ void __mmdrop(struct mm_struct *mm)
+ {
++	int i;
++
+ 	BUG_ON(mm == &init_mm);
+ 	WARN_ON_ONCE(mm == current->mm);
+ 
+@@ -688,8 +693,8 @@ void __mmdrop(struct mm_struct *mm)
+ 	put_user_ns(mm->user_ns);
+ 	mm_pasid_drop(mm);
+ 	mm_destroy_cid(mm);
+-	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
+-
++	for (i = 0; i < NR_MM_COUNTERS; i++)
++		percpu_counter_tree_destroy(&mm->rss_stat[i]);
+ 	free_mm(mm);
+ }
+ EXPORT_SYMBOL_GPL(__mmdrop);
+@@ -1030,6 +1035,8 @@ static void mmap_init_lock(struct mm_struct *mm)
+ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 	struct user_namespace *user_ns)
+ {
++	int i;
++
+ 	mt_init_flags(&mm->mm_mt, MM_MT_FLAGS);
+ 	mt_set_external_lock(&mm->mm_mt, &mm->mmap_lock);
+ 	atomic_set(&mm->mm_users, 1);
+@@ -1083,15 +1090,18 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+ 	if (mm_alloc_cid(mm, p))
+ 		goto fail_cid;
+ 
+-	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
+-				     NR_MM_COUNTERS))
+-		goto fail_pcpu;
++	for (i = 0; i < NR_MM_COUNTERS; i++) {
++		if (percpu_counter_tree_init(&mm->rss_stat[i], RSS_STAT_BATCH_SIZE, GFP_KERNEL_ACCOUNT))
++			goto fail_pcpu;
++	}
+ 
+ 	mm->user_ns = get_user_ns(user_ns);
+ 	lru_gen_init_mm(mm);
+ 	return mm;
+ 
+ fail_pcpu:
++	for (i--; i >= 0; i--)
++		percpu_counter_tree_destroy(&mm->rss_stat[i]);
+ 	mm_destroy_cid(mm);
+ fail_cid:
+ 	destroy_context(mm);
+-- 
+2.39.5
 
 
