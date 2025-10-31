@@ -4,85 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E30FCCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 02:32:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8C2BCCF9F0
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 02:32:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 74D4E8E007C; Thu, 30 Oct 2025 22:32:10 -0400 (EDT)
+	id 1331A8E0156; Thu, 30 Oct 2025 22:32:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FD058E006B; Thu, 30 Oct 2025 22:32:10 -0400 (EDT)
+	id 10A4E8E006B; Thu, 30 Oct 2025 22:32:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6149F8E007C; Thu, 30 Oct 2025 22:32:10 -0400 (EDT)
+	id F3B618E0156; Thu, 30 Oct 2025 22:32:17 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D1118E006B
-	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:32:10 -0400 (EDT)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id EB3F849866
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:32:09 +0000 (UTC)
-X-FDA: 84056834778.23.738F76E
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 4E1E62000A
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:32:08 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yCu1hRkP;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E1B748E006B
+	for <linux-mm@kvack.org>; Thu, 30 Oct 2025 22:32:17 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8297A140281
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:32:17 +0000 (UTC)
+X-FDA: 84056835114.22.01D39CF
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 8415C1A0009
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:32:15 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VXsRm2pT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761877928;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761877935;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XGaPq+ah2mEuBxT4HpF5mZo82K4cJT9BDNoAKEDrEAQ=;
-	b=F+jFLgrmvsaopI7MsTlL5VEvMn8QV9P0OqnIJlURTPdoOIMHwuhhPxO073SyXmqaHKMGaW
-	o9ULIVaLkeZpG41Qc+IOWn4z8ztlkZdN3TvRRmkee/j/KmXOnR7e0D4BNdiGnvt3lKNb/1
-	2pGXDTWRsJ5mI8OStHkV/ZclSv6rrWs=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=yCu1hRkP;
-	dmarc=none;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761877928; a=rsa-sha256;
+	bh=QV9/aau8/kBCbnurL+VQAEoEEwOJQQtoJW0VC7kNSaw=;
+	b=GyOfuSzz0I4erFNfLpAjpU1ejkXXO7lazgTrpCpOCLR8Z68TY99IbGAymBsqB7ozUwreJE
+	mtfrJaPKl5SAwds457ILZWOXXQE0QhjrvmbTSz3c30AZffXxKPLblhAuctjO5xKWDJee4u
+	rBOygtif0QO4kyb0VQqaaojLLN0yfyg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761877935; a=rsa-sha256;
 	cv=none;
-	b=DtuKbsJwuHgPCYJu/hQ+6TQxdzzp5iw+z7Pj9p0gyKo5W3sOBtv7oH5lK6VnuX/e1hn3i1
-	Q8r1QGezKm1t0nVGHnlyTnFv6StaIZajsXLenys9yi2bkcrBPJsl13oxOJzxlYZra6uUze
-	TdORhhjipneegdDwjhM7JkoXrtIiqV0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 54BF86128E;
-	Fri, 31 Oct 2025 02:32:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6300C4CEF1;
-	Fri, 31 Oct 2025 02:32:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761877927;
-	bh=knTtuIJ12DWZ+DPvQSS+x8bkA+2vUEOhQGD7Z/ID6oY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=yCu1hRkP3JtWkPgt2scPlN2ZhLjGgcfcAutGpiOSiR9xd4P1N5JqgFRbE9lkpoxDX
-	 VinSziniIAeVnXZYm/Jok02aeziTi0SZIU7LZ5YRT/bOCWBhFvH35gyn0zdVOq4jUY
-	 0dWRAAH2wtWhTRTy0iyuSCdzgJn1OcfGxYXp9P7U=
-Date: Thu, 30 Oct 2025 19:32:06 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Martin Kaiser <martin@kaiser.cx>
-Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
- maple-tree@lists.infradead.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] maple_tree: fix tracepoint string pointers
-Message-Id: <20251030193206.22bb773e697b6cc385d5aa67@linux-foundation.org>
-In-Reply-To: <20251030155537.87972-1-martin@kaiser.cx>
-References: <20251030155537.87972-1-martin@kaiser.cx>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+	b=p5Gpwj+QJm3Zi8YWagdIBy9lo7Qzr9Kobu318YQv42DtAPebLwrNkYUQLglJbyih3MdkV/
+	jyqUP0O53sV8Nqf29qTFX/Gi0GYVeEG4K8NVE4j/o4AaxmGJn4ZauGc04WroVFGyEVbWWi
+	Uk+ap7xM3cedtCmOZL92A+yIwLsNK24=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=VXsRm2pT;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf19.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-429b85c3880so1529489f8f.2
+        for <linux-mm@kvack.org>; Thu, 30 Oct 2025 19:32:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1761877934; x=1762482734; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QV9/aau8/kBCbnurL+VQAEoEEwOJQQtoJW0VC7kNSaw=;
+        b=VXsRm2pT5hoDGPxmQHwzpeILjjrcLjM/deJNo1YIXiH7XCVTBlipeNLPkX4RdRX5QC
+         5aqcTZrdnjOiG5UckrTAWqBslWkjsatpXVlqeosxXuoqAkvdPl4OdZ1W+1V9nCd5kNmf
+         ID4Mgjawb/JPtLvpZcrwkpvWHytZXxIu5XdK7l/DpXZU/PhURTECmtlgTG3YajkHAmp6
+         6NK0ceDuJ4E3a1p7lsRYEUTF34Vo5tABgNIyMnUkqh/e0+Y1cLKXVai78W1pSJv73qBR
+         YEMlslS/d2hpqi6z3xvR1a0fFwpi40BJhPcNhGPRjAZ4KxnOY6kZtZFuxc/8gpfSSDJL
+         /JcA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1761877934; x=1762482734;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QV9/aau8/kBCbnurL+VQAEoEEwOJQQtoJW0VC7kNSaw=;
+        b=LQY/UZioIeAIJbDDnef77N5bmyHCDZyUDe791wW8vCWGxT9m0WOY9Mw2ixRR5X4sij
+         WBRQmjCnDHUXdzCYjnmzgwP/d1yXuuF+AYIMIexd0xMxnHY+9XXGXUCgleUf7nL7o0B/
+         79GMVbW5EtINTK/vdGJStUia8K6aw/4DOWh86ENW0Haj5mUhNG4lVWDo2gMJGt96S1Nf
+         Oub6xcnPej7nNKj9NHUHr62hnQaO0pOZMbrqNey7B9S+HFkUNfzlhJ1hbg4YIHjyW3AB
+         fiQ13e5BXeNLAg6nelgvKBGqmOByqS3o0Sc3WFY3FC9jSx7DVw39fKP7ObXLaoYAX0e1
+         GrEw==
+X-Forwarded-Encrypted: i=1; AJvYcCVe2oA78GCRvaYO8PjB9/TEYSVFkpId1wPbohSFcal1tBP4Od8hwl7fEZeeu5S0rAuWN7MOpNrU/w==@kvack.org
+X-Gm-Message-State: AOJu0YwrHoDhIFvKWfZuficV8CMiOmXr3CSEW9s7H0YswvjZmk6coVNN
+	8FosnN7EglHuSVGu7unnNP+IHyUrSjXwesqIPebIbUek1e8G4L7NBdW5
+X-Gm-Gg: ASbGncs26iPVS3PObKo/XBxYU/OuHDxB7QQe9FwKHCphbM4i9DP9uBRrKqdouw2NeQL
+	76BUbtgksjWyjDalvFe8RKXri5OV/z+Zt1jvM68mebEkNgGX1ua3KBozdpy2LFhDOWIdxg7KAV1
+	buA/WshahBAwmyp2GJ95K1truMgJuPrtN/O2kwo/eFITImEKDHU65Ov/29v3RaDEEjEy1J9QeHZ
+	Ok+Q4160Lc0y4y7Zi+gGbzuaC9WluSsyvN0Y2SE2OnF2togXqOoV0M24JHkhbW0I/G5f/O0Iq0t
+	3mOOrv2IbO+9togexxhh4o28hSanBe0ghJji/uQKOe10PetKVdUkonh5MCWTW+71BsgA36BuTfL
+	7c0yyxucJFGLydHbN742pYWetd+NiCDHud01qpDigurjsU4V5wmL1fo1yBgQONB79BCystYPJcw
+	wFqWIpyyLPI4MQYUCslCSy
+X-Google-Smtp-Source: AGHT+IGDjmSI9ZsALv2eCXVZl/4MAYrL8m6rIPSbY8ME0ISG3yZXFfPvYoXo+3p6G3qEwgFPt/dYzw==
+X-Received: by 2002:a05:6000:4387:b0:429:b1e4:1f74 with SMTP id ffacd0b85a97d-429bd683753mr1506395f8f.20.1761877933879;
+        Thu, 30 Oct 2025 19:32:13 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13f192fsm735011f8f.38.2025.10.30.19.32.13
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 30 Oct 2025 19:32:13 -0700 (PDT)
+Date: Fri, 31 Oct 2025 02:32:12 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
+	kernel@pankajraghav.com, akpm@linux-foundation.org,
+	mcgrof@kernel.org, nao.horiguchi@gmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Yang Shi <shy828301@gmail.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 1/3] mm/huge_memory: add split_huge_page_to_order()
+Message-ID: <20251031023212.mghlthnfscnxkfhj@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251030014020.475659-1-ziy@nvidia.com>
+ <20251030014020.475659-2-ziy@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251030014020.475659-2-ziy@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 68xegf6od86w8yq51pmq4ibqt1ry731a
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4E1E62000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: zod88kkaq3yroh3gsmctmy4s38crzhke
-X-HE-Tag: 1761877928-228203
-X-HE-Meta: U2FsdGVkX1+va4cKTBLe+f9qsb0z9Ep8xyruAhmgCUGpdwBO0uKkld1XWwSnyP9a7nmScrCVE4OjRhMzb5FXbHt6ant/Lb+R0rzd/ru8uEAyHejPxZu0PH+dOTTorKMif13S63hVgGIohoKu2ChST3/LwJhaz1UKOA7c7VrA01ogCIgnOSYprkMIthR8vKhTBYcltzArU0/PG9eXJByoWxzKhj+31N6M+UzU0R6DdYbCnA7Rz2FXLxZ+7Q+YmaxJ8Jhc5XW3zI84ZPQut/0E+MJUzgsRVdf/f+COa46PrCHYIgXs5DFJYU2go2fnHRRWxSEzgnOuNMp4uhHxisdBQQio8d/CSqSPXL1qP89kVkBlbV25pgF02K5J+OH37+AZicJeRe+m5z1n3jVaWE5Rqb2vyoYggZwY64P2RB+AtUH0vS1IxQWhQ75Xh/vbRP84fzEi84k534HR0nabWPK4w3ZwrGitxArPSpl26E7r02BiIZB1c+A+k7aN9pqgNx7vXZn5kFLovhWiVA9RJjCkOVUNv/S7wu0fgSJPu+QnCMYhARoEUBY0cFk5zpRI8L4si4txNxyi3diB3dOs69zX8C+7UFSwEJqMRCipbBOH3vQmCyv8gSP+q4PVrWYb5wLCMHxQAj8sPBlqzBPQUGkCzH3/76dfmhpHepmfdJEACmwWlhVEtAzZvVU5vymKIf56MAvI80n+rqzx5vwhYfxKrHnVYEQD+X4cRqa1Vk8lKPkTxv7WmGQ1FP4qeYLuPpimWVZgi8d03Q2KINHFLEoQVQyeaRpsw8Q83TVjfO5mjobe3rzSOfNH6zk+V/ZBNtpfUFq0ShR7yE/RWyaHSxeTqqSGhyhdl5u/4diQ7f4W5vwhq54R52oE6njxGB/2wKztV7e1cfP9N1lYNv0XLS+pDFeK5LHl4e4ZCYfMItA0vlK5iNBPLUjmBrsQdms4zEOT9fHHssp2Uxax5k0LHTI
- XSB25xYt
- omZeh20nYLNO3qtevqjZwEaWPrIeidD0RmerjBsTYle9fEz55B3dg1oGqZDnjRCW11q43B1Pc9Ac6iC9zfyfXqU6q5TIHW1GR4qBJBRpRT9eDwCsBq0fIx0icSgV+MRi2098AhwFDODNWIxqSKJ/gzLb/lJt1jSgfUWnWavnINaDhrnDUep82qs+eyw6/ke4tR3G3ClXYPZR3/KLb/ktfl+ngrBt/LuQb7Ex9wsRzMHAUZkr31cFRSCO3uvxqVnw5+ht/G03eQVwZwiGbI3hPJ7gtkc/9iz113BN+lMG1k97c/Ek=
+X-Rspamd-Queue-Id: 8415C1A0009
+X-HE-Tag: 1761877935-457278
+X-HE-Meta: U2FsdGVkX1+rBOGJyrDGgInJQkOL3fYLV4hpTJTtoDfwgv4WdH902kzsiKaanOa1Cpjmgs1CINFxvbZcisUQAsofpeyDod5aIk4tZQ8a/RDfrN+b0o64PJCWYkvudnmmWynbAzwdI05MRznmd6KPeWrcXDS8jhmUKzmzl5b0yDTb77x27wUlheu8YQy7KaSyTUs09PRulLvExXz/hHwqXK0Sw748lzuuAB6J7aKVri4dJPFbyjJOTiek4XenmpGirJRii4inW86yz23gJcLjf8YF1sSMxsd/SKwUTShvrYB9TSdl8/gF+TjAFc7EaimEubFCsqNhz7AjBYEdn1JAG8+bJLaMogdxZtGYdU7aAr92cNlop5WzUdC0e4DAxjE7iHCe1+Q9LAN8SOyD5VEnVPh7nHRo6ZthCxv3qZsAKYqcamX71WT+L8ecR4Z8tNf2t4pwJijq2CP5CC75uLitvfaH0tQD4+wwv44mGTgVcxhb9Uhnsyl2oa4ehHCyWP2HuxKqptfxQDIoaHRIjqzJyidTfjLUqVLOED5EI+XjNTo43AY0PShXCtcYAEBjwvnOFxDiEVUNYOoLOQDo20ZuJRnWE5XDXChNJILI/NzhhHQvStnKqwoWpH3QNuiXoC7pg6L+RE9RtzVXoxTqJXS6RoHZU9dXicAEQvKrY3mAnyEAcgacVG5GjzlpuUd9h7RPGPnzEAqKwIVbvWa6OyJl5A6+vbnRsA/q2Rhg9doIZHXBEF5OGmHP0/mWt2VGwqrK/co30drIisAu3JFdPQ9E+uyCgAMMDrO7MwLM0Pz0wZnU2E59p5sZIJmIVc1sDsZtD59nzmYFs+YRTJz0KOgefCf8rtwmRphgKEjkS/FsyU/rCcknEOWnIAYFdt6/r/hFntX9sLgxxqTFZXEIGe+dTZdVyhaKN6TQitBf9WiEw6xdaGKMI2/48gcOlGHEqDeCeNXdyMYixMRKktXB9Ch
+ AlhpTYVO
+ rP9bTUVvAKZ4BM4p+DRobqWrRKukFpQ5/sv+OlEfwVGtLnhsTr6mIojvVI4jiw+EaZGYHz876xj7HEMRkiwDxUhd00MBDm95z9d1meckzP0MNZMgLdMQCbWYDEZuvqv93qy/ZI0CpbSaepMeYOXhfeGROcHZzWWNxy2ZqeEXwTY9p9JDbdae+k74uN97OK+LyFVnZLoHFm7UkKSv0535jpu9Ubp07je78e4HtfdVCRIW8OY4nA0Xu9F3CZj0bebVEAexq0mH977Gq3mHmHjVo9h+yYtq0DApqa5EaJdAGpwBEBG7GWq9ND3BxC0PaK+lDHp2S4YiHoJf5uhMtTPTubIVK/M+ioiCatK3xPcfpucfFpFJqzbaDUFFEt1NjnOpZELXgMn6J449ewJI5jSYF0W+MPFiqnruwD3EqC+WFIoKAU/T9ZN+EM8UU54z0kKkf763FeRYfCsxwSSRvDw1ZyLhV5qM8PLnwfBplWiDQlO7oRQTvLVNV5iBoJW2P9q+AuRylqJZAchaO2Bz11sKD/i+ykF8od8Ew2sJh10tMjjMs0Ve9AtSECfw7kB2MGl97YB/8qt4EqmlI7wO9IXaWAWvva7HJHgLsHsTEn03HrleTIDlW708lW9pxypxRlaW/wlVGzG1zfssDQ4UQzVSP2J4SZx5tpv+XFUKI1zmT5/L6ZqzBugEXuDHDNf95VeRmEL9v7AiTRBjuRdpyNAEnT9hQJfktE8bji3bP7SKMj42SXagh1xzm+SfOjPHwRel5kA8CYux/vx2221UTFswN/dzqk30st5EvG0BfQXXVa/4wrAon6ss4WssTAcNqxuevMv3xzR2sXSNoc8yBEXpkTW0h0w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,27 +133,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, 30 Oct 2025 16:55:05 +0100 Martin Kaiser <martin@kaiser.cx> wrote:
-
-> maple_tree tracepoints contain pointers to function names. Such a pointer
-> is saved when a tracepoint logs an event. There's no guarantee that it's
-> still valid when the event is parsed later and the pointer is dereferenced.
-
-Oh.
-
-> The kernel warns about these unsafe pointers.
-> 
-> 	event 'ma_read' has unsafe pointer field 'fn'
-> 	WARNING: kernel/trace/trace.c:3779 at ignore_event+0x1da/0x1e4
-> 
-> Mark the function names as tracepoint_string() to fix the events.
-> 
-> ...
->  
-> -	trace_ma_op(__func__, mas);
-> +	trace_ma_op(TP_FCT, mas);
+On Wed, Oct 29, 2025 at 09:40:18PM -0400, Zi Yan wrote:
+>When caller does not supply a list to split_huge_page_to_list_to_order(),
+>use split_huge_page_to_order() instead.
 >
+>Signed-off-by: Zi Yan <ziy@nvidia.com>
+>Acked-by: David Hildenbrand <david@redhat.com>
+>Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-What could cause the storage for __func__ to disappear as you suggest?
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
+-- 
+Wei Yang
+Help you, Help me
 
