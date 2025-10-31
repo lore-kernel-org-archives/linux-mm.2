@@ -4,124 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E81ACCF9FE
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 23:13:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1791CCCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 23:36:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D1B3A8E0098; Fri, 31 Oct 2025 19:13:05 -0400 (EDT)
+	id 3B76A8E0097; Fri, 31 Oct 2025 19:36:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CCAAE8E0068; Fri, 31 Oct 2025 19:13:05 -0400 (EDT)
+	id 369048E0068; Fri, 31 Oct 2025 19:36:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBA6D8E0098; Fri, 31 Oct 2025 19:13:05 -0400 (EDT)
+	id 27E6D8E0097; Fri, 31 Oct 2025 19:36:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A50188E0068
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 19:13:05 -0400 (EDT)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4B16B1A0663
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 23:13:05 +0000 (UTC)
-X-FDA: 84059961930.14.2ADA7EC
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6419740006
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 23:13:03 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=t5XTkVeW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
+	by kanga.kvack.org (Postfix) with ESMTP id 137AF8E0068
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 19:36:16 -0400 (EDT)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id B763813AC06
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 23:36:15 +0000 (UTC)
+X-FDA: 84060020310.07.8254865
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf27.hostedemail.com (Postfix) with ESMTP id B733340010
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 23:36:13 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OZBLFpp0;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761952383;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1761953773;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gY82JgAv1A8rYj9MCaiZVHVrEMWrbrCoiDwppP0oGWg=;
-	b=KcMv46VY6gAVEoBM3pegMNXFM/YDxkZHbk3XkMyIN9QahqVsBlX4k/3O+mqrWdru0poSSu
-	G6QRuXMGWJ3NpgTE2v1JDCdpLJkEnJHOKimpzVH+XsL6YBp3sHclPi311E7RW/+SkYcph0
-	YbBHhzGqzN+mVfgBQr1o4H/M46toq4U=
+	bh=4Eq4jvviKUAzs1+1SoozEwcB6MMHVfZDN8rnqvceNns=;
+	b=x9uFWCtktGn0wQWLR8KXXvFbJO8kO0BoCxB/UwwCaS6DNyvKyUbtlTVa7PGPJe+k8ApOQT
+	h+KHbfAb3w474+dSMXCWd5VLfWaW2yeYLh19/2SsOlAhOxZ1VhOKpydokCe+I+WaY9GN1d
+	prTRACv5IdUbSyD0Pq0+0FXWtcysqSk=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=t5XTkVeW;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf11.hostedemail.com: domain of surenb@google.com designates 209.85.160.181 as permitted sender) smtp.mailfrom=surenb@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761952383; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OZBLFpp0;
+	spf=pass (imf27.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761953773; a=rsa-sha256;
 	cv=none;
-	b=699iDDp9aD34py7IKwZ8HQzIKtyp9WaLrdLdp2wTujVg/5SXBeviEVelooQt81nVx8iXsE
-	SRy84WUgDNayzNi673qCN9lk1c6jPDVyW4b5ykC66csa5v+C3ZTA9Aw8FWj/LKhTSHbp+V
-	0vqyRxEIYF2fmxRU0XKv/i/nCGGsEZY=
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ea12242d2eso82051cf.1
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:13:03 -0700 (PDT)
+	b=T2NccbLa8unJliXvXvG1v5qsdfAgugwbdFZ9UVEgWf5IZzo7hxT0a3spYM9r+dv99dx7MD
+	y3Cl7nCRu1AJw+bRD9k/aXk4GWTecUbmaJu+Wk1D1RUkZ8hHpfMASFP99jaOk2BwzET3L6
+	Gn2NTtjBQI43LOFYjvWy5xtKYgwpyZM=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c3d913b3bso5184691a12.2
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:36:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761952382; x=1762557182; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1761953772; x=1762558572; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gY82JgAv1A8rYj9MCaiZVHVrEMWrbrCoiDwppP0oGWg=;
-        b=t5XTkVeW+o6OWiZ4NdDzsjF96UDdY0LyenFhp671Pf18uMAI1Gojzz/r5vyWYgE4b6
-         bcRFEnbbBMIqAgiopLqP3n7a0FO7v1ZsRfWTZroaq8oXLlfV2qyxbYdrOoxSNE+b6fAP
-         kB2hGTX30OBVciJUN8Wed9aR5WqrrURXZ8B8PKGLmTD1LXVSgryxXJrm7WJKGKkFGAQb
-         EFO3I2oVdo6Yp24/OMdSl89c1t0lGza/qvCx5f/ao+GnM2tATDATO8yxnz96eFZBs1hd
-         poAsbLnev/gLSZBWK327B47VCmMROy/5SBAWFOzpDjqpmZNkIC87wRPCygdH9TEolmU6
-         yzPQ==
+        bh=4Eq4jvviKUAzs1+1SoozEwcB6MMHVfZDN8rnqvceNns=;
+        b=OZBLFpp0uCYDniCUv32mbI2Mxnc4OSmSzHBx+uq8bEq8Il4F6I10u+1FVvP+uOBtiC
+         uEZP1am4+eR5Qgm8UCzWdozSl13slRnFFSQOvep67tv5MD7w9ZZviI1qkr8RENmdJkqI
+         D/s0vKGrr75K8Q4wa4Q14bwIi5ZPxMGm1GHA/Gzrikc1Ri6ZYVLebi3h/GV0d7myyz1b
+         gd99msx+BduPU3uFpm77lhfQmYYEzLPKalJtdKRa3LUlk2SjmdCdUmcGfjilrZkeWrO/
+         jy1hcXJHbtPWoPCqwONZHcC87ZrO9mIRPawLtTIy8eZTzC5n4QE6qexVgY48s0j6jLBT
+         wPNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761952382; x=1762557182;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gY82JgAv1A8rYj9MCaiZVHVrEMWrbrCoiDwppP0oGWg=;
-        b=kz67Ic5AHTzCqG8hIHBTOEzjIEqg6KrVbE24Uoe7djwsRvIVEyATw4DzOlNKlM3VH0
-         n2N0LOh8x3NNuramnQQGWqYnL7XDiewgQZ21xrM/0ZkGhxxIthH7wpv/5sos7G/VNU/p
-         MLQlsds5qVljQDvbl6nQq57mG5M2ZkVi6jmSUuSudPc+Q3PGObqdl+g92isoLL1HVWsM
-         KkCzNsO9lSROrrWSG8hg95jqvl7MaAPjI6atKd7w8CELuQegpljgfzTZekduo1bf4/bM
-         SQWqLpDzZMnHoBK11zbxjZsC3lKkPzvZLOM6SkwQZrxprabSOcOjs+dmPPhErO5NoYKb
-         R5Sg==
-X-Forwarded-Encrypted: i=1; AJvYcCWUFDUJXOGC8mnBddBm5UH6qyonc8jQ8BXeb0jvb2o+HKrSxgay89zoSoxRnQPDQIyyuG7B3sRHSw==@kvack.org
-X-Gm-Message-State: AOJu0Yypy0Qjo2A95QJPYZNnfKY75vAYmCaJmTjAexSyX6KeKE0BTW7Y
-	5RShUWInVwllThRHduHFca8B0HOqd72QE4M2S6g8RxEo1E1e/OemYnTuIAsd+HWKk2ISH8+lSbg
-	Yds84v10pJFA73BVmSB9R1kNsq2VyMyXHwVdCJm/N
-X-Gm-Gg: ASbGncsX9yWK9LWpUHMOHVmGe0OVlxmg1Zbvz5ZEMPyh3kByYAcBtJ2A+nxpfTGQQnC
-	XPRHGT0z/iTvtWx6OlQobJtroxGOyu79+ChUz4fTeyb/nuseuE7j2Y7eD6uusqqOdMg9blI4PGi
-	O03sFRIok++cXgQf1gyRgXjf7+uZML9Eh8EdRq/fjjMbNfznzms9C73CKyhkmAcSbSNuNR8w/Gx
-	/JpD3xHCwsSrWv/ACTgDwYoKCSPTUEcDx9raBWvFVztNXlC9lWyQaUmv6I=
-X-Google-Smtp-Source: AGHT+IENbX2I9QLWCzbGqCz+aeN8c925eFyi708BVOjF22TIfxJHEaH3VCvZrnHqn6i5au9Z3HH9DEYcpuxXzSR6lhg=
-X-Received: by 2002:a05:622a:1991:b0:4b3:1617:e617 with SMTP id
- d75a77b69052e-4ed424d7c14mr1098221cf.11.1761952382100; Fri, 31 Oct 2025
- 16:13:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761953772; x=1762558572;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4Eq4jvviKUAzs1+1SoozEwcB6MMHVfZDN8rnqvceNns=;
+        b=ulyg254Xos0lGMEINeJrSkq0aQqVrRhKMM3bcU3x7zTa0keVY+wqVTt7M7xaYI4ZSZ
+         KwrfvLumVSDiI7WiTydxeblcJYPUBzh8UQESPajlkr/1SqRqB2Qiy6+nhalNjB3HdKX2
+         n/FxhTKjHSdZb2YdvHJfbb8J0Iy6tTeVGajU9iMU8sZaa7JXX4KmaP0KX8YZQxgf4hx4
+         0JQ3T8qv6dGBwsO/shEUSR+aBC6OahAOLMIVOxUrqq1ofQcLWoRQEN8B1i3uGAYE1bu1
+         JzQrTvfxj6VrgQ+t0F2P/QMTuSleyIG9KJiyGbRvgpgywLyfQ9GmUP8GmOwM7UlekeLa
+         BuRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUi5TycF7NY3vFu+yhHqLXwTG6S22O1TOOiQSxL2fE5okEcJbV8i7Cd5D+P4UYiJAHQWo6nouUBjA==@kvack.org
+X-Gm-Message-State: AOJu0YykwGD7gkCc1c6WhLoANiJR3zgDA2JYbQ4PmEwRHD+r+A/dElK9
+	57tQvyVRc7n5xBYbQjE4kcDygQYGh7boDZ1CfYZwsC6EG9gbzcupPG+3
+X-Gm-Gg: ASbGnct4jfMVqpyLqtOZv7mD/QwhLR+rhxHO+IjuO+4KRspYFA6uh4YMOpWD7HFbqbk
+	Co52C39fDs7IuZEW2qFU5A/j6xvafvMpcRkP/IJ5UpJ/nEJhxubVrp0IVlSy+IjmGvA1O1SkN/r
+	EXezzmk6EjjHI9oOY5aRDrmLZsCv9xfXY29dcoilu1KU2WpcgklViRHJ0re7YcXQ4Zril2ybT41
+	/BOiPK6OV1+1U+DfsKMCX4B8upU7RjxzjeDIwBNY/geK6KjkCbhDo8NFesDlPRsqMIzcjiRbggK
+	4NuUDgd2BP00LiBXX/bmEPcLfPp3uWnd2HR7KolNDVIFAU6FF2n/7AMQZrbbwuX4M61RUyXQXTv
+	wlzJnq9dHkRU47A2ySW8ymes8ETI6iMbvE2HWH6HRmvLYg8AEhZUNvwLGfXHlregBVd7ziBNyaF
+	7PFa1R7I9LVw==
+X-Google-Smtp-Source: AGHT+IE9oiA7ZS+LrMufBrhbfjlMC2OP7kCQdowNH5Jt1ngMTD0p89JzaMQE80nXkCPgIOmTZL/sqg==
+X-Received: by 2002:a05:6402:510c:b0:63c:334c:fbc8 with SMTP id 4fb4d7f45d1cf-6407701851bmr4563108a12.17.1761953771822;
+        Fri, 31 Oct 2025 16:36:11 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6409012a6a2sm1126819a12.23.2025.10.31.16.36.10
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 31 Oct 2025 16:36:10 -0700 (PDT)
+Date: Fri, 31 Oct 2025 23:36:10 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
+	kernel@pankajraghav.com, akpm@linux-foundation.org,
+	mcgrof@kernel.org, nao.horiguchi@gmail.com,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	Yang Shi <shy828301@gmail.com>, linux-fsdevel@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 3/3] mm/huge_memory: fix kernel-doc comments for
+ folio_split() and related.
+Message-ID: <20251031233610.ftpqyeosb4cedwtp@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251031162001.670503-1-ziy@nvidia.com>
+ <20251031162001.670503-4-ziy@nvidia.com>
 MIME-Version: 1.0
-References: <cover.1761756437.git.lorenzo.stoakes@oracle.com>
- <7de40603015dee82970f5d37332a6d5af7532063.1761756437.git.lorenzo.stoakes@oracle.com>
- <xnsn5rfqigbm5ryjtbf2rtfotneiwygzesvyfdxiqrzlyzljdr@tmbht4ggnjcv>
- <61ae955e-310d-488e-b350-59bb809f06e1@lucifer.local> <c736tssdw3z57kamh6eqc23gr575q375n2o2nnszih64afnaf7@zwbqremsbhwf>
- <053f3a04-9195-4f8d-8959-42e0c3ba077b@lucifer.local> <72ee2324-d599-44b6-92ce-ed0afafed78f@suse.cz>
- <3ae457cd-6c18-4870-a617-7f937b107cb4@suse.cz> <88b72728-fa3f-4a70-9ea2-40ff50673047@lucifer.local>
- <a3bcac19-78b7-4918-81b3-641a65a19a9d@suse.cz>
-In-Reply-To: <a3bcac19-78b7-4918-81b3-641a65a19a9d@suse.cz>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 31 Oct 2025 16:12:51 -0700
-X-Gm-Features: AWmQ_bnVgpHA3Q0hYHvJgIIm_FpBFlpB9mdVzh6mL8zZeBp2jS4PiSvnDoBUG6c
-Message-ID: <CAJuCfpEs1JTywfZNPrVmeTHUUyK+7waCU9fqfur2Q_xxx7hacw@mail.gmail.com>
-Subject: Re: [PATCH 1/3] mm: introduce VM_MAYBE_GUARD and make visible for
- guard regions
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Pedro Falcato <pfalcato@suse.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Jonathan Corbet <corbet@lwn.net>, 
-	David Hildenbrand <david@redhat.com>, "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Andrei Vagin <avagin@gmail.com>, Barry Song <21cnbao@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031162001.670503-4-ziy@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: 9az1mr76j7sqhwq5rwqeey3pj3rk658n
+X-Rspamd-Queue-Id: B733340010
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6419740006
-X-Rspamd-Server: rspam03
-X-Stat-Signature: qrf3irwsg64ngz1n9ziw7r1fwbhu9st5
-X-HE-Tag: 1761952383-507373
-X-HE-Meta: U2FsdGVkX1+ffy89MnQQv2lMHSjSEZttmZ8emHWIhiK5lgDsSsdsiSD56k2kw+llQUGUErol0wPwLvZ6EV+HACIosuDE6yyj0rJjTcc6rDKFOhr/u0V/O5M/wyhnXoudTNWHnmJdMKIIQuXBuPojl4A2xDXgTzcqzAXqSEH0IFQB0Y4CwVwB2RqQPSfEh6VhinQrzvSJYhdYSa5qe2/ze+6m8yK1zhK2odFsp2aIyw+yvUizGqqoWTQnEaf1wTlijK8ZQzY39CvSiz2/Yz8LNuys0iZ33wd9VHy8daa0RA3DYb4yYGsYMG+SkzMDPKXTw+KVUFFOS4MKmp5Q1jjJn3vR+PwQ858/+M4/ZfQUisnms1fSXPPBDn20iLuCcaubx/fXfPQHPdl3bsITEY9Nd9FJlHt6WhwXfJRmNBxkMZG1IyVklQTbgGIGGJB/njAdLuA1ZCEgu8E1+wpn8dL1wz26/lFU+keOE4TdQQGtYhUwiAmqDQkDubmLSxwCCUvQcweXqQ4tak6WN/6hbAFm2wobaVc9ugqajTqsP2JsaIhrRUEA1H9sXUuO8W0Y4Hgvz0XP+2H7Sw29EOUIZrxg5NrOoE5s17gA7tUwsUeAm0nfoZQh92E7VbMdfRnPchYrMWMCBnrjbIobHk30SFk5NATWRDolFz+Xl/NoC5ddd8RVnZ5DSblX+xJ6RwGVyohCWqnOzWI++VO9uTIzheF2PtdKj9Bw6/vQZYH/eoanORWkvIS6Ov+ACnzSqmL50mNx32lPSbqKQbz3tKZI6Xmpu0x4KT0E0ak6g/2oXLKuGLTnPAnTuMs//qtIxqk7+yveWOtb3x6r1oIHSAXxVf5UHNOqnRoa6u1FCFwOcHbpuOyiR/WX0N3T0t8OWIB9kd7xqXkQUuz2x2gYQL3DHqS9OWYAfpxYwAWROVy5csxL03ZUJ+62KmefqK6L2utN/96FyENyuCZV8Yxsu/6mKh1
- 0QK6J9te
- jYDRyYMaKoHBKmp8mSnHaqVwgPNGTXCHlOm1y/D6Qz2kwstXpvhrU/DWtADvY38eqAfEn/+rmOgX0WPA8RntduEjvH/GD4vUMx+SWV4o31qAcJWQbAV8mJ1muVIHhkJrGslusgVk9Zv8EpTXKy60/CCRqVWj2DDtefuYoPd8vvvs73vGZeRcQ5zpNDp8qL0baW19C0OJ+FmAj7zg8V4jyMFa3cu2lcOF39uj8npbXQOWOtaxc/LUErapJhg==
+X-Rspamd-Server: rspam08
+X-HE-Tag: 1761953773-177332
+X-HE-Meta: U2FsdGVkX19gAnBEIKH+tJufYtSWlHCJ+C8FNAO0/aybcDLgRbS6UKldXP0IHcSiksR7QtRLDZMDDjOp3vw81aDnpsL2Fr3b92thGGIE3B53lllFfhW1r+a/T2A9ngrSVeoK7IJb8XzGafgdBCulYncdvefjbTaqGH5BkXWwzUuKD5zmdpWF9CKyeYGBxC9Wc6fCI74hKkLcml1isj9gxFRm8GiWXoQocSUHmBn7mhTjSlD4uqQY5fPJtXVpWnbdnVjSV113H2N+HTapzpHEH9MHrMIAHj2Fzw15HiZZu0AUc6iosVYEr+4eMK1NfuQEk/BKI482fzNgEkvU6GueAbabXbXr5UC1w1anUode+TAnQDwC2YucL6cIyBijv6r2YGCtz1gt+nGeAEhTM6gOgDzah85OYZ7xYBSDtRmSvtZEgHBn9baadBNgyPJ1pIceOFfvdMfns6Hn/DroWmGrDM0y4gkuNIYAtzgTdrPtONs85GHPUT+gnuBNmz6L/fyx0cgyCp9TbxVhlxUkgE+6H0tU/JNvw3biUpo+zP24oFSU2ufzu4nyDSNLP7DlEHBDiC5gAkhI3j6pVUwEf8iA7XQEwXVIHpPCivrt2BgONJ3LSeHeqZ2EhPhUhS2qPi1MflamamI+R5A79QC0n44p1NboeXL0cPCVUfEnNZcJCOtbpJNcqIcH4dhuqF2EPPxIBfv3KPxk7ad7TYHV7mhUZu2C1q2BeyXtx5z6+wJjdRWAsj7KtFsJK1Z73/CTDEjEHc9z+9wvKgevCHwAfh8DL1KFm+z/kTk20Z8VHeENqrC0KU85qRRibJIA12tSvuNuoxEzsOyOBTJrg3oOWN1ThxiyW3zNhuAFSgCC4N+b21WSLxdx7ViGyanIpZtIfLt7ZeSlWlmx2UTgtSOz+qvazuyDhjBb/ShO7NMYUvdwYg1g1fqmzU9kXH7Hm34v2YLCE6yVLGrUoaMeYkvejBn
+ quey44+M
+ +PuBo+25uzTr+akaY8fyTcp6i6Y2j7Eq+yxVDuHto3KfcbnhbUpyVBtnlZcx74JbgBBrDXnAAprXeJe3NMJJhvN4DlhGBsemwFbuuqnMwxXZWiB0iEWmlt9RWxFSRh9VkhVgKJTfBBIlbGFrLS0U91+DZvF2woi36Bojf04qn8gz5BOOPL4cg5mLBWcphWh3Oh20kBifKqVUdJOAOHWOTgd+FO8qOPaaKxuxvn5dhnS9duCqf6uqrLw5/Y9ovMdVb+BI9g9j+5taIeIFOHjaieKR8PpnEL3MoUAxdh8cMn/p8OdoG3VsRLlnIkGtRbQGQUmWrbi5z4RseSDK7b9Q0zRPA4ItU2lAHNkHO1oQiAWU+oQJFsVDQdE3sZbsblAm/9w65gkFoITMRUChYzAkrrCL3ZtynRtzbZXzWNnBL/JDX8jB8owbmoLXvrx1tUtTpDxbq741l7IGOYV8ChkRo/epYNT/dh6LLVkfG8TR+VmIUNuhbxXIBVm6u0sm8832qk+BaBQuyhFACXRA2U3eQwyvzoHxD80bXH9rZllhFBvsUUi5Q7RfRLNdPkAHgmFaG2CXZzY4m7xP9LkAch/fTLlQ3Y041DjfFtFpxZVx+NsTLo6KIFkRfosabBdy8Av9xlLjGWi2RgnazBp/ZwOPtG6iDXscbF6vRu0gZSiuFdAEGV2gkrgDV16eMCrP8slppZiZZa1X26iTH0BTcSph3YDXotw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,67 +134,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 2:48=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wr=
-ote:
->
-> On 10/30/25 20:47, Lorenzo Stoakes wrote:
-> > On Thu, Oct 30, 2025 at 07:47:34PM +0100, Vlastimil Babka wrote:
-> >> >
-> >> > Could we use MADVISE_VMA_READ_LOCK mode (would be actually an improv=
-ement
-> >> > over the current MADVISE_MMAP_READ_LOCK), together with the atomic f=
-lag
-> >> > setting? I think the places that could race with us to cause RMW use=
- vma
-> >> > write lock so that would be excluded. Fork AFAICS unfortunately does=
-n't (for
-> >> > the oldmm) and it probably would't make sense to start doing it. May=
-be we
-> >> > could think of something to deal with this special case...
-> >>
-> >> During discussion with Pedro off-list I realized fork takes mmap lock =
-for
-> >> write on the old mm, so if we kept taking mmap sem for read, then vma =
-lock
-> >> for read in addition (which should be cheap enough, also we'd only nee=
-d it
-> >> in case VM_MAYBE_GUARD is not yet set), and set the flag atomicaly, pe=
-rhaps
-> >> that would cover all non-bening races?
-> >>
-> >>
-> >
-> > We take VMA write lock in dup_mmap() on each mpnt (old VMA).
->
-> Ah yes I thought it was the new one.
->
-> > We take the VMA write lock (vma_start_write()) for each mpnt.
-> >
-> > We then vm_area_dup() the mpnt to the new VMA before calling:
-> >
-> > copy_page_range()
-> > -> vma_needs_copy()
-> >
-> > Which is where the check is done.
-> >
-> > So we are holding the VMA write lock, so a VMA read lock should suffice=
- no?
->
-> Yeah, even better!
->
-> > For belts + braces we could atomically read the flag in vma_needs_copy(=
-),
-> > though note it's intended VM_COPY_ON_FORK could have more than one flag=
-.
-> >
-> > We could drop that for now and be explicit.
->
-> Great!
+On Fri, Oct 31, 2025 at 12:20:01PM -0400, Zi Yan wrote:
+[...]
+>diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>index 0e24bb7e90d0..ad2fc52651a6 100644
+>--- a/mm/huge_memory.c
+>+++ b/mm/huge_memory.c
+>@@ -3567,8 +3567,9 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+> 		ClearPageCompound(&folio->page);
+> }
+> 
+>-/*
+>- * It splits an unmapped @folio to lower order smaller folios in two ways.
+>+/**
+>+ * __split_unmapped_folio() - splits an unmapped @folio to lower order folios in
+>+ * two ways: uniform split or non-uniform split.
+>  * @folio: the to-be-split folio
+>  * @new_order: the smallest order of the after split folios (since buddy
+>  *             allocator like split generates folios with orders from @folio's
+>@@ -3589,22 +3590,22 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>  *    uniform_split is false.
+>  *
+>  * The high level flow for these two methods are:
+>- * 1. uniform split: a single __split_folio_to_order() is called to split the
+>- *    @folio into @new_order, then we traverse all the resulting folios one by
+>- *    one in PFN ascending order and perform stats, unfreeze, adding to list,
+>- *    and file mapping index operations.
+>- * 2. non-uniform split: in general, folio_order - @new_order calls to
+>- *    __split_folio_to_order() are made in a for loop to split the @folio
+>- *    to one lower order at a time. The resulting small folios are processed
+>- *    like what is done during the traversal in 1, except the one containing
+>- *    @page, which is split in next for loop.
+>+ * 1. uniform split: @xas is split with no expectation of failure and a single
+>+ *    __split_folio_to_order() is called to split the @folio into @new_order
+>+ *    along with stats update.
+>+ * 2. non-uniform split: folio_order - @new_order calls to
+>+ *    __split_folio_to_order() are expected to be made in a for loop to split
+>+ *    the @folio to one lower order at a time. The folio containing @page is
 
-Overall, I think it should be possible to set this flag atomically
-under VMA read-lock. However, if you introduce new vm_flags
-manipulation functions, please make sure they can't be used for other
-vm_flags. In Android I've seen several "interesting" attempts to
-update vm_flags under a read-lock (specifically in the page-fault
-path) and had to explain why that's a bad idea.
+Hope it is not annoying.
+
+The parameter's name is @split_at, maybe we misuse it?
+
+s/containing @page/containing @split_at/
+
+>+ *    split in each iteration. @xas is split into half in each iteration and
+>+ *    can fail. A failed @xas split leaves split folios as is without merging
+>+ *    them back.
+>  *
+>  * After splitting, the caller's folio reference will be transferred to the
+>  * folio containing @page. The caller needs to unlock and/or free after-split
+
+The same above.
+
+And probably there is another one in above this comment(not shown here).
+
+>  * folios if necessary.
+>  *
+>- * For !uniform_split, when -ENOMEM is returned, the original folio might be
+>- * split. The caller needs to check the input folio.
+>+ * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
+>+ * split but not to @new_order, the caller needs to check)
+>  */
+> static int __split_unmapped_folio(struct folio *folio, int new_order,
+> 		struct page *split_at, struct xa_state *xas,
+
+-- 
+Wei Yang
+Help you, Help me
 
