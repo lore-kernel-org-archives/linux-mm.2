@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63CD3CCF9EE
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0BECCF9EB
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DDB3F8E00BF; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id 081528E0045; Fri, 31 Oct 2025 02:54:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BAF1E8E0045; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id D36B38E00C8; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8F0238E0094; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id B13FE8E00C3; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 67F578E00A4
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 7A9248E0045
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 10BEB13AB91
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E24D885FD
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:14 +0000 (UTC)
-X-FDA: 84057495228.02.B70D934
+X-FDA: 84057495228.28.B8C91B0
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 28606120004
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2947610000F
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:10 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
+Authentication-Results: imf14.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893652; a=rsa-sha256;
+	cv=none;
+	b=hbtq5JxvpLV6xHBbr3SBVksHwU1rK3YifWHqiS0b3rrPcK2MOfVeFerUlycIXoF5AIr1Py
+	+cYhbLYQGyzz7wMP8C1jfhXbpCXfQKDn6+/69RLjNQpK5NaH9UhfGjjGgHGgnTlMWANl3x
+	3girmVHpYmPZK0FzVLycfae/up3xqhE=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=none;
+	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761893652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=bbmv7Rn4/1R4DyrnY20/lvULMdGMV6gKvE3ptARpLvg=;
-	b=GwuuQsls1XOJrkpqvizyrOT/IDkYcVbxOYGvn/bFlzOC09IcG1L1s/aSkvX0WbH5CQJQDW
-	3003T+WGLALnC8RvdruD/AeZTRTBmLZDmwhVJ4X6DZWYI7tGf7f2R62hk0q0MXSwNhTgQP
-	T3elcj8lWDLVjw7x6wrUUt4lVOznikk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893652; a=rsa-sha256;
-	cv=none;
-	b=rS6G4NHTv1MaYlJ5gxk3+bfh4BiIsg4VhnEVogSktFfWKjtAOy+3gBLn5GHgrxHrqUEEJJ
-	cA1T15kvW3xB9ShZPIF3Dy0+Ej8YCA+DdtgLgQgXCEDnmZ1/IUeZY99rrlSgMEImHWlEnz
-	zmaGYPZjEBQ03qqHml5CDLC/NKJbbj8=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf29.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+	bh=WFjFltfgKt5EHOFlCDblZeFhQDbuIBhyC06c6h7ZXc8=;
+	b=CgpRJF5V4tWz/Xs4VRfP9V7KG0nNMehA2vImjEZQPe9lzSOCOSChEgU5wVdsL9xVxkcFoo
+	o4VcidutkFGo5EISEOvVgAoXhIhiHtYmf957452YvjFXcHI3cr0hsqg/O6PtqETUeTML1l
+	Fgkmq2wh5u9esztsJt8BkXMujaB5nR0=
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:07 +0900
+	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:08 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -62,20 +62,22 @@ Cc: linux-mm@kvack.org,
 	Barry Song <baohua@kernel.org>,
 	Chris Li <chrisl@kernel.org>,
 	youngjun.park@lge.com
-Subject: [PATCH v2 1/5] mm, swap: Fix memory leak in setup_clusters() error path
-Date: Fri, 31 Oct 2025 15:50:07 +0900
-Message-Id: <20251031065011.40863-2-youngjun.park@lge.com>
+Subject: [PATCH v2 2/5] mm, swap: Use SWP_SOLIDSTATE to determine if swap is rotational
+Date: Fri, 31 Oct 2025 15:50:08 +0900
+Message-Id: <20251031065011.40863-3-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251031065011.40863-1-youngjun.park@lge.com>
 References: <20251031065011.40863-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: hpsxxuebeiy98gqsgzwwjy7upz5d8oiq
+X-Rspamd-Queue-Id: 2947610000F
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 28606120004
-X-Rspamd-Server: rspam02
-X-Stat-Signature: zqk6x78meq3cotmxhuimjoar1z1yn5tt
-X-HE-Tag: 1761893650-307949
-X-HE-Meta: U2FsdGVkX1/WkytocIiBJxzh6eiwxjr+qUFJsD4rdSw7nm13cclhcEykTGkz2urAD6A/92L29fhyLEIrhwQ064sSOe70lg6sI8G3/PI/dnGlPZJy2mHbiWYYQFyl7eZf6J8gvtweNDJDO7ELEkjQLKkp+8tQX0BqcRb79aj1vLb9Du8ZwPNoCcttWF6DL+BwQg8wpFyuAeOfME5TTy6UFQTsjsCmJZI/xlrXX7ruCCh/vcG7tmtfm7LsCTSnqJ9DS42ku7O7Ow9EFE514wwjegey2q8c0ktnsMw2HtISzyOEtkXwbsrCcvSkGrQGF6UK0xiwUfb+4Xm4borMVdpOq7xcuOU/D30xALE/LVTygrifaOtj4qIprQMPRCaTR1gGjLt3bfTa+xXgr2KXF58szOKjwIvhXWFcpYyA7GyShX73gB/QobfnkAeKIFVjXh351ecN/UUcwNQR1eFT6z+a7ho1kHC2t6Ls/pnUUrZ+IRN4LjNto0PYe1dNejZs++L/3AZs3O0+X6k2MBg4msF+d29cYJ4e0s7AXHVFVPrQOXeULkMc7bA+zyw2s6SCGQY7dK2GqM/qj+RI9/ymirhi/7iPfdChSAH2jlrRjZOAdc9uFmjibuVC3XV15G9KYWYoEFXK9r0cFTi1jg4+iiJidDbJ1k5IYWUuplkuuoiSUwRH+W+9KGRi40iJfrWaZ+QJ/WECiuzWLG+Oic3hsEE6e37erfqDiptajCuEUvWyFeau3gRjp2LALLOazHx53jMIIZWrHq4vJt05zDQfbZLQUjuVTUvj0O6wKadZKsuP1YfiXEY5LCRzOrzLUz18qh8z7zhcXNkwpMV0h83v+jPfapaEl2aiul7WChGIlbbre9nTMyy7p+vxpDkzU0RZRmtd
+X-HE-Tag: 1761893650-796922
+X-HE-Meta: U2FsdGVkX1+5GaJ95Bl/sRaEtGrSIPZQf/RdxGUrACvB9thaQ3Jkjw3u0w52yjWAurIcJK/pNmq9S55asKVqUZxujunJQvlsSVWK5owXmmb4bdautsQ0J3Yy98+pKz5TUPJLPnimb0QgluJC0TlyE9EwNvat2//EXXcYn9GL5uI7sKzPsE49jUzU0pYfKNpvW5t5Jhg+a0Hjix/tfTJd4JcZV368+iAamcU/UCv/4JmppjdLSYRvJxLWEhZ1svnyZD3/AjimKO21wTAASOlkOKfkT5gMqWnXG+65XAs3JZ84BT32YVOEEHJMcy3lQK5SlPL9KwcRqs/soDC5K0vccQbFpEqyqrsPHumhwP3LMMUHAfgpKmgRW7fxDhrM6Zn+32AQQjqAWKkiMWYO3b+5vz3Srdvh2pAPV3qTJsvxy7ci6oNyEuHyf+sFOFlLrpLvtHCdLJ7gKmkRWHR7yzyMgbSXLHAGVylz1koISX3vWDlFgGp9zLCBGEAwf01o40S3/cUEPBGMuh4EFxH/Y3N2cIIejLZISd4EgmVzHQLpt7xoSm3Cwr4JaYREDVi4sqCtwpxD12RbxEXIiS0PweGPHszm9/f+P1v2vt98sKvSjhrEY15Msv0ZOmaUHmkFqo9sfLGhZSWju0CEyE+j+woX3EG1MXxonIm6asoS+jD9DwR1b2f/LVRTlL80xxaL6zXgV2CHK2oNTXzFy0aKoXqey6I6lgoquP4yO5sALvGn3gmm5SQWO7nEZbrfacMDFt2glLdaX9CZ+4ltxkL6GxVHmE3xkBOS9kz+tEYr8S7PS5kl/KYqeOw7Dgiktpbs8oLsQu2PxNwjKwOKcgJ4kB7qg2P71ixcdp9jMdzs7pEYR2GGrTfIcRL4ihxuKSHNpZIQMmIRUvMQNj9/MqUWTPJ4FkdvLCGGbEu/2FCxUiVO33HS3uyoRHINA9qz09az0SHsGYpzPfxFZwI9DmcS1w+
+ bf7wvZIf
+ kYouk6ewf+AzX3K+xg9kmd640+WEwq6W3NoGJ/ncZOKja2iLCU5pYSQbMIStCkLwAnXraAX/O8AOvWJwibbEHUr2j43MbMSy1q+e8VkLmdg79K0L3Dm44CP9Hjowv/wL0o57mmDdgbBRFkYHOc5ZU/G8pZNSQxPrB+vTPz5CYAWH6Kxl6hL0NXgWB7UjOetd00OyaxCRLcUtOBYWTWvn37lmbxhPjCN8TfrgvbflnH09Sv8Y=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -84,43 +86,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The setup_clusters() function could leak 'cluster_info' memory if an
-error occurred on a path that did not jump to the 'err_free' label.
+The current non rotational check is unreliable
+as the device's rotational status can be changed by a user via sysfs.
 
-This patch simplifies the error handling by removing the goto label
-and instead calling free_cluster_info() on all error exit paths.
+Use the more reliable SWP_SOLIDSTATE flag which is set at swapon time,
+to ensure the nr_rotate_swap count remains consistent.
+Plus, it is easy to read and simple.
 
-The new logic is safe, as free_cluster_info() already handles NULL
-pointer inputs.
-
-Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap table")
+Fixes: 81a0298bdfab ("mm, swap: don't use VMA based swap readahead if HDD is used as swap")
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-Reviewed-by: Kairui Song <kasong@tencent.com>
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index c35bb8593f50..ed2c8e4edb71 100644
+index ed2c8e4edb71..b7cde8ef6742 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -3324,7 +3324,7 @@ static struct swap_cluster_info *setup_clusters(struct swap_info_struct *si,
- 		si->global_cluster = kmalloc(sizeof(*si->global_cluster),
- 				     GFP_KERNEL);
- 		if (!si->global_cluster)
--			goto err_free;
-+			goto err;
- 		for (i = 0; i < SWAP_NR_ORDERS; i++)
- 			si->global_cluster->next[i] = SWAP_ENTRY_INVALID;
- 		spin_lock_init(&si->global_cluster_lock);
-@@ -3377,9 +3377,8 @@ static struct swap_cluster_info *setup_clusters(struct swap_info_struct *si,
- 	}
+@@ -2913,7 +2913,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
+ 	if (p->flags & SWP_CONTINUED)
+ 		free_swap_count_continuations(p);
  
- 	return cluster_info;
--err_free:
--	free_cluster_info(cluster_info, maxpages);
- err:
-+	free_cluster_info(cluster_info, maxpages);
- 	return ERR_PTR(err);
- }
+-	if (!p->bdev || !bdev_nonrot(p->bdev))
++	if (!(p->flags & SWP_SOLIDSTATE))
+ 		atomic_dec(&nr_rotate_swap);
  
+ 	mutex_lock(&swapon_mutex);
 -- 
 2.34.1
 
