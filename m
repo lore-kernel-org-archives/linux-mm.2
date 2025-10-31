@@ -4,52 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5E0BECCF9EB
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDFA5CCF9EE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 081528E0045; Fri, 31 Oct 2025 02:54:15 -0400 (EDT)
+	id 2B0EE8E00BA; Fri, 31 Oct 2025 02:54:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D36B38E00C8; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id 216EF8E00A4; Fri, 31 Oct 2025 02:54:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B13FE8E00C3; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id DD2088E00BA; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7A9248E0045
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A6E5B8E00BF
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2E24D885FD
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 666341403AF
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:14 +0000 (UTC)
-X-FDA: 84057495228.28.B8C91B0
+X-FDA: 84057495228.24.4ADAEF0
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 2947610000F
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:10 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7429B1C0007
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:12 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
 	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893652; a=rsa-sha256;
-	cv=none;
-	b=hbtq5JxvpLV6xHBbr3SBVksHwU1rK3YifWHqiS0b3rrPcK2MOfVeFerUlycIXoF5AIr1Py
-	+cYhbLYQGyzz7wMP8C1jfhXbpCXfQKDn6+/69RLjNQpK5NaH9UhfGjjGgHGgnTlMWANl3x
-	3girmVHpYmPZK0FzVLycfae/up3xqhE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=none;
-	spf=pass (imf14.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761893652;
+	s=arc-20220608; t=1761893653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=WFjFltfgKt5EHOFlCDblZeFhQDbuIBhyC06c6h7ZXc8=;
-	b=CgpRJF5V4tWz/Xs4VRfP9V7KG0nNMehA2vImjEZQPe9lzSOCOSChEgU5wVdsL9xVxkcFoo
-	o4VcidutkFGo5EISEOvVgAoXhIhiHtYmf957452YvjFXcHI3cr0hsqg/O6PtqETUeTML1l
-	Fgkmq2wh5u9esztsJt8BkXMujaB5nR0=
+	bh=ZZa4zROsfB4xSJtQN8oWlXD5heGe13KaKHVBiSiIgd8=;
+	b=bilrpyww8VtnXA1I33ZlqDGwvoguSVypsR9WjRwml9XOI5pirHo8YFNijyJJWRJskEQApP
+	qb+Nwz5uzgdbmJBigVU5JqszDaFn2Z8Ttx4dhh5BwO3W1/5fszh76M1lY2G5RIVMNHSWfJ
+	Eu/J8SNDpzYF+lEpQSQSsZ6aJzIeavk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893653; a=rsa-sha256;
+	cv=none;
+	b=hQKUufssfGR2+Seh0+99Wrg9mpBlroVlU6I+Pvv46g5Bhy9UVp6TiDcod7qVnSH47eM6Ma
+	oV+6a2lFv/itsvvN4kuyL80RyH/1wzn8kc4NrrhJbQxEL9oWNKVzsL4Tue7t149QM5e1s3
+	Q3qr/ICnpSMutT9sJeQ6u6JbCmFTYQ8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf21.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:08 +0900
+	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:09 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -62,22 +62,20 @@ Cc: linux-mm@kvack.org,
 	Barry Song <baohua@kernel.org>,
 	Chris Li <chrisl@kernel.org>,
 	youngjun.park@lge.com
-Subject: [PATCH v2 2/5] mm, swap: Use SWP_SOLIDSTATE to determine if swap is rotational
-Date: Fri, 31 Oct 2025 15:50:08 +0900
-Message-Id: <20251031065011.40863-3-youngjun.park@lge.com>
+Subject: [PATCH v2 4/5] mm: swap: change swap_alloc_slow() to void
+Date: Fri, 31 Oct 2025 15:50:10 +0900
+Message-Id: <20251031065011.40863-5-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20251031065011.40863-1-youngjun.park@lge.com>
 References: <20251031065011.40863-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: hpsxxuebeiy98gqsgzwwjy7upz5d8oiq
-X-Rspamd-Queue-Id: 2947610000F
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761893650-796922
-X-HE-Meta: U2FsdGVkX1+5GaJ95Bl/sRaEtGrSIPZQf/RdxGUrACvB9thaQ3Jkjw3u0w52yjWAurIcJK/pNmq9S55asKVqUZxujunJQvlsSVWK5owXmmb4bdautsQ0J3Yy98+pKz5TUPJLPnimb0QgluJC0TlyE9EwNvat2//EXXcYn9GL5uI7sKzPsE49jUzU0pYfKNpvW5t5Jhg+a0Hjix/tfTJd4JcZV368+iAamcU/UCv/4JmppjdLSYRvJxLWEhZ1svnyZD3/AjimKO21wTAASOlkOKfkT5gMqWnXG+65XAs3JZ84BT32YVOEEHJMcy3lQK5SlPL9KwcRqs/soDC5K0vccQbFpEqyqrsPHumhwP3LMMUHAfgpKmgRW7fxDhrM6Zn+32AQQjqAWKkiMWYO3b+5vz3Srdvh2pAPV3qTJsvxy7ci6oNyEuHyf+sFOFlLrpLvtHCdLJ7gKmkRWHR7yzyMgbSXLHAGVylz1koISX3vWDlFgGp9zLCBGEAwf01o40S3/cUEPBGMuh4EFxH/Y3N2cIIejLZISd4EgmVzHQLpt7xoSm3Cwr4JaYREDVi4sqCtwpxD12RbxEXIiS0PweGPHszm9/f+P1v2vt98sKvSjhrEY15Msv0ZOmaUHmkFqo9sfLGhZSWju0CEyE+j+woX3EG1MXxonIm6asoS+jD9DwR1b2f/LVRTlL80xxaL6zXgV2CHK2oNTXzFy0aKoXqey6I6lgoquP4yO5sALvGn3gmm5SQWO7nEZbrfacMDFt2glLdaX9CZ+4ltxkL6GxVHmE3xkBOS9kz+tEYr8S7PS5kl/KYqeOw7Dgiktpbs8oLsQu2PxNwjKwOKcgJ4kB7qg2P71ixcdp9jMdzs7pEYR2GGrTfIcRL4ihxuKSHNpZIQMmIRUvMQNj9/MqUWTPJ4FkdvLCGGbEu/2FCxUiVO33HS3uyoRHINA9qz09az0SHsGYpzPfxFZwI9DmcS1w+
- bf7wvZIf
- kYouk6ewf+AzX3K+xg9kmd640+WEwq6W3NoGJ/ncZOKja2iLCU5pYSQbMIStCkLwAnXraAX/O8AOvWJwibbEHUr2j43MbMSy1q+e8VkLmdg79K0L3Dm44CP9Hjowv/wL0o57mmDdgbBRFkYHOc5ZU/G8pZNSQxPrB+vTPz5CYAWH6Kxl6hL0NXgWB7UjOetd00OyaxCRLcUtOBYWTWvn37lmbxhPjCN8TfrgvbflnH09Sv8Y=
+X-Rspamd-Queue-Id: 7429B1C0007
+X-Rspamd-Server: rspam02
+X-Stat-Signature: j1n5gxai3pucaia5u7o53n4sout1mp8f
+X-HE-Tag: 1761893652-225076
+X-HE-Meta: U2FsdGVkX18iFEbTaTtYbThdDPRxlt/5iKVATWNQ0+jpOkugpzIJtfbiF8GZNx6BpbPxUKxTcGzp8j2apQcigKl5GZ5YctVBXRpJh5DUG/Pejn7GWRLSAlY/cK5QNEzzwQEjF7dhGv3bvg8SyDehiSQXEJv5JluQnceMQP5tcDZefPMjXRW5FDN37IoqEjSWy7OK8QPIQ2AD5ikBUCokIJf/nMK1JdGn/YyNvoWoH8FnTaZ9pihiBg0GIOqkzfACV2MuNAb1ozps/lPshgoGXgiNIJCg1h68tdosKGuyZck6rhl2+3J/s7NDwi++i1sE8UvOPfmJCeinHP1qlo2FXa0L61sdkZQGei6kPv1/5UZCUL7vAyEapsldrrG3rM907rp2ZCasjmwW7s1a9R9QSNARf1wjYupIwdPJv0ruENCNVss/mR7KLKR1Wc9Ji/nsG8nr2BcHh553MyLZ6Vq2b9Yhq4XIsmC64D3dAjdcCh68TZVyjakL5VKjPTyJzYsVwKxUMkxoJ6+Ah/NnghKzgcYHK9Go+hxdefE5LzBLr8BexcO8UE69fUcdShWDKfDQKyQJjYcoodJD3nWfQOC7qc+710Sk/YkECaSD7EVTR8aNFCPQVhJJzzDhZJErdn35Qx8poEF6tj7AloAiRnWQB0TWRf9TeQ/7Qw3YcKWi6huE5pCdPO92stx6BOFUN4iTAI57KWlb42SNqqHYKNMv+Nsy4uhgQPaOd1OZAQLNZOfkcuepU/olVsFNa7mCH9A34+0NJvHydqRK0H4d06f299/7yng0yAoj1DTholHXXy6/Oek4hi5Pa6G/itb89pbWCrFBrSPvTtgwYHdjaRu9sMBHEXU75PAwLFkR8tu1Z12B5FZYXIOyeLCeE2aADtpP
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,29 +84,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The current non rotational check is unreliable
-as the device's rotational status can be changed by a user via sysfs.
+swap_alloc_slow() does not need to return a bool, as all callers
+handle allocation results via the entry parameter. Update the
+function signature and remove return statements accordingly.
 
-Use the more reliable SWP_SOLIDSTATE flag which is set at swapon time,
-to ensure the nr_rotate_swap count remains consistent.
-Plus, it is easy to read and simple.
-
-Fixes: 81a0298bdfab ("mm, swap: don't use VMA based swap readahead if HDD is used as swap")
 Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
 diff --git a/mm/swapfile.c b/mm/swapfile.c
-index ed2c8e4edb71..b7cde8ef6742 100644
+index b7cde8ef6742..4f8a1843262e 100644
 --- a/mm/swapfile.c
 +++ b/mm/swapfile.c
-@@ -2913,7 +2913,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, specialfile)
- 	if (p->flags & SWP_CONTINUED)
- 		free_swap_count_continuations(p);
+@@ -1339,7 +1339,7 @@ static bool swap_alloc_fast(swp_entry_t *entry,
+ }
  
--	if (!p->bdev || !bdev_nonrot(p->bdev))
-+	if (!(p->flags & SWP_SOLIDSTATE))
- 		atomic_dec(&nr_rotate_swap);
+ /* Rotate the device and switch to a new cluster */
+-static bool swap_alloc_slow(swp_entry_t *entry,
++static void swap_alloc_slow(swp_entry_t *entry,
+ 			    int order)
+ {
+ 	unsigned long offset;
+@@ -1356,10 +1356,10 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+ 			put_swap_device(si);
+ 			if (offset) {
+ 				*entry = swp_entry(si->type, offset);
+-				return true;
++				return;
+ 			}
+ 			if (order)
+-				return false;
++				return;
+ 		}
  
- 	mutex_lock(&swapon_mutex);
+ 		spin_lock(&swap_avail_lock);
+@@ -1378,7 +1378,6 @@ static bool swap_alloc_slow(swp_entry_t *entry,
+ 			goto start_over;
+ 	}
+ 	spin_unlock(&swap_avail_lock);
+-	return false;
+ }
+ 
+ /*
 -- 
 2.34.1
 
