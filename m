@@ -4,51 +4,52 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 517A1CCF9EB
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 980D0CCF9EE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 06:54:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B5368E00C2; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id BB3858E0094; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93EC88E00A4; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id 9B3A88E00BA; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 743448E00BA; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
+	id 806038E00BF; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F8228E0045
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 676CA8E0094
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 02:54:14 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id E60B6589D8
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:13 +0000 (UTC)
-X-FDA: 84057495186.06.E0FDC8D
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 279FBC03DE
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:14 +0000 (UTC)
+X-FDA: 84057495228.27.1665B01
 Received: from lgeamrelo03.lge.com (lgeamrelo03.lge.com [156.147.51.102])
-	by imf19.hostedemail.com (Postfix) with ESMTP id CDACD1A000A
+	by imf05.hostedemail.com (Postfix) with ESMTP id 315C3100003
 	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:54:10 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
+Authentication-Results: imf05.hostedemail.com;
 	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
-	dmarc=pass (policy=none) header.from=lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893652; a=rsa-sha256;
-	cv=none;
-	b=SkLqyboahyp1VNPlKTsYMvsJInKn3yrJf72fNxIkRt/zoLyC85xVGjMb0QHBe5DxAsMawG
-	O1FWbqWtxN6aTqx7aXGYxs9F2FKSFJeK7u+gJHx9/wSngJpveKq+Z//OB3jDYgYLH/WxNP
-	eAMYgkGrdQ163Xx8fKnOpuJehlaaFzI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=none;
-	spf=pass (imf19.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
 	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1761893652;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=LhaAAcr8zje6NL7JjxmWSI1q8D949PnfOC3SLcWfp8A=;
-	b=qs42lnI/dYQ8Elfa9uc66AS+c3AdLSija5b84wmZLgBHwVb+79/dRRDJ8XoBVt5I/QMj+W
-	3UA/XqwaCMYJb9IYeZeK3jJdcl6Dqr7X3//GHj+vqEMNsd2R2SgL+e2iqNo/urW9ZZ4hCA
-	c/HIgwc0KpxJ1hcV4HHlA1sjD/gKuhI=
+	 in-reply-to:in-reply-to:references:references;
+	bh=T7rMLjqwsC8w/+e+VeU1NuX0oG3pCQi3c+3F0cayWTc=;
+	b=qOHgFNfBEVH+72B3EZ9ilT3B2OluXb6hRwHzXXxOWvjjNwUe0jVIxMx8XzHBXj0MzpqqYN
+	rRDaOxl4FqsgRE0Uw90U5q1cGTOryllZZQoPKiYvAzPDbtsInTVoVp5iSMZ51jcZoCZ102
+	aHR2/q9fNVzyK6x92WpmERb6wPcsHcM=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	spf=pass (imf05.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.102 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761893652; a=rsa-sha256;
+	cv=none;
+	b=8ThnY4jw2BIhpJ5VpE3kR8gtD9vpNCe/u/2kKgj5EyyWBO1x/eShXlJd6N9F0XRzUprkLq
+	l7gN7Vui9quaj8yFJcuUYc83S+HpHO1Agtkw/sTfMJO7xVon4tIJtp6hyhRgirxyGyaWFj
+	aKSdnUOTPpxBXuqWct/gybvaRICQzxI=
 Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:07 +0900
+	by 156.147.51.102 with ESMTP; 31 Oct 2025 15:54:08 +0900
 X-Original-SENDERIP: 10.177.112.156
 X-Original-MAILFROM: youngjun.park@lge.com
 From: Youngjun Park <youngjun.park@lge.com>
@@ -61,18 +62,22 @@ Cc: linux-mm@kvack.org,
 	Barry Song <baohua@kernel.org>,
 	Chris Li <chrisl@kernel.org>,
 	youngjun.park@lge.com
-Subject: [PATCH v2 0/5] mm: swap: small fixes and comment cleanups
-Date: Fri, 31 Oct 2025 15:50:06 +0900
-Message-Id: <20251031065011.40863-1-youngjun.park@lge.com>
+Subject: [PATCH v2 3/5] mm, swap: Remove redundant comment for read_swap_cache_async
+Date: Fri, 31 Oct 2025 15:50:09 +0900
+Message-Id: <20251031065011.40863-4-youngjun.park@lge.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20251031065011.40863-1-youngjun.park@lge.com>
+References: <20251031065011.40863-1-youngjun.park@lge.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: okw5j8rmudxbttdk7md1d154ird4eq7m
-X-Rspamd-Queue-Id: CDACD1A000A
-X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-HE-Tag: 1761893650-529290
-X-HE-Meta: U2FsdGVkX194eW6Hzcjq2u3PeKPO5xCUhQ2csDUtQ11obBNKKdUb2grL0M4EoKILvlqYuQSk62rtjifQk0w3DhraqntzhI2CIYw5HFUf5YJDee3V3ghb0Gga2Co30ibImK1cQTO7TqqnYhuLQ8RzDd3ozoyFmkIqch7F6lLbBpH4tolOz+2jt3iHsrWmRIbgH5lQTK9n50kizjzJ2e63zDCprsM23dbmtwdqsjzUCwMWeSjZIDn1e5j3ropcGx/NjH/rVHXj+Imb8WemX3NdAVGqacTb88zV9Qhks/PVAfUBw5GzbLAZFFT97pUmM+nJQianwornpAuB8qSvPGei7J672wgGMakY2IFZdwkHJiFvpoijQCHOG6rSU3XYxHi8w8s1Y5nlf8Nt7GCg2StOoT+yePgGOieQgPgzuOcR6QM1+DvDgCW1pUqtRJHJ14zoN3PiZJnm0mh24KgMIVWN1ntymQAwZIyF82r4+VQb6EpqoP2aCqmi6hae3Kt24nWbn49oDoXuYaIAaPe78VslLYklr1AZ5u/yzAPTHoRP8JYGKel8hDQtrJ8W82+r4w0BprG20smIpMMS54FVbcRBSMGp6tjnqlUa+ZXHzhuB8aExZTM6j8vIUYkAWlvy3j+TuxMrEn2itcxQ/javTFVKM8zvLQYNHTBZoU8S0A5rKHiyxMMdgZX8RShQbJ+7Ib+90aofYz6jqOLLr6r/Hr6TUY2xasZdvcqkzTJwdyIR23hRvzJ7CX3v5cDkg8bsPdpRlbV6FRuK3VRPJNDE+6WKZBxhBfzc+Z8zCfNTQ0/qDPDLScd1LFlLNEq2rPMb5L9qv56ShJo8TvSkx2zE/lbeZw==
+X-Rspamd-Queue-Id: 315C3100003
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 85jdnzuzy3fqohr8nq83n7w4fnfdc5as
+X-HE-Tag: 1761893650-322840
+X-HE-Meta: U2FsdGVkX189jwuXE9lxLOZ5G6l80hsAaQdbKo4d4LtKAij6Hjj6bCo326MTo3Z8yNuCyxgt7lBLjEgyaeWEf0USoyvUEMEm+WjAIkwO4uIvlBiMta30nzQ+rMtGZPJpoTrmxZ+dR2RlDdHrF9wlScFUweGz+uIt55B+joMVti/cPb9Emn80+v0N3Y4W92Bcamry3kBE3mTFQV5rxbQOQ10PYB3iQgHPPnzOO9itk4CC3HsxdyqU93+CCZ8vzS/kWmPzEnlCr52Kv8FNHnGVNRXHUdV8DMDklYjV51Ez3rPeq3AoC+/ta3IjC3DReVZTB1IJ7NeBNZGeBkwm0pnF7mqdX2yTmyKPFi7LU6YuuZWh3UepaEdRTAo73zjICsdnHk+7poOsyRfIyGuWw2Xi4Iy5GYkoad6kCHIikEACGWt2yNUr+NuGo1iX7uWgDxqdJg5ymmhRxaCwLcS9vMUHjYZJx93Lby6+GiXdQrIz2mUv5m7ZzrPEI6UEOFl8FmQsPVLpEfIJQ4ZMLWMNicNVefbhLhXk3eHK4XyGvXaJSAF94Wg2gWie1+2wOh9PXxzxEXTG8u+tABReZMPuwE1ng8pRnlEVviGVjSJi57i1IEDVNEWKh5q9FY9xxf+E2RIjxFnMP+47iNatZ6EfemMIUMFmVdYrovTRPsFnE+GVssO3OO89XSSgiyCgBM6THAI52nX0QUSGvLPgZZ3W4X+Cai4FWkN0XXKCX4Atukvm6lBJj9ADhti8CYPT09j9KsIe758pBPGxONjVXb6abMaTo3gOYalTBc8ONuE/Oz9XjJzs7Cwt8rVmiJgK0uRxR63N9fQGm+iktmK5Kd4wpvek0Z7IssHkN6DU+5lI6/9s6wB+ZdCBQp5B4znPNBT0lZK113gbXIS2XcA8DfFLUV84ooPtLxT80xBiwqIUJvjlOCLEl4VMv1UkkKVT/mWD7p+U75TZhXw838U/kcezhnj
+ rSXNZ9eH
+ vGTOWx+JJjJ+34xFA/jOCAX9TX96laJRdRiEWID2ahCNFGz8yBPn9Ms5xs4PWaAkI7dGfT8JQmDgM1YXUw/oiRca3zJ/D9jLMpXKgHU+ycT94xo1PXkl24HKwp/E6u4J2VUUVNuA/wm4EAgfIEQNfqRZCOf9McFJs5VupgFzQap6R7fMS8gT71vsFhblSf555fMh8I/nrnSixs0M=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -81,40 +86,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
-This series provides a few small fixes and cleanups for the swap code.
+The function now manages get/put_swap_device() internally, making the
+comment explaining this behavior to callers unnecessary.
 
-The first patch fixes a memory leak in an error path that was recently
-introduced. The subsequent patches include minor logic adjustments and
-the removal of redundant comments.
+Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 
-This version addresses feedback from Kairui Song. Thank you for the
-review.
-
----
-v1->v2:
- - Reworked the error path in setup_clusters() to use a single exit
-   label as suggested by Kairui.
- - Added a Fixes: tag to the first patch to identify the commit that
-   introduced.
- - Added Kairui's Reviewed-by tag.
-
-Link to v1:
-https://lore.kernel.org/linux-mm/20251029085659.2005942-1-youngjun.park@lge.com/
----
-
-Youngjun Park (5):
-  mm, swap: Fix memory leak in setup_clusters() error path
-  mm, swap: Use SWP_SOLIDSTATE to determine if swap is rotational
-  mm, swap: Remove redundant comment for read_swap_cache_async
-  mm: swap: change swap_alloc_slow() to void
-  mm: swap: remove scan_swap_map_slots() references from comments
-
- mm/swap_state.c |  4 ----
- mm/swapfile.c   | 34 +++++++++++++++-------------------
- 2 files changed, 15 insertions(+), 23 deletions(-)
-
-base-commit: df412f2f12d492234da858e4dbaeabed9ecff3c4 (mm-new)
+diff --git a/mm/swap_state.c b/mm/swap_state.c
+index b13e9c4baa90..d20d238109f9 100644
+--- a/mm/swap_state.c
++++ b/mm/swap_state.c
+@@ -509,10 +509,6 @@ struct folio *__read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+  * and reading the disk if it is not already cached.
+  * A failure return means that either the page allocation failed or that
+  * the swap entry is no longer in use.
+- *
+- * get/put_swap_device() aren't needed to call this function, because
+- * __read_swap_cache_async() call them and swap_read_folio() holds the
+- * swap cache folio lock.
+  */
+ struct folio *read_swap_cache_async(swp_entry_t entry, gfp_t gfp_mask,
+ 		struct vm_area_struct *vma, unsigned long addr,
 -- 
 2.34.1
 
