@@ -4,87 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0678ACCF9FE
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 15:36:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9403FCCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 15:42:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4D6358E00D6; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
+	id EA9C18E00E1; Fri, 31 Oct 2025 11:42:28 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4869F8E006C; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
+	id E59EA8E006C; Fri, 31 Oct 2025 11:42:28 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C3AD8E00D6; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
+	id D22138E00E1; Fri, 31 Oct 2025 11:42:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B7108E006C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:36:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B6ED78838D
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:29 +0000 (UTC)
-X-FDA: 84058811298.30.E0FE794
-Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
-	by imf16.hostedemail.com (Postfix) with ESMTP id BB00D180002
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:36:25 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="l8ORUx/7";
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761924988;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id BC29F8E006C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:42:28 -0400 (EDT)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 57AB8B9DAE
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:42:28 +0000 (UTC)
+X-FDA: 84058826376.09.09FF6DD
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010014.outbound.protection.outlook.com [52.101.193.14])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 77C1A40014
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 15:42:25 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BTUs0u7P;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1761925345; a=rsa-sha256;
+	cv=pass;
+	b=qc92nKqO96Omb5GEZJHHtOpp1OuvP4+TUnK0LDSrcCq4F3IoiMBOKlsn/JxBuDqkzx8HgR
+	IWyRmvpFtDmqukRX69vMBXvukzYhTbHZfv9XtyWIHAzEsIQ/tC3P1olxZmSZUqVoZ5LWOo
+	UM3Hqll++8kquI07HYO5guhC44+YEGc=
+ARC-Authentication-Results: i=2;
+	imf27.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=BTUs0u7P;
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	spf=pass (imf27.hostedemail.com: domain of ziy@nvidia.com designates 52.101.193.14 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1761925345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7bCk+2TmNZusllnMtS41IqvcnVBVBQ9/CiQF7zZf5Vc=;
-	b=PvwIRldjQIUEibitiZzD8DdPWLJiKDyz2fEPQZqLdjY4uOAIAZk0vu1M94WldrA1BMyYde
-	B/l8jA6nIBazGia1LF2rKNgRXvlAm7MjVJNB3LeFQrfpWZR9VEG8FxPrVT2AQc6UFycvuj
-	yiIbCEv9wWzscdQHPdwwh7KqUL+gM8M=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761924988; a=rsa-sha256;
-	cv=none;
-	b=mtoGqSEnCa4KbFlBbJTS+bYQVOA8OuaHBaSkbm7h20HboOKXN7TXDponw25rbQRNaeMuZi
-	+2FUny67exWUI1IKZ1jrq5n2d94Nm+gxuog7Rol1Yv6iTBBtLY++rbNDO2k2zRWEbpWH/z
-	mFXRUTu/0q3bt2hznduCYmOFvuvcv/4=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="l8ORUx/7";
-	spf=pass (imf16.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.172 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Date: Fri, 31 Oct 2025 08:35:50 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761924981;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7bCk+2TmNZusllnMtS41IqvcnVBVBQ9/CiQF7zZf5Vc=;
-	b=l8ORUx/7Mi0smhRm+xHaR3mx/ktAWkoTlJ16+OPu6VoBiSSnK5QHFBzLN+bIc0j0e0E7ot
-	eKil38tggLwOnNfnIICY2dhStqWjdFJXZ2SULXCdkNq9cbQdxgqERp2XjVU8Yi2OoNYKZg
-	Ri918dNNGCyDdyI0hUKajLlkx4Dg43Q=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>, Michal Hocko <mhocko@suse.com>, 
-	libaokun@huaweicloud.com, linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz, 
-	yi.zhang@huawei.com, yangerkun@huawei.com, libaokun1@huawei.com
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Message-ID: <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
-References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
- <aQRkTKTm08lSJZZi@tiehlicka>
- <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
- <aQTHMI3t5mNXp0M1@casper.infradead.org>
+	bh=sn1uX4NQLjcde7SH+PGfUJnYc+kHCAHy9AbB3lPCRS0=;
+	b=Cf+N3cOxagRuZI0/qX0ORMNKTphy9ybjkfFEEa3yaiCnfWc3ZhvK8ygDdrWijIAwdaDNGy
+	xNXweSVayDWPl9ib/i+gBgY77tpNnUONfZ1VyMfnZQJnj25yV4E4qiUeDHZTKREK+YfHsy
+	3LJPeNu7U4rZHHLTK/FpDp1lUGdSOMM=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=zFno2QcYgtxZ1CokDMDx7rR+U55zAb2LgIMfIhXs7InILwIenhwEyDb1ThClKLsLMzFjla/7+DzOBl6n4NPjype73RjUbDsR19/M2wVFvk0Tx8NLc3nR0BCSNf2Okpkh4dWlbTXbN4Glg7xOQBTdx1JmFB7SdJ2lGUoY7lxp4G3LePyChYHZcTsY9YL9u00F5PTvb3rIMRYCvIlT0pbuMZr/taQoiQGS2FhZzW9CpbywbWH9iHU8nXtZcLwl4Iq9F5PmDMEKjfqffHtdgNSSsGevjYKS56uJs4rgQ2WU4JicczsDIzB7lcpOnaxG/IW7tEO1d93jo24nWs+RiOV1CQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sn1uX4NQLjcde7SH+PGfUJnYc+kHCAHy9AbB3lPCRS0=;
+ b=tBeDQxqLrvMrB/ekW/CX2y4T96EGHJQCLr9oVuwgYx3rWCy0+poRuirPklPW6NLXTI1m/gWkzXjaPP6/tZhMfxMljZGm/pPzHf6xNSFgfWqhXCM1kvsCfZRQcGBPmhbpkhmQUK1ocRJlo5h3CIs7D//3/tRr0bNU9oVVhm/g94ACDIyr8KLxe9TobWwE+VqLQJIIA+E2mBDytgG8A6Rx55Vd1xdpDDhUlb5HQxFxYLWrHFI/QoS+E/O33uyC+Mul399PRU1iUi4PpGXrbUatYK7tGul+bLeTQvAkfehyF4tXABBFoyqwq5EJU+spwt8FKGQ8IyGBLZDhP48ExabpvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sn1uX4NQLjcde7SH+PGfUJnYc+kHCAHy9AbB3lPCRS0=;
+ b=BTUs0u7PeJ8DHH5kIfz3o7PTieKeNhgXLMJAvOJGFgp+OBSvMOksK8QAFkm/P/L+80oiOJxsKlQhZ257B4Dj9lZduJqIsXE+vGMoeW0C3ypzoHBGCRUAUezlMTjknRnwSHXkFertCikxg12y/HppUQl/SdKDL8Hcc//61NMVyXbT6iuFqbkHBP3r7SpX9XHRMT1eq96oiAcnz1OUvfSpiLfksLr1jMks4+W5YCIyZB9dSwCTK1PjuQyFKoMjIKU5QU8eWR2V+H2R3aPq5y5F/FMn3qz35hDVH6AnyvqmlTEvhyF+gA92+II7TNDuk3nM5IVnfvBP+TOhoW4LwOSIJA==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ CY8PR12MB7730.namprd12.prod.outlook.com (2603:10b6:930:85::17) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9275.15; Fri, 31 Oct 2025 15:42:21 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9275.013; Fri, 31 Oct 2025
+ 15:42:21 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linmiaohe@huawei.com, david@redhat.com, jane.chu@oracle.com,
+ kernel@pankajraghav.com, mcgrof@kernel.org, nao.horiguchi@gmail.com,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
+ Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
+ linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+Subject: Re: [PATCH v4 0/3] Optimize folio split in memory failure
+Date: Fri, 31 Oct 2025 11:42:19 -0400
+X-Mailer: MailMate (2.0r6272)
+Message-ID: <2F077EE8-9E34-4EE8-B2BB-90FBE5680C05@nvidia.com>
+In-Reply-To: <20251030204257.13590714dfb2deae8c2f193c@linux-foundation.org>
+References: <20251030014020.475659-1-ziy@nvidia.com>
+ <20251030204257.13590714dfb2deae8c2f193c@linux-foundation.org>
+Content-Type: text/plain
+X-ClientProxiedBy: BL0PR1501CA0015.namprd15.prod.outlook.com
+ (2603:10b6:207:17::28) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQTHMI3t5mNXp0M1@casper.infradead.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 1557hd1sjgbjsd8ziw1ieegjd8gfdew6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|CY8PR12MB7730:EE_
+X-MS-Office365-Filtering-Correlation-Id: a088ea6d-6dd9-4259-dff3-08de189414b3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fa+hRlBOAY/PsS579R+QP0po3I2I1bZnqHm3vOwUY/8d/J8h1gte4CllAuOP?=
+ =?us-ascii?Q?Cf+jWYEq/dUqZSmmsbrYgpO9a6c5HtP0O9V0HzK9TKa4UTnSmWC4K2A4/A3c?=
+ =?us-ascii?Q?4ylvnkv0saQzVxadu2V68Pwac48nCWo7db0xjyF2TxZIu9ArRS8wj/JthxqJ?=
+ =?us-ascii?Q?BUxvKy69EqX+OkBvOvHQzdYuXNW/v2tTpz1yp54xUDaWE0yzDUSZgLuZlLAC?=
+ =?us-ascii?Q?nO5ivjcrA8LO5W4JigvWcEV9UU4IJS5CHpB/i9sxcFS8nugsujH9y8MQsDZl?=
+ =?us-ascii?Q?8iEsm0uiKc8/12lk/WxUU5930hwUJ8XlmpeeRPv8If+XxR/XDIj89J3E4xv+?=
+ =?us-ascii?Q?m6Q5WOWhxieDSmBhYifNJk1RmclJRWKccnEC5Y9peueABqEtPIaAORDtZO77?=
+ =?us-ascii?Q?Do/PPIyj0KVdLMoMHj6Qyvg7I75AipbdWWJnVIRuEaNc/OBuarhKmvOxgG5Q?=
+ =?us-ascii?Q?FnOwBkDPL48httRgEPbHo69WWE1PofSN0nYjM6wrfB4O0z6DDX4r2fNhRqMH?=
+ =?us-ascii?Q?u6WsRAlSL8ZCThlnfEbly4UR3SIWqw/zAeIMG+gSVhqzTmEVmC4Y309OpzQh?=
+ =?us-ascii?Q?977xNhh3KFxINrjeuoIRejHW1bBXKscPZyzjvcEHMQCEBcpLvPWMqwpp94Xv?=
+ =?us-ascii?Q?SJamo4UwJX3NysCiG3nh5gmNgwwTn71sHZoj9o7pIHFVhwnLQlggOc8I9/v1?=
+ =?us-ascii?Q?owvsS+BuZ+BCYORpnRRh1UkMLXL5SrHPL8KIzJEBDJeiTmQ/xetWLeTOVhDb?=
+ =?us-ascii?Q?Sm+LIEABdjGz6sWHRRbgrfSoH3nAr7N7bMRdPYSFT3P4Xm/k94bmpV8kIoI1?=
+ =?us-ascii?Q?uNJ4rGmBx/kHYyM79pCRYQwTd4YeOX0/H+TcMF+zeRC+A9fjuJw/1g60qkt/?=
+ =?us-ascii?Q?5bvE/Q0+9E/wY2c2CfHDLZ2JA2LTCFAh75k/y7HYnM3QDgkIuBFD9ab3yXxk?=
+ =?us-ascii?Q?yd7njpcRUjnM7nHplA21S651dkajimQhaHO9He7uca+1BksZ8JZ9tJuuC+Xt?=
+ =?us-ascii?Q?VJ6hcxkPEFm8+BAyw9kGo1UgPQlVo5K9Q16bGf9u6+1NRHjLESqh4LwnxHDV?=
+ =?us-ascii?Q?JDIB/9KhotZ0PuivU/XhhPyC/wRe7p5lqONMlytEL+8OrS2I44LdABfo97Ap?=
+ =?us-ascii?Q?VGdMnNn5AbwRBLcG6l1TbSUdnnaEK2PVaeYNSfU8imHqQl2uX+bSeAegZ9k/?=
+ =?us-ascii?Q?saF+gMRLu0dMU3gHxYLBvooBgya2/gY/j2rSAnBrzrgLer204rfQ7eRxC2y1?=
+ =?us-ascii?Q?hlBOvgChJNUYCECVE7FkPov0HJaWjIH9v//mMhYNuKSfY8s6dN2UC4EjGQC2?=
+ =?us-ascii?Q?Oe57fZBsnO35f9ateDLb23LwqHmzyV+Bq01dLVUQ0by+muRdqXwY9I7WLbPz?=
+ =?us-ascii?Q?cImfHHM6T12h+ELck0l+F1lFTA5gLNHZb2BudaIpg3PhLyQ3rwv/Y2RJaRPT?=
+ =?us-ascii?Q?fQJ26vlz1//ogu3mv9m+1ZIMVpph9cPe?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?dwcnOUEaJtk9K3t1lqiTDKhzxNyz/s1UIj8RpFi2Oow6APiMsGZfHiRLybTL?=
+ =?us-ascii?Q?+yGZePA/gkggCQyjq4iQKeg8ppZkRsNlH4EuSzdN6o99VAUCpbMkP13anKPs?=
+ =?us-ascii?Q?ES4thUfzq2VskeffHDTzrLDMQTqVX0hKc3mrFR61DBW6Su/yHSJP1rcSBKim?=
+ =?us-ascii?Q?n3k42/CJ+3LCcxspCHwvwOByQ2TpI0j1fOhARZTDmqoEe6KDzgQCRYjGx8+4?=
+ =?us-ascii?Q?eyEqz/k7NP+KnLrjID7pPck/w/C/++GOqR+l6I6D3jFpNlwsZkKWN1FKvjuV?=
+ =?us-ascii?Q?m5SzJoiq4Q4yvDsUEvJ7ay0oEZJxQ+blu+AQF9n7cvhfWd4f0jx7NtWXmKEN?=
+ =?us-ascii?Q?VEd1rF+MluB16Sy9SzNC0mlc+8TRz2P2C9DdbQZjfhMmnRT+eBMFWnIEZxmK?=
+ =?us-ascii?Q?WmYXuT56UjUJnNYVRCU00pee5velrULllaAL5ZhyvGAtnytJid+0Hhf0BOBq?=
+ =?us-ascii?Q?D2hXQY70Zom71VO4B3mAVgH8cWUqEJ4Iv+yJ5DDu4Ur9y3Sa2byqW0Atts3A?=
+ =?us-ascii?Q?nOay6xrGoCsVomXjRs4z20xJjaS9mBznNNQ/GGKK8TvKo+ume3Gn9FCPbhDf?=
+ =?us-ascii?Q?/SCTzWzD/JZUgqFuO8gNQ7ZbVVi5iEA/HlaBvFnxcPc5161awwU0aZhB5E0F?=
+ =?us-ascii?Q?NiZcboliZahUR1br+tknXP/bXWma/xbaCdcWcf5Oq3GIaXZ8me7Lo8sC+206?=
+ =?us-ascii?Q?dpeDj3N/WHlFBFKszFNNX5y7Z5TfL+Ubn/jfhNnPcyv0ikMEBKB6KwNKwKXq?=
+ =?us-ascii?Q?rkbJNJ6UHLWtiBcR35Xp6HaLc9t01p6wIeFFF503U+D5FtTyDQp/UfieNUgc?=
+ =?us-ascii?Q?mDp1C0AmBGuoaZPHMcEe9OW5qUeBy6cNlVmAZ/vQWFi11fiItwVFvtgZ1zLo?=
+ =?us-ascii?Q?nYo/9G1CFbQTqGwgJQkBb51ARdySLGnPMpQW0VuTONTNbN0NE3HH+Pa1ynD1?=
+ =?us-ascii?Q?cvcASKRnAS9YsQXZzfxO7tD8SXeabuFHyW1xubuGj+NH/VaILXp6v9YMZQf2?=
+ =?us-ascii?Q?iWC8C4PdVOHfvJCIIWRFA7TCnT5dLwmRZy9ZpXW8t/JPPdpn1yeQTPDG/pgf?=
+ =?us-ascii?Q?NI7fqs+yi/3aYZMEdbjJGlf6vR8MDHty2KYXMjU3rLbAerUytUqGc4mtYmZp?=
+ =?us-ascii?Q?YNR197niIVEjvkjJ+qz348UPaYb7QW1Yznth/r3IivIpfkmDAwIW4CcvTJsQ?=
+ =?us-ascii?Q?ahUvpJrlWTkjCHHpHLEdS73xS14gc7w0xF0I26CXLs/IQrXNWJ1EqmExOgSS?=
+ =?us-ascii?Q?i4KjeG9Rl1HGp1uXRF670ol/Joq73+VInFzEAFwvxasR9xNZ5PyRC2ZBu+1P?=
+ =?us-ascii?Q?eE1Pq3J1GYW/zXq0AhsUs7VfTfrfTuhUHAI/nKSGsFw/tjjnxrNZD2PNqJ7Q?=
+ =?us-ascii?Q?us6mA7zpWoBOw88rdrLWSaafX3c41mJ6Gzz1Jyw2hfH+CbZgn2Yxv9bKvXh7?=
+ =?us-ascii?Q?cNeSRzD2YIYkq7uGB2xHJkK68u5LHzgAbzzXKvUzo7J4quGn4l4TWbpaixHb?=
+ =?us-ascii?Q?7n6cNM3McxJsOhgfxEjNZqIvo/eTR8dnS3+p7NQjkBfS/g+4/kvvkPi7Ytjb?=
+ =?us-ascii?Q?nrZHUR51m0SqAe4XI4jAm2PvEF44SEUat+s3mHQ8?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a088ea6d-6dd9-4259-dff3-08de189414b3
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Oct 2025 15:42:21.6095
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: p237PH3K0HakKVyJSC8orepoOuwQZsooEoK3jHuRFksfjh9uZOD37vmZC2xL2udD
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7730
+X-Stat-Signature: 5k7iitr8frubupwfoanmxfbardj8u67t
+X-Rspamd-Queue-Id: 77C1A40014
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BB00D180002
-X-HE-Tag: 1761924985-976748
-X-HE-Meta: U2FsdGVkX18gB/oFN9bmXFlea/GSYsy4oqdHCDLnP70gI0oQNXoIRt9CXwJkdtuX6znezCU6gOCJURqPQpB3x10dUaDgThyUJbcPbRftm4VMAmvV++QkiWW+8VBIipcAGMrefO74QXeHN8SG9fkWrlVEX/PaPTEuZ5+0nAiTfxeuP/hCizXsQZZUrb0b3GsdMQEYx26R6KcCUm7vsTkI/V9WpAOJ8z7OJQsrnm9DFi8X3/q1bHq6JrlCEhBfzH4/uvkEHjhetYH7Ese4CbBAHup3R8utBh4DJAf79t4oci+uA+DqBYrwIe3Do6DgggGeKqLuC1n/Q/cPhXB7X+XSb/3n+qvUsLVfiSNnzfdjxtZBBUEvPgsrjlCbLQ+5HxxOr9oNMWe+QWFtlOPLmnC9fLEoLLYZIpAtMHGwUHhTruXOIUFq3iBbi2EYUGbYSODrK6WXV2REaI+KHuI5nB8nAxHL2ngqlZKmz/yWB9BhAcSqUapshx4gV5drwHQoI+U/ZBxd0D8ZKMCwbRLjkYfptYEskPP/XR8JqJ1ptcSwpiOoJzhq55XHK9NUDmdgLE3E9dWRf36o9vzbxeNDX6NKJa+41fnrMbo+ydAuzYXBoqYGg2E+ALaQEfSDYKMTq6WdvoKckX3ZMot9S4UE8azEKHPX+qjqMszTUgxFuzx6/McK8yizNo6D2uk0Exmax3aZXGi6APvMC4GixmLJgyIx//1dwIH/Wp5tb37MVz1w7dgidtWY5Uc44P6UBZSxNRaVSfJpdh/bKOkxaEkn1OJJAIrS3ZcSWVuyWodAkvsyqg5h8H+ywxfRgHliof+E1MsPdXs86tZYEBohGMxJg7q0r3x4sQy0FvO6gbWa/OAcWogSsovw+HD9pz7a5lGx27VzaV+YCiExmHX+8N52SLo3ybE8QF3V3WW0UOyBnX9wyrlz7bjWXjdYk9uQrMG9eLRixlT+U1c7bquVZOyN2Em
- gBBRC8AD
- M98aYRWnUnjvKAG1PU/6TTfOo87hv3OpX0ZVa7AsN6P00eB/BUl4nmWxDfg6b3uZ49iyV9JWJId+tXjcrmuSIj3PnjMRvRbElsCiG7gW/ON2vrC+r/0ZZyyk1WpynGIKsq+zpZD16LBMk77RkulgfEvE4ANp8ajdSEra6K1GSpe5b9OGzyI7N8AsdSBpN7/DS9T22ZO9qEK+WFfTr/Kj1DhLAjKrWI6SAmG+LN9JcW3FpXgYSi5Nns7e//ORrssLr8EBuLLBHONAXL9wG0wFfhW4T0nMHSko6M/IrbQcNvxrlpUI=
+X-HE-Tag: 1761925345-165087
+X-HE-Meta: U2FsdGVkX1/bl4CXUeyQWfCrkamjIj4REko9iVfckmc8p7TNct6hart6S2HQ3YEwb5mL+zWgSigBumj24Fjg/+4dqrvUt38/fI4ftZMdPK2/0MzCuEHRTDhaBxJGEm4T8ng0JmjfzlUxiO31InGtKFB5rCR38J+Kx0U9LzZeIcQ8Ce5NwP/IRaqr1YqCHyPD8IlyEgokIKCPvcbIOahGAFTdSr5GQV5YUf3WQkOLS6soFDJOMS85aynm72Av7+SR4WB+OPPGE57V+S/IsPgL/Dii9BMjnLtin0WXsvEPxmfFIviOmgpLHtZtV1phGTxNUIYAWs2JhpcEEic3I0lZRJmd2Hp8g+B6RZv5PgkzdQU8x5V7KI2TcGhdeCIeFrJTAC2+NEKYLMguEkUzI5nglJoiV/ADGkL9/Ct49t4AUF9F0+YuYM8+mWkDenfCyB0ODvOV8IihwkDWK5KxLyqGtd8VN1DgmC2cWsP8NXgKUQ7SkidOnJTTvJhJzGnZmFoEXeuCqi753p9WzIsIsIqKEU7L/6n8325Qo7jmWihfR6MlKjFFR6kqptHHh/l1opCFjUAXLmiMKz/LEeTYTz66lQficsn1jtzmMP/E6nAvVsOtI8/wOiFbrhz/Zyhr8rmhIqUf7a1JWlcFz8YXTJZAicQIr03N1mL6ugf7oahQV/V7qKwoMP6/0LenweNemtcikTnVamgrK8jY1/qiL6TcsbBxns/dPwwgi1oqzK2Lj9fP2q5I0yfKh80hq7ndAr1hQpS08IM+jU1Uq7/o1jOYD18UUVw3gDZ+9e7+0amAJjWo/Wd4X67z8pPokAB9cxTVLAstHkNxRXJLs4xT929XKbocs0uF5N3kk1sFX5jvLbVR3H88yvOlnYd1m8gCAA8dCYORjh6+ourl4lgTLOUkHuV/3BNUEhCka6HEqX2AOiCUAJGJunrxuCOlmHiP4hk4E4Gw+ORhutGLQUtg5zC
+ vbe75bKe
+ YyZz+hkAWLJLdhGayBacNh6F4fGm1NXVmHZHVBVPqTy8ovRCGZM33zI0UjxQ9kWQlqujGZUu7kx9XNKgQIg83Ee8b1GscJ9lg+Am+65bHTsIUtDFuDFrssnu4PWKrTfKPDxdBAbG0oMtks6TEes/Ul5aswbkjur5eL1STlvnYmXGCiGSVb6KN56MsWuG5U5zvSL+4Svl0vA4rfVJ4fO0HY0OQRXve9iTqiN+QbBSe0I8X+jMe2Z4B55RgQ1vU97uYnWiB/KhyCDO/fPOtj/XJHpjJQuLnpPslAHT0S9ZVeEHtX91tkdlTAHP80Px+XURPtyEseQ8dH0ZJ7SbC+F2fzq4hjDibMWKASYyo5KcIENkJmGuiDQKs9NRBC/e0h6zl2ZnHVrunMh+gSkjHszHPAO9KKGaBRGIt4cyfQXEl+B0JELE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,73 +188,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 02:26:56PM +0000, Matthew Wilcox wrote:
-> On Fri, Oct 31, 2025 at 11:12:16AM +0100, Vlastimil Babka wrote:
-> > On 10/31/25 08:25, Michal Hocko wrote:
-> > > On Fri 31-10-25 14:13:50, libaokun@huaweicloud.com wrote:
-> > >> From: Baokun Li <libaokun1@huawei.com>
-> > >> 
-> > >> Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
-> > >> reads at critical points, since they cannot afford to go read-only,
-> > >> shut down, or enter an inconsistent state due to memory pressure.
-> > >> 
-> > >> Currently, attempting to allocate page units greater than order-1 with
-> > >> the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
-> > >> However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
-> > >> can easily require allocations larger than order-1.
-> > >> 
-> > >> As Matthew noted, if we have a filesystem with 64KiB sectors, there will
-> > >> be many clean folios in the page cache that are 64KiB or larger.
-> > >> 
-> > >> Therefore, to avoid the warning when LBS is enabled, we relax this
-> > >> restriction to allow allocations up to BLK_MAX_BLOCK_SIZE. The current
-> > >> maximum supported logical block size is 64KiB, meaning the maximum order
-> > >> handled here is 4.
-> > > 
-> > > Would be using kvmalloc an option instead of this?
-> > 
-> > The thread under Link: suggests xfs has its own vmalloc callback. But it's
-> > not one of the 5 options listed, so it's good question how difficult would
-> > be to implement that for ext4 or in general.
-> 
-> It's implicit in options 1-4.  Today, the buffer cache is an alias into
-> the page cache.  The page cache can only store folios.  So to use
-> vmalloc, we either have to make folios discontiguous, stop the buffer
-> cache being an alias into the page cache, or stop ext4 from using the
-> buffer cache.
-> 
-> > > This change doesn't really make much sense to me TBH. While the order=1
-> > > is rather arbitrary it is an internal allocator constrain - i.e. order which
-> > > the allocator can sustain for NOFAIL requests is directly related to
-> > > memory reclaim and internal allocator operation rather than something as
-> > > external as block size. If the allocator needs to support 64kB NOFAIL
-> > > requests because there is a strong demand for that then fine and we can
-> > > see whether this is feasible.
-> 
-> Maybe Baokun's explanation for why this is unlikel to be a problem in
-> practice didn't make sense to you.  Let me try again, perhaps being more
-> explicit about things which an fs developer would know but an MM person
-> might not realise.
-> 
-> Hard drive manufacturers are absolutely gagging to ship drives with a
-> 64KiB sector size.  Once they do, the minimum transfer size to/from a
-> device becomes 64KiB.  That means the page cache will cache all files
-> (and fs metadata) from that drive in contiguous 64KiB chunks.  That means
-> that when reclaim shakes the page cache, it's going to find a lot of
-> order-4 folios to free ... which means that the occasional GFP_NOFAIL
-> order-4 allocation is going to have no trouble finding order-4 pages to
-> satisfy the allocation.
-> 
-> Now, the problem is the non-filesystems which may now take advantage of
-> this to write lazy code.  It'd be nice if we had some token that said
-> "hey, I'm the page cache, I know what I'm doing, trust me if I'm doing a
-> NOFAIL high-order allocation, you can reclaim one I've already allocated
-> and everything will be fine".  But I can't see a way to put that kind
-> of token into our interfaces.
+On 30 Oct 2025, at 23:42, Andrew Morton wrote:
 
-A new gfp flag should be easy enough. However "you can reclaim one I've
-already allocated" is not something current allocation & reclaim can
-take any action on. Maybe that is something we can add. In addition the
-behavior change of costly order needs more thought.
+> On Wed, 29 Oct 2025 21:40:17 -0400 Zi Yan <ziy@nvidia.com> wrote:
+>
+>> This patchset is a follow-up of "[PATCH v3] mm/huge_memory: do not change
+>> split_huge_page*() target order silently."[1] and
+>> [PATCH v4] mm/huge_memory: preserve PG_has_hwpoisoned if a folio is split
+>> to >0 order[2], since both are separated out as hotfixes. It improves how
+>> memory failure code handles large block size(LBS) folios with
+>> min_order_for_split() > 0. By splitting a large folio containing HW
+>> poisoned pages to min_order_for_split(), the after-split folios without
+>> HW poisoned pages could be freed for reuse. To achieve this, folio split
+>> code needs to set has_hwpoisoned on after-split folios containing HW
+>> poisoned pages and it is done in the hotfix in [2].
+>>
+>> This patchset includes:
+>> 1. A patch adds split_huge_page_to_order(),
+>> 2. Patch 2 and Patch 3 of "[PATCH v2 0/3] Do not change split folio target
+>>    order"[3],
+>
+> Sorry, but best I can tell, none of this tells anyone anything about
+> this patchset!
+>
+> Could we please have a [0/N] which provides the usual overview of these
+> three patches?
+>
+> Please put yourself in the position of someone reading Linus's tree in
+> 2028 wondering "hm, what does this series do".  All this short-term
+> transient patch-timing development-time stuff is of no interest to
+> them and is best placed below the ^---$ separator.
+>
 
+How about?
+
+The patchset optimizes folio split operations in memory failure code by:
+always splitting a folio to min_order_for_split() to minimize unusable
+pages, even if min_order_for_split() is non zero and memory failure code
+would take the failed path eventually. This means instead of making
+the entire original folio unusable memory failure code would only make
+its after-split folio, with min_order_for_split() and containing the
+page marked as HWPoisoned, unusable. For soft offline case, since the
+original folio is still accessible, do not split it. In addition,
+add split_huge_page_to_order() to improve code readability and fix
+kernel-doc comment format for folio_split() and other related functions.
+
+
+--
+Best Regards,
+Yan, Zi
 
