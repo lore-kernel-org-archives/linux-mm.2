@@ -4,88 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D0365CCF9FE
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 10:35:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC23ECCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 10:35:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E7218E00FC; Fri, 31 Oct 2025 06:35:08 -0400 (EDT)
+	id 321298E010D; Fri, 31 Oct 2025 06:35:47 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BEFE8E0042; Fri, 31 Oct 2025 06:35:08 -0400 (EDT)
+	id 2F8A78E0042; Fri, 31 Oct 2025 06:35:47 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0FC558E00FC; Fri, 31 Oct 2025 06:35:08 -0400 (EDT)
+	id 235D18E010D; Fri, 31 Oct 2025 06:35:47 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id F319A8E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:35:07 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8FFBB885E5
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:35:07 +0000 (UTC)
-X-FDA: 84058051854.30.24FDD8A
-Received: from out-180.mta0.migadu.com (out-180.mta0.migadu.com [91.218.175.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C488E120004
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:35:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=puzyI4VS;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 11C068E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 06:35:47 -0400 (EDT)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 94FE3881F2
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:35:46 +0000 (UTC)
+X-FDA: 84058053492.14.2586080
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
+	by imf22.hostedemail.com (Postfix) with ESMTP id A3374C0006
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 10:35:44 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c0ufGMqi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761906905;
+	s=arc-20220608; t=1761906944;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=15d5jagqZuWVPOYKHa4FJ77KmZ/Kk6K2xbbjYubxhkU=;
-	b=3sryQM3O6KZ2itQ4SbVPQ9vcYIDRf3DalFI9e6+EzVzwJCofJ1feWVW84zMSpEeO3KLwPi
-	f+ww9RnGTWwg/+PUQ8HRzXcIEfMaQxf5vX9ZwwgKVSL4lj0yRU60wmzCSbdiHZqDCKExPl
-	Xqoi51rf++ZSMX0iknbpSdB07Y1/cwk=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=puzyI4VS;
-	spf=pass (imf29.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.180 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761906905; a=rsa-sha256;
+	bh=hA88PfMvT7s/ypjD/Vu1krMCrweTiktQkOm7yWYdPeo=;
+	b=kmC1yW1mSjH5mxpBEvX+TgBOHg8wfGQzlDSP0MvHTriW4nxwS+X10VRboemo9ay+wmtUqY
+	Wh503xr3LVgYTQds3AnMKeXI7NiSI77r7Ybx9EE/NiELo25SXZT6cTIypaxjFvr4qpWwq5
+	llVte/s3fcNsZNK4x3a+a5bxvPv0qFA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761906944; a=rsa-sha256;
 	cv=none;
-	b=zrLj+8DuPluOgpZkE3bjae1X0WZpAHpDjTJNlsbEIcgt5riVJNhNGPkZQZUwCi82iSW3a4
-	mufwlG8C4ouuGGgIspNiLrpE+CtO4xD6ULvO+/YgA5MS4Rm1Zup+4GJsRZrZOyWmhUlXih
-	FiaLJ5izJmJ7kJCtdrOAgI6CdDM4+qI=
-Message-ID: <5adc0331-d699-402f-a798-acbf76e124db@linux.dev>
+	b=csyOhNse2rx30/oE8MzeRMDx2yW/C8eeQxBOo4bN9jvjSPPAkhGUmjf5kTedd5LQhRzgDc
+	2GUM6hbEla2dmk+Pz7iARK0Um3ryYNPB7H8ONoKS+cDx/LvQ+0dv4UzZG7hL3PnaqEQe2B
+	tcXaFBAxx71IYcxg1/P7ba5RCFst5X0=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=c0ufGMqi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf22.hostedemail.com: domain of lance.yang@linux.dev designates 95.215.58.177 as permitted sender) smtp.mailfrom=lance.yang@linux.dev
+Message-ID: <4d2006d5-01c1-4bea-9071-7827b1fb2c85@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1761906903;
+	t=1761906942;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15d5jagqZuWVPOYKHa4FJ77KmZ/Kk6K2xbbjYubxhkU=;
-	b=puzyI4VSEcGnkKbWUyQwU8Fr2Cmzx93J3JXvaM/b5q6xIf6hFk4D9XEQIXtewTZydWzo3h
-	N7MZfd9y7CNsoHOwLv1jNmWQyvU1MkeMbx+/edLqwHblPKh1suHNw5L5WZsFOSgk+13cso
-	XTQeEKURcNDUydqbFINmNPex8s5BQEM=
-Date: Fri, 31 Oct 2025 18:34:58 +0800
+	bh=hA88PfMvT7s/ypjD/Vu1krMCrweTiktQkOm7yWYdPeo=;
+	b=c0ufGMqiRA30r8ZbzAxJk1JAjkGhKvS/qeIRy1TZUJGI65clbzcFx2MprvLinIt5BYTd9f
+	QjWF+cBAlAOor3mB5p1sRWmdG3/CORLLMbRRPWHVmyUC4UqxkcIuyLS9hOoNtxRdBg2dJG
+	felui++sKubhXXBzfiguWtQNc5NtW2U=
+Date: Fri, 31 Oct 2025 18:35:32 +0800
 MIME-Version: 1.0
 Subject: Re: [PATCH 1/1] mm/secretmem: fix use-after-free race in fault
  handler
 Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: David Hildenbrand <david@redhat.com>
 Cc: akpm@linux-foundation.org, big-sleep-vuln-reports@google.com,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, willy@infradead.org,
- david@redhat.com, stable@vger.kernel.org, Mike Rapoport <rppt@kernel.org>
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ lorenzo.stoakes@oracle.com, willy@infradead.org, stable@vger.kernel.org,
+ Mike Rapoport <rppt@kernel.org>
 References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
  <20251031091818.66843-1-lance.yang@linux.dev> <aQSIdCpf-2pJLwAF@kernel.org>
- <02caf80d-ccde-49d4-99dd-0ea3763a0593@lucifer.local>
+ <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <02caf80d-ccde-49d4-99dd-0ea3763a0593@lucifer.local>
+In-Reply-To: <38f0ff98-3dcd-4dc2-87f1-3ea34bb9935a@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Stat-Signature: bw88y8tmhbj36e7pqz559omthcomimmt
+X-Rspamd-Server: rspam01
+X-Stat-Signature: ctwjsu8erua65sbi4oj9kckr5ysx1pjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: C488E120004
-X-HE-Tag: 1761906905-293905
-X-HE-Meta: U2FsdGVkX1/I9PZrMq9Ld0t9J86QuP19mpC0xr6HuEmHbSikoj5FFB570xN7pfL0Bdc30OoAB5Ou7G1vlOGYKQp6u9JTjMCK8+tWT51i/ATnVM28G8aMC3PLmwzXTyYBYwUZeasV8yVp+3sOsjdXBbsMkjeDM+dEAgmfowvNQbpU0fympWWrECiJcLuPs72ovgRgKXhuYpHpL7DiX/7T1iGIuzFNTP+3FtmltTYLNsqJ0VGu2iaIeFwPkl4P+1r07Ywo1NwVWHMiuPXHnJ2+mmO/y/g3Rc+uOnJK5ttF5IEd2fL9v074a8N3tuTQzy/g2dRtXAJ2VdN+NDwR4qN9EcXTcruXyW61+MnGgoYXDHZgrhJYiXTKuJR4AOn1uSxnE08hxDYItyvO55FkN8e+ZgOYKQadYs4CmIQu3ai6DpCZ17GHNcOvFdlUAclk8627tHlGMUUvLrlwNF+AYYM1VshwV92lffF0I6YOxlUxaIo5tNIOhwX4JmNCr7HkqZ/zyOQ/UTMQDCxU0xw7RM4sJwjyF69QRJIvDfsOzPrk1zLaym1w9TfSbMqrsQF9Ff+dpFeWSfN9aSZ5w64texxdEZwGXipl+onzZeZaZh6OBn3JWDTFQVtsOoFMd2uqXxDAykmlfeHh+q4pB7ATZx0yUZMGzu2RgV0Yee13CZfaAxep3kr9KlKzu2tH3FaL9fk6VrVegeQdnfLUsNqzWj4PyZj/65UmoTRXy7BrOhVMZyW/zEhA2bqvJBhiqWDIgcDEsBBANCdq3iVDJ98oCw9AYBRLePM2RELFCQxVg+jHvPSCBJT8CPMB8EC93OlheswTqKx48LV53/jK6nY9igqnbJ97fy2gq49OiJ8x/IPxlLKXnge+LXnHv4cz020KH0l6XzgQ8Pil2zSEYMQ0jbomOvfoCO3GHy5j5QOHoJnvv5POBMwVpUmBqV8YSsXRS8liYmx1+tRf7jrNHbPopj4
- S4gWa5lU
- EipRd39cobHlDeyGYjlodeo7MwaGelBNQZUx8UXyQBknx4ADITC/z4nB94agasWJLqf/x7IX8KVd3563/MwVJoru6M/7aYnU/4qMDEkLkOth1liisTLlFPyrOxK3mslPkXLcw1MPIKc+kygA2/CzFIp6PHWMfF4u59mXnY5+Ht+m3qINZcmeJl3V9J0Y/lRXj47WSJigX3RWNe61ssntpXtqH1z7JobiRkLkoigyA+5E+Rh9Aov6YuepdhV9yRxtoPe/IW7Y1vJj0j3vBWyF33+gua5flG9SMHlrY7rb3FsPw7KM=
+X-Rspamd-Queue-Id: A3374C0006
+X-HE-Tag: 1761906944-583910
+X-HE-Meta: U2FsdGVkX193DJWX1TLbZMYWWhes1gfYzPxanbbFXIv/cr3AnMCB8ah5l/ecR2VY1qRHY+4Qkg6VEl8XBWHBX1MIFIP+jz4OyzH6K671vFeagH4YpOnuxbVKYVp2c3JNd4KxWJg6jfnJ6e52Ja2Cd2qBSPICMOQzjMgDjaRGy6+WqoiS2AXMo4+0ic+sKXQYV9CJJXduQljcI8zGIO6B1GL7WUBdLxe4rPq2mOrhdCGkD4/O+JYcc2sQ7e/1xi2Ib2z5kdigISFXEmpCHf+N7BS2I0ZNKxYv83ZePitUER6PB0QqIBwLRyW4Ty3YH97LJ62zlu5rPLW22cHFCtP9ff+XTvZN9KFZjnSzzFcplsOtlPXRg7XnjtxEw/pvwm4GFYWbUAqdAPD++9rJufvCvnosWvLq31AZbQaBw3haOcaOOGkFh6J0wln/uiXKutsTUV1zX3L0wgeLCBNZ0mkcaAZBWXtrDQYyCXtrX2nAKUWs8AHlDT1i2qa3HC+4eC4meb/W2YtYuxyKYolKuU0WprEXHE2dGGCcyUYBtq4Z0I7WdYBwL0ihUa3dQ0cCZLH9pI7LlD69NWXx7L/B4FYLA8wuUQzVFenrfFBHiHd7SbXC6ClgwIaU4mVIwjiPJJYSJ7STszUrmsZM9unS4bajw20aqlyHaR27lsYvQlb1VfoYPEA30qJyVf+ve9ZBk6ldrAlEWfmolQl40D5wRsdWszdnHsC/Z4++kw2v/+6PMIMIOSf7MLoXmmLieCM8+ZKtDqRmzMxIb82SbDLCxCVoFukuadfvdVfWS8aG/W3gbQKJUXXxyGkTa1dGtrrEg6xKuLEnnz2dy/x6ARtrZWFCy/VAAizKX4UGWDpb+OeyBgyNevahKyLv1a1Onipcn4XVR+irBwtIRlA/DHqpJwEEfZH2afT+czpvm+nUnOei34v2uPzrU5SbdEfCcYm0EkfYVEGZ/QNZ46OWylEQbXP
+ PmX2m/7r
+ s0eebtYsWpdAAdnsZK4RTKa+vdZZKbLfNP+WEcfdf5QJh5Q2o3Owmi29BBRtKzW/qV0UpaxR1oOF4FEsWSOOJP9bxEbqS5DZEgtltKq2HXvF28uDcYjPqlVu1V4TPV0YihqJrLrJAHepvf3TRN1w8jJMsCmRNVX0zWJU25gO2dPWOoG+j4xp9dpu0NdqdUgv+vZ5AhxpMj2/BGK/nPGwsSOuAcIzuJafkdEkLRc3QEzVWDLNHnlZAbpwko7GgoOJ+Ieiz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,11 +97,8 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
 
-On 2025/10/31 18:24, Lorenzo Stoakes wrote:
-> Small thing, sorry to be a pain buuuut could we please not send patches
-> in-reply to another mail, it makes it harder for people to see :)
-> 
-> On Fri, Oct 31, 2025 at 11:59:16AM +0200, Mike Rapoport wrote:
+On 2025/10/31 18:19, David Hildenbrand wrote:
+> On 31.10.25 10:59, Mike Rapoport wrote:
 >> On Fri, Oct 31, 2025 at 05:18:18PM +0800, Lance Yang wrote:
 >>> From: Lance Yang <lance.yang@linux.dev>
 >>>
@@ -126,7 +124,6 @@ On 2025/10/31 18:24, Lorenzo Stoakes wrote:
 >> If another task attempts to allocate the page between (a) and (b), and
 >> the kernel tries to access it via the direct map, it would result in a
 >> supervisor not-present page fault.
->>
 >>> Fix the ordering to restore the map before the folio is freed.
 >>
 >> ... restore the direct map
@@ -135,58 +132,9 @@ On 2025/10/31 18:24, Lorenzo Stoakes wrote:
 >>
 >> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> Agree with David, Mike this looks 'obviously correct' thanks for addressing
-> it.
+> Fully agreed
 > 
-> But also as per Mike, please update message accordingly and send v2
-> not-in-reply-to-anything :P
+> Acked-by: David Hildenbrand <david@redhat.com>
 
-Sure. V2 is on the way ;)
-
-> 
-> With that said:
-> 
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-
-Thanks!
-Lance
-
-> 
->>
->>>
->>> Cc: <stable@vger.kernel.org>
->>> Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
->>> Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
->>> Signed-off-by: Lance Yang <lance.yang@linux.dev>
->>> ---
->>>   mm/secretmem.c | 2 +-
->>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/mm/secretmem.c b/mm/secretmem.c
->>> index c1bd9a4b663d..37f6d1097853 100644
->>> --- a/mm/secretmem.c
->>> +++ b/mm/secretmem.c
->>> @@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
->>>   		__folio_mark_uptodate(folio);
->>>   		err = filemap_add_folio(mapping, folio, offset, gfp);
->>>   		if (unlikely(err)) {
->>> -			folio_put(folio);
->>>   			/*
->>>   			 * If a split of large page was required, it
->>>   			 * already happened when we marked the page invalid
->>>   			 * which guarantees that this call won't fail
->>>   			 */
->>>   			set_direct_map_default_noflush(folio_page(folio, 0));
->>> +			folio_put(folio);
->>>   			if (err == -EEXIST)
->>>   				goto retry;
->>>
->>> --
->>> 2.49.0
->>>
->>
->> --
->> Sincerely yours,
->> Mike.
-
+Cheers!
 
