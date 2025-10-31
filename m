@@ -4,106 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45DBFCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 12:10:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 17FBFCCF9FE
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 13:00:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 863A58E0160; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
+	id E98A88E00CC; Fri, 31 Oct 2025 09:00:18 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7ED608E0042; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
+	id E6FD28E0042; Fri, 31 Oct 2025 09:00:18 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6DBCD8E0160; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
+	id DADA88E00CC; Fri, 31 Oct 2025 09:00:18 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 584F38E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28D26B96F3
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:10:16 +0000 (UTC)
-X-FDA: 84058291632.15.F5C4079
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4E25A180002
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:10:14 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+	by kanga.kvack.org (Postfix) with ESMTP id C90428E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 09:00:18 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 72E7D59211
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:00:18 +0000 (UTC)
+X-FDA: 84058417716.27.35F4B31
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 5F815C0003
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:00:16 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I622t+vo;
+	spf=pass (imf28.hostedemail.com: domain of pauld@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pauld@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761912614;
+	s=arc-20220608; t=1761915616;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=t0WbfK5vwuoBUWDeRvrXFDT7iz9UNmzAdlRjdob6MPo=;
-	b=OuhmLGAxW7XU/woSMVJC1DKiTnpsxfTBRMmWDjno9yHCAlr3yWy2jxr6/FG+9T4RR8mPMm
-	SiPenJRwCSoWbB6vOHRhx+nlYyWvklAbKwritLB3vG17Jma5Fpg0h4mQdKxH/Wzre9H1hk
-	m6E1p+OoJt5+su8lzo2O/h0nWBSAxXw=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=none;
-	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761912614; a=rsa-sha256;
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=uLDwt+NU3vvKrlrQRKfDo5aEPn3HnX2ZWzIgGku0kDc=;
+	b=5Vho0tT6IGTh2PamcwBeIZMPzsa0bUJBQ86LF2irjJxR8DzJLricQRmgA7YYWtmPIMf5X/
+	GZmH6Sjf9boBEyMlUN2rWgRAnDRwZCDMHyJrqgF21tBu6RjHPLZSzaTNWLBM5xUHyMQtO1
+	4mZ54Sl3jTwnG37nNtCpbQkS6+yTwzc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761915616; a=rsa-sha256;
 	cv=none;
-	b=mc7xtdNRONmAfBIXgrfdfb3adTJa8bFo8gI9j2fzpdFLF4Nlzm3gwjb8QeztN9Mk+s7MvK
-	cwg7nNysya243OrP2tduGnDzEXkt4I/rX3ZVC7DcbsjyCoTkPjt92kzjQhF11XvXAlwSnB
-	i8d82uc5rGZRE4uPrVuolS9gA40tVag=
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b6cea3f34ebso1661114a12.0
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:10:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761912613; x=1762517413;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=t0WbfK5vwuoBUWDeRvrXFDT7iz9UNmzAdlRjdob6MPo=;
-        b=Q5MEsjhlfhYTF+nbJDh+KyJRwaiOE1EHjA9O1NirATVX95FhHzZApqeHs4R3VT6fok
-         J/NyQZ9l25lB4hUa2wYn1DPy0rEIWtCbCJyjZmRBLyEal3plZFbTRrJEaFKRl511yJDH
-         CHHTiyFkV6V5qWG/a0P8/OG8zNNXb/P+OC8u8TrNJhQaECjSpkh2ovAKYVz2jouGrCDZ
-         XUwNf1tulxpb1l6+vwN4Aanhh7cN/GEjuuGNfoBXmFkt+orLNYu7K/qD9+giAYIBk/w4
-         ExZJs0ja/hG/uqWwkeah/ZelU82I7xPoveo2ko52EibLwuGByU0IUHvpGMoZq0frqQQl
-         X6Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+4pnVQ8IngS1PNiJXT4uZE7gAN9GImiIuTYKXEYOf7qtEd3uoXVNgNSVeADEGNNoRQqXmuzCRkQ==@kvack.org
-X-Gm-Message-State: AOJu0YybES6+kojJ65KxuU8zxEjhpZbGmsRuj90M+X34T9ObJO4H+iBH
-	3oB8NTQqWN0SQ2vibFTZNQOpnzzuABPIHIW7o2/kkQcwW+7iMPGDVxCn4+0Teg==
-X-Gm-Gg: ASbGncsR0wTJ8deVcSqGoPuSH3QH4HGrhJp2rWZwS8BS0yfGKHuzzO4RFdGSqqBooVN
-	zBhb+3bpp4v/OcuzfBpfy7WuIJ36M4+GLe73lzlemgVvfinJtgqEAddSM2SjuXptNLPpWDqCiQN
-	JtgIbgebRccs6XcMB6IJvnXauXc5lQrY5M4tr/fmmK+a3WnBIF0x6kJ5Z9QJl3v6eogvVnMC61b
-	5S8qVxMVi3sVNbunAq9Arf+jQLcrZONBuMTIvfsPOLbfXTZ1cm+iVOyDDK2KhRxJSXMH0Fs5Vgz
-	SbjQaEYyuCQYMgyyeulEiVcfBRWr+XqsliiBlxOwouUArJPykOR4Kc/gPkisS3bKPek5ZYuTt7k
-	p632A4uxKv8psYWpV2joD4d0tozFsw8kMNI/qajF/KW98MeXMvYh58V+1OZCNr4I5SRmaZK1AJM
-	07FQIuCjjycVOtIVeZO6zrLFPwbw==
-X-Google-Smtp-Source: AGHT+IFkZYYrPO9da+1rqdpxHxQzVGAbYeTTm9iNmfhwPCVX2eqm9vtdFUdqrf7DEDE/y6nY5qWI1A==
-X-Received: by 2002:a17:902:8ec9:b0:269:8059:83ab with SMTP id d9443c01a7336-2951a50e59amr30879555ad.51.1761912612853;
-        Fri, 31 Oct 2025 05:10:12 -0700 (PDT)
-Received: from localhost.localdomain ([124.156.216.125])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-295269b95bdsm21683055ad.93.2025.10.31.05.10.08
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 31 Oct 2025 05:10:12 -0700 (PDT)
-From: Lance Yang <lance.yang@linux.dev>
-To: akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	lorenzo.stoakes@oracle.com,
-	rppt@kernel.org,
-	willy@infradead.org,
-	david@redhat.com,
-	ioworker0@gmail.com,
-	big-sleep-vuln-reports@google.com,
-	stable@vger.kernel.org,
-	Lance Yang <lance.yang@linux.dev>
-Subject: [PATCH v2 1/1] mm/secretmem: fix use-after-free race in fault handler
-Date: Fri, 31 Oct 2025 20:09:55 +0800
-Message-ID: <20251031120955.92116-1-lance.yang@linux.dev>
-X-Mailer: git-send-email 2.49.0
+	b=L+ed0Qy16CrL7TeKiZfGgQekPL5qjYSigmBXNE/hMcTxIf7YXvcTxbnmJE3AwPlY3ppQCc
+	pvSayRfEADQMxXbHACWb5T0jNFQlPORabEY1D6hN6iwtv94tNONfMnuo5ZTiIIgT8EbvdS
+	zbKNQ90ltarhyoGM8KC+t3mWlnhbEtA=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=I622t+vo;
+	spf=pass (imf28.hostedemail.com: domain of pauld@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=pauld@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1761915615;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=uLDwt+NU3vvKrlrQRKfDo5aEPn3HnX2ZWzIgGku0kDc=;
+	b=I622t+votir+o6W0kijC/MB1m+syBwAS+VBTOeZVDYp0jyWxEQkh+mWRXnBcRh0Z/eyBWg
+	WqcBbBL9pny3UtX/Iif5TixJ/n/mCaVrQsk+6IoufMY2cQoOK8baExbyTc7MnGEV5EHt0o
+	bb/LFV0w25o6JNCJ1TH6KbIKfY3SWc0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-qDUMAdLUOq24oc-NOEKyLQ-1; Fri,
+ 31 Oct 2025 09:00:10 -0400
+X-MC-Unique: qDUMAdLUOq24oc-NOEKyLQ-1
+X-Mimecast-MFC-AGG-ID: qDUMAdLUOq24oc-NOEKyLQ_1761915606
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CB1101955F3E;
+	Fri, 31 Oct 2025 13:00:03 +0000 (UTC)
+Received: from pauld.westford.csb (unknown [10.22.80.244])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 2491A1955BE3;
+	Fri, 31 Oct 2025 12:59:53 +0000 (UTC)
+Date: Fri, 31 Oct 2025 08:59:51 -0400
+From: Phil Auld <pauld@redhat.com>
+To: Frederic Weisbecker <frederic@kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+	linux-mm@kvack.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: Re: [PATCH 13/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+Message-ID: <20251031125951.GA430420@pauld.westford.csb>
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-14-frederic@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4E25A180002
-X-Stat-Signature: py8fmqskosidseo3x7ciyh67uiaj4n9b
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251013203146.10162-14-frederic@kernel.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 77r4k7raf5979sr4g9nhiye3ffsssato
 X-Rspam-User: 
-X-HE-Tag: 1761912614-686659
-X-HE-Meta: U2FsdGVkX1/KYWkue32ErreErPVtiXTYXTS2hupFTt0IiFPT7B/cvGEzbyBKVnUGI+bwXQoijgVGjy7sgTtrDRwRBZJfeKNI6ph5xr1MP0GJOPjfiNwvdQnMk/EDJKgmfMJh718z7C9glcaOQ1Nu/UqrkczsT75aQy27VuxtIO//yGAPEuG50yZJ5QHbKwlFTv8OgcxarB8iaJVspbdxrSkU+V8mGQMVPOxdVUSsdw8jM1IVdq6JPuJWoCAHRe8qKXTng09SSLF0G/vGsdhKmISbV0b23tZxZHgX62TX7RyF02+6BvgGBnU1CpgEDTXXqiF8xzA8MZn61JN8YCpltrOyZo6uA+dcdALrB5N+LpmyDSv+gTUjBu6UT6ijzk7yCC4fllkjGfeZhMkzGjlJsAacbFmxsDHIh3C2y0zWvSRr71RIaN4CMgRfwiRPIGwlL6YIz4/yx9IkkZ2GaYR67E3k7y+rT3orrQNE4ifMJo19CPz9KpeDs924dKDgtnEL2oaWWun2lvqf8zvSQIvTqRBjHtC7CHqViP+XiAQ+NAQRBBgC3paIEMw7rumcm3fwibFkr7EP01sYSDzJi/yDuLVYrBN6cPFzc0y8ObMhvBX/UxL+4IcaSD7Z/kXJptNk+wXfIq6bHNKQ9ydk1ZR2qJxDuuxLOHTfUQ/rq/fM9dInx2BeZCYxWjVkF5YH4j3FlJv1At+BxhTY/4awHbqLpGy+7ogf/mSSYzhT5tnwPbe3nF3EisMAN44T84yuCD2XT87rMD8OMCkZBbfiWB7yf1tj+VpFYhxJHhKhL4Efvgyeasu5FIdi3t+42BPfsfaeIN4H0d3GwchRi7bvFTVCYfc5C/j+9TolgM1iEaTMRZIn8NpEIUIPDBEkZPChNFaCx8b1dAEK3fxyuyVrXdJCoVHJ3QS9pgvEL/MFlGMtzGkYy3J58my61EV+T/WKdnRXCcG2YhysFbd9wwIpb8g
- z6pFcczL
- Li/vKu8cqyejBW62rSVVEaxkBT03UWw5+mam7HvS32+NBcaA2L+Qmd33Oocpd/6fdtIZcZDKmTEXgBfJtMke+sMfKN9WXjo3FYHuObyeGMwuGe8wUz6ILSZgPDrqei83vxJZhEDnl4j853cwMaEUQds0yrqMSEpzR5QnWuo//sufkHZQqBoeT9Uc4RhYtlOMLXpmKIoVspuCYAYhbtVBLH+yowiBR8Ao2d/WI2v0xGJMuDiRMCKIp0gZh7O3pf49CmD5zg8FbSaI6UIEtIsEpLh0Dx7E25+yIBdHZLHk4c3bNg7kEgPcT2qY9ooX42XsIOGv8IjvCYRph8dtLN5zUc2kjIA4dE+Ye3kaOTeDjdD54PBm+b+5lXboX5aVn5+uf/oYXhQI6HypfYW3p7Iqgh7Bwe/2MkbxiG6DkUqCuqURQpiQRwvi+dr270++Ps0mtS96JyLtqoGrfZGuMtDWgJUyZQt6cZwgnzlji
+X-Rspamd-Queue-Id: 5F815C0003
+X-HE-Tag: 1761915616-544971
+X-HE-Meta: U2FsdGVkX1/ePBTbpaDnmwMGDsPO/te6MI5XIQqw00wU4Wcjj2MBwbAOg/53KW9RVruvhegu4Y4/wFH4DIgOPE/o2f/YVNi2sSHiu0lBo/3lKw3S6hbwyG+biTsL/VtcMQyz6x+TVkhoXB9QR2Q8KAt2mlaPYeWwdMyBaGBtM0TYm+ytwJhk3AFgyh/ZCcNZcHBIjHEm5nudC3Gy3PrlpUGjfC59WsyeMkEi9ZuVkO4rLlM6rAvoioo/4VA/aHH+Jk75OE7bDxqry3pvJUwdPi/lcErmgs3Bm9Cbq4PLHNaBEtnHzwj0RkiNWyt5jJ79IGtzb6Ae5tM/SF8kFgVRlf+4318kyZ6CxFR944pB6808oO7TnRN0ts8qnGkJAvM3mAvPP6ljUEEcSxpDgS72LcRK7EW9Xk9zkmHiTrN6DYmFInofn172NP3tOmKtYrH3XBoMJxaC86/z+4Kc3YOTSpsRY7E0rHcGpf6PPaPiHkDSR+8DO6rPa5kYmXUaLkIHGwAhnwQrMkl6mWtxK7fP09Xg1Z9uJTG2iAdhyy1Ro80eHnuBfRom9nmpJEKPudb5wm8SoeJr4+ZAiFDNgQaDIHFELb8KzO5qIJDLhww8qisytzYwY8GVPOOTuxM+WO+XtzMDnD4rdVw7uMFEH4WZ3/vJ7+ygam838Wuav7CuTvrA85ktgY9ykYpiFiIUcQqWj8upQyFA1zK4UOQkxpapF2d2UQqx9ZI7hG4wPQztO9D+7Q3QWiZfHA2staYBG2tpjgeM+Ah9sOTzWry6etTTSNDgyx4K6vOu3A8Ft8Xxpsk9k0M1oZiaIHU5vOrG/zxs2c8HK8F7EEBTkQXC/svkxrra2Q8KAGoQWFgvzHLMHlNcuwt1pNEfIxkN/lUt+SYmWVkJQ85SjrrDIObR7lR+7+HX5tR1tFiV2cWQUZZxgbQ6l3kWtQV9FO1UfcwssNDtjJhxAkHHwEiZASwf2CH
+ 4hdbMn1A
+ N+SSb9ds2VgH5HLjHIWPY7sAyvnNeoWvBpdAItnZuP3tq7BEPArAfaJ4ubFVvwczZoHHpReN/BR/1CU50jYLgJItDb9D+TH86plBRDBcJA1os005Kw033ESweQB8OkrlVy5Uuhga9kG+bGK7J8EyIFTKSf6w7eM+CzTNB2/hL/6JLxSHNhv0WdTbwfb1+EKAIIMdjZK4RA7wafNc6sc3clhDDKTJQfOlTjK8vf8pBe0e/jU6axbP3ou8NvtVy3RSa9Mijv5qRVjmv3/wMlM1Lcw2wLoCDtY/XlQv9VegJ+oY9Kykq6EGBJqX6l5DE/kG5AfJqjBYoY4g8Zn3k1gHf+OgpCixMNKLAa4Cgw6iHP0S5KoKtyfGRnd+/QW7OVLiO5fuz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,65 +128,202 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+Hi Frederic,
 
-When a page fault occurs in a secret memory file created with
-`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
-underlying page as not-present in the direct map, and add it to the file
-mapping.
+On Mon, Oct 13, 2025 at 10:31:26PM +0200 Frederic Weisbecker wrote:
+> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
+> CPUs passed through isolcpus= boot option. Users interested in also
+> knowing the runtime defined isolated CPUs through cpuset must use
+> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
+> 
+> There are many drawbacks to that approach:
+> 
+> 1) Most interested subsystems want to know about all isolated CPUs, not
+>   just those defined on boot time.
+> 
+> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
+>   concurrent cpuset changes.
+> 
+> 3) Further cpuset modifications are not propagated to subsystems
+> 
+> Solve 1) and 2) and centralize all isolated CPUs within the
+> HK_TYPE_DOMAIN housekeeping cpumask.
+> 
+> Subsystems can rely on RCU to synchronize against concurrent changes.
+> 
+> The propagation mentioned in 3) will be handled in further patches.
+> 
+> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> ---
+>  include/linux/sched/isolation.h |  2 +
+>  kernel/cgroup/cpuset.c          |  2 +
+>  kernel/sched/isolation.c        | 75 ++++++++++++++++++++++++++++++---
+>  kernel/sched/sched.h            |  1 +
+>  4 files changed, 74 insertions(+), 6 deletions(-)
+> 
+> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+> index da22b038942a..94d5c835121b 100644
+> --- a/include/linux/sched/isolation.h
+> +++ b/include/linux/sched/isolation.h
+> @@ -32,6 +32,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
+>  extern bool housekeeping_enabled(enum hk_type type);
+>  extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
+>  extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
+> +extern int housekeeping_update(struct cpumask *mask, enum hk_type type);
+>  extern void __init housekeeping_init(void);
+>  
+>  #else
+> @@ -59,6 +60,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>  	return true;
+>  }
+>  
+> +static inline int housekeeping_update(struct cpumask *mask, enum hk_type type) { return 0; }
+>  static inline void housekeeping_init(void) { }
+>  #endif /* CONFIG_CPU_ISOLATION */
+>  
+> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> index aa1ac7bcf2ea..b04a4242f2fa 100644
+> --- a/kernel/cgroup/cpuset.c
+> +++ b/kernel/cgroup/cpuset.c
+> @@ -1403,6 +1403,8 @@ static void update_unbound_workqueue_cpumask(bool isolcpus_updated)
+>  
+>  	ret = workqueue_unbound_exclude_cpumask(isolated_cpus);
+>  	WARN_ON_ONCE(ret < 0);
+> +	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
+> +	WARN_ON_ONCE(ret < 0);
+>  }
+>  
+>  /**
+> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> index b46c20b5437f..95d69c2102f6 100644
+> --- a/kernel/sched/isolation.c
+> +++ b/kernel/sched/isolation.c
+> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
+>  
+>  bool housekeeping_enabled(enum hk_type type)
+>  {
+> -	return !!(housekeeping.flags & BIT(type));
+> +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>  
+> +static bool housekeeping_dereference_check(enum hk_type type)
+> +{
+> +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
+> +		/* Cpuset isn't even writable yet? */
+> +		if (system_state <= SYSTEM_SCHEDULING)
+> +			return true;
+> +
+> +		/* CPU hotplug write locked, so cpuset partition can't be overwritten */
+> +		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
+> +			return true;
+> +
+> +		/* Cpuset lock held, partitions not writable */
+> +		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
+> +			return true;
+> +
+> +		return false;
+> +	}
+> +
+> +	return true;
+> +}
+> +
+> +static inline struct cpumask *housekeeping_cpumask_dereference(enum hk_type type)
+> +{
+> +	return rcu_dereference_check(housekeeping.cpumasks[type],
+> +				     housekeeping_dereference_check(type));
+> +}
+> +
+>  const struct cpumask *housekeeping_cpumask(enum hk_type type)
+>  {
+> +	const struct cpumask *mask = NULL;
+> +
+>  	if (static_branch_unlikely(&housekeeping_overridden)) {
+> -		if (housekeeping.flags & BIT(type)) {
+> -			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+> -		}
+> +		if (READ_ONCE(housekeeping.flags) & BIT(type))
+> +			mask = housekeeping_cpumask_dereference(type);
+>  	}
+> -	return cpu_possible_mask;
+> +	if (!mask)
+> +		mask = cpu_possible_mask;
+> +	return mask;
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+>  
+> @@ -80,12 +110,45 @@ EXPORT_SYMBOL_GPL(housekeeping_affine);
+>  
+>  bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>  {
+> -	if (housekeeping.flags & BIT(type))
+> +	if (READ_ONCE(housekeeping.flags) & BIT(type))
+>  		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
+>  	return true;
+>  }
+>  EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+>  
+> +int housekeeping_update(struct cpumask *mask, enum hk_type type)
+> +{
+> +	struct cpumask *trial, *old = NULL;
+> +
+> +	if (type != HK_TYPE_DOMAIN)
+> +		return -ENOTSUPP;
+> +
+> +	trial = kmalloc(sizeof(*trial), GFP_KERNEL);
+> +	if (!trial)
+> +		return -ENOMEM;
+> +
+> +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), mask);
+> +	if (!cpumask_intersects(trial, cpu_online_mask)) {
+> +		kfree(trial);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!housekeeping.flags)
+> +		static_branch_enable(&housekeeping_overridden);
+> +
+> +	if (!(housekeeping.flags & BIT(type)))
+> +		old = housekeeping_cpumask_dereference(type);
+> +	else
+> +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | BIT(type));
 
-If two tasks cause a fault in the same page concurrently, both could end
-up allocating a folio and removing the page from the direct map, but only
-one would succeed in adding the folio to the file mapping. The task that
-failed undoes the effects of its attempt by (a) freeing the folio again
-and (b) putting the page back into the direct map. However, by doing
-these two operations in this order, the page becomes available to the
-allocator again before it is placed back in the direct mapping.
+Isn't this backwards?   If the bit is not set you save old to free it
+and if the bit is set you set it again.
 
-If another task attempts to allocate the page between (a) and (b), and
-the kernel tries to access it via the direct map, it would result in a
-supervisor not-present page fault.
 
-Fix the ordering to restore the direct map before the folio is freed.
+Cheers,
+Phil
 
-Cc: <stable@vger.kernel.org>
-Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
-Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
-Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Signed-off-by: Lance Yang <lance.yang@linux.dev>
----
-v1 -> v2:
- - Collect Reviewed-by from Mike and Lorenzo - thanks!
- - Collect Acked-by from David - thanks!
- - Update the changelog as Mike suggested
- - https://lore.kernel.org/linux-mm/aQSIdCpf-2pJLwAF@kernel.org/
 
- mm/secretmem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> +	rcu_assign_pointer(housekeeping.cpumasks[type], trial);
+> +
+> +	synchronize_rcu();
+> +
+> +	kfree(old);
+> +
+> +	return 0;
+> +}
+> +
+>  void __init housekeeping_init(void)
+>  {
+>  	enum hk_type type;
+> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> index 0c0ef8999fd6..8fac8aa451c6 100644
+> --- a/kernel/sched/sched.h
+> +++ b/kernel/sched/sched.h
+> @@ -30,6 +30,7 @@
+>  #include <linux/context_tracking.h>
+>  #include <linux/cpufreq.h>
+>  #include <linux/cpumask_api.h>
+> +#include <linux/cpuset.h>
+>  #include <linux/ctype.h>
+>  #include <linux/file.h>
+>  #include <linux/fs_api.h>
+> -- 
+> 2.51.0
+> 
 
-diff --git a/mm/secretmem.c b/mm/secretmem.c
-index c1bd9a4b663d..37f6d1097853 100644
---- a/mm/secretmem.c
-+++ b/mm/secretmem.c
-@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
- 		__folio_mark_uptodate(folio);
- 		err = filemap_add_folio(mapping, folio, offset, gfp);
- 		if (unlikely(err)) {
--			folio_put(folio);
- 			/*
- 			 * If a split of large page was required, it
- 			 * already happened when we marked the page invalid
- 			 * which guarantees that this call won't fail
- 			 */
- 			set_direct_map_default_noflush(folio_page(folio, 0));
-+			folio_put(folio);
- 			if (err == -EEXIST)
- 				goto retry;
- 
 -- 
-2.49.0
 
 
