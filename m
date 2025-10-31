@@ -4,123 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 43998CCF9FA
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 11:35:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 132AFCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 11:48:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7EC6C8E00D1; Fri, 31 Oct 2025 07:35:44 -0400 (EDT)
+	id 263F68E00F4; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7C3158E0042; Fri, 31 Oct 2025 07:35:44 -0400 (EDT)
+	id 23BD78E0042; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6FFC68E00D1; Fri, 31 Oct 2025 07:35:44 -0400 (EDT)
+	id 152158E00F4; Fri, 31 Oct 2025 07:48:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 5E0128E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:35:44 -0400 (EDT)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 123071A047E
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:35:44 +0000 (UTC)
-X-FDA: 84058204608.02.029A7F5
-Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3941C2000A
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:35:42 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JOhIaTNo;
-	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id F2ADA8E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:48:29 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9322013B14D
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:48:29 +0000 (UTC)
+X-FDA: 84058236738.22.167E102
+Received: from mail-oi1-f178.google.com (mail-oi1-f178.google.com [209.85.167.178])
+	by imf27.hostedemail.com (Postfix) with ESMTP id A62C040010
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:48:27 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xozfIB49;
+	spf=pass (imf27.hostedemail.com: domain of gnoack@google.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=gnoack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761910542;
+	s=arc-20220608; t=1761911307;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sbYQROsqbxlCCT18FcNDkFe0rlrcvGndQ8kTMkEAgwk=;
-	b=FgVT0SrrCClUETFg3GOQSUX9G/fec8qQTGXnVBS5BeBw6f0NjgtXBY0CNz80EcUZwxFGP+
-	8iRJCtlPMO7uGjkEInFyywUanzmhCTwHaIbDhxSTdFfegm+HsGblaXdDLXHWlo9hcbF9hc
-	GKgBXwu52nZZLq0yeV/TB/RE4ToUJQU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761910542; a=rsa-sha256;
-	cv=none;
-	b=GDDB7YJGJiVCe4pPn0MDpTnTi/nrNEnUTC14INqMeygqSGB5IRxbh2a03v3tvku2y58vdf
-	rGqITO2j+QKh9k5iWG/V2f3WQcdFDd7cJPxwVL7h5GO6638oiOdy5WExtWBlPhg92UTDn1
-	32GN0oux7mfP70FpGgO6M1Kycaxm/aU=
+	bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
+	b=BhCRfgDLgLxeiH2F+3hYZp+9FdlrsZJGKRHOsOtLVkitQKYfn429I6YVrSIt+dDuRdRp1Q
+	eg4/LfWINOi66YL/j4Ez6f08CNhv8+oyL7B4NXSNJ3Y3nMWBKuLKQV2EfcteG9etdEsyEe
+	hKc+bOKnmUoBPxxHFDuBQ5KwaztzV9s=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=JOhIaTNo;
-	spf=pass (imf13.hostedemail.com: domain of laoar.shao@gmail.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=laoar.shao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63e336b1ac4so3576669d50.1
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:35:41 -0700 (PDT)
+	imf27.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=xozfIB49;
+	spf=pass (imf27.hostedemail.com: domain of gnoack@google.com designates 209.85.167.178 as permitted sender) smtp.mailfrom=gnoack@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761911307; a=rsa-sha256;
+	cv=none;
+	b=M84Z8SCLzCOl99KdWsSc/cX30vejmpB+O8Ak2ib9j/v+ktoG6EZikcj5LafvBqonYSDdDh
+	bHJS3IuKd36xFxt2ukxsnBBtWpC3WW7PI3pZmJje0YcUcbebl+MrOMB7eQuOZENc1qLQ6E
+	09UEfkgvx7sXCsQFMqW02X+irkDQmVc=
+Received: by mail-oi1-f178.google.com with SMTP id 5614622812f47-44da774cc9dso1253686b6e.3
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:48:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761910541; x=1762515341; darn=kvack.org;
+        d=google.com; s=20230601; t=1761911306; x=1762516106; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sbYQROsqbxlCCT18FcNDkFe0rlrcvGndQ8kTMkEAgwk=;
-        b=JOhIaTNoTUjDev3MiZVIGoCt4JKLEG+OZjCPXNzWrY0FqdWz86CZzLtHnf4U8MdW7X
-         knyZZTn4LcK8l4AsdKF8lh1r9EZplEHjO4rwX0qXQdIsS6wYJBfy+9FIXP4Q2qioQU84
-         vRbWOuSY3sKiQsjApDaQlpLEYdko4fxgzhs3LBy9X2Uw5JjKNfgHKkoOVCp3SKBMXfVT
-         sR6/XoOw/ulJMoaW1gGhgVfO+kukjzK7r4UuL08EO+kFlecefu+Dv3mCxq9X6nOXyrcy
-         4FZ91OqoL3eSy5hqavdOoRHTKgcgY7ao0BPJueXdoiypdrhd6Roh2t0k4PgDi561ogRr
-         N0rw==
+        bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
+        b=xozfIB49sBQYr5ghIFycp4y76zRt/pRghOj8K9ghedbff/gp4JRZ4kUTG2CqCmQ5kW
+         8BFp+vJ1U6zXwlScxVaIacoLiZCTR7KZQM153OmXkUZqzAARwOmiX0SschjHx2u7yj9M
+         Q9sInrWHfxeruVzDVwqlaFRxT2xkLnodCtGIjYwxs2nOX+QNmVzi4+GiVbhCF8GMSTgo
+         RgyuUP87Lz6Gcd5mtlN5TjTn4MRKjcMJP9vjMOUmNUimWL4mSIHm055Zn5vhUtQQ5GGS
+         ETav9q9rd4EXTvegRYoszNEk2Nwb+41EtNh3l87jO2+9CKkIDbQQgnTVCQ+E6XjVnfZy
+         Sn6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761910541; x=1762515341;
+        d=1e100.net; s=20230601; t=1761911306; x=1762516106;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sbYQROsqbxlCCT18FcNDkFe0rlrcvGndQ8kTMkEAgwk=;
-        b=FLZ/ywLDBi3GpHc+aGmo2tMWqcGMGoqy+eyeH4/tx1PCx4iA/cgIP33Vu7jKFBz5X7
-         fbgbJOs7jpEFQBf7lm2Vmzv4EZnidfJ+FyOrOBiqifZhAi60XAd8w9aan+8ksmNrIUNr
-         CPl9NdLAAI3p6pAK68cqm7a0r3ZHK+mXNfaA4N6ivROnTmKWH5GoveXBFsiSpOlQOkf8
-         hGTO/05UndsCS605G3v5GoFwenpSZQ4SJHYicBMYLLTp2bhBcynswFHF5lT/QuFfk2kh
-         Uj2gzthKQZWkDKKe+t/MAXLX3Lx9qzBXXeru5woH8EWq3WH4YT8vUgViALYNRQm4Mlti
-         vnig==
-X-Forwarded-Encrypted: i=1; AJvYcCUnczEYa0IlJ323rUOA2XwwTi1JtXaBOC5y0x3G8ZkqgUbz7SObmxQApzs9gUgRGe77378OD2+xQg==@kvack.org
-X-Gm-Message-State: AOJu0Yy0sidg6wRCZTDCbNdVrKI77S/Kn45U4qYWnNZoC1pLI0J+9BWk
-	z1RM9vsYSGzrCrkx9vGYKS5BrJufW07CbXLK9FgsC2UTGBUer72TZkYilvU5tvy3IeGbslU+8g0
-	kiLNKA7O7BN7UuaIsf9dvwTJ7fvymBL8=
-X-Gm-Gg: ASbGncschxeT9BOy4tI0QqTXrXX5do4Qe9+ugMO8To27Pxu3pXEUEVYeiLt26wBJ6Zz
-	rJbsOEHjKGfrI9Z5ImVxWoky7CYLM1Wd3oScTpPfeoBILx0KqIIvDGTBRQIxVEkecfSGeehfqhX
-	ACbPbWHXdIh8iCThaK5r0zphIjuBt+an5TVANi8MPztNwxKvQruAS6IzapbYkv9Dlm+lK9oTVRO
-	G+2QsFRFm1B0FgysoIMDfCuH2/2ToH3X4e8n8Tm2rgRMLs6YHp/zjklNq2oLA==
-X-Google-Smtp-Source: AGHT+IEu9dWSv5Gv4oIclWkYCdwjipk6IKPGLuplrWhNfsF2BSjzskyBODi71LrFaVQiUOiO05FML1vQlRoaBoKLGH4=
-X-Received: by 2002:a05:690e:4311:b0:63f:471b:c949 with SMTP id
- 956f58d0204a3-63f828dc3f4mr4262945d50.8.1761910541181; Fri, 31 Oct 2025
- 04:35:41 -0700 (PDT)
+        bh=KlwS3zPH7Q41Nzo2HC1V07gN7n2rhCpo5Vfsn6GhCWs=;
+        b=fF/bu1ecLVTJElM/VLndImWbdJVD6i4CC/Se5Na+oyAWnB8iQTcNvOPcT/cs+G9VNz
+         X1rzboxSTLNk+RSSrMq2IriUeiIQFc+erlZv2nGb07r9Xgn46dWTKtlxzmyTzNHdii69
+         u/inMnHnipCwEu5l8UrmclQdjUZhB/5mSmzHSeX360jQKKIMHV97Q/96RrdwemEzmTuJ
+         N4ioGF0CkO0WBSa1GfJwp8DoW2yvQZsYpccoVAp2eLJ7NKOJ+IjtRMnYfuKsyQwb44w5
+         dne8Ai1XiGar7W8Zsv8VzwY43E7YbXF7CVqCWTpIEGKdVLR7wPOFgsLDR0AM5VYsIt3A
+         LLKQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXvjPTU5CAPQzKKwCy+k9aO6/Y/xrSEpgK2tjzDiUCWLGIF7ACIBUCkyflyx9DPrzVfxbvE/Pw/Rg==@kvack.org
+X-Gm-Message-State: AOJu0Yz6aQa3iYdofgYbZjdNfTorO3nfQb+zptietnTPr5yrG3wXtvHR
+	91OnKbe+1t5tUHa+/tP5hbGsqt0BIt/k1iqKxBzHJOJAuV4xbfAHp/8h9IQHRDotLyBaqHdYAtK
+	YlAsklmTU1GtSK20iSGFe33f4wR7IOELTR4x/ns+M
+X-Gm-Gg: ASbGncsUrE7OQd9qIAbyVSC6/jOnX2658nY6IkM7ZyWTv0Tz34iOEYqjRa0FQnNXLct
+	l1cawXtC7VsNcq9TUHzfyF1Bxc4blqcwBVMi6F9gpGmu9jJSn/0ys1ASzVRRC6Xed7T91QTlgyr
+	qHFL2LNO5PagesY66rmExr9/8rCc24k0UEls2Rw/212agEY/nhLwkETSRJcGs3BHH5K+xFI98Fb
+	XsedasYhl1+DC0r0/UERbGpnFm2D+//S44S4GDcjZqskXQc8XHYLeAldDocym9iz+2LpqLlA78f
+	y1cjI8nvZ/YnyYc=
+X-Google-Smtp-Source: AGHT+IFn+kdpOaxRHChvDDCOT/IzFOqf6Yuxb5QncITiTYgJQXvWtUAPFk1/Z9bVNPh2z8gErYmDPzmHey0AxrHVefg=
+X-Received: by 2002:a05:6808:218d:b0:441:8f74:f0d with SMTP id
+ 5614622812f47-44f95fac413mr1322392b6e.55.1761911306379; Fri, 31 Oct 2025
+ 04:48:26 -0700 (PDT)
 MIME-Version: 1.0
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-3-roman.gushchin@linux.dev> <CAHzjS_sLqPZFqsGXB+wVzRE=Z9sQ-ZFMjy8T__50D4z44yqctg@mail.gmail.com>
- <87zf98xq20.fsf@linux.dev> <CAHzjS_tnmSPy_cqCUHiLGt8Ouf079wQBQkostqJqfyKcJZPXLA@mail.gmail.com>
- <CAMB2axMkYS1j=KeECZQ9rnupP8kw7dn1LnGV4udxMp=f=qoEQA@mail.gmail.com>
- <877bwcus3h.fsf@linux.dev> <CAADnVQJGiH_yF=AoFSRy4zh20uneJgBfqGshubLM6aVq069Fhg@mail.gmail.com>
- <87bjloht28.fsf@linux.dev> <CAHzjS_vRrxTLR0kFJvm4R3kO0s8hyN5Onsr6XfbA3Peyasz+Cg@mail.gmail.com>
-In-Reply-To: <CAHzjS_vRrxTLR0kFJvm4R3kO0s8hyN5Onsr6XfbA3Peyasz+Cg@mail.gmail.com>
-From: Yafang Shao <laoar.shao@gmail.com>
-Date: Fri, 31 Oct 2025 19:35:05 +0800
-X-Gm-Features: AWmQ_bnhSoJ6Ut36XhdxJDrXBHOIvRPVygYW6oOyCo1P7xEhTIcG9Z7qxfxs8eM
-Message-ID: <CALOAHbAAjx+OAOd=2y-fQUTbPd6gxVeybJd3RoTLYahb_ZO8DA@mail.gmail.com>
-Subject: Re: bpf_st_ops and cgroups. Was: [PATCH v2 02/23] bpf: initial
- support for attaching struct ops to cgroups
-To: Song Liu <song@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>, 
-	Alexei Starovoitov <alexei.starovoitov@gmail.com>, Amery Hung <ameryhung@gmail.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Alexei Starovoitov <ast@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@kernel.org>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Andrii Nakryiko <andrii@kernel.org>, JP Kobryn <inwardvessel@gmail.com>, 
-	linux-mm <linux-mm@kvack.org>, 
-	"open list:CONTROL GROUP (CGROUP)" <cgroups@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	Martin KaFai Lau <martin.lau@kernel.org>, Kumar Kartikeya Dwivedi <memxor@gmail.com>, Tejun Heo <tj@kernel.org>
+References: <CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com>
+ <20251030183621.39ea843ebba82ae133b2b38b@linux-foundation.org>
+In-Reply-To: <20251030183621.39ea843ebba82ae133b2b38b@linux-foundation.org>
+From: Big Sleep <big-sleep-vuln-reports@google.com>
+Date: Fri, 31 Oct 2025 12:48:15 +0100
+X-Gm-Features: AWmQ_bllX8fiVQbcOAZy9XxrHCwkX9Mk1pssFOX_WeDNH-_wvRGsENq8nY9U520
+Message-ID: <CAEXGt5TEr353v7waAc8N68te4xLwCRE+RB2BWs5tFwMC1mQs9Q@mail.gmail.com>
+Subject: Re: Oops in secretmem_fault()
+To: big-sleep-vuln-reports@google.com
+Cc: Mike Rapoport <rppt@kernel.org>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Lance Yang <lance.yang@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Stat-Signature: is157fokrakzrpxhyywmbybj65t18tfh
+X-Rspamd-Queue-Id: A62C040010
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3941C2000A
-X-HE-Tag: 1761910542-786047
-X-HE-Meta: U2FsdGVkX1+LGpA/BsRTJp/9FerPNJcQxxYPQp0BUHi00Wlpcj0bJ0/NwUsowGX/UCF0NlI+OSApSbp9x4oC7a3IT8xFhqDzgeP2xyE0wHe/uSdooF8tLmpMfg3w4QfO/YN1ZCqb9UqVQJVCArtrjbh6cgz0p0+yTF1/hFouxHJiv5uphWkJkVgd/9rljT4UFvh3pTnaFk0lEpHlRfB0IXT3MEPBYEGO9ZpEMoLzLkjxC0WaTejv4ixvVkiSoPjrfseUJDkUcFj/XhAfHuWBBIM7fxkvTq6mZAWP4U7fHZ12O+fRychvjzJsl+PIyrP9d8KiXLbXcfGUlssvjSUClzYYz+t9p6PcKTxFXC0rzCpkAJyuzDv+SdUZT4Ye7sMbX7BoNDzpTQKdk1IR7LHud/t6vFVdTi3oXLyG+0yCVjo88lH05O8TzURXd5PObv2tOforUUcGnG21SI6HIqTeOpTV3/IEzYeZdZ0+FAtm/FqUvT4b/ZUf6OwJZiNamB2eI2Ot8sLRII8+fp6S8LN6Sg4zsW6NZqnhRazQ4Z17if9Yj2AZ19oUdIXlMCWTQjJh2R7BtsJwWIxbEjKu5ePw1GeOyDAiAvAaMGV1TuAhT5pSSr84tu6QKU12Tgt1/tvFkcLx4939Ps9jUTmlfcApJrR0ucAp+cT1aHsb0B9aPlRUIZddqmdJV3Qb8irB3UT5HKYcttd2aLvqVdnxDoV/R+FYsftTnG0hNZmQaLcpa5UPKs2RA58GPCwokYdnc0wn02p3dUqhgOnwO1BFheFffl7eDFDRkC/6UvWY2tnAI7aaZBuoD2ig8TZULbPH7tGQT9DBpQoG7nECIlMXcYvyN7j92553M01qdBW63/1Ul/pdnIzUhS93xzXmQzjehB9BNWdYTf94rD/2Y+zDVJHcDNpHLt1kf1nauMRhq3zMxEXy9+GY5zK0XrEo5xRerXrYoY992ajIrT9+xN0reo+
- XJYnZ8jG
- mCAEAVE+G+WztzEt3vY0GJEyhp01zI1hT70falHcwuTSjLQ9j1W5UoMbYGEBCb3KjnSxwrvCuJQZ8CJcbKf46phe6FlpVgiZNK9MfoFl+1M2/1IEUGUXNKktBUsU5Hwj+BDcQsdi+0BuMQPwU7HoDhY7pcLi103zX0zeXrhdRiVbv7WHLrR/0sCVldvgxgP4u9D3+pjuVSG/xT620S6FCbJymf736lJoHugD5OQN3QjAtHjbYx8K7YbvPDxrVeqC2bVjt1DVom/v2tI5n73ZyYNw93uvs9hOhmW2TMLM0AzckOXjJflQ2SCc8qPrVcUkwk/LQvviJ5AVz8HbKXnmwsLDZ8/mlaCabzabvhfMtprAYrry1VreCsl2kkFB/QV+j0Oau4B17tni4px/xjJWZ11g0z8eVg1m13N+1+HxjGuZL+Y0FvH2C5zT03CN+cRn83DcbpPsVPPw+SS+0Cpfr9Emyo7q5dTi7dgdG3l2a27D9tDtRQ/foD/apQjCPKrtXxrRYnQ+h7tCtvajRY34wsFHTlQ+5S7jyqpsRVprKfjdqfPw=
+X-Stat-Signature: pfnzyn97h66kz8miebbwfhzb1r5sq9aj
+X-HE-Tag: 1761911307-714938
+X-HE-Meta: U2FsdGVkX18/1yt0STBrqXU1aF7XrFIOwtEhXLGYZIzVRWxLg11IQudFrrnxoW97NaU973EIyDHeGoRMyTFRgtOdT9qt+Mxc1p+w+htNq91CftrAgjwmPObrmzXc+9Z4s9trSJe/CWJw60RVFm1DnIQEWF31indLTYtkT6D5hO/1rW+3KbU568kHi4MeNkvCR9WNJRdIk0JUnBcFsNi1negnj9Qt8fKxwGswkgZcCz7O3gqNYka+I6URX+6GNOM2opp3zNWlqahBHxCmytqynY/YRZZIltye9NuhPp6536vG7WrzBkkGMgTwXnXCqRDAIX9PudIk+BPBU4avAWGDgsEQGDBt3vE6zVullKix9NoDwQBC6wV4z0B92MXWJLKgCAS0zOvWDWlJAFE/BEiXSBrjnnuFJaakbm5VUuHVzL3uZYgwk1054DT+5elOT9LsK8UZyJMbOrxSyxIRIgzf1UNa0Fr9Kik2xtCD9jl0bq2FwjwQhhBQ/o2LFxhWHFaz1YuWXm/bfrWUWvGwXPkLqgvqMOq8jYNh5fc01hNT1rWIbpVKksJ5AlwSa94YBPXVBEhyDQb7UdQAvswyblfEtqCShBsZf5uPFyfldVHSn2K963uTCwnBYLc+zSArRu2ZpYRho+h3zf1FaH6zLssS9CRksFZAtdx7fUl1KMgLLQUACra//VFXbxk38s7vZ40AiUy4jkH76LgVvwyLKqrTzDTaQ6YY3nTI7t/DiyKdzAc0wXqCboKsjDyim+XIGV3VQV3c0W9tro9SslmszARlWiAAM58vtlE6Dpjb7jO+brnlEdFUCEx9xRTK/LSwwNsoFMQMHwIg/SgnfTu6RfjTgQNyuuSSJZr7yJX7xHn4sF9lC/3mE/yxFRv7w6LqFc2SgObSQmaXh1TJRf0/7IL+vJXnMBQBEasFvEuJvr853aPmdJsi1y3RYXQRSY85eWWanRrxo8ECZiMXk2lQzGn
+ 4RC6AHSN
+ l6S9MQfgGZMfvVX6pP54evcTa835vDKPdNKAok5QKipWFc1Fb82S/Nyi6Rf7I36K6XI5DR4mu034qOTOfl7OYyDgiSmJs8AQbokgK9x0QdK+RKdF/pxYfzhfZXyzmg5q+Ste8UyjrrYscJZxJKMzodqsunoGXDeyfItx2mSpB5IVs1JAQL178857KNun7w0W3Lv6hNnPvfdTIIT83rL4cA5eXVOKWsQ30jB2AsiGsxEKbRmkHtO3jx02avTMJexqwF86UPHl+OeWTqekriVOpRx+liSDlNTuJsaVO5J1o1lmIFbiv118pZo1JkJP9nxLTRIm+VraU0Jbi/8fmy1PiZMaUoWKMNvcaCeArmxxOw/8+fkdZURZf/VypeQ4srj6k/0X8lTtjPqn0JHEzHdw5K9ABSvC6WmyERsZNe8J21t6vqZaRZ4WkiIqUHwCjMIAhuN32ei4ogxez0d3jQJZ7f90+Qm2LG20vIzU3WHKshWezgFaIt4aTxEpPev5h/QPVLbCy5YSnYfrPHqnhS+AkMC/Y6/FVb4snTbQtjOjRhtHfVcW0GrsfvPTEjCN2qojEXWroKJzyz0xrm2NqUIFtk/5c1Qcmif5WkSaUqXoztsQyNer/N1mgb5d4B0iIFBmxQSn5XM9IIXBuaT6e7VgxwS3ohRMmNYy6O2KKobdJ4DVan69h4L5X97tR9EXxGx/7ndutwZ8Zd36lifVX5A2LJ+w4Lvj1ruJLm3iTMg7JYEoI01VTdvhpOzcY0J3PuGDkPZ4pVBwor6Ti+tU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,61 +119,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 2:14=E2=80=AFPM Song Liu <song@kernel.org> wrote:
->
-> On Thu, Oct 30, 2025 at 4:24=E2=80=AFPM Roman Gushchin <roman.gushchin@li=
-nux.dev> wrote:
-> >
-> > Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
-> >
-> > > On Thu, Oct 30, 2025 at 12:06=E2=80=AFPM Roman Gushchin
-> > > <roman.gushchin@linux.dev> wrote:
-> > >>
-> > >> Ok, let me summarize the options we discussed here:
-> > >>
-> > >> 1) Make the attachment details (e.g. cgroup_id) the part of struct o=
-ps
-> > >> itself. The attachment is happening at the reg() time.
-> > >>
-> > >>   +: It's convenient for complex stateful struct ops'es, because a
-> > >>       single entity represents a combination of code and data.
-> > >>   -: No way to attach a single struct ops to multiple entities.
-> > >>
-> > >> This approach is used by Tejun for per-cgroup sched_ext prototype.
-> > >
-> > > It's wrong. It should adopt bpf_struct_ops_link_create() approach
-> > > and use attr->link_create.cgroup.relative_fd to attach.
-> >
-> > This is basically what I have in v2, but Andrii and Song suggested that
-> > I should use attr->link_create.target_fd instead.
-> >
-> > I have a slight preference towards attr->link_create.cgroup.relative_fd
-> > because it makes it clear that fd is a cgroup fd and potentially opens
-> > a possibility to e.g. attach struct_ops to individual tasks and
-> > cgroups, but I'm fine with both options.
->
-> relative_fd and relative_id have specific meaning. When multiple
-> programs are attached to the same object (cgroup, socket, etc.),
-> relative_fd and relative_id (together with BPF_F_BEFORE and
-> BPF_F_AFTER) are used to specify the order of execution.
->
-> >
-> > Also, as Song pointed out, fd=3D=3D0 is in theory a valid target, so in=
-stead of
-> > using the "if (fd) {...}" check we might need a new flag. Idk if it
-> > really makes sense to complicate the code for it.
-> >
-> > Can we, please, decide on what's best here?
->
-> How about we add a new attach_type BPF_STRUCT_OPS_CGROUP?
+Hello Andrew!
 
-I'm concerned that defining a unique BPF_STRUCT_OPS_XXX for each type
-might lead to a maintainability challenge. To keep the design clean
-and forward-looking, we might want to consider a more generic
-abstraction that could easily accommodate other kernel structures
-(task_struct, mm_struct, etc.) without duplication.
+On Fri, Oct 31, 2025 at 2:36=E2=80=AFAM Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+> On Thu, 30 Oct 2025 16:34:29 +0100 Big Sleep <big-sleep-vuln-reports@goog=
+le.com> wrote:
+> You might want to include a token here so we (you!) can track the
+> report through to its resolution.  See what the sysbot people are
+> doing.  For example,
+>
+> https://lkml.rescloud.iu.edu/2408.2/07972.html included:
+>
+> : IMPORTANT: if you fix the issue, please add the following tag to the co=
+mmit:
+> : Reported-by: syzbot+5054473a31f78f735416@syzkaller.appspotmail.com
+>
+> and when Dmitry fixed this he included that info in the patch metadata:
+>
+> https://lore.kernel.org/all/20251028101447.693289-1-dmantipov@yandex.ru/T=
+/#u
+>
+> and that Reported-by: will be carried all the way into the mainline tree.
 
---=20
-Regards
-Yafang
+Thank you for the suggestion!  We are not currently tracking reports
+which we categorize as having no security impact, but we will include
+a tagging scheme like this for future reports to the kernel which do
+have a security impact.
+
+> btw, it would be nice to Cc some human on these reports.  One cannot
+> be very confident that emails sent to big-sleep-vuln-reports@google.com
+> will actually be read by someone.
+
+We are monitoring and replying to our reports and the surrounding
+conversations from our project alias.  We'll try to clarify this on
+future reports.
+
+--Google Big Sleep Team
 
