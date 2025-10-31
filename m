@@ -4,117 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8CA7ACCF9FA
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 11:57:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45DBFCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 12:10:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED5DD8E015F; Fri, 31 Oct 2025 07:57:42 -0400 (EDT)
+	id 863A58E0160; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EAD438E0042; Fri, 31 Oct 2025 07:57:42 -0400 (EDT)
+	id 7ED608E0042; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DC2678E015F; Fri, 31 Oct 2025 07:57:42 -0400 (EDT)
+	id 6DBCD8E0160; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CABC78E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:57:42 -0400 (EDT)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4221413B151
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:57:42 +0000 (UTC)
-X-FDA: 84058259964.09.48FB1B5
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 6A275C0004
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 11:57:40 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nsfJHOJG;
-	spf=pass (imf28.hostedemail.com: domain of glider@google.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 584F38E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:10:16 -0400 (EDT)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 28D26B96F3
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:10:16 +0000 (UTC)
+X-FDA: 84058291632.15.F5C4079
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 4E25A180002
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 12:10:14 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761911860;
+	s=arc-20220608; t=1761912614;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dY7Z2MmzbkxuT2iz0v8W7dJrKa/ZUWsqjm3RZImAMKI=;
-	b=oSR4rAyM2LFxB6D4YBfxvRGoLfPA6Q8qfiZJuSpO1Rj+lKsso11RBcLLpSyemfEsXD60bD
-	qmW24u9l9Z1XBFW4ZDXYS3HQFAjxM3IKDSpzkSS0nm+G12hxwd7B4MtQmJ2/PMokE2dP9J
-	5wRvvR6mn0X034Zlm2AhmZVxOhpyTGU=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=t0WbfK5vwuoBUWDeRvrXFDT7iz9UNmzAdlRjdob6MPo=;
+	b=OuhmLGAxW7XU/woSMVJC1DKiTnpsxfTBRMmWDjno9yHCAlr3yWy2jxr6/FG+9T4RR8mPMm
+	SiPenJRwCSoWbB6vOHRhx+nlYyWvklAbKwritLB3vG17Jma5Fpg0h4mQdKxH/Wzre9H1hk
+	m6E1p+OoJt5+su8lzo2O/h0nWBSAxXw=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=nsfJHOJG;
-	spf=pass (imf28.hostedemail.com: domain of glider@google.com designates 209.85.219.47 as permitted sender) smtp.mailfrom=glider@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761911860; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.215.172 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761912614; a=rsa-sha256;
 	cv=none;
-	b=d5JlzJjug2lXP+Zv2ecZttGeDGrzY6sUM3Vj8S6zMtbqfZjrscIBm6DAR0H0hZN79bKGd7
-	T1pqIZIMyGOOAdbEAkkwFVS/3yZqLIChEqSEIKHM6gMJo03So5y6JuhOGgi2NngbpJb1Y/
-	+oh1y8wgkhcSkVVolt8o3R4MUnw7FQw=
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-88025eb208bso14089346d6.2
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:57:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1761911859; x=1762516659; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=dY7Z2MmzbkxuT2iz0v8W7dJrKa/ZUWsqjm3RZImAMKI=;
-        b=nsfJHOJGyC7uI2gElgAFDwdxj2ovxS2Q13qqihupUqlduxpaSgcG16i6X3o6VvAxi8
-         T/Gi7gUYHnb0Y2UdjPFB/QnPtwfq/hDn6wUZshCnujGRHNg2umMGWELD8DSNHGPhRJuE
-         K0n0cXXmr6VvhRpFvw2j+FU4H2UPH/m2ywMODr2Nl2feJ55Ompkg/tWEpiuo6jPUL7db
-         5HtuBxkjYTHFvuqHuEehcs34UznMiNkUpve/BBwaK4xz0hDPocjZ25Q28nnl3fa7k+EL
-         18XxvhSWVvlSneddx/dt6fudKp6VF7bBYDdwHUwU8Qe71QhblVT0uoGz40+3bSEb8ZNL
-         9yPQ==
+	b=mc7xtdNRONmAfBIXgrfdfb3adTJa8bFo8gI9j2fzpdFLF4Nlzm3gwjb8QeztN9Mk+s7MvK
+	cwg7nNysya243OrP2tduGnDzEXkt4I/rX3ZVC7DcbsjyCoTkPjt92kzjQhF11XvXAlwSnB
+	i8d82uc5rGZRE4uPrVuolS9gA40tVag=
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-b6cea3f34ebso1661114a12.0
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 05:10:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761911859; x=1762516659;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1761912613; x=1762517413;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=dY7Z2MmzbkxuT2iz0v8W7dJrKa/ZUWsqjm3RZImAMKI=;
-        b=FGyPsWa2qeliUgk7fUof8in5LtmHKtAD20ObyAL69GKc/KPmFGM2618mkPDMuXWgQa
-         QiljnC0Lcb3ksFddfpeHV8mySqnWEQf+b2uPKe70gmTD3mifpsHfm8UiVHpLdtBa0l0b
-         sPmmwgps9n6W5sFkyuEwfX/5xtq8pif+XAlJ8kKs5IVb3B4dvTRYDAkjwgEZpCj0qSz3
-         gy3NgUTn/QqvvHdc1zlslsFoEy9PgIDQXS3xlq+We0hRXEfLUFek3LxPefUfDRoEVwVc
-         Dd5Is+0Fm2khyuzir6ELEZi/XpAmi3pQBlFA5l6O2kHrBzB7DIgyK4lX8H68y9j/0Xdj
-         NMyA==
-X-Forwarded-Encrypted: i=1; AJvYcCWkKDpJHZLr724l5eL9wvSZQL0Sx1HV0xY0XmNhHjJxCViVUMc9awL+4Eg2jz7sRTt8geV5yLCo1g==@kvack.org
-X-Gm-Message-State: AOJu0YxkV0C8+6JQ6bRhLkBGe9nfsg9HV9AE27XNJeyDd/Ta8g0t4oKx
-	JuXN20ZMx0v83K7Ug3fRwJ/mLKvHX7FUGmYWWomDX5h1ITMQtbpJ65PgHGsLop4SXrsEwp3bd84
-	9NNVI5w2/ALfU60MwB25U6EikZPAWCy1n2GKpLO3t
-X-Gm-Gg: ASbGncu7uOzJCgcjq2VpvXtnCku9hnLS0gKZhnb58mJ6e4M/Dtwch/91Q+2BK8+pqiG
-	Gm2wXAcTnBOKcuRkDBLXQXDufKILmApgUjhnVED7hWIgTJ5nvxbxVgOrw1JIORoD882tfGwO+pi
-	5szADe+PV3NklYac1V8d5bWywschNjPlc3tQOtLqX7C5uFFxd7Eq4psQV0Kvw9WcJfbXtRXk+DE
-	33OTg5bOLOkuvxWXDUVMjrGcNH29WYA6jgbHon4J8XKwa5DtHg66OWHCKf2eToO3segSIqxZSOv
-	eFCSsDyync8Xma8=
-X-Google-Smtp-Source: AGHT+IH/WfUBbYgpcQjhubmZPkjb99DuZN8mTUPRUydXIR3zlsXxfvRxJAbboXz8gq5VWvs192w21z+0QLbcg/B7x0M=
-X-Received: by 2002:a05:6214:238e:b0:880:219c:34 with SMTP id
- 6a1803df08f44-8802f316e39mr33232076d6.21.1761911859273; Fri, 31 Oct 2025
- 04:57:39 -0700 (PDT)
+        bh=t0WbfK5vwuoBUWDeRvrXFDT7iz9UNmzAdlRjdob6MPo=;
+        b=Q5MEsjhlfhYTF+nbJDh+KyJRwaiOE1EHjA9O1NirATVX95FhHzZApqeHs4R3VT6fok
+         J/NyQZ9l25lB4hUa2wYn1DPy0rEIWtCbCJyjZmRBLyEal3plZFbTRrJEaFKRl511yJDH
+         CHHTiyFkV6V5qWG/a0P8/OG8zNNXb/P+OC8u8TrNJhQaECjSpkh2ovAKYVz2jouGrCDZ
+         XUwNf1tulxpb1l6+vwN4Aanhh7cN/GEjuuGNfoBXmFkt+orLNYu7K/qD9+giAYIBk/w4
+         ExZJs0ja/hG/uqWwkeah/ZelU82I7xPoveo2ko52EibLwuGByU0IUHvpGMoZq0frqQQl
+         X6Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCW+4pnVQ8IngS1PNiJXT4uZE7gAN9GImiIuTYKXEYOf7qtEd3uoXVNgNSVeADEGNNoRQqXmuzCRkQ==@kvack.org
+X-Gm-Message-State: AOJu0YybES6+kojJ65KxuU8zxEjhpZbGmsRuj90M+X34T9ObJO4H+iBH
+	3oB8NTQqWN0SQ2vibFTZNQOpnzzuABPIHIW7o2/kkQcwW+7iMPGDVxCn4+0Teg==
+X-Gm-Gg: ASbGncsR0wTJ8deVcSqGoPuSH3QH4HGrhJp2rWZwS8BS0yfGKHuzzO4RFdGSqqBooVN
+	zBhb+3bpp4v/OcuzfBpfy7WuIJ36M4+GLe73lzlemgVvfinJtgqEAddSM2SjuXptNLPpWDqCiQN
+	JtgIbgebRccs6XcMB6IJvnXauXc5lQrY5M4tr/fmmK+a3WnBIF0x6kJ5Z9QJl3v6eogvVnMC61b
+	5S8qVxMVi3sVNbunAq9Arf+jQLcrZONBuMTIvfsPOLbfXTZ1cm+iVOyDDK2KhRxJSXMH0Fs5Vgz
+	SbjQaEYyuCQYMgyyeulEiVcfBRWr+XqsliiBlxOwouUArJPykOR4Kc/gPkisS3bKPek5ZYuTt7k
+	p632A4uxKv8psYWpV2joD4d0tozFsw8kMNI/qajF/KW98MeXMvYh58V+1OZCNr4I5SRmaZK1AJM
+	07FQIuCjjycVOtIVeZO6zrLFPwbw==
+X-Google-Smtp-Source: AGHT+IFkZYYrPO9da+1rqdpxHxQzVGAbYeTTm9iNmfhwPCVX2eqm9vtdFUdqrf7DEDE/y6nY5qWI1A==
+X-Received: by 2002:a17:902:8ec9:b0:269:8059:83ab with SMTP id d9443c01a7336-2951a50e59amr30879555ad.51.1761912612853;
+        Fri, 31 Oct 2025 05:10:12 -0700 (PDT)
+Received: from localhost.localdomain ([124.156.216.125])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-295269b95bdsm21683055ad.93.2025.10.31.05.10.08
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 31 Oct 2025 05:10:12 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: akpm@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	rppt@kernel.org,
+	willy@infradead.org,
+	david@redhat.com,
+	ioworker0@gmail.com,
+	big-sleep-vuln-reports@google.com,
+	stable@vger.kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: [PATCH v2 1/1] mm/secretmem: fix use-after-free race in fault handler
+Date: Fri, 31 Oct 2025 20:09:55 +0800
+Message-ID: <20251031120955.92116-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
 MIME-Version: 1.0
-References: <20250930115600.709776-2-aleksei.nikiforov@linux.ibm.com>
- <20251008203111.e6ce309e9f937652856d9aa5@linux-foundation.org>
- <335827e0-0a4c-43c3-a79b-6448307573fd@linux.ibm.com> <20251022030213.GA35717@sol>
- <20251022143604.1ac1fcb18bfaf730097081ab@linux-foundation.org> <CAADnVQ+o4kE84u05kCgDui-hdk2BK=9vvAOpktiTsRThYRK+Pw@mail.gmail.com>
-In-Reply-To: <CAADnVQ+o4kE84u05kCgDui-hdk2BK=9vvAOpktiTsRThYRK+Pw@mail.gmail.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 31 Oct 2025 12:57:01 +0100
-X-Gm-Features: AWmQ_bmooBOl4Jc73SKfuTO-ZNCvAEqNx0sukASP61H3kOcFqYTjm6P9qzvWG3E
-Message-ID: <CAG_fn=UQYdGqiMbFxp+XTgP=zkZgDGgdcA74Zcs9HTo+zd3oYA@mail.gmail.com>
-Subject: Re: [PATCH] mm/kmsan: Fix kmsan kmalloc hook when no stack depots are
- allocated yet
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Vlastimil Babka <vbabka@suse.cz>, 
-	Harry Yoo <harry.yoo@oracle.com>, Michal Hocko <mhocko@suse.com>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Eric Biggers <ebiggers@kernel.org>, 
-	Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>, Marco Elver <elver@google.com>, 
-	Dmitry Vyukov <dvyukov@google.com>, kasan-dev <kasan-dev@googlegroups.com>, 
-	linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, 
-	Ilya Leoshkevich <iii@linux.ibm.com>, Alexei Starovoitov <ast@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6A275C0004
-X-Stat-Signature: dunjejw85n77tfm6fi44e5piexqiok66
+X-Rspamd-Queue-Id: 4E25A180002
+X-Stat-Signature: py8fmqskosidseo3x7ciyh67uiaj4n9b
 X-Rspam-User: 
-X-HE-Tag: 1761911860-903150
-X-HE-Meta: U2FsdGVkX18KRHsY44AS0lkdGwzBsC7yCqUEd8Usw701Eo/nhFD40pq4SrVMWecZib59unHjsN6eNEtsmTw3msbIYgu9QK9yhPC76LC9/GaN8dkKsHSAJ7dDyaAt/PWKF+WoAqZBLbu4zeCCvn0C7cj31C/DuvZijUikbeFm/qg2xEcpS26jz65QP5F5RW/cENRUp1GE+OnrBlQMIpK8/gK6RmW131pBVPb3mI1ZGQqhpMqpNlz7DZVhw53JNLoBZxkZaoywiOTGn6QIQoeR0jeo8qHGj3sFxogmkMstZ37HWAeO8++YcaZQUFBoPLM/uUeifFC0FS0qj69AKChif22/aWiF020u+hxyHIhppW++3O2eRgiE58Wewjq88zGorBs1Rc24MXYJXKX7NI+h4ZiJakTw3wH6vhv6LarhiNjv0ToEtzFeJzAR3NvmJb1POBMrmUQoeBvl6p7LyPCKZZswUkMnY9jlL0k3rJar6aM3uNjhiFxNWdGEwWW79Iqm6hRmpOnF/J9zNSdA4LqMJ286/T5jl9dQzpV2JArNONvTCbA+qEgIiRt0JV8tvOmXFCvdX9pxpVoX1YPTBi9RrIoc6bN0Unu46gI7NQn27bRKnB/t0m0Pty44JzJQEWF7FSfGkPvdx8T/hndsk4lKmxMn9noRxD4RQmfVpd7u1GCLdsPvShGv+UpWBd31mHaE0EPilQorSPvaVd79xhLTjbJFUcnlT31VF+kC6jHu0uBE8HD7Ma0lXphQ2DkDO5fK39oBPM9FMoCxTqbivgTizl6mc/dzNZrCyQg9thvH/jRQiCErHBhHkcZoBaM1kT9rxDI/5MwNXQfXjJbP3KrgrqOH9nbntgRv5TZvfsz3enOYBkPXeyW7SPjOlqsvq2O1NSGvXn1cBwncy3RSjKbQfZKsZihjpMEKzLv6sxJlRoG7EFFf4UzPpwDiXo/VeSSd832flEjtEJk2yM0eeBE
- Z3gA5fFA
- Ey2gIZ+fgElLxfoEbvROzkDcT+tO1cnLfJT6kKWDL1twYbxhNFU92j8zn8ABlqseaG5Elm630lEefnYc+GoIMrYmHqODrCul2hXZRwfwcmoPAKmj5vROELAVS8QjhVx8QZ4PCibIR4rrs4g0W+/ZS95ar4z+OSPAZV6ARo8q/R7YCHFTzIGPzHa/u+fQy9srUhkhSTCAHemmk1smQ5OVw7/h3AyiVTIkB8SupFhmfWv2AhAS98vgZUjUYuhhbyiEexBx1QUM9JR7AIvVC/kmf7fQ+rFoq+xY4kilj0vdfWOAUO7zKN4s5EOWps60sF8L9HC6+
+X-HE-Tag: 1761912614-686659
+X-HE-Meta: U2FsdGVkX1/KYWkue32ErreErPVtiXTYXTS2hupFTt0IiFPT7B/cvGEzbyBKVnUGI+bwXQoijgVGjy7sgTtrDRwRBZJfeKNI6ph5xr1MP0GJOPjfiNwvdQnMk/EDJKgmfMJh718z7C9glcaOQ1Nu/UqrkczsT75aQy27VuxtIO//yGAPEuG50yZJ5QHbKwlFTv8OgcxarB8iaJVspbdxrSkU+V8mGQMVPOxdVUSsdw8jM1IVdq6JPuJWoCAHRe8qKXTng09SSLF0G/vGsdhKmISbV0b23tZxZHgX62TX7RyF02+6BvgGBnU1CpgEDTXXqiF8xzA8MZn61JN8YCpltrOyZo6uA+dcdALrB5N+LpmyDSv+gTUjBu6UT6ijzk7yCC4fllkjGfeZhMkzGjlJsAacbFmxsDHIh3C2y0zWvSRr71RIaN4CMgRfwiRPIGwlL6YIz4/yx9IkkZ2GaYR67E3k7y+rT3orrQNE4ifMJo19CPz9KpeDs924dKDgtnEL2oaWWun2lvqf8zvSQIvTqRBjHtC7CHqViP+XiAQ+NAQRBBgC3paIEMw7rumcm3fwibFkr7EP01sYSDzJi/yDuLVYrBN6cPFzc0y8ObMhvBX/UxL+4IcaSD7Z/kXJptNk+wXfIq6bHNKQ9ydk1ZR2qJxDuuxLOHTfUQ/rq/fM9dInx2BeZCYxWjVkF5YH4j3FlJv1At+BxhTY/4awHbqLpGy+7ogf/mSSYzhT5tnwPbe3nF3EisMAN44T84yuCD2XT87rMD8OMCkZBbfiWB7yf1tj+VpFYhxJHhKhL4Efvgyeasu5FIdi3t+42BPfsfaeIN4H0d3GwchRi7bvFTVCYfc5C/j+9TolgM1iEaTMRZIn8NpEIUIPDBEkZPChNFaCx8b1dAEK3fxyuyVrXdJCoVHJ3QS9pgvEL/MFlGMtzGkYy3J58my61EV+T/WKdnRXCcG2YhysFbd9wwIpb8g
+ z6pFcczL
+ Li/vKu8cqyejBW62rSVVEaxkBT03UWw5+mam7HvS32+NBcaA2L+Qmd33Oocpd/6fdtIZcZDKmTEXgBfJtMke+sMfKN9WXjo3FYHuObyeGMwuGe8wUz6ILSZgPDrqei83vxJZhEDnl4j853cwMaEUQds0yrqMSEpzR5QnWuo//sufkHZQqBoeT9Uc4RhYtlOMLXpmKIoVspuCYAYhbtVBLH+yowiBR8Ao2d/WI2v0xGJMuDiRMCKIp0gZh7O3pf49CmD5zg8FbSaI6UIEtIsEpLh0Dx7E25+yIBdHZLHk4c3bNg7kEgPcT2qY9ooX42XsIOGv8IjvCYRph8dtLN5zUc2kjIA4dE+Ye3kaOTeDjdD54PBm+b+5lXboX5aVn5+uf/oYXhQI6HypfYW3p7Iqgh7Bwe/2MkbxiG6DkUqCuqURQpiQRwvi+dr270++Ps0mtS96JyLtqoGrfZGuMtDWgJUyZQt6cZwgnzlji
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,23 +112,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> What's puzzling is that it took 9 month to discover it ?!
-> and allegedly Eric is seeing it by running kmsan selftest,
-> but Alexander couldn't repro it initially?
+From: Lance Yang <lance.yang@linux.dev>
 
-If I understand correctly, Eric was linking his tests into the kernel
-(CONFIG_KMSAN_KUNIT_TEST=y was implicitly set because
-CONFIG_MODULES=n), whereas I ran them as a module.
-After the kernel booted up, the stack depot was already initialized,
-so the tests behaved just fine.
-KMSAN also continued to work normally on syzbot and report bugs (see
-https://syzkaller.appspot.com/upstream/graph/found-bugs), so it wasn't
-really obvious that something was broken.
+When a page fault occurs in a secret memory file created with
+`memfd_secret(2)`, the kernel will allocate a new folio for it, mark the
+underlying page as not-present in the direct map, and add it to the file
+mapping.
 
-> Looks like there is a gap in kmsan test coverage.
-> People that care about kmsan should really step up.
+If two tasks cause a fault in the same page concurrently, both could end
+up allocating a folio and removing the page from the direct map, but only
+one would succeed in adding the folio to the file mapping. The task that
+failed undoes the effects of its attempt by (a) freeing the folio again
+and (b) putting the page back into the direct map. However, by doing
+these two operations in this order, the page becomes available to the
+allocator again before it is placed back in the direct mapping.
 
-You are right, we should add KMSAN KUnit tests to some CI (wonder if
-there are KernelCI instances allowing that?)
-I'll look into that.
+If another task attempts to allocate the page between (a) and (b), and
+the kernel tries to access it via the direct map, it would result in a
+supervisor not-present page fault.
+
+Fix the ordering to restore the direct map before the folio is freed.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 1507f51255c9 ("mm: introduce memfd_secret system call to create "secret" memory areas")
+Reported-by: Google Big Sleep <big-sleep-vuln-reports@google.com>
+Closes: https://lore.kernel.org/linux-mm/CAEXGt5QeDpiHTu3K9tvjUTPqo+d-=wuCNYPa+6sWKrdQJ-ATdg@mail.gmail.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Lance Yang <lance.yang@linux.dev>
+---
+v1 -> v2:
+ - Collect Reviewed-by from Mike and Lorenzo - thanks!
+ - Collect Acked-by from David - thanks!
+ - Update the changelog as Mike suggested
+ - https://lore.kernel.org/linux-mm/aQSIdCpf-2pJLwAF@kernel.org/
+
+ mm/secretmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mm/secretmem.c b/mm/secretmem.c
+index c1bd9a4b663d..37f6d1097853 100644
+--- a/mm/secretmem.c
++++ b/mm/secretmem.c
+@@ -82,13 +82,13 @@ static vm_fault_t secretmem_fault(struct vm_fault *vmf)
+ 		__folio_mark_uptodate(folio);
+ 		err = filemap_add_folio(mapping, folio, offset, gfp);
+ 		if (unlikely(err)) {
+-			folio_put(folio);
+ 			/*
+ 			 * If a split of large page was required, it
+ 			 * already happened when we marked the page invalid
+ 			 * which guarantees that this call won't fail
+ 			 */
+ 			set_direct_map_default_noflush(folio_page(folio, 0));
++			folio_put(folio);
+ 			if (err == -EEXIST)
+ 				goto retry;
+ 
+-- 
+2.49.0
+
 
