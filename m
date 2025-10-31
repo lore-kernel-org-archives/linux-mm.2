@@ -4,124 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6113ACCF9FF
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 08:34:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 45928CCFA00
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 08:46:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1E928E0095; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
+	id A38698E00A9; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF5CD8E0042; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
+	id A0FB28E0042; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B329D8E0095; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
+	id 925808E00A9; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id A3FB18E0042
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:34:30 -0400 (EDT)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 390CA49C52
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:34:30 +0000 (UTC)
-X-FDA: 84057747900.30.D5CA0EC
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 3B21220009
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:34:27 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=McEkAoh+;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7DD458E0042
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 04:46:30 -0400 (EDT)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 32D5316034F
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:46:30 +0000 (UTC)
+X-FDA: 84057778140.02.BB23669
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 624A740006
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 08:46:28 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761899668;
+	s=arc-20220608; t=1761900388;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
-	b=rnrj8//ZTipnuvm2E4+pdHUds8vm5CQo210/mBS5ypUtKHbYY539j5fAbiP7tAsA0pNrrN
-	GjLs4PZFLKXNhLOYrjlblAbErlrNr/whKZqExqe36GiKbkGvrPRqMRW15pDMv0+A2CTDB3
-	4a07jlNdG4ID/3aVVrAr1u4n0a1JMjs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761899668; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7d2jDf+rNANjgdXJ9jgGNfHD9Jjf+8Cvrl1XyirvqFY=;
+	b=cbsAFkykV2mo9IvBg4HkMEKJmrtzi8MDcT6b91mGrQgD02sqkTeCK3lrJvY7H+muNHzumh
+	vwb+isJaqqcyd+budA6fOCg6nDggyyPuYplDfKT3J1JhX1PRjsfa3HqURXRezUaR1UMhgQ
+	4OCAAgDtdhRceZHc1FjcGSMTLC+aai4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761900388; a=rsa-sha256;
 	cv=none;
-	b=himt08bAYyrN8xV8Z1AqBt13TW8J6CHcMuTb5pXIyYmI+zZCre+IEO74T+q9qrNOZsBEAn
-	8zPkqJIa0KUgSahBt9+TNZK7swFmWu3Unq+CoK3kbFLoAbT7E2gpJ4oYNwU/T5DUoABExC
-	aBe5VGS/uGsj2INKAJMLm6an0V9kgt4=
+	b=Ln8Rlg6AqoNQBM2jRL4xkbHip3zUcDpRZnd3oa6UfuGXCdcKPGCM0zj6ZTWp0UgznyYbmx
+	znbQmJappAsaRFlPcNwtEdsC1stBwzlY2FqJiE86a/ljqLGqNttpBbyj1HT5LmjUbH6nxy
+	GTnBViz/h+Xxi7Ld0dnNB7Ds4lmMjOw=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=McEkAoh+;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf13.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-47728f914a4so9564625e9.1
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:34:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1761899667; x=1762504467; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
-        b=McEkAoh+jn5ZwX+9OfQK5b+CYBHhtcI8HHYFDMgBSSxz7JT/J4GwcCMN5lxmm17THd
-         ftdQQ2X6eM6bnesV+DVB4EPUSJLp+9HSYIttQuVhwFqPcgjCXQLJiuDfVntlvg0u9Fnv
-         zNl6DSbVisgMYVI/FPlhJ5YAEgqQs5PaDw8d0TYuM3sO5oO67a11d07dJHo7Z3+vIMyB
-         VB7Il+H1b/p7uyymPzn1ADwsIhUDkGRgXtaVLeb8VlUxx2fu8v6qT6ca5zgJuGoZBMEr
-         7e9q8o1XPflkM3nOAXwlPZO0gMXOxxmKI7vyauOBNn3ypnYU7AZJ/Vy5e/e6FCm0k3Rl
-         ym9w==
+	imf27.hostedemail.com;
+	dkim=none;
+	spf=pass (imf27.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.48 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=linux.dev (policy=none)
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-33d463e79ddso2446399a91.0
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 01:46:28 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761899667; x=1762504467;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Brce2942SeTVJJTNYHk2AtyCkePvDy1yHUmXXiPEbXA=;
-        b=Wx2ECN8YMphcv6MpZFE+YVV0p0Uj9xcIdqvb5orUan70Kvh05ktcALdCVHM5RZ+4/M
-         TXj6e0DYA1wZrFr+B8zCYIQhcli2CnNIxJJYofokz3q75/XIDpPZ88VmQvfBTAixNyjy
-         9cd6pnDjS/MCbs3BrNmkbN2BuoSidkfzsomTDMVMQszYMNYef+fWXSp4hMj7J1I7ezfS
-         aoQSe5y5abhWwgx1LvPq0W3GuQ5FifcuGwYdBmVFzwPkotoRvWGem7ZI6dNrqq+QwQv6
-         EQcDyUoM9bEF+OIfzDE01bHw3mIFaF2BncEeqtzWWq3mctGuZ4C8ktQXch6QTyCJEzSB
-         +ggw==
-X-Forwarded-Encrypted: i=1; AJvYcCVpoNqn/p1OCgEbpVTyocg6TdX8UXN/MywrMYwAWIMZtFjsKcyMH26LC5s/CyoqbMPgcATaUHct4w==@kvack.org
-X-Gm-Message-State: AOJu0Yzp6DyE1N0+iOTbe1fXcQefZ0jkS1TQsU0x0xMSx093aHc2HVYv
-	qsqd/l4gJfHanoxLtbz/ZE+XuClY+JnJEvXMRPY9k9y+z8oTj4f0sOHqybETuUZDLZ4=
-X-Gm-Gg: ASbGncs2scMEyORpu5JLwxngoUkCRnL56O4shjLTIuSFhj7jADZkYpspZwPB+80wO63
-	/yLEQFcBLOwxecG+MBew/66gW6AG8w1EU5I8W6CQqUZUkR7tDAPX35hqmoKhfh3gj02UztMi51R
-	GnK7W7f8tLFQCBgG2DyVyhlUmAVb+hLo66e0uLF9u7m/X5a5YEKabsbshYFYe7ndZny0AD0dLRc
-	YYVOdQy8WZIdkI15M3qu2THRFpEkaPOSZOwwfTPUW60yD1btioLQzhfEPua0LZ+JPomhgJMoj1w
-	tcEswIWrDg5gRtqY0TjB46b8j1no4YhMs4TcjCO8b6ngVpP5Iy4engSgn9XAudPuc/fb/RWnIcO
-	WIKpVQL6EVwK4pmeGOG/vtdtquRiVO3eoXTeWRVthZtOs2rtGcMG3ESobmh97A9nF6dSXhLaQHn
-	3Vz+yW4rbUY6ZSPQ==
-X-Google-Smtp-Source: AGHT+IEqeWzc1dYod8DDM80O+3DfRoIrCHAb+32/10VgcqcE8gyD3g3E2A+vxz5v6zZlDzTIz39ZaQ==
-X-Received: by 2002:a05:600c:34d0:b0:475:daa7:ec60 with SMTP id 5b1f17b1804b1-47730872dcamr20908505e9.21.1761899666777;
-        Fri, 31 Oct 2025 01:34:26 -0700 (PDT)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4772fcf6c05sm17137655e9.4.2025.10.31.01.34.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 Oct 2025 01:34:26 -0700 (PDT)
-Date: Fri, 31 Oct 2025 09:34:25 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 05/23] mm: declare memcg_page_state_output() in
- memcontrol.h
-Message-ID: <aQR0kf_g2e59JCmz@tiehlicka>
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-6-roman.gushchin@linux.dev>
+        d=1e100.net; s=20230601; t=1761900387; x=1762505187;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7d2jDf+rNANjgdXJ9jgGNfHD9Jjf+8Cvrl1XyirvqFY=;
+        b=XVXpN7w1eFsf1Q8TGJJ7rGrSTElTpWL7XNFtUaGRkVwzTHaqn0kR4OC0fEzsP29ReQ
+         o2sTcrAJqcs3Rpf9pEqTZvQtI0wFcnJwx/hq78McXjqfvvYMs0DedLspJKcgl1G4Ayo7
+         B7QE5HavY1eDJQwawQAeDefLfgOKRnxXIXjm7F0fv5OOGj5n3jYw9JEkUp9YmgF1++8E
+         0VXCbftmBFFmBwxgnNzzIdaDBfqq4WZDBjEPsFxOxQw01L+qD4qk+/F4NcL2UwXTfOZi
+         2XjJhYHSrI2Q4XsQXg4jshJ0z6qhV7LQjb4s7ie8w/O4MJh4Q5KlLpYlWhvPdCqm50ES
+         5HCQ==
+X-Gm-Message-State: AOJu0YwaWHIx/lFUIJHzTJD3mmOFygy8XRDbM5CdULwiy8EGMPKhGRmQ
+	M13CVWTTuTWmZqcQ5d4OXdvxFPa9xOmYQU6KHNKQcemN2tNMMm3rKG+95nfsXw==
+X-Gm-Gg: ASbGncsE5hNQ42GY8f237b9lLyiPjAHk3ShmJYq0d/krNvz1VBuFfz/XZhKIDi9XFqi
+	nDCP7H8e0dRNdlPShfEcMr0VFO8JMTG2g/E9jsumy05BkCSXQ3MkIknqETNvPYrxr3BNTfpxChC
+	7f5e8b7Sbs1n5oLbBNsKHcVwUZNqDu03APimybrgvIM1/fE4tml3XsSnYyc4G6nskYsTD67nKZV
+	D0xuQxXq4tFFw8NfZNczpitDswUFWpwTxEsrlWc44SK9cgnJznQ438GkK/Wjq1Dvx/dZAxoLrj1
+	rZHCMyHTK0U2Tjcfmjk9N2rdxtsvTRPV/2uR/bMG6x1WDAqQn3etCML7anM2FOgFMeBL78i9zDr
+	s5fSUGSIU2uyybv70iNgLkFx18eiXoCc3NyQSg1AkVDIFHbutivzZYXXzDRKbmDsFZmmnCqcjUN
+	zDrUQdv1aY4SIT5+jXypD1xxU=
+X-Google-Smtp-Source: AGHT+IG9MOSsDXHUjOBUeSNUFj7dBvuDkEH12Kq/Ecv5qWphiL900dFodWOVBiicFMyj2+J3dq64wg==
+X-Received: by 2002:a17:90b:54c6:b0:33e:2334:ef05 with SMTP id 98e67ed59e1d1-34083070a19mr3342121a91.28.1761900387243;
+        Fri, 31 Oct 2025 01:46:27 -0700 (PDT)
+Received: from EBJ9932692.tcent.cn ([124.156.216.125])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-340924a0e4bsm1415489a91.1.2025.10.31.01.46.25
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Fri, 31 Oct 2025 01:46:26 -0700 (PDT)
+From: Lance Yang <lance.yang@linux.dev>
+To: adam.c.preble@intel.com
+Cc: linux-mm@kvack.org,
+	Lance Yang <ioworker0@gmail.com>
+Subject: Re: Accounting for vmap_area object growth when kmemleak doesn't notice any leaks
+Date: Fri, 31 Oct 2025 16:46:16 +0800
+Message-ID: <20251031084616.64054-1-lance.yang@linux.dev>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <PH7PR11MB6523C5200943207E879FB5CAA9F8A@PH7PR11MB6523.namprd11.prod.outlook.com>
+References: <PH7PR11MB6523C5200943207E879FB5CAA9F8A@PH7PR11MB6523.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251027231727.472628-6-roman.gushchin@linux.dev>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: 3fsnwt1iz1mfezgdsd985nsdp4z65zmf
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 6xg1hamyfyphyswgdy966jmfpk7ag7ni
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B21220009
-X-HE-Tag: 1761899667-298646
-X-HE-Meta: U2FsdGVkX1+Bd5Nz0MzMqmlrpRRFVjpzSMHGHNRTafffhGbJ1JtWCoHaI6XPmF/sPiYIOjerg9FnjJ3T0QbWq+FxulSyxLWpXeWME9V5seQ+dHV1Lh8cAdek8oJSuwCbE2edIWp7JO3ED6Ipt04zzH6Sf8Ymq41cSqYJTo4GN2r7INu/jBGkav4oqjT+yux5fpsNZGCY6U11Q01vPeSiJ0/o677Oc9JfLsd6FW3qCTdPDl8LLSUqReDaUVGKLsFySGsKUNn/Ifu0szvRkumBlyq9U9MlmQFMv0a+0QS0vMmu6GHdVkZ8vzjRmn5H+9Or5OsarJm5o7r2CsJ06jTDtZwRKxOjo/c4VOVA3yoZzihNLI9n5ymeWCbsdZgcmOERVJMi9OBA9KTuCsoWzG4jEnuqo+iSr1kcPkS0eJ6B99GA14EcD41Prvjz6GCjQ+muANkauGXEI42pQ7J/mCAzC4fRDMxvW8c/N4giRvteS0rNcF1hHT2Ol8OvcEzm/2xdtHmli7sUEVNrzdDE9dpeNgbOSczqXcG5BElugfHSy+iz6zRASjo2N9/eN30Z0UJUymY6ZxrvpX6xbKJB34sWqrhU3wn7FVUKx0h3DOwKDeWe+k4WKdSbOea5bGbQfGpThlTCG4112pCa3cfbfCXEzSQ4J+LdmNy/WCWHD+NQ1Wav0hsY3wI4Q4KYLpgFkzfUOonIKDpriBwb8btjlw7FC6Wxw2xXvTGwmsMpWt/LMyoxPJjeRXgDtXxi6/fMxM/Xz1stFJP45x9lFnDxPi1oxz7DHcydLevxdB9twCQJ98qOrXuNgMho1wmvkBChmBT6K5lB/MhRVw6MdYxtmPN+oyaGwgqbL2WrLS4KgwiCjF4LcOQ8MrsSb8C7AAj0ezTRovGQS6nOtYNicRqgqLeIZSa06Kfq//Nd44ASCBo98aRMyVgPC2mCHc/a8bD1/UlvWO7FGJfXijt15WgrCGt
- Ze/TVKKJ
- 7dej8Yq3f6WWoUp11Cqbt+LnGfsed36iEgzPl34gHHH2K4w4or/m5U1GmnaFRcgGKZWhU0Y9a8G8/M8O3VucoTh5gEfmd0wSuqgy5T0rIZDqzgq0Kvr5d2a0PaGfI7f617vx6mr6uMibagMq3ln+AwsB18uJlNcc5fsv/gLeT7Am3Aj/nu6y4jnKm9zMhvugsK7Cnkz1SU57zeBauSc9xHd92MHuZMtE0l13UAaEzz3YhbqamWCLunnb91tGCnpeFBaecoWIc3AJ9iRbi1UmFDkj/DhDIbBj/4pWhVrZidAJ1eHeBgja+OtilSFn8hD/4h2U5DX0odm0ttpQY7llWRAIbG1aiZlDn8iZ3EaVrZwFhZK23m1bSwKC9SEy1lrP1yELSI6QheEHdyILwfwGV9UUYJZRfsUU6vWWSQU2zzLzBx5+OZInWTwUyVP0uYzr9uqS5Q2UbhrsyA8FwK7M4Kvj+ZIZnKrMBQzXMGI4EV6Vt9cGuNRn9pmEjHQ==
+X-Rspamd-Queue-Id: 624A740006
+X-HE-Tag: 1761900388-750756
+X-HE-Meta: U2FsdGVkX1/KJyCMDBlE1liFW22UM8sho/Uvai6VC97TBGYtq1tdAYOtRg97GEykxcnkMrjN4AkfVmZrAme17cPovI4pRkZ0S6dTsEAVon5CdUh0SflUf8saHjnNe0VS1i+vPiHV+e4UV4b2rDtJtVU3offJnE2hfrfc6FnXUrKXKJnJkomDFhXG5Knf8cs34SVZz6r0+gZdkojvVwHxdP+iZm8v73d039tKWes1SpbMjkjs4Pjy3uiMqklIoG+fBmtLvmkKgJb0J1+UHngUDuuHXqjDWw5xYjTrc9fmkTTLpZFpU6FbWBEUMwar5hDCrS/Go11bYhEGqwRxiLbuNb2o3QWT1l0UAEM1NLSSTDa3EGkuaVChfsiHUbHnyn1BQX6FvHz0zcy2mRZRwqtdASyqip8WrXKdiv+pFvEAoJt9MVDHO/kJDR2SBVbbDWo6bnjuja2lAhoUawt+64IVudk7ZblqCEX6GMh89hdSy/XwJ41znc4xgokSs9IK1HY9z3l7FirTeOBBoh9zAdO5pQmSNG+uBnDR3/OI72xihvS/DAy+Gs6Ux8diBh7WBw8XRoBJb18wRYqA1OBMFEan3xFlXdzv93YmMaPJx/TCOClMdN7e1I2oC+G/NYG0QtIL4YARAIuaYZwtsqXTnLwtoaoLRq3NlRE7Rl/zGF30ec7/U6p/2mnonAA7jwNl92eGyBmPeRZDY2CvwN32cnLHlV60u5Zi0kiBQmVMpBBE+wZoElWxVeM5WOZYshBIP0+f3A0H9vt/ojR7EzYunUJzM4gdw2zwi1zty03iJ2c7n5STZ9dm0rkcbXso3w35TRpjnOWVQGSxga17Y8PFWSi82xIFbX4dGMYtDGJRKMnE2kZW0EATHg8itJLgjB3HbcIDNA6hdQ3Cj3GHfgoyA62LFWMHpIEn3bH6Ud2AzGENpmWoD3I8Ly6ceoouL2qeJBuxzCW1oktH4IlRrAoyoJ7
+ B4J3oRlG
+ mcR9T7R5i92S0gGpz3LUruEq3B+SEoJCz6mTOp8aUrSr3KIwx5BlSS5SzwI33eXxYhSYmt314LDRHzTYmdsO6aRAjm+saDMbAz658ZGY3k+4ODYk7a3UZPkUfnCIeElSwYNKgfZdSLpj20j97h2JpVy9LBex1zo/3sQatX8R/Epsvvu5LXRKuvNe6gM9Tov9DkaGHaSqC3g/NRE/pPgl4SMAfCh1Q+Ix3w8J5Avfj5Aocz1rgKoaWiwYc3RRG+yZyXKCxYCHXkh6fd9q4XcufdRdcwZdAZXHkTZC3YaCcdqK+v8hThyQFjcVm0jL/ItxgXh0doDpoplBFh7UpYix1q+lmMjXtn8bTF7gz1ACilQBFTMKWl35NUzjY9ETt9NjaStGpC8brB8bngWl3p7stvui06azsflPJxXZ+Q2/pCukW964v3FEdyzXTdvzmvSRnF/64w+J3TCwDe39nF3DXkxFnk1QAU1d0sLv34IHjoaqetyx8zP1HMt7LYLVvFknBLij55c3cPMiPkfs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,47 +106,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 27-10-25 16:17:08, Roman Gushchin wrote:
-> To use memcg_page_state_output() in bpf_memcontrol.c move the
-> declaration from v1-specific memcontrol-v1.h to memcontrol.h.
-> 
-> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
+From: Lance Yang <ioworker0@gmail.com>
 
-Acked-by: Michal Hocko <mhocko@suse.com>
+That's a tricky one. With kmemleak being clean, it seems like a logical leak.
 
-> ---
->  include/linux/memcontrol.h | 1 +
->  mm/memcontrol-v1.h         | 1 -
->  2 files changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-> index 9af9ae28afe7..50d851ff3f27 100644
-> --- a/include/linux/memcontrol.h
-> +++ b/include/linux/memcontrol.h
-> @@ -949,6 +949,7 @@ static inline void mod_memcg_page_state(struct page *page,
->  }
->  
->  unsigned long memcg_page_state(struct mem_cgroup *memcg, int idx);
-> +unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
->  unsigned long lruvec_page_state(struct lruvec *lruvec, enum node_stat_item idx);
->  unsigned long lruvec_page_state_local(struct lruvec *lruvec,
->  				      enum node_stat_item idx);
-> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
-> index 6358464bb416..a304ad418cdf 100644
-> --- a/mm/memcontrol-v1.h
-> +++ b/mm/memcontrol-v1.h
-> @@ -27,7 +27,6 @@ unsigned long mem_cgroup_usage(struct mem_cgroup *memcg, bool swap);
->  void drain_all_stock(struct mem_cgroup *root_memcg);
->  
->  unsigned long memcg_events(struct mem_cgroup *memcg, int event);
-> -unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
->  int memory_stat_show(struct seq_file *m, void *v);
->  
->  void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
-> -- 
-> 2.51.0
+Might be worth enabling CONFIG_MEM_ALLOC_PROFILING[1], which is perfect for
+tracking down the call sites of allocations that are still live.
 
--- 
-Michal Hocko
-SUSE Labs
+[1] https://docs.kernel.org/mm/allocation-profiling.html
+
+Cheers,
+Lance
 
