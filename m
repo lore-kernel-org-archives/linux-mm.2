@@ -4,111 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A1EFFCCFA02
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 20:18:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 633CDCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 21:01:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEDCF8E00F8; Fri, 31 Oct 2025 16:18:39 -0400 (EDT)
+	id 3242E8E007A; Fri, 31 Oct 2025 17:01:05 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9E528E0068; Fri, 31 Oct 2025 16:18:39 -0400 (EDT)
+	id 285C68E0068; Fri, 31 Oct 2025 17:01:05 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DB47F8E00F8; Fri, 31 Oct 2025 16:18:39 -0400 (EDT)
+	id 19AF38E007A; Fri, 31 Oct 2025 17:01:05 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C88D58E0068
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 16:18:39 -0400 (EDT)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 80EA21405D5
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 20:18:39 +0000 (UTC)
-X-FDA: 84059522358.20.12572BB
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8B03840009
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 20:18:37 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JeEuqJis;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0516B8E0068
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 17:01:05 -0400 (EDT)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6CEBB1605FB
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 21:01:04 +0000 (UTC)
+X-FDA: 84059629248.13.DCD3BE2
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 52CFB1C001C
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 21:01:02 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=awMqbcaU;
+	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761941917;
+	s=arc-20220608; t=1761944462;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iZhdacDdwvl3z6wuG1uUon8ZTl5XKBxP70M1vr4Jtcg=;
-	b=vXQed/mqYyGNILbFl/MNXi0idt+v0yxQKY2N/NZzYDLccsp6+nfEyHefVW0+5U+kuszadP
-	93A0e+7NmPgW50n88HENiIM8mZIO70qM7Nas63dQxEMCl41YWyQy2rUyDCyKqZtfkf08Vb
-	N9l5diYy2DFimF0ozb58VJWrWUenbxw=
+	bh=4M437FhMWrYRU9fL8t9iQDlE+b8fQeZRsavMmMebzdc=;
+	b=JcoGIy+1h/h6cCr2x9bz7W+P8nwvvEtVu1GWqZaTyvynegRso60kHWTi8scgHyW9ANx7o8
+	TCSeHKb6v5+RC2JL06IS/eXlrjW1gzgiYiFPGyd2zuePGnKBVY5rsTZgt0nkF3Oy7dgymn
+	MYuaCV/bnd6Dxjfad9RVGDDYXFnJgCw=
 ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=JeEuqJis;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf11.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761941917; a=rsa-sha256;
+	imf21.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=awMqbcaU;
+	spf=pass (imf21.hostedemail.com: domain of yanjun.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761944462; a=rsa-sha256;
 	cv=none;
-	b=wyJGkbYLDZUfXSkU6Whj/TK4vbhmUUgz9yoalU5q4IZ/RAsEveAmU7L2vW8cE/T0ka1gM+
-	IPM6p7hYDt9fu9NKLxnTEJqkkywkoR2+ekhMr6iSTaojFwxoe0EoIRy/UWsPUXtqwkWceb
-	180V5d7GduRVTxWlb7wN/0/PJHrwado=
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-63c21467e5bso5672102a12.0
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 13:18:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1761941916; x=1762546716; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iZhdacDdwvl3z6wuG1uUon8ZTl5XKBxP70M1vr4Jtcg=;
-        b=JeEuqJis4jgwkludpxKGnXvLCWiipzHVxDKVAW+/+vxm93vNklrJ+9nGv5uSZ8odEU
-         ruUNwX6vHR/j/i8g9Aps2CNfRHc4nZ4PjeMrFIE9Jbqtz6FHqh+vDo/FORMkcInGGOjD
-         /KHWS743VFAYO44G+vGFGBJwjZelc1vCFEWLK/W4PIpiUZrW5UZ8kAsJQRAYOM/6PDVw
-         S4PwhPgiHHYQscLIN3OjjWHEcaPpNBxLsgBFplX4X6C55x5ukdwQfj8hp9uVNJcRNgLl
-         E4Z8d64h7V/humCJ1erb+TVJCCLFCuxNGFMbYigC7WzWBpLG1roRGlasanl/4ysihLbv
-         a4GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761941916; x=1762546716;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iZhdacDdwvl3z6wuG1uUon8ZTl5XKBxP70M1vr4Jtcg=;
-        b=eELlYqRzbPER5HASSRghI1GpYXlC/0ny9UHy39ceIAWtMK9A0HAeON4W6zU3MG3pl5
-         oO7GEc1W5ttAOy3ENW7JuwO8snnIOl/Q3JHx+Xz5oPCUKdoklanTd1gtCUMjuiR3OCff
-         P4yFzqookqIkn/sU4NErhSFrdeiKXzRA8lgfKR8APfpBT0jxtnVQ9YYVJZGqn+WcfC1j
-         ffBHYsgoXlyiA8ntD0LvQyDiKYN8SV06OZlCu3PMn5u2y4Hqgk9p5SbcN1WoGu3e4QgD
-         q046v7pdnLCDOZGNPmkUhywaH7gB09WMOMPJIBQ2g70RJF4qKWpT7flQRrYJ+HdgG34z
-         Inpg==
-X-Forwarded-Encrypted: i=1; AJvYcCWbIJlq84pp3eo6IXWlfXTMV5HTLiww8k0iCfsIj0Z1I+Iu8rTJirp3wKMs9LfLoWNbRbWnP2RWTA==@kvack.org
-X-Gm-Message-State: AOJu0YyhFf4BK4OywEPuEG1mXwnULwCPbffn8XijOddNQZWsSniFlu8O
-	n17ijzQusye3NgO9UO6+rgSRvYXD6XAdJKecXNkybE7POJeBjeib90W06t0u76LShygaiBbwl+k
-	kvExV3Q1JLZ2Gd7YG3TSWWMfgOiKGeQrB3GA7Ni0WBA==
-X-Gm-Gg: ASbGncuoAm9235b0KjuAkzLTVKyk02rgSAJ6DEKq47n76enNCbHf68NKxGLzuMx9y6+
-	TpBWld2ovDq8aV4ZUYgiq1Wwd0KqLNZ7V1J6GMJzDY8x+GiLbAZyQ6Gs+ccW6tmiMH+CCaDXDmu
-	i85KH0YaXipl899vAIFV1ZdA0dEgMc/VpG9e/y1XEF0tBHDaKS14kGX/WXAqtnubj7DDDnCQa2s
-	i4vdTk3x1kii6G1XKkdLQuD+ijYGYiUzrSCwfw2yqnM2gTxFqWFWnXuaKyHzrTf2xhiFge2NXo0
-	TeM=
-X-Google-Smtp-Source: AGHT+IH8popBFFuu+7j49MbLPlZ9PCj/ug8iNZoAkJ4cP6tQ/3sJ+ToxQbaNYdZnYT4W9gHNNYSqbMSCstTCZpJAjro=
-X-Received: by 2002:a05:6402:2549:b0:63b:ef0e:dfa7 with SMTP id
- 4fb4d7f45d1cf-640770413b4mr4089855a12.6.1761941914959; Fri, 31 Oct 2025
- 13:18:34 -0700 (PDT)
+	b=kJQaNBR2Ii+nlN+OhGaCvuZEs6jGHjRilMG6qxUAX/jinIOylJdLq7fBxIWvjodwq4Qyak
+	9XavzxQPlOl/vLFrYTFLgYus1Il4MRYLxshOazGEm8TGT0gNF2TyWsk/VukbZXHemRRdUF
+	KBIFTGLWy3Hx307IJwAgvHHA6t5o7a8=
+Content-Type: multipart/alternative;
+ boundary="------------MKu83Q5FmrLXu5CJIynSSYlh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1761944459;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4M437FhMWrYRU9fL8t9iQDlE+b8fQeZRsavMmMebzdc=;
+	b=awMqbcaUmmQikqXXPOw2EXUJKAMePrp6SE3lJ49LdDWaOO/xIgOi9KMJpPK8fF2Fymyd81
+	rLGJRmowtcGAxIzW1WZUZ6StU9kQXAmJpv8kwcRFGgcSGIagvErjWGZf57G+CADyyH7QOG
+	+ijL0HjSwRgmppIZnwWYWYT9Bjg3xpI=
+Message-ID: <d710a4fb-adba-4d95-99db-a2d1176bdeaf@linux.dev>
+Date: Fri, 31 Oct 2025 14:00:55 -0700
 MIME-Version: 1.0
+Subject: Re: [PATCH 1/1] kexec: Use %pe format specifier for error pointer
+ printing
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Simon Horman <horms@kernel.org>,
+ kexec mailing list <kexec@lists.infradead.org>, linux-mm
+ <linux-mm@kvack.org>, Alexander Graf <graf@amazon.com>,
+ Mike Rapoport <rppt@kernel.org>, Changyuan Lyu <changyuanl@google.com>,
+ akpm@linux-foundation.org, Baoquan He <bhe@redhat.com>
 References: <20251016200320.4179702-1-yanjun.zhu@linux.dev>
- <aPdVSyLRKeRN3i6z@horms.kernel.org> <16b37574-32b4-40ff-a8b7-2b443f293d74@linux.dev>
-In-Reply-To: <16b37574-32b4-40ff-a8b7-2b443f293d74@linux.dev>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 31 Oct 2025 16:18:24 -0400
-X-Gm-Features: AWmQ_blp1EcIGvx2FVAvkiazcvVZTd2t3Kird0CkC1s4V_L1BZfa0AWSXlFb8ZQ
-Message-ID: <CA+CK2bD+_QFWx-+3sTW5f-C2tKG+bU1Fzk2bUP39UGuGouPRVA@mail.gmail.com>
-Subject: Re: [PATCH 1/1] kexec: Use %pe format specifier for error pointer printing
-To: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
-Cc: Simon Horman <horms@kernel.org>, kexec mailing list <kexec@lists.infradead.org>, 
-	linux-mm <linux-mm@kvack.org>, Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, 
-	Changyuan Lyu <changyuanl@google.com>, akpm@linux-foundation.org, 
-	Baoquan He <bhe@redhat.com>
-Content-Type: multipart/alternative; boundary="000000000000f4d27706427a1110"
+ <aPdVSyLRKeRN3i6z@horms.kernel.org>
+ <16b37574-32b4-40ff-a8b7-2b443f293d74@linux.dev>
+ <CA+CK2bD+_QFWx-+3sTW5f-C2tKG+bU1Fzk2bUP39UGuGouPRVA@mail.gmail.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: "Yanjun.Zhu" <yanjun.zhu@linux.dev>
+In-Reply-To: <CA+CK2bD+_QFWx-+3sTW5f-C2tKG+bU1Fzk2bUP39UGuGouPRVA@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Stat-Signature: sjurfd65ich3k5m3k4p6hy4szfqo8akg
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8B03840009
-X-Rspamd-Server: rspam03
-X-Stat-Signature: w57nabcm3rjh47j8kwzc9gm1zg4hqrx8
-X-HE-Tag: 1761941917-976083
-X-HE-Meta: U2FsdGVkX18PoUeBmdxCJ3WE8NGlxOeNDeN7+QQxZqRemthRy39AH+E57zc0bRHMvqNmoBif/E/jBFtxlarHayKBUsCG+IOvu8I7wljCBON005IjZzTS/jchQOuunomZm84UR392NwZXGQrX0qkbMrhMPpFF/6m3ftmKmPQSJF4piNc+t1RF8atmtx7+MGJr8yjaOSDQ0D8wcz9+F/tWTbSi2KqgmSTeEOIaQnJOoKZldnmsdgwl6A2K/PEWuacGiF0AI2TJYK0D9l6KFqgVGvSzsT1tat33ikdv5vE9+rsmx6Hr8xkDJCl5KyjZ/G8QGE4EMbjIWuHVygD+0Oqzf5mg9AayzKWDrNZxxkAJakVyyVOrshnkGUcAMN5ZfmiOLS0uZI6c/3TdmQOzQBZPKng1NN/vIJJwIqbSHHYEqUOmqE0vKz9cAnmSdF/Rn1YLQ43wkMcD2yMjdnJRuAjjoX7tl2HU/Fv4VHOvVoLftI285Hvu8JPobV9Wlh4ZEI2Ra+DZKZtsHnGRJJ9SPRawOCBcyLc2oRwJ3Moke3qQbeZT91hNqNEsynYDbhh2s2zOc7cnOJvCqzcSzdQ8v9fJZeAzv142WS9/AdQCdY+yzUpk7+etHVLUaqIlwe0fz+aKHrfiX8a9MJ/3MBLBoIn68tuEO8O0YKWSHjXh4ew6gCBrb/OTL3BcjYtrosPniq0IrvqUCwdHOjeo6Ej0cfvgmBNlzcfwzwD77O6pqUMePRtjWjfpCyL/ux8YKdlARO58OB/T0EMll0pEtEKaCiptQK/DBzoour4AJffq6ZPPF6Ijr2nXsgwPNm637OEvFMwLgSmJ5APlGcNeoURr27S6+9beV9r1qRbc3eZ6Ys74MmOTxi5ywX4hKu3I2oCtCR+nK2NbNd/8VdBcD/67h9EjX+HM3tbmcp1ZWGiWM4H7iWmEX6ceBYLEhL8EwQkEjpKgsCOilisRasdcclty2J/
- CWzLCRMF
- a38IbRf+7sqa0fKqRDwUtEgSUj9zPAXXMyuXB4DTdf4uFOHkI/95hwtonIP3dGJOFTIxK1WklZI9NtPJ04YVqdS6+5Za4Bwyw928eEVNLe7JmrYp7QDaew2QNpanNJ6gPQpYERntt7TCOeqcq3ZjD/Ljqvj5CmyWGY4KD/4yzoxvQ3Htvar/4OFoIGMOpCZoaLYK6u5VolodsjI7BYi43vzIVZ+Q3dUB96l2fsCXyLjs2erY8uBVaQlkCLWQFjm/lKqM5vHGSfIDjh9UnohfypZF5AXE4NWrb3WzyhaRzyY3CJu9EccvxhK4a8VGTobMRIfrz
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 52CFB1C001C
+X-HE-Tag: 1761944462-788504
+X-HE-Meta: U2FsdGVkX1/xZUNCC/BnY9ZvIO5t1DiSG280lXxE9fLyJ1w5dwldNp4IW1ELBDaOQ0EWenZLL2fw44ZYr9kc90QJU9l8/wV4tNYlxv3VOTGFIQRW/e/Q+RWW1xAe8NrivC66MWSYSS0FfXK4+W1WBZEE746a5zAFkRIL7W1S1+MKI/wOQjZc72Z//Zpm5AXtCUPJ7WRMr2A7GnYazozblzPRz6pvv8Q/5PZU4yL8t9OpDLFUEfKzfaW2JNKAPcI+AD+Dkf7I9noVeRRgOM1Hi/KN+fMEXIqDxHJUGeIDQBYbF1wwIVQ8W9+e2Q7PoxNK7TSEq8+f+hVaDO3xXsNDvUyOaTG5HAfntodLA9fG/hiy2QE2qtbSz15WHbHXAbc/TCFzaQbr4pbjoTamgXVBa+CxVt1p7lHd6LpNw2FAhJAtzPZNXJuWtjNywYqsyaS6IZTV0UQpw9VjrZcQ3ygTnFGqt5cBZxw5k5fr6ijKTGdemFBRawwAwuUHTqVbFaEv8FrKhsExZjHfCOdlhSgHkuE97ppUfP2el6jD+jmMJrO2CVrkwT1OcEy+r65EDL4kA9ggY9se5UNmRlDbv/Yo7lv3BbwUYwPvick2eq2+eaCFe8CJwHV9c4Sm/K+0wqrg5bruiFXun5j4VoXOEqwVZmlPWwwiAPd+6ECWNdM4KZm7c6TUb3HZoRMwcjCfJ2jDbncmZAHjsol6/6T+s25Rl4sKg0Yk4XE6LtIBe/OnySR4uDyPuy1G/MQBN04w1QsA6EFsLUtDTcJfKx9K/FjDYEAhJ13Km3sQ5P0Vsb1RLJ2al6MZZ9ZCKz00hKRhPy9dO1QxbA2BwZBV9kRNZ2nHo47Rp047IViu3QuopLc7X0gJSQ6WBjENofFgu7oEJ5cjCUwBBOLB/4Gtz3Fg5zfDW6BLXIj7F4YseZak2zrrRceekLIV4wOZzpphz3HZzjANKQwI6kCXIcEPGxo+X/Z
+ Wg4kQKIT
+ tKroMv8vkjoigx/H4vmGNBsNTHYsJAo51vxJWpv9TcN241e1orWJbe/SDkDOPzxMgL0nLC3cOoRE9ZP1Z8YEv2l+DudvhIcq2TSciRWgx6UImN83ag5ZqwzBsry/bKXNJeeXygNKpWZnapbSsE03FACV3faZN6VjlQ8t+l6SUT3P0hnPu4sBF6NvW38hGUxfPZv/HJ7qRXkQg4aszfSpuNgE0vHmW8yxN/O9MoZkgU6nw+uT0zK2wonMyRQYJa7n3VbV6jPbCueu7u3vmF9H5HjQzqQd6iLkpbZSDpZ6ZlsbKy82uyknBrCY67Bt4XMjH1iDgebwTNk1S5wlBuvdU9ZVJ/q9OtiKiY9ng3KLPJXmce23wlNuMKnwfmh38FTTMQiFn6fiX/Qm1vidOkznlHnkozAJpDB03nsqSOf9CcWwOYYILJJGw69CkH03j6AMc5p4u
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -117,89 +95,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
---000000000000f4d27706427a1110
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+This is a multi-part message in MIME format.
+--------------MKu83Q5FmrLXu5CJIynSSYlh
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Sure. Will include it
 
-On Fri, Oct 31, 2025, 4:09=E2=80=AFPM Yanjun.Zhu <yanjun.zhu@linux.dev> wro=
-te:
+On 10/31/25 1:18 PM, Pasha Tatashin wrote:
+> Sure. Will include it
 
-> Hi, Pasha
->
-> I noticed that you are moving kexec_handover.c from the kernel/ directory
-> to kernel/liveupdate/.
->
-> Several developers suggested that I resend my patch after your patch
-> series is merged upstream.
-> Therefore, I=E2=80=99d like to ask if you could include my patch in your =
-series.
-> This would help avoid extra work on my side to resend the commit later.
->
-> Thanks,
->
-> Yanjun.Zhu
-> On 10/21/25 2:41 AM, Simon Horman wrote:
->
-> On Thu, Oct 16, 2025 at 08:03:20PM +0000, Zhu Yanjun wrote:
->
-> Make pr_xxx() call to use the %pe format specifier instead of %d.
-> The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
-> -EINVAL) when given an error pointer created with ERR_PTR(err).
->
-> This change enhances the clarity and diagnostic value of the error
-> message by showing a descriptive error name rather than a numeric
-> error code.
->
-> Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev> <yanjun.zhu@linux.dev>
->
->
-> Thanks,
->
-> This looks good to me, even though I note that this file
-> has moved in linux-next.
->
-> Reviewed-by: Simon Horman <horms@kernel.org> <horms@kernel.org>
->
->
+Thanks a lot. Appreciate your helps.
 
---000000000000f4d27706427a1110
-Content-Type: text/html; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Yanjun.Zhu
 
-<div dir=3D"auto">Sure. Will include it</div><br><div class=3D"gmail_quote =
-gmail_quote_container"><div dir=3D"ltr" class=3D"gmail_attr">On Fri, Oct 31=
-, 2025, 4:09=E2=80=AFPM Yanjun.Zhu &lt;<a href=3D"mailto:yanjun.zhu@linux.d=
-ev">yanjun.zhu@linux.dev</a>&gt; wrote:<br></div><blockquote class=3D"gmail=
-_quote" style=3D"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:=
-1ex"><u></u>
 
- =20
-   =20
- =20
-  <div>
-    <p>Hi, Pasha</p>
-    <p>I noticed that you are moving <code>kexec_handover.c</code> from the
-      <code>kernel/</code> directory to
-      <code>kernel/liveupdate/</code>.</p>
-    <p>Several developers suggested that
-      I resend my patch after your patch series is merged upstream.<br>
-      Therefore, I=E2=80=99d like to ask if you could include my patch in y=
-our
-      series. This would help avoid extra work on my side to resend the
-      commit later.</p>
-    <p>Thanks,</p>
-    <p>Yanjun.Zhu</p>
-    <div>On 10/21/25 2:41 AM, Simon Horman
+>
+> On Fri, Oct 31, 2025, 4:09 PM Yanjun.Zhu <yanjun.zhu@linux.dev> wrote:
+>
+>     Hi, Pasha
+>
+>     I noticed that you are moving |kexec_handover.c| from the
+>     |kernel/| directory to |kernel/liveupdate/|.
+>
+>     Several developers suggested that I resend my patch after your
+>     patch series is merged upstream.
+>     Therefore, I’d like to ask if you could include my patch in your
+>     series. This would help avoid extra work on my side to resend the
+>     commit later.
+>
+>     Thanks,
+>
+>     Yanjun.Zhu
+>
+>     On 10/21/25 2:41 AM, Simon Horman wrote:
+>>     On Thu, Oct 16, 2025 at 08:03:20PM +0000, Zhu Yanjun wrote:
+>>>     Make pr_xxx() call to use the %pe format specifier instead of %d.
+>>>     The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
+>>>     -EINVAL) when given an error pointer created with ERR_PTR(err).
+>>>
+>>>     This change enhances the clarity and diagnostic value of the error
+>>>     message by showing a descriptive error name rather than a numeric
+>>>     error code.
+>>>
+>>>     Signed-off-by: Zhu Yanjun<yanjun.zhu@linux.dev> <mailto:yanjun.zhu@linux.dev>
+>>     Thanks,
+>>
+>>     This looks good to me, even though I note that this file
+>>     has moved in linux-next.
+>>
+>>     Reviewed-by: Simon Horman<horms@kernel.org> <mailto:horms@kernel.org>
+>
+--------------MKu83Q5FmrLXu5CJIynSSYlh
+Content-Type: text/html; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <br>
+    <div class="moz-cite-prefix">On 10/31/25 1:18 PM, Pasha Tatashin
       wrote:<br>
     </div>
-    <blockquote type=3D"cite">
-      <pre>On Thu, Oct 16, 2025 at 08:03:20PM +0000, Zhu Yanjun wrote:
+    <blockquote type="cite"
+cite="mid:CA+CK2bD+_QFWx-+3sTW5f-C2tKG+bU1Fzk2bUP39UGuGouPRVA@mail.gmail.com">
+      <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      <div dir="auto">Sure. Will include it</div>
+    </blockquote>
+    <br>
+    <p>Thanks a lot. Appreciate your helps.</p>
+    <p>Yanjun.Zhu</p>
+    <p><br>
+    </p>
+    <blockquote type="cite"
+cite="mid:CA+CK2bD+_QFWx-+3sTW5f-C2tKG+bU1Fzk2bUP39UGuGouPRVA@mail.gmail.com"><br>
+      <div class="gmail_quote gmail_quote_container">
+        <div dir="ltr" class="gmail_attr">On Fri, Oct 31, 2025, 4:09 PM
+          Yanjun.Zhu &lt;<a href="mailto:yanjun.zhu@linux.dev"
+            moz-do-not-send="true" class="moz-txt-link-freetext">yanjun.zhu@linux.dev</a>&gt;
+          wrote:<br>
+        </div>
+        <blockquote class="gmail_quote"
+style="margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex">
+          <div>
+            <p>Hi, Pasha</p>
+            <p>I noticed that you are moving <code>kexec_handover.c</code>
+              from the <code>kernel/</code> directory to <code>kernel/liveupdate/</code>.</p>
+            <p>Several developers suggested that I resend my patch after
+              your patch series is merged upstream.<br>
+              Therefore, I’d like to ask if you could include my patch
+              in your series. This would help avoid extra work on my
+              side to resend the commit later.</p>
+            <p>Thanks,</p>
+            <p>Yanjun.Zhu</p>
+            <div>On 10/21/25 2:41 AM, Simon Horman wrote:<br>
+            </div>
+            <blockquote type="cite">
+              <pre>On Thu, Oct 16, 2025 at 08:03:20PM +0000, Zhu Yanjun wrote:
 </pre>
-      <blockquote type=3D"cite">
-        <pre>Make pr_xxx() call to use the %pe format specifier instead of =
-%d.
+              <blockquote type="cite">
+                <pre>Make pr_xxx() call to use the %pe format specifier instead of %d.
 The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
 -EINVAL) when given an error pointer created with ERR_PTR(err).
 
@@ -207,23 +204,25 @@ This change enhances the clarity and diagnostic value of the error
 message by showing a descriptive error name rather than a numeric
 error code.
 
-Signed-off-by: Zhu Yanjun <a href=3D"mailto:yanjun.zhu@linux.dev" target=3D=
-"_blank" rel=3D"noreferrer">&lt;yanjun.zhu@linux.dev&gt;</a>
+Signed-off-by: Zhu Yanjun <a href="mailto:yanjun.zhu@linux.dev"
+                target="_blank" rel="noreferrer" moz-do-not-send="true">&lt;yanjun.zhu@linux.dev&gt;</a>
 </pre>
-      </blockquote>
-      <pre>
-Thanks,
+              </blockquote>
+              <pre>Thanks,
 
 This looks good to me, even though I note that this file
 has moved in linux-next.
 
-Reviewed-by: Simon Horman <a href=3D"mailto:horms@kernel.org" target=3D"_bl=
-ank" rel=3D"noreferrer">&lt;horms@kernel.org&gt;</a>
+Reviewed-by: Simon Horman <a href="mailto:horms@kernel.org"
+              target="_blank" rel="noreferrer" moz-do-not-send="true">&lt;horms@kernel.org&gt;</a>
 </pre>
+            </blockquote>
+          </div>
+        </blockquote>
+      </div>
     </blockquote>
-  </div>
+  </body>
+</html>
 
-</blockquote></div>
-
---000000000000f4d27706427a1110--
+--------------MKu83Q5FmrLXu5CJIynSSYlh--
 
