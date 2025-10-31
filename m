@@ -4,116 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCB0ACCF9EB
-	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 07:11:54 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23FA3CCF9EB
+	for <linux-mm@archiver.kernel.org>; Fri, 31 Oct 2025 07:25:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2650D8E00C8; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
+	id 608378E00C9; Fri, 31 Oct 2025 03:25:06 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 23C8F8E00A9; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
+	id 5B8CD8E00A9; Fri, 31 Oct 2025 03:25:06 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 179248E00C8; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
+	id 4A7E38E00C9; Fri, 31 Oct 2025 03:25:06 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 037948E00A9
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 03:11:54 -0400 (EDT)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 791F512AA80
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:11:53 +0000 (UTC)
-X-FDA: 84057539706.01.706EDCB
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 9745C4000C
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:11:51 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ECW+bIP7;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 336F18E00A9
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 03:25:06 -0400 (EDT)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0083649A1F
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:25:05 +0000 (UTC)
+X-FDA: 84057572970.17.6C143D3
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DDE8F20003
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 07:25:03 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZagFReHr;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761894711;
+	s=arc-20220608; t=1761895504;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
-	b=4coiMlBDCReq16H3jD6fyc3oqFgYDvmQ/6ZaYsss3myAFomcOHRlxeJMSJpgIjTNJuoP2y
-	tlQhuF1I8VVJDSU29975lwA//Ix93k8nOSqF8Q5Cl+5Bw4ykH0LNhHJ2myulL3r6bWqGKR
-	1/Q+r6Q76PwlSf/0e5x0qoLY0Td851Q=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761894711; a=rsa-sha256;
+	bh=lohvLpll6vsyFk4ShQMHpnqTTssQwRpAOT4Fwwfc1jE=;
+	b=5oNQ6Ib/s8qDkZK5g5/jDm+yx+e2igdi2j6pQw38caDhKFXXT7tcs4Xp7Yuzj8GMRgYsDR
+	TEOoff9YuNAj8jVkoCzxMTyQTxH4zKWmFQm9zPaCX3juVG2PXuAwRX246BSGkDCtt4MLPk
+	BmP+Dq+MREpKu4/k/yNMYfq/ZFwZiXU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761895504; a=rsa-sha256;
 	cv=none;
-	b=K1Ol5b173c81OQ7HbZl/cskin4EacU4IYCxxcrShXgdshtWCbCTfyoKXmClrQY48jg4XMa
-	nWZQ+m8xZSot2P3PdTfchVUezTDfFcMZyxi514RPdOK8VVQqrUmo8jGRHA/LpIx0I2Dqvh
-	aT7lR00hJ6m7czssKJhCJIABCGTjBBU=
+	b=QlZDCwG8Ml4x8C6HfUUMn7nfr4GJqhl0dUcSOM2EwsC8vlqVG3eaoHp1HQGuyqn3KKP9tH
+	RrGk96EXjjMCqqmBwOPB8qHWoJy+wiPviFBr6oaaLAxJJdpoxaYVAP9Up94mSJj2pD2i0e
+	V96Fdwp/I5LzfRr8+MIiZIt/NB88FOc=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ECW+bIP7;
-	spf=pass (imf17.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so332268a12.2
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:11:51 -0700 (PDT)
+	imf03.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=ZagFReHr;
+	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.221.41 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-426fc536b5dso1193380f8f.3
+        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 00:25:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761894710; x=1762499510; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
-        b=ECW+bIP7klX1NUCSfF9K5Pjx4tTKEy+Pxqd4kYcsxeG64ltqTbK/OIu9EWDRHJHXrk
-         5mbJhKme/ITG6SAaGK1tEK+OMtzGTNFlkezTvIkpxQBvlqIcHI+GP2p12H1MQ5/DsLJv
-         fyRvbxYttFSTZzWS+tYPdaKeI3zL/ubvBPTtv1p8ZOhj8oZi5RL4AzzpTFAk6sR1DY8y
-         +sFfRRrf9JiGojnrQHhJXbD2O9WkgfizgcwcX5v6NYlaDgHOVPf21KxZQ2s1jOUCLaSL
-         HzcV3w0/MULeJ39sqenrOoqoDbs+2DTUyyU3aduR282P2BNT2C4zK4Ai7k3+vH2Fujzl
-         nwvA==
+        d=suse.com; s=google; t=1761895502; x=1762500302; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lohvLpll6vsyFk4ShQMHpnqTTssQwRpAOT4Fwwfc1jE=;
+        b=ZagFReHrigDp1xjuZWiJ41a3Dn9XwwB7Pq+D8M6OMFi62WYIDJW6YjgJJAQOH86ZiB
+         4njHljCr2ClhxGARk3deE0SjqS4F8kKGVC5K+wa2fLRF/ijS1bgKO3k1cihz7E6Ac4K3
+         ZNoRHTJ1MjG7ac3wJhr/qiU1z69JYfaVycRR6OvTz2aqC85wC33BWqBUhYswR8NsUpgp
+         czdIgzCDxn18X2aMEav6rExm2+Ijie29eRV7/7OumW01Hzw8WrxvaDxf/DnIskuifCK2
+         mu1hTzwTzuH0cucPn3Iabn3n8+Ijk/sT6huSaJTpA1O5hR+PCJAj36SRoEguknixwIXa
+         k4zg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761894710; x=1762499510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dXB+Vh+b92T0wuC0Ul2D33PSfjieUXT8f5pmdI4rnpo=;
-        b=WzjjN2qG/3ybQTfifeTkYwgcSk4Q5EaBrusCaUHTssSEvOKOT8d2SY3tuIcMOXg25r
-         bTah/EMhZXp5dmXnBLtrxhau4srtKlQYymJ0MDSQajytt63k3Vb82Bt0E0q+zXTXWRnk
-         P/dnq2UTENqXSUNDw2/uqn5m5NnqgU4+hzsn/aTGFB1ol9+du+HkJGTF2D1WHik405RZ
-         Ii6zS77RiNDnixkIKpi5r9Efyo/NXNE//fZjvpHzpdrXj9dh7eP6i3w6txopUmozvKA1
-         FJXk8RMFWYGeKQkRzSdFTZ6Fhin5/Hw5V1/D9WGzy+72l/CCP0SMod67W3Pj6TFLAMpl
-         /ypQ==
-X-Gm-Message-State: AOJu0YyejORIsiptXK0BhvJQP6jE46Csx0V3ykQXliZn475oXXzyZR9q
-	vrOWrOTnNZBJBWOO2u1ESjJIPwrsZIm6jbgMqMZ9OIT+Eez7+sI349W5CO8X2C9qO/i2K3JDwuZ
-	vHzpWQkDP6fRe2Rbj0oxaU1Sk4UMeqEuyhZtgSZQ=
-X-Gm-Gg: ASbGncuG7Qpx3r7eeLPbGqoOE7k8uCJrdKByxWTkk/k+8DcXe7xY75AFbFXnsmcBToi
-	x1LmDTHB54f1/JRZAkY4kp7A0XMFcpbs66RyKbgoNMReSY0HAFrqhLXyXAd9H88stSdZcR3g0Xw
-	OqlroUQ3RtPhdOXEDkNAFRaE9OYFMfCr8VAal0CC2sb7HSoNP438+8fOJTgvvdS5SFbqocSGMhs
-	+44oDF+lFYYUU8LOe6z1A6FFl3gZHhBBZxVrJr3EbPPaA5rf8s+i/X0HCb3
-X-Google-Smtp-Source: AGHT+IEa+rgq4Th4Ha/g3FBZ4FkmU4TjKVn+RGltX7Wmz1uoTotbPOvX8BJ4rCoXh+dAatlVRaYla2NKrWme3YUf5D0=
-X-Received: by 2002:a05:6402:51cf:b0:639:ffb5:3606 with SMTP id
- 4fb4d7f45d1cf-6407703ef39mr1959342a12.33.1761894709939; Fri, 31 Oct 2025
- 00:11:49 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1761895502; x=1762500302;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lohvLpll6vsyFk4ShQMHpnqTTssQwRpAOT4Fwwfc1jE=;
+        b=WDAKO39DMN2yCBJvBCGmCJMJP3cf6h5N72s8vgizFqeFSftV6v9hx8WPw4smYw4Gef
+         eVa11HSK0eAO/dbKFVKapvBqjAmG4DIm8kYbrXo9ZAoa7YnIst/H7/mEyzLA2OThI0Rl
+         /5ysgnggTmoZukVzLSBs2u7AxLwGr6p7XmEB535xCCT7Pam7yL6hdKQ20Zg61+xA2sG1
+         qDsgNzEHKYC60hnU5NWqJ6XUzpeq96S+y+rp+3Y7EoAdc5wu8eZgI3OIG3mh21gX1ouP
+         p4GrqhQDQCv7rIvsfd6iO1RVe7X4FKlSsfcWFjfpp3LP2ZOSDKdr+haGSe9lomrLZBx3
+         UUuQ==
+X-Gm-Message-State: AOJu0YzYsCv3X0Sm/+WMrNr7U914J0rHoNoQrggwPkSS2xrv6j1RRC6k
+	38FuzoiE8FtYRnCK6GE8dPc2LSxGR+r9bY8cEWxmgF6yKOq2A981doGFWlmBjPcjt0A=
+X-Gm-Gg: ASbGncsrAPXDoWWR8mtacaF7ElzmxQVd1vkmeQaX8JSg0+vUwH6P2quq1ApSDbihzk/
+	yZIxLCC6Bh+D+r2oegd/s0FRzZOh9D/zkhWmjWFTPXd0uVdKMWp4L/2mVU55RUpdbPa1IDKl31o
+	PAWVWIL2iHobEP2SydS6AN9/pW1xSTA51IGnA8fRpzcLIQ7rFKyK8I0Vl73rRUk11+CahFSllzg
+	SNEeuWk9ORjQBXMG26zBf04+UPZY8r6xe8A7l/XZAlv3KNLNAaqXtJJMSGW+6clyCUpE6slvVcH
+	ORfCiYAbw63ySGQCloLC0KIH99ITb9gEyP1aK+h59SHED0YxXObYcrng4H4od9VmiXGpi9wNFHu
+	YpFc5TGzHlx1uM8yDxx9N0fbNS4DHLK6oZISVsQWTJLp/oOkC9sm2E6XGiKAUNWNTdYScTgeccS
+	45u+ceEzypO+jHAg==
+X-Google-Smtp-Source: AGHT+IGU8tyymBcC1b7YyJEsl3ZG80z0iONG8om34CQfRnTMWYHsyHHMU9XDPRjHaix45FNiDQ3+YA==
+X-Received: by 2002:a05:6000:2082:b0:429:ba25:5b1b with SMTP id ffacd0b85a97d-429bd6be67bmr1735525f8f.63.1761895502216;
+        Fri, 31 Oct 2025 00:25:02 -0700 (PDT)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13f3278sm1881851f8f.42.2025.10.31.00.25.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 Oct 2025 00:25:01 -0700 (PDT)
+Date: Fri, 31 Oct 2025 08:25:00 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: libaokun@huaweicloud.com
+Cc: linux-mm@kvack.org, akpm@linux-foundation.org, vbabka@suse.cz,
+	surenb@google.com, jackmanb@google.com, hannes@cmpxchg.org,
+	ziy@nvidia.com, willy@infradead.org, jack@suse.cz,
+	yi.zhang@huawei.com, yangerkun@huawei.com, libaokun1@huawei.com
+Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
+ BLK_MAX_BLOCK_SIZE to support LBS
+Message-ID: <aQRkTKTm08lSJZZi@tiehlicka>
+References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
- <20251029-swap-table-p2-v1-10-3d43f3b6ec32@tencent.com> <aQRIOMsAkDciWFw/@yjaykim-PowerEdge-T330>
-In-Reply-To: <aQRIOMsAkDciWFw/@yjaykim-PowerEdge-T330>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Fri, 31 Oct 2025 15:11:13 +0800
-X-Gm-Features: AWmQ_bkR65N4sXjn4E7jF7ZR-b0DRabhpr_6ttycSokgao5UgLF3qlUaZW0wRPk
-Message-ID: <CAMgjq7A2gs+CMRftP9r4Pt=GKDAO=NaZVuKFYBVkZZjgz8c96g@mail.gmail.com>
-Subject: Re: [PATCH 10/19] mm, swap: consolidate cluster reclaim and check logic
-To: YoungJun Park <youngjun.park@lge.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, David Hildenbrand <david@redhat.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251031061350.2052509-1-libaokun@huaweicloud.com>
 X-Rspamd-Server: rspam05
-X-Stat-Signature: a8bguwa31ercy35socwtzi6w6jc5oe8h
+X-Stat-Signature: aoxic9w5puk9y9kbif9shx9yt81utfkz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9745C4000C
-X-HE-Tag: 1761894711-930192
-X-HE-Meta: U2FsdGVkX1/31NgfRgYIBAGDPkUst92TLcGoES9as+FzcXfXe2I+5ixKc0xN3lbv7VCAlNQvz2nJmdQvuvQuE90rVzTerGzWJDJkYcpuYpu/WxZ5wEywx7+K3KcrxGbHNPOiz2UGNHmyKg7S8JG5HTv/uDv35HsEP1jpJWBZIM9xV3WQ88zyc5KJpKPpS4aJOF/ngSd7Dqt/U4uGeQUMVUtHapRuD3oEppYMd8k9dUcplmWIT39SHP3m2sorz0DPzotz3afxXti1PkW7qbemkk4dbeDotXuzoiUMjkXR4vGWD9v0xNOAwPsN5nSOguooSVVEQgkInT12lfGKKKtp5A1Hz8EQ4qMWXIxp/MfOI9HYF7ey2UcWFQORlB+pW/wIlb0hxPVNLPm0BS1+kV/zyAbYZs5gQS7PC71k3jX8dS5/YEp4ZXQPAUf1z3vL+CCF0tIUhyFSSakKYl4VYmN55257tc+Cgf9AsYaFfferWG2vZTBG+JbG44mW+379c1AnXyo1kbcc9IwKNO/BNfc25lCVI+IgUc45o4YbBSo32LjBUz+ENO8h1Q9cqdTyvRejtve9301/Zusa6IWEa/wKwqTogAXqK37nBIKzRIzk4wFcDadSxF4Dkr1851c36xm31LPrrah+hdogjX94+kFVai+xb7cvOcFduOaXVfWdgTcEcZnGkLb2jJGBCzOGYX4hACPyHJbiGU0dSw1mglWmcC4joLrKFTEZmZwqpc7np5xEPKMg2ny6lUVzcf9oCynmmmYhz+/obNoYWiWAvh9LdFZWRCGFj2Reot70deD/If7kh6Y2YWnVrCWseZ8+bCcxGLlvXLtxHyo2kaSCwV4U0RnequJWIjQA4q5RhkBHzZhYo4FXyKl0FUdSyI2/hBtsLecd2ek6PB1gL5fH3qk8OShLQUC6l2zpuRkwfrmLfzpgXYN7o20OK+qba7KlZZ90wHuqMXU5OAq4RxkggYW
- XaZLaaeJ
- ouSryPvhvwqrw358tmqHIzVD3h7qp75ReECvXPGU3A/smE33NBBb67LXAKx5Ncg4d8kygmweqenD9LcZo5dUwQkbOHKtqZbNfRhRz55Mi9Bt0CcK2LdizIWuH4UAOZsdO4sbmXjuLquMEsV7J+M3P0iJ8lYI+51DmZG/NwIxbWaxlHVeZBEBrKIgwt3usSQLKKGaBuK7vlbQy1YYsLcCgBttOgPEttXQvQ6ebMJOc+1ygxnU0K8+qcZgl4lDDBpxrI5/PkJ7JsiCnXNLTRbWeecG7b7arpL3bGPjCFJ5QhHbK684kXyYVHEpcXkDPyn3KvMMTU5qfHxPlHTdBo1D/e3M+mVkUQ+SEmj/3mWpjE3UgBmT4uxs33J+Ryp6W0F1eJxf40S+ccz/yLRJMIaXq6P1m6g==
+X-Rspamd-Queue-Id: DDE8F20003
+X-HE-Tag: 1761895503-393329
+X-HE-Meta: U2FsdGVkX1/aS8DCl5MqFlWLLW3NbWS0EBFJJLLlfaXP2wWSFcvjz4RBcS48GayR2VSc2QJ/VginXyW0WVYX3zWoK5twTSBYfAv4AgaQ8KY1iMsHDWPC3m6uGno8r/Od6nOn+QMJfu3mw8HC3L+i+EEi7oixOrqW8uSFzLD9Q35ast8rVsNB7OgFRDYLrdihI26fMfJLMH0YHsxoHV+36VlePcAm4nksGxcniP38WyYSHQ+6wcYjQj6V0DPL72tgpXynnPEOPsjUPwYL3oSCPfvtDUj8XBGTqJWqkIIIkjwrSUOT60EX9nV54tV2EIIF2MAf49WtCauRKfLMQl2fS82fInzCpI7Kl+gzOGEfM+gWDAKGzekWRktnC5x592+fO+0iQyfzof9bwNtPDwWmJc6/8O4+Y1fzvKGzklPhtcCx+lunCUvgTPpvPl3l8pcv7BUrHUL9/w1K3g8ut9H7X/C3ieYkaHJ+bVH5hw2ukueDbPvpIk4dKd2gG4X96AR+gywShBjUvv4TQG6HlPuzT7ZED8q0MOnbmJJjpWunEnO32JTVHqbIoRAnqXRKc+siD4ADKL8UlO7cUH0mDFELdFa1W+4T8lz2TnxaiZtF7BUKYiPxiMUJz85a9cIwr/SG0df0qpJmGmxJR+oN4oABvmYQeON36wJScpMLMNo5tm+Dr05amj7loTF2rWt8J/AKS86uY4jWFNMkKdKR42NlKfbKFOfKRjY+He5zINuW4XMoDwWeI/eqQVTyzoMkoIBrP1QaaOhQAM8Gxwh0sl7ilH1fsmz20eqs6hrR3+BF+uzC3KvSs5geA1ZLHseGk9ddi8EV4yYwhf24ZoYX3apJJTUy3kgXmLDitYlB2gBXZpoTFQGMmiQrsbiwvdM9h1F0zLtQ18wiZwzjZNy8EdwOOkFSo4fKkisW854cNWWFxS8+g5eFIsCSockLUdTUF+GameBLdlLOf5RQdTWbZhJ
+ Tmx4wG9Z
+ b2/oi7YbE60CSZNCNIAtbRj4UCgu45kmjYyFioJ3yDEppkvcUDgFb9eozcx/1ORDzs2QeTg7vGBfhLi4IuJkP46bXVLQPAhkA3OMEJDN2iUgXpijlWr8KHncIhLTmHcp+zPaEn6+zljMNWfRo511OUC8ryM2vC6zEf/xtJu7Vv2JpyQZgFezzd5+rW2iGvDftMyd7yEQeimLCmQYNPNyEhMzukeCrTP5/xzb2zmQ13lSzpAcEkjyR4kAWWLT+V6DDE6BYq5yDuZ1+8aZwL6GDdj+sgsXpPnWVPOjiTHFSxYStHe77h/1MvkCZJGVCm0e4bU16Moz4XaRp8gjVYNRx/sVgvwh89EjqGMYTyje6qtI+g+XQuAXof0fzC6afrkaSUQM+snnZGmIrU92y/ocLVmtkFBsvYlmGOERbuKEa/sKRV2D8PZo5kr2M1yfaAmOA7H3wm1lbDoL3viO7pjSdAmEcIk3b8B8EZ3gQ/rtQb6Tp69FIBO778erCYM4jTFA4r+dhORA7VVaL9ec6lTJkkUHmJQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,167 +120,95 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 1:25=E2=80=AFPM YoungJun Park <youngjun.park@lge.co=
-m> wrote:
->
-> On Wed, Oct 29, 2025 at 11:58:36PM +0800, Kairui Song wrote:
->
-> > From: Kairui Song <kasong@tencent.com>
-> >
->
-> Hello Kairu, great work on your patchwork. :)
-> > Swap cluster cache reclaim requires releasing the lock, so some extra
-> > checks are needed after the reclaim. To prepare for checking swap cache
-> > using the swap table directly, consolidate the swap cluster reclaim and
-> > check the logic.
-> >
-> > Also, adjust it very slightly. By moving the cluster empty and usable
-> > check into the reclaim helper, it will avoid a redundant scan of the
-> > slots if the cluster is empty.
->
-> This is Change 1
->
-> > And always scan the whole region during reclaim, don't skip slots
-> > covered by a reclaimed folio. Because the reclaim is lockless, it's
-> > possible that new cache lands at any time. And for allocation, we want
-> > all caches to be reclaimed to avoid fragmentation. And besides, if the
-> > scan offset is not aligned with the size of the reclaimed folio, we are
-> > skipping some existing caches.
->
-> This is Change 2
->
-> > There should be no observable behavior change, which might slightly
-> > improve the fragmentation issue or performance.
-> >
-> > Signed-off-by: Kairui Song <kasong@tencent.com>
-> > ---
-> >  mm/swapfile.c | 47 +++++++++++++++++++++++------------------------
-> >  1 file changed, 23 insertions(+), 24 deletions(-)
-> >
-> > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> > index d66141f1c452..e4c521528817 100644
-> > --- a/mm/swapfile.c
-> > +++ b/mm/swapfile.c
-> > @@ -778,42 +778,50 @@ static int swap_cluster_setup_bad_slot(struct swa=
-p_cluster_info *cluster_info,
-> >       return 0;
-> >  }
-> >
-> > -static bool cluster_reclaim_range(struct swap_info_struct *si,
-> > -                               struct swap_cluster_info *ci,
-> > -                               unsigned long start, unsigned long end)
-> > +static unsigned int cluster_reclaim_range(struct swap_info_struct *si,
-> > +                                       struct swap_cluster_info *ci,
-> > +                                       unsigned long start, unsigned i=
-nt order)
-> >  {
-> > +     unsigned int nr_pages =3D 1 << order;
-> > +     unsigned long offset =3D start, end =3D start + nr_pages;
-> >       unsigned char *map =3D si->swap_map;
-> > -     unsigned long offset =3D start;
-> >       int nr_reclaim;
-> >
-> >       spin_unlock(&ci->lock);
-> >       do {
-> >               switch (READ_ONCE(map[offset])) {
-> >               case 0:
-> > -                     offset++;
-> >                       break;
-> >               case SWAP_HAS_CACHE:
-> >                       nr_reclaim =3D __try_to_reclaim_swap(si, offset, =
-TTRS_ANYWAY);
-> > -                     if (nr_reclaim > 0)
-> > -                             offset +=3D nr_reclaim;
-> > -                     else
-> > +                     if (nr_reclaim < 0)
-> >                               goto out;
-> >                       break;
-> >               default:
-> >                       goto out;
-> >               }
-> > -     } while (offset < end);
-> > +     } while (++offset < end);
->
-> Change 2
->
-> >  out:
-> >       spin_lock(&ci->lock);
-> > +
-> > +     /*
-> > +      * We just dropped ci->lock so cluster could be used by another
-> > +      * order or got freed, check if it's still usable or empty.
-> > +      */
-> > +     if (!cluster_is_usable(ci, order))
-> > +             return SWAP_ENTRY_INVALID;
-> > +     if (cluster_is_empty(ci))
-> > +             return cluster_offset(si, ci);
-> > +
->
-> Change 1
->
-> >       /*
-> >        * Recheck the range no matter reclaim succeeded or not, the slot
-> >        * could have been be freed while we are not holding the lock.
-> >        */
-> >       for (offset =3D start; offset < end; offset++)
-> >               if (READ_ONCE(map[offset]))
-> > -                     return false;
-> > +                     return SWAP_ENTRY_INVALID;
-> >
-> > -     return true;
-> > +     return start;
-> >  }
-> >
-> >  static bool cluster_scan_range(struct swap_info_struct *si,
-> > @@ -901,7 +909,7 @@ static unsigned int alloc_swap_scan_cluster(struct =
-swap_info_struct *si,
-> >       unsigned long start =3D ALIGN_DOWN(offset, SWAPFILE_CLUSTER);
-> >       unsigned long end =3D min(start + SWAPFILE_CLUSTER, si->max);
-> >       unsigned int nr_pages =3D 1 << order;
-> > -     bool need_reclaim, ret;
-> > +     bool need_reclaim;
-> >
-> >       lockdep_assert_held(&ci->lock);
-> >
-> > @@ -913,20 +921,11 @@ static unsigned int alloc_swap_scan_cluster(struc=
-t swap_info_struct *si,
-> >               if (!cluster_scan_range(si, ci, offset, nr_pages, &need_r=
-eclaim))
-> >                       continue;
-> >               if (need_reclaim) {
-> > -                     ret =3D cluster_reclaim_range(si, ci, offset, off=
-set + nr_pages);
-> > -                     /*
-> > -                      * Reclaim drops ci->lock and cluster could be us=
-ed
-> > -                      * by another order. Not checking flag as off-lis=
-t
-> > -                      * cluster has no flag set, and change of list
-> > -                      * won't cause fragmentation.
-> > -                      */
-> > -                     if (!cluster_is_usable(ci, order))
-> > -                             goto out;
-> > -                     if (cluster_is_empty(ci))
-> > -                             offset =3D start;
-> > +                     found =3D cluster_reclaim_range(si, ci, offset, o=
-rder);
-> >                       /* Reclaim failed but cluster is usable, try next=
- */
-> > -                     if (!ret)
->
-> Part of Change 1 (apply return value change)
->
-> As I understand Change 1 just remove redudant checking.
-> But, I think another part changed also.
-> (maybe I don't fully understand comment or something)
->
-> cluster_reclaim_range can return SWAP_ENTRY_INVALID
-> if the cluster becomes unusable for the requested order.
-> (!cluster_is_usable return SWAP_ENTRY_INVALID)
-> And it continues loop to the next offset for reclaim try.
-> Is this the intended behavior?
+On Fri 31-10-25 14:13:50, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
+> 
+> Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
+> reads at critical points, since they cannot afford to go read-only,
+> shut down, or enter an inconsistent state due to memory pressure.
+> 
+> Currently, attempting to allocate page units greater than order-1 with
+> the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
+> However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
+> can easily require allocations larger than order-1.
+> 
+> As Matthew noted, if we have a filesystem with 64KiB sectors, there will
+> be many clean folios in the page cache that are 64KiB or larger.
+> 
+> Therefore, to avoid the warning when LBS is enabled, we relax this
+> restriction to allow allocations up to BLK_MAX_BLOCK_SIZE. The current
+> maximum supported logical block size is 64KiB, meaning the maximum order
+> handled here is 4.
 
-Thanks for the very careful review! I should keep the
-cluster_is_usable check or abort in other ways to avoid touching an
-unusable cluster, will fix it.
+Would be using kvmalloc an option instead of this?
+
+This change doesn't really make much sense to me TBH. While the order=1
+is rather arbitrary it is an internal allocator constrain - i.e. order which
+the allocator can sustain for NOFAIL requests is directly related to
+memory reclaim and internal allocator operation rather than something as
+external as block size. If the allocator needs to support 64kB NOFAIL
+requests because there is a strong demand for that then fine and we can
+see whether this is feasible.
+
+Please keep in mind that 64kb > PAGE_ALLOC_COSTLY_ORDER and that is
+where page allocator behavior changes considerably (e.g. oom killer is
+not invoked so the allocation could stall for ever). So it is not as
+simple as say this just going to work fine.
+
+> Suggested-by: Matthew Wilcox <willy@infradead.org>
+> Link: https://lore.kernel.org/all/aQPX1-XWQjKaMTZB@casper.infradead.org
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> ---
+>  mm/page_alloc.c | 25 ++++++++++++++++++++-----
+>  1 file changed, 20 insertions(+), 5 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index fb91c566327c..913b9baa24b4 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -4663,6 +4663,25 @@ check_retry_cpuset(int cpuset_mems_cookie, struct alloc_context *ac)
+>  	return false;
+>  }
+>  
+> +/*
+> + * We most definitely don't want callers attempting to
+> + * allocate greater than order-1 page units with __GFP_NOFAIL.
+> + *
+> + * However, folio allocations up to BLK_MAX_BLOCK_SIZE with
+> + * __GFP_NOFAIL should always be supported.
+> + */
+> +static inline void check_nofail_max_order(unsigned int order)
+> +{
+> +	unsigned int max_order = 1;
+> +
+> +#ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> +	if (PAGE_SIZE << 1 < SZ_64K)
+> +		max_order = get_order(SZ_64K);
+> +#endif
+> +
+> +	WARN_ON_ONCE(order > max_order);
+> +}
+> +
+>  static inline struct page *
+>  __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  						struct alloc_context *ac)
+> @@ -4683,11 +4702,7 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+>  	int reserve_flags;
+>  
+>  	if (unlikely(nofail)) {
+> -		/*
+> -		 * We most definitely don't want callers attempting to
+> -		 * allocate greater than order-1 page units with __GFP_NOFAIL.
+> -		 */
+> -		WARN_ON_ONCE(order > 1);
+> +		check_nofail_max_order(order);
+>  		/*
+>  		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+>  		 * otherwise, we may result in lockup.
+> -- 
+> 2.46.1
+
+-- 
+Michal Hocko
+SUSE Labs
 
