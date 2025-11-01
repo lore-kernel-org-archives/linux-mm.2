@@ -4,77 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19899CCFA00
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 13:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCDA5CCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 13:50:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CB66A8E0070; Sat,  1 Nov 2025 09:42:31 -0400 (EDT)
+	id 157E28E0071; Sat,  1 Nov 2025 09:50:29 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C67188E0068; Sat,  1 Nov 2025 09:42:31 -0400 (EDT)
+	id 10A538E0068; Sat,  1 Nov 2025 09:50:29 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BCC3D8E0070; Sat,  1 Nov 2025 09:42:31 -0400 (EDT)
+	id 020118E0071; Sat,  1 Nov 2025 09:50:28 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id ACAC88E0068
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 09:42:31 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1E19F89073
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 13:42:31 +0000 (UTC)
-X-FDA: 84062152902.13.55E1101
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AD6E7160013
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 13:42:26 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DBA198E0068
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 09:50:28 -0400 (EDT)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 853371A0886
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 13:50:27 +0000 (UTC)
+X-FDA: 84062172894.27.15780FC
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 93CA9C000B
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 13:50:25 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=SeOzDbbd;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762004549;
+	s=arc-20220608; t=1762005025;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=3cvApbxM4MUPbfye4oidq6VYSoxjios4V1e7shSohHA=;
-	b=UX+gh0xzqy9RaH1ndbdfKesJATJJFgdUPlBHnrvpI42gqyZk9vbYwj8ok3H4rSXkzBsa6V
-	9j+xQ+KOMCvadomfmW4LqordqNBTqkI1Do8LsYm5m6EptbB/LHYKWYQO/UHFdKeErGA2np
-	Vi5xddAKSD0uauScxMOiHEkM5Pr9nIg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762004549; a=rsa-sha256;
-	cv=none;
-	b=xXK7vI9mtULbtPmpeVcci4NhVceSNK/DxRJOX7wzCoiB2RD7Q4qBCoI4DrQeLWvKjDxd0s
-	6sNP141LIBRsDP8X0zcI2y0E0L3QRUqHfu//kpSjC+D1PMshZV+0YUuApcjjAyNfy0EsX/
-	GmC0QfSMNApCFzm3RU5AAjsxbQeOeYo=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JUhy8B8e0SPVvnGZqFMKkN671bOxkjd/0ClcQZsCqPk=;
+	b=fQUvTEl9rtcqMPie0XSM8RkCC8gYoYp/P0997v2CVO0MxqgL2XzrSu0Qhd8f93d5IfvfH/
+	PAGYrZ5pauPkv7ZLzyMLTf3hON2iGOXMxXZVpWHyQmZttF+B1AO9sSDm6SdFoXBHbJYp/u
+	sNfxifWJCHgI9kRmZiuK91doabfgpgM=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf08.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 1 Nov 2025 22:42:21 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-mm@kvack.org,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>,
-	Barry Song <baohua@kernel.org>,
-	Chris Li <chrisl@kernel.org>,
-	youngjun.park@lge.com
-Subject: [PATCH] mm: swap: remove duplicate nr_swap_pages decrement in get_swap_page_of_type()
-Date: Sat,  1 Nov 2025 22:41:58 +0900
-Message-Id: <20251101134158.69908-1-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
+	imf28.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=SeOzDbbd;
+	spf=pass (imf28.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.52 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762005025; a=rsa-sha256;
+	cv=none;
+	b=JxrzB2HXEuRArYIXJeczGT36Bc7FEQpKg3wa9Scm160Vk800StT8EDODOE+9YXjmehP/p3
+	jDT7MXv+2ggjZYeSNDYCJDkfp0Zx+38ezNVKXiYHcCmjkvWockk2zcc0BM16tkBWX6aA+D
+	GlfIyhZtK5rX+c4s9VUh7RVMVu8sw/U=
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-63e076e24f2so5899515a12.3
+        for <linux-mm@kvack.org>; Sat, 01 Nov 2025 06:50:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1762005024; x=1762609824; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JUhy8B8e0SPVvnGZqFMKkN671bOxkjd/0ClcQZsCqPk=;
+        b=SeOzDbbdEdb4TgiC/7sAbYjp5TvpgjENqqK2RvUNlYbYCDBr8se39i3xLk1eCTyVlu
+         SIZdLewz/ZbF/Okn3InCPBb8JPIQ/nA4aaBYevySfGPHTKOV8Xmv9lVam9tat+ojg4Om
+         C2K/ado1ZBYgIarurwjvInKEhTRhaaVBbh9nd9Nuaihx6JpvFUbWMNopHwoRxodgK5pi
+         T3BTJvKAu3adsJRz2+09e+n6f3gZnpQwYlhqw4NbkO7ucigo+qODpBpjFU8+tTOP6L1s
+         DRG1QF4Zmza9744No4A0ULAKuhOj3TUp9pcvGrdVLgVxHNlxAAAHapic9SVjjOEm0KCE
+         qfuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762005024; x=1762609824;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=JUhy8B8e0SPVvnGZqFMKkN671bOxkjd/0ClcQZsCqPk=;
+        b=wZjY9RDZ5CZNTYmvntbFvxSUTr5cN5CE0RUcdOmcMONKuHIgIu0b9JI+surXdmRIi2
+         oJcgZVqHKmZdcJQt/QLy92KXHo6tF0E8wiehAZEFZCUi6kC2bxIaBELpDskzlv/iLuXc
+         U4x0KHRc5MgWTnB4DlNG6babRoJ3txXA4pLdAbh6+LtAA1Pm/n1JLUODLlFKKmOsADWc
+         eJAhGOQBuWHGD5EIEPazVExDTHZQ4ojZ5CARChZSY8DE4KnRrJzCA1EqvQ53YOOaQRC3
+         ahfMXeb2w+98hOB4Z3/EWq200BJ+0ZqEW+qGE9LC1raa37jt0JKwuOgFYbTb8XlMOdQ2
+         4iaA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7klK1jNYXXm1uqVpFgjTnfeVBSyReaiy9B2cYtlqSTWMRB2D+2IoOnWrjUi3/4NsWBQv2+M6FSw==@kvack.org
+X-Gm-Message-State: AOJu0Yxx8MEzpTCE3LIP6vsW1QrjCq0GphwGLOHZ4UOYDhZrXA/hhufg
+	2XDiDTEYR4LgpLTDU5Sl2lq4joPrKpVnc8A8a9FCAu+XL8cuBBiiR7wUphTPjBnJ2fn+c8E9rFh
+	+H8xh/DVi5ZarydfsJUrork/fYb+d61TpjddP+HSykQ==
+X-Gm-Gg: ASbGncvyZVE+wNjMfTkMrT534DzGTLTy7nEVyaY+aPrluREr3U/eqRw+jBqGey6ny7W
+	h8Eb/rNWNBVsS7bm6Rfu4au5QWZhjxyJAguxyGQyOz7wHv7p1j9uHM9N9cBi7XEuykwnIhFQkwZ
+	kMqfNLhAY6C8lHLBPJZcLghIONcyIoaPV93C5yqDt25Mu5PmkQXP6k9n5XqxO9/NiTKaZJbfrWe
+	gqXtQREA4Xdsd/vjLTgc+y2b/N+VYjmVyeZufBBSRfWxIoD+/LOQ93WmjpE7J4O3l0I4tvgHC10
+	qcZ3U0Liv1AMH0TgnMNRUgjVq88I
+X-Google-Smtp-Source: AGHT+IEIO7PvHjnJQ62KO0r3gUSccSfXRQY2A86NcnBt2N+segjhBecWOfFmRqh0rMurQ5aFXaviqq5czfpYfbaRUOE=
+X-Received: by 2002:a05:6402:5347:10b0:633:7017:fcc1 with SMTP id
+ 4fb4d7f45d1cf-6407704fd5dmr4625184a12.14.1762005023728; Sat, 01 Nov 2025
+ 06:50:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam01
-X-Stat-Signature: xj9iwmeq9ynbhqkjeqgag8zowsmw38ba
+References: <20251016200320.4179702-1-yanjun.zhu@linux.dev>
+In-Reply-To: <20251016200320.4179702-1-yanjun.zhu@linux.dev>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Sat, 1 Nov 2025 09:49:46 -0400
+X-Gm-Features: AWmQ_bnZsvumh2bpEqN2i1Lq7WYeKAVK8RN5_qMjSNkRfeRKZmWCf3eNLlzvj1M
+Message-ID: <CA+CK2bCHCw=5MaOVpm4VzJ0rHtuTVJ5JWECZQxc128djt3i0XA@mail.gmail.com>
+Subject: Re: [PATCH 1/1] kexec: Use %pe format specifier for error pointer printing
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: kexec@lists.infradead.org, linux-mm@kvack.org, graf@amazon.com, 
+	rppt@kernel.org, changyuanl@google.com, akpm@linux-foundation.org, 
+	bhe@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 93CA9C000B
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AD6E7160013
-X-HE-Tag: 1762004546-549168
-X-HE-Meta: U2FsdGVkX1+wXYViX75KyOhqMqbvTZPB7q2TNNhDwM0QRpS6ZRd02n72EoW3A3uVKdxTh5qrfo58IDgpVaGla3FoU50xrusJBi9jM2H/diwHyG91MO9V4fBTVCipeQSWGb9SZNa7jITZJAnOt81nBtarb6Ff2o0e7WGRKjwS6sE3JH8259QLSEupP9xO/seTkpIJgCKrhfpabbkEedK3gzQ/lRpo3LrKGJgfyqWSsq/TJFsWXHR2Xa0R19ztrnP/CcPT8nQsymaSeFgp02qHYfHgepN/wlZANavjh2p+Mbm8FeY5SAq8l2EQChUcWAGZpPdnfM8ee6JQK16CE6WsPpWne9KY95NMveLOdmKqj1cd74s6VKHvn1df+IIRnUhztYYSH5QHKEfK29BzjmIFqM2LNNj0YFrW+cxnKRkqjhs5c4oU1ggOaC471vaj6XgPcOkRxhIw23YNv7K+khoHmLjRTiY8v5dkXFeTxMrXanPwoCES9AJQKfTINpOtXgbc+Er8kburJwxh8Aw/116RjQH3E64zbOHkZ4+JP/v+Ec606Ns1X+U+UcL6m8gaqKN4YUp25/ndbjJ7W1Jp/DxKBk6PJjybuBXJrJPgia0SBmXxklSUkWnbO+vL6p+sHMtiIxRSlrDNdmlcG7gVf5UGt7IAA7fXXGHDZt81oFqs8klt1STWqm74OP5zwwnlA3VrYeVlY9+RdajTpwSz7a7lmsotwDNf/qsgzlhi0Re/rkdEqRCRcr2PlFIFPWDTs7CF8aLW+x+EYXd9Y8w0lT9tBoufgwG1XhGAfSts1bu70twgaNpmxcNn22N423qirRhv2njFxjiXQJRrwrbV2CJ7N2W6dE9sXYXxhrOHnS12pQLqnJBehjOOk15yYyJHaeasDZAJ0Np8nmOxLrBSybZhOy+cVT4C9yfLNi6KNelLlVEVa23//Km8ct4349rcRT3uhaKGYEcO+cUk/nhdVn2
- cpTjdnWl
- twa7WelSn5BQjDPKFRo8tWf0enKSKTvV9T40TojHe5k1FukN1Skrlv0w2ZbGoD8pwaVcqqEgoBsUbBbiswmdaK5H16pgrlrXCD/LLmxLOVuyR26nsCYP6EFcOOWEIQBoJ6M05hol1Mo4ctBbtZQAYOqoJJtjOk2NgyyKKBPde2Yzm6nSGBHydYc8Fs2/VFNBn2Mb9QRK0GoSgRPqQNJkNt0/CMnT/requbWa5OqDn2BNJC80=
+X-Stat-Signature: izkic46hsuzsrcf866duya3kdi8jqki1
+X-HE-Tag: 1762005025-567147
+X-HE-Meta: U2FsdGVkX1+SvPDW9gF2C2TIIdMMPzU5f2wiSvyCOg7raNVEFB7f0fg7U10b0ld8vVMXBT3RtuIpkyN30RiG51uTCHZjm+C7y1rK4dDYKplJ2LPUHLJrww+9rGT89F5hKCarCPfFapgq806b8fw22/Anz8GBr9ipDXXyGoCKZm3R6w0AHROC7ew5Q4ibX2r0AGxla7AehGmT0rJIwpKcxCuVItN9Lrk0ElkrJjkBfaS8lXj1u0APxncsEbGwsqEd0a37EmmuNHcsNVSBEt2RmaSaNAMOG9rMlQrKES+oygS0HOWOZE21DNN6Tnlm51jXkyZz8YceUHs+xAd1AGcHF01X9BwgzPE37nz3YegBEPt24L7203bu0xrB3D6xIjqsPQvFMd20a6t3FsrhuoQqGNxMxnRHAxi6iUZSF8cZx0IadIhoMG4ylpg+GPURpa3fIZOXyZ0/Ea4HsTDCznzJGZv4mfEbq3Ns5/fGqsRPDlulcClWNPTKUXTZ1WN1vTD+cHq34dkb7Ee+HoviwENcFgo9rNyMkZ5MaLYLcM2T9ZRH8L2vz1N4TyfFjNpA/zUE9cwZSQ/rXQIXnHZ8SXEVMRCwnNyn35hQoXuGcPd8l8NyRghR3q7nutm4fL4+d2T1InaY2g53l4EMQjSz+Ij3WmJ0Q8yrV1FeFyINzlH28PSbYeA+rv53edwm6rzVpw/2aDuvZc7Iwwpc41Il8roA61Wi3BxlRqiz92K9qBeGtQG9ikdnfkbC2scrrb5od/j7wWdYOwvXxED8Jdlx8QiHd4xVOiQsrXNxelQGTeK+Rz81XpAwNUun+85hcG9//0JQMc0GSMpSEAE7Egoc9YhDmqCasSskGYfT6+oXv6tzP8rNub3szDveJeMOZVI4IwN6C3xYEFKntqTs7lIcxMROU8KOYX7sqVv6NXAoKzZLRouvRAyaNfEeoLcv03fRob0P/CsekYX0CNHpnreHIGG
+ hAXPTJ/R
+ MuOUrjkaaRqXe6EUKX+cT6W3JCh5e0dc+IE+dQ2bj22MbaZKQRs9YJep4Zz7XbHqOxvWjFy0XIfi4VhRA059F5dDlA6T5XkJPGPksVe3afr6Mw9mHQn3WK7pzp5dPy1BoDp5t/8OGmfv649hdCx7XqYzT9iwgs/xQhhKWXl14XvCcly+CF2X//FaDXh+AqaSpM9AafouFedK6/ZkkdUnJE33mshaA9fLg7o6lKlIp3HBcyxDzCMKbKCPMk+7MrZCWdhYuiZ1tu+uCq4oKKQ4OBzMX0LbiYruPyxgmy2G4HXLqfCm+GjVGAFmCaNwx2UwAUvqoJ294oZoieSMH2GpnosR5VA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -83,33 +118,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-After commit 4f78252da887, nr_swap_pages is decremented in
-swap_range_alloc(). Since cluster_alloc_swap_entry() calls
-swap_range_alloc() internally, the decrement in get_swap_page_of_type()
-causes double-decrementing.
+On Thu, Oct 16, 2025 at 4:03=E2=80=AFPM Zhu Yanjun <yanjun.zhu@linux.dev> w=
+rote:
+>
+> Make pr_xxx() call to use the %pe format specifier instead of %d.
+> The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
+> -EINVAL) when given an error pointer created with ERR_PTR(err).
+>
+> This change enhances the clarity and diagnostic value of the error
+> message by showing a descriptive error name rather than a numeric
+> error code.
+>
+> Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+> CC: graf@amazon.com
+> CC: rppt@kernel.org
+> CC: changyuanl@google.com
+> CC: akpm@linux-foundation.org
+> CC: bhe@redhat.com
+>
+> ---
+>  kernel/kexec_handover.c | 18 +++++++++---------
+>  1 file changed, 9 insertions(+), 9 deletions(-)
+>
+> diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+> index 76f0940fb485..77af377022b0 100644
+> --- a/kernel/kexec_handover.c
+> +++ b/kernel/kexec_handover.c
+> @@ -1095,7 +1095,7 @@ static int kho_abort(void)
+>         err =3D notifier_to_errno(err);
+>
+>         if (err)
+> -               pr_err("Failed to abort KHO finalization: %d\n", err);
+> +               pr_err("Failed to abort KHO finalization: %pe\n", ERR_PTR=
+(err));
+>
+>         return err;
+>  }
+> @@ -1142,7 +1142,7 @@ static int kho_finalize(void)
+>
+>  abort:
+>         if (err) {
+> -               pr_err("Failed to convert KHO state tree: %d\n", err);
+> +               pr_err("Failed to convert KHO state tree: %pe\n", ERR_PTR=
+(err));
 
-Remove the duplicate decrement.
+The problem here (and in some other places below) is err a not an
+-errno, but fdt error:
+see: scripts/dtc/libfdt/libfdt.h
 
-Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from folio_alloc_swap() to swap_range_alloc()")
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 543f303f101d..66a502cd747b 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -2020,10 +2020,8 @@ swp_entry_t get_swap_page_of_type(int type)
- 			local_lock(&percpu_swap_cluster.lock);
- 			offset = cluster_alloc_swap_entry(si, 0, 1);
- 			local_unlock(&percpu_swap_cluster.lock);
--			if (offset) {
-+			if (offset)
- 				entry = swp_entry(si->type, offset);
--				atomic_long_dec(&nr_swap_pages);
--			}
- 		}
- 		put_swap_device(si);
- 	}
--- 
-2.34.1
-
+%pe ERR_PTR(err)  will output garbage, and make the debugging even harder.
 
