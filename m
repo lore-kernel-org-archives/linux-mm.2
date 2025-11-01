@@ -4,68 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E210BCCFA00
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:21:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85E4CCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:27:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E99868E0016; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
+	id 4A70D8E0018; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CB0C08E0015; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
+	id 456B78E0015; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ADE488E0016; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
+	id 3453B8E0018; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6E7A18E0018
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4110014024C
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:45 +0000 (UTC)
-X-FDA: 84062854050.21.D0276BD
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf18.hostedemail.com (Postfix) with ESMTP id AEBA51C0004
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:43 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9Qs0SVq;
+	by kanga.kvack.org (Postfix) with ESMTP id 200CE8E0015
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BEFA94A8EE
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:27:03 +0000 (UTC)
+X-FDA: 84062869926.06.0870A15
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2BEE0140002
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:27:01 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FjPZlaB2;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021243; a=rsa-sha256;
-	cv=none;
-	b=NQ+uafGepOb+3TwG4ivhS46KzxslbyPehfaHnK6/Za4GVdMp+A8AmD+F5EPnZqeCxn2uIr
-	6y/biIEgeu9TDj59hdQxsqV4/o1wy5JqjRyquJXWqx2WyiA9CXT9ySh96Y8Y9kidrjuo4r
-	Q+L/ibrkr9IHQnohdXjtgJPLU5v6vGo=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i9Qs0SVq;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf18.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762021243;
+	s=arc-20220608; t=1762021622;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vxSsPmumQtyDYdsPL9QaIpjIsGTS2mm1NL8gQSvk/m4=;
-	b=79tPTVgGcbRFCXZiW4y9dtKV4zaSppK645mlU6ZP2797KqFiMnV1xKXQqvXhpB3Yf5rAPd
-	wsWYJ+TZrlxjJtRXReplWegcb0u0L9LFk2P/kO+rLwyIlK5JFJh1Em7ahXn286Zu6Zd8yA
-	A7y0+nr3WlRx8jBdt4FHwxtf8HXFYo0=
+	bh=fPueBcNJa/qI0DXLfBmr5vxibSFjAo0eKSnnuNl27yw=;
+	b=0hV5bsv1pLDdjCjEK8Uk24FnckN/yZySI5nrKluDqxleQrWQXtwx4VQOSQ6hcdx4Tul+LG
+	sgmK8DlRr9aFO9eqUsyjWIIcmfqRT+xDncUOaOb+ULNK+GQPhF4dSltV5AhD/2v0Gwp20m
+	/99ylii+UZGeIer49eeOth1gwC4SM88=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FjPZlaB2;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021622; a=rsa-sha256;
+	cv=none;
+	b=yULaX6dPhS46XUwxIoW0IrhPz117Klp/7ir7qMtVrTPmBkcovrG3yw6YJj9N+qPL7zvJUk
+	vMvuN7ek7BMklfGJwyZZ95enhCRQWP4/U86dd1K4d7ZNrzlM7rBzBb9CN2TvhpHxjU+Cgm
+	912bz8y7dnBHJCgTcb6jPkiq3sfe0NM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 367C5601FF;
-	Sat,  1 Nov 2025 18:20:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD677C116C6;
-	Sat,  1 Nov 2025 18:20:42 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 18677440FF;
+	Sat,  1 Nov 2025 18:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52F1C116B1;
+	Sat,  1 Nov 2025 18:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762021242;
-	bh=7DGmc3I+5nR3iT/IUWCpGRBq8NOcMAe9aK8+QNZZPkg=;
+	s=k20201202; t=1762021238;
+	bh=mFKvW58Z/A1OQcFHyE0QlO67VUd7WnWfCLTNsVL0kBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i9Qs0SVqVhQ+cgTpUUlxG5QlAQukPmjmxt6eZXHcyaU3l9KUJtW09FWDRDcfT0Rr6
-	 9+CFFebpcb2rwBWvOGieJzSUGdHSJOwYvDvyFcqoZOzLTX2qNFaBgTXoR+jkAD15MN
-	 r1SNi9xKeePBufxbAMqfuFxfzKTWCtScyMfK6ee6Jo++FdHxttENFVYZa/3JXtdYSf
-	 iZzlr3E+xOnNca6wscC0ot5/Mk2SinVlANgjDOIGUwnUlBcNwebF17q9mVUXnBv02b
-	 S0j9Gwh+W48r/aC9lIi1VLYMz9MYluQoYZYCfs2q81gx7Vu+rIBFGrruYT8/Tn6mS/
-	 09N3b7/ZLMuyg==
+	b=FjPZlaB2TObb4T2dW5PMEVnsKEXDA50bpKODTpc5GgHl21/G21jLbAlvsxq1boR+W
+	 CulmNGBY0zT4Qdo93ckIV9xSsmlHG83/iM830OiMVCpjKGhBzKnvOkDGgUe+WA2Saz
+	 tVK18LGeQljsGtziSPkVv3pdUfs+XN9b4cCzYKEEsMLMUu6/rBnkY6Z8esXKw7TUEw
+	 oSNQgKIZ118ViGn/X/6d9PNyfXjcc6WSfgC5K4ww2ldfPdu9lwzLTQxl2M+XeZQEYY
+	 3m4lkLAbyu5oEe8PmIxKJOHVqVjHAzYc1Dab5HJDXXDZGybbkCIoLvSw4MuIGEctzC
+	 6QVQNiET8g+Vw==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 15 . x" <stable@vger.kernel.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
@@ -73,22 +74,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 21/22] mm/damon/tests/core-kunit: remove unnecessary damon_ctx variable on damon_test_split_at()
-Date: Sat,  1 Nov 2025 11:20:15 -0700
-Message-ID: <20251101182021.74868-22-sj@kernel.org>
+Subject: [PATCH 06/22] mm/damon/tests/core-kunit: handle alloc failures on damon_test_merge_two()
+Date: Sat,  1 Nov 2025 11:20:00 -0700
+Message-ID: <20251101182021.74868-7-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251101182021.74868-1-sj@kernel.org>
 References: <20251101182021.74868-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: AEBA51C0004
-X-Stat-Signature: aqsod1zcdmskii1psm49sa5zrjw4apk9
-X-HE-Tag: 1762021243-575121
-X-HE-Meta: U2FsdGVkX1/UVAQ1lSYayZQyHDLtRflw3O5TAdssIZDqxm5GTy71XfwOZ2KQocJQehB2pj+6M1g4FXFUa1n0nyDQeGinEahqN16JxJu9e6n/4mdPu9DlDR34Z44hUMYQqlpTufXNVcbet8AmE/6fHROTGTpxbF8Bia1bxc08UmER4LmgbVSQD/7yDDrTeh6H90OOTir25z87EU4IRGVluqEQAEQAQk7fSH5VlB8K6meCuYrZAdGl8apmGSKN70n0MiLYHvUQQNJg10mWKu+labTSKI2vQu5YSIFCdX2+VcOfMZXvAmAtslR4W3isRk529Xm/QGsl6h6vY/dyM8p/S5U9oIA7XArb1ewKrtas6LWkXwefoTZo/EQ1Qk1UMOlswKOExR6W+UNomZWEIeF3Bk1qsU7hnryiRu0gmVvuqrKQcMsSHbtHSdrbZV3gBLGJG35Q1csFBKTwKoFh+XKn5t8/apHS6eBLI9MV5kDcCVAeWjQWL4DCwJjDkb1vKuMLrySfnI9rXeOHjhLK41njybs/1Ujq9vP1HAV06B2e8SMS1vuBJnlc9mf+MBFPwwiAsXkeuWfe8XUdXUkJKZapBHGFqC7k7Niu0+rQ0GTBE8UPin1dEPK+fKXFFycXABup6bY3t4jqPBamx2cvR0E2n0oplWxzH9lBH4XkrVTeQlQShk+hwc5/KFMeJ5gY26oQGq390G3BMpXgCg7zy7PBLGqbHa71ZYuuCDcJnw+QtzNs7ezsyfs/xEspMBjBdj2aMWHujNMfLURsOyPbE8ITdTLVQFdI6jii2Ay8dryM6bMWD9aB4w1QVP/WWgmDFuIdjC1IdxjpJGwc1ledfv0bDA9muq4mc2yngoUUOXRdpdHFqJTy7onRyigX94ch4y58Ean8aE/JEToxYeuX9HrzifSlvaLgh8LiwrZsVS5ZIJbvGqAc/FUFtSfH5VPbzN53GqOLAmsU/Z8ZTxDYqs0
- gLMBq7V3
- 2ZDe20vNR8XZkptSzoeNuZnq5kYHdq2tKega9XrzS4KzUOOh65BzpzqIOqCAaeD8iN51gUqX90VfK582eT/peJB3w1sQB6LRT/MCJRy1+RVbgigkKOYRXpZLg36/0cqau0u4c3XRVL9A+FSfYVAjw/26VGS1Iu+VNCMb6xICanRWoPQ0eds/8+bJvL4CJywl3O1jOJLYMBjI+JRm30ytXZNvR2YcjfM+bXWIbAlDnVhmZZ8td9teHrCpQyESaJH6IIUOmQjzbP67yDbxPFGC12WnfZg==
+X-Rspamd-Queue-Id: 2BEE0140002
+X-Rspamd-Server: rspam03
+X-Stat-Signature: jy3n7ns819garzboo7p7jnukmdccwt4x
+X-HE-Tag: 1762021621-757737
+X-HE-Meta: U2FsdGVkX1+9xWdgVpO/TEBBSRGQ/WQdfWZWTc5vjtPJ9aiDH+SbubRwqaUGvRT3mnCu/285z4T1vaS6gbELYFa6TKhQ3aA7jf7qQ0GomgPbcIndhqgH5oR4P5L5RYtAC65mOjJUgj5zvzNmi4pAQU8Ix2Sm6Gy7ZL32N0BlcbshGd1gjuppVULhTBJSo7cuAaWUNBb9ssJmiyeAaJc11esCvCyGGFHbtBQkRCfEy+nhw9CigSDkxIM4tc3GNAiBI3fbKnhilxyOtwH0BncJkWl9In4aF7+VERtDd6mAAMcTkw0cKNGa1luB5QAaHIoXrFV3NLma5Sa7sQZcR//3sYA8ciMBjZiwC9104Lt3TGTxChbI+888ti+M+ILVaoMomVK1wK0EnPKD/KujhgdNJ4tBrYLkixY2pg1nMHKZ53q50nmmwMD8y6121bwL3becnqeP0iYDoxIZqCKx+A2YT7/bmBSKYLSx59xHNJo7DQTVwibkoVtNolEtHL0LiRV8kDs6IaTZmlFFRHVpGKCqv3UMhFPfgbjbRt84xlQLH7cVsEGpskMs1wf+9ToJlwuNRgcmMUtdzsXzpJBF6u9BDWbGrMix+wsZVKu8bEXDXa2691yZ5GplsgPV1jZ5BkJHNg2BzYBCgvJmG6ANPWEfBkCiNcHJBfd9bNoN/QfYw8kVagZkkdKrKICzBLDOiurG24Kd4sEKucVS5rZ3zJ90P6u+TLuyDCC/NxroyKqsz883FnqIIrWlEo7qbJTBCl/A62rJw5l3vDvbKHF3sZaWT3TtV9yyzYfMJQfxvYy427OE8rcxPe9lQkAzicYY2Bf5mMG4LgsjMbEhqnkbJ+U/EHdguNMGhL+0zlfVa9fJjf7HuhdLj0zDw6OL+ZafmIo1HeMBZZz39Is7lfu+o/CG1sg+wEHnLVpD82bs+Tk0rV91nEaTCDrMAFYN46cpP5xu8YSfet9m+GNq2azfjRz
+ GMUU5peW
+ 8IfMfkCIqkuQ/ojALq6rHQeVV6357B8yamMQmP0+MRSsna48/Q5MDipbtrYhuL5kD9faUBfLcr7SxXZjnkfHVhzbh87opaFs91ZU/niy3yHHULJJABddE5Oj96jqbUkheFipBj5FeSvcebHBP2IaVl5OGBaBQChB9+bLlMsSIvavr7FYXz9VVHLTGb7CD6nZ1S929tkDr4M/InG07sEFie+yl04pCjw08rhsjDWSHshQM5pVGQsIxV0EcBTmwfX+tlAak0gplHQUKGGredSj/q9Ji9g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,50 +98,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_test_split_at() dynamically allocates a 'struct damon_ctx' object,
-but it is not really being used in the code other than handling the
-allocation failure and deallocating it at the end of the function.
-Remove the unnecessary allocation and deallocation of the object.
+damon_test_merge_two() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.
+In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/core-kunit.h | 9 +--------
- 1 file changed, 1 insertion(+), 8 deletions(-)
+ mm/damon/tests/core-kunit.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
 diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index a91d798caa70..726f593930e7 100644
+index f5f3152cb8df..e8219fd23318 100644
 --- a/mm/damon/tests/core-kunit.h
 +++ b/mm/damon/tests/core-kunit.h
-@@ -144,20 +144,14 @@ static void damon_test_aggregate(struct kunit *test)
+@@ -188,11 +188,21 @@ static void damon_test_merge_two(struct kunit *test)
+ 	int i;
  
- static void damon_test_split_at(struct kunit *test)
- {
--	struct damon_ctx *c = damon_new_ctx();
- 	struct damon_target *t;
- 	struct damon_region *r, *r_new;
- 
--	if (!c)
--		kunit_skip(test, "ctx alloc fail");
  	t = damon_new_target();
--	if (!t) {
--		damon_destroy_ctx(c);
 +	if (!t)
- 		kunit_skip(test, "target alloc fail");
--	}
++		kunit_skip(test, "target alloc fail");
  	r = damon_new_region(0, 100);
- 	if (!r) {
--		damon_destroy_ctx(c);
- 		damon_free_target(t);
- 		kunit_skip(test, "region alloc fail");
- 	}
-@@ -178,7 +172,6 @@ static void damon_test_split_at(struct kunit *test)
- 	KUNIT_EXPECT_EQ(test, r->last_nr_accesses, r_new->last_nr_accesses);
- 
- 	damon_free_target(t);
--	damon_destroy_ctx(c);
- }
- 
- static void damon_test_merge_two(struct kunit *test)
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	r->nr_accesses = 10;
+ 	r->nr_accesses_bp = 100000;
+ 	damon_add_region(r, t);
+ 	r2 = damon_new_region(100, 300);
++	if (!r2) {
++		damon_free_target(t);
++		kunit_skip(test, "second region alloc fail");
++	}
+ 	r2->nr_accesses = 20;
+ 	r2->nr_accesses_bp = 200000;
+ 	damon_add_region(r2, t);
 -- 
 2.47.3
 
