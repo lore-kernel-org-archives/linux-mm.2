@@ -4,89 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E19D5CCFA00
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 16:37:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD9E9CCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:20:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F07498E007D; Sat,  1 Nov 2025 12:37:05 -0400 (EDT)
+	id 474558E0003; Sat,  1 Nov 2025 14:20:39 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EDF268E0045; Sat,  1 Nov 2025 12:37:05 -0400 (EDT)
+	id 44B9A8E0002; Sat,  1 Nov 2025 14:20:39 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E1BB98E007D; Sat,  1 Nov 2025 12:37:05 -0400 (EDT)
+	id 388678E0003; Sat,  1 Nov 2025 14:20:39 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id D134E8E0045
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 12:37:05 -0400 (EDT)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6C8D1BB84D
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 16:37:05 +0000 (UTC)
-X-FDA: 84062592810.28.3E50841
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 24D2B8E0002
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:20:39 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C54BC4A778
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:38 +0000 (UTC)
+X-FDA: 84062853756.22.53A0AB3
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id D232E1A0005
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 16:37:03 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gOnF0Fpf;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	by imf15.hostedemail.com (Postfix) with ESMTP id 43E7EA0011
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:37 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="MoOC/Q9T";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021237; a=rsa-sha256;
+	cv=none;
+	b=vu2pO5Rwl3PJuEYcBGmltJh4SRRqAuFYsq7nYVfe3g/5V1obrauOxcQB2LhQBbcf1F/8jv
+	qHOjZ8kpD11dAWk5TL/ZGA1xNVvQoF4vubczZOyVsXTBXU79J9iBZbqVGCuz8QijW9t+zR
+	rMD4F1+Fz2IUplHi8DrZc5iqsnBqAXk=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="MoOC/Q9T";
+	spf=pass (imf15.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762015023;
+	s=arc-20220608; t=1762021237;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=G5Die7jIIGa60l9e7IEoFUD436s7N354SKG3hOSIsDM=;
-	b=5s7cA3LN6FvedtsJGvfaySyr8KRacFBCHsuVUxUhr5oHQHOvxkZEHD/veFyuvTacDNRVbr
-	IAvnzAF2vheO50anx81sFI3WNbb9im0Ob/vBG8RsEnIwXzy+6RYGQKpbcxoVPwkl56Z3Cd
-	hcwgBYj0FIlgxUsLxUx4uSPVq0rZyNc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=gOnF0Fpf;
-	spf=pass (imf19.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762015023; a=rsa-sha256;
-	cv=none;
-	b=tfsdRSoRlUguliijgGa/JkyP7wvrf6Rk4tODYJIqUn+M4vKkegmDEBGfg6XYTOXVOs4uMf
-	em06f0/5seEIwowDH3AP1cEZXnMHaTaPuMbIEeDfdXkRMKN8ME5CB0HHRBKfyVTEdxnRGd
-	lch7DTPCwM4ghl4d88zDBYXF36dgwCs=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SZAHEhWX2zyv4sQOI8R+YcmNPhCPWXh0fXIXGTP+4Lk=;
+	b=Tby8RC98FUSpNctNfL4U4isnjVUA7+dC+U76UMSO7jYhoGZaPdkFP1f6UCnJYLar6PpDUA
+	FT3SRgZQZp9HEnxl3ZEv9+9JTsdsctv4anw6BjzQnNoHUzqfs+z8xH3vBuOYgbB5VcrD8g
+	Cx8/iIrdpoDvgVSgtwEepp15DRpEUiE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0EDF360142;
-	Sat,  1 Nov 2025 16:37:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8196BC4CEF1;
-	Sat,  1 Nov 2025 16:36:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6ACFD601D8;
+	Sat,  1 Nov 2025 18:20:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8240C4CEF1;
+	Sat,  1 Nov 2025 18:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762015022;
-	bh=QD1sibqRBPzm00GzNbQgSKI+qAFQGKOnEE0guoDboxA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gOnF0FpfAq9rrWZiMV3zfkX9ztq4b6Yktm75vsXmspy3ST7BzO1Ixq6JpNyzceFWo
-	 X+wPmGG1brQhD9vmmKBXaFJar7QFv/YmuOteYTHBtlKBIbs/2YBqalcRXglEkOKzgh
-	 oJ1zVD8QVkEleLhOC9mroC8ZN6JYD6bAFKzfzOAHQTO77Ar0ZCMX1o75+BYUQnHJo/
-	 v281cAn4LSibnRiNaeLw4MFUWKYMsJarhweqxCJJhQUbxY9FpHd0GVovxuNcYHhX5c
-	 yL6tX0QSg5foWhpnk64eF3SyEyyRy0s9Hmpk4T1kpuVt8+RZZNwP28C+Bs6b6SlJc3
-	 6LLCx9xGIXEAg==
-Date: Sat, 1 Nov 2025 18:36:53 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
-	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
-	rdunlap@infradead.org, tj@kernel.org, yanjun.zhu@linux.dev
-Subject: Re: [PATCH v9 8/9] MAINTAINERS: update KHO maintainers
-Message-ID: <aQY3JUGAcS3FR8uJ@kernel.org>
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-9-pasha.tatashin@soleen.com>
+	s=k20201202; t=1762021236;
+	bh=YTd/vHBelVnR6mgK17h8ySbO2cFbzynFbPAWylHXqLk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MoOC/Q9TCmUnC9Zl9aJKK4Yg4xuuXinVSTajYDp9j64NVw/rlgaaJbt4ukM9OiZ6Y
+	 uadJI7iBu2uFO+7SxgMkGpiBcJ+TjBkSp1poVWyvl2NBGZ/h9l1gA8Yje4Om5EobN5
+	 o2lBy8yVeq2buFtnN3egBTJo734aeGWc5JlBREdi6x3B7lYYqwXh8qkpsMZKMLbYQx
+	 lsaRHNXbje01iUxvNzpcfGUnvGtU9a9mosNIIUhlXjZsepnxJBawU5OZdSX/4Zl6cR
+	 E8Z+2mEU4PKW+loBu6Plk/HfQv8kmh6q82v7VPii4zOFy1D1fl0eSd+XuJPw8rtACa
+	 P0/2lWn2IE96Q==
+From: SeongJae Park <sj@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	"# 5 . 15 . x" <stable@vger.kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Sang-Heon Jeon <ekffu200098@gmail.com>,
+	damon@lists.linux.dev,
+	kunit-dev@googlegroups.com,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 00/22] mm/damon/tests: fix memory bugs in kunit tests
+Date: Sat,  1 Nov 2025 11:19:54 -0700
+Message-ID: <20251101182021.74868-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251101142325.1326536-9-pasha.tatashin@soleen.com>
-X-Stat-Signature: mp3hz7eat93eh6dnhukark1gypn1wrhj
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D232E1A0005
-X-HE-Tag: 1762015023-474137
-X-HE-Meta: U2FsdGVkX1+CWZIaUK7h4XziGYyTO+L55juitL1Q1rvjzuIA1Q2tQt8pRd8dITJRfHRXVSs1e/M8pjpbDCUKt1tRvEoMq/hhR+88Qd+tUAs7Zic/5XEA8x+4HI8H2EdJ2/zJngXvpwy6P02n3OYk/FqmPdZoRy0BYLR4XzqzKEL8VFsh1mpfs28OELyHySjjqcukkE1KqlfMei8KYmygrXcy6Ae2RmlTvi7MS6pIsoQ5CmdBEdMCzlEIqNsvJHiajCoMoiGnTmZv/CH3eNnDsJHiyIHwF81i3Smgs4z0BiI3AWgio0CsNNaH9GlAgmstYiUAu7BbrDjXBT0nhMKkKet/HtINVFGlFXCFfFv3pHvkxDHExSGv+FSbntrEdz88bgiz7NYAhcXOgOzPvbUSF/C8qICiUKkoyWhX+BM0OW3Igg0nUxhfV4qS3FmmA1NwLuw/r/nwhEOGlFt+ArPOlbuMFnk6wQLXvTwNoSW1BP2rLCpDw860K9UIEC4yM22bYZSdD5cJhlhram0j36QQrj5wk6WHwKeVZpamx6uLPaRJdPX3+mgmHoT2H6y/IAXfYlweZ55vv0uNN/7l9O3MHxD4fjAZ3f1f/ToIDf0qyOAOxMwQCeon9rXyOR+e6iduhEZZj3oo5MraE1Bl9f67W375P8HR+i4m0kUFNLqXOoRWbpYgJ7WrheYxpC2AQofTUXHhrMB3iBQoqicgr9S8olvb7qYwwMFV8TERFb6IjgvpADzzsUT7pMPOuoZO0QS7CGBvg7jj5av5LDVTd5lf+gTYTZmPkkS6OLE2KLhJW6LayCSbnBcI6unEJXubBCIkbwU9NhZlp6jbk0TkA9SHMnPSDYjc+mxKh7a/W877DL1e/FyZZGELugNlbq5sgMr7fpHx2y88CdvBIDA8j3dgqDNc4C64lzE5Q6mxgBI8zj7Va7b2B2fkHT69tmewwUApViTwtFsNeqyNk/tSX/T
- 5oOWkqr2
- Qxpn9vIFlKn1Kb+OVg52aSr8nmn28UP6MExkSoaanCCZCoHwe5Z2jE1hAUpUSj/J70uLUT4yc+f6aKCcuLHjLzlZoPbHbPD8N6x/xOPc+FQW+uB000BAIOibhxeQGbM0f1GcMhKQyOoUA/pTPjQ2DyCN8HQF66bzxih0Zm8YrCtzkTjPK+AvYHdtwPSxZwvQ9kNfAPdggeLyzVUsd6+Mvinr4n7dHh7ahOAyGluKk0zA5O7d07vnDtGZ5jfF3TFennouqLhOAmAmcUTcGhH9pBWLyaNzYU/xmjkpHhS/qYn/p54/3twOOEumGq6n1f8OxQoWon48fsFrrBvylavwB+d9fTgaSyIY4pDq9CLKlZlYLy/OnbcZvyysD7lFx37drfCW+Ijy2Qj4XqKtfE3Db0WVHMBAyOBzns5Adn1MMFHzT3LfpgWm5IOht64nUtv0wh8ciw+e5PKeN5GzvGZwG3n/gLfbecra+JFUtZchke1kmcqwNkf56UBM+J1kZa1hrdXNT
+X-Stat-Signature: hktam83mgajqq4mco6akp19tftkzimnb
+X-Rspamd-Queue-Id: 43E7EA0011
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1762021237-20158
+X-HE-Meta: U2FsdGVkX1/VPYDfR5YZ6PcZZMlvfLMSfIHt3FytMenV+fqgHxaCRCX4J1rcz3Uf1HuZNXQd0z5cbLVlLEegsIGFgRYwxeOyaXLl82Y9QGONBlgx7UW9iaCjL9N9VZ5z5S1NPqgWQeKgqzb2KIdwpueeTaZTgTD4jApiqcHAdRq4YSXh4ZfsZ3gkhgt83jIzaVZPWvMq1j2MPwxwCsDZIPGYjWHpIQGBeZCW19vfvCnfXipuLnJcRzE65/3BJaJo8QZ2KQBBRojy4ebMSvKqwoFj2IoMRaq6Xp0QHfsTAEvBThL0FPN2hNE/YWZd9p1hmcT420I3P+XcvqtrmZRjANWeHxc2KfD6TEbR0vA3G912IWtT/zvvp9gTi60D7MtpJ4shh9orNWIRbB5QoBsdMgnarRK6LX8pKZ+D8xRUTTTc7Iz8ncQA04hKYbYhTeOg6xCJ+8KC0LAmpFXsUCdTyn879JRASsfIZOtDRsLupAy6CFHcY7wKG7iRIVbNmqHLEvv+VraoqC7pB/2idxK1aKLRjlZdwpSB/3F77lbyI1yUQ3IGPRYSUrRPAq4Nwez+fwz1CkWDMRnxxX2+w8ScLxI+zGJA/541Y/nGyVzZqIvVZmVKki0p1WkS9aEbVQjOuwDdGmjPYO3OZQ7EnSIpddNjx3+x/rRFsqlooRhENjH4h6CoNQn5lAqNYKN8sSXu1c6uttk4htv8AOn8wHSlyDRitfLQh13jPMngxPnojJLyY9/VRPI2gp9JHow8Gwhe5VM0tyDhQH1syDAlvm7SwV1ahDN5VNdX3i3aRl/u8m/TgQWATNyGPvPf0ABTahvP/kdqTVIo5/FOw7t2WfLmk4iht6gGkbB1bPp2REk6BR/YxExZXqLuxRHkN54R8/79YBX07QmVXqjoI1bjI/HYgb1RRGl6Jk3eap1nliXIWuGb0Gv00wcK4dAxYyhz4NB1w5Ia/rsInmpH7p3EJwz
+ GTfMQTK+
+ qvy1+qMk5qSWkhk2M3uLXKbXm528YdF53ZKqeDq/sR/FC8acE6z6goG+y1EkDDDDauGANB+sxpKqqUH196vw//9vhCWF8IGhZua4BNH3gtiVxsKe1ek16kUZj1Tmtm2mxT3RFYYi4AcraIdvt7TsXnHryV5ZWRtGIs+bwpcLI+YrepXp5kN/bfDNWPp3KkBi7TtSSKl2Gkyh9O0s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,37 +98,90 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 01, 2025 at 10:23:24AM -0400, Pasha Tatashin wrote:
-> Changyuan does not have cycles to commit to the upstream work of KHO.
-> Remove from KHO maintainers.
-> 
-> Signed-off-by: Changyuan Lyu <changyuanl@google.com>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+DAMON kunit tests were initially written assuming those will be run on
+environments that are well controlled and therefore tolerant to
+transient test failures and bugs in the test code itself.  The user-mode
+linux based manual run of the tests is one example of such an
+environment.  And the test code was written for adding more test
+coverage as fast as possible, over making those safe and reliable.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+As a result, the tests resulted in having a number of bugs including
+real memory leaks, theoretical unhandled memory allocation failures, and
+unused memory allocations.  The allocation failures that are not handled
+well are unlikely in the real world, since those allocations are too
+small to fail.  But in theory, it can happen and cause inappropriate
+memory access.
 
-> ---
->  MAINTAINERS | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 764df916fae7..6200de2027fe 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13788,7 +13788,7 @@ F:	kernel/kexec*
->  KEXEC HANDOVER (KHO)
->  M:	Alexander Graf <graf@amazon.com>
->  M:	Mike Rapoport <rppt@kernel.org>
-> -M:	Changyuan Lyu <changyuanl@google.com>
-> +M:	Pasha Tatashin <pasha.tatashin@soleen.com>
->  L:	kexec@lists.infradead.org
->  L:	linux-mm@kvack.org
->  S:	Maintained
-> -- 
-> 2.51.1.930.gacf6e81ea2-goog
-> 
+It is arguable if bugs in test code can really harm users.  But, anyway
+bugs are bugs that need to be fixed.  Fix the bugs one by one.  Also Cc
+stable@ for the fixes of memory leak and unhandled memory allocation
+failures.  The unused memory allocations are only a matter of memory
+efficiency, so not Cc-ing stable@.
 
+The first patch fixes memory leaks in the test code for the DAMON core
+layer.
+
+Following fifteen, three, and one patches respectively fix unhandled
+memory allocation failures in the test code for DAMON core layer,
+virtual address space DAMON operation set, and DAMON sysfs interface,
+one by one per test function.
+
+Final two patches remove memory allocations that are correctly
+deallocated at the end, but not really being used by any code.
+
+SeongJae Park (22):
+  mm/damon/tests/core-kunit: fix memory leak in
+    damon_test_set_filters_default_reject()
+  mm/damon/tests/core-kunit: handle allocation failures in
+    damon_test_regions()
+  mm/damon/tests/core-kunit: handle memory failure from
+    damon_test_target()
+  mm/damon/tests/core-kunit: handle memory alloc failure from
+    damon_test_aggregate()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    damon_test_split_at()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    damon_test_merge_two()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    dasmon_test_merge_regions_of()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    damon_test_split_regions_of()
+  mm/damon/tests/core-kunit: handle alloc failures in
+    damon_test_ops_registration()
+  mm/damon/tests/core-kunit: handle alloc failures in
+    damon_test_set_regions()
+  mm/damon/tests/core-kunit: handle alloc failures in
+    damon_test_update_monitoring_result()
+  mm/damon/tests/core-kunit: handle alloc failure on
+    damon_test_set_attrs()
+  mm/damon/tests/core-kunit: handle alloc failres in
+    damon_test_new_filter()
+  mm/damon/tests/core-kunit: handle alloc failure on
+    damos_test_commit_filter()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    damos_test_filter_out()
+  mm/damon/tests/core-kunit: handle alloc failures on
+    damon_test_set_filters_default_reject()
+  mm/damon/tests/vaddr-kunit: handle alloc failures on
+    damon_do_test_apply_three_regions()
+  mm/damon/tests/vaddr-kunit: handle alloc failures in
+    damon_test_split_evenly_fail()
+  mm/damon/tests/vaddr-kunit: handle alloc failures on
+    damon_test_split_evenly_succ()
+  mm/damon/tests/sysfs-kunit: handle alloc failures on
+    damon_sysfs_test_add_targets()
+  mm/damon/tests/core-kunit: remove unnecessary damon_ctx variable on
+    damon_test_split_at()
+  mm/damon/tests/core-kunit: remove unused ctx in
+    damon_test_split_regions_of()
+
+ mm/damon/tests/core-kunit.h  | 125 ++++++++++++++++++++++++++++++++---
+ mm/damon/tests/sysfs-kunit.h |  25 +++++++
+ mm/damon/tests/vaddr-kunit.h |  26 +++++++-
+ 3 files changed, 163 insertions(+), 13 deletions(-)
+
+
+base-commit: 75f0c76bb8c01fdea838a601dc3326b11177c0d8
 -- 
-Sincerely yours,
-Mike.
+2.47.3
 
