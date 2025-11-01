@@ -4,116 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F9C7CCFA02
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 19:36:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2844ACCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 19:46:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8084E8E001C; Sat,  1 Nov 2025 15:36:55 -0400 (EDT)
+	id 586D28E001D; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7BA008E0015; Sat,  1 Nov 2025 15:36:55 -0400 (EDT)
+	id 538DE8E0015; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6A8A18E001C; Sat,  1 Nov 2025 15:36:55 -0400 (EDT)
+	id 4274E8E001D; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 561568E0015
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 15:36:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 10FFCBA6E8
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:36:55 +0000 (UTC)
-X-FDA: 84063045990.18.E6B6776
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 408091A000E
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:36:52 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KRRXb0UU;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 329698E0015
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEEEC12BC13
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:46:14 +0000 (UTC)
+X-FDA: 84063069468.24.C52EFEF
+Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 183FCC0002
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:46:12 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bt6NhuXw;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762025813;
+	s=arc-20220608; t=1762026373;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VYqGa9RORLVyXblVOECesyP+TuX/E6+QTJ1nBrAec7E=;
-	b=5giashKCmR2cUXcnnM6EdTD+JVt72y/DpGjLrShBsYSArUklBVjyxO/tIMnT9dplfV6zfd
-	ZEqe2qJJKQBvNO3FFqHtU4rDDKG6/otOmWLIWEdF2dJP2oQVvDhIEdx72izinZzeQnRELB
-	XMid5Myo4Cwg/t4JskAoM80YzN0A7EE=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=KRRXb0UU;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.11 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762025813; a=rsa-sha256;
+	bh=qSk/sZRQi90GHI3IILQtj3YgPAQn3xbHNm/4+VGi7to=;
+	b=Vm2aj68Z1fenJF9u9Uw6DER/hNZlDuKiROS/MXl8Ya3tZ1ydnWb5S4H+Vbh0MqMha6o7cg
+	hC8ONwPCyx45ajGIMN78fJlNgz29OU5+cGJM7C3B80c4A6SBDQsEFvOwzsI5wv1CDECfPJ
+	gG3tkFNFXjZXzog4NWYWWT6u1KEx1Xk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762026373; a=rsa-sha256;
 	cv=none;
-	b=inwYZCAVgFAeUibKQ3nFlBUE5NIrIW1sHZXrMJsFua5QmPmdlcVkzyL6SQ/GExVul4xsnv
-	gS1ZhStaXnqmnY5uD/67qIAK0XGiu392RBvof9SyKdn2FrarJBtD2cUk8eb9Y+4ooN9x4v
-	/Ux1gxavVvGeik7piVZKGo0huIIazLg=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762025812; x=1793561812;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=UNLgUNEbuilYnhoztX92QSHI2QpWIAoqAV+6Dwad9Fg=;
-  b=KRRXb0UUw/nmJzI5RcZp0KL/+UsUZzN2SArqOPpMj5uxD9hitomKsfB4
-   4DrR+GZMTsrJFm5zVBbNAK6q08ntgOevLbwZxRhugJye+NsEZ2ZBZT/LJ
-   8gXeXHddefWEySiTvZRnMHhQ2nye7sQadV2rwV8kLa8WJU+hpxCRnmp67
-   /o3e0xfY6YxAdDyRhvyLEXb82lYlvMuNOLAzWCz652LYKWaiMalI8dmKl
-   fvlO7Da0fqPtLinn2Sfyy7A3h3uWED1UNQuSu73NlAJJ9+FV8bOLUjOJN
-   zUPIrH4SMP3u1hdBED6iC7LIziNt4by/L+QSzjdpOegELU0akhXEn0wzP
-   Q==;
-X-CSE-ConnectionGUID: qjy3IcCCSKG1WuO9Kz4mBA==
-X-CSE-MsgGUID: EZLQlxUfRxKiCimYO3driw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11600"; a="74452049"
-X-IronPort-AV: E=Sophos;i="6.19,272,1754982000"; 
-   d="scan'208";a="74452049"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Nov 2025 12:36:50 -0700
-X-CSE-ConnectionGUID: /AXIaqu7T1CsP3LWinhpbA==
-X-CSE-MsgGUID: xzImgq6JSjeWc0g6fZo9+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,272,1754982000"; 
-   d="scan'208";a="186393320"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa006.fm.intel.com with ESMTP; 01 Nov 2025 12:36:46 -0700
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vFHON-000Odw-2x;
-	Sat, 01 Nov 2025 19:36:10 +0000
-Date: Sun, 2 Nov 2025 03:35:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: David Laight <david.laight.linux@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	David Laight <david.laight.linux@gmail.com>,
-	u.kleine-koenig@baylibre.com, Nicolas Pitre <npitre@baylibre.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Li RongQing <lirongqing@baidu.com>, Yu Kuai <yukuai3@huawei.com>,
-	Khazhismel Kumykov <khazhy@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>, x86@kernel.org
-Subject: Re: [PATCH v4 next 6/9] lib: test_mul_u64_u64_div_u64: Test both
- generic and arch versions
-Message-ID: <202511020341.TEhkaR65-lkp@intel.com>
-References: <20251029173828.3682-7-david.laight.linux@gmail.com>
+	b=j9AbAVEBzxG0xt+3wd0Hp9krWZCErSZbdhwHI7YrK/3ujRv+m9l1PMUVA18WOXyhJeUmBh
+	ij4N6jEXfUxQKCvoqCFH1G4RfvjfvdjrJP7eWeU1T1cSh3wCNWXjtJ4PwDgxPCfMAFk/xk
+	xpByt3PcBvZXssynyoiryxIKT04Aulc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=bt6NhuXw;
+	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Message-ID: <57bbade3-0707-4045-b39b-2053434b0b7c@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762026370;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qSk/sZRQi90GHI3IILQtj3YgPAQn3xbHNm/4+VGi7to=;
+	b=bt6NhuXwWlyIZUWEiIsROrc2jyonkIZX/DOSReszd9+6z1Nhl2up7ZnTMedodcIqC9ozwX
+	W6aLNMDub//7cjEzYGIR3b7lj/p/0Mp4ex4mSvTR50MifJPiYezgJYuplEidrWU1FkCTxz
+	qJsT50eEfIWOMW9JdydU/DYe9lZNic8=
+Date: Sat, 1 Nov 2025 12:45:59 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251029173828.3682-7-david.laight.linux@gmail.com>
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 408091A000E
-X-Stat-Signature: tgwm8a4xrg98o185jic5qfnr6e1yn9rm
+Subject: Re: [PATCH v9 9/9] liveupdate: kho: Use %pe format specifier for
+ error pointer printing
+To: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
+ brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
+ pratyush@kernel.org, rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org
+References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
+ <20251101142325.1326536-10-pasha.tatashin@soleen.com>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
+In-Reply-To: <20251101142325.1326536-10-pasha.tatashin@soleen.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Stat-Signature: 7mrr56e7xmuubtz6je8rfhg7cqodeg9a
 X-Rspam-User: 
-X-HE-Tag: 1762025811-557065
-X-HE-Meta: U2FsdGVkX1/a+kxMBkcnFzRQdaEtVLpfvXx7YE482pFfRiO7vlCeuZTvr0ebv9YXr2Z4dde6rvouLAzg6RZfiZe2Vvr9zurJW2zFGgs/6pne0gxY6ACvr9wdL2UK2hIQC0UzZFNCZkA9OhKTK1knaWvBPl2k+CE+0l9Pv8CmBKXPyKAz3psCa8GotNuWITeZQBeQlkf2SyHn7sDPiMYKed9D22/K1lsB7TfrQ2V6y2FLuotdpEhwz8VGYj1KHYaFodYCPaihvsKDx8pwraL7msJdb/DxaN8B6IHkSohtMXf3OSZCZf5deeJqP0cK48LuNYm43Uj0QCBsyHhK+c837+DhFJT3kXWItsIRJeOaeSgZVBrGfQK2kXj1+NKidtIWxeMFx0n6CzDh4w60Cp1br6Ggc03hjXUXJQ7sY1uH/+Zo9cU4klcpA9aNCWwuEm+Nt57p2q47MDyo7O5walFY+fr9j/3KqVEtBSRA5tfB7xvJya8I7Wptu5Xqmhvf40J8YclSVvI73i2OlhphlHLW3o6fLu2E6rfgklRq/Yd8XWLwC63sTAf44zppJg1rlailWtewHFJ0Mo1BpOqIdCMbOVhLVOtf9Hgo0pP60rynM0s2Cdrp9UfQmKCckEMw9DeCcA8JRaUobShZVKXFKaCWKvA8QVNKoIxXWGxyEVkpt+ZW4FPhmVOM123oMfRs8e/Z1sUmO0qyywVIAR7PUQhpqdz1pLHqBSvxUuJo+8g5XgYExrXvpZHiNeW8I0RdyXFSNQ+DQk8rEsoVKoBonGaHetbx7YWUbocs/11m1LCv73UPPfjZJetzwBFrINQ9q7qF9vd8hmvCxQ3yuMx4r6tSzywdwpmltUkE9XTlw06wEYh85d+a7QQz+IKpyVC14pf+C3LkesOHkVnIyzGNyh3GHSpUfKOBWuWX/qMB2KCijj87lrDRFEIWYKEi5c5XXRihGGZKFopxSXdqPue73v+
- IoGO4Z8T
- oyU8ooI0aVGmZYDPmtRu9bOZA4istjXNTk6MBJm1Ofh5UtdlhoMS1RsZ70XSSEe6zf0NCwE9uQUJ7L26FfeWqq+yWMr+oa90wuKwK2kcfH+z3AfH2jZe3hm1MHG18+N7JlKwLxwhyaF9+M8s3rTm5tDiUG7jin5WbHgFcS1syaHIvnS54jXnN8787h7OGT7779j6tSupEUd82XNM6biadrIrW3c2zQNOSlwp76acHugPCGMCmC4M0RV6dh3b+8QGJDy+YgUH579CDYQoNttV7PjzDnRweOlAumML3Jc2MlL7bVp2reVwP5kk6MrRieU1kTNxcXMOy9xniLMwwg5+M/UtMdD3yKTFG9wRw6NR9NNXb3yaMoI1Odp5exbOeh1kvs3yvyW7NcY066brG0RoqMIDuz0SdhY426R/s/ydNkYsvYj7Y9twMzc7CJe/AV78mztgXGX9qzqM/oFPlmJy1zNeoPQ==
+X-Rspamd-Queue-Id: 183FCC0002
+X-HE-Tag: 1762026372-961978
+X-HE-Meta: U2FsdGVkX1/MOzs0JKAhN2pSpSjKxiX/ENfLG1sSLdjPtz/eUuPnAIC0mXdIA0d8VeGzXM7EauVKFDael10Rl1P0qy4RI+y3NVcFJ+ADOCKoG2tGpAohc2EYPWCfbOoe2NBqARjFGkdMCd/9Q/PYZqx1nhiZcGzwTh4PE6s9NEVQdvUnDAyPtHn9+F/xeRD+GIKDd/x9Rh1IQit6JshJ6LB88dQRwE1F1xDYqZDrLWsxPdtDUWZhdv4ir65P+Wgy52NvbJx2YwQ+gypKDyaxPNMYwZebuKTuI5/zfyP8J10YU6vjNCzuQaoQUPZ1mxavWeZPyfImqcyitLEbP57VZvQePgbPLTdg5SXMNvZ71G+F8dIJr7YmabcFWOSAt3r045jBWisXYGFAupAVo1N0B2rwgis+0tB06kNL5ciaOFzetuxdYincEuOM5R9OqUY/6Bvlkq91uwPxs5Z8Iq+FluFrGzj2cdX4zxMIeRKvsnj9rb1TKxKxF3euQUPu9ftBuMpgWgLVNUsh4ePeiP+UGrySqfbXfxr1uf6UmDT1ntZ32s/ZI6KZT8HdScmliKmQQ8NDQDX0BevktFhWz+w/xpOFwB1FcYEIAfggCRPFgnnm0YPngyGUBQtoMiTMq6WXJcZETl9aeFrvSu5P5vELMqMBBABOAZdOnm/oNqKBoVs+ldPBlZn/lGH7QqrGVQiUoKgMe5bS6YnMHfuymHxCsdlQEueWqcIT7zjhqYS8Ft2txhtehg6mcNhVrX9h6t1teWeOKvXeC7ha+sbasJ1Eam3eSnETGj3P4ZgmeCfLMD+j/cZvM1ceP5Nyr4XDSEUXGBGMbS9pSR9qoT1x70quJJYd3txWM0IkxhxMYGC7D+P9LKR+OOcc+UQKFFgGbZEs0eHjd3Y/7OpexB7utdAAWA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,54 +91,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi David,
 
-kernel test robot noticed the following build warnings:
+在 2025/11/1 7:23, Pasha Tatashin 写道:
+> From: Zhu Yanjun <yanjun.zhu@linux.dev>
+>
+> Make pr_xxx() call to use the %pe format specifier instead of %d.
+> The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
+> -EINVAL) when given an error pointer created with ERR_PTR(err).
+>
+> This change enhances the clarity and diagnostic value of the error
+> message by showing a descriptive error name rather than a numeric
+> error code.
+>
+> Note, that some err are still printed by value, as those errors
+> might come from libfdt and not regular errnos.
+>
+> Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-[auto build test WARNING on next-20251029]
+Appreciate your help, Pasha
 
-url:    https://github.com/intel-lab-lkp/linux/commits/David-Laight/lib-mul_u64_u64_div_u64-rename-parameter-c-to-d/20251030-025633
-base:   next-20251029
-patch link:    https://lore.kernel.org/r/20251029173828.3682-7-david.laight.linux%40gmail.com
-patch subject: [PATCH v4 next 6/9] lib: test_mul_u64_u64_div_u64: Test both generic and arch versions
-config: i386-randconfig-052-20251102 (https://download.01.org/0day-ci/archive/20251102/202511020341.TEhkaR65-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251102/202511020341.TEhkaR65-lkp@intel.com/reproduce)
+Yanjun.Zhu
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511020341.TEhkaR65-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> lib/math/test_mul_u64_u64_div_u64.c:142:9: warning: "__div64_32" redefined
-     142 | #define __div64_32 __div64_32
-         |         ^~~~~~~~~~
-   In file included from include/linux/math.h:6,
-                    from include/linux/math64.h:6,
-                    from include/linux/time.h:6,
-                    from include/linux/stat.h:19,
-                    from include/linux/module.h:13,
-                    from lib/math/test_mul_u64_u64_div_u64.c:9:
-   arch/x86/include/asm/div64.h:78:9: note: this is the location of the previous definition
-      78 | #define __div64_32
-         |         ^~~~~~~~~~
-
-
-vim +/__div64_32 +142 lib/math/test_mul_u64_u64_div_u64.c
-
-   140	
-   141	/* Compile the generic mul_u64_add_u64_div_u64() code */
- > 142	#define __div64_32 __div64_32
-   143	#define div_s64_rem div_s64_rem
-   144	#define div64_u64_rem div64_u64_rem
-   145	#define div64_u64 div64_u64
-   146	#define div64_s64 div64_s64
-   147	#define iter_div_u64_rem iter_div_u64_rem
-   148	
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> ---
+>   kernel/liveupdate/kexec_handover.c         |  4 ++--
+>   kernel/liveupdate/kexec_handover_debugfs.c | 10 ++++++----
+>   2 files changed, 8 insertions(+), 6 deletions(-)
+>
+> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
+> index be945c133a2f..167c761988d3 100644
+> --- a/kernel/liveupdate/kexec_handover.c
+> +++ b/kernel/liveupdate/kexec_handover.c
+> @@ -1448,8 +1448,8 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
+>   		memblock_add(area->addr, size);
+>   		err = memblock_mark_kho_scratch(area->addr, size);
+>   		if (WARN_ON(err)) {
+> -			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %d",
+> -				&area->addr, &size, err);
+> +			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
+> +				&area->addr, &size, ERR_PTR(err));
+>   			goto out;
+>   		}
+>   		pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &size);
+> diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
+> index 46e9e6c0791f..ac739d25094d 100644
+> --- a/kernel/liveupdate/kexec_handover_debugfs.c
+> +++ b/kernel/liveupdate/kexec_handover_debugfs.c
+> @@ -150,8 +150,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+>   		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
+>   					    phys_to_virt(*fdt_phys));
+>   		if (err) {
+> -			pr_warn("failed to add fdt %s to debugfs: %d\n", name,
+> -				err);
+> +			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
+> +				ERR_PTR(err));
+>   			continue;
+>   		}
+>   	}
+> @@ -168,8 +168,10 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
+>   	 * reviving state from KHO and setting up KHO for the next
+>   	 * kexec.
+>   	 */
+> -	if (err)
+> -		pr_err("failed exposing handover FDT in debugfs: %d\n", err);
+> +	if (err) {
+> +		pr_err("failed exposing handover FDT in debugfs: %pe\n",
+> +		       ERR_PTR(err));
+> +	}
+>   }
+>   
+>   __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Best Regards,
+Yanjun.Zhu
+
 
