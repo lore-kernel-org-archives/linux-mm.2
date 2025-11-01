@@ -4,69 +4,69 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9AF2CCFA03
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:21:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F2715CCFA02
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:21:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22B868E0017; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
+	id 449CB8E0014; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 202248E0015; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
+	id 404D28E0019; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EAD358E0018; Sat,  1 Nov 2025 14:20:44 -0400 (EDT)
+	id 1B5C88E0014; Sat,  1 Nov 2025 14:20:45 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B8EFC8E0014
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id D5ADF8E0017
 	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:20:44 -0400 (EDT)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8FD31B97C8
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0D2A88857
 	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:44 +0000 (UTC)
-X-FDA: 84062854008.26.520EC82
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id E43A6C0006
+X-FDA: 84062854008.23.EB3A601
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 134BD1C0004
 	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:20:42 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PBKwpse/";
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021243; a=rsa-sha256;
-	cv=none;
-	b=OAPUvWS2lWc3oID2QTC15nhV+3wUUHSJVcFnXFW3lHC4I0lAgiAJiSnm9OKxhtdh4vY2D8
-	yoJoZegyRSZBcPig0et9K3+dCETeyo4g3+mS0n8bFqVjCki70kxaqkbhL26GG5FU61AZbn
-	4ER+58/88kr7EbLyx7y/I5ZQ/NZsdlE=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="PBKwpse/";
-	spf=pass (imf10.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hk8oZQyt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762021243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LtM7TPbFvo83NhxgKLHhweSPQSwubrn+0fPjUs1hsD0=;
-	b=KrDGqyF3ho2V2YnShHX5YLsJOccmFTHe+abXOlJ7QuRNfWbaGWNuvzWCeTx5yhQOIbXmWm
-	WRZVQP5mMkwZZ08ZmBbjO8MAnOs99xEqBR0AKANOxZNH0JUG4Kp3SZkQueaUvKXx8rG0He
-	rdpROg3QqE8lkGTNPa0r1jUgpFkjRmI=
+	bh=Z1ffhiHv8OB6FPSsGlOS1bPAonWBDrN84MuF7JMfKuA=;
+	b=CREaCB0tgXBSXX24pTDY49hQRBWyQr9h4RnWYKatgjLLAwiyCXYPVaCBTROcgR+4r3SVWU
+	9UNcEf4lmhRS0L55flrr2CRGgQxThhBj43gnT7Mi0d21bGqhbkvvJyEx4+wqnx+Wbl4pv0
+	kRS5uc1zasGzfOr99k6WswSGPnMI+n4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021243; a=rsa-sha256;
+	cv=none;
+	b=4FIgljzhywz7BESKBKOGfJhkLF57db13AFVX7tzaVP/4I9iSmI3JosDQzUsM/XwFHz0ujM
+	8aHk8HIldkBYO5fGevMyb0XiULt+pfY8b0rv0OZ4178co4hCJqWqcyWkN1FcDGDSKwloPZ
+	SdJW9T8Xy+3jWuU7L4Xin27eDS3yeN8=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=hk8oZQyt;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of sj@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sj@kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A8DA744368;
+	by tor.source.kernel.org (Postfix) with ESMTP id 9590960208;
 	Sat,  1 Nov 2025 18:20:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED08C116D0;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10B93C4CEF1;
 	Sat,  1 Nov 2025 18:20:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1762021242;
-	bh=YKKetXWckUNAeNivss353X8s+7x7z2c2pZKrb6m5Vqg=;
+	bh=PLzxcHsoSe+0yVejn7B0A/LGthJsGhvzYk8OEsuxAOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBKwpse/W69Y85fbiyxFTe0Yhn0KF55DLJUWj7U/1BQmCjOjs9/sk7MwkKx2qt5yP
-	 20MSUTKtBNCNfZ+lOjrSwRis54URs5b/7mg+Kfw/rH2hL826ghikSzuGKIirCe+yUp
-	 5+rnCF4THr0Xs0PD50d5TjYTJOlFqPoAkE6A4VEvydg8RtPh+3iIdfpkhfn17Zc5I/
-	 W8DJnV3+sPWBnDxWk59G2mnuEWQCVFbXX/OgS/4mf2k6xoWM0lsFwIjJaQxcxIx7oe
-	 em/lD1X9cfs54/iwlOuEo+LAbbcR0j7L/VS1b51U2kaDhOYzX1zWkaJSkcuyXzUEjf
-	 UGN5MC4ojfWgA==
+	b=hk8oZQytRHvD4yY1GTSmSR5xdnrFQaYLz0Neg46BHv9DIcvoXZdYDUeepzqOKkRGA
+	 PQdMwmnMSndNRmiV6tEnV7K4EfSB9+2onrnhkjywAkSRC89hu097m8uH1DBSOaUEnt
+	 QcxZhCZ0+e4MYhaAlAXRjP5D+1Lu/cM+QyXRWq6yL0OWM/3MzNwW2Q9OTGtFERMY+b
+	 okP80u3h6S+YiBXPPzoxNpKy2T+CyEy3C/323OTjtzJ4rpIoRDknBu95SpbnHJ9eQv
+	 ELqNdB/w1R6hmLmm7ZrdEC8pqQEkyG82IoWq2U+dAHxzHkZHRgObgmwwTMNOj4ZsLw
+	 /6ovLKarDPWhA==
 From: SeongJae Park <sj@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: SeongJae Park <sj@kernel.org>,
-	"# 6 . 7 . x" <stable@vger.kernel.org>,
+	"# 5 . 15 . x" <stable@vger.kernel.org>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
 	David Gow <davidgow@google.com>,
 	damon@lists.linux.dev,
@@ -74,22 +74,22 @@ Cc: SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: [PATCH 20/22] mm/damon/tests/sysfs-kunit: handle alloc failures on damon_sysfs_test_add_targets()
-Date: Sat,  1 Nov 2025 11:20:14 -0700
-Message-ID: <20251101182021.74868-21-sj@kernel.org>
+Subject: [PATCH 19/22] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
+Date: Sat,  1 Nov 2025 11:20:13 -0700
+Message-ID: <20251101182021.74868-20-sj@kernel.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20251101182021.74868-1-sj@kernel.org>
 References: <20251101182021.74868-1-sj@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-Stat-Signature: wxoz53he5d4uzcg93a7s9w3k1cqhd8z7
-X-Rspamd-Queue-Id: E43A6C0006
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1762021242-335152
-X-HE-Meta: U2FsdGVkX18gCK8IGrgYDVNClyvzKQz4io5IRx+Ig70dEb7y3JgdEVL5HVggDjXk34logK95dt4z/7qBX96+4xdVDcyM6lPLm3SpnkNeprZjr8LzaJjYT5ZYGRP8t25ni751BwLyZzig7pfYZx+x32L7CivHopojnCasFYMtQ/4jJhjEK0jItZNQqr+ctbWChS3G3aSFyMn5pED/3gNoFxAbq1ziLoyp+avFAYVeRTbpXRjgrZpZrenW1tKyimg0GY9afA8lBeEKWYozoAkBPxZH+IoXg+pWHDcDUD3Ki+XNidgjoQLy54//LGJzLbdF7FPhwyCfkTTgqmbLi4vlqFEvned5PMrP7c7zKVv+qlLsP9Koj3TVgK2ednqNE9FeldDvbP1LmxeczKt1Y3X21b5bZ6PB181yyYOzpOpH7FySzCl1W0GAeF+Y3lQZ49//zLqQ1MqZdY0IN9sdWY+gUcrGAMZJUT1WKsn/zZFy2U0ZZggvjtiuUYx+mV7ppMb5T+1TSBr0Wb7frGOPe6oIdKDu/GVYEWUfMMaIrExo1U2Ys1KTodJT+SbCvXKBJelHKRv6l6T1xl7xq7FMVqM4PtcYr4cb18//XcDdfKIYqLdFsHVukEvmx6dxGNnepYqCZLRqblZua3FoSuSgbPZ3MDxq95Z0i2Odt70KukPdsuOSrYYerMM20vTiW2OMTGrUROvwSXBVjUeNuJDyoOfB96RenhhP9x45IjFYJDhcMzu6PTGE/RBJa+BEsAbBuPt9u1hSjsIjf+GEth6MzSwLA91iZNWjYaudXOTGLXEssa/9zHodeyUQ2fkiWLbFBJIA8hHZ6zC7eB9r8dbCQXXg4BTe2/xaOJT5W/nWdwapP/Raoi0ksvj/JBRTmhWY7vGYoFkiLfiqrrayHo+PtwFWrgQVPJDaTIlsea7iT0Q3WhB7Mug005Ukv8RjJzli81BY7OekQ8sJfpi/ExBtBQb
- W7vbC+fN
- HENsqwSYOHttjdSnu4RyIzVqJcZNkaBDhMLdZ+za5g/CwbROQhqyQtXykxSc+8C+qytKsp0mMAraj67H37fDMJ3NNlwhyEtZ1/T3ma/8zs7BV9J8oXxQ10I1W2Sf7bN+DX94SSbVqRlYR4rgEPNpRbIXrEH4GiWKVCL0sQi1dkYKj1D/rbaJp5Egl2nGl+2I12Aif9dRzXBOhv1pzI63NSsFGphT8SbNgimvi5a1RRXNo4nbU3F9trb5uFolhSLerjTXQ49E2fEy6Q4fBZc3Vdo8i3SIJdBbhU+5n
+X-Rspamd-Queue-Id: 134BD1C0004
+X-Rspamd-Server: rspam02
+X-Stat-Signature: 4t1xxbdrbzb3t8enbubjauawdkupob96
+X-HE-Tag: 1762021242-724967
+X-HE-Meta: U2FsdGVkX19UQRBHnypGECDyzQbPMybA+pJr6ajjVPtASiPjqzzSxmWaaVhgQHDllyJ5rHcus85ZEctIGm4d6nnYvWGWMn1GoBa9183dNtN+HaI0SbigFJsasTfQhdPvh76SgxFLF0iqYOSU6OEiFkQLgqgYQgY6B3bXKELkLbX5FpLK7VgcNIIKZCZpEMWnSYwA9fJSapcda0cym1fvK4Uvv/MUMUROKLzC7tM1SMIUp4YQO+xznYRDzBbyouIhfY7+rNPA1VTR7T6M33lYjvFycRkn+4AH3T3dxMw5V6gfCwpRCb0cz0CFaUgzU3W7PRBeu4dZA5gIDRr9qeHxgp0LH5xn+fh5sQEXYyxLNocMGPnUu9cFqEO6NjU06EFZVZkBjpLwQ9HLlYQvhHkL6tDp4MZVxG2SunPCUCooofLCNCTSvvI/8M9PhJINq5U+i/qAYHwVnmTOT6G9zUGuqo1hFPHWa8WR+MCUHaML2TjhXgeDsow/uGvr5s/oBTn5JDPkiNwvn5sXskKSRQOOSNdh4u87dkIkdt+vETC5GeTHPMXdonr+bSuthiUzHdO+EENu4UHi/WyGmT0XWcZCAgeaBclMrusth8l9pR5Cnp5NkiysZ5B1b4lniQ7QWYfntHQJtGsjlZYIRmI+aDoQ72BQ63cM0vxMfjZbtnXbYcywlJQiGZhVBzaakNuX95GzxQCEKF1rU4bcOejKiLU2C+BvhcXRaq89U8skQA/3OaQtMrOmBef59b69z8oVj5xMpSi0zdCQRr39wReDTvn/GIU4NcwA8LyiPM6/GAg0Vor6zQ49/xzTDC3kTYIqa2Ur0tK/Qmy1IoP4fmRtImZ51fRarbQwRlDrcFOrERY8dbwQQexMpGEPj3JAaVLA3+P1wT+XYtvt8ozr9Or3AT8eYkeym2KupFtFuJ9lI77aenpahkTb3NVfLpoy/0Lt7lix5uTTYN+AwhnL8AbHZxq
+ z7o3ayNQ
+ V+Bfdgdh01tIu/MY5mT3Z46rMCj8fQ2/kiysftSXHQc0GahwfLYNCFMfNEfGTXfXlDE7xHbJ0AAh9HIisWLzy4sDQMpaF8DWaww1dun/Fk1HQc7NZaadVROESaBx8z9IryXVds0BnAPXaqb/IoH1qE1qty+RkRJ4ux0/wUvHPkMDvpvIqG7JnbM/WniJpgVv+N3oq4Y0kdYnKi5xxPDkMBSQH6bOW9N1Kr1znSm9F4kPiyVuq7keFAlZ03GN4B4xOVDUWUyv2UojJ+mA4rfl52uMRkA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,66 +98,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_sysfs_test_add_targets() is assuming all dynamic memory allocation
+damon_test_split_evenly_succ() is assuming all dynamic memory allocation
 in it will succeed.  Those are indeed likely in the real use cases since
 those allocations are too small to fail, but theoretically those could
 fail.  In the case, inappropriate memory access can happen.  Fix it by
 appropriately cleanup pre-allocated memory and skip the execution of the
 remaining tests in the failure cases.
 
-Fixes: b8ee5575f763 ("mm/damon/sysfs-test: add a unit test for damon_sysfs_set_targets()")
-Cc: <stable@vger.kernel.org> # 6.7.x
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: SeongJae Park <sj@kernel.org>
 ---
- mm/damon/tests/sysfs-kunit.h | 25 +++++++++++++++++++++++++
- 1 file changed, 25 insertions(+)
+ mm/damon/tests/vaddr-kunit.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/mm/damon/tests/sysfs-kunit.h b/mm/damon/tests/sysfs-kunit.h
-index 7b5c7b307da9..ce7218469f20 100644
---- a/mm/damon/tests/sysfs-kunit.h
-+++ b/mm/damon/tests/sysfs-kunit.h
-@@ -45,16 +45,41 @@ static void damon_sysfs_test_add_targets(struct kunit *test)
- 	struct damon_ctx *ctx;
+diff --git a/mm/damon/tests/vaddr-kunit.h b/mm/damon/tests/vaddr-kunit.h
+index 1b0f21c2e376..30dc5459f1d2 100644
+--- a/mm/damon/tests/vaddr-kunit.h
++++ b/mm/damon/tests/vaddr-kunit.h
+@@ -284,10 +284,17 @@ static void damon_test_split_evenly_succ(struct kunit *test,
+ 	unsigned long start, unsigned long end, unsigned int nr_pieces)
+ {
+ 	struct damon_target *t = damon_new_target();
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
+ 	unsigned long expected_width = (end - start) / nr_pieces;
+ 	unsigned long i = 0;
  
- 	sysfs_targets = damon_sysfs_targets_alloc();
-+	if (!sysfs_targets)
-+		kunit_skip(test, "sysfs_targets alloc fail");
- 	sysfs_targets->nr = 1;
- 	sysfs_targets->targets_arr = kmalloc_array(1,
- 			sizeof(*sysfs_targets->targets_arr), GFP_KERNEL);
-+	if (!sysfs_targets->targets_arr) {
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "targets_arr alloc fail");
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
 +	}
- 
- 	sysfs_target = damon_sysfs_target_alloc();
-+	if (!sysfs_target) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kunit_skip(test, "sysfs_target alloc fail");
-+	}
- 	sysfs_target->pid = __damon_sysfs_test_get_any_pid(12, 100);
- 	sysfs_target->regions = damon_sysfs_regions_alloc();
-+	if (!sysfs_target->regions) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kunit_skip(test, "sysfs_regions alloc fail");
-+	}
-+
- 	sysfs_targets->targets_arr[0] = sysfs_target;
- 
- 	ctx = damon_new_ctx();
-+	if (!ctx) {
-+		kfree(sysfs_targets->targets_arr);
-+		kfree(sysfs_targets);
-+		kfree(sysfs_target);
-+		kfree(sysfs_target->regions);
-+		kunit_skip(test, "ctx alloc fail");
-+	}
- 
- 	damon_sysfs_add_targets(ctx, sysfs_targets);
- 	KUNIT_EXPECT_EQ(test, 1u, nr_damon_targets(ctx));
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
+ 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
 -- 
 2.47.3
 
