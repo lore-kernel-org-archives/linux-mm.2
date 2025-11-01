@@ -4,93 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 705C2CCFA03
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 14:23:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BFE1CCFA05
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 14:23:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 986B68E00B0; Sat,  1 Nov 2025 10:23:44 -0400 (EDT)
+	id DCB808E00B3; Sat,  1 Nov 2025 10:23:46 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9101F8E008A; Sat,  1 Nov 2025 10:23:44 -0400 (EDT)
+	id D2E4A8E008A; Sat,  1 Nov 2025 10:23:46 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 825E88E00B0; Sat,  1 Nov 2025 10:23:44 -0400 (EDT)
+	id BF71D8E00B3; Sat,  1 Nov 2025 10:23:46 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 694318E008A
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 10:23:44 -0400 (EDT)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0A978BB0A0
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id A1D768E008A
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 10:23:46 -0400 (EDT)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 5B2E8140827
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:23:46 +0000 (UTC)
+X-FDA: 84062256852.08.CDEA3EA
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 886E6C0003
 	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:23:44 +0000 (UTC)
-X-FDA: 84062256768.21.CF49123
-Received: from mail-ua1-f42.google.com (mail-ua1-f42.google.com [209.85.222.42])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 4584020010
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:23:42 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=d+XOuVKt;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QdFF6QG9;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762007024; a=rsa-sha256;
+	cv=none;
+	b=pSUwV8FWeCzBZRsM8cxpmCn3bilD6ZiYRSQxifgWcCUzOa5f/Dw1x1+d5H88IIuXzvy2lU
+	S4WKzjaDWW8k6g1vd3NhLcjTdfJkFRKUFLQN+iS9vCtApHRLhLcM8fhBzjhOehvm0uYHdx
+	ei7Hwg2hZN6f9qxHeRHOdA5FxSVDJl4=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=QdFF6QG9;
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf10.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.217.54 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762007022;
+	s=arc-20220608; t=1762007024;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=57rygU5OjDWbT5PCPIwncZxw1NBlZuRuRnZzBsppy54=;
-	b=3MBmcKIX7f7qJiHluJ3xfpO295GUDWIBjUI8hGrs2GUP7YdCiGjG4BVowrJe++mQYiy8Gv
-	DdsCJqCAm8qaSAK8lNKgMTZ2XxI3+NEourw4UxRFebUy8/bhhUlYAqn6AU/SkFm+Bf7Yhw
-	PHkDH2L3M0/0t8QX2q7t6GrIn2jx7IM=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=d+XOuVKt;
-	spf=pass (imf03.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.222.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762007022; a=rsa-sha256;
-	cv=none;
-	b=JMK52xIDA7cTmMbKu94nSC3WLvlApkEtDkgVZf6B4czEMA+FsvLJ3qGzFvYUKjFes4fFUb
-	1RSGkdZUm5q07FHC+vWUc5sNTKBG+taElxiQQTFPvp/4GJvTcUAanpPya+8TF/NFACPRZL
-	y81meyHbSAY6tI/Ar7Tawzxehs+dVl4=
-Received: by mail-ua1-f42.google.com with SMTP id a1e0cc1a2514c-93515cb8c2bso1362285241.1
-        for <linux-mm@kvack.org>; Sat, 01 Nov 2025 07:23:42 -0700 (PDT)
+	bh=/3sZsODYdE+lXQW6sSfXvI4QX3oinLZLnJVK+OowB7E=;
+	b=JA8LSlqHjW19G6mhjgjdjFRGBIy02L0irTcK/OB+QDUsCcLQxKPYwUsVmJeU//IpCrYfDq
+	/sUgSNWmy/bcP7XDLBZuxyCCZJ4FiMw1roa6rGJDHaLoUZkaYqV8BIHW2ivrkPwimvAp4m
+	IUblrO+xKEKBY9HszoC/RrLYySlIjhU=
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-5d967b67003so4059681137.2
+        for <linux-mm@kvack.org>; Sat, 01 Nov 2025 07:23:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762007021; x=1762611821; darn=kvack.org;
+        d=soleen.com; s=google; t=1762007023; x=1762611823; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=57rygU5OjDWbT5PCPIwncZxw1NBlZuRuRnZzBsppy54=;
-        b=d+XOuVKtpTNOXoryDmJfWZjW2cUXnmReTsfztrk7z56aZOgSZa3CdVyIkr5V1XY2AK
-         B5mWgkuv28fuPIf9aQT9J8LCSrpn7s0V6HlFdCdFe+u4Dc29Dck0UC7QJ4GQFF+2ebpP
-         BD0qXJQjXbHcfj3xhJeLK2rHq2xrF/I0oW8L0uOh+qqqXrUmLY3+AQYlWJuCaWX6n/hn
-         oMTbUWAxXBwmldIyuAUJYvvnogQHz1ITOn2/nBYf1/NWuV3o1qBbrKHwC7Ql2QeYhgP4
-         7vY1RjxBPO5mcfWdVjvLAD8Pja2N+1WlC5/q7uedCShaGPc9Zjs6gMltngxe1120gKEo
-         Sppg==
+        bh=/3sZsODYdE+lXQW6sSfXvI4QX3oinLZLnJVK+OowB7E=;
+        b=QdFF6QG9sPbQPPNql6+cCq8xTlU4qDu2Y0KIr2YMgzWRkA0/+c6/0EwIoEl4HnqAbG
+         ivxoZeSFk8RNwkzmBM0lvMzpN/DfF7K2W9n0fDcZ5hfL0MUwuA0k25l1WRKEFzWtUXl1
+         ofI4cszasRMyrO3+MQq10g1PV7Dq35X78r5NWGdXkaWJaFcZa+j62+u8Uito1n4RfBGT
+         roCxpSvbct+rwzYAc8cifu7jqMs4ZzRuLolDrLpeZpidQ/Q+T04WNa1fv9DQy12rEmwh
+         p1HN0szD656UouTaJAIAD2as0ShdRuaIO3Pr9Zv9kv59AUfWl9jK5JsYxO9rjqd5dndc
+         6q4Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762007021; x=1762611821;
+        d=1e100.net; s=20230601; t=1762007023; x=1762611823;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=57rygU5OjDWbT5PCPIwncZxw1NBlZuRuRnZzBsppy54=;
-        b=WrGKDm2F2vz996y3uAVYMfXb6301P4Ru7bBXe0PChgwYQS8xERWdY8zhy7NSxuCL8b
-         3VxHRjqfwhrraOIC/MdDZk28cGBxcxEE762HXy0dPFbYg07JmfHzQ5/78/fbJA1cO5zB
-         yeNzS+l167EBTIbbntWi7XSWfgnYJJO+4v4WSDQD6agE94Ws5DjZiVSroCzrpYNzjtdZ
-         rZ1tgy01lCfjVZJ70Ph5+jh+r1gBpX3Noj2xuv3RygWPikLAbJHIYZToEZSGMegqRvSQ
-         kmVcfAcYevOtOgbRl450TA2mb1eaMqYrKLu2CfRS9vUScc3xxmWG27qAQ5Bs214zMqqo
-         uSCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUzyL4TgrYkQ+eMwFEn4PdMAtVMiLMFjP3QzYyGiWEcBlxunbZhfMNxDv0xloCVgAa+CYZsYPMPDQ==@kvack.org
-X-Gm-Message-State: AOJu0YxPN5XdSVcoDZIKnfNWELCKotVqlntyZAhGFJeEnE7CDQcv3l9m
-	P+W0c543GrjIo8x4tZQ/8AgSkaX7LeGmHRC8mossYzxwY+tnXYBir6ZSLc+pyu3Cnb8=
-X-Gm-Gg: ASbGncsaQ2P4nDTWmx27r7TlVhqM+tcag8BaOjxpvjZo2OZzbj9ibXJ327TaJIieCsn
-	6iCyFX57BNNiu6EHGulY2OIRl5DrwwbihaeNboTtBcqXTZ3dtbdAJ8HKTIidm8xkDgdGV9y7Gw7
-	87PUFPJX6uPvdrIoe5IBRnu7UkeUf8N6Mcwvnofou3cNS1cS3pHs0WymyWemrClUk+pSvpjTTLY
-	lpr9pSE/wj2DHrqoyW1F6PSiewxj6pOZYjhtgRozkhO8Anp0IGxE7tPaaxClmgq5Suzsppowv9w
-	ToTV0D4dJMxHykAyEHbPPPRSBGkCoMC3ziveNFtPzQohh+ydhHaRhCRj+go3zHsSZ6AxPD0RpfZ
-	ma3L+LII0h0XckmKEkEnu+Ss6IM7aTYZ1ziZVg0AOzJXfIBfGRpTF6TPYFmzFUnAHzz1kP/hH6u
-	1gTUDsjXKG8BS+wwThE9Tbi8kLH9vtg3liYfIQsBJ3rQcVcfqUDNlPOfxm7Vv7
-X-Google-Smtp-Source: AGHT+IFHTA9MFhIfCaO4quOEqPC9MjBBViuMWnhpeFtjZfr2lHvftLMFFMHCzKtyyjM8DjV8X9i0hw==
-X-Received: by 2002:a05:6122:90c:b0:554:e4ba:4408 with SMTP id 71dfb90a1353d-5593e006778mr2627356e0c.0.1762007021390;
-        Sat, 01 Nov 2025 07:23:41 -0700 (PDT)
+        bh=/3sZsODYdE+lXQW6sSfXvI4QX3oinLZLnJVK+OowB7E=;
+        b=D8N3t94UE1dDXLoTIjn34a+CoF17kBZrCBY7ubJCy6KWzdCUSFNydWFf3wR+ndxPwD
+         W5WU1TTLQIKDuZF/oq0tocTkJsKtZfXVQ/F/PJEin88hxomTB0efVBUheOmABu++y8LZ
+         0Pl6kJQ4WOZ09xaiH4IB931nRKWXNmAMS6dvWF1RZzOmGb7nb2o7ha6897UpeUMK0SJp
+         xtE6VDvqNCJ87TwfziE5EZD9srYPhyKXnhSH0E51PfeJA5c92ImyG7p48XG9na7UmG+B
+         LHO6PWidflU39nOnJn+iBHgCtZDLOL6+U5vKi1XFCWLrIiTIVM635PQddk+203TjaCMX
+         neKA==
+X-Forwarded-Encrypted: i=1; AJvYcCUopYFqL8QmANg8oSUv+bOA+aGlijgtEyenJ5wQR6szCqfVIizeymjjcjYsbsd8i1CiQ0jOlLLt/g==@kvack.org
+X-Gm-Message-State: AOJu0YxC5S58Rr7fyGwn97iTH4SS5djJPsNTb58I+TI1YiLi1jTxYYcc
+	yRCh7ox7jKNao8LYL4FyIWjeWBU3XyCDCtkInCsrhH6yvoXJ4zWPC0iqqVw+0rgMvN4=
+X-Gm-Gg: ASbGncsFLrPsa4Qr4iqINHOPHuRebnmFGRN8LNRpiKEHImW91qMTs2oeP788k5Nk65+
+	Se20+b4xBMDpLfrrZLDR+u9rLwm1oHbFMERVPxP0pmQe9DfGQ2XTSYCAg5vODdMZm1ntu+/l24g
+	rroHWPLlH8y49cFS9t1GDUkzgI4juQrF3JdMQdHs0EZugjjfH0OlqwjPFY50dFEhOrdZZlOVi5B
+	QPj0DFTCCj74WpxzQtdG2li/T0MR80fJ2zpdPCcIPhwKH56owCg2mqrVIIBrm2fm5r5NkKBNcZC
+	A5iINpq4GhjHV/mB2djzmBnE9xs+oQV78KW/OotbD2tCeWYkYi3KO+EZTqHhsVwR3p2dRCjH3gT
+	3P3r233ZEQ4sCh//d8cWych3A22TWEIiPNbxlaUzzn4zi5IVELs9p1aTOpFyha0YIIoZ1+qX+cy
+	MCBjSpxBOnwLrpKUMZY5a3OqjxsxFZVmlXCwIMm7u4M68QB2Foq5q5Na9+AJCmRHuY7jRb8b0=
+X-Google-Smtp-Source: AGHT+IEW1fTK12XGUTtqXJsef8/76poVKTgBxu4YxD9HHtSEN7ne/NH+yy5cGEPUcuJdr6fOnT+fYw==
+X-Received: by 2002:a05:6102:8349:20b0:59f:4f48:4e31 with SMTP id ada2fe7eead31-5dbb11f91c3mr1950860137.1.1762007023601;
+        Sat, 01 Nov 2025 07:23:43 -0700 (PDT)
 Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-559449647e0sm1776242e0c.3.2025.11.01.07.23.39
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-559449647e0sm1776242e0c.3.2025.11.01.07.23.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Nov 2025 07:23:40 -0700 (PDT)
+        Sat, 01 Nov 2025 07:23:42 -0700 (PDT)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: akpm@linux-foundation.org,
 	brauner@kernel.org,
@@ -108,22 +108,22 @@ To: akpm@linux-foundation.org,
 	rppt@kernel.org,
 	tj@kernel.org,
 	yanjun.zhu@linux.dev
-Subject: [PATCH v9 5/9] test_kho: Unpreserve memory in case of error
-Date: Sat,  1 Nov 2025 10:23:21 -0400
-Message-ID: <20251101142325.1326536-6-pasha.tatashin@soleen.com>
+Subject: [PATCH v9 6/9] kho: don't unpreserve memory during abort
+Date: Sat,  1 Nov 2025 10:23:22 -0400
+Message-ID: <20251101142325.1326536-7-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.1.930.gacf6e81ea2-goog
 In-Reply-To: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
 References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 4584020010
-X-Stat-Signature: kxmgae6takdpyjqt9kybfrjhqnbtuzwm
 X-Rspam-User: 
-X-HE-Tag: 1762007022-861030
-X-HE-Meta: U2FsdGVkX19Z9KwHeYLLsQ+1tM38qTY43IVpYYO6j77/R3hqyLoj/gtzN+r3BpUJHuOPDqRs/G38jUDCZevaVtXyLVneCzdP7xD+2EMNrooRuwp2YwWImf/dpUeaXfSXFRu1UksMScz7sgHi1fDV0+UfQwYQgjZ+gZTX6OmrSfI2Pjazc7Ec3uChQTb0KtKHVt5VUfz3lo/NEMyxMTnnCR9iC0zFSqyVRbvdWlFbuOMtNyBaHATIp6LCHA1OHdwVd2LLATtH4XqcL43t2hNrMsl2q23pPKAYMuMaMvSrrBxVaW4EcQT81GIU5/C8cMX2dvjjf+TusIBf0v+KF5m81+eDkV6wGJx5+5mNwURgb7IGES/XzanJRUcu4GMDmvxoMheccb5r1N8LTIc+erZqjYWr1RIP2mwvaj98hEUAbYq9kmUGIFiKlMhFHsNinTqeaqgx0JvObt/oDRligKVFyY4dwuNtmlJBaiee+jHPjLXdjQONOcX4SeG/CgDC2jHOwweuLbGcBESYSEplgS148rP3PUS2WGZYki2FPgPXkRFFWe1Y+mTMoTSnPatso0kR1+7vr4VrQ+qXxN7Jw0npGa2zUCHulyVLEFnDi+cd43p4VDz4xAo4zXY5mFns+gkP9pC0T+w+ziXjmuidcd4ZAKf4lkwrP3AGYq9xiZdMR2OsnsinGcHVn+72IAp7yc8ATvk0nVjT7MrsXRSur8dpdCqIHLwAF9CbnrKR2q35hc5SkUjaA3po6SS1/8ZQBVjNy7N1sa/jckNQx9GHrHVKoWHB0Z+0bvtnqWJQmICC7eBL60cuiP/oP1hm+f/zbkth7ulv1fgjfngoGHgXxIccgbeImepo/tElT6E3ggxMlzzed+3Ghz75d7S0Tjz36adC3MEHtXlXl9p4Jh0huwaFFPp54WpHj91x/zt/iXcCKxeVuJgWsaI9BhUE/l/Xd+koP/KcvqnXQiVuuD/vsgP
- tf30E4UJ
- mIIofJM7WZkm6aCi5gPM3qbzfW3GNIGy1B0Mf
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 886E6C0003
+X-Stat-Signature: sbp75ks6xohxmk9nnfcdprba8zwww9zm
+X-HE-Tag: 1762007024-823702
+X-HE-Meta: U2FsdGVkX18hEtuBFI68QrnkHgqAOxzxCM0Rk3TQpKf2sOtVHZIlVnfguZWJU26+SyrD/CMbz+L55nhpeJKAGgi295ktuq3sx8e98cCbgRSFb8X59sfNjJ2JlPXh7KvfHm+0wND7Nc0IbrK3IF/baNrEnmyEg9MPBU+gZbIVxJJ7DjOIrjjc3QW/9PRy0sm8b4oIXWeRTxb7OnmAILNwlAd53o57QiDdOLQhYrlO47uYXscZRhSTj0AuX2ANI0M73rThFoVpYd0rrdhwawt+mtfeoWKc9aSZ+EPmtZfGMBeEyGW49ZVXBFUGHQL7wF2Ufa8ky38+Xoe4C6n54PSiQgFh4jlZnClYUfyGyveyfw/s85VrlzZoP9VN0CfLkJxTwNeOONYz0n1ctkraPOpuYuYuCN1YO2ULsB5z0yKzg58st4US8qB91uqvSg56cOFizmjA/5fvk65smMBY4KHz5LZ4FYArv+vlGXnHyE5ly2MRo1bObgIM7IqR4hby/9hLia4hvYcsGNEyOpMA/rLnLuJJqVsZ82wKeN/9YcEOfmvwqMuQK5ifWDv37DyJLp77OK9zLgA/LNWnxZxp8q4vk1o5tt08NROppz3o4drTLYo8rvtmEB465jUyqCRGx/7kbgSXq9nbvuFwUo+yfwJ7TfN+6GFIRqQQ1BePfUCT/kFt6tWB9JLJ5BJSUqGDxKxEyNZNb8huOQNPiYAJY3+9yfBaeofhiMKkW37VwcvvSqDnP7MPql424xM7GVbnb3MZx5G8bRxSUNWWA0CyP3J9hX7V2gN0UQoM8aMKaxw6k4DEIIyo3FaEDTy/8pEiZs9HnadO1hLOLnaftg5Bz032Skd/o+nIFlh4DfgtiDmDdlP63kzL2se7ZiTPKWnG0eXIitQwScLdQxZbGu0n9NrzeQ0Y6I9wFwB8JSoJfUv8zOqLT8V/mRfRMtGT3T6q0N6XnLcTn+W2qBnBJziIdBx
+ MNGpvpM4
+ CQwqbqrrCGiiwz+JEHT3v+y/xrUJ2IeC2KHeHoiNp4NXLKyU0PnnTmuDv9Vmm/cY+fzUdjb8y7xBTQy/CQ/9SMB5I68Gd5XFF0suIPCUy7SsT0x63iPkbU3VYYFE8KSkAIJFqORhVnzhD6bHRWXWAapjx9QiUl/wCd7GsXxcWcuwzQvONXPLDY2CWv9UKOqmWOavY8HAtUNFvp/w+o5KG3Y632KJEFgxAGnLwfKDm1KRfk5QNM2VhDClNSWuhLC8nnIpKrdMw5ny9DcU3E9Qk2bdyDdG+ioGMKr/p
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,191 +132,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-If there is an error half way through KHO memory preservation, we should
-rollback and unpreserve everything that is partially preserved.
+KHO allows clients to preserve memory regions at any point before the
+KHO state is finalized. The finalization process itself involves KHO
+performing its own actions, such as serializing the overall
+preserved memory map.
 
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+If this finalization process is aborted, the current implementation
+destroys KHO's internal memory tracking structures
+(`kho_out.ser.track.orders`). This behavior effectively unpreserves
+all memory from KHO's perspective, regardless of whether those
+preservations were made by clients before the finalization attempt
+or by KHO itself during finalization.
+
+This premature unpreservation is incorrect. An abort of the
+finalization process should only undo actions taken by KHO as part of
+that specific finalization attempt. Individual memory regions
+preserved by clients prior to finalization should remain preserved,
+as their lifecycle is managed by the clients themselves. These
+clients might still need to call kho_unpreserve_folio() or
+kho_unpreserve_phys() based on their own logic, even after a KHO
+finalization attempt is aborted.
+
 Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- lib/test_kho.c | 103 +++++++++++++++++++++++++++++++++++--------------
- 1 file changed, 73 insertions(+), 30 deletions(-)
+ kernel/kexec_handover.c | 21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
 
-diff --git a/lib/test_kho.c b/lib/test_kho.c
-index 9f7cfa6ac855..025ea251a186 100644
---- a/lib/test_kho.c
-+++ b/lib/test_kho.c
-@@ -33,17 +33,28 @@ struct kho_test_state {
- 	unsigned int nr_folios;
- 	struct folio **folios;
- 	phys_addr_t *folios_info;
-+	struct kho_vmalloc folios_info_phys;
-+	int nr_folios_preserved;
- 	struct folio *fdt;
- 	__wsum csum;
- };
+diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
+index c514b300ebe6..3adf86c7c2db 100644
+--- a/kernel/kexec_handover.c
++++ b/kernel/kexec_handover.c
+@@ -1118,31 +1118,12 @@ EXPORT_SYMBOL_GPL(kho_restore_vmalloc);
  
- static struct kho_test_state kho_test_state;
- 
--static int kho_test_save_data(struct kho_test_state *state, void *fdt)
-+static void kho_test_unpreserve_data(struct kho_test_state *state)
-+{
-+	for (int i = 0; i < state->nr_folios_preserved; i++)
-+		kho_unpreserve_folio(state->folios[i]);
-+
-+	kho_unpreserve_vmalloc(&state->folios_info_phys);
-+	vfree(state->folios_info);
-+}
-+
-+static int kho_test_preserve_data(struct kho_test_state *state)
+ static int __kho_abort(void)
  {
--	phys_addr_t *folios_info __free(kvfree) = NULL;
- 	struct kho_vmalloc folios_info_phys;
 -	int err = 0;
-+	phys_addr_t *folios_info;
-+	int err;
- 
- 	folios_info = vmalloc_array(state->nr_folios, sizeof(*folios_info));
- 	if (!folios_info)
-@@ -51,64 +62,98 @@ static int kho_test_save_data(struct kho_test_state *state, void *fdt)
- 
- 	err = kho_preserve_vmalloc(folios_info, &folios_info_phys);
- 	if (err)
--		return err;
-+		goto err_free_info;
-+
-+	state->folios_info_phys = folios_info_phys;
-+	state->folios_info = folios_info;
- 
- 	for (int i = 0; i < state->nr_folios; i++) {
- 		struct folio *folio = state->folios[i];
- 		unsigned int order = folio_order(folio);
- 
- 		folios_info[i] = virt_to_phys(folio_address(folio)) | order;
+-	unsigned long order;
+-	struct kho_mem_phys *physxa;
 -
- 		err = kho_preserve_folio(folio);
- 		if (err)
--			break;
-+			goto err_unpreserve;
-+		state->nr_folios_preserved++;
+-	xa_for_each(&kho_out.track.orders, order, physxa) {
+-		struct kho_mem_phys_bits *bits;
+-		unsigned long phys;
+-
+-		xa_for_each(&physxa->phys_bits, phys, bits)
+-			kfree(bits);
+-
+-		xa_destroy(&physxa->phys_bits);
+-		kfree(physxa);
+-	}
+-	xa_destroy(&kho_out.track.orders);
+-
+ 	if (kho_out.preserved_mem_map) {
+ 		kho_mem_ser_free(kho_out.preserved_mem_map);
+ 		kho_out.preserved_mem_map = NULL;
  	}
  
-+	return 0;
-+
-+err_unpreserve:
-+	/*
-+	 * kho_test_unpreserve_data frees folio_info, bail out immediately to
-+	 * avoid double free
-+	 */
-+	kho_test_unpreserve_data(state);
-+	return err;
-+
-+err_free_info:
-+	vfree(folios_info);
-+	return err;
-+}
-+
-+static int kho_test_prepare_fdt(struct kho_test_state *state, ssize_t fdt_size)
-+{
-+	const char compatible[] = KHO_TEST_COMPAT;
-+	unsigned int magic = KHO_TEST_MAGIC;
-+	void *fdt = folio_address(state->fdt);
-+	int err;
-+
-+	err = fdt_create(fdt, fdt_size);
-+	err |= fdt_finish_reservemap(fdt);
-+	err |= fdt_begin_node(fdt, "");
-+	err |= fdt_property(fdt, "compatible", compatible, sizeof(compatible));
-+	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
-+
- 	err |= fdt_begin_node(fdt, "data");
- 	err |= fdt_property(fdt, "nr_folios", &state->nr_folios,
- 			    sizeof(state->nr_folios));
--	err |= fdt_property(fdt, "folios_info", &folios_info_phys,
--			    sizeof(folios_info_phys));
-+	err |= fdt_property(fdt, "folios_info", &state->folios_info_phys,
-+			    sizeof(state->folios_info_phys));
- 	err |= fdt_property(fdt, "csum", &state->csum, sizeof(state->csum));
- 	err |= fdt_end_node(fdt);
- 
--	if (!err)
--		state->folios_info = no_free_ptr(folios_info);
-+	err |= fdt_end_node(fdt);
-+	err |= fdt_finish(fdt);
- 
- 	return err;
- }
- 
--static int kho_test_prepare_fdt(struct kho_test_state *state)
-+static int kho_test_preserve(struct kho_test_state *state)
- {
--	const char compatible[] = KHO_TEST_COMPAT;
--	unsigned int magic = KHO_TEST_MAGIC;
- 	ssize_t fdt_size;
--	int err = 0;
--	void *fdt;
-+	int err;
- 
- 	fdt_size = state->nr_folios * sizeof(phys_addr_t) + PAGE_SIZE;
- 	state->fdt = folio_alloc(GFP_KERNEL, get_order(fdt_size));
- 	if (!state->fdt)
- 		return -ENOMEM;
- 
--	fdt = folio_address(state->fdt);
+-	if (err)
+-		pr_err("Failed to abort KHO finalization: %d\n", err);
 -
--	err |= kho_preserve_folio(state->fdt);
--	err |= fdt_create(fdt, fdt_size);
--	err |= fdt_finish_reservemap(fdt);
-+	err = kho_preserve_folio(state->fdt);
-+	if (err)
-+		goto err_free_fdt;
- 
--	err |= fdt_begin_node(fdt, "");
--	err |= fdt_property(fdt, "compatible", compatible, sizeof(compatible));
--	err |= fdt_property(fdt, "magic", &magic, sizeof(magic));
--	err |= kho_test_save_data(state, fdt);
--	err |= fdt_end_node(fdt);
-+	err = kho_test_preserve_data(state);
-+	if (err)
-+		goto err_unpreserve_fdt;
- 
--	err |= fdt_finish(fdt);
-+	err = kho_test_prepare_fdt(state, fdt_size);
-+	if (err)
-+		goto err_unpreserve_data;
- 
- 	err = kho_add_subtree(KHO_TEST_FDT, folio_address(state->fdt));
- 	if (err)
--		folio_put(state->fdt);
-+		goto err_unpreserve_data;
- 
+-	return err;
 +	return 0;
-+
-+err_unpreserve_data:
-+	kho_test_unpreserve_data(state);
-+err_unpreserve_fdt:
-+	kho_unpreserve_folio(state->fdt);
-+err_free_fdt:
-+	folio_put(state->fdt);
- 	return err;
  }
  
-@@ -174,14 +219,12 @@ static int kho_test_save(void)
- 	if (err)
- 		goto err_free_folios;
- 
--	err = kho_test_prepare_fdt(state);
-+	err = kho_test_preserve(state);
- 	if (err)
- 		goto err_free_folios;
- 
- 	return 0;
- 
--err_free_fdt:
--	folio_put(state->fdt);
- err_free_folios:
- 	kvfree(folios);
- 	return err;
+ int kho_abort(void)
 -- 
 2.51.1.930.gacf6e81ea2-goog
 
