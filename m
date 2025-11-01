@@ -4,92 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E85E4CCFA00
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 18:27:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4ECF1CCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 19:13:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4A70D8E0018; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
+	id 6478A8E001B; Sat,  1 Nov 2025 15:12:59 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 456B78E0015; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
+	id 61F728E0015; Sat,  1 Nov 2025 15:12:59 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3453B8E0018; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
+	id 55C5C8E001B; Sat,  1 Nov 2025 15:12:59 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 200CE8E0015
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 14:27:04 -0400 (EDT)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BEFA94A8EE
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:27:03 +0000 (UTC)
-X-FDA: 84062869926.06.0870A15
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 2BEE0140002
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 18:27:01 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FjPZlaB2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 424B88E0015
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 15:12:59 -0400 (EDT)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE2921A03E5
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:12:58 +0000 (UTC)
+X-FDA: 84062985636.22.330F809
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 0272C18000F
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:12:56 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sg3P/247";
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762021622;
+	s=arc-20220608; t=1762024377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=fPueBcNJa/qI0DXLfBmr5vxibSFjAo0eKSnnuNl27yw=;
-	b=0hV5bsv1pLDdjCjEK8Uk24FnckN/yZySI5nrKluDqxleQrWQXtwx4VQOSQ6hcdx4Tul+LG
-	sgmK8DlRr9aFO9eqUsyjWIIcmfqRT+xDncUOaOb+ULNK+GQPhF4dSltV5AhD/2v0Gwp20m
-	/99ylii+UZGeIer49eeOth1gwC4SM88=
+	bh=Zpm1mESM3/oA5bThlDFirqG8Q0DiFOKq9b3r3tGgUWU=;
+	b=GRrBraSmMjR96iUhVaheT5a7Afbb9fmrds2uP5c3UfiaNwC2t07p6beYKKCLU15kaAee6H
+	tmHhJOXIyRgDGtwcdkM3cP0cpVkxdki+X4LK7SKs7K3ZbHh7PfnyxnEOa/4NyuYC515l3r
+	E0/8H7IqEFHqKATWwkR4rKNx379BU6I=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FjPZlaB2;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762021622; a=rsa-sha256;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="sg3P/247";
+	spf=pass (imf06.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762024377; a=rsa-sha256;
 	cv=none;
-	b=yULaX6dPhS46XUwxIoW0IrhPz117Klp/7ir7qMtVrTPmBkcovrG3yw6YJj9N+qPL7zvJUk
-	vMvuN7ek7BMklfGJwyZZ95enhCRQWP4/U86dd1K4d7ZNrzlM7rBzBb9CN2TvhpHxjU+Cgm
-	912bz8y7dnBHJCgTcb6jPkiq3sfe0NM=
+	b=7aAguanxnjXREjzq5phFBaVEUFiJo6EPg4pJl7ND6fHBqU0jvp53GTFkg3SwvE/vQz/MvB
+	zLPO1wV5BXv+vu9+TXPBtEGZ2jftz21n6RMgH1OiBqWcZNoULe6FVqfy6t9tEZR0BJsPpl
+	dDl2q7P32Q+1nXfK5FabJBlWa9hbRwM=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 18677440FF;
-	Sat,  1 Nov 2025 18:20:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52F1C116B1;
-	Sat,  1 Nov 2025 18:20:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E23C601FF
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:12:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6267C116C6
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762021238;
-	bh=mFKvW58Z/A1OQcFHyE0QlO67VUd7WnWfCLTNsVL0kBU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FjPZlaB2TObb4T2dW5PMEVnsKEXDA50bpKODTpc5GgHl21/G21jLbAlvsxq1boR+W
-	 CulmNGBY0zT4Qdo93ckIV9xSsmlHG83/iM830OiMVCpjKGhBzKnvOkDGgUe+WA2Saz
-	 tVK18LGeQljsGtziSPkVv3pdUfs+XN9b4cCzYKEEsMLMUu6/rBnkY6Z8esXKw7TUEw
-	 oSNQgKIZ118ViGn/X/6d9PNyfXjcc6WSfgC5K4ww2ldfPdu9lwzLTQxl2M+XeZQEYY
-	 3m4lkLAbyu5oEe8PmIxKJOHVqVjHAzYc1Dab5HJDXXDZGybbkCIoLvSw4MuIGEctzC
-	 6QVQNiET8g+Vw==
-From: SeongJae Park <sj@kernel.org>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: SeongJae Park <sj@kernel.org>,
-	"# 5 . 15 . x" <stable@vger.kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	damon@lists.linux.dev,
-	kunit-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH 06/22] mm/damon/tests/core-kunit: handle alloc failures on damon_test_merge_two()
-Date: Sat,  1 Nov 2025 11:20:00 -0700
-Message-ID: <20251101182021.74868-7-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251101182021.74868-1-sj@kernel.org>
-References: <20251101182021.74868-1-sj@kernel.org>
+	s=k20201202; t=1762024375;
+	bh=VtMrJvAEomhT9hGcgHveYpITdp1VB+e2RMoVqAhOaUQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=sg3P/247bkXFcbeYk2tS94WeLZcSbqnBXAnmI4tf8tuQsWEDfSG/HOYrkknUgC+yw
+	 Hj0dxCxg1+ztvk7rOMo7uR3VLRlfvR/0kSGxIBSVJ05qTK1duBiF+WBNlamvWkv+Nd
+	 Q5atdogBJm1j2U1kD7kIUdDal1Nmfk70J8LIPUFL+TcM0hRRa2fQiNIuwdJdFi/pja
+	 M+EkrvlPlI3j1syGJ5FcxQQQCyd6sg/zqhWv+I79RA7DwFW8j+YZ1kVaxbUD/5RqNn
+	 gnpiOAZTlXYkgIh/RHD9QhYrehhD7V4WtxnMTwrNtoSW02PCwXkJONSPyJ20vs7PJR
+	 bFJ56r2cJX92Q==
+Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-786572c14e3so13225547b3.2
+        for <linux-mm@kvack.org>; Sat, 01 Nov 2025 12:12:55 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxeZ/KzMHVBxX5z4AEUv9F/paaiGchvYKbWc2lPtQu/DfP8XE1Z
+	aJZuyXGolYDc5j8jFgpP/1xzYSIfsnYyRY4D9t5Nkg5hfnLMfnYd/MKHaV7AbwsSBeCGLVl2O8D
+	QmIhMDC6BU6qLE0/MWz3O+FTHXDcwO/skIvf7aYBNAg==
+X-Google-Smtp-Source: AGHT+IH0HZ1QTTyDOzoxc0ks5C1nssC/fgZ/u8kSK0n0raMAiGgRlyScUcmLqwRgIISaE/371wR0Ijbo/LyRoWq3GMQ=
+X-Received: by 2002:a05:690c:ec2:b0:781:177f:9dd6 with SMTP id
+ 00721157ae682-78648528901mr74876387b3.52.1762024374920; Sat, 01 Nov 2025
+ 12:12:54 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251101134158.69908-1-youngjun.park@lge.com>
+In-Reply-To: <20251101134158.69908-1-youngjun.park@lge.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Sat, 1 Nov 2025 12:12:44 -0700
+X-Gmail-Original-Message-ID: <CACePvbV=Br5yiaXOdyC43Dz+6eUV6GfyxqCsGPG0e6kggT84ig@mail.gmail.com>
+X-Gm-Features: AWmQ_bmXVOd_FFWvXDjxJz8x_VF0n4gvcjXVG229dcG8BP-OEDJSM1ekUyB1OZ8
+Message-ID: <CACePvbV=Br5yiaXOdyC43Dz+6eUV6GfyxqCsGPG0e6kggT84ig@mail.gmail.com>
+Subject: Re: [PATCH] mm: swap: remove duplicate nr_swap_pages decrement in get_swap_page_of_type()
+To: Youngjun Park <youngjun.park@lge.com>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-mm@kvack.org, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Stat-Signature: md4npqifpr8y9amjbj7piq4firorngob
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2BEE0140002
-X-Rspamd-Server: rspam03
-X-Stat-Signature: jy3n7ns819garzboo7p7jnukmdccwt4x
-X-HE-Tag: 1762021621-757737
-X-HE-Meta: U2FsdGVkX1+9xWdgVpO/TEBBSRGQ/WQdfWZWTc5vjtPJ9aiDH+SbubRwqaUGvRT3mnCu/285z4T1vaS6gbELYFa6TKhQ3aA7jf7qQ0GomgPbcIndhqgH5oR4P5L5RYtAC65mOjJUgj5zvzNmi4pAQU8Ix2Sm6Gy7ZL32N0BlcbshGd1gjuppVULhTBJSo7cuAaWUNBb9ssJmiyeAaJc11esCvCyGGFHbtBQkRCfEy+nhw9CigSDkxIM4tc3GNAiBI3fbKnhilxyOtwH0BncJkWl9In4aF7+VERtDd6mAAMcTkw0cKNGa1luB5QAaHIoXrFV3NLma5Sa7sQZcR//3sYA8ciMBjZiwC9104Lt3TGTxChbI+888ti+M+ILVaoMomVK1wK0EnPKD/KujhgdNJ4tBrYLkixY2pg1nMHKZ53q50nmmwMD8y6121bwL3becnqeP0iYDoxIZqCKx+A2YT7/bmBSKYLSx59xHNJo7DQTVwibkoVtNolEtHL0LiRV8kDs6IaTZmlFFRHVpGKCqv3UMhFPfgbjbRt84xlQLH7cVsEGpskMs1wf+9ToJlwuNRgcmMUtdzsXzpJBF6u9BDWbGrMix+wsZVKu8bEXDXa2691yZ5GplsgPV1jZ5BkJHNg2BzYBCgvJmG6ANPWEfBkCiNcHJBfd9bNoN/QfYw8kVagZkkdKrKICzBLDOiurG24Kd4sEKucVS5rZ3zJ90P6u+TLuyDCC/NxroyKqsz883FnqIIrWlEo7qbJTBCl/A62rJw5l3vDvbKHF3sZaWT3TtV9yyzYfMJQfxvYy427OE8rcxPe9lQkAzicYY2Bf5mMG4LgsjMbEhqnkbJ+U/EHdguNMGhL+0zlfVa9fJjf7HuhdLj0zDw6OL+ZafmIo1HeMBZZz39Is7lfu+o/CG1sg+wEHnLVpD82bs+Tk0rV91nEaTCDrMAFYN46cpP5xu8YSfet9m+GNq2azfjRz
- GMUU5peW
- 8IfMfkCIqkuQ/ojALq6rHQeVV6357B8yamMQmP0+MRSsna48/Q5MDipbtrYhuL5kD9faUBfLcr7SxXZjnkfHVhzbh87opaFs91ZU/niy3yHHULJJABddE5Oj96jqbUkheFipBj5FeSvcebHBP2IaVl5OGBaBQChB9+bLlMsSIvavr7FYXz9VVHLTGb7CD6nZ1S929tkDr4M/InG07sEFie+yl04pCjw08rhsjDWSHshQM5pVGQsIxV0EcBTmwfX+tlAak0gplHQUKGGredSj/q9Ji9g==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 0272C18000F
+X-HE-Tag: 1762024376-398544
+X-HE-Meta: U2FsdGVkX19f0MzvbRkEo5YZyXt/b6/VVV6IAypHjDOtGSB8no8BnKl1mKSFji1ID5AnxlQoJrkhelkeVRbldalJZd9cyvpuiWgKcUIL1M6EzNXjvf+guL20P81dcvyVLhDZMV9BKzk0WKJd7Yqhs4IULmth2cYnhgc4GY5SKPNO6iEJAB0e9EnKTYQWqeP7cQg6wXA5xO0QjSfyrWeElYiUN7yzFyeK785nHD/5aOuu5HrrczzciN+2LXCgOxN+8R1XYPeZIMbapVekBrRNBv1NBbLJ7loDZ7H3lk5lAwXGDrGhPv9op2msIjYJ0E6Vfm2GDQ3j3a1NSwt14hSey7u6B5jgrIw8jkYUhKHiC+Mr04NwUenIfRk6DUws+r+FScsjRtiu1Zk8ugdnCrelJcMlf0oNM58NcUKqQ2Lu5n3tDKODKSvLbyVMZ8dDHwy7EFg0CRnsrqxHoFL4DRaALwp+RN4AGec+ysZfJoZ5L6/6ZyCGf2S9OUyVZLp0t1N9iDMwW/2KvFiq27xwF1JrAENct9WGss/v1m1QZhtukRELHTl+MxXbWtpwIfbr//cWWzQXAVdbPKqay+vDXtfD35BroJXsz7eYmbCHFMBKpL05MJ7knpmckZ7EdU0BVsBa34iruD4vbYkYhkYUTBI1mMfw8LQXnutzGXAMBS/fEMArrENQxyhGN8ZXl7bMlwBPOwiDfO10oJhFNNsM1nfOBx6FedlomIIgE78CzoyPeaZ6bRl2wSlnNOUH6mCCdX2X3IGwcqownjmfIwlIvjYBI/LhV+/HYJWBgjqtW6/bM877ID8z/cE2wflEZULsEqfj5r3K0FU1sk/gq0LfPJhceiim+T7o3y09pufuHcpn7fyalCHq7m7xbY6Hr1dYh/PBepqkaDHqUS+onn4d0LT/ggSHzkgeK6JJs2/FZ97slIje2J4FMQEVFKUlcTwSa8TU+mfk9lwlvcYpat2Ktev
+ lOaeP1l3
+ pokNvAHElXATVHMZAuszKDR+XRsUO0Qsk9ZP561u9r078KAHLiAXOQtCjaI2e3cK24hESc1PzJ+SaHKs3risCDh+HY3jpG+yoxbbKxNGGyiVWIfRQsoJ9IoV2TV7oApEQD4eTBqCMapCgRQWb62X+83gjS622qQAhVzERxCn5/r6Lq1Y8HHKIWx7gqbie3oEOBMvoJM1U7T+AgiVYLrJfadUnijY3/xy4hjOSzFJCIiSuJuRgqe3fMmxERbirSR6ufXa68ZnwrQ5vfxRD50oCy/eD/9UG0vNE62G4JxO3hHTfUTg1Ifwf7vRlroCN/zKpMyIo6/vAiBNViB8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,46 +104,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-damon_test_merge_two() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.
-In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+On Sat, Nov 1, 2025 at 6:42=E2=80=AFAM Youngjun Park <youngjun.park@lge.com=
+> wrote:
+>
+> After commit 4f78252da887, nr_swap_pages is decremented in
+> swap_range_alloc(). Since cluster_alloc_swap_entry() calls
+> swap_range_alloc() internally, the decrement in get_swap_page_of_type()
+> causes double-decrementing.
+>
+> Remove the duplicate decrement.
 
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: SeongJae Park <sj@kernel.org>
----
- mm/damon/tests/core-kunit.h | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Acked-by: Chris Li <chrisl@kernel.org>
 
-diff --git a/mm/damon/tests/core-kunit.h b/mm/damon/tests/core-kunit.h
-index f5f3152cb8df..e8219fd23318 100644
---- a/mm/damon/tests/core-kunit.h
-+++ b/mm/damon/tests/core-kunit.h
-@@ -188,11 +188,21 @@ static void damon_test_merge_two(struct kunit *test)
- 	int i;
- 
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	r = damon_new_region(0, 100);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	r->nr_accesses = 10;
- 	r->nr_accesses_bp = 100000;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
-+	if (!r2) {
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	r2->nr_accesses = 20;
- 	r2->nr_accesses_bp = 200000;
- 	damon_add_region(r2, t);
--- 
-2.47.3
+Thanks for the good catch. Indeed there is duplication, but only
+affects the hibernation usage of swap as far as I can tell.
+This bug is in v6.17-rc1 upwards including v6.17 as well. You might
+want to add the stable tag:
+
+Cc: stable@vger.kernel.org # v6.17-rc1
+
+Hi Andrew,
+
+Please apply. Can you add the above line or Youngjun needs to send out
+a new version to include the stable line?
+
+Chris
+
+>
+> Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from=
+ folio_alloc_swap() to swap_range_alloc()")
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 543f303f101d..66a502cd747b 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2020,10 +2020,8 @@ swp_entry_t get_swap_page_of_type(int type)
+>                         local_lock(&percpu_swap_cluster.lock);
+>                         offset =3D cluster_alloc_swap_entry(si, 0, 1);
+>                         local_unlock(&percpu_swap_cluster.lock);
+> -                       if (offset) {
+> +                       if (offset)
+>                                 entry =3D swp_entry(si->type, offset);
+> -                               atomic_long_dec(&nr_swap_pages);
+> -                       }
+>                 }
+>                 put_swap_device(si);
+>         }
+> --
+> 2.34.1
+>
 
