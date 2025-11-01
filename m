@@ -4,99 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E4DD7CCF9F8
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 04:17:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1BA05CCF9F8
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 04:51:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12F618E0079; Sat,  1 Nov 2025 00:17:55 -0400 (EDT)
+	id D65FE8E009D; Sat,  1 Nov 2025 00:51:52 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 107C38E0068; Sat,  1 Nov 2025 00:17:55 -0400 (EDT)
+	id D169D8E0068; Sat,  1 Nov 2025 00:51:52 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01C218E0079; Sat,  1 Nov 2025 00:17:54 -0400 (EDT)
+	id C531E8E009D; Sat,  1 Nov 2025 00:51:52 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E2DC98E0068
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 00:17:54 -0400 (EDT)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 42B60140720
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 04:17:54 +0000 (UTC)
-X-FDA: 84060730068.13.E35E151
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 80C3F40006
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 04:17:52 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id B31B88E0068
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 00:51:52 -0400 (EDT)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 48DBAB716A
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 04:51:52 +0000 (UTC)
+X-FDA: 84060815664.01.77991BF
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 94A1E4000A
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 04:51:48 +0000 (UTC)
 Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tfOETtR1;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761970672;
+	s=arc-20220608; t=1761972710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X6SkfV/86eW9rmLS74bOWIDEsW+0DwWzI80P5ZTiKyY=;
-	b=jxHWp+9XgkLIMVLebRAAakOKMoP8Rh3L76gYq41z3/D6/gdz8oel5iMncGOwkAHqhHI4UY
-	f7kgqcQI4Pb9tBPXO90SL9kLyGPl8C/tnIwpEgzm3fYbKJF+/71yx8MqBYGUxINQcrSFbI
-	W0pQjTrlRqa+ySuVYejT4ixCOjt1RNU=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9cyipZczHoPDtWHm7/aK1U4qYAJtUWjxiCa7fQADT/g=;
+	b=ZBg2Hhj61Ggk4DlF5sEIQ6GzXdpo1h9xgFgK2w4acyomosi1snCIpVSJaKGcNVSGb1OJvG
+	1nmfYq1m8oZajB2f10+vw3CU8RtXMpuMb+00FQ0a3M2s7cR4vzu0Rl5iSdp/NZHfOPaxqV
+	gtVNeZng5dMUScEaR588M4DOZ/fYubs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761972710; a=rsa-sha256;
+	cv=none;
+	b=IMq7IgLxql9gzje4HmXr60jTP0mbIi5i8QBLoENYmCTpDOZ2tyBxX5GkH0dP+Fh8Z3eVl5
+	yDYiLLgOo2KIl94XndSpWzJ0USDYZQUbpOs3eucAM9sLPDBcMBUAg2Nls/R/u9hKeK+78t
+	YUo0iSa+N6ugC2GBZAIfIMq+hi6ECzM=
 ARC-Authentication-Results: i=1;
 	imf01.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=tfOETtR1;
-	spf=pass (imf01.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761970672; a=rsa-sha256;
-	cv=none;
-	b=xLbTNCtY0R4FSYW4QBrZZvgcOO/c8rwE7XN/NJnYi/neFA2AY32o8s4mM0k4hBLJ580ziY
-	Twqu3q5awg3J2txiwohqTPtKtOag0RNjOOrkf1I8XNlTJ3WmNi9hwJlxHhDUVWl3SHPJZ8
-	IUxZKXmZ4aNKNWW08C8QlkgO/NFin5I=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 476D34350A;
-	Sat,  1 Nov 2025 04:17:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F082C4CEF1;
-	Sat,  1 Nov 2025 04:17:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1761970671;
-	bh=NLL5ea2GwmpaOiH9MtZNsnU7K+1o4iuMC+0AO7ylnmw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=tfOETtR1sXcY6EhAa2YKEqAJKZGK3QYaHCgEs/S4mQ7CY8b8+TerJy7pHNrXau1yl
-	 9JQE1HslJhp14A8NfUPLGV6YOhOXJUaQeUkt45vBXU/g51NiO2h+IEu4xAwcj2LunE
-	 FeYE9LbWGV2HGdv5ndvvOFTVdz+qGyZS9ZgTwuQM=
-Date: Fri, 31 Oct 2025 21:17:49 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Hugh Dickins <hughd@google.com>
-Cc: Kiryl Shutsemau <kirill@shutemov.name>, David Hildenbrand
- <david@redhat.com>, Matthew Wilcox <willy@infradead.org>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Michal Hocko
- <mhocko@suse.com>, Rik van Riel <riel@surriel.com>, Harry Yoo
- <harry.yoo@oracle.com>, Johannes Weiner <hannes@cmpxchg.org>, Shakeel Butt
- <shakeel.butt@linux.dev>, Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <david@fromorbit.com>,
- linux-mm@kvack.org, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-Message-Id: <20251031211749.e8729676c0ca40c8d6b95166@linux-foundation.org>
-In-Reply-To: <9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
-References: <20251027115636.82382-1-kirill@shutemov.name>
-	<20251027115636.82382-2-kirill@shutemov.name>
-	<20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
-	<hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
-	<9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: 9yixdycyap9n9wjfgmjg8aeroydo33so
-X-Rspamd-Queue-Id: 80C3F40006
+	dkim=none;
+	dmarc=pass (policy=none) header.from=lge.com;
+	spf=pass (imf01.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 1 Nov 2025 13:51:41 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Sat, 1 Nov 2025 13:51:41 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>,
+	Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Huang, Ying" <ying.huang@linux.alibaba.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	linux-kernel@vger.kernel.org, Kairui Song <kasong@tencent.com>
+Subject: Re: [PATCH 14/19] mm, swap: sanitize swap entry management workflow
+Message-ID: <aQWR3fK/GtTkx0kX@yjaykim-PowerEdge-T330>
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-14-3d43f3b6ec32@tencent.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251029-swap-table-p2-v1-14-3d43f3b6ec32@tencent.com>
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1761970672-560483
-X-HE-Meta: U2FsdGVkX18uBLgTSsBsG/320/u2stjeQ3w3GduyIqJ964q3kt14vOkIKkK03QyX910EvWkKO7I7mopPdEMPMZrFR3T/CV3xUPm02GCy9dMINb+Ev6yjs2QqxTIxuzCp2F4zuZqKi7UirB/Ip9ztpH+h4mxjONbhlDH4qPWrAANFFQQ0Z1ZXhEjBDpQYxWUs7ksFLO5/gSUs1VNg+Ye8XcPZTsgTBME1z2Aac1diM+af6S0tHeUhUDTyTuevgIxPLea2Mrvf1sII0mc9JJXV9Kic0F82eS0yCUdyXT8niCNrCeNU28hs9tXD+HsaAi7CKKf+u8p5EIWQ1Hbp3BezXGaHRK/u3ERkjtxE+YEYRixlXSpzcj7m0Pze70an2uV6fjHCT2g+d1PLRaFA5XSp72pB1Eg74hxDGiY6ipjkTFGJpZE5ANwYIha0vrKHpaGiL9ATKBniPIN8dBNPUVT2qD52in+6EoWHcXdLhWnQQ63r10W/VkN3a5DM2tKopVeJN27GDYMsiIAPaV+c5ZYWF0rFDjxPU5ouilhJTNPKZf78OQNdIs7HybQ4nTZlvhUW1BTCHV7ygBsKPbLEEOlisYS2Gn5PzSGyt+MQRrGkRmH5loLLfbWGBd0wLB4WhGNybUcLw7WZb63NhhJrqOHA8tYNAAPC+BZMMJSxTzZ6kHtpV8WnGm5j65qxQSeFw9d93TGoH7ZLCVpdZwImiCJJZbKIYh1Nfbya1JZDc3WFMnOSbP3JDM5lzmdzHrnPLragdNlEH6FZw/n0RBPZ4diFIdGn0WnbqBwliBm/Mu9wI0ah0rJuLDZuglPYxfu/Ps0kd+oB8mdqVEK7WKJi2fL8zVUkABPaYvIdyiLN3pxHbZE0hpEtCOEDM86ErsJ9qAOhpOlB9otfrhANBzjcacmu3T9/qKUTZ35/s4h99rhbB86i145iEVl+7XPELOaRTOE6yc6m/BqpjTaaZDJBWN+
- 4qjQD68n
- pFbIEmHSW8rzYRJWh9t3x8q4gPAQChrJFX0GW01Ba3H1EsikeTr8zQ2GCH2vR8Wbg9T3kdX0U3F23Qhkw/nfK8ZwYww5/4oWuT1IDr7IVqP3AfJj4IleWejIzMk/jzZFVLe5TB4QzmG9gZa1PaqyjV76P795grD8+cc0npPMkkK/V0AB1BYjpEd0NL8vJbOuc5V2PJwk3xGLMAGnhVItDfOW6FXQZ0r2BCmdnkeD2rkyvlE+GouMwGnR5y09ncabrwQ/ccDrTpFnvNszPYxj1uLEsSqagDuaVYtlvRYzvgnThADLujmqMmRks6txu19wwBaRc
+X-Rspamd-Queue-Id: 94A1E4000A
+X-Rspamd-Server: rspam02
+X-Stat-Signature: qwgf5qsqm33ji3h3oh4xjo1panmm9ueb
+X-HE-Tag: 1761972708-599571
+X-HE-Meta: U2FsdGVkX1+oVp4ZQQTe7bOj24wtMz1fJ5XB92pZ3E4IbpRb6X9oLpR/aS/MTupV9UHlOxr/ta5a56xFIU+miqXxOjs1upiALEbtu1VbD5Rmr1nim1UuHfEduGJWMYdcwapUhPp0grEXURR0gbhA72PJbPBQ7wYRKZlZ9CQYX47eVzHCt8D7gOK0nKVDO6ZcMlMzNqBVzexyL223LTDb7AOefATE+pHli8uvvoEp8SyLweaYYCUp/7sAtcIDHzYtVQ2DYbXhu/ToouHmn6eLj8j2lZoHzsohhmjd2qeVsbvHMxGqPsfEnu85D/8VhUMsfdcxXxzyPvD6fJzbxEAj5nzkcD4VgqOuIVXAxCWp5jKzXfbuUb/OH7AqmZbwWukhG5xlgN96Q0mA+wgnEsJfEmsjGaLEBPG1sEU0LgjzcwNkQyzRl9uM0eyNXMH7dGixquxot6JHS2WtsPWRptfcFa2aQHLhUggdiFKSHrJ1iATG+xhNRjkApGrP9Wy8snJl87J0hfSqjpcn+moQXN6pRe7trLKEcFx9aK1rOgz//xS2Ofv536qSV3COz7PEwaA+wi6kEjXtCMaf+fC8P8kF0pi1fy0rSvbCbxcFr42Ciq/CB+Es57f+PgIGtH2TY/mmEahnB2svLZXQlMgVayCC8XZ4cDnxPPf+YHsHlZyEAL7oG5p1YdSBJUSUEaR8OZToRebYmxkWvJ5jKStL+DiJlMykBgGpOOHbZS8GyF2ALql1GQnda+lcwpQPMSWVUiF+gIUjWzSPuh29R2lW+Q5Ysxc0XjEBdc9TLedo0jUJ8R95kriuYSG9UQpakSGvrhuAknZRdIUeLAtSj6YVWwD0M3PbeJLnvKY56sRK/aatOT023QR0JXZ/1V3+3jGqpmAQoYHS9ci1+S0F9bAjwWa+BYh9uvUTtXBmmijZaCJvqmVLW3R+AOIx5Z4IQ9TRpjor/bva7SXiag8o6qh5IzC
+ w9sbNinb
+ A1pck/9qdvRkSAsDP99VX7iGe/tDQdrgn7fJ7XlSUSUWWojF/USynOOnAsJlUQFdRBamA22jACGOBk+M3HE/t2c6GJdI8haV7MVdW/fWW7BfmqaaGCbZW7duQjSgecfldOkDCh8ihC1PNZzLCKa7hHLUuCYTUJ3oj4BAebgf+sp9+EXvgN6ZyIffC/zPDszxcty2fL4pYUlEuPhr8Y8T3VVJPNkv8JNshpJ1af/nlhkn32h5j0qH9BXrnnw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,20 +92,112 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 29 Oct 2025 02:45:52 -0700 (PDT) Hugh Dickins <hughd@google.com> wrote:
+On Wed, Oct 29, 2025 at 11:58:40PM +0800, Kairui Song wrote:
+> From: Kairui Song <kasong@tencent.com>
 
-> > Fixes: b9a8a4195c7d ("truncate,shmem: Handle truncates that split large folios")
-> 
-> I agree that's the right Fixee for 2/2: the one which introduced
-> splitting a large folio to non-shmem filesystems in 5.17.
-> 
-> But you're giving yourself too hard a time of backporting with your
-> 5.10 Fixee 01c70267053d for 1/2: the only filesystem which set the
-> flag then was tmpfs, which you're now excepting.  The flag got
-> renamed later (in 5.16) and then in 5.17 at last there was another
-> filesystem to set it.  So, this 1/2 would be
-> 
-> Fixes: 6795801366da ("xfs: Support large folios")
+Hello Kairui!
 
-I updated the changelog in mm.git's copy of this patch, thanks.
+> The current swap entry allocation/freeing workflow has never had a clear
+> definition. This makes it hard to debug or add new optimizations.
+> 
+> This commit introduces a proper definition of how swap entries would be
+> allocated and freed. Now, most operations are folio based, so they will
+> never exceed one swap cluster, and we now have a cleaner border between
+> swap and the rest of mm, making it much easier to follow and debug,
+> especially with new added sanity checks. Also making more optimization
+> possible.
+> 
+> Swap entry will be mostly allocated and free with a folio bound.
+> The folio lock will be useful for resolving many swap ralated races.
+> 
+> Now swap allocation (except hibernation) always starts with a folio in
+> the swap cache, and gets duped/freed protected by the folio lock:
+> 
+> - folio_alloc_swap() - The only allocation entry point now.
+>   Context: The folio must be locked.
+>   This allocates one or a set of continuous swap slots for a folio and
+>   binds them to the folio by adding the folio to the swap cache. The
+>   swap slots' swap count start with zero value.
+> 
+> - folio_dup_swap() - Increase the swap count of one or more entries.
+>   Context: The folio must be locked and in the swap cache. For now, the
+>   caller still has to lock the new swap entry owner (e.g., PTL).
+>   This increases the ref count of swap entries allocated to a folio.
+>   Newly allocated swap slots' count has to be increased by this helper
+>   as the folio got unmapped (and swap entries got installed).
+> 
+> - folio_put_swap() - Decrease the swap count of one or more entries.
+>   Context: The folio must be locked and in the swap cache. For now, the
+>   caller still has to lock the new swap entry owner (e.g., PTL).
+>   This decreases the ref count of swap entries allocated to a folio.
+>   Typically, swapin will decrease the swap count as the folio got
+>   installed back and the swap entry got uninstalled
+> 
+>   This won't remove the folio from the swap cache and free the
+>   slot. Lazy freeing of swap cache is helpful for reducing IO.
+>   There is already a folio_free_swap() for immediate cache reclaim.
+>   This part could be further optimized later.
+> 
+> The above locking constraints could be further relaxed when the swap
+> table if fully implemented. Currently dup still needs the caller
+> to lock the swap entry container (e.g. PTL), or a concurrent zap
+> may underflow the swap count.
+> 
+> Some swap users need to interact with swap count without involving folio
+> (e.g. forking/zapping the page table or mapping truncate without swapin).
+> In such cases, the caller has to ensure there is no race condition on
+> whatever owns the swap count and use the below helpers:
+> 
+> - swap_put_entries_direct() - Decrease the swap count directly.
+>   Context: The caller must lock whatever is referencing the slots to
+>   avoid a race.
+> 
+>   Typically the page table zapping or shmem mapping truncate will need
+>   to free swap slots directly. If a slot is cached (has a folio bound),
+>   this will also try to release the swap cache.
+> 
+> - swap_dup_entry_direct() - Increase the swap count directly.
+>   Context: The caller must lock whatever is referencing the entries to
+>   avoid race, and the entries must already have a swap count > 1.
+> 
+>   Typically, forking will need to copy the page table and hence needs to
+>   increase the swap count of the entries in the table. The page table is
+>   locked while referencing the swap entries, so the entries all have a
+>   swap count > 1 and can't be freed.
+> 
+> Hibernation subsystem is a bit different, so two special wrappers are here:
+> 
+> - swap_alloc_hibernation_slot() - Allocate one entry from one device.
+> - swap_free_hibernation_slot() - Free one entry allocated by the above
+> helper.
+
+During the code review, I found something to be verified.
+It is not directly releavant your patch, 
+I send the email for checking it right and possible fix on this patch.
+
+on the swap_alloc_hibernation_slot function
+nr_swap_pages is decreased. but as I think it is decreased on swap_range_alloc.
+
+The nr_swap_pages are decremented as the callflow as like the below.
+
+cluster_alloc_swap_entry -> alloc_swap_scan_cluster
+-> closter_alloc_range -> swap_range_alloc
+
+Introduced on
+4f78252da887ee7e9d1875dd6e07d9baa936c04f
+mm: swap: move nr_swap_pages counter decrement  from folio_alloc_swap() to swap_range_alloc()
+
+ #ifdef CONFIG_HIBERNATION
+ /* Allocate a slot for hibernation */
+ swp_entry_t swap_alloc_hibernation_slot(int type)
+ {
+....
+                       local_unlock(&percpu_swap_cluster.lock);
+                        if (offset) {
+                                entry = swp_entry(si->type, offset);
+                                atomic_long_dec(&nr_swap_pages); // here
+
+
+Thank you,
+Youngjun Park
 
