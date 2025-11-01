@@ -4,85 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2844ACCFA00
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 19:46:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 31526CCFA00
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 20:56:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 586D28E001D; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
+	id 007A58E001E; Sat,  1 Nov 2025 16:56:01 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 538DE8E0015; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
+	id EF9D38E0015; Sat,  1 Nov 2025 16:56:00 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4274E8E001D; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
+	id E10AE8E001E; Sat,  1 Nov 2025 16:56:00 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 329698E0015
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 15:46:15 -0400 (EDT)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id CEEEC12BC13
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:46:14 +0000 (UTC)
-X-FDA: 84063069468.24.C52EFEF
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 183FCC0002
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 19:46:12 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bt6NhuXw;
-	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id CEDE18E0015
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 16:56:00 -0400 (EDT)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 53AE9C070E
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 20:56:00 +0000 (UTC)
+X-FDA: 84063245280.11.1FB80D8
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 6BC1540006
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 20:55:58 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762030558; a=rsa-sha256;
+	cv=none;
+	b=6zuqO2oiB3L7diuXpGB8gbsrM7eJbSL/BoyD1bNS/xG/0Vjxzd42XO3zQR8Q9KhesfRdbF
+	f2XTlutNzq2uCefCrDGRiiz+vWziuERfci3HzXWTTU4BmCTk4s1PVV2tPVAk0xgABttJK4
+	yM6/6u4c/b0lVIgY7psBYNFUyHfn3qE=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=none;
+	spf=pass (imf01.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762026373;
+	s=arc-20220608; t=1762030558;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qSk/sZRQi90GHI3IILQtj3YgPAQn3xbHNm/4+VGi7to=;
-	b=Vm2aj68Z1fenJF9u9Uw6DER/hNZlDuKiROS/MXl8Ya3tZ1ydnWb5S4H+Vbh0MqMha6o7cg
-	hC8ONwPCyx45ajGIMN78fJlNgz29OU5+cGJM7C3B80c4A6SBDQsEFvOwzsI5wv1CDECfPJ
-	gG3tkFNFXjZXzog4NWYWWT6u1KEx1Xk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762026373; a=rsa-sha256;
-	cv=none;
-	b=j9AbAVEBzxG0xt+3wd0Hp9krWZCErSZbdhwHI7YrK/3ujRv+m9l1PMUVA18WOXyhJeUmBh
-	ij4N6jEXfUxQKCvoqCFH1G4RfvjfvdjrJP7eWeU1T1cSh3wCNWXjtJ4PwDgxPCfMAFk/xk
-	xpByt3PcBvZXssynyoiryxIKT04Aulc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=bt6NhuXw;
-	spf=pass (imf22.hostedemail.com: domain of yanjun.zhu@linux.dev designates 95.215.58.174 as permitted sender) smtp.mailfrom=yanjun.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <57bbade3-0707-4045-b39b-2053434b0b7c@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762026370;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=qSk/sZRQi90GHI3IILQtj3YgPAQn3xbHNm/4+VGi7to=;
-	b=bt6NhuXwWlyIZUWEiIsROrc2jyonkIZX/DOSReszd9+6z1Nhl2up7ZnTMedodcIqC9ozwX
-	W6aLNMDub//7cjEzYGIR3b7lj/p/0Mp4ex4mSvTR50MifJPiYezgJYuplEidrWU1FkCTxz
-	qJsT50eEfIWOMW9JdydU/DYe9lZNic8=
-Date: Sat, 1 Nov 2025 12:45:59 -0700
+	bh=AfDgklileJj3lr14BrRrB1s/Af42yLvNvHqicgRovmo=;
+	b=rFUZxeOPgJm7jlO0+zNB1hn2s3SZnWswa81ATnOrIDdMWfjPULVMf+Q893tC6ilGwNmGGa
+	I1WD+FrTJ2LX6f2jZi6xGECWzm91IZHEt4cXTTsObhOm0UNzEK7RHr+G9L9fiHYId7tQFZ
+	ILYF6+KuhQuPYxYnovCAIpCpnb/+wRw=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-891208f6185so306155685a.1
+        for <linux-mm@kvack.org>; Sat, 01 Nov 2025 13:55:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762030557; x=1762635357;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AfDgklileJj3lr14BrRrB1s/Af42yLvNvHqicgRovmo=;
+        b=cWHVKAQSRoaKirGQMxoa7lJPDbTI6M+0hKqgj5x/sBeDKOXlLvrMZaZTq6qTOYeX+S
+         eXiN4D7hEBopFg7imkRXEqYj3T7bv62qsLmfQl32LseVPU36xpfA5AetTIHf7yc1qwDk
+         SiFQgnuYHx45EKHqUP+dqanaUvKjaeDc9gSdmVtvy6rcZXaz6JqFAZ8iXbu0er2Um7yU
+         AJXYBHIRGDp1N+UWWrFr8+mmXJfmCleEJH7R4i8sfHjwulC430P/KtcYkqJwmGUynb3Z
+         kxL6E/BJr+QZsuWyovTmoC18GvVvQlQ6UYMxVn4+T60fZNzozq1ZoETeXAYGjsq8Uivi
+         nIDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXCkb6HmMvhFqEXi8eTM0AUJHLnUuBgZHZM7wMI10OP1m/VKxNP+iRUxTMEqJsWubEho2oCYqN1tQ==@kvack.org
+X-Gm-Message-State: AOJu0YwjjipoY/0G7NGnvpwblwI/KUf41SwmTSTwYOWDBtZCM/k2UsLE
+	oFC4/0390a2ttb3M7ZAVNi6+Nveixv/JCsdIPTwtXxZKiBkFkZhI3tPR4P0C8vPHbWx9gXeTrBA
+	WZUxOGDEZCJKtqTUJZXhsTHQPHRV5gjQ=
+X-Gm-Gg: ASbGncts3z7Bz2px5AFzSeRc4H00ARAf1BGHdZ06ZfmPPPc04oQXWD99oI4TDpyr0Iv
+	fKtpYMi5K+fmqtOlqCrwWLeV3xaEK6rnsgkM0BSeloPZCALCpNY1ot2GCszfUq1BPvl9X4vraRG
+	s+H7n5M+KhenrZ7d/r+ep1kbRlMoSYeFO45NXjyiDOREy6cKnXFIOpzTv8Le3gQNSY57UCiZk2N
+	/tl/7cZPdh50U/pqzm2cR6M2zOXStsfGEVnDLt1nZxqBoWCL/FLjIgetPFiLDze3dKPIgWmYuU0
+	h5IXfJDUWvdWSOXTRPYcI1snrak=
+X-Google-Smtp-Source: AGHT+IGzPG5lX5aThng9k33S/kxhaAbv+L6NkZ2ZX1H0R/5NzYaAyJgIDthESW+zfDOjVlnDwvYfpphnupgwWMk59Ik=
+X-Received: by 2002:a05:620a:3916:b0:8a2:71d1:30e1 with SMTP id
+ af79cd13be357-8ab9afd09e8mr944399985a.58.1762030557342; Sat, 01 Nov 2025
+ 13:55:57 -0700 (PDT)
 MIME-Version: 1.0
-Subject: Re: [PATCH v9 9/9] liveupdate: kho: Use %pe format specifier for
- error pointer printing
-To: Pasha Tatashin <pasha.tatashin@soleen.com>, akpm@linux-foundation.org,
- brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
- pratyush@kernel.org, rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-10-pasha.tatashin@soleen.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
-In-Reply-To: <20251101142325.1326536-10-pasha.tatashin@soleen.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 7mrr56e7xmuubtz6je8rfhg7cqodeg9a
+References: <20251101134158.69908-1-youngjun.park@lge.com>
+In-Reply-To: <20251101134158.69908-1-youngjun.park@lge.com>
+From: Barry Song <baohua@kernel.org>
+Date: Sun, 2 Nov 2025 04:55:46 +0800
+X-Gm-Features: AWmQ_bl76Rp_bNve1Wn4skNzo75T-04LnBcw0Ef9vvWWi_6R1ItrxVzNuLbQsFE
+Message-ID: <CAGsJ_4xJnVC-0zccgnB9NZUU15_oO=eqn1wrh8REkqdGjjsJVw@mail.gmail.com>
+Subject: Re: [PATCH] mm: swap: remove duplicate nr_swap_pages decrement in get_swap_page_of_type()
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 183FCC0002
-X-HE-Tag: 1762026372-961978
-X-HE-Meta: U2FsdGVkX1/MOzs0JKAhN2pSpSjKxiX/ENfLG1sSLdjPtz/eUuPnAIC0mXdIA0d8VeGzXM7EauVKFDael10Rl1P0qy4RI+y3NVcFJ+ADOCKoG2tGpAohc2EYPWCfbOoe2NBqARjFGkdMCd/9Q/PYZqx1nhiZcGzwTh4PE6s9NEVQdvUnDAyPtHn9+F/xeRD+GIKDd/x9Rh1IQit6JshJ6LB88dQRwE1F1xDYqZDrLWsxPdtDUWZhdv4ir65P+Wgy52NvbJx2YwQ+gypKDyaxPNMYwZebuKTuI5/zfyP8J10YU6vjNCzuQaoQUPZ1mxavWeZPyfImqcyitLEbP57VZvQePgbPLTdg5SXMNvZ71G+F8dIJr7YmabcFWOSAt3r045jBWisXYGFAupAVo1N0B2rwgis+0tB06kNL5ciaOFzetuxdYincEuOM5R9OqUY/6Bvlkq91uwPxs5Z8Iq+FluFrGzj2cdX4zxMIeRKvsnj9rb1TKxKxF3euQUPu9ftBuMpgWgLVNUsh4ePeiP+UGrySqfbXfxr1uf6UmDT1ntZ32s/ZI6KZT8HdScmliKmQQ8NDQDX0BevktFhWz+w/xpOFwB1FcYEIAfggCRPFgnnm0YPngyGUBQtoMiTMq6WXJcZETl9aeFrvSu5P5vELMqMBBABOAZdOnm/oNqKBoVs+ldPBlZn/lGH7QqrGVQiUoKgMe5bS6YnMHfuymHxCsdlQEueWqcIT7zjhqYS8Ft2txhtehg6mcNhVrX9h6t1teWeOKvXeC7ha+sbasJ1Eam3eSnETGj3P4ZgmeCfLMD+j/cZvM1ceP5Nyr4XDSEUXGBGMbS9pSR9qoT1x70quJJYd3txWM0IkxhxMYGC7D+P9LKR+OOcc+UQKFFgGbZEs0eHjd3Y/7OpexB7utdAAWA==
+X-Stat-Signature: h86cm9fmgbfaujhxczi8c5jaurom5qqd
+X-Rspamd-Queue-Id: 6BC1540006
+X-Rspamd-Server: rspam09
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspam: Yes
+X-HE-Tag: 1762030558-806989
+X-HE-Meta: U2FsdGVkX1+ZbFrskm2OY6MAbh0/rU4hfuBKJTNeYvoPXpVNRJ0mkPe6rBK89aUaRYK7XSXiw5OkvVNRQRkEjN3i8Nw7VP0Yl5JcHIk71kUHZHEDN45NZjAzdCqC/Bsqwt3Dun4tlMnl6a3iCP4ZC7g6/XBMVCyGAsScvRfA71jr4ebs4ClK+AXSh2ld3VfmEOWuafq0RFBakNFFlxaYJX1ukQ8nQ+B//UWnNWcluzvjQLkyfbkYKPi/bdTGK4F9QES3XNwLTGov9Dia1Vp7W63d+hj3q8LXormn5V7i+BucpCd4mlqsUpqQS1PTthQxqFcWb5mx4xwNOm2+7+oqbuLonSukY9oxb9IORjHnCsAirokU3kFoIVCCA6vOzF0Z7Y2Bkwoq2FNK9V5MGsYI8aiX0qkYjquz56GvKqzCPYDJWYnPON22IzrHOxex5pQ0aa/V6294tdFwHH5YOnj7DThNjmOLn1juPkkBDNXim2FTMZUd8JWHQ29BHKijJeNeR/SX2ifilDT0QAOA2bMuTHqrkLUFVmmUj/NSJviiWpqNC8Oef0MfkSvnnlTA9eLFyExvcMZxbQ07Y6UIUx6UNeJmQ84smZ2kH2RA3TDPJt2lhfP9wMppneuv8lyBG9StqB/nHwtdLVcAxSUyxxOhPhjK5JU0u3B2UhhGPDUicRO7c+OCOTPOBqZdPhzuFM9sxXqitiIeJolHqhCIDqeFHtSw2vjQuMusZDbJpvekOnDpZ8SfpY/lgcg5/peXbV8cY8Ok9dKfPr64Uw3nFE6UOm91uT7BfqXVBFN+V7lT9OLm9Do5XK9neKdj1H7PmYgC16DXrlakov0d2MhUntosmYlOdMVimlzbVibrD7FgUNhdv+TXzcMTEi0ZV6KN76dBR4LlR24tPE6KuzAyj5v4fAZXpjgyu4Kj+jSRKUVZ0xPsGS6NhHXuoa+4u+lIOq4rHXU8SexLS7kxQghUtno
+ XYqWWEow
+ in0FYouNZlolSAnFRUYe+mUIDAXvm5aMTkem7wdE5Kq1RZjodu+8itLi26P+8P1dZUgzwFy/50Cq9vglc68wYucqdVOK+I1kU9HjU0qfuZqjokqvtzwP2ql87WA9LeLzYuprc6BXgS24qeZ9z64mX1s4Eg/Sx7ZYqKyvkDQ647UFDfAQRMfRMON6ue1+ZndotfehdIJqR5H6hisIX5P092u4OAXqidl+RAZfDCEgPi+peNa00FpTpIx1IBpz6+LpQPMNuhFsIs7tCa2S4yfCldN93m6Y6h/MHtW4vwRHcTwgljIsJN3Lpb2+80fOn8/cXAVZ0xN8RfnDJJwWwiXbtQI0YJGsg4pMO21BchGcfBhfXSOtxEKTp/MU1ZYvdVKQSx0nF
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,81 +110,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-在 2025/11/1 7:23, Pasha Tatashin 写道:
-> From: Zhu Yanjun <yanjun.zhu@linux.dev>
+On Sat, Nov 1, 2025 at 9:42=E2=80=AFPM Youngjun Park <youngjun.park@lge.com=
+> wrote:
 >
-> Make pr_xxx() call to use the %pe format specifier instead of %d.
-> The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
-> -EINVAL) when given an error pointer created with ERR_PTR(err).
+> After commit 4f78252da887, nr_swap_pages is decremented in
+> swap_range_alloc(). Since cluster_alloc_swap_entry() calls
+> swap_range_alloc() internally, the decrement in get_swap_page_of_type()
+> causes double-decrementing.
 >
-> This change enhances the clarity and diagnostic value of the error
-> message by showing a descriptive error name rather than a numeric
-> error code.
+> Remove the duplicate decrement.
 >
-> Note, that some err are still printed by value, as those errors
-> might come from libfdt and not regular errnos.
->
-> Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from=
+ folio_alloc_swap() to swap_range_alloc()")
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
 
-Appreciate your help, Pasha
+As Chris mentioned, we need to add Cc: stable@vger.kernel.org.
 
-Yanjun.Zhu
-
-> Reviewed-by: Simon Horman <horms@kernel.org>
-> ---
->   kernel/liveupdate/kexec_handover.c         |  4 ++--
->   kernel/liveupdate/kexec_handover_debugfs.c | 10 ++++++----
->   2 files changed, 8 insertions(+), 6 deletions(-)
->
-> diff --git a/kernel/liveupdate/kexec_handover.c b/kernel/liveupdate/kexec_handover.c
-> index be945c133a2f..167c761988d3 100644
-> --- a/kernel/liveupdate/kexec_handover.c
-> +++ b/kernel/liveupdate/kexec_handover.c
-> @@ -1448,8 +1448,8 @@ void __init kho_populate(phys_addr_t fdt_phys, u64 fdt_len,
->   		memblock_add(area->addr, size);
->   		err = memblock_mark_kho_scratch(area->addr, size);
->   		if (WARN_ON(err)) {
-> -			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %d",
-> -				&area->addr, &size, err);
-> +			pr_warn("failed to mark the scratch region 0x%pa+0x%pa: %pe",
-> +				&area->addr, &size, ERR_PTR(err));
->   			goto out;
->   		}
->   		pr_debug("Marked 0x%pa+0x%pa as scratch", &area->addr, &size);
-> diff --git a/kernel/liveupdate/kexec_handover_debugfs.c b/kernel/liveupdate/kexec_handover_debugfs.c
-> index 46e9e6c0791f..ac739d25094d 100644
-> --- a/kernel/liveupdate/kexec_handover_debugfs.c
-> +++ b/kernel/liveupdate/kexec_handover_debugfs.c
-> @@ -150,8 +150,8 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
->   		err = __kho_debugfs_fdt_add(&dbg->fdt_list, sub_fdt_dir, name,
->   					    phys_to_virt(*fdt_phys));
->   		if (err) {
-> -			pr_warn("failed to add fdt %s to debugfs: %d\n", name,
-> -				err);
-> +			pr_warn("failed to add fdt %s to debugfs: %pe\n", name,
-> +				ERR_PTR(err));
->   			continue;
->   		}
->   	}
-> @@ -168,8 +168,10 @@ __init void kho_in_debugfs_init(struct kho_debugfs *dbg, const void *fdt)
->   	 * reviving state from KHO and setting up KHO for the next
->   	 * kexec.
->   	 */
-> -	if (err)
-> -		pr_err("failed exposing handover FDT in debugfs: %d\n", err);
-> +	if (err) {
-> +		pr_err("failed exposing handover FDT in debugfs: %pe\n",
-> +		       ERR_PTR(err));
-> +	}
->   }
->   
->   __init int kho_out_debugfs_init(struct kho_debugfs *dbg)
-
--- 
-Best Regards,
-Yanjun.Zhu
-
+Otherwise,
+Reviewed-by: Barry Song <baohua@kernel.org>
 
