@@ -4,115 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0035ACCF9F8
-	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 02:11:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 692CCCCF9FE
+	for <linux-mm@archiver.kernel.org>; Sat,  1 Nov 2025 02:36:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EFD858E0082; Fri, 31 Oct 2025 22:11:55 -0400 (EDT)
+	id 4D9678E00AD; Fri, 31 Oct 2025 22:36:02 -0400 (EDT)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id ED5DE8E0068; Fri, 31 Oct 2025 22:11:55 -0400 (EDT)
+	id 48A278E0068; Fri, 31 Oct 2025 22:36:02 -0400 (EDT)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DEAF58E0082; Fri, 31 Oct 2025 22:11:55 -0400 (EDT)
+	id 378EF8E00AD; Fri, 31 Oct 2025 22:36:02 -0400 (EDT)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id CF9D78E0068
-	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 22:11:55 -0400 (EDT)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 65AE188DF2
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 02:11:55 +0000 (UTC)
-X-FDA: 84060412590.18.B1EEE46
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	by imf29.hostedemail.com (Postfix) with ESMTP id A584712000A
-	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 02:11:53 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bQrsT3dN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 1E9278E0068
+	for <linux-mm@kvack.org>; Fri, 31 Oct 2025 22:36:02 -0400 (EDT)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1D85140692
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 02:36:01 +0000 (UTC)
+X-FDA: 84060473322.12.0A03870
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0957A100009
+	for <linux-mm@kvack.org>; Sat,  1 Nov 2025 02:35:58 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eusadvVj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1761963113;
+	s=arc-20220608; t=1761964560;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
 	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=bdih8M6hm+4uO0tTpAdslFXGRGNxv8Y5bIJUuza8Kds=;
-	b=Xwqk2L9x8M+s6M+cmm94EKDAlzFTXA3aOKffUKwJITAeWPzVLEQ1alHyfxOempv1il2+XN
-	ypfPGsdl4S8kIlu98Pg+8Y81pT9BFhL3V1T5HHKed0l4AaptPSdjInVWNGJACgpFWV/7ii
-	IkP8wkviQ6Y7d+uMJv4BI1WEmkUBIdw=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=bQrsT3dN;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf29.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761963113; a=rsa-sha256;
+	bh=FvSS1/7yZOrPQm9LhCxSsbFTObl2zO51hYQ+MrZpGlI=;
+	b=GUajZQ79klxSPT54U37UDHSS8dF+DIPrSHbmGZ7gF7hKMRDdub17VmQBtDdG7zGHUxe/sR
+	xj2bxRk+sDYVfzE5yBGi4NAC9rUOOwJcbrWt+mkoOTE0utaWvVgLfPMHmW2IwY6c+khxWM
+	Oriz82Pcjx0E35oJN/ceY8eni0u6cc8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1761964560; a=rsa-sha256;
 	cv=none;
-	b=pl3WAAuOO0/fGbfFKk8oHirimW+KMVPCyrLNBKpp76wCeOhmmOoRnYYToOdeKaXNKePIdG
-	a+TihQqVQmfa3vdI5gY4jco6K8406UiGBTesGu2q2mCVjT0Nv5TPVn/E6pvlL7SZsj6cCs
-	U2DuESv+w8rdGjBjBUO0WwECh473H2A=
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-b5e19810703so392128366b.2
-        for <linux-mm@kvack.org>; Fri, 31 Oct 2025 19:11:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1761963112; x=1762567912; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=bdih8M6hm+4uO0tTpAdslFXGRGNxv8Y5bIJUuza8Kds=;
-        b=bQrsT3dNF2Duz2SlFhPku/wavFeY/cP6hi0rA+x5qTfboFImujNlpr61YuAkeKtk6p
-         rH8zK6zZrxP3Dd7o2nvhTMbR9/Pk5BCscr4Kpx5TAK4PS4N2nFGVy5taALw6+0aKg6P8
-         32T9EX6Hv2t0Hqhq3bpDqP7ZvGdYepcsvrazOuoFeeVBbeL/3k6v9EUixHJtkcox1aB/
-         mq5/HBPY5VxU4IrzWDXLArkQzMfhdysaM3tgT9Ta/nAP27eBaL0bkeWcAsaRRSgYF6KP
-         +au6yfWerYhglG6RLO/Vtfdy2dz+E0Ep852HhZWGvJ4vC7Q82Qdgm06ACIudnDHiWMMi
-         Rdsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1761963112; x=1762567912;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bdih8M6hm+4uO0tTpAdslFXGRGNxv8Y5bIJUuza8Kds=;
-        b=eLQ0AOOOh3ckZrq0PUd4f/whwDNi4HFos+BfU5vE179ZHynDbtZe9IvmTYJZ5XqW2l
-         1JlGDdeaX4GB065m2ViD9K/fgEk6mJ95M4tuMjhV72JTzNl2adr7LiDthueJScEyYBFQ
-         rcEMHLmfckNi9UMi3WLkS6gQDEq+zbxL83nX9uT4URr3tylvEJ4ZbdQSwhC1uvC145dA
-         oOw7GGd6KRhY1/8RxtTwmsDXvCTr8MnjMX6jHRorHSF/p8Ou3asWCZ7zLZYDGtLjtiiE
-         /H6jaIV88EbnhHAVcnUSEy4/jiSnICxRRUoM4s88G1TV38P9sXYzk3H0qAeYE3BZPOw7
-         PbuA==
-X-Gm-Message-State: AOJu0Yyy6p4JxHyXJ6lSAfbHiH1X2K4I65EF1/F8IOd0wDGqYSf3Tmpr
-	8oV/M7kAJbCD0xq03sr0A0bqF6zjJ6iwpWNGqefh4X+B4CUIUZkQ/hIM
-X-Gm-Gg: ASbGncsGEvhxuCucvFsPVd89Qw8LlboW4XUpRh7l8SvwPvkEU4au+dsrrfhtQ2IiD20
-	8Ccdlzk2j5q9XntpYZE+y01Ta7yd08OAH5raMq38ka/gbyMSDWeLfBQptsviB69JYq7nwKRzGul
-	PKTDYt7kYUH3BDxeTONCfiZImMAT7580uaBAMQe5cm7+skF/Aj9xtu3a/CSuVbAkOsIk7Jrk8nf
-	galxfR7jcp5B/aMkT3JBYc3ig0uE3sEQ+3TTuVi6r3RyzmcAONSO9FKrXQOwcwsSL0JXBQrymTx
-	W57/B60u/K1L1zr2wZ+fGanSLNSm3MZQHYg9wQ8+6OliskmJkdfT2dipPaLBnwBC5tTVY0OHEB9
-	ffc/RMZhxSyxemL8//7HuSt5rdDxAY5Sf5QXCx3KZThtQaWIetYsb66SUMCkUZuZ6/2/q39hZeo
-	g=
-X-Google-Smtp-Source: AGHT+IHscMtPR+58N4my+49af0/d1BaouFRqguyZmIV56ZK8+HnKJFQDsbbcotgMRzcdLcuLgHB0Hg==
-X-Received: by 2002:a17:907:7ba3:b0:b6d:6ef8:35b with SMTP id a640c23a62f3a-b7070133762mr599549766b.16.1761963111699;
-        Fri, 31 Oct 2025 19:11:51 -0700 (PDT)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077c3da2fsm322487966b.36.2025.10.31.19.11.51
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 31 Oct 2025 19:11:51 -0700 (PDT)
-From: Wei Yang <richard.weiyang@gmail.com>
-To: akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	ziy@nvidia.com,
-	baolin.wang@linux.alibaba.com,
-	Liam.Howlett@oracle.com,
-	npache@redhat.com,
-	ryan.roberts@arm.com,
-	dev.jain@arm.com,
-	baohua@kernel.org,
-	lance.yang@linux.dev
-Cc: linux-mm@kvack.org,
-	Wei Yang <richard.weiyang@gmail.com>
-Subject: [PATCH] mm/huge_memory: merge uniform_split_supported() and non_uniform_split_supported()
-Date: Sat,  1 Nov 2025 02:11:45 +0000
-Message-Id: <20251101021145.3676-1-richard.weiyang@gmail.com>
-X-Mailer: git-send-email 2.11.0
+	b=qSTy4VJJb3g9TKHFIWuzDqIaBZShjaKTY6ldgwFUNHwfMIIa4uFFOBDzQXzsOKPgtYDPai
+	/rZeZQ9l7CFEWBZr/MVlO9JAwMw/vANYrfmeC6x4ncr1uqYaHRTraojWhEOxpG2STi/z/k
+	SOgrc/yCTRG8wXEr8r7XCS7yz198eec=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=eusadvVj;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf05.hostedemail.com: domain of lkp@intel.com designates 198.175.65.15 as permitted sender) smtp.mailfrom=lkp@intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1761964559; x=1793500559;
+  h=date:from:to:cc:subject:message-id;
+  bh=QhdL8RJwE1U2ocSN3pKQe9xEfrfuuI+BzTEPnAiyXaA=;
+  b=eusadvVjb759ILRVdt3MG4HgrscSkU/FZIcYYgWdUJNhh3/8WiYv0ArF
+   u/z9Ua4Dv7PikGBsxLzySBoDtf7QqDtQSP2Wr5tJYE33om4d+We8mXyCr
+   2g+gyffn/L1F4nmzty+lvWCCwQFYydPT9eSWmTvjVSPitqCOace3NICHU
+   h78D1txW48wenSzDhEgsHYlf5cNk2wgLPOIB75EimsICumoh6V3DnxUbV
+   uyJzNsB80QBEi0i5LqCUu2p72GZxATChC8wawsc/QQuUiJo2I5jNp4LFw
+   ZlzFbKhYhWqhqs8eXzy/w1yuUShQDCmqqwUd2IbRRKn3UvKOlezyj3pEo
+   w==;
+X-CSE-ConnectionGUID: 5ZsBtbFlTHWsS3+PW+wlXg==
+X-CSE-MsgGUID: c9ZOcQUMRMGFO3a/thiGQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11599"; a="67785290"
+X-IronPort-AV: E=Sophos;i="6.19,271,1754982000"; 
+   d="scan'208";a="67785290"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Oct 2025 19:35:57 -0700
+X-CSE-ConnectionGUID: VUOtf8ZPRF+41rkxuAozRw==
+X-CSE-MsgGUID: VaRSXhFxQxCm7DsRQI+wmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,271,1754982000"; 
+   d="scan'208";a="209937320"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by fmviesa002.fm.intel.com with ESMTP; 31 Oct 2025 19:35:56 -0700
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vF1T7-000NsK-2l;
+	Sat, 01 Nov 2025 02:35:53 +0000
+Date: Sat, 01 Nov 2025 10:35:51 +0800
+From: kernel test robot <lkp@intel.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Linux Memory Management List <linux-mm@kvack.org>
+Subject: [linux-next:master] BUILD REGRESSION
+ 98bd8b16ae57e8f25c95d496fcde3dfdd8223d41
+Message-ID: <202511011025.f3WQJ7dy-lkp@intel.com>
+User-Agent: s-nail v14.9.25
+X-Rspamd-Server: rspam01
+X-Stat-Signature: kqsnfxkie3kddkkkancay6r5wkncjqdq
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A584712000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: u46j75iy18b3y8u6x3j98mr1kjw9c1gc
-X-HE-Tag: 1761963113-441094
-X-HE-Meta: U2FsdGVkX1/q9uYDbCHgdDv2XpU8huGfBoHBXmeO3ndQDwp01VNm8tn/A7ApZTYM0KarER+AHMK4wassM1dH7IvZGtlo5On0lHNXiYqIPGslqcgp/4s8iOewIk/kk9nPd1rwksmdWoJMJvln+OqkI/SELpkFVUN1lwRHKZXli9uyYRQXbZj7jAWGXqFiFnoHdtNMkX2KtJmQAKD3bLxgIU+YisUWWsnmVDhkRpXBRrP3T3f69gsor2XKTGzsIJHth/YQSMFIwPPRa311rxFJoIBrnmRcBJ2DWZdMTzNQ/jRSFmEjoqTBvLSaU0QUYEB7R1WsagVJJojlYNE/Nv6OYyOvdk6F7KLGZ/sgN4iLfewWN93vzcr17HubD8InLgK+D0F8hHXkWeBZRbWlgx1ZTSl6Ewq81XXulXRtz1ibp1bRGpOkmZjrQnDI/OkpJlQJa+jYsilSmb1nKvu0xjxuSjkWVZ2/kSykch/E9G9WJhk2kFnsnTxlbWpBGllB3zngBZXujCuDg0ukeZKCKUNr++gcGE9pM6WXkOLN92OnbchsH/E5b78alXXLAG/WJr+mCaiV+JBKsrWVUAIJrJMcRTe+VgBkNwSw6dlIB3FpdlK9JLAECmFDGbcBUigL6Da4IFVSkGaKAGfDAQgB24Wcbs9bc8FhbPvLpjhapqGujbHQaRZCTWl3wbJbs/A88PWI5fmDiqvjY0Edfb57yjeX6bjUYITK3cFyq7UOd6TaJr7emrDEpVf46OgvNoYgrlvkeHSbru79hrqayItZMtsEA5hAyqjLWPFpKg1eaXdd3SqNXQ5GhE67xyyouDKNlVAAs2Doj6BiS3CWl74tW++xW4BoeUaCO5dKcRwwklbq4boyZ70XpDMTLBd37bj9cGhYkYFYI0JUKb5MwDw++Umd9Kzqb5+bBqDa+7q45kViR2swCcMnYcWDsi+yCBx4C96k8ZBZNNEeMtsE4TPJRwf
- ss9QLXQ9
- RNXn2daCwqoEHVz7mSb8AeWSqY40ROXKiUlrV2MgfO/u9COU8OjQFMezSzmpvm2pCvXa9pxqR5HQeChI3LT0nO+RcsObeUfW+0FsvtfhQtAI0+9DnejD+Vxd9GB3EjTYGAIY6sZAYYxWjkNDHpKdug3IkTwMvxW4y5b0xS1J6Z1xDq1iTExYFA7N3efqj63uVP+bCM/bJJ+H/kvLay6NjMblKsW1nZ3UFAzvGB8Km4x2Q9yjcx0abtTyPqi+WByIZoqCfa824y7AF2x6p3X36Ag/+jgKEMqLtNPJ0NoBunwKtYt6bIRDIVw3IYimET8xkGCTfst0IHzrkmJd1NXrgp+E29uYIqM046hcwAFEwHlKl3hY1ju0adfFtroVk7PK0bgKRHAlYFV9auzu0JeoxRzmY8BZ5wPc/C3v8J2y1SCVDDw/VcsTzr0dVtifOS5THr/90bxyP85fcMxwy8yQxmAO9hQ32YeKMAgKdTnvLLu5p8BNxvoA7w+tEQKKDHsJsQGfSTr+z5bjtRR77CFkOmHguMXS/z358plqmufyTRykGU0jik9RnQDwoOTnPTEFyxqzDsbU0mKZXEssBtcWgjnkE6g==
+X-Rspamd-Queue-Id: 0957A100009
+X-HE-Tag: 1761964558-650855
+X-HE-Meta: U2FsdGVkX18wnw/VIOG91b7apHgE2g9Xbpme1fE9gSZ5M3n4EdEhnF+olgS776+ELACY9Y5gtXjhTfgxqPy3hzYh1DlUWw3lmPX2N/Z6vcmvMMW85cwgRn0fB22E4Wo3ElXuOY2kKmcnp8um8xgI1z1ZljEKaI6Q9U8aQqOsSYiHzemhyJs4ZOk/BVcnC9lIVlU5LdTLECxRNsDR2FT5Nge/J/sqGq5ftmq42UhkEBr+i1qPZ2/ftT2fMCdsb4pUctJsPLdBSxXBXsrUksktGC2SjncvMWwvxQEGhpBWvE20dHNJr5ncrxSGlyWgQOms99tmjALsc1/dCeHRZLtmL6eRyhqCyfLtZHKjqtfSIGFkTlvrYofeaWDD+715bVE2ImQsPcNBukvmYxNkGZr9iyI80MlSd+WM4dy82I4qUIGW6x0ZBkEpTI13VRtrS8MbF5tbsc+V0EWoA0D+d2VGxOj6Izy42uCGcRQWF8E/zZC85qwt5wuZA/sS1FtL3Vn3c1V9fhfEuBa+XFiXUmaii80l8N74SliJeIV3jloP2OrGASRvhZkXf/YE75lSutbY6RXPCFCPl+OdibZ9LRoAqNvTOU57YTYLV8txJJIhV52VNuAakGxWuo+DltzmFhSBIXtywcXQSK6LBj/9bkLlJvDSk97WsSoLwgr8er1r+uXDHOSRu2ER3HkglNSamGtlxRShdKsjoSuZnHh4nOG5ttim+AsvPxPnNBVndsNRjNxDx0wZzj4y8s2iz/Ii32jY6JnPljDcTrBjC+j7RrqxBBpUq9OCN09tUHX1oRyRlgPQO3qSUc/r7gzhUKsxY8hsWswDSSTBPXduDenA6w7kkuueusVn464zwMp2UbV4iNLnM4Vlec/nw+ARzF2ZibSLf7jujrqwPHTCY/7h0uZ6dLLbjlb0P01J/FCiH3DjdRE1S2wtWvWmdvnZlnXzJuAMQr1r0cK+PxWnxGaLMId
+ ui5349KE
+ tr4Fz3HuBnMUjbGsNhVg/Ucj6YLOT3Mw0VolucM+aE5sPZiBAJMg9L58jQVy2su1hWdOAjbGSvUVE6p9dpjXwtiICvLZQOqICyLMxlLLT9wcwsCseQRyySanvpdXQHSDGuYSwSyfIvtnBczUYthJp9X1ukSeWslGBY9qzs7uSVryrWpRCBWq/CnXd0A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,140 +101,564 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The functions uniform_split_supported() and
-non_uniform_split_supported() share significantly similar logic.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+branch HEAD: 98bd8b16ae57e8f25c95d496fcde3dfdd8223d41  Add linux-next specific files for 20251031
 
-The only functional difference is that uniform_split_supported()
-includes an additional check on the requested @new_order before
-proceeding with further validation.
+Error/Warning (recently discovered and may have been fixed):
 
-This commit unifies the logic by introducing a new variable,
-@need_check, which is conditionally set based on whether a uniform
-split is requested. This allows us to merge the two functions into
-a single, combined helper, removing redundant code and simplifying
-the split support checking mechanism.
+    https://lore.kernel.org/oe-kbuild-all/202510211913.5a4SfQab-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510250422.YmoOlBv8-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510282030.nzq0BTFH-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510291500.a2Lg0OSH-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510291905.CNy7FYI0-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510292307.DmOaSI39-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510300152.UG9LOpTY-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202510302348.Knwt7vQ1-lkp@intel.com
+    https://lore.kernel.org/oe-kbuild-all/202511010200.BobYItig-lkp@intel.com
 
-Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Zi Yan <ziy@nvidia.com>
----
- include/linux/huge_mm.h |  8 +++---
- mm/huge_memory.c        | 55 +++++++++++------------------------------
- 2 files changed, 18 insertions(+), 45 deletions(-)
+    ERROR: modpost: "__udivdi3" [drivers/gpu/drm/amd/amdgpu/amdgpu.ko] undefined!
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:7309 function parameter 'connector' not described in 'amdgpu_dm_connector_detect'
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm.c:7309 function parameter 'force' not described in 'amdgpu_dm_connector_detect'
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_detection.c:1354 function parameter 'link' not described in 'link_detect_analog'
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_detection.c:1354 function parameter 'type' not described in 'link_detect_analog'
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_detection.c:872 function parameter 'edid_header' not described in 'link_detect_evaluate_edid_header'
+    Warning: drivers/gpu/drm/amd/amdgpu/../display/dc/link/link_detection.c:890 function parameter 'link' not described in 'link_detect_ddc_probe'
+    amdgpu_ras_mgr.c:(.text+0x134): undefined reference to `__udivdi3'
+    arch/riscv/include/asm/vdso/processor.h:23:2: error: expected instruction format
+    arch/riscv/include/asm/vdso/processor.h:27: Error: unrecognized opcode `0x100000f'
+    drivers/gpu/drm/amd/amdgpu/../display/dc/dce/dce_stream_encoder.c:1571:69: error: positional initialization of field in 'struct' declared with 'designated_init' attribute [-Werror=designated-init]
+    drivers/gpu/drm/amd/amdgpu/../ras/ras_mgr/amdgpu_ras_mgr.c:132:(.text+0x136): undefined reference to `__udivdi3'
+    drivers/gpu/drm/panel/panel-visionox-rm69299.c:343:(.text+0x408): undefined reference to `devm_backlight_device_register'
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index cbb2243f8e56..79343809a7be 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -369,10 +369,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
- 		unsigned int new_order, bool unmapped);
- int min_order_for_split(struct folio *folio);
- int split_folio_to_list(struct folio *folio, struct list_head *list);
--bool uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns);
--bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns);
-+bool folio_split_supported(struct folio *folio, unsigned int new_order,
-+		bool uniform_split, bool warns);
- int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
- 		struct list_head *list);
- 
-@@ -403,7 +401,7 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
- static inline int try_folio_split_to_order(struct folio *folio,
- 		struct page *page, unsigned int new_order)
- {
--	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
-+	if (!folio_split_supported(folio, new_order, /* uniform_split = */ false, /* warns= */ false))
- 		return split_huge_page_to_order(&folio->page, new_order);
- 	return folio_split(folio, new_order, page, NULL);
- }
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index d1fa0d2d9b44..f6d2cb2a5ca0 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3673,55 +3673,34 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
- 	return 0;
- }
- 
--bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns)
-+bool folio_split_supported(struct folio *folio, unsigned int new_order,
-+		bool uniform_split, bool warns)
- {
--	if (folio_test_anon(folio)) {
--		/* order-1 is not supported for anonymous THP. */
--		VM_WARN_ONCE(warns && new_order == 1,
--				"Cannot split to order-1 folio");
--		return new_order != 1;
--	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
--	    !mapping_large_folio_support(folio->mapping)) {
--		/*
--		 * No split if the file system does not support large folio.
--		 * Note that we might still have THPs in such mappings due to
--		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
--		 * does not actually support large folios properly.
--		 */
--		VM_WARN_ONCE(warns,
--			"Cannot split file folio to non-0 order");
--		return false;
--	}
--
--	/* Only swapping a whole PMD-mapped folio is supported */
--	if (folio_test_swapcache(folio)) {
--		VM_WARN_ONCE(warns,
--			"Cannot split swapcache folio to non-0 order");
--		return false;
--	}
-+	bool need_check = uniform_split ? new_order : true;
- 
--	return true;
--}
--
--/* See comments in non_uniform_split_supported() */
--bool uniform_split_supported(struct folio *folio, unsigned int new_order,
--		bool warns)
--{
- 	if (folio_test_anon(folio)) {
-+		/* order-1 is not supported for anonymous THP. */
- 		VM_WARN_ONCE(warns && new_order == 1,
- 				"Cannot split to order-1 folio");
- 		return new_order != 1;
--	} else  if (new_order) {
-+	} else if (need_check) {
- 		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
- 		    !mapping_large_folio_support(folio->mapping)) {
-+			/*
-+			 * No split if the file system does not support large
-+			 * folio.  Note that we might still have THPs in such
-+			 * mappings due to CONFIG_READ_ONLY_THP_FOR_FS. But in
-+			 * that case, the mapping does not actually support
-+			 * large folios properly.
-+			 */
- 			VM_WARN_ONCE(warns,
- 				"Cannot split file folio to non-0 order");
- 			return false;
- 		}
- 	}
- 
--	if (new_order && folio_test_swapcache(folio)) {
-+	/* Only swapping a whole PMD-mapped folio is supported */
-+	if (need_check && folio_test_swapcache(folio)) {
- 		VM_WARN_ONCE(warns,
- 			"Cannot split swapcache folio to non-0 order");
- 		return false;
-@@ -3779,11 +3758,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 	if (new_order >= old_order)
- 		return -EINVAL;
- 
--	if (uniform_split && !uniform_split_supported(folio, new_order, true))
--		return -EINVAL;
--
--	if (!uniform_split &&
--	    !non_uniform_split_supported(folio, new_order, true))
-+	if (!folio_split_supported(folio, new_order, uniform_split, /* warn = */ true))
- 		return -EINVAL;
- 
- 	is_hzp = is_huge_zero_folio(folio);
--- 
-2.34.1
+Error/Warning ids grouped by kconfigs:
 
+recent_errors
+|-- alpha-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arc-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arc-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arm-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arm-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arm64-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- arm64-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- csky-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- csky-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- i386-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-dce-dce_stream_encoder.c:error:positional-initialization-of-field-in-struct-declared-with-designated_init-attribute
+|-- i386-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|   `-- drivers-gpu-drm-amd-amdgpu-..-display-dc-dce-dce_stream_encoder.c:error:positional-initialization-of-field-in-struct-declared-with-designated_init-attribute
+|-- i386-buildonly-randconfig-001-20251031
+|   `-- amdgpu_ras_mgr.c:(.text):undefined-reference-to-__udivdi3
+|-- i386-randconfig-001-20251031
+|   `-- drivers-gpu-drm-panel-panel-visionox-rm69299.c:(.text):undefined-reference-to-devm_backlight_device_register
+|-- i386-randconfig-002-20251031
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- i386-randconfig-011-20251031
+|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|-- i386-randconfig-012-20251031
+|   `-- drivers-gpu-drm-amd-amdgpu-..-ras-ras_mgr-amdgpu_ras_mgr.c:(.text):undefined-reference-to-__udivdi3
+|-- i386-randconfig-013-20251031
+|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|-- i386-randconfig-015-20251031
+|   `-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|-- loongarch-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- loongarch-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- loongarch-defconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- microblaze-allmodconfig
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- microblaze-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- mips-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- mips-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- openrisc-allmodconfig
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- openrisc-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- parisc-allmodconfig
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- parisc-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- parisc-randconfig-002-20251031
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- parisc-randconfig-r111-20251031
+|   |-- ERROR:__udivdi3-drivers-gpu-drm-amd-amdgpu-amdgpu.ko-undefined
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- powerpc-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- powerpc64-randconfig-r133-20251031
+|   `-- drivers-pmdomain-mediatek-mtk-mfg-pmdomain.c:sparse:sparse:incorrect-type-in-assignment-(different-base-types)-expected-restricted-__le64-assigned-usertype-base-got-unsigned-long-long-usertype-shared_
+|-- riscv-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- riscv-allyesconfig
+|   `-- arch-riscv-include-asm-vdso-processor.h:error:expected-instruction-format
+|-- riscv-randconfig-001-20251031
+|   `-- arch-riscv-include-asm-vdso-processor.h:Error:unrecognized-opcode
+|-- riscv-randconfig-002-20251031
+|   `-- arch-riscv-include-asm-vdso-processor.h:error:expected-instruction-format
+|-- s390-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- s390-randconfig-002-20251031
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc64-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc64-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc64-randconfig-002-20251031
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- sparc64-randconfig-r113-20251031
+|   |-- kernel-sched-ext.c:sparse:sparse:incorrect-type-in-initializer-(different-address-spaces)-expected-struct-scx_kick_syncs-ksyncs-got-struct-scx_kick_syncs-noderef-__rcu
+|   `-- kernel-sched-ext.c:sparse:sparse:symbol-scx_bpf_reenqueue_local___v2-was-not-declared.-Should-it-be-static
+|-- x86_64-allmodconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-allyesconfig
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-randconfig-001-20251031
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4-bpf
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4-func
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4-kselftests
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4-kunit
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+|-- x86_64-rhel-9.4-ltp
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+|   |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+|   `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+`-- x86_64-rhel-9.4-rust
+    |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-connector-not-described-in-amdgpu_dm_connector_detect
+    |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-amdgpu_dm-amdgpu_dm.c-function-parameter-force-not-described-in-amdgpu_dm_connector_detect
+    |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-edid_header-not-described-in-link_detect_evaluate_edid_header
+    |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_analog
+    |-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-link-not-described-in-link_detect_ddc_probe
+    `-- Warning:drivers-gpu-drm-amd-amdgpu-..-display-dc-link-link_detection.c-function-parameter-type-not-described-in-link_detect_analog
+
+elapsed time: 1004m
+
+configs tested: 179
+configs skipped: 7
+
+tested configs:
+alpha                             allnoconfig    gcc-15.1.0
+alpha                            allyesconfig    gcc-15.1.0
+alpha                               defconfig    gcc-15.1.0
+arc                              allmodconfig    gcc-15.1.0
+arc                               allnoconfig    gcc-15.1.0
+arc                              allyesconfig    gcc-15.1.0
+arc                                 defconfig    gcc-15.1.0
+arc                   randconfig-001-20251031    gcc-8.5.0
+arc                   randconfig-002-20251031    gcc-8.5.0
+arm                              allmodconfig    gcc-15.1.0
+arm                               allnoconfig    clang-22
+arm                              allyesconfig    gcc-15.1.0
+arm                       aspeed_g4_defconfig    clang-22
+arm                       imx_v4_v5_defconfig    clang-22
+arm                         lpc32xx_defconfig    clang-17
+arm                   randconfig-001-20251031    gcc-14.3.0
+arm                   randconfig-002-20251031    clang-22
+arm                   randconfig-003-20251031    gcc-11.5.0
+arm                   randconfig-004-20251031    clang-22
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-15.1.0
+arm64                            allyesconfig    clang-22
+arm64                 randconfig-001-20251031    gcc-8.5.0
+arm64                 randconfig-002-20251031    clang-22
+arm64                 randconfig-003-20251031    gcc-10.5.0
+arm64                 randconfig-004-20251031    gcc-14.3.0
+csky                             allmodconfig    gcc-15.1.0
+csky                              allnoconfig    gcc-15.1.0
+csky                             allyesconfig    gcc-15.1.0
+csky                  randconfig-001-20251031    gcc-9.5.0
+csky                  randconfig-002-20251031    gcc-15.1.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-22
+hexagon                          allyesconfig    clang-22
+hexagon               randconfig-001-20251031    clang-22
+hexagon               randconfig-002-20251031    clang-22
+i386                             allmodconfig    gcc-14
+i386                              allnoconfig    gcc-14
+i386                             allyesconfig    gcc-14
+i386        buildonly-randconfig-001-20251031    gcc-14
+i386        buildonly-randconfig-002-20251031    gcc-14
+i386        buildonly-randconfig-003-20251031    clang-20
+i386        buildonly-randconfig-004-20251031    gcc-14
+i386        buildonly-randconfig-005-20251031    clang-20
+i386        buildonly-randconfig-006-20251031    gcc-14
+i386                  randconfig-001-20251031    gcc-14
+i386                  randconfig-002-20251031    gcc-14
+i386                  randconfig-003-20251031    gcc-14
+i386                  randconfig-004-20251031    gcc-14
+i386                  randconfig-005-20251031    gcc-14
+i386                  randconfig-006-20251031    gcc-12
+i386                  randconfig-007-20251031    clang-20
+i386                  randconfig-011-20251031    clang-20
+i386                  randconfig-012-20251031    gcc-13
+i386                  randconfig-013-20251031    gcc-13
+i386                  randconfig-014-20251031    gcc-14
+i386                  randconfig-015-20251031    clang-20
+i386                  randconfig-016-20251031    clang-20
+i386                  randconfig-017-20251031    clang-20
+loongarch                        allmodconfig    clang-19
+loongarch                         allnoconfig    clang-22
+loongarch                        allyesconfig    clang-22
+loongarch                           defconfig    clang-19
+loongarch             randconfig-001-20251031    gcc-15.1.0
+loongarch             randconfig-002-20251031    gcc-14.3.0
+m68k                             allmodconfig    gcc-15.1.0
+m68k                              allnoconfig    gcc-15.1.0
+m68k                             allyesconfig    gcc-15.1.0
+m68k                                defconfig    gcc-15.1.0
+m68k                       m5208evb_defconfig    gcc-15.1.0
+m68k                           virt_defconfig    gcc-15.1.0
+microblaze                       allmodconfig    gcc-15.1.0
+microblaze                        allnoconfig    gcc-15.1.0
+microblaze                       allyesconfig    gcc-15.1.0
+microblaze                          defconfig    gcc-15.1.0
+mips                             allmodconfig    gcc-15.1.0
+mips                              allnoconfig    gcc-15.1.0
+mips                             allyesconfig    gcc-15.1.0
+nios2                            allmodconfig    gcc-11.5.0
+nios2                             allnoconfig    gcc-11.5.0
+nios2                            allyesconfig    gcc-11.5.0
+nios2                               defconfig    gcc-11.5.0
+nios2                 randconfig-001-20251031    gcc-9.5.0
+nios2                 randconfig-002-20251031    gcc-11.5.0
+openrisc                         allmodconfig    gcc-15.1.0
+openrisc                          allnoconfig    gcc-15.1.0
+openrisc                         allyesconfig    gcc-15.1.0
+openrisc                            defconfig    gcc-15.1.0
+parisc                           allmodconfig    gcc-15.1.0
+parisc                            allnoconfig    gcc-15.1.0
+parisc                           allyesconfig    gcc-15.1.0
+parisc                              defconfig    gcc-15.1.0
+parisc                randconfig-001-20251031    gcc-14.3.0
+parisc                randconfig-002-20251031    gcc-15.1.0
+parisc64                            defconfig    gcc-15.1.0
+powerpc                          allmodconfig    gcc-15.1.0
+powerpc                           allnoconfig    gcc-15.1.0
+powerpc                          allyesconfig    clang-22
+powerpc               randconfig-001-20251031    clang-22
+powerpc               randconfig-002-20251031    gcc-12.5.0
+powerpc64             randconfig-001-20251031    clang-22
+powerpc64             randconfig-002-20251031    gcc-10.5.0
+riscv                            allmodconfig    clang-22
+riscv                             allnoconfig    gcc-15.1.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-22
+riscv                 randconfig-001-20251031    gcc-8.5.0
+riscv                 randconfig-002-20251031    clang-17
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-22
+s390                             allyesconfig    gcc-15.1.0
+s390                                defconfig    clang-22
+s390                  randconfig-001-20251031    clang-16
+s390                  randconfig-002-20251031    gcc-12.5.0
+sh                               allmodconfig    gcc-15.1.0
+sh                                allnoconfig    gcc-15.1.0
+sh                               allyesconfig    gcc-15.1.0
+sh                                  defconfig    gcc-15.1.0
+sh                    randconfig-001-20251031    gcc-14.3.0
+sh                    randconfig-002-20251031    gcc-14.3.0
+sparc                            allmodconfig    gcc-15.1.0
+sparc                             allnoconfig    gcc-15.1.0
+sparc                            allyesconfig    gcc-15.1.0
+sparc                               defconfig    gcc-15.1.0
+sparc                 randconfig-001-20251031    gcc-8.5.0
+sparc                 randconfig-002-20251031    gcc-8.5.0
+sparc64                          allmodconfig    clang-22
+sparc64                          allyesconfig    gcc-15.1.0
+sparc64                             defconfig    clang-20
+sparc64               randconfig-001-20251031    gcc-8.5.0
+sparc64               randconfig-002-20251031    clang-22
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-22
+um                               allyesconfig    gcc-14
+um                                  defconfig    clang-22
+um                             i386_defconfig    gcc-14
+um                    randconfig-001-20251031    gcc-14
+um                    randconfig-002-20251031    clang-22
+um                           x86_64_defconfig    clang-22
+x86_64                           allmodconfig    clang-20
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20251031    clang-20
+x86_64      buildonly-randconfig-002-20251031    gcc-14
+x86_64      buildonly-randconfig-003-20251031    clang-20
+x86_64      buildonly-randconfig-004-20251031    gcc-14
+x86_64      buildonly-randconfig-005-20251031    gcc-14
+x86_64      buildonly-randconfig-006-20251031    gcc-14
+x86_64                              defconfig    gcc-14
+x86_64                                  kexec    clang-20
+x86_64                randconfig-001-20251031    gcc-14
+x86_64                randconfig-002-20251031    clang-20
+x86_64                randconfig-003-20251031    clang-20
+x86_64                randconfig-004-20251031    gcc-14
+x86_64                randconfig-005-20251031    gcc-14
+x86_64                randconfig-006-20251031    gcc-14
+x86_64                randconfig-011-20251031    gcc-14
+x86_64                randconfig-012-20251031    clang-20
+x86_64                randconfig-013-20251031    gcc-14
+x86_64                randconfig-014-20251031    gcc-14
+x86_64                randconfig-015-20251031    gcc-14
+x86_64                randconfig-016-20251031    clang-20
+x86_64                randconfig-071-20251031    gcc-14
+x86_64                randconfig-072-20251031    clang-20
+x86_64                randconfig-073-20251031    gcc-14
+x86_64                randconfig-074-20251031    clang-20
+x86_64                randconfig-075-20251031    gcc-14
+x86_64                randconfig-076-20251031    gcc-14
+x86_64                               rhel-9.4    gcc-14
+x86_64                           rhel-9.4-bpf    gcc-14
+x86_64                          rhel-9.4-func    gcc-14
+x86_64                    rhel-9.4-kselftests    gcc-14
+x86_64                         rhel-9.4-kunit    gcc-14
+x86_64                           rhel-9.4-ltp    gcc-14
+x86_64                          rhel-9.4-rust    clang-20
+xtensa                            allnoconfig    gcc-15.1.0
+xtensa                randconfig-001-20251031    gcc-13.4.0
+xtensa                randconfig-002-20251031    gcc-8.5.0
+xtensa                         virt_defconfig    gcc-15.1.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
