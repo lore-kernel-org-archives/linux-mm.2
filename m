@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCD39CCFA06
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D11F5CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25B878E000E; Sun,  2 Nov 2025 03:01:52 -0500 (EST)
+	id 36D0B8E000F; Sun,  2 Nov 2025 03:01:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233088E0002; Sun,  2 Nov 2025 03:01:52 -0500 (EST)
+	id 31D028E0002; Sun,  2 Nov 2025 03:01:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 121DD8E000E; Sun,  2 Nov 2025 03:01:52 -0500 (EST)
+	id 1E6048E000F; Sun,  2 Nov 2025 03:01:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id EF95F8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:51 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9732312BC99
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:51 +0000 (UTC)
-X-FDA: 84064923222.15.0A5F947
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf02.hostedemail.com (Postfix) with ESMTP id F0DE68000C
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:49 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GZGPhL6i;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 044738E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:56 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 94EB612BBFD
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:55 +0000 (UTC)
+X-FDA: 84064923390.26.7B2DC62
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 01EAA1C000A
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V8cZCg+G;
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762070510;
+	s=arc-20220608; t=1762070514;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=aZPHlHJzd9mlc6mCDbIQ4lr6plnBTGtCGLAoEEQ25pU=;
-	b=l8qAmOMTpFPceKjAZEMXny0bZWiOWPfnazpvTJGBlC4hV1M85Ma+atfPLFhN6hM5dFdxz1
-	51sxUCWk4yyhmH0H0seeJuzJ5JrJGXR+J7TARYx2baErsd64pPbHBbGdAEf6r911M+gq10
-	6df69s6OKswnx6rlLfI571OeBU5nlzw=
+	bh=FSMZ1gz/paYdc9wCux4QR9CCFBF3S6LbaeB7FwxEYTQ=;
+	b=5QBXcjCeGdRIMkDGPjq3z0NqRj9VEkZx5zHlsVzJMDd8V73AeMR//E0fyOo7fweGRa1MFI
+	i+zibAH1J05uVU58kOw2RFvYJnpKLix3JUggB+NERHXHdSUy8pBWuXexJv57fuA04DuaDZ
+	HGdQOjX7Vbewx0DwL+NOtHPVRRkXsr4=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GZGPhL6i;
-	spf=pass (imf02.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V8cZCg+G;
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070510; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070514; a=rsa-sha256;
 	cv=none;
-	b=CH2l6+9r5qJr2v65rcIZdEzROQnXEZcm0GdRjsaZ+53B6vU8EOeAdheyNxBgcnCrv4eJyL
-	2nYQiXd0JRaxBunDAgrL7ylYqSq3JW6lJXt95o/Jy8cUNBgIibMCo6QI19Mn1QcEM5zSO2
-	MI9bAoJsG3fpS6S83d0BmTTJc3IabT8=
+	b=l8OnLG1c5tiWoviKsan4XkKOuewVot4Yv20mwjUslA2HA3zp5etm14Uun+DbZEAP3U57I1
+	G9XrOAoF9+0qQBabaXR7nlhIghYvNhsudHGTZc0IknP/a4lDVpYz/VP6pRqmLR2x8HEqC1
+	kyc7H+J7HC7DckPVetIZdbH+WFg7XPw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 241A644614;
-	Sun,  2 Nov 2025 08:01:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9C3C4CEFB;
-	Sun,  2 Nov 2025 08:01:48 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 54DC7601F8;
+	Sun,  2 Nov 2025 08:01:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587D2C116B1;
+	Sun,  2 Nov 2025 08:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762070509;
-	bh=RFrF2BF/mdmOYmAY1LEiW1Xg5AXsI7VY+PN6Vhlf1FA=;
+	s=k20201202; t=1762070513;
+	bh=uCY80udWH1E5dnNUaTEth5SWNH14l/8yeNTFZKFyjkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZGPhL6i0x0jO1hLSYtlil/xgFxl9nFGcgApoOn8jnoJEgQnQ99mAe2AbALvZzTT9
-	 X/FcwfzOoiCHw15iJPlw6JVu1vVVT8Ki389gmSy9GE6Jan3VvRF0Wy3Jc2sjPos6VA
-	 gCF/u99+pMqxTvilzvunCIlzR68fNqoK8bYwVJNasbFPXoWISUsybYHzZCuQMEb1/I
-	 RXL3JPxjUyR3+dCilijLBEQLVsqjUz1KDwwPAcEDyVa/iCsKLKkENnlfetsai/iwvJ
-	 /c9XBl/T45VEgeqAvZ0mpsNSy73y6J83ebQ3D6x5nhhrfu8ZvY+u9lsfH1ho4e9gmK
-	 c6IpsZisbgjRg==
+	b=V8cZCg+G2951KSUZxkFRwAN9P7XfvYitAfCyWmeMXKS5oM/ikMbrBB8vbt9O8AFmv
+	 D0ae2XJQk2A/zCNKd374QwVpX5qV4Q9+gyZrhBsGX4epyM882G4Lg6gYIi2XfB9vr3
+	 3V4SLGAgqvQB6LXe7X18+BskZ+O41JrW+lgepSk7c5CTE87Ju+Drlp+3upPpfzPtM4
+	 /jmlMcgxezSjBLctTMLEOoCghOiKWFWXFG8omUipiue3Tbvc28tM6RbLU0p8JDgLET
+	 Yo6QbRBWc6KdV3UiNxmxppf4/H+nqqEOM6GUZD/mIQgvgk4UgGbakUTTb9kh7kxCMa
+	 9ZEIZqV6cGRlA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>,
@@ -98,9 +98,9 @@ Cc: Krishnakant Jaju <kjaju@nvidia.com>,
 	linaro-mm-sig@lists.linaro.org,
 	kvm@vger.kernel.org,
 	linux-hardening@vger.kernel.org
-Subject: [PATCH v6 11/11] vfio/nvgrace: Support get_dmabuf_phys
-Date: Sun,  2 Nov 2025 10:00:59 +0200
-Message-ID: <20251102-dmabuf-vfio-v6-11-d773cff0db9f@nvidia.com>
+Subject: [PATCH v6 09/11] vfio/pci: Enable peer-to-peer DMA transactions by default
+Date: Sun,  2 Nov 2025 10:00:57 +0200
+Message-ID: <20251102-dmabuf-vfio-v6-9-d773cff0db9f@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
 References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
@@ -108,12 +108,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.15-dev
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: F0DE68000C
+X-Rspamd-Queue-Id: 01EAA1C000A
 X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Stat-Signature: hbm3d49tq5cccfcc7h3a7icdf5e9jtxh
-X-HE-Tag: 1762070509-910085
-X-HE-Meta: U2FsdGVkX1942YzaiNBxzrxdd0fOj68IXWkBJT86KszdgvqfdEbswyhLASjinEhq3PAh1knnj88AecCCXWnvTjgnmRfMA65IPnMjs0ipPQHVf9Prd55qaN7cld/y1DfwwYq6TXqjU5gzbaGDarTyGxyJcQPcEbo/Zhi8IZjw6Jjky0EyJEbdTSU8vF8UwHSUGe1JjOpt9Ha31uUAF57MatgxPaQdRWNKk+EVT0dl7ulw9wIHmxIcH2jWktGt2b3BmT83nRIrDEtrDbFtt5a140estCUg47pCcFjiR4KBfQ+UlzrD66Vd5gQsSei4g+ITwmZikTUBep8H3MqeuDwMlbXRVegtsUAQc8OiQ5VV9SHwoYELyegIOYroGLYiD32xvpNZH9NB66EpEFUCTnzaS48dBnouTNnH3SMEz1gjYSzohD8SVzS0w6VI+SQ8v29/MYt6nNlR8PAnlGVNPIpQdyk6FVQSKb6q3udNtBqP0r5a4jIpqRF/maQRHwjOaCFbqG3eDySlXhaquUUDzFIWnNYCEmFHHTXCEDrq/sbSjXj82muGiNyQkbvdvMnH7DtOu99lAellZ7QeTaUjRjXNm25vmXAdcxIYQly0y0sOTZFes8x2pum5e2c4kxi8jorUCHmSKISF7m1+8/WQWAxfWV/jAVSEHTtBN8+wu0mCPH0d2tRdAKqVRCStG+M1c1I+fGVJVwnvp2lnjPFSr6OryJTODgWde97DcuW09daev9rdh16l/AxePtsFN2E7XQkbeSJM7Hy4FAjbQjZXbk5LbNeyJl/nX7USmNC9sQYls4scynaJyMqjnkVYCVV3vhuAMD6BBG/L4CAly4hRRXuf64VtMVxSxbY3txBbdEGqlVy7TziqTIdnlb8tyj5WQGVrJ4zgPsrBuZpZJBrPSGDZ8A==
+X-Stat-Signature: 8rrjcu6b5efrtt65x5nb9dbuj6yhduzc
+X-HE-Tag: 1762070513-902981
+X-HE-Meta: U2FsdGVkX1+Zd3Nf1XbEvMPucPF2SKc1n4JPvkcXpKkocL3kZfhLtF4uj/K5neoIswv1GJD6tl2VoWS2E+RXhAWWH4b+XXwiXQ2EZTERDN11pcMIDRjy537JOohtP+mniJBg8DuqJEl81Qumugb95Mr81NK6NFJSsqk5OYuKqHyJhw7Bz1fT85e/KN9SRP+4D0Gy19+kCy8dUqEkWkC80b2DWdh+xFVHd5JUMePBAaTJ7Tdg1s1MdKB5mHyBfRcOpjipy2gIRAZDKvCayiQXfQb8mPgQj9Fd6YeS9wK2darAKwzFBE8omPt/SNZzwuIZ5QrzQ4kHAWaizXOzy9R2thuGo1rBtUnXZNmI0+88efSuPJS4+RnBxUOoqYEcprFOWuTTjCPl9K7MYy8Toz6HZ5Rhw59/dFM5DtzkTykE0jr59lUWyjat5Kpfcr22gLso5eBipxQqf3GXrikQ5pWv+MFlXoaKSyS/G8XbgkTnt8H6h6E6159VzcS5KiTERXXX/CmcbpkZcI2azG3FHSrPtPfZj7j4Jriv2gcXioNFnuiQ0qLL28UoTfkLVDdDFLRbCYPDPBtB5GVIS0OFpy9ZDPHLGTWx8QkKq+IhNOtHRIfgd9RhNE/wBiAIKJniNvBG/WSrTckOJscLF4wGu7aisQmepsKcqNpB5mLOLUt8tzsUawr7IPgUFndSu5HdYQ+gizkz1ASi+CdyowqvHl+kRnhdePF06s7/OkMyoVgDvf0J4fYpVnRrU+Evd4WizUJEc5+F4kBJ1bI83tF3bxkfBAxcoSazEMMvdLZ/my5wazGKBTbdYG2Fxxu1F+dQ62wruxy4S3GxgNmIb6zVo6WY2SnRmRJ63bI+E48qoSvFbpWB/7VSxjcPpAN3ePF5nBSKgiV4sblJ7kroXIlyNEWENrGaCQsKLmLJ1O6+CCjxzJO6NZHypzHtH6+4RYJmoz80BrmXdyavQiVcl2Zj89B
+ 6xLttG0j
+ MpRiS/Qo74x1LjgdBcxJzmnHwCi7wVG6EUV1zzA7RjjqZxqigHIMwLrIM2jPPt5oz2S059nztr05ZBub4DaZK3vNYUdOXJB5IX5M/tg65cpyGKFBlT44DVtfcxttXIl/RaeEtlNF8/rOR/dXX+hWdNlmWuQgyGgeOdq7OlXwcaSdEwRmgIIICL+sXxwiPZdAY6qO1Tz1OE9HEaK/XWZ4OJaWsDyDC4R1USnh7rke9wjn48g0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,118 +124,71 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-Call vfio_pci_core_fill_phys_vec() with the proper physical ranges for the
-synthetic BAR 2 and BAR 4 regions. Otherwise use the normal flow based on
-the PCI bar.
+Make sure that all VFIO PCI devices have peer-to-peer capabilities
+enables, so we would be able to export their MMIO memory through DMABUF,
 
-This demonstrates a DMABUF that follows the region info report to only
-allow mapping parts of the region that are mmapable. Since the BAR is
-power of two sized and the "CXL" region is just page aligned the there can
-be a padding region at the end that is not mmaped or passed into the
-DMABUF.
+VFIO has always supported P2P mappings with itself. VFIO type 1
+insecurely reads PFNs directly out of a VMA's PTEs and programs them
+into the IOMMU allowing any two VFIO devices to perform P2P to each
+other.
 
-The "CXL" ranges that are remapped into BAR 2 and BAR 4 areas are not PCI
-MMIO, they actually run over the CXL-like coherent interconnect and for
-the purposes of DMA behave identically to DRAM. We don't try to model this
-distinction between true PCI BAR memory that takes a real PCI path and the
-"CXL" memory that takes a different path in the p2p framework for now.
+All existing VMMs use this capability to export P2P into a VM where
+the VM could setup any kind of DMA it likes. Projects like DPDK/SPDK
+are also known to make use of this, though less frequently.
 
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+As a first step to more properly integrating VFIO with the P2P
+subsystem unconditionally enable P2P support for VFIO PCI devices. The
+struct p2pdma_provider will act has a handle to the P2P subsystem to
+do things like DMA mapping.
+
+While real PCI devices have to support P2P (they can't even tell if an
+IOVA is P2P or not) there may be fake PCI devices that may trigger
+some kind of catastrophic system failure. To date VFIO has never
+tripped up on such a case, but if one is discovered the plan is to add
+a PCI quirk and have pcim_p2pdma_init() fail. This will fully block
+the broken device throughout any users of the P2P subsystem in the
+kernel.
+
+Thus P2P through DMABUF will follow the historical VFIO model and be
+unconditionally enabled by vfio-pci.
+
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/vfio/pci/nvgrace-gpu/main.c | 56 +++++++++++++++++++++++++++++++++++++
- 1 file changed, 56 insertions(+)
+ drivers/vfio/pci/vfio_pci_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index e346392b72f6..7d7ab2c84018 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -7,6 +7,7 @@
- #include <linux/vfio_pci_core.h>
- #include <linux/delay.h>
- #include <linux/jiffies.h>
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index ca9a95716a85..142b84b3f225 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -28,6 +28,7 @@
+ #include <linux/nospec.h>
+ #include <linux/sched/mm.h>
+ #include <linux/iommufd.h>
 +#include <linux/pci-p2pdma.h>
+ #if IS_ENABLED(CONFIG_EEH)
+ #include <asm/eeh.h>
+ #endif
+@@ -2081,6 +2082,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+ {
+ 	struct vfio_pci_core_device *vdev =
+ 		container_of(core_vdev, struct vfio_pci_core_device, vdev);
++	int ret;
  
- /*
-  * The device memory usable to the workloads running in the VM is cached
-@@ -683,6 +684,54 @@ nvgrace_gpu_write(struct vfio_device *core_vdev,
- 	return vfio_pci_core_write(core_vdev, buf, count, ppos);
- }
+ 	vdev->pdev = to_pci_dev(core_vdev->dev);
+ 	vdev->irq_type = VFIO_PCI_NUM_IRQS;
+@@ -2090,6 +2092,9 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
+ 	INIT_LIST_HEAD(&vdev->dummy_resources_list);
+ 	INIT_LIST_HEAD(&vdev->ioeventfds_list);
+ 	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
++	ret = pcim_p2pdma_init(vdev->pdev);
++	if (ret && ret != -EOPNOTSUPP)
++		return ret;
+ 	init_rwsem(&vdev->memory_lock);
+ 	xa_init(&vdev->ctx);
  
-+static int nvgrace_get_dmabuf_phys(struct vfio_pci_core_device *core_vdev,
-+				   struct p2pdma_provider **provider,
-+				   unsigned int region_index,
-+				   struct dma_buf_phys_vec *phys_vec,
-+				   struct vfio_region_dma_range *dma_ranges,
-+				   size_t nr_ranges)
-+{
-+	struct nvgrace_gpu_pci_core_device *nvdev = container_of(
-+		core_vdev, struct nvgrace_gpu_pci_core_device, core_device);
-+	struct pci_dev *pdev = core_vdev->pdev;
-+
-+	if (nvdev->resmem.memlength && region_index == RESMEM_REGION_INDEX) {
-+		/*
-+		 * The P2P properties of the non-BAR memory is the same as the
-+		 * BAR memory, so just use the provider for index 0. Someday
-+		 * when CXL gets P2P support we could create CXLish providers
-+		 * for the non-BAR memory.
-+		 */
-+		*provider = pcim_p2pdma_provider(pdev, 0);
-+		if (!*provider)
-+			return -EINVAL;
-+		return vfio_pci_core_fill_phys_vec(phys_vec, dma_ranges,
-+						   nr_ranges,
-+						   nvdev->resmem.memphys,
-+						   nvdev->resmem.memlength);
-+	} else if (region_index == USEMEM_REGION_INDEX) {
-+		/*
-+		 * This is actually cachable memory and isn't treated as P2P in
-+		 * the chip. For now we have no way to push cachable memory
-+		 * through everything and the Grace HW doesn't care what caching
-+		 * attribute is programmed into the SMMU. So use BAR 0.
-+		 */
-+		*provider = pcim_p2pdma_provider(pdev, 0);
-+		if (!*provider)
-+			return -EINVAL;
-+		return vfio_pci_core_fill_phys_vec(phys_vec, dma_ranges,
-+						   nr_ranges,
-+						   nvdev->usemem.memphys,
-+						   nvdev->usemem.memlength);
-+	}
-+	return vfio_pci_core_get_dmabuf_phys(core_vdev, provider, region_index,
-+					     phys_vec, dma_ranges, nr_ranges);
-+}
-+
-+static const struct vfio_pci_device_ops nvgrace_gpu_pci_dev_ops = {
-+	.get_dmabuf_phys = nvgrace_get_dmabuf_phys,
-+};
-+
- static const struct vfio_device_ops nvgrace_gpu_pci_ops = {
- 	.name		= "nvgrace-gpu-vfio-pci",
- 	.init		= vfio_pci_core_init_dev,
-@@ -703,6 +752,10 @@ static const struct vfio_device_ops nvgrace_gpu_pci_ops = {
- 	.detach_ioas	= vfio_iommufd_physical_detach_ioas,
- };
- 
-+static const struct vfio_pci_device_ops nvgrace_gpu_pci_dev_core_ops = {
-+	.get_dmabuf_phys = vfio_pci_core_get_dmabuf_phys,
-+};
-+
- static const struct vfio_device_ops nvgrace_gpu_pci_core_ops = {
- 	.name		= "nvgrace-gpu-vfio-pci-core",
- 	.init		= vfio_pci_core_init_dev,
-@@ -965,6 +1018,9 @@ static int nvgrace_gpu_probe(struct pci_dev *pdev,
- 						    memphys, memlength);
- 		if (ret)
- 			goto out_put_vdev;
-+		nvdev->core_device.pci_ops = &nvgrace_gpu_pci_dev_ops;
-+	} else {
-+		nvdev->core_device.pci_ops = &nvgrace_gpu_pci_dev_core_ops;
- 	}
- 
- 	ret = vfio_pci_core_register_device(&nvdev->core_device);
 
 -- 
 2.51.0
