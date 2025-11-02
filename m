@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 588C9CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF2C9CCFA05
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B82AE8E000A; Sun,  2 Nov 2025 03:01:32 -0500 (EST)
+	id 14A2A8E000B; Sun,  2 Nov 2025 03:01:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B597E8E0002; Sun,  2 Nov 2025 03:01:32 -0500 (EST)
+	id 0FCBB8E0002; Sun,  2 Nov 2025 03:01:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A6F7D8E000A; Sun,  2 Nov 2025 03:01:32 -0500 (EST)
+	id F2C058E000B; Sun,  2 Nov 2025 03:01:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 935F28E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:32 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 67DC7C0824
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:32 +0000 (UTC)
-X-FDA: 84064922424.11.C9DA634
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 89C234000F
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YB6nr94t;
-	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E0B238E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:35 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE5A11A08F9
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:35 +0000 (UTC)
+X-FDA: 84064922550.26.360309C
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 0A020C0014
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:33 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1nef/TQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070494; a=rsa-sha256;
+	cv=none;
+	b=wtAQaiOqCz3p3SXFw8iG7ux1X1Lpptu33PLiG6xX/Hp7Gs7BSoIXCMrEXLjGwLUkndsrQR
+	yFtTvc933TtWANtkRg0iJG3UXS3ZTdm7WDKA9XWFuHWotXIpLrOv0WgjtvvJ8IU9D61wCc
+	6pqxUh1BZCGkSLbcmdeFZrBYJbsgasE=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="f1nef/TQ";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf22.hostedemail.com: domain of leon@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762070490;
+	s=arc-20220608; t=1762070494;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p6BBHDAV9jGVWRncF/41vwucSoEDMhtGGtdDGYObXd0=;
-	b=lz5P6+k12WslkUY1iOpmf+6vAq+0ZHzqtB6KWGfjDL2xbcivVkU5RuIca+kbPVQuylfFb+
-	+FBIgp1mRXSa6FFglbW+7SdMkzaDMok+ok2uGyIyw9J8qBZvHXoF1b3k06e8Ipkx5ihUk7
-	o2zOMA7F02dcOYnVHjkE2Lq89kgdxE0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YB6nr94t;
-	spf=pass (imf27.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070490; a=rsa-sha256;
-	cv=none;
-	b=08AHNEzRQobnJmOorpSmH7xXdYjnXljlMyd8VXf+yXwYRi8Dx84fIc9EaNZqFQWx/oCTeQ
-	zm/VkqQg+lbzQus49zZ8XRyzyARF9Mq3Gl/7bjWAKJDVzoFeTHxFjpRW0q2lTIixOF5nfB
-	CXLd5rLFXzO9L24CMfsC5qlXQQav4PM=
+	bh=4Ji5Lx1mSBU+j/1A4MD2fY9J9b6of1/4ZA10YsvMcHI=;
+	b=8Gl1mIBzbmOp2vZwtnEGel4GbCOYcrl4RboAsbo5eFUMVcMsbgTjMXTY1078a8ggwbGT9R
+	jvL/QhHtKZBFsFPl4PsmGhAVV9qqnargFX+CMBVfQfMB7JSTpIAUihnxXTwDSzABPyf4lm
+	cYz2CeDNBVdfy58suYr24CNL4G/ZWEk=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AB8F6445D5;
-	Sun,  2 Nov 2025 08:01:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEBEC4CEF7;
-	Sun,  2 Nov 2025 08:01:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 7CBB16020B;
+	Sun,  2 Nov 2025 08:01:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536E7C4CEFB;
+	Sun,  2 Nov 2025 08:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762070489;
-	bh=ndPcRKIiyqtHFrTLYbUKl2uaf8xy34e6GF8mIet7D08=;
+	s=k20201202; t=1762070493;
+	bh=3yq5E/X85v6vCVuKi2LScKzF5l88MwDsoXjHa+RbDfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YB6nr94tBlslfqSku4LPBfDq1PyF/5qEELeYEgkTUkcLZNgNdGWTnOhvVJzuDcX8r
-	 3br8PM2ogwue5gJ/Vq5TkhhDYxG0AeA2q9Uhvny4SGCfqkY/63kqBmiDTxCc06CP+o
-	 01uaKzjxiy2TlT39gL85U41OD5abwC4qmNm0mNIXjpq679CuGV5+LraXXU95AcsoCj
-	 E7UrfyuTzTJowEFTLdwOwoTfWtqZQYejRK891PvXE5JPM3VA8SexAfDgy7AR6xXJkw
-	 Vnh098Cjs4oZUNY3X4xtX7Pml8E5XwE0U+EUricxO1jHp8y7c0ep8BrZArzY3ZVKdd
-	 +YW1NjBIpRGKw==
+	b=f1nef/TQhZ+F796Xeu1Yv8RCAWkBxMLpT3WZzt+UV0WqEs2aEKIoMoAXLhagtCz8s
+	 mywFCKamPcczrS4bLwpwCcHhMdtrfWBFC6jlb82HEVH0+AFDzvVXT6C1AlcEoCX0aX
+	 RZ8Bwl9GU+prIw3xflUKR6oa001zcgX7rAXY9SOLkjkbLYKSQ+8e9Lh7KMy7RXiDhU
+	 CpLSLGZlYiIgc6xm345L+kqjhcUPsQd50DIClnoJZ+EjXTv37f/ih4nI89AN7g94Ob
+	 jZANa329yv6v/RlYvvDIqAGUX8K6hOy0OfddkLC7S8kyRL5bC6+yOlJFk5ekQHFr5e
+	 5n79o/rg/EXnA==
 From: Leon Romanovsky <leon@kernel.org>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>,
@@ -97,10 +97,12 @@ Cc: Krishnakant Jaju <kjaju@nvidia.com>,
 	dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org,
 	kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: [PATCH v6 06/11] dma-buf: provide phys_vec to scatter-gather mapping routine
-Date: Sun,  2 Nov 2025 10:00:54 +0200
-Message-ID: <20251102-dmabuf-vfio-v6-6-d773cff0db9f@nvidia.com>
+	linux-hardening@vger.kernel.org,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH v6 07/11] vfio: Export vfio device get and put registration helpers
+Date: Sun,  2 Nov 2025 10:00:55 +0200
+Message-ID: <20251102-dmabuf-vfio-v6-7-d773cff0db9f@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
 References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
@@ -108,14 +110,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 X-Mailer: b4 0.15-dev
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: ubgdmf6r84j9szwkwyb9zqya7ctes8ni
-X-Rspamd-Queue-Id: 89C234000F
+X-Stat-Signature: rk3by7673qw6qmign9kx9n5wjjtych6h
+X-Rspamd-Queue-Id: 0A020C0014
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1762070490-239660
-X-HE-Meta: U2FsdGVkX18P/i4TMQHa5MoZ4jcL0XZpLJ6sNe99mf8ZZVNGFZa+DfevjFkYkxnmHNuo9VtVSYsOlNGB930ky75xCHUq+Tt7rdnHPBB5T9TlfScJYKnDC4nQcsY/pOWjR/l1tJa+dSOc3g/wSvcuLJsXLE8loiZxPk0tAMelLBwxVyuZOsJLFzAxG+d738sJELa5N7HwNc+x3ARSG7dFbGt88Vj+jfJEkiQZiEeqtgK68xwLMiJULkSC/s1oCO+soXXqVHZ9HpncVqShTbzc3CRZYr52hrH1PvLyIOqQfkemMQYt/YJxtUQHobxg+rXceEW2xevywZWSlLR5SE/nWu2UOs48PJixidX2OlKHkU0Dsm5kxoMkc4BJvc1m8QcEDvETmf1npIYm9ZkIfrstn0qaxItT7IExCJKVlzyP+qBXr5D0j2t+bwrymfHDov95RR6x/wakKUf+iBnoaQao0P9cWL/gKFYE6VZgifc44FEbbjrJ/Y6u2oADyPuupAjOahpsZOq/k3wDz3MysmpZ9Oyxp0fj5GoFDqb8DnPrwsG3fNM+HDEw4yX1QBeGlBFg7dri8ynT8MDz0vRuxI8uJSpcSkpSq/dQUNfRDa1DtYhWUi/zSIY7VMLnWl5rstcR5GsdgkJK/yA9yUNeiblPHgltZXYCtTgbCjVCbPD5/9xwqE/sGMiMkbopVww0PQja7wneL+QBiLXYKpAZtQcsRSL8LYRqJlPNHa5bMxPUs3LqUsvgWIKiGkIWXVs9TkipSALkGrgrKbUkANpQTkeP4R4vZvEHEt8ZhsfXZWRtOAelEIefeBTQCIfcKNH38u1yBNoeErT+UmEI1nNIEVxVbm4babz8uWOMymyj55hSPPpJtm1UXfvyjr5eTjDXLyCgKfLxHgau80z9TaGbgAFOnS4pl0Lo6fRU5dYrW3Z90kxgLeRxNRQoHanFyKtsILxBGhob2R331dh9+KDoMNT
- 3MPo9yGV
- Tb5B0Wd0JZymhUQIYI5nI4HRh1L+VJLM0Vaxsd2I/OJA6TW+Wr3QP1ODJNaaMZhfTyAEcdGX0Y27Opaxm5w9bCZw5NPMJtBQEmdnGH4vdyXvxkBhnATM5ZUtQggh4HYaIoYpCIL1MZSWLv6k83m2Pud+rh12ABtRkbxNvGtQc+Q/LIYe5jtAmiIFy0oCzkNTD5+IPwJPbvYRo/Sn5UYQLhwmVlr74JgRqEi3J2TCNtGrWWPJEziPlQrWLEOVKSeO5APbnC34QsWHAIK7OVAhgzGs4Pg==
+X-HE-Tag: 1762070493-902878
+X-HE-Meta: U2FsdGVkX18Y4WHBBm/hPn+KSa3zhzvCJ8mt2Fwvu4p8jboqrZwpW9m6XBbBnewG/QXK7wUDTGhkLgk9n3lb0ZSFqTJPaFwbKTbaJNdJTa3TdIJhUrrPJzfsYU8FgmCCp3TUpsrUytUnFEJTqAf7WPu2g/Q40SAEDCFVQSpdF/nfDsXBjbXLjF1ru3HnO8XQFtt4+GHRRMba+/DTA19Ul9owb+yYi97ODQVO7WYTJOQb1TJuuCZkdRj41VzdOgDBN6QPdDU9Fc8TXMa5RK0HBkZUnJiVyDzbSR4rwAx2ZmbAUUy6dapSIPjGGSY2EO3kD6D55y0U0JnHuPqguERamD/8GxbewJ1zrJ5Q7CznSdrVRHomdswco0/hpvhW/lpdz29PHu8VUNFV9b1ToSjNMgTkY+s12stpGsZhPE27rpgR3rdB3PN032shZctGUVP8YB5zfRcMtSJxIOQNEl0DEA0IRkmNmzZrPpQtAAOTAs17mr6LWH6tf4OPf8yWS2rmNJGwZV4mjd1Wmval1s7ldZcTGOo1JFKFquxdjHchInBLvTYVnRF45hTYg8OqhQhfCF4J6wtWMdT7AsOu/x0kTclr4M04JXGm16mWvkgo2+quDm+U60V1l1OjTAnK46byNoVWF1gmyVjspFgAU+RRHyOS5fTkg2/s3/CVCKDXURJjhu3J66L7Q8kdLdZPBQi9u/CEmOlJXJDJrE7/1WUZS9EO7PO12NHAgMKaLbYDdmkX/M1gCX80empWdhflpqpEsuVYUm0pCogWz3pk4o/bihv3psds0xkFVb0D1IePADeEESCfbPsR+gSzEgEI8/8AZe18M6ipcGJERtoBY4eRRvbejrnah1gpsBIokm/lRhrbzsIX5SEBydc9u4fJo/DU+1RHyZT9/yCoKBq1u5ssRhUZJNeN2TO8gDOmpQO7UpYfkegFTDtcGG3vtbRukALAb+8Nqkry3ycCnCW1OnY
+ zBP7yJXk
+ XIHmwoHlJNTkzULwCuDPplWdJhn9hKR+Zom2lsKePXx//fwK3TmXT6BwC7Fzox0XJKM3BvB45XG3fA2ybgErQ7QubF9THelnkRQ6vs0jTAO8/luxZhOGtlavXbD+GzU/1rB0nDvI/z8ZvS4IQSi+NNmFJ+GRYA0qWOO8WEfpziWsH8liAPwAEA4teg7MwyyDPL3yksDKJF093YV0+uXNz6CHFFlbICIRCMy3WgRLm+NG0aDIT+AC/a0P7UoxDp2sawVYj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,346 +126,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Leon Romanovsky <leonro@nvidia.com>
+From: Vivek Kasireddy <vivek.kasireddy@intel.com>
 
-Add dma_buf_map() and dma_buf_unmap() helpers to convert an array of
-MMIO physical address ranges into scatter-gather tables with proper
-DMA mapping.
+These helpers are useful for managing additional references taken
+on the device from other associated VFIO modules.
 
-These common functions are a starting point and support any PCI
-drivers creating mappings from their BAR's MMIO addresses. VFIO is one
-case, as shortly will be RDMA. We can review existing DRM drivers to
-refactor them separately. We hope this will evolve into routines to
-help common DRM that include mixed CPU and MMIO mappings.
-
-Compared to the dma_map_resource() abuse this implementation handles
-the complicated PCI P2P scenarios properly, especially when an IOMMU
-is enabled:
-
- - Direct bus address mapping without IOVA allocation for
-   PCI_P2PDMA_MAP_BUS_ADDR, using pci_p2pdma_bus_addr_map(). This
-   happens if the IOMMU is enabled but the PCIe switch ACS flags allow
-   transactions to avoid the host bridge.
-
-   Further, this handles the slightly obscure, case of MMIO with a
-   phys_addr_t that is different from the physical BAR programming
-   (bus offset). The phys_addr_t is converted to a dma_addr_t and
-   accommodates this effect. This enables certain real systems to
-   work, especially on ARM platforms.
-
- - Mapping through host bridge with IOVA allocation and DMA_ATTR_MMIO
-   attribute for MMIO memory regions (PCI_P2PDMA_MAP_THRU_HOST_BRIDGE).
-   This happens when the IOMMU is enabled and the ACS flags are forcing
-   all traffic to the IOMMU - ie for virtualization systems.
-
- - Cases where P2P is not supported through the host bridge/CPU. The
-   P2P subsystem is the proper place to detect this and block it.
-
-Helper functions fill_sg_entry() and calc_sg_nents() handle the
-scatter-gather table construction, splitting large regions into
-UINT_MAX-sized chunks to fit within sg->length field limits.
-
-Since the physical address based DMA API forbids use of the CPU list
-of the scatterlist this will produce a mangled scatterlist that has
-a fully zero-length and NULL'd CPU list. The list is 0 length,
-all the struct page pointers are NULL and zero sized. This is stronger
-and more robust than the existing mangle_sg_table() technique. It is
-a future project to migrate DMABUF as a subsystem away from using
-scatterlist for this data structure.
-
+Original-patch-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
 ---
- drivers/dma-buf/dma-buf.c | 235 ++++++++++++++++++++++++++++++++++++++++++++++
- include/linux/dma-buf.h   |  18 ++++
- 2 files changed, 253 insertions(+)
+ drivers/vfio/vfio_main.c | 2 ++
+ include/linux/vfio.h     | 2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/dma-buf/dma-buf.c b/drivers/dma-buf/dma-buf.c
-index 2bcf9ceca997..cb55dff1dad5 100644
---- a/drivers/dma-buf/dma-buf.c
-+++ b/drivers/dma-buf/dma-buf.c
-@@ -1254,6 +1254,241 @@ void dma_buf_unmap_attachment_unlocked(struct dma_buf_attachment *attach,
+diff --git a/drivers/vfio/vfio_main.c b/drivers/vfio/vfio_main.c
+index 38c8e9350a60..9aa4a5d081e8 100644
+--- a/drivers/vfio/vfio_main.c
++++ b/drivers/vfio/vfio_main.c
+@@ -172,11 +172,13 @@ void vfio_device_put_registration(struct vfio_device *device)
+ 	if (refcount_dec_and_test(&device->refcount))
+ 		complete(&device->comp);
  }
- EXPORT_SYMBOL_NS_GPL(dma_buf_unmap_attachment_unlocked, "DMA_BUF");
++EXPORT_SYMBOL_GPL(vfio_device_put_registration);
  
-+static struct scatterlist *fill_sg_entry(struct scatterlist *sgl, size_t length,
-+					 dma_addr_t addr)
-+{
-+	unsigned int len, nents;
-+	int i;
-+
-+	nents = DIV_ROUND_UP(length, UINT_MAX);
-+	for (i = 0; i < nents; i++) {
-+		len = min_t(size_t, length, UINT_MAX);
-+		length -= len;
-+		/*
-+		 * DMABUF abuses scatterlist to create a scatterlist
-+		 * that does not have any CPU list, only the DMA list.
-+		 * Always set the page related values to NULL to ensure
-+		 * importers can't use it. The phys_addr based DMA API
-+		 * does not require the CPU list for mapping or unmapping.
-+		 */
-+		sg_set_page(sgl, NULL, 0, 0);
-+		sg_dma_address(sgl) = addr + i * UINT_MAX;
-+		sg_dma_len(sgl) = len;
-+		sgl = sg_next(sgl);
-+	}
-+
-+	return sgl;
-+}
-+
-+static unsigned int calc_sg_nents(struct dma_iova_state *state,
-+				  struct dma_buf_phys_vec *phys_vec,
-+				  size_t nr_ranges, size_t size)
-+{
-+	unsigned int nents = 0;
-+	size_t i;
-+
-+	if (!state || !dma_use_iova(state)) {
-+		for (i = 0; i < nr_ranges; i++)
-+			nents += DIV_ROUND_UP(phys_vec[i].len, UINT_MAX);
-+	} else {
-+		/*
-+		 * In IOVA case, there is only one SG entry which spans
-+		 * for whole IOVA address space, but we need to make sure
-+		 * that it fits sg->length, maybe we need more.
-+		 */
-+		nents = DIV_ROUND_UP(size, UINT_MAX);
-+	}
-+
-+	return nents;
-+}
-+
-+/**
-+ * struct dma_buf_dma - holds DMA mapping information
-+ * @sgt:    Scatter-gather table
-+ * @state:  DMA IOVA state relevant in IOMMU-based DMA
-+ * @size:   Total size of DMA transfer
-+ */
-+struct dma_buf_dma {
-+	struct sg_table sgt;
-+	struct dma_iova_state *state;
-+	size_t size;
-+};
-+
-+/**
-+ * dma_buf_map - Returns the scatterlist table of the attachment from arrays
-+ * of physical vectors. This funciton is intended for MMIO memory only.
-+ * @attach:	[in]	attachment whose scatterlist is to be returned
-+ * @provider:	[in]	p2pdma provider
-+ * @phys_vec:	[in]	array of physical vectors
-+ * @nr_ranges:	[in]	number of entries in phys_vec array
-+ * @size:	[in]	total size of phys_vec
-+ * @dir:	[in]	direction of DMA transfer
-+ *
-+ * Returns sg_table containing the scatterlist to be returned; returns ERR_PTR
-+ * on error. May return -EINTR if it is interrupted by a signal.
-+ *
-+ * On success, the DMA addresses and lengths in the returned scatterlist are
-+ * PAGE_SIZE aligned.
-+ *
-+ * A mapping must be unmapped by using dma_buf_unmap().
-+ */
-+struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
-+			     struct p2pdma_provider *provider,
-+			     struct dma_buf_phys_vec *phys_vec,
-+			     size_t nr_ranges, size_t size,
-+			     enum dma_data_direction dir)
-+{
-+	unsigned int nents, mapped_len = 0;
-+	struct dma_buf_dma *dma;
-+	struct scatterlist *sgl;
-+	dma_addr_t addr;
-+	size_t i;
-+	int ret;
-+
-+	dma_resv_assert_held(attach->dmabuf->resv);
-+
-+	if (WARN_ON(!attach || !attach->dmabuf || !provider))
-+		/* This function is supposed to work on MMIO memory only */
-+		return ERR_PTR(-EINVAL);
-+
-+	dma = kzalloc(sizeof(*dma), GFP_KERNEL);
-+	if (!dma)
-+		return ERR_PTR(-ENOMEM);
-+
-+	switch (pci_p2pdma_map_type(provider, attach->dev)) {
-+	case PCI_P2PDMA_MAP_BUS_ADDR:
-+		/*
-+		 * There is no need in IOVA at all for this flow.
-+		 */
-+		break;
-+	case PCI_P2PDMA_MAP_THRU_HOST_BRIDGE:
-+		dma->state = kzalloc(sizeof(*dma->state), GFP_KERNEL);
-+		if (!dma->state) {
-+			ret = -ENOMEM;
-+			goto err_free_dma;
-+		}
-+
-+		dma_iova_try_alloc(attach->dev, dma->state, 0, size);
-+		break;
-+	default:
-+		ret = -EINVAL;
-+		goto err_free_dma;
-+	}
-+
-+	nents = calc_sg_nents(dma->state, phys_vec, nr_ranges, size);
-+	ret = sg_alloc_table(&dma->sgt, nents, GFP_KERNEL | __GFP_ZERO);
-+	if (ret)
-+		goto err_free_state;
-+
-+	sgl = dma->sgt.sgl;
-+
-+	for (i = 0; i < nr_ranges; i++) {
-+		if (!dma->state) {
-+			addr = pci_p2pdma_bus_addr_map(provider,
-+						       phys_vec[i].paddr);
-+		} else if (dma_use_iova(dma->state)) {
-+			ret = dma_iova_link(attach->dev, dma->state,
-+					    phys_vec[i].paddr, 0,
-+					    phys_vec[i].len, dir,
-+					    DMA_ATTR_MMIO);
-+			if (ret)
-+				goto err_unmap_dma;
-+
-+			mapped_len += phys_vec[i].len;
-+		} else {
-+			addr = dma_map_phys(attach->dev, phys_vec[i].paddr,
-+					    phys_vec[i].len, dir,
-+					    DMA_ATTR_MMIO);
-+			ret = dma_mapping_error(attach->dev, addr);
-+			if (ret)
-+				goto err_unmap_dma;
-+		}
-+
-+		if (!dma->state || !dma_use_iova(dma->state))
-+			sgl = fill_sg_entry(sgl, phys_vec[i].len, addr);
-+	}
-+
-+	if (dma->state && dma_use_iova(dma->state)) {
-+		WARN_ON_ONCE(mapped_len != size);
-+		ret = dma_iova_sync(attach->dev, dma->state, 0, mapped_len);
-+		if (ret)
-+			goto err_unmap_dma;
-+
-+		sgl = fill_sg_entry(sgl, mapped_len, dma->state->addr);
-+	}
-+
-+	dma->size = size;
-+
-+	/*
-+	 * No CPU list included — set orig_nents = 0 so others can detect
-+	 * this via SG table (use nents only).
-+	 */
-+	dma->sgt.orig_nents = 0;
-+
-+
-+	/*
-+	 * SGL must be NULL to indicate that SGL is the last one
-+	 * and we allocated correct number of entries in sg_alloc_table()
-+	 */
-+	WARN_ON_ONCE(sgl);
-+	return &dma->sgt;
-+
-+err_unmap_dma:
-+	if (!i || !dma->state) {
-+		; /* Do nothing */
-+	} else if (dma_use_iova(dma->state)) {
-+		dma_iova_destroy(attach->dev, dma->state, mapped_len, dir,
-+				 DMA_ATTR_MMIO);
-+	} else {
-+		for_each_sgtable_dma_sg(&dma->sgt, sgl, i)
-+			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
-+				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-+	}
-+	sg_free_table(&dma->sgt);
-+err_free_state:
-+	kfree(dma->state);
-+err_free_dma:
-+	kfree(dma);
-+	return ERR_PTR(ret);
-+}
-+EXPORT_SYMBOL_NS_GPL(dma_buf_map, "DMA_BUF");
-+
-+/**
-+ * dma_buf_unmap - unmaps the buffer
-+ * @attach:	[in]	attachment to unmap buffer from
-+ * @sgt:	[in]	scatterlist info of the buffer to unmap
-+ * @direction:	[in]	direction of DMA transfer
-+ *
-+ * This unmaps a DMA mapping for @attached obtained by dma_buf_map().
-+ */
-+void dma_buf_unmap(struct dma_buf_attachment *attach, struct sg_table *sgt,
-+		   enum dma_data_direction dir)
-+{
-+	struct dma_buf_dma *dma = container_of(sgt, struct dma_buf_dma, sgt);
-+	int i;
-+
-+	dma_resv_assert_held(attach->dmabuf->resv);
-+
-+	if (!dma->state) {
-+		; /* Do nothing */
-+	} else if (dma_use_iova(dma->state)) {
-+		dma_iova_destroy(attach->dev, dma->state, dma->size, dir,
-+				 DMA_ATTR_MMIO);
-+	} else {
-+		struct scatterlist *sgl;
-+
-+		for_each_sgtable_dma_sg(sgt, sgl, i)
-+			dma_unmap_phys(attach->dev, sg_dma_address(sgl),
-+				       sg_dma_len(sgl), dir, DMA_ATTR_MMIO);
-+	}
-+
-+	sg_free_table(sgt);
-+	kfree(dma->state);
-+	kfree(dma);
-+
-+}
-+EXPORT_SYMBOL_NS_GPL(dma_buf_unmap, "DMA_BUF");
-+
- /**
-  * dma_buf_move_notify - notify attachments that DMA-buf is moving
-  *
-diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-index d58e329ac0e7..545ba27a5040 100644
---- a/include/linux/dma-buf.h
-+++ b/include/linux/dma-buf.h
-@@ -22,6 +22,7 @@
- #include <linux/fs.h>
- #include <linux/dma-fence.h>
- #include <linux/wait.h>
-+#include <linux/pci-p2pdma.h>
+ bool vfio_device_try_get_registration(struct vfio_device *device)
+ {
+ 	return refcount_inc_not_zero(&device->refcount);
+ }
++EXPORT_SYMBOL_GPL(vfio_device_try_get_registration);
  
- struct device;
- struct dma_buf;
-@@ -530,6 +531,16 @@ struct dma_buf_export_info {
- 	void *priv;
- };
+ /*
+  * VFIO driver API
+diff --git a/include/linux/vfio.h b/include/linux/vfio.h
+index eb563f538dee..217ba4ef1752 100644
+--- a/include/linux/vfio.h
++++ b/include/linux/vfio.h
+@@ -297,6 +297,8 @@ static inline void vfio_put_device(struct vfio_device *device)
+ int vfio_register_group_dev(struct vfio_device *device);
+ int vfio_register_emulated_iommu_dev(struct vfio_device *device);
+ void vfio_unregister_group_dev(struct vfio_device *device);
++bool vfio_device_try_get_registration(struct vfio_device *device);
++void vfio_device_put_registration(struct vfio_device *device);
  
-+/**
-+ * struct dma_buf_phys_vec - describe continuous chunk of memory
-+ * @paddr:   physical address of that chunk
-+ * @len:     Length of this chunk
-+ */
-+struct dma_buf_phys_vec {
-+	phys_addr_t paddr;
-+	size_t len;
-+};
-+
- /**
-  * DEFINE_DMA_BUF_EXPORT_INFO - helper macro for exporters
-  * @name: export-info name
-@@ -609,4 +620,11 @@ int dma_buf_vmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
- void dma_buf_vunmap_unlocked(struct dma_buf *dmabuf, struct iosys_map *map);
- struct dma_buf *dma_buf_iter_begin(void);
- struct dma_buf *dma_buf_iter_next(struct dma_buf *dmbuf);
-+struct sg_table *dma_buf_map(struct dma_buf_attachment *attach,
-+			     struct p2pdma_provider *provider,
-+			     struct dma_buf_phys_vec *phys_vec,
-+			     size_t nr_ranges, size_t size,
-+			     enum dma_data_direction dir);
-+void dma_buf_unmap(struct dma_buf_attachment *attach, struct sg_table *sgt,
-+		   enum dma_data_direction dir);
- #endif /* __DMA_BUF_H__ */
+ int vfio_assign_device_set(struct vfio_device *device, void *set_id);
+ unsigned int vfio_device_set_open_count(struct vfio_device_set *dev_set);
 
 -- 
 2.51.0
