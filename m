@@ -4,115 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 855B7CCFA02
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 16:57:55 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DFB0CCFA02
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 16:59:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A2B7B8E0003; Sun,  2 Nov 2025 11:57:54 -0500 (EST)
+	id AF20C8E0006; Sun,  2 Nov 2025 11:59:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A03368E0002; Sun,  2 Nov 2025 11:57:54 -0500 (EST)
+	id AC9448E0002; Sun,  2 Nov 2025 11:59:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9416D8E0003; Sun,  2 Nov 2025 11:57:54 -0500 (EST)
+	id A06788E0006; Sun,  2 Nov 2025 11:59:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 83CD58E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 11:57:54 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 153F589219
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 16:57:54 +0000 (UTC)
-X-FDA: 84066274068.02.7F02750
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 30DD31C0007
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 16:57:51 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUQZ6dH0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762102672; a=rsa-sha256;
-	cv=none;
-	b=MlOUmWolZSmI4CfUME9M0eCW93ajCUAConwhjfrq2Ei/t6Ecx+vw64R9nVIRBtlt5jRB8l
-	89xrWiQ6w/nvUhJuIrRCDLb695yfWzSMHr+jT4a9F3U67c/IT4L+y/y1NYR6fiVUN/H2qE
-	Xsj3Nf1UH9c4HQNxkYjl8peAA+uDf7M=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=WUQZ6dH0;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf20.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.218.41 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 907938E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 11:59:11 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 88EE3BC003
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 16:59:09 +0000 (UTC)
+X-FDA: 84066277218.09.7A1117F
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BC30140010
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 16:59:07 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RHBZg50Y;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762102672;
+	s=arc-20220608; t=1762102747;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8D/2LxIRqPaEFpcJY4xTpfZFJoJ4QwYTL33/bGyG1rc=;
-	b=AFuuVWSy/PeVfwvWaM1kvFhcW9xO8sPX0pVqwI6hfmDZHjRMVvJd4Obml4isf3ATHQYHz2
-	48z2BigfCfUrUaBgKzweYPPNU27pfmbrgIBsQd/ub2mzp7Ka+wJZJ2VSiqWRIDlBTkZKj6
-	briZB6/tNs8s5ziCnn3j42UOy51g/0Q=
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b3e9d633b78so902787266b.1
-        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 08:57:51 -0800 (PST)
+	bh=2H8A9cw3kvMs3bkUEbK9NC3MLhUkDdEmf0tI4Urblvg=;
+	b=Q1VlCX23cBtSny6MTqCVmNcEt5nBbV5FY/q3K7CCA4DV1rdy6nnKLVkRH3BZx0EWIG+jG2
+	9DO/WT4IYaGxs253xEILVoZzin3Fg4evk0Eo8YXkkYGvqxBs3kzDrWHvJ39sTBm8hhZtdR
+	pg0qlKeeRFfzf+jJ4hglCqeH2MDQemo=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=RHBZg50Y;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.49 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762102747; a=rsa-sha256;
+	cv=none;
+	b=b/6L5RctJXZDLISy2M4r/KqJQkpanOtM8nlG0EiBQTqdPSj/Hk6x8eYa5zu5Frf7IasnCg
+	fRdxiBd305E/zCjoRLMU4MF0sUck5FYATUjPXNXHfOO7LAxUxi5U2cc048Eg8I6J+CHd1Q
+	A0c6gPnyc1mF4urPC6pwvu3TS9gSAnk=
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-3401314d845so4942320a91.1
+        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 08:59:07 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762102670; x=1762707470; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1762102746; x=1762707546; darn=kvack.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8D/2LxIRqPaEFpcJY4xTpfZFJoJ4QwYTL33/bGyG1rc=;
-        b=WUQZ6dH0xDn0X5OQvGhVFOlenJQHDnXPwEXVbHeVaxGK2K01fYwHslzopHCiihJR9H
-         OlOD/dg5v904Ob28n++pZoAOmIFxsX2GEhh3EhbOGWZ2ciu85q35zC5d5jGL4y6odO6v
-         nlgr9FSqC2k7u4h7Xys8rPsqmDV/9dGB1PF5flYIwb+4zI08O4z9CIAmsJ3RpMiRPdyv
-         LXgW060Itu29sGHUp4fKhpsx2rFeJtDJtzJml0KRdhYFu0+r2qqI9oR09RdF2YN9BIwk
-         kDDh0jcMe637L1Am+5xTl3ZmcgK4seb1X9gvtDcjb1KgxJbMDLAokkxb0URs+WNhdKe+
-         5rag==
+        bh=2H8A9cw3kvMs3bkUEbK9NC3MLhUkDdEmf0tI4Urblvg=;
+        b=RHBZg50YAKebB7jK0IYomlxG5HfuXETLnKellHSFMIhg+DjQTWuDJLjg9emodHMbge
+         EllGUG7ilflzwlaEhMIZkBS1S4F0ZP+/x5LpajgUukpHN9wU5hQx/S7/XY9br2e3v4V6
+         MGcd5n3nxsA1GnH2Vs2pdiY5IpAJiog9HnX6cMS5fzEo4CrUKYiKrCNk0i95UUkxerWv
+         bSCGP7o4UDqXIZCvbbIv6Xa1Xcj2L5FpQ+STAL1QHoS+ZbS0rTVHjVP/ljdHZa6ZTF7o
+         Oncn5pjS3Q5DKS/RJxeLrtP/RAr2ZiV690IEKESftkt2WSMYRMpGwzsr3UZRiHFkACPc
+         uuyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762102670; x=1762707470;
+        d=1e100.net; s=20230601; t=1762102746; x=1762707546;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8D/2LxIRqPaEFpcJY4xTpfZFJoJ4QwYTL33/bGyG1rc=;
-        b=TMolmbK+QI1OZFn5wkowMzq+tnRNdf1MzxahXoCSFEtNOQC9szkvyj3y8QvUe8MxWe
-         Yd60Awvhq/je/SleIxLmbUTrX4Bxx0KD4HgswaeiD90x5l11xoJDKiJh5gZa9r/tKcnt
-         cCX3INg1cZrxsoudlFbjPbzNZrUlTUwEBnlTJgGXcoZ48cV9rK1jd16mUh+yA10ItzXs
-         Pdv+uRVZQPP6XVIeCpIRBV7Ly7TZsNzTCDDXPZtLUf+I9GjnRFZQC0n5ZMjIJFjMgJuV
-         tn+5oTIFucsMT999c8uEPEOt3nb0aeTkb12MTwuc68lqyZjPDhorNhtsI/jr4yX8Othg
-         arZw==
-X-Forwarded-Encrypted: i=1; AJvYcCU9/R810CdeeV4ROgUQeK0RG3RC+wfuCOFU5pIbOKau2yU9R1Fkp33CAR8QkbnylqdKXzaqDJy0VQ==@kvack.org
-X-Gm-Message-State: AOJu0Yz8R2Egz+AXVmaMIdAwztLoI+nDVsALm3h5y5lW/BlSyhbDpkwB
-	9blL7fFctSUK4cZs4SYDaIT64Zjlxp2b2rCR4dm8KKyGYY4j8vzlSc7XGj17otlBE/VVNB7/Hli
-	mYBAL2jBj0OLql+J3c9HbgmgRBTxF+ag=
-X-Gm-Gg: ASbGncuOGAfTDoKWTOVdVJrb0CxpoOBxnXUTz91i534RrUx4+l5hLQ2m0PFfiVY2bJ/
-	PKjZJecQ3vPfBZ77aVEBrOCxokw/toatOEc8g+ji/wGwPyAnSOxfhwQRkY864FwcvomDv7gWE+f
-	cUKXNB4GRGNJhSjyKjBn6AKY8BhEF1TwBGNlyxu7O75lSXiYnULPj3zx6q/dkj0IIcVpbBeP6v8
-	BJGzs2F7WMgbapqR2S4vc64Ne6Yp3dtsWJQps3Dzo5q/YM0uhFltgT18pVUsTQK
-X-Google-Smtp-Source: AGHT+IF6kTS+BPq+5g0QzVhd4H7jJGaDHe33YwK8YfXloE6tTgIk87zoSHroCKmGlQ8/BJmiGW2LNXgDUOPRTx4dCUw=
-X-Received: by 2002:a17:907:3f89:b0:b6d:671d:8814 with SMTP id
- a640c23a62f3a-b706e5823f5mr1057229866b.27.1762102670334; Sun, 02 Nov 2025
- 08:57:50 -0800 (PST)
+        bh=2H8A9cw3kvMs3bkUEbK9NC3MLhUkDdEmf0tI4Urblvg=;
+        b=TpqEXVk1EQ2PVFmP0Pe3+eZdIQ4A9Y+uj/sAdDuZjfZrV7pSZfZnlNaKoQMQZ82uAg
+         J+vtAUUO40Db7ocGLd+xtCGg01GOVDO9OH2/qoA+qGVIFOg5seK4oXnqquF5xV1fJe6A
+         haAkd4G7CNsW0Vw905iZtdq6sXUMRXOWIM0a/rfeU9ld6i9o3OHyVTjW3fnoJL8xPR3r
+         CRe+uW//MffWOmtQN4VCXO81ygJCodEdZTLPCU9JHv7ZGC3Rd94C50okdsz2P95/7FFe
+         yFJ3U4XLqjuAxQIjAMcmlGLtDRV9OnLd0mRH4myuUo4pNb2EzBac9D0b+mTErbL4uptZ
+         LrDg==
+X-Forwarded-Encrypted: i=1; AJvYcCXagkZMmJQ9KIvQYjVfh+kYh5ikR/IqLUTYegnyrrzZjPgrsbqLkU61zyJPmQCrny3oz2tkpA6iPg==@kvack.org
+X-Gm-Message-State: AOJu0YyejoB1hI5BhseUxAT19UdjdNC6V/i5m/nNeE3EdpYM3/9OIUbw
+	FBucMlE+OrKyeF6Z+jfg0uwXN68yQUpNNdAgOSyACeUVp04rKWCJqnDPk2owOrgPPWKk36ASWkY
+	IKbQn8Q2+r0p0a37jztBzneX/9ejUHhM=
+X-Gm-Gg: ASbGnctqZJQ2S66lAzsf/9X3XWDy1fhze00X+mS9HwubJpF6YxpurJh6Y/SRMwhyDjG
+	7frby6ab4m4b5Rbywm01YSk4VpUGa9eUbmrLobh8sDy7ipysdwCOFbi9E65zKDj5IZSC79GAMz+
+	4jZTTDRn2a0esHyaHZfl05TOqao65SDYy4MSZ/59gViNYSQK6A7bVRYbSKVQYFW2HafYRavAHqI
+	Ky7CL+qJP4+RvqIoLvwlucA+A6bwmuBoBXaGWv0kFX1dCN4k8z6kMQJ5ciBWoWMsv9OhJSocwc=
+X-Google-Smtp-Source: AGHT+IFjlhqpuH5VGDhb2suMV/zsTD+1QVQkmaCxgbxr/Pp8L/y4CtuYgIYJ6lyEP01I8OaXB9/MAlSGrK0mTOo6Q50=
+X-Received: by 2002:a17:90b:314e:b0:340:d511:e15f with SMTP id
+ 98e67ed59e1d1-340d511e56fmr4995965a91.18.1762102746574; Sun, 02 Nov 2025
+ 08:59:06 -0800 (PST)
 MIME-Version: 1.0
-References: <20251102-swap-m-v1-1-582f275d5bce@kernel.org>
-In-Reply-To: <20251102-swap-m-v1-1-582f275d5bce@kernel.org>
+References: <20251102082456.79807-1-youngjun.park@lge.com>
+In-Reply-To: <20251102082456.79807-1-youngjun.park@lge.com>
 From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 3 Nov 2025 00:57:13 +0800
-X-Gm-Features: AWmQ_bkaoXNCTN1n6otnUWB6pWjlguUIqX3xJfiZv2IxdZsnRJDYnUHIqQ415CA
-Message-ID: <CAMgjq7AaPEAWF64qQ7mbcvoV18R2h19yuuw7AjWYyS6eWanw_Q@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add Chris and Kairui as the swap maintainer
-To: Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	Minchan Kim <minchan@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
-	SeongJae Park <sj@kernel.org>
+Date: Mon, 3 Nov 2025 00:58:25 +0800
+X-Gm-Features: AWmQ_bkcGo-PpbWMfhxdt3eXO4V0cB_Au_-2jF3It7BqxZY_Pu4fYLIIF6egW60
+Message-ID: <CAMgjq7BENujWdD_7htQ6WmvP70sZUTSvLu8vV0YGapEjkvpVxg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] mm: swap: remove duplicate nr_swap_pages decrement
+ in get_swap_page_of_type()
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Chris Li <chrisl@kernel.org>, 
+	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: BC30140010
+X-Stat-Signature: 8ncbq4d8g3jwhsp63h8br1t5871fa9g1
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 30DD31C0007
-X-Stat-Signature: kmhp7s4uwq3kj4nt5ezgcwtubs5oj7io
-X-HE-Tag: 1762102671-665342
-X-HE-Meta: U2FsdGVkX18cpHjwQIC+syE3FtLqs+71wLc/umd0F4qpLCLkTtCuplNVt4nu/yJCH4crV0xOphwp/t89j1dUgIJOnEbAq0Hs9f5f/ftFTivnzY3KVa2Ft9fbiEEj5Afb/IyUo6cF7eMiO7lclWa/F6JWEJm2rG+YEaRILI4S8jjPbRFbsPjr696xx4Xe8sKoawRHw8mTdNBcPet6aB7beNV2byLc7i0X2A+g6G7XZGZibKJMZDR8cMvHcUDrVD7FhM382aErk0YCR04yD6KmIa297k8JTYnRyti6FS4RlqiP9vVh8hVbzWAyRWTKCdnTPcW9Id72bKa/VaTS/4TcT4rbqVt2TwtkztU5vYZTC9PGCF87v2MDiY1VcRqvU2B1nuGwbRG3a/iD749e4Lp1sHZhJ+3JaMkC6sGO3QibyQANPVo69lLUvDgDeRFHUy6DQsUw6xMrushMJ3BJm+6VB/Ps5FafvHmUseHIBZzl+f7QHF5dOneUXD7AXodG17kJb7PyCSdIUCpToxPFeA66cKRY2JX8/UgIDw8uyuXInlu6Bdz/PyOgRTUU3YqczQIe3nEMuiywcVkcMI2efdBaSJMr0Au/yC1ZAdOYLgunn7RywtMjUGlvfPl59htTx6usEDYkdGArde+g+BZB4LoVI3OrGA2qq7ZN0jozNwBGW69L+9eQWbjLRsKFKYzrRSH/rm6udwadRQTKxwUipzRPqs9FlWiD33RNbtUdo0Ccupp3DRkzQHLTRBxkDyM7VpnCdb2X0XmJ3Q9GaXe/0pfg7GwJvUWMRIrhG6qqOoiXl0JQnrU2fBmxpg+NE/tsig7H6gF4VkVWDTJQpO0f1XMpejEXCiiKPs8fP1rK2TJ84viAivAZj6qcnJrK4n1XtT4D+agHGtyIKgha3BgR8gaVMsDEzYj5RLM9GJCTdlxfTZmhNYymakKcWYPgYMCmbFak8kBJMNmJITsUovna6fv
- KDNumMr/
- YQ0F+GSkTjQ2Uw4qCAx552TSxjMgNWHPO2CwDThQtRwOvWdJSq+Xz9gkx4XE/P630AXmAfkm6x/b10oWE/c01HaqLADaN/u9FLWIHqxIDHqfTnlFKF1iJHysB9GsTi/aYzqKBj9jOJe/mbqdVmTalm3HNTMCAJ9sbySP+FgT6P9w3UqcEILfpJYJOqkTe+eVQoGhsESmCHrhJWm/hFaKs91zuXHmPOoOQyiq3+gMCh6tR7G+9CdRSqyXtAiD/UPEViVrUUOhnrkwOZ03zacHhkKE/KxpRRugHibHmKxeb7EdS7mfVXl8zwciGAJtYn8EBUYwku0sTVLyvVt4Bs4kCfse5vvSP/G9oVdDacpAnHXE73ZzpX5Xy/GjPj24RMrorenSWMChfBzC6cLRtB4pXwzDXPM5tY2ReFWQwBHIN9U7J/H46RYV+AfzxPvxuTyjgDZHvYGyNCr++xjabiRg3FxIVQgatATQMTy83VYOsnz57Orb7Pitg3NA48K/kl5GCUfZhrHFpqNqsrUuSpXGQx4hzBw10Blfy/rZzZtWe0/N5poFw3qz8L2baFq330UhJWMi21cUrcv4DQmPImm+B8ZyHEA==
+X-HE-Tag: 1762102747-109350
+X-HE-Meta: U2FsdGVkX1+db2WjMm4a7OVljDeHfAJDghYcOLrJ6W37hiQiNjSP/IypzUXdDfAQFb/e1w8V8WLWnJH2GO5+CDYKRJ6xGhJSAGLQRH6NV9KBhtNRrTk24pIIO+NvrTeQ/qehoWSJq52UvIB5VWD9I7SK+7LIiCDpUPQK5Ub5+wudQ8cvufJ0tULI++7PwlClN+eZPg2KKIjzJnFRYY1bjDcENh4wsm8w3Ek1f8RiMOGWk91frJs/Xr4KpGj6vAypHu++2JpW5heMpeJjwCxfzp7SC78+nUtQq1vi3jNey1VaZVhoq9x/biwF/QyOl/LlEJcgPMKPr0ZLMl9oDtASeSrXI0b/btiRqESO9WrlqkzZIIaFKVde+NvIs7mvQTwDT1xeLSeSTBxY0yrBnBf0lr2h+oLHKvI84Hwg74+bCmehhqWp53N1qE1/lom/jR9zg0H/8T2+Oke+jOQ8cCH/xOc1IyL2c/otUsNrrwH09VA/+sJI1q2gKiVcCWqiLGGVaJ8Up7FTLHJhw4bbr4XFZDKKfs3kb1PjPD0xumx7+wvoSORoVyS+fHuUx4vAoSiO8ztATf7kSQ1fIjN0Z0CnDDpMCwER3TfvT3CUW+a4VrYvKQQEQLCcYF7nMQZDQIdDo2BBGDI7+Z4Ei4FtMdSKOEACCCP0DfXy3HdFbQ4qBoJjF7lCJIMvaFIZa1+9AIkStHPWUU39BH30ihgd4OaprXpjB0GosslFd/Jw105sjAXJLJIILki1YO9Hhp6IKdBZRneXnMpcuIb0CI+gD7TQ+rbeoD6frFq4wmM14ZOhqqydHG8IstkB1YP+2bxcgFGQaHPWeWPEvYXeJSfkCU7yZ045BBeyl5+8Hjqh43MtgglVpsfpaGng9XXy+e/3ODoG1k8daz3M4sZ40DFRIYRTuA/sz1d7ayjSezPnyCF56rO6mGmWFohNKnHVj4FgYs+LcmgP3uMGCzDqOX1k+OZ
+ vmg9qnXb
+ Mz13Eokw1nMux+mFs195sSpYKwRk1wsUAfHlEFHY1O8evDe0Rxt1SXDsmcTjF5PPtBxqLuxVqGkRAxrwveMc9waAfHLk4neopFdWCCtoOePwloYtG8m3z2vHY4CTD508E2DwN6Ys9EGSAtOogl8/Bc61g+XX7QWreBYZGwUdWPnE6Vw0yIejZAwHDjQOBW01KSBOn+vIWIPI5+Sh34KwVelJa1XsVY3qHtrQqfenpZfqtUEVgNoKp/8RWJXluvg/X8txvR0+CE0rci8p78UX7mmDS0OMJVA6cKKVkNPY8NmdkwMwZJejWlmpYcQPz30Y+e0Oe1KSFa81FjvqNuYFjDfQPEBd4zbePMvWrHespX9TVaPSPrGWMfuEDkShWL/j1GmDE9KkdMpw98rlBIcseU4/Lfml3boWDJYvSgoXuytrpWqKiNBytHpPFMLMDrirV0HXOJy/t5uD4Fj4x2Md2lREwvn3D0hA1hwQN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,38 +119,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 2, 2025 at 11:39=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+On Sun, Nov 2, 2025 at 4:36=E2=80=AFPM Youngjun Park <youngjun.park@lge.com=
+> wrote:
 >
-> We have been collaborating on a systematic effort to clean up and improve
-> the Linux swap system, and might as well take responsibility for it.
+> After commit 4f78252da887, nr_swap_pages is decremented in
+> swap_range_alloc(). Since cluster_alloc_swap_entry() calls
+> swap_range_alloc() internally, the decrement in get_swap_page_of_type()
+> causes double-decrementing.
 >
-> Signed-off-by: Chris Li <chrisl@kernel.org>
+> Remove the duplicate decrement.
+>
+> Fixes: 4f78252da887 ("mm: swap: move nr_swap_pages counter decrement from=
+ folio_alloc_swap() to swap_range_alloc()")
+> Cc: stable@vger.kernel.org # v6.17-rc1
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> Acked-by: Chris Li <chrisl@kernel.org>
+> Reviewed-by: Barry Song <baohua@kernel.org>
 > ---
->  MAINTAINERS | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> v1 -> v2:
+>  - Collect Acked-by from Chris - thank you!
+>  - Collect Reviewed-by from Barry - thank you!
+>  - Link to v1: https://lore.kernel.org/linux-mm/20251101134158.69908-1-yo=
+ungjun.park@lge.com/
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2628431dcdfe..8b5af318a0c8 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16497,12 +16497,12 @@ F:    mm/secretmem.c
+>  mm/swapfile.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
 >
->  MEMORY MANAGEMENT - SWAP
->  M:     Andrew Morton <akpm@linux-foundation.org>
-> +M:     Chris Li <chrisl@kernel.org>
-> +M:     Kairui Song <kasong@tencent.com>
->  R:     Kemeng Shi <shikemeng@huaweicloud.com>
-> -R:     Kairui Song <kasong@tencent.com>
->  R:     Nhat Pham <nphamcs@gmail.com>
->  R:     Baoquan He <bhe@redhat.com>
->  R:     Barry Song <baohua@kernel.org>
-> -R:     Chris Li <chrisl@kernel.org>
->  L:     linux-mm@kvack.org
->  S:     Maintained
->  F:     Documentation/mm/swap-table.rst
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index 543f303f101d..66a502cd747b 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -2020,10 +2020,8 @@ swp_entry_t get_swap_page_of_type(int type)
+>                         local_lock(&percpu_swap_cluster.lock);
+>                         offset =3D cluster_alloc_swap_entry(si, 0, 1);
+>                         local_unlock(&percpu_swap_cluster.lock);
+> -                       if (offset) {
+> +                       if (offset)
+>                                 entry =3D swp_entry(si->type, offset);
+> -                               atomic_long_dec(&nr_swap_pages);
+> -                       }
+>                 }
+>                 put_swap_device(si);
+>         }
+> --
+> 2.34.1
 
-Chris has been very helpful and insightful, I'm glad we're working
-together to improve SWAP.
+Thanks.
 
-Acked-by: Kairui Song <kasong@tencent.com>
+Reviewed-by: Kairui Song <kasong@tencent.com>
 
