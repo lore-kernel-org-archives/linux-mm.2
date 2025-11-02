@@ -4,60 +4,60 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2764FCCF9E3
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 20:54:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 64FE4CCFA02
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 21:09:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E15478E0005; Sun,  2 Nov 2025 15:54:39 -0500 (EST)
+	id 92F3C8E000A; Sun,  2 Nov 2025 16:09:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DED4B8E0002; Sun,  2 Nov 2025 15:54:39 -0500 (EST)
+	id 907378E0002; Sun,  2 Nov 2025 16:09:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D03148E0005; Sun,  2 Nov 2025 15:54:39 -0500 (EST)
+	id 81C0C8E000A; Sun,  2 Nov 2025 16:09:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C173A8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 15:54:39 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6F384BBF00
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:54:39 +0000 (UTC)
-X-FDA: 84066870678.02.E5E1D22
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 6BC044000F
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:54:37 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FAL7bBL+;
-	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 6F0118E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 16:09:58 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0BE0513BF40
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 21:09:58 +0000 (UTC)
+X-FDA: 84066909276.22.D111556
+Received: from out-183.mta0.migadu.com (out-183.mta0.migadu.com [91.218.175.183])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 1C55E14000C
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 21:09:55 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BCSFaMuD;
+	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762116877;
+	s=arc-20220608; t=1762117796;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSoLTMn7D7wRI+KcjGWMGJNZbmIDanYc/C6CsZGY6C4=;
-	b=reYZff+pdM/F6Zve8LSeiZozHttH7Z5sXF6CkudzXyjtQ3jDQxCRRdpE3T8C2fHhtYs1Rr
-	i7RiAWKKEPTqMLQ6vl51SVDggKtEnQ61hJ+ss+0mNPJotPsgM1A/FqqtIH9RM6V+QnF+3j
-	+vr0mJGjjcKLiu0rbjj3FStKhVz0a10=
+	bh=gAXmeX2vGz54XSwHtOTFcyqmVp+LVbdN0KySc9/XxCo=;
+	b=aWerUHF2D7RsVBVTp9zIN52ZUtXF9jP12SJzKbuVXnEiiK364GG9Q8auXpeOGk2e46VR5W
+	EPO5lRDSb5RIFSpeNdm0KfCwBT7cuQBGTA/XzE9ZoE3UUPbW8RKaGPfXiiRTTC+y5ZxyOr
+	n+SFhFDZVuIlLxTV/Qq3wF2thGM7TcI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=FAL7bBL+;
-	spf=pass (imf17.hostedemail.com: domain of roman.gushchin@linux.dev designates 95.215.58.187 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	imf26.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=BCSFaMuD;
+	spf=pass (imf26.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.183 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762116877; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762117796; a=rsa-sha256;
 	cv=none;
-	b=ozroIIyie/PZLA+Cjmsft1gdejhtKbLuTGo3T/Nr9i4HQ+8yf15Ui0/F7TcJUdnI0z0nbN
-	NAtJbcfVxOfzwlylP8RYkkU+ULJ0HahIYDWYfFsSoUh/x+EoR5IfCSX6wcQwEVaKy8Tcf2
-	9fU6iJCTB9A6wE9EOFbYLO7oysGfhcE=
+	b=y3V3df8/00c1wHxKd4Coc9cdcrf/c5OdzYOPJ8aJc3qkYbotzK+1Y0p18u3icNr8CahI8E
+	DK4iPqZullJchWewm+j1ryEiI+mpw1cGAbM1ZwZSuz+UKbaiHufKhh6+UZ3IBeSDpWtrSM
+	ZNDDGHb0mGh+7kWsCVOQQe8C+Zpj+Ac=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762116875;
+	t=1762117793;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=vSoLTMn7D7wRI+KcjGWMGJNZbmIDanYc/C6CsZGY6C4=;
-	b=FAL7bBL+C4exDYR5oCnLVtwAWj+9G1H9ZgsdMgNY1fT9EkYaCt1Oyygsfg30HqDWIOTChr
-	Drhu3O+o/jfQzjrcQwvyWMuxQ1W4mQNaTYonOereiy54CtofgwkshbhVvMobBUBKFZ4/6d
-	EroT4lTO5LUCSggGDgSv6KlmZ+MNLtg=
+	bh=gAXmeX2vGz54XSwHtOTFcyqmVp+LVbdN0KySc9/XxCo=;
+	b=BCSFaMuDWZvhGuK3M8jq73iXeeCw++xgqxFM0RIJ0Q7sBeTHlERrN2x/JruaS9YJ7nwza9
+	h8gqats07cT1iWF+GU7ixYeWQ1af+8OTumPHVZQv16AYEYIGEGDXeNSyW3cwdckNKSigCR
+	N6U0l8Q6V03D9uy8bYqtQaixkQHeODc=
 From: Roman Gushchin <roman.gushchin@linux.dev>
 To: Michal Hocko <mhocko@suse.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>,
@@ -68,24 +68,25 @@ Cc: Andrew Morton <akpm@linux-foundation.org>,
   linux-mm@kvack.org,  cgroups@vger.kernel.org,  bpf@vger.kernel.org,
   Martin KaFai Lau <martin.lau@kernel.org>,  Song Liu <song@kernel.org>,
   Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 00/23] mm: BPF OOM
-In-Reply-To: <aQSB-BgjKmSkrSO7@tiehlicka> (Michal Hocko's message of "Fri, 31
-	Oct 2025 10:31:36 +0100")
+Subject: Re: [PATCH v2 07/23] mm: introduce bpf_oom_kill_process() bpf kfunc
+In-Reply-To: <aQR79srdPzyUT9_I@tiehlicka> (Michal Hocko's message of "Fri, 31
+	Oct 2025 10:05:58 +0100")
 References: <20251027231727.472628-1-roman.gushchin@linux.dev>
-	<aQSB-BgjKmSkrSO7@tiehlicka>
-Date: Sun, 02 Nov 2025 12:53:53 -0800
-Message-ID: <87ldkonoke.fsf@linux.dev>
+	<20251027231727.472628-8-roman.gushchin@linux.dev>
+	<aQR79srdPzyUT9_I@tiehlicka>
+Date: Sun, 02 Nov 2025 13:09:45 -0800
+Message-ID: <87a514nnty.fsf@linux.dev>
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Migadu-Flow: FLOW_OUT
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 6BC044000F
-X-Stat-Signature: bj8qn4dkn9c3jhq3ti56d5rpn6jeumaa
+X-Rspamd-Queue-Id: 1C55E14000C
+X-Stat-Signature: 61fgwj9zt1mudaogpfradm7wdf4de4wk
 X-Rspam-User: 
-X-HE-Tag: 1762116877-26051
-X-HE-Meta: U2FsdGVkX18BXj8VPECWaa7IMbmGFhK6LedGiwy2uGN/HVRuz9sascyr3V5+ec/d4WEJwcIX2zxzzxvK5jEjSrPflyUWyTEJUNW3s6fcaM0waWe4TyPf5MoaQupLmyXvq/HguZUDj5qkiatGLuX3QHqJeSDT7n0v0mgzbbCmz25Kd2vr9mIhw/kehZZEHysRhqc0MpMYC1iVUxU+/qTH0r5uyBGY4Or7fR288hD09R8SIDjnCjApBOUwAdTpKv+N+3LVIU03li1VgF2nB0eW0s6Kb5HqueBN2oF09HufH9UFsH8r/mpV9SE+o+jvBn0gve1uzuaerZMGU85lguM9zSIV2+0hUWGmMdYGeCPoTMYyIkLToHR5IdQbYgQtivXz9vDpG6gF453c3LAlI7RUyLMRrhqMMj96UTn3xi7CgVOS8ILa1SY1Uf3lgxjrd9a0FX78R4k2ET1Qh2FvcGvpX9bbXH3zhyh12A+PD6FFKVJVy5PDZQ23noc3UNOjN83A+7gyfvDF41GpkW4BV/+ziWJHP1mxiSK9MbLdZpdGR5MnTTTjyu/PnupX6pOTAsO7k2XKJ/e8U1OkuWghLybz7W6/kYP0YuH3EuEYz9AsJNLM7/Ju91hw1x6p24Y+148LjUqh2Ud2tAiLJM68l/77ZHiYTziVaFsU4XLZEMivRgfFB39gZfB+KPG90V48L8dtnp1DqaCnq8j0oScoiD+wB34QIhhBCjj+slwhVIfEApXWcoLt5t/XEdnBjzB5jfkmMTMnsluI5HYTrF0HIhxepMkHk6q4PUrZqpBHuzrpzvuV8+96EsgT823XKgI4pIxWyilpUhYbZfdmnJ2lDRQ7rvnjB7wmoIDjTRr9eEmIYwxo5QFVjKXneY5q/2001sxpN7Bdd7fXeZOCh2zF9J6bqSSHxTnh/8g4q9v1uHY8EhQpv4YKJyxblzQPUbaWEJHT87tLppX39v/RJ3gKLFb
- RbFYiuNZ
- taq7oYICO1KbOYksxPT41g1E71IvmPu3r6qIN21mK/FwAkHCMSnX+ijBVPwWTq3drJBBpdZ1AnU+a410/eqdiOmVlPj+xBMaHOsU548kOH2zI8kSNrGehMg6axFEAJIZr2j06RioC/VT5u/6l3mAzWLI96G9Jc5fVbgOX5Y8t+NZGIyOh+oGDkiBEHzHwvf3mw708b5jNgJciTylAiH/lLq5dJlpoOTDq2Xr80lbhxT3f8S6UqkaZ518hqQ==
+X-HE-Tag: 1762117795-140017
+X-HE-Meta: U2FsdGVkX1+EBvMMptFhUOf+LFzNZnqP4j8wnfsQZykLUr5VtgerqNOXMdfpN08dCJorajzP615UqK2G/DvL8aZhvLBNaw34NYhPQ55mA0jcrJdb/czpanlR+KRbrVljM31rV8vyLrJhsMPtRK86hTwTa7bYwGQ8ExuUPISK1eQtp9xLVUw9NkmCpXHuJNt9pMzRvjSgT/G+RCUN3JQoFkev148+1m1IWC5rrn/1Dv3WCLgHcZ/EWv5XLJ5dvpOWVzUYaUn4QEwkep0+VQPctZLBBh/Ww7BaR9ZmL34LHixRVurkMrBYMqkmvNfPmQx0PIRWAgHtf4czU4kF9Z0KuPH4riZtIk9FmVRaq51/rID4ZZgkIsT91EVOvtOrcVHRiEQm8suLScmbIQr1lHEZJzt5tHt9TtjUXvKKGYi+x/5e0SXMEI5XOp2onA+QcMLZ9ForvZiPF5Wj8zKlxRq4hEgLch9SYk+dPRhNHUGDeQnWDP4e2l+N1XIBApuBoMtJ3tv/l9rmGjrJXL6CUfbisOIKlsnzTbO4tVKL9s4Ruq1iKsP6gLdbRwXHRRDle1fGpnqs5bhRpZAzyskSJVVHnvW7nJWwNOwu/EDYpJx+tRqV5eF+xx9adlrOtQwhkSaurjyVjHblihQDPSj/JCIyXHgGEmOqTt34P8CY4RTV7uHlGNVcVYXk7YnUSwf7/voO5AV+b4vcV0HEpDw3xrFBGKvLahz8zoeHG/9SFcNrIRngik3POUxauW19EYlC8GlssK9mcyUDa8Z5SdLj5+PGrW6/odJD7mN2e66v7Xq5R3QXhIeVOnBKo/U0Wo0ShngEh/qYlwd094CFpsEdxiI7vof/DewCBBTvFMDHdTSjtxLgu5+l+P/tC6ZL7RpJPciemDWUGjplQLTNGA+duqhM4ILTMPYteOaZkU/BVsD25FuRJeppeTYj7WKD+1u/2/1V/fGlIjr+Fdq98v7XtsL
+ lOeh3hTB
+ N7aRlcBK0qLA7zYcmOxFLfvP8uyYUGoh77cz2ubL91zlqHK+jT87ePO8t3mxLNwwONTvMwmuy9vT4jjjtoLdVWabB7foSJLd+AFQCVLLfhGN+uJsVvj0YI464rlpxp1Ly4hsVO8w0W/ur8np8jjoc4szWx6ClhYLkdEuhg8bvgDYxgZIBGT2BtufMlRTq/nxbFwirFJo5noO/4aK6AaJik2SiTJM9so6wqsGK8FK6c7PO/GqwbFM6nfbR/1M4jqfGavOl6UQfDLYAG8s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,36 +97,27 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 Michal Hocko <mhocko@suse.com> writes:
 
-> On Mon 27-10-25 16:17:03, Roman Gushchin wrote:
->> The second part is related to the fundamental question on when to
->> declare the OOM event. It's a trade-off between the risk of
->> unnecessary OOM kills and associated work losses and the risk of
->> infinite trashing and effective soft lockups.  In the last few years
->> several PSI-based userspace solutions were developed (e.g. OOMd [3] or
->> systemd-OOMd [4]). The common idea was to use userspace daemons to
->> implement custom OOM logic as well as rely on PSI monitoring to avoid
->> stalls. In this scenario the userspace daemon was supposed to handle
->> the majority of OOMs, while the in-kernel OOM killer worked as the
->> last resort measure to guarantee that the system would never deadlock
->> on the memory. But this approach creates additional infrastructure
->> churn: userspace OOM daemon is a separate entity which needs to be
->> deployed, updated, monitored. A completely different pipeline needs to
->> be built to monitor both types of OOM events and collect associated
->> logs. A userspace daemon is more restricted in terms on what data is
->> available to it. Implementing a daemon which can work reliably under a
->> heavy memory pressure in the system is also tricky.
+> On Mon 27-10-25 16:17:10, Roman Gushchin wrote:
+>> Introduce bpf_oom_kill_process() bpf kfunc, which is supposed
+>> to be used by BPF OOM programs. It allows to kill a process
+>> in exactly the same way the OOM killer does: using the OOM reaper,
+>> bumping corresponding memcg and global statistics, respecting
+>> memory.oom.group etc.
+>> 
+>> On success, it sets om_control's bpf_memory_freed field to true,
+>> enabling the bpf program to bypass the kernel OOM killer.
+>> 
+>> Signed-off-by: Roman Gushchin <roman.gushchin@linux.dev>
 >
-> I do not see this part addressed in the series. Am I just missing
-> something or this will follow up once the initial (plugging to the
-> existing OOM handling) is merged?
+> LGTM
+> Just a minor question
+>
+>> +	/* paired with put_task_struct() in oom_kill_process() */
+>> +	task = tryget_task_struct(task);
+>
+> Any reason this is not a plain get_task_struct?
 
-Did you receive patches 11-23?
-git send-email failed on patch 10, so I had to send the second part separately.
-It seems like the second part did at least to some recipients, as I got
-feedback to some patches from that part.
+Fair enough, get_task_struct() should work too.
 
-In any case, you can find the whole series here:
-https://github.com/rgushchin/linux/tree/bpfoom.2
-
-And thank you for reviewing the series!
+Thanks
 
