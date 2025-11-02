@@ -4,118 +4,151 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C93A6CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 14:57:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C40ACCFA02
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 15:01:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EB6578E0007; Sun,  2 Nov 2025 09:57:50 -0500 (EST)
+	id A2C558E0009; Sun,  2 Nov 2025 10:01:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E66FC8E0002; Sun,  2 Nov 2025 09:57:50 -0500 (EST)
+	id A042A8E0002; Sun,  2 Nov 2025 10:01:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D7D2F8E0007; Sun,  2 Nov 2025 09:57:50 -0500 (EST)
+	id 919958E0009; Sun,  2 Nov 2025 10:01:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C158C8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 09:57:50 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6F8FA12BB49
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 14:57:50 +0000 (UTC)
-X-FDA: 84065971500.21.B7804A0
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 8C5E6C0008
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 14:57:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VeH9R3IQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=visitorckw@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762095468; a=rsa-sha256;
-	cv=none;
-	b=lw6ulssisp49crZjGGwoXWBEmb7YyM8eRgsY2Xwms2Ok+Ea1LwO6Ar8E4v97VmkU3U2FES
-	0ELWJDWYgChyskUaTpF0WxwQdfN35xoU+fXRRPPg130xcNkRm93MIpxsnmWSMkRVmmq1Re
-	J8shNfwj0jl2t8qf4HwP1m3ytbCY8V0=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=VeH9R3IQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf28.hostedemail.com: domain of visitorckw@gmail.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=visitorckw@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 7E8B98E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 10:01:49 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 3391D16086A
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 15:01:49 +0000 (UTC)
+X-FDA: 84065981538.20.5D5188F
+Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 2742040016
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 15:01:46 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=TDBBXL62;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="1 LVX56y";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf12.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762095468;
+	s=arc-20220608; t=1762095707;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=EW+evJrk5p1TwCCxbQG/bGH1p9PSRSCoapL/P+6NYsg=;
-	b=4DVSee8sJOj8POuLwTDXknAaAaKMidpSmpaPs6fgvX2n/kGSxJ4SouMkhv7KfS0rd/QRWj
-	821dgnhy2Vn+dzTuXHIuL3gzp/toXwWvinLB6+CwjHVh/cs80kkWZ793PkV61FM6j4+Cfl
-	V8aeREgfOBaA50cxotRdGAKtyJ7wr1s=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-7a74b13f4f8so2494023b3a.1
-        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 06:57:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762095467; x=1762700267; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EW+evJrk5p1TwCCxbQG/bGH1p9PSRSCoapL/P+6NYsg=;
-        b=VeH9R3IQwMUBOqFhKVc7S5hE+mjJa1uXt+CrmMKSmi+WvWQXhLsrXAyOuqOHdXPRQF
-         bAWXBsuxxSa0nXaquTjTttIQIVdruubOnJLULg8LzYdkzmIN/Lvp+kX5cdnJWwZ+IOBt
-         dgAs3styyR0gQCFZsrQ28hKeyzIY9dJ8SpnxwJV04ZaoAn52yvTF2CiQkgbRqkmcEW2M
-         kRtJY3OAj/SMQGFl6hA8FpTH6DVpksoMMlkNOOlt76x8Ion8tiCU38HD5525sRLZwVR3
-         Dv3hg0lWRiRYs/9LaKGUrReHlsmu1aJDEffvwt5P2cbJP82vI/s2ASval8JlNtOM69b/
-         y7IA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762095467; x=1762700267;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EW+evJrk5p1TwCCxbQG/bGH1p9PSRSCoapL/P+6NYsg=;
-        b=bo4PZHcRIwarRdpEt08wzWPvXkZpxoXY9Cnge8voIN/UqJM7nMBwSPx8ubMVdP/25V
-         MV8lhJD5ws4csxhBoSjLNK2AXprlbhXer043khJtaHmL6Pose9BG3CF34mWnnXW7TjI+
-         p622Uaov71kak3JVuFqQIsUSg5gQGWnVaVjuUHEIM9apnIAWH9eh41fh4kuqdBWuMHfi
-         OC0tTBx87j8T03mp6/w/1Oth0dCcm7F5ACRlZjER4X3EvwraRx5mjkbiM5j8BWUOrX+y
-         IJbCOLP0TH16OUOw6nMEMFJ+TgQpZl0QcbDE5cSxtHlkBEkeoJxG/QueLU1feJgevitV
-         b5xg==
-X-Forwarded-Encrypted: i=1; AJvYcCU7iJot1UQnaVGgFBZN1UblZ6yewno3MlyGjr2YSDBXBZ+mDJGmL8l5fKNOuz9BqRKjpRWLSBkClQ==@kvack.org
-X-Gm-Message-State: AOJu0YzRV+Sso9/7P7M30ZGe2gqmK8KqSPy7YkJ0eCz4ScwCXB7Eo9X3
-	FcyOeKl9AiIlF1LUbmFDxKB0g7aJtRmhRkgycIG56/viDiiNoQFILa4y
-X-Gm-Gg: ASbGncuN4atPTrFkMjpkX5OPIYnezmUGpD2dk1JeEagKZ6/0V/gFNVaS9DrfXyNmWqW
-	Ym981l0nK7Z9QgXQ0xf1vCjhReZdGUk1cZ4qKYa0Z8oxITAJb10grtgzNJpKdvxyy81qZbTP+1E
-	xNCpWEyrQju2Q0WrjCsG10zmsqaZGt4r/NYYCGLJKkIqYXYGm3IWcmwMuNqBbpmCAcVhG/VYR9s
-	SpGfrrxOkFbrnCYfvDAOYiRzULyqvcsA0G4H3MobQlhhAGwj428CG2hZcbLWD4j8JycQ1TLf8qg
-	Xk8kV5JBVbXT7PNmOopYAQB1IhODWoL3pzct7YVw5cA/kTiXC2A2J/kqtXA5Fli0xjWqObc5iS+
-	UVG6wvwUpLRPKpI44dGWZin3A6kBs7YO5oNBc1Nkr3FRQ90uXMj05IN73p3mFTq+Rd9+wwsTp5E
-	Ac0rh9aZ+eOHfM3PGWo0kOFZrLWw8XWV7dBHs4laH5+relhtQISJs2SZsYaQEm0RvmnS4=
-X-Google-Smtp-Source: AGHT+IFU2DNnYwsIyV4r7s9YtpZ7QQ1tNNIWx6HST/ojw1e0uIZWMRFwK+HdG4jzTgIZNpdYhvzBag==
-X-Received: by 2002:a17:903:2441:b0:295:28a4:f0aa with SMTP id d9443c01a7336-29528a4f2a9mr121037185ad.43.1762095467244;
-        Sun, 02 Nov 2025 06:57:47 -0800 (PST)
-Received: from google.com (114-39-189-33.dynamic-ip.hinet.net. [114.39.189.33])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29556d61d85sm54355065ad.68.2025.11.02.06.57.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 06:57:46 -0800 (PST)
-Date: Sun, 2 Nov 2025 22:57:43 +0800
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
-To: David Laight <david.laight.linux@gmail.com>,
-	Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Guan-Chun Wu <409411716@gms.tku.edu.tw>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 87/91] lib/base64.c:36:28: sparse:
- sparse: Initializer entry defined twice
-Message-ID: <aQdxZ_bmyfWTEvW2@google.com>
-References: <202511021343.107utehN-lkp@intel.com>
- <aQdfzCq2JH5QX9AH@google.com>
- <20251102144251.7f0fa78c@pumpkin>
+	bh=0d6OEFnYJ2V3XAULn/TZmZlWcybfhiFmQJo6mbyVvXM=;
+	b=g09/qBsiq2oYX+wVUy6vexx8yLSkGePcc0yy0S/LNwSUVME3PIAiqiRw707cVXhdgZRgbd
+	0ID2+2qMWV7Wcbc9pqaXNReS+//vZMsJIPg6ShmOJRmWHhtjXcc4xmR6Z9fjzM0zpnbX0i
+	AuaKdUaxsC4FGOPCn3Sqp814OUWSzYU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762095707; a=rsa-sha256;
+	cv=none;
+	b=lrymon908cpdnHgSSpEbF4Hoc4CO+MvIMFSTUrrMCcvdAqX0ZuEKkita9ioivngD01Py4t
+	/oD+v7BTzq+N2XmDnPu3dAEm/0XBw2x12YU27oJeYiR4HQBiZ7jJL7wdGzx250OGAspWcO
+	wRbRObhIX5xR43QF4JKavxDIz+SGTUU=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=pass header.d=shazbot.org header.s=fm2 header.b=TDBBXL62;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="1 LVX56y";
+	dmarc=pass (policy=none) header.from=shazbot.org;
+	spf=pass (imf12.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.150 as permitted sender) smtp.mailfrom=alex@shazbot.org
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 5A52EEC00FA;
+	Sun,  2 Nov 2025 10:01:46 -0500 (EST)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Sun, 02 Nov 2025 10:01:46 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1762095706;
+	 x=1762182106; bh=0d6OEFnYJ2V3XAULn/TZmZlWcybfhiFmQJo6mbyVvXM=; b=
+	TDBBXL627U62EbSvE9rFypOnDsF59crhLTr4X2QKEvliSdqCxPjUyGG2gU1rfyy6
+	KFAxwA1gTIMopje4193uHXPRW+ufV9dJZdKqHBRfwc/N4IBiaOR98b4eAXEH0znN
+	TGEm6RPZFvDOWz2t1+XG+tu8SlR7C3lIquO0xndqYyPCLJ47ZApUOwrZ+fL1v05Y
+	UO6kQ6QwKw94v0SpG2cVHhgdcGhgAbGr8yyVtoD/NNB4QwWq9iuTPgKYtfwDhnMp
+	zc4DNh9MkV7/Al+RIrs1DZduD58Ug0u+UsN5KgH6wUZEtxvKc9YwIHTm4hVd6tSs
+	0CyeiKlKqOJyqaNciuiXOQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762095706; x=
+	1762182106; bh=0d6OEFnYJ2V3XAULn/TZmZlWcybfhiFmQJo6mbyVvXM=; b=1
+	LVX56yfNDSpIjbdRvoJO/pVaXhalPLO9zDUW46RhJ+NIFwjTzsxKz0U4lLijuDiE
+	/J3coBRe5aiRdAgOPuppxezWF1Kn0vGtaRJ50DbviHDspFXvN4/CsZxDPYFdrTQE
+	rQTnMDPaU17wxuuSeRSLCIFoTsQyLhm25SgJgE5MCtd6olWZ3wnfxKjXIlHhXu8w
+	AAt1cjfsRLEfHZrrZDRyeCx3bzQMm2DgNgFc3x8D1rq3/SGQUf0gVyKY6ZUAHtAk
+	GMrN0tWn0OhqQOH1gi2ycbisP7rKgjkeGTT6oLypSJHXOoGRXO+1vl0LQkXCAw2d
+	qLCgYO+qQmzuvtppNv+Cw==
+X-ME-Sender: <xms:V3IHacICu8ulgNi7o_gOHA7n7OIXpJl_EkrwhFpTuoWMNbSElXRs6g>
+    <xme:V3IHaS_eEi56epCAR71Ow3AZO5YiCeI-oW6OtskAXSaFLFE3lJ3Znpd7T6hKXX39l
+    jB_EqBTEDIfpaRz-GdwttQNDa_LzOaDIwPhNt2bHOF7kJ6YFJwVHA>
+X-ME-Received: <xmr:V3IHaVpqiAR7FIyLA4s1kUh8xeOXyBaoUionVfff_VNmwkaMImllMw6SCTs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujeehheeiucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
+    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeefgedpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhg
+    seguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrug
+    hkpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthht
+    ohepjhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
+    hlrdhorhhgpdhrtghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgt
+    ohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
+X-ME-Proxy: <xmx:V3IHacPvm6yYAGFkJOoCwJMSLlRkDxe2mP1wwPGKFs_yQdMVw0EBhA>
+    <xmx:V3IHaXrLQtlZj7fWGRlOfeH0EMNmKki9CCwP4XF51mbUGiN7MdHcbQ>
+    <xmx:V3IHaTinpkeptwnvtlt4p2ISS1nkQs5QM83RIoLIlJ1Tl7W2DA4-lA>
+    <xmx:V3IHaY2_kf5P8v7ucB2Tj-fdZ8lmkzXzEpiEchjKzUpwizU-U37EHw>
+    <xmx:WnIHaYlbGcSJfLIFOTNM9Y5mg_T2bF-aTHDN-65hDt2_atGb1QiAIi8U>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 2 Nov 2025 10:01:41 -0500 (EST)
+Date: Sun, 2 Nov 2025 08:01:37 -0700
+From: Alex Williamson <alex@shazbot.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+ Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+ Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>,
+ Marek Szyprowski <m.szyprowski@samsung.com>,
+ Jason Gunthorpe <jgg@ziepe.ca>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
+ Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+ Alex Williamson <alex.williamson@redhat.com>,
+ Kees Cook <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+ Shameer Kolothum <skolothumtho@nvidia.com>,
+ Kevin Tian <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
+ Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+ iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+ linux-hardening@vger.kernel.org,
+ Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v6 10/11] vfio/pci: Add dma-buf export support for MMIO
+ regions
+Message-ID: <20251102080137.209aa567@shazbot.org>
+In-Reply-To: <20251102-dmabuf-vfio-v6-10-d773cff0db9f@nvidia.com>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+	<20251102-dmabuf-vfio-v6-10-d773cff0db9f@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251102144251.7f0fa78c@pumpkin>
-X-Stat-Signature: 3zg11wf1b8puz3gpqprrnbxsfiz4zt39
-X-Rspamd-Queue-Id: 8C5E6C0008
-X-Rspamd-Server: rspam06
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: g9wzukpzccy7dss8rzkiimmrhhi36ds3
 X-Rspam-User: 
-X-HE-Tag: 1762095468-388364
-X-HE-Meta: U2FsdGVkX19cswrn/NiG/EJueT/lacRURaTebi2MPd62vB7UWhCRgJy2du0NYUj46UTkjZAPPJcm1bK11/WkKYMCKAX2RBEiBIIw1+i/hlSNXnfvn9a3UFq8Mr+05fftI6fuIPFuXvjO+aDULAYq+AwKqkh1VeDDt9s7VhzRElpBpDyvi2qklpwKgg/Y4yPWlR0YgySvJ8HVaicSJuQDDBm3U3NNXlaJYGsNOQfHpa2m3DY/aTyhzO3U+6NG2czfayf+j3ESJO+M/dl4Po3qAVv8jdGRokpb8LJdJgUYtVCJQHjn1rpN7Tp7bTa70ZvpVugpvs3n1U66K9cvS4f0hdvQK1IYC2VGsW6Jg7ErZbTEf5RkoEVpey2qJz9JbqS4CMQEjNGLBWO8KeIHkOZxXs0VrhfJFE3D3zYjfHK6O+v36ZNWEF/OXPBH68UiLe4cbaXa9cbd4TyUoS17G0WUZDEYhvvbQRjjr64g9c+VLvotKtrrk2DlNzaNC+A3YsUlSBkvdyuLO4GHRdQk7DRMLclPe7jx5xDqt+yM/lYjgZ2VvE8wMaXHGAxuzmXdziSjCIyatuEcSMmXHgLzaC4UIefp3DYlR35SHnSrik4wJyC3prbYrn85BxD0elxkTiGKiYM5zEIqXyZtJ4GFoW7KqSF9KbQ0eGSqOUXa/2BuMseBnd3ReqL1/5my7921mB0eEWaobwTfInxgJm/HkeReT/J4IhVPP6B18vvn0Dus8lbbCWnSqp2NNgyRQs2Q5bG1hTqMaKxwTiBpBr8VHOAxkSAzTtM0mcI1OMnHrB6y5/tfOHl6TeH7ZiwDARJ9Cczz7MX6ztCgcOY8c0O56jppRj9dCXs787/JAxL34v3HLYM8cb8FUwKvcIBsUH5/g4+ToTE4qVEhNXiHKFYJ2bRe0zKQeDcNM9gJKsfiFPRZeSmF6sSGinByZfFRj3Xwq/kphT/d18Y1Wc8ASRVcV/L
- 1VyyW5tI
- QBj1UjqvIdTQqN0if01oN1j5oQMYkYZrkeAeCf9S32ZaewZuJUWW1kaAGO3g2UZmJ9qLOjTHMMeBUQYMqsngzHgSRWxtwY+D4EK3v+PCS5RE98VuGKago1uLJwSzOjnL7qHaCglEOD/85YR4APFMF8AZjoc6a5aKEOiX+8I7ajklh6q2kcpHTBW+nHqCTYrIW2WVTXQ5fyaNE+ri1yQ9+ErIE7bzjFIylbunLh20gpoWgMyd5Rqj3wTqh/FIIogHBh2GeS90ypNmz3hIxP4jiQNIYEvLJaT1CNagnxtnXtmGx4Z++IdoQUoGPELnBBrf1bXXj6YCGegV+IrSKZYNjOrKkayHATMaPhXtxQ7QMgt9RnbQvUX+5azvvJJTvjYiE46b3ys44ubJYrRkyyxT3UHIBzfCymgdkHid4y4QHH36clyboA+yIinAfWCzHSdYcYxryWdiymeoKyoVKq65HxT39JH2VZpP4jV6Zs8mwTIFWykowq63eW4NZcJ5UYRqSX8Fnsdwj3gPax1qZphPnSzDhzv8NjJd3saFym2oIUaLro2fiIpK4omgSJyGHnM/GXg8Khsrf6IrZnUauMRWuVOXqVvdn2vPyy2yFksKY6QTZ9vo=
+X-Rspamd-Queue-Id: 2742040016
+X-HE-Tag: 1762095706-520163
+X-HE-Meta: U2FsdGVkX1+Q52Uxw/mEgPJJCYVHme+k4vXEBTNKzzSZNo/FpYLgw25NTBk786DgKb5YcQA5T9StWeDj6YQuc+8KNvIakfpl/R6uraTWNThkAL+w0xcKdQEBv8TNl/85NHMItDa3dXkKRaoFekJE5ErIYf/MhpWaHQ5ZWslCuJrYkzIF+SJ97YvehssxmS/5wqwPUoKUUDurdRYyAcO2MFId+farE8glKXKFmBvvGQ4PGpPuRPSHLOAc4gWTYydhdtB235XcULE8vvs09igieb2PFlzRe4fPI7hr4OeApW+1UfMXWmyslA7YnaVVZS94I3dm04O+1e3QwWYeKt05TD3Nts3ExaxctGgF60rJMAMLDa//9FQMXIKUSxKZzJ3/CLvaUixXQxmM0gvBR3pzr+XonB6bVN9d30DJwlPFYVjvl+qqOcyXFy1neyBvllRSrot6H/0uTVak2jfX6KJVJFUCe99iwmiHn88ebQRQF1g/PFWRy/RErLcM0k4y1CI3RqhQd2+f9+3eub6+zWzubQJcmTzb7CCxiNKwOd/BEiL/xPT1WWuAW1qpknPafrAp8/OT2q7d9ViPxnwkobeVGiQ7k0uE3qeuXb3XZs0KCjOizd6jcKYaPYcxFcuoIE+HikG1GDTzU3lgtCIO7JeF8YN/5TItFpwCV0QE2YHqOe73gI4ZlVU0VCuu+BWh5ZpQ2+DFned+V0cmH/idPLEhb9Wh+dtJhSGdnXVRBG8BqWS88rcgn7llBMW2xGA4belw3OxdjtUQ+dMxuqnu6OqenpRQDorAInoGhzMb6KalLaSNrvnuVNThxA2Ek07w17j6x7N32SyCaVdNRY6O1PtpPE89tJ9Xg3X0y42nbRTmJ2kSYwl0cJDPolM4zTPbVMbVs+mI4hQnMetThSv1hBUiWMsDg6egWcV4XRAX+XtQbUQVhIW1ANTOkGnRYGuEv3tToxA3sgMjKnK56DRwBfj
+ Fa5yzrUn
+ ggL5OCgHlC11buQJxosfYdnMy9k6TrMWwOOQESXSMkkK51Upu0Uf2riE3TIOroFnDAG6U9SMlqs3jKNc2TLdxBXDD2CPMmMotNjvtKu74tYLZxWYepR2vaLNN3YrETKsvtChcJyJ4BZZU5uHwOMHP2WDxswveo9AUklE6/q06fo6wWM3N1ApUTz0G5RJUkgs1ePb+ohqSTrwms+ozpVHImJiIAJKdI13PvpiBGP0IsPJz09ntK7T2WCt+/0mpLFK0EVtFFGCDp2zcPeZLDPISrVyxD4DjXDMtt4vWe5NqXW5P3hGGp3l9qqkmoAYjkuhBMeFN1MzvvDfHVfsWngAxQEzeGpqooNuLZZnTKSKaqPoDSayiSBj4RGextZiWxCvEhUFCbCYWvQPwp0s=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,148 +157,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-+Cc Luc Van Oostenryck for sparse discussion
+On Sun,  2 Nov 2025 10:00:58 +0200
+Leon Romanovsky <leon@kernel.org> wrote:
+> @@ -2391,6 +2403,7 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>  				      struct iommufd_ctx *iommufd_ctx)
+>  {
+>  	struct vfio_pci_core_device *vdev;
+> +	bool restore_revoke = false;
+>  	struct pci_dev *pdev;
+>  	int ret;
+>  
+> @@ -2459,6 +2472,8 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>  			break;
+>  		}
+>  
+> +		vfio_pci_dma_buf_move(vdev, true);
+> +		restore_revoke = true;
+>  		vfio_pci_zap_bars(vdev);
+>  	}
+>  
+> @@ -2486,6 +2501,12 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>  			       struct vfio_pci_core_device, vdev.dev_set_list);
+>  
+>  err_undo:
+> +	if (restore_revoke) {
+> +		list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
+> +			if (__vfio_pci_memory_enabled(vdev))
+> +				vfio_pci_dma_buf_move(vdev, false);
+> +	}
+> +
+>  	list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+>  					 vdev.dev_set_list)
 
-On Sun, Nov 02, 2025 at 02:42:51PM +0000, David Laight wrote:
-> On Sun, 2 Nov 2025 21:42:36 +0800
-> Kuan-Wei Chiu <visitorckw@gmail.com> wrote:
-> 
-> > +Cc David
-> > 
-> > On Sun, Nov 02, 2025 at 01:36:16PM +0800, kernel test robot wrote:
-> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> > > head:   97751db460a7c6988b2ab988d9889d4309f9cc8c
-> > > commit: 5b693a7ad2acfa88e8ab0a047335ea4c94fecdb1 [87/91] lib/base64: optimize base64_decode() with reverse lookup tables
-> > > config: m68k-randconfig-r123-20251102 (https://download.01.org/0day-ci/archive/20251102/202511021343.107utehN-lkp@intel.com/config)
-> > > compiler: m68k-linux-gcc (GCC) 14.3.0
-> > > reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251102/202511021343.107utehN-lkp@intel.com/reproduce)
-> > > 
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202511021343.107utehN-lkp@intel.com/
-> > > 
-> > > sparse warnings: (new ones prefixed by >>)  
-> > > >> lib/base64.c:36:28: sparse: sparse: Initializer entry defined twice  
-> > >    lib/base64.c:36:28: sparse:   also defined here
-> > >    lib/base64.c:37:25: sparse: sparse: Initializer entry defined twice
-> > >    lib/base64.c:37:25: sparse:   also defined here
-> > >   
-> > 
-> > I guess this warning is triggered because we first initialize the array
-> > with [0 ... 255] = -1, and then re-assign values for ['A'], ['a'],
-> > ['0'], as well as the 62nd and 63rd characters.
-> > 
-> > This approach was adopted based on David's suggestion [1] to improve
-> > readability by avoiding the expansion of the large 256 * 3 table.
-> > 
-> > I'm uncertain whether we should reconsider this method to avoid the
-> > warning, or if it's safe to ignore it in this case?
-> 
-> I was worried something might complain.
-> But any other initialiser makes it pretty easy to forget to initialise
-> one of the fields.
-> I don't know whether the code can be annotated to stop sparse complaining,
-> maybe sparse could be fixed to ignore a non-zero default initialiser.
-> 
-> The only other obvious initialiser is to pass in the values for "+-/_".
-> eg:
-> #define BASE64_REV_INIT(val_plus, val_comma, val_minus, val_slash, val_under) { \
-> 	[ 0 ... '+'-1 ] = -1, \
-> 	[ '+' ] = val_plus, val_comma, val_minus, -1, val_slash, \ 
-> 	[ '0' ] = 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, \
-> 	[ '9'+1 ... 'A'-1 ] = -1, \
-> 	[ 'A' ] = 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, \
-> 		  23, 24, 25, 26, 27, 28, 28, 30, 31, 32, 33, 34, 35, \
-> 	[ 'Z'+1 ... '_'-1 ] = -1, \
-> 	[ '_' ] = val_under, \
-> 	[ '_'+1 ... 'a'-1 ] = -1, \
-> 	[ 'a' ] = 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, \
-> 		  49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, \
-> 	[ 'z'+1 ... 255 ] = -1 \
-> }
-> 
-> Then have:
-> 	static const s8 base64_rev_maps[][256] = {
-> 		[BASE64_STD] = BASE64_REV_INIT(62, -1, -1, 63, -1),  
-> 		[BASE64_URLSAFE] = BASE64_REV_INIT(-1, -1, 62, -1, 63),  
-> 		[BASE64_IMAP] = BASE64_REV_INIT(62, 63, -1, -1, -1)
-> 	};
-> 
-> But even that is error-prone, and doesn't really scale.
-> 
-> The static testing tools shouldn't really make coding error-prone.
-> So I'd definitely look for a way of stopping sparse complaining.
-> 
+We don't need the separate loop or flag, and adding it breaks the
+existing reverse list walk.  Thanks,
 
-I also think the current code is more readable and less error-prone.
-I'll loop in Luc to see if he has any feedback or thoughts on this.
-
-Regards,
-Kuan-Wei
-
-> 	David
-> 
-> 
-> > 
-> > [1]: https://lore.kernel.org/lkml/20250928195736.71bec9ae@pumpkin/
-> > 
-> > Regards,
-> > Kuan-Wei
-> > 
-> > > vim +36 lib/base64.c
-> > > 
-> > >     33	
-> > >     34	static const s8 base64_rev_maps[][256] = {
-> > >     35		[BASE64_STD] = BASE64_REV_INIT('+', '/'),  
-> > >   > 36		[BASE64_URLSAFE] = BASE64_REV_INIT('-', '_'),  
-> > >     37		[BASE64_IMAP] = BASE64_REV_INIT('+', ',')
-> > >     38	};
-> > >     39	/**
-> > >     40	 * base64_encode() - Base64-encode some binary data
-> > >     41	 * @src: the binary data to encode
-> > >     42	 * @srclen: the length of @src in bytes
-> > >     43	 * @dst: (output) the Base64-encoded string.  Not NUL-terminated.
-> > >     44	 * @padding: whether to append '=' padding characters
-> > >     45	 * @variant: which base64 variant to use
-> > >     46	 *
-> > >     47	 * Encodes data using the selected Base64 variant.
-> > >     48	 *
-> > >     49	 * Return: the length of the resulting Base64-encoded string in bytes.
-> > >     50	 */
-> > >     51	int base64_encode(const u8 *src, int srclen, char *dst, bool padding, enum base64_variant variant)
-> > >     52	{
-> > >     53		u32 ac = 0;
-> > >     54		int bits = 0;
-> > >     55		int i;
-> > >     56		char *cp = dst;
-> > >     57		const char *base64_table = base64_tables[variant];
-> > >     58	
-> > >     59		for (i = 0; i < srclen; i++) {
-> > >     60			ac = (ac << 8) | src[i];
-> > >     61			bits += 8;
-> > >     62			do {
-> > >     63				bits -= 6;
-> > >     64				*cp++ = base64_table[(ac >> bits) & 0x3f];
-> > >     65			} while (bits >= 6);
-> > >     66		}
-> > >     67		if (bits) {
-> > >     68			*cp++ = base64_table[(ac << (6 - bits)) & 0x3f];
-> > >     69			bits -= 6;
-> > >     70		}
-> > >     71		if (padding) {
-> > >     72			while (bits < 0) {
-> > >     73				*cp++ = '=';
-> > >     74				bits += 2;
-> > >     75			}
-> > >     76		}
-> > >     77		return cp - dst;
-> > >     78	}
-> > >     79	EXPORT_SYMBOL_GPL(base64_encode);
-> > >     80	
-> > > 
-> > > -- 
-> > > 0-DAY CI Kernel Test Service
-> > > https://github.com/intel/lkp-tests/wiki  
-> 
+Alex
 
