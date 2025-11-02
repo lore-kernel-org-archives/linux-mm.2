@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B4ACFCCFA02
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E0609CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 08:01:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 197438E000C; Sun,  2 Nov 2025 03:01:40 -0500 (EST)
+	id 4576A8E000D; Sun,  2 Nov 2025 03:01:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 149848E0002; Sun,  2 Nov 2025 03:01:40 -0500 (EST)
+	id 42E598E0002; Sun,  2 Nov 2025 03:01:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 010A18E000C; Sun,  2 Nov 2025 03:01:39 -0500 (EST)
+	id 2F6F38E000D; Sun,  2 Nov 2025 03:01:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id DDE1E8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:39 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AE4E8C084A
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:39 +0000 (UTC)
-X-FDA: 84064922718.20.1B125A1
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1A74F8E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 03:01:44 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id BFAF21A08F7
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:43 +0000 (UTC)
+X-FDA: 84064922886.21.257B9DF
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf03.hostedemail.com (Postfix) with ESMTP id DCDE220005
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:37 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RJUIKTi6;
+	by imf20.hostedemail.com (Postfix) with ESMTP id EF88D1C0005
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 08:01:41 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GeQrdtgq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070498; a=rsa-sha256;
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762070502; a=rsa-sha256;
 	cv=none;
-	b=jX0V0Mm4J6IyYULu6aS9PzcbZlGFMh0P+kHb9L4Sb1N2GkbhmjZ9wNlC8vLGAUQ6idmh8E
-	g2EYC76Yqk4PcJgud/XqvAak8nuxSlhFTBxxGBKkv5jvdV3HjQCZt5lFggN28U4Qv53LMt
-	97NTKy5+qOLzTYLd9uacF6eioV2LHXk=
+	b=BH07Z/J+25izBuapYbDJNTUD3ajlqAsaqwMYLnzl0mzZ2Q1wZoghYJRzRngyQmpe0CDfoe
+	Rs4+u/v7ZY0zkCxRLA97HQE6hAfNSxebL43KAg4Ddlae1FtcwhpYhkc5w3glMsLf5REM71
+	fD0m/zqRNsZtHmbtuSDXu5i+njP9Y2Q=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=RJUIKTi6;
+	imf20.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GeQrdtgq;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+	spf=pass (imf20.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762070498;
+	s=arc-20220608; t=1762070502;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=d03z8PmtrougYvCYBi87t/0b452LDO+ayVMxh0b5S4U=;
-	b=Ddb5uoXSzOghOkHKp/UBC/XvNhQpg97xXf0gyWtJ/pMKBT+IGiho2bm5IqSBJTi7VUOCxG
-	+8eh6+qDPaf2eFpJ1PMp7q3rMWRZeGF3ZRSS9p45O4r+BhIiSUZHgXsVqsDnRgYD/duXu7
-	apNlRpHLx5AMBu3ETh6F6HHyqoAFOe4=
+	bh=3FrKnDlsJKcFUiLrx+aDHgys30Q/h9FcD0Ng4abujdo=;
+	b=H+7nJjSPVy3fRH3ZFUpxV5erXTrd9/hdz0CcEk+37KwO4AoLjrSTdch1IbrFcWsP4VIAuS
+	VTiCFV7nkmqQbBtwC9FXXYGxNudVwutyVgx2yptG8WQcKELDSOs2bzDJpBZ/hU7yGi/VhN
+	v6U6qbn8wHxL1q8EA8OUBTtH8F5+oJo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 0244E445D5;
-	Sun,  2 Nov 2025 08:01:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D3C5C4CEFB;
-	Sun,  2 Nov 2025 08:01:36 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1F50444792;
+	Sun,  2 Nov 2025 08:01:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50DD8C116B1;
+	Sun,  2 Nov 2025 08:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762070496;
-	bh=dlJDZuIUPdYxcsRxWAdBRAuyHBpo2K29Gx37eGDRDtc=;
+	s=k20201202; t=1762070501;
+	bh=YEj7lVMjG/2/HYFIZSu2/o74kulmj1G6rnGXJYyVmnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJUIKTi6tWLzuTQ+8t6twCDK/tg7Lk2+AhK4dlUnKfYy3x/Um36xaiXcqTuy8wU/r
-	 Rk0ZRClC4Mk1jO6S1IJDJwXuApMNam8YEtAanosZCNY4KCRDPmw5iofo2xMr/ILulp
-	 XVBGNUpppvdiGCvb6kpVjwEzEXCuCGGMHQPcPWgy/RzO2mBrGyf7tcakOjogF4ecFg
-	 b5KTUhOe1dl4hkBx0/RsPmFR443HjxsLhGJPvucnmHB90Ac4sJ3GkbIHWEVfiYn0t9
-	 iBDGiw8OJQSjm/HLG7rNsTbPVBTDxPrgol19j5RA6hb+fpdao44SQaBHpBOYH61drS
-	 S3RgXkEOCsmAQ==
+	b=GeQrdtgqOBrp3SSL7bb5BM8UNhWStBmhQNvnJTJpY6b87guzPaUbYr977bcX7Pcys
+	 Yxc87/WEOCpr6+I0a7aOihy/M040Q6oJAKt57MOitktMdBkKYSmRvVAAGUFmu4cRLb
+	 GiF0K3SKuEWa1PiQpGez3mj2ynIUSgJZxBoWSI1HJOfm04/lnNUCVZWvEW4UjqNf4s
+	 jjzG8Y+HrfUFjn/1FmYPnjRoCfkF/8U5zQ5n8a4lLbMq7qhZ1JrKOuODyBz90mBK/0
+	 RitZslKa0LprpIxm9rOwwbV/sDXoBPlF9joy4PQkCxYROfGTF3sOOrE20g3w3riJVo
+	 h/0R1XRSwONlw==
 From: Leon Romanovsky <leon@kernel.org>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	Logan Gunthorpe <logang@deltatee.com>,
@@ -97,11 +97,10 @@ Cc: Krishnakant Jaju <kjaju@nvidia.com>,
 	dri-devel@lists.freedesktop.org,
 	linaro-mm-sig@lists.linaro.org,
 	kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: [PATCH v6 08/11] vfio/pci: Share the core device pointer while invoking feature functions
-Date: Sun,  2 Nov 2025 10:00:56 +0200
-Message-ID: <20251102-dmabuf-vfio-v6-8-d773cff0db9f@nvidia.com>
+	linux-hardening@vger.kernel.org
+Subject: [PATCH v6 05/11] PCI/P2PDMA: Document DMABUF model
+Date: Sun,  2 Nov 2025 10:00:53 +0200
+Message-ID: <20251102-dmabuf-vfio-v6-5-d773cff0db9f@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
 References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
@@ -111,12 +110,12 @@ X-Mailer: b4 0.15-dev
 Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DCDE220005
-X-Stat-Signature: gesjynd1c79igmzeiez9xs6i4ybnue6h
-X-HE-Tag: 1762070497-539146
-X-HE-Meta: U2FsdGVkX18zGfLVMDwXHyuLy1klsAdNSVvDl0EvtIzkDUtvUPwOj2WNa3lPCyWlNt3zRnfjY1z2YOMTV5gYuKqZcIOkNTXfdkMtzlez3vSmdnvZ/W1lklrpmDYkDgN80r+oxj3lRvdnMLrNBvVR+2UlSGwSdGeoAnkMa3RBZvEuWUh9X3zDrm5lFu+Tdd7pw+bWaFg/NBeBpEmYxZIIsHykOdFpTur3x/cmfV4KQatx/wePCUk2mt5DmDDk/M/YiRD8a3ZQmK0K4GD4eVIlkUzc3D3QlYWLHSWKz1gt/Uo5a17YYwAkgKIpHL6cD8NRwXDOzpdZvIdgai9p1anWPT5weLJWZqKYc2wtrSgwGBnDsRwlJZ5H/U3wQAG2aDNxjo2AkegfZSH1FHMG8Z8/pplt7hWNCkEhinoM8GUN84DTz8kAvv5ssuegxnwdZ+bC7ZNATrjH6u52UGLoPEf+PRQGvnOE9pGYPTzwqxxzM0fdG/Cj/orZG2Iml9lFQ7JQJBR/Q93RAx9YYt+XLG/3aCGEGuBhkgMh3AETgBcZS8eta9s9MjxOOORANOV3ym94gOcQ4w7AuWWxcbTziRCmVMKsHRnxw7fYEqmZEKUklSLlQ/KTCZxW3Y7vbvb4Z0rqfadB1uCEQbT0qhA81SaoU7pbj8tiqz1sTjk+L/T0aG60A3fqKiu9q1gcs4tiMIGEWOBh3FClHMmWLsgkXdMP81Sm0y7CKO5pCrINHWVcTFu9oMQo9hEse92fAq17W8R0KDtCu5u4TfkUk0J4fr2PTdVnmNZZra5gDbCSeY5RK9TnVccD8udNl3RAmttiMgnbq75bfhMqu1A3y1i7vhGW97SOWI1DQrMTT8bKIdtbN0NZkhxyPJ787MofOZtTG3nXhe8+Xoq8ay1yq6pMn5wqXzFPpIWBbEYZ1JxAPRB1fhfAylsTpZSRuth70er9yJUfZQX4RKGl2pP50Agr/Tl
- aiLaKV/9
- KbD/a86jwqrC5v/es9lj+n/uArYOWeocV8zQ471o/ldHLScirNZ/VXn0oL2n/911yDQ+Uwk+cjK0anx8R8ddgfi6iRHE3fyuDoSxec0gVH71QTpGZJzl+JS6Wa/oCuNNSM96CY87hz8lYdwv8uXClS2N/ztqW+x8oKXGvqDCnqCuNvNDCnjpL8tfAarpIqUtXGAOtjFetqVVBPOdWhX5y1qXccwNVbrcFjmHE
+X-Rspamd-Queue-Id: EF88D1C0005
+X-Stat-Signature: bc3iseqb1nhjwkdfnt1a7dudtgbtmqyq
+X-HE-Tag: 1762070501-791486
+X-HE-Meta: U2FsdGVkX18RCht+LRn69iJTtNe2GaybdR6c0YW1FyAnCRr1h3dVBkAMPEGxlLcTqFeMgG6QRRbfCLbj/50X2UBkr0Ye0hNXPpAJpiuXo8jS5hefqeAR96UwkfJEw5TvXH+AVmC3sCPq7G4DGSXz/kaytR9C/XX1RGOH/FY1kBwM/Eyl7PSY8bbX3JP5ykG7EfeGtmqCAzt/2XpnAkEV5Rrx1y/7DW66Lw+mdR8I5ID5SZVFRK5d+uT45MKl73jVvDiqa6zsTESfWC/VzyybCbw4BL/udlJZLQMcxT0BoOWn//y9VITZS1fAzLqmHmdxA0JjVpmBgi+tbTZeKYU+YMKyQlmMCEO7enHrKuhGwhsukyklRm9Mh/4iXTw2X12Lvn+zPKBpdBmaz6H95JMujZuuK8bKJgQ/s7Urm2qaGNRHJKw1yh6ORUpJ3EksPt8Iy+U4hM19dhitC3u7RM7C+1XLXGVtyUxDqna//hrMvoYY2rqu6ebd0w/AmmYOencPUL9492ohTJedoY1Kec9lLMXzyUs2pC8JC00PJPqpdHbCEXaTskJn0NOKuVeUSjiVFlUZGR/gizaHBt7z+KlfqVQnGfSol94zJuWqyoIzEPZch1GpR9kkKK2WiOCTcHkXsfxOT/DNoJbbYN0NWrqLQolLiR2R5FgQ5LP5UvKzXkEC8iOj365kJXOGFMvMt0al8hU0pw4Er7Zc7YdyTwtYT432Ogyo0f1pckjayVFJipIJ/UqsrQQIG40aQLckRkCJpRRWchXpbbAIY+aT3gqc73vA5aHc/Yd2OayGLhkbIXtWTFcDn0TtNYUFbAhuWBjMnf1wxy6U0+DqKZ3qEaa3C2Afb6ReDs8LNEa1aykC1BuJI+2+Znw90f0gmjBWm7LkO6ADuY4l5tNPSLmhiD4yQ4zk+DgZWuAGpxACTEDO9+z0+BLlSRNYzeOG3KSC/nql4D0TNplr4Ma8KbG/1kO
+ cVF0MNT6
+ DD+0VirQbAVUeevFRB83DT9L4mM7ansLmLT6bQnByT+1ryB0k/LvRufXWw2SJL/oAscx2HtU/JEbaEgr7OhPyVszdtRiHCt10L2eCv1EYXMqroP9/y+W8ZPwIH6JvuYD0VYTHAM2QJtTVed3vqMTj5FG86OGJ+0/ZQr94gyZd9AdU1bF8iCtp3p9TG75rJI3J6kbLFFPQFxaVTDY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,102 +124,130 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Vivek Kasireddy <vivek.kasireddy@intel.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-There is no need to share the main device pointer (struct vfio_device *)
-with all the feature functions as they only need the core device
-pointer. Therefore, extract the core device pointer once in the
-caller (vfio_pci_core_ioctl_feature) and share it instead.
+Reflect latest changes in p2p implementation to support DMABUF lifecycle.
 
-Signed-off-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 ---
- drivers/vfio/pci/vfio_pci_core.c | 30 +++++++++++++-----------------
- 1 file changed, 13 insertions(+), 17 deletions(-)
+ Documentation/driver-api/pci/p2pdma.rst | 95 +++++++++++++++++++++++++--------
+ 1 file changed, 72 insertions(+), 23 deletions(-)
 
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 7dcf5439dedc..ca9a95716a85 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -299,11 +299,9 @@ static int vfio_pci_runtime_pm_entry(struct vfio_pci_core_device *vdev,
- 	return 0;
- }
+diff --git a/Documentation/driver-api/pci/p2pdma.rst b/Documentation/driver-api/pci/p2pdma.rst
+index d0b241628cf1..c43ec1356471 100644
+--- a/Documentation/driver-api/pci/p2pdma.rst
++++ b/Documentation/driver-api/pci/p2pdma.rst
+@@ -9,22 +9,47 @@ between two devices on the bus. This type of transaction is henceforth
+ called Peer-to-Peer (or P2P). However, there are a number of issues that
+ make P2P transactions tricky to do in a perfectly safe way.
  
--static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
-+static int vfio_pci_core_pm_entry(struct vfio_pci_core_device *vdev, u32 flags,
- 				  void __user *arg, size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	int ret;
- 
- 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
-@@ -320,12 +318,10 @@ static int vfio_pci_core_pm_entry(struct vfio_device *device, u32 flags,
- }
- 
- static int vfio_pci_core_pm_entry_with_wakeup(
--	struct vfio_device *device, u32 flags,
-+	struct vfio_pci_core_device *vdev, u32 flags,
- 	struct vfio_device_low_power_entry_with_wakeup __user *arg,
- 	size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	struct vfio_device_low_power_entry_with_wakeup entry;
- 	struct eventfd_ctx *efdctx;
- 	int ret;
-@@ -376,11 +372,9 @@ static void vfio_pci_runtime_pm_exit(struct vfio_pci_core_device *vdev)
- 	up_write(&vdev->memory_lock);
- }
- 
--static int vfio_pci_core_pm_exit(struct vfio_device *device, u32 flags,
-+static int vfio_pci_core_pm_exit(struct vfio_pci_core_device *vdev, u32 flags,
- 				 void __user *arg, size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	int ret;
- 
- 	ret = vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET, 0);
-@@ -1473,11 +1467,10 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_ioctl);
- 
--static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
--				       uuid_t __user *arg, size_t argsz)
-+static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
-+				       u32 flags, uuid_t __user *arg,
-+				       size_t argsz)
- {
--	struct vfio_pci_core_device *vdev =
--		container_of(device, struct vfio_pci_core_device, vdev);
- 	uuid_t uuid;
- 	int ret;
- 
-@@ -1504,16 +1497,19 @@ static int vfio_pci_core_feature_token(struct vfio_device *device, u32 flags,
- int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
- 				void __user *arg, size_t argsz)
- {
-+	struct vfio_pci_core_device *vdev =
-+		container_of(device, struct vfio_pci_core_device, vdev);
+-One of the biggest issues is that PCI doesn't require forwarding
+-transactions between hierarchy domains, and in PCIe, each Root Port
+-defines a separate hierarchy domain. To make things worse, there is no
+-simple way to determine if a given Root Complex supports this or not.
+-(See PCIe r4.0, sec 1.3.1). Therefore, as of this writing, the kernel
+-only supports doing P2P when the endpoints involved are all behind the
+-same PCI bridge, as such devices are all in the same PCI hierarchy
+-domain, and the spec guarantees that all transactions within the
+-hierarchy will be routable, but it does not require routing
+-between hierarchies.
+-
+-The second issue is that to make use of existing interfaces in Linux,
+-memory that is used for P2P transactions needs to be backed by struct
+-pages. However, PCI BARs are not typically cache coherent so there are
+-a few corner case gotchas with these pages so developers need to
+-be careful about what they do with them.
++For PCIe the routing of TLPs is well defined up until they reach a host bridge
++or root port. If the path includes PCIe switches then based on the ACS settings
++the transaction can route entirely within the PCIe hierarchy and never reach the
++root port. The kernel will evaluate the PCIe topology and always permit P2P
++in these well defined cases.
 +
- 	switch (flags & VFIO_DEVICE_FEATURE_MASK) {
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY:
--		return vfio_pci_core_pm_entry(device, flags, arg, argsz);
-+		return vfio_pci_core_pm_entry(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_ENTRY_WITH_WAKEUP:
--		return vfio_pci_core_pm_entry_with_wakeup(device, flags,
-+		return vfio_pci_core_pm_entry_with_wakeup(vdev, flags,
- 							  arg, argsz);
- 	case VFIO_DEVICE_FEATURE_LOW_POWER_EXIT:
--		return vfio_pci_core_pm_exit(device, flags, arg, argsz);
-+		return vfio_pci_core_pm_exit(vdev, flags, arg, argsz);
- 	case VFIO_DEVICE_FEATURE_PCI_VF_TOKEN:
--		return vfio_pci_core_feature_token(device, flags, arg, argsz);
-+		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
- 	default:
- 		return -ENOTTY;
- 	}
++However, if the P2P transaction reaches the host bridge then it might have to
++hairpin back out the same root port, be routed inside the CPU SOC to another
++PCIe root port, or routed internally to the SOC.
++
++As this is not well defined or well supported in real HW the kernel defaults to
++blocking such routing. There is an allow list to allow detecting known-good HW,
++in which case P2P between any two PCIe devices will be permitted.
++
++Since P2P inherently is doing transactions between two devices it requires two
++drivers to be co-operating inside the kernel. The providing driver has to convay
++its MMIO to the consuming driver. To meet the driver model lifecycle rules the
++MMIO must have all DMA mapping removed, all CPU accesses prevented, all page
++table mappings undone before the providing driver completes remove().
++
++This requires the providing and consuming driver to actively work together to
++guarentee that the consuming driver has stopped using the MMIO during a removal
++cycle. This is done by either a synchronous invalidation shutdown or waiting
++for all usage refcounts to reach zero.
++
++At the lowest level the P2P subsystem offers a naked struct p2p_provider that
++delegates lifecycle management to the providing driver. It is expected that
++drivers using this option will wrap their MMIO memory in DMABUF and use DMABUF
++to provide an invalidation shutdown. These MMIO pages have no struct page, and
++if are used with mmap() must create special PTEs. As such there are very few
++kernel uAPIs that can accept pointers to them, in particular they cannot be used
++with read()/write(), including O_DIRECT.
++
++Building on this, the subsystem offers a layer to wrap the MMIO in a ZONE_DEVICE
++pggmap of MEMORY_DEVICE_PCI_P2PDMA to create struct pages. The lifecylce of
++pgmap ensures that when the pgmap is destroyed all other drivers have stopped
++using the MMIO. This option works with O_DIRECT flows, in some cases, if the
++underlying subsystem supports handling MEMORY_DEVICE_PCI_P2PDMA through
++FOLL_PCI_P2PDMA. The use of FOLL_LONGTERM is prevented. As this relies on pgmap
++it also relies on architecture support along with alignment and minimum size
++limitations.
+ 
+ 
+ Driver Writer's Guide
+@@ -114,14 +139,38 @@ allocating scatter-gather lists with P2P memory.
+ Struct Page Caveats
+ -------------------
+ 
+-Driver writers should be very careful about not passing these special
+-struct pages to code that isn't prepared for it. At this time, the kernel
+-interfaces do not have any checks for ensuring this. This obviously
+-precludes passing these pages to userspace.
++While the MEMORY_DEVICE_PCI_P2PDMA pages can be installed in VMAs,
++pin_user_pages() and related will not return them unless FOLL_PCI_P2PDMA is set.
+ 
+-P2P memory is also technically IO memory but should never have any side
+-effects behind it. Thus, the order of loads and stores should not be important
+-and ioreadX(), iowriteX() and friends should not be necessary.
++The MEMORY_DEVICE_PCI_P2PDMA pages require care to support in the kernel. The
++KVA is still MMIO and must still be accessed through the normal
++readX()/writeX()/etc helpers. Direct CPU access (e.g. memcpy) is forbidden, just
++like any other MMIO mapping. While this will actually work on some
++architectures, others will experiance corruption or just crash in the kernel.
++Supporting FOLL_PCI_P2PDMA in a subsystem requires scrubbing it to ensure no CPU
++access happens.
++
++
++Usage With DMABUF
++=================
++
++DMABUF provides an alternative to the above struct page based
++client/provider/orchestrator system. In this mode the exporting driver will wrap
++some of its MMIO in a DMABUF and give the DMABUF FD to userspace.
++
++Userspace can then pass the FD to an importing driver which will ask the
++exporting driver to map it.
++
++In this case the initator and target pci_devices are known and the P2P subsystem
++is used to determine the mapping type. The phys_addr_t based DMA API is used to
++establish the dma_addr_t.
++
++Lifecycle is controlled by DMABUF move_notify(), when the exporting driver wants
++to remove() it must deliver an invalidation shutdown to all DMABUF importing
++drivers through move_notify() and synchronously DMA unmap all the MMIO.
++
++No importing driver can continue to have a DMA map to the MMIO after the
++exporting driver has destroyed it's p2p_provider.
+ 
+ 
+ P2P DMA Support Library
 
 -- 
 2.51.0
