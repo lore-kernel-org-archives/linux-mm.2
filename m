@@ -4,153 +4,145 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E53ACCFA02
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 17:12:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B328CCFA02
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 17:17:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 802D88E0007; Sun,  2 Nov 2025 12:12:08 -0500 (EST)
+	id D8CC98E0005; Sun,  2 Nov 2025 12:17:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7DA368E0002; Sun,  2 Nov 2025 12:12:08 -0500 (EST)
+	id D63278E0002; Sun,  2 Nov 2025 12:17:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6EF738E0007; Sun,  2 Nov 2025 12:12:08 -0500 (EST)
+	id C793F8E0005; Sun,  2 Nov 2025 12:17:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 5D44B8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 12:12:08 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E9F27129C6E
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 17:12:07 +0000 (UTC)
-X-FDA: 84066309894.29.E96E308
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
-	by imf26.hostedemail.com (Postfix) with ESMTP id C1733140007
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 17:12:05 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=ARP+t+ms;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 9KpaIc";
-	spf=pass (imf26.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.155 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B2F208E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 12:17:00 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 35DD04AB2A
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 17:17:00 +0000 (UTC)
+X-FDA: 84066322200.24.13F6F0B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 5AB8A180003
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 17:16:57 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V03Vo1/d";
+	spf=pass (imf24.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762103526;
+	s=arc-20220608; t=1762103817;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a8GBlzVdFLqLDITNMfrx+jlxxxq6gfyNGi3CdsrexZI=;
-	b=R4rPnW3xJAqeho+BGYKubzIEz5ejub7FrOOTm6IGXMf0jcQsjM+wKdUmnhuvrnoSCbPuVb
-	W81YaJB+ZWOOLiPAn2IgVyvvrvfxmXX3Wpz07TJXZA1BdE5ek7HgmXdv7A8CWCZCX825Xk
-	hK5uwAOUjj8fmB1prZJaxVvff5ne8WE=
+	bh=zNOgYikCqXVbzPcBHmhLjA8uKoTgMccbt06bdanviJQ=;
+	b=vbRGMlggyKq59QDQSDgSG1T9bBsTgKjoVjMd7nJdLnSaDi1bEDv4PWoqnnNjAJqcgd1Aas
+	JTPpg1dnm1VZbX0mh9yO/XkLONPqq6GaMTPKVqgP9eaf0WQp152p8KvSWxqN27r3XpNn+8
+	77ZjnDp6XDSwlZbzjfPhepgZRqiCb0w=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=ARP+t+ms;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="v 9KpaIc";
-	spf=pass (imf26.hostedemail.com: domain of alex@shazbot.org designates 103.168.172.155 as permitted sender) smtp.mailfrom=alex@shazbot.org;
-	dmarc=pass (policy=none) header.from=shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762103526; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="V03Vo1/d";
+	spf=pass (imf24.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762103817; a=rsa-sha256;
 	cv=none;
-	b=xChN6DkZzfgCfQWEmR1Vmy5XPow2hQcOxLBczdXccPIp0KeHNrfTOdcOJR9CEuZW0KsBau
-	t8aHOLhJOE3olApIhMCfBxxkElOtTpVbpQqTTPhhSaaAbwRJa6Fv3xlx8k70Uk4FgQw5N9
-	5iOnPXOmzE38yxSClZKtwjqm88VN+dA=
-Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id D3C421400085;
-	Sun,  2 Nov 2025 12:12:04 -0500 (EST)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Sun, 02 Nov 2025 12:12:04 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1762103524;
-	 x=1762189924; bh=a8GBlzVdFLqLDITNMfrx+jlxxxq6gfyNGi3CdsrexZI=; b=
-	ARP+t+msJuI/3RJhhtYbBSFdEA7HyYjz67gdLAISlfgMVO+MnsQr8r1xk62dNhbd
-	yI1NvYRfUV5jvNQigsXv5hM9shQ9mIGK7qiGfyO8fc5PQcGXpIOuwDEIZ3WwT5q7
-	Gyox0q0Fnl1k6VbVxwNvzp/3PszW8Yb1PKA6OTjeFDd2fkXefL0kmJv1l77vIF5i
-	YIgLYJgBqufautWfZLVDdNYHKouRVaxeHaRRsVRK+pLviBAK7gJaEXGEB4qNwR+7
-	Hezxm8X7xwAKlixuVAWWSJ+8dOvKgWlCg4pqu016RbmhLzs+27VhTRQqLN29OogB
-	3wjUYYJOaN6K34W+lgbHyQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762103524; x=
-	1762189924; bh=a8GBlzVdFLqLDITNMfrx+jlxxxq6gfyNGi3CdsrexZI=; b=v
-	9KpaIclihxfYlmk593KmiTk5BxS4JIR7bgYvhR0NAwe80xqKE16tUXwNpDkvT269
-	OFbT4TjgEiVVOOQDgfAiN06ZXLgRr482uVauwHbvA1UG6HKqcbJGpSpu62nfR9uw
-	SZQP7sZg848DbQ/gj6+NF4RZuuTr+gfvhjGuc50FwmUunVlkhCkZ8S0QFToF9eDj
-	Q9FsUBEScnBDJGasO2skhA9rIWRksj1tLSmc8bbPrE/V3omRv1tZDAkV/l5A1+pY
-	zSXEjUYbPxiJ2N5N7CFusfzpEys4zyVu0WPlXGZHfQx2PC4canHEHDI8LJ045GIC
-	moNcBmwwrBiSN+laj4PhQ==
-X-ME-Sender: <xms:4pAHaaJvAQn91kmZ_L8EDo9K0hkQkKrMWH_IihatlP3lP5mfCsgZLA>
-    <xme:4pAHaVGqzWItmKM9uVjZd7D7s73TPSJT17RH_QAqT7tOT2Lt3yN0HyR1RhuS_DqG1
-    Am_YdNX9LPn6NdmN50A5pDf7ybqjSBfU9JLJSS02Nex2t7iHMwkLg>
-X-ME-Received: <xmr:4pAHae4VRDGyqVonaYTLr6w6DuqmTaw4vZiOzLQ3Heo4t_Q0q99oFoXPKM8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujeehkedvucetufdoteggodetrf
+	b=Z3jZf/skT3YoxhN5+7FbuLSGqHDOWt8fOAENDbYdrzj9Azq9Vw9awQXP36eHZCCLNwxPH8
+	ezKBJzIlOzB7WoJYjSCniRbMVqTJ5RU2W9OUhEmLq9H5puYkbThx7FMwKVpNIOAKgTkB0J
+	HF1d+Cfj60Xk+wdtkBfQFUchCOYQrsQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 22C0A4419F;
+	Sun,  2 Nov 2025 17:16:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFA9C4CEFB;
+	Sun,  2 Nov 2025 17:16:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762103816;
+	bh=6J4RYbNE7xRGZGzVZmTnvJ17pocxZEQO9XjI2jSDlH8=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=V03Vo1/dFUnMI+5BbeSpvmGBru6UCgp+YG0p5jilNDNsgR6zk8AYE4Sblf2BQ/bmA
+	 cwy3eyQaMO+EuVUbooSLshXM976UQjawj+Ks6mqjWBaUB+CAlbyIgVxwCdCMkAKxYp
+	 /HBNlc5NLl4m/uj0f4TeVd72fT8gO0tmDfib3DZ5YBd3Om1uOIeawLXje9HbXc620U
+	 kqnPHWsvnXiUA91+P8VXbtE0lge0OGtdlmuyh0rZHlqktQeWsNfJZUAXjNiD8QvVOy
+	 YdufGRB2UCgVyoaJiWQvRy3FWCM4jD4Z+pQvl+iQSpogn0oQ+cs9QrXkDLFTviP1Ot
+	 /EgcUFdL+Re7Q==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 0463EF40066;
+	Sun,  2 Nov 2025 12:16:53 -0500 (EST)
+Received: from phl-imap-08 ([10.202.2.84])
+  by phl-compute-04.internal (MEProxy); Sun, 02 Nov 2025 12:16:54 -0500
+X-ME-Sender: <xms:BZIHaYuDYmBjtG7IxUKfvEjba2RKlTl6PZHc9IqGhy7j_jG9gMTxwg>
+    <xme:BZIHaQS40zUxhPV_fDp3AqrkIE7bV3DYAqxEVG9VTMoSNhTnkeM8e4NmeRVOn9bh6
+    C0ttUUKruiqlA23NausYNPjUtH2T_MmINiNR9Ge9obYEtgqTuQOXog>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddujeehkeefucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfgggtgfesthejredttddtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepteetudelgeekieegudegleeuvdffgeehleeivddtfeektdekkeehffehudet
-    hffhnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeefgedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheplhgvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhrtghpthhtoheplhhoghgrnhhg
-    seguvghlthgrthgvvgdrtghomhdprhgtphhtthhopegrgigsohgvsehkvghrnhgvlhdrug
-    hkpdhrtghpthhtoheprhhosghinhdrmhhurhhphhihsegrrhhmrdgtohhmpdhrtghpthht
-    ohepjhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopeifihhllheskhgvrhhnvg
-    hlrdhorhhgpdhrtghpthhtohepmhdrshiihihprhhofihskhhisehsrghmshhunhhgrdgt
-    ohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggr
-X-ME-Proxy: <xmx:4pAHacmtyeD6hGjmG5yJylSyTA-HADMGajUjQCdmqT32jDrnaono_w>
-    <xmx:4pAHadv8O87-N3u7RBjdpz4I-VpiuG28OEKea_LULbQEWM07iNrZow>
-    <xmx:4pAHafSnW8NhnYBcocBvwjMJZJwKp-bH1sWpaSPhMezd7UcEP_aM4A>
-    <xmx:4pAHaXEDRYciiigXo_h0MGBa4ZI4FQYqaBv7JF7YPQQn35BVrD5OoA>
-    <xmx:5JAHaTjTYS-Qyu0V5EarqGMARTYneth4LDaS1-R29jSNkR8I4POCr7gf>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 2 Nov 2025 12:12:00 -0500 (EST)
-Date: Sun, 2 Nov 2025 10:11:58 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>,
- Marek Szyprowski <m.szyprowski@samsung.com>,
- Jason Gunthorpe <jgg@ziepe.ca>,
- Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
- Christian =?UTF-8?B?S8O2bmln?= <christian.koenig@amd.com>,
- Alex Williamson <alex.williamson@redhat.com>,
- Kees Cook <kees@kernel.org>,
- "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>,
- Kevin Tian <kevin.tian@intel.com>, Krishnakant Jaju <kjaju@nvidia.com>,
- Matt Ochs <mochs@nvidia.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
- iommu@lists.linux.dev, linux-mm@kvack.org, linux-doc@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-hardening@vger.kernel.org,
- Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v6 10/11] vfio/pci: Add dma-buf export support for MMIO
- regions
-Message-ID: <20251102101158.6d2c36c6@shazbot.org>
-In-Reply-To: <20251102151253.GA50752@unreal>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
-	<20251102-dmabuf-vfio-v6-10-d773cff0db9f@nvidia.com>
-	<20251102080137.209aa567@shazbot.org>
-	<20251102151253.GA50752@unreal>
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedfnfgvohhn
+    ucftohhmrghnohhvshhkhidfuceolhgvohhnsehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepjeevffelgfelvdfgvedvteelhefhvdffheegffekveelieevfeejteei
+    leeuuedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eplhgvohhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdeftdehfeel
+    keegqddvjeejleejjedvkedqlhgvohhnpeepkhgvrhhnvghlrdhorhhgsehlvghonhdrnh
+    hupdhnsggprhgtphhtthhopeefgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohep
+    jhhorhhoseeksgihthgvshdrohhrghdprhgtphhtthhopegthhhrihhsthhirghnrdhkoh
+    gvnhhighesrghmugdrtghomhdprhgtphhtthhopehrohgsihhnrdhmuhhrphhhhiesrghr
+    mhdrtghomhdprhgtphhtthhopehlohhgrghnghesuggvlhhtrghtvggvrdgtohhmpdhrtg
+    hpthhtohepsghhvghlghgrrghssehgohhoghhlvgdrtghomhdprhgtphhtthhopehkvghv
+    ihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphhtthhopehvihhvvghkrdhkrghsih
+    hrvgguugihsehinhhtvghlrdgtohhmpdhrtghpthhtoheprgigsghovgeskhgvrhhnvghl
+    rdgukhdprhgtphhtthhopehguhhsthgrvhhorghrsheskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:BZIHaR-tvJBh8-mgAOYUGdkn8s8kLulP-EWIIyk8S5GtuaFeBTZsdA>
+    <xmx:BZIHaaYTJL4Te_4Fw1GF_JCGz90x2YjX8VH8icEpsxwlFdW8L1BOyw>
+    <xmx:BZIHafTp-dL-74eqOB1FVVTeUq8Z5EEatKsfbiYGKBXPZYMUUjiokA>
+    <xmx:BZIHaZkRSqwn6yV6mfCDZEPERqhJEoAAI8EBR8iho6RnbORQMwbAEA>
+    <xmx:BZIHabI8zmEQV1j8o_hMlt7NB4IWeKKppSR-0yCNW9noFRUXSASJvZ-B>
+Feedback-ID: i927946fb:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id AD0F62CE0067; Sun,  2 Nov 2025 12:16:53 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+X-ThreadId: A48325OsNhe3
+Date: Sun, 02 Nov 2025 19:16:34 +0200
+From: "Leon Romanovsky" <leon@kernel.org>
+To: "Alex Williamson" <alex@shazbot.org>
+Cc: "Bjorn Helgaas" <bhelgaas@google.com>,
+ "Logan Gunthorpe" <logang@deltatee.com>, "Jens Axboe" <axboe@kernel.dk>,
+ "Robin Murphy" <robin.murphy@arm.com>, "Joerg Roedel" <joro@8bytes.org>,
+ "Will Deacon" <will@kernel.org>,
+ "Marek Szyprowski" <m.szyprowski@samsung.com>,
+ "Jason Gunthorpe" <jgg@ziepe.ca>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Jonathan Corbet" <corbet@lwn.net>,
+ "Sumit Semwal" <sumit.semwal@linaro.org>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ "Alex Williamson" <alex.williamson@redhat.com>,
+ "Kees Cook" <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Ankit Agrawal" <ankita@nvidia.com>, "Yishai Hadas" <yishaih@nvidia.com>,
+ "Shameer Kolothum" <skolothumtho@nvidia.com>,
+ "Kevin Tian" <kevin.tian@intel.com>,
+ "Krishnakant Jaju" <kjaju@nvidia.com>, "Matt Ochs" <mochs@nvidia.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
+ linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+ kvm@vger.kernel.org, linux-hardening@vger.kernel.org,
+ "Vivek Kasireddy" <vivek.kasireddy@intel.com>
+Message-Id: <d757cbcb-866a-4af4-b4fd-0ba27f706e74@app.fastmail.com>
+In-Reply-To: <20251102101158.6d2c36c6@shazbot.org>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+ <20251102-dmabuf-vfio-v6-10-d773cff0db9f@nvidia.com>
+ <20251102080137.209aa567@shazbot.org> <20251102151253.GA50752@unreal>
+ <20251102101158.6d2c36c6@shazbot.org>
+Subject: Re: [PATCH v6 10/11] vfio/pci: Add dma-buf export support for MMIO regions
+Content-Type: text/plain
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: C1733140007
-X-Stat-Signature: 3cetbpwoqrfyteog16awgyoczyc3fdwe
+X-Rspamd-Queue-Id: 5AB8A180003
+X-Stat-Signature: mzzbi55zg31sr9g48mansgkhcrsukhm8
 X-Rspam-User: 
-X-HE-Tag: 1762103525-759650
-X-HE-Meta: U2FsdGVkX18LMUJQPBvcFy7pb0drcuizEoQAg37PbzzZGEPd3aHFGKxoqklL49RN8VDJEx2jfrHMCTLgUfCBD7JT0VbUEOgp1rkXUvcXwfeh+dxmsh+dL7ujLWDFLsaHTuikdbNuzRipOSTZ+dxqQMpvsU0ro3uVndOEIpzlOfRRQV+MFmSQC01yKSJYGvgfoeMC5qMoLB4Vi9mCWTeRKIkJdsa7ARBgbESMY7b9b6EzF02cmGJMkqH0PG0bWsJtOULEzY2TWB6UzcULAJyMrKVwRgTT3IOxejEnxQEDcYEMAfKK7ukkoOQeUriahQUL4p1Cw+OOxla7G+qhT9T1CZ/qVegnUg9r5f6Bdcj9yPKoDms0u9b7W+xfpxdxxkanTwJfifG57xgWVeoDPgQ6mR/7a9+UmPYTu9AsKKxTA68D3DDxP/SwDQ1zexRg3lRfr3vK/PsSnno2EjvzziDJ1RSq5soHnjFKMI2Ts/p5got4QeFUQxu/OHsuzABdapBxKWb9G/dKlGdxtYpX8CTHIfkirwszNuhd9ZFUYDVh6lvYYst+T7ULDl21tOyc5zvmOjGm6vkeAa+pPUIVhMyzEkVuSBCMIAX14Ncq4HpWbfnUyb/SXmOcW4ifdUKFO2nh9dqWompn6EwRHbfEOfBaquXVKZ6xoYbLLflhnQ8k/MuGAZY//KSNSjcuRL4BaH/pe4+1TaSNXJcovx+00MnfKvY+fpkJ3F6G7SI0JGRnqLL93vz0rRLGWjQwKiuL1SiShPCx3xw8bNlfK37/w6gBfDhDaScAzEN30yPbZTgdyhgm8JgHCH5igWJrTr7obB5bgAMeuvUBbEgk6PSVQcW4dY6sjIs9iiiS5WPbjQXMyYiO1mbvXkBhtev/dlqH4s07lDqzZQU3bqhJYFMhh3r+wrFmyYG16pv0iF2Xm5wKv8nJzK7+qQL44lu4WCQZeq3TkkDUix5UsiNSD3hHpb1
- FWCIcU5b
- AJ1DZfsHUNUAMXGMp5oc7C3owpfv02ZC5xlGvwXzhUGdb+ZGEjKmLchZGxsIZnCp7rnkitHdYEOBzbP6sr6cWhgNc9njJjZEqrM4AvL8StL2LRDvKIIuPIalVxCne97FXnpme9Uexnt3QDwikFs4ex3jZ/QlmPdh9sQm6cs6gfLRiCMtvgegtsNBpiz0Og4d8zA0YslMslbBynmpLj/3Ub3Cf+U6E4la7voML7dAS44eoPnAkOC3QsI5y46Vsc3DgGAExeHnOEZHMVLSPvHIfiR1z1JvVx2Umj6uEmkwqAiYhBXNeJcfCDg5aY9soXTmWSX9713wNnzrf0LybAepiG6/bFVK1NxYCxXBIq2Qnwq5Jv+mS4P/UnPc8tlFGksuE3ufCAgMfs/ARiys=
+X-HE-Tag: 1762103817-14282
+X-HE-Meta: U2FsdGVkX19A3IGOjJvCH/7esZScsDsYxGOFDwDzme6iBkr6ojZojAn6U91dcJAzgAo6KfxFtXH2hBEE/v4+LdRI5hBblQUOFH1mBXrMQ2oEci4EWVLFXw6Qbkx+hzmdWfWaUzCEJTG1O4MoUFCgXKqyfCMaN7G+EbuWlUJYBhzdpxRkQavIZkrrGE2e9AqPML+NmcEfTXS1Ht8Pe+YDUcJUbBSB9utI5AWr86w3IL7vonNT8Y39OcS9ix+XtGW23by6pzhsvqnXXGGgrOoX7bhEoXWNwW5pTWBbRqhfq5MXGlr4nXxw4r8BKT4LovPhkFeGl9FiPKtXXUFf1qvKh9WCRII7uTTaFr4/VpTBLoQg5B+dv4+e+eKQZGSfe0UvHTNUtB+IZbyBbuTQo0iAuc+nXv4xRe3mUO3eh5TTU4bdOzWZ5tnaan1+LCB1faOoiI0Ts+8lvVsZYKselLM91ppZ+XifFRz81tN1WPh0usS+4CLjTG4PU4gyzpkY2Y+zKJ462mM04rQbw/sMZUVG6vplPSZoO9J/zW8KIyfCLCJqBxrqg8eQvdRK8E87ymQD91aRZEXl6Uo3Zzq3RqrRA+2yvdj8LFym0q3G1LsVFxPgo/LUg9IrugxTxbdFu/pHinNzp6tDssghTm3fhXXKKz4bgsuh9i/q1uHreH+X6LnogpQdlAtPelN6n8BP2/V4DVP0amTSJslQ4SiM9urJdPTpZ4fH2Y6teWcf8+VY2vrtqmR1KgI023ipNZDS2Un7CXU9MhVYjTA+f1PjjVWpq6ZWezffm4ZoUi4bhJ4D0yHTuez7QBE6v0vLksHBOSXK4OF/enjHc+KaAfOsCp7nWB/e20aGQPlcuNTUJLhDHM2arISKzQ/oS0kleeDOf8DJ2yUfmd1NCPxLAL6azRZ/vZxyKVKknXXAV+xEz6WIbEKcj6NNEqQSDUek+ErOOZQaFmFUrNWKAzPiwBjiCdh
+ EVCqp9HS
+ ut4Ion4e2RW0Nmui0BAs/+cvZ/xAzEnXDOawRmlLuBFKWyQWp/PV4Z5+qMB/CDQ8oMWht3C5UFtecu59iH6d54VI2xMLzwM8Bun0qjmB6ANe7fPUEcoYSSA/l4SSyUnY65+7KhI+71sp+htQWyYMAtur965LGGibIRy0f2sEzOc/areTQp5xwpVgtTcbe8+BDlbv86AvLjE8honQxOrFcpYAJajwsJvSb0E32
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -159,64 +151,69 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2 Nov 2025 17:12:53 +0200
-Leon Romanovsky <leon@kernel.org> wrote:
-> On Sun, Nov 02, 2025 at 08:01:37AM -0700, Alex Williamson wrote: 
-> > We don't need the separate loop or flag, and adding it breaks the
-> > existing reverse list walk.  Thanks,  
-> 
-> Do you want me to send v7? I have a feeling that v6 is good to be merged.
 
-Let's hold off, if this ends up being the only fixup I can roll it in.
-Thanks,
 
-Alex
- 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 24204893e221..51a3bcc26f8b 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -2403,7 +2403,6 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
->                                       struct iommufd_ctx *iommufd_ctx)
->  {
->         struct vfio_pci_core_device *vdev;
-> -       bool restore_revoke = false;
->         struct pci_dev *pdev;
->         int ret;
->  
-> @@ -2473,7 +2472,6 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
->                 }
->  
->                 vfio_pci_dma_buf_move(vdev, true);
-> -               restore_revoke = true;
->                 vfio_pci_zap_bars(vdev);
->         }
->  
-> @@ -2501,15 +2499,12 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
->                                struct vfio_pci_core_device, vdev.dev_set_list);
->  
->  err_undo:
-> -       if (restore_revoke) {
-> -               list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
-> -                       if (__vfio_pci_memory_enabled(vdev))
-> -                               vfio_pci_dma_buf_move(vdev, false);
-> -       }
-> -
->         list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
-> -                                        vdev.dev_set_list)
-> +                                        vdev.dev_set_list) {
-> +               if (__vfio_pci_memory_enabled(vdev))
-> +                       vfio_pci_dma_buf_move(vdev, false);
->                 up_write(&vdev->memory_lock);
-> +       }
->  
->         list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
->                 pm_runtime_put(&vdev->pdev->dev);
-> 
-> 
-> > 
-> > Alex
-> >   
-> 
+On Sun, Nov 2, 2025, at 19:11, Alex Williamson wrote:
+> On Sun, 2 Nov 2025 17:12:53 +0200
+> Leon Romanovsky <leon@kernel.org> wrote:
+>> On Sun, Nov 02, 2025 at 08:01:37AM -0700, Alex Williamson wrote: 
+>> > We don't need the separate loop or flag, and adding it breaks the
+>> > existing reverse list walk.  Thanks,  
+>> 
+>> Do you want me to send v7? I have a feeling that v6 is good to be merged.
+>
+> Let's hold off, if this ends up being the only fixup I can roll it in.
+> Thanks,
 
+Thanks 
+
+>
+> Alex
+> 
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 24204893e221..51a3bcc26f8b 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -2403,7 +2403,6 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>>                                       struct iommufd_ctx *iommufd_ctx)
+>>  {
+>>         struct vfio_pci_core_device *vdev;
+>> -       bool restore_revoke = false;
+>>         struct pci_dev *pdev;
+>>         int ret;
+>>  
+>> @@ -2473,7 +2472,6 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>>                 }
+>>  
+>>                 vfio_pci_dma_buf_move(vdev, true);
+>> -               restore_revoke = true;
+>>                 vfio_pci_zap_bars(vdev);
+>>         }
+>>  
+>> @@ -2501,15 +2499,12 @@ static int vfio_pci_dev_set_hot_reset(struct vfio_device_set *dev_set,
+>>                                struct vfio_pci_core_device, vdev.dev_set_list);
+>>  
+>>  err_undo:
+>> -       if (restore_revoke) {
+>> -               list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
+>> -                       if (__vfio_pci_memory_enabled(vdev))
+>> -                               vfio_pci_dma_buf_move(vdev, false);
+>> -       }
+>> -
+>>         list_for_each_entry_from_reverse(vdev, &dev_set->device_list,
+>> -                                        vdev.dev_set_list)
+>> +                                        vdev.dev_set_list) {
+>> +               if (__vfio_pci_memory_enabled(vdev))
+>> +                       vfio_pci_dma_buf_move(vdev, false);
+>>                 up_write(&vdev->memory_lock);
+>> +       }
+>>  
+>>         list_for_each_entry(vdev, &dev_set->device_list, vdev.dev_set_list)
+>>                 pm_runtime_put(&vdev->pdev->dev);
+>> 
+>> 
+>> > 
+>> > Alex
+>> >   
+>>
 
