@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4D228CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 06:51:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D1377CCF9E3
+	for <linux-mm@archiver.kernel.org>; Sun,  2 Nov 2025 06:59:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1228B8E0003; Sun,  2 Nov 2025 01:51:37 -0500 (EST)
+	id EA1C78E0006; Sun,  2 Nov 2025 01:59:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0F8F98E0002; Sun,  2 Nov 2025 01:51:37 -0500 (EST)
+	id E52688E0002; Sun,  2 Nov 2025 01:59:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 035458E0003; Sun,  2 Nov 2025 01:51:36 -0500 (EST)
+	id D68C88E0006; Sun,  2 Nov 2025 01:59:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E6E9C8E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 01:51:36 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 83D354AB0B
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 06:51:36 +0000 (UTC)
-X-FDA: 84064746192.05.9593FB8
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf09.hostedemail.com (Postfix) with ESMTP id EBF7114000B
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 06:51:34 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vco4K2eV;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BCB228E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 01:59:54 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4B29113BEA6
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 06:59:54 +0000 (UTC)
+X-FDA: 84064767108.07.CB7B0A8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf14.hostedemail.com (Postfix) with ESMTP id B4DC310000B
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 06:59:52 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0PownLD;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762066295;
+	s=arc-20220608; t=1762066792;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Kmsnrn6KpwkTEPHAtunolJMTlcE7tRcinjuxt+lQrE8=;
-	b=aApvf8obfY+HNqNEaGSP/6ysKfdVMsRz0IEKcoukIRGHhIxwhgVlmDbLCUney8w3q2ATst
-	luJCEAUPgpdE6197HRhB0LfGhdriQ6jcGYsCWhKHL4XHpi6Bl7wYUwnwYTqHxt7GVmca53
-	PzEjWcKXvk0mUGGp/vX9f74R8shJCqk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762066295; a=rsa-sha256;
-	cv=none;
-	b=wBcRZLaxfTaDys8FzZW6KZ2jgRWnlnDggP35Cg4hpgCn5/UWP05c5teStcspacPuL3yhN4
-	SnfKn/vSa5qyyhpeZQ7Eo0MXrEb70XhwvYbNqDtdhTCOY383T/Zf7enBNb/27fj5tvcH3n
-	iR2tqx/2GuohnkInmfKRtSHz1PJJyEA=
+	bh=Or2j8a2oFpDwYNBj+OHrpTvt3HR49oLPx3Il3uEI3fw=;
+	b=pk1SlvlXB/PEnuYPdLgHSgILQA1DFHTrt8pPTMgOU049HZt5cj2sObq1FMit+l9hf4u6vD
+	/e2k+Lreg4c7085g1nIAgFFIm4Bnf0kYf2u4KWHuw5gGlYqJzSzuz2cTmouA4hbx4WtB6A
+	Go5lrjSZXmuJzwBTvN5ToKTbOgI5maQ=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Vco4K2eV;
-	spf=pass (imf09.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=p0PownLD;
+	spf=pass (imf14.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762066792; a=rsa-sha256;
+	cv=none;
+	b=mxd/vQhLrFzx8YxRbpFv0UYM7WVg8faSI6H6P5HF/fw/ZgdldvMvGTXlFKK879zUli1RE3
+	VQ73hu1GyBRrKwBKUweAQnTly7qh7Do8A6A4xiHUfpQ7agvWHLHGQkEh0Ht335mrQqzlWL
+	jC9fa4qadxSyftQP+mkBsbboKDP8Tj0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A6DAA43733;
-	Sun,  2 Nov 2025 06:51:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC90C4CEF7;
-	Sun,  2 Nov 2025 06:51:28 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D014560191;
+	Sun,  2 Nov 2025 06:59:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D057C4CEF7;
+	Sun,  2 Nov 2025 06:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762066293;
-	bh=LiEsqySHdTNYoNAeeFwBBm/8FtkxDtaFLj1JlFEIwUY=;
+	s=k20201202; t=1762066791;
+	bh=tZauxRiF+oHUfUJ6HFpFdgYgUz1Y0O/xSwPp9Ax33bo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Vco4K2eVYGfYGyg5YaHsmWN+3k6nNiSCNBYy6ngq88ATZov79V6nUDRzIi5gwzstW
-	 Xe7q49t6AGV0dD46I6vdQAJAcYLbbMv3RM6KVHqgIHtILpg4//ZwtHtO2eM64ocX/u
-	 waAtNhTJ6/rZKk9j1bXufCWyDqAlo2vSH5JRjOVPC5m5FhVh3YZ2CCeUyKe6CR2WPC
-	 H6pViBJAdyPUW24cVSC2qToLalSQRX9J6o0/2Dex+E9Bw3upHJxQzt0exEnHFECSUN
-	 oWp8B654jSXWaDNW7NlNhsKGOuTWNqowQUgT3P23de8tG70lFk+sAVQcQlkvs8q8xl
-	 udORXqwFbHOkw==
-Date: Sun, 2 Nov 2025 08:51:24 +0200
+	b=p0PownLD6rGjXsR5XIoGxxmKz93L0EcSsB2xkR5xWsoLkpqRqqSOMUHjJ0R+fuLTB
+	 ByR08VTC7i9hkxMWFQAlsLtgTlHE4yLMwwar8PzXUswkVkg2T872d4i9jwV+v3D23A
+	 AuS4xQA5/uI/akctZZDL4roCf53ggcy71a94AHXnOv/UnkmfFyZp6CPnPY5tejMDI6
+	 d36+6lmcxRdHvBU3E3BLj6bN4JV76TVMmGLZa5P8qamMP7A8qDfLIaN5mebYy5KSXi
+	 Mm5fq5TAR+yxkz2pGV8R4kJEs1P7rtyy6y9+h5PXgW10BW5OGGMXOCxwKBGeTMGfq3
+	 FAsr+Km3p5tQw==
+Date: Sun, 2 Nov 2025 08:59:42 +0200
 From: Mike Rapoport <rppt@kernel.org>
 To: Pasha Tatashin <pasha.tatashin@soleen.com>
 Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
@@ -71,20 +71,23 @@ Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net,
 	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
 	masahiroy@kernel.org, ojeda@kernel.org, pratyush@kernel.org,
 	rdunlap@infradead.org, tj@kernel.org, yanjun.zhu@linux.dev
-Subject: Re: [PATCH v9 4/9] memblock: Unpreserve memory in case of error
-Message-ID: <aQb_bJ2et5rO0k5q@kernel.org>
+Subject: Re: [PATCH v9 9/9] liveupdate: kho: Use %pe format specifier for
+ error pointer printing
+Message-ID: <aQcBXnYEzMhssa-C@kernel.org>
 References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
- <20251101142325.1326536-5-pasha.tatashin@soleen.com>
+ <20251101142325.1326536-10-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251101142325.1326536-5-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam05
-X-Stat-Signature: 3zmnpfqy8kajp7m1dj1axh8dnst3isga
+In-Reply-To: <20251101142325.1326536-10-pasha.tatashin@soleen.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B4DC310000B
+X-Stat-Signature: 398deh1ndxbtt8ynxrjie4k995czf5fd
 X-Rspam-User: 
-X-Rspamd-Queue-Id: EBF7114000B
-X-HE-Tag: 1762066294-241883
-X-HE-Meta: U2FsdGVkX1/VCdFrP56ROepkyJpuiK2AMjZBmAgcGAP3hx7TDaMYWVvtWoVEqN7SQ0vsH750ARXvABNEOHcUlexsQMyj0LPtDqcOk5Bj3N7yzQ6Jb/vtI7X+x9jgHL8wrivl4tNi+dAnCIc0S2cCty5pLaheaM4NIaPG4/6FEbPOdKLlt+9Tsyrm1LRo2yq9WkuJr42hY1TrnyiicGG/aQd8LXkHfkw1DKBvB2o7Z+VVYaP2PFLxV+9/KKH+nIluICKFNhTF7PMPrXplWPv7o+TetUl6fkMDDL8oFy7Rw9sj6Df9d1co0/WlS0FvAjFkyZP9ZcNOuOGOqBB8KrnZch/vH01/CNeZ5QXmNWa6LzPEuag327ll/WdTgmU6on0IawkglkuBOdAcjtSU//mhbRRMJyV7HXuqfYpEgxfMI0nADP5d1sIrWEGreno7n2Wee6fxJpM62C7ZbQhyB56YYHymn98Fx9D0w+ebfbB6bi5i5hFVC+rtae9sSsSPuyvmmn6pQOG3KjsQmyJ+jTFJ3P/xLwg6lwmuL/EH0aTRXad2k7VbS51OfcwmgkmcGODuAAaoXmfj5AVddt96urMNZck0/dgegfVWhQnH+b9diOYMEKTpgtbd8Jr0rsdxw8hzK3lqAv7gcp7ATDIxYm4/kZ7rK2a/wwmVQavnykdDmIUOJF1Rcb5OsoYH8lG9uzJQfr7CfCakmEDC7gC+pOjnB4ZJR++vmJ+dUYG4jgkpALWgnkC96Ar39WMGCoa3/me6CDWUGyX6sFL7pxBSnmGfNHXVF6BUCy5bwZmDLjeLQtgsuBGYzfBiPQ3I2gwgteyCeqRit3+tb5t8r/L3kzmoI9yvxl/+ffinOCcaBBNxj2QLsl2UruUleDH9qfnMplwjZJSyqWSI28zNL6gvFTqTyQSjxyEW8jDPUTlsmy5+7o/59/1LwDun2A==
+X-HE-Tag: 1762066792-964747
+X-HE-Meta: U2FsdGVkX19fa7qozaNTIl/F81gLIHrzkIBnFuqe20NqdD8VTABJmFbOI4698eUXkE3n36BLGWoOOFaN6PZsfNWVhTFGURlaRHKr47oE517fM0DKfC2K3gjJz8892Cxi682jylfUYoKtwiFx/QvOylzsRmLBe1icWPyy7PbbXebrO8Skdmouv0WROQ/0X0Me9YlGAFJcp3RPduQWonhZGSvvy9H5Rr6wiFwISFhWEPb0tyipLtAdS3AqZjDJi7NTbcNCzoRkxfXyGY2ZzxBYcaORuwaZ5QdM6ZjZRU4ftA9SAfatQfV8JcRc6ULYEItg2n4bVUeovYhpD2pEqFD1lC+bji7+PYfho/G9vDFcxhArgrPyKseqlqTwjDp/uiiYbmIS4gGVxazpJXa6HS6Z1n16lTamlwCTYyzrede7zG3TY4neNdMHJpt0OXg6vqmJ3wEwOdLDUbBNa023UQfc5xy2IYuAO0+ftbQyecPb8blGobYKn0IBWqQ5Zjo7BFX4iLbl1JDCInAKVBM1Cik6R/EShX0ZNUu0kpCOoOfgkmUgPKQ03GQYBHYkKuVbPGG/+YTeb1WubmuYXtzIEtN16bgz1oPf/58Ivdt1Z/MUKTi7agq92jyP2OYCCS6w+Ob2B2lecvVEAHg3vaki8ySo3/N/xEs3M078O2yhimMIpUDadtFQ9q+M73V7dKx/CTobx1cVfsjlr6qkvbFc222Qncae3dZaYBLC2HrnPqgLs7vKT/wOqFzk2aBDcfgncvdcgVYfERIIEP0wBLfCfKweVIyoxW8VioAzSQIHAk4rZwralqhCwfFFJ1hz0LAf9z9t6idYvkR3BowWJACIoEX3uDhCOQCvt5Rwt2DNHgr3zSmyaclZqR2cYVpfuAKrjpI8K6NdwXOsB2j/kWzhQr9D7A4phoAlZoc2VPOiduefB1rX461BTgyMfVK08rztSVZpQCTpoUvJk+POlKoEpVI
+ X0G9NcFC
+ aL/mErNTOjos64D/453lJRtfVJUc6eDiH3p+h7wVo34FX1WlnYoCdjNSjhuIqIbxM44Jx8/6eatYTBe3kLxivIVd1vJIvw74MG4CfCX3nG5r6yJ2fgekBI5lF5z/OcrObZNUf4hGae542MuNrNqlZf9QSiLTRH+qcTsFiOCwmEKUnKv0c8s3vsuj397AtHfXUMRdbObfSEPxeEjLQHImEr4fa7M6FhphzEICTxN7JNHhcQ8aW1yCbDUpor6cgeMSbGw4TgAQBZhy4kO0hFvzkd9BvlMDUQK/e7CaaiaoUH4Glhnk/06g+Fga/5Z05uWwjb7s89P+4sbdXLj1EWPIjA5LdDA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,62 +96,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 01, 2025 at 10:23:20AM -0400, Pasha Tatashin wrote:
-> If there is an error half way through KHO memory preservation, we should
-> rollback and unpreserve everything that is partially preserved.
+On Sat, Nov 01, 2025 at 10:23:25AM -0400, Pasha Tatashin wrote:
+> From: Zhu Yanjun <yanjun.zhu@linux.dev>
 > 
+> Make pr_xxx() call to use the %pe format specifier instead of %d.
+> The %pe specifier prints a symbolic error string (e.g., -ENOMEM,
+> -EINVAL) when given an error pointer created with ERR_PTR(err).
+> 
+> This change enhances the clarity and diagnostic value of the error
+> message by showing a descriptive error name rather than a numeric
+> error code.
+> 
+> Note, that some err are still printed by value, as those errors
+> might come from libfdt and not regular errnos.
+> 
+> Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+> Co-developed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> Suggested-by: Pratyush Yadav <pratyush@kernel.org>
+> Reviewed-by: Simon Horman <horms@kernel.org>
 
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-with a small nit below.
-
 > ---
->  mm/memblock.c | 73 ++++++++++++++++++++++++++++++++++++++++-----------
->  1 file changed, 58 insertions(+), 15 deletions(-)
-> 
-> diff --git a/mm/memblock.c b/mm/memblock.c
-> index e3bef9b35d63..f527ad1ca682 100644
-> --- a/mm/memblock.c
-> +++ b/mm/memblock.c
-> @@ -2445,29 +2445,60 @@ int reserve_mem_release_by_name(const char *name)
-
-...
-
->  static int __init prepare_kho_fdt(void)
->  {
-> -	int err = 0, i;
->  	struct page *fdt_page;
->  	void *fdt;
-> +	int err;
->  
->  	fdt_page = alloc_page(GFP_KERNEL);
-> -	if (!fdt_page)
-> -		return -ENOMEM;
-> +	if (!fdt_page) {
-> +		err = -ENOMEM;
-> +		goto err_no_fdt_page;
-
-Please rename the label to describe what the goto does, say, err_report.
-I believe it can be a fixup on top after Andrew merges these.
-
-...
-
-> +err_remove_subtree:
-> +	kho_remove_subtree(fdt);
-> +err_unpreserve_fdt:
-> +	kho_unpreserve_pages(fdt_page, 1);
-> +err_free_fdt:
-> +	put_page(fdt_page);
-> +err_no_fdt_page:
-> +	pr_err("failed to prepare memblock FDT for KHO: %d\n", err);
->  
->  	return err;
->  }
-> -- 
-> 2.51.1.930.gacf6e81ea2-goog
-> 
+>  kernel/liveupdate/kexec_handover.c         |  4 ++--
+>  kernel/liveupdate/kexec_handover_debugfs.c | 10 ++++++----
+>  2 files changed, 8 insertions(+), 6 deletions(-)
 
 -- 
 Sincerely yours,
