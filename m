@@ -4,126 +4,170 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3CF32CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 09:25:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90DFECCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 09:38:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B8CD8E004C; Mon,  3 Nov 2025 04:25:44 -0500 (EST)
+	id 9232D8E004D; Mon,  3 Nov 2025 04:38:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6685B8E002A; Mon,  3 Nov 2025 04:25:44 -0500 (EST)
+	id 8FB4E8E002A; Mon,  3 Nov 2025 04:38:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 556F18E004C; Mon,  3 Nov 2025 04:25:44 -0500 (EST)
+	id 8111F8E004D; Mon,  3 Nov 2025 04:38:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E55D8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 04:25:44 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6045C0AFA
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:25:43 +0000 (UTC)
-X-FDA: 84068763366.19.3218A52
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf12.hostedemail.com (Postfix) with ESMTP id C7A3F40004
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:25:41 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=cLwTUyRV;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6FC588E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 04:38:56 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 1A864BCC26
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:38:56 +0000 (UTC)
+X-FDA: 84068796672.12.22DA5AD
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 87BFAC000B
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:38:53 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x6xNYIOw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ugjgjJ/+";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3M9MHPla;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fbhaKPkY;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762161942;
+	s=arc-20220608; t=1762162734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=tf1fBcrky/yZyqREIk7CKv1sKuqf+jaJkSHB1INt7Xo=;
-	b=zT8451K5qDhb47IuiwYRuP08Co/j6v9acIdEGVBp9XS4iosGSRPSMc+ItVKiaJTJXLgDkU
-	WGRQEukj5LgidIJ5J+uj48ikOmlLaapp+lccw+e0FVKzLyx8611Z0jQ1o9YKybVyFApqNQ
-	zpdVw7/8iqKXOTY3cd1Vy06qUbloyy0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762161942; a=rsa-sha256;
-	cv=none;
-	b=gizfNZoBeHXpJ0ZqD9M9RkOdcQgzc3QbUMd3ktPxfZi2HbyVvhYkCK9I9v9SZkGLs/+Pb8
-	JsWM3N+i7G2ohDAW+gfT4QNtK7Io6INAoXwaqBRmXFZjaaeagSKIlqTPKhJ9+tm9SGZ2JP
-	8MqjYQW2LvQSxHzwUrm0KzL+a6qVIek=
+	bh=4eRcdeBAb3pQr4Fhg28b8ShB6FjYE1f6zB493Yv45TU=;
+	b=m9iGQzKR7pTTYbBPJYwLJCv1/Stqhn4J5++QQpWXT7orvMjvsQhcqVHwunBf+Gueru6EZE
+	oPJajXdyhi1e1osE0lyGYqhB2wZfl2AWvN+Bi06fpmoGTKA6FCYNEyice9dhd8Df39ZxkG
+	0jmv0kvB1xix8KbdrRKmxJaLJIjITsc=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=cLwTUyRV;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf12.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=mhocko@suse.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-640b9c7eab9so1363839a12.1
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 01:25:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762161940; x=1762766740; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tf1fBcrky/yZyqREIk7CKv1sKuqf+jaJkSHB1INt7Xo=;
-        b=cLwTUyRV89J4vNcvI+Ap+bruTSnwUW8DZj7FZ8/MdZ9YlOepVCsS3ylxIrXZbiNSGQ
-         Q2GSqrvGz+kKFCq58xbB8FJtOT5anK9F+UeDPV8vPpy0F7XW3EITRgHdulNSpcIvlpLz
-         NxvjsW+MM/sDdd77EVKa6GhQo+c1lvrTjXPeB71KBQB+gTEQI1n3VFo7gieWe7Ll3Em9
-         Tk/zQigd6Ox945EQHYHVLqyGhn1/fw9HeWu2uU6yN3lqn37ynEFIY6amgkDoW0kZRHjH
-         5ia3U3jl9DFZWogCVFt9psQjdU3961jVxQazF7A6gF7msYFCYBt996+xVvkCIiWm5ttx
-         layA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762161940; x=1762766740;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tf1fBcrky/yZyqREIk7CKv1sKuqf+jaJkSHB1INt7Xo=;
-        b=gFNpWzouK8QPRvSLJv/AfsQBxrf0pkKWXS/6GUjWlDhmcjmwoTfse+4OAfaj9uguOG
-         3UE0Wbs0qRkcwM/O0XXjeyuaDt03ToAyvPbnJJdAJL1h1gU+FfmpoOMYvsP+P7A/FJtb
-         p0LOlhmAqBx9Oq7eTED4f500bDwqg1DC1zpfGbFf5b17somsg4G1i50LXxuaBHAErDxd
-         lk0FVdJ0Hjfr6Co7QIM+J1WX/1gPRdUA36PdY3RX2TjiAATwNJRE2ZZNjOJKuDoeSRBf
-         L94ECYRLUV3Z5+Rxxd0+hfUSX25vqFM7GDBpgbuHdwy2yRei2IK33/sIHiT8OodPR/+5
-         HUvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX96xlu8gjN6PsMXkFzO5/QS9mtDSD8S3hGVEdlQ0DfYAWStZqusVfNexA6rUWMEAheU2t1rm7pjg==@kvack.org
-X-Gm-Message-State: AOJu0YyOTv6ay0i4EkTiZYNSDK3ZSzg75Ba+au+6mlJNMCQ5UzeuVctA
-	ppbGOBBMwzOel2vyvklVXNIvAqQrXnHufK55BXCh8CZnRgvClbC+duItjM5yUgI+Vkk=
-X-Gm-Gg: ASbGncsF0mk9dtI40oXh6Kt+bh/MDgLXmkqiwLlMUahIBjmyguJ+fuBke0nafGFmI/p
-	FxaFWB6+m900mxa7DpSl0nYKDJUmj4VbLnVv0M4sk2CbOyu6aLhe1Ury/i2hq1kal62pftwRbTQ
-	i9nD2t8zedDLwy5aqaa77SGNx5r3NTYCYLmE0q5SmTZ1gAQ3Qt0c1XJtoWmwu9I55DYWo2XmAgh
-	SknOHaszskboabmZn9jZkKq8qMrlvVdcDmMAR/rhK5Gu439wVCS/RK58sdBJhqwQ8LcBbRVQHVB
-	P45Oul5865novH/MdFga0eoCYlkWCaChBdXkMwmCgLhGyYxUUjXcsdUxls37XQmuP8ss4R+FrfM
-	GguG0P5/6tOha03npHTlGyR3JjSVYezhzwl5nZ0ZH3RK+IFQeXvMOVR6Ny916fJohM/vHbeB2hz
-	PnG3Y+mBBes/9nbBH3+0yR8zPW
-X-Google-Smtp-Source: AGHT+IE3Y2Ge+uwa7x5U2G0gOCZBTHF+519C6h1q7EcMJI2PKxCdrSAv7+sBGhcTO/PZD6VINsLsbA==
-X-Received: by 2002:a05:6402:3509:b0:640:c918:e34 with SMTP id 4fb4d7f45d1cf-640c91812a5mr1477004a12.0.1762161940248;
-        Mon, 03 Nov 2025 01:25:40 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6407b42821bsm9171075a12.22.2025.11.03.01.25.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 01:25:39 -0800 (PST)
-Date: Mon, 3 Nov 2025 10:25:38 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>, libaokun@huaweicloud.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jack@suse.cz, yi.zhang@huawei.com, yangerkun@huawei.com,
-	libaokun1@huawei.com
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Message-ID: <aQh1EmVd8IPHK0Gh@tiehlicka>
-References: <aQRkTKTm08lSJZZi@tiehlicka>
- <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
- <aQTHMI3t5mNXp0M1@casper.infradead.org>
- <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
- <qfo7raavlfupjqwbgl2mnmfvmn3z5oslnxcehorib3xjdgf4yo@bp76xmxplre7>
- <aQTb0NdyN3tU50ss@casper.infradead.org>
- <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
- <aQTqELGGKCN3JTIm@casper.infradead.org>
- <aQhf5LJJMlvT-rrE@tiehlicka>
- <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz>
+	imf28.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=x6xNYIOw;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ugjgjJ/+";
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=3M9MHPla;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=fbhaKPkY;
+	spf=pass (imf28.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762162734; a=rsa-sha256;
+	cv=none;
+	b=HayaBibPTE6njPYOcG5jq8b3zztSmZwk0aKPSLNOe/ml38qwfx1IIRBdKOuwRIzKf1b0Jg
+	wy0NBzUJskyT9wK9bFBLcvY7zeNXmYIhCILN1EZPgQJJP/6HeqdMnKgMjb3P8yzxsbvDBn
+	Hj/SN5ReJSrC936Du31FVEkUkOJB/94=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id C38EF2128A;
+	Mon,  3 Nov 2025 09:38:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762162732; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4eRcdeBAb3pQr4Fhg28b8ShB6FjYE1f6zB493Yv45TU=;
+	b=x6xNYIOw0wopyADnLNGc9pa6NsQPeMU7LEzALF6dhY2i1xqREF1i4Mh3vNY5LxFSponR4M
+	NZ6nlvvS50O6vzwI6TBmY2+XeNnx1jS3iWvcWd4O5285cLW+v6S/ZNoP38Ws4gIL69Pp7J
+	dXLzYoaXMZAiD8rF24ygcF01M3fYISM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762162732;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4eRcdeBAb3pQr4Fhg28b8ShB6FjYE1f6zB493Yv45TU=;
+	b=ugjgjJ/+yKHL/UDkjjYk0JvaSlFL+0Um4dqTO3FNrCn9qQR5uJ5pU39S2jJ/R4Y+lErARv
+	Z24iDNSUtmDhbSAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762162731; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4eRcdeBAb3pQr4Fhg28b8ShB6FjYE1f6zB493Yv45TU=;
+	b=3M9MHPlave/95yiDJiN1qfgJQQ8FeEh/hqC1NMcwECibDd2JaWGaW0J6fLxVcTUwXGcPg0
+	GXarSlWP5YKbBN7ALRzJqq0FZC1gYV6eZpfBh4RLBHq26AA4SnhCXgz9IpGDmu3M3sEHgG
+	zzZ1lGEiCEi0hXOjnAri+96zT5FANPY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762162731;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=4eRcdeBAb3pQr4Fhg28b8ShB6FjYE1f6zB493Yv45TU=;
+	b=fbhaKPkYcboly0+dniQH4npHrILpeyCSuQQcMdGWcWW/oJ7/t9ywycSkxYpWABCow9jweZ
+	h3IP1YF6zsO4Z3DQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B4AFC13A91;
+	Mon,  3 Nov 2025 09:38:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id x7++Kyt4CGmlNgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Mon, 03 Nov 2025 09:38:51 +0000
+Message-ID: <1f3bae6c-d75d-44c3-8db6-c25aa13afacb@suse.cz>
+Date: Mon, 3 Nov 2025 10:38:51 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz>
-X-Rspamd-Server: rspam01
-X-Stat-Signature: pf4j6fxyaikxct8h7pc1k4qx4un8i7cp
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/debug: fix missing space in case statement
+Content-Language: en-US
+To: Zhang Chujun <zhangchujun@cmss.chinamobile.com>, akpm@linux-foundation.org
+Cc: linux-mm@kvack.org
+References: <20251103065910.2196-1-zhangchujun@cmss.chinamobile.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251103065910.2196-1-zhangchujun@cmss.chinamobile.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Action: no action
+X-Stat-Signature: x8644wichgwx8hbri76fesjzonf8oogz
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C7A3F40004
-X-HE-Tag: 1762161941-870597
-X-HE-Meta: U2FsdGVkX1/aL/p7wDGUOrb31OYZH3tKDtaqh1P7skX/OFXL7YhIIta8tzhXFBI8fok56woUMBJlBuWqrtcJ8aM3Cxp+tpUSDg2tdaG1hkf2xzOMeBvVHgaOBZj01A1YHau5y7lUZghYDVq9rl0DNDdgfsd15LFuOiqI31g3/uj9OaQpcxdSqXzU6s2kx1VlaaOeWAOvJRSdf9J8xUccyNLz5I8zESivPYD8fUjv765hkqsNOifgppLbHXti+cvz1SfkYvh6wUabSKfDwMq7/aZ6rSm2FKP7cWoEXRlhO1klXFl0GBuSntc1OulKbf4Pcv6Zs5IDhYCnFgafUg95obZkamcFQx9LKZrUiqbTndWa9xIioRC1IJDg3dJxBRiM4zVANZujaw5l/KHIFWNAPtUTQ6q4UCYGge1q51w8OvOSA+DE325dVdEYWWKINAyAajfgPj6DBODOsLlS8b8+BIOFDI15GusJIaG61R/IKQIGu+uxS/ylD/Y8/pwzPSmA2uvYnOl5+IlrJkJ5E8+hs7jeZsfJk0dsZeginNO7lZpHiYsR0B4ntlZEvVK/SokROj8ZYmhA7hQlwe1npY/tJEI/W8TxUs5/QXMuOs+oycEN1+3YFd6kazw4lo3ruJvkLCpxKHxzCA7FRohJfcwknElGg4x5aHYu5oDRon3O7ZHajPJkqM9FWdApKgIXOxmiq0BAZaYBaLaE4PWGFwFRRPq309nBQpmZCvi9o9+iUv8rNEm8oobo3gum6VRqj/yVkfPUIp4oxQUl4GL4/h8Ct9i7p8i5J5RB3/1HaW2ZpeckdLb/oiIwxSAjKgy7SPrPDPMPAb6sFAoSlkg54IU6/f6sZa/tZ1uH/oxd5IKZb1XuoXwtGykTc2i/74ZX51quk8V3WOs0QPKn6/Wvhilekt7m3jTE82iMTaWcKnQ/wwOJv66X3I9mR+u32EkjUfW6I2YLkPYA2c5s2Fl+jbW
- X6x/TryE
- K3sWvAnV1qBH7rOjxC2GI854zwQ5qiPy7XROErme9Rbw8ctH3gtlgU0QLq2QfOdlc3WUFy+gQJr8bSH+oGJ9TKCoZUYOyFV20v5XOSXm4IG5B3cpKXnb8Fx1BR/rZXLYRzc0kTLMPzoiZZL4hqF2gLThm3y7DGmxKgLxoQdmMWMcR5XVAf/1i3lrB/AFKstOW2WUjFzrC8r0JFF5PQahM4PVm1//bmqyiz0y5L9/ehy1KXJE8UHSQ7Kmi9XYXXs0v7wNQqjexCmA/F4xJX1CXIEZPIVu+PGSK6oQg6G4AbH/Wi1gvsKfhCw/IAPjecrOVphyABMOZ7xqq6T1Wuo6JiWHCDbOe6FguoHa3CRiBImKT5t+r81oe83tqfpd9pfRKYy7GD5rW1IncP2lF2sVCR5a9Rw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 87BFAC000B
+X-HE-Tag: 1762162733-333540
+X-HE-Meta: U2FsdGVkX19qtfX/MNTs1UwEgtB1unEw0RgOShh/mZdvAAH3kSrXw4SsacIQUulbUGDkH5NYgtdcVkOWM1gMhPNVbwkTuQ0GOYI0Z+yyRUIKBxlcEmIzLPb+3FvoLOHDePkl1kFfQe+H/wQ4k7IWUs/weVLZyazdTpIwIUV57Ai7Psn8u+8/S0Ijfjbx97zCsK5wYBa9e99Y9luznsM8qVSdKCpsfwGAg++iJPyq8/7ThoAfV20ARPaHu31YMvCxHsVhdIOrBAkWFMOzAA5AODTWPP2zQ0VzDPcmQu1+JZrDM4ewlbqMreSNCj3a/HMWMxXsIF93FrpaznrzCfnvbnmYrFc/qTXSW4QUgzmBggPkSGUJLCXaTyrpiSmquZ0URE3t8uyqtt/sLuakUWpEdqNwzHsySWkroB49iXbjE7qqGqZUx/mrQiGEF4Yir+hG5fhbE1e3vM9m1DTrILjAnD1VhdvcBvSb3GkGU37t3mmBC8QxIt/++w8P4dmOSMKfL7Jgw/TLa2K4kv+7fVpKaXvGdvhxgPjI1ajMnMYPelHGxZatbuIgt4WgRcbiE0C+Dd0OBFwdRYx4qKIKOSixZT4z8H9OSl2LU+ME1FqrpYxbWX2h0g6DlqNVEKCIUMDFeId03ZH6JM5Bb103Xcntt+5hc2zMI6SoDuo0bm2Is4lI8SWJkq7y2CotbQKye0o8S9ftEZoXxQE779AAMLdJRL5lwGD/Xx3maJFeB3Uo53PLKmroscdkjFPymQRpWLxVZ7KsuhnHFJySmtqsyyjUBDbO2yFiX3SyKntcImrFgqdjd+wabfmTDv6uZCHJ1h/Xu/Gr0b5g2H9NGkCGBpH++1XpDsYrIjYdtywEhgALXo/ylqxkLDdSrEoUWJSEQ0YtwnRi18X2covtfcNBYWPSg7xmMRRWO1ppu8nAkKMtP8hQdmM+d2CqzxxKbwNbIvhMXMQbgz4ZOcgl3Va4IsR
+ z+/8m0je
+ 4HKbuRH0Ms9TIDBtY7p806ESsNj4oWhjBJsMxK2q2GdQJLmq8lWlXPoEmZo8rDSBGeeHnA2bX2q/F15lsa6V1DwVlc+r80YrO1CQSORSwyBC8duiIRtlgVTAOFcfgKrGsw/dC2cTf+I3C/7WX+xs+46AgQsd8H/zPPAUTAc4+bYtfEGGy2Q2tQe6EXLzVLbZWvt0Tuwp3IyFER+uCeS/cCRD3QB0T2lHdqeNx/QnlmMiCdHEgxr2VULa/TDy/pHSJ6M6v87qe8Utylb7rP45YwA0dKTnf7qBGHT62TNRjn697FLG8kH422vgWMpMTs+4YsarSkIX5SFy/7J0zoQsv+7b1pQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,18 +176,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 03-11-25 10:01:54, Vlastimil Babka wrote:
-> Maybe we could keep the warning for >=PMD_ORDER as that would still mean
-> someone made an error?
+On 11/3/25 07:59, Zhang Chujun wrote:
+> In the setup_vm_debug() function, the case statement for 'p' option
+> is written as 'case'p':' without a space between 'case' and the
+> character constant. While this is syntactically valid C, it violates
+> the Linux kernel coding style, which requires a space after 'case'.
+> This patch adds the missing space to comply with coding standards.
+> 
+> Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
 
-I am not sure TBH. For those large requests (anything that is costly
-order) it is essentially a loop around allocator inside the allocator.
-I would be really much more worried about order-3 which still triggers
-the oom killer and could kill half of the system without much progress.
-For oder-2 you at least have task_struct which spans 2 pages but I do
-not think we have any guaranteed order-3 page for each task to guarantee
-anything when killing those.
--- 
-Michal Hocko
-SUSE Labs
+Acked-by: Vlastimil Babka <vbabka@suse.cz>
+
+> 
+> diff --git a/mm/debug.c b/mm/debug.c
+> index 64ddb0c4b4be..d860864063be 100644
+> --- a/mm/debug.c
+> +++ b/mm/debug.c
+> @@ -327,7 +327,7 @@ static int __init setup_vm_debug(char *str)
+>  
+>  	while (*str) {
+>  		switch (tolower(*str)) {
+> -		case'p':
+> +		case 'p':
+>  			__page_init_poisoning = true;
+>  			break;
+>  		default:
+
 
