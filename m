@@ -4,130 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E201ECCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:28:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DC4C7CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:28:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3ACCD8E0041; Mon,  3 Nov 2025 03:28:00 -0500 (EST)
+	id 2EBE78E0042; Mon,  3 Nov 2025 03:28:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 383FF8E002A; Mon,  3 Nov 2025 03:28:00 -0500 (EST)
+	id 274898E002A; Mon,  3 Nov 2025 03:28:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2C1548E0041; Mon,  3 Nov 2025 03:28:00 -0500 (EST)
+	id 163C38E0042; Mon,  3 Nov 2025 03:28:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1AECD8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:28:00 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C1EBE140AB5
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:27:59 +0000 (UTC)
-X-FDA: 84068617878.23.478EE68
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 8FF9E20003
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:27:57 +0000 (UTC)
+	by kanga.kvack.org (Postfix) with ESMTP id 020398E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:28:58 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id BFFCC894ED
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:28:58 +0000 (UTC)
+X-FDA: 84068620356.24.CE9FA06
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	by imf03.hostedemail.com (Postfix) with ESMTP id D2F6B20005
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:28:56 +0000 (UTC)
 Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DCUlnY/z";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c0ERLWzA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DCUlnY/z";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c0ERLWzA;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762158477; a=rsa-sha256;
-	cv=none;
-	b=KTqC6sce9Dk8AQTCW1eNfeLAV2aEN7of5aEwveOqNOaOwcAvUY+jdCTyFfSjH/8mBQfCcH
-	bBrxGJuhTDh7xTqilDQcRU3f9w/qIOAwrEYW6/wLLmv9hh0U2R2mKJedsVNbbUwikYhCKf
-	1kmK85YpkWC5lAn1hFs3rFowyoXeIr0=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DCUlnY/z";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c0ERLWzA;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="DCUlnY/z";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=c0ERLWzA;
-	spf=pass (imf03.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762158477;
+	s=arc-20220608; t=1762158536;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Ee5KZvxhugRFMpeq4Qiq/n3Z6f7uctA6ZH0uyPJXPCI=;
-	b=o7ryDrs75FK+irZIHwcASPy6V6gNIR3wWrwFQPs/W1NVyFBIlje6qywQHFMYRgRHmcxuZs
-	D6A5YJA2kIlCeCX7Ov6PQ7Eyq1Z7fpl0Jw19Zwv4hpSzmlc7UA0omUDG3xCtBt9KFSOzkA
-	jXCK1rIUqOmVy124INapd6FYyJLXsQ4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 0D43421DB0;
-	Mon,  3 Nov 2025 08:27:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762158476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5KZvxhugRFMpeq4Qiq/n3Z6f7uctA6ZH0uyPJXPCI=;
-	b=DCUlnY/z3Ky1Xm7HAejt1r3xOlJx51+9ntNJx4rLAM1au4uIxhA/I1M8OZuE94qrPu60kX
-	EpDC1vkxqvmvaXNgVg/qOQ0xKL/3Va1UhHOxrIjyBcwG3dlHYVO0tINJ77JXK1M0Hq9rjV
-	/Z9dKUSvi/2zuIeoYrXGy/CvkH/+zqw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762158476;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5KZvxhugRFMpeq4Qiq/n3Z6f7uctA6ZH0uyPJXPCI=;
-	b=c0ERLWzAYo0wOk3SCD6EFNCY8xqV9JLpQwjjnzLOVniOLfYrVnJ5Uh7SEcq4IcwLxr1AMe
-	wSuB8/J/wL2IgSBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762158476; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5KZvxhugRFMpeq4Qiq/n3Z6f7uctA6ZH0uyPJXPCI=;
-	b=DCUlnY/z3Ky1Xm7HAejt1r3xOlJx51+9ntNJx4rLAM1au4uIxhA/I1M8OZuE94qrPu60kX
-	EpDC1vkxqvmvaXNgVg/qOQ0xKL/3Va1UhHOxrIjyBcwG3dlHYVO0tINJ77JXK1M0Hq9rjV
-	/Z9dKUSvi/2zuIeoYrXGy/CvkH/+zqw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762158476;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ee5KZvxhugRFMpeq4Qiq/n3Z6f7uctA6ZH0uyPJXPCI=;
-	b=c0ERLWzAYo0wOk3SCD6EFNCY8xqV9JLpQwjjnzLOVniOLfYrVnJ5Uh7SEcq4IcwLxr1AMe
-	wSuB8/J/wL2IgSBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id EBD3A139A9;
-	Mon,  3 Nov 2025 08:27:55 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VYWQOYtnCGkVcAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:27:55 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 4B850A2A64; Mon,  3 Nov 2025 09:27:55 +0100 (CET)
-Date: Mon, 3 Nov 2025 09:27:55 +0100
-From: Jan Kara <jack@suse.cz>
-To: libaokun@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
-	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	libaokun1@huawei.com
-Subject: Re: [PATCH 08/25] ext4: support large block size in ext4_readdir()
-Message-ID: <kfzwluvt7sb43pl7fr4qexvflentvgm5y2s52kxg4exe6tsq7n@e4kjkexvwtvg>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-9-libaokun@huaweicloud.com>
+	bh=0ALGggkqCFEX0FeZvPrEJORb6xgYMLiTbPKW+HWNC6Q=;
+	b=MU577cGLui12cq0Uf24CSSmdStq6pUMGJ6KP3RdxNWxmQ+Ik/L/DSGTrHbPVgX/Fh+w15k
+	xqI66Kcz/w1FO5J3ua/u5Pa/+r7XkAF34X8rXTX4K09ssqQD7YoF7YNCQya1ZTjmr7r48D
+	ofjSgpfm+OM49WLe9lFefDqjh8l7CNU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=none;
+	spf=pass (imf03.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.181 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762158536; a=rsa-sha256;
+	cv=none;
+	b=Js/wDDh/qkL8D8uMtbbutbej35KdOIs+LgKZhI3MwARJT5WOYG0VRxeRrdekImXAVZ1VQy
+	M3kAiPJHkXuNzYKaUkcrcKT4/xNflFGY+0X6/9JsCmUxwrcjovFOMlFMbauKrZ//WJR+9i
+	iFpDeMWn1F4d1b5CFkc6XhBd1K8AalQ=
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-89ed2ee35bbso665812385a.3
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 00:28:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762158536; x=1762763336;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0ALGggkqCFEX0FeZvPrEJORb6xgYMLiTbPKW+HWNC6Q=;
+        b=lkplN+6rEie6uZlsr/B6XdHcMjACISooF3hOpQOeMcummybFxJJR7nmRZygO72YsZ9
+         ehrWm2rJ5mugWa8BDblRrUjv9ZMwWOUO+7WWtE9fzQiamYCzLmKCPE5TklvBTIfqMv6L
+         WCjowF4ipYV6BE/VSF3QH6RCMqMUMSBruwDY8Gkcla5rE+rYU7SfvqmFDp/R0OlWkeno
+         Ri0iYgaIalnA9rrbbZ+XJqPkjlifoEIAIFDjZT0bejjwtdtHE5DAQMSQmQgLYzDCUpfV
+         19BsSZlNtqqxrCyM318qHFpnBz+fky7hP0bNLLrV4evqaP+65JuFwuprZkOfPmZsULkf
+         FguA==
+X-Forwarded-Encrypted: i=1; AJvYcCUldIla2NqgTc/jIzuTY92SMixIM6TaUsrdkTjAcNDWebqtdSKvgZgMhsb8uiryPSb6ve0eJFP3nA==@kvack.org
+X-Gm-Message-State: AOJu0Yy79rl0k4Q7WPJK3aRGwMMCt8Zk5TAWC85f4CX4PO5fxsnG+Qnl
+	p+vuFzrq65G3OCO7kKtqOPzPFbIkZkg/hRz0GAl7mYMfB4x9CdwQYr1P20vC1w1jVUDVpb/PC76
+	9Gc9qMX/VSsW7wg2eiUVX3N+0A0HRVjw=
+X-Gm-Gg: ASbGncuBel+KIiY/pu8tLtu5eZmOUzIw01orw4DEXpXeQu2g3Fhf2O+xrDoVgQVt/ic
+	9UFm/7WgREyS8emb+UVPVg7q5llTU0S4Oh3l2v3kZW7X57MGgVi/CevLpLppuYbHo2yd09snRvI
+	7uMyL1e3cs56SmiPTpTimz1kk+heIGZ46APqKY0xzWteDdrcvzjCOYvfARs6D7BFCBH78Fxl+sS
+	vcak5PB3s/nH79+zzdzrPIRleYpJ4I30vW6n+FcyYudgztWsTCYoEMcuzy0yNrrOs9qgpNP9O5y
+	wTh0opTK4mTTYt9U8RGRhHLzTk0=
+X-Google-Smtp-Source: AGHT+IHzeD+UNIt9JhvaMBK+8a14XleqJaL023J0/r9cZgmbQDIdVKFc9aV5c6PSRSKtUe463r+vYPTbq6U5YNNz868=
+X-Received: by 2002:a05:620a:17a6:b0:82e:ef43:38f0 with SMTP id
+ af79cd13be357-8ab95d76bc6mr1447433485a.0.1762158535685; Mon, 03 Nov 2025
+ 00:28:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-9-libaokun@huaweicloud.com>
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-1-3d43f3b6ec32@tencent.com> <ufy26fqfvaxqjywneec3hcuky7ozpa2fm63pxcuuberrvicffv@bkblomeix35w>
+In-Reply-To: <ufy26fqfvaxqjywneec3hcuky7ozpa2fm63pxcuuberrvicffv@bkblomeix35w>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 3 Nov 2025 16:28:44 +0800
+X-Gm-Features: AWmQ_bnPTtOR5hKwFnBZ9byfQkqRpfXOBNplM_TV2TQxxp4f9EWRpSuU8LoARD0
+Message-ID: <CAGsJ_4x1P0ypm70De7qDcDxqvY93GEPW6X2sBS_xfSUem5_S2w@mail.gmail.com>
+Subject: Re: [PATCH 01/19] mm/swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+To: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
 X-Rspam-User: 
-X-Stat-Signature: imbh4zgtnxmn1cir6ny7te8544smnhbm
-X-Rspamd-Queue-Id: 8FF9E20003
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1762158477-181131
-X-HE-Meta: U2FsdGVkX19HOzw7GOZe1QTU0rH6cjMLoynVfPWCGWx7mEerrPWlNJVyfle4/wEOjpR/l8U806NAhPfKjM35AIabjChEa6CByHBGAo2QMLjGDDLmrPLJ27qog4S3/R3npAdL4WOzI5g+yudBsrx/PHKYnXhVRFjkT+k3XjiAK5PK53xxjlpUWAF1zLOPRzxaL3UByi7pdaiVFn+jdnQV3djMFM/dRGS6jB+FdNJ6ixth5p1HCPtbO/D+ZcswjY52WEB8uepNjxkgfBz4DAsH3wmJfm20d6FckB6uHpUmw2YIvCa2IUCG+KbTxH1AAsZ9orVfCTYXFcsfu1JZ6ENNhXeT2IMS0fE0ii10/vPDnd25ITP26gVSV6yH5uw1NJUWDcrIEglWgsi4ePDvDQmuKp+MITExu/kbsMV8cVENIgIDNSotrcYP62tE6ngWnyZE5zi3608YRbtPpQzo//npYlA8T0Zx/9livOeTftRTDiHFCK0f3tQCZkIGHE/eOTT77ChY3GpixayevGUOw/ki4qoMR5OeeJ4IRUL1R+FCYl2JfR6Q/vSB6sOKY3RAABTMdQ4xOOwdLLO/e4UmixknjECsrKTzreRA2JPfDTa6sqAWzLSS5NHsYjTUhMxcffts4jxUs2+yOunqmnr/8NhNzLW1oufYz9jpEy5jEjtdSyPY6vw8oCeBTVP7bmhQGFRfpPhpah68ioamuiEpZI+WY0GdwBL9Dl6oRPU2XaoiTTfHryaFStjYXZolMQ8OXUrcSogb7zBkSff2vOTtsM5I3Zcn6rxqSb+PfcHeP8Le8O1Hmw3H8teSjokkr/qNFgNXRi518DAkv4ZOT+BUiTqRu4OzwHz+RB+rYo5mk8ps929WNak1ZG9vADutEatTmCr2Ysh7TUFhmJo6SFwyAe13n47t+McTvBxWf8lggSVyJ8RDo5Yrx8HQbGUGxVW4tVFMG9BFXvTLzKdURS6ZSbv
- uHTRMz/V
- 2VzM9mOhfBHUhkYmw5KuexdBWd1RmAb6O0iW+2e+8jbi3h2gPM7kWTDl0Dru+pqguZGXK5ameVwoUPJMuGGv5ztp5sSjTLq9wOry9RuZPkQVhU08v7htKo2t5zh6t+NSEGY20M0N/oEcQWjMI3GbeF3xqQzYpzJM71seVLsFzsKgEVVIfe6AGSPJnzFQkWBSP/3S2J60TXJx7Dcv6bjjFxO0f74W2pnOaZbW0EVFZD/g6een/62dIOQkxqEj7eqRW8c+2MwWcd9YZ7L9wWnr4oF4/kaPbXemvVbO93KUGJ99tAJDrCJ+kRgQZ/xXjnmfC7j0A1k1b0EgvItMkqJ+bZvywCMCof1bbg1O455S5WZEV0dT1LlBVRfSTmfuqb53jwyXFsmOXZQDoZkGCuPq25A2NRccaYHmadgeRahZ/9uaVD7CDlqztPwJnmA==
+X-Rspamd-Queue-Id: D2F6B20005
+X-Rspamd-Server: rspam03
+X-Stat-Signature: 6hrnhto8t67o5giigds8mcetpib8ohep
+X-Rspam: Yes
+X-HE-Tag: 1762158536-311238
+X-HE-Meta: U2FsdGVkX1+Agf2XGuC+vTnUh9186w6Nw1KQYoZA/gB/y4cfbVMF6Um4OX4UimvJ6JhXzvwqJrr1CaJT0qwsmxF2UQbFdn9bGKLept/sR3ObCGiQ7iFhMWoEFE+R1KOszbzifY3TYKnPsFSm4DWnOM20TE275kuHVRmZAHCBo14cB+dfxPcBj+P6oqPW5gx9vVw/GdfJ0lu/ghHsUZ5xnmsQNnLMBw8ddKX2EmdHZvSaN4O808A8xJTLELbimgybU54xUWn6r5wPjiEdn2I2HjsleUzEuDjUK4uv7BVi9Vp74ZeIV2oqJ7pOxoHloq+uWaouiJOlZcfhCTmpsF2tYvXoYuWt5r0qbzMLZV5U26NQfFRn2tkf649zwDn+xW8NIAT9W+Rzjnb3EwxwAN6hl4hGz5LoiTj5S/f0D7cNLVE8H8OSsku8JHcXGln+GMQXQFT5pYdiAG7TzNLbnp1Vo1KDuEkb5gvtu9qHBPuKFunfHUXSbGKl/uFi8Dz2ljPvA8gXeyLlnACFkjaJYk4mQMRKrlThd/DmkszwwCilOTnYHbAeQWyu/ILlB7ijL9R9ukEdCwCUKU1twaSTAy6NZhvvHLri2RLFS0FRPl8RB0cdgb7u/UXruZMt/b0DkqWfGAN2QYR5XmMRiWwUPIblAAC+5NabmxR+LlSOeoIEPdzVLulPDzRK+Y3gKXSo1K8QmrZpGForaW4IMaEYmtveVw67G2xDM5dAfDoh9pRN5a/QEwb+a3S0Oe72Kt1PmGQjBc8kghJfH6aMYZDN5IpZ/Sy/FHzDuTZyg298pz9crswlQUgC39itu6nXzxWzhY+bJ3hFGPy+so0vyNddB8inaY2OtGT4alX9k3isH+1sl1MAJ5mvDU4NUNS13XoWs3GRZMSR/9vEV2qwEWh/V+oU8oVYb3evLQb56/hEFSV6sSiDM/Ak9j8YYNa4dDn7sfE8pJ5aoXQHe6oCxcFLZGC
+ 4+x1+6DE
+ b334enKENS1k5spii7Vpd03t8h8J7P5cyUXn+/4viP/5wdV9PnnnYiYzjn2pljJOcPK+JMnKLkFMG7mAdZORXToWuNQuW3zU9WnqwDm1K4lBj+kKjQQ3tBVKH5AxTAkw+r1IRdyVdxvb+JoJETRmWP+QgEpFU6VeaW38eKFoiDhqGHMUS7E7EogA7G1SQ8TeG3WyUNHZnnGAufZp33obKxBMrl6Pta0Re9ww/oWP4yjsyhxAjA/yIy3sxHPePBlTK7fQvb0eZThbvyI4TdIPR43Lkq1j8ZJNrClMdtT2tbA9vGqMZR4uLb/7L2kM+JXgJbsO3IIkkM/bcEi9bwz9WbAAyjiWPjw6Z1Lp3y9QXVzyZBsdrOTL76H9BGA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,52 +117,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:04, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> In ext4_readdir(), page_cache_sync_readahead() is used to readahead mapped
-> physical blocks. With LBS support, this can lead to a negative right shift.
-> 
-> To fix this, the page index is now calculated by first converting the
-> physical block number (pblk) to a file position (pos) before converting
-> it to a page index. Also, the correct number of pages to readahead is now
-> passed.
-> 
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+> > +/**
+> > + * swap_cache_alloc_folio - Allocate folio for swapped out slot in swa=
+p cache.
+> > + * @entry: the swapped out swap entry to be binded to the folio.
+> > + * @gfp_mask: memory allocation flags
+> > + * @mpol: NUMA memory allocation policy to be applied
+> > + * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
+> > + * @new_page_allocated: sets true if allocation happened, false otherw=
+ise
+> > + * @skip_if_exists: if the slot is a partially cached state, return NU=
+LL.
+> > + *                  This is a workaround that would be removed shortly=
+.
+> > + *
+> > + * Allocate a folio in the swap cache for one swap slot, typically bef=
+ore
+> > + * doing IO (swap in or swap out). The swap slot indicated by @entry m=
+ust
+> > + * have a non-zero swap count (swapped out). Currently only supports o=
+rder 0.
+>
+> Is it used for swap in? That's confusing because the next sentence
+> mention that it needs to be already swapped out.
+>
+> I suspect you're referring to the zswap writeback use case, but in this
+> case we're still "swapping-in" the folio from zswap to swap it out to
+> disk. I'd avoid mentioning swap in here because it's confusing.
 
-Looks good. Feel free to add:
+I assume you mean avoiding any mention of swap-out? As for swap-out, we=E2=
+=80=99re
+swapping a folio out from the LRU =E2=80=94 we=E2=80=99re not allocating a =
+new folio.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+BTW, this sentence also feels a bit odd to me. I=E2=80=99d prefer removing
+=E2=80=9Cswap out=E2=80=9D from
+=E2=80=9Cdoing IO (swap in or swap out)=E2=80=9D.
 
-								Honza
-
-> diff --git a/fs/ext4/dir.c b/fs/ext4/dir.c
-> index d4164c507a90..256fe2c1d4c1 100644
-> --- a/fs/ext4/dir.c
-> +++ b/fs/ext4/dir.c
-> @@ -192,13 +192,13 @@ static int ext4_readdir(struct file *file, struct dir_context *ctx)
->  			continue;
->  		}
->  		if (err > 0) {
-> -			pgoff_t index = map.m_pblk >>
-> -					(PAGE_SHIFT - inode->i_blkbits);
-> +			pgoff_t index = map.m_pblk << inode->i_blkbits >>
-> +					PAGE_SHIFT;
->  			if (!ra_has_index(&file->f_ra, index))
->  				page_cache_sync_readahead(
->  					sb->s_bdev->bd_mapping,
-> -					&file->f_ra, file,
-> -					index, 1);
-> +					&file->f_ra, file, index,
-> +					1 << EXT4_SB(sb)->s_min_folio_order);
->  			file->f_ra.prev_pos = (loff_t)index << PAGE_SHIFT;
->  			bh = ext4_bread(NULL, inode, map.m_lblk, 0);
->  			if (IS_ERR(bh)) {
-> -- 
-> 2.46.1
-> 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Thanks
+Barry
 
