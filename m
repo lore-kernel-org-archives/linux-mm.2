@@ -4,85 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAEF0CCFA00
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 01:49:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D79ECCFA04
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 01:49:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 666908E0012; Sun,  2 Nov 2025 20:49:01 -0500 (EST)
+	id 1F9868E0013; Sun,  2 Nov 2025 20:49:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5A1468E0002; Sun,  2 Nov 2025 20:49:01 -0500 (EST)
+	id 1D1078E0002; Sun,  2 Nov 2025 20:49:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4B7388E0012; Sun,  2 Nov 2025 20:49:01 -0500 (EST)
+	id 10E0A8E0013; Sun,  2 Nov 2025 20:49:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 369D48E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:49:01 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C52E1160A37
+	by kanga.kvack.org (Postfix) with ESMTP id 006038E0002
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:49:02 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id B031C140A32
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:02 +0000 (UTC)
+X-FDA: 84067612524.29.591C8BD
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 0B2AA1A0009
 	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:00 +0000 (UTC)
-X-FDA: 84067612440.21.AE9C69F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id F33D84000A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:48:58 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b="xPitT/Na";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762134539; a=rsa-sha256;
-	cv=none;
-	b=t1aVBB0oQyryqZZz25C9bVVHqA77EN7cfF7Wqe6KOlrFczLrkp38L+SNEQlA4TY4HAGvkR
-	Z8AKQbDlHR1Asw9IHdco+ptd2SkWsCbD06e149m+LEJWU8Fm6O7tFD+hWYNN4Prtnz9uyw
-	eilNHH2rAq5tc50PCGckq0PvbVKhQgI=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b="xPitT/Na";
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf12.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Authentication-Results: imf19.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=nbvoeVZt;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762134539;
+	s=arc-20220608; t=1762134541;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=ng1L4mgaMfjyUoixnhV1UePdLKnKRGbfTBsi3P0YK14=;
-	b=O+WKV/NdVp7AQ/LQHfKoicoNw9vcfwzYbTcY6/unSVVGQXQH+yuNnYvjytFDcw48SktJOo
-	mxLTKOVrbgXrF3lH09noFOotiW/lWQgqOFelxvdbAwczZUBU0d3T+ESf+I/w99RQvuYWCT
-	qJn6T8ljdRQyLE8so1hR1xA+9Ur968w=
+	bh=/MXTxbhVJZb/aKJlnz5Ar0qHYhtM+uQHxmwfG7X7yNg=;
+	b=yfHwYkjWbjGJlqmo4U+xNXevR6SiFGRWLW/MfUw0OdLAE3T9yxox4mzr0eRH9qd6XJzwxH
+	gAwk8S2lmHFikQpl0RUHFduggRWv8VKCX3X6R6tDnc383+5RE+1skj7GqlLqLd3eqY+F+K
+	75wt3arwXKwai/gCkdGOtrAbcBMfX6E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=nbvoeVZt;
+	spf=pass (imf19.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762134541; a=rsa-sha256;
+	cv=none;
+	b=k5E1oM6SkNfw7sRWPDzRcj2wFh27NWzuc/5+42DQvccdPQJKTTQuc69OzyWb4C+WxyGSSl
+	L7gr7FX3RK9GuMXuFma/FIa01Dx/wMQKnJoKK19iV1TCkypgCJOeuKC24cVdTXyay8JVBd
+	4Hd7rYsaY4jByRnTHGhQXXXW/kI21Vg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 2A28040590;
-	Mon,  3 Nov 2025 01:48:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C27AC4CEFB;
-	Mon,  3 Nov 2025 01:48:57 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8F00260283;
+	Mon,  3 Nov 2025 01:49:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA21C4CEFB;
+	Mon,  3 Nov 2025 01:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762134538;
-	bh=zmE4vYPhLsLlNZClDX7jMxJnkyssWUT8qSU9Q8+p7ag=;
+	s=korg; t=1762134540;
+	bh=4yyEDFex+hFxF/7qryJOkq9qNYQH9VKVpDG2zfmDNTc=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=xPitT/Na85xDwv2HMLA4Egk9QxDKIa95C+3IASHiprddm75cMGFSNVjt6YsX9FPTZ
-	 JyOpvuQAIlaQuOEBCn0JAp0ZH6IF6GCV2q2FHW+VJ0Yeq72GRLyuUCE2JFyJVSVh2w
-	 ynhticRcUerSZwNOIZG0hrrkHQSBxCVnO8BeTPiM=
-Subject: Patch "block: fix race between set_blocksize and read paths" has been added to the 6.1-stable tree
-To: adilger.kernel@dilger.ca,akpm@linux-foundation.org,anna@kernel.org,axboe@kernel.dk,chao@kernel.org,djwong@kernel.org,dlemoal@kernel.org,gregkh@linuxfoundation.org,hare@suse.de,hch@infradead.org,hch@lst.de,idryomov@gmail.com,jaegeuk@kernel.org,jlayton@kernel.org,konishi.ryusuke@gmail.com,linux-f2fs-devel@lists.sourceforge.net,linux-mm@kvack.org,mcgrof@kernel.org,mngyadam@amazon.de,nagy@khwaternagy.com,shinichiro.kawasaki@wdc.com,trond.myklebust@hammerspace.com,tytso@mit.edu,viro@zeniv.linux.org.uk,willy@infradead.org,xiubli@redhat.com
+	b=nbvoeVZtikZi+yV3cKHBOWJ0EIVhO8NUBFAIlLkmALjnt6JqtvAzb1s9fv6fc6dQR
+	 djFnluCmpGYQ2MKFc/Rl0nSW5EuCoS0OnBdvEZvOxl6OFIFJNIw2BB66nXZwDx7EnM
+	 jgYn2WZhwdMygabB4+QF82hIBXJCpoAYDegKstzQ=
+Subject: Patch "filemap: update ki_pos in generic_perform_write" has been added to the 6.1-stable tree
+To: adilger.kernel@dilger.ca,agruenba@redhat.com,akpm@linux-foundation.org,anna@kernel.org,axboe@kernel.dk,brauner@kernel.org,chao@kernel.org,djwong@kernel.org,dlemoal@kernel.org,gregkh@linuxfoundation.org,hare@suse.de,hch@infradead.org,hch@lst.de,idryomov@gmail.com,jaegeuk@kernel.org,jlayton@kernel.org,johannes.thumshirn@wdc.com,konishi.ryusuke@gmail.com,linux-f2fs-devel@lists.sourceforge.net,linux-mm@kvack.org,mcgrof@kernel.org,miklos@szeredi.hu,mngyadam@amazon.de,mszeredi@redhat.com,nagy@khwaternagy.com,trond.myklebust@hammerspace.com,tytso@mit.edu,viro@zeniv.linux.org.uk,willy@infradead.org,xiubli@redhat.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 03 Nov 2025 10:46:56 +0900
-In-Reply-To: <20251021070353.96705-9-mngyadam@amazon.de>
-Message-ID: <2025110356-shrapnel-squash-a5dc@gregkh>
+Date: Mon, 03 Nov 2025 10:46:57 +0900
+In-Reply-To: <20251021070353.96705-5-mngyadam@amazon.de>
+Message-ID: <2025110357-playgroup-surpass-150c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore
-X-Stat-Signature: mkx167mje8phe76zeptqe5h7rd3ywt9b
-X-Rspamd-Queue-Id: F33D84000A
-X-Rspamd-Server: rspam06
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: 0B2AA1A0009
+X-Stat-Signature: 3g6f8w6p7mc5waiprcxqkj1fa1dbh6cb
 X-Rspam-User: 
-X-HE-Tag: 1762134538-829775
-X-HE-Meta: U2FsdGVkX1//txoQ2VDmsn4GgU2X9u1ZVF2gigfRw589ZRUZjY5gjbfRPzhCkqgQNErxsIGVseayeufZ18zefhVPoT+24ig5pUBPxWEk89hC4o5zJjl6tcVBmBuPlpwVFCe+b0TkXj8lGn64t3liaBdZgQai1L4tYrn4peQXlkePngpb+2zt7nsGHMGgx/GQxMD8+O/AujMVGR3gtOf73JKhxMGghE4u+MzUNdFS9Bn97i3wSdz+9FSEAJNLErxkKiwDhL0J+YloVWBFNoo7ZUm/2iKbemjjb21uA6uYemJqJpgRAsXjQevaV+PY0u9zbjvx9dNEJ10I+fGFt12V5Gc+LI0AYLZpj0eGj9g7z1KZv4kMXnBLTxB50EXMZFkSZNNyBHvX8sJ0vz8wiuTWkPC52buORWjWXDmj9jJejSDa6YVVWiolByxV1+a94YaxNAUmQ2ipTKix69IzfhgZf2lRP8uZIT0/SWWsvU+gSc+E5axuiw5osRNtl/VnwSy3oU/soTa2yqUUzx1A60mEvpGmAtL9F8YhaJyx6z/U8rZsgshqEAkdMO2zqVTsMHBYVe9WnD1mSsS6ipUtznABomqNA8u9lX28CXKlHPeGFuhdbLAMjIh/U72oRSIMBfl5xcl009QlACHOX/zVRJ5EiWtEZkxNyVtt4HiQGuWZoK6yQOCqxgIZ9nwKZ4CiVqBP5RmICmafy+x7RtNuSJlI01zxIhpaKD3QACMl0De/kXn/Nm6pFPcs8aFMd/cgdDm7ZjsvnyI+YtdEz0aVplL/7n08Yh55Yh6SwaJ0df6rF3zI4pg4o6izPL59tNnmRmfemQSyf7ZqxWlje/knjfwG3b44JCAKaSDpXslNccqpjaV27m+z3qDj55zhKP0TQzX+16KVeij/t3+RYoj5dr/dYR8l+1uYPBOOlKXf+LqZYTdhzjsD8ceMKuV9w1A/s4UmI5A3vSloB0w+KLPaku7
- JjrvZjuG
- 81WQojUCAG8Y13kfc6jUcvSMmffCAZsZ/XGL9IrTG1gmTALNSKKyRAcS1wbJXYDCjGL0oO4FY6VYTXTiRRW1WrM8HWB8/8KBaYBIX5PVhWLB4OBV3CsuaqfbCDTYX3yAGci9CqkQ6788b1rtPljXwTuJGhusXErarBOqyj09vaB7TKCJGrGiJhL/g65YTN3ldj5cPQEM7k566h8TVRrRCV7J+9swEqyUcGjYKfhOEBcSrFUvZfoxP+fO9HOqFJRdA2wYvWcIglFCTnIqERYwMpA/gSxCO9T7NX7zPPIlX7mnrTMLSCc1d/MX3/tMENs74k3dWDalhvz+lCTBSUf7J7fToSu2YKYVQmTMGImwKQN5jg/L++xf6wzCNgTIu2pbi2oiR9AjGYbNJZq0G/R8Qq723D8BIj8KzLR7V5EEoEu6zUPId4nN4v3ze0HIicih0KWltJ32L3z0tUiya120EipbtR6YAo9DfnH5QYVEAGetFyZFBazJ9UcvjvaaGneFNnXmRnpHMXf0nNqsn//Ux5nneXuibaCOw/emUfm6xfUZOQ+O7f+lgzLelpzDG1VrJ88tHMjsbW1/eHVK4gW4eEbXr8OrWlyg+qoaNGWjPAKwatcgFjE0SOPFiU0xYCHhAQwJjIqMbI736umizJVa9YBy0b+fNvnAjmxvFPGjoNe3BmgU2nmmTDfOEKqu9K0WbFMXTr2oQEPAw/Y/4Nq1Ynkx+j1A3CAoRQ2GFYUWfP2vteIW6W84/Jr2Co6fx1NKdi6DjhhDsVRW3VcdCSM91W5nwCBMvEnRVXM9GWRNVmczPbzCRP8cmcr3mn6SuBo+XR2lSPznZDTwcV1uDY5/C0uDD5MUTWlvD1qO6X69DEt11+ETdGQiKNGvJD1vHHvYp09JaSrNiJAw0HjyCZpO0n3iytklHRmN1sg171FlSN2XAlOyuyA+WWTcoTP4F3LV72sZEE1Dj0B/A8cxaZjGwdJSz9aLw
- M/kHEWBd
- OG3KLg6o7p9nUQbMw26J7T3iLe33aRzZY7owOaxat4XlEhaxSHzjR28FCdIBkFOy9dbRfDvjd1j+mpYYPzZBHCpQx32gYwr2QTbkM+oKgotYjopFdKeHfnNcQVHFHFxE17b2BcofsajJHytO8RZo9PQu4Uq0vQnPsUuredebAmSaSWApr0PVeg==
+X-HE-Tag: 1762134540-496511
+X-HE-Meta: U2FsdGVkX18/VvvHpHD3hMWKwbLwbtmNf0RBAzODFF8iVgoYpSbVydXnrh3/TXbMkiPn+qnD+bbgGtt74YT3UrKij4nyFlWJCFjvmccAFG8LHxyFml1cVH+xX/r1j1WGd3KSK7t9fSRKBnpca3uDacyRWV6Vn+pxPGqpLp6RgfsVNh3MYf70M9eqzNGrMl+OcWeUMw4iK6OF5XU8mYV9moMWJL03+PFA4oYznfu4vG42wEvkJFMakxrWOuxJPUq26pLsKOuMNpRVrSCLVtFu3PozyQfDOLYbRm9plSy7KLpL4hJYeLpSyNxG1rsb1eAxtGeHXGHNL31QMD0QT8a9crSwz1ctJEk7W3xfqKNph6eHbipccj55I2quI9jN5u7Y58Ogv209XcG1EmBOhUSjg9iZ84u4M0wkKsYK/7HkTVC55hZ9acnYOYsLPm62jarSdOO/Pav0DWH7awlV0HcC+CtaHwIWjAhBbY188txCzVsXNFMJ5+t4K22ZV0S+g+rGslSw/MMdVULfluLfTBtx36kRvjdxjIA4DYwHAt3dAZ4y00YNF0uIP/sFATlCF79XAveh0etd51/W6P+FkBQFOVTj7Xs4Eh6zcKS39O3RnhV6hionFwDpgJ1Ek8EbSu7vKMMRd6b+7uqKAnc+63UR9H5qKTk0saxgD+tyR/snX9xJcBfHyoHcVeeIbWFx5y5pcbG4GPXL8pCbkwNuKPrt9Smh5befKSDO2TqKGqd0a+VikDYF/K55M7bsnZHsO9YswyaF2dIvkFaFO3YmSLnD4kvSVm/7U1xT69K2rlq2kAAx31nHqJrqTJ8Z2fR5aeqDJLksEmF3QxnASSgnipxvMGM+xLrdICnsNRUblhtWLen/tIgTLEw56mimzpvXZZK/lpmOLlS59VVbEQoaOvvShNF7p+UJQIV8jWoGKRWytGHmGva8zh0P9UP0KwyL9k2IQ1TQZEFA05c6uRaP+3p
+ 6IRFLQji
+ NQq8Vpca33ujp9kXxd0qml9TRqbF5JWlh11qYsywl48IJlPxjp42VmW+fBnkYPOS3fGf7+h65Gp0NE8pLL9hro7d1GJvHpb+d3uJGUeY4LDyrUav+YEyj3RC5Jy8tFpZyOYJ+vIySAgqGWCXEZShmVkGqhG0CIfG9trWyAUAcLUX8ya6tBiEG13I7qo0YfpZAFSaePFkDIk1ggWMl3+Odl6lJWhBBIu/EAwpqI3DFIZeysG6e9LrpHhdG1Vt8ATKWjItWZ2Ke5ZZhPduQ/JbTLnyfMAv1Ot0P3XJxp5pjcIyQKijM2IXrX919cA9DXPFKZbNEsudvGAcR7ejbGq3cVHQABvm7kwm6cowX7fwRO733SWush3cfDsiTGq7qpKacDuKdWBUiAlM/yKupj+5476pZ/qM3fz/svRoyzo5WRHrr0QkYeYqhj7oxAUL2DmiUypQo1WJBKrUC0aFTrc1jga+EU/2K5Z0VzDm1Vt7L+qyi0GTnS/kkEYHSLjTl3yOuiC+TY6UpuuIb62AxthscAgxAI7sOrjAf5oMq9gaTWI6SA3fH7GeHneIdAV7s6x1Lnq/qq8mkou9G/KGvIu8St3id5f3d9jDaOjgqrlDKri2NtquoZPW6WAGpUN1VXeWJb1cggPGS0MQnIg84u1/xaGHsQyy+zXokf20IXLIm1WjlQnW6fpM2U5O7a2El9XP0cCpaGZU9AF2F4VxogbvoqXUhpmiq/iGyT/NYSoHi5jb9I+w5c5KqpDRXCRJblw5u3TOdnkUOSkIPCJ01sbwQypFZXNB2/IvuUw4+p0DE8Ku5UatLhZKU5NNKxdwFPdq12jr3G8DeMXS2VfHu9R+uvd0MWRS7IejuBFqE7RBuFQc8m3F1V3cdMtEXKCZgW6Y4VULJKus+R5xml4er5f9TbbPHV48lJ7ZxUfzgkGhJWbCX8Jcav1cbyIM5hz9Lj2hCuoG65W0/Nipx1gcLkGsrU/5a+IEM
+ IuYodVM6
+ /L1yH1YcSFfl7qSsMigNlLOrLvPyru9XtUvfecWu3GtzC/6XnJIpgEcWC5pUqvxovIrtvKKL56iiBocbN1pk3JK8AEV3FuQUSr0U1NhYwAM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -94,231 +94,147 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    block: fix race between set_blocksize and read paths
+    filemap: update ki_pos in generic_perform_write
 
 to the 6.1-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     block-fix-race-between-set_blocksize-and-read-paths.patch
+     filemap-update-ki_pos-in-generic_perform_write.patch
 and it can be found in the queue-6.1 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-188302-greg=kroah.com@vger.kernel.org Tue Oct 21 16:13:58 2025
+From stable+bounces-188298-greg=kroah.com@vger.kernel.org Tue Oct 21 16:16:51 2025
 From: Mahmoud Adam <mngyadam@amazon.de>
-Date: Tue, 21 Oct 2025 09:03:42 +0200
-Subject: block: fix race between set_blocksize and read paths
+Date: Tue, 21 Oct 2025 09:03:38 +0200
+Subject: filemap: update ki_pos in generic_perform_write
 To: <stable@vger.kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, "Darrick J. Wong" <djwong@kernel.org>, Christoph Hellwig <hch@lst.de>, Luis Chamberlain <mcgrof@kernel.org>, Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>, "Jens Axboe" <axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, Christoph Hellwig <hch@infradead.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, "Ryusuke Konishi" <konishi.ryusuke@gmail.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Andrew Morton <akpm@linux-foundation.org>, "Hannes Reinecke" <hare@suse.de>, Damien Le Moal <dlemoal@kernel.org>, <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, <li
- nux-ext4
- @vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>, <linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>, <linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
-Message-ID: <20251021070353.96705-9-mngyadam@amazon.de>
+Cc: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Christoph Hellwig <hch@lst.de>, Xiubo Li <xiubli@redhat.com>, Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, Theodore Ts'o <tytso@mit.edu>, "Darrick J. Wong" <djwong@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, Andreas Gruenbacher <agruenba@redhat.com>, "Anna Schumaker" <anna@kernel.org>, Chao Yu <chao@kernel.org>, Christian Brauner <brauner@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Jens Axboe <axboe@kernel.dk>, Johannes Thumshirn <johannes.thumshirn@wdc.com>, Matthew Wilcox <willy@infradead.org>, "Miklos Szeredi" <miklos@szeredi.hu>, Miklos Szeredi <mszeredi@redhat.com>, "Trond Myklebust" <trond.myklebust@hammerspace.com>, Andrew Morton <akpm@linux-foundation.org>, Jeff Layton <jlayton@kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>, Christoph Hellwig <hch@infradead.org>, "Ryusuke Konishi" <konishi.ryusuke@gmail.com>, Luis Chamberlain <mcgrof@kern
+ el.org>,
+  <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>, <linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>, <linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
+Message-ID: <20251021070353.96705-5-mngyadam@amazon.de>
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Christoph Hellwig <hch@lst.de>
 
-commit c0e473a0d226479e8e925d5ba93f751d8df628e9 upstream.
+commit 182c25e9c157f37bd0ab5a82fe2417e2223df459 upstream.
 
-With the new large sector size support, it's now the case that
-set_blocksize can change i_blksize and the folio order in a manner that
-conflicts with a concurrent reader and causes a kernel crash.
+All callers of generic_perform_write need to updated ki_pos, move it into
+common code.
 
-Specifically, let's say that udev-worker calls libblkid to detect the
-labels on a block device.  The read call can create an order-0 folio to
-read the first 4096 bytes from the disk.  But then udev is preempted.
-
-Next, someone tries to mount an 8k-sectorsize filesystem from the same
-block device.  The filesystem calls set_blksize, which sets i_blksize to
-8192 and the minimum folio order to 1.
-
-Now udev resumes, still holding the order-0 folio it allocated.  It then
-tries to schedule a read bio and do_mpage_readahead tries to create
-bufferheads for the folio.  Unfortunately, blocks_per_folio == 0 because
-the page size is 4096 but the blocksize is 8192 so no bufferheads are
-attached and the bh walk never sets bdev.  We then submit the bio with a
-NULL block device and crash.
-
-Therefore, truncate the page cache after flushing but before updating
-i_blksize.  However, that's not enough -- we also need to lock out file
-IO and page faults during the update.  Take both the i_rwsem and the
-invalidate_lock in exclusive mode for invalidations, and in shared mode
-for read/write operations.
-
-I don't know if this is the correct fix, but xfs/259 found it.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
-Tested-by: Shin'ichiro Kawasaki <shinichiro.kawasaki@wdc.com>
-Link: https://lore.kernel.org/r/174543795699.4139148.2086129139322431423.stgit@frogsfrogsfrogs
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-[use bdev->bd_inode instead & fix small contextual changes]
+Link: https://lkml.kernel.org/r/20230601145904.1385409-4-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Acked-by: Theodore Ts'o <tytso@mit.edu>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Chao Yu <chao@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Ilya Dryomov <idryomov@gmail.com>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Miklos Szeredi <mszeredi@redhat.com>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Mahmoud Adam <mngyadam@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/bdev.c      |   17 +++++++++++++++++
- block/blk-zoned.c |    5 ++++-
- block/fops.c      |   16 ++++++++++++++++
- block/ioctl.c     |    6 ++++++
- 4 files changed, 43 insertions(+), 1 deletion(-)
+ fs/ceph/file.c |    2 --
+ fs/ext4/file.c |    9 +++------
+ fs/f2fs/file.c |    1 -
+ fs/nfs/file.c  |    1 -
+ mm/filemap.c   |    8 ++++----
+ 5 files changed, 7 insertions(+), 14 deletions(-)
 
---- a/block/bdev.c
-+++ b/block/bdev.c
-@@ -147,9 +147,26 @@ int set_blocksize(struct block_device *b
- 
- 	/* Don't change the size if it is same as current */
- 	if (bdev->bd_inode->i_blkbits != blksize_bits(size)) {
-+		/*
-+		 * Flush and truncate the pagecache before we reconfigure the
-+		 * mapping geometry because folio sizes are variable now.  If a
-+		 * reader has already allocated a folio whose size is smaller
-+		 * than the new min_order but invokes readahead after the new
-+		 * min_order becomes visible, readahead will think there are
-+		 * "zero" blocks per folio and crash.  Take the inode and
-+		 * invalidation locks to avoid racing with
-+		 * read/write/fallocate.
-+		 */
-+		inode_lock(bdev->bd_inode);
-+		filemap_invalidate_lock(bdev->bd_inode->i_mapping);
-+
- 		sync_blockdev(bdev);
-+		kill_bdev(bdev);
-+
- 		bdev->bd_inode->i_blkbits = blksize_bits(size);
- 		kill_bdev(bdev);
-+		filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
-+		inode_unlock(bdev->bd_inode);
+--- a/fs/ceph/file.c
++++ b/fs/ceph/file.c
+@@ -1891,8 +1891,6 @@ retry_snap:
+ 		 * can not run at the same time
+ 		 */
+ 		written = generic_perform_write(iocb, from);
+-		if (likely(written >= 0))
+-			iocb->ki_pos = pos + written;
+ 		ceph_end_io_write(inode);
  	}
- 	return 0;
+ 
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -287,12 +287,9 @@ static ssize_t ext4_buffered_write_iter(
+ 
+ out:
+ 	inode_unlock(inode);
+-	if (likely(ret > 0)) {
+-		iocb->ki_pos += ret;
+-		ret = generic_write_sync(iocb, ret);
+-	}
+-
+-	return ret;
++	if (unlikely(ret <= 0))
++		return ret;
++	return generic_write_sync(iocb, ret);
  }
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -417,6 +417,7 @@ int blkdev_zone_mgmt_ioctl(struct block_
- 		op = REQ_OP_ZONE_RESET;
  
- 		/* Invalidate the page cache, including dirty pages. */
-+		inode_lock(bdev->bd_inode);
- 		filemap_invalidate_lock(bdev->bd_inode->i_mapping);
- 		ret = blkdev_truncate_zone_range(bdev, mode, &zrange);
- 		if (ret)
-@@ -439,8 +440,10 @@ int blkdev_zone_mgmt_ioctl(struct block_
- 			       GFP_KERNEL);
+ static ssize_t ext4_handle_inode_extension(struct inode *inode, loff_t offset,
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -4659,7 +4659,6 @@ static ssize_t f2fs_buffered_write_iter(
+ 	current->backing_dev_info = NULL;
  
- fail:
--	if (cmd == BLKRESETZONE)
-+	if (cmd == BLKRESETZONE) {
- 		filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
-+		inode_unlock(bdev->bd_inode);
-+	}
+ 	if (ret > 0) {
+-		iocb->ki_pos += ret;
+ 		f2fs_update_iostat(F2FS_I_SB(inode), inode,
+ 						APP_BUFFERED_IO, ret);
+ 	}
+--- a/fs/nfs/file.c
++++ b/fs/nfs/file.c
+@@ -645,7 +645,6 @@ ssize_t nfs_file_write(struct kiocb *ioc
+ 		goto out;
  
- 	return ret;
+ 	written = result;
+-	iocb->ki_pos += written;
+ 	nfs_add_stats(inode, NFSIOS_NORMALWRITTENBYTES, written);
+ 
+ 	if (mntflags & NFS_MOUNT_WRITE_EAGER) {
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3891,7 +3891,10 @@ again:
+ 		balance_dirty_pages_ratelimited(mapping);
+ 	} while (iov_iter_count(i));
+ 
+-	return written ? written : status;
++	if (!written)
++		return status;
++	iocb->ki_pos += written;
++	return written;
  }
---- a/block/fops.c
-+++ b/block/fops.c
-@@ -592,7 +592,14 @@ static ssize_t blkdev_write_iter(struct
- 			ret = direct_write_fallback(iocb, from, ret,
- 					generic_perform_write(iocb, from));
+ EXPORT_SYMBOL(generic_perform_write);
+ 
+@@ -3970,7 +3973,6 @@ ssize_t __generic_file_write_iter(struct
+ 		endbyte = pos + status - 1;
+ 		err = filemap_write_and_wait_range(mapping, pos, endbyte);
+ 		if (err == 0) {
+-			iocb->ki_pos = endbyte + 1;
+ 			written += status;
+ 			invalidate_mapping_pages(mapping,
+ 						 pos >> PAGE_SHIFT,
+@@ -3983,8 +3985,6 @@ ssize_t __generic_file_write_iter(struct
+ 		}
  	} else {
-+		/*
-+		 * Take i_rwsem and invalidate_lock to avoid racing with
-+		 * set_blocksize changing i_blkbits/folio order and punching
-+		 * out the pagecache.
-+		 */
-+		inode_lock_shared(bd_inode);
- 		ret = generic_perform_write(iocb, from);
-+		inode_unlock_shared(bd_inode);
+ 		written = generic_perform_write(iocb, from);
+-		if (likely(written > 0))
+-			iocb->ki_pos += written;
  	}
- 
- 	if (ret > 0)
-@@ -605,6 +612,7 @@ static ssize_t blkdev_write_iter(struct
- static ssize_t blkdev_read_iter(struct kiocb *iocb, struct iov_iter *to)
- {
- 	struct block_device *bdev = iocb->ki_filp->private_data;
-+	struct inode *bd_inode = bdev->bd_inode;
- 	loff_t size = bdev_nr_bytes(bdev);
- 	loff_t pos = iocb->ki_pos;
- 	size_t shorted = 0;
-@@ -652,7 +660,13 @@ static ssize_t blkdev_read_iter(struct k
- 			goto reexpand;
- 	}
- 
-+	/*
-+	 * Take i_rwsem and invalidate_lock to avoid racing with set_blocksize
-+	 * changing i_blkbits/folio order and punching out the pagecache.
-+	 */
-+	inode_lock_shared(bd_inode);
- 	ret = filemap_read(iocb, to, ret);
-+	inode_unlock_shared(bd_inode);
- 
- reexpand:
- 	if (unlikely(shorted))
-@@ -695,6 +709,7 @@ static long blkdev_fallocate(struct file
- 	if ((start | len) & (bdev_logical_block_size(bdev) - 1))
- 		return -EINVAL;
- 
-+	inode_lock(inode);
- 	filemap_invalidate_lock(inode->i_mapping);
- 
- 	/*
-@@ -735,6 +750,7 @@ static long blkdev_fallocate(struct file
- 
-  fail:
- 	filemap_invalidate_unlock(inode->i_mapping);
-+	inode_unlock(inode);
- 	return error;
- }
- 
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -114,6 +114,7 @@ static int blk_ioctl_discard(struct bloc
- 	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
- 
-+	inode_lock(inode);
- 	filemap_invalidate_lock(inode->i_mapping);
- 	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (err)
-@@ -121,6 +122,7 @@ static int blk_ioctl_discard(struct bloc
- 	err = blkdev_issue_discard(bdev, start >> 9, len >> 9, GFP_KERNEL);
- fail:
- 	filemap_invalidate_unlock(inode->i_mapping);
-+	inode_unlock(inode);
- 	return err;
- }
- 
-@@ -146,12 +148,14 @@ static int blk_ioctl_secure_erase(struct
- 	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
- 
-+	inode_lock(bdev->bd_inode);
- 	filemap_invalidate_lock(bdev->bd_inode->i_mapping);
- 	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (!err)
- 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
- 						GFP_KERNEL);
- 	filemap_invalidate_unlock(bdev->bd_inode->i_mapping);
-+	inode_unlock(bdev->bd_inode);
- 	return err;
- }
- 
-@@ -184,6 +188,7 @@ static int blk_ioctl_zeroout(struct bloc
- 		return -EINVAL;
- 
- 	/* Invalidate the page cache, including dirty pages */
-+	inode_lock(inode);
- 	filemap_invalidate_lock(inode->i_mapping);
- 	err = truncate_bdev_range(bdev, mode, start, end);
- 	if (err)
-@@ -194,6 +199,7 @@ static int blk_ioctl_zeroout(struct bloc
- 
- fail:
- 	filemap_invalidate_unlock(inode->i_mapping);
-+	inode_unlock(inode);
- 	return err;
- }
- 
+ out:
+ 	current->backing_dev_info = NULL;
 
 
 Patches currently in stable-queue which might be from mngyadam@amazon.de are
