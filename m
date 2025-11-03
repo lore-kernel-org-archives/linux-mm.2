@@ -4,125 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8D4F3CCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 19:00:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0454CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 19:04:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E933D8E0090; Mon,  3 Nov 2025 14:00:14 -0500 (EST)
+	id 54EEE8E0063; Mon,  3 Nov 2025 14:04:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6A1B8E0063; Mon,  3 Nov 2025 14:00:14 -0500 (EST)
+	id 4D8208E0060; Mon,  3 Nov 2025 14:04:44 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DA6628E0090; Mon,  3 Nov 2025 14:00:14 -0500 (EST)
+	id 39FB78E0063; Mon,  3 Nov 2025 14:04:44 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id C5ECD8E0063
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:00:14 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6982A12B228
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:00:14 +0000 (UTC)
-X-FDA: 84070211148.11.004169C
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 583051C0016
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:00:12 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CLaYvhvb;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 25C538E0060
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:04:44 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 976EDC02AC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:04:43 +0000 (UTC)
+X-FDA: 84070222446.26.FF65A24
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	by imf13.hostedemail.com (Postfix) with ESMTP id BDACB2001A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:04:41 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D+isGUmD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762196681; a=rsa-sha256;
+	cv=none;
+	b=Es/SUywJk4qjaEY63jVNxK9SuxBwLIZvlKkw4bg0CQC2BVL/5z7XQPQ5ZTP9P7gnK8un2E
+	JQIqsJ8LyIxh22uMzXEOb9+vf/p/PTwTLv2VcJDXxDOayw6tsxi1Qqmy/qhrrNlzveFJl/
+	y9/KNFHcpYB7cU2Vr5Okxh9QSKZbeTU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=D+isGUmD;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf13.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.221.45 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762196412;
+	s=arc-20220608; t=1762196681;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QJ3N2WUq/UZ5e0T22UvDFgeGGC9bQkna+j2RgD0j4rQ=;
-	b=YmDNRXNf5TE+t/qWiYhDOn0qlOkS0Ih3Rvtv0WlUoiMQj7Mpcb+iOrtGEVrbilEymPtiv3
-	oyEleq5AQOlS81nOC920A1UtWB7FbNuE39kF2pHEgd/yfhv8hoj9vrhQCotN8iKfs6WFcf
-	0Le4sr+8NjUgmEnQGOd/iYP9ZDsc4aQ=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=CLaYvhvb;
-	spf=pass (imf21.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762196412; a=rsa-sha256;
-	cv=none;
-	b=rMji5DukuggfOqmMDmYjlOaa8M6G35YGJuiZvA4DTcaFpR87x2fQfj1Tux3txoEEAUGGvk
-	pFJYvmID5vw2JTFyxF+FcjBv5EIKrJZQbn4p0kEzU3ZibWMPtibE1U9OfZugIKyJJkGBww
-	kmQEW52jL99ePzBQSzVyeTSaIJIsZoc=
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b626a4cd9d6so698345966b.3
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 11:00:12 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=fexCSefmQslz1ffdDiamddZkpHXIYvXyJ6JNPYg30cY=;
+	b=k3JWLH021+QnS44IuBmCZRLyjS8abqpbvI56jwdvFLR0Zv6Fkq/7fr0Bpm+04To4RUyqGw
+	mXSW2L6cBYjM6YcqEaWsk84G+SlZx1ehccFJ1yzh6gNLyZPsPjl01yAE/v8HTLFTNQ1ALI
+	JdB9K0UfXdZeKMjVFQCy5dn6IDXpCI4=
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-429c82bf86bso2258792f8f.1
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 11:04:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762196411; x=1762801211; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QJ3N2WUq/UZ5e0T22UvDFgeGGC9bQkna+j2RgD0j4rQ=;
-        b=CLaYvhvbEyIjK5kbWHfvQI4Pfaywkvl3rHjAxA2BhSDsTyAl48m1CxJpMCWK3mse0g
-         VckiUosm5lOU90RiF8gIBO2Ql7U/qTIylTY93fueyjPUUAfuVbnDCOeD+6RPB0KyEAP1
-         0EeSRfJCXnd/vuKCfZAlzZ+RcRh+LAHZ4AWR8FoWi7wvTmgaT0pIgrn8BFsjE5Sguh0Q
-         e1LYhUfv5Z23wS1vwicTs9LEKCowPynYrrEcwTNEhSNtBS8S1eOkAM97xxG1Vsu1vGPC
-         ishzUeqVIYs+2jBzzlu4LpSXSw1qd9fzJNnUtXMjLR4hpyrAFPkqzmVq+NRJWQ0qqW0I
-         PtDg==
+        d=gmail.com; s=20230601; t=1762196680; x=1762801480; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fexCSefmQslz1ffdDiamddZkpHXIYvXyJ6JNPYg30cY=;
+        b=D+isGUmDNCYuUz+9qQXEMz/thXWVpNtLMvcvyTz6rR/4fG+jJSr4aEzLP9ogRUAwcO
+         snW0TWPP2P/1N5s24+L6cafay51V5zGrKybljXkxpOoupMSQ07pyh5FT/uXR/yoqQgu1
+         /OKXAMrQYxW3vQpMvUeM/2mFiqgoyLJMBZrWyS03BkyVCKGv6nMnbrfgJEqeKIO2n965
+         YOHkBhe26p/Qq4FrmxpuaN5f7S/ueBVQdGXVEkipf9eSR06V4fucIeZQhEj/J5Z55ts/
+         5JerJX6vlhWsmJZ1FPyClQYdYMB36z66+zn7+EHHyj/9JAvbAyXA9FHXes8Pg+8BXXk/
+         HZtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762196411; x=1762801211;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QJ3N2WUq/UZ5e0T22UvDFgeGGC9bQkna+j2RgD0j4rQ=;
-        b=FLZW42gQF2DqPLej/owJ1V2f2uONX23T01Am4CHMc8KNPWPqi72OiYjhlWeBRdYCZT
-         eX85XjI3dht05YGwA9DmzIlTcsgV6FDbTYpD9HhUCvECFY8WetLtUp/ps3ACJ83SQqa9
-         JwRmDOXFWyCsNnJXj8ulddS8aHzwq3vyw8wCjRgckxP7qgBvh9JPtCv9elmNiHHOTMII
-         oGdRExuHG3gsd7V6dr2uGJiQkd2yiQKpIDSMOdPke1J2EOTJAvJFXQ0WXbQ9sdNJtRy8
-         uKJ6Ou6jDW+X3T/loURLA+TK6bRPkXKbzmleNDb7hqBcYoeFJvFZQvrE/UDoGFap19U2
-         RVDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUBCB2cl9s/74iHnnWAjiww40QEb9AQ6VpvemMT/VRSWaR9zYEUohEivn/EdCy9i2Nay6/o5bCgZw==@kvack.org
-X-Gm-Message-State: AOJu0YyewEcW8K0UmCeKiqUB7uAcSESL4Fg90FiFqTpjkhgZIcZFJHMf
-	nRgo5/butjxUQ8zh9KqAh+wpnlgy6yJbIttmZjg4T+1hxv1GLJpt4zy9aLZGSsyvUKY=
-X-Gm-Gg: ASbGnctGAb5sltjprlJ25fKqvsRzUmGpWQxdhyr42y5JUt1x/Vk73NzdPgfLRFtJC7r
-	UeZibWMrXJJ/34GsI7N0t7jImOkcIR9ybnd8NavhGd6ygR+ioM6d1dac4DP2BMcs/5UdfSE6n7l
-	j4Txh7TrmSbBhBaPoZXpR7y9o4iQCgyh/LYwj7riAaoRQtOwUr33WKl/zt5Dnd3F82Hzswf7pNl
-	vhagt8XSebaq3Q3AogtmNvOoCWcBse/3mYpH9dkOwwiwi6nU2WZNuc9jPlSNS5gV+H0w8vZSYc4
-	0QnUSLQRVQoAhOWUMu+sD9XmJ9nhwVCJgDryn/RCbSrUOpi+ODkt2X4o7SMNXkuyFvVAQ4YHtwh
-	Dgxz1yPC8DhCTUItSUBVGOZnk3XUNK4IvaeG8QUEBCMsSt31cRyC4S8EtcQm+za45dkV5i9zwK0
-	uqqGXSdeF73yCAoI3WGAXQM5S6
-X-Google-Smtp-Source: AGHT+IFhQXFPVDqHyarWQQ7R2subtRafoxgNsFUzIvYeodwBNh8qSwx6VEdKXz8J8S7jSfx/fTTE1Q==
-X-Received: by 2002:a17:906:ad0:b0:b70:a982:ad71 with SMTP id a640c23a62f3a-b70a982f501mr457990366b.33.1762196410649;
-        Mon, 03 Nov 2025 11:00:10 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077ce927csm1117305366b.63.2025.11.03.11.00.10
+        d=1e100.net; s=20230601; t=1762196680; x=1762801480;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fexCSefmQslz1ffdDiamddZkpHXIYvXyJ6JNPYg30cY=;
+        b=v23+QqsHcJPADlJQxmN86l8pEHjFyuNqejmeUpRUR2CtDdxq1Lg3xELiK0RIcjnJGD
+         KeRB/Vg89gCH0jNtDaJqVQxKgGpOfC6Y6YCuEExC2a5yPCSOOT56wA1nxmx3AadGpYed
+         62neaWQCXOJDmXouKVGgoxakGin633h1jB8ot9yadZln+3rPc+w2xHCpeq/41gFHOz6m
+         Do+rbU0fGBuXiAG5YDheg9qR5IXt3gwSm3eauVrdx37Tz6jcojdjRJQ8+zDaf6NMQ+lP
+         aQXIjBEd48yOihOCzXYVR4vL+pgccx2DKngAFPf/yTOSf2Yi14C3BEshrty7WHUjKVgg
+         zc2A==
+X-Forwarded-Encrypted: i=1; AJvYcCViLiRBRw3i5vYaFBq+0/RtFlFbeAXf5ZobiF7dGl93r7JOHInZwJ3C3VzS4C1ZlySwXtitzRqHbA==@kvack.org
+X-Gm-Message-State: AOJu0YyPAMd2Pg3KbkdJXKYgaf4ntpRCRsrB74E0zBvHYFijMgziMhoa
+	qal/vNKq5QaiCjGVLWdtvV/9wWDmi4ZhhP5t2tDME9SkJht/3q8esZrVnBroGhI1
+X-Gm-Gg: ASbGncuLHbVubcL4HUb3XrGWEcRytBfugFG+InGqIV0j23CItucG31ee8Mk0EuzV5UY
+	HJ4LFfD9YNuJPEna31Of+znPE4BHNaOjdNoAIwJZTK/hgwR8ZTuL1Gsy9JllXcHRUJKnp6bH0iN
+	W0cgSfYx2mTKjeh6/RAkWQlQYj6kxW57tB5mkne31dRNNAmCNpQC+otOLde0t6eAQHIexvz15St
+	0peZ6XG1nU2MvpCPMJDO3NRW8UTJw9E8V3GyMaKMFKOMUkeoCEzw+bHUlj6Jbd3BmZmZFV9V1nY
+	0RRSpeFB/SHDaCfxSSc5KoFPZav98qVHhuYR8l4om01ro60GLmhLLJAg6dLUBBKjMy7hfUbtwg4
+	HmtT4BIWPEwp/RoT/zMqFbzwBKOE6eQ8duuLgJwkjFWRnVCt5iy4zOb38xvTxN0Kdw8dMQdZ9Kr
+	QgOxoXI3a7gYM9DjPTearQZgrjnSk9gctZi1HCSPKgXwph8OzzNpSCSARqogpDpA==
+X-Google-Smtp-Source: AGHT+IG2fVh1qN85r1cd+mUxA1KUwJ+pMLth8UL6voFWjtFCEOmLBM0dU0z1uJI3EhqKm0/d2PfG+g==
+X-Received: by 2002:a05:6000:2383:b0:429:d495:7c8 with SMTP id ffacd0b85a97d-429d4950a5bmr3272773f8f.37.1762196680030;
+        Mon, 03 Nov 2025 11:04:40 -0800 (PST)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-429dc192ac4sm327407f8f.17.2025.11.03.11.04.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Nov 2025 11:00:10 -0800 (PST)
-Date: Mon, 3 Nov 2025 20:00:09 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
-Message-ID: <aQj7uRjz668NNrm_@tiehlicka>
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-7-roman.gushchin@linux.dev>
- <aQR7HIiQ82Ye2UfA@tiehlicka>
- <875xbsglra.fsf@linux.dev>
+        Mon, 03 Nov 2025 11:04:39 -0800 (PST)
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@infradead.org>,
+	"Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Subject: [RFC PATCH v2 0/4] make vmalloc gfp flags usage more apparent
+Date: Mon,  3 Nov 2025 11:04:25 -0800
+Message-ID: <20251103190429.104747-1-vishal.moola@gmail.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <875xbsglra.fsf@linux.dev>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 583051C0016
-X-Stat-Signature: e53oai6t791e5dejinfxmgtukrhe8kh5
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BDACB2001A
+X-Rspamd-Server: rspam07
+X-Stat-Signature: x4idh7er3ij19bzmwpnqu889cbekq67x
 X-Rspam-User: 
-X-HE-Tag: 1762196412-25977
-X-HE-Meta: U2FsdGVkX1/ktwclAktLthzHDzWqasj8gcy8/KB1FbinRz9SOJD7zDy6TmR5fGNqyS6H1XJNGlANqBBoEdJLRl1RfPWxD/3LjTc1mKqLZfm0bTDHeoAuSZFkMb+07KPnv9c+YdRVlUgh/AJgsHASqwelyCpY5Six/c829l3UfkfUM3dYCttdd2KNeNYPT/MOqsde6ZoTERUkAHq4sGhoqU2nYP2PW4RyGXCKHTT3WmGKfkLAS8bskCq3S+VuMRk8+wx7S0mVaOsth211tu9OCp72mPihcauiCjHqY7EBqSM+09am7zmbaMft17C4m+VO2e56F0/c3PpbjZMGnB3c8uLHXJL3hpCjk5dWs6vqs2HOYQKANPoDzEXI0yfIU5NXzN6Nz8FWNQAkb//Np1RrQCF8xn9PdA1bXovF/NsxAsnEO0xvlEtSZT2BGMFuDzVmxTGcoCpqNdfF0roOY38uywoYc34n4UFNK/t79MtQiSV2ChePYA2KuN5EtvZ4iGMOJjOktCJHe467pRiqW1F1GrDTgrlhbENpnps2eaU3XgsawM+DdOAJyAnCYqV8pQMLCU1GgDQsBg1tRnzHoyxhiWe7xoWID0WBYWvDn8mtfdSWjPE6c6NpYT2UFnxXHODerkmnCTImvZqslNs8pLmmXh6bN0d9s0uZUGTOwe5NCzXIhmuRSIEy7VkPTtbA8ZUNEOfIVmDG31VZizbQAXMWKZeFnEs+6Z3U0Oen2joCoxwmlGLocF1O/vncIBmdTRrVJ/JwRCIzSTBZt1J8ZsCR3kwYkirySSVKond2tyiy12TsfBz/Eii1EiH2n83Iz/F+UDpklCCEO/7DcqNECvCCCbMdIKOzxuL7SgS/DVCwciM+PB4lfLecHVZA61xeLNCHl6B0cMMFRpQ5NOOjd8ypH0FuT6VHfow68KuA6JbYX8LXkEf4RVQuUO/U8TBtZ/3QGdRt1OXmS5/YH0JrVTN
- Sz8R99wa
- 2ek79cDbNqZBW+QcuhyQ1KdaAnj+MOsxnhg+N5RmlfOPBXuM3+B424CR/cd+KSk6seehCMfRY5B7WJWBgMlHltZEyhsk2jWUDbmXo+pnDCgNsfDgqTUufE5Z7UndUEYQybYTnySMSWJlURIi9b8x27K0elJqZA8ZaDo8Rc7gaXF9hviICMLtw+DoXHJc81RPq2655Xrp6ZEvWN6ZUcSoPiV4rv2IjCT4yLFL2bHR9OaWeKh1H4ritxeZTF1mS+HlaK2AxjmU6iR7D12u0Ghz6XVs128qw73RbYXSBvGvMj/U3bbxrVeYzgHdkwyBl7lvL19hsMxCiecyW537TeizDBG7U0Eyjdw/4vRxixRmXgLbsvODgwh0lVE7ZD80SVGoNjI7dVdy/6ViJcpg2Kb4zcZFXUz/TNZfjTRJ8
+X-HE-Tag: 1762196681-720318
+X-HE-Meta: U2FsdGVkX1+n5eOsc7dPbuC545NVOpBhFdPOE9fJ2l5UFuj2TULQhfWXuyMumop/9mhMUYw2Ga4bdg/2OR9Msp5faxn31bQ7hzqwE4ztdG2L4AoEyAV5jvh2Gmsgy0SYQDfyNBV30NJExAGKrn/nZGplVv4/RYx+VhEtNg+bSM56YZ9kwPMAzgbmQgtpxG0dR9jM8AuRjrSry8CicAWAd7RhpP8+TRTPBHaADF7sPm627IvfZqjdWwnDYUtqFOHxk5XWFjfbXP7Bkp0teH1o8ySOscsf1GmxOR0uf7jUGdvKejRBc6SvFTYlu5T9PIKHWLh9HaAnc8iVwI3oypvhc1rk+P9xVbTxDFkY+oZvQKa9vBDfoApvOy3ntiMcQQDJCY55m9blExss85ItzsmUObG/rUPHllNpwbrOZybRjt+7oAwqTcvr8NPLLcPLCyy1UZdpRfs8aH58LTppNTXMxR1aK+mfaKHqIUdkRGWPc4XCY904yAdNrIqP1chK3GI0d41+tPvS0bu6XOi72b5aTeS9SahIloEIKRT/52fYNkMYZxGf1nk3qjdcnuGb5RZ339LvOFhfYMBOw3nQFyjQgPK/rzCs3WOUeC78k2ka9IEw1dE70hwhnJcXCaL5odqdYbNkwEoeCnqxXeeBl1GDs6hs0L1/BBtXuHOcVfXHmuzK+WOXR3RsX1z9+6DEjzw8JlkDATpQG83xAS6DGRdhPy1QNynHt4OB85w4ULKoFVliCPWQPaSpOSL06vwvgD7DOqo67lxPP/EW9LFYX37VWo8P4jp3MhgRn+vuR/huVjIynDYUQR6BKWkg54yqO2BjPBySI8LTKsX7xTNHAEmYr3UXK0WhX0t4VncScuhVYt+dXiPVjxu9jr2+wUR5GPpGdgioJaZSQ0v0eMK0wf6jWHTizlZSvG3kQP7Ziusc3t0/VQpGzXbkRzcx/r7GdY5PF+VnOBkSSect3FPWeEg
+ DZhpproS
+ GKBpgIcyux1C/7cwnaYfO7CjhEVo4HHdQOlwg2KEgNX9ZZRNc9zyBrhRa/H5CK2+uiPDNH+TXN7V32teyjM407lJffQhEc/QMIxt4X+B38Xkh0HZj6bH+MFzpMnClfPM5JgF83dY3a+48SgBg9lG5dZ21o4guIokkdcWKt8Y9Ga9vdDvq/tEedvoGikPW00ZwKDYYtdSwjXQYkXtXCIxRKmaCJNIuP/gK1v7I/iEu3JOewGFWpRQb8dNBMFIPLZUitVxzW4u07jQGdsXa2RGh+SeP9425QShs8EnesOT89EO5QRTN7pe39oD2RsIlqmzD8imVz0pQSk91Vr57jgFM0WmpiCDdrzNXfPBmO2nt5AkUM2ksOA0tMsUY0O0fqJ8IhuxlSwrp7+Gj/dMvff4yuY+7ElBimVYtIiFnmDtpySG04z2Vzj9pz9RhIgcDie5j+0tn8+ARMjukpRY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,106 +119,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun 02-11-25 13:36:25, Roman Gushchin wrote:
-> Michal Hocko <mhocko@suse.com> writes:
-> 
-> > On Mon 27-10-25 16:17:09, Roman Gushchin wrote:
-> >> Introduce a bpf struct ops for implementing custom OOM handling
-> >> policies.
-> >> 
-> >> It's possible to load one bpf_oom_ops for the system and one
-> >> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
-> >> cgroup tree is traversed from the OOM'ing memcg up to the root and
-> >> corresponding BPF OOM handlers are executed until some memory is
-> >> freed. If no memory is freed, the kernel OOM killer is invoked.
-> >
-> > Do you have any usecase in mind where parent memcg oom handler decides
-> > to not kill or cannot kill anything and hand over upwards in the
-> > hierarchy?
-> 
-> I believe that in most cases bpf handlers will handle ooms themselves,
-> but because strictly speaking I don't have control over what bpf
-> programs do or do not, the kernel should provide the fallback mechanism.
-> This is a common practice with bpf, e.g. sched_ext falls back to
-> CFS/EEVDF in case something is wrong.
+We should do a better job at enforcing gfp flags for vmalloc. Right now, we
+have a kernel-doc for __vmalloc_node_range(), and hope callers pass in
+supported flags. If a caller were to pass in an unsupported flag, we may
+BUG, silently clear it, or completely ignore it.
 
-We do have fallback mechanism - the kernel oom handling. For that we do
-not need to pass to parent handler. Please not that I am not opposing
-this but I would like to understand thinking behind and hopefully start
-with a simpler model and then extend it later than go with a more
-complex one initially and then corner ourselves with weird side
-effects.
- 
-> Specifically to OOM case, I believe someone might want to use bpf
-> programs just for monitoring/collecting some information, without
-> trying to actually free some memory.
-> 
-> >> The struct ops provides the bpf_handle_out_of_memory() callback,
-> >> which expected to return 1 if it was able to free some memory and 0
-> >> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
-> >> field of the oom_control structure, which is expected to be set by
-> >> kfuncs suitable for releasing memory. If both are set, OOM is
-> >> considered handled, otherwise the next OOM handler in the chain
-> >> (e.g. BPF OOM attached to the parent cgroup or the in-kernel OOM
-> >> killer) is executed.
-> >
-> > Could you explain why do we need both? Why is not bpf_memory_freed
-> > return value sufficient?
-> 
-> Strictly speaking, bpf_memory_freed should be enough, but because
-> bpf programs have to return an int and there is no additional cost
-> to add this option (pass to next or in-kernel oom handler), I thought
-> it's not a bad idea. If you feel strongly otherwise, I can ignore
-> the return value on rely on bpf_memory_freed only.
+If we are more proactive about enforcing gfp flags, we can making sure
+callers know when they may be asking for unsupported behavior.
 
-No, I do not feel strongly one way or the other but I would like to
-understand thinking behind that. My slight preference would be to have a
-single return status that clearly describe the intention. If you want to
-have more flexible chaining semantic then an enum { IGNORED, HANDLED,
-PASS_TO_PARENT, ...} would be both more flexible, extensible and easier
-to understand.
+This patchset lets vmalloc control the incoming gfp flags, and cleans up
+some hard to read gfp code.
 
-> >> The bpf_handle_out_of_memory() callback program is sleepable to enable
-> >> using iterators, e.g. cgroup iterators. The callback receives struct
-> >> oom_control as an argument, so it can determine the scope of the OOM
-> >> event: if this is a memcg-wide or system-wide OOM.
-> >
-> > This could be tricky because it might introduce a subtle and hard to
-> > debug lock dependency chain. lock(a); allocation() -> oom -> lock(a).
-> > Sleepable locks should be only allowed in trylock mode.
-> 
-> Agree, but it's achieved by controlling the context where oom can be
-> declared (e.g. in bpf_psi case it's done from a work context).
+---
+Based on mm-new.
 
-but out_of_memory is any sleepable context. So this is a real problem.
- 
-> >> The callback is executed just before the kernel victim task selection
-> >> algorithm, so all heuristics and sysctls like panic on oom,
-> >> sysctl_oom_kill_allocating_task and sysctl_oom_kill_allocating_task
-> >> are respected.
-> >
-> > I guess you meant to say and sysctl_panic_on_oom.
-> 
-> Yep, fixed.
-> >
-> >> BPF OOM struct ops provides the handle_cgroup_offline() callback
-> >> which is good for releasing struct ops if the corresponding cgroup
-> >> is gone.
-> >
-> > What kind of synchronization is expected between handle_cgroup_offline
-> > and bpf_handle_out_of_memory?
-> 
-> You mean from a user's perspective?
+v2:
+  - Whitelist supported gfp flags instead of blacklisting the unsupported
+  - Move the flags check up to the only exported functions that accept
+    flags:
+	__vmalloc_noprof() and vmalloc_huge_node_prof
 
-I mean from bpf handler writer POV
+Vishal Moola (Oracle) (4):
+  mm/vmalloc: warn on invalid vmalloc gfp flags
+  mm/vmalloc: Add a helper to optimize vmalloc allocation gfps
+  mm/vmalloc: cleanup large_gfp in vm_area_alloc_pages()
+  mm/vmalloc: cleanup gfp flag use in new_vmap_block()
 
-> E.g. can these two callbacks run in
-> parallel? Currently yes, but it's a good question, I haven't thought
-> about it, maybe it's better to synchronize them.
-> Internally both rely on srcu to pin bpf_oom_ops in memory.
+ mm/vmalloc.c | 48 ++++++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 40 insertions(+), 8 deletions(-)
 
-This should be really documented.
 -- 
-Michal Hocko
-SUSE Labs
+2.51.1
+
 
