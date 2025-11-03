@@ -4,100 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90EB5CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 18:03:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A156CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 18:03:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D76FF8E00B6; Mon,  3 Nov 2025 13:03:31 -0500 (EST)
+	id 059858E00B7; Mon,  3 Nov 2025 13:03:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D27BA8E0057; Mon,  3 Nov 2025 13:03:31 -0500 (EST)
+	id 030E78E0057; Mon,  3 Nov 2025 13:03:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BEFFB8E00B6; Mon,  3 Nov 2025 13:03:31 -0500 (EST)
+	id EB0FA8E00B7; Mon,  3 Nov 2025 13:03:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A8F0E8E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:03:31 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 7B11812B0E4
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:03:31 +0000 (UTC)
-X-FDA: 84070068222.29.8025642
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id B414C40012
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:03:29 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F736mNZ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762193009; a=rsa-sha256;
-	cv=none;
-	b=HHqS+BdAtk3zivmeaskAPUdL76I0R1LqUGxIBvWoSnPJ6qAqP3mNN3IyLb2HWZzESBZlzR
-	47qoDaJLPgSTIhGvj++JWpihNReqGSl6BZpmk6VEzGWQNwwx5PiK8NpDl2BcKK5wLgYTSD
-	RUUwP253T3Sy30PdYlemIkMKN+Mc9cw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F736mNZ4;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf04.hostedemail.com: domain of sashal@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=sashal@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id DA1258E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:03:56 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8579087BD5
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:03:56 +0000 (UTC)
+X-FDA: 84070069272.05.205B6F0
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf19.hostedemail.com (Postfix) with ESMTP id E86751A0017
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:03:53 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kZL3LXzU;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762193009;
+	s=arc-20220608; t=1762193035;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=j3TDOYm2DVmfqJCujq+6JvTV9/WNymHqWtuQZIak8R4=;
-	b=hsCPPVigrIYuFDfgjjD84VE/nWVKy52B/18egrxiWuAIgysVq5mWuNmY8ft22nTO5CedvX
-	1lIlJ4SE1KkIqpzwypewENsq8CisAgbeunrI+BkMjY4OT/uF4qoPG5g3tvgoIXoGTj0Kge
-	2blIoPy4u/uK0+/cbifk/8l4vTiUBAY=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 0C5BF6013B;
-	Mon,  3 Nov 2025 18:03:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55759C4CEE7;
-	Mon,  3 Nov 2025 18:03:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762193008;
-	bh=YOjQBkrOvTLYl9O3qPNqMbiCs0u056QzurwCIfKrTaY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F736mNZ4enqmL1CdoNBgCseU/Rb6cT+mn8V/+4DdA2zn6krYSoi32FImyJgsY5Mmq
-	 eS2xkqfvGanND5uHf/4K0l6HgNDFKrt4Sbq9QDK/9qsyASgGQw2/8EueQUJO3CX4Ct
-	 O17hWlY4l5npThOxsCldovbc/heH0Hyk4cI+99epdadY7F9qiIfbjZaO8G20UxmoUm
-	 q17JewytWt5tlGPBlWk7Lb1m6NwqICEprcRCI+iX8K4JL9jIyTysjFiYpTfDK+3x0H
-	 7Ot70mZ4DBIZUgtcZs7HmW79Rv5vJw8SwQSHsr/WCaOnt7/j7tk9LvenVG+2pGDdtu
-	 kznpX5MOOcY3A==
-From: Sasha Levin <sashal@kernel.org>
-To: patches@lists.linux.dev,
-	stable@vger.kernel.org
-Cc: Sidharth Seela <sidharthseela@gmail.com>,
-	SeongJae Park <sj@kernel.org>,
-	wang lian <lianux.mm@gmail.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	hannes@cmpxchg.org,
-	nathan@kernel.org,
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=azEErvwdo7w/mK6w6XTMw8a3NZn/NnLohy5/QnHVzUI=;
+	b=wsDObfd3+dz6aotQWbaR0xa1KZQOenp5Xpj9PqLglX3AusI3FfGJdswlRR8fauKFM5RiVR
+	msnGKjHb6LgtAQlOArQouu/rDpydeyVLjI/4Vp1h1Ss//tCE9eW8RVwilvOxD6oBPtWuuh
+	KdlvEIoGduZ1uIs3j6WNSmlS47/l2kg=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=kZL3LXzU;
+	spf=none (imf19.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762193035; a=rsa-sha256;
+	cv=none;
+	b=Jd0oK4wcs5xeTW/QSmRV/RrTbscf4oYjW/euiAlaa00VGwtjpvRL6ao45+xVfeLI1/ZUT/
+	AJ1R1RGQX24cE0M1GP57JbubM9UwYAxNy1Lt7V9pXvE50ji3Z+Zkvir/XRLTnGhsKuepu1
+	LDJZMska1BCoOeemPqxTfQl7s4rOHrA=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=azEErvwdo7w/mK6w6XTMw8a3NZn/NnLohy5/QnHVzUI=; b=kZL3LXzU0+mSY+v6Eb+Cqs6FyQ
+	ncvyO2ZBIUUymi9cMiWz5zKWsdn8V6E13tBPo1hbwol8JUvpAFxJ2tWGHcCvEai6S01y5y/gVsemU
+	ti2ttCS32KDxClc+vC9dRjNG7mNB//B9omGY3LTtK6CR/AWx+7js58nRMpKnG11eU7aDtBKx2PxTr
+	BUGfAS8l3wPaSqBY3aKP4lQ9mHyM0WMtKiGWDgZJ4TqG0xGQvbvAxr1o4FufBsy4W+rJBGHd2T6dY
+	h3e3twUEM85zRa+EKysytmXtB8ARDFj+VOogWmFSIivXzOdVJArlie8KaRN8FePdmPFecafUOkS2E
+	KR2hQxxA==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vFyuE-0000000E8RF-2rHl;
+	Mon, 03 Nov 2025 18:03:51 +0000
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	linux-mm@kvack.org,
-	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.17] selftests: cachestat: Fix warning on declaration under label
-Date: Mon,  3 Nov 2025 13:02:33 -0500
-Message-ID: <20251103180246.4097432-20-sashal@kernel.org>
+	Suren Baghdasaryan <surenb@google.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Chris Li <chriscli@google.com>
+Subject: [PATCH 0/2] vma_start_write_killable
+Date: Mon,  3 Nov 2025 18:03:44 +0000
+Message-ID: <20251103180348.3368668-1-willy@infradead.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251103180246.4097432-1-sashal@kernel.org>
-References: <20251103180246.4097432-1-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.17.7
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E86751A0017
+X-Stat-Signature: s6c7uijbujr863ro9xqoce6bg4isnuo3
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: B414C40012
-X-Stat-Signature: rr9j555wsr5rzzaq17mz6napkxbxpz37
-X-HE-Tag: 1762193009-740447
-X-HE-Meta: U2FsdGVkX19FAZwMNaDDVPaf+IkvdpXUY30panmHRJUcnXIxFm3ef1NlWlnO3cg2VRkWQm/9Ba8l64h81/OB6LM3HTTTYf8N17G8Pz/R6Vm80Wg3StZ/VgSqX3crCZCb454iI6nF82WWbC95HRTfhfrCP0QdIdLSEzAgHOiMUN/XVGK771j8+Qm+lB1LQChxB61PwoJLVfhk9DkwQZDbW4HX72VfkZb/f0OzEx8F/OWgmaXW4pY2Cb6bv4C3XkzRz4Xdyct/hS5/Cx81yXF2pdVNp2J+SGdnsCFoer1p3HKMs48jVRfrRm7jCyEz34zom3IEQQfGNWuRPbYjCi0m4uExT6THHfxg4JHZWNusuE70c6fmtGGrv2hSOTKMNHB8J/Uw6uxIn682IUjDRC3wzAwS29yody3SZtUD1LOrIaH7UwT/Q8UmKZ8I3yaw2bDmyfInLwidePINbf4FXpST6j3LmtgLpeghUljWuad/mATWZrAMd9aau4Ch2+fn331I+0haAcSM8nGCEBbW5CjUBw3SSqGmXafDz1YaBKtsp5W4ablD9Rfg1IUGb/I1tOvZS6ME8U/R5xmqi2sn/18KNtS7So6oxMCxlfIDMA+Q3iWUe03YS8JLz35kLBz6YxIfM/Qe/it/qjvTDuJmK9PIPw5MrUbqQQDSSzVsF6rLByWgsK2ejWJ11c2axYiZ6KCcAqw3ePhdy6SQCkyzKNQebP5QtNe4m0b3QWdRdECUe7LiXhZ4IoB0KR9L9q6Gb+TEXrenmflwWdipCUCVYct5/AjmnTAlCfvx2b2Bv0HCBZWBOyzawhqqmOJNHhUn6KuWS1CZjnpGMEgNmbTHXTvyiuUhH/fDS9wlGY/CLsw1VUMWChr8bxmVX1qS7AFIKVeR5W6/G6C16GVR026rB5nxwMXH1k89fn42Kbt/BpFSlmfmonU3Ul2K/7JSxd6mhxDNlyOUVYhqhZhZrK03ai9
- DKJ1IaPZ
- LSdHDb1XdtB92Ma5oPKz09JTSkNefWd+h4j3RxrJcmRdD5/OHfJWxNpUAnS7aLpl5zjwDLiARnRuQQR655jWs4tDaTU31RqFIbna232icsojA4QdlVhaNll3Do9Fia36dKyuJdCfrkI8lvfEkg7heOjPfpX2gQKkq9z5V3645/rIvnawW1spplV0qfTjEzgDsHqI/awwIwhiP5Q5qXM/BPKQLlBmP+7IoromX2/chQheZLShNwysJ+e48tqu5F5cyLBOOUDBZiGO1nkqSMd8lzngHTVud6gQC8gUSOKtQQnRwebheVMQP5jsV1D15hgxAtn7J71ycPtAZF1ua4SYiBXoIyc9JOjpF8bp2PHIF1u9TN2rAMcSq0xEShqhQ7JW5QR2WLl7D4S+sfiSTyU+1MLsEy0KQLOpJSaDQqToKgunLFEf7Ud/+3ftwiXeElMtJC6nVlt63FW3Zp4cCOqbjoE6iuMYf+LJdR4IG
+X-HE-Tag: 1762193033-549749
+X-HE-Meta: U2FsdGVkX182c8YaancGTPWG2dOLBHs469e2vjtXdapE6mEGCJ+s0yQ/LiT+UYn+3/y4dN/N5YOeNeMLa9rGQf0tfpfsr4ynaTuF6WZ5+gKkxUkEnJGB/EKTf4m3NBwv1FiVg6xHRGpL4cssq5j8UhOTXwSTnKBJu4C3sr5/ODyoEA8lK7PphqzFfmIv6dELqDURpHlHDhIlP2FYemKWW+BfyYhU23pIB8y5uV6pqeU5X3KjrMD1syCj+W+YaMGkA522RHXEHKzdOm5egPx96n32gMj3jXXyExW2StOnT9dXo2cJaHYLI7ltjZIotR1mbzqzt1RXo5hyMGi/uUgwVhzrjc22Af6Arf2maN+h0ijOkCl2KsmLbaJ2FwBRuZr6livSrbmQ/QksI7dbulEY00CWRpLatTVDKJBDlmqL6Q28QIdeZmeDzszZc0nDblEjTQs1ZSh8NcTwWQXeY1sv+C8F/WHqnAkK2l2EaOH6Or38OQziQiBQB/jsh/VwoXRlfKEc5rXz+EOi/9DPRZJFB5QM2q5wGRJZ2KtklZQTzcL9iS22lAAq/B4QIGiK679v0vVF5jUspGkM8YLATrxBfbKo/QexrYQGX2pV/tgy5Dzb4W8ziwIc9mrdvisLRj0E2MMOU9aShc6DPvI3YnMNm2NlG/pMh1W1U2MDaBCXluVLpIhJNyNvljfiXqpBSEsslR+rV3V49sUfDjzL3NNaJB3FbxKPoqzZcW0UYPdHjiFPUthGhlYpIdWq9wiVu8d+MmHFDEFH4Hr8xo6xxWUtOy/imCE7c0woBRxAAxgA41WdHkv9MjGqmu0LoUqmxDGv7/tll1EmWbaUZLWlOZb05HGzMq0LgjtvIst0/Af2WLTy5BeDw/Xl5As0NcHcfSjrgxEkchfzRFLx20QD0p5Opo5NWDeeM6MuRqkfl01IdNLedYGKNwX7i2Pn5ovY1mBAJ9c66O41qoFl4pZGgth
+ bpaIfyjL
+ HEh2vQPDVUlJOuNfNfJTMSnnF8IzHa09Fw8o+briAcLizvnkQjyB25AxMSKStrG+TBK9UHdTm8Scft08Q0dXgvQv3S3gnSN8YXKmYfsjFRDqqLkRc0xVmdQJmUPShmxphGzPuSUGJjnfHwaZ9FhXqWm/+9mzS0oLMLzYOHRJ1m4q5ts1Bm4j2GRKWn6nZBhPeYyhENgIzkKoUbiDcLD78pC2rQAV2wn2pP7Z9H9aLp69+hN3cereHlT8zew==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,162 +95,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Sidharth Seela <sidharthseela@gmail.com>
+When we added the VMA lock, we made a major oversight in not adding a
+killable variant.  That can run us into trouble where a thread takes
+the VMA lock for read (eg handling a page fault) and then goes out to
+lunch for an hour (eg doing reclaim).  Another thread tries to modify
+the VMA, taking the mmap_lock for write, then attempts to lock the VMA
+for write.  That blocks on the first thread, and ensures that every
+other page fault now tries to take the mmap_lock for read.  Because
+everything's in an uninterruptible sleep, we can't kill the task,
+which makes me angry.
 
-[ Upstream commit 920aa3a7705a061cb3004572d8b7932b54463dbf ]
+This patch set just adds vma_start_write_killable() and converts one
+caller to use it.  Most users are somewhat tricky to convert, so expect
+follow-up individual patches per call-site which need careful analysis
+to make sure we've done proper cleanup.
 
-Fix warning caused from declaration under a case label. The proper way
-is to declare variable at the beginning of the function. The warning
-came from running clang using LLVM=1; and is as follows:
+Matthew Wilcox (Oracle) (2):
+  mm: Add vma_start_write_killable()
+  mm: Use vma_start_write_killable() in dup_mmap()
 
--test_cachestat.c:260:3: warning: label followed by a declaration is a C23 extension [-Wc23-extensions]
-  260 |                 char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
-      |
+ include/linux/mmap_lock.h        | 31 +++++++++++++++++++++++++++++--
+ mm/mmap.c                        | 12 +++---------
+ mm/mmap_lock.c                   | 27 ++++++++++++++++++---------
+ tools/testing/vma/vma_internal.h |  8 ++++++++
+ 4 files changed, 58 insertions(+), 20 deletions(-)
 
-Link: https://lore.kernel.org/r/20250929115405.25695-2-sidharthseela@gmail.com
-Signed-off-by: Sidharth Seela <sidharthseela@gmail.com>
-Reviewed-by: SeongJae Park <sj@kernel.org>
-Reviewed-by: wang lian <lianux.mm@gmail.com>
-Reviewed-by: Dev Jain <dev.jain@arm.com>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
-
-LLM Generated explanations, may be completely bogus:
-
-Now let me compile my comprehensive analysis based on all the data
-gathered:
-
-## Analysis Summary
-
-**ANSWER: YES**
-
-This commit should be backported to stable kernel trees (specifically
-6.17.y and any newer stable branches that contain the buggy code).
-
-### Detailed Analysis
-
-#### 1. **Code Context and Bug Identification**
-
-Using semantic code analysis tools and git history examination, I
-identified:
-
-- **Function analyzed**: `run_cachestat_test()` in
-  tools/testing/selftests/cachestat/test_cachestat.c (lines 222-295)
-- **Bug introduced**: Commit d6a511dea45ce (July 2025) - "selftests:
-  cachestat: add tests for mmap"
-- **Affected versions**: v6.17 and later (confirmed via `git tag
-  --contains d6a511dea45ce`)
-- **Bug confirmed in v6.17.7**: Using `git show
-  v6.17.7:tools/testing/selftests/cachestat/test_cachestat.c`, I
-  verified the problematic code exists:
-  ```c
-  case FILE_MMAP:
-  char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,  //
-  VIOLATION: declaration after label
-  ```
-
-#### 2. **Semantic Analysis Used**
-
-- **mcp__semcode__find_function**: Located `run_cachestat_test()`
-  function and confirmed the bug exists at line 260
-- **mcp__semcode__find_callers**: Identified that this is a test
-  function called from main
-- **Git history analysis**: Traced bug introduction and verified no
-  prior fix exists
-
-#### 3. **Nature of the Fix**
-
-The fix is **minimal and safe**:
-- **Changed**: Variable `char *map` declaration moved from line 260
-  (under case label) to line 229 (with other variable declarations)
-- **Lines modified**: Only 2 lines changed (declaration location)
-- **Risk level**: Zero - pure code style fix with no behavioral changes
-- **Compiler warning**: `-Wc23-extensions` when building with clang
-  LLVM=1
-
-#### 4. **Backporting Precedent**
-
-I found strong precedent for backporting selftest build fixes:
-- **Commit 90c1ffd1347f3** (bc4d5f5d2debf upstream): "selftests:
-  cachestat: Fix build warnings on ppc64"
-  - Similar warning fix for the same test file
-  - **WAS backported to stable** (shows "Signed-off-by: Sasha Levin"
-    indicating automated stable backport)
-  - Establishes that cachestat selftest build fixes ARE appropriate for
-    stable trees
-
-#### 5. **Impact Assessment**
-
-- **Scope**: Affects only userspace selftest code, not kernel runtime
-- **User Impact**: Developers building selftests with clang will get
-  warnings without this fix
-- **Build Impact**: Does NOT break builds (warning, not error), but
-  reduces noise and follows best practices
-- **Testing Impact**: Enables cleaner CI/CD pipelines that treat
-  warnings as errors
-
-#### 6. **Stable Tree Compliance**
-
-✅ **Fixes a real issue**: Violates C language standards (pre-C23)
-✅ **Small and contained**: 2-line change, single file
-✅ **No architectural changes**: Pure variable declaration movement
-✅ **No new features**: Maintains existing functionality
-✅ **Well-reviewed**: Multiple Reviewed-by, Acked-by tags from
-maintainers
-✅ **Precedent exists**: Similar fixes were backported before
-
-#### 7. **Commit Quality**
-
-The commit has proper maintainer approval:
-- Signed-off-by: Shuah Khan (selftest maintainer)
-- Reviewed-by: SeongJae Park
-- Reviewed-by: wang lian
-- Reviewed-by: Dev Jain
-- Acked-by: Shuah Khan
-- Acked-by: Nhat Pham
-
-### Conclusion
-
-This is a **low-risk, high-value** backport candidate that:
-1. Fixes legitimate C standards compliance issue
-2. Improves developer experience when building with clang
-3. Has precedent for similar backports in the same file
-4. Contains zero functional changes
-5. Has strong maintainer approval
-
-The commit follows all stable kernel rules and should be backported to
-6.17.y and any other stable trees containing the buggy code introduced
-in d6a511dea45ce.
-
- tools/testing/selftests/cachestat/test_cachestat.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/cachestat/test_cachestat.c b/tools/testing/selftests/cachestat/test_cachestat.c
-index c952640f163b5..ab838bcb9ec55 100644
---- a/tools/testing/selftests/cachestat/test_cachestat.c
-+++ b/tools/testing/selftests/cachestat/test_cachestat.c
-@@ -226,7 +226,7 @@ bool run_cachestat_test(enum file_type type)
- 	int syscall_ret;
- 	size_t compute_len = PS * 512;
- 	struct cachestat_range cs_range = { PS, compute_len };
--	char *filename = "tmpshmcstat";
-+	char *filename = "tmpshmcstat", *map;
- 	struct cachestat cs;
- 	bool ret = true;
- 	int fd;
-@@ -257,7 +257,7 @@ bool run_cachestat_test(enum file_type type)
- 		}
- 		break;
- 	case FILE_MMAP:
--		char *map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
-+		map = mmap(NULL, filesize, PROT_READ | PROT_WRITE,
- 				 MAP_SHARED, fd, 0);
- 
- 		if (map == MAP_FAILED) {
 -- 
-2.51.0
+2.47.2
 
 
