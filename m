@@ -4,89 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29487CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 23:15:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 446C0CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 23:17:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7AAF08E00CD; Mon,  3 Nov 2025 18:15:07 -0500 (EST)
+	id 762B98E008C; Mon,  3 Nov 2025 18:17:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 783298E0058; Mon,  3 Nov 2025 18:15:07 -0500 (EST)
+	id 73B258E0058; Mon,  3 Nov 2025 18:17:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6BEAE8E00CD; Mon,  3 Nov 2025 18:15:07 -0500 (EST)
+	id 677CA8E008C; Mon,  3 Nov 2025 18:17:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 598058E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:15:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id EEE2D140344
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:15:06 +0000 (UTC)
-X-FDA: 84070853412.17.AE0ACDF
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 7AE141C000A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:15:04 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jmi9OqAc;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762211705; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 565C78E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:17:54 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1BEB24A3FC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:17:54 +0000 (UTC)
+X-FDA: 84070860468.10.A8189FE
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 3E20D80017
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:17:52 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=M6Tf1TUK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762211872; a=rsa-sha256;
 	cv=none;
-	b=Ob2HU5FMmL5vSzVxiLuA7KhDhxSDGEbQHG+pkmIR/vFI8ncR2TcY/awtqZdXYW08jf/Ctl
-	lVTz+UNAJcNa9gC2qTIT0vx9uG64wRmkvxgr6NfD7vSNIJ7O8hHsjKQQgIxVrwg+DKKPUL
-	bKXuVl9XuisxT5oI4ltRg5c/XvxImFQ=
+	b=7zJOemeTO8BZWYQhlCCTG3Ms/HZLMR/xsZ4nzy7IxC39n+RYjAqmuh/1tOOf09GPVFhFV/
+	AHT+Mt5M9bHswqWXCg4A4MvNSnYqhNzTv0W1304BUVI5QaGvjns8bGcegJYCOgvs6/acxS
+	iWYsZ/DMjsGYIRI3wnu2Elw5ql9Txns=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=jmi9OqAc;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf20.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+	imf02.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=M6Tf1TUK;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf02.hostedemail.com: domain of surenb@google.com designates 209.85.160.180 as permitted sender) smtp.mailfrom=surenb@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762211705;
+	s=arc-20220608; t=1762211872;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K7JQoCcMmbgwr2pvxCFTGk+XIJ4h4+rFfLxirIJ3DSs=;
-	b=zLSkP2ijKr6RRr/jsz+TbPQLxq5LddtKe0OOKhRmoGSl3YxZGovcfZ9O6wm8OQ5WLJBzpW
-	uz6txseBM39hLjpkIAavZmXk9Ap36xvE9aCfFq9fsWL5Dyl8hHODFvVRUsasCUl/Sl8dZk
-	FsiyJM6riZEX6WW0iHEYv5P0CQbt+hY=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K7JQoCcMmbgwr2pvxCFTGk+XIJ4h4+rFfLxirIJ3DSs=; b=jmi9OqAcLty5zGAs9Gmy1H6Kqw
-	MbCZsf79T9ebEb0TNu8jzTBoZg7g8FNrJNt49fglohj0eGi7YQQLQhAKYQQoKAe2QNttu4xhgMGnz
-	/3Ev/9Z2OLTjz2tEwchOA3O+Mpv67S//pg0TzV6u16wbrYJ4Z4hCULQvZUqp849H5e9DHWSw+GDso
-	nRq/SkpdYES1/qi5oogdgxC4OnaMiv49HvK86iFbvTQWWqz8F5K+VFjTmgzTrnUI6J1fzT3cKbHci
-	dOigqBeNWQ3dlhIqETMPXGk5P06r/F9a3b7W+Sp+SVZOIoRrFmw26YEOe9gWQa8YJ0snXbtUtlJzd
-	FUXTm3+A==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vG3lL-000000044bd-3k58;
-	Mon, 03 Nov 2025 23:14:59 +0000
-Date: Mon, 3 Nov 2025 23:14:59 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>,
-	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>
-Subject: Re: [PATCH 1/2] mm: Add vma_start_write_killable()
-Message-ID: <aQk3c0vzEeC8lotz@casper.infradead.org>
-References: <20251103180348.3368668-1-willy@infradead.org>
- <20251103180348.3368668-2-willy@infradead.org>
- <CAJuCfpEGdMLxKqPZND32BZeYcpmRb7WQqBc2Qq_Z2Dk1LZEVhA@mail.gmail.com>
+	bh=6fTPNz4WRApFt5wxHNB70egXXItDw+twybx/DEhnB6Y=;
+	b=XzOiGHaehPfLKTtj0HQkF2qkMxTCUR5lDOca8dY7ZOeiDyBuP/uVuj4jtnWDo8Pi0Gvchq
+	CcuduYWzmhIWp4TCwUQfYa6Nl4O7NANwlRGbbp4tCC5MFV98Sdf8h4TyHU8r8CzbHzLBTg
+	lOukv2BAnOHoUUPTiQeo5O5+SPAaaw8=
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ea12242d2eso61701cf.1
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 15:17:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762211871; x=1762816671; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=6fTPNz4WRApFt5wxHNB70egXXItDw+twybx/DEhnB6Y=;
+        b=M6Tf1TUKUqAhLG0G3x6pbhZuvGaCmuRy/u8QfzCPvNKgRr7HLkPr04HIaZ53fT23i+
+         CHtu+EvcKO6Xck6pMqI7jpuGlVFubMgrBpDXiKCMN2cmnBKSsny94x9DF3NuT/pX2MhR
+         s5O0ts+koWp4GkpSHsTBd5DLuyBbfUOfJ6zA5uk8rpUNEgjDNqMK5Jx1/OrzjOCB2G0X
+         JY5dp5Z00NOlYLAUmzNKUvBmvYt/8QnzYw64GMnF8ARrPVBO9Jj503P1omNov70awhiI
+         rEHJKWA8jjEQbk+FYTlmYlhPAk9Z10gby1Ffx6JBcKqyPgqb0QmPU0Um+VwqGF9u9Bnh
+         77Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762211871; x=1762816671;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6fTPNz4WRApFt5wxHNB70egXXItDw+twybx/DEhnB6Y=;
+        b=NroVefwWUcNqwpaNB3Lz/maPbDrTnuXKzyNrOBlNHJvJhSpcdVs+FpTfryZMxB0tnn
+         dnuUV+y/PewJKBBPooJl3vrJnB2XaPBbDyUjH2ZPZ8q575TGlbo6Pl3cWAK8B9pPWFQM
+         1dtfxpmpm+pe0eyWTXc+PbL02N69XRZulSOoI2PHgrNppH90BpBA8YwNVxQs0wGBNKI9
+         rXmby0BxvAainSKv/UboPCR3/PJp1k0dfastGoxkqCuPLACuYReQpoINnvhyFk24blHP
+         fCPxD23Gs0X9R35NYqRckD+dYoJMzhgOFNWXXd/sLJ+mgaNEje1kKdcQxionUAU30aAe
+         jtEg==
+X-Forwarded-Encrypted: i=1; AJvYcCXk7Tzgv9ejgVUG30ME6oD3wA2GMiVDaq6p/N2LnAuAp0eWe2q0txmcIRRYz4o8fPU6usDQ5AnP1Q==@kvack.org
+X-Gm-Message-State: AOJu0YzUibMfo7+OtNnausnxzW2h13nE+Y9Tu5u7FmUWxxMmrPoRTPjZ
+	03Wx7T9frqGwY5JXl8eBTmlsXo9a37wZI4/5WBrAXeJO5haKo/AW92SfYX6pG8ZVjv3xBofqIjP
+	CAyG0oOnbpQqyrBniPy2ITrhMxL1hEH9Wcp+y6rS0
+X-Gm-Gg: ASbGncvq61UQxmqJVAIMFlNxgVYEhHMn0bt+lL1dICPFAxEyTXF7tA+T2JjvziZ61FL
+	y0ZUUIeaEX9ejCJlKZewyp3wK5ImGeLMV9YVXcOQH674oI3gnI1gPUyTfVOoJJH8JzZyx9i/ZBj
+	vj7n3qFgK47nwwyZ6aza1N0hC41I4zhaHD9WT95hqSZfb64Lls+F+K/92YVdRdH2nDfkW7tEq1s
+	1hel9D6je/Xh/oARUVdDLGQXCKPcYK5oerv2tJEebbgLNHU0Fj0mKq3ivHTtEp5Io5OBA==
+X-Google-Smtp-Source: AGHT+IF7rODbFNkhivyhVtTQPFkQYURjWBKo6IQpCJCJ6p8BXTcbnQU4tU3G15EixIWCyQpnr7FnZRgw8HPovXyyJ2c=
+X-Received: by 2002:ac8:594b:0:b0:4ed:18ef:4060 with SMTP id
+ d75a77b69052e-4ed61c2b01dmr2705781cf.8.1762211870947; Mon, 03 Nov 2025
+ 15:17:50 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAJuCfpEGdMLxKqPZND32BZeYcpmRb7WQqBc2Qq_Z2Dk1LZEVhA@mail.gmail.com>
-X-Rspamd-Queue-Id: 7AE141C000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 6796c599zf16461ujmq5wjogjj9qj1f4
+References: <20251103180348.3368668-1-willy@infradead.org> <20251103180348.3368668-2-willy@infradead.org>
+ <CAJuCfpEGdMLxKqPZND32BZeYcpmRb7WQqBc2Qq_Z2Dk1LZEVhA@mail.gmail.com> <aQk3c0vzEeC8lotz@casper.infradead.org>
+In-Reply-To: <aQk3c0vzEeC8lotz@casper.infradead.org>
+From: Suren Baghdasaryan <surenb@google.com>
+Date: Mon, 3 Nov 2025 15:17:40 -0800
+X-Gm-Features: AWmQ_bm6w4xW4z2tVLVpbf-e65wW6S_fTHqnGM3rLpzrm1Bqxai6KXE0bMbuxXA
+Message-ID: <CAJuCfpHB8TBpmmMO3xyjqKnuhEFgg10Ani2+U-YP5vu8c34UMw@mail.gmail.com>
+Subject: Re: [PATCH 1/2] mm: Add vma_start_write_killable()
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Vlastimil Babka <vbabka@suse.cz>, Shakeel Butt <shakeel.butt@linux.dev>, Jann Horn <jannh@google.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Chris Li <chriscli@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762211704-16369
-X-HE-Meta: U2FsdGVkX19OXjqmiwoudhZ42wbPU9+l2Nqq1zOxW8gapTij/cPR50s4T30eMvQhmweO+H9iwbHeoaTgdA1HHZww0cLKyHMDBvI//CWqmz2N+aQJhIcURlI7v+unFlmYagRJjZ1hHZTmNyfNuPC1KMXrSIkRgJtdKYnMrekA+yg+iDBOM4nWKQk5ij3VmnxokHVdjDbmmG4EXQ+GE6xHSEI+HC+uYoJcKFyt6NMhbKm/JqNCGMQX6Znwa0+pyx+6ShYiHTjtNaLlxkXC+cIm5rbrdPeQvGklBCRk3CTjULcR9XI9o5VLFgc+S9l6KHvgIH69G6FwiS382FMlLPtqSSzrwwMe3+HIvwzk8PHTzMJ3F7curQdjfRhJXzYqNTpdIaRZp7FKmWyOdGmeUMnxW0iY/tKrOpbZhTdPShzVMtH3f+6lTBbyMB731i9Z+oEjM7EnADn85Lq32O5uy6JHUKXcotZ0axtmvpVwdV0EDv/FBXuoVz8DoLfbifqpRhz573xkIRv4TSo3Cdz9iSGCLVgnPNrpwRZ7XAktZqK1QYATSxQwUWA3cYe2EyNAuLr03wfMfbfyfHFbtQI8DPStvXry5iztWajeg51ORk6BnK75/snhMc0MyWSJZiAdN8N7UmIXy4X72bYGPwZ/vX8aiHzyH8E6ucL/XTLwwVIwWHps5Go5KgftUg0Yia5T/RjfTwHTl1WyD/dR1ykPlD/p+UZYOWVOx1TesCvoWVe3ysFS4JJS9p9ixiDojgP3hSEHk1lZhkmOOAfXiYz8eShy+vJmEspdPetK3bh3kUr4KCk+GNAaVqS6fCVAMC5NWX89ga6Wk9YTHjTlYirVGLDn8iavTZBONoYArJgcXkT+crnLMDx+VpWZBgKm7YkteuqjXaycpKCJW21KVYo9iFVLqgBhKRvZJc80k01DrhdaUBDDZKssTBxPm2XFRCjhg1CQHdewGdz7LkPhk4BkMT2
- S8QLJR7T
- 5vLm9Wmh6WKfKsqtR+jYDL2yQLdD4eWVzHT5JwQBxxiRiSEoUrSbREkt2brKhPpGQ5uEASH/jmBYlBio825An0peDbuCNgXi2qoDkEQpd00Ah2SGsBjAepIRwlKOPV+UML1SlBuzS/QSdAV+EHI3/hTApeg2HGyfZvNTETzpVolJ44E1VaWatKX7ucwYjqhCrfSeJak/J2XJn85J4Bo7Zpc8zBs2yF20BmZkLO5T8AhKI0x6982ZS2eraf1Es0atfviaLDNSWO7AhHVEsKcpn8ve7sBRIJM4pWRGF1NBBM5ZQPrI=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3E20D80017
+X-Stat-Signature: wugf4cx18ymf1jhf86hacoeix8n4gp3g
+X-HE-Tag: 1762211872-271625
+X-HE-Meta: U2FsdGVkX18O7jigULzIPIHgxzFfJKjHxh/9qwt4XG1uf/zXrp4Cxpuz9OA2Q/i87+6mmVlQZbdLuwKuxc6HgVqUS0nu32yQxp2aqgSh5X4Jv+mhQ8gYjkh3+n7R5ocNys4EtDCe43Zfc2GkM4ENG9T0SJzFbeIrdg2T3VwLwqwNoiQp7r6uTJ7mzXvCIH5sySx5OReQcenOFREPocQawUHdEz43ttI5ESCYmDAF/ZVscpBUnQvISgCnM4FnZ3D/FXgLOcTG4gjxsDWMgHNhkncxNaR/vxchlP9QjZjrwjHhqvLAn6hlhnLsnXpSTNRNL22wY7Vzf6t98riAitM98upQluaOGy+3o7XX2VKmaFZ5EcpcYS5Dci1teI4DZ8Boq9Ul85eDDIYkRkT7ZbIX9q0bAJlr86lkIDQXZIBgUsUqrLQIV27siws+8dlGjh/Vy2lhqnf85JQBHYmW9bVw7o64dfs1h8UWv6EqXVdtcFny7KIg57Ezhvj0nPljTkRpslCIJbH1iAEywrTdl4iHRnr88Q7mWOSK16iiF8Zb8k92DmIn2NjZ6pRTa5p6+9WaL85Ib/zXNMeKorZSpRG4ghYtkuoBG2itP/QMSXx/CRlEqRvW/BBdWIuL4wXMTEvWhZSMCcVk5vKEs4igI/kJBahEuCJ9K3Thkh4QQyXJOewi5JtGgTUzvrReDycXuIWXiY7xD2q96SD21zbQ7DswhHvTjGDzMT8GQbJgv2fdFs3QSqGHfkudJ49ciIGt4cGpeGZEkfTl22JD1IpzuqZqq82zDrgLxA2rRnV0XdWr7J0i5qQ9LM1q0vax6pzJvQ+8yn8i2v7YxyM2CfJBDBu8myRiDg5wGf7DPSUK6s2CdXhkYGzlGTr+5TCzFvNT8hUETVtbT1G/btaXxop0rxj4xT7KgLTyRnqOZ0oNy5Xi8JAL2Q30ZiMf+WqY4aYknbtUpQfb4Uiz7Gif9+uhlrI
+ 2xJLnTPT
+ G1GK3o+GeWPWL1+nmvOfZGGKlw13PvKW2XXJNnfx+vaHptRIKYGpGTuPh0BDx17r04aUc8Q7iE9dv0nvZsF9VkfngV4F7zlRuJL2+aqIDJtx3/ob6OJ41Cmr2M/jbyfeeOFDMTp+OhBpltKrv0h9JpDj4JEyAA7UwszFdBezv/HPJJYNWevhXGWqcP7bk8SeqrD6bQ3RDQ39tCWV+hPUBUcKynutFmftf/bL/rFk4aE6uq58eImeqm0SNvBH0WmEkppWC9smsWMrAIZJj0SXN+hPBnYAdOCswc50q5D0IkWB5Ue0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,28 +119,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 01:53:44PM -0800, Suren Baghdasaryan wrote:
-> > @@ -286,6 +310,9 @@ static inline struct vm_area_struct *vma_start_read(struct mm_struct *mm,
-> >                 { return NULL; }
-> >  static inline void vma_end_read(struct vm_area_struct *vma) {}
-> >  static inline void vma_start_write(struct vm_area_struct *vma) {}
-> > +static inline
-> > +int __must_check vma_start_write_killable(struct vm_area_struct *vma)
-> > +{ return 0; }
-> 
-> nit: a tab for consistency with other stubs please.
+On Mon, Nov 3, 2025 at 3:15=E2=80=AFPM Matthew Wilcox <willy@infradead.org>=
+ wrote:
+>
+> On Mon, Nov 03, 2025 at 01:53:44PM -0800, Suren Baghdasaryan wrote:
+> > > @@ -286,6 +310,9 @@ static inline struct vm_area_struct *vma_start_re=
+ad(struct mm_struct *mm,
+> > >                 { return NULL; }
+> > >  static inline void vma_end_read(struct vm_area_struct *vma) {}
+> > >  static inline void vma_start_write(struct vm_area_struct *vma) {}
+> > > +static inline
+> > > +int __must_check vma_start_write_killable(struct vm_area_struct *vma=
+)
+> > > +{ return 0; }
+> >
+> > nit: a tab for consistency with other stubs please.
+>
+> No.  This is a stupid indentation style that's not in use anywhere else.
+> There is not one inline function in linux/mm.h that uses this formatting.
+> If anything, I'd correct the other stubs to match the rest of the kernel.
 
-No.  This is a stupid indentation style that's not in use anywhere else.
-There is not one inline function in linux/mm.h that uses this formatting.
-If anything, I'd correct the other stubs to match the rest of the kernel.
+Ok, I wasn't aware of that.
 
-> Let's add a comment to list possible return values:
-> 0 - the vma is not attached;
-> 1 - the vma is attached with no readers;
-> negative - an error code;
+>
+> > Let's add a comment to list possible return values:
+> > 0 - the vma is not attached;
+> > 1 - the vma is attached with no readers;
+> > negative - an error code;
+>
+> I considered doing that, but decided it wasn't worth doing since there
+> are only two callers and it's a static function.  If you feel strongly
+> I'll add it though.
 
-I considered doing that, but decided it wasn't worth doing since there
-are only two callers and it's a static function.  If you feel strongly
-I'll add it though.
+If it's not too much trouble. I think it's not very clear from reading
+the code, so a comment would be helpful.
 
+
+>
 
