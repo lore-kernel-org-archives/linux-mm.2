@@ -4,121 +4,102 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1AECCCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:03:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90DECCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:14:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DC7878E0024; Mon,  3 Nov 2025 02:03:41 -0500 (EST)
+	id E7EB38E0025; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D9F1A8E0015; Mon,  3 Nov 2025 02:03:41 -0500 (EST)
+	id E563F8E0015; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CDBD68E0024; Mon,  3 Nov 2025 02:03:41 -0500 (EST)
+	id D45058E0025; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BBC3F8E0015
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:03:41 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 4DCAD13BF96
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:03:41 +0000 (UTC)
-X-FDA: 84068405442.19.0B01197
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 76899140003
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:03:38 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=dY8bnnEA;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0D68E0015
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E63512C021
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:14:58 +0000 (UTC)
+X-FDA: 84068433876.08.6003B4A
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	by imf12.hostedemail.com (Postfix) with ESMTP id A5EFE40014
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:14:55 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="CtIdrG/k";
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762153419;
+	s=arc-20220608; t=1762154096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5P3j3pQdM3AH1u51YzJ0Fa/KQtK+2/TBxkltuxNOgs=;
-	b=JU5q60zouiK1Je+vuJtee5QKq6aP2PStL5TsJIK2J3wivPdJn98/8mBVFsLlPpxXlLYYQs
-	ub3epmEoGG3dKiVo8FuAzJK5JfcyBpmLhWHpgCyvNF4y7+FbP8MwbyWXlhvLPNGe8i1TGU
-	Er+Vp+fr2llinNlt1cLbuNrppG84zhE=
+	bh=GIo7T0pEvXOjHk/2UjQ9D+bXEZ7esBCrIMEr5LaABD8=;
+	b=WFSiPDJnDScx1lICS87eHde7/F/2TZlxqGtEq0sE/PU3JIUyumdhB32Nt4yQ/U3ou7cHxc
+	flfaGauKINe4fiXpOasMnzfFnGXGn+Sx22XRa1yTLic5ZSNuBPndy6fRtncE1ulZozfpWY
+	dc3s8i2uH2WKbszmzN34OdKlaUHtp9A=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=dY8bnnEA;
-	spf=pass (imf09.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.180 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762153419; a=rsa-sha256;
+	imf12.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="CtIdrG/k";
+	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
+	dmarc=pass (policy=none) header.from=infradead.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762154096; a=rsa-sha256;
 	cv=none;
-	b=NrAnv3HBJYycHjBhCpluiQKtD6TYsmc66YhL4pnDYKjMUl3wFUSU0bXf5zn1vDnLh6A4er
-	ZBCwaoYl5qRC/s1tePpSS5/rC9wgPrj8L5awur88DiEpdogyg1O+zqtxUy0bf0zQ1LdKfM
-	WVOxEMG4qr2Xk6+ne6YHMNro1jEkkqU=
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-781ea2cee3fso3981842b3a.0
-        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 23:03:38 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1762153417; x=1762758217; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=w5P3j3pQdM3AH1u51YzJ0Fa/KQtK+2/TBxkltuxNOgs=;
-        b=dY8bnnEAHPOm+saSbiK+QEmnXwUqzLz1gxTHaV8oHGHTLFzArgeQ5e68Yuivgk1q1W
-         bezGdc22nlBicStboePongDeJsvG4wVb92o7C0nEi+ZJe5qBqe55Sf8/7Rp2ok/p5t81
-         4YEDDisf6P/hGZTS9eWz6UXewUwQWNWOT1pj4KMuSYyIvCFl+Vx2Rwpz6t8G+DrB8QQ0
-         QhEPrrvDWYzUaEVY4hL8nr22WuUCR59iqUlL5Rh/0QjhhkDY6KBDU8ac8LxFNW95k9n3
-         1Y3DxzlD1BGTvyhMsPUy/0HCnvy5+ev+j9jrLrz0E/3ClRZpUhRJKjEcoYyuFihGoECt
-         82xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762153417; x=1762758217;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=w5P3j3pQdM3AH1u51YzJ0Fa/KQtK+2/TBxkltuxNOgs=;
-        b=J/ixhOq8TPLZsTR83wFVVBtJtTEaDZKb1l0KDtNDQfE33o4LhwNOmBqb6W6dU8K8t5
-         9hLXrV0IFPNvHA1T5d/Ru+96BiC5rY/+a80CviaJ+zOYJ0jkFZeIpklNuMZriJv2Uotd
-         amqUS9UDcpeabUvAOmws57FG6X7wtegkWjX3LsFiTliYOSlHKXqZQBGqRCCJdYMG3Jla
-         VWJPz2XQOggWUr13/hnq8yZRQ0eGgJTeJ//PS8odnZmzuhUjdnTpj90tf/7fxg+h2uC3
-         yGYeMs6yeWdby6ot/RlEn7qt8W8qJ5ivJ5LvQbweHyRNg4oM6+qCITf2MpxNyvFsYBW4
-         1Fhw==
-X-Forwarded-Encrypted: i=1; AJvYcCU4CJ60rDaOtu40fcaFbv5A6Qn3EYTiaBlXFcVURI3V+9DA0qMURVJf7xtGxBjwrTyjmkvQ9/gXWg==@kvack.org
-X-Gm-Message-State: AOJu0YwnJTJNX7zt9735ZHXFp7mqPILw3Sv1gtsVyrNcfNOANNbA4aj9
-	cGYywEvq5G8wkKkCs5Mmc4WFhfknqJCBBic28kzLAtsZrMlZa5BgKcZjDrCm7f+aX7SB6UcDN+7
-	rfgqz
-X-Gm-Gg: ASbGncsehxF6vXLOLpfEKHCPsxmXAYp471FB0ZR6vi7BF6ASKwIuSXGG1Lc/P0kn5e8
-	WL2HNcwYcqtslhll7XHNbMns4oXHkADhAweIva6G2NxEXHmaij1QPgH+roo9brB9XCy/7N8y7//
-	6ujVSi+qkhw0N1XSCBRsSGbg8pLlky589amozFbxXbn+C0dspbmqp+uxFr5fZhOdupmynYQPpCz
-	2jtKdQDT18GAbdwFKj91BP8D7LY2CSO93iwvZAF5CuOeLkI3FNP5jjN8hDAfepacvyCtCuRZwUi
-	XGhfYcE3/vTOhrTozuceVQ34p1HNkDTiAe/U/VoWdeuqBcBQfMkeLEppu/duuherb6fM+fX5saZ
-	jxSAETxsi2obfIRp8wWLtidJq7rDx46HOWNY11iVnT0djnBB1/fienkODQU78PQy7AtEApjHdTb
-	h+Wa5UOqaCj9d9sKZvTljHjgvSe9o3rSQJglsUqw==
-X-Google-Smtp-Source: AGHT+IGTNhaBgPV94HpLwq3wxD5moGyXJBQ3HMvWngLRZxDRivXq6LV1O8EW9Wa5ai847X2dvYueZA==
-X-Received: by 2002:a05:6a21:3283:b0:344:c254:d9ee with SMTP id adf61e73a8af0-348cd21bc02mr16031690637.45.1762153417086;
-        Sun, 02 Nov 2025 23:03:37 -0800 (PST)
-Received: from [100.82.90.5] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-b95c44f7363sm7270941a12.6.2025.11.02.23.03.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Nov 2025 23:03:36 -0800 (PST)
-Message-ID: <044e3f9a-3de2-4939-afff-3bb527eb024b@bytedance.com>
-Date: Mon, 3 Nov 2025 15:03:21 +0800
+	b=4pKTwddGvsnTowA/EJVwPLnMtGAG1WqljOckTkkCd6B2VyvoXW9dq1GV77LqsR72BbrMxc
+	G91CY4idGMavEVcB8Ikl6f23JHnNZprCU8AeomZtf30gw+ygEnJ2M8jm1ClnAndMR8Fr93
+	6VxJK9igFCjlsjklDwYizj3uKl2dO+Y=
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
+	bh=GIo7T0pEvXOjHk/2UjQ9D+bXEZ7esBCrIMEr5LaABD8=; b=CtIdrG/kicwJtBeyrqdL71kzkf
+	Ixd1Zw47cH9hrhJDvymaOZ9KJ99hCaHYMOU7xAfKCQaheuqdsGRNhyeB6Q2uHYg0gCFCw5Qe+oYO5
+	t3LLyahOUUICMTsnQluvFZp1F2ECx3l6VvpK5E2B3Dm/ohe965p8lmiWZin8skdEKVOM9L4xGtPjC
+	mWXQ3Djqyewcrqr2Rcfh19Xg3574FNAowTahco+GQdrp9SANs5Zs7wRZWmGYlVFep58w/w+x8ym9U
+	dZ8ZxZqex66du2NlF8kjWgpoYohoswZcqsJcUTFKE6LPkV6eY9vCBEzEF/kBVqk0/gEg3Sy1vwbyA
+	z5gjFCXQ==;
+Received: from [50.53.43.113] (helo=[192.168.254.34])
+	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vFomB-00000009LEa-1CVW;
+	Mon, 03 Nov 2025 07:14:51 +0000
+Message-ID: <7fd1c990-d96e-49ba-9bbb-ebddebf684aa@infradead.org>
+Date: Sun, 2 Nov 2025 23:14:50 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
-To: Dev Jain <dev.jain@arm.com>, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- david@redhat.com, hannes@cmpxchg.org
-Cc: ryan.roberts@arm.com, hpa@zytor.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, ppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251103063718.90743-1-dev.jain@arm.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20251103063718.90743-1-dev.jain@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH] Documentation: treewide: Replace marc.info links with
+ lore
+To: Bagas Sanjaya <bagasdotme@gmail.com>,
+ Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+ Linux Documentation <linux-doc@vger.kernel.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ Linux ARM <linux-arm-kernel@lists.infradead.org>
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ David Hildenbrand <david@redhat.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
+ Dongliang Mu <dzm91@hust.edu.cn>,
+ Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Arnd Bergmann <arnd@arndb.de>
+References: <20251031043358.23709-1-bagasdotme@gmail.com>
+Content-Language: en-US
+From: Randy Dunlap <rdunlap@infradead.org>
+In-Reply-To: <20251031043358.23709-1-bagasdotme@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: 76899140003
-X-Stat-Signature: ixbe578yfnai9d9wznt5ura67mwnhnxj
+X-Rspamd-Queue-Id: A5EFE40014
+X-Stat-Signature: wcqdojd5bn4adqd8srjy6oaycge9xrty
 X-Rspam-User: 
-X-HE-Tag: 1762153418-110577
-X-HE-Meta: U2FsdGVkX1+m+KPC4RTe3fikuD5ZtgRZ9FQkSbn7RPrI3fLpmvamyegWQCf3BdGZM6Wch6ZB1nhBjI0zld//8b5UWMh4LnjKjCpQ900L1xxGXKhnH2CAzMuxNYEEt2yrKgjO3cBAzPVUrmlfm74lji/gnmjt5kxwerDnms86CAmArJWR5rsrn34zeZt403veaNPlJTSyrV2owBltXlJaq1ldsROUQvXUPx99ML4tM1RVRaC86P2VOJ3xxitpQB6eonLO42nuXAa6XHlFJOyfHZtZcjy60BfrQYliGpXCoBRDeU+CjqCZfk0l+l7iyUrOUgG7pAxtlP+1dI2dZeUb/UP2xXMEiVxDHRV5E+L3Hxx0l43icVNPLZrvsw8l8ohl2Ke22PjsZsVv87eNgDT5OSlNeStv+WWgCr3bYgMMKOTGumT7UQXnLxV2V0snpgmt0O1jTstGtfAoK4dB82ROLjEhmv8XgsEFsvBqlM4F2Aa2l9QdTDg+VAvefU/IB4kDk8erHBJRBUdFJC33UWs//ag/jCPBeGKENokFtkMs2yzq/8Vk6a7FT56PRJvv/hecGKfLOoF9RZRmSton2sx2My0vMgP1QEFo1ZFKooOQp9jIUfR084LgonEKvIAuh//qAVABoZxiMN2qerrS7zesefq+7vRC5J2y2uZPCsOIqPyp9UfWptZkQUkQCxSAeh0/LuvqrwVft5TsnfGbsRvbGE24wiYPO9iIDhQQsvOWpT13277eiMdvZGrahngP/vB+lTVq6yJzqsoVguX902mNLX+2D4zQ2/QMUzNU50BuC07xZJ3ggm5hcvSHJHAu/t7aMmCbjubuvhalFsL+TNYOfRt8VLRCBrmAemvZ5y6P4KTJZes8IbZHIsgH4kovot9Mv28cKI51e1/JQ9umoM763h252Bc16LV3weghXP6Aa6/pFXRqiGWWFXZBMNNnN48qvMVnPwNnLNfJrTg89qK
- Oa0E4mru
- 8cCamkxA2wQ2LbReHrqbAE9R01gHVnBjnVxjV2qAglqmWJisKRaxkozNcHdYxX05W8PlLbMQXA0o05H9Xl17yKIS1DpmFiMh+K8W7iZFUXP4Dwwv2MDA3QPZ2UHvYAYVpgOdSnkSH088er3lH4gHTD7uuP4bp0WfC+EAkSofdSzuVWVTl2mG/8Fcb33MH83UL/kDn3znDxtezl7SqRfZ4mLYcrsQYFbQuHsRntzAFoV1haDxid4Sq3VwUzNGZtm9vVWFd563dEsg0Wv53KRg0UkuSk8mYVtHC+LKvpQ7G073IYMTShzIGSPVI3leB9ABeS83qBU7kCXJVVJtsvXTHIWS3Hhlsg/MBMA/xC5IapUvJKqvboOCJydR0y/idIrkA9k6oKJDpgYEBsqUwi6IXSkLKZ+uojUPMPey3vSG/2ZNo1uAUPQ1SLNvZTC/tdweoGtjlG5FzucGPH1b22UTZsBGpFo7sY2fepBlU
+X-HE-Tag: 1762154095-723163
+X-HE-Meta: U2FsdGVkX1/+CJRN4tkQGJv38c12CGJ1WPDngj1RQ06v/gyZ8/m71YToHvP4WSWOVt9yyVBPr0QpIMwz2M0dIe7D9WdQ4ON9Hsolm7p6CHyrp/5K/WGjsMtFYPtVntenNGv4gxZJavFioCJbf1M7vflcnhXqvhmRZ4AmtYHNups/iPUvPNORhzdYD+sY7XsvbVwTwcLJ0FCptU3h3XzYMOr2tJQaDNHrOSipG/VbNxWmEyDss7f0o/Ai80RLfxLJYU/dSkUWXz1RrT/xe3P9vH48pjr6NnTPQacTSrEaRn2RwNaEG4gaIRBP+oDaFWvtnX/BdIjyDkhSt6ppicjWj/++v7n3x8ADFhNqaQk124guTfBmTgWsQdKrcWj39+WOh5ArpqgVd8KVcV0DiVkZC3N0ZdVjDyWLmxb8Ago0m3xTgF3I8D3EXZTISN9ZQDIrp/3Yyq7ES/pgdU9WAYSDncQMiP9pwO35SJzcmQbTq/8uCaGyAyDHmlmTWL5PjvugQrXq9glKeO7/zqo64mz9CPelu0/4cpGWUUChYxDbiaVeWO6jaL2KU5vifa9Yy3FPJ5PVMgW4eJsjp8wN2fxXqBgQ6vgh+V+iAwzZEsDeBtPdYwbMRjLv/kzF5/+OUnIyb5yZmEt6HeKdd3ilSLnj6hXWdvjEADHFifn54ZfxjozpTCNzO5Q5HtTRAHVlvCwYKHHJZw1Wy6KioiM9Dn0Kc5Zu+TKQZ4FFwx66S/zdl5L9XfVCkXCPx6htYP4MkIU1yC4K99T4UVXXq2zBiu8dRuS8jedNEtHyAphIXTMXe0fCe4RD9a9eJ0JPS5km93hsTJ9AwlsqPPl1eGLPK+14gFi66bb7alD64N7aCR71n84fhNeHcWdWQilgTy6rR8334WNCNtGYNKtUAMC6qfwCg2y8BhhYvfj7I5iQPBbcrL9Okt0ulcPoPaoonkqB+iihhuql7NhiN1u6fOdU/BE
+ u2NZ83zI
+ yDgIOppW+KOdaQ2Ixh2btuR67rIeJFrV6Kqbt8HUzz3ex2RmlXxgWt6a4fJZ9jgYW9YRNyCuQg+vM1EpWIM/Wzm8lHjwS1qNzABDnjTBHRkgnO01XQHfxwZzBHQ6mIzMo8J3AMUUFbZ9B3lxiKOoonnwyfrvbvDwc33ZsE51veX49z8ha74D0Fv7d8zHLomEXwPIgFYWrUZEDG369/+FazdHlp6Zssp4lOS5WwrxSYi4ZjclZUTYRq6pSiK3ik6jl3I6pdimNYhSQgneWBKMQgF4ObFQHUtNJU3EZ0Waeep9seuNnl0mqD83ZoR3enKNaXtjAVZKpbRYKmzcPNJSqsKrVzD4lakhUenuJGR5cY81MsItclWfFJ8FjhTScVDSmU+flz+07ikriIXs7WYP12ISQ6Bl032thudSQ5sRCnORTwlTcS/gecfvrcka/h+NCMhZDaOOOseXU1y+WljkJFHfKjmhlDSF502C8dpI8F0c2hAhMJMssiftZ29md1Ob/zIJyijALOTVriBEMwNAM/ys1WU3t8E70yVF3rH0W1XVApNDMMeawt/g33CzfGWwzG+rX1iemRcz40EnbEOTogg0mbE5AbKUpEwBvk9mIg2mKTCCxIceLC9umy+TKPCKSC94vYJX5Jv0cQzpQnK3MXc4tR6dsMFKVMD+ImmEutHDcByoh69BjHxhe9A==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -127,80 +108,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dev,
 
-On 11/3/25 2:37 PM, Dev Jain wrote:
-> The implementation of CONFIG_PT_RECLAIM is completely contained in generic
-> mm code. It depends on the RCU callback which will reclaim the pagetables -
-> there is nothing arch-specific about that. So, enable this config for
-> all architectures.
 
-Thanks for doing this!
-
-But unfortunately, not all architectures call tlb_remove_ptdesc() in
-__pte_free_tlb(). Some architectures directly call pte_free() to
-free PTE pages (without RCU).
-
-We need to modify these architectures first, otherwise it will
-lead to UAF. This approach is feasible because Hugh provides similar
-support in pte_free_defer().
-
-Enabling PT_RECLAIM on all architecture has always been on my
-TODO list, but it's been blocked by other things. :(
-
-Thanks,
-Qi
-
+On 10/30/25 9:33 PM, Bagas Sanjaya wrote:
+> In the past, people would link to third-party mailing list archives
+> (like marc.info) for any kernel-related discussions. Now that there
+> is lore archive under kernel.org infrastructure, replace these marc
+> links
 > 
-> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> Note that the only remaining marc link is "Re: Memory mapping on Cirrus
+> EP9315" [1] since that thread is not available at lore [2].
+> 
+> [1]: https://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
+> [2]: https://lore.kernel.org/linux-arm-kernel/?q=b%3A%22Re%3A+Memory+mapping+on+Cirrus+EP9315%22
+> 
+> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Thanks.
+
 > ---
->   arch/x86/Kconfig | 1 -
->   mm/Kconfig       | 5 +----
->   mm/pt_reclaim.c  | 2 +-
->   3 files changed, 2 insertions(+), 6 deletions(-)
+>  Documentation/driver-api/usb/writing_musb_glue_layer.rst | 2 +-
+>  Documentation/mm/active_mm.rst                           | 2 +-
+>  Documentation/translations/zh_CN/mm/active_mm.rst        | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
 > 
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index fa3b616af03a..5681308a5650 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -327,7 +327,6 @@ config X86
->   	select FUNCTION_ALIGNMENT_4B
->   	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->   	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
-> -	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
->   	select ARCH_SUPPORTS_SCHED_SMT		if SMP
->   	select SCHED_SMT			if SMP
->   	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 0e26f4fc8717..903c37d02555 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->   	  The architecture has hardware support for userspace shadow call
->             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->   
-> -config ARCH_SUPPORTS_PT_RECLAIM
-> -	def_bool n
-> -
->   config PT_RECLAIM
->   	bool "reclaim empty user page table pages"
->   	default y
-> -	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
-> +	depends on MMU && SMP
->   	select MMU_GATHER_RCU_TABLE_FREE
->   	help
->   	  Try to reclaim empty user page table pages in paths other than munmap
-> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-> index 7e9455a18aae..049e17f08c6a 100644
-> --- a/mm/pt_reclaim.c
-> +++ b/mm/pt_reclaim.c
-> @@ -1,6 +1,6 @@
->   // SPDX-License-Identifier: GPL-2.0
->   #include <linux/hugetlb.h>
-> -#include <asm-generic/tlb.h>
-> +#include <asm/tlb.h>
->   #include <asm/pgalloc.h>
->   
->   #include "internal.h"
+> diff --git a/Documentation/driver-api/usb/writing_musb_glue_layer.rst b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
+> index 0bb96ecdf527b4..b748b9fb1965af 100644
+> --- a/Documentation/driver-api/usb/writing_musb_glue_layer.rst
+> +++ b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
+> @@ -709,7 +709,7 @@ Resources
+>  
+>  USB Home Page: https://www.usb.org
+>  
+> -linux-usb Mailing List Archives: https://marc.info/?l=linux-usb
+> +linux-usb Mailing List Archives: https://lore.kernel.org/linux-usb
+>  
+>  USB On-the-Go Basics:
+>  https://www.maximintegrated.com/app-notes/index.mvp/id/1822
+> diff --git a/Documentation/mm/active_mm.rst b/Documentation/mm/active_mm.rst
+> index d096fc091e2330..60d819d7d0435a 100644
+> --- a/Documentation/mm/active_mm.rst
+> +++ b/Documentation/mm/active_mm.rst
+> @@ -92,4 +92,4 @@ helpers, which abstract this config option.
+>   and register state is separate, the alpha PALcode joins the two, and you
+>   need to switch both together).
+>  
+> - (From http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
+> + (From https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
+> diff --git a/Documentation/translations/zh_CN/mm/active_mm.rst b/Documentation/translations/zh_CN/mm/active_mm.rst
+> index b3352668c4c850..9496a0bb7d0705 100644
+> --- a/Documentation/translations/zh_CN/mm/active_mm.rst
+> +++ b/Documentation/translations/zh_CN/mm/active_mm.rst
+> @@ -87,4 +87,4 @@ Active MM
+>   最丑陋的之一--不像其他架构的MM和寄存器状态是分开的，alpha的PALcode将两者
+>   连接起来，你需要同时切换两者）。
+>  
+> - (文档来源 http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
+> + (文档来源 https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
+> 
+> base-commit: e5e7ca66a7fc6b8073c30a048e1157b88d427980
 
+-- 
+~Randy
 
