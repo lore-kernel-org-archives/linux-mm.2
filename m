@@ -4,109 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E779CCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:05:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 46E0ECCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:05:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EBB7E8E0036; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
+	id A4FF68E0037; Mon,  3 Nov 2025 03:05:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E6C128E002A; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
+	id A00298E002A; Mon,  3 Nov 2025 03:05:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5A918E0036; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
+	id 8EF948E0037; Mon,  3 Nov 2025 03:05:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C012C8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 688291A0A67
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:29 +0000 (UTC)
-X-FDA: 84068561178.24.7D8BC37
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id AE8F8100009
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:27 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YNIMhHK+;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 7AB968E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:05:58 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 45BF28904C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:58 +0000 (UTC)
+X-FDA: 84068562396.08.8322669
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf20.hostedemail.com (Postfix) with ESMTP id E37C61C0005
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:55 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IWvYky2k;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HHHt24oT;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IWvYky2k;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HHHt24oT;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762157127;
+	s=arc-20220608; t=1762157156;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MENFHqQdCM/upWrhnvldLJ5d/Mmo7/c3cfyIErXyUzc=;
-	b=kjmmp7CK86jU42QvMhCADuIz+eL8OAW3mXZfxXPXt2KOfZCuIL3XpZFs+TRW9UAWEXyGy8
-	VTYFdY1EB8LelKp0g5FJLfEH1Edk2TifdhaRGujFPFIcsWLJdj2kwTKu4phrtqpWhf7yMi
-	eIFXdAJ1nQU69JFrduMbvn4kOMpIjXE=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YNIMhHK+;
-	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157127; a=rsa-sha256;
+	bh=1kCzcdMMVzQByO/M/ivTSIZeuG0QmSvpmFe9MpD4DCo=;
+	b=mJ9GES9XBk4NZHEGyT1YcPDb5fyTWUOH7UJ4MFo6OxgqRE3L8VyvaFAoweWU6HRbn8vFpi
+	CdSRWAlOHr1ix3rt4x6Zm4tlf+5kNhEudJ8ssrV5GfNHXoXrkWH6gwVZuzBT5DaTXTA+AJ
+	lujl0yX7FLrlPfmFi+PKmMZazvmBujQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157156; a=rsa-sha256;
 	cv=none;
-	b=3C2MY07zOSkRaOJKx2t5orifiulFeyRfjniL263FweJZc3UAHwF7eVjJ+1HyZ+vrAQZjsn
-	fNRidpXgLvdmTMlQd90UCFpGohC24beMnh0lRKotTRF4Ebwdm1+njitOKgot852BJSyYlm
-	a3Y/2rDVH8Tdh8ZhoJiXhaQ4dAU94P8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 9C7BA43DBB;
-	Mon,  3 Nov 2025 08:05:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBE8C4CEE7;
-	Mon,  3 Nov 2025 08:05:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762157126;
-	bh=/Z00hsFx0kFKgS/fH2fkWOXPCRXDBSY3j5PVFskPLtY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YNIMhHK+TIAw9S8epUQRLJ0hHWrXGrX021AASru7kQYHYuMFC6zo5jxbc7KUmJ0L3
-	 YNEe1nE+4ae3JtQxcTTez3gXWgSy2u2msyRHFv6Ufnrx2bt2n0+8KYqma3OyMomdHy
-	 Und0omT0toRmHQSOMJHh8FIiBDSXmNrLx8mv1uScrl9HdFKsXLarM713jjbRgR+/v4
-	 7/jTF678ISrptDm6AzMN9ALIVAtiWOrlbYsGz2TuzZPwPoiteJ/wA8NnfdkaDlmCac
-	 R8sanushWpLqk/uQd051eoYlDOALHHRNHhGhWZBT9cBCKpSLGzr/fRIrMBO19/jAvs
-	 SiEU4tXpMsS3Q==
-Date: Mon, 3 Nov 2025 10:05:18 +0200
-From: Leon Romanovsky <leon@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-Cc: Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org
-Subject: Re: [PATCH v6 05/11] PCI/P2PDMA: Document DMABUF model
-Message-ID: <20251103080518.GB50752@unreal>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
- <20251102-dmabuf-vfio-v6-5-d773cff0db9f@nvidia.com>
- <86383031-807e-43d9-976e-dd955d79dc52@infradead.org>
+	b=xHA12jZ5kSt29v0vMbdpIxlAtutgKHBFuHUdJeKdNCSeDRDCWHpvRkbSQO+oGzuB4fteSv
+	3FvMdS4zTGyDn+6SqmDLTJNR/xztkjvsMUCuQGAkWyoSSggmnZ0E3YTWb9LoIVqN+ugc01
+	qAuFdO+Ml0Gpf+Rj/GTaFfprtIAc0Q8=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IWvYky2k;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HHHt24oT;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=IWvYky2k;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=HHHt24oT;
+	spf=pass (imf20.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5560221DC9;
+	Mon,  3 Nov 2025 08:05:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762157154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kCzcdMMVzQByO/M/ivTSIZeuG0QmSvpmFe9MpD4DCo=;
+	b=IWvYky2kLUkMEsXXhqEKF5kEsYt1OyCo3AsbPk5xM3+rhuPs+1bb4mYbgWUYcG3N43mGZa
+	F0mFRI89ho3xGrqd24PIv1xvM3Jope4EaqLzxRW7KjOev81xUkkfjZeAaKbCey4xDf/G8j
+	0rh70YVcw1jC0x/qEgaF/Yk96lAvq7w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762157154;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kCzcdMMVzQByO/M/ivTSIZeuG0QmSvpmFe9MpD4DCo=;
+	b=HHHt24oTqGd+KxfECCrzRHNwBpak63P6fATQzb6nA0+iGsJnZtHL87gBSXK/MPM4dhsZE+
+	xoq6WcIz1MKBkMDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762157154; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kCzcdMMVzQByO/M/ivTSIZeuG0QmSvpmFe9MpD4DCo=;
+	b=IWvYky2kLUkMEsXXhqEKF5kEsYt1OyCo3AsbPk5xM3+rhuPs+1bb4mYbgWUYcG3N43mGZa
+	F0mFRI89ho3xGrqd24PIv1xvM3Jope4EaqLzxRW7KjOev81xUkkfjZeAaKbCey4xDf/G8j
+	0rh70YVcw1jC0x/qEgaF/Yk96lAvq7w=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762157154;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1kCzcdMMVzQByO/M/ivTSIZeuG0QmSvpmFe9MpD4DCo=;
+	b=HHHt24oTqGd+KxfECCrzRHNwBpak63P6fATQzb6nA0+iGsJnZtHL87gBSXK/MPM4dhsZE+
+	xoq6WcIz1MKBkMDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 0A16F1364F;
+	Mon,  3 Nov 2025 08:05:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id H9VxAmJiCGlFWQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:05:54 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 22C5AA2A61; Mon,  3 Nov 2025 09:05:49 +0100 (CET)
+Date: Mon, 3 Nov 2025 09:05:49 +0100
+From: Jan Kara <jack@suse.cz>
+To: libaokun@huaweicloud.com
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
+	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
+	libaokun1@huawei.com
+Subject: Re: [PATCH 04/25] ext4: make ext4_punch_hole() support large block
+ size
+Message-ID: <v55t7ujgvjf2wfrlbyiva4zuu6xv5pjl7lac5ykgzvgrgluipc@moyoiqdnyinl>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-5-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86383031-807e-43d9-976e-dd955d79dc52@infradead.org>
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: AE8F8100009
-X-Stat-Signature: wowdwh341zqdj1fypjxkuf56k5i7ndqp
+In-Reply-To: <20251025032221.2905818-5-libaokun@huaweicloud.com>
+X-Rspamd-Server: rspam05
+X-Stat-Signature: bqpb9wtchrsz47mh5iq3ccoobdds6968
 X-Rspam-User: 
-X-HE-Tag: 1762157127-107570
-X-HE-Meta: U2FsdGVkX18O4UCjd59Lg5FL3ZCzEGaJNW7RZWALfTSjvBY0SZu7XOK+oYegDJQ7gQKG15n9obbD8VyEnnm3xr0xv/kkA9QP6CF7tg/zVWyFdd5tDvwZ4gVNJq4dYctbl4sdYbBoDmCEqCoUaZXAaonmOpOvfmDq8J9bLpKGhTNgiD1DEBYv0pEzcngajXsaoOg4jp7XUmPm4luZHb/x31y0+sPUTmVCu5AMfevFz+cGMQOCHRRlBAh+GXYL6Ef/G6fyGvfkiTQx51888Dsrtl/ELLq9nsy9bWt1fIdTxJvWtJ4NF6ZVOnjYOurVB0mBbGU9y1hpATrmVrcxGpIqQACTBpoNaemjJCO0Zz+8Lu9mkcQej2R01FldZGJbWDVxpJDv0YHFlpB3kGngs07745r7PzvGh6ur15uNFlG9ovBJPm1vIk2JjhrQYppELRy+xvSMIpaZhSQvNkyW0Ond2Xv529PLgGjMnaE85XS8Ko/FgpVyY0FydbgerGsJDRgLTkPI9TYpFyYi8vtQS0xth+qQ4yzsw+4T0roPCmC5YiNC7UTwePHliwkzHObQ882u6gKTMB761ZoylU8kAopYvq7sbz8QiQi1OtwG2aGbCH6TkupUZr6zYat/2H5/hfffymYpecKWRpyBrurd9V8KJQZm8I2Kr7+M3Dh++F1m2KnR2mVbPTpiRi6eSTdm2xp3gN0fFdc804P+HVDBRilniTQV3/uo5qLGDlYkqqzBoCOHkRgaMjRWBKuRGc78nkE7vi9H4z9dnhzCfpQArbokpDWLgNbzXuWQtJv69XJVTRBZ3fjC8BPgL5I0D3K8vG8c8XRqlmNqt8Rd+aq0TZlsqkrIUw80H368UQBuQihRjqRJ3/6NqDA0gsP9hBLCa4CXRimB015JXrSqzkBiw2x2rGWEtMMMXXJo7XZrY8FNKbgQiw+3V8ktnc+NFdLeO3lV/hUgciXWqWSG+ktYO83
- bjTYpeg/
- qgHo3CdaJ0vyDgEOpBlipl6/j/ueogpPAvEyIIF87O5OBBqt0aFXmDfrJYnNsdnsWhMhkVNQ++l8mxsYogS0hAa8VzYG1ZV7IKy1gFqDcCn1GIa6U2o1/ebGJWsVYxANAUMajwAoFPrvujd1vNEXY8O+BeZEIG/ph3W+ovoU3AX+gQZj6AvqtRKP2ZKImyHgyBdFbtSPH/CALDnUJeu5M9IulCy1nLgCf4C8+qyKLZHMYS8+E5s0VN9Ny9rM/NDuCgfJFMgAg1oAliZnN2V1qwQfShg==
+X-Rspamd-Queue-Id: E37C61C0005
+X-HE-Tag: 1762157155-104610
+X-HE-Meta: U2FsdGVkX19Ch1vXctn0WtRjjpusLrW5E6iZRRZk9NfsQN47c7Zx/ND2xhCbcfJRZT+C/lYnddT0yJ1dirapvaj9Q2mKjH/uqrQn1efR12MGDvpaM25YYIWaysITFpf9J/E8x7N2G+h3jqckBeJ8Xv27RHSCx7sHVM6j6CDxs6gRb/HubMgeOtWADKFJ9aqn3sgkQL16c54P6l9RuunddIgiy705HI+jD2XU1Dp4/7QF2Dr7ek9OcsCAYCy5BLkIJN+4hQVCds5tiSr6lWnbIRQnVdgaFB3Q1LoytjytgUH7g+mKUYaueE37ewUwb7wDNaRNU3KrbQbEjnTTOMvLnTqlagMsrk+BKM48lOycEXPeO5qoBTrCu945j2FsF6+3+7dmxple7yenHUiHOV2INbIcRjWhyMsAInx8CbLWeQnvMgZcuXsW+q9rWwbJejKreXMrTiZT3UV0Ju7dbWvIgbvq8cTKdoOIBThP7c86GVx/79vCaMRuqOnDgmc6ny/L711uJQ03RjkkyR4AvhvPgf0IofpgxglO3F7BnXqtR38LsLzwm8hyzwNltU8ERNleCsQLj55CV5mN+VuFAz6UwBlO2IHpGiZOBZpKZBKqD7jou1V9323548MbKi3ywohuivQE2l7ESHb/mQprHWMwpsquMgEyL6jY2L8YYUW8uq8ZQoZM06fdRahMu2EgyiCLlmMOKj2HKI5cPDZ/QRU4IJ6lZGdPHI6HdL2OYU63Il8W4aRMGFJm7Pzf8mokB231nNQuzan7+qg02YxqjbJG4qme0x/5n+ytTC8izEnJCxezNWwLTdLkFJ5w2mWiiRaCCmzo7M2By47bae7Z+sKI6FoCAHFvq+wX4e74Bac0hrtNXa/aqyn4Vf+VgiaH9ph7jio6uVdc7AymzIktctWXMSFxk/GhOgk0xml2nr4I3ldyKE6l7Dw8wW+ggfWgEueGj8YzGR0o+cJvu/FM/uX
+ 0vY1mK2M
+ y1y9B
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,60 +137,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 02, 2025 at 10:16:59AM -0800, Randy Dunlap wrote:
+On Sat 25-10-25 11:22:00, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
 > 
+> Since the block size may be greater than the page size, when a hole
+> extends beyond i_size, we need to align the hole's end upwards to the
+> larger of PAGE_SIZE and blocksize.
 > 
-> On 11/2/25 1:00 AM, Leon Romanovsky wrote:
-> > From: Jason Gunthorpe <jgg@nvidia.com>
-> > 
-> > Reflect latest changes in p2p implementation to support DMABUF lifecycle.
-> > 
-> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> > ---
-> >  Documentation/driver-api/pci/p2pdma.rst | 95 +++++++++++++++++++++++++--------
-> >  1 file changed, 72 insertions(+), 23 deletions(-)
-
-<...>
-
-> > +guarentee that the consuming driver has stopped using the MMIO during a removal
+> This is to prevent the issues seen in commit 2be4751b21ae ("ext4: fix
+> 2nd xfstests 127 punch hole failure") from reappearing after BS > PS
+> is supported.
 > 
->    guarantee
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
-<...>
+When going for bs > ps support, I'm very suspicious of any code that keeps
+using PAGE_SIZE because it doesn't make too much sense anymore. Usually that
+should be either appropriate folio size or something like that. For example
+in this case if we indeed rely on freeing some buffers then with 4k block
+size in an order-2 folio things would be already broken.
 
-> > +if are used with mmap() must create special PTEs. As such there are very few
-> 
->    if used
+As far as I'm checking truncate_inode_pages_range() already handles partial
+folio invalidation fine so I think we should just use blocksize in the
+rounding (to save pointless tail block zeroing) and be done with it.
 
-<...>
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index 4c04af7e51c9..a63513a3db53 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -4401,7 +4401,8 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
+>  	 * the page that contains i_size.
+>  	 */
+>  	if (end > inode->i_size)
 
-> > +pggmap of MEMORY_DEVICE_PCI_P2PDMA to create struct pages. The lifecylce of
-> 
->    pgmap ?                                                        lifecycle
+BTW I think here we should have >= (not your fault but we can fix it when
+changing the code).
 
-<...>
+> -		end = round_up(inode->i_size, PAGE_SIZE);
+> +		end = round_up(inode->i_size,
+> +			       umax(PAGE_SIZE, sb->s_blocksize));
+>  	if (end > max_end)
+>  		end = max_end;
+>  	length = end - offset;
 
-> > +architectures, others will experiance corruption or just crash in the kernel.
-> 
->                               experience
-
-<...>
-
-> > +In this case the initator and target pci_devices are known and the P2P subsystem
-> 
->                     initiator
-
-<...>
-
-> > +exporting driver has destroyed it's p2p_provider.
->                                   its
-
-Thanks a lot, fixed.
-
-> 
-> -- 
-> ~Randy
-> 
-> 
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
