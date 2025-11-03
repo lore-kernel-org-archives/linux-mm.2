@@ -4,71 +4,71 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77893CCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 17:08:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB8C9CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 17:13:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CFE0D8E00B1; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
+	id 4A1A68E00B2; Mon,  3 Nov 2025 12:13:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CACCF8E0057; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
+	id 4797A8E0057; Mon,  3 Nov 2025 12:13:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9A748E00B1; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
+	id 3B5EE8E00B2; Mon,  3 Nov 2025 12:13:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A61838E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 808BE1A0203
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:08:15 +0000 (UTC)
-X-FDA: 84069928950.10.A42AD40
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id C42BF2001C
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:08:13 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QMW8zha/";
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BD6D8E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:13:21 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id C002B879D4
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:13:20 +0000 (UTC)
+X-FDA: 84069941760.09.0D84757
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 06B1E40010
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:13:18 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jJhFr/4Q";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762189999; a=rsa-sha256;
+	cv=none;
+	b=7/UQusBVz67FSEEG5+ZqeJySoDYjcnFhtpgnpaK7H+yDK9SENJxDk5bIAIz2OYmqmnpdpR
+	zjvk7aXxrmmffA91CrYokqTrlePxBMEssUklofLXBPOE6OjzmUa8G4xMhaC3popUa0tngp
+	OSYkKnNI03hJGwdxtqCQhZljOwMY/dw=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="jJhFr/4Q";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762189693;
+	s=arc-20220608; t=1762189999;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6+5iMoNOYBcLWe0CaIaAmmUu2GFWCDHnu4ctS//CQgw=;
-	b=oVc8p+hHWS2oQs3qMh7Py7T44YRN9y8rlh4/fceNJ9V8eDPDkfRephNzIz1DJJ5EG4UmCM
-	Icu0ZJuAKBi/NUYPMxjuKBxVF/bQH5+5NMx0lMkrzPwZ5b2E0o7cbmkOvK1AJ+trChpo61
-	hMh1wUZ6Si4zjSI4b0bNkr8eQIhXStc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QMW8zha/";
-	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762189693; a=rsa-sha256;
-	cv=none;
-	b=mJ+8n1piRqZXfTNvZZCCqWlGppCmm8d/MJmBpeUIcbYVIaXFG81iT8TbjtDo7O/sSFWz4M
-	9nrSCYH/K5tfHzzA6GtnqoGplwWrXv9jngLaxb3Hjbgi0KqtFEdDeFVXs8mXMXk9UexOSX
-	UmxSSHs911NbKR1eU4jSr7KE9D+uhU0=
+	bh=Fsufg2mIfAYSTab9OFgsuFbnkDYNgFVYHakn7svNvdY=;
+	b=RxZ2kJcm6B7Apyd6F8YeOokO6DTatft7if3tzS225Yh40TA8zH6T0V2Iivy9Uxzel3epgg
+	P8dAXHSstAFYLeHp3wyx5+QaUcvU62KKzNlzKAGgC9PNrfUbVLi+s9FrpPRF3+OZboaZug
+	LOCq2/SdJBm8HIJjrtHVaiXM+jUbSRE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B783343961;
-	Mon,  3 Nov 2025 17:08:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB9BC4CEE7;
-	Mon,  3 Nov 2025 17:08:03 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 12C96600AC;
+	Mon,  3 Nov 2025 17:13:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64DACC4CEFD;
+	Mon,  3 Nov 2025 17:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762189692;
-	bh=R4htJzSMPqKUheWFqD30DrfQ176o4Yn8IJrGpqBlr/E=;
+	s=k20201202; t=1762189997;
+	bh=Nfuy/Y5/u2wXbohcwDnEdJwCaH6aPns6pDI6CT+NKiM=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QMW8zha/pnUwa3tfZUaFK2bT4lDcoBh/DY32ySXAvx11GfxnxoQT76C+mWa83vMqn
-	 5dgf8xFQbeRRXfbsboE5M/KFKQz47hbPo+EnqmXiHpYBYZT/iaCMtvy2d2ha8kC2jD
-	 kgCM8jiflgzODz8WMWnAkyrMK8wZZiWSJ/y3RPWdIflBININGH3XfgJt3QlL3aOh04
-	 VQeOoh5daKWcZcWfgeCKy1wVXRC06BIkFwwa+6zb6ouw5miTUoZ6wRq1INFRkKwBf7
-	 9vBqWHAjIFRuHZBjJkRpVvwlCaqTdHMs8ANOEvnniMBCsaiTXLvOqKY52FCYC86mjb
-	 KIPEY48x9nSeg==
-Message-ID: <28a5b824-f415-461c-af88-cb474ed37df1@kernel.org>
-Date: Mon, 3 Nov 2025 18:08:01 +0100
+	b=jJhFr/4QOzl07oYJgTxRVXnu7lH/ADPT5cwLT8TT0RAqTTwD8y7szPqcE45ge8DS3
+	 JiB/kaIEV/Fpep2QN3jnRLPozz0+3jDHsMz9xCiiC5WJVUXUKtkm/yLNjDJ4jOlD9C
+	 yqlEQXnjfHZMSDuZUnDIcyzWqVC8UhurlXx0UJE9WbFeKFaUPjHTOc/eE4uf80j75e
+	 bsp1fsSgNxIM5Bk9gAqLrfwSaIhTS1c3NXbg/FmzOV5aVrOVvYa/oxNVKDsCtYwSMk
+	 9jSbYnjSZYhjx5b+yvioev2VaOq/I6LTAN/TqRkthfpZeMAbJA9SK49h30Z2muZ8bO
+	 PABGgddLWtCzw==
+Message-ID: <6c34ce4e-1212-4dd0-8b7c-6af952dda3cb@kernel.org>
+Date: Mon, 3 Nov 2025 18:13:07 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/5] mm: Document lenient map_count checks
+Subject: Re: [PATCH v4 2/5] mm/selftests: add max_vma_count tests
 To: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
  minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
  Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
@@ -89,20 +89,20 @@ Cc: rostedt@goodmis.org, hughd@google.com, kernel-team@android.com,
  linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org
 References: <20251028212528.681081-1-kaleshsingh@google.com>
- <20251028212528.681081-2-kaleshsingh@google.com>
+ <20251028212528.681081-3-kaleshsingh@google.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251028212528.681081-2-kaleshsingh@google.com>
+In-Reply-To: <20251028212528.681081-3-kaleshsingh@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C42BF2001C
-X-Stat-Signature: x38auwdj19tpc6ptmh3dcho4xfnauj49
 X-Rspam-User: 
-X-HE-Tag: 1762189693-14449
-X-HE-Meta: U2FsdGVkX1+SetcvtgVZYJlCuPlpvsbfhb3oBx84CKok95843CmgfHSUH5gcTuzbeYai3VJ6UM9Sz98xQ7k7ggv8sQ9Fr/QSaVnNNoshtU7QIuFHhdSEHfC9N4GCmbkGXKpqZ9RWFv0pM8GhPA87etk/9whfhp+VMNrqhSJLQjsFhQtb6FBctf0VqBhoGemnI1484LRQKfYGbjv7GUNSVwwe5+ixRX+GBS4x1gFVcJolXIrxvObPdF9AWAZwEpwSO7fgGxhC6630YykshwHZj0MeQrLEBBOmAMNbExnd3UpfvhX9f/DCdbIVl8CXF5ZM31PSTvZl++xZ/xv6mhQ9abwaql7GL4NFDvMf1AzLIdHQwioVTpFz/VyfIn6klQs6WAA+WOzu8YnIOY9cGRLl9kQYjD1UmyG+hrmFJIVAMx1k9u0Z1CllhhsGVlOVnPSz8v93OBXFff01n3C+0nP54iQ60AiEJ72s+Evn978sJUkZk81Fm6SquroIHyc7DtC7emr58ibg0qYMfLhxVlItjP1Hgw4/vNyPnlzkvzfyVQQ6FGMwaFZUd0DQ5VR7nOv9i62Tc6clATCpONzikB/AJWv8NokFs8xcbGKxZkLGgLr7yb5HlFWP8CnNYeBjFpkgh3T2Vox938Tg7Jj/xGLWK8AeNutjp5DbELiW6sQkoFzvxwZZ0GrLn+HjTktSQ6LkkL84h6OdrRx9v1ScSRk2ZeXczZpuWwFas2Ni4mHqcBuiqwYeBmQCmlzBBu/4GhnVFHAxcY+yJj2VDu/cV/u3cG+/6whrCgjI01G5lbj9dAw8Sm4cKJOAOmGvY+/k9WZp9JKk/tCZAA1iKG+JgN/UDbnfwqxLOI+v9IotCZV3KA8YZFF1DpM60EUxRS8IYlAmWWfs3nV/zw4SdybHIbMEqTUeQIDr+9+lZjezlCY10INre06ZYDcxH8yqTvtOZ9rZVCn0kFQfR9ZoX//j/h6
- t5j6nn0o
- /OL2tZqMgZ6PeCYxO1jPGfnLGkyJ0dCDaVh4D4JHF1AJGQUHshfNs+z7fzYsFEWlH0EBuOvMNYRu20blFTE6kw72HeYocEpGKdij/Qs3YxGBfV+Sj4iqU0iyPBm7ZP5OdZwnq1UDTSuXkPTCLOVeTbCe2/VTfSUgfZR1THHYoX7b2DyQjlOY583hFTmjmQbmIpQyYWP25sM85uXDBm3G4aC2WGbgL4tVLo+oEEvDlk7pLIf/izr5jkDBKOH2kH8r4HGqnmHrQqcW2NPBM80LzBLGerkK2PFG3F7A6aRgj1AIy2J0gY58u5WfSWNOQuYoZbmtAOGdmlLAnIZbGjQ5CF/VNLPP9n6zXRfFu
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 06B1E40010
+X-Stat-Signature: 98yo6y4abr6fgqgmtp8z6mrng1xw3cj4
+X-HE-Tag: 1762189998-24445
+X-HE-Meta: U2FsdGVkX1+5+ha6CU1vqJUFkbSt7VyL6w2R8UrJdnl4S1tPbVErpEybjrXCL1BXLqrTeFJmaVklATiMOTZr1xBDBUrgiv2cC2sP5CvHZNoth4U6t81f8SZ09B/rqpUBL9ZX3Tsyr28JZngji8NqdSxUaA69BKmcS4VKE3zAD5ShRydwhGbD2qwPwKJz1QMbDmvuIYGHd77uK4/zrgUPYV8EBXy/eXKaHbSEq9wiMUQIPEQMvmp5uws1SrVdzLzs4NPDIp6iDigyyYqqz9eLAuL9/h3Er3teEyO/BxB3YRHFuL1qyp7KSj4xvDp+c+ucoY+rhu1GkAk7iw8XisiVfiz/u+q+BkTlYPUKwNwC3npeTJlO2TAl0ECdmwI35jd/0YwHAqbTv1lOUsLdm11CT+IyCTHnVEOZ+IAY6DDiW/+hErjX6GgAIhSqOfa2vGDtjnczglKJBJEesfidY43t7vGd4AYvhRL+NF5NoA6PAOqdJ4N50EZ4RAW9KhnhkHboL26vDw2bzpFlgOTDhOrrBS3s3tR66LupO8KKgs+C7LfV/1KirROf3frjLffltQBZcxFNJPkva/2QsPFdjv220oFtb/aDnRhYxnjt6Aox0E88LZ6mBFUdxa8TAciQQB+0QHH5HItWTFjPLbef3JaGx62vGI0CNip78HDKgEPWQKFOs43U3a9nsBX3b4m32Eq7RU4tLNfVQtYVj4EfP8iPJ5gmvjIzKZWH76TgWqDxxlbxZb2CY1jiOTxBKe0kT+QTPiDbsvsN/Ou8bA/RI/BGLZlBA2D4Y4O9QSdvGw6/ZR1PUdM43TmLySGB4m+uOG69kyc++zwkgwxypn+03UD2q2nMEZUMVQN7MfzvQfkY0CNqclIsPaNkWA6Fn87sZqNUbl+Fp1SlN04zIelMUPDsUlQEdL7imKL0vuJtAKAqdEb0+cTIiTfwQtGhDZK9nhlhvhXwmd4B4RxsyARYKlL
+ +3i5JFF3
+ 6CRpPhItY0OEHI5KdLbX52hz/mSLTqAZoQy5IJaBz89Jbay/UxNdIFYW8baysjVYG9L33/Xoi3uFpN1oL1397NqWjivjgWvQePvVN49OLG02ZxsLiQwjhSOn6apqWIKoKyPv2G8wOMaZknvnTF2BI88mUL/YAM9IsNKH3W0WAUyJsM+GQ1t91o3ZyOjuKsq8X0TBMO7yEIlj0PPmstJWmegpoqlE8kDlx+IFHmmp9HG8ba1WiJXkGupkP9m1S1FRcXPls2iwLHoeFU6r5+Z1bymWdVy3sK1zswWNMK7V+YaMeP/6WR88zlgQxkYWUEuu2WPWY0M0b+/nrGzRNcyz7tbzWoUVbhdcjyDjVEiKEsaB6Hc3oHkLXFyiq8yYBwe5BXq/bSoZ8jmnlQPiNv9LZZLJBDDjdlkMtaW0uoTCYTsAryE6F4OJ0RIXp5WYW5UtDCarbLggVrTpm38c=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,24 +112,66 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 28.10.25 22:24, Kalesh Singh wrote:
-> Add comments to the map_count limit checks in do_mmap() and
-> do_brk_flags() to clarify their intended behavior.
+> Add a new selftest to verify that the max VMA count limit is correctly
+> enforced.
 > 
-> The use of a strict inequality ('>') in these checks is intentional but
-> non-obvious. It allows these functions to succeed when the VMA count is
-> exactly at the sysctl_max_map_count limit. This historical behavior
-> accounts for cases where the operation might not create a new VMA, but
-> instead merge with or expand an existing one, in which case the VMA
-> count does not increase.
+> This test suite checks that various VMA operations (mmap, mprotect,
+> munmap, mremap) succeed or fail as expected when the number of VMAs is
+> close to the sysctl_max_map_count limit.
 > 
-> These comments clarify the long-standing behavior and will help prevent
-> future misinterpretation as an off-by-one error.
+> The test works by first creating a large number of VMAs to bring the
+> process close to the limit, and then performing various operations that
+> may or may not create new VMAs. The test then verifies that the
+> operations that would exceed the limit fail, and that the operations
+> that do not exceed the limit succeed.
 > 
+> NOTE: munmap is special as it's allowed to temporarily exceed the limit
+> by one for splits as this will decrease back to the limit once the unmap
+> succeeds.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: Minchan Kim <minchan@kernel.org>
+> Cc: Pedro Falcato <pfalcato@suse.de>
 > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 > ---
 
+[...]
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+No capacity to review the tests in detail :(
+
+> +
+> diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+> index d9173f2312b7..a85db61e6a92 100755
+> --- a/tools/testing/selftests/mm/run_vmtests.sh
+> +++ b/tools/testing/selftests/mm/run_vmtests.sh
+> @@ -49,6 +49,8 @@ separated by spaces:
+>   	test madvise(2) MADV_GUARD_INSTALL and MADV_GUARD_REMOVE options
+>   - madv_populate
+>   	test memadvise(2) MADV_POPULATE_{READ,WRITE} options
+> +- max_vma_count
+> +	tests for max vma_count
+>   - memfd_secret
+>   	test memfd_secret(2)
+>   - process_mrelease
+> @@ -426,6 +428,9 @@ fi # VADDR64
+>   # vmalloc stability smoke test
+>   CATEGORY="vmalloc" run_test bash ./test_vmalloc.sh smoke
+>   
+> +# test operations against max vma count limit
+> +CATEGORY="max_vma_count" run_test ./max_vma_count_tests
+
+I'd just call it CATEGORY="vma" or "vma_handling".
+
+Which makes me wodnering whether "vma_merge" falls into the same category.
+
+Smalls like mremap test is similar.
+
+Point is that "CATEGORY" stops being really useful if we end up having a 
+separate category for each test, right? :)
 
 -- 
 Cheers
