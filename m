@@ -4,105 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EAA5ECCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 14:36:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4E37BCCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 14:37:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 368FB8E0083; Mon,  3 Nov 2025 09:36:13 -0500 (EST)
+	id A4AF08E005C; Mon,  3 Nov 2025 09:37:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3191F8E005A; Mon,  3 Nov 2025 09:36:13 -0500 (EST)
+	id A226F8E005A; Mon,  3 Nov 2025 09:37:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22F2C8E0083; Mon,  3 Nov 2025 09:36:13 -0500 (EST)
+	id 95EFD8E005C; Mon,  3 Nov 2025 09:37:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 151458E005A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:36:13 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9EC1B1DF61B
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:36:12 +0000 (UTC)
-X-FDA: 84069545784.16.FDCB2B7
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	by imf22.hostedemail.com (Postfix) with ESMTP id D6521C0002
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:36:09 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hu75PmCK;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 887738E005A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:37:57 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 08E0AC0198
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:37:57 +0000 (UTC)
+X-FDA: 84069550194.27.A609174
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 5755A10000B
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:37:52 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WrwQlH8l;
+	spf=pass (imf05.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762180571;
+	s=arc-20220608; t=1762180675;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bDJLzxzXeix51zzhX2vSU/9HiMumVsIUdwFwVA82G6A=;
-	b=0WBgmXl89dRdANksZRjszcSY0kQ4eBqRLKtZJoeSpKkW1WoEGM0yCySKv/zEQZbTMaUA5f
-	9RmC6uT6V4fK2JpfaZIJLnUahes+VqDY4KBQNYyTFvt6UJUhLDmWNt+VrEHm0fobFJPnnS
-	EeocEah1hnYtThxIrzrBNLDgpJ/klaQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=hu75PmCK;
-	spf=none (imf22.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762180571; a=rsa-sha256;
+	bh=eGGeoWjftywpXqd25cgi9W6Zo6I329qDMqJRqqnzkTY=;
+	b=Y8/r89odu4MA8tdFXai8L1OEf/alsc9coa3qnv+HOQJrKCT2xMHbJcJuXe0C+ChYhG1ONe
+	e9aWXfDk9X7uDVgP4mC7ktTQKgmjElFwPpr8odfkS/bgffxJ/6Hu6huwLklBU+8kq3QtTR
+	9bjjs/QuSm6dMB2phESVPxNgsVa/Q/E=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762180675; a=rsa-sha256;
 	cv=none;
-	b=8EtFbGiJBeUGdrAXgmWUp/Q9+vfST4yV/uyyL+s3JmPchwvg7sAMhFnbpWKJIIONUKEwoL
-	mpjn5fuTxPulouTnvCkfb9bx/8SzzwJC/mdmF8zy4NfbU1zImOnwiNUvpHFjapArTiqLIj
-	f+dpPzaMqhZgYkR8V9mr18RKDELlU68=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bDJLzxzXeix51zzhX2vSU/9HiMumVsIUdwFwVA82G6A=; b=hu75PmCKzdeDR7snJfmgqiYskr
-	4Y+walnvU1NsJgfJ12yFjqNQQ6z64Kt7zgMxH2HfwjtCBNQwrXHwQWgvMap+GK4otMLw4mg5AfVet
-	qwHSUePwD1bMztaS6NBdgCU88ut4785Q4wVifQnfCXPkYVmGyySH/cIadqVIgWN0ePB4ws89Xg6Di
-	BpDuY77NKwLBZJWM5L5uda8UtdQ5gy3vlhqkTvyAj3OntGYhMcRLfnvoxFr553Uw8MEWfSumy8GL5
-	/7HDjsGlInDkOQeKkZ3JzXQddczmYxPncAru6jv/Jy8t2KDjxb5jc1EPJzu1Zge+u6IsLqIAmuKlp
-	V58oCqwQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFvf3-00000008v4J-1HNK;
-	Mon, 03 Nov 2025 14:35:57 +0000
-Date: Mon, 3 Nov 2025 14:35:57 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Kiryl Shutsemau <kirill@shutemov.name>
-Cc: Hugh Dickins <hughd@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>, Rik van Riel <riel@surriel.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>, linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCHv3 1/2] mm/memory: Do not populate page table entries
- beyond i_size
-Message-ID: <aQi9zaPxwLBTneF4@casper.infradead.org>
-References: <20251027115636.82382-1-kirill@shutemov.name>
- <20251027115636.82382-2-kirill@shutemov.name>
- <20251027153323.5eb2d97a791112f730e74a21@linux-foundation.org>
- <hw5hjbmt65aefgfz5cqsodpduvlkc6fmlbmwemvoknuehhgml2@orbho2mz52sv>
- <9e2750bf-7945-cc71-b9b3-632f03d89a55@google.com>
- <aQWT_6cXWAcjZYON@casper.infradead.org>
- <xadc6rbs7fkk2mb5b4reobqwue2kveo736r3wpa5zwted4daua@rgasjiwwot3g>
+	b=3qBa+Ahzj3dssgaCBphsZwiTcbZrlwc62XT2w8P7k9f/kkY1iSjEH3R9m3IHlKQBaYaXMI
+	r7tbYMYoDYL7n6/RY1yHnsVliC0VtG/WwEaEOwOP/j769VPLLcWyXLRkgdze1p35MLVIEy
+	IMYYLvBgEkwgNSu21k++e2KQso0i1Ck=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=WrwQlH8l;
+	spf=pass (imf05.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.217 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=eGGeoWjftywpXqd25cgi9W6Zo6I329qDMqJRqqnzkTY=;
+	b=WrwQlH8lSAQpoTyjNCrbB3iphcJzncWZfRlf74sQrgsPbwsTrLH2SgEbAsATlmSzSw6vT0jLM
+	l2158lRS4FQrFSsxnYpnGG7I719b2wRMI8nvfXfV2sLuvkmks3qJsnNK2TTwyfCOrzgQu1nRYFD
+	CR/FzoirvzJ1aIvIPQTLlAc=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4d0Yzy64WSzcb1J;
+	Mon,  3 Nov 2025 22:36:14 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3FB2E180064;
+	Mon,  3 Nov 2025 22:37:48 +0800 (CST)
+Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 3 Nov
+ 2025 22:37:46 +0800
+Message-ID: <70fd2f0e-8fac-4be7-9597-7072a36a58bc@huawei.com>
+Date: Mon, 3 Nov 2025 22:37:45 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <xadc6rbs7fkk2mb5b4reobqwue2kveo736r3wpa5zwted4daua@rgasjiwwot3g>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: D6521C0002
-X-Stat-Signature: co7ffxfyhuumep1zs43ocf6n9m3mo6cx
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 07/25] ext4: support large block size in
+ ext4_calculate_overhead()
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<linux-kernel@vger.kernel.org>, <kernel@pankajraghav.com>,
+	<mcgrof@kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
+	<libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-8-libaokun@huaweicloud.com>
+ <qmsx753xemvacoaghwhv6emusazmlynv54qqxwsdfsoaoeqre4@bp2lgrdufaim>
+Content-Language: en-GB
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <qmsx753xemvacoaghwhv6emusazmlynv54qqxwsdfsoaoeqre4@bp2lgrdufaim>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.254]
+X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
+X-Stat-Signature: ufbnmp86kfpnuzatwtf5bej49mqh36ip
 X-Rspam-User: 
-X-HE-Tag: 1762180569-342404
-X-HE-Meta: U2FsdGVkX199pztx+sGUDu6/oZBglGqdWmtnxcgqSmzOm9Pj33RvZen/moSkCxgZRpoUJwqIC6V6VuL+cldNkeq/MIItRbmm0DVK15eRJe+oSDdjF0bG9UZwg7aGtVtGJQ1qjS5r/FxvwOakaua7dnWHo4fa2uy0u8zEMPnOwg3ELSNAZmTIZrQA7ebtJ1ny+UvC+LMGYSDVjxsGggUM9x0ydktVbK4kqWw7HElK4zFkiIUE51WNE3aotKeCD81ropB6lUdtNWN0HMGa3e5Dw+xnkccKBcRxYnUhPwLc0SLwa5pK5Nta7xZQyi5vCFzd0+nPTolt2IFo8MgfhgM870FxYEp3W/TpwcscSKX6GXL2HLSM0m3RwpgyFXTIYddlKWPcnE3GxwDiNkyVumWHt+QGcjvcnwkPgmnt2cxpMmnBGYLNIn8+3N7S5TbjTMLn8+2IZnHOwyO3+nFKL+wmFfT3YyU85uSKlF+ISmF4C27cmqiFfxo1FndrW2/1VYtzd7w+8p4Hh0qE96yE6PRIN+ftxQWUfhjRYcNFa2YOvOqwHcu2CwSUxH07fk1MWvPz20852Q9Ht+m71sR028gXktNrzqhaaRyLCKkQJcspqf47TIxoaTFx0VuwlQAISzMXl8JMsOsm6r3iUw1YDF8pz4M7u+zUGufSZYilvkqEJui9N14JhKRYGsJ9TnAGb1Tb5Xx+T878WGPvLf1lZ/vrw9KfYlIFwhL6xgt7EmfNC2XFkXMAxiA4AOUckjWIUxXtoKcrGSBwZo3v0Rpei7f/D7ksdRlJVZsYh+UTeis5tgmxBE1NZ9MZFtH2iD+AxwF5Mc6XDYReRgUxsdzvW6w5PUakY82ERzhi7jR1p6P1tRTWr3Mg78OOXd9QaoOaN7PDjdIUXTX0vcSlnGgyTyvXRquUMu4ZvqVJcgOTD/CTIm5LoLnyhKBwvk4y7D4/rJKW8nMybmi40F3wrTg17SQ
- BRiNnEiy
- 3mEDHD/K9K0P92o6KaTzGkF8FfodR4Z2F8t7eeoiBW7mMuvum1ULDd+cTmFDZ8mZVMg7JvWcsfO4QrjRz4vDAtIFy//1HMx3IHs4wh4tdL4JCgdnJCswBv9L2z8UUPdCa5sbJu8EVVKBJqaZttOUk2vHvM50yFiJyg1FsqUPkrnBGIHY4KFP60GAebSKhm2yC62coIAcagVkAqTlZWSWL/7z5ybew+2iqCCLUt40bZ0qyVesDCD501iUbLL/JW5le/D8ZSwrX0IRkZMvn5BwvDR/GefIapZ7xJzMP8a0xT5Sy9o3cbFD1GtzBlP/+djQGpkEAbMaYLlw2677+r1aJY11SV2Dr3FBvfDNg
+X-Rspamd-Queue-Id: 5755A10000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762180672-177954
+X-HE-Meta: U2FsdGVkX18ew+6NYwMdW8SE9DQv9NnMZ50kXp4yVdztJz6J/CwD02gpEsIVyDGxNBJVaMMuWX0drJIFEZjy1r9iPFiw1172TU7SNfCTFOAiANbTzbbmLvlrFhdwB7ikbacvuK12Sh8aUDT6r+502G3aDW4vkvk1eRmy1ZHzRu+ArT2sVJbwrqroR4/VqyermcxCPHMFL+5xJcZMJ2e2MQn/bnCTw5nZYNA10r83P/tU1/+6kcfDsREWUcGQPSSLNwqCYlb8wxd3oB/JDvm2zh0ZbDTnjshVaQVLUQ13YMEmMSHpdvn+ZbFIi/C3M1MmtzFj3Fezm5Y1lsg9CW0UnaPWwOZ9jqbL9hpu3Hn9o5uqxRzx+/jkU/WRMykxIMJVi8rlKzrB1PpaYOqKLI3prDpPZ3gTLCx/FNhvX9gy54dqonQO+KbB5SUxpXHL3TZ8Slw4JYJNQcRuiqRR/Ltuw/BEDCStfwBMLQH8QFxsaMP9fJaA5URf+J74xZJ/4XKhQ3Kq3yIVMiHtE78rMigIIFkH5YN+vJNKKZhVXoHnLZ/HlUee2mqMI13wg3HXfJBtfQ27jdh5KAFsKAsJIvfzWT7pDYXZS1dcyFq8iJjI1ArKHxPaAFKKs5k0RqqFrnwsacwos6TSAxD7J1mn5wrgeZ5oJU3ISfvetWzeHJsorqg2t08CU5VbFV4Z/kArKbfFZwXtRATkePrCFcyOnccJBQdGbZu0MI4h7sXVx1j7Dgn9UsRjxQfKbM9W2n4NHqWiac69Wec5OrgdBssQBzQXRsRa3oVw0Kti75h5ixTMusW0ttlSLTIfiF0VVVODFC6ARKzBvAVRl6jB+TycsDp+4vaIaHCmEB/ZR0eDQFjnCUj9/JmNM4UwUsitja5pt5MZ9BOtkruAD2SrbISBdXge17ZHr77B/318zOfRzXU0gbMIfXKISL/+a1BdAHM7VzUvrA+EwaFvInya/UUtx8q
+ LsyORgqB
+ rvbS0VBahO9j+w7cl67VYSvH9ctysYn85YgtzZ3kmEFX15K6d9DzOxBJUfOpmYgFs5fbJqSZu8ux4sFc/eUNc7MHWyVA8Nr9o1IzOXMzAR6TN7yowiIKzrhmk2501xQ/vXHAVPy1qRbyyX5oDuIaC50c0ybD1V20bGjW0z1bXQ57CCU2dhO7yTum2aOvJI9cb8SreULvB3MjZY70gUzIlxw6Zs9735KsUKSMhMZ5eA24Vl/xFKqMnzNdsnSOFmYFJ1yFzqtNkcL+oHk3Jx971Jzjseqxk5HfbjWkUbl/7WaqSGU2jO8xwF6g2vNDdQ8VdNk9mr9f6HLKf6IBi7WyKzl88ZUfVERIm/HYnvNYUS6fLqdgg+7odYQdzcmSkDxMlTjVVXl/n3T8ElcKZntK4PPRp7JpuMHXlD63j4opAj5THKwhiL0/ulpRdFeT2kji81362HXeNBrQE6xg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,29 +105,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 10:59:00AM +0000, Kiryl Shutsemau wrote:
-> On Sat, Nov 01, 2025 at 05:00:47AM +0000, Matthew Wilcox wrote:
-> > On Wed, Oct 29, 2025 at 02:45:52AM -0700, Hugh Dickins wrote:
-> > > But you're giving yourself too hard a time of backporting with your
-> > > 5.10 Fixee 01c70267053d for 1/2: the only filesystem which set the
-> > > flag then was tmpfs, which you're now excepting.  The flag got
-> > > renamed later (in 5.16) and then in 5.17 at last there was another
-> > > filesystem to set it.  So, this 1/2 would be
-> > > 
-> > > Fixes: 6795801366da ("xfs: Support large folios")
-> > 
-> > I haven't been able to keep up with this patchset -- sorry.
-> > 
-> > But this problem didn't exist until bs>PS support was added because we
-> > would never add a folio to the page cache which extended beyond i_size
-> > before.  We'd shrink the folio order allocated in do_page_cache_ra()
-> > (actually, we still do, but page_cache_ra_unbounded() rounds it up
-> > again).  So it doesn't fix that commit at all, but something far more
-> > recent.
-> 
-> What about truncate path? We could allocate within i_size at first, then
-> truncate, if truncation failed to split the folio the mapping stays
-> beyond i_size.
+On 2025-11-03 16:14, Jan Kara wrote:
+> On Sat 25-10-25 11:22:03, libaokun@huaweicloud.com wrote:
+>> From: Baokun Li <libaokun1@huawei.com>
+>>
+>> ext4_calculate_overhead() used a single page for its bitmap buffer, which
+>> worked fine when PAGE_SIZE >= block size. However, with block size greater
+>> than page size (BS > PS) support, the bitmap can exceed a single page.
+>>
+>> To address this, we now use __get_free_pages() to allocate multiple pages,
+>> sized to the block size, to properly support BS > PS.
+>>
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+> One comment below:
+>
+>> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+>> index d353e25a5b92..7338c708ea1d 100644
+>> --- a/fs/ext4/super.c
+>> +++ b/fs/ext4/super.c
+>> @@ -4182,7 +4182,8 @@ int ext4_calculate_overhead(struct super_block *sb)
+>>  	unsigned int j_blocks, j_inum = le32_to_cpu(es->s_journal_inum);
+>>  	ext4_group_t i, ngroups = ext4_get_groups_count(sb);
+>>  	ext4_fsblk_t overhead = 0;
+>> -	char *buf = (char *) get_zeroed_page(GFP_NOFS);
+>> +	gfp_t gfp = GFP_NOFS | __GFP_ZERO;
+>> +	char *buf = (char *)__get_free_pages(gfp, sbi->s_min_folio_order);
+> I think this should be using kvmalloc(). There's no reason to require
+> physically contiguous pages for this...
+>
+> 								Honza
 
-Is it worth backporting all this way to solve this niche case?
+Makes sense, I will use kvmalloc() in the next version.
+
+
+Thanks,
+Baokun
+
 
