@@ -4,124 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B48C2CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:55:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495ECCCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:57:27 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1F8698E0034; Mon,  3 Nov 2025 02:55:24 -0500 (EST)
+	id A89358E0035; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1D05B8E002A; Mon,  3 Nov 2025 02:55:24 -0500 (EST)
+	id A60668E002A; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 071058E0034; Mon,  3 Nov 2025 02:55:24 -0500 (EST)
+	id 976218E0035; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E98038E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:55:23 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCE424AE9E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:55:23 +0000 (UTC)
-X-FDA: 84068535726.24.BC8F597
-Received: from mail-ej1-f66.google.com (mail-ej1-f66.google.com [209.85.218.66])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 6BC32140002
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:55:21 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=C9AwIaEZ;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 86B0C8E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 339C44AEBA
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:57:26 +0000 (UTC)
+X-FDA: 84068540892.02.AF792CC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 6F7272000C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:57:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyuFXS/5";
+	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762156644; a=rsa-sha256;
+	cv=none;
+	b=cdcQ6fHhZAuHQJ9TiCt53At2PHb6Vvib0VLkvd7JqXQUiyAhBlr2EDP7GshXoClDWp8RXq
+	XGc9jyQkLuGgiY+qYGIFTWVkzCoECBfsHLhta7mAtty6i2sbOurLH4FsS53dUe9v6g3/WW
+	60Q5s6CW7wnhS2bwq09c4gPEv0gb5Es=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyuFXS/5";
+	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762156521;
+	s=arc-20220608; t=1762156644;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LG+X9+YNounZx/yarpz5onoisOPc/oil7GLZG6w20qY=;
-	b=Ob9Ku61HMktn/9RVLWolp6aujzYJO0JCOdigYIXBxlr9ATnGHMfuIFSzLpQWbX3GZ3jq8w
-	XJCAfYij8cBFLtj43xbPAkmcyyziHAUjfGikEyhduoR9E5B+Z1QL4+3OPwYK20sq/M3Igb
-	7t1D1ykyw98zPXTlTwpAw56V5bJ3CoA=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=C9AwIaEZ;
-	spf=pass (imf26.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.66 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762156521; a=rsa-sha256;
-	cv=none;
-	b=tokzwvO593ONahcygyCW3CfIj+ggzZiSP+YPcD3iXlV+NNSqnwB+UaIeODbvNRMvJC+Qxp
-	/LcJrmLefPGIgBrsfQaoQKqnD8FpvehjIn9C5bW2go6RqXnU/Dpp+6egrEIWZ84e0D8diz
-	hN+5+a/jwVm2WxNYbnL8c/UGPKRkNfo=
-Received: by mail-ej1-f66.google.com with SMTP id a640c23a62f3a-b6d855ca585so775108766b.0
-        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 23:55:21 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762156520; x=1762761320; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LG+X9+YNounZx/yarpz5onoisOPc/oil7GLZG6w20qY=;
-        b=C9AwIaEZeHD0rApo23a0xwDliy9nvtdW6UbZCsJ5kxodb9t7vhnt/B/l+FTgiWiyLr
-         f6RjgdZdBsMxw8z7ooPVT/SUXJ3lMrmcDYmhYaHXfWoYiEkMOzkRSzqeBGTKi4UADu/H
-         KHXw79WLJewp7RbUGrwlLWrtW9AlfyzhV3T+l3LWn8ipRDziJYmXIBAaIB4t2SPxqc3o
-         xgw8PFknOJ3gmaPUW9P3Ko+VosGGmevAkPm4fYcZjY9a/AuH/+ue0K9dB6jaFZv02Cvq
-         7VxYGpomDoDs6XLUVHWuiEzkEwdGjtWbf7Tqw4E8vSvq6aFtcqet78JrmWjeV4LOvDtg
-         VaZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762156520; x=1762761320;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LG+X9+YNounZx/yarpz5onoisOPc/oil7GLZG6w20qY=;
-        b=AhXxY30VFXI2WVpw/SXubHoHz6RHGuulN4P+etcKS1phvf+tNr1/YO+UdjDA1Bo+Ry
-         UZPc8lc5/VXZuWfUwMt0wmln9OdgFhJH/ZsYCXwnIYQ2IX2K56wJoMsxW64/vRVDhyFb
-         U4H18Xg5ju6bbf/6oZFiDSJL7YsFZ5FXBedVPKIgCsHnYXcpnZBN/xVo2gsdvdDvtzsv
-         vuB83yf4u6vUVs++EyX4a+ZYy3+6UI6VICaOG9ybfWAEa/pYm49NwET51YO2uKJT99J9
-         08/9rSOEmcG+qmPoCYL5yfxvY+nA8mJvZmpDNj4RoNQd0cc0PMbyMSNDcMd+Q7M1LTmJ
-         ndEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrIAIPtx/61pOzwHgluD9sF/EXawMr+KRb7HlKe4LFarykErYDfYq7C3GcYZxxUtzXT6eki2hafg==@kvack.org
-X-Gm-Message-State: AOJu0YxCEN5NoIAEJSHFKM7mPqVDDFSXW0GFOlMp616Aok6NHX3t1luC
-	lB3/0IYQvlsyv/NeZuDNSWrIIzMyR7v3m4cHgpVnFhxrWoaRsou/XYZAXXL9yTfSOSU=
-X-Gm-Gg: ASbGnctbE1/+VG4s/v/e2bltFIUTx11/wKSoC2qRB2tTkGdJF3XIk51TKjs2o87hQL0
-	kZOgWB/ngcEMHo/LjnDiDWZNihVkWwHrGQ0ZZLHNRgGjInNGuBvUxlpLlxcI+RzNy5MDZwnb25/
-	+yPWcS3mj7xRE/3Emv0M3qEwk0p8iJOFTpfyoK4xSNkztKjRgHkigeoPXBPySHMQlg9K/OcmFRM
-	IW25NP2l7pe5XI5qZnnau/PqL6Y2foMbRhvXAMqsa6fX/BAJo9vxZ3b5ZMnOsRv81xyNJmGaEKJ
-	jmWcok/bPm1lRbOyVJxs6GLND4TWBkjdNGa380X8YHXSzV0f/91C7IhE48XvSNEPbJuUW3LL9wE
-	ZO8s9rxwv1NoVYzIVbYI8CtwsYxRSEWPjLiU0+IMHXBMAJ5hOLWW18brEuL+6kEdmInXB6gnSnF
-	1ODZVXpA8pAoI9YQ==
-X-Google-Smtp-Source: AGHT+IHa4Xl7JZ3CIUpyYyBE5kztcOvpiHuJ7ZhJhBGD5U4E6YrSM5iAbrUgVG8kGis1gxqx4Ev4/Q==
-X-Received: by 2002:a17:907:97cc:b0:b6d:7e04:7a24 with SMTP id a640c23a62f3a-b70705e7dedmr1240745066b.36.1762156517654;
-        Sun, 02 Nov 2025 23:55:17 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7077d10664sm953717066b.74.2025.11.02.23.55.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 23:55:17 -0800 (PST)
-Date: Mon, 3 Nov 2025 08:55:16 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
-	libaokun@huaweicloud.com, linux-mm@kvack.org,
-	akpm@linux-foundation.org, surenb@google.com, jackmanb@google.com,
-	hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz,
-	yi.zhang@huawei.com, yangerkun@huawei.com, libaokun1@huawei.com
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Message-ID: <aQhf5LJJMlvT-rrE@tiehlicka>
-References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
- <aQRkTKTm08lSJZZi@tiehlicka>
- <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
- <aQTHMI3t5mNXp0M1@casper.infradead.org>
- <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
- <qfo7raavlfupjqwbgl2mnmfvmn3z5oslnxcehorib3xjdgf4yo@bp76xmxplre7>
- <aQTb0NdyN3tU50ss@casper.infradead.org>
- <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
- <aQTqELGGKCN3JTIm@casper.infradead.org>
+	bh=/IS1QnfToebO9Eww57EcVTgSVRHjpzRkmozpTfyGEkg=;
+	b=bUnE1/u6PDyc8oqnfe6nkQSzmH+PKDp8Dhq8Bw7NB8cGvN+mZv3nnB9s70quWvn1iFYU2r
+	6nwFUNPHkLVhyV3yCaOPMBqR3buH/yJHXfp3XQfLjAvzQNPz/ydq5lAPiY1RivKHXXjP6k
+	8iL3WyfSeHON9qVjFmSC0SQk2227uTE=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1278C4347B;
+	Mon,  3 Nov 2025 07:57:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78AEC4CEE7;
+	Mon,  3 Nov 2025 07:57:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762156642;
+	bh=HSj/Z5n0gDZ4meqwx9ffw43W8XomEOuc7B2mT893bzs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=EyuFXS/5i8cjPsKl1fmDKJwxtvpzPfkDrVD/7Dw9cVg4MIRSZ9pwX9Mwp3TkQNtyw
+	 zoeqzLLyxPRNqLWKH6FXNg+6ZNo7vj4V4K1a2Q2k642McCDmgxisCjpK6A9S/QL1M+
+	 JohKsDSLySE14H0H5z5GG8d356N9+qgQ55m+uwsMsRoTogFqUE9iZVhmwTsjaJxJ0D
+	 rf7CiQwNGNOSkhhNm3a8Kegsyv/wACFQk0qTNci2kW/sBtJn3XjoC3JgBMB4DLxEd1
+	 BxbJrOVgc9EcBq/f6dV64raqbuuFvwCKqXqgbvNuoO3N0Gl4d4KOsuqDiCv8HqbTcE
+	 IGGXAlmxritEQ==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: "Roy, Patrick" <roypat@amazon.co.uk>
+Cc: "Roy, Patrick" <roypat@amazon.co.uk>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>,
+	"corbet@lwn.net" <corbet@lwn.net>,
+	"maz@kernel.org" <maz@kernel.org>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	"joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"will@kernel.org" <will@kernel.org>,
+	"tglx@linutronix.de" <tglx@linutronix.de>,
+	"mingo@redhat.com" <mingo@redhat.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+	"luto@kernel.org" <luto@kernel.org>,
+	"peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+	"david@redhat.com" <david@redhat.com>,
+	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
+	"vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>,
+	"surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>,
+	"song@kernel.org" <song@kernel.org>,
+	"jolsa@kernel.org" <jolsa@kernel.org>,
+	"ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>,
+	"andrii@kernel.org" <andrii@kernel.org>,
+	"martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>,
+	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
+	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
+	"kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>,
+	"haoluo@google.com" <haoluo@google.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>,
+	"jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>,
+	"jannh@google.com" <jannh@google.com>,
+	"pfalcato@suse.de" <pfalcato@suse.de>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"seanjc@google.com" <seanjc@google.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
+	"Cali, Marco" <xmarcalx@amazon.co.uk>, "Kalyazin,
+	Nikita" <kalyazin@amazon.co.uk>, "Thomson,
+	Jack" <jackabt@amazon.co.uk>,
+	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
+	"tabba@google.com" <tabba@google.com>,
+	"ackerleytng@google.com" <ackerleytng@google.com>
+Subject: Re: [PATCH v7 05/12] KVM: guest_memfd: Add flag to remove from
+ direct map
+In-Reply-To: <20250924152214.7292-2-roypat@amazon.co.uk>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-2-roypat@amazon.co.uk>
+Date: Mon, 03 Nov 2025 13:27:04 +0530
+Message-ID: <yq5ajz07czvz.fsf@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQTqELGGKCN3JTIm@casper.infradead.org>
-X-Stat-Signature: ndp75tinxmo66bb48iaiout6b6fn99zk
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: 6BC32140002
-X-HE-Tag: 1762156521-891510
-X-HE-Meta: U2FsdGVkX1+o5KuPoqulNL6O9DQYlaSOgHDyawyY5KCs5TJQMWJXRRyn0MOo4j1o/uPEhq6wgT4I2lq6WGowTbuymC+9wNdniXf4Jpbuk7vPcIcW1GQrJq2osI/ehpYLJw4rHNhdwa8PJFr4ZBZLa9QaAsrh9pqj3/SK9o2b1s275wqkpNiLeJZMnn6I0hGIDcQYGxyF99AN+TAoGtBkViNlKQU3vw9y5L3i/weUib3rJRN1o0kLhI5oRsuB+0DNevum0diffUoTdGMcLe7eewtNypW3yZuL2PyunCh/EPT3q14K24BjWbzYaH0LvtS6EJpSGdS3UCaT9MtnocwhdHROrtEM/V1plmFCIcWUWb55uC1zHJeDXG4yKQajFVXjm+ePZiqWiIho+5yqZTDrYxUaxAxu62Rny8fjIYuQtw6uvu4zlgXgNz5A2nUt4LKpu4VYsmska2qkOphc0G6QG52aM0Fp/qw9DQhczFQ2QpYlb6nPJW0y9NC7fNhqSj/lul7FgV1AYNPk69fZ2TaMUqEmq7e+WSo2qLUk4oNT3XROFMffkBVZlu+Om1FUG18mhJ7tqcxNYTmzveZZlJkouBjlXm+JiCGwNzs7cewFrzbSCF0nBVUCA42Q5dqZZBlB0lWce8hRzdL06lMeUMwGZ0qcS3xMDSCGikkOCtd2sruEe5KBUDK/ypZgZeHe8XgCxQsivQ2MMz9jy2MIXOrJCKsCZHDNS86Ga9VYr9uQa1JxyU4bTCyHikgGm7irEBQfqfzlcjVWthpdXmNRZNnOb5mK0n9LkNl7sRP7Zff21wq5lfTTC/p/c+0gyf/rvakqWhq/kzaiOPJLhFiBjpGHk2cMhUQNvaazTEMam3rdgN1DaRWXOZzVRVNZyIz6CrNxqI5wY0v/Y0Zermqv/hRKDKJ4FH6AdrULYh+3cXb+Jss3rd7meF6BV/Wp+D4FJ1vWJ8cn/PzU1D7HsnRJiF0
- X8UcHgU0
- S4DsPPuc5a9nMX4vZTBynhRaLaxpz2OzPhKS6Sojb56GXBXYT+k/yzRV77MswguN/sYoa2D2p85Hbx5a4I3YSWD/HF23vLoS+NGN3/Lv8J3mWN9ad+M6wDzjKgzjH4+1JxPbOVa1DNFx1W3ijFysbwmVr3jfhPqhjeYW71k6FW1M9NqUf3MSMGCokTOmJrL9MCTKcdhICfXFLmrwNSJYlgrZq/CeMAK6+YCrpVXu6dliIwOXGVz8p9RCL1ABi2N15th7PBKyIIqEobXZhWREZlOYisDWp7n2kDhnNvdKTeuApY+yOAhDTW4J+eyh1p75NNXoB/4df8j19JUMkGGhhvFhUPp0Oiigo5stXZjrZ/4Leif8anDZqzrYi4RHjmYK9msTKOmKF9wivxcI9YQfEAF/YxTr+MxHlSov4ZGQofHlOFxbSTkAvkrApsM5rcDrfDHsFHSllRanyspUu/7WfYvDcltewNjg4WkoCzh+R9EUK/l9aw17I2QJOJzFFMBej3C5hegxCtvwch9c=
+X-Stat-Signature: gwu8una37c8f5wr63qundh98dc17mz8f
+X-Rspamd-Queue-Id: 6F7272000C
+X-Rspamd-Server: rspam09
+X-HE-Tag: 1762156644-726595
+X-HE-Meta: U2FsdGVkX1+kp00fxTzzEZFhIGxa/l6/eEDSbs0tYW8bqJByZC2FvJJ0h94oN9+xo1o6p66Ak1KS8UneelIfgfEBufhhEAEcv++Ga6iuaznjX+yAqfyPgM/6hNkryhM+1u2BX4GGQN6YYhSk9rBnxcAQO8AYsoGaHQbcx24NOpyIJjFBb4uwvwPdg8/Vy8ltTHaarofnfFQwNFT/6lHhovKzdlXVBsPNmByWOwEO1tAL/7VWqNfgX+A2LR98vaBG8DHcxfbO7GfgRnXaeNZA1PFP6MYPugYycEiUQ8tCNowE2x4VZtDrGwIiRSfydA/mEH/0lbA6ALdC7xT5oBf+TkpqQMjLXO4JmciUmyaAkbCXMubgTbBJ0cpZLcoIhoV4kXg9ZDL7KOFz9uzkgmaMuD8UHRhej3aUSdXCXprkYihLmU0F1CGeKnfmJDGsAnppO2BiGGc0WLPzfYS5K3YymubSGtSgZjRR9bA0b5M5ps3RLdw4PORHOVqNR1xvlg36mWa0QwVuZYnLDTEpc/+uUdaBHZ1JHG6cfwvbvIW0BEKZ3vEH2dt8LRajrayfKwJmXRN+zJC2zTi+WxJ5qfuHu45cbbIrwdRyDihEJFJ6sGjJ4SNjdD85HOanMTzXKOyW3HK8CcldWZe3VxeIL2gsrRjpkrBMQM2lSjq0pN+2Q9oqdfdckg7Zzxjx6jhnTyciuiTjRavyTWtb43PhG2co0TwHyHyWb8cyZ2bq8+11L8M02tPNnwHT4jo9mIylS+jsQJZYe26fKijpwTZkcCCY7kqzAgFdrS2YNSjTU30pNI4IBFvy5OoTnIp4YRjDHltoxUBfII6j2iQrBvTfxAjbYaQYNYYILqNiQDtD7GNpp6puAvwV9JtvGkBFLfg438998Og2CMY9CBqGH+LekMqqXJ4V/KJTekDbyt+Y4fOFEzGb5LtZoTur3jbBlr/tEz56HovpBQgIqFEVlcGejyP
+ yH1kVD+6
+ ugaOc0Gaqs9bZ7HwzvtP06PLtv8xqF5lwSLV93v0r+U20XK73T5yLBn81xplwpC7su46QsptgUhuj0+QyVTUBiJEsS53CgB+WSTX5+Jnfy6n38BvURfUcxEolzx1O+q5CslsqGlYQTFv+z7cO49qQVBTVXjqosa8rBPc0OzYC8P3hndElnejr2MPIltgruHvsXt2ZfVMSCD8PeiwtSsqNP/1D5aYOPpDrBHC+aeLT2LJ5uJiByUkJBB2PoCHnF+FAPph3YSvv6IFtKjxwq24ZZsBK7AsaK08ON3BO7m5NnV5UQo1VWRsNbPuO5tZ7ImAHExO6DTgZjUm9keITEhtIhiFweGTL+hA/mykF2hmD7ic+yxy3/5y2M5sjbhRMxMTBqn1vu+KPGO6vEinjiXXJwmr7/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,52 +154,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri 31-10-25 16:55:44, Matthew Wilcox wrote:
-> On Fri, Oct 31, 2025 at 09:46:17AM -0700, Shakeel Butt wrote:
-> > Now for the interface to allow NOFS+NOFAIL+higher_order, I think a new
-> > (FS specific) gfp is fine but will require some maintenance to avoid
-> > abuse.
-> 
-> I don't think a new GFP flag is the answer.  GFP_TRUST_ME_BRO just
-> doesn't feel right.
+"Roy, Patrick" <roypat@amazon.co.uk> writes:
 
-Yeah, as usual a new gfp flag seems convenient except history has taught 
-us this rarely works.
+....
 
-> > I am more interested in how to codify "you can reclaim one I've already
-> > allocated". I have a different scenario where network stack keep
-> > stealing memory from direct reclaimers and keeping them in reclaim for
-> > long time. If we have some mechanism to allow reclaimers to get the
-> > memory they have reclaimed (at least for some cases), I think that can
-> > be used in both cases.
-> 
-> The only thing that comes to mind is putting pages freed by reclaim on
-> a list in task_struct instead of sending them back to the allocator.
-> Then the task can allocate from there and free up anything else it's
-> reclaimed at some later point.  I don't think this is a good idea,
-> but it's the only idea that comes to mind.
+> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
+> +{
+> +	if (kvm_gmem_folio_no_direct_map(folio))
+> +		return 0;
+> +
+> +	int r =3D set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_p=
+ages(folio),
+> +					 false);
+> +
+> +	if (!r) {
+> +		unsigned long addr =3D (unsigned long) folio_address(folio);
+> +		folio->private =3D (void *) ((u64) folio->private & KVM_GMEM_FOLIO_NO_=
+DIRECT_MAP);
+> +		flush_tlb_kernel_range(addr, addr + folio_size(folio));
+> +	}
+> +
+> +	return r;
+> +}
 
-I have played with that idea years ago. Mostly to deal with direct
-reclaim unfairness when some reclaimers were doing a lot of work on
-behalf of everybody else. IIRC I have hit into different problems, like
-reclaim throttling and over-reclaim.
+These 'noflush' functions are actually doing flush_tlb_kernel
 
-Anyway, page allocator does respect GFP_NOFAIL even for high order
-requests. The oom killer will be disabled for order-4 but as these will
-likely be GFP_NOFS anyway then the order doesn't make much of a
-difference. So these requests could really take long time to succeed but
-I guess this will be generally understood. As the vmalloc fallback
-doesn't seem to be a feasible option short (maybe even mid) term then
-this is the only choice we have other than failing allocations and
-seeing a lot of fs failures.
+[-]  =E2=88=98 flush_tlb_kernel_range
+ |-[-]  =E2=86=90 __change_memory_common
+ |  `-[-]  =E2=86=90 set_memory_valid
+ |     `-   =E2=86=90 set_direct_map_valid_noflush
 
-That being said I would much rather go and drop the order warning than
-trying to invent some fine tuning based on usecase. We might need to
-invent some OOM protection for order-3 nofail requests as OOM killer
-could just make too much harm killing tasks without much of chance to
-defragment memory. Let's deal with that once we see that happening.
-
--- 
-Michal Hocko
-SUSE Labs
+-aneesh
 
