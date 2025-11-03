@@ -4,99 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 182E6CCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 13:24:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E6219CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 13:32:49 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5D3CA8E007D; Mon,  3 Nov 2025 08:24:14 -0500 (EST)
+	id 1A0488E0080; Mon,  3 Nov 2025 08:32:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 584178E005E; Mon,  3 Nov 2025 08:24:14 -0500 (EST)
+	id 178728E005E; Mon,  3 Nov 2025 08:32:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 472648E007D; Mon,  3 Nov 2025 08:24:14 -0500 (EST)
+	id 0B54C8E0080; Mon,  3 Nov 2025 08:32:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 313D88E005E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:24:14 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D54ADB5795
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:24:13 +0000 (UTC)
-X-FDA: 84069364386.29.C4B9D30
-Received: from canpmsgout06.his.huawei.com (canpmsgout06.his.huawei.com [113.46.200.221])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 1E2D44000E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:24:10 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=XN2VxKRZ;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762176252; a=rsa-sha256;
-	cv=none;
-	b=3SXlOWsLDnP3HyCfF0Ib3l4W+IyMUxMEUjGfc61nsWSxRxtJpT8DhzM3i8B4viSVsHc8nP
-	Wn8WUcyLHj1vbkEUYGadP6PV4cDxZaImIqN1BjxCrPN9dgGfk8GlndTQdjI0SZN5QUWG02
-	SSZrdzj2kK9lz59MjBR7AD8ImK0ZAr0=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=XN2VxKRZ;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf12.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.221 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id ECCA38E005E
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:32:48 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 9B0CF85538
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:32:48 +0000 (UTC)
+X-FDA: 84069386016.01.567F294
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf17.hostedemail.com (Postfix) with ESMTP id D3AD340017
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:32:46 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Icl6eF75;
+	spf=pass (imf17.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762176252;
+	s=arc-20220608; t=1762176767;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mAK4GGZ6Wc0AlGtkULkNF5rra7UyoEYfK4R4QDVlWWY=;
-	b=oISfPvMvrJYFJ+aa/z3lCY9KKmlZAChxVoGNwYszS4hZ93dX+/zKiLyLFOp53vd+enhrC3
-	9SHUL3gXo36j/I9l6J4XIfIacm17u7M4GRNA73u7OgKBxNntffzFrmPw9SwyYxdxJeXQ35
-	FGXpunrknN/2GCG/twC0/8Vhc8GCKKU=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=mAK4GGZ6Wc0AlGtkULkNF5rra7UyoEYfK4R4QDVlWWY=;
-	b=XN2VxKRZ3crT5GYeeWcFkjt4OALy8Rp9wM7ylmTQFH7kUhZ88qzDVCE5n8pywkFL/nevUvLYE
-	BwLJxMPgMSFxeY3ZRf2IwNogn4eKh8IPohQlk3UBi7gNesWUVZl/0GcQ6vIZC2tpJj5Zoi4FPnt
-	npWYlwA07OCHYgkB/eN8ZX4=
-Received: from mail.maildlp.com (unknown [172.19.162.254])
-	by canpmsgout06.his.huawei.com (SkyGuard) with ESMTPS id 4d0XLt3rgWzRhQp;
-	Mon,  3 Nov 2025 21:22:30 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1D4CA180491;
-	Mon,  3 Nov 2025 21:24:04 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 3 Nov 2025 21:24:03 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <tglx@linutronix.de>, <david@redhat.com>, <mingo@redhat.com>,
-	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-	<akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <linmiaohe@huawei.com>,
-	<nao.horiguchi@gmail.com>, <luto@kernel.org>, <peterz@infradead.org>,
-	<tony.luck@intel.com>
-CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-edac@vger.kernel.org>, <will@kernel.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: Re: [PATCH 1/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
-Date: Mon, 3 Nov 2025 21:23:58 +0800
-Message-ID: <20251103132358.79766-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <5ace86cc-0b2d-4306-8bc1-dfc34cccef1a@redhat.com>
-References: <5ace86cc-0b2d-4306-8bc1-dfc34cccef1a@redhat.com>
+	bh=3l1oHecGlpNpSZOR6dOjzbo00UCNKjOaXvRkPwiEvSo=;
+	b=MZpa6Rk0tgIyZ7/oqF6ThT9bMcQHZeJ+tFyGhrISuvPhJ8/G19c/p86w6DuHdn/iM4D3a3
+	pI3b9wnZl2PxsGaUoB+bHt3tDOWgcr6TeO/uNjCBwMGvoq1SX/qbdQ9lNmt3fOhy04py/6
+	7Kg9RzLJcCKCZj8L1EDD8h5VZDuHKaM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762176767; a=rsa-sha256;
+	cv=none;
+	b=1WxVtZ9axpFvyh66BlATE94cH1HPngoIKjCAymsW8wSV25Z1FrEoJCtah7Pq4Tb33oNidG
+	cY/8t17Pk+BRaHxf5DhRYloGiyd/JqnqRwT7LC//HZN7K0+r4IbB9ECVo08vKZvbW0+KaM
+	D6y4+uBPxv5/T7TqaJUfuL5NUpRKbpM=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Icl6eF75;
+	spf=pass (imf17.hostedemail.com: domain of broonie@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=broonie@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ADB90417B0;
+	Mon,  3 Nov 2025 13:32:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B2BBC113D0;
+	Mon,  3 Nov 2025 13:32:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762176765;
+	bh=rv5IOYmAi9gffnN3PWIBCsFc9IzI9PzRnuUE+GpwrQw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Icl6eF75jY80ayW75IoZ0+LaPiPi2EcEgn13Ycd69S2hVI2xar7gCviAMLxOeSJXf
+	 GM6OXzXYvbzUIkLAxOFnoRp0A34f7TykgQJyW9q63ZZbrinhKCvq31c/jwUYw4H7kL
+	 O736gPg0odgIdTIHBw1WTAJnptmFtT5qer3mfGeZgE8KlOLxH6u0/ehNdXJUNUPN01
+	 kSrXRcKNOimokj5fhuwid3rYkYiteka7WzdG+2pVwmBHrUu8iy8QjjoVxzoynZLTVO
+	 d7k1b1LcQKs7sEf2/ddXpwpyF27u83//ZaJkf7s9iFyYf8GyfYxIx9/RwH8UgJcPse
+	 0dvcB+RZyVmZw==
+Date: Mon, 3 Nov 2025 13:32:42 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Will Deacon <will@kernel.org>, Aishwarya.TCV@arm.com
+Subject: Re: [PATCH] mm/huge_memory: Initialise the tags of the huge zero
+ folio
+Message-ID: <aQiu-hU3x5V5drHF@finisterre.sirena.org.uk>
+References: <20251031170133.280742-1-catalin.marinas@arm.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemj100009.china.huawei.com (7.202.194.3)
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="W9aQpuovxYTKD7ef"
+Content-Disposition: inline
+In-Reply-To: <20251031170133.280742-1-catalin.marinas@arm.com>
+X-Cookie: news: gotcha
+X-Stat-Signature: 66qfw6foea79kidmkxrw8otkwccm6dmc
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1E2D44000E
-X-Stat-Signature: esikncxxphrhm1ewrgezj9fjtg3f5ezs
-X-HE-Tag: 1762176250-185255
-X-HE-Meta: U2FsdGVkX1+AWZdFbcizK7Sg3PBOKT1OySJzNIfvCpEC0OEzzeJSaw6JWjPXyfzsPx3xHH2zRr+CA5+ifPx3P3dVeABc/fhaCOl0bTvS1jF/LjZG43VE6Q7Ru/O6Xb40ZCAcmgPscZztHwy2c7iwQJYPZ9c7xtJOnvv3pls0FnBeG0iesib81a1mCCgylns/Qgyun3kRE61tWfwPNVBHf3Xo4Y7TPOwhO+ijOC9lrhGjt0qZQHIGyfJKRimH7L1yWscQLv9xLgJqYBRu0LtpFy6RtEFiPQc7DZ9A9COfe6Z5QSdMmawX7s9DOjpM6bOH7BjcyJkVNcclLt14OYYISDBYWIQvY+lR6cf7gav5REFUUvr32CJUmYdOVBieOe/4OLug00LQTNSoMwiQJzCloOpF6BW/tMbUqWkXxijx5ds6d4ZAh5D9pun4x8c1GzirYcX5Z6v6d1O0IEGJhOtTHWeXIETJlZgCAQao1wHbQ5ZOxUGHaB7StlMh6nW7CE8dguVOAtN8Y+V9sAegJLJB3MiHtDwLvDJgtIROdUGLl2qGh6e5/wL0Xsj4se7SWtKaBjZ0aKhuMj47sLL/E6zdljuAwE7GMnLhLxfpTaVnZXdkO4+/GvqXypE+wFkyd/k4QcSUVbQJVDKyDRccRWXlQVFt4REk4PSUW7sMA0CvAbZlJhR5ClQhx3l/aLFTFeiRn6PAKGr1CFJ9msGKTmRJ2Kff+y9JbQHEhV76nomBiUtzbekuzPz3nGg+D2JcFSnkgjK4aXeVu4V1Yj9FB20BePwWTrby9oX7+7N+L54QhmG/0tS+oXi8vx2sGhvtgtbf/32CWudIQeeCyNN52hioRK3BHydKtYpq+/DYogUDS0+vokhUOnfLjES2gWwt6CYuu5gKGmJVgJADgcBBCxaZxXCoZRT/qQ4wELLhJGGQ3Qqo5gpD+Gp1luu38Z6ZqYo97FNrNMlTliboktCUcIm
- 1yfL6aX+
- 0J/v95ZbzWdUHh0qFfz0eNXWhoerfiYRuRznmJnQP9rnSsskBYB6yztF+3S7mPfGfIKDtGDEsvk1xkxnt5vAUQNOZkQODE/8pPcTJ1rqwn3yDCz5gkkz8Nj+B/qx8fYEFaB2f3jmRpo0TAyUYkSzPFh0YfX7lHJaNTSu4vyEuiGsgFCRUK05joHHURrFPQOkp4OLV45Oq4m2qMKHnnqFtKYIlfA2gmQNFw4h4YPY15qboXEYCEI+vxBkhd7no1WMKo4Qo+01rRP89mvwHVCLdoATp46CfJ4dYONa7VYaiyTZY4XM/XkXfn3I3nAV1dcVqvEl+UQXqWmImuPGgK/7w21LH3Q==
+X-Rspamd-Queue-Id: D3AD340017
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762176766-15118
+X-HE-Meta: U2FsdGVkX1/7WyovlQO5CwOY1jD0kSvTrEothiiFx3fVnLKQj8lWw7B6xfy1vQPyMgmej4L8rphKZJDOrXDDAWpEPFYs9fciLcOhgVa/VKyakQ+3KLuGKPdijg8V4RRdu6Va2Pc5XNNbK+F5k/7SoElU0yZZKFKDcCBApBiMQ8cNNfa8UkRlgComq/4g/Zc99z2fe+5YYKDJdmKUS5LW1HC58JjdDLbZCIZDTFA+UQc56OZBCIa7ER0RLGD1azzqjgAvnR7Jp0B9qV77xLXJ3JfY9hepUPa0Bx10/RwbDekQg6umeI7WidKgQL3/ricqrZNT+TKD/+2sHdjKINjU0aXUg1ci8s7ElZd35/64XNAI+hkOGbnVnq12CH2xDE5jR1hzdCxlth0HWdJ5DoSKTVOdpzGm2GQwCEjZKMzEvJY+wuChisf8lpXeCw70bi67q4TFqtcnePlVYXekYhSgMGY17/KdCsxc7yeP+k/RhxJ1AzctweDP/rI4/gTliC+IWJmrNHdxa7iqhT6BMk9+au0ag+qGObNY1CB4cxgOytEkj3pnHZRGBxPp8f25girSttgDy6MzKF8ICFnQgcx/1El8XuPU0zSBj2yVKcBpSpfcECKDNZ7NPjAoqsQHbUC2PqoUMFUl/JzfYgnwex8g1FkBQNZxWcpEHMRXwtg6j8BIbon/C7pJePif3o+yLhyvx+jr6KM3PLbmjnSLqeNkdb/vXfI4sd765a/PIy6qrNlK8R+Ywl2zi/X3WMpEeB5zqm44t40k4hJ+6UEp3JYHXNG5j72TwOOcAJU/5eV5bOgHw3kLHHCQ90p2uUjH185VqLfucqMOMHF2ykSF2v1+9vKfyTS38lhqkH51zPim/wS0AFTfSjJ+b1XvbzK+iOxt441kksh0RZwjAZm4Mb8/IXWblkvhL26PefzIFB2/wkojfwxw1xIUE71LUMF+SHXC1Z9nG9x8hqiAHl53sa4
+ OJIWnmAe
+ bZ5IGTpkoRKVoy5ylFU1Z59Ildz4HxGYefwRHZM6thxBz3lrv+r72Qgb07JB1e8qVqWB8/I0NA6RVKhkPehS1zfKFkXTLtWTC6+T6WJkU1SeL2Wr3YB/6B48NEv0hKJ2s4X61t/MBLCtgdNcjfLqzL0m+bNnpz62zQ7+ZLV7/jdIewOmc6I64yjDsUu2C9m90apR4rjVvPESF81EQ6VnflShV9TLmhJVVe42tHhxei4AF4l6qetGeSIG+yzIxHqLuA2Lo97Q3BIi2wdUg40NKODPY3oh0wvBt+4/CNku2i9I1gwKT40Zbb8gwSztyemETZ5PnSj2EXfR2BQ4HeJQHt/wrlPAUrbyRy9M/QMnGUG1khFBpbwF0tzIelyH6H9z0NZiHNYQ1Jv3glCDxFKGHvKbaZJpTtG9l7WusWw8VKbx5mFqI9NaLLebTOtJ9tOH4Fn06
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,45 +96,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 3 Nov 2025 13:08:38 +0100, David Hildenbrand wrote:
->> The historical commit d949f36f1865c60239d4 ("x86: Fix hwpoison code
->> related build failure on 32-bit NUMAQ"), disabled x86_32's
->> memory-failure when SPARSEMEM is enabled, because the number of
->> page-flags are insufficient.
->> 
->> The commit 09022bc196d23484a7a5 ("mm: remove PG_error") removes a
->> page flag, so memory-failure can now be enable now.
->
-> In the meantime, we added PG_dropbehind
 
-Okay, I completely understand now.
+--W9aQpuovxYTKD7ef
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-For historical versions, MEMORY_FAILURE cannot be enabled with x86_32 &&
-SPARSEMEM because the number of page-flags are insufficient. At least it
-has been so from 5.10.x to 6.9.x.
+On Fri, Oct 31, 2025 at 04:57:50PM +0000, Catalin Marinas wrote:
 
-The commit 46df8e73a4a3f1445f2a ("mm: free up PG_slab") from 6.10-rc1
-remove a flag that allows MEMORY_FAILURE to be enabled from here on.
+> On arm64 with MTE enabled, a page mapped as Normal Tagged (PROT_MTE) in
+> user space will need to have its allocation tags initialised. This is
+> normally done in the arm64 set_pte_at() after checking the memory
+> attributes. Such page is also marked with the PG_mte_tagged flag to
+> avoid subsequent clearing. Since this relies on having a struct page,
+> pte_special() mappings are ignored.
 
-The commit 09022bc196d23484a7a5 ("mm: remove PG_error") from 6.12-rc1
-remove another flag.
+We are seeing breakage in userspace on a range of arm64 platforms which
+bisects to this commit in -next.  We see traces like:
 
-The commit cceba6f7e46c48deca43 ("mm: add PG_dropbehind folio flag") from
-6.14-rc1 add a flag, but MEMORY_FAILURE can still be enabled.
+[   59.746701] Internal error: Oops - Undefined instruction: 0000000002000000 [#1]  SMP
 
-At least for the current version, memory-failure can be safely enabled.
-The number of pageflags reaches its maximum value under the following
-conditions: HIGHMEM && SPARSEMEM && X86_PAE && X86_PAT. In this case, if
-MEMORY_FAILURE is enabled, the number of pageflags just reached the limit
-of 32.
+...
 
-I will update the V2 patch to describe it.
+[   59.819007] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[   59.826055] pc : mte_zero_clear_page_tags+0x1c/0x40
+[   59.830980] lr : tag_clear_highpage+0x68/0x118
 
-> Cheers
->
-> David / dhildenb
+...
 
-Thanks!
+[   59.911874] Call trace:
+[   59.914333]  mte_zero_clear_page_tags+0x1c/0x40 (P)
+[   59.919278]  get_page_from_freelist+0x1a60/0x1c80
+[   59.924042]  __alloc_frozen_pages_noprof+0x178/0xd20
+[   59.929068]  alloc_pages_mpol+0xb4/0x1a4
+[   59.933022]  alloc_frozen_pages_noprof+0x48/0xc0
+[   59.937683]  folio_alloc_noprof+0x14/0x68
+[   59.941718]  mm_get_huge_zero_folio+0xf4/0x30c
+[   59.946200]  do_huge_pmd_anonymous_page+0x278/0x6a0
+[   59.951119]  __handle_mm_fault+0x700/0x1834
+[   59.955332]  handle_mm_fault+0x8c/0x2a0
+[   59.959190]  do_page_fault+0x108/0x75c
+[   59.962964]  do_translation_fault+0x5c/0x6c
+[   59.967181]  do_mem_abort+0x40/0x90
 
-Xie Yuanbin
+Looking at the codes:
+
+> -       zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO) & ~__GFP_MOVABLE,
+> +       zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+> +                                ~__GFP_MOVABLE,
+>                         HPAGE_PMD_ORDER);
+
+This adds an unonditional __GFP_ZEROTAGS - from a quick scan it looks
+like this was previously only enabled by vma_alloc_zeroed_movable_folio()
+when the VMA has VM_MTE, I think we need a similar test here.
+
+Full log:
+
+   https://lava.sirena.org.uk/scheduler/job/2036941#L1423
+
+Sample bisect log (with links to further runtime logs:
+
+# bad: [3575af345aa2424636e69ac101a568bda249abe6] Merge branch 'i2c/i2c-host-fixes' of https://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
+# good: [6146a0f1dfae5d37442a9ddcba012add260bceb0] Linux 6.18-rc4
+git bisect start '3575af345aa2424636e69ac101a568bda249abe6' '6146a0f1dfae5d37442a9ddcba012add260bceb0'
+# test job: [3575af345aa2424636e69ac101a568bda249abe6] https://lava.sirena.org.uk/scheduler/job/2036941
+# bad: [3575af345aa2424636e69ac101a568bda249abe6] Merge branch 'i2c/i2c-host-fixes' of https://git.kernel.org/pub/scm/linux/kernel/git/andi.shyti/linux.git
+git bisect bad 3575af345aa2424636e69ac101a568bda249abe6
+# test job: [81f07f151b0759666fee3184651aab90ef1c5ed5] https://lava.sirena.org.uk/scheduler/job/2037418
+# bad: [81f07f151b0759666fee3184651aab90ef1c5ed5] Merge branch 'usb-linus' of https://git.kernel.org/pub/scm/linux/kernel/git/johan/usb-serial.git
+git bisect bad 81f07f151b0759666fee3184651aab90ef1c5ed5
+# test job: [661821dc41b20c505d5adad10bb71fe5746c57fb] https://lava.sirena.org.uk/scheduler/job/2037588
+# bad: [661821dc41b20c505d5adad10bb71fe5746c57fb] Merge branch 'fixes' of https://git.kernel.org/pub/scm/linux/kernel/git/krzk/linux-mem-ctrl.git
+git bisect bad 661821dc41b20c505d5adad10bb71fe5746c57fb
+# test job: [972cbfc499182c200bd3d2fb8fe4173df0d4d3e7] https://lava.sirena.org.uk/scheduler/job/2037773
+# bad: [972cbfc499182c200bd3d2fb8fe4173df0d4d3e7] mm/huge_memory: initialise the tags of the huge zero folio
+git bisect bad 972cbfc499182c200bd3d2fb8fe4173df0d4d3e7
+# test job: [6923ff319e1b0d3541cd240b6ed494e1cb6287d1] https://lava.sirena.org.uk/scheduler/job/2037885
+# good: [6923ff319e1b0d3541cd240b6ed494e1cb6287d1] fs/proc: fix uaf in proc_readdir_de()
+git bisect good 6923ff319e1b0d3541cd240b6ed494e1cb6287d1
+# test job: [e356021a7589f6dd1c946b86c933462dca0bc1ec] https://lava.sirena.org.uk/scheduler/job/2037973
+# good: [e356021a7589f6dd1c946b86c933462dca0bc1ec] codetag: debug: handle existing CODETAG_EMPTY in mark_objexts_empty for slabobj_ext
+git bisect good e356021a7589f6dd1c946b86c933462dca0bc1ec
+# test job: [decb83d6239894a14b07c8f5ebf9feb5c87ec651] https://lava.sirena.org.uk/scheduler/job/2038008
+# good: [decb83d6239894a14b07c8f5ebf9feb5c87ec651] mm/damon/sysfs: change next_update_jiffies to a global variable
+git bisect good decb83d6239894a14b07c8f5ebf9feb5c87ec651
+# test job: [53cf2716958490997b8ce11cc4665256905b23dd] https://lava.sirena.org.uk/scheduler/job/2038076
+# good: [53cf2716958490997b8ce11cc4665256905b23dd] nilfs2: avoid having an active sc_timer before freeing sci
+git bisect good 53cf2716958490997b8ce11cc4665256905b23dd
+# first bad commit: [972cbfc499182c200bd3d2fb8fe4173df0d4d3e7] mm/huge_memory: initialise the tags of the huge zero folio
+
+--W9aQpuovxYTKD7ef
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmkIrvkACgkQJNaLcl1U
+h9DhLQf7BoAYx4bPh8mue63qcZgpM2Id1rQlCGH5fqtgH8QCKKanNo/GxHUXLrK2
+ENTCk8/ysVGuUjeRRAvgO+3q0MCOu89oKZXTq+N0mmsODdcj2AkfsYgeKVv9dQpi
+Re1/brRZ7sUTOLBfKzfzOcCaOqyE+w7aO7pUGnrop8Zx1g7cNXcfSBPLjtytd5F9
+M/3Gr40H+YEUmq0r6wDp5xn3X8tzA+GkRkfNL51Kv/sM8/XJTbxzQ9c0G5nW0cC0
+B4yUxKJVKT3wRF/svVwxZwgbRMXXbbjhkq2LvAw9p1k3xFonFxViUNWTn16UsoeX
+RfH4WuDp6M/sDmsAQ+BTDVx8Bl1feA==
+=qRZL
+-----END PGP SIGNATURE-----
+
+--W9aQpuovxYTKD7ef--
 
