@@ -4,148 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 495ECCCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:57:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9E779CCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:05:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A89358E0035; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
+	id EBB7E8E0036; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A60668E002A; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
+	id E6C128E002A; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 976218E0035; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
+	id D5A918E0036; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 86B0C8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:57:26 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 339C44AEBA
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:57:26 +0000 (UTC)
-X-FDA: 84068540892.02.AF792CC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id C012C8E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:05:29 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 688291A0A67
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:29 +0000 (UTC)
+X-FDA: 84068561178.24.7D8BC37
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6F7272000C
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:57:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyuFXS/5";
-	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762156644; a=rsa-sha256;
-	cv=none;
-	b=cdcQ6fHhZAuHQJ9TiCt53At2PHb6Vvib0VLkvd7JqXQUiyAhBlr2EDP7GshXoClDWp8RXq
-	XGc9jyQkLuGgiY+qYGIFTWVkzCoECBfsHLhta7mAtty6i2sbOurLH4FsS53dUe9v6g3/WW
-	60Q5s6CW7wnhS2bwq09c4gPEv0gb5Es=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="EyuFXS/5";
-	spf=pass (imf13.hostedemail.com: domain of aneesh.kumar@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=aneesh.kumar@kernel.org;
+	by imf05.hostedemail.com (Postfix) with ESMTP id AE8F8100009
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:05:27 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YNIMhHK+;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762156644;
+	s=arc-20220608; t=1762157127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/IS1QnfToebO9Eww57EcVTgSVRHjpzRkmozpTfyGEkg=;
-	b=bUnE1/u6PDyc8oqnfe6nkQSzmH+PKDp8Dhq8Bw7NB8cGvN+mZv3nnB9s70quWvn1iFYU2r
-	6nwFUNPHkLVhyV3yCaOPMBqR3buH/yJHXfp3XQfLjAvzQNPz/ydq5lAPiY1RivKHXXjP6k
-	8iL3WyfSeHON9qVjFmSC0SQk2227uTE=
+	bh=MENFHqQdCM/upWrhnvldLJ5d/Mmo7/c3cfyIErXyUzc=;
+	b=kjmmp7CK86jU42QvMhCADuIz+eL8OAW3mXZfxXPXt2KOfZCuIL3XpZFs+TRW9UAWEXyGy8
+	VTYFdY1EB8LelKp0g5FJLfEH1Edk2TifdhaRGujFPFIcsWLJdj2kwTKu4phrtqpWhf7yMi
+	eIFXdAJ1nQU69JFrduMbvn4kOMpIjXE=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YNIMhHK+;
+	spf=pass (imf05.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157127; a=rsa-sha256;
+	cv=none;
+	b=3C2MY07zOSkRaOJKx2t5orifiulFeyRfjniL263FweJZc3UAHwF7eVjJ+1HyZ+vrAQZjsn
+	fNRidpXgLvdmTMlQd90UCFpGohC24beMnh0lRKotTRF4Ebwdm1+njitOKgot852BJSyYlm
+	a3Y/2rDVH8Tdh8ZhoJiXhaQ4dAU94P8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 1278C4347B;
-	Mon,  3 Nov 2025 07:57:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A78AEC4CEE7;
-	Mon,  3 Nov 2025 07:57:07 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9C7BA43DBB;
+	Mon,  3 Nov 2025 08:05:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDBE8C4CEE7;
+	Mon,  3 Nov 2025 08:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762156642;
-	bh=HSj/Z5n0gDZ4meqwx9ffw43W8XomEOuc7B2mT893bzs=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=EyuFXS/5i8cjPsKl1fmDKJwxtvpzPfkDrVD/7Dw9cVg4MIRSZ9pwX9Mwp3TkQNtyw
-	 zoeqzLLyxPRNqLWKH6FXNg+6ZNo7vj4V4K1a2Q2k642McCDmgxisCjpK6A9S/QL1M+
-	 JohKsDSLySE14H0H5z5GG8d356N9+qgQ55m+uwsMsRoTogFqUE9iZVhmwTsjaJxJ0D
-	 rf7CiQwNGNOSkhhNm3a8Kegsyv/wACFQk0qTNci2kW/sBtJn3XjoC3JgBMB4DLxEd1
-	 BxbJrOVgc9EcBq/f6dV64raqbuuFvwCKqXqgbvNuoO3N0Gl4d4KOsuqDiCv8HqbTcE
-	 IGGXAlmxritEQ==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: "Roy, Patrick" <roypat@amazon.co.uk>
-Cc: "Roy, Patrick" <roypat@amazon.co.uk>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>,
-	"corbet@lwn.net" <corbet@lwn.net>,
-	"maz@kernel.org" <maz@kernel.org>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	"joey.gouly@arm.com" <joey.gouly@arm.com>,
-	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"catalin.marinas@arm.com" <catalin.marinas@arm.com>,
-	"will@kernel.org" <will@kernel.org>,
-	"tglx@linutronix.de" <tglx@linutronix.de>,
-	"mingo@redhat.com" <mingo@redhat.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"x86@kernel.org" <x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
-	"luto@kernel.org" <luto@kernel.org>,
-	"peterz@infradead.org" <peterz@infradead.org>,
-	"willy@infradead.org" <willy@infradead.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"david@redhat.com" <david@redhat.com>,
-	"lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
-	"Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>,
-	"vbabka@suse.cz" <vbabka@suse.cz>,
-	"rppt@kernel.org" <rppt@kernel.org>,
-	"surenb@google.com" <surenb@google.com>,
-	"mhocko@suse.com" <mhocko@suse.com>,
-	"song@kernel.org" <song@kernel.org>,
-	"jolsa@kernel.org" <jolsa@kernel.org>,
-	"ast@kernel.org" <ast@kernel.org>,
-	"daniel@iogearbox.net" <daniel@iogearbox.net>,
-	"andrii@kernel.org" <andrii@kernel.org>,
-	"martin.lau@linux.dev" <martin.lau@linux.dev>,
-	"eddyz87@gmail.com" <eddyz87@gmail.com>,
-	"yonghong.song@linux.dev" <yonghong.song@linux.dev>,
-	"john.fastabend@gmail.com" <john.fastabend@gmail.com>,
-	"kpsingh@kernel.org" <kpsingh@kernel.org>,
-	"sdf@fomichev.me" <sdf@fomichev.me>,
-	"haoluo@google.com" <haoluo@google.com>,
-	"jgg@ziepe.ca" <jgg@ziepe.ca>,
-	"jhubbard@nvidia.com" <jhubbard@nvidia.com>,
-	"peterx@redhat.com" <peterx@redhat.com>,
-	"jannh@google.com" <jannh@google.com>,
-	"pfalcato@suse.de" <pfalcato@suse.de>,
-	"shuah@kernel.org" <shuah@kernel.org>,
-	"seanjc@google.com" <seanjc@google.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-doc@vger.kernel.org" <linux-doc@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>,
-	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-mm@kvack.org" <linux-mm@kvack.org>,
-	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
-	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>,
-	"Cali, Marco" <xmarcalx@amazon.co.uk>, "Kalyazin,
-	Nikita" <kalyazin@amazon.co.uk>, "Thomson,
-	Jack" <jackabt@amazon.co.uk>,
-	"derekmn@amazon.co.uk" <derekmn@amazon.co.uk>,
-	"tabba@google.com" <tabba@google.com>,
-	"ackerleytng@google.com" <ackerleytng@google.com>
-Subject: Re: [PATCH v7 05/12] KVM: guest_memfd: Add flag to remove from
- direct map
-In-Reply-To: <20250924152214.7292-2-roypat@amazon.co.uk>
-References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
- <20250924152214.7292-1-roypat@amazon.co.uk>
- <20250924152214.7292-2-roypat@amazon.co.uk>
-Date: Mon, 03 Nov 2025 13:27:04 +0530
-Message-ID: <yq5ajz07czvz.fsf@kernel.org>
+	s=k20201202; t=1762157126;
+	bh=/Z00hsFx0kFKgS/fH2fkWOXPCRXDBSY3j5PVFskPLtY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YNIMhHK+TIAw9S8epUQRLJ0hHWrXGrX021AASru7kQYHYuMFC6zo5jxbc7KUmJ0L3
+	 YNEe1nE+4ae3JtQxcTTez3gXWgSy2u2msyRHFv6Ufnrx2bt2n0+8KYqma3OyMomdHy
+	 Und0omT0toRmHQSOMJHh8FIiBDSXmNrLx8mv1uScrl9HdFKsXLarM713jjbRgR+/v4
+	 7/jTF678ISrptDm6AzMN9ALIVAtiWOrlbYsGz2TuzZPwPoiteJ/wA8NnfdkaDlmCac
+	 R8sanushWpLqk/uQd051eoYlDOALHHRNHhGhWZBT9cBCKpSLGzr/fRIrMBO19/jAvs
+	 SiEU4tXpMsS3Q==
+Date: Mon, 3 Nov 2025 10:05:18 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+Cc: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org
+Subject: Re: [PATCH v6 05/11] PCI/P2PDMA: Document DMABUF model
+Message-ID: <20251103080518.GB50752@unreal>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+ <20251102-dmabuf-vfio-v6-5-d773cff0db9f@nvidia.com>
+ <86383031-807e-43d9-976e-dd955d79dc52@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86383031-807e-43d9-976e-dd955d79dc52@infradead.org>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: AE8F8100009
+X-Stat-Signature: wowdwh341zqdj1fypjxkuf56k5i7ndqp
 X-Rspam-User: 
-X-Stat-Signature: gwu8una37c8f5wr63qundh98dc17mz8f
-X-Rspamd-Queue-Id: 6F7272000C
-X-Rspamd-Server: rspam09
-X-HE-Tag: 1762156644-726595
-X-HE-Meta: U2FsdGVkX1+kp00fxTzzEZFhIGxa/l6/eEDSbs0tYW8bqJByZC2FvJJ0h94oN9+xo1o6p66Ak1KS8UneelIfgfEBufhhEAEcv++Ga6iuaznjX+yAqfyPgM/6hNkryhM+1u2BX4GGQN6YYhSk9rBnxcAQO8AYsoGaHQbcx24NOpyIJjFBb4uwvwPdg8/Vy8ltTHaarofnfFQwNFT/6lHhovKzdlXVBsPNmByWOwEO1tAL/7VWqNfgX+A2LR98vaBG8DHcxfbO7GfgRnXaeNZA1PFP6MYPugYycEiUQ8tCNowE2x4VZtDrGwIiRSfydA/mEH/0lbA6ALdC7xT5oBf+TkpqQMjLXO4JmciUmyaAkbCXMubgTbBJ0cpZLcoIhoV4kXg9ZDL7KOFz9uzkgmaMuD8UHRhej3aUSdXCXprkYihLmU0F1CGeKnfmJDGsAnppO2BiGGc0WLPzfYS5K3YymubSGtSgZjRR9bA0b5M5ps3RLdw4PORHOVqNR1xvlg36mWa0QwVuZYnLDTEpc/+uUdaBHZ1JHG6cfwvbvIW0BEKZ3vEH2dt8LRajrayfKwJmXRN+zJC2zTi+WxJ5qfuHu45cbbIrwdRyDihEJFJ6sGjJ4SNjdD85HOanMTzXKOyW3HK8CcldWZe3VxeIL2gsrRjpkrBMQM2lSjq0pN+2Q9oqdfdckg7Zzxjx6jhnTyciuiTjRavyTWtb43PhG2co0TwHyHyWb8cyZ2bq8+11L8M02tPNnwHT4jo9mIylS+jsQJZYe26fKijpwTZkcCCY7kqzAgFdrS2YNSjTU30pNI4IBFvy5OoTnIp4YRjDHltoxUBfII6j2iQrBvTfxAjbYaQYNYYILqNiQDtD7GNpp6puAvwV9JtvGkBFLfg438998Og2CMY9CBqGH+LekMqqXJ4V/KJTekDbyt+Y4fOFEzGb5LtZoTur3jbBlr/tEz56HovpBQgIqFEVlcGejyP
- yH1kVD+6
- ugaOc0Gaqs9bZ7HwzvtP06PLtv8xqF5lwSLV93v0r+U20XK73T5yLBn81xplwpC7su46QsptgUhuj0+QyVTUBiJEsS53CgB+WSTX5+Jnfy6n38BvURfUcxEolzx1O+q5CslsqGlYQTFv+z7cO49qQVBTVXjqosa8rBPc0OzYC8P3hndElnejr2MPIltgruHvsXt2ZfVMSCD8PeiwtSsqNP/1D5aYOPpDrBHC+aeLT2LJ5uJiByUkJBB2PoCHnF+FAPph3YSvv6IFtKjxwq24ZZsBK7AsaK08ON3BO7m5NnV5UQo1VWRsNbPuO5tZ7ImAHExO6DTgZjUm9keITEhtIhiFweGTL+hA/mykF2hmD7ic+yxy3/5y2M5sjbhRMxMTBqn1vu+KPGO6vEinjiXXJwmr7/g==
+X-HE-Tag: 1762157127-107570
+X-HE-Meta: U2FsdGVkX18O4UCjd59Lg5FL3ZCzEGaJNW7RZWALfTSjvBY0SZu7XOK+oYegDJQ7gQKG15n9obbD8VyEnnm3xr0xv/kkA9QP6CF7tg/zVWyFdd5tDvwZ4gVNJq4dYctbl4sdYbBoDmCEqCoUaZXAaonmOpOvfmDq8J9bLpKGhTNgiD1DEBYv0pEzcngajXsaoOg4jp7XUmPm4luZHb/x31y0+sPUTmVCu5AMfevFz+cGMQOCHRRlBAh+GXYL6Ef/G6fyGvfkiTQx51888Dsrtl/ELLq9nsy9bWt1fIdTxJvWtJ4NF6ZVOnjYOurVB0mBbGU9y1hpATrmVrcxGpIqQACTBpoNaemjJCO0Zz+8Lu9mkcQej2R01FldZGJbWDVxpJDv0YHFlpB3kGngs07745r7PzvGh6ur15uNFlG9ovBJPm1vIk2JjhrQYppELRy+xvSMIpaZhSQvNkyW0Ond2Xv529PLgGjMnaE85XS8Ko/FgpVyY0FydbgerGsJDRgLTkPI9TYpFyYi8vtQS0xth+qQ4yzsw+4T0roPCmC5YiNC7UTwePHliwkzHObQ882u6gKTMB761ZoylU8kAopYvq7sbz8QiQi1OtwG2aGbCH6TkupUZr6zYat/2H5/hfffymYpecKWRpyBrurd9V8KJQZm8I2Kr7+M3Dh++F1m2KnR2mVbPTpiRi6eSTdm2xp3gN0fFdc804P+HVDBRilniTQV3/uo5qLGDlYkqqzBoCOHkRgaMjRWBKuRGc78nkE7vi9H4z9dnhzCfpQArbokpDWLgNbzXuWQtJv69XJVTRBZ3fjC8BPgL5I0D3K8vG8c8XRqlmNqt8Rd+aq0TZlsqkrIUw80H368UQBuQihRjqRJ3/6NqDA0gsP9hBLCa4CXRimB015JXrSqzkBiw2x2rGWEtMMMXXJo7XZrY8FNKbgQiw+3V8ktnc+NFdLeO3lV/hUgciXWqWSG+ktYO83
+ bjTYpeg/
+ qgHo3CdaJ0vyDgEOpBlipl6/j/ueogpPAvEyIIF87O5OBBqt0aFXmDfrJYnNsdnsWhMhkVNQ++l8mxsYogS0hAa8VzYG1ZV7IKy1gFqDcCn1GIa6U2o1/ebGJWsVYxANAUMajwAoFPrvujd1vNEXY8O+BeZEIG/ph3W+ovoU3AX+gQZj6AvqtRKP2ZKImyHgyBdFbtSPH/CALDnUJeu5M9IulCy1nLgCf4C8+qyKLZHMYS8+E5s0VN9Ny9rM/NDuCgfJFMgAg1oAliZnN2V1qwQfShg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,35 +115,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-"Roy, Patrick" <roypat@amazon.co.uk> writes:
+On Sun, Nov 02, 2025 at 10:16:59AM -0800, Randy Dunlap wrote:
+> 
+> 
+> On 11/2/25 1:00 AM, Leon Romanovsky wrote:
+> > From: Jason Gunthorpe <jgg@nvidia.com>
+> > 
+> > Reflect latest changes in p2p implementation to support DMABUF lifecycle.
+> > 
+> > Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+> > Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> > ---
+> >  Documentation/driver-api/pci/p2pdma.rst | 95 +++++++++++++++++++++++++--------
+> >  1 file changed, 72 insertions(+), 23 deletions(-)
 
-....
+<...>
 
-> +static int kvm_gmem_folio_zap_direct_map(struct folio *folio)
-> +{
-> +	if (kvm_gmem_folio_no_direct_map(folio))
-> +		return 0;
-> +
-> +	int r =3D set_direct_map_valid_noflush(folio_page(folio, 0), folio_nr_p=
-ages(folio),
-> +					 false);
-> +
-> +	if (!r) {
-> +		unsigned long addr =3D (unsigned long) folio_address(folio);
-> +		folio->private =3D (void *) ((u64) folio->private & KVM_GMEM_FOLIO_NO_=
-DIRECT_MAP);
-> +		flush_tlb_kernel_range(addr, addr + folio_size(folio));
-> +	}
-> +
-> +	return r;
-> +}
+> > +guarentee that the consuming driver has stopped using the MMIO during a removal
+> 
+>    guarantee
 
-These 'noflush' functions are actually doing flush_tlb_kernel
+<...>
 
-[-]  =E2=88=98 flush_tlb_kernel_range
- |-[-]  =E2=86=90 __change_memory_common
- |  `-[-]  =E2=86=90 set_memory_valid
- |     `-   =E2=86=90 set_direct_map_valid_noflush
+> > +if are used with mmap() must create special PTEs. As such there are very few
+> 
+>    if used
 
--aneesh
+<...>
+
+> > +pggmap of MEMORY_DEVICE_PCI_P2PDMA to create struct pages. The lifecylce of
+> 
+>    pgmap ?                                                        lifecycle
+
+<...>
+
+> > +architectures, others will experiance corruption or just crash in the kernel.
+> 
+>                               experience
+
+<...>
+
+> > +In this case the initator and target pci_devices are known and the P2P subsystem
+> 
+>                     initiator
+
+<...>
+
+> > +exporting driver has destroyed it's p2p_provider.
+>                                   its
+
+Thanks a lot, fixed.
+
+> 
+> -- 
+> ~Randy
+> 
+> 
 
