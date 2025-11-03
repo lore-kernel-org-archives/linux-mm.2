@@ -4,83 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A35AECCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 01:49:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F20D7CCFA08
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 01:49:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 073378E0002; Sun,  2 Nov 2025 20:49:08 -0500 (EST)
+	id CCE988E0016; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 023778E0015; Sun,  2 Nov 2025 20:49:07 -0500 (EST)
+	id C7F818E0015; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E04828E0002; Sun,  2 Nov 2025 20:49:07 -0500 (EST)
+	id BBD9C8E0016; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C38878E0002
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:49:07 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 750D04A3A0
+	by kanga.kvack.org (Postfix) with ESMTP id A509F8E0015
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77AF01A078C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:09 +0000 (UTC)
+X-FDA: 84067612818.17.6ACC932
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf17.hostedemail.com (Postfix) with ESMTP id E10454000E
 	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:07 +0000 (UTC)
-X-FDA: 84067612734.06.3F90FD5
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf27.hostedemail.com (Postfix) with ESMTP id D4E6340005
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:05 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=by+vf6nh;
-	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
+Authentication-Results: imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=FP05s2qm;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762134546;
+	s=arc-20220608; t=1762134547;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=kKAQ55ZC7CWCOj9QlnZCvTgQQ9XfGsQN//rFpJEjYqI=;
-	b=4C9Ol30X6KgkbhFgLuSBYBWMFtFuu1Bd03wIMvbaoTABfhXk9c9/tE0o7WDeyOXag0Jx6L
-	DQcdDu32ef4naIS+bwdE3qWVw/MwbrDYjOpVudLD8iBx36NpdyH6mgtPfyplla0ZbchRSE
-	nFBWgnIdqgVcnS0jF2+ETkONnH2OgVI=
+	bh=yoNGa3BIGUupq3nqv1c1Texjxp2LF49BQVW1KnxuAHE=;
+	b=famcRb0AvveH1t4+7M8xWxuEu/8tPt6d7ovxZah/GUF2snCwgzngmLAEio2V9bLFRBxs6n
+	mBKVWfQgj6gbF/nxyINU0ljj02h3zz4uiXykMVeoyiup8CH9IMza+k90c+1pj9sXpMQZ3Z
+	ed1Z3kbA7f6K62b/cROObSacm/nOEVk=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=by+vf6nh;
-	spf=pass (imf27.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762134546; a=rsa-sha256;
+	imf17.hostedemail.com;
+	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=FP05s2qm;
+	dmarc=pass (policy=none) header.from=linuxfoundation.org;
+	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762134547; a=rsa-sha256;
 	cv=none;
-	b=tPUYO9+fOUiaSE73ovdYskmOPhORAZ15acoRncTRpHrMGKXVhDCEuzb7KljjDm5FMigq+3
-	psaeynTfy3q7JtMfBTZBtmZdgE/HvcGApyQcoJ/j+XKNAYITeWGqhL0RBahsgaE+wylWDy
-	6aRYxarb1H7BRpir5UxoUsBPcv1Tvm4=
+	b=TNhqf3F0vcL7onVPrTlpJvfTYVsgOiW5mlgy2nVD3MtUOtgx6K2518S6AdjTQfmcdblV3S
+	BzbOC7PywJATNsyQBkARxyvGrEJNmAJhcYxrZD+eQmJu4ix02kC2YG81JDPTD22R58AxkL
+	CrgWABcn35Jc09d7zEqbvGdyw49o/Io=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id F1A88445EB;
-	Mon,  3 Nov 2025 01:49:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F9EC116B1;
-	Mon,  3 Nov 2025 01:49:04 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 6E77360288;
+	Mon,  3 Nov 2025 01:49:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8866C116B1;
+	Mon,  3 Nov 2025 01:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762134544;
-	bh=arAtIsI9jWOkj6ySIvHWCR08cokcinzzktaRQv6IHN4=;
+	s=korg; t=1762134547;
+	bh=oD5MGG3WGGsNK9lAnNSf8zWYE8mFT+Bpvl/9vNMGYqg=;
 	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=by+vf6nh/IxLNCKqVoTx0uY91rCPHfNp0SKR0gkxqPBwDPjvazd9muJvUpQ4MX6+h
-	 OVH0VZosqAwP6uQtGyF5Yr6H6NS13L3oTDqvQJ73JXuYLmDzIMf41Hyl9nZRCM3MCR
-	 X4lZ3wrziffBnDCz8ofoefifnznpH+LbyqLDfRNw=
-Subject: Patch "nilfs2: fix deadlock warnings caused by lock dependency in init_nilfs()" has been added to the 6.1-stable tree
-To: adilger.kernel@dilger.ca,akpm@linux-foundation.org,anna@kernel.org,axboe@kernel.dk,chao@kernel.org,djwong@kernel.org,dlemoal@kernel.org,gregkh@linuxfoundation.org,hare@suse.de,hch@infradead.org,idryomov@gmail.com,jaegeuk@kernel.org,jlayton@kernel.org,konishi.ryusuke@gmail.com,linux-f2fs-devel@lists.sourceforge.net,linux-mm@kvack.org,mcgrof@kernel.org,mngyadam@amazon.de,nagy@khwaternagy.com,syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com,syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com,trond.myklebust@hammerspace.com,tytso@mit.edu,viro@zeniv.linux.org.uk,willy@infradead.org,xiubli@redhat.com
+	b=FP05s2qm1BM57b7XuRGGEFR69Np5D5EpyCbVrxW18WQRNZkMbIWHMz8hiO0ypbTD+
+	 y8tgk1OSUdezYg0Ehcyl+1X5XAhT2oqwW9MZZsC1/RMgtWl+3OaHXYZLiPGSXaOM6B
+	 KRBTsMztFj/Fa9xOr/++l6+/UXkuLVwERBZjnMX8=
+Subject: Patch "filemap: add a kiocb_invalidate_post_direct_write helper" has been added to the 6.1-stable tree
+To: adilger.kernel@dilger.ca,agruenba@redhat.com,akpm@linux-foundation.org,anna@kernel.org,axboe@kernel.dk,brauner@kernel.org,chao@kernel.org,djwong@kernel.org,dlemoal@kernel.org,gregkh@linuxfoundation.org,hare@suse.de,hch@infradead.org,hch@lst.de,idryomov@gmail.com,jaegeuk@kernel.org,jlayton@kernel.org,johannes.thumshirn@wdc.com,konishi.ryusuke@gmail.com,linux-f2fs-devel@lists.sourceforge.net,linux-mm@kvack.org,mcgrof@kernel.org,miklos@szeredi.hu,mngyadam@amazon.de,mszeredi@redhat.com,nagy@khwaternagy.com,trond.myklebust@hammerspace.com,tytso@mit.edu,viro@zeniv.linux.org.uk,willy@infradead.org,xiubli@redhat.com
 Cc: <stable-commits@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 03 Nov 2025 10:46:57 +0900
-In-Reply-To: <20251021070353.96705-10-mngyadam@amazon.de>
-Message-ID: <2025110357-fossil-reclusive-c3df@gregkh>
+In-Reply-To: <20251021070353.96705-4-mngyadam@amazon.de>
+Message-ID: <2025110357-cornbread-cold-7221@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 X-stable: commit
 X-Patchwork-Hint: ignore
-X-Stat-Signature: gziwueo45gcmztmtggamb51gqqsk4y6x
 X-Rspam-User: 
-X-Rspamd-Server: rspam07
-X-Rspamd-Queue-Id: D4E6340005
-X-HE-Tag: 1762134545-181990
-X-HE-Meta: U2FsdGVkX18WSG1Lj631k+w3/xm4thb7UIQkf2wpiw8LvA1nCD4kiWfT/8cbJ2VpOxJwEtKbVZ9ENH79PGLwYa7yBzGbMkhDfmwhR+cmJfcbTNgVibqV9HSTXFW2x6v0/gLU2kmmxCqgoFsFGXDxvkIFR4/S+F0CtEgsrAj6OdGy+nMqSIeg1fT7L9ZlDrfa8Sid/OxQAJ/UOAuQr4MkJG8ALVcXOia58UvAp4aMcu9ygGnOUJL/PakbLgMfIVxYxEHmn4MEI85T89TP3PibNFJKonc8BDrlMI8/mIKok6lZ6a4xDF5iznWfZQwOa/jqBaH+IVWsALURZVnvVC4wA1v3a4p+yC5F+LhwCkCpq733uF1ydki4HF1rCKPr5R0jr7emqLu8Ch/e4OcG3LwmGCURVj+iJzoD2sZPOvobR4VMo9z0jnjsvmvfxiR2Lbkht8IdnvHLXdAoBK0/HrC9nkbAP03Cw4v5yHAYZ5C9NGIs/2K4DUEmM46WIb+u+lF+E3H5RgYf4lylGhkjxZ0qsF/0/bIbIW60iy+kpsj/T0Pvj4r3cfGhyKgIXmUwNi2oODMdKI861dd5WW+3i1nfvg5l+dfZn4q4p1enF3/tc1HzbDA2VCKcd2qKNdjUEJRDfaxcqumsiNCSOEpEFZ6i84iukdq5M4mVwoOWeYW7H0XR0iKmC8NQDZwjwQhp4vx2QDbaJz7aTyC882pE4naGIfaE0wnmqACitx18KHoNl6tC7CQP8tzS7BvcvxST9bLdKRLqgTTRpL71eONYfRDUKiOsG51d6UdkY5/VaNJUGrWND6JJr9qtx50VysQV4rIZ5CTxZfxT+ThIiqLTZe2qJEGQYaR5DdTikBolTKgO5sLf13zqH+xafGZS22ia0ABhTEXCXAET+IxDDzTnlrsHSE69xec4OVJpnxKKkvXCuP2jLp22iVtv08cEnBGVNygFulrSbRVY8R47icp/+Di
- Ear5aIJ8
- jE/ManWaEB8/d4VAc8VmaY3l2dbtUujtQXWDu4r3q6A8BnA6UeHuOxewGcvYAFjx53vl0bBaePZ1OrPVlEXxZmJIL+5jBRIgm3L06S0PT1NbtUW3MItA4+MZSSpGwnOA6itmzpaoJOWSeML4RBihY3B42U6Pnea0Cj6EP6Y0OAdZafxkIQLPfaRpSgo6D4hy2/JbuqgnTU6gQnpEHY1Co7yU53w==
+X-Rspamd-Queue-Id: E10454000E
+X-Rspamd-Server: rspam03
+X-Stat-Signature: sr7here4criiwhrpnjim35eh3e3m9ruk
+X-HE-Tag: 1762134547-469917
+X-HE-Meta: U2FsdGVkX18FHIRU1APj9WEHjiNJbry/ORgpSfApMsJeMPNLfUGL/2ps5aXRUHdy/mB/juVLeRVzMj3c37VtcaWrIF0YKT62W5u9WruWHssmW9h8lgU+Zb0ysiFkXvTX0FdNyY3V3rvKWYIdZXdYInKPuJyZZQxqc2ksLz2q9fUPbxds0566Qfex+4fEAToZW2yuWIR04AOaCrAd6e30czF21iAtTl86x693mTXdp6PXcLBMCU616+bjZaveYBWHlpuBBfcOp+lwpfJJQB2Fb86VvKzO9zuYEMEQLaeiW4rOAO7oMZT7RZ+Jz2rmzci98P1tMwohOTLL6x7BYgDjGRarMu2umh2aHXXCQvbWH1cqFK4Wouik8EtoEdMVhIgqNphJ2sMkxs7T3ypcgGCSRNq1j3QlradG2+iWXj6YwGuKw4hE9GNe3O+M+cBGgDZWQx9q2bRem+ma0hy1X1VfaIWIDb4ttfy0jOeVBEL+dGEqJbOHq7dKlppqc5wndHlBg2RJOnAo1Igun8ve24ikSiFN26ga5tM0tqHD3YXGeVyoEoLay2QC2phCaj8/0BupAy83ZhMHzzhXVyrP+l6EtbpEdOCfa1zd1ETCKRVrvcjSyfpNq9tb0icLeWifdyZs9ya2C2qoVQs8v2Qc9hMZeoy16DRPXBuUkQ/Ju2vYayjLHZz1RURBB5HeVFdACq3ZVUKrQJyAZ7JoSr7dHsLhvIO2dbKeCvkYrDwzMgGmmVYqVktHWfzEl8Q9xgrrRFSOkGIlV45WntGLX76wBZzNrab3nOJO+2udRJVX3W+AKE+h93XKkNRT5e+0K4Li+PihxL/9UUt3hhAHfiH+U0qsbEUXV/sm4gQA5fiEhZV/VGwUGAb6hcHBeK7pgMkqzyXg8jW0RGp3h0uFvr9VTFkw1bC/MG16kkv8jeHKTyUR8tnwxkevONPgxJspXxkCGS2FWDInX+K3FRcCvAQKAJ5
+ LFHDuH4S
+ ZfFRg8/bkxMLY9fb+M5don9RxUbDXkHTO2QWc/KQafht5FIEKuNm3c+AZMVHRu2j5RLB7dyBmAJovaz3QSAo1wbkHXUNNU21HKoWkmE7mFXHDmEwCZia8e7P3SsjRduTZtHauLgK7llBNddy0tOXnYJtGL3WrIykQRxnHgCXDvZYTVpe6+XBAJ0Vq5OvB/2txz8BswNkaE6VOgb0ubf1H8oYfT0G9Y0s5IBvX6trvcbWwoIfN14MIDFwvEkkE87tLKGcRb8JAkDDlluS02Lx4vzQMaOgfqvOJgQST/dzSC6hKmPHsyKhnxTNF7VXtPI7A4r7JxyfoSTFxkgdnyjkG8FhzuXFN4IJwWej4ovyKjzniFNMCTlE/89cTuCozB4BTjy2NEmjbJLzRtiOpQbYzL7OdeWy+iHEFvZtbsmB7USnJ+6AhVthkMJjtP233mS0lfT8aarFITLn/4p1VMbmMYuy87GW5QHO/sWoLeBe63+DnRBa6uJJp6d7J/hr5UmnMhD7NITKvaOUHwjFOjLvmU+gY9tih0NoBsGYAll90Ju5Xk8uFwTMLqb8GCot1r3BXIoAGpioS4jJjlUlOmaIsbP+DRbexFQXsTj/xn1FwMLqXSC5KxoYqMWNBNvocteirf3TF4Goul+eraRkgRimOx8HZMHfTYJz7UGWyGCvaeLUajNFuPLI0QITxuzrTqn/9shlHnkO8hzI0NOPVqhcvIQfePtGyI/0Q4a7gbEDOpmiJKoSSKA8K8zIZhoU02CA9oum0mL7MxXpOf8KwOD1iPykY8fOTM7sHiFxPdNGkAUgoimCGN/9GAz/xuV20w7X7Zympbv6vW5vv1cGh0tv2JX9XzDoIrtJxtRT5XjT6BUxq8EIcN/tHEEjHfUsHGopj/oLvwbn13Wu3/MnGUic2oyV0kLYPx6oYTYNblA6m1E49NWV8/DDWlPzjrpUJwebuJs/1tNL/VoIhxWSeAMCrJtmH/zH1
+ qSnXmRTm
+ IX+YMXbJj5P19peUqRjYtXpR62wue0pSDwBmTThVJZAV9HLJir3xRop7UiYRW9hOkx6gbwnp8jBZHE74Z4Lzf2vhu4oVAHfaaX63t0dcqBwiPdlIIaQ0WUTXYp2llY+PGPRb5euXdP4WGIvpOm+ow5o0exODN7+aLOuLh1aIa89pAHKey3gVtw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,92 +94,215 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 This is a note to let you know that I've just added the patch titled
 
-    nilfs2: fix deadlock warnings caused by lock dependency in init_nilfs()
+    filemap: add a kiocb_invalidate_post_direct_write helper
 
 to the 6.1-stable tree which can be found at:
     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 
 The filename of the patch is:
-     nilfs2-fix-deadlock-warnings-caused-by-lock-dependency-in-init_nilfs.patch
+     filemap-add-a-kiocb_invalidate_post_direct_write-helper.patch
 and it can be found in the queue-6.1 subdirectory.
 
 If you, or anyone else, feels it should not be added to the stable tree,
 please let <stable@vger.kernel.org> know about it.
 
 
-From stable+bounces-188303-greg=kroah.com@vger.kernel.org Tue Oct 21 16:19:13 2025
+From stable+bounces-188297-greg=kroah.com@vger.kernel.org Tue Oct 21 16:13:23 2025
 From: Mahmoud Adam <mngyadam@amazon.de>
-Date: Tue, 21 Oct 2025 09:03:43 +0200
-Subject: nilfs2: fix deadlock warnings caused by lock dependency in init_nilfs()
+Date: Tue, 21 Oct 2025 09:03:37 +0200
+Subject: filemap: add a kiocb_invalidate_post_direct_write helper
 To: <stable@vger.kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, <syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com>, <syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com>, Andrew Morton <akpm@linux-foundation.org>, Jens Axboe <axboe@kernel.dk>, Xiubo Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jeff Layton <jlayton@kernel.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>, Christoph Hellwig <hch@infradead.org>, "Darrick J. Wong" <djwong@kernel.org>, Trond Myklebust <trond.myklebust@hammerspace.com>, Anna Schumaker <anna@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Hannes Reinecke <hare@suse.de>, Damien Le Moal <dlemoal@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <linux-fsdev
- el@vger.
- kernel.org>, <linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>, <linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>, <linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
-Message-ID: <20251021070353.96705-10-mngyadam@amazon.de>
+Cc: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, "Darrick J. Wong" <djwong@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, Andreas Gruenbacher <agruenba@redhat.com>, "Anna Schumaker" <anna@kernel.org>, Chao Yu <chao@kernel.org>, Christian Brauner <brauner@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Jens Axboe <axboe@kernel.dk>, Johannes Thumshirn <johannes.thumshirn@wdc.com>, Matthew Wilcox <willy@infradead.org>, "Miklos Szeredi" <miklos@szeredi.hu>, Miklos Szeredi <mszeredi@redhat.com>, "Theodore Ts'o" <tytso@mit.edu>, Trond Myklebust <trond.myklebust@hammerspace.com>, Xiubo Li <xiubli@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "Jeff Layton" <jlayton@kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>, Christoph Hellwig <hch@infradead.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, Luis Chamberlain <mcgrof@kern
+ el.org>,
+  <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>, <linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>, <linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
+Message-ID: <20251021070353.96705-4-mngyadam@amazon.de>
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit fb881cd7604536b17a1927fb0533f9a6982ffcc5 upstream.
+commit c402a9a9430b670926decbb284b756ee6f47c1ec upstream.
 
-After commit c0e473a0d226 ("block: fix race between set_blocksize and read
-paths") was merged, set_blocksize() called by sb_set_blocksize() now locks
-the inode of the backing device file.  As a result of this change, syzbot
-started reporting deadlock warnings due to a circular dependency involving
-the semaphore "ns_sem" of the nilfs object, the inode lock of the backing
-device file, and the locks that this inode lock is transitively dependent
-on.
+Add a helper to invalidate page cache after a dio write.
 
-This is caused by a new lock dependency added by the above change, since
-init_nilfs() calls sb_set_blocksize() in the lock section of "ns_sem".
-However, these warnings are false positives because init_nilfs() is called
-in the early stage of the mount operation and the filesystem has not yet
-started.
-
-The reason why "ns_sem" is locked in init_nilfs() was to avoid a race
-condition in nilfs_fill_super() caused by sharing a nilfs object among
-multiple filesystem instances (super block structures) in the early
-implementation.  However, nilfs objects and super block structures have
-long ago become one-to-one, and there is no longer any need to use the
-semaphore there.
-
-So, fix this issue by removing the use of the semaphore "ns_sem" in
-init_nilfs().
-
-Link: https://lkml.kernel.org/r/20250503053327.12294-1-konishi.ryusuke@gmail.com
-Fixes: c0e473a0d226 ("block: fix race between set_blocksize and read paths")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=00f7f5b884b117ee6773
-Tested-by: syzbot+00f7f5b884b117ee6773@syzkaller.appspotmail.com
-Reported-by: syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f30591e72bfc24d4715b
-Tested-by: syzbot+f30591e72bfc24d4715b@syzkaller.appspotmail.com>
+Link: https://lkml.kernel.org/r/20230601145904.1385409-7-hch@lst.de
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Acked-by: Darrick J. Wong <djwong@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: Anna Schumaker <anna@kernel.org>
+Cc: Chao Yu <chao@kernel.org>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Ilya Dryomov <idryomov@gmail.com>
+Cc: Jaegeuk Kim <jaegeuk@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Miklos Szeredi <mszeredi@redhat.com>
+Cc: Theodore Ts'o <tytso@mit.edu>
+Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc: Xiubo Li <xiubli@redhat.com>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Mahmoud Adam <mngyadam@amazon.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/the_nilfs.c |    3 ---
- 1 file changed, 3 deletions(-)
+ fs/direct-io.c          |   10 ++--------
+ fs/iomap/direct-io.c    |   12 ++----------
+ include/linux/fs.h      |    5 -----
+ include/linux/pagemap.h |    1 +
+ mm/filemap.c            |   37 ++++++++++++++++++++-----------------
+ 5 files changed, 25 insertions(+), 40 deletions(-)
 
---- a/fs/nilfs2/the_nilfs.c
-+++ b/fs/nilfs2/the_nilfs.c
-@@ -680,8 +680,6 @@ int init_nilfs(struct the_nilfs *nilfs,
- 	int blocksize;
- 	int err;
+--- a/fs/direct-io.c
++++ b/fs/direct-io.c
+@@ -286,14 +286,8 @@ static ssize_t dio_complete(struct dio *
+ 	 * zeros from unwritten extents.
+ 	 */
+ 	if (flags & DIO_COMPLETE_INVALIDATE &&
+-	    ret > 0 && dio_op == REQ_OP_WRITE &&
+-	    dio->inode->i_mapping->nrpages) {
+-		err = invalidate_inode_pages2_range(dio->inode->i_mapping,
+-					offset >> PAGE_SHIFT,
+-					(offset + ret - 1) >> PAGE_SHIFT);
+-		if (err)
+-			dio_warn_stale_pagecache(dio->iocb->ki_filp);
+-	}
++	    ret > 0 && dio_op == REQ_OP_WRITE)
++		kiocb_invalidate_post_direct_write(dio->iocb, ret);
  
--	down_write(&nilfs->ns_sem);
+ 	inode_dio_end(dio->inode);
+ 
+--- a/fs/iomap/direct-io.c
++++ b/fs/iomap/direct-io.c
+@@ -81,7 +81,6 @@ ssize_t iomap_dio_complete(struct iomap_
+ {
+ 	const struct iomap_dio_ops *dops = dio->dops;
+ 	struct kiocb *iocb = dio->iocb;
+-	struct inode *inode = file_inode(iocb->ki_filp);
+ 	loff_t offset = iocb->ki_pos;
+ 	ssize_t ret = dio->error;
+ 
+@@ -108,15 +107,8 @@ ssize_t iomap_dio_complete(struct iomap_
+ 	 * ->end_io() when necessary, otherwise a racing buffer read would cache
+ 	 * zeros from unwritten extents.
+ 	 */
+-	if (!dio->error && dio->size &&
+-	    (dio->flags & IOMAP_DIO_WRITE) && inode->i_mapping->nrpages) {
+-		int err;
+-		err = invalidate_inode_pages2_range(inode->i_mapping,
+-				offset >> PAGE_SHIFT,
+-				(offset + dio->size - 1) >> PAGE_SHIFT);
+-		if (err)
+-			dio_warn_stale_pagecache(iocb->ki_filp);
+-	}
++	if (!dio->error && dio->size && (dio->flags & IOMAP_DIO_WRITE))
++		kiocb_invalidate_post_direct_write(iocb, dio->size);
+ 
+ 	inode_dio_end(file_inode(iocb->ki_filp));
+ 	if (ret > 0) {
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -3371,11 +3371,6 @@ static inline void inode_dio_end(struct
+ 		wake_up_bit(&inode->i_state, __I_DIO_WAKEUP);
+ }
+ 
+-/*
+- * Warn about a page cache invalidation failure diring a direct I/O write.
+- */
+-void dio_warn_stale_pagecache(struct file *filp);
 -
- 	blocksize = sb_min_blocksize(sb, NILFS_MIN_BLOCK_SIZE);
- 	if (!blocksize) {
- 		nilfs_err(sb, "unable to set blocksize");
-@@ -757,7 +755,6 @@ int init_nilfs(struct the_nilfs *nilfs,
- 	set_nilfs_init(nilfs);
- 	err = 0;
-  out:
--	up_write(&nilfs->ns_sem);
- 	return err;
+ extern void inode_set_flags(struct inode *inode, unsigned int flags,
+ 			    unsigned int mask);
  
-  failed_sbh:
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -31,6 +31,7 @@ int invalidate_inode_pages2(struct addre
+ int invalidate_inode_pages2_range(struct address_space *mapping,
+ 		pgoff_t start, pgoff_t end);
+ int kiocb_invalidate_pages(struct kiocb *iocb, size_t count);
++void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count);
+ int write_inode_now(struct inode *, int sync);
+ int filemap_fdatawrite(struct address_space *);
+ int filemap_flush(struct address_space *);
+--- a/mm/filemap.c
++++ b/mm/filemap.c
+@@ -3733,7 +3733,7 @@ EXPORT_SYMBOL(read_cache_page_gfp);
+ /*
+  * Warn about a page cache invalidation failure during a direct I/O write.
+  */
+-void dio_warn_stale_pagecache(struct file *filp)
++static void dio_warn_stale_pagecache(struct file *filp)
+ {
+ 	static DEFINE_RATELIMIT_STATE(_rs, 86400 * HZ, DEFAULT_RATELIMIT_BURST);
+ 	char pathname[128];
+@@ -3750,19 +3750,23 @@ void dio_warn_stale_pagecache(struct fil
+ 	}
+ }
+ 
++void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count)
++{
++	struct address_space *mapping = iocb->ki_filp->f_mapping;
++
++	if (mapping->nrpages &&
++	    invalidate_inode_pages2_range(mapping,
++			iocb->ki_pos >> PAGE_SHIFT,
++			(iocb->ki_pos + count - 1) >> PAGE_SHIFT))
++		dio_warn_stale_pagecache(iocb->ki_filp);
++}
++
+ ssize_t
+ generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ {
+-	struct file	*file = iocb->ki_filp;
+-	struct address_space *mapping = file->f_mapping;
+-	struct inode	*inode = mapping->host;
+-	loff_t		pos = iocb->ki_pos;
+-	ssize_t		written;
+-	size_t		write_len;
+-	pgoff_t		end;
+-
+-	write_len = iov_iter_count(from);
+-	end = (pos + write_len - 1) >> PAGE_SHIFT;
++	struct address_space *mapping = iocb->ki_filp->f_mapping;
++	size_t write_len = iov_iter_count(from);
++	ssize_t written;
+ 
+ 	/*
+ 	 * If a page can not be invalidated, return 0 to fall back
+@@ -3772,7 +3776,7 @@ generic_file_direct_write(struct kiocb *
+ 	if (written) {
+ 		if (written == -EBUSY)
+ 			return 0;
+-		goto out;
++		return written;
+ 	}
+ 
+ 	written = mapping->a_ops->direct_IO(iocb, from);
+@@ -3794,11 +3798,11 @@ generic_file_direct_write(struct kiocb *
+ 	 *
+ 	 * Skip invalidation for async writes or if mapping has no pages.
+ 	 */
+-	if (written > 0 && mapping->nrpages &&
+-	    invalidate_inode_pages2_range(mapping, pos >> PAGE_SHIFT, end))
+-		dio_warn_stale_pagecache(file);
+-
+ 	if (written > 0) {
++		struct inode *inode = mapping->host;
++		loff_t pos = iocb->ki_pos;
++
++		kiocb_invalidate_post_direct_write(iocb, written);
+ 		pos += written;
+ 		write_len -= written;
+ 		if (pos > i_size_read(inode) && !S_ISBLK(inode->i_mode)) {
+@@ -3809,7 +3813,6 @@ generic_file_direct_write(struct kiocb *
+ 	}
+ 	if (written != -EIOCBQUEUED)
+ 		iov_iter_revert(from, write_len - iov_iter_count(from));
+-out:
+ 	return written;
+ }
+ EXPORT_SYMBOL(generic_file_direct_write);
 
 
 Patches currently in stable-queue which might be from mngyadam@amazon.de are
