@@ -4,102 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C90DECCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:14:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C563ACCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:41:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E7EB38E0025; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
+	id C16EE8E0026; Mon,  3 Nov 2025 02:41:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E563F8E0015; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
+	id BEF4F8E0015; Mon,  3 Nov 2025 02:41:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D45058E0025; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
+	id B05458E0026; Mon,  3 Nov 2025 02:41:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id BF0D68E0015
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:14:58 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6E63512C021
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:14:58 +0000 (UTC)
-X-FDA: 84068433876.08.6003B4A
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf12.hostedemail.com (Postfix) with ESMTP id A5EFE40014
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:14:55 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="CtIdrG/k";
-	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 991C08E0015
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:41:47 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 321DDBC82A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:41:47 +0000 (UTC)
+X-FDA: 84068501454.29.ED92A03
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf07.hostedemail.com (Postfix) with ESMTP id C7D394000A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:41:44 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Fco/1o4Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=36nnXm7N;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nz0e0JhF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ruSI0m/z";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762154096;
+	s=arc-20220608; t=1762155705;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=GIo7T0pEvXOjHk/2UjQ9D+bXEZ7esBCrIMEr5LaABD8=;
-	b=WFSiPDJnDScx1lICS87eHde7/F/2TZlxqGtEq0sE/PU3JIUyumdhB32Nt4yQ/U3ou7cHxc
-	flfaGauKINe4fiXpOasMnzfFnGXGn+Sx22XRa1yTLic5ZSNuBPndy6fRtncE1ulZozfpWY
-	dc3s8i2uH2WKbszmzN34OdKlaUHtp9A=
+	bh=Uf4jQTpB9VGe8rGSo1CupspYWZxA+nV5Rkk/NcNgaTk=;
+	b=HlHd/IfSn/bILB6sbXSvqEU4Tpyifsee7bOtIFylTltZdPMiHwGIivUUCxKg8I7njX2/LS
+	lhmR3msACbq+7g6AW1nBRdr4T+xJuHTWk33QJqiT7DIUprIEmicSaJX9dEzmgyP7ovnv2y
+	unXgA26gdRSJNilsRME/VI1wGdzKEts=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b="CtIdrG/k";
-	spf=none (imf12.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762154096; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="Fco/1o4Y";
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=36nnXm7N;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nz0e0JhF;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="ruSI0m/z";
+	spf=pass (imf07.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762155705; a=rsa-sha256;
 	cv=none;
-	b=4pKTwddGvsnTowA/EJVwPLnMtGAG1WqljOckTkkCd6B2VyvoXW9dq1GV77LqsR72BbrMxc
-	G91CY4idGMavEVcB8Ikl6f23JHnNZprCU8AeomZtf30gw+ygEnJ2M8jm1ClnAndMR8Fr93
-	6VxJK9igFCjlsjklDwYizj3uKl2dO+Y=
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=GIo7T0pEvXOjHk/2UjQ9D+bXEZ7esBCrIMEr5LaABD8=; b=CtIdrG/kicwJtBeyrqdL71kzkf
-	Ixd1Zw47cH9hrhJDvymaOZ9KJ99hCaHYMOU7xAfKCQaheuqdsGRNhyeB6Q2uHYg0gCFCw5Qe+oYO5
-	t3LLyahOUUICMTsnQluvFZp1F2ECx3l6VvpK5E2B3Dm/ohe965p8lmiWZin8skdEKVOM9L4xGtPjC
-	mWXQ3Djqyewcrqr2Rcfh19Xg3574FNAowTahco+GQdrp9SANs5Zs7wRZWmGYlVFep58w/w+x8ym9U
-	dZ8ZxZqex66du2NlF8kjWgpoYohoswZcqsJcUTFKE6LPkV6eY9vCBEzEF/kBVqk0/gEg3Sy1vwbyA
-	z5gjFCXQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vFomB-00000009LEa-1CVW;
-	Mon, 03 Nov 2025 07:14:51 +0000
-Message-ID: <7fd1c990-d96e-49ba-9bbb-ebddebf684aa@infradead.org>
-Date: Sun, 2 Nov 2025 23:14:50 -0800
+	b=3k2hk6DDJXMAg74n/CyqbTCPxL+ZAt3kWw7Lfm6rU6A4f/SPKFUpkIiIv6623G76/P3uBP
+	+fWY1nWBYIhp1vx/bLqhd2vDbiXVNhlLsCRuqbgxt+qJ412V5boloQdili044VDw/AdTYG
+	fhsFnGRz3nb57S8CA1qkp4IkF3yQFuI=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D309D1F787;
+	Mon,  3 Nov 2025 07:41:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762155703; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uf4jQTpB9VGe8rGSo1CupspYWZxA+nV5Rkk/NcNgaTk=;
+	b=Fco/1o4YyB8iS5bcU70L/XwLCQmi7qhWcwRKdn0IP7ikTW2SnYYMejZHOhFOlJkj2aqbYv
+	7Og4UdFt3FYyg0RAaJiJd87MyeKJqIMGRah3xgjwru1mrFcbM71/MRFI61T4CNKbQ/sX/a
+	tExDc26+tFJuMH/kJjt8STWfE9jf66s=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762155703;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uf4jQTpB9VGe8rGSo1CupspYWZxA+nV5Rkk/NcNgaTk=;
+	b=36nnXm7NdXBObt6o7MmXBreIjaTra9Fc9Esd6P/Sn6DNWcwYHVi8j93/BIkgjqD+wt54Zp
+	zJn9a7o979ZCSOAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762155702; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uf4jQTpB9VGe8rGSo1CupspYWZxA+nV5Rkk/NcNgaTk=;
+	b=nz0e0JhFowNrzf/aSLze8jAtlvEedLy3sCYQJeKOvmoebvnHAa0rrjsHlx4/ew7ybr+Hus
+	DaS7mMAkVoD6YCAlLaA0sqopXJS8OVwxLjz1cDgKMnO9Hhgwt88xOvdli9dLflEd33tppW
+	k14iL1q7Be1O1sFP4KIK6EZX/kj7JAc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762155702;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Uf4jQTpB9VGe8rGSo1CupspYWZxA+nV5Rkk/NcNgaTk=;
+	b=ruSI0m/zQZfLi+kTpwut7bmbwxLnOc9AATOzXEy5HyIzV774iyAoJsuyYLIBARDgakIh0N
+	CJXb55htoN3cmbAA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B7B4813A88;
+	Mon,  3 Nov 2025 07:41:42 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id F6rPLLZcCGlVQgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 07:41:42 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 24BF0A2A61; Mon,  3 Nov 2025 08:41:42 +0100 (CET)
+Date: Mon, 3 Nov 2025 08:41:42 +0100
+From: Jan Kara <jack@suse.cz>
+To: libaokun@huaweicloud.com
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
+	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
+	libaokun1@huawei.com
+Subject: Re: [PATCH 01/25] ext4: remove page offset calculation in
+ ext4_block_zero_page_range()
+Message-ID: <w7dawsu3tli23h6ezt4u7evprczgbezylnbyh3sqhv5rfimg4q@5vqelz5hsev6>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-2-libaokun@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: treewide: Replace marc.info links with
- lore
-To: Bagas Sanjaya <bagasdotme@gmail.com>,
- Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Linux Documentation <linux-doc@vger.kernel.org>,
- Linux Memory Management List <linux-mm@kvack.org>,
- Linux ARM <linux-arm-kernel@lists.infradead.org>
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Andrew Morton <akpm@linux-foundation.org>,
- David Hildenbrand <david@redhat.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
- <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Alex Shi <alexs@kernel.org>, Yanteng Si <si.yanteng@linux.dev>,
- Dongliang Mu <dzm91@hust.edu.cn>,
- Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Arnd Bergmann <arnd@arndb.de>
-References: <20251031043358.23709-1-bagasdotme@gmail.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251031043358.23709-1-bagasdotme@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
-X-Rspamd-Queue-Id: A5EFE40014
-X-Stat-Signature: wcqdojd5bn4adqd8srjy6oaycge9xrty
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251025032221.2905818-2-libaokun@huaweicloud.com>
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: C7D394000A
+X-Stat-Signature: wnjm8sjrc5qh1tfttxh39g39xipa49s3
 X-Rspam-User: 
-X-HE-Tag: 1762154095-723163
-X-HE-Meta: U2FsdGVkX1/+CJRN4tkQGJv38c12CGJ1WPDngj1RQ06v/gyZ8/m71YToHvP4WSWOVt9yyVBPr0QpIMwz2M0dIe7D9WdQ4ON9Hsolm7p6CHyrp/5K/WGjsMtFYPtVntenNGv4gxZJavFioCJbf1M7vflcnhXqvhmRZ4AmtYHNups/iPUvPNORhzdYD+sY7XsvbVwTwcLJ0FCptU3h3XzYMOr2tJQaDNHrOSipG/VbNxWmEyDss7f0o/Ai80RLfxLJYU/dSkUWXz1RrT/xe3P9vH48pjr6NnTPQacTSrEaRn2RwNaEG4gaIRBP+oDaFWvtnX/BdIjyDkhSt6ppicjWj/++v7n3x8ADFhNqaQk124guTfBmTgWsQdKrcWj39+WOh5ArpqgVd8KVcV0DiVkZC3N0ZdVjDyWLmxb8Ago0m3xTgF3I8D3EXZTISN9ZQDIrp/3Yyq7ES/pgdU9WAYSDncQMiP9pwO35SJzcmQbTq/8uCaGyAyDHmlmTWL5PjvugQrXq9glKeO7/zqo64mz9CPelu0/4cpGWUUChYxDbiaVeWO6jaL2KU5vifa9Yy3FPJ5PVMgW4eJsjp8wN2fxXqBgQ6vgh+V+iAwzZEsDeBtPdYwbMRjLv/kzF5/+OUnIyb5yZmEt6HeKdd3ilSLnj6hXWdvjEADHFifn54ZfxjozpTCNzO5Q5HtTRAHVlvCwYKHHJZw1Wy6KioiM9Dn0Kc5Zu+TKQZ4FFwx66S/zdl5L9XfVCkXCPx6htYP4MkIU1yC4K99T4UVXXq2zBiu8dRuS8jedNEtHyAphIXTMXe0fCe4RD9a9eJ0JPS5km93hsTJ9AwlsqPPl1eGLPK+14gFi66bb7alD64N7aCR71n84fhNeHcWdWQilgTy6rR8334WNCNtGYNKtUAMC6qfwCg2y8BhhYvfj7I5iQPBbcrL9Okt0ulcPoPaoonkqB+iihhuql7NhiN1u6fOdU/BE
- u2NZ83zI
- yDgIOppW+KOdaQ2Ixh2btuR67rIeJFrV6Kqbt8HUzz3ex2RmlXxgWt6a4fJZ9jgYW9YRNyCuQg+vM1EpWIM/Wzm8lHjwS1qNzABDnjTBHRkgnO01XQHfxwZzBHQ6mIzMo8J3AMUUFbZ9B3lxiKOoonnwyfrvbvDwc33ZsE51veX49z8ha74D0Fv7d8zHLomEXwPIgFYWrUZEDG369/+FazdHlp6Zssp4lOS5WwrxSYi4ZjclZUTYRq6pSiK3ik6jl3I6pdimNYhSQgneWBKMQgF4ObFQHUtNJU3EZ0Waeep9seuNnl0mqD83ZoR3enKNaXtjAVZKpbRYKmzcPNJSqsKrVzD4lakhUenuJGR5cY81MsItclWfFJ8FjhTScVDSmU+flz+07ikriIXs7WYP12ISQ6Bl032thudSQ5sRCnORTwlTcS/gecfvrcka/h+NCMhZDaOOOseXU1y+WljkJFHfKjmhlDSF502C8dpI8F0c2hAhMJMssiftZ29md1Ob/zIJyijALOTVriBEMwNAM/ys1WU3t8E70yVF3rH0W1XVApNDMMeawt/g33CzfGWwzG+rX1iemRcz40EnbEOTogg0mbE5AbKUpEwBvk9mIg2mKTCCxIceLC9umy+TKPCKSC94vYJX5Jv0cQzpQnK3MXc4tR6dsMFKVMD+ImmEutHDcByoh69BjHxhe9A==
+X-HE-Tag: 1762155704-567449
+X-HE-Meta: U2FsdGVkX186/eQXtUh4bJ4qlzNzkp0pr0l0Zw9XecqLbdGdGJZtDVryB8lh9Ky+zh8dxhjWViFIi94Jmtiyq9kVU83CA8CyrZipzuaz++3CpdttS4l3FFV8mSEWHYEQ0ShwTJFnxT4v7P4j393yBDhkh9Nuab7CDGZDH15hX6Pl+ntub2P0mElSMzqAgycUrpVwcAvSQtP1E/4JlHwbq9/nW2b7zUW8UkE8x/5mTenBW8nSjaTkoWbSlJAuUqDv91h5BWwIAzT9CwIe3aQAJ9kKXpyFMz1OiSWRys02O/ZBitk8q99hvB4G56cZ0Wgm2MgxmnZa94AKg1Qx5owqPfAUf5j3i8I/5BQDurq8OB013H+jIwPWuutm21q5SRKV4geYEb6jIDIMS2b4cuOShdoZpRZ7P3kcbu5N3g7Ns72Jqg54h6Pb+BGV74pH9ZOWLEBCLKmLu8qhNiBh4gdxUq9PdVARfxgup2M9dkOtgFp3nhy4phkXt9dmyHG1aU8F4olMfMnyuIOrJs3DyQRDxajpqTzWjtWy4qY/Hz1WEB08cUcMJDhW2oMKFCqipwF1G5+GIMVPvj8pudE/dJLveOBiMTN5shzYsNSwiNitA3Y2XH3dmhAeLW9K7RwdONGm9GYAvlrye5fqN9YrMkzGuJgWI92HaT6HUTy+NJTsRfbLUR0w8ovG7SNCevMhTmCatSlHQ5uHLIC2/FGGuNQQIRBStNpwf8jrkNNV9uDXQcGTYq5QSUmHJNiUa3IFADxZ32SwNw4s2wjtB7yIAWQRZ3rm31xA1xMkMmLg4CbPyOsGF83Lm6ObJpNx2xD6FKXrWwMWbpUwZ/0ymwnRQcKdXr61PJ5YGw1U5fFU63V91iGFb4TTma3hVSZUCjNZmF3D7X+ZZIaP4o1/XI5GsZL2eghLYUlvmAsvy6rcTf8jxfN4YqRJn5b58pVuDmce/rq4CkRXN8a6+uLe2ek3Lz9
+ 7eCEObQ8
+ hLgRTWW8nHr4BygjvxDMRUsoymxDb8Cb/VeKLD/jxWtKgKlHHgVF/+GXzHdD6GnFildgPG56ghqtuEessk2pbs8TqO1vexGGyriLkoIyij/qhWEHYS1yEpjc3DpsOeqfkxs5b6r0sEGOiOBh0RExRxBw+c/xjoK5k2DMA4Ni7NqeiY4y9fvIXMhft9i84QiuetSsm/lE6KP58FXNhZ2QQbvukTl9jwAPPkOKFejuRkBgcVhLaIHIyCZHe+3HJ43A8In6rWjNbDtW7oh1bYaJMga6QKiFKy+ybpgdiEn+lh48/aXhew9pfVkq+5rfRkqQpjJSZ1Yt+YQSTTs5KG/rHrxcQsKfFqssS/J6ssCOHAV5PIw9b3nZp/ZqlgBYoYgPT7iopJS/8jSy566acNv623iEyro8fwqk8BNrhji2TYgITX8us00nwAZO4gw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,67 +137,46 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 10/30/25 9:33 PM, Bagas Sanjaya wrote:
-> In the past, people would link to third-party mailing list archives
-> (like marc.info) for any kernel-related discussions. Now that there
-> is lore archive under kernel.org infrastructure, replace these marc
-> links
+On Sat 25-10-25 11:21:57, libaokun@huaweicloud.com wrote:
+> From: Zhihao Cheng <chengzhihao1@huawei.com>
 > 
-> Note that the only remaining marc link is "Re: Memory mapping on Cirrus
-> EP9315" [1] since that thread is not available at lore [2].
+> For bs <= ps scenarios, calculating the offset within the block is
+> sufficient. For bs > ps, an initial page offset calculation can lead to
+> incorrect behavior. Thus this redundant calculation has been removed.
 > 
-> [1]: https://marc.info/?l=linux-arm-kernel&m=110061245502000&w=2
-> [2]: https://lore.kernel.org/linux-arm-kernel/?q=b%3A%22Re%3A+Memory+mapping+on+Cirrus+EP9315%22
-> 
-> Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+> Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Thanks.
+Looks good. Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
 
 > ---
->  Documentation/driver-api/usb/writing_musb_glue_layer.rst | 2 +-
->  Documentation/mm/active_mm.rst                           | 2 +-
->  Documentation/translations/zh_CN/mm/active_mm.rst        | 2 +-
->  3 files changed, 3 insertions(+), 3 deletions(-)
+>  fs/ext4/inode.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
 > 
-> diff --git a/Documentation/driver-api/usb/writing_musb_glue_layer.rst b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-> index 0bb96ecdf527b4..b748b9fb1965af 100644
-> --- a/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-> +++ b/Documentation/driver-api/usb/writing_musb_glue_layer.rst
-> @@ -709,7 +709,7 @@ Resources
+> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+> index e99306a8f47c..0742039c53a7 100644
+> --- a/fs/ext4/inode.c
+> +++ b/fs/ext4/inode.c
+> @@ -4157,9 +4157,8 @@ static int ext4_block_zero_page_range(handle_t *handle,
+>  		struct address_space *mapping, loff_t from, loff_t length)
+>  {
+>  	struct inode *inode = mapping->host;
+> -	unsigned offset = from & (PAGE_SIZE-1);
+>  	unsigned blocksize = inode->i_sb->s_blocksize;
+> -	unsigned max = blocksize - (offset & (blocksize - 1));
+> +	unsigned int max = blocksize - (from & (blocksize - 1));
 >  
->  USB Home Page: https://www.usb.org
->  
-> -linux-usb Mailing List Archives: https://marc.info/?l=linux-usb
-> +linux-usb Mailing List Archives: https://lore.kernel.org/linux-usb
->  
->  USB On-the-Go Basics:
->  https://www.maximintegrated.com/app-notes/index.mvp/id/1822
-> diff --git a/Documentation/mm/active_mm.rst b/Documentation/mm/active_mm.rst
-> index d096fc091e2330..60d819d7d0435a 100644
-> --- a/Documentation/mm/active_mm.rst
-> +++ b/Documentation/mm/active_mm.rst
-> @@ -92,4 +92,4 @@ helpers, which abstract this config option.
->   and register state is separate, the alpha PALcode joins the two, and you
->   need to switch both together).
->  
-> - (From http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
-> + (From https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
-> diff --git a/Documentation/translations/zh_CN/mm/active_mm.rst b/Documentation/translations/zh_CN/mm/active_mm.rst
-> index b3352668c4c850..9496a0bb7d0705 100644
-> --- a/Documentation/translations/zh_CN/mm/active_mm.rst
-> +++ b/Documentation/translations/zh_CN/mm/active_mm.rst
-> @@ -87,4 +87,4 @@ Active MM
->   最丑陋的之一--不像其他架构的MM和寄存器状态是分开的，alpha的PALcode将两者
->   连接起来，你需要同时切换两者）。
->  
-> - (文档来源 http://marc.info/?l=linux-kernel&m=93337278602211&w=2)
-> + (文档来源 https://lore.kernel.org/lkml/Pine.LNX.4.10.9907301410280.752-100000@penguin.transmeta.com/)
+>  	/*
+>  	 * correct length if it does not fall between
+> -- 
+> 2.46.1
 > 
-> base-commit: e5e7ca66a7fc6b8073c30a048e1157b88d427980
-
 -- 
-~Randy
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
