@@ -4,106 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A7ECCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 12:40:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58453CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 12:57:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E476D8E0079; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
+	id 45BC08E007A; Mon,  3 Nov 2025 07:57:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF7DB8E005E; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
+	id 4333B8E005E; Mon,  3 Nov 2025 07:57:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D35218E0079; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
+	id 2FAC78E007A; Mon,  3 Nov 2025 07:57:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C1BF38E005E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
-Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9659C1363F6
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:40:02 +0000 (UTC)
-X-FDA: 84069253044.06.D07AEDC
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 244564000A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:39:59 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=bTzr4D7Q;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762173601; a=rsa-sha256;
-	cv=none;
-	b=Q7apVN8NcvwneacB2rJtr4e8dEymrg/8BVjlW9h8bfowERPxrc+UgkDeyKNeDMUh5AEAkW
-	WsTiz/ojXetJnztPtW5BjTTRG5uehiQmhFDVw28aM4WxOjDFF8r5D9d//3fc6hOElg+Ojn
-	Skp+8vAjO2ke3kZNTSHTPOW+qviyKJ4=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=alien8.de header.s=alien8 header.b=bTzr4D7Q;
-	dmarc=pass (policy=none) header.from=alien8.de;
-	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 158948E005E
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:57:08 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B77B2B3AF6
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:57:07 +0000 (UTC)
+X-FDA: 84069296094.12.205C4C3
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	by imf24.hostedemail.com (Postfix) with ESMTP id B34B3180013
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:57:05 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qqq1m4dW;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762173601;
+	s=arc-20220608; t=1762174625;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FFLwKgwx6WFvJkW1SsKMkTkIEWPqVqozlHZeum7DzeM=;
-	b=Cq+n8OrxUjLdRwjGWN5AP/o7iJcUhFB7UrQJryhvXhXrASRQT/ebCWtf9/4v5hDVfoSZ//
-	6LMxq675EhCBB3CwakxvY6L+WMKQMorDw1eC6rfMBLh5O90ipW9HTBmmiIwZfjljGA0smB
-	FuUAmSBy9004WtuXCru7kgCzQa1v4qs=
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 604D840E00DA;
-	Mon,  3 Nov 2025 12:39:55 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id KtrrO9iIlOm3; Mon,  3 Nov 2025 12:39:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1762173591; bh=FFLwKgwx6WFvJkW1SsKMkTkIEWPqVqozlHZeum7DzeM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bTzr4D7Q9+R8M2HmUNps/SjaU1a4dLaSFPp04M573KsTmbE0ij51zExSOukKSk4S0
-	 DP94WNtHHPKkSinM4l8W8pf8mQ7AbLqEdnghTE+kTAjGl/QPTDihnlr69s7/3LjOz/
-	 ZY92w1g3PJH9Pg/MKQY8wl5LZfI+VqGcSC6Lqp/T4m0mBf6DtpObIeSD1ONlzfQolG
-	 RIDo/NMQc9wKm0/OGVAbu1G6ui4DsAWKh89LlScXzVH9/lAOsipQEOuXLYjkCFUG0c
-	 Br4iUhT6qLiLZpvbca1ivrqE4Z3yq2RTAsU6sYT3mjZ5W2wilHvFxwK3EEgNVhDp9j
-	 /b7xfTr8WLRBwisU9zbd4sJbafD15zbyV+FNUDW+Hc8KS1AxxZtDP2S0htntKOEswf
-	 UXAXHompzT7Na3DM6/uzbokyfnJ/B7T6bPk+5HDmZs3R0XgWEsmT/LsIvAAuXhOI4+
-	 A6fKJ5ZOZD+Xx86G/jTuyZ6jvVjjZPJwsTXsKlpwfIgWCW45a18KsKc+7KATcsgasc
-	 FGaSbQm98KSLWWT3nKQ8ZO2gYtrJAbrwarUAC9DeHJCO5WEH2ueYYQ4i79u6+NZI9T
-	 Ho43YZd4DjmHkb7nsGe5S2FaqtOG91C9pVK912aY0UpHX0+byeWKxeNE7v8JKYpwpF
-	 f+0t9hMU6aTP6YzxBKVDzOeo=
-Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4B2AB40E01FA;
-	Mon,  3 Nov 2025 12:39:26 +0000 (UTC)
-Date: Mon, 3 Nov 2025 13:39:20 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: David Hildenbrand <david@redhat.com>
-Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, tglx@linutronix.de,
-	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
-	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
-	surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
-	nao.horiguchi@gmail.com, luto@kernel.org, peterz@infradead.org,
-	tony.luck@intel.com, x86@kernel.org, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-edac@vger.kernel.org, will@kernel.org,
-	liaohua4@huawei.com, lilinjie8@huawei.com
-Subject: Re: [PATCH 2/2] mm/memory-failure: remove the selection of RAS
-Message-ID: <20251103123920.GCaQiieAtEGz1nspWZ@fat_crate.local>
-References: <20251103033536.52234-1-xieyuanbin1@huawei.com>
- <20251103033536.52234-2-xieyuanbin1@huawei.com>
- <341ff738-255f-41c7-8b23-48aac4cf51e3@redhat.com>
+	bh=ABjcrw89jAA3Q20fdppeCXKOEoaWX9Ww3g8nGLhqb0U=;
+	b=XG4d407uBkDE6OU53R3GjarlNPfhYhCMqGjyasklCvhVU3vfG2XFRXp9SigScRaozWFAxk
+	lNYSSJieAKJFXHE04/IYEuHftS0gd5n+Q+DxiDSHm1BgVM+5HSTNONa6WZf5w2HmovtXSs
+	SO+ZWLn7pff6NXYsBEcMmz+CQ96UZsc=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Qqq1m4dW;
+	spf=pass (imf24.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.179 as permitted sender) smtp.mailfrom=urezki@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762174625; a=rsa-sha256;
+	cv=none;
+	b=tBMqO4HjSWhxUmYI3Qmofr3Z2dOMs/t57938q28ukomClo5zxbaCQwxadeJPmSDwCjIeme
+	OdSfP+ud/rVpuaop6l4KRwQ39q21BbR2GLLpajNGAo04LctpTpFKowltHIMJ84eRVnVuzO
+	0BmHl2wJboOc+v08rqOWbFUg5KhISgg=
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-378cfd75fb0so50718011fa.1
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 04:57:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762174624; x=1762779424; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ABjcrw89jAA3Q20fdppeCXKOEoaWX9Ww3g8nGLhqb0U=;
+        b=Qqq1m4dWKV1Lfj7Nm5CdxLxHt8b4Fb41/uA2syPSSZVpEbXmqOo2tXI3d9iXefAz4V
+         J4k4SAHMopSjQqd2vVaL8WWq3vT+hJPnRjpKQh6jyX+nnhgV/o5mDFvlw8i4ua0zdav1
+         M2WBooO2/V6qtAGh3PTYjZVoi7rc4TrKO2Zn5UKQx5XS9FdCRV8/OqEA/SmnItbeVg66
+         ibYNpak6L82Tk5lS8ICVpIwfHqgo8F1CZGiN8KxChskO/MAT4s529i8/sK2k8qOjfKHz
+         0xEZXsqyBHmQzeDBa3+21kBA9KslsnbwwEWROjKuSQVHpJYAzGU53hUOQcJOTc/g6pFS
+         vOyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762174624; x=1762779424;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ABjcrw89jAA3Q20fdppeCXKOEoaWX9Ww3g8nGLhqb0U=;
+        b=X0Erb1Zh8KXBEiSCltzCdY/FxLOg81CpexlWIMdHSlMUPnn/+/LX43gnDQ+Nch6JIa
+         VbRIN30UE+oZSL/tJm+CFAElvbWEhD/O92eh0rv/smnQ5SItNTi4Xbm4sCN+EXd1y2aF
+         HGv/M2erIJQcSODKjLMQOwVFxoYNdjAZWkdHY79L8xJvy/O+XVYs5+CiiYJacHFitkz8
+         YWhKb2+I7RYscJQk0I7RxuKtlA33l1nqUZeFS9EUBb/LprawEcd3fVKX8v2WQWiOy9Va
+         j+JHzbmClA+5OBg1rzMozRLMaJCOKrkmeF7GO5b5wIZ5zgJ6EABb4jJ9c4xPGWGnHcMI
+         FRRg==
+X-Forwarded-Encrypted: i=1; AJvYcCUOwjszG0lfHaOBwrsd+Tmu+9RtrQqe1shdCUTxL344u06D4J+rWZczDgYl4vaApzyv9l6k2FTOcw==@kvack.org
+X-Gm-Message-State: AOJu0YyZGZUS73ifsDBovNb30d8wkg7zmFCdo+uBd3AnBeHGQcgtAX/Z
+	DGzdoOwyNl/Cmd1yNgl8ijWR+13PCcGP8V366LFyiF+vv92+y15n72Aa
+X-Gm-Gg: ASbGncsdIWDPgXawS1nhH+BmDs6b17NZMLVlo9tsBpkZBXDA+QPmHmp+NclkLurZA1/
+	mF5TfoBbZKq6fg5XvMc90Wc2OLUvD/J6rGnBj8Tj8WCFFiqs3kaiIT0iA+CgEoqtAdpQGATSaqL
+	it9PPdLRq6SES6P2HXPlr0KgfTN2wIuO4bAJWXIaJznbE5WuyGjmt+F54o0ZKDcCGTHvmc3qYhG
+	ZRK9SqAxtsfCOVBarkMPSdFmMEuSqqRExbsLdA6ex6URsk0t6LdK730hhWCqZ4sp+jDpW9nnRMv
+	9xdu9uKRTJp6ahrgimgQiiqYfLo9pAsnTx1ix3AL7g2LR83ctCho95dRsoco971FdNOeyKkeSpn
+	sw/quQLzh/iH/lXnQYRZqPaFdNK4akMQ+YIKNzLYuew==
+X-Google-Smtp-Source: AGHT+IG4xzdqhYAc4R6V0PORR3naINtbpFIeJn5oDtyrwDfJWC2/RhaLJmIXtOn0jpFV5tRicG8KCw==
+X-Received: by 2002:a2e:a542:0:b0:37a:2fa7:53af with SMTP id 38308e7fff4ca-37a2fa75c90mr17228221fa.40.1762174623533;
+        Mon, 03 Nov 2025 04:57:03 -0800 (PST)
+Received: from pc636 ([2001:9b1:d5a0:a500::800])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-37a4167f286sm276301fa.52.2025.11.03.04.57.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 04:57:02 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Mon, 3 Nov 2025 13:57:01 +0100
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@infradead.org>
+Subject: Re: [RFC PATCH 0/4] make vmalloc gfp flags usage more apparent
+Message-ID: <aQimnV815XIjV2JT@pc636>
+References: <20251030164330.44995-1-vishal.moola@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <341ff738-255f-41c7-8b23-48aac4cf51e3@redhat.com>
+In-Reply-To: <20251030164330.44995-1-vishal.moola@gmail.com>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: B34B3180013
+X-Stat-Signature: kk4fk7gggxaeq4fgcxhxyrowxiqjczjn
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 244564000A
-X-Stat-Signature: 1jcgc37dr78zkhtj7yn9xh4f7qjh87up
-X-HE-Tag: 1762173599-556039
-X-HE-Meta: U2FsdGVkX18RJzmSs4qDEcJmg8uiRM3zr4S6qMNuNoOKTukzEa5CSh2+Vo04o9COIbvAw9nOx8hkwCaQ7PW6txFU8SbcxqRolgs+m/sMa7QiTZ+P+qvDgyOJ3uCoReNvXFGMC/NMIuTn2M3TXjm8eQft1AKb9Fpm7IEX2Ld7D1JDNydslqNwSi2VAaBk0Fs854WyIcysUzToJkXjwf5Qa54jQ6owQM2CzNx4+88+YhA9rRBfX8xYw0mGHbdS27RfMgoAU7xdn//QLRtlU6G1FYNYPXWygCISSvpBXVDbHx/LzWiufLHNuPtuo8IY9P1xHOhvcoqDXXw7FugPQMZvvdYAEbIrDj/lqMEopSQbkiEGahA8PWydobYmJsmOJoAGUOliBm5EixzGZ3XjdrpRmvPzwDOQx7yS074f9j/H9dmTnVjmmJzOEmAGWgzw/jFDB6a4qO9Fm54MHgUgH6Rjl9lBkARyN2Q76RsM/snIwZ4oNnDJJs/JL8vAncjWZjxo30LLdSa2FMW+/hUTxUDraVjMy3lg4CcUGnbYVr6YNLeO4Z3uvt9n/kKG3Bh841HJQIOaBrZ6u2f2SFBNirXHhk96AOpzWg+f3G3pXsEwbrOq8jBW81ZdYOqsimL/CEp1vzINpAeDjVB5mLEhgGWfBCpn5WQ7CncYRIrksYfVmyVStk9vOgMkObv0lViksin0011XG9wfDRnw6bo4GR8jhHCWaLvdKra0COXkjlUB7L3kighaXYPvR+K2HPPNBfbf3Frzkpd3cRF1KrI3nj4BSUrr6RH8c60PD4dQSK21fkmRd16xq0D0ELp94B4+B/4qavQbtMCt9t2JqMa5nghS4/HT7pw28IX1OBXsZ6/lPYzYUi2LAlIjidHa93EcX53O7udZn3zq3paHn0IWZvIsvgYT4vbwcasaz3el1r2lKm8cRbwqsbqM5VKH/8yBTzJT09NjwQlouZ4F2W4ld4L
- bpbuyDwE
- bDl1b2bxa1w3B1eCm7VumNHkyyuuEFWy203sXWVo+VigUQv7iEPOvCou2PRiQBui/3qf6uLg0CTXd7UMBPjj2gL6gPmZ1wL80fNlYB5FrcUtO03VpZ1pemNDoGj5N0xOMCUqehAZLPKa1s/PIVGTI/U65RrueFH2gKhCHIZo3/s0tYK9ry5DgwkDymz8vie+i/Zug9+hSiG8UGySHN4VmYCyy51PavpSW/z0cjtL/F+O5jWNySA3C3/NknBCOe0luP+2RFDAm657HyxujUgLW6B/e6Qc54bEOYVR/dUxy+B5r2zE=
+X-HE-Tag: 1762174625-762316
+X-HE-Meta: U2FsdGVkX1/2oAOvJwTqlP2RkAvzEPFRBR7NxLvnN6tJYiE6N+1BCbw6zzCw3YGfYrs8yNa7574CStBS7EW/gqZJne/Xj1zT7ImRDncuMRlYornU2o1rvFung35kWs8UHxA3ueg1agYy4FFzwrdcFLDTOUGPCu0nsQgy8lcdzEz2f3P6Z6r5kTSicE/eG3sPqQHauxDN8nFk5UC5Is2er+jJHEZ4uRk/pHaPz0UaXQWIg8dLHPeDVt4XPMUuwWHKXlvTHT2gS8yN0oUg/ojESDh/s2P9iKNmw9RgBcvPvdewo1VK1ceQQRe8K9APxTIR9KNGQeB0JY/e662lCUty2JFk28dyxl2zdGwCYXgcXRMT5sZ2e5/n0URerwxg+VUpaxPUXMGrJt8K2OsRj0bP1fnnEkgXiKTpadNOBZL9mb3VrtI5ltleRWMcXM0QJRwEoHRIlRhloiFddD+qpgO/JazY5EycwRwcCMi7KsLVSYu2UvFq43ssIP69GHdcytHa8JkbfwyBpv0TubZfEDQb5j8ww72EjTUeQgVNHqHzE9ibQEyyN5NRb6UZGbVCGqHDDDgY8HwLzqqptWlzHtQn/cHhfVTDwAvsA6F/7Pw2Q4/y3VFBuIJ/6QW2LlIPtpmlbQAbCohxrVRHDMTHxGadEI7QnvVKD3l5AWqXIbn2FvU5d2hY0rMgzgYBO6iz8FU0eQ6TSvEp1+phoNMyhGXFsKkfeRlXLkKkHpqgWRZYWE+0mNtmCJLJo2YKBpFa0zomfPVr9VqJ0ZdnIpfLLegOwDe74d06yzCfqeWwfqaruuBA+OiiMxfWKBbIt5mqUQEqyx1vHu+eu7VyOdO/kq1ljyPGM2f/O0mEqKhtEg3lU3arucIT0fPn/Fqk9hY9IW9aLQAFznPfjmhXbTpq7HichHKUSUKD7BiLRWXFftmVOe66uQ/eMnS9eOwr21h/sxQrMrYif8s1JubRMWI9M6I
+ S/jXF1bk
+ 9pPot8tSslgufH+fBWXMdVULv0gG8zYooQlbmf3ChDzvzanFBrjfZmhLtb3IGmi/2a+iFub+iQIzdqNgnZ1RuonIdtMoP+jofRBFsPPIWvdgSR6d+kAlJGsBBM51MwxQQ3/RrMUHPgdhbZ/XiGfMhKQH2VXZS0EpWTzGdzBhjH95MAkbKLj9G465+XquVzze7DuC3sbW5O3yIcofeopbu0QPrArdsvDcFoVgY8Gnp+7Bu3qXMldMILq5StAJe/BiKdHmtmuKNpn+tGMps95KJPYvJN1nBqAsw198FD67npNyjMQoaDndffZhql85gA2dcMJ5A7nta0bBzzb0EaMWbfweDQTX0o4QkTgmXI4PDSdum9riwBYprABUiCfo8k8j2pt82IEGnVGZF4m2qp52EkPVGqSg72MA2DtQtZTRPUou4ZR1Hvl/dkOA7FoqCKFOpHVFST42R2pwOIJ8tYng9sKwS7OWEK6ZpKmOu5jtuOKVNpny2V6qilGGQlIALPGU3qpUBCQ9WTc+5xu/jD3Xk6GazZ4WnMPyejBLR
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,15 +120,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 01:15:58PM +0100, David Hildenbrand wrote:
-> I rather wonder whether the memory-tracing code should live in a
-> memory-failure.h instead.
+On Thu, Oct 30, 2025 at 09:43:26AM -0700, Vishal Moola (Oracle) wrote:
+> We should do a better job at enforcing gfp flags for vmalloc. Right now, we
+> have a kernel-doc for __vmalloc_node_range(), and hope callers pass in
+> supported flags. If a caller were to pass in an unsupported flag, we may
+> BUG, silently clear it, or completely ignore it.
+> 
+> If we are more proactive about enforcing gfp flags, we can making sure
+> callers know when they may be asking for unsupported behavior.
+> 
+> This patchset lets vmalloc control the incoming gfp flags, and cleans up
+> some confusing gfp code.
+> 
+> ----------------
+> Based on mm-new
+> 
+> I did some digging and am not entirely sure what flags vmalloc does NOT
+> support. Is a better idea is to have explicitly supported flags and drop
+> all others?
+> 
+> __GFP_COMP is an obvious one due to a BUG call in split_page().
+> ~GFP_BITS_MASK is also obvious.
+> 
+> Then I started following the kernel doc and added NORETRY and
+> RETRY_MAYFAIL, and after forking a couple hundred times, it turns out some
+> per-cpu allocations pass in the NORETRY flag right now.
+> 
+> Does anyone have a handy-dandy list of supported/unsupported vmalloc flags
+> that we should reject/clear? Ulad?
+> 
+We recently have added GFP_ATOMIC, GFP_NOWAIT support. Both are handled
+based on gfpflags_allow_blocking() checking:
 
-Yah, move it pls. It doesn't belong there.
+<snip>
+* Supported GFP classes: %GFP_KERNEL, %GFP_ATOMIC, %GFP_NOWAIT,
+ * %GFP_NOFS and %GFP_NOIO. Zone modifiers are not supported.
+ * Please note %GFP_ATOMIC and %GFP_NOWAIT are supported only
+ * by __vmalloc().
+<snip>
 
--- 
-Regards/Gruss,
-    Boris.
+>
+> I did some digging and am not entirely sure what flags vmalloc does NOT
+> support. Is a better idea is to have explicitly supported flags and drop
+> all others?
+>
+Maybe we should look at it vice versa. Focus on supported flags. In the
+slab there is an adjust function which modifies the gfp and emits the warning
+if passed GFP is part of buggy mask.
 
-https://people.kernel.org/tglx/notes-about-netiquette
+--
+Uladzislau Rezki
 
