@@ -4,107 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 244FACCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 05:24:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2D6ECCFA07
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 05:30:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DF9248E001F; Mon,  3 Nov 2025 00:24:08 -0500 (EST)
+	id 3CDC18E0020; Mon,  3 Nov 2025 00:30:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DA9A98E0015; Mon,  3 Nov 2025 00:24:08 -0500 (EST)
+	id 37E9A8E0015; Mon,  3 Nov 2025 00:30:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C714D8E001F; Mon,  3 Nov 2025 00:24:08 -0500 (EST)
+	id 2943F8E0020; Mon,  3 Nov 2025 00:30:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AE3148E0015
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 00:24:08 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id EBAE3BC1DA
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 05:24:07 +0000 (UTC)
-X-FDA: 84068154534.12.1AB0AAF
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 2409212000A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 05:24:05 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ILjSwEEi;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 13DE78E0015
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 00:30:17 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AE1AB1A0980
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 05:30:16 +0000 (UTC)
+X-FDA: 84068170032.15.84825FA
+Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
+	by imf10.hostedemail.com (Postfix) with ESMTP id CADA0C0009
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 05:30:14 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine);
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762147446;
+	s=arc-20220608; t=1762147814;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=hxlaLhA1KNd3P6ts8pPE7iFrzEvkZDWndI4E+RtwM3c=;
-	b=gqJ3y6mWsLxTSwODdi600d4dAmj1LkiYes6EdIvlxqEDFAD1FHP2QETRXmOq++i0g3lxH1
-	8Uc7KRUqZXo7oErOsrTrsa/NpqyLzgzVVqzwPHkEuT/u92wlXQAEITYsbVdklLjzfwm3R8
-	lD3gGz99Cvpl+ad9XjZzYaWU04/9TF8=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h0IjBdFvCe6GDPneRMmh+K7UVDEF3+8TDpaNsFUJXv8=;
+	b=3ijNzcyk1Krz3HzSZvyieqW6ttEf5w/jTM11F1dJTECWI01LN7CZ5WezSmTKCNBbBkaT3s
+	3hvVYALvJswoKDgTcFMnkWTg69k2ysM2huszN30ICxIf16BE5w7bfFC4A5J4Z4ppJEZjfm
+	y8W0mzP30VwTz9dDY3opbSKpMqHsY28=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ILjSwEEi;
-	spf=pass (imf29.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.177 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762147446; a=rsa-sha256;
+	imf10.hostedemail.com;
+	dkim=none;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=kernel.org (policy=quarantine);
+	spf=pass (imf10.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.176 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762147814; a=rsa-sha256;
 	cv=none;
-	b=oS/+68zvBtHz0/isicVkvYsy0HBKa1DvOo2ek+SrDk4DZk/5WvyKQxxTNhSifRWug3bU/k
-	XXXdrgmYCj8xZqMfPeYEjD1Ro6QvHPq/T02hYW8fXQ0r6zau/VSl0zFnY9Y5JOERepshfH
-	ZAQubxpYHcS1YGLIsWl7QSO/0ssiV68=
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7aae5f2633dso502549b3a.3
-        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 21:24:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762147445; x=1762752245; darn=kvack.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=hxlaLhA1KNd3P6ts8pPE7iFrzEvkZDWndI4E+RtwM3c=;
-        b=ILjSwEEiKgc3VC3tvAGK5z5URLN4G939KIaV2TlPTyNV+2LgIlBNHXsQcGT9e73VWo
-         2zzph2m6M+xzrxtHwMxWWP7qJB5vgEKUycmGAxDyPdasxp+pRLLbm2v408qXzwED+tem
-         02UUvPewxccgKJbuBUqACM60uVcS0DJcRRWLRlFH1HP+W36Tm9iu/Ad/NJwrrY3o3evB
-         dsxdDbseTMl7vs4smteyBxcxRdUSNlWz11cyBQ+7HpBd3nvd3GWTdlHNU/Bev72k6nB8
-         Abnvj8Wr+xuJm5NUiw79lQQfV43LqtxxOH3whNUfQh6JHAGqFbuBrcl+xeAg1ZAUDgpz
-         7fVQ==
+	b=cCUazTwlhkZjmB9Ih26A/vlyCyGAuLto3cKfwLev8RgyN3H070+syQQxRQOo2DUFU31BLy
+	GUqvA5hFNwqbOVmIzzrUciiOXqBj+tnV+lkzYGdJMMN3q0GrWRB80XXkQXYnuQ67TIErjI
+	JNRGRaIIAt+XEWs7TpB3vQ//svVF06g=
+Received: by mail-qk1-f176.google.com with SMTP id af79cd13be357-8a074e50b41so555388385a.3
+        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 21:30:14 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762147445; x=1762752245;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=hxlaLhA1KNd3P6ts8pPE7iFrzEvkZDWndI4E+RtwM3c=;
-        b=gY1fEwt49j/h3edgOuDYBqWVm4X+2rWFmIhaVgcFTAUBoOg1HX8FLln5v+p3gNJBnT
-         xp4ui3uA2XTNJW5hsN1i3TB8P7S2NJWyuKf8J1lDFRgxVcw7e7sRlbx5E8m1GBmr0VZK
-         +OCFMOScMzSY79tGZN3lVi7EdA2q7pE2rlq7N3RxzUpuHqGLw3eFFF8YmbJvFVnFi822
-         7MPj95p5xPWDcIxoqmg0eU5diKqkqy5qXIqSuXucbwajoF4scjVz8ammZ9ygjFBnLNLn
-         w/czjyiCVSs1SP00LfPCNvVWu0uskToFfV7GAuw0qPPCcNF4X/WxEaVZdNv9a/M3apkq
-         ysBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWwqLjdt9adPcLLVl02cDt4V2oJ8rs+odkJWGD+TUZEUjCYd6lSsg6bJWj7qu5NpbOfEkvwCgoreQ==@kvack.org
-X-Gm-Message-State: AOJu0YzH1A3h9KCSCZkyg62Bs8bZUbiTdPvhMjHUhlCa6S95jzakzsFP
-	Omcap/W/1NAIiSi0p0DKTYT0AbnL/7GIBt6RM5MAdBfn4FRdiMcsjQm1
-X-Gm-Gg: ASbGncv5KlIc3LNpOhoDDPyBQ7TIkpRRSVgHjEy3rpuZ7ngT0DuSPZifpWf0wYIo2lL
-	riut2h9a7N19OEIUDzySlCGf/lGUKK2HVz/+Aao+LF3GWH34U8X2AGbDrTs6MnC6rxaYNNl5zW0
-	kP/9nd9c98Y9wVJDbsLGwcouzOfStNnmP50SZBhu9K0J+5cu5nBHvfixuWwSSsJ4iMCNC8ZzN5r
-	jGCmyGLfi2G77Yv+xDlAlcv+FhURK6C3J2JlfMn4lID+k2cHNrvXtRXu6wYIBkkbHeuj6IOSUNt
-	QxQ+9SzHjm4x+hanRnxQGIXbvns2gp6iEgKN/ISfGhBBzqt9m7GcweLmm3tDaEkjby77+t+hyox
-	OM3pSm2eyIyYyC7eTp0zP3SNWjb8oeO1YFL2dCP7n7ycrH1LJUdeBoKiPy10dGS+2rFAmJt6Nt0
-	0PrZSW
-X-Google-Smtp-Source: AGHT+IGLt4dkwu/l/f8pyXhwZlNlKn0W2O0qaUgnRSLR4mLq5jyeTb1X/5S+ByPTtg2TX/kY2ScSqw==
-X-Received: by 2002:a05:6a00:b87:b0:77d:6a00:1cd1 with SMTP id d2e1a72fcca58-7a777b47d9dmr14621942b3a.12.1762147444828;
-        Sun, 02 Nov 2025 21:24:04 -0800 (PST)
-Received: from dw-tp ([171.76.85.117])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7a7db86f0fesm9646002b3a.60.2025.11.02.21.24.00
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Nov 2025 21:24:04 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Heiko Carstens <hca@linux.ibm.com>, Luiz Capitulino <luizcap@redhat.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Joao Martins <joao.m.martins@oracle.com>, David Hildenbrand <david@redhat.com>, osalvador@suse.de, aneesh.kumar@kernel.org, akpm@linux-foundation.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, linux-s390@vger.kernel.org
-Subject: Re: [PATCH] s390: Disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
-In-Reply-To: <20251030145505.2764038-1-hca@linux.ibm.com>
-Date: Mon, 03 Nov 2025 10:29:29 +0530
-Message-ID: <87zf934spa.ritesh.list@gmail.com>
-References: <20251030145505.2764038-1-hca@linux.ibm.com>
-X-Stat-Signature: 9t956kzuk13817t6kt41oeriawnb573x
-X-Rspamd-Queue-Id: 2409212000A
-X-Rspam-User: 
+        d=1e100.net; s=20230601; t=1762147814; x=1762752614;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=h0IjBdFvCe6GDPneRMmh+K7UVDEF3+8TDpaNsFUJXv8=;
+        b=tALnMBsxPlcb/Ihwu8amCd3VmxGSPcVfHPUN/kvdMuR2krz5dwByDvSo7y5wHs00ON
+         Rkpais2AEgirtsRhPqEFsP4huONkYCRTzYg9YU+FyAZ4lqVgBFHkS9iVv5uEJtvGyzfm
+         HE15q4GGn1KiCjPsV25OGj5yETr+73bz7KBESDkkRt4dx2LpWZmXscA6a0TuMvE3yGGg
+         z01BemMYyZeVnx+PGjcTd4UWHPkTvfKppgxsYRhYH39n73eGrBkrZVlYU2DKt0211hnc
+         sxzShBA+d/IG8FaiYiT3X7AZLKBBOipjggJiKVHJkRwTLciSToST50BCIzYEwxrcFvs9
+         oNJg==
+X-Forwarded-Encrypted: i=1; AJvYcCUDg8wqYd6KPFwuAd4QxGAdyCzSs5OiZPRD6ulx+yRfK22tHxpZlh+MVC7nq775Q7K7EmtNTnMbXw==@kvack.org
+X-Gm-Message-State: AOJu0YzD9chY7LZGCMGXUxxnGLCKN1vLdxVnOBEJ0Ovo3SAlhbj7JxZ6
+	RRKZSBi2/HasN8sTEP3i2IEplTQBeR7EfQdxd5hHuwPN2CQkPCLLyR+Z3rhCPMGlHzq5abcqlHj
+	vEy5rRl59OWh8HTTVpczw/AsVK2YKuBc=
+X-Gm-Gg: ASbGncvISl3qELhFEh7xYOaWuO4uRN+Ppnbr3OREYwJnROnfyWdAoGr+y5QoybLkLVD
+	OyOyuMpG+zj+aMA2H43wiXeli2RXfRHbtfTjiTMkS637Zk2YqQVUq5jxFMYSliJnXXN9V8Si7YK
+	YpEiLf2WnfiYBe3QbFjwK4PdO8oX/3+C+7ePCyikOIl9/z/j/gcrxK3mHeEarNSuXXhN5l/uPSP
+	ppBLM8kBtz8IRwm5arRJ5byCdqVjo1AoEURp7D42adpnPMpVln/ek3nKbLKBUrXfUmErotXQkqY
+	GZEDVU3IZcicnS9O
+X-Google-Smtp-Source: AGHT+IHOQo9W0aZf3MnjhclhR3nwlrFk6dppnhp5ayWEimO/qCbezZZnv9jMcOotLi2ysrcz68+yI+jPmrE7PBsoXgg=
+X-Received: by 2002:a05:620a:1991:b0:7e8:3fbd:4190 with SMTP id
+ af79cd13be357-8ab98eba49amr1317486085a.2.1762147813760; Sun, 02 Nov 2025
+ 21:30:13 -0800 (PST)
+MIME-Version: 1.0
+References: <20251102-swap-m-v1-1-582f275d5bce@kernel.org>
+In-Reply-To: <20251102-swap-m-v1-1-582f275d5bce@kernel.org>
+From: Barry Song <baohua@kernel.org>
+Date: Mon, 3 Nov 2025 13:30:02 +0800
+X-Gm-Features: AWmQ_bnMUWkq9T95a6Uuq6ry1hDCnCtzRCM38-pLN__26i5yO5lc68dIeHd6alg
+Message-ID: <CAGsJ_4ybtsP=ObDrWHZVN0htoGSWy-RMkRuiWWw6B9+Xaq_4YQ@mail.gmail.com>
+Subject: Re: [PATCH] MAINTAINERS: add Chris and Kairui as the swap maintainer
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, 
+	Baoquan He <bhe@redhat.com>, Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	Minchan Kim <minchan@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Michal Hocko <mhocko@kernel.org>, 
+	SeongJae Park <sj@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1762147445-154099
-X-HE-Meta: U2FsdGVkX1/AyKCLuhNO7agDa/KrSn5WTbLSf7rRGJcDHk4OKnXBroP9ujtJ7gcBoXHMPRMLKn1A2jHn2l6KjYwB0PVkN/KJTv5AYVWT7RmEtYnbK7HcIDSvzeCoI1gFPfZwEEzmn4XZAmAubnOYcK3M+W/U7l0gkPb1S8gXJfACLPBR4K7tymZv3pitJhcK4z5tjY+suqNgL5PbH+y3Zdj9mTPx1GpT8/7d/tM+7ZwD+OVhjVnqbey3tZq03gA5lakr0IlvOltd3OU0H2ckoc9gWwGEOtdkunt7iaXiFZao7zwOF+rSn8NX/+yNoYcx3kBVKUHDCMmCPYnqpWl8Og5cPDbjXlrBjWQ0GOllpc9Bnu+hoPjasdNqj+iPuYlnqWOxYwLLaq1OURvtJJX7wzvtI5Kv3yEOte3vkXobNnjy7PiIhOhvMQQRXKkKxD0CZnkWoIAN5sajxJK6q2WfXdjDreNOdfTGDCffEA8rtQZZs87+3i4GfhZg3STxlqfwxNszwJ07krmcIbTPaHSKBqM2lSyJup081vj2qnyIWiu85bWq3vDFVQ1g2TaQ49S10NuOddchbUGnvnFp+iDsMFcTXsyeHojhecEjDSgEQhdsBbVojLNNgJJhf7a/rDjP6OTiUakJ4kwMApkiJv6XmLA55WM5bMm+DMaKJ6FT6bGQL8WALdoGbew6cH+yzV7o2JfiDkcv1Z/LrMKKn84AdRML3Lybdd7sWnTvS1ZFwT+u2W60PYO4PPVCEYKDJlM9Mho1nCmrhvhuKLPryKbDf7C67q6QqPqnW0iZYlADDmgpVp8MPdsFZ4ZD/yadzY3quhKV1EMNhVFkAFnQ19uds9m5OR6G0ffcXiiikJupWds72d5vJpvBjlTgv7m80W0ipMq/30NQ5fs1SqK3MlwCnYO8NVwTlprk2C78SBlcOzxaS1Jgiu9x0UlODzlGJ9uUaXSjQ37dW5wGnVyPpM6
- NjtqAXSN
- t3xJNK07FK3gkD0ssP5+l/8oV41Sw/QNEqMmxz6LnsY4xr3sybTu/j74L2mMemoN3A+OOd+necSN4khPLi2HFnaSTUgdlMVGwvirwYT1P9gAl3rm4ucD5Uu30iHBK557xC/egTylAK3WbFKXluYw61/ORI0Mss/7wVsN9KKSGj6IeITusbvNIk+HEnPdI7Fzp/x+1LKfUUBq2FttW+ZwNS9pyz2ujYAXaIDpM21+GtOTotZ6dceW06/fqQXusnA3B5CSCfxnMlBIwDr49xbwl2+IGF6AhzFVYyfDBV+1e2jV/KNSESmid4/ozTRSw6Pq/s369ajf6gNaVSIrCsjHEZRQFsP0WOviT+0Gz/PulhB4dWGZFUEaryXUDAIFxkI+X+ZVHjOObQg+6GTDMKYPZHLmmf31rygad+mPOm5sY9OaSAwlhu1RtFmZ7jYcH74eLVZvMcQd1bpMWtnb97sJY9UdqL7dgCsSm4ffOgRNbBxeDdwbqySjhNfzeywK/3EnrPosmn9R/vwRBjIG3PbAvSN1cuqyi7cHW3+iA
+X-Rspam-User: 
+X-Rspamd-Queue-Id: CADA0C0009
+X-Stat-Signature: fmjr59gu1wdc8poj1cgjpg1x4imko7jo
+X-Rspamd-Pre-Result: action=add header;
+	module=dmarc;
+	Action set by DMARC
+X-Rspam: Yes
+X-HE-Tag: 1762147814-477261
+X-HE-Meta: U2FsdGVkX187q1mR3P3s+6srUQQURAvQbfvo7WMID3rUPiTVgln3lLiZBgBtU0pt0iyetAllmyhLlNe9tEZZvOheZBd/hAiBCj5K1D4T15hMD5fzyTERbFzZFcMoBWISBi9MBdHQ/K4n+JPHyd/RnCdibMyrtcpMb2zJBo2QRYUoP5yW9Z+lQUbPEL6KYBNMtOQjpwzRHfyBmz1pJ+I8xdtosqjSD8wpXAcECOOcIABBM+8pWCz02v14nPe6MOnfAU9Q/4LbPLf2erume9z5KR2wxc7vRznLADmJFfhZ38TYfJ3AVHu5jjEAj+w6Q/kO1Kt5SLZr/WGJRTQEEU5DYVrD5Gf+yrk2Lv34C/JoPghQSP6MpT54iKjIyyJd092WCIoPzXUD0PGBhfbXma+d4HgxyaHZ3sjxKC4IsRjuzZPGI+5m8p0iGqkIbphllFIs81xuJQYtTmE1pszAoAl7mJYKZgkGYOTTy0Hx4Y2ycrL4FmsjePKAt252IqaFaiHYO5jD3VVw43cubhoVSLGPRIH+FGvSKAfx4mBvPucvX2m1PO0PG1S4L3sRFnT5E5HAhx5sAKr6XsLn+iB+F2lIhhOAPuWRZ2IgVv4byy6W1EC0Nz9J6pbx6ALFmRxT0jAgDNhNP95wLpa6EG6vewJyWwVRNvks//LVBHuopBbi+pDxla1uE3fsH/gvIsXh1GwhFRdSnsvWl50+SrqIRs7o+bP9NWt/d9U0h/VIEiJBogLZS30QNZHonoWuJXsegxcS8fmHC2zDPsxJlQ96GM4X3dxXGJbTomYDac/xaIkr0momacBiYzXvUQW7WhqzP6Pu8DK7o0FqeQDGC2Ec0aUJ3oLh5n0WEXfkSOEW/9gBxtnuXJwiCNz6/FHHGyZS3mxjz5uQR0Ec9gV0wc2uuV7pcs9b0nqwMx3cg/F9Jkj2kz33ioxRRGPll5M3QsN6OJig1eTK1EFonO0r7Hy94/+
+ Fa0yULTT
+ jw9g1+fzPYfluLKX9Fksw7Ylm8WEOYd4yQZ2jFcFooPX+62ayCsS+gnP+4ONF6/P8D71cnvW7EFwOkmAUMhxiiOq8943H5bb27QBGlRWD38/F8kSWgmpIzsvYF+bx6hRPlFMm5lwSvs9wbAnLP85MRo86JxvP/u+gV9obmh3HMyq+xboq8J/BTl473Hzj/jjt3LxsYV5ObyKeZp3Rq3k9FhT3xdiMkSGmm39RjZ8iYH/fDGKPcZof7qTL9rWNqC42lPdvBcAM/qQ3c/vooCqM5yHJj1DXKdbsQh+ZDBPrTDENQY1jNDKJPTDu3k32gHDmuOsi04nL+7KZCR9DbF/fV7Pyk90Z8i1hsE4r
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,61 +114,17 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Heiko Carstens <hca@linux.ibm.com> writes:
-
-> As reported by Luiz Capitulino enabling HVO on s390 leads to reproducible
-> crashes. The problem is that kernel page tables are modified without
-> flushing corresponding TLB entries.
+On Sun, Nov 2, 2025 at 11:11=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
 >
-> Even if it looks like the empty flush_tlb_all() implementation on s390 is
-> the problem, it is actually a different problem: on s390 it is not allowed
-> to replace an active/valid page table entry with another valid page table
-> entry without the detour over an invalid entry. A direct replacement may
-> lead to random crashes and/or data corruption.
+> We have been collaborating on a systematic effort to clean up and improve
+> the Linux swap system, and might as well take responsibility for it.
 >
-> In order to invalidate an entry special instructions have to be used
-> (e.g. ipte or idte). Alternatively there are also special instructions
-> available which allow to replace a valid entry with a different valid
-> entry (e.g. crdte or cspg).
->
-> Given that the HVO code currently does not provide the hooks to allow for
-> an implementation which is compliant with the s390 architecture
-> requirements, disable ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP again, which is
-> basically a revert of the original patch which enabled it.
->
-> Reported-by: Luiz Capitulino <luizcap@redhat.com>
-> Closes: https://lore.kernel.org/all/20251028153930.37107-1-luizcap@redhat.com/
-> Fixes: 00a34d5a99c0 ("s390: select ARCH_WANT_HUGETLB_PAGE_OPTIMIZE_VMEMMAP")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+> Signed-off-by: Chris Li <chrisl@kernel.org>
 > ---
->  arch/s390/Kconfig | 1 -
->  1 file changed, 1 deletion(-)
 
-Yup architectures like aarch64 and PPC64 keep it disable for the same
-reason. However patch [1] allows for enabling similar optimization for
-DAX vmemmap "ARCH_WANT_OPTIMIZE_DAX_VMEMMAP", if DAX is supported.
+This is very welcome! Thanks for all your efforts in improving swap across =
+both
+architectures and performance.
 
-I see in 6.18-1 pull request s390 had "Add DAX support for DCSS memory
-block devices".
-
-[1]: https://lore.kernel.org/all/20230724190759.483013-8-aneesh.kumar@linux.ibm.com/T/#u
-
--ritesh
-
->
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index c4145672ca34..df22b10d9141 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -158,7 +158,6 @@ config S390
->  	select ARCH_WANT_IRQS_OFF_ACTIVATE_MM
->  	select ARCH_WANT_KERNEL_PMD_MKWRITE
->  	select ARCH_WANT_LD_ORPHAN_WARN
-> -	select ARCH_WANT_OPTIMIZE_HUGETLB_VMEMMAP
->  	select ARCH_WANTS_THP_SWAP
->  	select BUILDTIME_TABLE_SORT
->  	select CLONE_BACKWARDS2
-> -- 
-> 2.48.1
+Acked-by: Barry Song <baohua@kernel.org>
 
