@@ -4,125 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C958ECCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AC573CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:25:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1C6518E00A7; Mon,  3 Nov 2025 11:25:20 -0500 (EST)
+	id 102868E00A8; Mon,  3 Nov 2025 11:25:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 14F928E0057; Mon,  3 Nov 2025 11:25:20 -0500 (EST)
+	id 08C528E0057; Mon,  3 Nov 2025 11:25:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EE4598E00A7; Mon,  3 Nov 2025 11:25:19 -0500 (EST)
+	id E6FD78E00A8; Mon,  3 Nov 2025 11:25:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE63C8E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:25:19 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75A265790E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:25:19 +0000 (UTC)
-X-FDA: 84069820758.19.1116F02
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 38B16180002
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:25:16 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S+xdgrNq;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id D09C38E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:25:29 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E1261A025F
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:25:29 +0000 (UTC)
+X-FDA: 84069821178.23.6D8E35A
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 8FAC3A0007
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:25:27 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BMjLpUht;
+	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762187117;
+	s=arc-20220608; t=1762187127;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ctbyIEO/P7AZFWB3Fx33rn+FNYjmUk1aJIdv4/kWlrE=;
-	b=zjb6CE6QvcMEx6hQ7UICvBtLZ6SJOeJqQSH3v4SZUomIhRvOK3jeF7b4g07AtKZADZC5l4
-	i2jZyILi5RhP29hKaV8PBHIOBeMwnbW/ZGcY53NKPjuG1/jlbrnGceDVui74AbZDJBLhmp
-	toTDdZ0yxh/lBfqHKzKPI41nw/RYt7E=
+	bh=LF3gL9UIYUJIJ6CLrBLKlGhki20XLPHsMgj4XqFirso=;
+	b=d6POi50lZ+tq2lXVC/xzxMX4POgegYp1lnBM77/TDWOEsLFQZSCrHFU9WWDjZe2fmYINjB
+	y8TKpzpiTMn0pH9sBur4l6MTr+3u6aHEMDHC8zwvB8Oi/LcX+jIzE9R/lfdZH10w+0Lq7l
+	nVeqi+B1oS7V79tpjyRxMozV/9L/Dlw=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=S+xdgrNq;
-	spf=pass (imf16.hostedemail.com: domain of lkp@intel.com designates 198.175.65.16 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762187117; a=rsa-sha256;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=BMjLpUht;
+	spf=pass (imf15.hostedemail.com: domain of vishal.moola@gmail.com designates 209.85.128.54 as permitted sender) smtp.mailfrom=vishal.moola@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762187127; a=rsa-sha256;
 	cv=none;
-	b=x0aowWLr8yeySe9Pm2oFu+ndrmpGPD4c3fcyCn4fZzHl7YLjwdXtH6snat1PkmQt7hoh/3
-	TXFRuac8mLP1HAz5karAH5zuIs7jEPPLBEOv/4hTM5mFtxUKJRn5THz6D4htNwxEF45SwI
-	hJqDXuz/obyeWkKGXwLmFJ+5UkvYRrs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762187116; x=1793723116;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=t926oHxXyeoHO/tZR4YDfvuIUGOhvh1nCNJiG044Dv4=;
-  b=S+xdgrNqeYk7S0LmtjitrQYfdevZThSi59LTTe08SvtRHDTPSt0Aousm
-   CaNUxWIMebHS2+92bQxUdKWsuYOtUgOBl7QwHI2ZL1SdzlwRluc1yAiiw
-   MoNagpj1XtaNodd0YlTIonAcdI1+3UIlZbUS+4mI6B+S4b1Ea+YTyE4wU
-   k7zgApKhCOD+NKBd/z1PG0aqH0aj3wMz7aAWSzghn5IhVIL7IYa4Jrg2T
-   lTrqnQjoe5/mDwHbd1cGsPVhpTMiBoL8VaGjInptbYawOqjFvdt3qKwcC
-   sI74e/PpfbF/9Ikgqt8PfA+KRXVim5Gd58FEfSQVs3h/h85s6AwXDcQh9
-   Q==;
-X-CSE-ConnectionGUID: dAKO6tGGQLOuuLmqHGoyFQ==
-X-CSE-MsgGUID: nADeJDaNTL2BOrqeWmVlVg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="64417677"
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="64417677"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 08:25:15 -0800
-X-CSE-ConnectionGUID: PnTRSjgDTD+C/2KQbGtg6A==
-X-CSE-MsgGUID: kJFZyWkqRdKS4C+GNCdU+w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
-   d="scan'208";a="191251179"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 03 Nov 2025 08:25:07 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vFxMe-000QKi-0o;
-	Mon, 03 Nov 2025 16:25:04 +0000
-Date: Tue, 4 Nov 2025 00:24:31 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 10/16] mm: replace pmd_to_swp_entry() with
- leafent_from_pmd()
-Message-ID: <202511032303.n4dF1k87-lkp@intel.com>
-References: <38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes@oracle.com>
+	b=3AV1h1zTEBRioPvk9bVL9r/3T5Hf5B68EMH+5AFfgvIf/BhOhnM3DKGCU3Yrmz+XMA0KCf
+	je9bXvcp493tyMXF3iJve0bpC+MdqcHmenZcSUeUVhQJDL7/3QUVpV/iFAvDmYdpKoCX2u
+	LF5pju7CH5E1Ummg0Uz+lqYFkQFYN/M=
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-47754547a38so1031075e9.2
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 08:25:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762187126; x=1762791926; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=LF3gL9UIYUJIJ6CLrBLKlGhki20XLPHsMgj4XqFirso=;
+        b=BMjLpUhtCrTjzt2Q0XSegOkU83SOBRvrPWgC0szCQVMEQKRba7xp19cHHVPxzPE1W+
+         4BwxJcFlFvUPs0vQ+8zF02lC5BxAIHTI4ZJQ/0JBArQMW14Gq4s9u6Jh2YlLPx7zfJ+w
+         HpnI/MSMj60lVkDAhNkQZsQHW5cQ8TP+wjlQpM45KXtrpcvbcTTNiYr12SwaNcmBynfM
+         cj6Jtj6uJ5OUNaWmC3BK5AdyW6uX3aD92TV1Q2wqAF6C7oVHBKSTgHVmCM8Trugcx4FZ
+         QAw6eiMj3GDYgymyA5TQzCZdDgW9B5fSL+VR9D7RG21mxhwGcWHvqqj8Wwzdw+YbtOSQ
+         bREw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762187126; x=1762791926;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LF3gL9UIYUJIJ6CLrBLKlGhki20XLPHsMgj4XqFirso=;
+        b=CRvxBRg92sc+KYXO6xbPywvc1uorco2LsU/AGteOZU75cGvX5nw4GVf/hWXZ/ja5Tj
+         2a4qu+2K7zdTWAzTEjMxQ7pkqDUE+PL/MEDacsSbl6rRWuB6s/CWbr7tMSfIV5iQ81JL
+         EyV30G6U2ENtY43SeDL8gkk/1QDSX/o4AFcsjG13TA5eG2yA4r3/jBgOFtgGSOLQdqGl
+         yJM3BEubc/xuVM2cb1fk3Yxe6kiMUDcVVJ5P+XYBnqdSV4AlV8amRUPIwsWPUTeQgoa7
+         tibqMDnWeCZ7AjhewBxDes9zALIV0ukPaW4RUCsynxdpgbkWuvPmrKVLWa/Kpw79+iXi
+         hmJQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUgW0DWEfNzWUuXoobpYd1fW7QAflyZr4S7u0JwxMh6hfskAWI8JUBJkIuMf/aPmb76zMtzG9kkrw==@kvack.org
+X-Gm-Message-State: AOJu0YwOLb89mKComBc9zlI4sh2BwAF9cr3sNef0cSjt2f1SfEFyE/n2
+	Pg6NkA0TPUdbGEKNEndfdy0V0rAZUSy5/JUdI58egi41DTQZeceo4Ita863m0PEp
+X-Gm-Gg: ASbGncvyUxe34AZgAsrhZUOhLow5gBY9xXM4+j9x0/hHakky+cRcprFJG7rxqv5erLf
+	uYlSMzZAMbiOD5HzLQR6EMfMbgjDfsq88neQjtDZnqicymiFp3am/5QnbrPweW+M0q+QGYeDIZi
+	IbzH85TvPmYbLKjzopnbJ3vv4+Yo/DpF19kklSGYdjM8IHeMnhEy9S4Dcrk78ug2zBtbRgPV/np
+	JQLZRVDAuXXeqBxnaLnz9wz8+LfRAhb5EzRvnY7QR4GseU7osnCcT3QMpOF65QpoFjGgcxckyCR
+	ZvAZYS6FaS9FmfQU3ihkZstf+mYY6EO3uoH9Zq6qY0zyUR3oXm/2B+YCAMlv/GB43TYfB1X3VOZ
+	8LJckW/xSSn+n3w6XE5ig/IzbIjtLWpxvAtGqIpFV0kotbpXW4CmaXdgyjUt2usu+mtpuSy1FjM
+	5tj0YfmzWhL8aiHqb4yn92cA0mrIT4KHgkZ+HraGdZcjeoQJpXJ73a6o09YXm9sQ==
+X-Google-Smtp-Source: AGHT+IGJUhjtjrw4JNRzbxH45JTjp5ZOtnw7BrJ7Wa7zYRDEN8vWYrANkKFN3fi6lHAq+b96Y7nzHA==
+X-Received: by 2002:a05:600c:450e:b0:46e:394b:49b7 with SMTP id 5b1f17b1804b1-477308ec10cmr134660045e9.37.1762187125699;
+        Mon, 03 Nov 2025 08:25:25 -0800 (PST)
+Received: from fedora (cpc92878-cmbg18-2-0-cust539.5-4.cable.virginm.net. [86.16.54.28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429c13ec105sm21666274f8f.36.2025.11.03.08.25.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 08:25:25 -0800 (PST)
+Date: Mon, 3 Nov 2025 08:25:22 -0800
+From: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+To: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+Cc: akpm@linux-foundation.org, vbabka@suse.cz, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/debug: fix missing space in case statement
+Message-ID: <aQjXckc1M3L3cfJH@fedora>
+References: <20251103065910.2196-1-zhangchujun@cmss.chinamobile.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <20251103065910.2196-1-zhangchujun@cmss.chinamobile.com>
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 38B16180002
-X-Stat-Signature: ayga7ah8tr1bhwt67w9rpce5dozmxpt7
+X-Rspamd-Queue-Id: 8FAC3A0007
+X-Stat-Signature: o17ncn8w9zh6n4ektgw3yqzbn3tthwe8
 X-Rspam-User: 
-X-HE-Tag: 1762187116-632439
-X-HE-Meta: U2FsdGVkX1/iLjUHW33F4848Mg+SzDUZtouRVIAeO2Ga6FYYGmHUM+OJHVhhhmZKaB7rDP9fDAb9nlxfc84KKMOP0ZdxZ3EOHJdU41B/9teNF10OIdRwMEyoW6pwyKL3FU6eS2mnQb3Qoa/K/OTGrqx05HHpCerl/j4LhhseX9hWGyU5xQAjdwxGXOQiO6hakWnSa8zz/G7bFPz2hC72iqC/CTWjw9dhgwuQOv2QFfBbsl1WED/1QB34AiyH4Dn/NImBOBk1MJhRB4moI1+vWy/xFt/3u3Tg9hetz7SRaiGg43kLBjR6/yMxtvy8Giq88+XN5vauARTqJRi7K5bvMVRSe7aBGjxygMaNusag8mXqnb9rgcwIi0eal29iMciY4gXKiiJY/NTEtz7NlZW4LuvcYSysTMpG0sbNK5VGS8QjmqLkzyQFhBUikJX3zdVuG1XnrqbiiviJQfY7fIGqsIQThOVINKRkPHAPVh+7sU1izCe+XLYAdRvvpyN7HdV/SenG32pDN1Ig5eVrTZH+Z60VLiHU3ipDomKQzxT4yn6YNBNW4xhtgNkgnks7Bf/udbcnO3Sa8v8RJTFeWySMURtp01pqc2og+sMgFV1ItjXTdyP3ow/ZbJUZwEu5Wn0eQHR3dqRN+CRwKAGRC9KneuhnkB/Mbds9Lnn66dUK7WzNP3/nWZm4onJD/grn6rlAYmWQEl8EDhdi/mXbkizW7xAwsvELZgIgJ/Z/ajT10Y6OHXiltGv9Y5FMcE++bUxwQZtI2W2+/ouL28KqHGZhBTufqGj4mTQD82Ho+Aik3+DdhCYoLG8wtkINv4/aL9v8pFOKfrkHx0zOmCY8LjAK1933Qv6WKi26B8jqf5NAbJ2L4gwKKg3Gar8F8OiKgxIJcPjhUZESswZIs7I3tBU7ArFjgYhL9sK6yaOGNxMr4rZdG5A2Pe+PkNwdJUW/fRbEWUruBbWd4txtxd8u+DF
- dfX+S5cw
- f4F9NgWo96/zhZ1vNO0Y5ZR5Fhms9XzlfUOtxDOLffNgSFJYlHbQ/Racw85WC+tKVAcXEbXxqFr5mYdQZOUg6yqzIZmIXc956EUP6BBo0qEYiEE+8a27hMGJg5I229WKV+MY+8HupbW2MNrhzwjuoDUg4il9sTXrvTklr1itTvWGiqzUpPcXLBQ6PEvTRs9QfF6e5NlptdGKGP34LPd5hLyuAYoDkJdEe3xH92+IR2PL6zX+1aYPnfpfTBC4OxNnER5ICyv5+1eDqd5rdvd4iR77xXobCer8YWwQMlzdkEAx2f3bR1HcfJOwPdyp8IXVAncRKV4f6+Oior0531Ow7N4oEdNhPRZ1WSgzDz2tdcJv7vOZG0uac9HNsOqyMbA4fVxU2yC9/qET9MrV/FpoBvLcqG5erCyhPQUwpy4Nq0mn1m/W5aYcZRIpfyQ==
+X-HE-Tag: 1762187127-519084
+X-HE-Meta: U2FsdGVkX1+GmEVNO+fWmoshf0FUPHd3oHmhwjXu0nPc4Gdf4kI/+WcFKvJFb7+Pm8j2uLWtb84U73opI6DYL9i9gWHWmSStstxaMDGopH2z165DFSCGQZjo1xRl7Is2P7YYyg+e4hTBIZdWzRxFirEgDDJwNm2nVt+m3vJ3YtzyIf4O/o/l5kOvN4deKf46ptXJ/rZYgSg2tpbjlBrEWKDOkhk+SeznzLjJ0Ptkpry+Z839J4S/9M8WTbWrvjv8sE205rLmU+Si7tHFlF+TDiQZSKmnD5D7wYqVtCSC2AlYoffZQN3v6cijcXfp0OqcdtKH5PjyT5yftiJnXOVKCOonHDR1tpJnGVNBRWcwBkW19wcAGe+obxYexklrl2yIWFFfy41fhz5LmMy6XDSwGKq7Bn4WYIN6VuDEeLQvjL4u7V9dYAPkjgyhyaUCERnS6suVuCI6Dm4AoG3/zYhMG1Pc+7pDTbZZEMifhPVgfULPiYELqjqCv+rBkj3wn+bRSaGCxqLhX87FtlEIBgzQo8bHG47uOhIpjB36XHNveqJEpdB6EdWY/ZEDsz8dCZaQTrz1rWJUfnIAhII/GjiKtLd4aHAICvlO5AHiZDyr3f1zeneYqyhbvgcJ0da9PeGDE0knQeXHEvUBgAHYgYRNz5k/PiSYfaFrmi8B7F3v2QQNeXeTFbrOBOT4RuZFHV0rxe4vZezFd0s40K1bOJdDXYcrTysc+1hmi3Nf/brmQYgAYeY1/xsxQYMAoqDg4euQRpVnBbZIfn1nAJgl1VzTt3jqtRCyjmEhrbdHSDZOBwoCCWzDYZaAqbEQhFixZpWFRKePGZG2H034+zNBH0zgys2CWFcr6tH7JMvqf401/TxqG7OV4J0ApmoeSJVVfxO25IsYTdglOYr8cml1vrw8a9rxbZvz11hzQ07wG4iU3HKTIdzVqn1m51PLidkvvwYIeUgTTh41Y/FbV6eKKig
+ x6Wp+Xt4
+ rKxfcXaBKYo1Jrz4W46ONnPj4wJqhqyrWJ5u/An/76x8Kf2552gFFCeGcmlM+iMehyrkfxHq6sopgGyE3cqttSOG8RLh93iY1iMoJkJz5UHGu3HT4QxGI05J87TgL/nAagUdH6GnWGceSWOsIiRn1iaPa0GGSWDzRz5BcTcwSSD80xR7lm4o9jYQNBLsgv3Mvcd5PvjxaHX6i0wObLHwswfeT38rzPCQ84xB2vCoyjJZa+U4YQeygjsrKrbDSGtZvp8DgipHC1xbcmFkIpcCakPujbAEhAWdLlm2+4B5C3luzakyumn3wgVXrgThMOtS3UDcUDzy952+wM6wJHfsNeweH/rQDagJ3oJCF/9ci5dqfXmTp2JlCBEcFoIHEI4K34bC3xAz1ljS7wxU16km3kHuK6zvX3629wmeayffgnIK/BsEul1G56DHo4hukVz9tlWF1INOolTB7W6rjTPSIADWZT6yyduvHgOoU6fhyQcA3T/TZ3fC2CYznUjRWiGcxQVZy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,109 +117,14 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On Mon, Nov 03, 2025 at 02:59:09PM +0800, Zhang Chujun wrote:
+> In the setup_vm_debug() function, the case statement for 'p' option
+> is written as 'case'p':' without a space between 'case' and the
+> character constant. While this is syntactically valid C, it violates
+> the Linux kernel coding style, which requires a space after 'case'.
+> This patch adds the missing space to comply with coding standards.
+> 
+> Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
 
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on akpm-mm/mm-everything]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-correctly-handle-UFFD-PTE-markers/20251103-204118
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes%40oracle.com
-patch subject: [PATCH 10/16] mm: replace pmd_to_swp_entry() with leafent_from_pmd()
-config: x86_64-allnoconfig (https://download.01.org/0day-ci/archive/20251103/202511032303.n4dF1k87-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251103/202511032303.n4dF1k87-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511032303.n4dF1k87-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   In file included from mm/folio-compat.c:7:
-   In file included from include/linux/migrate.h:9:
-   In file included from include/linux/leafops.h:6:
->> include/linux/swapops.h:90:21: error: use of undeclared identifier 'MAX_SWAPFILES_SHIFT'
-      90 |         ret.val = (type << SWP_TYPE_SHIFT) | (offset & SWP_OFFSET_MASK);
-         |                            ^
-   include/linux/swapops.h:27:45: note: expanded from macro 'SWP_TYPE_SHIFT'
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^
-   include/linux/swapops.h:90:49: error: use of undeclared identifier 'MAX_SWAPFILES_SHIFT'
-      90 |         ret.val = (type << SWP_TYPE_SHIFT) | (offset & SWP_OFFSET_MASK);
-         |                                                        ^
-   include/linux/swapops.h:28:34: note: expanded from macro 'SWP_OFFSET_MASK'
-      28 | #define SWP_OFFSET_MASK ((1UL << SWP_TYPE_SHIFT) - 1)
-         |                                  ^
-   include/linux/swapops.h:27:45: note: expanded from macro 'SWP_TYPE_SHIFT'
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^
-   include/linux/swapops.h:100:23: error: use of undeclared identifier 'MAX_SWAPFILES_SHIFT'
-     100 |         return (entry.val >> SWP_TYPE_SHIFT);
-         |                              ^
-   include/linux/swapops.h:27:45: note: expanded from macro 'SWP_TYPE_SHIFT'
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^
-   include/linux/swapops.h:109:21: error: use of undeclared identifier 'MAX_SWAPFILES_SHIFT'
-     109 |         return entry.val & SWP_OFFSET_MASK;
-         |                            ^
-   include/linux/swapops.h:28:34: note: expanded from macro 'SWP_OFFSET_MASK'
-      28 | #define SWP_OFFSET_MASK ((1UL << SWP_TYPE_SHIFT) - 1)
-         |                                  ^
-   include/linux/swapops.h:27:45: note: expanded from macro 'SWP_TYPE_SHIFT'
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^
->> include/linux/swapops.h:395:19: error: use of undeclared identifier 'SWP_PTE_MARKER'
-     395 |         return swp_entry(SWP_PTE_MARKER, marker);
-         |                          ^
-   include/linux/swapops.h:448:15: error: use of undeclared identifier 'MAX_SWAPFILES_SHIFT'
-     448 |         BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
-         |                      ^
-   include/linux/swapops.h:27:45: note: expanded from macro 'SWP_TYPE_SHIFT'
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^
-   include/linux/swapops.h:491:28: error: use of undeclared identifier 'MAX_SWAPFILES'
-     491 |         return swp_type(entry) >= MAX_SWAPFILES;
-         |                                   ^
-   7 errors generated.
-
-
-vim +/MAX_SWAPFILES_SHIFT +90 include/linux/swapops.h
-
-099dd6878b9b12 Peter Xu       2021-06-15   82  
-^1da177e4c3f41 Linus Torvalds 2005-04-16   83  /*
-^1da177e4c3f41 Linus Torvalds 2005-04-16   84   * Store a type+offset into a swp_entry_t in an arch-independent format
-^1da177e4c3f41 Linus Torvalds 2005-04-16   85   */
-^1da177e4c3f41 Linus Torvalds 2005-04-16   86  static inline swp_entry_t swp_entry(unsigned long type, pgoff_t offset)
-^1da177e4c3f41 Linus Torvalds 2005-04-16   87  {
-^1da177e4c3f41 Linus Torvalds 2005-04-16   88  	swp_entry_t ret;
-^1da177e4c3f41 Linus Torvalds 2005-04-16   89  
-3159f943aafdba Matthew Wilcox 2017-11-03  @90  	ret.val = (type << SWP_TYPE_SHIFT) | (offset & SWP_OFFSET_MASK);
-^1da177e4c3f41 Linus Torvalds 2005-04-16   91  	return ret;
-^1da177e4c3f41 Linus Torvalds 2005-04-16   92  }
-^1da177e4c3f41 Linus Torvalds 2005-04-16   93  
-^1da177e4c3f41 Linus Torvalds 2005-04-16   94  /*
-^1da177e4c3f41 Linus Torvalds 2005-04-16   95   * Extract the `type' field from a swp_entry_t.  The swp_entry_t is in
-^1da177e4c3f41 Linus Torvalds 2005-04-16   96   * arch-independent format
-^1da177e4c3f41 Linus Torvalds 2005-04-16   97   */
-^1da177e4c3f41 Linus Torvalds 2005-04-16   98  static inline unsigned swp_type(swp_entry_t entry)
-^1da177e4c3f41 Linus Torvalds 2005-04-16   99  {
-3159f943aafdba Matthew Wilcox 2017-11-03  100  	return (entry.val >> SWP_TYPE_SHIFT);
-^1da177e4c3f41 Linus Torvalds 2005-04-16  101  }
-^1da177e4c3f41 Linus Torvalds 2005-04-16  102  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  103  /*
-^1da177e4c3f41 Linus Torvalds 2005-04-16  104   * Extract the `offset' field from a swp_entry_t.  The swp_entry_t is in
-^1da177e4c3f41 Linus Torvalds 2005-04-16  105   * arch-independent format
-^1da177e4c3f41 Linus Torvalds 2005-04-16  106   */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  107  static inline pgoff_t swp_offset(swp_entry_t entry)
-^1da177e4c3f41 Linus Torvalds 2005-04-16  108  {
-3159f943aafdba Matthew Wilcox 2017-11-03 @109  	return entry.val & SWP_OFFSET_MASK;
-^1da177e4c3f41 Linus Torvalds 2005-04-16  110  }
-^1da177e4c3f41 Linus Torvalds 2005-04-16  111  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
 
