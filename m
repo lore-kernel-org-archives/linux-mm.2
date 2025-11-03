@@ -4,122 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A6C6DCCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 09:07:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7704CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 09:10:41 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CAFEB8E004A; Mon,  3 Nov 2025 04:07:34 -0500 (EST)
+	id DEC3C8E004B; Mon,  3 Nov 2025 04:10:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C87388E002A; Mon,  3 Nov 2025 04:07:34 -0500 (EST)
+	id DC3E08E002A; Mon,  3 Nov 2025 04:10:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9D0E8E004A; Mon,  3 Nov 2025 04:07:34 -0500 (EST)
+	id CDA2B8E004B; Mon,  3 Nov 2025 04:10:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id A2DBA8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 04:07:34 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 500F212BD3E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:07:34 +0000 (UTC)
-X-FDA: 84068717628.23.1AD5ADE
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 2C15940009
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:07:30 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iyiooCOM;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf27.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
+	by kanga.kvack.org (Postfix) with ESMTP id BCAF98E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 04:10:40 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 96B24160A95
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:10:40 +0000 (UTC)
+X-FDA: 84068725440.18.1EDF37D
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	by imf29.hostedemail.com (Postfix) with ESMTP id B802B120006
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:10:38 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bu+Rpas+;
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762160852;
+	s=arc-20220608; t=1762161038;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4IXR4W/3bU885mnocYWtgD1fWaKiafANwqtbBTb2/Bg=;
-	b=8ZFD65KK8yBdCcOxALSC8DSARW+WTNT4J1iVEYwpI+S4Q++JmEC0LAfkhOr1DVrGqjU5Ko
-	QQILR417LimEOZGHGpV8ndYz8i2TDA3LFIRwLJxMYlVZHLYVYYN8k4ptwGwHovikJoysQK
-	/b4VjxIjzAv1rGMXoFs/hpXkIJumWn0=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762160852; a=rsa-sha256;
-	cv=none;
-	b=mhVFxNvdO/YWeYGZf/yYMebbdJK3skBuvUOuGe1v7FtxBuwXU3EMYpRCm25/n/g8cJnEOP
-	losVIq+CZ6TRM+KBwCVCw6rKBr3rtf8WWWiCg1c+V8Q0ODLfBgqvqgBNb3HGRaCdvl1Rmo
-	JatkNjL2BnKLIH5aJ4SmNJB/EOghcWA=
+	bh=QUiZDJyRgD/8ISelZGs9/tsma9n2NV13edtbnKVKZEE=;
+	b=iQUdTxH0/DWTbKu4KUEf20jU849+baNK7cIjV6dY8DJOMoKG7/15TfBPnkht39cMlF8HQT
+	rDRGfkfubjN4+Raz3Fa6cFotPZSBYynJb9K8DRYmb12llkT69DnV/89vqxrBAVT2gzYWrw
+	7rszGF24iU8hdp51a8VxWwWntWmkFIA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=bytedance.com header.s=google header.b=iyiooCOM;
-	dmarc=pass (policy=quarantine) header.from=bytedance.com;
-	spf=pass (imf27.hostedemail.com: domain of zhengqi.arch@bytedance.com designates 209.85.210.179 as permitted sender) smtp.mailfrom=zhengqi.arch@bytedance.com
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-78af3fe5b17so3868360b3a.2
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 01:07:30 -0800 (PST)
+	imf29.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=bu+Rpas+;
+	spf=pass (imf29.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.169 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762161038; a=rsa-sha256;
+	cv=none;
+	b=4CIpdtaqPqDeb+RVOumTR/WFi1fUnYJCHCtjRZLz1dBe4f3UNqm+hIXcItvvTYDLeoN8yS
+	2o4r8rZ7wYhG7ZZN4EJy3knj9XnRgaumHu9DZH7acxSY1tbENFhh1lzX+yBnA2PQSVmgC+
+	RYKuQXnQmaITK2po58oF/EhPINrACt0=
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-88f8f346c2cso425697085a.0
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 01:10:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1762160850; x=1762765650; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1762161038; x=1762765838; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4IXR4W/3bU885mnocYWtgD1fWaKiafANwqtbBTb2/Bg=;
-        b=iyiooCOMHpM8fi7TCbzohFJKsT06TgOd4ggmNmrFC1PHayZbfLrlj8bk53hH0FW0qg
-         /Ih3u2zbL9xnENXXggIpaFVRRMvDpDymPypftALLRSvC1rCv+DAUmQ8sCQcwqHZFrRGP
-         H3AYupginbJ9CvBCyTXwzLS/evT06JCqmTl2Mu0FK5jiHashwHlFpTh+LsYjmCW9bpie
-         nKPkPOb99M5ZlNkLzGHSXAh4K+zavjsqc55ARDiwmvx7ZOv55SY/SRjOhFue6LBjNmbQ
-         ZlnVx+MekyIsRS2faH1wKDc2uu4Q83nsq5LPa4uZzKG4e4HKnoTju5wCon8sj8lB8juh
-         sTTw==
+        bh=QUiZDJyRgD/8ISelZGs9/tsma9n2NV13edtbnKVKZEE=;
+        b=bu+Rpas+hXiQwbhxIe3tfMI8wWBOad/e/CkPqmRYYovw5CT0RcPwXqCoBnAmCQQAXb
+         ToF5QQliBx/ilJrn9QP6wXMArDT6rG6Z8fWClsVHCTdPfOtMhOJ/seA9/LWKOG7Ntp0t
+         PKaQ0TL91VgRrsVVkx/r/0SpDMexpnFEZjrSWc7YAV5XyPBrliO/MUStG7AGPb2vd1Ma
+         +iV/Rs9RBZoiWjjeXWC1FrtyTQeszM/m9+sJRCeyROWAc6nTMOl74lAHeEppIJdibCF1
+         Pk2/XecMU5GR0ZmlcxLrwYCQRCy0Pa1SA4cH5JbfRBarDamva3JBbOXsc+FSOnHWYK0r
+         DqrQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762160850; x=1762765650;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4IXR4W/3bU885mnocYWtgD1fWaKiafANwqtbBTb2/Bg=;
-        b=eQwOG3KAviD8KuGuDzVP1FHo99uagiL+cmRcJjnIMmje0oocC1Y7MFtpcl17ZoQ787
-         m1q8whz1jP86WXvGAHqGwLFWXMlvhN8Fox4ENHDoI7GC4SNtY3f9XWBAPty6Wv/6Bb4H
-         wbIuAK8+GZul0c9WiAQEoYwLlT72QWO3ymmhtns52npae6NnlUSmf84nV7Cl1VhLaVzD
-         jaJDPJY9sD3IuwRq6SE2qGD5fVI+rLlIwmtlXp0xVmmUAxZUVGPeJEl+a+1ngpMOU3uR
-         zRpxCPN+YpiIYUEcLInYQEzyitcyBGGzRNA6JOkyv+NTBQikTClkfNtPMqAglJrzVkdd
-         6foA==
-X-Forwarded-Encrypted: i=1; AJvYcCVYAhwadpnM6yUAHB8/zB1NMmdRyrCN15fxH4I5s0D3qmviPmTBtRGbOoJrvmvvIAYloMKieqoPGg==@kvack.org
-X-Gm-Message-State: AOJu0YzVx10BR1gXfmTRbPg7QSkRx52JbCLlkUn3BLxKtaYXQmkyEhkA
-	Hyzoz9kiV0weOX5NWx1tHUdlzZLd/mB+A95UuEgQ/g395Bb89GhRAL1ls4krihV9XpA=
-X-Gm-Gg: ASbGncv3xI6C5VOsODxhDbta+2kdZonzZo/eDzu1Tne6bR9y01H1gcOYNE3LOptBi3X
-	msORNbCYtr+Wgek+rLs9fhTcdI8SW+Lbk52fiku8dNqqyXpPeD9/g4G8N/SkQMoYQf7hlcIu8+C
-	2DCwXXeGdx0aAQZeas17c9AIo1H3b0TTGdKHxID+rBUJa2UvmU06yrO43OOX6GdUfXyBh+vsshb
-	lStR8J0GqbJDYc495UGA210r5w2CiRZX7TK0xw5zLoYcULQchRBsfLLN6+NUa3Tu4Vj8GvBf6df
-	u5vkUX13jLlWTlTWlvXw/XUu5v1MJExGUnuWJmvAwjN4XIPkz021C4XysqGVBCKT3bF4IMr1sqI
-	72MrJbJdCHTJRMypc35LsDC0sagtD1GKqBH2kQE2oRvZ23QbT/P03fBe8BdRNuPDM+5KYzt9foa
-	T4M+Yo5B83IY8m2krr/rafet0PuYA=
-X-Google-Smtp-Source: AGHT+IHh54ogHRgLZ5oCFCpwo7pndIkikgTzZE7KUbmx78mSc7CxlZ6V2BvH9MS0x7/fAgICWjZBSQ==
-X-Received: by 2002:a17:902:da89:b0:295:5d0b:e119 with SMTP id d9443c01a7336-2955d0c24bbmr89339565ad.26.1762160849656;
-        Mon, 03 Nov 2025 01:07:29 -0800 (PST)
-Received: from [100.82.90.5] ([63.216.146.178])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3407f24ee93sm4810869a91.9.2025.11.03.01.07.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Nov 2025 01:07:29 -0800 (PST)
-Message-ID: <9359ce51-5ac7-4312-8ef8-79fa51d014f5@bytedance.com>
-Date: Mon, 3 Nov 2025 17:07:15 +0800
+        d=1e100.net; s=20230601; t=1762161038; x=1762765838;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QUiZDJyRgD/8ISelZGs9/tsma9n2NV13edtbnKVKZEE=;
+        b=KBjixiAxrMq0B18yOChs0cPLq5gpOalY5xjewHudlbvdejC0FR25G6xQtlToMihkgj
+         OzpaIBAXb3xEQbiEmW9usEaICuDb4ghdB10O//UxOSbwAt1SAhwEJZnXX9dU4DDElMSd
+         Vg4pfw8CErdHRjRyt/VM2+tcPPkNjaJ3i9qpGXd338rs2LNP3TozL5n8eqTDZ+OjKdMN
+         pi01nyWpYAKTN7Y5lkKT5l/uihRqiENTiddN+hSb12Ni6lLSX+2uKxBxz4Rho0rZgn3k
+         m61HofH6suJ4/OpfmpWzfVqYVTl9D083S/8KqaVer0DFH57HvEbFSG/mDRRt8ua3wp1k
+         U9xg==
+X-Forwarded-Encrypted: i=1; AJvYcCXpBQ6k0T75fH2bGTucsaQlhRALJh40QJcwQoDT/oC44eypOXw7vilXw31FWUbkBtKpY6xXklsuXg==@kvack.org
+X-Gm-Message-State: AOJu0YwWHCJdcqDyX/3DWWb8ft4zryotMZzkkTmuTC59uR7oZlK/94En
+	9+Pax9lGMTdk82sA0fwc/LapyIjP/O5Mgp+dsNEeE5RmkohhDeos7t8+fBmjwrLBWrMvdXIB3Vb
+	l0cBRCYEg/Gqhvit1AZagsiIMQQDFvLU=
+X-Gm-Gg: ASbGnctB1DR/3Axv+UpASExbzG4ZZsTbQ8YeO9krG0Slud1UvYG9evIVHK3FLudS+/0
+	NX1nvCjSHw73l7Wc4GdNkm8RaCnRzHOds7kIGPBt4ZXg7h/UGGt93Ad5+1OfSiatcV2muQ5fazh
+	ZRxmOhEfaw+1kiWzEQqd8Jj89icGNZTUkwhVFjQrw8/o6QKPFLWRrCNO6MMtcdgtE//CtnJAfQp
+	ZjoCoMY69kDAUTPouj3Z5slwEmyR+uokY4R0dvW45AVyJcbr1jGRtcT8+dpTvv+Uq4lw/X2tDUb
+	Zs/jz9WuwUEHsFLRNvrnoTc8ufI=
+X-Google-Smtp-Source: AGHT+IExkPs8nlbN6h2EtytDA/E26wg/SoLzvVARgJNEMejaCO7Oe83L2OTAOQHjef9AwC5pLrkqUQzXxOhklPtd2tQ=
+X-Received: by 2002:a05:620a:4087:b0:8a9:eb9d:512b with SMTP id
+ af79cd13be357-8ab988eda3fmr1352526985a.6.1762161037654; Mon, 03 Nov 2025
+ 01:10:37 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
-To: Dev Jain <dev.jain@arm.com>, tglx@linutronix.de, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- david@redhat.com, hannes@cmpxchg.org
-Cc: ryan.roberts@arm.com, hpa@zytor.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, ppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251103063718.90743-1-dev.jain@arm.com>
- <044e3f9a-3de2-4939-afff-3bb527eb024b@bytedance.com>
- <666e012e-0b13-4def-82de-55ccd5868d36@arm.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <666e012e-0b13-4def-82de-55ccd5868d36@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-1-3d43f3b6ec32@tencent.com> <ufy26fqfvaxqjywneec3hcuky7ozpa2fm63pxcuuberrvicffv@bkblomeix35w>
+ <CAGsJ_4x1P0ypm70De7qDcDxqvY93GEPW6X2sBS_xfSUem5_S2w@mail.gmail.com> <CAMgjq7A+OBoH71qo=Vt65BeV7M9uOvkJ+9pQX2eq4-tqcKwVwg@mail.gmail.com>
+In-Reply-To: <CAMgjq7A+OBoH71qo=Vt65BeV7M9uOvkJ+9pQX2eq4-tqcKwVwg@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Mon, 3 Nov 2025 17:10:26 +0800
+X-Gm-Features: AWmQ_bkqWGIOm_V1HEduqJo4E0AkHgk0dtjri9662bFQ_YbNVTPpmfTPLZFhKNE
+Message-ID: <CAGsJ_4zryZ-FqxZDo8k6VLx4-ijPdjk4i+txVzP41ZS_koNBgQ@mail.gmail.com>
+Subject: Re: [PATCH 01/19] mm/swap: rename __read_swap_cache_async to swap_cache_alloc_folio
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam10
+X-Rspamd-Queue-Id: B802B120006
+X-Stat-Signature: fz65bnrjxdy7resboybj4md4kykzh3h3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2C15940009
-X-Rspamd-Server: rspam02
-X-Stat-Signature: uts4a96wx7ewk8zz3pjfypb5ugyiposs
-X-HE-Tag: 1762160850-342464
-X-HE-Meta: U2FsdGVkX18Ps7nxBRLQ7oH6cNoBZ0IJGcbAUMJoT+XMa+uctvBWhe9t8V7RlSudUGymeKlfYyPlRJiW3kNXS3w8O1djgN5vpEO14gw20j/DIpEdxwrRSPhWJPdHvrwzEVZvn6mOYs9pIwzC6gmYt4osQNIhaYfaFsd09W9KWtjsHRS4zvftXK8Iu6OSXCh1bFYiqbQF6teVYVi0VEFy8uMzvJ35Hw4TREuhKpivQrmYWpVcRl+njmlCl27yDHGUjlAgdasPK//GXKy1HZhC8GzGLmUl85mSpkeMmx7qC72tCGFzf9B7iI2n0Z0PooEJi9eCDnqqJDChTK+KtTBBFCuB7Y564faqij+A3A8mcookIQ2L4CQBpvINGdIAijvRBC4KeX/FksmNS8fwNzY+JXqES33Bsy1UOtTlW6r2/QnCANhk3eOHHXBgITG4SZ9aMXhwJtf8CQ2wtqelMTVUjSti00PwclsZu5M4VooE+JP6gJmXAOYrqY93JxIIxzruYzcJmdgpSFHzJsgxYVj2OOgJlfelwcOQNzH/UHLa5dYnVju7vTkPlPal1WWuZSa+BYIH/nh8soNUJRUWSmwoHXrwweYI365mbG5HfUTwK6GQLmJV9srAxQo6h06CeX/iO3n/fP1p0LiQbV6hBvWvzlOQi+Ah+AAt/vycpr0uo4HQTNKMr/4i9g/v6BwkSME1y1pN1j5U9I4yB2HkVSKHVOA9A8DfFkSZ9bAO1pdsjWyB4i/NDpvUa72kBoSEp8/arGdVb1sNgFGIhjTCaCueG5gf/T3qz8qLS9MoEwVKa2aILSRg8119ZcrwI7+aUbcKxyvVYN6o1Yv/4GZll9FN8rBWGeNPmZiyANSbqC8+nAx8KjaKoI3LKKX4MqxEO2iPYi7PbjE7quVTPwcwUy8za/e2iPtJUI1gXBCMF+xv/BYi04Bt1mX0qONGWr8KgH8LdRXFywkShF3MjgUbB8t
- jCDbGFzN
- seMIUNVHNB2aJ00bnO08wD0zK1tBctv4bnKKYhhaJGKE3gYBtZf7BfQlS8me7jtF3kcL/fm4JOTGVKSPtiuFbZeoYk+oFbI4LuJY6zPgV8Du+A65Fgbuo48OHkJTkAjD97L7FpZYwVIeFAuzI53XTWVFo1PIXTdIPXWi4+pxcYXahTu4PY8VEOO5MBKh5rnoHQudRDj/c1GGkehi5CORYVnTFr8lRGPniR0Vu5AawdMAx1ZMpegkMYgE45VSyLPxr7La8Wzo4GbrvCbKXrniBAu/OIdLOLPyvIc0V5L5Y7K26VoZ8oNQeFh86qqTzdX0f3MyGxW8L0NgZ99rJfgcKS7z5xO79JChCHE4euwQtBjbAATXzZubHVWtmJP83vOSLRqqZX12C1k/SbNYyFSWXRJEqc/RPX19GrEAtrUQkDJjcFEeFUTKY9ocpkr0dWONLyKiSn61B4PScfGuM1eCpYrMAXHkWGhJnvTlETi1Zw+0yW2yJJ2dgI/shyQ==
+X-HE-Tag: 1762161038-83727
+X-HE-Meta: U2FsdGVkX1/qa9DzVNUZxmJaOSXrnwVKvIyQsyO6VQzFUcdkkNUfY3wrinj0Ds9WPFVeRo5K8MQgbcLOPl1ls4y3ue8WYulqUhWzq7G7F95fy5HI1DTJ0chCX8dUEAO+fwD0G4NooIvHJZo3mqeyH23AO8g3gHHLYH39X5SJoWChr4UDIvymve0ysgoLRzbmT5DHvZwUKavQfyLGWGIt0rxtocHFpsevTOBOEnzTbMRGUKXRBAEcZG25fDLMa6oj7I8bqFq6/GfmvDe5mL5eqGZOkIZ3KxK9QEKYI7jzsK/KBYiCMSreKxyMsSHCOSZpH0rePcrqtP8xA3WppbeMR+nShf+PhCsk5GLkzDBVGjDtgX0RkvDyKC5hX/gkX7nVqzkXchvtbjg1KlK22y0BfafcS+Apsdi4HHeqRWm06AccT2dWk1/QgiPLxpFeKGc85t75TJcCWaUCH2iEpgP13RD6AkeTLTII6AgKbSTSfbCJYf9OI0gNOu6Ym/nMPwEuHaPVyIXuIuoGEzuee2KH6eGBy7+gA5E2BmB2QXEedj1USK6DYW18KHZearrcv6Gwtjcv48oOnBxHZjrzusUiEbn2bmG2BgefRPQwcgGysnD9GEhYCkWOSFD9s5gFGY1FiCWkshF0eVleSUtatkyATEEXpuDxowzr5shwEjjaUjZ/RWqCmiUeDlk0tu7JakSbUppPTQiGcn6xWPFfXAsg8PuRWY9uc1o92IvP+wZs78kZ2TfFHP32EEqueHe96gqgYIgpSY0nFYZB1rvMtX5fGNfxp7frstTLBmDZbX17WhNonG4QuNXn4WoJAug1HN45GXr4/DTXqqljtyHR5AGQLqI7h/AL82WoCq2MKQnNtsfZ0X9ffm0/gcfxj3Te2zF7KTcyXCaWap2hynBoDKBQ33c/NyVkbdzGPR+VD51sU/reT08rEfz4DjXopCX+j4rFelwf96qAKZwyl9RU3Ku
+ CoCxkpFY
+ C90kiE7+ui87Kfe8A1SxjQGqBeoU/EufKo93izWJ0eGDIRqNTKri38Wn848lf7oXtUbQ4+WIog86Y9wam1+surhcBHz3dISYKmYWbLBuaP7Wz/U83a4a4vF4Skma006baucZv3qxeZU2FdOosSr6UWC2RsGAl93LDt47sDMCHJGehCm/4KnmrO56vDG9R+8SDIkfA1dYyi6YFOmNjUHlurhtSYaV7XqgX3eF17D3LiFMRrR4CzGj10rYBLOeysNfHPaVROjtLb9LUJdfbkkAbToOb83vtBTs5uRCTtBc4dQplqV7iibEhRgkhmTl217PlrCA8uRGVYftGOMh4xvr9gPgWO9LqG7OKjheGW8Q60XjefTufNMmvJ0mzXjHl1jW+arIQNCv9SqpUauxJkxlqliepGg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -128,121 +125,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dev,
+> > I assume you mean avoiding any mention of swap-out? As for swap-out, we=
+=E2=80=99re
+> > swapping a folio out from the LRU =E2=80=94 we=E2=80=99re not allocatin=
+g a new folio.
+> >
+> > BTW, this sentence also feels a bit odd to me. I=E2=80=99d prefer remov=
+ing
+> > =E2=80=9Cswap out=E2=80=9D from
+> > =E2=80=9Cdoing IO (swap in or swap out)=E2=80=9D.
+>
+> How about "doing IO (e.g. swap in or zswap writeback)"? Swap-in is a
+> very common user, and zswap writeback can be mentioned explicitly.
 
-On 11/3/25 4:43 PM, Dev Jain wrote:
-> 
-> On 03/11/25 12:33 pm, Qi Zheng wrote:
->> Hi Dev,
->>
->> On 11/3/25 2:37 PM, Dev Jain wrote:
->>> The implementation of CONFIG_PT_RECLAIM is completely contained in 
->>> generic
->>> mm code. It depends on the RCU callback which will reclaim the 
->>> pagetables -
->>> there is nothing arch-specific about that. So, enable this config for
->>> all architectures.
->>
->> Thanks for doing this!
->>
->> But unfortunately, not all architectures call tlb_remove_ptdesc() in
->> __pte_free_tlb(). Some architectures directly call pte_free() to
->> free PTE pages (without RCU).
-> 
-> Thanks! This was not obvious to figure out.
-> 
-> Is there an arch bottleneck because of which they do this? I mean to say,
-> 
-> is something stopping us from simply redirecting __pte_free_tlb to 
-> tlb_remove_ptdesc
+Yes, that seems much better. Though Yosry seems to view zswap_writeback as =
+a
+swap-in from zswap followed by a swap-out to the device, I kind of
+agree with him :-)
 
-Some architectures have special handling in __pte_free_tlb(), and cannot
-simple redirect __pte_free_tlb() to tlb_remove_ptdesc(), such as m68k,
-powerpc, etc.
+Mentioning the special case separately seems to be the clearest approach.
 
-For those architectures that call pte_free() in __pte_free_tlb(), it
-should be easy to modify them.
-
-If you're not in a rush, I can take the time to finish the above tasks.
-
-> 
-> or pte_free_defer?
-> 
-> 
-> I am looking to enable this config at least on arm64 by default, I 
-> believe it will be legal
-> 
-> to do this at least here.
-
-IIRC, arm64 can directly enable CONFIG_PT_RECLAIM, as it is supported
-at the architecture level.
-
-Thanks,
-Qi
-
-> 
-> 
->>
->> We need to modify these architectures first, otherwise it will
->> lead to UAF. This approach is feasible because Hugh provides similar
->> support in pte_free_defer().
->>
->> Enabling PT_RECLAIM on all architecture has always been on my
->> TODO list, but it's been blocked by other things. :(
->>
->> Thanks,
->> Qi
->>
->>>
->>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>> ---
->>>   arch/x86/Kconfig | 1 -
->>>   mm/Kconfig       | 5 +----
->>>   mm/pt_reclaim.c  | 2 +-
->>>   3 files changed, 2 insertions(+), 6 deletions(-)
->>>
->>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>> index fa3b616af03a..5681308a5650 100644
->>> --- a/arch/x86/Kconfig
->>> +++ b/arch/x86/Kconfig
->>> @@ -327,7 +327,6 @@ config X86
->>>       select FUNCTION_ALIGNMENT_4B
->>>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>>       select SCHED_SMT            if SMP
->>>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->>> diff --git a/mm/Kconfig b/mm/Kconfig
->>> index 0e26f4fc8717..903c37d02555 100644
->>> --- a/mm/Kconfig
->>> +++ b/mm/Kconfig
->>> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>         The architecture has hardware support for userspace shadow call
->>>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>   -config ARCH_SUPPORTS_PT_RECLAIM
->>> -    def_bool n
->>> -
->>>   config PT_RECLAIM
->>>       bool "reclaim empty user page table pages"
->>>       default y
->>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>> +    depends on MMU && SMP
->>>       select MMU_GATHER_RCU_TABLE_FREE
->>>       help
->>>         Try to reclaim empty user page table pages in paths other 
->>> than munmap
->>> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
->>> index 7e9455a18aae..049e17f08c6a 100644
->>> --- a/mm/pt_reclaim.c
->>> +++ b/mm/pt_reclaim.c
->>> @@ -1,6 +1,6 @@
->>>   // SPDX-License-Identifier: GPL-2.0
->>>   #include <linux/hugetlb.h>
->>> -#include <asm-generic/tlb.h>
->>> +#include <asm/tlb.h>
->>>   #include <asm/pgalloc.h>
->>>     #include "internal.h"
->>
-
+Thanks
+Barry
 
