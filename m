@@ -4,102 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97260CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:11:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 53D10CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:15:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 020A58E00A0; Mon,  3 Nov 2025 11:11:39 -0500 (EST)
+	id 9EDAB8E00A1; Mon,  3 Nov 2025 11:15:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F3A7B8E0057; Mon,  3 Nov 2025 11:11:38 -0500 (EST)
+	id 9C5478E0057; Mon,  3 Nov 2025 11:15:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E77E08E00A0; Mon,  3 Nov 2025 11:11:38 -0500 (EST)
+	id 901F08E00A1; Mon,  3 Nov 2025 11:15:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id D6CA68E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:11:38 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8BC62B62BE
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:11:38 +0000 (UTC)
-X-FDA: 84069786276.20.2427DEB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 15A71180003
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:11:36 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K8p8WP9r;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762186297;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0cx3pPhs9okrD8qu0Xa0ceSBi4k1FcUEdAxhIOGYsE0=;
-	b=ZxqHBsHKQpA3MqlLpOyPXiW7CjwdNyYDtGmAg600b/EQ1IKEU5Lyrp9Wz1gP734VEslbZe
-	yU5jDz86w403nFqSoq0j8oj/35O/hVCS5eKeghcRYPgY++Bwt3t/ixafVchn2I8AjiYQiv
-	QSQdqG61pwLuGM3zO0XYjYH1NBdXj4s=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762186297; a=rsa-sha256;
+	by kanga.kvack.org (Postfix) with ESMTP id 7F9598E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:15:32 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4879F1401DD
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:15:32 +0000 (UTC)
+X-FDA: 84069796104.06.6BECA27
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 6430A8001A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:15:30 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pMmG9L/w";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762186530; a=rsa-sha256;
 	cv=none;
-	b=1R9qM2hdOBC1XKCv9Ka2mQ0zzS9vd3t6YzOiJ8QVf/vxQnfyfyyESzxBBnHVGriP8do7ZW
-	edUZG9gwQPgNLu+JnJ+4rTixOMHEWM1h/jyOQHqSY0P+RU0ki8rJZ345HVo5GVZPLTcBA/
-	q3xOQoiBFhkQ2RoqLz5u9ZYSB9IhwHw=
+	b=E7vkIwtzwsDuo/I9JrxN/jyyN0AlmR+BD9FsFDf0B5XmmJMctYIsuOgoYvVrXK14lDML1I
+	klwpOfgFlIcCg6BktT76bfcYSAQnVgQDLqpzWb3SRobEItypO6oYfJ81MErCEFrJQDWS9m
+	9XoFPXrO5A369P0wQ7waBK2qaHpi2jY=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K8p8WP9r;
-	spf=pass (imf24.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	imf30.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="pMmG9L/w";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf30.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762186530;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=nwOqk6r952fnoq6kqx5JJLxmDxQO3I/qHQLZzHd75RQ=;
+	b=wQ9Dzas2xG/v4JGSY/rQbHQdYYgtaSLF8poQJo6AXbI4a++L1+ON5MFnH8ja35LNl/wQrF
+	EUkqBD2D8yibGl/fcyIYDv1Sg2XSkBhEohuKr9mkg9/f8zyXhaoT9rzLYjgYzyI6RK7CdB
+	LSNLHP89hqlDHGSRH3EUhCpZplmbqsg=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3DC266013E;
-	Mon,  3 Nov 2025 16:11:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0C59C4CEE7;
-	Mon,  3 Nov 2025 16:11:30 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 3D68643BB2;
+	Mon,  3 Nov 2025 16:15:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BE5C4CEE7;
+	Mon,  3 Nov 2025 16:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762186295;
-	bh=t3uCVlNB2xJvfnPV0X/hGGm+4C1tih7qB1AMxkuOk3s=;
-	h=Date:From:To:Subject:References:In-Reply-To:From;
-	b=K8p8WP9rT5MxIAnfnxfqwVuhJ0DnYjbNVkEk8Ii1JA8elVgIjBSFsM4Iu+x/ZCI3c
-	 dPZE5rbVRMx7VmX4a0AsIYVnsWDfyct4kktvU7CFb427nTX8O0RRyhiRliyEFopkDu
-	 YrI7hkvPtsHGccYOL/e767fSIzzbElpa38AnXNjt7zajMnbjoJvpZ9Sba67iFWsvLQ
-	 0NPj0z66MzqlMSqDio+rPwd7e1TVY1woUkCQ9UEIG2ptPlZ4Lu1UF6dS9eN5MU030c
-	 bxiXfGKcu6Q+D+LR8VUj/RYno21OP8zVX8G4ddiIGaL0tL93VlVmynrHqneNaOvMd0
-	 cdkYD63GTiyNw==
-Date: Mon, 3 Nov 2025 18:11:26 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Peter Xu <peterx@redhat.com>, David Hildenbrand <david@redhat.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Muchun Song <muchun.song@linux.dev>,
-	Nikita Kalyazin <kalyazin@amazon.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Houghton <jthoughton@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
-	Ujwal Kundur <ujwal.kundur@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>
-Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
-Message-ID: <aQjULib7JriWnVTq@kernel.org>
-References: <20251014231501.2301398-1-peterx@redhat.com>
- <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
- <aPZDVuscFsYSlQjI@x1.local>
- <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
- <aPe0oWR9-Oj58Asz@x1.local>
- <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+	s=k20201202; t=1762186529;
+	bh=S0YKJr0SoBmysmz8IMr3QugNjlhYpJzfR41WjPWBUB4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pMmG9L/wSj8xOcK/DzcO7x+pUKpbN+kaGWRhPKGT/hFa2p/Ay8Nl1Mzz1ZWUyScDa
+	 vucJ0XbF6T0spIoI3AD/0qxqWiVKMh+Mmks24qxQFDpKZf3Zexx64cDs61lCh6Efy6
+	 od0TqupiK1VEnDg7glIHKRlBc357kZIMtV/jM6SD3qxje1H7u2r4taFzH3oyOWmxWM
+	 hHnL2j3jQ8KEJexQD4wpbJBjPfYdQst+gwFFqah20VMhXD96dyPMbnm/scOYZnijeO
+	 WcP/Ww9iS8dXs6EdOUxwooqxO/I0VbjvAaMNzv31ZZN/WtGdcK9zJR5blHKdrg4t/9
+	 0WafEdG9rsGng==
+Message-ID: <c7c8a233-2103-4b48-b65e-ec81666d20e4@kernel.org>
+Date: Mon, 3 Nov 2025 17:15:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
-X-Stat-Signature: 1yo7ch76mdh7j9j9rh39w16j6k1dtmfz
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/12] x86/xen: use lazy_mmu_state when
+ context-switching
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-12-kevin.brodsky@arm.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251029100909.3381140-12-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6430A8001A
+X-Stat-Signature: 8bdyybqqbiwbo3k8i1a63oah45oe38io
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 15A71180003
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762186296-88278
-X-HE-Meta: U2FsdGVkX18D8HHhGQOkb8ACgztweGHUw7XwGdfT6Q9tj3BxqKeGNI5c2e2tSIzz3R6tY/oMoV3RLD4pxwsM09oMTz2ZZikK0hRD8ZuHJmxqEixUZ2VIi7YrRbS8mjmxSsPOH2EBykiotnyiBGcRjIvdkAqzm7z3Wj0vEO9bvXjbTiPpUQj7FaS3jNADA6j/puuuYM6kzv3vU2DvND/Kbu2YdfdcieCBd+xCZi1tNgxeVXlzCCRw62vqyJ5z5qRBNhVhloED/ujRu6jjizbMA7UCdQkcrwU/rvnrjwyiv80jpMitYmz+gMNBHf0sZXjgR7z6G6PHesKHJYR9XIgZNkJuHlvBSu2P/dQVtnt+Iknnla1XW1nXu8ZT9k2NQSVQ4pM2BFnMy8SAjEJk5jLLGy2qBWBYcr7kY/tNumYKhPiVfAHEh7f1gzG6XclUbw8FYTYLG3HN8eOvnYzh5WVmThOUwUJzEm1ZH+XcY0Tc4qaipbh2xN5j8MrKqwpB+68a6Fb1VeGbf2col4UUL3FyNBYQCDwVkWr5vh9RqLlImrRAX5kCK7Lrt2fiiTdBjZNeVGly808AXn4z2Y1lHdE1//xN0DKv4o8L+dAlPFbaNqUPyCHRSUBGJDGjKYh3oGESfnep6LVKmUPToCNFkzPX4+CZaw6CzxoHjuN5wwpWh9J8qUzR4ixOnQcaIGdggCimxLjph7mc2WyGTwVgEfeihGShb7U9yccB6we7jh6wdU0Z+r5qS5tKbug/mplxtVrTaTfwrLdJjVdk+aNBUC1ggv7n1TsGaJCSNreePcRYMbLGQcCWM8KYLO0Gm9h/dDWpi/F6FAPJQ3elCalxxdl8QCBI6ZD5XCttp24lFbeJkkywyOkU4daUNQ82EjPyOvZJWTLeqptg7c62/o/X2KCOneonqukDvlmpkGygRhC/BXQwln0rC8b70ARpckctQjx9hurOeMY6ftgazFJX8kE
- 9Ayuo6WG
- KMWfm5st++ayf9XBiXJrIb+g4wU9aXQAwL6wgU0gtgafC/RwhpfraVsCD1K+R/3QeWL25moCO4P8g1wpnv+9KONx8Sbs+SLE9ve1LLNdmz/y9LI67L4ILVQjPddbm/EyFpHoQ3WNRIFnP9w4PBwALRvrf0rsYiLMZfx9GJnw3fr01IL49FXYOH0StRgQcejc70ZZpYptUbya9RQ2tS/i46eqx3Qeq3Gqc1zCijgC2zrktRNQm2aOYrfFT8jOZHz9MgLa14PuNNHZ3nzNI2FrNLyXRg6vng5NkUmhqgt4zkHC3vpkDnfHEZLJWdTANgyWleV0VHojf/w9z/Rc9In0cFnJlePIN5XWZ/IZwbqeXTQ/uhLEw3TenkE5HwA7GfTvDneJjX4nn/k1Tp4rzRoKpq0ojkfgRkk20hZLv
+X-HE-Tag: 1762186530-1159
+X-HE-Meta: U2FsdGVkX1+WknSajRgI0UN19mucJMQx7UNq0y/4nzrN5wvuNTiObvTn8EmXrAh5lw7bitKQKeu+4GqyH8JUs1+4XY/eTNPGJ+SaBvKQduu5rCF5eNh51o5cB0PoQoSVfiyqw1yGikWRW5O8xij0IKfqk72f0xwYu1r7CaODE8E92gW1E5DMA23bpH3Y8PIbd3v40imbJbwQgxk62KwWW1ORAU76+cCbodj4omqYwIVPm/Gd79saHsIL04Qq3Yse8Wa8UgvS5bJnYwgj0TJgAtrnqATicN5xNkkeDUqkk8lq+yemIigz3GmO/J+dtVv9TzKh5qaWviBI+mwcw8SAK65AmSGRnGfZfrj5l9QEiDvbiPHH8xEsG+h7bv9BC9uERkeW3PFchNAeOIZs7I57cDqMNAhHV5Z7x/uwQPUwhddmP6I9zQfpc2TUKNUn5kH8BNcXUc8fYFOvHCiggKq41gv5Kyj7XtKWfR+qxq720woNGi94F3H/E06F5GhiSAkd3XqJHTdJ8wJ5mW2iN+W8/ptwFEQ3av+rkZCt6FXNB4OHLJVoHYYJ8F6F5y+RRMo85nzaVfer0112lj2qiYccQK4y157U6U0q+3c97EI2atuDC8/toAl9wH4nuO+mIUXJjEFL7ShJjYq7PpcWgh4DxeK1jU/bDqHoFjuyDGadR0C79PDEpwpwklMWIwZ4coYG7Zgn1z7b0d2lJaJjKb1H3y+W8GKN/FMZRuB0kaGZwqH9cxCoSC6KuzRGDrubLu1HNPWVOSn3jjsa+ThMwPjIyKz4USBSqiMT1+f9bQk9YY3v1Qdb5xX+3w7i6UXp8t1GV76cASDlSYbWDV8QePCri1llezvuGZ4fvh1hjyeXVKa3WCJ80+E6oXFIMWxCJGu87WaB9w3xpIZ6an70IUT9Q/CUw5qlaKxLEVzYD7hofk8qmBfDjqDNq7b+m/ARbCxwnPoXygplFe3/oc2u6A1
+ BEGieXoJ
+ sM1zL0BYzwDTPANNUQ8SAvcYXMaXtoWYgHLVBoVgYWn2I0ruWsS/U9Q+INIjykMBTCtCZjEjFLz1qsQX4LReW3hwel0tXReRPXRv+TYbkUSRdKquyb28qTeUel2G0aViAOZzcsZafNgqwZJjutLT5T2jK/J+pTgUKEBP3/o25+4s4bOfhb3yIDKRLhScecZ1i2Idu8A+VkcKD08QruQyb8UaYx8XND1aPs6SPYNge/XtddJreDgnqw6+1QcsaUwoaLpq51sRzjTzY2wBjXc41/DEIDGuss+OdC5fDnGuK4Hy8PUE2FdeUMrV79XfDY76qNZXSbyN5/ZqDO6e0WOGO2uiKfD/3ptdRPSHK9lM1pz5zta8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,111 +116,70 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Liam,
-
-On Thu, Oct 30, 2025 at 01:13:24PM -0400, Liam R. Howlett wrote:
-> * Peter Xu <peterx@redhat.com> [251021 12:28]:
+On 29.10.25 11:09, Kevin Brodsky wrote:
+> We currently set a TIF flag when scheduling out a task that is in
+> lazy MMU mode, in order to restore it when the task is scheduled
+> again.
 > 
-> ...
+> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+> mode in task_struct::lazy_mmu_state. We can therefore check that
+> state when switching to the new task, instead of using a separate
+> TIF flag.
 > 
-> > Can you send some patches and show us the code, help everyone to support
-> > guest-memfd minor fault, please?
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>   arch/x86/include/asm/thread_info.h | 4 +---
+>   arch/x86/xen/enlighten_pv.c        | 3 +--
+>   2 files changed, 2 insertions(+), 5 deletions(-)
 > 
-> Patches are here:
-> 
-> https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/modularized_mem
+> diff --git a/arch/x86/include/asm/thread_info.h b/arch/x86/include/asm/thread_info.h
+> index e71e0e8362ed..0067684afb5b 100644
+> --- a/arch/x86/include/asm/thread_info.h
+> +++ b/arch/x86/include/asm/thread_info.h
+> @@ -100,8 +100,7 @@ struct thread_info {
+>   #define TIF_FORCED_TF		24	/* true if TF in eflags artificially */
+>   #define TIF_SINGLESTEP		25	/* reenable singlestep on user return*/
+>   #define TIF_BLOCKSTEP		26	/* set when we want DEBUGCTLMSR_BTF */
+> -#define TIF_LAZY_MMU_UPDATES	27	/* task is updating the mmu lazily */
+> -#define TIF_ADDR32		28	/* 32-bit address space on 64 bits */
+> +#define TIF_ADDR32		27	/* 32-bit address space on 64 bits */
+>   
+>   #define _TIF_SSBD		BIT(TIF_SSBD)
+>   #define _TIF_SPEC_IB		BIT(TIF_SPEC_IB)
+> @@ -114,7 +113,6 @@ struct thread_info {
+>   #define _TIF_FORCED_TF		BIT(TIF_FORCED_TF)
+>   #define _TIF_BLOCKSTEP		BIT(TIF_BLOCKSTEP)
+>   #define _TIF_SINGLESTEP		BIT(TIF_SINGLESTEP)
+> -#define _TIF_LAZY_MMU_UPDATES	BIT(TIF_LAZY_MMU_UPDATES)
+>   #define _TIF_ADDR32		BIT(TIF_ADDR32)
+>   
+>   /* flags to check in __switch_to() */
+> diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+> index 4806cc28d7ca..f40f5999352e 100644
+> --- a/arch/x86/xen/enlighten_pv.c
+> +++ b/arch/x86/xen/enlighten_pv.c
+> @@ -426,7 +426,6 @@ static void xen_start_context_switch(struct task_struct *prev)
+>   
+>   	if (this_cpu_read(xen_lazy_mode) == XEN_LAZY_MMU) {
+>   		arch_leave_lazy_mmu_mode();
+> -		set_ti_thread_flag(task_thread_info(prev), TIF_LAZY_MMU_UPDATES);
+>   	}
+>   	enter_lazy(XEN_LAZY_CPU);
+>   }
+> @@ -437,7 +436,7 @@ static void xen_end_context_switch(struct task_struct *next)
+>   
+>   	xen_mc_flush();
+>   	leave_lazy(XEN_LAZY_CPU);
+> -	if (test_and_clear_ti_thread_flag(task_thread_info(next), TIF_LAZY_MMU_UPDATES))
+> +	if (next->lazy_mmu_state.active)
 
-It's really cool you picked up the gauntlet and invested this effort into
-refactoring of uffd!
+This is nasty. If in_lazy_mmu_mode() is not sufficient, we will want to 
+have a separate helper that makes it clear what the difference between 
+both variants is.
 
-I agree that userfault code begs for cleanups after the sh^W stuff has been
-piling over and over, but ...
- 
-> This is actually modularized memory types.  That means there is no
-> hugetlb.h or shmem.h included in mm/userfaultfd.c code.
-> 
-> uffd_flag_t has been removed.  This was turning into a middleware and
-> it is not necessary.  Neither is supported_ioctls.
-> 
-> hugetlb now uses the same functions as every other memory type,
-> including anon memory.
-> 
-> Any memory type can change functionality without adding instructions or
-> flags or anything to some other code.
-> 
-> This code passes uffd-unit-test and uffd-wp-mremap (skipped the swap
-> tests).
-> 
-> guest-memfd can implement whatever it needs to (or use others
-> implementations), like shmem_uffd_ops here:
-> 
-> static const struct vm_uffd_ops shmem_uffd_ops = {
->         .copy                   =       shmem_mfill_atomic_pte_copy,
->         .zeropage               =       shmem_mfill_atomic_pte_zeropage,
->         .cont                   =       shmem_mfill_atomic_pte_continue,
->         .poison                 =       mfill_atomic_pte_poison,
->         .writeprotect           =       uffd_writeprotect,
->         .is_dst_valid           =       shmem_is_dst_valid,
->         .increment              =       mfill_size,
->         .failed_do_unlock       =       uffd_failed_do_unlock,
->         .page_shift             =       uffd_page_shift,
->         .complete_register      =       uffd_complete_register,
-> };   
-
-... I don't think it's the right level of abstraction to add as uffd_ops to
-vmap_ops.
- 
-As I see it, we have two levels where things are different: hugetlb vs
-others at the very core of mfill_atomic() and then how different pte-based
-types implement a single page operations, i.e copy/zeropage/continue.
-
-So to separate hugetlb code from userfault we need something like 
-
-	->get_parent_pagetable()
-	->pagesize()
-	->mfill_atomic_page()
-
-and apparently something like your complete_register() and maybe
-is_dst_valid().
-
-But to provide hooks for shmem, anon and potentially guest_memfd() we
-should be looking at callbacks to get a folio to populate a PTE, either for
-copy or continue, and Peter's ->minor_get_folio() seems to me the right
-level of abstraction to expose at vm_uffd_ops.
-
-I believe we can extract ->get_folio() and ->put_folio() from
-shmem_mfill_atomic_pte() and call them from mfill_atomic_pte_copy().
-
-> Where guest-memfd needs to write the one function:
-> guest_memfd_pte_continue(), from what I understand.
-> 
-> Obviously some of the shmem_ functions would need to be added to a
-> header, or such.
-> 
-> And most of that can come from shmem_mfill_atomic_pte_continue(), from
-> what I understand.  This is about 40 lines of code, but may require
-> exposing some shmem functions to keep the code that compact.
-
-This seems to me an overkill to implement MFILL_ATOMIC_CONTINUE for
-guest_memfd().
-I think it should be able to register a callback to provide a singe folio
-at a given file offset if that folio is in the guest_memfd's page cache.
-No reason for guest_memfd to start re-implementing locking, acquiring of
-PMD and updating the page table, even if it only needs to call functions
-from userfaultfd
-
-> So we don't need to expose getting a folio to a module, or decode any
-> special flags or whatever.  We just call the function that needs to be
-> called on the vma that is found.
-
-Agree about exposing flags to a module and about limiting API to functions
-only.
- 
-> Thanks,
-> Liam
-> 
 
 -- 
-Sincerely yours,
-Mike.
+Cheers
+
+David
 
