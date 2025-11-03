@@ -4,92 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09915CCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 17:06:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 77893CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 17:08:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 641868E00B0; Mon,  3 Nov 2025 12:06:58 -0500 (EST)
+	id CFE0D8E00B1; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6190C8E0057; Mon,  3 Nov 2025 12:06:58 -0500 (EST)
+	id CACCF8E0057; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52F2A8E00B0; Mon,  3 Nov 2025 12:06:58 -0500 (EST)
+	id B9A748E00B1; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 4273D8E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:06:58 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id A61838E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:08:15 -0500 (EST)
 Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1099912A81B
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:06:58 +0000 (UTC)
-X-FDA: 84069925716.10.31E9218
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 7AB6CC000C
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:06:56 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i4+lnzu5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762189616; a=rsa-sha256;
-	cv=none;
-	b=lFMvmDWmjE7laV0UzbNwG2zll9/vdHamQWEgvzRDO7wNjRDBYp2SSNsn9xGwJQlZki/vmi
-	wYqVsjlKWPysGkoNsKwLS4H7xY8hpEkRpsHh5K0zYzItkUKqcTAYCMI8XOeWXfHO1m2n8m
-	1BhZIz6PwlNfzt7GInPsGJzUOlSZRpI=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=i4+lnzu5;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 808BE1A0203
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:08:15 +0000 (UTC)
+X-FDA: 84069928950.10.A42AD40
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf13.hostedemail.com (Postfix) with ESMTP id C42BF2001C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 17:08:13 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QMW8zha/";
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762189616;
+	s=arc-20220608; t=1762189693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UXNNUe+HScAzzMROGJgFOXzKFw2iBITtUWw5Cz5Tocc=;
-	b=oomVkJVatzBedZiCjkf8aAprUzaWQpsV4DkOiGIGQmbemfTueQrwXe4YlCHo8xWEzj6b2j
-	GYAfdrun42SXsDUUQfcXwUPy8Dhc7gqKngAyJzcJXLDyZH6RAU4dR0E2mG+SWFYVci+3le
-	vs+iLOKjxhdj/btvlMrULWrHqoU1MzQ=
+	bh=6+5iMoNOYBcLWe0CaIaAmmUu2GFWCDHnu4ctS//CQgw=;
+	b=oVc8p+hHWS2oQs3qMh7Py7T44YRN9y8rlh4/fceNJ9V8eDPDkfRephNzIz1DJJ5EG4UmCM
+	Icu0ZJuAKBi/NUYPMxjuKBxVF/bQH5+5NMx0lMkrzPwZ5b2E0o7cbmkOvK1AJ+trChpo61
+	hMh1wUZ6Si4zjSI4b0bNkr8eQIhXStc=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="QMW8zha/";
+	spf=pass (imf13.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762189693; a=rsa-sha256;
+	cv=none;
+	b=mJ+8n1piRqZXfTNvZZCCqWlGppCmm8d/MJmBpeUIcbYVIaXFG81iT8TbjtDo7O/sSFWz4M
+	9nrSCYH/K5tfHzzA6GtnqoGplwWrXv9jngLaxb3Hjbgi0KqtFEdDeFVXs8mXMXk9UexOSX
+	UmxSSHs911NbKR1eU4jSr7KE9D+uhU0=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 00ADD6013B;
-	Mon,  3 Nov 2025 17:06:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C467FC4CEE7;
-	Mon,  3 Nov 2025 17:06:53 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id B783343961;
+	Mon,  3 Nov 2025 17:08:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCB9BC4CEE7;
+	Mon,  3 Nov 2025 17:08:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762189615;
-	bh=bxGv/8/30qv9u6TosV/pnkBKN6DycBFjoEKn0mWZGvQ=;
+	s=k20201202; t=1762189692;
+	bh=R4htJzSMPqKUheWFqD30DrfQ176o4Yn8IJrGpqBlr/E=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=i4+lnzu5Ya5JTr+gMtuKgI3KcEKOs8Zg5LFHRxkNFe97CmgErRepFnpthZ7VPHPZK
-	 2SYqnfKc5MZBmgOzcSKVWGQHokUSYKt7/GttWha6O54fMv9HveEaCc782JWxWayoxS
-	 Ri5MLs9gK+capqsorK+qPGJW98lyLWbXJ4Ea9l7AQqxiOqIZwr6WuzGVT31LwFCVWK
-	 IEIl0g7jFG7MH2Tiv/q/5ZQv3k7bGPTtvlUpwu1e9vdKycW2Q6nLaFLnIu6QblX8tk
-	 +zuFLal8spd0/hcauQRwAMS25orwvc6FgRcQVo43Z4IgYqYprZ7kAvVFuh1cq5jO7f
-	 DzMpRTJr2vioQ==
-Message-ID: <b4598fbe-8c4d-4a92-9e8e-836feeba2f15@kernel.org>
-Date: Mon, 3 Nov 2025 18:06:52 +0100
+	b=QMW8zha/pnUwa3tfZUaFK2bT4lDcoBh/DY32ySXAvx11GfxnxoQT76C+mWa83vMqn
+	 5dgf8xFQbeRRXfbsboE5M/KFKQz47hbPo+EnqmXiHpYBYZT/iaCMtvy2d2ha8kC2jD
+	 kgCM8jiflgzODz8WMWnAkyrMK8wZZiWSJ/y3RPWdIflBININGH3XfgJt3QlL3aOh04
+	 VQeOoh5daKWcZcWfgeCKy1wVXRC06BIkFwwa+6zb6ouw5miTUoZ6wRq1INFRkKwBf7
+	 9vBqWHAjIFRuHZBjJkRpVvwlCaqTdHMs8ANOEvnniMBCsaiTXLvOqKY52FCYC86mjb
+	 KIPEY48x9nSeg==
+Message-ID: <28a5b824-f415-461c-af88-cb474ed37df1@kernel.org>
+Date: Mon, 3 Nov 2025 18:08:01 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/3] ksm: replace function unmerge_ksm_pages with
- break_ksm
-To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
- David Hildenbrand <david@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org
-References: <20251031174625.127417-1-pedrodemargomes@gmail.com>
- <20251031174625.127417-4-pedrodemargomes@gmail.com>
+Subject: Re: [PATCH v4 1/5] mm: Document lenient map_count checks
+To: Kalesh Singh <kaleshsingh@google.com>, akpm@linux-foundation.org,
+ minchan@kernel.org, lorenzo.stoakes@oracle.com, david@redhat.com,
+ Liam.Howlett@oracle.com, rppt@kernel.org, pfalcato@suse.de
+Cc: rostedt@goodmis.org, hughd@google.com, kernel-team@android.com,
+ android-mm@google.com, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+ Kees Cook <kees@kernel.org>, Vlastimil Babka <vbabka@suse.cz>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ben Segall
+ <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+ Valentin Schneider <vschneid@redhat.com>, Shuah Khan <shuah@kernel.org>,
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+References: <20251028212528.681081-1-kaleshsingh@google.com>
+ <20251028212528.681081-2-kaleshsingh@google.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251031174625.127417-4-pedrodemargomes@gmail.com>
+In-Reply-To: <20251028212528.681081-2-kaleshsingh@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: C42BF2001C
+X-Stat-Signature: x38auwdj19tpc6ptmh3dcho4xfnauj49
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7AB6CC000C
-X-Stat-Signature: 6azf9ie3xdxae681m6za8dmgktckj1xr
-X-HE-Tag: 1762189616-120520
-X-HE-Meta: U2FsdGVkX1+HFJLEjB0OeDG+EOCjrUcfN1NWkOXktSSdPQiLb26w1XbpDpdcZVvmZ4Sc7YKfvmKpc/npws71S2tZs8VmlD4r9XY9qKT79GIf0DNQqXI2ABsBTVQyDJaDprNBBc2jakN6NngMHwZVmU1HFTy3sEVu8TpHU7dJKqS12CpP8vWV3HUb86SLnF7XoXyiG3ODo9c8bhGf/XXjEwfB/JyH0eDnyPfl26ko1Rg2sqlt6tVX4Cq6H2Q2f93FQHIjTepM9pmrtADtcV8NMyk3Xughnl7nOo7QafOWDEXv6E+gWQsoFX2Vx7W8q25cRbdTvha1JED6H6Mh+G3TFm3/bKzKo2aLb1D8d/a57XTWHDXeGKTYBCoWsGrjUfwWO8Xqmy/2j0Q2HocYYfZRZXp9I5Y/HViod0bVzKPHMabMed2raZUAAi/9HGTUIubZ3o6GYcTdxWFYwVlx5P5hbDq5NhM73OS70258QXerK6UFzEEPNZO4u3T8EWSpQbXYAt1LApwz++TRu3iMI7KupwP6mVF2EkJ7OIYvPauUkpqllE9MdckeID9O+iHRE/uvirKUwOFHMQ1jyIQO3pF1qQ6OsTo2NDWm7/qnS3GgJjKamwiVCAF09OgkyWC5q3QNq6Y9bUaV+tolnmgOx166hM3Hd9xtAua4n2wVYN0YyC/PjbfndoDnwkIOAl3p5dMyMGSkmxH5IpVV5jMqVbpZVOwI3SXwflJegx69BAeYdU7EHFjujo6QKaQcmKZcrX3fNQ764qN52o2cfAoyCCMejdzhZvzW84NOz+ps+hDlTrWDoWnFPlbfQY2bq7E8zPuHU6cEjSrSoCSuf1so8TDuw7iGerG1tPuPKSmyx5zOZHer8L9JQgbe1f+/iV2QJ7qqxahxePqlYIqPZUulHd5KyCer4nbRFuwZ0VR3BEb7BZsyFezp0d1cxt9cwHgT0v/EpjROXEiUTCdzT4b5SwW
- MJ+Ry+2L
- dVUyC
+X-HE-Tag: 1762189693-14449
+X-HE-Meta: U2FsdGVkX1+SetcvtgVZYJlCuPlpvsbfhb3oBx84CKok95843CmgfHSUH5gcTuzbeYai3VJ6UM9Sz98xQ7k7ggv8sQ9Fr/QSaVnNNoshtU7QIuFHhdSEHfC9N4GCmbkGXKpqZ9RWFv0pM8GhPA87etk/9whfhp+VMNrqhSJLQjsFhQtb6FBctf0VqBhoGemnI1484LRQKfYGbjv7GUNSVwwe5+ixRX+GBS4x1gFVcJolXIrxvObPdF9AWAZwEpwSO7fgGxhC6630YykshwHZj0MeQrLEBBOmAMNbExnd3UpfvhX9f/DCdbIVl8CXF5ZM31PSTvZl++xZ/xv6mhQ9abwaql7GL4NFDvMf1AzLIdHQwioVTpFz/VyfIn6klQs6WAA+WOzu8YnIOY9cGRLl9kQYjD1UmyG+hrmFJIVAMx1k9u0Z1CllhhsGVlOVnPSz8v93OBXFff01n3C+0nP54iQ60AiEJ72s+Evn978sJUkZk81Fm6SquroIHyc7DtC7emr58ibg0qYMfLhxVlItjP1Hgw4/vNyPnlzkvzfyVQQ6FGMwaFZUd0DQ5VR7nOv9i62Tc6clATCpONzikB/AJWv8NokFs8xcbGKxZkLGgLr7yb5HlFWP8CnNYeBjFpkgh3T2Vox938Tg7Jj/xGLWK8AeNutjp5DbELiW6sQkoFzvxwZZ0GrLn+HjTktSQ6LkkL84h6OdrRx9v1ScSRk2ZeXczZpuWwFas2Ni4mHqcBuiqwYeBmQCmlzBBu/4GhnVFHAxcY+yJj2VDu/cV/u3cG+/6whrCgjI01G5lbj9dAw8Sm4cKJOAOmGvY+/k9WZp9JKk/tCZAA1iKG+JgN/UDbnfwqxLOI+v9IotCZV3KA8YZFF1DpM60EUxRS8IYlAmWWfs3nV/zw4SdybHIbMEqTUeQIDr+9+lZjezlCY10INre06ZYDcxH8yqTvtOZ9rZVCn0kFQfR9ZoX//j/h6
+ t5j6nn0o
+ /OL2tZqMgZ6PeCYxO1jPGfnLGkyJ0dCDaVh4D4JHF1AJGQUHshfNs+z7fzYsFEWlH0EBuOvMNYRu20blFTE6kw72HeYocEpGKdij/Qs3YxGBfV+Sj4iqU0iyPBm7ZP5OdZwnq1UDTSuXkPTCLOVeTbCe2/VTfSUgfZR1THHYoX7b2DyQjlOY583hFTmjmQbmIpQyYWP25sM85uXDBm3G4aC2WGbgL4tVLo+oEEvDlk7pLIf/izr5jkDBKOH2kH8r4HGqnmHrQqcW2NPBM80LzBLGerkK2PFG3F7A6aRgj1AIy2J0gY58u5WfSWNOQuYoZbmtAOGdmlLAnIZbGjQ5CF/VNLPP9n6zXRfFu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,15 +111,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31.10.25 18:46, Pedro Demarchi Gomes wrote:
-> Function unmerge_ksm_pages() is unnecessary since now break_ksm() walks
-> an address range. So replace it with break_ksm().
+On 28.10.25 22:24, Kalesh Singh wrote:
+> Add comments to the map_count limit checks in do_mmap() and
+> do_brk_flags() to clarify their intended behavior.
 > 
-> Suggested-by: David Hildenbrand <david@redhat.com>
-> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+> The use of a strict inequality ('>') in these checks is intentional but
+> non-obvious. It allows these functions to succeed when the VMA count is
+> exactly at the sysctl_max_map_count limit. This historical behavior
+> accounts for cases where the operation might not create a new VMA, but
+> instead merge with or expand an existing one, in which case the VMA
+> count does not increase.
+> 
+> These comments clarify the long-standing behavior and will help prevent
+> future misinterpretation as an off-by-one error.
+> 
+> Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 > ---
 
-Thanks!
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
