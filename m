@@ -4,93 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DB90CCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 06:37:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11BD0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 06:59:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 155F08E0022; Mon,  3 Nov 2025 01:37:45 -0500 (EST)
+	id 66B1E8E0023; Mon,  3 Nov 2025 01:59:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1065F8E0015; Mon,  3 Nov 2025 01:37:45 -0500 (EST)
+	id 61BE18E0015; Mon,  3 Nov 2025 01:59:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01B7F8E0022; Mon,  3 Nov 2025 01:37:44 -0500 (EST)
+	id 531518E0023; Mon,  3 Nov 2025 01:59:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id E1DB28E0015
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:37:44 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4EEC8BC2AF
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 06:37:44 +0000 (UTC)
-X-FDA: 84068340048.13.3E308E2
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id B5B9D40006
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 06:37:42 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762151862; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 402E88E0015
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:59:23 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id A5EEE1401CC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 06:59:22 +0000 (UTC)
+X-FDA: 84068394564.15.FFDC29C
+Received: from cmccmta2.chinamobile.com (cmccmta6.chinamobile.com [111.22.67.139])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 896E7160008
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 06:59:19 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	spf=pass (imf08.hostedemail.com: domain of zhangchujun@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=zhangchujun@cmss.chinamobile.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762153161; a=rsa-sha256;
 	cv=none;
-	b=0xt99oULzak8KaYICh3wQVMjtFwWVTqM3BSXwyGvH7PJzneYKB6+aklcwhVzeB0GEfHt65
-	oKF0j8SiEYVCnm6eVVOINtc5nwQ8quIwz5AfSgKuFNVCR9iJ27H4Gqxird+LTB3G1AXx8J
-	maPwtnJl0reWNKpKD2L+alDIoFx3Lds=
+	b=vcDkKk8PfMTIXPsHXfvlyoUU5/Z6ZaRODEWwKG4GIgCV7202oA5hg2guY21h+TNzpifqlt
+	wA69Lj7LiFFHjblRZ7EMDln8K58py7f7dRAvxTJuu0naUTG1gjT9XhmKQK/ENhFHqFMCPo
+	XMFfgAbZ+RAk1WfgyMKZKPYGQyZ+lTQ=
 ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
+	imf08.hostedemail.com;
 	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	spf=pass (imf08.hostedemail.com: domain of zhangchujun@cmss.chinamobile.com designates 111.22.67.139 as permitted sender) smtp.mailfrom=zhangchujun@cmss.chinamobile.com;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762151862;
+	s=arc-20220608; t=1762153161;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=GJIPJJXmQ2fWPUkO5lEa/TKja8rwMjMgSN4jo2vTnhM=;
-	b=p6Ke4PI7Okq02fH8NpTIdpwLp7j9dQ7NmPhLVXj/tWSCeL5mCNgU9ZFlaxzr7tmVsgkgEF
-	YEvcuBPzIzD5oWzRFI1MIRa5ImfU6Dw2Z8D4s+hETI4b/VR7u+bkZaY65MxCYMvyRp3LGW
-	o6WnVK1EHHTT6ENtsHYcUKUGIXS8Rqc=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 005BA28FA;
-	Sun,  2 Nov 2025 22:37:33 -0800 (PST)
-Received: from Mac.blr.arm.com (unknown [10.164.136.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 258E73F694;
-	Sun,  2 Nov 2025 22:37:34 -0800 (PST)
-From: Dev Jain <dev.jain@arm.com>
-To: tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	catalin.marinas@arm.com,
-	will@kernel.org,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	hannes@cmpxchg.org
-Cc: ryan.roberts@arm.com,
-	hpa@zytor.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	ppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	zhengqi.arch@bytedance.com,
-	shakeel.butt@linux.dev,
-	linux-kernel@vger.kernel.org,
+	 in-reply-to:references; bh=8+zwHYxLxejwCJwYPz4PWby587pXN55vsfl1JA9beq4=;
+	b=XDnBRpl+ArKlK8cr4LYdz8C9KO58///d5P23yLzLfhBj0fSGuSz1kjuQNP2YNKn5kPAN/y
+	3No5F9MBJ2qzjKYXcahJRGO5hdI6E2FeQsu1qbr5QqdIsaNenD1P+0enHhD0V2fYTns8/8
+	mM+rlzTUILNeMdRDe16zL2i7C5ReLfA=
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from spf.mail.chinamobile.com (unknown[10.188.0.87])
+	by rmmx-syy-dmz-app05-12005 (RichMail) with SMTP id 2ee5690852c22a3-883c5;
+	Mon, 03 Nov 2025 14:59:16 +0800 (CST)
+X-RM-TRANSID:2ee5690852c22a3-883c5
+X-RM-TagInfo: emlType=0                                       
+X-RM-SPAM-FLAG:00000000
+Received:from FHB-W5100149 (unknown[36.137.216.21])
+	by rmsmtp-syy-appsvr01-12001 (RichMail) with SMTP id 2ee1690852c16da-c8307;
+	Mon, 03 Nov 2025 14:59:16 +0800 (CST)
+X-RM-TRANSID:2ee1690852c16da-c8307
+From: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+To: akpm@linux-foundation.org
+Cc: vbabka@suse.cz,
 	linux-mm@kvack.org,
-	Dev Jain <dev.jain@arm.com>
-Subject: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
-Date: Mon,  3 Nov 2025 12:07:18 +0530
-Message-Id: <20251103063718.90743-1-dev.jain@arm.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+	Zhang Chujun <zhangchujun@cmss.chinamobile.com>
+Subject: [PATCH] mm/debug: fix missing space in case statement
+Date: Mon,  3 Nov 2025 14:59:09 +0800
+Message-ID: <20251103065910.2196-1-zhangchujun@cmss.chinamobile.com>
+X-Mailer: git-send-email 2.50.1.windows.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Stat-Signature: iqrprbnmoq9jcypewjoh1jt4fgbgod8b
+X-Rspamd-Queue-Id: 896E7160008
+X-Rspamd-Server: rspam06
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B5B9D40006
-X-Stat-Signature: 1gzio3mn7e4ggwz3sbhtxrr8sky6cwjq
-X-HE-Tag: 1762151862-50220
-X-HE-Meta: U2FsdGVkX1//LKKxb2NxpnOXZIrcUCKuLmls1kIE+F3c5so3p8PU67o1yrWeHrKLF+33KPSZif4u8TKZZj2lHJTX9tto1TIEGRxxetkp3n1BFDEFJQ4V8YkFcZfl7VxDcIee+vzLJFduD0eYZwGKVBONJEhDGHq5UMF+Uvr11KwBJJjkWJvaIzE0tj5G1XzXB5D25NxRkRJNLfP4gg9TF2l9pc6aOto/2ZOKuov0ZJ3oqrNxLeZD3Kvbiwbqo5cYCRch03vpfpcPJIdnA0+orsnlmjP9BANnoB3lu0G7kCOiUYfgouODwhM7BMT5HLN2bTiW9mj+A4j//nFrrJIGxRZrvM5amfog3wjR0s1CEpFC9R7jk1S3TGGu3mv+9iHXy7WXYz+DmMbaGMdbbMFxTeqZwbEv/86IPtfQ0gz7TpI1jxoXcjEoyNaq0CZtlxDUB+9I1Oj1duuKmq0fbHCMhGHWU1mAFAKUbyh5p1Bg7ahtZTTbg/PPVlbZR117pjy/ytxrK12rVfzrNm6QVnkrYj9YZIe2Evh+ISZokUwoPCD0XW1v9OnAWjdcs95a+yYMwcwHBQjDnbG0PnRFa5F3iH56nk/5xT8DA2TwXLQ4fnIACSmKCVwoQ2iINsa//s1+L0Xs/h7oOcFWtpf6f+81FUZoCvjubS/8F/D2xQ7TaglVy60+0TvbUDa6+gg9qVRTrP4Zr+0cqiD/5JFZcOV1CrVYm6+6fCHZkWT64rYXq+cNhERtSjEECMxey+FGEiQWYlxHHUOjZS8Xy6JnhisBgBuJGu+dVtZYrgS4YqMLLPJ1zM/OpSIHMox6FTjoWFQ8ETzkIIMFEZH0y3NrNPU337flELwvpczF1Ym6DX9QBGruy8EXjR5/Xo8p6wh1BOC3WBBZo1sHw6CwMNx21FXHJ/NroteJ1eXzX/wSTEm6EaN84SHNozVvDZNH+qmiJWoFeCAHlxz0lBBtBsR9r9C
- ++h6VpnR
- 0/z26KLStFSeNruQ2UjT2blKS50arTHiZ6kVks8jSlXwURVZrBn4jpmvkrLfizeJzphIMF/RZ65VembolCduPHVowEoY0Oe0sfnw4YAPO9hU3HalmTZ43P8sFOwRFUthshIp6rzsXpT2NDkfJH0amlXkno/K4lMstMOZ/krgB1ZkCuZbnv1NYWIR7g+/yWY6Zsnfk9a1VYr6ZaL/wTMFaLVgDALq+mCQ/QfVmERQCpKLmS+M=
+X-HE-Tag: 1762153159-721822
+X-HE-Meta: U2FsdGVkX1/cZARYNu0tSG89FDVTWZcxSLxdv1Tvdh4gVyPYhqZnGPHkamqGcgM+3nsh0Qd0HSKZ9XQj1f91EQAR9LeINjv/R/Zlo7Sf10yx3WqpwOdmezW7oe0mYzyBfpcqkSgXvE2xV7ZH9urPSCbRk1BamROqTwM7mwsLQGDtmokeRnlBM75COBGQtsZSz7wd0ohrg/oSOgDlNdu1JuZnym5NPSz6H28lMthoZwMEg9vi53lTZ/EuV8IcipqlOQllG2YzBlp6RFPswzKW9Dzm3vT54M88HiDUMjG3a2EHFFqfWOzyy04lGK9zPxPu6C+vlP3tZl3EZOs+cRi7fNZg5I8OpEFgWZhylBJ38ogTcc/EfOhrM1vAUOLhIA3AKyt0lPYyyoIlNSFqB75VL0AjyQqWsID8ux1mC6Cr/3sNowwdkmlobcg7QtwZDxeWVGad7x7JIRkQwySZohF+XsNLCzk8KkWQPBjXGL4j9qrJY3hsj6WPl7rg6pHMkne7YKAEmM5eINXsRv5ynTS8zpaSuWT+3PT21+lyfCI2r7rDLtySe9nETJr3I0C/Os2JGARe8wdsrYZgnMsL4yt5MXG14dbyzeWMRzqMKFuyoeN063fU1r+HtpAKgOeEL5Rp7ZRXEQxswZvhFi6T8/uet+9pQ0ApmYd/HhcWkE7SXgU5C45HwW4BLN9rq7r57l72sZc5ibByQszETx4lz2AAOym6fbtYSwJn3tQKv6phAVrfzOAb+/s2qZsk56Ra7iZ3A8njn/YuPVJStmVpBaOZBT+twfVUMTrK4yvdHK1Ue5Bo+xIdm9Twru20Z8ZV6eymhw0wdPYp9KbDrsBE87sKDlraF4SZ3B6riC9SibKgNWlItcumcEcvHdXTglrUreDq76hCU4DQYlejJ1WP42fcgxOJIFdcje9Gmmlfx8UCYH6F+fhJZknmJbZsdJYcfqUONSV0xYCvO1lDHrNqQIY
+ IOWuYVGt
+ OGQeLgL1WdxusvAeOLZGq0ATGLojb7gD5HWQO1fiOdcJmgqu9xLUHJYnCH8iFGoqGor7V
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,62 +84,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The implementation of CONFIG_PT_RECLAIM is completely contained in generic
-mm code. It depends on the RCU callback which will reclaim the pagetables -
-there is nothing arch-specific about that. So, enable this config for
-all architectures.
+In the setup_vm_debug() function, the case statement for 'p' option
+is written as 'case'p':' without a space between 'case' and the
+character constant. While this is syntactically valid C, it violates
+the Linux kernel coding style, which requires a space after 'case'.
+This patch adds the missing space to comply with coding standards.
 
-Signed-off-by: Dev Jain <dev.jain@arm.com>
----
- arch/x86/Kconfig | 1 -
- mm/Kconfig       | 5 +----
- mm/pt_reclaim.c  | 2 +-
- 3 files changed, 2 insertions(+), 6 deletions(-)
+Signed-off-by: Zhang Chujun <zhangchujun@cmss.chinamobile.com>
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index fa3b616af03a..5681308a5650 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -327,7 +327,6 @@ config X86
- 	select FUNCTION_ALIGNMENT_4B
- 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
- 	select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
--	select ARCH_SUPPORTS_PT_RECLAIM		if X86_64
- 	select ARCH_SUPPORTS_SCHED_SMT		if SMP
- 	select SCHED_SMT			if SMP
- 	select ARCH_SUPPORTS_SCHED_CLUSTER	if SMP
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 0e26f4fc8717..903c37d02555 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
- 	  The architecture has hardware support for userspace shadow call
-           stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+diff --git a/mm/debug.c b/mm/debug.c
+index 64ddb0c4b4be..d860864063be 100644
+--- a/mm/debug.c
++++ b/mm/debug.c
+@@ -327,7 +327,7 @@ static int __init setup_vm_debug(char *str)
  
--config ARCH_SUPPORTS_PT_RECLAIM
--	def_bool n
--
- config PT_RECLAIM
- 	bool "reclaim empty user page table pages"
- 	default y
--	depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
-+	depends on MMU && SMP
- 	select MMU_GATHER_RCU_TABLE_FREE
- 	help
- 	  Try to reclaim empty user page table pages in paths other than munmap
-diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
-index 7e9455a18aae..049e17f08c6a 100644
---- a/mm/pt_reclaim.c
-+++ b/mm/pt_reclaim.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/hugetlb.h>
--#include <asm-generic/tlb.h>
-+#include <asm/tlb.h>
- #include <asm/pgalloc.h>
- 
- #include "internal.h"
+ 	while (*str) {
+ 		switch (tolower(*str)) {
+-		case'p':
++		case 'p':
+ 			__page_init_poisoning = true;
+ 			break;
+ 		default:
 -- 
-2.30.2
+2.50.1.windows.1
+
+
 
 
