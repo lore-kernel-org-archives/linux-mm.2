@@ -4,91 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA7EFCCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 14:41:11 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D643CCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 14:43:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C22F8E007E; Mon,  3 Nov 2025 09:41:11 -0500 (EST)
+	id 687A08E0084; Mon,  3 Nov 2025 09:43:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 372C78E005A; Mon,  3 Nov 2025 09:41:11 -0500 (EST)
+	id 637B98E005A; Mon,  3 Nov 2025 09:43:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2613B8E007E; Mon,  3 Nov 2025 09:41:11 -0500 (EST)
+	id 4FF2D8E0084; Mon,  3 Nov 2025 09:43:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 114488E005A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:41:11 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A3A52C016D
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:41:10 +0000 (UTC)
-X-FDA: 84069558300.10.385983C
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id DF351C0003
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:41:08 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JDHYLNBZ;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3A8748E005A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 09:43:57 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id C785D1601DA
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:43:56 +0000 (UTC)
+X-FDA: 84069565272.13.7202B00
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	by imf24.hostedemail.com (Postfix) with ESMTP id EDA7B180013
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 14:43:53 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YLKy0t+6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762181034; a=rsa-sha256;
+	cv=none;
+	b=oDQO1+BLnwqKWv2wXv/4WQ21M3IMNkPUQUCYVd1+r7cZiOVZmrSrXRj2XGf9IjIghKDUJ8
+	Z/LHbrD/47HD2htyWyG1c2PytrDWZO2qG4pLHwIgvHx1+le+ee47lRlbX+FPSg7F9w0oW9
+	pZc4BYWb4zSOn1hwHevM3zEG/MCaHvs=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=YLKy0t+6;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf24.hostedemail.com: domain of dave.hansen@intel.com designates 198.175.65.9 as permitted sender) smtp.mailfrom=dave.hansen@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762180869;
+	s=arc-20220608; t=1762181034;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yOIN4al8o3hvby2tYjmv7154iKKH2/FeWfWDeE8Z1b4=;
-	b=fxwFTtoM9V1bCiuXffGSNDGCZkkxoGBI0oBTv5PPQGt+unk/nLgtsUBdjl2EBX9ocmNrLO
-	AZNcxiU5Z+czt2Aw8JrTpKhXGNCxtgaeXVSOhHP10hO8gW5F1Yiyk5vgt8uU0JGx0vHeAH
-	If6dD44CfnyhiYHV6lI6Ekl1SLwHH2U=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JDHYLNBZ;
-	spf=pass (imf28.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762180869; a=rsa-sha256;
-	cv=none;
-	b=oZzQIbh9yJS2Z7bnyaPckg4e6VosppNAeG4OPZHDSpKq5JvR5QHlMPIrqbl6l1DthtR/kl
-	vHlvybQoJP+fbQPrArxrWCOuDcR3cBt99/9w3VXwHOuboq3C+e8bubPr9OZZfPFNJsSjBC
-	o978fZ1ejjaTbFgRRopFwHsFB9gv5/o=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 90856439B7;
-	Mon,  3 Nov 2025 14:41:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5CFC113D0;
-	Mon,  3 Nov 2025 14:41:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762180867;
-	bh=LjFjByiv2udyhbpyhBMDGQWMK+5W1S4rpccn8+FhmMU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=JDHYLNBZtzPaNXVho2kDaLiARfyfnqFPnf9nfQ6EhFuKJtSRiOUtDhjFgeY/WYmAn
-	 2YcV9Ima4gdxz6cuzyeN28w4y8xpgk+5Ly7cWdY/OlR5ff6W4eurh8O+6DXGuBSCTW
-	 S2j+eMw/HHoN8UL7L718UMmeUmCy2S1K6SNGIqjFwGOUwxvFrVtIZFe8DJ2URkyBhZ
-	 Tb92uq2SfYTN5KbWc24raM66iJwD5mL5Ozm4oD0p0h/1rzNSg62ZSWCLuf2SZM+3FT
-	 4Rf8uDV0VWwRxE0K2MzM9oTB1Qk0vatyWHOVZX3p8H2Pd1dWTH1NsaUfAqBYnjUKXv
-	 7/Y3vSsYDIfPQ==
-Message-ID: <79a1f2dd-6752-426c-84c1-a38d300eb78c@kernel.org>
-Date: Mon, 3 Nov 2025 15:41:03 +0100
+	bh=J02W1Iw/Jfwyc8k+uXOvE16dWe+Giy8i3f3bmJQNB04=;
+	b=IsQV3brv4tJrV193M+tvgUxQ6gbToGERMBo52JFCjtWg9Z2ba0Vpz4q7B/0pbYnQ1OgDfJ
+	iynnH5qpIztDB+fgmnJ6q+SoZKEO/jfs5XNVtVnsTz87unpQNe479yvTyMYwZNUpQa/2vF
+	7ZI+lqfJxlOFQgoP14mQH2vHK/Z5pys=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762181035; x=1793717035;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=J02W1Iw/Jfwyc8k+uXOvE16dWe+Giy8i3f3bmJQNB04=;
+  b=YLKy0t+6dsGjU7aUkaMhoNM5RjEsocOv4v2jj26NHJqdgS9CARGhaRBr
+   8a4LVCVCEfHZtKtl3D8zjN7Jqw2wYGOrTfwikRvhxck++HfR3d/hsFnhE
+   SedgBMqzgOfGmLMNiZmmzBCUgMX7zwexaemEUQUI1y8aSmwG1zhSgPNNo
+   ti88rXeWxkmc2NBm+YFAhQV0JRArtyfBzG9xeomc2BlP+JoOVtmh7IGEE
+   +Cc88WxA2EAiUuRA4RLtrWQTL1yUh+7nZ7jjeKpsHj2lPYBNoYyLrvijt
+   1Q0K/YWxFu2ivMxfkPpJSP0tB2uPM/WsP5dNo4/b1KseYzFbgK+ddw/PD
+   w==;
+X-CSE-ConnectionGUID: 0ex4Cf7vThSQPQA9rmJwZA==
+X-CSE-MsgGUID: N2RsnLESTqyqIJK9fbcA2g==
+X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="86879819"
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="86879819"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 06:43:53 -0800
+X-CSE-ConnectionGUID: sg2xt+/qTXexAbr7EYwjtA==
+X-CSE-MsgGUID: S+XBoW6qRC2gVayyp3RQag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,276,1754982000"; 
+   d="scan'208";a="186172524"
+Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.110.129]) ([10.125.110.129])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 06:43:52 -0800
+Message-ID: <8c6c5d0a-c5e1-4c43-b824-2e3aa6641d48@intel.com>
+Date: Mon, 3 Nov 2025 06:43:51 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/huge_memory: Initialise the tags of the huge zero
- folio
-To: Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- Andrew Morton <akpm@linux-foundation.org>, Will Deacon <will@kernel.org>,
- Aishwarya.TCV@arm.com
-References: <20251031170133.280742-1-catalin.marinas@arm.com>
- <aQiu-hU3x5V5drHF@finisterre.sirena.org.uk> <aQi8dA_QpXM8XqrE@arm.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH 1/2] x86/mm: support memory-failure on 32-bits with
+ SPARSEMEM
+To: Xie Yuanbin <xieyuanbin1@huawei.com>, tglx@linutronix.de,
+ david@redhat.com, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, hpa@zytor.com, akpm@linux-foundation.org,
+ lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
+ rppt@kernel.org, surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
+ nao.horiguchi@gmail.com, luto@kernel.org, peterz@infradead.org,
+ tony.luck@intel.com
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ linux-edac@vger.kernel.org, will@kernel.org, liaohua4@huawei.com,
+ lilinjie8@huawei.com
+References: <5ace86cc-0b2d-4306-8bc1-dfc34cccef1a@redhat.com>
+ <20251103132358.79766-1-xieyuanbin1@huawei.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
-In-Reply-To: <aQi8dA_QpXM8XqrE@arm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20251103132358.79766-1-xieyuanbin1@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: DF351C0003
-X-Stat-Signature: kxg5igxpf7r3roqbot4e6rh9shoaawdd
 X-Rspam-User: 
-X-HE-Tag: 1762180868-116457
-X-HE-Meta: U2FsdGVkX1+F67WpmQSwm+26ALYygOm6skQ0tnJKCurDz6QXbBLaBwq4in7aUDvNVjisfibQ1V+Iw9QUWm6iwMpOj0h5aiHxn8Fc3SrR6x209zfMi3z4rWtRcE+P1iMpcFJqLXsK9mbU7WN9um6zAUB49OCy8tjhq0UgugotVJLeJ/boSPfcht5fdC7ZDLf8roBvgcRwIPhDMvfgEGYjuHK457D4KIOMjj1sjAEXhHeMfohu4U3l8c7euRZ8/ETpiop5+SeSvty3ySURpPdbWps05R45plgFxulOejXVGA4LQVXFbt2w3CCpQOyezfmuKpdL8C7L0QEdRHvk6KYDI7sNxK/AluRDtVB9dtUYVGoGEl9E3APQJYOzAgf0Kyo6dLxN9SVl2rJYzWJK21sbzUfp+qMtmj1Ms9fqiew8kgEKM8cUY0l2J7/b0Z9T9utHzKaUy7bNANFmtfDmhQDQPm1AyrpR46XeHckHR+OmujfK87jEtNSz2AnFII8+Fxt4MBsQIEJpKOgoQhQ83+kKsBLXjwpAvwwwhzkLLCYPhL2cowdRGK6jvBbLQIYDl/1r07MPxWDybJ1z27bOUIBPjmxXbwlvZy5qVbFuPRznX9CkXBPV8zpgyI6DSeLtfYQ269lpzVuYDWbpZjCeMAk6f7t0d3tY4DHATE8VxN9OzOT7xNBv5AhKmtEw2C6Y6+saqWQ/QyxTyRGOaMRWiHDunME/1mGWXhLakWDxdUc2KWjC+iMzFfjG9tNwAVD8AOfar1yJ8NQs2zkmp/yjBNgPtxCd+pEpdFZho+jODB2o59wvv+rDX4fVn5NA5jX6xMzh12lJMr1I1InkOxaFhbnS/lVcZrNIeDxA4b5BTv+6cbQSjVWdAK5d5YCz3qdaCeJGSM+O4uLPmMohdrWs5r+MiNyUSGoEsZdxMO0FBiA5KtNUD8Jj0vddtS7bKJ0YBbUo3rDGFttmZjhE7qME6Q9
- 3rkKYmh+
- 6r3vo4FxOphTr8OBHm8xa/3PDIiqNmuCvDHx2Cn5Wmb7VsczMPGdPhHlEXq8uBjunzWx8an7UT2vLlgJWofOqC4lHaXA3BnnIm9WBuHkk5XX+7nHHyMecMvDZJ0a6+5KRETI2O/+1DX6rRIDj/VvEmWRd/SRWBHLDgMy4uXFvUlK+vmEAEOPW3v4ZXBU114Sy3BZU0W0cjHFcx9cmGmbFwiJh23iwdLjgpSxYVtGRgbzfV6wprMaTtUUrsLKfguCkgaGAMerSFHWBweOSGyCmVxHyeGnKRkeREzUPfxAI7PSzHvSbdbF35X8Zgw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EDA7B180013
+X-Stat-Signature: jsz4wbx57bih5afj9rpiniz35nh8dpnh
+X-HE-Tag: 1762181033-88966
+X-HE-Meta: U2FsdGVkX18OGBOPQfJJC5kJCl95a8jcTIrRDIrojPwn6xu0V3wLlCS+aWZ1qTpKNgnYsP0YzMig+GjC1o/z6Yx8hDr1alAzUxg3XWnCGZMxChsPwOS+/8UXQlZTbUo2GhuHQPgfAsRnX5xjqmlzwxb28OAwb3Da0poUzMLn1E6OqKfCEDinGM9jk07jJ616VYhBBPAFKOa/YxU/Yx/SvZO4HIy+lfqiq6gG+Hj58X5BivHqguh3lDjbPMWUlyxIiROFZspe3V/zxg5BTLikqd4F2kATKw+RRK75P0DrHuUlB3BnoD5gQucLpj2/70fI/cRtVZjYAbJ+Lel9CZxPJqBkMWCxjF7hGLNRztqYOGVU5Lbx2s9X4OisOxt7pnk3y5hI8zxVjWfiUBYMLGwhc34r+tsvlMOlOn6MYqJ8dNiFBFrtuJ4NSCFiHGFj1GomwrAVKUy1iM6DFdyDTcD9xa3e9ap0yYRw+TI0d1UYyMM4vnqd9/NhcT+RLk4YSqTqg4hRYnqBWvGZrrqv5KOolZ+E3DhXqupEeJizVJXmnAuOGP9enayvLCnqS0Y4YVa0QF+ROBC0+gkd/omscPakHFTeQRp+6z/xl3YokH1p/vJJVWtbPFHi3NckP/dvzTuN8Ph7ZzBoJC2zWF1Ku5GfalPbDnTGljCzpYqNyuRIlwpRJso6KeYCvzvUqGLP3QryQW5pgBlncLzh6Uf1Ypc/vsl6Drgn1W/33nDLSnj5u9pnFNHl0ENXXj9QA9s/v+4UNCgL88rw+hW+KBTzyr+YyzXcS8Yp/imPa19KZRLLPB7iaCk1lDfa5TsvY+WqWfZEGChGb3v6CGSKd1OMAlk6HiJQK1YNCMmWltJhQZMlomVbRKi3sz1sfQjNIKagr+miHpAyGgCPTzonsFlI4oS2Xd8cld5keUZZyKcHfltJGROVt7XkJvm4rRCrnMuSR8M0aHpHezaJk+Q3RPAlhzw
+ zKQs0pCM
+ TVvVT920cZtO6pY1cy6QU5iqpw8/ItxF04tXBnNEGJ4Ny51XOV5spyuaQKwtb4/M9AwC9ue6cj+UqWrSxa0KHTMuYd2Hp9VMwlQZXYpANzgvunULU92+cMrXk002rmGoOa3wGW+64eWX2oYsOaCCXTM97g2A4WGMMPLVX1T7o/3bVIdwd7AqpijF9iZQOXTdL3AXdhIHiN8909TNn/PevDvSlqUeAWX4AUU14+1eQNuVPSSmHSRSP7dAVDnk0FnzoHlCV4LzEkVhyCDxBnjjb17cK4g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,32 +158,9 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> 
-> -----------8<---------------------------------------------
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index d816ff44faff..125dfa6c613b 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -969,6 +969,16 @@ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
->   
->   void tag_clear_highpage(struct page *page)
->   {
-> +	/*
-> +	 * Check if MTE is supported and fall back to clear_highpage().
-> +	 * get_huge_zero_folio() unconditionally passes __GFP_ZEROTAGS and
-> +	 * post_alloc_hook() will invoke tag_clear_highpage().
-> +	 */
-> +	if (!system_supports_mte()) {
-> +		clear_highpage(page);
-> +		return;
-> +	}
-> +
+On 11/3/25 05:23, Xie Yuanbin wrote:
+> I will update the V2 patch to describe it.
 
-LGTM!
-
--- 
-Cheers
-
-David
-
+Please also include the logic behind why you want this change, including
+a description of the hardware on which you want to use this change.
 
