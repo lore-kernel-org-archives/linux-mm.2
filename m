@@ -4,133 +4,265 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16236CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:14:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DA3A4CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:17:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7329A8E0039; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
+	id 2A77A8E003A; Mon,  3 Nov 2025 03:17:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 709628E002A; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
+	id 2575E8E002A; Mon,  3 Nov 2025 03:17:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 61F4A8E0039; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
+	id 0D1D28E003A; Mon,  3 Nov 2025 03:17:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 50E988E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07CEF160A84
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:14:19 +0000 (UTC)
-X-FDA: 84068583438.01.33F140E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf08.hostedemail.com (Postfix) with ESMTP id A189216000C
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:14:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762157657;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E92948E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:17:17 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 838A589476
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:17:17 +0000 (UTC)
+X-FDA: 84068590914.22.2A532AB
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 36A8640007
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:17:14 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Y78QDuCF;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GCsxG84g;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762157834;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
-	b=XaGwlo1WvBKPLrTn6tvdMsN7U9ukYBFQs3hjf3u0LLhBGNndGARtjBKfsafoFZaFvhmT9d
-	T9uiLwty+oKmlNYA+FzyZEQm3jPFIcEknpUBcksTg8aT7KsESu/XWmFL6WrWmB98vQBZpz
-	2Ahm7Xzs01UAMpRFvcqMoOQjm5dg+Qo=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
-	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157657; a=rsa-sha256;
-	cv=none;
-	b=K+s8prhbRpL4RraQtA2QX5p9vtjuB6Hm8TvZO7LKqqnz025F+VGmfDwhApIuSH03pwa3nz
-	gOSYdWFvsrjdbJiRgaky0VtHi30BxrCfCeKvbCQU+IHDlekPBUxpe1uBjfFxtQ5CLdA6N4
-	y3Pl8RpCqddW+r7m469XngPrsCUaC0g=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id A075B21EC9;
-	Mon,  3 Nov 2025 08:14:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762157654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
-	b=VQ+j7uxNDcVsNPTHd3unaB+kEhcNnjs6bCHaF5ZxN9bXsiexkAeteKfEmlgA4MgQTwbgxa
-	X3oBxfZVFo4NfcWRmG/LUEHk7zkbH7OX4zoNdm+vgbzjXP+Ppdj91X4+Ufa32ldnR2kdWD
-	J7GCM/W+E1rZlUfHDFKC4y/9qmBGZYQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762157654;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
-	b=ILcOvWE3ko+Lu34V3dlOGO/OykohZmnSXALd+aOofNHRb+gfNSERLcnFd/Fk5p3Clu1xsN
-	By3x0es9kLP96JBw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762157654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
-	b=VQ+j7uxNDcVsNPTHd3unaB+kEhcNnjs6bCHaF5ZxN9bXsiexkAeteKfEmlgA4MgQTwbgxa
-	X3oBxfZVFo4NfcWRmG/LUEHk7zkbH7OX4zoNdm+vgbzjXP+Ppdj91X4+Ufa32ldnR2kdWD
-	J7GCM/W+E1rZlUfHDFKC4y/9qmBGZYQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762157654;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
-	b=ILcOvWE3ko+Lu34V3dlOGO/OykohZmnSXALd+aOofNHRb+gfNSERLcnFd/Fk5p3Clu1xsN
-	By3x0es9kLP96JBw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E7321364F;
-	Mon,  3 Nov 2025 08:14:14 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Qa3DIlZkCGlZYQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:14:14 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id F0DE2A2A64; Mon,  3 Nov 2025 09:14:09 +0100 (CET)
-Date: Mon, 3 Nov 2025 09:14:09 +0100
-From: Jan Kara <jack@suse.cz>
-To: libaokun@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
-	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	libaokun1@huawei.com
-Subject: Re: [PATCH 07/25] ext4: support large block size in
- ext4_calculate_overhead()
-Message-ID: <qmsx753xemvacoaghwhv6emusazmlynv54qqxwsdfsoaoeqre4@bp2lgrdufaim>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-8-libaokun@huaweicloud.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+	bh=jChQpwT+gFg1scc07SFf9OaIVAQpxzIvbFia05iRzbw=;
+	b=aH9FWvVj9KgvDajPm68mrXo6ClX3GH7K+F7mYEEKLPVsKjH2PK2NbkwxBJdzKBJdd/1hTg
+	3sBcq6cNWyFG/G3MQIiSPzygdSuJV4TJlYqYt54L8dtCTQAEmbVSxjgHdRQuqbFc4r99hy
+	QGUhiQ3szJlL22ibdluSmFSacJOOe0s=
+ARC-Authentication-Results: i=2;
+	imf01.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=Y78QDuCF;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=GCsxG84g;
+	spf=pass (imf01.hostedemail.com: domain of harry.yoo@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=harry.yoo@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762157834; a=rsa-sha256;
+	cv=pass;
+	b=kJb5gWqiDcoXDACcGx3bCDRwZFTx0misvn2RyRtgd7V5tFvhKBdU40YM0JLqv9jLM8daSO
+	A2T3j3FjSbsalxSGnT54bf2wy3wqMkZTRx16HptgKcK9JgoLO+2gC2sZiBPcCLhLrtRLzN
+	ipkU/xiJ91n00y6nkDMkbXq11S019ks=
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A384Gl5016900;
+	Mon, 3 Nov 2025 08:16:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=jChQpwT+gFg1scc07SFf9OaIVAQpxzIvbFia05iRzbw=; b=
+	Y78QDuCFxP8mbdJlQ05ZLM9QeeAZpvz8rQVnwYL0x4Qr39vjnLBPhlwUYDm1mglB
+	T4xVkk6W7QhlSZ1Gvz4uw3h44EP7A1GuSKnFuYIKzIlcY1Xlc5GAKwHDYwqaWjt4
+	RZMdOQkhI5Y66/9sC7iZPTXuosZBEaNcx1wgNwb39I759F8wsA2+amkUmLmKw4ka
+	N/UwZ18srfBtEoqW2vLyKR+Fq/Unb0kmZdDodZD+rl1Sn57o28H5UuDOJhqz/EgW
+	NceMeOWVbgJ3o4gKVcekUX1wZebAPqkAkc9+4aKzruGmmvfxW46Jo9AjUL7/fizm
+	5PpHNsSLSRpgKryAIhxHcg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a6rje814p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Nov 2025 08:16:50 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5A361xGr039424;
+	Mon, 3 Nov 2025 08:16:49 GMT
+Received: from sj2pr03cu001.outbound.protection.outlook.com (mail-westusazon11012025.outbound.protection.outlook.com [52.101.43.25])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a58nhkkr8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 03 Nov 2025 08:16:48 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bMRC6H4HD4iXXg+5bZBLcpyvVt6rFZusl4AKCxDjL/Soc/PHarCpXehWA/gVKX9CL1WGQjwHLDbA69qdc+VBzj+wsMRFmvFWKbf29lY4Qepr6yxMkmSFDgenl5JL16BZNXBDRLiWdsfpZEsu8sK0mllmINXjXWeDCARrra8fnHrA28z/FHL7DP1jFZFQoVYOTMVDpGb6AbgE9foWdmtNOH5//xkmsw5K2IiDwZ9PqRB16qB2enaFwVczq7hRqVr8RhwL8fgUqOpxYiVYCpR2DzbcuIgYX+zbuzssJ017T4Q9jm9rCgNGEngvC95GJd0fPkxi3bCDvTtocJ8z/DmztQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jChQpwT+gFg1scc07SFf9OaIVAQpxzIvbFia05iRzbw=;
+ b=c3BiLxEn4/h0UiMFM7Fejp9lMNyuMo/9MRzqsBV9EnZG6FQdG8gkvKtAyJCl7yKNw2EkeT8Z1eZ/KnkJorNftTC8hrGIp5Ln2OSyjCzteIOTxt49Nju3+soAmcwwrkqbXBq5s//A3rPb8h0vh1WDnphz2PEEFcPHcNjDlaChuIdL16MbVMtYG8lVv+/r/b7x75hUXBDkBSQI4SDO9yyRs6OXYM2QscTnU79CL5Q7jkIx2Ec5bI1AeG4f42Ishu4QUcy+lGoRIDBq9Pr2Ok+/j3o1rczY9cXybdFZ8+6txca5QInNf8G0iex36nZJ45EBr+kxC7AmidyxARh/H45XXQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jChQpwT+gFg1scc07SFf9OaIVAQpxzIvbFia05iRzbw=;
+ b=GCsxG84gadttR5HAsxKDLW1z/czsyJMCqFJZpyrBK6d96GfFH9oF09E+P85GE7dP1g0+4cAdbt/4q22gI8LYgu4JeNhp5QdA9WFYREL1oq6rn8WYEAfVgyoCVeZkeNjAPj0vzvAM34G+E/bmkFDeSDrfZS/QIU6gIL6C/d1meXk=
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com (2603:10b6:610:12c::16)
+ by DS0PR10MB6080.namprd10.prod.outlook.com (2603:10b6:8:c8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.16; Mon, 3 Nov
+ 2025 08:16:43 +0000
+Received: from CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23]) by CH3PR10MB7329.namprd10.prod.outlook.com
+ ([fe80::f238:6143:104c:da23%5]) with mapi id 15.20.9275.015; Mon, 3 Nov 2025
+ 08:16:43 +0000
+Date: Mon, 3 Nov 2025 17:16:33 +0900
+From: Harry Yoo <harry.yoo@oracle.com>
+To: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>,
+        =?utf-8?Q?=E2=80=9CWilliam?= Roche <william.roche@oracle.com>,
+        Ackerley Tng <ackerleytng@google.com>, jgg@nvidia.com,
+        akpm@linux-foundation.org, ankita@nvidia.com,
+        dave.hansen@linux.intel.com, david@redhat.com, duenwen@google.com,
+        jane.chu@oracle.com, jthoughton@google.com,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, muchun.song@linux.dev, nao.horiguchi@gmail.com,
+        osalvador@suse.de, peterx@redhat.com, rientjes@google.com,
+        sidhartha.kumar@oracle.com, tony.luck@intel.com,
+        wangkefeng.wang@huawei.com, willy@infradead.org, vbabka@suse.cz,
+        surenb@google.com, mhocko@suse.com, jackmanb@google.com,
+        hannes@cmpxchg.org, ziy@nvidia.com
+Subject: Re: [RFC PATCH v1 0/3] Userspace MFR Policy via memfd
+Message-ID: <aQhk4WtDSaQmFFFo@harry>
+References: <20250118231549.1652825-1-jiaqiyan@google.com>
+ <20250919155832.1084091-1-william.roche@oracle.com>
+ <CACw3F521fi5HWhCKi_KrkNLXkw668HO4h8+DjkP2+vBuK-=org@mail.gmail.com>
+ <aPjXdP63T1yYtvkq@hyeyoo>
+ <CACw3F50As2jPzy1rRjzpm3uKOALjX_9WmKxMPGnQcok96OfQkA@mail.gmail.com>
+ <aQBqGupCN_v8ysMX@hyeyoo>
+ <d3d35586-c63f-c1be-c95e-fbd7aafd43f3@huawei.com>
+ <CACw3F51qaug5aWFNcjB54dVEc8yH+_A7zrkGcQyKXKJs6uVvgA@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-8-libaokun@huaweicloud.com>
-X-Spamd-Bar: /
-X-Rspamd-Action: no action
-X-Stat-Signature: y7bxu3qcuh44tgwgmtqwejagfk4pjbsp
-X-Rspamd-Queue-Id: A189216000C
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CACw3F51qaug5aWFNcjB54dVEc8yH+_A7zrkGcQyKXKJs6uVvgA@mail.gmail.com>
+X-ClientProxiedBy: SL2P216CA0079.KORP216.PROD.OUTLOOK.COM
+ (2603:1096:101:2::12) To CH3PR10MB7329.namprd10.prod.outlook.com
+ (2603:10b6:610:12c::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR10MB7329:EE_|DS0PR10MB6080:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6853d431-25bd-465e-4bce-08de1ab1528e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?TkFnOFBaTkd1dlF3Mms0YktFaEVBbzFma3RJbmUwNmVjNVZRK2doVXdxb3lD?=
+ =?utf-8?B?YlFrZDJOS1ZRY1ZBc210NDdiUzZqOVhvRUxaelNGN2puNUxFWVdra3R3OXg5?=
+ =?utf-8?B?NTZiVDJweHVra1Yxd1MrRmp3R2RPVVBZSnhEckt5WVVXYjVDS0JWb1FEOVFt?=
+ =?utf-8?B?d3BSaEkrWDZaSWJydUVUdVVCeGcvU2dURzFVMmlSakVJaUF1R1VOdnIyNWQ5?=
+ =?utf-8?B?NUdaZmFNUnNORGhyUkJxYTd3R3JDcWxsMHpKWE5oa3lITFpkcFdxTllSMTg2?=
+ =?utf-8?B?Q1pLY2dvYXBwVjRxNmE5Zlp6dUxIdkRKZjFTRFUwYlN3N0ZvU211WUlreGJ4?=
+ =?utf-8?B?UkRFRGxqcFF1TTVGUW5oa1BoUDljUTltRXZoWkJWbDlMZ1UySWhRMHNZVUox?=
+ =?utf-8?B?T0VHdW1waHhPVk5VUGRCK25CN3YwN2xnM3VCLytwV0JFQzdMYS9TNHFKcmJ3?=
+ =?utf-8?B?VDE1dmdiQmZmLzVFVy9Qc0g2cVZWbFplME9lRWRpWGlxUEdaczR5YXVoU3Vr?=
+ =?utf-8?B?Q0hlNjF0eUN0YU0zNVJkOHd2VVZMYUhPM1h6TmEvNXZBdDRTUVFrT1RpaVBz?=
+ =?utf-8?B?MTJXWGFoN3EzZ1BOZUdBbjhpZExVUllTVW0zZ3VYK0Z1ZXRGVFYxSGZSYjZq?=
+ =?utf-8?B?WHd2VFJzMTNJdGxaSlNXeXpaMlJvMlFjRDAwY3hPV1VpRkZOeEdLZVhISDhu?=
+ =?utf-8?B?Zkg1VUduVGtZN2dCeC9DWWRJVE1DM0JxTE8wRE1EK2ZHMm52NkRZZ0tJa1Bs?=
+ =?utf-8?B?YUZOcEV6UElvRHk4dlBxbmZtclJSd0xmU1IxMzdWUVE5Uy8rQ0VLTmFKTG9H?=
+ =?utf-8?B?K2dWVWo3RTV2RlVXcmsycUxQa3Ira0JDLzJjdFI3NkVGOG05QVg2cGJiQXNJ?=
+ =?utf-8?B?LzlJZmx3MHpjODA1TTRpS0RzeWRDUmZ6UDJXNGNWeGRVSHZCelZLdzY4UUlJ?=
+ =?utf-8?B?R3NmdktLT0FjMjErekNkUzl2bkhid3g0VFowcTdtWkhzeFFmbnFWMGNCTitu?=
+ =?utf-8?B?MU1sZlBXTnJqTVFuTkVhT3JEaHVHaFNvazluZUZyWUlITGd1VTJ2aXAxVTFj?=
+ =?utf-8?B?YUpPUmJUWGI5bkRqbm1UZVdLczZCNmZUdXB6WjFyVnczUG1EcEVZU0NMc213?=
+ =?utf-8?B?b0Z2SksxRmxPdStCeG5SemFjVTlINVlyaGwweWcyMW1BUndnQWpqVVQzRzUv?=
+ =?utf-8?B?aFp1Y3pTdTNEOUJMVFgrU2loLzBCZkJCNHgrV0RYd1M2NkIvTmZwY0lwQlFh?=
+ =?utf-8?B?aXluS0dza2IrQlJUZGdSZWZvblFwYWl2VGtrOFUxZ2RCM2w0MU1pR0xSNzl2?=
+ =?utf-8?B?WnNPczdMV2k1VTZmeUtFYWNIN2NjL3JyYjluWVphRjIrN3VnMzAvb2RLZnkw?=
+ =?utf-8?B?cUU1RGtJcDNnSWU5c0FRRUZLMHloTmtHcXZOV2ZmWEJRYmF5Z0E3QlZQanlS?=
+ =?utf-8?B?MDdzMzZWc1lKaHdFM1BFWUNNMUk4TTdCanJNM1lNWkJJcitUYUM5MUZQendW?=
+ =?utf-8?B?c3dka3dqRkw5VnEvRkpxSENZakJiRElMTnBycFNkV2RCUC94NEdTSDVOYmdn?=
+ =?utf-8?B?dE5kZHhGd2IvNE9YNUdrSE1ST2E3c1BLZ0E1Ukl6RnEyT0NuRm9YcTBQUmdp?=
+ =?utf-8?B?b3UrMHRHVFhMQ1Q4cmF6dUpGdld6aUtiN29IdkdSamdXNmFrQjJVUnJrMjVE?=
+ =?utf-8?B?YXdoV0tmQXY2ZDdIcGZFUGtkMEdzS0k2bkhqMDAyU29QMElsU2dZNXUxZ20w?=
+ =?utf-8?B?NE41OUdqYWp6aTZFQ0hGUGhwUWFxcGNIYzZhYlpCOHFiWHJuWU42UUo3TGJi?=
+ =?utf-8?B?V05TNFBYandsMXdOTlEwUjRyakhFQmY3STNwNzUweW5rUlM0SkR1SksxZkZi?=
+ =?utf-8?B?elJublpUWURCVXlmTGNESmF6WUxUZCtjak9ydDhJaTNCMnBVYUt6eitCVnE3?=
+ =?utf-8?B?UENmc25Pa2toYUQ4QXB1YmVDTS9jV203c2MxOVNoZ0M2Yll5eVVGNGdpZE9M?=
+ =?utf-8?B?UmUzdmhXZzRnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR10MB7329.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(13003099007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?cDlRS0ZPREg4N3h2RVFaSmFKcGZVdHZ1T01sQ0hmRFVNUEVIMEUrRmJqZXBB?=
+ =?utf-8?B?ZDBLV2xTejhXb285dDJKUnZHa2NTUDZVRXpwK2d4MzNxWXRRMG5UV3J1ZnJF?=
+ =?utf-8?B?YmxGLzA4QUNXNUowc3Zwc2tUUkR3OFErdlZEd3BFdmcybXpOeUJjc0N3dXJX?=
+ =?utf-8?B?UVBJRG1pVDB6bVV1ZWhtQjlrbTBVd0hZNkdXNFBtOHNicDFwQXFRVWxKQlZI?=
+ =?utf-8?B?K3RXR3JFQkNYUS9KemcxMEpKT2hTREllSFdvak5FQ0xod3dZMFhsLzhTMUE5?=
+ =?utf-8?B?QXBPUGJQMmVhZ3ZjcHpVOWpzRncxSHV1RGlUaXZxUnM5UXczd2locitrSkNn?=
+ =?utf-8?B?UkhoZElqcXpQNnlXaDZVaUVMT2d3YVlDNjdQMTJ5SllkTXpZb1BpeklraTJu?=
+ =?utf-8?B?K1IvbFdYQkFTajZXRFNOQkNueFhUVFhKT1AvUU42aGlVWlE2bXV1cklwMkZT?=
+ =?utf-8?B?Und3dUxwTzBUeTgvNExCT2xMRUNwUEdac3NCbFA4d0VEVHBFTVFLRTJHQSsv?=
+ =?utf-8?B?TDBaRlZ5Z1ZZOTZDaFo3Zkw0TXVKRElKa3VaaHloWUhTUERYRVR6clJPc1Rp?=
+ =?utf-8?B?cDZvMWZaRU9ydUs1czlDTmdpTHlqbk1PQ0tBeXh1NHpBSE01V0h1blhoekdE?=
+ =?utf-8?B?ZlFNNFFIQ21aWXQ2dU5QUlRMYW44a01JMm52SUFZVDF2c1l3blNGOUxIWWhq?=
+ =?utf-8?B?akNoVnJBRnJqUlM1Q3VUNDBWUVJSdFhvaU5hSkdpS1VHbHcrL2wvZ0tPc0ZQ?=
+ =?utf-8?B?QXh5cEFpbjV5U2FXeXBLWVFlcUVIaDBuMFp2QnV2RkVpK2lYUzJiQmlLRnZ5?=
+ =?utf-8?B?aW5TZmtvMFhSa2NyL0N3WnRVaDJkdkNpQzhyemVyTWNXanNyRHpmeUp5aHcz?=
+ =?utf-8?B?KzhzNWw2MXE2Wks0aWRKS2lMcHBsWlFjUWJHekNCeE9jRk44bTFFdmFrZFlM?=
+ =?utf-8?B?MHhtVE45L0Z5cUExQkx2RmcrWm5hZ1pKUHNrUUNhN2NHOExNRVQ4bngreDBo?=
+ =?utf-8?B?U04rZDRMRVdzY3pvcjNWOFBUbWQrVXUwSDdFdTRhOE5YMHRSNW9Ka0I2TWR4?=
+ =?utf-8?B?S1I3QjVHQmxwOVRpWElWZ1VBNHJsQkZPcVVZZU9NMW56cVo5VktPb3FCMTd4?=
+ =?utf-8?B?WWxCU0o5c2xzVEVHS1psWFJ0bXdEQlJIT09hdWc4TkZrV0VHZUxYS2JQaDlP?=
+ =?utf-8?B?K29sT0gxU2VTNmNrY2ZiS1QzS0FoY05xam1NcDA2cFU3SWtnWHdLREpCTGZu?=
+ =?utf-8?B?V1k2bTlvdmk3MEhSUXFDSm5qaE1yYUt1R1E0YTZETVRWYnlIbVJzdlpMOHNP?=
+ =?utf-8?B?cWRaaXY0c1pSc1ppTUdscE52UWVRTk5kVEFWa21SYVdpUkdjbG1MYklPajZX?=
+ =?utf-8?B?T0tpSE9yMXlxK2xtRndPdlJsYUZHWnhlZGhGaVB2L21jTisxa3pjZHc0bHBk?=
+ =?utf-8?B?WUZYc0NvY1hPRmZZYTFYWTZ4NmJaQU5EZXR2SlpLR01ZWlJNRTdEUS9aRkVp?=
+ =?utf-8?B?YVh1aVQyeFZYeWRJUU84cWN4Nk5QQnpXY1ord1ZqRkhaR1NUMkNVdnErSStL?=
+ =?utf-8?B?ems5dG9tSk5pMHA1cU1zZm5Db3JHVjVmem51L3RYblhyNDA0eUZRbWlFZFV5?=
+ =?utf-8?B?ZVFOUEF1SkpIVFg4OUFUUVI5cURhTnczdkI0bnAyVWxRbkZuY1pKYXFCUVIz?=
+ =?utf-8?B?WVB1NnMzLzg3K1NCQ2NSNmc2S0FKYlFaZy9ZSzJIT0czMGc4cE9pUWtWWFFI?=
+ =?utf-8?B?WE1tOE5EUHFLRW9jSHkrdHluVlJsb2w1K09mZ2ZqbkZQbUZnRGhtb0JueDhN?=
+ =?utf-8?B?M28rbmZJMVZSMnNxTGdTYWllRUJvcWdWQ2orMThaeW85eERPQ0oxRnp6QTZz?=
+ =?utf-8?B?bGNYaWs2azRuUlYwTDFkTkZLMitMZmR6R0NiWG9KZXhYMzh6blorR3BrTTJx?=
+ =?utf-8?B?Yll2R0VFYWZ3V0NQVE9iSk5zS20zNVZCMm8ySVFHNm92RStVMERvSnZsU2da?=
+ =?utf-8?B?Y3NuR3Vpcm1ka2E4YzJBc0pVMHpJZTFYZHp2NGtuYVhpcFBta1Nwd0VmK2xt?=
+ =?utf-8?B?bitwOEJpMGJuTEFKNEtKRWlPcmpYc1g5UEFHVEFiTHpnQnZjc3plNmJCdWsr?=
+ =?utf-8?Q?xfpxQEPusvnCjgYR5WhzMB/DF?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	en1JtnK0r3TqY8EaEzQjO73dBly9t1UXt87eDa+GsD2xEGQg1naoWUUixGPacv1JtqUYMHWeEhi0jjDCUzQccZdGyhnM+frgWJ6t32rJHP3RrEB+YoScX/gRVgYjbXfe/R05SDEJ3XFLswt5Zrqlc5NTLqcf/Blt77qiQiys4d1AHn5VNt1qACNXc0LnTsMYt4vLwatjwh6IH0z8X7l2i8yLYSzaHoHvD1iBmSv1jmKJD13o1dAtupYJ/592TG5cedUIoZtTJru57tI41EH+PfS4ajrbLOBKG9VFwQOOThpoQTkldd5swksPAuEcOWHhmpLw9On/4xgFVt2MgAfxuLEsWzBLQH+0fFT4xaonFB/NivInUoOHu7Njka/eSP6kObzLSCOh5wWz4tbDCC9F1XjxRUVWs3hoXyZZIdQoGGVNzEkfoEWAoTOHU88mKyeOcpVsbo4vJXQFm+Ewg4YIgt1sSDAcY6ua39SLOfxM9wK7B7UFjyrS+WPED/og6Ns/Ry8tJw3u9gP6YQrblNWdcgYW9CGj9nqrN3lj0OViqlhjHP1h30Yl1U/JDcAxmzb+I7zyVEWdK+ncWT2drMTS2XLHzUZKBpDQ5X5MRb/5s34=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6853d431-25bd-465e-4bce-08de1ab1528e
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR10MB7329.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Nov 2025 08:16:43.3806
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: XMqF1XmpMafD9NUdkn4519psRX07IWj/UVkOeeB+ygNhzy/1NyFwcLEMJmiA8AK4p3VX47Bk2AOY9zRRX2DYFA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR10MB6080
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-02_02,2025-10-29_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511030075
+X-Proofpoint-GUID: mXMI_o660rnRtxRL8VNRUq77mWJ6Ojlg
+X-Authority-Analysis: v=2.4 cv=EvffbCcA c=1 sm=1 tr=0 ts=690864f2 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=R_Myd5XaAAAA:8 a=i0EeH86SAAAA:8 a=yPCof4ZbAAAA:8
+ a=GJNGE0ECJFVJzd6KToEA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+ a=L2g4Dz8VuBQ37YGmWQah:22 cc=ntf awl=host:12124
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDA3NCBTYWx0ZWRfXzdvbc6GlCQiT
+ +LiazWVIhlSVcgsoqNk6lk37RztSA7P4N/ij/cnYo5ki+c2qthxl9DVdUbGstsRMJhQkobhAjyQ
+ yF98hy/2rkO/TYeFhUlLB6oN7KLoNcLJTlNQk1qMRFibYj5mNFx1cHGlfBB09+khTdgQKtbLLSv
+ CHNdNt/gKuayfJ/M4CW800EATfW4Ta5gnImzhCePqHWoP9HV3b9d/BPCF/5ja3aIcOHFZ7G/3+P
+ Czi9DJ+e5+XP4KHoZPvAy20Nphw04yzm6l/zewTdPRozDd8tPumw3M8i4N5vyleaDrdI1i0FrJ1
+ 1MOcVSyTcA4WvCl5mu13mwEACwkkZtdT4Oz7A9NpQVSjum0GhVLBRaP0Hl57WRo/pKol4FhXPd2
+ KBWibAK4QVjCJ3/TD11pKpK9a8jA6z/YuzzC+GpLJKQlz4uhstM=
+X-Proofpoint-ORIG-GUID: mXMI_o660rnRtxRL8VNRUq77mWJ6Ojlg
+X-Stat-Signature: mdjsgisy6adj5q4gbcjmt5ifaf97biky
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-HE-Tag: 1762157656-385932
-X-HE-Meta: U2FsdGVkX19zoA1CVbB9rsjzxGPGY4ynSpTi0gI+sB2NEU7gq5zpdGQtKKC5+PfgscCPxLxbySvo13cpJfQRuevJwrLNs++HxL5g9bQj72U5VDC4oDuwkCnVediBkdoTkMrKbWlQrLhEtO879pPLPHhJwmsBPKL1xIt5xb1J8PuqmKY7wi4tY6eVNG9FUdC/PRxvKgx4CErTbLOraXEYC7o2CgoHON8Ak26sqE+QYEthEtYFCik1IEyE+jDLP78jDmSJTdAvLjyC7NjAxrEdsfBN6q+gZ0iyV4h8A36B/C+FnVXlN9Qsragl1kfrsMTWIA7/BPWGyD6eQfPWW8342EKrqMD53g9osF7Xj8F1a5m4yjZKKv/um7GvX5KNJKi1otLeSKqdi8SKxF9XuZ72sdARQhZdv9HWYaL/raftYo6L+Umu77WLIG4l0kGfz8pythXhq5F7p4P2Md/8LW/W7h4zjsqOd5jrNy4oxzjsmfmQCamQd16hUiXMquRUsPI5RYGotkSMG72rlPVIDiptjafEc78mtngu9OLIOnYz0ycXZg4cZZw/zFoa5NezufRlbn6MNO9NtPQHAVD+VZMPwhoirtSi6C4NdzmE2CK/N7o/clf11181ozy1zTdKNkJxyReaLefws4nDDTK/chacaUBxl60YQ5h0qX4cR5mQ3Cd9c2CvaKHez5BsGKtW3ISIAGLu/kSf477l7kYdvTVtbQJvedvAuXMBjJmQ3LakaquG2nDiMCxegmAivN5woRoW0CxHQT/92wqk5mbN9HH5zdA6mnGCZXpMmlh5OCdCAOcTKtGeEYcQrS39Gx5CGy9Tk1ELVVtyZjsyBsbfHoz0Tn6hlbC2UHJcuRbfn4FqPoBH1eQTocqVnujkEAjpgmXuffxvfbWT07eCNUtR9cYV4GXZsoZItWAqJtJgflMuiCr6j40ciNa2Ii4mqyxGWkMHPusLymkI33edeMp63D9
- REJzsXmj
- begbqgnpn5Fl7RcnZ7395pD464zWkS16tw8+NO2Z3sH0m1DihzxTvGvLtlO8qTLpaexvvXk1NbecDICTwbAupYpC0BNoeJ7Mvy89QKOwewCVC07bnY3M0pOV5OQse6JLBDGHHvhRCPBwkNgrEecNP0QsMf62wcSwY/DZWsM5YTd9Tw8jaOG3jq5BdUw8Xy+2jwyp0GLPj8JXIGvDT9Hvh7L+qsqrYhWSOgbT7l8RAdZpVUx3VKiuqM1PzSmyuU147ZKgSZjdfVVEUXOZmdO36fGgvYaQLw/A+RwzU3dLSmGmNB06hhN6RO0c/GYlAQgskIw360D/fMys/94BZMHcwb2euuyt6zpe8x2EWw02c5CW8N4bzemrgzK9//xYupVOFkDj5jhmU52n569V3+V/sY7k/FRY7x8xCuUzvJgyA2i5EHd9ciuoXjSUJvw==
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 36A8640007
+X-HE-Tag: 1762157834-464697
+X-HE-Meta: U2FsdGVkX1/3JzVFCgFFGBa4kI64tvzHJxfzn1ZZbpa20YXhJVqqt/VjpsIK6Z2kkWdK6OAmS8iZ4PKpCXfjlov2yQRe5TYyBqNAzHAmS/9EqsE9yN6vrKg5RgiNFE1TfZ01oTDBqbi07+RidY1HDmjV3d09dvx4syhqY2sV+s74WTHmWSERKbC6KV5MU/5SmgyFBpljoiavnI0XhnXOjkClEoXdc2Xbkk0a84xGKxHY+yw3U2p+PJmXMAc5Y6D3tn/YHqUtbalTgz/+96m32XO43P/+8P4vsgRBVFW2hgW+QCTYjnI+DlPTFqZU8k60d5mI6lJJteLGQFnDhObSMJ4/LzYOELtqZB+AS4Ovy6PI/+E6O0s4hBATlg2Iie0lHktx2l27sPgO4wVyxwKog0lf3aRIuik6DFL6t71gNaz7lXaKBqdkLPLFDK6uzpeCRYQgEKRCRyWlpzV6Eiz8IzuyACmMfz0I3XuV2e6olL+F7eX0zhLuJw2V8mYDh1H5wloNEDP5x0zKNAqS2GsoE6SJIrPZa/c6IrLgZaIOnHmhCqJidjK+y8+0Rse81+HpMdFGTayzR44JgZLTDmBzJ7ITsSc56lncRusPDnQdlZ/U0GYxhkym6qu+Kx5nS5TwNXfca4vFqpSAGuw+/CZZ/pzjhIqOBKrUs5RBR7a3AvV8hjTQ2CbwKzFVDmFEc13/yFW872OF1oPJKIj3UqqiekkS2MW6pmnztLdiK5bOX8+ch5kTi4uClFyuHgzMVQUNGQGN0L6caV61UnZiS3nMXPp7Bt3htVVW1fc2RvpEFJP43UHxX61xNRUAsl+L+MJwyQ08/F+8Yh0QmXiim6wdrCcPbUPwoMtPNRk5oTOMzV+YTC6C3GAxWpzT/Bu7PkpsjNzAQYiFUAbrWSswNfAMXxM5PkDyiQyqtYt/45nHQLSTytQBW1JmMs637OHRt/RpInIefg1+cDbLuPG5neR
+ gkwE+K4R
+ Jv1AJOG4ZtDMzLoJZR6Cdf6Zyeq6PI0HBnQSaEvh2VpS4DrX+Tdnk/efNMBzYRTnszX4Ek9fV5L3rI7t78t8s0jF9r8s4eD3T/q5JJ2HqHuovD5Wo8Rg0w8Lj7PJsvxafTTABmXFyB3cbhsd0UAsUBREhfA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,38 +271,173 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:03, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
+On Thu, Oct 30, 2025 at 10:28:48AM -0700, Jiaqi Yan wrote:
+> On Thu, Oct 30, 2025 at 4:51 AM Miaohe Lin <linmiaohe@huawei.com> wrote:
+> >
+> > On 2025/10/28 15:00, Harry Yoo wrote:
+> > > On Mon, Oct 27, 2025 at 09:17:31PM -0700, Jiaqi Yan wrote:
+> > >> On Wed, Oct 22, 2025 at 6:09 AM Harry Yoo <harry.yoo@oracle.com> wrote:
+> > >>>
+> > >>> On Mon, Oct 13, 2025 at 03:14:32PM -0700, Jiaqi Yan wrote:
+> > >>>> On Fri, Sep 19, 2025 at 8:58 AM “William Roche <william.roche@oracle.com> wrote:
+> > >>>>>
+> > >>>>> From: William Roche <william.roche@oracle.com>
+> > >>>>>
+> > >>>>> Hello,
+> > >>>>>
+> > >>>>> The possibility to keep a VM using large hugetlbfs pages running after a memory
+> > >>>>> error is very important, and the possibility described here could be a good
+> > >>>>> candidate to address this issue.
+> > >>>>
+> > >>>> Thanks for expressing interest, William, and sorry for getting back to
+> > >>>> you so late.
+> > >>>>
+> > >>>>>
+> > >>>>> So I would like to provide my feedback after testing this code with the
+> > >>>>> introduction of persistent errors in the address space: My tests used a VM
+> > >>>>> running a kernel able to provide MFD_MF_KEEP_UE_MAPPED memfd segments to the
+> > >>>>> test program provided with this project. But instead of injecting the errors
+> > >>>>> with madvise calls from this program, I get the guest physical address of a
+> > >>>>> location and inject the error from the hypervisor into the VM, so that any
+> > >>>>> subsequent access to the location is prevented directly from the hypervisor
+> > >>>>> level.
+> > >>>>
+> > >>>> This is exactly what VMM should do: when it owns or manages the VM
+> > >>>> memory with MFD_MF_KEEP_UE_MAPPED, it is then VMM's responsibility to
+> > >>>> isolate guest/VCPUs from poisoned memory pages, e.g. by intercepting
+> > >>>> such memory accesses.
+> > >>>>
+> > >>>>>
+> > >>>>> Using this framework, I realized that the code provided here has a problem:
+> > >>>>> When the error impacts a large folio, the release of this folio doesn't isolate
+> > >>>>> the sub-page(s) actually impacted by the poison. __rmqueue_pcplist() can return
+> > >>>>> a known poisoned page to get_page_from_freelist().
+> > >>>>
+> > >>>> Just curious, how exactly you can repro this leaking of a known poison
+> > >>>> page? It may help me debug my patch.
+> > >>>>
+> > >>>>>
+> > >>>>> This revealed some mm limitations, as I would have expected that the
+> > >>>>> check_new_pages() mechanism used by the __rmqueue functions would filter these
+> > >>>>> pages out, but I noticed that this has been disabled by default in 2023 with:
+> > >>>>> [PATCH] mm, page_alloc: reduce page alloc/free sanity checks
+> > >>>>> https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz 
+> > >>>>
+> > >>>> Thanks for the reference. I did turned on CONFIG_DEBUG_VM=y during dev
+> > >>>> and testing but didn't notice any WARNING on "bad page"; It is very
+> > >>>> likely I was just lucky.
+> > >>>>
+> > >>>>>
+> > >>>>>
+> > >>>>> This problem seems to be avoided if we call take_page_off_buddy(page) in the
+> > >>>>> filemap_offline_hwpoison_folio_hugetlb() function without testing if
+> > >>>>> PageBuddy(page) is true first.
+> > >>>>
+> > >>>> Oh, I think you are right, filemap_offline_hwpoison_folio_hugetlb
+> > >>>> shouldn't call take_page_off_buddy(page) depend on PageBuddy(page) or
+> > >>>> not. take_page_off_buddy will check PageBuddy or not, on the page_head
+> > >>>> of different page orders. So maybe somehow a known poisoned page is
+> > >>>> not taken off from buddy allocator due to this?
+> > >>>
+> > >>> Maybe it's the case where the poisoned page is merged to a larger page,
+> > >>> and the PGTY_buddy flag is set on its buddy of the poisoned page, so
+> > >>> PageBuddy() returns false?:
+> > >>>
+> > >>>   [ free page A ][ free page B (poisoned) ]
+> > >>>
+> > >>> When these two are merged, then we set PGTY_buddy on page A but not on B.
+> > >>
+> > >> Thanks Harry!
+> > >>
+> > >> It is indeed this case. I validate by adding some debug prints in
+> > >> take_page_off_buddy:
+> > >>
+> > >> [ 193.029423] Memory failure: 0x2800200: [yjq] PageBuddy=0 after drain_all_pages
+> > >> [ 193.029426] 0x2800200: [yjq] order=0, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029428] 0x2800200: [yjq] order=1, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029429] 0x2800200: [yjq] order=2, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029430] 0x2800200: [yjq] order=3, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029431] 0x2800200: [yjq] order=4, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029432] 0x2800200: [yjq] order=5, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029434] 0x2800200: [yjq] order=6, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029435] 0x2800200: [yjq] order=7, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029436] 0x2800200: [yjq] order=8, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029437] 0x2800200: [yjq] order=9, page_order=0, PageBuddy(page_head)=0
+> > >> [ 193.029438] 0x2800200: [yjq] order=10, page_order=10, PageBuddy(page_head)=1
+> > >>
+> > >> In this case, page for 0x2800200 is hwpoisoned, and its buddy page is
+> > >> 0x2800000 with order 10.
+> > >
+> > > Woohoo, I got it right!
+> > >
+> > >>> But even after fixing that we need to fix the race condition.
+> > >>
+> > >> What exactly is the race condition you are referring to?
+> > >
+> > > When you free a high-order page, the buddy allocator doesn't not check
+> > > PageHWPoison() on the page and its subpages. It checks PageHWPoison()
+> > > only when you free a base (order-0) page, see free_pages_prepare().
+> >
+> > I think we might could check PageHWPoison() for subpages as what free_page_is_bad()
+> > does. If any subpage has HWPoisoned flag set, simply drop the folio. Even we could
+>
+> Agree, I think as a starter I could try to, for example, let
+> free_pages_prepare scan HWPoison-ed subpages if the base page is high
+> order. In the optimal case, HugeTLB does move PageHWPoison flag from
+> head page to the raw error pages.
+
+[+Cc page allocator folks]
+
+AFAICT enabling page sanity check in page alloc/free path would be against
+past efforts to reduce sanity check overhead.
+
+[1] https://lore.kernel.org/linux-mm/1460711275-1130-15-git-send-email-mgorman@techsingularity.net/
+[2] https://lore.kernel.org/linux-mm/1460711275-1130-16-git-send-email-mgorman@techsingularity.net/
+[3] https://lore.kernel.org/all/20230216095131.17336-1-vbabka@suse.cz
+
+I'd recommend to check hwpoison flag before freeing it to the buddy
+when we know a memory error has occurred (I guess that's also what Miaohe
+suggested).
+
+> > do it better -- Split the folio and let healthy subpages join the buddy while reject
+> > the hwpoisoned one.
+> >
+> > >
+> > > AFAICT there is nothing that prevents the poisoned page to be
+> > > allocated back to users because the buddy doesn't check PageHWPoison()
+> > > on allocation as well (by default).
+> > >
+> > > So rather than freeing the high-order page as-is in
+> > > dissolve_free_hugetlb_folio(), I think we have to split it to base pages
+> > > and then free them one by one.
+> >
+> > It might not be worth to do that as this would significantly increase the overhead
+> > of the function while memory failure event is really rare.
 > 
-> ext4_calculate_overhead() used a single page for its bitmap buffer, which
-> worked fine when PAGE_SIZE >= block size. However, with block size greater
-> than page size (BS > PS) support, the bitmap can exceed a single page.
-> 
-> To address this, we now use __get_free_pages() to allocate multiple pages,
-> sized to the block size, to properly support BS > PS.
-> 
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+> IIUC, Harry's idea is to do the split in dissolve_free_hugetlb_folio
+> only if folio is HWPoison-ed, similar to what Miaohe suggested
+> earlier.
 
-One comment below:
+Yes, and if we do the check before moving HWPoison flag to raw pages,
+it'll be just a single folio_test_hwpoison() call.
 
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index d353e25a5b92..7338c708ea1d 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -4182,7 +4182,8 @@ int ext4_calculate_overhead(struct super_block *sb)
->  	unsigned int j_blocks, j_inum = le32_to_cpu(es->s_journal_inum);
->  	ext4_group_t i, ngroups = ext4_get_groups_count(sb);
->  	ext4_fsblk_t overhead = 0;
-> -	char *buf = (char *) get_zeroed_page(GFP_NOFS);
-> +	gfp_t gfp = GFP_NOFS | __GFP_ZERO;
-> +	char *buf = (char *)__get_free_pages(gfp, sbi->s_min_folio_order);
+> BTW, I believe this race condition already exists today when
+> memory_failure handles HWPoison-ed free hugetlb page; it is not
+> something introduced via this patchset. I will fix or improve this in
+> a separate patchset.
 
-I think this should be using kvmalloc(). There's no reason to require
-physically contiguous pages for this...
+That makes sense.
 
-								Honza
+Thanks for working on this!
+
+> > > That way, free_pages_prepare() will catch that it's poisoned and won't
+> > > add it back to the freelist. Otherwise there will always be a window
+> > > where the poisoned page can be allocated to users - before it's taken
+> > > off from the buddy.
+> > >
+> >
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Cheers,
+Harry / Hyeonggon
 
