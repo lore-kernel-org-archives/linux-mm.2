@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 938C9CCFA04
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 18:02:47 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 834C4CCFA09
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 18:02:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6BE828E005D; Mon,  3 Nov 2025 13:02:46 -0500 (EST)
+	id 0CB608E0093; Mon,  3 Nov 2025 13:02:48 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 696A58E0057; Mon,  3 Nov 2025 13:02:46 -0500 (EST)
+	id 07C438E0057; Mon,  3 Nov 2025 13:02:48 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5D35A8E005D; Mon,  3 Nov 2025 13:02:46 -0500 (EST)
+	id EAAA08E0093; Mon,  3 Nov 2025 13:02:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 386448E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:02:46 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F1F671A02A7
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:02:45 +0000 (UTC)
-X-FDA: 84070066290.02.058657C
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id D03148E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 13:02:47 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 97FFFB7387
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:02:47 +0000 (UTC)
+X-FDA: 84070066374.06.C300F20
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 5615620005
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:02:44 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CP85rxHj;
+	by imf18.hostedemail.com (Postfix) with ESMTP id DAC4C1C000C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 18:02:45 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IogQUODJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762192964; a=rsa-sha256;
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762192966; a=rsa-sha256;
 	cv=none;
-	b=Lm8QyPnkIwvlSr7LqBQbZb26hMlm9rOrHsGaJ9iW6Ds23nbKfscQunTpA+lbMmm902wruK
-	kU/qni3xwTyb3CS/D3SuTv5S+ZFCua4xPwcDh+eIXnslpexP+8jdgKAkr8sad/Fu/hzn5i
-	TObkGcSsMr9iZCBe65AGm+DCEAZceXM=
+	b=PUvz9ewtFv3eOiYcfrHMrPDSGR3gcIP32WdUqFH0dS1GqwWDtDYzTi+z2w6EsDC2BDlx2h
+	WoMf8FXXJGSkkSsiSiJl/r0WsK99m8X8gs6DA+hLmURl2ADMaLCsfxG1hcw1RuqXZRP07o
+	nBZCsKpWqPxjXXKeBhktcB1qVhmRD0M=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=CP85rxHj;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=IogQUODJ;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf13.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
+	spf=pass (imf18.hostedemail.com: domain of pratyush@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=pratyush@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762192964;
+	s=arc-20220608; t=1762192966;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=X8b6TjRMt+dyAXz7YM2WBrHqiTyR0VEpvl9wTYXPD+M=;
-	b=F76XjOPEk4KS1D3PzhWBf3KQG5JSx993MUesgju7sDUnhRZfXM4zC28zuwL3YtCQdO2IoE
-	YxwqvWtYjeyiQ6U/xYqQS0R82IUjPGG8maHjQ2oxn1S+lJCPd+Rbue5rsUQWn7CwlT909q
-	fb7bqZZ6BrN4CWLax0C6W0cGNIFGorg=
+	bh=ErWge/UzD1LqvuHl7Z8/FN67Gq0geRz5k29l1oyq1Is=;
+	b=KQJgDXSVY4LVcwI5KSscHsqqxOPF+xc2WcjOuFoQBTGDFbGMBc9bbwUMd5/kMYSTxu93w8
+	DtV0AgG7OYrbpdBNbgLiCUTENxAn02nQqtPZk7HRVOdaVL2tcxIn31TxOa2Z851zII5s28
+	8TEMTH5vKcDB9znT14+ltnV/u7oQM2I=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 6ADA143D2E;
+	by sea.source.kernel.org (Postfix) with ESMTP id 068FF41E48;
+	Mon,  3 Nov 2025 18:02:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AD2DC4AF09;
 	Mon,  3 Nov 2025 18:02:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05FBBC16AAE;
-	Mon,  3 Nov 2025 18:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762192963;
-	bh=BW3nIFF3ejh4ARubY8O9vgvGP+ux/Zl54hpiB5TaeKA=;
+	s=k20201202; t=1762192964;
+	bh=XAwF/h8XdutL+ENyQyWob7z7axCXjW7g+SCPNNUBiyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CP85rxHj43C1QmClK8ydP/bgZqswAFc42oKCQ54TrICWgUj7GK2OkmKpGHZLFDuuv
-	 14CnmrqrWsbN0Tc2NEsq4z4VD1Smh+jmRndB98xJzaJ6Hrqaq3a2QBhNTBQC0vbi2d
-	 9KCzSphtvVWw5jHiwPGcYSxyw9awUJOT/B9B4ruG98mvH8AW6c03H7qnUZGiPc+YsJ
-	 K5Uw1ebrjxDlVFP5DYUcL5niMxwv5foGeTmX3JjUh+7YKh06RG1SbV75BqgHSvdX7P
-	 o2JO+UpEXblcyaVwJdlve7y55XjhQER/XqgbzXiSDlx9hmbknSJSiEh7O/750ReEi7
-	 +rrOUX2DFlXIQ==
+	b=IogQUODJjyTWMTWVWaSKOwkSJBVW67K2O34Yde/KtslQOOC/Iz4sy8KaX6kqBr7H5
+	 GFb0Mcw/CkdVwmgfsioszFx5cEWJnFMulKlO4IIWvyPCxOY1jfelhxhEZQ5AP4Ct20
+	 0Vgjho6r1cDd6BAXDhjF53c2kxEy94T2XEauW2MpEwvaH7ybnXWy2ukCRmB/8Xzbk8
+	 Q8XlwO1XtdHF4UuXTBo9/62vnf1B1SOwpRq/JctgNqhxnH4iX4n2dIk3KVMpmHVZDY
+	 fl6Itix1asg+IRwQ/C5Alq02OX92QqFS6qSZ4BEdLJGRyEcSa9MguO0nJ5vMyR8QXe
+	 Rxj/Q36Ehv0Gg==
 From: Pratyush Yadav <pratyush@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Baoquan He <bhe@redhat.com>,
@@ -73,22 +73,22 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 Cc: kexec@lists.infradead.org,
 	linux-mm@kvack.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] kho: fix unpreservation of higher-order vmalloc preservations
-Date: Mon,  3 Nov 2025 19:02:31 +0100
-Message-ID: <20251103180235.71409-2-pratyush@kernel.org>
+Subject: [PATCH 2/2] kho: warn and exit when unpreserved page wasn't preserved
+Date: Mon,  3 Nov 2025 19:02:32 +0100
+Message-ID: <20251103180235.71409-3-pratyush@kernel.org>
 X-Mailer: git-send-email 2.51.2
 In-Reply-To: <20251103180235.71409-1-pratyush@kernel.org>
 References: <20251103180235.71409-1-pratyush@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 5615620005
-X-Stat-Signature: dgsns8t48e58jscz8ms4bsshq3m365tg
+X-Rspamd-Queue-Id: DAC4C1C000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 6uwcouie1x1qkjquukatsqt1e5fg1z87
 X-Rspam-User: 
-X-HE-Tag: 1762192964-664510
-X-HE-Meta: U2FsdGVkX1+WGrVRPrrWjaxv+CfmDpLV3Csu5iFziGskx25jt2kbNgJ/FYHjCiR1CaM3WolmCXOXQPySq6YQi5do11Ni2qRZEjhlwp634pPQXLfEI87hqGFR0TLleNr84qg8069LA/bMKm14tvTXxUjYkn+Wm0rYHd9BLz3n3lpMNrJfHKheU9kdPu0DyyoHsQYIxYOmsqMOD4ePRtfKFump3VvtssG8W2pmnIYP72wu7JqWEli7u9k5hxXH2zHSgaxXDU1Fu50UUfTR3rlvIhp019DGqw4cD1AH6fXlT9j4lbON8ZaZ9js6OnAWWBQAbDZ3VDuXym9psYbo9mrtKGjm7v978cKfktbaGdYvY1q2Ik8mORfzal0yfWeor7zKOXOfuRo8FrdEjQ1mQ2EYMVgcD+VBtcqPwFfC5hBAlYfgwbzpnks6Ya55j2rJ2LuJtXvQdX/vGduWHBjuFjAFjTJb8Maspt0PRhLOLPnvBnQDbgGigrIL+nDa9mbv6piQcxH0Acy53AEey+luOOR5/QFSOtn//57Ow7zwAoTEST9sPy6LjagSnN0rKI1K13hwv+3iT5fH/UhR8jReHZVK6UZYeLvFwYabUf1/Cld/Z3bGAf78AFuBr+MmZcZJZyPCVLtySZHZyZ5vgNK1/9rkft54a7wGPd+ino/qCnN5iDWuyXWEDYdBrAFq2x8e/2uwakc/b77mcykLkehmeZKldfODDJmO0g5vxmr3DZFY+Y1ifZtJiPsW3XUxyfl2LuZsQMdgj6dLrrDd0IAqeoA6D3+Pph/mhcjAqYYSilg0zYNmuzFhQOdFVPBnlBN9FJGga8hGGV+MDweWDs9xh3EBHsztzwimTe17Jqo9X/qZDzgcL5A3RW9GPtiW0K7apALEz2CKLAtgZV7mJqK0IZoln6z99qav5BJTtk2VuYNTAttZEtg6hdPus9+d52kP4949u6/+ZkDuSwKaWpd0eBc
- BpoBC1h3
- tUvoBXmzN7vQ5J5yaIBP63RWSGATcSBjBVT03cAu1ei5KFtE+5pYbNPcFFBoldeXg0V2bKtIK6b1yBmfGJTKcZvJ3Hv5o3AZCCumHPuwChTedm5o+6BOhV/NQVZNGLs7mteo7xRAHMgFhqs5mrA1Ce7Vsya55AYKIYqMcwTMcsvmTSnOhYE4m5rmpGRMZ8lj15X/xx5BioEl5pXGDpmedn2vF0GePHkdaMxNSIeF2HV4lq4b923Vxg4GztXjh85nmGT98pFV4Abetwfd7V9+7O48npyxzzXKKLyWF
+X-HE-Tag: 1762192965-776363
+X-HE-Meta: U2FsdGVkX1+sFWw36GsMmdGuhSeczmg2ortiAWUIoCCjc4UqCpAD1xAPoLcF/xQWza+OYjCngXinrtART4wP6RM/i/DLakE4SUS9+to8sUckidTKVVB0qyW/cXdoe6j017EW36P+tnUjhV1pkuKjAKch2tLtNEqPADU30qNIx6HQKR+89fWq+DXgJzscWhyguficvhnvj+hNi02Kjns8ee/f4VNGAHtJh/8FWwLH824CL+TEY4i3NXX5Ft4vn5Ay69theMc+EWwlaxR0n/v3zEMSXiVQgXbnUET+TAqbK9WVo/OKMFxkGKDIoV0iSW3YmVgR0yL0/Wy5YyEYUaReMz2hU6BUU4jLbzvenwHP+KX1azFDyMzE1+e8CSdbZQ6t4AT4/I2PX7bN7retWxSlyJJiS0h1vq6JMjuPg2yNXRVLaIJ1QUCARMkGJJwMoyYZmng9OZWhb1l4gmu2NF04KYg7K6kFGqzefD/GZITD3vJ25myaMKIIJ9TJbHvosnWk+6P4wlTJz8TI9eUOtjqYPMaB016W67Yq1BQGSWYdAHqsPElNSdf+ffQupIL2bZjEAMkNDCW8bJ+vghowAgO2nW50CXv1XdrIEAa/JJvlGvGkkpxaf0EDLKivaw0mL0P6xNZpz/tu6MOvzrK89fexkh0OWYjXakPcLEmQf7VW9y4il4W+HTFUMzz4QQj8gHyyI9ngFMOuDWsbfYFSYlvijF/NH+xLBvXwDTGvlVapqL8/EqkPWm73IVIRHkoUKc7nwHzxbxDysfEJHuzPonPyV3G3XYP0RfDiAFd2t7x9W2N/oymj2i5nLYIgra2D/++VPXhtlsY+N8vtm0dWVlXoBi12RZIkGowDR5kEuz/Fu+mrpJrDbjW7FXFCPSqrXubmXAxk2ZcPviKsAhEN9K+lMlRfoaWRdRnwk7a104yENFXp7z6GWG4PqzzihjoU+Z6notFp2e4MXHz9aRPjqqQ
+ oaGdVDZe
+ DXW1Er0srSK604KfU5TbirJo7H6o66xYLjpEUE/vkCAnUKfGU5Q1yHBZ9+BnATe2U2gdKUhZ1NoBZ+UMowqhL3ltNJh42LnMu60i5qr3LQ2BM4epqGRoCGw1bsH8EnILKX46QOJhOXISBoE0ExEr/RWF69K7HZte3vCYnll++54iV7OgQtTi3yRNAKvLrdyLrpOKC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,67 +97,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-kho_vmalloc_unpreserve_chunk() calls __kho_unpreserve() with end_pfn as
-pfn + 1. This happens to work for 0-order pages, but leaks higher order
-pages.
+Calling __kho_unpreserve() on a pair of (pfn, end_pfn) that wasn't
+preserved is a bug. Currently, if that is done, the physxa or bits can
+be NULL. This results in a soft lockup since a NULL physxa or bits
+results in redoing the loop without ever making any progress.
 
-For example, say order 2 pages back the allocation. During preservation,
-they get preserved in the order 2 bitmaps, but
-kho_vmalloc_unpreserve_chunk() would try to unpreserve them from the
-order 0 bitmaps, which should not have these bits set anyway, leaving
-the order 2 bitmaps untouched. This results in the pages being carried
-over to the next kernel. Nothing will free those pages in the next boot,
-leaking them.
+Return when physxa or bits are not found, but WARN first to loudly
+indicate invalid behaviour.
 
-Fix this by taking the order into account when calculating the end PFN
-for __kho_unpreserve().
-
-Fixes: a667300bd53f2 ("kho: add support for preserving vmalloc allocations")
+Fixes: fc33e4b44b271 ("kexec: enable KHO support for memory preservation")
 Signed-off-by: Pratyush Yadav <pratyush@kernel.org>
 ---
-
-Notes:
-    When Pasha's patch [0] to add kho_unpreserve_pages() is merged, maybe it
-    would be a better idea to use kho_unpreserve_pages() here? But that is
-    something for later I suppose.
-    
-    [0] https://lore.kernel.org/linux-mm/20251101142325.1326536-4-pasha.tatashin@soleen.com/
-
- kernel/kexec_handover.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/kexec_handover.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index cc5aaa738bc50..c2bcbb10918ce 100644
+index c2bcbb10918ce..e5fd833726226 100644
 --- a/kernel/kexec_handover.c
 +++ b/kernel/kexec_handover.c
-@@ -862,7 +862,8 @@ static struct kho_vmalloc_chunk *new_vmalloc_chunk(struct kho_vmalloc_chunk *cur
- 	return NULL;
- }
+@@ -167,12 +167,12 @@ static void __kho_unpreserve(struct kho_mem_track *track, unsigned long pfn,
+ 		const unsigned long pfn_high = pfn >> order;
  
--static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk)
-+static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk,
-+					 unsigned short order)
- {
- 	struct kho_mem_track *track = &kho_out.ser.track;
- 	unsigned long pfn = PHYS_PFN(virt_to_phys(chunk));
-@@ -871,7 +872,7 @@ static void kho_vmalloc_unpreserve_chunk(struct kho_vmalloc_chunk *chunk)
+ 		physxa = xa_load(&track->orders, order);
+-		if (!physxa)
+-			continue;
++		if (WARN_ON_ONCE(!physxa))
++			return;
  
- 	for (int i = 0; i < ARRAY_SIZE(chunk->phys) && chunk->phys[i]; i++) {
- 		pfn = PHYS_PFN(chunk->phys[i]);
--		__kho_unpreserve(track, pfn, pfn + 1);
-+		__kho_unpreserve(track, pfn, pfn + (1 << order));
- 	}
- }
+ 		bits = xa_load(&physxa->phys_bits, pfn_high / PRESERVE_BITS);
+-		if (!bits)
+-			continue;
++		if (WARN_ON_ONCE(!bits))
++			return;
  
-@@ -882,7 +883,7 @@ static void kho_vmalloc_free_chunks(struct kho_vmalloc *kho_vmalloc)
- 	while (chunk) {
- 		struct kho_vmalloc_chunk *tmp = chunk;
+ 		clear_bit(pfn_high % PRESERVE_BITS, bits->preserve);
  
--		kho_vmalloc_unpreserve_chunk(chunk);
-+		kho_vmalloc_unpreserve_chunk(chunk, kho_vmalloc->order);
- 
- 		chunk = KHOSER_LOAD_PTR(chunk->hdr.next);
- 		free_page((unsigned long)tmp);
 -- 
 2.47.3
 
