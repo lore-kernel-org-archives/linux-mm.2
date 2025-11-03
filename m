@@ -4,123 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B8FCCCCF9F8
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 12:39:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 81A7ECCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 12:40:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 175D78E0078; Mon,  3 Nov 2025 07:39:53 -0500 (EST)
+	id E476D8E0079; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 126788E005E; Mon,  3 Nov 2025 07:39:53 -0500 (EST)
+	id DF7DB8E005E; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F301D8E0078; Mon,  3 Nov 2025 07:39:52 -0500 (EST)
+	id D35218E0079; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id DCEBD8E005E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:39:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A714914010B
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:39:52 +0000 (UTC)
-X-FDA: 84069252624.10.28AFB78
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 47503C0003
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:39:49 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	spf=pass (imf22.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762173591; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id C1BF38E005E
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:40:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 9659C1363F6
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:40:02 +0000 (UTC)
+X-FDA: 84069253044.06.D07AEDC
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 244564000A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 12:39:59 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=bTzr4D7Q;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762173601; a=rsa-sha256;
 	cv=none;
-	b=UGzzjTF6KuXy1eYhXG17nuJZrEfT0tKhfSx/JeUKV+iEWKjbZMPZ2qdQ+vz49VdJ38GBCt
-	MjcVHT+obvqaVekwsWGXLu+zSelGkxQV002TUiMGF3E5usCsWjs40ZadSSxo2xJVXmVz9X
-	nX0TPHFBCUbHrQjzvXfxXhufqHiZbXA=
+	b=Q7apVN8NcvwneacB2rJtr4e8dEymrg/8BVjlW9h8bfowERPxrc+UgkDeyKNeDMUh5AEAkW
+	WsTiz/ojXetJnztPtW5BjTTRG5uehiQmhFDVw28aM4WxOjDFF8r5D9d//3fc6hOElg+Ojn
+	Skp+8vAjO2ke3kZNTSHTPOW+qviyKJ4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf22.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=bTzr4D7Q;
+	dmarc=pass (policy=none) header.from=alien8.de;
+	spf=pass (imf07.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762173591;
+	s=arc-20220608; t=1762173601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=GqwW+ikKcHMqpfzJMJht+qhb0tBTn8CGY3TRN/VHZUs=;
-	b=UPAownavBAHKDzERzfOteTzBfqG+91Bbk+0/u57lSNh6xW9ElS828lZZoQx2RoOcbBwlvD
-	DKLVniOaYo4BUzTSi60yqr/ef/SQuIb1fb8WoJyoqBc5o5qtJIhy1kEQ6+5O9T5GSqyG9J
-	KtNkQligAJ60KeC0nfxTLcQe4NvfnLU=
-X-AuditID: a67dfc5b-c2dff70000001609-34-6908a293b816
-Date: Mon, 3 Nov 2025 21:39:42 +0900
-From: Byungchul Park <byungchul@sk.com>
-To: Toke =?iso-8859-1?Q?H=F8iland-J=F8rgensen?= <toke@redhat.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
-	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
-	davem@davemloft.net, kuba@kernel.org, hawk@kernel.org,
-	john.fastabend@gmail.com, sdf@fomichev.me, saeedm@nvidia.com,
-	leon@kernel.org, tariqt@nvidia.com, mbloch@nvidia.com,
-	andrew+netdev@lunn.ch, edumazet@google.com, pabeni@redhat.com,
-	akpm@linux-foundation.org, david@redhat.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
-	rppt@kernel.org, surenb@google.com, mhocko@suse.com,
-	horms@kernel.org, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, ilias.apalodimas@linaro.org, willy@infradead.org,
-	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
-	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
-	almasrymina@google.com, asml.silence@gmail.com, bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
-	ap420073@gmail.com, dtatulea@nvidia.com
-Subject: Re: [RFC mm v5 2/2] mm: introduce a new page type for page pool in
- page type
-Message-ID: <20251103123942.GA64460@system.software.com>
-References: <20251103075108.26437-1-byungchul@sk.com>
- <20251103075108.26437-3-byungchul@sk.com>
- <87jz07pajq.fsf@toke.dk>
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=FFLwKgwx6WFvJkW1SsKMkTkIEWPqVqozlHZeum7DzeM=;
+	b=Cq+n8OrxUjLdRwjGWN5AP/o7iJcUhFB7UrQJryhvXhXrASRQT/ebCWtf9/4v5hDVfoSZ//
+	6LMxq675EhCBB3CwakxvY6L+WMKQMorDw1eC6rfMBLh5O90ipW9HTBmmiIwZfjljGA0smB
+	FuUAmSBy9004WtuXCru7kgCzQa1v4qs=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 604D840E00DA;
+	Mon,  3 Nov 2025 12:39:55 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id KtrrO9iIlOm3; Mon,  3 Nov 2025 12:39:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762173591; bh=FFLwKgwx6WFvJkW1SsKMkTkIEWPqVqozlHZeum7DzeM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bTzr4D7Q9+R8M2HmUNps/SjaU1a4dLaSFPp04M573KsTmbE0ij51zExSOukKSk4S0
+	 DP94WNtHHPKkSinM4l8W8pf8mQ7AbLqEdnghTE+kTAjGl/QPTDihnlr69s7/3LjOz/
+	 ZY92w1g3PJH9Pg/MKQY8wl5LZfI+VqGcSC6Lqp/T4m0mBf6DtpObIeSD1ONlzfQolG
+	 RIDo/NMQc9wKm0/OGVAbu1G6ui4DsAWKh89LlScXzVH9/lAOsipQEOuXLYjkCFUG0c
+	 Br4iUhT6qLiLZpvbca1ivrqE4Z3yq2RTAsU6sYT3mjZ5W2wilHvFxwK3EEgNVhDp9j
+	 /b7xfTr8WLRBwisU9zbd4sJbafD15zbyV+FNUDW+Hc8KS1AxxZtDP2S0htntKOEswf
+	 UXAXHompzT7Na3DM6/uzbokyfnJ/B7T6bPk+5HDmZs3R0XgWEsmT/LsIvAAuXhOI4+
+	 A6fKJ5ZOZD+Xx86G/jTuyZ6jvVjjZPJwsTXsKlpwfIgWCW45a18KsKc+7KATcsgasc
+	 FGaSbQm98KSLWWT3nKQ8ZO2gYtrJAbrwarUAC9DeHJCO5WEH2ueYYQ4i79u6+NZI9T
+	 Ho43YZd4DjmHkb7nsGe5S2FaqtOG91C9pVK912aY0UpHX0+byeWKxeNE7v8JKYpwpF
+	 f+0t9hMU6aTP6YzxBKVDzOeo=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 4B2AB40E01FA;
+	Mon,  3 Nov 2025 12:39:26 +0000 (UTC)
+Date: Mon, 3 Nov 2025 13:39:20 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: David Hildenbrand <david@redhat.com>
+Cc: Xie Yuanbin <xieyuanbin1@huawei.com>, tglx@linutronix.de,
+	mingo@redhat.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
+	nao.horiguchi@gmail.com, luto@kernel.org, peterz@infradead.org,
+	tony.luck@intel.com, x86@kernel.org, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-edac@vger.kernel.org, will@kernel.org,
+	liaohua4@huawei.com, lilinjie8@huawei.com
+Subject: Re: [PATCH 2/2] mm/memory-failure: remove the selection of RAS
+Message-ID: <20251103123920.GCaQiieAtEGz1nspWZ@fat_crate.local>
+References: <20251103033536.52234-1-xieyuanbin1@huawei.com>
+ <20251103033536.52234-2-xieyuanbin1@huawei.com>
+ <341ff738-255f-41c7-8b23-48aac4cf51e3@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87jz07pajq.fsf@toke.dk>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA02SWUwTYRSF889MZ6YNjUNF+BETTV3jAm6J17ihUfMb18QHN6I2MtLGAqYo
-	glGDiFsVXJBIC8aqEShCwCq0JWKUHdwIbjXK6oJBrMhSqahIUSNvJ+eee777cHla0SIZyWsi
-	9oi6CJVWycoY2WevK9OSr/Ka6dn1AOl5OSzc6I2BzCabBNw5rRSkZxci6Ha/5qC/uAJBV1kl
-	C59KOxFcu+KiIf1JAgM9ed9psBe1ImhLzWXhfUULBzcsq6Ex4wMDd45baWg5U8VCYkIfDcVu
-	JwfxtqyB4ltxHNQWJkngwvfrNFjjmjh4WpTOQkNOvwQ+lCQyUG00M9CRUkZDY1IwVJh8wfWg
-	HUFZnpUC1+lLLDw3FFFQUPycg+Q6EwtvExoR1JW2MJDy4wQLaYeTEPT1DlQ6z3ZLIK28gQsO
-	JIcdDpaUtn+hyW3zK4q8SD3HEMfdGorYjfUcMVn2kltZk4neUUcTS/ZJllg6z3PkzYs7LKlK
-	7WOIvXkusdu6KJJ4xMmuG7FZNj9U1GqiRV3Qwu0ydZU1hdr9zSum9ls5E4ceyvRIymNhNnYd
-	raD+6fziR4xHM8I4XJ/slng0K0zEDoeb1iOe9xEW4we9YXok42nByeH+3FbakxkubMBfHA2D
-	ebkA2PrSPOgrhAO4sib5r++Nqw3vBvtpYSq2F7xhPZ20EIAzf/F/7NH4SEHa4KpUGI8NJz8i
-	jx4hjMX3CispDxcLp6S4tLof/bnZH9/PcjBnkbdxCMI4BGH8jzAOQZgQk40UmojocJVGOztQ
-	HRuhiQncERluQQOfl3HwxxYb6qxdX4IEHim95MTEaxQSVXRUbHgJwjyt9JHrYwcseagqdr+o
-	i9ym26sVo0pQAM8o/eQzXftCFUKYao+4SxR3i7p/U4qXjoxDqcPjQfGoZ9W7sDX2Cf7SkHy/
-	jWE7V+Z68eruoI9PfZucSm/X8qZ7ywzP2uMv7njML22OH2OZsmBYUChp65nVnZ9wLPhyuXvt
-	z3kHTDcNZ6Y0H1tBxr6SjcpcpN3I+EWqAzLaQoT9VujYfKhvyaY5XZO2mv3R15fRD9dytnPl
-	HZfMSiZKrZoxmdZFqX4DHLABhHUDAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA03SbUxTZxQH8Dz3eXrvpVp3ZahXCdHVt4woSjLMmRqjwcQnJho/LBr9InXe
-	0AYoplVCF02qEJ2NrSI2QqlaNQMpNZAilHZ0cYC86BYZBFdUwDEtBpQaxUoBRYoa+fbP/5zz
-	+3R4HNskW8RrtIclnVaVqWTlRL5zQ97qwmu8Zm2o+juwV7pYqBjNhbIndTKIuAYYsDtrEYxE
-	HnEw6W9G8KaphYWhxtcIrl8NY7DfzyfwtnIMg9c3gGCw6CYLz5r7Oahw74C+0iCB+lMeDP1n
-	W1kw549j8EeGOThRd2MKrjZy0HipTQbttRYZXBj7DYPH+ISDTp+dhV7XpAyCDWYCbbZyAq+s
-	TRj6LJuh2TEfwvdeIGiq9DAQPnOJha5iHwM1/i4OCjscLPyf34ego7GfgHXiVxZKjlsQjI9O
-	kcPnRmRQcqeX27yGHg8EWNr4IoTprfJuhj4oKiA08MddhnptPRx1uI/Q6huJ1BTowNTtPM1S
-	9+vzHH38oJ6lrUXjhHr/+5F6694w1Jw3zO6av0++8aCUqcmRdGs2pcnVrR4rc+jd7Nz2d3eI
-	Ef0lN6EYXhR+EKv8f5NoJsIysacwIotmVlgpBgIRbEI8HydsEe+NppuQnMfCMCdO3hzA0Z1v
-	hT1iKNA7va8QQPT8Wz7dxwpHxZa7hZ/7uWJb8dNpHwurRG/NYzZqYiFeLPvAf6oXi3k1JdOn
-	McJysfj0cxTN84Sl4u3aFuYcmmObIdlmSLavkm2G5EDEieI02pwslSYzJUmfoTZoNblJP2dn
-	udHUb5UemyioQyOd2xqQwCPlbAV18JpYmSpHb8hqQCKPlXEKk2GqUhxUGX6RdNn7dUcyJX0D
-	iueJcoFi+x4pLVZIVx2WMiTpkKT7MmX4mEVGlFyG1+/NGNiuujbIXCcPLXbmxIr3Pun7Hlib
-	fLFr1jfGKlKfcGVw6M9S24RBedSdVKH90Hbx/SnfyytVJ0vMY/7E+suzxteHljjM/2wLLnT5
-	f3rqSt/6Momk7A6tWubcZbds3RhUr1waVIc749bdTrP+viI1q5saH6U4w6kJ1gNKolerkhOx
-	Tq/6CMKBWTFXAwAA
-X-CFilter-Loop: Reflected
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 47503C0003
-X-Stat-Signature: xtmo3psdju31kd4t67pjebwpsyge4cxd
+In-Reply-To: <341ff738-255f-41c7-8b23-48aac4cf51e3@redhat.com>
 X-Rspam-User: 
-X-HE-Tag: 1762173589-734320
-X-HE-Meta: U2FsdGVkX1/Z6OkT4jEKdnwizIWUh91rceB3b+TCve3b4lTN8hl8kFecBApVTJS5OCYXHCBrKUg4QsZlA2jYLZP5qa46wF4xa0KPi9Z/avjipGORz5dgrWXwBwBAUEeAucDfoib2HUtjiYjxzlnUwNf2VlUp84UuLkCQ7MnG5TNH6JtzQyOccCKOFiFgzb0WEb7Ghw+WJH41LdNRuX1QPvqyeCUzSf5vNWaq0vrGPV2CzIg7sviOEvV83Ir85wlP8JlK0pSGaN8oSOK4wdBxqcKC8j0xh0BL73yPZAjdxJrn5Gq5FpMe/5CdG3gUnW62I6zVM/alcw+cAPf3crRH2VEUyOVOSxw5tTRWl8Rr6jkX0AAEpQM/5I5dLUHcKrbryqeJ8nGuU7pHO4Q5VsPrLdAOSCf24Q1WtNnu5KAF1+xqcUllzY+Y2S6ZvCGaJg9i0gBnL0PMJYZq0YIQ7zRr5wTdLUCvK+YXU7Epq5IXl82tyc09ZnM4x4CrSKuspfrRCWV0+6Owg7FKHmRVTtrE1VD4xgVGlZ3gg2X19Y5awuXFAWdn37wg4ctObSeVTJc9eojvzy3DhjkKP5JGBMlkrQAYFW0mcDqxv4I0ef8VD+Zz6DkexUYt6TIcqWgPeCD4UWPH4jVLc2oDfxqVoLrCTZzuaPMrtGd7eDOnlzRyn5v9buWC7W/H1YJjkhi0SGtmPcvHxisY2A+fg7AXoWFIvEN7dHyzUq1r+WaWDe90AHs5dy/y6hfKAcRBXaAuRNqyjCiIbdNQ0ECqRwrl73cSkm9MYzCmtNMeEvDICDRwRWdOlnUFEVKpzae4tLQSuX4GfnThuJCqHh2cqyeZaqn+AL/BxYtO+8aHWtCNbKuB25zCuTZszR7ctpPgz8eaIA0KzEfe98FGo4yuepXBq/ZL9Dfwz6jscePhao2AKuaYibd9+nNvcFm710G6WPmeaWeojVngYSX/3INXjKiCsHr
- 2CfQH5R3
- nKfTeWvZHzjwMaBUkdv33I0G5m/EcMGH/RILa6w0T/SnZ4MvdeRQIY2W1oI37LuVp0V5Ga6qoSuHeKQqdWu87BzJXXTlDc77B5GBYYUXKAyraNrFMSQkLgmAgvRnmPXHN7HE+GsDSUlRP+XhlkTncdRKp3MPgdSHV9YPVZY5aOE4jCA2GxalI8ytAl4FFR3LafaQ9MfEkSHDALeTupY1E9aO8/a7+et9EVXW8
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 244564000A
+X-Stat-Signature: 1jcgc37dr78zkhtj7yn9xh4f7qjh87up
+X-HE-Tag: 1762173599-556039
+X-HE-Meta: U2FsdGVkX18RJzmSs4qDEcJmg8uiRM3zr4S6qMNuNoOKTukzEa5CSh2+Vo04o9COIbvAw9nOx8hkwCaQ7PW6txFU8SbcxqRolgs+m/sMa7QiTZ+P+qvDgyOJ3uCoReNvXFGMC/NMIuTn2M3TXjm8eQft1AKb9Fpm7IEX2Ld7D1JDNydslqNwSi2VAaBk0Fs854WyIcysUzToJkXjwf5Qa54jQ6owQM2CzNx4+88+YhA9rRBfX8xYw0mGHbdS27RfMgoAU7xdn//QLRtlU6G1FYNYPXWygCISSvpBXVDbHx/LzWiufLHNuPtuo8IY9P1xHOhvcoqDXXw7FugPQMZvvdYAEbIrDj/lqMEopSQbkiEGahA8PWydobYmJsmOJoAGUOliBm5EixzGZ3XjdrpRmvPzwDOQx7yS074f9j/H9dmTnVjmmJzOEmAGWgzw/jFDB6a4qO9Fm54MHgUgH6Rjl9lBkARyN2Q76RsM/snIwZ4oNnDJJs/JL8vAncjWZjxo30LLdSa2FMW+/hUTxUDraVjMy3lg4CcUGnbYVr6YNLeO4Z3uvt9n/kKG3Bh841HJQIOaBrZ6u2f2SFBNirXHhk96AOpzWg+f3G3pXsEwbrOq8jBW81ZdYOqsimL/CEp1vzINpAeDjVB5mLEhgGWfBCpn5WQ7CncYRIrksYfVmyVStk9vOgMkObv0lViksin0011XG9wfDRnw6bo4GR8jhHCWaLvdKra0COXkjlUB7L3kighaXYPvR+K2HPPNBfbf3Frzkpd3cRF1KrI3nj4BSUrr6RH8c60PD4dQSK21fkmRd16xq0D0ELp94B4+B/4qavQbtMCt9t2JqMa5nghS4/HT7pw28IX1OBXsZ6/lPYzYUi2LAlIjidHa93EcX53O7udZn3zq3paHn0IWZvIsvgYT4vbwcasaz3el1r2lKm8cRbwqsbqM5VKH/8yBTzJT09NjwQlouZ4F2W4ld4L
+ bpbuyDwE
+ bDl1b2bxa1w3B1eCm7VumNHkyyuuEFWy203sXWVo+VigUQv7iEPOvCou2PRiQBui/3qf6uLg0CTXd7UMBPjj2gL6gPmZ1wL80fNlYB5FrcUtO03VpZ1pemNDoGj5N0xOMCUqehAZLPKa1s/PIVGTI/U65RrueFH2gKhCHIZo3/s0tYK9ry5DgwkDymz8vie+i/Zug9+hSiG8UGySHN4VmYCyy51PavpSW/z0cjtL/F+O5jWNySA3C3/NknBCOe0luP+2RFDAm657HyxujUgLW6B/e6Qc54bEOYVR/dUxy+B5r2zE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,44 +112,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 01:26:01PM +0100, Toke Høiland-Jørgensen wrote:
-> Byungchul Park <byungchul@sk.com> writes:
-> 
-> > Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-> > determine if a page belongs to a page pool.  However, with the planned
-> > removal of ->pp_magic, we should instead leverage the page_type in
-> > struct page, such as PGTY_netpp, for this purpose.
-> >
-> > Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-> > and __ClearPageNetpp() instead, and remove the existing APIs accessing
-> > ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-> > netmem_clear_pp_magic().
-> >
-> > This work was inspired by the following link:
-> >
-> > [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
-> >
-> > While at it, move the sanity check for page pool to on free.
-> >
-> > Suggested-by: David Hildenbrand <david@redhat.com>
-> > Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-> > Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-> > Signed-off-by: Byungchul Park <byungchul@sk.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> > Acked-by: Zi Yan <ziy@nvidia.com>
-> > Acked-by: Mina Almasry <almasrymina@google.com>
-> 
-> Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
-> 
-> IIUC, this will allow us to move the PP-specific fields out of struct
-> page entirely at some point, right? What are the steps needed to get to
-> that point after this?
+On Mon, Nov 03, 2025 at 01:15:58PM +0100, David Hildenbrand wrote:
+> I rather wonder whether the memory-tracing code should live in a
+> memory-failure.h instead.
 
-Yes, it'd be almost done once this set gets merged :-)
+Yah, move it pls. It doesn't belong there.
 
-Will check if I can safely remove pp fields from struct page, and do it!
+-- 
+Regards/Gruss,
+    Boris.
 
-	Byungchul
-> 
-> -Toke
+https://people.kernel.org/tglx/notes-about-netiquette
 
