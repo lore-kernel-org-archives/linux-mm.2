@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E69F8CCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:06:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16236CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 08:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3C30C8E0038; Mon,  3 Nov 2025 03:06:43 -0500 (EST)
+	id 7329A8E0039; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 372A08E002A; Mon,  3 Nov 2025 03:06:43 -0500 (EST)
+	id 709628E002A; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 262328E0038; Mon,  3 Nov 2025 03:06:43 -0500 (EST)
+	id 61F4A8E0039; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 102968E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:06:43 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0380E12BE64
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:06:41 +0000 (UTC)
-X-FDA: 84068564244.28.4377CFC
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 50E988E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:14:19 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 07CEF160A84
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:14:19 +0000 (UTC)
+X-FDA: 84068583438.01.33F140E
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BD63C4000F
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:06:39 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zi8CXFTc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TKVA5B8h;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=018BWjI4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OUQNZkcn;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by imf08.hostedemail.com (Postfix) with ESMTP id A189216000C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 08:14:16 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762157200;
+	s=arc-20220608; t=1762157657;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zCkJf14wqV0F4XHGtpv6IsvGx/JTM7DNUNTENvxVbxU=;
-	b=6av4mdNstd8dEA1hZ5sdKOVG1mKHicS1DkYBgVS5IcIKNF4p6VI6ofgFLPiaAgpIsSHSdU
-	OPV3ubOFFMRLQoWZV0VvsAjqyaC9IL2lhCxGy8sdy0UpZCqJkxBV+KhXPLaUdo1MHNSL+l
-	1ZHz7Xuilru2vBSOLgKUKtEKa4H4OMA=
+	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
+	b=XaGwlo1WvBKPLrTn6tvdMsN7U9ukYBFQs3hjf3u0LLhBGNndGARtjBKfsafoFZaFvhmT9d
+	T9uiLwty+oKmlNYA+FzyZEQm3jPFIcEknpUBcksTg8aT7KsESu/XWmFL6WrWmB98vQBZpz
+	2Ahm7Xzs01UAMpRFvcqMoOQjm5dg+Qo=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=zi8CXFTc;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=TKVA5B8h;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=018BWjI4;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=OUQNZkcn;
-	spf=pass (imf04.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=VQ+j7uxN;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ILcOvWE3;
+	spf=pass (imf08.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157200; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762157657; a=rsa-sha256;
 	cv=none;
-	b=PSmJw/UhXRcC99jyHcFTd0GvYbd4eNMedPxUv6rmFzyIiQLfmDFYhOGEdoUdHu0WOjFhKV
-	ke4jdpxn1P4nDNyG3/b8BOoXbyr9duLJeDcSzEUAT54Ui6OKUBc2cfOdqVKRbzzqDbubLR
-	g/bLBiv4pU96sQd4h0tVHvWtoMpC01w=
+	b=K+s8prhbRpL4RraQtA2QX5p9vtjuB6Hm8TvZO7LKqqnz025F+VGmfDwhApIuSH03pwa3nz
+	gOSYdWFvsrjdbJiRgaky0VtHi30BxrCfCeKvbCQU+IHDlekPBUxpe1uBjfFxtQ5CLdA6N4
+	y3Pl8RpCqddW+r7m469XngPrsCUaC0g=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E9E9E218E8;
-	Mon,  3 Nov 2025 08:06:37 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id A075B21EC9;
+	Mon,  3 Nov 2025 08:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762157198; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762157654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zCkJf14wqV0F4XHGtpv6IsvGx/JTM7DNUNTENvxVbxU=;
-	b=zi8CXFTcQaBKBEpxv7jW3Umveo7VgqtbjbyACZo1GbTjQwPDcorm1dOoX2Fkzlq0Le8W7Z
-	btudHizqz5EvwlqXOQ/UDkPeQrzjIWq1c/nwBIaBQ3RAWu7RZYky7dzQmT0mOXdF3LVAKS
-	fboMrOzYBm+sRlW2IjQOuDoi3rtNtNI=
+	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
+	b=VQ+j7uxNDcVsNPTHd3unaB+kEhcNnjs6bCHaF5ZxN9bXsiexkAeteKfEmlgA4MgQTwbgxa
+	X3oBxfZVFo4NfcWRmG/LUEHk7zkbH7OX4zoNdm+vgbzjXP+Ppdj91X4+Ufa32ldnR2kdWD
+	J7GCM/W+E1rZlUfHDFKC4y/9qmBGZYQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762157198;
+	s=susede2_ed25519; t=1762157654;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zCkJf14wqV0F4XHGtpv6IsvGx/JTM7DNUNTENvxVbxU=;
-	b=TKVA5B8hPFYXxiy/uI/8Rk5SdCozQnbaYE7+LwVfmJ06p/Xb+Lcc3AAxwO6+v525r62EHA
-	3xHAl02CyVW1tXAA==
+	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
+	b=ILcOvWE3ko+Lu34V3dlOGO/OykohZmnSXALd+aOofNHRb+gfNSERLcnFd/Fk5p3Clu1xsN
+	By3x0es9kLP96JBw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762157197; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762157654; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zCkJf14wqV0F4XHGtpv6IsvGx/JTM7DNUNTENvxVbxU=;
-	b=018BWjI4UciYupwdOCuccVBXRZ2XDz4ea6ZHTB/DxoByTkfFiQn9aVNlepUhZZZVL3TB3C
-	hWx8qqKRjPqp/S72VAwSZxlLZF0Xp2V7sgAz3DYOkuw8nW7JorvnSi5rwKVh4mFeMylsPN
-	X1E37pTBeIXIrj963W1YYXZBYaLdK5A=
+	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
+	b=VQ+j7uxNDcVsNPTHd3unaB+kEhcNnjs6bCHaF5ZxN9bXsiexkAeteKfEmlgA4MgQTwbgxa
+	X3oBxfZVFo4NfcWRmG/LUEHk7zkbH7OX4zoNdm+vgbzjXP+Ppdj91X4+Ufa32ldnR2kdWD
+	J7GCM/W+E1rZlUfHDFKC4y/9qmBGZYQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762157197;
+	s=susede2_ed25519; t=1762157654;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zCkJf14wqV0F4XHGtpv6IsvGx/JTM7DNUNTENvxVbxU=;
-	b=OUQNZkcnZxVs3XQevIvUo8kEsC/6j+XzxjZ9NihmdZtp/sOAR2FXLvP18hvLA5VBsBmA4j
-	gutiWwhxOU80b7DQ==
+	bh=lCdxGDoqhxMX2on1WCoiMvZKcJKb7d7apOzd7GJhudg=;
+	b=ILcOvWE3ko+Lu34V3dlOGO/OykohZmnSXALd+aOofNHRb+gfNSERLcnFd/Fk5p3Clu1xsN
+	By3x0es9kLP96JBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DA6F91364F;
-	Mon,  3 Nov 2025 08:06:37 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E7321364F;
+	Mon,  3 Nov 2025 08:14:14 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3gNSNY1iCGnNWQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:06:37 +0000
+	id Qa3DIlZkCGlZYQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Mon, 03 Nov 2025 08:14:14 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 58F69A2A61; Mon,  3 Nov 2025 09:06:33 +0100 (CET)
-Date: Mon, 3 Nov 2025 09:06:33 +0100
+	id F0DE2A2A64; Mon,  3 Nov 2025 09:14:09 +0100 (CET)
+Date: Mon, 3 Nov 2025 09:14:09 +0100
 From: Jan Kara <jack@suse.cz>
 To: libaokun@huaweicloud.com
 Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
@@ -112,25 +112,25 @@ Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
 	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
 	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
 	libaokun1@huawei.com
-Subject: Re: [PATCH 05/25] ext4: enable DIOREAD_NOLOCK by default for BS > PS
- as well
-Message-ID: <q7podhkdz5bnjif6tm2ldwkdvzafwqc37u67eepajoreu4x2zx@3zypdbhvmouk>
+Subject: Re: [PATCH 07/25] ext4: support large block size in
+ ext4_calculate_overhead()
+Message-ID: <qmsx753xemvacoaghwhv6emusazmlynv54qqxwsdfsoaoeqre4@bp2lgrdufaim>
 References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-6-libaokun@huaweicloud.com>
+ <20251025032221.2905818-8-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-6-libaokun@huaweicloud.com>
-X-Rspamd-Action: no action
+In-Reply-To: <20251025032221.2905818-8-libaokun@huaweicloud.com>
 X-Spamd-Bar: /
-X-Stat-Signature: 5sqpqfj5mmfyprpy59wcasd76fu9eus9
-X-Rspamd-Queue-Id: BD63C4000F
+X-Rspamd-Action: no action
+X-Stat-Signature: y7bxu3qcuh44tgwgmtqwejagfk4pjbsp
+X-Rspamd-Queue-Id: A189216000C
 X-Rspam-User: 
 X-Rspamd-Server: rspam08
-X-HE-Tag: 1762157199-176532
-X-HE-Meta: U2FsdGVkX19cOpVCrizo+L3+vSNq4x93B0vX/kKv7qUNTwM9Unrqrt0VKN00ZycLUTN1/SH+UmR5cNieq0svlURgmGAX0kTfVojBA++ucDZlxKTBbcrDOq7fKNZjAJwcmFy1dpqjzCjZuXazSNxPA2QoVgH49HF7IAdqzva1o06Q3r0sdlKnhbYVlJwrtHamlWZ5WoMQp5XNuh4f1/IfZBZwugXaP6PvVuxrm5gei4Vpv3Cwx+XcNHocooValHU0D1ZpGMqcSgSBd8JruBrX/3LO3paryTpMgzwi8mfRbceQxy2meMDtJsSqI7QHyIsjt5bp5Ot4FXKdXIHMSUpOySmiFG99fqdWpscK/ZaI7f1byIGVSjge2Zha5bTE3sgZ3pJwmMoj049qtDXpTvrlBx7sRKAzSjOJPdnhqHXvutczpwSZEnyjftZEv4JLqBtOI9F6v78c1jILHx2BvN+loe2mwrPjtMk40qm82Z8kYriXCdmi8EvsPM+wR+odCYMwJkDN3OQGfGxGye03St8M+8/8qpIFYtZY6CIZXsfMSlCxZ+5Eg3Dgiy4EE+7u781CcPezlCpT9wFJPEuRKMIALG9z+xYNjOLNvRhOFC+7GVm1dBjdcDaL/eDrexa1plRd6HPh7kaotle7mgbVX+vq5Cxv8uoI4sHgzL2Tl4ygdkMfhuQt+SlLiy9bXJDltZik65mQIAm/MZy/ejoOAkE+5Go3LGyK6ezBNdf6cyIO+uj+xaZ7QFPcHjePjET0GJUJWgonyBvyf+VJadTt2YTrjYmyd/OkfkwQK03DW86b6KWTJHMQhFZfBoNyXxCeFZ+K9jP0nEihoaeEReqGdIbhiE+LHuZ4hDHhsazHQBUwNTRpJlvln8LlHvZ7ivCamejgZhQwbDqn4NZcO+RcZo/LGKVM+1c1r88sh/PjZCxwNUrcl8NhJjKMAcY908HCvrCM2M377QVwa9viku/nt0Q
- D2/IOZSp
- hh7BK6pT046LT4p7Rso+Zjzy6sOadSkg8P2G4if2Hi/aXHfQFkyGcZp4912bW4znqMiiA8diR3iXXbCkJFY7npkwFBHuE9PTSAtR7HvybfV8JuqrArHgkxRsjC5OBF+v0Jh1z34P9qGRHUwfszx9h7dheVwjZhLs1ZO0taG/EH/Vao4NYftqfRRl+ywCEyDUPSZ9fkRcGeKZyjJxDisNrdd+3lPLvgwrRW3e9Q1jfUno1nIr5wGJEa1XcWD7B7+0/Na5fAL9p0iS22EnLVPtdnWms4PEvRs9VwQUHqv6dklIFjwJc41Zn45qlCWmVwzbTHnHkGm0EFfHCBuvD+LMRQZtVFQ7tNyENi1knzYtGHKdRqjeloBd7iOu+O29TPl4EnS4UiAs3t8PYMKwEOrEwHnt1Z6jDF5fZAF7mafvsoy+DW40G2FEqCZ/NUvsOwp07Gsvvj6C1eSUb40bjx10qgeSGZg==
+X-HE-Tag: 1762157656-385932
+X-HE-Meta: U2FsdGVkX19zoA1CVbB9rsjzxGPGY4ynSpTi0gI+sB2NEU7gq5zpdGQtKKC5+PfgscCPxLxbySvo13cpJfQRuevJwrLNs++HxL5g9bQj72U5VDC4oDuwkCnVediBkdoTkMrKbWlQrLhEtO879pPLPHhJwmsBPKL1xIt5xb1J8PuqmKY7wi4tY6eVNG9FUdC/PRxvKgx4CErTbLOraXEYC7o2CgoHON8Ak26sqE+QYEthEtYFCik1IEyE+jDLP78jDmSJTdAvLjyC7NjAxrEdsfBN6q+gZ0iyV4h8A36B/C+FnVXlN9Qsragl1kfrsMTWIA7/BPWGyD6eQfPWW8342EKrqMD53g9osF7Xj8F1a5m4yjZKKv/um7GvX5KNJKi1otLeSKqdi8SKxF9XuZ72sdARQhZdv9HWYaL/raftYo6L+Umu77WLIG4l0kGfz8pythXhq5F7p4P2Md/8LW/W7h4zjsqOd5jrNy4oxzjsmfmQCamQd16hUiXMquRUsPI5RYGotkSMG72rlPVIDiptjafEc78mtngu9OLIOnYz0ycXZg4cZZw/zFoa5NezufRlbn6MNO9NtPQHAVD+VZMPwhoirtSi6C4NdzmE2CK/N7o/clf11181ozy1zTdKNkJxyReaLefws4nDDTK/chacaUBxl60YQ5h0qX4cR5mQ3Cd9c2CvaKHez5BsGKtW3ISIAGLu/kSf477l7kYdvTVtbQJvedvAuXMBjJmQ3LakaquG2nDiMCxegmAivN5woRoW0CxHQT/92wqk5mbN9HH5zdA6mnGCZXpMmlh5OCdCAOcTKtGeEYcQrS39Gx5CGy9Tk1ELVVtyZjsyBsbfHoz0Tn6hlbC2UHJcuRbfn4FqPoBH1eQTocqVnujkEAjpgmXuffxvfbWT07eCNUtR9cYV4GXZsoZItWAqJtJgflMuiCr6j40ciNa2Ii4mqyxGWkMHPusLymkI33edeMp63D9
+ REJzsXmj
+ begbqgnpn5Fl7RcnZ7395pD464zWkS16tw8+NO2Z3sH0m1DihzxTvGvLtlO8qTLpaexvvXk1NbecDICTwbAupYpC0BNoeJ7Mvy89QKOwewCVC07bnY3M0pOV5OQse6JLBDGHHvhRCPBwkNgrEecNP0QsMf62wcSwY/DZWsM5YTd9Tw8jaOG3jq5BdUw8Xy+2jwyp0GLPj8JXIGvDT9Hvh7L+qsqrYhWSOgbT7l8RAdZpVUx3VKiuqM1PzSmyuU147ZKgSZjdfVVEUXOZmdO36fGgvYaQLw/A+RwzU3dLSmGmNB06hhN6RO0c/GYlAQgskIw360D/fMys/94BZMHcwb2euuyt6zpe8x2EWw02c5CW8N4bzemrgzK9//xYupVOFkDj5jhmU52n569V3+V/sY7k/FRY7x8xCuUzvJgyA2i5EHd9ciuoXjSUJvw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,43 +139,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:01, libaokun@huaweicloud.com wrote:
+On Sat 25-10-25 11:22:03, libaokun@huaweicloud.com wrote:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
-> The dioread_nolock related processes already support large folio, so
-> dioread_nolock is enabled by default regardless of whether the blocksize
-> is less than, equal to, or greater than PAGE_SIZE.
+> ext4_calculate_overhead() used a single page for its bitmap buffer, which
+> worked fine when PAGE_SIZE >= block size. However, with block size greater
+> than page size (BS > PS) support, the bitmap can exceed a single page.
+> 
+> To address this, we now use __get_free_pages() to allocate multiple pages,
+> sized to the block size, to properly support BS > PS.
 > 
 > Signed-off-by: Baokun Li <libaokun1@huawei.com>
 > Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
-Looks good. Feel free to add:
+One comment below:
 
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/ext4/super.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
 > diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index 894529f9b0cc..aa5aee4d1b63 100644
+> index d353e25a5b92..7338c708ea1d 100644
 > --- a/fs/ext4/super.c
 > +++ b/fs/ext4/super.c
-> @@ -4383,8 +4383,7 @@ static void ext4_set_def_opts(struct super_block *sb,
->  	    ((def_mount_opts & EXT4_DEFM_NODELALLOC) == 0))
->  		set_opt(sb, DELALLOC);
->  
-> -	if (sb->s_blocksize <= PAGE_SIZE)
-> -		set_opt(sb, DIOREAD_NOLOCK);
-> +	set_opt(sb, DIOREAD_NOLOCK);
->  }
->  
->  static int ext4_handle_clustersize(struct super_block *sb)
-> -- 
-> 2.46.1
-> 
+> @@ -4182,7 +4182,8 @@ int ext4_calculate_overhead(struct super_block *sb)
+>  	unsigned int j_blocks, j_inum = le32_to_cpu(es->s_journal_inum);
+>  	ext4_group_t i, ngroups = ext4_get_groups_count(sb);
+>  	ext4_fsblk_t overhead = 0;
+> -	char *buf = (char *) get_zeroed_page(GFP_NOFS);
+> +	gfp_t gfp = GFP_NOFS | __GFP_ZERO;
+> +	char *buf = (char *)__get_free_pages(gfp, sbi->s_min_folio_order);
+
+I think this should be using kvmalloc(). There's no reason to require
+physically contiguous pages for this...
+
+								Honza
 -- 
 Jan Kara <jack@suse.com>
 SUSE Labs, CR
