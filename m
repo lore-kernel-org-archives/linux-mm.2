@@ -4,141 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 756A1CCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:51:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12ED4CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 07:52:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D62258E002B; Mon,  3 Nov 2025 02:51:50 -0500 (EST)
+	id 6FC7B8E002C; Mon,  3 Nov 2025 02:52:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D39C68E002A; Mon,  3 Nov 2025 02:51:50 -0500 (EST)
+	id 6D3FC8E002A; Mon,  3 Nov 2025 02:52:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C4FF68E002B; Mon,  3 Nov 2025 02:51:50 -0500 (EST)
+	id 5E96D8E002C; Mon,  3 Nov 2025 02:52:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B0ADC8E002A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:51:50 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E8AF1A09DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:51:50 +0000 (UTC)
-X-FDA: 84068526780.17.CB1F9E1
-Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
-	by imf23.hostedemail.com (Postfix) with ESMTP id A8BF0140009
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:51:48 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	spf=pass (imf23.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762156309; a=rsa-sha256;
-	cv=none;
-	b=jrdeY5uzm5IzgfdiiIIifT1S6tcxjtykw6PAa7KUIZU2i2eLMjvOsbHec3RuEo0aGrzmQE
-	rGItmc+u1rEt9pc2bFbe7GG8P8iJQcwXEItDwWYKk+w3LASVsFr176FZIRJ9XKGGRFYf/y
-	69USHon3oG1SVBbZaAtAgM44IGQmD7I=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=none;
-	dmarc=none;
-	spf=pass (imf23.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 4B39A8E002A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:52:57 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 139F84AEAB
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:52:57 +0000 (UTC)
+X-FDA: 84068529594.28.EA8AD9A
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1A12FC0005
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 07:52:54 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b="caXh9Rq/";
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	spf=pass (imf22.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762156309;
+	s=arc-20220608; t=1762156375;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-	bh=zaJKwrwkZoCPySs9KOH4UErrETjCaDXjQJX5UbAl7LY=;
-	b=wcn45sL8MYJ8KpU5n2Cbyu3nkegNEgJc3uBsLwaEj1cSrN5Wb7nxiMHeh9k0W5U9v+aSm2
-	jh4IFpLbfQQTTfIGycZ8Hv7t6T2TBVgQDhfAe0eJMIX/Dri4ilarDfYEvIfFspmeCnMUYJ
-	oMRNM18MJYoI8gDLtrgljhy7CLXCAGg=
-X-AuditID: a67dfc5b-c45ff70000001609-5f-69085f0c2fe6
-From: Byungchul Park <byungchul@sk.com>
-To: linux-mm@kvack.org,
-	netdev@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	kernel_team@skhynix.com,
-	harry.yoo@oracle.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	davem@davemloft.net,
-	kuba@kernel.org,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	sdf@fomichev.me,
-	saeedm@nvidia.com,
-	leon@kernel.org,
-	tariqt@nvidia.com,
-	mbloch@nvidia.com,
-	andrew+netdev@lunn.ch,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	horms@kernel.org,
-	jackmanb@google.com,
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=pLkzhtoF4Ahv1FKwU/tjbCnsdl0esqhckJcQdc+yB8A=;
+	b=EMOJJKL12L+I3fNbqMNvytvo72MbqOC0V606Mxj+AXx9frBiQCfKzZkjfChmSEJd7/D7H5
+	yI1sXUj594Bhf1oiDmOTjOU18U7fDmFh+N8MpOM7U85dQ5GjLaCgu84J+PAoHZaiS4GIhY
+	Dkvlv9aARtPjcbMFO+vwFIhrokPzII4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762156375; a=rsa-sha256;
+	cv=none;
+	b=hS/+K7bR1DLc4GHcxAkm9cVzCHzXgWdzTaMpuMLE6nNwpl37J5PVUip3dJIc926YSo0CPw
+	Q1pBKTfuh42r+nuWtYzb5+04dhYur8IjvWmqeOPH/TWkAXdvVvIpewQYCsljm1TOD5o9co
+	wqVswjpyLDsr/uqEXdLPTxBJPJT+Z2U=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b="caXh9Rq/";
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	spf=pass (imf22.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.45 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-33ff5149ae8so3211065a91.3
+        for <linux-mm@kvack.org>; Sun, 02 Nov 2025 23:52:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1762156374; x=1762761174; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=pLkzhtoF4Ahv1FKwU/tjbCnsdl0esqhckJcQdc+yB8A=;
+        b=caXh9Rq/gE9hOQrcg4LZtefbzbv7a6bFr3PcShmGJqrLtRipebeTlw+ZIXjQtjpyck
+         nhK35QIojJeUKiyqYshdz0xCQaK1wDqNgVrrLRtsd3pnA75kQPeJVzq9GrG0Z+5JzaP5
+         y1tVz2LEiTfVF3eneUr4Z6aIqzewtKEBJigYdMJ/YnqXOPqvZID/BsEiamrMJali+L9E
+         ZNwdmRNPZKpFwt5M8GyZ2CXcw0RLxhE/acvetr3rFgxaVN3uvbPqHeqB/DDeG82pFZxH
+         LgYMcjOS+w3aMtd3K8NbFB1ZTxucQwQdT9sgc0I5bE3HozXmU48fQj6jA/sr+Uo3u+xM
+         ysxw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762156374; x=1762761174;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pLkzhtoF4Ahv1FKwU/tjbCnsdl0esqhckJcQdc+yB8A=;
+        b=F73AOfFzwccB9a8bIuRDuVznzLi1PyuQOrg1rg53ghYtNWvY5MmjY0WuyCLYG3JmAw
+         hKNtZrsglOz+ELPL/4RmQMamcS5gL5b9snxwQc9a7vlpsCRjRRaG86LwH4OdiD1Qwg0K
+         0V3xq3v8y6Z4E+daURGzTZXQHYa3EAj4vX1MEu3LqusLTzMJ0cVdM/BrSOVdWXAh8UVC
+         pwiUFH/WpUDZiVde+VUBzxlo9A8KxUSvS+EoGmS0mnRWx6Q0cV3RPFnqLXNIxkrRrR/n
+         ySjYvVwQTqoVoWjc0XEWKrK22aM8n/OzzKqjeStiiR8nTloeVZjlFx9oQ/uwocwMFmI3
+         1ctQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXjQvL52+9eCYvadF3g9a8JhiFfb1/UUoEbOQIv0Zh+MxRWcCe/xNXIRiDd2vSzC5OoUgFmwtOHtQ==@kvack.org
+X-Gm-Message-State: AOJu0YzeubPX5rkEDNulnvXmpPn3Fwxt9cUJqlWMNPe1/RBRJj/yxBol
+	hKjOJVu6OKR97nYweMjk27p2mS3qM4IUOUEaSVXq9agTwZymdBvEChs8RPpffFQc1AOSNUtk5cX
+	zgYJ/ZesWAg==
+X-Gm-Gg: ASbGncv/mK0msJtB6gTINiChmF9NK5tmExBxjsW235Jc9Ku6fthkK+elQmER8cMuBR1
+	fZdl86ZDhKdPZ8d3a5M9ABLW5PODBu9V3lMhhwwqJPV6TfnTtcmAOKeGn57oSixC3w0E+dJ1OjY
+	Do5UgFjKd+MW7rC9lVlMRFMeD2qREWG6zP+dmyJ3y3FxZv3rzXHoR0iUX6Xk3+AH0fmmlN4+Vt6
+	jc937Q9oGc7FLbwFWH771YgmZTiceapWh+4vlXRzH504Tw5esKm8I/6h92QeRvyH/DP5a97v4rm
+	HWg5i65Xc04v6B2dKPHhMvJmpCGPH5GR4vaVfcEXbN91Hl0SZAGFZGknAC4pwtXgqBb+Bji3j5G
+	S46J3dI4AYxlWLxd2kSp6PGsIY9C6plwcEoneWOYRcne8xK68VCwlTgBMMt5UjhKv39MEjMbsPn
+	nwnLqL3hmReXR2Ekgs9/yZ/pW+
+X-Google-Smtp-Source: AGHT+IFmmflmrHgmAEotptMvyKECeXV6WQu6qDa1mCLOci2pV13NrALFzKLJadVhnxzhUmSBh4pxng==
+X-Received: by 2002:a17:90b:1c06:b0:341:2150:4856 with SMTP id 98e67ed59e1d1-341215049b9mr3820496a91.17.1762156373781;
+        Sun, 02 Nov 2025 23:52:53 -0800 (PST)
+Received: from .shopee.com ([122.11.166.8])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-34159a16652sm34552a91.20.2025.11.02.23.52.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 02 Nov 2025 23:52:53 -0800 (PST)
+From: Leon Huang Fu <leon.huangfu@shopee.com>
+To: stable@vger.kernel.org,
+	greg@kroah.com
+Cc: tj@kernel.org,
+	lizefan.x@bytedance.com,
 	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	ilias.apalodimas@linaro.org,
-	willy@infradead.org,
-	brauner@kernel.org,
-	kas@kernel.org,
-	yuzhao@google.com,
-	usamaarif642@gmail.com,
-	baolin.wang@linux.alibaba.com,
-	almasrymina@google.com,
-	toke@redhat.com,
-	asml.silence@gmail.com,
-	bpf@vger.kernel.org,
-	linux-rdma@vger.kernel.org,
-	sfr@canb.auug.org.au,
-	dw@davidwei.uk,
-	ap420073@gmail.com,
-	dtatulea@nvidia.com
-Subject: [RFC mm v5 2/2] mm: introduce a new page type for page pool in page type
-Date: Mon,  3 Nov 2025 16:51:08 +0900
-Message-Id: <20251103075108.26437-3-byungchul@sk.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20251103075108.26437-1-byungchul@sk.com>
-References: <20251103075108.26437-1-byungchul@sk.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAAzWSbUhTYRTHe+69u/e6XNym1U0/WCMJjNTK4kQRURFPlGBEH8rCRl5ypFbz
-	JY2CaUPL8q0yzRYY1ZzTUKeps810W8vemBnqlqZmZGTLwsxSBzYtv/0O58/vnA9/lpSqRQGs
-	IjFZUCbK42W0mBJ/8727dnEMqwjvKWdBU11FQ+WfNCgfbBLBZNVnAjT6BgTjk70MzJjtCH7a
-	ntHw1TqG4N7dCRI0DjUFv6qnSDA2f0YwUvKQhk/2IQYqDZEwoB2mwJTdSMJQfjsNueppEsyT
-	owxkNum84joVAx0NeSK4MfWAhEbVIANvmzU09FfNiGDYkkvB89IKCn4U2UgYyNsO9rKlMPHS
-	jcBW3UjAxNU7NHTdaibgkbmLgeudZTR8VA8g6LQOUVDkuUTD7Yw8BNN/vMrRgnER3H7az2wP
-	xRlOJ42t7u8krq9wEbi7pJDCzpYXBDaWvmdwmSEF1+lCcI6zk8QG/WUaG8auMbiv20Tj9pJp
-	Chs/bMbGpp8Ezr04SkctOSzeGivEK1IFZdi2Y+K4b65i4vQ7nOZqNJMqVLMlB/mwPBfB6z/V
-	EfOcr/9BzjLNreadzsk59ufCeV3RuJfFLMldYfnellrvwLJ+3H4+qyNtNkNxwXx/wVN6liXc
-	Rr73+j3ynzOIr6xpnWMfbhNvfqWduyX1ZvT16jknz7Wy/Ps37v9PLOfbdE6qAEnK0AI9kioS
-	UxPkiviI0Lj0REVa6PFTCQbk7Yb2gie6CY11HLAgjkUyX8ngcUYhFclTk9ITLIhnSZm/xKWm
-	FFJJrDz9nKA8FaNMiReSLCiQpWTLJOsnzsZKuRPyZOGkIJwWlPNbgvUJUKElrwOD/J2E/xPd
-	a0dA6XDQoS87FrWP1LTZ8k2vlHv3rYjwXPJ0LnRFa0cK17LTUz3Lbg6sctvDznTHRDvOX9Pe
-	dNW61w/tPWfxcxDFUVbPysepGtfurX0FYa17JKrfnoORa8j7UVmGda6d2drwI/lt33fVFoYF
-	b9BnHtUl+5o+rpRRSXHydSGkMkn+F6OI+pUXAwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAAzXRa0hTcRgG8P7nnJ1zXC2OS+pglLQIycyKtF4xxCTwX1TYp6AUHXnK4bxw
-	pqaBOXNkWt6VzEsolum0tGnqxFnNS7OERDGmljMjlVIzNcksahZ9+z28D8+XlyXlk5Qzq4qK
-	FcQopVpBSynpaZ/UvRtCWNX+4mwvKK2vo6H2ewI8GG+VwErdFAGl+mYESyujDPw29SBY7HpB
-	w+fOBQSVFcsklL7WUfCt/gcJxrYpBJ+KHtLwsWeCgVrDKbBVTVLQntZCwkS2hYZM3SoJppU5
-	Bq61VtuHG7UMdJb1SqC/OUsCBT/uk9CiHWdgsK2UhrG63xKYNGdS0FtcQ8F8YRcJtiw/6Cnf
-	DMuvZhB01bcQsHyrjIahO20EPDENMZA/UE7DB50NwUDnBAWFP2/QUJKShWD1u31yLmdJAiXd
-	Y4zfPpxitdK4c+YLiZtqhgn8piiXwtaOlwQ2Fr9jcLkhDjdWu+EM6wCJDfp0GhsW8hj89k07
-	jS1FqxQ2vvfGxtZFAmemztGBm89Jj4QJalW8IO7zDZWGzw7fJmJGcMJwi4nUogafDOTA8pwn
-	n62fJ9dMc6681bry107cfr66cMluKUtyN1l+tOOxPbDsJu4Mf70/Ya1Dcbv4sZxues0yzosf
-	za8k/2268LUNz/7agTvEm/qqiDXL7R19k47MQdJytE6PnFRR8ZFKldrLQxMRnhilSvC4EB1p
-	QPbvVyX9zG1FS4MBZsSxSLFBNn6BUcklynhNYqQZ8SypcJIN6yiVXBamTLwiiNEhYpxa0JjR
-	VpZSbJGdOCuEyrlLylghQhBiBPH/lWAdnLXo6szu85XyiqD1zxn3oxYLk2zKCzusdXb3df0g
-	ZriUbHMema4NPhhw8Wmgt21+4+ysecExtKbsuGPQZdFHf5c6pldu9/cueLKn11WdV5b2y/LV
-	Nb5yTGMTtuiCj/pORx5xFANS0pqpzJ2e/v7pJx/twJJjXcaOJPfqkbiB5Ma+ewpKE6484EaK
-	GuUffCXdMvkCAAA=
-X-CFilter-Loop: Reflected
+	corbet@lwn.net,
+	mhocko@kernel.org,
+	roman.gushchin@linux.dev,
+	shakeelb@google.com,
+	muchun.song@linux.dev,
+	akpm@linux-foundation.org,
+	sjenning@redhat.com,
+	ddstreet@ieee.org,
+	vitaly.wool@konsulko.com,
+	lance.yang@linux.dev,
+	leon.huangfu@shopee.com,
+	shy828301@gmail.com,
+	yosryahmed@google.com,
+	sashal@kernel.org,
+	vishal.moola@gmail.com,
+	cerasuolodomenico@gmail.com,
+	nphamcs@gmail.com,
+	cgroups@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH 6.6.y 0/7] mm: memcg: subtree stats flushing and thresholds
+Date: Mon,  3 Nov 2025 15:51:28 +0800
+Message-ID: <20251103075135.20254-1-leon.huangfu@shopee.com>
+X-Mailer: git-send-email 2.50.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam01
+X-Stat-Signature: 8sfgpx16tbzfmpm4or7t31uob9rb96im
 X-Rspam-User: 
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: A8BF0140009
-X-Stat-Signature: asayo87hpd18g3whykd7r8mzdq4whrre
-X-HE-Tag: 1762156308-282943
-X-HE-Meta: U2FsdGVkX1/ayUAwOQN94EUfH7A6MrZPj0p/O469lBem6dac7i62PzJriQL1rg4lU+Hw2/8dQWG1jjwk7OqexkDbiZYMntLCP/RyxTKhdu0Pt4oH/Zus899VXZO5adui2LXZ0btDELIbvprEBS1NRHdTvV0s2xiFHVW2WfLOZix9owAcVF9eGJ8DWYu26fSa+XVjtDOT3DsDFoDWxTVj2sdJ8bbmeRbTVFjDr7YLLS/gai9KrGjP5YNuQzHbIxJ5z9LWZAZrSmnYIO7vUq6Cvu1HKIAFqi7KOv9PxbfJVKbherJwNP3yOz44EnXdqmyctBEr4Ll68LcEy4BhARzXDeYxD/Fukt0JBr8MrBkyWYYLrAm/Od3fCivaxVaRfo89RfkOMkhfgbuRkI5e2BQ5ExWNDKSGOaUo/EIehXFiibJd57AZ4HJWTpFpxtY0Wuo/rssUtXJWodUTnXB6pPhdmSSRcToDr+nGqpYpH7teIaC38AtJFIcT6Fj/UuAxer/bX+4qZvOt4gru00yntffDgytmyMOQZx2uAmsaul7l+TVCIu9eE/jvV9VVR2C1dx9hVT4BN4TzGjBEHq+d8o5SzSMNXXy/EyNLaDZlmc5nXTTJTCwpyZ0nzs3YrD86qrfB0ZuuF7Noguledo3g26quYPgt1uJQje+2bpffMTfMrG1EUuSai9BpXt1pCVjrD8eobjYcgbd/hWQNh2cjne3oBr/EkS+RS+kHl6Vtk3UEroApEacKbUyjQdRtaqhenKOECCTCxgNJD/0Quj+6urEroGBJjRcSFpH/D3mI7FIafZButx8MOWsejpRFH7fYTihoRT4pqSWsgIWmLl6LxBeP88pxpzLHqJy3TAr+kZk8n47xwJLHBAHl0pYnEi4AJfUu0pwGhY4AIzzVyp0wP8YUlY5IkJ4gFBnGkFjmXExQc8MzU9Uw5j3n0svFM1NU4IAXKgvM5U9k//rz1Qrptey
- obMJP5T5
- 7Eh89xVaV5gU+ccSl+yuBYxGZdClcWeKDM4AZSa0HWSqvWztOtttfB3nYAE1yScR1pqmyBz7TtXy6T87yRWpuXOYZVT23Pf7WFYRQS0UOXUvTrovF4uG28IFaocvVWzXgZQxuk98cvw9RHCqLafPev++Vgw==
+X-Rspamd-Queue-Id: 1A12FC0005
+X-HE-Tag: 1762156374-773017
+X-HE-Meta: U2FsdGVkX19bCnAmsY9JR9D5klZpkNEtXLlFv+VIUNVkCkNpKlakOn9ezguNbMb90U8oxaI/aN+dbyAaswoPdkXeeZppdn0LGAoENpy1cwNx3G8rxiQ1IBVuEPPQrOKpafHUFcMdgPScGbw/1BTFw38QymZXfEHZTpbK+dnWLmHk+h9+RP3iwyEv9tTps7lskqP0iFIvne8DJ3gHCowjI58+pENCyNhIAGGRkJQxNYLeV+H6qow4eV3qtmuOyGXTkYyBHgj856NIAt85hj3mH/r1yYT/9b1QAnpTRmdUrcLJaEn3vJTR7rUKcKUgekDUaWXmo+Y0A6yryuxa6zd4DJ4m7eA1RXnkFU054L3u1ZN4b3G41O9waq3ql6e5AqwIV7FAjNqQwJS1lu8nFzsuu6LoVNec9JW5XzFd3XVF39o0I3aPeATOIapaxkEt9CK9GS2Ay6+i/U0OMl2QOHUedNxle0Ua6n9+5DSgxW6QgSxBU7/7qApwS4Y/BKXf2aic7uFxA8B3Z0jRa2gGQT2lka1qQ++5Yqnm0Sx+fkLXyJn+ig+GPorfcvDveGDrbbPHTPiW8iNmEXXvZIUstPRafsz0xdncXM+02rqFT3RErhRA9HNmwRXyA8lEvXhKiWyHSfJyEhGoMorG+EXWLFg3JGjlpZYHclkVyGtt65E3OXJxuBwIVutz7nRnMLO0M8hXoQQ7Ze0BU+ZiBqEDgR60FS1uLavsNy6PAhMVySqokkw9q25KAxj9I6sfImTKoIW3B4xcfuMpk0TYOyURlNWirKnpjWNH/YE1hvxQkay0RG8IR2gbQVfuzgn5iXe5x6qMOVgdmcUTYaSbnPphS1mkHyKucq/rag9T94OWjTrlsJ8rZUI4If1oybUMc2c68FJG76ISUU808oi/UIYcALtTspeTDYlw1u0Z50uXf35wA0HNMPS6Gmj9b3/Povjnbm4zjCn+uL0mbzI6OsfcuRL
+ yY2PjLxd
+ j9KVNPtQSYdHwOTEhOqwLZuaUozhuGoPdoi+eWSh0tFyltdWovnsTgGmlkINBVj9UNPHTOHAqTqkQQKjJMngwf4lCrUEpxj8eorl7iADWkJo3pIY4rH2GGbELIk8Qk5bHH5vzJygXXdO99q3l/21iZP4YwzzkILZRmPhbIzICVlRektE/fQ8Ed/fyn/TH1lj0QWWCxOH43ktmcBT71oibM0Ic2uSirntgUpaAgvvUr74U6wmL1KXj5LaxKDstHU+hqw7y42QyYJImMHid2eCF9pX+FBnNyLPFUGhS5Ev4r8twoJ2C/q/1gSEwe3nQ+bitjzKjwfcOjvUGJ2Cg4ieZf4qB7SMr10fmmB1dTHnb3LyB7wgLyfuq2B8T1g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -147,241 +140,132 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
-determine if a page belongs to a page pool.  However, with the planned
-removal of ->pp_magic, we should instead leverage the page_type in
-struct page, such as PGTY_netpp, for this purpose.
+We observed failures in the 'memcontrol02' test case from the Linux Test
+Project (LTP) [1] when running on a 256-core server with the 6.6.y kernel.
+The test fails due to stale memory.stat values being returned, which is
+caused by the current stats flushing implementation's limitations with large
+core counts.
 
-Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
-and __ClearPageNetpp() instead, and remove the existing APIs accessing
-->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
-netmem_clear_pp_magic().
+This series backports the memcg subtree stats flushing improvements from
+Linux 6.8 to 6.6.y to address the issue. The main goal is to restore
+per-memcg stats flushing with dynamic thresholds, which improves both
+accuracy and performance of memory cgroup statistics, especially on
+high-core-count systems.
 
-This work was inspired by the following link:
+Background
+==========
 
-[1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+The current stats flushing in 6.6.y flushes the entire memcg hierarchy with
+a global threshold. This is not efficient and can cause stale stats when read
+'memory.stat'.
 
-While at it, move the sanity check for page pool to on free.
+Dependency Patches
+==================
 
-Suggested-by: David Hildenbrand <david@redhat.com>
-Co-developed-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Acked-by: Mina Almasry <almasrymina@google.com>
----
- .../net/ethernet/mellanox/mlx5/core/en/xdp.c  |  2 +-
- include/linux/mm.h                            | 27 +++----------------
- include/linux/page-flags.h                    |  6 +++++
- include/net/netmem.h                          |  2 +-
- mm/page_alloc.c                               |  8 +++---
- net/core/netmem_priv.h                        | 17 +++---------
- net/core/page_pool.c                          | 14 +++++-----
- 7 files changed, 25 insertions(+), 51 deletions(-)
+Patches 1-2 are dependencies required for clean application of the main
+series:
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-index 5d51600935a6..def274f5c1ca 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -707,7 +707,7 @@ static void mlx5e_free_xdpsq_desc(struct mlx5e_xdpsq *sq,
- 				xdpi = mlx5e_xdpi_fifo_pop(xdpi_fifo);
- 				page = xdpi.page.page;
- 
--				/* No need to check page_pool_page_is_pp() as we
-+				/* No need to check PageNetpp() as we
- 				 * know this is a page_pool page.
- 				 */
- 				page_pool_recycle_direct(pp_page_to_nmdesc(page)->pp,
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index a3f97c551ad8..081e365caa1a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -4252,10 +4252,9 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
-  * DMA mapping IDs for page_pool
-  *
-  * When DMA-mapping a page, page_pool allocates an ID (from an xarray) and
-- * stashes it in the upper bits of page->pp_magic. We always want to be able to
-- * unambiguously identify page pool pages (using page_pool_page_is_pp()). Non-PP
-- * pages can have arbitrary kernel pointers stored in the same field as pp_magic
-- * (since it overlaps with page->lru.next), so we must ensure that we cannot
-+ * stashes it in the upper bits of page->pp_magic. Non-PP pages can have
-+ * arbitrary kernel pointers stored in the same field as pp_magic (since
-+ * it overlaps with page->lru.next), so we must ensure that we cannot
-  * mistake a valid kernel pointer with any of the values we write into this
-  * field.
-  *
-@@ -4290,26 +4289,6 @@ int arch_lock_shadow_stack_status(struct task_struct *t, unsigned long status);
- #define PP_DMA_INDEX_MASK GENMASK(PP_DMA_INDEX_BITS + PP_DMA_INDEX_SHIFT - 1, \
- 				  PP_DMA_INDEX_SHIFT)
- 
--/* Mask used for checking in page_pool_page_is_pp() below. page->pp_magic is
-- * OR'ed with PP_SIGNATURE after the allocation in order to preserve bit 0 for
-- * the head page of compound page and bit 1 for pfmemalloc page, as well as the
-- * bits used for the DMA index. page_is_pfmemalloc() is checked in
-- * __page_pool_put_page() to avoid recycling the pfmemalloc page.
-- */
--#define PP_MAGIC_MASK ~(PP_DMA_INDEX_MASK | 0x3UL)
--
--#ifdef CONFIG_PAGE_POOL
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return (page->pp_magic & PP_MAGIC_MASK) == PP_SIGNATURE;
--}
--#else
--static inline bool page_pool_page_is_pp(const struct page *page)
--{
--	return false;
--}
--#endif
--
- #define PAGE_SNAPSHOT_FAITHFUL (1 << 0)
- #define PAGE_SNAPSHOT_PG_BUDDY (1 << 1)
- #define PAGE_SNAPSHOT_PG_IDLE  (1 << 2)
-diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
-index 0091ad1986bf..edf5418c91dd 100644
---- a/include/linux/page-flags.h
-+++ b/include/linux/page-flags.h
-@@ -934,6 +934,7 @@ enum pagetype {
- 	PGTY_zsmalloc		= 0xf6,
- 	PGTY_unaccepted		= 0xf7,
- 	PGTY_large_kmalloc	= 0xf8,
-+	PGTY_netpp		= 0xf9,
- 
- 	PGTY_mapcount_underflow = 0xff
- };
-@@ -1078,6 +1079,11 @@ PAGE_TYPE_OPS(Zsmalloc, zsmalloc, zsmalloc)
- PAGE_TYPE_OPS(Unaccepted, unaccepted, unaccepted)
- FOLIO_TYPE_OPS(large_kmalloc, large_kmalloc)
- 
-+/*
-+ * Marks page_pool allocated pages.
-+ */
-+PAGE_TYPE_OPS(Netpp, netpp, netpp)
-+
- /**
-  * PageHuge - Determine if the page belongs to hugetlbfs
-  * @page: The page to test.
-diff --git a/include/net/netmem.h b/include/net/netmem.h
-index 651e2c62d1dd..0ec4c7561081 100644
---- a/include/net/netmem.h
-+++ b/include/net/netmem.h
-@@ -260,7 +260,7 @@ static inline unsigned long netmem_pfn_trace(netmem_ref netmem)
-  */
- #define pp_page_to_nmdesc(p)						\
- ({									\
--	DEBUG_NET_WARN_ON_ONCE(!page_pool_page_is_pp(p));		\
-+	DEBUG_NET_WARN_ON_ONCE(!PageNetpp(p));				\
- 	__pp_page_to_nmdesc(p);						\
- })
- 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 600d9e981c23..01dd14123065 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1041,7 +1041,6 @@ static inline bool page_expected_state(struct page *page,
- #ifdef CONFIG_MEMCG
- 			page->memcg_data |
- #endif
--			page_pool_page_is_pp(page) |
- 			(page->flags.f & check_flags)))
- 		return false;
- 
-@@ -1068,8 +1067,6 @@ static const char *page_bad_reason(struct page *page, unsigned long flags)
- 	if (unlikely(page->memcg_data))
- 		bad_reason = "page still charged to cgroup";
- #endif
--	if (unlikely(page_pool_page_is_pp(page)))
--		bad_reason = "page_pool leak";
- 	return bad_reason;
- }
- 
-@@ -1378,9 +1375,12 @@ __always_inline bool free_pages_prepare(struct page *page,
- 		mod_mthp_stat(order, MTHP_STAT_NR_ANON, -1);
- 		folio->mapping = NULL;
- 	}
--	if (unlikely(page_has_type(page)))
-+	if (unlikely(page_has_type(page))) {
-+		/* networking expects to clear its page type before releasing */
-+		WARN_ON_ONCE(PageNetpp(page));
- 		/* Reset the page_type (which overlays _mapcount) */
- 		page->page_type = UINT_MAX;
-+	}
- 
- 	if (is_check_pages_enabled()) {
- 		if (free_page_is_bad(page))
-diff --git a/net/core/netmem_priv.h b/net/core/netmem_priv.h
-index 5561fd556bc5..664a9fe87c66 100644
---- a/net/core/netmem_priv.h
-+++ b/net/core/netmem_priv.h
-@@ -8,18 +8,6 @@ static inline unsigned long netmem_get_pp_magic(netmem_ref netmem)
- 	return netmem_to_nmdesc(netmem)->pp_magic & ~PP_DMA_INDEX_MASK;
- }
- 
--static inline void netmem_or_pp_magic(netmem_ref netmem, unsigned long pp_magic)
--{
--	netmem_to_nmdesc(netmem)->pp_magic |= pp_magic;
--}
--
--static inline void netmem_clear_pp_magic(netmem_ref netmem)
--{
--	WARN_ON_ONCE(netmem_to_nmdesc(netmem)->pp_magic & PP_DMA_INDEX_MASK);
--
--	netmem_to_nmdesc(netmem)->pp_magic = 0;
--}
--
- static inline bool netmem_is_pp(netmem_ref netmem)
- {
- 	/* net_iov may be part of a page pool.  For net_iov, ->pp in
-@@ -30,7 +18,10 @@ static inline bool netmem_is_pp(netmem_ref netmem)
- 	if (netmem_is_net_iov(netmem))
- 		return !!netmem_to_nmdesc(netmem)->pp;
- 
--	return (netmem_get_pp_magic(netmem) & PP_MAGIC_MASK) == PP_SIGNATURE;
-+	/* For system memory, page type in struct page can be used to
-+	 * determine if the pages belong to a page pool.
-+	 */
-+	return PageNetpp(__netmem_to_page(netmem));
- }
- 
- static inline void netmem_set_pp(netmem_ref netmem, struct page_pool *pool)
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 2756b78754b0..c43a0f4479d4 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -700,12 +700,11 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- {
- 	netmem_set_pp(netmem, pool);
- 
--	/* For page-backed, pp_magic is used to identify if it's pp.
--	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
--	 * and nmdesc->pp is NULL if it's not.
-+	/* For system memory, page type in struct page is used to
-+	 * determine if the pages belong to a page pool.
- 	 */
- 	if (!netmem_is_net_iov(netmem))
--		netmem_or_pp_magic(netmem, PP_SIGNATURE);
-+		__SetPageNetpp(__netmem_to_page(netmem));
- 
- 	/* Ensuring all pages have been split into one fragment initially:
- 	 * page_pool_set_pp_info() is only called once for every page when it
-@@ -720,12 +719,11 @@ void page_pool_set_pp_info(struct page_pool *pool, netmem_ref netmem)
- 
- void page_pool_clear_pp_info(netmem_ref netmem)
- {
--	/* For page-backed, pp_magic is used to identify if it's pp.
--	 * For net_iov, it's ensured nmdesc->pp is non-NULL if it's pp
--	 * and nmdesc->pp is NULL if it's not.
-+	/* For system memory, page type in struct page is used to
-+	 * determine if the pages belong to a page pool.
- 	 */
- 	if (!netmem_is_net_iov(netmem))
--		netmem_clear_pp_magic(netmem);
-+		__ClearPageNetpp(__netmem_to_page(netmem));
- 
- 	netmem_set_pp(netmem, NULL);
- }
--- 
-2.17.1
+Patch 1: 811244a501b9 "mm: memcg: add THP swap out info for anonymous reclaim"
 
+  This patch adds THP_SWPOUT and THP_SWPOUT_FALLBACK entries to the
+  memcg_vm_event_stat[] array. It is needed because patch 4 (e0bf1dc859fd)
+  moves the vmstats struct definitions, including this array. Without this
+  patch, the array structure would not match between 6.6.y and 6.8, causing
+  context conflicts during cherry-pick.
+
+  The patch is already in mainline (merged in v6.7) but was not included in
+  the stable 6.6.y branch.
+
+Patch 2: 7108cc3f765c "mm: memcg: add per-memcg zswap writeback stat"
+
+  This patch adds the ZSWPWB entry to the memcg_vm_event_stat[] array. Like
+  patch 1, it is required for patch 4 to apply cleanly. The array structure
+  must match the 6.8 state for the code movement to succeed without
+  conflicts.
+
+  This patch is also in mainline (merged in v6.8) but was not backported to
+  6.6.y.
+
+Main Series
+===========
+
+Patches 3-7 are the core memcg stats flushing improvements:
+
+- Patch 3: Renames flush_next_time to flush_last_time for clarity
+- Patch 4: Moves vmstats struct definitions for better code organization
+- Patch 5: Implements per-memcg stats flushing thresholds (key change)
+- Patch 6: Moves stats flush into workingset_test_recent()
+- Patch 7: Restores subtree stats flushing (main feature)
+
+Cherry-Pick Notes for Patch 7
+==============================
+
+Patch 7 (7d7ef0a4686a) requires manual conflict resolution in mm/zswap.c:
+
+The conflict occurs because this patch includes changes to zswap shrinker
+code that was introduced in Linux 6.8. Since this new shrinker
+infrastructure does not exist in 6.6.y, the conflicting code should be
+removed during cherry-pick.
+
+Resolution: Keep the 6.6.y (HEAD) version of mm/zswap.c and discard the
+new shrinker code from the patch. The conflict markers will show:
+
+  <<<<<<< HEAD
+  // existing 6.6.y code
+  =======
+  // new 6.8 shrinker code (shrink_memcg_cb, zswap_shrinker_scan, etc.)
+  >>>>>>> 7d7ef0a4686a
+
+Simply keep the HEAD version and remove everything between the "======="
+and ">>>>>>>" markers. This is safe because the zswap shrinker is a
+separate new feature, not a dependency for the memcg stats changes.
+
+Additionally, if you encounter a conflict in mm/workingset.c, it may be
+due to commit 417dbd7be383 ("mm: ratelimit stat flush from workingset
+shrinker") which was backported to 6.6.y. The resolution is to use:
+  mem_cgroup_flush_stats_ratelimited(sc->memcg)
+which preserves the performance optimization while using the new API.
+
+Testing
+=======
+
+This series has been extensively tested upstream with:
+- 5000 concurrent workers in 500 cgroups doing allocations and reclaim
+- 250k threads reading stats every 100ms in 50k cgroups
+- No performance regressions observed with per-memcg thresholds
+
+The changes improve both stats accuracy and reduce unnecessary flushing
+overhead.
+
+References
+==========
+
+[1] Linux Test Project (LTP): https://github.com/linux-test-project/ltp
+
+Domenico Cerasuolo (1):
+  mm: memcg: add per-memcg zswap writeback stat
+
+Xin Hao (1):
+  mm: memcg: add THP swap out info for anonymous reclaim
+
+Yosry Ahmed (5):
+  mm: memcg: change flush_next_time to flush_last_time
+  mm: memcg: move vmstats structs definition above flushing code
+  mm: memcg: make stats flushing threshold per-memcg
+  mm: workingset: move the stats flush into workingset_test_recent()
+  mm: memcg: restore subtree stats flushing
+
+ Documentation/admin-guide/cgroup-v2.rst |   9 +
+ include/linux/memcontrol.h              |   8 +-
+ include/linux/vm_event_item.h           |   1 +
+ mm/memcontrol.c                         | 266 +++++++++++++-----------
+ mm/page_io.c                            |   8 +-
+ mm/vmscan.c                             |   3 +-
+ mm/vmstat.c                             |   1 +
+ mm/workingset.c                         |  42 ++--
+ mm/zswap.c                              |   4 +
+ 9 files changed, 203 insertions(+), 139 deletions(-)
+
+--
+2.50.1
 
