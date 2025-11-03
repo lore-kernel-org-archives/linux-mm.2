@@ -4,85 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F20D7CCFA08
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 01:49:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B9D6ECCFA00
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 02:23:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CCE988E0016; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
+	id B73118E0017; Sun,  2 Nov 2025 21:23:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C7F818E0015; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
+	id B236F8E0015; Sun,  2 Nov 2025 21:23:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BBD9C8E0016; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
+	id A126E8E0017; Sun,  2 Nov 2025 21:23:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A509F8E0015
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 20:49:09 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 77AF01A078C
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:09 +0000 (UTC)
-X-FDA: 84067612818.17.6ACC932
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id E10454000E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 01:49:07 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=FP05s2qm;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 895EA8E0015
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 21:23:00 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 177D414025E
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:23:00 +0000 (UTC)
+X-FDA: 84067698120.29.7A0B3F1
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 94B6310000A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:22:55 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762134547;
+	s=arc-20220608; t=1762136578;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:dkim-signature;
-	bh=yoNGa3BIGUupq3nqv1c1Texjxp2LF49BQVW1KnxuAHE=;
-	b=famcRb0AvveH1t4+7M8xWxuEu/8tPt6d7ovxZah/GUF2snCwgzngmLAEio2V9bLFRBxs6n
-	mBKVWfQgj6gbF/nxyINU0ljj02h3zz4uiXykMVeoyiup8CH9IMza+k90c+1pj9sXpMQZ3Z
-	ed1Z3kbA7f6K62b/cROObSacm/nOEVk=
+	 in-reply-to:in-reply-to:references:references;
+	bh=ucqkRwzrfBsenxemOARzaMa+BGX7n61tqLj1pLVa8L0=;
+	b=rL7IAq7MwNI8As2N5XCNS3WC1inQTEo5ofyAWrDziYcn/26PzIuaggQDfxiQp+coIXRgap
+	9CNe74vdKLgpV7QFyd4fS2bh+h4ANH8sSaoC3u+XVR4MhpqI0Moxevg9cQhOBHA18m1mA+
+	pADEIZ1CWiTDy8C2tq/8QGrMhk8O95I=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=fail ("body hash did not verify") header.d=linuxfoundation.org header.s=korg header.b=FP05s2qm;
-	dmarc=pass (policy=none) header.from=linuxfoundation.org;
-	spf=pass (imf17.hostedemail.com: domain of gregkh@linuxfoundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=gregkh@linuxfoundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762134547; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf05.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762136578; a=rsa-sha256;
 	cv=none;
-	b=TNhqf3F0vcL7onVPrTlpJvfTYVsgOiW5mlgy2nVD3MtUOtgx6K2518S6AdjTQfmcdblV3S
-	BzbOC7PywJATNsyQBkARxyvGrEJNmAJhcYxrZD+eQmJu4ix02kC2YG81JDPTD22R58AxkL
-	CrgWABcn35Jc09d7zEqbvGdyw49o/Io=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 6E77360288;
-	Mon,  3 Nov 2025 01:49:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8866C116B1;
-	Mon,  3 Nov 2025 01:49:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1762134547;
-	bh=oD5MGG3WGGsNK9lAnNSf8zWYE8mFT+Bpvl/9vNMGYqg=;
-	h=Subject:To:Cc:From:Date:In-Reply-To:From;
-	b=FP05s2qm1BM57b7XuRGGEFR69Np5D5EpyCbVrxW18WQRNZkMbIWHMz8hiO0ypbTD+
-	 y8tgk1OSUdezYg0Ehcyl+1X5XAhT2oqwW9MZZsC1/RMgtWl+3OaHXYZLiPGSXaOM6B
-	 KRBTsMztFj/Fa9xOr/++l6+/UXkuLVwERBZjnMX8=
-Subject: Patch "filemap: add a kiocb_invalidate_post_direct_write helper" has been added to the 6.1-stable tree
-To: adilger.kernel@dilger.ca,agruenba@redhat.com,akpm@linux-foundation.org,anna@kernel.org,axboe@kernel.dk,brauner@kernel.org,chao@kernel.org,djwong@kernel.org,dlemoal@kernel.org,gregkh@linuxfoundation.org,hare@suse.de,hch@infradead.org,hch@lst.de,idryomov@gmail.com,jaegeuk@kernel.org,jlayton@kernel.org,johannes.thumshirn@wdc.com,konishi.ryusuke@gmail.com,linux-f2fs-devel@lists.sourceforge.net,linux-mm@kvack.org,mcgrof@kernel.org,miklos@szeredi.hu,mngyadam@amazon.de,mszeredi@redhat.com,nagy@khwaternagy.com,trond.myklebust@hammerspace.com,tytso@mit.edu,viro@zeniv.linux.org.uk,willy@infradead.org,xiubli@redhat.com
-Cc: <stable-commits@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 03 Nov 2025 10:46:57 +0900
-In-Reply-To: <20251021070353.96705-4-mngyadam@amazon.de>
-Message-ID: <2025110357-cornbread-cold-7221@gregkh>
+	b=hWMqTbka+c0MvmzLdcQJPWkTudBr8Kw5BFk06Ug8ihafDhNHroeAObS649DSC5PVOTCLOC
+	bqYqiQ5BmbczSu1HZ9mAU1iY2QgGKAAdEzyRmjoPbmzROYEax/IDgYweRM+Q3fRQnAy/eV
+	h43m4NB/E9aVMICjAm/NBKuQUMt/pw0=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d0FjV2tl7zYQtgj
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 10:22:38 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.252])
+	by mail.maildlp.com (Postfix) with ESMTP id 154581A01A1
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 10:22:51 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP3 (Coremail) with SMTP id _Ch0CgAHmt74EQhp69jiCQ--.60304S2;
+	Mon, 03 Nov 2025 10:22:50 +0800 (CST)
+Message-ID: <14cd347c-42c9-4134-9c1c-1a222b553c2f@huaweicloud.com>
+Date: Mon, 3 Nov 2025 10:22:47 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 12/33] sched/isolation: Convert housekeeping cpumasks to
+ rcu pointers
+To: Frederic Weisbecker <frederic@kernel.org>, Waiman Long <llong@redhat.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-13-frederic@kernel.org>
+ <bb9a75dc-8c34-41da-b064-e31bf5fe6cb2@huaweicloud.com>
+ <510b0185-51d6-44e6-8c39-dfc4c1721e03@redhat.com>
+ <aQThLsnmqu8Lor6c@localhost.localdomain>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <aQThLsnmqu8Lor6c@localhost.localdomain>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-stable: commit
-X-Patchwork-Hint: ignore
+X-CM-TRANSID:_Ch0CgAHmt74EQhp69jiCQ--.60304S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3JF4xAr48tryrCw1kZr4kXrb_yoWfCrWfpr
+	WDGFW7GF4kXr15G3yYvwnFyr90gwn7AFn2yr93Gw4rGF9F93WkJry09F13Wrykur97Cr1U
+	ZF1Dtw4fua48A37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvYb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
+	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
+	CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v2
+	6r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07
+	j6a0PUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
+X-Rspamd-Server: rspam12
+X-Rspamd-Queue-Id: 94B6310000A
+X-Stat-Signature: dbw9y4xjuk1qjk3gs5x8bi4qwfpexos3
 X-Rspam-User: 
-X-Rspamd-Queue-Id: E10454000E
-X-Rspamd-Server: rspam03
-X-Stat-Signature: sr7here4criiwhrpnjim35eh3e3m9ruk
-X-HE-Tag: 1762134547-469917
-X-HE-Meta: U2FsdGVkX18FHIRU1APj9WEHjiNJbry/ORgpSfApMsJeMPNLfUGL/2ps5aXRUHdy/mB/juVLeRVzMj3c37VtcaWrIF0YKT62W5u9WruWHssmW9h8lgU+Zb0ysiFkXvTX0FdNyY3V3rvKWYIdZXdYInKPuJyZZQxqc2ksLz2q9fUPbxds0566Qfex+4fEAToZW2yuWIR04AOaCrAd6e30czF21iAtTl86x693mTXdp6PXcLBMCU616+bjZaveYBWHlpuBBfcOp+lwpfJJQB2Fb86VvKzO9zuYEMEQLaeiW4rOAO7oMZT7RZ+Jz2rmzci98P1tMwohOTLL6x7BYgDjGRarMu2umh2aHXXCQvbWH1cqFK4Wouik8EtoEdMVhIgqNphJ2sMkxs7T3ypcgGCSRNq1j3QlradG2+iWXj6YwGuKw4hE9GNe3O+M+cBGgDZWQx9q2bRem+ma0hy1X1VfaIWIDb4ttfy0jOeVBEL+dGEqJbOHq7dKlppqc5wndHlBg2RJOnAo1Igun8ve24ikSiFN26ga5tM0tqHD3YXGeVyoEoLay2QC2phCaj8/0BupAy83ZhMHzzhXVyrP+l6EtbpEdOCfa1zd1ETCKRVrvcjSyfpNq9tb0icLeWifdyZs9ya2C2qoVQs8v2Qc9hMZeoy16DRPXBuUkQ/Ju2vYayjLHZz1RURBB5HeVFdACq3ZVUKrQJyAZ7JoSr7dHsLhvIO2dbKeCvkYrDwzMgGmmVYqVktHWfzEl8Q9xgrrRFSOkGIlV45WntGLX76wBZzNrab3nOJO+2udRJVX3W+AKE+h93XKkNRT5e+0K4Li+PihxL/9UUt3hhAHfiH+U0qsbEUXV/sm4gQA5fiEhZV/VGwUGAb6hcHBeK7pgMkqzyXg8jW0RGp3h0uFvr9VTFkw1bC/MG16kkv8jeHKTyUR8tnwxkevONPgxJspXxkCGS2FWDInX+K3FRcCvAQKAJ5
- LFHDuH4S
- ZfFRg8/bkxMLY9fb+M5don9RxUbDXkHTO2QWc/KQafht5FIEKuNm3c+AZMVHRu2j5RLB7dyBmAJovaz3QSAo1wbkHXUNNU21HKoWkmE7mFXHDmEwCZia8e7P3SsjRduTZtHauLgK7llBNddy0tOXnYJtGL3WrIykQRxnHgCXDvZYTVpe6+XBAJ0Vq5OvB/2txz8BswNkaE6VOgb0ubf1H8oYfT0G9Y0s5IBvX6trvcbWwoIfN14MIDFwvEkkE87tLKGcRb8JAkDDlluS02Lx4vzQMaOgfqvOJgQST/dzSC6hKmPHsyKhnxTNF7VXtPI7A4r7JxyfoSTFxkgdnyjkG8FhzuXFN4IJwWej4ovyKjzniFNMCTlE/89cTuCozB4BTjy2NEmjbJLzRtiOpQbYzL7OdeWy+iHEFvZtbsmB7USnJ+6AhVthkMJjtP233mS0lfT8aarFITLn/4p1VMbmMYuy87GW5QHO/sWoLeBe63+DnRBa6uJJp6d7J/hr5UmnMhD7NITKvaOUHwjFOjLvmU+gY9tih0NoBsGYAll90Ju5Xk8uFwTMLqb8GCot1r3BXIoAGpioS4jJjlUlOmaIsbP+DRbexFQXsTj/xn1FwMLqXSC5KxoYqMWNBNvocteirf3TF4Goul+eraRkgRimOx8HZMHfTYJz7UGWyGCvaeLUajNFuPLI0QITxuzrTqn/9shlHnkO8hzI0NOPVqhcvIQfePtGyI/0Q4a7gbEDOpmiJKoSSKA8K8zIZhoU02CA9oum0mL7MxXpOf8KwOD1iPykY8fOTM7sHiFxPdNGkAUgoimCGN/9GAz/xuV20w7X7Zympbv6vW5vv1cGh0tv2JX9XzDoIrtJxtRT5XjT6BUxq8EIcN/tHEEjHfUsHGopj/oLvwbn13Wu3/MnGUic2oyV0kLYPx6oYTYNblA6m1E49NWV8/DDWlPzjrpUJwebuJs/1tNL/VoIhxWSeAMCrJtmH/zH1
- qSnXmRTm
- IX+YMXbJj5P19peUqRjYtXpR62wue0pSDwBmTThVJZAV9HLJir3xRop7UiYRW9hOkx6gbwnp8jBZHE74Z4Lzf2vhu4oVAHfaaX63t0dcqBwiPdlIIaQ0WUTXYp2llY+PGPRb5euXdP4WGIvpOm+ow5o0exODN7+aLOuLh1aIa89pAHKey3gVtw==
+X-HE-Tag: 1762136575-3114
+X-HE-Meta: U2FsdGVkX1+4VXnNrt1vbQKcYr3y0mg+gf76y3BDCp1mdSwpIsoocq81mmNunx8bSZv+oDVQdWR4jW1JhWI7WSdty83ETu9PilWyD46Jt+KXwOOENm2RohyB8lDYy0u57P/HiEUzW4a7DANj/zU58VparcXx+7/spYIx7cBwapX/A/Eo8BxxanC4rG2gAXGTCyNoCyCEoXlmm9zQGGEeWVSlpevWQpzOYT/YV6uM6mGoTfHVbbMTNbKJRcSj48ihnp73bG7vhLhsGEG8G79zcW/A0la3IhDrYfmq6dh5t0/3f5bOwfWDBb7qlCTQmdOY2IRV2+etSODNaj9XK/KGsr3Lp7PeVVaLEy9cnJdyMRQzY+vmpBes7VcWOxHAPSkaGpa6RaJTtDbtVVUJR+B/dINcxHFgaBL0yVqZTIyiw66O5vEeY171nLclY29SourVvekz79ivLZRqQ4CZa9hEhNIQCUyYXfPa3UcsQykag44Ab+Vppz4SqFAQU0gvOlXyGdnA5TYljks6+R3IqKBijloWah3kBf+iLt5RwOWZiqMwOJpruy9yvxuCd6sKJYLTmLFWvCasPmW7aWoVGk6JBChQHhuCRfv0Vgn/+F8dKeqBF8Ouq62LqwsRpowBYL864kR3yHtvpNkNl9y6IvwdVFcKA9ScbLHO0MbXZZi0xo3oO0axr3DE4EZUHh9yTUxwOcoBKQ7KTOjEF9qqm98vJ6ITnwfZ62xFoFgG6tEcm9Hiyf50XWz7pPgqT0gL39eOlSAuL+JoZa8ol1m7DGt9jmYj7SYAUcmTcMPR6WO8jlj01Xn1S5bqMZ2sahYWihM1MEUYfhBQIoX2lxY8HJ6B1MkBAo6FSdhhPTaGRavdNds0uygZeCqIG++ePqPR5kdJUnIYlbx1tZwcRE/PSYaskmKYESb4oOrcRxCuoLQ9kyFZFU7fJTOxS8TsKIYyn/widLfwJkCs8d+orK43x7N
+ 5zZKVr/m
+ +zBPhQGL8SWrNpIiEoDYEPjntaRNGuChJ+w4Eo3/qAonNmARkMqFyS4O7z4uEF6xoUnzeJirdkPWS+ToJfkiSZO1D8SNnWIz/UesFKJ6AVa3Qb92oC2oqWU2Bmyhh47EWJn+TmMlGKhtudPAonHdKlHD7mg5vrLXgGx7FCRg4bjsEj0U=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,227 +129,230 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
-This is a note to let you know that I've just added the patch titled
 
-    filemap: add a kiocb_invalidate_post_direct_write helper
+On 2025/11/1 0:17, Frederic Weisbecker wrote:
+> Le Tue, Oct 21, 2025 at 12:03:05AM -0400, Waiman Long a écrit :
+>> On 10/20/25 9:46 PM, Chen Ridong wrote:
+>>>
+>>> On 2025/10/14 4:31, Frederic Weisbecker wrote:
+>>>> HK_TYPE_DOMAIN's cpumask will soon be made modifyable by cpuset.
+>>>> A synchronization mechanism is then needed to synchronize the updates
+>>>> with the housekeeping cpumask readers.
+>>>>
+>>>> Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
+>>>> cpumask will be modified, the update side will wait for an RCU grace
+>>>> period and propagate the change to interested subsystem when deemed
+>>>> necessary.
+>>>>
+>>>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+>>>> ---
+>>>>   kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
+>>>>   kernel/sched/sched.h     |  1 +
+>>>>   2 files changed, 37 insertions(+), 22 deletions(-)
+>>>>
+>>>> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+>>>> index 8690fb705089..b46c20b5437f 100644
+>>>> --- a/kernel/sched/isolation.c
+>>>> +++ b/kernel/sched/isolation.c
+>>>> @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
+>>>>   EXPORT_SYMBOL_GPL(housekeeping_overridden);
+>>>>   struct housekeeping {
+>>>> -	cpumask_var_t cpumasks[HK_TYPE_MAX];
+>>>> +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
+>>>>   	unsigned long flags;
+>>>>   };
+>>>> @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>>>> +const struct cpumask *housekeeping_cpumask(enum hk_type type)
+>>>> +{
+>>>> +	if (static_branch_unlikely(&housekeeping_overridden)) {
+>>>> +		if (housekeeping.flags & BIT(type)) {
+>>>> +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+>>>> +		}
+>>>> +	}
+>>>> +	return cpu_possible_mask;
+>>>> +}
+>>>> +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+>>>> +
+>>>>   int housekeeping_any_cpu(enum hk_type type)
+>>>>   {
+>>>>   	int cpu;
+>>>>   	if (static_branch_unlikely(&housekeeping_overridden)) {
+>>>>   		if (housekeeping.flags & BIT(type)) {
+>>>> -			cpu = sched_numa_find_closest(housekeeping.cpumasks[type], smp_processor_id());
+>>>> +			cpu = sched_numa_find_closest(housekeeping_cpumask(type), smp_processor_id());
+>>>>   			if (cpu < nr_cpu_ids)
+>>>>   				return cpu;
+>>>> -			cpu = cpumask_any_and_distribute(housekeeping.cpumasks[type], cpu_online_mask);
+>>>> +			cpu = cpumask_any_and_distribute(housekeeping_cpumask(type), cpu_online_mask);
+>>>>   			if (likely(cpu < nr_cpu_ids))
+>>>>   				return cpu;
+>>>>   			/*
+>>>> @@ -59,28 +70,18 @@ int housekeeping_any_cpu(enum hk_type type)
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(housekeeping_any_cpu);
+>>>> -const struct cpumask *housekeeping_cpumask(enum hk_type type)
+>>>> -{
+>>>> -	if (static_branch_unlikely(&housekeeping_overridden))
+>>>> -		if (housekeeping.flags & BIT(type))
+>>>> -			return housekeeping.cpumasks[type];
+>>>> -	return cpu_possible_mask;
+>>>> -}
+>>>> -EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+>>>> -
+>>>>   void housekeeping_affine(struct task_struct *t, enum hk_type type)
+>>>>   {
+>>>>   	if (static_branch_unlikely(&housekeeping_overridden))
+>>>>   		if (housekeeping.flags & BIT(type))
+>>>> -			set_cpus_allowed_ptr(t, housekeeping.cpumasks[type]);
+>>>> +			set_cpus_allowed_ptr(t, housekeeping_cpumask(type));
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(housekeeping_affine);
+>>>>   bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>>>>   {
+>>>> -	if (static_branch_unlikely(&housekeeping_overridden))
+>>>> -		if (housekeeping.flags & BIT(type))
+>>>> -			return cpumask_test_cpu(cpu, housekeeping.cpumasks[type]);
+>>>> +	if (housekeeping.flags & BIT(type))
+>>>> +		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
+>>>>   	return true;
+>>>>   }
+>>>>   EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+>>>> @@ -96,20 +97,33 @@ void __init housekeeping_init(void)
+>>>>   	if (housekeeping.flags & HK_FLAG_KERNEL_NOISE)
+>>>>   		sched_tick_offload_init();
+>>>> -
+>>>> +	/*
+>>>> +	 * Realloc with a proper allocator so that any cpumask update
+>>>> +	 * can indifferently free the old version with kfree().
+>>>> +	 */
+>>>>   	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
+>>>> +		struct cpumask *omask, *nmask = kmalloc(cpumask_size(), GFP_KERNEL);
+>>>> +
+>>>> +		if (WARN_ON_ONCE(!nmask))
+>>>> +			return;
+>>>> +
+>>>> +		omask = rcu_dereference(housekeeping.cpumasks[type]);
+>>>> +
+>>>>   		/* We need at least one CPU to handle housekeeping work */
+>>>> -		WARN_ON_ONCE(cpumask_empty(housekeeping.cpumasks[type]));
+>>>> +		WARN_ON_ONCE(cpumask_empty(omask));
+>>>> +		cpumask_copy(nmask, omask);
+>>>> +		RCU_INIT_POINTER(housekeeping.cpumasks[type], nmask);
+>>>> +		memblock_free(omask, cpumask_size());
+>>>>   	}
+>>>>   }
+>>>>   static void __init housekeeping_setup_type(enum hk_type type,
+>>>>   					   cpumask_var_t housekeeping_staging)
+>>>>   {
+>>>> +	struct cpumask *mask = memblock_alloc_or_panic(cpumask_size(), SMP_CACHE_BYTES);
+>>>> -	alloc_bootmem_cpumask_var(&housekeeping.cpumasks[type]);
+>>>> -	cpumask_copy(housekeeping.cpumasks[type],
+>>>> -		     housekeeping_staging);
+>>>> +	cpumask_copy(mask, housekeeping_staging);
+>>>> +	RCU_INIT_POINTER(housekeeping.cpumasks[type], mask);
+>>>>   }
+>>>>   static int __init housekeeping_setup(char *str, unsigned long flags)
+>>>> @@ -162,7 +176,7 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+>>>>   		for_each_set_bit(type, &iter_flags, HK_TYPE_MAX) {
+>>>>   			if (!cpumask_equal(housekeeping_staging,
+>>>> -					   housekeeping.cpumasks[type])) {
+>>>> +					   housekeeping_cpumask(type))) {
+>>>>   				pr_warn("Housekeeping: nohz_full= must match isolcpus=\n");
+>>>>   				goto free_housekeeping_staging;
+>>>>   			}
+>>>> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+>>>> index 1f5d07067f60..0c0ef8999fd6 100644
+>>>> --- a/kernel/sched/sched.h
+>>>> +++ b/kernel/sched/sched.h
+>>>> @@ -42,6 +42,7 @@
+>>>>   #include <linux/ktime_api.h>
+>>>>   #include <linux/lockdep_api.h>
+>>>>   #include <linux/lockdep.h>
+>>>> +#include <linux/memblock.h>
+>>>>   #include <linux/minmax.h>
+>>>>   #include <linux/mm.h>
+>>>>   #include <linux/module.h>
+>>> A warning was detected:
+>>>
+>>> =============================
+>>> WARNING: suspicious RCU usage
+>>> 6.17.0-next-20251009-00033-g4444da88969b #808 Not tainted
+>>> -----------------------------
+>>> kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
+>>>
+>>> other info that might help us debug this:
+>>>
+>>>
+>>> rcu_scheduler_active = 2, debug_locks = 1
+>>> 1 lock held by swapper/0/1:
+>>>   #0: ffff888100600ce0 (&type->i_mutex_dir_key#3){++++}-{4:4}, at: walk_compone
+>>>
+>>> stack backtrace:
+>>> CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-next-20251009-00033-g4
+>>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239
+>>> Call Trace:
+>>>   <TASK>
+>>>   dump_stack_lvl+0x68/0xa0
+>>>   lockdep_rcu_suspicious+0x148/0x1b0
+>>>   housekeeping_cpumask+0xaa/0xb0
+>>>   housekeeping_test_cpu+0x25/0x40
+>>>   find_get_block_common+0x41/0x3e0
+>>>   bdev_getblk+0x28/0xa0
+>>>   ext4_getblk+0xba/0x2d0
+>>>   ext4_bread_batch+0x56/0x170
+>>>   __ext4_find_entry+0x17c/0x410
+>>>   ? lock_release+0xc6/0x290
+>>>   ext4_lookup+0x7a/0x1d0
+>>>   __lookup_slow+0xf9/0x1b0
+>>>   walk_component+0xe0/0x150
+>>>   link_path_walk+0x201/0x3e0
+>>>   path_openat+0xb1/0xb30
+>>>   ? stack_depot_save_flags+0x41e/0xa00
+>>>   do_filp_open+0xbc/0x170
+>>>   ? _raw_spin_unlock_irqrestore+0x2c/0x50
+>>>   ? __create_object+0x59/0x80
+>>>   ? trace_kmem_cache_alloc+0x1d/0xa0
+>>>   ? vprintk_emit+0x2b2/0x360
+>>>   do_open_execat+0x56/0x100
+>>>   alloc_bprm+0x1a/0x200
+>>>   ? __pfx_kernel_init+0x10/0x10
+>>>   kernel_execve+0x4b/0x160
+>>>   kernel_init+0xe5/0x1c0
+>>>   ret_from_fork+0x185/0x1d0
+>>>   ? __pfx_kernel_init+0x10/0x10
+>>>   ret_from_fork_asm+0x1a/0x30
+>>>   </TASK>
+>>> random: crng init done
+>>>
+>> It is because bh_lru_install() of fs/buffer.c calls cpu_is_isolated()
+>> without holding a rcu_read_lock. Will need to add a rcu_read_lock() there.
+> 
+> But this is called within bh_lru_lock() which should have either disabled
+> IRQs or preemption off. I would expect rcu_dereference_check() to automatically
+> verify those implied RCU read-side critical sections.
+> 
+> Let's see, lockdep_assert_in_rcu_reader() checks preemptible(), which is:
+> 
+> #define preemptible()	(preempt_count() == 0 && !irqs_disabled())
+> 
+> Ah but if !CONFIG_PREEMPT_COUNT:
+> 
+> #define preemptible()	0
+> 
+> Chen did you have !CONFIG_PREEMPT_COUNT ?
+> 
+> Probably lockdep_assert_in_rcu_reader() should be fixed accordingly and consider
+> preemption always disabled whenever !CONFIG_PREEMPT_COUNT. Let me check that...
+> 
+> Thanks.
+> 
 
-to the 6.1-stable tree which can be found at:
-    http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+I compiled with CONFIG_PREEMPT_COUNT=y and CONFIG_SMP=y.
 
-The filename of the patch is:
-     filemap-add-a-kiocb_invalidate_post_direct_write-helper.patch
-and it can be found in the queue-6.1 subdirectory.
+-- 
+Best regards,
+Ridong
 
-If you, or anyone else, feels it should not be added to the stable tree,
-please let <stable@vger.kernel.org> know about it.
-
-
-From stable+bounces-188297-greg=kroah.com@vger.kernel.org Tue Oct 21 16:13:23 2025
-From: Mahmoud Adam <mngyadam@amazon.de>
-Date: Tue, 21 Oct 2025 09:03:37 +0200
-Subject: filemap: add a kiocb_invalidate_post_direct_write helper
-To: <stable@vger.kernel.org>
-Cc: <gregkh@linuxfoundation.org>, <nagy@khwaternagy.com>, Christoph Hellwig <hch@lst.de>, Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>, "Darrick J. Wong" <djwong@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, Andreas Gruenbacher <agruenba@redhat.com>, "Anna Schumaker" <anna@kernel.org>, Chao Yu <chao@kernel.org>, Christian Brauner <brauner@kernel.org>, Ilya Dryomov <idryomov@gmail.com>, Jaegeuk Kim <jaegeuk@kernel.org>, Jens Axboe <axboe@kernel.dk>, Johannes Thumshirn <johannes.thumshirn@wdc.com>, Matthew Wilcox <willy@infradead.org>, "Miklos Szeredi" <miklos@szeredi.hu>, Miklos Szeredi <mszeredi@redhat.com>, "Theodore Ts'o" <tytso@mit.edu>, Trond Myklebust <trond.myklebust@hammerspace.com>, Xiubo Li <xiubli@redhat.com>, Andrew Morton <akpm@linux-foundation.org>, "Jeff Layton" <jlayton@kernel.org>, Andreas Dilger <adilger.kernel@dilger.ca>, Christoph Hellwig <hch@infradead.org>, Ryusuke Konishi <konishi.ryusuke@gmail.com>, Luis Chamberlain <mcgrof@kern
- el.org>,
-  <linux-block@vger.kernel.org>, <linux-kernel@vger.kernel.org>, <ceph-devel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>, <linux-f2fs-devel@lists.sourceforge.net>, <linux-xfs@vger.kernel.org>, <linux-nfs@vger.kernel.org>, <linux-nilfs@vger.kernel.org>, <linux-mm@kvack.org>
-Message-ID: <20251021070353.96705-4-mngyadam@amazon.de>
-
-From: Christoph Hellwig <hch@lst.de>
-
-commit c402a9a9430b670926decbb284b756ee6f47c1ec upstream.
-
-Add a helper to invalidate page cache after a dio write.
-
-Link: https://lkml.kernel.org/r/20230601145904.1385409-7-hch@lst.de
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Acked-by: Darrick J. Wong <djwong@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Anna Schumaker <anna@kernel.org>
-Cc: Chao Yu <chao@kernel.org>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Ilya Dryomov <idryomov@gmail.com>
-Cc: Jaegeuk Kim <jaegeuk@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
-Cc: Theodore Ts'o <tytso@mit.edu>
-Cc: Trond Myklebust <trond.myklebust@hammerspace.com>
-Cc: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Mahmoud Adam <mngyadam@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/direct-io.c          |   10 ++--------
- fs/iomap/direct-io.c    |   12 ++----------
- include/linux/fs.h      |    5 -----
- include/linux/pagemap.h |    1 +
- mm/filemap.c            |   37 ++++++++++++++++++++-----------------
- 5 files changed, 25 insertions(+), 40 deletions(-)
-
---- a/fs/direct-io.c
-+++ b/fs/direct-io.c
-@@ -286,14 +286,8 @@ static ssize_t dio_complete(struct dio *
- 	 * zeros from unwritten extents.
- 	 */
- 	if (flags & DIO_COMPLETE_INVALIDATE &&
--	    ret > 0 && dio_op == REQ_OP_WRITE &&
--	    dio->inode->i_mapping->nrpages) {
--		err = invalidate_inode_pages2_range(dio->inode->i_mapping,
--					offset >> PAGE_SHIFT,
--					(offset + ret - 1) >> PAGE_SHIFT);
--		if (err)
--			dio_warn_stale_pagecache(dio->iocb->ki_filp);
--	}
-+	    ret > 0 && dio_op == REQ_OP_WRITE)
-+		kiocb_invalidate_post_direct_write(dio->iocb, ret);
- 
- 	inode_dio_end(dio->inode);
- 
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -81,7 +81,6 @@ ssize_t iomap_dio_complete(struct iomap_
- {
- 	const struct iomap_dio_ops *dops = dio->dops;
- 	struct kiocb *iocb = dio->iocb;
--	struct inode *inode = file_inode(iocb->ki_filp);
- 	loff_t offset = iocb->ki_pos;
- 	ssize_t ret = dio->error;
- 
-@@ -108,15 +107,8 @@ ssize_t iomap_dio_complete(struct iomap_
- 	 * ->end_io() when necessary, otherwise a racing buffer read would cache
- 	 * zeros from unwritten extents.
- 	 */
--	if (!dio->error && dio->size &&
--	    (dio->flags & IOMAP_DIO_WRITE) && inode->i_mapping->nrpages) {
--		int err;
--		err = invalidate_inode_pages2_range(inode->i_mapping,
--				offset >> PAGE_SHIFT,
--				(offset + dio->size - 1) >> PAGE_SHIFT);
--		if (err)
--			dio_warn_stale_pagecache(iocb->ki_filp);
--	}
-+	if (!dio->error && dio->size && (dio->flags & IOMAP_DIO_WRITE))
-+		kiocb_invalidate_post_direct_write(iocb, dio->size);
- 
- 	inode_dio_end(file_inode(iocb->ki_filp));
- 	if (ret > 0) {
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3371,11 +3371,6 @@ static inline void inode_dio_end(struct
- 		wake_up_bit(&inode->i_state, __I_DIO_WAKEUP);
- }
- 
--/*
-- * Warn about a page cache invalidation failure diring a direct I/O write.
-- */
--void dio_warn_stale_pagecache(struct file *filp);
--
- extern void inode_set_flags(struct inode *inode, unsigned int flags,
- 			    unsigned int mask);
- 
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -31,6 +31,7 @@ int invalidate_inode_pages2(struct addre
- int invalidate_inode_pages2_range(struct address_space *mapping,
- 		pgoff_t start, pgoff_t end);
- int kiocb_invalidate_pages(struct kiocb *iocb, size_t count);
-+void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count);
- int write_inode_now(struct inode *, int sync);
- int filemap_fdatawrite(struct address_space *);
- int filemap_flush(struct address_space *);
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -3733,7 +3733,7 @@ EXPORT_SYMBOL(read_cache_page_gfp);
- /*
-  * Warn about a page cache invalidation failure during a direct I/O write.
-  */
--void dio_warn_stale_pagecache(struct file *filp)
-+static void dio_warn_stale_pagecache(struct file *filp)
- {
- 	static DEFINE_RATELIMIT_STATE(_rs, 86400 * HZ, DEFAULT_RATELIMIT_BURST);
- 	char pathname[128];
-@@ -3750,19 +3750,23 @@ void dio_warn_stale_pagecache(struct fil
- 	}
- }
- 
-+void kiocb_invalidate_post_direct_write(struct kiocb *iocb, size_t count)
-+{
-+	struct address_space *mapping = iocb->ki_filp->f_mapping;
-+
-+	if (mapping->nrpages &&
-+	    invalidate_inode_pages2_range(mapping,
-+			iocb->ki_pos >> PAGE_SHIFT,
-+			(iocb->ki_pos + count - 1) >> PAGE_SHIFT))
-+		dio_warn_stale_pagecache(iocb->ki_filp);
-+}
-+
- ssize_t
- generic_file_direct_write(struct kiocb *iocb, struct iov_iter *from)
- {
--	struct file	*file = iocb->ki_filp;
--	struct address_space *mapping = file->f_mapping;
--	struct inode	*inode = mapping->host;
--	loff_t		pos = iocb->ki_pos;
--	ssize_t		written;
--	size_t		write_len;
--	pgoff_t		end;
--
--	write_len = iov_iter_count(from);
--	end = (pos + write_len - 1) >> PAGE_SHIFT;
-+	struct address_space *mapping = iocb->ki_filp->f_mapping;
-+	size_t write_len = iov_iter_count(from);
-+	ssize_t written;
- 
- 	/*
- 	 * If a page can not be invalidated, return 0 to fall back
-@@ -3772,7 +3776,7 @@ generic_file_direct_write(struct kiocb *
- 	if (written) {
- 		if (written == -EBUSY)
- 			return 0;
--		goto out;
-+		return written;
- 	}
- 
- 	written = mapping->a_ops->direct_IO(iocb, from);
-@@ -3794,11 +3798,11 @@ generic_file_direct_write(struct kiocb *
- 	 *
- 	 * Skip invalidation for async writes or if mapping has no pages.
- 	 */
--	if (written > 0 && mapping->nrpages &&
--	    invalidate_inode_pages2_range(mapping, pos >> PAGE_SHIFT, end))
--		dio_warn_stale_pagecache(file);
--
- 	if (written > 0) {
-+		struct inode *inode = mapping->host;
-+		loff_t pos = iocb->ki_pos;
-+
-+		kiocb_invalidate_post_direct_write(iocb, written);
- 		pos += written;
- 		write_len -= written;
- 		if (pos > i_size_read(inode) && !S_ISBLK(inode->i_mode)) {
-@@ -3809,7 +3813,6 @@ generic_file_direct_write(struct kiocb *
- 	}
- 	if (written != -EIOCBQUEUED)
- 		iov_iter_revert(from, write_len - iov_iter_count(from));
--out:
- 	return written;
- }
- EXPORT_SYMBOL(generic_file_direct_write);
-
-
-Patches currently in stable-queue which might be from mngyadam@amazon.de are
-
-queue-6.1/block-fix-race-between-set_blocksize-and-read-paths.patch
-queue-6.1/filemap-add-a-kiocb_invalidate_pages-helper.patch
-queue-6.1/fs-factor-out-a-direct_write_fallback-helper.patch
-queue-6.1/direct_write_fallback-on-error-revert-the-ki_pos-update-from-buffered-write.patch
-queue-6.1/filemap-update-ki_pos-in-generic_perform_write.patch
-queue-6.1/filemap-add-a-kiocb_invalidate_post_direct_write-helper.patch
-queue-6.1/nilfs2-fix-deadlock-warnings-caused-by-lock-dependency-in-init_nilfs.patch
-queue-6.1/block-open-code-__generic_file_write_iter-for-blkdev-writes.patch
 
