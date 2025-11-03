@@ -4,101 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5DBCACCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:39:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF826CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 16:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BCF0D8E00AC; Mon,  3 Nov 2025 11:39:04 -0500 (EST)
+	id C39318E0091; Mon,  3 Nov 2025 11:51:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BA70C8E0057; Mon,  3 Nov 2025 11:39:04 -0500 (EST)
+	id BE92D8E0057; Mon,  3 Nov 2025 11:51:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE3F98E00AC; Mon,  3 Nov 2025 11:39:04 -0500 (EST)
+	id AD7A68E0091; Mon,  3 Nov 2025 11:51:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 9C9F68E0057
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:39:04 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3F77FC01FA
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:39:04 +0000 (UTC)
-X-FDA: 84069855408.01.D474647
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 8931F12000E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:39:02 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FakmInk3;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 978578E0057
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 11:51:09 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 333D4139DB0
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:51:09 +0000 (UTC)
+X-FDA: 84069885858.06.EDC6371
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 11174180002
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 16:51:06 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LwXOJc1f;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762187942;
+	s=arc-20220608; t=1762188667;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DYvhL7W4k7bZaqAg+5Qo3jTA5a+2yjdrv6jycIhaHTc=;
-	b=Go4pjktd60U9XzGhIx3WyzN0ksUGNXI6LLzUA87awwSBvBr+g1xnsuyAkq2ZoOBGrJTmly
-	GGUTwEJyOXnxLNkkBxWYcrPS1RIHD47/h+TEQxu9yOK3QSgqKyJTtyrD/0bDnHBnS020R9
-	d9gdlcxI7GgRjslOrX8gpdSxZbDqjYM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762187942; a=rsa-sha256;
-	cv=none;
-	b=p66h4EhUXHF1YoZ9rb56Ah40k1dhLM8wqFK5jyj++W0pubajcomvZ2rptcHk4HDFcb0zu2
-	J2bdd1pdjJs3QF03ubjzo8XcH/TXd4ofThxdDIKBs/zpmZz85fxDb3JbvPqmnD6jI/eX+D
-	WdDLu1hu11beCpuv34ORpiW8469KXQs=
+	bh=K607a5Gs7qbahtSC1e+NSqHSnCO3TxUx9UKukeyvNPg=;
+	b=c+sBoXHilWLQf/HujOt6kfq4T8JkFp4cfZFe3IYtyf9kOvItRxSZT0AAdmVklo61Fb4kuU
+	z/6Rq34TJrRlEZRQcD8yMob/9GLTCZFSNsAUGtJBK5kiOPb0ucv291rLsOUBeUsV6+meEW
+	Zsqa0qhMFMXwHtbDOwm48hCty+54f5c=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FakmInk3;
-	spf=pass (imf29.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E0269601B5;
-	Mon,  3 Nov 2025 16:39:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1150C4CEE7;
-	Mon,  3 Nov 2025 16:38:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762187941;
-	bh=MJf28eCwFjXy43H5HkPqmDjsZqFEkChdkvJCw3zVsbc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=FakmInk37hbSkL1UHSx54jy0CI61iH1VgLKnghGMCpnPVWHqwAx5xSsUC0yeqMZi6
-	 2GmCQt5UVt1fR2a5SLg1lEvBS+XECag4pIoPR0D9Lvdgj+Qq14VBP6wkKycGgJv44e
-	 pyiA1tGhZLqAslFWZedz5dZOTwgI4IC6sqYoeBSqTf0T9UislrqMcrXKujaoF4EYmu
-	 w02Lmva3QPEzqjXBtJapusaYj6QieQ7y44LsSMzldDMwnqKBXWFtekdpFbPcrbHeHu
-	 bxuJZnFfvsHS66DyHzpz0gK9UBUwrFSerdYrIVLaFVi2ndoMu9lYJEySXC4aHzVRJr
-	 vzEz0sSA77Geg==
-Message-ID: <6ab96953-3475-41c2-b31b-e50f15088f0d@kernel.org>
-Date: Mon, 3 Nov 2025 17:38:54 +0100
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=LwXOJc1f;
+	spf=pass (imf16.hostedemail.com: domain of yosry.ahmed@linux.dev designates 95.215.58.179 as permitted sender) smtp.mailfrom=yosry.ahmed@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762188667; a=rsa-sha256;
+	cv=none;
+	b=4OpySsMvU6UP7VLE/pnAwpIWsBhDBdTrI139VUl+i5Wss5Yzo9HgLUviuzMkfse5MyugyG
+	pWafRXjx5q3ZDr/NhDCUY8p5ZYsxVu/Q6ug/Z2sCOqe/YtgG6UcGmYKg1i7uUrZBTqfRhS
+	F5399QGak7eZZSqYnfHX48GyFIxY6jE=
+Date: Mon, 3 Nov 2025 16:50:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762188664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=K607a5Gs7qbahtSC1e+NSqHSnCO3TxUx9UKukeyvNPg=;
+	b=LwXOJc1f/K6nb9wVO4GrLcftfn/ho3nwgJUxumOCpurUvQXx/93i+UNBV5Yq2bbZt7nvAw
+	fMmzfMUc1I/3+ppcS733aXLz+px5KKfFl/WleoOFYiWgdyYLV+Z7APCP8bdRcshyLwBq9s
+	F69Azfl+0DfAJts9qaYrtJW/yoECpf0=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Kairui Song <ryncsn@gmail.com>
+Cc: Barry Song <baohua@kernel.org>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	Nhat Pham <nphamcs@gmail.com>, Johannes Weiner <hannes@cmpxchg.org>, 
+	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 01/19] mm/swap: rename __read_swap_cache_async to
+ swap_cache_alloc_folio
+Message-ID: <2gzofxcv3vbfd5l22drj6p67huf533nq6g2hnurr74ewbrp2gx@f7i6qabbuxng>
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-1-3d43f3b6ec32@tencent.com>
+ <ufy26fqfvaxqjywneec3hcuky7ozpa2fm63pxcuuberrvicffv@bkblomeix35w>
+ <CAGsJ_4x1P0ypm70De7qDcDxqvY93GEPW6X2sBS_xfSUem5_S2w@mail.gmail.com>
+ <CAMgjq7A+OBoH71qo=Vt65BeV7M9uOvkJ+9pQX2eq4-tqcKwVwg@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/3] mm/huge_memory: fix kernel-doc comments for
- folio_split() and related.
-To: Zi Yan <ziy@nvidia.com>, akpm@linux-foundation.org,
- Wei Yang <richard.weiyang@gmail.com>
-Cc: linmiaohe@huawei.com, jane.chu@oracle.com, kernel@pankajraghav.com,
- mcgrof@kernel.org, nao.horiguchi@gmail.com,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Yang Shi <shy828301@gmail.com>, linux-fsdevel@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org
-References: <20251031162001.670503-1-ziy@nvidia.com>
- <20251031162001.670503-4-ziy@nvidia.com>
- <20251031233610.ftpqyeosb4cedwtp@master>
- <BE7AC5F3-9E64-4923-861D-C2C4E0CB91EB@nvidia.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <BE7AC5F3-9E64-4923-861D-C2C4E0CB91EB@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMgjq7A+OBoH71qo=Vt65BeV7M9uOvkJ+9pQX2eq4-tqcKwVwg@mail.gmail.com>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Queue-Id: 11174180002
+X-Stat-Signature: yf9kooyje5y8n3m7gtdebbo5mw96ibut
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 8931F12000E
-X-Stat-Signature: 3ok818a49zaz16h6b7xkaffk5a7r331n
-X-HE-Tag: 1762187942-465859
-X-HE-Meta: U2FsdGVkX18fh8/pRnugvXpLfWyRQeYEeq3Al/LOHDq8GDWDOPYlucUNAuZt7hptrsikm8xHOHNpWwrusOtOxffaxyNSgID9Iz1nd5VyFCKA7XKf+SIdzW+1T2z8tjikgmrOQPlFTpjmpMxE8CdnpQO3CORzCBo7y5oVMDH7+kAVRDzhPEWpnuzkrneH9Dx/K2D8tb3nt1t7h0ZCiGbUAZnbdfVoRLqAA8kmR4ffRM7W0kt6iJGDZ58pjypahKeseylqbg5i4T4reEG78NticwOM1B9q/+s2f/mhs67bcT+cXxsmf8EBN7p7/BTtyj7693ogaxvcxR4VSb0X7XBa4HNdyIbv90r6Ryhd7LlVdciQ6/weR2qcqHjZzMk5Ie/7J1CnxbTIe62gAnULqVmzEpS9aPxoCz+DMnZa8j1VN+MCkqJwxQo2PtcKk4FUNmY4+r3+ehyWSAbXK7LKZr9z2pz9L27U+l4PiDSl7xE7zMztgRXzmhl893nWz41tgBSWvAWfjnpF87gidE1nG7ttbxImJydeXCI7dzxBN2VyWVurbQDaOUulZD0hMa217yg3yzdLqRh8quX9XZUSYAorN5H/4xOirnrI8797OkzYS3dz/YZTd1MrNG0K9Zwub4NOxfx1K36Grg0lvpAGelptucVn9C3HaNXdaZAai3sFuytyQLUCQ7LYlGLbKGWtwz4C2QrLy0TeNAieCTQWEwRl2fMKfiGwpApPUr1ru3mMO8eeE6BtoKGpsLxj76xag7aYw/oU3EMzGVm6lvWDkFrvtK238NT848tih7JdG+zdRruuLwa0emXqoyCMEBk7UrofxJe6/6Ifa1KD7hfNPBKyQ77asY65twGwKa08bHrwljHuUnRUb97IkVjG2pjD7mtiwPD5P4UKCb45QM22Oyd5wuiIBLmaQMOLhxtx7r961a+UQ1tQ73FNVkHG5WasUmyq+CbTOOYn5Sv134Zq+hh
- m+Lc0D8F
- 9BQEt53S+6ApryEl7pjirYVc0z4PV0+MRegFIXTUqORXNl7H7m1//9noe5N9eCfb+RIZ0D6fU5lM19rUBLDSHYJ2FnyjzorUMHUSiDEaBRzNUXBaRHQ5kZ9VQakTzEKfMu+LQIH+n6f4X4XCtmh4ZG3R4cHRw9S7yJji6mttUpUa3K8snK50fC0WN4ccCFVXRNRcUlwglmI9TQmd706KQU+Hkap6E4DmSY+uJm2q/dqJKHyWfyu+YgLFnmifMA76jfGcGXra8A8paRlnA9jw77XyaONY3nKy0GGrnoEu0nEun1tRt+EkRmgFy04/mGgafTTif1ysNdB55wHMJw+9V1FtrHTe3GhU3jWwHvfCovVbSDGXYDLLb/VfRK6UwXLlERvyw56C35U2yKzNOXs+q+sS5DTGIaCALfpQOsS0vVpeGUkgUEHq1HDfq9w==
+X-HE-Tag: 1762188666-161964
+X-HE-Meta: U2FsdGVkX1+cPMCUxzwYLoEEUxLHBoDbi+3pvHHmjfbeCE/9ohvSXn/uqtKN23ABwJ2qUImK6dQYmE+Tlg8kfhq5mdsGLLwa+w5psWSbToDpWRQpHoOn63b3Dwldw1VKcd6V1aTSbSfGpyr9DYKkLXgGr/NNSxv8U79kwIDimZueQpNlG08vycyp20+D3NXrmTUn+69Z/MmUtHSN11QL/vwYLukG7polZWS3Q24Ge1SqB3iJD5W12E7T+Ehwu0FykUb/MhKe1j9AUp+JdTzvxBmcATsM8/yc3wAmpHxSKOpIYk90jdlQuB6z0IcM3/18HmW+1661bDZCq501YTHQnOOWBiTvDsKdrI7IyIUpntBbdWMVplLNrYeUP584hAsIdb1fzatoNC80LcLwwyawwHR5T1JGUnpduG+X4FwEabkaMqipp9fT0wBiPND56WIpV2/4EZmaKtWyNEcYmgJaFNCKzUUp1SmGf1/QYeujNMTK0iOEn1+wuNVvH26o/pEjkuXLUj2zlnvRgJPMWw0eFWtbEOMEG6rY/tXWg0IRfZotkNJ4gZdqfyypxBGdVsNwH7YNmeI7/JyUyvp+kzCxXui8q0pZGn5AZvRbMTVo0PgCXi5T7Qt9oKcYbCru1YJktG4h9+9HIIhbgYl2Yyx1IHEXhATHI37obaSyys1zu/Lqrw8oxCm/y57F6lKy+eE4YRLqajU+sBBRZ9cpigGO+OisDoaw3r+/ZSdrd0Z5y3QIKfmIuRgwsoaShfVb5KfIWfc/4Irn9ziZH51sQhnAdUL8S99B9Rszxqqx3OaQX5JHO05q05Ix/PlfwdJU3Ltza1o3fTkcReorzetRTPxM9//9KSMrwDyGCcCVhEbHN/xIJ60CNQ6bUb/QJQte4xksa00jJdd6wawGjgQ8JytRZFS1iPCkIRHHrGOFFqd6JImI0dJeRN2gpamyf0obaSQlQ0Fmapv5NaPWyFpL3uE
+ 5qSgI7k7
+ AmaKJ5n9QUy+XakZNJ7F0IX2Qv4cJPwNOGchQzkcWDfiV9NntvE/SXOChUx45bREFgJgCgvH+YUznAqHgq0Wqal0vhbae1tcityYwEy8u2v9ozNGfW5Y1alRLPam+17ZkpIvPeZPYDtFn0E5HYPVj+shqWSPrJUxga2pSP3y6I18BUN/iIGL66IcEDbtXVrTfguGKVlZFebsM/OIsKmZBVtI2Y49plAV99KYsNQTC0OZE90ql0VeD3zWgWAHIprr3qlD5xZkAqy6JMXY/oEUEeYAYsbAmCAS27L4K237jK/NJKvQoEEbA3G3DTQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,44 +101,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Mon, Nov 03, 2025 at 05:02:28PM +0800, Kairui Song wrote:
+> On Mon, Nov 3, 2025 at 4:28 PM Barry Song <baohua@kernel.org> wrote:
+> > > > +/**
+> > > > + * swap_cache_alloc_folio - Allocate folio for swapped out slot in swap cache.
+> > > > + * @entry: the swapped out swap entry to be binded to the folio.
+> > > > + * @gfp_mask: memory allocation flags
+> > > > + * @mpol: NUMA memory allocation policy to be applied
+> > > > + * @ilx: NUMA interleave index, for use only when MPOL_INTERLEAVE
+> > > > + * @new_page_allocated: sets true if allocation happened, false otherwise
+> > > > + * @skip_if_exists: if the slot is a partially cached state, return NULL.
+> > > > + *                  This is a workaround that would be removed shortly.
+> > > > + *
+> > > > + * Allocate a folio in the swap cache for one swap slot, typically before
+> > > > + * doing IO (swap in or swap out). The swap slot indicated by @entry must
+> > > > + * have a non-zero swap count (swapped out). Currently only supports order 0.
+> 
+> Hi Yosry and Barry, thanks for the review.
+> 
+> > >
+> > > Is it used for swap in? That's confusing because the next sentence
+> > > mention that it needs to be already swapped out.
+> 
+> Yes, swap in is the typical user, swap_vma_readahead calls this
+> function directly, allocate a folio then initiate the swap in IO.
+> 
+> I'm not sure why it is confusing. A swapped out slot getting swapped
+> in seems a very common thing?
 
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index ad2fc52651a6..a30fee2001b5 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3586,7 +3586,7 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->    *    uniform_split is true.
->    * 2. buddy allocator like (non-uniform) split: the given @folio is split into
->    *    half and one of the half (containing the given page) is split into half
-> - *    until the given @page's order becomes @new_order. This is done when
-> + *    until the given @folio's order becomes @new_order. This is done when
->    *    uniform_split is false.
->    *
->    * The high level flow for these two methods are:
-> @@ -3595,14 +3595,14 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->    *    along with stats update.
->    * 2. non-uniform split: folio_order - @new_order calls to
->    *    __split_folio_to_order() are expected to be made in a for loop to split
-> - *    the @folio to one lower order at a time. The folio containing @page is
-> - *    split in each iteration. @xas is split into half in each iteration and
-> + *    the @folio to one lower order at a time. The folio containing @split_at
-> + *    is split in each iteration. @xas is split into half in each iteration and
->    *    can fail. A failed @xas split leaves split folios as is without merging
->    *    them back.
->    *
->    * After splitting, the caller's folio reference will be transferred to the
-> - * folio containing @page. The caller needs to unlock and/or free after-split
-> - * folios if necessary.
-> + * folio containing @split_at. The caller needs to unlock and/or free
-> + * after-split folios if necessary.
->    *
->    * Return: 0 - successful, <0 - failed (if -ENOMEM is returned, @folio might be
->    * split but not to @new_order, the caller needs to check)
+I mixed up swapping in and swapping out :) I was complaining about
+mentioning "swapping out", not vice versa. Sorry for the confusion.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> 
+> > >
+> > > I suspect you're referring to the zswap writeback use case, but in this
+> > > case we're still "swapping-in" the folio from zswap to swap it out to
+> > > disk. I'd avoid mentioning swap in here because it's confusing.
+> 
+> Oh, I thought the zswap writeback is considered a kind of swap out :),
+> since it's technically writing data from ram to swap device.
 
--- 
-Cheers
+We do swap the page out, but we use __read_swap_cache_async() to "swap
+in" the page from zswap first.
 
-David
+> 
+> >
+> > I assume you mean avoiding any mention of swap-out? As for swap-out, we’re
+> > swapping a folio out from the LRU — we’re not allocating a new folio.
+> >
+> > BTW, this sentence also feels a bit odd to me. I’d prefer removing
+> > “swap out” from
+> > “doing IO (swap in or swap out)”.
+> 
+> How about "doing IO (e.g. swap in or zswap writeback)"? Swap-in is a
+> very common user, and zswap writeback can be mentioned explicitly.
+
+Looks good to me. Thanks.
 
