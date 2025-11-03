@@ -4,173 +4,142 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAE95CCFA03
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 20:07:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DAB54CCFA03
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 20:47:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2F02E8E00C9; Mon,  3 Nov 2025 15:07:48 -0500 (EST)
+	id D09858E00CA; Mon,  3 Nov 2025 15:47:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2C7678E0058; Mon,  3 Nov 2025 15:07:48 -0500 (EST)
+	id CE0138E0058; Mon,  3 Nov 2025 15:47:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1B6548E00C9; Mon,  3 Nov 2025 15:07:48 -0500 (EST)
+	id BF55C8E00CA; Mon,  3 Nov 2025 15:47:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 0666D8E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 15:07:48 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id BF34C1394B8
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:07:47 +0000 (UTC)
-X-FDA: 84070381374.25.0AF5035
-Received: from relay.hostedemail.com (unirelay10 [10.200.18.73])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 36924140018
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:07:45 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762200465;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n9Hp+W96E82ffeM9TGY/T64q12eMoTlbRaWkBHrOVhQ=;
-	b=QIpG0tj+1UFukr2I76Jdo8OTzuKzNYoISS6dXYFS9b+oNCb2UNYMOSXxmA5kCiL/8chmjT
-	HNck20/Po2e9hxjLT+1MphGrvskzIsodVAw8P4C4NP9hZp/RQ1ZcfEOiIhR4peIrh30EkK
-	P/qFxZCdpBU4o3aMdGfoRJswCSH+CxE=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762200465; a=rsa-sha256;
-	cv=pass;
-	b=WCSif2gXQ8G0z2iVOAQMlq1oKewNw8fzTTgkaZoMnfokpnwxIsRW3RUpzA5XYLOCKKpeov
-	MntimRCYZmVvgHq3YZW/jGezytCO05EeVOFr7zaapnFarscYthdAd99TTk65YsOBKHQf8S
-	lyz/g1L4TsAHA4MdvqJru0D8ijr5W88=
-ARC-Authentication-Results: i=2;
-	imf09.hostedemail.com;
-	arc=pass ("hostedemail.com:s=arc-20220608:i=1")
-Received: from relay.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id B3D00C028F
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:07:44 +0000 (UTC)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 85E5E13A70E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:07:44 +0000 (UTC)
-X-FDA: 84070381248.25.5E2E4BF
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 288F7C0012
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:07:41 +0000 (UTC)
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762200462; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id AD6BF8E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 15:47:08 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 381A81402F7
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:47:08 +0000 (UTC)
+X-FDA: 84070480536.12.F171396
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	by imf17.hostedemail.com (Postfix) with ESMTP id CFE334000C
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:47:05 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VO0HSlFn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762202826; a=rsa-sha256;
 	cv=none;
-	b=QUviuUAkqF9LnO8BgMe8okhtzTZoEkWnGiunk7fWAFi8pbfz7FBJAl6jTF67XqukEy8H1X
-	HIaPBHXWE9AnG2I+Q7vCods3LMQK3ARKJA1PBkICJ1SwpnUr5DLrGBRhxJB9T++bIfkf0x
-	vd0XUnu9bBYL80hWl4WMH9gkJbjnGQw=
+	b=Zwt3Z6awqDupsSd6KWCr2imzQgR35lH1X0FB0AcNW08X6vLip5iVxuh2VIH5nOK1NmWu5/
+	KctWoP/DPOxBiJfvQEIaxFIUqvpPoOo0oq8wF6oUAOeWGj318bLcjPITzGNVJUrXbdKxHo
+	I3VdpFk6z21q6o02y6gLp5h9bNwa4o4=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=fb.com header.s=s2048-2025-q2 header.b=Y5TYvio2;
-	dmarc=pass (policy=reject) header.from=fb.com;
-	spf=pass (imf22.hostedemail.com: domain of "prvs=740262d6a4=amastro@meta.com" designates 67.231.145.42 as permitted sender) smtp.mailfrom="prvs=740262d6a4=amastro@meta.com"
+	imf17.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=VO0HSlFn;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf17.hostedemail.com: domain of peterx@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=peterx@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762200462;
+	s=arc-20220608; t=1762202826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=n9Hp+W96E82ffeM9TGY/T64q12eMoTlbRaWkBHrOVhQ=;
-	b=Kz6NwwndDV43z+n8+urjKxS3Pzu7MgDCfnEaowMNyQy3CtLPJ9gHHlP/feUEKMjrko7dVL
-	iN4/DPMuE68DfCSkOtTbBsCymKGXN4zn37JIhWPky82w+SK2tsqk30tW6tkzMzfqghi/hY
-	OeAFKiHoF6ryWsXBQaetzr+S7fvYWjI=
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 5A3HSUl13368916;
-	Mon, 3 Nov 2025 12:07:21 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=s2048-2025-q2; bh=n9Hp+W96E82ffeM9TGY/
-	T64q12eMoTlbRaWkBHrOVhQ=; b=Y5TYvio2wy42a6OuNV1jizo/aQU5rL6HohWI
-	OdRswHnuwgKDGg4PRZorsSwOwSWNepxL3lv6e92F0ZZiEQOO8ZMDqwElBWya7VYx
-	yHZJ1Bg/rdGSvGKN1xCect7aLk4BJP3dFq0W4bRU4thNy47l/7qf6QCLDdrJWuYT
-	ttchffm5fJ8azlwk2GD5NtPH33FSvCNhfhPKLPVh0Qs6M/RaBFY1LsIhyFIHXKOv
-	PPwMbL4I1eFF62/08bb33eCUiaTLoRka7NFBHCCzuXtuZDc3HhRZW8A7Jd4FsCBj
-	aU36aw88WsqWA0jpB+Nf9LOBQRQOfcCvornGVmHGoYNGSzpsQw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4a6yfe2849-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Mon, 03 Nov 2025 12:07:21 -0800 (PST)
-Received: from devgpu015.cco6.facebook.com (2620:10d:c085:208::7cb7) by
- mail.thefacebook.com (2620:10d:c08b:78::c78f) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.20; Mon, 3 Nov 2025 20:07:19 +0000
-Date: Mon, 3 Nov 2025 12:07:12 -0800
-From: Alex Mastro <amastro@fb.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>,
-        Logan Gunthorpe
-	<logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-        Robin Murphy
-	<robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-        Will Deacon
-	<will@kernel.org>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Jason
- Gunthorpe <jgg@ziepe.ca>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Jonathan
- Corbet <corbet@lwn.net>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Christian
- =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-        Alex Williamson
-	<alex.williamson@redhat.com>,
-        Kees Cook <kees@kernel.org>,
-        "Gustavo A. R.
- Silva" <gustavoars@kernel.org>,
-        Ankit Agrawal <ankita@nvidia.com>, Yishai
- Hadas <yishaih@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin
- Tian <kevin.tian@intel.com>,
-        Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs
-	<mochs@nvidia.com>,
-        <linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-block@vger.kernel.org>, <iommu@lists.linux.dev>,
-        <linux-mm@kvack.org>, <linux-doc@vger.kernel.org>,
-        <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>,
-        <linux-hardening@vger.kernel.org>,
-        Vivek Kasireddy
-	<vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <aQkLcAxEn4qmF3c4@devgpu015.cco6.facebook.com>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+	bh=vghBKiSvOSdxfV0lhypHIAUMncAsgcwHnYxmY/VnkRM=;
+	b=KGcP+iRPFORL2c6lB2UFoKtMZmiLnBe07U5CdEq0QvjqOW/WoW8RoywwNxrrIAwgNTt7gB
+	lLl27KKXbHCZyQNvvMy75/AcdHrhfdDkqRyXeUyxq2kGHqNQfj8caTpuUzCqp98f8ZrrHS
+	w4RIUMN+VG4hUci8JJT/F+mgx3AZNzw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762202825;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vghBKiSvOSdxfV0lhypHIAUMncAsgcwHnYxmY/VnkRM=;
+	b=VO0HSlFna2i7mcPULJMboPxE+4x6iZTDWRwuL3kAO1cOtvSumdbAGX6hwbPVmWKXAplSps
+	a8LOWai3BD0Z9jOq5xctsxrKZF3MAcJabUV0XjPM2acKcbDe50F9evSWkC52z+XXecWCdi
+	w+hBvYKPfxz+Oz0OvXGV1m0MYYoVbYU=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-172-BlWVBS0dMKaSV2VUj8bf9Q-1; Mon, 03 Nov 2025 15:47:03 -0500
+X-MC-Unique: BlWVBS0dMKaSV2VUj8bf9Q-1
+X-Mimecast-MFC-AGG-ID: BlWVBS0dMKaSV2VUj8bf9Q_1762202823
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-8804b991976so47639866d6.2
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 12:47:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762202822; x=1762807622;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vghBKiSvOSdxfV0lhypHIAUMncAsgcwHnYxmY/VnkRM=;
+        b=BBIHuWrKH9m/w4WHCfc9fs4QbyR+A37xIjoRsB6+C/qi+z/8ivzPVqIh1Pel80eFEV
+         4SQtRInBW+rUlkD2C8NdDvxMITWDi+eRjOCWdX7zTph6o9ha3vck2vTH+xGwNy6gqbOR
+         4URud5V8R1OdCECpAyWaVK5ZnrFKvIX/GbFAcHQ3cbu3j5lswa18ILpZ6sIuJsb+JA8c
+         so1yZ9gg8EWL8Dt0J9SJwtW2qw9C+SuE+MRHIGQr9kcF0H0LWV+Th8lU05rljN08p4ci
+         JhD57xpCLkViRXztaAZMo4XDclrXEo7tpW8/XZzoEm997CnaKdAYr6BJPBuumCblXDpE
+         4NLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdluUUDLLXX7TlDaNuBfspvb4PRHaI3cj+IAx59Vw5oYRn/6dlSOKv8vTTPK0u3weBSrBABuSAqw==@kvack.org
+X-Gm-Message-State: AOJu0YwHxArLBu75lt8KdxJ7gwkXDudWwWAFTHW+IJKsTcW6p3GvwC3Y
+	DHT9gQyTDqfy7Ma5bFUkM5kuLWl+pJ/cnnn9Eg0GR6FTHhOQDtQTid8i0J3KFfCWxUJKDu9BOTW
+	bFOnqdad7Sp654tIM6Xz5JrLKEGOHzDEXV0Na8LTu9kCPbPStmYkj/ShZs6hN
+X-Gm-Gg: ASbGnctLLZdKHDQDjNbaUdQqC4zDOyuHKX4+0VxdJmiFLZfGfu63bjoS6ueQxLNwICD
+	QL65Rm28kUVrgklO0mmoE7qzc3WHo8jMmsxJevDcZMPKPECE0MRdlnWRl/LPwKFXHYT1l5/Xztq
+	baGVbKgJggLEhY5ZDUs+2oqLXAJGnxaU53Lgw/VQjQiZqZl7mD4/Y3Ee9u6OdggEzaJ/+5Pksyq
+	HW4vdj8FkjpYsqqGMQopyAuhcvvmGM1uoYi8ZFinTRGNIT687RNW9wr8CXyMIUXvqTEQJ8xYlPh
+	hpVfinQFjfXu7UL/+Vr/OhZERF9Qh8Y3x+0YAP9XVxF4y3cBndllcBQGgm9qzyJA0ds=
+X-Received: by 2002:ad4:5d43:0:b0:880:4c73:9e44 with SMTP id 6a1803df08f44-8804c73a24emr33040646d6.15.1762202822198;
+        Mon, 03 Nov 2025 12:47:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFki4qB2bWfAdvpnwwEKDZVQ/jgwqxyK8R5E1a/l8fmyEI99KRQ9GoapziPmE3jrH2Z1ZbnIQ==
+X-Received: by 2002:ad4:5d43:0:b0:880:4c73:9e44 with SMTP id 6a1803df08f44-8804c73a24emr33040296d6.15.1762202821640;
+        Mon, 03 Nov 2025 12:47:01 -0800 (PST)
+Received: from x1.local ([142.188.210.50])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88060e9566dsm9124636d6.47.2025.11.03.12.46.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 12:47:00 -0800 (PST)
+Date: Mon, 3 Nov 2025 15:46:57 -0500
+From: Peter Xu <peterx@redhat.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Nikita Kalyazin <kalyazin@amazon.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Houghton <jthoughton@google.com>,
+	Hugh Dickins <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
+	Ujwal Kundur <ujwal.kundur@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Andrea Arcangeli <aarcange@redhat.com>, conduct@kernel.org
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+Message-ID: <aQkUwbx7Z4q1qcSB@x1.local>
+References: <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com>
+ <aPZDVuscFsYSlQjI@x1.local>
+ <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
+ <aPe0oWR9-Oj58Asz@x1.local>
+ <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+ <aQO3Zko6Qrk7O96u@x1.local>
+ <aQPCwFZqNd_ZlZ0S@x1.local>
+ <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
+ <aQPU-tyo_w68cnKK@x1.local>
+ <7768bbb5-f060-45f7-b584-95bd73c47146@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+In-Reply-To: <7768bbb5-f060-45f7-b584-95bd73c47146@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2-Lxd5ighq6RbboP_ffZqXFszH9IS1DhHDkf-CrXqLk_1762202823
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
-X-Originating-IP: [2620:10d:c085:208::7cb7]
-X-Authority-Analysis: v=2.4 cv=G9QR0tk5 c=1 sm=1 tr=0 ts=69090b79 cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=FOH2dFAWAAAA:8 a=b_Saz7MSmFOFN_6dvx4A:9 a=CjuIK1q_8ugA:10
- a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
-X-Proofpoint-ORIG-GUID: F1nk6hmysPbKhKVQa_mqqIFKqOIt2lHM
-X-Proofpoint-GUID: F1nk6hmysPbKhKVQa_mqqIFKqOIt2lHM
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAzMDE3OSBTYWx0ZWRfX6SW28Xvycs0O
- YOKukhqpHcTfkYNeGRk02UVQnYAieNl0FPP5nyOoQsMjQfkPKcUonaa3EWc/tqdoAAQyhyOyp0d
- /JHwcN3QLYQ/+EZJhZ2InHvQ5+q0ThEzTdyBEGsfGK6Opxy38U0CpsznUzKLwU/5Eqh1l493VDE
- PyTsfwJm0au//MmeaXH4NXKBaJs6mnL334sMoj6rtJQYWDX5DKMNRtgxvcMAQid95nsgniy4DYE
- +umaq/vNBvV3b0K6HXe0s/cT+YOR8m2DkpctVf5zXXorytYnhbn1vV3nGRWxaQ24cLeCzQnNSqB
- UmVF2ZqiQwbE9Yb71RMC4EJcfgbsbmodipz9oljstvRLhQ7lzspcSOdC0w5Z4QcLNUWGre4urgV
- ZaziQQl4T7tsVkAKgmifB2A8A6gzCQ==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-03_04,2025-11-03_03,2025-10-01_01
-X-HE-Meta: U2FsdGVkX1/ahO3XMG4E/jh4btL2o1XT1zkfmkFg+Khj883Ztoffx+HEcHWjjT9PxO5FYpPIQdy3b2W57eEj9ikxC8mkHxyU9qSPKoOxjy/HOvklgwqn8i7XedwlmndXpFApgpDJQFH6bGssyt548ukRlZCT21OqmVpV/crtri013om3je5M8qWqbaOQ8OqtT8aIEDxyt6UPY8p8vaACP9Jx7D2vgDZaWROzTCMxg0glfvlqw4fofD30dMRHnjUqot69m3FOtv6LyPWMTVMquIifBYPeDlGs1phguPh3UGApUNrelSzAbaBbeAIo08N3uADX7je3L+Mraf8dMjIp5ApSSDMb9P4EIQveUA4JOmNk5mOUsVxs+nd+CUyn+4rptaCcGN0+kd9au/8v7G4GwalxZmCVGBZ0yBEr1PaN+YHc9QEZyH7SP630Xy8gXeFr6LeLgk+96kjP4N4uXPLvqxIBnuqO/kxgtg4BH7WP/zpPz88XSu4NwOvEdUqcUauiFYX3C4n2Oj+IL2V/cqDxnEhUktc9wx3WnOQbBLr289VE7RJu6w+h+/7UKS1I8zpBwWvRCK2Y5tRaHf7zjbqqeu8ys6VL7+BvXIhYVs4qEmNQrfnog9OVKke6/ufAwZkQBAWgI9Q71EKdrkLWjIxjlnPIG8NpDtcNjZZ9fBUpjCQ8QCyeybCr1aQVO0DqdHUMqlveMFETmkzXjMN/45exNVSYXA7pt29qS3zt6sxZO88ovXESHi65SLf6T+Z0fAPAcrLUB7nc9fdA3Ru3CBv30e5j0wcW668O8CG7EFN02SsxHo2U9MPqy7BVrPKpawqhA2vp6FInuZxPuupmoyS45mu0SdtdCtaT7rFhPOrqPQIqh33ICZAv9YCANUl7oivSwEeROG9xLWiePuDzckS1TEZcTbZ+V0S7aXtKF+exrleYZRzydDBsNxhFjgbU5/Grhwe6ULdzqiR8W6XXYTO
- Te13Go2f
- NZ4rIFZRRYlgKwo4iaL8j0tLH27HyJTVWPxWfM23v3fKf8N1yVXz4/fVvYG9gmk/0GCVmRwd0e3ljRsdtN83HP9x/3UGHqxyapH7eDm9XR55fl0hbjnXLLaUVaSsqMkGj0p32pYNUL7z/3HzFTk0kAv9JqghzP1FIQjl+OodlEbfAcBkmTATiuKbyh6M73qjr2ouDB/Nuf4cyQYgESZ4XyRKuENg1HzJIG1+kIccwCfj3GOrgo8VnhrE9DBPMzOp2a6+oUyFfmZYAWX7g+ODGBhIk8stzywB03dM/KFAy8q/d4uVeYGr89jtuC+RMebwva2pXXQSe024+8pqB8TSNwVo3dnUt1KOcZQudfqdMVyTTlr41NXWPIIH1+5Ll1gmourmNxJFLSvOaM/py1SJR2xI1U588lRfeynEYjT83xIHSD6Smj3nBA4pVQCuqr3n8XhNj
-X-Stat-Signature: 3rqcr6tc47e7rwzue6czghkic8ksazbz
-X-HE-Tag-Orig: 1762200461-696451
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36924140018
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762200465-879036
-X-HE-Meta: U2FsdGVkX1/1lS/AGzr0oRqdvOjq2HhxR7XI6Zs150hZ/720/TO0popzwST0iksXDqKFe476p8co9rfSVLyEd/DM68PEsaO+AIJrqFoDI7rEu32CAN/yRgrOaUw4cje1rdG54SEoIfTDZxNq/Br9UPTAaJ2C8Sc5hzBvXFGZZ8G+C2bFjXXq+RPwPUXM1droMZjQijTe+wMVe+tQbn7oILLWIKHWGo9uNF/ZEYJJXS5tu1B7aq/sMpHlkChAZBd5xf8xDXGyeeuUpRZHirjvkkNlw08PQMR1spRGROooM/Go1yNfue07m5Vb84ohB+hcsTBR8K4X2TcGQYpYhKGHh1ZHYoQaQcnh1OL/diRAV5QFuMx8Ci+NHPhjYewRYL/sli643Gx7PZdqRytnvYAAliNx1quAW/WM3TctOoouss9CjnGARHwZAeuIt/VeuxoOOU2Fwp7FkW8ZtrSoLvPRJ3tj5OPaYQRQJLWZ1ClFGX5tHLQ2UYp2tqdaj1AZopvYczju5MPyf16MvVeeyzqRDShXSi67x0+cyAkGnLxB8w42GN5u4s4MOPqhNVFzN1cYxUqgLieTqV/sbPlBNBMrz0Q9uGsy5a+0sunBGbKqb8Yp0BHj8BUhRJY5BqNbnO+4xKuuGyaQKXe/CxefEMag3BVGfybgm5WLK2jgINAqn0LUbKUoZyNb+MwTBSWEUZcGmk5fL3I4fYotkVi3eDBaeIzspZcmh3bqRC01QOjqT1CCM0kQXxiP/z4QxwaMGvAwgOVU/pBomh/P/3LScaf9xvmcr/lRZrWO54n5OZ+tT6XS1cPXjtxFyQKtfxMuCFmkz4ChofXH1GHX1uJTlz4LrJKwwYik5hPfEcR75rQb9zn1rqulSwRKmPnqr6kKWxi6cxHA6MNLG/cBpk8x8XMCWXC+bo4BJOv1x5kZWokqbDdYzmi5wd2740rz1wXhIF5lWtPayAGS1tBAcMTjpua
- /zNiJjLD
- jYN2+HdapGzULhxZ7IiYY6QQyGp/ZNz4KqmT1nqI1ZPpZy3ovEt8i4vOZHIRSh08auMlrlNW5hm8dZ9i+l8b8/0EdK+LtYkc4a7Yjb7MLiUg3CCA1h9yRqBkGF3BXrAHdqlkjU2G+P9VzR0AVo7JyT41cVJFH5ivx0N3AT18DyWE/i9S39o4jHxasm83LgEM2k97V8dXDh+9eGd5maEACQ2e/Os5erZl89E2jCmLwjSXHWKHWMkPodpdK4o3+REuSHXb2KX4rRQw5F/rmeDGzbbsATMfTs4co4uWEiMibd2ZSN8TsAfP9BS2K3mkugJXB4vdz6PapK7gVc2WnlDem8aArhAcmZSl/7QxdIPOUNHPOH+uhC0JjbhsL/PiELszP4z88ZAbDxkbFQcn2PSpKbE381A==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: CFE334000C
+X-Stat-Signature: yz47i9coqoe7rec4otoebwiarifrwq9o
+X-HE-Tag: 1762202825-56727
+X-HE-Meta: U2FsdGVkX183GetM039iLuOfziaYqZjN6Z0ek+t3xouKyzYww3tcTs2AwHPzKYYcBDrFOkSaXiL3DSXO2lbdua0QGpVWw/NHOGUXecqUfNdhTk8ns9FMUqsAL7/bRc/Y1HjnZJ4aMtBUFOPWVQwiNEsi1LxA0a1tPd5M6pNRHgoa+vlXFmoYIDT9h9uA+1rj5XmD34YNcI6MXnUBcOrLmZQXTzk6qk9qhSIMEzsXw1lmmE8K3ftt2fCQ90niqnlWQgfAc1sh5D4E6LvS4XF4ZsT1/+XntspiChcJ0hD3+pMVjB+ZKXdiHUDPGkURk6S/ScqmOEK6MJhFJOPc3rm5Ae4Ww3/7OYgchZF5AUXX//yGQdLTnN8aaRkI7NrE9dGNQRH4Ye8335lowDjYHWwHaeoXO9hrwOwJnitvGUOjFxNoW42uJaW6TQSXB71i19k4y1JFtdOiv6nE/qJpVT8yarb6e5sN+D9JslHc9pUnOlXZ8YF+9XVrD4YibZA58GBmDXDJB8lrblESY30QtH6LfBiwnXhl7kgWBb70OBn/3bTpsO2WPrO7Kc+lzeOX+BhvtOCs+sH0aSd08HZlsXtOblyXID8R1VrbetyDoZSjec9/94ylfb605zGXWsf1bkW5Yee3YihcDUMskVaMgGy4tgIF+CO5NTbfTlDEdkj1ISkrR9BFg16YmIgz0sK8LQm5k5rAHyhfAMh2+HEdOu4+1YjrrQpHR8qWIbIEJO07wCS4PQGdEC3nXi/fBBxXSRLP/srCiMF6w9ciDWYPrkaY/xd7rxPzlk/ia8vLcUFPWqD/veVOi6q9zxEtvgjPpDHLQrfm6dlfqmsQM6PNhKn64MTHwZYBVQ34OtQRcM04Ou1w8Pqq6w6QrzSMzHL+CcOSME3RnQhQkhnWeq93N0SNsWqY4Yu1g7uBwV3CZ2Fh9j0kNYeZEiab0Wjl2/FXG1W3v/3/A2SQo+CsxmGJHN4
+ xDzNOce1
+ VbByxqaq0TpsUqk3SYc5UTYqiAoeDjkgDuRjgLyv2JwNzH3kK7nsoMNpcIB1cwtogFlm0QylRu+jbBogdaGEjFkX9hK85eo4mZPqyfOt6gr4a6qOg6DZMBtm04MxUV9OrTE5HZJ7Gw2X5/vQJcoFTRnho0aFJi9DMjZORADcwadgTxUQ3V7jTdciaM6az/2SvUZWM2MZZCDX7axNbBwRX3FACtcLchxcoRW6G6HY/iOcUPQgI97bG9YmAnK33RJbKlaaNMppA9pHrkeHM4qFB7Fp0j0nQ3bItZOBQ2+tlZKDbW8bTRf4P6vZT2lMiKQ0d08EzGTAXcnrwxg2kWB1u6Zm8iAgbGKb37FE3zJsvAvq8k8EZeOgrBVUiMHplreFRBw885/9Whctp5ml59Q04dTZtyQRJfGxu+lBrCcb+3ZvvuVvRBlyQ6+G5zlEtOP0FhPItYrxI+rtObnnGpK5sBoGc4WB8XGmq8/O/LEwXmvmJXYPKwHCgdcp68UwufjWVB9N7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -179,203 +148,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
-> Changelog:
-> v6:
->  * Fixed wrong error check from pcim_p2pdma_init().
->  * Documented pcim_p2pdma_provider() function.
->  * Improved commit messages.
->  * Added VFIO DMA-BUF selftest.
->  * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
->  * Fixed error unwind when dma_buf_fd() fails.
->  * Document latest changes to p2pmem.
->  * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
->  * Moved DMA mapping logic to DMA-BUF.
->  * Removed types patch to avoid dependencies between subsystems.
->  * Moved vfio_pci_dma_buf_move() in err_undo block.
->  * Added nvgrace patch.
+On Mon, Nov 03, 2025 at 09:01:02PM +0100, David Hildenbrand (Red Hat) wrote:
+> > > I have an extremely heavy workload at the moment anyway, but honestly
+> > > interactions like this have seriously put me off being involved in this review
+> > > personally.
+> > > 
+> > > Do we really want this to be how review in mm or the kernel is?
+> > > 
+> > > Is that really the culture we want to have here?
+> > 
+> > Gosh.. Seriously?
+> > 
+> > I'm ok if this needs to be audited.  I have all the previous discussions in
+> > the cover letter as links.
+> 
+> I'm late to the party (or whatever this here is called. ah right, drama),
+> and I haven't yet dug through all the emails and certainly not through all
+> the of involved code changes.
+> 
+> Peter, I was a bit surprised by your messages here indeed, not what I
+> expected.
+> 
+> The "Your code allows to operate on pmd* in a module??? That's too risky and
+> mm can explode!  Isn't it?" definitely was absolutely unnecessary ... or
+> telling Liam that "he want almost mad".
 
-Thanks Leon. Attaching a toy program which sanity tests the dma-buf export UAPI
-by feeding the allocated dma-buf into an dma-buf importer (libibverbs + CX-7).
- 
-Tested-by: Alex Mastro <amastro@fb.com>
+It was a joke!
 
-$ cc -Og -Wall -Wextra $(pkg-config --cflags --libs libibverbs) test_dmabuf.c -o test_dmabuf
-$ ./test_dmabuf 0000:05:00.0 3 4 0 0x1000
-opening 0000:05:00.0 via /dev/vfio/56
-allocating dma_buf bar_idx=4, bar_offset=0x0, size=0x1000
-allocated dma_buf fd=6
-discovered 4 ibv devices: mlx5_0 mlx5_1 mlx5_2 mlx5_3
-opened ibv device 3: mlx5_3
-registered dma_buf
-unregistered dma_buf
-closed dma_buf fd
+uffd_copy() API was NACKed because of this.  Now the new proposal
+introduced it.  I made a joke saying Liam allows that to happen in his
+branch, but forbid mine.
 
----
-#include <fcntl.h>
-#include <infiniband/verbs.h>
-#include <libgen.h>
-#include <linux/limits.h>
-#include <linux/types.h>
-#include <linux/vfio.h>
-#include <stdbool.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/ioctl.h>
-#include <unistd.h>
+I thought it was super clear to identify.
 
-#define ensure(cond)                                                             \
-	do {                                                                     \
-		if (!(cond)) {                                                   \
-			fprintf(stderr,                                          \
-				"%s:%d Condition failed: '%s' (errno=%d: %s)\n", \
-				__FILE__, __LINE__, #cond, errno,                \
-				strerror(errno));                                \
-			exit(EXIT_FAILURE);                                      \
-		}                                                                \
-	} while (0)
+> 
+> Again, not what I would have expected from you, and I would assume that you
+> had a bad day and would at least apologize now that some time passed.
 
-#ifndef VFIO_DEVICE_FEATURE_DMA_BUF
-#define VFIO_DEVICE_FEATURE_DMA_BUF 11
+Sorry, no.  I won't apologize for that.  I was not fair treated, and now I
+think it's fair I at least make a joke.  
 
-struct vfio_region_dma_range {
-	__u64 offset;
-	__u64 length;
-};
+David, you're leaving, and I'm totally dissappointed that at this point of
+time, you ask me to apologize instead.
 
-struct vfio_device_feature_dma_buf {
-	__u32 region_index;
-	__u32 open_flags;
-	__u32 flags;
-	__u32 nr_ranges;
-	struct vfio_region_dma_range dma_ranges[];
-};
-#endif
+I thought it was obvious a joke, because I never thought having pmd* in a
+function in a module is not OK.
 
-static uint32_t group_for_bdf(const char *bdf)
-{
-	char path[PATH_MAX];
-	char link[PATH_MAX];
-	int ret;
+I always thought it was fine, Linux is not a micro kernel.  It's just fine.
+It is what happening in Linux right now.  It is so obvious.  In case it was
+not clear, I hope I make it clear now.  If I'm going to formally NACK
+Liam's series, I won't use this as one of the real reasons.  I just hide it
+in some of others that are real reasons.  However if to be fair, when this
+reason is removed, this series should also remove the "highlight" that it
+removed shmem.h header, because my v1 also did that when with uffd_copy().
 
-	snprintf(path, sizeof(path), "/sys/bus/pci/devices/%s/iommu_group",
-		 bdf);
-	ret = readlink(path, link, sizeof(link));
-	ensure(ret > 0);
+> 
+> I understand that you were upset by the previous feedback on the earlier
+> series.
+> 
+> There were some heated arguments in the last discussions, but most of them
+> were based on misunderstandings. I would have thought that once they were
+> resolved that we could continue focusing on discussing the technical details
+> again.
+> 
+> From what I can see you asked for actual code and when Liam came back with
+> some code that looks like *a lot of work* to me.
 
-	const char *filename = basename(link);
-	ensure(filename);
+It's Liam who stood out strongly pushing back what he at least used to be
+not familiar with.  This was, IMHO, rude.  It's ok to keep silent on some
+patchset that one isn't familiar.  It's ok to ask questions.  It's not ok
+to strongly push back without being extremely familiar with the code.
 
-	return strtoul(filename, NULL, 0);
-}
+He might be more familiar now, I wish he is. But it's Liam's decision to
+work on the code.
 
-int main(int argc, char **argv)
-{
-	int ret;
+We're adults, we do what we should do, not what we asked to do.  If we do
+what we asked to do, we should have our reasons.
 
-	if (argc != 6) {
-		printf("usage: %s <vfio_bdf> <ibv_device_idx> <bar_idx> <bar_offset> <size>\n",
-		       argv[0]);
-		printf("example: %s 0000:05:00.0 3 2 0x20000 0x1000\n",
-		       argv[0]);
-		return 1;
-	}
+My ask was trying to make Liam see that what he proposed is over
+engineering the whole thing.  I was pretty sure of that, he wasn't.  I
+explained to him multiple times on why it was an overkill, he doesn't
+agree. It's fine for him to disagree, it's Liam's right.  Then it's also
+fine for me to ask him code it up to notice himself, if I can't persuade
+him.  That's the only way for him to persuade me instead.
 
-	const char *bdf = argv[1];
-	uint32_t ibv_idx = strtoul(argv[2], NULL, 0);
-	uint32_t bar_idx = strtoul(argv[3], NULL, 0);
-	uint64_t bar_offs = strtoull(argv[4], NULL, 0);
-	uint64_t dmabuf_len = strtoull(argv[5], NULL, 0);
+I sincerely wished that works out.  As I said, then I'll properly review
+it, and then we build whatever we need on top.  I'm totally fine.  However
+it didn't go like that, the API is exactly what I pictured.  I prefer my
+proposal.  That's what I did: showing the difference when there're two
+proposals, and ask for a second opinion.
 
-	uint32_t group_num = group_for_bdf(bdf);
-	char group_path[PATH_MAX];
-	snprintf(group_path, sizeof(group_path), "/dev/vfio/%u", group_num);
+It's not fair to put that on top of me to blame.  He's trying to justify
+he's correct.  It has nothing to do with me.  He can stop pushing back
+anytime.  He can keep proposing what he works on.  It's his decision, not
+mine.
 
-	int container_fd = open("/dev/vfio/vfio", O_RDWR);
-	ensure(container_fd >= 0);
+> 
+> He really seems to care (which I highly appreciate) and went the extra mile
+> to show us how the uffd code could evolve.
+> 
+> We've all (well okay, some of us) been crying for some proper userfaultfd
+> cleanups for years.
+> 
+> So is there a way we can move forward with this without thinking in binary?
+> Is there some middle-ground to be had? Can some reworks come on top of your
+> series? Can so reworks be integrated in this series?
+> 
+> I agree that what Liam proposes here is on the larger side, and probably
+> does a lot of things in a single rework. That doesn't mean that we couldn't
+> move into that direction in smaller steps.
+> 
+> (I really don't think we should be thinking in terms of a CoC war like: show
+> them what I did and I will show them what they did. We are all working on
+> the same bigger goal here after all ...)
 
-	printf("opening %s via %s\n", bdf, group_path);
-	int group_fd = open(group_path, O_RDWR);
-	ensure(group_fd >= 0);
+We've got some second opinion from Mike, please read it first.  David,
+you're co-maintaining mm with Andrew.  I think it's fair indeed you provide
+how things should go together with Andrew.  It's fair you and Andrew
+whoever would like to make a decision on how to move forward.  I'm fine on
+whatever decision you want to make.
 
-	ret = ioctl(group_fd, VFIO_GROUP_SET_CONTAINER, &container_fd);
-	ensure(!ret);
+I think I tried my best trying to make gmem work as simple as possible.
 
-	ret = ioctl(container_fd, VFIO_SET_IOMMU, VFIO_TYPE1v2_IOMMU);
-	ensure(!ret);
+For the CoC report, I wish someone from CoC would also review it.
 
-	int device_fd = ioctl(group_fd, VFIO_GROUP_GET_DEVICE_FD, bdf);
-	ensure(device_fd >= 0);
+Thanks,
 
-	uint8_t buf[sizeof(struct vfio_device_feature) +
-		    sizeof(struct vfio_device_feature_dma_buf) +
-		    sizeof(struct vfio_region_dma_range)]
-		__attribute__((aligned(32)));
-
-	struct vfio_device_feature *ft = (struct vfio_device_feature *)buf;
-	*ft = (struct vfio_device_feature){
-		.argsz = sizeof(buf),
-		.flags = VFIO_DEVICE_FEATURE_GET | VFIO_DEVICE_FEATURE_DMA_BUF,
-	};
-
-	struct vfio_device_feature_dma_buf *ft_dma_buf =
-		(struct vfio_device_feature_dma_buf *)ft->data;
-	*ft_dma_buf = (struct vfio_device_feature_dma_buf){
-		.region_index = bar_idx,
-		.open_flags = O_RDWR,
-		.nr_ranges = 1,
-	};
-
-	ft_dma_buf->dma_ranges[0] = (struct vfio_region_dma_range){
-		.length = dmabuf_len,
-		.offset = bar_offs,
-	};
-
-	printf("allocating dma_buf bar_idx=%u, bar_offset=0x%lx, size=0x%lx\n",
-	       bar_idx, bar_offs, dmabuf_len);
-	int dmabuf_fd = ioctl(device_fd, VFIO_DEVICE_FEATURE, buf);
-	ensure(dmabuf_fd >= 0);
-	printf("allocated dma_buf fd=%d\n", dmabuf_fd);
-
-	int num;
-	struct ibv_device **devs = ibv_get_device_list(&num);
-	ensure(devs && num > 0);
-	printf("discovered %d ibv devices:", num);
-	for (int i = 0; i < num; i++) {
-		printf(" %s", ibv_get_device_name(devs[i]));
-	}
-	printf("\n");
-	ensure(ibv_idx < (uint32_t)num);
-
-	struct ibv_context *ctx = ibv_open_device(devs[ibv_idx]);
-	ensure(ctx);
-	printf("opened ibv device %d: %s\n", ibv_idx,
-	       ibv_get_device_name(devs[ibv_idx]));
-
-	struct ibv_pd *pd = ibv_alloc_pd(ctx);
-	ensure(pd);
-
-	uint64_t offset = 0;
-	uint64_t iova = 0;
-	int access = IBV_ACCESS_LOCAL_WRITE | IBV_ACCESS_REMOTE_READ |
-		     IBV_ACCESS_REMOTE_WRITE;
-
-	struct ibv_mr *mr = ibv_reg_dmabuf_mr(pd, offset, dmabuf_len, iova,
-					      dmabuf_fd, access);
-	ensure(mr);
-	printf("registered dma_buf\n");
-
-	ret = ibv_dereg_mr(mr);
-	ensure(!ret);
-	printf("unregistered dma_buf\n");
-
-	ret = close(dmabuf_fd);
-	ensure(!ret);
-	printf("closed dma_buf fd\n");
-
-	return 0;
-}
----
+-- 
+Peter Xu
 
 
