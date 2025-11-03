@@ -4,67 +4,68 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF4A1CCF9FE
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 03:35:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 09C8FCCF9FE
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 03:35:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 13E0A8E001C; Sun,  2 Nov 2025 22:35:53 -0500 (EST)
+	id 5AB358E001D; Sun,  2 Nov 2025 22:35:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1160C8E0015; Sun,  2 Nov 2025 22:35:53 -0500 (EST)
+	id 582A98E0015; Sun,  2 Nov 2025 22:35:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 053298E001C; Sun,  2 Nov 2025 22:35:53 -0500 (EST)
+	id 4992A8E001D; Sun,  2 Nov 2025 22:35:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id E89588E0015
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 22:35:52 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 7E51B1A0A95
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 39E1F8E0015
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 22:35:55 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id CE5901A0A91
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:35:54 +0000 (UTC)
+X-FDA: 84067881828.06.5F96D6E
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 93CA540009
 	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:35:52 +0000 (UTC)
-X-FDA: 84067881744.26.3DDE4E4
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A31924000A
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 03:35:49 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pDisz5Xi;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cAsCMg1B;
+	spf=pass (imf27.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762140950;
+	s=arc-20220608; t=1762140953;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=WPxs96Hs/koLnIBv2CHx6Mog13FyM3+Pfhd5CDpvcDQ=;
-	b=ag9xYptQcPVlNMDzxk2xRb8TT8yTIkW/X/0bCwCurTPAkxMf4SzyrN9UZRC4apfu6behGR
-	u7CwUEje1fwta04JTykkX9cmlLatWAnx3JDD9ACpvXyFAZNVSVIyreAGZF6qfA/dUestgE
-	wyLw4PwyQR5TM/4O2quzUKZ6B5/M8EI=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=5iAlRuAIsi2GE5ItcdrGuYTZod15rl8M0hhAckNHMcs=;
+	b=fh4pZl99UG/jgI7hTan6LqGzNymnANrV7HMebWk2ov+xmd3TMufqMq0N+T5LsAgOokCw4q
+	wbR2Lfh/WNa+3z9wAPtmVSkv8NCRfZw6+aP+lGHbZevLn2qNlAigQqr6XD3UoTWFpSYm0N
+	i3e7gpH2KQeZU1cS3VQtsNCkVRedsSI=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=pDisz5Xi;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf07.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762140950; a=rsa-sha256;
+	imf27.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=cAsCMg1B;
+	spf=pass (imf27.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762140953; a=rsa-sha256;
 	cv=none;
-	b=f8k63+DgxCCln+3mIhuJOWUi3Lv7tKXctgwCnx5K7/may6eDaKbDM4nWe2dmuoKqEUDUie
-	DcHEgGTwXj3sJT5bxcTf3HrURp+BRnyrDW1TkjYOeKRruHKbtctH0igs17lk7pzwg0kGGp
-	BTlJxUbNgjJzXSPcixbxZ4J7XwFCpyo=
+	b=aHrPo0MmELTHktrapaX6+BGeopIQwjxyCIFhjIcnPG17pjdwX7YoNyoQL2s3V97hL1D5qg
+	dJ2Kb4j+cMBXE5KaW+w62YcRSXnxJgz2eFlVLwd++/DgqUB8UsOwbsG3jRJGb1u3+xrJlO
+	5pJmGRn+d5Be/uC3mSHwEkragZFZ4i4=
 dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
 	c=relaxed/relaxed; q=dns/txt;
 	h=From;
-	bh=WPxs96Hs/koLnIBv2CHx6Mog13FyM3+Pfhd5CDpvcDQ=;
-	b=pDisz5Xis5C/jNgPZPCj4fd73OzkDQPHOjqPBdGsn5EocB4cKbPdWwXHji3iShhaxUFcN5oJa
-	RpWFYbFWrrmpd8ulEATo1MF23QHDhANbAHoAI26Fyd0tm0Y1IGIEGbI/RpaD4zQjFMUpPMecuqr
-	jFdaCtWi8qv6+sLvpAPM4ag=
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4d0HJ126Ycz1cyNp;
-	Mon,  3 Nov 2025 11:34:09 +0800 (CST)
+	bh=5iAlRuAIsi2GE5ItcdrGuYTZod15rl8M0hhAckNHMcs=;
+	b=cAsCMg1BrDm96i8ognht4vAKSaZKt8SVQAMotpszTJBJw3IMv69XAQmpy1g5RnlhCc2rIjwzt
+	gXbsfEiX7W4ucdEJCpVZk59tAx3Xu8OTPFH61xGh3ZdGoquc2Z3PrYVIwpxPVPxTNV+VtESZRrv
+	ODY/L0Sak3nX9dqGFpx0wgg=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4d0HJ63dr3zmV8P;
+	Mon,  3 Nov 2025 11:34:14 +0800 (CST)
 Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A92C18001B;
-	Mon,  3 Nov 2025 11:35:43 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id 7950E140277;
+	Mon,  3 Nov 2025 11:35:48 +0800 (CST)
 Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
  kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Mon, 3 Nov 2025 11:35:42 +0800
+ 15.2.1544.11; Mon, 3 Nov 2025 11:35:47 +0800
 From: Xie Yuanbin <xieyuanbin1@huawei.com>
 To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <akpm@linux-foundation.org>,
@@ -75,24 +76,26 @@ To: <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
 CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
 	<linux-edac@vger.kernel.org>, <will@kernel.org>, <liaohua4@huawei.com>,
 	<lilinjie8@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: [PATCH 1/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
-Date: Mon, 3 Nov 2025 11:35:35 +0800
-Message-ID: <20251103033536.52234-1-xieyuanbin1@huawei.com>
+Subject: [PATCH 2/2] mm/memory-failure: remove the selection of RAS
+Date: Mon, 3 Nov 2025 11:35:36 +0800
+Message-ID: <20251103033536.52234-2-xieyuanbin1@huawei.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251103033536.52234-1-xieyuanbin1@huawei.com>
+References: <20251103033536.52234-1-xieyuanbin1@huawei.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.67.109.17]
 X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
  kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Queue-Id: 93CA540009
+X-Rspamd-Server: rspam11
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A31924000A
-X-Rspamd-Server: rspam03
-X-Stat-Signature: 6mo9in4nzpgu67r9xxiq8aiwua93etm1
-X-HE-Tag: 1762140949-661444
-X-HE-Meta: U2FsdGVkX18GRNsbyqmJ47b5g/7qoyJPzrOffZWnSnHJZ3dir+LXlkKbhBlwB9VwF1yowx1kz6eIUCrLhtBT99Gaizf+m6A7QTVpVjZ84LKFnsF8m9jPbPDvG718Sq/aVq50h11LYEOTsSINGQ87/ZwWoddKk2UkTyK/ehqg7sqL4yRt2gfnQiw8J5qlIortWkX6oUVBLcJhkmO5cVvgD1SHL++8WSOSWSUfUXa9gE2am6Fz31k5IliMkKkrvz+VicvM0I1/nPsGi/bz9vVdlREySZSRUrlrQbCUQYkmajw/rmm7NLZRZcfdItNZln7RwNbDyDV75xHILSNDb5w+wZ6BAz8jb9MyEE6srqTsXVjqzeoASW5Grcdp2tm9nUplcU22A42ffc924gftGm0tLXXVR+152fWji8YTRVhFyrf1U4r8cny0zaR/6oAylDib9o90a+J8s2Xxiod0Z4Lfv1LkfW9HasjGgSRxeIDmcrG2i0mS72htzOZPH7yo6ukPt0mCJ1F6kA8PVpegsbZ+l80X48mxDHLMXhALUNJi8jXZyq18+n9ZAHmBbirlkOnOu7owIycHt3otkCBsNt3cywS7WBTvErt8mnf0wGIgKL8MeOd1j4XEWuC9WAKLfkUmCkmadLnuBudq67IImiqD6j2unYr8d60SGC3snvC+BJbd3y3q6w58skf/IFicteyPSXYOABj5upYihUxrddxozFh09Pl3SiT9g9PnxloUZr6vyoroDLlwvobayJEsVWZrUgYIpSFV9ibZ1zVvyZ9epXoOY7HVrA9JQSLxB6UFN2dC4KcJ1UTGX3cFpLKfBCVnoS1RG4CpwqCr2l52U5G2SLsDFhM16/83cQRFVmP8mCluzLJdHWlwmTy8dpo+XxCsUR3ODUzp2siGkmdS4xKO/7xeXJcTCK6CXKWSRM8NUyzd0WV6HAu6vUmWJMcLFF5jEkwhEQj0MOiwFFPrd7L
- XP8hlpYY
- t5+8nkag6pDwvxWFxBe+xsVojtqmrQU2xT/xgWI0+We+kJpcSlIWWy0zCXkQ+YXUi3+/CFZLajIYjC/uRnBv9Ewmb+PNDoENIaHL1bauyves/dT9y78lauVIVAmjC5dMWtxMDZsA+29+1a+11sRloBjr4LsvzxSXWl/1Tu+iK6638+qcNqQL46UvWvOAeBQ0M3lbjA7Zj/RqG0aODADlJLuhDXdVoJE+EdqMKXwBcwLTu44ZY5QhvbBCuL50WEIfZufeRG7uOQErJFDdzwCqqTKDBywyhsUxc5+AmspHLj7JCXH6jJRZOH7JB2djfF3/JVA4YA9xNIeIUDD/1OxuhOREoswi7Oop1szRy/hZfvVvusSU=
+X-Stat-Signature: tk7y9zo5jpu1kh675eognoxjmirfrh65
+X-HE-Tag: 1762140952-550859
+X-HE-Meta: U2FsdGVkX18hcomkG1R9dvGYeTB3yjYcnYMQWEeO9lJwpsv5dYWntULGIhNrNZlgakunWpEAa5Q+qa3xagwXuxvkyVt13WDOfOfFzjKNMtiC6WUA3v2jMJMNnIQAUOXWbzzP4yDFg55pngSFcrLh8dDcq7pwuq3A/k/q9Cyue8+LYQ+LXgTORbDg1+rTXrtDnjlXy3TkoKTFZRIZNpCEPvSdsrkuiK5sRKinQCnhiSXtcx120hk9TYQjIzP+bvawPxgaqcu30SEDNCz5+LvK7Db9TO9SW1MLwGNiKeq/uZyFScNhJRdeGTP0woqWDnLKRatLV9KflbeV/A53fELDWU8GJ8CVAYILeKzCEnSpb58adKVlJ31FwhIhX5L3U5oMYLuWavLbG0JZere5rzxdpy6g3dJ3S/dnz1ZvMT9PC9nglXWkhvY2VDnJXBz7lZifh0o5axrY2dehdFhyD0AcrQB/zAeOzC63pxAOreQwZMnkVkoP/OPTfJ0hfLkVd3k15VX8FjeOrG7WsB8uq7VJhB9CmYlN20hgtx1pu44lMZCAMXrwZtG6nH2z7RkiP5dJLh3N1ByL0vf0gjXzN8kMwThmSzTw9PR8PCAztgpiZvHsgAri4SuRDjdVwRQS49gGlhz4UN0GyQpk7wJwOr21e0aLnE7hT9A0mH9CS1c4mFs16FMkSJVzh9ZV+eWqE4WEoSGJacMnRrdD+eZ87bI+U1NslOm22+Q5JmYQ2jE8N6fj41Ckib9SnCsC/FEGhlmhgNJwKrnzNWSYDduZVRLiBPvNPeWHNlsvu8Jpe4TLsl2Qy9LL39ssRdFgsIbyt7+BV1AeMImp8K1RBcpGxL4Krz0b4zUVpc94g1KZgLe8RgwXagb2KJ0LOj8Bdppb9fZNE7dKG/79w+pViG+7FfU+/iEso+ImCr6Ekdfr0G5DFhj160WBzSC3aBnXN2HiQdPcIcsI0mNz6E3wOgijZ6o
+ H2sNSnkq
+ QGX4wTnhKx4tans/vuktJZR3Zx/R+7vFsIZHPVJOTYc8uPmK2jmm+6Ve05rLcxNwNxO/Co9nGVXC/8wKZIw3bP+hS40vAwhXIxOmP5UZBySy4vBnWwczuYxtJqYR7xZcfZAFsfmdyWsLKIL9Q0ZZ2U4tkPy67ddY8tDuhK95Xu/z2AgL8tB++tr0ce9nkBLmImGvbyx3XnfjOyWnQPiPp7461zp2bUIxFZ4OU4MhN2MZm5SepFH6JMavLAlZWUPLYfZZO6xb6yiCuEQSlEvAMhXBCbHuRtJzXmDA/HZkEQHk+EbMZe6bToqdYvy63E2tbB7fFnVbbjffjeiABpS4QIv+56bFs7dHcO85v/zUFjQIwtas=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,37 +104,52 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The historical commit d949f36f1865c60239d4 ("x86: Fix hwpoison code
-related build failure on 32-bit NUMAQ"), disabled x86_32's
-memory-failure when SPARSEMEM is enabled, because the number of
-page-flags are insufficient.
-
-The commit 09022bc196d23484a7a5 ("mm: remove PG_error") removes a
-page flag, so memory-failure can now be enable now.
+The commit 97f0b13452198290799f ("tracing: add trace event for
+memory-failure") introduces the selection of RAS in memory-failure.
+This commit is just a tracing feature; in reality, there is no dependency
+between memory-failure and RAS. RAS increases the size of the bzImage
+image by 8k, which is very valuable for embedded devices.
 
 Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
 ---
- arch/x86/Kconfig | 3 ---
- 1 file changed, 3 deletions(-)
+ mm/Kconfig          | 1 -
+ mm/memory-failure.c | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index d55c01efd7c2..f9ee57a55500 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -750,13 +750,10 @@ config IOSF_MBI_DEBUG
+diff --git a/mm/Kconfig b/mm/Kconfig
+index a5a90b169435..c3a8e0ba1ac1 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -738,11 +738,10 @@ config ARCH_SUPPORTS_MEMORY_FAILURE
  
- config X86_SUPPORTS_MEMORY_FAILURE
- 	def_bool y
- 	# MCE code calls memory_failure():
- 	depends on X86_MCE
--	# On 32-bit this adds too big of NODES_SHIFT and we run out of page flags:
--	# On 32-bit SPARSEMEM adds too big of SECTIONS_WIDTH:
--	depends on X86_64 || !SPARSEMEM
- 	select ARCH_SUPPORTS_MEMORY_FAILURE
+ config MEMORY_FAILURE
+ 	depends on MMU
+ 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
+ 	bool "Enable recovery from hardware memory errors"
+-	select RAS
+ 	help
+ 	  Enables code to recover from some memory failures on systems
+ 	  with MCA recovery. This allows a system to continue running
+ 	  even when some of its memory has uncorrected errors. This requires
+ 	  special hardware support and typically ECC memory.
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index f698df156bf8..baf2bd79b2fb 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1276,11 +1276,13 @@ static void update_per_node_mf_stats(unsigned long pfn,
+  * setting PG_dirty outside page lock. See also comment above set_page_dirty().
+  */
+ static int action_result(unsigned long pfn, enum mf_action_page_type type,
+ 			 enum mf_result result)
+ {
++#ifdef CONFIG_RAS
+ 	trace_memory_failure_event(pfn, type, result);
++#endif
  
- config X86_32_IRIS
- 	tristate "Eurobraille/Iris poweroff module"
- 	depends on X86_32
+ 	if (type != MF_MSG_ALREADY_POISONED) {
+ 		num_poisoned_pages_inc(pfn);
+ 		update_per_node_mf_stats(pfn, result);
+ 	}
 -- 
 2.51.0
 
