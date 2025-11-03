@@ -4,120 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B1E1CCFA00
-	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 02:32:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D74CFCCFA00
+	for <linux-mm@archiver.kernel.org>; Mon,  3 Nov 2025 02:45:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D5F7F8E0018; Sun,  2 Nov 2025 21:32:13 -0500 (EST)
+	id 409B28E0019; Sun,  2 Nov 2025 21:45:54 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D10158E0015; Sun,  2 Nov 2025 21:32:13 -0500 (EST)
+	id 393C28E0015; Sun,  2 Nov 2025 21:45:54 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BFEC18E0018; Sun,  2 Nov 2025 21:32:13 -0500 (EST)
+	id 25B038E0019; Sun,  2 Nov 2025 21:45:54 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id AE0328E0015
-	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 21:32:13 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5C53C5B7B5
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:32:13 +0000 (UTC)
-X-FDA: 84067721346.23.CAD2BBE
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 9681112000E
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:32:09 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 0F11F8E0015
+	for <linux-mm@kvack.org>; Sun,  2 Nov 2025 21:45:54 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A320712BF3A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:45:53 +0000 (UTC)
+X-FDA: 84067755786.10.D52FDF9
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7DADB4000A
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 02:45:50 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="Bc/dXkhn";
+	spf=pass (imf07.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762137131;
+	s=arc-20220608; t=1762137951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=f7NJ5BHZawfzP3SjdeFGSHGjJ23dkO6ZAs2KcuU9kho=;
-	b=SVX1q776w02VslUayt+xrKReLN7HfhTO8XRTRFI0bnhmYehQrEcxB3wCCbXa7NHg02FtVd
-	0PddMDe6qYcYIlWn0epvAMzmw5NdkbRNtKDo/z51O4mC1Azu+b4D7cGce2Y2csNllbBReW
-	HFAWvzcUHCJrGv3DZMV3OdR50182fvo=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=NLsNdV5msKuuZDhVKS6JixW7JdJt6WuPTHBa//DL1Zs=;
+	b=5IZfikJE12Ri5jpsJDwIg14eeK7XQIRIbWEGwHCtjb7FuRYr9Ax7AMH0JZ05wQcu+ADA6d
+	0buqHFmzB6ag8+P7rDDayZLQ3sK/YNhp4bRtdeIimqAKX937fHt7in6srRf0yhVwaDIDPp
+	sEbhDsIeL4wKvacdUDT5U1CmGRtsXMA=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=none;
-	spf=pass (imf29.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762137131; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="Bc/dXkhn";
+	spf=pass (imf07.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762137951; a=rsa-sha256;
 	cv=none;
-	b=jXTmXVMof0Ql1QhavIxquMM4wNX+qp9bfQkBDSackX0WK7tLQ0u1Wse2PP7F2QXcXwQfp4
-	zNYiCIEVTBR4pgktIPD8CcEFroVX9TKHtbiKmthS+tU8S5+KowPXxVf7kxT0gvUlbCg+pG
-	/CDPM4SH0J0BOo3mirMozcFQta/wrcU=
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d0Fw90qwMzYQthc
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 10:31:53 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.112])
-	by mail.maildlp.com (Postfix) with ESMTP id C31441A18C4
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 10:32:05 +0800 (CST)
-Received: from [10.67.111.176] (unknown [10.67.111.176])
-	by APP1 (Coremail) with SMTP id cCh0CgDHN0slFAhpPKf4CQ--.38631S2;
-	Mon, 03 Nov 2025 10:32:05 +0800 (CST)
-Message-ID: <400165fe-18d5-4a78-b4bd-4e5b55de0c04@huaweicloud.com>
-Date: Mon, 3 Nov 2025 10:32:04 +0800
+	b=7iuLpp1uxXJ5sS5Rybm/5dvCoFh+o8cuwyRI49GixcS85fFR1wEMT/7ZE4RW2n6z0rY43K
+	BCO5o/sqjBiSnmCteSy6BcuklpvOwvjQWhnFJyuBj9UbT/HVJgu9dTzLIkkZahRnZ0Nxg/
+	CZ3GB//A3NOdBGW325tI9fvAoSqBVpM=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=NLsNdV5msKuuZDhVKS6JixW7JdJt6WuPTHBa//DL1Zs=;
+	b=Bc/dXkhn8ilkZLFe6YzY1QCSQAJJJwKteCLud2KsWiytzOJe2HR+BaGQHhmNBZ9Gdq/c+o/4h
+	fFHbI1leHPUoP0A2KXJ/+quk5SEfIjImUhqGRXRkbqx7122uwyEPP5qcrf6D6tWFVLmY+QS1720
+	b0IWjPHV9G4LqsAQzNNwwkQ=
+Received: from mail.maildlp.com (unknown [172.19.162.112])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4d0GBM10DjzmV7D;
+	Mon,  3 Nov 2025 10:44:11 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 22AD5140230;
+	Mon,  3 Nov 2025 10:45:45 +0800 (CST)
+Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 3 Nov
+ 2025 10:45:43 +0800
+Message-ID: <2a383d7d-e4bf-4762-ab01-4bbb2756e764@huawei.com>
+Date: Mon, 3 Nov 2025 10:45:42 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 11/33] cpuset: Provide lockdep check for cpuset lock held
-To: Frederic Weisbecker <frederic@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
- <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
- Bjorn Helgaas <bhelgaas@google.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
- <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
- Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
- Lai Jiangshan <jiangshanlai@gmail.com>,
- Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
- <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
- Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
- Roman Gushchin <roman.gushchin@linux.dev>,
- Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
- Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
- Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
- Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-12-frederic@kernel.org>
- <b94f6159-a280-4890-a02a-f19ff808de5b@huaweicloud.com>
- <aQTe6X5XXSp8_3z5@localhost.localdomain>
-Content-Language: en-US
-From: Chen Ridong <chenridong@huaweicloud.com>
-In-Reply-To: <aQTe6X5XXSp8_3z5@localhost.localdomain>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:cCh0CgDHN0slFAhpPKf4CQ--.38631S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tryxCw1kAF1UJrWfKw4DJwb_yoW5Jr1rpF
-	yDKFyrCF4rZr4UuFy2qw17uF1vqw4kWF1UGFn5tr18XasFvFn2vF1v9r1Ygr1F9rs7Gw40
-	vF17Wa9I9FWqyrJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvFb4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26rWY6Fy7MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWrXVW8
-	Jr1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7
-	CjxVAFwI0_Cr0_Gr1UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AK
-	xVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvj
-	xUsPfHUUUUU
-X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
-X-Rspamd-Server: rspam10
-X-Rspamd-Queue-Id: 9681112000E
-X-Stat-Signature: wmqs5zab4u3ssicbzkh6f533a53b8r3c
+Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
+ BLK_MAX_BLOCK_SIZE to support LBS
+Content-Language: en-GB
+To: Matthew Wilcox <willy@infradead.org>, Shakeel Butt
+	<shakeel.butt@linux.dev>, Michal Hocko <mhocko@suse.com>, Vlastimil Babka
+	<vbabka@suse.cz>
+CC: <linux-mm@kvack.org>, <akpm@linux-foundation.org>, <surenb@google.com>,
+	<jackmanb@google.com>, <hannes@cmpxchg.org>, <ziy@nvidia.com>,
+	<jack@suse.cz>, <yi.zhang@huawei.com>, <yangerkun@huawei.com>,
+	<libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
+References: <20251031061350.2052509-1-libaokun@huaweicloud.com>
+ <aQRkTKTm08lSJZZi@tiehlicka> <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
+ <aQTHMI3t5mNXp0M1@casper.infradead.org>
+ <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
+ <qfo7raavlfupjqwbgl2mnmfvmn3z5oslnxcehorib3xjdgf4yo@bp76xmxplre7>
+ <aQTb0NdyN3tU50ss@casper.infradead.org>
+ <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
+ <aQTqELGGKCN3JTIm@casper.infradead.org>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <aQTqELGGKCN3JTIm@casper.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.254]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
+X-Stat-Signature: p7x6s4cmcygrz1zfzijrqpbfjsbi9ru9
 X-Rspam-User: 
-X-HE-Tag: 1762137129-849406
-X-HE-Meta: U2FsdGVkX19uRy5GUKNSAa9UErjLLc6OsM0z+J0X3HUzlKf7YsXIve9sWZ9OJ0lb4vjLuWaSJ7WjVYgUtA7fi19KlZYvKDD+WKiFh3nFuVWFLbmLO5ix95nau0l2RD7BqnfeT9hiLOf+C9HShdc85vqQDH+kZ3APRC1Mq9K5Y3xSSoH7wFJ4y282zXDRcuL7nWWyf0ZqlM7NQpHE78GJuEmmkQ0wsYDfLCVqt2XsAQNuZNEM9Vm6P0hbSiYKX85l6N9kdOftOMT7MwEDWl73WvSZtiqXO/snqdIx3ndLN50uEdtON3d8MBRipnRu3f5Fd7contRl+z6Pl4X/LSVQ+Z78KyTmYjeLKCZqGmswJnsJNjwZqTDcxRC06FekDum07Vv52fBB8YT5nBylN7hOZ38Pk6n7fwo2NqlRhOMjZAD2ZwFV5SOirGw4uLKq13sKOHHms1D8+n3uqBj2BV221XH6hfH+f7hXUM92oi/lc6vX14OYN9Gw6O1XnnPhCaP6b3wycOlsNkAWMrnR/AJaCGnpKjZwBAtyTpWgjzcZlTAsc9pEFrvsk/YZGHX1qTgXPkDgFxoRPtQ7NkF8jMLzSmRb2Vza90NRJMCuPOTg6Rr0PWhOTiuHgU6siJkUYOTbYB0djknZ3nQcWOHF2KWSy7sYNVqkRkVGUULNoyIdkSV3FxJiyNJQIWTOBaB++t6chP7uKmTX5MS260rXRLXMLWFkryBLUxMkWcadPJenZur5SWkhYYqpQKU7rZRltOT+hXtgyPp9z6eaTFvU7EsrjDHQCH9yY76QkLxqx6M3zOkmTqv5MYXWTrwqb+HyVY969amUdVuK6h0Nf7kIvZru72TE6HRLfIodyLp9KpRFhA3Yvnhgrbn6QU1l+a2ReCW62W9uaF/oc6mLI1wPVMrHOdaRcdPQER6+3ZyyyqE5Gi0FtDDdg7/XuWVpwHRdepuOBOW85fKs2chPANsjZTV
- E6lWII4D
- VLZnpmVDcsXl9bkLW4scOjB6zUI6W51xTi0aftKF8o8Etxn0zN1JRi/JfWRk+N3bkxbbhcVB0fwV+J+QNxoD24HG2JAfYXIsxAvMQKc6bAg8keegk2/6KSJIZJsPybUyMOMIsQ/6GHEnMMwa+Ou1DWQPriji8Gtg6inaPJC2p8ize/J4=
+X-Rspamd-Server: rspam07
+X-Rspamd-Queue-Id: 7DADB4000A
+X-HE-Tag: 1762137950-238219
+X-HE-Meta: U2FsdGVkX1+/rxmPrFy7tB6QE35TCLBl3YmsbISKWXEQQZr4qaQHkyyVI2u6vJt241c9yQMyjr2uxDh3UxL9yOzjLdX6rvhwNBusTWYqArKBLmyRRfCebAyMJYbnu+zZX3EX7J5Ti5i0uMZWilU5hjKy8KEagZXlBC7RxFnt8x5FEa5dkxbnKj2F6N8exM4ICcGmyYzbgvLE+mRv1Pn0lpRN7FlBDGPaj3GuQ5sS9RS1bXw1N4Nn4N1oTrKFXjUqUzi2xJll9/EirowfAWgIxB1i6/F6Q3qVHpnUsaZPHpBaVTeBovfnhKSXTdOmearxiTqwmdzYDodzibu+cMuCgRVvGK9J4wmIHEN5g4tb6niQNo/zSQOxtu/+G9mmzLZx8PYmHKFaXMc1JlQ9FtONxS/8aPcgvvO31ea8sbMSEeDgGVYydMhbPPnPyQ7Sl6aM49ZkNq5HA+b/QYtETEue2eJzAPJ3bAm9DlCWbBNEF4EiX7jEAKNnF0WoMXA8xXSSgFV4+gG5g+QGiSu63rXspJ3cHH+TR9nvKLxHpCaQP2+8Ni7MP0EtcA7lLNuj/4RToWszulaDZB0iECZok/EFs/clYOi8uNPvS3VdmgEdaMgKw8JXvOPESylLOuUkfwb/zSOs5WmROfA1DD15KvGxBnAjsk1qJnEYgPXJGmVB3hnMtsTbN0ohDoJeIif964aYzUfHwJfu9TSpZCiXdkn9ugUN+eMMBtQveCTqFSkoo+cxmyAODUT5VkPzvee4yJsZM2kNRzWB8gc9JtN9LP6r3Qt3Jtk0haXFq4qmc1TPvLIY3os8to6AzNYzbx9xfpHLr8Pbyr0LRj8//GZhk5X3iGn0DB/5koYGhe3gHiTtYyvlSqqcmi0eIMkMLaaHL3mrtdVR+HRS9MdQNUwv7IGvn02v7k5g0GpkEJ/I2IPl8vMls4E5LZeV4XgWbztXAwXdesHDYFb7Phyu33xDptl
+ 4yo0xN9p
+ gv+7p9vbPsXnEQtQ7MckOXY203T16DhutwLltnH1HSmuquuS+eUaIt/MiSYd5XchPjXmQ8VXXaYHNiDVc5swUWtodrN0BZNfbV7s7ajDgJUDVHQjfL8LC/m8KHaiVMzsXGOv5a6cigy0NgKMHRXkSZUxuQHrBUdhZMXt8r5XrA85t2hk30REyYzKHEdCo0BvoAb8qvLb/vzP5CZD8C9HwrGJrd0tFPyVkKmhXFzLXWEHevr8veq78saa0bqAw7anmHZ+orHdZiQjQVPZGA0y7VDVhwN2TiF/IxE/m6KIOTgXBnwkIr7N6UhDGh7RUrw3YH2o4wMff6spL8Qr0Rkhsl/ojJfqewEmySQbs79EAT7nGBQxWMndXhy9pVVVE645BToOLftps8ekPoAppHahGhxAPaKHpa1lur3be
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,84 +111,44 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi,
+
+Sorry for the late reply, I was traveling of office.
+
+Thanks to Matthew for helping with the explanation.
+
+On 2025-11-01 00:55, Matthew Wilcox wrote:
+> On Fri, Oct 31, 2025 at 09:46:17AM -0700, Shakeel Butt wrote:
+>> Now for the interface to allow NOFS+NOFAIL+higher_order, I think a new
+>> (FS specific) gfp is fine but will require some maintenance to avoid
+>> abuse.
+> I don't think a new GFP flag is the answer.  GFP_TRUST_ME_BRO just
+> doesn't feel right.
+
+Agreed. If we add a new GFP flag, it will be hard to prevent its misuse,
+and __GFP_NOFAIL is a good example of this; we simply have no way to
+monitor all callers.
+
+>> I am more interested in how to codify "you can reclaim one I've already
+>> allocated". I have a different scenario where network stack keep
+>> stealing memory from direct reclaimers and keeping them in reclaim for
+>> long time. If we have some mechanism to allow reclaimers to get the
+>> memory they have reclaimed (at least for some cases), I think that can
+>> be used in both cases.
+> The only thing that comes to mind is putting pages freed by reclaim on
+> a list in task_struct instead of sending them back to the allocator.
+> Then the task can allocate from there and free up anything else it's
+> reclaimed at some later point.  I don't think this is a good idea,
+> but it's the only idea that comes to mind.
+
+I am not familiar with the MM module, but here is a rough thought:
+
+What about passing the minimum folio order to the allocator?
+We could then ensure that pages are freed and allocated using the list
+matching that specific order.
 
 
-On 2025/11/1 0:08, Frederic Weisbecker wrote:
-> Le Tue, Oct 14, 2025 at 09:29:25PM +0800, Chen Ridong a écrit :
->>
->>
->> On 2025/10/14 4:31, Frederic Weisbecker wrote:
->>> cpuset modifies partitions, including isolated, while holding the cpuset
->>> mutex.
->>>
->>> This means that holding the cpuset mutex is safe to synchronize against
->>> housekeeping cpumask changes.
->>>
->>> Provide a lockdep check to validate that.
->>>
->>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
->>> ---
->>>  include/linux/cpuset.h | 2 ++
->>>  kernel/cgroup/cpuset.c | 7 +++++++
->>>  2 files changed, 9 insertions(+)
->>>
->>> diff --git a/include/linux/cpuset.h b/include/linux/cpuset.h
->>> index 2ddb256187b5..051d36fec578 100644
->>> --- a/include/linux/cpuset.h
->>> +++ b/include/linux/cpuset.h
->>> @@ -18,6 +18,8 @@
->>>  #include <linux/mmu_context.h>
->>>  #include <linux/jump_label.h>
->>>  
->>> +extern bool lockdep_is_cpuset_held(void);
->>> +
->>>  #ifdef CONFIG_CPUSETS
->>>  
->>>  /*
->>> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
->>> index 8595f1eadf23..aa1ac7bcf2ea 100644
->>> --- a/kernel/cgroup/cpuset.c
->>> +++ b/kernel/cgroup/cpuset.c
->>> @@ -279,6 +279,13 @@ void cpuset_full_unlock(void)
->>>  	cpus_read_unlock();
->>>  }
->>>  
->>> +#ifdef CONFIG_LOCKDEP
->>> +bool lockdep_is_cpuset_held(void)
->>> +{
->>> +	return lockdep_is_held(&cpuset_mutex);
->>> +}
->>> +#endif
->>> +
->>>  static DEFINE_SPINLOCK(callback_lock);
->>>  
->>>  void cpuset_callback_lock_irq(void)
->>
->> Is the lockdep_is_cpuset_held function actually being used?
->> If CONFIG_LOCKDEP is disabled, compilation would fail with an "undefined reference to
->> lockdep_is_cpuset_held" error.
-> 
-> Although counter-intuitive, this is how the lockdep_is_held() functions family
-> do work.
-> 
-> This allows this kind of trick:
-> 
-> if (IS_ENABLED(CONFIG_LOCKDEP))
->    WARN_ON_ONCE(!lockdep_is_held(&some_lock))
-> 
-> This works during the compilation because the prototype of lockdep_is_held()
-> is declared. And since the IS_ENABLED() is resolved during compilation as well,
-> the conditional code is wiped out and therefore not linked. As a result the
-> linker doesn't even look for the definition of lockdep_is_held() and we don't
-> need to define an off case that would return a wrong assumption.
-> 
-> Thanks.
-> 
-
-Thank you for your explanation
-
--- 
-Best regards,
-Ridong
+Thanks,
+Baokun
 
 
