@@ -4,123 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6049CCFA03
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 00:36:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27CCACCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 00:39:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id F11B38E00D0; Mon,  3 Nov 2025 19:36:24 -0500 (EST)
+	id 729E28E00D1; Mon,  3 Nov 2025 19:39:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EE8C18E0058; Mon,  3 Nov 2025 19:36:24 -0500 (EST)
+	id 6DB788E0058; Mon,  3 Nov 2025 19:39:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DFE528E00D0; Mon,  3 Nov 2025 19:36:24 -0500 (EST)
+	id 5F02C8E00D1; Mon,  3 Nov 2025 19:39:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id CD7878E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:36:24 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 70C36140352
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:36:24 +0000 (UTC)
-X-FDA: 84071058288.16.6CBB999
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 5CDCD1C0004
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:36:22 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z2vCX6a8;
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762216582;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=rzEoGW6DZWu5zrrQLgXZO5MejLWoxJsp61Y5pY+ws4o=;
-	b=M1lfz1PUQQxWOn9/s6Qw+atEAzMKz2bsyvdjrbgBDPKJVkTyx1r9Bf1AAwDhS56j+XD7ug
-	NVBD8KHutKEa9KyZRekDH4DVVGNFttZyAePP29F92/Yu0Bjkfbd14ubn/li4yyVGhXO26g
-	PStboOVY7ZDY4LFvtMpewBAl8rK06a4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762216582; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4DB828E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:39:57 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id EEFE5C032A
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:39:56 +0000 (UTC)
+X-FDA: 84071067192.17.256A00A
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 345E9A0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:39:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lkWRoWfQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762216795; a=rsa-sha256;
 	cv=none;
-	b=jEuXPlSVmI029xCwbEWKsHgmXnHPz5ysvk/UdYMJR+EdXi9NbVJcNWAAFGV+ZUJfvFUcNX
-	yzuEeSpMII5PwzoF34TuReFHzApbDPZJuLTlpl2eKi/HkfGGerWQKNmPtm2HBbfIkMceHB
-	Odk8iyNfpA0qmYXFR08dn8ViLAwQeaw=
+	b=DyUc0SOeuBtg1hUL94FOfWcGwuH0Tx3NWxt71aF3RHnfsNb5v4nmJVDvss3xvAHjjIOWcg
+	4gRsHaDcxvtVn5OPIinJ9IdxBeDMdHD3VWQ9lZEtslBH0C/orjtWvgHp1gUJ8zZia3ccvu
+	6HVavcMCGNmhxewZBJefpAEBdIfZwn8=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Z2vCX6a8;
-	spf=pass (imf21.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.43 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-63c0c9a408aso7290636a12.3
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 16:36:22 -0800 (PST)
+	imf25.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=lkWRoWfQ;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf25.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.210.175 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762216795;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=iam28yxbxtTcQIZpnqIWn4zgf5SETAhbeipE7iPuLHg=;
+	b=WqihtfM6OpZ3ikER/hDlg15gK2W/TgZIvnUlpfYGX72jWXoyvXKk946ha3z3+x5yknb5CU
+	z238iUzpg2X+zz/T5Xxh1GqRcmqFhoW3rv5HpUdBPztDbZYXjNogK5yKI+pIxNz9L0rQ89
+	YTdeF+pLIm4rahtz9fuilcbD+j7pBhw=
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-794e300e20dso4797943b3a.1
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 16:39:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762216581; x=1762821381; darn=kvack.org;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rzEoGW6DZWu5zrrQLgXZO5MejLWoxJsp61Y5pY+ws4o=;
-        b=Z2vCX6a8WsQRr3KHx84OpI1SyA2Xf41571WnMIm4u7KPgqW8HrT7AcIHgMbhVNKRiw
-         /t1fHjVb7yICsTiKsGaVDao6DQzgln4OAjXoG44IeeEUB5h56F94GRdQUWRdYGxIeGwL
-         9rH/0u4ZOCfGBNIKTydevhSuw9lytzZtY7PEi91MSDIhcJmAS4li0sAZPuIw1WKvCrif
-         Zc7WwUddAteFN2m+0SsndZ53MRVkF3lLoQPDUiT8lc8TQxnlemzhUYxNjXbZfikS5R5c
-         4LOBv1EjE1+Xmt3zXrf5tSHZeMS+xNydOAvITr78yHklhjpBXMN+qnFetmTSaw4YREzD
-         FKkw==
+        d=gmail.com; s=20230601; t=1762216794; x=1762821594; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=iam28yxbxtTcQIZpnqIWn4zgf5SETAhbeipE7iPuLHg=;
+        b=lkWRoWfQ0yxfyd6PwpcIU7n9sZpVK4pLOQnY60fJ/yT0NV1r9pTlbmcuNdFg7lMeCu
+         8vyfgU0+Yw953t2wpI7XO3QdZyeo2r8RFI/jmRaw8gH7Zy+wYi32hud5j6hFSYiEWkQ4
+         I7JdobXur09O5c2PaXtLIs4XPajcb8gXm4xDFc1XMuBvI/v7ZKppwxEibKa2v4+CjrTZ
+         8Sf4HBXsnmY6scMmU3Wg/edq/2GtBbbYfzB+ER3kpgdPCDLKXZk3odW+207h75avB5BZ
+         xoYevWyGmm89WDsU0V9d3fO+vuF4Tokwfo+F2J5HvsVPcrPplLPQEz0LYmItYznIMArj
+         BfHw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762216581; x=1762821381;
-        h=user-agent:in-reply-to:content-transfer-encoding
-         :content-disposition:mime-version:references:reply-to:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rzEoGW6DZWu5zrrQLgXZO5MejLWoxJsp61Y5pY+ws4o=;
-        b=qu7OYxL03WzvFbuC6cjbkxUr8fPOTHsLufMmi0GtRP+bHGtXonzi3XEsxreBsowVwA
-         NztuIaNpULWlqGJzH4u2raPOMYAbKYTlRrDTumehwQH3mpLCm90zIWm5cpwXaNiJts8I
-         6E73zU/XPjR+OwdveA03hFabvKIzApEDB1yUUtM2IgKAOcusolY2sx3X+c8dzKW2CajI
-         1mNG1nAK27yL/QTYDyx+uofCRGaRZE+6XqCtKOPmKjpV49a6ebt3GmcBsChxzz80STbb
-         mqpDuMpwqsWkT47Dt5Kq6yDaNsZSyhCpXBFXIRwh0vExfQUWYgjS2noPbeAn0vf7uREw
-         Ar/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVVQNANZw9xx0vlwhqlsTsrXflsAWGuZW7DQRTtyuocBYcpUjJ8McSRsWnlH9RZB16+nFsbtU+Jcg==@kvack.org
-X-Gm-Message-State: AOJu0YxJAuy4pSa+Km8CuWcwGKpAo5y85KYJ8d63zKqCuSgsx61bvbzG
-	JZQYzNnMk9REJaO7Oi+TnY1Q24tLKWucSBUqM1fgi4enLbQkQy9qyl4c
-X-Gm-Gg: ASbGncs/bGw7ShnQS86ge79fBw2SFGyGDilXUTSqIoL0EpaACEknmGIaAV7LwpTPfGT
-	P8Oak8IpdLo2yYCb6DuqvBDUHJ1Mixkx8qkOdjaHUa2Yd/bXEEyi45eOuUnr2rRgyPbO5jNVRdX
-	asboBnA/AOQbyo1EpkUPdU/YkBg8Z4C+5bnUFoh78bBUHM3JG00OovlHobDPx/lMwJHWmtD54Tg
-	eubE1qUmWKFYeFNCn6dG+b/uenZ5TuqkIaIiIpLq+GORY1og3MFUMNtQ2E9j2zhVsEb5GvHeWpm
-	8MF6qO9P7KS+Ri3sLuw9thjuuIqA3vdp9CyucvNT3i1UnRJg3NxxcErT02t+F69g+mi0YzvyTuv
-	6Ktoi+p0Lt0pxFtKhXOA0uv1D9+9Wbs/za8NNht1bZTpMq+hYCyxfHIWPM7UacG5dIBIAK2zkqz
-	s=
-X-Google-Smtp-Source: AGHT+IEkR2NLMXKuEZel7fJeh+DHT10gMxObMOeRLrmPNXK14RcVVRWUODjsHg5LmWOnMYpwtvJpCQ==
-X-Received: by 2002:a05:6402:5244:b0:63b:dc3e:f01c with SMTP id 4fb4d7f45d1cf-64076fad74amr12175195a12.12.1762216580460;
-        Mon, 03 Nov 2025 16:36:20 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640e67eb64dsm695131a12.5.2025.11.03.16.36.18
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Mon, 03 Nov 2025 16:36:19 -0800 (PST)
-Date: Tue, 4 Nov 2025 00:36:18 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/huge_memory: merge uniform_split_supported() and
- non_uniform_split_supported()
-Message-ID: <20251104003618.adfztcwwsg26gmvd@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251101021145.3676-1-richard.weiyang@gmail.com>
- <CF5DECC4-7C92-45DB-9931-A1E35CA3C0A5@nvidia.com>
+        d=1e100.net; s=20230601; t=1762216794; x=1762821594;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iam28yxbxtTcQIZpnqIWn4zgf5SETAhbeipE7iPuLHg=;
+        b=EzfsinciceWe7ezHu5cF+aBPonWqox8ECfoOk6LaZcqCPzIyY9B3DmB1qqpE8j30in
+         GWe+fVulXlIk9LEYnFNoHksNF/CgePR0esFfx5qDKPdVXdRGNYm8zdwF8YrgUI2ksQQ7
+         S8MnC/hR2VK7HDZezvJfgcc06Ar61wgsw+TLF2smbbKoSf0LorgVKJ/nA075d70uzSge
+         oSKSG7gfMDrOFwa7l43DNq4ZTXKYlF19A17GcD6y1NgmROS/YsFvyL/+c79mnHPtrymN
+         HFODUnS7nlULr8sSpN0IU1o7g0pScEny/j10L8cOH0Ci1RJ13ZX7vYzGhHSg6oWaOJmg
+         RX7g==
+X-Forwarded-Encrypted: i=1; AJvYcCX4v7B3kn9KuIlbBJM+QhzqecfqjKyes7eGJCV7SQWAxdM5CdPaknqp4tlTWUCTjo6525ZZUVCyog==@kvack.org
+X-Gm-Message-State: AOJu0Yxhr8T8pdO2LI2r6jNCzgOVhm82+SM7LdBo4X2exTgGX6gHFHE3
+	VR2nKWO10MFXX72oDwlGGjLYWpls4sA0YVit94EvYrgQhY3ogLQrmgx7
+X-Gm-Gg: ASbGncvwWA69LoOp8V5hZHWm/y8Qb4AufW83v6tBHJxSH1NAwlu9JBQaMRb8knGP9d2
+	NrFBbeqH9/pe47bS3KpN80HmogFo1w4ayRSoSmSirTKo897zCzAXQtKLLe+i3tYCJ3I/h+GJB4F
+	xyiEMynhwhknhz8BtQhUo92ge+dpVHAE0sglmmT4GnultfzzlgkbZAZ/xKpzL9MAU8KYNGRmHy8
+	WEiplwSKKY5KbthhhtmAVytJk58U1SwQLd34RTG4yzmQdiuZuar7MZ7iBOQ8dyLvwFY/mgCZuPO
+	eX5Yc0zSkKxKNCTfmhh6JuGMV8AVbzmb7VIHyV/IXGp4QXo9uBDIOjXYWlfyxQ8Upl1q30hKVKa
+	55LWFEYCdGGHAjZMQUhk1lpO5pkOH53H8txn7n3OOl8hP7BgZiVTkj+oqrBo9v54fD2goau81UU
+	VrCM4HOwex0pxgsU9Gm2gMVNbhXw==
+X-Google-Smtp-Source: AGHT+IFJbftbMdXgKxfl5nxnplvx3Z6+G0scrRMZ2oVSB3QoWsoHMMWseKqIUdRWNIb6rfsyQvsVRA==
+X-Received: by 2002:a05:6a21:6d8d:b0:2cb:519b:33fe with SMTP id adf61e73a8af0-34e2a1a60bemr1475870637.21.1762216793733;
+        Mon, 03 Nov 2025 16:39:53 -0800 (PST)
+Received: from localhost.localdomain ([240f:34:212d:1:30f4:78b7:7acf:47d9])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7acd634081dsm666661b3a.58.2025.11.03.16.39.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Nov 2025 16:39:52 -0800 (PST)
+From: Akinobu Mita <akinobu.mita@gmail.com>
+To: akinobu.mita@gmail.com
+Cc: linux-cxl@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	akpm@linux-foundation.org,
+	rppt@kernel.org
+Subject: [PATCH] memblock: fix memblock_estimated_nr_free_pages() for soft-reserved memory
+Date: Tue,  4 Nov 2025 09:39:21 +0900
+Message-ID: <20251104003921.9707-1-akinobu.mita@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CF5DECC4-7C92-45DB-9931-A1E35CA3C0A5@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 345E9A0002
+X-Stat-Signature: uhmm69bzat8ehn7oauteuncp5pk4fcuc
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CDCD1C0004
-X-Stat-Signature: dkit7a5674bkzke6hizjh5sxerwekmiq
-X-HE-Tag: 1762216582-755920
-X-HE-Meta: U2FsdGVkX1/ea9jQiUaS3jNromNqZjvAMMFFKaWKzAVVPmXfL3PLbaqLT4IzikmV3p4hgT2jOgWE/y7zztCqYa89ygiUkv9Ki1YF+aGmiIxksIC6rqEU5F3uI3I4AlfHvNSETutwZyW+O5ah8DpB2kuYtKUQIQv2Anys5azYBu/xEpt5+vdmNzMeHbSyFFI5+KWeWaxumix2fqmqqLc3Bu0rf7RQVzRxH8jW7OWi++uERWnWwGnLd1jAkrNtNQd9Z4PQWBMdEVRImbkt38Bgheb+SQSC5YYPLR7EIjGaM0FcvrOKMsH4nJs4H+9IRZghVbrJSZ2PAARyCp2fyIzzJJ+uxjAfLoW5LDhJ1uxlWQVKra3aU73axSwMCPjPXzFt9SRRtdRMMN0aQ1+EJJJBG/YPJiORJ+kAksyD28mB8o/uPnddFnJ7dol7y6CHqc1kfmOuhLusR2AOZfnfNQwPoXA88hetvR3vBACSJFIXtXrQnP5ZvQvyhiplNYtD681bZbI8up+lFvoXBzFi4nUFd8soOCFbqmj0dPHO9kgXgTp0NzafUzh2XnGt43ps6VqQBVu1nAsDowpZOybuQaSjb4aOmE9C6ARx7JKvqvPEUKwVdkwH6Use7ue5k+SC3o18CHBjEDmJYN5LpixKTVEmc+Pxve5nKXF4m3ENrRWUDMdUelLLrgg8cMuvYhnjTvqGApqvE1w/kMwI+DqvKhI/tt8N2AKuGiIIcvRkYVh96WnVt8A3//qoa/9AhepzoptQih0j0sufEbNMF4JoG+JJWud9op5151ixoYpSafrbCxGiFqpqOTwE1zIuF2G4P5+goZEmc2vd2hAKFJRM0dKNBcBJt+gEasuyOBxvgkWlVOdy+vRnfxgtXrR9FtU9M+gSRyB4BqoLYDesEIUajJBgR8YEzfsbov03XuJ0w1LG3VHl1p5aNgqhRDZ1axr9QNCiCo/mxBtqUS2k+JGOFA4
- MlsHdZWf
- ZpWFV3a7p5gYV3l3E/YGn9fGXLQlJZGwS/vaPj0bGI3TVD/Syw9eT7k0M798FJJNHZnWKOEN5MfLxwjhWWPMnyhMiO7IAcKu6VBQ+1O634jGKPqGUd0rGME6dmZ5I+bIdajYQBIibjWaHDhQqPxEOsFzArHBUcx0TQ/jic13F51rrlaYRkEZgqDI5OUFRswIbhRYuTyDOkrWp0JPfbwfRmZBYHRWkCSeRuzt0aNzAkTMgz0kuNGWCMUHyn3/fg/A+08+JHooRlfXG4Pi+af2VXqVtHte0gqeIjAliVUZ2yYLm3bBEaYV6oB9T//YDDQu8Bvd/uYCS4wAH+QS3csgQTPfL36N+lW79VkBYRVfBiDB/3HaudFtW+COfWzfY+2eTLm1FtH4wODmsPb5u7gDzT+EwJnnrkjCiTthRwdrpo/kNzVFSyhr0PqEtiFKBuGZB8qgQeywA9dBTK2rBnXLflkIlF+xBydb4S7yOIgcfLBv2fGuqvSvJZVEJreU6BJJD5pZuSZDCjJ56z40hWyjpLjrGb4TvNI1iC02Vco87ZQwA3mtCCxQIVZRr13Kve+53RmbMAEY5kniMrbIp8wRlUr9M55FMzPPDze6+PY6a5y3XFAsXSkVHa8otwDxHsjigoGS9867mpt6Q41MLwhoGf8dlQb+u/ciDSpYOcT1mWTbP/ncYmtI6cwn1AzV6tfHks0cXST+1d9kxaBXFxcLUESr4xjsBYiqmX9jXdZthZypd2tD41lyWHLe5eERnjsRnFtm+Sgu7Q2KalZ25E4uINMz+DaOS/BRr/gmOLZlhZk6sYxAaGxYseWoOIqTWvpzhin5K
+X-HE-Tag: 1762216795-455073
+X-HE-Meta: U2FsdGVkX193ORKqseFqQAb9eybDE3LEIxbc+PosO3B0e7Ex2G/jljGp/3WzoUE0Mc/6yycNAOTFHqakhKrnREBY8S75MIGVUM0+eQsPJy3LyMEr5W8y9mS91xXq3RW35hZCYpB8gv1yBDV1fAYxgZlK2m6iVkJZQgNn88NtBlqELPTfJew2vcIJ7Vkm6geOZygXUtbPT2z5pk2Z/scofGCSBeLXG/pUCzTSl7CXoZ+mCFnQjRvuoHHeqOLlU96brWRrbTteSOy666OBAo0XuF13ZSW5BqoxdcZAY1EmpURNJSeDEzveP4cVT7AN33NBRGDj5PEGhnx2hQrcgXt+gLNaCB8vDbg3D2wfPDhSY9zfcyn6DxNLNQOvKOZi+GtZoF2oilCtjDpbxVqNFRXBiFPUs2DXbu1Svt3pZjaTFUv557DyEZJ+alca/JUUMd8rjy4ZAWzSCofrN/I82rBQNoHXSxy2+o6LeA+I+qe2txLO4QWWZJNqOwg4Q6opniem0FIx7ULwlldszgLOx8A1mi1xOYomgtuDDQYw6GWUF9edWXDeEK1Sd3PdBmvnTH35iJsdxj/NllfWVEAzNKPj2NzDhI8BFaVR7rdYMJWQCh27cKABInrLKHH+D3yE5PrNtov/wEtZjXARP8namcAgQd4C7Vkblo1RUQ0qbFPNLyRyZugapGiacaqe0zWb9eLLcVm5oDLqbgKOw5tMu+wJFqR3HIABNDhBLcrx6lNo8K1gNCLpe5coeJ/RVlz53TWiR2aXJmZJQ5iBAUgmAHRK2VknDcKpkV1kGOP6VBnWCNy5J5CD0Q9bpXuBskO8Gtbu4C3tJtIMQze3+/xZpsiUO15k/o5tlS/3Pk0Y7b93MpTFTDhkioV3mH0yLvKQ8KX6aa3CsRW/3HRknEvaqUmwzC8tE2fMmZIulRm50b8de1COJYk0LNyRvfzsUyRIwYIxwxeCzv92riippvJcB+6
+ 9D0PYuci
+ bQA8SU0nfELJzvwLEeCrV45ecx32OEDt8UlAHua0oqwMlhYRJPn0hj+PgQEcfT9AkBycQg7hh3hqyivpO63ZdnHvwYVwp8AiynuF0tQrfBw6K7cdnu3qzHt0z4wR2xP8z2BchQtLefvDhf+TjR0M0zVeH5cAdrgj2S33ls6j7zE7FFqAUj3XSIuojd/EAEmjiJRrVB/pbI5hKUCKGXmIEflmLVjbdLezeRhYsnBpp9zm1QBeZNOIPN9gGSi8aO7oR6MEM6+NNZ7zEWzzBNReBgu3VwPNPUXm7RoJmsFNsUzjEVyA+Ua4frIJOm3rhzt5Jv2BcGfghljACSK2UAFIg4XpPxACmj6uGEGua7K8hgExapS4GBGhaliQAXQEjwz3xDFcn0La+GaK6BrGzeWufWdAiE00vdDYhes8b6ithbcEE2trJaNBXZmlGe2K2zNzsGb4nbB3omnhyQRFBZvL2qw2MLRl2zDnKB89vX+gjJYWEo0CPZlmcmfSwiZoSC+oCylSFumN67toy4aRusQffAW9apqm/QLPS7q3uDRInIFoVUBjtmJF7ZHfzgnYhpNnlVCwN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,205 +119,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 11:34:47AM -0500, Zi Yan wrote:
->On 31 Oct 2025, at 22:11, Wei Yang wrote:
->
->> The functions uniform_split_supported() and
->> non_uniform_split_supported() share significantly similar logic.
->>
->> The only functional difference is that uniform_split_supported()
->> includes an additional check on the requested @new_order before
->
->Please elaborate on what the check is for.
->
->> proceeding with further validation.
+memblock_estimated_nr_free_pages() returns the difference between the total
+size of the "memory" memblock type and the "reserved" memblock type.
 
-How about this:
+The "soft-reserved" memory regions are added to the "reserved" memblock
+type, but not to the "memory" memblock type. Therefore,
+memblock_estimated_nr_free_pages() may return a smaller value than
+expected, or if it underflows, an extremely large value.
 
-The only functional difference is that uniform_split_supported() includes an
-additional check on the requested @new_order and split type to confirm support
-from file system or swap cache.
+/proc/sys/kernel/threads-max is determined by the value of
+memblock_estimated_nr_free_pages().  This issue was discovered on machines
+with CXL memory because kernel.threads-max was either smaller than expected
+or extremely large for the installed DRAM size.
 
->>
->> This commit unifies the logic by introducing a new variable,
->> @need_check, which is conditionally set based on whether a uniform
->> split is requested. This allows us to merge the two functions into
->> a single, combined helper, removing redundant code and simplifying
->> the split support checking mechanism.
->>
->> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->> Cc: Zi Yan <ziy@nvidia.com>
->> ---
->>  include/linux/huge_mm.h |  8 +++---
->>  mm/huge_memory.c        | 55 +++++++++++------------------------------
->>  2 files changed, 18 insertions(+), 45 deletions(-)
->>
->> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
->> index cbb2243f8e56..79343809a7be 100644
->> --- a/include/linux/huge_mm.h
->> +++ b/include/linux/huge_mm.h
->> @@ -369,10 +369,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
->>  		unsigned int new_order, bool unmapped);
->>  int min_order_for_split(struct folio *folio);
->>  int split_folio_to_list(struct folio *folio, struct list_head *list);
->> -bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->> -		bool warns);
->> -bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->> -		bool warns);
->> +bool folio_split_supported(struct folio *folio, unsigned int new_order,
->> +		bool uniform_split, bool warns);
->>  int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
->>  		struct list_head *list);
->>
->> @@ -403,7 +401,7 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
->>  static inline int try_folio_split_to_order(struct folio *folio,
->>  		struct page *page, unsigned int new_order)
->>  {
->> -	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
->> +	if (!folio_split_supported(folio, new_order, /* uniform_split = */ false, /* warns= */ false))
->>  		return split_huge_page_to_order(&folio->page, new_order);
->>  	return folio_split(folio, new_order, page, NULL);
->>  }
->> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->> index d1fa0d2d9b44..f6d2cb2a5ca0 100644
->> --- a/mm/huge_memory.c
->> +++ b/mm/huge_memory.c
->> @@ -3673,55 +3673,34 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
->>  	return 0;
->>  }
->>
->> -bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
->> -		bool warns)
->> +bool folio_split_supported(struct folio *folio, unsigned int new_order,
->> +		bool uniform_split, bool warns)
->>  {
->> -	if (folio_test_anon(folio)) {
->> -		/* order-1 is not supported for anonymous THP. */
->> -		VM_WARN_ONCE(warns && new_order == 1,
->> -				"Cannot split to order-1 folio");
->> -		return new_order != 1;
->> -	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->> -	    !mapping_large_folio_support(folio->mapping)) {
->> -		/*
->> -		 * No split if the file system does not support large folio.
->> -		 * Note that we might still have THPs in such mappings due to
->> -		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
->> -		 * does not actually support large folios properly.
->> -		 */
->> -		VM_WARN_ONCE(warns,
->> -			"Cannot split file folio to non-0 order");
->> -		return false;
->> -	}
->> -
->> -	/* Only swapping a whole PMD-mapped folio is supported */
->> -	if (folio_test_swapcache(folio)) {
->> -		VM_WARN_ONCE(warns,
->> -			"Cannot split swapcache folio to non-0 order");
->> -		return false;
->> -	}
->> +	bool need_check = uniform_split ? new_order : true;
->>
->> -	return true;
->> -}
->> -
->> -/* See comments in non_uniform_split_supported() */
->> -bool uniform_split_supported(struct folio *folio, unsigned int new_order,
->> -		bool warns)
->> -{
->>  	if (folio_test_anon(folio)) {
->> +		/* order-1 is not supported for anonymous THP. */
->>  		VM_WARN_ONCE(warns && new_order == 1,
->>  				"Cannot split to order-1 folio");
->>  		return new_order != 1;
->> -	} else  if (new_order) {
->> +	} else if (need_check) {
->>  		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
->>  		    !mapping_large_folio_support(folio->mapping)) {
->> +			/*
->> +			 * No split if the file system does not support large
->> +			 * folio.  Note that we might still have THPs in such
->> +			 * mappings due to CONFIG_READ_ONLY_THP_FOR_FS. But in
->> +			 * that case, the mapping does not actually support
->> +			 * large folios properly.
->> +			 */
->
->Blindly copying the comment here causes fusion. The checks for
->uniform and non uniform look similar but this comment is specific
->for non uniform split. The “No split” only applies to non uniform
->split, but for uniform split as long as order is 0, the folio
->can be split.
->
+This fixes the issue by improving the accuracy of
+memblock_estimated_nr_free_pages() by subtracting only the overlapping size
+of regions with "memory" and "reserved" memblock types.
 
-Per my understanding, "no split" applies to both uniform/non uniform split
-when new_order is not 0.
+Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+---
+ mm/memblock.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
 
-So the logic here is:
-
-  * uniform split && !new_order: no more check
-  * non uniform split: do the check regardless of the new_order
-
-But I am lack of some background knowledge, if it is wrong, please correct me.
-
->Please rewrite this comment to clarify both uniform and non uniform
->cases.
-
-Not sure this one would be better?
-
-   We can always split a folio down to a single page (new_order == 0) directly.
-   
-   For any other scenario
-      * uniform split targeting a large folio (new_order > 0) 
-      * any non-uniform split
-   we must confirm that the file system supports large folios.
-
-   Note that we might still have THPs in such mappings due to
-   CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping does not actually
-   support large folios properly.
-
->>  			VM_WARN_ONCE(warns,
->>  				"Cannot split file folio to non-0 order");
->>  			return false;
->>  		}
->>  	}
->>
->> -	if (new_order && folio_test_swapcache(folio)) {
->> +	/* Only swapping a whole PMD-mapped folio is supported */
->
->The same issue like the above one. Please rewrite this comment as well.
->
-
-How about this one:
-
-   swapcache folio could only be split to order 0
-
-   For non-uniform split or uniform split targeting a large folio, return
-   false.
-
->> +	if (need_check && folio_test_swapcache(folio)) {
->>  		VM_WARN_ONCE(warns,
->>  			"Cannot split swapcache folio to non-0 order");
->>  		return false;
->> @@ -3779,11 +3758,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
->>  	if (new_order >= old_order)
->>  		return -EINVAL;
->>
->> -	if (uniform_split && !uniform_split_supported(folio, new_order, true))
->> -		return -EINVAL;
->> -
->> -	if (!uniform_split &&
->> -	    !non_uniform_split_supported(folio, new_order, true))
->> +	if (!folio_split_supported(folio, new_order, uniform_split, /* warn = */ true))
->>  		return -EINVAL;
->>
->>  	is_hzp = is_huge_zero_folio(folio);
->> -- 
->> 2.34.1
->
->
->Best Regards,
->Yan, Zi
-
+diff --git a/mm/memblock.c b/mm/memblock.c
+index e23e16618e9b..af014fa10a44 100644
+--- a/mm/memblock.c
++++ b/mm/memblock.c
+@@ -1812,6 +1812,22 @@ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int n
+ 	return total;
+ }
+ 
++static phys_addr_t __init memblock_addrs_overlap_size(phys_addr_t base1, phys_addr_t size1,
++		phys_addr_t base2, phys_addr_t size2)
++{
++	phys_addr_t start, end;
++
++	if (!memblock_addrs_overlap(base1, size1, base2, size2))
++		return 0;
++
++	memblock_cap_size(base1, &size1);
++	memblock_cap_size(base2, &size2);
++	start = max(base1, base2);
++	end = min(base1 + size1, base2 + size2);
++
++	return end - start;
++}
++
+ /**
+  * memblock_estimated_nr_free_pages - return estimated number of free pages
+  * from memblock point of view
+@@ -1826,7 +1842,22 @@ phys_addr_t __init_memblock memblock_reserved_kern_size(phys_addr_t limit, int n
+  */
+ unsigned long __init memblock_estimated_nr_free_pages(void)
+ {
+-	return PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size());
++	int memory_idx, reserved_idx;
++	struct memblock_type *memory_type = &memblock.memory;
++	struct memblock_type *reserved_type = &memblock.reserved;
++	struct memblock_region *memory_region, *reserved_region;
++	phys_addr_t phys_mem_size = 0;
++
++	for_each_memblock_type(memory_idx, memory_type, memory_region) {
++		phys_mem_size += memory_region->size;
++		for_each_memblock_type(reserved_idx, reserved_type, reserved_region) {
++			phys_mem_size -= memblock_addrs_overlap_size(memory_region->base,
++					memory_region->size, reserved_region->base,
++					reserved_region->size);
++		}
++	}
++
++	return PHYS_PFN(phys_mem_size);
+ }
+ 
+ /* lowest address */
 -- 
-Wei Yang
-Help you, Help me
+2.43.0
+
 
