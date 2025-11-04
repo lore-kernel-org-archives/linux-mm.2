@@ -4,116 +4,125 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB620CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 07:53:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8E9BCCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 07:53:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B25538E00F6; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
+	id 422108E00F7; Tue,  4 Nov 2025 02:53:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AD82A8E00E7; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
+	id 3D1BD8E00E7; Tue,  4 Nov 2025 02:53:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9C48F8E00F6; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
+	id 29A9E8E00F7; Tue,  4 Nov 2025 02:53:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 879B18E00E7
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FB3CB955C
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:03 +0000 (UTC)
-X-FDA: 84072158646.26.FA8DA4A
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 9F5F3140004
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:01 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j4yROKUV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762242781;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Sf91WClkVGv56YCT4Cfqj1gBCbg+MyS3l290UhFQwEs=;
-	b=U8EJ+2DXul9s5Ow5+7SLuIkAf8LmTekxmniGpOx+xxPSF4x5HotpI3KbJxN+lV17M7yAIX
-	IFiorWGnwnWF2ZZIRUGL0uv2vQarRQEZQKGtjCU/HIuBFLNQRdUcb59UgCpSWtwEuf30ld
-	8K8YZlCkVCxi2K0yBsD92Qu0hnTF1Qw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762242781; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 13DC18E00E7
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:53:32 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BBEA04A7CC
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:31 +0000 (UTC)
+X-FDA: 84072159822.15.A5679E7
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	by imf05.hostedemail.com (Postfix) with ESMTP id A8368100006
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:29 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="nSjI/05g";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762242809; a=rsa-sha256;
 	cv=none;
-	b=5futIWDIMTaiVLGlc2cRcXD6CGtUxpkwgWiw8+LaObSiV1Yc6+RjdSSnGbLOUieWz38TtJ
-	AQHiYd4p4G9SIofts+aHMPV4fjr2aGuW2CRJhSNixAn8nV016ARO5ifRD6ExXR9M4HY2BX
-	oqhO05E5Hc+EtvwyBqtIDus/+ReySBQ=
+	b=CwX0PswjS2lEe3e2gRqslpP5pjqXoGiyn5KH9sbLW67MyyRqILX84k/SPgFlBUndpVAl5A
+	KUNLwm7O5lNRhC2X0J+IRS8NhQwigWmAS096zGl2d1cj9urwA2MpLRw7rscW9CneX63U/x
+	hb/n/cHoJATkQxyl3CIs4rEkTOnrOJE=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j4yROKUV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf09.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C9DC9600B0;
-	Tue,  4 Nov 2025 07:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8A2C4CEF7;
-	Tue,  4 Nov 2025 07:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762242780;
-	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=j4yROKUVgRxS9OZJC90/SHA8XCPDVvwVHDTgceh+mCs64FFENtqjNn3VC2cS3YHRS
-	 Vh89i49TvVRT0q9eqdMJYy6UnQ4flTEkFee+vNQ+LDBtPs6JzXOg9rqYQ1l4R+DhcE
-	 OKQGVXbTY9tU25yQyQP/GPDQop+9ZGgyxC6t3ereLkJQbDn6Ob5K1plMoN0NTftZxP
-	 H0zc0vdg/o5PK4tKAehZQ7H8UtwncmtwY6oH+6QVwjaU8ikukGQIRaxvlWW+ISd3QU
-	 to0NJLl+MiSLIdyT3IYNIGJSnGwpG80zYDO7P7ohAcYwUyIFI+7D4Iv2WyVwNsWwgM
-	 89d6ggsAvvugA==
-Date: Tue, 4 Nov 2025 00:52:53 -0700 (MST)
-From: Paul Walmsley <pjw@kernel.org>
-To: Randy Dunlap <rdunlap@infradead.org>
-cc: Paul Walmsley <pjw@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
-    Andy Chiu <andybnac@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
-    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-    "H. Peter Anvin" <hpa@zytor.com>, 
-    Andrew Morton <akpm@linux-foundation.org>, 
-    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-    Vlastimil Babka <vbabka@suse.cz>, 
-    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
-    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
-    Christian Brauner <brauner@kernel.org>, 
-    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
-    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
-    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
-    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-    Andreas Hindborg <a.hindborg@kernel.org>, 
-    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
-    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
-    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
-    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
-    richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
-    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
-    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
-    broonie@kernel.org, rick.p.edgecombe@intel.com, 
-    rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
- for signal
-In-Reply-To: <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
-Message-ID: <febe1a8a-a68b-1af8-a9d5-1b5f510ecab3@kernel.org>
-References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com> <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org> <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="nSjI/05g";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf05.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.54 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762242809;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/c0cWuMNthabQIvP+S2vYuStVi48qVUenefOXdza2xg=;
+	b=pmRqrgwTh4jI1sleF0zjn0jHDJ4nedAT8ZxvyUy4gSjtE05KWnTF2V0hygOXUeNwrza35I
+	/+8eMT5xEp8yZHM5JwMJsgzPr8KeK+AkQTPJ814ClzcGP+RW/lkYcVAglNoiArFDYwp6tY
+	6+mWI6WyI1GCZYHXuB5DkQnSTem9HKw=
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-b6d3340dc2aso1275387866b.0
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 23:53:29 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762242808; x=1762847608; darn=kvack.org;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/c0cWuMNthabQIvP+S2vYuStVi48qVUenefOXdza2xg=;
+        b=nSjI/05g3qFWU2WRdZThJ/DB1LNN1NJOwt0dqYjxOPlIWhqtmkj2Yz7RPjTPOK2ZxU
+         JJ825R4P9Bd38IxXq3RL5R593SU6jOtweMuBr/ERfcpGhogE7TLv0FyT/U0jQ+b8QOGU
+         gviSrn62KHkiooqL62IyDf+sVJLX8dE6HvaE4nFDy1JfxksC5v58p1TCRaR5qScKvQrl
+         kq96H/0LetoVRaHvb4bSppQ9V7wDhXOQou/aAthDP4lYSPHhdhxYGsTwxHoMdyusgb9k
+         AhT2XG0knuTU5jdj1Oi5fGr+kHYfJf8DGKILem9a9zpT6tJizCb3PtSg3z/eALC2lidt
+         nh/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762242808; x=1762847608;
+        h=user-agent:in-reply-to:content-transfer-encoding
+         :content-disposition:mime-version:references:reply-to:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/c0cWuMNthabQIvP+S2vYuStVi48qVUenefOXdza2xg=;
+        b=m3I+vol1w0KDUZ1dglcvbkMrYYHx4w1frig3/wp+bsnlTKknq3b0y5GHyfuzUooUYo
+         AB9Ls8piAQVPHmB8nhxXV6jVy2VHh2fc3CRFue1JWpKOi3ju67Rk8zVLHwSelcQa9hzo
+         dr24Ji2Dqbdde4/iawugduQV43q5Q7udCODqzLQD3z0g6VoB4WfJsYfRP+v2wSym8U26
+         PD4DtTNrb1YrpGUUEhwUPtxXVjZzmwd7KzXTajvjIP9MYwvB7mfLdZwetuQYBCheSdEh
+         v0CMofAi32lMTxRmFDcQVnmTlHfLUhUM1X6hqENccsu9WqCViEb4Q1xxq4thPx4jEgC/
+         tKyg==
+X-Forwarded-Encrypted: i=1; AJvYcCX6Hz8EMRB6J6axV8aocG9TnGOcYMAuPvdiM9UlOW1rL0kfSubsVtiuiQ+w/sL7aRQfTF70fb/UpA==@kvack.org
+X-Gm-Message-State: AOJu0Yxhsey1PdXkgki9cXJ25UE6+xfHROeNnuA1ZSTrGvYX1zUBi2iR
+	7gK9p0zi6AjUWTMpJFNtLESb470cWuxcsGBZCT6q+MXfkPm81t0vaCGU
+X-Gm-Gg: ASbGncv03IJ75QO+oeC7EfX/aTRN2s4AvnFtAnHLNyxC2cbUuMxBFI3ZolEEZFpOoIT
+	4y3dzvblhUdoeTf4LHFciT8Lv7bjYO8XpbV955Yzio9SEtegA/ImnqWGg/1B5BeW7lTLcEeZniW
+	CP+G6cK3VOWgdzZ3idLbiyxbYZkVXobciipesU3dxDVhNDJrVGE0J0aOUbTCh+rEPqf3bJE7bNh
+	4fqvkyDgDUpfKOdxKQLPSV6heEVPR29WUe4U6JT9bjP7as5YZpMR+cpCbLgX8mkk4wuYgPFnX2H
+	CfRhh3gzd9LcpClAPUmuccs81j6CwaHy+f87bd2xJIs1iDXVUH19hkIa1V7UWvJNex6AmtIjsZz
+	K6UpLA1KLZuIiXffKmgaqIWVI2+ASzuKhLdYTp7Efy6k2LJ7uQe+muU7N3nRjYLKr2s1o8Ke4C/
+	g=
+X-Google-Smtp-Source: AGHT+IGGSzUEQC5GNQ0kebc3Soggrn+Djd8JqMx2PWVdoqxVgizEucNoDhfXDBu0nKmUReTNWMzVFA==
+X-Received: by 2002:a17:907:60c9:b0:b65:7f88:72d5 with SMTP id a640c23a62f3a-b7216e61f39mr236569966b.28.1762242807566;
+        Mon, 03 Nov 2025 23:53:27 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723f6e3764sm140126266b.48.2025.11.03.23.53.27
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 03 Nov 2025 23:53:27 -0800 (PST)
+Date: Tue, 4 Nov 2025 07:53:26 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH] mm/huge_memory: merge uniform_split_supported() and
+ non_uniform_split_supported()
+Message-ID: <20251104075326.hqktuvois66j3cdk@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251101021145.3676-1-richard.weiyang@gmail.com>
+ <CF5DECC4-7C92-45DB-9931-A1E35CA3C0A5@nvidia.com>
+ <20251104003618.adfztcwwsg26gmvd@master>
+ <016650EF-DBFC-4C7A-A707-8FC6A0F93ABD@nvidia.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Stat-Signature: 3aw85zw5gtyqp6x8uzsm55thgacxuct6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <016650EF-DBFC-4C7A-A707-8FC6A0F93ABD@nvidia.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: A8368100006
+X-Stat-Signature: 69qsztzyoafsnjh51qsuywrt1dzepty9
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9F5F3140004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762242781-23725
-X-HE-Meta: U2FsdGVkX19k01iisjzks31he/V8fUL59PKfuh68ghBEhoRD1ckEQFHIt2Srbl9VpTnn5NFA93pZAVWV3zzIEG93Sj3Flisu2tBJ/UDYSxwRswC2Z7fZJCrFjES7ntn05efbcm0jB4e7UEaoemn68bm8BEG1fJT5Ag/POcOW6X0mYLi7i/9F+zdmn9hzjZz6Q9fdixXcTivy4oy+ix5x2gBJIkDjoO2dNtE4xUVE3SAd+gZTndQ5H5nyXfu+U5wckofcOZy8o6xlnOswBVrJN1qY04NHuOd4f1PKy4FsH4ejDj+0oD5Yv2jk+Pl1bfAHYycDJJDsj0E169EoX4AKmoxdw389m96vRY4Z+2V8IYhOzrkVmJzXFLgkJaU/cpSH7JSdY0FaSSz17LdDAmGeYgb4OICrzTxvJc7s79caQtdlOzZreIBcyA7F7mus93OfeEuMrmr1M9TWUCl4NO5CV4lG5PeOEIwP81fg2/pBuGHm7D/UM+J909VfLi6RdQtLbUasDPIZ0dS2Ssl0s2zkPsvDhcePSu09S3rblHd1iS2Rq+6DvgdInIBSeJbez3IPrNmKFuNogT2AuoL6vG95JrfKlaAUqL93JjpZM79D1+lE63EBZix8IbDFfYSssAXMpjCAObmPs33oW8RkgnkBgDvF+uTbyb6T1SC2Wcj+wgRtjHZTjhQPyVJElFg0Pns23jVN62wI1ZBk2AucUszKveF2AlcZM/DBAnklJyBK7Aq0YLitYXbFg3IwyMvDDopqpcz+/XeUitpOY6NieK5uOmGs8oFExzv9bUNzzPWV/q9ZMqTs8y5slO5R+RNtgHxOIqF1nS4MfZDUx1sLeGgKLjFik/X0uFWdb44eNGGDxrBsUJwqFySby6g6mXi3yMhwd9OgwwNIjlihrMvumKw3OQgqkatfd15PTpTgzcJAQswmnBP3WjvnjA07fUuF5WQSvHx8B8svxvuRA8f+yUf
- U8bAahd3
- qto3TJ1vHLoLfj1EmlIQmQ9Rkn5JSINxSVU0y2tvavjBAQVP2X/u2t4jb9CJ9EYe88Vl/LzQvesH0b02fo3v+uiWO8LCQPFkpv8IDNnVq3KKg5C2opsILGDFHE4/0EyK4aR5jMGtk4mBvOauXKto4gdEIAyiHBpTPDlZDLuaBhIqfLSbQq5dY4DtsjVeDXTY/xcNnhy9ji+OURQxc53bf8TxIHSjQ1Vl8/qXHc+HhuruAXL/Iy59nDcVB9GuejRmOfbJ62a2BJ+eFkLk4vbGJ8yf1JViQ9vU6IMZmTLz/WAQi8d7tMPgKum2IyEAjHzUY9+eDXluMz2VRdYs=
+X-HE-Tag: 1762242809-819092
+X-HE-Meta: U2FsdGVkX1/U33axjMP3F7zYZZd7iloiutubYP+Y0jygFE/7nafhHXxSYm+bGreKG0nS2MjHmieJj8uZuEUpkk/QsblnLKgUgRcYw4z7pDAB/UoMR6JloQWC7WZ8OUCVHnGUIrvh5MRWL1joNXKPWI3l0Uw5kjVTQ8+PA/2rFz7GqSPvBI/h3WpjLm4jUfceRQ78iwDu7JQLfGZ68hsQvSqv19ajOnW2VQM0tIUF1ePIZetxG6Xmt2l9uJsXCRelsApS/fFPZ6RnagL1+AWxf8PZaWB2cGZxLxQF6A2SzNmlimofNjgXrznafPQXYW9xe1xfpqrXIPhQ0m/3JTBFV50vWJ5MNdzCde5D7K0c/6omUW/ytOIv9w2buZ86TisnMilorGa+4LcKJHZZ/pkcctsjFDsWvY7Wm0Cow98X8OJuuBnFMzu47Q3/0LFVCXSBHDXqTLFvSOwtfw9nPAD+dn8iiPHC6Z94/rRs6bK69ueuYTXHZPNrQUOUdect/ZUQgQ3NY4FayK4e9KhA/d/4R7b8+Klgzra6BztTOCavc+xOCyiT72tLTfqbWy0EZ1fRipDMc9R5OQcAXnLzd1UPlrU6kQSPBCq9XHO4ja2MRK45Pt46vQQN2m8nju5NX9uJ0tplEc2jgT8nsgcb5j+MLrKuVCz3PU3ZSlepqQ3oSjQ5iO6QYGHG/H+ivJKCRm8yuX8AGfxVofi/MVsmyOg+qNsAEHZyjg04p88/UhcTitDn674y2eP7zDO9/LC+8oTUSt9fTzUzuSyWRHuCIdlfFgREPI5GjJP5/m8K02hzmXcAkGi/3NpAkgWRcamFVIRGs1oPUAZz1dmA6BAbbXsB0z+N3Un3ica+FR1WGKGP8RkQL+aEoET3JBvvD68HmADoNEim2LU8Uv4/9faSw4oyPdl5Nc0TBfUkg1Q38xxipxmwgdG1JITiVo7YvhDzX+hgMxnZ5LoWEx/2G5V7g+s
+ TiZo0yF1
+ cc88HljDlyVNUgyOG4tTv8SbnetHcFH4WUQyQWaUuU4hP8SQTijg4yl0W1Q7CKaDRkD4B50IjMTDMnhVzS7e7kY1Bzf0QgqXIaN+sP6WOk7NbT0vgA+igPqnnL1gnuYX7pP0GajYpTE9ZN/hKPHZUFsoDDlJKKA5kRnJW78HVTCadBKF16PVkfLK0XL/ayLEU18zouI/AH7tZfrXpvjTJqphj4dVdLCLgIZG938k0jLtx0/RE9JtFt/yLH1WPDbT9PimU0xRe4Rac1opjk0MShIgdA/NlPk7sXZ+Tx51O23DTK4kRR+wEWSan5lmWf7Hncwj/k9H11Z+CVjODL++rQkreqJWp4Jr2krI12RodnergmKSOs4dVpf2R8VCw+mbvsqwci++b7F7Gpqv92E7DiP7Ky5639EB3RR7elo7st07qJV2GoByL7sstLkDdyJsIMxNsP2qUOHO+mnIoqna62fGvF9P6Clc3pCiFkTpQvbwKuXNy933pYTKjdzMXN7kn4EDmwYyUYN5ApiJC0oSmLcJo1cYYEEy6ob2xTViB0byOyXyBJHLgTnOGdLbsItuecbowKYrDPkhwDZfToG9nUpwX1saNOX+2AZVOHEeHsBvNYqNigb8+ZEZKNXjKrvb+9v8gqBOGBqMBaQ+RV4V4eJgp8RA2wLnD9yDlJ27DoVlCb+ZlEqwWFn4PqJPUm3APRsRcwaVaWBG9VLmplvBoS8gsw+vy5qmZnmOfiY4VW0PBMm6o924sE59n1oq6kBoxH7pPJXq8joGPgE9OzH2RnDl4mxT+kpxbpK5XmnmMs2bR/GJNuMlJ4AigWYi38JpAggNz
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,51 +131,316 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Randy,
+On Mon, Nov 03, 2025 at 09:30:03PM -0500, Zi Yan wrote:
+>On 3 Nov 2025, at 19:36, Wei Yang wrote:
+>
+>> On Mon, Nov 03, 2025 at 11:34:47AM -0500, Zi Yan wrote:
+>>> On 31 Oct 2025, at 22:11, Wei Yang wrote:
+>>>
+>>>> The functions uniform_split_supported() and
+>>>> non_uniform_split_supported() share significantly similar logic.
+>>>>
+>>>> The only functional difference is that uniform_split_supported()
+>>>> includes an additional check on the requested @new_order before
+>>>
+>>> Please elaborate on what the check is for.
+>>>
+>>>> proceeding with further validation.
+>>
+>> How about this:
+>>
+>> The only functional difference is that uniform_split_supported() includes an
+>> additional check on the requested @new_order and split type to confirm support
+>> from file system or swap cache.
+>
+>You are describing what the code does instead of its actual meaning.
+>You need to describe:
+>1. what is the difference between uniform split and non-uniform split?
+>2. what order does what file systems support? Only order-0.
+>3. what order does swap cache support? Only order-0.
+>4. why can uniform split be used to split large folios from 2 or 3 to
+>   order-0?
+>5. why can non uniform split not be used to split large folios from 2
+>   or 3 to order-0?
+>6. The logic similarity between uniform_split_supported() and
+>   non_uniform_split_supported() and they can be combined with detailed
+>   comment.
+>
 
-On Fri, 31 Oct 2025, Randy Dunlap wrote:
+Here is the updated version:
 
-> 
-> On 10/31/25 1:07 PM, Paul Walmsley wrote:
-> > On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
-> > 
-> >> Save shadow stack pointer in sigcontext structure while delivering signal.
-> >> Restore shadow stack pointer from sigcontext on sigreturn.
-> 
-> > This patch causes some 'checkpatch.pl --strict' messages:
-> > 
-> > CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
-> > #271: FILE: arch/riscv/kernel/usercfi.c:186:
-> > +	if (saved_shstk_ptr == NULL)
-> > 
-> > CHECK: Lines should not end with a '('
-> > #300: FILE: arch/riscv/kernel/usercfi.c:215:
-> > +		pr_info_ratelimited(
-> > 
-> > I've fixed them up here in the event that v22 goes in, but please do the 
-> > same on your side in case a new version is needed.
-> 
-> Is checkpatch.pl --strict the norm for arch/riscv/ ?
+The only functional difference is that uniform_split_supported() includes an
+additional check on the requested @new_order.
 
-I run it on every patch I review.  I usually implement the formatting 
-recommendations, in the interest of keeping the codebase formatted in a 
-standard way across submitters.
+The reason for this check comes from the following two aspects:
 
-> If there are enough arch/riscv/-specific patch expectations,
-> maybe they could be documented in Documentation/process/maintainer-riscv.rst
-> (a new file).
+  * some file system or swap cache just supports order-0 folio
+  * the behavioral difference between uniform/non-uniform split
 
-It never occurred to me as being arch/riscv specific, in the sense that, 
-if --strict wasn't more broadly useful across the entire kernel tree, then 
-we should just remove it from checkpatch.pl entirely.  In other words, 
-probably everyone should use it.  There are false positive warnings, of 
-course, including at least one with this patch set; but then again, there 
-are regular false positive warnings with non-strict checkpatch (also with 
-this patch set).
+The behavioral difference between uniform split and non-uniform:
 
-In any case, thanks for the suggestion, and will consider.
+  * uniform split splits folio directly to @new_order
+  * non-uniform split creates after-split folios with orders from
+    folio_order(folio) - 1 to new_order.
+
+This means for non-uniform split or !new_order split we should check the file
+system and swap cache respectively.
+
+>>
+>>>>
+>>>> This commit unifies the logic by introducing a new variable,
+>>>> @need_check, which is conditionally set based on whether a uniform
+>>>> split is requested. This allows us to merge the two functions into
+>>>> a single, combined helper, removing redundant code and simplifying
+>>>> the split support checking mechanism.
+>>>>
+>>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>>> Cc: Zi Yan <ziy@nvidia.com>
+>>>> ---
+>>>>  include/linux/huge_mm.h |  8 +++---
+>>>>  mm/huge_memory.c        | 55 +++++++++++------------------------------
+>>>>  2 files changed, 18 insertions(+), 45 deletions(-)
+>>>>
+>>>> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+>>>> index cbb2243f8e56..79343809a7be 100644
+>>>> --- a/include/linux/huge_mm.h
+>>>> +++ b/include/linux/huge_mm.h
+>>>> @@ -369,10 +369,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+>>>>  		unsigned int new_order, bool unmapped);
+>>>>  int min_order_for_split(struct folio *folio);
+>>>>  int split_folio_to_list(struct folio *folio, struct list_head *list);
+>>>> -bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+>>>> -		bool warns);
+>>>> -bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+>>>> -		bool warns);
+>>>> +bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>>>> +		bool uniform_split, bool warns);
+>>>>  int folio_split(struct folio *folio, unsigned int new_order, struct page *page,
+>>>>  		struct list_head *list);
+>>>>
+>>>> @@ -403,7 +401,7 @@ static inline int split_huge_page_to_order(struct page *page, unsigned int new_o
+>>>>  static inline int try_folio_split_to_order(struct folio *folio,
+>>>>  		struct page *page, unsigned int new_order)
+>>>>  {
+>>>> -	if (!non_uniform_split_supported(folio, new_order, /* warns= */ false))
+>>>> +	if (!folio_split_supported(folio, new_order, /* uniform_split = */ false, /* warns= */ false))
+>>>>  		return split_huge_page_to_order(&folio->page, new_order);
+>>>>  	return folio_split(folio, new_order, page, NULL);
+>>>>  }
+>>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>>> index d1fa0d2d9b44..f6d2cb2a5ca0 100644
+>>>> --- a/mm/huge_memory.c
+>>>> +++ b/mm/huge_memory.c
+>>>> @@ -3673,55 +3673,34 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+>>>>  	return 0;
+>>>>  }
+>>>>
+>>>> -bool non_uniform_split_supported(struct folio *folio, unsigned int new_order,
+>>>> -		bool warns)
+>>>> +bool folio_split_supported(struct folio *folio, unsigned int new_order,
+>>>> +		bool uniform_split, bool warns)
+>>>>  {
+>>>> -	if (folio_test_anon(folio)) {
+>>>> -		/* order-1 is not supported for anonymous THP. */
+>>>> -		VM_WARN_ONCE(warns && new_order == 1,
+>>>> -				"Cannot split to order-1 folio");
+>>>> -		return new_order != 1;
+>>>> -	} else if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+>>>> -	    !mapping_large_folio_support(folio->mapping)) {
+>>>> -		/*
+>>>> -		 * No split if the file system does not support large folio.
+>>>> -		 * Note that we might still have THPs in such mappings due to
+>>>> -		 * CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping
+>>>> -		 * does not actually support large folios properly.
+>>>> -		 */
+>>>> -		VM_WARN_ONCE(warns,
+>>>> -			"Cannot split file folio to non-0 order");
+>>>> -		return false;
+>>>> -	}
+>>>> -
+>>>> -	/* Only swapping a whole PMD-mapped folio is supported */
+>>>> -	if (folio_test_swapcache(folio)) {
+>>>> -		VM_WARN_ONCE(warns,
+>>>> -			"Cannot split swapcache folio to non-0 order");
+>>>> -		return false;
+>>>> -	}
+>>>> +	bool need_check = uniform_split ? new_order : true;
+>>>>
+>>>> -	return true;
+>>>> -}
+>>>> -
+>>>> -/* See comments in non_uniform_split_supported() */
+>>>> -bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+>>>> -		bool warns)
+>>>> -{
+>>>>  	if (folio_test_anon(folio)) {
+>>>> +		/* order-1 is not supported for anonymous THP. */
+>>>>  		VM_WARN_ONCE(warns && new_order == 1,
+>>>>  				"Cannot split to order-1 folio");
+>>>>  		return new_order != 1;
+>>>> -	} else  if (new_order) {
+>>>> +	} else if (need_check) {
+>>>>  		if (IS_ENABLED(CONFIG_READ_ONLY_THP_FOR_FS) &&
+>>>>  		    !mapping_large_folio_support(folio->mapping)) {
+>>>> +			/*
+>>>> +			 * No split if the file system does not support large
+>>>> +			 * folio.  Note that we might still have THPs in such
+>>>> +			 * mappings due to CONFIG_READ_ONLY_THP_FOR_FS. But in
+>>>> +			 * that case, the mapping does not actually support
+>>>> +			 * large folios properly.
+>>>> +			 */
+>>>
+>>> Blindly copying the comment here causes fusion. The checks for
+>>> uniform and non uniform look similar but this comment is specific
+>>> for non uniform split. The “No split” only applies to non uniform
+>>> split, but for uniform split as long as order is 0, the folio
+>>> can be split.
+>>>
+>>
+>> Per my understanding, "no split" applies to both uniform/non uniform split
+>> when new_order is not 0.
+>
+>Not exactly. For non uniform split, any new_order value is not allowed.
+>
+>>
+>> So the logic here is:
+>>
+>>   * uniform split && !new_order: no more check
+>>   * non uniform split: do the check regardless of the new_order
+>>
+>> But I am lack of some background knowledge, if it is wrong, please correct me.
+>
+>You are changing the code, please do your homework first. Or you can
+>ask. After go through the above 6 bullet points, you should get the
+>background knowledge.
+>
+>>
+>>> Please rewrite this comment to clarify both uniform and non uniform
+>>> cases.
+>>
+>> Not sure this one would be better?
+>>
+>>    We can always split a folio down to a single page (new_order == 0) directly.
+>
+>Not always, the exceptions are listed below.
+>
+
+I mean uniform split to order-0, maybe above line misleading to non-uniform
+split?
+
+>>
+>>    For any other scenario
+>>       * uniform split targeting a large folio (new_order > 0)
+>>       * any non-uniform split
+>>    we must confirm that the file system supports large folios.
+>>
+>>    Note that we might still have THPs in such mappings due to
+>>    CONFIG_READ_ONLY_THP_FOR_FS. But in that case, the mapping does not actually
+>>    support large folios properly.
+>
+>These filesystems do not support large folios except THPs created from khugepaged when CONFIG_READ_ONLY_THP_FOR_FS is enabled.
+>
+
+Want to confirm to see whether I understand correctly.
+
+We have two kinds of file system:
+
+  a) support large folio
+  b) not support large folio
+
+For a), we can split large folio to min_order_for_split(), uniform or
+non-uniform.
+
+For b), normally there is no large folio. The large folio is collapsed by
+khugepaged when CONFIG_READ_ONLY_THP_FOR_FS is enabled. So we can only split
+it to order-0 folio for this case.
+
+Not sure this one would be better?
+
+   We can always split a folio down to a single page (new_order == 0)
+   uniformly.
+
+   For any other scenario
+      * uniform split targeting a large folio (new_order > 0)
+      * any non-uniform split
+   we must confirm that the file system supports large folios.
+
+   Note that we might still have THPs in such mappings, which is created from
+   khugepaged when CONFIG_READ_ONLY_THP_FOR_FS is enabled. But in that case,
+   the mapping does not actually support large folios properly.
 
 
-- Paul
+>>>>  			VM_WARN_ONCE(warns,
+>>>>  				"Cannot split file folio to non-0 order");
+>>>>  			return false;
+>>>>  		}
+>>>>  	}
+>>>>
+>>>> -	if (new_order && folio_test_swapcache(folio)) {
+>>>> +	/* Only swapping a whole PMD-mapped folio is supported */
+>>>
+>>> The same issue like the above one. Please rewrite this comment as well.
+>>>
+>>
+>> How about this one:
+>>
+>>    swapcache folio could only be split to order 0
+>
+>This looks good.
+>
+>>
+>>    For non-uniform split or uniform split targeting a large folio, return
+>>    false.
+>
+>You are just describing the code.
+>
+>non-uniform split creates after-split folios with orders from
+>folio_order(folio) - 1 to new_order, making it not suitable for any swapcache
+>folio split. Only uniform split to order-0 can be used here.
+>
 
+Below is the updated version:
+
+    swapcache folio could only be split to order 0
+
+    non-uniform split creates after-split folios with orders from
+    folio_order(folio) - 1 to new_order, making it not suitable for any
+    swapcache folio split. Only uniform split to order-0 can be used here.
+
+>>
+>>>> +	if (need_check && folio_test_swapcache(folio)) {
+>>>>  		VM_WARN_ONCE(warns,
+>>>>  			"Cannot split swapcache folio to non-0 order");
+>>>>  		return false;
+>>>> @@ -3779,11 +3758,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+>>>>  	if (new_order >= old_order)
+>>>>  		return -EINVAL;
+>>>>
+>>>> -	if (uniform_split && !uniform_split_supported(folio, new_order, true))
+>>>> -		return -EINVAL;
+>>>> -
+>>>> -	if (!uniform_split &&
+>>>> -	    !non_uniform_split_supported(folio, new_order, true))
+>>>> +	if (!folio_split_supported(folio, new_order, uniform_split, /* warn = */ true))
+>>>>  		return -EINVAL;
+>>>>
+>>>>  	is_hzp = is_huge_zero_folio(folio);
+>>>> -- 
+>>>> 2.34.1
+>>>
+>>>
+>>> Best Regards,
+>>> Yan, Zi
+>>
+>> -- 
+>> Wei Yang
+>> Help you, Help me
+>
+>
+>Best Regards,
+>Yan, Zi
+
+-- 
+Wei Yang
+Help you, Help me
 
