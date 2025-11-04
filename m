@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38DE9CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 12:10:14 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C6C16CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 12:24:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 661038E0134; Tue,  4 Nov 2025 07:10:13 -0500 (EST)
+	id 104338E0135; Tue,  4 Nov 2025 07:24:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6119C8E0124; Tue,  4 Nov 2025 07:10:13 -0500 (EST)
+	id 0B4B38E0124; Tue,  4 Nov 2025 07:24:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4DA048E0134; Tue,  4 Nov 2025 07:10:13 -0500 (EST)
+	id EE5D38E0135; Tue,  4 Nov 2025 07:23:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ABAD8E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:10:13 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id C925E59200
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:10:12 +0000 (UTC)
-X-FDA: 84072806664.07.0B9CE5C
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 3B88CA0019
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:10:09 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0SvR9VoW;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id DAFCE8E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:23:59 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 7224B140531
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:23:59 +0000 (UTC)
+X-FDA: 84072841398.03.AF46EA9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id ADAAA2000B
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:23:57 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K9Fi45Ya;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762259037; a=rsa-sha256;
+	cv=none;
+	b=XeZXFiupCz8w9Cqxf/oCyJSJdMap4ZMkWZBd2Ld7ww6N7dQGIZF2c6TvhZpv/gxCIWKOi0
+	UdOc1+JW1tlgdOiIu/Dbt6yvHQt6qJcY7LysshcSYXwvkfWMpcHC8lEY9LXIJ1vRc19jDT
+	1IGDJuiBYPrOi2AylErmTL/Jyuq51vU=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=K9Fi45Ya;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf03.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762258211;
+	s=arc-20220608; t=1762259037;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=muowinBjB5u+VBZIerFKK9Iv670g+lCFTaqTXK7kMfE=;
-	b=QssxcowjwoTfcyp0/llp3YSU68QE5PrSBP5EBpU+hlU3gOXpUq17ShmPo0HMSB0yNMgqpc
-	FWUi9ZjOjau6DPXuUjz7ZXhvXonWw1y/l5XyPUBBxfL3ICFZDv/3YUfFKf6a4RFu96woCX
-	Y6av0SBCYs4sTfErXEiY0reIucABSgU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762258211; a=rsa-sha256;
-	cv=none;
-	b=HZSD1f0TMMxdE6rSZSwZtL9+pBqn9n8m+9Z+E62Xdyz8Mq0wUgpUKq2sQRrFhpsq2VFEBB
-	WZ9yd35Xeep/12rvA/0EU9+yC5g4tEpBsN0UG8p33nECumeOeHy+e9t3b4QgupTeVl6054
-	Kpyfye5ji2RLLvuV+DXHE+6cFYHlwIg=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=0SvR9VoW;
-	spf=pass (imf15.hostedemail.com: domain of wangkefeng.wang@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=wangkefeng.wang@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=muowinBjB5u+VBZIerFKK9Iv670g+lCFTaqTXK7kMfE=;
-	b=0SvR9VoWnt+T2u4dNohjI1F1XGclCpF4gVQDX59MF6RB1AetoxXCPPt0x5HpT6tj7G0EXNQXq
-	D+L0xxUHXFYSuOFWuuFq3w9/akt8+DBjAXz1gFhoBNzSQQSXW4ILAJxcR4aqxRLtmR/z7BglSMZ
-	1suk62WNhnA8ACmx1hOq6iE=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4d16fy4f48zmV6l;
-	Tue,  4 Nov 2025 20:08:26 +0800 (CST)
-Received: from dggpemf100008.china.huawei.com (unknown [7.185.36.138])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7B8CE140143;
-	Tue,  4 Nov 2025 20:10:01 +0800 (CST)
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemf100008.china.huawei.com (7.185.36.138) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 20:10:00 +0800
-Message-ID: <c9925b2e-207b-447e-afce-07873406a853@huawei.com>
-Date: Tue, 4 Nov 2025 20:09:58 +0800
+	bh=V6P3uoQL4uWs+t5G+p0taETLOYUGgok1YeVz+E2jRpg=;
+	b=pZQXUB/HuS+cahGjJd/hABSabcWX8O1QFort8mkzIhvMo1MaG4MrzvupIGiO9u+BscGEvA
+	eMRaNC0qwyq1bcGxEL+zJxTKizSTbwT5mnG/3qk1OdCJBzIzxrGjX619djygKIn6jjgeWp
+	7LVDkpMrxLejH+ZnW/xcFkJm6gdWhhg=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 60FCF44324;
+	Tue,  4 Nov 2025 12:23:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9585C4CEF7;
+	Tue,  4 Nov 2025 12:23:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762259036;
+	bh=OaulnFfIv9hYj/nauRuDYbAuQXPylBEP9GcGHpiUvAk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=K9Fi45YagBaVytfPhJw99wYzHfVNhv98n74R+fFiWU8QxYsDvSsWBlIN6UqHzHzDM
+	 EgagJn9KmmEi3ffbOXmcBMdPe+pwuq0fNlDsVtL3DxfEpg3PzU7uT6lUGHhQ4wbX+N
+	 b2Ou5E1SOeTf7/myN14KvVyiJtH9HLgtOmmbUInr6fjXIq97H4IetxHdkF4I2tt5dN
+	 3x/Uq3dQdVTZR+i6g01hAO0DkOSj6LnZuGrpJohlethDz4iBq2jV0w8SR+mlavFOPl
+	 BhQTVhIVgdWIVRifdPNl83Upz+rjhgt6glK2tfydNYBic9UqNyuxaKKo4uhajRvBTq
+	 uiQSXFDi0MWGA==
+Message-ID: <52e064b1-819a-47b3-9f4e-7ab0890841e7@kernel.org>
+Date: Tue, 4 Nov 2025 13:23:49 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4] mm: use per_vma lock for MADV_DONTNEED
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-CC: Barry Song <21cnbao@gmail.com>, <akpm@linux-foundation.org>,
-	<linux-mm@kvack.org>, Suren Baghdasaryan <surenb@google.com>,
-	<linux-kernel@vger.kernel.org>, Barry Song <v-songbaohua@oppo.com>, "Liam R.
- Howlett" <Liam.Howlett@oracle.com>, David Hildenbrand <david@redhat.com>,
-	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, Lokesh Gidra
-	<lokeshgidra@google.com>, Tangquan Zheng <zhengtangquan@oppo.com>, Qi Zheng
-	<zhengqi.arch@bytedance.com>
-References: <20250607220150.2980-1-21cnbao@gmail.com>
- <efeb3350-fbdf-408c-92ef-c6eada4a5755@huawei.com>
- <564941f2-b538-462a-ac55-f38d3e8a6f2e@lucifer.local>
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Peter Xu <peterx@redhat.com>, Lorenzo Stoakes
+ <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ James Houghton <jthoughton@google.com>, Hugh Dickins <hughd@google.com>,
+ Michal Hocko <mhocko@suse.com>, Ujwal Kundur <ujwal.kundur@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, conduct@kernel.org
+References: <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
+ <aPe0oWR9-Oj58Asz@x1.local>
+ <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+ <aQO3Zko6Qrk7O96u@x1.local> <aQPCwFZqNd_ZlZ0S@x1.local>
+ <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
+ <aQPU-tyo_w68cnKK@x1.local> <7768bbb5-f060-45f7-b584-95bd73c47146@kernel.org>
+ <aQkUwbx7Z4q1qcSB@x1.local> <5f128cbf-7210-42d9-aca1-0a5ed20928c2@kernel.org>
+ <aQmplrpNjvCVjWb_@kernel.org>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-From: Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <564941f2-b538-462a-ac55-f38d3e8a6f2e@lucifer.local>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: kwepems200002.china.huawei.com (7.221.188.68) To
- dggpemf100008.china.huawei.com (7.185.36.138)
-X-Stat-Signature: dgjpzf8e6rdmw6t67oabur5ozo8bf4xt
+In-Reply-To: <aQmplrpNjvCVjWb_@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3B88CA0019
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762258209-363807
-X-HE-Meta: U2FsdGVkX198ORGizgmSiqFt3tz94PZFQ51i+HRfLwugMcPl4fj+Ib0HbO2cgWLfveNYbH6f+jAlySRbxwoaejal9HtqorJdC2GRqtrYiKnJAdm/0aX7nUkSBen4XVrusqgH7VqDpQXM1LGy41Bd7FkUXmftwfvLuJc56AYVV8qBLXisrIvzn9rHYLaVyejgtzwrIXoG0Gr6UvWRVVB+Y6MUjJDBikAaNQu/ERYxs/4dUQjaByjLSOIo3/ma0Zcb/sLShA+te0hc0UPA9pBk4WQDbIKDnvtFJkuAKUzLnWiyCSjLcIDr5OCU9elEc8aoaU8/8UQc7oZgI03J1rkj6miMhkJEOZXwJheU7DcAxZSX/ZNwRAbpaPwLMluz7B6m1UQJyXYb4nfUXeeIW3yvvSnltFixZFAxXgw5kKMQBkgcVCJYaLFy5l7uBK1uteaR+HhjMLE5lMA7uU7z7tQjlbdmw3fkiH5Qkb30vhTPrqqnEyJfEfSy1CPrnE2MC2TlfY25tfHIpFTmq7x0O6zW7cv6lAw807uQO5gdMVMkLLqG1wTDs1Vbo26oghPguktfnhyWdwrqV1gmGcjaemOMMR/G762ItoOrkGbMc89c5GjAGFEfgj2Ld2qxhSdwFxjgL2lAx64ZurA7zYcQ5Vn/0kFz3YCAAoJtz3raYWdOrAEEW/TN8xAKN9wIpiQ55l7n/e3UgVWFuqP1EXGXJo88z913lJnm4s+pH4JFjWWF7TOi5EbpRIsfImavQCd7S/P5nU6UVNUWBJJiLL3Jemryo6Kb1QTmJ66pQmR/g0IHKLh8fiWpcuqIdVxbfdEitMNkDT1q+SLNlQF4fyPOTuADTSSCkHmR9Nz6tYGPTSd8jryhc2fX7pP7sKdpmySBnNphiC81rGjkalFzM5TLxlM37V02JsCqFR6zv1M6jsqAzUtlZf6xywNSO/ZLT8BxU1ed6b2poz8Ksqwbk6ByMN3
- WcqGUSQp
- xVskgpEufuGBxDkuohPnbKFW2zj8Oh4cjgMSediHfLaHIO+8UXkgsEl23X49innnV0szpOB5OtnG0FzAW0nQCRn1FJh+TySRIoKqztvw5abnWdjv5UA0kHhc1ZcXfUNL6l2wMBr1eGJA6CCmVmPacPl2G/2/cNjYGkD0WzHY56EFpl0m3hg7QbX+A3Y7idAzvOnUokyzTmOVGz9MR3OpJOMwm5ucspdiuKxHHvWpsOaQcxG/EWQs4PBl89vrsG4aeV14earoNWIEvW4rTnmCYp3cOcA4wtCzob2NrxBRMA4y8PeluDzgftgjMmj4MX0gaj+ov0Ht6MqqOwe4FlSUUkx8FGlPZY6xzCGQpPKbuwJ1eM6ZS1WXsKoJpjtbxwj4dVU6+08k2MmVeRvPUkE8WaCEfXzsFL7eGqJk/j4dRgSd+zKPoAXCmGshWa6GxlxgedoWwaDhRr+yiO3g=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: ADAAA2000B
+X-Stat-Signature: gfi7turewaxu36koh4hq1bp5with3rdp
+X-HE-Tag: 1762259037-921400
+X-HE-Meta: U2FsdGVkX1/7zT3YMF5BxZ73G1XS24CgdgzKP4aLqZH+cfgsRmhHHXa3i4tXZtgYpLU1WiLKtVHDrr1dgO3LqMMlBUUmxwuBmRPjRfRIrCHoApqGsUFJuSKK3XhY2P7TiMhQd9EIAhEg2G9cxVFOfFO9ISMDVxy7xDDzI+pezTJaqKMk0owGvnaUJArEK79SdA7BB2kgYpAJUN5guFY/M9RH65kRvvVqZ6uNiMsQaA0qXPpBkdUQC+gsq5zHK4IU4tdkUSiDkHTgUdPuWVkckvbu9eWnUB4c1YrgYztnDWp+YfSanuAXSD+chj+Y5VzqL9gKh6KUn0CUKYSdhBP6s7w7GzvnWanxFbzSKzL1GHtPzeKcB1CdiJFzoj+p4W5xQgEP3lQ48p0AME/aSCNq16paWyX+U6sHJu77XLQkiQ/R+7Vw1PVdW8u9TUZ3TusdR6BYpFYm2vJzRywm3b/SYzbYiJ0covUbCVd7mpWdD1Mqnkq5EZAZ3383WMPZHd5HpyJG6vsPtQdZgIcMqH5Yic/+iOLMXmFEpKlU7bYFGNvAlzkMOk43O4WwCf1kc4I7vD7QLTv+ZTw4tcVJUT1rn53R1diJaxQqUd15PdbO1+2IQT25+lkMCKGOdLDPHaYKuxXSiOt8Yhnev05xXaOJs68cEObfCGICpyGI5fi1VsBK6LWuXq1AF0YQTZw39S91o7tDZ3scHZ+0urhZgS+xsMnQyvAw/7nJrMBDatAy66gKu/TIo1ShFnIXDT282jQGWBHnC5B+0G/Ct2+9h2Byy4dB5NG/hz3jOtvpMru8i/vPvPRKCYFY2p1SaM2sS9UoX/PUiPucmrXE7JnYHLu72ZrOFKFKj6tTydeDxTO65O4easAqVc3CeWiZsUR49qkpBXd+UcN7ZFMwDa0TB6U/2svJzWBOUCb2AqVdbGM5KVR7XmaqJuGpjZkzpFYYUkIjp2In8r2UQ18XJEK2WM2
+ FwgZDDZi
+ wqF3M11/k/T7ucFsGZH0vz9TMWI/riDclJ7YR0rF73RSZ5/fkrVH8GblViaqebc2do8OtKcgYDuHm/WC/6Mkomy4XPp09m/b1+mvduErLaCpbz6SWwDEksIvng36HFEfpT9pvP3aWAjjxz7rz0fTHcnjGEY1WnW9b88mUGkQf1frDzGXKyZptH9W7CJ91xpkWZgOCI/bfUq88MpEbjWpJNJJ/pro/hGWKT7TP99G+EQYrDuWmyWPGRwmHs5bGZiKBL7pPgNnDy0XME4L1EwMlJK3ZIxnNLVkCAuq3nIfL8NdQZONmzi1h42BmGvf1McSDJ6Ngm+4xUeEMcggL0NrfZu0Z9HEPMg9zj2Fy
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,120 +109,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/11/4 17:01, Lorenzo Stoakes wrote:
-> On Tue, Nov 04, 2025 at 04:34:35PM +0800, Kefeng Wang wrote:
->>> +static enum madvise_lock_mode get_lock_mode(struct madvise_behavior *madv_behavior)
->>>    {
->>> +	int behavior = madv_behavior->behavior;
->>> +
->>>    	if (is_memory_failure(behavior))
->>> -		return 0;
->>> +		return MADVISE_NO_LOCK;
->>> -	if (madvise_need_mmap_write(behavior)) {
->>> +	switch (behavior) {
->>> +	case MADV_REMOVE:
->>> +	case MADV_WILLNEED:
->>> +	case MADV_COLD:
->>> +	case MADV_PAGEOUT:
->>> +	case MADV_FREE:
->>> +	case MADV_POPULATE_READ:
->>> +	case MADV_POPULATE_WRITE:
->>> +	case MADV_COLLAPSE:
->>> +	case MADV_GUARD_INSTALL:
->>> +	case MADV_GUARD_REMOVE:
->>> +		return MADVISE_MMAP_READ_LOCK;
->>> +	case MADV_DONTNEED:
->>> +	case MADV_DONTNEED_LOCKED:
->>> +		return MADVISE_VMA_READ_LOCK;
+On 04.11.25 08:21, Mike Rapoport wrote:
+> On Mon, Nov 03, 2025 at 10:27:05PM +0100, David Hildenbrand (Red Hat) wrote:
 >>
->> I have a question, we will try per-vma lock for dontneed,
->> but there is a mmap_assert_locked() during madvise_dontneed_free(),
+>> And maybe that's the main problem here: Liam talks about general uffd
+>> cleanups while you are focused on supporting guest_memfd minor mode "as
+>> simple as possible" (as you write below).
 > 
-> Hmm, this is only in the THP PUD huge case, and MADV_FREE is only valid for
-> anonymous memory, and I think only DAX can have some weird THP PUD case.
-> 
-> So I don't think we can hit this.
+> Hijacking for the technical part for a moment ;-)
 
-Yes, we don't support pud THP for anonymous pages.
+What?! That's crazy :P
 
 > 
-> In any event, I think this mmap_assert_locked() is mistaken, as we should
-> only need a VMA lock here.
-> 
-> So we could replace with a:
-> 
-> 	if (!rwsem_is_locked(&tlb->mm->mmap_lock))
-> 		vma_assert_locked(vma);
-> 
-> ?
-> 
+> It seems that "as simple as possible" can even avoid data members in struct
+> vm_uffd_ops, e.g something along these lines:
 
-The pmd dax/anon split don't have assert, for PUD dax, we maybe remove 
-this assert?
+Right, that's certainly even more "minimal".
 
+In the end I agree with previous assessment that the original series is 
+not completely a "modulize memory types".
 
+If we want to make it easier for guest_memfd to support 
+MFILL_ATOMIC_CONTINUE, then maybe we should focus on that, and only 
+that, for the time being to make progress.
 
+-- 
+Cheers
 
->>
->> madvise_dontneed_free
->>    madvise_dontneed_single_vma
->>      zap_page_range_single_batched
->>        unmap_single_vma
->>           unmap_page_range
->>             zap_pud_range
->>               mmap_assert_locked
->>
->> We could fix it by passing the lock_mode into zap_detial and then check
->> the right lock here, but I'm not sure whether it is safe to zap page
->> only with vma lock?
-> 
-> It's fine to zap with the VMA lock. You need only hold the VMA stable which
-> a VMA lock achieves.
-> 
-> See https://docs.kernel.org/mm/process_addrs.html
-
-Thanks, I will learn it.
-
-> 
->>
->> And another about 4f8ba33bbdfc （"mm: madvise: use per_vma lock
->> for MADV_FREE"）, it called walk_page_range_vma() in
->> madvise_free_single_vma(),  but from link[1] and 5631da56c9a8
->> ("fs/proc/task_mmu: read proc/pid/maps under per-vma lock"), it saids
->>
->>    "Note that similar approach would not work for /proc/pid/smaps
->>    reading as it also walks the page table and that's not RCU-safe"
->>
->> We could use walk_page_range_vma() instead of walk_page_range() in
->> smap_gather_stats(), and same question, why 4f8ba33bbdfc(for MADV_FREEE)
->> is safe but not for show_numa_map()/show_smap()?
-> 
-> We only use walk_page_range() there in case 4 listed in show_smaps_rollup()
-> where the mmap lock is dropped on contention.
-
-Sorry, I mean the walk_page_range() in smap_gather_stats() called by
-show_smap()  from /proc/pid/smaps, not the walk_page_range() in
-show_smaps_rollup() from /proc/pid/smaps_rollup.
-
-
-> 
->>
->> Thanks.
->>
->> [1] https://lkml.kernel.org/r/20250719182854.3166724-1-surenb@google.com
-> 
-> AFAICT That's referring to a previous approach that tried to walk
-> /proc/$pid/swaps under RCU _alone_ without VMA locks. This is not safe as
-> page tables can be yanked from under you not under RCU.
-
-But for now it tries per-vma lock or fallback to mmap lock, not 
-lockless, so do you mean we could try per-vma lock for 
-/proc/pid/numa_maps or /proc/pid/smaps ?
-
-> 
-> Cheers, Lorenzo
-> 
-
+David
 
