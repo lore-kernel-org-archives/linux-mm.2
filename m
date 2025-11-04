@@ -4,129 +4,140 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65118CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:22:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFF0CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:26:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A762F8E0005; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
+	id 108FD8E0007; Tue,  4 Nov 2025 14:26:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9FF4E8E0002; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
+	id 0B9308E0002; Tue,  4 Nov 2025 14:26:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C6EB8E0005; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
+	id EEC0D8E0007; Tue,  4 Nov 2025 14:26:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 76D758E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F58B88D24
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:22:17 +0000 (UTC)
-X-FDA: 84073895514.21.681017F
-Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
-	by imf14.hostedemail.com (Postfix) with ESMTP id E5C66100019
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:22:14 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FzMpqT9N;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id DE3C98E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:26:20 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B115A1E0
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:26:20 +0000 (UTC)
+X-FDA: 84073905720.04.AB91C2D
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf07.hostedemail.com (Postfix) with ESMTP id A946B40008
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:26:18 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=KWQctEuj;
+	spf=pass (imf07.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762284135;
+	s=arc-20220608; t=1762284378;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
-	b=0Jkj6z0Vq6+lwAERru1sxnEZVPejwB6C5ayxYmuax2RmgnUp+Y8MsTN7hUvrVDRhlt97uR
-	x3m+X6iDBfh+EV/CzVK/hmim+AF9o7IQQC3WbxkgseJ29MB1LyHtMlZFScQquPXe6PyDhc
-	btQObiTVq3jSjSOvyBmQA49C0i0QlZg=
+	bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
+	b=j5tST0PiQ9HAKVLQw3Zoa+WifE86cFIuw1jV5MKv7Q6h6gv11+6yvjkNovwH90CiJmOhcm
+	ejsvG0YkSm/787TjAWiIUQslSg+OTNUpWheUNPFNG1s8hhqWFiTxCad5d/4IfN2hUhZOhO
+	Tiz+tXyVkGlETQ72DJFMcDr9m6hB/XI=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FzMpqT9N;
-	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762284135; a=rsa-sha256;
+	imf07.hostedemail.com;
+	dkim=pass header.d=ziepe.ca header.s=google header.b=KWQctEuj;
+	spf=pass (imf07.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762284378; a=rsa-sha256;
 	cv=none;
-	b=hbNQdOkE70LW5jurdyf/WxZ8PRzqdlPFeQ00nMOvE7xLx/IqJoN7hyx27lpR/Kr2EbHASo
-	lPEl1IEQhaqKm70IBcX1msCs2BTfyQ+c1sg/1O7lbHSFCIfkHZDoF9JY/HesgTdAbsoSZa
-	DShe6vy8HU1TUfI8Z0XsFIYYIfnLgHw=
-Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b403bb7843eso283570266b.3
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 11:22:14 -0800 (PST)
+	b=jpw2eTxZQccCD/t22Dfkk61s+W4SAqTMbSN6z+EwrZTJFiU0NsC9UcpvM3YRpC9y9CSue3
+	NYul9+D4DQRPZCT/jpcwr94VwlAX5P+sFbTljgi/Q0oj4AI26HKBE4AaZvdCvohn/dHjGg
+	6/Fjz2qCdnuff4VuZAtrKcXheqSF5u0=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-88f2aebce7fso648613485a.3
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 11:26:18 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762284133; x=1762888933; darn=kvack.org;
+        d=ziepe.ca; s=google; t=1762284378; x=1762889178; darn=kvack.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
-        b=FzMpqT9NWrIYW3Qh7MB5YwgyKb0fgBOj2fVVAnraGCgzj49bdfZvwwV4BRV4jGwZQ5
-         l/7pYBmR71aiPiau4e70ZSpYTvPBMH4FFiW5hMq47Ym+T1ctKW6IJWajp7Zg+HBy/tnI
-         eDrTacwBBtGb3IA09Lm3fzVdNXnL+D1sZ8I14J+bs76wtAyJzhIrr4dJGtuIsbkr2hDp
-         W8df3h3eUChdZ/dau1ey0aR/HPedlVinWRU+sd/PItypg4kqXCKEHoCBT/VohzyMil3y
-         xqmRtzqjdnF3Q4nSgxXPbWsBDOJk2klVDntPCRaOyDcpCMR/GjA4qZelaCJPDor/ZplW
-         XvCA==
+        bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
+        b=KWQctEuj7zjyn5FUz4BdVMrVolLhP4Vi3pn/ffECLjKEX9X/59/eftPS9edb+iOzfy
+         GOgEyrEuaS8ACNNTIILWL+JHbNClcrD5xrzJfhEhx6ryEe2e9Pc5DAeWr51SWeSlN/TT
+         VUSbtLE26I9O2lESsI9Eq0/ynBDrDTyoa/wh4zVF3cm/hmNbBP6lDtoDb0ghZs6anVf/
+         d2sj99Djqkj9Bmmy4zTDOjWKcoC7cxtR7XlxVCP8hylLeSdb4Ghc2EtGHy64E0Glfz+y
+         ZnW11r8tee6T/xH4ZWy/bgRY5gHd7lzFMmgS7agO0UeWo4bkReRrddSDamwLcWyY7RF9
+         zYyQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762284133; x=1762888933;
+        d=1e100.net; s=20230601; t=1762284378; x=1762889178;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
-        b=QQal/ScBscfIvCiY0Qa3/2QqA3J3ZUaXByDSiF2i4fW1iBpl9ULKg28XarA2SEz+yX
-         0+CNh1WJJNLl4SKTCEnjYf2hE3omfiaUzJEhIMMuiSdDBQb1iwNJ5G/i1CPzFQvECKsR
-         4RH2r+FEBmeT59IuAo2nKshFRJe2eKz9xYPQn+3sUbNqIRyRMQ7veYq9Kv7n3XZboA4R
-         ilz7A/7YWJKa2XANL9IvKM+gdGY/olcOxhqXKQJAsiuPHhYJFpvlcLyc40lwTcRamoPa
-         4OieES29KF/HQTe7+LN9RbxbKDUmRASnV4cxf8bL8Eik+JLXUbhpqBHnTOiOfucdp63a
-         QMgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWNbX1y6P1AxJI4a8BHtIgkXHXTGVYBQy3eZcx8yqqMXQXH6nTh0S7pVKNTNnS1cdjGvzdh6Imd2A==@kvack.org
-X-Gm-Message-State: AOJu0Yw++MwGal8gB1UFtvmRh83+CRXR3pgRdd7+yD0kveHg2D54fV0j
-	wrx+V3GV/Tl0de4cXsXZjW8PRWFmOF2P1gjN1XNlMMIqxd0vyZIUcCe8dFtj1o1I51w=
-X-Gm-Gg: ASbGncvwXgxU82EHB3BpxWS3gE7RdF1ghswNBRU7o+nA94E7KjnkyFUyAt6bAGSnuNh
-	Nd7n98mAg4ydE+57f2+vQ7HJNfHuBaxGxx3/V+tov5ENkiJud6+80Ct/4iJeu0GDkefAy9KFheu
-	PqTWEP5ScTM8siSDWQ6THuVrwVQMxVp+PX4JyT+S3oYoXUNDTi9mGGIx7ZVCSRH6X9F97xvZWLl
-	GTj61cRShIFJm1UGqBse/cYg5A7Ycg19JJGwJCDCh6RNWC/yCHDpCJkzTrTSWR2EQL797dBX4WV
-	Cm+gi8E/N5nHh+Ym/4m/POspCkQi0Xba19R1EBd7Ded/VQ1QhDClN7aRcMuYQ/jBRy62FDyDKx4
-	R3/9wqFHYRKej+Yr6td/a8ANNDxy13D+dhKm2QQRUYbquI0/Wz0tTxpu138fTZ4Tj87rYIp1HjM
-	YIL0cQ4NSxLdyEdw==
-X-Google-Smtp-Source: AGHT+IFik8SalFdLc/bnmoU3LnAmqT4cTwgJ3PvSTxEZQ+CS4V8zLsokvxKnUaET/LmVBxkwZrJpyw==
-X-Received: by 2002:a17:907:9721:b0:b6d:5bc1:4859 with SMTP id a640c23a62f3a-b72653cb70amr25182666b.29.1762284133077;
-        Tue, 04 Nov 2025 11:22:13 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723fe3902bsm285399366b.63.2025.11.04.11.22.12
+        bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
+        b=e1lsJEjfSoentnGyYKF5NjW9QBS9sGE2awg7mCCEG3l8ZR6bUyRUkArLf4G/nPKxtb
+         +zgZ8lku7hx6oVUYcAo8YgEc9iYYW2Tv5yKVAn3mP7hWbxF5yWhLIJmoyMb9EABQGXft
+         WaDNOSXbt9RMEfgSi9+AtvpKV0voo4cEUEuxEcxDPpt9HLR4u81I5MFoKCFF5fD1NRB8
+         zz7q1x2c3JddfcJYkn7aRPOjJnFVqXhDxu1bmH9hUevVdYg+jkOs7cdx82IUP1PthiMg
+         TaaSCt19Animk2dUX2rgrtYNqhN1/7Gy21T6bN24DkVfFJ7F4w8IJUT7oBQHWhrEtj0P
+         IwZA==
+X-Forwarded-Encrypted: i=1; AJvYcCWj15kEib7BahqfhtKyyq0iPrSQJuUL3tyf+ibBlRWGaYP7BaGvc4RSAwzXqdDsdrzRadS6QsczaA==@kvack.org
+X-Gm-Message-State: AOJu0YzSqPNlmD1S+mgmi5xkMLbIhc83BkcMg8OP4PgBU9DFYW+lT5kr
+	/m4DZQIwytsGhQfCcojXelNbwsiM3GFXVKP9lmHuLLmfym501W//2dqSDamPIZl44vQ=
+X-Gm-Gg: ASbGncvcwZYwl4mKSvU/HdxkN3LAExPaxx2Zbj3cImufpxBAmPWIQ34IbdFJ5OIY4fb
+	jQTOFzNv5/jqPAnf/2t6a1Wrbw5Myi6CBm/KjPQUxudUfo1Bcgm8KEjejQcPgPGmwzmZd0IF0Gf
+	DQiNQgJJsF7rSX48ktYXX3fCwKg1o8Zj94uWf2PAlxyqmtKto7/Vg2cmCAna8Kc4ukaGVeMCr7Q
+	LFJ4aSCln2bOHEk73eR4PTbRZQGvfFl29aLGbx/SWMa4EXiKHOxyQPehgGXu53u1GSmb+8xqJSH
+	zzR0aZEiJIrQ/8Qf4zdOdoqF2H4wikj63UcUVT0YF+YaBrjVR/9otiiUqGi60n7U7IpB3Sxc3Z/
+	TwJ8kti8tdlog+vVtfTv/ArkHMU0NMcLPaqsClW3Q7TLfwgkyOuLEjLTxrztIo+5RMwD31WMFHW
+	MhdkbGpVIBd9B36QbwEjLqdh0AhfUZo8ea3KEUeeUdL/96Nw==
+X-Google-Smtp-Source: AGHT+IFUVGYM+r9VlnujjXwSiyntNScv3JSZn85Gft/uvY+ZvhCxVbalAnSefdp5Rhr2H4+z2gOTFg==
+X-Received: by 2002:a05:620a:2a06:b0:86f:aee8:fcbc with SMTP id af79cd13be357-8b220b9ef27mr103417385a.79.1762284377655;
+        Tue, 04 Nov 2025 11:26:17 -0800 (PST)
+Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b0f7bb3e33sm250495385a.39.2025.11.04.11.26.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 11:22:12 -0800 (PST)
-Date: Tue, 4 Nov 2025 20:22:06 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
-	Alexei Starovoitov <ast@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
-	cgroups@vger.kernel.org, bpf@vger.kernel.org,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
-Message-ID: <aQpSXgUL1fUzRgyL@tiehlicka>
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
- <20251027231727.472628-7-roman.gushchin@linux.dev>
- <aQR7HIiQ82Ye2UfA@tiehlicka>
- <875xbsglra.fsf@linux.dev>
- <aQj7uRjz668NNrm_@tiehlicka>
- <87a512muze.fsf@linux.dev>
- <aQm2zqmD9mHE1psg@tiehlicka>
- <87h5v93bte.fsf@linux.dev>
+        Tue, 04 Nov 2025 11:26:16 -0800 (PST)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1vGMfY-000000073Bk-1Ldv;
+	Tue, 04 Nov 2025 15:26:16 -0400
+Date: Tue, 4 Nov 2025 15:26:16 -0400
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Nicolin Chen <nicolinc@nvidia.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20251104192616.GJ1204670@ziepe.ca>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+ <aQpRz74RurfhZK15@Asurada-Nvidia>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87h5v93bte.fsf@linux.dev>
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: E5C66100019
-X-Stat-Signature: oi7w1ij1dac5uxypyckm7o1xqe5ao3oq
+In-Reply-To: <aQpRz74RurfhZK15@Asurada-Nvidia>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A946B40008
+X-Stat-Signature: nbhu33knw93z6u5jj1tsncbuoh5aeujq
 X-Rspam-User: 
-X-HE-Tag: 1762284134-235827
-X-HE-Meta: U2FsdGVkX1/ovhuRAubFHHRjOQ6WzrhTnrHhRxf/q9Mh0EOlK+wuXoMGQOMgXfQu/GCCedcpK4441xRS4hRSM9D0XFwtx1g5SmYvks25ILN0c/IV2DDr/4F/2LcZDqellgpzzWti7RabVzycZkBdXJMipfHDxIloQt8JS8nZwVqzGt5c/gGXKV+eW/ixgJWUQkAZwn1m7AnObOcRlXuBcMMzTma0naenZmLzk4lxWURI4eddjLUEsVLXDp/OfacLYjNTO5l4i3lU7g57EfwzdsUTzMiJAvSy9uu2cBCHXwz3exVPDt2X4x4DP44oMFGeJ8szgVtHdXHDopWfndtMN9P8AYNPOgHL/Pgy61i9aiFeBpTrGVFAKov8hIzlbKZFvzd5z5wMul2m65ef6E8eoh8x0BzHi7+/7M+5vWLj6KBSz3afSVDXupL99n+IwFJR3O8IwSXvIMg5JeKdTDDKlDjzjDEEpqkKBPdC37qRHbOaG+lC2iXWhN+R9VoG/SscDG/YB+uAs80nzZUt8CESK6/h5/LEeoCt9b/R5VvlsPLh45vSsd83iqq8COmfjzZmQHz1MBKyopQghOcG3K9A7NTEO+dZoaj+o32wGfJh3lHksfQRIhEBb7ZNVnLWNrERsEtCNft3k+XzVYCyk4xh8SQ8jGNb+JbipsPZKA9FUbTdyj0TFW8pgLi8dXmtL5LCLh0ZWUI2G0XjZTNqi9K4c83QfpdEklAlrJR/p0u4C1PBNEh51mk905qVpAK7STCco4JW+absgaBxWkKl1SxlOygBFWyjUiRVMPd90W3+TAWX8oyF69ROAGfJnTYW/9OrMbPKGqZzd4boI7Ph66VaRgakIheQRncwjd70EboOIhyZWpi7m1bLLcTMclm7X0Wr8+gTjRdFq+QNYlVpDsGZUZniusnFtcdmLUcHqDW6caCjcU9Io8N7HuDdr3hnKmFAKNf/8HUiJJ2OXwYXibt
- nYGO8JPy
- 0DA+L0r7/RuQciOyhYssPF304xeqOtCZQZHNIksZDqT1V54lsJpZSLMBlTTmxXJ156hRhoODSnSl5IzCXIS4g+BKww+B0vfpfYMiD80mG/jNSS5gVmCz7Uu0ho6xeQb7N3gbM7Rj73CrPnzZ/3uyJ3p0JrFYtrMuxhiNBEji7WAdCfw/KABPGKAh+NXcQ6xMgE9iciu44RnUi4xAjKT0LqS0viX5vXTdMjeJeP3uXEyaXjVLJstHPUrETtt0nsZsByRhjZU9PhytEI7umhE7SNkJViXTHWSw2vfC4jp1MaQVREu6mzekuB4uPUrERZdNTKKpcQtG0zM/mj/PnqgQZo94fCN5JXXqN6dH93yoWdtYh9qthYZIAsB3zaJkOCbHxtuda+eWL8283YyEm4hArsIYEqvEQQaIBwif7
+X-HE-Tag: 1762284378-804485
+X-HE-Meta: U2FsdGVkX18EsA21AjiM2bps9FxnI6HME3zb5k+uSQeaSg77E9k+USwm34y2xUHgWElVfPUMzGvx4aqFTqA38hT49hpGN9cvxkK3Y1Bt4Q0vwKFIih5X6UQ9mw5M9hag5sQgCT7OIUwuJ2are5UODySe2u21j6VePmEg7MLjA2waqWeF3Rgu0ITmj/4dX1x7zRNTIiirz09PIqmJ8sOXA4ZpLXbuBK9fTluKRm4duhBB7PRMY0cpdgG35fcN/DRHJ/2dmRl/PdKJ//spdW4ptpZY0BuYzdXdkvAJ60TkOiy3QhuVfqMpshr7Rgn14THSlzf/1pTwcq7byHcK7T3tYo4o+FVYySrFzhEkzyCJzpw4vA0W99t5Xqmi9KTSPpsaNfWhzLja+tkgJjN4+t80htMmW3dL0rhUw1yGcj+3lM1q1GvUxMQ/JHORmKn0xlLkfOX4AyrfaZG0R0GxMmpNWMFIsugzSm/Bx0blFK05TYVC2nfjFbNx/3AVQv62AAFFfPIvjQsku0K1Q37hJE7GQYaaW9MQu3IdClS4gI+9vPE7brTd2Gg8CpSBtDxZi34BsW16CQRacc+M05Y9vwG4Bg/fCqxtyTwq44FPnbIbDbeJruHNgpCkl2NeOylkGwVxUl6jfsJMDznWrin6NYDWKL9diHFLUngJrs6OV5x44lwQ6/p3o0nsOf4lHdmi23WcupO9zV0NRn6UlEVRT/De9q6gA7WRe2mtRGnMrkiqEQkRVXZzpb8uZsLnfZjOAGgMSPmxo+7lCX0kUxH9Y/ocAGR7agpIFriosnpBMj1C5KCACoY5C4mZN+4USefL5z73dSPPoi2PX2FVLyXT1P3zuFHRPRVrBly2dCKnhccyIGvp0z5CgF5xgQVuU/cqerEFAaN1Tdhqmnf/4A6lwh61jaZD1B92xRUZFj6IFnd3PdrMMkvl0ZiKTfvbv6pR9FOw+i24OvJy710eiLfc5M3
+ ZpaeqmuJ
+ THmPqlH0xKmKCswDCGSzfHZROEwfTBal/4qNBcc9WbgwKpgS2CWfOkCLkiIXa0JTJ7rqLgbOzo/gvWlHGk1vkspJYVxjDnTrxnVg3bA0OXoSC1RsfhITWcAMu8xLJQ8LIjplwx3P1MENE4EnB8XWlAmOmM5TWNlw485DziPrkAZhXTeiUz34k6fgQRtIvrIypml4PILnUk5zTR8maMtZMG6TUWJ7PEkxii6Nv3OzhKP7LhLNB0nyVcCupWSXV3VUZXfiFAVz4vFeUXTskr91rx8ZZ3Z+zP0iVNplJfKU406bX2yz5oxuUC9C89g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -135,107 +146,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue 04-11-25 10:14:05, Roman Gushchin wrote:
-> Michal Hocko <mhocko@suse.com> writes:
+On Tue, Nov 04, 2025 at 11:19:43AM -0800, Nicolin Chen wrote:
+> On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
+> > Changelog:
+> > v6:
+> >  * Fixed wrong error check from pcim_p2pdma_init().
+> >  * Documented pcim_p2pdma_provider() function.
+> >  * Improved commit messages.
+> >  * Added VFIO DMA-BUF selftest.
+> >  * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
+> >  * Fixed error unwind when dma_buf_fd() fails.
+> >  * Document latest changes to p2pmem.
+> >  * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
+> >  * Moved DMA mapping logic to DMA-BUF.
+> >  * Removed types patch to avoid dependencies between subsystems.
+> >  * Moved vfio_pci_dma_buf_move() in err_undo block.
+> >  * Added nvgrace patch.
 > 
-> > On Mon 03-11-25 17:45:09, Roman Gushchin wrote:
-> >> Michal Hocko <mhocko@suse.com> writes:
-> >> 
-> >> > On Sun 02-11-25 13:36:25, Roman Gushchin wrote:
-> >> >> Michal Hocko <mhocko@suse.com> writes:
-> > [...]
-> >> > No, I do not feel strongly one way or the other but I would like to
-> >> > understand thinking behind that. My slight preference would be to have a
-> >> > single return status that clearly describe the intention. If you want to
-> >> > have more flexible chaining semantic then an enum { IGNORED, HANDLED,
-> >> > PASS_TO_PARENT, ...} would be both more flexible, extensible and easier
-> >> > to understand.
-> >> 
-> >> The thinking is simple:
-> >> 1) Most users will have a single global bpf oom policy, which basically
-> >> replaces the in-kernel oom killer.
-> >> 2) If there are standalone containers, they might want to do the same on
-> >> their level. And the "host" system doesn't directly control it.
-> >> 3) If for some reason the inner oom handler fails to free up some
-> >> memory, there are two potential fallback options: call the in-kernel oom
-> >> killer for that memory cgroup or call an upper level bpf oom killer, if
-> >> there is one.
-> >> 
-> >> I think the latter is more logical and less surprising. Imagine you're
-> >> running multiple containers and some of them implement their own bpf oom
-> >> logic and some don't. Why would we treat them differently if their bpf
-> >> logic fails?
-> >
-> > I think both approaches are valid and it should be the actual handler to
-> > tell what to do next. If the handler would prefer the in-kernel fallback
-> > it should be able to enforce that rather than a potentially unknown bpf
-> > handler up the chain.
+> I have verified this v6 using Jason's iommufd dmabuf branch:
+> https://github.com/jgunthorpe/linux/commits/iommufd_dmabuf/
 > 
-> The counter-argument is that cgroups are hierarchical and higher level
-> cgroups should be able to enforce the desired behavior for their
-> sub-trees. I'm not sure what's more important here and have to think
-> more about it.
-
-Right and they can enforce that through their limits - hence oom.
-
-> Do you have an example when it might be important for container to not
-> pass to a higher level bpf handler?
-
-Nothing really specific. I still trying to wrap my head around what
-level of flexibility is necessary here. My initial thoughts would be
-just deal with it in the scope of the bpf handler and fallback to the
-kernel implementation if it cannot deal with the situation. Since you
-brought that up you made me think.
-
-I know that we do not provide userspace like no-regression policy to BPF
-programs but it would be still good to have a way to add new potential
-fallback policies without breaking existing handlers.
-
-> >> Re a single return value: I can absolutely specify return values as an
-> >> enum, my point is that unlike the kernel code we can't fully trust the
-> >> value returned from a bpf program, this is why the second check is in
-> >> place.
-> >
-> > I do not understand this. Could you elaborate? Why we cannot trust the
-> > return value but we can trust a combination of the return value and a
-> > state stored in a helper structure?
+> by drafting a QEMU patch on top of Shameer's vSMMU v5 series:
+> https://github.com/nicolinc/qemu/commits/wip/iommufd_dmabuf/
 > 
-> Imagine bpf program which does nothing and simple returns 1. Imagine
-> it's loaded as a system-wide oom handler. This will effectively disable
-> the oom killer and lead to a potential deadlock on memory.
-> But it's a perfectly valid bpf program.
-> This is something I want to avoid (and it's a common practice with other
-> bpf programs).
-> 
-> What I do I also rely on the value of the oom control's field, which is
-> not accessible to the bpf program for write directly, but can be changed
-> by calling certain helper functions, e.g. bpf_oom_kill_process.
+> with that, I see GPU BAR memory be correctly fetched in the QEMU:
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 0", offset: 0x0, size: 0x1000000
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 2", offset: 0x0, size: 0x44f00000
+> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 4", offset: 0x0, size: 0x17a0000000
 
-OK, now I can see your point. You want to have a line of defense from
-trusted BPF facing interface. This makes sense to me. Maybe it would be
-good to call that out more explicitly. Something like 
-The BPF OOM infrastructure only trusts BPF handlers which are using pre
-selected functions to free up memory e.g. bpf_oom_kill_process. Those
-will set an internal state not available to those handlers directly.
-BPF handler return value is ignored if that state is not set.
+Great thanks! This means we finally have a solution to that follow_pfn
+lifetime problem in type 1! What a long journey :)
 
-I would rather call this differently to freed_memory as the actual
-memory might be freed asynchronously (e.g. oom_reaper) and this is more
-about conformity/trust than actual physical memory being freed. I do not
-care much about naming as long as this is clearly document though.
-Including set of functions that are forming that prescribed API.
+For those following along this same flow will be used with KVM to
+allow it to map VFIO as well. Confidential Compute will require this
+because some arches can't put confidential MMIO (or RAM) into a VMA.
 
-[...]
-> > OK. All I am trying to say is that only safe sleepable locks are
-> > trylocks and that should be documented because I do not think it can be
-> > enforced
-> 
-> It can! Not directly, but by controlling which kfuncs/helpers are
-> available to bpf programs.
-
-OK, I see. This is better than relying only on having this documented.
-
--- 
-Michal Hocko
-SUSE Labs
+Jason
 
