@@ -4,90 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74CC8CCFA03
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 01:45:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id ED535CCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 02:20:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FD808E00D7; Mon,  3 Nov 2025 20:45:21 -0500 (EST)
+	id 049F58E00D8; Mon,  3 Nov 2025 21:20:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8D51C8E0058; Mon,  3 Nov 2025 20:45:21 -0500 (EST)
+	id 021738E0058; Mon,  3 Nov 2025 21:20:28 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 812338E00D7; Mon,  3 Nov 2025 20:45:21 -0500 (EST)
+	id EA14E8E00D8; Mon,  3 Nov 2025 21:20:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 6FE728E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:45:21 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 14DB2160393
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:45:21 +0000 (UTC)
-X-FDA: 84071232042.26.ABAD4FF
-Received: from out-181.mta0.migadu.com (out-181.mta0.migadu.com [91.218.175.181])
-	by imf29.hostedemail.com (Postfix) with ESMTP id 28ED3120005
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:45:18 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eej7SG6K;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D80F48E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 21:20:28 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 290B04A5E9
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:20:28 +0000 (UTC)
+X-FDA: 84071320536.04.B501A15
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 1B8AF180004
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:20:24 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5fMGUL4C;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762222826; a=rsa-sha256;
+	cv=none;
+	b=mjDvhA8bH/Rk2hxeogrC0Ngq0HfJiYJWtHBGNbAoTu3q5motNUudeOxJB40nvTrXQ6NRUv
+	ZLOO37py36YNgK1AYKd0FG1jbpciXnJjFshmtLXJnz9+fbKmbctY52rYkC3OYqn/bTmsS5
+	SGg2/i0rAXKRW0fAGXuT0V/Vi+R/S7o=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=5fMGUL4C;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf16.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762220719;
+	s=arc-20220608; t=1762222826;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P2r2L9mfw9r+buciI9SKXnid4aHeJcUG8hdz1itgchw=;
-	b=M1GWRw8qadGd/8U+KY5L3kTs+lgPsFQ2n6chbYsBV3UtiAjDTdemIx0y8EMSc6HRpdE1JR
-	N+x0BNjMSHvVbs9XW4GbP+5dVZoylLaxji45vzhmXo3hLCr5eK0YXWUBZ5jCN6g/S46a01
-	+ke/AZsGZplFgcqi7WiUUGRriU5avJI=
-ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eej7SG6K;
-	spf=pass (imf29.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.181 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762220719; a=rsa-sha256;
-	cv=none;
-	b=R4QB/Vf6Vk2fCq0m5beL0rQb6Tab4thdaJxtSu88Mm/VlAnIHUEkxiQXpSWs8i2yCPJhaj
-	onfctc6qoYVXS+DspxNg27cyGqmNPrSKK1E6kuN5rycUaSy0PQ4X3mggqCgxM+bkzuTZcC
-	U1XMfNErwXe7Mb9H3QMW7QpUAI0zEWc=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762220716;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P2r2L9mfw9r+buciI9SKXnid4aHeJcUG8hdz1itgchw=;
-	b=eej7SG6KYOyP3W/QXNmOQHfVG0rj2NyX9HRwoKpg+FWmsW7ArMfA2C/rXKHxlOZYdKzghs
-	oqCvSSke2vPfqgIIicBVX3ygA8Fsiz0AOAIbO9KSQKL9jyicSmHTjkv1WG0pn5uuQu8j6t
-	Ib+R2BY04rXYyG9jZXzc/7qccoD5dzg=
-From: Roman Gushchin <roman.gushchin@linux.dev>
-To: Michal Hocko <mhocko@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
-  Suren Baghdasaryan <surenb@google.com>,  Shakeel Butt
- <shakeel.butt@linux.dev>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrii
- Nakryiko <andrii@kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
-  linux-mm@kvack.org,  cgroups@vger.kernel.org,  bpf@vger.kernel.org,
-  Martin KaFai Lau <martin.lau@kernel.org>,  Song Liu <song@kernel.org>,
-  Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Tejun Heo <tj@kernel.org>
-Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
-In-Reply-To: <aQj7uRjz668NNrm_@tiehlicka> (Michal Hocko's message of "Mon, 3
-	Nov 2025 20:00:09 +0100")
-References: <20251027231727.472628-1-roman.gushchin@linux.dev>
-	<20251027231727.472628-7-roman.gushchin@linux.dev>
-	<aQR7HIiQ82Ye2UfA@tiehlicka> <875xbsglra.fsf@linux.dev>
-	<aQj7uRjz668NNrm_@tiehlicka>
-Date: Mon, 03 Nov 2025 17:45:09 -0800
-Message-ID: <87a512muze.fsf@linux.dev>
+	bh=O828h5KICt+CxEvVNrcn2W18GSriC+FVfgyjhNIRBsY=;
+	b=r3B2d6rn63OtAuicGt8lkAz9COPcDyErBg0Yz9yA3e03PxEPiJmw9IVX+w8FkkidvgD5fP
+	Fqe93jLtO+rZ9hpNYWeizH6D8Jk3lYOzlAFnKBm+QF6mwoP4wfL5b1oYNfgSjV/mVTXldm
+	aCym+ZWXXpot+V2Bc7LfLnB22/DgdGY=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=O828h5KICt+CxEvVNrcn2W18GSriC+FVfgyjhNIRBsY=;
+	b=5fMGUL4CG0GbPCEQ4BfyTgfKq4Ur/10j59cFtq9svQdXjZTp9AZzzHnkhKDxUA/Z+nz85/WGa
+	Jqwqdq0yj/8xwLLhytz3ljGEjlJLp6ncQsyIK922sHW2FyT4x9GKoVcPaGWjxmJ5MvzyUzp2dGM
+	rtM9uLvdOsk3pXu/4rOTkuk=
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4d0sZg1WYhzpT1F;
+	Tue,  4 Nov 2025 10:18:51 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id A3984180B5A;
+	Tue,  4 Nov 2025 10:20:19 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Nov 2025 10:20:18 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <bp@alien8.de>, <david@redhat.com>
+CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>,
+	<dave.hansen@linux.intel.com>, <hpa@zytor.com>, <liaohua4@huawei.com>,
+	<lilinjie8@huawei.com>, <linmiaohe@huawei.com>, <linux-edac@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <luto@kernel.org>, <mhocko@suse.com>,
+	<mingo@redhat.com>, <nao.horiguchi@gmail.com>, <peterz@infradead.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <tglx@linutronix.de>,
+	<tony.luck@intel.com>, <vbabka@suse.cz>, <will@kernel.org>, <x86@kernel.org>,
+	<xieyuanbin1@huawei.com>
+Subject: Re: [PATCH 1/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
+Date: Tue, 4 Nov 2025 10:20:14 +0800
+Message-ID: <20251104022014.7716-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20251103123920.GCaQiieAtEGz1nspWZ@fat_crate.local>
+References: <20251103123920.GCaQiieAtEGz1nspWZ@fat_crate.local>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 28ED3120005
-X-Stat-Signature: mzq4kiqyhufyskguknd75qaz8ymeroa9
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
 X-Rspam-User: 
-X-HE-Tag: 1762220718-803763
-X-HE-Meta: U2FsdGVkX1+jKp5vRqfIHxL0aGd/q2Y41Hu6Z18xMTcoHY0KKfk4s7Y220YQTqBLtJIjc9r7lM1X6lVzht4IzvK+0IHCQnHG7+4DhBIrHMpjb3Y5ZaAWlBdAGGaQtVOSJDSBOTLrO65Hzuf1oTyMIRYSfW6k8Hgr5K8c3OWnpVNQUGz/eHJNMnNoBe88ts2fm+sF0YqnIvNbBRSp1hetm8lJYOgxHoe0t7tex7UHgJ6/HELoSgjFCY+MJBhOBbXhXtgxdWcQKTRmmTxl15maefIH5g3x0gqee3v8WZvdGo6KUZkeOkxftQ8ml9DpJQ32yu1p/pbJnaR1GOO1QnP414bLF8sIH5dTYKp5rn3bAchZsy8fnjJKXDWn3kWVNM8aDH1hdjuqDDcyYOVrABlqxdYDKYq5KD6TZoAMvic+PeTL44ciuyKN0SKBKnOgeyxawD4I8oOiiegjdLDtrlyB9m0EkiX5KUFSG1YdIdU7r/VYvKCqtPiYEcQv2KJKWLoM3+Sa8Tg4fzb2owJkDwDJORNmK6FdSDwC9fYDHUNiIDCqI6+SI/Nt1k/qkWEzu8chA9U9K5Ik8tzEYzdfzOEO40gKcmBv6ga9sFlOg4zCwcyOgAIHiVF1NKQ2PEjVoPSwdUdrUT/h9DdAwu1JQtS9EPerjVCvLIqrNZkNgKSrupFmDh0ZdmIVEjloqfc5Jill2zpm1qmiHdJ084MvZF6LGrXEccxKW0SzWuvC4l27hPRzLp3QyekueGs10dLi1p5wTfzHnUkdoqElMwYG532QpMAid83mXN0NeG8nNK538NiQf8pNBhXdegl0rY/TEzsCVlF+LZeOwTZXMY+M4p0z0awt6tV7tJ+u2wYhydg+KJjj5cQgTmJQBEAIv6wWffvbmX6hsVwBgPl3pUshGqrSmK3SJdjJns6z/VttDOw956cbURRXcbX/mSAZOR6mDxtWxFP7N8odFm7V2SiG0JM
- U4OEAIvT
- YDdzTN2SCLxxCSg3UwBc+2UaY205wJk4bYfOGNywTe5NEY9ST5A1ktdDKg1j/KWBBPvb9CUfTHSqUbxhyYtY3rA6oDHeFMAkjMR29GJGGiRJT6Jk6hrhlLE7EgVjstqusJic/xuQZ8rkUoSoaev/K1VjtamXXNj5FoTKBEm6Lm3kUXF2q92/H+PANxCZNpLyFcARYTJ8Qhvj+Hcm1E/hbrfKZPAufjznAj/iF
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 1B8AF180004
+X-Stat-Signature: d9x5biob6nbfiixjojipsr3noikymwpe
+X-HE-Tag: 1762222824-121443
+X-HE-Meta: U2FsdGVkX1/iA5GriMYUjG0F6tqU2ldM9N8VcFiCPH4Q96Q18xgHL4T75r0X67htQwxmU2BX3wgQk5qiu83RaO6fgKTrYUmhFEIuKBgQX15zY9UcrXXGkKhRdYwZUJqvJHIAwX6MBRLGKIkM9wpjCXzMBwUIjgzWXnE7S2mvGNy4BQz5ML/CSQQyMpVXWhp8nlZRa17qaqQoMNMQ3A71EQkA56GGaAaOmLvsaQH+sk30vDfwmdpC487mc09Spi86lZoMj8oZHbhEHWiNWl/i1bCVieYlcShgE3uIef/SQUYRF+aY97RVu60NfChIO5CDXTP4Wv2VYmBXaZ9v1xekUEPZV3v8Kq/bchGFAiLV2k/7b30+Bprabcolu0Dp/3YOXjN5hYu0lJkD3NYhIrm1x0DK4e0vN1NeZyoE715HyOnAwQyF9vnKKkpqgevp4RU0yXd1JeUBYBcJnO3b6ujuxJRiCm5/6isuzJNZJVPV8VfgNFuUfxnUiN2rKKqw8AKXElDDHMRwTN1yK+DQokdte6/MjTaO1Gfh8xNt0y8HFzIDMy5OKVD90ntfFmSjlmDtJJO7/Ja4mZKHyFItP9uLLy8SfgUu03npE5jTdbnCBoD1QLgXbII7lj7eiTAYHA2o88TtCaUGQHjx1f2FN2suXBb2uE7/Qw41fKfd59uaHSYUa+QrKDdBcLCCztj2Y9L609/Je3WA/pBKZQuzr6PQ0cGS4cbZ21Nj9JVoyp+9oo9Y4Iq3Mipb2nrY1mmFf8vvc6/R8LH8GI9ftNBO9vUxTxxl1V6avfTwFB/kyqmt066V30hkT5q31/spGdIL9QvGOaTnsF1CrNE3bb1ZdqmACdEbvzCQbupWTtHDKS9BdFGLmIIfidoUDODGmSLs7BCLZ/VtZARNeAjXh6xRDVfdKgaQjlYM4N4X1bzHlBuifEJVk1JMckIDibwfiBNuDQcTbZJSpJ1mKNKTIwfyvWo
+ DzppRIbT
+ HFDpu9j4NZ8qf0ZH/4vCNyfsbVSLo3LwgMzsJghI3t0ZdQCZ/hrLa0hHZqGQpr/GE57SAwHOi5TDh1KQjw7xCM4KxuQ+AtREZ+ToKeQbFhXNDAESdEivcL+qMM9TUIqqJLQADhlAyCg6gwZEDtjkyXyrJh+VHAO9Jc4F2NzR41NEXCUr12qOXoX91LdIPzvayBPjkVngvoQ/uK6tKccV/Klv0T9fQacH3vdfA5dcitLYEKpNHfUErX2ILziRIOThlATRMm7poG0hhK3Oy06LYVKZxW21OMSE7bX0ZAbXDAOmsjCrUETzKdXGL7uWovhFGUwK8dB2Rdjy6qz7s3KJqFqfgJg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,114 +105,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Michal Hocko <mhocko@suse.com> writes:
-
-> On Sun 02-11-25 13:36:25, Roman Gushchin wrote:
->> Michal Hocko <mhocko@suse.com> writes:
->> 
->> > On Mon 27-10-25 16:17:09, Roman Gushchin wrote:
->> >> Introduce a bpf struct ops for implementing custom OOM handling
->> >> policies.
->> >> 
->> >> It's possible to load one bpf_oom_ops for the system and one
->> >> bpf_oom_ops for every memory cgroup. In case of a memcg OOM, the
->> >> cgroup tree is traversed from the OOM'ing memcg up to the root and
->> >> corresponding BPF OOM handlers are executed until some memory is
->> >> freed. If no memory is freed, the kernel OOM killer is invoked.
->> >
->> > Do you have any usecase in mind where parent memcg oom handler decides
->> > to not kill or cannot kill anything and hand over upwards in the
->> > hierarchy?
->> 
->> I believe that in most cases bpf handlers will handle ooms themselves,
->> but because strictly speaking I don't have control over what bpf
->> programs do or do not, the kernel should provide the fallback mechanism.
->> This is a common practice with bpf, e.g. sched_ext falls back to
->> CFS/EEVDF in case something is wrong.
+On Mon, 3 Nov 2025 13:39:20 +0100, Borislav Petkov wrote:
+>On Mon, Nov 03, 2025 at 01:15:58PM +0100, David Hildenbrand wrote:
+>> I rather wonder whether the memory-tracing code should live in a
+>> memory-failure.h instead.
 >
-> We do have fallback mechanism - the kernel oom handling. For that we do
-> not need to pass to parent handler. Please not that I am not opposing
-> this but I would like to understand thinking behind and hopefully start
-> with a simpler model and then extend it later than go with a more
-> complex one initially and then corner ourselves with weird side
-> effects.
->  
->> Specifically to OOM case, I believe someone might want to use bpf
->> programs just for monitoring/collecting some information, without
->> trying to actually free some memory.
->> 
->> >> The struct ops provides the bpf_handle_out_of_memory() callback,
->> >> which expected to return 1 if it was able to free some memory and 0
->> >> otherwise. If 1 is returned, the kernel also checks the bpf_memory_freed
->> >> field of the oom_control structure, which is expected to be set by
->> >> kfuncs suitable for releasing memory. If both are set, OOM is
->> >> considered handled, otherwise the next OOM handler in the chain
->> >> (e.g. BPF OOM attached to the parent cgroup or the in-kernel OOM
->> >> killer) is executed.
->> >
->> > Could you explain why do we need both? Why is not bpf_memory_freed
->> > return value sufficient?
->> 
->> Strictly speaking, bpf_memory_freed should be enough, but because
->> bpf programs have to return an int and there is no additional cost
->> to add this option (pass to next or in-kernel oom handler), I thought
->> it's not a bad idea. If you feel strongly otherwise, I can ignore
->> the return value on rely on bpf_memory_freed only.
->
-> No, I do not feel strongly one way or the other but I would like to
-> understand thinking behind that. My slight preference would be to have a
-> single return status that clearly describe the intention. If you want to
-> have more flexible chaining semantic then an enum { IGNORED, HANDLED,
-> PASS_TO_PARENT, ...} would be both more flexible, extensible and easier
-> to understand.
+> Yah, move it pls. It doesn't belong there.
 
-The thinking is simple:
-1) Most users will have a single global bpf oom policy, which basically
-replaces the in-kernel oom killer.
-2) If there are standalone containers, they might want to do the same on
-their level. And the "host" system doesn't directly control it.
-3) If for some reason the inner oom handler fails to free up some
-memory, there are two potential fallback options: call the in-kernel oom
-killer for that memory cgroup or call an upper level bpf oom killer, if
-there is one.
+Okay, I will try it in V2 patches.
 
-I think the latter is more logical and less surprising. Imagine you're
-running multiple containers and some of them implement their own bpf oom
-logic and some don't. Why would we treat them differently if their bpf
-logic fails?
+I'm not very familiar with the implementation of trace.
+A trace/events/memory-failure.h file should be added, and:
+```c
+#define CREATE_TRACE_POINTS
+#include <trace/events/memory-failure.h>
+```
+should be added in memory-failure.c, right?
 
-Re a single return value: I can absolutely specify return values as an
-enum, my point is that unlike the kernel code we can't fully trust the
-value returned from a bpf program, this is why the second check is in
-place.
+If I have made any mistakes, please point them out. Thanks!
 
-Can we just ignore the returned value and rely on the freed_memory flag?
-Sure, but I don't think it bus us anything.
-
-Also, I have to admit that I don't have an immediate production use case
-for nested oom handlers (I'm fine with a global one), but it was asked
-by Alexei Starovoitov. And I agree with him that the containerized case
-will come up soon, so it's better to think of it in advance.
-
->> >> The bpf_handle_out_of_memory() callback program is sleepable to enable
->> >> using iterators, e.g. cgroup iterators. The callback receives struct
->> >> oom_control as an argument, so it can determine the scope of the OOM
->> >> event: if this is a memcg-wide or system-wide OOM.
->> >
->> > This could be tricky because it might introduce a subtle and hard to
->> > debug lock dependency chain. lock(a); allocation() -> oom -> lock(a).
->> > Sleepable locks should be only allowed in trylock mode.
->> 
->> Agree, but it's achieved by controlling the context where oom can be
->> declared (e.g. in bpf_psi case it's done from a work context).
->
-> but out_of_memory is any sleepable context. So this is a real problem.
-
-We need to restrict both:
-1) where from bpf_out_of_memory() can be called (already done, as of now
-only from bpf_psi callback, which is safe).
-2) which kfuncs are available to bpf oom handlers (only those, which are
-not trying to grab unsafe locks) - I'll double check it in thenext version.
-
-Thank you!
+Xie Yuanbin
 
