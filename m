@@ -4,86 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49613CCF9F8
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 02:42:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D105CCCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 02:47:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A36C58E00DD; Mon,  3 Nov 2025 21:42:04 -0500 (EST)
+	id 00D018E00DE; Mon,  3 Nov 2025 21:47:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A0EB68E00DC; Mon,  3 Nov 2025 21:42:04 -0500 (EST)
+	id F24488E00DC; Mon,  3 Nov 2025 21:47:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 94BB28E00DD; Mon,  3 Nov 2025 21:42:04 -0500 (EST)
+	id E60D48E00DE; Mon,  3 Nov 2025 21:47:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 82F6C8E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 21:42:04 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 40B2713AA37
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:42:04 +0000 (UTC)
-X-FDA: 84071374968.28.A73CD2E
-Received: from out-184.mta0.migadu.com (out-184.mta0.migadu.com [91.218.175.184])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 93FD3A0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:42:02 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KouVxNdP;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id D3B598E00DC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 21:47:46 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8260813AA2C
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:47:46 +0000 (UTC)
+X-FDA: 84071389332.27.5B9F12D
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf28.hostedemail.com (Postfix) with ESMTP id D8EBEC0008
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:47:44 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ulXY+Dx0;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762224122;
+	s=arc-20220608; t=1762224465;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=jrRYu9HPjwo6Pe33SVmq+ZaNoNPIIc4e6Jwj2agDzxE=;
-	b=EFrXPdbEafe1jJQUC4gnejbgogz3eJDL/oPwSfUvh8uunQiITbvhmvDPm431icRURVl4L9
-	e+1E/ueIuYY9wuHJhtmPSYOGosxDpMf7xks5SbRyo5l3e6UoeEZti2p7ixoykW8042OZR0
-	BKP0A0PdagZ7rIVh93bkEYVd0+nAlFo=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=KouVxNdP;
-	spf=pass (imf25.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.184 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762224122; a=rsa-sha256;
+	bh=E1ozK2WLgGus5MRn1cDh8wVhYS2nt0ltlERgXG+Ih80=;
+	b=evorENOkJ8RgwMJO+RaRBG7h2YLfxahdlSU+InMuMMwKBh984TaMXzvG4fuqq3lEq6dkyT
+	T65OXHTLXNUMG021m0fcPZCKnd6Pk0wx4qF+xaY2X/RMPonFrTfFwybObOEMbrXlgGVj3L
+	nSH7fTgU3uS6ohy6PmcDKIafQ1Li/I0=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762224465; a=rsa-sha256;
 	cv=none;
-	b=shHa0fJvM/YLXGPsAQwXCnkwH3Avv53uu/JekAU3P9fGn7lNb7A+jTQYlYFx0VdMHRi1mI
-	Jn+CGjC4c0GaJUCD3ApnEG2Vd9Evldbz7qnpytFRLIdLxeQDxO4rBnhfbSgI6rEFYGEb+5
-	Be0BvkXxAdKKtsl3GCKd/t0xDIx7jWU=
-MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762224121;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jrRYu9HPjwo6Pe33SVmq+ZaNoNPIIc4e6Jwj2agDzxE=;
-	b=KouVxNdPurpBVOxWme6zPBHls/q68AeQA5Y8ySWoarm4fl2KTt2rbydNlOk2fMPwySzsmB
-	T0hdEeyr2+oEF51OJhMCfpQj+ZbUnqwxtZ2bWte6VKcMTgZ9mDHVVkVKkChb3Ok7JydrKR
-	2NZ0Kzytx7WBvwUQZvKSPDmW4G7RG9o=
-Date: Tue, 04 Nov 2025 02:41:59 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: hui.zhu@linux.dev
-Message-ID: <1ecbb7b6b6c1cc85e9a52d32d968a2ad987a1922@linux.dev>
-TLS-Required: No
-Subject: Re: [PATCH 1/2] mm/hugetlb: extract sysfs into hugetlb_sysfs.c
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>, "Andrew Morton"
- <akpm@linux-foundation.org>, "Muchun Song" <muchun.song@linux.dev>,
- "Oscar Salvador" <osalvador@suse.de>, "David Hildenbrand"
- <david@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc: "Geliang Tang" <geliang@kernel.org>, "Hui Zhu" <zhuhui@kylinos.cn>
-In-Reply-To: <cbee126b-5a3b-4f03-a049-2d8b86b4e5f9@kernel.org>
-References: <cover.1762156954.git.zhuhui@kylinos.cn>
- <fa0fee2b8c2e54cb2437db44579475492c19e94d.1762156954.git.zhuhui@kylinos.cn>
- <cbee126b-5a3b-4f03-a049-2d8b86b4e5f9@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Queue-Id: 93FD3A0002
-X-Stat-Signature: s6f9695z8a3wpzj4zfdpmbq8w4x1397y
-X-Rspamd-Server: rspam02
+	b=G41VIyiSUMuFAeDp6wwLPfCprSuy4Sg3GctgfKv5UPk2MTf7WLUe8BO6FuadYU27ADd6VG
+	OO66IxoEnGa4644lKrOgoxaVsBoJQZ4NBZcGtGc+ETIZJls2+uMtRxPYVUWlg8QhTE/zFj
+	+EpFo8Ubd9h2whoBCZ1XWBctT0WoUf8=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=ulXY+Dx0;
+	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 191D9601E5;
+	Tue,  4 Nov 2025 02:47:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB6DC4CEE7;
+	Tue,  4 Nov 2025 02:47:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762224463;
+	bh=Aq0A4s+Uy/ELDjmPRsdvDGJIZkiNPNcjd+vWWv0awuo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ulXY+Dx074aqU438BK/rGe0ov/CSzMgaQbm+CTcEmwZDGUg+PqhGSMSrkIzjumw/E
+	 66czt4Xn8IpTygJ7r0A3dM0xxQIoI7FepogiQXjQ882RimY4Z/ZtvC1aiY1jOsZYsO
+	 +Kpfaz7P8mz13jPg4WStd2QCIDp+e3Yw+NyesBfw=
+Date: Mon, 3 Nov 2025 18:47:42 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: <ankita@nvidia.com>
+Cc: <aniketa@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
+ <mochs@nvidia.com>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
+ <nao.horiguchi@gmail.com>, <david@redhat.com>,
+ <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
+ <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
+ <tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
+ <guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
+ <kevin.tian@intel.com>, <alex@shazbot.org>, <cjia@nvidia.com>,
+ <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiw@nvidia.com>,
+ <dnigam@nvidia.com>, <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
+ <linux-mm@kvack.org>, <linux-edac@vger.kernel.org>,
+ <Jonathan.Cameron@huawei.com>, <ira.weiny@intel.com>,
+ <Smita.KoralahalliChannabasappa@amd.com>, <u.kleine-koenig@baylibre.com>,
+ <peterz@infradead.org>, <linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>
+Subject: Re: [PATCH v5 0/3] mm: Implement ECC handling for pfn with no
+ struct page
+Message-Id: <20251103184742.441e98e93c5ed36320c4f41a@linux-foundation.org>
+In-Reply-To: <20251102184434.2406-1-ankita@nvidia.com>
+References: <20251102184434.2406-1-ankita@nvidia.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: ro387p44wfuhorpd87woisdgfh4hmt6g
 X-Rspam-User: 
-X-HE-Tag: 1762224122-301379
-X-HE-Meta: U2FsdGVkX19gQZObo67WcZKO5/qiqk6oPDgZ7eQWu7MEGcOPUhw9b+H8yJwxpIY9MsSE5+mHUh/o00A4b2pd/SWlCIJUFAwWUBGOYg8nVtUQPZ+GfMy5HzhhcPB/V1PlUam2PKCXZ/i/7f0oyMTgLy6Cb1qN/7E20XbRuiXpRXlu+V8OFIIFvxrOXDYoAyBj1jAW3dJSjwxdWZD7pwkntbLIAf8XAvAe1Ik5isfCP6DncGx9AgjEmueLPHz00fIdsnnHCGKw804QkQetwvysC+4PKaw4eAft7gcZM5EjGX1H78U/K4KMn9NrEAAnbJNrT3L3D37vyxE2bnliHGqF4OWi4CaW15v4xS1FsUPEjUNBdnh2ZXkj5NOJGeSeb1oeuHqm6aLieIizQryLojVGF5c75wXMqiMeX836Jt4jl+INOTDGaZ55yZDMOZn+GjGw93/owKLwmJpSYWDoyUc9pbkLk8RHbFPi0Z+IdED9QH6W5CoKixqN8f+c+fdVUUaYxIvik0cGnNYnmvPMP+u1WZ8qXOjyBFndvGfdv1obGXRZk2j9RiRtNYwt+PRopYlMeIWGUT1liT5H2cIPNSXb1OqG1qukQNyR5Du5JG934NUqXELL1Ss/xwUqYp1L3MtqxkEenX0jqVasoBo8yLr5hz+btBOI1LQw9JTwZwDXv1eS0Nh1xYIR6MByq0BZhLcy+g+p/vdNGphpqgyD/94rBcdMx8n1ZwInTr253+17BFUySyofIRlCCSu2XWASRHNBYgTBqkjJGoIeKc4VraObe9pXfkNiuwBFqCjJC/5det5YWDCUtj+t5zZJuq5Bc4H1cJR+bzEnZ+v7AdkzrFxclpm5YeW/yd1opBmelvZ14BnPSLg1+QtBOQ==
+X-Rspamd-Queue-Id: D8EBEC0008
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762224464-432623
+X-HE-Meta: U2FsdGVkX1+2ayrklzze9dSGnGd6TTBnkJKtRSIE2tUBni/Y5iWYizyjGGzjSvSzuxouqehsMYZOpmLqjhDnVDO0I/WkzL7jC6NRIdky+5UyLQGSeUdjUVtwd+0z2pmkPI1ZACDo6syUzMLO4h+pgnb4WCsKzkMb5wzkUVzvXmKJxmbWq/x7otqs7xK42Xb6Bv0dwDSerHFmqVF7u16QdkKC7kAmDr3+ulJiLdFpt7x/2dMmvQZvWM+SKLLsTFaT+q/iTV7Hbr21Hjn8JMW2ipcRi9UbneQBCtEF2SAmurgf67GM31t0/jKhVMZ9Yx5+4sxSg89a9uYsyjypUIIgA2VvX7eTn31Qpq1rmAJW5hStt4asVNQj5QkieCWrAvzKf9VW2HLrEmhcom2ZYTardjADk2Sn47DCO7PihyVtegap4se6dpWPAwKG4Bf4SPV7IHmNpty76S7Ys/aV/P0tGoo+fH4Y1InSwvUJlbbfmhtxnoecVWVpJw1/D5fNJkOmu5XwgLkdCDb0LhhD0T4fwhaBDKNNlIJqVCoFoQNh4LK06sQzndLjOXwnNTFWmlSHylNQfAAD0tmsn9B+g+BmoFV18IaG0ECMqA5lbpq+HZrbf0NEur9Qv41FGgaFi9J6NF3xJ3tVqd+uEaHaajF7X/vWeHs9cjJ3uauu1ybIEChbKF1JXCbPWaUba+on61Q39AcK5+p9TbzTPqfI41srzRtJOdfK1hHcrf1cpxhH1b4UCAqngJkXf94Ok7X9j9ZfqkyKCm6JL0e7/ph/hpLXiUjgPffu0XR20fZZ+AXf21IOlbSNs7QELuOsq5IuVqKsJ7cd4f7Ukm8mh2zb5YFoyHeNqgQhFUUs20MQVmlDD4fV4Wo9P8exo9Nxf0bTOrZSXXN6py1xjtGy0sZkJJBIWmbEQ669n7NsPojKnNLiMsQCmhGRdctJmzaZpj4TdjUulRQ2psTurKc8I9LVQyY
+ 2rlEZSEc
+ QhJsYTAxirrudjKzgr6vuEzjzH3hW3qSJJ9EPbgcPTmba+VdwoMJrBLBR178impM2rTanhcY007acupXeUaQTDNvj34duFZQQPleuc7wBkfHqL7brDUR/pHG1Qb53gtszrJxqwaX/cePCOwAi4UXezBA8wQlL6E5lM5fw3aUKAqCbxAffyMb2jCWzZn/xpqLTu1N7oTbD1JT7FrdY0egBb9OLDtIHF3hZc4EnsvGaulv2Jg1uNspVpx6W9I7iJYw+cf1Sz1L8T74YwgkG0YVQ6sHeS6qh8/OdyHS68qlj5dNJMRaYwg2cp8duYIe9NFhFC0KOmIMifuEWQP8u4UKGGUG7uA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,84 +103,23 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025=E5=B9=B411=E6=9C=884=E6=97=A5 00:28, "David Hildenbrand (Red Hat)" <=
-david@kernel.org mailto:david@kernel.org?to=3D%22David%20Hildenbrand%20(R=
-ed%20Hat)%22%20%3Cdavid%40kernel.org%3E > =E5=86=99=E5=88=B0:
+On Sun, 2 Nov 2025 18:44:31 +0000 <ankita@nvidia.com> wrote:
+
+> Poison (or ECC) errors can be very common on a large size cluster.
+> The kernel MM currently handles ECC errors / poison only on memory page
+> backed by struct page. The handling is currently missing for the PFNMAP
+> memory that does not have struct pages. The series adds such support.
+> 
+> Implement a new ECC handling for memory without struct pages. Kernel MM
+> expose registration APIs to allow modules that are managing the device
+> to register its device memory region. MM then tracks such regions using
+> interval tree.
+
+Thanks.  My knowledge of this material is weaker than usual :( But the
+series looks good to my eye so I'll toss it into mm.git's mm-new branch
+for some testing exposure.  If that goes OK then I'll later move it
+into the mm-unstable branch where it will get linux-next esposure.  At
+that point I'll monitor reviewer and tester feedback (please).
 
 
->=20
->=20On 03.11.25 09:22, Hui Zhu wrote:
->=20
->=20>=20
->=20> From: Geliang Tang <geliang@kernel.org>
-> >  Currently, hugetlb.c contains both core management logic and sysfs
-> >  interface implementations, making it difficult to maintain. This pat=
-ch
-> >  extracts the sysfs-related code into a dedicated file to improve cod=
-e
-> >  organization.
-> >  The following components are moved to mm/hugetlb_sysfs.c:
-> >  - hugetlb page demote functions (demote_free_hugetlb_folios,
-> >  demote_pool_huge_page)
-> >  - sysfs attribute definitions and handlers
-> >  - sysfs kobject management functions
-> >  - NUMA per-node hstate attribute registration
-> >  Several inline helper functions and macros are moved to
-> >  mm/hugetlb_internal.h:
-> >  - hstate_is_gigantic_no_runtime()
-> >  - next_node_allowed()
-> >  - get_valid_node_allowed()
-> >  - hstate_next_node_to_alloc()
-> >  - hstate_next_node_to_free()
-> >  - for_each_node_mask_to_alloc/to_free macros
-> >  To support code sharing, these functions are changed from static to
-> >  exported symbols:
-> >  - remove_hugetlb_folio()
-> >  - add_hugetlb_folio()
-> >  - init_new_hugetlb_folio()
-> >  - prep_and_add_allocated_folios()
-> >  - __nr_hugepages_store_common()
-> >  The Makefile is updated to compile hugetlb_sysfs.o when
-> >  CONFIG_HUGETLBFS is enabled. This maintains all existing functionali=
-ty
-> >  while improving maintainability by separating concerns.
-> >  Signed-off-by: Geliang Tang <geliang@kernel.org>
-> >  Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
-> >  ---
-> >=20
->=20[...]
->=20
->=20>=20
->=20> index 000000000000..63ab13cfb072
-> >  --- /dev/null
-> >  +++ b/mm/hugetlb_internal.h
-> >  @@ -0,0 +1,110 @@
-> >  +// SPDX-License-Identifier: GPL-2.0-only
-> >  +/*
-> >  + * Internal HugeTLB definitions.
-> >  + *
-> >  + * Copyright (C) 2025 KylinSoft Corporation.
-> >  + * Author: Geliang Tang <geliang@kernel.org>
-> >  + */
-> >=20
->=20So, you move some code and suddenly have copyright and authored that =
-code.
->=20
->=20Especially given the cove letter says "The code is moved
-> as-is, with only minor formatting adjustments for code style
-> consistency."
->=20
->=20?
-
-Thanks for your remind.
-Remove the wrong copyright according to your comments.
-
-Best,
-Hui
-
->=20
->=20-- Cheers
->=20
->=20David
->
 
