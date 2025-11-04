@@ -4,99 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7BF5DCCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 07:23:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BB620CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 07:53:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED6AF8E00F5; Tue,  4 Nov 2025 02:23:22 -0500 (EST)
+	id B25538E00F6; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E61598E00E7; Tue,  4 Nov 2025 02:23:22 -0500 (EST)
+	id AD82A8E00E7; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D9D848E00F5; Tue,  4 Nov 2025 02:23:22 -0500 (EST)
+	id 9C48F8E00F6; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C47B98E00E7
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:23:22 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 8A137886ED
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:23:22 +0000 (UTC)
-X-FDA: 84072083844.08.F3D3BB2
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 00B1410000C
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:23:19 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xroOrPlT;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762241000; a=rsa-sha256;
-	cv=none;
-	b=gePkIIDYAheifjXbnUYt9I3eNOMmqrF1onTGLS9oB3hN21kQ0WMl39MmjZm8K/zcL9FYKq
-	5bMc1bovoW0TxdT4WBqhB5JxWFw7xd0ve0rffNmfpaSWkLRIl4wk97JoWzXc4zCK4cN8KQ
-	Bbsbu5+c2sX1fJWe0Vz87Qg+FQdSVaE=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xroOrPlT;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf14.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.224 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 879B18E00E7
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:53:03 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 2FB3CB955C
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:03 +0000 (UTC)
+X-FDA: 84072158646.26.FA8DA4A
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 9F5F3140004
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:53:01 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j4yROKUV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762241000;
+	s=arc-20220608; t=1762242781;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5ACxLG6dzzDo30S/CHlMc09wITqLQddejtCKmmhm0BQ=;
-	b=NNlWAtt2yuA1eM80iFfmyOTwon5ak34LTAurNOVLOL3jfSvzC7GpmKwY/9SIYI29L5mVNB
-	VP2MCjRSC8U3TMbAdeZoOEcy9mENxg1wUjTKExVSJMg0Jg/tpZu/Im7MDBP0Gii5rpPMJG
-	s5PgtYi5tsWVHjiMemFy5YgQ0E02Mqo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=5ACxLG6dzzDo30S/CHlMc09wITqLQddejtCKmmhm0BQ=;
-	b=xroOrPlTR0uZ9+iLfrqbfubRjRexnA3TBZ399y4grTlz9Flnce/wf9rEsSbMR5Z3Ps0RA0NTS
-	EVcGDFAtakWZH2kG6c/Hpf+G9xVkXG8fcV8L6avJItBdLACHEcjs5TY4z8H79s6B2e12l6/l3Wh
-	s7IaF6vGqb2v2F8wLNkFxkI=
-Received: from mail.maildlp.com (unknown [172.19.163.44])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4d10J319T3z1cyPR;
-	Tue,  4 Nov 2025 15:21:39 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1009E140158;
-	Tue,  4 Nov 2025 15:23:14 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 15:23:13 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <david@redhat.com>, <dave.hansen@intel.com>, <bp@alien8.de>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <linmiaohe@huawei.com>,
-	<nao.horiguchi@gmail.com>, <luto@kernel.org>, <peterz@infradead.org>,
-	<tony.luck@intel.com>
-CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-edac@vger.kernel.org>, <will@kernel.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: [PATCH v2 2/2] mm/memory-failure: remove the selection of RAS
-Date: Tue, 4 Nov 2025 15:23:06 +0800
-Message-ID: <20251104072306.100738-3-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251104072306.100738-1-xieyuanbin1@huawei.com>
-References: <20251104072306.100738-1-xieyuanbin1@huawei.com>
+	bh=Sf91WClkVGv56YCT4Cfqj1gBCbg+MyS3l290UhFQwEs=;
+	b=U8EJ+2DXul9s5Ow5+7SLuIkAf8LmTekxmniGpOx+xxPSF4x5HotpI3KbJxN+lV17M7yAIX
+	IFiorWGnwnWF2ZZIRUGL0uv2vQarRQEZQKGtjCU/HIuBFLNQRdUcb59UgCpSWtwEuf30ld
+	8K8YZlCkVCxi2K0yBsD92Qu0hnTF1Qw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762242781; a=rsa-sha256;
+	cv=none;
+	b=5futIWDIMTaiVLGlc2cRcXD6CGtUxpkwgWiw8+LaObSiV1Yc6+RjdSSnGbLOUieWz38TtJ
+	AQHiYd4p4G9SIofts+aHMPV4fjr2aGuW2CRJhSNixAn8nV016ARO5ifRD6ExXR9M4HY2BX
+	oqhO05E5Hc+EtvwyBqtIDus/+ReySBQ=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=j4yROKUV;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of pjw@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pjw@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id C9DC9600B0;
+	Tue,  4 Nov 2025 07:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8A2C4CEF7;
+	Tue,  4 Nov 2025 07:52:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762242780;
+	bh=lGIbceyVZgdKoxAlgrENOyuI7iqdDhBBFcc98C3lKn0=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=j4yROKUVgRxS9OZJC90/SHA8XCPDVvwVHDTgceh+mCs64FFENtqjNn3VC2cS3YHRS
+	 Vh89i49TvVRT0q9eqdMJYy6UnQ4flTEkFee+vNQ+LDBtPs6JzXOg9rqYQ1l4R+DhcE
+	 OKQGVXbTY9tU25yQyQP/GPDQop+9ZGgyxC6t3ereLkJQbDn6Ob5K1plMoN0NTftZxP
+	 H0zc0vdg/o5PK4tKAehZQ7H8UtwncmtwY6oH+6QVwjaU8ikukGQIRaxvlWW+ISd3QU
+	 to0NJLl+MiSLIdyT3IYNIGJSnGwpG80zYDO7P7ohAcYwUyIFI+7D4Iv2WyVwNsWwgM
+	 89d6ggsAvvugA==
+Date: Tue, 4 Nov 2025 00:52:53 -0700 (MST)
+From: Paul Walmsley <pjw@kernel.org>
+To: Randy Dunlap <rdunlap@infradead.org>
+cc: Paul Walmsley <pjw@kernel.org>, Deepak Gupta <debug@rivosinc.com>, 
+    Andy Chiu <andybnac@gmail.com>, Thomas Gleixner <tglx@linutronix.de>, 
+    Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+    Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+    "H. Peter Anvin" <hpa@zytor.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+    Vlastimil Babka <vbabka@suse.cz>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, 
+    Krzysztof Kozlowski <krzk+dt@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+    Christian Brauner <brauner@kernel.org>, 
+    Peter Zijlstra <peterz@infradead.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+    Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>, 
+    Jann Horn <jannh@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+    Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+    Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+    =?ISO-8859-15?Q?Bj=F6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+    Andreas Hindborg <a.hindborg@kernel.org>, 
+    Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+    Benno Lossin <lossin@kernel.org>, linux-kernel@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-riscv@lists.infradead.org, devicetree@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-doc@vger.kernel.org, 
+    linux-kselftest@vger.kernel.org, alistair.francis@wdc.com, 
+    richard.henderson@linaro.org, jim.shu@sifive.com, kito.cheng@sifive.com, 
+    charlie@rivosinc.com, atishp@rivosinc.com, evan@rivosinc.com, 
+    cleger@rivosinc.com, alexghiti@rivosinc.com, samitolvanen@google.com, 
+    broonie@kernel.org, rick.p.edgecombe@intel.com, 
+    rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v22 17/28] riscv/signal: save and restore of shadow stack
+ for signal
+In-Reply-To: <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
+Message-ID: <febe1a8a-a68b-1af8-a9d5-1b5f510ecab3@kernel.org>
+References: <20251023-v5_user_cfi_series-v22-0-1935270f7636@rivosinc.com> <20251023-v5_user_cfi_series-v22-17-1935270f7636@rivosinc.com> <a8f469b8-5750-dfec-2390-09bad4515f99@kernel.org> <d442965b-8716-4f89-be88-bc62459af712@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Rspamd-Queue-Id: 00B1410000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: zfx7qkxecri1d9sr13w8wwd9rysk1jpx
+Content-Type: text/plain; charset=US-ASCII
+X-Stat-Signature: 3aw85zw5gtyqp6x8uzsm55thgacxuct6
 X-Rspam-User: 
-X-HE-Tag: 1762240999-488759
-X-HE-Meta: U2FsdGVkX1+nBPBzJ/bJLZKPElZsdJJXPzDkO0bbzHFg/rKulOF8y7vMKTYvgCe04H9LZb72taecorhjTcAL/Yh8wHYktkVZl26RiTtr+4CZGqRTbstQ3X6kRuv6Tcw37lwdvHtcZAFQqFsxsEadGHy30kBeLCQ7bpLzolyZcRv7CDvycOW4vtk53zB06OVbmsc3a4x7SuBhYbyqrI3AF63ygxrqsRvQrEqGjXw4wIF51IsjmkM02S7UpCKY++ZxATUIF8cVav67BmoUAjJ9w8aed7TC5peRU0G5bcEuO8yh9lHHOVsVIONwV0aSGBA8R4qpDXuSqdZPxt4a06xNO6JqBFRpf8h6Dtvrks/UJS5VjUzxEPrhsDgaK760YifxAzVXRNFnR+/ETdQCj4pbrV/9CRmmfKm430JO03wNzItPF+bUEuL3E66PrGPFlBZ6E9qVLfQfi3DX+9/9i+SWfHNgyRyimqEzU0Tm6U7IlGGhFEc8w2Qmk9A5AofyOaPT+WmQEJhJ2xPlsgcw2sjz0DLM550aZqtPhNoUIWEiWp8BMzeEvzfSWfzv4WFHcqZOiIQrDOpL076uo+1AcEOqwDOzeQEn4b/xIgW3ryaE3Lq5vhzMmyRpGdHrfH6s1z+r3udcimxlzxebQFUpfAH4aknitIUPdc4a0Mv2cEnD86+8qXNA5GM2DwI4/zVjyNN+Rkpc0pMokgp1Nb+DO67kzH/15dKjt0ggpzjSEDjhNUmKvaPwTkFECplvwe7jRdJyMcF7r/kOfNKj0nfdbfDaKGB9P1yTArXsxDQXXjjs08koQRzGkv/N57ocpXWrmkdd6oQPE+pl/+KFZaKuJJHKgXDpuEiQxqMh/9tOAKGoedZX2zivlY0CQfjC24LSKojDUOnPx4RJavR/Oj33CwSG4dI526uUjwGsoPChZPWaiI8W9R3XGVtyYV1iDUcPDXmsmcS+bQOmmqUlkTIC21S
- SkVWLsg9
- y8Ay3579hqM56Z0pJB7A/jgyRioxI3d4UfYRL/bRYh+X2aXkIUpLbkxyRJdesfN4vLPB23DtD5jM61hWQQRKTF3aNw413AcZEUwyIlSde6N9VrjTqNvpxy/WWzjKE8DlExvtfVHNblxJQyR2I3tUWLNuV7RNzXEDkBEgXdHFuFFrLaM7B5ov6pR8PRLsjSv7ta1gziZadCIIrWYK+kzn+aGT1FYuI92WGfw01h8aMcrNDm3Uvafc4a6yPDn6ksz4v4ChVabKJsRF2BYsmJcA9LEr9g8IX5d7WU9WbCvQ13GftgjxGK+iqa5U8F7QuP6cOhePPLsv9YAxYVDIdVJN/zZmmr6knspyIfr0qv5r98hj2Li/H+gjr15tHbiYiUgpuH33MvCgG3PUY6l5gnefTa1Kvr1HCHOPfsU5Y
+X-Rspamd-Queue-Id: 9F5F3140004
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762242781-23725
+X-HE-Meta: U2FsdGVkX19k01iisjzks31he/V8fUL59PKfuh68ghBEhoRD1ckEQFHIt2Srbl9VpTnn5NFA93pZAVWV3zzIEG93Sj3Flisu2tBJ/UDYSxwRswC2Z7fZJCrFjES7ntn05efbcm0jB4e7UEaoemn68bm8BEG1fJT5Ag/POcOW6X0mYLi7i/9F+zdmn9hzjZz6Q9fdixXcTivy4oy+ix5x2gBJIkDjoO2dNtE4xUVE3SAd+gZTndQ5H5nyXfu+U5wckofcOZy8o6xlnOswBVrJN1qY04NHuOd4f1PKy4FsH4ejDj+0oD5Yv2jk+Pl1bfAHYycDJJDsj0E169EoX4AKmoxdw389m96vRY4Z+2V8IYhOzrkVmJzXFLgkJaU/cpSH7JSdY0FaSSz17LdDAmGeYgb4OICrzTxvJc7s79caQtdlOzZreIBcyA7F7mus93OfeEuMrmr1M9TWUCl4NO5CV4lG5PeOEIwP81fg2/pBuGHm7D/UM+J909VfLi6RdQtLbUasDPIZ0dS2Ssl0s2zkPsvDhcePSu09S3rblHd1iS2Rq+6DvgdInIBSeJbez3IPrNmKFuNogT2AuoL6vG95JrfKlaAUqL93JjpZM79D1+lE63EBZix8IbDFfYSssAXMpjCAObmPs33oW8RkgnkBgDvF+uTbyb6T1SC2Wcj+wgRtjHZTjhQPyVJElFg0Pns23jVN62wI1ZBk2AucUszKveF2AlcZM/DBAnklJyBK7Aq0YLitYXbFg3IwyMvDDopqpcz+/XeUitpOY6NieK5uOmGs8oFExzv9bUNzzPWV/q9ZMqTs8y5slO5R+RNtgHxOIqF1nS4MfZDUx1sLeGgKLjFik/X0uFWdb44eNGGDxrBsUJwqFySby6g6mXi3yMhwd9OgwwNIjlihrMvumKw3OQgqkatfd15PTpTgzcJAQswmnBP3WjvnjA07fUuF5WQSvHx8B8svxvuRA8f+yUf
+ U8bAahd3
+ qto3TJ1vHLoLfj1EmlIQmQ9Rkn5JSINxSVU0y2tvavjBAQVP2X/u2t4jb9CJ9EYe88Vl/LzQvesH0b02fo3v+uiWO8LCQPFkpv8IDNnVq3KKg5C2opsILGDFHE4/0EyK4aR5jMGtk4mBvOauXKto4gdEIAyiHBpTPDlZDLuaBhIqfLSbQq5dY4DtsjVeDXTY/xcNnhy9ji+OURQxc53bf8TxIHSjQ1Vl8/qXHc+HhuruAXL/Iy59nDcVB9GuejRmOfbJ62a2BJ+eFkLk4vbGJ8yf1JViQ9vU6IMZmTLz/WAQi8d7tMPgKum2IyEAjHzUY9+eDXluMz2VRdYs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,279 +122,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The commit 97f0b13452198290799f ("tracing: add trace event for
-memory-failure") introduces the selection of RAS in memory-failure.
-This commit is just a tracing feature; in reality, there is no dependency
-between memory-failure and RAS. RAS increases the size of the bzImage
-image by 8k, which is very valuable for embedded devices.
+Hi Randy,
 
-Move the memory-failure traceing code from ras_event.h to
-memory-failure.h and remove the selection of RAS.
+On Fri, 31 Oct 2025, Randy Dunlap wrote:
 
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
----
- include/ras/ras_event.h               | 86 ------------------------
- include/trace/events/memory-failure.h | 97 +++++++++++++++++++++++++++
- mm/Kconfig                            |  1 -
- mm/memory-failure.c                   |  5 +-
- 4 files changed, 101 insertions(+), 88 deletions(-)
- create mode 100644 include/trace/events/memory-failure.h
+> 
+> On 10/31/25 1:07 PM, Paul Walmsley wrote:
+> > On Thu, 23 Oct 2025, Deepak Gupta via B4 Relay wrote:
+> > 
+> >> Save shadow stack pointer in sigcontext structure while delivering signal.
+> >> Restore shadow stack pointer from sigcontext on sigreturn.
+> 
+> > This patch causes some 'checkpatch.pl --strict' messages:
+> > 
+> > CHECK: Comparison to NULL could be written "!saved_shstk_ptr"
+> > #271: FILE: arch/riscv/kernel/usercfi.c:186:
+> > +	if (saved_shstk_ptr == NULL)
+> > 
+> > CHECK: Lines should not end with a '('
+> > #300: FILE: arch/riscv/kernel/usercfi.c:215:
+> > +		pr_info_ratelimited(
+> > 
+> > I've fixed them up here in the event that v22 goes in, but please do the 
+> > same on your side in case a new version is needed.
+> 
+> Is checkpatch.pl --strict the norm for arch/riscv/ ?
 
-diff --git a/include/ras/ras_event.h b/include/ras/ras_event.h
-index c8cd0f00c845..1e5e87020eef 100644
---- a/include/ras/ras_event.h
-+++ b/include/ras/ras_event.h
-@@ -10,11 +10,10 @@
- #include <linux/edac.h>
- #include <linux/ktime.h>
- #include <linux/pci.h>
- #include <linux/aer.h>
- #include <linux/cper.h>
--#include <linux/mm.h>
- 
- /*
-  * MCE Extended Error Log trace event
-  *
-  * These events are generated when hardware detects a corrected or
-@@ -337,94 +336,9 @@ TRACE_EVENT(aer_event,
- 		__entry->tlp_header_valid ?
- 			__print_array(__entry->tlp_header, PCIE_STD_MAX_TLP_HEADERLOG, 4) :
- 			"Not available")
- );
- #endif /* CONFIG_PCIEAER */
--
--/*
-- * memory-failure recovery action result event
-- *
-- * unsigned long pfn -	Page Frame Number of the corrupted page
-- * int type	-	Page types of the corrupted page
-- * int result	-	Result of recovery action
-- */
--
--#ifdef CONFIG_MEMORY_FAILURE
--#define MF_ACTION_RESULT	\
--	EM ( MF_IGNORED, "Ignored" )	\
--	EM ( MF_FAILED,  "Failed" )	\
--	EM ( MF_DELAYED, "Delayed" )	\
--	EMe ( MF_RECOVERED, "Recovered" )
--
--#define MF_PAGE_TYPE		\
--	EM ( MF_MSG_KERNEL, "reserved kernel page" )			\
--	EM ( MF_MSG_KERNEL_HIGH_ORDER, "high-order kernel page" )	\
--	EM ( MF_MSG_HUGE, "huge page" )					\
--	EM ( MF_MSG_FREE_HUGE, "free huge page" )			\
--	EM ( MF_MSG_GET_HWPOISON, "get hwpoison page" )			\
--	EM ( MF_MSG_UNMAP_FAILED, "unmapping failed page" )		\
--	EM ( MF_MSG_DIRTY_SWAPCACHE, "dirty swapcache page" )		\
--	EM ( MF_MSG_CLEAN_SWAPCACHE, "clean swapcache page" )		\
--	EM ( MF_MSG_DIRTY_MLOCKED_LRU, "dirty mlocked LRU page" )	\
--	EM ( MF_MSG_CLEAN_MLOCKED_LRU, "clean mlocked LRU page" )	\
--	EM ( MF_MSG_DIRTY_UNEVICTABLE_LRU, "dirty unevictable LRU page" )	\
--	EM ( MF_MSG_CLEAN_UNEVICTABLE_LRU, "clean unevictable LRU page" )	\
--	EM ( MF_MSG_DIRTY_LRU, "dirty LRU page" )			\
--	EM ( MF_MSG_CLEAN_LRU, "clean LRU page" )			\
--	EM ( MF_MSG_TRUNCATED_LRU, "already truncated LRU page" )	\
--	EM ( MF_MSG_BUDDY, "free buddy page" )				\
--	EM ( MF_MSG_DAX, "dax page" )					\
--	EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )			\
--	EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )		\
--	EMe ( MF_MSG_UNKNOWN, "unknown page" )
--
--/*
-- * First define the enums in MM_ACTION_RESULT to be exported to userspace
-- * via TRACE_DEFINE_ENUM().
-- */
--#undef EM
--#undef EMe
--#define EM(a, b) TRACE_DEFINE_ENUM(a);
--#define EMe(a, b)	TRACE_DEFINE_ENUM(a);
--
--MF_ACTION_RESULT
--MF_PAGE_TYPE
--
--/*
-- * Now redefine the EM() and EMe() macros to map the enums to the strings
-- * that will be printed in the output.
-- */
--#undef EM
--#undef EMe
--#define EM(a, b)		{ a, b },
--#define EMe(a, b)	{ a, b }
--
--TRACE_EVENT(memory_failure_event,
--	TP_PROTO(unsigned long pfn,
--		 int type,
--		 int result),
--
--	TP_ARGS(pfn, type, result),
--
--	TP_STRUCT__entry(
--		__field(unsigned long, pfn)
--		__field(int, type)
--		__field(int, result)
--	),
--
--	TP_fast_assign(
--		__entry->pfn	= pfn;
--		__entry->type	= type;
--		__entry->result	= result;
--	),
--
--	TP_printk("pfn %#lx: recovery action for %s: %s",
--		__entry->pfn,
--		__print_symbolic(__entry->type, MF_PAGE_TYPE),
--		__print_symbolic(__entry->result, MF_ACTION_RESULT)
--	)
--);
--#endif /* CONFIG_MEMORY_FAILURE */
- #endif /* _TRACE_HW_EVENT_MC_H */
- 
- /* This part must be outside protection */
- #include <trace/define_trace.h>
-diff --git a/include/trace/events/memory-failure.h b/include/trace/events/memory-failure.h
-new file mode 100644
-index 000000000000..6c88fb624bd7
---- /dev/null
-+++ b/include/trace/events/memory-failure.h
-@@ -0,0 +1,97 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#undef TRACE_SYSTEM
-+#define TRACE_SYSTEM ras
-+#define TRACE_INCLUDE_FILE memory-failure
-+
-+#if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
-+#define _TRACE_MEMORY_FAILURE_H
-+
-+#include <linux/tracepoint.h>
-+#include <linux/mm.h>
-+
-+/*
-+ * memory-failure recovery action result event
-+ *
-+ * unsigned long pfn -	Page Frame Number of the corrupted page
-+ * int type	-	Page types of the corrupted page
-+ * int result	-	Result of recovery action
-+ */
-+
-+#define MF_ACTION_RESULT	\
-+	EM ( MF_IGNORED, "Ignored" )	\
-+	EM ( MF_FAILED,  "Failed" )	\
-+	EM ( MF_DELAYED, "Delayed" )	\
-+	EMe ( MF_RECOVERED, "Recovered" )
-+
-+#define MF_PAGE_TYPE		\
-+	EM ( MF_MSG_KERNEL, "reserved kernel page" )			\
-+	EM ( MF_MSG_KERNEL_HIGH_ORDER, "high-order kernel page" )	\
-+	EM ( MF_MSG_HUGE, "huge page" )					\
-+	EM ( MF_MSG_FREE_HUGE, "free huge page" )			\
-+	EM ( MF_MSG_GET_HWPOISON, "get hwpoison page" )			\
-+	EM ( MF_MSG_UNMAP_FAILED, "unmapping failed page" )		\
-+	EM ( MF_MSG_DIRTY_SWAPCACHE, "dirty swapcache page" )		\
-+	EM ( MF_MSG_CLEAN_SWAPCACHE, "clean swapcache page" )		\
-+	EM ( MF_MSG_DIRTY_MLOCKED_LRU, "dirty mlocked LRU page" )	\
-+	EM ( MF_MSG_CLEAN_MLOCKED_LRU, "clean mlocked LRU page" )	\
-+	EM ( MF_MSG_DIRTY_UNEVICTABLE_LRU, "dirty unevictable LRU page" )	\
-+	EM ( MF_MSG_CLEAN_UNEVICTABLE_LRU, "clean unevictable LRU page" )	\
-+	EM ( MF_MSG_DIRTY_LRU, "dirty LRU page" )			\
-+	EM ( MF_MSG_CLEAN_LRU, "clean LRU page" )			\
-+	EM ( MF_MSG_TRUNCATED_LRU, "already truncated LRU page" )	\
-+	EM ( MF_MSG_BUDDY, "free buddy page" )				\
-+	EM ( MF_MSG_DAX, "dax page" )					\
-+	EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )			\
-+	EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )		\
-+	EMe ( MF_MSG_UNKNOWN, "unknown page" )
-+
-+/*
-+ * First define the enums in MM_ACTION_RESULT to be exported to userspace
-+ * via TRACE_DEFINE_ENUM().
-+ */
-+#undef EM
-+#undef EMe
-+#define EM(a, b) TRACE_DEFINE_ENUM(a);
-+#define EMe(a, b)	TRACE_DEFINE_ENUM(a);
-+
-+MF_ACTION_RESULT
-+MF_PAGE_TYPE
-+
-+/*
-+ * Now redefine the EM() and EMe() macros to map the enums to the strings
-+ * that will be printed in the output.
-+ */
-+#undef EM
-+#undef EMe
-+#define EM(a, b)		{ a, b },
-+#define EMe(a, b)	{ a, b }
-+
-+TRACE_EVENT(memory_failure_event,
-+	TP_PROTO(unsigned long pfn,
-+		 int type,
-+		 int result),
-+
-+	TP_ARGS(pfn, type, result),
-+
-+	TP_STRUCT__entry(
-+		__field(unsigned long, pfn)
-+		__field(int, type)
-+		__field(int, result)
-+	),
-+
-+	TP_fast_assign(
-+		__entry->pfn	= pfn;
-+		__entry->type	= type;
-+		__entry->result	= result;
-+	),
-+
-+	TP_printk("pfn %#lx: recovery action for %s: %s",
-+		__entry->pfn,
-+		__print_symbolic(__entry->type, MF_PAGE_TYPE),
-+		__print_symbolic(__entry->result, MF_ACTION_RESULT)
-+	)
-+);
-+#endif /* _TRACE_MEMORY_FAILURE_H */
-+
-+/* This part must be outside protection */
-+#include <trace/define_trace.h>
-diff --git a/mm/Kconfig b/mm/Kconfig
-index a5a90b169435..c3a8e0ba1ac1 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -738,11 +738,10 @@ config ARCH_SUPPORTS_MEMORY_FAILURE
- 
- config MEMORY_FAILURE
- 	depends on MMU
- 	depends on ARCH_SUPPORTS_MEMORY_FAILURE
- 	bool "Enable recovery from hardware memory errors"
--	select RAS
- 	help
- 	  Enables code to recover from some memory failures on systems
- 	  with MCA recovery. This allows a system to continue running
- 	  even when some of its memory has uncorrected errors. This requires
- 	  special hardware support and typically ECC memory.
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index f698df156bf8..a1fe6d760983 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -58,13 +58,16 @@
- #include <linux/kfifo.h>
- #include <linux/ratelimit.h>
- #include <linux/pagewalk.h>
- #include <linux/shmem_fs.h>
- #include <linux/sysctl.h>
-+
-+#define CREATE_TRACE_POINTS
-+#include <trace/events/memory-failure.h>
-+
- #include "swap.h"
- #include "internal.h"
--#include "ras/ras_event.h"
- 
- #define SOFT_OFFLINE_ENABLED		BIT(0)
- #define SOFT_OFFLINE_SKIP_HUGETLB	BIT(1)
- 
- static int sysctl_memory_failure_early_kill __read_mostly;
--- 
-2.51.0
+I run it on every patch I review.  I usually implement the formatting 
+recommendations, in the interest of keeping the codebase formatted in a 
+standard way across submitters.
+
+> If there are enough arch/riscv/-specific patch expectations,
+> maybe they could be documented in Documentation/process/maintainer-riscv.rst
+> (a new file).
+
+It never occurred to me as being arch/riscv specific, in the sense that, 
+if --strict wasn't more broadly useful across the entire kernel tree, then 
+we should just remove it from checkpatch.pl entirely.  In other words, 
+probably everyone should use it.  There are false positive warnings, of 
+course, including at least one with this patch set; but then again, there 
+are regular false positive warnings with non-strict checkpatch (also with 
+this patch set).
+
+In any case, thanks for the suggestion, and will consider.
+
+
+- Paul
 
 
