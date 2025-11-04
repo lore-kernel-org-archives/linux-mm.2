@@ -4,115 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0FC5CCF9F8
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 01:14:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 273E7CCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 01:23:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id ED0908E00D4; Mon,  3 Nov 2025 20:13:59 -0500 (EST)
+	id 808908E00D5; Mon,  3 Nov 2025 20:23:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id EA8048E0058; Mon,  3 Nov 2025 20:13:59 -0500 (EST)
+	id 7BA658E0058; Mon,  3 Nov 2025 20:23:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DBDDA8E00D4; Mon,  3 Nov 2025 20:13:59 -0500 (EST)
+	id 6CF048E00D5; Mon,  3 Nov 2025 20:23:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CAE0C8E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:13:59 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 85676160362
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:13:59 +0000 (UTC)
-X-FDA: 84071152998.15.4720CBA
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id F279740012
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:13:57 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MXiijNs0;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 5C8658E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 20:23:25 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E6C7BB8C9B
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:23:24 +0000 (UTC)
+X-FDA: 84071176728.30.80833E9
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 36A3CA000B
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:23:23 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EdgYUvAY;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762219403; a=rsa-sha256;
+	cv=none;
+	b=loax0M3iYnKWTajrJZ4U93eXROCr9LXfce0WER5gLFfuFADdixjzQwN0F6Ztc1JdtfL80g
+	nzTn87lqYnQcaHpKd9BWDwkOwpb8PLKP7AtwVyYE3I0S6J6wsCSqXEm61umPxVnwR0/tZw
+	I1mmpaoTq5QZdMXKy5SjXkMqN8rH+tc=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=EdgYUvAY;
+	dmarc=none;
+	spf=pass (imf25.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762218838;
+	s=arc-20220608; t=1762219403;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6EZqMExrBlq40ZRP6BWxMfVndpsjeirYG7cQXkyRxsI=;
-	b=K3EvDqcXVa1gkep6jHNCov9RRajh/JJ6cuf2A/kvv424iUc+7dgPaNTR5g1nB89rubZgyD
-	xyxgx84Wa//HfjoSbgRcGZlvAiAyGwsnYude2MKt85nzfYa3Z89oKzaUUD80rZaLAPu0xp
-	do+4x4HPMSxQhD8G+yVCUCdhqcCsuzI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=MXiijNs0;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762218838; a=rsa-sha256;
-	cv=none;
-	b=puZdZO4jxYHTN8VqmqEmkPdhgjiabKYpoqperJ88AE/qEWoQrIME2yomnxfWTVqXHx6ftd
-	seriK+JwTGUk/JvkxFP7kO46fb9BZdJiliBN1S8Da8yhM5uQO0fsXAUyVwgVWgsnfE1nof
-	wti1i9W9VApk1LmOtOj7eruqKvuOy78=
+	bh=L9ajnhOoxDRiGFYl3wuL64nz1f19StQBd281qP65M3o=;
+	b=gpRXUyLoN/j5YkOa68AUO6Ve+2cFw04JuLKt+Rs8nuA17/ithyJVPSXQprInCb8c4wYdmC
+	xsjO+xbnfAFSJnkmq9dFzz+s5sZaNXBw3b1cdWIb8MF4VEs9b62VwXvUYOlE4WioECQ0H9
+	BgUbudNd3YgcG88MR1IcDEU+qjWRF7g=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3EFC0601D8;
-	Tue,  4 Nov 2025 01:13:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDF4FC4CEE7;
-	Tue,  4 Nov 2025 01:13:54 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id F0AC641876;
+	Tue,  4 Nov 2025 01:23:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 926DEC4CEE7;
+	Tue,  4 Nov 2025 01:23:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762218836;
-	bh=g7+1CBZoXgMB9m5sapw5MTlDDr4R1niG6p5OTGYxjW8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=MXiijNs0dGLzPm7ExN02p9fLamNAS3PK8usLGn4WUjz1zDuNgKotkoWoll6bFAcCZ
-	 c+DX7hIKwm4DgEsPCtD3kUf+z8RMOay39KpBJN6aox4BmnB/K49oGznndZHewdwfAL
-	 cQ5C9jPS31+fy+Dxn1r0V+f74Kv5BDm26YQZF0TQ=
-Date: Mon, 3 Nov 2025 17:13:54 -0800
+	s=korg; t=1762219401;
+	bh=O+EbnOruKhiIrqCFK8PK7/fd3bCIQqLDIo8Gmu5gXD8=;
+	h=Date:From:To:Subject:In-Reply-To:References:From;
+	b=EdgYUvAYaqJ4iE8rYLjZnK2QIlkPprTnCr88K3m1l6ewi6mUMHyNC3jl/5qjpCZmJ
+	 rSlcoRH1V4Ijowsw6+XnYbz7c/pJXq2Yz/Xu0h3elPEQtBgNAfiYr7X3LN5LDSum1g
+	 wpRnmKi1RJbzz7C859LT39PqK9okofTjRhUCsP3w=
+Date: Mon, 3 Nov 2025 17:23:21 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, David
- Hildenbrand <david@redhat.com>, Alexander Gordeev <agordeev@linux.ibm.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Heiko Carstens
- <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Sven Schnelle
- <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, Alexander Viro
- <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara
- <jack@suse.cz>, Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>, "Liam R . Howlett"
- <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, Ryan Roberts
- <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song
- <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, Muchun Song
- <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>, Vlastimil
- Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan
- <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Matthew Brost
- <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim
- <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price
- <gourry@gourry.net>, Ying Huang <ying.huang@linux.alibaba.com>, Alistair
- Popple <apopple@nvidia.com>, Axel Rasmussen <axelrasmussen@google.com>,
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, Kemeng Shi
- <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, Nhat Pham
- <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li
- <chrisl@kernel.org>, SeongJae Park <sj@kernel.org>, Matthew Wilcox
- <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky
- <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou
- <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, Miaohe Lin
- <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, Pedro
- Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, Rik
- van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins
- <hughd@google.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-s390@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-mm@kvack.org, linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
- entries, introduce leaf entries
-Message-Id: <20251103171354.bb28c06d9e83bdd72c3bd648@linux-foundation.org>
-In-Reply-To: <cover.1762171281.git.lorenzo.stoakes@oracle.com>
-References: <cover.1762171281.git.lorenzo.stoakes@oracle.com>
+To: Pratyush Yadav <pratyush@kernel.org>, Baoquan He <bhe@redhat.com>,
+ Alexander Graf <graf@amazon.com>, Mike Rapoport <rppt@kernel.org>, Pasha
+ Tatashin <pasha.tatashin@soleen.com>, kexec@lists.infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] kho: misc fixes
+Message-Id: <20251103172321.689294e48c2fae795e114ce6@linux-foundation.org>
+In-Reply-To: <20251103162020.ac696dbc695f9341e7a267f7@linux-foundation.org>
+References: <20251103180235.71409-1-pratyush@kernel.org>
+	<20251103162020.ac696dbc695f9341e7a267f7@linux-foundation.org>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: F279740012
-X-Stat-Signature: s7hnjiz57eg9zy4uoiaufjg69mjg15hc
+X-Rspamd-Queue-Id: 36A3CA000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: gudju14ikmhii7adcojf91jokz8nj8pf
 X-Rspam-User: 
-X-HE-Tag: 1762218837-385840
-X-HE-Meta: U2FsdGVkX1++VbFngbwu37GpMqOYIIbGX3Fin9f4tT1UmoAaU5CIcWyyBoM8+9eC/b1Cpzu2va/Jrb8ytQdD72egAoy6xfVD+E0UUWO3zdXYrpCUx3HeMG2Th33dQ8Q3W2HySg00I5ZZrhIJ3ZaLWVPGXMVIB4FWYl8WSI9SaI9QdR4q/OzyFp6pahw+u/KNGbi/HmlFjwPIj53G72u/4Ny6f9QIo95OWkA60n+gVdZZcj+qyzcaSJ3VFebpph7eeSwz0yBmm6OS7y2PYU1gnA6Jpd8zh7qscY2GiHp9ScH45fm+pvN+0g/zohc7pT5DJ6myVaeAwOn/FNL0WhsXjJEpDuTEeCndbSnziWWVMKrgvCOwCqG4ZnYAtjBx347hD8om8jRONU+hEtAuaUXJmSnV0Smb9TgkMG/EIFtpOLywf7til631AqbEi+tgbYlXTOQY3AH9I3qZ6pXG2DNkKlqC76V0jkSRSVBCHRF7LJ7DS7taoy55Y1WTwlL3+Xun+SJKD67T8y7BRIvYItD4Q8tHKmj1SyAyb6RGdehpToNlDCNAa5U2lgoHF2RW5NNhvXbLxwfx8DnOOPuCCusQoavFt3A7rH0qh2iNL4cbI3SAm01EXCxHLzQtgZpnOicsDdBNNVYXMHKTD6w9Xcvw8zMiIC5YRaPFg88PHCul6bgGDvzhRySYSPD9iQ4+TCbJ5yfcLxt/ZuaHGXUIS5oOm7oXqGhiiKV9SG/YGXfTxyFhuJ8pGmXblIlsaw2M/5sXjCaqXLYGGGwAvfBgmOdgqUJP1GNNhQEgTsAkPKgrrlxAHkFBgsnNPYUI5hhcMDY4YECh0IN5yEoO5qQterNhy5xcKdxkHVyPOwX/ogjatxJhz3pS9BO5/EKpQymvn9fiB0TKQxwsim1Vi74IC8lx41Iq93D81MpZVvPc/MoTIGU0LLnCfFt17dnSylaR6B6yWCI0KjMYFpGFtR8ojKJ
- yGN5lSLQ
- UUcRrwe3/ZycOnQTj1C/722/ute5HBKe7/Bb9GYgIMKxKRaV1PSYRiwxr6rqftWMvD7GAwj7vSKpDUa24/f3CzB7dphRNGEpiN4D4d1b2NAcV1jEkRN7LDiFDMmYUVMfjqEcEUjAuiJ3vghUK6O8G1R8Bj6/5hWa2DLuUlehfbdru3LsnnXX98KP7x8QrtrV3wNUtThbNkLyKEHeQic6yOIaRooVDzOk4F5qoNwOppBTJLg7Eep7lBlXspSi0D0Zls9IXuFY2lrBYK/haNPbM/uqH3lULrX/Wfj32eBPkJqVtfiLAEnrnOM/FnYMdMCZJ/oWFqBEPEU3UYr66waJO0CrTpO6WFJsgJa7qw2uWD2YljuuiTcWWfUsYXt8GwBf1dVoTJjX/fQOkdK8=
+X-HE-Tag: 1762219403-615363
+X-HE-Meta: U2FsdGVkX1+Dn0AhGmeCtOh/8Umg0mH1i1sJlaHBWN92X96BLH0+LNauxSADFHxIgK6zSwB7kriwYG0E3fhagERALeylhai4WfDOpBJi6Jb5Jq+dNUPXvneeAASdE1Dj0arJ5OvRId+uOD/T2CKR3Xhj1RGqAiHHVfDM4lYDDflbFRNxLw9uH+7enXx+sbiT4nP3lIqV946iyKgGaNsQcED+QSkjQoNk0lY17to2eDntuNuaF+SCAHozOST1mmHHNHor3CD90wAkepDRsKipqiq1bSDJPPeUzOogZQlDDMw/iENZuF0yLemMKvyCSSfiAgZlN6bO2zReH6eL/qUdR68IW71NPAlxokEq/UQK1AWUxBCTUYwh0B7uJwDAUR6R6eoN3i330mZcHHdepX+W8+kZNf2RkEyKtt1S+eh77AFAeFeCVd+on4/yPgt1a4g6thxuFQP8WCWV5Ze1GIRdIZaY1wzKhV6oAHOdhUEvg3BvmwB+mRumVD37vnKPaerYzchmiY1K4waNtUC0JS1KSYRhRDoj4NJnREoFiljjC9KZXT871iov4S0ul0u6jmeMvLp8hckeoSBj8Ya4aKeRaVzuIJqu75Np9lnFuIc/KFepMiPsvJQnA1TL8g7wpOOL0qhRz2qyd7jDifACKWgfbjuv/PBs8ee4Narfz4Zl/9GH26h8kA2zoCvd3lSHZ3WDrkbJ6uSTcw5XfLr4FSczjBk/I1Hdzm3ska0PzdZhiNMZ2+zKYy8+Q+yF17k9rtnDiLIKgYYOwPqbtPQy3Q0YzNKNMx0UsARpBd+WaBph53N/CT7MISJy6lC1zuPPfYq35m99kpYcLbXFA+9BheZBR/MOHdSGJHTxpBDU/+Yh5JfesvR7nl/juTy9fABnLnnpoIJ/xN5GTZ1uzs3sXXbZAtJpmIlkzCZkkjfhtI7QbmDa6rE7MBGzhXVFi0aNTwfsmyhHlqqrdSQBKUxE7GT
+ cqAhyZWt
+ 76j5JLee+XtoG0d6qQ2KYech8NMqopJlQ/KMheF6EckFsLcJKO36IWrVap+g0/wSpyCkAx1oTVLKUsA21/DoB97+huowv5DJpXfBnyKFRPra9pkJP8WOFEWtzhMQh5VFRjSOtvTFW/8yakJEbwcQkFIyWmwg0WejZ7EIs7Eqjq6Hoj/L5kG3ynP/oxvohEuZDoWq/uYeLLYgUnKR2F1aItsYwrnjbXtSVvBShCob71lEqw1pyg5ulm50NCiBKYGdZyoC4Fj8z6DKNHx4RWyiA/c/lFJMHM6PvlTvtH1vC7ACAS8HPDCY/QKMkHZm3KkhUPyIcAIa0tPrOVgU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,17 +92,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  3 Nov 2025 12:31:41 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Mon, 3 Nov 2025 16:20:20 -0800 Andrew Morton <akpm@linux-foundation.org> wrote:
 
-> There's an established convention in the kernel that we treat leaf page
-> tables (so far at the PTE, PMD level) as containing 'swap entries' should
-> they be neither empty (i.e. p**_none() evaluating true) nor present
-> (i.e. p**_present() evaluating true).
+> On Mon,  3 Nov 2025 19:02:30 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
 > 
-> ...
->
+> > This series has a couple of misc fixes for KHO I discovered during code
+> > review and testing.
+> > 
+> > The series is based on top of [0] which has another fix for the function
+> > touched by patch 1. I spotted these two after sending the patch. If that
+> > one needs a reroll, I can combine the three into a series.
+> >
+> 
+> Things appear to be misordered here.
+> 
+> [1/2] "kho: fix unpreservation of higher-order vmalloc preservations"
+> 	fixes a667300bd53f2, so it's wanted in 6.18-rcX
+> 
+> [2/2] "kho: warn and exit when unpreserved page wasn't preserved"
+> 	fixes fc33e4b44b271, so it's wanted in 6.16+
+> 
+> So can we please have [2/2] as a standalone fix against latest -linus,
+> with a cc:stable?
+> 
+> And then [1/2] as a standalone fix against latest -linus without a
+> cc:stable.
+> 
 
-All queued up, along with two -fix patches, thanks.
+OK, I think I figured it out.
 
-I disabled the customary email spray.
+In mm-hotfixes-unstable I have
+
+kho-fix-out-of-bounds-access-of-vmalloc-chunk.patch
+kho-fix-unpreservation-of-higher-order-vmalloc-preservations.patch
+kho-warn-and-exit-when-unpreserved-page-wasnt-preserved.patch
+
+The first two are applicable to 6.18-rcX and the third is applicable to
+6.18-rcX, with a cc:stable for backporting.
+
 
