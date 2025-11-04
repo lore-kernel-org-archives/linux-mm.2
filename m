@@ -4,126 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4DDB6CCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 10:31:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A8EECCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 10:33:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 81D288E0128; Tue,  4 Nov 2025 05:31:18 -0500 (EST)
+	id B08768E0129; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7A5AF8E0124; Tue,  4 Nov 2025 05:31:18 -0500 (EST)
+	id A92FF8E0124; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 66DEA8E0128; Tue,  4 Nov 2025 05:31:18 -0500 (EST)
+	id 95A868E0129; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 4F0E28E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:31:18 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id EC36188B0D
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:31:17 +0000 (UTC)
-X-FDA: 84072557394.27.7C8F848
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	by imf22.hostedemail.com (Postfix) with ESMTP id E1879C000D
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:31:14 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FFeBC9Jz;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762252275; a=rsa-sha256;
-	cv=none;
-	b=lKc4yZJdlCv+7O7NUMDG/ZPLPA4qg3X0MMXWWzC+zUi033y0Spbj31s1Motw3KEzfMMVy6
-	oZu/P7ova7JIa07S2I0wgjmuZK55zSkTDyyLw4slEcejpjbS/QjokWSpPAToCnh8by1I6y
-	OqtlWr1eLHvQEY/x4lpxW3YgVV5ZNJc=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=FFeBC9Jz;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf22.hostedemail.com: domain of mhocko@suse.com designates 209.85.128.42 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 8025C8E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27A084A789
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:33:52 +0000 (UTC)
+X-FDA: 84072563904.26.733BA10
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 4C43CC0009
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:33:50 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GBz2QfyI;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762252275;
+	s=arc-20220608; t=1762252430;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NSOPSjO6RreslNDAcd5uRimHqlxvaREmrSvGaog2qzE=;
-	b=uVA9GJe4Boutk2upaMmh5O6Xgv90X2KDomkITtgMNathtYjqO5AfTFtfe6wjffzsd4L7Eh
-	usdS6BI4UV+eeWLlb0ftkS1w27Q5DLxZ3/x2P+kNRGJNuakNTHY+6eiyl4mS8vXxKX2u0a
-	R2Yd4oX5qBU2HRz30xUfmocjnQQdvOo=
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-471191ac79dso59709095e9.3
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 02:31:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762252273; x=1762857073; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NSOPSjO6RreslNDAcd5uRimHqlxvaREmrSvGaog2qzE=;
-        b=FFeBC9JzWDoF5UgRtrWNMDJnmv+fsvptxVD4G8VumSrUAd0Pmcwg4T5jlT963vMoiO
-         mdLqmJSZBLuhmd8PCPWJIhQ/+V97lXsrfmYmQHtu1k6jAPAVoZzc28yZMzFiZBtq4zWb
-         bjHR7FzLzpcdkx29CpbU2X4QocbK7+cDBp3kJEFenvVDeoU6eJUQ4yfMh1BBZ631O7GS
-         FQq68Sxt/O6KmsT2+DQqfzmPySvXN2YYTG33EyZ81j9MvLnssGrWFIllUVsQbykuqaPQ
-         iDMncBeWVPlXNXHrxP+/xKeyPb3UkTADflwKlzbHvijjYEaZ70VdZ+iqAAsf3PRQyKnU
-         08bw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762252273; x=1762857073;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NSOPSjO6RreslNDAcd5uRimHqlxvaREmrSvGaog2qzE=;
-        b=JJ7JaSt76Mex06R4QvXg7K+N9F+u6unCxQVtmtZbDzMj/BzJc3kyJ7zoCOxdQiXcZT
-         yi+fh09o0ZNhLhg1yfpMgzrLMI6aI5s1qP9dFhvwD0D09J2okWIHtxyG/IUEQCq4Ynxe
-         Z7F4ygwsFura6//O4ARK/CamVqZ1uuD45HbwDKvkfYowq8CIbDZ/E1v5yqqy0IGMYdpS
-         ATRkCpROOdhrOAHdrFBhyGszv6v9ZiO/ss3Vz8axu0DEWEa6ryRKxSaC/tavD5SqwQZS
-         hM5vDGOlAVriKGI5h3NUYMW+jDjSQF6RTxw2UVR9xDAnS74zit5vHg8PBq/GbWv9zIXP
-         zd7w==
-X-Forwarded-Encrypted: i=1; AJvYcCUxOWbOmtfFmMDxhEVu6N2G4x8cxw0PA1EuifkUd8i5oK5uHX0Snp7tHULyfkosYVXS8OeXcG2JLg==@kvack.org
-X-Gm-Message-State: AOJu0YxjL6ZcOmgZXkP559lMh70mrG+nGwGUAHFejgIujQpOZYun1Wbv
-	w0pXXb6pct60vgCYJ6dTu8Dx4/BQCFjQD+IKODr73U5XeUe9Fx6VXt9eRn8cqcG9VD8=
-X-Gm-Gg: ASbGnct/Gl3vKEzguWTTL0HAxjWg14YfowdWjT9UjKSJvDwWI+4q6cDDG6POP7nmdiu
-	AEEffpjfJ3lKTN36qHx45Pjmln43ftDtjhBUPL60aoUhG5bQ+hxVS43FL7Ydx9tl5BipCzsB99N
-	5aPFyIMNCnMCjiglU6zELe3Hw6W/70OsgPvMB3qL2kWz0OgVZM6JgQN/Niq1iK0DhKTqZfoge4W
-	60YL4DQmlPuTp2GHbMXRnAleBYielFDlBp0TrP8tQb8RdN7JGgbdm4Zecxq6GkDc2U98qgxCMhx
-	iQwjnVOsnmp2WRxD/mNfONiuiuZalKwQC+NSMDQKqHHjIuZoNbJh+jXQtjnB7QnzybsevyqCjtn
-	1rIVtsWV6OI6n/O+7/QNmw5YGF0ASHgxkEy2tpRqHSAO3pY0x0dhunMjPV7bmmJpW8/qtF21KSw
-	esL4Ls4rquhiMHaFaaxgs=
-X-Google-Smtp-Source: AGHT+IG0yM/4LjWI3TtpLMmBCevAasyZkItqRC3R1FYg7HJh2om90kK+v+DnqpEiUr8P0yImeBkO1w==
-X-Received: by 2002:a05:600d:434c:b0:477:b93:a7b8 with SMTP id 5b1f17b1804b1-477328b8fdfmr112603725e9.8.1762252273151;
-        Tue, 04 Nov 2025 02:31:13 -0800 (PST)
-Received: from localhost (nat2.prg.suse.com. [195.250.132.146])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc18f41bsm3680398f8f.9.2025.11.04.02.31.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 02:31:12 -0800 (PST)
-Date: Tue, 4 Nov 2025 11:31:11 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>, libaokun@huaweicloud.com,
-	linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com,
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
-	jack@suse.cz, yi.zhang@huawei.com, yangerkun@huawei.com,
-	libaokun1@huawei.com
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Message-ID: <aQnV73KorhS0AWH5@tiehlicka>
-References: <1ab71a9d-dc28-4fa0-8151-6e322728beae@suse.cz>
- <aQTHMI3t5mNXp0M1@casper.infradead.org>
- <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
- <qfo7raavlfupjqwbgl2mnmfvmn3z5oslnxcehorib3xjdgf4yo@bp76xmxplre7>
- <aQTb0NdyN3tU50ss@casper.infradead.org>
- <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
- <aQTqELGGKCN3JTIm@casper.infradead.org>
- <aQhf5LJJMlvT-rrE@tiehlicka>
- <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz>
- <aQh1EmVd8IPHK0Gh@tiehlicka>
+	bh=r4BpmpsifWGmEf60k652ypdrzkQz0SpNCdoZl89z4mE=;
+	b=NQqX2969QzhUFBK/4WDIju5i8zx1ZBaXBCeMfIMgaPcHAXrdxY4kMr9tojdWZXuievuLvp
+	0Dg8qIcLr/8Uf/tSm2QB8PQ5wvO06z3UqvGzRTDjSnRK8U4mCPtLcQxYRfh1h+O+bZYd4K
+	69xD/myMLvme/09Yy/2cs+pHhsvlzCQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762252430; a=rsa-sha256;
+	cv=none;
+	b=69tLOwvuw4281TOCWHpZvF8zVrJehS9fEvzz6KehbhW4/7Ms5aQ81otjRW6/uoy2WtQsxe
+	ie4QFAu2C8oc8KXSgMToJ8fbqfcpoEDb7axLPZ+992+kHDC8I8rtWxnFN69fLd+xRE1KpH
+	mkjBdWH4hkiv22JiwCVBKOOFHXCQpQs=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GBz2QfyI;
+	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 02E6240B40;
+	Tue,  4 Nov 2025 10:33:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16E9C116B1;
+	Tue,  4 Nov 2025 10:33:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762252428;
+	bh=KuLhso+GBkpmIE1sGuLSBeKjvPFIReoPVoBC2F3vsXQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=GBz2QfyIIxl9EoNtSyLMHzQkEk+YH8krTMh7fwlFrsHfDeJIsoiamxqcmlV/zytj1
+	 TQAbwcKQCTC9x2LdsR6yZesy9tlkBL1kA1XsTvrM7KRSJ0zG9tqAfK5r28kEkLRQnZ
+	 bhNkEC2dxH0JRQVQ0TzLggVb2rZSM0wl92wO6whPG5kO8jivm6JYP+cMWyAcuhZlob
+	 WWTi0Xto+gfwF1isQ/Xtaf7tMsRpNKaZdST79/mxQYESEiMrbTVJOmc3FUlJgT282T
+	 UQciHrF6qVz4ya5ugu1KcpqwwWVunRT5jaRof7tMkdQsUYUMNZNvWxFC+dxcTs59JB
+	 xX6X9Xvdv+KBw==
+Message-ID: <de9943ab-1fd1-4a1e-940a-a3ea86f544db@kernel.org>
+Date: Tue, 4 Nov 2025 11:33:43 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQh1EmVd8IPHK0Gh@tiehlicka>
-X-Rspamd-Queue-Id: E1879C000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: p9zzi498b7jqw861s1ey84ngzfzct5xc
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] mm/huge_memory: introduce
+ __split_folio_and_update_stats() to consolidate split task
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org
+References: <20251101002927.2610-1-richard.weiyang@gmail.com>
+ <20251101002927.2610-2-richard.weiyang@gmail.com>
+ <b2a1ef9a-9822-49c8-85e6-43b19bc8bdd7@kernel.org>
+ <20251103233728.b5kmsit3vcqpmr6w@master>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251103233728.b5kmsit3vcqpmr6w@master>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762252274-275456
-X-HE-Meta: U2FsdGVkX1/Z/jXhIQSmJ9WS+ENnhhK3sTkFhtocdQrvkB/I9xl5pSQwIlHeo+7LknxgvOnBnNm00LTVU+w5gc3vrZW8HKark7cBpQwuSZMs1Ngrv064pDa9meNsBetQlHYjTODE+7NSqH0E67P6DgzpiZovWI1S+ohwyLU31WzUKgQhM0UIABMIeilZTH8nv1CyjyS6uJqkBkpOASPLdx6PPmSaOIQASrj1/m1ktIgjzdySBWxPoEN+MPSNopoLWzlkO50Y5JH/c0tybC0buEgR0OgG+Xqr0H6K7R63SywHJX+muYReZ6kU1v0Jowt31/LpmCFeviPEidyCjp/rylrvhugPB63x22QMust7j4XE+YJcZZZmAL7tCqCv4snV8ZXK+IgfC3R7JXR93ls8P7gKsXAiF1970lyD/6oMd8tvHMAYth4rLoqOf14Np1ouBh2a7I4R7/djiqtDfwXWQt95vwHoPMu22VCH2HLZ+DfO5JDoX/U7qGmXrC746CjMJvH79uxLvecjdOZBi2l1LokeLUQox38XfibB5Muc2RoriPpVKoVjBQfxmUYAvYFZK2BUWoB4KvwAyce7QQkvy2ghnereflvQKQtID/ihZ9o3aq9OZssH1Db2C1WTotJno9ttKHrZILZd+bkaADpbDxzklylrHaXtbMBRKGhDBAjQclJWwuxD1tgBdqW3cewRzNMeuNqotklpHcJCKJZNU5a49jPbjRoKnLWoYPqUHi6TwEH3rhO+51Z221aQm9/TXyWnFVp+oNVwruwCQHiNPX56nP3t9pBBvhQB5uumVVCO0Svmqbsniclh8Kr8tbZ38QCGprilNwezzhG/8k4Vv2+qA0vn32v+x6WisK4lRq5xi6p5dXIVvjouY7yKR7DDRwtp/N0sdpoTI3mDvEXQwt3YkDZ78Gjn9xUUxsJFOqlDmov826TSUWY2MiT0ScnVP+mRcGADhA290oinOMe
- jnYllZHv
- znvtAhFZYMs2rsFVSI7Y/xGtOh8k6gIYcJ61jRiNe3pYjpbxEL+WPQAksH04+UELd3lcwVyftd/672C9BSHfIoEGr8Bs0HIB31lv7DeSL0Sz7JB2uoVFuLvb2e5lPnO2m4KYMUqSN79/TbThAPxMt3Qht0m7QYlJukW0HSBQR38sFLOzTD96PWFlR1E1ZuK5RVcJy5Tkc5jbrdpl5nVAf58m7F/dJaDcsiQRiY5AFRPor5FpT78cQa6a0Ey4Y1XBA+gjoV6KW8j+d81yeWg8VFSFSUrKFh0v3n/QSdwmLPOkFwyuMTEHwHltSNz1GrlRJtRoha1eqn0GaZh42+e06I8MoXgtIIxzxr1LfxBc6PcW9ItbLh/OUktfluvl0z6KUlivvbIANDUB80mlkljQ1nLLZSw==
+X-Rspamd-Queue-Id: 4C43CC0009
+X-Stat-Signature: ag99hkwxphj1etmqpetzytghxy63no1k
+X-HE-Tag: 1762252430-22595
+X-HE-Meta: U2FsdGVkX1/YI8l2yNv9ZbfI8m9jbgPSfWecX+0BAcD6DqPr1UPOsKqhKmyMdeoG4+NmPDORyU4npBUatjM9MZCJZGKJMeL7JGQm6eAGJkc61NtRFEEuBGWE76voi8jpc41nOR9Wn+3CnVD71OD9MpyZ6F2r4rh1xnlUGFZ5++fL6WgOkPWLyE/EiyAZbw5FZRteNyjfBPUvJXTrKYwxxn4q1ypJ4SS4IOdRF5wSojBJJcgjgK2Atkk+LNSDovkBZ+XXOS1C0/WBJ6qxaZN6GXuysiphaXOlf73HAAI6hgl/1wErzWWFYWaSc+SrcC06gFp7CkzCfy85CKUvTjgSm2oEXVj+KYi/BoYjN1UiVzYrwOLzM2hUh0r8FBqwLGJ/Q5OmeHWk8S8AeAfiVGGJOjZA4b8GP/QMmF/a/TqyMg4HnnLorTxnelz3ENFK8guOgk/V5DHCZbqC9S80xEaQwk6CTwj/tbSREnAlXqGSouglRkPWTH2EFe8/ZDZxL/gIBo1ZzFt46Q93i23N73oof8se6FIP4ZrAJegFXNhA2XNa83gBvUaohZFAPaCOVm9DnKEa9rkxDHobP8vsyFHomQ+WHsKs8+Yo0WgXIoGNcBnQS9QMAa/IQ5yNSIWpRGGCK4cBPLJGYwMQCrcKSvwttTs1jEj9ANB80gPgyqVST+WIv0pzPWNWNNTYA09uKagnZAZ8Doq5PruDALV9vqgkE9U5txKK8TU9dres6CqUOs59plIHMLJlvqNdcsUCPwVZkY8psZRCwSSmDF4I+FTAIxa2/NAjM+XpQqMzNh7PZn8oJD+4k5/gKnczRyu4gpsl16MuUk46j5nL+noh6j6BZROX8sFIyqbD2rird/5Z+G3ycQo/l0QcD4izRjgbJfTLvtvSP0USLI0kFUG8AXRRJyweqVEVq54oynkge5odf7AfTaa64vJUbng+a9XS7R52MIzCeO4687E5/0rE+D0
+ 4WGT0RNh
+ ErhIwQComlZvGAOCw9Fn/kZW0halWqmDLXKisncgZN3F7WrGUpqD6v8xa/hfC2gZT2etDQ3caPF0wH6webVx5a8aDHwysTtbV0ShEadjUi6HD2oYH5iLN16vGkXbEOR/G72vk7UTnNnQinEqdkv3u1MLkiDxf7iIfeAV0RpSjik52E5bAh6AFFr70zyKKkld8rzVhQaPqmJVdhahJ3If05v3GtY+xknqTNaulHbIPHMF9Atxgvf3jdni/i7VYvpNxDszjo0CeORnprC66qXff0V8w7hJR2viQZkcJlAC61RE0XUQCuvrxRhUowQ+jKeBhptDjzCPrZR7ZMIwh/VbAPPuGh5/Kay64XekDGeDzGH41Zw7wK771UQTyN1EMj0/FwidqQKur4E6mUqg5PXUPbFBg1/HjPVI3QeHodvrMjAjBdiqcy9NyalmBn9bqHzCE36Z8
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,64 +100,53 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon 03-11-25 10:25:40, Michal Hocko wrote:
-> On Mon 03-11-25 10:01:54, Vlastimil Babka wrote:
-> > Maybe we could keep the warning for >=PMD_ORDER as that would still mean
-> > someone made an error?
+On 04.11.25 00:37, Wei Yang wrote:
+> On Mon, Nov 03, 2025 at 05:20:02PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 01.11.25 01:29, Wei Yang wrote:
+>>> The folio splitting process involves several related tasks that are
+>>> executed together:
+>>>
+>>>       Adjusting memcg (memory control group) accounting.
+>>>       Updating page owner tracking.
+>>>       Splitting the folio to the target size (new_order).
+>>>       Updating necessary folio statistics.
+>>>
+>>> This commit introduces the new helper function,
+>>> __split_folio_and_update_stats(), to gather all these tasks. This
+>>> consolidation improves modularity and is a necessary preparation step
+>>> for further cleanup and simplification of the surrounding folio
+>>> splitting logic.
+>>>
+>>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>> Cc: Zi Yan <ziy@nvidia.com>
+>>> ---
+>>>    mm/huge_memory.c | 28 +++++++++++++++++-----------
+>>>    1 file changed, 17 insertions(+), 11 deletions(-)
+>>>
+>>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>>> index c37fe6ad0c96..abde0f1aa8ff 100644
+>>> --- a/mm/huge_memory.c
+>>> +++ b/mm/huge_memory.c
+>>> @@ -3567,6 +3567,22 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>>>    		ClearPageCompound(&folio->page);
+>>>    }
+>>> +static void __split_folio_and_update_stats(struct folio *folio, int old_order,
+>>> +		int new_order, bool is_anon)
+>>
+>> Is there any good reason we want to pass things like "is_anon" instead of
+>> just querying it in that helper?
+>>
 > 
-> I am not sure TBH. For those large requests (anything that is costly
-> order) it is essentially a loop around allocator inside the allocator.
-> I would be really much more worried about order-3 which still triggers
-> the oom killer and could kill half of the system without much progress.
-> For oder-2 you at least have task_struct which spans 2 pages but I do
-> not think we have any guaranteed order-3 page for each task to guarantee
-> anything when killing those.
+> The reason is during split, folio's attribute will not change. In
+> __split_unmapped_folio() it is queried and set as const.
+> 
+> Otherwise we need to query it on each split.
 
-Essentially something like this
-diff --git a/mm/oom_kill.c b/mm/oom_kill.c
-index 25923cfec9c6..2df477d97cee 100644
---- a/mm/oom_kill.c
-+++ b/mm/oom_kill.c
-@@ -1142,6 +1142,14 @@ bool out_of_memory(struct oom_control *oc)
- 	if (!(oc->gfp_mask & __GFP_FS) && !is_memcg_oom(oc))
- 		return true;
- 
-+	/*
-+	 * unlike for other !costly requests killing a task is not
-+	 * really guaranteed to free any order-3 pages. Warn about
-+	 * that to see whether that happens often enough to special
-+	 * case.
-+	 */
-+	WARN_ON(oc->order == 3 && (oc->gfp_mask & __GFP_NOFAIL));
-+
- 	/*
- 	 * Check if there were limitations on the allocation (only relevant for
- 	 * NUMA and memcg) that may require different handling.
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index d1d037f97c5f..ca8795156b14 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -3993,6 +3993,7 @@ __alloc_pages_may_oom(gfp_t gfp_mask, unsigned int order,
- 	/* Coredumps can quickly deplete all memory reserves */
- 	if (current->flags & PF_DUMPCORE)
- 		goto out;
-+
- 	/* The OOM killer will not help higher order allocs */
- 	if (order > PAGE_ALLOC_COSTLY_ORDER)
- 		goto out;
-@@ -4612,11 +4613,6 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	int reserve_flags;
- 
- 	if (unlikely(nofail)) {
--		/*
--		 * We most definitely don't want callers attempting to
--		 * allocate greater than order-1 page units with __GFP_NOFAIL.
--		 */
--		WARN_ON_ONCE(order > 1);
- 		/*
- 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
- 		 * otherwise, we may result in lockup.
+These checks are extremely cheap. Do we really care?
+
 -- 
-Michal Hocko
-SUSE Labs
+Cheers
+
+David
 
