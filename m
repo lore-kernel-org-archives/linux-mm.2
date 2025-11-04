@@ -4,140 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59C8CCCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 15:29:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C3D2ACCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 15:38:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8C2CE8E014F; Tue,  4 Nov 2025 10:29:33 -0500 (EST)
+	id 331598E0003; Tue,  4 Nov 2025 10:38:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 872F98E0124; Tue,  4 Nov 2025 10:29:33 -0500 (EST)
+	id 308EE8E0002; Tue,  4 Nov 2025 10:38:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7625C8E014F; Tue,  4 Nov 2025 10:29:33 -0500 (EST)
+	id 21E7A8E0003; Tue,  4 Nov 2025 10:38:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6418A8E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:29:33 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0831D4AD6D
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 15:29:33 +0000 (UTC)
-X-FDA: 84073309026.03.7B325E5
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 2665CC000F
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 15:29:30 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QIegYlWJ;
-	spf=pass (imf10.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=vannapurve@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 11AF88E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:38:32 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A0A9F88C9A
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 15:38:31 +0000 (UTC)
+X-FDA: 84073331622.15.74C8B5B
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id DF96F20008
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 15:38:29 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOScfZaH;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762270171;
+	s=arc-20220608; t=1762270710;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8GNMbexAGe1nKqMzzLVClEkNd7j6DVDRkgcdOMp8ajQ=;
-	b=IZH8xyIT8H1XpPDns58/1l5RjufXyCXwPGA2h+wSFJp5j5DL9rMuiySK6hzI0ETPXkU04C
-	x+knMeONbKJ5v0Hj6U6KsOoCyobRfoSOlzTvPW53zHN2o1AHc0GLU8C6xDk8lPhqrQGO1u
-	rqdOk7PVACHjL9aIFCIYCrNIoz3IdbY=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=QIegYlWJ;
-	spf=pass (imf10.hostedemail.com: domain of vannapurve@google.com designates 209.85.214.172 as permitted sender) smtp.mailfrom=vannapurve@google.com;
-	dmarc=pass (policy=reject) header.from=google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762270171; a=rsa-sha256;
+	bh=bPPCYUrkQ4b31RpUoHm2sozk/0REimUGJ814jhQRsHI=;
+	b=1BLgjz23ByP4mGjvhny0gfcyxWGtTEZUmlDl0F5WEItQyOz96NiqAZfhcA6oC7f2bvvJwi
+	QyE94fDGwcjrsfuWeBzbTshLpB9DcdQXVxN/CHgCBPLJEGNSMX9Bw4CDUvkHxRlMQzpeZW
+	8X2lIpGwk6CGWk0r8oSofcxkYKW9MR8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762270710; a=rsa-sha256;
 	cv=none;
-	b=yCGSo8iHS8KVxA/iTrOj5Qm9cbRZGgEXAQrrZWTBwdk5zh5LnfwUVrqSbez4GkXjn8uRqO
-	b3AYBYMKnU5Yy/87DWzvkvljXXYq2QwGT77cPkivH42qpg9HTVgz/mS0cYAbSzX4p5OxPU
-	XGrkODzBsDiXelnEF19IS9nNxQzD0ws=
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2959197b68eso195615ad.1
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 07:29:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762270170; x=1762874970; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8GNMbexAGe1nKqMzzLVClEkNd7j6DVDRkgcdOMp8ajQ=;
-        b=QIegYlWJgqJ7uw35mokqW9LCjkwFEFZZAGM279zOs4n2ckXZjQGwM1NdUMmJ4y+rkQ
-         CjYQMdRZj903O3pobn8VKMUNrJqkaj1ZwpsBYQW+BUCh6Gq4SEKOqQmpvisROVKJT0+Q
-         0RzuTLyKHFqoS3eC/K/Oq93MdGXFwYzOGAgp6BzfsmvKWp18DSslSUShqSfd+Xe8lFOm
-         DRPZ2wWuMGvN+b8VZNNYopTsqHZBgz88dtW9fLC/r8klrkJKYvTaGO5EXWOX3i/gUV+k
-         ok+J8iG8qErt+dN39rDe4Yk1Jidt9TP6/lQXrqSxPHuG6AfN/0hCrNIf8w+7HuXdwi5y
-         WXQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762270170; x=1762874970;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8GNMbexAGe1nKqMzzLVClEkNd7j6DVDRkgcdOMp8ajQ=;
-        b=izc3RUo2zCPbk3ZIEqSj1Ds8IfqpdljMS/fQoIRsi94yHqU0uhPTz8/8dD6wzN2mQ3
-         mRRYYSxTuP7nqEl+rSWENtSHg1OZBJy2v8rz/vJOfV6XngXYj+PEVNN54pvDB0bSCOYA
-         ulMqRx04vOdroK88rGtMqpjQUpnvtlVs5CWyZjeSIeZQm+EryRiasW86XdTePwW7t9R4
-         XFf775nt8SZrQr9J2rZnxJEY7Tm5S1XgT6gV5uvVHm2ayFgPEK5Mydi8wJZlLzzLBR6V
-         p4AUmNtiY3u0tE8X2GN/OZqOAb35yA4HCIX9UL6+W9P9PoERhPzoJqavIngwPq+XT6zz
-         UM4A==
-X-Forwarded-Encrypted: i=1; AJvYcCWNf4tRLXO8bND/A+uKLyx9bgrdllM8Pjczi2RPjEQnZtULj9t9sosVtZ6RFHTOzmmcKnFhaluVhw==@kvack.org
-X-Gm-Message-State: AOJu0YzbBTeIhvrjSPrir0DZj4wxfKcdaFJ6cq2jB6YiqzkRaCo8I156
-	6B4eQZaWhefHhnOdQGyEg5yStJeU3J0hQj64Bf+zaZIVaan+ODWi+0cx2x1/x1oFdOKb9jKPhHj
-	zO72KAGPNBHKxtXu+zDxnsYDlj39aUsMLPa7gGDM3QpBjyXF3KGH+nFn9tLI=
-X-Gm-Gg: ASbGnctPt2DqiOYfh8loeVM03MxC6x9LSPCk3K7RXfbB6jJr1Z/1rhQ8VD05cZR5MHI
-	CtYF87yffYIDCBgSJozrCXbBnUIeYDvs7AcG1xq/KC79yycdhZ9Rx0xOCx1/wi0KLGp6wDpO8Xe
-	5j9+JekOrAWH2F+cVZWNUJ3ylyLqWYb2iLxYaF/bFkBM17wlxI3UqvZZ/3cq/Yq54qRxfs3WRIy
-	qUWNsIdiWdPJMnRarB8sgn0UblkXB3oXWx0Vc16/xUYdStSTb7G9CIzdXJoWAyRK+S4FWgA/lRp
-	HVzEXPmf4YCmpr0DBQ==
-X-Google-Smtp-Source: AGHT+IH4UAJnle8ScuJWqynVoBOWdaJhxSn6rAs6bqvidoqyAcb3/mjW+zeWXvxPSrbgnMnIJK48J8HHgBswCtIjjHM=
-X-Received: by 2002:a17:902:c412:b0:294:d42c:ca0f with SMTP id
- d9443c01a7336-295fd276d54mr4970305ad.2.1762270169379; Tue, 04 Nov 2025
- 07:29:29 -0800 (PST)
+	b=wB61FbyamnUGcTMNXthreGckF+qeLRcilYwx7VqjX+tLuzrVgKLPY2v293SI6od+7iRQzP
+	OTKIYTJ1KKhhJNLDbDe1ZFZmW1qrkt+dh4sPKjy9iq+9jI6pjjYCNrm3+Oow/GA9J8ihAN
+	439FxcmlHGDkzCFBZChc7K9xdHpWbNA=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=QOScfZaH;
+	spf=pass (imf03.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 91E6343676;
+	Tue,  4 Nov 2025 15:38:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77FE7C116B1;
+	Tue,  4 Nov 2025 15:38:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762270708;
+	bh=Cy2J3fuWY60QkQU2M8ngzJ5eZQ2C5WxBRZsDSPR2PEk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QOScfZaHZ3az+dDuP50EvzmdN+lL8yV1bHUDHlYcjWAsL7QLDE3XzC0dRkfwZdr/q
+	 tkzFsQoAh0QnlQr2erUlAfdglfTB/KIsIcTX+Mfa8mAe48pOr8bu+FEkys4Eboxluz
+	 J2oFcJEmCXMsCJDf/BQRZjhDxVWs9otbXK2ODvX5ksOFoolvGOUktMBRGAVeImYsx+
+	 cKBl8MJQyk4mQijeqp5yk+NU6LCNCan3LRmZiVX3mv6w2hqXuo8659s4WTS7jE0ADJ
+	 zzz5u55ggzwP2KKYkyH1uzrQgpgZnf1c3uTFd/TH1gMuPcPzZSecVnABD5GgRNAP0s
+	 ru4zV22/FXINA==
+Date: Tue, 4 Nov 2025 17:38:22 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [linux-next:master 4972/5926]
+ kernel/kexec_handover_debug.c:16:18: error: use of undeclared identifier
+ 'kho_scratch_cnt'
+Message-ID: <aQod7jDFBjw9T-u2@kernel.org>
+References: <202511042251.paO6f5BZ-lkp@intel.com>
 MIME-Version: 1.0
-References: <cover.1760731772.git.ackerleytng@google.com> <5a4dfc265a46959953e6c24730d22584972b1179.1760731772.git.ackerleytng@google.com>
- <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
-In-Reply-To: <aQnGJ5agTohMijj8@yzhao56-desk.sh.intel.com>
-From: Vishal Annapurve <vannapurve@google.com>
-Date: Tue, 4 Nov 2025 07:29:14 -0800
-X-Gm-Features: AWmQ_bl_ayCFfhnMsugNyyrAbP6HSGsNUxGOugUtPG7U3zm3zMrinB0nHoIiMMY
-Message-ID: <CAGtprH9cajbGWrU9PAZWNKMeKJ9DyhoV=nEYk_DnYnR8Fyapww@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 11/37] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, cgroups@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, x86@kernel.org, 
-	akpm@linux-foundation.org, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@intel.com, chenhuacai@kernel.org, 
-	corbet@lwn.net, dave.hansen@intel.com, dave.hansen@linux.intel.com, 
-	david@redhat.com, dmatlack@google.com, erdemaktas@google.com, 
-	fan.du@intel.com, fvdl@google.com, haibo1.xu@intel.com, hannes@cmpxchg.org, 
-	hch@infradead.org, hpa@zytor.com, hughd@google.com, ira.weiny@intel.com, 
-	isaku.yamahata@intel.com, jack@suse.cz, james.morse@arm.com, 
-	jarkko@kernel.org, jgg@ziepe.ca, jgowans@amazon.com, jhubbard@nvidia.com, 
-	jroedel@suse.de, jthoughton@google.com, jun.miao@intel.com, 
-	kai.huang@intel.com, keirf@google.com, kent.overstreet@linux.dev, 
-	liam.merwick@oracle.com, maciej.wieczor-retman@intel.com, 
-	mail@maciej.szmigiero.name, maobibo@loongson.cn, 
-	mathieu.desnoyers@efficios.com, maz@kernel.org, mhiramat@kernel.org, 
-	mhocko@kernel.org, mic@digikod.net, michael.roth@amd.com, mingo@redhat.com, 
-	mlevitsk@redhat.com, mpe@ellerman.id.au, muchun.song@linux.dev, 
-	nikunj@amd.com, nsaenz@amazon.es, oliver.upton@linux.dev, palmer@dabbelt.com, 
-	pankaj.gupta@amd.com, paul.walmsley@sifive.com, pbonzini@redhat.com, 
-	peterx@redhat.com, pgonda@google.com, prsampat@amd.com, pvorel@suse.cz, 
-	qperret@google.com, richard.weiyang@gmail.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, rostedt@goodmis.org, roypat@amazon.co.uk, 
-	rppt@kernel.org, seanjc@google.com, shakeel.butt@linux.dev, shuah@kernel.org, 
-	steven.price@arm.com, steven.sistare@oracle.com, suzuki.poulose@arm.com, 
-	tabba@google.com, tglx@linutronix.de, thomas.lendacky@amd.com, vbabka@suse.cz, 
-	viro@zeniv.linux.org.uk, vkuznets@redhat.com, wei.w.wang@intel.com, 
-	will@kernel.org, willy@infradead.org, wyihan@google.com, xiaoyao.li@intel.com, 
-	yilun.xu@intel.com, yuzenghui@huawei.com, zhiquan1.li@intel.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 2665CC000F
-X-Stat-Signature: 4itjc5rn7313gyua1ssumhiidhy3n3bx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <202511042251.paO6f5BZ-lkp@intel.com>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: DF96F20008
+X-Stat-Signature: t9ygqyc5zfnbdpjo68wmrtnamg6xshn9
 X-Rspam-User: 
-X-HE-Tag: 1762270170-276550
-X-HE-Meta: U2FsdGVkX19nNiSd8Ryg12y4p5+QBkGjtPzSNlRfBRPk/APFY7cLX9RzDAnN/tYssIztsjFwu6L6sDNrJ0u3TAg+H63S9FaumeX2malX9dhT5hejS+rdgZwwXhHFUNeZ5X9EeZb/FzierSiZ2qysT22dy7YvM5uNqi6yjO8wmf3ahijtT8HjYjzk0/XvWsRoUd4dpeImS5yUrv4Mh9154y2FU8GFEmKcJxAzs0q1lhn9RRvSClhfGEhPpOAeqlCIvOEgmZKx7/F29BUZnRYRymvMhaj9lmrVEa8makSSRfevX0yEAyn4LgSfVxF2Qg/ycqUVqpmrt6vM6iDJcnp57am/5Hfz2bSKeBF/pa+wkhKYApM3/z/yE+QOPpKfmi5lAaIgsiJf5hJ5YM/EudsCIQe7yCWHEt9QFP9dSAdGKCyyV3yHytw/L5gLByczoBBQt0WkauW/n94TR5oq/wN5/4P/XGu5DhQCQrpx9AqW2Y6Cb1B0Ak3CwkjdnDLhb9cjnkd1SK7Xq3531wvt6J339z5qC/4diXyW8rMhJUZ28bwbmtxj98ZQN1Qb9+5bdolpEM9g2Qqjjzvjb1D8jaW7J6BWBOvqvmKMDO3d/stFGNoimmqdZvj1iCTwYtGbaTh1OY9WJsYHdAI5D/cfmhGsog5hrQhSG4gy8TXG2vBMWYraNzgMwEI868Men98HFKODXsiKD57+GJdvyJAr2gmBsfpcugfcG9d56G110+1aMaLvoj3rQOh3C6qChoVlgUwB4tk1JCwPZjuy9IEb/ITv8H/am+U5zR9b5oxR6bN7r3uItr9PwOLjxvcw7W5R0CbzIf0hzMAD6B20r7Hbn8ePklQk7teBgJ0ll6nEyKvfmEvp7wVxM6vsZnuLOWsUIdrQxI1UFV6obd764bEuqnYbONu/TnoNQKn3soShv1K4fJRVbs/fnPlUfMm2EMEVo+etMlD6BT7V1TJ4162X7Wf
- gSked9nJ
- qrxEOTBkunVLCnKncrOWC7Wu0NBrt7MrT/t3J3DCZYYds27HYJM4W7OjvEJr+VqAGRnCognwWT3G4Wq+e3oM8v3jnJf0oZN7Hd4X0CIVwCRrmTuohikkGeFu4h3bl77zurZznccz1odi83gTJHc9WNkw790S9O6FfhSun2dduTV/kKqm9Bu4m6YuTVTdJKlEr+gtT9nZq2cQW4aDjHL5d3+5OuaEsQcBtFbmR4eQS8RHu2RCZKUlLlMQu6DVjH2iPhcNPrYWwpX+4F82Q7Z4fMfw8G5IoceQAxeFKuH5yHBW8syKDT4GPaB/Ao7KEUJ6gXnhUnWesoU9jEQVlRVmdYNdhxA==
+X-HE-Tag: 1762270709-696827
+X-HE-Meta: U2FsdGVkX19fgGxVxc+Khi9/JfmNOTlqMWWmQIutz2wOymiJ6la9PNWTHxtevj3rtEJg5UaLgp0cUxG5XZhn2CvH5WRzYgGLoY7uKoNf5KAzrMr3+YZUKFJm96KldEnGqBh0SrWng3WGeuNTyEf/5xQnYHyu8fo2/MCr4lwTKoZvT/D45Pq0PpkifCo+fZ5+EFz67/XmPWECK5j9VKcBLV6PzMoBtfu6Z2BY6Wb69jvw6Lg7boJXYMShs0o5MqBmxBvn8MRlxLeGfFyGioYOPdvZrkmqcCYIPPj6dyUTLFiN8nN2dWnhD/Qy3ARZ1WFilGA0TeezgZezD3bySQkd8XrskMqORZFkWPaU0FPywa5Wqn2WcFHO3lD9S1to1AmVLiNfLrRv/iNzCOJM2Mq426VWtfNpRY2vTQVcI0f89KBgITXdLwj4tRIjS+iJSyDpJKkfQKMESMzAR85SvC9RiKZnxFUhz44dy3OYCPtV87k0Coq9mPgH0bDUJotvK+1oN7tcVLaYCGgGSbx4ppbCoGmsWfnBZbJlcFDDtBa1j/fTL6rKG91b5W9WiMg0bG3c2Rt35O3AAkfP0lJbr9KhzUV394uX0rixcX6AdETP4EhSFqEE5PirW7OcmnLGvcJ6cJPjLSvCdDjiUfeJ707Nes4q4u4kAytMztwJrrxAY0ZYgb0a/9lumy8CHh+kJinuj38cihcLx0LOTy17BVMgw6mwr0Bd9Iygkj1v9e+x6GYSHx2xGrY90kBitMRkNwuzQfoaT9lnz604/l4HbOQ+kJsLzOHYTp9TGk6y80WhoWX/iJq1CSLr87FFW1fzPvBbIOgubxmYXSzAYr40vFoQN05tqbB/No1SLOyX3XcJ/xU1TWsaUHbumTDiBv4LUB23cmB87VJmOpEvNYeNXycbnTuvVSw9ffJwkKb7yjK1z03dYkz6ANsX25WTy0Gf2omnCLSgdyzPFTILF9FSqTW
+ 7kgXurdY
+ sUKEyKjmwZ0FHEFXVoXwHZjX5zY7jkWckekJP+LuKY44aYs9IZf8DshwrylAGA+83g+wo9QP6xnkmP75vKRKZLgyym5QmgqrKZG5NmAunrfgXhlbYiy64pWKraDkTILOKyZVoKTpF7AE5vAQT0j1REhSYQbdy4sxkclXotKwLFR8msqbzEgWghegHqnRRqbx4UngGh7jeczHlDNY4234aWcYrtWj0KKO8GuSyJIkSWzbSaSH1iq6RoVIHLpX/y/P79c40nMoE8swdbUj2E/nEY7JblWWY+RVKRZCMm/uzFYMI8tM0M8Izxc+eSUCpRrGTQ1mb2mT63+S9kSpR0CvIWQ62Uqsc9ZS4F691KVnUTXEVopnsojz/LlNAywSyOBmsJH23uQk+j6/A8pM56rQf0vc+i0/yrgK3dAy5FNmCrIMOrjeT0GNsQU6OaVOTHXDo5zN/F1t8w6PO970dQb/y38iYtSBMshc+3Mj1eyfVBMDYkOP0soWnKQI64OBmsaBlKXZ/RVTV5D5HDc61WXfAS8wlJdFkehkpZ644dCOEkjNLmWY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,33 +95,64 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 4, 2025 at 1:27=E2=80=AFAM Yan Zhao <yan.y.zhao@intel.com> wrot=
-e:
->
-> On Fri, Oct 17, 2025 at 01:11:52PM -0700, Ackerley Tng wrote:
-> > For shared to private conversions, if refcounts on any of the folios
-> > within the range are elevated, fail the conversion with -EAGAIN.
-> >
-> > At the point of shared to private conversion, all folios in range are
-> > also unmapped. The filemap_invalidate_lock() is held, so no faulting
-> > can occur. Hence, from that point on, only transient refcounts can be
-> > taken on the folios associated with that guest_memfd.
-> >
-> > Hence, it is safe to do the conversion from shared to private.
-> >
-> > After conversion is complete, refcounts may become elevated, but that
-> > is fine since users of transient refcounts don't actually access
-> > memory.
-> >
-> > For private to shared conversions, there are no refcount checks. any
-> > transient refcounts are expected to drop their refcounts soon. The
-> > conversion process will spin waiting for these transient refcounts to
-> > go away.
-> Where's the code to spin?
+(adding Pasha)
 
-When dealing with 4k pages, I think we don't need to spin waiting for
-transient refcounts to drop, that logic will be needed when dealing
-with huge folios in order to restructure them while handling
-conversion. So the specific part can be safely dropped from the commit
-message.
+On Tue, Nov 04, 2025 at 10:48:31PM +0800, kernel test robot wrote:
+> Hi Mike,
+> 
+> First bad commit (maybe != root cause):
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git master
+> head:   17490bd0527f59d841168457b245581f314b5fa0
+> commit: 8c211175c3abcebb8bffce8095d78d193e482105 [4972/5926] liveupdate-kho-warn-and-fail-on-metadata-or-preserved-memory-in-scratch-area-fix
+> config: x86_64-randconfig-071-20251104 (https://download.01.org/0day-ci/archive/20251104/202511042251.paO6f5BZ-lkp@intel.com/config)
+> compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251104/202511042251.paO6f5BZ-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511042251.paO6f5BZ-lkp@intel.com/
+> 
+> All errors (new ones prefixed by >>):
+> 
+> >> kernel/kexec_handover_debug.c:16:18: error: use of undeclared identifier 'kho_scratch_cnt'
+>       16 |         for (i = 0; i < kho_scratch_cnt; i++) {
+>          |                         ^
+> >> kernel/kexec_handover_debug.c:17:19: error: use of undeclared identifier 'kho_scratch'
+>       17 |                 scratch_start = kho_scratch[i].addr;
+>          |                                 ^
+>    kernel/kexec_handover_debug.c:18:17: error: use of undeclared identifier 'kho_scratch'
+>       18 |                 scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
+>          |                               ^
+>    kernel/kexec_handover_debug.c:18:39: error: use of undeclared identifier 'kho_scratch'
+>       18 |                 scratch_end = kho_scratch[i].addr + kho_scratch[i].size;
+>          |                                                     ^
+>    4 errors generated.
+> 
+> 
+> vim +/kho_scratch_cnt +16 kernel/kexec_handover_debug.c
+> 
+> 4039a00022d42a Pasha Tatashin 2025-10-20  10  
+> 4039a00022d42a Pasha Tatashin 2025-10-20  11  bool kho_scratch_overlap(phys_addr_t phys, size_t size)
+> 4039a00022d42a Pasha Tatashin 2025-10-20  12  {
+> 4039a00022d42a Pasha Tatashin 2025-10-20  13  	phys_addr_t scratch_start, scratch_end;
+> 4039a00022d42a Pasha Tatashin 2025-10-20  14  	unsigned int i;
+> 4039a00022d42a Pasha Tatashin 2025-10-20  15  
+> 4039a00022d42a Pasha Tatashin 2025-10-20 @16  	for (i = 0; i < kho_scratch_cnt; i++) {
+> 4039a00022d42a Pasha Tatashin 2025-10-20 @17  		scratch_start = kho_scratch[i].addr;
+> 
+> :::::: The code at line 16 was first introduced by commit
+> :::::: 4039a00022d42ac3d68b2eea63066bc9f7ef89ce kho: warn and fail on metadata or preserved memory in scratch area
+> 
+> :::::: TO: Pasha Tatashin <pasha.tatashin@soleen.com>
+> :::::: CC: Andrew Morton <akpm@linux-foundation.org>
+> 
+> -- 
+> 0-DAY CI Kernel Test Service
+> https://github.com/intel/lkp-tests/wiki
+
+-- 
+Sincerely yours,
+Mike.
 
