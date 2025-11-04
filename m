@@ -4,140 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BFFF0CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:26:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6EDD0CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:52:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 108FD8E0007; Tue,  4 Nov 2025 14:26:21 -0500 (EST)
+	id 8C2518E0003; Tue,  4 Nov 2025 14:52:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0B9308E0002; Tue,  4 Nov 2025 14:26:21 -0500 (EST)
+	id 8720F8E0002; Tue,  4 Nov 2025 14:52:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id EEC0D8E0007; Tue,  4 Nov 2025 14:26:20 -0500 (EST)
+	id 7616D8E0003; Tue,  4 Nov 2025 14:52:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DE3C98E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:26:20 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 97B115A1E0
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:26:20 +0000 (UTC)
-X-FDA: 84073905720.04.AB91C2D
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf07.hostedemail.com (Postfix) with ESMTP id A946B40008
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:26:18 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=KWQctEuj;
-	spf=pass (imf07.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 620468E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:52:41 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id E5011C05DF
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:52:40 +0000 (UTC)
+X-FDA: 84073972080.22.819B5AD
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 1520B20016
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:52:38 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FHnL5xMj;
+	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762284378;
+	s=arc-20220608; t=1762285959;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
-	b=j5tST0PiQ9HAKVLQw3Zoa+WifE86cFIuw1jV5MKv7Q6h6gv11+6yvjkNovwH90CiJmOhcm
-	ejsvG0YkSm/787TjAWiIUQslSg+OTNUpWheUNPFNG1s8hhqWFiTxCad5d/4IfN2hUhZOhO
-	Tiz+tXyVkGlETQ72DJFMcDr9m6hB/XI=
+	bh=mhuUACoe017FfPrBL9Y+3E62APiFcTixj+edYubzRZY=;
+	b=I5QqXtmV9FAgmAaWD/I44J6T0f9WbwzR13PHUmJPegoqQBO3PwLTuQkCNlM7MDl1LVRSHF
+	QGCjsZ1Ku/IiRDtp1do76ASDFizlGDsUmE6fXc+/Xc3yUNC65RnvMj6bD0EJ3Be+QuBu3l
+	5GDCLiC45ucLxhtla/f1dsM4xK3LYXA=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=ziepe.ca header.s=google header.b=KWQctEuj;
-	spf=pass (imf07.hostedemail.com: domain of jgg@ziepe.ca designates 209.85.222.182 as permitted sender) smtp.mailfrom=jgg@ziepe.ca;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762284378; a=rsa-sha256;
+	imf13.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=FHnL5xMj;
+	spf=pass (imf13.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.160.177 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762285959; a=rsa-sha256;
 	cv=none;
-	b=jpw2eTxZQccCD/t22Dfkk61s+W4SAqTMbSN6z+EwrZTJFiU0NsC9UcpvM3YRpC9y9CSue3
-	NYul9+D4DQRPZCT/jpcwr94VwlAX5P+sFbTljgi/Q0oj4AI26HKBE4AaZvdCvohn/dHjGg
-	6/Fjz2qCdnuff4VuZAtrKcXheqSF5u0=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-88f2aebce7fso648613485a.3
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 11:26:18 -0800 (PST)
+	b=lsjGlHu0SJBkzClmvd1RxKTk4mI5l20jewabwbYirMDT84B3H99AwVeDpc3Qj1wWSG8TeB
+	3IvEXehwRJk3POVTGYR8wnqN8FT7pmfaqT1hOpR1qMgpIcOL9UvWiOghMmR7J6p14gU5R9
+	efF/4HTMAW4P3BJuHL/aYBq/iuV5SJA=
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4ed0d2a949dso40590681cf.1
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 11:52:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1762284378; x=1762889178; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
-        b=KWQctEuj7zjyn5FUz4BdVMrVolLhP4Vi3pn/ffECLjKEX9X/59/eftPS9edb+iOzfy
-         GOgEyrEuaS8ACNNTIILWL+JHbNClcrD5xrzJfhEhx6ryEe2e9Pc5DAeWr51SWeSlN/TT
-         VUSbtLE26I9O2lESsI9Eq0/ynBDrDTyoa/wh4zVF3cm/hmNbBP6lDtoDb0ghZs6anVf/
-         d2sj99Djqkj9Bmmy4zTDOjWKcoC7cxtR7XlxVCP8hylLeSdb4Ghc2EtGHy64E0Glfz+y
-         ZnW11r8tee6T/xH4ZWy/bgRY5gHd7lzFMmgS7agO0UeWo4bkReRrddSDamwLcWyY7RF9
-         zYyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762284378; x=1762889178;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1762285958; x=1762890758; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=b3vZ52GkNsJGLOkvon3L18RWVKcEn1c510aPuA199YI=;
-        b=e1lsJEjfSoentnGyYKF5NjW9QBS9sGE2awg7mCCEG3l8ZR6bUyRUkArLf4G/nPKxtb
-         +zgZ8lku7hx6oVUYcAo8YgEc9iYYW2Tv5yKVAn3mP7hWbxF5yWhLIJmoyMb9EABQGXft
-         WaDNOSXbt9RMEfgSi9+AtvpKV0voo4cEUEuxEcxDPpt9HLR4u81I5MFoKCFF5fD1NRB8
-         zz7q1x2c3JddfcJYkn7aRPOjJnFVqXhDxu1bmH9hUevVdYg+jkOs7cdx82IUP1PthiMg
-         TaaSCt19Animk2dUX2rgrtYNqhN1/7Gy21T6bN24DkVfFJ7F4w8IJUT7oBQHWhrEtj0P
-         IwZA==
-X-Forwarded-Encrypted: i=1; AJvYcCWj15kEib7BahqfhtKyyq0iPrSQJuUL3tyf+ibBlRWGaYP7BaGvc4RSAwzXqdDsdrzRadS6QsczaA==@kvack.org
-X-Gm-Message-State: AOJu0YzSqPNlmD1S+mgmi5xkMLbIhc83BkcMg8OP4PgBU9DFYW+lT5kr
-	/m4DZQIwytsGhQfCcojXelNbwsiM3GFXVKP9lmHuLLmfym501W//2dqSDamPIZl44vQ=
-X-Gm-Gg: ASbGncvcwZYwl4mKSvU/HdxkN3LAExPaxx2Zbj3cImufpxBAmPWIQ34IbdFJ5OIY4fb
-	jQTOFzNv5/jqPAnf/2t6a1Wrbw5Myi6CBm/KjPQUxudUfo1Bcgm8KEjejQcPgPGmwzmZd0IF0Gf
-	DQiNQgJJsF7rSX48ktYXX3fCwKg1o8Zj94uWf2PAlxyqmtKto7/Vg2cmCAna8Kc4ukaGVeMCr7Q
-	LFJ4aSCln2bOHEk73eR4PTbRZQGvfFl29aLGbx/SWMa4EXiKHOxyQPehgGXu53u1GSmb+8xqJSH
-	zzR0aZEiJIrQ/8Qf4zdOdoqF2H4wikj63UcUVT0YF+YaBrjVR/9otiiUqGi60n7U7IpB3Sxc3Z/
-	TwJ8kti8tdlog+vVtfTv/ArkHMU0NMcLPaqsClW3Q7TLfwgkyOuLEjLTxrztIo+5RMwD31WMFHW
-	MhdkbGpVIBd9B36QbwEjLqdh0AhfUZo8ea3KEUeeUdL/96Nw==
-X-Google-Smtp-Source: AGHT+IFUVGYM+r9VlnujjXwSiyntNScv3JSZn85Gft/uvY+ZvhCxVbalAnSefdp5Rhr2H4+z2gOTFg==
-X-Received: by 2002:a05:620a:2a06:b0:86f:aee8:fcbc with SMTP id af79cd13be357-8b220b9ef27mr103417385a.79.1762284377655;
-        Tue, 04 Nov 2025 11:26:17 -0800 (PST)
-Received: from ziepe.ca (hlfxns017vw-47-55-120-4.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.120.4])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b0f7bb3e33sm250495385a.39.2025.11.04.11.26.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Nov 2025 11:26:16 -0800 (PST)
-Received: from jgg by wakko with local (Exim 4.97)
-	(envelope-from <jgg@ziepe.ca>)
-	id 1vGMfY-000000073Bk-1Ldv;
-	Tue, 04 Nov 2025 15:26:16 -0400
-Date: Tue, 4 Nov 2025 15:26:16 -0400
-From: Jason Gunthorpe <jgg@ziepe.ca>
-To: Nicolin Chen <nicolinc@nvidia.com>
-Cc: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
-	Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
-	Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothumtho@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org, iommu@lists.linux.dev,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org,
-	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
-	linux-hardening@vger.kernel.org,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <20251104192616.GJ1204670@ziepe.ca>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
- <aQpRz74RurfhZK15@Asurada-Nvidia>
+        bh=mhuUACoe017FfPrBL9Y+3E62APiFcTixj+edYubzRZY=;
+        b=FHnL5xMjsz+we3/b0YZSLSss0DU+6DWd6FIV3v21tDapYjlc0pyYLrW/czy8FKHTp5
+         RPMHuhcGVYYJlUUs6CJVzHw1JKZVVZsQYnX1xKOXhe1Jq66LlCAwxK6oSuDJ6LJqeZ9e
+         n5023nqw66JSjc9vDkWHY64vsLUl0tl5dKNd4xFRLg/QQnLuiYqo8Q0nXDEXy/iCEJe0
+         qsFnNBf8EU7po8+I0sI53oOyF9kj52KT1v7wxPJGQIehAI5SuwRywZpAPQUCR9UVcDkl
+         9fYw5cKGXpEl3NC5ibDm0mj4N0YC6Pt40m/K7xDKHNcSvg8ZIjNxF1VynWwpwQp5Auxn
+         6cVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762285958; x=1762890758;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mhuUACoe017FfPrBL9Y+3E62APiFcTixj+edYubzRZY=;
+        b=QuUSu0Fh4LnqZ/CfSLzOJTXyvmP0INh+27IsPknszTQPopVH0PeUY171vP0hlnVEjq
+         luzeRKXdhzLA11aLN1bP77yeaxS2mOLPgltE5Z1ShLmRgtm2EKa4YajbzLIcYuhUpJaF
+         EAzkkeXhBK7zeINd26n6HtOFIu9IS6Bq4rDTRVnTP4Liqd188ye/uf3Zwjm/dBL0R2tF
+         WvO4V8EovSnoCcGKUzxIMP3zTGyKJFCK7Y5cahxv+nVK85Zrd7874abPT1L7qcHyTeXt
+         vKVCM4WM37R30NSprdu1eIr4bwX8PNuVaoMSwaKSNIKFQoaALnOYsPrBmNCu4MK9SoNK
+         i/zw==
+X-Gm-Message-State: AOJu0Yzyfm5n/g4hJF54mJSpnbpctmyIVtghvpGNL3XE0qff6m/u/aWn
+	kst0Crr7aTW/zfpMySRzo6ZpbbeYXSio9oxjGa1QGE99XpumGWC0ZF8SjwuflhyVco4qO1HQIVX
+	yKjBxDIxX4JC0+iniFVCZhdWusvDDWbY=
+X-Gm-Gg: ASbGncuW8cdL2f/CZPnu6vaW/LzqicZU67Os8nY5wZH+xRrRlTleKHZYTZrB7Kbs9Mz
+	CFlxl1NWprT8NKa63eNsSrytvSUroFIK9bO0Je3Q0iZmgHiNlDuBWwaiIxyHSl7r8DoyEleuXPj
+	pF6GI5UJy/JecPTOxEb4Hgr8AIjApC/06wbP3M5H/ZeoocJCFLQZV8XZPrhqIS1xEEI2x+eAHc+
+	6Tn1htb74gvHCnsDkuezm0xx7+6Ns5kDtJPocsR/8C22OSNk5hhQdz5WwDgr3voihrRaMmaKnDM
+	QksIJxtRqbyFd+96
+X-Google-Smtp-Source: AGHT+IErS0dFQ9jSDtfrpY3erXURu4B0wJ5JPQIqfYmbvt+/0DnjutNzhFHJ5wyZ+GLxm+MijMOW2D+SuD0mqWz0CIk=
+X-Received: by 2002:a05:622a:424d:b0:4c7:130f:72ef with SMTP id
+ d75a77b69052e-4ed72347647mr10478241cf.9.1762285957761; Tue, 04 Nov 2025
+ 11:52:37 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQpRz74RurfhZK15@Asurada-Nvidia>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: A946B40008
-X-Stat-Signature: nbhu33knw93z6u5jj1tsncbuoh5aeujq
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
+ <20251029-swap-table-p2-v1-6-3d43f3b6ec32@tencent.com> <CAGsJ_4z1gB8x7GNUL4THdC7G9ZGMqbM3UtWM2LXPoT0xcLAQ3A@mail.gmail.com>
+ <CAMgjq7CV14FdHvgGtXwWQPqXKwy4W-5vfR=-hUYkBemeMP=Srw@mail.gmail.com>
+In-Reply-To: <CAMgjq7CV14FdHvgGtXwWQPqXKwy4W-5vfR=-hUYkBemeMP=Srw@mail.gmail.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Wed, 5 Nov 2025 03:52:25 +0800
+X-Gm-Features: AWmQ_blYiz9VoLZN8wpGXcrjgSu3kDWfO42m1wTALvWOvIpMx5_FNki1QlYNF54
+Message-ID: <CAGsJ_4z47L4u50xdv9opC4QN6Jtdx6oR7xVx6WCGCtUa_CqMQQ@mail.gmail.com>
+Subject: Re: [PATCH 06/19] mm, swap: free the swap cache after folio is mapped
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 1520B20016
+X-Stat-Signature: ryumjw6g745apk7iks7iuipwmc5jq5fp
 X-Rspam-User: 
-X-HE-Tag: 1762284378-804485
-X-HE-Meta: U2FsdGVkX18EsA21AjiM2bps9FxnI6HME3zb5k+uSQeaSg77E9k+USwm34y2xUHgWElVfPUMzGvx4aqFTqA38hT49hpGN9cvxkK3Y1Bt4Q0vwKFIih5X6UQ9mw5M9hag5sQgCT7OIUwuJ2are5UODySe2u21j6VePmEg7MLjA2waqWeF3Rgu0ITmj/4dX1x7zRNTIiirz09PIqmJ8sOXA4ZpLXbuBK9fTluKRm4duhBB7PRMY0cpdgG35fcN/DRHJ/2dmRl/PdKJ//spdW4ptpZY0BuYzdXdkvAJ60TkOiy3QhuVfqMpshr7Rgn14THSlzf/1pTwcq7byHcK7T3tYo4o+FVYySrFzhEkzyCJzpw4vA0W99t5Xqmi9KTSPpsaNfWhzLja+tkgJjN4+t80htMmW3dL0rhUw1yGcj+3lM1q1GvUxMQ/JHORmKn0xlLkfOX4AyrfaZG0R0GxMmpNWMFIsugzSm/Bx0blFK05TYVC2nfjFbNx/3AVQv62AAFFfPIvjQsku0K1Q37hJE7GQYaaW9MQu3IdClS4gI+9vPE7brTd2Gg8CpSBtDxZi34BsW16CQRacc+M05Y9vwG4Bg/fCqxtyTwq44FPnbIbDbeJruHNgpCkl2NeOylkGwVxUl6jfsJMDznWrin6NYDWKL9diHFLUngJrs6OV5x44lwQ6/p3o0nsOf4lHdmi23WcupO9zV0NRn6UlEVRT/De9q6gA7WRe2mtRGnMrkiqEQkRVXZzpb8uZsLnfZjOAGgMSPmxo+7lCX0kUxH9Y/ocAGR7agpIFriosnpBMj1C5KCACoY5C4mZN+4USefL5z73dSPPoi2PX2FVLyXT1P3zuFHRPRVrBly2dCKnhccyIGvp0z5CgF5xgQVuU/cqerEFAaN1Tdhqmnf/4A6lwh61jaZD1B92xRUZFj6IFnd3PdrMMkvl0ZiKTfvbv6pR9FOw+i24OvJy710eiLfc5M3
- ZpaeqmuJ
- THmPqlH0xKmKCswDCGSzfHZROEwfTBal/4qNBcc9WbgwKpgS2CWfOkCLkiIXa0JTJ7rqLgbOzo/gvWlHGk1vkspJYVxjDnTrxnVg3bA0OXoSC1RsfhITWcAMu8xLJQ8LIjplwx3P1MENE4EnB8XWlAmOmM5TWNlw485DziPrkAZhXTeiUz34k6fgQRtIvrIypml4PILnUk5zTR8maMtZMG6TUWJ7PEkxii6Nv3OzhKP7LhLNB0nyVcCupWSXV3VUZXfiFAVz4vFeUXTskr91rx8ZZ3Z+zP0iVNplJfKU406bX2yz5oxuUC9C89g==
+X-HE-Tag: 1762285958-937768
+X-HE-Meta: U2FsdGVkX18K5avFFMFD2tIkPz9CptuUdcbRqTOXwAxyhtxyNV2gLHyajMyThk+rM1K2GTFeJUwFIrWcA7jrMlig5EQC3tJxjNr++MdmiSut18giBNgQfUS3LfQzJ5QIEXxKePA3oubLgyGg/RzmWM5SUFrxCJ8oWv1ByOm7PAYiiM/2LzXkRqEof3F1JXwQ7S8We3Fcd+s55QufTLLgimROxeZM4HxYDOVQ5wyimDo2i0uGNPURqTjvTN+8CUBuNyoWoAN+h9ZPGlLnKygdw0A/IMuYCxRju2++bNOOsAB2VC00VEhg/Ak9Tc0edq8ruZb3Q4gEvWa6HACoDAgk7exrNmqs/Mrs/B4GUfDyDCfZQKOBvBqOAyUreT3FgpqtjmyUqaSh3ghApxE2+Hy3SStKZu7v0W5vdE7+Gqs0ZCQI4zk5JaA0wbyZbUPMX9jYgmqx6y4N/dHtBsvS4jqjDW4lI+5SbzeRbhCW9rjoVhsZhwOB0t5fP7/ynp7jshmDzy8OvIor66YKkTIxcqOD1PImoVviXVHA1GdxEGOF1H9JUtsGLaH3cDygyqbWPkTMI8skE6+rHmrNAq29P70zZfFo0n4eUi+IYYA3m1jwPsNg7b0N1fYXgQmCka1YS8hgj3fZmvKANyYZiZbk7AGKjfSIxwEZ4az55V6X/xE0bo/nzoBYjwd6BSs/qu2TYbOiYMEwtiTf8vdSJax9vZR35gYw1vGAp8V54weFsN/VekOmwJ+Woz22q+FZjmDdWVaC6F2l24Rw+Wxr9LMCIOhebfP0row+sDoql1/WLjpyG9Ue2tIm7VvjCOuhqcEnrzZoNqEZr8k/I9ZbUEKcbGVdgjhSA4vCfdywfZEV8fKsMwyKTZ2Q0nhfIBu7+QNyecmyM8Pyh9CIBuRjInL3cn/lVsyVaJD+v8AGIFTlXL2MHkjg/jeB6f4pEtVEC0kzS9leVZ/eT6vAPHquVLXm7x0
+ Y3+WHdW2
+ KA8H2UqlRpMBz6+SjSuWCzJNF+lPA1u2CgdYlxP2nR+QJ0AmH/BS1fhFC910+DsSkwP3wsxFaO2YyCD8LVeBfybVMgD3+Yf0hIhZWMPpPn7xGC2f0v2b4PokukhIhIQoq6WmPVxc8pBAWp7cx0rnJ0T0UzMC9/hiR0Q0XOso/lxmOKAc140oWS40z692NEu7ZNflYVnxtWqMrFY+ttqf8SSr/2wBI8pQZg2ctvgFLkHFc1NDKY+QqigE6vS3zc+hQEHtgZgN07nzjcR+mnFx7Fus6fzDuyZd7MhOHlmryIUC02Auz2sGKnWO1tIbRwiCQIAXiPBYyNNbObxQUu2NDhqHDbQp3Y/G5GgOCsCE/BiO6oZuTgjwm9A1yTA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -146,40 +124,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 04, 2025 at 11:19:43AM -0800, Nicolin Chen wrote:
-> On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
-> > Changelog:
-> > v6:
-> >  * Fixed wrong error check from pcim_p2pdma_init().
-> >  * Documented pcim_p2pdma_provider() function.
-> >  * Improved commit messages.
-> >  * Added VFIO DMA-BUF selftest.
-> >  * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
-> >  * Fixed error unwind when dma_buf_fd() fails.
-> >  * Document latest changes to p2pmem.
-> >  * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
-> >  * Moved DMA mapping logic to DMA-BUF.
-> >  * Removed types patch to avoid dependencies between subsystems.
-> >  * Moved vfio_pci_dma_buf_move() in err_undo block.
-> >  * Added nvgrace patch.
-> 
-> I have verified this v6 using Jason's iommufd dmabuf branch:
-> https://github.com/jgunthorpe/linux/commits/iommufd_dmabuf/
-> 
-> by drafting a QEMU patch on top of Shameer's vSMMU v5 series:
-> https://github.com/nicolinc/qemu/commits/wip/iommufd_dmabuf/
-> 
-> with that, I see GPU BAR memory be correctly fetched in the QEMU:
-> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 0", offset: 0x0, size: 0x1000000
-> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 2", offset: 0x0, size: 0x44f00000
-> vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 4", offset: 0x0, size: 0x17a0000000
+On Tue, Nov 4, 2025 at 6:51=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wrote=
+:
+>
+> On Tue, Nov 4, 2025 at 5:15=E2=80=AFPM Barry Song <21cnbao@gmail.com> wro=
+te:
+> >
+> > On Wed, Oct 29, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com>=
+ wrote:
+> > >
+> > > From: Kairui Song <kasong@tencent.com>
+> > >
+> > > To prevent repeated faults of parallel swapin of the same PTE, remove
+> > > the folio from the swap cache after the folio is mapped. So any user
+> > > faulting from the swap PTE should see the folio in the swap cache and
+> > > wait on it.
+> > >
+> > > Signed-off-by: Kairui Song <kasong@tencent.com>
+> > > ---
+> > >  mm/memory.c | 21 +++++++++++----------
+> > >  1 file changed, 11 insertions(+), 10 deletions(-)
+> > >
+> > > diff --git a/mm/memory.c b/mm/memory.c
+> > > index 6c5cd86c4a66..589d6fc3d424 100644
+> > > --- a/mm/memory.c
+> > > +++ b/mm/memory.c
+> > > @@ -4362,6 +4362,7 @@ static vm_fault_t remove_device_exclusive_entry=
+(struct vm_fault *vmf)
+> > >  static inline bool should_try_to_free_swap(struct swap_info_struct *=
+si,
+> > >                                            struct folio *folio,
+> > >                                            struct vm_area_struct *vma=
+,
+> > > +                                          unsigned int extra_refs,
+> > >                                            unsigned int fault_flags)
+> > >  {
+> > >         if (!folio_test_swapcache(folio))
+> > > @@ -4384,7 +4385,7 @@ static inline bool should_try_to_free_swap(stru=
+ct swap_info_struct *si,
+> > >          * reference only in case it's likely that we'll be the exclu=
+sive user.
+> > >          */
+> > >         return (fault_flags & FAULT_FLAG_WRITE) && !folio_test_ksm(fo=
+lio) &&
+> > > -               folio_ref_count(folio) =3D=3D (1 + folio_nr_pages(fol=
+io));
+> > > +               folio_ref_count(folio) =3D=3D (extra_refs + folio_nr_=
+pages(folio));
+> > >  }
+> > >
+> > >  static vm_fault_t pte_marker_clear(struct vm_fault *vmf)
+> > > @@ -4935,15 +4936,6 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >          */
+> > >         arch_swap_restore(folio_swap(entry, folio), folio);
+> > >
+> > > -       /*
+> > > -        * Remove the swap entry and conditionally try to free up the=
+ swapcache.
+> > > -        * We're already holding a reference on the page but haven't =
+mapped it
+> > > -        * yet.
+> > > -        */
+> > > -       swap_free_nr(entry, nr_pages);
+> > > -       if (should_try_to_free_swap(si, folio, vma, vmf->flags))
+> > > -               folio_free_swap(folio);
+> > > -
+> > >         add_mm_counter(vma->vm_mm, MM_ANONPAGES, nr_pages);
+> > >         add_mm_counter(vma->vm_mm, MM_SWAPENTS, -nr_pages);
+> > >         pte =3D mk_pte(page, vma->vm_page_prot);
+> > > @@ -4997,6 +4989,15 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
+> > >         arch_do_swap_page_nr(vma->vm_mm, vma, address,
+> > >                         pte, pte, nr_pages);
+> > >
+> > > +       /*
+> > > +        * Remove the swap entry and conditionally try to free up the
+> > > +        * swapcache. Do it after mapping so any raced page fault wil=
+l
+> > > +        * see the folio in swap cache and wait for us.
+> >
+> > This seems like the right optimization=E2=80=94it reduces the race wind=
+ow where we might
+> > allocate a folio, perform the read, and then attempt to map it, only
+> > to find after
+> > taking the PTL that the PTE has already changed.
+> >
+> > Although I am not entirely sure that =E2=80=9Cany raced page fault will=
+ see the folio in
+> > swapcache,=E2=80=9D it seems there could still be cases where a fault o=
+ccurs after
+> > folio_free_swap(), and thus can=E2=80=99t see the swapcache entry.
+> >
+> > T1:
+> > swap in PF, allocate and add swapcache, map PTE, delete swapcache
+> >
+> > T2:
+> > swap in PF before PTE is changed;
+> > ...........................................................;
+> > check swapcache after T1 deletes swapcache -> no swapcache found.
+>
+> Right, that's true. But we will at most only have one repeated fault,
+> and the time window is much smaller. T2 will PTE !=3D orig_pte and then
+> return just fine.
+>
+> So this patch is only reducing the race time window for a potentially
+> better performance, and this race is basically harmless anyway. I
+> think it's good enough.
 
-Great thanks! This means we finally have a solution to that follow_pfn
-lifetime problem in type 1! What a long journey :)
+Right. What I really disagree with is "Do it after mapping so any
+raced page fault
+will see the folio in swap cache and wait for". It sounds like it
+guarantees no race
+at all, so I=E2=80=99d rather we change it to something like "reduced race =
+window".
 
-For those following along this same flow will be used with KVM to
-allow it to map VFIO as well. Confidential Compute will require this
-because some arches can't put confidential MMIO (or RAM) into a VMA.
-
-Jason
+Thanks
+Barry
 
