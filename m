@@ -4,97 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 655EBCCFA03
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 02:49:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 630D7CCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 02:52:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C1BEE8E00DF; Mon,  3 Nov 2025 21:49:36 -0500 (EST)
+	id 5B9EF8E00E0; Mon,  3 Nov 2025 21:52:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF4098E00DC; Mon,  3 Nov 2025 21:49:36 -0500 (EST)
+	id 591778E00DC; Mon,  3 Nov 2025 21:52:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B32F78E00DF; Mon,  3 Nov 2025 21:49:36 -0500 (EST)
+	id 4CE2F8E00E0; Mon,  3 Nov 2025 21:52:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A01378E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 21:49:36 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 55BA31603A4
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:49:36 +0000 (UTC)
-X-FDA: 84071393952.02.B65787E
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 3B2A18E00DC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 21:52:31 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id EB381886F1
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:52:30 +0000 (UTC)
+X-FDA: 84071401260.17.128E603
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 9C35E40002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:49:34 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E4bWQ1iW;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762224574; a=rsa-sha256;
-	cv=none;
-	b=seKtBpYBRYau53favhLsPfFwIVi6j3+VceH0ASKgwaZR5Cb3z0iG2lVyBw2junvelhPZkG
-	dSp1hwzvetUB+58w0RNmM4rAURIOR9WI9RadTaLat0QR7QqhsKUdlMSfTpWH3xPgBdeI+e
-	ZwWDE+ylHKs48tEwgG/njwGQZ+yDGzE=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=E4bWQ1iW;
-	dmarc=none;
-	spf=pass (imf04.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	by imf15.hostedemail.com (Postfix) with ESMTP id 391FBA000D
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:52:29 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q7xTFejP;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762224574;
+	s=arc-20220608; t=1762224749;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hqaQzZEvebc6TMHyunEVE+xERh4+XbyreXwVwGEjUhU=;
-	b=wQah5OWgrP86zFCWuxjQPzXSJV+VCQW4rkkRwpW+8/fzrUTzyk81MMr6+R77N6aI7OchI6
-	tqaZYGhjOAVlJSoscH0TBS8NthlLnJckqXoBxCt67ialbcDMwxFCw2n7b3MFnCu6asPw5a
-	vm4Ps1R5g1IT3ytpMkhkZtVYun29rp4=
+	bh=2BFBWkf/8rEOWM836Ntv1gFfhVHav8x4T+hrRvRU0IU=;
+	b=nQxtuGjNMPGv/yL7CB8Pbnxg+NdUyqE3EsTtITHKf6o0y41O8ZBswnDd2/ODYxm58qnjan
+	5CMANv1Yp7bTfhrsy3Ms3jkz+kI1AvT6/cT3M3lApahPWvVmsm6GM81wWqTBkiPDncFcwG
+	//HAsCav9s/WdOrdyO1rNkjKLk1LNHs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762224749; a=rsa-sha256;
+	cv=none;
+	b=nLl62DucHuNkgBH7g30w35RiuTzGNiAfXrU9Ucdar7PQAREl0qGPwrcOD/FKjPfJr+4vEE
+	460hOoy3vVdioTX31n856584jLOYEMlYlYx1W/q93LjQYReSXvEVsNoT+y5DgICngi3bJm
+	zcp6vgilb2xJSHf49JoHFbkZAqAuMlQ=
+ARC-Authentication-Results: i=1;
+	imf15.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=q7xTFejP;
+	spf=pass (imf15.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4367C43F63;
-	Tue,  4 Nov 2025 02:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06C63C4CEFD;
-	Tue,  4 Nov 2025 02:49:32 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 200B3436DD;
+	Tue,  4 Nov 2025 02:52:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA1DC4CEFD;
+	Tue,  4 Nov 2025 02:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762224573;
-	bh=pmS6+6nbTBZg9Sai36VoJ0kR5C4vAImQr4aXsiuJMfg=;
+	s=korg; t=1762224748;
+	bh=Xovpelytaf1rVw6/MGWZziRvb+wid13hMajWjKa65Y8=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=E4bWQ1iWrF2MTS5TlMy71BcsCjBBiB4zv35Huf2oBjnnV4AKlELWYwFgF+4XHEHBQ
-	 X9DB5Nh6+7hxZK3QvZ5cRZgZ2yYhrBac8xcfiuP58LFnzMZAigjWZxenfMdKdCjsaA
-	 wh/U3UkzpxyO+7QcmVE1dT9KmfK3NR40orjT58io=
-Date: Mon, 3 Nov 2025 18:49:31 -0800
+	b=q7xTFejPKd6NhT06RWpXtSixWQbEpsjjKBezm1wVg44aGl0ALe0Oy1XhGDJVqSHHy
+	 MAJJ0qgiFXuHTQuaQRCrTT7oBrEjP3r5aNq6iZqPuLddO7lzY8BxtsRizHiiSc4pKe
+	 hIbRUTmPyMmu1L6vvb9GyRzw3s52raw3T8RmJaig=
+Date: Mon, 3 Nov 2025 18:52:26 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: <ankita@nvidia.com>
-Cc: <aniketa@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
- <mochs@nvidia.com>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
- <nao.horiguchi@gmail.com>, <david@redhat.com>,
- <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
- <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
- <tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
- <guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
- <kevin.tian@intel.com>, <alex@shazbot.org>, <cjia@nvidia.com>,
- <kwankhede@nvidia.com>, <targupta@nvidia.com>, <zhiw@nvidia.com>,
- <dnigam@nvidia.com>, <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>,
- <linux-mm@kvack.org>, <linux-edac@vger.kernel.org>,
- <Jonathan.Cameron@huawei.com>, <ira.weiny@intel.com>,
- <Smita.KoralahalliChannabasappa@amd.com>, <u.kleine-koenig@baylibre.com>,
- <peterz@infradead.org>, <linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v5 2/3] mm: handle poisoning of pfn without struct pages
-Message-Id: <20251103184931.5a8e0be8f959ba2a0b6b814b@linux-foundation.org>
-In-Reply-To: <20251102184434.2406-3-ankita@nvidia.com>
-References: <20251102184434.2406-1-ankita@nvidia.com>
-	<20251102184434.2406-3-ankita@nvidia.com>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Ankit Agrawal <ankita@nvidia.com>, Aniket Agashe <aniketa@nvidia.com>,
+ Vikram Sethi <vsethi@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Matt
+ Ochs <mochs@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>,
+ "linmiaohe@huawei.com" <linmiaohe@huawei.com>, "nao.horiguchi@gmail.com"
+ <nao.horiguchi@gmail.com>, "david@redhat.com" <david@redhat.com>,
+ "lorenzo.stoakes@oracle.com" <lorenzo.stoakes@oracle.com>,
+ "Liam.Howlett@oracle.com" <Liam.Howlett@oracle.com>, "vbabka@suse.cz"
+ <vbabka@suse.cz>, "rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com"
+ <surenb@google.com>, "tony.luck@intel.com" <tony.luck@intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "rafael@kernel.org" <rafael@kernel.org>,
+ "guohanjun@huawei.com" <guohanjun@huawei.com>, "mchehab@kernel.org"
+ <mchehab@kernel.org>, "lenb@kernel.org" <lenb@kernel.org>,
+ "kevin.tian@intel.com" <kevin.tian@intel.com>, "alex@shazbot.org"
+ <alex@shazbot.org>, Neo Jia <cjia@nvidia.com>, Kirti Wankhede
+ <kwankhede@nvidia.com>, "Tarun Gupta (SW-GPU)" <targupta@nvidia.com>, Zhi
+ Wang <zhiw@nvidia.com>, Dheeraj Nigam <dnigam@nvidia.com>, Krishnakant Jaju
+ <kjaju@nvidia.com>, "linux-kernel@vger.kernel.org"
+ <linux-kernel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+ "linux-edac@vger.kernel.org" <linux-edac@vger.kernel.org>,
+ "Jonathan.Cameron@huawei.com" <Jonathan.Cameron@huawei.com>,
+ "ira.weiny@intel.com" <ira.weiny@intel.com>,
+ "Smita.KoralahalliChannabasappa@amd.com"
+ <Smita.KoralahalliChannabasappa@amd.com>, "u.kleine-koenig@baylibre.com"
+ <u.kleine-koenig@baylibre.com>, "peterz@infradead.org"
+ <peterz@infradead.org>, "linux-acpi@vger.kernel.org"
+ <linux-acpi@vger.kernel.org>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH v4 2/3] mm: handle poisoning of pfn without struct pages
+Message-Id: <20251103185226.fea151c58ce7077b11b106aa@linux-foundation.org>
+In-Reply-To: <aQjy0ZsVq7vhxtr7@tiehlicka>
+References: <20251026141919.2261-1-ankita@nvidia.com>
+	<20251026141919.2261-3-ankita@nvidia.com>
+	<20251027172620.d764b8e0eab34abd427d7945@linux-foundation.org>
+	<MW4PR12MB7213976611F767842380FB56B0FAA@MW4PR12MB7213.namprd12.prod.outlook.com>
+	<aQRy4rafpvo-W-j6@tiehlicka>
+	<SA1PR12MB71998D21DD1852EB074A11ABB0C6A@SA1PR12MB7199.namprd12.prod.outlook.com>
+	<aQjy0ZsVq7vhxtr7@tiehlicka>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 9C35E40002
-X-Stat-Signature: uy3ikix6krffyqdiq3tg9xrejo1n9c7o
+X-Stat-Signature: ptdkdkesgbs8ozjj34t58sbsbk3dykof
 X-Rspam-User: 
-X-HE-Tag: 1762224574-161790
-X-HE-Meta: U2FsdGVkX19QoLik0nzN8In33G0Da36efi1hf16/8NVuytnT2SUEonvKL+gpyuVWaUVK6uRnEpw+9Blql7JH82eY0KORjHs1g+MGj4bP6GwFX+r+LjCpzpMSbvELPXKAMVwMVHLfMsw4NZW1cAtwGYYatn+BsSOm1jww3FFM2RV5vA5n+MwuaIou+9NEmHSShFAOoBnVzAqiWA4k8Rui04vY2noxOmHxZ4/ZHjZFVf4T7MIs0ddPsnRXuREqWbWTZVwsq8/HxoBqpL5UXm92NgNVYhGCzjf3N4pTVU9H4FGQv0s08obDQMpuXcYCwGQwlpcD2n7neVuMmrVRuggW3Z0q/3Jo0pSjoKb7PKWndfiFli++IFhwoIBwQi9hTATUTlY/hm8tmqdbG3d/q/9XkALuqJ/VrdtSuVkFJRKMudbknWom6mSQRAFTUhTiNarnkCN5pFcbUbzSB206m3fDxks301OW/LTxWiLcxmMfUKOO1osv6iJ2fq+ci3FaIcVVRM+E1zQ3yVjO7YJMZE8ro16ZZiNflyuoBRUDRJGoaaeQtZmXz5jH6LRYpjsVAInvrqnrYg9WUqxEsdNN0VOUj2fPLpNpKr8UZcvBp/QmhpG8rS70wV+TGfmjxTdYkWxzASGMsK6Rme55DmVfiF/xoNu2eETQG+2GvnkdodEBtj0OKiJp5dIGptaTrFzhlxlgYg1VeDTKgHoY+2W2mTzRUVzIxOe+0M9FZoxY4ftf9hKj+xP8JVdLUg/2EQCwgV+hSCHCH0HmMNWpt3Gn+gQeqE4egtxqaFLtFQpIF2vF+HeurS1qykBobPY/jOgKgR3cebLy65QJLEVLHI6iwMTmLhcA/WRLkIWH1zw5LpUVpqTj7SKgjI1EgDqrSAn+zuLzNKJGUDa1dCakNN5U/9LxVahLoCxt8cGInqxOn3e88rV43uXyLcqI1ljc/ldDBTFHl5S3G/ntMWyXUCSbfkC
- ylB7Zs3B
- zrFzSHQgjWPtp9MANRw6lxKPSv3SvSIduoRor1tUR9t+jlBNWzsaB68AGfBZsWCxfYt+Z6DbgpZKGxuNaiAhsfDnSxIlGd5kcWxjCLERc1Ofm5sM9o5v0NPAT9taEEgrQbCU+QfSaKoSiYWd+qsRMf3ZQWRXT08abHHzk+W7b6vCfqfL5HeRKVCw/PPLJg9P32Cp1nhcHuhqyPMccP0ICI58Ppd2pUEY742Jv/bHJsNkY1yZNH7BcKjC63QxtzbCDS8/9HOVdQKZdmXzePKyvv/xbAlaGns0sua0a/StclxKaabnajunfPQs0wJfUz8C96J2m84stDmb5xadi646LbQiGy6wW1WKRkZlxiigmUgSxz/i9qG+aR0xOqw==
+X-Rspamd-Queue-Id: 391FBA000D
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762224749-961693
+X-HE-Meta: U2FsdGVkX1+KPC1269NdTyDuuonRZnPdn/tqGFiZWbtwo3e2FtVRJsD+4eZBpBYJH9OcBoPqh4Ap0yRnCM2YJL0LV/l5L6CZTvfOOMacYxZt/GWvxvkeNkGDEvpIgE9eNUzKY/mhzmiU3qP/rjXC+MGnFYIRuVjV8kml0KuAPNb5YGdzma6DOAhNer07iLLstnFagv690+mdhEseHPWH+5YqwWXgmtzc8NuHheoytJz9b48QK9s0P4WqLTLG3R4V5fdPerfCk+qCnUx6EKGFgj1V3a52ZokoKj+BF6l0DPocpatLEYLw22P+Lje6KKsdFqMri+OcT5U7BRuB2wKpGcEqSg/ppFIWjNEGsAT1FoORXFL86MJPUO+sGL+FMsYJVmN2uW0yDeBEoozgPcfn8RJn9x/VZUbECwjuCsAC7GaXM8qm17oIjtYmZiJswxNT9bRLTUU0b0n6HdaGWR7Rvv/pASnYX40R5xjjYLFe0zKr2FO9bCpEL8QD46KTMuTJSPggaiGacP/YfwwzGgehHvT0DASu1RjLz4qlSAXyA18vDtC2/OlA+Vzu/j4M10CgwAM4O8zQkBlBqdm39r++rFIIIhMpQhThY07/KgwMLEVHf/m+Ba2CsD4PNS6bu45TkzJCijQLvOFdzQ2qoE8fB6vVtXnUF86BR1TUscvqPgmZdvoYEUlaZ23BG85j9yvsxSm09dFkzC0Ghaw90kimqLZbKoG8eB1id3zPbCCubO1+V7zjGGsFu00E6DPBDPRZZx60+Zskgn6K1/v3tL1HFYVnScrhYo+niZtJHcUmBANRvJBm9vQQidrRpqcP6K6eP4Nf0vCU4n2howPZ5RzmOZzhKCP1GDWk6wwrvxDg0Hji1gitARtD3FChKU6rQTup32C5dvbB9N2Y7qw1ITbHpVvc8W/tJBbO+jH0cCXCQUmw1BpPOTAAfsgx6udL92kiyZZdr0hJgdO4q43j+pG
+ FxI9Lbqv
+ Q5mvZa2rv62FoaKvqX2GMOIb1vbwalBftCje8kUr0dRv7BHuhbXPiho3h7ICltL+18+cCN+1Y2KtO0NNOEpD7lePtszaQyVYBoB4ZAaGg0IQLLe6BlURtl13ijVURBtuh5MichaQjr28+lGpob3y+5RT/OXruN2yyv5Pjn/q4BsH6hrBJeWIUWOz4IT9qyRMy5VT+TmKj8IDGSQExgMibAhGcQWuOiveB6XpenWoRt7HLavqtHux7HKfXnRM8kpmTld8Ox3hDc0L9iY0k7sXvHmm09+dnPCal10EVq273aGHBTIfK4Ti9pw/EMX0kJAFzEqHGr335XkjvQbxOyE0LmHsn3wCDLW1SeIb2cfVxVpZljKkFIHXyNikBuGdGL+0PZOLKecwo1oneDayDFuhZ94kDKGaNqbY36QLq3R7hxMu+OzS572cip7bBlacSVoX1ndDmxtxpkUiWTEOMThSMtCGyAg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,11 +120,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2 Nov 2025 18:44:33 +0000 <ankita@nvidia.com> wrote:
+On Mon, 3 Nov 2025 19:22:09 +0100 Michal Hocko <mhocko@suse.com> wrote:
 
-> diff --git a/include/linux/memory-failure.h b/include/linux/memory-failure.h
-> new file mode 100644
+> > Hi Michal, I am trying to replicate what is being done today for non-PFNMAP
+> > memory failure in __add_to_kill
+> > (https://github.com/torvalds/linux/blob/master/mm/memory-failure.c#L376).
+> > For this series, I am inclined to keep it uniform.
+> 
+> Unless there is a very good reason for this code then I would rather not
+> rely on an atomic allocation. This just makes the behavior hard to
+> predict
 
-OK.  I assume there is a bunch of memory-failure material which can now
-be moved into the new memory-failure.h.
+I don't think this was addressed in the v5 series.
+
+Yes please, anything we can do to avoid GFP_ATOMIC makes the kernel
+more reliable.
 
