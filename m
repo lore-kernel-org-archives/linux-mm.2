@@ -4,142 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE9AFCCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 12:57:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 33DCCCCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:14:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19F938E0139; Tue,  4 Nov 2025 07:57:40 -0500 (EST)
+	id 789518E013B; Tue,  4 Nov 2025 08:14:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 177348E0124; Tue,  4 Nov 2025 07:57:40 -0500 (EST)
+	id 760A88E013A; Tue,  4 Nov 2025 08:14:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 08F648E0139; Tue,  4 Nov 2025 07:57:40 -0500 (EST)
+	id 64FFF8E013B; Tue,  4 Nov 2025 08:14:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id EAE7F8E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:57:39 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8BCF412BE83
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:57:39 +0000 (UTC)
-X-FDA: 84072926238.18.F7BB887
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 1A78640006
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:57:36 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ocxp9Vs3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cqK8EHzF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ocxp9Vs3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cqK8EHzF;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762261057; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 4BC728E013A
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:14:02 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 024F4B6B60
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:14:01 +0000 (UTC)
+X-FDA: 84072967524.06.7A77824
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 042511C000D
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:13:59 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T56CV3Nk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762262040; a=rsa-sha256;
 	cv=none;
-	b=YtXY3OKh0PW9s9LXHpBs49tshFOuyeZ4HP2n528m/Bsr4Ui1K8RX1dm2506DwNK5GMg9dn
-	z5B36izJMA2XZcnyuadR3biCa/d0ifZ9QG18p4tJ6xeg2+ST5+3aS8ViDPt/c4WWKNetzW
-	4TvYtEkmHykUTCnSOOuI5zaNSxQpwLo=
+	b=XEkUQvgb8woBIPK1tP8JxGLbhGGmB+eg56v+ZrjVN7BBOqcyN35mhKxW9ZZwAiEwquCDZb
+	PYwOxeQwwIpidl8LV++hCBKhDrbbTlGLdrcOqrS6guug3mv74l6Qk0G2SLQ/eqOg4EXJX0
+	jBKzV5kCZSMEQjiSSaZOyE6j9RS3Yo4=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ocxp9Vs3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cqK8EHzF;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Ocxp9Vs3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cqK8EHzF;
-	dmarc=none;
-	spf=pass (imf01.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=T56CV3Nk;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ioworker0@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762261057;
+	s=arc-20220608; t=1762262040;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xRbSnf5HPjCvD5W0ZK49O8zVxenDHk8tqcNADgcyFzM=;
-	b=ugbnPtpjrtiKNZEgHuUKSB2i8k4QbtqwYxGADOA+7cQkMbFFoSzKcD+xhtvHyfzNYnp7cS
-	bybhR3Tkl3j1MTW/au4KxqjdMxMOtOGCYRFknBsUVMB2ZHUJ7xFDRL6lYSl/LAB1S+eDUC
-	EIaB2ywwHkLUpwAVn1Z5f8R4iMnsrsU=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 806B31F387;
-	Tue,  4 Nov 2025 12:57:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762261055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xRbSnf5HPjCvD5W0ZK49O8zVxenDHk8tqcNADgcyFzM=;
-	b=Ocxp9Vs3i7eYnIeXk8HbPCIwrBJYvAlsqA5UaQMCjulJV0oSiv54ACLl83Z3Gcg37c+34w
-	pfVo+/YVR+ask5Lsa2L5HwZbHMdAaGNqU4aXcEZda6JciGS139vRW99KqOdYirbl6lPEnF
-	Pv1q88TC5CxHek41Tmqu/ZgJlaypUyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762261055;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xRbSnf5HPjCvD5W0ZK49O8zVxenDHk8tqcNADgcyFzM=;
-	b=cqK8EHzF4XHsCKDdkHSTbHDzL56QBJ6ElBJ//q/4o6cWn6yMZLV55+7+hVCpWDv5+HgOhI
-	o4ZYjIRou1ha9tDQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762261055; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xRbSnf5HPjCvD5W0ZK49O8zVxenDHk8tqcNADgcyFzM=;
-	b=Ocxp9Vs3i7eYnIeXk8HbPCIwrBJYvAlsqA5UaQMCjulJV0oSiv54ACLl83Z3Gcg37c+34w
-	pfVo+/YVR+ask5Lsa2L5HwZbHMdAaGNqU4aXcEZda6JciGS139vRW99KqOdYirbl6lPEnF
-	Pv1q88TC5CxHek41Tmqu/ZgJlaypUyA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762261055;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xRbSnf5HPjCvD5W0ZK49O8zVxenDHk8tqcNADgcyFzM=;
-	b=cqK8EHzF4XHsCKDdkHSTbHDzL56QBJ6ElBJ//q/4o6cWn6yMZLV55+7+hVCpWDv5+HgOhI
-	o4ZYjIRou1ha9tDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6DAFB139A9;
-	Tue,  4 Nov 2025 12:57:35 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id De18Gj/4CWkKbwAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 04 Nov 2025 12:57:35 +0000
-Message-ID: <188a95ba-6384-4319-bb74-c0d9ec6c4079@suse.cz>
-Date: Tue, 4 Nov 2025 13:57:35 +0100
+	bh=htheXeHYFH0rHBiPohNUpeYbuuhI1fDU6CfL2d8wKps=;
+	b=nO66F5Mxt+ly4nbFe5259YW1Dt9Ey77vKmO3QhS0ZxWlE7O2rjZqIUAh5Kymvqno/ZUCr3
+	pXVOsyn0/ByVq4+H9Kln8OGDgorIerjiydhKRTL1ocIzEFVMPWJp+cAJuiYxKRNhVFFLnZ
+	i04nk1k3xBi/8j8J64J2VaZUukd6XGs=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-3407f385dd0so3582540a91.1
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 05:13:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762262039; x=1762866839; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=htheXeHYFH0rHBiPohNUpeYbuuhI1fDU6CfL2d8wKps=;
+        b=T56CV3Nk6kTvgn5+Kfe/IX4OjvWxHNmlo0jlt9ntnUtHuQTo03UqvmDHIvz5rTIq/D
+         c4k+/UW0N9pTilCMWE02vn8xsHZ1KnDeQzdNvnToiYDJH+bHjWzZSd5/ZTT4pdYsvNIU
+         dmbXY9Fqv1Wa5ihqOd43uHWtW3QMhlLz9tmTfyZqVQuOeHNkAvPofENnP3Ahx5tkZ1rb
+         BaTOkEKJLAlfs6j7SGvcOHMWaMClXpOe5nLn4rSyAIPsin3e3JdArcG17e6BpucE+9nb
+         WLkEd3HnAiv2RqA5wQ33lwBXsuqtUwqVJLvPZZVoPI5/b4UkTYbXJsejYX7oo+Xt6IrQ
+         Wrow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762262039; x=1762866839;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=htheXeHYFH0rHBiPohNUpeYbuuhI1fDU6CfL2d8wKps=;
+        b=bwMmATZLvgEpiWvQlc6c43u46o3FwmnD5n08bgwaDPd4eA+WrQVMoNSPu8V6xk1Xt/
+         gHbq4S401jh3gqlUIUoZLzWhSGsRKH+cd/hx3nb7jJ0/M4U7lNKxjY+wl23T/X7ujAtE
+         Av89L8CmKRo0tIzBBWtFedfgcjo6WBk5o41KGmzJ86nav0THbfq89OM9sqKG5IR5C5hA
+         rfIPYhqyqkkbKdhX8+HJGUDzPfBnl93xSNspprdsC7ro6YImxgml5kZlsy5Y2SYRNki0
+         bwydUE78XslTPdmlp9J15P5SNp7NlkbCRTtdyHlJqzWjoGM4y3Bg9c9PjdvjWKTHwYqL
+         8Zsw==
+X-Forwarded-Encrypted: i=1; AJvYcCXtgiMc/vYPiiOqirQ7wYrGDG149d6A9BuVtJ4meNQf/xYZC4cQMRaYHnEFrlq+63HrpnUVeDcZ4Q==@kvack.org
+X-Gm-Message-State: AOJu0YyAreZPOtfpHDtTa4U/Kml603PnqNE9Nk34gMin0gAo3hzfcWUE
+	Gl8AIjC5lC5HFrunOmh0mLMlLV2TinnbtRGDXlU3tyLE9eYqMQbei9ao
+X-Gm-Gg: ASbGncuOmJ/gaBFn9pq/6iRPJYgecx3ddKwAgk70fGw6pCR5kmrfR1AhGI5yqG7xKkE
+	AeMyNP/bA5u7xQL5Pn/3eWatDXgDLbpQd0PydPNQ/hgCGrql4XApn2VvUMili93RSya9ILJ0kN+
+	85GyRgC9IioXSdqeIZAYDvXng7moMgRi7sPx/rIO1H7ZGiYrKRqDuuZVIAhzZi4cpllzcXEJj84
+	zFP1Zk/BO5wXGl/TDSmIi/4yCEwUI/VLmCbEoUj7/inejB9bBT9smUa9OCVSsYpcYaDWW6C4NzV
+	RtMlnwsxqeEMGcTrhiMkufKMOu5o4n2W7FAslnavbGqVHJs65B0RZVZqHre4wtai9tqkDUe50tm
+	iShWXfIyZHnAxMYbWeEO25cNsTvLQORE8QTEpffaAyWtGZDDWs+dfzR973S0T+Ou+VZE4T2MDty
+	Gs4qTEdSTKu+Y9Fx06ug==
+X-Google-Smtp-Source: AGHT+IHUCOHDOpY+jomk9+xhanjpsBEdHr6SPe8Xr4SpqUQogzIVi9n8mhwvDLW5yvR6G0BAdhVDBQ==
+X-Received: by 2002:a17:90b:3c50:b0:33f:f22c:8602 with SMTP id 98e67ed59e1d1-3408308ab16mr21572001a91.26.1762262038771;
+        Tue, 04 Nov 2025 05:13:58 -0800 (PST)
+Received: from EBJ9932692.tcent.cn ([124.156.216.125])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3415991d381sm4616141a91.2.2025.11.04.05.13.52
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 04 Nov 2025 05:13:58 -0800 (PST)
+From: Lance Yang <ioworker0@gmail.com>
+To: zhengqi.arch@bytedance.com,
+	dev.jain@arm.com
+Cc: Liam.Howlett@oracle.com,
+	akpm@linux-foundation.org,
+	bp@alien8.de,
+	catalin.marinas@arm.com,
+	dave.hansen@linux.intel.com,
+	david@redhat.com,
+	hannes@cmpxchg.org,
+	hpa@zytor.com,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	lorenzo.stoakes@oracle.com,
+	mhocko@suse.com,
+	mingo@redhat.com,
+	ppt@kernel.org,
+	ryan.roberts@arm.com,
+	shakeel.butt@linux.dev,
+	surenb@google.com,
+	tglx@linutronix.de,
+	vbabka@suse.cz,
+	will@kernel.org,
+	x86@kernel.org,
+	Lance Yang <lance.yang@linux.dev>
+Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
+Date: Tue,  4 Nov 2025 21:13:45 +0800
+Message-ID: <20251104131348.32332-1-ioworker0@gmail.com>
+X-Mailer: git-send-email 2.49.0
+In-Reply-To: <827b647d-798f-4775-bb31-ef735485c6bb@bytedance.com>
+References: <827b647d-798f-4775-bb31-ef735485c6bb@bytedance.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-To: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, libaokun@huaweicloud.com,
- linux-mm@kvack.org, akpm@linux-foundation.org, surenb@google.com,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz,
- yi.zhang@huawei.com, yangerkun@huawei.com, libaokun1@huawei.com
-References: <fwm7tynepbnpq3db7u2fqrzmeq55gs5472r7wbggxmndap3k26@ngwgdcy26vxx>
- <qfo7raavlfupjqwbgl2mnmfvmn3z5oslnxcehorib3xjdgf4yo@bp76xmxplre7>
- <aQTb0NdyN3tU50ss@casper.infradead.org>
- <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
- <aQTqELGGKCN3JTIm@casper.infradead.org> <aQhf5LJJMlvT-rrE@tiehlicka>
- <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz> <aQh1EmVd8IPHK0Gh@tiehlicka>
- <aQnV73KorhS0AWH5@tiehlicka> <a0015508-e72b-4b1c-9993-7e66076a0a19@suse.cz>
- <aQn2fIcj9LduzsmI@tiehlicka>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <aQn2fIcj9LduzsmI@tiehlicka>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 042511C000D
+X-Stat-Signature: 9n4gj78agtor8n11ounm4csxtqehahw9
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1A78640006
-X-Stat-Signature: ug5i8zam5xad5tpgq4ztc7p1k3aiind3
-X-HE-Tag: 1762261056-155801
-X-HE-Meta: U2FsdGVkX19EjmUUoi213H8jm+67E72BElWEAgjdMll99nU1yb6yCAtfBUn7DnGKCdt0+8meuSvMSM9zZVX/FhM3jXctnxxUV5mjAPgRNgYLBH7sbqgqapF8ynuvdvl17l6gqqqYDKTi6MLUoHQwiT9OEZBcugLWtqz/cQXFWjzjK7YELwE6/fmyiG5bZ/WTnyT89+lrZJJMOuBu0zm3o5n/7YM5vhDI7fvKGAJnbagLdpDdn8X9YPjhVA6vJdx4W1R0rt2VEam5QrrjeDU/HQtY1T99bFOlf1tI7s0UBLKZCPPHnAbf/UwNeJg8geu2Pk+P2AgEipYkw0deg+Qlyzq1ak+eC6IPQtoqoXVGs2zluz9vbPMWzFzN5aM3LBvxe0+ZVd1jYpoxFEtJW2bbdYXxCrdMNKOGzeS/mZGPDHuVv/kuo20Nhqk0huAPo46wYzsGpOVW0AVT1My5IuhOKM6lG1Ac7VGN8OKvKlJTPnlJcYf6+K6psEZMkybVpPIdhm7RmhKIvZCkcRC3lMfkUTGFDzF/JxuEu4kca1RsZ5x9NcNV5dRlZ4FMPXocAh6hs/bovXBvFzvfuoa7aV3B+u1RCbAm4Ozx1X/na7j020fA3WGkB8jfUQMCdtIJBVyOGgY5/hpyzeLRdJjKkphP5ONfjIPA8Im1ugMAZOYLJsT3mrxzXy+q24BVigBdbC91urR81mM63/m1RM/o7LheEnlzMIkFlNA1OFQOiHxOYbaFIlav56iWUZ+iv84X/M+HEv9Lc+FdD3i3vvl6oacia7I2GpuEt/QwIlfXM/rVSwbB25CBTjCtsgSjXHJ3A0qpDioQ6Idsg6kQ7EVAAxF1MVPoaz7AxHDXFOwvZVznmrUTYwjwaHbMDKwR6ti3YUNMz7ttRBhEnrRm+LkIP/LCSnScoZwTlgbfrU+akwAtUV18Zd9LPdHeDM/CeW/C9mjX/2e6bRXeVl+6LoJDbej
- Cbat0frM
- fvwfzkG1KzGqQZF2RgPgisSzcXoQ412aFrU+gG7YrFHxSFOWwG6hiuLCb62jKm7Bg0YcAmHiGjf4GKnAuKTxbWHIIN80x84VWt6CvKtDKNwtmv+keK7Og8d5bhThecLADl8s5FvoBL+Jan+W71aPq1pp5yHCUEFpTbHSrSnxJ9NwxvY73+LjjaIjhGlsdJZ8f8dh2XzsKYvE0JMLAYxR3ZPm+3VpA88J4hdg0P1zJE+V2CwxUYn7Fb8932RlcxEfDfO3iNW9UO5ykCA9Ych7hp8a4kWfCN3RG5ohDGvDdn5WULrWA2Pzn1A2HLDKCAYTHBH3Uak6i69rjeRo=
+X-HE-Tag: 1762262039-255797
+X-HE-Meta: U2FsdGVkX1/uKI/z404kYmT5ogfUkk6EbtMrDz4LkvCXt76WRHhdwKyY3fXsZQSOiG1sZXKdHHrd8dm5RPKapg8TPt2SktZIupSrtw/GD3ZPmKURPT++UXM7keWjCT6td8WuL/hgYTdvJ60DaaQyjtQOSe79OfhQA/2vGN0GEaSxLH3P5CZ3xsWJvgA7298ir+DJpqq8M7VU+/YLqDVeifw802r01xGlw1CYQUcsT1cIEWM+fvNDzwCDK/lID0Rl2WBTXNqDJEdb/3ARucPVb/MpM7FLIbdmgSc9GSYxkwVBPJJBZ2Ks+bpkLgDz/QbE7cXa9geeeDoySJAR8jmF/T2tqcHUacrQTys2HI1zCZc2gGBGFyP50QJMqxTp3Zdy3yolHlA2pAfaFG0zxk2hPFH7k/8NFQ2wFMh5CekkYiS3qRljWOLzTZtrWUxbSE7v+twjIMbfdCZi8EUIX01r1biQAVJ14m65T9usSw/L1U5aoyBLEbVEyLm3WCZWKN0xz3Qi0NsEHQy1kIMtde6YMdNbE8d0oqkQIAxtWe7KMqAMimSg/Uxsrk1dSZ3VZj7Yr1QEy/9JOoUB2mKLCGc/ehoVVl0pu3+aA4mSDN2k0CYRPKCvupm/SNqRTHfc7aPZJLzCkZe/Pyql51Lzwf2RrOW5ncUO5nwfasKcux/26m+c1cji3SjoeLsOf6JA8Oyczti94bKdcBv3TJLCUxX7nxZD537nl7tjW3lsAo16YHYFBgk1xWodFlMfGimOdNDBHEXFpVV343KjYnbQH3Ho5UBqVZb38z9uCG0Vz0dtHYJ2RMRBg0aTBdumjWciBta/FAfulEEVYoEVujJ1QBfdJimrrXQEsz8Hf23hFhuBU2srrkM5rQuJ17/8NOBXtXsb+L5Kt8uM1VzhlsCgAFn8XkyKcWIW4XprWceBzLtI7Od29hklMY+yI1xUuEXCw/wG4PcwKRY1w6hIAdFXN0V
+ TRLrveE8
+ YTMNLDq+LzEB0CEhgmA63BdhUP187XtFfntHUZaU6+p1q1fQMTKNTDeNbWHuAwbaT2TJGlQs5kHFtO2htwDvW3pZ4admmO7tTzcYzV3jHQHJmnxN7Zx3JX4QZr8DPEaL2QAvOipZYtClTuEx/vycF1kGDc6kRwDLE1vf5mDNwtlpTpWKHg/o9Ow5p3N9CLJwWae3vk7cQXHE8GITonGe58jn2b46au4XB0dydgIhpGlAK78/W2ZDwvbz8hWqW/76aef1a/tIRCUe1wHIxP0oS3QxlPEqErzlJArkPMWCBR7NaQD5FQ3giLf5aOnUZFBoVlbr5NqHh+6/Eg5QmgJ9eohBGJx06nL+hLZrzmz/VGBHScCyt3l4SKAN02AveKgnL/6HsZfHl8Jt4uktPRi6OOwwBSTf4MYrYsgLLSj12n876dfB2vZ9SLs+vRs8EmmWwCfFoNymlCRumD1OGEpfn2/URZajzDhGx34cX0wcE4v9yQ+DhOkKCACaPx5xN/wvBUkXf9FwJfZ5mMEsiFJlU9wWJuC+iCg1PdlzR9DVfFXWAybMyAmw6LGKVpy3RoSoEhrLQ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -148,26 +142,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/4/25 1:50 PM, Michal Hocko wrote:
-> On Tue 04-11-25 13:32:52, Vlastimil Babka wrote:
->>
->> OK, it might not create an order-3 page immediately. But I'd expect it
->> allows compaction to make progress thanks to making more free memory
->> available? We do retry reclaim/compaction after OOM killing one process,
->> and don't just kill until we succeed allocating, right?
+From: Lance Yang <lance.yang@linux.dev>
+
+
+On Tue, 4 Nov 2025 14:33:00 +0800, Qi Zheng wrote:
 > 
-> Yes we do go through the reclaim/compaction cycle. Do you think this
-> warning is overzealous? Th idea is that a flood of OOMs could be easier
+> 
+> On 11/4/25 12:02 PM, Dev Jain wrote:
+> > 
+> > On 03/11/25 2:37 pm, Qi Zheng wrote:
+> >> Hi Dev,
+> >>
+> >> On 11/3/25 4:43 PM, Dev Jain wrote:
+> >>>
+> >>> On 03/11/25 12:33 pm, Qi Zheng wrote:
+> >>>> Hi Dev,
+> >>>>
+> >>>> On 11/3/25 2:37 PM, Dev Jain wrote:
+> >>>>> The implementation of CONFIG_PT_RECLAIM is completely contained in 
+> >>>>> generic
+> >>>>> mm code. It depends on the RCU callback which will reclaim the 
+> >>>>> pagetables -
+> >>>>> there is nothing arch-specific about that. So, enable this config for
+> >>>>> all architectures.
+> >>>>
+> >>>> Thanks for doing this!
+> >>>>
+> >>>> But unfortunately, not all architectures call tlb_remove_ptdesc() in
+> >>>> __pte_free_tlb(). Some architectures directly call pte_free() to
+> >>>> free PTE pages (without RCU).
+> >>>
+> >>> Thanks! This was not obvious to figure out.
+> >>>
+> >>> Is there an arch bottleneck because of which they do this? I mean to 
+> >>> say,
+> >>>
+> >>> is something stopping us from simply redirecting __pte_free_tlb to 
+> >>> tlb_remove_ptdesc
+> >>
+> >> Some architectures have special handling in __pte_free_tlb(), and cannot
+> >> simple redirect __pte_free_tlb() to tlb_remove_ptdesc(), such as m68k,
+> >> powerpc, etc.
+> >>
+> >> For those architectures that call pte_free() in __pte_free_tlb(), it
+> >> should be easy to modify them.
+> >>
+> >> If you're not in a rush, I can take the time to finish the above tasks.
+> > 
+> > Right then, I'll leave that up to you!
+> 
+> OK, I will do it ASAP.
 
-I think it's too odd to warn for a specific order and not that or higher
-orders. We would risk someone would make the allocation order-4 instead
-of order-3 just to avoid it.
+Cool! Looking forward to seeing that land ;p
 
-> to pin point with this in place. It doesn't have to be full WARN_ON,
-> maybe pr_warn would be sufficient as the backtrace is usually printed 
-> in the oom report.
+Cheers,
+Lance
 
-With gfp flags and order also part of the OOM report, I think we could
-risk just removing the warning completely and seeing if such (flood of)
-reports ever comes up?
+> 
+> > 
+> > 
+> >>
+> >>>
+> >>> or pte_free_defer?
+> >>>
+> >>>
+> >>> I am looking to enable this config at least on arm64 by default, I 
+> >>> believe it will be legal
+
+Great proposal, Dev! That looks like a very useful feature. Let's make it
+happen on arm64 ;)
+
+> >>>
+> >>> to do this at least here.
+> >>
+> >> IIRC, arm64 can directly enable CONFIG_PT_RECLAIM, as it is supported
+> >> at the architecture level.
+> >>
+> >> Thanks,
+> >> Qi
+> >>
+> >>>
+> >>>
+> >>>>
+> >>>> We need to modify these architectures first, otherwise it will
+> >>>> lead to UAF. This approach is feasible because Hugh provides similar
+> >>>> support in pte_free_defer().
+> >>>>
+> >>>> Enabling PT_RECLAIM on all architecture has always been on my
+> >>>> TODO list, but it's been blocked by other things. :(
+> >>>>
+> >>>> Thanks,
+> >>>> Qi
+> >>>>
+> >>>>>
+> >>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+> >>>>> ---
+> >>>>>   arch/x86/Kconfig | 1 -
+> >>>>>   mm/Kconfig       | 5 +----
+> >>>>>   mm/pt_reclaim.c  | 2 +-
+> >>>>>   3 files changed, 2 insertions(+), 6 deletions(-)
+> >>>>>
+> >>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> >>>>> index fa3b616af03a..5681308a5650 100644
+> >>>>> --- a/arch/x86/Kconfig
+> >>>>> +++ b/arch/x86/Kconfig
+> >>>>> @@ -327,7 +327,6 @@ config X86
+> >>>>>       select FUNCTION_ALIGNMENT_4B
+> >>>>>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+> >>>>>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+> >>>>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
+> >>>>>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
+> >>>>>       select SCHED_SMT            if SMP
+> >>>>>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
+> >>>>> diff --git a/mm/Kconfig b/mm/Kconfig
+> >>>>> index 0e26f4fc8717..903c37d02555 100644
+> >>>>> --- a/mm/Kconfig
+> >>>>> +++ b/mm/Kconfig
+> >>>>> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
+> >>>>>         The architecture has hardware support for userspace shadow 
+> >>>>> call
+> >>>>>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+> >>>>>   -config ARCH_SUPPORTS_PT_RECLAIM
+> >>>>> -    def_bool n
+> >>>>> -
+> >>>>>   config PT_RECLAIM
+> >>>>>       bool "reclaim empty user page table pages"
+> >>>>>       default y
+> >>>>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
+> >>>>> +    depends on MMU && SMP
+> >>>>>       select MMU_GATHER_RCU_TABLE_FREE
+> >>>>>       help
+> >>>>>         Try to reclaim empty user page table pages in paths other 
+> >>>>> than munmap
+> >>>>> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
+> >>>>> index 7e9455a18aae..049e17f08c6a 100644
+> >>>>> --- a/mm/pt_reclaim.c
+> >>>>> +++ b/mm/pt_reclaim.c
+> >>>>> @@ -1,6 +1,6 @@
+> >>>>>   // SPDX-License-Identifier: GPL-2.0
+> >>>>>   #include <linux/hugetlb.h>
+> >>>>> -#include <asm-generic/tlb.h>
+> >>>>> +#include <asm/tlb.h>
+> >>>>>   #include <asm/pgalloc.h>
+> >>>>>     #include "internal.h"
+> >>>>
+> >>
+> 
+> 
 
