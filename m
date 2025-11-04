@@ -4,94 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A8EECCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 10:33:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DBB5DCCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 10:35:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B08768E0129; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
+	id 2A8618E012A; Tue,  4 Nov 2025 05:35:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A92FF8E0124; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
+	id 2587E8E0124; Tue,  4 Nov 2025 05:35:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 95A868E0129; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
+	id 16E818E012A; Tue,  4 Nov 2025 05:35:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 8025C8E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:33:52 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 27A084A789
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:33:52 +0000 (UTC)
-X-FDA: 84072563904.26.733BA10
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 4C43CC0009
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:33:50 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GBz2QfyI;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id EF3B98E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:35:55 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 8FA155909F
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:35:55 +0000 (UTC)
+X-FDA: 84072569070.23.5FB5E78
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6B6C91C000F
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:35:53 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762252430;
+	s=arc-20220608; t=1762252553;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=r4BpmpsifWGmEf60k652ypdrzkQz0SpNCdoZl89z4mE=;
-	b=NQqX2969QzhUFBK/4WDIju5i8zx1ZBaXBCeMfIMgaPcHAXrdxY4kMr9tojdWZXuievuLvp
-	0Dg8qIcLr/8Uf/tSm2QB8PQ5wvO06z3UqvGzRTDjSnRK8U4mCPtLcQxYRfh1h+O+bZYd4K
-	69xD/myMLvme/09Yy/2cs+pHhsvlzCQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762252430; a=rsa-sha256;
-	cv=none;
-	b=69tLOwvuw4281TOCWHpZvF8zVrJehS9fEvzz6KehbhW4/7Ms5aQ81otjRW6/uoy2WtQsxe
-	ie4QFAu2C8oc8KXSgMToJ8fbqfcpoEDb7axLPZ+992+kHDC8I8rtWxnFN69fLd+xRE1KpH
-	mkjBdWH4hkiv22JiwCVBKOOFHXCQpQs=
+	 in-reply-to:in-reply-to:references:references;
+	bh=W9fWhd6QJsyeKlRbv3z0NdTNxe0g7ZY8sLGfpRKnytQ=;
+	b=s3llvbAj9CdHL2LL/XF97Hj6ogDBVWkCzEnG/MfdOoZcCfAp7TcOLt4H4cyo4zoVw0lUNW
+	CzK0SVAVzU4kHyTaUMC9Mh+a3Iu7ztqD/R+qeslx97czrN/kK8SrdiFAH2JUQ+tf4vI1Ch
+	d+GkCYqlybxV+JSfaGa7rbR10MemuEc=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=GBz2QfyI;
-	spf=pass (imf10.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 02E6240B40;
-	Tue,  4 Nov 2025 10:33:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B16E9C116B1;
-	Tue,  4 Nov 2025 10:33:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762252428;
-	bh=KuLhso+GBkpmIE1sGuLSBeKjvPFIReoPVoBC2F3vsXQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=GBz2QfyIIxl9EoNtSyLMHzQkEk+YH8krTMh7fwlFrsHfDeJIsoiamxqcmlV/zytj1
-	 TQAbwcKQCTC9x2LdsR6yZesy9tlkBL1kA1XsTvrM7KRSJ0zG9tqAfK5r28kEkLRQnZ
-	 bhNkEC2dxH0JRQVQ0TzLggVb2rZSM0wl92wO6whPG5kO8jivm6JYP+cMWyAcuhZlob
-	 WWTi0Xto+gfwF1isQ/Xtaf7tMsRpNKaZdST79/mxQYESEiMrbTVJOmc3FUlJgT282T
-	 UQciHrF6qVz4ya5ugu1KcpqwwWVunRT5jaRof7tMkdQsUYUMNZNvWxFC+dxcTs59JB
-	 xX6X9Xvdv+KBw==
-Message-ID: <de9943ab-1fd1-4a1e-940a-a3ea86f544db@kernel.org>
-Date: Tue, 4 Nov 2025 11:33:43 +0100
+	imf20.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf20.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762252553; a=rsa-sha256;
+	cv=none;
+	b=DLvtqk6bPi0AYZKWWoEmMHcDbZc7Siu18Vx7CCuiR7oAnRmxpXwQlDiOyKfXHu9KZFzfaV
+	lC8Pb0a0qwlP7djqxbcR027mOTRARRZz/BCwR7wSSX/BTBROHkRGWToWXZgHd/8VGQFnNk
+	40+KrBecJYBhIVN6G1N9kzBHvI5hlzs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 663671764;
+	Tue,  4 Nov 2025 02:35:44 -0800 (PST)
+Received: from [10.164.18.64] (unknown [10.164.18.64])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 56E1C3F694;
+	Tue,  4 Nov 2025 02:35:49 -0800 (PST)
+Message-ID: <9dcd181a-7058-4fee-83a5-695df77c9edb@arm.com>
+Date: Tue, 4 Nov 2025 16:05:46 +0530
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] mm/huge_memory: introduce
- __split_folio_and_update_stats() to consolidate split task
-To: Wei Yang <richard.weiyang@gmail.com>
-Cc: akpm@linux-foundation.org, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- lance.yang@linux.dev, linux-mm@kvack.org
-References: <20251101002927.2610-1-richard.weiyang@gmail.com>
- <20251101002927.2610-2-richard.weiyang@gmail.com>
- <b2a1ef9a-9822-49c8-85e6-43b19bc8bdd7@kernel.org>
- <20251103233728.b5kmsit3vcqpmr6w@master>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: [PATCH] slab: prevent infinite loop in kmalloc_nolock() with
+ debugging
+To: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251103-fix-nolock-loop-v1-1-6e2b3e82b9da@suse.cz>
+ <5bb311a5-b59f-4897-b4d0-4e06d7d2b3f2@arm.com>
+ <f59e2a0e-1da3-4670-84ee-679c2001f58f@suse.cz>
 Content-Language: en-US
-In-Reply-To: <20251103233728.b5kmsit3vcqpmr6w@master>
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <f59e2a0e-1da3-4670-84ee-679c2001f58f@suse.cz>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 6B6C91C000F
+X-Stat-Signature: 7iu5j7d18tsds1uqb9bm4rc3dmxwswzr
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 4C43CC0009
-X-Stat-Signature: ag99hkwxphj1etmqpetzytghxy63no1k
-X-HE-Tag: 1762252430-22595
-X-HE-Meta: U2FsdGVkX1/YI8l2yNv9ZbfI8m9jbgPSfWecX+0BAcD6DqPr1UPOsKqhKmyMdeoG4+NmPDORyU4npBUatjM9MZCJZGKJMeL7JGQm6eAGJkc61NtRFEEuBGWE76voi8jpc41nOR9Wn+3CnVD71OD9MpyZ6F2r4rh1xnlUGFZ5++fL6WgOkPWLyE/EiyAZbw5FZRteNyjfBPUvJXTrKYwxxn4q1ypJ4SS4IOdRF5wSojBJJcgjgK2Atkk+LNSDovkBZ+XXOS1C0/WBJ6qxaZN6GXuysiphaXOlf73HAAI6hgl/1wErzWWFYWaSc+SrcC06gFp7CkzCfy85CKUvTjgSm2oEXVj+KYi/BoYjN1UiVzYrwOLzM2hUh0r8FBqwLGJ/Q5OmeHWk8S8AeAfiVGGJOjZA4b8GP/QMmF/a/TqyMg4HnnLorTxnelz3ENFK8guOgk/V5DHCZbqC9S80xEaQwk6CTwj/tbSREnAlXqGSouglRkPWTH2EFe8/ZDZxL/gIBo1ZzFt46Q93i23N73oof8se6FIP4ZrAJegFXNhA2XNa83gBvUaohZFAPaCOVm9DnKEa9rkxDHobP8vsyFHomQ+WHsKs8+Yo0WgXIoGNcBnQS9QMAa/IQ5yNSIWpRGGCK4cBPLJGYwMQCrcKSvwttTs1jEj9ANB80gPgyqVST+WIv0pzPWNWNNTYA09uKagnZAZ8Doq5PruDALV9vqgkE9U5txKK8TU9dres6CqUOs59plIHMLJlvqNdcsUCPwVZkY8psZRCwSSmDF4I+FTAIxa2/NAjM+XpQqMzNh7PZn8oJD+4k5/gKnczRyu4gpsl16MuUk46j5nL+noh6j6BZROX8sFIyqbD2rird/5Z+G3ycQo/l0QcD4izRjgbJfTLvtvSP0USLI0kFUG8AXRRJyweqVEVq54oynkge5odf7AfTaa64vJUbng+a9XS7R52MIzCeO4687E5/0rE+D0
- 4WGT0RNh
- ErhIwQComlZvGAOCw9Fn/kZW0halWqmDLXKisncgZN3F7WrGUpqD6v8xa/hfC2gZT2etDQ3caPF0wH6webVx5a8aDHwysTtbV0ShEadjUi6HD2oYH5iLN16vGkXbEOR/G72vk7UTnNnQinEqdkv3u1MLkiDxf7iIfeAV0RpSjik52E5bAh6AFFr70zyKKkld8rzVhQaPqmJVdhahJ3If05v3GtY+xknqTNaulHbIPHMF9Atxgvf3jdni/i7VYvpNxDszjo0CeORnprC66qXff0V8w7hJR2viQZkcJlAC61RE0XUQCuvrxRhUowQ+jKeBhptDjzCPrZR7ZMIwh/VbAPPuGh5/Kay64XekDGeDzGH41Zw7wK771UQTyN1EMj0/FwidqQKur4E6mUqg5PXUPbFBg1/HjPVI3QeHodvrMjAjBdiqcy9NyalmBn9bqHzCE36Z8
+X-HE-Tag: 1762252553-408343
+X-HE-Meta: U2FsdGVkX1/QdU7t7BvO2ufOHiaq24esvclAbZtIi5dSs3sCi6mVK7bRSXatxlZCvIZBIl+dbqgXHuabzDBJoKiGfqp6vu7AnXI/pPhD5vjJoFo9WBZYAR4weSls+zKsyUJuf3cGcQZ2WwNYCgkPkHizbpkH9TH/C8lxRchh0h5PKRfD2lyMtM72bzFWs7gNB7hVeN/vqvbpzfKcJjoHLT6xkaJFEZf66JhawGgYWDdD6hbM9P7abyhcXW+2J88JL8/Vh6mNcKkHlqpsyNYIHpMaEpvp0pebpK+XAu3GeFKbrD/RC8fe6Rq3SB5mSp6ofodxUBKeM6B1IiI+DsHB8mvKoIqj+guSY0wxQ8MqpZ1sSCCMuzmQ1tv0jBEQnpNaWDz0I89HzB3PO3ytigGgxC5oHyx64lf/dxErFzet76xA9IwEVlOAxmtgD+zKz5H5CAdlgfa5R7znwswEXK0NgaZGMGmLXvFKb4XEJqbZASt+cfXAX6kOXUX0yftWxSg+p9fXBmGutxJY6bIVpsp6M6MNxQDnQy5wHeuQVyn51XrYAl29PoS6X3Y1TtgCjn2u3Nvrf+MirOv9YLihO5GlXjIxs24psBFd/+L2nYwx6df7am2/wQaW2GGCJ0aCVNYYkoZa/r3FnuvMhm8QiQJOO93UzHNVZgzTQSlaTPJk1G/2ESAW92x09cfRNNhDqjpEMXdVJ+F1Q/41aw9MkyecRjXm0OnVTwMDUK+WHqV5IQKnT5kuRxSY6yNNmMI9VMd07bFM1cg8DtfE5fsm4UF8DdS24tVD21u2PvB8oNwS7REd97u784/PBa4M4QFpvXFr9U7SAlAScM7H9YeAMOeycwhDPS23SXqAYu4brUrEld4PBqbgmeJjBQMzbVSGKdrXDfa04QdZcmHnGCltxcvLVAwe4ChmUNdwMFuKoHZ+E7KDy3qQ6EelVj5Dpa4IELdbmby9CSeOYVpPE50g4tS
+ Apm/t29V
+ y6kNqfnCtuM64MlBMONyakjFTUaOjMbVfP6wumGnPec1HueK49K7NfuEwjVlTrMlRsE0HxAhLhWyJcIkT2ClVzdGdzmtoR1miy6Wj1p4zErWj3pYTanNLpC8SBrHVOT/8Fk7vQCXgN8IWduM+MqoD+fvg5bCucPTmhefoi0jsoeTgFuhfq1aeCGb3eaSukFe8VmR2NiMhiziSn6hq6ImClvBif7rnM9uokIPUxiL+MfQ4xQdNKfZFk1PI/47mVafi3nCl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,53 +91,77 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.11.25 00:37, Wei Yang wrote:
-> On Mon, Nov 03, 2025 at 05:20:02PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 01.11.25 01:29, Wei Yang wrote:
->>> The folio splitting process involves several related tasks that are
->>> executed together:
+
+On 04/11/25 3:54 pm, Vlastimil Babka wrote:
+> On 11/4/25 6:26 AM, Dev Jain wrote:
+>> On 03/11/25 5:54 pm, Vlastimil Babka wrote:
+>>> In review of a followup work, Harry noticed a potential infinite loop.
+>>> Upon closed inspection, it already exists for kmalloc_nolock() on a
+>>> cache with debugging enabled, since commit af92793e52c3 ("slab:
+>>> Introduce kmalloc_nolock() and kfree_nolock().")
 >>>
->>>       Adjusting memcg (memory control group) accounting.
->>>       Updating page owner tracking.
->>>       Splitting the folio to the target size (new_order).
->>>       Updating necessary folio statistics.
+>>> When alloc_single_from_new_slab() fails to trylock node list_lock, we
+>>> keep retrying to get partial slab or allocate a new slab. If we indeed
+>>> interrupted somebody holding the list_lock, the trylock fill fail
+>> Hi Vlastimil,
+>>
+>> I see that we always take n->list_lock spinlock by disabling irqs. So
+>> how can we interrupt someone holding the list_lock?
+>  From a NMI or e.g. a kprobe->bpf hook, which are the use cases for
+> kmalloc_nolock(). The word "interrupt" thus doesn't mean IRQ, but I'm
+> not sure which word would be better. "Preempt" would be perhaps even
+> more potentially misleading.
+>
+>> If we are already in a path holding list_lock, and trigger a slab
+>> allocation
+>> and recursively end up in the same path again, we can get the situation
+>> you mention, is that possible?
+> There shouldn't be such recursion in the code itself, in the absence of
+> NMI/kprobe/etc.
+
+Thanks for explaining.
+
+>>> deterministically and we end up allocating and defer-freeing slabs
+>>> indefinitely with no progress.
 >>>
->>> This commit introduces the new helper function,
->>> __split_folio_and_update_stats(), to gather all these tasks. This
->>> consolidation improves modularity and is a necessary preparation step
->>> for further cleanup and simplification of the surrounding folio
->>> splitting logic.
+>>> To fix it, fail the allocation if spinning is not allowed. This is
+>>> acceptable in the restricted context of kmalloc_nolock(), especially
+>>> with debugging enabled.
 >>>
->>> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
->>> Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
->>> Cc: Zi Yan <ziy@nvidia.com>
+>>> Reported-by: Harry Yoo <harry.yoo@oracle.com>
+>>> Closes: https://lore.kernel.org/all/aQLqZjjq1SPD3Fml@hyeyoo/
+>>> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and
+>>> kfree_nolock().")
+>>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 >>> ---
->>>    mm/huge_memory.c | 28 +++++++++++++++++-----------
->>>    1 file changed, 17 insertions(+), 11 deletions(-)
+>>> as we discussed in the linked thread, 6.18 hotfix to be included in
+>>> slab/for-next-fixes
+>>> ---
+>>>    mm/slub.c | 6 +++++-
+>>>    1 file changed, 5 insertions(+), 1 deletion(-)
 >>>
->>> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
->>> index c37fe6ad0c96..abde0f1aa8ff 100644
->>> --- a/mm/huge_memory.c
->>> +++ b/mm/huge_memory.c
->>> @@ -3567,6 +3567,22 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
->>>    		ClearPageCompound(&folio->page);
->>>    }
->>> +static void __split_folio_and_update_stats(struct folio *folio, int old_order,
->>> +		int new_order, bool is_anon)
->>
->> Is there any good reason we want to pass things like "is_anon" instead of
->> just querying it in that helper?
->>
-> 
-> The reason is during split, folio's attribute will not change. In
-> __split_unmapped_folio() it is queried and set as const.
-> 
-> Otherwise we need to query it on each split.
-
-These checks are extremely cheap. Do we really care?
-
--- 
-Cheers
-
-David
+>>> diff --git a/mm/slub.c b/mm/slub.c
+>>> index d4367f25b20d..f1a5373eee7b 100644
+>>> --- a/mm/slub.c
+>>> +++ b/mm/slub.c
+>>> @@ -4666,8 +4666,12 @@ static void *___slab_alloc(struct kmem_cache
+>>> *s, gfp_t gfpflags, int node,
+>>>        if (kmem_cache_debug(s)) {
+>>>            freelist = alloc_single_from_new_slab(s, slab, orig_size,
+>>> gfpflags);
+>>>    -        if (unlikely(!freelist))
+>>> +        if (unlikely(!freelist)) {
+>>> +            /* This could cause an endless loop. Fail instead. */
+>>> +            if (!allow_spin)
+>>> +                return NULL;
+>>>                goto new_objects;
+>>> +        }
+>>>              if (s->flags & SLAB_STORE_USER)
+>>>                set_track(s, freelist, TRACK_ALLOC, addr,
+>>>
+>>> ---
+>>> base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+>>> change-id: 20251103-fix-nolock-loop-854e0101672f
+>>>
+>>> Best regards,
 
