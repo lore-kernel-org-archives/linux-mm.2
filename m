@@ -4,118 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF38ECCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:19:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90ABBCCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:44:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DB3128E00E6; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
+	id A0B5C8E00DC; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D62888E00DC; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
+	id 9E2B68E00E7; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C52498E00E6; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
+	id 924D38E00DC; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id ADC618E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D87D1603BA
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:19:51 +0000 (UTC)
-X-FDA: 84071621382.04.7FAFEE9
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 82B4210000A
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:19:49 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jl+kcMbN;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 835C18E00DC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id E216B1A03DF
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:44:02 +0000 (UTC)
+X-FDA: 84071682324.28.01D5747
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4B81940006
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:44:01 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO018gDQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762231441; a=rsa-sha256;
+	cv=none;
+	b=4NlYWSbyM+CyJdfQ4RQM+YBMIFRw8onylY7+VG0rQAvPSgBvhgLFSi1nEpX5zp1NvGCjfJ
+	LuCEkD8LxUyRpEmsg3oB2kwdFETfO4wBsHmm6XVp3Ghd1Jmu4I+fV7y971SI9YpWvU5c01
+	sFYM38RyvjFG2LtCZKpk//6ffPVyHec=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO018gDQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762229989;
+	s=arc-20220608; t=1762231441;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
-	b=tK4vq/Iz3yIW3fk7X+YTzUxnNlW7KlUYehyqF4HjHxpdnTbwJ0yG5dFd0ZaKqNfmLZ9S1I
-	fXXxsEYcDN+i+TFe0L/7el6+hgzROnVKzvzEVO7ukHt4fLtvdLECKhXCEXYq4EjxO8m7G+
-	SeUgS6G5Y/8cqGB6Ug8edcFSwhcgz9s=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jl+kcMbN;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762229989; a=rsa-sha256;
-	cv=none;
-	b=lsDXpFWc3FCjI6yZNtsOnK0wVumsz8+qh3zLRRCevB6mHTwyUtprgaWzR1C48FRKc+ZRgd
-	MoSQ23LSIU3n7cUu69boWi/Yk/orvSFYsyFgEdPmRc3Bdbj9IVUV3CnwRqs12YPG/jh78i
-	BvdOS71egUpbSvqKcSFHb0cdEUWppVk=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-891208f6185so482582185a.1
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 20:19:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762229988; x=1762834788; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
-        b=Jl+kcMbNeK9UgM76vI3mGkE3CUFNxkIoaBsb9Dqxy5HWsUNsI/UoVcGuZKrg0FhExW
-         S1UotYQz8iW9+1jbyuavwHIn3ABB8mpIvg6txxyE1OuQH3TBg/B6xmEJobZf+KoTnesj
-         bm3KJM0WQ9c6dHYROxb6KmGuk+ssbE0L7T9Warlcx+zu9R4WLi1pnjyZUA4y+gaFzNc6
-         zh1/3ctOg5fnMaQ38zwuJWsm6iowzknaSCTFX0MBf3MlUNGM6S1O8o33vgx/WdnvFYy8
-         0JtAkQfith/2IfktJ0xaavMvgrKwGlX6XJccBqdIni1nSGH0bgonTdAjEFF2kDNIYfJ4
-         a7ow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762229988; x=1762834788;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
-        b=YuGJ21gRTTO3+tFHEohSezg0iGyEgZ9EBnUgO3nx+MRP/Do9MpNg6XEhPJ1blzHmxI
-         U5PFjdVLE6fFpp0zTQid/HPWNbtiqySjuOgj4xCYLEBbWQlD7vLGZ+whRz8nCpNH164E
-         8wMJvMfCSt1yT9T1fAN8/9QmfaIQG3S+/WQdNW+vT5kYOHdG7tThq1gqIIjP2UsG/FlI
-         Sg3i9WvJW7qtaarOhy3YDg8y+S5LamRuBJ4LXYJyekISN0sD2+tZgpO7U0AY9Rjgoe8/
-         PE8J024MOTqYUj88G6Mpn2pDwgElvdgIfkivlWe+Uh7S3QWebzxjzcV7+CQOBtILdEYu
-         MgLA==
-X-Gm-Message-State: AOJu0YxQk7VMiGirbsiq0L7zzUrA5NTHKoABhS1ftbf1OeQ64L3bxLK0
-	U7L0FWLpG8S8PSy6WrhtjSCsfRiJWalmInaA1t3Vh38OTeqNTYolmomFZ43Aa+vIL8Agq0P6Z7o
-	lqx6S+cv6O3AyA9JnD6UtVYCtjZiaODpy/BwB
-X-Gm-Gg: ASbGncsKuyx2kQU+XfUErTzgtw9jJJlt8hwSYPKmSgnzFo0fZwqK9+FGtVGj03LQ3Oi
-	+0ASmIw0YELm3airgCyvX/zkqFK5G7du4DxyxwZxsPOG3uEHInCCEGwc9CkhbDKGNJ+bzW5hlt5
-	7XYrNNWU50pDBARLPc6MjFVNSfLY0RkPhHkxQHPLQfMBbP6ZugqU9EjzxlMq3iZyE1lV53RXGzV
-	3B6J3DhF73qK2Q5K3KKTteYCrM3uxUzr5HDFCiH7BtWVngJJklRVJ4clieM9xSS+HBWGNGT5SE1
-	FfdWaks5iOSTo8YgnEH5pKBEe1Y=
-X-Google-Smtp-Source: AGHT+IH+5RRmTLyNpLIP6XrC7qEFKTxDYBgtFCpqxbfJLWWu5/DWtPIwC9vO7peSq0UZx7LZCNaKunPtQOQRW95H5sI=
-X-Received: by 2002:a05:620a:7103:b0:866:73f7:25a2 with SMTP id
- af79cd13be357-8ab9b598b23mr1762087485a.64.1762229988351; Mon, 03 Nov 2025
- 20:19:48 -0800 (PST)
+	bh=JKIq0hBTK28JBFWuM0r6MFcOPWyW7jRewz2w2X78yrk=;
+	b=InYoMkiL+4IemOvtiDmN2HW/La3zBkgJ8FDAegvq8nGLLLgjj2hl7iJBWLFJcmA7GNjkgB
+	5eGulyAU4R6qUmjJWXpBG6Cc8ec8Pboiw/7Vqz9YMkUKYA24OUCFl/GfNzTgUvQRh8cAIb
+	Q5tsa3IZN0XUqNzQsXN0CXhzZyrQryI=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 120AA40823;
+	Tue,  4 Nov 2025 04:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBA8C4CEF7;
+	Tue,  4 Nov 2025 04:43:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762231439;
+	bh=Z7KhNXOenut48lwUMNJxE28x5klL4Yn07BEFFcrZ6AU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=FO018gDQgELbLAGDo3eqXtRjD92b3sr3PGSg9THQONsaFkmA6Tlue5rZ9mf3aVHBT
+	 w1O368gkXxt0RGr7MA/9k8PVxLl42w0K+DD+N+J5VoBTEdZ8bKKUu8QZ8FurUkGtJG
+	 FQijL5pRksGIkEazCCzagCL58q4t2Uir0NZ2QC2bRJUV4o44ioLppqGP3xosrhX+sh
+	 JEB2N+hO4w070VnyT4C6izrBDapDMgctzE383IaWLTDMye6cbJlc+Hn5gRh4ZHdAWf
+	 mQm28XaZIoo+5ZJkRPqOjTRCz/GbuxI5IWAS6e5mxzYAaGAB/2iNxq8EN1EdPQFqd/
+	 B4tnO9qrUdpBw==
+From: SeongJae Park <sj@kernel.org>
+To: Hui Zhu <hui.zhu@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	Hui Zhu <zhuhui@kylinos.cn>
+Subject: Re: [PATCH 0/2] mm/hugetlb: refactor sysfs/sysctl interfaces
+Date: Mon,  3 Nov 2025 20:43:54 -0800
+Message-ID: <20251104044355.94885-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <cover.1762156954.git.zhuhui@kylinos.cn>
+References: 
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com> <20251029-swap-table-p2-v1-4-3d43f3b6ec32@tencent.com>
-In-Reply-To: <20251029-swap-table-p2-v1-4-3d43f3b6ec32@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 4 Nov 2025 12:19:37 +0800
-X-Gm-Features: AWmQ_bmTFRrhwXCcOBLUnvIw4tjUmphj21GmvzG37YUU2k9yPanr3-g3-dGf8iw
-Message-ID: <CAGsJ_4xOd0CJLZvzvZu9mRLjVvV0OSKE8NcBAYe3wvHFtLjWyA@mail.gmail.com>
-Subject: Re: [PATCH 04/19] mm, swap: always try to free swap cache for
- SWP_SYNCHRONOUS_IO devices
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 82B4210000A
-X-Stat-Signature: atq93kdj3be4yqaaaxofpjdteuj7e4p8
+Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
-X-HE-Tag: 1762229989-689886
-X-HE-Meta: U2FsdGVkX19DjNSQme+IhYEElkPiS+BuEQjSZsHJQj1/kIhL51g417/pqPwsl2Hf2kOCg0ujXJOxfDOng0tfe+9l6QHkMC+72+mgrpzQ77wlwpiLmEtnD2iJTi+fTV3oU70+n7dgQYftPRli8HgcgSa2IqXzE4w3Pbtmf8gRfCk1MIvyNDtLXpfFhsSd++SfTeBcb79MO4OlWBK7wMCoFjk099aJ37DXG9i12TwItXidwkH57JUC1JOO7thiA0zhwkjPzW122GHjxhW2MBlxfByXrOVr/5lswHHE7iPAw9fmjqYTFxvDYxDieuZ0hJBe2e/Ad6UyeH1kcCFC72EX2PXCz3/lVXy3aea5AFQYzpKDlcoRB3DMBJ/1zpwrflZRWtuGq9fp+zcrLeasxOddFCGYmordn3MLTnqn1/B6bfNgCwmg+BCTHjyeg7qohLs5CZ2S0XK+ExRI8fIfwl8uSVmmvMgbVX7Mrbyk5ds8nCvRgxovg/imtMNPZL/1bZu0955fCjXdsugyvdFKCcMHaWRqd7L8oWtXeIaXDV6nOeLnTEoCOZCDXkMR/9y2+GEGr9dPXEDx4DyWL7cmXVrl1DU9Xl7p07KwNvMW3Q0Urufx75WC+jZZrKEEZNq7oaE9z1YVBMOYHE+7VzNzqN+NvZjvfC5EZZu77ISAtj/KX8P/66WkkKqfVl2jtoF44dC7vE9PcdPFHt1ANMMjuXOZ1AUer8RwxsIlw944k+Xlhag5NlE6UP1YAoFGj3qOVIxwVopL9nN1eX2sMj20FJkV0Eilwn2DwUa+roVSuElGHSLnPVc/os2d7qDbr9wSq6r3bQ63lycQuDdERo1G+ljR/T0aXJBQ3p3J14WiTJ+TE+/OZSmEXaLQVFq/X/R6MKkGXxKYvm+aRNFHk1oTFyQ6pPAVp8rJgkfWqcVRTIkyn8YNebWDbKnODRREiR6Ft27wgTuRuTT0whhZTCRLeno
- C6nSwwSD
- CLC82hf+Grts6A2DWNJQhiZCFqqRz82q4OPRftqDem1fMLEFVBx4XDh+JRoXDdE0b3+Rz6RWJHbQ/+6xW01vIJgZ6KeU/heGldfqSIpDQ/bm6zd5z0HzfPSblHGb9hg1hUHJ8GvcWuzuvrVFWmgCl8HLFArDIjWG38W/+JpzWoJslqWWnpT51WL7F1ahd4yIzW8I4am0MXvh2eG9LDqoxE5MXMkZI5ploI++ne/+aWZ/HVzBE7/ioCvfYHpVRMHFR3IrSD85ZCm6EM6wdF6Yd/H6lFEZtCiUXnYHgjCX8JA83Y62VGXVbAXxxrtCeno7Ya042dl9UBEClxiBtV2B07kMqrg+SVk04VfAEm0GB6BkBewBId6cNxN0Tm2K8fUzxDMO3L6Xd8OFzXiUYDSkg4JwfzRO65OzDkwRLokTMxrO3aYGd30rPe4pFvpyvyqnEmImonbP3Zpff/aI=
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 4B81940006
+X-Stat-Signature: hizif5a6cd9snp8idepygfioqbb3f6de
+X-HE-Tag: 1762231441-346931
+X-HE-Meta: U2FsdGVkX1/Jk6WPSuKO98Wj6ofw6gzhpmXG+QBTvZtECvFr9gr4fRETKexs7lowxPzhEQf9uyOP+61Fygxaele9HKrP4IKiw+3wANqj637E/pmyQethRS7SRdVfTLdAwBl55l8C8wbEHPPTUTR46yOXdOtvlpY3HPLmx3CS8knzcdy4C+tQL7JYe36Zf8XRYnZJO6pRmYes+uA+uAV8tA5NBUzl74LkKYxpPVVO2vsrYhpFgaho/Glg+dvcMISJ+6qBEwG/Umfa3cTh7S2QheXG0IFTezuKByWpumgG3qj5MDYZ5y1XE+07ZCT0bUZHaRHzbkDyWXJH//AAIqPRPhzReAoYyIM6KDypiucttqUl67w5LBl+nEJSh6QwLOtn+67Vsc4iFYRBCdzZi2TzLL9R9lXNoXjBLhkD/QDJXKWfy0TGpYefidgY0ECY7Lqsk0ay8znHsRmQTBGKIAig1JPVk1Jn4kZs4xLxohHbgRmDVbqGvjQHWPTMBd6fHUJt7iGy9LtshFubZJEI8FhSfoNcdsi+bkbFAN7WjWreUMEa9MX8ax4JO1sfYjzBDTB5jG0GzFGNz8rIFkbmfZl8bTtDGcs7SCgs6gYzm8RkZzkiv0vZHlvv6x5Om+AKKh/FRh29sJM2Wk07lawSBXkqcCCBdIQVWWR7nuiG3uNl3w6hrjJUsEsKbva+heXvFJdhyAh/qtHTfTH3I1bTGQ+UIaUt93QjZdqvHhNmadCuRLQizX90CLPAGo9tsKs+sxb/o6bpcu6g/bYheS8nJq2/6idrnoqkJDrf+mjLN9WuTB5KSpsCgv2Y1IIbY4+fmMQRQLq3DQurFP+INdotOdoIS95ZkmthlwSvV2+G7ndhzoExOzS7lrm6/sd4nwjtzv+ir2W4R3yRmHkGJQmHUPGBk4aOHipCRRAI7EdIH6MgXD2XgkVzW/uEhHi5NtAlvIwuy2O9Hfq9VwUIit0rKjy
+ AJcfuWyQ
+ RQG5HXMqPBhdkGJgwBFAmAcZea+mtD+AljbhmFldE1hb04ZvsHj5ovfawpVqVvK9w/BTgK2pSOpcPdZYgofc4kZ9Q7sKva59DyJiroJkBlZC/PMntwUUmNuirfs38227Mss+6yzyQRO6C8HLs+HXz+rYxB2ZlsjZpX4FiQ+dThqCw8XpRsJGO9Yystoa+q1d2f4CXbAVfXEQfJb4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,63 +97,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Now SWP_SYNCHRONOUS_IO devices are also using swap cache. One side
-> effect is that a folio may stay in swap cache for a longer time due to
-> lazy freeing (vm_swap_full()). This can help save some CPU / IO if folios
-> are being swapped out very frequently right after swapin, hence improving
-> the performance. But the long pinning of swap slots also increases the
-> fragmentation rate of the swap device significantly, and currently,
-> all in-tree SWP_SYNCHRONOUS_IO devices are RAM disks, so it also
-> causes the backing memory to be pinned, increasing the memory pressure.
->
-> So drop the swap cache immediately for SWP_SYNCHRONOUS_IO devices
-> after swapin finishes. Swap cache has served its role as a
-> synchronization layer to prevent any parallel swapin from wasting
-> CPU or memory allocation, and the redundant IO is not a major concern
-> for SWP_SYNCHRONOUS_IO devices.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/memory.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 9a43d4811781..78457347ae60 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4359,12 +4359,21 @@ static vm_fault_t remove_device_exclusive_entry(s=
-truct vm_fault *vmf)
->         return 0;
->  }
->
-> -static inline bool should_try_to_free_swap(struct folio *folio,
-> +static inline bool should_try_to_free_swap(struct swap_info_struct *si,
-> +                                          struct folio *folio,
->                                            struct vm_area_struct *vma,
->                                            unsigned int fault_flags)
->  {
->         if (!folio_test_swapcache(folio))
->                 return false;
-> +       /*
-> +        * Try to free swap cache for SWP_SYNCHRONOUS_IO devices.
-> +        * Redundant IO is unlikely to be an issue for them, but a
-> +        * slot being pinned by swap cache may cause more fragmentation
-> +        * and delayed freeing of swap metadata.
-> +        */
+On Mon,  3 Nov 2025 16:22:07 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-I don=E2=80=99t like the claim about =E2=80=9Credundant I/O=E2=80=9D =E2=80=
-=94 it sounds misleading. Those
-I/Os are not redundant; they are simply saved by swapcache, which prevents
-some swap-out I/O when a recently swap-in folio is swapped out again.
+> From: Hui Zhu <zhuhui@kylinos.cn>
+> 
+> The hugetlb.c file has grown significantly and become difficult to
+> maintain. This patch series extracts the sysfs and sysctl interface
+> code into separate dedicated files to improve code organization.
+> 
+> The refactoring includes:
+> - Patch 1: Extract sysfs interface into mm/hugetlb_sysfs.c
+> - Patch 2: Extract sysctl interface into mm/hugetlb_sysctl.c
+> 
+> No functional changes are introduced in this series. The code is moved
+> as-is, with only minor formatting adjustments for code style
+> consistency. This should make future maintenance and enhancements to
+> the hugetlb subsystem easier.
+> 
+> Testing: The patch series has been compile-tested and maintains the
+> same functionality as the original code.
+> 
+> Geliang Tang (1):
+>   mm/hugetlb: extract sysfs into hugetlb_sysfs.c
+> 
+> Hui Zhu (1):
+>   mm/hugetlb: extract sysctl into hugetlb_sysctl.c
+> 
+>  mm/Makefile           |   2 +-
+>  mm/hugetlb.c          | 852 +-----------------------------------------
+>  mm/hugetlb_internal.h | 116 ++++++
+>  mm/hugetlb_sysctl.c   | 136 +++++++
+>  mm/hugetlb_sysfs.c    | 632 +++++++++++++++++++++++++++++++
+>  5 files changed, 894 insertions(+), 844 deletions(-)
+>  create mode 100644 mm/hugetlb_internal.h
+>  create mode 100644 mm/hugetlb_sysctl.c
+>  create mode 100644 mm/hugetlb_sysfs.c
 
-So, could we make it a bit more specific in both the comment and the commit
-message?
+I think MAINTAINERS file should also be updated for the newly added files.
 
-Thanks
-Barry
+
+Thanks,
+SJ
+
+[...]
 
