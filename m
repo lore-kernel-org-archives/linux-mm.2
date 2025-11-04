@@ -4,117 +4,87 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29BB4CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 03:47:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27048CCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:02:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EDAD8E00E4; Mon,  3 Nov 2025 22:47:50 -0500 (EST)
+	id 5EB378E00E5; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5C5AD8E00DC; Mon,  3 Nov 2025 22:47:50 -0500 (EST)
+	id 59ADB8E00DC; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5022B8E00E4; Mon,  3 Nov 2025 22:47:50 -0500 (EST)
+	id 4D7818E00E5; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3ECA28E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 22:47:50 -0500 (EST)
+	by kanga.kvack.org (Postfix) with ESMTP id 3A3AF8E00DC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
 Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id BEF23C037F
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 03:47:49 +0000 (UTC)
-X-FDA: 84071540658.09.23A695B
-Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 04D2480004
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 03:47:47 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=X1vQE1wl;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8AA1B9097
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:02:38 +0000 (UTC)
+X-FDA: 84071577996.09.23CAEAA
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf04.hostedemail.com (Postfix) with ESMTP id BDC114000C
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:02:36 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762228068;
+	s=arc-20220608; t=1762228957;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=i0pa7WeHz47MLgq+rdOSlkeWgaQxlJG3XLSzMhA+sBw=;
-	b=7zbb4WOCIqSx1Z8BdS4Znmm/LOV+67CTiKa4N30+lMPS3yLWqp8k71LxorvCjWQXEKsj86
-	9ohkYv/p8+tEJUIlTmRxr9FHV3Qxh380t+1/qyI0M8ufdlbEpGQTngIvQNpCImKPfXlDpp
-	oriDQlVR7tc8JV28+Ac3NcRkUr2rHFo=
+	 in-reply-to:in-reply-to:references:references;
+	bh=/QE7pAvMdiyVS73dSCBBcSZ2/zYxlgloHbOBsUxC/NI=;
+	b=k6BHIr/t4CCmfXDTvtdYDV6In54cjFHwsB+aKBKtgSJC3bNbZGSB5NNq9EymOZgMKTxbAf
+	Q+LTmxq39VdIg7AEXYu/lAL/lsjBIHszkGodCM3AIGhL2niemCO2Hu158SGUvHnTCkhDFL
+	iU04GFF5uLndJ8AA55RNrD+K1SsNcPA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=X1vQE1wl;
-	spf=pass (imf30.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.173 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762228068; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762228957; a=rsa-sha256;
 	cv=none;
-	b=Q9R0wRMZE25AK9Z0GstpKWnr70q/inOXTCQoRSfSOv+m8Lsu7ZRXTRH17ioHfxAKyv3MO/
-	zR+WnjdRI2NxPJ6qk6DtJ+aB3e/UmbqSLD/DXpGdY9qC44oWlOR/knb5FIP6goASGUY285
-	iDtRCLBnwMZRy6mI0//+zRg61eMUmD0=
-Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8a074e50b41so681962185a.3
-        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 19:47:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762228067; x=1762832867; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=i0pa7WeHz47MLgq+rdOSlkeWgaQxlJG3XLSzMhA+sBw=;
-        b=X1vQE1wlL+o2uMBgcp2/yAKr+R3LaD+f9YwM5dmTWiUfiDZWA7Ppma/tuoNhtFySxH
-         RQM1PyHkPgI00wKh6zJotoCkJLgi+GowR3TGX9CMLlHkiNKCCuDbKpwNrK/qWvZO59Xv
-         z022DBzwyMRZNgcKkKfE2ffLV321DNb6BvfjBCc0yZYOX742HLT3e+oOBM9oBARxMOfI
-         GgqdTO+gV9a929YsuKJEsZHIX9HLeoi0pEq2Leb2wnQhvXxDbiblMsSoNgk6TUn/VjYs
-         3UebIJTKE+3URrKd4oFh/rwMjENdBjQqBxAbEHuKtWk4zMgkCXVvmNwwAeBT+ZOdZVQd
-         LPNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762228067; x=1762832867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=i0pa7WeHz47MLgq+rdOSlkeWgaQxlJG3XLSzMhA+sBw=;
-        b=KluHX2oj6eT5QJxcijt2CzEeZsiOVDWmVqFOqvWBYjPF08rs5FbDuuQErDolTuy+ix
-         OK73HSFlSV3tWErzifXgmOh2smp0+ueZo6JVafuxNHEvYMq5D+5jeERHyPSmxXWhorZ9
-         JxfIQu9YtTCC0ul/jtiiABRXk1TIbS86GCFvGfYcElqE5As2fxx/HjIBtvoCfzEsX9tm
-         lxA8qoyY4iUfy8PBjlHYocSO77C53bi2AqZFI88KNLFM22pDoPbGpUHBuV7gK7h+f/57
-         6kU4m7qrFG4ijlJw9SzNWoF893lbXFzgYVjtA81wWI+KKdwACdxhzZL49SzTUw7IAZJH
-         y/lA==
-X-Gm-Message-State: AOJu0YxedIjwu9QoMGPKre1gMFFxGQlaTFS93NEaj91bDcpCr1hcnh/t
-	WqWjuBn9TFki4dtyM2B2qSjo06cf36jS47tEn4vg2iWGwaVuriGJiF8oUpQkzTJyQqvQebRzRFz
-	RlbAcNStCx5KBp9UqAKIjJIFBFyZIEwo=
-X-Gm-Gg: ASbGncuZqJ68OBKj64ANSFvxQsG3buy+nBxF1XUJEOxNbopH8RIkx9EKyfQ/FeTyTRi
-	e0OxClOQdRT1K483sM83bEMRW6cPcsK+UYZHL0pwWZnaGBYhHcVmmlWtw2j3Lf6GiIsRe5FQu84
-	wyvlUvEJsHg8sMPVXDOC/+uopg1myX4J27hjSE2YnGiXEhWg12vChsSA4Z4omUQP48M8uUZZGpe
-	7DU330gLMS4z5+B13cRcKEuI+90vT+9/p8iwCANa1lw/OzuSoG4xf4KIcT9HwV9zgeQfS4Tr7Vr
-	FGy+iiXRiHNElQY2
-X-Google-Smtp-Source: AGHT+IGOIVCFrSUGPZxgm5CFHiWVd9cq9GgBXRxZwbWr0M8xS7ROgHPlmVFJAjqv8pGjWXVr2hKxx8I/3dtQzmHBvdM=
-X-Received: by 2002:a05:620a:448a:b0:8a4:40da:b8f9 with SMTP id
- af79cd13be357-8ab9b88036bmr1932468985a.76.1762228066783; Mon, 03 Nov 2025
- 19:47:46 -0800 (PST)
+	b=ET13Ir2VXhU+sQP6BBPQPkWqywfelq51PWKCcLP2yTgGl2bjcQARaBv8fFjfm5TCj5B1on
+	AtSex6CX5sg6tSQ/8rcN8e14Jz8FfVxtRVV2Xnl8qlXCj05aA5HFpn2es12XqP6BaZofFk
+	SQ8bJRNP+n/MzSKmsoVx6OuzSRR2cEg=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA7481C2B;
+	Mon,  3 Nov 2025 20:02:27 -0800 (PST)
+Received: from [10.164.18.64] (unknown [10.164.18.64])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E1ED3F694;
+	Mon,  3 Nov 2025 20:02:28 -0800 (PST)
+Message-ID: <2be04785-d725-4e79-a609-87f174271f83@arm.com>
+Date: Tue, 4 Nov 2025 09:32:25 +0530
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com> <20251029-swap-table-p2-v1-3-3d43f3b6ec32@tencent.com>
-In-Reply-To: <20251029-swap-table-p2-v1-3-3d43f3b6ec32@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 4 Nov 2025 11:47:35 +0800
-X-Gm-Features: AWmQ_blJfTuoUvr32Du3u6wr18BZxK5VzePjdpb6Cvkx1_DpxqtXBlWvqOETAzM
-Message-ID: <CAGsJ_4xsUwUH_VyeYaXHURqTS66Fbuxa00GTM5izwK-=Vg_20g@mail.gmail.com>
-Subject: Re: [PATCH 03/19] mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 04D2480004
-X-Stat-Signature: bwnq473cho1b6tht58sqfkm91c61i58a
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
+To: Qi Zheng <zhengqi.arch@bytedance.com>, tglx@linutronix.de,
+ mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+ catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
+ david@redhat.com, hannes@cmpxchg.org
+Cc: ryan.roberts@arm.com, hpa@zytor.com, lorenzo.stoakes@oracle.com,
+ Liam.Howlett@oracle.com, vbabka@suse.cz, ppt@kernel.org, surenb@google.com,
+ mhocko@suse.com, shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20251103063718.90743-1-dev.jain@arm.com>
+ <044e3f9a-3de2-4939-afff-3bb527eb024b@bytedance.com>
+ <666e012e-0b13-4def-82de-55ccd5868d36@arm.com>
+ <9359ce51-5ac7-4312-8ef8-79fa51d014f5@bytedance.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <9359ce51-5ac7-4312-8ef8-79fa51d014f5@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: BDC114000C
+X-Stat-Signature: 15cyhufpxyhfnqfkoho651gjypx394eb
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762228067-787351
-X-HE-Meta: U2FsdGVkX1/7IVrJ+hUhn1jmGJ8pinf6NYKXH6SlTFVaNirxuthycNRp9xmgVBEQr1jhnEh3SVoptPxs5tqTgdacioC4rfIoPWZCb5ake/vEzl5wCw46cz7RmfWSn0X3fDG5FBqHDZo+I+UAzeU861LqemJqi6wfV6xqpGKCEzqjfuTWiszMXtcTCBgaKVnz9GAfdtmK7vDpHM8YDMLPN2iXguPI5FhFmakBV0w2tSfzjI9DUSpuzbSe/lNB8v71zRDA5hRufmgrBVrl1RElf9A9/pquJbP5mehjERZAO40OBt3cJDlr+Qc1IkCLNL8m0eMHPrzM+MN/l4ikpuYC0mKd0Ke4YIVDBxjSrr5n3PsDUe+yBHx4Ru2dGkcCC6hhZ86WgprjolWXKYMTm3ice0zbaXL/8w+lfMa1qfQp4UnozT1WeOTCNtbfYc07hG/m/UxZmmUu77PIPN30BJ25ji7vkf0d5nrJ+d0pr/I3jXwXzJmMwvnH1e2xg6KJjsrxwWoWX+1Q4DWiaXUWAyN8MEFTJLTy4jQhTeTH2XubyuHZTdzaZjcUWsBkzifmhK37KUV02Rdz0svdHhLb/HdQNf0te6tiVm/8x8KOLqlOFaVxX0pxWIVAtGEGR7qKCckvRQrDnuqHBvoFe4hjYvFuUAY4VbLXJBb6ofnFZ+P2HMd/wdwG3q9PU3z1Q106AlX934vLMvUnNE+oKQVZjxacwpdn+E1sp/pC3LmpZsdgI5MCytEw57ECXDSJLjss72lvFdgUDmotl98rvAa1ieBcau77hleUU3uzAv1FaZiyn9WQdlTPeaEy1QJbrpMQUy/NEuHPYbbqJeBTyWPxyt6/euMkBp5qRKZ0PWxJGMptSIQ+qJuT4uUKI5WbERfEzjVWOn3iP3WXZYTi4i66u0YlWPYrNqlNUkldzljXZSi5y6CRBHsUFlN+thV1bPFa4MX+muKaZUwNfGaP9G9Y68R
- EvROhNUk
- V0k+jttR3n9jjA5Tv6bDC08Oec8QzmIYsWvKKSPauFVLWr2jr9JKqEvFUl5sAsWaMBmdf4GLHIE1hZmZjjJsTHxOBFYnSyn5D9HFgqDsWW0Hs/OY3NxUK/ONo8HUsqKdryT91LiG+1DCE/d3tZWBwGWP1QJeyZ4CMxM2cfk0azR1fwu8jHsfsq5oU4TWkN+LOq7q//6cYqaqOMd3pDq3u8kgE8VmitdtxdHs69IIlHnSKdJ1SU4GnpIniAdJuMPq+2BjNzkEPeVyp6Mq7uvh6p56TsTEW9QwG2qexzAX1o1WFCrK7MofHTUFOKDkId01s/tAsO0ZZRWlffVhPl65fPrY0xfMcdztZmPxhfwmr9f0fDXDxFefGf06bwlL1kWVuAETvHStG71huOc9Jidqr9td0E5CgBrz5qA3x0H+c74DuKf6oYOR2q8IpQ6o1SIuFrhJ9CpORe2QEmNo=
+X-HE-Tag: 1762228956-875573
+X-HE-Meta: U2FsdGVkX1+M2NlbjNac8NWxGEE+YCZUPWWohf1NR54Sx5ZShiOvXKi5Vl3Y0QfTBJVq20/j7CzyG2ojZZ0r1MRHkBIE5w7gVkyUyBOrDzjOcHyQnKB+3fevz2cciAfeTvPDSDbyYX68+pT4pSd05YlB+RP3LEAi9a0m7oB2YM6TYdo2Wc8HB00DmBzKEF0ZraFUYR+OzeyP9XqLnxDIDM/uUus3kgROa7JE7P33GrhXaOcj6jrspiwm3SYtwgRyj+WTPvJagm+6nsI5xTwrBotFey76Z69PWDCfaNia9QfF9xBrbrAiJQgUupqVrlYEYnrmEGkYzZmBL3cLMPdPIMN5+lX02rXRWv8CMWkWw6DzcPYdt2nwqtKwXiueB93DVTGmE4at9zvsitKME5pA2d5pkG8o8VIx79S0cBFxPzlTumUGrcfC06TPue9258RTJdruk/Su2c5/Nw7t6G9PpYlWOaPNpI4tQOp/T8YB9sfBpJr3bVhBFdBL9gG4wlRihMsvDzoK+8HIRMULuBYqA8Mj56yj+IYFyotulIOpvx8I/PA/6oy1X0cd4cQc6Eup8L98OrLcTKEVYrpkE1PM2EHWZ+DRwv5V6GCMUTfIC4WHjX/BFnbyqbHxIFvWick4l1ypuUqgw2qQyvjRb68me/n1Zq8ac2tUyMIb7JVOZxVmU9tT671Oj6Fo+0aS9ayfiGh0FNRfZZ1uvwjtSiuMONpPSTOe4snG7BOdUQ3tdOzULyYls/gAK1TYrk8xrmTWBb1LLsgfTQM15qJ35z6CV8dI8109J2QUvDNpAV76R2cvqTM1l+wn1t010kBSxkX6efnCxWEGIIOy1Twrt1tfDGIxnOKV5eowoA1fGn3Bz2HGYpUPMzD50pBBAjCKJm8dsNWNcMTAV5ILPSZ36wu5U4qb4+n1Psk6JttJ+k8mUO7+aQWt+p1Blquq3zMz++WIFG/ZO35JT4aj8FLh1hp
+ Ec4K6IGP
+ RGsFjYFJil5P8fFXM56Dws+DKWY4dQvKzTh5PVyEZHjmyAwnz96iby8Y8YIIOTvdcI2s0sqxVKiFbtrEzzo7pmt9t5Qzq/5JtsaDOzeWBICVgxoUzvSSqjrbiBELU3Iu4wbQQlt4jdp6VrOTQAYi1q2RfVZi7t1ik2Pm20iWl5ImMbaMu7peVs5skpRdJF9TiYi4Bdmoziq0O13DG85V5sadmCNeSJZqyv9jRL+XpoQY/ff84JBXaHlXo5bfYKQ5pWORFsBSHnEdfv54VqmIkKu3AO2YbcZr49/PNN/OdbGkWXfkhV0knDh4/wQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,123 +93,129 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 29, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Now the overhead of the swap cache is trivial, bypassing the swap
-> cache is no longer a valid optimization. So unify the swapin path using
-> the swap cache. This changes the swap in behavior in multiple ways:
->
-> We used to rely on `SWP_SYNCHRONOUS_IO && __swap_count(entry) =3D=3D 1` a=
-s
-> the indicator to bypass both the swap cache and readahead. The swap
-> count check is not a good indicator for readahead. It existed because
-> the previously swap design made readahead strictly coupled with swap
-> cache bypassing. We actually want to always bypass readahead for
-> SWP_SYNCHRONOUS_IO devices even if swap count > 1, But bypassing the
-> swap cache will cause redundant IO.
 
-I suppose it=E2=80=99s not only redundant I/O, but also causes additional m=
-emory
-copies, as each swap-in allocates a new folio. Using swapcache allows the
-folio to be shared instead?
+On 03/11/25 2:37 pm, Qi Zheng wrote:
+> Hi Dev,
+>
+> On 11/3/25 4:43 PM, Dev Jain wrote:
+>>
+>> On 03/11/25 12:33 pm, Qi Zheng wrote:
+>>> Hi Dev,
+>>>
+>>> On 11/3/25 2:37 PM, Dev Jain wrote:
+>>>> The implementation of CONFIG_PT_RECLAIM is completely contained in 
+>>>> generic
+>>>> mm code. It depends on the RCU callback which will reclaim the 
+>>>> pagetables -
+>>>> there is nothing arch-specific about that. So, enable this config for
+>>>> all architectures.
+>>>
+>>> Thanks for doing this!
+>>>
+>>> But unfortunately, not all architectures call tlb_remove_ptdesc() in
+>>> __pte_free_tlb(). Some architectures directly call pte_free() to
+>>> free PTE pages (without RCU).
+>>
+>> Thanks! This was not obvious to figure out.
+>>
+>> Is there an arch bottleneck because of which they do this? I mean to 
+>> say,
+>>
+>> is something stopping us from simply redirecting __pte_free_tlb to 
+>> tlb_remove_ptdesc
+>
+> Some architectures have special handling in __pte_free_tlb(), and cannot
+> simple redirect __pte_free_tlb() to tlb_remove_ptdesc(), such as m68k,
+> powerpc, etc.
+>
+> For those architectures that call pte_free() in __pte_free_tlb(), it
+> should be easy to modify them.
+>
+> If you're not in a rush, I can take the time to finish the above tasks.
+
+Right then, I'll leave that up to you!
+
 
 >
-> Now that limitation is gone, with the new introduced helpers and design,
-> we will always swap cache, so this check can be simplified to check
-> SWP_SYNCHRONOUS_IO only, effectively disabling readahead for all
-> SWP_SYNCHRONOUS_IO cases, this is a huge win for many workloads.
+>>
+>> or pte_free_defer?
+>>
+>>
+>> I am looking to enable this config at least on arm64 by default, I 
+>> believe it will be legal
+>>
+>> to do this at least here.
 >
-> The second thing here is that this enabled a large swap for all swap
-> entries on SWP_SYNCHRONOUS_IO devices. Previously, the large swap in is
-> also coupled with swap cache bypassing, and so the count checking side
-> effect also makes large swap in less effective. Now this is also fixed.
-> We will always have a large swap in support for all SWP_SYNCHRONOUS_IO
-> cases.
+> IIRC, arm64 can directly enable CONFIG_PT_RECLAIM, as it is supported
+> at the architecture level.
 >
-
-In your cover letter, you mentioned: =E2=80=9Cit=E2=80=99s especially bette=
-r for workloads
-with swap count > 1 on SYNC_IO devices, about ~20% gain in the above test.=
-=E2=80=9D
-Is this improvement mainly from mTHP swap-in?
-
-
-> And to catch potential issues with large swap in, especially with page
-> exclusiveness and swap cache, more debug sanity checks and comments are
-> added. But overall, the code is simpler. And new helper and routines
-> will be used by other components in later commits too. And now it's
-> possible to rely on the swap cache layer for resolving synchronization
-> issues, which will also be done by a later commit.
+> Thanks,
+> Qi
 >
-> Worth mentioning that for a large folio workload, this may cause more
-> serious thrashing. This isn't a problem with this commit, but a generic
-> large folio issue. For a 4K workload, this commit increases the
-> performance.
+>>
+>>
+>>>
+>>> We need to modify these architectures first, otherwise it will
+>>> lead to UAF. This approach is feasible because Hugh provides similar
+>>> support in pte_free_defer().
+>>>
+>>> Enabling PT_RECLAIM on all architecture has always been on my
+>>> TODO list, but it's been blocked by other things. :(
+>>>
+>>> Thanks,
+>>> Qi
+>>>
+>>>>
+>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
+>>>> ---
+>>>>   arch/x86/Kconfig | 1 -
+>>>>   mm/Kconfig       | 5 +----
+>>>>   mm/pt_reclaim.c  | 2 +-
+>>>>   3 files changed, 2 insertions(+), 6 deletions(-)
+>>>>
+>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+>>>> index fa3b616af03a..5681308a5650 100644
+>>>> --- a/arch/x86/Kconfig
+>>>> +++ b/arch/x86/Kconfig
+>>>> @@ -327,7 +327,6 @@ config X86
+>>>>       select FUNCTION_ALIGNMENT_4B
+>>>>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
+>>>>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
+>>>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
+>>>>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
+>>>>       select SCHED_SMT            if SMP
+>>>>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
+>>>> diff --git a/mm/Kconfig b/mm/Kconfig
+>>>> index 0e26f4fc8717..903c37d02555 100644
+>>>> --- a/mm/Kconfig
+>>>> +++ b/mm/Kconfig
+>>>> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
+>>>>         The architecture has hardware support for userspace shadow 
+>>>> call
+>>>>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
+>>>>   -config ARCH_SUPPORTS_PT_RECLAIM
+>>>> -    def_bool n
+>>>> -
+>>>>   config PT_RECLAIM
+>>>>       bool "reclaim empty user page table pages"
+>>>>       default y
+>>>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
+>>>> +    depends on MMU && SMP
+>>>>       select MMU_GATHER_RCU_TABLE_FREE
+>>>>       help
+>>>>         Try to reclaim empty user page table pages in paths other 
+>>>> than munmap
+>>>> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
+>>>> index 7e9455a18aae..049e17f08c6a 100644
+>>>> --- a/mm/pt_reclaim.c
+>>>> +++ b/mm/pt_reclaim.c
+>>>> @@ -1,6 +1,6 @@
+>>>>   // SPDX-License-Identifier: GPL-2.0
+>>>>   #include <linux/hugetlb.h>
+>>>> -#include <asm-generic/tlb.h>
+>>>> +#include <asm/tlb.h>
+>>>>   #include <asm/pgalloc.h>
+>>>>     #include "internal.h"
+>>>
 >
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/memory.c     | 136 +++++++++++++++++++++-----------------------------=
-------
->  mm/swap.h       |   6 +++
->  mm/swap_state.c |  27 +++++++++++
->  3 files changed, 84 insertions(+), 85 deletions(-)
->
-> diff --git a/mm/memory.c b/mm/memory.c
-> index 4c3a7e09a159..9a43d4811781 100644
-> --- a/mm/memory.c
-> +++ b/mm/memory.c
-> @@ -4613,7 +4613,15 @@ static struct folio *alloc_swap_folio(struct vm_fa=
-ult *vmf)
->  }
->  #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
->
-> -static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
-> +/* Sanity check that a folio is fully exclusive */
-> +static void check_swap_exclusive(struct folio *folio, swp_entry_t entry,
-> +                                unsigned int nr_pages)
-> +{
-> +       do {
-> +               VM_WARN_ON_ONCE_FOLIO(__swap_count(entry) !=3D 1, folio);
-> +               entry.val++;
-> +       } while (--nr_pages);
-> +}
->
->  /*
->   * We enter with non-exclusive mmap_lock (to exclude vma changes,
-> @@ -4626,17 +4634,14 @@ static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
->  vm_fault_t do_swap_page(struct vm_fault *vmf)
->  {
->         struct vm_area_struct *vma =3D vmf->vma;
-> -       struct folio *swapcache, *folio =3D NULL;
-> -       DECLARE_WAITQUEUE(wait, current);
-> +       struct folio *swapcache =3D NULL, *folio;
->         struct page *page;
->         struct swap_info_struct *si =3D NULL;
->         rmap_t rmap_flags =3D RMAP_NONE;
-> -       bool need_clear_cache =3D false;
->         bool exclusive =3D false;
->         swp_entry_t entry;
->         pte_t pte;
->         vm_fault_t ret =3D 0;
-> -       void *shadow =3D NULL;
->         int nr_pages;
->         unsigned long page_idx;
->         unsigned long address;
-> @@ -4707,57 +4712,21 @@ vm_fault_t do_swap_page(struct vm_fault *vmf)
->         folio =3D swap_cache_get_folio(entry);
->         if (folio)
->                 swap_update_readahead(folio, vma, vmf->address);
-> -       swapcache =3D folio;
-> -
-
-I wonder if we should move swap_update_readahead() elsewhere. Since for
-sync IO you=E2=80=99ve completely dropped readahead, why do we still need t=
-o call
-update_readahead()?
-
-Thanks
-Barry
 
