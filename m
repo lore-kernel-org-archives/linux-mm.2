@@ -4,125 +4,85 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6F265CCF9F8
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 00:16:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 479E8CCFA03
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 00:20:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BAD948E00CE; Mon,  3 Nov 2025 19:16:36 -0500 (EST)
+	id 7E5BA8E00CF; Mon,  3 Nov 2025 19:20:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B852C8E0058; Mon,  3 Nov 2025 19:16:36 -0500 (EST)
+	id 7965A8E0058; Mon,  3 Nov 2025 19:20:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AC1FC8E00CE; Mon,  3 Nov 2025 19:16:36 -0500 (EST)
+	id 6D5088E00CF; Mon,  3 Nov 2025 19:20:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AD8E8E0058
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:16:36 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 2F9BC1A0382
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:16:36 +0000 (UTC)
-X-FDA: 84071008392.08.0ECDFD6
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 45F9F180017
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:16:32 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CREqH01x;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5D52A8E0058
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 19:20:25 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 01C6BB8B85
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:20:24 +0000 (UTC)
+X-FDA: 84071018010.04.04B4104
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 3CE7E180011
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:20:23 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kxfHdtZn;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762215394;
+	s=arc-20220608; t=1762215623;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ydNYBUGFrLAROdEaoedjyx2P5bsu0AiXwUjgu4DxHB8=;
-	b=wU3Z9qZvN+LE+sL70+rVDpbaxu4f1MpMw3Zm7pHt0vPrlx4opx6ihFc9NmokuNMywPKVfz
-	nfndz2eGV9jfCBChPSgsMW3XGxyX1TrIt/W/85xQtbApyeAcsJYgUPXri9KW1zmqJaOGJj
-	W4PFGBRgfjDiazQOQS2pygbOWTKmfVY=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762215394; a=rsa-sha256;
+	bh=kg4LF7rkE/bXl9iieD20/QFbOQMW7syaEp2SBV98U9g=;
+	b=7aLEPs5hrMkOl5JnpUKU/wPgG6Y9Zfn0uj1gr5kg+Y+bMJL4QqwmI+VVtHmlEh+tF2lBAu
+	D2m4HnlHLbiqFL1YbENtORn9PAOOksgjTe/3KOQUm6EdFdUqkyWcVEu+qPmJQcrdntVJO+
+	4IbZ93oKgbq/SKLTOFZq7I/Kbs2c0vo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762215623; a=rsa-sha256;
 	cv=none;
-	b=DN+jjpQZitWierJDaxWcpv8uPwjiwe+2U/MUaTKEOFM7/72iq73IKVILhg3WIBNiBFBxdj
-	aDfFHg5g66s3zoJj+iNFtLM/Z3XnV/F7+fHvCWP+3IEMBAYoHr43+SkVpevmwp0/4EHyFu
-	wxLEVm135Ob5KlBW6kXhL8N+d1aVeCM=
+	b=2jKvO7rm1rICaLPJ2pQoPaRIRKyUxM8mju0zE08CARv0vyre2D9Uy1u2N2k484zJ0cwew+
+	0zu51oTHUp/6JP671lXcsXIpCP0SD1sB7o8qtBi0OEqXbflbs/COT7IYTEdjTcQhQf+T7c
+	8LDkKZ1AMkWkDD3SMtll0Rh0IVsdJX0=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=CREqH01x;
-	spf=pass (imf24.hostedemail.com: domain of lkp@intel.com designates 192.198.163.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762215393; x=1793751393;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=zxAXuaKryOZl71JI0V1lAw38LB1v6NuF6Mtj84GNJJA=;
-  b=CREqH01x70s42QRyhY8sJ/jAwMw6OS+DAvbZ3EcSuAqe2/0mMFZoVjx4
-   eaGx6y3cZefuQuL9t61iEWTSz5MLX6sDHzH2vPA6a58DWaOBB2k2xPDa1
-   zFqfw5ck79KurtZ7fRaCXzlm34F981CUfwgljOE1TdKEL2cBxmhJLeyVZ
-   qlWE+QT/1DSkLOahLuOqCelqbcNhTg2es5iDs3vHbI+Oo0vX5TLRRISVk
-   Q8a0RhphTOLTXtMuS0ThgHHLaKhBKaDCL1l5qZfdKwD+rV24sYkzHvp8F
-   Lo/Msbg1617Srbm3z8pMEFK8SqhkFCRBBiCKfRNBSsSOffWi6R5YPTUJL
-   A==;
-X-CSE-ConnectionGUID: lq8E7ctnTPGOHzqMJE72ZA==
-X-CSE-MsgGUID: ZUWPjQoiTb+Se0ujZswDUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11602"; a="63315033"
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="63315033"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Nov 2025 16:16:31 -0800
-X-CSE-ConnectionGUID: xWdJEXLTRK285TprlfyTVg==
-X-CSE-MsgGUID: M2sTMn8SRQGukSTiZD9R6A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,277,1754982000"; 
-   d="scan'208";a="191352272"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 03 Nov 2025 16:16:24 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vG4iD-000Qeu-2k;
-	Tue, 04 Nov 2025 00:16:01 +0000
-Date: Tue, 4 Nov 2025 08:15:00 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 10/16] mm: replace pmd_to_swp_entry() with
- leafent_from_pmd()
-Message-ID: <202511040851.UAHe93ix-lkp@intel.com>
-References: <38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes@oracle.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: 11foqy3ps1ob4ywnzzeaiy3kfnc6cikr
+	imf06.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=kxfHdtZn;
+	spf=pass (imf06.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id D435F44455;
+	Tue,  4 Nov 2025 00:20:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE24C19425;
+	Tue,  4 Nov 2025 00:20:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762215621;
+	bh=ARYJ94hkfr+wqtaTaCXJsG3Gdo7c5EgIBjp/zMCYw74=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=kxfHdtZnLR8DJe75xj8jde8hiIdLJsDODUzrkcsU3oth4EmoafaP9q1vIet2FrDF7
+	 Vif5lE2/OP4CwnUL/MCo+HJX3LicBWecGw1rfvdMKv85ziXudJQm5eF/OZ1UJX5vzy
+	 P0Le76leURiT1Nbr40lIbqF1bECoQ5dIJm3nBBJ0=
+Date: Mon, 3 Nov 2025 16:20:20 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Baoquan He <bhe@redhat.com>, Alexander Graf <graf@amazon.com>, Mike
+ Rapoport <rppt@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>,
+ kexec@lists.infradead.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 0/2] kho: misc fixes
+Message-Id: <20251103162020.ac696dbc695f9341e7a267f7@linux-foundation.org>
+In-Reply-To: <20251103180235.71409-1-pratyush@kernel.org>
+References: <20251103180235.71409-1-pratyush@kernel.org>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 3CE7E180011
+X-Stat-Signature: 566uh11meftxef7da5mo95mht7oayji1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 45F9F180017
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762215392-497536
-X-HE-Meta: U2FsdGVkX18uQp6euLbn2O0nJl42inG+W/7k/+YCzWz6Qb6vrovTc94NrHqLm9zuz4bHx8jzVvoBVTrS5XEF+1ctUsDJXNMqei2dW4IcVp77N1l7T6dKEUqkq28sqXJ/tgNCxT8YqZZL625hUUP8+FNx77AnL3oalfKy0LP4WrM4zRJHFD85Gfq0tw8MTz6ffb74jkTpih5B3l1qUW0behOpfniQRJwjVaaN5h49G3XTW/nNoruIOIyPZ3u+9oDQJvBF64ZwZbDZaXa9k3OMsjECg4chcEjuHwezpMhYFd8J/36CPXpUd198mS9X4sfgdpXkJ5ByJ2OnltJO+K8mmTRRCp20gLI+Ziu/D6w4RT41xYwCJP3uNNJgBRSkQmq74M73wlCNhJno1FZ1kNZflgSofwfJ9cJC6WrWXepZFXpfPdZ/8H3Q9QK/doIT8vedf++pbrj9sYmTfPqE92ltHRmMh7oErIPdFEHCv/HxD2JaDMxgRkLa9vGtG8ELRl5ORhgk2Jjpz1d6Jh2ZYk8ALNZrchK2WT4JhtGevr8O/S1vViPT1xAx4YVy0be/fIojShNY5LZpU4aHl0uUtUg2eqnwbdGA5l2yhuWr/X6eUE8MsS03A9Zcyukul9ONc592IuKfhCkYSYHnuPXdSlS81TpnsoXxedxNXtijtgXlwWVSCpNk0WTn6EBdDPywS1OC664s+6uEC9caqwVCKjOQBDglkwy7BUbBfYYDpXDhUJAIWAMrLGRNKNaGmiuPAGk/TckQBnXrQlAGFz6WCx6++5+BYEREqd73KC4KWXiFHtu7oswakswy47c9lYLg3cXbYk31dYxhwAL+LxKM8XnvEm3RAUIr4/GXd6rBRGxgHGZ9Ba/WiNNmmRfmmERrBkwSbCZJ7a4kajaz5tEPrDFnheHFVHL8Bz6fOXSczTfEw85tXrfaEpsiG4KDvBpHjCixIP+IAfNo+9lfXkPasVk
- Hr6p25sa
- KlWqvF3Ry594QGbWAHJ62dMbLCxlkQ8RTP8sr4nSclXWYUcMUeun7y7R2pNDE5K07IF/IIYe1vB0yVyUsfw77AKyS7Et9k/HN9apljMcTnL9Me40u9HOzxmVdqp3afHl8YSbxD1I5fvGN5+/uPzp8MOCoPeKgAkSGj/KLgTYBrxO7JhD52Q1xdFnM+jgMLmBQkYRPyjJ+we1HkoUjFcGhFpRP3UtpzItr+hnVYWBox1mdu4CmlsqDVzXMlK4mdglnw+bJTC6/o2VCSnbuL/FSoyPGmhNBIDgn7vM+f+VNLkAvW/74VoeP5m2ePQv/s6dKv1r2e2MREN5INTjTq7EpvA5/o/NZMBMeHpPaTyGZEeCigIQD0jRykPMDw1NU8JpC/RJm8/7g8hvEpm3Ikph4YcRcMw==
+X-HE-Tag: 1762215623-950701
+X-HE-Meta: U2FsdGVkX18L+lyrASU4G3Y5TKsI+TBw4HB0H6WVt4dyQy0NmvqNKuNj2ePDUK0Lv50jVOQQ21yMV6EExVBWBfMwBSNBjK7Ux+FMgV9nA38JKMCrvtw8EHkAsIonyURDo/5yWnFWxCRpFW6sn1bDcUQP8bpJDfJCTugs0Oh54nOt4AyvuzX5zXNk5vL46pqKRSEYO805k8hX0ku+bSr1CA6klzyQfTF29gu/B4S9OKOZzmUfudCVOFUOrJuZLEWLMbgC9x9ZV8O468oQP6njLE3ot/G28PIEc301Yl7GY6njrIcqMZuivDX/s2vTBDLKBA3N6uUqU5bcROgAGEXN5cmBMAdIHsbEqT5IeNSgAJA3XcwWNqQntmz9Vu/0YQfXfp0v7NyXsjJSAevT1ogH5micA6L0QrSUfDHVDoCr1ERL9uxopu5z9swQy/rvhOKF8284oKW0HXIN8ewqyFH26+D8/Vp7axzy2wdYlycYJhWA6l1DPhaHZthRo4+6mgyjIE5aG1h06l5Qwm2bjoFnkrtMnvo7cV+Sz30Pj3sXbK8OCfF91c7jIcjxxDD/FXeR0K3LcGbb7j83FBSJAbvtk3NILMiudKUu9g19fvpaB8BEFaK7G3716XFlL/zQSOdQQpvekbtw68EnypQwNKa8pxFz1z6+Jq3a3tp9RDH6Wf2P0gt9QeI2911UiukZjqNhZ5iGe61u2M1rtyIIdq8acOUBRVAkiksPA276C5lLNpGjz880IEDSiTMQRlIuKneUjhpnnn9aFczKTal/srn32AM2MF8a8ywMtqLvqAPaeHb/OE/iQZi1Mo9tmgJC6wB+MQTK24Ka5Eq+usFgZI3wLPxw7fHfX1seN7st0RUNyvpzqW4hVdL3TMDV2xxnJMruSq+yokSCOdN9SbsV9ereM0VbAqvmHzEyI1YbwH3DfspKglFLJVue3vQ2Ubr/W+xyjY0wlsJw2KPb2xFupGT
+ ojUqN/H7
+ 10cXKdONlt+1LIYEdR9Bxv8rCYge2dxOay2vp/E2L77iHzjCcLBkQjkwUalAIGout7O0BeXPe++YTzhHHhLJRuX4+G/X24f4yEruXs8lhkhcyePejhps1TMShZhmS2EpxhPmeXCLAM/CyYxyS8TVEcp/M3N7t4jqnAc87jiPhqV37v9OGZjZNkKj0PvYe0AjwhqQkgryfiUKgnLw6vw8qStclPxSseHQDYSyI1EBMp6cpC1UGMohdnOdGmYRvLjZCHA03rEZArgN7/+k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -131,119 +91,33 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Lorenzo,
+On Mon,  3 Nov 2025 19:02:30 +0100 Pratyush Yadav <pratyush@kernel.org> wrote:
 
-kernel test robot noticed the following build warnings:
+> This series has a couple of misc fixes for KHO I discovered during code
+> review and testing.
+> 
+> The series is based on top of [0] which has another fix for the function
+> touched by patch 1. I spotted these two after sending the patch. If that
+> one needs a reroll, I can combine the three into a series.
+>
 
-[auto build test WARNING on akpm-mm/mm-everything]
+Things appear to be misordered here.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lorenzo-Stoakes/mm-correctly-handle-UFFD-PTE-markers/20251103-204118
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/38c26e75ed00263e9ecbebb0c045dd6d8183ec67.1762171281.git.lorenzo.stoakes%40oracle.com
-patch subject: [PATCH 10/16] mm: replace pmd_to_swp_entry() with leafent_from_pmd()
-config: sh-randconfig-001-20251104 (https://download.01.org/0day-ci/archive/20251104/202511040851.UAHe93ix-lkp@intel.com/config)
-compiler: sh4-linux-gcc (GCC) 13.4.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251104/202511040851.UAHe93ix-lkp@intel.com/reproduce)
+[1/2] "kho: fix unpreservation of higher-order vmalloc preservations"
+	fixes a667300bd53f2, so it's wanted in 6.18-rcX
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511040851.UAHe93ix-lkp@intel.com/
+[2/2] "kho: warn and exit when unpreserved page wasn't preserved"
+	fixes fc33e4b44b271, so it's wanted in 6.16+
 
-All warnings (new ones prefixed by >>):
+So can we please have [2/2] as a standalone fix against latest -linus,
+with a cc:stable?
 
-   In file included from include/linux/leafops.h:6,
-                    from include/linux/migrate.h:9,
-                    from mm/damon/ops-common.c:8:
-   include/linux/swapops.h: In function 'swp_entry':
-   include/linux/swapops.h:27:46: error: 'MAX_SWAPFILES_SHIFT' undeclared (first use in this function)
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^~~~~~~~~~~~~~~~~~~
-   include/linux/swapops.h:90:28: note: in expansion of macro 'SWP_TYPE_SHIFT'
-      90 |         ret.val = (type << SWP_TYPE_SHIFT) | (offset & SWP_OFFSET_MASK);
-         |                            ^~~~~~~~~~~~~~
-   include/linux/swapops.h:27:46: note: each undeclared identifier is reported only once for each function it appears in
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^~~~~~~~~~~~~~~~~~~
-   include/linux/swapops.h:90:28: note: in expansion of macro 'SWP_TYPE_SHIFT'
-      90 |         ret.val = (type << SWP_TYPE_SHIFT) | (offset & SWP_OFFSET_MASK);
-         |                            ^~~~~~~~~~~~~~
-   include/linux/swapops.h: In function 'swp_type':
-   include/linux/swapops.h:27:46: error: 'MAX_SWAPFILES_SHIFT' undeclared (first use in this function)
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^~~~~~~~~~~~~~~~~~~
-   include/linux/swapops.h:100:30: note: in expansion of macro 'SWP_TYPE_SHIFT'
-     100 |         return (entry.val >> SWP_TYPE_SHIFT);
-         |                              ^~~~~~~~~~~~~~
-   include/linux/swapops.h: In function 'swp_offset':
-   include/linux/swapops.h:27:46: error: 'MAX_SWAPFILES_SHIFT' undeclared (first use in this function)
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^~~~~~~~~~~~~~~~~~~
-   include/linux/swapops.h:28:34: note: in expansion of macro 'SWP_TYPE_SHIFT'
-      28 | #define SWP_OFFSET_MASK ((1UL << SWP_TYPE_SHIFT) - 1)
-         |                                  ^~~~~~~~~~~~~~
-   include/linux/swapops.h:109:28: note: in expansion of macro 'SWP_OFFSET_MASK'
-     109 |         return entry.val & SWP_OFFSET_MASK;
-         |                            ^~~~~~~~~~~~~~~
-   include/linux/swapops.h: In function 'make_pte_marker_entry':
-   include/linux/swapops.h:395:26: error: 'SWP_PTE_MARKER' undeclared (first use in this function)
-     395 |         return swp_entry(SWP_PTE_MARKER, marker);
-         |                          ^~~~~~~~~~~~~~
-   In file included from <command-line>:
-   include/linux/swapops.h: In function 'is_pfn_swap_entry':
-   include/linux/swapops.h:27:46: error: 'MAX_SWAPFILES_SHIFT' undeclared (first use in this function)
-      27 | #define SWP_TYPE_SHIFT  (BITS_PER_XA_VALUE - MAX_SWAPFILES_SHIFT)
-         |                                              ^~~~~~~~~~~~~~~~~~~
-   include/linux/compiler_types.h:577:23: note: in definition of macro '__compiletime_assert'
-     577 |                 if (!(condition))                                       \
-         |                       ^~~~~~~~~
-   include/linux/compiler_types.h:597:9: note: in expansion of macro '_compiletime_assert'
-     597 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
-         |         ^~~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:39:37: note: in expansion of macro 'compiletime_assert'
-      39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
-         |                                     ^~~~~~~~~~~~~~~~~~
-   include/linux/build_bug.h:50:9: note: in expansion of macro 'BUILD_BUG_ON_MSG'
-      50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
-         |         ^~~~~~~~~~~~~~~~
-   include/linux/swapops.h:448:9: note: in expansion of macro 'BUILD_BUG_ON'
-     448 |         BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
-         |         ^~~~~~~~~~~~
-   include/linux/swapops.h:448:22: note: in expansion of macro 'SWP_TYPE_SHIFT'
-     448 |         BUILD_BUG_ON(SWP_TYPE_SHIFT < SWP_PFN_BITS);
-         |                      ^~~~~~~~~~~~~~
-   include/linux/swapops.h: In function 'non_swap_entry':
-   include/linux/swapops.h:491:35: error: 'MAX_SWAPFILES' undeclared (first use in this function); did you mean 'S_SWAPFILE'?
-     491 |         return swp_type(entry) >= MAX_SWAPFILES;
-         |                                   ^~~~~~~~~~~~~
-         |                                   S_SWAPFILE
-   include/linux/leafops.h: In function 'leafent_from_pmd':
-   include/linux/leafops.h:111:22: error: implicit declaration of function '__pmd_to_swp_entry'; did you mean 'pte_to_swp_entry'? [-Werror=implicit-function-declaration]
-     111 |         arch_entry = __pmd_to_swp_entry(pmd);
-         |                      ^~~~~~~~~~~~~~~~~~
-         |                      pte_to_swp_entry
-   include/linux/leafops.h:111:22: error: incompatible types when assigning to type 'leaf_entry_t' {aka 'swp_entry_t'} from type 'int'
-   include/linux/swapops.h: In function 'swp_offset':
->> include/linux/swapops.h:110:1: warning: control reaches end of non-void function [-Wreturn-type]
-     110 | }
-         | ^
-   cc1: some warnings being treated as errors
+And then [1/2] as a standalone fix against latest -linus without a
+cc:stable.
 
 
-vim +110 include/linux/swapops.h
+Once I have those merged up we can then take a look at what to do about
+the 6.19 material which is presently queued in mm-unstable.
 
-^1da177e4c3f41 Linus Torvalds 2005-04-16  102  
-^1da177e4c3f41 Linus Torvalds 2005-04-16  103  /*
-^1da177e4c3f41 Linus Torvalds 2005-04-16  104   * Extract the `offset' field from a swp_entry_t.  The swp_entry_t is in
-^1da177e4c3f41 Linus Torvalds 2005-04-16  105   * arch-independent format
-^1da177e4c3f41 Linus Torvalds 2005-04-16  106   */
-^1da177e4c3f41 Linus Torvalds 2005-04-16  107  static inline pgoff_t swp_offset(swp_entry_t entry)
-^1da177e4c3f41 Linus Torvalds 2005-04-16  108  {
-3159f943aafdba Matthew Wilcox 2017-11-03  109  	return entry.val & SWP_OFFSET_MASK;
-^1da177e4c3f41 Linus Torvalds 2005-04-16 @110  }
-^1da177e4c3f41 Linus Torvalds 2005-04-16  111  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks.
 
