@@ -4,187 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4AA85CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:20:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 65118CCFA04
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 19:22:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 085A18E0003; Tue,  4 Nov 2025 14:20:18 -0500 (EST)
+	id A762F8E0005; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 036788E0002; Tue,  4 Nov 2025 14:20:17 -0500 (EST)
+	id 9FF4E8E0002; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E406B8E0003; Tue,  4 Nov 2025 14:20:17 -0500 (EST)
+	id 8C6EB8E0005; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id CBC7E8E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:20:17 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 4678A140677
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:20:17 +0000 (UTC)
-X-FDA: 84073890474.04.242228B
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012033.outbound.protection.outlook.com [52.101.43.33])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 35762C000B
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:20:13 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YR7hdKVX;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nicolinc@nvidia.com designates 52.101.43.33 as permitted sender) smtp.mailfrom=nicolinc@nvidia.com
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762284014; a=rsa-sha256;
-	cv=pass;
-	b=hP0LjOAcobWeldDylSjpBXw0qZYEOl7m3nQVCY8/cNmInPq0URNtesNr6k0pweTT3/Rzaq
-	TiDHqNH9W/IuvBaygEHqYQghsRmcsJNZ2w8294c2rLoG4Qco0kaNBa9D5AhXIijGSWb0D1
-	lO2303kEldpcZHhgxLhReLordIif0Do=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=YR7hdKVX;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf28.hostedemail.com: domain of nicolinc@nvidia.com designates 52.101.43.33 as permitted sender) smtp.mailfrom=nicolinc@nvidia.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762284014;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 76D758E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:22:18 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 4F58B88D24
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:22:17 +0000 (UTC)
+X-FDA: 84073895514.21.681017F
+Received: from mail-ej1-f52.google.com (mail-ej1-f52.google.com [209.85.218.52])
+	by imf14.hostedemail.com (Postfix) with ESMTP id E5C66100019
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 19:22:14 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=FzMpqT9N;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762284135;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MWr6q1jmbGgUJvDOdl8W5U9pj06L7ge1J2sazkf8Cu4=;
-	b=gI8QklOq7ad7O0t4PK03WHqZ/rr9OJ3NLODNqTnEyV61AHTYcNRlwE0F457mA/PplX75bW
-	OQpXFTJx70cElz3Y771c1OGz1HvZJdIv7Z4RYaQtQEN16gkSKZOUmr9Qh8xvgZJ45ZHRXu
-	pVo5zASA8tdLWcNWUbGaBHRbhr76Tq0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Ai6I/nN6paCnIKl1lsGPjwKo4w2QvjtRn/XVPF30IF7a5in/Qxz/G3mQA3XJoiqHlJ0ObcDQtzozid8didrg2LOe98OFfGWmw7HCIjt3WPMDs9ZVBU5AUzfc36Nle8+Zd/qIZxPjMsxhWIB2PKnDTSff1obEDvdxAdduC1KWKOWDPb0ttoxIx59nRAsyPy05hPHJjhWrXl+JG0hLfQhAOY4Np2KzVpoYwXmmtE7b5/KVTSitnUxV3e6SPLDQt8JFNnCCXPXTNXkDvC+RR51PnX80BRgxLXug4G5Id+A4VEeb1APxPjLGdT/yTBHsDAdYY2grBFXq1kgJS1nkcnegbg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MWr6q1jmbGgUJvDOdl8W5U9pj06L7ge1J2sazkf8Cu4=;
- b=kuBqpgRM2bKUCCfsNtNustXhDDl9oLM9EORC6tukZmTazlLwQi1/JE9CNJz6hNQGJDG8IBadZtkau4IGO8OSJIzkpML9+VQxQ7le0YOhtLdiibyYN8/Ge8Eq3kSF7FPx+brr/Ult7fLyL6VwxRwf0BsjOLorI0j+RdpNo31H858wrEex6rL7ASBKzK/ANpZ1mrNeIBM4nU4Mw6VEBwoIz3/wgPsr/R8PzjXU1Vfw7q/mAheBrkaKOWDrPILI1myNAFH+vrbp56vFLCddI16TO82auB2LiummZ3JBVggqnrgZfLFB9OTycRmEyvXac9+IrGvqhtW0QcKKxyaAis00Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MWr6q1jmbGgUJvDOdl8W5U9pj06L7ge1J2sazkf8Cu4=;
- b=YR7hdKVXbUXtQM7G5KQT9UDPbiXY4aUqnx82Z2AzHek42Saiw94IRSSfbqMkpMoei0eBsnozxVYqFCg7j8/dd08Pa3vajaumjIa+ehXlySSmS9Pz05y1wKD8ujLAnHIfHWv9vml9ballXZYMvZ70Kwbr3U+Udm6ERz2aecevauMT53RHobzBzyT/I9eM48TRy+z49jx5FO/QafZHm+fAz1FUAKKCX74+1G5TRGcE1maBPGs3doOESA+NRH657C+B99BIt13k8CS5EeJa89a9eI0UFf9CT+n4C+c6yh/iDGakp7pSDlfen/LzLInPmudOwlswexv0yD81Wq1ElemCcw==
-Received: from PH8P220CA0009.NAMP220.PROD.OUTLOOK.COM (2603:10b6:510:345::15)
- by BL1PR12MB5707.namprd12.prod.outlook.com (2603:10b6:208:386::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.15; Tue, 4 Nov
- 2025 19:20:10 +0000
-Received: from CY4PEPF0000E9D6.namprd05.prod.outlook.com
- (2603:10b6:510:345:cafe::3e) by PH8P220CA0009.outlook.office365.com
- (2603:10b6:510:345::15) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9298.7 via Frontend Transport; Tue, 4
- Nov 2025 19:20:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000E9D6.mail.protection.outlook.com (10.167.241.69) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9298.6 via Frontend Transport; Tue, 4 Nov 2025 19:20:09 +0000
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Nov
- 2025 11:19:47 -0800
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail203.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Tue, 4 Nov
- 2025 11:19:46 -0800
-Received: from Asurada-Nvidia (10.127.8.11) by mail.nvidia.com (10.129.68.9)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
- Transport; Tue, 4 Nov 2025 11:19:44 -0800
-Date: Tue, 4 Nov 2025 11:19:43 -0800
-From: Nicolin Chen <nicolinc@nvidia.com>
-To: Leon Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <bhelgaas@google.com>, Logan Gunthorpe
-	<logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>, Robin Murphy
-	<robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon
-	<will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>, "Jason
- Gunthorpe" <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
-	"Jonathan Corbet" <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>, Alex
- Williamson <alex.williamson@redhat.com>, Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>, Ankit Agrawal
-	<ankita@nvidia.com>, "Yishai Hadas" <yishaih@nvidia.com>, Shameer Kolothum
-	<skolothumtho@nvidia.com>, "Kevin Tian" <kevin.tian@intel.com>, Krishnakant
- Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
-	<linux-pci@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-block@vger.kernel.org>, <iommu@lists.linux.dev>, <linux-mm@kvack.org>,
-	<linux-doc@vger.kernel.org>, <linux-media@vger.kernel.org>,
-	<dri-devel@lists.freedesktop.org>, <linaro-mm-sig@lists.linaro.org>,
-	<kvm@vger.kernel.org>, <linux-hardening@vger.kernel.org>, Vivek Kasireddy
-	<vivek.kasireddy@intel.com>
-Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <aQpRz74RurfhZK15@Asurada-Nvidia>
-References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+	bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
+	b=0Jkj6z0Vq6+lwAERru1sxnEZVPejwB6C5ayxYmuax2RmgnUp+Y8MsTN7hUvrVDRhlt97uR
+	x3m+X6iDBfh+EV/CzVK/hmim+AF9o7IQQC3WbxkgseJ29MB1LyHtMlZFScQquPXe6PyDhc
+	btQObiTVq3jSjSOvyBmQA49C0i0QlZg=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=FzMpqT9N;
+	spf=pass (imf14.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.52 as permitted sender) smtp.mailfrom=mhocko@suse.com;
+	dmarc=pass (policy=quarantine) header.from=suse.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762284135; a=rsa-sha256;
+	cv=none;
+	b=hbNQdOkE70LW5jurdyf/WxZ8PRzqdlPFeQ00nMOvE7xLx/IqJoN7hyx27lpR/Kr2EbHASo
+	lPEl1IEQhaqKm70IBcX1msCs2BTfyQ+c1sg/1O7lbHSFCIfkHZDoF9JY/HesgTdAbsoSZa
+	DShe6vy8HU1TUfI8Z0XsFIYYIfnLgHw=
+Received: by mail-ej1-f52.google.com with SMTP id a640c23a62f3a-b403bb7843eso283570266b.3
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 11:22:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1762284133; x=1762888933; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
+        b=FzMpqT9NWrIYW3Qh7MB5YwgyKb0fgBOj2fVVAnraGCgzj49bdfZvwwV4BRV4jGwZQ5
+         l/7pYBmR71aiPiau4e70ZSpYTvPBMH4FFiW5hMq47Ym+T1ctKW6IJWajp7Zg+HBy/tnI
+         eDrTacwBBtGb3IA09Lm3fzVdNXnL+D1sZ8I14J+bs76wtAyJzhIrr4dJGtuIsbkr2hDp
+         W8df3h3eUChdZ/dau1ey0aR/HPedlVinWRU+sd/PItypg4kqXCKEHoCBT/VohzyMil3y
+         xqmRtzqjdnF3Q4nSgxXPbWsBDOJk2klVDntPCRaOyDcpCMR/GjA4qZelaCJPDor/ZplW
+         XvCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762284133; x=1762888933;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+Ekbw2JAUHQcxMukPAtOc9LSVhS6WclBdtt7KL4LfcQ=;
+        b=QQal/ScBscfIvCiY0Qa3/2QqA3J3ZUaXByDSiF2i4fW1iBpl9ULKg28XarA2SEz+yX
+         0+CNh1WJJNLl4SKTCEnjYf2hE3omfiaUzJEhIMMuiSdDBQb1iwNJ5G/i1CPzFQvECKsR
+         4RH2r+FEBmeT59IuAo2nKshFRJe2eKz9xYPQn+3sUbNqIRyRMQ7veYq9Kv7n3XZboA4R
+         ilz7A/7YWJKa2XANL9IvKM+gdGY/olcOxhqXKQJAsiuPHhYJFpvlcLyc40lwTcRamoPa
+         4OieES29KF/HQTe7+LN9RbxbKDUmRASnV4cxf8bL8Eik+JLXUbhpqBHnTOiOfucdp63a
+         QMgw==
+X-Forwarded-Encrypted: i=1; AJvYcCWNbX1y6P1AxJI4a8BHtIgkXHXTGVYBQy3eZcx8yqqMXQXH6nTh0S7pVKNTNnS1cdjGvzdh6Imd2A==@kvack.org
+X-Gm-Message-State: AOJu0Yw++MwGal8gB1UFtvmRh83+CRXR3pgRdd7+yD0kveHg2D54fV0j
+	wrx+V3GV/Tl0de4cXsXZjW8PRWFmOF2P1gjN1XNlMMIqxd0vyZIUcCe8dFtj1o1I51w=
+X-Gm-Gg: ASbGncvwXgxU82EHB3BpxWS3gE7RdF1ghswNBRU7o+nA94E7KjnkyFUyAt6bAGSnuNh
+	Nd7n98mAg4ydE+57f2+vQ7HJNfHuBaxGxx3/V+tov5ENkiJud6+80Ct/4iJeu0GDkefAy9KFheu
+	PqTWEP5ScTM8siSDWQ6THuVrwVQMxVp+PX4JyT+S3oYoXUNDTi9mGGIx7ZVCSRH6X9F97xvZWLl
+	GTj61cRShIFJm1UGqBse/cYg5A7Ycg19JJGwJCDCh6RNWC/yCHDpCJkzTrTSWR2EQL797dBX4WV
+	Cm+gi8E/N5nHh+Ym/4m/POspCkQi0Xba19R1EBd7Ded/VQ1QhDClN7aRcMuYQ/jBRy62FDyDKx4
+	R3/9wqFHYRKej+Yr6td/a8ANNDxy13D+dhKm2QQRUYbquI0/Wz0tTxpu138fTZ4Tj87rYIp1HjM
+	YIL0cQ4NSxLdyEdw==
+X-Google-Smtp-Source: AGHT+IFik8SalFdLc/bnmoU3LnAmqT4cTwgJ3PvSTxEZQ+CS4V8zLsokvxKnUaET/LmVBxkwZrJpyw==
+X-Received: by 2002:a17:907:9721:b0:b6d:5bc1:4859 with SMTP id a640c23a62f3a-b72653cb70amr25182666b.29.1762284133077;
+        Tue, 04 Nov 2025 11:22:13 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723fe3902bsm285399366b.63.2025.11.04.11.22.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Nov 2025 11:22:12 -0800 (PST)
+Date: Tue, 4 Nov 2025 20:22:06 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	Alexei Starovoitov <ast@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	JP Kobryn <inwardvessel@gmail.com>, linux-mm@kvack.org,
+	cgroups@vger.kernel.org, bpf@vger.kernel.org,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Song Liu <song@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
+Message-ID: <aQpSXgUL1fUzRgyL@tiehlicka>
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+ <20251027231727.472628-7-roman.gushchin@linux.dev>
+ <aQR7HIiQ82Ye2UfA@tiehlicka>
+ <875xbsglra.fsf@linux.dev>
+ <aQj7uRjz668NNrm_@tiehlicka>
+ <87a512muze.fsf@linux.dev>
+ <aQm2zqmD9mHE1psg@tiehlicka>
+ <87h5v93bte.fsf@linux.dev>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000E9D6:EE_|BL1PR12MB5707:EE_
-X-MS-Office365-Filtering-Correlation-Id: 265e2435-1e4d-4ae7-e2ae-08de1bd72b54
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|7416014|376014|82310400026|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7nLGBN468PB9gU5i7TxbYYTv5OfDTp2lGe7C6fsUsjG93dvO3a51nQY13Yb4?=
- =?us-ascii?Q?6xKf98FSA9X2pod3rsOKsvCSbJvAXRsmkuEADyYW9Xk53n1NHLyDDya1vj9b?=
- =?us-ascii?Q?fEwwsEREV6vkXfu2cRb/8VASQaDYZ5mb45KaNNxgDYMt0dFkTWI8qvESG03P?=
- =?us-ascii?Q?Kfj05CZqp2H+7NrWbQKEfMul+j/luNYr9Y3sQSbeBis+d/hlXlO8SNr9oZCn?=
- =?us-ascii?Q?CN4CzH3tDLfjH5NvOGG+QiXnX/o0HkYDQSHIFAD037Nc/BclvQYACJRFpHMz?=
- =?us-ascii?Q?pe/bRcK+2dNtJ7i1fGZGcv+Mzr3/feu9ZIKfxHr0lRm5MmesEm5uBLfLXenF?=
- =?us-ascii?Q?Ym/BZkR0VwSwtmjUn/SWlGC9Dd16syo9Ai2xtH5GjWsYUdwo21ic7EvcYQsb?=
- =?us-ascii?Q?43fym9/baYv3KVvKbFD9T3HMRn+dsXPOg4UiHuU2btAwNYNJdmr2ok7sx7lu?=
- =?us-ascii?Q?qyUHlbVn8G61vOr26CnDIc9ZIReOCznMEXVX1IDLcqe4VJVnzGti7BIAwST3?=
- =?us-ascii?Q?BkEUnaD7hGrEnhVN4yO07mjPCGFDowXA+7qcmHNsMkl/rOef1nLaxfBlqfFm?=
- =?us-ascii?Q?D3nc9YWYDX0beCCNBHY+eWSQqCcdLmKKW0mUVi9d6/YYy6W1rlAGPIg7G3AL?=
- =?us-ascii?Q?na98x3cb9+7GHFf1JhRq9B5rQVkgjQDNHyTTZSNmywfq96G/KWcAPTxq1JsQ?=
- =?us-ascii?Q?++oDOIIK2pdjE6gO4DesyopU/ndj0UWe3w1guJrPvqLqLGaM9Ksz4+QJv89M?=
- =?us-ascii?Q?uhx+HQ4QUWqpPS8pnIrcZIBVH+zW7OZM4KgrpIPVoJn44GV9uxmL/xgYw7l7?=
- =?us-ascii?Q?TkLpm1ArSYJMn6UusNOT/saB1AQSbSN3cczrkAuKt2MCJaLkVwWNO5EoTNCB?=
- =?us-ascii?Q?SBuGHeX85AOjeVl2gPGYO34nJv5jG7llAc+qoQ4/vN6ar1IvVE3TEeW9bVri?=
- =?us-ascii?Q?6YHjHgq1t0ZOLL29O8NWLFL7URFhFmPY15/hjsNMbMBKOr/J4dk1cAGMpyLS?=
- =?us-ascii?Q?KVp0CHmrXvqCV6b1MTu3WcZlfXH3PegRVt1UW52PMl/cMeWsM8YNM2PAzY4R?=
- =?us-ascii?Q?if72VpdmDZAVfAdNp9qv1aP4jw4CcTLBTb330jvNb66WoD38TqhIUbOBgM0P?=
- =?us-ascii?Q?WF5wyog2E9m4qThLulfjJYqNSBOwXYFTQehhKvFL1zVwdpAf8JHA67azyrQm?=
- =?us-ascii?Q?RFavBTCxVnnr/rs+weBABksssjBk39O9QImtbZR1ZwtA0urgtTqE9iVlOKEa?=
- =?us-ascii?Q?nc1+qsIjZeNe4NnSXlFgXJ8WZXyMb87VuhYO/R6BwbZi5+91nDvcxeZx7Pf8?=
- =?us-ascii?Q?eSareoFfZ5snvvsmhJlR5RTrnFNmPI+4/iMgpOKAi86ZsKNydBadLrciFRRh?=
- =?us-ascii?Q?hJbLtDJyJWkMWgN0Wm5xJ+Vd68kcyI2t4PdetZrtfX3cDnY39Gie3saLoIFh?=
- =?us-ascii?Q?X8dHTV1+uVWpMIHiWQkYBT0/hzZZ+EThupYOPiQ4o04B2ag0tz8dVomGphAN?=
- =?us-ascii?Q?dF/qgko0U+9JtGm9b7g+cvNTJrQBBAhc9LhnY7Ws42cowCACjLKET513G4aC?=
- =?us-ascii?Q?XHtrAIQIOPYo7kOxCooM+aIHoGmDjg1AiL9SaGEp?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(7416014)(376014)(82310400026)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Nov 2025 19:20:09.1344
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 265e2435-1e4d-4ae7-e2ae-08de1bd72b54
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CY4PEPF0000E9D6.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL1PR12MB5707
+In-Reply-To: <87h5v93bte.fsf@linux.dev>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: E5C66100019
+X-Stat-Signature: oi7w1ij1dac5uxypyckm7o1xqe5ao3oq
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 35762C000B
-X-Stat-Signature: kz8sokmu643hao75ucuj4tpa6595n67s
-X-HE-Tag: 1762284013-403611
-X-HE-Meta: U2FsdGVkX18VrSrKzxduPEOh67IMwa3pfTHjgRmYVNC2ZYY6xpivmX2Lhl2P61GeN7ATF7XLBbLe9ryU5/vz+ePiSiRd2Jj+E3xbkEaxQGLRJ8aEUyyzD8nOJGNtu4F1o9dQCp/81AQ7dzU9bJHDbTBi1x12pkNqKkP5rwu40u62Woy+MGaheNdrziD0oN+K26pFGWSK8LrB63zd9RpBtmmYkolzF6PoOGsJQFdqgtfZJVriZfmuIPs5TZeeawqZd4n1+tQ3L8UfCYQlTE4zB5ppc2+1Wrlq2HRmTnlkkZYJo6RIOGvW4MlFDELtmu+szQoZRp2NDNd+17F0b9hoXNnOBQUEwQbAi1QhW1Vjqf0v0byFkRXmNpGAv8crLaTlhcBqvQQZ5IuZmfl5bwwy+mK0ZgxqrcGG/llSe6RbWxYcGleqqoBD6pGlD4N1aL0SK4Vyf8aHRY0ry8h9usYzek9rjkhzWqsi0sEH+96Tv/bgLz4Sm6UZH7r2/Xy6sdI3Kvxz2WaZS79mKvECsRQKq4VjvhwZ8nLy9d6wAu56pBJykbKgfY5AQVSSIk8BYrdS0XUzNzYq19ZAk0qBiZgURBR1oE+7DXMQnEIANtehS06A3DZqSVp39cTK8OpAJkWzoJXmps8JyS17nvyUGxhhyeyy0TJQFVq0+yI+tgwaQ2aPQY5at/JbAJn0BANA+7PJhInwnXxABAiVXaRvvWDXm3zUNrtgyODbr/sXVxdxs4FYn363laTGVl3Bp+y7J3G+d7uMH+1+dwO4d2Mo8NN8DZ5Zfc8PyTNZYw/w4EoYa+cI7t04qFLsQZIfIudH9uEarxcralo7F8+eetWlbDcOxT5HbMB4XKu7e0aGnjrgThofHPti5IRHpF1kINlsvQEqQtqJV4XNhgDDnPopNq4ppwW+f1GJKbmWz1Rxtb8q6TagGLNap01ooJhI3thcdckobrdorSxXJ6vAD/2HkLD
- B866v92t
- /dgF5THqQ8p7YurvI28EybwunKJsi+DPMyagblooZyhmOlHMRfRHxm8MHRl9G+zCHCZvpqtr3B8xXXNqFssaUk9RrCOVKqi2UuJORsZZCMOmX6BNX/GEtS/x4Vmokoat76JQ++xXoyD7lTMnAaA+gueMHteB6BgTkKB53UZiBdVM37p77uYsj4QpdTeyyBGvJrurfFeaMTssbr/nKzlxs7nNQbAgayIVUYdKblZMgTA9Bq4FpUTrYPuwwkcobaXe4vOCiT0BcA+uk4liWoLYPNPJZBMz6m5uZmyTwA4Pv9vODJ/C4X49lMPPRGrA9h66KzwaQdNUd4Qgn0O1XtXLJ4ntpw1f1pFDa2BvqrbA1bNiePcaSRRg3mtzvyMhQ40dD+vsdZKKTQBrkrdzoXClRop32hqvdWYIc1Arh
+X-HE-Tag: 1762284134-235827
+X-HE-Meta: U2FsdGVkX1/ovhuRAubFHHRjOQ6WzrhTnrHhRxf/q9Mh0EOlK+wuXoMGQOMgXfQu/GCCedcpK4441xRS4hRSM9D0XFwtx1g5SmYvks25ILN0c/IV2DDr/4F/2LcZDqellgpzzWti7RabVzycZkBdXJMipfHDxIloQt8JS8nZwVqzGt5c/gGXKV+eW/ixgJWUQkAZwn1m7AnObOcRlXuBcMMzTma0naenZmLzk4lxWURI4eddjLUEsVLXDp/OfacLYjNTO5l4i3lU7g57EfwzdsUTzMiJAvSy9uu2cBCHXwz3exVPDt2X4x4DP44oMFGeJ8szgVtHdXHDopWfndtMN9P8AYNPOgHL/Pgy61i9aiFeBpTrGVFAKov8hIzlbKZFvzd5z5wMul2m65ef6E8eoh8x0BzHi7+/7M+5vWLj6KBSz3afSVDXupL99n+IwFJR3O8IwSXvIMg5JeKdTDDKlDjzjDEEpqkKBPdC37qRHbOaG+lC2iXWhN+R9VoG/SscDG/YB+uAs80nzZUt8CESK6/h5/LEeoCt9b/R5VvlsPLh45vSsd83iqq8COmfjzZmQHz1MBKyopQghOcG3K9A7NTEO+dZoaj+o32wGfJh3lHksfQRIhEBb7ZNVnLWNrERsEtCNft3k+XzVYCyk4xh8SQ8jGNb+JbipsPZKA9FUbTdyj0TFW8pgLi8dXmtL5LCLh0ZWUI2G0XjZTNqi9K4c83QfpdEklAlrJR/p0u4C1PBNEh51mk905qVpAK7STCco4JW+absgaBxWkKl1SxlOygBFWyjUiRVMPd90W3+TAWX8oyF69ROAGfJnTYW/9OrMbPKGqZzd4boI7Ph66VaRgakIheQRncwjd70EboOIhyZWpi7m1bLLcTMclm7X0Wr8+gTjRdFq+QNYlVpDsGZUZniusnFtcdmLUcHqDW6caCjcU9Io8N7HuDdr3hnKmFAKNf/8HUiJJ2OXwYXibt
+ nYGO8JPy
+ 0DA+L0r7/RuQciOyhYssPF304xeqOtCZQZHNIksZDqT1V54lsJpZSLMBlTTmxXJ156hRhoODSnSl5IzCXIS4g+BKww+B0vfpfYMiD80mG/jNSS5gVmCz7Uu0ho6xeQb7N3gbM7Rj73CrPnzZ/3uyJ3p0JrFYtrMuxhiNBEji7WAdCfw/KABPGKAh+NXcQ6xMgE9iciu44RnUi4xAjKT0LqS0viX5vXTdMjeJeP3uXEyaXjVLJstHPUrETtt0nsZsByRhjZU9PhytEI7umhE7SNkJViXTHWSw2vfC4jp1MaQVREu6mzekuB4uPUrERZdNTKKpcQtG0zM/mj/PnqgQZo94fCN5JXXqN6dH93yoWdtYh9qthYZIAsB3zaJkOCbHxtuda+eWL8283YyEm4hArsIYEqvEQQaIBwif7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,32 +135,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
-> Changelog:
-> v6:
->  * Fixed wrong error check from pcim_p2pdma_init().
->  * Documented pcim_p2pdma_provider() function.
->  * Improved commit messages.
->  * Added VFIO DMA-BUF selftest.
->  * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_dma_buf.
->  * Fixed error unwind when dma_buf_fd() fails.
->  * Document latest changes to p2pmem.
->  * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.
->  * Moved DMA mapping logic to DMA-BUF.
->  * Removed types patch to avoid dependencies between subsystems.
->  * Moved vfio_pci_dma_buf_move() in err_undo block.
->  * Added nvgrace patch.
+On Tue 04-11-25 10:14:05, Roman Gushchin wrote:
+> Michal Hocko <mhocko@suse.com> writes:
+> 
+> > On Mon 03-11-25 17:45:09, Roman Gushchin wrote:
+> >> Michal Hocko <mhocko@suse.com> writes:
+> >> 
+> >> > On Sun 02-11-25 13:36:25, Roman Gushchin wrote:
+> >> >> Michal Hocko <mhocko@suse.com> writes:
+> > [...]
+> >> > No, I do not feel strongly one way or the other but I would like to
+> >> > understand thinking behind that. My slight preference would be to have a
+> >> > single return status that clearly describe the intention. If you want to
+> >> > have more flexible chaining semantic then an enum { IGNORED, HANDLED,
+> >> > PASS_TO_PARENT, ...} would be both more flexible, extensible and easier
+> >> > to understand.
+> >> 
+> >> The thinking is simple:
+> >> 1) Most users will have a single global bpf oom policy, which basically
+> >> replaces the in-kernel oom killer.
+> >> 2) If there are standalone containers, they might want to do the same on
+> >> their level. And the "host" system doesn't directly control it.
+> >> 3) If for some reason the inner oom handler fails to free up some
+> >> memory, there are two potential fallback options: call the in-kernel oom
+> >> killer for that memory cgroup or call an upper level bpf oom killer, if
+> >> there is one.
+> >> 
+> >> I think the latter is more logical and less surprising. Imagine you're
+> >> running multiple containers and some of them implement their own bpf oom
+> >> logic and some don't. Why would we treat them differently if their bpf
+> >> logic fails?
+> >
+> > I think both approaches are valid and it should be the actual handler to
+> > tell what to do next. If the handler would prefer the in-kernel fallback
+> > it should be able to enforce that rather than a potentially unknown bpf
+> > handler up the chain.
+> 
+> The counter-argument is that cgroups are hierarchical and higher level
+> cgroups should be able to enforce the desired behavior for their
+> sub-trees. I'm not sure what's more important here and have to think
+> more about it.
 
-I have verified this v6 using Jason's iommufd dmabuf branch:
-https://github.com/jgunthorpe/linux/commits/iommufd_dmabuf/
+Right and they can enforce that through their limits - hence oom.
 
-by drafting a QEMU patch on top of Shameer's vSMMU v5 series:
-https://github.com/nicolinc/qemu/commits/wip/iommufd_dmabuf/
+> Do you have an example when it might be important for container to not
+> pass to a higher level bpf handler?
 
-with that, I see GPU BAR memory be correctly fetched in the QEMU:
-vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 0", offset: 0x0, size: 0x1000000
-vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 2", offset: 0x0, size: 0x44f00000
-vfio_region_dmabuf Device 0009:01:00.0, region "0009:01:00.0 BAR 4", offset: 0x0, size: 0x17a0000000
+Nothing really specific. I still trying to wrap my head around what
+level of flexibility is necessary here. My initial thoughts would be
+just deal with it in the scope of the bpf handler and fallback to the
+kernel implementation if it cannot deal with the situation. Since you
+brought that up you made me think.
 
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+I know that we do not provide userspace like no-regression policy to BPF
+programs but it would be still good to have a way to add new potential
+fallback policies without breaking existing handlers.
+
+> >> Re a single return value: I can absolutely specify return values as an
+> >> enum, my point is that unlike the kernel code we can't fully trust the
+> >> value returned from a bpf program, this is why the second check is in
+> >> place.
+> >
+> > I do not understand this. Could you elaborate? Why we cannot trust the
+> > return value but we can trust a combination of the return value and a
+> > state stored in a helper structure?
+> 
+> Imagine bpf program which does nothing and simple returns 1. Imagine
+> it's loaded as a system-wide oom handler. This will effectively disable
+> the oom killer and lead to a potential deadlock on memory.
+> But it's a perfectly valid bpf program.
+> This is something I want to avoid (and it's a common practice with other
+> bpf programs).
+> 
+> What I do I also rely on the value of the oom control's field, which is
+> not accessible to the bpf program for write directly, but can be changed
+> by calling certain helper functions, e.g. bpf_oom_kill_process.
+
+OK, now I can see your point. You want to have a line of defense from
+trusted BPF facing interface. This makes sense to me. Maybe it would be
+good to call that out more explicitly. Something like 
+The BPF OOM infrastructure only trusts BPF handlers which are using pre
+selected functions to free up memory e.g. bpf_oom_kill_process. Those
+will set an internal state not available to those handlers directly.
+BPF handler return value is ignored if that state is not set.
+
+I would rather call this differently to freed_memory as the actual
+memory might be freed asynchronously (e.g. oom_reaper) and this is more
+about conformity/trust than actual physical memory being freed. I do not
+care much about naming as long as this is clearly document though.
+Including set of functions that are forming that prescribed API.
+
+[...]
+> > OK. All I am trying to say is that only safe sleepable locks are
+> > trylocks and that should be documented because I do not think it can be
+> > enforced
+> 
+> It can! Not directly, but by controlling which kfuncs/helpers are
+> available to bpf programs.
+
+OK, I see. This is better than relying only on having this documented.
+
+-- 
+Michal Hocko
+SUSE Labs
 
