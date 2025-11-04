@@ -4,87 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 796E0CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 11:09:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40BA9CCFA04
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 11:28:57 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6DFF8E0130; Tue,  4 Nov 2025 06:09:31 -0500 (EST)
+	id 316268E0131; Tue,  4 Nov 2025 06:28:56 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D1EB78E0124; Tue,  4 Nov 2025 06:09:31 -0500 (EST)
+	id 2C7018E0124; Tue,  4 Nov 2025 06:28:56 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5B438E0130; Tue,  4 Nov 2025 06:09:31 -0500 (EST)
+	id 1B58C8E0131; Tue,  4 Nov 2025 06:28:56 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id B1BA78E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 06:09:31 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 609FBC0449
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 11:09:31 +0000 (UTC)
-X-FDA: 84072653742.14.E488AAA
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf23.hostedemail.com (Postfix) with ESMTP id BCBB1140005
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 11:09:28 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hMs8UXnu;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf23.hostedemail.com: domain of BATV+46153b84dec453ec9e5d+8108+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+46153b84dec453ec9e5d+8108+infradead.org+hch@bombadil.srs.infradead.org
+	by kanga.kvack.org (Postfix) with ESMTP id 072A48E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 06:28:56 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9486F1404A1
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 11:28:55 +0000 (UTC)
+X-FDA: 84072702630.30.B77C2D9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf18.hostedemail.com (Postfix) with ESMTP id C14211C0006
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 11:28:53 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762254569;
+	s=arc-20220608; t=1762255734;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=K636kHKOtARt/ZcJFrFL1GtxK5zuMOMIE2/8C0vPMVU=;
-	b=r6MihqVI934fIR7PWEWQGd+x0+dOgq3YmnrucrzILQF04rTr119N1TrQPvWwsOnOPDyWN5
-	SjHtiKMxW5sRXW9O03aaiukUy1XZioP2SMAXswXGVXEzZtpA/MYGXhKLFJdzhtVGScGGCz
-	sLsRpcviZQ8w55H4rQx2/VrBmxOhbGM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762254569; a=rsa-sha256;
-	cv=none;
-	b=XaOUSgeHeDr8cHZqmDZ5/NWJH4qD+bPhS1+y364mims1PlgcbWRFgaKOYu+QFEMgzzCx53
-	76r+aMJoZOCLFTNFZrj/SM0oX/7mCxwkzdBfrgbHWSdpTkvPgnw9baK3XRJhzmcZqMVsyN
-	kn/NuCQX7gBdenqwv9+GNvanKCaiAhk=
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=Q8S8W8Ce89aAd6Lp63iqNC1/ehzjUmA4uJIWdv2wfyI=;
+	b=Ib78qr/SVpDDFsdbJ3b3x54mNpLIOzWByg1rFt5dJL0emq7496UKMEReVbtrQA8tbXIwUQ
+	amYbomv07MVvhpa1a66rpiMbg/lJmeB2amrMiPJWWdgv1ZSTV+7FNsZU4ZbPUori9PNBvE
+	mL3HN90ix4a8HTfOhDU8MgOyX2bSEFI=
 ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=hMs8UXnu;
-	dmarc=pass (policy=none) header.from=infradead.org;
-	spf=none (imf23.hostedemail.com: domain of BATV+46153b84dec453ec9e5d+8108+infradead.org+hch@bombadil.srs.infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=BATV+46153b84dec453ec9e5d+8108+infradead.org+hch@bombadil.srs.infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=K636kHKOtARt/ZcJFrFL1GtxK5zuMOMIE2/8C0vPMVU=; b=hMs8UXnus5ZoQ2JWbzy5WPT/jE
-	dC9J4jgIbzuAwapymMIaYrdKWo/Qfao52h/MNjzrrjg50MD0EocdENbyV3gj8mfMxLeBEwbEfQW1J
-	2+j2od9RN/iAln3j+1/jbVlToitPUwzc1exSjUnJXyl2rYXX+k20Mk/e4Lhpk1xJTTdRSA55Zlq2x
-	xxzqKTgSdkm08soAB9hgDQCWkS6rZctCu09DQYHyluTgVTNyPu0Eo6FZtmICpJwGxWTF5bMg078ko
-	iwnADhIygRztrPaSQ8d9QgeNl/Riia60WxT8+fqfpgIhHOsTF3Vu4uwg9Q/hNZTaKyb3hY+8CzmBT
-	XQc/zZ2g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vGEuk-0000000Bgu6-3a3O;
-	Tue, 04 Nov 2025 11:09:26 +0000
-Date: Tue, 4 Nov 2025 03:09:26 -0800
-From: Christoph Hellwig <hch@infradead.org>
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Hellwig <hch@infradead.org>
-Subject: Re: [RFC PATCH v2 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
-Message-ID: <aQne5je7dTkaf7Lv@infradead.org>
-References: <20251103190429.104747-1-vishal.moola@gmail.com>
- <20251103190429.104747-2-vishal.moola@gmail.com>
+	imf18.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf18.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762255734; a=rsa-sha256;
+	cv=none;
+	b=nc42Xh2owOsmU+QrD8JamUDMQcqEfRteZyVJ0+9bohb0m/lZhej56IjYFQa5P3ZpajfdCP
+	kLkGuS7q1eptqqcgCzdfMYrG6XzesNanCnKXjiENEnR7lmVqdCCPDq/A1IAWvFCeo3IHIy
+	dHE+aU/EWJNy2kCqpQlAoSNdA8zBLlM=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D54651C2B;
+	Tue,  4 Nov 2025 03:28:44 -0800 (PST)
+Received: from [10.1.38.100] (e126510-lin.cambridge.arm.com [10.1.38.100])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 15B213F63F;
+	Tue,  4 Nov 2025 03:28:44 -0800 (PST)
+Message-ID: <216d54f1-334f-4600-9ecb-f7788b1abd7d@arm.com>
+Date: Tue, 4 Nov 2025 11:28:42 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251103190429.104747-2-vishal.moola@gmail.com>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
-X-Stat-Signature: 3xzfwwxsimsnq8m9khyartxojd7oc49b
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 11/12] x86/xen: use lazy_mmu_state when
+ context-switching
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-12-kevin.brodsky@arm.com>
+ <c7c8a233-2103-4b48-b65e-ec81666d20e4@kernel.org>
+ <285faae4-dab6-4819-847a-889bdf87d5d7@arm.com>
+ <a326d1eb-62f1-4add-8dc9-cea7d7e4ed3c@kernel.org>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <a326d1eb-62f1-4add-8dc9-cea7d7e4ed3c@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: C14211C0006
+X-Stat-Signature: mx4ofk7rq43yb9oi6ria4auajztcgp1z
 X-Rspam-User: 
-X-Rspamd-Queue-Id: BCBB1140005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762254568-917621
-X-HE-Meta: U2FsdGVkX18ourXxLSq1PnPoqvfnpqqB4EKr5P3OusaHF0ODww6P+7pV1BT77oKKQdFx5uMil5DaYrT1NrppCSwEJXn8nU1cgvUXhUZZGHhodGui/LLJaOgTDvGFdXuIwN3c/1pgfs7UjrjdifBzYsLUcxyRKFGYpfoWvddYU6YXWEgxmiDoO0e84IWhXAqZY7Nux6ddGFf8d4ZtUNuJKCihwYZpNj+uAgfyfJEj540CpSJ9xhRXP24+2wSEBpyZcfRPrvL5mg5y1/ID1dsNvE8NjBethoFLvL7nVlNgcEll5S/pwQ7AGpE6+VbN3E2a+46N9EfIEtP3STqUU03r5OPKlyrW3oiFMC1kznZFpWth/WfJjAMy5LcQkiCx3yGzptaJXsO0fv/n9kJh0nvJaHxOF8NUm1RiMdnOaejE0+B5xp3ApNiAuhvzKuPb4OfhsKNgc/G6hb9uDexzDuNLfZlD9frVY4R0/DcZAe7vujfH2jT+67aknrIfoKRoU1dHPNVDazbjRhapSm42feoobRSitXtIzeqyTn8CSgDuI7zlIuLqMS3aEVIy2usiRlcxmX2021AMlsTuZSAoM/VSavjy2GRwiowa6OTOoQS7Pwu6u38ICoDPTbub2bSHfsJxZToR39rw2PrLVAwVVgTE9xPvFWhPp8JR0eUqnBZqJTOci+DGeW0rCgzLO9YhkGqZLKTP5e/xBftHxLwAruE+e8mREMg/gzVyT21s9AFK3BY46ZBbLYKyl1KdxG4m6LPx7w0feeDyh2UiFw4TaLRRRX5FzLdyyVGPB4FxI4hxfoHCKg9LpygF0Rgw9SqftBtv+183V/4fXtTKCAqlTuD5jV7BrLYp/ZtIQ2Vi7DXCQBN+PfzPmFZrN3txfT4GAoYwo9kRQLJ64M/oYQTm9NKzvLdXRjXTPRtFHzXuO7p32hdaRUhJOM15IWia0p59JRVTquoGVcqqZOEvKglNg24
- cbqbnscH
- wv2kOYuVhdD7fHs520bqfetweHl6WeED+HvrjTw5TzBLAC70iBIfHlB9HzNycAkEILfYupPOueI6GgzSz9z3Kee81NoZGfts7PQhaEDh9fDYlRuZ83jolsVTqx68WqMKgmXmnGbpbzvHXAOUkB63ReWyhr3I4SHZwV9zlJ/fp7JFBq3SXORjkVFQJnB+1fPMtt2bIgTo/J6dNSh8px+CA6jn0rK+lHnB5dmJcYEHSyvdjqBu2BmmjJS5TxaTIBzFO3ikHynNVYaLTGB5Uv5iJP8uQBIBTgn0yLZbVIBR34bB3Lm8RDiOpUHgsPH7kRx12kzEjm1s0L7Z2pit1hBwFt9PVNIrFkOIAS4L5IRmYJjywNr6/FG6Heqalmwk49oEwY9bFwkhVvh3yDYh2/fB0jt1DiqjqNpeg2VvEmDkKD5l36yFL6XVLNYCTVo/vwn8dNhSArk0ijVLguDSziT351IShUMU75ICuow94yADItK27ha+xLhv0aZPKki9jQ6JnBkQ6ITbvdlXsBfD6ei+p5IA8QYdbvAiGJMRYFDk5I/TrFCYGS/Ab1WI3DeLDbI6W5kMr
+X-HE-Tag: 1762255733-749167
+X-HE-Meta: U2FsdGVkX1+C1Lfg8qTo2OSvl1IG6L3A0OOPdO6dcYUzR8QrBW7lwawvf9LwlJVriTPnAcgXqbsdGR+1t/yaLaxTtDvLlXKQpQzFl1Cb2r8Hw6EYRIDOhG8gh9m2zA66kvJC9aGL0CpkJKiPeQ8jkluASgWuwFBArLv2VISjQo2ReWh75f4NfGg9YBV/XAFGW0iT39YQ8BtOjDBFW1R735GyiEjPFB85HxQnnrCpCNgVohma3kGJgbZZKVm8Vm0EUB0VIMyA+I3ppItXLNKgCNVBdjak30An4Si7Qtc+hY2fscgD14CRCYKXbDWw9Pyr/CVjUSBGKE2/k85oWaavziL03KMcCr89onxZXBy9w6fztnf3+9349xiCzHeLTnFJXuI7T7AjnwwLgAXKQQtjdWwSUwuvYjdofSRrr+Yo7qV+lHPxJggeW4gUZYVhjzH4tfCxJze2B/Xrh8JF9pjfw7VKgt+2rkvV4AWWZps/dZ8wYIipNHbQx9i2xNl68iD0jUg0vBuWGtPbh2fT8Oo55gALf9YK1h8Ph+HJ/QYAnKj+tjxEqhcXmgmpGV1nDFq1hlCYWf43/mCcY6nuO7EpawWh0kAJQ8yfXNinNnUP3Tpsc6j1S/WR7doel3xZ1QxiouBA7ncCUyfGF1DhnHu58YOeEUCurX1eL4URfJkvYK+6VpCXGlJ+0v9l2pNdaSHbYvASVlDUNzxZz1qwIepavRlk2i6fEp9SBCJYw4ObnKup1/Hck/AZfROwsGD/93rjNV0qfgq6AOvYRqipBYJznzIH9BvQ79eAdJfkG0+tB9sTPCX0m7QsqFtx514XVZoojcUK2fHCfC9va2QnedgWO1dm61NFuD95P6yrGIopvRdPJW4bKz95KoPBZMIeX8W2YDnRgnrU41LLhZYcm+w/MUnuNvu3kJjr2bZUuVVfFOuxjb6k4XbI8yCgAbVx9c7e1fxBAerg02Nr+/ZIkta
+ 1V2rfPyj
+ ouOqoS7jm+Film/dpqExMQ5oIFHoWAR/dKDUwJUN6Ubq/pt1SM7A9pP3oJoUsPXRSUCmzdgbpaEXobKa1wFeDRBADk23lPNVXCWT6I28TfFWr0WdNRUoQHH9erVf51givEVE2AzIR3gEY0ZTvhAczcNjq/f+fInpfHeFtxjR6kI0LmWGfkaZ7ciRlWVJEePRfIaEdhahPjNY8PIt44MIKuhChVEkHm8ZMWO9/P2TSwoOrDIrgx7UE5X6laNCEm9weLSQf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,22 +110,75 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 11:04:26AM -0800, Vishal Moola (Oracle) wrote:
-> Vmalloc explicitly supports a list of flags, but we never enforce them.
-> vmalloc has been trying to handle unsupported flags by clearing and
-> setting flags wherever necessary. This is messy and makes the code
-> harder to understand, when we could simply check for a supported input
-> immediately instead.
-> 
-> Define a helper mask and function telling callers they have passed in
-> invalid flags, and clear those unsupported vmalloc flags.
+On 03/11/2025 19:23, David Hildenbrand (Red Hat) wrote:
+> On 03.11.25 19:29, Kevin Brodsky wrote:
+>> On 03/11/2025 16:15, David Hildenbrand (Red Hat) wrote:
+>>> On 29.10.25 11:09, Kevin Brodsky wrote:
+>>>> [...]
+>>>>
+>>>> @@ -437,7 +436,7 @@ static void xen_end_context_switch(struct
+>>>> task_struct *next)
+>>>>          xen_mc_flush();
+>>>>        leave_lazy(XEN_LAZY_CPU);
+>>>> -    if (test_and_clear_ti_thread_flag(task_thread_info(next),
+>>>> TIF_LAZY_MMU_UPDATES))
+>>>> +    if (next->lazy_mmu_state.active)
+>>>
+>>> This is nasty. If in_lazy_mmu_mode() is not sufficient, we will want
+>>> to have a separate helper that makes it clear what the difference
+>>> between both variants is.
+>>
+>> in_lazy_mmu_mode() operates on current, but here we're operating on a
+>> different task. The difference is more fundamental than just passing a
+>> task_struct * or not: in_lazy_mmu_mode() is about whether we're
+>> currently in lazy MMU mode, i.e. not paused and not in interrupt
+>> context. A task that isn't scheduled is never in lazy MMU mode -
+>> lazy_mmu_state.active is just the saved state to be restored when
+>> scheduled again.
+>>
+>> My point here is that we could have a helper for this use-case, but it
+>> should not be used in other situations (at least not on current). Maybe
+>> __task_lazy_mmu_active(task)? I do wonder if accessing lazy_mmu_state
+>> directly isn't expressing the intention well enough though (checking the
+>> saved state).
+>
+>
+> Likely there should be a
+>
+> /**
+>  * task_lazy_mmu_active - test whether the lazy-mmu mode is active for a
+>  *              task
+>  * @task: ...
+>  *
+>  * The lazy-mmu mode is active if a task has lazy-mmu mode enabled and
+>  * currently not paused.
+>  */
+> static inline bool task_lazy_mmu_active(struct task_struct *task)
+> {
+>     return task->lazy_mmu_state.active;
+> }
+>
+> /**
+>  * in_lazy_mmu_mode() - test whether current is in lazy-mmu mode
+>  *
+>  * Test whether the current task is in lazy-mmu mode: whether the
+>  * interrupts are enabled and the lazy-mmu mode is active for the
+>  * current task.
+>  */
+>  static inline bool in_lazy_mmu_mode(void)
+>  {
+> +    if (in_interrupt())
+> +        return false;
+> +
+>      return task_lazy_mmu_active(current);
+>  }
+>
+>
+> Something like that. Maybe we can find better terminology.
 
-Looks good:
+That's probably the clearest yes, will make the change. I can't think of
+more self-documenting names, spelling out the difference in the comments
+is likely the best we can do.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-
-And just for the record:  I very much suspect we'll find someone
-passing unsuported flags soon with this hidden somewhere that will
-need fixing or at least temporarily extending the mask.
-
+- Kevin
 
