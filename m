@@ -4,100 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0481CCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 09:51:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B936CCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 09:56:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D13958E0123; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
+	id A12A08E0126; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CEBDD8E0118; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
+	id 9C26A8E0124; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C28E68E0123; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
+	id 5CB138E0126; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B238F8E0118
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C022B94FC
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:51:00 +0000 (UTC)
-X-FDA: 84072455880.05.BBDE0BE
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
-	by imf19.hostedemail.com (Postfix) with ESMTP id B4FFA1A000E
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:50:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="w/wF74mo";
-	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 47A6D8E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id D780A1A0452
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:55:58 +0000 (UTC)
+X-FDA: 84072468396.23.418EED8
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 50A1FA0003
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:55:55 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QCtzdVGV;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762249858;
+	s=arc-20220608; t=1762250157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t8ryYqzNzuomFM1qI/F9XXL0yM4A3U1rNvzkeTZ8nMY=;
-	b=tlL+yn/HHqm2xs+El+dKMIzIfBltZuVSmjzYBrsG3N/emGPMMK7MZwROroM7FtzbIUuahF
-	GCYE3QytXdAAix2Mh8HOtX2x/EvQ6sMSpQjUFVYRKPcd47rA9OSzXCHwLXSefEjW8gCVOj
-	qqR5YmzeXKfDz+VbsIJKyyCziYFJ7Lc=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b="w/wF74mo";
-	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762249858; a=rsa-sha256;
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=SSHTx/aJBXe4tPj8g9UK0qKsO7sI9oG/c72UXbykh98=;
+	b=7W9VLTqfCZ4LTnQRlc3pUuubl2DCsholUmm1HD5qNsG3cMyTtGN44w+eFwJIFl2fBUMEzq
+	mzvebLyKF0VvwP9tnp2l5YPo5u46QUNFh9KWg7vjSQWe5t+GT2hGZ4AlDZLpvCkVG2DUJ5
+	u01L81TBaKcrtcLdJzVlt5MIJe+mvsc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762250157; a=rsa-sha256;
 	cv=none;
-	b=KmkqGUdAfOaUqOt0YPIY91DliLDIS50s25D5YvkKoDz+gFg+EjFsclNKhR7vnU1MdkUuen
-	GfVeJS+yFOOoJ4yieM+YKb8kk/8WP70HnhFsX8x2+PXH5Qn0k+L7vnujhFxPIZxohqCasj
-	DhZIDSR4LjuokmSVept47XG4abn9Hlo=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=t8ryYqzNzuomFM1qI/F9XXL0yM4A3U1rNvzkeTZ8nMY=;
-	b=w/wF74mo1/KwoyB4tDKQy8+xB8kViYjE1uL7ZkflzS+/rP/iIWNQoEXBIzZjAZ3+X8X8iOLE9
-	WnXgY/JOX/VGQ7dBqCOVHVi2P5xnsvukEBmMytUG9LEDroc5xVe3QENpNXf1HWq8jp+kA7FHJ3m
-	DaRzAsYEEupFXMccVPL+ZcA=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4d13ZS5RNGz1K96k;
-	Tue,  4 Nov 2025 17:49:20 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id B6A6C140155;
-	Tue,  4 Nov 2025 17:50:53 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 17:50:52 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <david@kernel.org>
-CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>, <bp@alien8.de>,
-	<dave.hansen@intel.com>, <dave.hansen@linux.intel.com>, <david@redhat.com>,
-	<hpa@zytor.com>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
-	<linmiaohe@huawei.com>, <linux-edac@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<lorenzo.stoakes@oracle.com>, <luto@kernel.org>, <mhocko@suse.com>,
-	<mingo@redhat.com>, <nao.horiguchi@gmail.com>, <peterz@infradead.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <tglx@linutronix.de>,
-	<tony.luck@intel.com>, <vbabka@suse.cz>, <will@kernel.org>, <x86@kernel.org>,
-	<xieyuanbin1@huawei.com>
-Subject: Re: [PATCH v2 2/2] mm/memory-failure: remove the selection of RAS
-Date: Tue, 4 Nov 2025 17:50:48 +0800
-Message-ID: <20251104095048.119012-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <01b44e0f-ea2e-406f-9f65-b698b5504f42@kernel.org>
-References: <01b44e0f-ea2e-406f-9f65-b698b5504f42@kernel.org>
+	b=Mu3SBj0apsXqISXoVyJM43eaipgYPxEC2S/pNTbyKu3ArO/eG3SZjQ7vv0Pc0riavSUVSz
+	CXOWuTtIsLc2tpXDcvXCrryTwANC+ABOpgNY/EeA89AFKqjSMCXdIhyuAuBkrtME6AksN/
+	Qr+P1wUXZVWdrWucHw+7ryYQHSypcsk=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=linux.alibaba.com header.s=default header.b=QCtzdVGV;
+	dmarc=pass (policy=none) header.from=linux.alibaba.com;
+	spf=pass (imf25.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.112 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1762250153; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=SSHTx/aJBXe4tPj8g9UK0qKsO7sI9oG/c72UXbykh98=;
+	b=QCtzdVGVtJtImm5fGdT/X/tDXnr2tI9KA4sUh8y+wrL1spzZLoULsr+EgYa+lGAhygQiIJ2DVDnFUYWprwfX4nmX5roC9r4V50BkLV34t5AEh2UBqTppJAVorjSVrBp9Wm4RBT6Rduc1gbYnAd5PLzUnVQvjDB3YUtTvcNRxjno=
+Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WrgsU.O_1762250129 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 04 Nov 2025 17:55:50 +0800
+From: Huang Ying <ying.huang@linux.alibaba.com>
+To: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	David Hildenbrand <david@redhat.com>
+Cc: Huang Ying <ying.huang@linux.alibaba.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: [PATCH -v4 0/2] arm, tlbflush: avoid TLBI broadcast if page reused in write fault
+Date: Tue,  4 Nov 2025 17:55:14 +0800
+Message-Id: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.5
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: B4FFA1A000E
-X-Stat-Signature: gp84p6w5xxrbt33c1tdpdwpeppkxrkyg
+X-Stat-Signature: 6fqu1petbjw5e1mnhptohoy6u646rdb8
 X-Rspam-User: 
-X-HE-Tag: 1762249857-594391
-X-HE-Meta: U2FsdGVkX1+THUtAtTDB5RAhhY2S4WkgPvaV2NnMnx8q+SQsypJnS8nerXdo/mVxd9/m+Lshkx5Bvf+dR2L0Y1S5cCM2GVplXLu3rS2sLUGGffw8nQnxo1GhzyWA4iGWRLF4tzi4pBeV8EHFtYitbYRLMq7i3rGy870TKtyzL3d8hOrFEoMVJ6aH0ICG/fR7MgGApeKtH7CWEfi28IF4tNThVBPCBCWkD9FaO4a7TX7Tqs0UQt3SXqs1uqEhR1BkdZnQHAViMFsCnZJb//o20aVKuuBcIdeqbNMs7LHAVF3Ctv89UhcBcOO5tr3oACdbmJyc4A6IO2w6uMwUlhY1WZQPellM+Z1u3fe+ccw6fOZ0nYxMUM6v8mWSQBOdudd8sWeOFuGGV8Uwsdz07r6y8KxUxwsHSE9bd7AgtZolXAMbw6uY2mv0J417ml+QVZQD+q81WjMel3qUuyzRbMSpCA/mcjntlBCT1XaIcYDeOMW23Coe55SaMo7v0/tCl3+wpGOeJ9o/WOXFViATwBVTmZVefmChOyGeJcUsQ8K8s8Jz+wHvZ0e40RVpdfzbk9uF+nrYHpR7dRr+NLKaR3gx+/b514jS/ChF9QO+f7Vsq/pSh48kbjEirqs1FgDCPfJYrmuL7bIaMJXkUYwNicTuHtv/xK0Ynj+DemXNq5qv3pZP1XMKc04o+39pFNrq45Wsz7yxo31wizdkjmZYdkEimqH6PujV+g0VuydK9dxtgmwXO4S9e0n2yN7uAkMkQBlCPDiRpsElMj2NKqmI9hsUSDFCRWO7q2021D3qLt5dTv37P7MbZB9ELgq2Dm+ghNBouNpxUD50Xxwoyc3Tw65cdyiyEyktFAifmLfZIEJ3reLKWF/oEdOoTBChk37dm0eWKZoHSX0NUK7esGXUl5PGnaFIlMv4kzhA8RsKsgtbqq8/FC+/jS6FvBb7KIe/x/PlVfcoc7udqU+xzXPdVuq
- cyRB1yU/
- Wu6kh72ZfCsiX9dDTpxK1Y1DAVssPoBOd7K/EyN6PgHsCB33Zx5+oHec5gGlViXzAIQs3wjxY2sCwUzgkgmFo+RUb2guS+ZKBsB9syGAph8DpVRKCP/iUwf67iegQyiQarA8AS1io7/R/vWKrXrTZE+u/8Xa0Y1rorPG+rRvviIrCkSOjxAY+tHcQ+suLxaQJlkW9TnDtxA8MAgnpTbpQi1p5XTQYa3Ai87xVCpONqbRzjQ2c+XNkS577Mn4EPqSswNltSzhbkw0WgDC0uBQuzwqdaLD67usUqMU42IMGZJVklSW/y7mAeGY7ZbYTtWorGVzRR+gzfAmfwQJbmtLXSmLs7Q==
+X-Rspamd-Queue-Id: 50A1FA0003
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762250155-22100
+X-HE-Meta: U2FsdGVkX1/n2/ADYC1OS794wXOS8IApdBtabuT9jx8n3WsQlquL1yLo6a5rHyrdgA0FTILs4HxViUD83pBLYaEIszvf272N6lgVO6w7HPFcJ0Eq71MXgQyl9ZGMhkkxtT5CreKqopB8fcEHhvZ3MlvN/kzUISvzS+p9qdB+ueXc9A8YWNImh5OTbm+aHU+V71YtZcml0Ffp08tJYbn5L5czqvH3bt0y35vIvaDq+Z8siOlb9gPU/ac+i+hvrunbwpGDDCcmVEDbWYgF3MxNYXz+hVZ5zB+FKBi5oDiJbLF5yCTSfLuZupCFyC9Ci0q+qgYECEsyLYpPpbRgG7MTVqtycQIq1M+dcwtIDrLSBexePIs5T+XXLpiTcwK1etwZxWuI9IWEakHtq77+U/xQ4ah//N9EuJhV4rFMkpJQeZi8rGcir1zaXw8QAKv62we96hxIPStaRvJTBRy2SppBYAZUYp4NPRaqfZtbksw0T/eYdRV7aZXJRJBpzJuAoLvrsiLJN2AlMKMMiLpDL8YVcIR3AbMSWQ/rCngO+fxcyt4TS8crSjIwjt+HJL+CNy/RcBIhngmLLIp3adH0LvA+dFAzohjgk782L89K/x3126Dm4FDERDaNJnbQjlyEzkPSvOp/f944ghdrjj0T+ZJWDoh8xx7CKhHCgep4qxklOpJVxUlNieSsy4QWZMdTAkvanYMR6wuuHgb8t44bd3Y22aFoPBi/6W6e1bB5i6Rii7/xLhUm3p203pH0bzYLjPukGPTRbOYdD3U0HYsDhOxrUTrO+3qZ/I42wEeHZIOhWm43SFurGKAoQ5CeP0Uq1A9DkF7QVnZckP+eJ4XqTYNHDXANgU40JnpUmxoGBBj55LrJrCcda9tTa+YjvMzumDwb0FoFfizfsyyvk87A5vzzvYmkhGsZDYoym4PwB13N6MYOAjVytDIVZvREykiVbRLj4zz55FMmZTlIdYjUv64
+ /UECZsSD
+ 1cR7QVH/PpJUbf+dFjtBOIJ3PWMfFMn2pMmGGOTd0hgT0zVD0nXV/aYuTGKpbxxs2LBRDiy7iY4717T+DLzjelLBCZZ9SGZGT9BFKhrNBSI3/yp/ZwcjzQngbBkYIqkQ880oQLxbtYp4DdAyTUQWIPRXWfw//0DctIwNHRrBVROet9sSRIxO7X2saeIwdzmhbNTqsa1ipCcuHqS9LrxQ2cchjIxpfj5UGAizBdst1MZxYuxRKEBZ2stKzO12CrzKTGuLzajATJhOU78Q=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,21 +100,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> This trace system should not be called "ras". All RAS terminology should 
-> be removed here.
->
-> #define TRACE_SYSTEM memory_failure
->
-> We want to add that new file to the "HWPOISON MEMORY FAILURE HANDLING" 
-> section in MAINTAINERS.
->
-> Nothing else jumped at me.
+This series is to optimize the system performance via avoiding TLBI
+broadcast if page is reused in the write protect fault handler.  More
+details of the background and the test results can be found in [2/2].
 
-Thanks, I will modify it in the v3 patches.
+Changelog:
 
-> Cheers
->
-> David
+v4:
 
-Xie Yuanbin
+- Collected Reviewed-by and Acked-by, Thanks Lorenzo, David, Ryan, and
+  Barry.
+
+v3:
+
+- Various code cleanup and improved design and document in [1/2],
+  Thanks Lorenzo and David's comments!
+- Fixed a typo and improved function interface in [2/2], Thanks Ryan's
+  comments!
+
+v2:
+
+- Various code cleanup in [1/2], Thanks David's comments!
+- Remove unnecessary __local_flush_tlb_page_nosync() in [2/2], Thanks Ryan's comments!
+- Add missing contpte processing, Thanks Rayn and Catalin's comments!
+
+Huang Ying (2):
+  mm: add spurious fault fixing support for huge pmd
+  arm64, tlbflush: don't TLBI broadcast if page reused in write fault
+
+ arch/arm64/include/asm/pgtable.h  | 14 ++++---
+ arch/arm64/include/asm/tlbflush.h | 56 ++++++++++++++++++++++++++++
+ arch/arm64/mm/contpte.c           |  3 +-
+ arch/arm64/mm/fault.c             |  2 +-
+ include/linux/huge_mm.h           |  2 +-
+ include/linux/pgtable.h           |  4 ++
+ mm/huge_memory.c                  | 33 ++++++++++------
+ mm/internal.h                     |  2 +-
+ mm/memory.c                       | 62 +++++++++++++++++++++++--------
+ 9 files changed, 140 insertions(+), 38 deletions(-)
+
+Best Regards,
+Huang, Ying
 
