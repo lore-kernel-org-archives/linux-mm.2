@@ -4,99 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87783CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:29:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 763A9CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:30:31 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D2AA48E013D; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
+	id D2CA28E013E; Tue,  4 Nov 2025 08:30:30 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D02838E0124; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
+	id D04D08E0124; Tue,  4 Nov 2025 08:30:30 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C3F1B8E013D; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
+	id C41DD8E013E; Tue,  4 Nov 2025 08:30:30 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id B4C558E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E57B58EFB
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:29:37 +0000 (UTC)
-X-FDA: 84073006794.11.3CFAE44
-Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 67468140002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:29:34 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vAARjTmh;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id B67908E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:30:30 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 752CB12BF52
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:30:30 +0000 (UTC)
+X-FDA: 84073009020.16.E4C2DB4
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 6655B14000B
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:30:28 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZJvidd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762262975;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762263028;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UDPk3iLG0eDrVTCl9rDky3CFQfLdclSTPbN3316Yf1M=;
-	b=iSUGxOp6X7Me4/M+Ms5D6GFwGYp21ZbY3c0GiwUaY4eoedmWB8Rfz76CbRBeQECEC1wRW8
-	slWMMq3hABqeOpuTzjwkJKyB8lANhMHK2uOq0kRpJxtu3Flc2QLIFDF7y6gzDVwnLxgUGc
-	5pRo2JPb349k3e1MnZxfHCMSPug1EsI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762262975; a=rsa-sha256;
+	bh=ehk1W8qCU8NEtx0V4guaC2b2vH/ys/H+vyYGxeFZ0m0=;
+	b=HLeUztgnooPRokidh0O1ASfHX2cpgawexqIEPtUlz4dmklwqZWd9XhCx2+z1uq6wwv9JST
+	tTXJSx6XzzROClV9vNkL7VX1RlXG0q/WuHBzQ9fzbMWAOEk3tZ8Dpc1WSJfzAgKJYvc+3O
+	qxB/NpCJcwvwLoStUsCh2ni/ll03Goc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762263028; a=rsa-sha256;
 	cv=none;
-	b=77s30FmlLHU6n9wnAInfRD8+oK2y2hFIszYkPZQF8cdUxlp5vEKol++1DijxZ3IQV5yLEk
-	LGoft5fRARPhyVUIRXpOgJnrioUWUTECVgrXiZi31wcEGnXpRnRwuJb0vNqH6omaZoIQ4a
-	dg8aReO/v5K9IjexQI78WAubzHbONRo=
+	b=DxUayN/6qmKOZKxP0IHdSuOyZ51p+1w1K8hbc8Y2HyKN3YRYqew3x3IB+UPHq+QE6k3w/7
+	XROjOn8zXB/QDv3R4eukWmn/1i8OG4jih1Y0aeMlYAGVEexxlihFkq5P8ENYNwovcq0mrR
+	/xXta2eGe6TwrHEaONoODhxwa99+v8Q=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=vAARjTmh;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=UDPk3iLG0eDrVTCl9rDky3CFQfLdclSTPbN3316Yf1M=;
-	b=vAARjTmhfdkMTg6kz24QdHijPIzqbQ709o2YuMI1IBCJCeK2ZHFk/2liIjNFLYAXJVkkEAx0Y
-	xTrC+GpliI935FQmjp15aAkcUUwmlqDSM0id/87/I2Cq5JBapzunB2Ej1GR/LrgArjfBi2ZPLc+
-	BPD9TGkcpKcpR4aKMQFU0Ig=
-Received: from mail.maildlp.com (unknown [172.19.163.48])
-	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4d18R40VY6z1T4G2;
-	Tue,  4 Nov 2025 21:28:16 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 754D11800B4;
-	Tue,  4 Nov 2025 21:29:28 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 21:29:27 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <david@redhat.com>, <dave.hansen@intel.com>, <bp@alien8.de>,
-	<tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
-	<hpa@zytor.com>, <akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
-	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
-	<surenb@google.com>, <mhocko@suse.com>, <linmiaohe@huawei.com>,
-	<nao.horiguchi@gmail.com>, <luto@kernel.org>, <peterz@infradead.org>,
-	<tony.luck@intel.com>
-CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<linux-edac@vger.kernel.org>, <will@kernel.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
-Subject: Re: [PATCH v2 0/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
-Date: Tue, 4 Nov 2025 21:29:23 +0800
-Message-ID: <20251104132923.145332-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <1b316667-470b-4e1a-9c18-e42571e4769c@kernel.org>
-References: <1b316667-470b-4e1a-9c18-e42571e4769c@kernel.org>
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=AgZJvidd;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.48 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso9933461a12.1
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 05:30:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762263027; x=1762867827; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ehk1W8qCU8NEtx0V4guaC2b2vH/ys/H+vyYGxeFZ0m0=;
+        b=AgZJvidd2zh8IhrZAk1vmAMPcL41Tk1gBwy1ov+tuUL2Y/IRlfFFadn0aUBnOocXdl
+         KhSW4Bw3HApoPc0WTwstCbMD1ICoS5cFDBult0/z/uwrS0JVt5Wa/X5uz9CY4aqEDzoF
+         y3emxwPlR3HJDlTr8KYNvCsx+8iAtEqdPZGCe16kEJLGAMnSQcAwFxQjsCPFvOwG/NGi
+         w13b2Us/Vv78PtixMmSGEC0zZe+7TfN4QSuv5dC01L8jGlFdt6i9auCFMauNNgro/C7w
+         3oA5FM1P3dywzDZ7SDCyR+jeHCB51QDLHseA/KQUMnARd6FdUwlFPJ1RiX6CmTaYEUvv
+         hv/A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762263027; x=1762867827;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ehk1W8qCU8NEtx0V4guaC2b2vH/ys/H+vyYGxeFZ0m0=;
+        b=DUlx6DuxUZ/NOoVKvwCMT3ZevnyF5ei+p3UmjdxT0LJGtGrYjmGPaFA5ILCBdAaG8q
+         dXwVl/un4dj3fymHI+7HhweKhW+NDsB74alnL2YSh7taxTqSH062IICYXd3eV5CWnL+7
+         KEn0ILTFHxOKuhS9yPfGYR94AWXhc50KHRFpq8uD6BDVIroEQtGGkRDk36eQC7yhg4Zb
+         lZIRDUxIv3lj2eYFof+uGCJErTn8Tc2kPlB7pRD8+6ylhUyAVuCHas1c/RgF+pbAj54K
+         t9bZDEf9C40TqbgssooQqp9Bjn71E6nUw977i6B3C0Ncv18ov/FxZFwyx/haGpsWQg5i
+         9Fbw==
+X-Forwarded-Encrypted: i=1; AJvYcCUek4wSFhdByHDov76YiEyh7k/u20eX/pJJxWkSweoVMBMZtg74ARorpOOhci8Z6alPmJm6Azbj5w==@kvack.org
+X-Gm-Message-State: AOJu0Yyo4k+Tmr9pJe95BJ2jTnN20fAfd5xwXg56aIgea2NVwlNVqgSV
+	wkYkWFX6aIlbWSHbX4tBcKrdaz4SasAyt6uKN5M2R9vxnC6bkLZTWpvT
+X-Gm-Gg: ASbGncux94R1Q48KR6U5AnEYVISUYgY5RfIkPInlLMS/aiLyc4KkJj/frxwRSY7II3s
+	mylEti/JDQ0v1+LkVSruE4GnIyXWaIqxv/x9phQbwo5roN+4NA4MXh/IEaTsIcC6f/8gwQQzT1r
+	u5AfAa7J7Ym0dtOhryA/Yi8WkYoMqlUyuL62OzSPi7RpZrNWNBSSDuIYKyEy3LPnmn3xvuGP2fS
+	YgiwjYvXNM3YW23+jjp308HliHKegttgN7quIEZJt51CNYRLAp/M/2VytP2CtQZQ5u0fEsuYbYm
+	Nj+vwf6pqRlf6qgZojAEK2tQv9BDAIOSUOg8IBH4qIAIAZ3BTAiQAsGbiQoaPM26ReIJ2Wc2iS1
+	xtN721erktXJOM3sDbyKtsGi2V0ubnbMEzTRSUea7GIkWDPUGvgcUC6eqoDT5NdspZKQWx+y9nB
+	M=
+X-Google-Smtp-Source: AGHT+IGgxpgN6rQpqHAcGEquLC/J+Uuvzir3h+PkU5xXIMsg5qUjBAX7sM9t3TY8P84VQfm+UUoPHA==
+X-Received: by 2002:a05:6402:22d7:b0:640:94c3:60fc with SMTP id 4fb4d7f45d1cf-640e59e5275mr2011084a12.14.1762263026506;
+        Tue, 04 Nov 2025 05:30:26 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640e6a7f1besm2103532a12.33.2025.11.04.05.30.25
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Tue, 04 Nov 2025 05:30:26 -0800 (PST)
+Date: Tue, 4 Nov 2025 13:30:25 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/huge_memory: introduce
+ __split_folio_and_update_stats() to consolidate split task
+Message-ID: <20251104133025.arl56nr6f5hmzhtc@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251101002927.2610-1-richard.weiyang@gmail.com>
+ <20251101002927.2610-2-richard.weiyang@gmail.com>
+ <b2a1ef9a-9822-49c8-85e6-43b19bc8bdd7@kernel.org>
+ <20251103233728.b5kmsit3vcqpmr6w@master>
+ <de9943ab-1fd1-4a1e-940a-a3ea86f544db@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Stat-Signature: zfzbfiqrmraei6axo7sh41euw5ngozdp
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <de9943ab-1fd1-4a1e-940a-a3ea86f544db@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Stat-Signature: xbbau9ytufjfsyjb4rkhjcpf17bkh1dx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 67468140002
+X-Rspamd-Queue-Id: 6655B14000B
 X-Rspamd-Server: rspam10
-X-HE-Tag: 1762262974-36351
-X-HE-Meta: U2FsdGVkX18QX84kohQCiiI0Myi6bRAtx4Sq8dtCM8GKYQiq8wEJvefF5RMSisa1t6Bv3CIJ/CtJC+EPclDezkmydOjDG9focaaVLCVcouTeAe9X4aAGj5TpuImVIt2vAsKxTSoSP0afj9DKJhyJ8XhVYtYOINb1GVbXIGXZ2wbusn6rjM8EWE9v8wB1QboNRCTIe6XjMKCr7orEEWbE7YxvdgwdiQbfK13oesftboCOMzqIgXRnxcaNPutRhszNqVf3LnDMYYjbGTF+XS4X8fLc2hJrpSGvDsp5tlD8sBea0Yf30uFacH239ZavHshXzo69ZIFsx2cjhDSXBX78ryzNI70PvdD4GpUbwZyJKVNHPe9+IzMYytQuInucUtDVTeNc1p8acTD2HfYXQzBPeQyDoT1oxIwo7E4u97QmEKovua4VlXiqzUyvAkOreoynf4Zap1YLrk/1AeDTBWUhttHX2wL2W0P2Uf9O/a4am1/RtCjCZsr6+P50wfag4ndpDHi/2nIH/khEW32SYDnUz6n2xdkoC+4ak4AykmUv5GDrpxWLuM1vzGvkmU33+Ka3lz/Jet705K4LBYn38xH6G3ZsFpqt/rVBUS8Tmb9k8KLKa3zPSu3wwco+wJ43qHel/HoERPgimzl3P+4J3seC/DnP5Fx5wotjh2g8P3hbT/iG612OPKG7I5qF+LLSCvI8D0HtNRxurm4OAdfpuLOAWfV+w9WA1Ac4qtW0qeowa6h2JY8DSdrD0BRLoEwFiaFAFlQEkMGVKFUXvbysMciz+sWYupQcz9BUvdxbS3bf5zJ6ZNxlt3Ej8qA7fPdt9r65ngz9mxzKLbHbX1PHFqwoWa06hc1PxKdkpnDb+521askgekW+n49InNFwAcBb2eEUgx+8ia5BbLidF1zgwTuleIBVewvU69ykizrXjTyI46qJ1F6kiteapfEj79zmeYaqp7cOj2XPXK4f6OQa5vF
- /Nltc1fI
- lz/4wKAexH8HOEUhKQtmCLaIFyp+KJepuvuIMo+j/bt592Fywh5xtxA5pqNtRq89IoYQIAnzN13wnNZZiSWnMnJYMkoDyaACGbCnHB8SimZCzAR6hEueKMFvAHgHoglv5YTP9PQsIrjKoKZ5oHnf7sx1l3pjG+QMUpSUbEoc0vots+qHS2VhpmNrtp+qyyDfJypud1M8/SjSqiTg5NSYla7SFmGFZgXXxnXTwsF5XG7EaBsQF7MJY57uOhj3ZexrIuqrQhw7wZ+f1asceZpDXyxzaG1b5uhgsKXmkxirV1jvCZu3UFxi6FdJs3k/7wxyKsQsnfdElA5hCe2zz+ytthQKKng==
+X-HE-Tag: 1762263028-303622
+X-HE-Meta: U2FsdGVkX1+ZbU/4NEpt3B+XWzetx3C4LE7BpeeL97vULTVqpHRgxsNpkxX9f/L25kZLHDFfZOM24Rir3DyacvIt7HB5u9Ccp45jn+2AWRN9cjsFCHFskC+ftArEHJ0shJsPAD/zysgGYCXPL3w9ohRUxKXRWsyeCUBrPrzINptEtG5A9KoDkOm/NjtL7SA0RWcRKDHsnNUuCkTvzRo8pAD+KfQGYjmXwFA3bFaCNtHTToDsJI/d1b/jU76EKBEe2TSnZzMOt36f2ljlJVw1Xf/zoMWa5jPku1tlrAKMq1cHnrHe516aTyGGrYtiLOvnJXrfWd/otmMvSRaizZhNd7dwmju4Zx1S2QeIPB0gmmY14/imJLEJJryebO2gJ3YErFzkpWi95gMb1U+os+784QXg3ZNUJWuqr2RwA6v6Ok28LBFxvAkkzW9YPVP8S+6NMba6htJgvVDqdrhrXqqbBHPr32iOFQ2kdB4YrGVsSJp88jmBm/9NQ/VlqN0HQu6xm/G5CQyGz4fNNXWvtWmvqmr+OTFVfAhhsQINs0V6hdZ0YrMutGdpiwoYKLC5pi1y5ymSKK7lYCh4UcdPlhpYv1DLnNFbI3F1HWP9VB5ZCpVB4AycDdZFxue2eqyXVnboGABXroU22n+xYAw0wxIftLWPFbke6maHwxvWnu4/GfA54zMpfslpV6Btcek1ZKqYRbMG3Tbx00PoKscpWG2bpFYcuAezn50c53CRSValBIcT6FsO8olWwR9Zxn3KO1xUIzNndn+4N5RvmgfbFXHlqZsmVNxaljxj5BgfOc4g0JSwKQOoN1Z9p1kl3NylQDqZxikjJNwrRhljAveJK/xe1ZSRgb0SR7wquoS6clXpeCGNkmgQcNp93uLrzdSL3S7H9stjHbX92ti/FVBoRU4H2/XalHdJh9Wm79se0Ig7g//SGZG9hv+AEW66HS4vXuaeJaPJidCdENjxo5BBLle
+ 2js661XX
+ LM2frBVPQD7XOFiy2D94oLqJtvrfJWNVVrF0d45nGpB8seHcqvPmUlOjeG5XBG05o9/IE3qiTyJZ+KKrBs3cmW5gg+UnACD3b3OtEVpaNlK5ia29sFf+BbfMY4wH87ZgPyxlnPlvKsRMfwdymhpZmxabf1Nfj54N/Wubv/k2Ik4C1ZAZ8RpX7uE50LE/ij9OMy1r//3Au8hOpDefWMTPRnD8iM+OYWBUmqy7k3YLtF/q4DMeO4kikzrKJiLbQVN/LkInaTDo7HrabpdwZV35X5muixuxiYEihRM6k+eTBABDroYhQUwL1pZ+ad57iAVBOh7e4oyHtjwHJ4QruHPmJ695cMh2kM/bBYR1gVtZkZ3vv4qB4V4qvQ10Db63O+H7nSul+xVAORFVv1a75CoUgAFMPNWsGPWnNePs1czRWNyZwM8y//Ky5gNCDKgDlKtONlNd4yJKl8DzpLNxwwqRnfsR8o4tov8s7hkJqh7gFSmsqz04zF52eAAv6DQuT5EkrF3B/JdH5MfWqa4njlF0EyhivrRq/DFHHjgHmbQrf4SJzPOcKeMgHGquXswWnNfIH01oEEFNvCQv3Zv54dwfYVVYja+qYiUhAd1p36iBUO5JMKkrPeOkXEzKmmZyaJW9TaeRya6ySGjGIeMspV0oS/LlgdjZgWbYVES0mMTHvTuutAGOrVpmbLzO13EBlPreFZHzr0ufrWYyyyk5qrm0yDgEwRaMpezu4SvT/UUZVOV7QTM1dUDOs3/HtvqOpuf8evwljYlYJeVDaPe2TdpWFOLeywMZvCYI2hY0x3weK4ZRGCrzkmJH8ArXD9S4AEYu8LzI1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,31 +129,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> This is a pretty generic description of MCEs.
+On Tue, Nov 04, 2025 at 11:33:43AM +0100, David Hildenbrand (Red Hat) wrote:
+>On 04.11.25 00:37, Wei Yang wrote:
+>> On Mon, Nov 03, 2025 at 05:20:02PM +0100, David Hildenbrand (Red Hat) wrote:
+>> > On 01.11.25 01:29, Wei Yang wrote:
+>> > > The folio splitting process involves several related tasks that are
+>> > > executed together:
+>> > > 
+>> > >       Adjusting memcg (memory control group) accounting.
+>> > >       Updating page owner tracking.
+>> > >       Splitting the folio to the target size (new_order).
+>> > >       Updating necessary folio statistics.
+>> > > 
+>> > > This commit introduces the new helper function,
+>> > > __split_folio_and_update_stats(), to gather all these tasks. This
+>> > > consolidation improves modularity and is a necessary preparation step
+>> > > for further cleanup and simplification of the surrounding folio
+>> > > splitting logic.
+>> > > 
+>> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> > > Cc: Zi Yan <ziy@nvidia.com>
+>> > > ---
+>> > >    mm/huge_memory.c | 28 +++++++++++++++++-----------
+>> > >    1 file changed, 17 insertions(+), 11 deletions(-)
+>> > > 
+>> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> > > index c37fe6ad0c96..abde0f1aa8ff 100644
+>> > > --- a/mm/huge_memory.c
+>> > > +++ b/mm/huge_memory.c
+>> > > @@ -3567,6 +3567,22 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>> > >    		ClearPageCompound(&folio->page);
+>> > >    }
+>> > > +static void __split_folio_and_update_stats(struct folio *folio, int old_order,
+>> > > +		int new_order, bool is_anon)
+>> > 
+>> > Is there any good reason we want to pass things like "is_anon" instead of
+>> > just querying it in that helper?
+>> > 
+>> 
+>> The reason is during split, folio's attribute will not change. In
+>> __split_unmapped_folio() it is queried and set as const.
+>> 
+>> Otherwise we need to query it on each split.
 >
-> I think what we are missing is: who runs 32bit OSes on MCE-capable 
-> hardware (or VMs?) and needs this to work.
+>These checks are extremely cheap. Do we really care?
 >
-> What's the use case?
 
-Now, let me try to explain it. From what I understand, it mainly comes
-from two aspects:
-1. Although almost all new CPUs are 64-bit, there are still many existing
-32-bit x86 devices in uses.
-2. On some embedded devices, in order to save memory overhead, even with
-64-bit CPU hardware, a 32-bit kernel may still be used. You might wonder
-why embedded devices need SPARSEMEM. This is because the MEMORY_HOTPLUG
-feature depends on SPARSEMEM, not necessarily SPARSEMEM itself.
+Ok, will remove it.
 
-All of the above devices, the memory-failure feature may be used to
-provide reliable memory errors handling, and to minimize service
-interruptions as much as possible.
-
-> Cheers
+>-- 
+>Cheers
 >
-> David
+>David
 
-Thanks!
-
-Xie Yuanbin
+-- 
+Wei Yang
+Help you, Help me
 
