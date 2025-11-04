@@ -4,113 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 697C2CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 17:51:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A831CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 18:14:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CE328E0003; Tue,  4 Nov 2025 12:51:32 -0500 (EST)
+	id 888168E0006; Tue,  4 Nov 2025 13:14:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6A6248E0002; Tue,  4 Nov 2025 12:51:32 -0500 (EST)
+	id 839168E0002; Tue,  4 Nov 2025 13:14:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5E2AC8E0003; Tue,  4 Nov 2025 12:51:32 -0500 (EST)
+	id 775598E0006; Tue,  4 Nov 2025 13:14:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D2A78E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 12:51:32 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 0D15B12BDC8
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 17:51:32 +0000 (UTC)
-X-FDA: 84073666824.20.98E2FF0
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 17FA34000F
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 17:51:29 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hjcLhq5b;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6540E8E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:14:19 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id EEDFF5951E
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 18:14:18 +0000 (UTC)
+X-FDA: 84073724196.13.4CC6FC4
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	by imf18.hostedemail.com (Postfix) with ESMTP id E3EF61C0004
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 18:14:16 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CYncNzCz;
+	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762278690;
+	s=arc-20220608; t=1762280057;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=9ECnLhPR8GCoIFxiWZs/Z7qt0UeuPLBFqpl/8chixW0=;
-	b=qUsqClMx3vJHTxyv9NSNak5hvd+g2fWxw7Lt2H+CB2ZzfzWhtaHz7EGO18LRAtaXspCLwG
-	MURQ/VhNQc6TZUwXtmJPyePwWG8OVFY7KzVPkwKHlR9zowfnjGakwV1aFnJQ6LmlPP05TP
-	QVTVSj3EJK0vs5zB0/bKwaa3BKb8zoA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762278690; a=rsa-sha256;
-	cv=none;
-	b=jXX4H0jTvK0MPY4BMCcSOaEC3peH7qOI7fwn+I1bZ4EkT8se8aBr7WRVpOyh/jr25b47jS
-	S/yN1NoDjBFZCPyMzpdy9Mn6RMH9emmWLZ7IB0HXBXO6uMkm5e6AZXYpoq4AuO8PtOlyIh
-	tMvTp8Qv/+2GZmcVHm8gnuLChuTpi/8=
+	bh=NAWdqQAMF5nun7wl28IZyFWxTMsXgZF6tpsdkVCFUVk=;
+	b=0toqr+R1zxRKh44nmNNoiiBkNzHzGwjicr2vGKcvVvDWUclJS7UHd3+L5JAhiiWxTk3Gd0
+	P9c/LZWjyEEZB6KoFXHxHguDs31fQXWR1Cr5UQUGj4yCfO2ZQsllNEhOCW7d6tgRptBFQ/
+	0KWxQZdotejM4i/Z+/Y+UzG4JO0Wm6I=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=hjcLhq5b;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf17.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.218.42 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-b50206773adso14438766b.0
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 09:51:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762278688; x=1762883488; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9ECnLhPR8GCoIFxiWZs/Z7qt0UeuPLBFqpl/8chixW0=;
-        b=hjcLhq5bT4IcqJiea1ZFtQqUN26ygWWz5hkVV5mggsK69c2Ofj4T078hg4zp0nYXZx
-         cOo3OigEOTVX4eTJ+OqHZ2jLn68nVjMKCf2CoYakiudEHtfyMrKxzQG/5DYH+yTBinBy
-         6DP66JC3D+bTC3zDXTL9BC3W28z2dOt9snhZVJNUqUKJlANdin10WDqjAmD5lCaYqHLk
-         uORWHhd/sE/ubxtMtq5OgeR5ymstBzz2A24VoO9NSeNIvN6nATgeK/ripzELNwshemwE
-         /rh0tq+uvfmagmtb6CSm9AM/p1XkWHpC20MT452aON2IRM6HuG55B4znxqVnYCQ6rFpp
-         iw4Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762278688; x=1762883488;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9ECnLhPR8GCoIFxiWZs/Z7qt0UeuPLBFqpl/8chixW0=;
-        b=ump0KDxLObxP9YOwjDz5EgYAHE0lAPF2SV0EoLPcKTarL+P2cjd9FZJvOuFLF7ZXlN
-         TSDcbHL/DajHE+uiROjFVPY8fzO1PLyrQGjRzup/CIi70v253h/X9W+YJpTaMTpsH8ui
-         Cc5gVCKmnFPzR5nolVY9RzdeBhJiuJQleq1LA7bmPWuiB2HLmoO7V2Zo/rF8TvqRs2oh
-         DqLvVsWoBfAnCFnKr9EPMqgAxGLIxAyc5OvKaXBy5UvB9/Go9MBTDs/PbVPeBR4Ufne1
-         BNwOA5w23eag6IxADUB3tsFYDG8l5skDOArxmA4JzxEdkOX4zId7LoIJ4ve0qGEddO40
-         xMgw==
-X-Forwarded-Encrypted: i=1; AJvYcCV5bwCcehJ1qeWEERZjsUOrXoFUIY4N1krb4W81GvPOEY3EDdWQJIKIqAZW7Cl7d3sedIr86tw1mw==@kvack.org
-X-Gm-Message-State: AOJu0YxJx4KM6pyWj5bve7o5DKtncIYPba9dKC0Of7acFg0hPWT+ZsPD
-	iIZN2xliGx6NUM0DIWrS6mzXERGE3GypY7Y6n8GUsGtAc5tnZ1BAxV9THl8WC3nke1gsCxXdj3R
-	ZpOm6O3/trJYbjqCXxMuUBhnxY91yri0n1gIx17LQbhQzI5mCO02YjqnnKA==
-X-Gm-Gg: ASbGncsq44UIvGSo6sB2nLqlkz5IEMn5fhk8kn3NugLyhE4/NJfeRPD6UYDCetG3lW0
-	Y13qs1VYwkNNJcaKN6YMAFJNKDeEeUdkzVaZjk5VUipaj7U54FkYc4KdUlbNHorEeO4tSzNQZ1q
-	OjVlXz118LZ6M1nCvAUF1M4XzcQVOh9E5i1hLOKhAmfFSdUNitZpBYxoOrE7M7UiczCheUYbtdd
-	PhUeyEQdTmuDvCR7DdE7PaINyGZGwU+/hrjn29Nz1nWJLhHHtJBC3SKWA==
-X-Google-Smtp-Source: AGHT+IEAuECOBfJlEHfnlgCL4CsibRKTRNtnk3GFRgThyXrDwaD6V3R0XSyMkbHHy67fCRj/QzdxZGD1hNnwsDEv3Hs=
-X-Received: by 2002:a17:907:26c3:b0:b70:83a2:3f5a with SMTP id
- a640c23a62f3a-b72138aaa11mr559213966b.0.1762278688472; Tue, 04 Nov 2025
- 09:51:28 -0800 (PST)
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=CYncNzCz;
+	spf=pass (imf18.hostedemail.com: domain of roman.gushchin@linux.dev designates 91.218.175.173 as permitted sender) smtp.mailfrom=roman.gushchin@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762280057; a=rsa-sha256;
+	cv=none;
+	b=qW/Z4FtXKkkw1xkwqctRRaUU7ikzXwodPcG9RprxB3ramPlHrZ50ylMLDv3WKbTKJo/dCa
+	2pTdw8DhFPPhbbRKMQRgF44ejiNpvEBWhfr6t+Z+oWQ2bzIw2CVlLh0gst7ewOtKK/9aW/
+	sXerC1L3grjHdAcmPjRG5sPVDQSZG6I=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762280054;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NAWdqQAMF5nun7wl28IZyFWxTMsXgZF6tpsdkVCFUVk=;
+	b=CYncNzCzYkQqitwhPYqZZ2XB5M4zBBImGrmM8RswwHaI5fjYIChKwb+qJ+P6ev/4Y8jaEV
+	UINgarZFhBJlyEkb3eGVjNfCyAerXhNhDDKh9POde27z+UNbv9dAnXxmOAcCOohdCIqP0I
+	m20QJOx7Cz/kEmiqvkHdkwAZ8kL8w+w=
+From: Roman Gushchin <roman.gushchin@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+  linux-kernel@vger.kernel.org,  Alexei Starovoitov <ast@kernel.org>,
+  Suren Baghdasaryan <surenb@google.com>,  Shakeel Butt
+ <shakeel.butt@linux.dev>,  Johannes Weiner <hannes@cmpxchg.org>,  Andrii
+ Nakryiko <andrii@kernel.org>,  JP Kobryn <inwardvessel@gmail.com>,
+  linux-mm@kvack.org,  cgroups@vger.kernel.org,  bpf@vger.kernel.org,
+  Martin KaFai Lau <martin.lau@kernel.org>,  Song Liu <song@kernel.org>,
+  Kumar Kartikeya Dwivedi <memxor@gmail.com>,  Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH v2 06/23] mm: introduce BPF struct ops for OOM handling
+In-Reply-To: <aQm2zqmD9mHE1psg@tiehlicka> (Michal Hocko's message of "Tue, 4
+	Nov 2025 09:18:22 +0100")
+References: <20251027231727.472628-1-roman.gushchin@linux.dev>
+	<20251027231727.472628-7-roman.gushchin@linux.dev>
+	<aQR7HIiQ82Ye2UfA@tiehlicka> <875xbsglra.fsf@linux.dev>
+	<aQj7uRjz668NNrm_@tiehlicka> <87a512muze.fsf@linux.dev>
+	<aQm2zqmD9mHE1psg@tiehlicka>
+Date: Tue, 04 Nov 2025 10:14:05 -0800
+Message-ID: <87h5v93bte.fsf@linux.dev>
 MIME-Version: 1.0
-References: <202511042251.paO6f5BZ-lkp@intel.com> <aQod7jDFBjw9T-u2@kernel.org>
- <CA+CK2bBYF5AndNHgqcb5zDbUOV04nE6xiZ0igcTdYf-GOU4aOQ@mail.gmail.com>
-In-Reply-To: <CA+CK2bBYF5AndNHgqcb5zDbUOV04nE6xiZ0igcTdYf-GOU4aOQ@mail.gmail.com>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Tue, 4 Nov 2025 12:50:49 -0500
-X-Gm-Features: AWmQ_bmyzYjklRdM4fCy26w5o6ihhFCSE_0V8f3fp0iGGrT9x2BXx4iNlGw-DMU
-Message-ID: <CA+CK2bBnorfsTymKtv4rKvqGBHs=y=MjEMMRg_tE-RME6n-zUw@mail.gmail.com>
-Subject: Re: [linux-next:master 4972/5926] kernel/kexec_handover_debug.c:16:18:
- error: use of undeclared identifier 'kho_scratch_cnt'
-To: Mike Rapoport <rppt@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, 
-	Andrew Morton <akpm@linux-foundation.org>, 
-	Linux Memory Management List <linux-mm@kvack.org>, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: sibo15c5zqcy716munsy3puf1fj7t3sh
+Content-Type: text/plain
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: E3EF61C0004
+X-Stat-Signature: t9rittdbacmk1cpngi95u1totkq7qm3e
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 17FA34000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762278689-609496
-X-HE-Meta: U2FsdGVkX1+MfK5RZbjdtXR6xlusXOP2fcmG0FCSMZBbF2srPffjQiibil7ul/bLTyvd8KAqKo7dJYJlD/rhDVTBPwGPCmAaMoYYBJzPx1SULohEzUNwBi3P8wHskrsuY9phMy5ZfU/5V2vlBeM1TT+RsV6ZwZ7QwRwTeGIbJcRm7YJNOocbY1TgMxN7G4zv9KL3pJV6N9lg2073FvgGRwBdd7+aOkEYameK01KqJf0jRCbuHH+orA1BB9/kCTw3zeoKJAgdfVfyj/0Tg0lujzIxLs8GCTne2ONckqgnPo4hIxMRA48hGRUED9jaTxPEpciYFbkE1KeXvxzMjChYcbTYjzzy+QmjMuaVSrihIvqLec7LWkL5kId0jD+wS41rZsYFGsmksGyZJ3eCdz64HYdontglJzvADUGqlBOmoUS6qFDi/CzMuunztujjXxKcT7FmoHgKAfu25x7O2L49H09Sfah85XKt2GqBIk6Bn0S33mMqRttjyPSdC2QwMbjFgQbgEpBxdLusxgOUaDRoRshXd81qdi1/v2nt3pSCFuQZJpOYBlkePoeWB2eC10V1C3oSarXCO4G7+gqzoCtiUnNWpz2GI/Gy8VoXqTDzW2pLr2cR/yrmOHwKvaEwJSJ3Io6s5R7f0pHYgeTWidXenah112EU7YO+FcuAeAADURpLrYRtobwfvDfkOe2SfcjGLtL+FzuUtENBWL9D+X7SFeN8MuXXdTrHIEYwZ/hjaK7UGW0MCfJulYRSktX8xHnxZiJhvS2sQzDukdIQ4dWwP5zPzT+3jZKwXjQu7re+KrI3H//QOIGBlLh19T7l/RKqBTiSnlUoeD/eXkUeSo4dUY2o8p/38huaE8Rpys5VmB5FWyggEzumsrPLQgin1jKjLzKp+Vpmp/4Q6CeWruYni93BCfSMhO9xM7lmFMOx/s3100EXxb5g96XF5y63T7yflDpa8tC4zomLqdB2OYl
- gxX5zg11
- mwBossfIt/CSgGPrMESKSdRu8+eYQJlP9/0CWG0StYGucIcYiuC9KKW1Ze7Phfwtc4FPX2DJUtkc45gnVKp5OS/6Hmg/5ja7iHhV0s78IcOoq9GacMIHAXoAF0ckpWWvXt5+54ERZIEtc4Wpkspva972uU2UEvy0YDe9tR+Jd2HfLVYUFqiyZqe4g7MHKmt6w/blbjMYba380J/TCc17iU7lakMyHDrtxB/18mzePW3sdInsH9JWjrCTc8jtQxZeZ9dW5jeLmZmQ4TKr/20pQ7exsS8J4My/jKtk5ZefF3rrElmLWJZPv06HkVbp5BFC8IvLpGCjxJQYMdg/CyRSiStUizqm0Hm9YJ534vXZIAEZaMYF1FoSk3+dWzJTH8/R52ZvKlrTZsL+FN4110SXt4VNNKMYDv07kM9qSgYdRfATbiMQnjj7EJwLCmqFYKo9bjtvu
+X-HE-Tag: 1762280056-806169
+X-HE-Meta: U2FsdGVkX1/t1DEEvPh8wW+CilxddJgbS4YCLoaIsLokJhnH/IPkB7JrkLMvHlxTHTvAD1HbsGcV1GL3e8/RnjHjAgXiJ3sKlgLFDJ5RgBSgTPYXLXFaU4rh5MyQhyjVxNSySeqbyi+tNyVm978gaBL8DFsqZq2ujzMxdmRVTpkaj5q2eEZ3gCk5QxEw5au4nI4Pj++XtdNO8/B/r8xCVGwviwo6W3hS5B932Y2Ck5ZZUYImwTcIVscY8gTKnzLjZMFQHaJCpyuvCw8FColuWITwwkHWQWx+VhNFYLQ22q5I+svtLhUrwl7WGyTCmpNmFfaW/w9dDFR6vKrR4unFI1xQOZCAGKSSNUCAmJQxjuR486WT1UCJ5hHLKGCj9Y6MZRzQWPSEYkrunDbEMDEfN6qXUFawn5vL1J/KnzHZy09akYf2ulltgRonNqQC59cKZya0WPkKtncQwCnIinTywUFIMUHPS1HQphTeAhvjr2S1EG2V2UgTEezzpCiHDWiPXbN/T4Akprn850qXpet7PFPvsXjGRlM5vTaZi063o0AAN0hBtYW9tPkfLwOC/S6wZa2LqTI1eE3aPdlXSOpx3XFguISxOTRajICAW9ZP3zjIFaYvU8pSVH9OxtqOA7ei+YSV7Jj8p6ahQ+V++xpyhjcUK3mXGrjWy96zK6+kud6eUeZAbddLkLrNpGGsSwbDjnQJFS6zYMgi+IrqTD9OZGbbu+Xy7wL7LsZSDDku30crnRsBoQwB9/huBXkX0BPzz8trpcKQLsjEmju2yab0iIXejJT+F+zJchAF2NmhiC/AzxkXm+AZGSr+RrmGgC1FNrhXYQmiLSda9sh8ISk3PalpbQpmUmnVEhkSPaXZePehLN5JaRDyInbxOZrItpb/PGj80drOb0pr5NY5k2kYV6iuq4aw6r10jrSCIdnLEDxt+HguSFa+HiVw0aqN6yhFZ78bAr8lFex+ii++6iX
+ VObBlVWY
+ IMRas2kF7Du4sjq+taeqs2hP/W3u0kICb78X6MkJrVzMobTFScjuQC7oilC/KBJv8EowjUErVprKYdc1btDfUr0W9u6hErq+xaMnV8IfV4PjfvFPAILjMheCSUJvME6n9ifgC2eRxEgFJ+ItFZp0GB1zN69cBs0diG/nsCXJsvUq9ZRPl9Z4eCdpfAoAHnOntol1YHWkolxD5TR4fksgC3/UuJEdhPUYCTOd9
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,131 +97,119 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The fix looks like this:
-diff --git a/kernel/kexec_handover.c b/kernel/kexec_handover.c
-index de4466b47455..2a8c20c238a8 100644
---- a/kernel/kexec_handover.c
-+++ b/kernel/kexec_handover.c
-@@ -477,8 +477,8 @@ static void __init kho_mem_deserialize(const void *fdt)
-  * area for early allocations that happen before page allocator is
-  * initialized.
-  */
--static struct kho_scratch *kho_scratch;
--static unsigned int kho_scratch_cnt;
-+struct kho_scratch *kho_scratch;
-+unsigned int kho_scratch_cnt;
+Michal Hocko <mhocko@suse.com> writes:
 
- /*
-  * The scratch areas are scaled by default as percent of memory allocated =
-from
-diff --git a/kernel/kexec_handover_internal.h b/kernel/kexec_handover_inter=
-nal.h
-index 05e9720ba7b9..3c3c7148ceed 100644
---- a/kernel/kexec_handover_internal.h
-+++ b/kernel/kexec_handover_internal.h
-@@ -2,8 +2,12 @@
- #ifndef LINUX_KEXEC_HANDOVER_INTERNAL_H
- #define LINUX_KEXEC_HANDOVER_INTERNAL_H
-
-+#include <linux/kexec_handover.h>
- #include <linux/types.h>
-
-+extern struct kho_scratch *kho_scratch;
-+extern unsigned int kho_scratch_cnt;
-+
- #ifdef CONFIG_KEXEC_HANDOVER_DEBUG
- bool kho_scratch_overlap(phys_addr_t phys, size_t size);
- #else
-
-Andrew, Mike, do you want me to resend the "[PATCH v3 0/3] KHO: kfence
-+ KHO memory corruption fix" series with the fix included?
-
-On Tue, Nov 4, 2025 at 12:32=E2=80=AFPM Pasha Tatashin
-<pasha.tatashin@soleen.com> wrote:
+> On Mon 03-11-25 17:45:09, Roman Gushchin wrote:
+>> Michal Hocko <mhocko@suse.com> writes:
+>> 
+>> > On Sun 02-11-25 13:36:25, Roman Gushchin wrote:
+>> >> Michal Hocko <mhocko@suse.com> writes:
+> [...]
+>> > No, I do not feel strongly one way or the other but I would like to
+>> > understand thinking behind that. My slight preference would be to have a
+>> > single return status that clearly describe the intention. If you want to
+>> > have more flexible chaining semantic then an enum { IGNORED, HANDLED,
+>> > PASS_TO_PARENT, ...} would be both more flexible, extensible and easier
+>> > to understand.
+>> 
+>> The thinking is simple:
+>> 1) Most users will have a single global bpf oom policy, which basically
+>> replaces the in-kernel oom killer.
+>> 2) If there are standalone containers, they might want to do the same on
+>> their level. And the "host" system doesn't directly control it.
+>> 3) If for some reason the inner oom handler fails to free up some
+>> memory, there are two potential fallback options: call the in-kernel oom
+>> killer for that memory cgroup or call an upper level bpf oom killer, if
+>> there is one.
+>> 
+>> I think the latter is more logical and less surprising. Imagine you're
+>> running multiple containers and some of them implement their own bpf oom
+>> logic and some don't. Why would we treat them differently if their bpf
+>> logic fails?
 >
-> Eh, "kho: make debugfs interface optional" makes this variable external.
+> I think both approaches are valid and it should be the actual handler to
+> tell what to do next. If the handler would prefer the in-kernel fallback
+> it should be able to enforce that rather than a potentially unknown bpf
+> handler up the chain.
+
+The counter-argument is that cgroups are hierarchical and higher level
+cgroups should be able to enforce the desired behavior for their
+sub-trees. I'm not sure what's more important here and have to think
+more about it.
+Do you have an example when it might be important for container to not
+pass to a higher level bpf handler?
+
 >
-> Let me see how to fix this quickly.
+>> Re a single return value: I can absolutely specify return values as an
+>> enum, my point is that unlike the kernel code we can't fully trust the
+>> value returned from a bpf program, this is why the second check is in
+>> place.
 >
-> On Tue, Nov 4, 2025 at 10:38=E2=80=AFAM Mike Rapoport <rppt@kernel.org> w=
-rote:
-> >
-> > (adding Pasha)
-> >
-> > On Tue, Nov 04, 2025 at 10:48:31PM +0800, kernel test robot wrote:
-> > > Hi Mike,
-> > >
-> > > First bad commit (maybe !=3D root cause):
-> > >
-> > > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-ne=
-xt.git master
-> > > head:   17490bd0527f59d841168457b245581f314b5fa0
-> > > commit: 8c211175c3abcebb8bffce8095d78d193e482105 [4972/5926] liveupda=
-te-kho-warn-and-fail-on-metadata-or-preserved-memory-in-scratch-area-fix
-> > > config: x86_64-randconfig-071-20251104 (https://download.01.org/0day-=
-ci/archive/20251104/202511042251.paO6f5BZ-lkp@intel.com/config)
-> > > compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project =
-87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-> > > reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/a=
-rchive/20251104/202511042251.paO6f5BZ-lkp@intel.com/reproduce)
-> > >
-> > > If you fix the issue in a separate patch/commit (i.e. not just a new =
-version of
-> > > the same patch/commit), kindly add following tags
-> > > | Reported-by: kernel test robot <lkp@intel.com>
-> > > | Closes: https://lore.kernel.org/oe-kbuild-all/202511042251.paO6f5BZ=
--lkp@intel.com/
-> > >
-> > > All errors (new ones prefixed by >>):
-> > >
-> > > >> kernel/kexec_handover_debug.c:16:18: error: use of undeclared iden=
-tifier 'kho_scratch_cnt'
-> > >       16 |         for (i =3D 0; i < kho_scratch_cnt; i++) {
-> > >          |                         ^
-> > > >> kernel/kexec_handover_debug.c:17:19: error: use of undeclared iden=
-tifier 'kho_scratch'
-> > >       17 |                 scratch_start =3D kho_scratch[i].addr;
-> > >          |                                 ^
-> > >    kernel/kexec_handover_debug.c:18:17: error: use of undeclared iden=
-tifier 'kho_scratch'
-> > >       18 |                 scratch_end =3D kho_scratch[i].addr + kho_=
-scratch[i].size;
-> > >          |                               ^
-> > >    kernel/kexec_handover_debug.c:18:39: error: use of undeclared iden=
-tifier 'kho_scratch'
-> > >       18 |                 scratch_end =3D kho_scratch[i].addr + kho_=
-scratch[i].size;
-> > >          |                                                     ^
-> > >    4 errors generated.
-> > >
-> > >
-> > > vim +/kho_scratch_cnt +16 kernel/kexec_handover_debug.c
-> > >
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  10
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  11  bool kho_scratch_overla=
-p(phys_addr_t phys, size_t size)
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  12  {
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  13          phys_addr_t scr=
-atch_start, scratch_end;
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  14          unsigned int i;
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20  15
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20 @16          for (i =3D 0; i=
- < kho_scratch_cnt; i++) {
-> > > 4039a00022d42a Pasha Tatashin 2025-10-20 @17                  scratch=
-_start =3D kho_scratch[i].addr;
-> > >
-> > > :::::: The code at line 16 was first introduced by commit
-> > > :::::: 4039a00022d42ac3d68b2eea63066bc9f7ef89ce kho: warn and fail on=
- metadata or preserved memory in scratch area
-> > >
-> > > :::::: TO: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > > :::::: CC: Andrew Morton <akpm@linux-foundation.org>
-> > >
-> > > --
-> > > 0-DAY CI Kernel Test Service
-> > > https://github.com/intel/lkp-tests/wiki
-> >
-> > --
-> > Sincerely yours,
-> > Mike.
+> I do not understand this. Could you elaborate? Why we cannot trust the
+> return value but we can trust a combination of the return value and a
+> state stored in a helper structure?
+
+Imagine bpf program which does nothing and simple returns 1. Imagine
+it's loaded as a system-wide oom handler. This will effectively disable
+the oom killer and lead to a potential deadlock on memory.
+But it's a perfectly valid bpf program.
+This is something I want to avoid (and it's a common practice with other
+bpf programs).
+
+What I do I also rely on the value of the oom control's field, which is
+not accessible to the bpf program for write directly, but can be changed
+by calling certain helper functions, e.g. bpf_oom_kill_process.
+
+>> Can we just ignore the returned value and rely on the freed_memory flag?
+>
+> I do not think having a single freed_memory flag is more helpful. This
+> is just a number that cannot say much more than a memory has been freed.
+> It is not really important whether and how much memory bpf handler
+> believes it has freed. It is much more important to note whether it
+> believes it is done, it needs assistance from a different handler up the
+> chain or just pass over to the in-kernel implementation.
+
+Btw in general in a containerized environment a bpf handler knows
+nothing about bpf programs up in the cgroup hierarchy... So it only
+knows whether it was able to free some memory or not.
+
+>
+>> Sure, but I don't think it bus us anything.
+>> 
+>> Also, I have to admit that I don't have an immediate production use case
+>> for nested oom handlers (I'm fine with a global one), but it was asked
+>> by Alexei Starovoitov. And I agree with him that the containerized case
+>> will come up soon, so it's better to think of it in advance.
+>
+> I agree it is good to be prepared for that.
+>
+>> >> >> The bpf_handle_out_of_memory() callback program is sleepable to enable
+>> >> >> using iterators, e.g. cgroup iterators. The callback receives struct
+>> >> >> oom_control as an argument, so it can determine the scope of the OOM
+>> >> >> event: if this is a memcg-wide or system-wide OOM.
+>> >> >
+>> >> > This could be tricky because it might introduce a subtle and hard to
+>> >> > debug lock dependency chain. lock(a); allocation() -> oom -> lock(a).
+>> >> > Sleepable locks should be only allowed in trylock mode.
+>> >> 
+>> >> Agree, but it's achieved by controlling the context where oom can be
+>> >> declared (e.g. in bpf_psi case it's done from a work context).
+>> >
+>> > but out_of_memory is any sleepable context. So this is a real problem.
+>> 
+>> We need to restrict both:
+>> 1) where from bpf_out_of_memory() can be called (already done, as of now
+>> only from bpf_psi callback, which is safe).
+>> 2) which kfuncs are available to bpf oom handlers (only those, which are
+>> not trying to grab unsafe locks) - I'll double check it in thenext version.
+>
+> OK. All I am trying to say is that only safe sleepable locks are
+> trylocks and that should be documented because I do not think it can be
+> enforced
+
+It can! Not directly, but by controlling which kfuncs/helpers are
+available to bpf programs.
+I agree with you in principle re locks and necessary precaution here.
+
+Thanks!
 
