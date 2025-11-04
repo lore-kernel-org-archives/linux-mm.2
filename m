@@ -4,99 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D1F8CCF9E3
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 06:55:52 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4B27ACCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 07:00:34 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4558B8E00EF; Tue,  4 Nov 2025 01:55:52 -0500 (EST)
+	id 8335D8E00F0; Tue,  4 Nov 2025 02:00:33 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 406848E00E7; Tue,  4 Nov 2025 01:55:52 -0500 (EST)
+	id 7E3C98E00E7; Tue,  4 Nov 2025 02:00:33 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 31CE28E00EF; Tue,  4 Nov 2025 01:55:52 -0500 (EST)
+	id 6D2F68E00F0; Tue,  4 Nov 2025 02:00:33 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 20A5E8E00E7
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 01:55:52 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id C0CD81403D8
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 06:55:51 +0000 (UTC)
-X-FDA: 84072014502.10.1547012
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C4EEFC0005
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 06:55:47 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4yyPL4xi;
-	spf=pass (imf22.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 588F98E00E7
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 02:00:33 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id ED9C5888E1
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:00:32 +0000 (UTC)
+X-FDA: 84072026304.23.276DE70
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 3B4B5140009
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 07:00:31 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I1UEY/F8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762239631; a=rsa-sha256;
+	cv=none;
+	b=uUT599KxtDkDGgF6yWVs8HZHLM7K3yfEn6/MQnVdgruNEB0K2RaC5+SRiBlF889wNKzkVa
+	UYUVNa6fW/y6jc3bBWjKNwpGRwRutVr11ZB6PBFjEPnHDXlSghQ+mCnoiYJOcHlkGJ9pC7
+	CNVdDCVS2okrw3RDOml5hadbHBnnWek=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="I1UEY/F8";
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762239350;
+	s=arc-20220608; t=1762239631;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MY0q0WzHzhej6e9lThaMmg4zC+Z3TXTsGd/cLJf2rak=;
-	b=x2ieFX30VDue+MoP8ogBlZA5aRWf3wAeR+l02E5OQYxINOpRGE7VfuwyGQQKaPXfdzLbtR
-	JT1SVpnMMW0VRXFGsR1iSeh5MUvIBKnJk7XUOJ2C+dwS94vTXu4E11iOIKJk/STYFxZQdh
-	h9lo2cQIXoFebFG9hlpyMjvGhU+MUnQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=4yyPL4xi;
-	spf=pass (imf22.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.218 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762239350; a=rsa-sha256;
-	cv=none;
-	b=Dg6HvxRzk9FunAjNvL+fI3NUBV0rfNw2sG25MXuE5q1w5VPECzCXLPi5ti9nVFC4ZVn6i4
-	hNOMTwoUr0Md4iWcPzghe9tGC4hcWPPkAX1t532TMut3p3hRdA278TRG0NdbwZVQ5/4VsG
-	CR7fn9jXCuigfLms09yzWdp9kogHK4c=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=MY0q0WzHzhej6e9lThaMmg4zC+Z3TXTsGd/cLJf2rak=;
-	b=4yyPL4xi/ls053nVqnalitPx7VgIaq/rBG8XJASRMmS2b7Cw10ZVBz3UkPwm66Plu5391QSC+
-	B0jFPLdUO7Z7GOvz5NuNCAUSmOSxAAa445EKsEB8lrd0G8Bt+WHoGqs3fMeYu4GLF2IJCuNJR5/
-	g2l0nI5e6JspjfsegSUCtOQ=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4d0zhN3DzczpStT;
-	Tue,  4 Nov 2025 14:54:12 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 41CCF140EE4;
-	Tue,  4 Nov 2025 14:55:41 +0800 (CST)
-Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 4 Nov
- 2025 14:55:39 +0800
-Message-ID: <4eb369fa-b03c-4883-8e01-2233dac81044@huawei.com>
-Date: Tue, 4 Nov 2025 14:55:38 +0800
+	bh=DVZBP+1TEb6s+S14NHo8ZefgFsL6be0T2qBcGKSJx28=;
+	b=T1LLx1S/pXIlv+YTWDhdxsKrwZNmO7ntv+4BFpCyuNQIMnsXqWXIdSLsq+inWhDzwagaK2
+	gI7YPAZIfLSRkesFrDKHv207hmxJcGiSysT1MN1wyvhG8KIeSoiWRMSQ52+5QbCmcwjPfN
+	GlSONTYcTtzyINCiwxkJe4bJ7cn+CPc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 1EE2943791;
+	Tue,  4 Nov 2025 07:00:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C40EC4CEF7;
+	Tue,  4 Nov 2025 07:00:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762239630;
+	bh=4X+6t70DXpoh2T+5EieuiIaGNQ+Nx/11qPV6DRFYJmY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=I1UEY/F8kb6rmfO1N8znpDwknPo+zoeYokqXc5isZjuBzW2kwNIyURNneL551ILHq
+	 xB1qlT1GwIRyPrqploIY1BSnrb/M+gayul0auOGaYIzVZ5ipDhkzhnPwCHrtS0f6BC
+	 z5t1VvB9oLCq/rFMCgCk9VhSiEJuSXID8okNRaVWmbtPOK+n28WqZyhoHpfWmronvf
+	 FcGjEPq4VK6Yo+LBMfOfTVdislK0QSciIeNRcwvKA5aNqAeghvNKt/yYcDiNo2g9fQ
+	 ijAwMsISbHre8xNCfIwmhQpHnPPoDWGxgBNbI3zl0/Lwh8StDazLf/AgskMUfBm9kx
+	 ZlGWIVygzFi3w==
+Date: Tue, 4 Nov 2025 09:00:21 +0200
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Jens Axboe <axboe@kernel.dk>, Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Alex Williamson <alex.williamson@redhat.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>
+Cc: Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org, iommu@lists.linux.dev,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: Re: [PATCH v6 00/11] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+Message-ID: <20251104070021.GC50752@unreal>
+References: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 04/25] ext4: make ext4_punch_hole() support large block
- size
-To: Jan Kara <jack@suse.cz>
-CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<linux-kernel@vger.kernel.org>, <kernel@pankajraghav.com>,
-	<mcgrof@kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
-	<libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-5-libaokun@huaweicloud.com>
- <v55t7ujgvjf2wfrlbyiva4zuu6xv5pjl7lac5ykgzvgrgluipc@moyoiqdnyinl>
-Content-Language: en-GB
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <v55t7ujgvjf2wfrlbyiva4zuu6xv5pjl7lac5ykgzvgrgluipc@moyoiqdnyinl>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.254]
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- dggpemf500013.china.huawei.com (7.185.36.188)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: C4EEFC0005
-X-Stat-Signature: t9r8rawch99u3j8e9hq4ze53czsm5cnt
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.com>
+X-Rspamd-Queue-Id: 3B4B5140009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: qbcjhxo8g1ohdw6rotzj39oit8i53cma
 X-Rspam-User: 
-X-HE-Tag: 1762239347-445606
-X-HE-Meta: U2FsdGVkX1/6M54QyB/C3Eryet79fyo0KxhmVeryGzj1pQfEjWGE7tF6p/sofSw98Lt/dthzZkdLWJEbykHTz6fA7OLbP22nD3/guqAsStO23u6P3Xwgzt5Fb0PtDPB29GfD9tltgtuQcKHMsuR/0KU16sBPgfW2OHZFEVMJkypyXXjV1OL8dGtXyh3fECl8EAQ5rf1EPnm+ztY1BqME/au50ScUlKx19QD9ffWGm2zRleZN6XctHNg0welZPJHE39G76tKBi9cvRgn43EDTPh4SuFRhPCvGLNT2yE6eoki2O2vcbYBtUwbZLcnijqh7mKl2mIw+ZtHSWdwW5Q7fpH5dA9ytD/3ZaIwP8pBP5xllNJsqxeGtpv7aE4Vm04m+CGGCVImrILj6xxC/OhGVOtUHch+jHBdWNopOZ9wj0/54aosA7b2+JCzqKeMRg3Z3Q5qbYcIN0WfIDtTnzSKfq3UWFpSbihmsLVoKRTGIkrXJm6cQ+gusVnneUEmUyN46KaWk280Djp4VlL14QkQMVPwJpB6KfpeUAH5Vo9xApakpwRK+RhJTNxBiQsyeNcN5LOQ+6DDVUfB/38gIzjSxQH+oz2CXkwxSbRtngrO1JA4zPj9cWwd1kOxeyN8sUjj3q4/75Sj1FmdOwDAAKE4JSvItHKmTo447ZgDdKH5ZtjNyY4Egiofn5etxuZU0/5jlnqtzMGRc8a358VzQ3aFAsQhFZw1v3CJHvQViuY7K6DBprOMXUV/lLytyvV05QAboRLwEWk/5aqtc04rdLW2z7HT65xFAzyP69J1vZMISmhFenKbXDcVnqH0A9VJVauf7U9s3nMdsJ05M6glBSfJx6OVBxF8TIu5RjbZTL1UO084Hdq/gn/YBfESn2DO0G4nx4dbeh/7fezQktlAetNX7LbcRYYXhxCe1JumQIY0vvJLSO5sGPi6McrNoW0Ckf1e5iUuYx4rtvTg5FyvJf+V
- LYIX+t/6
- AaJJ3crg1lGpjEt9AMZuFOua2GhDVJsfapPLl/CwnQ48exSsQiuXymyXY7s29G8nAWAlXqgxAwgFyopwfg/miniYrlaheSFGjcezja2NpZRoXa3+4Op9DcK8K77nn8VRj8LmpznnbU6CxCqULh/nrq2Me2sNThZ5EnVz8GqDV9ijqSYqxJ8ReLl25Lysifo+qF88crxyx1bkGyKL8DOgPcc3mFMzpULNVYOsRSbnvfXtM1zZnyx/74EwQoxJjPrBFs8h1e2orLeAAFyxg0JBTFWHvJ90u6MAJAorbWj+usQOVA1GWkH0XjX1/xgzFsTVEeI0D0oUhqwy7j4uuZntrqWPir1xad02hDJ3+ly0GznzhFh5ZCqXxHXH6WioBNYg+1h7tBq/09rKlacBnlz+rBYh1T8NaYeyY2L8Gu8sVmw856KalP7XTP0An7rkBjODQlHwC02Bml0uExlE5pFRSAMu4DEhdzqyxoduEDULp4LNHOQo=
+X-HE-Tag: 1762239631-721718
+X-HE-Meta: U2FsdGVkX1/ms9Bou4YEc3sJcl3oronnaU9mArrfhvp51meP/H8Yl429OYqjNgnkcpR0y01mRu3uyXkSnP15pCE07RpW5dFmj/HduuRkESpLN535z7nOd+nU+wusJ4qK/k26NeZHOI3xU+ILxcU3EpBEciUmzz1gsB/iehv927fLiRs9vIthpUsuIolOQKT2QsCu2orpGmnYVTNz/Y90xiDTn7vT3Tgi04ASMKArZXIVZHOaoFI0qILkXTmAEdASx3dvJ0jzeHMkGLvSAYkKtehFQ9ND/3cBVvTliUvYbux9v/i+dI4nAN/LrAccovjzOBMLCOpfuU/vREtVjkV2xPACwDBq8PSJiHdis5jBqLTxCh1e4ohH963RNjIZuvhbaKwHga2/cMMg4DIcft1f6ovMfLWmx12Y5qlHaeoBuSFTrFL92GCJVxcSuUPfw5NjCeQUbVZxQHuonLWQXO3KSOMgBW6IQGtsTNyqm4I6a9M32qI9CBZky6CAJWpR0lEM4faU/XWmrZY+2WJ13CefL0dPM3lR5PEfUsS2+6VaWOoXANMeWqEYDKJ900BbXkCI0ju7xdCVg/XAzGu1d6WHIrMDIv8dc33yRQpqvf4lVCbX11xmIRzSzzewmdojQ1X9RD1opi3d6YZ34rlSH+7MqKudvhwWOdssbtOUraL5UqHGXbpOmyEOo+vC/JHsQNp/Js0xy8y3YjmpyG61wBOLJOlwm6zGGKsiis2Ed8ZUx38FDGeEjsrXGiWOp8vAJYb0UX0xxNOj54iEd5/QHsIG0PqjPU0qCsNbBZloEHqGTucmMeyjqYSIoqX4lGDbUNq39ZLdPg+hialc/GXaXVEgIPVg33ARcuphxBFYHhBuI9WTiRdpqiphPhSIIXALdiKntrI0z0ZzrpPwcD8QC7CrFRNbg8l1avOg/gTNJo0n0P5UhDqQyY2U2V7NOBydR21DyL9WGhbc0WlsvrbfY3u
+ 0DrmYeM/
+ XmhApzjXDUE4W2tI9v7nAlMUmvIc2p0UHc9ng3oyNDFV+yi3Hmyvg0lsLBQNvzUq43qX8/b9gqkq8Yk3DmD661QmSOwXyGe9A7p+fmVJXc7xe2Vtoix2vSpZYIK7+xgbdHT+jNdLRbQqaKG6KR2anugyy8pLxqwTomAf2SnCGJpz07GiDFZsilOl0GhJqjt27kj9gZeNvQW914MjQa5FX4oJgRa9qzrXrUiios7LnsHwUgeKeyL4t1A+RCLE/ruPPONHD0CTND3EbsTUD+2IBNC1wOQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,59 +114,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-03 16:05, Jan Kara wrote:
-> On Sat 25-10-25 11:22:00, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Since the block size may be greater than the page size, when a hole
->> extends beyond i_size, we need to align the hole's end upwards to the
->> larger of PAGE_SIZE and blocksize.
->>
->> This is to prevent the issues seen in commit 2be4751b21ae ("ext4: fix
->> 2nd xfstests 127 punch hole failure") from reappearing after BS > PS
->> is supported.
->>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-> When going for bs > ps support, I'm very suspicious of any code that keeps
-> using PAGE_SIZE because it doesn't make too much sense anymore. Usually that
-> should be either appropriate folio size or something like that. For example
-> in this case if we indeed rely on freeing some buffers then with 4k block
-> size in an order-2 folio things would be already broken.
->
-> As far as I'm checking truncate_inode_pages_range() already handles partial
-> folio invalidation fine so I think we should just use blocksize in the
-> rounding (to save pointless tail block zeroing) and be done with it.
+On Sun, Nov 02, 2025 at 10:00:48AM +0200, Leon Romanovsky wrote:
 
-Right. I missed that truncate_inode_pages_range already handles this.
+<...>
 
-I will directly use the blocksize in v2.
-
-Thank you for your review!
-
->> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
->> index 4c04af7e51c9..a63513a3db53 100644
->> --- a/fs/ext4/inode.c
->> +++ b/fs/ext4/inode.c
->> @@ -4401,7 +4401,8 @@ int ext4_punch_hole(struct file *file, loff_t offset, loff_t length)
->>  	 * the page that contains i_size.
->>  	 */
->>  	if (end > inode->i_size)
-> BTW I think here we should have >= (not your fault but we can fix it when
-> changing the code).
-
-Yes, I didn’t notice this bug. I will fix it together in v2.
+> ---
+> Jason Gunthorpe (2):
+>       PCI/P2PDMA: Document DMABUF model
+>       vfio/nvgrace: Support get_dmabuf_phys
+> 
+> Leon Romanovsky (7):
+>       PCI/P2PDMA: Separate the mmap() support from the core logic
+>       PCI/P2PDMA: Simplify bus address mapping API
+>       PCI/P2PDMA: Refactor to separate core P2P functionality from memory allocation
+>       PCI/P2PDMA: Provide an access to pci_p2pdma_map_type() function
+>       dma-buf: provide phys_vec to scatter-gather mapping routine
+>       vfio/pci: Enable peer-to-peer DMA transactions by default
+>       vfio/pci: Add dma-buf export support for MMIO regions
+> 
+> Vivek Kasireddy (2):
+>       vfio: Export vfio device get and put registration helpers
+>       vfio/pci: Share the core device pointer while invoking feature functions
 
 
-Cheers,
-Baokun
+Hi,
 
->
->> -		end = round_up(inode->i_size, PAGE_SIZE);
->> +		end = round_up(inode->i_size,
->> +			       umax(PAGE_SIZE, sb->s_blocksize));
->>  	if (end > max_end)
->>  		end = max_end;
->>  	length = end - offset;
-> 								Honza
+Can we get Acked-by for p2pdma and DMABUF parts?
+
+Thanks
+
+> 
+>  Documentation/driver-api/pci/p2pdma.rst |  95 +++++++---
+>  block/blk-mq-dma.c                      |   2 +-
+>  drivers/dma-buf/dma-buf.c               | 235 ++++++++++++++++++++++++
+>  drivers/iommu/dma-iommu.c               |   4 +-
+>  drivers/pci/p2pdma.c                    | 182 +++++++++++++-----
+>  drivers/vfio/pci/Kconfig                |   3 +
+>  drivers/vfio/pci/Makefile               |   1 +
+>  drivers/vfio/pci/nvgrace-gpu/main.c     |  56 ++++++
+>  drivers/vfio/pci/vfio_pci.c             |   5 +
+>  drivers/vfio/pci/vfio_pci_config.c      |  22 ++-
+>  drivers/vfio/pci/vfio_pci_core.c        |  56 ++++--
+>  drivers/vfio/pci/vfio_pci_dmabuf.c      | 315 ++++++++++++++++++++++++++++++++
+>  drivers/vfio/pci/vfio_pci_priv.h        |  23 +++
+>  drivers/vfio/vfio_main.c                |   2 +
+>  include/linux/dma-buf.h                 |  18 ++
+>  include/linux/pci-p2pdma.h              | 120 +++++++-----
+>  include/linux/vfio.h                    |   2 +
+>  include/linux/vfio_pci_core.h           |  42 +++++
+>  include/uapi/linux/vfio.h               |  27 +++
+>  kernel/dma/direct.c                     |   4 +-
+>  mm/hmm.c                                |   2 +-
+>  21 files changed, 1077 insertions(+), 139 deletions(-)
+> ---
+> base-commit: 3a8660878839faadb4f1a6dd72c3179c1df56787
+> change-id: 20251016-dmabuf-vfio-6cef732adf5a
+> 
+> Best regards,
+> --  
+> Leon Romanovsky <leonro@nvidia.com>
+> 
+> 
 
