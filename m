@@ -4,96 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D8DDFCCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 09:39:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C0481CCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 09:51:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 35C8D8E0122; Tue,  4 Nov 2025 04:39:06 -0500 (EST)
+	id D13958E0123; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 30BF38E0118; Tue,  4 Nov 2025 04:39:06 -0500 (EST)
+	id CEBDD8E0118; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1FAD28E0122; Tue,  4 Nov 2025 04:39:06 -0500 (EST)
+	id C28E68E0123; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0A8938E0118
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:39:06 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 901FB888F5
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:39:05 +0000 (UTC)
-X-FDA: 84072425850.20.C0A95A3
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 250D040010
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:39:04 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZFQJVcMz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762249144; a=rsa-sha256;
-	cv=none;
-	b=ncicZBfLbVpYrRFY5WMcmJI3/1wvWbTbwTlBX/YWMM1OB2AJTzF5Itd9CNqoo3pNZWg7XB
-	ARAmK73o24f3aVhM28uFZ/0sjJY+Q3Tlw47spig37ctweho9ZJJOwaKAhn1dDLYwNO1+wR
-	UDJbk8kN9DAT0NH4D047LDh6LW3cLLQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=ZFQJVcMz;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B238F8E0118
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:51:00 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4C022B94FC
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:51:00 +0000 (UTC)
+X-FDA: 84072455880.05.BBDE0BE
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B4FFA1A000E
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:50:57 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="w/wF74mo";
+	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762249144;
+	s=arc-20220608; t=1762249858;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=g+wec/9JYtpPVezWD+fw+56JDSwlOisYONnVe8hiMJc=;
-	b=7PgJPGW4jbDXGTl7P6wA/3pXpukEwt/Ky3EfxUEmlHg5hGcXddRBbTWHviVfTp6U3DfRJU
-	rjq3wNKhdtiVP0CcMbw/99bMMrdi27lqjb2NHlK1TJJQdscGP4awUoKFPmtsD6y+csKNEf
-	xf+3qVqIuiWRXJU4MqdtjtZJcXGL/rw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 81800600AC;
-	Tue,  4 Nov 2025 09:39:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B021DC16AAE;
-	Tue,  4 Nov 2025 09:38:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762249143;
-	bh=yCvLd6/nomDiRwqOxlI7HgKTubggDv3X7Fw8HkVVE90=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ZFQJVcMzqNmStko7xcWsrOQU2jsh+T1CI46vYG7MnzH0iwjcfZAn6Iq4VUzTsLeFv
-	 EDzRxhDVpIdsBW7iHYlhsuhz8JZKZ+EfC7eqTQZjkhD5UGaB/yZ+eUzyqR2lf+hfTU
-	 RvSHzngbGZs3QS7uoyr/8slXk3r5d0MZT3i0lKwcZ8ryBtKSjdU4Rj+F2Mxdw+XEWS
-	 6LvvRwC5JqOArtOvAwEwGHqwxJqINAQ4R3zhvb+r31uCmFRLofuAX6m2wGXjxdySf/
-	 JA1nk5xWCsQ9/OWkCIAejRBF4rCVeNopvCjP4zEpewQbzFb/fi6GPJ9S/8eZxc/gki
-	 PIYs8bzyFG+Iw==
-Message-ID: <01b44e0f-ea2e-406f-9f65-b698b5504f42@kernel.org>
-Date: Tue, 4 Nov 2025 10:38:54 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	bh=t8ryYqzNzuomFM1qI/F9XXL0yM4A3U1rNvzkeTZ8nMY=;
+	b=tlL+yn/HHqm2xs+El+dKMIzIfBltZuVSmjzYBrsG3N/emGPMMK7MZwROroM7FtzbIUuahF
+	GCYE3QytXdAAix2Mh8HOtX2x/EvQ6sMSpQjUFVYRKPcd47rA9OSzXCHwLXSefEjW8gCVOj
+	qqR5YmzeXKfDz+VbsIJKyyCziYFJ7Lc=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b="w/wF74mo";
+	spf=pass (imf19.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.225 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762249858; a=rsa-sha256;
+	cv=none;
+	b=KmkqGUdAfOaUqOt0YPIY91DliLDIS50s25D5YvkKoDz+gFg+EjFsclNKhR7vnU1MdkUuen
+	GfVeJS+yFOOoJ4yieM+YKb8kk/8WP70HnhFsX8x2+PXH5Qn0k+L7vnujhFxPIZxohqCasj
+	DhZIDSR4LjuokmSVept47XG4abn9Hlo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=t8ryYqzNzuomFM1qI/F9XXL0yM4A3U1rNvzkeTZ8nMY=;
+	b=w/wF74mo1/KwoyB4tDKQy8+xB8kViYjE1uL7ZkflzS+/rP/iIWNQoEXBIzZjAZ3+X8X8iOLE9
+	WnXgY/JOX/VGQ7dBqCOVHVi2P5xnsvukEBmMytUG9LEDroc5xVe3QENpNXf1HWq8jp+kA7FHJ3m
+	DaRzAsYEEupFXMccVPL+ZcA=
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4d13ZS5RNGz1K96k;
+	Tue,  4 Nov 2025 17:49:20 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id B6A6C140155;
+	Tue,  4 Nov 2025 17:50:53 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Nov 2025 17:50:52 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <david@kernel.org>
+CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>, <bp@alien8.de>,
+	<dave.hansen@intel.com>, <dave.hansen@linux.intel.com>, <david@redhat.com>,
+	<hpa@zytor.com>, <liaohua4@huawei.com>, <lilinjie8@huawei.com>,
+	<linmiaohe@huawei.com>, <linux-edac@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<lorenzo.stoakes@oracle.com>, <luto@kernel.org>, <mhocko@suse.com>,
+	<mingo@redhat.com>, <nao.horiguchi@gmail.com>, <peterz@infradead.org>,
+	<rppt@kernel.org>, <surenb@google.com>, <tglx@linutronix.de>,
+	<tony.luck@intel.com>, <vbabka@suse.cz>, <will@kernel.org>, <x86@kernel.org>,
+	<xieyuanbin1@huawei.com>
 Subject: Re: [PATCH v2 2/2] mm/memory-failure: remove the selection of RAS
-To: Xie Yuanbin <xieyuanbin1@huawei.com>, david@redhat.com,
- dave.hansen@intel.com, bp@alien8.de, tglx@linutronix.de, mingo@redhat.com,
- dave.hansen@linux.intel.com, hpa@zytor.com, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, linmiaohe@huawei.com,
- nao.horiguchi@gmail.com, luto@kernel.org, peterz@infradead.org,
- tony.luck@intel.com
-Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- linux-edac@vger.kernel.org, will@kernel.org, liaohua4@huawei.com,
- lilinjie8@huawei.com
-References: <20251104072306.100738-1-xieyuanbin1@huawei.com>
- <20251104072306.100738-3-xieyuanbin1@huawei.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251104072306.100738-3-xieyuanbin1@huawei.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Date: Tue, 4 Nov 2025 17:50:48 +0800
+Message-ID: <20251104095048.119012-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <01b44e0f-ea2e-406f-9f65-b698b5504f42@kernel.org>
+References: <01b44e0f-ea2e-406f-9f65-b698b5504f42@kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: B4FFA1A000E
+X-Stat-Signature: gp84p6w5xxrbt33c1tdpdwpeppkxrkyg
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 250D040010
-X-Stat-Signature: bzu8y43s8ipid4z13gpwmh3y8d4dcnh7
-X-HE-Tag: 1762249144-214066
-X-HE-Meta: U2FsdGVkX19Togms3pDHevTww1jyoXM3u+yhjpzQD3MkN75W+kmruKXQt4maUQ22g5q7JPsvicaYKyq3L8MVGbU9YybWsmKe1Hr8cXwzR8eac8FwEmT2PtFsVClI9KNMHM1pmikvPrRUOPtA4fhKwMW3PFberVaxO/7y2QrfWAAAho+LidJ9WXHqvCqMbc6WW1IziaD2A1hJTqVqXssyfvZcjuKl/u2hJp/ZRWPTuS7vtey+bXTWv8fea1c9xzmIsgF7MNI+DYUWnLFVDh7NAMoSoQS4JZ0dwJDnS2MqnM6q5ldncypEAX6r1frjGHQIEENTiaySM+sCRZP3RgVWIlSKNiCP2k9F2sy09Yu71Eo5VfqElaZ2L8wzcSkNn6SmE6mjQ2ScOcGCjJzu6I8izKSc6T6hWJo5qn3OjSwoZn/Sk3j5FefcKsKjC2VsqLohx49qhJqfxjZu9c1171Kbw1z3HT1besy/BvwAPVEOhBM6GDyb/MY4lpHwE3sAV/AHm+viksuwPKLYPcadHp7LNgP7LGdTHO+QDgYRO8BknkiUNSeI3fjaFijAw1cufsn3oke2JDch7pZHDvUt9uw8fltWX4RGX9ho5V6COn1tg53RX/8ze32wRso8JUEdWY2cZ3l19M04OzL+gSLy2KkJAefmu65U3Al16AlhmwBDc/t1YLO0dCjrP34lu5BJtkdmdD67LdB4nxUUEyhOiEXbGEiQFeY/QW0w+56ljgBfgw4XWyeYPkLWd7l8izktSp+XfJL78w/fhi75o5MQbB4m79iXYFM03lHObBIaNnGj5PLhtTTYLpHrFu6i7f+Y9z7IT+we3JckMxvrO7i1AhOIH7yAwNTl4ZdjExU5BbefnTXrdE2w2o+gtGJYB0OBOZ8Cm6V2vOcAwntkVMbqZx7W8IEcP7jCDwDNJeVIrcA6d9ASBshwWqaevqE8TOs2YvzyBYoaF2Zs8TsNu4pIxtC
- L9S303hG
- k4ezft1gCgvVUQnqHuW/z0Tq2tznmprGeCmSb
+X-HE-Tag: 1762249857-594391
+X-HE-Meta: U2FsdGVkX1+THUtAtTDB5RAhhY2S4WkgPvaV2NnMnx8q+SQsypJnS8nerXdo/mVxd9/m+Lshkx5Bvf+dR2L0Y1S5cCM2GVplXLu3rS2sLUGGffw8nQnxo1GhzyWA4iGWRLF4tzi4pBeV8EHFtYitbYRLMq7i3rGy870TKtyzL3d8hOrFEoMVJ6aH0ICG/fR7MgGApeKtH7CWEfi28IF4tNThVBPCBCWkD9FaO4a7TX7Tqs0UQt3SXqs1uqEhR1BkdZnQHAViMFsCnZJb//o20aVKuuBcIdeqbNMs7LHAVF3Ctv89UhcBcOO5tr3oACdbmJyc4A6IO2w6uMwUlhY1WZQPellM+Z1u3fe+ccw6fOZ0nYxMUM6v8mWSQBOdudd8sWeOFuGGV8Uwsdz07r6y8KxUxwsHSE9bd7AgtZolXAMbw6uY2mv0J417ml+QVZQD+q81WjMel3qUuyzRbMSpCA/mcjntlBCT1XaIcYDeOMW23Coe55SaMo7v0/tCl3+wpGOeJ9o/WOXFViATwBVTmZVefmChOyGeJcUsQ8K8s8Jz+wHvZ0e40RVpdfzbk9uF+nrYHpR7dRr+NLKaR3gx+/b514jS/ChF9QO+f7Vsq/pSh48kbjEirqs1FgDCPfJYrmuL7bIaMJXkUYwNicTuHtv/xK0Ynj+DemXNq5qv3pZP1XMKc04o+39pFNrq45Wsz7yxo31wizdkjmZYdkEimqH6PujV+g0VuydK9dxtgmwXO4S9e0n2yN7uAkMkQBlCPDiRpsElMj2NKqmI9hsUSDFCRWO7q2021D3qLt5dTv37P7MbZB9ELgq2Dm+ghNBouNpxUD50Xxwoyc3Tw65cdyiyEyktFAifmLfZIEJ3reLKWF/oEdOoTBChk37dm0eWKZoHSX0NUK7esGXUl5PGnaFIlMv4kzhA8RsKsgtbqq8/FC+/jS6FvBb7KIe/x/PlVfcoc7udqU+xzXPdVuq
+ cyRB1yU/
+ Wu6kh72ZfCsiX9dDTpxK1Y1DAVssPoBOd7K/EyN6PgHsCB33Zx5+oHec5gGlViXzAIQs3wjxY2sCwUzgkgmFo+RUb2guS+ZKBsB9syGAph8DpVRKCP/iUwf67iegQyiQarA8AS1io7/R/vWKrXrTZE+u/8Xa0Y1rorPG+rRvviIrCkSOjxAY+tHcQ+suLxaQJlkW9TnDtxA8MAgnpTbpQi1p5XTQYa3Ai87xVCpONqbRzjQ2c+XNkS577Mn4EPqSswNltSzhbkw0WgDC0uBQuzwqdaLD67usUqMU42IMGZJVklSW/y7mAeGY7ZbYTtWorGVzRR+gzfAmfwQJbmtLXSmLs7Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,137 +106,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.11.25 08:23, Xie Yuanbin wrote:
-> The commit 97f0b13452198290799f ("tracing: add trace event for
-> memory-failure") introduces the selection of RAS in memory-failure.
-> This commit is just a tracing feature; in reality, there is no dependency
-> between memory-failure and RAS. RAS increases the size of the bzImage
-> image by 8k, which is very valuable for embedded devices.
-> 
-> Move the memory-failure traceing code from ras_event.h to
-> memory-failure.h and remove the selection of RAS.
-> 
-> Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Borislav Petkov <bp@alien8.de>
-> ---
+> This trace system should not be called "ras". All RAS terminology should 
+> be removed here.
+>
+> #define TRACE_SYSTEM memory_failure
+>
+> We want to add that new file to the "HWPOISON MEMORY FAILURE HANDLING" 
+> section in MAINTAINERS.
+>
+> Nothing else jumped at me.
 
-[...]
+Thanks, I will modify it in the v3 patches.
 
-> +++ b/include/trace/events/memory-failure.h
-> @@ -0,0 +1,97 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#undef TRACE_SYSTEM
-> +#define TRACE_SYSTEM ras
+> Cheers
+>
+> David
 
-This trace system should not be called "ras". All RAS terminology should 
-be removed here.
-
-#define TRACE_SYSTEM memory_failure
-
-> +#define TRACE_INCLUDE_FILE memory-failure
-> +
-> +#if !defined(_TRACE_MEMORY_FAILURE_H) || defined(TRACE_HEADER_MULTI_READ)
-> +#define _TRACE_MEMORY_FAILURE_H
-> +
-> +#include <linux/tracepoint.h>
-> +#include <linux/mm.h>
-> +
-> +/*
-> + * memory-failure recovery action result event
-> + *
-> + * unsigned long pfn -	Page Frame Number of the corrupted page
-> + * int type	-	Page types of the corrupted page
-> + * int result	-	Result of recovery action
-> + */
-> +
-> +#define MF_ACTION_RESULT	\
-> +	EM ( MF_IGNORED, "Ignored" )	\
-> +	EM ( MF_FAILED,  "Failed" )	\
-> +	EM ( MF_DELAYED, "Delayed" )	\
-> +	EMe ( MF_RECOVERED, "Recovered" )
-> +
-> +#define MF_PAGE_TYPE		\
-> +	EM ( MF_MSG_KERNEL, "reserved kernel page" )			\
-> +	EM ( MF_MSG_KERNEL_HIGH_ORDER, "high-order kernel page" )	\
-> +	EM ( MF_MSG_HUGE, "huge page" )					\
-> +	EM ( MF_MSG_FREE_HUGE, "free huge page" )			\
-> +	EM ( MF_MSG_GET_HWPOISON, "get hwpoison page" )			\
-> +	EM ( MF_MSG_UNMAP_FAILED, "unmapping failed page" )		\
-> +	EM ( MF_MSG_DIRTY_SWAPCACHE, "dirty swapcache page" )		\
-> +	EM ( MF_MSG_CLEAN_SWAPCACHE, "clean swapcache page" )		\
-> +	EM ( MF_MSG_DIRTY_MLOCKED_LRU, "dirty mlocked LRU page" )	\
-> +	EM ( MF_MSG_CLEAN_MLOCKED_LRU, "clean mlocked LRU page" )	\
-> +	EM ( MF_MSG_DIRTY_UNEVICTABLE_LRU, "dirty unevictable LRU page" )	\
-> +	EM ( MF_MSG_CLEAN_UNEVICTABLE_LRU, "clean unevictable LRU page" )	\
-> +	EM ( MF_MSG_DIRTY_LRU, "dirty LRU page" )			\
-> +	EM ( MF_MSG_CLEAN_LRU, "clean LRU page" )			\
-> +	EM ( MF_MSG_TRUNCATED_LRU, "already truncated LRU page" )	\
-> +	EM ( MF_MSG_BUDDY, "free buddy page" )				\
-> +	EM ( MF_MSG_DAX, "dax page" )					\
-> +	EM ( MF_MSG_UNSPLIT_THP, "unsplit thp" )			\
-> +	EM ( MF_MSG_ALREADY_POISONED, "already poisoned" )		\
-> +	EMe ( MF_MSG_UNKNOWN, "unknown page" )
-> +
-> +/*
-> + * First define the enums in MM_ACTION_RESULT to be exported to userspace
-> + * via TRACE_DEFINE_ENUM().
-> + */
-> +#undef EM
-> +#undef EMe
-> +#define EM(a, b) TRACE_DEFINE_ENUM(a);
-> +#define EMe(a, b)	TRACE_DEFINE_ENUM(a);
-> +
-> +MF_ACTION_RESULT
-> +MF_PAGE_TYPE
-> +
-> +/*
-> + * Now redefine the EM() and EMe() macros to map the enums to the strings
-> + * that will be printed in the output.
-> + */
-> +#undef EM
-> +#undef EMe
-> +#define EM(a, b)		{ a, b },
-> +#define EMe(a, b)	{ a, b }
-> +
-> +TRACE_EVENT(memory_failure_event,
-> +	TP_PROTO(unsigned long pfn,
-> +		 int type,
-> +		 int result),
-> +
-> +	TP_ARGS(pfn, type, result),
-> +
-> +	TP_STRUCT__entry(
-> +		__field(unsigned long, pfn)
-> +		__field(int, type)
-> +		__field(int, result)
-> +	),
-> +
-> +	TP_fast_assign(
-> +		__entry->pfn	= pfn;
-> +		__entry->type	= type;
-> +		__entry->result	= result;
-> +	),
-> +
-> +	TP_printk("pfn %#lx: recovery action for %s: %s",
-> +		__entry->pfn,
-> +		__print_symbolic(__entry->type, MF_PAGE_TYPE),
-> +		__print_symbolic(__entry->result, MF_ACTION_RESULT)
-> +	)
-> +);
-> +#endif /* _TRACE_MEMORY_FAILURE_H */
-> +
-> +/* This part must be outside protection */
-> +#include <trace/define_trace.h>
-
-
-We want to add that new file to the "HWPOISON MEMORY FAILURE HANDLING" 
-section in MAINTAINERS.
-
-Nothing else jumped at me.
-
--- 
-Cheers
-
-David
+Xie Yuanbin
 
