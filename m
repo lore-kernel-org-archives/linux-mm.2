@@ -4,86 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F287CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:21:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87783CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:29:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BB8BA8E013C; Tue,  4 Nov 2025 08:21:19 -0500 (EST)
+	id D2AA48E013D; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B690B8E0124; Tue,  4 Nov 2025 08:21:19 -0500 (EST)
+	id D02838E0124; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A57898E013C; Tue,  4 Nov 2025 08:21:19 -0500 (EST)
+	id C3F1B8E013D; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 929128E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:21:19 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 52FD7C0518
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:21:19 +0000 (UTC)
-X-FDA: 84072985878.27.10C9E78
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 32B2C40014
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:21:17 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762262477; a=rsa-sha256;
-	cv=none;
-	b=8RCQqbYUcLMkPZ8YjK4Vd3Q03ynV3Be7vL/KswJ0vsapLZulNkm+9gaPFQMWevuPV1xGGv
-	KkwnUkcwp96aw3isLehtJ7eJ2A3EzMOp4YO+YcqHWKh4Y/HWlHF+AApS6sUniWKtI5VIRF
-	9e8zUEqT/oyIHYkcPkSYjaei/0wQm8E=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf12.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id B4C558E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:29:37 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5E57B58EFB
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:29:37 +0000 (UTC)
+X-FDA: 84073006794.11.3CFAE44
+Received: from canpmsgout01.his.huawei.com (canpmsgout01.his.huawei.com [113.46.200.216])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 67468140002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:29:34 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vAARjTmh;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762262477;
+	s=arc-20220608; t=1762262975;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0xtcF3lGaa8N2N2K4KUl4lTF49+O8kNeOdJScmNjjIs=;
-	b=uz1bEYtO2ORgGE0p6wt3CRgbKlgG1cXsupfM7h3wlXmEbKCPhOjKfx51rOyXNcQUn78bfC
-	6AcsIuvy/2uAgwNSloGdAyvtw4oS+/OHRdYFLPIyFKEC9YgQ6bjfe+F3AH07wWOcXov7L/
-	PC80f3jGZsETMw6FxRsbiGtxTF4zBsY=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5BE1D1CE0;
-	Tue,  4 Nov 2025 05:21:08 -0800 (PST)
-Received: from [10.164.18.64] (unknown [10.164.18.64])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E2E9C3F66E;
-	Tue,  4 Nov 2025 05:21:08 -0800 (PST)
-Message-ID: <d51ecac7-d67b-4da0-babe-a65aaf9293d0@arm.com>
-Date: Tue, 4 Nov 2025 18:51:05 +0530
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=UDPk3iLG0eDrVTCl9rDky3CFQfLdclSTPbN3316Yf1M=;
+	b=iSUGxOp6X7Me4/M+Ms5D6GFwGYp21ZbY3c0GiwUaY4eoedmWB8Rfz76CbRBeQECEC1wRW8
+	slWMMq3hABqeOpuTzjwkJKyB8lANhMHK2uOq0kRpJxtu3Flc2QLIFDF7y6gzDVwnLxgUGc
+	5pRo2JPb349k3e1MnZxfHCMSPug1EsI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762262975; a=rsa-sha256;
+	cv=none;
+	b=77s30FmlLHU6n9wnAInfRD8+oK2y2hFIszYkPZQF8cdUxlp5vEKol++1DijxZ3IQV5yLEk
+	LGoft5fRARPhyVUIRXpOgJnrioUWUTECVgrXiZi31wcEGnXpRnRwuJb0vNqH6omaZoIQ4a
+	dg8aReO/v5K9IjexQI78WAubzHbONRo=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vAARjTmh;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf26.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.216 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=UDPk3iLG0eDrVTCl9rDky3CFQfLdclSTPbN3316Yf1M=;
+	b=vAARjTmhfdkMTg6kz24QdHijPIzqbQ709o2YuMI1IBCJCeK2ZHFk/2liIjNFLYAXJVkkEAx0Y
+	xTrC+GpliI935FQmjp15aAkcUUwmlqDSM0id/87/I2Cq5JBapzunB2Ej1GR/LrgArjfBi2ZPLc+
+	BPD9TGkcpKcpR4aKMQFU0Ig=
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by canpmsgout01.his.huawei.com (SkyGuard) with ESMTPS id 4d18R40VY6z1T4G2;
+	Tue,  4 Nov 2025 21:28:16 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 754D11800B4;
+	Tue,  4 Nov 2025 21:29:28 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Nov 2025 21:29:27 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <david@redhat.com>, <dave.hansen@intel.com>, <bp@alien8.de>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <dave.hansen@linux.intel.com>,
+	<hpa@zytor.com>, <akpm@linux-foundation.org>, <lorenzo.stoakes@oracle.com>,
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>,
+	<surenb@google.com>, <mhocko@suse.com>, <linmiaohe@huawei.com>,
+	<nao.horiguchi@gmail.com>, <luto@kernel.org>, <peterz@infradead.org>,
+	<tony.luck@intel.com>
+CC: <x86@kernel.org>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<linux-edac@vger.kernel.org>, <will@kernel.org>, <liaohua4@huawei.com>,
+	<lilinjie8@huawei.com>, Xie Yuanbin <xieyuanbin1@huawei.com>
+Subject: Re: [PATCH v2 0/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
+Date: Tue, 4 Nov 2025 21:29:23 +0800
+Message-ID: <20251104132923.145332-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <1b316667-470b-4e1a-9c18-e42571e4769c@kernel.org>
+References: <1b316667-470b-4e1a-9c18-e42571e4769c@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
-To: Lance Yang <ioworker0@gmail.com>, zhengqi.arch@bytedance.com
-Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, bp@alien8.de,
- catalin.marinas@arm.com, dave.hansen@linux.intel.com, david@redhat.com,
- hannes@cmpxchg.org, hpa@zytor.com, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, lorenzo.stoakes@oracle.com, mhocko@suse.com,
- mingo@redhat.com, ppt@kernel.org, ryan.roberts@arm.com,
- shakeel.butt@linux.dev, surenb@google.com, tglx@linutronix.de,
- vbabka@suse.cz, will@kernel.org, x86@kernel.org,
- Lance Yang <lance.yang@linux.dev>
-References: <827b647d-798f-4775-bb31-ef735485c6bb@bytedance.com>
- <20251104131348.32332-1-ioworker0@gmail.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <20251104131348.32332-1-ioworker0@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Stat-Signature: zfzbfiqrmraei6axo7sh41euw5ngozdp
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 32B2C40014
-X-Stat-Signature: f8j1r4hybuucuwghtb9dgy6e15fkfuk3
-X-HE-Tag: 1762262477-525160
-X-HE-Meta: U2FsdGVkX1/jGzn4xyNAfPNpz4avu0bpj8FjlcyZVvVnbeH0c7H7UwL+35pyuFlSg7mEq56Sp/JFG0+vak2u9iTwx4GZdAdG68IStA22RZaMCK9ZfI6VlQUyJyja1j423fXC3ImAAfO+hm/fxH6sTJ6TE8Sw8LzEsMv1bVPTdhzv/s4nVDl774m6THMSfkOX4f8OzY48Cd1hzX+XM5Me0SuzReeOrv8IKTI7daWyYmFzTCuJsY6lPXDXnxTbC1HgOScNSceDQ3VbnNyOg5i/cmQevXn1gCSW2wqcOLFJ357xstPZcuHQwq/xzuoblYMACax+pXFVCVBVD7z0xPCmWvhvxTeb7Ezupcj9Wz/RtQJasvvDA0njLxEk5OVngCu7FQm6Y769Ac7DVQIMAn3pFSXJ0DBBHVK3DQUzF2tm+tv0O5VtDKhmo0d5OAZXz7yDM1NqAyhfaRutDh17n6P6gIT5jQ+h3kL1NMsnA43xV4pTRs5Og4zdQO8J0BGQTUrRrUe4UyHmbW44yzBOp2oH7UM/wQTqmrW5V52jctq/l3IwFttBVG3plTQmbq1sAt+vb/G2rS+6t/Yw3xuVh8Iy/pfYhvg8cJaLVpb4+TwFT8OvRBHBRta6IqJXbctEWfXbckQs0sqLNWQSLS/kO1s7G6PHor9Cjb+Rw1joI6ogVXsKy2Xll1BA4p6sEKMj3B1MmyMdjDOX4DuWVmNLCEAsA5YrHkyw+pB9JmJew5pPIugf0gXXZ5QvmOipjuuTszoO0pd741aqW02r0UxLKNpaB8wwbR9Xde9LqGTYOBYmncFDkl47GXBlQklt6X943HfPUzOTyxUf/qR7itG5REjXS/K91HgYv4w3VQAcRBDEW9FPBcyiZas/07LV9NJwrN0xeIpdb1byCOobsxgLrzhCt3SjjLSCgf97UW02a+8EFBBRtRRXYy55dkYBI0dUizoZRbZWXIw+pnFm00L7FSm
- 2XRVoEDV
- id/9IXja3Ewtkn4x6q/LPtw1cxai1YPY5GibGNAbpIM7gShtUIag6GUC7eSQVwCYwCKJBVQ9H7+aJBFkBgG+cdBH2exCTo1/P6VuFZlCdgWL/uR6vE//tvLgplgynqQ2mY5v0CEvW1WNY/XBApzYuDGPyol5NJmo/ist3fp50smOzzIAEdv5rOfpJZjECZgHoOfjc18uz2OuEaCqo6jHLPXJuU0b7qm3aHsAp+RjwfKCrgpFyBuLAmx0ekQ9RPlIyJLB4GDvN/YHz4aDBayWHui71GCbDgZsjM2OuM/MXdredY87CC4KhKdtAQQ==
+X-Rspamd-Queue-Id: 67468140002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762262974-36351
+X-HE-Meta: U2FsdGVkX18QX84kohQCiiI0Myi6bRAtx4Sq8dtCM8GKYQiq8wEJvefF5RMSisa1t6Bv3CIJ/CtJC+EPclDezkmydOjDG9focaaVLCVcouTeAe9X4aAGj5TpuImVIt2vAsKxTSoSP0afj9DKJhyJ8XhVYtYOINb1GVbXIGXZ2wbusn6rjM8EWE9v8wB1QboNRCTIe6XjMKCr7orEEWbE7YxvdgwdiQbfK13oesftboCOMzqIgXRnxcaNPutRhszNqVf3LnDMYYjbGTF+XS4X8fLc2hJrpSGvDsp5tlD8sBea0Yf30uFacH239ZavHshXzo69ZIFsx2cjhDSXBX78ryzNI70PvdD4GpUbwZyJKVNHPe9+IzMYytQuInucUtDVTeNc1p8acTD2HfYXQzBPeQyDoT1oxIwo7E4u97QmEKovua4VlXiqzUyvAkOreoynf4Zap1YLrk/1AeDTBWUhttHX2wL2W0P2Uf9O/a4am1/RtCjCZsr6+P50wfag4ndpDHi/2nIH/khEW32SYDnUz6n2xdkoC+4ak4AykmUv5GDrpxWLuM1vzGvkmU33+Ka3lz/Jet705K4LBYn38xH6G3ZsFpqt/rVBUS8Tmb9k8KLKa3zPSu3wwco+wJ43qHel/HoERPgimzl3P+4J3seC/DnP5Fx5wotjh2g8P3hbT/iG612OPKG7I5qF+LLSCvI8D0HtNRxurm4OAdfpuLOAWfV+w9WA1Ac4qtW0qeowa6h2JY8DSdrD0BRLoEwFiaFAFlQEkMGVKFUXvbysMciz+sWYupQcz9BUvdxbS3bf5zJ6ZNxlt3Ej8qA7fPdt9r65ngz9mxzKLbHbX1PHFqwoWa06hc1PxKdkpnDb+521askgekW+n49InNFwAcBb2eEUgx+8ia5BbLidF1zgwTuleIBVewvU69ykizrXjTyI46qJ1F6kiteapfEj79zmeYaqp7cOj2XPXK4f6OQa5vF
+ /Nltc1fI
+ lz/4wKAexH8HOEUhKQtmCLaIFyp+KJepuvuIMo+j/bt592Fywh5xtxA5pqNtRq89IoYQIAnzN13wnNZZiSWnMnJYMkoDyaACGbCnHB8SimZCzAR6hEueKMFvAHgHoglv5YTP9PQsIrjKoKZ5oHnf7sx1l3pjG+QMUpSUbEoc0vots+qHS2VhpmNrtp+qyyDfJypud1M8/SjSqiTg5NSYla7SFmGFZgXXxnXTwsF5XG7EaBsQF7MJY57uOhj3ZexrIuqrQhw7wZ+f1asceZpDXyxzaG1b5uhgsKXmkxirV1jvCZu3UFxi6FdJs3k/7wxyKsQsnfdElA5hCe2zz+ytthQKKng==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,135 +105,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+> This is a pretty generic description of MCEs.
+>
+> I think what we are missing is: who runs 32bit OSes on MCE-capable 
+> hardware (or VMs?) and needs this to work.
+>
+> What's the use case?
 
-On 04/11/25 6:43 pm, Lance Yang wrote:
-> From: Lance Yang <lance.yang@linux.dev>
->
->
-> On Tue, 4 Nov 2025 14:33:00 +0800, Qi Zheng wrote:
->>
->> On 11/4/25 12:02 PM, Dev Jain wrote:
->>> On 03/11/25 2:37 pm, Qi Zheng wrote:
->>>> Hi Dev,
->>>>
->>>> On 11/3/25 4:43 PM, Dev Jain wrote:
->>>>> On 03/11/25 12:33 pm, Qi Zheng wrote:
->>>>>> Hi Dev,
->>>>>>
->>>>>> On 11/3/25 2:37 PM, Dev Jain wrote:
->>>>>>> The implementation of CONFIG_PT_RECLAIM is completely contained in
->>>>>>> generic
->>>>>>> mm code. It depends on the RCU callback which will reclaim the
->>>>>>> pagetables -
->>>>>>> there is nothing arch-specific about that. So, enable this config for
->>>>>>> all architectures.
->>>>>> Thanks for doing this!
->>>>>>
->>>>>> But unfortunately, not all architectures call tlb_remove_ptdesc() in
->>>>>> __pte_free_tlb(). Some architectures directly call pte_free() to
->>>>>> free PTE pages (without RCU).
->>>>> Thanks! This was not obvious to figure out.
->>>>>
->>>>> Is there an arch bottleneck because of which they do this? I mean to
->>>>> say,
->>>>>
->>>>> is something stopping us from simply redirecting __pte_free_tlb to
->>>>> tlb_remove_ptdesc
->>>> Some architectures have special handling in __pte_free_tlb(), and cannot
->>>> simple redirect __pte_free_tlb() to tlb_remove_ptdesc(), such as m68k,
->>>> powerpc, etc.
->>>>
->>>> For those architectures that call pte_free() in __pte_free_tlb(), it
->>>> should be easy to modify them.
->>>>
->>>> If you're not in a rush, I can take the time to finish the above tasks.
->>> Right then, I'll leave that up to you!
->> OK, I will do it ASAP.
-> Cool! Looking forward to seeing that land ;p
->
-> Cheers,
-> Lance
->
->>>
->>>>> or pte_free_defer?
->>>>>
->>>>>
->>>>> I am looking to enable this config at least on arm64 by default, I
->>>>> believe it will be legal
-> Great proposal, Dev! That looks like a very useful feature. Let's make it
-> happen on arm64 ;)
+Now, let me try to explain it. From what I understand, it mainly comes
+from two aspects:
+1. Although almost all new CPUs are 64-bit, there are still many existing
+32-bit x86 devices in uses.
+2. On some embedded devices, in order to save memory overhead, even with
+64-bit CPU hardware, a 32-bit kernel may still be used. You might wonder
+why embedded devices need SPARSEMEM. This is because the MEMORY_HOTPLUG
+feature depends on SPARSEMEM, not necessarily SPARSEMEM itself.
 
-Yup, but not sure whether an arm64 enabling patch, only for that to go away
-when Qi implements the feature generically, is worth the trouble!
+All of the above devices, the memory-failure feature may be used to
+provide reliable memory errors handling, and to minimize service
+interruptions as much as possible.
 
+> Cheers
 >
->>>>> to do this at least here.
->>>> IIRC, arm64 can directly enable CONFIG_PT_RECLAIM, as it is supported
->>>> at the architecture level.
->>>>
->>>> Thanks,
->>>> Qi
->>>>
->>>>>
->>>>>> We need to modify these architectures first, otherwise it will
->>>>>> lead to UAF. This approach is feasible because Hugh provides similar
->>>>>> support in pte_free_defer().
->>>>>>
->>>>>> Enabling PT_RECLAIM on all architecture has always been on my
->>>>>> TODO list, but it's been blocked by other things. :(
->>>>>>
->>>>>> Thanks,
->>>>>> Qi
->>>>>>
->>>>>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>>>>> ---
->>>>>>>    arch/x86/Kconfig | 1 -
->>>>>>>    mm/Kconfig       | 5 +----
->>>>>>>    mm/pt_reclaim.c  | 2 +-
->>>>>>>    3 files changed, 2 insertions(+), 6 deletions(-)
->>>>>>>
->>>>>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>>>>> index fa3b616af03a..5681308a5650 100644
->>>>>>> --- a/arch/x86/Kconfig
->>>>>>> +++ b/arch/x86/Kconfig
->>>>>>> @@ -327,7 +327,6 @@ config X86
->>>>>>>        select FUNCTION_ALIGNMENT_4B
->>>>>>>        imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>>>>>        select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>>>>>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>>>>>>        select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>>>>>>        select SCHED_SMT            if SMP
->>>>>>>        select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->>>>>>> diff --git a/mm/Kconfig b/mm/Kconfig
->>>>>>> index 0e26f4fc8717..903c37d02555 100644
->>>>>>> --- a/mm/Kconfig
->>>>>>> +++ b/mm/Kconfig
->>>>>>> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>>>>>          The architecture has hardware support for userspace shadow
->>>>>>> call
->>>>>>>              stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>>>>>    -config ARCH_SUPPORTS_PT_RECLAIM
->>>>>>> -    def_bool n
->>>>>>> -
->>>>>>>    config PT_RECLAIM
->>>>>>>        bool "reclaim empty user page table pages"
->>>>>>>        default y
->>>>>>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>>>>>> +    depends on MMU && SMP
->>>>>>>        select MMU_GATHER_RCU_TABLE_FREE
->>>>>>>        help
->>>>>>>          Try to reclaim empty user page table pages in paths other
->>>>>>> than munmap
->>>>>>> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
->>>>>>> index 7e9455a18aae..049e17f08c6a 100644
->>>>>>> --- a/mm/pt_reclaim.c
->>>>>>> +++ b/mm/pt_reclaim.c
->>>>>>> @@ -1,6 +1,6 @@
->>>>>>>    // SPDX-License-Identifier: GPL-2.0
->>>>>>>    #include <linux/hugetlb.h>
->>>>>>> -#include <asm-generic/tlb.h>
->>>>>>> +#include <asm/tlb.h>
->>>>>>>    #include <asm/pgalloc.h>
->>>>>>>      #include "internal.h"
->>
+> David
+
+Thanks!
+
+Xie Yuanbin
 
