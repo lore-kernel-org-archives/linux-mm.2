@@ -4,100 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F394CCFA04
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 13:48:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DD6D3CCF9E3
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 14:18:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C93E48E0142; Tue,  4 Nov 2025 08:48:47 -0500 (EST)
+	id EFD5F8E0143; Tue,  4 Nov 2025 09:18:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C44968E0124; Tue,  4 Nov 2025 08:48:47 -0500 (EST)
+	id ED5008E0124; Tue,  4 Nov 2025 09:18:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B5A508E0142; Tue,  4 Nov 2025 08:48:47 -0500 (EST)
+	id E12268E0143; Tue,  4 Nov 2025 09:18:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id A504D8E0124
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 08:48:47 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 63A9D12BF32
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:48:47 +0000 (UTC)
-X-FDA: 84073055094.10.36D5F4A
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 43D26180017
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 13:48:42 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=485pWYjv;
-	spf=pass (imf06.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id CCC778E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:18:52 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 72B1AC0490
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:18:52 +0000 (UTC)
+X-FDA: 84073130904.04.BF07E87
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 8C37A1C000F
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 14:18:50 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a7BzEF7o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762265930; a=rsa-sha256;
+	cv=none;
+	b=07E52RQS68jvPKNoJ6I2WNcKfUOCD2zbVUBZ8HK4Kre90U0ADhN+Whv7loxxWxFJjoOoWc
+	iMvTnH1zx3UOm6bQI3R2i8RRdfCOguF8Igt7Asaoe+QaVnW4a/KFbGRsijcctNAuO6wnPd
+	z+2Lvs2ydoJJe3tcj+7MrK4q+zvnthg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a7BzEF7o;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762264125;
+	s=arc-20220608; t=1762265930;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=3/OARezs29eUq90xKny6FQe3l9UwiuCpXkYqxg2+/iY=;
-	b=QWScHy9bm1ARNztQlKqv0eyZswf+PoRY7eZO/p6SUoKVNrOUMEwyxcHS61fhTpPhEiEUDy
-	dnr1nVz2q3QROVxzt4vNbKp0c9qvkMCgaCMy+a7CoPGwki6RdzKi7NtDZSTWTk9j1OZ85Z
-	EEWBxnMfoPIrVcjENvSzKei/Er/EDsU=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=485pWYjv;
-	spf=pass (imf06.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762264125; a=rsa-sha256;
-	cv=none;
-	b=BXtnpSDksK1jqg1DDk9s1vjc/1C+xASv6LIWBBT9TgWDIMdikre9Q9QFbmo532Udx+8VFs
-	SOQHElbNRRsHnvxoegVMHe8sGdTALVBpQJcfhrGXkyPPSKMWlSByPo1K3vy4r06zon/dOO
-	299DjDJeQdoHdW43HHlzGw2fezOGFFA=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=3/OARezs29eUq90xKny6FQe3l9UwiuCpXkYqxg2+/iY=;
-	b=485pWYjvuZXFV9mKiWgarmKxkGqcVR6VQWU2toTQMryKr2Ccu9GXeoCSUTGB9tmbqKoCpniXy
-	I+RSyrWRIamnsSyRhH5kbEOoRupCQmkdnbybmsLNDjkuvrFDBpROPDmUvLZ+CmZ8iM4HeydHHQC
-	MM1lAeLT19FUO479+LA7qEA=
-Received: from mail.maildlp.com (unknown [172.19.163.252])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4d18rj1mzYz1prL4;
-	Tue,  4 Nov 2025 21:47:01 +0800 (CST)
-Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
-	by mail.maildlp.com (Postfix) with ESMTPS id 8B967180B69;
-	Tue,  4 Nov 2025 21:48:36 +0800 (CST)
-Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
- kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Nov 2025 21:48:35 +0800
-From: Xie Yuanbin <xieyuanbin1@huawei.com>
-To: <david@kernel.org>
-CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>, <ardb@kernel.org>,
-	<arnd@arndb.de>, <dave@vasilevsky.ca>, <david@redhat.com>,
-	<ebiggers@kernel.org>, <kees@kernel.org>, <liaohua4@huawei.com>,
-	<lilinjie8@huawei.com>, <linmiaohe@huawei.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux@armlinux.org.uk>, <lorenzo.stoakes@oracle.com>,
-	<mhocko@suse.com>, <nao.horiguchi@gmail.com>, <nathan@kernel.org>,
-	<peterz@infradead.org>, <rmk+kernel@armlinux.org.uk>, <rostedt@goodmis.org>,
-	<rppt@kernel.org>, <surenb@google.com>, <vbabka@suse.cz>, <will@kernel.org>,
-	<xieyuanbin1@huawei.com>
-Subject: Re: [RFC PATCH 1/2] ARM: mm: support memory-failure
-Date: Tue, 4 Nov 2025 21:48:31 +0800
-Message-ID: <20251104134831.147584-1-xieyuanbin1@huawei.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <e323f1f3-f543-4e81-af6b-243fcf9ba750@kernel.org>
-References: <e323f1f3-f543-4e81-af6b-243fcf9ba750@kernel.org>
+	bh=fegadqky2+wDncO6EEzp6EtHtYs+MZ/h5acCaF7TRFY=;
+	b=67vsVMNVxZ0yzv6eb3q8i/SZZx0ADyc6iMZ3cRF9SBHGXD6lB7Hs7VAQhAQGuHejmpD2E/
+	xnljW/pP+S13sY7UNq62nPyTPLfaLj+Izy6B9VyFzPa8CPUpbiOpj1lhVNhPBG52RFjxQu
+	g5kArjjaT/KvNqFVDdsyIjdCaDqYpEo=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 51A7E409F5;
+	Tue,  4 Nov 2025 14:18:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC05C4CEF7;
+	Tue,  4 Nov 2025 14:18:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762265929;
+	bh=KDpA3sfTJje2PYGRTGef7NL8grPCiLnKO59C6WUsjEU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=a7BzEF7osH2v9ARCYCeQ6HfKY9wZv7DLYeLSUfZwei3yXJNENy25KCPWcM3pgTFSD
+	 xE2Pj0ciI8BfCpz1WzXoJz0Q6JzXphKOHe+8XhKFeGLXrETRofN1juogJEPHB8OWQC
+	 GVQL78JoqQOiBXA/1kyBr3zl1oJXnZH3UeaUkVlJYwWy7KcDeGptzRjawURSh/MqZo
+	 mLoot90VHA0GNjn+Bc/K7xXziFoeu+NqJt74JR+kP/lqxLEArgPC4VRCxGg+prNPDo
+	 E3t7RzQLpzKMbxrkEIpoTidpmWEJxz1jveteipDOjPLKBjbXPK63FQwq4kojzbCENN
+	 bQizyIqoEGIhw==
+Message-ID: <56df0211-dccd-425f-9690-e2c0adb2160f@kernel.org>
+Date: Tue, 4 Nov 2025 15:18:42 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.67.109.17]
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemj100009.china.huawei.com (7.202.194.3)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 43D26180017
-X-Stat-Signature: yz4g595qerom5pnyn8fmpjb4gg16chni
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+To: Peter Xu <peterx@redhat.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, Mike Rapoport <rppt@kernel.org>,
+ Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Axel Rasmussen <axelrasmussen@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ James Houghton <jthoughton@google.com>, Hugh Dickins <hughd@google.com>,
+ Michal Hocko <mhocko@suse.com>, Ujwal Kundur <ujwal.kundur@gmail.com>,
+ Oscar Salvador <osalvador@suse.de>, Suren Baghdasaryan <surenb@google.com>,
+ Andrea Arcangeli <aarcange@redhat.com>, conduct@kernel.org
+References: <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
+ <aPe0oWR9-Oj58Asz@x1.local>
+ <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+ <aQO3Zko6Qrk7O96u@x1.local> <aQPCwFZqNd_ZlZ0S@x1.local>
+ <d0b037a6-11b9-483b-aa67-b2a8984e56e0@lucifer.local>
+ <aQPU-tyo_w68cnKK@x1.local> <7768bbb5-f060-45f7-b584-95bd73c47146@kernel.org>
+ <aQkUwbx7Z4q1qcSB@x1.local> <5f128cbf-7210-42d9-aca1-0a5ed20928c2@kernel.org>
+ <aQkxioBXJtPbuJJ-@x1.local>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <aQkxioBXJtPbuJJ-@x1.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1762264122-475408
-X-HE-Meta: U2FsdGVkX1+RLwBMAiwWhcG7tO9Cg2hAks6W9kdIU5vxb/jpHaoBA6TAlBErfwurL6oCfi5d2qgv+JLMhTwtENdD9Z+SShfkslATxIp6jX/CtBgXV50TWMZ0Xd4SCk+KE6YCarjVvrj0MJHaoyUQI0jPOnHnT2CTlLb9GhNCdqSqCrwliZV3wEBqWM/p9epoDGx37uBp/3DKE5Ew24tFXd8YR1rYOZVqsIXjG0++WvCxV14rQcbY8VyJ/vAwXTJbSEofpUc04BA2XiPnm+Mzn8ecUsXcCKYXtecPFDQPJjDpqROkdXT4mEL1yLKzdcmPr7pFa5t5Sm9GlZ4IfRUm9UJgPRiN3MwEvoFaoJynMJpxJMWr/JwxsB5d+q2e/5EKH3ZwuRj4mkpRadcS/JJWrXbxCPbuBhIab5WnU9KrHSv9hRbz7q/+3Vc4E/rcHCF8/ZM/0s3+TbSQ4R+RzuQGH6IVNOqreU7X6ClR2V885JvI2keRqReRcjlqYsHO5Kc6e9r/xN6Mv0S43AnNTG5+J/zpXkqKyyALDus5Wn9y0c1ilWyOtDf2kQDtzT44x1xGaB9lnsafY5icyR7gxIbgOD5qwOufrhTIr5C0DrUVUnlOEW2zJrWQW4WJkfS6w02TvStACg8YZ0CwuAPt6ubne9OI9KHDizVPcobFEPVd0gt6mikHEUcq7b/2gowP/MP/gvHDR3sHmNpdTsDEZmCTI2hyqXcHW4e3yqzlaidZuDvYkO0S0p/rxGQfvB/Myek66yUPdf2gHT4f615GtogkR4ghwvs8CffS4mBgRreN6znoLDC47dkC/UcJm/ehQ/uy286XtvBaKMjfwDe4rpPBw/gVvbGDwiNnt2pIDo+h0FdKSthfaxAMoxhwCHQcVRs5paOVUPKAVR32i5omfBIX+3/vXd+0U5iqRePsTVs9jQh4RpURQpsNq8UINYLCwWtxcjWiRO5k2bfspL+UNAx
- 1LvoKgzF
- u3HHNJx21aaVQT0Gv5ccoNwBKyJAJGtg6UJJWW6ga+7o2mGkHaE2T46AqCJ+slHr8hna3kzfe0Do7d0LE09t78R88xAVQIwJbzHlU7eUcXxDvuQ0IlyZTuF5U6VVWNh25/NwkiIl6VJ2Jf2KZUFBi5WGRWKek68yKCJK4zRTdOieMIUERuPeFcxVqRl8BaGHJ1ckNuzXmCeQzl7368D7qNlETPf9kDWEfN7iwMzrb5aUaloe6jDmpwBfL7ZCyvWmSvMGvmrpddwgVvFwB6RmISu7/nRkPkYbpu1ao62rDnNRsD96ufqWQxndT6x7tXgsZPtx2l7dEL8THEG7ju8DpLXg82bGxQ9qXhl5n
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 8C37A1C000F
+X-Stat-Signature: 37xgy7e78b16c9wz7g1i5x73m4obyxt4
+X-HE-Tag: 1762265930-418012
+X-HE-Meta: U2FsdGVkX19+tcOpC0pDpDw9DASp8IAGGtfGD6tzChDv7F+H207s30PW/DMGcYRr2/SzoYva5EVSjno3OAS/j/9PB5xbyh7Xt7GybED3EiY/hz2QGf7hJaXnYdWXrEbLbNxQx/AYaM4RSvcaAgVcfOzLrDEgssa7kMH031VGoa7RZqTKF2SQB6Pk1eIMS4J/nZMCJhqmbpBWU8QUw/rTdAH5yp3NC5bXdGEoZD1L0Hif0jKHd5oqvcANk7CwDzcGgfhjpNMICmtHxC/VF5/cUHwNzJnLRWGnNeawtvoEOI7jDLXg54Y/wW/zMipod+WMHZ8I7WcqHmyOmbMY01BXYzsrbWJ8hXBBxB1qGP1adZc3R29BdUjYhidpZO70/eQXPR3wmXlyrqudDBfQpdXzGAHPIyqc84qpNQw88lNw75aEH+X/I/uO01WrfKOxiKqWBsO4TQKpQiUwl3lKBr/hAuEEDs1DyAzEA9mhRejhNcuKnQ8mTzHtM/ZWE2Wh/W0XZkFwSViNwYD436m04Yus2DeMgoXB3LbR67f4dp2zn0bkAHR1P9HgZUpRoHhHl67es0bty/BqrihpOtAQHCumCdpxMYZ79xbLKz9KZwX67cmWvRg+9Rs+Le2xMzYtpR3rRKYQg550HzlWMTBCH4JOFRg7zKJEWwMuulnXpg6/MnrrAgp0KyQwlDDn7gVLC+DjB+Xm+Cpf7xbASeMVl62jqLvY3xlIcW7EiOps8JLsf24bDpK4s4M+6kyr5wWdGUjU3bpwSPx3dw1r7ZStITX8FM1JdIZ4Tzs5PNN3ka21rdIzFGP5v7zEwhYgpctr3lAWryeUKIbyu60AEKfj02pSfbpSgJuOwzMhahl0mMXwUB7AFKNOFZyaMSVYyVCdFv2ppI7I8WT3jgXyWUe1n0J1OcSixQCEWx8FpXF2ey+h9dqlhqnUKxMgnhPCC2G6xtF1Z9E1RBgGs8rKK8cAV3J
+ hoGM+uzT
+ 2nTSGN9wOgBOQ6TnSEx0e6MeLAA+AgsUoQe+mD/YO8FXyLsse4/LnVQepKTPNy4IRSTPl6HnEruuDxa7NfzIGuWPzH/YDLn21VqlSCWcAbEyn5Fw88h3DefsE7osus1eNXqPRUgAxhgqzWw60QEqJMTgeA+XheXEAcHtJcd73Y8lGGpkbloZs+VH9Vz8NoluXyzs3mI+Pks20sypU69asQa5Gz/gxZMhMt+VDDbNIcHgqVIJbQrla5OgDSIkxPKu6ZLG5g/N/O3KDTF2NN9U3pFJ82pDMFOTCi4Ztfsofd+/SCHrUAuExNJvDgagMgEYUUbY4k7Uy9NFPytJLshz7U4P7XjE3Tg3t+THzTOjwDkTJ00zo5AGIU0h3BnM5jk1nWQBD
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,49 +109,263 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, 3 Nov 2025 17:53:18 +0100, David Hildenbrand wrote:
-> Can you go into more details which exact functionality in
-> memory-failure.c you would be interested in using?
->
-> Only soft-offlining or also the other (possibly architecture-specific)
-> handling?
+>>>> Again, not what I would have expected from you, and I would assume that you
+>>>> had a bad day and would at least apologize now that some time passed.
+>>>
+>>> Sorry, no.  I won't apologize for that.  I was not fair treated, and now I
+>>> think it's fair I at least make a joke.
+>>
+>> Peter, if you would tell me that I am going mad I would not be able to
+>> understand that as a joke -- unless maybe if you add plenty of :) . :)
+> 
+> If it's a problematic use of the word "mad", it could be my English not my
+> attitude.  I can easily say I'm mad at something when I'm not satisfied.
+> I admit I'm not a native speaker.
 
-Thanks! Let me describe it in as much detail as possible.
+I'll note that there is a difference between "going mad" and "getting 
+mad". Many of us are not native-speakers, so this stuff can happen. We 
+can explain that it was not our intention and move on.
 
-The functions in memory-failure.c are currently used in three ways:
-1. When the application is using memory, and ECC detects a UE
-(Uncorrectable Errors) bit flip from DRAM (the detection is performed by
-hardware and is not perceived by software), it reports an interrupt to the
-CPU. The relevant driver (a third-party module) has already
-registered the interrupt callback function.
-Based on the configuration, the driver calls `memory_failure_queue()`
-inside callback function, or wakes up the related kthread to call
-`soft_offline_page()`/`memory_failure()` to take the affected memory
-offline or kill the process.
+> 
+> But then, if you think "mad" is a bad word, how about:
 
-2. Hardware memory scanning function: The hardware periodically performs
-read/write tests on some memory (This hardware is not a standard hardware,
-so it is not included in the ARM spec. The scanning is not perceived by
-software) If bit flip is detected during the test, an interrupt is
-reported to the operating system to do the memory-failure,
-just like what described earlier.
+The issue is when it gets personal, not the word itself.
 
-3. Software memory scanning function: The software (such as kthread/
-work-queue) periodically use `soft_offline_page()` to isolate some free
-memory and performs read/write tests. If bit flip is detected during the
-test, it is considered a failure, and the memory will not be recovered.
-Otherwise, use `unpoison_memory()` to recover the memory.
+I.e., calling code mad/trash vs. calling people mad/trash.
 
-Unfortunately, the driver code for these three methods is difficult to
-open-source. I have also been thinking about whether there is a
-general-purpose function that could use memory-failure, but I haven't
-come up with a good idea yet.
+Could be that some userfaultfd code might be mad trash :)
 
-> Cheers
->
-> David
+> 
+> https://lore.kernel.org/all/6odeeo7bgxgq4v6y3jercrriqyreynuelofrw6k6roh7ws5vy2@wyvx7uiztb5y/
+> 
+>          I'm happy to address changes, but I'm not happy to accept more
+>          middleware and "it's not part of the patch set" to address any
+>          problem as you push more trash into an already horrible code base.
+> 
+> I didn't raise CoC report for that.  
 
-Thanks!
+I don't think this is CoC material, but I am sure no expert on that.
 
-Xie Yuanbin
+> I was still trying to be technical on
+> the whole discussion as much as I can do best.  Hence, my reply was:
+> 
+>          > I'm happy to address changes, but I'm not happy to accept more
+>          > middleware and "it's not part of the patch set" to address any problem
+>          > as you push more trash into an already horrible code base.
+>          >
+>          > We need to fix things too.
+>          >
+>          > So I'm fixing it.
+> 
+>          Let's wait for a 2nd opinion on the approaches.
+> 
+>          As I said, I'm OK if everyone likes your solution and if I'm the only one
+>          NACKing it.  If we can support guest-memfd finally whoever adds that, it's
+>          not so bad.
+> 
+> Is "trash" a better word than "mad"?
+
+See above.
+
+[...]
+
+>>>
+>>> It's Liam who stood out strongly pushing back what he at least used to be
+>>> not familiar with.  This was, IMHO, rude.  It's ok to keep silent on some
+>>> patchset that one isn't familiar.  It's ok to ask questions.  It's not ok
+>>> to strongly push back without being extremely familiar with the code.
+>>
+>> /me am I a rude person? :( ;)
+> 
+> Frankly, I would trust that if you strongly NACK a series, then you should
+> have good knowledge of the code base and the series you disagree.
+
+Right, I didn't, I pushed back against some things in there to reduce 
+the scope. Even if it would go upstream as is I could live with it. I 
+don't really maintain the VMA pieces though, that this interacts with.
+
+So maintainers that maintain related pieces (e.g., VMA) might have a 
+stronger opinion on the interface than me.
+
+> 
+> If you didn't have enough knowledge and NACK some patchset without really
+> knowing much better than the author, yes, IMHO I think it's rude too.
+
+I'm usually careful with NACKs, I barely use them :)
+
+> 
+> If I did it, it's the same.  I will be the one to be rude.  It has nothing
+> to do with who's doing it.
+> 
+> Like if I strongly push back whatever change in maple tree, I'll be rude.
+> I never did, and I'll never do that.
+
+Well, assume you maintain VMA handling and there are changes to the 
+maple tree that would affect the VMA handling, sure you could push back 
+against some interface changes without being an expert on the maple tree 
+implementation.
+
+That's how people push back against some rust changes without being an 
+expert on rust ...
+
+Anyhow, I agree that jumping in into something completely unrelated 
+could be considered rude. I don't think this is the case with Liam and 
+Lorenzo here, though. But that's just my personal take.
+
+[...]
+
+>> I acked your series for a reason: I think it is good enough to implement
+>> that (as simple as possible), but I also have the feeling that we can do
+>> much better in general.
+> 
+> "feeling" is not a good reason to block a series from landing.  
+
+Right, but I didn't block it because of that. I merely pointed at the 
+raised alternative.
+
+> If you, or
+> Liam, or anyone, has good proposal already, we can always consider it.
+
+Yeah, that's what Liam ended up doing. Spending a lot of time to have a 
+technical discussion to see how we can move forward.
+
+> 
+> The thing is I don't easily see a good proposal so far, it's non-trivial.
+> 
+> Meanwhile, the current v1-v4 I posted should be simply enough that even if
+> one day someone wants to clean it up we can revert relevant changes and
+> apply the cleanup idea on top, because the changeset needed to do the
+> cleanup on top of v1-v4 of mine will be trivial.  It doesn't need to be
+> blocked.
+> 
+> I mentioned too that I think userfaultfd code isn't the cleanest, for
+> example, here:
+> 
+> https://lore.kernel.org/all/aQPX859LbBg5FmE8@x1.local/
+> 
+>          On Thu, Oct 30, 2025 at 04:24:46PM -0400, Liam R. Howlett wrote:
+>          > Right, so the existing code a huge mess today and you won't fix
+>          > anything, ever.
+> 
+>          IMHO fix is the wrong word.  Cleanup it is.  I agree the current
+>          userfaultfd code isn't extremely easy to follow.
+> 
+> So I agree cleanups might help.
+
+Good that we all seem to agree on that at least.
+
+> 
+> Liam explained his "vision" on how to cleanup.  I explained why it won't
+> work, starting from:
+> 
+> https://lore.kernel.org/all/20250926211650.525109-1-peterx@redhat.com
+> 
+> At that time, the proposal was still:
+> 
+>          struct vm_uffd_ops hugetlb_uffd_ops = {
+>                  .missing = hugetlb_handle_userfault,
+>                  .write_protect = mwriteprotect_range,
+>                  .minor = hugetlb_handle_userfault_minor,
+> 
+>                  .mfill_atomic = hugetlb_mfill_atomic_pte,
+>                  .mfill_atomic_continue = ...
+>                  .mfill_zeropage = ...
+>                  .mfill_poison = ...
+>                  .mfill_copy = NULL, /* For example */
+>          };
+> 
+> Obviously, whoever proposed above hasn't looked at handle_userfaultfd() at
+> all. That's also why I stopped commenting at that time, because it means
+> who proposed it actually doesn't know the code well yet, and I don't
+> necessarily need to comment on each line.  I explained from high level on
+> why it's an overkill at that time.
+> 
+> It's fine to propose something being familiar or not with it, but again
+> it's not fine to strongly pushback one series with such a proposal, and
+> without the familiarity of the code base.
+
+Again, see my reasoning above regarding interfaces. Don't get me wrong, 
+I understand both sides here and I am personally also not a friend of 
+hard pushback / NACKs, which is why I usually try to phrase stuff 
+differently.
+
+> 
+>>
+>>>
+>>> I sincerely wished that works out.  As I said, then I'll properly review
+>>> it, and then we build whatever we need on top.  I'm totally fine.  However
+>>> it didn't go like that, the API is exactly what I pictured.  I prefer my
+>>> proposal.  That's what I did: showing the difference when there're two
+>>> proposals, and ask for a second opinion.
+>>>
+>>> It's not fair to put that on top of me to blame.  He's trying to justify
+>>> he's correct.  It has nothing to do with me.  He can stop pushing back
+>>> anytime.  He can keep proposing what he works on.  It's his decision, not
+>>> mine.
+>>
+>> I would prefer if we can come to a conclusion instead of having people stop
+>> pushing back and walking away.
+> 
+> Obviously people can walk away from either side.  It's not always that who
+> push back things can walk away.
+> 
+> I'm nobody.  I don't mean I'll be walking away and I'm comparing that to
+> Liam's walking away.  Liam is doing very well on maple trees (I didn't
+> follow at all, but I'd trust that), while I'm pretty sure Linux will run as
+> smooth if I walked away.  
+
+Of course, I wouldn't say "nobody". But yeah, pretty much all of use 
+could leave the kernel today and Linux would keep on running fine (at 
+least for a while :) ).
+
+> However IMHO this is not a reason at all to allow
+> anyone randomly NACK on anything without good reasons, and without good
+> knowledge base of what the patchset is touching.
+> 
+> Not to mention this is also not the 1st time it got strong NACK.  v2 was
+> almost NACKed because I introduced a function that returns a folio*.
+
+Yeah, I hate how this patch set evolved. I guess most of us do.
+
+[...]
+
+>>
+>> Of course, I *could* make a decision, but that would likely involve that we
+>> continue the discussion without this drama. But do people want that?
+> 
+> If you get my whole point, I was sincerely trying to collect 2nd opinions.
+> 
+> I can paste my reply once more here, for my attitude:
+> 
+> https://lore.kernel.org/all/aQPX859LbBg5FmE8@x1.local/
+
+That was the mail that was IMHO absolutely appropriately phrased.
+
+> 
+> If you are talking about drama, just to mention I didn't raise a CoC report
+> even if my code was evaluated as "trash".  IMHO, whoever reads these
+> discussions likely wasted some part of one's time.  I don't want to waste
+> time for whoever is going to audit this whole thing.
+
+Again, calling code trash is not really CoC material but I might be wrong.
+
+> 
+> I left my opinion in maybe 1 hour after Liam shared his branch, that
+> included having lunch.  I can glimpse ~1000 LOC as fast almost because what
+> Liam proposed matched almost like what I can imagine.
+> 
+> Mike shared his opinion today.
+> 
+> You can definitely share yours after taking time to read about it.
+> 
+> We stuck here for months. So many things happened.  It's definitely not a
+> problem if we take this slow.
+
+I hope we can de-escalate now and try to move forward while assuming 
+positive intend and maybe slapping in a bunch of :) to highlight jokes ;)
+
+-- 
+Cheers
+
+David
 
