@@ -4,96 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 343CDCCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 09:56:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D7CBCCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 10:24:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E66968E0125; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
+	id E75C38E0127; Tue,  4 Nov 2025 05:24:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DBA828E0124; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
+	id E4DC38E0124; Tue,  4 Nov 2025 05:24:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A5EAC8E0127; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
+	id D637A8E0127; Tue,  4 Nov 2025 05:24:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 583E88E0125
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:55:59 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 16223C0435
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:55:59 +0000 (UTC)
-X-FDA: 84072468438.18.AAAE517
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 17B651C0004
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 09:55:55 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C531C8E0124
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:24:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6232113AF6B
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:24:35 +0000 (UTC)
+X-FDA: 84072540510.11.91A3B45
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 16ABD1C0006
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 10:24:32 +0000 (UTC)
 Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=f+5XNYLZ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762250157; a=rsa-sha256;
-	cv=none;
-	b=bK6jL1wyLY1J+KQEBfqcBuVSJWpnPJsfCp0lBSYMlylZA3G5AThEn/flNxwrUEN5yJndCM
-	IeuU+cDH8fqkVko06Pd4KJj8TNLSU/SvLgSgJ9MHjNIPHsnJq8LkBtS/58ILAfu+flaS6I
-	1Qw4ufXcoA2uWjV5cexwQjXqQu5yoZY=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=f+5XNYLZ;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf18.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.130 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F22ZyU0O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dEnDLU+I;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F22ZyU0O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dEnDLU+I;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762250157;
+	s=arc-20220608; t=1762251873;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=/xXceKPMp8UFg2aPwvJeptDALB/4lrD/age8qUK3AD0=;
-	b=C1mfH1luFxBZ4So6PAXbM7CBj7y347BySjKuztvXJyblIKKttvjI/Q4BIKMh2irz9TaqYK
-	ty5tnN/v5lReefRuIMpVALXRHwq5xpteK+D1aDicnf0pPxQzK2rbd0c8QaYi3KVLgFiwT6
-	j/DeBqdS4SzR7eeJ/GmHvClIU8KI7TY=
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762250153; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=/xXceKPMp8UFg2aPwvJeptDALB/4lrD/age8qUK3AD0=;
-	b=f+5XNYLZs2W6hGcQ7djTHX5kpC98MXpyCeTr1n4Dv+seRWM26EmeH5Q6LsBZbt7qPlbGLXxhaVxPwRjyqy8qXvwQGWzIrY3xFY4UIOBF0UNu0hDq62X0I6H0usu/5TKdaLxx08gtl9qd2VYDsebUo30/ZShd49V3v8btI1ZEM0M=
-Received: from localhost.localdomain(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0WrgsU9X_1762250151 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 04 Nov 2025 17:55:51 +0800
-From: Huang Ying <ying.huang@linux.alibaba.com>
-To: Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@redhat.com>
-Cc: Huang Ying <ying.huang@linux.alibaba.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	"Christoph Lameter (Ampere)" <cl@gentwo.org>,
-	Dev Jain <dev.jain@arm.com>,
-	Barry Song <baohua@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Yin Fengwei <fengwei_yin@linux.alibaba.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: [PATCH -v4 1/2] mm: add spurious fault fixing support for huge pmd
-Date: Tue,  4 Nov 2025 17:55:15 +0800
-Message-Id: <20251104095516.7912-2-ying.huang@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
-References: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
+	bh=QUST+k1U2v9lp03HQYKCUSRvVl3dhQ0RkvE1dYJyp1o=;
+	b=a+aH26V7/eTeot3F11iWA4o8YNgtemCDJZxketObJKpZQorPsy28PkM9W38+U3yFmvuQmo
+	RMU3xNu/tKIEnMVaUEfWgnxdyMLPYjSBJyzFJyNF6VVFO71Sy4bTMCR6m9/M3hOZeXYLzA
+	HrR1EHTHX1xCazFCKMXKWAwHuKUr5D4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762251873; a=rsa-sha256;
+	cv=none;
+	b=TEBJzx/nR41JL9sAKo6Y7iOJv2BQ3NIX5ssfKoVNHhXm7G4ExqPlP/D3hG8LnCe24GiVM4
+	LINj0uKR2NmiTEMxies4Wj/FcTioQyjmtjWwK+m619Zx4sxpFUnQeXRUv46Z3yZ4jgm8f8
+	1Imw4oiQicF5KM7LxkmuEPTIdqFrb5A=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F22ZyU0O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dEnDLU+I;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=F22ZyU0O;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=dEnDLU+I;
+	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 327021F387;
+	Tue,  4 Nov 2025 10:24:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762251871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QUST+k1U2v9lp03HQYKCUSRvVl3dhQ0RkvE1dYJyp1o=;
+	b=F22ZyU0OIGfXA1u0JS5EOCFYZyKpvScHY10HJUuFKjT6B5JHaDP4ESwA5uodFGiDjuxoG1
+	CYY22Vg4A9ObiRMF49kJNWO9EJEd6YG3L8Mwn7D6HpvCvRrlFKU+xXF1yF+LGYBEpzmvSa
+	mak0CaKaLl5LBOkp1JjFXu5jS+4G5N0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762251871;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QUST+k1U2v9lp03HQYKCUSRvVl3dhQ0RkvE1dYJyp1o=;
+	b=dEnDLU+IQsczLobueRkov04DKkoK6RLqFABHB2TaJN9RLqxNp7+ee6pWLzBhn5d+eFlbXe
+	u94X+Qt7X8IvyPCg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762251871; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QUST+k1U2v9lp03HQYKCUSRvVl3dhQ0RkvE1dYJyp1o=;
+	b=F22ZyU0OIGfXA1u0JS5EOCFYZyKpvScHY10HJUuFKjT6B5JHaDP4ESwA5uodFGiDjuxoG1
+	CYY22Vg4A9ObiRMF49kJNWO9EJEd6YG3L8Mwn7D6HpvCvRrlFKU+xXF1yF+LGYBEpzmvSa
+	mak0CaKaLl5LBOkp1JjFXu5jS+4G5N0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762251871;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QUST+k1U2v9lp03HQYKCUSRvVl3dhQ0RkvE1dYJyp1o=;
+	b=dEnDLU+IQsczLobueRkov04DKkoK6RLqFABHB2TaJN9RLqxNp7+ee6pWLzBhn5d+eFlbXe
+	u94X+Qt7X8IvyPCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 253AD136D1;
+	Tue,  4 Nov 2025 10:24:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id T53hCF/UCWktUgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 04 Nov 2025 10:24:31 +0000
+Message-ID: <f59e2a0e-1da3-4670-84ee-679c2001f58f@suse.cz>
+Date: Tue, 4 Nov 2025 11:24:30 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: prevent infinite loop in kmalloc_nolock() with
+ debugging
+To: Dev Jain <dev.jain@arm.com>, Harry Yoo <harry.yoo@oracle.com>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251103-fix-nolock-loop-v1-1-6e2b3e82b9da@suse.cz>
+ <5bb311a5-b59f-4897-b4d0-4e06d7d2b3f2@arm.com>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <5bb311a5-b59f-4897-b4d0-4e06d7d2b3f2@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 17B651C0004
-X-Stat-Signature: ycs9o1b75rx8p5bksicwb98ge83byewu
-X-HE-Tag: 1762250155-857125
-X-HE-Meta: U2FsdGVkX18THqrlfjmQuIpU5IHrpvwwLxkWaBbb4SKP7NhPaC64rkQ0ozyXg6F0d07aBbTNhYRnd0UFWp9otPyT8vKiE//ZFX3Fvmt5LBZPltQccMK3EL4AoPWpmQbEprdQTHvh5e1oX7XFj8b1ZsukOaXY7KmLTiFQ1OY2cu3W1dsgFcISY8E73q5bIkC9vH61rfZrhDZuLlcjNP6gnn0J2Hq+bMEWGJ8o5RLwr8jdKU33IBubowTHN61T0vrlii5+Ltk41eCL5/hb/c615vBL/azOxePPzw2iUubHS/KjwRjx/tKB5ksl/L5eKnH5d0E80UM65US8j+5jEjFLn0jnZR69xI5ln+pBxNZbJ2Z6lQAzaHSjtg7VfsyRbK7wkTQJrhTTKiRPwExENzGeOmpAshI3JCxIjU3DjstEU6KIa8H2OZLwoPX/cqx1SHg46byW/HnJpJusGhaA9Go8GkdOoYRZUxYt1fDwvYLrkuIyAift/LuL08eZCbTwSOpfJyJKw1FBEN0Kod7ct0Cq/3/H+tccQ3mNa/WK+HGN2QyAcE+dCfOAjRNrikXxATx78vPSHwqOOhtiwlrtUYzjXfznccoo1+e2CTbUHc26LbMGywdTMdVxXLMFuEu1a4/VVKtClV3V2KfykdJY/gaZZmHIWGuQ9EuQk/aWv/MXfZ1p1P/JiFWWly/AL1wwYCj3PEI8S7Vpdf/GMgbzCiYXGaWujhfxQQVZUoH5D6zj4b89cb9cNV2pxP6mp7h1l2QGPlDhhObJ3fEuaF9zsfTjA3X0dlWbx/d7ZgF+4TCh+W0s5y0oM7rol56IyEhvCLMY1gTPh7ge52ya9LfFaDeeq1KXt5SyhDjIlpKXcDmZA38lwUz0apH+S/+xepDIVpC3oUd3w3Wivumcs/Lb81sTNPhtellyWElWglRATERye4idlwSKPGQQBdDgasw+2zo5SrnvzI/GsZjanCjAKcI
- 24VlBDbG
- Xr6QT6UqZ8ZPc9zngvI6teY7hTjAT7MD/rU4unPj0HucjMASNp92ElAwejSOKkHRfKrkbxV213Wg91vfJ0YgiTRex62wZ5nU2SkM59EzAOIEA9fYPAzl+odhkmULxSkpNo8Kueprhpj3tZ60/fxcjHW5uaF6IaIHtQouXO7W9iFlr9UnFumTXOBExavMDWHoIXxr7yS/jd2wDBv/yNnIdMWTiGGMO7shZ6jyZ1y1jhHJ1D+D2vCV94hjQxV2amUmNbaqzwurQxc48taB6k0QBeqtibOE1kJ7ZxnhEzf4Ckb9sVHolfmgTv07h29bjbdpipQvIO9UdQS+lbaUFSjgKXC/JQTmKtIhXpnV4/nZFwLsN5QqW1BGNQ1r34tiYbcvhM+e/x/01Mj1wyv7PDcW9GWVmAxTFyOqmtL01JGUzukGTLQOtfGhYmSai1rtyhrD62tiAW1RmapfETY8DKDP3aIzyDn7xq8Sz1YVQv5n+NFltoOdD4M1aogmuhSMIXXnQo0IxieMvQ+eb62xw5StrZASV8CPw4YQuKdNJXcGc92UljWB7E6JtEuokb1F+l6pGUNUzJl0EQsFlJZlcGExKezI/Y4knAkm4bNN+S9vUB7rQgKgd0bS6y49h40ag4GmFo1xMUI9fdw8i4tmQjXjE+czJIOfHaEzhxrqjTKiV/udXatj0Z0wVJB6UKl9KPqH+Xcp3mcPp5zsfH4l5j+5CsW/8oqBTD5eniVEm3ejus6XWjYWR1urPNxD3oeCcSP5FVkT7
+X-Rspamd-Queue-Id: 16ABD1C0006
+X-Stat-Signature: dmzahbb6amsdbta46p17b5ny4xkzb5qm
+X-HE-Tag: 1762251872-439612
+X-HE-Meta: U2FsdGVkX18TNcW9CsGu0EIyHN+scr51DUzvdKROmWT9zdwIhCJBS8i9iFtC7wz8KcWXkkp6t0/DC0yxGtOLQ/SW1Lzv3Vm7RL25T6JNPIudJp/0/r5jgzIVIdjNRdqz3KOZH4qe6UkrWlphsS+E6c/VMpJ9X+QqF3bNy6xc1nLWC2YbjZ7MuGkL5x4jBfEaZ3JWBomPoz+gFR1k0tElTpHD6A1NTCIeligjNUTXdQSqLWmMmbZuQyYOJi72ElntQPeeIhZkjwKlcEr4x+Npf8irzh3AWfpdi1HbMUOVi2SI+OFn0TxQ5wlnO/Sumkl/V6YTmL1Sn6/uyh8FmmMj7OzNHP4cet4l0RNPnxHb/CbADKLHGKEGBuPgSHAdP/J0ODOH9hn7JuQH4Lacx0V5kNxuJW5VVU/LgNNDhVilppdFIemS5TFOvd6GVdiuGyezSzyP1ZOSoAWrNIjMNzLG+v9JzL/K+E06KInZP9CXbVUJb73q6tGPxxtAExsoggkf1mjJvMIbI4zlq+YRorzwMZwbBRC/UESdy0IAIw0MUb8KHTq7hSp0Hv/83dmohPb7yBOSZgCYBeNB3SU7q9ebRMVdLo9J48A4JJ9hqBiBcUq2BeH9lkXy2iCDPfMvaxBLP2MM+w/HzK0qZSe2BTUH9/o6uj4juMGw3B1QXJCbRg1Cm9RurH88kUYAoKlipDuVQFd6FhwmbX1+5HA/QVBr9UBCOX+c+ne98xIM1NUAwrEyp1XPoB4M7f+HBQwIazsTzFTDPFFqD9aW1V8BI95ppqkfmXjI2/GO+GonnBXNKI47M7qqLGU0NOl6nhNCvcLfWdWf3+5HX+KXMG1bSJ7KNhpi8ikFxOuu6yi2WWx1KXXtCL+HptwalKDqfAoMQ8EeV4cSPnHXkpfT++JcAFcvOSrUtUtPJagEI/uSfyYhCFIjJLfCIl+EUdy/oILkyekLlVa28mphaqnY8l7Gvca
+ BrnalCXi
+ y438iXegGvQBqFdQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -102,246 +143,76 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The page faults may be spurious because of the racy access to the page
-table.  For example, a non-populated virtual page is accessed on 2
-CPUs simultaneously, thus the page faults are triggered on both CPUs.
-However, it's possible that one CPU (say CPU A) cannot find the reason
-for the page fault if the other CPU (say CPU B) has changed the page
-table before the PTE is checked on CPU A.  Most of the time, the
-spurious page faults can be ignored safely.  However, if the page
-fault is for the write access, it's possible that a stale read-only
-TLB entry exists in the local CPU and needs to be flushed on some
-architectures.  This is called the spurious page fault fixing.
+On 11/4/25 6:26 AM, Dev Jain wrote:
+> 
+> On 03/11/25 5:54 pm, Vlastimil Babka wrote:
+>> In review of a followup work, Harry noticed a potential infinite loop.
+>> Upon closed inspection, it already exists for kmalloc_nolock() on a
+>> cache with debugging enabled, since commit af92793e52c3 ("slab:
+>> Introduce kmalloc_nolock() and kfree_nolock().")
+>>
+>> When alloc_single_from_new_slab() fails to trylock node list_lock, we
+>> keep retrying to get partial slab or allocate a new slab. If we indeed
+>> interrupted somebody holding the list_lock, the trylock fill fail
+> 
+> Hi Vlastimil,
+> 
+> I see that we always take n->list_lock spinlock by disabling irqs. So
+> how can we interrupt someone holding the list_lock?
 
-In the current kernel, there is spurious fault fixing support for pte,
-but not for huge pmd because no architectures need it. But in the
-next patch in the series, we will change the write protection fault
-handling logic on arm64, so that some stale huge pmd entries may
-remain in the TLB. These entries need to be flushed via the huge pmd
-spurious fault fixing mechanism.
+From a NMI or e.g. a kprobe->bpf hook, which are the use cases for
+kmalloc_nolock(). The word "interrupt" thus doesn't mean IRQ, but I'm
+not sure which word would be better. "Preempt" would be perhaps even
+more potentially misleading.
 
-Signed-off-by: Huang Ying <ying.huang@linux.alibaba.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Zi Yan <ziy@nvidia.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: "Christoph Lameter (Ampere)" <cl@gentwo.org>
-Cc: Dev Jain <dev.jain@arm.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Kevin Brodsky <kevin.brodsky@arm.com>
-Cc: Yin Fengwei <fengwei_yin@linux.alibaba.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org
----
- include/linux/huge_mm.h |  2 +-
- include/linux/pgtable.h |  4 +++
- mm/huge_memory.c        | 33 ++++++++++++++--------
- mm/internal.h           |  2 +-
- mm/memory.c             | 62 ++++++++++++++++++++++++++++++-----------
- 5 files changed, 73 insertions(+), 30 deletions(-)
+> If we are already in a path holding list_lock, and trigger a slab
+> allocation
+> and recursively end up in the same path again, we can get the situation
+> you mention, is that possible?
 
-diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-index f327d62fc985..887a632ce7a0 100644
---- a/include/linux/huge_mm.h
-+++ b/include/linux/huge_mm.h
-@@ -11,7 +11,7 @@ vm_fault_t do_huge_pmd_anonymous_page(struct vm_fault *vmf);
- int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		  pmd_t *dst_pmd, pmd_t *src_pmd, unsigned long addr,
- 		  struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma);
--void huge_pmd_set_accessed(struct vm_fault *vmf);
-+bool huge_pmd_set_accessed(struct vm_fault *vmf);
- int copy_huge_pud(struct mm_struct *dst_mm, struct mm_struct *src_mm,
- 		  pud_t *dst_pud, pud_t *src_pud, unsigned long addr,
- 		  struct vm_area_struct *vma);
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 32e8457ad535..ee3148ef87f6 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -1232,6 +1232,10 @@ static inline void arch_swap_restore(swp_entry_t entry, struct folio *folio)
- #define flush_tlb_fix_spurious_fault(vma, address, ptep) flush_tlb_page(vma, address)
- #endif
- 
-+#ifndef flush_tlb_fix_spurious_fault_pmd
-+#define flush_tlb_fix_spurious_fault_pmd(vma, address, pmdp) do { } while (0)
-+#endif
-+
- /*
-  * When walking page tables, get the address of the next boundary,
-  * or the end address of the range if that comes earlier.  Although no
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 1d1b74950332..c7aeb639d063 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1641,17 +1641,30 @@ vm_fault_t vmf_insert_folio_pud(struct vm_fault *vmf, struct folio *folio,
- EXPORT_SYMBOL_GPL(vmf_insert_folio_pud);
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- 
--void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
-+/**
-+ * touch_pmd - Mark page table pmd entry as accessed and dirty (for write)
-+ * @vma: The VMA covering @addr
-+ * @addr: The virtual address
-+ * @pmd: pmd pointer into the page table mapping @addr
-+ * @write: Whether it's a write access
-+ *
-+ * Return: whether the pmd entry is changed
-+ */
-+bool touch_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	       pmd_t *pmd, bool write)
- {
--	pmd_t _pmd;
-+	pmd_t entry;
- 
--	_pmd = pmd_mkyoung(*pmd);
-+	entry = pmd_mkyoung(*pmd);
- 	if (write)
--		_pmd = pmd_mkdirty(_pmd);
-+		entry = pmd_mkdirty(entry);
- 	if (pmdp_set_access_flags(vma, addr & HPAGE_PMD_MASK,
--				  pmd, _pmd, write))
-+				  pmd, entry, write)) {
- 		update_mmu_cache_pmd(vma, addr, pmd);
-+		return true;
-+	}
-+
-+	return false;
- }
- 
- int copy_huge_pmd(struct mm_struct *dst_mm, struct mm_struct *src_mm,
-@@ -1841,18 +1854,14 @@ void huge_pud_set_accessed(struct vm_fault *vmf, pud_t orig_pud)
- }
- #endif /* CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD */
- 
--void huge_pmd_set_accessed(struct vm_fault *vmf)
-+bool huge_pmd_set_accessed(struct vm_fault *vmf)
- {
- 	bool write = vmf->flags & FAULT_FLAG_WRITE;
- 
--	vmf->ptl = pmd_lock(vmf->vma->vm_mm, vmf->pmd);
- 	if (unlikely(!pmd_same(*vmf->pmd, vmf->orig_pmd)))
--		goto unlock;
--
--	touch_pmd(vmf->vma, vmf->address, vmf->pmd, write);
-+		return false;
- 
--unlock:
--	spin_unlock(vmf->ptl);
-+	return touch_pmd(vmf->vma, vmf->address, vmf->pmd, write);
- }
- 
- static vm_fault_t do_huge_zero_wp_pmd(struct vm_fault *vmf)
-diff --git a/mm/internal.h b/mm/internal.h
-index 1561fc2ff5b8..27ad37a41868 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -1402,7 +1402,7 @@ int __must_check try_grab_folio(struct folio *folio, int refs,
-  */
- void touch_pud(struct vm_area_struct *vma, unsigned long addr,
- 	       pud_t *pud, bool write);
--void touch_pmd(struct vm_area_struct *vma, unsigned long addr,
-+bool touch_pmd(struct vm_area_struct *vma, unsigned long addr,
- 	       pmd_t *pmd, bool write);
- 
- /*
-diff --git a/mm/memory.c b/mm/memory.c
-index 74b45e258323..6e5a08c4fd2e 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6115,6 +6115,45 @@ static vm_fault_t wp_huge_pud(struct vm_fault *vmf, pud_t orig_pud)
- 	return VM_FAULT_FALLBACK;
- }
- 
-+/*
-+ * The page faults may be spurious because of the racy access to the
-+ * page table.  For example, a non-populated virtual page is accessed
-+ * on 2 CPUs simultaneously, thus the page faults are triggered on
-+ * both CPUs.  However, it's possible that one CPU (say CPU A) cannot
-+ * find the reason for the page fault if the other CPU (say CPU B) has
-+ * changed the page table before the PTE is checked on CPU A.  Most of
-+ * the time, the spurious page faults can be ignored safely.  However,
-+ * if the page fault is for the write access, it's possible that a
-+ * stale read-only TLB entry exists in the local CPU and needs to be
-+ * flushed on some architectures.  This is called the spurious page
-+ * fault fixing.
-+ *
-+ * Note: flush_tlb_fix_spurious_fault() is defined as flush_tlb_page()
-+ * by default and used as such on most architectures, while
-+ * flush_tlb_fix_spurious_fault_pmd() is defined as NOP by default and
-+ * used as such on most architectures.
-+ */
-+static void fix_spurious_fault(struct vm_fault *vmf,
-+			       enum pgtable_level ptlevel)
-+{
-+	/* Skip spurious TLB flush for retried page fault */
-+	if (vmf->flags & FAULT_FLAG_TRIED)
-+		return;
-+	/*
-+	 * This is needed only for protection faults but the arch code
-+	 * is not yet telling us if this is a protection fault or not.
-+	 * This still avoids useless tlb flushes for .text page faults
-+	 * with threads.
-+	 */
-+	if (vmf->flags & FAULT_FLAG_WRITE) {
-+		if (ptlevel == PGTABLE_LEVEL_PTE)
-+			flush_tlb_fix_spurious_fault(vmf->vma, vmf->address,
-+						     vmf->pte);
-+		else
-+			flush_tlb_fix_spurious_fault_pmd(vmf->vma, vmf->address,
-+							 vmf->pmd);
-+	}
-+}
- /*
-  * These routines also need to handle stuff like marking pages dirty
-  * and/or accessed for architectures that don't do it in hardware (most
-@@ -6196,23 +6235,11 @@ static vm_fault_t handle_pte_fault(struct vm_fault *vmf)
- 	}
- 	entry = pte_mkyoung(entry);
- 	if (ptep_set_access_flags(vmf->vma, vmf->address, vmf->pte, entry,
--				vmf->flags & FAULT_FLAG_WRITE)) {
-+				vmf->flags & FAULT_FLAG_WRITE))
- 		update_mmu_cache_range(vmf, vmf->vma, vmf->address,
- 				vmf->pte, 1);
--	} else {
--		/* Skip spurious TLB flush for retried page fault */
--		if (vmf->flags & FAULT_FLAG_TRIED)
--			goto unlock;
--		/*
--		 * This is needed only for protection faults but the arch code
--		 * is not yet telling us if this is a protection fault or not.
--		 * This still avoids useless tlb flushes for .text page faults
--		 * with threads.
--		 */
--		if (vmf->flags & FAULT_FLAG_WRITE)
--			flush_tlb_fix_spurious_fault(vmf->vma, vmf->address,
--						     vmf->pte);
--	}
-+	else
-+		fix_spurious_fault(vmf, PGTABLE_LEVEL_PTE);
- unlock:
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
- 	return 0;
-@@ -6309,7 +6336,10 @@ static vm_fault_t __handle_mm_fault(struct vm_area_struct *vma,
- 				if (!(ret & VM_FAULT_FALLBACK))
- 					return ret;
- 			} else {
--				huge_pmd_set_accessed(&vmf);
-+				vmf.ptl = pmd_lock(mm, vmf.pmd);
-+				if (!huge_pmd_set_accessed(&vmf))
-+					fix_spurious_fault(&vmf, PGTABLE_LEVEL_PMD);
-+				spin_unlock(vmf.ptl);
- 				return 0;
- 			}
- 		}
--- 
-2.39.5
-
+There shouldn't be such recursion in the code itself, in the absence of
+NMI/kprobe/etc.
+>> deterministically and we end up allocating and defer-freeing slabs
+>> indefinitely with no progress.
+>>
+>> To fix it, fail the allocation if spinning is not allowed. This is
+>> acceptable in the restricted context of kmalloc_nolock(), especially
+>> with debugging enabled.
+>>
+>> Reported-by: Harry Yoo <harry.yoo@oracle.com>
+>> Closes: https://lore.kernel.org/all/aQLqZjjq1SPD3Fml@hyeyoo/
+>> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and
+>> kfree_nolock().")
+>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> ---
+>> as we discussed in the linked thread, 6.18 hotfix to be included in
+>> slab/for-next-fixes
+>> ---
+>>   mm/slub.c | 6 +++++-
+>>   1 file changed, 5 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/slub.c b/mm/slub.c
+>> index d4367f25b20d..f1a5373eee7b 100644
+>> --- a/mm/slub.c
+>> +++ b/mm/slub.c
+>> @@ -4666,8 +4666,12 @@ static void *___slab_alloc(struct kmem_cache
+>> *s, gfp_t gfpflags, int node,
+>>       if (kmem_cache_debug(s)) {
+>>           freelist = alloc_single_from_new_slab(s, slab, orig_size,
+>> gfpflags);
+>>   -        if (unlikely(!freelist))
+>> +        if (unlikely(!freelist)) {
+>> +            /* This could cause an endless loop. Fail instead. */
+>> +            if (!allow_spin)
+>> +                return NULL;
+>>               goto new_objects;
+>> +        }
+>>             if (s->flags & SLAB_STORE_USER)
+>>               set_track(s, freelist, TRACK_ALLOC, addr,
+>>
+>> ---
+>> base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+>> change-id: 20251103-fix-nolock-loop-854e0101672f
+>>
+>> Best regards,
 
