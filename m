@@ -4,87 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 27048CCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:02:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF38ECCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:19:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5EB378E00E5; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
+	id DB3128E00E6; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 59ADB8E00DC; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
+	id D62888E00DC; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4D7818E00E5; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
+	id C52498E00E6; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3A3AF8E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:02:39 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D8AA1B9097
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:02:38 +0000 (UTC)
-X-FDA: 84071577996.09.23CAEAA
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BDC114000C
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:02:36 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+	by kanga.kvack.org (Postfix) with ESMTP id ADC618E00DC
+	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:19:51 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4D87D1603BA
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:19:51 +0000 (UTC)
+X-FDA: 84071621382.04.7FAFEE9
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 82B4210000A
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:19:49 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jl+kcMbN;
+	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762228957;
+	s=arc-20220608; t=1762229989;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/QE7pAvMdiyVS73dSCBBcSZ2/zYxlgloHbOBsUxC/NI=;
-	b=k6BHIr/t4CCmfXDTvtdYDV6In54cjFHwsB+aKBKtgSJC3bNbZGSB5NNq9EymOZgMKTxbAf
-	Q+LTmxq39VdIg7AEXYu/lAL/lsjBIHszkGodCM3AIGhL2niemCO2Hu158SGUvHnTCkhDFL
-	iU04GFF5uLndJ8AA55RNrD+K1SsNcPA=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
+	b=tK4vq/Iz3yIW3fk7X+YTzUxnNlW7KlUYehyqF4HjHxpdnTbwJ0yG5dFd0ZaKqNfmLZ9S1I
+	fXXxsEYcDN+i+TFe0L/7el6+hgzROnVKzvzEVO7ukHt4fLtvdLECKhXCEXYq4EjxO8m7G+
+	SeUgS6G5Y/8cqGB6Ug8edcFSwhcgz9s=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf04.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762228957; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Jl+kcMbN;
+	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762229989; a=rsa-sha256;
 	cv=none;
-	b=ET13Ir2VXhU+sQP6BBPQPkWqywfelq51PWKCcLP2yTgGl2bjcQARaBv8fFjfm5TCj5B1on
-	AtSex6CX5sg6tSQ/8rcN8e14Jz8FfVxtRVV2Xnl8qlXCj05aA5HFpn2es12XqP6BaZofFk
-	SQ8bJRNP+n/MzSKmsoVx6OuzSRR2cEg=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CA7481C2B;
-	Mon,  3 Nov 2025 20:02:27 -0800 (PST)
-Received: from [10.164.18.64] (unknown [10.164.18.64])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0E1ED3F694;
-	Mon,  3 Nov 2025 20:02:28 -0800 (PST)
-Message-ID: <2be04785-d725-4e79-a609-87f174271f83@arm.com>
-Date: Tue, 4 Nov 2025 09:32:25 +0530
+	b=lsDXpFWc3FCjI6yZNtsOnK0wVumsz8+qh3zLRRCevB6mHTwyUtprgaWzR1C48FRKc+ZRgd
+	MoSQ23LSIU3n7cUu69boWi/Yk/orvSFYsyFgEdPmRc3Bdbj9IVUV3CnwRqs12YPG/jh78i
+	BvdOS71egUpbSvqKcSFHb0cdEUWppVk=
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-891208f6185so482582185a.1
+        for <linux-mm@kvack.org>; Mon, 03 Nov 2025 20:19:49 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762229988; x=1762834788; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
+        b=Jl+kcMbNeK9UgM76vI3mGkE3CUFNxkIoaBsb9Dqxy5HWsUNsI/UoVcGuZKrg0FhExW
+         S1UotYQz8iW9+1jbyuavwHIn3ABB8mpIvg6txxyE1OuQH3TBg/B6xmEJobZf+KoTnesj
+         bm3KJM0WQ9c6dHYROxb6KmGuk+ssbE0L7T9Warlcx+zu9R4WLi1pnjyZUA4y+gaFzNc6
+         zh1/3ctOg5fnMaQ38zwuJWsm6iowzknaSCTFX0MBf3MlUNGM6S1O8o33vgx/WdnvFYy8
+         0JtAkQfith/2IfktJ0xaavMvgrKwGlX6XJccBqdIni1nSGH0bgonTdAjEFF2kDNIYfJ4
+         a7ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762229988; x=1762834788;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DHJdjMEE/xapcpdDdK8KASqwyVZ/30uRlTXAFHL0inQ=;
+        b=YuGJ21gRTTO3+tFHEohSezg0iGyEgZ9EBnUgO3nx+MRP/Do9MpNg6XEhPJ1blzHmxI
+         U5PFjdVLE6fFpp0zTQid/HPWNbtiqySjuOgj4xCYLEBbWQlD7vLGZ+whRz8nCpNH164E
+         8wMJvMfCSt1yT9T1fAN8/9QmfaIQG3S+/WQdNW+vT5kYOHdG7tThq1gqIIjP2UsG/FlI
+         Sg3i9WvJW7qtaarOhy3YDg8y+S5LamRuBJ4LXYJyekISN0sD2+tZgpO7U0AY9Rjgoe8/
+         PE8J024MOTqYUj88G6Mpn2pDwgElvdgIfkivlWe+Uh7S3QWebzxjzcV7+CQOBtILdEYu
+         MgLA==
+X-Gm-Message-State: AOJu0YxQk7VMiGirbsiq0L7zzUrA5NTHKoABhS1ftbf1OeQ64L3bxLK0
+	U7L0FWLpG8S8PSy6WrhtjSCsfRiJWalmInaA1t3Vh38OTeqNTYolmomFZ43Aa+vIL8Agq0P6Z7o
+	lqx6S+cv6O3AyA9JnD6UtVYCtjZiaODpy/BwB
+X-Gm-Gg: ASbGncsKuyx2kQU+XfUErTzgtw9jJJlt8hwSYPKmSgnzFo0fZwqK9+FGtVGj03LQ3Oi
+	+0ASmIw0YELm3airgCyvX/zkqFK5G7du4DxyxwZxsPOG3uEHInCCEGwc9CkhbDKGNJ+bzW5hlt5
+	7XYrNNWU50pDBARLPc6MjFVNSfLY0RkPhHkxQHPLQfMBbP6ZugqU9EjzxlMq3iZyE1lV53RXGzV
+	3B6J3DhF73qK2Q5K3KKTteYCrM3uxUzr5HDFCiH7BtWVngJJklRVJ4clieM9xSS+HBWGNGT5SE1
+	FfdWaks5iOSTo8YgnEH5pKBEe1Y=
+X-Google-Smtp-Source: AGHT+IH+5RRmTLyNpLIP6XrC7qEFKTxDYBgtFCpqxbfJLWWu5/DWtPIwC9vO7peSq0UZx7LZCNaKunPtQOQRW95H5sI=
+X-Received: by 2002:a05:620a:7103:b0:866:73f7:25a2 with SMTP id
+ af79cd13be357-8ab9b598b23mr1762087485a.64.1762229988351; Mon, 03 Nov 2025
+ 20:19:48 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] mm: Enable CONFIG_PT_RECLAIM on all architectures
-To: Qi Zheng <zhengqi.arch@bytedance.com>, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- catalin.marinas@arm.com, will@kernel.org, akpm@linux-foundation.org,
- david@redhat.com, hannes@cmpxchg.org
-Cc: ryan.roberts@arm.com, hpa@zytor.com, lorenzo.stoakes@oracle.com,
- Liam.Howlett@oracle.com, vbabka@suse.cz, ppt@kernel.org, surenb@google.com,
- mhocko@suse.com, shakeel.butt@linux.dev, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251103063718.90743-1-dev.jain@arm.com>
- <044e3f9a-3de2-4939-afff-3bb527eb024b@bytedance.com>
- <666e012e-0b13-4def-82de-55ccd5868d36@arm.com>
- <9359ce51-5ac7-4312-8ef8-79fa51d014f5@bytedance.com>
-Content-Language: en-US
-From: Dev Jain <dev.jain@arm.com>
-In-Reply-To: <9359ce51-5ac7-4312-8ef8-79fa51d014f5@bytedance.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: BDC114000C
-X-Stat-Signature: 15cyhufpxyhfnqfkoho651gjypx394eb
-X-Rspamd-Server: rspam02
+References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com> <20251029-swap-table-p2-v1-4-3d43f3b6ec32@tencent.com>
+In-Reply-To: <20251029-swap-table-p2-v1-4-3d43f3b6ec32@tencent.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 4 Nov 2025 12:19:37 +0800
+X-Gm-Features: AWmQ_bmTFRrhwXCcOBLUnvIw4tjUmphj21GmvzG37YUU2k9yPanr3-g3-dGf8iw
+Message-ID: <CAGsJ_4xOd0CJLZvzvZu9mRLjVvV0OSKE8NcBAYe3wvHFtLjWyA@mail.gmail.com>
+Subject: Re: [PATCH 04/19] mm, swap: always try to free swap cache for
+ SWP_SYNCHRONOUS_IO devices
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
+	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
+	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	Kairui Song <kasong@tencent.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 82B4210000A
+X-Stat-Signature: atq93kdj3be4yqaaaxofpjdteuj7e4p8
 X-Rspam-User: 
-X-HE-Tag: 1762228956-875573
-X-HE-Meta: U2FsdGVkX1+M2NlbjNac8NWxGEE+YCZUPWWohf1NR54Sx5ZShiOvXKi5Vl3Y0QfTBJVq20/j7CzyG2ojZZ0r1MRHkBIE5w7gVkyUyBOrDzjOcHyQnKB+3fevz2cciAfeTvPDSDbyYX68+pT4pSd05YlB+RP3LEAi9a0m7oB2YM6TYdo2Wc8HB00DmBzKEF0ZraFUYR+OzeyP9XqLnxDIDM/uUus3kgROa7JE7P33GrhXaOcj6jrspiwm3SYtwgRyj+WTPvJagm+6nsI5xTwrBotFey76Z69PWDCfaNia9QfF9xBrbrAiJQgUupqVrlYEYnrmEGkYzZmBL3cLMPdPIMN5+lX02rXRWv8CMWkWw6DzcPYdt2nwqtKwXiueB93DVTGmE4at9zvsitKME5pA2d5pkG8o8VIx79S0cBFxPzlTumUGrcfC06TPue9258RTJdruk/Su2c5/Nw7t6G9PpYlWOaPNpI4tQOp/T8YB9sfBpJr3bVhBFdBL9gG4wlRihMsvDzoK+8HIRMULuBYqA8Mj56yj+IYFyotulIOpvx8I/PA/6oy1X0cd4cQc6Eup8L98OrLcTKEVYrpkE1PM2EHWZ+DRwv5V6GCMUTfIC4WHjX/BFnbyqbHxIFvWick4l1ypuUqgw2qQyvjRb68me/n1Zq8ac2tUyMIb7JVOZxVmU9tT671Oj6Fo+0aS9ayfiGh0FNRfZZ1uvwjtSiuMONpPSTOe4snG7BOdUQ3tdOzULyYls/gAK1TYrk8xrmTWBb1LLsgfTQM15qJ35z6CV8dI8109J2QUvDNpAV76R2cvqTM1l+wn1t010kBSxkX6efnCxWEGIIOy1Twrt1tfDGIxnOKV5eowoA1fGn3Bz2HGYpUPMzD50pBBAjCKJm8dsNWNcMTAV5ILPSZ36wu5U4qb4+n1Psk6JttJ+k8mUO7+aQWt+p1Blquq3zMz++WIFG/ZO35JT4aj8FLh1hp
- Ec4K6IGP
- RGsFjYFJil5P8fFXM56Dws+DKWY4dQvKzTh5PVyEZHjmyAwnz96iby8Y8YIIOTvdcI2s0sqxVKiFbtrEzzo7pmt9t5Qzq/5JtsaDOzeWBICVgxoUzvSSqjrbiBELU3Iu4wbQQlt4jdp6VrOTQAYi1q2RfVZi7t1ik2Pm20iWl5ImMbaMu7peVs5skpRdJF9TiYi4Bdmoziq0O13DG85V5sadmCNeSJZqyv9jRL+XpoQY/ff84JBXaHlXo5bfYKQ5pWORFsBSHnEdfv54VqmIkKu3AO2YbcZr49/PNN/OdbGkWXfkhV0knDh4/wQ==
+X-HE-Tag: 1762229989-689886
+X-HE-Meta: U2FsdGVkX19DjNSQme+IhYEElkPiS+BuEQjSZsHJQj1/kIhL51g417/pqPwsl2Hf2kOCg0ujXJOxfDOng0tfe+9l6QHkMC+72+mgrpzQ77wlwpiLmEtnD2iJTi+fTV3oU70+n7dgQYftPRli8HgcgSa2IqXzE4w3Pbtmf8gRfCk1MIvyNDtLXpfFhsSd++SfTeBcb79MO4OlWBK7wMCoFjk099aJ37DXG9i12TwItXidwkH57JUC1JOO7thiA0zhwkjPzW122GHjxhW2MBlxfByXrOVr/5lswHHE7iPAw9fmjqYTFxvDYxDieuZ0hJBe2e/Ad6UyeH1kcCFC72EX2PXCz3/lVXy3aea5AFQYzpKDlcoRB3DMBJ/1zpwrflZRWtuGq9fp+zcrLeasxOddFCGYmordn3MLTnqn1/B6bfNgCwmg+BCTHjyeg7qohLs5CZ2S0XK+ExRI8fIfwl8uSVmmvMgbVX7Mrbyk5ds8nCvRgxovg/imtMNPZL/1bZu0955fCjXdsugyvdFKCcMHaWRqd7L8oWtXeIaXDV6nOeLnTEoCOZCDXkMR/9y2+GEGr9dPXEDx4DyWL7cmXVrl1DU9Xl7p07KwNvMW3Q0Urufx75WC+jZZrKEEZNq7oaE9z1YVBMOYHE+7VzNzqN+NvZjvfC5EZZu77ISAtj/KX8P/66WkkKqfVl2jtoF44dC7vE9PcdPFHt1ANMMjuXOZ1AUer8RwxsIlw944k+Xlhag5NlE6UP1YAoFGj3qOVIxwVopL9nN1eX2sMj20FJkV0Eilwn2DwUa+roVSuElGHSLnPVc/os2d7qDbr9wSq6r3bQ63lycQuDdERo1G+ljR/T0aXJBQ3p3J14WiTJ+TE+/OZSmEXaLQVFq/X/R6MKkGXxKYvm+aRNFHk1oTFyQ6pPAVp8rJgkfWqcVRTIkyn8YNebWDbKnODRREiR6Ft27wgTuRuTT0whhZTCRLeno
+ C6nSwwSD
+ CLC82hf+Grts6A2DWNJQhiZCFqqRz82q4OPRftqDem1fMLEFVBx4XDh+JRoXDdE0b3+Rz6RWJHbQ/+6xW01vIJgZ6KeU/heGldfqSIpDQ/bm6zd5z0HzfPSblHGb9hg1hUHJ8GvcWuzuvrVFWmgCl8HLFArDIjWG38W/+JpzWoJslqWWnpT51WL7F1ahd4yIzW8I4am0MXvh2eG9LDqoxE5MXMkZI5ploI++ne/+aWZ/HVzBE7/ioCvfYHpVRMHFR3IrSD85ZCm6EM6wdF6Yd/H6lFEZtCiUXnYHgjCX8JA83Y62VGXVbAXxxrtCeno7Ya042dl9UBEClxiBtV2B07kMqrg+SVk04VfAEm0GB6BkBewBId6cNxN0Tm2K8fUzxDMO3L6Xd8OFzXiUYDSkg4JwfzRO65OzDkwRLokTMxrO3aYGd30rPe4pFvpyvyqnEmImonbP3Zpff/aI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,129 +124,63 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+On Wed, Oct 29, 2025 at 11:59=E2=80=AFPM Kairui Song <ryncsn@gmail.com> wro=
+te:
+>
+> From: Kairui Song <kasong@tencent.com>
+>
+> Now SWP_SYNCHRONOUS_IO devices are also using swap cache. One side
+> effect is that a folio may stay in swap cache for a longer time due to
+> lazy freeing (vm_swap_full()). This can help save some CPU / IO if folios
+> are being swapped out very frequently right after swapin, hence improving
+> the performance. But the long pinning of swap slots also increases the
+> fragmentation rate of the swap device significantly, and currently,
+> all in-tree SWP_SYNCHRONOUS_IO devices are RAM disks, so it also
+> causes the backing memory to be pinned, increasing the memory pressure.
+>
+> So drop the swap cache immediately for SWP_SYNCHRONOUS_IO devices
+> after swapin finishes. Swap cache has served its role as a
+> synchronization layer to prevent any parallel swapin from wasting
+> CPU or memory allocation, and the redundant IO is not a major concern
+> for SWP_SYNCHRONOUS_IO devices.
+>
+> Signed-off-by: Kairui Song <kasong@tencent.com>
+> ---
+>  mm/memory.c | 13 +++++++++++--
+>  1 file changed, 11 insertions(+), 2 deletions(-)
+>
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 9a43d4811781..78457347ae60 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -4359,12 +4359,21 @@ static vm_fault_t remove_device_exclusive_entry(s=
+truct vm_fault *vmf)
+>         return 0;
+>  }
+>
+> -static inline bool should_try_to_free_swap(struct folio *folio,
+> +static inline bool should_try_to_free_swap(struct swap_info_struct *si,
+> +                                          struct folio *folio,
+>                                            struct vm_area_struct *vma,
+>                                            unsigned int fault_flags)
+>  {
+>         if (!folio_test_swapcache(folio))
+>                 return false;
+> +       /*
+> +        * Try to free swap cache for SWP_SYNCHRONOUS_IO devices.
+> +        * Redundant IO is unlikely to be an issue for them, but a
+> +        * slot being pinned by swap cache may cause more fragmentation
+> +        * and delayed freeing of swap metadata.
+> +        */
 
-On 03/11/25 2:37 pm, Qi Zheng wrote:
-> Hi Dev,
->
-> On 11/3/25 4:43 PM, Dev Jain wrote:
->>
->> On 03/11/25 12:33 pm, Qi Zheng wrote:
->>> Hi Dev,
->>>
->>> On 11/3/25 2:37 PM, Dev Jain wrote:
->>>> The implementation of CONFIG_PT_RECLAIM is completely contained in 
->>>> generic
->>>> mm code. It depends on the RCU callback which will reclaim the 
->>>> pagetables -
->>>> there is nothing arch-specific about that. So, enable this config for
->>>> all architectures.
->>>
->>> Thanks for doing this!
->>>
->>> But unfortunately, not all architectures call tlb_remove_ptdesc() in
->>> __pte_free_tlb(). Some architectures directly call pte_free() to
->>> free PTE pages (without RCU).
->>
->> Thanks! This was not obvious to figure out.
->>
->> Is there an arch bottleneck because of which they do this? I mean to 
->> say,
->>
->> is something stopping us from simply redirecting __pte_free_tlb to 
->> tlb_remove_ptdesc
->
-> Some architectures have special handling in __pte_free_tlb(), and cannot
-> simple redirect __pte_free_tlb() to tlb_remove_ptdesc(), such as m68k,
-> powerpc, etc.
->
-> For those architectures that call pte_free() in __pte_free_tlb(), it
-> should be easy to modify them.
->
-> If you're not in a rush, I can take the time to finish the above tasks.
+I don=E2=80=99t like the claim about =E2=80=9Credundant I/O=E2=80=9D =E2=80=
+=94 it sounds misleading. Those
+I/Os are not redundant; they are simply saved by swapcache, which prevents
+some swap-out I/O when a recently swap-in folio is swapped out again.
 
-Right then, I'll leave that up to you!
+So, could we make it a bit more specific in both the comment and the commit
+message?
 
-
->
->>
->> or pte_free_defer?
->>
->>
->> I am looking to enable this config at least on arm64 by default, I 
->> believe it will be legal
->>
->> to do this at least here.
->
-> IIRC, arm64 can directly enable CONFIG_PT_RECLAIM, as it is supported
-> at the architecture level.
->
-> Thanks,
-> Qi
->
->>
->>
->>>
->>> We need to modify these architectures first, otherwise it will
->>> lead to UAF. This approach is feasible because Hugh provides similar
->>> support in pte_free_defer().
->>>
->>> Enabling PT_RECLAIM on all architecture has always been on my
->>> TODO list, but it's been blocked by other things. :(
->>>
->>> Thanks,
->>> Qi
->>>
->>>>
->>>> Signed-off-by: Dev Jain <dev.jain@arm.com>
->>>> ---
->>>>   arch/x86/Kconfig | 1 -
->>>>   mm/Kconfig       | 5 +----
->>>>   mm/pt_reclaim.c  | 2 +-
->>>>   3 files changed, 2 insertions(+), 6 deletions(-)
->>>>
->>>> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
->>>> index fa3b616af03a..5681308a5650 100644
->>>> --- a/arch/x86/Kconfig
->>>> +++ b/arch/x86/Kconfig
->>>> @@ -327,7 +327,6 @@ config X86
->>>>       select FUNCTION_ALIGNMENT_4B
->>>>       imply IMA_SECURE_AND_OR_TRUSTED_BOOT    if EFI
->>>>       select HAVE_DYNAMIC_FTRACE_NO_PATCHABLE
->>>> -    select ARCH_SUPPORTS_PT_RECLAIM        if X86_64
->>>>       select ARCH_SUPPORTS_SCHED_SMT        if SMP
->>>>       select SCHED_SMT            if SMP
->>>>       select ARCH_SUPPORTS_SCHED_CLUSTER    if SMP
->>>> diff --git a/mm/Kconfig b/mm/Kconfig
->>>> index 0e26f4fc8717..903c37d02555 100644
->>>> --- a/mm/Kconfig
->>>> +++ b/mm/Kconfig
->>>> @@ -1355,13 +1355,10 @@ config ARCH_HAS_USER_SHADOW_STACK
->>>>         The architecture has hardware support for userspace shadow 
->>>> call
->>>>             stacks (eg, x86 CET, arm64 GCS or RISC-V Zicfiss).
->>>>   -config ARCH_SUPPORTS_PT_RECLAIM
->>>> -    def_bool n
->>>> -
->>>>   config PT_RECLAIM
->>>>       bool "reclaim empty user page table pages"
->>>>       default y
->>>> -    depends on ARCH_SUPPORTS_PT_RECLAIM && MMU && SMP
->>>> +    depends on MMU && SMP
->>>>       select MMU_GATHER_RCU_TABLE_FREE
->>>>       help
->>>>         Try to reclaim empty user page table pages in paths other 
->>>> than munmap
->>>> diff --git a/mm/pt_reclaim.c b/mm/pt_reclaim.c
->>>> index 7e9455a18aae..049e17f08c6a 100644
->>>> --- a/mm/pt_reclaim.c
->>>> +++ b/mm/pt_reclaim.c
->>>> @@ -1,6 +1,6 @@
->>>>   // SPDX-License-Identifier: GPL-2.0
->>>>   #include <linux/hugetlb.h>
->>>> -#include <asm-generic/tlb.h>
->>>> +#include <asm/tlb.h>
->>>>   #include <asm/pgalloc.h>
->>>>     #include "internal.h"
->>>
->
+Thanks
+Barry
 
