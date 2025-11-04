@@ -4,91 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 90ABBCCFA00
-	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 04:44:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1F989CCFA00
+	for <linux-mm@archiver.kernel.org>; Tue,  4 Nov 2025 05:26:48 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A0B5C8E00DC; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
+	id E1FFA8E00E8; Tue,  4 Nov 2025 00:26:47 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9E2B68E00E7; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
+	id DD00A8E00E7; Tue,  4 Nov 2025 00:26:47 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 924D38E00DC; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
+	id CE6708E00E8; Tue,  4 Nov 2025 00:26:47 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 835C18E00DC
-	for <linux-mm@kvack.org>; Mon,  3 Nov 2025 23:44:03 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id E216B1A03DF
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:44:02 +0000 (UTC)
-X-FDA: 84071682324.28.01D5747
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4B81940006
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 04:44:01 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO018gDQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762231441; a=rsa-sha256;
-	cv=none;
-	b=4NlYWSbyM+CyJdfQ4RQM+YBMIFRw8onylY7+VG0rQAvPSgBvhgLFSi1nEpX5zp1NvGCjfJ
-	LuCEkD8LxUyRpEmsg3oB2kwdFETfO4wBsHmm6XVp3Ghd1Jmu4I+fV7y971SI9YpWvU5c01
-	sFYM38RyvjFG2LtCZKpk//6ffPVyHec=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=FO018gDQ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id BDF5D8E00E7
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 00:26:47 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 25A7F58C02
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:26:47 +0000 (UTC)
+X-FDA: 84071790054.16.F6DC401
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0B52C100006
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 05:26:44 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762231441;
+	s=arc-20220608; t=1762234005;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKIq0hBTK28JBFWuM0r6MFcOPWyW7jRewz2w2X78yrk=;
-	b=InYoMkiL+4IemOvtiDmN2HW/La3zBkgJ8FDAegvq8nGLLLgjj2hl7iJBWLFJcmA7GNjkgB
-	5eGulyAU4R6qUmjJWXpBG6Cc8ec8Pboiw/7Vqz9YMkUKYA24OUCFl/GfNzTgUvQRh8cAIb
-	Q5tsa3IZN0XUqNzQsXN0CXhzZyrQryI=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 120AA40823;
-	Tue,  4 Nov 2025 04:44:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABBA8C4CEF7;
-	Tue,  4 Nov 2025 04:43:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762231439;
-	bh=Z7KhNXOenut48lwUMNJxE28x5klL4Yn07BEFFcrZ6AU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FO018gDQgELbLAGDo3eqXtRjD92b3sr3PGSg9THQONsaFkmA6Tlue5rZ9mf3aVHBT
-	 w1O368gkXxt0RGr7MA/9k8PVxLl42w0K+DD+N+J5VoBTEdZ8bKKUu8QZ8FurUkGtJG
-	 FQijL5pRksGIkEazCCzagCL58q4t2Uir0NZ2QC2bRJUV4o44ioLppqGP3xosrhX+sh
-	 JEB2N+hO4w070VnyT4C6izrBDapDMgctzE383IaWLTDMye6cbJlc+Hn5gRh4ZHdAWf
-	 mQm28XaZIoo+5ZJkRPqOjTRCz/GbuxI5IWAS6e5mxzYAaGAB/2iNxq8EN1EdPQFqd/
-	 B4tnO9qrUdpBw==
-From: SeongJae Park <sj@kernel.org>
-To: Hui Zhu <hui.zhu@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Hui Zhu <zhuhui@kylinos.cn>
-Subject: Re: [PATCH 0/2] mm/hugetlb: refactor sysfs/sysctl interfaces
-Date: Mon,  3 Nov 2025 20:43:54 -0800
-Message-ID: <20251104044355.94885-1-sj@kernel.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <cover.1762156954.git.zhuhui@kylinos.cn>
-References: 
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=yuMw5ee23ZZNBX9Qe5ghwRWK8KNaFfk+XtJ08y6pygk=;
+	b=5bX+M+rpXd8io+iYYfUD/C35SCwbEo6MIh6poAYZqwWvE70/wS854w9s4kIEYzluSDeZtr
+	SBnXfOTOw++AARtSL/pUmW7Tyqqhg63Yft7amvs6R6qqOzFxpCD98jBgnFJjjLNgu2zm8X
+	9HjEz402txrYiMNogzaaK1slV7BRUjE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762234005; a=rsa-sha256;
+	cv=none;
+	b=pzjkEntS9keyPMtzLpXTr2SA2uWGxzUAyGtnJuVdHIg45sQDYN8jsbbgyUgomz/G53YcBV
+	pYmf85JsW1BPiG0CYRCE75Nt7VQcYrppGRajYoLerZ5nx0tS9BkrIsVP8EnMbPqt49xUQc
+	uZUQTw4hvhVpVM0wlfCpstrG3cUmdBo=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf05.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0BEC51CE0;
+	Mon,  3 Nov 2025 21:26:36 -0800 (PST)
+Received: from [10.164.18.64] (unknown [10.164.18.64])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EC0BE3F63F;
+	Mon,  3 Nov 2025 21:26:40 -0800 (PST)
+Message-ID: <5bb311a5-b59f-4897-b4d0-4e06d7d2b3f2@arm.com>
+Date: Tue, 4 Nov 2025 10:56:37 +0530
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] slab: prevent infinite loop in kmalloc_nolock() with
+ debugging
+To: Vlastimil Babka <vbabka@suse.cz>, Harry Yoo <harry.yoo@oracle.com>,
+ Alexei Starovoitov <ast@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <20251103-fix-nolock-loop-v1-1-6e2b3e82b9da@suse.cz>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251103-fix-nolock-loop-v1-1-6e2b3e82b9da@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: tbfjjcz5yiqxbw9spxnsytgp3h85x8ii
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4B81940006
-X-Stat-Signature: hizif5a6cd9snp8idepygfioqbb3f6de
-X-HE-Tag: 1762231441-346931
-X-HE-Meta: U2FsdGVkX1/Jk6WPSuKO98Wj6ofw6gzhpmXG+QBTvZtECvFr9gr4fRETKexs7lowxPzhEQf9uyOP+61Fygxaele9HKrP4IKiw+3wANqj637E/pmyQethRS7SRdVfTLdAwBl55l8C8wbEHPPTUTR46yOXdOtvlpY3HPLmx3CS8knzcdy4C+tQL7JYe36Zf8XRYnZJO6pRmYes+uA+uAV8tA5NBUzl74LkKYxpPVVO2vsrYhpFgaho/Glg+dvcMISJ+6qBEwG/Umfa3cTh7S2QheXG0IFTezuKByWpumgG3qj5MDYZ5y1XE+07ZCT0bUZHaRHzbkDyWXJH//AAIqPRPhzReAoYyIM6KDypiucttqUl67w5LBl+nEJSh6QwLOtn+67Vsc4iFYRBCdzZi2TzLL9R9lXNoXjBLhkD/QDJXKWfy0TGpYefidgY0ECY7Lqsk0ay8znHsRmQTBGKIAig1JPVk1Jn4kZs4xLxohHbgRmDVbqGvjQHWPTMBd6fHUJt7iGy9LtshFubZJEI8FhSfoNcdsi+bkbFAN7WjWreUMEa9MX8ax4JO1sfYjzBDTB5jG0GzFGNz8rIFkbmfZl8bTtDGcs7SCgs6gYzm8RkZzkiv0vZHlvv6x5Om+AKKh/FRh29sJM2Wk07lawSBXkqcCCBdIQVWWR7nuiG3uNl3w6hrjJUsEsKbva+heXvFJdhyAh/qtHTfTH3I1bTGQ+UIaUt93QjZdqvHhNmadCuRLQizX90CLPAGo9tsKs+sxb/o6bpcu6g/bYheS8nJq2/6idrnoqkJDrf+mjLN9WuTB5KSpsCgv2Y1IIbY4+fmMQRQLq3DQurFP+INdotOdoIS95ZkmthlwSvV2+G7ndhzoExOzS7lrm6/sd4nwjtzv+ir2W4R3yRmHkGJQmHUPGBk4aOHipCRRAI7EdIH6MgXD2XgkVzW/uEhHi5NtAlvIwuy2O9Hfq9VwUIit0rKjy
- AJcfuWyQ
- RQG5HXMqPBhdkGJgwBFAmAcZea+mtD+AljbhmFldE1hb04ZvsHj5ovfawpVqVvK9w/BTgK2pSOpcPdZYgofc4kZ9Q7sKva59DyJiroJkBlZC/PMntwUUmNuirfs38227Mss+6yzyQRO6C8HLs+HXz+rYxB2ZlsjZpX4FiQ+dThqCw8XpRsJGO9Yystoa+q1d2f4CXbAVfXEQfJb4=
+X-Rspamd-Queue-Id: 0B52C100006
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762234004-589387
+X-HE-Meta: U2FsdGVkX1+O5rUmI2YHOUbKJF4Yj4OFkmvxAvFwp1TUeLgHi9auUpOqO1BwEscx2eDo5sv+MTjAesxSPATj3wlwKEMU1sSyEPAPDwt5Vi6hPt6JrG0gWic1MExksFQ0F0bpw1G7EFGGq3lP76gxmiU2MDR8e1NQgqKH4bU3UT92+jBRITdfrl9lLmYhaA5BPUzN6j+Y5j5ojN5M2uQQb9TUIlFKYoRs2VHQgDw/AB/quc+D2/ESXvcykXg/Ps61LhAhf+MIC+HZ00mGKEVXPVKyoLOugkJ6PTFgbtRihc8Kurx9suoviDgGGr3ZNq8f1hhxzzqXMPpVNbO82XvuVGVhqHIWf2OiY6UGbJpyj4RE70yODO4H9w51UvOcXNc+oMAzLE6UsQIuUINI6ENNlsVA4Dgc7jQIShtMwXQyoXRJ0q9GKR4GtFrN0DBWGcxt2Y5kc+6H4XMbcd0qY1wrCwXHpQ3OsT9OO+r8ys94TuElwqM9ToN/Nnw61E190uWV10WZqgAkJWfJEaCBttCmpSQ2aP5PFbOi6wdcjcVvXCGNZrso5y+IvPT9R6qXFLz2wcNhjpq54X5x/YIEez1DG7gNUhtHDNctkbS0WukZu7524QOlaSqQtDVtifefKB/kyR8bB5yidZTFgDNoOfJRArg3g676R2v/FhXussL08AagEkv0B3umTx/ioWMS5LHPEZZUX3Rr34kvABetEScYwj1Pp2qiFE6IO+dIrH9gbpM/Uwl3hjZ4/A0PWG2+pxyDBWnF8vq+LFWiGPrH3O7vrXNQf+J3dlMPq5TP1r15ru/UGdxEHhP8AKujJv/J0aiJy1ct1Rtzf5Y3XqIlb3JtQ6MHSxc6a9JRxQYAolUVxr+qm14jrEse3/znXg6Guz79xItAULS1ayiMP08t+pLyi+BfyD7uKkcyHvlQoJLq7AV7/zsNtV9fYcfN5y97WggKMHCuCYhOWcSYOd/hFmO
+ hkyejGAf
+ tKRWkO5rG9sF791DA8qHgUfcJYUqwLXnRFYZL49q8v4uV1x8JkkXmRfrbSwqfPGrvigraLsV7wD9JWG3YVQ/IENAJuW0Wb6zGc7g25xK3TdgmDsEAp/ERLLRfhRIZxVMTU8SpT7QLw0ubCZhLKNVmDr7Wnir/XR8JAwMw+H4E4SMrFdf2OaOuOQaalH/lbYnOgbLm0tq9EKEcDfBC6LbqMTW/90OMxim9479MglWGuBmjwYg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,47 +89,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon,  3 Nov 2025 16:22:07 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
 
-> From: Hui Zhu <zhuhui@kylinos.cn>
-> 
-> The hugetlb.c file has grown significantly and become difficult to
-> maintain. This patch series extracts the sysfs and sysctl interface
-> code into separate dedicated files to improve code organization.
-> 
-> The refactoring includes:
-> - Patch 1: Extract sysfs interface into mm/hugetlb_sysfs.c
-> - Patch 2: Extract sysctl interface into mm/hugetlb_sysctl.c
-> 
-> No functional changes are introduced in this series. The code is moved
-> as-is, with only minor formatting adjustments for code style
-> consistency. This should make future maintenance and enhancements to
-> the hugetlb subsystem easier.
-> 
-> Testing: The patch series has been compile-tested and maintains the
-> same functionality as the original code.
-> 
-> Geliang Tang (1):
->   mm/hugetlb: extract sysfs into hugetlb_sysfs.c
-> 
-> Hui Zhu (1):
->   mm/hugetlb: extract sysctl into hugetlb_sysctl.c
-> 
->  mm/Makefile           |   2 +-
->  mm/hugetlb.c          | 852 +-----------------------------------------
->  mm/hugetlb_internal.h | 116 ++++++
->  mm/hugetlb_sysctl.c   | 136 +++++++
->  mm/hugetlb_sysfs.c    | 632 +++++++++++++++++++++++++++++++
->  5 files changed, 894 insertions(+), 844 deletions(-)
->  create mode 100644 mm/hugetlb_internal.h
->  create mode 100644 mm/hugetlb_sysctl.c
->  create mode 100644 mm/hugetlb_sysfs.c
+On 03/11/25 5:54 pm, Vlastimil Babka wrote:
+> In review of a followup work, Harry noticed a potential infinite loop.
+> Upon closed inspection, it already exists for kmalloc_nolock() on a
+> cache with debugging enabled, since commit af92793e52c3 ("slab:
+> Introduce kmalloc_nolock() and kfree_nolock().")
+>
+> When alloc_single_from_new_slab() fails to trylock node list_lock, we
+> keep retrying to get partial slab or allocate a new slab. If we indeed
+> interrupted somebody holding the list_lock, the trylock fill fail
 
-I think MAINTAINERS file should also be updated for the newly added files.
+Hi Vlastimil,
 
+I see that we always take n->list_lock spinlock by disabling irqs. So
+how can we interrupt someone holding the list_lock?
+If we are already in a path holding list_lock, and trigger a slab allocation
+and recursively end up in the same path again, we can get the situation
+you mention, is that possible?
 
-Thanks,
-SJ
-
-[...]
+> deterministically and we end up allocating and defer-freeing slabs
+> indefinitely with no progress.
+>
+> To fix it, fail the allocation if spinning is not allowed. This is
+> acceptable in the restricted context of kmalloc_nolock(), especially
+> with debugging enabled.
+>
+> Reported-by: Harry Yoo <harry.yoo@oracle.com>
+> Closes: https://lore.kernel.org/all/aQLqZjjq1SPD3Fml@hyeyoo/
+> Fixes: af92793e52c3 ("slab: Introduce kmalloc_nolock() and kfree_nolock().")
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> ---
+> as we discussed in the linked thread, 6.18 hotfix to be included in
+> slab/for-next-fixes
+> ---
+>   mm/slub.c | 6 +++++-
+>   1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/mm/slub.c b/mm/slub.c
+> index d4367f25b20d..f1a5373eee7b 100644
+> --- a/mm/slub.c
+> +++ b/mm/slub.c
+> @@ -4666,8 +4666,12 @@ static void *___slab_alloc(struct kmem_cache *s, gfp_t gfpflags, int node,
+>   	if (kmem_cache_debug(s)) {
+>   		freelist = alloc_single_from_new_slab(s, slab, orig_size, gfpflags);
+>   
+> -		if (unlikely(!freelist))
+> +		if (unlikely(!freelist)) {
+> +			/* This could cause an endless loop. Fail instead. */
+> +			if (!allow_spin)
+> +				return NULL;
+>   			goto new_objects;
+> +		}
+>   
+>   		if (s->flags & SLAB_STORE_USER)
+>   			set_track(s, freelist, TRACK_ALLOC, addr,
+>
+> ---
+> base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+> change-id: 20251103-fix-nolock-loop-854e0101672f
+>
+> Best regards,
 
