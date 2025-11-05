@@ -4,114 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7B9CFCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 17:26:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8235ACCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 17:30:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A62508E0005; Wed,  5 Nov 2025 12:26:43 -0500 (EST)
+	id 9CDF38E000A; Wed,  5 Nov 2025 12:30:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A13FA8E0002; Wed,  5 Nov 2025 12:26:43 -0500 (EST)
+	id 97EEB8E0002; Wed,  5 Nov 2025 12:30:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 902608E0005; Wed,  5 Nov 2025 12:26:43 -0500 (EST)
+	id 894F98E000A; Wed,  5 Nov 2025 12:30:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C54A8E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 12:26:43 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 16D201A0168
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:26:43 +0000 (UTC)
-X-FDA: 84077233086.04.26BF75E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3A1CF140015
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:26:41 +0000 (UTC)
-Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OParZvII;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7524D8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 12:30:09 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 2078258C36
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:30:09 +0000 (UTC)
+X-FDA: 84077241738.08.42A19B8
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 43C60160013
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:30:07 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="K1BKINd/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762363807; a=rsa-sha256;
+	cv=none;
+	b=iikU/HvlzGwAlYuTEpemcOjhfD+oBYRN8yzfOp+GkM+Tne3myarxxqjNvk7Alw2LXTuYat
+	By/eJBgcF4TeOGtSaQS2vteXammoIzmH8FHt9naUIFrqXmuUUswRIUYE/I1mCD3CTJGMRu
+	LBYHet0V6Pd9/AufFvvjqsbij/Itd0Y=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="K1BKINd/";
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf08.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.210.46 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762363601;
+	s=arc-20220608; t=1762363807;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7lghsdtJqQPkyeqPZcgsEqUxzm/bu72iLJp6V770hM8=;
-	b=pRXwtmrhHE12WLg6OGppoE1w3E0EI1l5cP03h1HVjVU/aFvB9t1VWekzHg7OfTtfYWKBCL
-	emCI9PeyFK1uxALrHsQd1qEO53Q1n2Sz56/y+tjPzSTj0Yww9NINvGn1+zOcYlJdjmHXor
-	MDcoA2DcU675Bjpe06CChVzBCAI7l+Y=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762363601; a=rsa-sha256;
-	cv=none;
-	b=DjaPzkF0HKjQHk8+jUtNb/4yBnN5pJcz5akkx/bwFfzPmByTtbeX77w+tZxEjZbXel+qIt
-	sv4eRzYuwpoYZCLwhxTAuIj5aJR4h1rbwQre65eR8kmv2cUPfEhTenk3Fp0AH0InhPoM/N
-	TtRZvZe3nYOmhC2tenmlIEPGaAMlbsQ=
-ARC-Authentication-Results: i=1;
-	imf23.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=OParZvII;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf23.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 31D7A41A7D;
-	Wed,  5 Nov 2025 17:26:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92223C4CEF8;
-	Wed,  5 Nov 2025 17:26:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762363600;
-	bh=YFkDJLxlVgB8fCGfrzLzPiyZl67TcHqa4QAD1eCk1n4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OParZvIIPyLR/7+d2Nc6dNNHFfgvciQYcDXNfvWRUfLM3ALdZr2Qma8M0FObiSEDX
-	 4yAZaB4HMBbFQrVX9l1Nc5Mz9Akx6GYVPeFSxJauPuNjV+cvXZHiYCJny752RKPXaZ
-	 nb6HFbh2rTIqP1/GSHtyqu5D4fAirasFidCHLVTYcLZQRPj1LLeRYNMtTIBUkecGZD
-	 NUQfI4i1crcBXLrqQ3YrkVWcmSf4kYDrq048l6zq2V/zPjyDvLarmgFinhmBNoPsqB
-	 5DP9Yf37WOYWdxdZegji5DJs83/ZGNy27MtOeueRr7A8jum6leEhur43LN6wcOt6ld
-	 1Fax28SwoFeww==
-Date: Wed, 5 Nov 2025 18:26:37 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Simon Horman <horms@kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Gabriele Monaco <gmonaco@redhat.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
-	Lai Jiangshan <jiangshanlai@gmail.com>,
-	Marco Crivellari <marco.crivellari@suse.com>,
-	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
-	"Rafael J . Wysocki" <rafael@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>, Tejun Heo <tj@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
-	Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
-	linux-mm@kvack.org, linux-pci@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: Re: [PATCH 30/33] kthread: Add API to update preferred affinity on
- kthread runtime
-Message-ID: <aQuIzQo3tDbwoytv@localhost.localdomain>
-References: <20251013203146.10162-1-frederic@kernel.org>
- <20251013203146.10162-31-frederic@kernel.org>
- <aO5Dn2AwQWn0SQKQ@horms.kernel.org>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=ECvbQOCleXWV41glKff6TwUAo/ctHSkBw2CY6tJdeAU=;
+	b=M1rfcTVdRFkgCtCeTRuh/7W0PjSb6hsPSLSJlHPnWMicEkMiIldU6awmFFnD2gQsiAHahz
+	iuJZSnYNULVbMs+SLqxS2qXV9WlTzp3PJ3ozglYVIHleyOBgo8rBvnlB9zRyEST+b82+I+
+	KiSvXHTxTfPQYMVPi3/mnMjWY/JVXv4=
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7c6dbdaced8so343653a34.1
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 09:30:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762363806; x=1762968606; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ECvbQOCleXWV41glKff6TwUAo/ctHSkBw2CY6tJdeAU=;
+        b=K1BKINd/oPfffHvG9i3T8v2pzdHuvJAFLVXUsLWmdOfIim2BhwbJOY6cjCGkyXUBtW
+         8utDeRLH1C1otpc1kAsUCwV+9b0rUqzCNvR0zREV0Gp1Wg7GWgzu6gYyLPSFpWYnIQfk
+         mqzYH2sUK2/3JmYDILbstxBnKJW28eCN0TY8AigAqpOUyvldcIoHt4Ys3Je7WbAlVB/u
+         552svbeVd/KM02GD+lj831K2iturt7xZN7/yZfFF91yzID/SNKN5eNbyJQIb5/6i5eh1
+         8wVYRM00H2BL8SIF+itZmpdfxt66nndOUX2sz8SDvv3BywrTUu+SO5/opTA/bRC7W0zO
+         3sSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762363806; x=1762968606;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ECvbQOCleXWV41glKff6TwUAo/ctHSkBw2CY6tJdeAU=;
+        b=KwKuBEbrBi7rRx3wYmrFlT6FnxvN/E+qvYX1hyo0Bsz6vojpWDjai9fDQ1zVma2qVY
+         QMiiv4c1Zthitc5R0Sy1gAkKQsVkicen98GT+GuY12sgY8Vz7aZWMa4jkflJI2+BtCx1
+         6tTHOVaX+P4ZvsUE680vkgl2HZuDDydhKB9127wV9nrCwsE8rNpdVCa71PLrg/dAaPhB
+         EPY8S66xjyA/oBqNooXXImNoXSJJcnx1fzAmcKJEqKAnKqc1NwBVV3VIBvSAd3JlOVJY
+         vhXiW/Z42iYOdUBnHWvl9ZXpIKRL/FbLDoSx/9X7k4N9tdSaTZ7oL9FxzPZrwsrarUho
+         Pcew==
+X-Forwarded-Encrypted: i=1; AJvYcCWaJf88JT1cQJfzNa8CiBrhJUwv72dwW7QqNltpbe67J0e2xM762hunBaXdEluAU5Bf6cWV9Gptpg==@kvack.org
+X-Gm-Message-State: AOJu0Yw6gGN0MYqWb6kddCCe02QnOi05rDUDT8DGJgMFGy/FF4NGQJXD
+	w4j8jO6BEI5nNWOmtl4oqYJt/TCRcvHgP5orqb3NYUiDJbmevo1lYNii
+X-Gm-Gg: ASbGncur6CAJwksfN7TTg2ZaanKYNrEQW1DaWOHhdZQctab0WyzNOedMTiVU7v+Uqej
+	i5MIIXj3SgzxyG+FB2iOSB+PRrX8n0540vlLM7qBb9XRU2QwrLAALUw4+WnR5mX0aqOjUNcYN1i
+	gp55kVWtaWcU+cuV1y0nqs9AucQ4BGvdsJxpvVyyoNKUx8f5Y3bHd46oEdBCMQvw68PrX4yUnds
+	7sRM5FSH/0Fz2yJ2KxDzlpxwjClZMELQi65ZMFVS4jdYBJW5uqDp/Rs56SLLuLCyCcew1YW2ohs
+	RJR/qKp4rxUh9CBs7wwa+FeUZik3/26MzIGqV81TXX2G2OkrJw5EqrU0H5ROp7VA9YpWlXasb7B
+	Sg35hJLdxcyMbe4y1CZOQTqFlZ+T+XB6L9mfvPiIZ1SwvBxkgiomMihl2Wh0jYaewj7Ricc4wTu
+	TdvJlcqoSMW+pDAn03xfx0TRPcB4FIuv5WxNc8aIGgqtRUr8JTA2i+IpHtxM/08siWYnQ=
+X-Google-Smtp-Source: AGHT+IEEGoBFr8oSk1ZccH795h94yD/tdE3zaD5H9+9COL+gtAHu17GIo7aa9d7OyusPpetKtRbniQ==
+X-Received: by 2002:a05:6830:63cb:b0:7c6:a6fd:fcd6 with SMTP id 46e09a7af769-7c6d132f342mr2506695a34.11.1762363806080;
+        Wed, 05 Nov 2025 09:30:06 -0800 (PST)
+Received: from weg-ThinkPad-P16v-Gen-2.. ([177.73.136.69])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-7c6c25108b3sm2248313a34.30.2025.11.05.09.30.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 09:30:05 -0800 (PST)
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: David Hildenbrand <david@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+Subject: [PATCH v3 0/3] ksm: perform a range-walk to jump over holes in break_ksm
+Date: Wed,  5 Nov 2025 14:27:53 -0300
+Message-ID: <20251105172756.167009-1-pedrodemargomes@gmail.com>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <aO5Dn2AwQWn0SQKQ@horms.kernel.org>
-X-Stat-Signature: d8kn5wuuqa4ojo3fice6hmkbqpm75ysu
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 3A1CF140015
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762363601-471934
-X-HE-Meta: U2FsdGVkX18FFKq2fYL2aZUnICcwmfL2ebze9nrgtgVOTj/EPTCcMmjumvazJiY8YCvoCujGYzW6kPQmenjq5bHsG1/ummb551UXOrTPQwasudhJBuo4tjLF1JW531k8cRS+KhRlphWlNxt5RnXu6EH8NkStBeLe/CdYxsFi3VDAx7xLnu32S5UmrTYeXGLQ9Xzc9lR6nVLXAlGYRxslmyleY/D6XOo5Gp7cbK8Od6Jtm3P5cdCsYOKcs29+afgmSLYBxz7J3Z58F4gJ6pM9l19UfV2oYxh9C1ASuaVuIotMOYIT6rrj8Qa2sqCHiYaGrK5ljg5tIWHabfr/HaH9Lo6Qi19l4Ejitf6/LH5JxdE/THac1uR0XIDpCXYm9JxzTw/oUMquPa+bvmBZeo3AQB5XF9x/k++yzI3DHj5XdJjoJ/BVKbpZrVt6H29AagJTjdFNlQ5MbvB+bkR6xdGPO9sADgYRFlOPl5DBqjH/X/6sV9gzUeF5pLtfAwIssJ6IC+Uhy2b5HgBiJSIsTeCd0gFQESkeds3ZN48/eTqiLknEqrh4izJbT/kFUU21uBRgPXoiDdpOTk61BYuE94XRaB0/HL+gxbESNzOhCsNtRvqiK33zGAZ4ex7c+Uai0OJ0IphdGU+rlXD+slh/SUJXZIj+pwPQkFW2pfN59V3fzLRmT0/5395wIZCEyVGMGFQL0RgEMATqT9+75UikmsrqBlAmiUcZz5oi9mCZA3LZwjygo7feiXnGvaieaLxf2QdGnPHv4OukQ2ToPLvCcZXnZq0WLnLOZSCDUXE8FEHIJ4dijH0aOpgDpBImgOb0rv9DqVm9ZBvYyBglyO/iYTJcSeK/EnfntKo35Q2uh3MEdSTjcYXamLEraoF6AFT2vS9g7xFtpzUhTUOhdGc+j/DU1uFj9lwbdPjw31UAq46QeUji9v85FXx33IcCK4LJjwIib/qfH/YX+dZFsLGSUwM
- zdge/Ztx
- omEwtJNJ0jizk+gKPxjcc9LpPcPWt3yr1AtUil8NDyRpyJ0ZtNSpBk4gXfvLygFD3/GSdMO4Ie2cTvQUtI9owAIfuTGvBw7fxZY8GHPZzTLrmvhYtBnrWolSzufYhfAXvKZqNC2P75J1vxzmRDyTufx19z1rB5mWWHSnKRt5l/GoKSusRCyvPXz7nCLcnZUIHf/7EIkNkcdDm/hV26JhgjqASlFucALMwnSyizAwPN49lj+A=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 43C60160013
+X-Stat-Signature: 69bzzfzr7qjkrpsckj4oadz4spkyokjr
+X-HE-Tag: 1762363807-214798
+X-HE-Meta: U2FsdGVkX1/RY4GWuGmH69lT05puM3T09JGv7iEibYWxrPZ5q1ZV32aMtf8XNi30juuJjfsnwPYG1IOCSHKnkjfPz7yt4ULMgsVCRKITknWGvGqFZaW+uauVDU/J2WFFuZe4cWN8354StWBXENS8KHKNRHwnx/eNqW74JfnpsDzeJeKTmcxtM7cY+7r2V3mFuhULonTjXM3ZAsF3JA2z38w6uZzW9qvI9Pso/f8q72B9mfe6psyqpoVhZDrvci9qFPQMhASATup/oTAiZVjqxqnXOzVOqAIg9F60HOXn+vaqz7zgDe8wDyjScHl/u3vZhtMX3FzCj/Ooq7Fl10FADyFog/RDCY0TBR746oXE/WS6++TANqJ/9bkkBJ1adswNrME2ovHj2KTpxc1Bhk7237MeMaQLwpBfGp/qq0dSEftruJJIjGMIv3yU2DnsIiA01ze2WiWIhlAE/7YjKl7ls/dRnNQKCl59ha9WtKsaMMomKsXMV5AJZLOTCh7jpdHZRhc5lEcP1+sWCC4AFEvXYuba/dZp/L6JOBdKwFMlIL0bIgr1mEFx+pxwGSqdYpzcKa6WZTgOnsd+lOB6U70n2CrRUCifAIDXmLSimsEgQ2FFelJ9YjnCmzL4vJQEGPYfxl83BXYWVFdepX/zliyZ+x6eGz3tiRpqit63rbaRHz+23Z3fR00wT8l5pk3vfQkN4hSvH4z4NIYaE12OpcUoKad25ue4f0nVVckGzvK03ZQM6Mg0Kthis+GneDvreyuL69W9GJXJ0MwQJy5IooRwWGcnzrmRyVnd4yJzk3UjQpiBXKG+nx11yO5ZqeBpzgF7P6PozU6Bb56yZFvvttxB/qGh3+7BxFvT986zOGF9+Z3QiccoBURJifBgy5zB4tSqi8JrPL4EfMSokd3KMWYHW1iUFiNrxPRyIa71UfmpVeUdDl8ODhbKEUyuJE3tYCRDXOHdeSBcWEunNsBTvHI
+ /gDbbT/0
+ J0qiEL4r150TqV5/3jFf8ttvLvUMExGOAZTlGKq7f9lBfMwpegJfpjeaApNcaLiTz+CcZD3neElBBpW3trM93IuATJK0KwXGo6QdO7jnIhzVX5yajC77zMm6te3kUOmUfXVSzeUbOwM6fCpg3dG4vEUG7khKikfCcLq6wAUd9+6Ihd5SyxMiYAimyoWY5hdoS9PH6/kzFNEu7mLyU1hVkWgHAck4ABRi8xpF8IuZjpQ3kossyNUJOmlRFwO9l0YgsNWA5GovrqL4GGTVEu22QcD0EHo9xDvespWhy6EwBmx6fSwTOuKLlm7gf4Xg8zqymTXsM3dKYjfZzxySdalknnJc+ZFYqroAWEU1Is58AxlIxBgqnB2oq99NysToLcVjyU0RMJUtdhKWE8r67smHbfialbAHLuW/buyoKSzVY7ySYI5ur1hGNjEnLcz2QJujPQnoGBmarFp3qRQgSblblZ9WA6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -120,32 +120,91 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Tue, Oct 14, 2025 at 01:35:43PM +0100, Simon Horman a écrit :
-> On Mon, Oct 13, 2025 at 10:31:43PM +0200, Frederic Weisbecker wrote:
-> 
-> ...
-> 
-> > @@ -900,6 +899,46 @@ int kthread_affine_preferred(struct task_struct *p, const struct cpumask *mask)
-> >  }
-> >  EXPORT_SYMBOL_GPL(kthread_affine_preferred);
-> >  
-> > +/**
-> > + * kthread_affine_preferred_update - update a kthread's preferred affinity
-> > + * @p: thread created by kthread_create().
-> > + * @cpumask: new mask of CPUs (might not be online, must be possible) for @k
-> > + *           to run on.
-> 
-> nit: @mask: ...
+When unmerging an address range, unmerge_ksm_pages function walks every
+page address in the specified range to locate ksm pages. This becomes
+highly inefficient when scanning large virtual memory areas that contain
+mostly unmapped regions, causing the process to get blocked for several
+minutes.
 
-Thanks! I'm dropping the current patch anyway but...
+This patch makes break_ksm, function called by unmerge_ksm_pages for
+every page in an address range, perform a range walk, allowing it to skip
+over entire unmapped holes in a VMA, avoiding unnecessary lookups.
 
-> 
-> Likewise for the documentation of kthread_affine_preferred()
-> in a subsequent patch in this series.
+As pointed by David Hildenbrand in [1], unmerge_ksm_pages() is called
+from:
 
-...fixing it to that patch.
+* ksm_madvise() through madvise(MADV_UNMERGEABLE). There are not a lot
+of users of that function.
+
+* __ksm_del_vma() through ksm_del_vmas(). Effectively called when
+disabling KSM for a process either through the sysctl or from s390x gmap
+code when enabling storage keys for a VM.
+
+Consider the following test program which creates a 32 TiB mapping in
+the virtual address space but only populates a single page:
+
+#include <unistd.h>
+#include <stdio.h>
+#include <sys/mman.h>
+
+/* 32 TiB */
+const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
+
+int main() {
+        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
+                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
+
+        if (area == MAP_FAILED) {
+                perror("mmap() failed\n");
+                return -1;
+        }
+
+        /* Populate a single page such that we get an anon_vma. */
+        *area = 0;
+
+        /* Enable KSM. */
+        madvise(area, size, MADV_MERGEABLE);
+        madvise(area, size, MADV_UNMERGEABLE);
+        return 0;
+}
+
+
+Without this patch, this program takes 9 minutes to finish, while with
+this patch it finishes in less then 5 seconds.
+
+[1] https://lore.kernel.org/linux-mm/e0886fdf-d198-4130-bd9a-be276c59da37@redhat.com/
+
+Changelog:
+
+v3:
+  - Remove leftover code from previous version
+  - Call is_ksm_zero_pte() only if the folio is present
+  - Rename variable ret to found in first patch
+
+v2: https://lore.kernel.org/all/20251031174625.127417-1-pedrodemargomes@gmail.com/
+  - Use folios in break_ksm_pmd_entry
+  - Pass address pointer to walk_page_range_vma private parameter
+    instead of struct break_ksm_arg
+  - Do not unnecessarily initialize start_ptep
+  - Order local variable declarations from longest to shortest line
+  - Improve patch 2 description (do not reference the cover letter)
+  - Quite a few styling fixes and improvements as suggested by reviewer
+
+v1: https://lore.kernel.org/all/20251028131945.26445-1-pedrodemargomes@gmail.com/
+
+Suggested-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+
+Pedro Demarchi Gomes (3):
+  Revert "mm/ksm: convert break_ksm() from walk_page_range_vma() to
+    folio_walk"
+  ksm: perform a range-walk in break_ksm
+  ksm: replace function unmerge_ksm_pages with break_ksm
+
+ mm/ksm.c | 137 +++++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 82 insertions(+), 55 deletions(-)
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+2.43.0
+
 
