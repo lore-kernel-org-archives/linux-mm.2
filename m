@@ -4,124 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 38AF6CCFA04
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 02:44:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B380CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 02:45:38 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 977D58E000D; Tue,  4 Nov 2025 21:44:07 -0500 (EST)
+	id 7581E8E0009; Tue,  4 Nov 2025 21:45:37 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9500F8E0002; Tue,  4 Nov 2025 21:44:07 -0500 (EST)
+	id 72FCA8E0002; Tue,  4 Nov 2025 21:45:37 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 88D0D8E000D; Tue,  4 Nov 2025 21:44:07 -0500 (EST)
+	id 66CD38E0009; Tue,  4 Nov 2025 21:45:37 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 7B10F8E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 21:44:07 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 272F91DDF3B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:44:07 +0000 (UTC)
-X-FDA: 84075008934.17.63291CC
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 312744000C
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:44:04 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsxD0pbl;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762310645;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7BhSeNW9Sre5WGut4anFf8luecVrBacmwXmBuyT30lQ=;
-	b=hfjc++bEqMwp8jvFfSF5jOy4FxcdFYvs5XqaDceYtJJITKsOnm4qHLNTvwK6LIriMf2+AR
-	rwijpLxztHMWpn6qk+gjJP2X8S9SUkdCl0PpTdYIIemj8WzonReQQIf2ZmQS7F10peawy/
-	D6Sfg099IJOlgcRmQ0Bk3TDOxev54XI=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=nsxD0pbl;
-	spf=pass (imf04.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.46 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762310645; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 574D38E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 21:45:37 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 01C7D84E3B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:45:36 +0000 (UTC)
+X-FDA: 84075012714.03.E51552D
+Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 10E2080008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:45:33 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vTL06P1R;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762310735; a=rsa-sha256;
 	cv=none;
-	b=rRm+/nLdnVZQlOYh76gUQ0m3zL7ztLd4LM2/zN9oeWIBYBOnbsS3TpVbDxOrQfhuGd3R3s
-	coy8bFy7num9p9vEBcGmx2vYA1PI63j80YIoZFpuusaybsBHgPabRY6XmcXEaYL+RUe+K6
-	Ce8RI4L3XA73PQEOqCozJ0odQRsLvqo=
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso6490640a12.3
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 18:44:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762310644; x=1762915444; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7BhSeNW9Sre5WGut4anFf8luecVrBacmwXmBuyT30lQ=;
-        b=nsxD0pbl0tIoP+Mvoori5zO3k40YpA+Xwwv3kTWDk/4UeF8iFmA5q4+HywkX7j7tQv
-         /g/2sOM3d4OrJtEHYE785CicuiWxw14/TbS0er6ZDdXgVh96avgxSHXkSP2eN4DiIBFY
-         YNaWjnIDWMAOktUG2/l0w00DzezXzn3bnixIfoSlwPPCo21Lj8VtJ4XfM5KCfmCtSnQZ
-         maFJxJpdngrY+yQjPIPKE3bFDp6fJZeyJ22JLYgCCoYOeUcQ4sBScDn8QKAJSwT9xbRP
-         jK9NZsWc0vpHRe3b+IRqlL8LWfCl6JceyeLHq1d4fLMPZIWhbz04/e3Y8wYY2DeTtpNm
-         Q6rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762310644; x=1762915444;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7BhSeNW9Sre5WGut4anFf8luecVrBacmwXmBuyT30lQ=;
-        b=TdOKSV2W7iv7Bc/fjLzyV6ebp7Z/od5BpKYSiBDwIkuCgBX3GxVECigjfErQWfAPis
-         NKcp/ZrSRmdjcrbNUWTX6FvnHheTNUREZHnuuCssvW3bgewFDjz+QZ+ZKAXQqO7t/8Ky
-         3cvEgTvc6kN3/+nxdPApEEQDRiYVA+TiAbHOPlwoQqS23Ei1CoxzAEMJIQr+PM7BJv+1
-         jYMDaagt+ym+XM4VOmOvAXbL7gmawTa4/EkD5DuJKArCJDLFwlOVi5PQ18lKYZOqKhSY
-         5fshX3cmHjmSOwCJ3bQY9w1tDbf+EYUrrS9lowJXDHx99sAGnfumo0WV0OR+5l+ds8cG
-         h8aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUum9wk22ojJREpdgN2Eb0drI1o/zyPMlkGhdTG3/RKtmb97RL7CB4moTv8seAT15+cOUV6gbLqxw==@kvack.org
-X-Gm-Message-State: AOJu0Yx3PFVTxkVmi/W/yuidi6Ae0IiBBONAXyTARZMrlD7EAoZLHZSQ
-	hS1Ly2BLEhGo5zBf0uEj8Bhq/MVdgavBwHM8aqP/DugTjp9JhTl/qSGB
-X-Gm-Gg: ASbGncuPKU5x1ME2Lie1e7i4E0ZLt5Os46KNJqySmRZ/LX61EWGCkcDBXL2jStjpoeh
-	UTpdruZRxgEdXyFLCf6gQZzItWhlZoDMlAB3PLcgUaXcDAZuEaoCfTWnaidncftosgduIYX+8RC
-	0MbB288GgqJo140Ojkf/WLDIHIYcP9lZdHDLlSC1Tu18NBDjdBOx2z3++D5PDsoE1BKT11nwoh8
-	9ThSSYQmcQmBlcW/vfJI8UUAIcKiYKE9drdQad5YD6ClpdRlqAK09vVh5c4gmhbeCWV4pqCHF4a
-	YjRuWoYriy7yKHfYR3UGhD9KBPEfbnqX0Vmmi+ievw6AfmLqrcP8pKUKvaMxWF4rXphs1CPd1p2
-	slprlUrH16qbjyBGEWJSo9kWXmYlEIR/JLX8djRMRASqrx6axDTKFqc5zyz1NugMMPGXcWejaMx
-	A=
-X-Google-Smtp-Source: AGHT+IEkpG5BOZJtdtlM10DIGuOaPHqJ2gETick/Wf3YYMNOiALID2rVx+AEHW48EulvIomrAU0y6Q==
-X-Received: by 2002:a17:907:8692:b0:b6d:8385:2164 with SMTP id a640c23a62f3a-b7265642f03mr142088666b.54.1762310643735;
-        Tue, 04 Nov 2025 18:44:03 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b723d3a3867sm373343366b.12.2025.11.04.18.44.02
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 04 Nov 2025 18:44:03 -0800 (PST)
-Date: Wed, 5 Nov 2025 02:44:02 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Zi Yan <ziy@nvidia.com>
-Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
-	david@redhat.com, lorenzo.stoakes@oracle.com,
-	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
-	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
-	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
-Subject: Re: [PATCH] mm/huge_memory: merge uniform_split_supported() and
- non_uniform_split_supported()
-Message-ID: <20251105024402.ikb5c7ayeq6gmkty@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251101021145.3676-1-richard.weiyang@gmail.com>
- <CF5DECC4-7C92-45DB-9931-A1E35CA3C0A5@nvidia.com>
- <20251104003618.adfztcwwsg26gmvd@master>
- <016650EF-DBFC-4C7A-A707-8FC6A0F93ABD@nvidia.com>
- <20251104075326.hqktuvois66j3cdk@master>
- <E1772F62-C1FC-4B67-A47F-7A1A6581C89D@nvidia.com>
+	b=WT1RyDyImtcJQDHkRBX1WHJsAX+DfRGLtS5ooIQ7Hz49M8cfFb0J+K8IwgNy/1kupZYVsz
+	8B5eJ2p89WQPujFLosgW+Ve0YBDs1UobNgvWTZmwVOfx5NSOeK6Mi2nvFwhtd5rVl+PpqU
+	vhCH74P3ADs0rC2JbSXTqd5oJcwKFMU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=vTL06P1R;
+	dmarc=pass (policy=quarantine) header.from=huawei.com;
+	spf=pass (imf30.hostedemail.com: domain of xieyuanbin1@huawei.com designates 113.46.200.223 as permitted sender) smtp.mailfrom=xieyuanbin1@huawei.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762310735;
+	h=from:from:sender:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=3Ggi/Q/B9Jjx+W4BbCfJWgLqE0uFZ19wuYTgC69T+VI=;
+	b=5nMv/WFXBJUea3Gs4SeNPYdtG3SHnUYEvAvIjYojd9RiqRyCIpczICj7tce9iHYQSDbkd8
+	XAZ9z5tUE8JDg4zoZz3Mpdt/JgY4UMvvl9kIseR9LidINOs61043rIdx3BmYY8b9CQrlB1
+	SX6SgQ98FZ0YCuWlrma9ZfEkwRp+BYo=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=3Ggi/Q/B9Jjx+W4BbCfJWgLqE0uFZ19wuYTgC69T+VI=;
+	b=vTL06P1RNNIlClyL1lwh43rq8s5bX7YszQJ7wdw8CC/98pbIztmydkexhOiDM2G6jZXESTZxf
+	cXKvc+YlXQZ3kj62CtgIImOwKDQu7K8qtyI/8e6oY/B+18Tic/Q6vYCPhzVlGjszt8XnRPSK0Yx
+	9j4OGKfkLgTJf7oa7VKtCos=
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4d1V5567bFzmV7D;
+	Wed,  5 Nov 2025 10:43:53 +0800 (CST)
+Received: from kwepemj100009.china.huawei.com (unknown [7.202.194.3])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0C2C4140156;
+	Wed,  5 Nov 2025 10:45:29 +0800 (CST)
+Received: from DESKTOP-A37P9LK.huawei.com (10.67.109.17) by
+ kwepemj100009.china.huawei.com (7.202.194.3) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 5 Nov 2025 10:45:27 +0800
+From: Xie Yuanbin <xieyuanbin1@huawei.com>
+To: <dave.hansen@intel.com>, <david@kernel.org>
+CC: <Liam.Howlett@oracle.com>, <akpm@linux-foundation.org>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <david@redhat.com>, <hpa@zytor.com>,
+	<liaohua4@huawei.com>, <lilinjie8@huawei.com>, <linmiaohe@huawei.com>,
+	<linux-edac@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-mm@kvack.org>, <lorenzo.stoakes@oracle.com>, <luto@kernel.org>,
+	<mhocko@suse.com>, <mingo@redhat.com>, <nao.horiguchi@gmail.com>,
+	<peterz@infradead.org>, <rppt@kernel.org>, <surenb@google.com>,
+	<tglx@linutronix.de>, <tony.luck@intel.com>, <vbabka@suse.cz>,
+	<will@kernel.org>, <x86@kernel.org>, <xieyuanbin1@huawei.com>
+Subject: Re: [PATCH v2 0/2] x86/mm: support memory-failure on 32-bits with SPARSEMEM
+Date: Wed, 5 Nov 2025 10:45:23 +0800
+Message-ID: <20251105024523.14300-1-xieyuanbin1@huawei.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <47b3e8ba-bc95-41ce-be0a-ddfd1323bab3@intel.com>
+References: <47b3e8ba-bc95-41ce-be0a-ddfd1323bab3@intel.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <E1772F62-C1FC-4B67-A47F-7A1A6581C89D@nvidia.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 312744000C
-X-Stat-Signature: 5nztr84paqpfcrir6ywmi5bprete3grq
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.67.109.17]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemj100009.china.huawei.com (7.202.194.3)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 10E2080008
+X-Stat-Signature: 5ejy3yjrg8wsg6anahdq3rtt7f7drw38
 X-Rspam-User: 
-X-HE-Tag: 1762310644-584476
-X-HE-Meta: U2FsdGVkX19pYG+CYwU6xAG96WPKpWDQ8IObLJPXpBCt9vhmuBPC+tmPLkQf+MKg1rnUcnKP0wGP2RzqxfMwf4Srj5iV+BBzYCeo8RJrCWe1jG9YNCnX0/rjkEEgIsulpTrgwQYdTylDevPRZP7WEuexEmdyctnPAtBjppdZmBuoN8A2bKLDWkqaFzUj5UPOYhuigROTb6Pq115plh5zHTBQEBSpzewV4xDpDN8gCIezvfwmztHM1MhjqhCHSfGXXJHJz/1df065GMlBhdPBUL5TOPeMYQA2DCa0j2s055SgLxZ4NZ3A7oyTQeTEkhXC3gejReuWrLuTsoTZO9dogGoT7RNH99PBAyhBCqnPF+cG4cOPifZTT13G9qaY8gGzBGDBvx3ESpDAltpDWTU5vLlM1SGXTGT5ibO0qhvxcylxdVxCqZDuN2+XEAhq3W10b7HJca494tn+W/jpfgxBRElScXsE66SPuZ21nZeqYyJIF1tGyRqdrjxClVQIL5teA5AFVLeU612MfFcZ9nC85dvIPLHD+7iUHdapVS33z5xc8geRmnfikipQETuzeXu2cd9wj71vGsKM7PU2hHmezhzZL66dWwJoQYoVyN6eUA+eRn5ewnjxiinfgDnuyr/ufO48EBcjOHRB6CJ0CJCxbLRjpY2kBFN18/DALeMR2+0LjkS2DFNlPfXgPoKmf/uc/oVvgGwvUmjvlL1ZCuSJuXfSK8Y6NSoqdIdQB2H14CDOfMo2AzktcscBROXFLuNnvZRnxQDLsMudVu4F0IJs4KDGwPgH4iRFAeiwGILKLEcv4iBtfsbur6+cd/sg/J6wFs8sq+1x4UnNzCfjPPUqoYvVU6lFUV2OiwCt5ReoADRldZlC4SE7cgj6eY8bY3a8TVFQMwwPkyC4mEKXkWnvHnwMTyUnarL+bkaURvJtfiAOgJmg+hiibVo2HDccPXIQpwfRnDiVpUykiWU2/Fb
- uiQYuLZF
- iZHLjjJuh9rbSByTrr2DLL5Fm0Lih50B1coiVA1IWwo/X5CMni3qvNYBH21awmYR9LYbElVPKBPeRZ2dcOdRZG6sYMl8U4zuExdqhHCuId23leMx16SlIBOsi5gfZe1n0La+covHCXFjoXQ6cjTrENjzZAIKNIdLRVWpKg4CHa+jrvJrTwoKyjVhmDRJ2FKND81dDVJRkeSNNsO6vH63R/1oOulK9hS0bYwzOSa2Eh+r53DFHUCRqe604MHNVvJV0XyBX8+ruNAlHDxglVyWboGA1K7kLeq54pJBGHoqczRKlsG2/139Y66EWwKkcXoHsDPIUmuJ3N8oqH7ukLoWvsbWFWMETdOwf9s8JNQYXc2646ypskQeWWIo0OniB/+t5Ku0aIcRwNENfDQw2t0sNAsP53GEeZUfwB5+ZczzXbXzHxkRQXWQV2ihusti6Kn06JcpYCyi1tzSfcMEoAgFrBP6GVfpRvzgN+tKpnlcYQlhBNGvlTlxB6CUnkB656sK4CTjp1eihoKQ3+bArknq6y3ZHhnCxfyz6tGe3V+ScFI3ZTE0YZDCEtEHLlXnhpzbLQs40EI7Gy1oEgGZitZG3/uvQmf0o6z18Wy27AjiYAeL3vvDGZ434EGiH4+qAYW4yEuTKwyW62gMNkUDmEZS82cFQECP10/wXPcAQVcQFlUAdpqkx4tatMlHbj4tEY0k2K8ZjrzErO+FnJ4YpgqFM/PiUjojV1YN2u/ommxButwLoPKy2vaRz2T+Ttofyaz7EyCvr
+X-HE-Tag: 1762310733-419691
+X-HE-Meta: U2FsdGVkX1+bgMkYtnv6tmmxEhHot5jPcse0odpVbf3zQxJwhX7TFk+wW6VTJ885b5V5KuKi4nW9Hvj7JDHBlfjnGBQbyP+3s0UD90yJ3yl/tqYLrHUP9wM4tGriKtVxNp0jRtoEF+6kDPv34SOl+PGtlBQgyuHHHmnKSQwHwUscKS7OOVWdhGt/yqkP3QrycxuMuW1QR8wdSlGr4fQJqwkge7Dt7TyalrIDR1X8eimq0jhQLivD5tC/rEs5jEvl3xtqkSq1/4I8qadRJVqDmTsd3tohpxsWs5V4Y99MWIjjrRQ6FMRENOlCLRrISvncybSzK8JX9kGUpH1KAj/UcnRcWrh85CWIBe2ClmmZd4j7MfPCJlnFDtnMHg1QYgJxkY5/eufF6C9ahHkXmi6imoXGRrEvxkoHX1nq3ISWdxsarSsik8YDq8wWCnT4943QLDmRXwZ9a0x1P65EWm5se2AfIEW8xOtu8sjHq5mU4GZv1CdZk4g+mvo1NlyN0YoMopQUa3IDKNs6U2Q4ctF71jwmHPJyobWWy5ZkartfM6L5WrSsYSquCdHFIjEGbdNdmDDl5muBUBg7Bw48yJFVajWWTPxLgu1USLRno3rXTZPOqBW8FDFYG3/2thYD3RSSg3sfZSsdyCsEw398E0ym4MEB90I61+oPxVK0Pn+xypvOXU69bdDV3dCsIRdy/QSqC84i8sBZPtCxup/mKzEzwQ3X18aaSIyU0LkTPdpefODagUNTmCTsM41byxFa31HGEgDVHbZxk/1Wg+knIM+VH90zQ8KM/TPKh8N1jJb6AQQBIqTlq2FQglxt9HmgwBguHmnpvAzYWiM1DISnYCK3malWm6/tmuWUTwxDIVEtW5BpLfHPCjlRslEKwtY8jObQESQOZwFOUSs9ORffVhD1fR/6voDuwaX9Xzs0VeJenAIlNrz0hpuU0Iou7AUbRZFxPJYDbjQpdRX8AHkZ829
+ DLuXPNq1
+ V5+3yCIKf8kxIwvGyu2gbSRFwJ7LlCK4uLSIlkjSEejQUAD4wtb3dwSUAH1MPC442jMbOK4k0ybuk27vYQSTZtkxBemmIcO/jKY2FK4JvP2JiHpM2DWihX5biUUKXgit69a3IOuWpyH+rFsjNcJZD7bAETCSBngWtkFCttlwQZRPNjyhgTVWge7aUyAYzFKgjBZlLTgZjY9ms/JzTbSGmBCHTenBXB4GujaiOtUYelNPr9l9v1Xb3rtX1NvBDBIEtjpOoP4LzEYIxy60z9tdhdNFKjPRXevIH/ksQBDraJMiVpd3BxYV2eJHrmvDY4KVh0ilD9W1CF2X+rRR/Tmd0KaKUD3aZhQ30N1zjzfgObqmbS1SFL/fGoCWGCHQMy8jYRAer
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -130,43 +105,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 04, 2025 at 09:14:31PM -0500, Zi Yan wrote:
->On 4 Nov 2025, at 2:53, Wei Yang wrote:
-[...]
->>>>>
->>>>
->>>> How about this one:
->>>>
->>>>    swapcache folio could only be split to order 0
->>>
->>> This looks good.
->>>
->>>>
->>>>    For non-uniform split or uniform split targeting a large folio, return
->>>>    false.
->>>
->>> You are just describing the code.
->>>
->>> non-uniform split creates after-split folios with orders from
->>> folio_order(folio) - 1 to new_order, making it not suitable for any swapcache
->>> folio split. Only uniform split to order-0 can be used here.
->>>
->>
->> Below is the updated version:
->>
->>     swapcache folio could only be split to order 0
->>
->>     non-uniform split creates after-split folios with orders from
->>     folio_order(folio) - 1 to new_order, making it not suitable for any
->>     swapcache folio split. Only uniform split to order-0 can be used here.
->
->LGTM.
->
->Thank you for updating the comments. Looking forward to your updated patch.
+On Tue, 4 Nov 2025 06:26:58 -0800, Dave Hansen wrote:
+> Which LLM generated that for you, btw?
 
-Thanks for you time and patience, will prepare a new version.
+I wrote this myself; LLM just helped me with the translation. My English
+isn't very good, so I apologize for any mistakes.
 
--- 
-Wei Yang
-Help you, Help me
+> I wanted to know _specifically_ what kind of hardware or 32-bit
+> environment you wanted to support with this series, though.
+
+I think I have explained it clearly enough in this email:
+Link: https://lore.kernel.org/20251104133254.145660-1-xieyuanbin1@huawei.com
+
+In simple terms, it refers to some old existing equipment and some
+embedded devices. More specifically, it includes some routers, switches,
+and similar devices. From what I know, there is no VM environment that
+using it.
+If you are asking about a specific CPU chip model, I'm sorry, but I may
+not be able to provide that information for you.
+
+Btw, why do you only ask about which x86_32 devices use memory-failure,
+but not which x86_32 devices use sparsemem? This patch just allows both
+to coexist, and perhaps both are important?
+
+Thanks!
+
+Xie Yuanbin
 
