@@ -4,32 +4,32 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0DE72CCFA07
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:05:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B8DFCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:05:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 445E88E000E; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
+	id BD8C38E0010; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F6448E0002; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
+	id AFB868E0002; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2BEA18E000E; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
+	id 976438E0010; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 15D7C8E0002
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7388F8E0002
 	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:05:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DC1B61A025D
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:40 +0000 (UTC)
-X-FDA: 84075970440.27.912D103
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B45401C0002
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2DE5D140252
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:41 +0000 (UTC)
+X-FDA: 84075970482.15.04F827E
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 04D8B160008
 	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:38 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g3fD4LL3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GzVO54J1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g3fD4LL3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GzVO54J1;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dRvvKLgY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1NzQGu59;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dRvvKLgY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1NzQGu59;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762333539;
@@ -38,82 +38,82 @@ ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=k3xWBfAUG4JHWgNOrNA/S+tg/3AdmFzQs0YfUSio0A4=;
-	b=UBujMQnFzNZbPkETrLwVwkyTUmNMbKjdTXuz28TRTV4lMqCD9lPGr1fs5p4+Ol1VHFTayV
-	W6T9oN3aniwr7qlsLJ7KG4J5xQy266sbmCkeAU7Pd4E/2JILMRLhGUNCCP6jgz48sHNl1S
-	3iA6Xy6QfkyrNuljOarIsbRs9TTAGqw=
+	bh=tVqdfrjinTijcg8TfrfGQECaxpdrWMMyTcELwLOOflY=;
+	b=T0JK+9uIVjrNgaLGlSZat1fIkTv4ky6bfp+BAungGmPfLty4bKImxXY9PCRqX7WCHfH+Yp
+	T3Di125WaGVyd9S7+Duz/5ElXIOQ7ve5+ibvTCOG0gRF6EnY3Qkak1jrwXj8LurNxPur8R
+	Qm2Ue7FJDMKSxkmEQG0fwLP8g3xjHSs=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762333539; a=rsa-sha256;
 	cv=none;
-	b=cmJccM2kBbF4CeHbeivy31PwJeI66025owpvvHCJkJyB1H8irMog1v81kjvGVSU/RGg+lB
-	jsezxxmggzGiocp7IrlNro3BFGDD5Tn1/hjLy3B2/c/9WCD3c42v5pfiiLgd+vMsznOk6P
-	I69DbkxDe7lki9u4eUw4wGqWGnhN9/0=
+	b=i6QwcfiU9OdA+RDJFRUoc8x8V+WT+TzpYJ+IHyrtwkhujDERFiuKAlW1fJx7eSrvR5BIyB
+	KfBcFCOag2GqPazKdittNsnbn9iRusLPMvxGlq6MXezFQ2/dZfp2F2xmHnpsYoTBCuKN8p
+	WcJ7ywacfzhTaJnaUj3OVFsgx4jrAic=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g3fD4LL3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GzVO54J1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=g3fD4LL3;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=GzVO54J1;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	imf08.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dRvvKLgY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1NzQGu59;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=dRvvKLgY;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=1NzQGu59;
+	spf=pass (imf08.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id A05C21F452;
+	by smtp-out1.suse.de (Postfix) with ESMTPS id CCF9B21193;
 	Wed,  5 Nov 2025 09:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1762333530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3xWBfAUG4JHWgNOrNA/S+tg/3AdmFzQs0YfUSio0A4=;
-	b=g3fD4LL33ECWdz21ko4qzOiUHJYqrVoCocAlITeBCKRkeodmkYBy+qk2Cxoso1KqhqT6f0
-	cqM/y4VAjl5bylqAaXXU+3gb6DxvIcBMqGAUdAnTFYIFroyBGDJDPn8l1VRTZKqKQy+Yxb
-	tP7YIt8FRkr3OCjamXg4CaREc7KrJvc=
+	bh=tVqdfrjinTijcg8TfrfGQECaxpdrWMMyTcELwLOOflY=;
+	b=dRvvKLgYGTfd/n3M1dFj6+GxTd+NScV+vYHpylekGIYZcBLNjg/XfoL8xaa3nbx3hYxrqO
+	SkhthjfMSKpKkGZkyS0vjzTLoRYcAXpSjc9FtNWtyXM2w+dYdL3G0Q65uJfJ8erXDaz/8N
+	RlAB3GlKVXoufpmp5E2og5oBgyIDq/k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1762333530;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3xWBfAUG4JHWgNOrNA/S+tg/3AdmFzQs0YfUSio0A4=;
-	b=GzVO54J16sRzISTwXLTNgiTawsg7vs94G7phWvyfnZ9EjrcwOqV98XFAb50pHfRSM9GUJa
-	srNKAqDOmfudL8DA==
+	bh=tVqdfrjinTijcg8TfrfGQECaxpdrWMMyTcELwLOOflY=;
+	b=1NzQGu59u/7ZxRzwVyaZG9DTNHQteJfJjumnVC7Yd0iBtAHohH+7ncrCCJghTB2JqSsAch
+	zWnZcE5Od9QwF7CQ==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
 	t=1762333530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3xWBfAUG4JHWgNOrNA/S+tg/3AdmFzQs0YfUSio0A4=;
-	b=g3fD4LL33ECWdz21ko4qzOiUHJYqrVoCocAlITeBCKRkeodmkYBy+qk2Cxoso1KqhqT6f0
-	cqM/y4VAjl5bylqAaXXU+3gb6DxvIcBMqGAUdAnTFYIFroyBGDJDPn8l1VRTZKqKQy+Yxb
-	tP7YIt8FRkr3OCjamXg4CaREc7KrJvc=
+	bh=tVqdfrjinTijcg8TfrfGQECaxpdrWMMyTcELwLOOflY=;
+	b=dRvvKLgYGTfd/n3M1dFj6+GxTd+NScV+vYHpylekGIYZcBLNjg/XfoL8xaa3nbx3hYxrqO
+	SkhthjfMSKpKkGZkyS0vjzTLoRYcAXpSjc9FtNWtyXM2w+dYdL3G0Q65uJfJ8erXDaz/8N
+	RlAB3GlKVXoufpmp5E2og5oBgyIDq/k=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
 	s=susede2_ed25519; t=1762333530;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=k3xWBfAUG4JHWgNOrNA/S+tg/3AdmFzQs0YfUSio0A4=;
-	b=GzVO54J16sRzISTwXLTNgiTawsg7vs94G7phWvyfnZ9EjrcwOqV98XFAb50pHfRSM9GUJa
-	srNKAqDOmfudL8DA==
+	bh=tVqdfrjinTijcg8TfrfGQECaxpdrWMMyTcELwLOOflY=;
+	b=1NzQGu59u/7ZxRzwVyaZG9DTNHQteJfJjumnVC7Yd0iBtAHohH+7ncrCCJghTB2JqSsAch
+	zWnZcE5Od9QwF7CQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8699513A88;
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B303613ADD;
 	Wed,  5 Nov 2025 09:05:30 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CAyZIFoTC2lSBAAAD6G6ig
+	id iKJyK1oTC2lSBAAAD6G6ig
 	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 09:05:30 +0000
 From: Vlastimil Babka <vbabka@suse.cz>
-Date: Wed, 05 Nov 2025 10:05:29 +0100
-Subject: [PATCH 1/5] slab: make __slab_free() more clear
+Date: Wed, 05 Nov 2025 10:05:31 +0100
+Subject: [PATCH 3/5] slab: handle pfmemalloc slabs properly with sheaves
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20251105-sheaves-cleanups-v1-1-b8218e1ac7ef@suse.cz>
+Message-Id: <20251105-sheaves-cleanups-v1-3-b8218e1ac7ef@suse.cz>
 References: <20251105-sheaves-cleanups-v1-0-b8218e1ac7ef@suse.cz>
 In-Reply-To: <20251105-sheaves-cleanups-v1-0-b8218e1ac7ef@suse.cz>
 To: Andrew Morton <akpm@linux-foundation.org>, 
@@ -124,15 +124,14 @@ To: Andrew Morton <akpm@linux-foundation.org>,
  linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
  kasan-dev@googlegroups.com, Vlastimil Babka <vbabka@suse.cz>
 X-Mailer: b4 0.14.3
-X-Rspamd-Action: no action
 X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: B45401C0002
-X-Stat-Signature: 4rm71eo7it7w5k9xq36gboe5oi9bh714
+X-Rspamd-Queue-Id: 04D8B160008
+X-Stat-Signature: n3qs7asfe6omtbptk18sjcnjt3qccs9y
 X-Rspam-User: 
-X-HE-Tag: 1762333538-782697
-X-HE-Meta: U2FsdGVkX1+9xsk1bRxyEu/FGVb4f+NoMzZYl4EjUIc+0ezG6MsoFZ+AMismojKASTlrn14C7En8ml6zdajDDeWTkoyh/d0X0WofMMIzluaMLKKfJvtaCzTxV0BMVxzDr0VqWemptQWqiDqGd1DdXn7NxfhVYdkFGFG3koFsAZ78+FKHXYA9NDluKKXKCo5ThQBiom3AeC7feQ+JT5No1zJFsTd0V2qcdA3u0l1UrX/eSt7slh5sw6zFbMnU43tOm8SfIL4PWGLKnleFoxW869Cw9oTR7iDiY8SCC+4zoJVCm6Uy4K9NL/ccnEYbsQS6h7UalB1tErIEoCHytcFEY0ygtNPe30aDc67pjJHEVVmgrJMqmiEDQh5jDViVhwEQvbGGAM3P4hFd1xI8ju91PD6n1bL1MNW4YAElJW8iEIVhLOYPQuaXB6eAWmp4jMYNfUYdUchOvctnzd9WbI1CxPfo+wmD3KPYepNRf8UQXdAUTqwCI/dyMBQMiMaccyXcY9cbiMgalGqhIgbkuYbXAyuJnz/5dgJlnqmX15TNHfq6OLn1odIf0u/cIKn88w18V50YQw5NuHA+bWoV4pnjRpTZ1z5w3hEOW3/UR188cLtFK8VMWM2Q87bkFtfnqZaiJEavlqshpsfZ0hsXJHi5fKS+/011q0u5kZ4zd4moPWm/l1tww/WSwu+4Obh2gmRl4n8Dbkv4C9ws7p+yYGC9nTg3W59v9AnqH/QZZL82w585iH8IoHDtLfNW8faNhBWrDpIqXVKknOIHOvq8VmpoDEvCslSFaIYMJv/MEzgDiMZT5sFAowp4O5mXCTTzp5V0Lyc8rsxU4JAD8i2vf52kdjjeU91c0TYAtzrjKEiTvVGFNyNZ206M18+QjN8uM1c2KH74VGUX8zWCsUR3BkF8YaoMGqrWn3nB5Lc9p2xigO1z5YV9RSDEXrO6zp+e9WzLm0eMc6V4F3depacQDiO
- ctorG2e/
- UoBAZ0hKtuKZ/sid+B5d4pkjgByucSOUSFgg3Odl3DF2hMgFvNJAif5SFF0koonEzEBi0AQje+ZqBcw4skRzghVepisfp0oNNN6Pp4MlIrlZS0LBYQqXcsU8+MuWap7VTRIddiIUbR1ECQLHAjPdQgLbPuzGCg3qFMnQ4RIElBWREAH5aFoCzuf/uUlXfsOZXTR9qcvraUjPArd8gMsK6CuYEU0O3wHfRcOTU18tIsNsW1iXW6XExfGJJHQqaPAlWtz2iinFKzDCi2GIfAc14aw4PpfRCEokilNxql9dCcLfxxxs=
+X-HE-Tag: 1762333538-430655
+X-HE-Meta: U2FsdGVkX19aCzS1t04sgSsRqPx2aMEP6DMHq+8M34w5qXrLLIVXmmk91NcgiWMaPHKeBRU9csiOjhxkBzvJ7BK2yikBQYj56Iax4Cmr4WlDI4vkvkEJuEZ1adY1JbV31wAjpHryciZLS7dMUe15I+yHo8irtt0hVBoWXF+28h88bdgjJsFbrYNKjHcWv+dcTaADDY/a71iyv0njic97v8z2SqI+xsMMrFtJCtcuC/3/nVaIUjTOhIQBwpD1t+8lhr9DhNMrmH+x8fpOL++ZAERFK5YARYCb0EeDcip8cNrqC8nFazqrDy4u2IIjIQMyjN6G//7YyJfYFtSyGJ/4qrhzHLNaR0kYf328HoWj9x0SQGe/0RGvO4hjnu4VNaip4lK+Bdy9cSsImfzU2lPFE53CKovBT8M2Rp1YpY8T6TYy7LcdLWinndsqXp5e8uqM2J2FnFrNCq0wnjYMDezivCsFkOoaEbkhGHkFKZ6bwW5WVOhY9ZJqB7JqBkNR2swxgE01+90kyA3a4bDb9wQ1S+n4zycWPumEygIQ/QIEZ0aHx6GRxgKL0w8FR/ncnpeKD5jloIJeeCsxo+joEPQwWeju0yPusksVy0hqkx+8j7uNhpxGqR0E9x7TKcQNIorp4YwKw6AX+q9cs4a3AD8YYOhH9BkrWlFJlAQ6cET3SWpxeArRAEe9ofDT2kzulMxZabcVeaOOBu8TLtBvt+MSXXOIwQHNu1dGxU+iSY0qVO2C53+MZUlgJzti2YSghKmA+NCfRWNhwq8Y0YRsmU6oaS/tf9/JEodm1w9JV2NNf3rPDKfjmezVf0e/d23Ca4nhXW91kbREAqALwYs8a/SNEHxEge0iLe6oKYa3SAecDniuPd1YOATxffmZ6MlnllKFjSvtqPVWetJW6Muw8vnHO5DS9Az4UC2mjMWPtshX2T2CGaONpk7pu2IjhnBEihIUMeAltBo22j5aZrgnmTU
+ 7+HAbuxJ
+ ktkvQpkqMMYJo77jrNdhSQH+OWPtJd6Ck5MeRf0aYM5vp3xW9YwvbnMcQXZSWk8eRSxES8PnRYtCzC3qjfHC5eD0XXzHYo5eqnRvaVg/ybybxrUFF3dth33vnISjSW62K/Y16r7O1hGDsmmmO+IMWEAhGBXd6VbLmwFOVnMKUrfsAxQxsLAU4pt3g6LECy1CZBcd5SwAMOunBwBhzXxrcv+kYIE8zfynaKFGZ0PpXzlG9snhEINiYe9hh7JCcvqLGDdP5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,157 +140,207 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The function is tricky and many of its tests are hard to understand. Try
-to improve that by using more descriptively named variables and added
-comments.
+When a pfmemalloc allocation actually dips into reserves, the slab is
+marked accordingly and non-pfmemalloc allocations should not be allowed
+to allocate from it. The sheaves percpu caching currently doesn't follow
+this rule, so implement it before we expand sheaves usage to all caches.
 
-- rename 'prior' to 'old_head' to match the head and tail parameters
-- introduce a 'bool was_full' to make it more obvious what we are
-  testing instead of the !prior and prior tests
-- add or improve comments in various places to explain what we're doing
+Make sure objects from pfmemalloc slabs don't end up in percpu sheaves.
+When freeing, skip sheaves when freeing an object from pfmemalloc slab.
+When refilling sheaves, use __GFP_NOMEMALLOC to override any pfmemalloc
+context - the allocation will fallback to regular slab allocations when
+sheaves are depleted and can't be refilled because of the override.
 
-Also replace kmem_cache_has_cpu_partial() tests with
-IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) which are compile-time constants.
-We can do that because the kmem_cache_debug(s) case is handled upfront
-via free_to_partial_list().
+For kfree_rcu(), detect pfmemalloc slabs after processing the rcu_sheaf
+after the grace period in __rcu_free_sheaf_prepare() and simply flush
+it if any object is from pfmemalloc slabs.
+
+For prefilled sheaves, try to refill them first with __GFP_NOMEMALLOC
+and if it fails, retry without __GFP_NOMEMALLOC but then mark the sheaf
+pfmemalloc, which makes it flushed back to slabs when returned.
 
 Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
- mm/slub.c | 62 +++++++++++++++++++++++++++++++++++++++++++++-----------------
- 1 file changed, 45 insertions(+), 17 deletions(-)
+ mm/slub.c | 69 ++++++++++++++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 55 insertions(+), 14 deletions(-)
 
 diff --git a/mm/slub.c b/mm/slub.c
-index f1a5373eee7b..074abe8e79f8 100644
+index 0237a329d4e5..bb744e8044f0 100644
 --- a/mm/slub.c
 +++ b/mm/slub.c
-@@ -5859,8 +5859,8 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 			unsigned long addr)
+@@ -469,7 +469,10 @@ struct slab_sheaf {
+ 		struct rcu_head rcu_head;
+ 		struct list_head barn_list;
+ 		/* only used for prefilled sheafs */
+-		unsigned int capacity;
++		struct {
++			unsigned int capacity;
++			bool pfmemalloc;
++		};
+ 	};
+ 	struct kmem_cache *cache;
+ 	unsigned int size;
+@@ -2651,7 +2654,7 @@ static struct slab_sheaf *alloc_full_sheaf(struct kmem_cache *s, gfp_t gfp)
+ 	if (!sheaf)
+ 		return NULL;
  
+-	if (refill_sheaf(s, sheaf, gfp)) {
++	if (refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC)) {
+ 		free_empty_sheaf(s, sheaf);
+ 		return NULL;
+ 	}
+@@ -2729,12 +2732,13 @@ static void sheaf_flush_unused(struct kmem_cache *s, struct slab_sheaf *sheaf)
+ 	sheaf->size = 0;
+ }
+ 
+-static void __rcu_free_sheaf_prepare(struct kmem_cache *s,
++static bool __rcu_free_sheaf_prepare(struct kmem_cache *s,
+ 				     struct slab_sheaf *sheaf)
  {
--	void *prior;
--	int was_frozen;
-+	void *old_head;
-+	bool was_frozen, was_full;
- 	struct slab new;
- 	unsigned long counters;
- 	struct kmem_cache_node *n = NULL;
-@@ -5874,20 +5874,37 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 		return;
- 	}
+ 	bool init = slab_want_init_on_free(s);
+ 	void **p = &sheaf->objects[0];
+ 	unsigned int i = 0;
++	bool pfmemalloc = false;
  
-+	/*
-+	 * It is enough to test IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) below
-+	 * instead of kmem_cache_has_cpu_partial(s), because kmem_cache_debug(s)
-+	 * is the only other reason it can be false, and it is already handled
-+	 * above.
-+	 */
+ 	while (i < sheaf->size) {
+ 		struct slab *slab = virt_to_slab(p[i]);
+@@ -2747,8 +2751,13 @@ static void __rcu_free_sheaf_prepare(struct kmem_cache *s,
+ 			continue;
+ 		}
+ 
++		if (slab_test_pfmemalloc(slab))
++			pfmemalloc = true;
 +
- 	do {
- 		if (unlikely(n)) {
- 			spin_unlock_irqrestore(&n->list_lock, flags);
- 			n = NULL;
- 		}
--		prior = slab->freelist;
-+		old_head = slab->freelist;
- 		counters = slab->counters;
--		set_freepointer(s, tail, prior);
-+		set_freepointer(s, tail, old_head);
- 		new.counters = counters;
--		was_frozen = new.frozen;
-+		was_frozen = !!new.frozen;
-+		was_full = (old_head == NULL);
- 		new.inuse -= cnt;
--		if ((!new.inuse || !prior) && !was_frozen) {
--			/* Needs to be taken off a list */
--			if (!kmem_cache_has_cpu_partial(s) || prior) {
-+		/*
-+		 * Might need to be taken off (due to becoming empty) or added
-+		 * to (due to not being full anymore) the partial list.
-+		 * Unless it's frozen.
-+		 */
-+		if ((!new.inuse || was_full) && !was_frozen) {
-+			/*
-+			 * If slab becomes non-full and we have cpu partial
-+			 * lists, we put it there unconditionally to avoid
-+			 * taking the list_lock. Otherwise we need it.
-+			 */
-+			if (!(IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full)) {
+ 		i++;
+ 	}
++
++	return pfmemalloc;
+ }
  
- 				n = get_node(s, slab_nid(slab));
- 				/*
-@@ -5905,7 +5922,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 		}
+ static void rcu_free_sheaf_nobarn(struct rcu_head *head)
+@@ -5041,7 +5050,7 @@ __pcs_replace_empty_main(struct kmem_cache *s, struct slub_percpu_sheaves *pcs,
+ 		return NULL;
  
- 	} while (!slab_update_freelist(s, slab,
--		prior, counters,
-+		old_head, counters,
- 		head, new.counters,
- 		"__slab_free"));
- 
-@@ -5917,7 +5934,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 			 * activity can be necessary.
- 			 */
- 			stat(s, FREE_FROZEN);
--		} else if (kmem_cache_has_cpu_partial(s) && !prior) {
-+		} else if (IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && was_full) {
+ 	if (empty) {
+-		if (!refill_sheaf(s, empty, gfp)) {
++		if (!refill_sheaf(s, empty, gfp | __GFP_NOMEMALLOC)) {
+ 			full = empty;
+ 		} else {
  			/*
- 			 * If we started with a full slab then put it onto the
- 			 * per cpu partial list.
-@@ -5926,6 +5943,11 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 			stat(s, CPU_PARTIAL_FREE);
- 		}
+@@ -5341,6 +5350,26 @@ void *kmem_cache_alloc_node_noprof(struct kmem_cache *s, gfp_t gfpflags, int nod
+ }
+ EXPORT_SYMBOL(kmem_cache_alloc_node_noprof);
+ 
++static int __prefill_sheaf_pfmemalloc(struct kmem_cache *s,
++				      struct slab_sheaf *sheaf, gfp_t gfp)
++{
++	int ret = 0;
++
++	ret = refill_sheaf(s, sheaf, gfp | __GFP_NOMEMALLOC);
++
++	if (likely(!ret || !gfp_pfmemalloc_allowed(gfp)))
++		return ret;
++
++	/*
++	 * if we are allowed to, refill sheaf with pfmemalloc but then remember
++	 * it for when it's returned
++	 */
++	ret = refill_sheaf(s, sheaf, gfp);
++	sheaf->pfmemalloc = true;
++
++	return ret;
++}
++
+ /*
+  * returns a sheaf that has at least the requested size
+  * when prefilling is needed, do so with given gfp flags
+@@ -5375,6 +5404,10 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+ 		sheaf->cache = s;
+ 		sheaf->capacity = size;
  
 +		/*
-+		 * In other cases we didn't take the list_lock because the slab
-+		 * was already on the partial list and will remain there.
++		 * we do not need to care about pfmemalloc here because oversize
++		 * sheaves area always flushed and freed when returned
 +		 */
+ 		if (!__kmem_cache_alloc_bulk(s, gfp, size,
+ 					     &sheaf->objects[0])) {
+ 			kfree(sheaf);
+@@ -5411,17 +5444,18 @@ kmem_cache_prefill_sheaf(struct kmem_cache *s, gfp_t gfp, unsigned int size)
+ 	if (!sheaf)
+ 		sheaf = alloc_empty_sheaf(s, gfp);
+ 
+-	if (sheaf && sheaf->size < size) {
+-		if (refill_sheaf(s, sheaf, gfp)) {
++	if (sheaf) {
++		sheaf->capacity = s->sheaf_capacity;
++		sheaf->pfmemalloc = false;
 +
++		if (sheaf->size < size &&
++		    __prefill_sheaf_pfmemalloc(s, sheaf, gfp)) {
+ 			sheaf_flush_unused(s, sheaf);
+ 			free_empty_sheaf(s, sheaf);
+ 			sheaf = NULL;
+ 		}
+ 	}
+ 
+-	if (sheaf)
+-		sheaf->capacity = s->sheaf_capacity;
+-
+ 	return sheaf;
+ }
+ 
+@@ -5441,7 +5475,8 @@ void kmem_cache_return_sheaf(struct kmem_cache *s, gfp_t gfp,
+ 	struct slub_percpu_sheaves *pcs;
+ 	struct node_barn *barn;
+ 
+-	if (unlikely(sheaf->capacity != s->sheaf_capacity)) {
++	if (unlikely((sheaf->capacity != s->sheaf_capacity)
++		     || sheaf->pfmemalloc)) {
+ 		sheaf_flush_unused(s, sheaf);
+ 		kfree(sheaf);
  		return;
- 	}
+@@ -5507,7 +5542,7 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, gfp_t gfp,
  
-@@ -5933,19 +5955,24 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 	 * This slab was partially empty but not on the per-node partial list,
- 	 * in which case we shouldn't manipulate its list, just return.
+ 	if (likely(sheaf->capacity >= size)) {
+ 		if (likely(sheaf->capacity == s->sheaf_capacity))
+-			return refill_sheaf(s, sheaf, gfp);
++			return __prefill_sheaf_pfmemalloc(s, sheaf, gfp);
+ 
+ 		if (!__kmem_cache_alloc_bulk(s, gfp, sheaf->capacity - sheaf->size,
+ 					     &sheaf->objects[sheaf->size])) {
+@@ -6215,8 +6250,12 @@ static void rcu_free_sheaf(struct rcu_head *head)
+ 	 * handles it fine. The only downside is that sheaf will serve fewer
+ 	 * allocations when reused. It only happens due to debugging, which is a
+ 	 * performance hit anyway.
++	 *
++	 * If it returns true, there was at least one object from pfmemalloc
++	 * slab so simply flush everything.
  	 */
--	if (prior && !on_node_partial) {
-+	if (!was_full && !on_node_partial) {
- 		spin_unlock_irqrestore(&n->list_lock, flags);
+-	__rcu_free_sheaf_prepare(s, sheaf);
++	if (__rcu_free_sheaf_prepare(s, sheaf))
++		goto flush;
+ 
+ 	n = get_node(s, sheaf->node);
+ 	if (!n)
+@@ -6371,7 +6410,8 @@ static void free_to_pcs_bulk(struct kmem_cache *s, size_t size, void **p)
+ 			continue;
+ 		}
+ 
+-		if (unlikely(IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) != node)) {
++		if (unlikely((IS_ENABLED(CONFIG_NUMA) && slab_nid(slab) != node)
++			     || slab_test_pfmemalloc(slab))) {
+ 			remote_objects[remote_nr] = p[i];
+ 			p[i] = p[--size];
+ 			if (++remote_nr >= PCS_BATCH_MAX)
+@@ -6669,7 +6709,8 @@ void slab_free(struct kmem_cache *s, struct slab *slab, void *object,
  		return;
- 	}
  
-+	/*
-+	 * If slab became empty, should we add/keep it on the partial list or we
-+	 * have enough?
-+	 */
- 	if (unlikely(!new.inuse && n->nr_partial >= s->min_partial))
- 		goto slab_empty;
- 
- 	/*
- 	 * Objects left in the slab. If it was not on the partial list before
--	 * then add it.
-+	 * then add it. This can only happen when cache has no per cpu partial
-+	 * list otherwise we would have put it there.
- 	 */
--	if (!kmem_cache_has_cpu_partial(s) && unlikely(!prior)) {
-+	if (!IS_ENABLED(CONFIG_SLUB_CPU_PARTIAL) && unlikely(was_full)) {
- 		add_partial(n, slab, DEACTIVATE_TO_TAIL);
- 		stat(s, FREE_ADD_PARTIAL);
- 	}
-@@ -5953,10 +5980,11 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
- 	return;
- 
- slab_empty:
--	if (prior) {
--		/*
--		 * Slab on the partial list.
--		 */
-+	/*
-+	 * The slab could have a single object and thus go from full to empty in
-+	 * a single free, but more likely it was on the partial list. Remove it.
-+	 */
-+	if (likely(!was_full)) {
- 		remove_partial(n, slab);
- 		stat(s, FREE_REMOVE_PARTIAL);
+ 	if (s->cpu_sheaves && likely(!IS_ENABLED(CONFIG_NUMA) ||
+-				     slab_nid(slab) == numa_mem_id())) {
++				     slab_nid(slab) == numa_mem_id())
++			   && likely(!slab_test_pfmemalloc(slab))) {
+ 		if (likely(free_to_pcs(s, object)))
+ 			return;
  	}
 
 -- 
