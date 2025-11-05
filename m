@@ -4,115 +4,128 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 511BECCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 08:52:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id DDB85CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:01:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 402698E0012; Wed,  5 Nov 2025 03:52:26 -0500 (EST)
+	id 3EE9F8E0013; Wed,  5 Nov 2025 04:01:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D9548E0002; Wed,  5 Nov 2025 03:52:26 -0500 (EST)
+	id 3778C8E0002; Wed,  5 Nov 2025 04:01:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 315ED8E0012; Wed,  5 Nov 2025 03:52:26 -0500 (EST)
+	id 2189B8E0013; Wed,  5 Nov 2025 04:01:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 1FCE98E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 03:52:26 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id A538457AA3
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:52:25 +0000 (UTC)
-X-FDA: 84075937050.05.AA8C4F8
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	by imf28.hostedemail.com (Postfix) with ESMTP id A5DACC000B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:52:23 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=aTilbZ0R;
-	spf=pass (imf28.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BB848E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:01:20 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id D40E01DE5C7
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:01:19 +0000 (UTC)
+X-FDA: 84075959478.27.75028A2
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E589C140015
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:01:17 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ByDv8TtB;
+	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762332743;
+	s=arc-20220608; t=1762333278;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Gkg/vCbQBbLgfYhLaxoF1MxQ4LNFqiCSVDKlCPX94O8=;
-	b=eCDhqF7yYH8b4ZVCNKNzaQnOPtWQUYvW5GXGZyfSp+zSnQH9FXJ/rBmCo5JC5I0yy5p+ID
-	AsoHK5WRf4wZfxvlkbJ4iF8UciaySd2pVYCwr8HayBBU0/njgKbO9d2wYiv1S/23YrMIF8
-	cLx+Z23gFVRfRgKVBjJ2SjGrY4u/AlU=
+	bh=BqwAluvFQHR3rGs29bqhyFCcj3SAHqQXu+Y8BdSkuwM=;
+	b=ARoaV1w5poPSRG44U1EMfkCJHwG78lUuCmF5KjWdVsVf0HRdBIGHVPu/yfuCiuc2UxAVJO
+	vIpJd4N3cclJyGCNLLwWRF9+4wS3k4feZA2/tUfF5nyZ/374BSZ0g1UR5WpHrm8/AWPm8X
+	WLplUitgx+dYUnyOxxQ3v8Kfe3qThwA=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=aTilbZ0R;
-	spf=pass (imf28.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.208.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762332743; a=rsa-sha256;
+	imf09.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=ByDv8TtB;
+	spf=pass (imf09.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.216.47 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762333278; a=rsa-sha256;
 	cv=none;
-	b=hi5KKp5jZgsXg8sWTql38K074wQu45T9ellCBRuLXduMBpWnsmHCNBCmKYmjnXoYTBHAX8
-	8y3mfJhGzXWTFCGFuLSbvUtNW6hv6FnDyJepIYOi+WWfpoXUOvUFOA3oDvW75HDq/q5zM2
-	XHeDYmt0ISE3yP31cUFEY17KH6aMH8s=
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so5723180a12.3
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 00:52:23 -0800 (PST)
+	b=U/XV0lvyEaM3FwgN7cXwewnmBQRN9FC3GsjFsUd/D14NJc8koNhNCjhrHb/8LECQhQQSbM
+	yT9/172Prljesf+CD3pWYZiJ3YR0ZKEpcm4+vwrwUGNAJ0Hqrsy0mvgHRZ3qzVii1YfY2+
+	Hn3EkHIGNePOActh+uXbLBjoUO9ZuWA=
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-340a5c58bf1so3609701a91.2
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 01:01:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1762332742; x=1762937542; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Gkg/vCbQBbLgfYhLaxoF1MxQ4LNFqiCSVDKlCPX94O8=;
-        b=aTilbZ0RKCs8rd7AawdiISoqokmWo5PR1CT1Zq5ymGr/9v7e1d8k4JFRJ5mX0gyvPl
-         oH3oSPCL/FLcMU/CYdNkXIeIDEY2y5KqplvcG8H9wSIGHK6uDha32ymnN6yMeNyialAc
-         pI6G8giEbtasiCk8rUcoAdEzvMfvYz+7V5MND6HQaIN4/Gspk90NlvRYT17pt6imisJo
-         e+Df+MJ0KvMXb3adW8zg2W9g2ASHmPjSCmx7U6Wfez9PBJaJNBo8YD9RSbnqc/Tzlvs4
-         H21O0YPo9e1PBnRrWqxIpCayxYlfF04h7ooKtk3Lt8MXlBwSkXr+LJXhDA+3oXEBhBVT
-         tqsg==
+        d=gmail.com; s=20230601; t=1762333277; x=1762938077; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=BqwAluvFQHR3rGs29bqhyFCcj3SAHqQXu+Y8BdSkuwM=;
+        b=ByDv8TtB7w+Wn91Q4H9+M40Mqu5aTixK/Mz1mj951Bl1ZHXGnOUN2l3QiylixGV75y
+         H6g0sCj8qhMVojqSkfqODUdsgEEUOFv+Cmowpe2C/JN80C374vlxZF0SESqej+rS/v9X
+         atyqHazxCwgcBkGHpBGuRpC9aJ/yDFw7ShowVMdfhUBynIvv6JH6p4j87QnJE5f7TDBC
+         qi81Fr/10a5PwhtH7rptXuAU81Iz7C0Ow10kMtd0iPyB6mgoqAf1I9mp7txtF9C3SaR1
+         Uh9weGDcmd44ezd4xBIOfB3b2L09Ebjm94bxLGqNrQdbXPP5QT2WMiO97bkmW2xnphy6
+         LuOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762332742; x=1762937542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1762333277; x=1762938077;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Gkg/vCbQBbLgfYhLaxoF1MxQ4LNFqiCSVDKlCPX94O8=;
-        b=BPhS18DLbRGyl73baGcVn+5tjGyMAyIhWQvwhmnzLzd9dDNr60NfTAIk7QugAx0nfw
-         kMLAknDR2/2/aTurs/0rvYTuCXxngfyejy02ZIqfMkiliXkBShrWSXkd1wHFGQMYe756
-         mWMjhnVZzdkfBrnLiFOsLwqRqyzDAw3bFOtH+HGQzrK5pu+luh6a8Q2HhSWjrsz04/nx
-         WjGM987Wrei761jIO9sJFOyIM0+vOfK4rX1CHx6CRVvWi03bv9QdbWOLR5784YvYfALU
-         LKgtLcsldCK5PdSSppym2SfvOnEI46Zwi7NYX9JVU1a/xS+scwDaBnqDEHoYyAPatTCB
-         BpOA==
-X-Forwarded-Encrypted: i=1; AJvYcCU0uhcHYcnpasa4sX58qVQT6PGF/j34wPHqN2mmncOEPOJKgp6+NltQn9n80jGRxfgFXPr6cya6uQ==@kvack.org
-X-Gm-Message-State: AOJu0YxbTvjlKqnl4Qy8vcP1SKWKaxGHbj5cPHHE13d9RCIswEZESqCW
-	qJd50CN8lk5+FqlEVAFPhIs3cAklcs04iyYzWQjbRMOzgteYKAzx07g46DkhYDvtMuBUcS8fl50
-	e5CFusT/2FgRiuEjfFPhYCHaGQIQIE/g6y1kHSXV2HQ==
-X-Gm-Gg: ASbGncsFP6IP9yd9mQJL6E9Sk1Lm4D8V8MAcxxxLbC+cmg2rNbD27FH6+qQfBbhoSCb
-	MklNglHPj8eMroojL1QQb53MOHPMv5ShQEdbgGBaZ5sPNVjQ38N1PVrOs/kbRfCCiC3wfytGk52
-	wJU+aZnXdtWIWMozJrWhlVxjGJl6TKsutIykf5yFqdwQwu56elSTuoAcCp7Fy7P+6rYpqMURpOV
-	OBcs6S12h4ip/s8ajGkmi3v3I1CI3egMkpE/ZI6L7Idx0KtWEUn+4sZUKpTiejsRohisA==
-X-Google-Smtp-Source: AGHT+IFxxt2EdxGwLdk3L9EezdOqzEzIoElbn2uBq8KS5FKpSP/CV4oKR3J8eSFfaFisM3JEbR7uWvI68mpagt1N8hs=
-X-Received: by 2002:a17:907:9815:b0:b71:cec2:d54 with SMTP id
- a640c23a62f3a-b72655a5d40mr200972466b.57.1762332741872; Wed, 05 Nov 2025
- 00:52:21 -0800 (PST)
+        bh=BqwAluvFQHR3rGs29bqhyFCcj3SAHqQXu+Y8BdSkuwM=;
+        b=gSIh7RW6aNqBKtWPrGqUJO29pXjqmAJLBYbKApRTutoHmVcvPiiEO2PzGjyHvehipO
+         +wpsNpO4ZeNkujLpWfC1d9cs6A+3jzWvc753pd4vezq/eP6J6+m+XgTQP+l4heNObT4M
+         bg3Iei5oXWY4jvZ+kmckqLbsKMIv+UnzEhy5jOcUdoQyCeE/HWpQpIy6GEgmVaUnPqeK
+         C0A8L5gwRcBGCjeGVVINawFp7/Zf+YS2PWxHYoK07q1PBB1ukqiw1TqZ36MnEkD0V1yd
+         qKY4KEl48vI85TqkcuLEimwR2ZCNBAxosAKIzRqfEbNYvGycNVhM2Fn5Ifbji7DzlwD+
+         OHkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVbdOG5UwQRSaMkylcWAPzKRz7WunETfVLdKUQdfw4nbqNb62mrhNQ7pY5GhpSMi5Z+LleeCFSXSw==@kvack.org
+X-Gm-Message-State: AOJu0Yym7//IRHwyanv1awS1tB4RvMlnka+AsOdxIQLDOpmxTTO9Nqkz
+	yaQEuvNmWc9zFFBjmgzjG18q2yVRlojwWXwBRlMrXv5eJeTtmFSL0DSs
+X-Gm-Gg: ASbGnctNypFTKecwQMvAX+hE36hQ27qCF+6QiGAbPu9VUiRklxrFgtcYto6VMYnxzpG
+	FaQNL28Lk5lOh56eHwg5VojI0dmNPi3WUxsb9V3mucbjs9QlePO7D4I8LXyjv4yOgJPfx1mIsSA
+	HFu2rL1WpE5FsvA9HTdhxNQ5uMRh4iLQw5vgxvalLHtfqvsREgK901nGIUmtWB1x/KK2qxlNggH
+	9AYp14zn6VlN5AosClNKubeYNs9yt5WBn3cdSad8c8BcBY+r6TSdUnMAcJzwgZEHEUkkhhiKgGE
+	P4sXpAGQTCQgBE+Gyd6ftTG2MXb6u8F1XOhV/vTyCAxR1Y3PCbdFKSbsFQb3YNCuJqyPCnaUcP0
+	22zn2i+GzZ++26F/Sq9csM4nIZNUGna2Q9VTBXgPOLYKiyFIBOOgi8PqRh6Kqp2/dbV1B+CMSJJ
+	FqT2ED
+X-Google-Smtp-Source: AGHT+IHHv+LyuTSVYYYzkbgRnz7hULJzgzWM0oNnTXqbUlny/y0AGDg1tLVk5Pgi5QjOwQ4eknTvSQ==
+X-Received: by 2002:a17:90b:51c8:b0:340:f05a:3ed1 with SMTP id 98e67ed59e1d1-341a6dc8735mr2732523a91.21.1762333276313;
+        Wed, 05 Nov 2025 01:01:16 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a68c822dsm2153637a91.8.2025.11.05.01.01.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 01:01:15 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, 
+	Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+In-Reply-To: <20251029100909.3381140-8-kevin.brodsky@arm.com>
+Date: Wed, 05 Nov 2025 14:19:03 +0530
+Message-ID: <87ms5050g0.ritesh.list@gmail.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-8-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-References: <20251105074917.94531-1-leon.huangfu@shopee.com>
- <aQsIq_zQXMfNNo6G@tiehlicka> <19986584-885b-4754-b98c-948e4bf9716b@linux.dev>
-In-Reply-To: <19986584-885b-4754-b98c-948e4bf9716b@linux.dev>
-From: Leon Huang Fu <leon.huangfu@shopee.com>
-Date: Wed, 5 Nov 2025 16:51:45 +0800
-X-Gm-Features: AWmQ_bmvHlhc5eJ8ueTjqxVXAa3vivPGkX-f4MR8OhK4W12VAolYXW0qkjbzZYQ
-Message-ID: <CAPV86roGZa5q1N95+ehdPRE6GkXr6bZbEU89--BgpOD8td5SoQ@mail.gmail.com>
-Subject: Re: [PATCH mm-new v2] mm/memcontrol: Flush stats when write stat file
-To: Lance Yang <lance.yang@linux.dev>
-Cc: Michal Hocko <mhocko@suse.com>, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev, 
-	akpm@linux-foundation.org, joel.granados@kernel.org, jack@suse.cz, 
-	laoar.shao@gmail.com, mclapinski@google.com, kyle.meyer@hpe.com, 
-	corbet@lwn.net, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: A5DACC000B
-X-Stat-Signature: dj7g9a3wjd1s4pe139znistxd54zf81f
+X-Rspamd-Queue-Id: E589C140015
+X-Stat-Signature: sgaz6pwnkkecseotb543d9y4yjarmgkm
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762332743-12044
-X-HE-Meta: U2FsdGVkX19caMZwpfwx/K5vVj5i1Xnyu68FODFA7PddFkFUg9RhIshfir9RkdeBkFFVc57JfFqKodXMS+uaB6lEDvFYuXXZRCxSyyPF0VBESP6bgecRBD4UZsUxZFZ55aWHvrrXpjtvu3qn06UAf5+zDL5RvotxxL13ek8CxhLxRltm5Io4ZWRFchj8AWJmryYnrq2Rn6x6kKvYgnoTNY7sbZoeIKRJ6g2y94n3+0ILF5t3rYbzOtOE71XBuegwb24LykwY2diFRh+uN0JjjdC6I1DOpQbHfwtstnFQ5KOviTWDfD0o3T6dp16aC72ThgrfePlwz6RU057RMtIWHCjpsMRiB9jN+dj5VCiplKcMIY7ldJuoX00WEJV/eNQrpBwSZ//mPsJQ6zUaby3r0gFW7SqtdSsp43dKx82lkC7BfQXW1cr8UnuddVch9/vbkUMqRrbc2Fw/FIYT5za6PGKU9yiuRGPgI7f6AKOwuKfODMOfxflWf+HkWUAh4Yfam0/tFTm77G89tN4yWj+xUpOBnqshL6IFPOIuPFqKU5guCksxkkNK7tx5BG6B5/6E5526azMtvv2fjyE7gPoDDXXfQkBBpSzETVg80qjGMzoJqF/qJa4vsJrM4aGDqIJeqQ/GHuo3GEygW9xGD7khe+Zy4+6uO1jtG4oE4kOx+FgPHV+fVk19h92lWq8Sq9UI9vbj+XC/SEg7VkMHERDM9IT1vMD2Lceoww03RmK4CpLNp6Veg1RL4NcAbaBK81I5ZTjPHEIfoZ80RKLpza0zr/NNsxXajabrtoDOAGpRCS4cI0Cjyzy7kVYqsxscaJfHLDotTnhJ3VZNeTHGe1cIvb9KRImOI3ulSEFe7wT7Y2RSJKfTZmO5twEeCTbupac0WpMMXUlP4xL6Y5SbwllpFvnqs3VK2pZ2/tqdhdsMIskD1Mnu0er5LkAQO/opv6RQp19g3XW7nUjATHXK0kP
- cUPRxaRd
- QCIb/dowaRy5s0FhUaocF1U1it3izunqMShTkHTFZBLrqyfDk/TV1o61FuP35s7fN0GoAIpuyqrrm1/T2XShjDcU1bdXA4CrwKkfd12YgZ8ao1xYtV83QPN2oyR5cNMSwSvx+8JCpf1kSgmxx3y/kSTP344WierLwi+yWiWp6l2mtcfO8nn+8LPuoLvNWxWBNVIy0tQ6k1KpCVZT0H7QLVRJs9USZ9J4LZs+VEwuL674MAyo/alIXQPgMo05OKHHmydRSGttB4ZE8r/I=
+X-HE-Tag: 1762333277-819786
+X-HE-Meta: U2FsdGVkX18K2xX/fP8DB2HIRkwBzZHMc/OUIGPoPCm+NPtwPQBaQoVB/DeJ17TOFmhyfjQYfbPaSBT2UcevkYkyqWJm+5rKZ6c+cEiq/C8Fq2gua+qiwVUKesuUZ3GNUy1xDFSbx3lCfsraL7z1EzbvsNwLBXkPcnHbAFHlrfpurldLqC+TvIX80N64Tca5AuOSsTxoqq4wMoyLKH7/QKwmmaiG5UpIN6Ywdn5QcM5nVr7cf7kAzcsA3oay7ySA8qtuGKaTX94l2O7NRm4phbJyT4Yb1NX0pfUzsj2FlzJJ5LjU1U5oG7uaPYUh+cD3ul2GFsbFPBMxvwIx+x+J9fjz8NR2jEgkNWT6KcCh4pSMRrQys9eUtCC3hV5apMUxb3jrZNxhjieiZXH2l3yL+Bn+O3rWNIbzxG+xyORb+Y5O3TLQZm3YR/GE5/9QEVHVETUZSXGoaFNchTFkIy/1IfmhyAIaju0qowQ5Dlnwki0BJs40zseL9V5uTW/cviNXU2qugwyELOpLH0jW/E6747RPZ7NJqxokzBOVerSW25vFysBaVDCb1A3AwFVfwIzmOGeKy0Uxx+Z9XdKNdIhRS8fYHETvqZFNi2QZLHHH0gZ5rW9pRGpS+kd7oc4r0lguYz6wOUb2PAy2ngzBqouKrgqvccXEteljAqvJoDc/4w1pC2hBMopRefAiwHhe3nl7dE78djzcgTX/XGCwlkrD6GvqzXyeLbldn2O9ZONysBWe3WZ3nBJ2wC7MjA+xQMYwukJRaL9KgXxqooRvDCJztnh8jVCzQF1A6OdcbC9keSLMd2je9cdJRJeoJRs7OMRx+Oocl0M705bPPTPklNbrDVu8midYUwqXYnsuaIT4ppXsCwRQcrIGsJ0LFqMyz51h6y4vNJ0/sADhPfv8veVqYmI5nCNwgaDGMWLe3IInbP4N4ADbsPMuKPOZCdmPAkh66wcGajKd0ThCqkLRuhL
+ umSSrue5
+ qHxXapq49wSHXufHEkdGKYqr0FMYHYB2Mub9hJQ1DBDL1Vy13zx3ktpmudnwzCKYRVin4stRn3CTMNB1PhsSJxYactzo+f7KccU/t6T3/gUnqBx8sZ4YSHKoPia3y7ctgRCEHMWZRcqaTMpnYX7Q+8I7uCpCD8yIdHH53TfwdQAkVi5Kd1G10iivWP8Gse+t/QlJEmxNEF5Vj1FWpwRHElbqa+Z9Y+jR1FKUQeIi5q+MZDJyO9PK8qg4qdzNsFLzjqQGkTN1jX5Yzq/I0sdP25ofbCwjc3V19v0ZO+IxJ69CzQMnLRiSc6ocyIZiFHGXYcg3qoFbd8XuoZ5pBxgS3nFByxwRYGh8q1tufUJlZXGkwzefagZtoGfRmT12LBbSRYE7Zt30IvoMDprAjoWELpwdycBzEQERefwxF0gx9k2WE9anACYgHaOmr2ybzDnECgNixS5LbmfYJ+ZHpBA738SKlbvANzYBFYPBIHGDRjMLylh6QRGmVFNNNLaCB3YbCJ6RoSAdcwQUjd26aqzC3JI6UNVZiFKXEjWyaeUMLvAcTKKxTh/30xU6HY2cN2BA+5+20oiBxiBGo7C32CLKXiyMD99lCftCMWQR0iLhKOrZ+AvPXqtgl4XmawU0TLgVWiVVPvA814C3HzvU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,71 +134,280 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 5, 2025 at 4:39=E2=80=AFPM Lance Yang <lance.yang@linux.dev> wr=
-ote:
-> On 2025/11/5 16:19, Michal Hocko wrote:
-> > On Wed 05-11-25 15:49:16, Leon Huang Fu wrote:
-> >> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
-> >> index 6eed14bff742..8cab6b52424b 100644
-> >> --- a/mm/memcontrol-v1.c
-> >> +++ b/mm/memcontrol-v1.c
-> >> @@ -2040,6 +2040,7 @@ struct cftype mem_cgroup_legacy_files[] =3D {
-> >>      {
-> >>              .name =3D "stat",
-> >>              .seq_show =3D memory_stat_show,
-> >> +            .write_u64 =3D memory_stat_write,
-> >>      },
-> >>      {
-> >>              .name =3D "force_empty",
-> >> @@ -2078,6 +2079,7 @@ struct cftype mem_cgroup_legacy_files[] =3D {
-> >>      {
-> >>              .name =3D "numa_stat",
-> >>              .seq_show =3D memcg_numa_stat_show,
-> >> +            .write_u64 =3D memory_stat_write,
-> >>      },
-> >
-> > Any reason you are not using .write like others? Also is there any
-> > reason why a specific value is required. /proc/sys/vm/stat_refresh whic=
-h does
-> > something similar ignores the value. Also memcg.peak write handler whic=
-h
-> > resets the peak value ignores it. It is true that a specific value
-> > allows for future extensions but I guess it would be better to be
-> > consistent with others here.
-> >
-> > One last thing to consider is whether this should follow
-> > /proc/sys/vm/stat_refresh path and have a single file to flush them all
-> > or have a per file flushing. I do not have a strong preference but
-> > considering both are doing the same thing it makes sense to go
-> > stat_refresh path.
+Kevin Brodsky <kevin.brodsky@arm.com> writes:
+
+> Despite recent efforts to prevent lazy_mmu sections from nesting, it
+> remains difficult to ensure that it never occurs - and in fact it
+> does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
+> Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
+> made nesting tolerable on arm64, but without truly supporting it:
+> the inner call to leave() disables the batching optimisation before
+> the outer section ends.
 >
-> +1
+> This patch actually enables lazy_mmu sections to nest by tracking
+> the nesting level in task_struct, in a similar fashion to e.g.
+> pagefault_{enable,disable}(). This is fully handled by the generic
+> lazy_mmu helpers that were recently introduced.
 >
-> IMHO, a dedicated file like memory.stat_refresh is a much better approach=
- ;)
+> lazy_mmu sections were not initially intended to nest, so we need to
+> clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
+> This patch takes the following approach:
 >
-> It's cleaner, simpler to use, and much more intuitive for users.
+> * The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
+>   calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
 >
+> * Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
+>   to the arch via arch_{enter,leave} - lazy MMU remains enabled so
+>   the assumption is that these callbacks are not relevant. However,
+>   existing code may rely on a call to disable() to flush any batched
+>   state, regardless of nesting. arch_flush_lazy_mmu_mode() is
+>   therefore called in that situation.
+>
+> A separate interface was recently introduced to temporarily pause
+> the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
+> exits the mode *regardless of the nesting level*, and resume()
+> restores the mode at the same nesting level.
+>
+> Whether the mode is actually enabled or not at any point is tracked
+> by a separate "active" field in task_struct; this makes it possible
+> to check invariants in the generic API, and to expose a new
+> in_lazy_mmu_mode() helper to replace the various ways arch's
+> currently track whether the mode is enabled (this will be done in
+> later patches).
+>
+> In summary (nesting/active represent the values *after* the call):
+>
+> lazy_mmu_mode_enable()		-> arch_enter()	    nesting=3D1 active=3D1
+>     lazy_mmu_mode_enable()	-> =C3=B8		    nesting=3D2 active=3D1
+> 	lazy_mmu_mode_pause()	-> arch_leave()     nesting=3D2 active=3D0
+> 	lazy_mmu_mode_resume()	-> arch_enter()     nesting=3D2 active=3D1
+>     lazy_mmu_mode_disable()	-> arch_flush()     nesting=3D1 active=3D1
+> lazy_mmu_mode_disable()		-> arch_leave()     nesting=3D0 active=3D0
+>
+> Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
+> headers included by <linux/pgtable.h> to use it.
+>
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 12 ------
+>  include/linux/mm_types_task.h    |  5 +++
+>  include/linux/pgtable.h          | 67 ++++++++++++++++++++++++++++++--
+>  include/linux/sched.h            | 16 ++++++++
+>  4 files changed, 84 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pg=
+table.h
+> index 54f8d6bb6f22..535435248923 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -82,18 +82,6 @@ static inline void queue_pte_barriers(void)
+>=20=20
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+> -	/*
+> -	 * lazy_mmu_mode is not supposed to permit nesting. But in practice this
+> -	 * does happen with CONFIG_DEBUG_PAGEALLOC, where a page allocation
+> -	 * inside a lazy_mmu_mode section (such as zap_pte_range()) will change
+> -	 * permissions on the linear map with apply_to_page_range(), which
+> -	 * re-enters lazy_mmu_mode. So we tolerate nesting in our
+> -	 * implementation. The first call to arch_leave_lazy_mmu_mode() will
+> -	 * flush and clear the flag such that the remainder of the work in the
+> -	 * outer nest behaves as if outside of lazy mmu mode. This is safe and
+> -	 * keeps tracking simple.
+> -	 */
+> -
+>  	if (in_interrupt())
+>  		return;
+>=20=20
+> diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
+> index a82aa80c0ba4..632d404f8191 100644
+> --- a/include/linux/mm_types_task.h
+> +++ b/include/linux/mm_types_task.h
+> @@ -88,4 +88,9 @@ struct tlbflush_unmap_batch {
+>  #endif
+>  };
+>=20=20
+> +struct lazy_mmu_state {
+> +	u8 nesting_level;
+> +	bool active;
+> +};
+> +
+>  #endif /* _LINUX_MM_TYPES_TASK_H */
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index b5fdf32c437f..e6064e00b22d 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -228,27 +228,86 @@ static inline int pmd_dirty(pmd_t pmd)
+>   * of the lazy mode. So the implementation must assume preemption may be=
+ enabled
+>   * and cpu migration is possible; it must take steps to be robust agains=
+t this.
+>   * (In practice, for user PTE updates, the appropriate page table lock(s=
+) are
+> - * held, but for kernel PTE updates, no lock is held). Nesting is not pe=
+rmitted
+> - * and the mode cannot be used in interrupt context.
+> + * held, but for kernel PTE updates, no lock is held). The mode cannot b=
+e used
+> + * in interrupt context.
+> + *
+> + * The lazy MMU mode is enabled for a given block of code using:
+> + *
+> + *   lazy_mmu_mode_enable();
+> + *   <code>
+> + *   lazy_mmu_mode_disable();
+> + *
+> + * Nesting is permitted: <code> may itself use an enable()/disable() pai=
+r.
+> + * A nested call to enable() has no functional effect; however disable()=
+ causes
+> + * any batched architectural state to be flushed regardless of nesting. =
+After a
+> + * call to disable(), the caller can therefore rely on all previous page=
+ table
+> + * modifications to have taken effect, but the lazy MMU mode may still be
+> + * enabled.
+> + *
+> + * In certain cases, it may be desirable to temporarily pause the lazy M=
+MU mode.
+> + * This can be done using:
+> + *
+> + *   lazy_mmu_mode_pause();
+> + *   <code>
+> + *   lazy_mmu_mode_resume();
+> + *
+> + * This sequence must only be used if the lazy MMU mode is already enabl=
+ed.
+> + * pause() ensures that the mode is exited regardless of the nesting lev=
+el;
+> + * resume() re-enters the mode at the same nesting level. <code> must no=
+t modify
+> + * the lazy MMU state (i.e. it must not call any of the lazy_mmu_mode_*
+> + * helpers).
+> + *
+> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> + * currently enabled.
+>   */
+>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  static inline void lazy_mmu_mode_enable(void)
+>  {
+> -	arch_enter_lazy_mmu_mode();
+> +	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON_ONCE(state->nesting_level =3D=3D U8_MAX);
+> +	/* enable() must not be called while paused */
+> +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> +
+> +	if (state->nesting_level++ =3D=3D 0) {
+> +		state->active =3D true;
+> +		arch_enter_lazy_mmu_mode();
+> +	}
+>  }
 
-Agreed. Thank you both for the feedback.
+Some architectures disables preemption in their
+arch_enter_lazy_mmu_mode(). So shouldn't the state->active =3D true should
+happen after arch_enter_lazy_mmu_mode() has disabled preemption()? i.e.
 
-You're right that following the /proc/sys/vm/stat_refresh pattern makes
-more sense here. A dedicated memory.stat_refresh file has several advantage=
-s:
+  static inline void lazy_mmu_mode_enable(void)
+  {
+ -	arch_enter_lazy_mmu_mode();
+ +	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
+ +
+ +	VM_WARN_ON_ONCE(state->nesting_level =3D=3D U8_MAX);
+ +	/* enable() must not be called while paused */
+ +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+ +
+ +	if (state->nesting_level++ =3D=3D 0) {
+ +		arch_enter_lazy_mmu_mode();
+ +		state->active =3D true;
+ +	}
+  }
 
-1) It provides a clear, explicit interface for the refresh operation rather
-    than overloading existing stat files with write capability
-2) It's more consistent with the existing kernel patterns - stat_refresh
-    ignores the written value, and memory.peak also ignores it for reset
-3) It's more intuitive for users - the purpose is immediately clear from
-    the filename
+... I think it make more sense to enable the state after the arch_**
+call right.
 
-For the next revision, I'll introduce a dedicated memory.stat_refresh file
-that ignores the written value (similar to stat_refresh and memory.peak).
-This will work for both cgroup v1 and v2.
+>=20=20
+>  static inline void lazy_mmu_mode_disable(void)
+>  {
+> -	arch_leave_lazy_mmu_mode();
+> +	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON_ONCE(state->nesting_level =3D=3D 0);
+> +	VM_WARN_ON(!state->active);
+> +
+> +	if (--state->nesting_level =3D=3D 0) {
+> +		state->active =3D false;
+> +		arch_leave_lazy_mmu_mode();
+> +	} else {
+> +		/* Exiting a nested section */
+> +		arch_flush_lazy_mmu_mode();
+> +	}
+>  }
 
-Thanks,
-Leon
+This looks ok though.
 
-[...]
+>=20=20
+>  static inline void lazy_mmu_mode_pause(void)
+>  {
+> +	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON(state->nesting_level =3D=3D 0 || !state->active);
+> +
+> +	state->active =3D false;
+>  	arch_leave_lazy_mmu_mode();
+>  }
+>=20=20
+>  static inline void lazy_mmu_mode_resume(void)
+>  {
+> +	struct lazy_mmu_state *state =3D &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON(state->nesting_level =3D=3D 0 || state->active);
+> +
+> +	state->active =3D true;
+>  	arch_enter_lazy_mmu_mode();
+>  }
+
+Ditto.
+
+-ritesh
+
+
+>  #else
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index cbb7340c5866..11566d973f42 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1441,6 +1441,10 @@ struct task_struct {
+>=20=20
+>  	struct page_frag		task_frag;
+>=20=20
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +	struct lazy_mmu_state		lazy_mmu_state;
+> +#endif
+> +
+>  #ifdef CONFIG_TASK_DELAY_ACCT
+>  	struct task_delay_info		*delays;
+>  #endif
+> @@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_=
+struct *tsk)
+>  	return task_index_to_char(task_state_index(tsk));
+>  }
+>=20=20
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +static inline bool in_lazy_mmu_mode(void)
+> +{
+> +	return current->lazy_mmu_state.active;
+> +}
+> +#else
+> +static inline bool in_lazy_mmu_mode(void)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+>  extern struct pid *cad_pid;
+>=20=20
+>  /*
+> --=20
+> 2.47.0
 
