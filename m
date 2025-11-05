@@ -4,107 +4,107 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C1D60CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:31:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3A42ECCFA07
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:31:53 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1BE728E000D; Wed,  5 Nov 2025 04:31:06 -0500 (EST)
+	id 9AF338E0019; Wed,  5 Nov 2025 04:31:52 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 196468E0008; Wed,  5 Nov 2025 04:31:06 -0500 (EST)
+	id 95FB78E0008; Wed,  5 Nov 2025 04:31:52 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AC988E000D; Wed,  5 Nov 2025 04:31:06 -0500 (EST)
+	id 850988E0019; Wed,  5 Nov 2025 04:31:52 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EA4648E0008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:31:05 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9AA4712B5D5
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:31:05 +0000 (UTC)
-X-FDA: 84076034490.27.4C96048
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 7897AA0011
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:31:03 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuZQtyDj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cn3IsDC1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuZQtyDj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cn3IsDC1;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	by kanga.kvack.org (Postfix) with ESMTP id 6DB868E0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:31:52 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 39EA8B7803
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:31:52 +0000 (UTC)
+X-FDA: 84076036464.15.2660271
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 985D0120011
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:31:49 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aFsG9XOx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9nFT0QKk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aFsG9XOx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9nFT0QKk;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762335063;
+	s=arc-20220608; t=1762335110;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=p3v0IBakxPfN80lKZ9HG+/JKVr7LVerWut7g1o96eek=;
-	b=ruqE0a9E30xkS3Las7LRW3KObREFm+YrKEiFWweEjIZTn5Bi6RiF5CBiPQ+KUhFvapQwCi
-	wSJMajHgbCaKfCqx39Z1ccHawyxEBcOlHm0+Kfi/Oa5SGdKKoysVMSRS+RLqpIqiGqSAZX
-	d/fUPB8o6qbxPSuPV7389uMWfCRAkUA=
+	bh=7dhBI3wtUUGN8VYMC+NN1TmUWEPtpBQKbvGkUzp4Vn4=;
+	b=8iO5Th4Jmj7K+yx31d6lbIEfH5wFm9gK2UkQJ2hA+Unm556kXoqDBQ+DiXk2yTbxfDqt9D
+	9rK0JWDxpBI0O60yBCDUJpAAIfX5HaGzorkFouukU7Tk1X/TT1hXLIojYHsJYUHFEoAkxb
+	28wQnM12n9JO5WCX354CieuSSM8E5v8=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuZQtyDj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cn3IsDC1;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KuZQtyDj;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=cn3IsDC1;
-	spf=pass (imf15.hostedemail.com: domain of jack@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aFsG9XOx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9nFT0QKk;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=aFsG9XOx;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=9nFT0QKk;
+	spf=pass (imf29.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762335063; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762335110; a=rsa-sha256;
 	cv=none;
-	b=UG9DECq2jyuI13wAB54/5m+MGGURTKHrMgxFLp3wkSFvC/S1X0JmFuXrIAB1lEFZVAYP5o
-	FvBWx0elc7KTK5c0upVk4FqqIgoHJmPSx6A86IZ7yRiqIaRDuni4tshzrmXo3hr0iej+RR
-	EzGMogvvormX5VUGJ87Zbq1k1OmyfbE=
+	b=ApPtnbFRYVWt59ZhirfRYgReGRaORhz6U8XHJ48HLCVRRnjhpQdpLc9MVCpuQY+XyMr2bD
+	iNtHkmJBwyAk1k/X2e/mrzT7ZzdLgeB6oilBITk0yPIS9QpC8Jjd+9kOHDZg4lxDiYusOi
+	VrPYF3Cpndzt1X4FxXlTTdLjU+CgcWA=
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id B9A691F443;
-	Wed,  5 Nov 2025 09:31:01 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 0A65A211CD;
+	Wed,  5 Nov 2025 09:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762335061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762335108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3v0IBakxPfN80lKZ9HG+/JKVr7LVerWut7g1o96eek=;
-	b=KuZQtyDjDUi7V99tm5RZCGH6RaZguDOoGjZ3UKdBXbYzrtKjGV6VqRMeSTuk0gMYQpaWs7
-	ANBEo3cnhvywej/ZR7p4863VnVib1MuQybQG+sJKjhDvGk+o2esTiXlx/P41jamBcA7X6v
-	C5CYJee1QE3CSvn2WIp1rAMlt3uvYgc=
+	bh=7dhBI3wtUUGN8VYMC+NN1TmUWEPtpBQKbvGkUzp4Vn4=;
+	b=aFsG9XOxNgfZjqF1+TZq/aUlkyMAiG05LcrvqPnchHr6sZXxbpALmJkaW7aGCADJxPrk5n
+	RuN8RRXOzucWiSgNK2gBI2JAUjD4iXGWsG6Aa2+Im3OGLAJKF5HG7lRJniHhBZAvgCGngn
+	o3m72mdRxiE0fpM5Jxcz8fFg4dty6P0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762335061;
+	s=susede2_ed25519; t=1762335108;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3v0IBakxPfN80lKZ9HG+/JKVr7LVerWut7g1o96eek=;
-	b=cn3IsDC1WuCkmuWAXqBY5fycF9EKm9Cx/1ov+sr8+dV249nzyqfUgdOZSsFaUmVjt5VCIh
-	XLspu1adc1xBnpDA==
+	bh=7dhBI3wtUUGN8VYMC+NN1TmUWEPtpBQKbvGkUzp4Vn4=;
+	b=9nFT0QKkG7hMvQYQz1w+N4wRwdOEX10tqjL851bdA15QjLQ7JVXzRO2WuQFuVL9qqHMar/
+	5HzjHwYO4GhrbgDw==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762335061; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762335108; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3v0IBakxPfN80lKZ9HG+/JKVr7LVerWut7g1o96eek=;
-	b=KuZQtyDjDUi7V99tm5RZCGH6RaZguDOoGjZ3UKdBXbYzrtKjGV6VqRMeSTuk0gMYQpaWs7
-	ANBEo3cnhvywej/ZR7p4863VnVib1MuQybQG+sJKjhDvGk+o2esTiXlx/P41jamBcA7X6v
-	C5CYJee1QE3CSvn2WIp1rAMlt3uvYgc=
+	bh=7dhBI3wtUUGN8VYMC+NN1TmUWEPtpBQKbvGkUzp4Vn4=;
+	b=aFsG9XOxNgfZjqF1+TZq/aUlkyMAiG05LcrvqPnchHr6sZXxbpALmJkaW7aGCADJxPrk5n
+	RuN8RRXOzucWiSgNK2gBI2JAUjD4iXGWsG6Aa2+Im3OGLAJKF5HG7lRJniHhBZAvgCGngn
+	o3m72mdRxiE0fpM5Jxcz8fFg4dty6P0=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762335061;
+	s=susede2_ed25519; t=1762335108;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=p3v0IBakxPfN80lKZ9HG+/JKVr7LVerWut7g1o96eek=;
-	b=cn3IsDC1WuCkmuWAXqBY5fycF9EKm9Cx/1ov+sr8+dV249nzyqfUgdOZSsFaUmVjt5VCIh
-	XLspu1adc1xBnpDA==
+	bh=7dhBI3wtUUGN8VYMC+NN1TmUWEPtpBQKbvGkUzp4Vn4=;
+	b=9nFT0QKkG7hMvQYQz1w+N4wRwdOEX10tqjL851bdA15QjLQ7JVXzRO2WuQFuVL9qqHMar/
+	5HzjHwYO4GhrbgDw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id AF959132DD;
-	Wed,  5 Nov 2025 09:31:01 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 00BF9132DD;
+	Wed,  5 Nov 2025 09:31:48 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ir3cKlUZC2kpHgAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 05 Nov 2025 09:31:01 +0000
+	id nEssAIQZC2n6HgAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 05 Nov 2025 09:31:48 +0000
 Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 5E667A083B; Wed,  5 Nov 2025 10:30:57 +0100 (CET)
-Date: Wed, 5 Nov 2025 10:30:57 +0100
+	id AD641A083B; Wed,  5 Nov 2025 10:31:47 +0100 (CET)
+Date: Wed, 5 Nov 2025 10:31:47 +0100
 From: Jan Kara <jack@suse.cz>
 To: libaokun@huaweicloud.com
 Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
@@ -112,25 +112,25 @@ Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
 	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
 	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
 	libaokun1@huawei.com
-Subject: Re: [PATCH 18/25] ext4: support large block size in
- mpage_map_and_submit_buffers()
-Message-ID: <cyxlv42ng4cetw55mzxywfmzoqo7uzeemswnwn3ztfuphdpdiv@bjlhohw3gdzs>
+Subject: Re: [PATCH 19/25] ext4: support large block size in
+ mpage_prepare_extent_to_map()
+Message-ID: <fgyzoczbfupsdkstxojoodxnny3mjoqj4jn7k26lq7barrtq72@zvw2p5pvglnk>
 References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-19-libaokun@huaweicloud.com>
+ <20251025032221.2905818-20-libaokun@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-19-libaokun@huaweicloud.com>
+In-Reply-To: <20251025032221.2905818-20-libaokun@huaweicloud.com>
 X-Rspamd-Action: no action
 X-Spamd-Bar: /
-X-Rspamd-Queue-Id: 7897AA0011
-X-Stat-Signature: tnru7xt8ubbaknjx7m7sb7f4cte4w99i
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 985D0120011
+X-Stat-Signature: 5ks4kzq3aswi5oji5ffemycuwbc9j9u5
 X-Rspam-User: 
-X-HE-Tag: 1762335063-142626
-X-HE-Meta: U2FsdGVkX19FfTwAZTLvprfh5QWuJWVK0bDzx7QLZ9GnNAdfpXrMAbknpT64GmRWR16NneBqz4UXG/mkEbrff7aN3AeyCKWc2qrXTXluYxHmiPU0lPhiNN5d+8kdcQTu+3kCgqNaIxkW4rreUdCt6bhQOhaEHN/n0NZmEWppbPhdE6kECn8eXtq7/ZkNm0pioGARSInI2LzGUD1foaD70sOw3m9fm8+swZkB4Mf6ju4BWIdCZuu6Ru2fieJkUxHaoR6radBpj/dbpEXsfIeNcpat9BfUb3B6CPC5R49Zt11MA+bdvE3oBMImx1D7+aSkCUPn7MB5Vw/ryMegVOSgwmw97prKS8WXkyA+8SWhPZVgMLo6sozbsyI+Wme7gL8376Oz+KIW4HUZSx2X7iK+eg/Tzkf/t86ZSndt0LcBHl1SwzlvJKS922tvPw9aEXGbZ/YhRwC/kDptKIZjwsnksGSuJ4iGpA9neOPBH2FM7AvtNWei2OK7PucTsvJ9ZOc5jP8gfw8lDQgrxeORJxgvkCnvOQocIAzqPz5eO9pEYmv0mko2GyDzWW6UqE5taJf+AE5XFmRQTRtL7HzLl4LIBScnSSq6WokdhjgA7NV2zMwKGa0V6G35UK1Gw1kCKqgY/BWQyybYKwIVToadoVyVG/QfhZXEIY5zY0gm7oDyRI40ERns8I0bm7GpUoqOVxQgnh2U5VfVvInhr3gl4D87ejT4M6Hp9Q2u0zeLd5n8JPzpTara7WCj5/LLNHw89HzD1A8uCM9J3LFjM0shdX8ftlVhccGJZD46Frp+ZobPUG8pN6DbzGiPZgsrb/1SUXa+Oj898r0hDhR/x+E1+U6Kqcr7KEGJg7BXmvT2KFY0i3bgHa1Nx0xsWtUPEI2NMO5qiwfTZsq5GLVHfWGo/bTFh3u9uEMw+7j3c7BgSJb7q/Lt4I6llqqGVWurXUVmCRBFnNCP+NyFM+DNfG3HYN/
- vKOkZ+Nf
- sEHhU
+X-HE-Tag: 1762335109-891992
+X-HE-Meta: U2FsdGVkX1+C1KXTKpTUBAZTK8rAcxGYQcmDOoc1sMVy04zS/suOA58pkyIGJPCiO06hWKQ8Z7qsfD+uyc6s6YGTjbOiHI4mdC/4iVOzMBMnBARvInXy863k05ChEByttKVogZKOvXFXytFvODNtQUdltRHHboZk6mPi5jvQZVo8q5TkfDDJI20+cAn6e9S+Kedz9tMm9xk/xLiOfbhXzIW+/htOmLht7OhvdhyNWjRN8fdWnBWd/S2FqW/McO2sj2qJ+9RKaV08nBC5tlvSFvfRMkhpV2xqOg7/qt7u/5kYIM969bvL2H9YFsi4VAGX+8jX1XZgYnttTap7N9HNkb9lWnw4sADEGFNd24qAV53VZSttlyZWY6EElx9EsXccZvhv+sk79/HS5Oyjc2O2Wjmkq+dP2Jv7tkoCWMrTOoiiZ4sB8hwQJyFAxVJTIQM9grq4H9laPrE1w4mFXMPePhNvwq+pG5DuVv23RVmbP0AhM+8abF6atTYs53T8ACzXpGWueHDn79MQ5f6+YrNx5cGm/Fp8rGp1wjGWYLUYHm6my+KPkCwIlDqTxeMOsHkiAkJu/SBHTJLBjUYwNamJ7CoKR5/FL5OaPSZcGzthUq9TZ8qLbWArdAue0IYhuxRDyUFWkG/Z2s6Z7nD8uBV993K1V9qutKHpY+ahnRLpT+/I1PPhzfCj6f08ocwo/ZKPyTHenLOVq9EvwvDe3l4tCA+meAJTc8liO0CCUr6uH1zRjlIFHkmY0U4KLqZp9xwx+AhWqYOkVZEkhHsA49SWYyXs3zWGi+Z0g1wGSEzaJ9q6ozxjMq8cmEB/NJeoW63tIPQMMXVBAz9pIASpZNpA+xqIT0vl6bif/Ag/CE4LU8OEgkNrAC0/ZYj9H/p90GnJ/T4VJqbl7KUvWyH9YAwwbd9U2/OJT35exoqkIC8ctjSLGxHgmee7B2mYrMw0uuPVzCqn2FP+vUFJkxyypq6
+ yzwYi2jN
+ Fh/eL3x/rDM/PMUpGT59bCmmhV4lf3LOAckaP/XUMv1d3PmccXMg+/LK6ZlFokZgfb7exFQH9o52s3I7sh4qVagCkcNLNgYMI8t76YKKSxJYjVxhqJwhFKBcstYtYJKlJe0cF4IUgrTaIUcQYD4gZWfA42PI30yas9uTFYkBEHFOHKWx/Xr3kjE2ZWoqNhZixY0CJVVgmOYeJHnatn1eBqVgt7OJKYT1QL16N5pM74CYPNen2fvC4Oirz9eo4VPPBJno2A89Pnt0Fk5BPPURQQiql12WIvY239oOUaqFak0Cyk4XrskrQoB9OxREaX3buP8xXAx8U8uA1f1TiZaqYBocYi/iNNZxXAkVKOWmHb4FZyolIr42EI9LrZnYmB9RIDtK7QyTd4XlNGJ/jvS3p1IDdiuPImAgIu7ThEdKUlimQcUhP9SefqPXRTw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,7 +139,7 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:14, libaokun@huaweicloud.com wrote:
+On Sat 25-10-25 11:22:15, libaokun@huaweicloud.com wrote:
 > From: Baokun Li <libaokun1@huawei.com>
 > 
 > Use the EXT4_P_TO_LBLK/EXT4_LBLK_TO_P macros to complete the conversion
@@ -156,40 +156,40 @@ Reviewed-by: Jan Kara <jack@suse.cz>
 								Honza
 
 > ---
->  fs/ext4/inode.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+>  fs/ext4/inode.c | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 > 
 > diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-> index d97ce88d6e0a..cbf04b473ae7 100644
+> index cbf04b473ae7..ce48cc6780a3 100644
 > --- a/fs/ext4/inode.c
 > +++ b/fs/ext4/inode.c
-> @@ -2289,15 +2289,14 @@ static int mpage_map_and_submit_buffers(struct mpage_da_data *mpd)
->  	struct folio_batch fbatch;
->  	unsigned nr, i;
->  	struct inode *inode = mpd->inode;
-> -	int bpp_bits = PAGE_SHIFT - inode->i_blkbits;
->  	pgoff_t start, end;
+> @@ -2610,7 +2610,6 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
+>  	pgoff_t end = mpd->end_pos >> PAGE_SHIFT;
+>  	xa_mark_t tag;
+>  	int i, err = 0;
+> -	int blkbits = mpd->inode->i_blkbits;
 >  	ext4_lblk_t lblk;
->  	ext4_fsblk_t pblock;
->  	int err;
->  	bool map_bh = false;
+>  	struct buffer_head *head;
+>  	handle_t *handle = NULL;
+> @@ -2649,7 +2648,7 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
+>  			 */
+>  			if (mpd->wbc->sync_mode == WB_SYNC_NONE &&
+>  			    mpd->wbc->nr_to_write <=
+> -			    mpd->map.m_len >> (PAGE_SHIFT - blkbits))
+> +			    EXT4_LBLK_TO_P(mpd->inode, mpd->map.m_len))
+>  				goto out;
 >  
-> -	start = mpd->map.m_lblk >> bpp_bits;
-> -	end = (mpd->map.m_lblk + mpd->map.m_len - 1) >> bpp_bits;
-> +	start = EXT4_LBLK_TO_P(inode, mpd->map.m_lblk);
-> +	end = EXT4_LBLK_TO_P(inode, mpd->map.m_lblk + mpd->map.m_len - 1);
->  	pblock = mpd->map.m_pblk;
->  
->  	folio_batch_init(&fbatch);
-> @@ -2308,7 +2307,7 @@ static int mpage_map_and_submit_buffers(struct mpage_da_data *mpd)
->  		for (i = 0; i < nr; i++) {
->  			struct folio *folio = fbatch.folios[i];
->  
-> -			lblk = folio->index << bpp_bits;
-> +			lblk = EXT4_P_TO_LBLK(inode, folio->index);
->  			err = mpage_process_folio(mpd, folio, &lblk, &pblock,
->  						 &map_bh);
->  			/*
+>  			/* If we can't merge this page, we are done. */
+> @@ -2727,8 +2726,7 @@ static int mpage_prepare_extent_to_map(struct mpage_da_data *mpd)
+>  				mpage_folio_done(mpd, folio);
+>  			} else {
+>  				/* Add all dirty buffers to mpd */
+> -				lblk = ((ext4_lblk_t)folio->index) <<
+> -					(PAGE_SHIFT - blkbits);
+> +				lblk = EXT4_P_TO_LBLK(mpd->inode, folio->index);
+>  				head = folio_buffers(folio);
+>  				err = mpage_process_page_bufs(mpd, head, head,
+>  						lblk);
 > -- 
 > 2.46.1
 > 
