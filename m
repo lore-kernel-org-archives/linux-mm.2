@@ -4,185 +4,162 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BEF1DCCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 16:10:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F04EBCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 16:13:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 19FF18E0007; Wed,  5 Nov 2025 11:10:36 -0500 (EST)
+	id 305A28E0008; Wed,  5 Nov 2025 11:13:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150DF8E0005; Wed,  5 Nov 2025 11:10:36 -0500 (EST)
+	id 2B5A28E0005; Wed,  5 Nov 2025 11:13:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 018098E0007; Wed,  5 Nov 2025 11:10:35 -0500 (EST)
+	id 1A54E8E0008; Wed,  5 Nov 2025 11:13:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id DE4108E0005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:10:35 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 9002512C242
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:10:35 +0000 (UTC)
-X-FDA: 84077041230.19.4D626F2
-Received: from SA9PR02CU001.outbound.protection.outlook.com (mail-southcentralusazon11013017.outbound.protection.outlook.com [40.93.196.17])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A26638001A
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:10:32 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Qlu3MKmh;
-	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762359032;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 012838E0005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:04 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 91B211A041B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:13:04 +0000 (UTC)
+X-FDA: 84077047488.01.4F3F984
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	by imf04.hostedemail.com (Postfix) with ESMTP id 2EBDC4000C
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:13:02 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=SGkprtBR;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762359182;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mmi2QqaRWAjSi94ZWJgncWo1eNM7iNXXNC3dV8bMM0U=;
-	b=kI8KTJjpXWTNqiVoCcZoldx1zUf4WiKttwekar5niEWsMbpV06n36iIiLcfxqWIBRDhJxQ
-	BtZdighAnofFavs06B3XNokgR/XakBQGhmrnqCKUN9vBpdpymClMqeLNSBLxvE9wNAavXO
-	ZBDg9AjvaW8pSm/EyFrOiHfTFa1yOqI=
-ARC-Authentication-Results: i=2;
-	imf02.hostedemail.com;
-	dkim=pass header.d=Nvidia.com header.s=selector2 header.b=Qlu3MKmh;
-	spf=pass (imf02.hostedemail.com: domain of ziy@nvidia.com designates 40.93.196.17 as permitted sender) smtp.mailfrom=ziy@nvidia.com;
-	dmarc=pass (policy=reject) header.from=nvidia.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762359032; a=rsa-sha256;
-	cv=pass;
-	b=Q3x79hs8rvE0+rMvzhUuj4yXdbkrYhaMosEFzfBwjVXPe+QVtUjim5scZUdCDA9wkerq1N
-	6Pf67OyDwn33QnrM4BnB9YNKTl7Tcsfvc4XqPg/4GoLr3OdfMnHl6ybuHLbtQ7SdWgUig9
-	MlxkNEti9Grp8FwZXatvZ/xANF7vzU0=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=epnsrztolJYorTrYooEpBe0goQYutYddXFegWUutAxT2DgPYmFDNKgfrzsQWQvVJtmFMnsBeZ3U0cBTDpQtG978jLfvKpqDyqPCkTSs3XqJSuJxaevqtQG6Vk9MKGz7wL/c48YScjRGFkMHHml7UhZMZJLaoWO5wyZncsht6WTbY3HUu6/SPUFC4jRksh0GBX5beEOBpanxWWMMuNhcSB0a8bMfKMafSnIIOMu+26FSFih92TJTRozAlmCYQeR9BwlA2G84upas1nigwwi7bqxKuLG7bwH1lkxXT7qa4+NZhmn19tWHE29AAHrI/zTfzTGUbMw0fzGuD6N+gCOMViQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mmi2QqaRWAjSi94ZWJgncWo1eNM7iNXXNC3dV8bMM0U=;
- b=OKJPNz3bmo3v99XGQRkYq6mpcQgzue+ScCrzrmGnKi2xbFgOnxQsDtxpqayLdmnsxFu0U+YgTeIK9eDbhXfj7DAIUeAKPowXSzS9QKVdChCTaVYWWKE6ZWf+uuqpLKl5l286f6kUM9dWY9Qy+6YfeILeKKbos3GCy5c1BaQbUHB6lsGNH4sI03hP0vGwFdmktN/mH6+0Yc2coDKmQ2YshzstFavkW8xzQjJ7harWvU6GYhpSeV1twgFRhoufD+GEmpv4kZ7L0XWWgKew+BZ4J5Ig0auyAHeEYCHMPla8s2jXeDmb/i8bCY0HZN0CkN3caktA/8YtBuyLYpB+lyuIuw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=mmi2QqaRWAjSi94ZWJgncWo1eNM7iNXXNC3dV8bMM0U=;
- b=Qlu3MKmhZrDCoxP9XL31XNLHN9bFyO0pkyDz4pDlE94NTmqjP0adZwdD4OnKjLfpeYmfppjtqUbi9giJwlyzcZta6biT14/XFmBOoD9ITTsSWMRPlzAtkqhKdV78jyLvXEYVaARo5QXel4JyfXoKiDz8QqbfHbwynFOFg5G6sJmeg1BGRP6ncXndnWXN0mFifMu9dtWg/D9mW/g5R84TkRcTthRK7CBJmm+t9pfdmQnTsDSf/VEZVU1BEC7dZaJzOL4ITnNuB85prkTY/N+8sYt9ZyzGZpk6JWCjbwBIP5QSmcMRCZCNDr0QMIAibwXcnGuBvHUfihsVqAKau3eAKA==
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
- PH7PR12MB6884.namprd12.prod.outlook.com (2603:10b6:510:1ba::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Wed, 5 Nov
- 2025 16:10:27 +0000
-Received: from DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
- ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9298.006; Wed, 5 Nov 2025
- 16:10:27 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: akpm@linux-foundation.org, linmiaohe@huawei.com, david@redhat.com,
- jane.chu@oracle.com
-Cc: kernel@pankajraghav.com, ziy@nvidia.com, mcgrof@kernel.org,
- nao.horiguchi@gmail.com, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>,
- Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>,
- Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
- "Matthew Wilcox (Oracle)" <willy@infradead.org>,
- Wei Yang <richard.weiyang@gmail.com>, Yang Shi <shy828301@gmail.com>,
- linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-Subject: Re: [PATCH v5 3/3] mm/huge_memory: fix kernel-doc comments for
- folio_split() and related.
-Date: Wed, 05 Nov 2025 11:10:24 -0500
-X-Mailer: MailMate (2.0r6283)
-Message-ID: <040B38C0-23C6-4AEA-B069-69AE6DAA828B@nvidia.com>
-In-Reply-To: <20251031162001.670503-4-ziy@nvidia.com>
-References: <20251031162001.670503-1-ziy@nvidia.com>
- <20251031162001.670503-4-ziy@nvidia.com>
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: MN2PR01CA0027.prod.exchangelabs.com (2603:10b6:208:10c::40)
- To DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5)
+	bh=hoOO0E96ahCdATo2vQq4UFuH8BQoyWGvRJ67v+d6zmY=;
+	b=Kye7M/yVEB2MSYE8E9NVTjGmmWCDvc7XFk8Y6oXiVaZT8xuztkYDBASY18cdHFnWHwOA0y
+	gFldmJsrp08/bJ8x6XHMFaaMHOrDqQ2mPLQQruwipO/GHbPrDWxVP9bXpnyIySPmxeukaQ
+	IJQx8mMMG01t0nQVZ9G2sfQX3BqohQI=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=SGkprtBR;
+	spf=pass (imf04.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762359182; a=rsa-sha256;
+	cv=none;
+	b=W8tqijrwEmdfMLZmJP65GOAlI4TB6Wx1oyA00yTxiFaXU9GlPYrmc3Er6enGE/GGu13qK8
+	Nvy7lY+uNV4PyaDPNc5SuHfInRrp5HXHIkdEYzgpKfRVT1TjjXr2k++2txUs6i1Z2aYkcJ
+	XtXWQKuKlhV0+eWS3m5n8Xtn4LfghFg=
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A54HYRj019236;
+	Wed, 5 Nov 2025 16:12:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=hoOO0E96ahCdATo2vQq4UFuH8BQoyW
+	GvRJ67v+d6zmY=; b=SGkprtBRmnhHNGgfbF3sg7Go+c8inCeDqeC9AZjQfWNjqP
+	UlImdvXnB2eMzCk0pwDJKkF+IyFhEL/jEE8u1kZi8IReERwiQ1FVxGw+w2LhH+sy
+	2G0xn4JOOstfTzc1c06KaQNGCHeOXa9vK9rwN0ha3pMsSVpC2jcrtdLnZUA5XPvR
+	m+dXvo/F5oe8kUj+LdeKJtJbBvr0BqSaBvx8WxcuOGrxYtiM/WL6KzUAgfQRUPkh
+	RrK27EIk9Nv7KGFJk1CZtMDciaSlLsrEXmshoHrTVS3KKkC1OsBwg3P57glcc1m8
+	Yx7AzbSh81g2JkUW5G52BRvU1+355886S8zrCK3Q==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a57mra2tj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 16:12:27 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A5FVr3J003755;
+	Wed, 5 Nov 2025 16:12:27 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a57mra2tb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 16:12:27 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A5Fg5qS009863;
+	Wed, 5 Nov 2025 16:12:26 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kgw7a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Nov 2025 16:12:26 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A5GCOji52167096
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Nov 2025 16:12:24 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3071320043;
+	Wed,  5 Nov 2025 16:12:24 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 136CC20040;
+	Wed,  5 Nov 2025 16:12:23 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  5 Nov 2025 16:12:23 +0000 (GMT)
+Date: Wed, 5 Nov 2025 17:12:21 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Ritesh Harjani <ritesh.list@gmail.com>
+Cc: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Message-ID: <50d1b63a-88d7-4484-82c0-3bde96e3207d-agordeev@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+ <87ms5050g0.ritesh.list@gmail.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH7PR12MB6884:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2f11e9e0-3b56-4c97-c520-08de1c85d5b6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?meA+hqSRaf/AWE71g45RcWekD0l/DDt4TshDbz5YkfsjAd5/yeWuX13ZJbV3?=
- =?us-ascii?Q?Iu1Ei2hX9VI7QzvasliBingtdMLq/9fZi7XuT2vN5baSa2IVrKNSVN+Zyy8u?=
- =?us-ascii?Q?if6Ynjw7b9DDtfRvAGxwM2ZbanlSijRAjj+SFPe8LbV3+SLTJCWfwcSklaxg?=
- =?us-ascii?Q?pdzYaKUkIs0jAJZsHTNA+Qu4yupdpMR5Zq6yVYcgoxHwu5+XfZ8C8c7ao/mQ?=
- =?us-ascii?Q?69dSIFulTOlrGFa0Vyh/B69O6065ecg+lE8GxMIOLYC4Y0mDl9V2xCEKTc0d?=
- =?us-ascii?Q?0Opng/fY+C9Uo+SRhnSY5vf0ljokui34rFkdsTg1pEY9WJOcMFkXE9UXd9en?=
- =?us-ascii?Q?oKEuB2Nycv9fG6FdzknhOLt3YtIernkMsDlPnGUg3OSpZC4jB8o5nwo0OyB9?=
- =?us-ascii?Q?3miTu9EGV+R0q/lbwgeVRk453GVayEBCtD1CO3V+uboVZJJzlG3qGZOg4TKP?=
- =?us-ascii?Q?dPVhIDFGWWXK2iJB60H3nvaUnXArV+ujIWfOdycKxfX8HFgpZT3/KVyHukjj?=
- =?us-ascii?Q?ce1iRqySmhl7xGdJIKx3yWkxgofYx8EnJmM3pg9XNymQbX3q768GE0vyb5+e?=
- =?us-ascii?Q?y2ZsPwR/8sNnCyeVav/5YZyTdHJBMWT9EgSt63cVOb0lH+N0pp4B/2aUtFGO?=
- =?us-ascii?Q?DcO5eokK0mRXmKtaIKx1BHBtoo87Vw/xrd8YMhLzhZa2jtoxQZTGy8WIE88l?=
- =?us-ascii?Q?EoJSgaMoZafHMzd/gaulowft8+1pANeOHBqzhHnjUW4dH+H0YrfA4xcpzX48?=
- =?us-ascii?Q?5OGrKdvpS81NyBY/3AED+sjWJmZod5xqn4JgH8CZc0Sir77Mij72I318aaF8?=
- =?us-ascii?Q?tu94olEhU+TmGayeCw+D2/WjZPRxkNmtOZG+IYz0xVpNY2FCHsJYxTdSKnHb?=
- =?us-ascii?Q?pnyRdWl6xE1MHG7qPx75JVRSizwo5XcHaPxNHclPpi3gh+/EYkTP+KWnuArc?=
- =?us-ascii?Q?swqTRpo7EYS4r0DqozEDl434fumhXeYdjYcfat1hlH5K1Oyp4lE33pjoSyFW?=
- =?us-ascii?Q?j+XLsCCSijVQc+rrSOvH6DfvI5fs2AVZdTOVEzSucKUHxRH3W9Yzfw1inUfk?=
- =?us-ascii?Q?x6aug4N9mEs+eTUKjEwnSxrmQXbx2YI5yK+KXwfcmdqyiyzHbqnOaTa27VGe?=
- =?us-ascii?Q?BTCKscaPefe2gLL+4I8tlFD7IIUakdg0v9jkwL7IkdmgUOSX+LwsQSTo3yOy?=
- =?us-ascii?Q?VTUTYg/BwKM2K1l/ShdZhHC1qDwz78yKYcdK/WwCKC3NvR99EIqlt9ggXW8C?=
- =?us-ascii?Q?7GQ3ygxno7da5cUeGhPOeZlm8I9Eoq4RzRNeJtgNbhg+Jbo7CvD7kcfhIhoG?=
- =?us-ascii?Q?AdGAW8WmhLj07vUEVnlAgTWA6VPxGCnN7JU1n2C/vACxWFCs/+isfgWDH+Hb?=
- =?us-ascii?Q?nRbGxIQ06CR+YMKYsCR0vv8hKgQVwUcAKpof5qqAUPujYZye/bQegxSyfsnf?=
- =?us-ascii?Q?sC/ZVMjjYTJks6udCd8S+qftzmmfp0VIEVv2qCboOwv0ZTosDvEcUw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?C4KbW9AMnw/fQoYlNx8ND7xVn3K8nYEBYRjXs+HBTpUQHjQitaOc8gluKwn+?=
- =?us-ascii?Q?7R/7jfqfOOKNNqf/EwqObaAGkFRCJN4mbyLl6xfADuobOvjIZulcrTF6U7Tj?=
- =?us-ascii?Q?XNVyBWeoB9AyACUm7gqWxAzNcnHHPd0jJtJVRLkbP4QClMWlkjVtDeROGl/I?=
- =?us-ascii?Q?1gXn+NfycGxLo0ZSwUAQtz5FmUH4uvX4grBFAFhrR71ymjPhmIGdsfcqMiRE?=
- =?us-ascii?Q?7kXeXWAbahnB2ekqEoe+yGxz7SypyUpYPu9Y9KUgkONr7ofUfKsT8v4zsK0m?=
- =?us-ascii?Q?2FkPIT9FDkEdt37NincegQWjs7LXwohFYdv+BhyItrUSQft0qAyGN+Mo2+8u?=
- =?us-ascii?Q?89LjlvKG7FESGe4kS9COMbDjbwc4/cVRsaiF798V2aNJsHqqkGhGN/NqacWJ?=
- =?us-ascii?Q?JVyZKC4IW+wWLmbruHi3t/HGJh0F+WaZCad9bpB6R9NSro7X6pILp4jod0Iw?=
- =?us-ascii?Q?XaS5WrsOkaeKYqKocD2gpDnMLexc9hll/HLiPL9Lba6Eppn94dka9GgS4fm6?=
- =?us-ascii?Q?m9w/4lGIy8wi9FUlABV33/dFLv2glk9PiXtX2tWYJFfa0qp3E4OrBq8wKOzB?=
- =?us-ascii?Q?+k1TTmggt/HOBJhdTnJJ9WstF8n86k5EK6D6U5EIDCIZ41gWbOvTglLIIJTG?=
- =?us-ascii?Q?1nYwunvwioSpO4stJeLGtgUKnafA2CVCc83ZGiiZKPsYWYFe4TRTO3d/mL1D?=
- =?us-ascii?Q?N4EeVtZXkYOSJ26klR1MbQn4eYDUPQHm9mFt7KjPVgVcfiBVkt6I6wg64o2b?=
- =?us-ascii?Q?DOnxDV3OnOV34x/JoVb0wiRXgBk5kG7UVlqv3z/a7iwj0wf351ex/prZrt4Q?=
- =?us-ascii?Q?T0+inSG0NeRExbJB5Mizuy1x329AzhIWRfK5MfT0ByZLIFk695tAlvnXgYlq?=
- =?us-ascii?Q?4p2kN8T83ODe0P31laGZNpVQPKgLLPEC9SwHeUAa36nrG50s0YN5kHm+9yip?=
- =?us-ascii?Q?FSWYTcy1Z3azu9Ummy0mS+VSAIU4ZvMCts7A124OOaTCx9KeGGvr7QqYguQy?=
- =?us-ascii?Q?vGALZxH3bdRcNp+9Nc7XSglBwqT8ymZoHp0eniC3RRa6Yg9WUTG+TlVvd7Jb?=
- =?us-ascii?Q?qRVFn13ASPSBI5pV4/cNMgeO5KQ1fg4yKuO8sXaYyUawHn0ZRAQqk8ybvoCA?=
- =?us-ascii?Q?7np81XI92bgAAqblMSlbc3uczUJ4X3LkmdcJqp84VwKc4EUtpgRhaee5zCsU?=
- =?us-ascii?Q?sorAXfaCPjju4xoCA0XJ1DvJVKDt8I+bsUAmEamj1/kNN4S+tTwLpcEgsyV/?=
- =?us-ascii?Q?weZVPLdeEQjwjuKK1fIKMZ6qs8sunPH5vKROLAt4h7622ZJU5JxONPea6KRe?=
- =?us-ascii?Q?lJD1FHeQ2wUyXqvG1u2bXVeVpoHi1X4nCDWiMi0BNtfGIeJYlXSSdrdKeI2+?=
- =?us-ascii?Q?XQ5prot/AAktF+PJITPIAhEJbz++sVl/HFyWTVx7v41AVooLVZgswEZrLcB2?=
- =?us-ascii?Q?eBLpiV40YVQlTGHZNRtEpMbIRuQQEC/pMBLwYY2GP2JuC3NkayiGfSceDyaz?=
- =?us-ascii?Q?O5EAkYQCjLuaYtZWnPGkeLwnUKYUwgCCqLlEC2qrL6dPUZH9Z+DFC5iCly7y?=
- =?us-ascii?Q?8IHXvRbdRQqnYBi0g3lD4176lxtwVEmLh7AoQ7wY?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2f11e9e0-3b56-4c97-c520-08de1c85d5b6
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Nov 2025 16:10:27.6381
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nG7ksS1VT6oh2rVWiDic8qQ4GduLBQPIi+H2/19/PV1BjZH4n6QKbbHJ+ZxwM3PH
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6884
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: A26638001A
-X-Stat-Signature: y11gar9ay4c5hsassrruzbthkudpaake
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87ms5050g0.ritesh.list@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0NFs_GrYa4zcH0BLNom4mOsajrCSPUxj
+X-Authority-Analysis: v=2.4 cv=MKhtWcZl c=1 sm=1 tr=0 ts=690b776c cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=CPQ9TFRCZcvXz5jfQC4A:9 a=CjuIK1q_8ugA:10 a=DXsff8QfwkrTrK3sU8N1:22
+ a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: NNqKmXG2tTtHuvXhjQOh-riRMNlVPLAT
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAwMSBTYWx0ZWRfX2KnrArcnBxcH
+ TeGoejtsfYJDuRV3FbvjuDEBFMmDeOQEbaaSQExJ7765sDaLesq0lIorOycsEibo64TNmmHRSNz
+ 6XIuQLSaO5SrKkE/QNnJd3smjWHr0HSQ+uA+bMkugv+Df6gPVeHmGXHRAMUP3/n0rbDuuZ3m9UR
+ Vw/WmiOn8NrnsxKTvVsuwmGs5I8kM0QBGFJCMl0xuCoTJbnjBxb2U37aEnIf2iT73qQhw1Rsaku
+ Qftv0wlHgsh4K3kTYYn5/INUGE4LK5ev6oQVqwHTw5VhjuNirNmgcqWMIXq1s/3gqUc/RmuAgWN
+ rH1ZA/5Add3j27sIoKtigY6uE1hzOktXQSO9iyvuDIkbiOtgLSq15NhyhwbIusKnV/r5/eZHbpi
+ xbMKu5ZjKQ3ntqUuRquH+Yb1K/SdzA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-05_06,2025-11-03_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 suspectscore=0 bulkscore=0 impostorscore=0 clxscore=1015
+ lowpriorityscore=0 malwarescore=0 adultscore=0 phishscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010001
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2EBDC4000C
+X-Stat-Signature: myum4hcirnmqiojxu7sk4hcy3ugxra3j
 X-Rspam-User: 
-X-HE-Tag: 1762359032-180678
-X-HE-Meta: U2FsdGVkX1+3IV95Z3EvSt4FoKgMVYcUjEzHGZL/yJWzCD+OazR8+qslMOOwGPtelBKJM0D3QtxyasX2W0FDbRGA0anSZyUIlq3qbD/6IbcTuI6hNq7XB4caVWEobK04iAsKfT57Jlc+M76KNfygqTLRoQREAtoJ7wfsnq7tenY5rKR1xVkNdyW2yNfSyidTZAmanRxoq9iRDYZf3UZlsFzcZaamENCf335eZcaMYdbH4R0Qf0qCs8uost3ijgy9CZq70MIL256nIBD4Uo4RXKmNOJaCmBSUaRaYN/rp0hlOBoDkKnIG9U6Ue3x0hdQw9qXdhvTkqaJzTh3QiUVWFk81IwwSt5JREiiFMrQhAQjSAPAD326ObEGoe+iapvSYIU8XxE7zGiIc8vlpxQYRuRx9YqGg+y3gu9lvpfJUNkXhXL9FK2x2+Qb4IufCoQY+EUysE2vIN4EAf1nlGtCIkemt2gzSxXZZPY+51zKCDgLWfJ4B0KexaAl2t6HWztQh9SrOKffd/ztAw8FACUvVCL5heKs58tgfoEZ20sGOqYMUMXm+vCDKmmZm/W63nNAlEN2mHX8pJgXdSM9tjQxN9o6zjcVgpZgJCChcCsJ3Lo1ckdu2d+Gy0h4irU8gDNM31gOUphB9ywNtE9lP6/mCK40jcm2dLX4jLzKdjbgQWgS3Viul7/ePkeWT/bNL22RjUZzR99JRqcYxTjBhymqmrFJBSoLa5pqi/ZuRqgNVxfHowGL+w6YhmLczlV0qA/6Df7+y8I6BLx33km7AhZQYaqj22tSULUiRdQV1UnqCpm5vyDSs0jWiPvFwFuVGgj2rMAxkkVQxmvRCi4hL15+MSdB9KOmsRJ0s96r1ClF8NiGWTzhvPWmYUggn+3lUchLoLnxaMVglRJ3c5lJVaOYvQP19adn8wxEf0Ls3vCvYHi7ciOM3lps2Ci9nQQzPuVT6MG3JeLIsOKUk9ZI+ETH
- Blc3AuUo
- S5OmPXlelRzfxoz1+eV2RsaMZtXg0gbKHkjMoD5HSx0VjNSqhNayLZRKeh+8xYDcxy2GSaSg3E4zh+m7LH6/R8hZDwKgDOkiEEEwjN1ZyccHEBGcgLpkoX6Ihm7VwYPwoTnfHU9kDxqvrA08zPukykWDcdCF7uHUFaZ45lfJPJePqdbg0QWlf3LsP55CtofM6nzVBXrtqEZtyAjc4Zvmr8jKy78izCjm6hF6cBrnnLbPLotihk3njGuLIwbYt0H4ym32N/GeSL5/0hNAHIbdag3cIpsyjWbQ18pUb5YYRr9EplK7uwrFH3hJ0V2KrMxqd9/at9OX4sXwQXYlj38m4osx39tayx8xbG6DS2t9p3L0pvxB/Zkp1U2rYS8FKhCpM5XSrKO0trwmW+PD3LxvUrAnXZZXAaisN0jlEUCtBG8f9ZjeV3tqLNbpa1RVv73oVwj5qLKuj6JoStLaghS84zCa/HP7/9ISFnFQ40lS55Q6ULB/Y6ZoXS5+o1XIQZ2yR8bpOtaLQGFY3HjPWXToEnGM1k5AY02mR2GPAw8+RClVXSg5uUhysZmFcGbY8VB2+K1dyC1VYP4zoB1WeA73Ig+Gquw==
+X-HE-Tag: 1762359182-792219
+X-HE-Meta: U2FsdGVkX1/qWarM6ltPjamn8TEeezNG4hQbrtOJNKzzEmGTJhSJ5ocRQmueCHl5U0ysv/P+USdIIGOTtwPPATFEGcm5tf9xutGzdNTNYYSzWImNAN2h5CQsBDJGRVWITYgmXO6rrQo2KkXmcirnNWQukuS57Wd5xcIVqrxF8e6mdTEyns7S825IqbW5nQzoaa/JU79GxfsjTt9fAKqZ1bRqBf8yCP9r0CzO8CI9ZZYM/na78AbJWMID5U5z23ooa6+kcBkr8yJo4rBvlihfsHxdK45E2mqoc/31SZxUNGEwH/oAhGfzUAQCdhLp8YdgIThn6HlPNeWMOSLQ1QMu7Df1PIYoDAOoZfw6gAf2agjqA1WJlSDk7G1aZZuhpkYBuTZ3J0HnZAKUail9ewulTPk5XTsezhMT9I3Dc1hH7SBurT0WDG/CQpMDVLLOUTtO50OtrGxUPMXZ7B8p709beqjfzrbaU9lRx9gno1rG1W0TjL4vZCO37XoMM2t5bwz/QG5vL/rpSLm//rd38iDs72jU/ZB+1HtqzbTUIY4iTN6/2z7zOJAMdw1Kqd8hijIVz2Xd0npdQApQlNB0ks8wb0+fWsP8MXC+oThdL8rtNYPqRw0ghk327bHL8VdyakMV2EKAgfekLDW0oKJINy3CC6H99a/elKXWj0xSUoDv0yrEnklt9hbW72OkekuYvj5RBguKYcPkU65tDJ7H+ChDLlY+woGnCTns+nhePCXq28dl/mJKhALFuUeMa4mwIS5Qc9NlPfrSMqsfOJI7YiE1UHYRRfAm/ZkfQ6u5gjRTDrRxgpckOeyShrBM5W3vX+xrT0zpxeCja6HKeYVtQlMhIwhiMgn3vSK7fbMA3qDKaL7lakkDYTgYdaSmQ4xNAyeRUl5oFi/15JfHRno/DxbxRtaGFwj0HYRS/eHSBbRTnzVAO5K9vA9xA5VmtCqK0cPHs0eU29W4cqaiG24m1AL
+ wielj51S
+ 93YDWs2tYByeQEv0CZ+dVBdC/AndY2zrv2ro7Ufuhbw43sF6SwSCU4CXLW3IDVgxig7eX6l+sUOm7GksQ10ysbeLC60fPao3BWDtLoqRoDoFrsYb+LwBT1/PiN89949iUmYhbli73du5DXZFIk4eZ51QGwjUJcOY9qP0HEz5v3HU6DumeIU7+SFdiN9JxOZ+19vCCZ0xExsegX1pGL3X5z2Txs+Io87w5QKMq3y7I2QYRnZ8fCTvmseTmDBxRfnG07EROC+MC59eJKm4lRrf8Inr03mFcFw7lrif6rr1Ob8yScEYe79Clt471/7kjql/osA+47zv2TAIsfh+Xz2ovu2XdjRQeFgq3EEKESM6xa4PZ5cRzvs5DSOfTIg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -191,182 +168,96 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 31 Oct 2025, at 12:20, Zi Yan wrote:
+On Wed, Nov 05, 2025 at 02:19:03PM +0530, Ritesh Harjani wrote:
+> > + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> > + * currently enabled.
+> >   */
+> >  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> >  static inline void lazy_mmu_mode_enable(void)
+> >  {
+> > -	arch_enter_lazy_mmu_mode();
+> > +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> > +
+> > +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> > +	/* enable() must not be called while paused */
+> > +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> > +
+> > +	if (state->nesting_level++ == 0) {
+> > +		state->active = true;
+> > +		arch_enter_lazy_mmu_mode();
+> > +	}
+> >  }
+> 
+> Some architectures disables preemption in their
+> arch_enter_lazy_mmu_mode(). So shouldn't the state->active = true should
+> happen after arch_enter_lazy_mmu_mode() has disabled preemption()? i.e.
 
-> try_folio_split_to_order(), folio_split, __folio_split(), and
-> __split_unmapped_folio() do not have correct kernel-doc comment format.=
+Do you have some scenario in mind that could cause an issue?
+IOW, what could go wrong if the process is scheduled to another
+CPU before preempt_disable() is called?
 
-> Fix them.
->
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> Reviewed-by: Lance Yang <lance.yang@linux.dev>
-> Reviewed-by: Barry Song <baohua@kernel.org>
-> Reviewed-by: Miaohe Lin <linmiaohe@huawei.com>
-> Signed-off-by: Zi Yan <ziy@nvidia.com>
-> ---
->  include/linux/huge_mm.h | 10 +++++----
->  mm/huge_memory.c        | 45 ++++++++++++++++++++++-------------------=
+>   static inline void lazy_mmu_mode_enable(void)
+>   {
+>  -	arch_enter_lazy_mmu_mode();
+>  +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+>  +
+>  +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+>  +	/* enable() must not be called while paused */
+>  +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+>  +
+>  +	if (state->nesting_level++ == 0) {
+>  +		arch_enter_lazy_mmu_mode();
+>  +		state->active = true;
+>  +	}
+>   }
+> 
+> ... I think it make more sense to enable the state after the arch_**
+> call right.
 
->  2 files changed, 30 insertions(+), 25 deletions(-)
->
-> diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
-> index 34f8d8453bf3..cbb2243f8e56 100644
-> --- a/include/linux/huge_mm.h
-> +++ b/include/linux/huge_mm.h
-> @@ -386,9 +386,9 @@ static inline int split_huge_page_to_order(struct p=
-age *page, unsigned int new_o
->  	return split_huge_page_to_list_to_order(page, NULL, new_order);
->  }
->
-> -/*
-> - * try_folio_split_to_order - try to split a @folio at @page to @new_o=
-rder using
-> - * non uniform split.
-> +/**
-> + * try_folio_split_to_order() - try to split a @folio at @page to @new=
-_order
-> + * using non uniform split.
->   * @folio: folio to be split
->   * @page: split to @new_order at the given page
->   * @new_order: the target split order
-> @@ -398,7 +398,7 @@ static inline int split_huge_page_to_order(struct p=
-age *page, unsigned int new_o
->   * folios are put back to LRU list. Use min_order_for_split() to get t=
-he lower
->   * bound of @new_order.
->   *
-> - * Return: 0: split is successful, otherwise split failed.
-> + * Return: 0 - split is successful, otherwise split failed.
->   */
->  static inline int try_folio_split_to_order(struct folio *folio,
->  		struct page *page, unsigned int new_order)
-> @@ -486,6 +486,8 @@ static inline spinlock_t *pud_trans_huge_lock(pud_t=
- *pud,
->  /**
->   * folio_test_pmd_mappable - Can we map this folio with a PMD?
->   * @folio: The folio to test
-> + *
-> + * Return: true - @folio can be mapped, false - @folio cannot be mappe=
-d.
->   */
->  static inline bool folio_test_pmd_mappable(struct folio *folio)
->  {
-> diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> index 0e24bb7e90d0..ad2fc52651a6 100644
-> --- a/mm/huge_memory.c
-> +++ b/mm/huge_memory.c
-> @@ -3567,8 +3567,9 @@ static void __split_folio_to_order(struct folio *=
-folio, int old_order,
->  		ClearPageCompound(&folio->page);
->  }
->
-> -/*
-> - * It splits an unmapped @folio to lower order smaller folios in two w=
-ays.
-> +/**
-> + * __split_unmapped_folio() - splits an unmapped @folio to lower order=
- folios in
-> + * two ways: uniform split or non-uniform split.
->   * @folio: the to-be-split folio
->   * @new_order: the smallest order of the after split folios (since bud=
-dy
->   *             allocator like split generates folios with orders from =
-@folio's
-> @@ -3589,22 +3590,22 @@ static void __split_folio_to_order(struct folio=
- *folio, int old_order,
->   *    uniform_split is false.
->   *
->   * The high level flow for these two methods are:
-> - * 1. uniform split: a single __split_folio_to_order() is called to sp=
-lit the
-> - *    @folio into @new_order, then we traverse all the resulting folio=
-s one by
-> - *    one in PFN ascending order and perform stats, unfreeze, adding t=
-o list,
-> - *    and file mapping index operations.
-> - * 2. non-uniform split: in general, folio_order - @new_order calls to=
+But then in_lazy_mmu_mode() would return false if called from
+arch_enter_lazy_mmu_mode(). Not big problem, but still..
 
-> - *    __split_folio_to_order() are made in a for loop to split the @fo=
-lio
-> - *    to one lower order at a time. The resulting small folios are pro=
-cessed
-> - *    like what is done during the traversal in 1, except the one cont=
-aining
-> - *    @page, which is split in next for loop.
-> + * 1. uniform split: @xas is split with no expectation of failure and =
-a single
-> + *    __split_folio_to_order() is called to split the @folio into @new=
-_order
-> + *    along with stats update.
-> + * 2. non-uniform split: folio_order - @new_order calls to
-> + *    __split_folio_to_order() are expected to be made in a for loop t=
-o split
-> + *    the @folio to one lower order at a time. The folio containing @p=
-age is
-> + *    split in each iteration. @xas is split into half in each iterati=
-on and
-> + *    can fail. A failed @xas split leaves split folios as is without =
-merging
-> + *    them back.
->   *
-
-This change caused an error and a warning from docutils[1].
-The following patch fixed the issue.
-
-Hi Andrew,
-
-Do you mind folding this in? This fixup can just go after[2]. And both
-can be folded into this patch.
-
-Thanks.
-
-
-=46rom c49e940cc23e051e3f4faf0bca002a05bb6b0dc1 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Wed, 5 Nov 2025 11:01:09 -0500
-Subject: [PATCH] mm/huge_memory: fix an error and a warning from docutils=
-
-
-Add a newline to fix the following error and warning:
-
-Documentation/core-api/mm-api:134: mm/huge_memory.c:3593: ERROR: Unexpect=
-ed indentation. [docutils]
-Documentation/core-api/mm-api:134: mm/huge_memory.c:3595: WARNING: Block =
-quote ends without a blank line; unexpected unindent. [docutils]
-
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- mm/huge_memory.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index a30fee2001b5..36fc4ff002c9 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3590,6 +3590,7 @@ static void __split_folio_to_order(struct folio *fo=
-lio, int old_order,
-  *    uniform_split is false.
-  *
-  * The high level flow for these two methods are:
-+ *
-  * 1. uniform split: @xas is split with no expectation of failure and a =
-single
-  *    __split_folio_to_order() is called to split the @folio into @new_o=
-rder
-  *    along with stats update.
--- =
-
-2.51.0
-
-
-
-
-
-[1] https://lore.kernel.org/all/20251105162314.004e2764@canb.auug.org.au/=
-
-[2] https://lore.kernel.org/all/BE7AC5F3-9E64-4923-861D-C2C4E0CB91EB@nvid=
-ia.com/
-
-Best Regards,
-Yan, Zi
+> >  static inline void lazy_mmu_mode_disable(void)
+> >  {
+> > -	arch_leave_lazy_mmu_mode();
+> > +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> > +
+> > +	VM_WARN_ON_ONCE(state->nesting_level == 0);
+> > +	VM_WARN_ON(!state->active);
+> > +
+> > +	if (--state->nesting_level == 0) {
+> > +		state->active = false;
+> > +		arch_leave_lazy_mmu_mode();
+> > +	} else {
+> > +		/* Exiting a nested section */
+> > +		arch_flush_lazy_mmu_mode();
+> > +	}
+> >  }
+> 
+> This looks ok though.
+> 
+> >  
+> >  static inline void lazy_mmu_mode_pause(void)
+> >  {
+> > +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> > +
+> > +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
+> > +
+> > +	state->active = false;
+> >  	arch_leave_lazy_mmu_mode();
+> >  }
+> >  
+> >  static inline void lazy_mmu_mode_resume(void)
+> >  {
+> > +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> > +
+> > +	VM_WARN_ON(state->nesting_level == 0 || state->active);
+> > +
+> > +	state->active = true;
+> >  	arch_enter_lazy_mmu_mode();
+> >  }
+> 
+> Ditto.
+> 
+> -ritesh
 
