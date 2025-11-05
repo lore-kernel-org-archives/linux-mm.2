@@ -4,127 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BC94CCFA05
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945C7CCFA05
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:48:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B757C8E0007; Wed,  5 Nov 2025 06:43:57 -0500 (EST)
+	id DA21C8E0008; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B4CDE8E0003; Wed,  5 Nov 2025 06:43:57 -0500 (EST)
+	id D799E8E0003; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A64188E0007; Wed,  5 Nov 2025 06:43:57 -0500 (EST)
+	id CB6CD8E0008; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 93B108E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:43:57 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3F15C1A02ED
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:43:57 +0000 (UTC)
-X-FDA: 84076369314.30.7FA1034
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf03.hostedemail.com (Postfix) with ESMTP id CB85E20009
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:43:54 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LGJbevnC;
-	spf=pass (imf03.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id B9CC08E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45E7CB61E6
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:48:05 +0000 (UTC)
+X-FDA: 84076379730.29.4F6EA6D
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 9577110000B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:48:03 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MwGXM1sZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762343283; a=rsa-sha256;
+	cv=none;
+	b=JU9k5Yehhj3wys4gCQ+SriRifyhSfOS98j7NMo2WmJ2Xgrn8oIsznHmfO5XyMT4D3Urk25
+	/Tsqx6mYLjBHOMvMn//WpCVXTnN4bIA4Ottzvm8l4Q0Nk9xG2IxKkZh3lnl/aOizNBjBha
+	ehFxX59QjaVTZwSHRLa5A/u2GIaZCEY=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MwGXM1sZ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762343035;
+	s=arc-20220608; t=1762343283;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=klnCOqdIdlHY6mc/bR248n8wJUIpm2Vh5Q48weSXZPE=;
-	b=MaACynp39c9xBmIRbH1F1Hk3gfzpqMRJOowmIkoHv5CDBUfomSimRgDcvFEEmey3I314gZ
-	cvss/8wBUHLCEyNn2iadR2fQ+mtLAN0VvmTwfTxuiqzL9OXagPwh22rzPfKnQeX4o6LEE9
-	YWHOidtlFGbzM3Oqvsk8P8NoVvwfS2g=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=LGJbevnC;
-	spf=pass (imf03.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762343035; a=rsa-sha256;
-	cv=none;
-	b=W4gS2E/EvmTY4CCJJYTAv4M0GNc8vFw/BaXYnz8hr0iTrfcp6sREI96omRt+YqlQfwtpxw
-	xQ84a8IjRFOgQtbpLIwA5eJOLiMCSiRqgl96m2pCyZxwyg57EoQwF/iGwzfknFk4eA9Gf6
-	s3lkfSsqqpI1ZZ3SUNMxI6yjuVt6MT0=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762343034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=klnCOqdIdlHY6mc/bR248n8wJUIpm2Vh5Q48weSXZPE=;
-	b=LGJbevnCt+0GbzikKP4aC7Qnxlo2zo/9J0ITKpX/i3ct+BpM2hAWlA4xh8EjtO8q4W7nvp
-	rT0Hr8Eg767bnPwkP5Kim0aSa9yjN+om59Facmm7CsExzkoQ0MYJCRjjQP8ewXj8g44coX
-	zQUQddxcfRIrGKLP7J/fCetR8l+PRWU=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-615-whnhNyd5ObeL_DD9lkkyzw-1; Wed, 05 Nov 2025 06:43:53 -0500
-X-MC-Unique: whnhNyd5ObeL_DD9lkkyzw-1
-X-Mimecast-MFC-AGG-ID: whnhNyd5ObeL_DD9lkkyzw_1762343032
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-429cceeeb96so2112660f8f.1
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 03:43:52 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762343032; x=1762947832;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=klnCOqdIdlHY6mc/bR248n8wJUIpm2Vh5Q48weSXZPE=;
-        b=ss+JPZDtmjGDu2kOZrSF+gB9ycYNOGXSY0TZGVpABCyVjnExqRzNOlbpGCkSomQ/2c
-         xEfGgaQ1VPoqWE40lfsQ8UVLfcNty0RmiioSSud+x21JXPKcKnB99c4Hm/hZm8Ls4GUS
-         2z3paHOLWE168tRRhyDmt2uiKLhV7grd/c6nlxC0fm8lkp49tSoLjsJxp1X65Heq+xYP
-         dj75YJz9e85cv1qB8AVRY5QnXcCWGFE2IPOvKqm0E+AEjx43ENQPr/KqxuJMPTy3NoIt
-         uM5JEtIAyNhWU4/71OUgtZjL+G8Xe73aEsIG7HOSvW++R51g6jl7C+kxznTbP3lMoCec
-         qpcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXknpXuiHAcvf4ENar1WjHg41lSTyB0BFn7nOxyECJTobLbvOmEGis4vrPv1i5Fw9N4Op7RS/1m+g==@kvack.org
-X-Gm-Message-State: AOJu0Yy+TUrY0+fJwXq7p3J5OMcgiccLoE8qQVqitAkXjOZ1koHfFapB
-	rfC+K2rANd/1ubfbyX/yMztRwfP5x7Io2T8xN1L+tjWwiF8lAYPm7LMH+pNysyZyk3QisobYuJ/
-	E1N76kGn073mXlbIsRcewXCCTb0RbK5gxJzOaN83AVEGzk2GAaCvE
-X-Gm-Gg: ASbGncuNPDZx1THYaP197Sl6z4Bo/rXfVvgwYx8fwrenUlYNtV05O5sX1KYAnxlJvKS
-	5H48v8tdvDHPJQJj8iQq8J4m97v4JNJyIyI/bi8fpk4AmSD+HmPL6x+mg2lA85tokmPwt+IoMR7
-	lPpQgVrhjdHO9lncTumIkfKE3PU91aLjQgBo/QY027b1BGcmaMB4t7ruldhaLjIwsxcELNGGfAp
-	BPg2O8r7sGIjnKzru2czRwtdP/UzZKyN5SafSC2r7IThZ2F9osqt9h3KzpxPLw9CQ6NjPAM+Xn3
-	VaRkOxoVqOgyKb7x9FFAy3dkpxcRMvOd75fh+JVnQoAW8Q9lzK6RIutcUvSgF944kNu6Cvtxowb
-	NFiDKmVeq6zOm+BagDTdwe/ISG2J8mO66vanSzNkwx1Er0sH4e3vU3cPBiicSG4lOGUgllDNhU6
-	iXq1d23WoO37wWr6lo85DTYh4=
-X-Received: by 2002:a5d:5d0a:0:b0:429:d2a9:5dea with SMTP id ffacd0b85a97d-429e32e1778mr2767700f8f.15.1762343031797;
-        Wed, 05 Nov 2025 03:43:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFd+fmDakXbZEyKRhdg87mxQDe9DRgIxrMqS8HdOHW3oWAXWsvoavSh7hxbMrysYBkKGmrGpg==
-X-Received: by 2002:a5d:5d0a:0:b0:429:d2a9:5dea with SMTP id ffacd0b85a97d-429e32e1778mr2767679f8f.15.1762343031390;
-        Wed, 05 Nov 2025 03:43:51 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc18efbesm10423127f8f.8.2025.11.05.03.43.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Nov 2025 03:43:50 -0800 (PST)
-Message-ID: <58d3c50f-2b4a-4053-a846-613434d5bcd9@redhat.com>
-Date: Wed, 5 Nov 2025 12:43:49 +0100
+	bh=lxXbCLQxvn/59KzuFtW+MHCdYVZK1kOCrBQCFEwNh3o=;
+	b=pH+rLnilvqdIxoW/8Y+aMh9lV/yrITolEDjtIsX0AQUD559WMveRaSizmmExy2ZqeK6ame
+	Xl/3CqtbqXMSE5T/SZfQznhC3iicmvUvi2B8Np4K4ud778MAR5Ay0u+B6KbJaaNZIObBAI
+	YfqUamYEr3MJ9K7ed3Q8sz25VFrpDQQ=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 750A544447;
+	Wed,  5 Nov 2025 11:48:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAEAC4CEFB;
+	Wed,  5 Nov 2025 11:47:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762343282;
+	bh=btxGnn6CCgFSpgKGiKlUN2Uoo0h0EbsAS5PsaSiCdPQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MwGXM1sZVPMMIEL85QYLjQ0vHOh8EXKaoJGqdkAadD4KEXSGC6jdo1AVO1v9Uko01
+	 21aNnVjOVpauDxe0V1jUzhdmsI84/uGaC9tOddXiwkDzkDb6bNSYMptOr49arE3NTT
+	 G6SAw8F8neQfpDJOmI7IdebRpD5zMOfpYvn5QfSpEZiD+QrufvkQ768kFjqD0bnA87
+	 Pj+2TJSGXXZ+icT6U5pql6MqJ5IYwyi6170a7s7OSjLvjWWG/oucjF/Hk5DG2LMU9G
+	 TmcbT+xMixtAp/AeDdsLQfShwXpZRbwgAaHKWSnA07a8ZNc+Q5o0/P69dP6yifcQVn
+	 +jDFRzhxlPQsA==
+Date: Wed, 5 Nov 2025 12:47:54 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, 
+	James Bottomley <james.bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
+	jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, neil@brown.name, 
+	a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
+	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
+	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, selinux@vger.kernel.org, 
+	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 22/50] convert efivarfs
+Message-ID: <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
+ <20251028004614.393374-23-viro@zeniv.linux.org.uk>
+ <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+ <20251028174540.GN2441659@ZenIV>
+ <20251028210805.GP2441659@ZenIV>
+ <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+ <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+ <20251029193755.GU2441659@ZenIV>
+ <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] mm/hugetlb: refactor sysfs/sysctl interfaces
-To: Andrew Morton <akpm@linux-foundation.org>, Hui Zhu <hui.zhu@linux.dev>
-Cc: Muchun Song <muchun.song@linux.dev>, Oscar Salvador <osalvador@suse.de>,
- linux-kernel@vger.kernel.org, linux-mm@kvack.org, Hui Zhu <zhuhui@kylinos.cn>
-References: <cover.1762245157.git.zhuhui@kylinos.cn>
- <20251104150618.0606afefb2a9e226aaa6ce77@linux-foundation.org>
-From: David Hildenbrand <dhildenb@redhat.com>
-In-Reply-To: <20251104150618.0606afefb2a9e226aaa6ce77@linux-foundation.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: rgUf22C4BR37Av_Bz-vcSIJ5FsvfuNFDbAUHZx0m_-Q_1762343032
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CB85E20009
-X-Stat-Signature: 369z69ewss1xais1axr8pzyoikmcss9w
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+X-Rspamd-Queue-Id: 9577110000B
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 4kip361jqjrz44cybkw5pca4dkqep3eo
 X-Rspam-User: 
-X-HE-Tag: 1762343034-885822
-X-HE-Meta: U2FsdGVkX1+LioaAekq+EFpY30ZO6GqpMx1uoNyVy8ClCDDFVCy7R61OpABRFWj/i3RwTlSq/vrlRBn6JavEo/eepgDwQir1w+6iV38XZnoIanuDuNSzHU0sVggskfZxwN7pNCGB0BneNCjsBXU+2FLePQBAMxhN1C6jZ+NeKImdG0lA30Uu5vFFLgje/HdlM2JPwd+5ldfQpG4aKPFRTQae0WN85IHAkheTlnaEgHT+iI/9pCbTgKT/q/Qzwv9/NpVXvVABiEG6BzKoDpUWx8qVXwkrdk5IBJtBuasfHldTjW3PI5YMahJJOTHTiFmqGPMW+H42oEvl0UhIK7/83InhWsT749DivRJMgxARBxmToNgwcACPnqDqtdXNN171R7LwB3ATzr9X8ywY4YQbnIzdqctcd6jUE/uWigoBhXaGu2t2U4x5qa/nh/7j4286Y2Ju/XeHpOwW1zkkpHxMHxlRocP2s96uSMlWnJiyWus6ZpVg8Hf83Moayc5O46dVzvJsvyV+vjVMCEODKUkS6wmk0RnRVW302MsmSS5K3flTuTOZ0IsJQ/oUXn+Vl7Dm32IJZ7HyRBZTz/Sb3UKFgjB70Rkr8VfE0evB+Roc2lDSisdYADD2xQUCXt7AJ26jShiKtYZlFJgQhLMYcauD57beRnTK0WpSp+HIfVugKcMoso7c7jgcxJO+7ucZMIsvu0qc6P2EhK/iiA38ZVxz5gaggJYV8Bjtchk2jK/oo0wpYJAmK34ZGjbFUX1+mzAgMYrnajRaYCnpP/AvJiO0ov5vSI26Nv06TvR2KccrOqOh+t3hsizWVqUSX2baZoK+Ne7XNQyfwA2MR8m/CNccJfKLoGFZHfvz7DGdTMTxJlIfpWsUG0qdhk9h3MFqYoWcVXPkfcofgMDwnZIrh5gg0bSRS6WTkjE435iOIr8AvGTN43L6meeyForJ2H6Fr/MGU+t5g/DSVGqTl5Pjg1P
- WcERLnR+
- qIRyUjH8CIg/sTTHzkhiAP7yGlFBNyHd6Awf7+eG0Wq0zGomWYu+lJV46/758pOIX0pH8fXjeAlxYN9gw31RmIO4zB96lBiMZoYF1y/kAmWvgPRvKoXomKv7klhTzrfEV+N038gocM3OUEHpLr8tjYTMOM2IuyQs82ZvWiOTz96+UqrKxmyTSCmzF+9Y6fJj5iu0gerBOQRo1IQ24JP4W/uDx+zAyIZswNV3W7aUpPsqDj2hRBbQiXHsyZDtn9XznqBo+4FXgje2+iQ2X8g5iGlKUFgxq2Cme4ttPAv6sYU6Kv3Ggyb1d2hSrIvo6cTHr3C+T5rWXz2JQtyNPw+ZtrrpNztllKZz7qMoFXHlqF6cCmnExk1PXsAY39w7JdcCq0tMOOno5sqTxOVv1tDuk5EsyMMu278uLtY70MYOy7xz4BRo=
+X-HE-Tag: 1762343283-455745
+X-HE-Meta: U2FsdGVkX19wtKx9wt7OKk5csD0d7j0318secgTvAL/muW9sTJfH1ZOcb02OE9DXl1+sl3Nf6EbTWvtmMk7vbeWO2/9BsYh0pdMvBjmwofeCSAIuQN9a9pWWLYKQ2yVg+GbD/HboZi9vHFuWuYQO+iNaBHOgYw/0Mf2Q/vIHD4kJpBaQBaGe3/5xoCoy1QuRf9dSNOwySX8BCaZClMH8L6iN3/KBqFiZDX7u86lEJM3gHKYD9c1gP819AkuKoa55FWGooUkvTIOmAfbdfoTZGaSnrMkU19LdvKmto+b+ueSz0Kuah1rIvfVmT66Sj2MwBo16q4STyfNWIzSGgv4Rn9eelizg3VuCk/6B06HQqBq5dwtlxrbcoGYq5JHajQjFwn6fIEukk5KBleq21Gs9BiD58Tn9BrNBws3M8d7iIJFVyA4TlRh0xzHo9Qk5+XzGra9iI4mTYotFrkmdH0qHq7oOiHZRAqoNOHWJS7M0EAlXWmT+uEUKAimCZnZb7hCsLQVjelmVzhJ8EFa0X+pin92z5Mgfl9eF/i8zfLns/haG+Do8uPqPTrWCS/9uWY+VEkexrOBBq6ZmTYlJT/stpcxY/0gZsjM8Si0c+snjWGsn8oBRk4LT3N2idvY6wVwz2muZ+CDe/YNvgwLIrUiX8VWcf8ara1AG31gsawEwTIfMH/bitS/fDPOVO3SOL9sQwfoJfjdre7LoYuA1KUT/D/sIVnEkV/c9fUrKrXdq1RjF1d5OP08/etMMb36iUjOtdX41nYd7m2pmAzrvT3qHnE7UuU+R4d761jKfF04zJROhx7SOfuC36yOLeen/DpVXbL7OJ1lSyb/GjxBuYAo+LDeyiLpqPh8jKeBP/telMEqqwgLJfuIGjTl2+fT9q4ylzN1nPag7LZ24UbDEANaIARZka5LcNY/b5HZEZYI8NaHm6Goo8kj/UvtPC50BJ6nE4Wwa2sNFik3gVZj/Ko2
+ rnKQPBNj
+ qc00V87vt+jd0bI31qSqRE35NYdxwVwU0bWHnp1je8Zl801Bjzk7AOkbkEIKkUzHVKTAv/8x5cP/8k6LKSKU3z9neqXFJ6dMe3CHk4obh/zH0nTuRxzDTag4ACtwveJfYcmQlZqR3bi/9WIRM7pp+0lnjTUqmCtUSH2GYxpnYhL+o8q9s6cPpwSTpvBUiUUaFXBBM33wuV2XgsDKhDhEbhs2Iu5b/Rze5iyoyKgyDWBcodbPAold37lak0i+o3WNxGEtF+KQvur1xFPKHpx9pEoy7UjPlJSRVQpMm/PxugGAWLed/y5BwO8yF0pPOE1lk1GQbfpPg6c6tHLpMvmunU6z7E+L6kv81jzZHNMH3TjYfqmg4mkIZNGq61UaKE1uiLF9v
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -133,52 +105,82 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.11.25 00:06, Andrew Morton wrote:
-> On Tue,  4 Nov 2025 16:37:41 +0800 Hui Zhu <hui.zhu@linux.dev> wrote:
+On Thu, Oct 30, 2025 at 02:35:51PM +0100, Ard Biesheuvel wrote:
+> On Wed, 29 Oct 2025 at 20:38, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> >
+> > On Wed, Oct 29, 2025 at 02:57:51PM -0400, James Bottomley wrote:
+> >
+> > > I think this all looks OK.  The reason for the convolution is that
+> > > simple_start/done_creating() didn't exist when I did the conversion ...
+> > > although if they had, I'm not sure I'd have thought of reworking
+> > > efivarfs_create_dentry to use them.  I tried to update some redundant
+> > > bits, but it wasn't the focus of what I was trying to fix.
+> > >
+> > > So I think the cleanup works and looks nice.
+> > >
+> > > >
+> > > > Relying on the -EEXIST return value to detect duplicates, and
+> > > > combining the two callbacks seem like neat optimizations to me, so
+> > > >
+> > > > Acked-by: Ard Biesheuvel <ardb@kernel.org>
+> > > >
+> > > > but I have to confess I am slightly out of my depth when it comes to
+> > > > VFS stuff.
+> > >
+> > > Yes, ack too.
+> >
+> >         Umm...  FWIW, I've got a few more followups on top of that (see
+> > #untested.efivarfs, current head at 36051c773015).  Not sure what would
+> > be the best way to deal with that stuff - I hope to get the main series
+> > stabilized and merged in the coming window.  Right now I'm collecting
+> > feedback (acked-by, etc.), and there's a couple of outright bugfixes
+> > in front of the series, so I'd expect at least a rebase to -rc4...
+> >
 > 
->> From: Hui Zhu <zhuhui@kylinos.cn>
->>
->> The hugetlb.c file has grown significantly and become difficult to
->> maintain. This patch series extracts the sysfs and sysctl interface
->> code into separate dedicated files to improve code organization.
->>
->> The refactoring includes:
->> - Patch 1: Extract sysfs interface into mm/hugetlb_sysfs.c
->> - Patch 2: Extract sysctl interface into mm/hugetlb_sysctl.c
->>
->> No functional changes are introduced in this series. The code is moved
->> as-is, with only minor formatting adjustments for code style
->> consistency. This should make future maintenance and enhancements to
->> the hugetlb subsystem easier.
->>
->> Testing: The patch series has been compile-tested and maintains the
->> same functionality as the original code.
+> I pulled your code and tried to test it. It works fine for the
+> ordinary case, but only now I realized that commit
 > 
-> Thanks.
+> commit 0e4f9483959b785f65a36120bb0e4cf1407e492c
+> Author: Christian Brauner <brauner@kernel.org>
+> Date:   Mon Mar 31 14:42:12 2025 +0200
 > 
->>   MAINTAINERS           |   2 +
->>   mm/Makefile           |   2 +-
->>   mm/hugetlb.c          | 852 +-----------------------------------------
->>   mm/hugetlb_internal.h | 113 ++++++
->>   mm/hugetlb_sysctl.c   | 133 +++++++
->>   mm/hugetlb_sysfs.c    | 629 +++++++++++++++++++++++++++++++
->>   6 files changed, 887 insertions(+), 844 deletions(-)
->>   create mode 100644 mm/hugetlb_internal.h
->>   create mode 100644 mm/hugetlb_sysctl.c
->>   create mode 100644 mm/hugetlb_sysfs.c
+>     efivarfs: support freeze/thaw
 > 
-> Seems a reasonable thing to do, although those who work on this code
-> should have the final call.
+> actually broke James's implementation of the post-resume sync with the
+> underlying variable store.
+> 
+> So I wonder what the point is of all this complexity if it does not
+> work for the use case where it is the most important, i.e., resume
+> from hibernation, where the system goes through an ordinary cold boot
+> and so the EFI variable store may have gotten out of sync with the
+> hibernated kernel's view of it.
+> 
+> If no freeze/thaw support in the suspend/resume path is forthcoming,
+> would it be better to just revert that change? That would badly
+> conflict with your changes, though, so I'd like to resolve this before
+> going further down this path.
 
-If we limit the move to the core sysctl+sysfs code, leaving most of the 
-actual logic in hugetlb.c, I assume there won't be too many conflicts in 
-the near future.
+So first of all, this works. I've tested it extensively. If it doesn't
+work there's a regression.
 
-Hoping for some comments from the hugetlb maintainers.
+And suspend/resume works just fine with freeze/thaw. See commit
+eacfbf74196f ("power: freeze filesystems during suspend/resume") which
+implements exactly that.
 
--- 
-Cheers
+The reason this didn't work for you is very likely:
 
-David
+cat /sys/power/freeze_filesystems
+0
 
+which you must set to 1.
+
+Second, that "complexity" replaces your way more complex blocking
+notifier implementation for this thing which simply deadlocked the
+system as I reported and showed earlier this year.
+
+That blocking notifier thing had to use vfs_kern_mount() which had to
+come up with it's own internal private vfs mount to pin efivarfs because
+it's called out-of-band and then walk the list of variables and resync.
+Problem is that leads to completely untenable locking problems. So if
+you want to go back to that be my guest.
 
