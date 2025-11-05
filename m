@@ -4,139 +4,198 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 99CE6CCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B2FCFCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:24:09 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3B468E000B; Wed,  5 Nov 2025 16:23:55 -0500 (EST)
+	id 1F1638E000C; Wed,  5 Nov 2025 16:24:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CC4DE8E0002; Wed,  5 Nov 2025 16:23:55 -0500 (EST)
+	id 1A2338E0002; Wed,  5 Nov 2025 16:24:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B8D9B8E000B; Wed,  5 Nov 2025 16:23:55 -0500 (EST)
+	id 06AF08E000C; Wed,  5 Nov 2025 16:24:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A25C08E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:23:55 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 51B8213B006
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:23:55 +0000 (UTC)
-X-FDA: 84077830830.05.CEF9ACE
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf07.hostedemail.com (Postfix) with ESMTP id CD59640008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:23:52 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FLeCLTmr;
-	spf=pass (imf07.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E02898E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:24:08 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 8AEE0140488
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:24:08 +0000 (UTC)
+X-FDA: 84077831376.24.1EBF5C0
+Received: from flow-b6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5D5088000B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:24:06 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=HmU5hGoP;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="q SmEJgx";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf30.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762377846; a=rsa-sha256;
+	cv=none;
+	b=4Xp2TR9oj7BNoGNqr7IuV8d3bsGlYTdcwnN7JKb5Z29+Bln0eWX0NtpAyaLNU2yNnEzBo7
+	fD7uO2jt469exx3xzohtJvM+MLy4t3nuC8B9VtyyP6Ja1j8b2UV4HYpG7MDGQvBy/d+oFP
+	tlcYlI4njXPFO3KOs1iNA8fwOZnUOSU=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=HmU5hGoP;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="q SmEJgx";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf30.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.141 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762377833;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	s=arc-20220608; t=1762377846;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=irxlM+zajycQvptkFG0Ecggkg0FzwDEC2rGbASu0wKw=;
-	b=hTydZAO7LtN0Qi1UB9AF3MpVyWm3Whj7/X3lE+NpCJEIgE7lREeEAlS7xDSuXdUkjrA9Mj
-	UlJeIxYAv5Pyb+RA5bZ4YoBL+MJi4cXT5+XGR8p76bDtoU9/UXMP+qIv2llG9rUmdU+tOT
-	fr16SC6pA/mTFttoLRImre/YzIsSOVM=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=FLeCLTmr;
-	spf=pass (imf07.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762377833; a=rsa-sha256;
-	cv=none;
-	b=kPAD6Q26LpP2hgpLXyJ276ckVAqOW6CodY4cHYI7ty6O/F6vin5+xVNSpx2JmXQnlUmg0A
-	M4rW+H7UgHI/s59d0JZt+VOcFhesZYePk3xptp+ZZW+FkB8jrODNfhMpDccu47t4RgyAiS
-	TWfZCGkGlDUUV6SGfFmSxz8Vrwh5rsU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762377832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=irxlM+zajycQvptkFG0Ecggkg0FzwDEC2rGbASu0wKw=;
-	b=FLeCLTmrDODnIxI/14BiqHSrlAnkCMTiDV7teqw6o2WdNBbIBJNcz/YYZb9ZnD/ULgjILT
-	qNwVguTSFnv0zgFwrgn546wjS+ym0ne6Xv3FTkaEqVDFMiXVRVZbGwpZg9PPFxnlOgMNKE
-	f0VMYkDSENYTJnWs/X71vCDMaiUGtEE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-205-GnAd9WAyMqaOUcFlhnxhqQ-1; Wed, 05 Nov 2025 16:23:50 -0500
-X-MC-Unique: GnAd9WAyMqaOUcFlhnxhqQ-1
-X-Mimecast-MFC-AGG-ID: GnAd9WAyMqaOUcFlhnxhqQ_1762377830
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4775d110fabso3006285e9.1
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 13:23:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762377830; x=1762982630;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=irxlM+zajycQvptkFG0Ecggkg0FzwDEC2rGbASu0wKw=;
-        b=Fm9puOO5Qdmo1ygfVOkr/FdSWQxJxIKvB0Rd2c4MlWiJP2ILpMVrmrWsI/r+OUepVm
-         /A2vad2mngkzMWDDwE7Nyr5N9EhjMQodbtX6HDIXSthonqEv3tFqX4iq5axOWVaZmoNd
-         JQWY/RMR64Z30DB4u62eYRkxcxATSF55zBYoLfif8BmVP1IArqKgFIZXcDds586v1N9j
-         /bIjBclS69QBeAiLx3WVJlkntZaDAyQwAXjRkvjvm6z6O/iey77j++cODgDjMXCscD08
-         nGrk8k3wNmpBhCPK5WdF8dc05RpgUuTbmydfDzBa/1TQRgPQgsh7Wfrim1RYsqXhl25G
-         fp3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUhDQlS3+euWeDKTz8nyllC2kxhY5ZpTMAPc1eqi75rvbW4iIE9ZjVoAuoK04yjLvWmW56DicCK1g==@kvack.org
-X-Gm-Message-State: AOJu0YxDk3tNHypr66TPJuVwT2Lss6HeBgtSC/1ATCFmkhCvoXFdMTsN
-	crpKrleFfF+pEYIkbgWTOaFMPES/aRbz/uKOWlNSBWRaQKkhXmqNkm22UXQ4m6aq4fl8kbKyhIl
-	40drNHAqtwT6JUHQ9HZhEMjvu1sk+GehhKYxBA01J0qrkCTqIyyQ9
-X-Gm-Gg: ASbGncuAcaZjVojYNnrLhfWreM5+AYf4ootyaqjn5c3/WtSSAGACU6QDQDzSf9Tviof
-	remJcZz5d59X1EFoCZ0Bsd5wrvsqUs7v/GU0ZJUGdYFJiRQLVg5bjCVF6SMU80nE+dX1GwuMuVX
-	QiSzKDF4scE//F/MuBXLBf9VeJdkvCewoeZBlPS4ieBAL/yIBrEEQN2Ycibf/1A6ymlr1uV+NaQ
-	+P6KdfBjynl7EAUv97QJipn9hRuVhx/CWj0DU+4Mh+QvfyLt2WzToN19Y4chaffd8rirSPdgsxH
-	phTdIW+QjBLrvBs16IdAmM/OHsWFKs2SP+IgYpi+HChk0Fd7cgoE9C53UqGVMpRLW1UgD+/dd09
-	0X0wtlUNd13rUDr7NMi/2LvJlyi0iky8IqDMvP7utuXUyeK12+2SJzSiva7RYT1loOiuQy/0/Tc
-	7IMJXt2ALqKsyCoYsTxrFdsxE=
-X-Received: by 2002:a5d:5f45:0:b0:429:cbdc:86e with SMTP id ffacd0b85a97d-429e32e92f2mr4264251f8f.18.1762377829716;
-        Wed, 05 Nov 2025 13:23:49 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEFMBPGjUyAWRqYLdaePyzci1tJGP5cGEiWVS3z0azdKYFVcbbYYUKG6ZsLRBWt15fQxm1NIg==
-X-Received: by 2002:a5d:5f45:0:b0:429:cbdc:86e with SMTP id ffacd0b85a97d-429e32e92f2mr4264238f8f.18.1762377829254;
-        Wed, 05 Nov 2025 13:23:49 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429eb47873dsm860677f8f.31.2025.11.05.13.23.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 05 Nov 2025 13:23:48 -0800 (PST)
-Message-ID: <78de3d64-ecbf-4a3d-9610-791c6241497b@redhat.com>
-Date: Wed, 5 Nov 2025 22:23:46 +0100
+	bh=EVCZm+k0TFnzyISAYv/ad61W8yGyS+GgtniecPh35bI=;
+	b=EWJ6d8L+M3vFrD6e0642OVvnQX9fbRrUq4V3QB0qiaiMlLKRORgoE1BbCuI2sGzKNtHOAA
+	qs3lpnYlSPYXbra7aoc8LsfaKphFzZuxID+cNDPK+NSF5N2VgemvgiEilafBMZlu9e1aC4
+	JQtriuVWZ3FJh7WdXgoipMCk3XlHZh0=
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailflow.stl.internal (Postfix) with ESMTP id 1739B1300C2C;
+	Wed,  5 Nov 2025 16:24:03 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 05 Nov 2025 16:24:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1762377842; x=1762385042; bh=EVCZm+k0TFnzyISAYv/ad61W8yGyS+Ggtni
+	ecPh35bI=; b=HmU5hGoPqokqzJCeAqGf4BLGNy0MGNPv7gplJ67n7ajHRRuR5XU
+	QACgC7SBMngKWRr4nVPjJJgBKA3Q8lvkyUIGSJ1J47cOcYiClbPU1pS4MppGb5wh
+	2U2/xgadcENW/jgHJsJTyYYdk+1XjojR7/TQqmLQq3cUPGl27XnIya4CBHC1wN5U
+	B+nehvMy/L9Mb2tEVTuU62Q/a0ARwc5MO2szCGIyxpVtm6vXzecjyFmyuGF+NoPC
+	aDoFRHfQnTUA0wUc9ga83EokX5Vq/Y4zVF59Z0IqpO5AZkbSr//2iHDO/uH6Mdle
+	v+KzAJeRAhAF2PY5f//xFYICp+6h/EtUY0Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762377842; x=
+	1762385042; bh=EVCZm+k0TFnzyISAYv/ad61W8yGyS+GgtniecPh35bI=; b=q
+	SmEJgx4M8dlmgTjoUZkSr8FLucgLUEVlbd9odWDFkQcMJ+PFRsH9Y//0VRWWOa2P
+	Ww7Nr0XlQSokRvZEPNvVMlDa6wHjsBAaK17Tal0oudel/kBoVldVw56udPXn9uh7
+	Mczp91CekHgkQQrSfj7GW2ikHW7rCR3uH+ZZqm5byT0S1cyww1zJkHKJ+SuERDBe
+	UBNUFH0g9LBeW66OTxBJSBU1+z1R+WJlAHRefWLPYecfVMfJsDxhw/7LXOajVkRK
+	EY0gezm21MwMMJYPZofen2+s3eL3i0IyTk0/RNQdye2aRU/x2B6K2Dlf35uwcujj
+	UVMV0x49c00E0JFs7mDIA==
+X-ME-Sender: <xms:asALaQBQoSVaUuTXtcG_GYkEHX7ZGK1IdW3-DpTTeAob7NvcdQnESw>
+    <xme:asALaZvvSYTRURk71wOmt1sLYQpre30qKc9hcTtEoays4h59X1vNTOzcXv4ewIAT7
+    PBP05Cv2IT0eKS3Y5hzt-pSpQXWpNcWFPc3z3tPuShZJnbiAw>
+X-ME-Received: <xmr:asALaV1K1vj_trpV4WX4Ug9tckywabHWFw4izsBwBHNEfUZdhT2LhWV0hKbStCEFmuTyATTpSjnEcu5m6FzT9u-CFv5Y_mYw-vIlsrnNGGDt>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeegleejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtqhertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epleejtdefgeeukeeiteduveehudevfeffvedutefgteduhfegvdfgtdeigeeuudejnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepleegpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepfhhrrghnkhdrlhhisehvihhvohdrtghomhdprhgtphhtthhopehlihhn
+    uhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdhhrghruggvnhhinhhgsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:asALafmPr_ZX1OBseZ_yN5P8ha0kcdOo70DqfQ-d7eox1J3FRhMuTg>
+    <xmx:asALaYv6caGo7YOyqxlwHt-aa7xcS6ubR74B6joQPFkP4nVa857B-Q>
+    <xmx:asALaQazXCEbXKvEWtOde9MGMuFd4iSpENdxHY6Br8A6SQLP9UCqOg>
+    <xmx:asALaUc6XxQI42baNH5r4oVKLbArJeUxiTNL9duhGxUFeugLz9diCA>
+    <xmx:csALaZ2nr3Xo9lu7ZwRVoMnu5vfNzgtS4RKi9tfb5i1b6hqQye68vliH>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 5 Nov 2025 16:23:32 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Peter Xu
- <peterx@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
- Nikita Kalyazin <kalyazin@amazon.com>, Vlastimil Babka <vbabka@suse.cz>,
- Axel Rasmussen <axelrasmussen@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- James Houghton <jthoughton@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Hugh Dickins
- <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
- Ujwal Kundur <ujwal.kundur@gmail.com>, Oscar Salvador <osalvador@suse.de>,
- Suren Baghdasaryan <surenb@google.com>,
- Andrea Arcangeli <aarcange@redhat.com>
-References: <20251014231501.2301398-1-peterx@redhat.com>
- <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com> <aPZDVuscFsYSlQjI@x1.local>
- <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
- <aPe0oWR9-Oj58Asz@x1.local>
- <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
-From: David Hildenbrand <dhildenb@redhat.com>
-In-Reply-To: <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: T16XNMnVKFANXZ_TPhyB4kjNyx54rmM00eewEGxiDf4_1762377830
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: CD59640008
-X-Stat-Signature: ga8a3bg3x635m1qr1sh3do4ro94fyyft
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Dominique Martinet" <asmadeus@codewreck.org>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "David Sterba" <dsterba@suse.com>, "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ "Chris Mason" <clm@fb.com>, "Xiubo Li" <xiubli@redhat.com>,
+ "Ilya Dryomov" <idryomov@gmail.com>, "Jan Harkes" <jaharkes@cs.cmu.edu>,
+ coda@cs.cmu.edu, "Tyler Hicks" <code@tyhicks.com>,
+ "Jeremy Kerr" <jk@ozlabs.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sungjong Seo" <sj1557.seo@samsung.com>,
+ "Yuezhang Mo" <yuezhang.mo@sony.com>, "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Yangtao Li" <frank.li@vivo.com>, "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Mikulas Patocka" <mikulas@artax.karlin.mff.cuni.cz>,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Oscar Salvador" <osalvador@suse.de>,
+ "David Hildenbrand" <david@redhat.com>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Dave Kleikamp" <shaggy@kernel.org>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Bob Copeland" <me@bobcopeland.com>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Amir Goldstein" <amir73il@gmail.com>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>, "Tom Talpey" <tom@talpey.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Zhihao Cheng" <chengzhihao1@huawei.com>,
+ "Hans de Goede" <hansg@kernel.org>, "Carlos Maiolino" <cem@kernel.org>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Kees Cook" <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev,
+ linux-um@lists.infradead.org, linux-mm@kvack.org,
+ linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-xfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, "Jeff Layton" <jlayton@kernel.org>
+Subject:
+ Re: [PATCH] vfs: remove the excl argument from the ->create() inode_operation
+In-reply-to: <20251105-create-excl-v1-1-a4cce035cc55@kernel.org>
+References: <20251105-create-excl-v1-1-a4cce035cc55@kernel.org>
+Date: Thu, 06 Nov 2025 08:23:24 +1100
+Message-id: <176237780417.634289.15818324160940255011@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
 X-Rspam-User: 
-X-HE-Tag: 1762377832-976728
-X-HE-Meta: U2FsdGVkX19Ag4zdv5ZoktoVb4lCz3ll2dtv+RP/XWYdTZw8kDQabiwI3ZTL55hpqjJQ//kRTGmdLNASr4Us8zT3ILOyv/5QCvrrPM2GP8dmdd+DxGI677DBYC5OXzqLkuE8rr9hiqogetYQQv9+SdLpmghV9mxvsyOjnm0wvncDsnFJlVVrbr6TNWyQZ1bS4hrKzd7aqs8tzwVLNzFnfMDy3CfJK9/gRL6amSnR6KIuN3oHaa2UgQfGR8qjVF6r/45AjwyyOqBi++7ImLrFUohY5g27q8lHE/UTBxM3XoU2OssF7rz5GlQ1mI684ExZrCQFI+4Ef51u1eJRqLYin3N8EOAqBsV87zbQww8acTK04niPxnxN7hWFbu6zsPXBs5h2h50JxiMS8BWAdx8PlHoJtEu5N7yZwy817tKdt5wBqOOd3OI5gfLOEpuwffGFl1dNezGDxW48kBjdZUCjo3CcJiqNrc9SE28Paw52hvqbO3wNDzd1G2MAknSsjtuLJ8wQ78tOMCwXK6BTwm2IarwNW1UsxALIEwtPOylVR3SGXr1T8HHIviuxy04aqbZD9an6zpqxEfbDy4y/v6QuTHue0Flbdf92maTBtLrtpgVVKhu3gSOx2eG6p7EiZBkhKyQEgf7KH7x8Vm4TftnGF3DFkOIAxG9znFJBNS34JLOQxbkbUh2h6qRPWwU+ACOfkveFbwh6O7Z/JwElKwJCLBS4AlsoLZxdiahoNC/wMkjZt1W2gYFl1+CyEoZvywf+GOvbgjZ3mIjBSChKHUUkntmdfS1o0MTMlNsZk1VjFjBld/e9kr0WQGbewntMRElif4f+Pj00dKH6t6i9DWi8l6BFxiX44K4mgAwfrmoCmLQxfwzpFe7W+amQWl8SLCS3jul1T5hqhrZzzP7QQB0OkUVzldF7oAwAP0KMAkic+Jj1E59NPhGizdJn2M+S9UWLEWi/jryE/pM4MRWmJMm
- ldqC/e1g
- IrT8YBhrQUR7Lkox5FD/QluQgAQHIGZnxuRtULipkcWUliV2qCWtL01fvZjsCbXFuLXqXdx0ep6I1AHz3av/OoYweoh9t8omyGtlwimqHxwb6EBSmWAp7IuFvNlXGfTIU3qDuxpMMx+g8GEHDfMwVju4QA/4MNm5dtJZ00eO768njP6cm0Vj0s7iu/j227dEnTIZ7tx/0bl5AFvtuJMM+xJF+HshGf2ALoz21RlLEmf7+rHlQl7Aiik1MSf2RqoG4C26v8djLlOYYoi7HJ3BI85YcOfxF0nquZ3kaRbwjrixY16Ahjvuydweb82ZO3HdN8SgSD9T5fMyLYAgVoN+eQaN8LczLD637HYSHLJAajPULDmG1CNOAO2xWFEztsRMYjzUDugX5828EYgrV8HDy9ToJ3+kPcgVqvGan9SHIIVrZHygc8g8hUOY9s4+BfMCSiYHhBaj0XRnVa64IgPIaqlM43a5n8bz099U0BbTbwY6EpYxZkqlhFDzdGFtn66T6JL8S2y2IbS5R6eEkney83kJQMTKIm76qklY/rHPzGTZWiJWjnFCW4I9ftSZxP82szV8jws50mrTeSE+0UyWQbON/G3D/ImsSu0cg0SS/bjZMyzgRB6nE+RaUdpj1iWwiurmV
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 5D5088000B
+X-Stat-Signature: s5gk7x9bt89gsaueagqb6wf9ofic3xpu
+X-HE-Tag: 1762377846-550117
+X-HE-Meta: U2FsdGVkX18P02AE+iTMlsHH6MgFT8aBPnHkIXMEL/8KjpQRureEKkY0aWhKx3+rtQMkLDQMnXRKHbLE2NLhDbrP845W7ZJDckxJ3hmozDS2VtEvX8DNMSpZ/TO22jmlJ+4maZ9vmtEmCJrmf2WWjmawkTVlC6DWwKrb5WPsluvoBpt+tY1SC5BuaN9lLRq1EDm3Lb28XhEoNnTTB/b+gdemYZ/ac9matNhpQPe7HoerkrUF0yzrvw7qeKBx4tvdynFEjEAe41DCMUo+v1E0IZlD2yyBRzECuG7a9Bf8O9V2nZ+Zg+P6zZnK5g6mKomfN6YpJuLvSvjBq2QXLonRz1yXaR8j4iJZT+htMBbDHFlBDUsZPRmFfNXUszgpvuiVXLgB20V4ILsi7A7D62TCMHua4ECvBxqEVyHL7w4RMg5aqRkF+wWeRzvzqcWXHXhz2RZn9rjRH7zIqRV1HX86DixAVhcBzpTSJIiE073vz0gVMRnawkZ1zNjzvI/482MUKRwVSVRK5T/xsPZxc0+emflN4YIj2vd5yIrWLw26YmX5VUilqVnTyzMNENgNr7H5QJ4/R9mpdAuJ8ShztdhHuImnTR/iWx4kyIzxgbpU+Hp+5zndgtpMGht5K0M+x9AZ1ETVJM1visNTaTcoYymCkfnpXnKEkXfabtddiIvuglDEpEQImw0vUxZnxCGIgWUrQB1P1jaiJrdDbXVpHG2v5mrAhPAjXluleBN/vQuevBUswKi53MtgAgNmtIBpa238x4l2n6SQ7eaOm0hYd9t7NHlETIK5mh89SAUaDNIIYqYm2ec0eS3731c5p85oP4OEjQzASVCZSotofcqBskgUNxuISyxOwi82mUwzh86I0TqrEgkaeNnUCnZJKb60bWh2flB4W8tC09CocJHebwxsNsRbkd3ka9tS2xuVJhqq1to4wWVsoGkgvVXRB/f0oCbh9tL1IY3GEHD1k7V1SY/
+ UlhPrD4N
+ GYW1krYpKZGcc7QEOF5+j7U8667zuZb9xaChd5fzP8xrb7Jv0mF4EcJSTAyzDfCT7jf/6ri15ioWPxhuNy9A3JaNen4HMF/woGCJWKPiiidTZVyXP8yNehrfb4fVO1hbgVIv2uD2gs3tgTPHTzJ+BlwHUtid8Nh5AV26gImlg6vXgHHjmwjGCZVO+VmR4WzKjz+ttp/Ug2lxxQffmCa9ErgQVDwk7vma9J4rlTV2bB/ED4J6QMkWVcIUdccF0KXRvoeIrLEGLoUUTHDj19nzcIGDnInK8e5I367YEC9w3uQjHWX/seQUldoYtBOFcDOKMgPA04PaIn7LOdNXMtLfwFuHV6OYXBMhtXmosBY+qXDANdLhPvNgZcgzeNMzeTp9RHHEZ1SefarrxzJLwGoh1Py9WVysb3LF8ebxqdoHUuf1AOcVpcZBhms9EB0RYbFsh0QAFLnR8ggcYAAKlNM/6HJsFa73HxCTl4MUMYYE2wS8/rlHvC1s3eovsaK2/y1b8hw4U+jnKDwAh3Am+E8IKWNri5oLOs8Wuj4IJEk5E7siwcPQWJW1LjcgKYSFbjjPqx3PcwbG1H0OPTWT1VSzC8vze2kCjmfOpNtd3JJGZYc6BUejBvGjMto02AfvG5Oth25XAZ2CH4CVoHTClN3p6I74xxPy0+ZedSpyyoCBNWI+kqTX0Ie5gsVAj20Ixxob9KlYs
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -145,144 +204,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 30.10.25 18:13, Liam R. Howlett wrote:
-> * Peter Xu <peterx@redhat.com> [251021 12:28]:
-> 
-> ...
-> 
->> Can you send some patches and show us the code, help everyone to support
->> guest-memfd minor fault, please?
-> 
-> Patches are here:
-> 
+On Thu, 06 Nov 2025, Jeff Layton wrote:
+> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
+> the "excl" argument to the ->create() inode_operation is always set to
+> true. Remove it, and fix up all of the create implementations.
 
-Hi Liam,
-
-thanks for showing us what userfaultfd could look like when refactored 
-according to your idea. I think most of the userfaultfd core code is 
-easier to get in your tree.
-
-> https://git.infradead.org/?p=users/jedix/linux-maple.git;a=shortlog;h=refs/heads/modularized_mem
-> 
-> This is actually modularized memory types.  That means there is no
-> hugetlb.h or shmem.h included in mm/userfaultfd.c code.
-
-Yeah, I think there is this confusion of "modulize memory types" and 
-"support minor fault in guest_memfd".
-
-So I see what you did here as trying to see how far we could go to 
-remove any traces of shmem/hugetlb from userfaultd core.
-
-So I'll comment based on that and rather see it as a bigger, more 
-extreme rework.
-
-> 
-> uffd_flag_t has been removed.  This was turning into a middleware and
-> it is not necessary.  Neither is supported_ioctls.
-
-I assume you mean the entries that were proposed in Peters series, not 
-something that is upstream.
-
-> 
-> hugetlb now uses the same functions as every other memory type,
-> including anon memory.
-> 
-> Any memory type can change functionality without adding instructions or
-> flags or anything to some other code.
-> 
-> This code passes uffd-unit-test and uffd-wp-mremap (skipped the swap
-> tests).
-> 
-> guest-memfd can implement whatever it needs to (or use others
-> implementations), like shmem_uffd_ops here:
-
-There is obviously some downside to be had with this approach (some of 
-which Mike raised), regarding the interface to "memory types" 
-implementing this, but I'll discuss that later.
-
-> 
-> static const struct vm_uffd_ops shmem_uffd_ops = {
->          .copy                   =       shmem_mfill_atomic_pte_copy,
->          .zeropage               =       shmem_mfill_atomic_pte_zeropage,
->          .cont                   =       shmem_mfill_atomic_pte_continue,
->          .poison                 =       mfill_atomic_pte_poison,
->          .writeprotect           =       uffd_writeprotect,
->          .is_dst_valid           =       shmem_is_dst_valid,
->          .increment              =       mfill_size,
-
-See below, I wonder if that could be performed by the callbacks invoked 
-as part of the prior calls to mfill_loop() etc.
-
->          .failed_do_unlock       =       uffd_failed_do_unlock,
-
-That one is a bit unfortunate (read: ugly :) ).
-
-failed_do_unlock() is only called from mfill_copy_loop(). Where we 
-perform a prior info.uffd_ops->copy.
+nonono
 
 
-After calling err = info->op(info);
+> @@ -3802,7 +3802,7 @@ static struct dentry *lookup_open(struct nameidata *n=
+d, struct file *file,
+>  		}
+> =20
+>  		error =3D dir_inode->i_op->create(idmap, dir_inode, dentry,
+> -						mode, open_flag & O_EXCL);
+> +						mode);
 
-Couldn't that callback just deal with the -ENOENT case?
+"open_flag & O_EXCL" is not the same as "true".
 
-So in case of increment/failed_do_unlock, maybe we could find a way to 
-just let the ->copy etc communicate/perform that directly.
+It is true that "all calls to vfs_create() pass true for 'excl'"
+The same is NOT true for inode_operations.create.
 
->          .page_shift             =       uffd_page_shift,
-
-Fortunately, this is not required. The only user in move_present_ptes() 
-moves *real* PTEs, and nothing else (no hugetlb PTEs that are PMDs etc. 
-in disguise).
-
->          .complete_register      =       uffd_complete_register,
-> };
-> 
-
-So, the design is to callback into the memory-type handler, which will 
-then use exported uffd functionality to get the job done.
-
-This nicely abstracts hugetlb handling, but could mean that any code 
-implementing this interface has to built up on exported uffd 
-functionality (not judging, just saying).
-
-As we're using the callbacks as an indication whether features are 
-supported, we cannot easily leave them unset to fallback to the default 
-handling.
-
-Of course, we could use some placeholder, magic UFFD_DEFAULT_HANDLER 
-keyword to just use the uffd_* stuff without exporting them.
-
-So NULL would mean "not supported" and "UFFD_DEFAULT_HANDLER" would mean 
-"no special handling needed".
-
-Not sure how often that would be the case, though. For shmem it would 
-probably only be the poison callback, for others, I am not sure.
-
-> Where guest-memfd needs to write the one function:
-> guest_memfd_pte_continue(), from what I understand.
-
-It would be interesting to see how that one would look like.
-
-I'd assume fairly similar to shmem_mfill_atomic_pte_continue()?
-
-Interesting question would be, how to avoid the code duplication there.
-
-(as a side note, I wonder if we would want to call most of these uffd 
-helper uffd_*)
-
-
-I'll have to think about some of this some more. In particular, 
-alternatives to at least get all the shmem logic cleanly out of there 
-and maybe only have a handful callback into hugetlb.
-
-IOW, not completely make everything fit the "odd case" and rather focus 
-on the "normal cases" when designing this vm_ops interface here.
-
-Not sure if that makes sense, just wanted to raise it.
-
--- 
-Cheers
-
-David
+NeilBrown
 
 
