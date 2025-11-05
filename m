@@ -4,99 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 945C7CCFA05
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:48:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2CACBCCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:09:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA21C8E0008; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
+	id 001818E0005; Wed,  5 Nov 2025 08:09:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D799E8E0003; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
+	id F1B538E0003; Wed,  5 Nov 2025 08:09:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CB6CD8E0008; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
+	id E0AC48E0005; Wed,  5 Nov 2025 08:09:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B9CC08E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:48:05 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 45E7CB61E6
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:48:05 +0000 (UTC)
-X-FDA: 84076379730.29.4F6EA6D
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 9577110000B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:48:03 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MwGXM1sZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762343283; a=rsa-sha256;
-	cv=none;
-	b=JU9k5Yehhj3wys4gCQ+SriRifyhSfOS98j7NMo2WmJ2Xgrn8oIsznHmfO5XyMT4D3Urk25
-	/Tsqx6mYLjBHOMvMn//WpCVXTnN4bIA4Ottzvm8l4Q0Nk9xG2IxKkZh3lnl/aOizNBjBha
-	ehFxX59QjaVTZwSHRLa5A/u2GIaZCEY=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=MwGXM1sZ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf05.hostedemail.com: domain of brauner@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=brauner@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id CF2E48E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:09:08 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 3EEF11A031F
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:09:08 +0000 (UTC)
+X-FDA: 84076583976.03.07D58E0
+Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 891D2140012
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:09:06 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=Z4zM0B5S;
+	spf=pass (imf26.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
+	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762343283;
+	s=arc-20220608; t=1762348146;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lxXbCLQxvn/59KzuFtW+MHCdYVZK1kOCrBQCFEwNh3o=;
-	b=pH+rLnilvqdIxoW/8Y+aMh9lV/yrITolEDjtIsX0AQUD559WMveRaSizmmExy2ZqeK6ame
-	Xl/3CqtbqXMSE5T/SZfQznhC3iicmvUvi2B8Np4K4ud778MAR5Ay0u+B6KbJaaNZIObBAI
-	YfqUamYEr3MJ9K7ed3Q8sz25VFrpDQQ=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 750A544447;
-	Wed,  5 Nov 2025 11:48:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAEAC4CEFB;
-	Wed,  5 Nov 2025 11:47:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762343282;
-	bh=btxGnn6CCgFSpgKGiKlUN2Uoo0h0EbsAS5PsaSiCdPQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MwGXM1sZVPMMIEL85QYLjQ0vHOh8EXKaoJGqdkAadD4KEXSGC6jdo1AVO1v9Uko01
-	 21aNnVjOVpauDxe0V1jUzhdmsI84/uGaC9tOddXiwkDzkDb6bNSYMptOr49arE3NTT
-	 G6SAw8F8neQfpDJOmI7IdebRpD5zMOfpYvn5QfSpEZiD+QrufvkQ768kFjqD0bnA87
-	 Pj+2TJSGXXZ+icT6U5pql6MqJ5IYwyi6170a7s7OSjLvjWWG/oucjF/Hk5DG2LMU9G
-	 TmcbT+xMixtAp/AeDdsLQfShwXpZRbwgAaHKWSnA07a8ZNc+Q5o0/P69dP6yifcQVn
-	 +jDFRzhxlPQsA==
-Date: Wed, 5 Nov 2025 12:47:54 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Ard Biesheuvel <ardb@kernel.org>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, 
-	James Bottomley <james.bottomley@hansenpartnership.com>, linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, 
-	jack@suse.cz, raven@themaw.net, miklos@szeredi.hu, neil@brown.name, 
-	a.hindborg@kernel.org, linux-mm@kvack.org, linux-efi@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, kees@kernel.org, rostedt@goodmis.org, gregkh@linuxfoundation.org, 
-	linux-usb@vger.kernel.org, paul@paul-moore.com, casey@schaufler-ca.com, 
-	linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, selinux@vger.kernel.org, 
-	borntraeger@linux.ibm.com, bpf@vger.kernel.org
+	bh=aKXNus8uLm6scPOvxpF9lsViAjHu+KcHyaHVGZXBDKQ=;
+	b=zkWIQkziLXI+h/1XUAHeEvuQpI9Q3Hgh1LWrzpwEGDsB2VdKOp1/FcA9zyl7dpjOx+Ebx/
+	2PBV6+N+mSYaRgjmmz/VGBxlO7x5AJn029kPb5BLJ8bQjBgBzezFvRkT//maMQqutsWO95
+	yR7WVQ5j+jHML/FbXmp3jeZBJnffVNw=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=Z4zM0B5S;
+	spf=pass (imf26.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
+	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762348146; a=rsa-sha256;
+	cv=none;
+	b=IPca+1ZloLQoYP+OjvDJ7CIyJGgplKalSN937g18hBHIByXdpdEuzElrrETkjVUgfxKNR3
+	rwUnPOfGdF4GbGLKsZJGSHZHGXAf2KMPq1/3qnesQTJZWNJL1soYHdwDvUYuno/7cs+fkD
+	iFd150yQHiBUW6KELUqvk05cMy4Jm/w=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+	d=hansenpartnership.com; s=20151216; t=1762348145;
+	bh=ire8fBSaH5X2X8Fk/L25UVs6ngqVbi8pXJIwOAxBt3c=;
+	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
+	b=Z4zM0B5SZHl/4X6OjhuOwgkvTtAUSjY8A0QRetHs+gA4Y/czokXcoPgmEvi85cpqa
+	 gQz+iOyX3jHXlp6fEAUmajL5aSTN02gKCJ+jESykWqDMtBeI0/Zszpl1Y7gqYiuQfJ
+	 +Dazp3G+OMDH05O+udpMC2ZN/dmhb3sbpzwDLbuY=
+Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 8FA881C003D;
+	Wed, 05 Nov 2025 08:09:04 -0500 (EST)
+Message-ID: <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
 Subject: Re: [PATCH v2 22/50] convert efivarfs
-Message-ID: <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+From: James Bottomley <James.Bottomley@HansenPartnership.com>
+To: Christian Brauner <brauner@kernel.org>, Ard Biesheuvel <ardb@kernel.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+ torvalds@linux-foundation.org, jack@suse.cz, raven@themaw.net,
+ miklos@szeredi.hu,  neil@brown.name, a.hindborg@kernel.org,
+ linux-mm@kvack.org,  linux-efi@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, kees@kernel.org,  rostedt@goodmis.org,
+ gregkh@linuxfoundation.org, linux-usb@vger.kernel.org, 
+ paul@paul-moore.com, casey@schaufler-ca.com, linuxppc-dev@lists.ozlabs.org,
+  john.johansen@canonical.com, selinux@vger.kernel.org,
+ borntraeger@linux.ibm.com,  bpf@vger.kernel.org
+Date: Wed, 05 Nov 2025 08:09:03 -0500
+In-Reply-To: <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
 References: <20251028004614.393374-1-viro@zeniv.linux.org.uk>
- <20251028004614.393374-23-viro@zeniv.linux.org.uk>
- <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
- <20251028174540.GN2441659@ZenIV>
- <20251028210805.GP2441659@ZenIV>
- <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
- <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
- <20251029193755.GU2441659@ZenIV>
- <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+	 <20251028004614.393374-23-viro@zeniv.linux.org.uk>
+	 <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
+	 <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
+	 <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
+	 <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
+	 <20251029193755.GU2441659@ZenIV>
+	 <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
+	 <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
+Autocrypt: addr=James.Bottomley@HansenPartnership.com;
+ prefer-encrypt=mutual;
+ keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIB
+ wMCAQYVC
+	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAV
+ QEEwEIAD
+	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9
+ D9OOU8qB
+	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTV
+ YG5zyLRi
+	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZ
+ uorhFE06
+	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xj
+ WKAB6OII
+	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvC
+ W2e4dAlG
+	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.50.3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
-X-Rspamd-Queue-Id: 9577110000B
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 4kip361jqjrz44cybkw5pca4dkqep3eo
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 891D2140012
+X-Stat-Signature: r7q81ej41ppykctsx6sokfx4wt8s48on
 X-Rspam-User: 
-X-HE-Tag: 1762343283-455745
-X-HE-Meta: U2FsdGVkX19wtKx9wt7OKk5csD0d7j0318secgTvAL/muW9sTJfH1ZOcb02OE9DXl1+sl3Nf6EbTWvtmMk7vbeWO2/9BsYh0pdMvBjmwofeCSAIuQN9a9pWWLYKQ2yVg+GbD/HboZi9vHFuWuYQO+iNaBHOgYw/0Mf2Q/vIHD4kJpBaQBaGe3/5xoCoy1QuRf9dSNOwySX8BCaZClMH8L6iN3/KBqFiZDX7u86lEJM3gHKYD9c1gP819AkuKoa55FWGooUkvTIOmAfbdfoTZGaSnrMkU19LdvKmto+b+ueSz0Kuah1rIvfVmT66Sj2MwBo16q4STyfNWIzSGgv4Rn9eelizg3VuCk/6B06HQqBq5dwtlxrbcoGYq5JHajQjFwn6fIEukk5KBleq21Gs9BiD58Tn9BrNBws3M8d7iIJFVyA4TlRh0xzHo9Qk5+XzGra9iI4mTYotFrkmdH0qHq7oOiHZRAqoNOHWJS7M0EAlXWmT+uEUKAimCZnZb7hCsLQVjelmVzhJ8EFa0X+pin92z5Mgfl9eF/i8zfLns/haG+Do8uPqPTrWCS/9uWY+VEkexrOBBq6ZmTYlJT/stpcxY/0gZsjM8Si0c+snjWGsn8oBRk4LT3N2idvY6wVwz2muZ+CDe/YNvgwLIrUiX8VWcf8ara1AG31gsawEwTIfMH/bitS/fDPOVO3SOL9sQwfoJfjdre7LoYuA1KUT/D/sIVnEkV/c9fUrKrXdq1RjF1d5OP08/etMMb36iUjOtdX41nYd7m2pmAzrvT3qHnE7UuU+R4d761jKfF04zJROhx7SOfuC36yOLeen/DpVXbL7OJ1lSyb/GjxBuYAo+LDeyiLpqPh8jKeBP/telMEqqwgLJfuIGjTl2+fT9q4ylzN1nPag7LZ24UbDEANaIARZka5LcNY/b5HZEZYI8NaHm6Goo8kj/UvtPC50BJ6nE4Wwa2sNFik3gVZj/Ko2
- rnKQPBNj
- qc00V87vt+jd0bI31qSqRE35NYdxwVwU0bWHnp1je8Zl801Bjzk7AOkbkEIKkUzHVKTAv/8x5cP/8k6LKSKU3z9neqXFJ6dMe3CHk4obh/zH0nTuRxzDTag4ACtwveJfYcmQlZqR3bi/9WIRM7pp+0lnjTUqmCtUSH2GYxpnYhL+o8q9s6cPpwSTpvBUiUUaFXBBM33wuV2XgsDKhDhEbhs2Iu5b/Rze5iyoyKgyDWBcodbPAold37lak0i+o3WNxGEtF+KQvur1xFPKHpx9pEoy7UjPlJSRVQpMm/PxugGAWLed/y5BwO8yF0pPOE1lk1GQbfpPg6c6tHLpMvmunU6z7E+L6kv81jzZHNMH3TjYfqmg4mkIZNGq61UaKE1uiLF9v
+X-HE-Tag: 1762348146-701582
+X-HE-Meta: U2FsdGVkX18xLXrjfFsXa5uHAIqK94iWfFkqs0xYxLsd9V80r2FvUAPJdxRyY9xmqryv7/prJAORlCH3S3JQS6zqw0qMNPfqm0llm9wm1rEc8Fh7XOFJJCefw7QTirlHzF2nTVECz/ycqwZWhYr+2X2ap366kacbspSLgJHwvJz7PEzdjyk0Skdv0AuBu7g66f98cOUzBO7lyqBCJweoXEdnSWlaodwstN1qHBN6+w0WmLw69H0y/uNkPBEj6gboAtw8cRm228JBjBlmEmSdcXguyVRGzlV6TptxTCpRSnX2yEGJ3TsE/jq4+zqXgg/hiXIQToLwCl8d9gIbmbxJrU+HTZ+RphTnVRrUCK3DLCG39lHv+K0eNsj/Und654/vpuWhH7MohvEIOrXDnEgCgSD8kMq4soKRSe1ep5aTj0t5oUFtr6Se8aXGow20eQ+7ja2Umy8VfUkse7jPMvWXpgTV8P7gTxCWQW8RnRkzCo03RAwuswRiABev4YfQoxjXGrpJ7Tmic2eXZhqLTlJbKvGVc1Xui8NWEUxo49fBeX5q7y21tP4Zg/O6ovXRFrs0RVy8MFhaONLNbgonrf9Azo7Y4RRxcTmx5f1/wVeOapUk/yzBGcbFPCV6+JF5KF5c37+wtmHl6mgq1sZ8Lrq4PvNkrZ+qcuAImfViMCILLdweaH93INMfMgRu/c0HsERcW2B1N2KFKkgfDg7EVA0Q41591saMfC52mnySHTl6dLygKWBlCkRZNL8zPdLPM1OaGdTFTlgOG9qHDvnV5rZasJ4D5Kx79q4ZKdSwDHzldTvoJSOI+PmsHRv+RoVFy3Q9Mcn+UNwKOiBtLojyg2uVn/nDsMcEmkadYCuPesIO4eZ0Gv0d3cfntL9CSCG3G1JF32+vTbExdbHf+8Nh3SvdkeyJgMW/y90lkOLHOZDMATgGLcXlShFAxwYbzcM5bzaz8sX5lYasAB2bdJ8U0IM
+ KtDOJqfB
+ pN/JyDS4ki8NIdt1oJf0W1HZhc/1D+pERJYTaikaV3Ch60dmqKuv3r29eBA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,82 +123,67 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 02:35:51PM +0100, Ard Biesheuvel wrote:
-> On Wed, 29 Oct 2025 at 20:38, Al Viro <viro@zeniv.linux.org.uk> wrote:
-> >
-> > On Wed, Oct 29, 2025 at 02:57:51PM -0400, James Bottomley wrote:
-> >
-> > > I think this all looks OK.  The reason for the convolution is that
-> > > simple_start/done_creating() didn't exist when I did the conversion ...
-> > > although if they had, I'm not sure I'd have thought of reworking
-> > > efivarfs_create_dentry to use them.  I tried to update some redundant
-> > > bits, but it wasn't the focus of what I was trying to fix.
-> > >
-> > > So I think the cleanup works and looks nice.
-> > >
-> > > >
-> > > > Relying on the -EEXIST return value to detect duplicates, and
-> > > > combining the two callbacks seem like neat optimizations to me, so
-> > > >
-> > > > Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> > > >
-> > > > but I have to confess I am slightly out of my depth when it comes to
-> > > > VFS stuff.
-> > >
-> > > Yes, ack too.
-> >
-> >         Umm...  FWIW, I've got a few more followups on top of that (see
-> > #untested.efivarfs, current head at 36051c773015).  Not sure what would
-> > be the best way to deal with that stuff - I hope to get the main series
-> > stabilized and merged in the coming window.  Right now I'm collecting
-> > feedback (acked-by, etc.), and there's a couple of outright bugfixes
-> > in front of the series, so I'd expect at least a rebase to -rc4...
-> >
-> 
-> I pulled your code and tried to test it. It works fine for the
-> ordinary case, but only now I realized that commit
-> 
-> commit 0e4f9483959b785f65a36120bb0e4cf1407e492c
-> Author: Christian Brauner <brauner@kernel.org>
-> Date:   Mon Mar 31 14:42:12 2025 +0200
-> 
->     efivarfs: support freeze/thaw
-> 
-> actually broke James's implementation of the post-resume sync with the
-> underlying variable store.
-> 
-> So I wonder what the point is of all this complexity if it does not
-> work for the use case where it is the most important, i.e., resume
-> from hibernation, where the system goes through an ordinary cold boot
-> and so the EFI variable store may have gotten out of sync with the
-> hibernated kernel's view of it.
-> 
-> If no freeze/thaw support in the suspend/resume path is forthcoming,
-> would it be better to just revert that change? That would badly
-> conflict with your changes, though, so I'd like to resolve this before
-> going further down this path.
+On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
+> On Thu, Oct 30, 2025 at 02:35:51PM +0100, Ard Biesheuvel wrote:
+[...]
+> > commit 0e4f9483959b785f65a36120bb0e4cf1407e492c
+> > Author: Christian Brauner <brauner@kernel.org>
+> > Date:=C2=A0=C2=A0 Mon Mar 31 14:42:12 2025 +0200
+> >=20
+> > =C2=A0=C2=A0=C2=A0 efivarfs: support freeze/thaw
+> >=20
+> > actually broke James's implementation of the post-resume sync with
+> > the underlying variable store.
+> >=20
+> > So I wonder what the point is of all this complexity if it does not
+> > work for the use case where it is the most important, i.e., resume
+> > from hibernation, where the system goes through an ordinary cold
+> > boot and so the EFI variable store may have gotten out of sync with
+> > the hibernated kernel's view of it.
+> >=20
+> > If no freeze/thaw support in the suspend/resume path is
+> > forthcoming, would it be better to just revert that change? That
+> > would badly conflict with your changes, though, so I'd like to
+> > resolve this before=20
+> > going further down this path.
+>=20
+> So first of all, this works. I've tested it extensively. If it
+> doesn't work there's a regression.
 
-So first of all, this works. I've tested it extensively. If it doesn't
-work there's a regression.
+I haven't yet got around to finding the test image I used for this, but
+I'll try to do that and get a test running this week.
 
-And suspend/resume works just fine with freeze/thaw. See commit
-eacfbf74196f ("power: freeze filesystems during suspend/resume") which
-implements exactly that.
+> And suspend/resume works just fine with freeze/thaw. See commit
+> eacfbf74196f ("power: freeze filesystems during suspend/resume")
+> which implements exactly that.
+>=20
+> The reason this didn't work for you is very likely:
+>=20
+> cat /sys/power/freeze_filesystems
+> 0
+>=20
+> which you must set to 1.
 
-The reason this didn't work for you is very likely:
+Actually, no, that's not correct.  The efivarfs freeze/thaw logic must
+run unconditionally regardless of this setting to fix the systemd bug,
+so all the variable resyncing is done in the thaw call, which isn't
+conditioned on the above (or at least it shouldn't be).
 
-cat /sys/power/freeze_filesystems
-0
+> Second, that "complexity" replaces your way more complex blocking
+> notifier implementation for this thing which simply deadlocked the
+> system as I reported and showed earlier this year.
+>=20
+> That blocking notifier thing had to use vfs_kern_mount() which had to
+> come up with it's own internal private vfs mount to pin efivarfs
+> because it's called out-of-band and then walk the list of variables
+> and resync. Problem is that leads to completely untenable locking
+> problems. So if you want to go back to that be my guest.
 
-which you must set to 1.
+Let's figure out if we have a problem first (and if so, where) before
+we get into possible solutions.
 
-Second, that "complexity" replaces your way more complex blocking
-notifier implementation for this thing which simply deadlocked the
-system as I reported and showed earlier this year.
+Regards,
 
-That blocking notifier thing had to use vfs_kern_mount() which had to
-come up with it's own internal private vfs mount to pin efivarfs because
-it's called out-of-band and then walk the list of variables and resync.
-Problem is that leads to completely untenable locking problems. So if
-you want to go back to that be my guest.
+James
+
 
