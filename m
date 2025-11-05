@@ -4,84 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C29CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:13:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5550ACCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:13:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 450ED8E000B; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
+	id A42AD8E000C; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4016F8E0003; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
+	id 9A4A98E0003; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3171D8E000B; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
+	id 847E48E000C; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1BC2A8E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B9F7B1602AA
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 749928E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3118D5832F
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:12 +0000 (UTC)
+X-FDA: 84076291824.18.C175860
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 7A2B740011
 	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:10 +0000 (UTC)
-X-FDA: 84076291740.22.256F05E
-Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
-	by imf08.hostedemail.com (Postfix) with ESMTP id AE19B160002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:08 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=IynIMTyr;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.31 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762341189; a=rsa-sha256;
-	cv=none;
-	b=O7o2VZYlVUWbOw1K0ntiRPkECGgEqFcBKVXzcTs5UlzCc9t0tf4hsWJ5kDKRviWOnf8/hR
-	0Nt7HrD+l+XYrd61j11KFlUGZktnVtf51I3rfNc71QXV9tmjhMeoWD7SY0uJLQ3gytg/xz
-	Zz64PQo5TQMRgM3jGun9/P4cR+tKhOA=
-ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=pm.me header.s=protonmail3 header.b=IynIMTyr;
-	dmarc=pass (policy=quarantine) header.from=pm.me;
-	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.31 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2ZCZW2a;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762341189;
+	s=arc-20220608; t=1762341190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MhOL772gDQt3HjlEW0CKt9Wxom0RYSxrQeQWZ+rjImo=;
-	b=2T0XfUOZAQY8LvMTKL4nBINl/76MZ2I0eiFFBXN/NIQH0hpfkA1fTpYRJmRGVHAsezwcka
-	rmCaVxb2tPchgO18lDe3eRldi/vHcUcn2OJ8KhVCuBUiAmyAPjmBTMHjsWnkoahgqkwdpX
-	Gd2OFuaPNtljcoxswmxl3F1Whs9lWHU=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1762341185; x=1762600385;
-	bh=MhOL772gDQt3HjlEW0CKt9Wxom0RYSxrQeQWZ+rjImo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=IynIMTyrNWBlf4PhOmhXwPzcshBVn1bvwsGpIzoT+fFZDNBYsCY4t116aDu5ENCsc
-	 u9OIwrF5zikcMNOI4NqGkovwN0zaLpnRkdAi8buGUu73pc2/Lx2E8WX5oO+yea9aoQ
-	 Jy2u/U/p3nX5d7IeaKkUJWrgP2GiCNnwyU1Nu06Ej/WO2Wsa7jSSvRL1WJ7F0NOKiZ
-	 mWJD/b9C6YCsfwZIqlOUqqKmByhU1SzSAlsOWuMpaoyOBxMcPIsTZ/mOrIT9Vx+eLS
-	 KwGAJ9Vk6UVm3LoycXsk4/SVrr2juYIj0IrzoyNXaIdWOPk5qqNDZzq/L2wnbxUb/D
-	 RGQbgT+gxlcEQ==
-Date: Wed, 05 Nov 2025 11:13:00 +0000
-To: Andrey Konovalov <andreyknvl@gmail.com>
-From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
-Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 2/2] kasan: Unpoison vms[area] addresses with a common tag
-Message-ID: <cc4xh64s47ftujtp76hizmjqaczbgpzvmpbtzjtya2tuqyc75x@3obiajea2eem>
-In-Reply-To: <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
-References: <cover.1762267022.git.m.wieczorretman@pm.me> <cf8fe0ffcdbf54e06d9df26c8473b123c4065f02.1762267022.git.m.wieczorretman@pm.me> <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
-Feedback-ID: 164464600:user:proton
-X-Pm-Message-ID: 9bc93b4823ad8fa97869a332ca0a7f37c2bec3e2
+	bh=+AA7ZpHM+4GAFuFoc4UweFeCb0wRAqQjZLm0NDMGJ80=;
+	b=57LfDzFuTQz5Ru34cf69O9RtRDc/EOgjdnvTgcC01XePReqBoydd2/DfM5hJtsZ+vxNTbn
+	rRReG9ytEJssycph7eecyUEF7SALcTGBOJEjJF1ivuMpBlDyOzSzWV6w46qpZezuPwh3aR
+	DAyeUxGBMcU04LaeXtc6HWWSqY16Vds=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762341190; a=rsa-sha256;
+	cv=none;
+	b=ersCaEczyJZTFn4cEBYMr1k80SCkIBzlxxE5gXalGGYnvxEnWo7YYqJaPhjL0SaAl8f6R5
+	a4O84nK4MJZH8Va5Ob58zVtJ+9C4d4Gy88DTpu4huxdnT7T3zCv/ppc+RaIakiDbfCfldM
+	ePPUWNEY5gsEXF1UdK1NR8T+oPIfMOc=
+ARC-Authentication-Results: i=1;
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2ZCZW2a;
+	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id B08B360203;
+	Wed,  5 Nov 2025 11:13:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A383C4CEF8;
+	Wed,  5 Nov 2025 11:13:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762341189;
+	bh=5SRIi5stLzkcdcYgZc1z4fAx+Z2JyFKQR3FvjHjXFVU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=e2ZCZW2aZUwTmoa8nkSKTRxmK//+yjCM1ni6ddcN6a2AYWWlP5SJSR2XHIhrosRhW
+	 FkeXgKxkwalJCUXVL8ZRXwgQeXt/nkskp6283MjlC7lTTeCuKO0Zkw5rnVB3x1YRyj
+	 IkGK3GVWDlaFeAKTHY2TEjLIKEY99//uecF4P0nnE+tIuUkMXWSwYWhzQql1Ie+lp8
+	 9ckfH2KMKURDpq5BwetPWNUdAICq3iLfszaq3L/zO8lfcUgUw1gtrydLEZ7qvHClaA
+	 JNdNSh8riDJiNFEj6Da9MO+mUDJRlVUmuqNFaRAMP1KIlqLGhZV6b56epn4ksLHO18
+	 yhbfDM0b0kGmQ==
+From: Christian Brauner <brauner@kernel.org>
+To: Zilin Guan <zilin@seu.edu.cn>
+Cc: Christian Brauner <brauner@kernel.org>,
+	jack@suse.cz,
+	kees@kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	jianhao.xu@seu.edu.cn,
+	viro@zeniv.linux.org.uk
+Subject: Re: [PATCH] binfmt_misc: restore write access before closing files opened by open_exec()
+Date: Wed,  5 Nov 2025 12:12:46 +0100
+Message-ID: <20251105-gebucht-kaktus-f394c88493d5@brauner>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251105022923.1813587-1-zilin@seu.edu.cn>
+References: <20251105022923.1813587-1-zilin@seu.edu.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: AE19B160002
-X-Stat-Signature: gyo6twcd8fhk9g8es79x4cwseiimpppr
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1299; i=brauner@kernel.org; h=from:subject:message-id; bh=5SRIi5stLzkcdcYgZc1z4fAx+Z2JyFKQR3FvjHjXFVU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRyGzpEqfTLxG8oWDwtuyDHk//Hodv72q+1JTE+rNLUP S2XwKDXUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJHIzwy/2USCQ6Uvv2ao9L8c P/HVjsyJzqGC0yd7/tFbfbhk50ORm4wMl+a8PfrdePHd3vzCqUfPcFe6h3vY+M7acmZhwS7tn6s CGQE=
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: e3dpg1uryzd188aifddu9fnyi4d9ko3d
 X-Rspam-User: 
-X-HE-Tag: 1762341188-857851
-X-HE-Meta: U2FsdGVkX18xZeTtmvJHjkEt16FBtKLgxHpddEyENWMPaE5wkVbY1JciM2LrQngzCvnVhX1we62xONTYrIiJ0OlkFSRzTpaP9lRomlPicI43AOH6Ip72+JTvU27hzVvjjCsR9fAOontgBoZkRZoe8PipKygUEL9d3s/JcBW6mek/3y0puFSqniN0UAkya+DgckC8i3r911gzJL3yU+oDAvGVrFZ7xXG9ZRnecd2PKwNtrJQovIeT/VJQt6GOmtI09dN50BoYI7JztFlPXEL62CGnyjNVXlvG/TBJy79ogm3vQCrn9NUhxDrW9HWpLkH2lcgDUNHJus9W+S5+HMWfXz/JnHiSE7RcSobt+E/KpdUrO9T1Fr338LgwNhwgMkibdbkFE7VOAul5DbGjCv6O5/SiBZ/++bog8yWNHUFEOyNqQpEs1uz5+2iYa7BmLoXPXWGiDtQgA3UQ+EtPP70j6YYTKv2IWSLB5tn2/CMaj0MYNUl5i0iFhR7v1+ma4SkN5JOXKdeBdJIIfYHaln+WA/4rU7ZMz0xZdm6PYCabUdizWITzAjiS4aL5PBepB9qeDCXjEZWz/gv9E0h/a6Fvpum+oX0m+iE2mHE2V/NWdZaDFLdAbKuPO+Z+qFWFcnSHhxC4GnXs344cI7pw1f1SKTJ1MIdVqc01ycbMukE6FViLGlxf7V5EkZEVcwWjpyFEPsZ7jgio2qyPzQCW6s7aGmiDpdC4TPnw9AfoQDIi5hAypaqU6XkJbCD1awF/ZAFugetAsLVSjAtV4U3z8U5SfGlciNhm9NXOQM/ud98u+HbaEFtlOKfK/XtmWAax/DB3YKw48WBLSJIv2dBESPCw8VBan2kwPo6nDin+b1/KNC1jWf7VRu/gEaCiG9z41kTeV2KvctJpwIhSFTTL1Jzmm6hXDwngXnaYFouYGDmIarjIEI339lAom8RQxEDSFfWFdjR0by/V6wxUNqOgcRq
- bmjlSZpP
- 2dG7r5j9H55QswEx07p2vYNRd0sWRjCn/06Gf3aXqEb+9P84Xc3z9Fv+E1iD1FY49o82PyteRohGuVc5k1qaRUibCLhm59/CB8HpGoAfo4MT1n/JpFAk+8Rie6/NA/q/Ba5IM5Xv5zkwMg/sbxqytxCzCZmgCvabeAyvE7Lfr8buHVSdthIQM4E+VV5HpOKkrlOsMxPlqE/Ou3kSKBLSXjA1E9uWA+9/5aOKIQ3DN68x/TUXEytJuAdGGRY+WEKLx7aiSGf8O0AhKipr9kzXE+ZFd6zK5W9rmWh8XoIdHSxm6r5NDgFosVWImStyQthWFQ9pS5kO3ewKYvi0mo0XMsCQGchmx2i0IrAIJ
+X-Rspamd-Queue-Id: 7A2B740011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762341190-305540
+X-HE-Meta: U2FsdGVkX1+jHxdKr+vuWn9nuJKODGe5+odGWVw48sa1TpelN57vlfysgVLg2wW2GILnxcHwa1MKE4emjQviLaps7QLw3I2SMYAQsTNdrjhgCrx/Axb0X3N15BkATkbYqsmAW7SFhHs/Q5NKYtPRhmwp058TEaFsBotcPfkOsowtZhcZ6f9A4lA7FoQ+1zJ0mW0DUH6zadVtlPHEIE/6me+mW9OebIzOg6HZanw9q0pqyjfFTpfjngkTOLVRdFNAPJEo6/WLV3vy6XvFC4HtJaSn6D8tCFwpHDGWcqvEHP+6u6OJ6+nA0XAid5YJ1ZeGOH4TTvcH8RCMVIu2pjk10cebAq2c0WsqND9yUORQ+noxeG6WLRbL+B2j6ex2t4MGilcUT4owgCS1A4NcCymJbBIFXUigyzuzJEAkKey3LJ12+Y6ktmx7fJ8TEC7m3/I0UXqIneoith83X7XMH1q9HOZsDFRxbThbgIhZ58/3F6S5LedC4x3tHXPDf2PqzASa8u7BTAWejpiSjyU6VEH91W9PlxepNOuw2uE9W81HsQHUVfY+vwc01QR8cz+17yNPT7mh262jHRGwhI/xxUpIXJ8IVdbPfDWqaLUq4PYidu9W3RViZvK+6bhptc2/MAM2OtHn9Ri6O8CDHgSbGKoE+jyP+3bmaxQ4F5A6To/5l846roG8wPqu/qeDDS5Qb2Db3bE78/5iv7GShLBn59pwVSXwOmKTmwnNIiLU9cpnkYwLXCZn4KQ1Ba9VuHcdFPhuO8jRPpYuN0rBgZEfFyowVWa0Ycsfd75VES4yczJlLqV61NLUVve4n7h7ol+HIcPI4V4t+17V59aWti3eR9ru9RZk40KI/J2sSwBivbQ4/KL0+0El1yVpqD3+qHfJj+PRQCXexLvs3/kRtMKLfwPGajQ4zcNL9PbcHP5CqT6Fdx3GBrPPyySMjLSyyQAGuOYzNz5H3JIWu1T0i6mFVUm
+ ztQfNhlg
+ adyW2rBUDo/5KcMoeeoInsHTutntg8Zy8tHq7nnGuBdcQ4HV925P3btuQhfQxVU1YKKox8yvhOyio6/qlEPXSNduxNiz51jtKL1+KVf5lD6tb+b5JLOVN9qbLbcyP3cZ84tFimmlPk/Z3kHC1QXkV+qPRrD6jDN/nHHsZSs9QekWvmLWcrsCKMFNxUwZ2te9h60jIY+jyIS6NTvHmJ7Y9bT0U+7oQOnYVzJL+S1upiWeFfFe015f8KbPYOCs6vFbxrAQkBNGCjrR+YVdXdiTderAPFBBsASJxa+Xo37GMtbdhvrfMNOJhcPBrANSF2TGdHhhppr9Isfqd6bE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -90,87 +101,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-05 at 02:13:22 +0100, Andrey Konovalov wrote:
->On Tue, Nov 4, 2025 at 3:49=E2=80=AFPM Maciej Wieczor-Retman
-><m.wieczorretman@pm.me> wrote:
->>
->> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->>
->> A KASAN tag mismatch, possibly causing a kernel panic, can be observed
->> on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
->> It was reported on arm64 and reproduced on x86. It can be explained in
->> the following points:
->>
->>         1. There can be more than one virtual memory chunk.
->>         2. Chunk's base address has a tag.
->>         3. The base address points at the first chunk and thus inherits
->>            the tag of the first chunk.
->>         4. The subsequent chunks will be accessed with the tag from the
->>            first chunk.
->>         5. Thus, the subsequent chunks need to have their tag set to
->>            match that of the first chunk.
->>
->> Unpoison all vm_structs after allocating them for the percpu allocator.
->> Use the same tag to resolve the pcpu chunk address mismatch.
->>
->> Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
->> Cc: <stable@vger.kernel.org> # 6.1+
->> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
->> Tested-by: Baoquan He <bhe@redhat.com>
->> ---
->> Changelog v1 (after splitting of from the KASAN series):
->> - Rewrite the patch message to point at the user impact of the issue.
->> - Move helper to common.c so it can be compiled in all KASAN modes.
->>
->>  mm/kasan/common.c | 10 +++++++++-
->>  1 file changed, 9 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
->> index c63544a98c24..a6bbc68984cd 100644
->> --- a/mm/kasan/common.c
->> +++ b/mm/kasan/common.c
->> @@ -584,12 +584,20 @@ bool __kasan_check_byte(const void *address, unsig=
-ned long ip)
->>         return true;
->>  }
->>
->> +/*
->> + * A tag mismatch happens when calculating per-cpu chunk addresses, bec=
-ause
->> + * they all inherit the tag from vms[0]->addr, even when nr_vms is bigg=
-er
->> + * than 1. This is a problem because all the vms[]->addr come from sepa=
-rate
->> + * allocations and have different tags so while the calculated address =
-is
->> + * correct the tag isn't.
->> + */
->>  void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
->>  {
->>         int area;
->>
->>         for (area =3D 0 ; area < nr_vms ; area++) {
->>                 kasan_poison(vms[area]->addr, vms[area]->size,
->> -                            arch_kasan_get_tag(vms[area]->addr), false)=
-;
->> +                            arch_kasan_get_tag(vms[0]->addr), false);
->> +               arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(v=
-ms[0]->addr));
->
->set_tag() does not set the tag in place, its return value needs to be assi=
-gned.
+On Wed, 05 Nov 2025 02:29:23 +0000, Zilin Guan wrote:
+> bm_register_write() opens an executable file using open_exec(), which
+> internally calls do_open_execat() and denies write access on the file to
+> avoid modification while it is being executed.
+> 
+> However, when an error occurs, bm_register_write() closes the file using
+> filp_close() directly. This does not restore the write permission, which
+> may cause subsequent write operations on the same file to fail.
+> 
+> [...]
 
-Right, not sure how I missed that
+Thanks!
 
->
->So if this patch fixes the issue, there's something off (is
->vms[area]->addr never used for area !=3D 0)?
+---
 
-Maybe there is something off with my tests then. I'll try to run them in a
-couple of different environments.
+Applied to the vfs.fixes branch of the vfs/vfs.git tree.
+Patches in the vfs.fixes branch should appear in linux-next soon.
 
---=20
-Kind regards
-Maciej Wiecz=C3=B3r-Retman
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.fixes
+
+[1/1] binfmt_misc: restore write access before closing files opened by open_exec()
+      https://git.kernel.org/vfs/vfs/c/0e0c1b03d6d4
 
