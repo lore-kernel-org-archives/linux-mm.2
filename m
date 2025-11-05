@@ -4,175 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 100CBCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:12:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 78E73CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:18:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6E4C68E000E; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
+	id 89F738E0009; Wed,  5 Nov 2025 10:18:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6949E8E0008; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
+	id 876F68E0008; Wed,  5 Nov 2025 10:18:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55D308E000E; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
+	id 78D248E0009; Wed,  5 Nov 2025 10:18:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 3EF9A8E0008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE7A11A012C
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:12:33 +0000 (UTC)
-X-FDA: 84076894986.09.C043F5A
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 6ABAF1C0012
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:12:31 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762355551; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 6723E8E0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:18:11 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id D2809140391
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:18:10 +0000 (UTC)
+X-FDA: 84076909140.06.4F2D8BE
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 3CB864000D
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:18:09 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlA6UEYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762355889; a=rsa-sha256;
 	cv=none;
-	b=yGAxEOMODdIeagUylVfbcuYl89TGm0Fn8/J/q85qMDyru2StaLZXVvWkAghED9MdxUcVIl
-	dkPfqRaF8NdAC7GE2Rfmc5JsLXtAiCAimBYl6LMDxRR8diHQmGivfSK1XQ4BPGWTRVQLcC
-	IXmFTMd5C9H1Ejn3cKjxyO2qWdSHKOU=
+	b=xjgcfO0ziUhpxBxl3FuUXdEBC3KatQ5i0Prlh4MpBmjGtJGsLtrflWtqJfvavqbwi6+Wyn
+	FdtkNaq44ysWTvISJ3wQD7rfyEAb+0zFLjKSyFKGdkwWsqdGfJML9vXhtEHrE2M9K86P5g
+	8pJTWE8/lUk5BOM20EBsop7tSj5aNUU=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
-	dmarc=none;
-	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+	imf27.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VlA6UEYi;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf27.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762355551;
+	s=arc-20220608; t=1762355889;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
-	b=3Ua7B1+0fOuMZaCSWDiAI9Ty1J7xmMvdFxcXwmZgWCc4yqAIZ6h3FKy07/kZRRlH/Llt45
-	sCBtIOj3fNaQy4gvAUdyQyw0b71br+IfJuz5QbTeVaqTO2sd8G+ztzbnATDc2wmsZ4DX8A
-	bl5TbOHaBkffOZjtzDECOBt7YuJle2k=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id D37AE1F393;
-	Wed,  5 Nov 2025 15:12:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762355549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
-	b=vOPg+LHG7W8Yk1HS6Dsqqv3MuWG2XGmqog16SM/nz7u6dEMJPe3i9AhFhwP/WfJVXmvQcV
-	QWH4iMuF1SSTkpoQe/WLl/HtHn4D7b3y2PCeNYRSq3zsRKURpLzDnArWbzFfZtLKKvzbKk
-	QuWyoiheskgZBExMQm9+VQqcZ4b5XfQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762355549;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
-	b=3fBDLO1F7aXeoa1qyCsw7hVXRdwyz8+2qPyK704dPWdvmcYFcrqpQGEUIV0fpFTM3pjpyw
-	BPMYDGJJBtmN/qBA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762355549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
-	b=vOPg+LHG7W8Yk1HS6Dsqqv3MuWG2XGmqog16SM/nz7u6dEMJPe3i9AhFhwP/WfJVXmvQcV
-	QWH4iMuF1SSTkpoQe/WLl/HtHn4D7b3y2PCeNYRSq3zsRKURpLzDnArWbzFfZtLKKvzbKk
-	QuWyoiheskgZBExMQm9+VQqcZ4b5XfQ=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762355549;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
-	b=3fBDLO1F7aXeoa1qyCsw7hVXRdwyz8+2qPyK704dPWdvmcYFcrqpQGEUIV0fpFTM3pjpyw
-	BPMYDGJJBtmN/qBA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B30C1132DD;
-	Wed,  5 Nov 2025 15:12:29 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id mI/pKV1pC2lFeQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 15:12:29 +0000
-Message-ID: <39f2d0d3-de79-4e13-a577-83a3aeb5cf1b@suse.cz>
-Date: Wed, 5 Nov 2025 16:12:29 +0100
+	bh=tQ3dfkBlGHO9v9rqbnjdOgO0YfSQlNFm7epapPtn++k=;
+	b=BesLXjLWgsGawKw0NkyjRswD/snCNKWWkD4XCp3/XPdB/7NJMbkvzguziwLz67qy85jzgv
+	QepZDndqRLSZ673gBcXA+Zcq+oFawPPcwKfgTTRFgONuIrvN2B8eNC8i3b26E96gjZw7zj
+	PV9qupl3iC4lXt+Ob+VJH++AhByPtT4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 7120D601DD;
+	Wed,  5 Nov 2025 15:18:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B230C4CEF5;
+	Wed,  5 Nov 2025 15:18:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762355888;
+	bh=KrTmSd/KLHnmJp6uY5VjqlnOzYc3oRuRzLcvqn1keFo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=VlA6UEYiwYN0luQ/4V7V5KntlUFeIZMU+NmpkL7d+M3N2iUQ1IOTeflqlF+lIm90q
+	 HiYedRgVi60NobljBr8hiMWKlKYaC0H2qpqcbgA62caHhlCZRV0lAw+K6rG/pGXCdM
+	 v2fUWpgA1cuUl7tJFOCWW5vd5SlcBeqwuZxogThAgO6JWjnfivWSGwf1FZmVbvLp51
+	 DXvXopX+g369NCQ/HianrAkrAREQeoj/7Y3X5e7jN/22+bQDoRUOUhUSyljHri7cDD
+	 BYyWmWicrYUBAv0SObOJUefhS668cWVoSkzNKG1fBJO8d3jvGpTEthtLNQuTTZy+9f
+	 X1oSJavknulag==
+Date: Wed, 5 Nov 2025 16:18:05 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Waiman Long <llong@redhat.com>, LKML <linux-kernel@vger.kernel.org>,
+	Michal =?iso-8859-1?Q?Koutn=FD?= <mkoutny@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Gabriele Monaco <gmonaco@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>,
+	Marco Crivellari <marco.crivellari@suse.com>,
+	Michal Hocko <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, Phil Auld <pauld@redhat.com>,
+	"Rafael J . Wysocki" <rafael@kernel.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	Simon Horman <horms@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+	cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-block@vger.kernel.org, linux-mm@kvack.org,
+	linux-pci@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH 12/33] sched/isolation: Convert housekeeping cpumasks to
+ rcu pointers
+Message-ID: <aQtqrYlvMsjX91Vn@localhost.localdomain>
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-13-frederic@kernel.org>
+ <bb9a75dc-8c34-41da-b064-e31bf5fe6cb2@huaweicloud.com>
+ <510b0185-51d6-44e6-8c39-dfc4c1721e03@redhat.com>
+ <aQThLsnmqu8Lor6c@localhost.localdomain>
+ <14cd347c-42c9-4134-9c1c-1a222b553c2f@huaweicloud.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] blk-crypto: use mempool_alloc_bulk for encrypted bio
- page allocation
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
- Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, linux-mm@kvack.org
-References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-10-hch@lst.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251031093517.1603379-10-hch@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 6ABAF1C0012
-X-Stat-Signature: cf5zxrx9z8o65sa1cui1y9nj7bbjbqyb
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <14cd347c-42c9-4134-9c1c-1a222b553c2f@huaweicloud.com>
 X-Rspam-User: 
-X-HE-Tag: 1762355551-249165
-X-HE-Meta: U2FsdGVkX1/V58wiDUjGo+/6wnnQFye9EJHzQpvNEOIDOUPfDpfjNMbgRIrAdCErDgkmNkC+EdUe7JHdwR0aIHJKM7OBmF/mQBJ+DV0iuqFr4CajNUL524zmeAoqzKSFy/OhGj5ec21DzsvTCFPDzUhykY0DUO0XzPqGv3kzwYQ9eCgV29DPxQuCLzOFFjEe0cxkYRZAtEbOAJYDMataqJiXANgKVr0HoE6ER3YmS67e6ZfB5EYaRIvZ91mcHDRDbD+EOMSaSYctvDw/h1gfdS6xY0DzRjAgAUp19xlQgf8jFiy21EBhyNHZJKTHenFQffbqoVdKPrJpgLwFEMg2sCAFRgYcLcE4gPEyxEIOtuNZ0icb23ahLYq414g1VTMttH16T9YtOjgSkFgyP1M4GSEtLWsnOUF6Ei/2Tw5EdEUC75aQ2WRND57J6386ez6pjq7XgYiWL0lBx3dwTH/wkXb5H5hH5cA9Np22Usjyx4egNiDpttaQiVhBbXKWuGGzjRu7TLMbEzhPlPtSibb4p0jrFRjleksKWjJrFdO9XtqzPHNocp8AqNNj4hD0y1YPg4jx6UNBKz3ALdZZZrzsCuQPVRQKNNbNwdRzMPQ/9QovAM9m7vpvn0eqUhKtkXSWBWB5mPGzRquJppLXHsh8Os43yWwzzKqxSiRx1cdMfjMNMQyBCYYTztfj3AV01/rXuW9OvJ9A6D9wb9jyj5h1rMQTP+/hyE3kEcUD8yzANYS3prK3GFFl07gQryfS2aOTRl9sxevBzikfZj7+r5cmZ4xru0R/SS7h4va3pkbVNKp2nedlrrz492jfiX20qu6gvRsIIRq60imXvqSBg+6lsja6DICvPcNBSfy52SMVF8+lNJzWAGYfpHO/9zYZk35RWbcNMjbbVaOsAdFhNPpXYXsGa81bDDSEP9XF2a5dEO1KxB2Zi3jFmGZAvfl6KIuZKWgBuUW6plg/pZERfi9
- rrA4ny7P
- IPzkjkM2U8AmzIb52YHsg9pBN0YP61wARXb1vlao7N3+LOV6W3bLmQ2PmMFbWeoc8Dt3qLx/6TG2/9acH6BBrnzyvMe9N4q7wUZtA86UNqeuzEnMb4BloEnWRjEBP0zj5hOEswoIXtvvEcYaYedt30whsUiLxCs7G3sTrhebasBbkC21b9L0CIffbzR02Xl/g7Z0eyQPkpHhFR7J98b8gnxa/OL+fxBE+oimbjViPMO8MABUKlXBiJXI7VCuwSKADYb19HfS6yIo0+Zy1Yd6xtUTT9sOPN8wP1YGgV9FoDIB52QwDcs8THehWV51P2SzGC1kYJQNhsymr0hiNykcZNuXbFg==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 3CB864000D
+X-Stat-Signature: r3qzupqycz76c696bsqpiquyub8j586c
+X-HE-Tag: 1762355889-286128
+X-HE-Meta: U2FsdGVkX19RlSRBGvHh79nV1KGddTUXum1QHLTCerXsp9M/gOkQBtuNDzTpXVNMIKGTV0WmQOikBedovW5ghnui8HYcybBdQSvXX+pVoihOLnJLLBcgsnpmWGTRF/kBNh2mTN/kInW9Y331md3UoggR/HnTxv0z4j9fpeD17EFPMCRj1I0GV0uMt0Rk+8pm9gPQGhC+bu5KNPIdeo6bP+UyZXVx8/JVMtS/d1s0v7r0mlr3xCIW3sA1cTgKf8THETMrSHPgVhJ400fk/q3/N2w3Qrzm+7S1lyouejq19yoQQiJaIFijQXidN3kVRe9CfxE83DQRF+n4NhV2JRTMMoZTa/nqWIJYtmbQlY9ht5+5Bcrs7UkH79ZAJG1ns7qepYatgTKsvRGlopswypLoQWdoNbfOPJt0KgGesnyIFOhymahdMCSGyYNqX2yaZINAeYJObVfNyGmMwStHTczghILmFM9ResLrCnnIXlbqOb2F79Noj3GmYwjUU3ueTXxn+K29GpVvn+1onNIJeczhPTOOlrAG5zejH+UMg5kJ2gK+MOCAHapyT+UPyVGt1iqmcyO3mQdLDWicEJ5WlyuD+J15Hd0zpAYFEyvVsDw04evR2JyOgzbliakwC1qFSbyRcuxZAkpfT5FSYC0VDdBeiLi8B0L54KAyem9z0l6IJByHc3yepE0/WF6fjzQpNHaJGLi1B17nutUzrZnuYGZbSDmUgnhtHJKo2FTvhWyThvBs6ODePzV83cv/0kizCRM7B59r7nj2jvLB8kTVLBbNlHwmNaPuUqz1uDadOjE4oX12jDBv6WddFjCXez0u6VYmWJ8uKXJLh8kHIVFWfwK/3so2iYAmx08s9VownQqzu60qwALdBpFRw71aSnuCpqURcQPXy8ranMinjtFLJS02xnQzRU8UZ1weO5Wk94vUW+j7tc/3SME/hP0aQWaZbOpjHhLZhkkd2T6WZNZGY4H
+ EJ0zxdWk
+ gbt0rdeh90Emk1V6GQ9vCknOjhBe4ELD+Ia9J1XEtGF90ckxL17FNwV7/X7XV0yPaTYQvRhGTs7qp3F4ytX3GBA39h10PE1hRmxg3KDDuwGrc9NxS3pnVfTGA35ZskxnhA+1XOAvzyT6jcJ+vF4WUPiSM/sGsEXd1Rso+QioTcXyneB0az+r5w84GeRvOUjDhIsSEu3GE5Z25qPbcIiAUwGYagTR3IMNAlw13HuZRa4sb8RLjT4hGrGGsKpgkugZJCBPi
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,61 +123,245 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/31/25 10:34, Christoph Hellwig wrote:
-> @@ -192,6 +205,29 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
->  	bio->bi_write_stream	= bio_src->bi_write_stream;
->  	bio->bi_iter.bi_sector	= bio_src->bi_iter.bi_sector;
->  	bio_clone_blkg_association(bio, bio_src);
-> +
-> +	/*
-> +	 * Move page array up in the allocated memory for the bio vecs as far as
-> +	 * possible so that we can start filling biovecs from the beginning
-> +	 * without overwriting the temporary page array.
-> +	 */
-> +	static_assert(PAGE_PTRS_PER_BVEC > 1);
-> +	pages = (struct page **)bio->bi_io_vec;
-> +	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
-> +
-> +	/*
-> +	 * Try a bulk allocation first.  This could leave random pages in the
-> +	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
-> +	 *
-> +	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
-> +	 * any non-zero slot already contains a valid allocation.
-> +	 */
-> +	memset(pages, 0, sizeof(struct page *) * nr_segs);
-> +	if (alloc_pages_bulk(GFP_NOFS, nr_segs, pages) < nr_segs) {
-> +		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
-> +				nr_segs, GFP_NOIO);
+Le Mon, Nov 03, 2025 at 10:22:47AM +0800, Chen Ridong a écrit :
+> 
+> 
+> On 2025/11/1 0:17, Frederic Weisbecker wrote:
+> > Le Tue, Oct 21, 2025 at 12:03:05AM -0400, Waiman Long a écrit :
+> >> On 10/20/25 9:46 PM, Chen Ridong wrote:
+> >>>
+> >>> On 2025/10/14 4:31, Frederic Weisbecker wrote:
+> >>>> HK_TYPE_DOMAIN's cpumask will soon be made modifyable by cpuset.
+> >>>> A synchronization mechanism is then needed to synchronize the updates
+> >>>> with the housekeeping cpumask readers.
+> >>>>
+> >>>> Turn the housekeeping cpumasks into RCU pointers. Once a housekeeping
+> >>>> cpumask will be modified, the update side will wait for an RCU grace
+> >>>> period and propagate the change to interested subsystem when deemed
+> >>>> necessary.
+> >>>>
+> >>>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> >>>> ---
+> >>>>   kernel/sched/isolation.c | 58 +++++++++++++++++++++++++---------------
+> >>>>   kernel/sched/sched.h     |  1 +
+> >>>>   2 files changed, 37 insertions(+), 22 deletions(-)
+> >>>>
+> >>>> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+> >>>> index 8690fb705089..b46c20b5437f 100644
+> >>>> --- a/kernel/sched/isolation.c
+> >>>> +++ b/kernel/sched/isolation.c
+> >>>> @@ -21,7 +21,7 @@ DEFINE_STATIC_KEY_FALSE(housekeeping_overridden);
+> >>>>   EXPORT_SYMBOL_GPL(housekeeping_overridden);
+> >>>>   struct housekeeping {
+> >>>> -	cpumask_var_t cpumasks[HK_TYPE_MAX];
+> >>>> +	struct cpumask __rcu *cpumasks[HK_TYPE_MAX];
+> >>>>   	unsigned long flags;
+> >>>>   };
+> >>>> @@ -33,17 +33,28 @@ bool housekeeping_enabled(enum hk_type type)
+> >>>>   }
+> >>>>   EXPORT_SYMBOL_GPL(housekeeping_enabled);
+> >>>> +const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> >>>> +{
+> >>>> +	if (static_branch_unlikely(&housekeeping_overridden)) {
+> >>>> +		if (housekeeping.flags & BIT(type)) {
+> >>>> +			return rcu_dereference_check(housekeeping.cpumasks[type], 1);
+> >>>> +		}
+> >>>> +	}
+> >>>> +	return cpu_possible_mask;
+> >>>> +}
+> >>>> +EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+> >>>> +
+> >>>>   int housekeeping_any_cpu(enum hk_type type)
+> >>>>   {
+> >>>>   	int cpu;
+> >>>>   	if (static_branch_unlikely(&housekeeping_overridden)) {
+> >>>>   		if (housekeeping.flags & BIT(type)) {
+> >>>> -			cpu = sched_numa_find_closest(housekeeping.cpumasks[type], smp_processor_id());
+> >>>> +			cpu = sched_numa_find_closest(housekeeping_cpumask(type), smp_processor_id());
+> >>>>   			if (cpu < nr_cpu_ids)
+> >>>>   				return cpu;
+> >>>> -			cpu = cpumask_any_and_distribute(housekeeping.cpumasks[type], cpu_online_mask);
+> >>>> +			cpu = cpumask_any_and_distribute(housekeeping_cpumask(type), cpu_online_mask);
+> >>>>   			if (likely(cpu < nr_cpu_ids))
+> >>>>   				return cpu;
+> >>>>   			/*
+> >>>> @@ -59,28 +70,18 @@ int housekeeping_any_cpu(enum hk_type type)
+> >>>>   }
+> >>>>   EXPORT_SYMBOL_GPL(housekeeping_any_cpu);
+> >>>> -const struct cpumask *housekeeping_cpumask(enum hk_type type)
+> >>>> -{
+> >>>> -	if (static_branch_unlikely(&housekeeping_overridden))
+> >>>> -		if (housekeeping.flags & BIT(type))
+> >>>> -			return housekeeping.cpumasks[type];
+> >>>> -	return cpu_possible_mask;
+> >>>> -}
+> >>>> -EXPORT_SYMBOL_GPL(housekeeping_cpumask);
+> >>>> -
+> >>>>   void housekeeping_affine(struct task_struct *t, enum hk_type type)
+> >>>>   {
+> >>>>   	if (static_branch_unlikely(&housekeeping_overridden))
+> >>>>   		if (housekeeping.flags & BIT(type))
+> >>>> -			set_cpus_allowed_ptr(t, housekeeping.cpumasks[type]);
+> >>>> +			set_cpus_allowed_ptr(t, housekeeping_cpumask(type));
+> >>>>   }
+> >>>>   EXPORT_SYMBOL_GPL(housekeeping_affine);
+> >>>>   bool housekeeping_test_cpu(int cpu, enum hk_type type)
+> >>>>   {
+> >>>> -	if (static_branch_unlikely(&housekeeping_overridden))
+> >>>> -		if (housekeeping.flags & BIT(type))
+> >>>> -			return cpumask_test_cpu(cpu, housekeeping.cpumasks[type]);
+> >>>> +	if (housekeeping.flags & BIT(type))
+> >>>> +		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
+> >>>>   	return true;
+> >>>>   }
+> >>>>   EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+> >>>> @@ -96,20 +97,33 @@ void __init housekeeping_init(void)
+> >>>>   	if (housekeeping.flags & HK_FLAG_KERNEL_NOISE)
+> >>>>   		sched_tick_offload_init();
+> >>>> -
+> >>>> +	/*
+> >>>> +	 * Realloc with a proper allocator so that any cpumask update
+> >>>> +	 * can indifferently free the old version with kfree().
+> >>>> +	 */
+> >>>>   	for_each_set_bit(type, &housekeeping.flags, HK_TYPE_MAX) {
+> >>>> +		struct cpumask *omask, *nmask = kmalloc(cpumask_size(), GFP_KERNEL);
+> >>>> +
+> >>>> +		if (WARN_ON_ONCE(!nmask))
+> >>>> +			return;
+> >>>> +
+> >>>> +		omask = rcu_dereference(housekeeping.cpumasks[type]);
+> >>>> +
+> >>>>   		/* We need at least one CPU to handle housekeeping work */
+> >>>> -		WARN_ON_ONCE(cpumask_empty(housekeeping.cpumasks[type]));
+> >>>> +		WARN_ON_ONCE(cpumask_empty(omask));
+> >>>> +		cpumask_copy(nmask, omask);
+> >>>> +		RCU_INIT_POINTER(housekeeping.cpumasks[type], nmask);
+> >>>> +		memblock_free(omask, cpumask_size());
+> >>>>   	}
+> >>>>   }
+> >>>>   static void __init housekeeping_setup_type(enum hk_type type,
+> >>>>   					   cpumask_var_t housekeeping_staging)
+> >>>>   {
+> >>>> +	struct cpumask *mask = memblock_alloc_or_panic(cpumask_size(), SMP_CACHE_BYTES);
+> >>>> -	alloc_bootmem_cpumask_var(&housekeeping.cpumasks[type]);
+> >>>> -	cpumask_copy(housekeeping.cpumasks[type],
+> >>>> -		     housekeeping_staging);
+> >>>> +	cpumask_copy(mask, housekeeping_staging);
+> >>>> +	RCU_INIT_POINTER(housekeeping.cpumasks[type], mask);
+> >>>>   }
+> >>>>   static int __init housekeeping_setup(char *str, unsigned long flags)
+> >>>> @@ -162,7 +176,7 @@ static int __init housekeeping_setup(char *str, unsigned long flags)
+> >>>>   		for_each_set_bit(type, &iter_flags, HK_TYPE_MAX) {
+> >>>>   			if (!cpumask_equal(housekeeping_staging,
+> >>>> -					   housekeeping.cpumasks[type])) {
+> >>>> +					   housekeeping_cpumask(type))) {
+> >>>>   				pr_warn("Housekeeping: nohz_full= must match isolcpus=\n");
+> >>>>   				goto free_housekeeping_staging;
+> >>>>   			}
+> >>>> diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+> >>>> index 1f5d07067f60..0c0ef8999fd6 100644
+> >>>> --- a/kernel/sched/sched.h
+> >>>> +++ b/kernel/sched/sched.h
+> >>>> @@ -42,6 +42,7 @@
+> >>>>   #include <linux/ktime_api.h>
+> >>>>   #include <linux/lockdep_api.h>
+> >>>>   #include <linux/lockdep.h>
+> >>>> +#include <linux/memblock.h>
+> >>>>   #include <linux/minmax.h>
+> >>>>   #include <linux/mm.h>
+> >>>>   #include <linux/module.h>
+> >>> A warning was detected:
+> >>>
+> >>> =============================
+> >>> WARNING: suspicious RCU usage
+> >>> 6.17.0-next-20251009-00033-g4444da88969b #808 Not tainted
+> >>> -----------------------------
+> >>> kernel/sched/isolation.c:60 suspicious rcu_dereference_check() usage!
+> >>>
+> >>> other info that might help us debug this:
+> >>>
+> >>>
+> >>> rcu_scheduler_active = 2, debug_locks = 1
+> >>> 1 lock held by swapper/0/1:
+> >>>   #0: ffff888100600ce0 (&type->i_mutex_dir_key#3){++++}-{4:4}, at: walk_compone
+> >>>
+> >>> stack backtrace:
+> >>> CPU: 3 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.17.0-next-20251009-00033-g4
+> >>> Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239
+> >>> Call Trace:
+> >>>   <TASK>
+> >>>   dump_stack_lvl+0x68/0xa0
+> >>>   lockdep_rcu_suspicious+0x148/0x1b0
+> >>>   housekeeping_cpumask+0xaa/0xb0
+> >>>   housekeeping_test_cpu+0x25/0x40
+> >>>   find_get_block_common+0x41/0x3e0
+> >>>   bdev_getblk+0x28/0xa0
+> >>>   ext4_getblk+0xba/0x2d0
+> >>>   ext4_bread_batch+0x56/0x170
+> >>>   __ext4_find_entry+0x17c/0x410
+> >>>   ? lock_release+0xc6/0x290
+> >>>   ext4_lookup+0x7a/0x1d0
+> >>>   __lookup_slow+0xf9/0x1b0
+> >>>   walk_component+0xe0/0x150
+> >>>   link_path_walk+0x201/0x3e0
+> >>>   path_openat+0xb1/0xb30
+> >>>   ? stack_depot_save_flags+0x41e/0xa00
+> >>>   do_filp_open+0xbc/0x170
+> >>>   ? _raw_spin_unlock_irqrestore+0x2c/0x50
+> >>>   ? __create_object+0x59/0x80
+> >>>   ? trace_kmem_cache_alloc+0x1d/0xa0
+> >>>   ? vprintk_emit+0x2b2/0x360
+> >>>   do_open_execat+0x56/0x100
+> >>>   alloc_bprm+0x1a/0x200
+> >>>   ? __pfx_kernel_init+0x10/0x10
+> >>>   kernel_execve+0x4b/0x160
+> >>>   kernel_init+0xe5/0x1c0
+> >>>   ret_from_fork+0x185/0x1d0
+> >>>   ? __pfx_kernel_init+0x10/0x10
+> >>>   ret_from_fork_asm+0x1a/0x30
+> >>>   </TASK>
+> >>> random: crng init done
+> >>>
+> >> It is because bh_lru_install() of fs/buffer.c calls cpu_is_isolated()
+> >> without holding a rcu_read_lock. Will need to add a rcu_read_lock() there.
+> > 
+> > But this is called within bh_lru_lock() which should have either disabled
+> > IRQs or preemption off. I would expect rcu_dereference_check() to automatically
+> > verify those implied RCU read-side critical sections.
+> > 
+> > Let's see, lockdep_assert_in_rcu_reader() checks preemptible(), which is:
+> > 
+> > #define preemptible()	(preempt_count() == 0 && !irqs_disabled())
+> > 
+> > Ah but if !CONFIG_PREEMPT_COUNT:
+> > 
+> > #define preemptible()	0
+> > 
+> > Chen did you have !CONFIG_PREEMPT_COUNT ?
+> > 
+> > Probably lockdep_assert_in_rcu_reader() should be fixed accordingly and consider
+> > preemption always disabled whenever !CONFIG_PREEMPT_COUNT. Let me check that...
+> > 
+> > Thanks.
+> > 
+> 
+> I compiled with CONFIG_PREEMPT_COUNT=y and CONFIG_SMP=y.
 
-Why do the GFP flags differ?
+Oh actually I think it's my fault. This should be fixed with this:
 
-> +	}
-> +	*pages_ret = pages;
->  	return bio;
->  }
->  
-> @@ -234,6 +270,7 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
->  	struct scatterlist src, dst;
->  	union blk_crypto_iv iv;
->  	struct bio *enc_bio = NULL;
-> +	struct page **enc_pages;
->  	unsigned int nr_segs;
->  	unsigned int enc_idx = 0;
->  	unsigned int j;
-> @@ -259,11 +296,10 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
->  
->  		if (!enc_bio) {
->  			enc_bio = blk_crypto_alloc_enc_bio(src_bio,
-> -					min(nr_segs, BIO_MAX_VECS));
-> +					min(nr_segs, BIO_MAX_VECS), &enc_pages);
->  		}
->  
-> -		enc_page = mempool_alloc(blk_crypto_bounce_page_pool,
-> -				GFP_NOIO);
-> +		enc_page = enc_pages[enc_idx];
->  		__bio_add_page(enc_bio, enc_page, src_bv.bv_len,
->  				src_bv.bv_offset);
->  
-
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 95d69c2102f6..b2cb75513336 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -56,8 +56,8 @@ static bool housekeeping_dereference_check(enum hk_type type)
+ 
+ static inline struct cpumask *housekeeping_cpumask_dereference(enum hk_type type)
+ {
+-	return rcu_dereference_check(housekeeping.cpumasks[type],
+-				     housekeeping_dereference_check(type));
++	return rcu_dereference_all_check(housekeeping.cpumasks[type],
++					 housekeeping_dereference_check(type));
+ }
+ 
+ const struct cpumask *housekeeping_cpumask(enum hk_type type)
 
