@@ -4,67 +4,67 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 535BCCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:42:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3FBADCCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:46:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6B7028E0009; Wed,  5 Nov 2025 10:42:43 -0500 (EST)
+	id 733688E000A; Wed,  5 Nov 2025 10:45:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 68EC58E0005; Wed,  5 Nov 2025 10:42:43 -0500 (EST)
+	id 70B108E0005; Wed,  5 Nov 2025 10:45:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A4458E0009; Wed,  5 Nov 2025 10:42:43 -0500 (EST)
+	id 621318E000A; Wed,  5 Nov 2025 10:45:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 44DFD8E0005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:42:43 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 510368E0005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:45:59 -0500 (EST)
 Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id F355313ACD0
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:42:42 +0000 (UTC)
-X-FDA: 84076970964.27.714A2D5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 62316140010
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:42:41 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qW/SfRcZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762357361; a=rsa-sha256;
-	cv=none;
-	b=n1Mf7c3ALhzF7Km5L0rpbmuVx2777synM97g40IfW+NzoOOnr85S+mKJflyABYn+mu83g2
-	wSAYWhp9pFVCf74wqyw1Z137awrCjC+CkjB/THkBu4ZnWm6B778tbE4PiUSM2un8Mh1u9X
-	RNF1+aC08GW4ZhrwwBc61xy8saff4Y0=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="qW/SfRcZ";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf26.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 00DA11603DE
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:45:58 +0000 (UTC)
+X-FDA: 84076979238.27.E30C722
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 318F68001D
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:45:57 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V49Bcvv4;
+	spf=pass (imf02.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762357361;
+	s=arc-20220608; t=1762357557;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=69Av0KmPY+24sP5NTMN6vf2Kt/djTSytmW8AbmQUrVg=;
-	b=FUFAF3XUHfSsmuHB58B02SS2eYdD0yx+RdSxgo+2/NZaHXXhXmuv2vsptLGAANP84i7+Cb
-	hCW5Yn2gXmEpGvM9NR+4h90qauAaCkBT0/g9a336jtQeU6lJAOTWcSALw/SfKoPuxHcjUT
-	Q2JskCGpiWiuPJiIb+aFP82wVcRb+b0=
+	bh=Zoi8Wq3WjA1e5/c0y+vLl6j5XXs28shfJ6lWyOjda64=;
+	b=JF1gKp1Jkuu3AYLKZtCprUcCu+u1xYCQM4EIN+LidTN5idGZL2Bwch0HxSz7SC/+e46Qvw
+	rPkqQRyNX+1JE7wkcvD5kryagTd97ln5GhBX+Dn28xGRDbQlqxtRxG+5hgAVRUB2hefDAC
+	SD/swWnppFUYch4uv2RuuuzyA111+wI=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=V49Bcvv4;
+	spf=pass (imf02.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762357557; a=rsa-sha256;
+	cv=none;
+	b=zKzjcxkARuN3bEjt95xKUOMATJtgtvEhGl3J2/4AI9ythXeYPEj4gpdkcB2Go0klZV/pzI
+	uI84+SfA7eEm71b2daMvIte3z0ZD7Rr/eSG8ZYRhAVPnB2U4xql2NEiS9kQLFfAOgNS5MS
+	FivW6jqHctbk9fJRVKdxn5PsNiXH6zw=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9999E6021E;
-	Wed,  5 Nov 2025 15:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C476DC4CEF5;
-	Wed,  5 Nov 2025 15:42:39 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 1441540A19;
+	Wed,  5 Nov 2025 15:45:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A62C4CEF5;
+	Wed,  5 Nov 2025 15:45:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762357360;
-	bh=boPYeqvdKW7/3CnEhFVgNn0FsAC8XrMy6K95gzM+WjE=;
+	s=k20201202; t=1762357555;
+	bh=xmm6nLsTXBCwCytcbyH8QsnB2JeBdkkjUjdkaJjSew8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qW/SfRcZancAa0hsqKFnQRd29sYyNjQPo/6bgXUIdWQkQrCQ8SrjNfLEv2gd6QIbJ
-	 KNvHuiS8u4kGDpix1rUv2FrtZNIpRj8+YRbgkYtOcqokgdP5Lelomta91mDjj2utK2
-	 pJNN+t5ySqiy5B4IWOvfB+wUu7vtmplfUpxRFlJl/ItWWlSKTIKtO8NPw3lyVBm6hy
-	 PX81LQiCi7jb6e0lest8AkXP8Ttp7CHR2CEtZJBks+yM2bue/m166kiurBIXHdyHQN
-	 xXNTc0DdAqJPwKz19FVfa5KCbSwDOT4ZdNrwR2USJYY4x2nd++Gx+PqPUsZ/tGWHsn
-	 0JuvFbPfX+vtQ==
-Date: Wed, 5 Nov 2025 16:42:37 +0100
+	b=V49Bcvv4Vr1XD0d8nGugzn6nEJFHU94wKaZlMJvIc+YJdz7x5ju9aDQoREW8ASZJU
+	 MW1hUDPpNZJmSffEhIdGydas6VB+w4ctZOakowcXZPe9VCVSOUxeNYJArgQ7UxDpnN
+	 G8fLk11CiNYat6qGWS6sf3enIsQ6suuzdkc/xJ+96sXJyCgwm/VCvwN3kn/uST4kQ/
+	 n2/u4JFfGzZ4lnX2yMvrfbCe1/yIkfyrIb0MDZJtSXAoqGFqJvvBcFvCehuflcypjt
+	 eNy+hH/+vmLM4JvkGDmULWA4wY5yEEwNvPSk59QeVOmmqB4U/icu2vG2nFt6e1YuOS
+	 ZRjYiAhWKqFrQ==
+Date: Wed, 5 Nov 2025 16:45:53 +0100
 From: Frederic Weisbecker <frederic@kernel.org>
 To: Waiman Long <llong@redhat.com>
 Cc: LKML <linux-kernel@vger.kernel.org>,
@@ -94,23 +94,23 @@ Cc: LKML <linux-kernel@vger.kernel.org>,
 	linux-block@vger.kernel.org, linux-mm@kvack.org,
 	linux-pci@vger.kernel.org, netdev@vger.kernel.org
 Subject: Re: [PATCH 13/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
-Message-ID: <aQtwbRrFBCUoQ2Yj@localhost.localdomain>
+Message-ID: <aQtxMYmwzfg2NW1O@localhost.localdomain>
 References: <20251013203146.10162-1-frederic@kernel.org>
  <20251013203146.10162-14-frederic@kernel.org>
- <0e02915f-bde7-4b04-b760-89f34fb0a436@redhat.com>
+ <ea2d3e0e-b1ee-4b58-a93a-b9d127258e75@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0e02915f-bde7-4b04-b760-89f34fb0a436@redhat.com>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 62316140010
-X-Stat-Signature: phshc678usj9rdk3ryykcbdrnhkxo44g
+In-Reply-To: <ea2d3e0e-b1ee-4b58-a93a-b9d127258e75@redhat.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 318F68001D
+X-Stat-Signature: canehtpdybdfpmwt3zu8hdi3sp6dabbg
 X-Rspam-User: 
-X-HE-Tag: 1762357361-427992
-X-HE-Meta: U2FsdGVkX1+SLoZA+baxVvXfycxB52utfuZ7/WQn1kSm/qGYNroNQ9ik1DERB6L5kxuw1SR35AafCcm0uZCa5nficIB+L1/zD/2/yqEXwH6qMbFU+PvYGr+eEHrSxxoTFNmcLeTHeSWDgk+aUQwKDS+tM3RUnijThUvjilbR/HeCZ9fhQXAi+snfQ2kIInYixBlqP2IjghbKo9MGmX1fbDB7rsneDFmjJK+hK3PbDkkF9KLvN5xT2eBjmU6O2SwYuM451SL7nwE8u39hNJ1h5cTpNiY7Fw900cPIqu1P7roCv7fKMe9Az0PjtoPtNsGHY8twAMSuppJJMyGFM4HCPhcOGbHLhQi2ZbUe/rxYCzAMPhs+oLJrjLBghm2KwPtj5i/PvAuq10p9vVrJLK8TTjWFBOM1lqzyOXKGOmngoYiiVBSKi+vYEXmsrf/6zu7YvS9FJzXDtz2kaNeaMRVw+WUaGfX5jftfXzKUxGOS1pBxA6JrxO9ltlsbAezPiL7LGWlvvGOylnEICdkuYpL5qk5WhNdCN3EC/EeFSUO0aE1t2fxv4Ir94g8K7RhyZ2kcfplpls6kjXZyzrTADM5t2T0KNloND9MrS9VPL9iEuUBIA9kqDLtvXXGi8rXjQbwMV776wywlJGMlSxaxXYJEjfOP//0eurKrp4xf+kX9y15KEF1D0Uc8h9fB0464yBxKHnpLfGFbwdcU1qDttjaMBM8gU+5xSfZGg95QC408EORkyMy15U41wZeBGcL6eZqdf4pLu8Q/8WsqxEYY9GPKuv4L3G3L9VLDtv+N/EiQUJ7BOGiAExcvHWrHHc7rNpYS/AE26AeElDvXBSwrGstylfX5gahabsnEObIwI9DUSng5f38aEm2ZMFQajtO6SguU4wLRHcs+ogPWCLaJj2vejAJ88lS09z5rwhhD8yLKEi3a+yuQTPKqcKvA6UOybioz6Tzovk1XPHr7odX+1ql
- /EqozsBQ
- pqKc3d7WOfOp16tHSv34VmozeW8AKfKv6rv8/vCmTtuj+vNlgFRhOG+Qrjan0otAtwu6CGW4S8DN6H25ylfHzp+zHsuvFAf+klmllBE4GzW3dy3DG0yaZkbzYY98B6Vq/NG/NPF6clTmM/PQPht2K0iGM4AH85NiGcCuglLLyQMSiNHLJ1ZCEl9X0GSGO5I3hQyv5ORBX4Tc9dCM1tSDM+wjVtohg13Zlp44FRyof5v2sWFcCbNsSwYzs7QAyOlM5bPaDvFHVDvjkqTdg6w6FL4/M1+osqWJHp96wvwESeCb/VH/XgzXeShvvVpBZkOy8IV8QO9igHuM5tpFovlQ0Q7WoNA==
+X-HE-Tag: 1762357557-553387
+X-HE-Meta: U2FsdGVkX190cxZOgDkYhV7k9rnUu3zWa6Rar4yvfoWxc/BCWS613dY71XT5l62vOIJc2AfxRlNok+13JCzl525i2YaxSv4sjDupq2ThA0xpui+4bqLnAvakkaMTvkZSKWYJSL1JK9EomNeWAogJ05oS/xO97eA0wjW6AyquBvw9y1K/FKSFgaIXQj8YkMQUUEIIhe2Sq13l6KUE1TJtwnjkgFzxh2YjTE5F4YFuEmUr/YoZhSDr0JjtwtVAm8uooG8UO5I31am7Jst1h+doWfE0Pz/v6YWsVs2Us950+MV3p2oGSWHvDE23KBIinjF/Y6hCQwj5sAPZpXD0RduCqPkYqXc1GZMRxgELnNq/hZiP3x7WBwIoPcqYGis1Q32YqUPBCGkpOlfKp+d6IX4HN4VA47zfjDGvhk6dYC2wZpMHAJoLeLC+9Wm2QfhPZKcI35f2WOVjgYuNKVNpraqHlx5BwZ4vSrCwc/1+/BiDDJj4ND5K7s7iHq6pRHnRCIujX644JjRtXZMzR+v8QcLcV28lZYj+JSMZtpN1EGLEIj2p79+mE0Zd8Gc9iyaOhDDSKG3f/31M0zeftSmT0tALpDCoaX8rmzOY+btXdLuqane5sYEzg8IUI4XDRsqOgkBQMiQrXRzfSV9zzN+85d+sEDXBEPte45t3nsCBSINIoaDp3fZUzA6O87gWtFxp3aOWsNhkHd2F8cxXCMU4qpz9xhTHyg2jP7j+Im4j+MtPOeHYMhugAzDZ+YgYODLpP0AKaI7zTwCUKyN/ujZQsT14V+Rvi7lCUGuSXLdjeo4R4TRpfepY1FJQFqLp0lJBAFxlHscax/x/nZJgZdiUawEH80UrlJG7HoJnhAMOUbZgs9wGcAcK3BuHtB1F7vnOoGQliPfLnwxqCun3tH11XDis3u9SRqbUL4aueJxYmwb3b7wBuSSXL9r1BxI+Fo+BqeUkV0o4bEoWCu7qiN7oo6z
+ BfoVH/Ru
+ iAl/RjjxR9/tM0ZB+cgi4XGN0W7iFfPIzEISPtKv1cxUi+wX5XcvFkACSO2Ap+27TiQocGwHSGPeerFHwLIw/ZnnrOtXaqQkGIgAmQx+XXExdr0j8Kq8oNDbQwotZblirNxVaNgdxnpnoR8bdrvvoEg/rhWL00URSe02MtWQMYkpCq7cP9mjLDFgEKfiu2/4jYtVEXetQdjfnOCTA+jbVU5US0zqqu6gESlqfB6zBHAFEF0N2v2rjBsJiMsfJ0AJOZIrF/ptW56+Zh7lAbQb+lfz6dqIUt47wI6vc
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,110 +119,65 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Tue, Oct 21, 2025 at 12:10:16AM -0400, Waiman Long a écrit :
+Le Tue, Oct 21, 2025 at 09:39:10AM -0400, Waiman Long a écrit :
 > On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
-> > Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
-> > CPUs passed through isolcpus= boot option. Users interested in also
-> > knowing the runtime defined isolated CPUs through cpuset must use
-> > different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
-> > 
-> > There are many drawbacks to that approach:
-> > 
-> > 1) Most interested subsystems want to know about all isolated CPUs, not
-> >    just those defined on boot time.
-> > 
-> > 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
-> >    concurrent cpuset changes.
-> > 
-> > 3) Further cpuset modifications are not propagated to subsystems
-> > 
-> > Solve 1) and 2) and centralize all isolated CPUs within the
-> > HK_TYPE_DOMAIN housekeeping cpumask.
-> > 
-> > Subsystems can rely on RCU to synchronize against concurrent changes.
-> > 
-> > The propagation mentioned in 3) will be handled in further patches.
-> > 
-> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-> > ---
-> >   include/linux/sched/isolation.h |  2 +
-> >   kernel/cgroup/cpuset.c          |  2 +
-> >   kernel/sched/isolation.c        | 75 ++++++++++++++++++++++++++++++---
-> >   kernel/sched/sched.h            |  1 +
-> >   4 files changed, 74 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
-> > index da22b038942a..94d5c835121b 100644
-> > --- a/include/linux/sched/isolation.h
-> > +++ b/include/linux/sched/isolation.h
-> > @@ -32,6 +32,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
-> >   extern bool housekeeping_enabled(enum hk_type type);
-> >   extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
-> >   extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
-> > +extern int housekeeping_update(struct cpumask *mask, enum hk_type type);
-> >   extern void __init housekeeping_init(void);
-> >   #else
-> > @@ -59,6 +60,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
+> > @@ -80,12 +110,45 @@ EXPORT_SYMBOL_GPL(housekeeping_affine);
+> >   bool housekeeping_test_cpu(int cpu, enum hk_type type)
+> >   {
+> > -	if (housekeeping.flags & BIT(type))
+> > +	if (READ_ONCE(housekeeping.flags) & BIT(type))
+> >   		return cpumask_test_cpu(cpu, housekeeping_cpumask(type));
 > >   	return true;
 > >   }
-> > +static inline int housekeeping_update(struct cpumask *mask, enum hk_type type) { return 0; }
-> >   static inline void housekeeping_init(void) { }
-> >   #endif /* CONFIG_CPU_ISOLATION */
-> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> > index aa1ac7bcf2ea..b04a4242f2fa 100644
-> > --- a/kernel/cgroup/cpuset.c
-> > +++ b/kernel/cgroup/cpuset.c
-> > @@ -1403,6 +1403,8 @@ static void update_unbound_workqueue_cpumask(bool isolcpus_updated)
-> >   	ret = workqueue_unbound_exclude_cpumask(isolated_cpus);
-> >   	WARN_ON_ONCE(ret < 0);
-> > +	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
-> > +	WARN_ON_ONCE(ret < 0);
-> >   }
-> >   /**
-> > diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-> > index b46c20b5437f..95d69c2102f6 100644
-> > --- a/kernel/sched/isolation.c
-> > +++ b/kernel/sched/isolation.c
-> > @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
-> >   bool housekeeping_enabled(enum hk_type type)
-> >   {
-> > -	return !!(housekeeping.flags & BIT(type));
-> > +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
-> >   }
-> >   EXPORT_SYMBOL_GPL(housekeeping_enabled);
-> > +static bool housekeeping_dereference_check(enum hk_type type)
+> >   EXPORT_SYMBOL_GPL(housekeeping_test_cpu);
+> > +int housekeeping_update(struct cpumask *mask, enum hk_type type)
 > > +{
-> > +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
-> > +		/* Cpuset isn't even writable yet? */
-> > +		if (system_state <= SYSTEM_SCHEDULING)
-> > +			return true;
+> > +	struct cpumask *trial, *old = NULL;
 > > +
-> > +		/* CPU hotplug write locked, so cpuset partition can't be overwritten */
-> > +		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
-> > +			return true;
+> > +	if (type != HK_TYPE_DOMAIN)
+> > +		return -ENOTSUPP;
 > > +
-> > +		/* Cpuset lock held, partitions not writable */
-> > +		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
-> > +			return true;
+> > +	trial = kmalloc(sizeof(*trial), GFP_KERNEL);
+> Should you use cpumask_size() instead of sizeof(*trial) as the latter can be
+> much bigger?
+
+Good point!
+
+> > +	if (!trial)
+> > +		return -ENOMEM;
+> > +
+> > +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), mask);
+> > +	if (!cpumask_intersects(trial, cpu_online_mask)) {
+> > +		kfree(trial);
+> > +		return -EINVAL;
+> > +	}
+> > +
+> > +	if (!housekeeping.flags)
+> > +		static_branch_enable(&housekeeping_overridden);
+> > +
+> > +	if (!(housekeeping.flags & BIT(type)))
+> > +		old = housekeeping_cpumask_dereference(type);
+> > +	else
+> > +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | BIT(type));
+> > +	rcu_assign_pointer(housekeeping.cpumasks[type], trial);
+> > +
+> > +	synchronize_rcu();
+> > +
+> > +	kfree(old);
 > 
-> I have some doubt about this condition as the cpuset_mutex may be held in
-> the process of making changes to an isolated partition that will impact
-> HK_TYPE_DOMAIN cpumask.
+> If "isolcpus" boot command line option is set, old can be a pointer to the
+> boot time memblock area which isn't a pointer that can be handled by the
+> slab allocator AFAIU. I don't know the exact consequence, but it may not be
+> good. One possible solution I can think of is to make HK_TYPE_DOMAIN and
+> HK_TYPE_DOMAIN_ROOT point to the same memblock pointer and don't pass the
+> old HK_TYPE_DOMAIN pointer to kfree() if it matches HK_TYPE_DOMAIN_BOOT one.
+> Alternatively, we can just set the HK_TYPE_DOMAIN_BOOT pointer at boot and
+> make HK_TYPE_DOMAIN falls back to HK_TYPE_DOMAIN_BOOT if not set.
 
-Indeed and therefore if the current process is holding the cpuset mutex,
-it is guaranteed that no other process will update the housekeeping cpumask
-concurrently.
+Have a look at housekeeping_init() which reallocates the memblock
+allocated memory with kmalloc to avoid these troubles.
 
-So the housekeeping mask is guaranteed to be stable, right? Of course
-the current task may be changing it but while it is changing it, it is
-not reading it.
-
-Thanks.
-
-> 
-> Cheers,
-> Longman
-> 
+Thanks!
 
 -- 
 Frederic Weisbecker
