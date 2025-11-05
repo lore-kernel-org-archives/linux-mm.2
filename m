@@ -4,102 +4,84 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 19A79CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:08:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48C29CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:13:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4BBC28E0008; Wed,  5 Nov 2025 06:08:51 -0500 (EST)
+	id 450ED8E000B; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 493878E0003; Wed,  5 Nov 2025 06:08:51 -0500 (EST)
+	id 4016F8E0003; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CFE18E0008; Wed,  5 Nov 2025 06:08:51 -0500 (EST)
+	id 3171D8E000B; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 2B9128E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:08:51 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BD87C5801B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:08:50 +0000 (UTC)
-X-FDA: 84076280820.11.CE27BAB
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by imf28.hostedemail.com (Postfix) with ESMTP id AB9CAC000F
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:08:48 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf28.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 1BC2A8E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:13:11 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id B9F7B1602AA
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:10 +0000 (UTC)
+X-FDA: 84076291740.22.256F05E
+Received: from mail-10631.protonmail.ch (mail-10631.protonmail.ch [79.135.106.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id AE19B160002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:08 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=IynIMTyr;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.31 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762341189; a=rsa-sha256;
+	cv=none;
+	b=O7o2VZYlVUWbOw1K0ntiRPkECGgEqFcBKVXzcTs5UlzCc9t0tf4hsWJ5kDKRviWOnf8/hR
+	0Nt7HrD+l+XYrd61j11KFlUGZktnVtf51I3rfNc71QXV9tmjhMeoWD7SY0uJLQ3gytg/xz
+	Zz64PQo5TQMRgM3jGun9/P4cR+tKhOA=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=pm.me header.s=protonmail3 header.b=IynIMTyr;
+	dmarc=pass (policy=quarantine) header.from=pm.me;
+	spf=pass (imf08.hostedemail.com: domain of m.wieczorretman@pm.me designates 79.135.106.31 as permitted sender) smtp.mailfrom=m.wieczorretman@pm.me
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762340929;
+	s=arc-20220608; t=1762341189;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references; bh=uvCZqOBPO+pd4k0mUTUYJ8u93KUSdsRxLeSdDownsWc=;
-	b=saWsWWOl+Z+I3huAi7bIuLrmkUmorlB48+YG/XZmuX01oqfuvWCToQVdbYckNPjCOvFs4l
-	XgLHbsyZeJTZNvKIDskwJvi3BoZ2INpVa82r+BAmG2583sd9LBu0fyJ1zgfQKc/L4upgsG
-	cjhQzVI89ehwDfSh9kmH9XLXudMlYXU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762340929; a=rsa-sha256;
-	cv=none;
-	b=ahFX72Smsec52c0zHSIx0uZfVVTfltpehcTuU+Du7OoqehA9odXUJBwihJ4eZRdCo2CzJZ
-	+jrtK0JVRerY5m/wMFPRa/QR77uP0gypXijk31q9s9ABpo0CKDbfI4al8MQ7Bzi5/UwlZZ
-	WIz3jppdiK6bTKQ47HnyDNxZNGdFhrI=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=quarantine) header.from=csgroup.eu;
-	spf=pass (imf28.hostedemail.com: domain of christophe.leroy@csgroup.eu designates 93.17.235.10 as permitted sender) smtp.mailfrom=christophe.leroy@csgroup.eu
-Received: from localhost (mailhub4.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4d1jHd2Y2rz9sSf;
-	Wed,  5 Nov 2025 12:08:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id y4uEqxYbuSVd; Wed,  5 Nov 2025 12:08:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4d1jHd1Pgxz9sSb;
-	Wed,  5 Nov 2025 12:08:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1E3F68B76E;
-	Wed,  5 Nov 2025 12:08:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id x-YBUja5U7Aw; Wed,  5 Nov 2025 12:08:45 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 76C418B76D;
-	Wed,  5 Nov 2025 12:08:44 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Arnd Bergmann <arnd@arndb.de>,
-	linux-arch@vger.kernel.org,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-mm@kvack.org
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Peter Xu <peterx@redhat.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Paul Walmsley <pjw@kernel.org>
-Subject: [PATCH RESEND v2] asm-generic: Remove pud_user() from pgtable-nopmd.h
-Date: Wed,  5 Nov 2025 12:08:07 +0100
-Message-ID: <ae329757996213171c92495e4e4ad698c24f9d42.1762340395.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.49.0
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=MhOL772gDQt3HjlEW0CKt9Wxom0RYSxrQeQWZ+rjImo=;
+	b=2T0XfUOZAQY8LvMTKL4nBINl/76MZ2I0eiFFBXN/NIQH0hpfkA1fTpYRJmRGVHAsezwcka
+	rmCaVxb2tPchgO18lDe3eRldi/vHcUcn2OJ8KhVCuBUiAmyAPjmBTMHjsWnkoahgqkwdpX
+	Gd2OFuaPNtljcoxswmxl3F1Whs9lWHU=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1762341185; x=1762600385;
+	bh=MhOL772gDQt3HjlEW0CKt9Wxom0RYSxrQeQWZ+rjImo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IynIMTyrNWBlf4PhOmhXwPzcshBVn1bvwsGpIzoT+fFZDNBYsCY4t116aDu5ENCsc
+	 u9OIwrF5zikcMNOI4NqGkovwN0zaLpnRkdAi8buGUu73pc2/Lx2E8WX5oO+yea9aoQ
+	 Jy2u/U/p3nX5d7IeaKkUJWrgP2GiCNnwyU1Nu06Ej/WO2Wsa7jSSvRL1WJ7F0NOKiZ
+	 mWJD/b9C6YCsfwZIqlOUqqKmByhU1SzSAlsOWuMpaoyOBxMcPIsTZ/mOrIT9Vx+eLS
+	 KwGAJ9Vk6UVm3LoycXsk4/SVrr2juYIj0IrzoyNXaIdWOPk5qqNDZzq/L2wnbxUb/D
+	 RGQbgT+gxlcEQ==
+Date: Wed, 05 Nov 2025 11:13:00 +0000
+To: Andrey Konovalov <andreyknvl@gmail.com>
+From: Maciej Wieczor-Retman <m.wieczorretman@pm.me>
+Cc: Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, Andrew Morton <akpm@linux-foundation.org>, Marco Elver <elver@google.com>, stable@vger.kernel.org, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1 2/2] kasan: Unpoison vms[area] addresses with a common tag
+Message-ID: <cc4xh64s47ftujtp76hizmjqaczbgpzvmpbtzjtya2tuqyc75x@3obiajea2eem>
+In-Reply-To: <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
+References: <cover.1762267022.git.m.wieczorretman@pm.me> <cf8fe0ffcdbf54e06d9df26c8473b123c4065f02.1762267022.git.m.wieczorretman@pm.me> <CA+fCnZdUMTQNq=hgn8KbNwv2+LsRqoZ_R0CK0uWnjB41nHzvyg@mail.gmail.com>
+Feedback-ID: 164464600:user:proton
+X-Pm-Message-ID: 9bc93b4823ad8fa97869a332ca0a7f37c2bec3e2
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2987; i=christophe.leroy@csgroup.eu; h=from:subject:message-id; bh=TapBhVgQzm2A+wV0+EICT9kNVYEysKeqSw5mgwHSFA8=; b=owGbwMvMwCV2d0KB2p7V54MZT6slMWRyG4hv2mLy/4if7bKly48+d1CtzVdk/3JzVc7i9B/9/ QJPa2dEdZSyMIhxMciKKbIc/8+9a0bXl9T8qbv0YeawMoEMYeDiFICJMJxgZOhZ2VexMVfobuPp 3m1vTzlHujFxKxYs5V94XuDiBfNXNfkM/3S3n/334qvct9N2J/xrHmnNLT7BpmYSlZAhsGuH0ZE 7yhwA
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=openpgp; fpr=10FFE6F8B390DE17ACC2632368A92FEB01B8DD78
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: canznn4au7tdyenkqdg1mkfqm7t8nujy
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: AE19B160002
+X-Stat-Signature: gyo6twcd8fhk9g8es79x4cwseiimpppr
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AB9CAC000F
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762340928-1456
-X-HE-Meta: U2FsdGVkX1/b9j7iqyuNJ62kEN5lzg16Cyh0C/TkJp/865yxhUsynwbiRHbwMVZ0X2pCvomhvd0PYim0SP4hfIpK+rrVT3j+DAxE9aevfy61y7Gu4E6jsxitUgwAZ/leHWm1qCq0xi7pWHvRGhV0bDXOMB9024H3p8jiUc9nIw28T/NNu1LGJ1tW19htbxAY8af2dDBQi4pibUCwShb/YGOVbMIAKqwbsEntTTDAHA/iBXqJQmKjkmN6CnKbtgW2bJQaz4wLOd8gKxt7HRaW2UpS0nMkUEEwhUGgi+qSoyqd/1uR3WERLluLk8+ARF2ZG66VJLgBfSo0DYx6OzU40ez3/+dc4XTj5Wdc11v5ErADxbOW57k8l19v7QfzdJPGA8A/JTTCsjiDLBLAFNifyIV353W/t04N4ra7M+2mg6vVaMXlYD5hkzaJS9h6Or6rJLNKxm2xDPS9lpqdDnx3XkwdfkvtaccsxDIIyO6/vK1+TxAq6ICtRV7MnVjkmSLW9vgSz37GN00Ba8yXgtTgafo5nIvRVAS+YiR28ZYF8UOQptM/1m73BVFmuQQh9qwFmBvAXmqHEeCk/Qpme7W5rrOAZ10skOXo7JUEnyehUU6iJhWPQ/l+oPpkJBWgeZhcdLo3Td5oNKVpTQEhvnUaoYaPdwH0TsMKVmWZsYX35qjMnrbhCAfTRWFI+Tugg9hdWBTXhvXf6NAgXhN6LOiuYLX0ichifdVHuh1ch2BHkNeS9ODuaUvkmmd/p77TPkAf9vUKfKfL1nJqtFv/7NS02nECA13K+b26IcLlzclx+/R3+wBiJi8Pn19Q76AAHbqOqCFsubqZFhdZj4jFYiZqqcrsBRhONLrFH+zxJqxL2AR7pxdEAlA1HkepuEAIS/4rQLfK/AwnqQ8TaECspNyOXHVvxcyDJEYK
+X-HE-Tag: 1762341188-857851
+X-HE-Meta: U2FsdGVkX18xZeTtmvJHjkEt16FBtKLgxHpddEyENWMPaE5wkVbY1JciM2LrQngzCvnVhX1we62xONTYrIiJ0OlkFSRzTpaP9lRomlPicI43AOH6Ip72+JTvU27hzVvjjCsR9fAOontgBoZkRZoe8PipKygUEL9d3s/JcBW6mek/3y0puFSqniN0UAkya+DgckC8i3r911gzJL3yU+oDAvGVrFZ7xXG9ZRnecd2PKwNtrJQovIeT/VJQt6GOmtI09dN50BoYI7JztFlPXEL62CGnyjNVXlvG/TBJy79ogm3vQCrn9NUhxDrW9HWpLkH2lcgDUNHJus9W+S5+HMWfXz/JnHiSE7RcSobt+E/KpdUrO9T1Fr338LgwNhwgMkibdbkFE7VOAul5DbGjCv6O5/SiBZ/++bog8yWNHUFEOyNqQpEs1uz5+2iYa7BmLoXPXWGiDtQgA3UQ+EtPP70j6YYTKv2IWSLB5tn2/CMaj0MYNUl5i0iFhR7v1+ma4SkN5JOXKdeBdJIIfYHaln+WA/4rU7ZMz0xZdm6PYCabUdizWITzAjiS4aL5PBepB9qeDCXjEZWz/gv9E0h/a6Fvpum+oX0m+iE2mHE2V/NWdZaDFLdAbKuPO+Z+qFWFcnSHhxC4GnXs344cI7pw1f1SKTJ1MIdVqc01ycbMukE6FViLGlxf7V5EkZEVcwWjpyFEPsZ7jgio2qyPzQCW6s7aGmiDpdC4TPnw9AfoQDIi5hAypaqU6XkJbCD1awF/ZAFugetAsLVSjAtV4U3z8U5SfGlciNhm9NXOQM/ud98u+HbaEFtlOKfK/XtmWAax/DB3YKw48WBLSJIv2dBESPCw8VBan2kwPo6nDin+b1/KNC1jWf7VRu/gEaCiG9z41kTeV2KvctJpwIhSFTTL1Jzmm6hXDwngXnaYFouYGDmIarjIEI339lAom8RQxEDSFfWFdjR0by/V6wxUNqOgcRq
+ bmjlSZpP
+ 2dG7r5j9H55QswEx07p2vYNRd0sWRjCn/06Gf3aXqEb+9P84Xc3z9Fv+E1iD1FY49o82PyteRohGuVc5k1qaRUibCLhm59/CB8HpGoAfo4MT1n/JpFAk+8Rie6/NA/q/Ba5IM5Xv5zkwMg/sbxqytxCzCZmgCvabeAyvE7Lfr8buHVSdthIQM4E+VV5HpOKkrlOsMxPlqE/Ou3kSKBLSXjA1E9uWA+9/5aOKIQ3DN68x/TUXEytJuAdGGRY+WEKLx7aiSGf8O0AhKipr9kzXE+ZFd6zK5W9rmWh8XoIdHSxm6r5NDgFosVWImStyQthWFQ9pS5kO3ewKYvi0mo0XMsCQGchmx2i0IrAIJ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,76 +90,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Commit 2c8a81dc0cc5 ("riscv/mm: fix two page table check related
-issues") added pud_user() in include/asm-generic/pgtable-nopmd.h
+On 2025-11-05 at 02:13:22 +0100, Andrey Konovalov wrote:
+>On Tue, Nov 4, 2025 at 3:49=E2=80=AFPM Maciej Wieczor-Retman
+><m.wieczorretman@pm.me> wrote:
+>>
+>> From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>>
+>> A KASAN tag mismatch, possibly causing a kernel panic, can be observed
+>> on systems with a tag-based KASAN enabled and with multiple NUMA nodes.
+>> It was reported on arm64 and reproduced on x86. It can be explained in
+>> the following points:
+>>
+>>         1. There can be more than one virtual memory chunk.
+>>         2. Chunk's base address has a tag.
+>>         3. The base address points at the first chunk and thus inherits
+>>            the tag of the first chunk.
+>>         4. The subsequent chunks will be accessed with the tag from the
+>>            first chunk.
+>>         5. Thus, the subsequent chunks need to have their tag set to
+>>            match that of the first chunk.
+>>
+>> Unpoison all vm_structs after allocating them for the percpu allocator.
+>> Use the same tag to resolve the pcpu chunk address mismatch.
+>>
+>> Fixes: 1d96320f8d53 ("kasan, vmalloc: add vmalloc tagging for SW_TAGS")
+>> Cc: <stable@vger.kernel.org> # 6.1+
+>> Signed-off-by: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+>> Tested-by: Baoquan He <bhe@redhat.com>
+>> ---
+>> Changelog v1 (after splitting of from the KASAN series):
+>> - Rewrite the patch message to point at the user impact of the issue.
+>> - Move helper to common.c so it can be compiled in all KASAN modes.
+>>
+>>  mm/kasan/common.c | 10 +++++++++-
+>>  1 file changed, 9 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/mm/kasan/common.c b/mm/kasan/common.c
+>> index c63544a98c24..a6bbc68984cd 100644
+>> --- a/mm/kasan/common.c
+>> +++ b/mm/kasan/common.c
+>> @@ -584,12 +584,20 @@ bool __kasan_check_byte(const void *address, unsig=
+ned long ip)
+>>         return true;
+>>  }
+>>
+>> +/*
+>> + * A tag mismatch happens when calculating per-cpu chunk addresses, bec=
+ause
+>> + * they all inherit the tag from vms[0]->addr, even when nr_vms is bigg=
+er
+>> + * than 1. This is a problem because all the vms[]->addr come from sepa=
+rate
+>> + * allocations and have different tags so while the calculated address =
+is
+>> + * correct the tag isn't.
+>> + */
+>>  void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
+>>  {
+>>         int area;
+>>
+>>         for (area =3D 0 ; area < nr_vms ; area++) {
+>>                 kasan_poison(vms[area]->addr, vms[area]->size,
+>> -                            arch_kasan_get_tag(vms[area]->addr), false)=
+;
+>> +                            arch_kasan_get_tag(vms[0]->addr), false);
+>> +               arch_kasan_set_tag(vms[area]->addr, arch_kasan_get_tag(v=
+ms[0]->addr));
+>
+>set_tag() does not set the tag in place, its return value needs to be assi=
+gned.
 
-But pud_user() only exists on ARM64 and RISCV and is not expected
-by any part of MM.
+Right, not sure how I missed that
 
-Add the missing definition in arch/riscv/include/asm/pgtable-32.h
-and remove it from asm-generic/pgtable-nopmd.h
+>
+>So if this patch fixes the issue, there's something off (is
+>vms[area]->addr never used for area !=3D 0)?
 
-A stub pud_user() is also required for ARM64 after
-commit ed928a3402d8 ("arm64/mm: fix page table check compile
-error for CONFIG_PGTABLE_LEVELS=2")
+Maybe there is something off with my tests then. I'll try to run them in a
+couple of different environments.
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Peter Xu <peterx@redhat.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Acked-by: Alexandre Ghiti <alexghiti@rivosinc.com> # riscv
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Paul Walmsley <pjw@kernel.org> # riscv
----
-Resend of https://lore.kernel.org/all/c2c9fc69871a7caaa205e237ff73557f19f5e176.1755509286.git.christophe.leroy@csgroup.eu/
-
-I was expecting Arnd to take this patch as it is on asm-generic, but maybe Andrew should take it as it is linked to mmu management ?
-
-v2: Change ARM64 pud_user macro to pud_user(pud)
----
- arch/arm64/include/asm/pgtable.h    | 1 +
- arch/riscv/include/asm/pgtable-32.h | 5 +++++
- include/asm-generic/pgtable-nopmd.h | 1 -
- 3 files changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
-index aa89c2e67ebc8..256ce4a6162e9 100644
---- a/arch/arm64/include/asm/pgtable.h
-+++ b/arch/arm64/include/asm/pgtable.h
-@@ -960,6 +960,7 @@ static inline pmd_t *pud_pgtable(pud_t pud)
- 
- #define pud_valid(pud)		false
- #define pud_page_paddr(pud)	({ BUILD_BUG(); 0; })
-+#define pud_user(pud)		false /* Always 0 with folding */
- #define pud_user_exec(pud)	pud_user(pud) /* Always 0 with folding */
- 
- /* Match pmd_offset folding in <asm/generic/pgtable-nopmd.h> */
-diff --git a/arch/riscv/include/asm/pgtable-32.h b/arch/riscv/include/asm/pgtable-32.h
-index 00f3369570a83..37878ef374668 100644
---- a/arch/riscv/include/asm/pgtable-32.h
-+++ b/arch/riscv/include/asm/pgtable-32.h
-@@ -36,4 +36,9 @@
- static const __maybe_unused int pgtable_l4_enabled;
- static const __maybe_unused int pgtable_l5_enabled;
- 
-+static inline int pud_user(pud_t pud)
-+{
-+	return 0;
-+}
-+
- #endif /* _ASM_RISCV_PGTABLE_32_H */
-diff --git a/include/asm-generic/pgtable-nopmd.h b/include/asm-generic/pgtable-nopmd.h
-index 8ffd64e7a24cb..b01349a312fa7 100644
---- a/include/asm-generic/pgtable-nopmd.h
-+++ b/include/asm-generic/pgtable-nopmd.h
-@@ -30,7 +30,6 @@ typedef struct { pud_t pud; } pmd_t;
- static inline int pud_none(pud_t pud)		{ return 0; }
- static inline int pud_bad(pud_t pud)		{ return 0; }
- static inline int pud_present(pud_t pud)	{ return 1; }
--static inline int pud_user(pud_t pud)		{ return 0; }
- static inline int pud_leaf(pud_t pud)		{ return 0; }
- static inline void pud_clear(pud_t *pud)	{ }
- #define pmd_ERROR(pmd)				(pud_ERROR((pmd).pud))
--- 
-2.49.0
+--=20
+Kind regards
+Maciej Wiecz=C3=B3r-Retman
 
 
