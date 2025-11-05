@@ -4,87 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5461ECCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 08:39:31 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 407BCCCFA04
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 08:47:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6A2A58E0006; Wed,  5 Nov 2025 03:39:30 -0500 (EST)
+	id 9E9118E0011; Wed,  5 Nov 2025 03:47:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 67A068E0002; Wed,  5 Nov 2025 03:39:30 -0500 (EST)
+	id 9C1358E0002; Wed,  5 Nov 2025 03:47:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5B7648E0006; Wed,  5 Nov 2025 03:39:30 -0500 (EST)
+	id 8D6CC8E0011; Wed,  5 Nov 2025 03:47:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 4C73B8E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 03:39:30 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 19063140245
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:39:30 +0000 (UTC)
-X-FDA: 84075904500.11.A95ACB6
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 44990C000B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:39:28 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pyx6Ff5c;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B0A78E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 03:47:03 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 1077414024A
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:47:03 +0000 (UTC)
+X-FDA: 84075923526.20.1E8ACA8
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B398220005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:47:00 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kk4KHprh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IXKiak5O;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=euIPH0f5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZKyAO6Xj;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762331968;
+	s=arc-20220608; t=1762332421;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=iACYjLabBUF6JiLupF4Suvn3LPuLCNXMAQpDmoncQDw=;
-	b=ZfM6pDFAUVK7C5L7gs7yDSYKidHIktM/s2zLVZFpa9/qUmLU4tVzdsqh7LThalnDtbT8z9
-	SSymtBHcLEUD0NJ/p3w196iEKbtgLaiyNfYEAlInXqJZQwnwfNISJHYywKa8eTwN0isKYc
-	kEr4czTUthrDh+CfVRTtx+5ncJEfkHU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762331968; a=rsa-sha256;
-	cv=none;
-	b=An8KsGsXESenYgBVD2tww5x253TQbgWvL2qtYYATHC9Euu3V15AK7EQpD1zLkD4IJZwIve
-	y94xTo+0GpTVyZiBf8/IUS+iQsPN4jkKnnQyg3cjwV7UQpXwmRHYr87y0yLYqAPp21HLq/
-	SVFPNzdkyAWNyI4C5butuaawP9osuzM=
+	bh=b9dQBE0EcfsLO//r4BKJJsXu3FlACWq2NYnD5EknmFU=;
+	b=zrIOVBO0i5VjsAUoGUY/tsjoUkFLSaMgDuSF0jRyNxVycKEa3Q6ft/vlYa9Bv9PvIwXMF9
+	P03zKCjNXFr4wtnTH1EqW8DdCLkfpxJYmzak3QMQ3p3Kqz2NVZ4bHMc2J15iJ8HL9qoACR
+	2X0d84x7C3oVqldDplcSBf5YXGMpGTk=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=Pyx6Ff5c;
-	spf=pass (imf28.hostedemail.com: domain of lance.yang@linux.dev designates 91.218.175.170 as permitted sender) smtp.mailfrom=lance.yang@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-Message-ID: <19986584-885b-4754-b98c-948e4bf9716b@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762331965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	imf13.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=kk4KHprh;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=IXKiak5O;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=euIPH0f5;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=ZKyAO6Xj;
+	spf=pass (imf13.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762332421; a=rsa-sha256;
+	cv=none;
+	b=rBI6adw6T09Xg2SAf1MKVendIip1PXiATrn68XwOiMJUxEpnzwxb/rwfGHXRwXlMD2vhc9
+	qYZqb4GFsgqqnJ+btf10UgY0m3oaZ7hws4ST6b5M45wv25q/6T/rwBVtzbYs6nPhWsC+3/
+	AkAJMHOlpwP5y7T0bfV5i0azTcS2WeU=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E41F02116C;
+	Wed,  5 Nov 2025 08:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762332419; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=iACYjLabBUF6JiLupF4Suvn3LPuLCNXMAQpDmoncQDw=;
-	b=Pyx6Ff5cbTDxh6bFMoG56H+cQ6sG/0QG4qgsZ9U/tgGmlWxDHgKBH8LRRuc/D04Dzw5pNX
-	g6ZfVel4yEKJAW2CjwpU6eKy7U0KdoQjwCfCxRL/M8IrFCSUtUTNNFJd6uaN19l7qnpWJF
-	MThr76Zp+1t0ReNALTjfAzsXQoS1c1Y=
-Date: Wed, 5 Nov 2025 16:39:18 +0800
+	bh=b9dQBE0EcfsLO//r4BKJJsXu3FlACWq2NYnD5EknmFU=;
+	b=kk4KHprhck1/zn51q1Nx39TLpbhJSAmN+LxDrTkrVM/YwuYV7vxJbsCOFL7XdJ5jOtc99p
+	WZ9LMSS724hC5llKisRsii/KGGCc5qCmdMyCjwqBPQvGO5tTosXjUbhWI+ydof9DC8ew4j
+	nhBK/K9s5K53zio57QVlCvCZAoAUmjU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762332419;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b9dQBE0EcfsLO//r4BKJJsXu3FlACWq2NYnD5EknmFU=;
+	b=IXKiak5O3Z3v/zAQt/Ra/LWCdd7r3JgMRSLz2E4ZdpAozipAnmMMp5cwapcv5sug/zMN/o
+	gtENhGWL82Z7C6AA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762332418; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b9dQBE0EcfsLO//r4BKJJsXu3FlACWq2NYnD5EknmFU=;
+	b=euIPH0f53TpCLjfWxQbTZ/9gh2D4vculj7q1qw2tHzrxTBBed+t8pN2cAhsW3EpPdMqccj
+	DJfW2Y+7n2fA7Ylg76Dz6jJ1sunlM3DO0OqAoZQgAx0evy2aFpYX5a51/rd0XRM4joaXL5
+	s2G/SV2bQzevcRMgity8RIylPTrr1Ks=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762332418;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=b9dQBE0EcfsLO//r4BKJJsXu3FlACWq2NYnD5EknmFU=;
+	b=ZKyAO6XjgDyXJgXv+ssrCj5nybblEulOC2A6DXH93qCa2uP1bmb+rvTHZFo8yXEd4V848d
+	bhVnkz+yWuA1xDDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D6BD5132DD;
+	Wed,  5 Nov 2025 08:46:58 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id UlxlNAIPC2lAcQAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 05 Nov 2025 08:46:58 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 8E5FCA28C2; Wed,  5 Nov 2025 09:46:58 +0100 (CET)
+Date: Wed, 5 Nov 2025 09:46:58 +0100
+From: Jan Kara <jack@suse.cz>
+To: libaokun@huaweicloud.com
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
+	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
+	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
+	libaokun1@huawei.com
+Subject: Re: [PATCH 11/25] ext4: support large block size in
+ ext4_mb_load_buddy_gfp()
+Message-ID: <sesj43tzk243dgm7vmk2cvqy66gh57dd65yhebxf6pkmliblfr@6adx5sry5eog>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-12-libaokun@huaweicloud.com>
 MIME-Version: 1.0
-Subject: Re: [PATCH mm-new v2] mm/memcontrol: Flush stats when write stat file
-Content-Language: en-US
-To: Michal Hocko <mhocko@suse.com>, Leon Huang Fu <leon.huangfu@shopee.com>
-Cc: linux-mm@kvack.org, hannes@cmpxchg.org, roman.gushchin@linux.dev,
- shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org,
- joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com,
- mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- cgroups@vger.kernel.org
-References: <20251105074917.94531-1-leon.huangfu@shopee.com>
- <aQsIq_zQXMfNNo6G@tiehlicka>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Lance Yang <lance.yang@linux.dev>
-In-Reply-To: <aQsIq_zQXMfNNo6G@tiehlicka>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20251025032221.2905818-12-libaokun@huaweicloud.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B398220005
+X-Stat-Signature: y8ku3km6gyj56o3ap6wt6h7f9g9byiuk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 44990C000B
-X-Stat-Signature: ygk7kijkkk69h1cjg5gbmxjnpk5kwjgw
-X-HE-Tag: 1762331968-129749
-X-HE-Meta: U2FsdGVkX1/ICg/O72tjBHhNWtKOhrfbEnKQ5bShoAJAL2VtPloWB3ec62ZbQPRRp+YqxUB6Batyq4M13bXa/r4Tf1kVHoQbtaz/+sKkj6X3tM5+0end+gumPxy4Supm7QF0bhxSOeFDb8xLb79n8FZdXYO54bNmYz8s832habdid/DMFvTnzZ+AmxOTkB8f36sZ7f6UQu+MoygZQLXyoxNVbvEOCmhTMksKAr3YePw/o2lWAJOzp46Az9XyyIc4GWy4/MZYY0r9OGH+c4G8730te+0BD016dTaDl4gYiesa/u7ST/yitEsjDpcJhC5IZmWORVwWOpohCGg/9RDFWRCdeKe6XQJry05+rM0kP5S8B/UFxV5Wqkco2BcpaJy+GP4arIki4oUznptH1rJPFAn9LH5ypmuWo6DwMa3M6W0KCPQqreQnFvCNObS7FCOP/c2h6f0Ayya+UgKlOglBbCZ+rJN0MDlrPc0+/eqN5T1GM01FIlMpR8osp1xyhh7RHsr/v47cx+NwNSbmqEhCqYKwYfyft4CxLcl3K6uYpNtYkXs956dTzfNMXUs05gGI6JrNei7vNahTYggujIVuj1S2j+PPGINuAp3kajjQCdss4eVA6tu42ANDWEWiN9UnTfWuBpCqINgH7uAcI9RLoiP+H/Vq5F351BxPYQc9GifeZUz2Lhl+gAoKA8780itkP4HSBhwPJ1oCwUNTCc6l4i/V7mZqN2WJqpwAlVkD2hcckD31RsabjHqePHaTbSInEJnmUGaK8rV70/EgnGzg6SMvDDAhPJKD0aZjDzs1h3WPPztHZ7Yqv2CVXIXvfUlHP3uTtZSiBXUZVf201Cjt0ewNMD0OargzrVnKeIoasPWVmG+F0S0tSmymQ6WzakQEJoNvWvln/8Sy9+npLMHCtFpZku7ifOaxaaRaZ7Tk5fhEPlB3xUFvgg3J5sv2ZOLe
+X-HE-Tag: 1762332420-373583
+X-HE-Meta: U2FsdGVkX19ybsCnz+If74/6sO1sbaWuyguLS4Gt/lhvpVHEbXyNyGewjCOHPbYLS8wdTEeB6fqUGbKCPgELEVcWlMi7eT4cgv7rFxji4u+k0aVehmA4qcmsndbRjSr32N05bhzu3Z/DFmZBcyOYw1CooaNcA70MpjUssq6V2K6bG2MLPfgAHRSap9G7upfKoHvgf/m/EH1t++c+pcUPoK3NBPPaibam8SE5cl3YttwmShr/ROoYw4hy3cjmGgeatHFIfe+rnCZ9yMq8DZMhM9qWdYUqkZY4MGf5j0TSj8pSO0sy24UKD6aUdNjMgxfPZ643ZZfI1s6wYF1TaC6DYP2PclXjB02Kbih3iaPcEOv8lBr4ST7vIBkixZSwekmszyHf+06JOvgTMUXNFZwjdNtKC0DcgvV2Az/JPsgW+FoxcYbwX2nR64c0YV9hRZ61LhtaX89Er3Dh5OEuqJzb67g3AfppgGzKLRfHhbRBFud01OAzKnuy7UDxjsZLERDDZLgxkOS3X2xyejYWi36tzW7SZswKVIf6GA0cQYc0cyuEkO+QdPuJXyyKvGCemue4h2vmuss9ZvyBiZBc9kXJ4I/oOrQULyaO/2Rsd4W30CmrMBLSQMsGKOHgRzAx8MYROYfXd7ZcVPnhu2ceIJeqBJwmvuJKvJN7suUu6ETDnw2J9aMfNpT3DbDoS68qOEjD57eY4a40tQdfvwisSJNbKhq/8T+x0kxiXlFxwBv/8IARvY9xy3UBYzKhL9U6oTORadahIZjAGFbl3dNMakEY/T6FDhvdiL47+W38WGvNf1mspHkdSWRKnOEdQuug+2Sziu5W+WNOx9k7FdEgkiTRWWJPdWyhsSveW71GTBk3UaqAgVwAsd1I3UQ0Jnc37V68X8gDntD/XE5N0jWwRLifqPGH0bOSSI0zyNc9QPTi/vS7CDGF4mIWgcUAV/TqF2md870PHlLomG3ZR4JeNPP
+ jPXq5xnQ
+ b2k6Pzss2d/llLXYN1TSAFGwaltz6PNYZ0IgmCtMF7IPAkOsJO2RnIgGqmfSR1tMgTqeoABeEUoPaf32tUmRMIen6wXsphjTd/cWPJvwlQB9asCVDFJ0kAp/HPSwvB1hcsEtJRq9NBAb1W03vbLw62uPJslZWahmNuIPizURA68eL68nbDp8ZWM7zavGfHlGjrgmjDEVfZhcFjDd4sdgJsNc1dBS3Z0/4RVCPkXXyjgIOkU6ohJW44BbNZpz3ifTpdisOC4a1iD30ByqI1pP7u9VW3yg2ptu0jzL7JAvi/deng4MiIW9+d+ns/2DhzE+AKqk30LV2NbVOuVsZJiHiUzxmspvVoYsHxQy9H6PiJU8HHTfHgtBRGsMeTtbAnSXWa8bN2FI5xz9EKFjHvLCNNJjTLJKu2uagZspHwJiT/X8sIDAI+u75VOQsLEtsaSB6TygB/uDGH8Z6YSs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -93,52 +143,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-
-
-On 2025/11/5 16:19, Michal Hocko wrote:
-> On Wed 05-11-25 15:49:16, Leon Huang Fu wrote:
->> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
->> index 6eed14bff742..8cab6b52424b 100644
->> --- a/mm/memcontrol-v1.c
->> +++ b/mm/memcontrol-v1.c
->> @@ -2040,6 +2040,7 @@ struct cftype mem_cgroup_legacy_files[] = {
->>   	{
->>   		.name = "stat",
->>   		.seq_show = memory_stat_show,
->> +		.write_u64 = memory_stat_write,
->>   	},
->>   	{
->>   		.name = "force_empty",
->> @@ -2078,6 +2079,7 @@ struct cftype mem_cgroup_legacy_files[] = {
->>   	{
->>   		.name = "numa_stat",
->>   		.seq_show = memcg_numa_stat_show,
->> +		.write_u64 = memory_stat_write,
->>   	},
+On Sat 25-10-25 11:22:07, libaokun@huaweicloud.com wrote:
+> From: Baokun Li <libaokun1@huawei.com>
 > 
-> Any reason you are not using .write like others? Also is there any
-> reason why a specific value is required. /proc/sys/vm/stat_refresh which does
-> something similar ignores the value. Also memcg.peak write handler which
-> resets the peak value ignores it. It is true that a specific value
-> allows for future extensions but I guess it would be better to be
-> consistent with others here.
+> Currently, ext4_mb_load_buddy_gfp() uses blocks_per_page to calculate the
+> folio index and offset. However, when blocksize is larger than PAGE_SIZE,
+> blocks_per_page becomes zero, leading to a potential division-by-zero bug.
 > 
-> One last thing to consider is whether this should follow
-> /proc/sys/vm/stat_refresh path and have a single file to flush them all
-> or have a per file flushing. I do not have a strong preference but
-> considering both are doing the same thing it makes sense to go
-> stat_refresh path.
-
-+1
-
-IMHO, a dedicated file like memory.stat_refresh is a much better approach ;)
-
-It's cleaner, simpler to use, and much more intuitive for users.
-
+> To support BS > PS, use bytes to compute folio index and offset within
+> folio to get rid of blocks_per_page.
 > 
-> In any case, thanks for considering the explicit flushing path which is
-> IMHO much better than flushing tunning which would become really hard
-> for admins to wrap their heads around. Especially when dealing with
-> large fleets of machines to maintain.
+> Also, if buddy and bitmap land in the same folio, we get that folio’s ref
+> instead of looking it up again before updating the buddy.
+> 
+> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
 
+Looks good! Feel free to add:
+
+Reviewed-by: Jan Kara <jack@suse.cz>
+
+								Honza
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
