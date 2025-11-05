@@ -4,112 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326B8CCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:23:56 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7D19DCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:30:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8FE4E8E000C; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
+	id D7B698E000D; Wed,  5 Nov 2025 08:30:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8AECB8E0003; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
+	id D52C38E0003; Wed,  5 Nov 2025 08:30:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 79D8D8E000C; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
+	id C6A098E000D; Wed,  5 Nov 2025 08:30:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 62F848E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 082731A0353
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:23:55 +0000 (UTC)
-X-FDA: 84076621230.07.CE68263
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 15830C0008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:23:52 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA3+ByI5;
-	spf=pass (imf10.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B46828E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:30:51 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69D66140349
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:30:51 +0000 (UTC)
+X-FDA: 84076638702.18.DA568BE
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+	by imf15.hostedemail.com (Postfix) with ESMTP id 7CCB2A0019
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:30:49 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmhdwYzs;
+	spf=pass (imf15.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762349033;
+	s=arc-20220608; t=1762349449;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
-	b=FORj+ej+NOmT+R6zJhZx8HMGnBJz+Yz54QnPvc0hDWgVG+m4s4mqw/jNI2m9dgd1W2gsTe
-	M1WwUjBh5QMcmtC855ONuEbFzr4nFb1gAd2xJU4c4tqwqj2OtY4xYq2jW+Xko3jD66cAub
-	tjSMUId2KtvAyfYK2wvO0o6IzRYV5kM=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762349033; a=rsa-sha256;
-	cv=none;
-	b=qVmzLp4+bUHu9YsPJxKpL2CybkJ0bpHBaCDCq+7LiNj5nER/Ipq1SB/6n0oDZeukHUARTE
-	NBFtOmqovpcJFVkzoslSAxCRcpekav1UtbDBU3I9VyacIRvP/U44WQVMH/fXi5HAu9WSgK
-	Hs+pDEz7fH8pmMSSCSYzDsuIWCaNghg=
+	bh=NuKkAI8xRPtJ5Fw1eOvcnr1+sgWhXNgrcDdCSnmoslQ=;
+	b=OSUjFKC8cTUtMBfuMjrPRX3mv5qI9njyODWz5DuB3s27zgtjpKSruJCQLM5zJ+WE5ZXJMo
+	MgySUChHxN6ArdVTRjhpknhlUNlGUzng/MD4i15mtnBDHno1t/ByenKn/wmFwN7Pl6VNMe
+	FqYzwADzcnFTLEbY7OferVQ+i0aKrRM=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA3+ByI5;
-	spf=pass (imf10.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=LmhdwYzs;
+	spf=pass (imf15.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.161.51 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-378ccb8f84aso69944711fa.3
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 05:23:52 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762349449; a=rsa-sha256;
+	cv=none;
+	b=LxcDC3k4TlIQnRQPFy+QNCE/DDtZOtM0UgtyEIKtWlHCMBCGbw5vNnnHMdpt8lJH5VK7JR
+	eIOIVGDhXKiNuso42FyFRtWyUuawuMYMa/YKjuGSGQaa8PXRn4HFky492bRkN2cho4uEhf
+	fUm57KD2AEdPe8UPtGqD06grdvnhZNg=
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-656bb297df2so216691eaf.1
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 05:30:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762349031; x=1762953831; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
-        b=OA3+ByI56ZD8dJlBnAPqZzrs+WeH6VIfyludz76Cb9h2aUuEKpRIpuPXcjKxSIAVth
-         6yAXyZA3d1USn6U/HUhSwAaX1IjpgMYXZcig499snsCeguFEtlPrJCxkxEklJEjaVMG4
-         bDSvPSoGGG/knGBVf74dvqqg9jjnQJK43f1W+7Qa3QEml0vGMqpfYA2kbKwS6KUUpr2G
-         f0XEF1lGWmqKrw835VQmdUZWZwq4VV5PkNw0IyKMIg0DPqvclgaIPH515ADWZLe4omNR
-         8hlcKdaGisqiJPkeA20C4GaxfVN7PIb4sZpfL3/fvsD80bVwCcv3Vj+tS1clNye+waFP
-         unXw==
+        d=gmail.com; s=20230601; t=1762349448; x=1762954248; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NuKkAI8xRPtJ5Fw1eOvcnr1+sgWhXNgrcDdCSnmoslQ=;
+        b=LmhdwYzswRcBeTvoxw2T/7L/FLYAASKP+ao0m75VnYZDIvUA5RZWOWsrUS4nQ07T9r
+         Phs+JyF3dh5alGBN9bn7jHQIQq2geSz4MpPcCfBMq+cbqgf76s5czJWqUDxpjBzhS1Do
+         lFxrXJuPkCSxcC4cPxAOOTdGP/77UKML7WRG8sXPJ4Ql+Un22TLszsSLdw1AFfdpe6d3
+         b+rZz2bp5RULtXB6QVETT96xLpmxdQVVG8Wb1HORDn47RoheOO26h6ojClhFNgkFCGmy
+         c4xGBUlgm5BDhHyUj2LDQasGEBQSdK7E6a/pnGoO5v3vVz2/7WXvGRLyfilTVoqZPkgS
+         +wBg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762349031; x=1762953831;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
-        b=pEKnVrOZ+aEUD+cEhpAIs0lEbgEw+3x4KXrAqnIUeVQHvP9lORRVlZ6hV12eWluI7x
-         po2csAvQ6PcWJp5/Np/s9F1nzcoC+nknmJ0Z1KDhXucyFcBFirzoBRIfLq7wsGUPHKBC
-         x8LvVgKxx25rxGGBmGrfdtB+kB8SN1fEV6wzu1sae2D7pImgBFqs8EqkbT+cnXfi2Ycs
-         twUGIfQQJ6BC+Q77EC929a7fX1e+Im1DYYP8MEZ8gK0U16gUy8cLAVpbaCt+jAYxbeXH
-         DUvq++qF1gAmflOJF1ScvvkR3E89c86ZQvlUee1KdYg1zz/za2vqoIMKUlWKAdzyrUbj
-         fLsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXB4a49Vzao45vC3axh6GhhIo8W/xLqBrRf0QXK+G2ltfQUHpfL71XRFmADBFi0YLXsAOe/4ZoEKA==@kvack.org
-X-Gm-Message-State: AOJu0YwezF3sOq2/06PJ9a4NhNj9UQRtihq4htLDAyFFnb15K5nslcdQ
-	6AEWAUdDB+BZOln0kUKmzn1cbAqdQueQzNoDyBKvNkgmS+5strLdeEn0CKBWJtkOP4q4A+MuNj3
-	G0V8ACr8+kTqFTZHOlLogDrrjsbGHMhmibvB1
-X-Gm-Gg: ASbGncs2YNoi9c8BPuPCmoMs3cnkZFT116RVcK5o4h/s0LmV9ozRyJlUxZPjUrsaZsl
-	O/yMrYN+bRVYEqDs9XiIXkz7m1H+vI8AiIh5723mgyqzucKJMlALHMIf3hHJlRxVsvmtvhIIk8z
-	XbHhf/hIsAeQLMoi5UAeVe7CTV6dgvALJqXDN7cO/joQN+PGjy3STKVPnCoodep4kHzUKO/WQCU
-	+gXbCF3oMTvacCLiE1zMQJcJsNTs9Bey99MYXdIx7+D2nqQTcDOKsbTMtBDtCFGgNLC8aeLu3yF
-	A57uSFkLEJe8
-X-Google-Smtp-Source: AGHT+IGdn3dvXTFfnd26oUCEg5vL/XwsKbx6eN6B7iFUvvLn+iruzlQSAGzvDJ9vCiy6F+m/VX5r20KcdkbP0rV3R/0=
-X-Received: by 2002:a2e:a109:0:b0:37a:3033:16f6 with SMTP id
- 38308e7fff4ca-37a5142e2c8mr9741151fa.35.1762349030972; Wed, 05 Nov 2025
- 05:23:50 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762349448; x=1762954248;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NuKkAI8xRPtJ5Fw1eOvcnr1+sgWhXNgrcDdCSnmoslQ=;
+        b=LuKIDmAotN0VlCzNOmX6fyR/fUNqBdIQRtV8AsAWi5ewoZRjcf/gPOOiqyYCqC7FJu
+         UeLIAMD74/ByqLkUT4+7P1mKTDXFJgdmKLIp/QcUG06xbvBEeItyH4Ny7Be6dTG6nTI2
+         08F48O40Xg5Bn0baEJGy0U1BnNSRk4W3jGNRq5X0Fi8+U/7D15PsgQbhj94qy3AjWulD
+         ZLSRFibCQ4J/9OWcgH4MFx5jsWG7/t54SqiPJy8MOxaJpTyW6BN4oRlX090XBI7mYxZI
+         10bGpABkvSbDpkp35OL7nQ3OR89UmunlqnDWw2tIJaWfNCmwsuwXVnjIuotBSvfG/q3N
+         /vdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXW0mDxb4qn/UJaEMEkghNj+AlrFF+YctJZxWZtTZqZMWLxfDJDm8S0gjPbYGEoCMB2vvVjJXFurQ==@kvack.org
+X-Gm-Message-State: AOJu0YxBMUHZKoYPiEcx9BkpfcmV8xR8AjqIEZKA0ztSLsMHpD74q4zn
+	pLF+N43uImbBq4qHTS3cG9PHqsRIBAVy7uJPZs6Y140FTP1BoMlOvp+5
+X-Gm-Gg: ASbGncuUCA8n1v8E2CmyM2J0II1Xh1/vvMI0Yfy08hD4HRWYwZjHrfPXFmJYmgqDMKx
+	XqIpo4Surh5MuFDwOm/Aw8nUDh24gdPbuChR0BcLGdn1Trh7Cn4dY7R19Vziu0JnlRJPffVJfn5
+	mOY771AI0yW/U6L5Ld66UA77PIpegOe4exKuvtA+tp5yfnGLi6Ym+PIeLm8mo8mw8h6JW28kvim
+	dHH3/64jgwWHSyUIIbRu9XsOF5Eg+B47GYAsOBv7BdpWYnLxdR6veFWCA9r8yKsURtZxSpAQytp
+	FE1+rFPeABhrLdYyUF3NHKrIhCMmpzgHPQ5zcBayPhuZ+NfrApq11bCSmYn/7hjGb1uanOQ/PEB
+	2S31FxRyJJjw8Io2ivc5M+gRj13OHLnOEs+1EwmTKgofIpLJDgx/vuN73s1hFLt3Cs+ME3Ne8+L
+	V8IzSWbO/oyheF70co/d4sKELiTwJLHlD8qrIZlZ0pbbF+WKMm8FRkDAtEFNtSM0BT
+X-Google-Smtp-Source: AGHT+IFt/l5lO1NOARC/MCGJCb3cYRXCFTcjwE7BDBHrYUQg6rEEKsVOfAXgEudyx1baeVZLQvxmVw==
+X-Received: by 2002:a05:6808:158c:b0:43f:6bd2:3a57 with SMTP id 5614622812f47-44fed1f22b0mr1431631b6e.20.1762349448293;
+        Wed, 05 Nov 2025 05:30:48 -0800 (PST)
+Received: from weg-ThinkPad-P16v-Gen-2 ([177.73.136.69])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-44fd84b33ffsm1601874b6e.8.2025.11.05.05.30.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 05:30:47 -0800 (PST)
+Date: Wed, 5 Nov 2025 10:28:51 -0300
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] Revert "mm/ksm: convert break_ksm() from
+ walk_page_range_vma() to folio_walk"
+Message-ID: <42byvvz55omaszu6ep3g7n2dj5z7mfxy5h3zbc3xjdnslemkpp@kvdzrjz423mb>
+References: <20251031174625.127417-1-pedrodemargomes@gmail.com>
+ <20251031174625.127417-2-pedrodemargomes@gmail.com>
+ <a6574561-02bc-4ba6-9fb4-418dcb07cd5f@kernel.org>
 MIME-Version: 1.0
-References: <20251104003921.9707-1-akinobu.mita@gmail.com> <aQo1VjjQw1OZG8nY@kernel.org>
-In-Reply-To: <aQo1VjjQw1OZG8nY@kernel.org>
-From: Akinobu Mita <akinobu.mita@gmail.com>
-Date: Wed, 5 Nov 2025 22:23:39 +0900
-X-Gm-Features: AWmQ_bm7dSG6fty0drtbxuWvBO6bGxhtYdnsjyRSa0aF5n43MfZsmtccLtweZyg
-Message-ID: <CAC5umyigiSS+ynr2JnNSaR3irW0eEWFuUVnJvY2QvJJO4yfP-A@mail.gmail.com>
-Subject: Re: [PATCH] memblock: fix memblock_estimated_nr_free_pages() for
- soft-reserved memory
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 15830C0008
-X-Stat-Signature: tuqaqimwhkuzfhqw167ip8zzauuiasey
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a6574561-02bc-4ba6-9fb4-418dcb07cd5f@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7CCB2A0019
+X-Stat-Signature: 1kqogqwgknr3u9nmi7a5rmi5x8xj8x5y
 X-Rspam-User: 
-X-HE-Tag: 1762349032-405826
-X-HE-Meta: U2FsdGVkX19QclpazeOajigSTz8p80VmUj8ejMw2z7cHbw8M7P2T38JnBV3CktcS4B9Q3VTnEekexkulcY+DmlJ5EPP1zXfHxQaIFA4vjbiXT/F7FB767a/h3p9IIHB6/v3XSlT6jOuuwD/NiGn23otFF3c6gI4te/bvW4I/iyq7S8PVg6r7svqEdpOap1DRZI2Qvo1B3bI/MwcKynkc7Xkrhz0IUZ5At5AdsP72whHf1YOEd4Z5aAIpLbzk94rs3nOuLUN2MoE/w+wlT1u6Hghx/LWE5SajKnXdM4pLy7CIdt7szGpTBHlOGBdKPJ7BFLfq6FBtXRfd9GbC1Z4GF0e4TMSPUJ6oijdDppltzjAOffoiQhY6mLnCblGsBAwpt3E1axAg5q5TiEbS+EZz8lNzg0QpkoVEqIqvQLcfVtHflmO61iXn3UScPLuBXMZoLb9ic+ukcyNd8t/W7ePL2tQ6XWsEzuZNEpaayqb0lV/t7i6KHWpLpZFUe55QFg4jEUIhAuP4/8AYkS2tGfMM7Tvj5N+qLnbJGt9sbXooMMcXTSvjHcONFD9EkqSiR344QSExlk58QKpxNUE40FO43ktz9eTascuveASKUc4ZgjBJjd2oa3CGzRV7A8r9c2eZV2ju7SyWFoiXNHnR3iXSEul6IH4HR25Iem2rbBVnbwBTv9h43VNc00x8mYLPD31V3twmO14PDG3dtYngNI0aGF2B7jbx/Nr5AzlrzJvaWqjmlnsalnbPApkuv5BKbeb5dtQWViHXz64Q79vG2+00ufxNrqyVG0vuaU+ZBF4HxGjRNpVKchEQDAgMyWCaiVvZluAT+wjh4LC4PmDlxJvip1uj02YpBx3iChnwdDdggi1PLnVPm2mzDeQbb/iy6vnFr6ua5D5YWtg+LJ5Uf5Rhv38/BiFhmYFHPH/dedNWhZT+ltQRcfGFauOJVIcwAZKodLO3ObG4ubY209W/dOb
- zCTEDdlN
- XEoi2QuIGXHkqk6I1qmgBLaU4HK9d66zka3jJY3cHSsnUoEy9LDYcPRNFsqJKc16Pil4MwOIm52+gOWj2MzcpUIhfndjEQcF+ZfVGVe6agcHoljpR9xXnTS1VfIxS4ja/EupWA2DWTzLoCalIzAYMeQD4NdDQZvc7Vgq0X/DmNomqNd+jetPiuZJpQuhG7MGdAip4hYDYlDfUh00agFMXDlvbOsiN4FqYx8LzLjGCZSxQK8b1FmORz6oEVTBD7W9a3iZdoWTUIEnjjZHfPM7eyzI4h6r/A5B2wvYaxAJ/P8z8n5luCItnzreCRQee3PPRLnd4uIM/2w1ANoFhvcTmfL4f4Gs+FN2lXTWJZXY/1ZMxOyoHxri+unrA4WaM5pq6CMb9yEcQcbCAHt+Ry1QT0+O9v5ZBFDikdXNrMDqzNNoRFFCWuQcp9RR66dKvfxOXcN5zShm+Aj9COjEiOfRwcsJGS1ZG4aEe6rMX
+X-HE-Tag: 1762349449-281701
+X-HE-Meta: U2FsdGVkX18wjadSTTjUgApGKJZMB+pJc3G/qPKRRk7ON8K4RR1FchRTzI335HXke1OKWHOXfMSsrIcH3meEZG5kXvF/AtKJSex55+RJff+POCBKMdKUMs8Cs72Kpry7kwxeGEMrGvNDblzLxqPWctV5coRcP57NAAM6jScvxOeY2pXnQfN9JMpagyfGDdlOWpZBDVleIT6zUjUpW8oTUFYjvs6iZIhCNsg8ahxJgQ3I6VbB3VbLeNRe0NpvMPIY4d5e8qyUCwjEnKT6tD62b/JSceQy8vY7A2RUhvQKn943KGI6miuzCNaeIm+ImaZy5MZ9KJUtdgfNNKQR1xPA8Lo0/dfQIBZiiQ7RQqX0RdY8Fxuvq24zWzJxogfW4sHmhkavdmSPfhruA52NEFcAPjgCypLktIr0z3OD+29RiGWKr08Zf9nS/2Jf1Yo8Ezu0c/mC9gcUoyk8hzVp+XDhlYdDAvrsAFC4Q8dFTuBcr9Vh38oLObk7QiMboMRLjXg3SEmKtGAbPMQWPt24NZqohIy0lQwFORq2l+gwFCfkad2jQPcuz7lqVEvrkF2bsPZ5OtsBYA26TKebt8WKR4CCt5Ego6h6Coi5dFehNI16dO7lVgthWTmMZ80G0S2U2Qixqwz7U55TKA0sUE4T3PWLV31qufQOJu3NxcewhwcDmIys5XfhSN5I2ETWV+Z43q1UMtIbyJLyTliBo/6M7X6ve2d0KVIAsaazztMmIsL0qeth9CY/p8FeAkfdhTmrG5GWoBcuF0dbBYTgC7AwPHxfMXu2dTlNKfUKZtFxM0GOLgT8SAWPxukoWM6rLQ+/TWIbp8nSIEZhWE4TyjvzaWHChwedMdZ/9K3XW21/HhKT3br33HVBsBROMZGKh5XjOgPb8sN/JDao2rQNqgQ5oAhsGatav5FdsNCbboX4marlEWY9dvOF1j9NLRmAFj6WgCmCOqBNz6y241K+8XzucXq
+ W0x/SrTk
+ VBsvn7vltJKZgoN92hOnZSh7/CEAKykRrrQ/Lh/B6pnXCz6ZXXAh6wCBANVw9MdQdGlhOVXOf4/uqXZIotgFqe85/hkCPxPLXkZ1jOBtdvUG1v/7uXKKgecW+F/IkuLv8SB/gKecs/OP28Bpq8R5o5FhQxxwx2tKRGR+5S/5z0ppl6frfJgnHQsW72r2d+WCc4DL79ieBkH01qCYYDR2I2D+qKWrY56I0Im321fCt4DMIaBWcDtWUQbFTLY6tJXuhsDV3O1c9ssNZSuovaE7bEUQeALOaFbkaLsznyBPwGOKu8bG/p4Qq4AriJeii9mRp6Zqvwwlnt+d3aJ9xyy7H/9jqg2UtEv1sGyw77iac9rQZjwPXWy0bfgwhJq4P2JwAXZU688KEwWna4mN7SUKbyGONWOLObs+0VLATS/WbTFnXZN6JLV319YhCiKESjWtkBPeXlGwLob2qM+aZvq++scJFtM/m0wP7XV2MM9UygPgfB02jSpZBaifqd4SdiJEj61sTTfUMmqtkvXA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,66 +122,81 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-2025=E5=B9=B411=E6=9C=885=E6=97=A5(=E6=B0=B4) 2:18 Mike Rapoport <rppt@kern=
-el.org>:
->
-> (added Dan Williams)
->
-> Hi,
->
-> On Tue, Nov 04, 2025 at 09:39:21AM +0900, Akinobu Mita wrote:
-> > memblock_estimated_nr_free_pages() returns the difference between the t=
-otal
-> > size of the "memory" memblock type and the "reserved" memblock type.
-> >
-> > The "soft-reserved" memory regions are added to the "reserved" memblock
-> > type, but not to the "memory" memblock type. Therefore,
->
-> @Dan, do we really need to memblock_reserve() the E820_TYPE_SOFT_RESERVED
-> ranges?
-> Quick scan didn't show anything that requires this, but I could easily mi=
-ss
-> something.
->
-> > memblock_estimated_nr_free_pages() may return a smaller value than
-> > expected, or if it underflows, an extremely large value.
-> >
-> > /proc/sys/kernel/threads-max is determined by the value of
-> > memblock_estimated_nr_free_pages().  This issue was discovered on machi=
-nes
-> > with CXL memory because kernel.threads-max was either smaller than expe=
-cted
-> > or extremely large for the installed DRAM size.
-> >
-> > This fixes the issue by improving the accuracy of
-> > memblock_estimated_nr_free_pages() by subtracting only the overlapping =
-size
-> > of regions with "memory" and "reserved" memblock types.
-> >
-> > Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
+On Mon, Nov 03, 2025 at 06:00:08PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 31.10.25 18:46, Pedro Demarchi Gomes wrote:
+> > This reverts commit e317a8d8b4f600fc7ec9725e26417030ee594f52 and changes
+> > function break_ksm_pmd_entry() to use folios.
+> > 
+> > This reverts break_ksm() to use walk_page_range_vma() instead of
+> > folio_walk_start().
+> > This will make it easier to later modify break_ksm() to perform a proper
+> > range walk.
+> > 
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
 > > ---
-> >  mm/memblock.c | 33 ++++++++++++++++++++++++++++++++-
-> >  1 file changed, 32 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/mm/memblock.c b/mm/memblock.c
-> > index e23e16618e9b..af014fa10a44 100644
-> > --- a/mm/memblock.c
-> > +++ b/mm/memblock.c
->
-> ...
->
-> > @@ -1826,7 +1842,22 @@ phys_addr_t __init_memblock memblock_reserved_ke=
-rn_size(phys_addr_t limit, int n
-> >   */
-> >  unsigned long __init memblock_estimated_nr_free_pages(void)
-> >  {
-> > -     return PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size=
-());
->
-> We have memblock_reserved_kern_size() that tells how much memory was
-> reserved from the actual RAM. Replacing memblock_reserved_size() with
-> memblock_reserved_kern_size() will omit "soft-reserved" ranges.
+> >   mm/ksm.c | 63 ++++++++++++++++++++++++++++++++++++++++++--------------
+> >   1 file changed, 47 insertions(+), 16 deletions(-)
+> > 
+> > diff --git a/mm/ksm.c b/mm/ksm.c
+> > index 4f672f4f2140..922d2936e206 100644
+> > --- a/mm/ksm.c
+> > +++ b/mm/ksm.c
+> > @@ -607,6 +607,47 @@ static inline bool ksm_test_exit(struct mm_struct *mm)
+> >   	return atomic_read(&mm->mm_users) == 0;
+> >   }
+> > +static int break_ksm_pmd_entry(pmd_t *pmd, unsigned long addr, unsigned long next,
+> > +			struct mm_walk *walk)
+> > +{
+> > +	struct folio *folio = NULL;
+> > +	spinlock_t *ptl;
+> > +	pte_t *pte;
+> > +	pte_t ptent;
+> > +	int ret;
+> > +
+> > +	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> > +	if (!pte)
+> > +		return 0;
+> > +	ptent = ptep_get(pte);
+> > +	if (pte_present(ptent)) {
+> > +		folio = vm_normal_folio(walk->vma, addr, ptent);
+> > +	} else if (!pte_none(ptent)) {
+> > +		swp_entry_t entry = pte_to_swp_entry(ptent);
+> > +
+> > +		/*
+> > +		 * As KSM pages remain KSM pages until freed, no need to wait
+> > +		 * here for migration to end.
+> > +		 */
+> > +		if (is_migration_entry(entry))
+> > +			folio = pfn_swap_entry_folio(entry);
+> > +	}
+> > +	/* return 1 if the page is an normal ksm page or KSM-placed zero page */
+> > +	ret = (folio && folio_test_ksm(folio)) || is_ksm_zero_pte(ptent);
+> 
+> Staring again, we should really call is_ksm_zero_pte() only if we know the
+> folio is present.
+> 
+> It's not super dangerous in the old code (because we would only look at
+> present an migration entries), but now you are making it possible to call it
+> on even more non-present ptes.
+> 
 
-Replacing memblock_reserved_size() with memblock_reserved_kern_size(
-MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE) also fixed the problem. Thank you.
+IIUC vm_normal_folio will return NULL in the case of a ksm zero pte, so
+we can not do
+	found = folio && (folio_test_ksm(folio) || is_ksm_zero_pte(pte))
+because it will always be false for a ksm zero pte.
+So we should do 
+	found = (folio && folio_test_ksm(folio)) || (pte_present(ptent) 
+		&& is_ksm_zero_pte(ptent));
+since if the pte is present and is a zero pte we can guarantee that
+the folio is present.
+
+Sorry if I am missing something.
+
+
+> -- 
+> Cheers
+> 
+> David
+> 
 
