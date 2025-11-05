@@ -4,130 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E35DCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 10:14:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2E7F5CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 10:18:20 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 79E538E0008; Wed,  5 Nov 2025 05:14:11 -0500 (EST)
+	id 75B5F8E000B; Wed,  5 Nov 2025 05:18:19 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7768C8E0003; Wed,  5 Nov 2025 05:14:11 -0500 (EST)
+	id 732398E0003; Wed,  5 Nov 2025 05:18:19 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 68CB58E0008; Wed,  5 Nov 2025 05:14:11 -0500 (EST)
+	id 6483B8E000B; Wed,  5 Nov 2025 05:18:19 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 578A08E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 05:14:11 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 5501B8E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 05:18:19 -0500 (EST)
 Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B600A13A258
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:14:10 +0000 (UTC)
-X-FDA: 84076143060.05.2A58C35
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 1993B4000E
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:14:07 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l0cQXXR6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4e0fPDMY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l0cQXXR6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4e0fPDMY;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762337648; a=rsa-sha256;
-	cv=none;
-	b=c5lTAC9QFW+B8uHGnz+rWE78IkmfS2LtQwtRo8w8v1ezMy+8/PgmdyfGceHlCOusEkfonk
-	CmsM7aH9GxeEg4yQrDyM27Uj30BfaRnan3nSld4nmGOv1O/w+RVViJrfBXSeX9X8uH0Tqa
-	aNNIeAXQ2ktdUFNIL+kq4fr11xz+YLo=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l0cQXXR6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4e0fPDMY;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=l0cQXXR6;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4e0fPDMY;
-	dmarc=none;
-	spf=pass (imf27.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1E08312B80C
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:18:19 +0000 (UTC)
+X-FDA: 84076153518.05.DA90B5A
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 2A52780009
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:18:16 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762337648;
+	s=arc-20220608; t=1762337897;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=MnRVR2SMvEXU1ELRAdRpW7eZedo4gImxWnnMJ4zuclU=;
-	b=RNOIqodbKsnq3IpxdjDcO4+JLyLUnNd/uPxp30EeGhetGInj4u8pv/7pP/CHIVZLsVQRf6
-	hgeJzShX3yDjWIgppMrWum4U5ox4znss6KY0cCAU/40fK1tInkHg05udKDvW+K3My7iPRu
-	/NVaCYIm6D46VaRD2k4mnCP/XJtt8e4=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6A58221194;
-	Wed,  5 Nov 2025 10:14:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762337646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=MnRVR2SMvEXU1ELRAdRpW7eZedo4gImxWnnMJ4zuclU=;
-	b=l0cQXXR65kwfMnOQuqf4sI31Lioyf3TVNPKTfrgIj4F6XXWGa9fkHS+kgkKS8YiAr9fqDF
-	oj3FT/D2jbICKbvHgBx1QW8QqBdsQ8CGPkg36UDKNd6IqnIuzfxTo56tFt5l4W4k1LCKaf
-	ObyaP+p8qJEHf2kXWCaTuW9wJsKJxXo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762337646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MnRVR2SMvEXU1ELRAdRpW7eZedo4gImxWnnMJ4zuclU=;
-	b=4e0fPDMYKopYKys+zw4ggx2+K8sISKVGpt9q+xE+8lppJSi8hVuDEhD7QzM9Yti4Qzw/jq
-	qCleDpry2UkyKACw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762337646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MnRVR2SMvEXU1ELRAdRpW7eZedo4gImxWnnMJ4zuclU=;
-	b=l0cQXXR65kwfMnOQuqf4sI31Lioyf3TVNPKTfrgIj4F6XXWGa9fkHS+kgkKS8YiAr9fqDF
-	oj3FT/D2jbICKbvHgBx1QW8QqBdsQ8CGPkg36UDKNd6IqnIuzfxTo56tFt5l4W4k1LCKaf
-	ObyaP+p8qJEHf2kXWCaTuW9wJsKJxXo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762337646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MnRVR2SMvEXU1ELRAdRpW7eZedo4gImxWnnMJ4zuclU=;
-	b=4e0fPDMYKopYKys+zw4ggx2+K8sISKVGpt9q+xE+8lppJSi8hVuDEhD7QzM9Yti4Qzw/jq
-	qCleDpry2UkyKACw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5DC9013699;
-	Wed,  5 Nov 2025 10:14:06 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 6KXwFm4jC2mUSQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 05 Nov 2025 10:14:06 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id 0A2C1A28C2; Wed,  5 Nov 2025 11:14:02 +0100 (CET)
-Date: Wed, 5 Nov 2025 11:14:01 +0100
-From: Jan Kara <jack@suse.cz>
-To: libaokun@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
-	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	libaokun1@huawei.com
-Subject: Re: [PATCH 25/25] ext4: enable block size larger than page size
-Message-ID: <yp4gorgjhh6c3qeopjabmknimeifhnpbz63irrrtjpplatnk4k@ycofoucc4ry3>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-26-libaokun@huaweicloud.com>
+	bh=O+nitTwb5WJ+EUmnDTJjRK0YITVPRlucFpEPdRpx4NY=;
+	b=A9DYebgXdZ6o0w1MCbddRKCtvHo2vhDnTRzX0upBlKSQqd/9MBdwLjJ8C6XsC7rChq80Hi
+	mPlqFRkDUTSZ6wftVeyuVciyI2VnvIBtC5hFdDgsPfQAQ/PyScvjGSJOUe1jpKzTIRfImh
+	Ndy4ojY19xmBPy4U/0of8SaPfJsP+YM=
+ARC-Authentication-Results: i=1;
+	imf30.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf30.hostedemail.com: domain of breno.debian@gmail.com designates 209.85.208.45 as permitted sender) smtp.mailfrom=breno.debian@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762337897; a=rsa-sha256;
+	cv=none;
+	b=d0kgfqrnUfHb2QhI0Sr235BOB7qpUHZDLwOmSIuKxB/OWGdron+4xgxF9jeU0lLzuzWgaX
+	dWQlSjT4UtEON6febH3LUhGDamtyYrWs0D6CpKok2nyaTBxeZAEkoO0CPkiXhZVCbzOAGt
+	+aCS7l/YLtLFUJlKGd8/EmH/WBjjjBw=
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-640b06fa959so5848036a12.3
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 02:18:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762337896; x=1762942696;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O+nitTwb5WJ+EUmnDTJjRK0YITVPRlucFpEPdRpx4NY=;
+        b=mlnbuyi5TrgD3mgNSLBKUot5DfzHZR1Co1yoLxvdrYhFU94vltr4u+y6qSJQiBRyGB
+         lf3s7FEwlasjQ/akB+VTEA0REEzXN7we2FlslKCn1uKG0dgeZrp74kCOD9FvEM8cv5Ib
+         annZkCz07aJB/j/B0WFIEdH5Goa8b0zTaY8MQzYgq0t4R0Bz+JhfMs+dccjbW52eXpSH
+         c/6Y9prM8AcPp+TUtVZom9UeGjv9moHWDpVWIZg8JBxRqv+rhxU9HZ2KGXFNuaw6T5XM
+         KmxHHilf2Mu2k30NAG6KDvaDBjPIVBTKtUCBNpwWzcBU/+jvS8OK0fDWCkUdrLruOeok
+         g2GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEHiIzIzKbKEWuQ7xzgA0EZ7UzWusqpQYXMaECBiFPSOe8gp0gyk9RV7gbI99I+DQ8qslxlg9fxg==@kvack.org
+X-Gm-Message-State: AOJu0YzwWbgiAbGm5C80PUzV5O67O7wQN2pOKrCTQMesPPTQXm7BjBvR
+	PBUHGNg+peQazgVyEWxn21m8LyEWZOt3KBWuI+CCU9I5jrujsRiVT4Ef
+X-Gm-Gg: ASbGncvX3TDvkLPfZyeDtcYCnOMRfgGUo/t+lSh+1MpuVbX7nUvD3AmZeldsv2Z5vex
+	Cde104jpF1jZFoTF2+H5uHMf+iLdber5AQ6GyI7dNnnFENwxjv3YXwMQ2/NIKcRBtnBI2LqS5iC
+	djSMrV4I2TTQV6ELqAjUtFKVzF5daruV1AlSpD0u69VCYOAtt3tVCoeJNdNJ0MkGpX0db7lMtxt
+	3nZGqxMe0fVZKmnc5e7LOMpuF8PjQLqmkeYAqKNWARCloz4dIEivE6USFRUvJCkbjwL36qYMqtW
+	kQ5Etlp0cIdoD2o/96XwiRpdOk6Lk7c6UDp41tHfEh4Jqls0h8ejt3idkExT4EJ2SFNe1yftrwn
+	BEfCddU/pAb/ZFoV/jf0a1qHZEc9EtByR4viUumGLyu0mmjKebeRYSqRIp9EhDf6Y4Ig=
+X-Google-Smtp-Source: AGHT+IGMOyHdTrU7e4XzICZCye2rZuaFGN3pfPJ6kDUtI82R9LpfHeUzLCsG0FSLtDRWmVaLyRXkdA==
+X-Received: by 2002:a05:6402:5351:20b0:63e:6d38:865 with SMTP id 4fb4d7f45d1cf-64105b7a684mr1701971a12.36.1762337895297;
+        Wed, 05 Nov 2025 02:18:15 -0800 (PST)
+Received: from gmail.com ([2a03:2880:30ff:74::])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-640ebbdc7cesm3763441a12.35.2025.11.05.02.18.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 02:18:14 -0800 (PST)
+Date: Wed, 5 Nov 2025 02:18:11 -0800
+From: Breno Leitao <leitao@debian.org>
+To: Pratyush Yadav <pratyush@kernel.org>
+Cc: Changyuan Lyu <changyuanl@google.com>, rppt@kernel.org, 
+	akpm@linux-foundation.org, linux-kernel@vger.kernel.org, anthony.yznaga@oracle.com, 
+	arnd@arndb.de, ashish.kalra@amd.com, benh@kernel.crashing.org, bp@alien8.de, 
+	catalin.marinas@arm.com, corbet@lwn.net, dave.hansen@linux.intel.com, 
+	devicetree@vger.kernel.org, dwmw2@infradead.org, ebiederm@xmission.com, graf@amazon.com, 
+	hpa@zytor.com, jgowans@amazon.com, kexec@lists.infradead.org, krzk@kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-mm@kvack.org, luto@kernel.org, 
+	mark.rutland@arm.com, mingo@redhat.com, pasha.tatashin@soleen.com, pbonzini@redhat.com, 
+	peterz@infradead.org, robh@kernel.org, rostedt@goodmis.org, saravanak@google.com, 
+	skinsburskii@linux.microsoft.com, tglx@linutronix.de, thomas.lendacky@amd.com, will@kernel.org, 
+	x86@kernel.org
+Subject: Re: [PATCH v8 01/17] memblock: add MEMBLOCK_RSRV_KERN flag
+Message-ID: <c2nrxby4atq75o5yhwdpoikyso42tzimwn2bnl7fk54wuwdqax@i6kdssez3kfj>
+References: <20250509074635.3187114-1-changyuanl@google.com>
+ <20250509074635.3187114-2-changyuanl@google.com>
+ <ef6wfr72set5wa5el3wbbu4yd5tnc4p2rhtjpb5kpmncv3xs5d@i3c5v3ciioi3>
+ <mafs0wm4yluej.fsf@kernel.org>
+ <mafs0h5w2lpqu.fsf@kernel.org>
+ <2ege2jfbevtunhxsnutbzde7cqwgu5qbj4bbuw2umw7ke7ogcn@5wtskk4exzsi>
+ <mafs0cy6pljci.fsf@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-26-libaokun@huaweicloud.com>
+In-Reply-To: <mafs0cy6pljci.fsf@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 2A52780009
+X-Stat-Signature: ngn96ebjnh4uhn9co4ngg43nd5wm3cyx
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 1993B4000E
-X-Stat-Signature: b6ep4ccbz4egx7a4bz1osshnt77x73pt
-X-HE-Tag: 1762337647-99254
-X-HE-Meta: U2FsdGVkX18AImHnCA4HR0dAcxR40XCkBC3Ooz2ewDdGpCai3e92tvrS/xN+J1b90nVChY36rLOXmdPSXMYLvdHvazkZky5zAALCaFL1YEJT7llRwbPQZn3iiBba0qat5+boaPuUqBCaGinj3MJtnH8R1qvdboEUNkqcKaVW8KHc8BedJ0yglgXJ3qYmm05epTNVQzUzz46PLto7pmStQv7juX/B8G+KLyTo3MHX6T0iwILDcrxb9y1vZB4FmQe0mw3V5TmQgt5JwjrelocNcPIaRYq43pTwJr9vUBBMQ68bAKvfHRVUSClxz5OrzjjSXJih2hJUkVS6gwFMhHyXWs6OEgpDL7F0Kr+u2GWiEjJ0hsHjzp0S7n11VnuqWPFQcT2KImq3wcM4tWak9hgsuRUmGdArwlV7N41aeLR06xV9V8GiFfw445/2Atg+Ez+w9vFSA7PITVrDhZbQeYDKUItiR56rA5ZZxulbDyJMZY1YMte0qysNsGDkuC168h4hPf/WwdPp4C2c1aaa2+92tTgtYZxrYsu9cKy5+USaY2KIO1fYcQ70dz1mk8tWc6BwSIZPwvoZYcSNhje1Mjg/a1lWdYjhvtoTIBMAK8jNu+RAfVV4DdhcDAbHkcXtYuRWQvrS252fynCmieKL4qLX5ERDvnfykXShGtr8VvX9ZBHzoIFM2/DFrmvTeeFf0JqXhzWp/eK3VbodQLsxRc4irHS/XRQjsA2IJTmuYypyPX59iSemodgY896smilhPMNee9a25RviDyyiTBNgbGRfTNHew1CbXZqKeC4nQFuGDZDyacqVtXmdc4k7cznSJnPHjyyi90mDY1jr2rhhM35R0OKxZH+QwrP0Mn41ptakKeuropiUZvUbeFpwZJXGKaDXG8B6Jjdgrjf53r7vrmk1B9PECEfgNVQQDJZK6sFEVji5XbC2bVoMEpoqjNqGYfb3BeLZUlD5MeFUgZkZvEo
- x1Bxl2Vf
- 1jL3FNuoQDvJLyfYKIllFiBq7VSrdQnUYacSjBVpCGVmzjHi35ArPww/DJj2LEyNEDKVT6LegP3p1nBvTg6Hsq0uciKajbpsxRKTKQLdgMbolD7wGnNY8TB/97L3ILiF52bwVOzRkcmK075wzwLrTzBeGNwG3emlHEW0ax+bBv5FiVqPKeUdx2wTpai0Pv7oEOedREQfqXnZNvSVrQNd5/MSgil9RJOle2m4551/+L6E2zTaD3v61GMq8FUNguAbRjDJwQpr5b3+7ANeo0dLe2DChe+rqqaNgWWyvXlUjGbhsKiuhobKANwGxaAhzsUZp+xnvLLWEgV1qimUNdcoBBgQ9XYeyf3v9xIOfrqO4Srrpcmia9d1S2DkH7Z9t4zyYCZ/I
+X-HE-Tag: 1762337896-681842
+X-HE-Meta: U2FsdGVkX19jiICExDDq/RSeKRS1mY5eDmkMLa+YMw8bgYW4WyW+XSYF/DXj4MVJI5nORuA4HZ3bftTQY9hlzfE6WJHhMJyPeu1omeIeRC9l8ur+y31lgkui74HPBcHmOxCOagFA6FS/cjwJY5BO01oCNtD6J5k6Kzxf31MY9u8ga2G/q0vY1mjb/sYXfpm/LpeKM1FM/RF6uJRTC6ztiQnqnTx8cD+5+byOMZ0ppNcg7aDdU/QVHWoHO8kAjsnEs9eg3ZlXRby8fBdp35rzXLRHnxPYFiEhqDtTcb0qmXUa3U2qT0y3MIU3JsqNAVRgg+4xmXROihX/xd1hZY6Hy1TCvJ3AJwd4pPECkAX5MjUiPsjXpoC/+aDgL1MLMnPivQz2DAnqA5K++zMdl73P2MzNEp1mmlGyYcXVFOfvRjM+a5Hvt5lGqiMgR5amHXnVoMFn0k1AcUWoslCi+OUKhr6b6RxLSwysLjlLGi6VK5mykx58bPaZBErWFI6FG3f++S+3wfHaZ4riYRtaKCqgmO94BNolRSUF262vN9vbcUFDVrWvmUMI/hRuphlc7XN6V1+66wuAyWzalt7m1WC6SdrwSzJ6MPknC1LWltKo84YjL9ZIQFsjW+t6aRZQt9+BVYLMhnnv+KF9/I+OD57K5e8fdJ1yWTGyc8uEHHAXWkYiteSS7WKFQCOrL3GpQn73juI48ttQgmRhrRPnOrQK7XMFrf48YN9ZlfyBOQ71bDgez36S6Hh8/mFZCriFr+rOesFpYayR9W3CpbkaYhA04gDvjg1wGUjRk2bcxf1ImcW8x4ngKMb8GWyVdA9ec4wnwPl8DWT1dDSUnDLvMFK9WGpcuH32gYwKtQQEN+O4K3AhePshPjZL0WOFYYAKAo1XcycaLyrOPX1fE2UoxrMboHSBs6GBjXg3FGNeoWBbqkyY+6PTbOdq+E3Dyb5kjaETPv6s5UQz43Itea/hVBU
+ ziJZpNtA
+ K8srJiIRUlF6XisFv93Wzaj+tOn/xLfeamBPDWTgNSTpU5pDkFdGNvvF67hD4142rfVETY9KThzl/8NspHZFUxM+tg6S3dfP3Cd+uJfm4t0mFEERsIn18BC7hpdAV2xRGUz1aIImTVQwEEX1Vo0HLpvcSqEg2CTh9gZgoPPCeJDvs7YzL0Qnbo1/Pk3Rx5gQztIhBzG1Jlhevrsl1/cPAj1wxwajkcg9YYU3yghConeRI2LW0gVEiBqRDJ24oDOQOdtA5QPz4XdKbYLILGBOJ2an2zMWvy/xydT7A2fxxYCmqtgrGdRxp4ccwZaai58UynDUnZ04SmkJtPny+p2jhLIZP7M88PFZPQzRpkLAS+Ry/cGPv+A1KIiAN/v32w04XQeJKAJ9cLQOFq1wLfvaS16cbIge6qgqMMSvWr9S89ZJ8vk+2zEGG1njEGNQs0GhCWle3CObqWBYtQye2VgKKsWmNu5NF1MgiGjYV
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,88 +119,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:21, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> Since block device (See commit 3c20917120ce ("block/bdev: enable large
-> folio support for large logical block sizes")) and page cache (See commit
-> ab95d23bab220ef8 ("filemap: allocate mapping_min_order folios in the page
-> cache")) has the ability to have a minimum order when allocating folio,
-> and ext4 has supported large folio in commit 7ac67301e82f ("ext4: enable
-> large folio for regular file"), now add support for block_size > PAGE_SIZE
-> in ext4.
-> 
-> set_blocksize() -> bdev_validate_blocksize() already validates the block
-> size, so ext4_load_super() does not need to perform additional checks.
-> 
-> Here we only need to enable large folio by default when s_min_folio_order
-> is greater than 0 and add the FS_LBS bit to fs_flags.
-> 
-> In addition, mark this feature as experimental.
-> 
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Hello Pratyush,
 
-...
-
-> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
-> index 04f9380d4211..ba6cf05860ae 100644
-> --- a/fs/ext4/inode.c
-> +++ b/fs/ext4/inode.c
-> @@ -5146,6 +5146,9 @@ static bool ext4_should_enable_large_folio(struct inode *inode)
->  	if (!ext4_test_mount_flag(sb, EXT4_MF_LARGE_FOLIO))
->  		return false;
->  
-> +	if (EXT4_SB(sb)->s_min_folio_order)
-> +		return true;
-> +
-
-But now files with data journalling flag enabled will get large folios
-possibly significantly greater that blocksize. I don't think there's a
-fundamental reason why data journalling doesn't work with large folios, the
-only thing that's likely going to break is that credit estimates will go
-through the roof if there are too many blocks per folio. But that can be
-handled by setting max folio order to be equal to min folio order when
-journalling data for the inode.
-
-It is a bit scary to be modifying max folio order in
-ext4_change_inode_journal_flag() but I guess less scary than setting new
-aops and if we prune the whole page cache before touching the order and
-inode flag, we should be safe (famous last words ;).
-
-								Honza
-
->  	if (!S_ISREG(inode->i_mode))
->  		return false;
->  	if (ext4_test_inode_flag(inode, EXT4_INODE_JOURNAL_DATA))
-> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-> index fdc006a973aa..4c0bd79bdf68 100644
-> --- a/fs/ext4/super.c
-> +++ b/fs/ext4/super.c
-> @@ -5053,6 +5053,9 @@ static int ext4_check_large_folio(struct super_block *sb)
->  		return -EINVAL;
->  	}
->  
-> +	if (sb->s_blocksize > PAGE_SIZE)
-> +		ext4_msg(sb, KERN_NOTICE, "EXPERIMENTAL bs(%lu) > ps(%lu) enabled.",
-> +			 sb->s_blocksize, PAGE_SIZE);
->  	return 0;
->  }
->  
-> @@ -7432,7 +7435,8 @@ static struct file_system_type ext4_fs_type = {
->  	.init_fs_context	= ext4_init_fs_context,
->  	.parameters		= ext4_param_specs,
->  	.kill_sb		= ext4_kill_sb,
-> -	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME,
-> +	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME |
-> +				  FS_LBS,
->  };
->  MODULE_ALIAS_FS("ext4");
->  
-> -- 
-> 2.46.1
+On Tue, Oct 14, 2025 at 03:10:37PM +0200, Pratyush Yadav wrote:
+> On Tue, Oct 14 2025, Breno Leitao wrote:
+> > On Mon, Oct 13, 2025 at 06:40:09PM +0200, Pratyush Yadav wrote:
+> >> On Mon, Oct 13 2025, Pratyush Yadav wrote:
+> >> >
+> >> > I suppose this would be useful. I think enabling memblock debug prints
+> >> > would also be helpful (using the "memblock=debug" commandline parameter)
+> >> > if it doesn't impact your production environment too much.
+> >> 
+> >> Actually, I think "memblock=debug" is going to be the more useful thing
+> >> since it would also show what function allocated the overlapping range
+> >> and the flags it was allocated with.
+> >> 
+> >> On my qemu VM with KVM, this results in around 70 prints from memblock.
+> >> So it adds a bit of extra prints but nothing that should be too
+> >> disrupting I think. Plus, only at boot so the worst thing you get is
+> >> slightly slower boot times.
+> >
+> > Unfortunately this issue is happening on production systems, and I don't
+> > have an easy way to reproduce it _yet_.
+> >
+> > At the same time, "memblock=debug" has two problems:
+> >
+> >  1) It slows the boot time as you suggested. Boot time at large
+> >     environments is SUPER critical and time sensitive. It is a bit
+> >     weird, but it is common for machines in production to kexec
+> >     _thousands_ of times, and kexecing is considered downtime.
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> I don't know if it would make a real enough difference on boot times,
+> only that it should theoretically affect it, mainly if you are using
+> serial for dmesg logs. Anyway, that's your production environment so you
+> know best.
+> 
+> >
+> >     This would be useful if I find some hosts getting this issue, and
+> >     then I can easily enable the extra information to collect what
+> >     I need, but, this didn't pan out because the hosts I got
+> >     `memblock=debug` didn't collaborate.
+> >
+> >  2) "memblock=debug" is verbose for all cases, which also not necessary
+> >     the desired behaviour. I am more interested in only being verbose
+> >     when there is a known problem.
+
+I am still interested in this problem, and I finally found a host that
+constantly reproduce the issue and I was able to get `memblock=debug`
+cmdline. I am running 6.18-rc4 with some debug options enabled.
+
+	DMA-API: exceeded 7 overlapping mappings of cacheline 0x0000000006d6e400
+	WARNING: CPU: 58 PID: 828 at kernel/dma/debug.c:463 add_dma_entry+0x2e4/0x330
+	pc : add_dma_entry+0x2e4/0x330
+	lr : add_dma_entry+0x2e4/0x330
+	sp : ffff8000b036f7f0
+	x29: ffff8000b036f800 x28: 0000000000000001 x27: 0000000000000008
+	x26: ffff8000835f7fb8 x25: ffff8000835f7000 x24: ffff8000835f7ee0
+	x23: 0000000000000000 x22: 0000000006d6e400 x21: 0000000000000000
+	x20: 0000000006d6e400 x19: ffff0003f70c1100 x18: 00000000ffffffff
+	x17: ffff80008019a2d8 x16: ffff80008019a08c x15: 0000000000000000
+	x14: 0000000000000000 x13: 0000000000000820 x12: ffff00011faeaf00
+	x11: 0000000000000000 x10: ffff8000834633d8 x9 : ffff8000801979d4
+	x8 : 00000000fffeffff x7 : ffff8000834633d8 x6 : 0000000000000000
+	x5 : 00000000000bfff4 x4 : 0000000000000000 x3 : ffff0001075eb7c0
+	x2 : 0000000000000000 x1 : 0000000000000000 x0 : ffff0001075eb7c0
+	Call trace:
+	add_dma_entry+0x2e4/0x330 (P)
+	debug_dma_map_phys+0xc4/0xf0
+	dma_map_phys (/home/leit/Devel/upstream/./include/linux/dma-direct.h:138 /home/leit/Devel/upstream/kernel/dma/direct.h:102 /home/leit/Devel/upstream/kernel/dma/mapping.c:169)
+	dma_map_page_attrs (/home/leit/Devel/upstream/kernel/dma/mapping.c:387)
+	blk_dma_map_direct.isra.0 (/home/leit/Devel/upstream/block/blk-mq-dma.c:102)
+	blk_dma_map_iter_start (/home/leit/Devel/upstream/block/blk-mq-dma.c:123 /home/leit/Devel/upstream/block/blk-mq-dma.c:196)
+	blk_rq_dma_map_iter_start (/home/leit/Devel/upstream/block/blk-mq-dma.c:228)
+	nvme_prep_rq+0xb8/0x9b8
+	nvme_queue_rq+0x44/0x1b0
+	blk_mq_dispatch_rq_list (/home/leit/Devel/upstream/block/blk-mq.c:2129)
+	__blk_mq_sched_dispatch_requests (/home/leit/Devel/upstream/block/blk-mq-sched.c:314)
+	blk_mq_sched_dispatch_requests (/home/leit/Devel/upstream/block/blk-mq-sched.c:329)
+	blk_mq_run_work_fn (/home/leit/Devel/upstream/block/blk-mq.c:219 /home/leit/Devel/upstream/block/blk-mq.c:231)
+	process_one_work (/home/leit/Devel/upstream/kernel/workqueue.c:991 /home/leit/Devel/upstream/kernel/workqueue.c:3213)
+	worker_thread (/home/leit/Devel/upstream/./include/linux/list.h:163 /home/leit/Devel/upstream/./include/linux/list.h:191 /home/leit/Devel/upstream/./include/linux/list.h:319 /home/leit/Devel/upstream/kernel/workqueue.c:1153 /home/leit/Devel/upstream/kernel/workqueue.c:1205 /home/leit/Devel/upstream/kernel/workqueue.c:3426)
+	kthread (/home/leit/Devel/upstream/kernel/kthread.c:386 /home/leit/Devel/upstream/kernel/kthread.c:457)
+	ret_from_fork (/home/leit/Devel/upstream/entry.S:861)
+
+
+Looking at memblock debug logs, I haven't seen anything related to
+0x0000000006d6e400.
+
+I got the output of `dmesg | grep memblock` in, in case you are curious:
+
+	https://github.com/leitao/debug/blob/main/pastebin/memblock/dmesg_grep_memblock.txt
+
+Thanks
+--breno
 
