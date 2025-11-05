@@ -4,112 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 39C5DCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 04:20:59 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70540CCFA04
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 04:30:16 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 12E178E0005; Tue,  4 Nov 2025 23:20:58 -0500 (EST)
+	id B08388E0006; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0DE1C8E0002; Tue,  4 Nov 2025 23:20:58 -0500 (EST)
+	id AB8CA8E0002; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 01A8C8E0005; Tue,  4 Nov 2025 23:20:57 -0500 (EST)
+	id 9F58C8E0006; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id E20458E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 23:20:57 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 6E6E9160187
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:20:57 +0000 (UTC)
-X-FDA: 84075252954.08.F140BF1
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	by imf04.hostedemail.com (Postfix) with ESMTP id BB16E4000A
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:20:54 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ImwROvuq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762316455; a=rsa-sha256;
-	cv=none;
-	b=SZvNtuVnKEtQrsdTTBgOHVMNOHUJso1fWeJbEztlTJ1XWXUsX200DHLNdOtg2RK32JygPy
-	mCg4J5AZgvHAJcSkSN6ApkCHX/dLILFtk1CMvyGUCBjbCM+q0QgyVmVpU3NnUAi9Rvvbz4
-	FrHKVH0Wyu0tOhbAynZLu108PPcFqz8=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=ImwROvuq;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf04.hostedemail.com: domain of lkp@intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=lkp@intel.com
+	by kanga.kvack.org (Postfix) with ESMTP id 8ED0D8E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 354AC8604A
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:15 +0000 (UTC)
+X-FDA: 84075276390.07.CCBE6C8
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 4FEC040006
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:13 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIGnQGx1;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762316455;
+	s=arc-20220608; t=1762317013;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Zq4W7y+PxrZhypoQbEZTZrrBUkflx9ODl5ddzOQLhBk=;
-	b=YKHbuflOXQbeJ+flTubRJhZniALvIogKLcBbvApRQIumbWK42rUhEIi/exWp4sVAsEBi2/
-	QMnq39QquDZHVuxPiwm9EqNkTxdEhKTTqvsAXU5dwfL5gYWuorAmiWhb+z+Tx5DLrLee1J
-	sGUBv5IfuenErLd6ezE85ldeEkdfcH8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762316455; x=1793852455;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TZ/iCpQhqI2k8DgkkaFJpNQayv4Ws2h8B/Abzdxr+K8=;
-  b=ImwROvuq4MfeYEI44RQj3I6rm1yKPYzl90bqsExsd7KtRc60c8K+Ns9p
-   JbrS9g2hImKmO3nMpb2Ipsukmz7TdsMG7gv9dxCxAi5Pc/U1ao0Rg/wDq
-   LuCt0KJUZK3LmzxmwFWPyEu4cJFdIIIo+MkelTABOXhwqwwoKC5Z+DFw3
-   hW5c3EGullp6De1kRgfrsz/vWQ7c3ALxGF8Ozt4YwBBhm2Q+6RUxUg2Hn
-   7H6Cvkr/idC7kYJWtQmUoHZS+OxrdvUCo0z4vEMLwww9IHsF0Al1/7eEM
-   jNTdHNzye2SCccdlh0DdZG1Kc226a4DnS4RFBbuk4xhdYfooR73fT2BUe
-   Q==;
-X-CSE-ConnectionGUID: F38YOWsGTJOxPI0sBDMhfw==
-X-CSE-MsgGUID: jejOy4buRh6ka8Z5ASvgSg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11603"; a="51992994"
-X-IronPort-AV: E=Sophos;i="6.19,280,1754982000"; 
-   d="scan'208";a="51992994"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Nov 2025 20:20:53 -0800
-X-CSE-ConnectionGUID: QYLtRUMnQEeRSfVzBGxQ5A==
-X-CSE-MsgGUID: FzSmdCbGRSq8R4gHd8Yy8w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,280,1754982000"; 
-   d="scan'208";a="191698524"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 04 Nov 2025 20:20:48 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vGV0e-000S9y-33;
-	Wed, 05 Nov 2025 04:20:38 +0000
-Date: Wed, 5 Nov 2025 12:20:07 +0800
-From: kernel test robot <lkp@intel.com>
-To: Maciej Wieczor-Retman <m.wieczorretman@pm.me>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Uladzislau Rezki <urezki@gmail.com>, Marco Elver <elver@google.com>
-Cc: oe-kbuild-all@lists.linux.dev,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	m.wieczorretman@pm.me, stable@vger.kernel.org,
-	Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-	Baoquan He <bhe@redhat.com>, kasan-dev@googlegroups.com,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1 1/2] kasan: Unpoison pcpu chunks with base address tag
-Message-ID: <202511051219.fmeaqcaq-lkp@intel.com>
-References: <821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me>
+	bh=06woPWOwQOtZNwOFQo3C8Fknt3FAPql9ZhOwy3l4Q5s=;
+	b=0svKqN176vEsFg9cuWmHQAiZbWtlS8rdbkK1Uf/XHhhF6xpJdJtdqD2A/dNSCkk5fw1wGM
+	A/KUbzZSKp0RoZzEjNROONUmMuxx+ZCwk9bi7SCvs3O5rewckckwrCA/rF93yuYWdRuDZ4
+	TSLybfPX5gUJFBih0yNuuLzGdqKk4Rk=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIGnQGx1;
+	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762317013; a=rsa-sha256;
+	cv=none;
+	b=WIWrMwHLTuTDHWcO294vxw7khhGw1mEaBf7QY0npqGFUs5lzGGUYIQ/VgSv0Lqy7DtzFAJ
+	kmWCZabkU0Ca/zdcDAaDtF+AxIWVcYwKFnp55UJVWfF59Q2HQlo1YW6r1ptZGgS5SuEGuA
+	r069JFRI99wS6NgyHizUo4A4ZfpbBLc=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 92CE060211
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A3BC19421
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762317012;
+	bh=G/qCxnB36EpQNhfOT6yZW99z2x5Df1pKZ3J9/Srh9Gk=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=WIGnQGx1BiRBWNasEgXGgOHz4TfKbjlpAUFR7SHBZauD4a2qXWKUWkh5JShfEiVx8
+	 5eCiw3XpoNlf1VHZK3pGwY8JxUhJHDWvqKoAevPiG/LL+x8mBgjplf4nu7vM947Rc0
+	 PCvZ5X+0Oeqw9IVO2/e53l7eXIk8KiqbcLMenCg6USvE56YvZ1x3qbMa1ErpSUaxld
+	 iR4iWCrBJlF1pu99iFelX4MG5XGLEQa3Wd/f4L9KO1fgqZjw35/er+e7k9UqQ1M22g
+	 /QGz9K+HJdWa7l9DztdP3qIf1CmFoIjlJT2/iL5wtpKRc8eTLZbRV/m0/v6exWiMEN
+	 nPCj8Pu1pSwXw==
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63cf0df1abbso6659231d50.2
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 20:30:12 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXMz76u2cHI0R6HkrI+V4kACk1Ph/YMP7OtkQ9exnnsyQxYoZ6QmsxZMuov64bIzGP5xtfklNlh3A==@kvack.org
+X-Gm-Message-State: AOJu0YxRV1Fd8MLguusHnGPtv4W3dXIZnMEqxSvdj5xivzSa2WAv8D+o
+	5fj+BbbIiUSV95PvZGpF6YZ3ZCcYqd9xqiJMQECJ7T3xMiGHeFi3eeibztZbDQkfYbz8Iz/bNWD
+	85lBvYUiap5LfyMTuayNli/RMrTwnwYtRI0B8pfbhMQ==
+X-Google-Smtp-Source: AGHT+IH33g5FnRetLaV+B2cvyq+Sil9CkgltDyJbE+WpAnXFrmxDGMPntaiwOV7n3KL1ni8IIFhrSUi3NSnTAjjHfE8=
+X-Received: by 2002:a05:690e:424a:b0:63f:c6b3:cd03 with SMTP id
+ 956f58d0204a3-63fd34b6103mr1396353d50.8.1762317011548; Tue, 04 Nov 2025
+ 20:30:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman@pm.me>
-X-Rspamd-Queue-Id: BB16E4000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: et53496ywbgtey1sy9uoga8nuot8x1bw
+References: <20251031065011.40863-1-youngjun.park@lge.com> <20251031065011.40863-2-youngjun.park@lge.com>
+In-Reply-To: <20251031065011.40863-2-youngjun.park@lge.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 4 Nov 2025 20:30:00 -0800
+X-Gmail-Original-Message-ID: <CACePvbVh0tWth+WZv-CS+1bHFhJauBKGG-0+QzSfA+_=Kruj3Q@mail.gmail.com>
+X-Gm-Features: AWmQ_bmX5CGCUlxAIv0nL_kujRgA2ZCOYLiUfzWjfRRtCR8FjiOg1-a3W3PK5jU
+Message-ID: <CACePvbVh0tWth+WZv-CS+1bHFhJauBKGG-0+QzSfA+_=Kruj3Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/5] mm, swap: Fix memory leak in setup_clusters()
+ error path
+To: Youngjun Park <youngjun.park@lge.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 4FEC040006
+X-Stat-Signature: irpzkceyrhj6opz1bhgiqm8dzna5dxqa
 X-Rspam-User: 
-X-HE-Tag: 1762316454-578214
-X-HE-Meta: U2FsdGVkX19Z5VhmvUA32+Ktp+PluahDd2ja1DWQPp2F/WND4yTAjtir/Uz8+frid+RRvG53l1Wyp1UYyKv5U0zX8D8f2OMLPXVcvE/jdgFe7PENDrO7/MLXn0Tp5Ra0CaDpuOagXiM+TfbQakhnykB/DRQKtOkRbVMuEekiKA3VbaVLJP8t+eHgoOE8WTbng/lG/5kd4dorW8SC5csYj9/2O2euBHsokyvGHd09NFJ50SOFb4TTnmEYXsUwleiQSlyVXW5zjHjQ3WXVhMQfbxNcWsLMPWM/hlknM5cF5D8iIjLluexEV4/LyNFh4JkQX6i346mmpzgokLX3ziCuK44X8keCXLatBiK9Bq3kHW1KAqWL+9rFMOGYwdSFqdWBE+mFj6jJfkzFJr/iw/kqEESI55HwlZB5XYqHRJkCY2t5d5ZquXt2UCndM5lQvMDrUMwIFtQVihFHSkbUOqB/D/jqsQvGAbm9UYzPn1U/l25Pyf8C3n2HKCvFmGnSufGZx45CPw4aatXmymYt+GHEkrzWNQgJzgsA6hVyvNfMbtjpjn8n/H56RfrSNUe4ds/E0SNWX0EjCi15Q5E06XhUGDdHKTVhziRA0qWYSVlMWJdq3LF3olSTgVeypWn2lPSiG5As3yUC5Bwc9fk8uOhyEmIS3I4g0/vFvsez5kvp7z/+nZPUlElBhF1u55giQUYZ5zwR8t8gxntrepSo2ndlyK5ENuxV50BvQ1UwCx+TwlCfvY6G5b4066eWUFyB1SKcs5KkOViKisiUGokjLpHk/AZ2b5kUL1miZBW+5a9ogpscOkH0Pi1IzE6W+awHbDto1JFM5+mK/YlckZKiZWJBBA0+j1gop+I2dSCH6KsXBOLWmtd7VKo3amAkx9C2y7DMXuFrXy9qVkId8KhOTyRUNePtjBoHNiYIE1xpQIiYE5dO9ANrmEPr5PsfBFDC0gtJLl42kI7oXjwH7RX5/yC
- oDtoHsgN
- lGuL2+P4wNlmQPEYapDUTQpf3bTz8eNTyj+suUYqEteKRpRs2UYlDfHmDmXqLnV3P22c0Zq07PXA5FCTz/p/DyJjnTf5R+qPcc7mmY4a4D96Ru1qJAgunpCttUA9IYRc2Kypr3oZaWwOrD/gjCnlEdckApm3GHoGvVsUkFobmjNoEQQoj8F/nLtAvnCiTQAkL8Tf/SMVlVUjcM9hMhvi5JZyWZbTvjba4WTCDxc13ToAGPVeMP30CJFPs3TiBDQKlA37mIlq7Kowi+nNJYVah7HdzsDeAyS368p4C2Q7C3pF/uWcsxnKTLEbmLGnrgPHIPNsVnqElN3m349uv2HYbUcO2wV5FnV6GYDTJ23hjbmZ2hk85opckzx6I3e25hhjxjBi70T/6IbyO3fBeqoppORoGKwxWjFCPaczwFk7z/JZ8MJk=
+X-HE-Tag: 1762317013-840635
+X-HE-Meta: U2FsdGVkX1/maAVmMp4x9XGDDaOPq3rYLl3jOVE1/l28lMy/VPcGZKWiADkHSQHP6JlP+Kx2t3Pm6sxP+CAUib71FU6QhS+VtZ3fZt50w7lc9J60T+04YVVjQn0QsZ9YpyEbr6Mxl8/To5Ut0iDEDknyYmqfK//mn1b+heuUFmoP9C/tuLZ0074pYan61tvoAP69J1RCu3YtnrUtSKGpOx/Hvsxgogvkwi5HEhW17JUrzwgR6/DRuj4Xo7krKOxJ6yqQ6lEuxNyFEDWshG6i5s+PcS0ED2AXkLbLWelaRnOceAksuw2IJyu8zNqIYbOh2nal20LlwQG9p4chrkJlvBNqAL3VW1qneAVwTVUz2mGrcdyVyAuThivu8k1y4Lf0bqqvWtvPUqH6LuA4hxhGCpRMlX5V5/hSkZHVin+C+ZaYXD6SZmkrjEtxUZWapFFcd/szsxUN3aT9Czsx+1Rt/ydi1KF8NHt9h7dU1romqWjRUYcugo5V9784zDcL7pTYYBK6jhTi7c9SJaSUzAbrmpTG3GohYzHfCAo9udjqGA7/4xGSa3lzsM2gLw8bE6YoRYJ/MyVN4m3E0cj1SBXWDu6DYU3KYQvmocYDpy/Nm/rwW5LUc9FzF0ChrBWnipKi9mMMkd3LbGM/1tvK7GnCN/wN1XZhdlgCsiK795eouxTnypxcPAA9D+whMH0PVNgkHxxhfd/mc0rkxRGMgZXNSeqxWIaDap7K8UxqVtztk+IXsx5lfhhMWylYAxtXVAIoP1YQrpWXNkCwFbg/FSaANCe9mcqGdXYZ0U1z9l0ptAbcQKsw82IgPZP1LgPJM0YYtjCWJTEpAJLbvtFRuDZIdgSN5fRVTfu7/2D7rdob/lzozK4CTi7RNdTlAOrVCnreDfdEo0UB49RcJrt0+rgNd03SGWwX5WyvXqRMALduChq1UfohdSEB/UYgUJnQPkT/lyWESLRA43hGP4c5MzU
+ nGHk9T7X
+ 6+Lcq8nzmp3xTGg31FSs1v0PcJitjx5VRXnEpT/71dXl4/SoovpeHG09OOgGW5hiD0ZZbYcrelfQamrVOKCCHFWWL02ZxUW0Yv53GCyZ/EB+5pO4LXYfA2qksp8e44pMX6T1cx0VY23Xh67axeaDFu+9rkUQ4U1B9i77m/j5bZVY0nEUtWwS7gZrpPNXEilmLNFboqDGdhyUmas20VcAQ34SRVli9mZDmWRU3gfm+rBPm5wCBYrl7ps4294eVHlqSSaUO46E3aGo4n5vwpTqyRWtK+3u2nTOXLU3KAAoawpOXRXNtr/lTgqhVTWKnp36y9IRmLN1jZMzOg95xwch/hMYDWCHdxiBHPTfjJoMnFW8fylfqGOKdYeK27mss464c5OAeL47wSAueRTvzr9UcEyqajA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,42 +106,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Maciej,
+Sorry for the late reply. Has been super busy.
 
-kernel test robot noticed the following build warnings:
+Acked-by: Chris Li <chrisl@kernel.org>
 
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linus/master v6.18-rc4 next-20251104]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Chris
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Maciej-Wieczor-Retman/kasan-Unpoison-pcpu-chunks-with-base-address-tag/20251104-225204
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/821677dd824d003cc5b7a77891db4723e23518ea.1762267022.git.m.wieczorretman%40pm.me
-patch subject: [PATCH v1 1/2] kasan: Unpoison pcpu chunks with base address tag
-config: x86_64-buildonly-randconfig-003-20251105 (https://download.01.org/0day-ci/archive/20251105/202511051219.fmeaqcaq-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251105/202511051219.fmeaqcaq-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511051219.fmeaqcaq-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> mm/kasan/common.c:584:6: warning: no previous prototype for '__kasan_unpoison_vmap_areas' [-Wmissing-prototypes]
-     584 | void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-         |      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-vim +/__kasan_unpoison_vmap_areas +584 mm/kasan/common.c
-
-   583	
- > 584	void __kasan_unpoison_vmap_areas(struct vm_struct **vms, int nr_vms)
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Thu, Oct 30, 2025 at 11:54=E2=80=AFPM Youngjun Park <youngjun.park@lge.c=
+om> wrote:
+>
+> The setup_clusters() function could leak 'cluster_info' memory if an
+> error occurred on a path that did not jump to the 'err_free' label.
+>
+> This patch simplifies the error handling by removing the goto label
+> and instead calling free_cluster_info() on all error exit paths.
+>
+> The new logic is safe, as free_cluster_info() already handles NULL
+> pointer inputs.
+>
+> Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap tabl=
+e")
+> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
+> Reviewed-by: Kairui Song <kasong@tencent.com>
+>
+> diff --git a/mm/swapfile.c b/mm/swapfile.c
+> index c35bb8593f50..ed2c8e4edb71 100644
+> --- a/mm/swapfile.c
+> +++ b/mm/swapfile.c
+> @@ -3324,7 +3324,7 @@ static struct swap_cluster_info *setup_clusters(str=
+uct swap_info_struct *si,
+>                 si->global_cluster =3D kmalloc(sizeof(*si->global_cluster=
+),
+>                                      GFP_KERNEL);
+>                 if (!si->global_cluster)
+> -                       goto err_free;
+> +                       goto err;
+>                 for (i =3D 0; i < SWAP_NR_ORDERS; i++)
+>                         si->global_cluster->next[i] =3D SWAP_ENTRY_INVALI=
+D;
+>                 spin_lock_init(&si->global_cluster_lock);
+> @@ -3377,9 +3377,8 @@ static struct swap_cluster_info *setup_clusters(str=
+uct swap_info_struct *si,
+>         }
+>
+>         return cluster_info;
+> -err_free:
+> -       free_cluster_info(cluster_info, maxpages);
+>  err:
+> +       free_cluster_info(cluster_info, maxpages);
+>         return ERR_PTR(err);
+>  }
+>
+> --
+> 2.34.1
+>
 
