@@ -4,109 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E699BCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:16:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 326B8CCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:23:56 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 51C368E000A; Wed,  5 Nov 2025 08:16:41 -0500 (EST)
+	id 8FE4E8E000C; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4F4638E0003; Wed,  5 Nov 2025 08:16:41 -0500 (EST)
+	id 8AECB8E0003; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 40A2C8E000A; Wed,  5 Nov 2025 08:16:41 -0500 (EST)
+	id 79D8D8E000C; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 307608E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:16:41 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id CDB88B872B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:16:40 +0000 (UTC)
-X-FDA: 84076602960.18.C823BBA
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 0594E160004
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:16:38 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZpWGVaF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=urezki@gmail.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 62F848E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:23:55 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 082731A0353
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:23:55 +0000 (UTC)
+X-FDA: 84076621230.07.CE68263
+Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 15830C0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:23:52 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA3+ByI5;
+	spf=pass (imf10.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762348599;
+	s=arc-20220608; t=1762349033;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=5VGZrah33ie0BfSxMEnkVJv7D+VrvHZac8M9hCEtR7k=;
-	b=sZVaZ2jYzyOXlb90/Dw6h6KUdhkkyn7Mia1SMY28xK/hQC+R2S1hEz2fvh8Ivkj4EkGmu8
-	AHARgibrvgKLnMroOJQJP26lLI0OC3mZVhn0ftuTMuD5Tye8brOcwHFIy2yGZ43p2GxJvY
-	6gDZ7mDVnF2r1BZ03pGVNxOx0Yx4K+4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762348599; a=rsa-sha256;
+	bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
+	b=FORj+ej+NOmT+R6zJhZx8HMGnBJz+Yz54QnPvc0hDWgVG+m4s4mqw/jNI2m9dgd1W2gsTe
+	M1WwUjBh5QMcmtC855ONuEbFzr4nFb1gAd2xJU4c4tqwqj2OtY4xYq2jW+Xko3jD66cAub
+	tjSMUId2KtvAyfYK2wvO0o6IzRYV5kM=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762349033; a=rsa-sha256;
 	cv=none;
-	b=QTmw2w7u/SXsnrxzvHlKZhJi5YwbFrxBmN9P5NxgIxa121/ME/+q04+z+QGYSjSqI+iLic
-	KvjlHESoPYqoAmTVwQ8WQsPATkG73JHcw1QeSwomctfs+pT0dOpUtzPNNDjvsvP06YoNDh
-	GSA3H9+XeqFGqnRlmXFqfRaYbKxOXgI=
+	b=qVmzLp4+bUHu9YsPJxKpL2CybkJ0bpHBaCDCq+7LiNj5nER/Ipq1SB/6n0oDZeukHUARTE
+	NBFtOmqovpcJFVkzoslSAxCRcpekav1UtbDBU3I9VyacIRvP/U44WQVMH/fXi5HAu9WSgK
+	Hs+pDEz7fH8pmMSSCSYzDsuIWCaNghg=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=RZpWGVaF;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf08.hostedemail.com: domain of urezki@gmail.com designates 209.85.208.170 as permitted sender) smtp.mailfrom=urezki@gmail.com
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-37a492d3840so13454211fa.1
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 05:16:38 -0800 (PST)
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=OA3+ByI5;
+	spf=pass (imf10.hostedemail.com: domain of akinobu.mita@gmail.com designates 209.85.208.178 as permitted sender) smtp.mailfrom=akinobu.mita@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-378ccb8f84aso69944711fa.3
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 05:23:52 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762348597; x=1762953397; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5VGZrah33ie0BfSxMEnkVJv7D+VrvHZac8M9hCEtR7k=;
-        b=RZpWGVaF7LQZxhLawdOrpIOoeMNhw+RwfCI9prrJIOViX54VSTsrY8cw7hylhP3W+0
-         3jpPwJ3W29VtTnK6orrsxs4JovrN/NbUCRNm7BqdUh495RQmqs28QnyDejTLU15kd6Pc
-         WHn8Cb7K42y4KxRho0QRZMIHIAoIM0nBKmpKfdRuzu1PSRXe9t7j/xm3QOBZWBeV18lV
-         1mzQ+DghK65YTyh0xQpNueHBmN1biZeonJbNB8j0s3Er6+45CBfbcHnL55imidEkp+bk
-         aOv2Z1Q8A1auUSGWgUPuMQTDsvii1LvaH6bv5B0zRdCiIk3Gx5SZ2OLLO8f/kN7jQsEp
-         Kykw==
+        d=gmail.com; s=20230601; t=1762349031; x=1762953831; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
+        b=OA3+ByI56ZD8dJlBnAPqZzrs+WeH6VIfyludz76Cb9h2aUuEKpRIpuPXcjKxSIAVth
+         6yAXyZA3d1USn6U/HUhSwAaX1IjpgMYXZcig499snsCeguFEtlPrJCxkxEklJEjaVMG4
+         bDSvPSoGGG/knGBVf74dvqqg9jjnQJK43f1W+7Qa3QEml0vGMqpfYA2kbKwS6KUUpr2G
+         f0XEF1lGWmqKrw835VQmdUZWZwq4VV5PkNw0IyKMIg0DPqvclgaIPH515ADWZLe4omNR
+         8hlcKdaGisqiJPkeA20C4GaxfVN7PIb4sZpfL3/fvsD80bVwCcv3Vj+tS1clNye+waFP
+         unXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762348597; x=1762953397;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5VGZrah33ie0BfSxMEnkVJv7D+VrvHZac8M9hCEtR7k=;
-        b=O8ds84mq5zzi/CmrC5rWoWXb4gg6Yot6M2uvIrNBsaQFza21N6glRYF79gWBilhyqC
-         Cueq8NuFlQL8nxmicn88A3VYoyJeHJ5T51pDtQqnBqBWFyjybsJ/QpECrpuPffbkojte
-         9fkMZepwJGNgAlrOV4AQJQY16zs4/lp4ppyeHIq/fmIJXCgLzvbhQNkrPC/PdkChmK6J
-         6bDn6k1lv/PI7St6W1w6Lqu8EDa1C71INHbfRTnk9HOFfqu4HxfnJNLA95iMfkn3XJQS
-         7IvYxUbU7SHFSvkNxChWrCp3CiVmwFMLUiMbn8G1BFXaXSnic+ZpMOpMlq+3yira7EW+
-         c2Jg==
-X-Forwarded-Encrypted: i=1; AJvYcCVt5iX7RIA/d28rJeEbOPjTiEk62WWl4IxmrqI5jDS/CG8uOeR2hwbO9zWcFNX0l9EdYQyvXcLrFg==@kvack.org
-X-Gm-Message-State: AOJu0YxFV1Ka2PW1IokDmKnvixqdXWGd6DV4VmVQKhufC1h6YNoucpB5
-	Tnmu/o2IRroW908uzWITRgQ9slRyWBZh2El2JjEmJm7vci8rh3Rl2LBhNOK+siTjTHXabxphRPn
-	yHf128EKW4ONgSfdDO1yEvliFezM3k7k=
-X-Gm-Gg: ASbGncsndm+VTY5ljMznXU4hrMhOBMi6KSJwZFKNoNUuwgKhGLWFfdhIAiJtQZzG39H
-	ggimr9KAdAKDaxkzlvQZXI1Mnm61MPCWFBqek1ujU1YJjsPag1TSwZGz9QjFpAugm/gqP0UwQ7o
-	bxcUKqFo4ShQxfLHuTKQsKDLjRubLB2b3cuPGAvvBl/tH54a0pkmSehlGljmWfgrl+GFt0CUmGV
-	J2whJvsci4TxqwjW2bYRAs1Jb6VmQ50XUF41iIKoxGKGs4FjEgjDWKhsN7oN/Zl1VXh3730Vdqi
-	9hE=
-X-Google-Smtp-Source: AGHT+IG0YzXWMbTbwUU9D71aDeWBzEJ/KQVWDDiUSV4tlhYSsUwlaA485hhq2+u//XYa9y1WeInKFd1d1BUKtTZ3cIs=
-X-Received: by 2002:a05:6512:3e22:b0:594:2bc4:8284 with SMTP id
- 2adb3069b0e04-5943d80bfa2mr1150417e87.49.1762348596657; Wed, 05 Nov 2025
- 05:16:36 -0800 (PST)
+        d=1e100.net; s=20230601; t=1762349031; x=1762953831;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2WNWzl9UPAGqC0OeojGWF3FUUOCD6lJ7lBCWbQ62ZwI=;
+        b=pEKnVrOZ+aEUD+cEhpAIs0lEbgEw+3x4KXrAqnIUeVQHvP9lORRVlZ6hV12eWluI7x
+         po2csAvQ6PcWJp5/Np/s9F1nzcoC+nknmJ0Z1KDhXucyFcBFirzoBRIfLq7wsGUPHKBC
+         x8LvVgKxx25rxGGBmGrfdtB+kB8SN1fEV6wzu1sae2D7pImgBFqs8EqkbT+cnXfi2Ycs
+         twUGIfQQJ6BC+Q77EC929a7fX1e+Im1DYYP8MEZ8gK0U16gUy8cLAVpbaCt+jAYxbeXH
+         DUvq++qF1gAmflOJF1ScvvkR3E89c86ZQvlUee1KdYg1zz/za2vqoIMKUlWKAdzyrUbj
+         fLsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXB4a49Vzao45vC3axh6GhhIo8W/xLqBrRf0QXK+G2ltfQUHpfL71XRFmADBFi0YLXsAOe/4ZoEKA==@kvack.org
+X-Gm-Message-State: AOJu0YwezF3sOq2/06PJ9a4NhNj9UQRtihq4htLDAyFFnb15K5nslcdQ
+	6AEWAUdDB+BZOln0kUKmzn1cbAqdQueQzNoDyBKvNkgmS+5strLdeEn0CKBWJtkOP4q4A+MuNj3
+	G0V8ACr8+kTqFTZHOlLogDrrjsbGHMhmibvB1
+X-Gm-Gg: ASbGncs2YNoi9c8BPuPCmoMs3cnkZFT116RVcK5o4h/s0LmV9ozRyJlUxZPjUrsaZsl
+	O/yMrYN+bRVYEqDs9XiIXkz7m1H+vI8AiIh5723mgyqzucKJMlALHMIf3hHJlRxVsvmtvhIIk8z
+	XbHhf/hIsAeQLMoi5UAeVe7CTV6dgvALJqXDN7cO/joQN+PGjy3STKVPnCoodep4kHzUKO/WQCU
+	+gXbCF3oMTvacCLiE1zMQJcJsNTs9Bey99MYXdIx7+D2nqQTcDOKsbTMtBDtCFGgNLC8aeLu3yF
+	A57uSFkLEJe8
+X-Google-Smtp-Source: AGHT+IGdn3dvXTFfnd26oUCEg5vL/XwsKbx6eN6B7iFUvvLn+iruzlQSAGzvDJ9vCiy6F+m/VX5r20KcdkbP0rV3R/0=
+X-Received: by 2002:a2e:a109:0:b0:37a:3033:16f6 with SMTP id
+ 38308e7fff4ca-37a5142e2c8mr9741151fa.35.1762349030972; Wed, 05 Nov 2025
+ 05:23:50 -0800 (PST)
 MIME-Version: 1.0
-References: <20251103190429.104747-1-vishal.moola@gmail.com>
- <20251103190429.104747-2-vishal.moola@gmail.com> <aQopoAj3i2jdIX6V@pc636>
-In-Reply-To: <aQopoAj3i2jdIX6V@pc636>
-From: Uladzislau Rezki <urezki@gmail.com>
-Date: Wed, 5 Nov 2025 14:16:24 +0100
-X-Gm-Features: AWmQ_bm5zSslRL7odzax1g1yzWcLuJoFdgi4luT5u2tawHzjpU6ps8je4_UKZKU
-Message-ID: <CA+KHdyWxjqAxVEBjOun9VxoeErWEyba3OvcJveLqnRuBLk2RLA@mail.gmail.com>
-Subject: Re: [RFC PATCH v2 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Christoph Hellwig <hch@infradead.org>
+References: <20251104003921.9707-1-akinobu.mita@gmail.com> <aQo1VjjQw1OZG8nY@kernel.org>
+In-Reply-To: <aQo1VjjQw1OZG8nY@kernel.org>
+From: Akinobu Mita <akinobu.mita@gmail.com>
+Date: Wed, 5 Nov 2025 22:23:39 +0900
+X-Gm-Features: AWmQ_bm7dSG6fty0drtbxuWvBO6bGxhtYdnsjyRSa0aF5n43MfZsmtccLtweZyg
+Message-ID: <CAC5umyigiSS+ynr2JnNSaR3irW0eEWFuUVnJvY2QvJJO4yfP-A@mail.gmail.com>
+Subject: Re: [PATCH] memblock: fix memblock_estimated_nr_free_pages() for
+ soft-reserved memory
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Dan Williams <dan.j.williams@intel.com>, linux-cxl@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, akpm@linux-foundation.org
 Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: na7sgtnr7x3eeche6yh4ees1gmmhnjk4
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 15830C0008
+X-Stat-Signature: tuqaqimwhkuzfhqw167ip8zzauuiasey
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 0594E160004
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762348598-826391
-X-HE-Meta: U2FsdGVkX186Pe0lsCmb8fR8698b3p4sQK4buBJtnP46COgJqY5wPFd3bB/frBZlZYOefpdC7ayjGQroxyab9R2IdpmSwh0NoW/5dvI5XewXGDnK2uoMplhAKChjeBUsWcTRzawNBG0dlHD935IE/zcGAZxqtut+F0v81mOpRrbKzzR9HnuUOlnvwNqLCu7J4LbgX95VdtkE+xK8bQ624XoXGhTM3dFByO9ll7w46t/pA9rSSst2poV5muQdREwJLAi5E8We0NATmJKd6xzkjUxy4yviQt3CnhNsA9j3ToqVk3/pudVWCo85Y13cjg9l7OBLcTEefpzVm4pwNGMwHoHVeODlgKJuB18ZlZIOOHkJLKYP1eHuqCpjZ3AOXOfoMg/xL0OfRLCE1nkuQODzJrgsPJntJ/zCYIjZ61D1+aycpGUC6SWsGlpjROJIbmGMugwEHEgOv2VJ50LFlkDoR6MkjvfneXVVdPUfnlozLfQZPSOX83CYn3xqIs1Ggmmpp7OyKuantyUcXUjp8Xw5/UB4x5cMRWHt1IxNXFn6x3Y6QSrUFaKRuzaG1BNLLDO9ZstVP/Pmob13rmXwCaZ0UIqtcHt7yddbC0vZEWEspxWI++FjKQm37waGWHY1JnD/ZNzZHk8LRltfInsQpHs5/o1GgrN12mFSYeRvSxsVOHmv1M4qGMIePRT+lJenMDuaNI9EEQ0PwaQM/JMsLXK5nArs2dHQeHQF8xgdDMgTXm9+0zI0lYt4LExwhDUSR7W6UDnsMeVkP3J9Kxj/pdQCzk9LxRaKt/yQM0rezH58Q6j/290QCWT/RRB5dNZ+gM1Gq8SJcEdPTPHmLTyryIosyyUCFbCdl6wei65E/SJ/XMNOx6DV/RilKWL4GicSnCg4zWL2+2Rq9iwUAcf/22AE7ScuLEds/eb6Y/R8gxvJS4Qyys66A99WycSeQz6VDP3oxi6gLB1w3yiyOvO9+/V
- oJQfh2/Z
- Ic5dxkXAOICykFXyiF5emTcxt2fTbFgxYsk0MpbJV7Szl+DE4O8f/oC4PLT/MaDyXf7ds3b7Ub+NrIxoB8w7uf0u6w+RyRE6nabFSUGG5Jk2PmiWmefFXPzMQbQ==
+X-HE-Tag: 1762349032-405826
+X-HE-Meta: U2FsdGVkX19QclpazeOajigSTz8p80VmUj8ejMw2z7cHbw8M7P2T38JnBV3CktcS4B9Q3VTnEekexkulcY+DmlJ5EPP1zXfHxQaIFA4vjbiXT/F7FB767a/h3p9IIHB6/v3XSlT6jOuuwD/NiGn23otFF3c6gI4te/bvW4I/iyq7S8PVg6r7svqEdpOap1DRZI2Qvo1B3bI/MwcKynkc7Xkrhz0IUZ5At5AdsP72whHf1YOEd4Z5aAIpLbzk94rs3nOuLUN2MoE/w+wlT1u6Hghx/LWE5SajKnXdM4pLy7CIdt7szGpTBHlOGBdKPJ7BFLfq6FBtXRfd9GbC1Z4GF0e4TMSPUJ6oijdDppltzjAOffoiQhY6mLnCblGsBAwpt3E1axAg5q5TiEbS+EZz8lNzg0QpkoVEqIqvQLcfVtHflmO61iXn3UScPLuBXMZoLb9ic+ukcyNd8t/W7ePL2tQ6XWsEzuZNEpaayqb0lV/t7i6KHWpLpZFUe55QFg4jEUIhAuP4/8AYkS2tGfMM7Tvj5N+qLnbJGt9sbXooMMcXTSvjHcONFD9EkqSiR344QSExlk58QKpxNUE40FO43ktz9eTascuveASKUc4ZgjBJjd2oa3CGzRV7A8r9c2eZV2ju7SyWFoiXNHnR3iXSEul6IH4HR25Iem2rbBVnbwBTv9h43VNc00x8mYLPD31V3twmO14PDG3dtYngNI0aGF2B7jbx/Nr5AzlrzJvaWqjmlnsalnbPApkuv5BKbeb5dtQWViHXz64Q79vG2+00ufxNrqyVG0vuaU+ZBF4HxGjRNpVKchEQDAgMyWCaiVvZluAT+wjh4LC4PmDlxJvip1uj02YpBx3iChnwdDdggi1PLnVPm2mzDeQbb/iy6vnFr6ua5D5YWtg+LJ5Uf5Rhv38/BiFhmYFHPH/dedNWhZT+ltQRcfGFauOJVIcwAZKodLO3ObG4ubY209W/dOb
+ zCTEDdlN
+ XEoi2QuIGXHkqk6I1qmgBLaU4HK9d66zka3jJY3cHSsnUoEy9LDYcPRNFsqJKc16Pil4MwOIm52+gOWj2MzcpUIhfndjEQcF+ZfVGVe6agcHoljpR9xXnTS1VfIxS4ja/EupWA2DWTzLoCalIzAYMeQD4NdDQZvc7Vgq0X/DmNomqNd+jetPiuZJpQuhG7MGdAip4hYDYlDfUh00agFMXDlvbOsiN4FqYx8LzLjGCZSxQK8b1FmORz6oEVTBD7W9a3iZdoWTUIEnjjZHfPM7eyzI4h6r/A5B2wvYaxAJ/P8z8n5luCItnzreCRQee3PPRLnd4uIM/2w1ANoFhvcTmfL4f4Gs+FN2lXTWJZXY/1ZMxOyoHxri+unrA4WaM5pq6CMb9yEcQcbCAHt+Ry1QT0+O9v5ZBFDikdXNrMDqzNNoRFFCWuQcp9RR66dKvfxOXcN5zShm+Aj9COjEiOfRwcsJGS1ZG4aEe6rMX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -115,40 +118,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-> On Mon, Nov 03, 2025 at 11:04:26AM -0800, Vishal Moola (Oracle) wrote:
-> > Vmalloc explicitly supports a list of flags, but we never enforce them.
-> > vmalloc has been trying to handle unsupported flags by clearing and
-> > setting flags wherever necessary. This is messy and makes the code
-> > harder to understand, when we could simply check for a supported input
-> > immediately instead.
+2025=E5=B9=B411=E6=9C=885=E6=97=A5(=E6=B0=B4) 2:18 Mike Rapoport <rppt@kern=
+el.org>:
+>
+> (added Dan Williams)
+>
+> Hi,
+>
+> On Tue, Nov 04, 2025 at 09:39:21AM +0900, Akinobu Mita wrote:
+> > memblock_estimated_nr_free_pages() returns the difference between the t=
+otal
+> > size of the "memory" memblock type and the "reserved" memblock type.
 > >
-> > Define a helper mask and function telling callers they have passed in
-> > invalid flags, and clear those unsupported vmalloc flags.
+> > The "soft-reserved" memory regions are added to the "reserved" memblock
+> > type, but not to the "memory" memblock type. Therefore,
+>
+> @Dan, do we really need to memblock_reserve() the E820_TYPE_SOFT_RESERVED
+> ranges?
+> Quick scan didn't show anything that requires this, but I could easily mi=
+ss
+> something.
+>
+> > memblock_estimated_nr_free_pages() may return a smaller value than
+> > expected, or if it underflows, an extremely large value.
 > >
-> > Suggested-by: Christoph Hellwig <hch@infradead.org>
-> > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > /proc/sys/kernel/threads-max is determined by the value of
+> > memblock_estimated_nr_free_pages().  This issue was discovered on machi=
+nes
+> > with CXL memory because kernel.threads-max was either smaller than expe=
+cted
+> > or extremely large for the installed DRAM size.
+> >
+> > This fixes the issue by improving the accuracy of
+> > memblock_estimated_nr_free_pages() by subtracting only the overlapping =
+size
+> > of regions with "memory" and "reserved" memblock types.
+> >
+> > Signed-off-by: Akinobu Mita <akinobu.mita@gmail.com>
 > > ---
-> >  mm/vmalloc.c | 24 ++++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
+> >  mm/memblock.c | 33 ++++++++++++++++++++++++++++++++-
+> >  1 file changed, 32 insertions(+), 1 deletion(-)
 > >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 0832f944544c..290016c7fb58 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -3911,6 +3911,26 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
-> >       return NULL;
-> >  }
-> >
-> > +/*
-> > + * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
-> > + * This gfp lists all flags currently passed through vmalloc. Currently,
-> > + * __GFP_ZERO is used by BFP and __GFP_NORETRY is used by percpu.
-> > + */
-> > +#define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
-> > +                             __GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY)
-> > +
-Also we do support %GFP_NOFS and %GFP_NOIO flags.
+> > diff --git a/mm/memblock.c b/mm/memblock.c
+> > index e23e16618e9b..af014fa10a44 100644
+> > --- a/mm/memblock.c
+> > +++ b/mm/memblock.c
+>
+> ...
+>
+> > @@ -1826,7 +1842,22 @@ phys_addr_t __init_memblock memblock_reserved_ke=
+rn_size(phys_addr_t limit, int n
+> >   */
+> >  unsigned long __init memblock_estimated_nr_free_pages(void)
+> >  {
+> > -     return PHYS_PFN(memblock_phys_mem_size() - memblock_reserved_size=
+());
+>
+> We have memblock_reserved_kern_size() that tells how much memory was
+> reserved from the actual RAM. Replacing memblock_reserved_size() with
+> memblock_reserved_kern_size() will omit "soft-reserved" ranges.
 
--- 
-Uladzislau Rezki
+Replacing memblock_reserved_size() with memblock_reserved_kern_size(
+MEMBLOCK_ALLOC_ANYWHERE, NUMA_NO_NODE) also fixed the problem. Thank you.
 
