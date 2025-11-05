@@ -4,133 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5FA9CCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:26:49 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 538AECCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:27:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id BA0778E000B; Wed,  5 Nov 2025 04:26:48 -0500 (EST)
+	id AB79C8E000D; Wed,  5 Nov 2025 04:27:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B29A98E0008; Wed,  5 Nov 2025 04:26:48 -0500 (EST)
+	id A412E8E0008; Wed,  5 Nov 2025 04:27:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9CAAF8E000B; Wed,  5 Nov 2025 04:26:48 -0500 (EST)
+	id 908D28E000D; Wed,  5 Nov 2025 04:27:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 885F28E0008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:26:48 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 2AC4E13A085
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:26:48 +0000 (UTC)
-X-FDA: 84076023696.10.A2CE3E4
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf14.hostedemail.com (Postfix) with ESMTP id A1E4B100017
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:26:45 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9tYzCnF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V8/edqQ4";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a2GTD0gV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qXaS4806;
-	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 7BABD8E0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:27:17 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 37B01140263
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:27:17 +0000 (UTC)
+X-FDA: 84076024914.21.CF7E53A
+Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
+	by imf09.hostedemail.com (Postfix) with ESMTP id E13A9140004
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:27:14 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762334806;
+	s=arc-20220608; t=1762334835;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=li6o80IDGYsi/HbFc5gcJrYIZ6xt1ndrYA5Yrhm9wNM=;
-	b=Ki+SJ9o0/urYyQnw47cLCmPvwNmAS5YRfYWbvE9FKA+a3AXE9yKYrZ7klKOM/qGS+2/aGj
-	SzCLe7N76qN67AA5GT/evJ84T2dBndZvAJUtJkVq/U581g42Nca6PE+E4+BGiazKaoSjXb
-	c+Guyoj+aQ3aDFwwtC7fInJSlA1cIoc=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762334806; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=6oopl3rnEC27OqMXL8plwbRq1JSX2M+l3j8nKcRqlpk=;
+	b=LP3sh/K80+IfiTTm9X7VVYIBPvKr0wbrlmqgjU9AT/O/LOgnsatR8/IHuwupU0ZUOZeIzm
+	x7ad/D1Uk6vAW3ZdkN2brdbTe2fuw4dzXukwmx9/k2S04e/kklK/Xks41YOmM+CQIjSwNU
+	3UQMCkf8D9LftjD1UyAOAe7A+/NDmtE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762334835; a=rsa-sha256;
 	cv=none;
-	b=qy7OP14xtTriIspqVeyNiQuoVzFZK0NMS4cZDMeAwobRvSr47YUVWKAEhe/DiJDaTJqTvr
-	pJUtJH2lvu+xxDp/Y2v54NjL+unSRikkQHx044JiFcpIGtr889EcsQu50BaYT+lOYNCaXW
-	1nyumrUWvsDtjFRKCo3xCwOi/cmQhWg=
+	b=Q56dw6uvUxVEwazjXxgFJsscj6EnHP7Z2iwVhEHS6jRwt4zC0s7FxipiJzYHr5496p/2B1
+	0WSvuJ2BHQM3BQ6zBi4uGTX2s3GNAFlU5QDAmS37T8OLinBVEQXJ8YWY2I55bTyJiqnknf
+	5clzZLTnk30CNUQ317ELQZ86gTh8+QA=
 ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L9tYzCnF;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="V8/edqQ4";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=a2GTD0gV;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=qXaS4806;
-	spf=pass (imf14.hostedemail.com: domain of jack@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=jack@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1435021188;
-	Wed,  5 Nov 2025 09:26:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762334804; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=li6o80IDGYsi/HbFc5gcJrYIZ6xt1ndrYA5Yrhm9wNM=;
-	b=L9tYzCnFnPxMFuFnOfQRCTNTtEyMVQOdkUn+7rLE2UtBCcgYApNO7kUwOkaSzFkAs9fbWX
-	964rhJRj5yIOXynF6JT64L3PtB+cspGGo4RcpfBq3sWR6ecTtuY4girAmeXOLX6TtOq4Vh
-	CEcAGYDAaKZM+TIG1DOW6P6FDz006Eg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762334804;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=li6o80IDGYsi/HbFc5gcJrYIZ6xt1ndrYA5Yrhm9wNM=;
-	b=V8/edqQ4VYHBV3+J/0iSOO02dNdLpMV2fSfXdDwrCTDjabtF1W5I7gxFonx995PwgeLR25
-	sTstR3kE12ZLp3CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762334803; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=li6o80IDGYsi/HbFc5gcJrYIZ6xt1ndrYA5Yrhm9wNM=;
-	b=a2GTD0gV0mhZgLZteeOUH4zQxnnXtQbZDxi7zdllqLOtx5VQGvPPU9nUvVsiONPPSqFPTr
-	ZFQhfmuur98C5FER/YijuSEk/hNFtqpSeUoA1cttZQ/iB9Txtrirhl+WgBnJXZItaEDv8T
-	sLJJEhLrTLWvh0rOXg1Lh1z9lgaHrjw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762334803;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=li6o80IDGYsi/HbFc5gcJrYIZ6xt1ndrYA5Yrhm9wNM=;
-	b=qXaS4806tt+tAI2XoSRPECl8tFg0HBvPluO4XJm0TKioJkPUJ7nSG9G2QydtTvidgBS1Em
-	oMV8YsNRY3Pb6OCw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 08375132DD;
-	Wed,  5 Nov 2025 09:26:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id AksAAlMYC2nRGQAAD6G6ig
-	(envelope-from <jack@suse.cz>); Wed, 05 Nov 2025 09:26:43 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id AE55FA083B; Wed,  5 Nov 2025 10:26:42 +0100 (CET)
-Date: Wed, 5 Nov 2025 10:26:42 +0100
-From: Jan Kara <jack@suse.cz>
-To: libaokun@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca, 
-	jack@suse.cz, linux-kernel@vger.kernel.org, kernel@pankajraghav.com, 
-	mcgrof@kernel.org, linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
-	yi.zhang@huawei.com, yangerkun@huawei.com, chengzhihao1@huawei.com, 
-	libaokun1@huawei.com
-Subject: Re: [PATCH 16/25] ext4: support large block size in
- ext4_mpage_readpages()
-Message-ID: <svvbzbdnlvd5bvcbale6xe2qtdaf4ddr3rlrphqv3spcy6dxpt@cynxzantfcmu>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-17-libaokun@huaweicloud.com>
+	imf09.hostedemail.com;
+	dkim=none;
+	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com;
+	dmarc=pass (policy=none) header.from=lge.com
+Received: from unknown (HELO yjaykim-PowerEdge-T330) (10.177.112.156)
+	by 156.147.51.103 with ESMTP; 5 Nov 2025 18:27:10 +0900
+X-Original-SENDERIP: 10.177.112.156
+X-Original-MAILFROM: youngjun.park@lge.com
+Date: Wed, 5 Nov 2025 18:27:10 +0900
+From: YoungJun Park <youngjun.park@lge.com>
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>
+Subject: Re: [PATCH v2 3/5] mm, swap: Remove redundant comment for
+ read_swap_cache_async
+Message-ID: <aQsYbvpPweyWUl3b@yjaykim-PowerEdge-T330>
+References: <20251031065011.40863-1-youngjun.park@lge.com>
+ <20251031065011.40863-4-youngjun.park@lge.com>
+ <CACePvbXO8oSH+-igG1pNFueB5JdoDOadV0n9DNN++iMWgCDiPA@mail.gmail.com>
+ <CACePvbVydfq5DFP4R3tKXtN-UmZNQJMxm-p-4+fYFwyPfLR9cw@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251025032221.2905818-17-libaokun@huaweicloud.com>
-X-Spamd-Bar: /
-X-Rspamd-Action: no action
+In-Reply-To: <CACePvbVydfq5DFP4R3tKXtN-UmZNQJMxm-p-4+fYFwyPfLR9cw@mail.gmail.com>
 X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A1E4B100017
-X-Stat-Signature: o8x4go6wpiyqmnf61nhxsmos9mnt6ga5
-X-HE-Tag: 1762334805-428477
-X-HE-Meta: U2FsdGVkX194rikJMwsUOyz3/i5vRzgrAzqwmorTTcIRXmQ1pihtreYvMy0AmD5f/7rxvR7wR26F6Q7ODZUaxhqmj0+Kdep73CoYa+DIIK/9lGrBNsR917JDPkMoz31RCqUdYB0tUZK4Zjs591uDtZBdacG/7RhokcrMyfhhhvTn0ffonwWbXSsxo9hq9K3/3BfmXLavAdWFpfdhCyBXGAXcu60OPmv51+9QE7MVuW0mZEa0BPluukHPQFtO5P9bScZ1OIl7pgqtY/1S8FDdukD59wRqDgiIqgTtdjXF1yJMd1TCkgsBSwJLLnfHwyPtILU2ODVjVuSAYh1MzIIqtM7hMgx2I83UoSHF00lOy4xRCLEw0rpqtcIInf5qlDlRhu1EJ62CNbeG1/ntXPQu+F/vS4Ekf+oD/eTPh17rh8nh+EDefUuab/HwprRY7UjnhNU58cE1aiQTnhjANqV5BBy8/tn7qOZllaSdKQF2MK3cYIGmKiExgHhmGhbG1rKT277Y/9rMAuL7R2tCNZJC6QsJSH2PGu4RvYPlBhifHt+LRyFgOwDUeguvhZwMQYl8qZRpu5SqHydTcIwtlzFZXmLwOOsl64mcF2HmnU+tNDVhsdeQv4Jkn7NtNLTPRHeP2xhSncs1eqa0TWXBQE8luU+41NnB6gDIc9liqUGE8vYZenbhEBe+G8v5cfPbvBB4q2vaI3xeeDz4HzT1MCAYuJerpOhuIjmJ/BsDeDXz5sO5c0qKBqfcX+u6zpvh0ofPb/Rvp8QjzfNe708y2BvqCGJIzq/7/s0gn5TO2Rrf87dS87kOfK/czLctpKODvZLN1nb71Q5BJM7jLegqdbePv8A7f2ufVoCkTjNTjWIgtCJtBGqzoRpltB4DJOjipBgQmJSXOQ+W4wozefaOSd8E2/OnAB8Vba+nvFEDp7qvaVs/CijslnxnAMYocy051C1xbCaMPVetXkxrXFXTdkf
- XgeTmk1U
- 7oK4GPRX0td8StJDO65c8bYTyi4R+HGDjvwMQ5sJ7lLvQv1i3QXOx3ok/+LjtzTmHvfv8jEWXi4w178YVHH5AdarIc/jyi9DjKl0EesPrxazabP/pzwHAEur+f6j9wNqfKLh9IQY1Ov+mEG6/YRmO6V5Kx0jKdGHgOOGsSGSEGGrVPsMszlp6G75fTGv+9YSUIJ4hJ0n9LawkXFp9XtwE6jU3iuTr77Tg9XE9lsp+E1fkFjtzxDJy0Wzv6+3qGrqtTrbTxtfnqvNYfzvlGlf70s+kpvxedM/w3xYWI4yPiKNTEbDyN1vjI/bVHOgxaqbNo7qoAC9FRwFtTWTLjiQEhI/l1T+TKxWWhogW262IMty6Uvi8o7sxKHPPmCOfHei9FarIie9pFdJQlqmRKx3NumYfSeQPOgzoDvI0cIF+Bn5OuAcLTBUUbWBZXg==
+X-Rspamd-Queue-Id: E13A9140004
+X-Stat-Signature: 9rbd5jsh1jn4bk4fgcjx5rhj444eekwx
+X-HE-Tag: 1762334834-235574
+X-HE-Meta: U2FsdGVkX1/Q7HGrkSneTZMqkM2xlCUdq1SSZGOtyA2aXMh8VosAhakJ3BWPtouYmVrOANO6LdJMNH6frdWPAdaIncwqNaqkTuXeBSc5z+XW+aC+2nN5B3b7HZCg9+lhD2SFqkANWoqNakWOTw0JlEuHXXLYjiMzU2xB0Y6CMjwrg7uxjNl8wVBF0iIfFGmAzVI8jWhtxSZnxkINV+XRf+DIescI0wIohJSKcWNsjOlXXRkDsPMgsdj88zZncUaJdqSx+KgBMLg422sEG+ic09h+pCwRmnn3lYbn6eEWxoJMk2cbLwGWcsr5ejECiFQ/40flv+qUiAOAOHAlm+O+4WYf/0yGyudHu0s1XGcBjaBlC/UNvqd7dhLmazHh91bmD/6EukFjfoTePi8Q2lzgjnI828KkKE3Yh0xjJ7yJWGXkwxzvBfBdoRRtRiVY1kpInZAcckBrQ2/WRPu2m4myMnVNhQ0wx7m9nDJdtfT9VskG/W2M4O+cwxdyZulFk87yYNHBNiMIehwuTt59/kfJclkVsy9lz8855AYc+hGFLYTJkYC6rI0ICYcKW4WjGi0e3wlqrCfzuFzFPX+R6CDEC/sRCn5S6zNZgMry+3ZNmjbsnp6wMRHRM5N8zuLqHwAdbOYYAw/fL09Z/mZdUHtAPoXKfS8twzBYKifbHlTcaQnl0aTcpztgZf+M6Fq3eP2xLfaBOLs/uRtNulIl4P3crXpi47JMNQq9GXnIhWjU7iTiLaEMIgf0DNLqwjjqcS/v4EdlyIfvYuXLSeA14UUt/Yh8YTveQuEMtl/01zNLL9MD8vcp7iXFT7Lz5AsLCu1Do2CrpLxyt03c8R/AJ4a+bGwNDG9uzw7cYRo83n9USM3ZLRN47ettdlmFzdDuu71KKXAx6lkjYRz+VBKMKM4qD89F6tx35Wxz2djBz9trqTsLrzXCzAfO8Yy+ft1TEpP5MtDwjP17mIZJluMcqM5
+ 9kTK3Utg
+ zlVkIzL6+Y19S8oeQgOYMPH+3kpHEv02G0C+tuMHl/QwaoWQo4IahBEGsnjLtJn40w1qEPckBeodmAw0zizfBQCRsxAl6Uyrh9IUcSKHiX5E7vo+RtWYiMBPrh99Ipzfj92QamP9wy/EgyxCso7cy1vyj/OCo/RWa1bWh45wju1VXL19LAZxfkBx/da/LIye3ULRLri+21g21W6kpv/bCVu1+HfCJv5+A+9ECMu04sIDv+zWNQmTwprSK9FC9ZhtobHtA12kBZTx+g7o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -139,55 +86,27 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat 25-10-25 11:22:12, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
+On Tue, Nov 04, 2025 at 11:58:17PM -0800, Chris Li wrote:
+> Actually this patch can be dropped. The swap table phase II 1/19
+> already addresses those comments and fits my description of what needs
+> to be done for __read_swap_cache_async().
 > 
-> Use the EXT4_P_TO_LBLK() macro to convert folio indexes to blocks to avoid
-> negative left shifts after supporting blocksize greater than PAGE_SIZE.
+> Also, the comment adjustment is much better done within a series that
+> actually overhaul the code rather than out of series pure comment
+> clean up.
 > 
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
-> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-
-Looks good. Feel free to add:
-
-Reviewed-by: Jan Kara <jack@suse.cz>
-
-								Honza
-
-> ---
->  fs/ext4/readpage.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+> Hi Youngjun and Andrew,
 > 
-> diff --git a/fs/ext4/readpage.c b/fs/ext4/readpage.c
-> index f329daf6e5c7..8c8ec9d60b90 100644
-> --- a/fs/ext4/readpage.c
-> +++ b/fs/ext4/readpage.c
-> @@ -213,9 +213,7 @@ int ext4_mpage_readpages(struct inode *inode,
->  {
->  	struct bio *bio = NULL;
->  	sector_t last_block_in_bio = 0;
-> -
->  	const unsigned blkbits = inode->i_blkbits;
-> -	const unsigned blocks_per_page = PAGE_SIZE >> blkbits;
->  	const unsigned blocksize = 1 << blkbits;
->  	sector_t next_block;
->  	sector_t block_in_file;
-> @@ -251,9 +249,8 @@ int ext4_mpage_readpages(struct inode *inode,
->  
->  		blocks_per_folio = folio_size(folio) >> blkbits;
->  		first_hole = blocks_per_folio;
-> -		block_in_file = next_block =
-> -			(sector_t)folio->index << (PAGE_SHIFT - blkbits);
-> -		last_block = block_in_file + nr_pages * blocks_per_page;
-> +		block_in_file = next_block = EXT4_P_TO_LBLK(inode, folio->index);
-> +		last_block = EXT4_P_TO_LBLK(inode, folio->index + nr_pages);
->  		last_block_in_file = (ext4_readpage_limit(inode) +
->  				      blocksize - 1) >> blkbits;
->  		if (last_block > last_block_in_file)
-> -- 
-> 2.46.1
+> Do you mind putting this 5 patches series AFTER the swap table phase
+> II? It is the comment adjustment anyway. If there is a conflict with
+> phase II, I think phase II should take priority.
 > 
--- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+> Chris
+
+Hi Chris,
+
+Sounds good to me. Happy to have these queued with adjustment  after phase II.
+
+Thank you,
+Youngjun
 
