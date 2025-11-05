@@ -4,95 +4,182 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5550ACCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:13:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59FF9CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 11:25:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A42AD8E000C; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
+	id 83DF68E0008; Wed,  5 Nov 2025 06:25:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9A4A98E0003; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
+	id 815BF8E0003; Wed,  5 Nov 2025 06:25:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 847E48E000C; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
+	id 704218E0008; Wed,  5 Nov 2025 06:25:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 749928E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:13:12 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 3118D5832F
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:12 +0000 (UTC)
-X-FDA: 84076291824.18.C175860
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7A2B740011
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:13:10 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2ZCZW2a;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 5F3B78E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:25:23 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 1B8A24A839
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:25:23 +0000 (UTC)
+X-FDA: 84076322526.04.AD9865D
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 86B80140007
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 11:25:20 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FU8oo6YB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yraSf4DV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FU8oo6YB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yraSf4DV;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762341190;
+	s=arc-20220608; t=1762341921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=+AA7ZpHM+4GAFuFoc4UweFeCb0wRAqQjZLm0NDMGJ80=;
-	b=57LfDzFuTQz5Ru34cf69O9RtRDc/EOgjdnvTgcC01XePReqBoydd2/DfM5hJtsZ+vxNTbn
-	rRReG9ytEJssycph7eecyUEF7SALcTGBOJEjJF1ivuMpBlDyOzSzWV6w46qpZezuPwh3aR
-	DAyeUxGBMcU04LaeXtc6HWWSqY16Vds=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762341190; a=rsa-sha256;
-	cv=none;
-	b=ersCaEczyJZTFn4cEBYMr1k80SCkIBzlxxE5gXalGGYnvxEnWo7YYqJaPhjL0SaAl8f6R5
-	a4O84nK4MJZH8Va5Ob58zVtJ+9C4d4Gy88DTpu4huxdnT7T3zCv/ppc+RaIakiDbfCfldM
-	ePPUWNEY5gsEXF1UdK1NR8T+oPIfMOc=
+	bh=PP/vg4TETuUesnxpasg6ytdJ1cNcbiaaG4KK1fcuiIY=;
+	b=eVeImGnajvDFXSYzq17RfgeaHLJQoLEEgiD97+0g+JaHj9Mck4u9cqjW7UdqX7cuw+A6W+
+	p3W4Gl7HwDGQD1mWfwrj3k1aPUcICo/UxVVo4QhKxhCB/LiEedJoZodE25U/ysZxa/EY1+
+	t+7qVlmxMUpdIcPb54abmN4WeWGL+QA=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=e2ZCZW2a;
-	spf=pass (imf27.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B08B360203;
-	Wed,  5 Nov 2025 11:13:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A383C4CEF8;
-	Wed,  5 Nov 2025 11:13:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762341189;
-	bh=5SRIi5stLzkcdcYgZc1z4fAx+Z2JyFKQR3FvjHjXFVU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e2ZCZW2aZUwTmoa8nkSKTRxmK//+yjCM1ni6ddcN6a2AYWWlP5SJSR2XHIhrosRhW
-	 FkeXgKxkwalJCUXVL8ZRXwgQeXt/nkskp6283MjlC7lTTeCuKO0Zkw5rnVB3x1YRyj
-	 IkGK3GVWDlaFeAKTHY2TEjLIKEY99//uecF4P0nnE+tIuUkMXWSwYWhzQql1Ie+lp8
-	 9ckfH2KMKURDpq5BwetPWNUdAICq3iLfszaq3L/zO8lfcUgUw1gtrydLEZ7qvHClaA
-	 JNdNSh8riDJiNFEj6Da9MO+mUDJRlVUmuqNFaRAMP1KIlqLGhZV6b56epn4ksLHO18
-	 yhbfDM0b0kGmQ==
-From: Christian Brauner <brauner@kernel.org>
-To: Zilin Guan <zilin@seu.edu.cn>
-Cc: Christian Brauner <brauner@kernel.org>,
-	jack@suse.cz,
-	kees@kernel.org,
-	linux-fsdevel@vger.kernel.org,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	viro@zeniv.linux.org.uk
-Subject: Re: [PATCH] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Wed,  5 Nov 2025 12:12:46 +0100
-Message-ID: <20251105-gebucht-kaktus-f394c88493d5@brauner>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251105022923.1813587-1-zilin@seu.edu.cn>
-References: <20251105022923.1813587-1-zilin@seu.edu.cn>
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FU8oo6YB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yraSf4DV;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=FU8oo6YB;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yraSf4DV;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762341921; a=rsa-sha256;
+	cv=none;
+	b=5NgGGXBfP1GX16Q7xAI+LmINSfgZVhrBIqMTi4tB0e+PjawTTgw2pTgHgOMIDKXZPuylCj
+	tosMFf4931NCdiEIwcaIQac0l0SDzA07RY+VS80ofxEKhkIS3oGJZa+Cv8bZ04HO/wxo9I
+	JKEBwdwxZaO+dXu3VjdsqPcVl6866yk=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DEB5B211BA;
+	Wed,  5 Nov 2025 11:25:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762341918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PP/vg4TETuUesnxpasg6ytdJ1cNcbiaaG4KK1fcuiIY=;
+	b=FU8oo6YBT7CVji0/a6quURnUbwznLcDOExmxbfxdXFtYnSS8PShRbYT4ARqEpaDtFIicwJ
+	JS0In1K9YI0YsGQrT1/ltls3nypEUSjkaN6YcRaxGDSX+0FikINZ1p91aY71KL9XKXicE0
+	VQRXBBX0kYkMkdiiCajXUc0IGqgmhK0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762341918;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PP/vg4TETuUesnxpasg6ytdJ1cNcbiaaG4KK1fcuiIY=;
+	b=yraSf4DVWYl/W5BFC3s/lbeuDEv7YTuyVTIQMD/jIKmWChOFdkfVF/XaOrgLfmRjUbXjDT
+	55AGXH+HxCRUG3BQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762341918; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PP/vg4TETuUesnxpasg6ytdJ1cNcbiaaG4KK1fcuiIY=;
+	b=FU8oo6YBT7CVji0/a6quURnUbwznLcDOExmxbfxdXFtYnSS8PShRbYT4ARqEpaDtFIicwJ
+	JS0In1K9YI0YsGQrT1/ltls3nypEUSjkaN6YcRaxGDSX+0FikINZ1p91aY71KL9XKXicE0
+	VQRXBBX0kYkMkdiiCajXUc0IGqgmhK0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762341918;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PP/vg4TETuUesnxpasg6ytdJ1cNcbiaaG4KK1fcuiIY=;
+	b=yraSf4DVWYl/W5BFC3s/lbeuDEv7YTuyVTIQMD/jIKmWChOFdkfVF/XaOrgLfmRjUbXjDT
+	55AGXH+HxCRUG3BQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B2ADC132DD;
+	Wed,  5 Nov 2025 11:25:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +ShFKx40C2ncEQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 11:25:18 +0000
+Message-ID: <1bda09da-93be-4737-aef0-d47f8c5c9301@suse.cz>
+Date: Wed, 5 Nov 2025 12:25:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1299; i=brauner@kernel.org; h=from:subject:message-id; bh=5SRIi5stLzkcdcYgZc1z4fAx+Z2JyFKQR3FvjHjXFVU=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMWRyGzpEqfTLxG8oWDwtuyDHk//Hodv72q+1JTE+rNLUP S2XwKDXUcrCIMbFICumyOLQbhIut5ynYrNRpgbMHFYmkCEMXJwCMJHIzwy/2USCQ6Uvv2ao9L8c P/HVjsyJzqGC0yd7/tFbfbhk50ORm4wMl+a8PfrdePHd3vzCqUfPcFe6h3vY+M7acmZhwS7tn6s CGQE=
-X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: e3dpg1uryzd188aifddu9fnyi4d9ko3d
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 04/23] slab: add sheaf support for batching kfree_rcu()
+ operations
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Daniel Gomez <da.gomez@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ Sidhartha Kumar <sidhartha.kumar@oracle.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, rcu@vger.kernel.org,
+ maple-tree@lists.infradead.org, linux-modules@vger.kernel.org,
+ Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+ Sami Tolvanen <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>,
+ Lucas De Marchi <lucas.demarchi@intel.com>
+References: <20250910-slub-percpu-caches-v8-0-ca3099d8352c@suse.cz>
+ <20250910-slub-percpu-caches-v8-4-ca3099d8352c@suse.cz>
+ <0406562e-2066-4cf8-9902-b2b0616dd742@kernel.org> <aQge2rmgRvd1JKxc@harry>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <aQge2rmgRvd1JKxc@harry>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 86B80140007
+X-Stat-Signature: 667ijmfzu8jb4hfex571z97diafzx1td
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 7A2B740011
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762341190-305540
-X-HE-Meta: U2FsdGVkX1+jHxdKr+vuWn9nuJKODGe5+odGWVw48sa1TpelN57vlfysgVLg2wW2GILnxcHwa1MKE4emjQviLaps7QLw3I2SMYAQsTNdrjhgCrx/Axb0X3N15BkATkbYqsmAW7SFhHs/Q5NKYtPRhmwp058TEaFsBotcPfkOsowtZhcZ6f9A4lA7FoQ+1zJ0mW0DUH6zadVtlPHEIE/6me+mW9OebIzOg6HZanw9q0pqyjfFTpfjngkTOLVRdFNAPJEo6/WLV3vy6XvFC4HtJaSn6D8tCFwpHDGWcqvEHP+6u6OJ6+nA0XAid5YJ1ZeGOH4TTvcH8RCMVIu2pjk10cebAq2c0WsqND9yUORQ+noxeG6WLRbL+B2j6ex2t4MGilcUT4owgCS1A4NcCymJbBIFXUigyzuzJEAkKey3LJ12+Y6ktmx7fJ8TEC7m3/I0UXqIneoith83X7XMH1q9HOZsDFRxbThbgIhZ58/3F6S5LedC4x3tHXPDf2PqzASa8u7BTAWejpiSjyU6VEH91W9PlxepNOuw2uE9W81HsQHUVfY+vwc01QR8cz+17yNPT7mh262jHRGwhI/xxUpIXJ8IVdbPfDWqaLUq4PYidu9W3RViZvK+6bhptc2/MAM2OtHn9Ri6O8CDHgSbGKoE+jyP+3bmaxQ4F5A6To/5l846roG8wPqu/qeDDS5Qb2Db3bE78/5iv7GShLBn59pwVSXwOmKTmwnNIiLU9cpnkYwLXCZn4KQ1Ba9VuHcdFPhuO8jRPpYuN0rBgZEfFyowVWa0Ycsfd75VES4yczJlLqV61NLUVve4n7h7ol+HIcPI4V4t+17V59aWti3eR9ru9RZk40KI/J2sSwBivbQ4/KL0+0El1yVpqD3+qHfJj+PRQCXexLvs3/kRtMKLfwPGajQ4zcNL9PbcHP5CqT6Fdx3GBrPPyySMjLSyyQAGuOYzNz5H3JIWu1T0i6mFVUm
- ztQfNhlg
- adyW2rBUDo/5KcMoeeoInsHTutntg8Zy8tHq7nnGuBdcQ4HV925P3btuQhfQxVU1YKKox8yvhOyio6/qlEPXSNduxNiz51jtKL1+KVf5lD6tb+b5JLOVN9qbLbcyP3cZ84tFimmlPk/Z3kHC1QXkV+qPRrD6jDN/nHHsZSs9QekWvmLWcrsCKMFNxUwZ2te9h60jIY+jyIS6NTvHmJ7Y9bT0U+7oQOnYVzJL+S1upiWeFfFe015f8KbPYOCs6vFbxrAQkBNGCjrR+YVdXdiTderAPFBBsASJxa+Xo37GMtbdhvrfMNOJhcPBrANSF2TGdHhhppr9Isfqd6bE=
+X-HE-Tag: 1762341920-559959
+X-HE-Meta: U2FsdGVkX1/18v/EZuQhsh4nbRL1u40WRIc8k3Hf3JMRUm4+RXjh34VEtT6ztNt5vk8r073x/r9QmIfRfa2VDW1h9n6peSE5eS31pRSHHVl+++XKtXQodZfM27+1Ln6yCULfl8n7rw7BDGW9WgDp/DXJTY0k5z/0EQNaHWTRDHNzVhBi+U4ZEoAe+UhTtmxmBJfl/W4MJk0WEurzhLRhZWbJ4teFXfuoRCQJ77G5Htregd8cEJH7RKTw50vzuWh8hWIVXhnbdYhrxd1GRz8toDTvHrz+ZcrlahYvYsl2GrnCcYfA8nWCwXzu0LKaCQFzA/rehICXsCsAX5yqVFSPJSnHGflY+8OUap8J7FdXO12l7VtqPBa8dBqpTlQWSQkj/Lv8BDbhLvwTfwP8V+Gz4ZI5MgNPm4bi0QORqg4zFCkiuEDNvIHTzjC+QkSbQPDODUB4TK3IIHWXymkPBZ0SPIokh2q05J/2lzvTSUWQR8DqhFVMq2k33LCOwKpVM2gLlQxxucG+iAT9BjGOHBFxiOCNNFW0OipJLyYHb7WOuozGTgWfXHEd5YBZ3Hd7lvkNYkGMiPxV672ANRkdimDExO1FiQKRIsiChXwO1cu3bMhWsv/6p7ZStPAgx3R+KP3BB84F1dw+Jgxw6N63R0gddkWrw1Frh5RedDo/7+7P0FJSufNCO2MdcQEr0R/8AlTMxuCrRVycXPUhcScloIvOF3+RBpY3BCXGkOV//EfeG0sdcQU8tjxpAJqMB9gaknB+IIaDDf/k1NCUA2HCYPE79T5jkcjtftuhNs1Yq46W4BDANi9ngN0SI8xxGOpjV/7Vlm5S0M4OMEaaXd5qq2NOx+OxSA2ELnzn+O4Sl6zSik8aDkyOFStMrUXcUdJiGjFGvwT2aJRn51igM2NOcIthjL4/JkcQgk3RUl2Tb/9u71wtyZJZKzSxXQAsJ5V+GN4iBVfYY4TPG7gnvdsvM6S
+ 2ltiIfZB
+ u8MHnyJOekzSHkY4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,36 +188,92 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 05 Nov 2025 02:29:23 +0000, Zilin Guan wrote:
-> bm_register_write() opens an executable file using open_exec(), which
-> internally calls do_open_execat() and denies write access on the file to
-> avoid modification while it is being executed.
+On 11/3/25 04:17, Harry Yoo wrote:
+> On Fri, Oct 31, 2025 at 10:32:54PM +0100, Daniel Gomez wrote:
+>> 
+>> 
+>> On 10/09/2025 10.01, Vlastimil Babka wrote:
+>> > Extend the sheaf infrastructure for more efficient kfree_rcu() handling.
+>> > For caches with sheaves, on each cpu maintain a rcu_free sheaf in
+>> > addition to main and spare sheaves.
+>> > 
+>> > kfree_rcu() operations will try to put objects on this sheaf. Once full,
+>> > the sheaf is detached and submitted to call_rcu() with a handler that
+>> > will try to put it in the barn, or flush to slab pages using bulk free,
+>> > when the barn is full. Then a new empty sheaf must be obtained to put
+>> > more objects there.
+>> > 
+>> > It's possible that no free sheaves are available to use for a new
+>> > rcu_free sheaf, and the allocation in kfree_rcu() context can only use
+>> > GFP_NOWAIT and thus may fail. In that case, fall back to the existing
+>> > kfree_rcu() implementation.
+>> > 
+>> > Expected advantages:
+>> > - batching the kfree_rcu() operations, that could eventually replace the
+>> >   existing batching
+>> > - sheaves can be reused for allocations via barn instead of being
+>> >   flushed to slabs, which is more efficient
+>> >   - this includes cases where only some cpus are allowed to process rcu
+>> >     callbacks (Android)
+>> > 
+>> > Possible disadvantage:
+>> > - objects might be waiting for more than their grace period (it is
+>> >   determined by the last object freed into the sheaf), increasing memory
+>> >   usage - but the existing batching does that too.
+>> > 
+>> > Only implement this for CONFIG_KVFREE_RCU_BATCHED as the tiny
+>> > implementation favors smaller memory footprint over performance.
+>> > 
+>> > Also for now skip the usage of rcu sheaf for CONFIG_PREEMPT_RT as the
+>> > contexts where kfree_rcu() is called might not be compatible with taking
+>> > a barn spinlock or a GFP_NOWAIT allocation of a new sheaf taking a
+>> > spinlock - the current kfree_rcu() implementation avoids doing that.
+>> > 
+>> > Teach kvfree_rcu_barrier() to flush all rcu_free sheaves from all caches
+>> > that have them. This is not a cheap operation, but the barrier usage is
+>> > rare - currently kmem_cache_destroy() or on module unload.
+>> > 
+>> > Add CONFIG_SLUB_STATS counters free_rcu_sheaf and free_rcu_sheaf_fail to
+>> > count how many kfree_rcu() used the rcu_free sheaf successfully and how
+>> > many had to fall back to the existing implementation.
+>> > 
+>> > Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>> 
+>> Hi Vlastimil,
+>> 
+>> This patch increases kmod selftest (stress module loader) runtime by about
+>> ~50-60%, from ~200s to ~300s total execution time. My tested kernel has
+>> CONFIG_KVFREE_RCU_BATCHED enabled. Any idea or suggestions on what might be
+>> causing this, or how to address it?
 > 
-> However, when an error occurs, bm_register_write() closes the file using
-> filp_close() directly. This does not restore the write permission, which
-> may cause subsequent write operations on the same file to fail.
-> 
-> [...]
+> This is likely due to increased kvfree_rcu_barrier() during module unload.
 
-Thanks!
+Hm so there are actually two possible sources of this. One is that the
+module creates some kmem_cache and calls kmem_cache_destroy() on it before
+unloading. That does kvfree_rcu_barrier() which iterates all caches via
+flush_all_rcu_sheaves(), but in this case it shouldn't need to - we could
+have a weaker form of kvfree_rcu_barrier() that only guarantees flushing of
+that single cache.
 
----
+The other source is codetag_unload_module(), and I'm afraid it's this one as
+it's hooked to evey module unload. Do you have CONFIG_CODE_TAGGING enabled?
+Disabling it should help in this case, if you don't need memory allocation
+profiling for that stress test. I think there's some space for improvement -
+when compiled in but memalloc profiling never enabled during the uptime,
+this could probably be skipped? Suren?
 
-Applied to the vfs.fixes branch of the vfs/vfs.git tree.
-Patches in the vfs.fixes branch should appear in linux-next soon.
+> It currently iterates over all CPUs x slab caches (that enabled sheaves,
+> there should be only a few now) pair to make sure rcu sheaf is flushed
+> by the time kvfree_rcu_barrier() returns.
 
-Please report any outstanding bugs that were missed during review in a
-new review to the original patch series allowing us to drop it.
+Yeah, also it's done under slab_mutex. Is the stress test trying to unload
+multiple modules in parallel? That would make things worse, although I'd
+expect there's a lot serialization in this area already.
 
-It's encouraged to provide Acked-bys and Reviewed-bys even though the
-patch has now been applied. If possible patch trailers will be updated.
+Unfortunately it will get worse with sheaves extended to all caches. We
+could probably mark caches once they allocate their first rcu_free sheaf
+(should not add visible overhead) and keep skipping those that never did.
+> Just being curious, do you have any serious workload that depends on
+> the performance of module unload?
 
-Note that commit hashes shown below are subject to change due to rebase,
-trailer updates or similar. If in doubt, please check the listed branch.
-
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
-branch: vfs.fixes
-
-[1/1] binfmt_misc: restore write access before closing files opened by open_exec()
-      https://git.kernel.org/vfs/vfs/c/0e0c1b03d6d4
 
