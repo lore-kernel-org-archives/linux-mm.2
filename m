@@ -4,118 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 888BACCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:33:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 49162CCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 13:34:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA86D8E0008; Wed,  5 Nov 2025 08:33:15 -0500 (EST)
+	id A75E28E000E; Wed,  5 Nov 2025 08:34:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7FB48E0003; Wed,  5 Nov 2025 08:33:15 -0500 (EST)
+	id A4D9A8E0003; Wed,  5 Nov 2025 08:34:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C95BF8E0008; Wed,  5 Nov 2025 08:33:15 -0500 (EST)
+	id 9637C8E000E; Wed,  5 Nov 2025 08:34:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id B963B8E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:33:15 -0500 (EST)
-Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 35CD358830
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:33:15 +0000 (UTC)
-X-FDA: 84076644750.10.13BD49C
-Received: from lamorak.hansenpartnership.com (lamorak.hansenpartnership.com [198.37.111.173])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 44C912000B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:33:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=RqUoAhaY;
-	spf=pass (imf03.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 850468E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 08:34:22 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 467C788436
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:34:22 +0000 (UTC)
+X-FDA: 84076647564.28.A59668B
+Received: from mail-oo1-f48.google.com (mail-oo1-f48.google.com [209.85.161.48])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 928C11C0005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 13:34:20 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NpEe2J34;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762349593;
+	s=arc-20220608; t=1762349660;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KKPgvqntC9Jnme/QS9WQiXWniOv1IQ3bgzH5SXmU48w=;
-	b=P0gz68h2KQH3N3sRrobS5sUScwyEAlKatQMe0XbbInMpM8M+Pris9GzEC1h0qSouXpBsgJ
-	Vuqv6kyelY6TxLdu75vPjm3jEkD9bIu6Y67wkncftvCl4MPGQy5vggKsKXsNbUasCWcanM
-	nE4pvO7ya3eJdHmCC3i1E6tm/jPVTGE=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=hansenpartnership.com header.s=20151216 header.b=RqUoAhaY;
-	spf=pass (imf03.hostedemail.com: domain of James.Bottomley@HansenPartnership.com designates 198.37.111.173 as permitted sender) smtp.mailfrom=James.Bottomley@HansenPartnership.com;
-	dmarc=pass (policy=quarantine) header.from=hansenpartnership.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762349593; a=rsa-sha256;
+	bh=Sv/JzecOhMA8cZ94wcVGV+A+peoLF8ip0q5xsIEB14k=;
+	b=0l0Bp4MzokTunnQ/yqrsd/QHYv2QO1w2djieE06ryXT3JjHCyDrWnd6bEYGTQ4uGIFwIyC
+	BsgkrCBQJTL5bTikSES0mAhQ+Kan5Pi60cN7HxwAoDwHKu6exMT9r0+TITbpWJikpzLxTz
+	SX3BlLKGRZetb8atgy0wTPzPGBya2Gg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762349660; a=rsa-sha256;
 	cv=none;
-	b=fwlKWJ7n+9WPzvFnxaRDmVbc9ETbHxH0voqJdLEdvpEQr42L2LfP3lbE1IZ+ZVEzP5lflF
-	AkCjw2liVUPiFyhXJKO/vYrBnmOkeXq5zk6sUV+QbK7XQD9eWtpRUigspt0ZzU9kqnY3oy
-	DSKYYfanKHfCVVsEb+fx0XjaWEzPZ3w=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1762349591;
-	bh=KKPgvqntC9Jnme/QS9WQiXWniOv1IQ3bgzH5SXmU48w=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=RqUoAhaYfgLPWN5WuSEuxBIuQmQ36w+PmduQV1UrUTO7zaN33/VQSZI5Lhrv3lMCi
-	 +AC5Lyk69kEwmeUv0Mk1jS/OEnPW2BneRw/u9Xwib1tJOAJtZ7QRUAxfUtwHsIa6lN
-	 CjAt3smkP6ppKWdBWbIzNI7pOhZXunn8ZHf2agCo=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lamorak.hansenpartnership.com (Postfix) with ESMTPSA id 434991C01E9;
-	Wed, 05 Nov 2025 08:33:11 -0500 (EST)
-Message-ID: <305ff01c159993d8124ae3125f7dacf6b61fa933.camel@HansenPartnership.com>
-Subject: Re: [PATCH v2 22/50] convert efivarfs
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Christian Brauner <brauner@kernel.org>
-Cc: Ard Biesheuvel <ardb@kernel.org>, Al Viro <viro@zeniv.linux.org.uk>, 
- linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org, jack@suse.cz,
-  raven@themaw.net, miklos@szeredi.hu, neil@brown.name,
- a.hindborg@kernel.org,  linux-mm@kvack.org, linux-efi@vger.kernel.org,
- ocfs2-devel@lists.linux.dev,  kees@kernel.org, rostedt@goodmis.org,
- gregkh@linuxfoundation.org,  linux-usb@vger.kernel.org,
- paul@paul-moore.com, casey@schaufler-ca.com, 
- linuxppc-dev@lists.ozlabs.org, john.johansen@canonical.com, 
- selinux@vger.kernel.org, borntraeger@linux.ibm.com, bpf@vger.kernel.org
-Date: Wed, 05 Nov 2025 08:33:10 -0500
-In-Reply-To: <20251105-sohlen-fenster-e7c5af1204c4@brauner>
-References: <20251028004614.393374-23-viro@zeniv.linux.org.uk>
-	 <66300d81c5e127e3bca8c6c4d997da386b142004.camel@HansenPartnership.com>
-	 <20251028174540.GN2441659@ZenIV> <20251028210805.GP2441659@ZenIV>
-	 <CAMj1kXF6tvg6+CL_1x7h0HK1PoSGtxDjc0LQ1abGQBd5qrbffg@mail.gmail.com>
-	 <9f079d0c8cffb150c0decb673a12bfe1b835efc9.camel@HansenPartnership.com>
-	 <20251029193755.GU2441659@ZenIV>
-	 <CAMj1kXHnEq97bzt-C=zKJdV3BK3EDJCPz3Pfyk52p2735-4wFA@mail.gmail.com>
-	 <20251105-aufheben-ausmusterung-4588dab8c585@brauner>
-	 <423f5cc5352c54fc21e0570daeeddc4a58e74974.camel@HansenPartnership.com>
-	 <20251105-sohlen-fenster-e7c5af1204c4@brauner>
-Autocrypt: addr=James.Bottomley@HansenPartnership.com;
- prefer-encrypt=mutual;
- keydata=mQENBE58FlABCADPM714lRLxGmba4JFjkocqpj1/6/Cx+IXezcS22azZetzCXDpm2MfNElecY3qkFjfnoffQiw5rrOO0/oRSATOh8+2fmJ6el7naRbDuh+i8lVESfdlkoqX57H5R8h/UTIp6gn1mpNlxjQv6QSZbl551zQ1nmkSVRbA5TbEp4br5GZeJ58esmYDCBwxuFTsSsdzbOBNthLcudWpJZHURfMc0ew24By1nldL9F37AktNcCipKpC2U0NtGlJjYPNSVXrCd1izxKmO7te7BLP+7B4DNj1VRnaf8X9+VIApCi/l4Kdx+ZR3aLTqSuNsIMmXUJ3T8JRl+ag7kby/KBp+0OpotABEBAAG0N0phbWVzIEJvdHRvbWxleSA8SmFtZXMuQm90dG9tbGV5QEhhbnNlblBhcnRuZXJzaGlwLmNvbT6JAVgEEwEIAEICGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAhkBFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmBLmY0FCRs1hL0ACgkQgUrkfCFIVNaEiQgAg18F4G7PGWQ68xqnIrccke7Reh5thjUz6kQIii6Dh64BDW6/UvXn20UxK2uSs/0TBLO81k1mV4c6rNE+H8b7IEjieGR9frBsp/+Q01JpToJfzzMUY7ZTDV1IXQZ+AY9L7vRzyimnJHx0Ba4JTlAyHB+Ly5i4Ab2+uZcnNfBXquWrG3oPWz+qPK88LJLya5Jxse1m1QT6R/isDuPivBzntLOooxPk+Cwf5sFAAJND+idTAzWzslexr9j7rtQ1UW6FjO4CvK9yVNz7dgG6FvEZl6J/HOr1rivtGgpCZTBzKNF8jg034n49zGfKkkzWLuXbPUOp3/oGfsKv8pnEu1c2GbQpSmFtZXMgQm90dG9tbGV5IDxqZWpiQGxpbnV4LnZuZXQuaWJtLmNvbT6JAVYEEwEIAEACGwMHCwkIB
- wMCAQYVC
-	AIJCgsEFgIDAQIeAQIXgBYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJgS5mXBQkbNYS9AAoJEIFK5HwhSFTWEYEH/1YZpV+1uCI2MVz0wTRlnO/3OW/xnyigrw+K4cuO7MToo0tHJb/qL9CBJ2ddG6q+GTnF5kqUe87t7M7rSrIcAkIZMbJmtIbKk0j5EstyYqlE1HzvpmssGpg/8uJBBuWbU35af1ubKCjUs1+974mYXkfLmS0a6h+cG7atVLmyClIc2frd3o0zHF9+E7BaB+HQzT4lheQAXv9KI+63ksnbBpcZnS44t6mi1lzUE65+Am1z+1KJurF2Qbj4AkICzJjJa0bXa9DmFunjPhLbCU160LppaG3OksxuNOTkGCo/tEotDOotZNBYejWaXN2nr9WrH5hDfQ5zLayfKMtLSd33T9u0IUphbWVzIEJvdHRvbWxleSA8amVqYkBrZXJuZWwub3JnPokBVQQTAQgAPwIbAwYLCQgHAwIGFQgCCQoLBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmAUJGzWEvQAKCRCBSuR8IUhU1gacCAC+QZN+RQd+FOoh5g884HQm8S07ON0/2EMiaXBiL6KQb5yP3w2PKEhug3+uPzugftUfgPEw6emRucrFFpwguhriGhB3pgWJIrTD4JUevrBgjEGOztJpbD73bLLyitSiPQZ6OFVOqIGhdqlc3n0qoNQ45n/w3LMVj6yP43SfBQeQGEdq4yHQxXPs0XQCbmr6Nf2p8mNsIKRYf90fCDmABH1lfZxoGJH/frQOBCJ9bMRNCNy+aFtjd5m8ka5M7gcDvM7TAsKhD5O5qFs4aJHGajF4gCGoWmXZGrISQvrNl9kWUhgsvoPqb2OTTeAQVRuV8C4FQamxzE3MRNH25j6s/qujtCRKYW1lcyBCb3R0b21sZXkgPGplamJAbGludXguaWJtLmNvbT6JAV
- QEEwEIAD
-	4CGwMFCwkIBwIGFQoJCAsCBBYCAwECHgECF4AWIQTVYG5zyLRicb6tmt+BSuR8IUhU1gUCYEuZmQUJGzWEvQAKCRCBSuR8IUhU1kyHB/9VIOkf8RapONUdZ+7FgEpDgESE/y3coDeeb8jrtJyeefWCA0sWU8GSc9KMcMoSUetUreB+fukeVTe/f2NcJ87Bkq5jUEWff4qsbqf5PPM+wlD873StFc6mP8koy8bb7QcH3asH9fDFXUz7Oz5ubI0sE8+qD+Pdlk5qmLY5IiZ4D98V239nrKIhDymcuL7VztyWfdFSnbVXmumIpi79Ox536P2aMe3/v+1jAsFQOIjThMo/2xmLkQiyacB2veMcBzBkcair5WC7SBgrz2YsMCbC37X7crDWmCI3xEuwRAeDNpmxhVCb7jEvigNfRWQ4TYQADdC4KsilPfuW8Edk/8tPtCVKYW1lcyBCb3R0b21sZXkgPEpCb3R0b21sZXlAT2Rpbi5jb20+iQEfBDABAgAJBQJXI+B0Ah0gAAoJEIFK5HwhSFTWzkwH+gOg1UG/oB2lc0DF3lAJPloSIDBW38D3rezXTUiJtAhenWrH2Cl/ejznjdTukxOcuR1bV8zxR9Zs9jhUin2tgCCxIbrdvFIoYilMMRKcue1q0IYQHaqjd7ko8BHn9UysuX8qltJFar0BOClIlH95gdKWJbK46mw7bsXeD66N9IhAsOMJt6mSJmUdIOMuKy4dD4X3adegKMmoTRvHOndZQClTZHiYt5ECRPO534Lb/gyKAKQkFiwirsgx11ZSx3zGlw28brco6ohSLMBylna/Pbbn5hII86cjrCXWtQ4mE0Y6ofeFjpmMdfSRUxy6LHYd3fxVq9PoAJTv7vQ6bLTDFNa0KkphbWVzIEJvdHRvbWxleSA8SkJvdHRvbWxleUBQYXJhbGxlbHMuY29tPokBHwQwAQIACQUCVyPgjAIdIAAKCRCBSuR8IUhU1tXiB/9
- D9OOU8qB
-	CZPxkxB6ofp0j0pbZppRe6iCJ+btWBhSURz25DQzQNu5GVBRQt1Us6v3PPGU1cEWi5WL935nw+1hXPIVB3x8hElvdCO2aU61bMcpFd138AFHMHJ+emboKHblnhuY5+L1OlA1QmPw6wQooCor1h113lZiBZGrPFxjRYbWYVQmVaM6zhkiGgIkzQw/g9v57nAzYuBhFjnVHgmmu6/B0N8z6xD5sSPCZSjYSS38UG9w189S8HVr4eg54jReIEvLPRaxqVEnsoKmLisryyaw3EpqZcYAWoX0Am+58CXq3j5OvrCvbyqQIWFElba3Ka/oT7CnTdo/SUL/jPNobtCxKYW1lcyBCb3R0b21sZXkgPGplamJAaGFuc2VucGFydG5lcnNoaXAuY29tPokBVwQTAQgAQRYhBNVgbnPItGJxvq2a34FK5HwhSFTWBQJjg2eQAhsDBQkbNYS9BQsJCAcCAiICBhUKCQgLAgQWAgMBAh4HAheAAAoJEIFK5HwhSFTWbtAH/087y9vzXYAHMPbjd8etB/I3OEFKteFacXBRBRDKXI9ZqK5F/xvd1fuehwQWl2Y/sivD4cSAP0iM/rFOwv9GLyrr82pD/GV/+1iXt9kjlLY36/1U2qoyAczY+jsS72aZjWwcO7Og8IYTaRzlqif9Zpfj7Q0Q1e9SAefMlakI6dcZTSlZWaaXCefdPBCc7BZ0SFY4kIg0iqKaagdgQomwW61nJZ+woljMjgv3HKOkiJ+rcB/n+/moryd8RnDhNmvYASheazYvUwaF/aMj5rIb/0w5p6IbFax+wGF5RmH2U5NeUlhIkTodUF/P7g/cJf4HCL+RA1KU/xS9o8zrAOeut2+4UgRaZ7bmEwgqhkjOPQMBBwIDBH4GsIgL0yQij5S5ISDZmlR7qDQPcWUxMVx6zVPsAoITdjKFjaDmUATkS+l5zmiCrUBcJ6MBavPiYQ4kqn4/xwaJAbMEGAEIACYCGwIWIQTV
- YG5zyLRi
-	cb6tmt+BSuR8IUhU1gUCZag0LwUJDwLkSQCBdiAEGRMIAB0WIQTnYEDbdso9F2cI+arnQslM7pishQUCWme25gAKCRDnQslM7pishdi9AQDyOvLYOBkylBqiTlJrMnGCCsWgGZwPpKq3e3s7JQ/xBAEAlx29pPY5z0RLyIDUsjf9mtkSNTaeaQ6TIjDrFa+8XH8JEIFK5HwhSFTWkasH/j7LL9WH9dRfwfTwuMMj1/KGzjU/4KFIu4uKxDaevKpGS7sDx4F56mafCdGD8u4+ri6bJr/3mmuzIdyger0vJdRlTrnpX3ONXvR57p1JHgCljehE1ZB0RCzIk0vKhdt8+CDBQWfKbbKBTmzA7wR68raMQb2D7nQ9d0KXXbtr7Hag29yj92aUAZ/sFoe9RhDOcRUptdYyPKU1JHgJyc0Z7HwNjRSJ4lKJSKP+Px0/XxT3gV3LaDLtHuHa2IujLEAKcPzTr5DOV+xsgA3iSwTYI6H5aEe+ZRv/rA4sdjqRiVpo2d044aCUFUNQ3PiIHPAZR3KK5O64m6+BJMDXBvgSsMy4VgRaZ7clEggqhkjOPQMBBwIDBMfuMuE+PECbOoYjkD0Teno7TDbcgxJNgPV7Y2lQbNBnexMLOEY6/xJzRi1Xm/o9mOyZ+VIj8h4G5V/eWSntNkwDAQgHiQE8BBgBCAAmAhsMFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoNBwFCQ8C4/cACgkQgUrkfCFIVNZs4AgAnIjU1QEPLdpotiy3X01sKUO+hvcT3/Cd6g55sJyKJ5/U0o3f8fdSn6MWPhi1m62zbAxcLJFiTZ3OWNCZAMEvwHrXFb684Ey6yImQ9gm2dG2nVuCzr1+9gIaMSBeZ+4kUJqhdWSJjrNLQG38GbnBuYOJUD+x6oJ2AT10/mQfBVZ3qWDQXr/je2TSf0OIXaWyG6meG5yTqOEv0eaTH22yBb1nbodoZkmlMMb56jzRGZ
- uorhFE06
-	N0Eb0kiGz5cCIrHZoH10dHWoa7/Z+AzfL0caOKjcmsnUPcmcrqmWzJTEibLA81z15GBCrldfQVt+dF7Us2kc0hKUgaWeI8Gv4CzwLkCDQRUdhaZARAApeF9gbNSBBudW8xeMQIiB/CZwK4VOEP7nGHZn3UsWemsvE9lvjbFzbqcIkbUp2V6ExM5tyEgzio2BavLe1ZJGHVaKkL3cKLABoYi/yBLEnogPFzzYfK2fdipm2G+GhLaqfDxtAQ7cqXeo1TCsZLSvjD+kLVV1TvKlaHS8tUCh2oUyR7fTbv6WHi5H8DLyR0Pnbt9E9/Gcs1j11JX+MWJ7jset2FVDsB5U1LM70AjhXiDiQCtNJzKaqKdMei8zazWS50iMKKeo4m/adWBjG/8ld3fQ7/Hcj6Opkh8xPaCnmgDZovYGavw4Am2tjRqE6G6rPQpS0we5I6lSsKNBP/2FhLmI9fnsBnZC1l1NrASRSX1BK0xf4LYB2Ww3fYQmbbApAUBbWZ/1aQoc2ECKbSK9iW0gfZ8rDggfMw8nzpmEEExl0hU6wtJLymyDV+QGoPx5KwYK/6qAUNJQInUYz8z2ERM/HOI09Zu3jiauFBDtouSIraX/2DDvTf7Lfe1+ihARFSlp64kEMAsjKutNBK2u5oj4H7hQ7zD+BvWLHxMgysOtYYtwggweOrM/k3RndsZ/z3nsGqF0ggct1VLuH2eznDksI+KkZ3Bg0WihQyJ7Z9omgaQAyRDFct+jnJsv2Iza+xIvPei+fpbGNAyFvj0e+TsZoQGcC34/ipGwze651UAEQEAAYkBHwQoAQIACQUCVT6BaAIdAwAKCRCBSuR8IUhU1p5QCAC7pgjOM17Hxwqz9mlGELilYqjzNPUoZt5xslcTFGxj/QWNzu0K8gEQPePnc5dTfumzWL077nxhdKYtoqwm2C6fOmXiJBZx6khBfRqctUvN2DlOB6dFf5I+1QT9TRBvceGzw01E4Gi0xj
- WKAB6OII
-	MAdnPcDVFzaXJdlAAJdjfg/lyJtAyxifflG8NnXJ3elwGqoBso84XBNWWzbc5VKmatzhYLOvXtfzDhu4mNPv/z7S1HTtRguI0NlH5RVBzSvfzybin9hysE3/+r3C0HJ2xiOHzucNAmG03aztzZYDMTbKQW4bQqeD5MJxT68vBYu8MtzfIe41lSLpb/qlwq1qg0iQElBBgBAgAPBQJUdhaZAhsMBQkA7U4AAAoJEIFK5HwhSFTW3YgH/AyJL2rlCvGrkLcas94ND9Pmn0cUlVrPl7wVGcIV+6I4nrw6u49TyqNMmsYam2YpjervJGgbvIbMzoHFCREi6R9XyUsw5w7GCRoWegw2blZYi5A52xe500+/RruG//MKfOtVUotu3N+u7FcXaYAg9gbYeGNZCV70vI+cnFgq0AEJRdjidzfCWVKPjafTo7jHeFxX7Q22kUfWOkMzzhoDbFg0jPhVYNiEXpNyXCwirzvKA7bvFwZPlRkbfihaiXDE7QKIUtQ10i5kw4C9rqDKwx8F0PaWDRF9gGaKd7/IJGHJaac/OcSJ36zxgkNgLsVX5GUroJ2GaZcR7W9Vppj5H+C4UgRkuRyTEwgqhkjOPQMBBwIDBOySomnsW2SkApXv1zUBaD38dFEj0LQeDEMdSE7bm1fnrdjAYt0f/CtbUUiDaPodQk2qeHzOP6wA/2K6rrjwNIWJAT0EGAEIACcDGyAEFiEE1WBuc8i0YnG+rZrfgUrkfCFIVNYFAmWoM/gFCQSxfmUACgkQgUrkfCFIVNZhTgf/VQxtQ5rgu2aoXh2KOH6naGzPKDkYDJ/K7XCJAq3nJYEpYN8G+F8mL/ql0hrihAsHfjmoDOlt+INa3AcG3v0jDZIMEzmcjAlu7g5NcXS3kntcMHgw3dCgE9eYDaKGipUCubdXvBaZWU6AUlTldaB8FE6u7It7+UO+IW4/L+KpLYKs8V5POInu2rqahlm7vgxY5iv4Txz4EvC
- W2e4dAlG
-	8mT2Eh9SkH+YVOmaKsajgZgrBxA7fWmGoxXswEVxJIFj3vW7yNc0C5HaUdYa5iGOMs4kg2ht4s7yy7NRQuh7BifWjo6BQ6k4S1H+6axZucxhSV1L6zN9d+lr3Xo/vy1unzA==
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.50.3 
+	b=ToN5pw315t2F6Y/Pu3nwB98xHrAulGMeaHohf45IsD+AbSS5ze9jddorwFf4xuPK8OLQVK
+	x+Z0oYvOhO7NBznxL8N4lUQurj5Y5gUjR23QSOQr0RZyVzcnL1O31ZiV86Id4CP/WEilim
+	j9Y2PoN3Wog1DapLyDoRV4soMVVhgl4=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NpEe2J34;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf20.hostedemail.com: domain of pedrodemargomes@gmail.com designates 209.85.161.48 as permitted sender) smtp.mailfrom=pedrodemargomes@gmail.com
+Received: by mail-oo1-f48.google.com with SMTP id 006d021491bc7-656a67c0762so844710eaf.2
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 05:34:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762349659; x=1762954459; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Sv/JzecOhMA8cZ94wcVGV+A+peoLF8ip0q5xsIEB14k=;
+        b=NpEe2J34ohh9CdMKJT6ZZcuWJeQghuwv4c5NU+0ns4pvC+Z3/YOj0dIrVzT/vgSynl
+         RFFGaRl3N9dFsBPa66cLo/0Le+KSuNVZTO0gdJiGLuF+JOivmvMVkumXYU3WFbssZ7oT
+         yHpSW3VeFdLY/8Jztja5TRut+vZfePvOlVv5ooDf7YbUOh5Xfd21mE4Lf4RKuq0tgZku
+         OHqpJDiwDAMXyBgCDqyfnL/3zNjiicqsflz9UNGxjmdQW+WY0wWynn3xYwwDdyyxBSX7
+         +0ege2KBjpHvksOpxL413rswvoCftaM6jH6H1s4FRsv+q4L9SpiTRdbA8I4x1nHZ8N3H
+         CkUg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762349659; x=1762954459;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Sv/JzecOhMA8cZ94wcVGV+A+peoLF8ip0q5xsIEB14k=;
+        b=jK7fdpoJPunxRl28HK9K3rBTH7wgcogVR6g8C1QKKPvXVQgvqZT6tV88NrYi1+ZDLk
+         PWbm+FKKHDXIEpfFDsZMoE/qhkIRUKWmcEGaGmH4gmNWU7mU8lnmCCEnDwhVeImFhTWT
+         weEI9iycRBheZ3R+W3woLXuj0AulxSkz8Od2ss4WFF5noKadrYKNQcKsL18uvO1VFl+M
+         baCVyFCZl1vXeyeqevGIkpZ4rLCpiHxGwkRmt+ih3ae/OdjKEbRaV4Zcza5RgPvIBGg/
+         9jj1jVgLHqKXT6Jxam3Suc0HQz04T/DnQmMvAQp5d4QCcGpaAlrOa++/alWTmJnBaqf3
+         C/Qw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMNzYhyNHS3V8Yd6zJJ+7EvHWGDRlH3hCUzCB9qno8YUzuI1vRQYznpaAWOzQqvBE7muuYL60xeg==@kvack.org
+X-Gm-Message-State: AOJu0Yzz/vC0YT1vcOIrpXkB/LtFc/wj1YKV3iEDV3wCT4XfZkbx8pht
+	mP0IqTeprj+7hD+OaL6kqgRpW27uKn3nOJaTpQpTFHIPncU5aN2rQMgd
+X-Gm-Gg: ASbGnctmViDXgz3l6HNmWpeqXXTGo7pQLG+JNFtzMFgqJkdlMIb/0K4hWKzlHQdvZya
+	J7LFX0NYjzbh++JTlIX4EHKFt1rrDILNtqNJdShfQY88+QpLacwxIARNx6IGCcQ/P8ZPxhj7KU7
+	II3YuIUUpeMR6X0qlmyNab2f5suW8uWWI8HEw2+WObjy5G+UZIQj9o1vOjMJMNj9RwOFkxxFm8m
+	YO8dT021NTrAkar8tlmjq/LTxWpabMPoEpEDYEZQemQI9VkaSOVML8luI4gGdPjTCMhkk3kukZI
+	Sa3eMC/jpAkquLyPVMlZqySUqCxwG4dp3tmrLtuMDM0LOMtHvijT+ULWN/1yRXEZCjZ9VzWF9GH
+	tUWoCOVn7jxGGTVem/Oyin1hAK3XS25TQ4KYhXzBGxK5AfOQ2CXJh9U/X7Ge2yrNRgCW2wNn1I/
+	7dNY2x/fAbP5x+q3ZXEL1tHrNCpeODzmxN25HF6ymd3kI5sBjzBgB5wg==
+X-Google-Smtp-Source: AGHT+IE8z6TNiU3ePk48BI+doqg/bH4NTxWdTXISMyBVQ21lhT2P1M3hdipDnXRTCcDABOBcmXjW8w==
+X-Received: by 2002:a05:6871:878a:b0:3c9:7e9b:632b with SMTP id 586e51a60fabf-3e19af07bc3mr1381694fac.30.1762349659507;
+        Wed, 05 Nov 2025 05:34:19 -0800 (PST)
+Received: from weg-ThinkPad-P16v-Gen-2 ([177.73.136.69])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-3dff46fa5afsm2245210fac.5.2025.11.05.05.34.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 05:34:19 -0800 (PST)
+Date: Wed, 5 Nov 2025 10:32:23 -0300
+From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] ksm: perform a range-walk in break_ksm
+Message-ID: <ff4jfxphz32fackvh2236an7575zhqnwntrx5ledudb4afu2ag@sk4vigyq5jif>
+References: <20251031174625.127417-1-pedrodemargomes@gmail.com>
+ <20251031174625.127417-3-pedrodemargomes@gmail.com>
+ <cd632ad0-c73e-4e6d-872b-2f4dad285e9d@kernel.org>
 MIME-Version: 1.0
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 44C912000B
-X-Stat-Signature: yk6iny3p76esicb3iufwyz1drskhusrn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cd632ad0-c73e-4e6d-872b-2f4dad285e9d@kernel.org>
+X-Stat-Signature: 98msjzeqztr4mywsjmo5m51m78wrtfbs
 X-Rspam-User: 
-X-HE-Tag: 1762349593-66626
-X-HE-Meta: U2FsdGVkX1/LeUMBIKSNveGtpk/K1P6ohUkYe22MTOlHQmS7Zd4n5F1ULuR404KCEOjAS15tVUSxkSV4iIyrJs4ps68lU189h2KB+txCeEDHs4tbJs9gFg6w+61Ch5e+AWdvr4keOYcgrug3iV4n0211nQZYrgDs0r5aKytAYQtmZc67aSKXxCoUdw55VrZywjYdng3NXcbPy3FJ/JqjdQn2nNCgGi1aJqWDih1IC9T5+s0fy1w70vY0coWsoXqeYppfz2LQM764K1pUuxjZ2Atyy7UfZVxh1howL06vzxEUdFdhFAiHm6LraWhbexQu+G2TX81xRAhpNgt47jXuShMiV2w1mieqfniw6svGO8UVXgyfGIDxlyFJ277QAkvPLXobv2pgSxCvppP4HjXCykp1d+2RCpE6/VGj0bSrQNVyNQVKbW9o+N9Yieh+B0IAanYveFzOFc+KilzGRy/L4RvkOtsp70bo/Oq816P65fGfEwxplkFiFMHgWZvno5ryJg33K1zwhELX8/48zGeFHynTLl46xTLE9lrG4wIosQczA/6MohbUYRaeUzXE46neebGZxOVM8NdKELYrMq5cl4QbMFLXUN8O9M+iGbodsBACn/GrHEQDWb7mlqBLU965CkqGjphBXQSbgxs46Da4SLIJlv8x9owif57Kpqyk5MucwjmGOKrcKxNjYL5fkQZdHOt2hZ/NTHVE1Sc2AgsAiYfp7EeddzieIOoq7QOupTSoUzonZwX8c0y4H6yjtIUb/mUlKMSncLCSt5I4++xymu7fOpjgMTgWs5kAhgWQUl6DP9SSu0qZp94UdOA0VL3QZFk2vLJjk3xZtsuR8pvvv79+KhgQTlQBK4G8qP889rOzcu7+PxpB6N3HUUsUp6D/QXLqvRKdEWqq8druEovy1tp5fcahQHDuTxN0EtSAzLn0xoVnolXVwSwBG7xD2YJlfkIeYgAQSxC4pT6QQOl
- nsnktvXy
- 3ndPmQz8Y+nU9j18Rg8T9hR48GsTS5bhlPF5XHKGd4SvBBmYVfkmZPxpugeCLRI61MWJn9nT06npk+QhHreoc/1Unv0vxQ1KdOgin7mZr5sXy4bmnfNX/DSUMfb7WuGUjrt1KZXRUwu53dEtlmNO4DJ2eC6KCBR0e4QqEKvkNFQ3xWcW22we47fgIbLkmN1S0pbtyrntWAwJUu+pRVyQXThZTAU+lNtBW4O1v9cpDaKjcf8aL33KF8tPgwwJ4Kp5nvql8leri0JQDFbI6U8YpcrNgNeQRFYwqG9+IkGghG0DKllcrEV9QEOnYXndmGYp21urucgZzW4UntSBXcMoQbmh+3PgZLiNrLq/OdwFcztqZ+hheNc2vVosw10nbmECe/7x3
+X-Rspamd-Queue-Id: 928C11C0005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762349660-549814
+X-HE-Meta: U2FsdGVkX1/pVgs3GULPksIeuaj6kbUPnDHrQfUPMOLLewELU3uDoTk8jy82CeMDLC5e91fwM0pPQlzC09XGBklImJ661fHjXiRM/thBpCgi19NxIT7ua18jHBCCoASBbprCt+6g26fjU1tYzfkEoNYSE3P2rnX+zhED8nFA7pltsdevstuEs/KbSwF+deP7wqoVo367t+nizUM0fRxWfQ9y2n3zSNsryT79gW3Tv4yiq3UYVORqut9YW8GEeaFEF5Pbkw9D7JwlWLmOHLLxEmW4bw0s7X7wzfi3mF+AvLMT8Wt8U3MXws2KSuQqFs8hJDqS0G82WJ/z4QIn7zA7CgCtunRhFNmn2fapsv/WqBYYwPcT6aHw6SCISlFG/CJOqMMaR9tzYp0r5IhEmJlIa9mLwGYOOYi1SS9ObH3QSSkWWvFakjVy4w1gIiw+iI4YavbgBVB3iv57j3K4ThMiKHzYSkzn1RUmhKp0V08unj5s6SatxIY/xq/rW1tZQzq4STQDYjH40eh2cTXTzZQrb9yLILndDgugUkIbk7ui16Q3Ne5hPS9lEpLL8RnGJGdRdqVmP6e9J8koaACGo9irWdxO9aECJL2OSgYuFcYV0rHtgTtw8UCbcQsTYxVPMXc/N64vM0IkNhFodRIRSdeYuVEu5w8uli/38402s/Fpa0ld4ydJal9MA44UYrIVkSBVDBMtX7Ot3agZ4BVYfswygcLvdHjvwCO+LjV7RFYU9HzjApKtPAf+9sTN0dK4+Jh4dl6HGRdIqEyT3+bhV5dPzcE4nxFe4Nr6CbQqecyTOMsyM4bISzEixqOf5qR+sY0FYZbVPQ0a5dTX0xEHyG2K9DsXDgMAxKVAt8NVwAeUSrNuF8CjYmWKILYaRvFTif8kiZcSNeArq3CTZ4BjZtlZy+xCD2KwVNb5tzpkMGW1jRriacqzEWkJmnrolM+sRcp4cb5bbdk/VQ1xyX4AF3X
+ 6+HZxAYp
+ sWnAwmULRPLAxjIrVpzucgHi23fDN2+OW1v6oPlYFQkH50fPAltVVRD37MQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,40 +121,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, 2025-11-05 at 14:16 +0100, Christian Brauner wrote:
-> On Wed, Nov 05, 2025 at 08:09:03AM -0500, James Bottomley wrote:
-> > On Wed, 2025-11-05 at 12:47 +0100, Christian Brauner wrote:
-[...]
-> > > And suspend/resume works just fine with freeze/thaw. See commit
-> > > eacfbf74196f ("power: freeze filesystems during suspend/resume")
-> > > which implements exactly that.
-> > >=20
-> > > The reason this didn't work for you is very likely:
-> > >=20
-> > > cat /sys/power/freeze_filesystems
-> > > 0
-> > >=20
-> > > which you must set to 1.
-> >=20
-> > Actually, no, that's not correct.=C2=A0 The efivarfs freeze/thaw logic
-> > must run unconditionally regardless of this setting to fix the
-> > systemd bug, so all the variable resyncing is done in the thaw
-> > call, which isn't conditioned on the above (or at least it
-> > shouldn't be).
->=20
-> It is conditioned on the above currently but we can certainly fix it
-> easily to not be.
+On Mon, Nov 03, 2025 at 06:06:26PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 31.10.25 18:46, Pedro Demarchi Gomes wrote:
+> > Make break_ksm() receive an address range and change
+> > break_ksm_pmd_entry() to perform a range-walk and return the address of
+> > the first ksm page found.
+> > 
+> > This change allows break_ksm() to skip unmapped regions instead of
+> > iterating every page address. When unmerging large sparse VMAs, this
+> > significantly reduces runtime.
+> > 
+> > In a benchmark unmerging a 32 TiB sparse virtual address space where
+> > only one page was populated, the runtime dropped from 9 minutes to less
+> > then 5 seconds.
+> > 
+> > Suggested-by: David Hildenbrand <david@redhat.com>
+> > Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+> > ---
+> >   mm/ksm.c | 88 ++++++++++++++++++++++++++++++--------------------------
+> >   1 file changed, 48 insertions(+), 40 deletions(-)
+> > 
+> > diff --git a/mm/ksm.c b/mm/ksm.c
+> > index 922d2936e206..64d66699133d 100644
+> > --- a/mm/ksm.c
+> > +++ b/mm/ksm.c
+> > @@ -607,35 +607,55 @@ static inline bool ksm_test_exit(struct mm_struct *mm)
+> >   	return atomic_read(&mm->mm_users) == 0;
+> >   }
+> > -static int break_ksm_pmd_entry(pmd_t *pmd, unsigned long addr, unsigned long next,
+> > +struct break_ksm_arg {
+> > +	unsigned long addr;
+> > +};
+> 
+> Leftover? :)
+> 
 
-It still seems to be unconditional in upstream 6.18-rc4
-kernel/power/hibernate.c with only freeze being conditioned on the
-setting of the filesystem_freeze variable but I haven't checked -next.
+Yes, I am sorry.
+I will remove it in the v3.
 
-However, if there's anything in the works to change that we would need
-an exception for efivarfs, please ... we can't have a bug fix
-conditioned on a user setting.
+> > +
+> > +static int break_ksm_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
+> >   			struct mm_walk *walk)
+> >   {
+> > -	struct folio *folio = NULL;
+> > +	unsigned long *found_addr = (unsigned long *) walk->private;
+> > +	struct mm_struct *mm = walk->mm;
+> > +	pte_t *start_ptep, *ptep;
+> >   	spinlock_t *ptl;
+> > -	pte_t *pte;
+> > -	pte_t ptent;
+> > -	int ret;
+> > +	int found = 0;
+> 
+> Best to perform the ret -> found rename already in patch #1.
+>
 
-Regards,
+Ok
 
-James
+> With both things
+> 
+> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
+Thanks!
+
+> -- 
+> Cheers
+> 
+> David
+> 
 
