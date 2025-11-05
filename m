@@ -4,88 +4,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7F570CCFA04
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 02:29:46 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7942CCF9E3
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 02:39:40 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C3DEA8E0003; Tue,  4 Nov 2025 21:29:45 -0500 (EST)
+	id 1F40B8E0008; Tue,  4 Nov 2025 21:39:40 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BEDF48E0002; Tue,  4 Nov 2025 21:29:45 -0500 (EST)
+	id 1A46E8E0002; Tue,  4 Nov 2025 21:39:40 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B2B758E0003; Tue,  4 Nov 2025 21:29:45 -0500 (EST)
+	id 0E1FA8E0008; Tue,  4 Nov 2025 21:39:40 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 9F8CA8E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 21:29:45 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DF30B5CC1
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:29:45 +0000 (UTC)
-X-FDA: 84074972730.28.A6E96AF
-Received: from mail-m93245.xmail.ntesmail.com (mail-m93245.xmail.ntesmail.com [103.126.93.245])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 23FAA180002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:29:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=SgjWg6jJ;
-	spf=pass (imf16.hostedemail.com: domain of zilin@seu.edu.cn designates 103.126.93.245 as permitted sender) smtp.mailfrom=zilin@seu.edu.cn;
-	dmarc=pass (policy=none) header.from=seu.edu.cn
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id F27BA8E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 21:39:39 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 7AC85160144
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:39:39 +0000 (UTC)
+X-FDA: 84074997678.18.F20459B
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 9D4E04000C
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:39:36 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=IR9Kdhti;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of zeng_chi911@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=zeng_chi911@163.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762310377; a=rsa-sha256;
+	cv=none;
+	b=F5qzLKextEp+XP8+iX1BDd3fxhQlTXeAQkdN7zdxHj6TzRF5AoHNJLPTHKKS0IJu6s5QtE
+	eYgR7red9XgKPgAr7WO8ZfdDwG4IE3QwSFSQGydrMWM6Fs7Sm9p1NqnYZMM4J9CtV76chR
+	mvgQ3avnxOgXLgx8R/EtXOuhGcUjBAo=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=163.com header.s=s110527 header.b=IR9Kdhti;
+	dmarc=pass (policy=none) header.from=163.com;
+	spf=pass (imf01.hostedemail.com: domain of zeng_chi911@163.com designates 220.197.31.4 as permitted sender) smtp.mailfrom=zeng_chi911@163.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762309783;
+	s=arc-20220608; t=1762310377;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:references:dkim-signature;
-	bh=LcRHFkNUNb4BP3TxxcV+q8/C0VDrALX19FW40WNd0fU=;
-	b=3mq8fJZqDR/8L2ilKRIoDgt7egHHKtrca4hiaTCMyvSrgy9MA8+L9PrAkqjAisGR36/T7t
-	J9fABBjnVHro5flz6zxbzwmon8evUUFZLbuqJ4ZvSbLwCNR2aUecL2RtEb8X6x31c1u209
-	y4E96i1ciTQicckgJSrUPXYklWjCbH8=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762309783; a=rsa-sha256;
-	cv=none;
-	b=zlNJqc5bNQzjtQXfAKoxnHbjuBfHycqiJ/3DwbsMyK18Sw1t/jtZeJwlq8Bo9zwK+0STRz
-	QsOBornQIxpZ/JZIbjoo4ZxusCtsAv7IkZs/VQqhGMWE/ttAM1rjubYOOr/PVv2nuKHX3s
-	1RUXoCfDdFg+522ncLXtUUiZ1JbFIo0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=seu.edu.cn header.s=default header.b=SgjWg6jJ;
-	spf=pass (imf16.hostedemail.com: domain of zilin@seu.edu.cn designates 103.126.93.245 as permitted sender) smtp.mailfrom=zilin@seu.edu.cn;
-	dmarc=pass (policy=none) header.from=seu.edu.cn
-Received: from LAPTOP-N070L597.localdomain (unknown [58.241.16.34])
-	by smtp.qiye.163.com (Hmail) with ESMTP id 2869c975e;
-	Wed, 5 Nov 2025 10:29:36 +0800 (GMT+08:00)
-From: Zilin Guan <zilin@seu.edu.cn>
-To: viro@zeniv.linux.org.uk
-Cc: brauner@kernel.org,
-	jack@suse.cz,
-	kees@kernel.org,
-	linux-fsdevel@vger.kernel.org,
+	bh=BZpnaGngs562nOrD3YutHkLMT0eZNZA+nV/m/y76+ho=;
+	b=WZ/i2eghk8mJdRaSEKmEAkJjHW1CGXMk/b3mNQlS7peV24Zk+Q2Q6l5hqXgXvPAwxRFnKX
+	ovrGEf/9rvkbF8GeZT1E54D5mUori0VG/Kv4brzac2NyvDGyVPgjbinPjlb3Gi96g1efQO
+	lK8/ySIYbcD3Oo1xApT+9RZd9lf9XJQ=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=BZ
+	pnaGngs562nOrD3YutHkLMT0eZNZA+nV/m/y76+ho=; b=IR9KdhtikcbbuVqQ6A
+	PGB/4WTyvNUzTln4jBqin4k1RNzDPVOmBwyyCqCUim0RcGb0QwiH5barC4TH0Zmy
+	5SQO2yatcIVuGH80SydTyrUn2sFTfrwfS6u6M0mZUxPwbNfHnPz45CvdksIOrSZr
+	NYDZUbl8kOLDwa40m4znHMHW4=
+Received: from zengchi (unknown [])
+	by gzga-smtp-mtada-g0-3 (Coremail) with SMTP id _____wDnb9vfuAppK7GSBg--.32612S2;
+	Wed, 05 Nov 2025 10:39:28 +0800 (CST)
+From: zeng_chi911@163.com
+To: akpm@linux-foundation.org,
+	surenb@google.com,
+	kent.overstreet@linux.dev
+Cc: linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	jianhao.xu@seu.edu.cn,
-	Zilin Guan <zilin@seu.edu.cn>
-Subject: [PATCH] binfmt_misc: restore write access before closing files opened by open_exec()
-Date: Wed,  5 Nov 2025 02:29:23 +0000
-Message-Id: <20251105022923.1813587-1-zilin@seu.edu.cn>
-X-Mailer: git-send-email 2.34.1
+	zengchi@kylinos.cn
+Subject: [PATCH] alloc_tag: Use %pe format specifier
+Date: Wed,  5 Nov 2025 10:39:25 +0800
+Message-Id: <20251105023925.1447482-1-zeng_chi911@163.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-HM-Tid: 0a9a51d923e503a1kunm720395536d221e
-X-HM-MType: 10
-X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
-	tZV1koWUFITzdXWS1ZQUlXWQ8JGhUIEh9ZQVkZTBhDVk4aHxlITEwYHR1NGVYeHw5VEwETFhoSFy
-	QUDg9ZV1kYEgtZQVlOQ1VJT0pVSk1VSE9ZV1kWGg8SFR0UWUFZT0tIVUpLSUJDQ0xVSktLVUtZBg
-	++
-DKIM-Signature: a=rsa-sha256;
-	b=SgjWg6jJ8wpyCmGsWH3WTVRLOG3JzbweeWqjDcGDpbonlNJWyIFDP4Lt0u/yuOsGM9lInXLigVcnDDepki4vvA+Nb5jyFwvqwpt10FOi/iZ3WLgu2g6HhZ5o5IV07TysvZl+wCJeOllRwbp4mBntB8hyqV7hYUVxuwshUpeGVhs=; s=default; c=relaxed/relaxed; d=seu.edu.cn; v=1;
-	bh=LcRHFkNUNb4BP3TxxcV+q8/C0VDrALX19FW40WNd0fU=;
-	h=date:mime-version:subject:message-id:from;
-X-Rspamd-Server: rspam12
+X-CM-TRANSID:_____wDnb9vfuAppK7GSBg--.32612S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWruw4fuFW3Jw4ktr15trW8WFg_yoWDCFb_G3
+	45Jr4v934DGF1v9FsYvrnYqryqkw1v9F4rCrn5uws3J3srGwn5Xr18Xrn8AF13Ar429FyD
+	KwsxWr1vva1a9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IUnEfO5UUUUU==
+X-Originating-IP: [116.128.244.169]
+X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/1tbiRwv8u2kKtTARfAABsB
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 23FAA180002
-X-Stat-Signature: 7diq17gokt6akp449m3fro6mzifodwc4
-X-HE-Tag: 1762309781-563022
-X-HE-Meta: U2FsdGVkX1/ZSc/alLwpYa9UM+Bb1RoRXmw0hBlr/Y02H4lEsOHRLzKOtXqlb0K8kX1BEMbNOyXIKzBtGKZfUmNcDtvIn8EjVKRbvn8Lmt53z00Z4GBe8v2c6yH50cWIidJ9o92M8cRsshHO2qIuyohxnV8hnCpadPx4VfAdzo55BE5xh3OJ62bjQLXNFkuVgJ/iJt0ZEf6eOKDPk8YAc18OwXwQv0tVcGtrzSUyHZSPERx7/h1cLgwB+h/GM4fUcnwa8/mUlOQp7imv7wPkToMSm87YazBhaZ35+X3rpu5Xn9IiFbpEPq/Q0Cf3eikxZklDM2tzbiOjniWa1/vlb8CzAQHYAwxQ+aPI3uuyRSUVymg4jtCkr9tIpdnpF5uyGoZvL1iP0Br17bZrH4qfFN7yi2gqeOzCbYfRnGwZ3LwPje1X3NnNM5LZ05BB0nQoQtvVDsYsoT6/qhHO8FijE7OiZ1GSdYZUuWEZZfECcEj41SKVB7Ig7ttRbySRQd9g1hvbWGzkVzLOu4u/kBAcBaYDlhHxd5QdZm3Jl1J1miNPFsILrGBnG3vl5qHyp1kxrSMGZI0+6S4b5T9MDrtmh2EZBfjXBDgfc/GGqZOGPJX6nZVu3MldWM2KLwgf6oXtLF1IyMv5mPiLWkBLaT4SBQcWEXsnaIwY1cxcOV7PoFjebC83n8BkFjbSnETLPdWcO9sst8aJ31jHT2QvvLwpTArAeF4H3A75tY5SQO2CQWfPP/gFTPvr7MjkePiIrTon7LEusBnywM4zW1fmjjEObceYd7nsbbRZCiIR3qENvsTksH/xbq+n1aQpGqEMYAJ7qquIspskM3iF7NKbYInNFINuYK5xxEW8CtW761YVuAnSZCW6vd9Toj4Y84StnyKZn0VXDTlFUolff/CSRPzB8a4qX/4ZeHGWArgmV6n6dADJfdr/UNfr81cZOHhx7EdAMkYRrTN/8qVpBrlPhsA
- LCgSbt67
- oMnY1iJuy2427cA1TDfnQepw+nd+Nc39q+nMadvifmzG50dj31ENliy93mpV2ITBpM6snc3q8Qb9Vc5Ot2N1NhTY3H9eAKL2t8p184aJqVfZp5LygPlcOQ5Sw3AeYvhpsv84Q76Q7QWqcA1/R5KZlVBpJZz5o3AsOHLcrRoUOEZsM2LBHP6TdsEPoZ5cM21JS59VtU3NLW1BFAr5rB/mMH50T/LdAkbyeCXvhnqYFCA16jCDgvMCNuvaZw7g5dRDCI5GxieavTv3L9iHUgieWoM4Xjh2F60MWOOq+KojE7Ix/K4I=
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.041218, version=1.2.4
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 9D4E04000C
+X-Stat-Signature: bztandxbpyphkgg5154sjnekgqyjctm5
+X-HE-Tag: 1762310376-754069
+X-HE-Meta: U2FsdGVkX1/mlf/X3JkIQDXALWHHtVGmQljG3gdoTjTWXV7O8yKH5DmUd+f8q6nZGcdUdGtz0nShTJ9sqUcVp5upSvbX8E/KQ8XeeHmH7cM+AeXMm/ylV2mKDvc+JbdCX+Amw+NzEOyu0Ja6nz47YER3J/Yvo8BvPes0xBYrICgRGCOWrb7vhxdAttoz6kCFC81P0FYjd/XyxOepgJi7IUUicvimc3XRhJ0/YviOXHvQwEIMaMTq4xzqc/xTiHvTswhbV6Athh3RAyt2DUxC1xl7xUlHqj6y2ypp0iLGzaAvteA/Ly1X/ks+HV3nFCaHBe0YXpcSK0aNpb5bcejsgflryF09U6aNq0TSXV4Bs53r1maUYy1SeQpSpcQvyoFu3cEMx+iWXC+4sv212dadxEJi9yHoqiLf4BXNU2hm2LSCOktsziOwMGn4LzZWOuj9auMzsAmm304MjNT/rVgKK2jMzh0oUsxgKGbTq5v0YI7DVdADgzvUHxTbq/jbzqyYB22LroCGx2QqUdHCGMo4OheuYp6vvwtvL451Aum9aMyeSPPrKZiN3NlE8f4MAm2MLepaqCc4yJo/R6yDKFMHNvkBEnV2XPYC0Pl4K70iC8InrUNYQTOkDfO8MPf7m1I4I8Z+nHj/ImEWzmuNQVyQugwyl6/CyDoULcAri07L8Q3iIawdjhwSq40P3yL0+qWh1pKAdkhYtgppi4N09K8AETn9B7CgPy0yOQZ6y4lGGD1KffK6DGgI93lkRgZViKfLRUGRz3+4Y2xJQ9jS1wAVFP5QidQr80P6Qek5apH3xdmAAwh2AfWLEuffrQpTQS9OlZYS0tZumaYwTsHd3G4lEh0ql/6ynSVqMnNYcRAFBktdmh6r4MqqB+dN4iyRqtC0cI17rTLjwHZ0X2zb22pLJes8ADIcgGaP91fQ+deCLHdIDNLeQjykjN6p6K0d4VsGRFbfXebQSp0nneVR1ci
+ e2r1+ZXk
+ HB0Fupe2Sf6hu+ls1ohu7/+q0w0EgHWtl1/CUnnINxbWIMOfcp/ymBBj5nSdizi1jHp8D0MUReMSkdG8cSakaZF+dP1sa4OwWzFQCo8wyS4qXZd+nVM8iHLNTrXlTkrDikN4UBb6U/oXkW8nBclE6EmQhxztXe7VAuFkjrNcNCkmT8yycqPmF8tFxirr8Au3gBaat5asPYDrbjDBeMrv28CQSwjKLeJWqne/++BBzbgKjybA6GW4OOnlvf+D2cNOCdWZtB0vxe36IZ9RHdGEes65bRYQmEbO6euY/hNzFFjB1JkeEAcIsqwr1RZHFnvCFRQF76s3luQL3R0HOEnLkiaNiIlk2mHUfO4wWvdhJDavcjeUq2PMww0x0FNxNCfoX0Q1l
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -93,40 +93,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-bm_register_write() opens an executable file using open_exec(), which
-internally calls do_open_execat() and denies write access on the file to
-avoid modification while it is being executed.
+From: Zeng Chi <zengchi@kylinos.cn>
 
-However, when an error occurs, bm_register_write() closes the file using
-filp_close() directly. This does not restore the write permission, which
-may cause subsequent write operations on the same file to fail.
+The %pe format specifier is designed to print error pointers. It prints
+a symbolic error name (eg. -EINVAL) and it makes the code simpler by
+omitting PTR_ERR();
 
-Fix this by calling exe_file_allow_write_access() before filp_close() to
-restore the write permission properly.
+This patch fixes this cocci report:
+lib/alloc_tag.c:776:63-70: WARNING: Consider using %pe to print PTR_ERR()
 
-Fixes: e7850f4d844e ("binfmt_misc: fix possible deadlock in bm_register_write")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
 ---
- fs/binfmt_misc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ lib/alloc_tag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
-index a839f960cd4a..a8b1d79e4af0 100644
---- a/fs/binfmt_misc.c
-+++ b/fs/binfmt_misc.c
-@@ -837,8 +837,10 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
- 	inode_unlock(d_inode(root));
+diff --git a/lib/alloc_tag.c b/lib/alloc_tag.c
+index f26456988445..27fee57a5c91 100644
+--- a/lib/alloc_tag.c
++++ b/lib/alloc_tag.c
+@@ -845,7 +845,7 @@ static int __init alloc_tag_init(void)
  
- 	if (err) {
--		if (f)
-+		if (f) {
-+			exe_file_allow_write_access(f);
- 			filp_close(f, NULL);
-+		}
- 		kfree(e);
- 		return err;
- 	}
+ 	alloc_tag_cttype = codetag_register_type(&desc);
+ 	if (IS_ERR(alloc_tag_cttype)) {
+-		pr_err("Allocation tags registration failed, errno = %ld\n", PTR_ERR(alloc_tag_cttype));
++		pr_err("Allocation tags registration failed, errno = %pe\n", alloc_tag_cttype);
+ 		free_mod_tags_mem();
+ 		shutdown_mem_profiling(true);
+ 		return PTR_ERR(alloc_tag_cttype);
 -- 
-2.34.1
+2.25.1
 
 
