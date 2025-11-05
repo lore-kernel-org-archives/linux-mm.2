@@ -4,126 +4,129 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EC5D8CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 17:46:35 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34C90CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 17:51:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5388E8E0005; Wed,  5 Nov 2025 12:46:35 -0500 (EST)
+	id 93A618E0014; Wed,  5 Nov 2025 12:51:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 510668E0002; Wed,  5 Nov 2025 12:46:35 -0500 (EST)
+	id 8C3818E0002; Wed,  5 Nov 2025 12:51:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44D228E0005; Wed,  5 Nov 2025 12:46:35 -0500 (EST)
+	id 78AFD8E0014; Wed,  5 Nov 2025 12:51:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 336618E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 12:46:35 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 945D11A044F
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:46:34 +0000 (UTC)
-X-FDA: 84077283108.23.1C281FC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id C1992C0014
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:46:32 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X7Mf6l0a;
-	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 641A68E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 12:51:09 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 07651139C4E
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:51:09 +0000 (UTC)
+X-FDA: 84077294658.27.CECFE6F
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 89431180013
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:51:06 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMtEWUVd;
+	spf=pass (imf24.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762364792;
+	s=arc-20220608; t=1762365066;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ml2ENV49YDjBG99uR33VmgiseqTqkLu/oQRDXQnYV0A=;
-	b=Q3DrZWhtyyZwwKxMfmN3N1XfsebQZh/BKFgFxr4znKPiY/p7SIqQ4alB9tUYHAmqkBsyA0
-	FnbujBirwTB/TGa3Cgl35Imz1IIk/vQr/jCCGBosXfgcH8lQkyP/Hl/apTFY8UaPnyBT38
-	mP8216GJ9jKng6YV3LpDaaOfv3fE+W4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762364792; a=rsa-sha256;
-	cv=none;
-	b=PN19jrYHeX+gur8vEnHkTf6SWzrCjf7XA4BD2/hGwIw1RY9Pjp8glTsLE9q2va/Q+NnQTu
-	NkfUHjmCpei2ivSbs4/zDDKMQlYZ9NPr+xaPcvDoRUrJJxTTsRgw+irlJUiBA/3zV9HMft
-	mYBQuk8fcgHm7cVqqv1Xhqiis2x//ew=
+	bh=ISFGpQkJKSZ1BMPwjfpatM1IANu2Zxf0CyPwVpdWe9g=;
+	b=SWn2RSy7ecNCCbrZUgIXuYUixfHKO7H2+KrVk159jc6lDce6fFCua/FJw8iy9+0SayMVpQ
+	7kJehmqEkx+4h6Tz8pszQMxCP1JPTjBLIYJlzN1pFDJo9xPDJQn7YCTW8LuW8UqUdlnb7g
+	59pJhYkIdqbqWYAhJ8cmBs/O5TPCNbc=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X7Mf6l0a;
-	spf=pass (imf22.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id AF14441943;
-	Wed,  5 Nov 2025 17:46:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1533CC4CEF5;
-	Wed,  5 Nov 2025 17:46:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762364791;
-	bh=woawi0pKo/kryyYybe6UTBTWMoVsh5qziqijASjnREk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=X7Mf6l0akmdIq5iKgqrPQJacdZIwvZNDplWJ7ZFAiTj1m5jo/r4RZiwBnuufL7FJz
-	 rvjLuH5kIUsBewW58/KIJ4AtGpjFM65vgcq5Mq40hqFViVaFYaMO3B+3S2DJBgREr8
-	 Ydhgli/Ewi5GXUbKU7XplIRtFLKzGALUr+LrfoBKdNnCob1uuo8LERCMDso+bO1Ogb
-	 2kFxvq6vNnlZJHsASSZyjiY4DFFHKnlLj9M1sIw8Xs7M5lI6s7rwKH+tP57RLGeYQo
-	 I7shlbbDQcR6rzKbVlqZcx0moVDvOcKmF1aICmG6LscQYeQvqFcaYK64Yfrix1vGrk
-	 oPe9jn359SAFw==
-Date: Wed, 5 Nov 2025 18:46:28 +0100
-From: Frederic Weisbecker <frederic@kernel.org>
-To: Valentin Schneider <vschneid@redhat.com>
-Cc: Phil Auld <pauld@redhat.com>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rcu@vger.kernel.org, x86@kernel.org,
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
-	linux-riscv@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Arnd Bergmann <arnd@arndb.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Jason Baron <jbaron@akamai.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Josh Triplett <josh@joshtriplett.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Han Shen <shenhan@google.com>, Rik van Riel <riel@surriel.com>,
-	Jann Horn <jannh@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Oleg Nesterov <oleg@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
-	Clark Williams <williams@redhat.com>,
-	Yair Podemsky <ypodemsk@redhat.com>,
-	Marcelo Tosatti <mtosatti@redhat.com>,
-	Daniel Wagner <dwagner@suse.de>, Petr Tesarik <ptesarik@suse.com>
-Subject: Re: [PATCH v6 00/29] context_tracking,x86: Defer some IPIs until a
- user->kernel transition
-Message-ID: <aQuNdOEmPYkI03my@localhost.localdomain>
-References: <20251010153839.151763-1-vschneid@redhat.com>
- <aQDuY3rgOK-L8D04@localhost.localdomain>
- <xhsmhzf9aov51.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
- <aQJLpSYz3jdazzdb@localhost.localdomain>
- <xhsmh8qgk5txe.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=IMtEWUVd;
+	spf=pass (imf24.hostedemail.com: domain of dhildenb@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=dhildenb@redhat.com;
+	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762365066; a=rsa-sha256;
+	cv=none;
+	b=71GlkDGNw5Utp4uiAw6cTwyBSVynkYtKgYj28TvjrkiVUS7twxZK7c93vzurADkZtbP+en
+	c2WNExkYsHE4nhdixh4OYvGvu6LUiaT19KVYvkl/gU6jBFhfUeoFmw8wBYOcsi0I+VN/yV
+	Du0gKXQ+vRoVQEJcSelq1EiL5Bpdqpw=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762365065;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ISFGpQkJKSZ1BMPwjfpatM1IANu2Zxf0CyPwVpdWe9g=;
+	b=IMtEWUVdvUqcUFxE3dTECNzF4EVxg0jlrMXVEUqURsjYoPgtTwjF6gJJzQC1rQrssYbz+z
+	3GruAyWJnyzWIiwxd1EDkxd0OB8R5ISZYjFC3vBBLAcCIXjYF9daqdH8dANabiNPQ1pW7c
+	Rtqgc7NwKmLEDo4+kF90WbOYNF+VomE=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-Qk2GhauHPwC9DBMehFzz7Q-1; Wed, 05 Nov 2025 12:51:04 -0500
+X-MC-Unique: Qk2GhauHPwC9DBMehFzz7Q-1
+X-Mimecast-MFC-AGG-ID: Qk2GhauHPwC9DBMehFzz7Q_1762365063
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-429c9024a1dso61183f8f.2
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 09:51:04 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762365063; x=1762969863;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ISFGpQkJKSZ1BMPwjfpatM1IANu2Zxf0CyPwVpdWe9g=;
+        b=K26rb4fYn9Sg8ooZ4TJ4QF9VdtZRFFwFWTCAmZSEUIEVfAZfXRTYh7b1R/BOpX7LC+
+         hnx9K28Zf55AKBJZM4CoZjodMO0shfDVAiPAY6tpEGfUmYCyiubv4jZj1iBGQdEStu1J
+         MKFR4no+nxAEQ2qEDY3nOabfbE3nv/vVRKvIXsY7feVys5rV9kVeKdl/B21m6+nepdot
+         XpLId9ZCuKrQ1ovbEstglDhk6HcsaI0dk4NUxe/gCYwTpJ6ptTQGmcH7uMvr6BJ5/O6i
+         Ze1oSHM8pjhbb1VJADbVQefwx2/P1HJw/3mSzUN8nOCQIRymY7FZnLqlS7Q4d5/usbme
+         4POA==
+X-Forwarded-Encrypted: i=1; AJvYcCUs98ck2oZmN60Q0nAxV0fUHNuI6mMRGiIvWb5GdZM36Wkb6gXVxV4T3WR9vd7qjKiVlzLPAbTyJA==@kvack.org
+X-Gm-Message-State: AOJu0YyXlN7pyrNGTWNBMWEuxDK+k8sQCQtXbaGBSFGskoHhOpGi6Inx
+	qBz5mAdUy1hS5sZUtI+So8A1KqpgC/sxd/VAq0ImhRcO6/Il7qQLlslvSJ+yHnrMeTibKSPzuc8
+	6VFHnOps/IplXvwhfkpR9dzqeiASkgPbPRndsGPJKb8aKlgZR5i8O
+X-Gm-Gg: ASbGncuGAd6+pAEEqMwb2IKszMc14gJevCsx7/6kmDnKg1vPf6apEITU+MHpVIlihYu
+	z4FSdLRXKyvXjjL/VFNGb+nk7wIzpFkLfJ2z/kT7nk41uX/v5eDS4sRzKwcOGvQVNpzTZi5q9vd
+	AAknLvgPBndaMdWMTCHY8KgVwhRRHqQKx6E29mifKdenVm3nf4RWkwtJK9zjU3I/0x2SVRHfOV4
+	uKE+u/oexBhZ0mJWI7m6ioLKtOi5R42n+Gx827ssMo3uCmcRRPkPjn6LOTcxia35Q9dpMzfghB5
+	7bLfNkBFHfkwYpgvU1P2Jpvh0wAV/gXh7MDokBqBrOkDWUJnOV3RMgEOd95dgMad/Z15pJPYzJs
+	MO7yfg0olg+VZcl1DVfarb+1XWELurEboguRKgq8MxSGORBmeeQynL8w7amJcxX5vKJx5jeTmK5
+	mbza8bsM5kUjG2Z7PJI7otCaw=
+X-Received: by 2002:a05:6000:22ca:b0:429:c774:dbfc with SMTP id ffacd0b85a97d-429e32c8168mr3732767f8f.12.1762365063484;
+        Wed, 05 Nov 2025 09:51:03 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFewf6v4w5Te5dYAKTDbgxc9eRX6QAlJrRl89/5s4XLBna4xlJJ0Gt+LuAOvKZZlMh4VyOouQ==
+X-Received: by 2002:a05:6000:22ca:b0:429:c774:dbfc with SMTP id ffacd0b85a97d-429e32c8168mr3732746f8f.12.1762365063082;
+        Wed, 05 Nov 2025 09:51:03 -0800 (PST)
+Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429dc1fda36sm11649953f8f.40.2025.11.05.09.51.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Nov 2025 09:51:02 -0800 (PST)
+Message-ID: <021e8194-14bc-437a-a4ed-5e6abffb9827@redhat.com>
+Date: Wed, 5 Nov 2025 18:51:01 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <xhsmh8qgk5txe.mognet@vschneid-thinkpadt14sgen2i.remote.csb>
-X-Stat-Signature: wo5sxybrtqgwhb1iwk5ghxs1xdsusf6u
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] Revert "mm/ksm: convert break_ksm() from
+ walk_page_range_vma() to folio_walk"
+To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <20251105172756.167009-1-pedrodemargomes@gmail.com>
+ <20251105172756.167009-2-pedrodemargomes@gmail.com>
+From: David Hildenbrand <dhildenb@redhat.com>
+In-Reply-To: <20251105172756.167009-2-pedrodemargomes@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 5qK2ooCad1GbTADI896xWaatyqdEowoPJVVHXkY0o2Y_1762365063
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 89431180013
+X-Stat-Signature: ymyqishp3oho3zt1psr9othhigc77psa
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: C1992C0014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762364792-428073
-X-HE-Meta: U2FsdGVkX1/DtRd5PtmUan9h5sgerlx1LsPQ2kfmfa+/DP7RidQDcZbtwxYr3rsB7eeGoYNgbes/qeF8MjQ54pXOWUnjwYgJm6m17Mh13OEo6XDvzT6aI0sFvhQJwSUMJPycxsWwYxD+HLyKgUKVosWKxPP0AM8TiY/XPQ4IDpQFPkoTO0xWSaZBODe/T8KTms6xnIgXwX0/9vc1FGI4/xCNP+RPFrvB5UkabaQU5qE0LKk8jhbRDOLXM4gh26yVgpgxebY8vWNj7w6fcuMuVj1M13bb+1NQlCnnGx6BnQk7ZATuk+TaGIJYfe0zPk5F3EJZv5doYr4SI1B68jeCBc8mNDWpQtV5Nps/kZJyhra/GJTO3pV74W6fsF34Z7fhyC1r1DpcLWJCnz4Itp8ID1IFRKPS5CXidAK/uA9YyNRK5WHgz/kxWuvLHTVtYY6WgSlzd5GmHwRyeDeT8eRkyw5Aq3vqTG6y7ZxkFL0T2Wi5iZUC5nKV81V6rBQGfREW5oNGFMegGD6XmADBDgUfGNkVih+M1kHCcO3UsxIkdz6Yr66i0YQGnyMDvPgGjUpDGNyBesZyYpvtTW8eq4hzObdZPqo92CRti2yyXFqUHayWQSSIhqnKAqGTu8VRdOZSZ/w3fXkr0aYd7g3x3310QnbGcQDDe7ExdHNLrGNCxDtAZzt/Fr8NoUSYObEgMgWA1koxyl7S3+J1ylc5EGcXcgPdkl+0vGWwO7y6X1bkrbrUB+L+Ww7qLXn4ciEFxhLQpdQ4LR0vj0F1i1qLDZ6WuzdEgF7o5XkMAXG83e6qYdIJcY5O24P7Aw0Kbhiq5qFiEnjWfuhYMtsu7ZaGf26WHDydin98UFo8AlnGZ6z/XAoL4wp3MSUPGl/dKW1G5ofKHsMGqq0Fai1S4mZMtyA5o5Fy2byETshKCPJzV5HK+rPrX5XsQFrMeqEKAOeACBQxjKLetkXTpt6H73FLixN
- GyZQBIXT
- BpcHaOUIX8RuTP37cyfCB2F6iQr5yvYL3HX7AX2siX9DcjR2GBTNQHgYFjfDmhR2ACOUuQ/4N0SjS3DCfHPqPGsdKku/Tt8Qv6wXWqbRTS1hqO+26F/tCtefQm+pAZUsDYSPzXc1w0hZUGoSTtCyMLH6OhQHoKwLK4ay3n2OaCRj9tGnAOi+wK7l/Ir0RYjI4bo66PoIHoJ9/vZHg1AwI2ck/LujcSd1QQc40SpqVHpZVlxAvw9Pm1VmH6oHc3/2VN93HD8uI/IiMHANy9OzLUCtNgZlyKELpaiQ7zXfVftv5kbeuFD9jrdFuldPjA3vCx6qL4e8HQ0PoYSjimwmHq4fbeUit3B9rYMAgH0F7HtXikVfzhhG5LkAOrjFFmaaXGni1yxMTmbQSCpqgiSkVNkawtQ==
+X-HE-Tag: 1762365066-320290
+X-HE-Meta: U2FsdGVkX1+PO/3VAJBKex3BtPECJ9QH8DgNTI1e4hQkuXyifGMb/3BVi9falhbLAUb9XHtquqW8E6xv1CjGlFjF97hVwquhssZ4Znss9CAiGhLMouVAf8WQ2aPQhqC/th8yF8qAAukKAOVwP2QfMgzaVZfy9BqneEExXw3D71jmbHxFuLu8cMzJRKQieFk0jwADnN+xBc5rgIgoHcqHsd5aQctv4V6q8ypwMJEy1zbKWCAyCDVxl8KDkgbwYLwOyncjnoRGAdK3mlxtBMtbSCp1fmchjIoswcR4/nvjvxFaMC8xCUSP2UocCYGzLGK8zTpxF3oPc1+5ATYs8vWhSjb5SCP9J88MnsNmheqgrCMa0A3vrtoSHbZfUERzvXppW9ybl/doEk8XPL4VMIbIxwbCjXBQK3ohjCOw9ugxK5uEpr5QVNrDa8lWEgAE5w/4eSUtjtgl6k3+kA5gJVdEQUur3UTY2mYnOpT9TkHlKAmWFcfEV/y3Q4UkrolbjBimBSfjkyWZV8o15yWQTysbtauoDLL4Ao2ja4F6CCWmOWiSG9r0xOtvLRSScbIU4zJ8XIVZeR7LxmObQnuV48WQlkVo4HUVGvLh2R6EqYyctl8jC4TIOicxrKtHvao9Y+ITiwX2tL/wMZbKNaL775LgdernRmvyAz7nSwE5yg24KFmB36skLCbKKhli8YaPi44TK2U0nLYTm76MiLpu14BYm04t7faBmG7dzkruPJ4NWtJgONeXOuXxrbqFL/ig00CXJYH25cRJTJ+1wluleuRolXjKvYhcEiX8bcuCYI/LlDsG2+lBO1vMP7XqD3OQ1bJgU/O2R7ZqNo0KkV4uqANx9XgFmlKzo1DkekBFkofwpvj9arBf7FlUOu4XfhG9Jf2DTMTgxApwjnS1TxjfRlJMqlR0dS+Q7uJc9x+B11dtlZQqn6eXfGL2HjtDFE9FNDzo2HPECbGa45oAX5esx8N
+ qeA9Ivys
+ E2V7xvCx+205tGng8xrBv5Uy+YJE9NTIRWstjlIiVIAYHn0bn9J7bCO58fdBpZ6t47NRqTq9XMjrsZyf3QJFZzrw2wSsdr+1FPSfqatlg1WFLYbvm6c0gIKSiD6WB5ivIjjbQ3iS/Q0LoZwB50tWozKKdFSFH+J4FHAUezdwuuf3MBml9KmmQJNxOKYUXG74kECUpFSCox+ebdgDKfOubVlGfzTH1pk7KllX8KWwRq40CD56bbndzgNq6vL6RNIKhxZr9W3ZGKvbl6LO0RlzhhZN0eX4hdXG5A/kuumYGcj6dX+ZbCX/jS7M00uemxrVsbG9WS6KI9nv22hqDX5Ba8iBvWInw7qICBkwR7uso5+ePs06Paihbb1U50zZcLALoIUa5yP0aCGvDJkmxL9fqom60/D1WqRJX6z033wwo6cawJhN7ukFJPrdPbKCtzjZA5h6cgH+bbDADcJTp/fztPtJcRodn9sKg6tFBU0bXNLeoRHRaxw//a8gS/hDpym8PfEqgRTtC1UHuTzK0ZB3Jpx6WPm5+2hQhLnggj2INWNfC0L0bnw+ej8R/Z3w5eD2u81SBAkm7Z1k2CAV+9SAyxY3rPQb0QPNfsQ2bZC6xypqXZ//xP8qcAJFptAPPZrA0QznG
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,76 +135,72 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Le Wed, Nov 05, 2025 at 05:24:29PM +0100, Valentin Schneider a écrit :
-> On 29/10/25 18:15, Frederic Weisbecker wrote:
-> > Le Wed, Oct 29, 2025 at 11:32:58AM +0100, Valentin Schneider a écrit :
-> >> I need to have a think about that one; one pain point I see is the context
-> >> tracking work has to be NMI safe since e.g. an NMI can take us out of
-> >> userspace. Another is that NOHZ-full CPUs need to be special cased in the
-> >> stop machine queueing / completion.
-> >>
-> >> /me goes fetch a new notebook
-> >
-> > Something like the below (untested) ?
-> >
+On 05.11.25 18:27, Pedro Demarchi Gomes wrote:
+> This reverts commit e317a8d8b4f600fc7ec9725e26417030ee594f52 and changes
+> function break_ksm_pmd_entry() to use folios.
 > 
-> Some minor nits below but otherwise that looks promising.
+> This reverts break_ksm() to use walk_page_range_vma() instead of
+> folio_walk_start().
+> Change break_ksm_pmd_entry() to call is_ksm_zero_pte() only if we know
+> the folio is present, and also rename variable ret to found.
+> This will make it easier to later modify break_ksm() to perform a proper
+> range walk.
 > 
-> One problem I'm having however is reasoning about the danger zone; what
-> forbidden actions could a NO_HZ_FULL CPU take when entering the kernel
-> while take_cpu_down() is happening?
+> Suggested-by: David Hildenbrand <david@redhat.com>
+> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+> ---
+>   mm/ksm.c | 64 ++++++++++++++++++++++++++++++++++++++++++--------------
+>   1 file changed, 48 insertions(+), 16 deletions(-)
 > 
-> I'm actually not familiar with why we actually use stop_machine() for CPU
-> hotplug; I see things like CPUHP_AP_SMPCFD_DYING::smpcfd_dying_cpu() or
-> CPUHP_AP_TICK_DYING::tick_cpu_dying() expect other CPUs to be patiently
-> spinning in multi_cpu_stop(), and I *think* nothing in the entry code up to
-> context_tracking entry would disrupt that, but it's not a small thing to
-> reason about.
-> 
-> AFAICT we need to reason about every .teardown callback from
-> CPUHP_TEARDOWN_CPU to CPUHP_AP_OFFLINE and their explicit & implicit
-> dependencies on other CPUs being STOP'd.
+> diff --git a/mm/ksm.c b/mm/ksm.c
+> index 4f672f4f2140..de10ebcf3509 100644
+> --- a/mm/ksm.c
+> +++ b/mm/ksm.c
+> @@ -607,6 +607,48 @@ static inline bool ksm_test_exit(struct mm_struct *mm)
+>   	return atomic_read(&mm->mm_users) == 0;
+>   }
+>   
+> +static int break_ksm_pmd_entry(pmd_t *pmd, unsigned long addr, unsigned long next,
+> +			struct mm_walk *walk)
+> +{
+> +	struct folio *folio = NULL;
+> +	spinlock_t *ptl;
+> +	pte_t *pte;
+> +	pte_t ptent;
+> +	int found;
+> +
+> +	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
+> +	if (!pte)
+> +		return 0;
+> +	ptent = ptep_get(pte);
+> +	if (pte_present(ptent)) {
+> +		folio = vm_normal_folio(walk->vma, addr, ptent);
+> +	} else if (!pte_none(ptent)) {
+> +		swp_entry_t entry = pte_to_swp_entry(ptent);
+> +
+> +		/*
+> +		 * As KSM pages remain KSM pages until freed, no need to wait
+> +		 * here for migration to end.
+> +		 */
+> +		if (is_migration_entry(entry))
+> +			folio = pfn_swap_entry_folio(entry);
+> +	}
+> +	/* return 1 if the page is an normal ksm page or KSM-placed zero page */
+> +	found = (folio && folio_test_ksm(folio)) || (pte_present(ptent)
+> +		&& is_ksm_zero_pte(ptent));
 
-You're raising a very interesting question. The initial point of stop_machine()
-is to synchronize this:
+Nit:
 
-    set_cpu_online(cpu, 0)
-    migrate timers;
-    migrate hrtimers;
-    flush IPIs;
-    etc...
+found = (folio && folio_test_ksm(folio)) ||
+	(pte_present(ptent)&& is_ksm_zero_pte(ptent));
 
-against this pattern:
+Thanks!
 
-    preempt_disable()
-    if (cpu_online(cpu))
-        queue something; // could be timer, IPI, etc...
-    preempt_enable()
-
-There have been attempts:
-
-      https://lore.kernel.org/all/20241218171531.2217275-1-costa.shul@redhat.com/
-
-And really it should be fine to just do:
-
-    set_cpu_online(cpu, 0)
-    synchronize_rcu()
-    migrate / flush stuff
-
-Probably we should try that instead of the busy loop I proposed
-which only papers over the problem.
-
-Of course there are other assumptions. For example the tick
-timekeeper is migrated easily knowing that all online CPUs are
-not idle (cf: tick_cpu_dying()). So I expect a few traps, with RCU
-for example and indeed all these hotplug callbacks must be audited
-one by one.
-
-I'm not entirely unfamiliar with many of them. Let me see what I can do...
-
-Thanks.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
 -- 
-Frederic Weisbecker
-SUSE Labs
+Cheers
+
+David
+
 
