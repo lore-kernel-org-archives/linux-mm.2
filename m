@@ -4,108 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29883CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:23:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3B8FCCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:48:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 43CF78E000A; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
+	id 7A3B68E0003; Wed,  5 Nov 2025 01:48:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3ED208E0002; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
+	id 7542E8E0002; Wed,  5 Nov 2025 01:48:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2B5098E000A; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
+	id 642318E0003; Wed,  5 Nov 2025 01:48:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 15E128E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9381A0124
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:23:16 +0000 (UTC)
-X-FDA: 84075561192.16.CA45167
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 5772680004
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:23:08 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	spf=pass (imf30.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AEDF8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:48:41 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CE0F6864DB
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:48:40 +0000 (UTC)
+X-FDA: 84075625200.29.F5B9805
+Received: from out203-205-221-221.mail.qq.com (out203-205-221-221.mail.qq.com [203.205.221.221])
+	by imf08.hostedemail.com (Postfix) with ESMTP id EFEF5160004
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:48:37 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=fBwuo9Oo;
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ywen.chen@foxmail.com designates 203.205.221.221 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762325318; a=rsa-sha256;
+	cv=none;
+	b=ZLIo1KY8JBnNNruXklh8Vp5/wvE1qt7piBK8isDnQpSbzQqee8Qfzc5PTbB5gDxALe5FQK
+	cn1EFI/BTTb1cZaSuwx/MctU8OsW0MlFD3Il1g9EkZQ1LsRSBVeov+B8T6gAMRFjP2ohK3
+	5BVdB8V0tX28Q5zuUcFCTgluhAv9H6Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=foxmail.com header.s=s201512 header.b=fBwuo9Oo;
+	dmarc=pass (policy=none) header.from=foxmail.com;
+	spf=pass (imf08.hostedemail.com: domain of ywen.chen@foxmail.com designates 203.205.221.221 as permitted sender) smtp.mailfrom=ywen.chen@foxmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762323793;
+	s=arc-20220608; t=1762325318;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=J/vV2MKf3JEy0RYzE026Ug26bPPEjVBw8iMSZTRpNi0=;
-	b=WLO//Crz4Usn/KdIuEfvVd09fK5cepdmz9B9VCDUewUcrMCFS1ZL4yDmZvkcvnE/tnGUIt
-	whb770CVPZrhamomvSAEkUkpKAfWzfJhmdlcPqTRpu5kEKHGkIfl2AMetyO07RM/Sq2IIL
-	BPiFWmX/sEMfyVmahlTs/FojmCwtypE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762323793; a=rsa-sha256;
-	cv=none;
-	b=ZU6xe0Ivytcrf1XpGQvABhvfJ1wcDz49dtZ2wigsZ5n54U9G3ivatY9U3H1qN5r9WmtlrH
-	GQUNbc+bB6sisIOMADLXU+mcADDAZ3IH1VWWct9oD8rOZ09DbwINIV3yRMDn7VZYOwQ8HO
-	uKe+HT2NjwU8A2Of/4ci3BDn6vdOoyo=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=none;
-	spf=pass (imf30.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
-	dmarc=none
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d1Zxh02nzzYQv8F
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:22:48 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 45B501A1D6A
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:23:04 +0800 (CST)
-Received: from [10.174.178.254] (unknown [10.174.178.254])
-	by APP2 (Coremail) with SMTP id Syh0CgCHK0RG7QppvccOCw--.55319S3;
-	Wed, 05 Nov 2025 14:23:04 +0800 (CST)
-Message-ID: <a11bcb10-a10e-478e-92b9-1c02528c270e@huaweicloud.com>
-Date: Wed, 5 Nov 2025 14:23:02 +0800
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=mq0JclBaKBy4TWJ/ryyvsbPzM+n7z5k9LWVUwRw09pg=;
+	b=JtgWZg+qvUu7eJRf6YWJFhksbxupCnKnkuBFBs8bj7jBuXFAG2Va5BP0GnogLob7cjX1+7
+	0qWKDU2pfEF7rPF9LdpCaEcbKPAVYrNwPFOe+hftavaBJxx631f4O8DGpyYsQsaijapLx7
+	h/JPIptNevA4t0cQZKo423U6bYMYQGE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
+	s=s201512; t=1762325312;
+	bh=mq0JclBaKBy4TWJ/ryyvsbPzM+n7z5k9LWVUwRw09pg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=fBwuo9Ooq62rV4AK4peYDAo7vU7VFLQYQPfFGe2OLvcegO8T2mBvfD0DhulwmXE8h
+	 L8Hhx4meoz0cRWpb6RueI2BwHJ/FTSnMEO9jdD92/aWwhF2vajyqha1lexTU/8Q501
+	 ZTlqksPpgot1oj1BbR6cpShNlrsLUF3gnYRl4AaQ=
+Received: from meizu-Precision-3660.meizu.com ([112.91.84.72])
+	by newxmesmtplogicsvrszc43-0.qq.com (NewEsmtp) with SMTP
+	id C09020D0; Wed, 05 Nov 2025 14:48:09 +0800
+X-QQ-mid: xmsmtpt1762325289tzwix3fmp
+Message-ID: <tencent_25F89AABFE39535EF957519750D107B7D406@qq.com>
+X-QQ-XMAILINFO: MfXlhb1xJpsOoWvb9KDTSsn7+G3+IQwE/kGDDi09Bd4UMOaaXP8X4IJ2J3rzLL
+	 MUSe1cNV5v19tJRYJSI1BAfSvmtabJBs+6WgDlzlkoF+gHPYEhST8P4nqHjmYPH/4T4WmYE/Mo+t
+	 vhBuU6tI8N93MJydEZzJ0lRHAY+SzpOWNmwUBnKNnH0EFVWOTA0gr3NKZFthWWW6U/SS8Ir0lQ5w
+	 wPAgA7ae2V0Pyi9AjZ1thW55/Y1kl2qYAq3JKkfe2Xk+DjryxfG1r6QXnsQQF0BCxgNv8gdVb2k3
+	 UzxujK5VlTdGzchyS0X9/gl16zOMCD9p1Pg1O3CTxmSgi2LXLIyJPigRYgBnSCln++4QLC24NiFG
+	 K0t6XcfSLPlV/oR0Fob8WEsyj5BtUGPbm31/7+OPXUhYYbN9LKx2xaqBlgtKTz98Kri+twmPOJu8
+	 QWLdrY/ytBNcccFM/3CVMwdrry0HFRZ1n0UBkN4hFwaUegUFPUOhz1G3A55zB1YaFzOEP3SLxVWe
+	 7K39ikWXeLo0c3SrDQwkTH2Zrc7LWsOudZtvo0DqLzZMERVlN2iAGvKjnTSojfSj1Brx94nmiQja
+	 75LklGflGKDx4uWMO/f/kCWgcE17vtXATgDD+SF4XNLRXI799yitsBW/BDxftGR361ST4iZSjMop
+	 OMaOp+E1Mk22OmXEYPq6wGwoxuVIZU8yWFA92RkxLyVHUP+lb+g7XAzKtdAlsZJ2SiHlUXwWv2FY
+	 FkWRbOMTxQWe4Z89PvBhDc3xPo4j20iIUMy5RKerO96GR05+LrobD/AfeJl1Q3Hh3C49wEJwUxfa
+	 YVV6Njp5p+PQw/7IEU2CmDYFm197mj/5ODR0QET1DlBo6OSXQUTiBJcYulIK5/37D2veYz66KlcP
+	 +GwashhllGX9/RvhWuik3w45JFZAGBmN3oVd0CTnjOe9v4tO8CCyC0JBDCLiz7wxo827vW7Kzq10
+	 lXivwfbliMbVMiRiW4Kg3GpdSt8vwvizMgdfHczCWgyFiytVJ1xCepySpvTsFURs9XTF+bwFER3I
+	 JVqqYU7w4/toK3h1Quvdaa4JnJRmcMMenNcS+o6SZhPHe+BQppI3TQYQtllTG8uTy0eVAvIGyL1N
+	 nL7W5QN7j+4qdBdXE=
+X-QQ-XMRINFO: OWPUhxQsoeAVDbp3OJHYyFg=
+From: Yuwen Chen <ywen.chen@foxmail.com>
+To: ywen.chen@foxmail.com
+Cc: akpm@linux-foundation.org,
+	axboe@kernel.dk,
+	bgeffon@google.com,
+	licayy@outlook.com,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	liumartin@google.com,
+	minchan@kernel.org,
+	richardycc@google.com,
+	senozhatsky@chromium.org
+Subject: [PATCH v3] zram: Implement multi-page write-back
+Date: Wed,  5 Nov 2025 14:48:06 +0800
+X-OQ-MSGID: <20251105064806.2693018-1-ywen.chen@foxmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <tencent_85F14CD7BA73843CA32FF7AEB6A21A6EC907@qq.com>
+References: <tencent_85F14CD7BA73843CA32FF7AEB6A21A6EC907@qq.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
- BLK_MAX_BLOCK_SIZE to support LBS
-Content-Language: en-GB
-To: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@suse.cz>
-Cc: Matthew Wilcox <willy@infradead.org>,
- Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
- akpm@linux-foundation.org, surenb@google.com, jackmanb@google.com,
- hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz, yi.zhang@huawei.com,
- yangerkun@huawei.com, libaokun1@huawei.com
-References: <aQTb0NdyN3tU50ss@casper.infradead.org>
- <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
- <aQTqELGGKCN3JTIm@casper.infradead.org> <aQhf5LJJMlvT-rrE@tiehlicka>
- <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz> <aQh1EmVd8IPHK0Gh@tiehlicka>
- <aQnV73KorhS0AWH5@tiehlicka> <a0015508-e72b-4b1c-9993-7e66076a0a19@suse.cz>
- <aQn2fIcj9LduzsmI@tiehlicka> <188a95ba-6384-4319-bb74-c0d9ec6c4079@suse.cz>
- <aQotQBjnDDeL_wHx@tiehlicka>
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <aQotQBjnDDeL_wHx@tiehlicka>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgCHK0RG7QppvccOCw--.55319S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Zw45GFW7Aw4xWF4rWr4Uurg_yoW8Xr1kpF
-	WkWas7ta1vyF93JrZ2yw4IvryrXrn3Kay7J34rWryUA3W5Casavry7tFW8AFyq9wsIk3Wq
-	qr40qa1rJrnIvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
-	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
-	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
-	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
-	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
-	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
-	7KsUUUUUU==
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgADBWkJ0jBbNAAAsp
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 5772680004
-X-Stat-Signature: 7xe7cjy6j6c8gfuwm19if937bfe9kyo4
+X-Rspamd-Queue-Id: EFEF5160004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: teczcxz11g7ygme4pbw6pdigri95exne
 X-Rspam-User: 
-X-HE-Tag: 1762323788-854189
-X-HE-Meta: U2FsdGVkX18eqA0v7eOHsE1ammt4F38PKlNclc8UDB6LITf066k/o0tCKV3065pQuX+L71NZJcjDvar1m/8p61ioteEsk8ZN+zh+7lb8LzKZngUvgJYsUv3rvtH3/MhQ+e47m6T/Br/NYJGY5GzfmS1itWYcO/r9IORW+eaB+MIHLC7AJTx6101SVUDI/WQRrBbRlowOd3ojoJiS4bvf/8H4XniHhSTARL+DqbYsvycp54XH6S+r+hIJfiDLxHZRIaFnwkH7sM3bv6V2zs2ks//h4rDtF6RvrZH35k7PYKIUSGdF6pCG661i0JSzWZpy+tkLQ6kFMaATg3zxsaZL1t1YwbkHJ9iNpxJFG6E07aUGhXtzu0g+jaQhcU6e2juUu5nbjvycMdTthY5iOTcOOPDAOB3YVgp1tIB6BpxqzPRBoqYtTtNH3wBJ3TzIJokv/agjsCDcjCLLXJRkqFBGDv6XgQdPvugurXu3duiKQKjjIUzyeKmC0Vodp0J6PGpkljODsL0o/xz8EatQELBVcTtFv5gUDVaz7mFpzgQ3urK1N25tZGbydk9gxvQ5OACC2F/V5bvikE+b99keMwjXuaod9wu4GPUKdmbq/dirUrC3Zya72IZXKMDsDcLbUeWfmBHbcmJzms4StmKJ/G/EDV6OYbAeitolOJyjXXlfDU6YJ/wLRgE4z+nViv/fhGbaPrJbR5W61jOV6P/A6AHABOoW2n9lx8ggMW8utC+TLdSbJWOLLKOBda+yDvaMM0NtNAqiSO4VJMA3mBIOevC4slfUX2YzGoDswmbF3it2O76pXqA9UhOLNFXQ/fAYfnZtzXMZyjEqKSyXPtpqFH6u2EM5VWBesSM5wzbH40Y8uoVE5rrO9vCqz24qt/qJlKqOeAa4hN3EdMrsO8RZFvryeAfMr6kYdeSdQ9jpF6VJXsQGRmjHGEGOHoGZYI1hIyR4PGyhiiuGO6XrB3IgPtd
- pwqkUoFt
- SIB0IU86ytJNn/fVhuR7xogLA+v12p+mHx+qJwYKGbYjGRCGr8wPYnXSzBQO9ExlPEbWI+cdWI+EAnw1mTGjkentpaweunH89ZaO53OcuG8t1YpuwocmVMWwEqgnyTX/o4USdVcASKxoeR5U2xAKzfyXLwEol1TGQSsfbIWLFReTDb1Pm8isC5u2dK8cCpKsVq8L6
+X-HE-Tag: 1762325317-304777
+X-HE-Meta: U2FsdGVkX1+srTYZ3sG8qCxiAwsISqWhP6W4DG6shjwoPTyMaQd35i2FfsyXVTyrbSN55hDx7kv2OW/Gie7UHCA63qaz+y9OxXUPoiXs/PKm5JI6xB3y8DG8xRacrBU2lvIo3XUc8K3CiysTdHjRh6g/WSwwxGOLWCC9EoERdoHFbQIU6yzURV3IVO7FiBglQO4R6EE5giNGqji/tlu8ODMCWbJ3TmU+mtNNkr7tIvAN4xory5HtjcCWrMiIdCV/SHXbitjz1TQSThOcciBsRXnX9mqndOc4E5lZg1LNMDdc7oEfBwnb2XLmfdMtyRgCE8Tu9tHDNIoxZeBaca2ZYPKxSDTAlzFvDrWN/faqURZKKxOQ+NLhPV6j5jDYT/D2KbbI9iO2AB8P1XTn5YAegv7Fnl4w3RLho4MNua5fRXFM+Uk6Fxe32oD9Tnev6gOWP0PXhSjeE9dFATIiGGBBOeJdyZj5bMxHcs9PdktORzX7L8Z8fTIjQx3Gy/Qp/y6+zDfkPWLAwP07IPUF3xn3XfJ21qJ2aSKtFE24ATOuHEFbAsKqTeujeBuK9/9iIw1Az6289fpQ+UgQu6XdY88Hc2lc0XlBAvULKIbusHDLALqlG0q4WIPq16urNmeKzQmHTc7kFSAWjpIPCssJV44puhtKFxeHAhLIvd9douN5C7ZmtvMFIIMKmQZoim0943reGUBChONI0CLIIRHb0+gYpd8XAOYlYnMlNLKjKwaqqkB+xoH2P0IpZcdHuugL7AVl7N/weqglLiEZebMu48mDp1hoBz2gXw2YJd0SsrmxiM0go8cYRsH5JtvRAbPlBH778WfyQu29M5E7TWZxz7LVy7x15pp6lMOviBn9R1x0XC6+OEBTLVCnj/c/DAiO59vCLlngkLMBxHKRSabsJc10IL9+xuMPtrIBaVoRux5385ycm6Tj7s7sKqYrSpvnlPA3MdivITTDnVddVRsZxYe
+ xUZ/eAX7
+ R9X/bsCoD+ovPknNumymFhGXgwCOgFzg4O/lG2jUHYMpeqUwO4GYQC23ib/7QJRnkoezQGco+IqkRGAMy0/nVn1izxCdVpzcN1dP5fgEpAnfXcGcZoK7aB5oQTYN3RYuSxqHrGqbnoIfKA5KDG3gs3bv65m7SkeYaEyHSKwnJGk/osldXyHeYk1BSS5zjL5vu4x4QKhFngPaHOW/J7Ausx3XsCeUvr2y8yxrWQMkFmL+l3uVERxYn8/r5+Zdt1WmX5XvJWAbQbQ31rFNoa7AEfh8NkilSMRfCWR9jzeLU3NBbR3k=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -114,35 +114,314 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-05 00:43, Michal Hocko wrote:
-> On Tue 04-11-25 13:57:35, Vlastimil Babka wrote:
->> On 11/4/25 1:50 PM, Michal Hocko wrote:
->>> On Tue 04-11-25 13:32:52, Vlastimil Babka wrote:
->>>> OK, it might not create an order-3 page immediately. But I'd expect it
->>>> allows compaction to make progress thanks to making more free memory
->>>> available? We do retry reclaim/compaction after OOM killing one process,
->>>> and don't just kill until we succeed allocating, right?
->>> Yes we do go through the reclaim/compaction cycle. Do you think this
->>> warning is overzealous? Th idea is that a flood of OOMs could be easier
->> I think it's too odd to warn for a specific order and not that or higher
->> orders. We would risk someone would make the allocation order-4 instead
->> of order-3 just to avoid it.
-> higher orders simply avoid OOM killer so it is effectivelly retry loop
-> around the allocator. Order-3 is a bit odd and that is what the warning
-> is trying to tell. But fair enough let's just drop the existing warning
-> and see how it goes.
->
-Okay, since most people agree that we should first remove the current
-warning and then observe what happens before making further decisions,
-I will send a patch that directly deletes the warning.
+For block devices, sequential write performance is significantly
+better than random write. Currently, zram's write-back function
+only supports single-page operations, which fails to leverage
+the sequential write advantage and leads to suboptimal performance.
+This patch implements multi-page batch write-back for zram to
+leverage sequential write performance of block devices.
+After applying this patch, a large number of pages being merged
+into batch write operations can be observed via the following test
+code, which effectively improves write-back performance.
 
-Afterwards, depending on the situation once the warning is removed,
-we can consider adding some special handling in other places if needed.
+mount -t debugfs none /sys/kernel/debug/
+echo "block:block_bio_frontmerge" >> /sys/kernel/debug/tracing/set_event
+echo "block:block_bio_backmerge" >> /sys/kernel/debug/tracing/set_event
+cat /sys/kernel/debug/tracing/trace_pipe &
+echo "page_indexes=1-10000" > /sys/block/zram0/writeback
 
-Thanks to everyone for the discussion and suggestions! 
+Signed-off-by: Yuwen Chen <ywen.chen@foxmail.com>
+Reviewed-by: Fengyu Lian <licayy@outlook.com>
+---
+Changes in v3:
+  - Postpone the page allocation.
+Changes in v2:
+  - Rename some data structures.
+  - Fix an exception caused by accessing a null pointer.
+---
+ drivers/block/zram/zram_drv.c | 224 ++++++++++++++++++++++++++--------
+ 1 file changed, 170 insertions(+), 54 deletions(-)
 
-
-Cheers,
-Baokun
+diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+index 4f2824a..ce8fc3c 100644
+--- a/drivers/block/zram/zram_drv.c
++++ b/drivers/block/zram/zram_drv.c
+@@ -751,21 +751,131 @@ static void read_from_bdev_async(struct zram *zram, struct page *page,
+ 	submit_bio(bio);
+ }
+ 
+-static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
+-{
+-	unsigned long blk_idx = 0;
+-	struct page *page = NULL;
++enum {
++	/* Indicate that the request has been allocated */
++	ZRAM_WB_REQUEST_ALLOCATED = 0,
++
++	/* the request has been processed by the block device layer */
++	ZRAM_WB_REQUEST_COMPLETED,
++};
++
++struct zram_wb_request {
++	struct completion *done;
++	unsigned long blk_idx;
++	struct page *page;
+ 	struct zram_pp_slot *pps;
+ 	struct bio_vec bio_vec;
+ 	struct bio bio;
+-	int ret = 0, err;
+-	u32 index;
++	unsigned long flags;
++};
+ 
+-	page = alloc_page(GFP_KERNEL);
+-	if (!page)
+-		return -ENOMEM;
++static int zram_writeback_complete(struct zram *zram, struct zram_wb_request *req)
++{
++	u32 index = 0;
++	int err;
+ 
+-	while ((pps = select_pp_slot(ctl))) {
++	if (!test_and_clear_bit(ZRAM_WB_REQUEST_COMPLETED, &req->flags))
++		return 0;
++
++	err = blk_status_to_errno(req->bio.bi_status);
++	if (err)
++		return err;
++
++	index = req->pps->index;
++	atomic64_inc(&zram->stats.bd_writes);
++	zram_slot_lock(zram, index);
++	/*
++	 * Same as above, we release slot lock during writeback so
++	 * slot can change under us: slot_free() or slot_free() and
++	 * reallocation (zram_write_page()). In both cases slot loses
++	 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
++	 * ZRAM_PP_SLOT on such slots until current post-processing
++	 * finishes.
++	 */
++	if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
++		goto next;
++
++	zram_free_page(zram, index);
++	zram_set_flag(zram, index, ZRAM_WB);
++	zram_set_handle(zram, index, req->blk_idx);
++	req->blk_idx = 0;
++	atomic64_inc(&zram->stats.pages_stored);
++	spin_lock(&zram->wb_limit_lock);
++	if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
++		zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
++	spin_unlock(&zram->wb_limit_lock);
++
++next:
++	zram_slot_unlock(zram, index);
++	release_pp_slot(zram, req->pps);
++	req->pps = NULL;
++	return 0;
++}
++
++static void zram_writeback_endio(struct bio *bio)
++{
++	struct zram_wb_request *req = bio->bi_private;
++
++	set_bit(ZRAM_WB_REQUEST_COMPLETED, &req->flags);
++	clear_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags);
++	complete(req->done);
++}
++
++static struct zram_wb_request *zram_writeback_next_request(struct zram_wb_request *pool,
++	int pool_cnt, int *cnt_off)
++{
++	struct zram_wb_request *req = NULL;
++	int i = 0;
++
++	for (i = *cnt_off; i < pool_cnt + *cnt_off; i++) {
++		req = &pool[i % pool_cnt];
++		if (!req->page) {
++			/* This memory should be freed by the caller. */
++			req->page = alloc_page(GFP_KERNEL);
++			if (!req->page)
++				continue;
++		}
++
++		if (!test_and_set_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags)) {
++			*cnt_off = (i + 1) % pool_cnt;
++			return req;
++		}
++	}
++	return NULL;
++}
++
++#define ZRAM_WB_REQ_CNT (32)
++static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
++{
++	int ret = 0, err, i = 0, cnt_off = 0;
++	int req_pool_cnt = 0;
++	struct zram_wb_request req_prealloc[2] = {0};
++	struct zram_wb_request *req = NULL, *req_pool = NULL;
++	DECLARE_COMPLETION_ONSTACK(done);
++	u32 index = 0;
++	struct blk_plug plug;
++
++	/* allocate memory for req_pool */
++	req_pool = kzalloc(sizeof(*req) * ZRAM_WB_REQ_CNT, GFP_KERNEL);
++	if (req_pool) {
++		req_pool_cnt = ZRAM_WB_REQ_CNT;
++	} else {
++		req_pool = req_prealloc;
++		req_pool_cnt = ARRAY_SIZE(req_prealloc);
++	}
++
++	for (i = 0; i < req_pool_cnt; i++) {
++		req_pool[i].done = &done;
++		req_pool[i].flags = 0;
++	}
++	req = zram_writeback_next_request(req_pool, req_pool_cnt, &cnt_off);
++	if (!req) {
++		ret = -ENOMEM;
++		goto out_free_req_pool;
++	}
++
++	blk_start_plug(&plug);
++	while ((req->pps = select_pp_slot(ctl))) {
+ 		spin_lock(&zram->wb_limit_lock);
+ 		if (zram->wb_limit_enable && !zram->bd_wb_limit) {
+ 			spin_unlock(&zram->wb_limit_lock);
+@@ -774,15 +884,15 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
+ 		}
+ 		spin_unlock(&zram->wb_limit_lock);
+ 
+-		if (!blk_idx) {
+-			blk_idx = alloc_block_bdev(zram);
+-			if (!blk_idx) {
++		if (!req->blk_idx) {
++			req->blk_idx = alloc_block_bdev(zram);
++			if (!req->blk_idx) {
+ 				ret = -ENOSPC;
+ 				break;
+ 			}
+ 		}
+ 
+-		index = pps->index;
++		index = req->pps->index;
+ 		zram_slot_lock(zram, index);
+ 		/*
+ 		 * scan_slots() sets ZRAM_PP_SLOT and relases slot lock, so
+@@ -792,22 +902,32 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
+ 		 */
+ 		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+ 			goto next;
+-		if (zram_read_from_zspool(zram, page, index))
++		if (zram_read_from_zspool(zram, req->page, index))
+ 			goto next;
+ 		zram_slot_unlock(zram, index);
+ 
+-		bio_init(&bio, zram->bdev, &bio_vec, 1,
++		bio_init(&req->bio, zram->bdev, &req->bio_vec, 1,
+ 			 REQ_OP_WRITE | REQ_SYNC);
+-		bio.bi_iter.bi_sector = blk_idx * (PAGE_SIZE >> 9);
+-		__bio_add_page(&bio, page, PAGE_SIZE, 0);
+-
+-		/*
+-		 * XXX: A single page IO would be inefficient for write
+-		 * but it would be not bad as starter.
+-		 */
+-		err = submit_bio_wait(&bio);
++		req->bio.bi_iter.bi_sector = req->blk_idx * (PAGE_SIZE >> 9);
++		req->bio.bi_end_io = zram_writeback_endio;
++		req->bio.bi_private = req;
++		__bio_add_page(&req->bio, req->page, PAGE_SIZE, 0);
++
++		list_del_init(&req->pps->entry);
++		submit_bio(&req->bio);
++
++		do {
++			req = zram_writeback_next_request(req_pool, req_pool_cnt, &cnt_off);
++			if (!req) {
++				blk_finish_plug(&plug);
++				wait_for_completion_io(&done);
++				blk_start_plug(&plug);
++			}
++		} while (!req);
++		err = zram_writeback_complete(zram, req);
+ 		if (err) {
+-			release_pp_slot(zram, pps);
++			release_pp_slot(zram, req->pps);
++			req->pps = NULL;
+ 			/*
+ 			 * BIO errors are not fatal, we continue and simply
+ 			 * attempt to writeback the remaining objects (pages).
+@@ -817,43 +937,39 @@ static int zram_writeback_slots(struct zram *zram, struct zram_pp_ctl *ctl)
+ 			 * the most recent BIO error.
+ 			 */
+ 			ret = err;
+-			continue;
+ 		}
++		cond_resched();
++		continue;
+ 
+-		atomic64_inc(&zram->stats.bd_writes);
+-		zram_slot_lock(zram, index);
+-		/*
+-		 * Same as above, we release slot lock during writeback so
+-		 * slot can change under us: slot_free() or slot_free() and
+-		 * reallocation (zram_write_page()). In both cases slot loses
+-		 * ZRAM_PP_SLOT flag. No concurrent post-processing can set
+-		 * ZRAM_PP_SLOT on such slots until current post-processing
+-		 * finishes.
+-		 */
+-		if (!zram_test_flag(zram, index, ZRAM_PP_SLOT))
+-			goto next;
+-
+-		zram_free_page(zram, index);
+-		zram_set_flag(zram, index, ZRAM_WB);
+-		zram_set_handle(zram, index, blk_idx);
+-		blk_idx = 0;
+-		atomic64_inc(&zram->stats.pages_stored);
+-		spin_lock(&zram->wb_limit_lock);
+-		if (zram->wb_limit_enable && zram->bd_wb_limit > 0)
+-			zram->bd_wb_limit -=  1UL << (PAGE_SHIFT - 12);
+-		spin_unlock(&zram->wb_limit_lock);
+ next:
+ 		zram_slot_unlock(zram, index);
+-		release_pp_slot(zram, pps);
+-
++		release_pp_slot(zram, req->pps);
++		req->pps = NULL;
+ 		cond_resched();
+ 	}
++	blk_finish_plug(&plug);
+ 
+-	if (blk_idx)
+-		free_block_bdev(zram, blk_idx);
+-	if (page)
+-		__free_page(page);
++	if (req)
++		clear_bit(ZRAM_WB_REQUEST_ALLOCATED, &req->flags);
++	for (i = 0; i < req_pool_cnt; i++) {
++		while (test_bit(ZRAM_WB_REQUEST_ALLOCATED, &req_pool[i].flags))
++			wait_for_completion_io(&done);
++		err = zram_writeback_complete(zram, &req_pool[i]);
++		if (err) {
++			release_pp_slot(zram, req_pool[i].pps);
++			req->pps = NULL;
++			ret = err;
++		}
++
++		if (req_pool[i].blk_idx)
++			free_block_bdev(zram, req_pool[i].blk_idx);
++		if (req_pool[i].page)
++			__free_page(req_pool[i].page);
++	}
+ 
++out_free_req_pool:
++	if (req_pool != req_prealloc)
++		kfree(req_pool);
+ 	return ret;
+ }
+ 
+-- 
+2.34.1
 
 
