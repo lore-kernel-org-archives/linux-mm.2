@@ -4,115 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 041D1CCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 14:05:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B1A0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 14:14:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 47B9A8E0007; Wed,  5 Nov 2025 09:05:02 -0500 (EST)
+	id E2E5C8E000C; Wed,  5 Nov 2025 09:14:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 42B6A8E0003; Wed,  5 Nov 2025 09:05:02 -0500 (EST)
+	id DDECB8E0003; Wed,  5 Nov 2025 09:14:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2F3948E0007; Wed,  5 Nov 2025 09:05:02 -0500 (EST)
+	id CF4AF8E000C; Wed,  5 Nov 2025 09:14:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D55E8E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:02 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id BF0BA8E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:14:42 -0500 (EST)
 Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C4529B8D26
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:05:01 +0000 (UTC)
-X-FDA: 84076724802.08.AD3FBFF
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 603E513A9BD
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:14:42 +0000 (UTC)
+X-FDA: 84076749204.08.850088F
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 709EB100017
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:04:59 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mwaBfK9q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5x4wrmEQ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gG9BppFp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TxG2x/Ch";
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by imf23.hostedemail.com (Postfix) with ESMTP id 1D7C1140012
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:14:39 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2iEefTsX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eWMGy+vC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QQDOD4fe;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lGbBjwjX;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762351499;
+	s=arc-20220608; t=1762352080;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ObIHwLo4q/sN8twtSW+vc2ZozvwJfT2HzNmnwS+Wygg=;
-	b=LHTz8tFtYsOh1L5wnD/+N05nbUi8Lxy0QOw9Yek51tckKqF1gNYJeUqBuD1GyXJznvhBNt
-	MN0KgNNMW/7HHtf+28A53ZMYDjbtOyBLZb9RoiOnLc8hDP/S91CSaEL20F7Vhtzj/xkDK4
-	DgkiMQIenFObK87duA/NGpqRDGD+j4k=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762351499; a=rsa-sha256;
+	bh=LtaMTHwoSJ7gdcMsqu34UHmxryFF8g8ckxvwQO3B5rI=;
+	b=FMcGzMi490ArEDvqB5JV9Q587wxjwpyrG5tr4UFBHF8/Gls0bdaGN5/JRWsQI63n4xtHwT
+	RBMl0ZO6XwPwcsEweU3aP702gY63VFE7lMVoNgbCyxz9/t0Yed/GZ2zBpCRJ5S82P58GyN
+	uco74FeTbd5t0KR9i4LqVli1nNRFnhk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762352080; a=rsa-sha256;
 	cv=none;
-	b=J8qBg/VvW/gbt47Eozd3+cDf5o+OYNYY2YM7ZUN8vFfSfHWvZjlxF6jrOLhO9Jclas9Xac
-	DPfdErF7gRZFAGLboL/URggtZ2mqW43CUt3dEqOBsPUjYtdnyt4s77X5LUDyr02AWGLWHU
-	UzfTub80hRK1wW7Eu4b3CmFNaZBQtPg=
+	b=SzY22rPey9RDR0g/map6zjE19bSXMmL+ishT+6Nv1jP+V5bUE/af5UQM8ID1aV5hmUwc3g
+	Q+8moic7/pkYTSpuIMFSY3v03QIwi2WRatx8DDKSjYiBSCPorzsH/LXl4gxoWkBG8y2cEm
+	zAsSlDI7Jv+ZrO6l4js+Sc6I5gjlE2c=
 ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mwaBfK9q;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=5x4wrmEQ;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=gG9BppFp;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="TxG2x/Ch";
-	spf=pass (imf05.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	imf23.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=2iEefTsX;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=eWMGy+vC;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=QQDOD4fe;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=lGbBjwjX;
+	dmarc=none;
+	spf=pass (imf23.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id E7785211A9;
-	Wed,  5 Nov 2025 14:04:55 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4862F21168;
+	Wed,  5 Nov 2025 14:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762351498; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762352078; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ObIHwLo4q/sN8twtSW+vc2ZozvwJfT2HzNmnwS+Wygg=;
-	b=mwaBfK9q4KJUD4+xDLEv/Avzvg11MlFEEDvU/3mW6Tp92xKfgpWimolm0IlBswwtG/ibal
-	8XSav+g5ch/Uy9mjilQ+1zwAZhfZufpVZMSk1kEEbDAl6q1RQIVEUWBEtCNsj0YTXwpdlA
-	iYAK3Oal6h1P2aFlmV3fou6lYefjKV0=
+	bh=LtaMTHwoSJ7gdcMsqu34UHmxryFF8g8ckxvwQO3B5rI=;
+	b=2iEefTsX1euMaa+FNxmPl3nh8idQbUXy155AilvmFKxhdcoKyM8RVpItV1+cLjVDxWU/rl
+	WqleS1kf36xOENWqiGBHqbAcD7Vu0KdpI5HHHweoVuO7zy/zKFTtki3Ud94bQYtsK6tv4E
+	aK30ma/I0FwXWB0URQAi1fFINqqe/mY=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762351498;
+	s=susede2_ed25519; t=1762352078;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ObIHwLo4q/sN8twtSW+vc2ZozvwJfT2HzNmnwS+Wygg=;
-	b=5x4wrmEQe1zTSCOrQOzR6jiwukiPGwefynkPcdbCCEMPiYLU+Pdm6eCEkttOSIIDrSqfzY
-	LtbR2SI/wBLimMDQ==
+	bh=LtaMTHwoSJ7gdcMsqu34UHmxryFF8g8ckxvwQO3B5rI=;
+	b=eWMGy+vCWJugb+xfZG9LFToPeHdco31qNkoCouiIXae4gwP5xUJA+4oQ7XTlmuvvsDgRaB
+	gLMiuDHm3Ek42MAg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762351495; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762352077; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ObIHwLo4q/sN8twtSW+vc2ZozvwJfT2HzNmnwS+Wygg=;
-	b=gG9BppFprhCEcEdSuJpBptD+oBRebryZPhCIRSYT/F+MwIKDaq3HfzW+zyw0Una0MMG9jw
-	GjlaOkkPXUfbVGtZ6dKmHVcHDxA+xFSrAm2cWUkyUblk11WS1x6Zxq9KyobZbEBmOGez4W
-	C91kToyS+GuF3wLB+t00W5TCdzCFIdQ=
+	bh=LtaMTHwoSJ7gdcMsqu34UHmxryFF8g8ckxvwQO3B5rI=;
+	b=QQDOD4feMN1N7I5KKQ7uf7egbepTkcg0MudYHAJCcd8aBoJGVUhHtRmG/Fdpq7ov3NDVjX
+	KSHGcg0iYWFa91NbtGTMJXL7q8ZGiF18Ldm56bHraveLUhGaYY9FvccaSOq+BmQUjhKX/p
+	5EYWEZ97gIxb25oJC7G22Gn+HY71RIo=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762351495;
+	s=susede2_ed25519; t=1762352077;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ObIHwLo4q/sN8twtSW+vc2ZozvwJfT2HzNmnwS+Wygg=;
-	b=TxG2x/ChMut6poH3bRkP28pjwq5XZS11dyO7ot9qLxrwIdJUVy6pDHL6gY1A8wPEuMR96g
-	INEIcuKzLImnIRCg==
+	bh=LtaMTHwoSJ7gdcMsqu34UHmxryFF8g8ckxvwQO3B5rI=;
+	b=lGbBjwjX4eLt0ZDDfuREv71QYeCKsPcfsXFAwPYFBa/koic5cINLJMFOz9q129ZzSuInNK
+	XXNdoCfsH8g9Z1DQ==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id CA8F813699;
-	Wed,  5 Nov 2025 14:04:55 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1DAA413699;
+	Wed,  5 Nov 2025 14:14:37 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 5FWhL4dZC2mkNAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 14:04:55 +0000
-Message-ID: <59626bf3-033b-4b2f-99ea-7056ab1e4d74@suse.cz>
-Date: Wed, 5 Nov 2025 15:04:55 +0100
+	id F+nUBc1bC2kQPgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 14:14:37 +0000
+Message-ID: <1b76a8c3-fefd-4bb8-b86a-f715e014bd6d@suse.cz>
+Date: Wed, 5 Nov 2025 15:14:36 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/9] mempool: add error injection support
+Subject: Re: [PATCH 1/9] mempool: update kerneldoc comments
 Content-Language: en-US
+From: Vlastimil Babka <vbabka@suse.cz>
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
@@ -120,8 +121,8 @@ Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-fscrypt@vger.kernel.org, linux-mm@kvack.org
 References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-3-hch@lst.de>
-From: Vlastimil Babka <vbabka@suse.cz>
+ <20251031093517.1603379-2-hch@lst.de>
+ <c6dbd7f1-0368-4ab2-83ab-e51b2b3e92b7@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
  KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
@@ -161,18 +162,16 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20251031093517.1603379-3-hch@lst.de>
+In-Reply-To: <c6dbd7f1-0368-4ab2-83ab-e51b2b3e92b7@suse.cz>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Rspamd-Action: no action
-X-Stat-Signature: bdsd1ri31ysaymjp95n4eaz1ss8ym55u
+X-Stat-Signature: w9u1out18bgg318buckgwakrypeqwgy1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 709EB100017
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762351499-442101
-X-HE-Meta: U2FsdGVkX18lZSYzyfqDHgRLm+aZVs90KaGyOgmw92GXWDSCRPeX1mmT9t55AzuKmJJUxth4RiRKlT/DFN56SoHSM/IGCCqM0NK1+HBJMe+FWnt6T26/rGdefgM8IryshUwr6cAGU5nl+LOQ1TS8X6MqLgUldEtp4kZk/YhosXYUI5iPfysnxQORvsvDaUALTdGE+IKV5JxPYD4nWzEJYoqgVjALeK+QsolgKIU+zFLqfGDEF6mSRLTgEGiy3ucDxrLNWeQAcRIFsfwrJJ3aUlwjrV3UBfNTEcTech+F3QZzOoD5DOSXdpov6kDO9Qzs9BZ5q+avlRSfNXXR5kg/CqcbkmUooshVvEjwdwXy3Q8Hwa9ogYkocNaKxBfkuOPZabYKjWlGgkccydiCn6Z9cAkju+dXRP+Fraf/Q31xMCNHqfz6m8aBr4J8Y/JDskJzK+51osSsOk/jbM9rGPm4shRb4j3GXRjdZ5ZuzpDa7TmG8rMSm/EFaxvoBlSOmJLWQuoo0Rg8VZvlYW50hHEfIzjN2XG1ix7A8Z+NnhXhP+mEYCTXkzmpcZleL/lkP5VGyPQtPTOwsIJdTtQ9jJpY+Vl0t0ZqzkBt91PZOO6W4ZRRR4jrsvTDkMua//lLwI/s1P9/BKuVyiN5yJgDOazn8lxgSClEK0risRIHUkHsdEWBR+OOsWZPqWb43UCOyl2dMfZfbmgIuPwuuXRtUaIwbjVr0rAKGVEQg81Lo4QmF1xCm6owiFyiv3ayaF1BTTksBs1W29owhrCYrzK0e0KAVb+cMHkaGFddUYRbY7LXXyYX4sCsX84GjfAGttmkSWghDUJjBS91aBSf5qT+4Bc9pIcaWmJiV9LGsW2awtv1ppOeZ+yiO4Q3TAHWMG4ERUtFp9n84xastUIup4GmcG1pCXKIH3aCz7qdI/0YstXuStR6/NhY8zc07pyybdFzbaW8dpKHaS3whvk2+u2j82q
- P5z8VI4S
- JGdEqvFfS2+e8+1cL0ZSDTRuxZ5Qz21S0ZYbqFT5HrKtD6kRANd0BbUtETidvClfOlGdtyESnKhslMFDDZBROJeGViwLvv3B0H5/meosAkDYCIf0bhk0lkI88ZvNhHhN4l77UYsRWiX2HsknaZYpegxFiCNAoD1I884mLIr3Z5k2MfEDkecgDId5f32wQr1bm3AsQysdL6OO0SzbW8/GZEUquy/EI6/S5SVrnGDanx90bBpOpgCP2mcg33iEBNvGvjvMi
+X-Rspamd-Queue-Id: 1D7C1140012
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762352079-835407
+X-HE-Meta: U2FsdGVkX1/G9RL3Hbt3N4RCYvvOYrj0NehHHb4nt2vlLvfuf/HPelIYAVb+GW3ui1ldHw4J53r9fIKB71dEOv2itG+Nssr8b/hPPddPwGNCboKUM7sgqyoBZhFQDyH1plkRzNpomBIaGoAt3bW+qF554kdjhajjU3MKcUVoiYPFcoRcV0pzfvhPJwlX9kibbfYL58riOZNpckfV95K/S+jiALfnLNwxidHeXkco1Qoo6toxtzTXzn2KqfBwjRWOXyDiQqMiuU0pvgVoPV7EBF3VNyExhVqC32RIJ45e/xG+Vw0AFNyR8bSp2RwKulsF8dFwx7x/5hoCMbxn9rPtqEe8aTR0bzAJLO/Z0Kfd1ryrZsuHTIcUUJ7XwVpSOse00Amq+CMijB++JZUQOAiqPsOeOEPy3lEq2RIcWD2B57INEHB+WdFJw+61usLm8Yd4dqciwO8bsUeODiPUfptaYU/W3DGdfBaNWRH76ERQP2qBaJ0B25xdJV08qwmj8s862JrWUvu+JcV/1jDuY5xeqmU+Y4PpKJFDk1hQ4yF8A50uI1PVHlpgSjIkoTl3dVoY/xwsFaVRq8rDeV3kDr1bhjaHYDyUkGeprA6ET9WGUJYk7lZdwtIdZBh0uj4doCBQSE+GCl3HxOldns0HiWAj44ogC8ZiR8sP3ONk7RYRSxK2UxX/RuM99jVkeHQb0Fow/KeKoUZNOx7goin+9/hHrihGnRL3HJd0rxB/PFr8IxxPbBIT0WrASnpSaVMEUK3YCxggasyJO0o0GNgSgd7Eyjq2ZpLf5djNVPEO2230QgQbH8o5PGK080zm9UVcd5zCw6nHJiy9xoAvdtjuyJVsvT5PNHa1oaeRA6HIzOC0Bcr1zTf0hosFvViJqlTE9uhG3TWvM4fKqcZGS4U01zmZUsVtPEPze/wEx8inqqSZkFhwrONNE8WgWf1argwnLIz+
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,71 +180,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/31/25 10:34, Christoph Hellwig wrote:
-> Add a call to should_fail_ex that forces mempool to actually allocate
-> from the pool to stress the mempool implementation when enabled through
-> debugfs.  By default should_fail{,_ex} prints a very verbose stack trace
-> that clutters the kernel log, slows down execution and triggers the
-> kernel bug detection in xfstests.  Pass FAULT_NOWARN and print a
-> single-line message notating the caller instead so that full tests
-> can be run with fault injection.
+On 11/5/25 15:02, Vlastimil Babka wrote:
+> On 10/31/25 10:34, Christoph Hellwig wrote:
+>> Use proper formatting, use full sentences and reduce some verbosity in
+>> function parameter descriptions.
+>> 
+>> Signed-off-by: Christoph Hellwig <hch@lst.de>
+>> ---
+>>  mm/mempool.c | 36 +++++++++++++++++-------------------
+>>  1 file changed, 17 insertions(+), 19 deletions(-)
+>> 
+>> diff --git a/mm/mempool.c b/mm/mempool.c
+>> index 1c38e873e546..d7c55a98c2be 100644
+>> --- a/mm/mempool.c
+>> +++ b/mm/mempool.c
+>> @@ -372,18 +372,15 @@ int mempool_resize(mempool_t *pool, int new_min_nr)
+>>  EXPORT_SYMBOL(mempool_resize);
+>>  
+>>  /**
+>> - * mempool_alloc - allocate an element from a specific memory pool
+>> - * @pool:      pointer to the memory pool which was allocated via
+>> - *             mempool_create().
+>> - * @gfp_mask:  the usual allocation bitmask.
+>> + * mempool_alloc - allocate an element from a memory pool
+>> + * @pool:	pointer to the memory pool
+>> + * @gfp_mask:	GFP_* flags.
+>>   *
+>> - * this function only sleeps if the alloc_fn() function sleeps or
+>> - * returns NULL. Note that due to preallocation, this function
+>> - * *never* fails when called from process contexts. (it might
+>> - * fail if called from an IRQ context.)
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> Why remove this part? Isn't it the most important behavior of mempools?
+> 
+>> - * Note: using __GFP_ZERO is not supported.
+>> + * Note: This function only sleeps if the alloc_fn callback sleeps or returns
+>> + * %NULL.  Using __GFP_ZERO is not supported.
+>>   
+>> - * Return: pointer to the allocated element or %NULL on error.
+>> + * Return: pointer to the allocated element or %NULL on error. This function
+>> + * never returns %NULL when @gfp_mask allows sleeping.
+
+Oh I see, it's here.
 
 Acked-by: Vlastimil Babka <vbabka@suse.cz>
-
-> ---
->  mm/mempool.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index d7c55a98c2be..15581179c8b9 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -9,7 +9,7 @@
->   *  started by Ingo Molnar, Copyright (C) 2001
->   *  debugging by David Rientjes, Copyright (C) 2015
->   */
-> -
-> +#include <linux/fault-inject.h>
->  #include <linux/mm.h>
->  #include <linux/slab.h>
->  #include <linux/highmem.h>
-> @@ -20,6 +20,15 @@
->  #include <linux/writeback.h>
->  #include "slab.h"
->  
-> +static DECLARE_FAULT_ATTR(fail_mempool_alloc);
-> +
-> +static int __init mempool_faul_inject_init(void)
-> +{
-> +	return PTR_ERR_OR_ZERO(fault_create_debugfs_attr("fail_mempool_alloc",
-> +			NULL, &fail_mempool_alloc));
-> +}
-> +late_initcall(mempool_faul_inject_init);
-> +
->  #ifdef CONFIG_SLUB_DEBUG_ON
->  static void poison_error(mempool_t *pool, void *element, size_t size,
->  			 size_t byte)
-> @@ -399,10 +408,15 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->  	gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO);
->  
->  repeat_alloc:
-> -
-> -	element = pool->alloc(gfp_temp, pool->pool_data);
-> -	if (likely(element != NULL))
-> -		return element;
-> +	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
-> +		pr_info("forcing mempool usage for pool %pS\n",
-> +				(void *)_RET_IP_);
-> +		element = NULL;
-> +	} else {
-> +		element = pool->alloc(gfp_temp, pool->pool_data);
-> +		if (likely(element != NULL))
-> +			return element;
-> +	}
->  
->  	spin_lock_irqsave(&pool->lock, flags);
->  	if (likely(pool->curr_nr)) {
 
 
