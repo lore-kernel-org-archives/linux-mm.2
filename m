@@ -4,114 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D49DCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:05:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 100CBCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:12:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54AE88E0009; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
+	id 6E4C68E000E; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 522FF8E0008; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
+	id 6949E8E0008; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 411A98E0009; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
+	id 55D308E000E; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 2E8D88E0008
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id C93E3C03E7
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:04:58 +0000 (UTC)
-X-FDA: 84076875876.01.7B7A0B4
+	by kanga.kvack.org (Postfix) with ESMTP id 3EF9A8E0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:12:34 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id DE7A11A012C
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:12:33 +0000 (UTC)
+X-FDA: 84076894986.09.C043F5A
 Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 0C5B840024
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:04:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by imf20.hostedemail.com (Postfix) with ESMTP id 6ABAF1C0012
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:12:31 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762355551; a=rsa-sha256;
+	cv=none;
+	b=yGAxEOMODdIeagUylVfbcuYl89TGm0Fn8/J/q85qMDyru2StaLZXVvWkAghED9MdxUcVIl
+	dkPfqRaF8NdAC7GE2Rfmc5JsLXtAiCAimBYl6LMDxRR8diHQmGivfSK1XQ4BPGWTRVQLcC
+	IXmFTMd5C9H1Ejn3cKjxyO2qWdSHKOU=
+ARC-Authentication-Results: i=1;
+	imf20.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=vOPg+LHG;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=3fBDLO1F;
+	dmarc=none;
+	spf=pass (imf20.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762355096;
+	s=arc-20220608; t=1762355551;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
-	b=IEnOkeeeGAFX8XJgWLktYET4B1pLJMKHjUeyhAtm4tz7gZMnf+C9kZVRMsD2NAFB1R4TLp
-	CuaOationoyajwC9ONY45/X4LAHSYHl9ihgqYpgVkHKVjovaGZkgHNG5K7hM0FvErBqktZ
-	hLTarO0GP8P2UZEIWFMmlj8Gv2LtvL0=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
-	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762355096; a=rsa-sha256;
-	cv=none;
-	b=gHaqvuD+TWCXZEzAgsyqxtVpVmCJQt/H/R8uYomiXxho2fPlbmH6RTCXkXAf1Sv5Zrl1UG
-	D/pWPKHSwBqs1ZFYYIIWY3+SOd5aOB6Quy7klnMhqhrf5DTbBa0uEeB0UQA47BBUy8Stum
-	nv6cQJm80vs4adSQaf1fktoybvhy0/s=
+	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
+	b=3Ua7B1+0fOuMZaCSWDiAI9Ty1J7xmMvdFxcXwmZgWCc4yqAIZ6h3FKy07/kZRRlH/Llt45
+	sCBtIOj3fNaQy4gvAUdyQyw0b71br+IfJuz5QbTeVaqTO2sd8G+ztzbnATDc2wmsZ4DX8A
+	bl5TbOHaBkffOZjtzDECOBt7YuJle2k=
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 524981F453;
-	Wed,  5 Nov 2025 15:04:54 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D37AE1F393;
+	Wed,  5 Nov 2025 15:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762355094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762355549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
-	b=fPHkWN3cohCt3Y9aKRf5dm54h1HsdlNwgieAXowMXSKEVQAV31WG9vqp5LNul3fcV8VosZ
-	xuufrMV4qZezZ1GOacDwpUxuDJKZLUgzoKNoxAhoolNkY93hYgFgbCMQICdUEkkuh+IGAB
-	snxdZ4N7OU1ji6kBsCIe+PLk+xRwEok=
+	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
+	b=vOPg+LHG7W8Yk1HS6Dsqqv3MuWG2XGmqog16SM/nz7u6dEMJPe3i9AhFhwP/WfJVXmvQcV
+	QWH4iMuF1SSTkpoQe/WLl/HtHn4D7b3y2PCeNYRSq3zsRKURpLzDnArWbzFfZtLKKvzbKk
+	QuWyoiheskgZBExMQm9+VQqcZ4b5XfQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762355094;
+	s=susede2_ed25519; t=1762355549;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
-	b=zlDOApGaLytUOYBDPIikb5vi/8jstOehbTANXSGPR4wA1vCX7Q5L/ARIpWAD7RCT3Mb+0b
-	zwlX8tjLHn/UoyAw==
+	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
+	b=3fBDLO1F7aXeoa1qyCsw7hVXRdwyz8+2qPyK704dPWdvmcYFcrqpQGEUIV0fpFTM3pjpyw
+	BPMYDGJJBtmN/qBA==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762355094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1762355549; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
-	b=fPHkWN3cohCt3Y9aKRf5dm54h1HsdlNwgieAXowMXSKEVQAV31WG9vqp5LNul3fcV8VosZ
-	xuufrMV4qZezZ1GOacDwpUxuDJKZLUgzoKNoxAhoolNkY93hYgFgbCMQICdUEkkuh+IGAB
-	snxdZ4N7OU1ji6kBsCIe+PLk+xRwEok=
+	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
+	b=vOPg+LHG7W8Yk1HS6Dsqqv3MuWG2XGmqog16SM/nz7u6dEMJPe3i9AhFhwP/WfJVXmvQcV
+	QWH4iMuF1SSTkpoQe/WLl/HtHn4D7b3y2PCeNYRSq3zsRKURpLzDnArWbzFfZtLKKvzbKk
+	QuWyoiheskgZBExMQm9+VQqcZ4b5XfQ=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762355094;
+	s=susede2_ed25519; t=1762355549;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
-	b=zlDOApGaLytUOYBDPIikb5vi/8jstOehbTANXSGPR4wA1vCX7Q5L/ARIpWAD7RCT3Mb+0b
-	zwlX8tjLHn/UoyAw==
+	bh=iwBH7iM0sPxUEaHRpT+jUi+gGcVAjv29IOeKwGDaXZs=;
+	b=3fBDLO1F7aXeoa1qyCsw7hVXRdwyz8+2qPyK704dPWdvmcYFcrqpQGEUIV0fpFTM3pjpyw
+	BPMYDGJJBtmN/qBA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28038132DD;
-	Wed,  5 Nov 2025 15:04:54 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B30C1132DD;
+	Wed,  5 Nov 2025 15:12:29 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yLH8CJZnC2kjcgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 15:04:54 +0000
-Message-ID: <1fff522d-1987-4dcc-a6a2-4406a22d3ec2@suse.cz>
-Date: Wed, 5 Nov 2025 16:04:53 +0100
+	id mI/pKV1pC2lFeQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 15:12:29 +0000
+Message-ID: <39f2d0d3-de79-4e13-a577-83a3aeb5cf1b@suse.cz>
+Date: Wed, 5 Nov 2025 16:12:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] mempool: add mempool_{alloc,free}_bulk
+Subject: Re: [PATCH 9/9] blk-crypto: use mempool_alloc_bulk for encrypted bio
+ page allocation
 Content-Language: en-US
 To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
  Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
@@ -120,7 +121,7 @@ Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
  linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-fscrypt@vger.kernel.org, linux-mm@kvack.org
 References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-4-hch@lst.de>
+ <20251031093517.1603379-10-hch@lst.de>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -161,17 +162,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
  dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
  m6M14QORSWTLRg==
-In-Reply-To: <20251031093517.1603379-4-hch@lst.de>
+In-Reply-To: <20251031093517.1603379-10-hch@lst.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 0C5B840024
-X-Stat-Signature: bqeth5zxpx49g1mmcg54ih7jg5eoh36t
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 6ABAF1C0012
+X-Stat-Signature: cf5zxrx9z8o65sa1cui1y9nj7bbjbqyb
 X-Rspam-User: 
-X-HE-Tag: 1762355095-166812
-X-HE-Meta: U2FsdGVkX1/mOwpZP/913XrXKRTHI0DUHYNsr60mbpQulkUEZ6J9m45NJ7taHk5ibnqLmnt24uOCnWO9DBLM+lvXrQr53pEuYgVqB7yMc7brrMIVPgAR84wYnfNaFAQIaVGQ1Igx8JEFetQ3O0exLT38jebXiKBYbXybd4Hf4jvQ8xTMgIjGPwtOUPmHxtlXl1qz8noSfcYm20gPDxKOgM8C3QulEdflpJO5EhzEnrkV/YS1Y+cr14F1vA7kysOT9OC29k0o5dQ2QsX59WNf+wplEoGocQVBGib5qu3zG7TeqmV94Ga6Oyx6uDLLqRDp/dOHONyh086r7NUmGUZkwYYMQqrJ44oidz4MUdWRS4H0ND7jQgnNioAwoN1od0RSwBfSOQhoAymRw79dZM/w7mDDuKFwGjHft5Wr1fs4ck+UjV0hDkMufF3bjSaUFQpqsbiHS8ao3eBVQZItVBZeEgFYO5K1dDaGUem4heDGQmAjW7FSs1Lb+AdDM6WxukeOaMDTBPCY6dAjv0Gg2G5g901SAfax5f3nobcUVRnXcLbCLkSLWgcI0/pch9Z6bnhcWh59L/COxGF4waeD6xW1w7hy1ohRKrmqewbxH27Ql78arc4ZSte6GuRVCVQQJmWXQkByB/5qJhqglSVS6X/3aeH2XzG0YM0h2TOASCx3LrcxgVOsa7uI6L0mTu64YADWYgZJbhFn2mah0PIpR+t7wYnq2G+7eGcIV7sT8zWDRWIgrFqxl8khn3ZSGZGcJKAvyUAwlHGLv9nInFgao2ZhkOd2Fuzq8QASxMcd/INurCAtA/33021XnXaoplQFrQ2l+0AfOs45nON1Ig43/HUPqBuHLpP5rf/r69tO0EdeAI7u4LsJ93yWZY6CQfAAfG6BrBkoiJ6irYo0B53nbMlizTeIs6rbsnYWwFcgL+a0sCS+XPveKeKVvBlJ0v/kob7Yl+f5UrKWd+T6a3oZev7
- mbLUBj0k
- 1hmXHxo0nHtkdXcNHhY+ZERnRiTZfpcujXEUo/yL6iP/+afII7gdwgPHxQ0gVwXQq74+Y5p72s9G2eHZX6jvurH14uF54YFj7BX6A8ktSzOZHkWFh4lYbZyP0mglc37xxfuEY4s4kmoNnIXpNZQOVyrE2c2iRwhx1FH34TcrIodRGCgzS92Rd85Zh8mdda0lnlTMOHcurtrgpvGdgywB+JPuJUR0XMV92xr7CjLq9YPOorRObkV1WI7ghTWkI2AGSFaqnxgfZalWCvT/7bqoVYXS9PIpSEOS4BDF4AJETDwiVLyYk0Gk1Tqr51cje0Hiu+OJAODVbhY4RcYU=
+X-HE-Tag: 1762355551-249165
+X-HE-Meta: U2FsdGVkX1/V58wiDUjGo+/6wnnQFye9EJHzQpvNEOIDOUPfDpfjNMbgRIrAdCErDgkmNkC+EdUe7JHdwR0aIHJKM7OBmF/mQBJ+DV0iuqFr4CajNUL524zmeAoqzKSFy/OhGj5ec21DzsvTCFPDzUhykY0DUO0XzPqGv3kzwYQ9eCgV29DPxQuCLzOFFjEe0cxkYRZAtEbOAJYDMataqJiXANgKVr0HoE6ER3YmS67e6ZfB5EYaRIvZ91mcHDRDbD+EOMSaSYctvDw/h1gfdS6xY0DzRjAgAUp19xlQgf8jFiy21EBhyNHZJKTHenFQffbqoVdKPrJpgLwFEMg2sCAFRgYcLcE4gPEyxEIOtuNZ0icb23ahLYq414g1VTMttH16T9YtOjgSkFgyP1M4GSEtLWsnOUF6Ei/2Tw5EdEUC75aQ2WRND57J6386ez6pjq7XgYiWL0lBx3dwTH/wkXb5H5hH5cA9Np22Usjyx4egNiDpttaQiVhBbXKWuGGzjRu7TLMbEzhPlPtSibb4p0jrFRjleksKWjJrFdO9XtqzPHNocp8AqNNj4hD0y1YPg4jx6UNBKz3ALdZZZrzsCuQPVRQKNNbNwdRzMPQ/9QovAM9m7vpvn0eqUhKtkXSWBWB5mPGzRquJppLXHsh8Os43yWwzzKqxSiRx1cdMfjMNMQyBCYYTztfj3AV01/rXuW9OvJ9A6D9wb9jyj5h1rMQTP+/hyE3kEcUD8yzANYS3prK3GFFl07gQryfS2aOTRl9sxevBzikfZj7+r5cmZ4xru0R/SS7h4va3pkbVNKp2nedlrrz492jfiX20qu6gvRsIIRq60imXvqSBg+6lsja6DICvPcNBSfy52SMVF8+lNJzWAGYfpHO/9zYZk35RWbcNMjbbVaOsAdFhNPpXYXsGa81bDDSEP9XF2a5dEO1KxB2Zi3jFmGZAvfl6KIuZKWgBuUW6plg/pZERfi9
+ rrA4ny7P
+ IPzkjkM2U8AmzIb52YHsg9pBN0YP61wARXb1vlao7N3+LOV6W3bLmQ2PmMFbWeoc8Dt3qLx/6TG2/9acH6BBrnzyvMe9N4q7wUZtA86UNqeuzEnMb4BloEnWRjEBP0zj5hOEswoIXtvvEcYaYedt30whsUiLxCs7G3sTrhebasBbkC21b9L0CIffbzR02Xl/g7Z0eyQPkpHhFR7J98b8gnxa/OL+fxBE+oimbjViPMO8MABUKlXBiJXI7VCuwSKADYb19HfS6yIo0+Zy1Yd6xtUTT9sOPN8wP1YGgV9FoDIB52QwDcs8THehWV51P2SzGC1kYJQNhsymr0hiNykcZNuXbFg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -181,309 +182,60 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 10/31/25 10:34, Christoph Hellwig wrote:
-> Add a version of the mempool allocator that works for batch allocations
-> of multiple objects.  Calling mempool_alloc in a loop is not safe because
-> it could deadlock if multiple threads are performing such an allocation
-> at the same time.
-> 
-> As an extra benefit the interface is build so that the same array can be
-> used for alloc_pages_bulk / release_pages so that at least for page
-> backed mempools the fast path can use a nice batch optimization.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  include/linux/mempool.h |   7 ++
->  mm/mempool.c            | 145 ++++++++++++++++++++++++++++------------
->  2 files changed, 111 insertions(+), 41 deletions(-)
-> 
-> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
-> index 34941a4b9026..486ed50776db 100644
-> --- a/include/linux/mempool.h
-> +++ b/include/linux/mempool.h
-> @@ -66,9 +66,16 @@ extern void mempool_destroy(mempool_t *pool);
->  extern void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask) __malloc;
->  #define mempool_alloc(...)						\
->  	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
-> +int mempool_alloc_bulk_noprof(mempool_t *pool, void **elem,
-> +		unsigned int count, gfp_t gfp_mask, unsigned long caller_ip);
-> +#define mempool_alloc_bulk(pool, elem, count, gfp_mask)			\
-> +	alloc_hooks(mempool_alloc_bulk_noprof(pool, elem, count, gfp_mask, \
-> +			_RET_IP_))
->  
->  extern void *mempool_alloc_preallocated(mempool_t *pool) __malloc;
->  extern void mempool_free(void *element, mempool_t *pool);
-> +unsigned int mempool_free_bulk(mempool_t *pool, void **elem,
-> +		unsigned int count);
->  
->  /*
->   * A mempool_alloc_t and mempool_free_t that get the memory from
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index 15581179c8b9..c980a0396986 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -381,23 +381,29 @@ int mempool_resize(mempool_t *pool, int new_min_nr)
->  EXPORT_SYMBOL(mempool_resize);
->  
->  /**
-> - * mempool_alloc - allocate an element from a memory pool
-> + * mempool_alloc_bulk - allocate multiple elements from a memory pool
->   * @pool:	pointer to the memory pool
-> + * @elem:	partially or fully populated elements array
-> + * @count:	size (in entries) of @elem
->   * @gfp_mask:	GFP_* flags.
->   *
-> + * Allocate elements for each slot in @elem that is non-%NULL.
-> + *
->   * Note: This function only sleeps if the alloc_fn callback sleeps or returns
->   * %NULL.  Using __GFP_ZERO is not supported.
->   *
-> - * Return: pointer to the allocated element or %NULL on error. This function
-> - * never returns %NULL when @gfp_mask allows sleeping.
-> + * Return: 0 if successful, else -ENOMEM.  This function never returns -ENOMEM
-> + * when @gfp_mask allows sleeping.
->   */
-> -void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
-> +int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
-> +		unsigned int count, gfp_t gfp_mask, unsigned long caller_ip)
->  {
-> -	void *element;
->  	unsigned long flags;
->  	wait_queue_entry_t wait;
->  	gfp_t gfp_temp;
-> +	unsigned int i;
->  
-> +	VM_WARN_ON_ONCE(count > pool->min_nr);
->  	VM_WARN_ON_ONCE(gfp_mask & __GFP_ZERO);
->  	might_alloc(gfp_mask);
->  
-> @@ -407,20 +413,31 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->  
->  	gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO);
->  
-> +	i = 0;
->  repeat_alloc:
-> -	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
-> -		pr_info("forcing mempool usage for pool %pS\n",
-> -				(void *)_RET_IP_);
-> -		element = NULL;
-> -	} else {
-> -		element = pool->alloc(gfp_temp, pool->pool_data);
-> -		if (likely(element != NULL))
-> -			return element;
-> +	for (; i < count; i++) {
-> +		if (!elem[i]) {
-> +			if (should_fail_ex(&fail_mempool_alloc, 1,
-> +					FAULT_NOWARN)) {
-> +				pr_info("forcing pool usage for pool %pS\n",
-> +					(void *)caller_ip);
-> +				goto use_pool;
-> +			}
-
-Would it be enough to do this failure injection attempt once and not in
-every iteration?
-
-> +			elem[i] = pool->alloc(gfp_temp, pool->pool_data);
-> +			if (unlikely(!elem[i]))
-> +				goto use_pool;
-> +		}
->  	}
->  
-> +	return 0;
+> @@ -192,6 +205,29 @@ static struct bio *blk_crypto_alloc_enc_bio(struct bio *bio_src,
+>  	bio->bi_write_stream	= bio_src->bi_write_stream;
+>  	bio->bi_iter.bi_sector	= bio_src->bi_iter.bi_sector;
+>  	bio_clone_blkg_association(bio, bio_src);
 > +
-> +use_pool:
->  	spin_lock_irqsave(&pool->lock, flags);
-> -	if (likely(pool->curr_nr)) {
-> -		element = remove_element(pool);
-> +	if (likely(pool->curr_nr >= count - i)) {
-> +		for (; i < count; i++) {
-> +			if (!elem[i])
-> +				elem[i] = remove_element(pool);
-> +		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
->  		/* paired with rmb in mempool_free(), read comment there */
->  		smp_wmb();
-> @@ -428,8 +445,9 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->  		 * Update the allocation stack trace as this is more useful
->  		 * for debugging.
->  		 */
-> -		kmemleak_update_trace(element);
-> -		return element;
-> +		for (i = 0; i < count; i++)
-> +			kmemleak_update_trace(elem[i]);
-> +		return 0;
->  	}
->  
->  	/*
-> @@ -445,10 +463,12 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->  	/* We must not sleep if !__GFP_DIRECT_RECLAIM */
->  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
->  		spin_unlock_irqrestore(&pool->lock, flags);
-> -		return NULL;
-> +		if (i > 0)
-> +			mempool_free_bulk(pool, elem + i, count - i);
-
-I don't understand why we are trying to free from i to count and not from 0
-to i? Seems buggy, there will likely be NULLs which might go through
-add_element() which assumes they are not NULL.
-
-Assuming this is fixed we might still have confusing API. We might be
-freeing away elements that were already in the array when
-mempool_alloc_bulk() was called. OTOH the pool might be missing less than i
-elements and mempool_free_bulk() will not do anything with the rest.
-Anything beyond i is untouched. The caller has no idea what's in the array
-after getting this -ENOMEM. (alloc_pages_bulk() returns the number of pages
-there).
-Maybe it's acceptable (your usecase I think doesn't even add a caller that
-can't block), but needs documenting clearly.
-
-> +		return -ENOMEM;
->  	}
->  
-> -	/* Let's wait for someone else to return an element to @pool */
-> +	/* Let's wait for someone else to return elements to @pool */
->  	init_wait(&wait);
->  	prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
-
-So in theory callers waiting for many objects might wait indefinitely to
-find enough objects in the pool, while smaller callers succeed their
-allocations and deplete the pool. Mempools never provided some fair ordering
-of waiters, but this might make it worse deterministically instead of
-randomly. Guess it's not such a problem if all callers are comparable in
-number of objects.
-
-> @@ -463,6 +483,27 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->  	finish_wait(&pool->wait, &wait);
->  	goto repeat_alloc;
->  }
-> +EXPORT_SYMBOL_GPL(mempool_alloc_bulk_noprof);
+> +	/*
+> +	 * Move page array up in the allocated memory for the bio vecs as far as
+> +	 * possible so that we can start filling biovecs from the beginning
+> +	 * without overwriting the temporary page array.
+> +	 */
+> +	static_assert(PAGE_PTRS_PER_BVEC > 1);
+> +	pages = (struct page **)bio->bi_io_vec;
+> +	pages += nr_segs * (PAGE_PTRS_PER_BVEC - 1);
 > +
-> +/**
-> + * mempool_alloc - allocate an element from a memory pool
-> + * @pool:	pointer to the memory pool
-> + * @gfp_mask:	GFP_* flags.
-> + *
-> + * Note: This function only sleeps if the alloc_fn callback sleeps or returns
-> + * %NULL.  Using __GFP_ZERO is not supported.
-> + *
-> + * Return: pointer to the allocated element or %NULL on error. This function
-> + * never returns %NULL when @gfp_mask allows sleeping.
-> + */
-> +void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask)
-> +{
-> +	void *elem[1] = { };
-> +
-> +	if (mempool_alloc_bulk_noprof(pool, elem, 1, gfp_mask, _RET_IP_) < 0)
-> +		return NULL;
-> +	return elem[0];
-> +}
->  EXPORT_SYMBOL(mempool_alloc_noprof);
->  
->  /**
-> @@ -502,21 +543,26 @@ void *mempool_alloc_preallocated(mempool_t *pool)
->  EXPORT_SYMBOL(mempool_alloc_preallocated);
->  
->  /**
-> - * mempool_free - return an element to a mempool
-> - * @element:	pointer to element
-> + * mempool_free_bulk - return elements to a mempool
->   * @pool:	pointer to the memory pool
-> + * @elem:	elements to return
-> + * @count:	number of elements to return
->   *
-> - * Returns @elem to @pool if its needs replenishing, else free it using
-> - * the free_fn callback in @pool.
-> + * Returns elements from @elem to @pool if its needs replenishing and sets
-> + * their slot in @elem to NULL.  Other elements are left in @elem.
-> + *
-> + * Return: number of elements transferred to @pool.  Elements are always
-> + * transferred from the beginning of @elem, so the return value can be used as
-> + * an offset into @elem for the freeing the remaining elements in the caller.
->   *
->   * This function only sleeps if the free_fn callback sleeps.
+> +	/*
+> +	 * Try a bulk allocation first.  This could leave random pages in the
+> +	 * array unallocated, but we'll fix that up later in mempool_alloc_bulk.
+> +	 *
+> +	 * Note: alloc_pages_bulk needs the array to be zeroed, as it assumes
+> +	 * any non-zero slot already contains a valid allocation.
+> +	 */
+> +	memset(pages, 0, sizeof(struct page *) * nr_segs);
+> +	if (alloc_pages_bulk(GFP_NOFS, nr_segs, pages) < nr_segs) {
+> +		mempool_alloc_bulk(blk_crypto_bounce_page_pool, (void **)pages,
+> +				nr_segs, GFP_NOIO);
 
-This part now only applies to mempool_free() ?
+Why do the GFP flags differ?
 
->   */
-> -void mempool_free(void *element, mempool_t *pool)
-> +unsigned int mempool_free_bulk(struct mempool *pool, void **elem,
-> +		unsigned int count)
->  {
->  	unsigned long flags;
-> -
-> -	if (unlikely(element == NULL))
-> -		return;
-> +	bool added = false;
-> +	unsigned int freed = 0;
->  
->  	/*
->  	 * Paired with the wmb in mempool_alloc().  The preceding read is
-> @@ -553,15 +599,11 @@ void mempool_free(void *element, mempool_t *pool)
->  	 */
->  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
->  		spin_lock_irqsave(&pool->lock, flags);
-> -		if (likely(pool->curr_nr < pool->min_nr)) {
-> -			add_element(pool, element);
-> -			spin_unlock_irqrestore(&pool->lock, flags);
-> -			if (wq_has_sleeper(&pool->wait))
-> -				wake_up(&pool->wait);
-> -			return;
-> +		while (pool->curr_nr < pool->min_nr && freed < count) {
-> +			add_element(pool, elem[freed++]);
-> +			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
-> -	}
->  
->  	/*
->  	 * Handle the min_nr = 0 edge case:
-> @@ -572,20 +614,41 @@ void mempool_free(void *element, mempool_t *pool)
->  	 * allocation of element when both min_nr and curr_nr are 0, and
->  	 * any active waiters are properly awakened.
->  	 */
-> -	if (unlikely(pool->min_nr == 0 &&
-> +	} else if (unlikely(pool->min_nr == 0 &&
->  		     READ_ONCE(pool->curr_nr) == 0)) {
->  		spin_lock_irqsave(&pool->lock, flags);
->  		if (likely(pool->curr_nr == 0)) {
-> -			add_element(pool, element);
-> -			spin_unlock_irqrestore(&pool->lock, flags);
-> -			if (wq_has_sleeper(&pool->wait))
-> -				wake_up(&pool->wait);
-> -			return;
-> +			add_element(pool, elem[freed++]);
-> +			added = true;
->  		}
->  		spin_unlock_irqrestore(&pool->lock, flags);
->  	}
->  
-> -	pool->free(element, pool->pool_data);
-> +	if (unlikely(added) && wq_has_sleeper(&pool->wait))
-> +		wake_up(&pool->wait);
-> +
-> +	return freed;
-> +}
-> +EXPORT_SYMBOL_GPL(mempool_free_bulk);
-> +
-> +/**
-> + * mempool_free - return an element to the pool.
-> + * @element:	element to return
-> + * @pool:	pointer to the memory pool
-> + *
-> + * Returns @elem to @pool if its needs replenishing, else free it using
-> + * the free_fn callback in @pool.
-> + *
-> + * This function only sleeps if the free_fn callback sleeps.
-> + */
-> +void mempool_free(void *element, struct mempool *pool)
-> +{
-> +	if (likely(element)) {
-> +		void *elem[1] = { element };
-> +
-> +		if (!mempool_free_bulk(pool, elem, 1))
-> +			pool->free(element, pool->pool_data);
 > +	}
+> +	*pages_ret = pages;
+>  	return bio;
 >  }
->  EXPORT_SYMBOL(mempool_free);
+>  
+> @@ -234,6 +270,7 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
+>  	struct scatterlist src, dst;
+>  	union blk_crypto_iv iv;
+>  	struct bio *enc_bio = NULL;
+> +	struct page **enc_pages;
+>  	unsigned int nr_segs;
+>  	unsigned int enc_idx = 0;
+>  	unsigned int j;
+> @@ -259,11 +296,10 @@ static blk_status_t __blk_crypto_fallback_encrypt_bio(struct bio *src_bio,
+>  
+>  		if (!enc_bio) {
+>  			enc_bio = blk_crypto_alloc_enc_bio(src_bio,
+> -					min(nr_segs, BIO_MAX_VECS));
+> +					min(nr_segs, BIO_MAX_VECS), &enc_pages);
+>  		}
+>  
+> -		enc_page = mempool_alloc(blk_crypto_bounce_page_pool,
+> -				GFP_NOIO);
+> +		enc_page = enc_pages[enc_idx];
+>  		__bio_add_page(enc_bio, enc_page, src_bv.bv_len,
+>  				src_bv.bv_offset);
 >  
 
 
