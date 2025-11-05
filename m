@@ -4,159 +4,148 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D60BECCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 19:25:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E0EECCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 19:34:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D3CB88E0006; Wed,  5 Nov 2025 14:25:42 -0500 (EST)
+	id B7BF78E000A; Wed,  5 Nov 2025 14:34:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D14358E0002; Wed,  5 Nov 2025 14:25:42 -0500 (EST)
+	id B2C368E0002; Wed,  5 Nov 2025 14:34:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C2A378E0006; Wed,  5 Nov 2025 14:25:42 -0500 (EST)
+	id 9F3998E000A; Wed,  5 Nov 2025 14:34:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id B1AE68E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:25:42 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 46F3A4B2F2
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 19:25:42 +0000 (UTC)
-X-FDA: 84077532924.02.9C63CFE
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 49D2920005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 19:25:40 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iTmrCzz1;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762370740; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 87D608E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:34:06 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 4865D16020E
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 19:34:06 +0000 (UTC)
+X-FDA: 84077554092.05.6F7D18A
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 8F353180017
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 19:34:03 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N5UIYZQZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762371243; a=rsa-sha256;
 	cv=none;
-	b=8D/Nt5SqGQfrW0UWkllNCA4HOh1p+yROBu99utAt1+kjlbz9iyLZwhat9UTZwmbfAQd/XO
-	IqD725mGYIWjLxOqDDINQfDIaRU7l8GuZdLQpMs5L9J/d6boeQEQDYqOkEso3nIivKvtcI
-	mNddDNRk1O9a+QPBiTOGzdCFBZpQLQI=
+	b=OVQP/FFOZqAkFXGp0T5/qbVMwBbD+63FBqoloxUfZDl5dCeEWpus3JdFcJVUJoSqv+SkQJ
+	wX5bh/yYc4sh88Bzj2mBwafQAfKu3P1brDEm/KQO+VRiZ/XN3NFIq9Np6JznHs1jAeGnCr
+	WPZ6HVI5lmXVolDm+0Si/pnJYuiuhes=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=iTmrCzz1;
-	dmarc=none;
-	spf=pass (imf03.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.174 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf24.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=N5UIYZQZ;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf24.hostedemail.com: domain of llong@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=llong@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762370740;
+	s=arc-20220608; t=1762371243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z3c7ISS42F3tYlBvNOZmQXpwFtE1e4tCRa3nMbV4lv0=;
-	b=V1w2oR4PiADhzt+1lO3NlvNZYIYZwIm8WqO0kIjllwadnYsowJZxvmBdaG5ttNCX+lv7sO
-	GueYwpp4L2F4L3X3LqPGPA0TcphRBqWo+G8AQ2vKVJ6WM7C8kx+AWzGzDCchq4VpSDSqc1
-	qtvea87L6M0pp4ccrt4onkTRKNSkLbU=
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8b145496cc1so22096885a.1
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 11:25:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762370739; x=1762975539; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=z3c7ISS42F3tYlBvNOZmQXpwFtE1e4tCRa3nMbV4lv0=;
-        b=iTmrCzz1/wXNnPA6sJpWorma9YywmfLoJ/yGeJyQBicnsLHZTF/PTUwFeIFR6wu2IW
-         pkENF8UcYrpviLCQ0xo95Qh84XE8N4mo2MZRTWM7kn+5rxDEgIXV+wi0muuM1AON6Zd2
-         C9+F6s/eOJmrnxVfKKNVm0mYlgYalSXKn+00C2KeMm+QgkD7htc/X0z4G8/LO2P+H6KA
-         /8puRjlQ3s3dio3jZfdZcdSkeTizyxMB3FZvYoS/BGKjJfUhE7RRCpFBDT5VEV+WTIdP
-         x8X6Vc6dgyrwfwhnAgRl5svfPDAATsghWcEO5rzCNSBOLoktQnavDNoFq1F54jeA7GiI
-         +TLg==
+	bh=W2I3VQegSFx+o1eosI30+XZ8D9IOQq1JJdeZxqs+aI0=;
+	b=v7Cogg/Q/TTTDixS86VgTZTPviQiNdQL90dCerEKtPZiSV/JgH9vwyNiPC+ZNlcGzF3Wgi
+	ifwIWhxP/STymeFjPTq7/k+yjfPIUH2TnAJVsC479zmGUkgtJiWKZb1QqQcaxExo8lKZvx
+	MEBEA5/oLDhzrSDIwz3MuxqShiSnv2o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762371242;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=W2I3VQegSFx+o1eosI30+XZ8D9IOQq1JJdeZxqs+aI0=;
+	b=N5UIYZQZPf3NdxHWQ3qX2EljS91f8WJ6hHlX0KrQ9zp98Yy76QvIUCaaPiuC1BLS0fzLAR
+	EEd757ub4R2HDmTJJ0tD83n47C8VjYo8X/lVppVGanjb5V9j+XPXr5Web6e0XJbQloX0N3
+	zldmZIkQNGOVwvT17HCnfTHRHzw82dY=
+Received: from mail-qk1-f197.google.com (mail-qk1-f197.google.com
+ [209.85.222.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-635-wT0Ri1haN5muXfQm4tS3lA-1; Wed, 05 Nov 2025 14:34:01 -0500
+X-MC-Unique: wT0Ri1haN5muXfQm4tS3lA-1
+X-Mimecast-MFC-AGG-ID: wT0Ri1haN5muXfQm4tS3lA_1762371241
+Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-89eb8ee2a79so97247285a.2
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 11:34:01 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762370739; x=1762975539;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z3c7ISS42F3tYlBvNOZmQXpwFtE1e4tCRa3nMbV4lv0=;
-        b=MkuIqlp+7+vEnFv2eaqnsnK++ugYULpW/TLfhx3qo8TNh2WIDE5G0cMU0sKI06j35B
-         9XgZP3q/qPiDaEodBMo439HjZQq2PVkSmdApuy/LKgxTFjFimQefvUHvToM6dl2U7igz
-         Y9GARtMickkDWTuTnzyHZRHfpphbisAHFWxSTzyJ1FInMGkjvkkQrp4nxSd6AflJDuq9
-         1uvanhrbq6aMoNtWwCkvZZoK6S0XcxmdJ5v9azkG54Asstq7QbyVZP1GA+/Pvq7y9mRm
-         4/i3M7FCXvT5RFKSmHZVhvWpVh8KTB4wkZTqjJp25h9oSjBEfLAq6D5a2no1VUEs+VjY
-         7grw==
-X-Forwarded-Encrypted: i=1; AJvYcCX0smMfl8vyuV8RG0xvu0X2KKIE2AHmNej3ewzpxyz00FyiXefuATv1LZLDe67YaPV7GmZk3IzCBQ==@kvack.org
-X-Gm-Message-State: AOJu0YyFgBXX2uRncwmg03NhiMgwsLCSqzuWK/nhHaj+8JE92CeN2azR
-	jyVw4ZHeROdxCfb20jqVEgkv9Kgne54ecchNrD8cRQ7rbdeq1meuVnCdSZ1Moh6Vjvo=
-X-Gm-Gg: ASbGncsBxWwviXaIcesHtrN/AVWcTOgXAXx/IAP8ej6xI59bhBbfXv1kwi5U3g5Owlf
-	RS7s+cz651JPpLs2X6GD9ogtts+QmLZEKi1nfOClQkg4AkC8F5WUNg2Lg3SdOejn5c4XtwNJqFF
-	36XFiVNtrln4/mdozxAk9jGOW84TpVmAIDbscUgvrvWdBjtOE1G5By99pnXV6oyxfTp4BPzGZwL
-	czRqADQCIUhGD2BFo+x3NcEEBOBUBseF4Obc275tXEGKQfTBer5s7azL/SKRFxB86hKvwBMBGh2
-	mwv+1sUxtISbHv/MRzJzCMfy9t5qX27o43kqT1y1WXz0mxMs70pXuaS9FL27ZNkM7Iyms+yrBgl
-	x5gf0iqGgJn0yaCGDnBvbQLypnI25XP65svvpOoO3h1/hqxxO229orTZ2z267rgJjKSLS5hG9iF
-	+U2jOMLukURcTYXl4yAoMCfIo9lX5rfTSdgaLTg5uM5UBxD9DfJTOVf5IFpOE=
-X-Google-Smtp-Source: AGHT+IE93lZWq2OeBwVItF8pvYDXcfH6WZ0IIQ5p6JNn6wR82KcxAzEptz788KT3rDLJ0XOoUhNeCw==
-X-Received: by 2002:a05:620a:4887:b0:8b1:a624:17b1 with SMTP id af79cd13be357-8b220b03a22mr560424085a.27.1762370739005;
-        Wed, 05 Nov 2025 11:25:39 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2355e7208sm27162885a.18.2025.11.05.11.25.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 11:25:38 -0800 (PST)
-Date: Wed, 5 Nov 2025 14:25:34 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	SeongJae Park <sj@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH 02/16] mm: introduce leaf entry type and use to simplify
- leaf entry logic
-Message-ID: <aQukruJP6CyG7UNx@gourry-fedora-PF4VCD3F>
-References: <cover.1762171281.git.lorenzo.stoakes@oracle.com>
- <2c75a316f1b91a502fad718de9b1bb151aafe717.1762171281.git.lorenzo.stoakes@oracle.com>
- <aQugI-F_Jig41FR9@casper.infradead.org>
+        d=1e100.net; s=20230601; t=1762371241; x=1762976041;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:subject:user-agent:mime-version:date:message-id:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=W2I3VQegSFx+o1eosI30+XZ8D9IOQq1JJdeZxqs+aI0=;
+        b=DhE0nDXs/3gGEqjgqLFfMcjay6BSZNDMUNH6tMXAMVapjFa3Q0Q+0ktZN6YYSQpSVi
+         eCOGDWLlm7Ne+I3IOY8V7nxeKplbmj6ArBTvurgmYGElpVYjvFJxD3ckDBE/ABXuIcCl
+         28WQE02npQPae7rh/cgiUjN9VUPhgrZgYqEIBvZyIKWp3O6KSuUe2mej1ceLQYpDL3sn
+         nCeIcCgyaiIs5++fc579Od7jFJQJR87S0ywORnaxGzQ54k1X5coFs4oCQApGKvV/TSZg
+         1LlTfkO0Ueqz4t3SXI19E4Uexi6/GOcOhHFAIb532BX05k8S7Ekl3aXDisPtoPp4t6a6
+         j1cw==
+X-Forwarded-Encrypted: i=1; AJvYcCUDBgCGHnGQceAy6Jd45HDSbTbzlzTrk1jBR08SxFZYcuYSZ4Ta2EDmT1FRc8KXhOFzUB198pXpKA==@kvack.org
+X-Gm-Message-State: AOJu0Yx2iO0KHLIUVhGWznK4e/p0COhtfgHRFfg3ATK+wjDUKqDRNefo
+	GSyPIfDPGvadzp5sCDj5gU+3+9Jvjj7O09B5UKBFhbE1VOtOOeyHzcs9CYezv5p+78xEwX+JYhn
+	vSrJbr8S/xlIVu9+lpVXtiUJTB/uvROEqBs7tXDwNnTAEZYdMHipc
+X-Gm-Gg: ASbGnctnAiVH7YXcVYVzvc2MrQB09+LppzL5ZiVB+m6I0S4mx/ifiR81KT+2Oc6AreD
+	5p0a7BGuqI510i2/yR8So2jB1rRVjWiGrhYWtjk6JE5l4Dju3a/NAP/kAMIhIjGWe0AAmKDYgHd
+	oT+VvSK3dDtmBciphK9Gdl5qsdprAR1pVFWu86ZaqVfS9LJxuBmteZEsHTrVKf8oEKcpFbT7DlG
+	gmWzUx4GRPXgyFTBLANO6EFWTM4gSMxr5tUg1mvqyyTyhHn2JX2pmwxrcDvzEyckrccFxitEQUL
+	Y1tvX9qVYP8B8QBowknap8qM2Kqdk93qcTWUlAy9nThLzWFuHIiyuMUcAKwFECqg+Ma8HWydYR6
+	4n97+EWK47BPsRnFFRZM+Ec/KENS9vWYgqFjIwni8HVBvKw==
+X-Received: by 2002:a05:620a:4807:b0:8a2:e35f:90 with SMTP id af79cd13be357-8b220b1d46emr570525485a.30.1762371241163;
+        Wed, 05 Nov 2025 11:34:01 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGiRwB16QATLm26IUQJMPlOrIcZC/Pp82bOb2D9HMznRcFkSivER3LckBzG5MspPvf0gexFmQ==
+X-Received: by 2002:a05:620a:4807:b0:8a2:e35f:90 with SMTP id af79cd13be357-8b220b1d46emr570517185a.30.1762371240407;
+        Wed, 05 Nov 2025 11:34:00 -0800 (PST)
+Received: from ?IPV6:2601:188:c102:b180:1f8b:71d0:77b1:1f6e? ([2601:188:c102:b180:1f8b:71d0:77b1:1f6e])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2357dbcc5sm28762885a.35.2025.11.05.11.33.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 05 Nov 2025 11:33:59 -0800 (PST)
+From: Waiman Long <llong@redhat.com>
+X-Google-Original-From: Waiman Long <longman@redhat.com>
+Message-ID: <a5e3294b-4d37-4e98-9442-e35ca1949c17@redhat.com>
+Date: Wed, 5 Nov 2025 14:33:57 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aQugI-F_Jig41FR9@casper.infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/33] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+To: Frederic Weisbecker <frederic@kernel.org>, Waiman Long <llong@redhat.com>
+Cc: LKML <linux-kernel@vger.kernel.org>, =?UTF-8?Q?Michal_Koutn=C3=BD?=
+ <mkoutny@suse.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ cgroups@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-block@vger.kernel.org, linux-mm@kvack.org, linux-pci@vger.kernel.org,
+ netdev@vger.kernel.org
+References: <20251013203146.10162-1-frederic@kernel.org>
+ <20251013203146.10162-14-frederic@kernel.org>
+ <0e02915f-bde7-4b04-b760-89f34fb0a436@redhat.com>
+ <aQtwbRrFBCUoQ2Yj@localhost.localdomain>
+In-Reply-To: <aQtwbRrFBCUoQ2Yj@localhost.localdomain>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ai2A1Q24EdgyifRrx8rJRzZlUaeD2fDd-Yrpu6t1k9M_1762371241
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 8F353180017
+X-Rspamd-Server: rspam07
+X-Stat-Signature: cjje4ryazjzq4x61be4onodh1ehazsgf
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 49D2920005
-X-Stat-Signature: meefpnrq5cq99j7arjf1xriwysrxesfw
-X-HE-Tag: 1762370740-631129
-X-HE-Meta: U2FsdGVkX1/HWjktlHk82zch3aFjva/Uj/zC4lkFZ6ezHAtEKxDE6ShgpaOcOGn+qJoolLOwdSMr5CgrhJ4dW46SBBk5Nl4XCSXuKfhTUVCHjbNEQ9mKDUHLfoUQk3jZHXEupLyG7RHiiCM5Mre/cWvCoVRrIzXskZtggtBfIOpwUJmv5gmFNEeMfBhZ0nHKKmsp4hQ1+una0HQwb2ufVsDrMWVl0WJaAd4/AHVm/L7DlQS0J8PsHlfrGCiJkmXB//WI1SgEHaQYPUbWA66mpWIrufKSxKK1/aMhee5lgB3fhG9sTC76IdBM/s3oWNg3TG47Re9L1h46MU8I01Q64qqKdvacyOEbpEtOEBvvWfg5kp1xJ6lrXRfRrSVuX+02rW7/PqksZw4nG5JGPmlQ/foKyY0+rsgHQcDYk4k0Hy7DcB5FzTyyFi2gJJal1nWCOk4pmEjm8rHMgdZMdlCooOPlW6Mg6lCF3zksNz8fJSQMNVB+jsWDDKZIH3pc+V3FoG6x41NhcRUGqY8PqYsQfeUyK9ct2M+HY1mAGYpRlp64oOfy+brptHKprDv37f4QLd072qtnPgLi/bskh3Q+NAFksNEEIc4bj4YNrgQ+HoB8q3Ny6l2JTX16XVVJntYhLZz5Dmr/7U6QWXyKQqSgKYUAjZohnNsCRt1bhGGvCQIxEngX2/oEVR5ePuGc5Gun0cY3dmeaKBQG6OWP/1G1kYCqfPnnn8RkGR7rywUbR4I+LW+AJSmBN/TwZmgXIVksGFOXWJ0zeVV6A5Hkq+ZSi5hnw+WJv4682es5xb/jeWRHCv/U8GHvyd4mAA7LSSwgIEug9x/l8pYOOPrPuWLO0/N7ixRGhjGlwWSD1D0rWe2SejokVsNk7C5BRfJK6DRmDEHchaLxMPVRZ/I06eXhVJx+qubaTeXfaA5NCK7afF7P/okxZsU+Z3TbdXUGusJzUKsZ9wJdj5K7PJlIv75
- qLLcUWmS
- q8AQFE76I+NcVN7JcvDtc+tkfYr1OxjVvpibouS7U7ORAzEU5tfzAKBM0WCgte5n4nmDutXv+wMJ/bg/oMD+zWbnDdaiX3D7jzQLIHc0dpnWtSbpwWdP0LPFa5DKdEN4xrrM6VdDw+E97JvLhCR+T+RKoaU6s3cmyhMDc8FN9Q0KhZZ/q5Udp2r0uZotbZXTUwx1j6uhxexYcCf5Bk33hDDuRlZ4S8m7IddGM1KUgIK28fxbwD8O4tEDqHTVPcw4trhdXFAmUF8/aqKg7NsvOAgC4iY245gS4AASqVtcAp01sAyd4+A/bmNjZcyId41EAWBZTm5wpULdV8O441/DQtp6a+Ld1sTp7/3Lm43+KI0Tnz65ylTLCfXmRkWlZXiGJmeI8ik7n6meJyCzum6YhTyUbGw==
+X-HE-Tag: 1762371243-357776
+X-HE-Meta: U2FsdGVkX198Pj2muMjDKn6IJDEYPe/6ZouEjokQ2WmBe0dZMrj5uhdGz0T0vsRl1dI4RqLaHMbv098bi9jJkVYRoeRNFpWpqHHZRz8vQZaHOLwiWF48NvAtRnA6X2VTnW/3uvStJvAxjKT2zdxhguxQNTLNCUI9679ADMkqr2ErQ9t3b7J9ePtmkl82OWlRMtDy4bQ+uVybbbHJ/XOyBfZA0UuhpwV2R1iLLk76gD0F/P4LMY5IknBRWmLpMr9tivHf4hdEUJYG1m+IanWoNonuMVS7lC/1p22u4AxQeZ54PnwJXbbLdPEDFI1j2cz69KpYCjRNnfPMlVKcsBELZuHfcPv/EUeLocDhfLyeotLpijBYgfwGeobAcUp1qWI6OABYr7aysusN/8B6Lp8kWfw5TwZJ+JZ8D+rD/4Ejn/DR8sw4EbhYNmWLqfFkPX3hjAk/pn74iuvleYRZyv8srQEmbpk0hx41f5qs2VGRw8HguA+pp7hiasr6i5W360S1QMFt52SoIpPFd/acJq1Za+eDG9eF1x5r5/pQ0BcYy/8KSGkvunKFkPJ/QYl7xEsxFh0Bv5dQVK8sfKP/WfJXxyTfEeLpTFZ4d4LyurWhDaS57wMcLUNglOiQ31My3LEohdN+m9y2y7oDz6jveDGskbXB4cbvzNbZ/PyjCQ3NbnRGTEGGHFNLknIBJMM+fMu3WCJ1XcrvwC4fYE84gW1iG/mkSJjDFDhvPycDPH39eiZIdE7B9fTgf3Nz93mrUlfe3Nzdsv85/Jamxm6aRUM08lrpgK4oXdpyYKmCc6LoVP3Kb4te0v1dTEOZgGaiq+hpXKXK7pU3xlEOjoGlKaKHo9aJU8k3Ty2iBeai9PN/Bxwc1AdKMjwNLx6dYsxkA0ZW3M04cutN68358W0jsnufez2WqM+UTZOIPRMqOjGdsJ57ATrsHyeOOXI5QGpnxpwbpP3NarF7yupeRZ3myQv
+ LGlMuxyU
+ kQBoSqgmVQCZZQ+xOAVnsS1kRQ5BWc0+KWjqbsqAMjBri/KzEdFGsRGTVsildbtfFFaK25yTHYyqnISVz4lMzk6wSwd0MsSpS+TvcDqRguCS6I2uOuX/7FgEe88cfH/5DfncJ4BCqIMAc//PD2Dp99jVg6GWd359249zTaQmVGCMVIl3BGUUDZhNwxonQTMjycx2KQHM96B+Ey/5jAyAR2ke1k8UM2VGtNcoa4615ZdfRy1gdck+iC3/7BOvjDxChq4OvCBP9stavGdVEM7Eh+dNFDbf4Y9qiM8pfdfLd6E1ohVKIudg0+1iHfq/qBSR9U59f3HhhHnGbfwvA++8K1PXCGs9/s9aBuHPhiu+yxfHxHLstckHmvzyBsKlDq5DZIp7OAAHNsdBOb5gFzky6SEaebzi0UZ9FX4/vSqFzq4iSsL/7da+xqcvvTvkgGRGura5OEVPL6vSTfxjudVjN9zDlPjjWQ2BFaB3u8iN8lsTAVSedCFKRKzTJDXdfOEaH8KQl4t2MjHfFdveq/q9JygXfJDawobSGS8lK7MnBfxWIH0V2IDxnjnVxRNfPdnQnoQKPykkvSF7Z84Ecj4ZUbihI3T9sevynzK3DAciek9kjpn0d84V1Ee72hA3EupNBKixoTQ/Sr3nCiLA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -165,40 +154,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 05, 2025 at 07:06:11PM +0000, Matthew Wilcox wrote:
-> On Mon, Nov 03, 2025 at 12:31:43PM +0000, Lorenzo Stoakes wrote:
-> > The kernel maintains leaf page table entries which contain either:
-> > 
-> > - Nothing ('none' entries)
-> > - Present entries (that is stuff the hardware can navigate without fault)
-> > - Everything else that will cause a fault which the kernel handles
-> 
-> The problem is that we're already using 'pmd leaf entries' to mean "this
-> is a pointer to a PMD entry rather than a table of PTEs".
+On 11/5/25 10:42 AM, Frederic Weisbecker wrote:
+> Le Tue, Oct 21, 2025 at 12:10:16AM -0400, Waiman Long a écrit :
+>> On 10/13/25 4:31 PM, Frederic Weisbecker wrote:
+>>> Until now, HK_TYPE_DOMAIN used to only include boot defined isolated
+>>> CPUs passed through isolcpus= boot option. Users interested in also
+>>> knowing the runtime defined isolated CPUs through cpuset must use
+>>> different APIs: cpuset_cpu_is_isolated(), cpu_is_isolated(), etc...
+>>>
+>>> There are many drawbacks to that approach:
+>>>
+>>> 1) Most interested subsystems want to know about all isolated CPUs, not
+>>>     just those defined on boot time.
+>>>
+>>> 2) cpuset_cpu_is_isolated() / cpu_is_isolated() are not synchronized with
+>>>     concurrent cpuset changes.
+>>>
+>>> 3) Further cpuset modifications are not propagated to subsystems
+>>>
+>>> Solve 1) and 2) and centralize all isolated CPUs within the
+>>> HK_TYPE_DOMAIN housekeeping cpumask.
+>>>
+>>> Subsystems can rely on RCU to synchronize against concurrent changes.
+>>>
+>>> The propagation mentioned in 3) will be handled in further patches.
+>>>
+>>> Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+>>> ---
+>>>    include/linux/sched/isolation.h |  2 +
+>>>    kernel/cgroup/cpuset.c          |  2 +
+>>>    kernel/sched/isolation.c        | 75 ++++++++++++++++++++++++++++++---
+>>>    kernel/sched/sched.h            |  1 +
+>>>    4 files changed, 74 insertions(+), 6 deletions(-)
+>>>
+>>> diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+>>> index da22b038942a..94d5c835121b 100644
+>>> --- a/include/linux/sched/isolation.h
+>>> +++ b/include/linux/sched/isolation.h
+>>> @@ -32,6 +32,7 @@ extern const struct cpumask *housekeeping_cpumask(enum hk_type type);
+>>>    extern bool housekeeping_enabled(enum hk_type type);
+>>>    extern void housekeeping_affine(struct task_struct *t, enum hk_type type);
+>>>    extern bool housekeeping_test_cpu(int cpu, enum hk_type type);
+>>> +extern int housekeeping_update(struct cpumask *mask, enum hk_type type);
+>>>    extern void __init housekeeping_init(void);
+>>>    #else
+>>> @@ -59,6 +60,7 @@ static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
+>>>    	return true;
+>>>    }
+>>> +static inline int housekeeping_update(struct cpumask *mask, enum hk_type type) { return 0; }
+>>>    static inline void housekeeping_init(void) { }
+>>>    #endif /* CONFIG_CPU_ISOLATION */
+>>> diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+>>> index aa1ac7bcf2ea..b04a4242f2fa 100644
+>>> --- a/kernel/cgroup/cpuset.c
+>>> +++ b/kernel/cgroup/cpuset.c
+>>> @@ -1403,6 +1403,8 @@ static void update_unbound_workqueue_cpumask(bool isolcpus_updated)
+>>>    	ret = workqueue_unbound_exclude_cpumask(isolated_cpus);
+>>>    	WARN_ON_ONCE(ret < 0);
+>>> +	ret = housekeeping_update(isolated_cpus, HK_TYPE_DOMAIN);
+>>> +	WARN_ON_ONCE(ret < 0);
+>>>    }
+>>>    /**
+>>> diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+>>> index b46c20b5437f..95d69c2102f6 100644
+>>> --- a/kernel/sched/isolation.c
+>>> +++ b/kernel/sched/isolation.c
+>>> @@ -29,18 +29,48 @@ static struct housekeeping housekeeping;
+>>>    bool housekeeping_enabled(enum hk_type type)
+>>>    {
+>>> -	return !!(housekeeping.flags & BIT(type));
+>>> +	return !!(READ_ONCE(housekeeping.flags) & BIT(type));
+>>>    }
+>>>    EXPORT_SYMBOL_GPL(housekeeping_enabled);
+>>> +static bool housekeeping_dereference_check(enum hk_type type)
+>>> +{
+>>> +	if (IS_ENABLED(CONFIG_LOCKDEP) && type == HK_TYPE_DOMAIN) {
+>>> +		/* Cpuset isn't even writable yet? */
+>>> +		if (system_state <= SYSTEM_SCHEDULING)
+>>> +			return true;
+>>> +
+>>> +		/* CPU hotplug write locked, so cpuset partition can't be overwritten */
+>>> +		if (IS_ENABLED(CONFIG_HOTPLUG_CPU) && lockdep_is_cpus_write_held())
+>>> +			return true;
+>>> +
+>>> +		/* Cpuset lock held, partitions not writable */
+>>> +		if (IS_ENABLED(CONFIG_CPUSETS) && lockdep_is_cpuset_held())
+>>> +			return true;
+>> I have some doubt about this condition as the cpuset_mutex may be held in
+>> the process of making changes to an isolated partition that will impact
+>> HK_TYPE_DOMAIN cpumask.
+> Indeed and therefore if the current process is holding the cpuset mutex,
+> it is guaranteed that no other process will update the housekeeping cpumask
+> concurrently.
+>
+> So the housekeeping mask is guaranteed to be stable, right? Of course
+> the current task may be changing it but while it is changing it, it is
+> not reading it.
 
-Having not looked at the implications of this for leafent_t prototypes
-...
-Can't this be solved by just adding a leafent type "Pointer" which
-implies there's exactly one leaf-ent type which won't cause faults?
+Right. The lockdep check is for the current task, not other tasks that 
+holding the lock.
 
-is_present() => (table_ptr || leafent_ptr)
-else():      => !leafent_ptr
+Thanks,
+Longman
 
-if is_none()
-	do the none-thing
-if is_present()
-	if is_leafent(ent)  (== is_leafent_ptr)
-		do the pointer thing
-	else
-		do the table thing
-else() 
-	type = leafent_type(ent)
-	switch(type)
-		do the software things
-		can't be a present entry (see above)
-
-
-A leaf is a leaf :shrug:
-
-~Gregory
 
