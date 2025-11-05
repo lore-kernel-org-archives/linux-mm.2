@@ -4,99 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59CC4CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:44:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83D94CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:49:30 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 892688E000A; Wed,  5 Nov 2025 04:44:40 -0500 (EST)
+	id D0A718E0014; Wed,  5 Nov 2025 04:49:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 869ED8E0005; Wed,  5 Nov 2025 04:44:40 -0500 (EST)
+	id CE2818E0005; Wed,  5 Nov 2025 04:49:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7A74D8E000A; Wed,  5 Nov 2025 04:44:40 -0500 (EST)
+	id C1F0C8E0014; Wed,  5 Nov 2025 04:49:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 6AA608E0005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:44:40 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 05CDEB7141
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:44:40 +0000 (UTC)
-X-FDA: 84076068720.09.E40348E
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	by imf13.hostedemail.com (Postfix) with ESMTP id DB2E020005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:44:36 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Xl4yr03g;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=libaokun1@huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762335878; a=rsa-sha256;
-	cv=none;
-	b=K0EnPZwSREfsa1OQ+vXlApWrTvh9R9snciU+8HVWtc5dKoe0NmTcB0xtpBmxgJ6u86PxY5
-	O7osAAIgoeyKmeDJKsOxAEYs9xjs1oiyLn2MajLOtywrRQVncZaRF8Np6TBZ6gHTYgPXG0
-	dWLkHZSraqHjC/7C1zFO2bSXlDwGqP8=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=Xl4yr03g;
-	dmarc=pass (policy=quarantine) header.from=huawei.com;
-	spf=pass (imf13.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.222 as permitted sender) smtp.mailfrom=libaokun1@huawei.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id B23BD8E0005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:49:29 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 6569913A007
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:49:29 +0000 (UTC)
+X-FDA: 84076080858.02.F00E462
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 975C5140005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:49:27 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UJmehP6X;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762335878;
+	s=arc-20220608; t=1762336167;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ULBjQjfTQ2PhD78f/wqD4u2pFSqPbYJY7fZ9PMrAk2g=;
-	b=kxAlxOgI1S/BpU/XZDQLQWkLswaFTSpgH8eqEH8c8NMZ46PFMFc4kKVBHOYNpXzsK3orod
-	EeT/ALpcG7BUFG5GiK+8MH/vGcdLPBWCRK5qXA4aStdpuLhOyZzl2NC3qkmt5ebnCkZngk
-	yxeYAFwNZJ66dA7sdB1kTxkrLK3UQhs=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=ULBjQjfTQ2PhD78f/wqD4u2pFSqPbYJY7fZ9PMrAk2g=;
-	b=Xl4yr03g/f6ZMnj5GicYAb2bjUPpNqrsDwGaUvWjzZYt3z8PRrBWnK0IkFrfkeg8NaXIfqMw0
-	2a5b3MBSA+BOdYGDHZvzQaLEFUUqjI+TLkwAnXhnAfK3K8mGxH0qimjxp0gfk6NGvDEac1aFfvf
-	6apkBZlSE41pxIdeWt789mg=
-Received: from mail.maildlp.com (unknown [172.19.88.234])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4d1gNd4sY5zLlSM;
-	Wed,  5 Nov 2025 17:42:57 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 91B751402C3;
-	Wed,  5 Nov 2025 17:44:32 +0800 (CST)
-Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 5 Nov
- 2025 17:44:31 +0800
-Message-ID: <5280bbc0-be8b-4e46-8410-28719cb79ef0@huawei.com>
-Date: Wed, 5 Nov 2025 17:44:30 +0800
+	bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
+	b=oKtCZXktoQ3WIwsJQqRf4VfRgUjqlPE2XgCOKOkqyG+FZgyf60PlRfdDdbIj1t4MZ2t7W7
+	bqGZeiF6T1nMr1ir/9RE62Rw/RPuNyO713mKTOSU+2Lplu/kbPOs/NSIvNWDeL+1WgPlA3
+	93gJDYatT2Eymxt6DbtyMbQF46uWe7s=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762336167; a=rsa-sha256;
+	cv=none;
+	b=v//1nwDiLX8A667tLkoJJpKXBHg3VyUOXQMC7XMey6StpMuDHMDbNID/bBg1ZDX28zG815
+	tvWoCxj/NmRlFnT0T1wfk4s+AW1BAejgfRvuSYy4igddsR6yEBPhBHM8fH0/RUU/zfuwU2
+	WREc3/yvU13yI+XsIJvP5ZCnAPcNcMM=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=UJmehP6X;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf23.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.215.176 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-b996c8db896so3614682a12.3
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 01:49:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762336166; x=1762940966; darn=kvack.org;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
+        b=UJmehP6XMPeCHQLKf2cn3NUniRFHq8u8iRdbjMWgS14CUa+5ARiPOpumUSEeeQtl2q
+         Y20g2sV5VvOht+Zkg6wpm3qgsDmZEfDwqZjwD2XLBRCWO+X/1DV1jUAfdQ7w3uN5vpwV
+         +O4bKnPln0pdTrJ582l+ckAYBRLccm7K8iBrZre6dGM8xion7HvkZodCKJl0JKAVIoLg
+         nm86Wv3poNyOjBkaKQrXSf9oE50kGeHRNsFC58ZaX/pYrwrtFPHXbvGTIXCdKrNkQGtW
+         kYhQYk1mbJpiUB4WrExOdCRtdt0QmqJROh5DOsPZAY31ewocSXgtnzMftYjkw5NwrzZW
+         mmnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762336166; x=1762940966;
+        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KSkImeW26wxHMAXfbe7WvrT7t//6KWteMn9Q9gZQJTU=;
+        b=Oib0Owok8hTDBzh5fO7XckvKVHv16OBnrNY9+LwP9v3xkBBKoX1E0Sc8FRi4RPZZQQ
+         3I3Dv7iXoykzoP1HCoKZfJMbpeg5kqcfpG/gHJ03jG4ctsbFFojTrtdAT7lMzxPiHefB
+         WIoGSdS6mXRVG6L2VCth3nLK7wZ5vz/JDMy5BlA9eeSEwW8B/KNKuwqJFXfcTFrU4xz1
+         v8QTMDmZxqrASXABE48NZ2bTO1TNUY4zhC8Bro68DY8IltP7j9smql/E4U6CESAJNQkZ
+         8p7r/Vv3upiNctQ/GKE2fDHNz4k/8pPzSCiC0qBupBfw7S30l9TehCJLJq02RCd2PIUW
+         4lPA==
+X-Forwarded-Encrypted: i=1; AJvYcCUJI2CAGKRjkrnU+wFXaAf4ccCjxk7zBL7FK9qe9khjsEJqyZGpCRtFh2cOOK7FedZK2+Xvpv88vw==@kvack.org
+X-Gm-Message-State: AOJu0YwBDDEZx+MVZN5zQvjgVJnNlU7+I8kgV8KdS4ifYq+qpVe9cJPZ
+	yYU1wrdTjD91p0HAExDo5mZt0kIAuc1FS4BsYZP6j9CeCXPyuQDwnBTVruYMqPXi
+X-Gm-Gg: ASbGnctHPaDk6Gz/mheagUorarCY+SGTu1wyF2FHml/L7GIAE4x2Czn2lH0Uo2nBh+J
+	hNnAQ6HJtgHyjwI7m80+z4am5W4vKhxHmqzJQt+UnnCCJD3d/R04YHk+GepEGZk9Nr7FUmkPIKc
+	BYqcUb5j+07buNwXEE+kZ2/qdk+8BxLdogktMy1ZQplKYbWHA06IGP41IUdsAXRPBL9EXURpDdH
+	/DcI+SCaPCuV7zNUn1eRjkPnIaxvJUG1+ymtn9GnJGdlk/znSuTPXFiyyRtbDwHYHckgRmjClAX
+	f1/CXWqkUZv2SmduagpZyi37XKN3w81uxy4/oJjQLO9NL4P2N1vkzod+Aw71x3DhaCxdsaIuE1P
+	hlu+QUTpuPGCkYVgPZohSd4PJwHYfOcAaCGfqjwqKQxA9jGnMKVOe1ovRPAHtQPj0fWQ9fw==
+X-Google-Smtp-Source: AGHT+IGvXEix8Ale69u5jY13ojKwbWl3rHLnPywsClHEKGLTCQBX8z03LTjZkKtfW5wInDfRAomLmQ==
+X-Received: by 2002:a05:6a20:7283:b0:343:88b4:a722 with SMTP id adf61e73a8af0-34f862ff4a8mr3711914637.52.1762336166397;
+        Wed, 05 Nov 2025 01:49:26 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba1f765f148sm5030694a12.24.2025.11.05.01.49.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Nov 2025 01:49:25 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Kevin Brodsky <kevin.brodsky@arm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson <andreas@gaisler.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Borislav Petkov <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	David Hildenbrand <david@redhat.com>, "David S. Miller" <davem@davemloft.net>, 
+	David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, 
+	Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>, 
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, 
+	Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, 
+	Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, 
+	sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
+Subject: Re: [PATCH v4 09/12] powerpc/mm: replace batch->active with in_lazy_mmu_mode()
+In-Reply-To: <20251029100909.3381140-10-kevin.brodsky@arm.com>
+Date: Wed, 05 Nov 2025 15:10:20 +0530
+Message-ID: <87ldkk4y2j.ritesh.list@gmail.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-10-kevin.brodsky@arm.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/25] ext4: support large block size in
- ext4_mb_get_buddy_page_lock()
-Content-Language: en-GB
-To: Jan Kara <jack@suse.cz>
-CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<linux-kernel@vger.kernel.org>, <kernel@pankajraghav.com>,
-	<mcgrof@kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
-	<libaokun@huaweicloud.com>, Baokun Li <libaokun1@huawei.com>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-13-libaokun@huaweicloud.com>
- <5kbyz6ilhj7zde4dtv7fhy33yks3bhs2g6xesdzwptdenrrfdg@ydurgdouhuwn>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <5kbyz6ilhj7zde4dtv7fhy33yks3bhs2g6xesdzwptdenrrfdg@ydurgdouhuwn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.254]
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- dggpemf500013.china.huawei.com (7.185.36.188)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: DB2E020005
-X-Stat-Signature: b5yr67yxfec66eb9sg1z3fga6cugigrf
+Content-Type: text/plain
+X-Stat-Signature: u1w15gb5a17btico3f3tyi7tigztf5dh
 X-Rspam-User: 
-X-HE-Tag: 1762335876-741895
-X-HE-Meta: U2FsdGVkX1+nhz5fg2nWeilCjbvQYb/v6QnzNYVl/LNwsJItQfhOg2SAxUWAtvNT0PmonkSlTP3trNizSQ1IEZUmLXaA5ZlxJWEAbvK50ejPER59QbnE9s1lYeEsKWbuRWV5ltHa590STz+23fbgUGo7fAd7kM/gDMoTuJksJd1GF86SeSnw4ZSWMovEBv7kkmBMmNxBJne7A36VifUk5YMpZsliki1TByRVVwiSSf9/UnDD21FkPDEenoUHAK41q+TPUd4KkwKdK+YrlqWVejhw74sGpsFYftEZCDHYoA8STD2EbDatHip5yt+3ShjiH036WnrA+Ika2M/r8jwRqLGf0LsxtPlzwZoOowLZz7hdYXhlkYPo7aexMT9FKncP4O5a+oPUy0gydnnpDYXqt6JKaFI3gOunlh/FfyJUHnx3SdcVs5Wm9mB97h5zGwtSRxE6pmjrk+u/vvp/Cb+ZNRpYabwNFmPp8o0xmFara1+BrkJHb185OPchNchTSl9c/Ykf469ru5MGuuxaeNpW/gl6xAUoIYVxNsPuDRZHpyGd8tNDx/rie1HfNRB//HB8xSP/I1zKn9ckvTo6HHcRjmJxWEv1C3XaxEflzv7JWayDhJUWaDrBTEjk19ei8vy2ORUlfoquqTtm+0Sp7wiKZkfn9K5M1bbbwr6FDFMLvEgiphMEl8z/7XMSTXypus9CEpKdZp7ATZPolYQJ0U/iGTEIJGWipyAzURcx6qGskHuqt9qz4D8nBVs3e2bmxlf0vDwE7/1/xr34GFZBzyaGnZcGiIIj8tFmuIjEXw/KsfogKvhydfLReFQkvn/IYNC4Cce7WgSnNA+YpSESw5nAqq5gRmlRTNYyUN011R7aIHAJKdRyQPfSAyb2p2dL8C3VPHifPiApUX810oKJ8pzzIwJofMAPIYlR+NLaKDO3e0cLWcGJPjP8q9qC45hPIoUcKff6rwCghavcOWqM2Lj
- 9Dvk3FAa
- QBfU+vhtqQx7B2xv930Pw4YYQTibhW8lGvg4Rjy6TM4Id3WB39hDAtrwo3ANFwMpgyUdCz0+gSnMLhalbhii1Wpac1jtznsp5eeXNYLLH/pdxRIMPAw3emzHhlFinTJQYcpw6gjjIcFoShsffY+kIRTGZfrAjjDDr+4l7tgzDTE31RnZnu0KFzewTxUWyzYr/N77OQjH1wzYeP/zNH2aDVOVcojI36I/IYXLYVOzv3qweKGfIhIGZlVyxBV46DMZD9SUS6WP76olAeLQ/342URoJsFLPduNkJe3CNxCHRwDcDOf0kPT3mcg5uwA7hc/6YNEzsBixZbkEjbF8GfaCGAFy+eyOtn5eRVvotaoe60CZyLWuVzsq/5i/X6HV6TGr9w8WyXCsgJrITDLnAcSA60XfZVmqCKK+nJBguCxfjkBApHRBoU6Xsa1EpP5yj8izDRKo3uRs6m46f8fx+O1NKtelWQDOz4bl4qqP8ufAk0LyNgDM=
+X-Rspamd-Queue-Id: 975C5140005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762336167-812788
+X-HE-Meta: U2FsdGVkX1/pP42cOvQ14UKIxo8B8k+shVmU1fygcoFkpgp3rSRd376X28eYJ4q4LHkVh49crAn3oiejAo+WOBHFFnn2hBG4hNYcHy7ONTZCYUmKIBSuq0UZBDfccjKIbLTjcynHfGdyWNBh9d6Kvb7/nUVsAS56LIuxPIhEs5qYPyG+mRAWXI+t98qv1qijtzfjdOg+Cd+wK2LzW2zhevlzi/9O5O0KXpxfH/8DEcW9clCA1VS1YelTM4Z2XqpV+m/uyAXhlueLZnjeUB0gcyj2IjVv8U3O7Pn17x6dLEnjCwJVGne74acxPbjO0TEetJImQn6cAXZ3Htk7nqBlspMBZANS6syfSBJZTxhVwSia/AlhSfQ6uGBOTo5dWqmJsS+dTX37jpcNehkipUGforo5kW7XHeUG0qZ2desrfyeYlPdVTM63MvlnoGKNujvIiPHeJkVTJpgwm7KSZPrXpBjaS3eYsupx6evO3Gvr+ftas3gsTocV0rayMZM6pKRPGrMv7E3oFY3Jah6SM0nFjBIIb6XDm1gh48xsiizncxc+uevlgaymTa5+TFaRExG0msO6QC9W8ez1oyqOvwDTmRGCpJYZ6vcK0+/Ekgx/EVfaaE+BBwYHR3WVRkVxBi6M9t1zL8fMC5VrkinAOw8jL3TZgzzh5CW90dG4QuSFMnsY8/SNLz3FjAx8oaLjt1Ke9cq/HrCdlCv6KEkdtSbkVLlgB1ymJROlWHR1mnDug3ymuW0D7XglfNbMYTwuYVaqEO/lfaKnJmOixqA5iDHvLhy4QmXjreySKDIls2slVG//6gfzbxVOxMGK52ObcAh+FT1Ogqh2VqTRCoMGAP23TNPoP7H3CqF5KaMNeZeBsBERXbJjmgBHs9zWLK9myltF5vxB3cNcUNX07ujWxUz022m/bVai1mbcJkAc4u5Up5+v/4Eu1WFpchuPGBQgEktWPdUwzCZjMheVxmiwQMu
+ rXeuy9p9
+ ptYRZLsFwnZgU/MqLWQhwb/cx7L6BKliguqBQAm9qU2A436USXLJLs9U6NOlVBlM1GKksYd2EHG0uuniaZF7uBHmreWgXHtVa4QpA0bMGEMKUagdd1eLV7Vsp3YAYPVOyknnEY+EpewMK7067DNeRZXNAmK4oPuVDtoJLVL6HVOGdJuOykkVrBt7+2klJRY87cVYh5NvZV1NAeptnULheXSut3UhsWvGiD6k9PNqAxT10aabBrPw/g0/WA6GfGBsv34t9m78iO88byjJmybRw7MNky3d7iAlcfh6hfMoL0gTzBoG2t3z5lj4FlzxKSMmXaLRmBH1yAxhsm9Wk1uPqZhOeSFo2iDbp8TFidk3nPePC/XQVuSQI/eusVGP4JO14KLXoIP5Kv05a++Oq3fTtIybx+8nix9tZ4IpLQBNyyW9nnSIoEv5H+iGh7NND+vcprYS9u3qKvWxO94B7b42YVuhCjJ168pBNRJx1th9xslwJi4NLoZRbBUefvq1iuXeBxafTLzzvgEBbp2+ExgvYrDDstR1zKT4mOetkiByQJbMaNak=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,59 +129,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-05 17:13, Jan Kara wrote:
-> On Sat 25-10-25 11:22:08, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Currently, ext4_mb_get_buddy_page_lock() uses blocks_per_page to calculate
->> folio index and offset. However, when blocksize is larger than PAGE_SIZE,
->> blocks_per_page becomes zero, leading to a potential division-by-zero bug.
->>
->> To support BS > PS, use bytes to compute folio index and offset within
->> folio to get rid of blocks_per_page.
->>
->> Also, since ext4_mb_get_buddy_page_lock() already fully supports folio,
->> rename it to ext4_mb_get_buddy_folio_lock().
->>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-> Looks good, just two typo fixes below. Feel free to add:
+Kevin Brodsky <kevin.brodsky@arm.com> writes:
+
+> A per-CPU batch struct is activated when entering lazy MMU mode; its
+> lifetime is the same as the lazy MMU section (it is deactivated when
+> leaving the mode). Preemption is disabled in that interval to ensure
+> that the per-CPU reference remains valid.
 >
-> Reviewed-by: Jan Kara <jack@suse.cz>
+> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+> mode. We can therefore use the generic helper in_lazy_mmu_mode()
+> to tell whether a batch struct is active instead of tracking it
+> explicitly.
 >
->> diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
->> index 3494c6fe5bfb..d42d768a705a 100644
->> --- a/fs/ext4/mballoc.c
->> +++ b/fs/ext4/mballoc.c
->> @@ -1510,50 +1510,52 @@ static int ext4_mb_init_cache(struct folio *folio, char *incore, gfp_t gfp)
->>  }
->>  
-> Let's fix some typos when updating the comment:
-
-I’ll fix these typos in the next update.
-
-Thank you for your review!
-
-
-Regards,
-Baokun
-
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 9 ---------
+>  arch/powerpc/mm/book3s64/hash_tlb.c                | 2 +-
+>  2 files changed, 1 insertion(+), 10 deletions(-)
 >
->>  /*
->> - * Lock the buddy and bitmap pages. This make sure other parallel init_group
->> - * on the same buddy page doesn't happen whild holding the buddy page lock.
->> - * Return locked buddy and bitmap pages on e4b struct. If buddy and bitmap
->> - * are on the same page e4b->bd_buddy_folio is NULL and return value is 0.
->> + * Lock the buddy and bitmap folios. This make sure other parallel init_group
-> 					     ^^^ makes
->
->> + * on the same buddy folio doesn't happen whild holding the buddy folio lock.
-> 					     ^^ while
->
->> + * Return locked buddy and bitmap folios on e4b struct. If buddy and bitmap
->> + * are on the same folio e4b->bd_buddy_folio is NULL and return value is 0.
->>   */
-> 								Honza
 
+This looks good to me.
 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
