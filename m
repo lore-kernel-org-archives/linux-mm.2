@@ -4,105 +4,104 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1098FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 07:39:38 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42783CCFA04
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 07:49:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 582B08E0006; Wed,  5 Nov 2025 02:39:38 -0500 (EST)
+	id 858F28E0006; Wed,  5 Nov 2025 02:49:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 533728E0002; Wed,  5 Nov 2025 02:39:38 -0500 (EST)
+	id 830818E0002; Wed,  5 Nov 2025 02:49:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 449178E0006; Wed,  5 Nov 2025 02:39:38 -0500 (EST)
+	id 76D8A8E0006; Wed,  5 Nov 2025 02:49:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 34A2F8E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:39:38 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id D6E8DC01EE
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:39:37 +0000 (UTC)
-X-FDA: 84075753594.01.C348737
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 074952000B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:39:35 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X3bBg23v;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762328376; a=rsa-sha256;
-	cv=none;
-	b=M8EndEiffIut1YpJy6gl5CwZzsWrr3yi6vNTSWZHFLhUjbDWWPNbpDpchj3AuQGBPJpl7V
-	Di/1cgiSA7x1bNQLfwZtQzPPrsHxlYlfzEcQ2dsp0HeN4iAFdJNj/min89i/Q1O4dOjAUi
-	UB6DTWQp0fffAEwMIHIA46UB6ENQvr8=
-ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=X3bBg23v;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf03.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id 64A148E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 02:49:43 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id F0E72B7449
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:49:42 +0000 (UTC)
+X-FDA: 84075779004.30.34CAEC5
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 912514000B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:49:36 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	spf=pass (imf12.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762328376;
+	s=arc-20220608; t=1762328981;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HTGPaALNXtXTWKpufu61u4sGUQIgOwmDPHJoY1Snhio=;
-	b=p6+OYRPWFLtEf0Y9EsgZRCeRqLCG3MmZa3ACdqSkSeGuXQh44KZ7iJQHRURIcfkrPA7hBA
-	eDKuIJgEv1bVc071eXOfD2U63DEvv47Em707gehVMVQkvbZJB6nUhOj9CapkBTE5QpbYim
-	pCYsZ6AKWb3ykcKy9h1KaTsjWl2gyhM=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 2036260213
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:39:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6BB4C19421
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 07:39:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762328374;
-	bh=/vg+7+Moo/OB+f9aYaClqZiz4nKKXBfk39XMf6w6D04=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=X3bBg23vXxkvmwX5gkjiu6Hdk8E+EWLqO/b+HlbwpovGGvXaibtyi2A7seMXvsiS8
-	 hf1Z2v5LDp7N3vPCctsgXEMYraJ6QYh89J3bRX9tigO6Bzr1w4kmKcm5txay9XWz1q
-	 ap4gx4ONYxU28KZtXGq4haLGJOY9kw0F6bweby3ieeadjreNiqCC2GZY2GwAbTpHNl
-	 coMX9sn66ZzoV5posKdAWezgNt6uffab5FmnwMY5OX9JyVdoaVkq9aDrFRVhOsLEih
-	 c97Kriej3pQiK9ho7xvsH/yFAlPp5VD+Ocfw410Pm3r19qc1yhd77J7MVjzJmzmRtN
-	 mSl9djr+aPXEA==
-Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-7867497ad2fso9000987b3.0
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 23:39:34 -0800 (PST)
-X-Gm-Message-State: AOJu0YyGPw7U1Dkmowh22YuhUWWt1SUpOMF/jSNEHKxr2jj5bKJFfSgR
-	Rt8Ri8rFHl67PsIp0V+WoHxISzTd4D8ZBHI2kwAdJpqYvkzkzvwNBDmuusgJzZPGWZN7tpLQgwM
-	hxUFOTYFOaT0shbo4IDDo3aktHR2QhAmDbVSsP7TB6g==
-X-Google-Smtp-Source: AGHT+IGX86xgQBCmLrk/QzKuO4utxmWpZrge7RSgHnrJJ9y/6Mf1fWxn/yJu+oXQe4PK+p2VLbMWjHC84pqTrQmHqBE=
-X-Received: by 2002:a05:690e:190a:b0:63e:29af:bd23 with SMTP id
- 956f58d0204a3-63fc74addabmr4307350d50.4.1762328374083; Tue, 04 Nov 2025
- 23:39:34 -0800 (PST)
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references; bh=NiGzKdKwyxHtOIvZQAR0SjqLU7BoJ+d1SSckXZDCQwo=;
+	b=3t+M2lXm8k12RL1qO+66Cwmw8lsTNQeTWT//bN5Mvcw3WCKweI9Tmg1B4/dZuPEzBlQedN
+	jcnukUbr+8AzMRLl8POZvvNBbWqU8oWd4kRLbl55lY1S/4d+uUsLT3fL1nHqgz1cN3dhqV
+	5d29lU1A8L56vj5Mzrkihvfl0phVjX8=
+ARC-Authentication-Results: i=1;
+	imf12.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf12.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762328981; a=rsa-sha256;
+	cv=none;
+	b=MZsnT6+RqCimZiHqnQXoAbdc+hVYx04731fSrUZzuqLaASSbUexcg2o2rdekCghU6Tn10I
+	0LKEkVcazBpBDU6yKqjij6MtiMxKszKYp1XetIFhClqNDnSPmAG7gEY4M/y473oUeBBnA/
+	Af7mSQdpghGFhqDA91/ne80tJx0eV4I=
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d1csR1Z54zYQvM0
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:49:15 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 90D071A06E0
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:49:31 +0800 (CST)
+Received: from huaweicloud.com (unknown [10.50.87.129])
+	by APP2 (Coremail) with SMTP id Syh0CgAnyECIAQtpnJ8VCw--.65210S4;
+	Wed, 05 Nov 2025 15:49:29 +0800 (CST)
+From: libaokun@huaweicloud.com
+To: linux-mm@kvack.org
+Cc: akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	surenb@google.com,
+	mhocko@suse.com,
+	jackmanb@google.com,
+	hannes@cmpxchg.org,
+	ziy@nvidia.com,
+	willy@infradead.org,
+	shakeel.butt@linux.dev,
+	jack@suse.cz,
+	yi.zhang@huawei.com,
+	yangerkun@huawei.com,
+	libaokun1@huawei.com,
+	libaokun@huaweicloud.com
+Subject: [PATCH] mm/page_alloc: don't warn about large allocations with __GFP_NOFAIL
+Date: Wed,  5 Nov 2025 15:41:06 +0800
+Message-Id: <20251105074106.3508870-1-libaokun@huaweicloud.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
-In-Reply-To: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 4 Nov 2025 23:39:22 -0800
-X-Gmail-Original-Message-ID: <CACePvbWgMpKgHLB1=u0hbjb5Koncc11TpLLBd6objAs0PaKV1A@mail.gmail.com>
-X-Gm-Features: AWmQ_bnIYaNmRXhdYNKfzLAmy6l6ZxVb1e89MkVAHp2LAIM_idVKUcOc1WkvZys
-Message-ID: <CACePvbWgMpKgHLB1=u0hbjb5Koncc11TpLLBd6objAs0PaKV1A@mail.gmail.com>
-Subject: Re: [PATCH 00/19] mm, swap: never bypass swap cache and cleanup flags
- (swap table phase II)
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgAnyECIAQtpnJ8VCw--.65210S4
+X-Coremail-Antispam: 1UD129KBjvJXoW7Ary7Wry8GFWUCw18JFWkJFb_yoW8uw4xpa
+	yIkrn7ZFyjqF18uanrAa12yF95Gw1rJFW7GrWIq34ruF43A3WI9rn2kr1avF18ZFZ5CFyk
+	trs3ZF9Fywn8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBj14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+	I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Gr1j6F4UJwAm72CE4IkC6x0Yz7v_Jr
+	0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E
+	8cxan2IY04v7M4kE6xkIj40Ew7xC0wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwI
+	xGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480
+	Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7
+	IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k2
+	6cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxV
+	AFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdhLnUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAQADBWkJ0jVblwABsN
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 912514000B
+X-Stat-Signature: xkmcmpwqxrgop8eoadyqqykma4symazc
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 074952000B
-X-Stat-Signature: iwru8ahggnegmwxct1g7n7j1ady7dzg5
-X-HE-Tag: 1762328375-542951
-X-HE-Meta: U2FsdGVkX1+uHgl7G0bUteuYcnjCShEvmDGg0OEOWV1f+ErNkuZui82fjbMX6b12vJdfi86AaTbYt0FJDxR03CRihjqt+Zv38Z8EgFzEZcsQXcOFa7e/vfxXWfdh77T52pDSnqD+4acyW7loFhepN6GpQQbfyLyfeajepjiPQKi0m/uLXWCTLrAnKKz1WHonnvse8zczJNqyNKP4KvEXSksTRZOCwQ6Dg28CnXBx69wTGM9V21pJgCst1/hqdFMuAxXYzaW3a4cASsVIghQOBYaCeVY0WdurLYVgqcVLRznQodOQZR1FGGjymnP2cjGDfuHO6fJVQ4oNik2EKWXGx0sJZnUjBELqexSuawtr7U3Feqth+SXevbt2SHb6NuOhST/oedpZ9YKaYxiGz/XIyqNYkNhD5s4CUTqlG3qwYVhjYer4e79zU/sV/s55SxGROZpGQh+qnNaE9AZ+sG6kghi+eMdwnnLFF/W6OMK/rV3Mt/L37eNT1syTuzzitd+V5ODa/+1U6FpQwGzm4dKqoBN3y96naXwAulxO9Ss8/oj1SybnAUetxLFTyNI6vkNr3r89fdaJn6bM+RlN59K6wf8gWYogqRQ2sAN8T51SEhV4QI/gmEm5Iw8907YQEo6uEAIvRn6UF93WNkgr0keDTcew4vjQTvzH6g92arf6+8h0VSfMaXXWPgEz2roakdceDzFJ7vdZZM690vkk48JMBbDo2NuIU4dPS9C0RvDWOcoCDN6Rn44LTgl8iCUK3lt9xD7ATVh2tpDM8MgOo/pNapJ35pT1xz81RViVP6gMpT39FjkYVg4CG71fcYqrVuBWYJH48kwEyKbJRoSSOspLiB+bG0+Mwczon5sAeObt/bAXcwI02A4Aqangkaf2fORqrg9AGroaIYL78cNXi/v20h3c/1+5/jzmZLz5dG88qkSets615xHOLjQYwpifC7PyR7qu7xFfv6gMPmNu4vh
- utYUa1vx
- LhmnmtiIEiogK5uUizJDaCrX0AgYe6D6RPAYyUAfQsBzg7pF5FrG+bN9FgDIap/DT14XWa1lxpf82RHcgSyoJWACokua22m5Jp3t+bAU25jM31FuO11GiUqFtAdGL4y5wqo7DnGSW40hTcfY7/ny3wrioW+8VwFoUiWixpdx1fJI87uDMzPlX03mZFiVuNH8GuMikYiCKOl9dMWzR4bWo7TU1kMvucr6cngEdW6juHn0ZfMZ85TDPOItzxN08P6A7urptupkYhyCGD71LSGRh6TbBVT+V8ioAKj5SyzS8v0vZMvX2D6bkt3ES/dzHpe1tr6g+th118TOB1Rht/E0V1xy8zUHJ7yKGQLeE
+X-HE-Tag: 1762328976-209869
+X-HE-Meta: U2FsdGVkX18KgQmjTF1QgZMetJ5ML69b+dLrXaoLZW5ySdOwKS5T33ZPocRedXGpU03+ZcDmT2tIg6PAUQebNIBoDxiZlyWW7sxIMhyQB2OCkP8CtxZkfxCnhdL+Q4NR3yHrkmvaNypMyDlpWmL0v13Vg4+XcNBT6QAz/38OGlr4VytXWHD5WVjmtQPGFXZQUcXyyr5etFF/Y0Gs/w/nbKDlPBnnc3CRhoTD/GQA0hccYEp20w5vxNSAD5zVTMy8WMqcVMDoSxW1kzdd09yzHG2axsVfqZUEQUJj/CpvesXOkjgGxXNMkVQc0sH9yIGMm4Khv3yt/4vnTbsh2b98KwXZKUE7IkNAc6ortr5VtmGvr0eEs0HHgbNnaFnkxsGQkp/iikqWDk1JkW/xBUrB5MSO4fDo2o4/7ZbzHmzv5dphmMEyxJ14kpvhLit+sZ4MeSVPE0mH+dQ8vIw8Z8JpF1KcQDoQ3Dk5A/1pFWPHy16GvqBDPp0iT8iVguB8gHBDvV4y7avxZ0Si+d6kArLqK/VUmus2J3+COSBOhXYwbmY2dcatoPIFN4o9EfYafOUB5TKBoQ+00OM591pFICRXygee0bRNrlAFMHV2tRlM1zBiTB7lPGWcmthcPKV0858VahVXb5C8Hq/PqquldHjNqqwkaIIGvtGznT91/Cho6Zph/sznzoiVl3hwUrNTkIQm4EkMo/aqV+x0VU+KJKocxTxVIu9NUOUFj1b8C9wVbhhtctE1QdUn+uOY8BxdEFkroR3oGi842qW5HXD3gwXCFoGjItXd1213lMxwyXK+gRlvqPD8pFL2Jnq2rZC6cbXgFEu4epxreCxWXzZRMRbB9DncTMkUbkDiXAOIzrCWMnohFrxOo+0QwlYQ4dV5FkOcW4SubJew701IlvU3i7ju7IlMGNvK3GOOLp82uxyYaW572YJP5LoT4ocvK0IGZLfV9yBUYTtU9PF4RmRy11r
+ rdc+GMnA
+ Zw1sf2EfJ3nvtQSmQWbfcYAQAIeuyS/J1t8UUf4LnMJ8WnJcK7PomIwNMqsyJeLq/8/NQdSHu1cW1KFhuRfGtTNWrG9ODXGCqdkDcMAYpH9/hRHum7aA2XaQTejw+BNxvtvoK9fRu0huKzQ0+47jXD4NNvew9Q/YWV2xiMQVXpz4nHrpXfCRTLanQPcopHwGsvtl6bQaOtznSUXS4qKdM6kdUzMIjqtzDcWvuCLHSZi++T5w/bsiCLR2hGtubY1cnVCflntsNA1MCe1bYSnXy4/5MEBRGdDfRMW4EZiLkVVijqv8oMdtT7bfo6g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,200 +110,58 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry I have been super busy and late to the review party.
+From: Baokun Li <libaokun1@huawei.com>
 
-I am still catching up on my backlogs.
+Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
+reads at critical points, since they cannot afford to go read-only,
+shut down, or enter an inconsistent state due to memory pressure.
 
-The cover letter title is a bit too long, I suggest you put the swap
-table phase II in the beginning of the title rather than the end. The
-title is too long and "phase II" gets wrapped to another line. Maybe
-just use "swap table phase II" as the cover letter title is good
-enough. You can explain what this series does in more detail in the
-body of the cover letter.
+Currently, attempting to allocate page units greater than order-1 with
+the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
+However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
+can easily require allocations larger than order-1.
 
-Also we can mention the total estimate of phases for the swap tables
-(4-5 phases?). Does not need to be precise, just serves as an overall
-indication of the swap table progress bar.
+As Matthew Wilcox noted, if we have a filesystem with 64KiB sectors, there
+will be many clean folios in the page cache that are 64KiB or larger.
 
-On Wed, Oct 29, 2025 at 8:59=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wrot=
-e:
->
-> This series removes the SWP_SYNCHRONOUS_IO swap cache bypass code and
+With gfp flags and order already included in the OOM report, both
+Vlastimil Babka and Michal Hocko suggested that we can take the risk of
+removing this warning first and then observe whether a large number of
+related OOM reports appear.
 
-Great job!
+If that happens, we can consider adding special handling in other places.
 
-> special swap bits including SWAP_HAS_CACHE, along with many historical
-> issues. The performance is about ~20% better for some workloads, like
-> Redis with persistence. This also cleans up the code to prepare for
-> later phases, some patches are from a previously posted series.
+Suggested-by: Matthew Wilcox <willy@infradead.org>
+Link: https://lore.kernel.org/all/aQPX1-XWQjKaMTZB@casper.infradead.org
+Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lore.kernel.org/all/188a95ba-6384-4319-bb74-c0d9ec6c4079@suse.cz
+Suggested-by: Michal Hocko <mhocko@suse.com>
+Link: https://lore.kernel.org/all/aQotQBjnDDeL_wHx@tiehlicka
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
 
-That is wonderful we can remove SWAP_HAS_CACHE and remove sync IO swap
-cache bypass. Swap table is so fast the bypass does not make any sense
-any more.
+RFC: https://lore.kernel.org/all/20251031061350.2052509-1-libaokun@huaweicloud.com
 
-> Swap cache bypassing and swap synchronization in general had many
-> issues. Some are solved as workarounds, and some are still there [1]. To
-> resolve them in a clean way, one good solution is to always use swap
-> cache as the synchronization layer [2]. So we have to remove the swap
-> cache bypass swap-in path first. It wasn't very doable due to
-> performance issues, but now combined with the swap table, removing
-> the swap cache bypass path will instead improve the performance,
-> there is no reason to keep it.
->
-> Now we can rework the swap entry and cache synchronization following
-> the new design. Swap cache synchronization was heavily relying on
-> SWAP_HAS_CACHE, which is the cause of many issues. By dropping the usage
-> of special swap map bits and related workarounds, we get a cleaner code
-> base and prepare for merging the swap count into the swap table in the
-> next step.
->
-> Test results:
->
-> Redis / Valkey bench:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Testing on a ARM64 VM 1.5G memory:
-> Server: valkey-server --maxmemory 2560M
-> Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
->
->         no persistence              with BGSAVE
-> Before: 460475.84 RPS               311591.19 RPS
-> After:  451943.34 RPS (-1.9%)       371379.06 RPS (+19.2%)
->
-> Testing on a x86_64 VM with 4G memory (system components takes about 2G):
-> Server:
-> Client: redis-benchmark -r 3000000 -n 3000000 -d 1024 -c 12 -P 32 -t get
->
->         no persistence              with BGSAVE
-> Before: 306044.38 RPS               102745.88 RPS
-> After:  309645.44 RPS (+1.2%)       125313.28 RPS (+22.0%)
->
-> The performance is a lot better when persistence is applied. This should
-> apply to many other workloads that involve sharing memory and COW. A
-> slight performance drop was observed for the ARM64 Redis test: We are
-> still using swap_map to track the swap count, which is causing redundant
-> cache and CPU overhead and is not very performance-friendly for some
-> arches. This will be improved once we merge the swap map into the swap
-> table (as already demonstrated previously [3]).
->
-> vm-scabiity
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> usemem --init-time -O -y -x -n 32 1536M (16G memory, global pressure,
-> simulated PMEM as swap), average result of 6 test run:
->
->                            Before:         After:
-> System time:               282.22s         283.47s
-> Sum Throughput:            5677.35 MB/s    5688.78 MB/s
-> Single process Throughput: 176.41 MB/s     176.23 MB/s
-> Free latency:              518477.96 us    521488.06 us
->
-> Which is almost identical.
->
-> Build kernel test:
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> Test using ZRAM as SWAP, make -j48, defconfig, on a x86_64 VM
-> with 4G RAM, under global pressure, avg of 32 test run:
->
->                 Before            After:
-> System time:    1379.91s          1364.22s (-0.11%)
->
-> Test using ZSWAP with NVME SWAP, make -j48, defconfig, on a x86_64 VM
-> with 4G RAM, under global pressure, avg of 32 test run:
->
->                 Before            After:
-> System time:    1822.52s          1803.33s (-0.11%)
->
-> Which is almost identical.
->
-> MySQL:
-> =3D=3D=3D=3D=3D=3D
-> sysbench /usr/share/sysbench/oltp_read_only.lua --tables=3D16
-> --table-size=3D1000000 --threads=3D96 --time=3D600 (using ZRAM as SWAP, i=
-n a
-> 512M memory cgroup, buffer pool set to 3G, 3 test run and 180s warm up).
->
-> Before: 318162.18 qps
-> After:  318512.01 qps (+0.01%)
->
-> In conclusion, the result is looking better or identical for most cases,
-> and it's especially better for workloads with swap count > 1 on SYNC_IO
-> devices, about ~20% gain in above test. Next phases will start to merge
-> swap count into swap table and reduce memory usage.
->
-> One more gain here is that we now have better support for THP swapin.
-> Previously, the THP swapin was bound with swap cache bypassing, which
-> only works for single-mapped folios. Removing the bypassing path also
-> enabled THP swapin for all folios. It's still limited to SYNC_IO
-> devices, though, this limitation can will be removed later. This may
+ mm/page_alloc.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-Grammer. "though, this"  "can will be"
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index fb91c566327c..e4efda1158b2 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -4683,11 +4683,6 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
+ 	int reserve_flags;
+ 
+ 	if (unlikely(nofail)) {
+-		/*
+-		 * We most definitely don't want callers attempting to
+-		 * allocate greater than order-1 page units with __GFP_NOFAIL.
+-		 */
+-		WARN_ON_ONCE(order > 1);
+ 		/*
+ 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
+ 		 * otherwise, we may result in lockup.
+-- 
+2.46.1
 
- The THP swapin is still limited to SYNC_IO devices.  This limitation
-can be removed later.
-
-Chris
-
-> cause more serious thrashing for certain workloads, but that's not an
-> issue caused by this series, it's a common THP issue we should resolve
-> separately.
->
-> Link: https://lore.kernel.org/linux-mm/CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+=
-2i_mhuP5CQPSOPrmQ@mail.gmail.com/ [1]
-> Link: https://lore.kernel.org/linux-mm/20240326185032.72159-1-ryncsn@gmai=
-l.com/ [2]
-> Link: https://lore.kernel.org/linux-mm/20250514201729.48420-1-ryncsn@gmai=
-l.com/ [3]
->
-> Suggested-by: Chris Li <chrisl@kernel.org>
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
-> Kairui Song (18):
->       mm/swap: rename __read_swap_cache_async to swap_cache_alloc_folio
->       mm, swap: split swap cache preparation loop into a standalone helpe=
-r
->       mm, swap: never bypass the swap cache even for SWP_SYNCHRONOUS_IO
->       mm, swap: always try to free swap cache for SWP_SYNCHRONOUS_IO devi=
-ces
->       mm, swap: simplify the code and reduce indention
->       mm, swap: free the swap cache after folio is mapped
->       mm/shmem: never bypass the swap cache for SWP_SYNCHRONOUS_IO
->       mm, swap: swap entry of a bad slot should not be considered as swap=
-ped out
->       mm, swap: consolidate cluster reclaim and check logic
->       mm, swap: split locked entry duplicating into a standalone helper
->       mm, swap: use swap cache as the swap in synchronize layer
->       mm, swap: remove workaround for unsynchronized swap map cache state
->       mm, swap: sanitize swap entry management workflow
->       mm, swap: add folio to swap cache directly on allocation
->       mm, swap: check swap table directly for checking cache
->       mm, swap: clean up and improve swap entries freeing
->       mm, swap: drop the SWAP_HAS_CACHE flag
->       mm, swap: remove no longer needed _swap_info_get
->
-> Nhat Pham (1):
->       mm/shmem, swap: remove SWAP_MAP_SHMEM
->
->  arch/s390/mm/pgtable.c |   2 +-
->  include/linux/swap.h   |  77 ++---
->  kernel/power/swap.c    |  10 +-
->  mm/madvise.c           |   2 +-
->  mm/memory.c            | 270 +++++++---------
->  mm/rmap.c              |   7 +-
->  mm/shmem.c             |  75 ++---
->  mm/swap.h              |  69 +++-
->  mm/swap_state.c        | 341 +++++++++++++-------
->  mm/swapfile.c          | 849 +++++++++++++++++++++----------------------=
-------
->  mm/userfaultfd.c       |  10 +-
->  mm/vmscan.c            |   1 -
->  mm/zswap.c             |   4 +-
->  13 files changed, 840 insertions(+), 877 deletions(-)
-> ---
-> base-commit: f30d294530d939fa4b77d61bc60f25c4284841fa
-> change-id: 20251007-swap-table-p2-7d3086e5c38a
->
-> Best regards,
-> --
-> Kairui Song <kasong@tencent.com>
->
 
