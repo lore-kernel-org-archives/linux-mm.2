@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B33A8CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:06:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8639FCCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:06:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1A0668E001F; Wed,  5 Nov 2025 16:06:03 -0500 (EST)
+	id E23DF8E0020; Wed,  5 Nov 2025 16:06:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 150DE8E0002; Wed,  5 Nov 2025 16:06:03 -0500 (EST)
+	id DD4558E0002; Wed,  5 Nov 2025 16:06:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 040028E001F; Wed,  5 Nov 2025 16:06:02 -0500 (EST)
+	id CEB0F8E0020; Wed,  5 Nov 2025 16:06:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E51388E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:06:02 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id B2534B9B46
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:06:02 +0000 (UTC)
-X-FDA: 84077785764.11.7AA96A0
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 2355D40012
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:06:00 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOhlsM3F;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id BE89D8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:06:11 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 8EBB5B9B19
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:06:11 +0000 (UTC)
+X-FDA: 84077786142.17.ACE5CC5
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf09.hostedemail.com (Postfix) with ESMTP id DB7E5140012
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:06:09 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SGso82lX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762376770; a=rsa-sha256;
+	cv=none;
+	b=rF8bUjJX0bJ4kZIzxtmG/OuoaZPh38BB2p2sRFNGLRDd3KfaRdvxqxIv/ob3X4wMUI5u6d
+	KJr2PwvLkTXb0fv0wm4IhqfwirM1dWxa3gv0qRyJ26Uwq1Yr9m3x5tcrtXl5IGh0dEoZa3
+	2zrxr0KuFaff9a5pnkdi+cMPTnSNgr4=
+ARC-Authentication-Results: i=1;
+	imf09.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=SGso82lX;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf09.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762376761;
+	s=arc-20220608; t=1762376770;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SdJBQ+rWiBw2V4CFVKE2kVjSD7z/z7FLcRsM10EzZt4=;
-	b=GWNuForC6OSFm2FzUBVV4INnbloKyEud2br0udFsCMU66SR/nT7Ag/2IST9J5Z0TOgzVmr
-	mtqLigJSRtgHY0Yz3zq3Tb3qQO68O7WOKcfLKaJtG52iKwo3PzvdsOz1riUra2RVCu2CtE
-	ihSS5U2aJ4ifoI021VB3pvJ+SZnLeVs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762376761; a=rsa-sha256;
-	cv=none;
-	b=7WtB+bpZheju9lQkw09Xphxi3lOAFeojwfbCFqRUrrbS4UncVLDt23sOfd2iDGSOW0RtoE
-	Kn09GIUQdbDoPklYeBYiPKVGAlFFzlUqn2eCt9lqstJxuEqRWI8w46iosEKoOEdVKxkj9n
-	mlMCu0fz3xePJuU3f/uGrDrWEq/NXZo=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WOhlsM3F;
-	spf=pass (imf04.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=OhLqpHatyJ6fDaYoQzh9fBWkagpTPCWByoHOr1ArFn8=;
+	b=s72ZyepSo6D8enDewPAZRv9QtiyDn+oO9ewRMzNaYIVUMC0X8dzrf1LSspcQgMfrMljgRs
+	4WN5YhuKhCyF9hMh6MVH1K98H+zFlN6QEaIGbFlGx9wPAbyzZSLMGDu9GV8tLW3ek46G4w
+	VfF1k9yyFSh29tbN23cn0HBwTpAUjEI=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9126C60227;
+	by sea.source.kernel.org (Postfix) with ESMTP id 0BDF541906;
+	Wed,  5 Nov 2025 21:06:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3FEC4CEF5;
 	Wed,  5 Nov 2025 21:06:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 931BAC116B1;
-	Wed,  5 Nov 2025 21:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762376760;
-	bh=v2zJK6mDWINhu5V45BvrdNTmRnVcCM3RKrdK2Jievec=;
+	s=k20201202; t=1762376768;
+	bh=JiUppWP1p8g4DP4Hr+L5LcwYlcsK9hZTBPLusxTFDcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WOhlsM3FFPflzzkT+kungUw4CpxH4WtHCHs2d5HiMKT5nflQAjqznTB9idFhGi9j9
-	 tRztsTxI9koU2H6Z3S6lkIFF9qmFzav/2u8hz+uvQB2wL5RQInBeh3R4ri0XnCSI/L
-	 GKTmU+JnRlzeT5LmvFwcbWxVA7NWv3IMe2dOrHv3bm8xf7lqifjGolmaJ9b66D4hCa
-	 98qA5BREUujP5Z+vrdxNj0VnMmqeIVDjPJeHddkqna0zv9syW0oOqFapktxNlVlp4f
-	 kGURmDoYUwQZDXTMnR1JDZahFJALUF4V9l+OFovx6EBHHg/uJjmGKxPRiCTeGd9v9S
-	 x3UKTy6CIPBGQ==
+	b=SGso82lXWej3gwCMVjG+In6OAuz+oWZIKHcl5zSkrOo3iOJGj80tY/uefIBDRdkJ9
+	 zrvpNvHhAFFpeF34HITfKb6fyYMIuBhrTbWFnLXEVscW2zkZidtqpGCdGuvgz1JgjY
+	 dCkPvfRBFOQi0T7YMFHxRMbRqMctTBLmDoh2rTETHdurAo9vyHfYVedSr5ZTErqIb3
+	 G9wx0vk1arjCU5QIM6uwrwG8I1+mTTvOWMMauQjTmn9uCcP8xpqKqsMwOZdmr0Y4wb
+	 84As7/sgKqt1XxVy0Y4Ch2VRL3o/Nsk+cJgGkS7By3pLZ5nSFzJWRuqKlFG9Y92CbU
+	 syTh45q8Ls+Cg==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -101,22 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 15/31] sched/isolation: Flush vmstat workqueues on cpuset isolated partition change
-Date: Wed,  5 Nov 2025 22:03:31 +0100
-Message-ID: <20251105210348.35256-16-frederic@kernel.org>
+Subject: [PATCH 16/31] PCI: Flush PCI probe workqueue on cpuset isolated partition change
+Date: Wed,  5 Nov 2025 22:03:32 +0100
+Message-ID: <20251105210348.35256-17-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251105210348.35256-1-frederic@kernel.org>
 References: <20251105210348.35256-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: cw6uw9c3pt6cb796ta3hscfyocthczfx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2355D40012
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762376760-879088
-X-HE-Meta: U2FsdGVkX19vjjGS85VGbHOQnj6ERzc124cvZjL5s+8Mx+L9Un34yM9cXaM+G2iQ26G5/gBRiCRloOZmW0INbZ2dCJBFjKqEQ/RtRiNdaXc11l0/ly7W//fqLWkZmLNaMal68CuGbHpk9mO2UrfFrvVRHE2EPCD2SFz3LFlK2/5KzYA0YV29bIsEiD1/H2GLPYdV67OJUhgDUHdgIU6HCwlBE/nGmfBCy4YDoRMKt4xkyvP50u26tHzMJ7cFZAsPQFq2BUAbMkv+9JmZkltEjP0WPTX1rrXTo9H2hDllJFLSpIY4vixBnn6xuXOD+ZysM3531Ywf6tHCh9313wHD87GMbEbvU/qskC6iRG2o5Ell/lPUKBn436iESf0+XJ2e7uZxrrV9Jrmj2keopg3MxuLwrd13dPsUm9WVnEMoH3139NbuwrWOAZeb4xARaIkJPvzMuPt2o7NU1yb20Idl2nfgFuEMwhzaz8D8UQT3EQHV6BwpJk3Em41I8q3rOa93hjHm+5/RkGfZYnMyUJweKXbWFx9l8GYDWkeLTAJAs73JYm//3mQrd562fYUjbO/5KlOjxKPTggJWg5/tFAJwv5310BAzNA5wzgR+q7P6/1SkuDwuZHgGp5yxe/T24H6aNjtUQ43gUH/iKUhXH0LO5D7IsNjJSH3q3EvXzi3pE9KOR2wB6tNkBqAqS7v3zY0rAyjhAcD8n7wFMuHQO3ILYtS02nju/pfcZjrJ9Xqoc/nJKKjNyUYsevcl1Ri7c6+V9u8XZ7BR6DC8UMVe6A8PGI6YYPtzHiVPnhWBwp8iAXAs1Qh1KW5MWoB3EExKWiMfkP1Sn4bDMZu4W3p3y8YUVPH2aJwAHZJW6MjI2tq5ZUWjw8qYwN7XOO/0UYJbP4mJEOfjX9NAzuh4SG7x/3ab/upm5/GJpGRkov+FVQNmjffeXYqI6C1ql4K0aLNFzfijXvoxBfCKIseJiLl419b
- T5AgDoqR
- WsxclGWWHVNQ1Ars/0QFlwWHLOa/ar0ff54hWu/Iqpq7YmdOLqu7CgAh/Tdx+u09jiLF5P8v9dCsaBAuE/kkeO1ShjJn/Yl6NB6QG0oPF+Ob8pnlU3wyLYYtsMwG3FHlq9OiapslAAUmgMZsgdmAEVnOeISKEJBKbmbAXNFsrtJEFv7UgXplYr2fgZy4sJC0a3xPCG3ahjC+Fu0HnmizGOXK980tjL5UX1j2yQb3ff5F9Hg8gkeUILN1UOTDHYSTL/n4Hamza5jXJitpNPAMYKcRZdSzAHxTQieMz5zoSBottneE=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: DB7E5140012
+X-Stat-Signature: khypitdkywugjo6rkrhz9rwax8pdcbhy
+X-HE-Tag: 1762376769-739635
+X-HE-Meta: U2FsdGVkX18VGYFHEkb9r/pewSvNEVODYWXWR90hF8bH4o+TWer9AbVk1DsoXBjFjKyFx8Joqzmp03tjv6oafzV4vDNKkYh+b0drjlgkDDSwEIXaeVSFz5gJweqJ/5Cp7NaY0Rw4lXjPlb2UBdJUR1Pffhrme4ElMhma3vA8velWbrafEZ32GdYz9Q9VwL7FU7GHuIZi5C843hrwKz1BYUEcT6bzQyo+W41XbwlDYXt3x32PfBPBu6HsB+oAfq23va126qgcmM4FdfPLDIQP8p+PQ6o0eiw5d2onAtjX5ZSixoCi/N+YKkjG+oUaviFCX2/wjBDSUh+Rf5t4aHgDiSeNyO/IQfdVYIJn534If4SYVgTLp4rK35jL/LRRkF2II/07tBspXBqR+piGPkg1mIqmiaQSclEsZsvwufFD/h95s5fGtHujRSp59oXDM5sZMeJf9BMBdxWJ6q4eg0HpiQA13hgOA7sxqj+UMIDQpr1jkFEi+/TsOwdQHR0LEYc5f1GGxzj7VJUt35SsFhQdmBnemwMuALwNK8cvOZ8hw2W+WuOxav9va6AzwEzN8mOoFHKtfe0Y5QlpDDBDSCuoqa95eY70NBjyTu7S5+1OI8ZYEqoR5kIqc6CnsYRAY4J/sgP8NYav2G0C+n1YxG1XMNHjP1QcNffpMlxka4LQmQt72Fzty2eTyswrVJ89f0NVT4LgSizPBG6XCR4VJprb046AjJjX7GWHTind+ZzPmgyNA/NIFr0j9kCNAfyMX5ZhiVE23Hk3BigVddTPVgH8Q+fW+TsDRwBZPrHCO9HG7BHiKCqpcliCaTqTsk+KvJb8BRnCWikJ98jY6oCAg7eim6b7INfOeZ3XUgb2s6rckMraEV9QmHHa7RjHoeQfoWC55+XDCpB3p8gOpDMhsBNa9epSAz6BTsRV+4TS2m02zmyQWOJO0Yhu7sy/ZViRw1q1TPfgE48lnrPJEY86WWV
+ KT4Y857m
+ H+563A9JTGz5brh//AYS2/1cgrd/bBeuJ0kqmpYUG+l8iQIMWxExBYXgpazgt7ummrb4T+G2udlJVx/qJZXJc2KSk9745Hr7yZyFbF2AgXdhJQw5/sA521tIAt8kJ/QGrZVUXgf/DBAeFQgLHHG4ztCv4MjcQjus9sLp+/uh4xLH3jioDBFEmBH2eSOXfIHtlbAcC9wY4dEEPr01OjbvO5D5kRfpELSgKq8XNVtLxvbtGZpqyq8/yRN2xa4DseHVH6rD9klGDJoEBcZg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -125,83 +125,114 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The HK_TYPE_DOMAIN housekeeping cpumask is now modifiable at runtime.
-In order to synchronize against vmstat workqueue to make sure
-that no asynchronous vmstat work is still pending or executing on a
-newly made isolated CPU, the housekeeping susbsystem must flush the
-vmstat workqueues.
+The HK_TYPE_DOMAIN housekeeping cpumask is now modifiable at runtime. In
+order to synchronize against PCI probe works and make sure that no
+asynchronous probing is still pending or executing on a newly isolated
+CPU, the housekeeping subsystem must flush the PCI probe works.
 
-This involves flushing the whole mm_percpu_wq workqueue, shared with
-LRU drain, introducing here a welcome side effect.
+However the PCI probe works can't be flushed easily since they are
+queued to the main per-CPU workqueue pool.
+
+Solve this with creating a PCI probe-specific pool and provide and use
+the appropriate flushing API.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- include/linux/vmstat.h   | 2 ++
- kernel/sched/isolation.c | 1 +
- kernel/sched/sched.h     | 1 +
- mm/vmstat.c              | 5 +++++
- 4 files changed, 9 insertions(+)
+ drivers/pci/pci-driver.c | 17 ++++++++++++++++-
+ include/linux/pci.h      |  3 +++
+ kernel/sched/isolation.c |  2 ++
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index c287998908bf..a81aa5635b47 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -303,6 +303,7 @@ int calculate_pressure_threshold(struct zone *zone);
- int calculate_normal_threshold(struct zone *zone);
- void set_pgdat_percpu_threshold(pg_data_t *pgdat,
- 				int (*calculate_pressure)(struct zone *));
-+void vmstat_flush_workqueue(void);
- #else /* CONFIG_SMP */
+diff --git a/drivers/pci/pci-driver.c b/drivers/pci/pci-driver.c
+index 7b74d22b20f7..ac86aaec8bcf 100644
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -337,6 +337,8 @@ static int local_pci_probe(struct drv_dev_and_id *ddi)
+ 	return 0;
+ }
  
- /*
-@@ -403,6 +404,7 @@ static inline void __dec_node_page_state(struct page *page,
- static inline void refresh_zone_stat_thresholds(void) { }
- static inline void cpu_vm_stats_fold(int cpu) { }
- static inline void quiet_vmstat(void) { }
-+static inline void vmstat_flush_workqueue(void) { }
++static struct workqueue_struct *pci_probe_wq;
++
+ struct pci_probe_arg {
+ 	struct drv_dev_and_id *ddi;
+ 	struct work_struct work;
+@@ -407,7 +409,11 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+ 		cpu = cpumask_any_and(cpumask_of_node(node),
+ 				      wq_domain_mask);
+ 		if (cpu < nr_cpu_ids) {
+-			schedule_work_on(cpu, &arg.work);
++			struct workqueue_struct *wq = pci_probe_wq;
++
++			if (WARN_ON_ONCE(!wq))
++				wq = system_percpu_wq;
++			queue_work_on(cpu, wq, &arg.work);
+ 			rcu_read_unlock();
+ 			flush_work(&arg.work);
+ 			error = arg.ret;
+@@ -425,6 +431,11 @@ static int pci_call_probe(struct pci_driver *drv, struct pci_dev *dev,
+ 	return error;
+ }
  
- static inline void drain_zonestat(struct zone *zone,
- 			struct per_cpu_zonestat *pzstats) { }
-diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
-index 16c912dd91d2..8338c9259f4f 100644
---- a/kernel/sched/isolation.c
-+++ b/kernel/sched/isolation.c
-@@ -146,6 +146,7 @@ int housekeeping_update(struct cpumask *mask, enum hk_type type)
- 	synchronize_rcu();
- 
- 	mem_cgroup_flush_workqueue();
-+	vmstat_flush_workqueue();
- 
- 	kfree(old);
- 
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 77034d20b4e8..c638fc51fc07 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -68,6 +68,7 @@
- #include <linux/types.h>
- #include <linux/u64_stats_sync_api.h>
- #include <linux/uaccess.h>
-+#include <linux/vmstat.h>
- #include <linux/wait_api.h>
- #include <linux/wait_bit.h>
- #include <linux/workqueue_api.h>
-diff --git a/mm/vmstat.c b/mm/vmstat.c
-index 7afb2981501f..506d3ca2e47f 100644
---- a/mm/vmstat.c
-+++ b/mm/vmstat.c
-@@ -2115,6 +2115,11 @@ static void vmstat_shepherd(struct work_struct *w);
- 
- static DECLARE_DEFERRABLE_WORK(shepherd, vmstat_shepherd);
- 
-+void vmstat_flush_workqueue(void)
++void pci_probe_flush_workqueue(void)
 +{
-+	flush_workqueue(mm_percpu_wq);
++	flush_workqueue(pci_probe_wq);
 +}
 +
- static void vmstat_shepherd(struct work_struct *w)
+ /**
+  * __pci_device_probe - check if a driver wants to claim a specific PCI device
+  * @drv: driver to call to check if it wants the PCI device
+@@ -1760,6 +1771,10 @@ static int __init pci_driver_init(void)
  {
- 	int cpu;
+ 	int ret;
+ 
++	pci_probe_wq = alloc_workqueue("sync_wq", WQ_PERCPU, 0);
++	if (!pci_probe_wq)
++		return -ENOMEM;
++
+ 	ret = bus_register(&pci_bus_type);
+ 	if (ret)
+ 		return ret;
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index d1fdf81fbe1e..3281c235b895 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -1175,6 +1175,7 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
+ 				    struct pci_ops *ops, void *sysdata,
+ 				    struct list_head *resources);
+ int pci_host_probe(struct pci_host_bridge *bridge);
++void pci_probe_flush_workqueue(void);
+ int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int busmax);
+ int pci_bus_update_busn_res_end(struct pci_bus *b, int busmax);
+ void pci_bus_release_busn_res(struct pci_bus *b);
+@@ -2037,6 +2038,8 @@ static inline int pci_has_flag(int flag) { return 0; }
+ _PCI_NOP_ALL(read, *)
+ _PCI_NOP_ALL(write,)
+ 
++static inline void pci_probe_flush_workqueue(void) { }
++
+ static inline struct pci_dev *pci_get_device(unsigned int vendor,
+ 					     unsigned int device,
+ 					     struct pci_dev *from)
+diff --git a/kernel/sched/isolation.c b/kernel/sched/isolation.c
+index 8338c9259f4f..303cc3419ecb 100644
+--- a/kernel/sched/isolation.c
++++ b/kernel/sched/isolation.c
+@@ -8,6 +8,7 @@
+  *
+  */
+ #include <linux/sched/isolation.h>
++#include <linux/pci.h>
+ #include "sched.h"
+ 
+ enum hk_flags {
+@@ -145,6 +146,7 @@ int housekeeping_update(struct cpumask *mask, enum hk_type type)
+ 
+ 	synchronize_rcu();
+ 
++	pci_probe_flush_workqueue();
+ 	mem_cgroup_flush_workqueue();
+ 	vmstat_flush_workqueue();
+ 
 -- 
 2.51.0
 
