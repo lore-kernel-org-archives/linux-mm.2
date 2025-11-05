@@ -4,113 +4,108 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 364E8CCF9F8
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:08:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29883CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:23:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 68E998E0009; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
+	id 43CF78E000A; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 63F418E0002; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
+	id 3ED208E0002; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 52E548E0009; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
+	id 2B5098E000A; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3E7F18E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFC2E1DF37F
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:08:26 +0000 (UTC)
-X-FDA: 84075523812.29.3B680F7
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-	by imf13.hostedemail.com (Postfix) with ESMTP id D04ED20005
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:08:24 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=EBq9KbBN;
-	dmarc=pass (policy=reject) header.from=shopee.com;
-	spf=pass (imf13.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 15E128E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:23:17 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id AF9381A0124
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:23:16 +0000 (UTC)
+X-FDA: 84075561192.16.CA45167
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 5772680004
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:23:08 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	spf=pass (imf30.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762322905;
+	s=arc-20220608; t=1762323793;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
-	b=nmbcVFVn3Y/+x/gS4mZyNc+AaRWbmvnmqlsYP7UuwRFSiZ37eH4B9O0tSoxQOF9m5mv6S7
-	hGPIwDatUvIEQ8Y0NlfED4Agd0475s3RKwIYNPbImmmyFOm3OC6VTNeHtJPDZRYhjS/XUm
-	fHNDsjJPBa5yEVFVYlNj2sSt3UTnQoo=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762322905; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=J/vV2MKf3JEy0RYzE026Ug26bPPEjVBw8iMSZTRpNi0=;
+	b=WLO//Crz4Usn/KdIuEfvVd09fK5cepdmz9B9VCDUewUcrMCFS1ZL4yDmZvkcvnE/tnGUIt
+	whb770CVPZrhamomvSAEkUkpKAfWzfJhmdlcPqTRpu5kEKHGkIfl2AMetyO07RM/Sq2IIL
+	BPiFWmX/sEMfyVmahlTs/FojmCwtypE=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762323793; a=rsa-sha256;
 	cv=none;
-	b=J+jUbvS319Z1qXNM30wxf2B5GT3NwEeMdMnYrU9uVodJ28tFIyGpzhiKV8cx4YIoBRxiW+
-	qYpPPiEglDbljS7rzeoehTG53R0l46orgFqSFFggc5OuZ3Cddd26WunQPdngKRBzZhpy+p
-	ouzjobCJ/HJtYqxSRI9vpZIr+KEPcNg=
+	b=ZU6xe0Ivytcrf1XpGQvABhvfJ1wcDz49dtZ2wigsZ5n54U9G3ivatY9U3H1qN5r9WmtlrH
+	GQUNbc+bB6sisIOMADLXU+mcADDAZ3IH1VWWct9oD8rOZ09DbwINIV3yRMDn7VZYOwQ8HO
+	uKe+HT2NjwU8A2Of/4ci3BDn6vdOoyo=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=EBq9KbBN;
-	dmarc=pass (policy=reject) header.from=shopee.com;
-	spf=pass (imf13.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59445ee9738so10343e87.3
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 22:08:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1762322903; x=1762927703; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
-        b=EBq9KbBNQPlBT+7w79LcUf30Crn45gA7ThKtY/uAnmUJ0jy8pgW/AYqabm4fbVGzKs
-         ZFqA1n02HWYONjUaKZIGZ5CHKd3mLp62GRMO4PGBwdO+qEtDURpMcL03oCkr/F4AGK4m
-         ytJOi356ZivSJG9Mw+xZzOFV4550Bi2MEQpr4BMCk38Vo8o+EsZMjmIglVdN888o1pX7
-         +NgX6RiVOXVZMRyrAKuInyyWKqBi61RECtxdzFF1plX3jS9zScYkJJA6HxhwW70jjt60
-         jirZoGDVYY9urBdbbuVHLZypBKYv4bENNFT1els5tg1/DgDRdMiMGdA7kE3eiydjptal
-         xURQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762322903; x=1762927703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
-        b=ZROmra0Xb4zOwgMLJVlLfTDavTQNph6AO+hLNrv3Wm9cYrtPKtkaI+Hf8+wPITEzOv
-         b3RLiIPMdtQccizUh/7jG15FEgDQt4WWn+/HLje2asEM/uKvmLBbFhmAa5F+0J5PvA0N
-         pCvWVJEPm0L6k46J/052Z1EkMnKFLc5HlO5JktbfDHpmr7AFGKWbysR7KyS6H1OvqOL4
-         Na3y1oC7ehd8q4AIlBmWxRjw5D24wEiV7yWUs4pOw9UjJ+8/cyYmi+Fp6ECw6/H5uMvw
-         SNfNtC37cVW0TF+XshQPBOpRYbaAmFIYi1PTgGkwrMm28p+FjQsASBESFudaTFllhWkm
-         t13A==
-X-Gm-Message-State: AOJu0YxGcDqLHOf6aH7X73EOGm+RknxF/5oebRhaHWVZJcK0eY7wjcWA
-	ZwS1jmtmh4efn+/ZgVULOSOplPXRjL8Wi/MlQNb1qEaM6DMgTjTqhVmpkEOPghkutTd9olz1dwt
-	REUOLkPu9ObCFZrzQMvyRJEW3jEtboKlmPYp/c55EJW5xi1PRxzFySEWXIQ==
-X-Gm-Gg: ASbGnctrZ8MYGQ92YgPf4kpKqXVZMPnr1yTguG6Q8capLRL/Lqh5+GiA4A2cDbiptCE
-	L1KlhB8OZN2pCCBwZz5pn1pXUKbKn0FF01/4not5V6uRvukXARujAxSg6G0wwjb+aLnCSGSyjAD
-	yc0yCoaWv8ZL5EPe9TKM9YJ2pfuLCwfUCYZtW1v5hZF9AiAUwEiEYzESqBZNXb7crMo4IJAmnt1
-	XHwgYG/A57rFe3IeSxx0MJd6hAhlv7wWcIgH3YWklrytuXlI0Ww5azj3q8=
-X-Google-Smtp-Source: AGHT+IGhzBDN0J2xo0zgTrF8hoLMoPjH/0yoSaTiCKabdffwkstVhE2JzObLLjxmM0V2ZK+kJ0pjRcykFQushFkcK04=
-X-Received: by 2002:a17:907:94d2:b0:b71:ee24:8a3d with SMTP id
- a640c23a62f3a-b7265154e9bmr164396666b.12.1762322529791; Tue, 04 Nov 2025
- 22:02:09 -0800 (PST)
+	imf30.hostedemail.com;
+	dkim=none;
+	spf=pass (imf30.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com;
+	dmarc=none
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d1Zxh02nzzYQv8F
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:22:48 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.75])
+	by mail.maildlp.com (Postfix) with ESMTP id 45B501A1D6A
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:23:04 +0800 (CST)
+Received: from [10.174.178.254] (unknown [10.174.178.254])
+	by APP2 (Coremail) with SMTP id Syh0CgCHK0RG7QppvccOCw--.55319S3;
+	Wed, 05 Nov 2025 14:23:04 +0800 (CST)
+Message-ID: <a11bcb10-a10e-478e-92b9-1c02528c270e@huaweicloud.com>
+Date: Wed, 5 Nov 2025 14:23:02 +0800
 MIME-Version: 1.0
-References: <20251104031908.77313-1-leon.huangfu@shopee.com> <aQnFn6vPQ5D6STGw@tiehlicka>
-In-Reply-To: <aQnFn6vPQ5D6STGw@tiehlicka>
-From: Leon Huang Fu <leon.huangfu@shopee.com>
-Date: Wed, 5 Nov 2025 14:01:33 +0800
-X-Gm-Features: AWmQ_bkS8mFduVj_GZzMUe3ULkR8btNSr45nec1ttI4iNP0pSA8_ELWgHC8BzUM
-Message-ID: <CAPV86rrt0YT-npNSBJ_eHvAYdr_j1qkN7H+J4QLN8zsfi5TJ4w@mail.gmail.com>
-Subject: Re: [PATCH mm-new] mm/memcontrol: Introduce sysctl vm.memcg_stats_flush_threshold
-To: Michal Hocko <mhocko@suse.com>
-Cc: linux-mm@kvack.org, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
-	shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org, 
-	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com, 
-	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net, 
-	lance.yang@linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	cgroups@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: tw4nfmsudd636yqsxgfa8hg5syg4a1ka
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC] mm: allow __GFP_NOFAIL allocation up to
+ BLK_MAX_BLOCK_SIZE to support LBS
+Content-Language: en-GB
+To: Michal Hocko <mhocko@suse.com>, Vlastimil Babka <vbabka@suse.cz>
+Cc: Matthew Wilcox <willy@infradead.org>,
+ Shakeel Butt <shakeel.butt@linux.dev>, linux-mm@kvack.org,
+ akpm@linux-foundation.org, surenb@google.com, jackmanb@google.com,
+ hannes@cmpxchg.org, ziy@nvidia.com, jack@suse.cz, yi.zhang@huawei.com,
+ yangerkun@huawei.com, libaokun1@huawei.com
+References: <aQTb0NdyN3tU50ss@casper.infradead.org>
+ <k6k5azen4otnvlc35hj5ak7dmz2gxbb4lrgdu7cirewotggnp2@55cywarovlvs>
+ <aQTqELGGKCN3JTIm@casper.infradead.org> <aQhf5LJJMlvT-rrE@tiehlicka>
+ <9d5790f0-4a07-4cca-9f94-de101084a7e6@suse.cz> <aQh1EmVd8IPHK0Gh@tiehlicka>
+ <aQnV73KorhS0AWH5@tiehlicka> <a0015508-e72b-4b1c-9993-7e66076a0a19@suse.cz>
+ <aQn2fIcj9LduzsmI@tiehlicka> <188a95ba-6384-4319-bb74-c0d9ec6c4079@suse.cz>
+ <aQotQBjnDDeL_wHx@tiehlicka>
+From: Baokun Li <libaokun@huaweicloud.com>
+In-Reply-To: <aQotQBjnDDeL_wHx@tiehlicka>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Syh0CgCHK0RG7QppvccOCw--.55319S3
+X-Coremail-Antispam: 1UD129KBjvJXoW7Zw45GFW7Aw4xWF4rWr4Uurg_yoW8Xr1kpF
+	WkWas7ta1vyF93JrZ2yw4IvryrXrn3Kay7J34rWryUA3W5Casavry7tFW8AFyq9wsIk3Wq
+	qr40qa1rJrnIvaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
+	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
+	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
+	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS
+	14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I
+	8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8
+	ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU1
+	7KsUUUUUU==
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgADBWkJ0jBbNAAAsp
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 5772680004
+X-Stat-Signature: 7xe7cjy6j6c8gfuwm19if937bfe9kyo4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D04ED20005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762322904-477565
-X-HE-Meta: U2FsdGVkX18U5qSSSaPIgnAsUL9R3BtKiSxvwnSsOi1OpsG5/mOXtSonKOLEnYxQZysXc2TgdvTi90tek9ajuhwkSEKCDLQMUJLD13wmnHYynp1Be+bY83IBUoPEjFQg7HBWTcUAXGrVbc5SfdX6IAHNZk0eRLcircfYVfOdlHBxnzBWqoUeGGPDh3plX+OYtZWnZkP2BYZ4De4RmEnMeUfdXni4ig8QJkjG6EOaFcNtscyfoCHp1WudIF7Xc3DBP9l+jogGCbDaz345ZR2+xubQq+wroAl7o9hr2kMYyWxExxqP7OoJoLxJ2dECcXMZm6ZYFxcdPhXhLNpl0OGPXYKcwCwQrTsjApPkUJFINFiqAJX17Rigf+1QJKIzvqf0cNsW14gbKJBGWPyvOigHc+ypuRG9FDKgRrxp474yZtnSpa/1wcHG6YaUDzy3/fzL+p38lxqbM3l3uYXszrcN+K70P3/vKcCx87FCZCrCetlXnAjcFD44JfmzLn6QBfHJlaXzzJRbDjFXBayvNsKwDuvIzYIeRkugVHJe/NULb1Ow+KbTplPFUWpJmxGGX+B4zz6434NEen/qGrHoMTIw3ZqN4QtkomXZKiDFmx+Xzot9FtkTgCTgPA3S/fPOU1RgyrfKe3okC6/JEvp3fT57whwiuj94yWyTejmXNmOv50xe4KnTsbxCOjoylQkS2QsSwVPx9EG9f2xR9WlTJDdQWSMUp82mhtZznfO2eFgpUcpLpVV0PQzEA618A6vz4zAePEAdJPtRP3F0NDEs4V2jFoDe/IdPygeZhUBHXYKQG60yYBJ40MzXl6Ke+X6Y0/+ZAdmb+2Rmd4uIZDw7ayCky4xlxs6Mg6VaRTEf8tEzUK/tgGdU+FLq3jCnVkmF6jl3KE+AecPXcqQ0h0gzlDbDeMXFKZBPFXh1sVVI12lxRkP4KMGht4qHu1OHr9nrocKArQa+RhStgTA9xNFkr8H
- q3/I3gku
- thJqgnfOiJRvENy81lc+ptU6q03UJcfZlq5HPgnt9zKRQIf9MQ+0XEGmTQp0D2Mq9N5IhRMNnTIaShIS013qGo/K7HKB7hUbVIYzr5kFeUh/KB48lDaN8dfgRoT3SMPkJzWmGuFKJl+9LFxTLhNF8LPNjLWMy2mcPoi1vjgzcQxsnFX2z8J+4jZRVtUwEWZY0Rg731DGLN/jDvLWGAY3FQMg/P4dIrlYalIAFsJmIXUlFmi6E6vEjtxCXr8gxP80SZ0jNakH4kVNVXwvTgl/bMN6h1NH0cO68ap0KHYNsgwY/GgJOevkyLBsYZfv/3SlgUj7ZX+owEgGkptYcnHcPIwUzV2sRj5DKxMog+9PZXA4iVkBVrz1QDOUL5lwrmPgbtw+hhjV0mBUdwvjUkkL1iCw1sQ==
+X-HE-Tag: 1762323788-854189
+X-HE-Meta: U2FsdGVkX18eqA0v7eOHsE1ammt4F38PKlNclc8UDB6LITf066k/o0tCKV3065pQuX+L71NZJcjDvar1m/8p61ioteEsk8ZN+zh+7lb8LzKZngUvgJYsUv3rvtH3/MhQ+e47m6T/Br/NYJGY5GzfmS1itWYcO/r9IORW+eaB+MIHLC7AJTx6101SVUDI/WQRrBbRlowOd3ojoJiS4bvf/8H4XniHhSTARL+DqbYsvycp54XH6S+r+hIJfiDLxHZRIaFnwkH7sM3bv6V2zs2ks//h4rDtF6RvrZH35k7PYKIUSGdF6pCG661i0JSzWZpy+tkLQ6kFMaATg3zxsaZL1t1YwbkHJ9iNpxJFG6E07aUGhXtzu0g+jaQhcU6e2juUu5nbjvycMdTthY5iOTcOOPDAOB3YVgp1tIB6BpxqzPRBoqYtTtNH3wBJ3TzIJokv/agjsCDcjCLLXJRkqFBGDv6XgQdPvugurXu3duiKQKjjIUzyeKmC0Vodp0J6PGpkljODsL0o/xz8EatQELBVcTtFv5gUDVaz7mFpzgQ3urK1N25tZGbydk9gxvQ5OACC2F/V5bvikE+b99keMwjXuaod9wu4GPUKdmbq/dirUrC3Zya72IZXKMDsDcLbUeWfmBHbcmJzms4StmKJ/G/EDV6OYbAeitolOJyjXXlfDU6YJ/wLRgE4z+nViv/fhGbaPrJbR5W61jOV6P/A6AHABOoW2n9lx8ggMW8utC+TLdSbJWOLLKOBda+yDvaMM0NtNAqiSO4VJMA3mBIOevC4slfUX2YzGoDswmbF3it2O76pXqA9UhOLNFXQ/fAYfnZtzXMZyjEqKSyXPtpqFH6u2EM5VWBesSM5wzbH40Y8uoVE5rrO9vCqz24qt/qJlKqOeAa4hN3EdMrsO8RZFvryeAfMr6kYdeSdQ9jpF6VJXsQGRmjHGEGOHoGZYI1hIyR4PGyhiiuGO6XrB3IgPtd
+ pwqkUoFt
+ SIB0IU86ytJNn/fVhuR7xogLA+v12p+mHx+qJwYKGbYjGRCGr8wPYnXSzBQO9ExlPEbWI+cdWI+EAnw1mTGjkentpaweunH89ZaO53OcuG8t1YpuwocmVMWwEqgnyTX/o4USdVcASKxoeR5U2xAKzfyXLwEol1TGQSsfbIWLFReTDb1Pm8isC5u2dK8cCpKsVq8L6
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -119,74 +114,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 4, 2025 at 5:21=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrote=
-:
+On 2025-11-05 00:43, Michal Hocko wrote:
+> On Tue 04-11-25 13:57:35, Vlastimil Babka wrote:
+>> On 11/4/25 1:50 PM, Michal Hocko wrote:
+>>> On Tue 04-11-25 13:32:52, Vlastimil Babka wrote:
+>>>> OK, it might not create an order-3 page immediately. But I'd expect it
+>>>> allows compaction to make progress thanks to making more free memory
+>>>> available? We do retry reclaim/compaction after OOM killing one process,
+>>>> and don't just kill until we succeed allocating, right?
+>>> Yes we do go through the reclaim/compaction cycle. Do you think this
+>>> warning is overzealous? Th idea is that a flood of OOMs could be easier
+>> I think it's too odd to warn for a specific order and not that or higher
+>> orders. We would risk someone would make the allocation order-4 instead
+>> of order-3 just to avoid it.
+> higher orders simply avoid OOM killer so it is effectivelly retry loop
+> around the allocator. Order-3 is a bit odd and that is what the warning
+> is trying to tell. But fair enough let's just drop the existing warning
+> and see how it goes.
 >
-> On Tue 04-11-25 11:19:08, Leon Huang Fu wrote:
-> > The current implementation uses a flush threshold calculated as
-> > MEMCG_CHARGE_BATCH * num_online_cpus() for determining when to
-> > aggregate per-CPU memory cgroup statistics. On systems with high core
-> > counts, this threshold can become very large (e.g., 64 * 256 =3D 16,384
-> > on a 256-core system), leading to stale statistics when userspace reads
-> > memory.stat files.
-> >
-> > This is particularly problematic for monitoring and management tools
-> > that rely on reasonably fresh statistics, as they may observe data that
-> > is thousands of updates out of date.
-> >
-> > Introduce a new sysctl, vm.memcg_stats_flush_threshold, that allows
-> > administrators to override the flush threshold specifically for
-> > userspace reads of memory.stat. When set to 0 (default), the behavior
-> > remains unchanged, using the automatic calculation. When set to a
-> > non-zero value, userspace reads will use the custom threshold for more
-> > frequent flushing.
->
-> How are admins supposed to know how to tune this? Wouldn't it make more
-> sense to allow explicit flushing on write to the file? That would allow
-> admins to implement their preferred accuracy tuning by writing to the fil=
-e
-> when the precision is required.
+Okay, since most people agree that we should first remove the current
+warning and then observe what happens before making further decisions,
+I will send a patch that directly deletes the warning.
 
-Thank you for the feedback. Let me clarify the use case and design rational=
-e.
+Afterwards, depending on the situation once the warning is removed,
+we can consider adding some special handling in other places if needed.
 
-The threshold approach is intended for scenarios where administrators want =
-to
-improve accuracy for existing monitoring tools on high core-count systems. =
-On
-such systems, the default threshold (MEMCG_CHARGE_BATCH * num_cpus) can rea=
-ch
-16K+ updates, causing monitoring dashboards to display stale data.
+Thanks to everyone for the discussion and suggestions! 
 
-Regarding tunability: while the exact threshold value requires some
-understanding, the principle is straightforward - lower values mean fresher
-stats but higher overhead. Administrators can start conservatively (e.g.,
-1/4 of the default: num_cpus * 16) and adjust based on observed overhead.
 
-Your suggestion about allowing writes to memory.stat to trigger explicit
-flushing is interesting. Comparing the two approaches:
+Cheers,
+Baokun
 
-- Threshold (this patch):
-  - Administrator sets once system-wide via sysctl
-  - Affects all memory.stat reads automatically
-  - Tradeoff: harder to tune, always-on overhead
-
-- Write-to-flush (your suggestion):
-  - Tools write to memory.stat before reading: echo 1 > memory.stat
-  - Per-cgroup, on-demand control
-  - Tradeoff: requires tool modifications, but more precise control
-
-Actually, your approach may be more elegant - tools pay the flush cost only
-when they need accuracy, rather than imposing a system-wide policy. The
-write-to-flush pattern is also more discoverable and self-documenting.
-
-Let me try your approach in the next revision.
-
-Thanks,
-Leon
-
->
-> --
-> Michal Hocko
-> SUSE Labs
 
