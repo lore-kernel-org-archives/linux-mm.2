@@ -4,93 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A9A1CCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 14:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EF2ECCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 14:34:06 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C415B8E000E; Wed,  5 Nov 2025 09:21:26 -0500 (EST)
+	id 865108E000E; Wed,  5 Nov 2025 09:34:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BF1598E0003; Wed,  5 Nov 2025 09:21:26 -0500 (EST)
+	id 83C058E0003; Wed,  5 Nov 2025 09:34:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AE12D8E000E; Wed,  5 Nov 2025 09:21:26 -0500 (EST)
+	id 751D88E000E; Wed,  5 Nov 2025 09:34:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 97A3E8E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:21:26 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A12886E3
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:21:26 +0000 (UTC)
-X-FDA: 84076766172.14.92FF1FF
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 51FA3100018
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:21:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PMVDDg6Y;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 668EB8E0003
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:34:05 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id CDA2A16038F
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:34:04 +0000 (UTC)
+X-FDA: 84076798008.30.A947655
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf19.hostedemail.com (Postfix) with ESMTP id B42551A000E
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:34:02 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="crA5/Y78";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762353243; a=rsa-sha256;
+	cv=none;
+	b=csTQZh3E6RF9qSf5B2F9MxS6No2iHE7EIneDyusir0cIDkUbubg0Dt7kQRWVQ35i+m1+YD
+	lRcM2V4T76gdNGESE+lJIljUCv12MmYbS2PQ/ThhzV48P4ancd23nYCGpoCCapxGvwo2su
+	LSxaXYeZ6fojgeWNYKvSr+m8/pgFD4E=
+ARC-Authentication-Results: i=1;
+	imf19.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="crA5/Y78";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf19.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762352484;
+	s=arc-20220608; t=1762353243;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=PJXA9Vsg/Vef0RGpPu+bhWkC3ge0cfRJ+glIvliLJr8=;
-	b=fYyox60aswsf7IWcsROajcVMTUjDugywWi39y1ld6S3oO+xeDlQvQI7ljDc52GNKx+48ug
-	oodNrTDQB5f2va4+KgB1E0h6T5cUC9XohU1scdDZ/nl+oMf7HWXZXG4A0CSFz2949t5mn/
-	1G/ax2ATbURkuS3qZ+PhGiDToh46Hds=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=PMVDDg6Y;
-	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762352484; a=rsa-sha256;
-	cv=none;
-	b=y0+DYkb81xP54M9LqHOcpHl1jK5tbsP5P5ym3Lwfv4V27Ifpc/Fb3BlMMiOUGmNQnGJA6k
-	M0zGn9rvwX6ze9HErUUGD3e5EU2MiFhDSXodUDnXvzSygdmep4eGzDwCQaneWpCySnxGFk
-	h1+PgQOdeUG4ukmrOx//EBuCmH1djx0=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 37623446A5;
-	Wed,  5 Nov 2025 14:21:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54263C4CEF5;
-	Wed,  5 Nov 2025 14:21:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762352483;
-	bh=KDZATPE9X1vCi/Nk0hVLycBqSpHsTQBD3TNCN9EBGvs=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=PMVDDg6Yo0t9IjFgm+3etBRD3hShAzZ9ImdsaRXGGOvEvjYmA6Nozb10N0c5kZcAe
-	 mnkdv70xnmcmKC/RqRSkW0SqYq5TSHISco8uy0uAX8TUPzIT1Ih/Ize61KenaBCkwE
-	 azc9KHtUkxkzSu4ibpfRFAFXUe9tnO8AyZppkCJY1kxEGb9iU/GdLTsK2Elwrr7Zr9
-	 9Njk6NccBQtvPdDUqoQ0ZJbz9VdLad6ogrzujuSLQ4lam4sA7IR6yy6idCbWRHsfCV
-	 i66ttLJBjKY9iIAveH3CtdGHE987+oH08DpPjCPDCmUh/OWJoPA8kXbC2BGe9rKdBQ
-	 evLb1C6Sj+TiQ==
-Message-ID: <c6e5aa34-25ab-44f9-b6dc-127f3084adc8@kernel.org>
-Date: Wed, 5 Nov 2025 15:21:18 +0100
+	bh=ElYGIlkPKzTybpsHtstaGauKroEiTfyK75ipBsehUhk=;
+	b=yq7NjkChvNxgjDZCKPo7a5n7nlGxXvRLC25R1dlJuBWmFSUFXOaY2SsRhiy10K8vGz/8JJ
+	ldPaGh3+wpkG31nIuy3QVIBO58H46FLqaleKY+Pc4hmxopdyL+SLkLopEK5f7d8ZmzqE4f
+	LdwAhQPlwda+F903wZe8LBh18jjIQwY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762353242;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ElYGIlkPKzTybpsHtstaGauKroEiTfyK75ipBsehUhk=;
+	b=crA5/Y7813XPTpWPGLWxK0NjL4sod3bXzozae81SL542lrrIm3BhkVYBrqWXWUFJViVdzU
+	X7jWlgFJJekaBkxh3qsye7oq/p91FYRX5HqrECj+2NuOagReWHHtBkCncKG+d/4ysx/9PS
+	Y8a5KFK8gnXz/FgvNx4nt57zabYaSRE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-631-ONJ9TyxoOGyURfFJlmVhEg-1; Wed,
+ 05 Nov 2025 09:33:57 -0500
+X-MC-Unique: ONJ9TyxoOGyURfFJlmVhEg-1
+X-Mimecast-MFC-AGG-ID: ONJ9TyxoOGyURfFJlmVhEg_1762353232
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7691519560A1;
+	Wed,  5 Nov 2025 14:33:48 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.225.124])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 5DEDA180049F;
+	Wed,  5 Nov 2025 14:33:28 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Wed,  5 Nov 2025 15:32:31 +0100 (CET)
+Date: Wed, 5 Nov 2025 15:32:10 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Bernd Edlinger <bernd.edlinger@hotmail.de>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
+	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
+	Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>, Serge Hallyn <serge@hallyn.com>,
+	James Morris <jamorris@linux.microsoft.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yafang Shao <laoar.shao@gmail.com>, Helge Deller <deller@gmx.de>,
+	"Eric W. Biederman" <ebiederm@xmission.com>,
+	Adrian Reber <areber@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>, Jens Axboe <axboe@kernel.dk>,
+	Alexei Starovoitov <ast@kernel.org>,
+	"linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
+	linux-security-module@vger.kernel.org,
+	tiozhang <tiozhang@didiglobal.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	YueHaibing <yuehaibing@huawei.com>,
+	Paul Moore <paul@paul-moore.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Stefan Roesch <shr@devkernel.io>, Chao Yu <chao@kernel.org>,
+	xu xin <xu.xin16@zte.com.cn>, Jeff Layton <jlayton@kernel.org>,
+	Jan Kara <jack@suse.cz>, David Hildenbrand <david@redhat.com>,
+	Dave Chinner <dchinner@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Elena Reshetova <elena.reshetova@intel.com>,
+	David Windsor <dwindsor@gmail.com>,
+	Mateusz Guzik <mjguzik@gmail.com>, Ard Biesheuvel <ardb@kernel.org>,
+	"Joel Fernandes (Google)" <joel@joelfernandes.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Hans Liljestrand <ishkamiel@gmail.com>,
+	Penglei Jiang <superman.xpt@gmail.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Adrian Ratiu <adrian.ratiu@collabora.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cyrill Gorcunov <gorcunov@gmail.com>,
+	Eric Dumazet <edumazet@google.com>
+Subject: Re: [PATCH v17] exec: Fix dead-lock in de_thread with ptrace_attach
+Message-ID: <20251105143210.GA25535@redhat.com>
+References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
+ <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] Revert "mm/ksm: convert break_ksm() from
- walk_page_range_vma() to folio_walk"
-To: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Xu Xin <xu.xin16@zte.com.cn>,
- Chengming Zhou <chengming.zhou@linux.dev>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org
-References: <20251031174625.127417-1-pedrodemargomes@gmail.com>
- <20251031174625.127417-2-pedrodemargomes@gmail.com>
- <a6574561-02bc-4ba6-9fb4-418dcb07cd5f@kernel.org>
- <42byvvz55omaszu6ep3g7n2dj5z7mfxy5h3zbc3xjdnslemkpp@kvdzrjz423mb>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <42byvvz55omaszu6ep3g7n2dj5z7mfxy5h3zbc3xjdnslemkpp@kvdzrjz423mb>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 51FA3100018
-X-Stat-Signature: 4pk1b34b5aswpbr1817r99yfi1xr71tk
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 X-Rspam-User: 
-X-HE-Tag: 1762352484-462614
-X-HE-Meta: U2FsdGVkX1//oInwuXxPZL74TE4uzkgUa3AblMxXpR0WxQBLTuvwHRmmcTfARhYj8o1Md/Y+sBaNdg5/YZ0C8c/K3u3MdAvg/M8CC/+e2QsPwojjcyzHsPq/hIunQy6PSAKaRNkFBHHYgkTK5LwSbxPPFsRwHOnPb3BOXTqy+P86EaNZcwZtRhtWlFVL1OKs+TpBuPXprfRs0cCulH9Qd7YGbAqQB3V8cnBE6ytTaw/0idm8MH0wI4/GnDCqWxWWGwq4aSB+c4xQDSE2NkNgPeDJCQAf/ZUdrq8TXxV11FBpR263djfhLNTeAFfDuMS/DUrX7JaCLdnk6O9WG8/oNXfDLddEDoBxGDOuDiiImoSdNEJ1nwymCRHdV3knG1tN5FGDHlPR66sR0gapeqH9Hb92Fht50fogInLNA8mL/dtuf3DhdSTzlXutcv6rBdBsPvutHd9SFfTfk41tiz23FCnSnTNltzgnbG26QyYgoU3DZrs/t/h7dxKDH/4FnSoUOfem0NOz/UWsRZZn0UesjsiIuqKEcBTcoaTSSqnm6frotnWYUYdBPestZGS6JqigAo9v+sGUnsFlPkO9BlpZyBLCIUzuhc5pwdS+GP6dN+EP91xflSRoZPPlW2GkHVYvT7288NQawXD+kX2MD9XGdAw986Hp2Vn9nJ2U0IvniKrPAfd/fDYajachjsE8mBzCaWfa+zhzczwIvtSA4GUlLBAXFLwDjlCfQktuCkuNQRJxLjzkUfGCmnt6ct1prbMTIPdb9Qhg5PumUZXDl5ThM92tx6vNa+IqmChblOKqKCsvjfI1PUBMTRK3SsZwn4HWWE66CME47dn0QDpAEXSjvgGxi+DRG4agk2oEyKwtxcoXS9MOMhya/290j1x+JSAjEtEJDr6ALIN9CgMrdRUsgWcJdk19HNr0iceKQQzhSiv7TLyLvUD+kI9jDylsPGxDfzEYI74U4T+QnpRtFEU
- Y/Z8Nicv
- WN5vPCTtl0OVgjV1t0hy1emy7MRCX6gtPNbiTagzjwZ4mUUAOPP+zZ+sOuWx8YZSS48ybjFgtXsUWsfZ3cPvYXTDSlJCVbisZkEI4oQSFW44wE1yD+trGHOjwhG2pEH1NWL34cqXtxb+bg8LEZMmACiVOC/rrzkRx54upULuYWlTIXfff47fnB1rmgiOhxSSFlFL93GmB+F3VqlIZDvMZ77QjSgJODtVKVh3eiCva8UX3+3GTvTTyuQ79Q6YQLr4Gqzpo1R4TQabmLKr00PNK38wlyjN98SomaG7uKHGgoGV/twRvhfboIgbb4AQ/FenD4+eZcVC6r1ga0jjetmHOZYtoOAviabp0AOHP
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: B42551A000E
+X-Stat-Signature: wh5e3bjg1xj5jntyj3uzgpo3dzox6rox
+X-HE-Tag: 1762353242-449945
+X-HE-Meta: U2FsdGVkX1+kQwx3ChJ62aFPcEkeY+kA9zJtgjL7oHeInQq9xTZXdFfBfZoLrLtHH1u2LNSpjg60sFtcRXGGvn9S5eKqL1elrpVqD5bg5aMMDBtw5qi/j1pzK9NUAXikCmNGyLT6QNg7XTxr9WzUgji1f7uVu43tZq9M9UAagdtu2Kw16jTR11OX0qtul6yMmOtOba/UU4noQLI1Y/5G5NrsW2BCPey+tRvWvg68a1/C/x0FGwtRHT38lf6sb4ItGBQEtDrZILWrlG7cjaynZWPgIYCPnMg8qlAOzF26eJhtqNHWtTjbt0qyRvm7c5vQGlkUp+7MpDQ2SxDF4uywSxmM2V9DBPxENkRzmT6zYzwjGTJNkoEb6HLQifVVe1KvbRknJF59hUOcsD0oIbUyqF45z73zYDNQoppHIsrfnEu3CN9EdDNHftRC1S+2GRKiTJoO8EqtwyrPPaxQ8gt48a9EnMTnuOS2Q7pdxek+LKUy/KMKV9FFov9FESZ5LdWPpb6YbPK5WF4OoudI0NK6+wOZOz+7zSJbNKT9rBu6R7xm530a1ToWpYqbOZivR3GYoQMWsen4P3z0glmMKVC8BCKJVo00yqT2NkV3LYRitsFln9KUaAoZnJKqfsEzlpd1WyqPHcOAF+GO4tlz9wmm4xtEx/s7oIfLdomFnsAf92NTSHOVRDGMGdAuO1SyP3ggiZoeBDcibbMdUHa2DCCc7kprKYFqQK0YLYwbf4YlwM5qdJh87icRPc2jSQ49LmsARJFbYKp2pms0O2dzm8Rq/PGFJX5F3esFKYoKJhFZxk6iZkYegtYBj7RWxLhazgereVvxT80bx95ldwrnUEJsCYpcBkx0mggmVrr9TZLhIBlRCWpW8amwwgAX2jswmtHRJgxNEkIVPBvobfAhGVQfRLMKh6Oz4aipIvuG9xVeuINC/cF9mr+emKTlsoFlSq9yNVh8AcT0fx/4V059WiJ
+ tLa0d+aH
+ jliZKo8EFIHtopnQFT8dExtR+cawfg94rq3Gh1u2kKlavJJpKT0/cle8YL8RQAU6555gmRwe3thjjyuqKYORraf1rgqH2qGcjDTZwavQOdsEJL4kLycU4Oz/+KtH+c2wJ62c7B1SwEC9Z3eG4W4jjMsY3SsrTDuYyaRCHuXOVCIecS0+HRXs/WYdV8WquqRiAu2lQkx2FlnJOmH8ACmeLcMtRI7Pml8MrV+Lkt8hZfTlchgCkxYo5WbhYgiEQl3cmadLbKY4TRVh6x6Z1fHbLWJEOOSqIxYYtRUlNcsRpwLSbyHJbyNHM8xqpqoI8UbMxRd5WgRaXZ+W790ZIRKUqbP4i/w35FCttLZe6gYLaLyRiSPBbOCiOjAP8kSGOYozkrxYUtRmzBe7UznwCVTWSV7s190zq6pKTiSFqNLMQNfvs7UByo9dulx02wL2lg6YrvCt87ME9cQNtegY8sQ6g72OUt7tscli99jZWAL8oD1O5p6ZfuUcGeWIXGwerikT8Dja4
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,81 +153,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05.11.25 14:28, Pedro Demarchi Gomes wrote:
-> On Mon, Nov 03, 2025 at 06:00:08PM +0100, David Hildenbrand (Red Hat) wrote:
->> On 31.10.25 18:46, Pedro Demarchi Gomes wrote:
->>> This reverts commit e317a8d8b4f600fc7ec9725e26417030ee594f52 and changes
->>> function break_ksm_pmd_entry() to use folios.
->>>
->>> This reverts break_ksm() to use walk_page_range_vma() instead of
->>> folio_walk_start().
->>> This will make it easier to later modify break_ksm() to perform a proper
->>> range walk.
->>>
->>> Suggested-by: David Hildenbrand <david@redhat.com>
->>> Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
->>> ---
->>>    mm/ksm.c | 63 ++++++++++++++++++++++++++++++++++++++++++--------------
->>>    1 file changed, 47 insertions(+), 16 deletions(-)
->>>
->>> diff --git a/mm/ksm.c b/mm/ksm.c
->>> index 4f672f4f2140..922d2936e206 100644
->>> --- a/mm/ksm.c
->>> +++ b/mm/ksm.c
->>> @@ -607,6 +607,47 @@ static inline bool ksm_test_exit(struct mm_struct *mm)
->>>    	return atomic_read(&mm->mm_users) == 0;
->>>    }
->>> +static int break_ksm_pmd_entry(pmd_t *pmd, unsigned long addr, unsigned long next,
->>> +			struct mm_walk *walk)
->>> +{
->>> +	struct folio *folio = NULL;
->>> +	spinlock_t *ptl;
->>> +	pte_t *pte;
->>> +	pte_t ptent;
->>> +	int ret;
->>> +
->>> +	pte = pte_offset_map_lock(walk->mm, pmd, addr, &ptl);
->>> +	if (!pte)
->>> +		return 0;
->>> +	ptent = ptep_get(pte);
->>> +	if (pte_present(ptent)) {
->>> +		folio = vm_normal_folio(walk->vma, addr, ptent);
->>> +	} else if (!pte_none(ptent)) {
->>> +		swp_entry_t entry = pte_to_swp_entry(ptent);
->>> +
->>> +		/*
->>> +		 * As KSM pages remain KSM pages until freed, no need to wait
->>> +		 * here for migration to end.
->>> +		 */
->>> +		if (is_migration_entry(entry))
->>> +			folio = pfn_swap_entry_folio(entry);
->>> +	}
->>> +	/* return 1 if the page is an normal ksm page or KSM-placed zero page */
->>> +	ret = (folio && folio_test_ksm(folio)) || is_ksm_zero_pte(ptent);
->>
->> Staring again, we should really call is_ksm_zero_pte() only if we know the
->> folio is present.
->>
->> It's not super dangerous in the old code (because we would only look at
->> present an migration entries), but now you are making it possible to call it
->> on even more non-present ptes.
->>
-> 
-> IIUC vm_normal_folio will return NULL in the case of a ksm zero pte, so
-> we can not do
-> 	found = folio && (folio_test_ksm(folio) || is_ksm_zero_pte(pte))
-> because it will always be false for a ksm zero pte.
-> So we should do
-> 	found = (folio && folio_test_ksm(folio)) || (pte_present(ptent)
-> 		&& is_ksm_zero_pte(ptent));
-> since if the pte is present and is a zero pte we can guarantee that
-> the folio is present.
+I am still thinking about another approach, will write another email.
+But let me take a closer look at your patch.
 
-Yes exactly.
+First of all, can you split it? See below.
 
+On 08/21, Bernd Edlinger wrote:
+>
+> -static int de_thread(struct task_struct *tsk)
+> +static int de_thread(struct task_struct *tsk, struct linux_binprm *bprm)
+>  {
+>  	struct signal_struct *sig = tsk->signal;
+>  	struct sighand_struct *oldsighand = tsk->sighand;
+>  	spinlock_t *lock = &oldsighand->siglock;
+> +	struct task_struct *t;
+> +	bool unsafe_execve_in_progress = false;
+>
+>  	if (thread_group_empty(tsk))
+>  		goto no_thread_group;
+> @@ -932,6 +934,19 @@ static int de_thread(struct task_struct *tsk)
+>  	if (!thread_group_leader(tsk))
+>  		sig->notify_count--;
+>
+> +	for_other_threads(tsk, t) {
+> +		if (unlikely(t->ptrace)
+> +		    && (t != tsk->group_leader || !t->exit_state))
+> +			unsafe_execve_in_progress = true;
 
--- 
-Cheers
+you can add "break" into the "if ()" block...
 
-David
+But this is minor. Why do we need "bool unsafe_execve_in_progress" ?
+If this patch is correct, de_thread() can drop/reacquire cred_guard_mutex
+unconditionally.
+
+If you really think it makes sense, please make another patch with the
+changelog.
+
+I'd certainly prefer to avoid this boolean at least for the start. If nothing
+else to catch the potential problems earlier.
+
+> +	if (unlikely(unsafe_execve_in_progress)) {
+> +		spin_unlock_irq(lock);
+> +		sig->exec_bprm = bprm;
+> +		mutex_unlock(&sig->cred_guard_mutex);
+> +		spin_lock_irq(lock);
+
+I don't think spin_unlock_irq() + spin_lock_irq() makes any sense...
+
+> @@ -1114,13 +1139,31 @@ int begin_new_exec(struct linux_binprm * bprm)
+>  	 */
+>  	trace_sched_prepare_exec(current, bprm);
+>
+> +	/* If the binary is not readable then enforce mm->dumpable=0 */
+> +	would_dump(bprm, bprm->file);
+> +	if (bprm->have_execfd)
+> +		would_dump(bprm, bprm->executable);
+> +
+> +	/*
+> +	 * Figure out dumpability. Note that this checking only of current
+> +	 * is wrong, but userspace depends on it. This should be testing
+> +	 * bprm->secureexec instead.
+> +	 */
+> +	if (bprm->interp_flags & BINPRM_FLAGS_ENFORCE_NONDUMP ||
+> +	    is_dumpability_changed(current_cred(), bprm->cred) ||
+> +	    !(uid_eq(current_euid(), current_uid()) &&
+> +	      gid_eq(current_egid(), current_gid())))
+> +		set_dumpable(bprm->mm, suid_dumpable);
+> +	else
+> +		set_dumpable(bprm->mm, SUID_DUMP_USER);
+> +
+
+OK, we need to do this before de_thread() drops cred_guard_mutex.
+But imo this too should be done in a separate patch, the changelog should
+explain this change.
+
+> @@ -1361,6 +1387,11 @@ static int prepare_bprm_creds(struct linux_binprm *bprm)
+>  	if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+>  		return -ERESTARTNOINTR;
+>
+> +	if (unlikely(current->signal->exec_bprm)) {
+> +		mutex_unlock(&current->signal->cred_guard_mutex);
+> +		return -ERESTARTNOINTR;
+> +	}
+
+OK, if signal->exec_bprm != NULL, then current is already killed. But
+proc_pid_attr_write() and ptrace_traceme() do the same. So how about
+something like
+
+	int lock_current_cgm(void)
+	{
+		if (mutex_lock_interruptible(&current->signal->cred_guard_mutex))
+			return -ERESTARTNOINTR;
+
+		if (!current->signal->group_exec_task)
+			return 0;
+
+		WARN_ON(!fatal_signal_pending(current));
+		mutex_unlock(&current->signal->cred_guard_mutex);
+		return -ERESTARTNOINTR;
+	}
+
+?
+
+Note that it checks ->group_exec_task, not ->exec_bprm. So this change can
+come in a separate patch too, but I won't insist.
+
+> @@ -453,6 +454,28 @@ static int ptrace_attach(struct task_struct *task, long request,
+>  				return retval;
+>  		}
+>
+> +		if (unlikely(task == task->signal->group_exec_task)) {
+> +			retval = down_write_killable(&task->signal->exec_update_lock);
+> +			if (retval)
+> +				return retval;
+> +
+> +			scoped_guard (task_lock, task) {
+> +				struct linux_binprm *bprm = task->signal->exec_bprm;
+> +				const struct cred __rcu *old_cred = task->real_cred;
+> +				struct mm_struct *old_mm = task->mm;
+> +
+> +				rcu_assign_pointer(task->real_cred, bprm->cred);
+> +				task->mm = bprm->mm;
+> +				retval = __ptrace_may_access(task, PTRACE_MODE_ATTACH_REALCREDS);
+> +				rcu_assign_pointer(task->real_cred, old_cred);
+> +				task->mm = old_mm;
+> +			}
+
+This is the most problematic change which I can't review...
+
+Firstly, it changes task->mm/real_cred for __ptrace_may_access() and this
+looks dangerous to me.
+
+Say, current_is_single_threaded() called by another CLONE_VM process can
+miss group_exec_task and falsely return true. Probably not that bad, in
+this case old_mm should go away soon, but still...
+
+And I don't know if this can fool the users of task_cred_xxx/__task_cred
+somehow.
+
+Or. check_unsafe_exec() sets LSM_UNSAFE_PTRACE if ptrace. Is it safe to
+ptrace the execing task after that? I have no idea what the security hooks
+can do...
+
+Again, can't review this part.
+
+Oleg.
+
 
