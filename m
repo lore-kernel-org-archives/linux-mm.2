@@ -4,158 +4,174 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CCF45CCFA0D
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 14:42:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D49DCCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 15:05:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DA50F8E0003; Wed,  5 Nov 2025 09:42:31 -0500 (EST)
+	id 54AE88E0009; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7C3F8E0008; Wed,  5 Nov 2025 09:42:31 -0500 (EST)
+	id 522FF8E0008; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C97FB8E0003; Wed,  5 Nov 2025 09:42:31 -0500 (EST)
+	id 411A98E0009; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B87748E0003
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:42:31 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 661481A038D
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:42:31 +0000 (UTC)
-X-FDA: 84076819302.20.70B3780
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 6F60214001A
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 14:42:29 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dSGdSvgd;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	by kanga.kvack.org (Postfix) with ESMTP id 2E8D88E0008
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 10:04:59 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id C93E3C03E7
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:04:58 +0000 (UTC)
+X-FDA: 84076875876.01.7B7A0B4
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 0C5B840024
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 15:04:55 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762353749;
+	s=arc-20220608; t=1762355096;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=gCP0hsq/q40gFxNmjoVFcp0QbOx89aTWebuusBQgCaY=;
-	b=h0IF632H5zywTFqmMJlJNhlIylF8Ws1mJlRNRuWnkFTgCJyiiTW8+YcM1/dk2p9bQfJ/W2
-	KkzorFNAvUtt2intlpbg4S9/Y25S+kIKvKwdeVar0HxWt4MA36o7nVqlvCbSQHa2HNIwqK
-	REMb5DQpxhVSVCLfuZspS4X3SMqxwjg=
+	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
+	b=IEnOkeeeGAFX8XJgWLktYET4B1pLJMKHjUeyhAtm4tz7gZMnf+C9kZVRMsD2NAFB1R4TLp
+	CuaOationoyajwC9ONY45/X4LAHSYHl9ihgqYpgVkHKVjovaGZkgHNG5K7hM0FvErBqktZ
+	hLTarO0GP8P2UZEIWFMmlj8Gv2LtvL0=
 ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=dSGdSvgd;
-	spf=pass (imf09.hostedemail.com: domain of gourry@gourry.net designates 209.85.222.171 as permitted sender) smtp.mailfrom=gourry@gourry.net;
+	imf27.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fPHkWN3c;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=zlDOApGa;
+	spf=pass (imf27.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
 	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762353749; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762355096; a=rsa-sha256;
 	cv=none;
-	b=y4P20dtB7JfxaB02Wf3rDARAEP0rhvfqm6NAy9Erb4MnSwwaS4UFFgIWslIuNLc0sjAccf
-	aGWMboeH2kj7TjUFPLv6uki73MGhMi1fOCKLF3qvKDAgHjG+oXbcQLa+dJaRSVPPPE1/rb
-	n/2HevXHvraOP9hGcXNqx7Jq1ZaX24w=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8af121588d9so478622985a.2
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 06:42:29 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762353748; x=1762958548; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gCP0hsq/q40gFxNmjoVFcp0QbOx89aTWebuusBQgCaY=;
-        b=dSGdSvgdjZTBYxVK2oaGq8eFqB51VsuZ9x7rDIJoERpXtXqSMwCOXt1Tto0jYERCS1
-         ReeeW+GiGCjTW2kIu95NOhLdBDUwD+E1Shh423EgN5L1HDEBWzyIXGU42HnYsChA5IQH
-         CcVVbh+eetSrwFST2etNc/3e7K3/rTBxeOeOsH5+CLwqvMdDqckjFjQa0aH2OwTM2xCm
-         grgE1BrYBPr4FxKsja3MKP8RISDsKUSQXTLwVLT+0RthSfTDpQmgNPfHZqARruX50D4O
-         Vle1l3luO2lbLhQ2RT8LrFh+sbZxuB+dD8rbBDoPufH7AGZyU4oBkoHK5Qap93/3wbPG
-         iNMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762353748; x=1762958548;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gCP0hsq/q40gFxNmjoVFcp0QbOx89aTWebuusBQgCaY=;
-        b=H6XI9vbTMnqN46je2bvXlx3k/+Y1VpzLpIlN5+ud8Yyxz0PDF1c78d5nU5pnNt3EBd
-         6C11IfW2F4taCZsEnEFyP0BYjcMk+S5eg3AX7gqJNU0B1TKYQ3cmdS8Wi5eliWizaPNi
-         G2iZDv8XQ0bzYKITaoBhGg3T3GArm/3h3qd3JM15JtSBcV3sn7PqvIT67mfFPMtT/3T4
-         r8HoA/0qQimR1o2etH4PeYhz0sWPi42cFZTFP4vOm2EWvmaMc2zkOuRGEKVgl0c25Guv
-         tEztl26gnrzSY2cGEsHgmlpEF+g9/mlRFc6AjY5hOu2xxU+bof3Q8LVL+XYJ2RVy1Lys
-         NOOw==
-X-Forwarded-Encrypted: i=1; AJvYcCVdw0s7W386hW55T0bT6v3ijYx/wt7jWkc31z0ZABtK8kC7ku/mdMKc4uN/s/ZJPpjejk+y73z7AA==@kvack.org
-X-Gm-Message-State: AOJu0YzUmcqwUyz/264AekbKEguhOx3vx34jzYUMDT7RQJYL8t0aRil8
-	Hnw4oxOML1/ReK8m4E7HnAYM/lBNhB2pydFv3WqNNStfMazvex+H4u8eXJEb0OAKSE0=
-X-Gm-Gg: ASbGncsSWAHsmiKOC+qK5BpJE+edd9+7Z13d5Vi9WQp6i52KpodHV4WhPEb7L0bSTNl
-	7qY+xAudpnADkcUGh9arVMfhbTtx54cKqQoAZq4jUVpYAgNAYG4eb2VOPkYFl23fvOVSUS8EhFT
-	TJpPVq9yswwsx80Rw+OoCjoCvX+eBTmTA5yKCZPKqIvkyI3dvRVjRygqQEzxecqh77zhu8lz1ym
-	Q7oqB0u/NMIS0Woo8PO/p488EI+KrYtgn7zjbhGquoVE5EQX6uOdqel9aETzDi/JnrlMRoX89aj
-	SAhajapLsIqvsNEVTEJMFxTEdzyOD+bWblnGmZwbDsbKmHe3fE+Z8sg5n0OpVTK8LPc1RwKQyst
-	3DYfkgjTM5kRAWKFBAV+B5GGXg/+TKovbYF1Xfc1aXKaZOO1exbdH0Ry9sHHwZCciISgvCKT7Kl
-	dFiRrJO456lbLxZwMwkWe/yQ2xrz9Jbv1lh2iTXUA4Ek+0B67vvp3LlgGPSrxjDEO3Ir5buA==
-X-Google-Smtp-Source: AGHT+IFOPmymxkVWTStAmI1fSxsEHrX8n+cH3NR2hrKHNMeSwi6zTbwFsDY5mjtR5/Zbzi6pU1fUXg==
-X-Received: by 2002:a05:620a:4416:b0:8ab:4ada:9b2f with SMTP id af79cd13be357-8b220b7f441mr375892585a.56.1762353748298;
-        Wed, 05 Nov 2025 06:42:28 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b21fc36dbasm239867985a.19.2025.11.05.06.42.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 06:42:27 -0800 (PST)
-Date: Wed, 5 Nov 2025 09:42:24 -0500
-From: Gregory Price <gourry@gourry.net>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH 02/16] mm: introduce leaf entry type and use to simplify
- leaf entry logic
-Message-ID: <aQtiUPwhY5brDrna@gourry-fedora-PF4VCD3F>
-References: <cover.1762171281.git.lorenzo.stoakes@oracle.com>
- <2c75a316f1b91a502fad718de9b1bb151aafe717.1762171281.git.lorenzo.stoakes@oracle.com>
+	b=gHaqvuD+TWCXZEzAgsyqxtVpVmCJQt/H/R8uYomiXxho2fPlbmH6RTCXkXAf1Sv5Zrl1UG
+	D/pWPKHSwBqs1ZFYYIIWY3+SOd5aOB6Quy7klnMhqhrf5DTbBa0uEeB0UQA47BBUy8Stum
+	nv6cQJm80vs4adSQaf1fktoybvhy0/s=
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 524981F453;
+	Wed,  5 Nov 2025 15:04:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762355094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
+	b=fPHkWN3cohCt3Y9aKRf5dm54h1HsdlNwgieAXowMXSKEVQAV31WG9vqp5LNul3fcV8VosZ
+	xuufrMV4qZezZ1GOacDwpUxuDJKZLUgzoKNoxAhoolNkY93hYgFgbCMQICdUEkkuh+IGAB
+	snxdZ4N7OU1ji6kBsCIe+PLk+xRwEok=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762355094;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
+	b=zlDOApGaLytUOYBDPIikb5vi/8jstOehbTANXSGPR4wA1vCX7Q5L/ARIpWAD7RCT3Mb+0b
+	zwlX8tjLHn/UoyAw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762355094; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
+	b=fPHkWN3cohCt3Y9aKRf5dm54h1HsdlNwgieAXowMXSKEVQAV31WG9vqp5LNul3fcV8VosZ
+	xuufrMV4qZezZ1GOacDwpUxuDJKZLUgzoKNoxAhoolNkY93hYgFgbCMQICdUEkkuh+IGAB
+	snxdZ4N7OU1ji6kBsCIe+PLk+xRwEok=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762355094;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=1b2kqqfLNp7GE0vErHBCF/JiZ1v/mSHLXfSO46GI2vQ=;
+	b=zlDOApGaLytUOYBDPIikb5vi/8jstOehbTANXSGPR4wA1vCX7Q5L/ARIpWAD7RCT3Mb+0b
+	zwlX8tjLHn/UoyAw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 28038132DD;
+	Wed,  5 Nov 2025 15:04:54 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id yLH8CJZnC2kjcgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 15:04:54 +0000
+Message-ID: <1fff522d-1987-4dcc-a6a2-4406a22d3ec2@suse.cz>
+Date: Wed, 5 Nov 2025 16:04:53 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2c75a316f1b91a502fad718de9b1bb151aafe717.1762171281.git.lorenzo.stoakes@oracle.com>
-X-Rspamd-Queue-Id: 6F60214001A
-X-Stat-Signature: findnujdqbebdgcfqzm1bhsx8kn7nmjk
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/9] mempool: add mempool_{alloc,free}_bulk
+Content-Language: en-US
+To: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
+ Eric Biggers <ebiggers@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
+ linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+ linux-fscrypt@vger.kernel.org, linux-mm@kvack.org
+References: <20251031093517.1603379-1-hch@lst.de>
+ <20251031093517.1603379-4-hch@lst.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20251031093517.1603379-4-hch@lst.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 0C5B840024
+X-Stat-Signature: bqeth5zxpx49g1mmcg54ih7jg5eoh36t
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762353749-977984
-X-HE-Meta: U2FsdGVkX18a3ggwjAkuOXboX8WUx9DizuJ7LI1WQDWviLW9FUsBs+vWA0g2lrJ2x4rgKK3d3E7F0CIn2/o+zdkT43ad5yUsrx7Iah33QGI1gkobp+dH2OSylbOfsSBImJiWPSBBx6IcyBD4ar1NEAh/1G/gmX/3+sfy6TgFp61dDi8p8WNLK9bWfl6Zq7w4I5GWMjR5b0ArktN5HDhi9ElFbwKvTg3EcsFwiKX4J1CrGoD1kTPVr9PN6hj17HpwUdu/wygN4iX4rE4V8tpU7yHp9kPt1LqKKoEJP/sqL40WMFcFcVaFqsmMxC86++x7QSIuoftCq8bBEAA37g56+HV+Pzc3WvrT2r/DNEmdQ1GOSLatlO0sZ7iDC/VVk/gdwP41sYjHK4F053LhU9/aWMtZm1g1NlJaHg+mtYiLeTR1NA9er4m3VhaHnFU7Ksr8BBPMYgRn9G6gRRDuX+jT4tXG9XQnuJ6vwQFjPaKLeA/pUI9q4+aR1UkUobs0K4U0zXiq97D56hegY6RFuJ+1if5DkLInt0R9fmsjUzgSMlmWv0C6kkS3Vr0jaCSASPZjeCeYgqWM/4ly5DSY/1a25KzuP+bICUm8lWhtNzKSZ0dvVVpu1nu0qMxCx8TEm1qx4SRC46sUmIPq/XjFTrEOZL1gSPcc/JkRbrM+AQc7eCtnYMU0j/zIR9J4xYXYHd4pvOUgL5d9BFWtgLe8HT8PjWnElMe9znlWjdRs9fPZJZMrL12iHMOJkyuwZOrCbBuCnKnvJYFJRy9SvQoX/Cv9rXYn8q4JbIu5zR7RhdRYTH3QL6014tDVAf7H/l6xulTtJzvRKx/z/HoHFza3DxBRTVBrKa9WRPmNBuZggI9MxXH9gqvEgxv+9uz5ju/RX3d+e5XUUcUEIjkavem/nmcUaXSkMvgNDd7S7Zl+NKac7od0cMXLcM1BL3Gj8HHt/PynbGWsnNsj2NTGQOirzRo
- AJXXc6/y
- GaqKdkCBt58/5Iyd66izuIvv53DwTdaLbIEWPsOzEEuvS6RiaiPPEAJWH9kc6EfzNPwROy0xGQ3B2mZN+FeW61eGdkk7NVomvDxntV5QWSf5dVE3STz6YYDOhKS9UJKR5kQOm+4gPc/+jjXLmB2m0dpYvY9tPh8NvXxHiHKPIzd6uxQm6eaUjup90K7LWKBMd1D7H/DmlFfJqlbb5l49XvK3I7qjOYTdZD9e7z52jm88CwAEW1VWIrbFyKwmaTGLL3/8/sdqhYzrzakZcmm9i46m3UX9hrywhqhMqD8qzm6364ivU/7xE+1o5snXuqOWSlaC/ha1QLUnXKPflWN/zpA7Uo2II2RL/c9oEXBx/h3E+YoK23SQaAY5qSzI8srVsVxDkUETqorxTdQVgXbRtvKyfpA==
+X-HE-Tag: 1762355095-166812
+X-HE-Meta: U2FsdGVkX1/mOwpZP/913XrXKRTHI0DUHYNsr60mbpQulkUEZ6J9m45NJ7taHk5ibnqLmnt24uOCnWO9DBLM+lvXrQr53pEuYgVqB7yMc7brrMIVPgAR84wYnfNaFAQIaVGQ1Igx8JEFetQ3O0exLT38jebXiKBYbXybd4Hf4jvQ8xTMgIjGPwtOUPmHxtlXl1qz8noSfcYm20gPDxKOgM8C3QulEdflpJO5EhzEnrkV/YS1Y+cr14F1vA7kysOT9OC29k0o5dQ2QsX59WNf+wplEoGocQVBGib5qu3zG7TeqmV94Ga6Oyx6uDLLqRDp/dOHONyh086r7NUmGUZkwYYMQqrJ44oidz4MUdWRS4H0ND7jQgnNioAwoN1od0RSwBfSOQhoAymRw79dZM/w7mDDuKFwGjHft5Wr1fs4ck+UjV0hDkMufF3bjSaUFQpqsbiHS8ao3eBVQZItVBZeEgFYO5K1dDaGUem4heDGQmAjW7FSs1Lb+AdDM6WxukeOaMDTBPCY6dAjv0Gg2G5g901SAfax5f3nobcUVRnXcLbCLkSLWgcI0/pch9Z6bnhcWh59L/COxGF4waeD6xW1w7hy1ohRKrmqewbxH27Ql78arc4ZSte6GuRVCVQQJmWXQkByB/5qJhqglSVS6X/3aeH2XzG0YM0h2TOASCx3LrcxgVOsa7uI6L0mTu64YADWYgZJbhFn2mah0PIpR+t7wYnq2G+7eGcIV7sT8zWDRWIgrFqxl8khn3ZSGZGcJKAvyUAwlHGLv9nInFgao2ZhkOd2Fuzq8QASxMcd/INurCAtA/33021XnXaoplQFrQ2l+0AfOs45nON1Ig43/HUPqBuHLpP5rf/r69tO0EdeAI7u4LsJ93yWZY6CQfAAfG6BrBkoiJ6irYo0B53nbMlizTeIs6rbsnYWwFcgL+a0sCS+XPveKeKVvBlJ0v/kob7Yl+f5UrKWd+T6a3oZev7
+ mbLUBj0k
+ 1hmXHxo0nHtkdXcNHhY+ZERnRiTZfpcujXEUo/yL6iP/+afII7gdwgPHxQ0gVwXQq74+Y5p72s9G2eHZX6jvurH14uF54YFj7BX6A8ktSzOZHkWFh4lYbZyP0mglc37xxfuEY4s4kmoNnIXpNZQOVyrE2c2iRwhx1FH34TcrIodRGCgzS92Rd85Zh8mdda0lnlTMOHcurtrgpvGdgywB+JPuJUR0XMV92xr7CjLq9YPOorRObkV1WI7ghTWkI2AGSFaqnxgfZalWCvT/7bqoVYXS9PIpSEOS4BDF4AJETDwiVLyYk0Gk1Tqr51cje0Hiu+OJAODVbhY4RcYU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -164,35 +180,310 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 03, 2025 at 12:31:43PM +0000, Lorenzo Stoakes wrote:
-> +typedef swp_entry_t leaf_entry_t;
-> +
-> +#ifdef CONFIG_MMU
-> +
-> +/* Temporary until swp_entry_t eliminated. */
-> +#define LEAF_TYPE_SHIFT SWP_TYPE_SHIFT
-> +
-> +enum leaf_entry_type {
-> +	/* Fundamental types. */
-> +	LEAFENT_NONE,
-> +	LEAFENT_SWAP,
-> +	/* Migration types. */
-> +	LEAFENT_MIGRATION_READ,
-> +	LEAFENT_MIGRATION_READ_EXCLUSIVE,
-> +	LEAFENT_MIGRATION_WRITE,
-> +	/* Device types. */
-> +	LEAFENT_DEVICE_PRIVATE_READ,
-> +	LEAFENT_DEVICE_PRIVATE_WRITE,
-> +	LEAFENT_DEVICE_EXCLUSIVE,
-> +	/* H/W posion types. */
-> +	LEAFENT_HWPOISON,
-> +	/* Marker types. */
-> +	LEAFENT_MARKER,
-> +};
-> +
+On 10/31/25 10:34, Christoph Hellwig wrote:
+> Add a version of the mempool allocator that works for batch allocations
+> of multiple objects.  Calling mempool_alloc in a loop is not safe because
+> it could deadlock if multiple threads are performing such an allocation
+> at the same time.
+> 
+> As an extra benefit the interface is build so that the same array can be
+> used for alloc_pages_bulk / release_pages so that at least for page
+> backed mempools the fast path can use a nice batch optimization.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  include/linux/mempool.h |   7 ++
+>  mm/mempool.c            | 145 ++++++++++++++++++++++++++++------------
+>  2 files changed, 111 insertions(+), 41 deletions(-)
+> 
+> diff --git a/include/linux/mempool.h b/include/linux/mempool.h
+> index 34941a4b9026..486ed50776db 100644
+> --- a/include/linux/mempool.h
+> +++ b/include/linux/mempool.h
+> @@ -66,9 +66,16 @@ extern void mempool_destroy(mempool_t *pool);
+>  extern void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask) __malloc;
+>  #define mempool_alloc(...)						\
+>  	alloc_hooks(mempool_alloc_noprof(__VA_ARGS__))
+> +int mempool_alloc_bulk_noprof(mempool_t *pool, void **elem,
+> +		unsigned int count, gfp_t gfp_mask, unsigned long caller_ip);
+> +#define mempool_alloc_bulk(pool, elem, count, gfp_mask)			\
+> +	alloc_hooks(mempool_alloc_bulk_noprof(pool, elem, count, gfp_mask, \
+> +			_RET_IP_))
+>  
+>  extern void *mempool_alloc_preallocated(mempool_t *pool) __malloc;
+>  extern void mempool_free(void *element, mempool_t *pool);
+> +unsigned int mempool_free_bulk(mempool_t *pool, void **elem,
+> +		unsigned int count);
+>  
+>  /*
+>   * A mempool_alloc_t and mempool_free_t that get the memory from
+> diff --git a/mm/mempool.c b/mm/mempool.c
+> index 15581179c8b9..c980a0396986 100644
+> --- a/mm/mempool.c
+> +++ b/mm/mempool.c
+> @@ -381,23 +381,29 @@ int mempool_resize(mempool_t *pool, int new_min_nr)
+>  EXPORT_SYMBOL(mempool_resize);
+>  
+>  /**
+> - * mempool_alloc - allocate an element from a memory pool
+> + * mempool_alloc_bulk - allocate multiple elements from a memory pool
+>   * @pool:	pointer to the memory pool
+> + * @elem:	partially or fully populated elements array
+> + * @count:	size (in entries) of @elem
+>   * @gfp_mask:	GFP_* flags.
+>   *
+> + * Allocate elements for each slot in @elem that is non-%NULL.
+> + *
+>   * Note: This function only sleeps if the alloc_fn callback sleeps or returns
+>   * %NULL.  Using __GFP_ZERO is not supported.
+>   *
+> - * Return: pointer to the allocated element or %NULL on error. This function
+> - * never returns %NULL when @gfp_mask allows sleeping.
+> + * Return: 0 if successful, else -ENOMEM.  This function never returns -ENOMEM
+> + * when @gfp_mask allows sleeping.
+>   */
+> -void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+> +int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
+> +		unsigned int count, gfp_t gfp_mask, unsigned long caller_ip)
+>  {
+> -	void *element;
+>  	unsigned long flags;
+>  	wait_queue_entry_t wait;
+>  	gfp_t gfp_temp;
+> +	unsigned int i;
+>  
+> +	VM_WARN_ON_ONCE(count > pool->min_nr);
+>  	VM_WARN_ON_ONCE(gfp_mask & __GFP_ZERO);
+>  	might_alloc(gfp_mask);
+>  
+> @@ -407,20 +413,31 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  
+>  	gfp_temp = gfp_mask & ~(__GFP_DIRECT_RECLAIM|__GFP_IO);
+>  
+> +	i = 0;
+>  repeat_alloc:
+> -	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
+> -		pr_info("forcing mempool usage for pool %pS\n",
+> -				(void *)_RET_IP_);
+> -		element = NULL;
+> -	} else {
+> -		element = pool->alloc(gfp_temp, pool->pool_data);
+> -		if (likely(element != NULL))
+> -			return element;
+> +	for (; i < count; i++) {
+> +		if (!elem[i]) {
+> +			if (should_fail_ex(&fail_mempool_alloc, 1,
+> +					FAULT_NOWARN)) {
+> +				pr_info("forcing pool usage for pool %pS\n",
+> +					(void *)caller_ip);
+> +				goto use_pool;
+> +			}
 
-Have been browsing the patch set again, will get around a deeper review,
-but just wanted to say this is a thing of beauty :]
+Would it be enough to do this failure injection attempt once and not in
+every iteration?
 
-~Gregory
+> +			elem[i] = pool->alloc(gfp_temp, pool->pool_data);
+> +			if (unlikely(!elem[i]))
+> +				goto use_pool;
+> +		}
+>  	}
+>  
+> +	return 0;
+> +
+> +use_pool:
+>  	spin_lock_irqsave(&pool->lock, flags);
+> -	if (likely(pool->curr_nr)) {
+> -		element = remove_element(pool);
+> +	if (likely(pool->curr_nr >= count - i)) {
+> +		for (; i < count; i++) {
+> +			if (!elem[i])
+> +				elem[i] = remove_element(pool);
+> +		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+>  		/* paired with rmb in mempool_free(), read comment there */
+>  		smp_wmb();
+> @@ -428,8 +445,9 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  		 * Update the allocation stack trace as this is more useful
+>  		 * for debugging.
+>  		 */
+> -		kmemleak_update_trace(element);
+> -		return element;
+> +		for (i = 0; i < count; i++)
+> +			kmemleak_update_trace(elem[i]);
+> +		return 0;
+>  	}
+>  
+>  	/*
+> @@ -445,10 +463,12 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  	/* We must not sleep if !__GFP_DIRECT_RECLAIM */
+>  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+> -		return NULL;
+> +		if (i > 0)
+> +			mempool_free_bulk(pool, elem + i, count - i);
+
+I don't understand why we are trying to free from i to count and not from 0
+to i? Seems buggy, there will likely be NULLs which might go through
+add_element() which assumes they are not NULL.
+
+Assuming this is fixed we might still have confusing API. We might be
+freeing away elements that were already in the array when
+mempool_alloc_bulk() was called. OTOH the pool might be missing less than i
+elements and mempool_free_bulk() will not do anything with the rest.
+Anything beyond i is untouched. The caller has no idea what's in the array
+after getting this -ENOMEM. (alloc_pages_bulk() returns the number of pages
+there).
+Maybe it's acceptable (your usecase I think doesn't even add a caller that
+can't block), but needs documenting clearly.
+
+> +		return -ENOMEM;
+>  	}
+>  
+> -	/* Let's wait for someone else to return an element to @pool */
+> +	/* Let's wait for someone else to return elements to @pool */
+>  	init_wait(&wait);
+>  	prepare_to_wait(&pool->wait, &wait, TASK_UNINTERRUPTIBLE);
+
+So in theory callers waiting for many objects might wait indefinitely to
+find enough objects in the pool, while smaller callers succeed their
+allocations and deplete the pool. Mempools never provided some fair ordering
+of waiters, but this might make it worse deterministically instead of
+randomly. Guess it's not such a problem if all callers are comparable in
+number of objects.
+
+> @@ -463,6 +483,27 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+>  	finish_wait(&pool->wait, &wait);
+>  	goto repeat_alloc;
+>  }
+> +EXPORT_SYMBOL_GPL(mempool_alloc_bulk_noprof);
+> +
+> +/**
+> + * mempool_alloc - allocate an element from a memory pool
+> + * @pool:	pointer to the memory pool
+> + * @gfp_mask:	GFP_* flags.
+> + *
+> + * Note: This function only sleeps if the alloc_fn callback sleeps or returns
+> + * %NULL.  Using __GFP_ZERO is not supported.
+> + *
+> + * Return: pointer to the allocated element or %NULL on error. This function
+> + * never returns %NULL when @gfp_mask allows sleeping.
+> + */
+> +void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask)
+> +{
+> +	void *elem[1] = { };
+> +
+> +	if (mempool_alloc_bulk_noprof(pool, elem, 1, gfp_mask, _RET_IP_) < 0)
+> +		return NULL;
+> +	return elem[0];
+> +}
+>  EXPORT_SYMBOL(mempool_alloc_noprof);
+>  
+>  /**
+> @@ -502,21 +543,26 @@ void *mempool_alloc_preallocated(mempool_t *pool)
+>  EXPORT_SYMBOL(mempool_alloc_preallocated);
+>  
+>  /**
+> - * mempool_free - return an element to a mempool
+> - * @element:	pointer to element
+> + * mempool_free_bulk - return elements to a mempool
+>   * @pool:	pointer to the memory pool
+> + * @elem:	elements to return
+> + * @count:	number of elements to return
+>   *
+> - * Returns @elem to @pool if its needs replenishing, else free it using
+> - * the free_fn callback in @pool.
+> + * Returns elements from @elem to @pool if its needs replenishing and sets
+> + * their slot in @elem to NULL.  Other elements are left in @elem.
+> + *
+> + * Return: number of elements transferred to @pool.  Elements are always
+> + * transferred from the beginning of @elem, so the return value can be used as
+> + * an offset into @elem for the freeing the remaining elements in the caller.
+>   *
+>   * This function only sleeps if the free_fn callback sleeps.
+
+This part now only applies to mempool_free() ?
+
+>   */
+> -void mempool_free(void *element, mempool_t *pool)
+> +unsigned int mempool_free_bulk(struct mempool *pool, void **elem,
+> +		unsigned int count)
+>  {
+>  	unsigned long flags;
+> -
+> -	if (unlikely(element == NULL))
+> -		return;
+> +	bool added = false;
+> +	unsigned int freed = 0;
+>  
+>  	/*
+>  	 * Paired with the wmb in mempool_alloc().  The preceding read is
+> @@ -553,15 +599,11 @@ void mempool_free(void *element, mempool_t *pool)
+>  	 */
+>  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+> -		if (likely(pool->curr_nr < pool->min_nr)) {
+> -			add_element(pool, element);
+> -			spin_unlock_irqrestore(&pool->lock, flags);
+> -			if (wq_has_sleeper(&pool->wait))
+> -				wake_up(&pool->wait);
+> -			return;
+> +		while (pool->curr_nr < pool->min_nr && freed < count) {
+> +			add_element(pool, elem[freed++]);
+> +			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+> -	}
+>  
+>  	/*
+>  	 * Handle the min_nr = 0 edge case:
+> @@ -572,20 +614,41 @@ void mempool_free(void *element, mempool_t *pool)
+>  	 * allocation of element when both min_nr and curr_nr are 0, and
+>  	 * any active waiters are properly awakened.
+>  	 */
+> -	if (unlikely(pool->min_nr == 0 &&
+> +	} else if (unlikely(pool->min_nr == 0 &&
+>  		     READ_ONCE(pool->curr_nr) == 0)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		if (likely(pool->curr_nr == 0)) {
+> -			add_element(pool, element);
+> -			spin_unlock_irqrestore(&pool->lock, flags);
+> -			if (wq_has_sleeper(&pool->wait))
+> -				wake_up(&pool->wait);
+> -			return;
+> +			add_element(pool, elem[freed++]);
+> +			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+>  	}
+>  
+> -	pool->free(element, pool->pool_data);
+> +	if (unlikely(added) && wq_has_sleeper(&pool->wait))
+> +		wake_up(&pool->wait);
+> +
+> +	return freed;
+> +}
+> +EXPORT_SYMBOL_GPL(mempool_free_bulk);
+> +
+> +/**
+> + * mempool_free - return an element to the pool.
+> + * @element:	element to return
+> + * @pool:	pointer to the memory pool
+> + *
+> + * Returns @elem to @pool if its needs replenishing, else free it using
+> + * the free_fn callback in @pool.
+> + *
+> + * This function only sleeps if the free_fn callback sleeps.
+> + */
+> +void mempool_free(void *element, struct mempool *pool)
+> +{
+> +	if (likely(element)) {
+> +		void *elem[1] = { element };
+> +
+> +		if (!mempool_free_bulk(pool, elem, 1))
+> +			pool->free(element, pool->pool_data);
+> +	}
+>  }
+>  EXPORT_SYMBOL(mempool_free);
+>  
+
 
