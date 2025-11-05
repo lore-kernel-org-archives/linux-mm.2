@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93A40CCFA13
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:04:29 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0CE7BCCFA0D
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 21:04:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E20108E0010; Wed,  5 Nov 2025 16:04:28 -0500 (EST)
+	id 6CDA98E0012; Wed,  5 Nov 2025 16:04:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DF7C68E0002; Wed,  5 Nov 2025 16:04:28 -0500 (EST)
+	id 6A4F28E0002; Wed,  5 Nov 2025 16:04:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CE73C8E0010; Wed,  5 Nov 2025 16:04:28 -0500 (EST)
+	id 5BAE48E0012; Wed,  5 Nov 2025 16:04:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B7E0C8E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:04:28 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 55CBBB9AFD
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:04:28 +0000 (UTC)
-X-FDA: 84077781816.25.9DD374B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf21.hostedemail.com (Postfix) with ESMTP id A427F1C0012
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:04:26 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LTjEW+Lp;
-	spf=pass (imf21.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 491188E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 16:04:36 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4E2FB9B1A
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:04:35 +0000 (UTC)
+X-FDA: 84077782110.12.A0435B2
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 58465A000B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:04:34 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cyGGAVyE;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762376666;
+	s=arc-20220608; t=1762376674;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=7jsS0D1ZkHtkf2RkO8oWUbGdG/MMM9S/GrtgH5Fheqs=;
-	b=3+wFA9hidPuv3o8H1nobsJh28hf1yg0ORyJWa9MXlekhS5JPjr2v/OHctEO7yy5qcYdw4f
-	NpciRgNRFvh3TV1RWYCRwrHNfFD0/DuPMOTtR1XNi7vDeLjyeg7eHRSKKR8YVZTc5RTDjB
-	LX3AQjPFxEdbas6Y4rBfU5a8kE7EjL0=
+	bh=0U19jvwafjIOZHkrvh1p72wLiGgKTY6AYcVHnCGRHT8=;
+	b=wx7JuvDc5dcZyzppNu7SyNdgu6BWOi+2s1z8IhwIc9zvkWUycD4+NuKUCUtUNx4MiG9i3G
+	ufmhSKIAP8GE6gE16RPaMNpPsSwyt2BiMWTX4zXRnHT152RUzcY1qqxBKO09Yn/bhIbSU8
+	NzASOV/nsmAlKEFgBCZTg9tyNCXTkdo=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LTjEW+Lp;
-	spf=pass (imf21.hostedemail.com: domain of frederic@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=frederic@kernel.org;
+	imf25.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cyGGAVyE;
+	spf=pass (imf25.hostedemail.com: domain of frederic@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=frederic@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762376666; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762376674; a=rsa-sha256;
 	cv=none;
-	b=seAV7Yi1shrwcpAgKuXV3ILqozEerQx5VCbsR+1pNHZuiNvNFDi7lAGG6SjdAcGklXeHve
-	ZyPXQhBFU2PYVABS+pqVcDZJbjRb/sY8APl6OFsSiCnb2u6g+yneR5zfSR9h+fsCoZ7+Hg
-	TgQh6358qgulnVpsh5exTj0GYGc2rJE=
+	b=332MNCLuCci5iHkO1mhtSWF2UXgBPwFB8Bk3/3h+zx9Isv0Ev7jBG5TA7BsA9aH/wji0Tn
+	g4SsL+o71cJds5X8L6FHE5Vu6E9KQBzPUgk7jDdMtJjDMkcd6ZU4KuAl0Nq11DfKmA59Fp
+	GrJxRpIeeiRRbWXUGoUAZhgP3Pi4OVA=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BB333417B1;
+	by tor.source.kernel.org (Postfix) with ESMTP id B35AD60220;
+	Wed,  5 Nov 2025 21:04:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FFC7C4AF09;
 	Wed,  5 Nov 2025 21:04:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C864C116B1;
-	Wed,  5 Nov 2025 21:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762376665;
-	bh=QDY6OFwPCpaj5eQjhmw6Wwop/7HtBl8sFRDTAL/mseY=;
+	s=k20201202; t=1762376673;
+	bh=ApQa5R07ipGBiVCyA3EgObV++ftyWFoj/ra3rzP5dCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LTjEW+LpKe78Iwb5IpUCFicQk91WKrouEhNOVkCIWNJWT/IUfA+/1BuMRMTE/GSNf
-	 +H7F8egVjXkx/lSP96kC+SuuJLTGF/8XU6ILZHU9JyBzgy3HxvUFPliaEIO6h0Pw4Q
-	 NVPHhj8BuptnLIKmapcvKpE/aGeO4jSutNhuT0C4PABWjnpD9Q5cuNIdyWXg3giORC
-	 Fi9PFedNEfYKwdFXqkXdRc0iWC1GJiQi2RRoWyt+ov+H9uiPm/BOjklQPfkM6OtIbG
-	 I2NCBOxhuNhTQcrNQ8aEH7WXQtqQYaJPe3rmjJTxzn9fdSN39b2M5jDqPW6Yafqx0c
-	 MhWXAmuKuHXaw==
+	b=cyGGAVyEEtnTJleIGvRPvdX/Cc6KEP2KDLlXtGtmXgRrPqu8Hr6k4dV2PS4NZXG/b
+	 0TuJ9Xv9ZVXQWSh2Q5s5CnahVU/19PTlWf5bvziWhR6igHAhOvKcyNWxStp0IREsuQ
+	 dCvjHLJNUd14dOSieLUuFACfi9H0I3xpfHEEvQVGyxubT+iCI4qTrf+SBosWgX9JwY
+	 q8wUhQKNtbk77Gb5lvCUyYfdwPpF6f8ZJlnEwEOgiTX7YW4gUFPYiJIdvr5mvwbwxf
+	 m8/DbHKO9hBpJpzZlv5oT+4ck92P+ii+pCIyA06mlA6F7sTvBrnc5dZH921cfMjKM3
+	 ISpiuGCwxLlCw==
 From: Frederic Weisbecker <frederic@kernel.org>
 To: LKML <linux-kernel@vger.kernel.org>
 Cc: Frederic Weisbecker <frederic@kernel.org>,
@@ -101,22 +101,22 @@ Cc: Frederic Weisbecker <frederic@kernel.org>,
 	linux-mm@kvack.org,
 	linux-pci@vger.kernel.org,
 	netdev@vger.kernel.org
-Subject: [PATCH 03/31] memcg: Prepare to protect against concurrent isolated cpuset change
-Date: Wed,  5 Nov 2025 22:03:19 +0100
-Message-ID: <20251105210348.35256-4-frederic@kernel.org>
+Subject: [PATCH 04/31] mm: vmstat: Prepare to protect against concurrent isolated cpuset change
+Date: Wed,  5 Nov 2025 22:03:20 +0100
+Message-ID: <20251105210348.35256-5-frederic@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20251105210348.35256-1-frederic@kernel.org>
 References: <20251105210348.35256-1-frederic@kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: A427F1C0012
-X-Stat-Signature: m4yrfaaqnhpu61jin655uckomu87c84s
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 58465A000B
+X-Stat-Signature: 1edx8x69r64oj7cmg31w78a6s3sqcgka
 X-Rspam-User: 
-X-HE-Tag: 1762376666-4927
-X-HE-Meta: U2FsdGVkX19oPXe4V6F4rcSGN0Um/vDRjE788DnYRZGKMNWO9hFK/ugC6syI/l8QLjbW48X/GM1tr6M7LQMKk/1UNLEuKM5fZ+tGC9NsT9hgO36eLZBvQsKtCV2yqkPQCjw3fBRu+xYCKxnDYBqo2LTKx2dIVrnfHbADJILVFX/h1m8gucEaUjHf8Oqg3J8weAKAyLrzok8ai7NamZ2D+kRd2lWRMNspkrj5MZsGJrzSVVv9VzuuTibX496sHFDNvKwcvolMBcj84TlHEi+lQtr6SCn1SQM+uTxAN1McgvUoNPgcAgR2+HVvViSmezQyOUbbUkRC9RE7cT4IRUnYnc6Np5Spe6SJlNRbjsix2Ah8IXwVlBcAg7edoInEdLkPh60jQcy6NArAow+OF0/xiryZ155ojHhqRiUR7mFMeLpUn9fYyKi8M2BoLG7XMnvxjz88g/as61RE6QfcT7FuQDjmsONnEtq1WrCBsRAL+S8DepH/ovG3kiQRie5B5x7Jam4x9RH3hZe2SCCl8nJXN3LxaTWBQXQ88iyBd3cisgWRf3d3lzYQO011oLyTOzVhQIKK/Zod51fVBCn5QBBdlRbT+IivbW/INa45xp1CgAq2aTQZPfflJP7/Q8MmjGm/QrpGP6lkridereqslLUxhVa+OjQu00Mx08u+VBoFRIHdadKIu3yA9y1FW4DA2wWv9ebzO9+/U5LW28lC6wfjedBuXevaydtu0fNhX7/nhpXsaUml4zYliPD72klG6naSaflHVsTXvl/rIPy0kATURNBC+LQkUHG1c5gJ527c+g7uvvmFMT1ybooZrULiEb9e89u0WBP2xuQB9jt/Bd+7t9oRLCf5NhUSnY0RH+2STruFy7e4hukFt18qXZYAh5aoj+RCH39hgdyJpZFtdNs7g+cqlpnCrcFUC9XRk5Q9RZ0F+mgQu77/m3DkgMamfkeKE54dnuwOmETn+1JXzTr
- AzRgfsY6
- MSzAQoIwpWX/2ryzST0iqBGMEY3R4QmQnk947kdZTzDbKfT9dJxLA6UR/sOCzmzN3q5ibHrZIubsUZ3Leqtt8PqPdA94iRjuzycrw7b7BLKyVlceTXxldYCvLqGhIqhlAGaDygs9Cr3GIYUAeJv+2Ye6PlNHDEwuavspaVAI0cr8FkBj/xUoqWq/1z7yAjm/NyNzlE7geu44wDaKTXwWG7WsVLtSCy0LM50atS8vZc2zq9sDLQD8bjZXM9wQKP7jioIlwPQF0PzqSB+k=
+X-HE-Tag: 1762376674-257607
+X-HE-Meta: U2FsdGVkX18heSFZD8H/I/zU87APl3wKn8fQdUZ8QTEgcGX6aKXUA/NcHen7d/pUWf6/suUTEzDCxrIwiFMDF0R8HFNOyOSk4q4Sf/B5lE75LNVv621MQzFepGce1dpewhn28p7J++yFT7BuF9eojFWeFOE98LaxlHMGPQZ32wA2/vmWn/33i3i/7nFFjCDtup5rKv8MPohMehTWrqenyiORnRZXFM60Gp+qRYK8/hvNHVxxuKZi0J5g6KQlQJyB/6qylzO2SXeK2BSjaimG4y6a/aPpjiysFkb9VC37qjJLTd98y4y8pwDpbcy/EXolgZ3CYw4KgDC16teol4vb+0YCiha7tVRf19o2nY6v1Q19tzgTNPo5pJdpFTxtUO7InTnKaYx30IvLyDwl+W+LFDvWciEl/oO3Azvvf1qpw3Rv6+05FxMuYBvryzsMg0/nhhDVb/1kAF1+fynRQSPm68yrlG9RTdEa0hXk+Z6ZpWhq356tzuYmIytEfANnli476HLL1MUsQkBbmCH4xGhQ9+KVMlJmhlR/XR9iLwBHHigoEqlhJWJZpJPxDTzqW1sJU3B6vpMklSTKhB75golfxeRXiXgoeVTOixcd6z1IkYG9/jw/63PvTGOjTtMUk8YZZkn3+T74swMNLj3fB956kLhiBI9u/0Z6kw5bQMYpfBGrjGM3kfG1akTHxpCN8vyN7LkgaCen1JBfVw0aLyM5r2NssgYzpzjgdyoxdXJTM9Su2+kkRIKufj9xxhE1SEBA/i/XGCCzxh/Ql8adPJW1BycevIQBoutnHhHuebZ0w22PjhfNB5xuXa0jQi2xaMzfLy2Dl/Zam/GGmitTdhOEscJQUsj6cCtQ46xazbEAmAf86CvBwbnCMyfj9vow6hG5cemToJSiASQbhSPhIUUmpcKtBBm/tDI49MLT/EDnDPlJVbtBQlOJgXnzom5P6hSYOqjvfc9t8EUUun3Vuzw
+ 71GF/jUl
+ 0ChXG555cDE36vrMLkUbpmilgFfVIjJdYKkkZRqs5V9QVrUDm94voszu+c11byUs8b4veTZbA+USFy6QIVW/Zvpa0ZiYfxxJamnNuIWLRnLw1nMOK30KjS3pfy4PwKuB9TS67rwkR78jWZVL9EZO8wEpF3KsJwLzz3fzr1VHmccU9oZdTrYP3jX/pzpc9lvcH1iptsVYCFvMvZhYNAE8qdgbK54eCjbV0niQoDlOmyV6fPWAhMBTmmoWExrBjz4x6+anhRBoHQU78OTs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,60 +126,42 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 The HK_TYPE_DOMAIN housekeeping cpumask will soon be made modifiable at
-runtime. In order to synchronize against memcg workqueue to make sure
-that no asynchronous draining is pending or executing on a newly made
-isolated CPU, target and queue a drain work under the same RCU critical
-section.
+runtime. In order to synchronize against vmstat workqueue to make sure
+that no asynchronous vmstat work is pending or executing on a newly made
+isolated CPU, target and queue a vmstat work under the same RCU read
+side critical section.
 
-Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a memcg
+Whenever housekeeping will update the HK_TYPE_DOMAIN cpumask, a vmstat
 workqueue flush will also be issued in a further change to make sure
 that no work remains pending after a CPU has been made isolated.
 
 Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
 ---
- mm/memcontrol.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ mm/vmstat.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 4deda33625f4..1033e52ab6cf 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -1971,6 +1971,13 @@ static bool is_memcg_drain_needed(struct memcg_stock_pcp *stock,
- 	return flush;
- }
+diff --git a/mm/vmstat.c b/mm/vmstat.c
+index bb09c032eecf..7afb2981501f 100644
+--- a/mm/vmstat.c
++++ b/mm/vmstat.c
+@@ -2135,11 +2135,13 @@ static void vmstat_shepherd(struct work_struct *w)
+ 		 * infrastructure ever noticing. Skip regular flushing from vmstat_shepherd
+ 		 * for all isolated CPUs to avoid interference with the isolated workload.
+ 		 */
+-		if (cpu_is_isolated(cpu))
+-			continue;
++		scoped_guard(rcu) {
++			if (cpu_is_isolated(cpu))
++				continue;
  
-+static void schedule_drain_work(int cpu, struct work_struct *work)
-+{
-+	guard(rcu)();
-+	if (!cpu_is_isolated(cpu))
-+		schedule_work_on(cpu, work);
-+}
-+
- /*
-  * Drains all per-CPU charge caches for given root_memcg resp. subtree
-  * of the hierarchy under it.
-@@ -2000,8 +2007,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 				      &memcg_st->flags)) {
- 			if (cpu == curcpu)
- 				drain_local_memcg_stock(&memcg_st->work);
--			else if (!cpu_is_isolated(cpu))
--				schedule_work_on(cpu, &memcg_st->work);
-+			else
-+				schedule_drain_work(cpu, &memcg_st->work);
- 		}
+-		if (!delayed_work_pending(dw) && need_update(cpu))
+-			queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++			if (!delayed_work_pending(dw) && need_update(cpu))
++				queue_delayed_work_on(cpu, mm_percpu_wq, dw, 0);
++		}
  
- 		if (!test_bit(FLUSHING_CACHED_CHARGE, &obj_st->flags) &&
-@@ -2010,8 +2017,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg)
- 				      &obj_st->flags)) {
- 			if (cpu == curcpu)
- 				drain_local_obj_stock(&obj_st->work);
--			else if (!cpu_is_isolated(cpu))
--				schedule_work_on(cpu, &obj_st->work);
-+			else
-+				schedule_drain_work(cpu, &obj_st->work);
- 		}
+ 		cond_resched();
  	}
- 	migrate_enable();
 -- 
 2.51.0
 
