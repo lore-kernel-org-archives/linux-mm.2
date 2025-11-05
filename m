@@ -4,106 +4,135 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F342FCCFA07
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:05:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B13B0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 09:05:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F7178E0006; Wed,  5 Nov 2025 04:05:27 -0500 (EST)
+	id 11AB18E000D; Wed,  5 Nov 2025 04:05:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CE548E0002; Wed,  5 Nov 2025 04:05:27 -0500 (EST)
+	id 0A4558E000A; Wed,  5 Nov 2025 04:05:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E51B8E0006; Wed,  5 Nov 2025 04:05:27 -0500 (EST)
+	id E848A8E000A; Wed,  5 Nov 2025 04:05:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 1CAC88E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:05:27 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E069F8769B
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:26 +0000 (UTC)
-X-FDA: 84075969852.09.89CED6A
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 014231C0004
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:21 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	spf=pass (imf18.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762333525; a=rsa-sha256;
-	cv=none;
-	b=XVEyHFKWAgYy4uYS0uTXth3dJIBx3aoP+ZItA0MLxSZlyvJ5sDeZns9aRg4uzY4DelGAjK
-	gINsQ1/+v6W8PeESCcb7arEnVyb+532dFa/+G2tsf0y9VboySTbXIgA5XfNF9VPjwPt2NX
-	YqXaYXTpjXRAy21oM0St8TNQxLmi+aA=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=none;
+	by kanga.kvack.org (Postfix) with ESMTP id D75968E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:05:34 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A5AB612B561
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:34 +0000 (UTC)
+X-FDA: 84075970188.30.F2FF93B
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	by imf29.hostedemail.com (Postfix) with ESMTP id 45794120005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 09:05:32 +0000 (UTC)
+Authentication-Results: imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1uXJvNXZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k+qtCPEX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1uXJvNXZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k+qtCPEX;
 	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of libaokun@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=libaokun@huaweicloud.com
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762333532; a=rsa-sha256;
+	cv=none;
+	b=d69jF4P/WRGzrnIV0k7BCboRmR/j9JrAZqIUtsymsnOQYecltGJ92ymWJrQcs1DjtBiHH2
+	79ynQz61xk45Pev4LckyczNSrC4GrvO1Qc4pWkgKWZuDvQXP6bRZf68cFWagVbXFVFS5BH
+	wmfx0cZMeEe7J0ki1XfJXWJ/gd6YkLs=
+ARC-Authentication-Results: i=1;
+	imf29.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1uXJvNXZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k+qtCPEX;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=1uXJvNXZ;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=k+qtCPEX;
+	dmarc=none;
+	spf=pass (imf29.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762333525;
+	s=arc-20220608; t=1762333532;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references; bh=q1pURz/rWrwwv5hjnEVYEolJ0ngWWUoUVzmw1aF70+s=;
-	b=a2XGAk18a1HSCRgxm3pvp8PU3TIqZGgf7HT4aJyJXHSct/eyC554b7PZqD1170xAVbTgyr
-	hDaGA9FkGszvM+pOP1u116upQwBkDaAI9uDrSO8QnQGMwdobdIkdaDH4TjuSCFa3I0bmeo
-	aFZoODs9MGte4KZmaZVOol2M2XM9i5Y=
-Received: from mail.maildlp.com (unknown [172.19.93.142])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d1fXs0SswzYQvR8
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:05:01 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.75])
-	by mail.maildlp.com (Postfix) with ESMTP id 7EA061A07BB
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 17:05:17 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.50.87.129])
-	by APP2 (Coremail) with SMTP id Syh0CgBXrUVLEwtpFrQbCw--.12398S4;
-	Wed, 05 Nov 2025 17:05:16 +0800 (CST)
-From: libaokun@huaweicloud.com
-To: linux-mm@kvack.org
-Cc: akpm@linux-foundation.org,
-	vbabka@suse.cz,
-	surenb@google.com,
-	mhocko@suse.com,
-	jackmanb@google.com,
-	hannes@cmpxchg.org,
-	ziy@nvidia.com,
-	willy@infradead.org,
-	shakeel.butt@linux.dev,
-	jack@suse.cz,
-	yi.zhang@huawei.com,
-	yangerkun@huawei.com,
-	libaokun1@huawei.com,
-	libaokun@huaweicloud.com
-Subject: [PATCH v2] mm/page_alloc: don't warn about large allocations with __GFP_NOFAIL
-Date: Wed,  5 Nov 2025 16:56:52 +0800
-Message-Id: <20251105085652.4081123-1-libaokun@huaweicloud.com>
-X-Mailer: git-send-email 2.39.2
+	 references:dkim-signature; bh=s7exJ7wPrvcdkgXiFEjvbZXYLs/HVJlgsx8rLBAN5tA=;
+	b=Wssr5UcJci0Uhl6+XnAMYiiOlrg99cGlwH7G5+jzYGvjNNC5yf6VdFZ5p186klUtpAyRGS
+	PByNAo6vvcQJDRKcJs12o4MyNfcRHwipK2fnyxVsp9CwEg+T3tUWbiafe3ycWelRt7m7Qi
+	ex0NEjCXdyjEBr88G1Nks/kTzquUZKo=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 93B981F451;
+	Wed,  5 Nov 2025 09:05:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762333530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s7exJ7wPrvcdkgXiFEjvbZXYLs/HVJlgsx8rLBAN5tA=;
+	b=1uXJvNXZ0oeWJolUamZsclQYWLhgjDV2VIcl2AbOW1bAUFeGvdxMpEVBuNcw4NTnuvG3Aa
+	RhKnLdmaTkC4ixvPeVjbewnh9hT25WTqG8WZ1JfvPljMRZeUoPUty2LqHMT0WHor9+R26P
+	jkTNLr8+2bVcEk/tU0+/zSgC8wKF9Ig=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762333530;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s7exJ7wPrvcdkgXiFEjvbZXYLs/HVJlgsx8rLBAN5tA=;
+	b=k+qtCPEXLrLalvmr4cJJ973ilPbmBHT5tcP6DvcOr1rLdx5y8YfS3QXNGkh9OqHuzFvUCe
+	zoE+w0eay0C+A+Aw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762333530; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s7exJ7wPrvcdkgXiFEjvbZXYLs/HVJlgsx8rLBAN5tA=;
+	b=1uXJvNXZ0oeWJolUamZsclQYWLhgjDV2VIcl2AbOW1bAUFeGvdxMpEVBuNcw4NTnuvG3Aa
+	RhKnLdmaTkC4ixvPeVjbewnh9hT25WTqG8WZ1JfvPljMRZeUoPUty2LqHMT0WHor9+R26P
+	jkTNLr8+2bVcEk/tU0+/zSgC8wKF9Ig=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762333530;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s7exJ7wPrvcdkgXiFEjvbZXYLs/HVJlgsx8rLBAN5tA=;
+	b=k+qtCPEXLrLalvmr4cJJ973ilPbmBHT5tcP6DvcOr1rLdx5y8YfS3QXNGkh9OqHuzFvUCe
+	zoE+w0eay0C+A+Aw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6EBB8132DD;
+	Wed,  5 Nov 2025 09:05:30 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id tOG2GloTC2lSBAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Wed, 05 Nov 2025 09:05:30 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Subject: [PATCH 0/5] slab: preparatory cleanups before adding sheaves to
+ all caches
+Date: Wed, 05 Nov 2025 10:05:28 +0100
+Message-Id: <20251105-sheaves-cleanups-v1-0-b8218e1ac7ef@suse.cz>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Syh0CgBXrUVLEwtpFrQbCw--.12398S4
-X-Coremail-Antispam: 1UD129KBjvJXoWxXw17Gr45CF17ZFyxKw47XFb_yoW5Jw1kpF
-	WxCrn7XFyjqF18uanrCa17AFy5Gw4rJFW7Wr9ag34rZF43Aa429r129r4YvF18AF95CFyk
-	trs3ZrnFy3s8Z3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUB014x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
-	2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r4UJVWxJr1lOx8S6xCaFVCjc4AY6r
-	1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02
-	628vn2kIc2xKxwAKzVCY07xG64k0F24lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64
-	vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8G
-	jcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2I
-	x0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE42xK
-	8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I
-	0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUoeHqDUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgADBWkJ0jBqqAAAsE
-X-Rspamd-Queue-Id: 014231C0004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: j95rpdcowa7o6xpwsodwj1ciizjuoq69
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFgTC2kC/x3MTQqAIBBA4avErBM0sr+rRAvRsQbCwiEJxLsnL
+ b/FexkYIyHD0mSImIjpChWqbcAeJuwoyFVDJzutlNSCDzQJWdgTTXhuFrqfvB9GJ+fZQc3uiJ7
+ ef7lupXzrHx/cYgAAAA==
+X-Change-ID: 20251105-sheaves-cleanups-548ff67d099d
+To: Andrew Morton <akpm@linux-foundation.org>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+ Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, 
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, bpf@vger.kernel.org, 
+ kasan-dev@googlegroups.com, Vlastimil Babka <vbabka@suse.cz>
+Cc: Alexander Potapenko <glider@google.com>, Marco Elver <elver@google.com>, 
+ Dmitry Vyukov <dvyukov@google.com>
+X-Mailer: b4 0.14.3
+X-Rspamd-Action: no action
 X-Rspam-User: 
-X-HE-Tag: 1762333521-787525
-X-HE-Meta: U2FsdGVkX1+NCQBTpXTCqEJ7rNSTtJ1h8DueenUT0w1m7eTJvY+BLea3yNHL4B3thZ6m5l04Y/UJLFoGDQusSagOjjp25w2Ed3/cIR75bd7I7vJ9A1fDFgbN1IHDhO2HS0KKVCt7KFig39i29nHcs8DtX1GmuUAWy5uiiT0wO8CqGXasJ4tPMA1hSI3h3dDx3icxij/8l08qi5FCkdgxvGyJ5d0uESyHAgS8mxu65xYTE8K2NMCYSnIIyjBbiEGjMvj/op+nbIyyVZQcA59fW1FI3EgyMlXLbUVU+Ur1d05ca3r0UHmUbWI8VHlE2RuhQz12nafcAWY/jO9Er7bM5B9mMvibzgo5yKt6t6rukHVG1XxX1mX5DW/Xgudw7wPtFCsYWzhT7EQrL25t6DTTnH2J7jMCrkWSdsoSs8ho3PTPDEYsIydkJm4jzf8gqDy1FQ744uuK1pWTHvhWj4+lBqJclCJ7OGMiUJ05SDO6Wt+6bK3sr4mPf+8D6z6LDdngXZ3qWyS4MA0zGt1HQGjUwDGxhiGDjYOixWtgHiv8tNr1D6fLxqB5bu3KOpcNw3RblRG9RqakJH5wONkYTaS1qqDvbohMcmwKdkrFEI5PJLBTdju+sOhy9JKVqjprWNW7KmufN6WSlHcqs91mo+bK3xBJ9QNTZ1OIBBneV8keJjlyyDoLQwJR+xIXby8XwtVCtJCHlZgPQk8XK/OW6qpHjkDo4X8F55ilAqIl+5z8gXNFAQ8OC0VdhQqRVi0a8nRlbtUmurUJhWKfp8FjdgG/hsS9UdMlJW67FIwndaUfoK3cDMuCmo//QdxOaKv899STcMMPuHFyzIuJF8qok0EBHK3ztAyi0YVcQqSyub0FN+tbqHdY/9xQSVTsGUFO/8GdlIQmWDdJy+Wn7WLqzja+rzEc7nSxSEAaVUS5bbMpAejnDUDX5sU1Jh0ixYLWj575GQ283nJIPkNZedttM28
- QJ+4+QfZ
- yv0m1iokiDQ7FT/REDiVTBuOZNKpHw5rCQCenDTp+1IwX/CDIAIVT9+NwXS0YsZ7j+ySTDfxypafLHkfWbEk62qLBg1WrBz/Aa0geIcIacWg5f6MRAGK87MNwFGbyCE84oXzC62vyYaIRC6QEOkbfEn+8kPrSS8TkZOYdiHSOAxp+i0Ng5lD7a/JGGsXabHyRJTpCsJId37vzEQcxBYlHLTQ4oGLownlayhQTqhLyAuarqzmM79Eh+JieIRS3T1P33xYDGlG+LBomlRsf5LY6lEjtzau8z7Won62w3rVwf4wQIJeARQ87xpq3/r3buON/0y+5N8XmxgpSNnMbNWSccdbHbA==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 45794120005
+X-Stat-Signature: iktmsedpmcges87cdq6faazamcmtpq99
+X-HE-Tag: 1762333532-523791
+X-HE-Meta: U2FsdGVkX19hGFytEQH5xW2gdEsn9JkZ2fC5YYkMjqPLhQM9SXFd48LB8bBTazyVVCz/k7hPpz+4yD64QiH1lBJtbd2BkAy+KOMSHUgNqKBEqIe5CZshFrpXdsOUBiAdIQJ+8ZpaclE76/oqhK5lPeAiiyqCYqlNmhLiml1yi7w+PtziE9R9R9jUdYFli5tIYc0r0QWR2I/8hVRtipr72pQOLf7t+uo0MAyC5Oqj2wU7SwUL349CmupdAcdp61yHpZodEDu03HAJSFkp+f7uk0ze7wEfbhwiuJ41GiuAl0twAtjJdL9j+YdXoCz6v1d9So8AR6RaT/VpUTHnGVz/WO0HjBFE2vKN+R2Xq30MUBmUmaKTe6N0vSmlw3Sx12TXw0SjrdU+u151zIHIX/vjE+3/JQOVshvE3iMJv23whaY9PiRNkTYwo1cLaNZq+7u3mVjS8ygW/jDay2njVAZ7S/BnwkomePVoNRDehKOHjwlNfRS74Btovnhrw+POu5go+G0lJ9BykM6KZztyyMxgnNsq/MHcAnB3ocn/gZob4fEBb3f5kOVjaT6c3f07u+Ngu+obeXj7L+f3rikJgLxA5Pdj8U4PjoL62N9puQW7bwducBMPZBbM+jXwjMCu1ESwB7/tQb1kAWtV5Q8jaDy2ottZ6m3vrPoZvM2o7n97B8g4YlHrH1cvYdRyT1oeSFPVSjmpKz8iH6Eg2TKktX/nBv1fRQ8PpE5h0SfzTBpgTqCgJ87oA71+jRAbWEfkFzDvQ408r+2TMJiZPbFX8Dz26ujGGGM92DJzN753YLuFD7cn7hEjx3bt7wliKiXrOE/QhjZZNat6bXvyyKZEy77wCUZlaYW8XVpJbjNzEQOmHQqqtk4qb0y7Xvz2UYz6+v8zxnjioS8hQ2F6bYv2Hj8BhCdAmH++qv7yelJGr9P7a7F6c4+2DFsk5+TG+UjPwmvoVVEG320LLqDw5ViI35z
+ RnG2x7vG
+ gNStWOj0sv5MWD/Fbcch/Lsj4+lPhIlfDoDGlIEwDlgW4KdP8OezYxF98+koEVBbUQ+5Nq83Pg+r/wLu/tjTwW7vNPZOpaoH90P3yQUQYPR7Nx4I24qvK4Ms5iynbazqCcYcl+ZHdbJTO/9Imrkn4bASDuByvcTkOwAP4Kr76HfJVGXpmBHbXbZyIAZJ+jSAU2Da71Rrd5prhtQbX2gufqk1RWdVFdnk1BSLPnwN5ZWo3PzQixm3qVSwmy9qzuolv1flAZ3SgbX0znJw3EcCQ1xvfP9aBUOcoOWstqvZLx8IuclB7OlordRDsrS8+8HWWQri7uiUR2d9pS4fe6QMFETM6G0mVGpjL3zPAG4IurfJwzAhrI3pDaU50wQNSwjvb0AbdZ801Mjdc4Mk=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,63 +141,37 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Baokun Li <libaokun1@huawei.com>
+These patches are separated from the RFC [1] since that needs more work
+and 6.19 would be unrelistic for the whole series at this point. This
+subset should be safe to land, improve the codebase on its own and make
+the followup smaller.
 
-Filesystems use __GFP_NOFAIL to allocate block-sized folios for metadata
-reads at critical points, since they cannot afford to go read-only,
-shut down, or enter an inconsistent state due to memory pressure.
+Patch "slab: make __slab_free() more clear" is a new one based on review
+of one of the RFC patches where __slab_free() was found rather tricky.
 
-Currently, attempting to allocate page units greater than order-1 with
-the __GFP_NOFAIL flag triggers a WARN_ON() in __alloc_pages_slowpath().
-However, filesystems supporting large block sizes (blocksize > PAGE_SIZE)
-can easily require allocations larger than order-1.
+Git branch: https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/sheaves-cleanups
 
-As Matthew Wilcox noted in [1], if we have a filesystem with 64KiB sectors,
-there will be many clean folios in the page cache that are 64KiB or larger.
-He also explained in [2] why kvmalloc isn’t a valid approach here.
+[1] https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
 
-With gfp flags and order already included in the OOM report, both
-Vlastimil Babka and Michal Hocko suggested that we can take the risk of
-removing this warning first and then observe whether a large number of
-related OOM reports appear.
-
-If that happens, we can consider adding special handling in other places.
-
-Suggested-by: Matthew Wilcox <willy@infradead.org>
-Link: https://lore.kernel.org/all/aQPX1-XWQjKaMTZB@casper.infradead.org [1]
-Link: https://lore.kernel.org/all/aQTHMI3t5mNXp0M1@casper.infradead.org [2]
-Suggested-by: Vlastimil Babka <vbabka@suse.cz>
-Link: https://lore.kernel.org/all/188a95ba-6384-4319-bb74-c0d9ec6c4079@suse.cz
-Suggested-by: Michal Hocko <mhocko@suse.com>
-Link: https://lore.kernel.org/all/aQotQBjnDDeL_wHx@tiehlicka
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 ---
+Vlastimil Babka (5):
+      slab: make __slab_free() more clear
+      slab: move kfence_alloc() out of internal bulk alloc
+      slab: handle pfmemalloc slabs properly with sheaves
+      slub: remove CONFIG_SLUB_TINY specific code paths
+      slab: prevent recursive kmalloc() in alloc_empty_sheaf()
 
-RFC: https://lore.kernel.org/all/20251031061350.2052509-1-libaokun@huaweicloud.com
-v1: https://lore.kernel.org/all/20251105074106.3508870-1-libaokun@huaweicloud.com
+ include/linux/gfp_types.h |   6 -
+ mm/slab.h                 |   2 -
+ mm/slub.c                 | 318 ++++++++++++++++++++++++----------------------
+ 3 files changed, 166 insertions(+), 160 deletions(-)
+---
+base-commit: 136fe0cba6aca506f116f7cbd41ce1891d17fa85
+change-id: 20251105-sheaves-cleanups-548ff67d099d
 
- mm/page_alloc.c | 5 -----
- 1 file changed, 5 deletions(-)
-
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index fb91c566327c..e4efda1158b2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -4683,11 +4683,6 @@ __alloc_pages_slowpath(gfp_t gfp_mask, unsigned int order,
- 	int reserve_flags;
- 
- 	if (unlikely(nofail)) {
--		/*
--		 * We most definitely don't want callers attempting to
--		 * allocate greater than order-1 page units with __GFP_NOFAIL.
--		 */
--		WARN_ON_ONCE(order > 1);
- 		/*
- 		 * Also we don't support __GFP_NOFAIL without __GFP_DIRECT_RECLAIM,
- 		 * otherwise, we may result in lockup.
+Best regards,
 -- 
-2.39.2
+Vlastimil Babka <vbabka@suse.cz>
 
 
