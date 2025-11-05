@@ -4,99 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20042CCFA04
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:05:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 364E8CCF9F8
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 06:08:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 80D028E0007; Wed,  5 Nov 2025 01:05:02 -0500 (EST)
+	id 68E998E0009; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7EB828E0002; Wed,  5 Nov 2025 01:05:02 -0500 (EST)
+	id 63F418E0002; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 721D58E0007; Wed,  5 Nov 2025 01:05:02 -0500 (EST)
+	id 52E548E0009; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 60F238E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:05:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id E9A181601C6
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:05:01 +0000 (UTC)
-X-FDA: 84075515202.12.815FB04
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf04.hostedemail.com (Postfix) with ESMTP id EBE9940009
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:04:59 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iCF1Vtct;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 3E7F18E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 01:08:27 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CFC2E1DF37F
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:08:26 +0000 (UTC)
+X-FDA: 84075523812.29.3B680F7
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+	by imf13.hostedemail.com (Postfix) with ESMTP id D04ED20005
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:08:24 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=EBq9KbBN;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	spf=pass (imf13.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762322700;
+	s=arc-20220608; t=1762322905;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=R+vZkqzUXWYtHnpeP/k+Z0CU35hYTztl88Oxvz+vJuQ=;
-	b=tzvBK/4/ANVTk9iwiCP5EUuMKu/8lN36bmSaJWJ6mS4YmgvxPQpYgTIDDwDQwO0F3TUx9J
-	rK4DKnHzPLmupZ3B4PqiXR7OHk4W79jzzmhQpy11zZTr31MBb+4WAeMPDaOjFmh7JQBk4A
-	D2zcVqqryqZYhtxTMTnC/agjZSNtrDw=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=iCF1Vtct;
-	spf=pass (imf04.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762322700; a=rsa-sha256;
+	bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
+	b=nmbcVFVn3Y/+x/gS4mZyNc+AaRWbmvnmqlsYP7UuwRFSiZ37eH4B9O0tSoxQOF9m5mv6S7
+	hGPIwDatUvIEQ8Y0NlfED4Agd0475s3RKwIYNPbImmmyFOm3OC6VTNeHtJPDZRYhjS/XUm
+	fHNDsjJPBa5yEVFVYlNj2sSt3UTnQoo=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762322905; a=rsa-sha256;
 	cv=none;
-	b=XHistwrhCoCuJbZAh5cr52I5AxGof6UAYXy9+Dvmrx7lsWHBc/4QROA++0Xo+XgOpeHQfn
-	D6oqZGFXUZHP/8PU/GgsuVBB85x8OcRzCd1FonnDAdC3dI2yGgT3juVI8KhPFCMU1mtO2/
-	Z6hFrzYV+Dq8oQlsrTlB1lWhMiCXDbc=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id A85A9437CF
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:04:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C11C116B1
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 06:04:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762322698;
-	bh=qRgNido8bfZD7nMso/A3h7JMhBGZS91Mw3fIybZMRmw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=iCF1Vtctc0yn5NV1dP8oUdao7FXc2iy+M4bp89sQLJa1z+e7kouQp6OcfPiCPlRmo
-	 QIhCPxq9bwI1/ptnhCmJL05AlLnuit7xYXukQCyl5u0jAvg1YiGnknD1eD1Kuftlie
-	 3x8rnjKdHTaJOERVNqq6LUO3YiVdgqMJzEg1Es+S8g9XLUJ8u7TgGGRYHk/vldBicV
-	 bf/thobxOmE8DKILY1AXEbK9po+k3PAWGJpLlIAhPJ8NL8MXogQanNNP8AlPuPFoqY
-	 rW/ELLA5AfR1EujT0S3+WaLj4ffsrvni8HXd9Tah9qKnVbgyiD0WL8FfvA6yLJpJSm
-	 OlQQJAdCbjOtA==
-Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-7815092cd0bso83922477b3.2
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 22:04:58 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVV9osgfBI8m5y7YwFqr3zvG++mItMXs/0Nonq+lRyt+rrjxuGim8oLaSKREaYeNTloHJHe36rv0g==@kvack.org
-X-Gm-Message-State: AOJu0YyfQl7HwEXBxMTm5V51sp2zIqWjY0ia+JZD8+tLEA4jedQhugcZ
-	LzG3zt6DR8IgULfu7HvFb+6Yp2pzu9aw3EAOXUYBKO3e3eU+NBj7K9PNQfIL+JwuP3SiGAbL3vm
-	Tl7LKLisaKtDgY9/NGtGe0fsY3EqPHYOPrfXS3ulzgQ==
-X-Google-Smtp-Source: AGHT+IG8dz3srAIRa1tKabx/AJFYse+7OvqF5RE7dk/QbfEj6NpQPFYcvgaRADoRNca0pb71n/sMJYoiQv8Hhs1ToVM=
-X-Received: by 2002:a05:690c:a0aa:20b0:786:7f50:f41 with SMTP id
- 00721157ae682-786a413a3f9mr32343147b3.22.1762322697856; Tue, 04 Nov 2025
- 22:04:57 -0800 (PST)
+	b=J+jUbvS319Z1qXNM30wxf2B5GT3NwEeMdMnYrU9uVodJ28tFIyGpzhiKV8cx4YIoBRxiW+
+	qYpPPiEglDbljS7rzeoehTG53R0l46orgFqSFFggc5OuZ3Cddd26WunQPdngKRBzZhpy+p
+	ouzjobCJ/HJtYqxSRI9vpZIr+KEPcNg=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=pass header.d=shopee.com header.s=shopee.com header.b=EBq9KbBN;
+	dmarc=pass (policy=reject) header.from=shopee.com;
+	spf=pass (imf13.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.167.48 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-59445ee9738so10343e87.3
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 22:08:24 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shopee.com; s=shopee.com; t=1762322903; x=1762927703; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
+        b=EBq9KbBNQPlBT+7w79LcUf30Crn45gA7ThKtY/uAnmUJ0jy8pgW/AYqabm4fbVGzKs
+         ZFqA1n02HWYONjUaKZIGZ5CHKd3mLp62GRMO4PGBwdO+qEtDURpMcL03oCkr/F4AGK4m
+         ytJOi356ZivSJG9Mw+xZzOFV4550Bi2MEQpr4BMCk38Vo8o+EsZMjmIglVdN888o1pX7
+         +NgX6RiVOXVZMRyrAKuInyyWKqBi61RECtxdzFF1plX3jS9zScYkJJA6HxhwW70jjt60
+         jirZoGDVYY9urBdbbuVHLZypBKYv4bENNFT1els5tg1/DgDRdMiMGdA7kE3eiydjptal
+         xURQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762322903; x=1762927703;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ko+h2HHqIfyVkiIdgqbGuzIvxFEpCvepvxTD0kgHwio=;
+        b=ZROmra0Xb4zOwgMLJVlLfTDavTQNph6AO+hLNrv3Wm9cYrtPKtkaI+Hf8+wPITEzOv
+         b3RLiIPMdtQccizUh/7jG15FEgDQt4WWn+/HLje2asEM/uKvmLBbFhmAa5F+0J5PvA0N
+         pCvWVJEPm0L6k46J/052Z1EkMnKFLc5HlO5JktbfDHpmr7AFGKWbysR7KyS6H1OvqOL4
+         Na3y1oC7ehd8q4AIlBmWxRjw5D24wEiV7yWUs4pOw9UjJ+8/cyYmi+Fp6ECw6/H5uMvw
+         SNfNtC37cVW0TF+XshQPBOpRYbaAmFIYi1PTgGkwrMm28p+FjQsASBESFudaTFllhWkm
+         t13A==
+X-Gm-Message-State: AOJu0YxGcDqLHOf6aH7X73EOGm+RknxF/5oebRhaHWVZJcK0eY7wjcWA
+	ZwS1jmtmh4efn+/ZgVULOSOplPXRjL8Wi/MlQNb1qEaM6DMgTjTqhVmpkEOPghkutTd9olz1dwt
+	REUOLkPu9ObCFZrzQMvyRJEW3jEtboKlmPYp/c55EJW5xi1PRxzFySEWXIQ==
+X-Gm-Gg: ASbGnctrZ8MYGQ92YgPf4kpKqXVZMPnr1yTguG6Q8capLRL/Lqh5+GiA4A2cDbiptCE
+	L1KlhB8OZN2pCCBwZz5pn1pXUKbKn0FF01/4not5V6uRvukXARujAxSg6G0wwjb+aLnCSGSyjAD
+	yc0yCoaWv8ZL5EPe9TKM9YJ2pfuLCwfUCYZtW1v5hZF9AiAUwEiEYzESqBZNXb7crMo4IJAmnt1
+	XHwgYG/A57rFe3IeSxx0MJd6hAhlv7wWcIgH3YWklrytuXlI0Ww5azj3q8=
+X-Google-Smtp-Source: AGHT+IGhzBDN0J2xo0zgTrF8hoLMoPjH/0yoSaTiCKabdffwkstVhE2JzObLLjxmM0V2ZK+kJ0pjRcykFQushFkcK04=
+X-Received: by 2002:a17:907:94d2:b0:b71:ee24:8a3d with SMTP id
+ a640c23a62f3a-b7265154e9bmr164396666b.12.1762322529791; Tue, 04 Nov 2025
+ 22:02:09 -0800 (PST)
 MIME-Version: 1.0
-References: <20251031065011.40863-1-youngjun.park@lge.com> <20251031065011.40863-5-youngjun.park@lge.com>
-In-Reply-To: <20251031065011.40863-5-youngjun.park@lge.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Tue, 4 Nov 2025 22:04:47 -0800
-X-Gmail-Original-Message-ID: <CACePvbVkwUDAxnjJ96X_nVSgSy8B2nd5f1tMoCnQ0j=T9hfDzQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bmJRSfZDbOhDh-lZ9I3TSyE0CaUTOgykA7GZWUk7UPAAxCmiQs2IlbvVec
-Message-ID: <CACePvbVkwUDAxnjJ96X_nVSgSy8B2nd5f1tMoCnQ0j=T9hfDzQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/5] mm: swap: change swap_alloc_slow() to void
-To: Youngjun Park <youngjun.park@lge.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>
+References: <20251104031908.77313-1-leon.huangfu@shopee.com> <aQnFn6vPQ5D6STGw@tiehlicka>
+In-Reply-To: <aQnFn6vPQ5D6STGw@tiehlicka>
+From: Leon Huang Fu <leon.huangfu@shopee.com>
+Date: Wed, 5 Nov 2025 14:01:33 +0800
+X-Gm-Features: AWmQ_bkS8mFduVj_GZzMUe3ULkR8btNSr45nec1ttI4iNP0pSA8_ELWgHC8BzUM
+Message-ID: <CAPV86rrt0YT-npNSBJ_eHvAYdr_j1qkN7H+J4QLN8zsfi5TJ4w@mail.gmail.com>
+Subject: Re: [PATCH mm-new] mm/memcontrol: Introduce sysctl vm.memcg_stats_flush_threshold
+To: Michal Hocko <mhocko@suse.com>
+Cc: linux-mm@kvack.org, hannes@cmpxchg.org, roman.gushchin@linux.dev, 
+	shakeel.butt@linux.dev, muchun.song@linux.dev, akpm@linux-foundation.org, 
+	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com, 
+	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net, 
+	lance.yang@linux.dev, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	cgroups@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: EBE9940009
-X-Stat-Signature: c576cdkecftogmouo5q7fhotybozgwbw
-X-Rspamd-Server: rspam02
+X-Stat-Signature: tw4nfmsudd636yqsxgfa8hg5syg4a1ka
 X-Rspam-User: 
-X-HE-Tag: 1762322699-591333
-X-HE-Meta: U2FsdGVkX1/drsVpfZQYg+Y299Oo0MtI450rzcy3I8SGGybisVoHYwB5gCLaOEJpVsYvuJGLtfcqjFaT99WThwqXyP9NlOOwoED3unVnfhxI3XzWjpndHYZOFCgyP+/6hvzuRUGgPhtCzEUDmPhHyWRjDgyRmwnI1SHM1gCweRulvi9rVf7KLC2rt6OjcHqwxDCtqtK0G1iMRsWNyxZIwE9TF8B8O9UJoO3yFkIaB6lszZGSTaqV0oWmY0I7QIf/5o6kAA/r+TrfB6r2q3M8oQl5tdQRenAi7RwG+70GJTw1kPEWlPQ/gq0ElAo9xWwKdugo2/eoFNXYo1kcIFaxwQFQ4cppI/8k21dZIHjqY1WkQfUZegiPQBc1LqSus9k2Dv/BUIa4AJK4jHt1zNFlBfuI2P2Eu41Yega0eVjoTCS/iLbvATPhKkS2ABlfXVfSE5jJ7JuEls3mb9nIUfcf7NjsTyzGDY1/g2T89hc7tR2eOoXPs/cV8hsk5u7J24jGP7N4+PM7kpV++bxVUifKM7NdBz/4zbP7WS75fA1y3gNYjYxMw+u4cECtp1wBXs5x9qsuj8Ounf4DTdbgzmtewx+O8REE8uJpjN5eCz68E59f21jeVKyCaubGB0lDd+n1qumZJFb/Ub6rX7WTe4sHL1fd7NW2wx/vwpvezRfE23MZdJCvXsCrGQ4uEQuAkwuAZ33vbDQq/thuhVSXsw4ayqzotiZIureqeYybMHcdm/y6v05BzuU2H407SzpeRIEC1S7j554aXELLJy+Mfqzo9VK84aejlp2Pw66eXuo45rCnnEO6yKFIrwpiTfLdAa0V8jp+psuHuBFM2RBjEfzob3HX1vK51FKK62WuadVSle0k+DaftlKb0+sJea68v6TkusdZ1A78GaE2cHppum6hPopVsA7LU7omSY4LU07vGY2jbFxXJPf0mGuSNtsOmmK8CLf+zxrA1hTnXRlH9cQ
- AVmXyjhL
- aijxGmemBC+C88G36K36XnmfD+wOvMboacA7Je9GEojrhureSQAjTI8yNJT25m5qfyoSKe+cSJMCEPptpw524VHatgJPCFPgTceQXjnVJ8QgnoBg96FjLwkNOe76dj9v+XmwXMGPW7wJNRv/R7LxQXshXZe6ZjKcAT/CzGuQaxNhroMrX7Cv6Ev0Z/0poQQNkZhMwvtceOZY11+f906BiPvZr54nm7PfaHNtqqT+JOvtzjUi1QEVUyLd0nFczYTMmI4c+9h+wN838aH5VdKr9Co7RBPZS62MgQB7QUKqilD27PRc+xdY7RSZezujb1c9X0gcgd3d1FN/AsRfTSUFrl6rP3AH4iDaSGpb48Tbl3E2lcKyhQNsLgX6W85TDPyMmqOKQJJxCEX+FoOB8asqrnKeq9g==
+X-Rspamd-Queue-Id: D04ED20005
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762322904-477565
+X-HE-Meta: U2FsdGVkX18U5qSSSaPIgnAsUL9R3BtKiSxvwnSsOi1OpsG5/mOXtSonKOLEnYxQZysXc2TgdvTi90tek9ajuhwkSEKCDLQMUJLD13wmnHYynp1Be+bY83IBUoPEjFQg7HBWTcUAXGrVbc5SfdX6IAHNZk0eRLcircfYVfOdlHBxnzBWqoUeGGPDh3plX+OYtZWnZkP2BYZ4De4RmEnMeUfdXni4ig8QJkjG6EOaFcNtscyfoCHp1WudIF7Xc3DBP9l+jogGCbDaz345ZR2+xubQq+wroAl7o9hr2kMYyWxExxqP7OoJoLxJ2dECcXMZm6ZYFxcdPhXhLNpl0OGPXYKcwCwQrTsjApPkUJFINFiqAJX17Rigf+1QJKIzvqf0cNsW14gbKJBGWPyvOigHc+ypuRG9FDKgRrxp474yZtnSpa/1wcHG6YaUDzy3/fzL+p38lxqbM3l3uYXszrcN+K70P3/vKcCx87FCZCrCetlXnAjcFD44JfmzLn6QBfHJlaXzzJRbDjFXBayvNsKwDuvIzYIeRkugVHJe/NULb1Ow+KbTplPFUWpJmxGGX+B4zz6434NEen/qGrHoMTIw3ZqN4QtkomXZKiDFmx+Xzot9FtkTgCTgPA3S/fPOU1RgyrfKe3okC6/JEvp3fT57whwiuj94yWyTejmXNmOv50xe4KnTsbxCOjoylQkS2QsSwVPx9EG9f2xR9WlTJDdQWSMUp82mhtZznfO2eFgpUcpLpVV0PQzEA618A6vz4zAePEAdJPtRP3F0NDEs4V2jFoDe/IdPygeZhUBHXYKQG60yYBJ40MzXl6Ke+X6Y0/+ZAdmb+2Rmd4uIZDw7ayCky4xlxs6Mg6VaRTEf8tEzUK/tgGdU+FLq3jCnVkmF6jl3KE+AecPXcqQ0h0gzlDbDeMXFKZBPFXh1sVVI12lxRkP4KMGht4qHu1OHr9nrocKArQa+RhStgTA9xNFkr8H
+ q3/I3gku
+ thJqgnfOiJRvENy81lc+ptU6q03UJcfZlq5HPgnt9zKRQIf9MQ+0XEGmTQp0D2Mq9N5IhRMNnTIaShIS013qGo/K7HKB7hUbVIYzr5kFeUh/KB48lDaN8dfgRoT3SMPkJzWmGuFKJl+9LFxTLhNF8LPNjLWMy2mcPoi1vjgzcQxsnFX2z8J+4jZRVtUwEWZY0Rg731DGLN/jDvLWGAY3FQMg/P4dIrlYalIAFsJmIXUlFmi6E6vEjtxCXr8gxP80SZ0jNakH4kVNVXwvTgl/bMN6h1NH0cO68ap0KHYNsgwY/GgJOevkyLBsYZfv/3SlgUj7ZX+owEgGkptYcnHcPIwUzV2sRj5DKxMog+9PZXA4iVkBVrz1QDOUL5lwrmPgbtw+hhjV0mBUdwvjUkkL1iCw1sQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -105,55 +119,74 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Acked-by: Chris Li <chrisl@kernel.org>
+On Tue, Nov 4, 2025 at 5:21=E2=80=AFPM Michal Hocko <mhocko@suse.com> wrote=
+:
+>
+> On Tue 04-11-25 11:19:08, Leon Huang Fu wrote:
+> > The current implementation uses a flush threshold calculated as
+> > MEMCG_CHARGE_BATCH * num_online_cpus() for determining when to
+> > aggregate per-CPU memory cgroup statistics. On systems with high core
+> > counts, this threshold can become very large (e.g., 64 * 256 =3D 16,384
+> > on a 256-core system), leading to stale statistics when userspace reads
+> > memory.stat files.
+> >
+> > This is particularly problematic for monitoring and management tools
+> > that rely on reasonably fresh statistics, as they may observe data that
+> > is thousands of updates out of date.
+> >
+> > Introduce a new sysctl, vm.memcg_stats_flush_threshold, that allows
+> > administrators to override the flush threshold specifically for
+> > userspace reads of memory.stat. When set to 0 (default), the behavior
+> > remains unchanged, using the automatic calculation. When set to a
+> > non-zero value, userspace reads will use the custom threshold for more
+> > frequent flushing.
+>
+> How are admins supposed to know how to tune this? Wouldn't it make more
+> sense to allow explicit flushing on write to the file? That would allow
+> admins to implement their preferred accuracy tuning by writing to the fil=
+e
+> when the precision is required.
 
-Chris
+Thank you for the feedback. Let me clarify the use case and design rational=
+e.
 
-On Thu, Oct 30, 2025 at 11:54=E2=80=AFPM Youngjun Park <youngjun.park@lge.c=
-om> wrote:
+The threshold approach is intended for scenarios where administrators want =
+to
+improve accuracy for existing monitoring tools on high core-count systems. =
+On
+such systems, the default threshold (MEMCG_CHARGE_BATCH * num_cpus) can rea=
+ch
+16K+ updates, causing monitoring dashboards to display stale data.
+
+Regarding tunability: while the exact threshold value requires some
+understanding, the principle is straightforward - lower values mean fresher
+stats but higher overhead. Administrators can start conservatively (e.g.,
+1/4 of the default: num_cpus * 16) and adjust based on observed overhead.
+
+Your suggestion about allowing writes to memory.stat to trigger explicit
+flushing is interesting. Comparing the two approaches:
+
+- Threshold (this patch):
+  - Administrator sets once system-wide via sysctl
+  - Affects all memory.stat reads automatically
+  - Tradeoff: harder to tune, always-on overhead
+
+- Write-to-flush (your suggestion):
+  - Tools write to memory.stat before reading: echo 1 > memory.stat
+  - Per-cgroup, on-demand control
+  - Tradeoff: requires tool modifications, but more precise control
+
+Actually, your approach may be more elegant - tools pay the flush cost only
+when they need accuracy, rather than imposing a system-wide policy. The
+write-to-flush pattern is also more discoverable and self-documenting.
+
+Let me try your approach in the next revision.
+
+Thanks,
+Leon
+
 >
-> swap_alloc_slow() does not need to return a bool, as all callers
-> handle allocation results via the entry parameter. Update the
-> function signature and remove return statements accordingly.
->
-> Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
->
-> diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index b7cde8ef6742..4f8a1843262e 100644
-> --- a/mm/swapfile.c
-> +++ b/mm/swapfile.c
-> @@ -1339,7 +1339,7 @@ static bool swap_alloc_fast(swp_entry_t *entry,
->  }
->
->  /* Rotate the device and switch to a new cluster */
-> -static bool swap_alloc_slow(swp_entry_t *entry,
-> +static void swap_alloc_slow(swp_entry_t *entry,
->                             int order)
->  {
->         unsigned long offset;
-> @@ -1356,10 +1356,10 @@ static bool swap_alloc_slow(swp_entry_t *entry,
->                         put_swap_device(si);
->                         if (offset) {
->                                 *entry =3D swp_entry(si->type, offset);
-> -                               return true;
-> +                               return;
->                         }
->                         if (order)
-> -                               return false;
-> +                               return;
->                 }
->
->                 spin_lock(&swap_avail_lock);
-> @@ -1378,7 +1378,6 @@ static bool swap_alloc_slow(swp_entry_t *entry,
->                         goto start_over;
->         }
->         spin_unlock(&swap_avail_lock);
-> -       return false;
->  }
->
->  /*
 > --
-> 2.34.1
->
+> Michal Hocko
+> SUSE Labs
 
