@@ -4,100 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 70540CCFA04
-	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 04:30:16 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3F286CCFA04
+	for <linux-mm@archiver.kernel.org>; Wed,  5 Nov 2025 04:30:50 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B08388E0006; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
+	id 9F8B98E0008; Tue,  4 Nov 2025 23:30:49 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AB8CA8E0002; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
+	id 9CF7D8E0002; Tue,  4 Nov 2025 23:30:49 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9F58C8E0006; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
+	id 8E5BC8E0008; Tue,  4 Nov 2025 23:30:49 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 8ED0D8E0002
-	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 23:30:15 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 354AC8604A
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:15 +0000 (UTC)
-X-FDA: 84075276390.07.CCBE6C8
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4FEC040006
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:13 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIGnQGx1;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F8F18E0002
+	for <linux-mm@kvack.org>; Tue,  4 Nov 2025 23:30:49 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 1FEC0160184
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:49 +0000 (UTC)
+X-FDA: 84075277818.16.113AFFD
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 1264A10000B
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:46 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KEt3F2G/";
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762317013;
+	s=arc-20220608; t=1762317047;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=06woPWOwQOtZNwOFQo3C8Fknt3FAPql9ZhOwy3l4Q5s=;
-	b=0svKqN176vEsFg9cuWmHQAiZbWtlS8rdbkK1Uf/XHhhF6xpJdJtdqD2A/dNSCkk5fw1wGM
-	A/KUbzZSKp0RoZzEjNROONUmMuxx+ZCwk9bi7SCvs3O5rewckckwrCA/rF93yuYWdRuDZ4
-	TSLybfPX5gUJFBih0yNuuLzGdqKk4Rk=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WIGnQGx1;
-	spf=pass (imf07.hostedemail.com: domain of chrisl@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762317013; a=rsa-sha256;
+	bh=igRXUB44k8RgyLhjiU+I7yMd0HD+u/6WMUZ+KkVbWNU=;
+	b=zDKySpwBBTJkyAPUDx7uWCc8J1pCTJiZuLYLGlw0XqJvHG0q99944WPhJf96JeTj7c2JT+
+	yO2WS1FjAiBdouPTjd5aQbA6RloFapDtNO3dsmh0Gj5DBkc9/4Lgp7ML3cDtzVo2T3c/hG
+	tvCWtA1hPffVvd0iLGKHspYQaZCJ+6g=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762317047; a=rsa-sha256;
 	cv=none;
-	b=WIWrMwHLTuTDHWcO294vxw7khhGw1mEaBf7QY0npqGFUs5lzGGUYIQ/VgSv0Lqy7DtzFAJ
-	kmWCZabkU0Ca/zdcDAaDtF+AxIWVcYwKFnp55UJVWfF59Q2HQlo1YW6r1ptZGgS5SuEGuA
-	r069JFRI99wS6NgyHizUo4A4ZfpbBLc=
+	b=KiDN2S+1ywI2urGKSHe3juns0TlNBncEHC9EWo4KCtXO8GZxo/aJ/XxJ9ByjqeCkApMTGx
+	edCnzrk0hUJS83RD97EN/sc9DdKw5+u/ouhYiONZwstvuOs5kWbg1fFd3MZG8m4lCYMeTy
+	2gAYMDCJpeKFmTccd9Kl/kXjAQhOsWw=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KEt3F2G/";
+	spf=pass (imf05.hostedemail.com: domain of chrisl@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chrisl@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 92CE060211
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40A3BC19421
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:12 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 0037F418DD
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D2BC116B1
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 04:30:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762317012;
-	bh=G/qCxnB36EpQNhfOT6yZW99z2x5Df1pKZ3J9/Srh9Gk=;
+	s=k20201202; t=1762317045;
+	bh=Z5+iLkNxhwcyGcvXemSB62Hf6H2F3Xk4ORxYo6lESnM=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=WIGnQGx1BiRBWNasEgXGgOHz4TfKbjlpAUFR7SHBZauD4a2qXWKUWkh5JShfEiVx8
-	 5eCiw3XpoNlf1VHZK3pGwY8JxUhJHDWvqKoAevPiG/LL+x8mBgjplf4nu7vM947Rc0
-	 PCvZ5X+0Oeqw9IVO2/e53l7eXIk8KiqbcLMenCg6USvE56YvZ1x3qbMa1ErpSUaxld
-	 iR4iWCrBJlF1pu99iFelX4MG5XGLEQa3Wd/f4L9KO1fgqZjw35/er+e7k9UqQ1M22g
-	 /QGz9K+HJdWa7l9DztdP3qIf1CmFoIjlJT2/iL5wtpKRc8eTLZbRV/m0/v6exWiMEN
-	 nPCj8Pu1pSwXw==
-Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63cf0df1abbso6659231d50.2
-        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 20:30:12 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXMz76u2cHI0R6HkrI+V4kACk1Ph/YMP7OtkQ9exnnsyQxYoZ6QmsxZMuov64bIzGP5xtfklNlh3A==@kvack.org
-X-Gm-Message-State: AOJu0YxRV1Fd8MLguusHnGPtv4W3dXIZnMEqxSvdj5xivzSa2WAv8D+o
-	5fj+BbbIiUSV95PvZGpF6YZ3ZCcYqd9xqiJMQECJ7T3xMiGHeFi3eeibztZbDQkfYbz8Iz/bNWD
-	85lBvYUiap5LfyMTuayNli/RMrTwnwYtRI0B8pfbhMQ==
-X-Google-Smtp-Source: AGHT+IH33g5FnRetLaV+B2cvyq+Sil9CkgltDyJbE+WpAnXFrmxDGMPntaiwOV7n3KL1ni8IIFhrSUi3NSnTAjjHfE8=
-X-Received: by 2002:a05:690e:424a:b0:63f:c6b3:cd03 with SMTP id
- 956f58d0204a3-63fd34b6103mr1396353d50.8.1762317011548; Tue, 04 Nov 2025
- 20:30:11 -0800 (PST)
+	b=KEt3F2G/mypNW57zrhuk1rCl59eUfO+6miYpPsCfzlEEEz+w7LPj+bcDs5OxTvBrh
+	 iekloDgHKcf3UKBMQXclxXQ9FUeL/ft/SQSbIWHwQAHWm8Svdxtj1xvSSZMf7xg0QI
+	 wlAkbt1q8vVFd6lk6IrFNGGcBVvAB2YagdhcOSEUSqhD/nz0U15m++TExm+iEGzYPz
+	 tbPokJtFQXH9cfPAjH+sXsXqQvyIiLApIvxF6TeUAeLLDHgviuMgMphE2FPzXu8Rdx
+	 kXXFZguH6M5BF59CXXEUGYOr4zznp9vDbty8asNLthMTWg7xPt7GclUiZZzGDXAc+u
+	 JCJqX4vI52KPA==
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-78488cdc20aso80260467b3.1
+        for <linux-mm@kvack.org>; Tue, 04 Nov 2025 20:30:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXO1+tDQ9HkEaDuorcFowftGmpIka+RHMo1OFzZ1cfOgzARgw7Iwi/giCJ1KdoZ0dGhhALvQWkgag==@kvack.org
+X-Gm-Message-State: AOJu0YxoAG0ckbX9el19iovKDzPpehf+0HYJyoJrC+NNwDnGJxNRFJ2F
+	OxNycf61mVBObO1YU7z6csuLpzfFB67kC0wQoDNEuYG1V1qB0UtjUhixjd7ioE0FO0yZMZw3lPI
+	Ys+js0Lv/aqiZGiRWw/6bTNgqwx1qIrMXdXyKMOAqFw==
+X-Google-Smtp-Source: AGHT+IHjemH17wHd9rPFc3L/t1fInrq9n+OST9E/VRc9aTFDN1BNCcfeFWBkhIreQTlb7iGtHcmLPEP/HbYhMj3MMpk=
+X-Received: by 2002:a05:690c:6804:b0:786:9971:e5fa with SMTP id
+ 00721157ae682-786a418d440mr19275517b3.37.1762317045227; Tue, 04 Nov 2025
+ 20:30:45 -0800 (PST)
 MIME-Version: 1.0
-References: <20251031065011.40863-1-youngjun.park@lge.com> <20251031065011.40863-2-youngjun.park@lge.com>
-In-Reply-To: <20251031065011.40863-2-youngjun.park@lge.com>
+References: <20251031065011.40863-1-youngjun.park@lge.com> <20251031065011.40863-3-youngjun.park@lge.com>
+In-Reply-To: <20251031065011.40863-3-youngjun.park@lge.com>
 From: Chris Li <chrisl@kernel.org>
-Date: Tue, 4 Nov 2025 20:30:00 -0800
-X-Gmail-Original-Message-ID: <CACePvbVh0tWth+WZv-CS+1bHFhJauBKGG-0+QzSfA+_=Kruj3Q@mail.gmail.com>
-X-Gm-Features: AWmQ_bmX5CGCUlxAIv0nL_kujRgA2ZCOYLiUfzWjfRRtCR8FjiOg1-a3W3PK5jU
-Message-ID: <CACePvbVh0tWth+WZv-CS+1bHFhJauBKGG-0+QzSfA+_=Kruj3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 1/5] mm, swap: Fix memory leak in setup_clusters()
- error path
+Date: Tue, 4 Nov 2025 20:30:34 -0800
+X-Gmail-Original-Message-ID: <CACePvbVwtxPEdC19sP0oV755BQ_ih233JQO2eLbuV1uFSS-T-Q@mail.gmail.com>
+X-Gm-Features: AWmQ_blGKRtZP3mR1-wNgRQbArJPGCk9H8lk9bfKXCExSfQd-MBpEpQ0ae9aVW4
+Message-ID: <CACePvbVwtxPEdC19sP0oV755BQ_ih233JQO2eLbuV1uFSS-T-Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/5] mm, swap: Use SWP_SOLIDSTATE to determine if swap
+ is rotational
 To: Youngjun Park <youngjun.park@lge.com>
 Cc: Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org, 
 	Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
 	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 4FEC040006
-X-Stat-Signature: irpzkceyrhj6opz1bhgiqm8dzna5dxqa
+X-Stat-Signature: igjgw1rf75hk18huietztczsckfcnymi
 X-Rspam-User: 
-X-HE-Tag: 1762317013-840635
-X-HE-Meta: U2FsdGVkX1/maAVmMp4x9XGDDaOPq3rYLl3jOVE1/l28lMy/VPcGZKWiADkHSQHP6JlP+Kx2t3Pm6sxP+CAUib71FU6QhS+VtZ3fZt50w7lc9J60T+04YVVjQn0QsZ9YpyEbr6Mxl8/To5Ut0iDEDknyYmqfK//mn1b+heuUFmoP9C/tuLZ0074pYan61tvoAP69J1RCu3YtnrUtSKGpOx/Hvsxgogvkwi5HEhW17JUrzwgR6/DRuj4Xo7krKOxJ6yqQ6lEuxNyFEDWshG6i5s+PcS0ED2AXkLbLWelaRnOceAksuw2IJyu8zNqIYbOh2nal20LlwQG9p4chrkJlvBNqAL3VW1qneAVwTVUz2mGrcdyVyAuThivu8k1y4Lf0bqqvWtvPUqH6LuA4hxhGCpRMlX5V5/hSkZHVin+C+ZaYXD6SZmkrjEtxUZWapFFcd/szsxUN3aT9Czsx+1Rt/ydi1KF8NHt9h7dU1romqWjRUYcugo5V9784zDcL7pTYYBK6jhTi7c9SJaSUzAbrmpTG3GohYzHfCAo9udjqGA7/4xGSa3lzsM2gLw8bE6YoRYJ/MyVN4m3E0cj1SBXWDu6DYU3KYQvmocYDpy/Nm/rwW5LUc9FzF0ChrBWnipKi9mMMkd3LbGM/1tvK7GnCN/wN1XZhdlgCsiK795eouxTnypxcPAA9D+whMH0PVNgkHxxhfd/mc0rkxRGMgZXNSeqxWIaDap7K8UxqVtztk+IXsx5lfhhMWylYAxtXVAIoP1YQrpWXNkCwFbg/FSaANCe9mcqGdXYZ0U1z9l0ptAbcQKsw82IgPZP1LgPJM0YYtjCWJTEpAJLbvtFRuDZIdgSN5fRVTfu7/2D7rdob/lzozK4CTi7RNdTlAOrVCnreDfdEo0UB49RcJrt0+rgNd03SGWwX5WyvXqRMALduChq1UfohdSEB/UYgUJnQPkT/lyWESLRA43hGP4c5MzU
- nGHk9T7X
- 6+Lcq8nzmp3xTGg31FSs1v0PcJitjx5VRXnEpT/71dXl4/SoovpeHG09OOgGW5hiD0ZZbYcrelfQamrVOKCCHFWWL02ZxUW0Yv53GCyZ/EB+5pO4LXYfA2qksp8e44pMX6T1cx0VY23Xh67axeaDFu+9rkUQ4U1B9i77m/j5bZVY0nEUtWwS7gZrpPNXEilmLNFboqDGdhyUmas20VcAQ34SRVli9mZDmWRU3gfm+rBPm5wCBYrl7ps4294eVHlqSSaUO46E3aGo4n5vwpTqyRWtK+3u2nTOXLU3KAAoawpOXRXNtr/lTgqhVTWKnp36y9IRmLN1jZMzOg95xwch/hMYDWCHdxiBHPTfjJoMnFW8fylfqGOKdYeK27mss464c5OAeL47wSAueRTvzr9UcEyqajA==
+X-Rspamd-Queue-Id: 1264A10000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762317046-230030
+X-HE-Meta: U2FsdGVkX1+3m8EK15op5xMpWpwE4QSOUV8cA2qw2VTxKkx/DGnLanzEDw4tN5fqvbcr67Kl0DZ2iwWMPFgpFTEbEaU561IV/6oRDzPp/mTgchJ+B2CLapAvTZbkfoa/Qiste1z/1OFE7dzoAs38vPmVIRtgj1w3+IuSSFYJxS2GObNQqAc08vnd5ke/I/tWerkoHbPd/xX3KEc4s7yd7x06llNz5SNxvjRv/nIXCTYO4a39uZXRfh4dXL1AJEYYUm4iUgw/rDgA40XauFMG6WQsD0ZMfxMV5Q9LK3hYMP3u8jpTEzxVKpyO22EeIuQMTKrgpX0pm9+3217HMsBWu//lOg9SSTjZqVHIolusMqaO2vCF8+8R75STqQu+rbTj0kSR+8ig5qLMRuWlkLoNwsf8uScVlZv9ybv+0ecDbS4mmFeY9DEAeJjB/wZGndqhQeo9ik3HMLcLEPaR+fFuGmJrZwHMXS1kUjqz4zxO6gp6GULJb5HcFzOqSrPO+YLZeH7m7+0qaZ031hRjCYSOVN1rpeL3eHnddocITSMD7SwwJZk7Fq/pTEK/LW4pJX5ekNPhTSMnXM4KwCQBoZBtvUnA6GAfnCFy60+2vCyiI7nyvQKPE/wmcT+TM931ZE28giSibZFY0WBZxpQ+GpWRHyKW/wfxHdJ6AttvcySiV1Irh4m06Vp07OZV46hd6PjLYN3DVanD1TfpxqohiU0MxS2RBFeyJc5mbmgks/MJEznhIsCNwBXZJWqzteOlJmrxcMYT4D9/A2y7hSJSoue2v3f4H7Y+Fh4c2LOpTvtQU4xBMgrpONFtK2m2eI2IFbTokSrbqXn/n0mI/PesubZcGVQvFYUaxdW3X9Y5+9dPhF24snI+C+LHcKp/ecTl0dLPjoVPM7yKWDfQA4JGKWrWv5P45iB0PeI+fZzxP46NT5cFHIk/rXDyvTQRa0H0EWWE7HahtK7hJi84GoIaSEu
+ N6mCVXwZ
+ +Gyq03uByAPD5LSRA64E+CoVqIqDTwXAGV2PME90TC4AvFTPdDR7mL33aemDJhApykYIGW6O4aYILv0N3d03T5SshLlb1XGMDW3zZVG4CRLnpr1KhfLkQtaKpKY6BwcDRQAKEWSlF7V2CVrc4vf+ySsvgqrMQqNK2SlD6lxSuV2QQEUfRXvzHjTy2MmXrP4tzhWZpCpVx0qW7jbRb5QAUIaqdnWyCJUM+XY7RLTdlmbwPl0p0p7LeWGu3Oj/1yXK3eIzQLwBN25+3aq2oF2O9s8mAcxWuJCWSMNt/cjUJ/rpBRqfRCRaTNxk4pxNlzAQ7XCM1At54oG1OlnR1ERLol4DJXA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,8 +106,6 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry for the late reply. Has been super busy.
-
 Acked-by: Chris Li <chrisl@kernel.org>
 
 Chris
@@ -115,48 +113,31 @@ Chris
 On Thu, Oct 30, 2025 at 11:54=E2=80=AFPM Youngjun Park <youngjun.park@lge.c=
 om> wrote:
 >
-> The setup_clusters() function could leak 'cluster_info' memory if an
-> error occurred on a path that did not jump to the 'err_free' label.
+> The current non rotational check is unreliable
+> as the device's rotational status can be changed by a user via sysfs.
 >
-> This patch simplifies the error handling by removing the goto label
-> and instead calling free_cluster_info() on all error exit paths.
+> Use the more reliable SWP_SOLIDSTATE flag which is set at swapon time,
+> to ensure the nr_rotate_swap count remains consistent.
+> Plus, it is easy to read and simple.
 >
-> The new logic is safe, as free_cluster_info() already handles NULL
-> pointer inputs.
->
-> Fixes: 07adc4cf1ecd ("mm, swap: implement dynamic allocation of swap tabl=
-e")
+> Fixes: 81a0298bdfab ("mm, swap: don't use VMA based swap readahead if HDD=
+ is used as swap")
 > Signed-off-by: Youngjun Park <youngjun.park@lge.com>
-> Reviewed-by: Kairui Song <kasong@tencent.com>
 >
 > diff --git a/mm/swapfile.c b/mm/swapfile.c
-> index c35bb8593f50..ed2c8e4edb71 100644
+> index ed2c8e4edb71..b7cde8ef6742 100644
 > --- a/mm/swapfile.c
 > +++ b/mm/swapfile.c
-> @@ -3324,7 +3324,7 @@ static struct swap_cluster_info *setup_clusters(str=
-uct swap_info_struct *si,
->                 si->global_cluster =3D kmalloc(sizeof(*si->global_cluster=
-),
->                                      GFP_KERNEL);
->                 if (!si->global_cluster)
-> -                       goto err_free;
-> +                       goto err;
->                 for (i =3D 0; i < SWAP_NR_ORDERS; i++)
->                         si->global_cluster->next[i] =3D SWAP_ENTRY_INVALI=
-D;
->                 spin_lock_init(&si->global_cluster_lock);
-> @@ -3377,9 +3377,8 @@ static struct swap_cluster_info *setup_clusters(str=
-uct swap_info_struct *si,
->         }
+> @@ -2913,7 +2913,7 @@ SYSCALL_DEFINE1(swapoff, const char __user *, speci=
+alfile)
+>         if (p->flags & SWP_CONTINUED)
+>                 free_swap_count_continuations(p);
 >
->         return cluster_info;
-> -err_free:
-> -       free_cluster_info(cluster_info, maxpages);
->  err:
-> +       free_cluster_info(cluster_info, maxpages);
->         return ERR_PTR(err);
->  }
+> -       if (!p->bdev || !bdev_nonrot(p->bdev))
+> +       if (!(p->flags & SWP_SOLIDSTATE))
+>                 atomic_dec(&nr_rotate_swap);
 >
+>         mutex_lock(&swapon_mutex);
 > --
 > 2.34.1
 >
