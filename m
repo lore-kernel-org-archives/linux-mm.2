@@ -4,92 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 541B2CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:17:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B217CCFA03
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:20:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 61B638E0011; Thu,  6 Nov 2025 05:17:09 -0500 (EST)
+	id C8B6E8E0012; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 5CC7E8E0002; Thu,  6 Nov 2025 05:17:09 -0500 (EST)
+	id C631F8E0002; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5094D8E0011; Thu,  6 Nov 2025 05:17:09 -0500 (EST)
+	id B9FBD8E0012; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9A48E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:17:09 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id B9E36578F4
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:17:08 +0000 (UTC)
-X-FDA: 84079779336.15.D59291F
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id A6D238E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 332E9140665
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:20:25 +0000 (UTC)
+X-FDA: 84079787610.17.C097DA1
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 04EDC4000A
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:17:06 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KsX/Wk0Z";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9347240009
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:20:23 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YNK2o/l8";
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762424227;
+	s=arc-20220608; t=1762424423;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4jDFu/uD7S0ILXQc0l4ufSAYQXxC/QL8k9B0N9IdHt0=;
-	b=VsNs7XaseXOO4W6OH6kmRvW7M47S3cViBy8OlR/iHZr85gEE9WhcJRB+VWzHQLCWyQGfju
-	TjnRisMA7yVWcrpnLi7XIiSZUSELFF1P1KvxlLwqLYyOMIKt72jcVHDlES6iEHbhNy0xBr
-	i4qlyY7C1bP8bW+bsI4iWN+YCiBSkig=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762424227; a=rsa-sha256;
-	cv=none;
-	b=cOPepktNtGiYF/9ekrHXawwPBH6MAoBcPq2pZ1qPfU6T4sBUQ7jXEavPF5rbu+Bp7eGRsm
-	+FUKOWjNaH7ypa8dQJBgA9ejFp1NjsyMulE/8MnuidrOh7jAdi3tUQWBrRwkkLMFsT9B7f
-	jbCLZ4boaz5lq9dl77vSgdRu5vrPC40=
+	bh=cQNwyIZ0cRwSC5udufgelwCGq0n2Q5Y956Fq1SQA/ic=;
+	b=11uE5CmTYOZI+B36hANktrcXGUfbi2GPge4MlrnQtc1NLSIDrBTtiESykPpt+XgrBRZ73z
+	Zq0HTzCeuV3vOjeMzXXOnYXUIObysINJb1OglZYVk7m74EBOk0Qpy7+dCD5BurhcTCyViC
+	Da6y0nALEhavDmsqNo60TxiF0wLpFTQ=
 ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="KsX/Wk0Z";
-	spf=pass (imf04.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	imf11.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YNK2o/l8";
+	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762424423; a=rsa-sha256;
+	cv=none;
+	b=AbZjJBSwG/AHBDIiM9NfxwRwaJyHK7hUB4tuy5+ByhVJPZf6TVHyp+PESjDoSLrKcvl4QA
+	v2WBgawt79cmTvWBNdOs5hvZqTusIzW0VKbARjWYUdXEANdhmx1ZVPWxaOH9Ian7uzfgWo
+	YwI5HiQo8q4t3+10a2Y0XyGhbIyFuOE=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 10BBA601F8;
-	Thu,  6 Nov 2025 10:17:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8C3C4CEF7;
-	Thu,  6 Nov 2025 10:17:02 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id D749760220;
+	Thu,  6 Nov 2025 10:20:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E06C16AAE;
+	Thu,  6 Nov 2025 10:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762424225;
-	bh=+AdCY9zJ+6gonNM8lcWLBTOcj/jVl6gpKb1/3jbrTb8=;
+	s=k20201202; t=1762424422;
+	bh=Uzdv7X5iGSxhbYbbKV4x7uTVi8GSHnnYaDFqzy50Gtc=;
 	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KsX/Wk0ZG7NWpSkzVKkKLiVz4Ii+escxaZvcpN6wTvlUxJpurW8XK2bKgNyq/7BKT
-	 3JIOOTmMj9izaHy7YqZNt8Z2pE8J/8ykEYwVZh2BYINlT59UB1lh78ci9V3VbACFVp
-	 T4ctfPVo/ixmV0Fbv0H0qjGKpuyW7AzRBs0O0BRXG3ylm9JQl3u3l0GgcITvpjEyi6
-	 Dd5mT7kUnXFpsdmOxtzxU51Z7Jya7Po8iKc7P4slXvAUhdqF3Ta4hagS1R1Eaj0Ago
-	 auh9Cqum7Du82YwJ8LIXqQilLRIg0oBxAqCA4+oblIlvwT1nx4WLsdMTm32UAH4qKf
-	 LVhX7gFkwQ74A==
-Message-ID: <c2d8380b-6452-4b12-9d51-2741f86180b5@kernel.org>
-Date: Thu, 6 Nov 2025 11:17:00 +0100
+	b=YNK2o/l8ETUrD1c2OGnHprJkg228pnjWczXRq6j70Uk4uvZZVSznUZe1qlDugwDF+
+	 mD7NjGM05huSNRwxnmBIta8PddoKJJ25a/JWd0hHzlGfYTIAtyOOT5HPAtzaDsDhyg
+	 RRf3NddjiE6LthZ9N972w7M7LRvaNpgLbLGSo2XVnhCzjZ66PRIZB8L/eAKOjEqv4H
+	 e0jnRaZErWhP+2qXxGQcH1gAG9hYbnqk9r4JFCVbnD9Q8WD7WkfhCLmxi0P8qQK0y6
+	 go8IaS1EILtePlaiiKtQykcy8v3JMZwj6CkPvnuiUMQni/sWY7bURFTOQpS9Utun8k
+	 2BXHaxxkaOeGg==
+Message-ID: <8e792092-11a4-4f50-be82-8a01512a5c1b@kernel.org>
+Date: Thu, 6 Nov 2025 11:20:17 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v3 1/2] mm/huge_memory: introduce enum split_type for
- clarity
+Subject: Re: [Patch v3 2/2] mm/huge_memory: merge uniform_split_supported()
+ and non_uniform_split_supported()
 To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
  lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
  Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
  dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
 Cc: linux-mm@kvack.org
 References: <20251106034155.21398-1-richard.weiyang@gmail.com>
- <20251106034155.21398-2-richard.weiyang@gmail.com>
+ <20251106034155.21398-3-richard.weiyang@gmail.com>
 From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-In-Reply-To: <20251106034155.21398-2-richard.weiyang@gmail.com>
+In-Reply-To: <20251106034155.21398-3-richard.weiyang@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 9347240009
+X-Stat-Signature: a5o1nw4auxkwszkh4i59coqzgkr9t35u
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 04EDC4000A
-X-Stat-Signature: nu8ds71g6jgr5ewznesdps1tx5os19ui
-X-HE-Tag: 1762424226-894988
-X-HE-Meta: U2FsdGVkX1/Bwy0FbM2j9y0bCW5Q7dveqBj804BmpPllpHxAMj1jYD1TXmORAL7h4yQWgl7tePHaQySu64qtxuZaOygTY3agxoxgWMyh+MEVRWm1hEXeJbCzJHM8TIafhok/1fBEMVRh+pbJXq9iuLCkj5uinRp/LxLxA6DkYm5rlUBxtp1erJu2fpQrrkeEQXUP/i30Hgvg31cGkWdziDRbcbkomqbHqavqYz3OSHAMeoOUrgpk02+zw3R6y9HSnUqveeQYBYuI606YuaS73XxkxiUfF+lBCu73tusi7QTP84Is8oKeB/TZhF+lPG4BDDiHje3/rrWPMB0jJdSSkU6sxEvZpxiT6iVJp7RVz4EHBC45AcDaLfr/Uk+20JXbJERHw812c4fvoVas9JEvpzFZ86/g2cmkxWoyu8Uktl2wUD4jxOFNue4+d2h4ksZdHmMMvmafgxSiG9wxD0UGiL+E5ny9mkhz81JAcwFX6aXiW3eLGTFpVo6ofsEQcx2UeVDhMJS/eAZPj/gCQCFFRu55YjT7OyMRXeEn5jY0OuBTZLvbGUIhfuy8mIbBNud0DzVbYejrMl5u8W+RzvBhnj42lBxFp6MpMiZHPaa7nmnk+tSsBNNnFJ3Gcjl7j64PpyftIMfbOW9Y+Yrh8sm7eHTrmKmagN0sLllUK9L/QB9b8ldP2TTFMIhrwxvod77HO/TezNCST9tjVo1UGH7Nnk+iyAbdbdF6dMiTTFQfQixKLZeeVPOryZHzktklpRfxVhyP81AsWjs1YxwJxcEfwz+r1zsdy/FNFFzodCn+of6LhgHGFGdqnik+4hu0ONZk3U1EcelZ6HwCToVoEBD5KsaIFZ2Sc1lRV96DZe8+JzqjORQWVqDAjVM0zomvUK0IDBFp2HtD1XETydTaK9X6//xGENr9YS6yfPpKyPo2j5YGHCg8jdgKrPh5KVGgvFPg1fWSkqFy4SvR3ipDEak
- LShpYo1G
- JdBvNs5p7i62Nyei04GZ6TKY2UtJlEdUIiIuC9jB8ZEB1o20WWAWlnY1zriiS6XXlrSualzJYQqG1DDUP6BSIk9X5JdCcluCQ5+TKtWyFUXg4b5hKBePlJODsA2r44RlqByr34QNl7UOTBshL5MQDBL6szRRZ3d7HkZwpafTr0SCBSAkXrFnQi6WGbJszVTR+r2uhB50GppIwpvzEyB8WRtlJR5OPSbfeVzUnio7mll5Fc9lnvHp7r9NHtv63n9xQJ0/96sUp9/Ox4nK3YofAYIlI52M6PScBvZa1hd+Yh/d7ZianvWBnkRNwV9l9gU6xAllXShfPXWl6oMIYZm1tuoUoPisV2TFQhabLFYq7SLUngtm8nb20RFLnC80/8UdP+/YE+AOl6GW9+G215fyb25FufpQaCWzVdWEC
+X-HE-Tag: 1762424423-442299
+X-HE-Meta: U2FsdGVkX1+gn2EtE0HHzN0r0OlFcErzi+HCpLcmN8cQ3bWXcDI2GS3kbX51Bj2yVXv7zwC2QwucRuLQ5/0/MCZF0clqFwWcQWLuYE1s4DIr2uELzcGyuRzAS4zlJPaI1uK/S/likk/5+MaTYPiRdKouPOVPsjvMW+VQp6ZHOM2qrng0y+57WTKewrM3aMNitYq//yzqtgVkH/+bH1MGvOo/vANsM9+VdcPiLsRuKzXH6bZm0bvulsa6kAgfzOuPSFl0CqDqsZRNUYac0pCMhetnQoU0ZIshBesyfK8dYIkc6MDpWbryfGhzrs4oe/at6ouRXxra8Pkce4GMDc6YuRuQZv13TdtnzX6gPAVuoJV0+5arN9yBPR8mzCFfpWM4u+io1bFJ72Zffs9RO1ZC4qAU3qitVxH5sMLOix3uKyXHXS32wqKlmt55TkwJdJSpkUgCihAHMYiEDu45gHzhRzZlR6jrML3otrojbVDLqUQQMwUHBN2mGbrpjxovLJDOsNLq72c/Y4Gt6IJGjdJSafJdc8FrjywfmSpMpgAGFNlFsrZHll9UM54bb13Mptc6B93TWtuaJNG7fKcL25UKiXWHeOwmYh236mLEYiKVrl0uGxmJVt/NT3TnvODK8PypQyZ0CLGABMVvL+gWp6a27Pq7qhAi6MlrOkHSfUfyEF7w4AY7dNLdkU+6jsCDapwtPNY09ZwDQal2k0E4uGc4xUGIC5S6QMc/PbqYuCfMQU3Iaj8WBWVnRlxA00GzA7ZZqD1gdQwqRgVs+uAbOlmUH9vaAbKK90h8BBdy/XQTWCoftTdFzecA02fS1Smo5eJ7t75NXKBMHzzXzzMuWQYHl2VIMQ/Cl8eCQp2Z8szN7slzDdT6AS0qQuMJYJ7LqFIUS1dfZa63dLBnqhiK/s1YxHtCJrKxibPssRpJ3JBmomHOoXpKW6ZMsk3tfhMZeHlQXGiFCVW+0C43S6Rno4R
+ c/Ggt+G1
+ 39OL09oozC34f4o/l+mNrkQRLkmBz16Zzl1swbBDbyU7k89lknL8xJ7Mi8l6Lowf4tsp+SVWt+uKnFl6bpPs6eUopNpCHPPvzhZa+u61PIOilB/f5T01Knp+CKIGggtQDhjHMr6HqYbApB2C0MPBRGNoGkJwm+QDJGPOofsQmM807IrQo3ezIAErjX1HtngzHYda8M0trl0TZeJPbEhI0zOkePySpZYqAcbLDZ4RAJDE17/snYOhRqiw+YewDsnU58hraISeOPcbkU+7YEAA6/qt55wO4PQsVd3R7x74wwIy3G/W7MEH68WqsRQShlafvpqe62yYYVpRPYR+1yt0NUYJl26JWM/6UP4GBrNCxIY+IWfCyL28C1VL4IFg0tHRa9OKem/JRJiT46CwMc6SVxv/aId2n8aTHslau9+LvY+ikC1maixYpPOzgZtzFv3KFP4Ba
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,55 +99,34 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 On 06.11.25 04:41, Wei Yang wrote:
-> We currently handle two distinct types of large folio splitting:
->    * uniform split
->    * non-uniform split
+> The functions uniform_split_supported() and
+> non_uniform_split_supported() share significantly similar logic.
 > 
-> Differentiating between these types using a simple boolean variable is
-> not obvious and can harm code readability.
+> The only functional difference is that uniform_split_supported()
+> includes an additional check on the requested @new_order.
 > 
-> This commit introduces enum split_type to explicitly define these two
-> types. Replacing the existing boolean variable with this enumeration
-> significantly improves code clarity and expressiveness when dealing with
-> folio splitting logic.
+> The reason for this check comes from the following two aspects:
 > 
-> No functional change is expected.
+>    * some file system or swap cache just supports order-0 folio
+>    * the behavioral difference between uniform/non-uniform split
+> 
+> The behavioral difference between uniform split and non-uniform:
+> 
+>    * uniform split splits folio directly to @new_order
+>    * non-uniform split creates after-split folios with orders from
+>      folio_order(folio) - 1 to new_order.
+> 
+> This means for non-uniform split or !new_order split we should check the
+> file system and swap cache respectively.
+> 
+> This commit unifies the logic and merge the two functions into a single
+> combined helper, removing redundant code and simplifying the split
+> support checking mechanism.
 > 
 > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
 > Cc: Zi Yan <ziy@nvidia.com>
 > Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> ---
-
-...
-
->   		 * Unfreeze after-split folios and put them back to the right
-> @@ -4149,8 +4149,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
->   {
->   	struct folio *folio = page_folio(page);
->   
-> -	return __folio_split(folio, new_order, &folio->page, page, list, true,
-> -				unmapped);
-> +	return __folio_split(folio, new_order, &folio->page, page, list,
-> +				SPLIT_TYPE_UNIFORM, unmapped);
->   }
->   
->   /**
-> @@ -4181,7 +4181,7 @@ int folio_split(struct folio *folio, unsigned int new_order,
->   		struct page *split_at, struct list_head *list)
->   {
->   	return __folio_split(folio, new_order, split_at, &folio->page, list,
-> -			false, false);
-> +				SPLIT_TYPE_NON_UNIFORM, false);
-
-Looks like both these are not properly aligned.
-
-Should be
-
-return __folio_split(folio, new_order, split_at, &folio->page, list,
-		     SPLIT_TYPE_NON_UNIFORM, false);
-
-
-Thanks!
+> 
 
 Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
