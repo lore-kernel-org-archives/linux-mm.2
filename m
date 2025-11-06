@@ -4,144 +4,116 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A72ACCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:09:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9A1E9CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:11:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 00B558E000D; Thu,  6 Nov 2025 11:09:27 -0500 (EST)
+	id 05E768E000E; Thu,  6 Nov 2025 11:11:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F24F28E0002; Thu,  6 Nov 2025 11:09:26 -0500 (EST)
+	id 035328E0002; Thu,  6 Nov 2025 11:11:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E3AE38E000D; Thu,  6 Nov 2025 11:09:26 -0500 (EST)
+	id EB4768E000E; Thu,  6 Nov 2025 11:11:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id CE27B8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:09:26 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 9BCFF1DF1F7
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:09:26 +0000 (UTC)
-X-FDA: 84080667132.21.470B060
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 3C013100019
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:09:24 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BgE4t36R;
-	spf=pass (imf05.hostedemail.com: domain of aleksei.nikiforov@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aleksei.nikiforov@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
+	by kanga.kvack.org (Postfix) with ESMTP id DB5668E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:11:22 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id B38BFB5CC1
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:11:22 +0000 (UTC)
+X-FDA: 84080672004.27.F25C16C
+Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9A3184001C
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:11:20 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iz4wuFZY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762445480; a=rsa-sha256;
+	cv=none;
+	b=K9EG/lg0uliCmaq7rUkyZUM46xADhHa/Rp/5xNw/ke/0gCMwmtrIICa8K1JEs/nS7tTmEs
+	gkoHSmQtKfFNJQBHYUCtByO7BVk0piMCdiGLpnirUbJ0YM3b/3ytp3QSUPni35up+foJa6
+	+xE5S0vkSJmpI6ut/YJVpxahDl5qcxg=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=iz4wuFZY;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf11.hostedemail.com: domain of urezki@gmail.com designates 209.85.167.54 as permitted sender) smtp.mailfrom=urezki@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762445364;
+	s=arc-20220608; t=1762445480;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NYh0v76lnnQ3448DOlCadXAQLR6tTdT6eiDqsyjof9o=;
-	b=tfLhKQ8CwHo/j5ywU08j+arUXyt6MrxW/dZHK5AeE2LOCwfq1UuFUcjClHDZ+w89s9/Q4H
-	cfRWZZ0v3pWOsQpzaq9TM8N6oXBXXFKe3Xzg1MAWVQCan//+qZWJirMfFGt2JhbOmQHorm
-	NEi7o53bhzh7+rVZLEBzu6oiYx9WuL0=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=ibm.com header.s=pp1 header.b=BgE4t36R;
-	spf=pass (imf05.hostedemail.com: domain of aleksei.nikiforov@linux.ibm.com designates 148.163.158.5 as permitted sender) smtp.mailfrom=aleksei.nikiforov@linux.ibm.com;
-	dmarc=pass (policy=none) header.from=ibm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762445364; a=rsa-sha256;
-	cv=none;
-	b=KpPb/HSQsoM9GUUY/B1en9JVUuFITITOPNN24vwr8CjofmiY5yxQW4W9EOHyFU/Qy3ACpN
-	vQifX8hmik8mPBQkk++vBuKsq+Pwo+8ZMiXOTtfZqSl91hPDGxol5Z7fW+CR631JhjgrEE
-	x6V8nWiJI/8bT9B6MV2xJyOpLhIqbJU=
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A67Xlmb000310;
-	Thu, 6 Nov 2025 16:09:22 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=NYh0v76lnnQ3448DO
-	lCadXAQLR6tTdT6eiDqsyjof9o=; b=BgE4t36R0Eqa6Th+cG5xGJL4pv3AGBRVO
-	7nnTZjOeGrw8AAYnPVYrgJT6g3iy5/2Y9im94JLe7xTmgoA2v0pN0qRbqHVzRFqn
-	J0s4pINlbm3/2jAsvRZMeO4Hn+sTpquLaJjH1V8p7xfqbP9zKm7tVDrfbCmCYc7H
-	xGMxIFf2XSea9MIXvei72YFwYYfnLoI2oxOxm1/qVL/hDsj6KBusBl1iR6S7Tuu9
-	LFxxzqhgZRRahSahyVz1OR4NRGAgta0qT19TG+sBGJHn+W4O+SlQd4EV+CdYg8nR
-	3vspaUME8LF4+7eQpnX+EnNF+tE1rIpfCd3sZIs1wlHUFZEkpuf+A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a58mm79ap-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 16:09:22 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A6FxNug017676;
-	Thu, 6 Nov 2025 16:09:21 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a58mm79am-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 16:09:21 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6CqSmw012872;
-	Thu, 6 Nov 2025 16:09:20 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5y826222-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Nov 2025 16:09:20 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A6G9H3930474584
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Nov 2025 16:09:17 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EE02520043;
-	Thu,  6 Nov 2025 16:09:16 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0A59520040;
-	Thu,  6 Nov 2025 16:09:16 +0000 (GMT)
-Received: from li-26e6d1cc-3485-11b2-a85c-83dbc1845c5e.ibm.com.com (unknown [9.111.24.158])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Nov 2025 16:09:15 +0000 (GMT)
-From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-To: Alexander Potapenko <glider@google.com>
-Cc: Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-        Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com,
-        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
-        Juergen Christ <jchrist@linux.ibm.com>,
-        Ilya Leoshkevich <iii@linux.ibm.com>,
-        Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Subject: [PATCH 2/2] s390/fpu: Fix kmsan in fpu_vstl function
-Date: Thu,  6 Nov 2025 17:08:48 +0100
-Message-ID: <20251106160845.1334274-6-aleksei.nikiforov@linux.ibm.com>
-X-Mailer: git-send-email 2.43.7
-In-Reply-To: <20251106160845.1334274-2-aleksei.nikiforov@linux.ibm.com>
-References: <20251106160845.1334274-2-aleksei.nikiforov@linux.ibm.com>
+	bh=m75i7vNoimficFnnD6P1eh7Qm/0yszGY8TVBpjGyd6s=;
+	b=OjpC9qOZSolSEvmhqdfoGIgaYaAwWYBr7NZmeRXXPLq4GVqw9qEvLNY04obYGw3iX6ktQC
+	Tzuf3o8FBC0MRVBnkyBLzk9k+JoErX6nEah88ien1XNyGg0ft5MSk3cb+0CinxR5UidqjA
+	mPT+N9dI8zYPKDpIBU9ujCc23FL2Uw4=
+Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-59435d82c1fso1282256e87.2
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 08:11:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762445479; x=1763050279; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=m75i7vNoimficFnnD6P1eh7Qm/0yszGY8TVBpjGyd6s=;
+        b=iz4wuFZYewLwhuhqylerNdWrDzGtSx9twctkvWc7Hlgjautylo7sldAbAWTDpjS6Pp
+         KL8MNrIPJyGFvgwJ4ifWpkk229M2+tpUcItMxh4V8yYJgfrKKkYZczNR9fRFumdQmpuV
+         hb9iXJIX250udXmndkOhO+O5qp6Bzn+FRMewqhpx8acggJXULGVMVfQFxg03eJg6Ggd/
+         PEKx9s5U8iFB8XO04eoeSV/hwyKFYHPSN3OnlpOFBhcU1cuEFBnRnJWj85Tmbe0/V5tl
+         5FYZta+go6l/fD9JiJ99YPpEik1Ryvx5a0JWN4toburcmgq3iwGL5rIPdI7kg16ryNwm
+         po8w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762445479; x=1763050279;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=m75i7vNoimficFnnD6P1eh7Qm/0yszGY8TVBpjGyd6s=;
+        b=ZSdGYWAyeBHNJVnvVRf7dduL0BgPiGagyrtbiKDalWNTrZiXuzkNky2zwe8TVDYy26
+         qNfu0QK1V5lxONuEYeKm2NRwCIpLVVd1J6rx5xUtPsq9jIK/hhsOQ6Ase97nL3ce3eFI
+         B6trRvOWddAAvtwBOlyYyU5zdJtvkp91NUaKkJpzEB4Qv9Keh1KI8xgG2LiK8LmPtFxU
+         e++K4Z5hXSYb/leCmr5H84QCyNEkDqCiqFg5b2yelEo2csu2th0TOQ9jaJ8gDmrqFdaw
+         GeLYcRqWqezcTgSuXOnwcsf1wtRFcAKGs8vz/zVbSDYlPKkIkVReNZYuVWDibNIQaLJ2
+         ksDw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiQA4cu9JWgZb+Vx6NP9dBGJ5VworcM8nuW6EFvCB5TCEcIqS4UtNGUyypmI6Riozy6uggxqWlng==@kvack.org
+X-Gm-Message-State: AOJu0YymXQLZbp18Mhg2+Dv+HDWpb1t5TPyL9U7mnQmZNvV9qwzaoUcL
+	9fZq2ZRcrJVM4e5mi7uFdhHhJj/gc/GnQSyji0FVqBfRGIOrKPIHS0hM
+X-Gm-Gg: ASbGncs1HsHqW+3cj/b+MMl/MB2mhbm765SbQ8C80eI4Fd7BJNQ/GZ4mhZrpEEFAVTv
+	A/nO78VKqxNx05BoQWpqnmN5asl5mrYwL8+V3XPioiRv83QHW+GzwI3bMwCx1alIVZKFg8pKG67
+	dJGlqVRGJeyADLPGMGPEdgTthN+JXuw1qyMqo0pRA3+aWO0ikh5COt7wQhTtBdo9Dt1kmBrOzzc
+	I13O54FN089u1oUCHI9lto1AqXvyohcoIuvrOWsAiiRrTLQJqOix5yk036sabx5Ohpbv7l6r/M4
+	OfLukJeTPSZ+IcHUzN6nMT+uaqaAPigPJ/XfboOgF/q2jHrJQ8wek1rhiDpvrkZYq4+boWRKhbs
+	MVnLHNmQuHX6nMOwxVslQH2vLkib6YHqUHDZvS2V77q+stL7B7aWESg==
+X-Google-Smtp-Source: AGHT+IGIIseZixMOo3+aCxB6RpKiM416jTA+ZGYYPPD7AoNcC+HpEflzewL39yo9nuj+SpbBpbmOug==
+X-Received: by 2002:a05:6512:3e27:b0:593:4a:a5cf with SMTP id 2adb3069b0e04-5943d814658mr2204519e87.56.1762445478234;
+        Thu, 06 Nov 2025 08:11:18 -0800 (PST)
+Received: from milan ([2001:9b1:d5a0:a500::24b])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5944a013cfesm811133e87.23.2025.11.06.08.11.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 08:11:17 -0800 (PST)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@milan>
+Date: Thu, 6 Nov 2025 17:11:15 +0100
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Uladzislau Rezki <urezki@gmail.com>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+	Christoph Hellwig <hch@infradead.org>
+Subject: Re: [RFC PATCH v2 1/4] mm/vmalloc: warn on invalid vmalloc gfp flags
+Message-ID: <aQzIo1ceCt3xP10o@milan>
+References: <20251103190429.104747-1-vishal.moola@gmail.com>
+ <20251103190429.104747-2-vishal.moola@gmail.com>
+ <aQopoAj3i2jdIX6V@pc636>
+ <aQvknlh6n7ncfAlA@fedora>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: hBw4vXcqyPgYlawhBneQH0p8B8IjDLLf
-X-Proofpoint-GUID: n58oJVejSDjFVhiU14KfQNzRI4mJJQv6
-X-Authority-Analysis: v=2.4 cv=SqidKfO0 c=1 sm=1 tr=0 ts=690cc832 cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VnNF1IyMAAAA:8
- a=uQN6hylD5dkGw-m7VIQA:9 a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAwOSBTYWx0ZWRfX9k7jBE+kZL0x
- SRPl4xn1zcpKVIzqzpkTGRBglAr9Aaf3xvzt5d9Fg9qFihXpLK37q0EhmQzuuyCi67wH/Pa9R1k
- zn5jVXTLD/U064fWWUbpr0iA25CUWH/aHLIGVBXbAXxctzzMonOXlSmulyfrmNesGbwOt/CepH5
- 83r6u8nJ4g+GYYH6/yWW/mtfd118yNZrazvSPOR6U67QRJXJvrpws0W5Bprkz00U5XyI3cOYy/r
- n28LaUGoCbMBLQh4+9aMsY8xNDUBpRnluMAXWnkVM/lnznULC6FIdbJRFLJ2pyxysZM+N0g/GXq
- UUg4DZi0/T/FuDtrWbpi4nMDbNvFw6odaVpBWdcVvVkPDL73L9TpKwpvMgpDtJaeLo5Am5zeWoE
- 344Fp7HzeXqKZmPpqb8Lk52w7r2dgg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 clxscore=1011 impostorscore=0 adultscore=0 lowpriorityscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010009
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3C013100019
-X-Stat-Signature: iaupnsupdekm4quezhsiquxp1fyj86xx
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aQvknlh6n7ncfAlA@fedora>
+X-Rspamd-Queue-Id: 9A3184001C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 1535bawxi8eyurpkj94ajwfbrxqhu5pc
 X-Rspam-User: 
-X-HE-Tag: 1762445364-336700
-X-HE-Meta: U2FsdGVkX1/eWdvZVS6SAZjSuAEPj8gKKgg2WjQoMLLEodqxH0j0haqlHl+tuO6jm7WdCZR2Gptx7SGQkqmPv+FjiEoyuCz0Ow2/GB6qER1S7mE7E/zQ1wGAVwjkes1sB9dkhDfr6dquNE8Ci3RvZJPHjJDtuDjM9K2h4OP0PmbpnBum3PWjXHc4P11rleeXkU5XRBYBfEifIceo0za7vyKI2fgb/eEPDZF+OBuo9HRan0Yjxw/f5rCJrY1WLyCsp8HDgkkV56r8Q8ZTpnU/iW2WUXs/KmIlVcnXfn0jBp3o+mQelKmCe2MhcLeEl8d1VrLaJOGFshi3cgH/Od52cm86ItqRx4eW6a/MpajoXncAFwKF9AIkiECpYK7r4ytyvZz+HgYOOxrt4JztmMKwA1tn4rkhpkX01/zbt8jJpE2BXS8WDXtao8xrMbBoB7osjQAZTRi6zYC5rSAzDx9cjAMTzLjCR590Kp9moOD7iYhkBddLpnIFcjaxodT32HY2vXa95nIvQzXlJoTf+P2Wiw21+FfioePiLRN0242soP4gMDwqSOhF74zWPxahiimg0sNBuOx5ubAAsnZNwMouZUteoppFWHH2NbaTDx7UTqjPOePq6ftS5lhTJaHn3ASKUjH3hx2WWp54lc+tUp6kYKswSwlvT8Myr0T5r8HUZxtFSkZIrJu8kTA5l9xsMZJLLNc9pzXHY7SrDC57YShzks8cNFmh9p0Hq3emJ1kYFoqSbT4uBwU2iOOrW9d3u5Gqr38NAXWV/G8BoPMlCMQ+NDbfhLQELBuNZf9GTt70mUcYWJlPvgMHZb2YxcJpIhu6GjzPmf4L3bTiIyI0EEUrEGKOfwZ1YNttZWODCM4u2JIIYPG4QozSFKSfn6557MQ/RzeeHb3hleU2DhKRNbuKyBr6lhWQfl8nBOwd/ffEmczHMZ3HsrOA91/W9JdROL52T2mSJmALP1feZEmu0Ba
- RQGjjuyl
- fYp2c0/uL5KlnOD1HXzmUr/JeJgxRChUOQ5fLyeOUn9yhi+OSiYU1gNM5kSukAqozuilUTOvHF3N+CNBsdNovMGnMDp9BAtxco8UXgHvzb9y7CpIhCOrzLoGNZVrnTOskHCXaNoK7sVkZMkBCNsMHNdPNWocKsTHrolWnatZ57dkk/jrDlinxg6eWUGdtrQpieASVO7UQQCo9y5/rMwvgCxnSwVqE28wYKZRJi1u5QlGtA/86zLYAzR+2fPWyOjNH6shqaVPVFv3qAkUUChwYilXCvFaA2AY7meRpqE4JXIDRqGpcYX/O5y0B7DIJZXV/g/hZ1Xm7EXO19t4/qFzaSw1321WPsVyoC89HQvpCAGT2dKWmc1AOVnfLVA==
+X-HE-Tag: 1762445480-576926
+X-HE-Meta: U2FsdGVkX19fj7OvybMEaASI/mkP/0rg+TjrvcCdt/IqEg/7AyuZqeAKvDuO6DI19exlghIyPjcaieOIXrPElv26aXmLBRrY3DcZXjyLHjR4HxODjYt52bCohvlpC8a8EkPLqq9fgZg2VV6bw/nvKUfIr1C1nb9XKEc+/7PGcmbflwPqGBkPp45PbQsBIpk+Y3N2XvAx50E0P8WPbpM6lExEvbtZjShKep/dd0lHKWOchA8Dn5a5Jtc80eHJp3VPnAw0S5IW0ZEuXuU5HNEcOyjzYZrzi1JlGADxl4+8+YKukpH7FfQCeqU+24HP9Qlc1SQNsibsrP7ur1fAyc98aAC6mroGCEBv7qIvNLLrFZMghcnsCjkwufbVIZrnUU0WHcIZwUwU/jtEHQxbbP87Lf9XOCA7MVrrJpDH3wtwuAkOaOZuUazSmsVEMndOPp3WUcDAIiYaoTMJUxCbUhIbBKYwjOCsXWllBBvRcG71Jkks4z6zXnxpjIGWeRIvhP9JKbDFhMuaJiaWX6JHs+VAUj34CbwHbgVeT2KKklKk+HSCpzD3n8RXtXPTEd1qlvwpvK4xi+ePPYuveJN4webd3YkshWLzT8X7yW3WBKwBNOEpv7AiDGNjs1vs6lGepVYGFl22nFXY1q4z87ssNDsq9MQUZvJmNyv1O8vLjzbXTW/hXFaW6OS/TyemcC6+E9y/NwgW/hu683YybjKSGauwthabBI6FcS4hBMyx18OatX8nLm4DuDu5IGVdiFP9qbBXNVNeRJ5BUPtuzhUP9I5WBjRM0C6lJcZhu2CCRf54yNKguQ4vJv4GMbmb7iWjZhAHJPkaAmXHOwFI8CO/FnuYYjxHvMy25wypUTZFUos6USZH3H/aSl9k70rznlV2HzDsfTPRm+C9tPzS6l249sj+TqIMYF9huTgt2rc05XHXamo/v8AxoC661iIugN7lCRR/Pdcw/w2S1OoHOOfBREj
+ Hed4U2Oa
+ 1MDzsvgukFX5ZtrHYti5uiyNayGD2uZLBXC+3hRXdBcylGhTKeGlNmBrJqR5ALhvgGdtuFaKeG7yq1DkOpZCkdYbembMcNgIfXYefc3zbQreOpXQkzcABF5TeTzlj5NY9bcKMBv06WhFS+kvI1cXZcllQbLI2HRe7LdfAbpleIuTnkt2oOeHIxrev76l3evV1eFrrhfksPD8h1cb/pZXd0X0KSjrXzzt2BWlSM8DKHZbqC1pSTNFqH7Vx2gE2978oAS7EXGctCw6EGdyfKlrQOM4n7hrEqn4e658cmcfw6PA6Qpzs/MSoOQOjHa+AHjUv2t9i41uRSYCkSwdx248W0ZzIq94Nzg8krN7DuFcrDcvNoGp82nW8uPeeYbgsqCBdOLLf/oQAmTtYrQ5AoGuuh1jj6KoZKDYRGJwVwy1iScZU//YlPjUq+zP7QRJCy3XF5Y/zsV/PQLbHZ8u7fDQ7T1CftEm9T3086v8E2RL1sB8ZiHZ5/wZfHWoRIasqSdptAw8jrmqhbcoTkl/KaMrb1IqUDjw/LofQSMOWX1l3G6OPDFg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,138 +122,107 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-clang generates call to __msan_instrument_asm_store with 1 byte as size.
-Manually call kmsan helper to indicate correct amount of bytes written.
+On Wed, Nov 05, 2025 at 03:58:22PM -0800, Vishal Moola (Oracle) wrote:
+> On Tue, Nov 04, 2025 at 05:28:16PM +0100, Uladzislau Rezki wrote:
+> > On Mon, Nov 03, 2025 at 11:04:26AM -0800, Vishal Moola (Oracle) wrote:
+> > > Vmalloc explicitly supports a list of flags, but we never enforce them.
+> > > vmalloc has been trying to handle unsupported flags by clearing and
+> > > setting flags wherever necessary. This is messy and makes the code
+> > > harder to understand, when we could simply check for a supported input
+> > > immediately instead.
+> > > 
+> > > Define a helper mask and function telling callers they have passed in
+> > > invalid flags, and clear those unsupported vmalloc flags.
+> > > 
+> > > Suggested-by: Christoph Hellwig <hch@infradead.org>
+> > > Signed-off-by: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+> > > ---
+> > >  mm/vmalloc.c | 24 ++++++++++++++++++++++++
+> > >  1 file changed, 24 insertions(+)
+> > > 
+> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > index 0832f944544c..290016c7fb58 100644
+> > > --- a/mm/vmalloc.c
+> > > +++ b/mm/vmalloc.c
+> > > @@ -3911,6 +3911,26 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+> > >  	return NULL;
+> > >  }
+> > >  
+> > > +/*
+> > > + * See __vmalloc_node_range() for a clear list of supported vmalloc flags.
+> > > + * This gfp lists all flags currently passed through vmalloc. Currently,
+> > > + * __GFP_ZERO is used by BFP and __GFP_NORETRY is used by percpu.
+> > > + */
+> > > +#define GFP_VMALLOC_SUPPORTED (GFP_KERNEL | GFP_ATOMIC | GFP_NOWAIT |\
+> > > +				__GFP_NOFAIL |  __GFP_ZERO | __GFP_NORETRY)
+> > > +
+> > > +static gfp_t vmalloc_fix_flags(gfp_t flags)
+> > > +{
+> > > +	gfp_t invalid_mask = flags & ~GFP_VMALLOC_SUPPORTED;
+> > > +
+> > > +	flags &= GFP_VMALLOC_SUPPORTED;
+> > > +	pr_warn("Unexpected gfp: %#x (%pGg). Fixing up to gfp: %#x (%pGg). Fix your code!\n",
+> > > +			invalid_mask, &invalid_mask, flags, &flags);
+> > > +	dump_stack();
+> > >
+> > WARN_ON() or friends? It prints the stack.
+> 
+> My understanding of WARN_ON() variants is they're used for internal
+> kernel concerns, while the pr_warn() variants are for situations like
+> this where proprietary drivers can cause unexpected behavior.
+> 
+As far as i got, we fix the mask if it contains buggy flags. In that
+sense it is absolutely OK to warn and print the stack of caller that
+violates the rules.
 
-If function fpu_vstl is called with argument 'index' > 0,
-it writes at least 2 bytes, but kmsan only marks first byte as written.
+> > > +
+> > > +	return flags;
+> > > +}
+> > > +
+> > >  /**
+> > >   * __vmalloc_node_range - allocate virtually contiguous memory
+> > >   * @size:		  allocation size
+> > > @@ -4092,6 +4112,8 @@ EXPORT_SYMBOL_GPL(__vmalloc_node_noprof);
+> > >  
+> > >  void *__vmalloc_noprof(unsigned long size, gfp_t gfp_mask)
+> > >  {
+> > > +	if (gfp_mask & ~GFP_VMALLOC_SUPPORTED)
+> > > +		gfp_mask = vmalloc_fix_flags(gfp_mask);
+> > >  	return __vmalloc_node_noprof(size, 1, gfp_mask, NUMA_NO_NODE,
+> > >  				__builtin_return_address(0));
+> > >  }
+> > > @@ -4131,6 +4153,8 @@ EXPORT_SYMBOL(vmalloc_noprof);
+> > >   */
+> > >  void *vmalloc_huge_node_noprof(unsigned long size, gfp_t gfp_mask, int node)
+> > >  {
+> > > +	if (gfp_mask & ~GFP_VMALLOC_SUPPORTED)
+> > > +		gfp_mask = vmalloc_fix_flags(gfp_mask);
+> > >
+> > gfp_mask = check_and_fix_flags()? 
+> 
+> I just mirrored how its done in mm/slab.h. IMO its cleaner to keep
+> the check out here and have vmalloc_fix_flags() stick to one thing.
+> 
+> If you really want it as check_and_fix_flags(), let me know and I'm open
+> to changing it in the next version.
+> 
+Well, i will not insist on. You decide :)
 
-This change fixes following kmsan reports:
+>
+> On another note, I'm now realizing I forgot to mark the check as
+> unlikey(). I'll include that in a final version once the other 2
+> patches have been looked at.
+>
+Sounds good. One thing i have noticed, it is below peace of code:
 
-[   36.563119] =====================================================
-[   36.563594] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   36.563852]  virtqueue_add+0x35c6/0x7c70
-[   36.564016]  virtqueue_add_outbuf+0xa0/0xb0
-[   36.564266]  start_xmit+0x288c/0x4a20
-[   36.564460]  dev_hard_start_xmit+0x302/0x900
-[   36.564649]  sch_direct_xmit+0x340/0xea0
-[   36.564894]  __dev_queue_xmit+0x2e94/0x59b0
-[   36.565058]  neigh_resolve_output+0x936/0xb40
-[   36.565278]  __neigh_update+0x2f66/0x3a60
-[   36.565499]  neigh_update+0x52/0x60
-[   36.565683]  arp_process+0x1588/0x2de0
-[   36.565916]  NF_HOOK+0x1da/0x240
-[   36.566087]  arp_rcv+0x3e4/0x6e0
-[   36.566306]  __netif_receive_skb_list_core+0x1374/0x15a0
-[   36.566527]  netif_receive_skb_list_internal+0x1116/0x17d0
-[   36.566710]  napi_complete_done+0x376/0x740
-[   36.566918]  virtnet_poll+0x1bae/0x2910
-[   36.567130]  __napi_poll+0xf4/0x830
-[   36.567294]  net_rx_action+0x97c/0x1ed0
-[   36.567556]  handle_softirqs+0x306/0xe10
-[   36.567731]  irq_exit_rcu+0x14c/0x2e0
-[   36.567910]  do_io_irq+0xd4/0x120
-[   36.568139]  io_int_handler+0xc2/0xe8
-[   36.568299]  arch_cpu_idle+0xb0/0xc0
-[   36.568540]  arch_cpu_idle+0x76/0xc0
-[   36.568726]  default_idle_call+0x40/0x70
-[   36.568953]  do_idle+0x1d6/0x390
-[   36.569486]  cpu_startup_entry+0x9a/0xb0
-[   36.569745]  rest_init+0x1ea/0x290
-[   36.570029]  start_kernel+0x95e/0xb90
-[   36.570348]  startup_continue+0x2e/0x40
-[   36.570703]
-[   36.570798] Uninit was created at:
-[   36.571002]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   36.571261]  kmalloc_reserve+0x12a/0x470
-[   36.571553]  __alloc_skb+0x310/0x860
-[   36.571844]  __ip_append_data+0x483e/0x6a30
-[   36.572170]  ip_append_data+0x11c/0x1e0
-[   36.572477]  raw_sendmsg+0x1c8c/0x2180
-[   36.572818]  inet_sendmsg+0xe6/0x190
-[   36.573142]  __sys_sendto+0x55e/0x8e0
-[   36.573392]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   36.573571]  __do_syscall+0x12e/0x240
-[   36.573823]  system_call+0x6e/0x90
-[   36.573976]
-[   36.574017] Byte 35 of 98 is uninitialized
-[   36.574082] Memory access of size 98 starts at 0000000007aa0012
-[   36.574218]
-[   36.574325] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   36.574541] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   36.574617] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   36.574755] =====================================================
 
-[   63.532541] =====================================================
-[   63.533639] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-[   63.533989]  virtqueue_add+0x35c6/0x7c70
-[   63.534940]  virtqueue_add_outbuf+0xa0/0xb0
-[   63.535861]  start_xmit+0x288c/0x4a20
-[   63.536708]  dev_hard_start_xmit+0x302/0x900
-[   63.537020]  sch_direct_xmit+0x340/0xea0
-[   63.537997]  __dev_queue_xmit+0x2e94/0x59b0
-[   63.538819]  neigh_resolve_output+0x936/0xb40
-[   63.539793]  ip_finish_output2+0x1ee2/0x2200
-[   63.540784]  __ip_finish_output+0x272/0x7a0
-[   63.541765]  ip_finish_output+0x4e/0x5e0
-[   63.542791]  ip_output+0x166/0x410
-[   63.543771]  ip_push_pending_frames+0x1a2/0x470
-[   63.544753]  raw_sendmsg+0x1f06/0x2180
-[   63.545033]  inet_sendmsg+0xe6/0x190
-[   63.546006]  __sys_sendto+0x55e/0x8e0
-[   63.546859]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.547730]  __do_syscall+0x12e/0x240
-[   63.548019]  system_call+0x6e/0x90
-[   63.548989]
-[   63.549779] Uninit was created at:
-[   63.550691]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-[   63.550975]  kmalloc_reserve+0x12a/0x470
-[   63.551969]  __alloc_skb+0x310/0x860
-[   63.552949]  __ip_append_data+0x483e/0x6a30
-[   63.553902]  ip_append_data+0x11c/0x1e0
-[   63.554912]  raw_sendmsg+0x1c8c/0x2180
-[   63.556719]  inet_sendmsg+0xe6/0x190
-[   63.557534]  __sys_sendto+0x55e/0x8e0
-[   63.557875]  __s390x_sys_socketcall+0x19ae/0x2ba0
-[   63.558869]  __do_syscall+0x12e/0x240
-[   63.559832]  system_call+0x6e/0x90
-[   63.560780]
-[   63.560972] Byte 35 of 98 is uninitialized
-[   63.561741] Memory access of size 98 starts at 0000000005704312
-[   63.561950]
-[   63.562824] CPU: 3 UID: 0 PID: 192 Comm: ping Tainted: G    B            N  6.17.0-dirty #16 NONE
-[   63.563868] Tainted: [B]=BAD_PAGE, [N]=TEST
-[   63.564751] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-[   63.564986] =====================================================
+/* __GFP_NOFAIL and "noblock" flags are mutually exclusive. */
+if (!gfpflags_allow_blocking(gfp_mask))
+	nofail = false;
 
-Fixes: dcd3e1de9d17 ("s390/checksum: provide csum_partial_copy_nocheck()")
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
----
- arch/s390/include/asm/fpu-insn.h | 2 ++
- 1 file changed, 2 insertions(+)
+i forgot to drop the __GFP_NOFAIL for non-blocking flags. But this
+is not a problem of this series. I will fix it by sending the patch.
 
-diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu-insn.h
-index 135bb89c0a89..151b17e22923 100644
---- a/arch/s390/include/asm/fpu-insn.h
-+++ b/arch/s390/include/asm/fpu-insn.h
-@@ -393,6 +393,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
- 		     : [vxr] "=Q" (*(u8 *)vxr)
- 		     : [index] "d" (index), [v1] "I" (v1)
- 		     : "memory");
-+	instrument_write_after(vxr, size);
- }
- 
- #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
-@@ -409,6 +410,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index, const void *vxr)
- 		: [vxr] "=R" (*(u8 *)vxr)
- 		: [index] "d" (index), [v1] "I" (v1)
- 		: "memory", "1");
-+	instrument_write_after(vxr, size);
- }
- 
- #endif /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
--- 
-2.43.7
-
+--
+Uladzislau Rezki
 
