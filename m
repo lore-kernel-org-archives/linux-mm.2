@@ -4,115 +4,74 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id AF0A6CCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 08:10:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F076ACCFA03
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 08:24:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CC74D8E0006; Thu,  6 Nov 2025 03:10:02 -0500 (EST)
+	id 0B3EC8E000C; Thu,  6 Nov 2025 03:24:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9EFA8E0002; Thu,  6 Nov 2025 03:10:02 -0500 (EST)
+	id 064AF8E0002; Thu,  6 Nov 2025 03:24:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BDB958E0006; Thu,  6 Nov 2025 03:10:02 -0500 (EST)
+	id EBC2E8E000C; Thu,  6 Nov 2025 03:24:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AD41F8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:10:02 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 6D3D712C81B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 08:10:02 +0000 (UTC)
-X-FDA: 84079459044.07.8F0149F
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 5CC7A20009
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 08:10:00 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UsIg8ruL;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
+	by kanga.kvack.org (Postfix) with ESMTP id D5DF98E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:24:42 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 875861A065A
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 08:24:42 +0000 (UTC)
+X-FDA: 84079496004.22.FC42AA0
+Received: from mail.eskimo.com (mail.eskimo.com [66.114.134.197])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 11C6A8000E
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 08:24:38 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=reject) header.from=eskimo.com;
+	spf=pass (imf02.hostedemail.com: domain of nanook@eskimo.com designates 66.114.134.197 as permitted sender) smtp.mailfrom=nanook@eskimo.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762416600;
+	s=arc-20220608; t=1762417481;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lfRQ4eBcjmm2Bq3zjTX5qrRFTj0WFq+LzwsImYnihBs=;
-	b=w+C3EprpHl3D+Od/+QDlo6uVdg+T7k+9VqSpBj/9djCvOf695NPakaz6ar88ptE4Pjwy6J
-	EHa5xRyJBYg6LV6rirUTLKF5QY23jsSlplX1lxDKMqrvokAXS1jKTwEw/o1tvmjdNzMooG
-	9HT8XuRrCRHLxrDtE2tcNed9SBaYixU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762416600; a=rsa-sha256;
-	cv=none;
-	b=JPJFxjIkQR+LmW/ILV9td/T6Q0PQLU4OBDfbHPOXvZxiS8ZMsl22CbmVk2nd+gYMC3ZNiY
-	Ksc7bmbOM7iIELGawcLqG1cB/+T2lnYrUwRVmMiEyNFgLZPNDptfoL1BcN6zBV7yTmCoTN
-	ZZvFdzRax5Cz7eFeyrGkj1V7dYRB+1E=
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9HPxNvMUKXtBCbAwN1IF8ciB8pgGU0QgOGk6rA/B5EQ=;
+	b=AD+zKG9/2WLDyzoVUtSYq0RzIXTqZBVoGVdLEkucZQ5pEq0EFxugRF3KZnwwTgQZDQj532
+	EiyR9TaQM+1+TBHRmXPR+SOs5fpSUKqoG0134/qOKfCTo13qs2AjvzbSjmqd+oa4O1yzaO
+	wr3Hp4goKRPYJDqH7NUuLlLNXkZzR4w=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=UsIg8ruL;
-	spf=pass (imf03.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.48 as permitted sender) smtp.mailfrom=mhocko@suse.com;
-	dmarc=pass (policy=quarantine) header.from=suse.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-afcb7ae6ed0so109115066b.3
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 00:09:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762416599; x=1763021399; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lfRQ4eBcjmm2Bq3zjTX5qrRFTj0WFq+LzwsImYnihBs=;
-        b=UsIg8ruLzgbKiPuTqbmf4qQGhTUyLQSHkXnm/Ch85W4gFwgMP6aUVZ41hO/j8TVRmW
-         X+DFJSgxbKSxk553rYhp2PJbicHu0KjCWIJbsBtyc+Lr5HL+2yY4XaqKAH8zBPc5yrW1
-         +O4CeoIUK/TKHeQojCp/kRwVArONTEmSR9tydoO+MVXBj/yTCWWO8s3LviGmVrf9bcSf
-         zH/V6ZKwEVXSg30XlXSl2Gq4lqDljsmQMcYpmxS0xdN+VWTzB5teDFpj4mH5ajKu+KIO
-         IZUNjkqbKc+2dLnrRDIVpRF8hBweqPJTrrSFLckZs793GlUIZ/Kt1mXDxko3NLApbvS9
-         JP9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762416599; x=1763021399;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lfRQ4eBcjmm2Bq3zjTX5qrRFTj0WFq+LzwsImYnihBs=;
-        b=ljsjXUbag2NOp1gIX/7Yu8eM2S5XeLgSUO2aajKTggxw2soxRUbE8SwapnSDNmqg7a
-         ZMY565BbpBwmggkogD/npZ2vE18Wa8vmZ/IwbZqYT0+1xne2ANN+j+fgi/3xVTdp65Ud
-         PaDWus2fuu2bkmFRmNgKjGSpXLA4CVKDvACctVYRVKHzbjpotiMEEH28tKOpvTeMGv79
-         7qTdYYOZufLiSyTf6DvRVIc7HD9D2khYbf0ljblkkMENh9+rr079f0IOcJA4KQu6h9+Y
-         dD7OySNy9fNktaOBA9vRsaMB6+6h7Y9pc+LsnCJjEvQBhgIvCcuzKkQpVO85YHAR9ISu
-         60FQ==
-X-Gm-Message-State: AOJu0YxNcifXibVGBhe3Gngjhj04Kn3mHrQ7I2sR70laLGFSOdTYAit6
-	bhj0SXEu0grWIwy1jUE0NIRR5R+eWULRQq1+Idwj7g/uhyFxTjcJ5hyR1APnRNKEaZQBea96F0C
-	VvuKH
-X-Gm-Gg: ASbGncvW3s1kx8C1Pwvl389ZzZjYfNiVPNeVhzxjaTmu1KKyFKg87LU4YadHa2PgL13
-	qlNo91rFlQ8vB1bMnTbbF4Vg/8OWCYQ/4XUMOZAs4H/gh35d/6KXloKXyr6flxTII0JBJQo2GDg
-	LR5REuESVkAkrCzOC39V6K6Syk6mHeoHlICj7zmTJb6NB4fmLXDOKJuTnFk7YgRrnU/k5mtVILy
-	oJ+MhiCVMxA1R3AQ86pRaW9g+f89wGvm8eEUy28v7N7ZO/d1bhAkorQIRnzpC67h6exPiG8BiLz
-	Md1795B4Rs+6taf6tHmYQXDawPT/ypXCs+9ZGtzGjoEnz1UhTcTmq05zxVzQdRoi2Ki91zIs9SF
-	yeNb2HcLBuwjL4Sc3qdEoY1dKdTuL0Mn1H1LLN8XvuXSZBd62U0VbLxT+He8RFgIVG/UkEiAqaL
-	ufXdqRRzx1cS8TjX5Y+LnwRS0b
-X-Google-Smtp-Source: AGHT+IEo2DMbd1CJeXhEfOo3Lj6cQEv/ZFkX4Hv0G5JRAe6kcb6PCnhyhUmPNd+1xBCZ+FWTBl74sg==
-X-Received: by 2002:a17:907:2da3:b0:b5b:2c82:7dc6 with SMTP id a640c23a62f3a-b72654ce3ffmr706771766b.40.1762416598738;
-        Thu, 06 Nov 2025 00:09:58 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f8578d4sm1211858a12.18.2025.11.06.00.09.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 00:09:58 -0800 (PST)
-Date: Thu, 6 Nov 2025 09:09:56 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Robert Dinse <nanook@eskimo.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+	imf02.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=reject) header.from=eskimo.com;
+	spf=pass (imf02.hostedemail.com: domain of nanook@eskimo.com designates 66.114.134.197 as permitted sender) smtp.mailfrom=nanook@eskimo.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762417481; a=rsa-sha256;
+	cv=none;
+	b=srph6lQkWD8YL/S5xd9QQI1OnOshbX/HWa+FLn0fcgF2fQVwDcKoS9h2KXSnpKc/T7EAJn
+	20NtgDvzF/WXQgkTafCPG6lCPAUAVFL4IzguKqZHKQSTWErIX8UA6rVShgAnQpX9gUONm5
+	WyihT5e1w9c+A39HAkEpN4cu0pgTZ7I=
+Received: from ubuntu.eskimo.com (ubuntu.eskimo.com [IPv6:2001:560:4407:1::106])
+	by mail.eskimo.com (Postfix) with ESMTPS id 10A2E3C1BE1;
+	Thu,  6 Nov 2025 00:24:37 -0800 (PST)
+Date: Thu, 6 Nov 2025 00:24:36 -0800 (PST)
+From: Robert Dinse <nanook@eskimo.com>
+To: Michal Hocko <mhocko@suse.com>
+cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
 Subject: Re: Folio Related Stability Crashes in 6.17.5 and 6.17.6
-Message-ID: <aQxX1HdOnVZJAERp@tiehlicka>
-References: <b964df0f-45e3-4fea-a84d-852869b49502@eskimo.com>
+In-Reply-To: <aQxX1HdOnVZJAERp@tiehlicka>
+Message-ID: <41d1cb48-7711-690e-c9a2-978e0f96f5d6@eskimo.com>
+References: <b964df0f-45e3-4fea-a84d-852869b49502@eskimo.com> <aQxX1HdOnVZJAERp@tiehlicka>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <b964df0f-45e3-4fea-a84d-852869b49502@eskimo.com>
-X-Rspamd-Server: rspam12
+Content-Type: multipart/mixed; boundary="1916979846-979605391-1762417477=:3951505"
+X-Virus-Scanned: clamav-milter 1.4.3 at mail.eskimo.com
+X-Virus-Status: Clean
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 11C6A8000E
+X-Stat-Signature: zkuj1zq7p6sntihf4ppjq43w6fzfiwxk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CC7A20009
-X-Stat-Signature: pwsj4g8dfd1ike4bxzdrxhur5ib3qm4u
-X-HE-Tag: 1762416600-78818
-X-HE-Meta: U2FsdGVkX19uvMYnk4LyIp/axOYRzYmcGZbld2XU0zUn6tWYRANlBSEK8O69yCD9iEwebZP+8w2YJhMcSr7dil3hM9vl2kSX094ngXbzy2Jd/YsZS+OmPJILx7nXwFqIXVJd3UjdN70wmwEMv5kI6dQPQS0oOuZmO2UPZeUjuTp9uqyYmN8ernMd0PfFa5MvovZmhH23BW1snlE8KaT+1viqPSK17m1h6hhdPsdcaoqz8KiZ/sfePc8Hd6paBSWs/bf8iq8bPxM5Y5VDlq4P/kWdvFZT7mIQ8beE67JlWcudS/FTeNTsic3zj/j3jtdixcHOw/QvUrEK07vbQ05YWhP0Rppw1KEMw0kNUCAM0zJGg+RG4gXbURb/SuFRdrU2ztNXzD9K+I3bDnqWZUB1W8CzH22gOx4DBulu/1cbKs8C/kE9kOBHx8C5mYhTfx1e634lqQeU/mQdmQdqXIJcb0hED9M3c9eAz6PZBldxkst0lFLpOHAqgdwSBVz2IE7fkO0lUDGV39LDVf/u2n57Ob2A09vr2g3xqASG969xQjv+bUM7AQgMlp0jg5CIw238WHeXf63hUwuOALhA8VKqT4Wiyo9CKkM8TKUsDwoRV6fiBggdjFvYM9Vd8zosjDjvPYzJrEh2eebR1/TYK4985A0xrW4SxLqXccGC5xqWg0jazGbXP+Fth+tCrFkcUrDUitNl0I8FxiyiXFENQd7lp6Yg5kYPtxNeUx/S2kL/cIqmGDSvMCn9wBPhitlr5aDgYymixuzKLprxnUlpAhIqQo1R5cmQhPEDgNzZiYjHZBJzGKZJ3U3SiVy1sYnz25IQ7XCzG6MlUUBKFejw44oHOuxglvSF8kWFjYT1W9Uv30+gOWTfMjFQchNeYUJoZkiw/dQGWnJkqitSGCbHFG0whVu8Rmc1jkldW77tvG3MBbhLpS/YOJaYng9vFhYIp3nAJa9zlSCw+RoL5gRHk83
- jfjL0J63
- nIOnFhP8pqRIDP0chtV+8Eup/gSgQMzzF90Lln9xgfYWIYtpS95z/XVk9jgZtO17ay5YGQq0OBH49smI+Wq+04fNqfIo9ATG5nqObDilppLDhc21p2lkWDTkIQYp+hX4M/tOS/j/4+Az/T+pkSyaW9OyHEUPELAihG1P+n63OJbBj3bS68NC41FDpLvoISZ/uF2QZ+QibES4fD40O+Zy+6xEGhijvOMFkPv2Ac3H2zDf4lqWo17pO+bYOFBbZUuZfL9z22hdq9u3mc7FRnX9KvGidCEJCQJGUR9IHdq9S2nMeAlPN07W+NlLb4To9HyqMQIuHluTCO18VTOf+LtGe5NA18yvGLZ839Lkv+whgUyXgBYBTnO1oBh/PfKS1FSXqbRl1
-X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
+X-HE-Tag: 1762417478-850535
+X-HE-Meta: U2FsdGVkX187injeU22q8Yu8qm/WQMLfYprVdEQMqujR9HIIgZ8qLrLZmpbzjBwJXe4Be75YkBDxxMrumaLuoFE/bQrD9RSHfNZwBO7TkbDqewv0kRw2IWV+06g5j6Fm4ORpd6YYmEAqWtlSHUAYs4rSTU7MijmHBBsH7DvtGqq/+kPB8gsARz1onhczAV2u4228ldKE9uNroEXyUSfoBfP256NEXsQRsw1GqR8yalt8Q0o8S36mg+R3bt6gjOCpcBhEV4SjqiCfTS8TDvGEdJ65Sy1A4hQPnmebWUK88duMtyiV5+A2IHck/WEh+q0pSuwXfPQi+1/so1jk8LojwF90g76J/KtxgSYmygHpxCtzrCxJoGgzmBEIunB/fR3LMcr+stPyS49UOpNRwWvYBn4AqfDfcC5PvomvZiQmncoOnJj8A+vA75ceAlyM610990b1G0wuOoE5c+7nQth/gjfv90FvdAlXKLWFz/dvICKKym5+gSq838IcW4Mq583DDk0YpHXtSV/JAXWNYDFZ3ILqbMWLSa+6puKco1Zy5Wsj/JasAq+EW/WdC1SnZMZ3G+UBKBYO1ENwF4fhql0FdHM4kdAf6OprQylzyuKaUz7z9cFrFbdNnXYi2lgmHo/H600RhnfKhKcXbMIyjT1uVw9CzR3a86zHxFjvLBQcNMFYCLTte8jMVou6AkUYGequClhHA2TndrFEYn4yKFJhOBFUXGqiz296dEV5461Jv6hv/xOu9RIzN/srhwKPTBs/EgDoksYoAMYk3QChF6Lx+M74CnTtajDcIaeuHVoXxYSnsbySFlH27Ih+Aho6uQLSI3GXhs1/8ei/0JxtNhz4UA5ntAefDR7IJIc1HCX3DOzUXxNFaPWQ1/JVRgnPoIwQ96eIGCt3GMH0VIxiZI482d8ltzc6lXtDawhCfy4jLMO+tpLJhucZX9c/xh5t1nG7dov0BFNccWL6mw0IPVs
+ NgDEEMfE
+ uF3hoFZcfzbhN+pvkeP66EHgebWQBmN1CXL/o9EiJP5KvF94O2WixfXEdXTaIgsaNzRqN6ZVfxguv2dnLP+UWnmU+SF0FCw/dCmGWNYBNiT/ZsP8j/IOSsM98+i0jS94aUprnQZHCsehp3PgxhjCdesE8r1KcTEdIAjzu2ixzJfvVEwHGKZQk2uBSKKJI1FfOA1LaJoR5sjrw0krEEmfcCht9LzygR72Z5WIGdbDL981CqpxTvDyQLvjo7drcVO4zOt+MB8vE6TKjaWXvVvnzKEzMtAtUIqNLCJdPeFU6xdN5oznohS1FAIPqPndXIXmPPNz8iNdUpGAxjruQ4RR7oR76YtUzDYm0ZV2AfY0ddOf8cihL0ErMeF6TM4CrSDuamQVyg8A89ub7hrpU6orAQHpRGaIvh4HppoDkeGrD4m80O8Wspe3zzBxf50+Rw6IjQPxYvi4XtvF/n7PreADLO1O3gnsgqLKJve9AVbFojetgHmL+WJ7dHXUluGmHdJ17NojTOmMBc4Kif6Tow8Zjkfsu2Lw8nGA1qVlJzErEPSxd37XtXQH1UCXgVg==
+X-Bogosity: Ham, tests=bogofilter, spamicity=0.003023, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
 X-Loop: owner-majordomo@kvack.org
@@ -120,13 +79,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed 05-11-25 19:19:17, Robert Dinse wrote:
->       Since 6.17.5 I have twice had one of my servers lock up in a state
-> where it still routed network traffic and responded to pings but no user
-> programs are running.
+  This message is in MIME format.  The first part should be readable text,
+  while the remaining parts are likely unreadable without MIME-aware tools.
 
-Can you reproduce with the current Linus tree?
--- 
-Michal Hocko
-SUSE Labs
+--1916979846-979605391-1762417477=:3951505
+Content-Type: text/plain; charset=iso-8859-1; format=flowed
+Content-Transfer-Encoding: 8BIT
+
+
+      I am installing 6.17.7 presently, I was a little resident to install the 
+current tree on a critical machine.  If need be I will.  Also, I do have a 
+crash dump on the last failure if that would be of any help.
+
+-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-
+  Eskimo North Linux Friendly Internet Access, Shell Accounts, and Hosting.
+    Knowledgeable human assistance, not telephone trees or script readers.
+  See our web site: http://www.eskimo.com/ (206) 812-0051 or (800) 246-6874.
+
+On Thu, 6 Nov 2025, Michal Hocko wrote:
+
+> Date: Thu, 6 Nov 2025 09:09:56 +0100
+> From: Michal Hocko <mhocko@suse.com>
+> To: Robert Dinse <nanook@eskimo.com>
+> Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org
+> Subject: Re: Folio Related Stability Crashes in 6.17.5 and 6.17.6
+> 
+> On Wed 05-11-25 19:19:17, Robert Dinse wrote:
+>>       Since 6.17.5 I have twice had one of my servers lock up in a state
+>> where it still routed network traffic and responded to pings but no user
+>> programs are running.
+>
+> Can you reproduce with the current Linus tree?
+> -- 
+> Michal Hocko
+> SUSE Labs
+>
+--1916979846-979605391-1762417477=:3951505--
 
