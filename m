@@ -4,177 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5BF5CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:27:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 92ED5CCFA03
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:28:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 25BDE8E0019; Thu,  6 Nov 2025 09:27:41 -0500 (EST)
+	id F2E008E001A; Thu,  6 Nov 2025 09:28:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 233418E0002; Thu,  6 Nov 2025 09:27:41 -0500 (EST)
+	id F054E8E0002; Thu,  6 Nov 2025 09:28:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 149B38E0019; Thu,  6 Nov 2025 09:27:41 -0500 (EST)
+	id E1B538E001A; Thu,  6 Nov 2025 09:28:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 05FCD8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:27:41 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id AFD55C0116
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:27:40 +0000 (UTC)
-X-FDA: 84080410680.27.7DBB5BF
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 1F304180011
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:27:37 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UM6v927M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NYryjSG6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UM6v927M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NYryjSG6;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D125E8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:28:03 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 6B28E52538
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:28:03 +0000 (UTC)
+X-FDA: 84080411646.16.E68FDF1
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 1FA4018001D
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:28:00 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xGxtWHQ2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D0OaQQNg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xGxtWHQ2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D0OaQQNg;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762439258;
+	s=arc-20220608; t=1762439281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hzExTjpfTe0MsCrHd3btlVc/M393MGUafFxJXP1rOqU=;
-	b=a7kU5BULTzqZdzDyC1JRoj0dvwaCe2qZ/13ZRcIUfeTti6mcs/KRwQR1aoT7xAaWwF4UOh
-	tgVxNnQjWW6EPEhslVR18NxGN1f7Xu7tbzOCv3sx1ZlU+jMEncwPzoAF85VxL+7fuI/zAx
-	/dUcqzMuuXh+D8tLpNf69T709hjNOhk=
+	bh=AuuUdnWkxyCHK93yhogM0GpeOIixS0TwW2AXgBsT1zU=;
+	b=y+c3PlVtlIpIvMyUCx11bxvWqkxVAEcYGAbFcN1lMt04OKVML+Ro+oaCVAkhtOE7EzCXGc
+	lIwZLBWwBftbehu2wItNqKKx3ZRCnkgnujqpZdWeCneypoeasLoyIes3kSlYqMs2kURco4
+	hN7A2qqNuxHBa2AG5YEZFp/I2ozV1mI=
 ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UM6v927M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NYryjSG6;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=UM6v927M;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=NYryjSG6;
-	spf=pass (imf06.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.131 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762439258; a=rsa-sha256;
+	imf24.hostedemail.com;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xGxtWHQ2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D0OaQQNg;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=xGxtWHQ2;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=D0OaQQNg;
+	spf=pass (imf24.hostedemail.com: domain of pfalcato@suse.de designates 195.135.223.130 as permitted sender) smtp.mailfrom=pfalcato@suse.de;
+	dmarc=pass (policy=none) header.from=suse.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762439281; a=rsa-sha256;
 	cv=none;
-	b=4D92KLXccpSVI6dCJ9pMZARl0oGcsyQlZ9UzDzSby/3mESjStzqeU1XBwFJd+gxC0ctvcX
-	hoDkKNj+NvzEIIrLzxobTXN723w+7XG9iM29WLyR4RrwQ5rTQXQC9GOPfaq8zzfafc0uwY
-	csrx0zgriVxirT2emChOyEZhwybA35c=
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	b=XwTgPWt76Vhmyd5RbV5n1Qx0wRSCij0R6P5nPWokmnf812roT9NLvV7SpcabyVpfQ3ULEt
+	ZbU0k3+VRlDbYwT7s4zi6cdvbi3l72f2W6F4buUSLSfSL5HvO96eqtgyVBeqCfztFul9rX
+	siiFJ3SluPN7EA2ftO3bw5YVZ0O+sJ4=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5443E1F74C;
-	Thu,  6 Nov 2025 14:27:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762439256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7D94D211FA;
+	Thu,  6 Nov 2025 14:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762439279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hzExTjpfTe0MsCrHd3btlVc/M393MGUafFxJXP1rOqU=;
-	b=UM6v927MK9uy2gtWMa+VPRbV9jxn9KMXFoJmYRZtoQT0VdcNDppl1lRFLNJEmk6CsEZXLd
-	0UtqFjt+CWWOgnfQG+OE6P0bm5+DeYrTbB/rACcPznkCPRcoRjMjsRgPAWsVg3fGj/uxkZ
-	1Nm3Y6NlPiHFaSYoM3wynWWyJ+aPG48=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762439256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuuUdnWkxyCHK93yhogM0GpeOIixS0TwW2AXgBsT1zU=;
+	b=xGxtWHQ2uld6xSLMvFvEFTNRtGmbFTMDR/KhcZ9qZDr1mc8KvPcrTDk+GRTNohsm7UXX/0
+	YaA4GOzFlmslU95Kd+zOAKXA+ih6Hi7LcFx8oaTxoQ0TzbzvlrneHF0JWXbVYttyaU0ozB
+	qCeKTANYWIxZ278NEITvmfyADVdY5Uc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762439279;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hzExTjpfTe0MsCrHd3btlVc/M393MGUafFxJXP1rOqU=;
-	b=NYryjSG67m2GfIiui/LExEukeoRnUvrs0IPvhv1pO9QH47IQKpKQdFWMrYkZ2IBWXrcO5A
-	RtL5OZHczIhKNDDw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762439256; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuuUdnWkxyCHK93yhogM0GpeOIixS0TwW2AXgBsT1zU=;
+	b=D0OaQQNgQZcmZpSNShYML4vLRxJdK8LQSYg3Qw52p082UUP7rVVlVjMejAyNWlZrAcblz7
+	sKc8jk20pNLiL/CA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1762439279; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hzExTjpfTe0MsCrHd3btlVc/M393MGUafFxJXP1rOqU=;
-	b=UM6v927MK9uy2gtWMa+VPRbV9jxn9KMXFoJmYRZtoQT0VdcNDppl1lRFLNJEmk6CsEZXLd
-	0UtqFjt+CWWOgnfQG+OE6P0bm5+DeYrTbB/rACcPznkCPRcoRjMjsRgPAWsVg3fGj/uxkZ
-	1Nm3Y6NlPiHFaSYoM3wynWWyJ+aPG48=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762439256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuuUdnWkxyCHK93yhogM0GpeOIixS0TwW2AXgBsT1zU=;
+	b=xGxtWHQ2uld6xSLMvFvEFTNRtGmbFTMDR/KhcZ9qZDr1mc8KvPcrTDk+GRTNohsm7UXX/0
+	YaA4GOzFlmslU95Kd+zOAKXA+ih6Hi7LcFx8oaTxoQ0TzbzvlrneHF0JWXbVYttyaU0ozB
+	qCeKTANYWIxZ278NEITvmfyADVdY5Uc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1762439279;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=hzExTjpfTe0MsCrHd3btlVc/M393MGUafFxJXP1rOqU=;
-	b=NYryjSG67m2GfIiui/LExEukeoRnUvrs0IPvhv1pO9QH47IQKpKQdFWMrYkZ2IBWXrcO5A
-	RtL5OZHczIhKNDDw==
+	 in-reply-to:in-reply-to:references:references;
+	bh=AuuUdnWkxyCHK93yhogM0GpeOIixS0TwW2AXgBsT1zU=;
+	b=D0OaQQNgQZcmZpSNShYML4vLRxJdK8LQSYg3Qw52p082UUP7rVVlVjMejAyNWlZrAcblz7
+	sKc8jk20pNLiL/CA==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 35FCF13A31;
-	Thu,  6 Nov 2025 14:27:36 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 38E6513A31;
+	Thu,  6 Nov 2025 14:27:58 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Ihm5C1iwDGmARAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 06 Nov 2025 14:27:36 +0000
-Message-ID: <b950d1a9-3686-4adc-ac2d-795b598ff1a5@suse.cz>
-Date: Thu, 6 Nov 2025 15:27:35 +0100
+	id 1yZSCm6wDGlERQAAD6G6ig
+	(envelope-from <pfalcato@suse.de>); Thu, 06 Nov 2025 14:27:58 +0000
+Date: Thu, 6 Nov 2025 14:27:56 +0000
+From: Pedro Falcato <pfalcato@suse.de>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jann Horn <jannh@google.com>, linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Andrei Vagin <avagin@gmail.com>
+Subject: Re: [PATCH v2 1/5] mm: introduce VM_MAYBE_GUARD and make visible in
+ /proc/$pid/smaps
+Message-ID: <yja2mhwa4bzatbthjjq5rolqlkfgcbmppic3caaiwi6jc63rbc@cims6rqnotvj>
+References: <cover.1762422915.git.lorenzo.stoakes@oracle.com>
+ <fe38b1a43364f72d1ce7a6217e53a33c9c0bb0c5.1762422915.git.lorenzo.stoakes@oracle.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/9] mempool: add mempool_{alloc,free}_bulk
-Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, Eric Biggers <ebiggers@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter
- <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>,
- linux-block@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-fscrypt@vger.kernel.org, linux-mm@kvack.org
-References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-4-hch@lst.de>
- <1fff522d-1987-4dcc-a6a2-4406a22d3ec2@suse.cz>
- <20251106141306.GA12043@lst.de>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20251106141306.GA12043@lst.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 1F304180011
-X-Stat-Signature: c1bbk37tsiqqn3thtsu8o5raueubtxzf
-X-Rspamd-Server: rspam02
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe38b1a43364f72d1ce7a6217e53a33c9c0bb0c5.1762422915.git.lorenzo.stoakes@oracle.com>
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1FA4018001D
+X-Stat-Signature: hzaqrwj45zxcwuo3dputms48w8ezihtc
 X-Rspam-User: 
-X-HE-Tag: 1762439257-727465
-X-HE-Meta: U2FsdGVkX193wBah7IS17kPI5UbC9afOjv02NBAyHoVBJTvWgvdm0XdtCi61iazNrzB31YHZVp71kzc7nVVHMjJekjkh59TqymllC83/GlwyZaM0880O7TfjUIcgLWH3LY4yXrJStJzBMbTyseckrCn4BoyQNbA955TnZewlM6RZgx20UNwPwvZgD13eqZSfRPY6zBBbS1I+CJENrxqfrgaNgLqQNbYfJGVZ8sJRF+pwBNdsslvR50pVmCHt7pUzjMU8xrILNsGGzX86sclslhDhUcVAHzlcxXEI5aNuN1IIN+YsdWe1YjjEMb1hKJJ1kW2aSKzaKxjqyALhSgzNxgBEYGjw/dGltgmE5sW/wKtSWxeY5MZo2PzZuyb6c3PHYNHeuze53M6kXgdbQd76Bk66mcL9OBBaxZSAY2hMoIrYgw6HsZYphi/T3tKxxqxd3nGVN3tY1KhLGKWu9gE0tUdXlwXir8W+39U5Wdv01XCjXTXstQqDqotFvTA0bLJ8279AIrghFyvQJI6qXxcM5x2nCi/y6fF3Z4OrrML9R+TBTd7+Ds/DBYWbubJbfSiAq5GAl2Ju0Wg2tp4IfgnpRoRYUjBCnLzreHRntsl3mNNWILw23NmEu68Z1k7Qd/y9b8Xm1bcVwGz8PrCBDS3HXiVnDOja/yFVdHQqNjcjIACd3OWeb9BdrnjEs3QrDNCKFLrvCmKJwYth1ksG+7BguxPLKOcJvKOwDKU2pu+10D1JdZnBTXb1+bJQofNf0v3eZRfd62+3Y7JNHwTJ8WDH/CLUBK2DXqVQB1l4fPHZqAfTUPRKJKg/khfBOHOFC1hHVCPuhglH122wh5NgI/uig/VeNkMfS3cI1VAyfW97PslLzfCSTsl6vo3grbkiOBPvbNdu8hwjpOy/RDJR4Mc+QlF4C9e4QBtYaBDsf4P08WuAz1hwjCNNy9AYvrsnVV0QHglVZlUUojd6I1e9E1L
- TuA3xnTc
- VQLfWbsCwAe5j4Qw1h19UbvgodU0uymsExkFlDkKAdKnGC2NdldxP1rfGKCoES9Po57bpA8y4beFxUkbvuztZOeOIz8r84ofA15jCyUU0oY/PQ89ItyD8Vmh00Je+JXUcnGvT+iJnsERaNkaclZEDyiPeptQtXSAsNBFKe75YhJ3Hy0aAhGuHHDYqdxBhcQqOP/DXGjaOMzkz07EShqUd4xWohOyu3rMcWZpcn3NY8rbo7fu24vMZMdk7fFdn9e2/uWrA2MXhFE5tczYvDXm2yfB25C4vpXcZZoovyG+PMTyc1KExmEhUFw4A/lyEXSHttVGI3Qu77X4UDuw=
+X-HE-Tag: 1762439280-677946
+X-HE-Meta: U2FsdGVkX1//VGQVMnQ1kcnqlfHbTma0nps86hfjmlTftk2kkFadyRnndLPtpCMNSjod3R9QE3A1zSr4xOOaCu3B8Xui9xnfcroYahZ0ugiBQz4nW8zH4RLP8o+tVOGWuOq5ajdfECS5NO6umvlzpSzpQvg4EES8q7fM1lN+R4EW6hChUpWCWXBgQ7tGjtzDbWK4r94gbTv958kK+42v9ExP1oFMLz1tlscooO5bvTgkwYege/SecBwtvLx7j2+A3luirZroffVQualwm5qS1AyTiuBXCZES/LbIAIdyKptEIyoDBjrfHQT29QW8eDscB8POIcTzCzXXOoKcR9EUB7iZzCLNrTvx9+IUREk3svIBhXbhLkh+Uhv4xo/Z+7tjILcbw9ZqrO5t2s55DJMGpwI10Y6G3zMxgzMRXDYoa3T8LuN6nO2iH8HTHA9CRZ1XTAr+Pj6nT0tlTTMjeREGJeBbeQxy4ySw9yFTPhrRfNtO5NYHcRbVuy4XpG8SuYxSeiJL6B79OqvW3CiSy/dtPz/zQnVUGxYYyb57cuAxSQEDkLnLL/jKs5VBKDSXHd85X8pYvpA5YFIkOoSzfxvrH6XIqakbxS/TmYMci3TbskdaGkmd6U+zz4Ovt8pD0DZ0qlfNT/V+0XKRaURunTBvCbClogHH6HGEkwOTi3wap74P+r+fTj5Q+X3qlDiBui73mz6ta1ObCwScipmc0ihmTsyBGf6EjZaMMpZGsuQlRjZZlnwuIDxWIBjzKlDWDmjsIKjhLgan5n3Z4RlOF7rIJliRBj2vOhEfaUdUKiHtcpcKVBiNGu9/ho9p+jh7slYKwgUlN38S/ykDTJVBGtKN7KZbPDCKXtuRrsdZPipYyjjepGKSxLABv49o38WFTYfGrE2+ExIs8sezp0gJ/Uqt9CzsaMizpY1YLvDOGlEljvl1K1iJ6KzN1dWZ9dTFAigmsyB+ubBHFVbBAdGG0N5
+ dK1ytdBF
+ Pd5gXaVf3SHElSwK57ImlpMBhfeulKah82lTpFZrNoQrQMyA4GyHheEDyI0cL52CFxpNeVCAwobuK7K5W037vJv7oDq2kHMs6Y5FIL5Yy/emdVzcMq1y81YSoNOM5jsbbG8/iSokSu6bIHdU7CB51H8ZpRs+/ZXn2IVj5599e3fYN5xX8UMFoOGZG7inBrX6P4r+gkREXoISaq80iKtvAbW09Q+1tE7YkyCNupeRr+bl5EFbs/CPXAD96gPkUELKWjTdmdXSZpga7Blb8vu37DXrLiheXimA9l+6LCVtW+Vy2HpghIVhH88aQByitPYTZvZewnY6bLm4kaQGRdOpQ6gdE0iZmvZ520CXxQrbElLmdZ4wd865SlNy5s4i52n7HEVLkSMKzYtvJvqw/eP0rWpyMupgwHxs5BBdE8EB9BI92eHI1VPBTlA2gDBt04DBZiLJo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -183,88 +140,104 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/6/25 15:13, Christoph Hellwig wrote:
-> On Wed, Nov 05, 2025 at 04:04:53PM +0100, Vlastimil Babka wrote:
->> > +	for (; i < count; i++) {
->> > +		if (!elem[i]) {
->> > +			if (should_fail_ex(&fail_mempool_alloc, 1,
->> > +					FAULT_NOWARN)) {
->> > +				pr_info("forcing pool usage for pool %pS\n",
->> > +					(void *)caller_ip);
->> > +				goto use_pool;
->> > +			}
->> 
->> Would it be enough to do this failure injection attempt once and not in
->> every iteration?
+On Thu, Nov 06, 2025 at 10:46:12AM +0000, Lorenzo Stoakes wrote:
+> Currently, if a user needs to determine if guard regions are present in a
+> range, they have to scan all VMAs (or have knowledge of which ones might
+> have guard regions).
 > 
-> Well, that would only test failure handling for the first element. Or
-> you mean don't call it again if called once?
-
-I mean since this is (due to the semantics of mempools) not really causing a
-failure to the caller (unlike the typical failure injection usage), but
-forcing preallocated objecs use, I'm not sure we get much benefit (in terms
-of testing caller's error paths) from the fine grained selection of the
-first element where we inject fail, and failing immediately or never should
-be sufficient.
-
->> >  	/*
->> > @@ -445,10 +463,12 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
->> >  	/* We must not sleep if !__GFP_DIRECT_RECLAIM */
->> >  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
->> >  		spin_unlock_irqrestore(&pool->lock, flags);
->> > -		return NULL;
->> > +		if (i > 0)
->> > +			mempool_free_bulk(pool, elem + i, count - i);
->> 
->> I don't understand why we are trying to free from i to count and not from 0
->> to i? Seems buggy, there will likely be NULLs which might go through
->> add_element() which assumes they are not NULL.
+> Since commit 8e2f2aeb8b48 ("fs/proc/task_mmu: add guard region bit to
+> pagemap") and the related commit a516403787e0 ("fs/proc: extend the
+> PAGEMAP_SCAN ioctl to report guard regions"), users can use either
+> /proc/$pid/pagemap or the PAGEMAP_SCAN functionality to perform this
+> operation at a virtual address level.
 > 
-> Yes, this looks like broken copy and paste.  The again I'm not even
-> sure who calls into mempool without __GFP_DIRECT_RECLAIM reset, as
-> that's kinda pointless.
-
-Hm yeah would have to be some special case where something limits how many
-such outstanding allocations can there be, otherwise it's just a cache to
-make success more likely but not guaranteed.
-
->> Assuming this is fixed we might still have confusing API. We might be
->> freeing away elements that were already in the array when
->> mempool_alloc_bulk() was called. OTOH the pool might be missing less than i
->> elements and mempool_free_bulk() will not do anything with the rest.
->> Anything beyond i is untouched. The caller has no idea what's in the array
->> after getting this -ENOMEM. (alloc_pages_bulk() returns the number of pages
->> there).
->> Maybe it's acceptable (your usecase I think doesn't even add a caller that
->> can't block), but needs documenting clearly.
+> This is not ideal, and it gives no visibility at a /proc/$pid/smaps level
+> that guard regions exist in ranges.
 > 
-> I'm tempted to just disallow !__GFP_DIRECT_RECLAIM bulk allocations.
-> That feature seems to being a lot of trouble for no real gain, as
-> we can't use mempool as a guaranteed allocator there, so it's kinda
-> pointless.
-
-Agree. If anyone comes up with a use case they can extend and actually test
-these rollback paths.
-
->> So in theory callers waiting for many objects might wait indefinitely to
->> find enough objects in the pool, while smaller callers succeed their
->> allocations and deplete the pool. Mempools never provided some fair ordering
->> of waiters, but this might make it worse deterministically instead of
->> randomly. Guess it's not such a problem if all callers are comparable in
->> number of objects.
+> This patch remedies the situation by establishing a new VMA flag,
+> VM_MAYBE_GUARD, to indicate that a VMA may contain guard regions (it is
+> uncertain because we cannot reasonably determine whether a
+> MADV_GUARD_REMOVE call has removed all of the guard regions in a VMA, and
+> additionally VMAs may change across merge/split).
 > 
-> Yeah, which is the use case.
-
-Good.
-
->> >   * This function only sleeps if the free_fn callback sleeps.
->> 
->> This part now only applies to mempool_free() ?
+> We utilise 0x800 for this flag which makes it available to 32-bit
+> architectures also, a flag that was previously used by VM_DENYWRITE, which
+> was removed in commit 8d0920bde5eb ("mm: remove VM_DENYWRITE") and hasn't
+> bee reused yet.
 > 
-> Both mempool_free and mempool_free_bulk.
+> We also update the smaps logic and documentation to identify these VMAs.
+> 
+> Another major use of this functionality is that we can use it to identify
+> that we ought to copy page tables on fork.
+> 
+> We do not actually implement usage of this flag in mm/madvise.c yet as we
+> need to allow some VMA flags to be applied atomically under mmap/VMA read
+> lock in order to avoid the need to acquire a write lock for this purpose.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  Documentation/filesystems/proc.rst | 1 +
+>  fs/proc/task_mmu.c                 | 1 +
+>  include/linux/mm.h                 | 3 +++
+>  include/trace/events/mmflags.h     | 1 +
+>  mm/memory.c                        | 4 ++++
+>  tools/testing/vma/vma_internal.h   | 3 +++
+>  6 files changed, 13 insertions(+)
+> 
+> diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
+> index 0b86a8022fa1..b8a423ca590a 100644
+> --- a/Documentation/filesystems/proc.rst
+> +++ b/Documentation/filesystems/proc.rst
+> @@ -591,6 +591,7 @@ encoded manner. The codes are the following:
+>      sl    sealed
+>      lf    lock on fault pages
+>      dp    always lazily freeable mapping
+> +    gu    maybe contains guard regions (if not set, definitely doesn't)
+>      ==    =======================================
 
-But mempool_free_bulk() doesn't use the callback, it's up to the caller to
-free anything the mempool didn't use for its refill.
+The nittiest
+of nits:     =============================================================
 
 
+>  
+>  Note that there is no guarantee that every flag and associated mnemonic will
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index 8a9894aefbca..a420dcf9ffbb 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -1147,6 +1147,7 @@ static void show_smap_vma_flags(struct seq_file *m, struct vm_area_struct *vma)
+>  		[ilog2(VM_MAYSHARE)]	= "ms",
+>  		[ilog2(VM_GROWSDOWN)]	= "gd",
+>  		[ilog2(VM_PFNMAP)]	= "pf",
+> +		[ilog2(VM_MAYBE_GUARD)]	= "gu",
+>  		[ilog2(VM_LOCKED)]	= "lo",
+>  		[ilog2(VM_IO)]		= "io",
+>  		[ilog2(VM_SEQ_READ)]	= "sr",
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 6e5ca5287e21..2a5516bff75a 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -271,6 +271,8 @@ extern struct rw_semaphore nommu_region_sem;
+>  extern unsigned int kobjsize(const void *objp);
+>  #endif
+>  
+> +#define VM_MAYBE_GUARD_BIT 11
+> +
+>  /*
+>   * vm_flags in vm_area_struct, see mm_types.h.
+>   * When changing, update also include/trace/events/mmflags.h
+> @@ -296,6 +298,7 @@ extern unsigned int kobjsize(const void *objp);
+>  #define VM_UFFD_MISSING	0
+>  #endif /* CONFIG_MMU */
+>  #define VM_PFNMAP	0x00000400	/* Page-ranges managed without "struct page", just pure PFN */
+> +#define VM_MAYBE_GUARD	BIT(VM_MAYBE_GUARD_BIT)	/* The VMA maybe contains guard regions. */
+
+Don't we also need an adjustment on the rust side for this BIT()? Like we
+for f04aad36a07c ("mm/ksm: fix flag-dropping behavior in ksm_madvise").
+
+In any case:
+Reviewed-by: Pedro Falcato <pfalcato@suse.de>
+
+-- 
+Pedro
 
