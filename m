@@ -4,105 +4,231 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25415CCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:38:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57C74CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:41:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 72E1F8E0003; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
+	id 97E3B8E000F; Thu,  6 Nov 2025 09:41:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DE018E0002; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
+	id 954EF8E0002; Thu,  6 Nov 2025 09:41:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F40B8E0003; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
+	id 81D048E000F; Thu,  6 Nov 2025 09:41:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 4AA7C8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 081271DC757
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:38:31 +0000 (UTC)
-X-FDA: 84080438022.08.562E43D
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 45CF4A0014
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:38:28 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PqtkRJ2N;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762439909; a=rsa-sha256;
-	cv=none;
-	b=c+OGJnjhV967RlmZiia3r1cYXRGcXTctGzvjZEjRSkql4e5s1u1+n6imZ+DftqXoXD8QEb
-	trRxXhh0SFsDqHLVe1FAPCzXkJqTrHKrQ7l/YXJfT9UPpnuXlQj+Pv6/A6EMGvxQrfHpsV
-	0IqxSYn8AAb6D5439pIdpm2vKwMlCck=
-ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=PqtkRJ2N;
-	dmarc=pass (policy=none) header.from=intel.com;
-	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762439909;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D61A8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:41:12 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 3982B129FC9
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:41:12 +0000 (UTC)
+X-FDA: 84080444784.11.A572FD4
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf13.hostedemail.com (Postfix) with ESMTP id B57FD20017
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:41:08 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="MAr/pBC2";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ezo/8B9r";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762440069;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lCE+9CfoyKV8XD5hYJc6hb73qx5l55wY+Ra4OYv3HLI=;
-	b=zZJf8L5TOi1O5GONYcaPdEUYFSJ9X0hDE8LZXx91Il/T+fuApWXqo3BDKWWy1Mq78q4dam
-	f74ZQGRUgZ5ntXrpjO1jivWilSJXcDMlXKdfy3C5iY7wTOxWmCoF1JD5mGDQO4WOudL24W
-	3jT/kmDwwaL12suNeIiYyOb/WmVUGvc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762439908; x=1793975908;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=qjA9ze1XqObCgR5Te5hbEW9wde11R4+WtauacdBNGBU=;
-  b=PqtkRJ2N/cHUhQQizgwWyTARzg5buqBJhcUJVJEEhgXzsBuU0TjITIU7
-   NFsbNAUzkg91BEbNPfcHpLeln/yxEowvvkBtTNfZeA0SwKYq5eDcTGsBt
-   rd2MF0juIFotM/rYLy/W58BVu5W3L6RwQQDkicVlg3xXyuDK8uSgCrobS
-   GvCWCKyNvuEQuXmMonL6FMapTLQY4zSeC3JXpoYOVW+Y2tIS9allM3Lbq
-   b7Cr/0A2tMFHIBHQSm3SHcnyNspfvPk5V9jqBUDPiQ2W2qKXGviOJNL0X
-   D1yW1t8Q9XUVIw4dsZmsREWNc8bZssJrOuvkoOcWKhiZrhfr0uj50R3J6
-   w==;
-X-CSE-ConnectionGUID: pD/0rF9SSEuqdj4oAW8FCA==
-X-CSE-MsgGUID: 0Tsv0NDjS5m2eCAdcRbIXQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="68436344"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="68436344"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 06:38:27 -0800
-X-CSE-ConnectionGUID: QD+x6HneTv6Gu9i9eTzITQ==
-X-CSE-MsgGUID: JYgGY/w/QwKQkjtpz9L0SQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="187716231"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by orviesa007.jf.intel.com with ESMTP; 06 Nov 2025 06:38:24 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vH182-000U1I-14;
-	Thu, 06 Nov 2025 14:38:22 +0000
-Date: Thu, 6 Nov 2025 22:38:04 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH 3/5] tracing: Have tracer option be instance specific
-Message-ID: <202511062223.ocoUvCBI-lkp@intel.com>
-References: <20251105161935.545400234@kernel.org>
-MIME-Version: 1.0
+	bh=O552z82k52JKdpsy2B3eS3+2KNOrAkftOpyDB3eQO8o=;
+	b=b0ohRl1NNO4MiNGjEA0GFLegppaZHy82LUIJFU9NLdMvZOoVrjCKIpkU4IGQ9kI4BdheaP
+	rDXh/RbRDnDxL/Ss921qbl60xbLl0f8/me7VZRwEqG0iXwT+QfGNDSgTNyzCO1uM36FFpx
+	LJaWyCC8J7j1kY4q89XzphtVuPkqftY=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762440069; a=rsa-sha256;
+	cv=pass;
+	b=Ycde8QZhfQ6pWlYnAcFRLrwgMLKDmUJzVqFk5NNUxV/kmbaqJjV/o9X0fW6EyHeKIZmUz8
+	PKCFR+uegrZTV6xd+CSJ+wSVVOrY3cu9SgvOQg8DWL6DtMC40gQ9Krz8JB/5NRWBhosiNB
+	gmV20/UdziC/ZSmH7tZg2BrobjfrSSc=
+ARC-Authentication-Results: i=2;
+	imf13.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b="MAr/pBC2";
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b="ezo/8B9r";
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf13.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
+	dmarc=pass (policy=reject) header.from=oracle.com
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6CA4VQ000476;
+	Thu, 6 Nov 2025 14:41:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=O552z82k52JKdpsy2B
+	3eS3+2KNOrAkftOpyDB3eQO8o=; b=MAr/pBC2Gv0WgDaSf40AkkKuE69Z1Xp8Sn
+	j4DkNSmSWM9szJzthTNn6kp39EJM9MjeNLg5EJqO9akrSR9xchSN673BLI21UE+r
+	PVriUADf40FVUJ1N61+GPkVC2e1J4w6947K1nx7jg84jtCamQxIRF6NnqvvWIhrs
+	rqZXli+C/ugoTFUoCLHbvhkq+9PLhWaF6QLXPS09qfHxAiPl5MFGyudsY3m023rh
+	orcn7ZEcszqyUOgbl19oftheJ2qy3QcGFTchdE+l1c8jzMik74RFH9NGT+/naWax
+	eez/1Nh6bej9WKb92Qi2LVQd9qOF1BlA8L4cz2nTuGrFr/FXdTsw==
+Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a8at925q9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Nov 2025 14:41:04 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6DK3Lw023093;
+	Thu, 6 Nov 2025 14:41:03 GMT
+Received: from ph8pr06cu001.outbound.protection.outlook.com (mail-westus3azon11012019.outbound.protection.outlook.com [40.107.209.19])
+	by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a58ng1g1p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Nov 2025 14:41:02 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=LTioP8KaL/5XP6DPz62ayQZd3PvHZeEcNNxy4cqLByUpejpe5H/qnOY3CpbRYEfqobzb6Po/uaVE5/IHiFgOxApas7AApxlOaEcEEQwsAP4E3a04c2VPOMYertFpDPeFGH3n6DszDQmJNxJiYFV7Aync4Lbbrk88xg4EU0DVEeiJ5omhw+1sYCiyWbF+QEDuvphPbM8qEeyOaHFsY8Y3tmBbrqgAZl2jFnXlG/SDklvCwSUUBfUPD4f+XF29Cas6rp9EACU5smgA2hK9QiDF9XoNkK1FCsJBWjRyBu0Yj9G0+hvxxrucJ3XHLKkIIKB8uKzc4WjqhF/JonGaKv6z8w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O552z82k52JKdpsy2B3eS3+2KNOrAkftOpyDB3eQO8o=;
+ b=CCsghB+ENVZTlSSZjGDOsh2dLqRmpwWfx+9WBRyibus8DTOmn5FtSfPQUtEvtHoKxUqWMEegAMk8jfQSUJoGuSQkOuyo7pTcur7WimWbXmPxPXf5JU7bBTLExs8JC8+Tea+YGoiKLOSBdqewXViQwFeaYk4oDEGGwPPwSsfjfNRA1rkPU4Hi8YKgG6T6CX896mVD0BaYaKGPgQf81XLNQm8Ll9v4QMJrSdj4vWn3oY/iNbq8SpXetUTxZcEna7oIHgE+vMYzdp1wKNYFWZefiGTnDa6QKNFk1YYv3MiWzxvCZqUSsdQGfhOtbTw06619NkZK820Dm8SD4lT2OCjSuA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O552z82k52JKdpsy2B3eS3+2KNOrAkftOpyDB3eQO8o=;
+ b=ezo/8B9rbcecZjb8vDwmb3ejYMiY83hXIdzkIDk+E7iPeY90nDw5I80Ifh/tkUnp6hSeeBi5W5qOUELgTSwqyP50V7pxYBtrC3gzLgU/TZRJeNUd3zhhYp/Esy8rqC8/9KQCOGvAtBnEDGntSWPa1O53IyCtuGeGKhDU7d9sXYg=
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
+ by CY5PR10MB6143.namprd10.prod.outlook.com (2603:10b6:930:35::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Thu, 6 Nov
+ 2025 14:40:59 +0000
+Received: from DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
+ ([fe80::2650:55cf:2816:5f2%6]) with mapi id 15.20.9275.015; Thu, 6 Nov 2025
+ 14:40:59 +0000
+Date: Thu, 6 Nov 2025 14:40:56 +0000
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@kernel.org>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+        Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
+Message-ID: <98ae03ab-ec73-4649-8a7a-71839d6e6eb0@lucifer.local>
+References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251105161935.545400234@kernel.org>
-X-Rspamd-Queue-Id: 45CF4A0014
-X-Rspamd-Server: rspam07
-X-Stat-Signature: n57fsgyjupfj4tkp8ch8jnxah5wtk4cb
+In-Reply-To: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
+X-ClientProxiedBy: LO2P123CA0106.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:139::21) To DM4PR10MB8218.namprd10.prod.outlook.com
+ (2603:10b6:8:1cc::16)
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|CY5PR10MB6143:EE_
+X-MS-Office365-Filtering-Correlation-Id: 0a08f94b-f3eb-4f98-1522-08de1d428088
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6uF/lJdI5AuwVO0cod2ZNAvA1/mPjZ+CJh1F9GMzskiyDRWaPDaQILITaYDC?=
+ =?us-ascii?Q?pxU2igFkzfIHnejVmxWrIGLe1lM0f/wSg4IYUz5rFG2lGzGCf6rHMsjyTqIL?=
+ =?us-ascii?Q?cJvZspWp5KxlfowZX0tCWAbJ3guQc5yffCC+P46HW1FIuukKnpV3NXs1j+XA?=
+ =?us-ascii?Q?0WytkQGQlRZQBE94KWicCoMdHbIjl66SHZz5TKLc3nSlV5sR4UdRQ7LrqE3g?=
+ =?us-ascii?Q?IZGd/cb7Bw5hlbXnE2jzYm/urQcUwDrWvcpZ6RA2sCeM4dG1momSsTzPFMbS?=
+ =?us-ascii?Q?MHZp58UtmRbK9F0QhfMdG9thr3C32ry1Ws+Z6wtyiiLvhkmho6RG/AsgE589?=
+ =?us-ascii?Q?GGIwjQBRcS1ooNHG1i8bTUPqVsG5Dz1pjEPq3dSR4um2SLDJSaBr4J/Hvcnd?=
+ =?us-ascii?Q?kehmySfOwTg+7vnEz9kMD8v+u+REccepbt47vO3TMM8TiXz4d3pAfF4XflRi?=
+ =?us-ascii?Q?YhTAZp80+s5ny0S6T2fB05948NheD3YiAgfLDID/NsuqGYvf4gQ7wZn3CDv6?=
+ =?us-ascii?Q?Jc2on8N2IGynjTqEFfUkuyqCSZO0IDUhXQ4+7u9hTslyz9Na/l6KTd6mGSG4?=
+ =?us-ascii?Q?Gp4OBLCFPasExEKymHCBGZC5TYbY02YDVgtAF776kIu5uz8RB/boEomypiqA?=
+ =?us-ascii?Q?uErP/IG1PxmDkoePTvvdRt6a801LJOC+I0yNWINdSj7xVBjI41kMkKPB18aK?=
+ =?us-ascii?Q?65pv3MzewhWrSywEcEUJe3o6qH5iwMsV7mCxvn85XNHCH6d6CAbUFWJWFKP1?=
+ =?us-ascii?Q?a63wuBEzAT0Flmg6nHUq5dFH+2j9TPXWwqw+LviAu/KFtEogjyA0be0PFx4p?=
+ =?us-ascii?Q?fS8mlgKaTSf4+UenBPY0JdYRaxStPBpgFMZUnXVpzP6OehRtsznK7XGlm3+R?=
+ =?us-ascii?Q?5+1/XhUKvQmuajfTG2nQeSuRnYCmjoDvpeqxHzoHPMkD2SgFqcIn5V7wqr/V?=
+ =?us-ascii?Q?ufaoNWv79sWbR2NsNwNjxdOtEB0CbcIpXETXu4tRH4FE41kA1j11pNSS8TUC?=
+ =?us-ascii?Q?XfFpYPHemS/XAVvdsnTd5aYH3s0aW4FVZZvMtQFNPiik0FBYrBNLzoP6VfAm?=
+ =?us-ascii?Q?tovNOpYRCaFp3VTsSRQo77MuH5cAUG5YxiS4CZCbgFFtH54M9H7Xr6k54DiV?=
+ =?us-ascii?Q?6bI9ESdNSF9dCb6Jd3xiTHlOcUYeF4s7PQ5/6kKzqmt9EmRE+/b1qjS/SW9p?=
+ =?us-ascii?Q?4lpBHrYyaUHNNPr+ijSv1j6F77sE4uKSKI9krtPAKAXuGLRVev+24ZspCxt6?=
+ =?us-ascii?Q?kddeAAxFPwuGZ6ESmwX9KN6YVzUJmSe0U61xCILQpdKX2o0qS+H9c+hNlN6f?=
+ =?us-ascii?Q?tE72PkokwyW/FjH/OwRlEFGMHCilXqXXU7c29fRinuijUqQlEtnZTj5vs+tu?=
+ =?us-ascii?Q?fVm+Arm8+rhUfdhyUpEfW8bljuowELUEzn4HYaP3iCnjqTh8dGpQZ9glnnw9?=
+ =?us-ascii?Q?EF9AsGVgpVxKVb67UaNOjRbtOsCjUSz8?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?VLbHTlnNn0JjInxk5Gsj+TWcfs8mxESkdZqxaR1yXp93dSTVphi5vbR9y6QR?=
+ =?us-ascii?Q?9+O22agQrPTgLy4mrDHy3tT0q+iuxkLQKshBEwRtiGf4IZJ29uDxrRWkHdpY?=
+ =?us-ascii?Q?REkaKnJdaNXXVnQ6IfYdaqoMx95hrCaKm/GA8nHvghlCvD2xIZJhS+fn15/+?=
+ =?us-ascii?Q?jcsyGmkjc6xJVy0JOvY4o7/bMOsSL0uMQVO/4BnsuqBA2xY3pbQ8djL+Xs53?=
+ =?us-ascii?Q?fN0CL7JjyS6m3eaxR9UMeSDN7n/VcTcDgmYhRCoBeaaP3ipA74ZH6WvVBZq9?=
+ =?us-ascii?Q?j+pIQy4otX0eB9caqmNLLITfSjutqwnupeulIFYpvzAvdTaT+aqVjIrJNFsD?=
+ =?us-ascii?Q?V43UbfzH65dDQtC8uU2/LOUIEhStPl5zY2pc0Oz4Y+wxyKERD7TgUbAIsmet?=
+ =?us-ascii?Q?u1vFUJu8pBM1aetM9TiV3LiQO9xsHF8OEt+4XE5ViIwxyz4InlWFrwI5DFz2?=
+ =?us-ascii?Q?MV9utg2RzcyQc5ycdczMT64+3B757ANtAZ5sfvs9/ewY2ILs03LgEVqTaCaV?=
+ =?us-ascii?Q?zjlCjhQHI2qx6fzeYmCK+p/3J7XT3shAJwUq5EXQl3chBe/ZpfRQW6OfLJk1?=
+ =?us-ascii?Q?b3lj7t1oAcWzmx+jwwo+ssUNqcJRmEAfgG1IHQp+86uZTaONV8iTas9dCssn?=
+ =?us-ascii?Q?y4Y/i+G8pdumBdimOle0FJPsGjdAfcjKCxZ6Sdi73cV0gD34eVtOpbqlJA9+?=
+ =?us-ascii?Q?KkQNUXqN2E9giS5hTxZn7HiTH8+RPFwmg8A6EttxeENPVVpuvASU5dGFMGZb?=
+ =?us-ascii?Q?mMTtU+AVwp/X3HNwP4FrPZWqJiSEH+hd/ft7BuojAM7091q9LxzgFWnhYO3H?=
+ =?us-ascii?Q?jsBZ2HErWeDS1hXetGCIYjcjuWEZK7D8fCb+AQbIu2E189S6eVpk4A7FBk0m?=
+ =?us-ascii?Q?qG5CFw17sB9RSjJ92e8o5+euF3WpJ7mhibWTj86E/aFlmHZIgjh2ZkNAahpP?=
+ =?us-ascii?Q?Yt9JNXsPBSeqYv+sQwbF0Yx5psFduP7MtDn0Uc9455X1OSrrWfTS8t9a+xO9?=
+ =?us-ascii?Q?fOtEnowHpG3fhhcOdIBKqyQZBwkasL1vpwtjU+e/80xn3QXSRxSuJaLoTIAQ?=
+ =?us-ascii?Q?VgzJYTTeAcA9IaJXJSWmleg1hZmPwe5SFykjEnJq9W8ww4dG6RIErdcdkSan?=
+ =?us-ascii?Q?REpKnTqE9PmWTmg3H+Ey+gsyjY2VGZ759ndQ6t71OPrCcNATSxeJaYvX3kUC?=
+ =?us-ascii?Q?aoxfJHhqONyuwfgURaAXmNjX5/jWraNVU08XPymujeOwASavaVntdurp3VFx?=
+ =?us-ascii?Q?F6oMlvopEHwVPAAIH9rvjpCgtiAiEvO9CtTy39PJxs245Q/5iP5F0lb14yea?=
+ =?us-ascii?Q?6gEGPYehtXG35PxAqRp83ywkHMBHo5nGKnIQbzPEmL2XsnaprAOwT9StQrGS?=
+ =?us-ascii?Q?a/jAOzJ3ZtndF3cugQdyEX8+GA28jaZ6ANwqBzr0upc9XJsev786poxQZLEK?=
+ =?us-ascii?Q?E817Uo01Ol6kbmdOVYMgXq8jX+38nkP4HWH/1Jz/4ZTLFl/Lm5lbiJks6UbO?=
+ =?us-ascii?Q?q4dPqaEoBY4ndEh7Vgf+S8R/EbANo79s/a0mA6ViU02ZhPiFRX5CWp3YrjIP?=
+ =?us-ascii?Q?QRerQ2O8Dn9eWUicfIbOPdc4MBZ68n85RQDqcUBWQAV8i+Xifz/KhfsAcmoG?=
+ =?us-ascii?Q?vg=3D=3D?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	XsN3YmzLv6XqDSeJUD2CZEH5/Eib0weP242teNOmQ1EtvazvJRYz0WcDLZncgvYfpJPIHKNWxdnhywmRTg36cpBPMC0MbjpqYH1g8wiDVC2Yj+ft0FbgJIJMzx0S3Y3c8oIc/vishJUVgY1ZGoUNanSTktCSOkXSPBdNLJ3E4Bejxdb3QNY2wDr5QftO2JVGkM/t4cRwYctyUvPqgeD6ibzfnL0KAvSmuudHDG8sXJIbjd3so74dmS5il35TgwAoKLfeYhFjpfQwVnp/sRjhncqrgFkrH4XHJsKJgs2z/ftyPKkafXsWYNDNGDvDXF1IbAza6g6c/M6JJMUhywxwiK3P2D/+Fvin4cZLbntTOcIidJvVnMJnXRz19swGmgjjq0OHoLkrtAx3oH86l8zgASf8o+1yQgXLPAFMDbb+YBmCS0cLgO4+5O0yhk6kQfNdPKznaKYXthhQZMkh/XiPd3tG/wvRtVQGHLHoExLH+OIWD+vvNlrzDIDYjqO3gMqfhA5fkdXyVFWlDgx9KXae4cbaVyaD3B1K+W/6jEGr0uOm/fUIWg2zOjepPfHSflEqWmp1j0t5tx/EIzMdgkij3v5ZHM/1rZq9ZMVelUszcqg=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 0a08f94b-f3eb-4f98-1522-08de1d428088
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 14:40:59.5398
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 93VoWDPAAEFHtrdS7aVGBkwQnLWO/00zibgTQS/4OLhJkTxit7U8edQV5TEwFl2TAg+v+CV7lnU4CUZUSwtnlay0gEWHVXBMkavdNx/Xr4Q=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR10MB6143
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 malwarescore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 spamscore=0 bulkscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2510240000 definitions=main-2511060116
+X-Authority-Analysis: v=2.4 cv=HPPO14tv c=1 sm=1 tr=0 ts=690cb380 b=1 cx=c_pps
+ a=zPCbziy225d3KhSqZt3L1A==:117 a=zPCbziy225d3KhSqZt3L1A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=pGLkceISAAAA:8 a=yPCof4ZbAAAA:8 a=BkskC4soglnEnhqh4IIA:9 a=CjuIK1q_8ugA:10
+ cc=ntf awl=host:12123
+X-Proofpoint-GUID: yaMmj1XtyMlW5nmtpSgC7uToeSs4ft1E
+X-Proofpoint-ORIG-GUID: yaMmj1XtyMlW5nmtpSgC7uToeSs4ft1E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA1MDEzNCBTYWx0ZWRfX8BpFmn3n7LZP
+ 2Lmk7nk5iCzfLAtk0HWzk3HgrS4fKhv8/mV+gO+QzjqiM1Trq38QsSsolQGKYOPaBEzpAWqzgYF
+ ppeOn2NgiXvHSVlNDW1ot3Hk0NuSFSH8TDjPV4d+WeSxBHM6sM+KETlXAqvukZvizUIYX3r/53f
+ Bpg4w/yWg1hcxdVrsmyqpdx9y5UfCs9Czvzrs2ykpsSFQu5mPF+AZPsyKXViZuYisrCsiR1krXs
+ NGllG3i5nkskVefkHJSLhexWA/GRakBJvSi30Wdyhfp7mNtucSvI8V27rO7vldSmn+Z/e/W6P/P
+ YFAtzPb0DalGfIPdhdePKCI17uVbf+Sls7rn5SFIthCEOdQsAurdb0whijKKKhsIfyru+BmzCHI
+ dnovzKPiMDlxsM1VsHgIzCKc+XtvTUHJnWn+uEB+D9ZscqPv1OU=
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762439908-21409
-X-HE-Meta: U2FsdGVkX18JEmvIfGSQMmhfIr7FiaSkj8yrJnBpuXHxUAtovEpwj8Ie26YKI32zGi3mt8BPkjGXnPytNshBvTobHteJPESMzpA0iXqfxm6JmZH7p9f9eMuo/u9ivtmc60+sH2Jfv8Sz7O0NEj7ynOZHmgZcrbrA4WA8XwtVrAnImKsM1KBb9zCmAmAzjIHJeXlud9A8QLIJa/hrltkBczhrUuutYOtFiBCYCHXHpuHLI5fVHHQ46/tgnnDJaNQ4Qi7Odlu8Ur+iz3YG5dKrKaNw43Q/yR5zy+Fb9dN6PPc8iDJPEvVbO82CstmoSe+nB3TItXywNsQC1VpYlDilgBFofS6TsuhXMY+vEGXOaHASsXf1kSE7M2u3ndexew3VxrRyju43OCI2/Q3FUufOHVxp+KimM3BZ3ALwoq3DdHPujwg5ONFz84RSWI5BfGUk5vhSITDqwGcCpGjRx34PcgrX0+xf/dB/vUlBNRI9nciKAViPrFAADMhBazGS++fdzqmSZkSBivANMaxgInqXVjSui13POBQVm0m++bjACfrTJLvf2//wRIK/+LMtIIzVhQxwE914EuazDPqADQmNRLAYyku1v5zVbWDj0d1m4PQX2cGgKpz7J+dz2T39Y2Yv+iuA7fh1dMThp+ZlEglnQhXv04m6vRRXDKC/pcwg+LQ8kKLsdNfyM9I8LlI2uxD24twnMyB7ntxrAh8+MgOGRGF9Tf7ps1Wk3G3ZX6v9sggP9MItTac6sCbdTaKkD5MtO68yBk9Jf/y48uUAkZ13XmZ5QxKut0ZTnsJ7AjwRHFbMK0HNDkyYwYC/G55koMEYnHJHMPw9n6zx1pFMq1VIYGeUmGSQVm0FsEs/6YosANLqhrINw0A6QK/xjAAtfRgT1ADie8vPlkGmGOazuIhl6BmW1yDo1xckocNdeqwcKGYFt54z+jhMl6Fy5brOhbIdOmdRnu2ynMcE1l592xH
- S1h+5yt5
- Ve87H1jQJvJ/HMGNQkBU4G8XBK3pTLzVDwAbF8JsnmM27w8cyRtfvc0SRJ2Mgn5XO2fgkb2TPMzrRLPApWnMHbnkRIcpoNCIW3paotq+ShQKpe1dz4P7pMSXOJ22AWdVi8LFyxEsYRF1mqOPb9renY8o087cUCkvbJAPdAaMOhaLz0b5QTM5q+VLHPS23J5GLqvqE5d7r7SmdHNYlA9zjn8IhyWAisWsDnobM7uOoYjtjyC4nCwpx2iXwAB8HsjchnMY1v5CANM10zG1+C7EnEAbeH9dnSN89ztanJFRvbB+hyZpH6+mzbbVUOolU9/t3dmGIGXhYk0M8xNOx+wD8/z3joYkjH+iDZnWZ
+X-Rspamd-Queue-Id: B57FD20017
+X-Stat-Signature: wr5u9odfors6yaw6ac7f1bautgmme1rg
+X-HE-Tag: 1762440068-536028
+X-HE-Meta: U2FsdGVkX18I7fpmN7lTN+P7+Vx/a5fwawbMzhRfzs2VkL2bDfOxUnnkLFqsjzI63Npbw/5628w9fqPj1DfUsIk70xKJXNuxfb9P8k/p1RM4I8hAPgjcrUR/U04wpDaVZASULDVmujSsEMIQy9Cv7sVVQE2Rkt4RddsArNi12hW72SKVYkwhhTHg/wPKpIH//EKtn943bTeoSKYm9wvO/CkLUx+4N/Yzm5I92qmOb+h4RYd2unRFfn2DEdYyqeiH8f84Mcnx33V3JOw10n6hAfdmAdmdQtyXeF/2fSeku9sLkPuDbG6Ogq44u0+3dWsPU3EsqGh32cTwQXONFYyPpr08gVk8ygt08LIZVRO5RZfFHjtE7Gc2HCpM/+p5FBY3dz1sHB0Tv0dakr9UGbyG0azAGFPM+aIUd99P9EevGTsLIYgHyS7bWFR8mrWQiylAqO5XH8Wuyop1nbJk3Vh9y6Myb+lYwGp+1mdkd/IQhg1dvtO3KoeTZqg/KWlzzUaH86T/eM9Nt3aHKMvKCzz1zatv+0cMKYrVVQltfgY/qgdzYS+Z/8jm8eVzT1gckavVY0DKMTqNcPX4Rgzw3JrfWx0MTJ7P28Ng6Tqr49vwBQSux8Add1ef/m0vz7r+AaDq5aJuHXBmfj6PASqqUfWGCQV+6pRv49QOy+k/hQ0vuzDk3pDYlG19bOOB2/8G5Y2cpgah6XUQjspI/k2y2mcvg/M+MRUrvBcdHqZQEiJBh6lJV4E45w0JWZHKDV04Oe4TE69WXrYCqB5uY6vFoPvQlfVUPrh/svALmTaVrOUcEgOQ73rKGPlPrWYVUniUDoZOVeWszrOKvGY/lI8PQNd1QLVnj15+40YqIDFfuwAt4C75BS2XMPmBtcX645+5yHMHAXDcIA09QkwErJlR7QCEh71nyz/YOSrICgHn5DB5xBUoolqGfqn3Ax/q2U3Zj8JQENUUcbxHybpfJysHhjP
+ SjB1yO0a
+ L6AEBiGHLmQyugHyodunTitCC2EX01wf6bMTou7uaMlR0jkpPGFrpZmon+0T5cjSSigyslZq6L56W42RSr3ByVlDyLMCED7qadvmNMtQLl7f2ypdVE0yfFX0Je9NA52Kd9f9UMHU2L0j7MpWnPocSvzFFEpNYCv8CdwriXU8Y8IcaHMPDWKER1VPQ9Z+Sur4NoguudvAoRiihUDOIcUHyPYQ7mwXCWVkknVz4eEwARAJ6vaOp5g+cuRwB+TlN0X6zxkKdu+hC1ncYW+NqL2+T48SM1AMNxASblB/+/5ml5+SBae4HwPJoXn7WHP6AW6wx2hgB9DW4gX3O9dkXtm8eXmaWD8YCq9vQ2YdQQzAbR/GcnQw9qYzNKaoDJEmencDCNIiksQ03jXe6NaHxqBaVktnUWtVraJASKc6364NIlWWYvL9K15hfyg9fkQp98FlVZLRXL2X2zv+7pjTCvF/eAy/suRNqfFtwZQUAgdugb26QVekARyY4w85XJ2eKOxGL6QaZ3fgOm3q5FmCgXkGJ2ASj7qHxw09vK8EIEwEraUdf/Zs+MLma8PCLdkJ1F+ICr2bB/cshcSzgTHxbL3nH12e4DGUWCU0Uo1F5/Iku8CsZWeYJB72FCGlMzQgLcWU6M6xhwDsLE+/yLlTpUqa9tNeofA3E2MacCbsLFa6LfOw19w5z8P1Odnkv6ahdbqQVL/YAjW6oU0UxZ6Gf6NDNl4JovaeJJOz5UrQWnKN1UmQXxl8zs5LgDYsDDgyK5BF61Oa9XlWZa7A+Tsz4c36RvhmB2E3KFK6faoRt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -111,179 +237,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On Thu, Nov 06, 2025 at 04:19:17PM +0530, Ankit Khushwaha wrote:
+> Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
+> triggers following warning:
+>
+> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
+> false [-Wtautological-compare]
+>  1035 |                 if (addr + c.dest_alignment < addr) {
+>       |                                             ^
+>
+> typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
 
-kernel test robot noticed the following build errors:
+Thanks for raising!
 
-[auto build test ERROR on trace/for-next]
-[cannot apply to linus/master v6.18-rc4 next-20251106]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>
+> Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Remove-dummy-options-and-flags/20251106-010511
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20251105161935.545400234%40kernel.org
-patch subject: [PATCH 3/5] tracing: Have tracer option be instance specific
-config: i386-buildonly-randconfig-003-20251106 (https://download.01.org/0day-ci/archive/20251106/202511062223.ocoUvCBI-lkp@intel.com/config)
-compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511062223.ocoUvCBI-lkp@intel.com/reproduce)
+See below, but the fix seems ok despite the existing code being really horrible
++ in need of rework:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511062223.ocoUvCBI-lkp@intel.com/
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-All error/warnings (new ones prefixed by >>):
+> ---
+>  tools/testing/selftests/mm/mremap_test.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
+> index a95c0663a011..5ae0400176af 100644
+> --- a/tools/testing/selftests/mm/mremap_test.c
+> +++ b/tools/testing/selftests/mm/mremap_test.c
+> @@ -1032,7 +1032,7 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
+>  	/* Don't destroy existing mappings unless expected to overlap */
+>  	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
+>  		/* Check for unsigned overflow */
+> -		if (addr + c.dest_alignment < addr) {
+> +		if ((unsigned long long) addr + c.dest_alignment < (unsigned long long) addr) {
 
-   kernel/trace/trace.c: In function 'run_tracer_selftest':
->> kernel/trace/trace.c:2174:30: error: 'type' redeclared as different kind of symbol
-    2174 |         struct trace_tracer *type = tracers->trace;
-         |                              ^~~~
-   kernel/trace/trace.c:2171:47: note: previous definition of 'type' with type 'struct tracer *'
-    2171 | static int run_tracer_selftest(struct tracer *type)
-         |                                ~~~~~~~~~~~~~~~^~~~
->> kernel/trace/trace.c:2174:37: error: 'tracers' undeclared (first use in this function)
-    2174 |         struct trace_tracer *type = tracers->trace;
-         |                                     ^~~~~~~
-   kernel/trace/trace.c:2174:37: note: each undeclared identifier is reported only once for each function it appears in
->> kernel/trace/trace.c:2180:18: error: invalid use of undefined type 'struct trace_tracer'
-    2180 |         if (!type->selftest || tracing_selftest_disabled)
-         |                  ^~
->> kernel/trace/trace.c:2189:38: error: passing argument 1 of 'save_selftest' from incompatible pointer type [-Wincompatible-pointer-types]
-    2189 |                 return save_selftest(type);
-         |                                      ^~~~
-         |                                      |
-         |                                      struct trace_tracer *
-   kernel/trace/trace.c:2158:41: note: expected 'struct tracer *' but argument is of type 'struct trace_tracer *'
-    2158 | static int save_selftest(struct tracer *type)
-         |                          ~~~~~~~~~~~~~~~^~~~
-   In file included from include/asm-generic/bug.h:22,
-                    from arch/x86/include/asm/bug.h:108,
-                    from include/linux/bug.h:5,
-                    from include/linux/mmdebug.h:5,
-                    from include/linux/mm.h:6,
-                    from include/linux/ring_buffer.h:5,
-                    from kernel/trace/trace.c:15:
-   kernel/trace/trace.c:2193:29: error: invalid use of undefined type 'struct trace_tracer'
-    2193 |                         type->name);
-         |                             ^~
-   include/linux/printk.h:484:33: note: in definition of macro 'printk_index_wrap'
-     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                                 ^~~~~~~~~~~
-   include/linux/printk.h:565:9: note: in expansion of macro 'printk'
-     565 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
-         |         ^~~~~~
-   kernel/trace/trace.c:2192:17: note: in expansion of macro 'pr_warn'
-    2192 |                 pr_warn("Selftest for tracer %s skipped due to tracing disabled\n",
-         |                 ^~~~~~~
->> kernel/trace/trace.c:2206:27: error: assignment to 'struct tracer *' from incompatible pointer type 'struct trace_tracer *' [-Wincompatible-pointer-types]
-    2206 |         tr->current_trace = type;
-         |                           ^
-   kernel/trace/trace.c:2207:39: error: invalid use of undefined type 'struct trace_tracer'
-    2207 |         tr->current_trace_flags = type->flags ? : type->default_flags;
-         |                                       ^~
-   kernel/trace/trace.c:2207:55: error: invalid use of undefined type 'struct trace_tracer'
-    2207 |         tr->current_trace_flags = type->flags ? : type->default_flags;
-         |                                                       ^~
-   kernel/trace/trace.c:2210:17: error: invalid use of undefined type 'struct trace_tracer'
-    2210 |         if (type->use_max_tr) {
-         |                 ^~
-   kernel/trace/trace.c:2220:44: error: invalid use of undefined type 'struct trace_tracer'
-    2220 |         pr_info("Testing tracer %s: ", type->name);
-         |                                            ^~
-   include/linux/printk.h:484:33: note: in definition of macro 'printk_index_wrap'
-     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
-         |                                 ^~~~~~~~~~~
-   include/linux/printk.h:585:9: note: in expansion of macro 'printk'
-     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
-         |         ^~~~~~
-   kernel/trace/trace.c:2220:9: note: in expansion of macro 'pr_info'
-    2220 |         pr_info("Testing tracer %s: ", type->name);
-         |         ^~~~~~~
-   kernel/trace/trace.c:2221:19: error: invalid use of undefined type 'struct trace_tracer'
-    2221 |         ret = type->selftest(type, tr);
-         |                   ^~
-   kernel/trace/trace.c:2235:17: error: invalid use of undefined type 'struct trace_tracer'
-    2235 |         if (type->use_max_tr) {
-         |                 ^~
->> kernel/trace/trace.c:2176:30: warning: unused variable 'flags' [-Wunused-variable]
-    2176 |         struct tracer_flags *flags;
-         |                              ^~~~~
-   kernel/trace/trace.c: In function 'tracing_trace_options_show':
-   kernel/trace/trace.c:5172:24: warning: variable 'trace' set but not used [-Wunused-but-set-variable]
-    5172 |         struct tracer *trace;
-         |                        ^~~~~
+Hmm this is odd though. gcc (and presumably for compatibility clang) treat void
+* arithmetic as if void * was of size 1, so on 64-bit systems this should be:
 
+64-bit value + 64-bit value < 64-bit value
 
-vim +/type +2174 kernel/trace/trace.c
+Which is a valid check for overflow right?
 
-  2170	
-> 2171	static int run_tracer_selftest(struct tracer *type)
-  2172	{
-  2173		struct trace_array *tr = &global_trace;
-> 2174		struct trace_tracer *type = tracers->trace;
-  2175		struct tracer_flags *saved_flags = tr->current_trace_flags;
-> 2176		struct tracer_flags *flags;
-  2177		struct tracer *saved_tracer = tr->current_trace;
-  2178		int ret;
-  2179	
-> 2180		if (!type->selftest || tracing_selftest_disabled)
-  2181			return 0;
-  2182	
-  2183		/*
-  2184		 * If a tracer registers early in boot up (before scheduling is
-  2185		 * initialized and such), then do not run its selftests yet.
-  2186		 * Instead, run it a little later in the boot process.
-  2187		 */
-  2188		if (!selftests_can_run)
-> 2189			return save_selftest(type);
-  2190	
-  2191		if (!tracing_is_on()) {
-> 2192			pr_warn("Selftest for tracer %s skipped due to tracing disabled\n",
-  2193				type->name);
-  2194			return 0;
-  2195		}
-  2196	
-  2197		/*
-  2198		 * Run a selftest on this tracer.
-  2199		 * Here we reset the trace buffer, and set the current
-  2200		 * tracer to be this tracer. The tracer can then run some
-  2201		 * internal tracing to verify that everything is in order.
-  2202		 * If we fail, we do not register this tracer.
-  2203		 */
-  2204		tracing_reset_online_cpus(&tr->array_buffer);
-  2205	
-> 2206		tr->current_trace = type;
-  2207		tr->current_trace_flags = type->flags ? : type->default_flags;
-  2208	
-  2209	#ifdef CONFIG_TRACER_MAX_TRACE
-  2210		if (type->use_max_tr) {
-  2211			/* If we expanded the buffers, make sure the max is expanded too */
-  2212			if (tr->ring_buffer_expanded)
-  2213				ring_buffer_resize(tr->max_buffer.buffer, trace_buf_size,
-  2214						   RING_BUFFER_ALL_CPUS);
-  2215			tr->allocated_snapshot = true;
-  2216		}
-  2217	#endif
-  2218	
-  2219		/* the test is responsible for initializing and enabling */
-> 2220		pr_info("Testing tracer %s: ", type->name);
-  2221		ret = type->selftest(type, tr);
-  2222		/* the test is responsible for resetting too */
-  2223		tr->current_trace = saved_tracer;
-  2224		tr->current_trace_flags = saved_flags;
-  2225		if (ret) {
-  2226			printk(KERN_CONT "FAILED!\n");
-  2227			/* Add the warning after printing 'FAILED' */
-  2228			WARN_ON(1);
-  2229			return -1;
-  2230		}
-  2231		/* Only reset on passing, to avoid touching corrupted buffers */
-  2232		tracing_reset_online_cpus(&tr->array_buffer);
-  2233	
+On 32-bit it seems even more so:
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+32-bit value + 64-bit value < 64-bit value
+
+So I'm not sure why this warning is happening.
+
+Maybe clang is doing some very clever checks to determine this is false.
+
+In practice I don't see how this could happen given userland pointers are
+already restricted on upper bits.
+
+BUT at the same time this is something that the rest of the test code does so it
+seems fine to take this.
+
+Also, (to be clear - it's not your fault Ankit):
+
+This (existing code) is horrible, I don't know why we're using unsigned long
+long _anyway_ here, the whole function is appalling.
+
+Your fix is in line with the existing code but is still quite horrible (again
+_not your fault_ :). So on the basis that it shuts this error up
+
+I guess we can take this patch as the fix is equally as gross as the existing
+code, but can we please:
+
+a. do away with the unsigned long long nonsense if possible (presumably to try
+   to detect overflow on 32-bit systems, but I do not understand why we are
+   bothering it seems totally overengineered and pointless for arbitrary mremap
+   tests)
+
+b. For the love of all spiders, cats and other beautiful things on planet earth,
+   let's please store a local unsigned long variable for the address and convert
+   from void * _once_ :)
+
+>  			ksft_print_msg("Couldn't find a valid region to remap to\n");
+>  			ret = -1;
+>  			goto clean_up_src;
+> --
+> 2.51.0
+>
+
+Thanks, Lorenzo
 
