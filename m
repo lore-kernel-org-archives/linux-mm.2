@@ -4,101 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C40A4CCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:05:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9722ECCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:12:19 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EDABF8E000F; Thu,  6 Nov 2025 05:05:22 -0500 (EST)
+	id A7DBC8E000B; Thu,  6 Nov 2025 05:12:18 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E8B818E0002; Thu,  6 Nov 2025 05:05:22 -0500 (EST)
+	id A55258E0002; Thu,  6 Nov 2025 05:12:18 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D79CF8E000F; Thu,  6 Nov 2025 05:05:22 -0500 (EST)
+	id 9923B8E000B; Thu,  6 Nov 2025 05:12:18 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C21178E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:05:22 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 95305C0586
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:05:22 +0000 (UTC)
-X-FDA: 84079749684.03.688BE04
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	by imf20.hostedemail.com (Postfix) with ESMTP id DB63C1C000B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:05:20 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CqIjs2IQ;
-	spf=pass (imf20.hostedemail.com: domain of dileepsankhla.ds@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=dileepsankhla.ds@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 857E68E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:12:18 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 44BA313B4D5
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:12:18 +0000 (UTC)
+X-FDA: 84079767156.10.ADD982F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 73C5A160002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:12:15 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pGcd8YVQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762423521;
+	s=arc-20220608; t=1762423935;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=Z9SBcCPeaeM8jmEuFyY3d76OUpSiPVaODHhAyJ2j1XY=;
-	b=yfhJWssiUabuIgTk12cazUABpATpCDqFH0Mmeyr5on4hZojdCuhYqG8oeL+1bOPLCtCz2O
-	jClsd+U3z5zMJ+6+GAEp28aZ6se2QKnxgvZfHEoTcirkuszzTym6cTXieU3zmOlLdAEQIZ
-	q/+B7uODERkQjZIRdBQGcx6V150z5wA=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=CqIjs2IQ;
-	spf=pass (imf20.hostedemail.com: domain of dileepsankhla.ds@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=dileepsankhla.ds@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762423521; a=rsa-sha256;
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=EqRxpoiqM5R7FJ0Bje9XStDpO2nwBfYYDIkZku5MxP0=;
+	b=rF+C6BRMNyQcYgAwiqfhoB4aa8q9JbowTvs7Wny92YEtuCYSJaIcywVYQMdQyyA+3VEk5B
+	ssDIHog9bwT5vH+Of5qD/5mx+ZGLf9XXrnl0Lf5xOAxAf4l3S0u6kva9beywNPsdb5Wj6G
+	OVZzbbAcf/ZlQ+742FG4fnev2NsjxIs=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762423935; a=rsa-sha256;
 	cv=none;
-	b=mPVhJWfYjfNTf+/C14l62IPtxeL6BZEDQ6PRVr2AzwWj6vpR5ZCuPsMVA2ILzai8eN224V
-	Gx7XZXjYqCOzqq5MwSclhaJq0G59kIqxu7TQcM6N0lO5EQUf315FLh3UMXOKjUpnEWU54H
-	CBJqdMgAKHkvZSQcJwku7FZFEfGlBxw=
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640ca678745so1409669a12.2
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 02:05:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762423519; x=1763028319; darn=kvack.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Z9SBcCPeaeM8jmEuFyY3d76OUpSiPVaODHhAyJ2j1XY=;
-        b=CqIjs2IQWQ84ZNVYxZa2dG5nJUcBpNP3xnE9E3ffs9C02wABlU8RtLcXjn3FPm+4sy
-         xieDi16+KpsS19dUhU43GnaIQE/lSseFe0uAlDgehNN3oArXePt/ijS5rglh5BWSLi5z
-         sj+4ht20WV4XkftZL9xQSRMR+lnBr+MQfUSv8mFoKwQg3EPhpxqgbe001IsnIGMxTY/Z
-         8SJ4Jz9n8vbnC7mljhb3agiJvZIUV5UaM3eaaXIUBu/tMptIqJ+SCJdK9tcn01Ny5pXK
-         skKH/xFSHMX7pRvyQ1eLtMcHOo7xRGaIy45VV68B52Ts98KnjxgnmYCsDx5bOXG59cuE
-         VjrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762423519; x=1763028319;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Z9SBcCPeaeM8jmEuFyY3d76OUpSiPVaODHhAyJ2j1XY=;
-        b=ckanOxkYc4kP4Tre8pkZmLCyHwVUjNtupLRHtJ7RxPbIev18b7gz1nhwi3dcH+hMFx
-         WZHfh7NCKZRkk7MjqVc13JFT0crbVkJtKTQbkHmfpqnqFgostJsqWbvLQnnadgWWBKDN
-         5okMEU26343H6PlqRyBGjNrGeh11Rt4NyXDCbriG5Vw+7cP+bg2h2Go31c/EsuVa4uNp
-         3FKmzfU6LBn50gUACCu3sX9BvIqvriaFKanCdZi/JVITxdxquis4SfTJip//p9qqSUks
-         rUs2ek9clKFhllqrHsQPCa1jGn3D9Yz1UesQ5T4NguEzU5HEPiUTuhp6MnF+IxGDzODw
-         lJww==
-X-Gm-Message-State: AOJu0YxnCL+5U+1ASnG0l6qcbUKaYccx8jBVjDIwZRep/TcsFgxPgMDr
-	LlSA05LhtY4qGO3O9pOwqd8wtCXPhFBfekzqQoVioE51arBdMbiP6d5fanpIt+8ONyPQILLtIIo
-	eO5VPL+la+m5MORQNm0KEe7LI2hKTZ3xZAcYOoss=
-X-Gm-Gg: ASbGncuE0mAEKoQ4dFnRrmBI92q1AAyqOZwnJl4wkM1Zd3K8PjnQtUGbJovCXLmMaVi
-	kOVlUGVVeKgAaey6u9Gehdbx/jgoRFbqNOFS8qLNx1bT6Zo58MJRHjpXQNWxNMFZ1P9e6Bsi22J
-	GbpblIIzDCbP8BEIlgpaNt1KkkyJ0DkHWpKKS4r6p7blqRfBD/u6bZ8RHDYBdd+f13uSnNIX74I
-	Kj6/5NkHCV6RMrrs7KacwmMoRcAXOUUxLkgdw/TTCpBRo2Zg4jDxrBk6EzVUHyO5zTIm8ndLvSw
-	jDqPiNgRdroSMVDH9jApg2IfZg==
-X-Google-Smtp-Source: AGHT+IGe+sITW7EViPAVEP0paiHz+gRzBRFhkCWl5QvuF4/OUXBi+vRvX2YBLwHzJntVrW4DzB00Ptw1LCFAE4hHslc=
-X-Received: by 2002:a05:6402:3553:b0:641:2cf3:ec3e with SMTP id
- 4fb4d7f45d1cf-6412cf3eeedmr511684a12.11.1762423518683; Thu, 06 Nov 2025
- 02:05:18 -0800 (PST)
+	b=ty33+sxBola7z/HExjC4pLOX9dvIof6RLLP0tvxARaFm5uhpV/0DUmFsxjPQcAUt4jqSP3
+	b+w15wZpUDQjjXvEOU7MIKV/BiApwBWe3DA/MFXL7T9IzCb/Xvu6kSD6KoST2GAG8rELJf
+	YqM9ef1j7lvb2hAHiA1D6ONyWJ0bV0Q=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pGcd8YVQ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf08.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 7E783401D8;
+	Thu,  6 Nov 2025 10:12:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16C25C4CEF7;
+	Thu,  6 Nov 2025 10:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762423934;
+	bh=vLdgMhMbqdRsS7pRY1HQBSMCzu007EocSaaqrY8zFyQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pGcd8YVQCbPtN3a/2MKKJWJUm/3VAYrlUL9uGyjCFTmURjyQy08/z0FF7aU06fuWo
+	 wIV6zjOh8o+RScH3Kt9b9ue2vDCjSvaY0/X5XHaX6mWg4dW+eacu2Nh4+bW3z48kgV
+	 lOMycMl3uK9Zv5EoNKz1Xc8OovT3z0p/gl3bD0PvbBW9QD2SB5S3QVZwBr9YDG70K5
+	 d1mdjfr/if7r7TPd1Y5wD+bJGFe/36tsTRn/E9zJAz/9z8d5235okzQJxHJssKImnA
+	 2AdZJdO7vI4w36a88wly0Ryw/sdZ0eG/ymzjK7PwfLFyG4jznb73PJso7qsGIKERC2
+	 IPBBH7hh2O63g==
+Message-ID: <79509ed8-d6e2-486f-9e41-0290320c496f@kernel.org>
+Date: Thu, 6 Nov 2025 11:12:10 +0100
 MIME-Version: 1.0
-From: Dileep Sankhla <dileepsankhla.ds@gmail.com>
-Date: Thu, 6 Nov 2025 15:41:52 +0530
-X-Gm-Features: AWmQ_bnIbwi2CybsHNWHjzZRoRFY2_e7hTFYFWfFID5l6rYIL9fGocbZD84KG-k
-Message-ID: <CAHxc4bug3HOPd1i2coqyJz_gRNGyeCpqiYo0UWV-w6cAAtD5KQ@mail.gmail.com>
-Subject: on solving syzkaller bug in __filemap_add_folio function
-To: linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DB63C1C000B
-X-Stat-Signature: m55e7gkxahy5ef9y7aob735kgf7wfqd6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: kill mm_wr_locked from unmap_vmas() and
+ unmap_single_vma()
+To: Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Liam.Howlett@oracle.com,
+ linux-mm@kvack.org
+References: <20251104085709.2688433-1-wangkefeng.wang@huawei.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251104085709.2688433-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9aiymxtgn4t7z7s88om8u5k4dqaib3i3
 X-Rspam-User: 
-X-HE-Tag: 1762423520-822116
-X-HE-Meta: U2FsdGVkX1/Nc4DsJQ9HMjo0BEWAGKjJyO/akRCllFe7Rj3HOY3+faOkq52yM/qjx5vyWnbZX9t2bCj5FUxGaPFAEs3y94nU3VvMlAoI0Qmyqob7rvJtpBVN9EDrvdALQJL4bj6FlxncyVofKnUklPz/neEABUqI1NeIU20GrDzqSltUPcs7WvCmjOiorN+D9+9yeN5hEyP7W9BVNys4z7uNfgqKjQyTRNxOZJG+XLFXmx58fpt/5uQyoKJUsntrewjuNHjA9oQLsJJbxziwCHMWNXHrMzeXgFNyze9ERejmQAaf3IkkRxF9Vii8H1h4p/4FFikhWEkiH2yeqPmXOlF3Ffw4bhMaYuIBUpKGHNdDwSKGzn+nRh0KRa6BHEtOA/Ybp3iEDSbRNe31FtTNk86zRRuiXWAXC3JVco25F55othnCQrI72MqPqHcwF5CY6N4DUchebaIiLJf+mZQcHqGXOrTtjQEGlGHDGWoEZPammyV4uf559KEj1JJXJYm0zuZZLqO8ew/N7ci/2RjngVliIDFoPcRBlXz3pjrW9dvMplR1ye2Tixs98MHaTOId2VUIN4VlehrZQNWmYL6hvbODAZ81VEX4ykwSKRQaC8jNQmwNYrAZU5eJEcg9Ju9NNsAd+lV6/kiG5nzpnvYN8o6OzTDiFoGp+vpwlmqHx1IUFdbBI0YbOZERnzS2Zs8Si3dwebjihL6+xEhW0qoD+JqSL3/qo1D6rndMHRuxaI9O3jqJQy9fC0AV8PiXdLBDl1wKynEBcuxxg51MVPwmzzZUt4TcFyHwJag4dg78vVCVEHJzcBZRGfAXThs0zYcMibKqXkP1JFaH3VLiTyZoTs+QcC9eoEnggOImSe8gWrpzuAsy/RX6N7UU0BwJh88iNPmE9f2jU1oV/7eJ5fMhNhzY8C7aqvVK/U2wPd8aCrWIl0MwRC/CPMvZn9nB6gVhsDjhkxbqBJ2V4V4JjD4
- OUYLCc3n
- XJf3+53GzYbm0vZo62LZTku6aOmQ93711DZDFxsJREjtIBWlN1nMTn6BsZV+p0/yjq2cHdSB8pqEUS3LBl09C3AVJ5FeqGv4ooVlwPxS/ELnvT4aA2b3IOp1BGTQOVu5FViviG8rZEfrPNOq06jKrv4u6OP0Pj8CURJ2hBS+dsMJv7Apyb4bul9snbe4ZWQuM7IbL+BHMvNa/yXDF5ii7azkJfyfagn1gfhMbb85/NoV59ibVad4diD3dQfr3j1myJlLHOvQ2spGToxXglV3Ib8W2XuRopZRL6JDCG2tNut0gNfolaqHvdor41nzWxndaE/Aekzghus6Sm4MfTYmDGO+7YznzQvh95GbEe5RlYQ7O19v+aNDCFeiG2vMU8L8ti9L9lRthCRZy7e6ANmz4YpWvwhqWQq82i60Vylk6vCgFeqGmnzoRyEf+oIMBWET6YsQ4AJYcidLTQSBQWeCqrH3HIPkwP3Ht4jm6
+X-Rspamd-Queue-Id: 73C5A160002
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762423935-3774
+X-HE-Meta: U2FsdGVkX1+zJEFEq2ctNPl2JbsnkHCM8n8VZlBmGICXe4zPFN841f4UvecM6EEoLAN93wL1otK+B8KAQwZ6idHMiSkt9wtr6ngUsiOAJ24GFhl9VTRN4aCT4wnuNw+C6FKVcmkJkSYVq1d1Rvjiy6Kms4kpy+vZxTyC8U7I9h+JkxGBjkJkAUirDoGIJodpJ9HvaUmrBEFzF6RYPenEgjarLW+jXP7cz9uXT45dG+kI3SrEXWhbijvi8RuPLn+/W2a/LSosc2opJvqcHmxgWGuh/aSXbB10AbIqg2bLEPtWfnExHjQzYv/GH93wpsYdAJBNwbVZSdMV0DpB01wsSyVacgMS2eH9yYIWx4BZm2udm8/VAe0Xv8tAE7Kx7xHaiiM+EcZ7EpVboGuKPi2/vfGGYeB5WhlCB8o654yhJik1EAiYL3cy7ntcYqASRemzBJ/9ONp/WSm6zgCYN4Zh97TYqh6q+fa8iJGexTxdEopEqwHHCQHwfyr1ynvE0c7djDDYQ0RXhLuzq8h3VedG2xyUMO6veCFFN0lKz/UW57HLUXNeIo7Iwbj3uvevl+ewPzDBEZ8dgVn4ai5Besv6L4WIzYvpJbmJht84sC2DsUCeqd96n3CcLq4XyxA6qKhZBw5uABaXzvxR7K8kFrfkPMH4ehgBfiOFcDA88M0TpcSrSbHdo/8ywyc8VM7uOYb4r5CU5p0r+1x5J0e3j04f9xpiLwak3Wu9CJRj+VrsB2mDSab0QZDexa38J9QEOoV7CsFT5fSvK1R3MroW8BOXWe17nkWDa5qCzxKTfke2O7sGvop2P6iIejSG0ZLMJszbjgxgsY15V7a8J84JtuZPIAgG7O7WihIY49qx1sgaPHOsU5CieoCkz4eWbQziwGoXF0F1m7rGK/B/4Qg4bPC404EgFuwQAslzyvlWXnegfew4GGLhGYJth7P8DEWasorvYg0uBSjmzH6pEunPnXo
+ 13Cg27/M
+ bYWKESAN1BhHtLYLRS2abbbN0SjdHTJQZWGkvVsXTZKzJ08WkzHKwt+ocms0xr8aQJytHleUEylEudWQD4cfBMfbsPSpJEVc43DhIcp8bzS2bUfq2mIEXOAmmJ10W8rBCKrykEqDEK/hGl+wcGaGhqII6pqHhdZFLVujvMqmvIRDTwxo61tQcI9Tsih4zwacL9AHxzKTyOKy3seyDj8RvMKPsXtXBhBTJXYcY1ge+AE91V+LUlteDfqNoW8nNOXdfxh0tVipfrQwrY33OtmYeE7ZRhMJec40ueDfebnbMySLNzR9EQA2MRIJrgAJqbMgpYWdraIudVerey5rQoh/w53RrgCcsNIBf2Ec7
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,48 +96,18 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello everyone,
+On 04.11.25 09:57, Kefeng Wang wrote:
+> Kill mm_wr_locked since commit f8e97613fed2 ("mm: convert VM_PFNMAP
+> tracking to pfnmap_track() + pfnmap_untrack()") remove the user.
+>
 
-I am solving my first kernel bug. As far as I understood, the
-syzkaller bug I am solving (please see [0] below) is about a crash
-during synchronous readahead when the folio order of the allocated
-folio is less than the mapping's minimum folio order. On debugging, I
-found out that the folio order was greater than or equal to the
-minimum order when the readahead was initiated, but the minimum order
-somehow changed (increased) while the readahead was in progress.
-Actually the set_blocksize() function (inside file block/bdev.c) is
-setting the new value for minimum order. This function was called as
-the result of handling ioctl() system call invoked from the C
-reproducer.
+Oh, nice!
 
-Both readahead and changing minimum order are done under
-mapping->invalidate_lock (readahead acquires it in read mode and
-set_blocksize() acquires it in write mode). In my patch [2] tested
-against the upstream commit [1] taken from the syzkaller crashes,
-during readahead, I am acquiring the lock first before initializing
-the min_order variable with mapping's minimum folio order. This solves
-the original syzkaller bug but another crash [3] occurs after running
-the C repro for a while. Actually this crash occurs in
-__readahead_folio() function (file include/linux/pagemap.h):
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-BUG_ON(ractl->_batch_count > ractl->_nr_pages);
+-- 
+Cheers
 
-The condition is being true during runtime. From what I understood, it
-is impossible to have the current batch greater than the number of
-pages in a readahead request. This means we are somehow altering the
-current readahead request improperly somewhere in the code. How to go
-about this bug?
+David
 
-P.S. The same crash was reported as another syzkaller bug [4] (kernel
-BUG in mpage_readahead), however, its call trace is different.
-
-Best Regards,
-Dileep
-
-Links:
-[0]: https://syzkaller.appspot.com/bug?extid=4d3cc33ef7a77041efa6
-[1]: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=9dd1835ecda5b96ac88c166f4a87386f3e727bd9
-[2]: https://syzkaller.appspot.com/text?tag=Patch&x=103ee342580000
-[3]: https://syzkaller.appspot.com/x/report.txt?x=14cdc114580000
-[4]: https://syzkaller.appspot.com/bug?extid=fdba5cca73fee92c69d6
 
