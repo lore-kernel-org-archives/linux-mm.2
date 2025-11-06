@@ -4,98 +4,83 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24723CCFA0D
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 02:44:23 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F70CCFA0D
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:08:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 668B58E000F; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
+	id 05C8A8E0009; Wed,  5 Nov 2025 22:08:44 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 640978E0002; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
+	id 00D478E0002; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5565F8E000F; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
+	id E8C0B8E0009; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 442528E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4E99B9E93
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:44:21 +0000 (UTC)
-X-FDA: 84078638322.28.691051D
-Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 95FDF180006
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:44:18 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xgwHqogv;
-	spf=pass (imf16.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
+	by kanga.kvack.org (Postfix) with ESMTP id D34CC8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 724ED88AE7
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:43 +0000 (UTC)
+X-FDA: 84078699726.15.2474F0D
+Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 9961D1C0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:41 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DIL/yDdm";
+	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762397060;
+	s=arc-20220608; t=1762398522;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SmiGeerJpItekeBrZ0vp8zm0YzZ1kocpU6u3YhL4BMc=;
-	b=iMgatINTJ1O3J0zwTrpdfm/FlbTdSC0mqSLYGiCvfIoz8vHr5Oz1M1oXR33ZI/bHTmWxf9
-	MSqhtJ0HtU8l34DszXs0/yfxGpmzhFtf884McUSq+C4te8926yOhCl28tYoWRZB+OaoEZc
-	3ypBSLRO7cCHlUAEnox4jrRqfoAf7NI=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=PEgt8dqODFgqWZubV0P8rSJ5eXEFZvoVCzJWLxN7M9g=;
+	b=xZM/rs9vV3pkQwrAJAWQEEm5DFJxLGUoKdeCQvDkjjUsV5bl8xv4f52zcPnYIoPhkDcD6p
+	0VKCEqCuqmp9O04ZxxVOwGI+xWwXp3pAZ36cloBJTsWMixFz1LOYbvOgVH+I1tC/wvFBAl
+	OgVidPTQBt0j8t6VykK2yG+POMEZAYU=
 ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=huawei.com header.s=dkim header.b=xgwHqogv;
-	spf=pass (imf16.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
-	dmarc=pass (policy=quarantine) header.from=huawei.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762397060; a=rsa-sha256;
+	imf18.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b="DIL/yDdm";
+	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762398522; a=rsa-sha256;
 	cv=none;
-	b=FLtY0/PZC9T9s8kPcR/BaLoCSRNO3euSxK5Mh+HvYL3cxi/5juylyvETzimij1PMgqeno0
-	O52YntQ/cIcINTKwTHW9ZGd93uweMnkGcN+A+4h6v9Ax0U1wTxvAGZ212QNT36EH3Z2l7p
-	I+DC3z672x9GqMI8vaDinjX+kE/W/rg=
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=SmiGeerJpItekeBrZ0vp8zm0YzZ1kocpU6u3YhL4BMc=;
-	b=xgwHqogvKdjdSjQOEiNXt3yMJngtWo0Y3iXn2mRqv7EpqxcVd312T/rdqLXC8B4Ld5dCDQJdA
-	X16AvLmzek4Fl5/+heqACTw+WUdIqjjuNZrTxJVMbinUXaT0bUyaJ/Ii3lrIm7lg+Ev+H+0MyZb
-	Uq/4Xu/yXujZiDi+0Wfnd1s=
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4d261908K0z1prKm;
-	Thu,  6 Nov 2025 10:42:37 +0800 (CST)
-Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4B608140276;
-	Thu,  6 Nov 2025 10:44:13 +0800 (CST)
-Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
- (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 6 Nov
- 2025 10:44:12 +0800
-Message-ID: <242f4438-d84d-46a6-86fe-8629c7e028cf@huawei.com>
-Date: Thu, 6 Nov 2025 10:44:11 +0800
+	b=wjMECOuitLU1pM6zTseMYa2ilXWPnzzVM+tdh2fI850LqIRpIzAB6qkxecFOkevqOnNb4a
+	OURO74lGz2/DlW+Wsj60PrBRPEdIBF3vY4MzZeS6NPsSpywkqHY61nXB2s8rHvwhkLPvKc
+	3ekWSb/GUUdUDelO706dk0SKA0D+/VU=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762398519;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PEgt8dqODFgqWZubV0P8rSJ5eXEFZvoVCzJWLxN7M9g=;
+	b=DIL/yDdmEpqocu9ESUZ8W9uH0Vh1M18a9ktyGr6YFz1Xeg33wl10vdqdtMnUxSz0n8Tz1v
+	J0oX93sKbVpg1ERQjL2zMnLSXwPGdaZatEpcBqBmULRgRYC6i0hvSU0olk/Q3El75yX0Bt
+	DVHZ5+MQ98DgLhm3nSEYY8NH/oDt9Oo=
+From: Hui Zhu <hui.zhu@linux.dev>
+To: Andrew Morton <akpm@linux-foundation.org>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	David Hildenbrand <david@redhat.com>,
+	SeongJae Park <sj@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org
+Cc: Hui Zhu <zhuhui@kylinos.cn>
+Subject: [PATCH v5 0/2] mm/hugetlb: refactor sysfs/sysctl interfaces
+Date: Thu,  6 Nov 2025 11:08:21 +0800
+Message-ID: <cover.1762398359.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 25/25] ext4: enable block size larger than page size
-Content-Language: en-GB
-To: Jan Kara <jack@suse.cz>
-CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
-	<linux-kernel@vger.kernel.org>, <kernel@pankajraghav.com>,
-	<mcgrof@kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
-	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
-	<libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
-References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
- <20251025032221.2905818-26-libaokun@huaweicloud.com>
- <yp4gorgjhh6c3qeopjabmknimeifhnpbz63irrrtjpplatnk4k@ycofoucc4ry3>
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <yp4gorgjhh6c3qeopjabmknimeifhnpbz63irrrtjpplatnk4k@ycofoucc4ry3>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.254]
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemf500013.china.huawei.com (7.185.36.188)
-X-Rspamd-Queue-Id: 95FDF180006
-X-Stat-Signature: is3m96wnbobyne4th53zw1hkjzaos7yk
-X-Rspamd-Server: rspam02
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9961D1C0002
+X-Stat-Signature: earnydhwuarzf1o4fpjb7c7nw87qj7hq
 X-Rspam-User: 
-X-HE-Tag: 1762397058-140660
-X-HE-Meta: U2FsdGVkX18ZdVXUXjUp9IljzqJV2fQYcXqUD0yzzWlFUGjUtU59I441FuBRHGfuG8fFtnSe48Kaidp8x+HqinFtFMRsNdsB3WZPqcOjuLpXZyd8sb1Yz2nST8gvXLLvwqgz7VOA+DDO4CF/od7u6JLzbYnx5ccH38R4GdUwaBbcda+uzZ40pdrdBPjDFBMIW9pQX1WXFYyL+4opavgQ04MuM7HViCPtdvT1+KZ7mLqCNYL3acHEHYT2qphza64rd1clATISg8U3wGNdRt+f6nHA3cgiCjnDAp6iGbFbXQQDqofuVMV9H0ndxUfrdZTBnuuxm5KQFRenlLluZgsakru+LbGdEHMmZ5hUahGrDMzeMCO3AH/uzIaJ723VVgBMKn33YGPPoVrKCmwX8BBnALMWMuyKXhUnX8fj9GCTNKmwyC2gjI/wdvrAD3K5L6ExVJ0X8LpkN9Zj7xoeCq699VX9fPCeUQyhmjSvfknvoHYI1i9W5hLrqq7PDcGfUT0LDZK23zmLsCm/YDhajvzqaO7oHARhhxKW3IMC/L2KOD7VYhFJn1FLTbTxSmmr73sycHLknQi97cwjpCTxCe28D0uwWYSjCzE4jsaHwLWUUrvnVOD0Oq8t1Sy8/IspS2dnc4O9E0vAy61kNmDNkXtMx+IAYgzIMHBJbRvyX0wmo28WnONWHIWSTY34xNh7tfvX0csXFVJGbBvm2ODJHhPO2GBBoj+bnQYhd5kp/qvnmaB5eddlH1FFj+8XCTxp3tAQrA04z3x/quzcWmB0aBYyxvCU+q5HS1l7VVCuLuDkeA9HvuUEeMYFQRViwvm0jUx87NxXR2F0Ca5QOflDRlJQT8EYrOEZMzYJo6NcvbHIJZ7SNhuvtJ+oGGIwfKxcNZ9zKr0IBm37iPhNeKNaxBMz3n2CkIKiQIP2gteAd2Yc9Ul+SE2P3ZGXxNRfg8tFgMKVvC3nj93eOYuZqaEm1G3
- Hbbxw7zM
- QDZ4e2cyGT6a/QTiTUoK+qzo69YFE9AQYsGWM0Hz0PPvSSfkV/rN0M+M30xmmytnbiN1j2x/YxOygRHjuUOhEQ5FeCsyi96RPc03H+Xn/q7HIE0ODzIbybanlW52RFSyymnzGr1nfkR4iYcd4wxERv0Z8c3WOB7Gz1xnkYnycvE0AlNUI0tU0xbhUoEj0L68giM0ZcVzpwreF7gUM/jbAhgpSEbcwgFcnAQpj5MqorPjL5xVbqFHmQqVVaYFz/ID2hVP5RRrBCD83oVa2vH0DyoBl5e0uAB93pw01iTjvJmwvZVTbUc1hurE7nrHzkQ3Dl2a9BfvVNuy3aC0xf09FCa/nI6OFkPEsYPSPKEWxXQbWzX1et+djI6D12IQcq0dwGSgh8JOgBzZiuayIRXDmM6WK+vT4ubEuYYKpqf/7DMOERiLUr7hYu1eR+Q==
+X-HE-Tag: 1762398521-712405
+X-HE-Meta: U2FsdGVkX1/4ozBLPl89q9DMTz7VFWVsCqQFBGdjoLWOCCt46IJ4EuA92WHPQwuBu9NNMVeuj1npZPKWPNmD0sx+bvEDvcAmOpDbCpWHCWylA4NtJ+4CCBlpHGUagC9c7wVJzhq4r/2fQ6Gdz9GHeRqy4aaJk4pD6tV9i3YH0R26t5khYphM8JR7pjCnC2nu+mJl5glXkMNWTqki3mDsu0s5Ba8+SvS2IC2v/D7eAX2r6BqTCa5nPqxqUACMRfyLQtYC5rl7LIzUT7qRAA8S84kb/iqmuhe5vCjHjRfz4Jly61NmoobDOxzI4ZwDWXzb/bwmBXxJGJI946WMRhBpG12gmjqEqSBkxvozAiHrsx2oucTP6v2asHSzZZ58b4MRsWlKjyhFNfn4ftz8hPSnoOXkKzY47IZnh6g4Weu5D3krM6CfTAhN33yG189XZ04Bku3PuXkNBEsO7EmVC0X0z4BGWKwkMh9rJstgiNGVUu+wRtBVjhDOfOHd481McWk6GaYApruR+BmmFg0XASk151mpVmhlWSu66oMCTJXUKXkdd1chQnCQ4Z6RhvY0HM8GQr1G84qjX4+3s/z7RAS/sHUHqYxI0AbsYtR6l+edgl35ZcOgbprovOXa/cw73cSNz/vkYh1UUILoi0fSRx1hce2W6ppVMYvIZ3dH7sxYY9FV0fet1OXaT1eUIx0MDNG2DTgyBpsi0HsDBH7kwSzIO5dgfaBULQfpEmna1+LNjyoIi9OW8dZ9+Ar4OtX3POe5r2u2HMAfSsYRQGlHiXI8KoOAupzgYF/9JCiWDXwRxiuQW2n1rbjmUCmy6+AwPHPTqhcH0tWwsPU1ZeX2+3LEKiAqTljDsiOEaBnkxzIL1dvgRNLAsy8LSisK4V5HhyFlaS1RpHuWMVSPS/RfBqA0KQiCLRWvDa0oJx6vHOi354AP8aIm8FS4XQKK4ChUe9ZgEGJOlc3XRCXATGzA2p0
+ XP29Lfy0
+ EIKZZ/t1VF7IUrVO6RfSp0KdJO/E7Ao1/M5589KsMBPcSwaVwq1UtSsdlDJ1B1zgcjZZyjnw79SVKbgs/eBpAav2TCdAV8UHNxTZQXLpWlhdQM/JiAT+072kVlPLJbslfpNGISw7azJAr6VAgKh1glbdYNCJEYD5nUpYN
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -104,97 +89,56 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-05 18:14, Jan Kara wrote:
-> On Sat 25-10-25 11:22:21, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Since block device (See commit 3c20917120ce ("block/bdev: enable large
->> folio support for large logical block sizes")) and page cache (See commit
->> ab95d23bab220ef8 ("filemap: allocate mapping_min_order folios in the page
->> cache")) has the ability to have a minimum order when allocating folio,
->> and ext4 has supported large folio in commit 7ac67301e82f ("ext4: enable
->> large folio for regular file"), now add support for block_size > PAGE_SIZE
->> in ext4.
->>
->> set_blocksize() -> bdev_validate_blocksize() already validates the block
->> size, so ext4_load_super() does not need to perform additional checks.
->>
->> Here we only need to enable large folio by default when s_min_folio_order
->> is greater than 0 and add the FS_LBS bit to fs_flags.
->>
->> In addition, mark this feature as experimental.
->>
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-> ...
->
->> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
->> index 04f9380d4211..ba6cf05860ae 100644
->> --- a/fs/ext4/inode.c
->> +++ b/fs/ext4/inode.c
->> @@ -5146,6 +5146,9 @@ static bool ext4_should_enable_large_folio(struct inode *inode)
->>  	if (!ext4_test_mount_flag(sb, EXT4_MF_LARGE_FOLIO))
->>  		return false;
->>  
->> +	if (EXT4_SB(sb)->s_min_folio_order)
->> +		return true;
->> +
-> But now files with data journalling flag enabled will get large folios
-> possibly significantly greater that blocksize. I don't think there's a
-> fundamental reason why data journalling doesn't work with large folios, the
-> only thing that's likely going to break is that credit estimates will go
-> through the roof if there are too many blocks per folio. But that can be
-> handled by setting max folio order to be equal to min folio order when
-> journalling data for the inode.
->
-> It is a bit scary to be modifying max folio order in
-> ext4_change_inode_journal_flag() but I guess less scary than setting new
-> aops and if we prune the whole page cache before touching the order and
-> inode flag, we should be safe (famous last words ;).
->
-Good point! This looks feasible.
+From: Hui Zhu <zhuhui@kylinos.cn>
 
-We just need to adjust the folio order range based on the journal data,
-and in ext4_inode_journal_mode only ignore the inode’s journal data flag
-when max_order > min_order.
+The hugetlb.c file has grown significantly and become difficult to
+maintain. This patch series extracts the sysfs and sysctl interface
+code into separate dedicated files to improve code organization.
 
-I’ll make the adaptation and run some tests.
-Thank you for your review!
+The refactoring includes:
+- Patch 1: Extract sysfs interface into mm/hugetlb_sysfs.c
+- Patch 2: Extract sysctl interface into mm/hugetlb_sysctl.c
 
+No functional changes are introduced in this series. The code is moved
+as-is, with only minor formatting adjustments for code style
+consistency. This should make future maintenance and enhancements to
+the hugetlb subsystem easier.
 
-Cheers,
-Baokun
+Testing: The patch series has been compile-tested and maintains the
+same functionality as the original code.
 
->
->>  	if (!S_ISREG(inode->i_mode))
->>  		return false;
->>  	if (ext4_test_inode_flag(inode, EXT4_INODE_JOURNAL_DATA))
->> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
->> index fdc006a973aa..4c0bd79bdf68 100644
->> --- a/fs/ext4/super.c
->> +++ b/fs/ext4/super.c
->> @@ -5053,6 +5053,9 @@ static int ext4_check_large_folio(struct super_block *sb)
->>  		return -EINVAL;
->>  	}
->>  
->> +	if (sb->s_blocksize > PAGE_SIZE)
->> +		ext4_msg(sb, KERN_NOTICE, "EXPERIMENTAL bs(%lu) > ps(%lu) enabled.",
->> +			 sb->s_blocksize, PAGE_SIZE);
->>  	return 0;
->>  }
->>  
->> @@ -7432,7 +7435,8 @@ static struct file_system_type ext4_fs_type = {
->>  	.init_fs_context	= ext4_init_fs_context,
->>  	.parameters		= ext4_param_specs,
->>  	.kill_sb		= ext4_kill_sb,
->> -	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME,
->> +	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME |
->> +				  FS_LBS,
->>  };
->>  MODULE_ALIAS_FS("ext4");
->>  
->> -- 
->> 2.46.1
->>
+Changelog:
+v5:
+According to the comments of David Hildenbrand and Oscar Salvador,
+move demote_free_hugetlb_folios and demote_pool_huge_page back to
+hugetlb.c.
+v4:
+According to the comments of David Hildenbrand, add copyright of
+hugetlb.c to hugetlb_internal.h, hugetlb_sysctl.c and hugetlb_sysfs.c.
+v3:
+According to the comments of SeongJae Park, updated MAINTAINERS to
+add new files.
+Removed the wrong copyright in hugetlb_internal.h.
+v2:
+According to the comments of David Hildenbrand, removed the wrong
+copyright in the file headers.
+
+Hui Zhu (2):
+  mm/hugetlb: extract sysfs into hugetlb_sysfs.c
+  mm/hugetlb: extract sysctl into hugetlb_sysctl.c
+
+ MAINTAINERS           |   2 +
+ mm/Makefile           |   2 +-
+ mm/hugetlb.c          | 728 +-----------------------------------------
+ mm/hugetlb_internal.h | 117 +++++++
+ mm/hugetlb_sysctl.c   | 134 ++++++++
+ mm/hugetlb_sysfs.c    | 502 +++++++++++++++++++++++++++++
+ 6 files changed, 767 insertions(+), 718 deletions(-)
+ create mode 100644 mm/hugetlb_internal.h
+ create mode 100644 mm/hugetlb_sysctl.c
+ create mode 100644 mm/hugetlb_sysfs.c
+
+-- 
+2.43.0
 
 
