@@ -4,92 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6B217CCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:20:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 93127CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:30:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C8B6E8E0012; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
+	id F13338E0009; Thu,  6 Nov 2025 05:30:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C631F8E0002; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
+	id EEAD48E0002; Thu,  6 Nov 2025 05:30:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B9FBD8E0012; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
+	id E27E88E0009; Thu,  6 Nov 2025 05:30:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id A6D238E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:20:25 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 332E9140665
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:20:25 +0000 (UTC)
-X-FDA: 84079787610.17.C097DA1
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 9347240009
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:20:23 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D41BB8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:30:03 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 87039BA763
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:30:03 +0000 (UTC)
+X-FDA: 84079811886.22.69BE247
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf11.hostedemail.com (Postfix) with ESMTP id C372D4000F
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:30:01 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YNK2o/l8";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762425001; a=rsa-sha256;
+	cv=none;
+	b=Kr7yykFU/fXEa1Jq0BzGYduw81162u45Hhik59LfaQ7S+YQsQHcz2P1Qol+brJ4MNtSZGb
+	LnYdW81dOncZvsj8kixcR09TQg9C6vPalzZmDnqJYGK26bTzSLJ4UIuwKXYrwoVjzuKpsA
+	hjzUgTeAYIMu4Ek6t5Q65FqIu6bFX9w=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf11.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762424423;
+	s=arc-20220608; t=1762425001;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cQNwyIZ0cRwSC5udufgelwCGq0n2Q5Y956Fq1SQA/ic=;
-	b=11uE5CmTYOZI+B36hANktrcXGUfbi2GPge4MlrnQtc1NLSIDrBTtiESykPpt+XgrBRZ73z
-	Zq0HTzCeuV3vOjeMzXXOnYXUIObysINJb1OglZYVk7m74EBOk0Qpy7+dCD5BurhcTCyViC
-	Da6y0nALEhavDmsqNo60TxiF0wLpFTQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="YNK2o/l8";
-	spf=pass (imf11.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762424423; a=rsa-sha256;
-	cv=none;
-	b=AbZjJBSwG/AHBDIiM9NfxwRwaJyHK7hUB4tuy5+ByhVJPZf6TVHyp+PESjDoSLrKcvl4QA
-	v2WBgawt79cmTvWBNdOs5hvZqTusIzW0VKbARjWYUdXEANdhmx1ZVPWxaOH9Ian7uzfgWo
-	YwI5HiQo8q4t3+10a2Y0XyGhbIyFuOE=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id D749760220;
-	Thu,  6 Nov 2025 10:20:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E06C16AAE;
-	Thu,  6 Nov 2025 10:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762424422;
-	bh=Uzdv7X5iGSxhbYbbKV4x7uTVi8GSHnnYaDFqzy50Gtc=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YNK2o/l8ETUrD1c2OGnHprJkg228pnjWczXRq6j70Uk4uvZZVSznUZe1qlDugwDF+
-	 mD7NjGM05huSNRwxnmBIta8PddoKJJ25a/JWd0hHzlGfYTIAtyOOT5HPAtzaDsDhyg
-	 RRf3NddjiE6LthZ9N972w7M7LRvaNpgLbLGSo2XVnhCzjZ66PRIZB8L/eAKOjEqv4H
-	 e0jnRaZErWhP+2qXxGQcH1gAG9hYbnqk9r4JFCVbnD9Q8WD7WkfhCLmxi0P8qQK0y6
-	 go8IaS1EILtePlaiiKtQykcy8v3JMZwj6CkPvnuiUMQni/sWY7bURFTOQpS9Utun8k
-	 2BXHaxxkaOeGg==
-Message-ID: <8e792092-11a4-4f50-be82-8a01512a5c1b@kernel.org>
-Date: Thu, 6 Nov 2025 11:20:17 +0100
+	 in-reply-to:in-reply-to:references:references;
+	bh=kXPFrNUNPhhkMe5rhwtRP1Qi03luuYdSthxJanNeerc=;
+	b=hz38MN3aMBTAs8sEbhvRZYuG1DXvXkmlu3+JS02zsCgdkLqZoVTDxKcx/dbUfMqOAgSPF0
+	R1NBnoeiTkE7b9HIJyscLUmtA/I5m9aaSIezC1LlXtcm61vRsUSS0Uqx7eY6NjC6oNtDth
+	IR8BhkNJIu8pJ1U8CwUi2O/Xgyl7V9Q=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B85731596;
+	Thu,  6 Nov 2025 02:29:52 -0800 (PST)
+Received: from [10.1.34.75] (unknown [10.1.34.75])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB9A53F66E;
+	Thu,  6 Nov 2025 02:29:53 -0800 (PST)
+Message-ID: <b3e4a92f-5b51-4eee-bfb8-c454add0f0d2@arm.com>
+Date: Thu, 6 Nov 2025 10:29:50 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [Patch v3 2/2] mm/huge_memory: merge uniform_split_supported()
- and non_uniform_split_supported()
-To: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
- lorenzo.stoakes@oracle.com, ziy@nvidia.com, baolin.wang@linux.alibaba.com,
- Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
- dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev
-Cc: linux-mm@kvack.org
-References: <20251106034155.21398-1-richard.weiyang@gmail.com>
- <20251106034155.21398-3-richard.weiyang@gmail.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Content-Language: en-US
-In-Reply-To: <20251106034155.21398-3-richard.weiyang@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH v4 01/12] powerpc/64s: Do not re-activate batched TLB
+ flush
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
+ Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
+ <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+ Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-2-kevin.brodsky@arm.com>
+ <87qzud42n1.ritesh.list@gmail.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <87qzud42n1.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 9347240009
-X-Stat-Signature: a5o1nw4auxkwszkh4i59coqzgkr9t35u
 X-Rspam-User: 
-X-HE-Tag: 1762424423-442299
-X-HE-Meta: U2FsdGVkX1+gn2EtE0HHzN0r0OlFcErzi+HCpLcmN8cQ3bWXcDI2GS3kbX51Bj2yVXv7zwC2QwucRuLQ5/0/MCZF0clqFwWcQWLuYE1s4DIr2uELzcGyuRzAS4zlJPaI1uK/S/likk/5+MaTYPiRdKouPOVPsjvMW+VQp6ZHOM2qrng0y+57WTKewrM3aMNitYq//yzqtgVkH/+bH1MGvOo/vANsM9+VdcPiLsRuKzXH6bZm0bvulsa6kAgfzOuPSFl0CqDqsZRNUYac0pCMhetnQoU0ZIshBesyfK8dYIkc6MDpWbryfGhzrs4oe/at6ouRXxra8Pkce4GMDc6YuRuQZv13TdtnzX6gPAVuoJV0+5arN9yBPR8mzCFfpWM4u+io1bFJ72Zffs9RO1ZC4qAU3qitVxH5sMLOix3uKyXHXS32wqKlmt55TkwJdJSpkUgCihAHMYiEDu45gHzhRzZlR6jrML3otrojbVDLqUQQMwUHBN2mGbrpjxovLJDOsNLq72c/Y4Gt6IJGjdJSafJdc8FrjywfmSpMpgAGFNlFsrZHll9UM54bb13Mptc6B93TWtuaJNG7fKcL25UKiXWHeOwmYh236mLEYiKVrl0uGxmJVt/NT3TnvODK8PypQyZ0CLGABMVvL+gWp6a27Pq7qhAi6MlrOkHSfUfyEF7w4AY7dNLdkU+6jsCDapwtPNY09ZwDQal2k0E4uGc4xUGIC5S6QMc/PbqYuCfMQU3Iaj8WBWVnRlxA00GzA7ZZqD1gdQwqRgVs+uAbOlmUH9vaAbKK90h8BBdy/XQTWCoftTdFzecA02fS1Smo5eJ7t75NXKBMHzzXzzMuWQYHl2VIMQ/Cl8eCQp2Z8szN7slzDdT6AS0qQuMJYJ7LqFIUS1dfZa63dLBnqhiK/s1YxHtCJrKxibPssRpJ3JBmomHOoXpKW6ZMsk3tfhMZeHlQXGiFCVW+0C43S6Rno4R
- c/Ggt+G1
- 39OL09oozC34f4o/l+mNrkQRLkmBz16Zzl1swbBDbyU7k89lknL8xJ7Mi8l6Lowf4tsp+SVWt+uKnFl6bpPs6eUopNpCHPPvzhZa+u61PIOilB/f5T01Knp+CKIGggtQDhjHMr6HqYbApB2C0MPBRGNoGkJwm+QDJGPOofsQmM807IrQo3ezIAErjX1HtngzHYda8M0trl0TZeJPbEhI0zOkePySpZYqAcbLDZ4RAJDE17/snYOhRqiw+YewDsnU58hraISeOPcbkU+7YEAA6/qt55wO4PQsVd3R7x74wwIy3G/W7MEH68WqsRQShlafvpqe62yYYVpRPYR+1yt0NUYJl26JWM/6UP4GBrNCxIY+IWfCyL28C1VL4IFg0tHRa9OKem/JRJiT46CwMc6SVxv/aId2n8aTHslau9+LvY+ikC1maixYpPOzgZtzFv3KFP4Ba
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: C372D4000F
+X-Stat-Signature: 5eskhmn6pfj3hjthpcuia7ku5wacuo7d
+X-HE-Tag: 1762425001-75779
+X-HE-Meta: U2FsdGVkX19y0f1elz7jvmJWLcEPnVNyZNR8rMXRj+JHFYpSVoGvJjl4Sh+H598s2+gbW4iQCiiCv4dP7Ov9PsstuEeDUG/JwADjFij6fUzJOh3m7vgc4BTx8etIPYunRfbaGXdMfg06uZdpS8yz6Xug1JN3BESYBtILiQYIvvVI7QoE4YxNYgvNFLjDdy/BF7gu5J53pk/Ir7Vl/fKSpCLk4FU1YooM6cAkQzSHR+bTMly0CpA+8AJ3hPdxa0+G2Q4uUphkmNRiCASIHFSRojbVzlOhn8rtCRWn+btL95uekPxosgT5AOSYKxr1OdOQSxtaiRj4JAMZ+cKIbrqYJWKVOkdS3IBwOWgl5Grb3gM2ZCjhn5BP+A/l6HZskeO3c2PBLwbCnmvLbSfbb9VKNYJDLkW9Er2tO3P/sJhVs1PstDefJL+zQEpi5uEyVjhZLs7cp/iYOAZdE48ApqoQqQLhEh13Ol/3Q7rogIMWo+bCK8fTieeHbtXMTQJSIzcG5cD4TFUQYYklvATUYBYEykBnuc7f4DCAAfSw+jcHxdZVK0t2XiYX8wGOOpiFzcPAMuHlG3tG1hFzelEQy17ZQs88bpisF7hAwSqw+rtwWHHTcPy4tdcb4DrNyJ9GdvLnmMmzqUz/+MHl0PQkgv0RmRmHyvfE0CZWEqzgQcrRDwALTBM7yRyuIO51wf7a00LaFiakGFZGhP7MMkU6jtTu6K2M39LKOWyx5ocj4yKeDwwisn+bkEF1xluWgiaPmvw5oKrD95Lv1x2c3J5VCJq/Uq0lOEYVe1tH1pwT+7VuqMdypl2OcyWnRjGtCdNN7usIwM0O+ai2ErOcZ7uMpbnIB1wFThv0Bh/JwVTcMJA9AUAeXb931CAEezcHxrarc/UIHtFVP/VuW+ibQHzGVn3CNhTqFpxs1QPKgShstGRDfgufeBswNXB8GjWlPnlfiTPvh1s5/ezkPXOqVAxka0m
+ ffe51KF/
+ Fa57h92rYQg+kw/1FAOJZLkSr/9kxIbJwX8eVlBJHq0/6rjsuW3484IOWPy0jk3SU3kpp4mn4wo2TI5jnpxlzmo+Qo4zoQMA1vm6MJoo5C8RZAtaBKZplY6MjLEc/njohhNPV/C851v2IodYPVahMSVCTQwOulDssSvM7UIsikNkcrOJxf5S61Py8vK3tGgsrP/M3jremIzAg7padrDA5b5olAeQu8RHv4jba4F/DJc82qMPk13dzhfhaFH06tFrsjycG+GakF/JZY4hL18mPs+QCB8j8Cq96kd+EjY1yPCYP9CmPGzG8UFhNKoru3gHpmr/f
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,40 +109,42 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06.11.25 04:41, Wei Yang wrote:
-> The functions uniform_split_supported() and
-> non_uniform_split_supported() share significantly similar logic.
-> 
-> The only functional difference is that uniform_split_supported()
-> includes an additional check on the requested @new_order.
-> 
-> The reason for this check comes from the following two aspects:
-> 
->    * some file system or swap cache just supports order-0 folio
->    * the behavioral difference between uniform/non-uniform split
-> 
-> The behavioral difference between uniform split and non-uniform:
-> 
->    * uniform split splits folio directly to @new_order
->    * non-uniform split creates after-split folios with orders from
->      folio_order(folio) - 1 to new_order.
-> 
-> This means for non-uniform split or !new_order split we should check the
-> file system and swap cache respectively.
-> 
-> This commit unifies the logic and merge the two functions into a single
-> combined helper, removing redundant code and simplifying the split
-> support checking mechanism.
-> 
-> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
-> Cc: Zi Yan <ziy@nvidia.com>
-> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
-> 
+On 05/11/2025 02:46, Ritesh Harjani (IBM) wrote:
+> Kevin Brodsky <kevin.brodsky@arm.com> writes:
+>
+>> From: Alexander Gordeev <agordeev@linux.ibm.com>
+>>
+>> Since commit b9ef323ea168 ("powerpc/64s: Disable preemption in hash
+>> lazy mmu mode") a task can not be preempted while in lazy MMU mode.
+>> Therefore, the batch re-activation code is never called, so remove it.
+>>
+>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+>> ---
+>>  arch/powerpc/include/asm/thread_info.h |  2 --
+>>  arch/powerpc/kernel/process.c          | 25 -------------------------
+>>  2 files changed, 27 deletions(-)
+>>
+> Since the commit referenced in above disables the preemption in
+> arch_enter_lazy_mmu(), so the expectation is that we will never be
+> context switched while in lazy_mmu, hence the code changes in
+> switch_to() around __flush_tlb_pending() should ideally never be called.
 
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Correct, that's the idea.
 
--- 
-Cheers
+> With this analysis - the patch looks good to me. I will give this entire
+> patch series a try on Power HW with Hash mmu too (which uses lazy mmu and
+> let you know the results of that)!
 
-David
+That'd be very appreciated, thanks a lot!
+
+> For this patch please feel free to add:
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>
+>
+> CC: Venkat who also runs CI on linux Power HW for upstream testing :)
+
+Ack, will Cc you both in the next version.
+
+- Kevin
 
