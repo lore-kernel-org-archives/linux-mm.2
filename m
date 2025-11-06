@@ -4,131 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5758CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 11:31:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id BA56ECCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 12:03:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1E32F8E000B; Thu,  6 Nov 2025 06:31:51 -0500 (EST)
+	id AB5E58E0005; Thu,  6 Nov 2025 07:02:59 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1BAD48E0002; Thu,  6 Nov 2025 06:31:51 -0500 (EST)
+	id A8DE08E0002; Thu,  6 Nov 2025 07:02:59 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0AA818E000B; Thu,  6 Nov 2025 06:31:51 -0500 (EST)
+	id 9A3908E0005; Thu,  6 Nov 2025 07:02:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id E94C38E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:31:50 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 925B859C6C
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:31:50 +0000 (UTC)
-X-FDA: 84079967580.23.3C38690
-Received: from mail-lj1-f194.google.com (mail-lj1-f194.google.com [209.85.208.194])
-	by imf04.hostedemail.com (Postfix) with ESMTP id 830124000F
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:31:48 +0000 (UTC)
-Authentication-Results: imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cIup4KrH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.208.194 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762428708; a=rsa-sha256;
-	cv=none;
-	b=SL3kdcFat6pqIV1vttGTFUxwmj2dy3S7nEJ/5hMbPr3ClHRUg6qro3k8JtW0mzFvMbxdYL
-	ZlqteM9PsuMqjz7ONvrkUBC6ccGtWCvPVoSDyRh3MG91LzsC5u1xTZBtm+aAfK/xxotpTH
-	lL4J2/gh727mfuWeyNpFOnjsJayVNos=
-ARC-Authentication-Results: i=1;
-	imf04.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=cIup4KrH;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf04.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.208.194 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 8C1E58E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 07:02:59 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 233C312C90A
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 12:02:59 +0000 (UTC)
+X-FDA: 84080046078.19.99404DB
+Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 217C7140009
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 12:02:56 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J5r5YDTX;
+	spf=pass (imf23.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762428708;
+	s=arc-20220608; t=1762430577;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=v34V6UOuAW4algEbYefyR7s7Tf+M59sk/X8aCBcGIPc=;
-	b=6x5kGFSKNd3pDo/0Bn7PXLy2rvYAL/YtJgE6/pdeJfUv0qlg0IvMsWKPaeZQjVT6xRkNrO
-	OM9hHrfLrxsPVzLgT8zb7UvS6tvaqWTlfDKscn3vQSxlsqjLjOMM5XbDwVxCRm60OMR082
-	3NrJhUmFajbMnoK1CkNxhxyt30f+eHg=
-Received: by mail-lj1-f194.google.com with SMTP id 38308e7fff4ca-378d54f657fso7272201fa.2
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 03:31:48 -0800 (PST)
+	bh=jPtGSfOGi/keSSlURDQLQTcDjTM2nCUWyB1gbbtP/wo=;
+	b=e5jwoBpDkarRHQg3oxppUwLv875n62MSJAaHRlwg6Fs4JUlWTtWcL2Ni+eTpVHxf4pQG8K
+	WVeUDqvGaw6mSAf/jfPZp6Ao1wn5hk1JKmT/i/2Jc8he+ETb2LkKjrRo74vqlnqkxR+0Hx
+	x4pnR1v7oLYH47a7aoIaw0FwBmOZ4HY=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762430577; a=rsa-sha256;
+	cv=none;
+	b=4bGc8qOi93ToDydjgj4iiMvKJEgsIUi9HxkxI65ZLZcD4n7E7wQIfGIXbf0vcxwKnDQ5pA
+	WxGcDEmQhIQxhBJUQDr3FOOKjRE+S7CsgqGYI8VJD9hWWlC/Z6jTIbPSgxgxqNtRduB6ue
+	lYWLwrNO36AoHKb4CbhrJBOtz19IAno=
+ARC-Authentication-Results: i=1;
+	imf23.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=J5r5YDTX;
+	spf=pass (imf23.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.214.194 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-295df6ad56cso8557315ad.3
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 04:02:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762428707; x=1763033507; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=v34V6UOuAW4algEbYefyR7s7Tf+M59sk/X8aCBcGIPc=;
-        b=cIup4KrHthlpfo/obX5VjKpVDy0z9eL3e2E/+kfGJUFgfPEfaYkYWSdUG6enDXB7lF
-         TVWj+4YgMQ3qvDdaDeCiQpRMhrHxGaV8jRlYZlFLChdsQR14wALqfpwRFH8Wvma4VIYg
-         t5Uco6mIj93RcAqozNMSbxYoQwRwW7pW1VWx3kv4PTNEzZPFx8peiNs1fif6BneZ1CVf
-         UyLF0MRhltOEV1BT1rGIV3fNQXBccRLJNMQcYVubX+sP3dCJCv+FYp2NJ9v3cc5MnKQJ
-         A1Q+0sTGmQ/S5dzg/gQ6DQPooUa4nV9xaaPyBXkaPmoCiE/6PDPsb79YbZ7MuxQbhepP
-         blFg==
+        d=gmail.com; s=20230601; t=1762430576; x=1763035376; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=jPtGSfOGi/keSSlURDQLQTcDjTM2nCUWyB1gbbtP/wo=;
+        b=J5r5YDTXBK6H+KWhko7NoLnHu2h/mGkrgXWo9efw1K/iulpEi2VEFJILReZkOhEJuz
+         a0xCqGEF1k2TcoRq7m3xjcQTje0dGEaJ/sCr348fOGoQzDkgK1hWYW/DIBCS8p/lJ0rM
+         q155cncFAdWdTGK5I1kUaDirJd4G+24j63amoJP4miasLWNxDkRJfINf/OIjbFbx/hmG
+         SX86fqI8/tB3BR3C03uAoBbITEh0dg6wGrsnr/jRBd1HuqZ1vVysvZQ9l+Sa8UvTkW3o
+         eWG6aipI603LkLqwq5sXjK+fcshb7ZNbr3UTSr41/WGnPN3CFRSKqyP7ndTSEEy9UWC3
+         b1FA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762428707; x=1763033507;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=v34V6UOuAW4algEbYefyR7s7Tf+M59sk/X8aCBcGIPc=;
-        b=L35/na96J+bQ3Kugbp+mLcfTXk56a5fgcrR3Eshek5bR5KgfeQt5jhjaQzK2AtmFGX
-         qpwed78AEyZ+uXsiGiIdxiaZKofZnTIFwD1lBG08MVwbd5kb9PhrwJhFNAxohx/62IC0
-         nVTnszNG7kAvXaHd2Xz2UcC4E4++zSwSjIG5lb/vt7h49X8MH3AuvFDkakYA1gwsDqAU
-         eEkKDtHJILG4QzgXzFRfsB8cszB3IUy0qgD87cApSC+6h3/JNsYxcIXz4LbcfFpwZIVo
-         /bVSh0wazc25XcNUDsboREjmezEZ56ze+IKktlVvEZOJXuvki+aFb7SupXsaEUVpNJfT
-         1XcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUASMhwjxrc3bOgV9RQyk5K5qG4JMs17SCyQB38z0tI3TNdEemQrxN+w6yc7wuKey3puv9GqozoYA==@kvack.org
-X-Gm-Message-State: AOJu0YzkNVDCo90vduD92U9PlOZueYb/EZ9KldpXAyD3mromTtYnG6Mn
-	kCIXg6lQdmmtznB1Adn6zme/B3FPYvAf/pqqQP+TTV26s7poUKHcYFHxbEnVUOJm
-X-Gm-Gg: ASbGncuc5xWn+NIOxA0JeOHCg5BUimkzWfeE7EcJigAMFSRV0Q0y095bdIYDW3inWfd
-	dZfnMrZRJDe5GO+0tW9s0/wqngEYrjuix8t+SK39gO2sCpz9m/5X/ApnClcrmem8wUAvqXWT6Mk
-	01dJo4hVijWCcarjyeuMXmIKTf3hBrM3Ft+AmVUoIv5vlycEqwb8b6p2chZIKn9l94nIYiQCONp
-	mfO1PAwVb/1XtwuUvhI03dI8Sqg9vWVTKdge3JcQXRClpR6b1dA1MVvq1vpP2yVZnQ7IY9VnS/4
-	g04JRARpJBwDAKHGnzblPsKs3VYcSPnU9cMZ6txKVWGQZprVmauUgPTuumShqaQoTh85a4eJDIs
-	r9JZsH+92wWgdAifJj6nwPJJU4XHYtZwbOGPko2NuwodpwPxU37M6351Uinupf/eBguK77DB+Cu
-	MCLJMcAF+vQHzJz6rUpqi8L6ZtxAA/tRUG7SpCg8SslQ9TsQQjcwBYwGQeWxK6P/UeEQMRIPO0B
-	9diqE3DOlaQFWI4z7nwMxWctJ2ixIHAyc9jSOy0uQ==
-X-Google-Smtp-Source: AGHT+IGIIzFUbwr8Yw2DpY4lrZQbFJ3COc7ijCkphFraNz8s3Ec0LQ/U2ePs+7AxsxoZH31PQrgUNQ==
-X-Received: by 2002:a05:600c:46ce:b0:477:1af2:f40a with SMTP id 5b1f17b1804b1-4775cdc9053mr58862025e9.17.1762422432751;
-        Thu, 06 Nov 2025 01:47:12 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce32653sm97818805e9.13.2025.11.06.01.47.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 01:47:12 -0800 (PST)
-Message-ID: <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
-Date: Thu, 6 Nov 2025 10:47:10 +0100
+        d=1e100.net; s=20230601; t=1762430576; x=1763035376;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jPtGSfOGi/keSSlURDQLQTcDjTM2nCUWyB1gbbtP/wo=;
+        b=nVwZdDFWHjjqFoRx3pKbkRKHVfmNunin3zuDihQkOA6J6IvkcId5WD749oHC5mPHEi
+         nwacYpzqKLPY3kH6wfanwL/g0FJtxI2mdL7kIfSo5sE1Tosf/vFsFcGnsNX+bP9xwriC
+         XM4pqLsDAy0c8FvZX+gE8LolhlumMpXcKYR6NznC3vfhrr2iOTCLo8oqtgX8w3dj9dtI
+         SJxpaXzIBP3jf/7voTnJBO/skERQzhalglBlnaA66TvUaiv2FNHaj2sRqiBUqClNkWG0
+         75Fqjpwaly2/Bkfu9ddvMoiE8AQi+JiEYvujZ1kiif1AQDOCtsLslBbGl310ZoFJkh58
+         uxIw==
+X-Forwarded-Encrypted: i=1; AJvYcCWny5rZNmWDQ/31Grr2KwNOztuVdHQmGbFaJdZKOo5ABsc5AIAthjmNsHTr+skX1vz+sSm2zR9LdA==@kvack.org
+X-Gm-Message-State: AOJu0YxAz8KmJMv+DdXyf5zuVb+exZZmBy1BJUDpJC7ARCHvtOZAYcA3
+	Spzzutctg+dY5snAq9LNW0et580kTJ/yZfiUJkFlfAsp8+8zkrzrpRon
+X-Gm-Gg: ASbGncvOMBZu177Zm3h2O3wrl79hGN+11ZSsUHB/9U8wxNmQasnu+lbAbu212AD+1KK
+	QEoaeZPnmMouTBMy4tK4NIOzv1c3u6FBif0uH6/ogTJn4bZX10VxljMpZBz+JggEfMthIOGLcY7
+	BRiMF0JFXDQZ10Nx75jRYREvrapRbGkVDRLSwYm+1kPNT8dH1Z0tYaHSPwlyTPJqHndktw65H7T
+	EFgCkqs5RzDDBJh51jsJHLJ5jS1l6DbfYABJm2dHDVTCcFDGiA3IjGpenuckM/dqksLn6fkooW1
+	AC2LXFudTWp+XwvPFhslATYUYi22V2xRyFL1PucJE4MHP0XpFdSHCgQBYdwPpMsZyhgJMENEeSP
+	gayTP0F0y7u/cLcKRqKUCpYlYXSlhcTXez+zAC/wSdb5Saut+jTh72ngpCeH7tws5BAH7ro7piP
+	Qcd+9YzD8uibFOo7gUQB3PpSgcVi3suQ==
+X-Google-Smtp-Source: AGHT+IFg4ppP6vi/pJwmzK9YEs7d/wlWubuW638khXVc5Pb/3DX1F1asOgyJ4kSWyBkD8lMqiRUGDQ==
+X-Received: by 2002:a17:903:287:b0:295:738f:73fe with SMTP id d9443c01a7336-2962ae4fc1emr78620125ad.30.1762430575766;
+        Thu, 06 Nov 2025 04:02:55 -0800 (PST)
+Received: from fedora ([103.120.31.122])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7af82afbb45sm2582114b3a.65.2025.11.06.04.02.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 04:02:55 -0800 (PST)
+Date: Thu, 6 Nov 2025 17:32:47 +0530
+From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>, Shuah Khan <shuah@kernel.org>,
+	linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
+Message-ID: <aQyOZ6eYng-IjxS_@fedora>
+References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
+ <fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v4 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-To: Huang Ying <ying.huang@linux.alibaba.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>, Barry Song <baohua@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Yin Fengwei <fengwei_yin@linux.alibaba.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
- <20251104095516.7912-3-ying.huang@linux.alibaba.com>
-From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Content-Language: en-US
-In-Reply-To: <20251104095516.7912-3-ying.huang@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 830124000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ery65eyjoa1f6g5wker1cjhzamc3517w
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762428708-138873
-X-HE-Meta: U2FsdGVkX18xi6motFnCaRdxmZAy4Y2pgHm3HY9mSifBizrU5EAI3+/C2TiIVnltFnigYbMul4BctAFZHdeTfLVe2C7f0G45f1SHO7zDtRAVLsW/0lQhVqx5nkhj9dn72KZSFjnTW9igdlaxf4jYhlthI1UefsVQokLPbf7ykdKp72T6Cdd4GyB6tz3Q69WkHhd43xSPwkAl8tFh/h6BTXHTkoyTOjixbsG66Ke8HtoFM4CzKShwcrDcmxmEFqqrxlmz143xxvHkJ1dfEpnmrT+ojuMZJrdynC3k20h5iR/HmHrzZEl9l7z4h3BSL9Mfj5cJd0vHKlPzwszM/9CKFsLluuERiuvs8iRwhl5G2AQE65QS3pgbOyQLJCgrm0sno2bvHJvAkOw/YNNNvoCWVfXiDh5jKyEe9InxzOCyxzoGXnwKtJKetcr+fiYJW22aSKFqKMm1k/TRdJvCwWz3clrFYHwrEOWHTrpHDCbncjwCAiVG6ldAuL/DEhAUC+PFEVs+1rzXwbV4aBP46KRict/N4McVf9gzpOSR9nnbhrtxBBq1Sha26gyK77qmuVEabOvziAC8+AC/8Tl/O1doxc4bkyynB8QvczGP3l+5a0YZpyKf4fOxdQLJTJWaHuZy26thbaRZYTXKVWXVtMnTzezYZc1o28eHmeCqE0M6AVf2lg+MWos3Oe4J6IPpiTJ1rLrP0HMDYlP7C9jT460/WVekFccAiv4rX8bRAYMnvXZm3ZrNzO2C5K2Hicji9Y57VBkpqIV9vQMlQmNYa+VtD5WgyT9XXV+A3Qvax/FZPc4tVGTjDtt7M4GuZamARNhU89CNAVmMRNAqw2YZIT+BDLMhD6djZyUdQL0xWskyfJD9eqUlqrWrYGklaG2wOSUEvG0HPjxVfr05SFQR8ffiBfxCEETV1B01VELmceqqA0RpofxplR0wXD5SYk4FU19vuw7tLWkhPQA5s0l/6Ws
- 8suxbPs9
- F99EsS3yi8Lv/ZJnB0WxUKvgPb2hnhl3dA2lxE1qAKwi+b9EOI731DBscc7hE5lCqVscEkjfaSTEmZBiLq6k0vVsfmBenmzlrDcvgpf3xn2FxIpt1J9qeehifAJ88qFK5sdCGO3dIZN4OWlDD2c3k5u4oz0HYjlapgXPA/NCjXkhBKS7U3uSc49W8iwIMDQKgDGBL8+4l03nB4DmSe7UYIvz0LbOpn+F445uWgotsasYYEFgxrX5o43C018BFslj9U7266UsIQyVpFmxzZmdy4GSbemKh1ZAzssPmBNOQsNyE7aj/KJyf3VRQoAz7dwcb3zNbT/Nnge8rbPmQSCsS8QLuqosVnDwlB63L2ztpDQ9kt3F3pqecPDQFrHK25FLa3eu9OszZ1p7mJGcgpfu5MmE/QNZMcbLKhFZ7ORRrjJl7Ttmb+LWB9wIbHWEKCXtAAq5gpSodKWLiqR2cKMRs9JwOyNmp0LKSTW3bTiQmAkHx0qTgKo6H1fL5Br0hQDMwTmq5pXoFYHqBl9k5yOeVk24guIhOypKY1ww84m4oA5USYTCjjB8d4EG/P8hcq7PanH9RxoxQZCB1FRNJ8HOOOY/Wog==
+X-Rspamd-Queue-Id: 217C7140009
+X-Stat-Signature: gwdbb5a57ooc5pspapofp4xkfsrz549w
+X-HE-Tag: 1762430576-525359
+X-HE-Meta: U2FsdGVkX1/px8iWWQhMOt0dQms+Bt77SsFyt/HrRqZ1cZVX1vSdE1/2G+w4VEIEUkonmmjZXf6Wmu0Tt7mo8K4t8qCWV0exVAWiFVhQviSJQ0Yf/7f06XMHgfZKPF9hTOAbpP4tyo+8c4u9ZtFv3jKp4o5sKsiFKt5D4YYnuc9SESw95W/PTyW2K7ZI1A+2RYG9gS5nwIdqScwyug+ITd8Mu76m/oHpOzhvFan/+J2MBET4WhbtKO0Mb2x46tGz4ep+tTptha/M101GTGHnrWHwBWKIg4oBEPTMjNwdI9gTlx1yhBBTAVKDeUm8oiwN769j/mZMDuLn4bDzobWO+sxvnLZ/nD0BJ9d+HXVQZeX3D80sq1ARhVZtudSmox2qiRAqpRojtKZZ2Zzah4iX5oYG/FnGcqyOmu5e1jhxBqy1uWyQiejMOyfsx7pja3aJDl0z4/0B/gRyyynfiob3usn2UEDpVkH9aDiLBfHmoVshKAGUVEp+SebT8uuYO/9RjNFMQP5O3zIq1Ht4kZQXpdlTmXBeYA7wysg43hU6VV2gxuywrzk42Ojxe9okXm/gqFxLGjS2w+49GrLYOC81MOO2ATOncWEFQNe1DUX4cf1ONGbDG9a39pLenyMOp8DcPcCnhxMguIzzoVD5itjqfgmkR2YYLF3bjb0A8PDRa/Ob2T3FTxFlfCEl8f/eyK+E5/uEOzV1wemaw+kr4KVN5E9fFlYAUuME61oDc1YyE16IM4lQFeA5FZUz0Nbtcgr6h5UolJugwtfoDuMATSgNBvgNFs8nDdCdM2fcqxMfEuMiQUfQrQezVUW9JxrSQZKtmhmACqhZ1x5vuMbtP4db+q8Yyt8rEsrX8O9rH3ESgH7qX+6d5ay2/ek2nSBj7mocc5TdMQCjMxOMK4u93yWJRrge8HNiDVQFpPu+YqN+hs8OnXdm5MazqUfwnPddknSjLOmzEMDei9VqQfk7/BB
+ WaZgsZQ6
+ Z2NBPkCFv4wqoKzVRC2JKnk/9iDLjq9yO1Q3XAx9ozCwPrnR5EsXe06lepJZJ5qGXL4URYo/kEF1wHKqdu28rLDyY+VfjhIgNG8sUPCcX+If14Y7vVrxqT9rD70jQveDHK3WKYhssLhpbcXfp4h/Lzz2GLxSsrWQDuSzllKkdsQqzVYhh4s9bYzoRRFAzLV5vxUpVh/tbtMuJycOEF28jtSi0v7vEEIIYh686E3SPXN1B24mZiBgfHjECsWvWIp5L1McIi17VSvsO5s+Lay7P4S31BIzfFgjdl/HV3IwguUGVSrpwHOa+7UYtG8E5Jc/8/mJ+0Z97pVRGQYBVfJDR7naKd6GDymhkIpA40R0Y9ZtEM1tJy1DMmIyrH7mAGGOd75k69mge0KND0EGJQuTAKkyq5Xps+09fZkzzhAA6w9RUyvCoY4ISPRYAV6t6HvifNbUgOBiQNkBHDnQV25RFhgHWrWOKAH3P52hGgS7wd3T254Ew4g7S28gJp5u/VeB+V/7sEzDdbgwsPSSOFmoICuUz99gQt+ySy5eJrSL9IoQZGec9VBW6B8A6KFb4icrv+bVBaK8ew5tof28yFgyQ1JNZA18ZaAZpNtvvJCz163zuVwW6Sk7YkBUgnwiK9yBq+Dev
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,132 +125,28 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 04.11.25 10:55, Huang Ying wrote:
-> A multi-thread customer workload with large memory footprint uses
-> fork()/exec() to run some external programs every tens seconds.  When
-> running the workload on an arm64 server machine, it's observed that
-> quite some CPU cycles are spent in the TLB flushing functions.  While
-> running the workload on the x86_64 server machine, it's not.  This
-> causes the performance on arm64 to be much worse than that on x86_64.
+On Thu, Nov 06, 2025 at 12:18:57PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 06.11.25 11:49, Ankit Khushwaha wrote:
+> > Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
+> > triggers following warning:
+> > 
+> > mremap_test.c:1035:31: warning: pointer comparison always evaluates to
+> > false [-Wtautological-compare]
+> >   1035 |                 if (addr + c.dest_alignment < addr) {
+> >        |                                             ^
+> > 
+> > typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
 > 
-> During the workload running, after fork()/exec() write-protects all
-> pages in the parent process, memory writing in the parent process
-> will cause a write protection fault.  Then the page fault handler
-> will make the PTE/PDE writable if the page can be reused, which is
-> almost always true in the workload.  On arm64, to avoid the write
-> protection fault on other CPUs, the page fault handler flushes the TLB
-> globally with TLBI broadcast after changing the PTE/PDE.  However, this
-> isn't always necessary.  Firstly, it's safe to leave some stale
-> read-only TLB entries as long as they will be flushed finally.
-> Secondly, it's quite possible that the original read-only PTE/PDEs
-> aren't cached in remote TLB at all if the memory footprint is large.
-> In fact, on x86_64, the page fault handler doesn't flush the remote
-> TLB in this situation, which benefits the performance a lot.
-> 
-> To improve the performance on arm64, make the write protection fault
-> handler flush the TLB locally instead of globally via TLBI broadcast
-> after making the PTE/PDE writable.  If there are stale read-only TLB
-> entries in the remote CPUs, the page fault handler on these CPUs will
-> regard the page fault as spurious and flush the stale TLB entries.
-> 
-> To test the patchset, make the usemem.c from
-> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
-> support calling fork()/exec() periodically.  To mimic the behavior of
-> the customer workload, run usemem with 4 threads, access 100GB memory,
-> and call fork()/exec() every 40 seconds.  Test results show that with
-> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
-> flush functions reduces from ~50.5% to ~0.3% in perf profile.
-> 
+> With which compiler are you seeing this?
 
-All makes sense to me.
+Hi David,
 
-Some smaller comments below.
+clang version 20.1.8 (Fedora 20.1.8-4.fc42) raised this warning.
 
-[...]
+To reproduce:
+	make -C tools/testing/selftests/mm CC=clang
 
-> +
-> +static inline void local_flush_tlb_page_nonotify(
-> +	struct vm_area_struct *vma, unsigned long uaddr)
-
-NIT: "struct vm_area_struct *vma" fits onto the previous line.
-
-> +{
-> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-> +	dsb(nsh);
-> +}
-> +
-> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
-> +					unsigned long uaddr)
-> +{
-> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
-> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
-> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
-> +	dsb(nsh);
-> +}
-> +
->   static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->   					   unsigned long uaddr)
->   {
-> @@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
->   	dsb(ish);
->   }
->   
-> +static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
-> +					   unsigned long addr)
-> +{
-> +	unsigned long asid;
-> +
-> +	addr = round_down(addr, CONT_PTE_SIZE);
-> +
-> +	dsb(nshst);
-> +	asid = ASID(vma->vm_mm);
-> +	__flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
-> +			     3, true, lpa2_is_enabled());
-> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
-> +						    addr + CONT_PTE_SIZE);
-> +	dsb(nsh);
-> +}
-> +
->   static inline void flush_tlb_range(struct vm_area_struct *vma,
->   				   unsigned long start, unsigned long end)
->   {
-> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
-> index c0557945939c..589bcf878938 100644
-> --- a/arch/arm64/mm/contpte.c
-> +++ b/arch/arm64/mm/contpte.c
-> @@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->   			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
->   
->   		if (dirty)
-> -			__flush_tlb_range(vma, start_addr, addr,
-> -							PAGE_SIZE, true, 3);
-> +			local_flush_tlb_contpte(vma, start_addr);
-
-In this case, we now flush a bigger range than we used to, no?
-
-Probably I am missing something (should this change be explained in more 
-detail in the cover letter), but I'm wondering why this contpte handling 
-wasn't required before on this level.
-
->   	} else {
->   		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
->   		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index d816ff44faff..22f54f5afe3f 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
->   
->   	/* Invalidate a stale read-only entry */
-
-I would expand this comment to also explain how remote TLBs are handled 
-very briefly -> flush_tlb_fix_spurious_fault().
-
->   	if (dirty)
-> -		flush_tlb_page(vma, address);
-> +		local_flush_tlb_page(vma, address);
->   	return 1;
->   }
->   
-
+Thanks,
+-- 
+Ankit
 
