@@ -4,112 +4,204 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id CE9AACCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 05:58:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A14A4CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 06:28:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 22A8E8E0003; Thu,  6 Nov 2025 00:58:43 -0500 (EST)
+	id A5C218E0003; Thu,  6 Nov 2025 01:28:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 201EC8E0002; Thu,  6 Nov 2025 00:58:43 -0500 (EST)
+	id A345D8E0002; Thu,  6 Nov 2025 01:28:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 13FFE8E0003; Thu,  6 Nov 2025 00:58:43 -0500 (EST)
+	id 922DA8E0003; Thu,  6 Nov 2025 01:28:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 01A878E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 00:58:42 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 8241913B39B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:58:42 +0000 (UTC)
-X-FDA: 84079128084.14.CBA40B6
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf02.hostedemail.com (Postfix) with ESMTP id B543E8000F
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:58:40 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ibENVbmL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762408720; a=rsa-sha256;
-	cv=none;
-	b=cezVutWDc8eUqYepA3Sty8oUqdKTyUi1l4AmfdLWqBU7a6RQabc+Kos5gBDJNJ9WpBXX8Y
-	ydUFPsbXs3w4g32Qq9zcyzEvhfh6b5HfrOpAuoXmu6xYjYVllB75U9vmAF1Gdonb/5MpoL
-	JUgBMl4+k06Walu/24Asf9xOCRqP9z4=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ibENVbmL;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf02.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762408720;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 7B90A8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 01:28:21 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D41B988F98
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:28:20 +0000 (UTC)
+X-FDA: 84079202760.08.8D64B17
+Received: from BYAPR05CU005.outbound.protection.outlook.com (mail-westusazon11010040.outbound.protection.outlook.com [52.101.85.40])
+	by imf04.hostedemail.com (Postfix) with ESMTP id B5ED740002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:28:17 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=pg0MqkIr;
+	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.40 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762410498;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=UzTY9uLnmKMTRAxdEztuc4L+zqZ9LZYXdyYI+Bt2y5U=;
-	b=dSr7uczaanDcnfB3JQOuLznssDpNs15CswgQyEe2F1Q0VVb+Lgbohs22xcLKhqPD5f5fR9
-	3rzoRkbReTdfgYxDPGQWRRayDd5X5cIbEoR9aVMyenmOxbhYAa3JhtXnX42qtvRmNmLh4N
-	gH2y7osOsou4bwmtinNtJ2sTynqGKMU=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6406f3dcc66so982741a12.3
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 21:58:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762408719; x=1763013519; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UzTY9uLnmKMTRAxdEztuc4L+zqZ9LZYXdyYI+Bt2y5U=;
-        b=ibENVbmL/EmfksRSrwS09KF3PY1n+30VZTvGvgm+ZthA71AN7HlKppr4v2RGr8yZ0L
-         wxNyhZeZRZHt8fd/f41N+B1nONW7nxIWJwJot68Nm3ckmq31E8b3sNlLmAdFNbD0OeuK
-         avyoMwvoFDxbDSM+NOmGeLLvlg6GeNaOSiW1SZr6wEeLxzrBxpRFxAQ8IPHS/l238h8j
-         J0EL5velLWsEueWKU8lCZBpFSfGN5FV4qW2PabZCWi+4Yp3cY1F19sQQVPBbBMJEeWfD
-         Op+srHW4lTxnyBQQA1n5ySqRLkKue/DRpGfdOpDJ0HrWlA09525nzFxRDauLh7Hx++0O
-         WFzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762408719; x=1763013519;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UzTY9uLnmKMTRAxdEztuc4L+zqZ9LZYXdyYI+Bt2y5U=;
-        b=Xs7XewD2iuXUVscYskt9xQdmc19Cr6py68bntcAsVpMO2d9LOG0NqIe1VtDsxR+wbx
-         7WpoC4vkKXws1ek3sY44izzMttTQgy0Ov+wz6JvD3YJ8XBjSHwNxUCv/Op6H8wbFoeDU
-         BmqdmqdzdkTojdOQnWFSado1iEtKNVfQCfc0x4zdZycsi1SC0RfFB+TZSpSMDqtouHpo
-         KNKqiPKqF6NXHNwcXRnOGolrfC7NWvVnUNxtC9JLjlXxQvxLzl+MVn6augSK1O7f2VVT
-         KzYBmiwTsdejIE342Dbmpgc56JlCdyhGbYMCwArYaYkDX/eqMeEyYrgP5R1FiTonA8F9
-         cekg==
-X-Forwarded-Encrypted: i=1; AJvYcCXU0Afj3tWILJSYsWwZMwdCiRmrS28K0CIi5Q/EuZvZzSMp6X/gGbN0DZn2YrgG3sT0KCYVEim8Ug==@kvack.org
-X-Gm-Message-State: AOJu0YzWxE/pKcOqgj3RBBHglrggIZNUvM99Tp96vRPTP63cKuV5m+My
-	5t44WPuGh2tpavqtqD6o2xJhrjhcxiRrvy2D9Mu+4fBdHpLZzG96dGoR1u9dZnAVvpouN5wvcDO
-	W/u1hIiG3q/mnDUoIrUmqvNEIFqiR/80=
-X-Gm-Gg: ASbGncsdF79fhyAt3OeuSkrmA7VJnJ1BPcszh+IyNtFrY4jVR11Ucj+dYaa9FuHWKhm
-	H+9RaC7LW2zbhbK/21DEUqbBiHHFb3xCJStTwsDgO0NEUiu3fWijNwNOIzr3rQYVOgky9Q9s/Le
-	7dO6WrbTclxTxitiNhyfnXEJOURQJXkdWKicwGxfHPMxqytizdyEyu7vODxGacvjQYvgMZmwp14
-	RkN3eEBYoGWIP6q+sTijEHPdqGOJEXHWSi+wQI5AsN7gCFNA6Sy9N/JfdVakEW2
-X-Google-Smtp-Source: AGHT+IEsh0YfLrQ6Befz1e+5Z8Ke8inELoHU9k4IjVehY2VMbpWVDfJ96d2X4MolrEK4yj2WsuO8tzP4B9EUAmcajOk=
-X-Received: by 2002:a17:906:f59b:b0:b40:664c:3317 with SMTP id
- a640c23a62f3a-b726555b4e3mr588270866b.43.1762408718932; Wed, 05 Nov 2025
- 21:58:38 -0800 (PST)
+	bh=3hfiKXw+Qv5kW5xi2S3iwBxJZGAAwyAkcNbncs/rzZg=;
+	b=qwZtXKp6PWmTZRFjYrFi4UB3fQCoNF8Rx+cxYXhIIK5D8i62gc6y80ty4CHmVq4JIIGFwq
+	VdSBquOEyXY5GfrUlvXedR7+UCuUNFFAxJH6HLlYuK0Vt69zP+4U6gz7TZf1AmERIPuOhn
+	PYqwmlhdOcU6VI1r0gZGI6ajrXWoIDY=
+ARC-Authentication-Results: i=2;
+	imf04.hostedemail.com;
+	dkim=pass header.d=amd.com header.s=selector1 header.b=pg0MqkIr;
+	spf=pass (imf04.hostedemail.com: domain of shivankg@amd.com designates 52.101.85.40 as permitted sender) smtp.mailfrom=shivankg@amd.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	dmarc=pass (policy=quarantine) header.from=amd.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762410498; a=rsa-sha256;
+	cv=pass;
+	b=p2r2qTMA/VRfXjknstfKqDcSxKTAj8p1Tpx9/ykGC3fHJpOCEY3YFIdllO0RzGPX7ZHUb1
+	7c8Nmg1FoH0O0q/gIk6WKyeBGRBcXPTcICzn/xPnoQq/Jint32c87Vhz5z2/o2sd0rfjKP
+	0Yk+tJWs0fqCt1e2eSjjGn0ArFQawwo=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JWKhxiNim9mTpmcpDyxOlaV/VH4hwj48O9BIGl3mimKAZUVV7WR5Qd4H12tWiQjWYUyABtQEri+iHrM3sZgGxto5sRGAdEwGmnsNW6Gn2U8sT7algSjTxneY66xAYqlDuHwEtgys94KL/kXy1nelhIWjnGYGs86JnPdxs/XprFosYHqxZain0gzKSspyOHDToXFTOFRoebha5W/gKnMTu52Cf9KgE9mqgfPB+obm9342Q2y/Ei3v6wl5nZ8NgNrygAVYMyU/uEA89PqnD6bmqt8svnVBbUIJ9soHnclYELnMPAWDOrpKmujX+1oWedH30fesDbTT0ShklfOhilyFEA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3hfiKXw+Qv5kW5xi2S3iwBxJZGAAwyAkcNbncs/rzZg=;
+ b=PVo9+QscVyCOSKEp8/LZ7u0OQh8wPAzDHkx3/msvEEJfmPFWtvwohKRFwUgE4iWW67Wv25Zxn5TmBTaVN6iWEvFl8Jz5uiqP5pJ5+WykJDGCnABk2t2iDXZJdzain0W0bNM3lMaN+uod6ExUyY4D8BYL4sbRR8X0wAJ7n+tzLQS/NMruOZINs8vVeopSLwGql8LomisvWJr2/cvim2Atr5SH6ouZIGc0W5i5ys7M/tFkypBjdD5NGFQOekl2sOI6/5PbuQjOQVcAZjzupYbfgt6Tp866CS5V8NfCL2j4+EhaK9f5YxYGo8iUxluAvP6jsuWQDI+0jIKPq7nDCWp/Ng==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3hfiKXw+Qv5kW5xi2S3iwBxJZGAAwyAkcNbncs/rzZg=;
+ b=pg0MqkIrwJV/R9ktQ99Aka+XLrAYcp/oCG/kri6fKl4H7SNIuK2aIJ9kXmFw3+Bxs5WtK0evUyUKuu/9L2W7Xz54mkkiHnnqasrMg4bs4rZoEMbcoQDVSdOA3Sq7TWv1XOo5OSQP5A3vx0Y/9oyxmprRRq4tGEJhK570EKrjgmg=
+Received: from SJ0PR12MB7458.namprd12.prod.outlook.com (2603:10b6:a03:48d::13)
+ by IA0PR12MB7556.namprd12.prod.outlook.com (2603:10b6:208:43c::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.10; Thu, 6 Nov
+ 2025 06:28:09 +0000
+Received: from SJ0PR12MB7458.namprd12.prod.outlook.com
+ ([fe80::83e7:e6cf:26ed:2f3d]) by SJ0PR12MB7458.namprd12.prod.outlook.com
+ ([fe80::83e7:e6cf:26ed:2f3d%6]) with mapi id 15.20.9298.010; Thu, 6 Nov 2025
+ 06:28:09 +0000
+Message-ID: <88ae0dfb-b10f-4829-8aa7-a681612704fa@amd.com>
+Date: Thu, 6 Nov 2025 11:57:54 +0530
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC V3 6/9] mtcopy: introduce multi-threaded page copy routine
+To: Byungchul Park <byungchul@sk.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, ziy@nvidia.com,
+ willy@infradead.org, matthew.brost@intel.com, joshua.hahnjy@gmail.com,
+ rakie.kim@sk.com, gourry@gourry.net, ying.huang@linux.alibaba.com,
+ apopple@nvidia.com, lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+ vbabka@suse.cz, rppt@kernel.org, surenb@google.com, mhocko@suse.com,
+ vkoul@kernel.org, lucas.demarchi@intel.com, rdunlap@infradead.org,
+ jgg@ziepe.ca, kuba@kernel.org, justonli@chromium.org, ivecera@redhat.com,
+ dave.jiang@intel.com, Jonathan.Cameron@huawei.com, dan.j.williams@intel.com,
+ rientjes@google.com, Raghavendra.KodsaraThimmappa@amd.com, bharata@amd.com,
+ alirad.malek@zptcorp.com, yiannis@zptcorp.com, weixugc@google.com,
+ linux-kernel@vger.kernel.org, linux-mm@kvack.org, kernel_team@skhynix.com
+References: <20250923174752.35701-1-shivankg@amd.com>
+ <20250923174752.35701-7-shivankg@amd.com>
+ <20251020082800.GA28427@system.software.com>
+Content-Language: en-US
+From: "Garg, Shivank" <shivankg@amd.com>
+In-Reply-To: <20251020082800.GA28427@system.software.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: PN4P287CA0107.INDP287.PROD.OUTLOOK.COM
+ (2603:1096:c01:276::10) To SJ0PR12MB7458.namprd12.prod.outlook.com
+ (2603:10b6:a03:48d::13)
 MIME-Version: 1.0
-References: <690b99ab.050a0220.baf87.0057.GAE@google.com> <fcikaqlrbqzc6utdbd3utgkkw52474l2hom5lzpbmh6wsvbb3n@tpex3btkz34q>
-In-Reply-To: <fcikaqlrbqzc6utdbd3utgkkw52474l2hom5lzpbmh6wsvbb3n@tpex3btkz34q>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 6 Nov 2025 13:58:02 +0800
-X-Gm-Features: AWmQ_bmVYfN0T17nYGfIatRf7DhVL4mqCPN_Mdqublj-P_yXRMvrkecHbryO4K0
-Message-ID: <CAMgjq7Du2iVn65UOCWZvXKw0XkB6JRsVv6bHJyg72bGeafAD3A@mail.gmail.com>
-Subject: Re: [syzbot] [mm?] WARNING in lock_list_lru_of_memcg (2)
-To: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: syzbot <syzbot+c5b060ce82921a2fd500@syzkaller.appspotmail.com>, 
-	akpm@linux-foundation.org, david@fromorbit.com, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, muchun.song@linux.dev, roman.gushchin@linux.dev, 
-	syzkaller-bugs@googlegroups.com, zhengqi.arch@bytedance.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: B543E8000F
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 7hu49uhtg1t5wo3dq3t1s5chh3omh7eb
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ0PR12MB7458:EE_|IA0PR12MB7556:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3b2894c8-6c45-42e1-fea2-08de1cfda76f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?VVhaOFlmckpaRVNlK0ZNUlJSSEtxNlg3QzdHUWs0MUFZSS90d2gyYjlCMDNn?=
+ =?utf-8?B?dTRYWi9UOUp1SDk1Qzh0QmFkZWIvM3BURUMzeGJvelowRU90d012ZzNXUW0w?=
+ =?utf-8?B?TXVGSHBIdGJhWGoxWHhWeG9sMkE0MkhNeTJOaWdPWTJ1dzdQVHF2QUZJVHRF?=
+ =?utf-8?B?dThsZEQzU3ZSQjJtWXRzYmp6K1ZMVFBZNGhaQ00rR3JNVXZSbWIxVkpuaklN?=
+ =?utf-8?B?NXhrREJoVlh6byt5eXZBS0N5emJ4aHlSQ2U5K01EOXptUnpyTFFtNG9nZkRu?=
+ =?utf-8?B?QTB6UnR1YWhibHdaOTlhbzlZYUpZalRVNmtBWW9oamhtajUwWDErdlQxek9V?=
+ =?utf-8?B?SHIzYnpqZDBVMy9sS1RZZ3pBMWdPdmJXYVVHUXoxaWloS2dQMXhEL05ZZW1o?=
+ =?utf-8?B?U3hYODJyWStPVzdFeDlTQTMwdGxsS0FNK1FqQm93eU85Q1pMN0trTE9zSXRn?=
+ =?utf-8?B?ZnV2WE1WVkZGZUZMYkpEUnc1SEVTWTlKQ3NqMHpZV3lFTkIxcU8rSmZaN0pk?=
+ =?utf-8?B?N1J4eU0yMW1nZGl5TzNsNElkY1ZtZ3U1RGQwSzBnVVBESkNvWjZyTnNtUHd5?=
+ =?utf-8?B?RFZaMDZ0a1k4NGhkcE43UWN1ZFM3Tk50SGxUMnU0QlhiOUZFR09wY2J2aTlx?=
+ =?utf-8?B?NnJiU0g1WnQ0TnNLUVI1VFkxSlhuMjBtbWZwT2xhYllyejZEYjVybjhxbXg1?=
+ =?utf-8?B?Tjh6RTAyL2xTUExpb1FxTzJYVE1IWXZKYzB6MTdoaWJCVkZnR0ZyR1RENmps?=
+ =?utf-8?B?TTVtQW42a1FaL0k3d1RVN1BjM08zaXlXT04zcmxGM0laL1J1bUQ5WVozalVO?=
+ =?utf-8?B?VTNCK3JLdlNSaVZ2VmtleElSRFAvYkc2ZmthQnBtM29wdlcreGpGd1I2aXlX?=
+ =?utf-8?B?WGFnSHZZY1ZsbGVTWE91MmlHaE4xeUFMRGNUdUxUeEd3TmNOb29qQm52bkpK?=
+ =?utf-8?B?WjhoYVQ5UjlFeENkVWRsVlNDbllOd3ZZSWVqczZVTmEyN2UwNHNreFRUUmo3?=
+ =?utf-8?B?NTFWYTQwZVZZQmhuTlNsSEllVkkyRjh5dGttTnVJYlpvSXhnOVluRGYyWDJJ?=
+ =?utf-8?B?dC8rUkp0blpLV2hYOGNyZy9DTG40R1diSG1EWjB5d3J2SXpzNDZhVVU2VnQz?=
+ =?utf-8?B?MXNPUGdKZ2plcnd3VDJTdTQrOG1haXNnQmpwWW5QU2RDOC9JU2gyNGI0SWJT?=
+ =?utf-8?B?aFNtUFhUaXJXZGFjU0ZVTW1hV0d2eVdodXBYamNHdThOcUhSL2J4RXEreHFZ?=
+ =?utf-8?B?QnM3NVROV2xxZUd4ZWdPQ2Q1VG82aFFjaDNzdWdUTExkbkp5aUo2RUE1ZVdw?=
+ =?utf-8?B?UHB5NUM3ZlAxQloyU29PUDdySFd0aThaekZjWXdYZzBZSGtUYTg2THd0UXJx?=
+ =?utf-8?B?cGVGaG1wVEpYblJCSlAzYVNOekxaOGU1MW5GVldBL1NUbncrUHVPdkd3WGZG?=
+ =?utf-8?B?NlVIR0V3RFllMVFna1pOSDZpQ2I5TkpxZkdLdngxdFZRY1JDM0hvak5PUERx?=
+ =?utf-8?B?VHJ4T2hvNkdjUHpuTkI1OFNRK0VMQXJEMld3ei9KZWZKQUswSmh0TlFFY1Y4?=
+ =?utf-8?B?TEgyU1MzZW9kc3pzdkdzYXpMdEppOFlQbnU4T3R4MldsWU8rNkhCNW5zY29M?=
+ =?utf-8?B?MWtLamlkUjdWOFVKeWZNTHdMYzJJUGs2WXpJdnVmb3JmV0hPVVZwVzB4ZW9x?=
+ =?utf-8?B?U0V1SlJvZkpJa1RUbkJ2UWxBbXl1SWxzUGpndExhbEpiRGp1RW93NjlDRm5a?=
+ =?utf-8?B?Z29XaVQ5M1NTU3owS1hoQjNKOXIwbVVLWUJzdXJ2RTQ1M2tUT003WS8rUWVr?=
+ =?utf-8?B?aXFXN3BnTkF5V1JZV1V1WnM0cEhFcFJMM3pQOFNTL0pRWHBLNUtmdG9tMUNE?=
+ =?utf-8?B?R0JhekxsN09JV0lxUjBDc0pPL2ZxcDkvcXZGOHp3WHlGU3dUY0QyN1VWTmZm?=
+ =?utf-8?B?ZzBNVWt3cWVOSkFYQWk4TjVsaGJtSmptMzQxR1V2WHBvUGpuMmpIU0Q0MVR0?=
+ =?utf-8?B?NkVQWHBYZ0RnPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR12MB7458.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?NFQ4Y1pCRWtvR3MzNTBTS015Ni9iMU82MXhNN0lpOVZ6a3JDanpXL1hET2p6?=
+ =?utf-8?B?M1hOT1BQb2xGR3dtVjZhWitML2VxSW80b0VtNzFJMFZkbWYvMWhHUk85NHJv?=
+ =?utf-8?B?WWt3c09zODlFdmdwSTVCek1IeHkxRHJha2tXeXFnOGk3VStmZ3ROMDA4eVFh?=
+ =?utf-8?B?WWd6T09sRThyQk04VzlBWllmbG9sWXRSMVhUYzl0Zm01KzdNWTM3YXZtMGFX?=
+ =?utf-8?B?Tnc0eDNRSzI1ckEvNTB3UDdkL2Z1WVA1TDNNU3lLZDJ4NXQzeHRwSXFXZUh6?=
+ =?utf-8?B?MnhrSXRrQ2kvT0JYNUFPcHhsSWUrZ28yMGplTGplK2VYYVdnVzliT2tTQ3Ux?=
+ =?utf-8?B?d0FsMUVIZVJCcnFhWVpqaHJXY3A2TEdsd2tyTkJvbXM1cHh3WndFMExZYXBH?=
+ =?utf-8?B?VXhUN1NUK2JpRzFlTXRjVmdxODA0S3dXVzQ1YkRtQXRyRytTa1F2Q0U2dWFB?=
+ =?utf-8?B?WTN2cCtaZWYvWDRJQ1ZHODV1ZVZRQUV2dUxMTWF5Q1l4azJwN0FqR1MrdC9O?=
+ =?utf-8?B?SGxaeitYZDRLd2tkaVJVUWFEZG95blQ5bjQySm02alJKTjg5dXU1b3VYZ3lq?=
+ =?utf-8?B?TFBxQUp2NnpMNE1tYzlSV3JUU09XbnpFLzZLZGxNSmVYNWNBYmlvUTVvTUFM?=
+ =?utf-8?B?ZTZWR0RIQ2t2U3kxSUhNYmFvL3VHeEdmSE1kT3ZBeitsQmhsMW4xd3Fma254?=
+ =?utf-8?B?bzFrRDZUTWN4cGxHTFd5MFRiWW9iYXdtMEJGRU5CS2dPUVlEbHBDc3UxNGZQ?=
+ =?utf-8?B?L21XOGtyeXlOU1N6VWxzZlZST1Q2ZnlYWXlKN2Nrc1lSK2lPSWxicFVqcGdT?=
+ =?utf-8?B?cVFEUEZnTGcvRG42Y2xvYVVXdEY5R0NVZVRraHZrSTZqTU9IRld0QVZvMzkv?=
+ =?utf-8?B?Tkd5Vzd6UWl4Y3NoMHB4aEkvYlphSmE3SFJLYnRDQVRTbGVVWnlPSGdaSXBX?=
+ =?utf-8?B?aWU4UThEdWYySDFlcGxVUVVqNDdwSVVJQ0ExaFhUMDR6TXVNdG1CdDk4SWhu?=
+ =?utf-8?B?Y09HNlpJV3ByUkFjWFdBSWdCc2Y2UnpuTWNPTVVPYzVnT0RQTWcxaXkwOXdx?=
+ =?utf-8?B?L2hVTzJhYjQ5THFsbHUxQW9mUm1nS01WbTBhQUIwdEkzbnhzVkUrRHlkcFY2?=
+ =?utf-8?B?YWRCS3JUbmNTUjRJZU51QlJ6d3BLU1BPY1NZdllXY2g5eU9JQ0I2eDBCbllG?=
+ =?utf-8?B?cHUyZVJ4Y2J3bThPT3hzY29hT1IzbnZVTmNNMWNGMG9TSGFmQVdFTXBmaU9o?=
+ =?utf-8?B?aGlIOGxUbGpqaElOZ093YlpsVzlRczRnOEZzQ3NKMTFkL01IbkxXU3UwZjlJ?=
+ =?utf-8?B?RFVVNG03WldOS1NBZE9Tb2xkVFhOaktQdFdRbHRpaEVTT1NzS3RIMlVSb25E?=
+ =?utf-8?B?QVllTEVEejdHZTVHQ2JBYzR6ekprdUhLOHVnc3MzNUl5V1N3L2w4Nml2Wnh1?=
+ =?utf-8?B?S2EvZW9XYnBuaUtFSHZCQjVEMTdQVXZBaXNEZjU3NVNlOEtmd0VmWnJyWmNE?=
+ =?utf-8?B?ZFF0elM4U2tPc0plTU55UE83T2NIYmRacThEb2RwVkIxM3lrZ3lrRXU0MGdt?=
+ =?utf-8?B?Nmc1aWdtcDU0VVpkT0szeGh0UlBqSmNTaXZzeCs2ODlUc0dYY1dsWGNBOGdW?=
+ =?utf-8?B?QlJLTXBlTXNjb3Y5b2QzeGFCNVNhSGYwQmYzVmw1dkpzb2lnUUJTY3JnVWZq?=
+ =?utf-8?B?UDdFVVVtVGNnV3dYVWJ6cnZlSWdHaHJQZnJDVDM5V2p2TXJNaG53c3ZERGtV?=
+ =?utf-8?B?Smc5UmZHdTNzR0FqOGVkZ2xJREliZVMzMDZseFIxdVdGRURNZ2Fodm5GdElk?=
+ =?utf-8?B?NENjZmpjNVdtMXd1L3g5OElzVUE5N3N0RDROSjNoVGNFMlFyWmE5bUxOT21x?=
+ =?utf-8?B?SGRWSXVTbVZWUHhuZzJEVFFLcUdxSmY2dTVHS25OZG00Q3gzY3VwSm9aSDV1?=
+ =?utf-8?B?SERuRXFyVnRlcjRaOTdqQ2lpNE85emdaaEd4Vkw5a0x4TlZIOHYxS0Y5VkZx?=
+ =?utf-8?B?Z05jZHFjSE1CNjZJZW03S0R3UEVmbWdNd2o4TkpQUVRQZkFNSnVITzB3Y0hi?=
+ =?utf-8?B?TFVoSGdEMWdibzVOUnhHa0QwVlMvYXBLTENSUllBUjdROGlwWmVlSVZSNVRj?=
+ =?utf-8?Q?jZB5Pp0I3IaoInYRwhs4yjtUr?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3b2894c8-6c45-42e1-fea2-08de1cfda76f
+X-MS-Exchange-CrossTenant-AuthSource: SJ0PR12MB7458.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 06:28:09.6574
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NezobGiYpDUfjmcUZc2gZUZzZdWRezRRpIvZ+XfE69WIoeH2xesOzN7D9x981uwCIzn4VW/82GQphKzd0KH8Lg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7556
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: B5ED740002
+X-Stat-Signature: 4dfuo5uotqhd4ys4e5nrehoigtfkfjj4
 X-Rspam-User: 
-X-HE-Tag: 1762408720-848171
-X-HE-Meta: U2FsdGVkX1/pHtcaFMPHcuQhqCy+MaN0nY16xZ831h5/WSc0uzRxMeCs+B/CJMD9VvLwSG6SbxUkKFKsWuqwnG+CjBUBwtO57SIyRT0px6jxyagw1S9zw7wSy7mA6OuD991EGpsmcnV7qk+xPsTelz0s5EeZPc3zGFB5cBGeBj6snF2yD9ak9TLPfHk+wMpbO0kbWwGkOX0jNe0DVU5eZ/lKJDzLCs9BxR9iDDMErOpRKp7Dbrsp7FAtgVyMtweciNaBPvdG2r4m0m/t0/cmwy0MQ02vHEFULgtMl7Nv+lZo1vbygBhOZW9Yt3E3tae8jXOFvliCSkgAGyo7oDgPaIrcxFgzrikvd7zNZs7k7tFYMLtSz/pdWv+rsnw3e6pnw0PaXTfXbZ8Daq3oEDJFKHYIIWY40TdeEz6VvohdioxbkBxBJ6rqlduRLIDAHzVntsOAlvi9ssE0QVREMiMLtJT4Irfq8p+8DmjHmly3XBSBvh/oIEpE2Z1YiPTnqE3h3ejlCPbe1Uu6yA4dRTDVMDn1x7XaXz/QiQpIvd8gPhC5QnE/MDgVRZvLQ7CCW1H7rylflA9rz+h8oFWFSUf2M0vAJsExSi84N+ur//gxIbtis6ou4Wdx7J9o6vSbfhuOFoYXOkD0ekENQHfP6r5iWVIwCEQH7cG9MrC8nClzc5n1vExYdnxqmy+mPcgAMb7OMbLdOV9vq2zoDv9X8QuAcxZszgCp+HUapPsdYKBIS289yiVFqLAxCwoiPE44OsxBkUMwODo6ohdGJ2EgGlrClVvVfq3bAikFn59Q/hj0Oc+32Z2UkKrEp1UpYFRVNKJFZJQ3PzD9K4ttyZI0Z0PHLeAb3StKnuHIhhLZdU16HtIjutvSU0pkH9jh40q/WGaFADJSHNlGVDacg8/SxTvwmQ+JPwV8iAWsF9iNamz+vonbu7llQP00ORdu7Oqh16zuAiB1FMedn2dXy1O1k01
- 90akQD/3
- eSuDuBUnsds+oVmJuFqhyOUc2VWzuIAc6sIzlQdwLzMS/1WZ2aJPHKHy/ZBs2NKJkp6fhZnv7mE1pZ7GpPME/YzLOPnr4H+vgrKPTNKpDf9gQjhG2sta4dbxWiPPkcnIraqgdR95PSeujMUmL/vp3PWVKOL1vQuQoQzdFVysukkNUFMOhOIn/i2oNx/O0EXlTVFei3/M82Xm7PVO2MFzEHCatCtE1VQJ4DbTSb+AAIdl8naK6FZXKU4I/VcAv8jZYLf0C2+JvSk5+q+HOBP8StWjsyJbqHLDls0aLyRwMMqaaMOPMINdrPuBngRJWS7BK8wnm
+X-HE-Tag: 1762410497-603214
+X-HE-Meta: U2FsdGVkX1/pnFOLiHGzGN+jVxRtPu/QiyL44lN9oIMHL8wVzHgAa6cmSoK7Pz+Vb1YmMvMOvcTvHHrpmFLqiZ2x1zrhJN3crVIn4me4ELyySUD4K0I6lx/VIaNMQFrC+W3XbFgYaZbGbPf9ncNtZf/65QX8h0bpVRD2motaWbKovjMrHEruyqL70TOzoMeY38QBWPGPiZkEQ35xTi1JCqY/y1QlFMyV5Wqyac9EexcZIM8FMadqQCQhT4l46eXeN2VRe2bIvf4sEIijh2snfKUNrIzb+YMMI1VDX7s+tAQ2rrDnFoO2CZI4wlTJZMCmiaD0RW7yzfQx5csPo5G4m9V3RmgXjTJfhwSmPA3GRmNz+O/Lvppp/thry+2GNi3MQAvN/KcRh+67VEnRFnydiCnWgeAcp6YHweW8qjOi+xZQRQ4qYHE1ITKR8LmH5/9Z4le8h4X5qeyEZqP2EWis4S81bIGEYKudkBeHlMUWUm3YWbKQfvvGJwQkCqyoZzbhXuQi3L3HhbaCRzSI7HlJfyFLj9axPgqffmu0mo4ZGvZo141W6j60N1NjhXZB+7HTiO8LujT4E0RqFi2OQ0mCZzr/SvJH5eyzpjCJeUbkr+IT76BkYBC/bcT26XI7F8J3TR8eZEoN84sk5C6kdcMJQbEhnxiYrR78+HqP3K3qzhwGq9qywon1YV7WZfQ3mIG75E0LmmdcTJor5sCPO8ENANLlTu7r/J2C+JcwSAaQ3H7kzcbGAazcIUhrfSm+P0xRsAX/5h/25lID4SU/yaAcmvYE2/VjqybSSkjqUr0sOKJj3noDwMA5DatuXlr4sXAwpks9u0nO6gKZlsGpNp3HROqXX739s/ookI+kakPWgo4WvZhKRDMRe7R46+raUjGDd4zZdKYlf4i4rlcxeAEotrDP+2m0YbDm/tldkti+8/qNBgiC+K/1K8jHWHTrsIhlLcIrZuKtqgUnjr0SuIL
+ cr0pqQFa
+ MRqKM8JyS8HUHAYR9cKPVMsYy7b7/DAkNCMRKrNqYMzwDq5JBRPM12V33Bm4si64aFCS5G2uNxixd8YhmI0KOznK1Sfp3ftNLT+TASaExdW9wsS9j2pocWUcSre/pjxyxnkLNhfQptbp3CP5hiRGglLxuIn8CHXzu0oS7pIxRjz0oOc7LXDVbYVucvfxQ4CEjh3a9hnym7/2CNw7Oc2FciZjIyzicSA6/4SjF+1V8I1bM8/LtTxFdQKEkxZteAuVhnb2KD+XuMztWOGtzYMkE7aNm2VK2dYHFnKXRH35FNiB89pq9Wkj5g9YzYO9qyUPfGzgKZ0xMmE+MKT8u3k9FArFXZNmCJFJ3OrCgLSPZKkJ+UZB06csH/vYZGy8UU5I1uK/ww8RJCmjM6gk6LAMDJMIOo801wzI4IpVctjrmfwoofgFfmQfdPihBK6gm1Kyzfknhf1ecI8CUUtYKHzxr4+pUQLQfN3DM3GHd2af1QOrOSRl684oGn5CCLsoIs+32Xm/FlibWd6pwa0mMf88rFHHMi7RTMwlDnkLOEkTpU6mQ/GA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,76 +210,455 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 6, 2025 at 10:58=E2=80=AFAM Shakeel Butt <shakeel.butt@linux.de=
-v> wrote:
->
-> +Kairui
 
-Thanks for the Cc.
 
->
-> On Wed, Nov 05, 2025 at 10:38:35AM -0800, syzbot wrote:
-> > Hello,
-> >
-> > syzbot found the following issue on:
-> >
-> > HEAD commit:    ba36dd5ee6fd Merge tag 'bpf-fixes' of git://git.kernel.=
-org..
-> > git tree:       upstream
-> > console output: https://syzkaller.appspot.com/x/log.txt?x=3D16515704580=
-000
-> > kernel config:  https://syzkaller.appspot.com/x/.config?x=3De46b8a1c645=
-465a9
-> > dashboard link: https://syzkaller.appspot.com/bug?extid=3Dc5b060ce82921=
-a2fd500
-> > compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7=
-976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-> > userspace arch: i386
-> >
-> > Unfortunately, I don't have any reproducer for this issue yet.
-> >
-> > Downloadable assets:
-> > disk image: https://storage.googleapis.com/syzbot-assets/62471ef815ed/d=
-isk-ba36dd5e.raw.xz
-> > vmlinux: https://storage.googleapis.com/syzbot-assets/e7a72af6e621/vmli=
-nux-ba36dd5e.xz
-> > kernel image: https://storage.googleapis.com/syzbot-assets/352eec7dbce0=
-/bzImage-ba36dd5e.xz
-> >
-> > IMPORTANT: if you fix the issue, please add the following tag to the co=
-mmit:
-> > Reported-by: syzbot+c5b060ce82921a2fd500@syzkaller.appspotmail.com
-> >
-> > ------------[ cut here ]------------
-> > WARNING: CPU: 0 PID: 13908 at mm/list_lru.c:100 lock_list_lru_of_memcg+=
-0x30c/0x4c0 mm/list_lru.c:100
->
-> This is VM_WARN_ON(!css_is_dying(&memcg->css)) in
-> lock_list_lru_of_memcg(). It is unexpected as it can only happen if
-> (1) list_lru_from_memcg_idx() returns NULL or (2) lock_list_lru()
-> find l->nr_items is LONG_MIN which is set after CSS_DYING is set.
->
-> I don't see how (2) can happen. For (1) to happen, somehow someone has
-> deleted the given alive memcg's list_lru_memcg from shadow_nodes
-> list_lru. Not sure how that can happen without some memory corruption or
-> unsafe updates to shadow_nodes.
+On 10/20/2025 1:58 PM, Byungchul Park wrote:
+> On Tue, Sep 23, 2025 at 05:47:41PM +0000, Shivank Garg wrote:
+>> From: Zi Yan <ziy@nvidia.com>
+>>
+>> Now page copies are batched, multi-threaded page copy can be used to
+>> increase page copy throughput.
+>>
+>> Enable using:
+>> echo 1 >  /sys/kernel/cpu_mt/offloading
+>> echo NR_THREADS >  /sys/kernel/cpu_mt/threads
+>>
+>> Disable:
+>> echo 0 >  /sys/kernel/cpu_mt/offloading
+>>
+>> Signed-off-by: Zi Yan <ziy@nvidia.com>
+>> Co-developed-by: Shivank Garg <shivankg@amd.com>
+>> Signed-off-by: Shivank Garg <shivankg@amd.com>
+>> ---
+>>  drivers/Kconfig                        |   2 +
+>>  drivers/Makefile                       |   3 +
+>>  drivers/migoffcopy/Kconfig             |   9 +
+>>  drivers/migoffcopy/Makefile            |   1 +
+>>  drivers/migoffcopy/mtcopy/Makefile     |   1 +
+>>  drivers/migoffcopy/mtcopy/copy_pages.c | 327 +++++++++++++++++++++++++
+>>  6 files changed, 343 insertions(+)
+>>  create mode 100644 drivers/migoffcopy/Kconfig
+>>  create mode 100644 drivers/migoffcopy/Makefile
+>>  create mode 100644 drivers/migoffcopy/mtcopy/Makefile
+>>  create mode 100644 drivers/migoffcopy/mtcopy/copy_pages.c
+>>
+>> diff --git a/drivers/Kconfig b/drivers/Kconfig
+>> index 4915a63866b0..d2cbc97a7683 100644
+>> --- a/drivers/Kconfig
+>> +++ b/drivers/Kconfig
+>> @@ -251,4 +251,6 @@ source "drivers/hte/Kconfig"
+>>
+>>  source "drivers/cdx/Kconfig"
+>>
+>> +source "drivers/migoffcopy/Kconfig"
+>> +
+>>  endmenu
+>> diff --git a/drivers/Makefile b/drivers/Makefile
+>> index b5749cf67044..5326d88cf31c 100644
+>> --- a/drivers/Makefile
+>> +++ b/drivers/Makefile
+>> @@ -42,6 +42,9 @@ obj-y                         += clk/
+>>  # really early.
+>>  obj-$(CONFIG_DMADEVICES)       += dma/
+>>
+>> +# Migration copy Offload
+>> +obj-$(CONFIG_OFFC_MIGRATION)   += migoffcopy/
+>> +
+>>  # SOC specific infrastructure drivers.
+>>  obj-y                          += soc/
+>>  obj-$(CONFIG_PM_GENERIC_DOMAINS)       += pmdomain/
+>> diff --git a/drivers/migoffcopy/Kconfig b/drivers/migoffcopy/Kconfig
+>> new file mode 100644
+>> index 000000000000..e73698af3e72
+>> --- /dev/null
+>> +++ b/drivers/migoffcopy/Kconfig
+>> @@ -0,0 +1,9 @@
+>> +config MTCOPY_CPU
+>> +       bool "Multi-Threaded Copy with CPU"
+>> +       depends on OFFC_MIGRATION
+>> +       default n
+>> +       help
+>> +         Interface MT COPY CPU driver for batch page migration
+>> +         offloading. Say Y if you want to try offloading with
+>> +         MultiThreaded CPU copy APIs.
+>> +
+>> diff --git a/drivers/migoffcopy/Makefile b/drivers/migoffcopy/Makefile
+>> new file mode 100644
+>> index 000000000000..0a3c356d67e6
+>> --- /dev/null
+>> +++ b/drivers/migoffcopy/Makefile
+>> @@ -0,0 +1 @@
+>> +obj-$(CONFIG_MTCOPY_CPU) += mtcopy/
+>> diff --git a/drivers/migoffcopy/mtcopy/Makefile b/drivers/migoffcopy/mtcopy/Makefile
+>> new file mode 100644
+>> index 000000000000..b4d7da85eda9
+>> --- /dev/null
+>> +++ b/drivers/migoffcopy/mtcopy/Makefile
+>> @@ -0,0 +1 @@
+>> +obj-$(CONFIG_MTCOPY_CPU) += copy_pages.o
+>> diff --git a/drivers/migoffcopy/mtcopy/copy_pages.c b/drivers/migoffcopy/mtcopy/copy_pages.c
+>> new file mode 100644
+>> index 000000000000..68e50de602d6
+>> --- /dev/null
+>> +++ b/drivers/migoffcopy/mtcopy/copy_pages.c
+>> @@ -0,0 +1,327 @@
+>> +// SPDX-License-Identifier: GPL-2.0
+>> +/*
+>> + * Parallel page copy routine.
+>> + */
+>> +
+>> +#include <linux/module.h>
+>> +#include <linux/kernel.h>
+>> +#include <linux/printk.h>
+>> +#include <linux/init.h>
+>> +#include <linux/sysctl.h>
+>> +#include <linux/sysfs.h>
+>> +#include <linux/highmem.h>
+>> +#include <linux/workqueue.h>
+>> +#include <linux/slab.h>
+>> +#include <linux/migrate.h>
+>> +#include <linux/migrate_offc.h>
+>> +
+>> +#define MAX_NUM_COPY_THREADS 64
+>> +
+>> +unsigned int limit_mt_num = 4;
+>> +static int is_dispatching;
+>> +
+>> +static int copy_page_lists_mt(struct list_head *dst_folios,
+>> +               struct list_head *src_folios, unsigned int nr_items);
+>> +
+>> +static DEFINE_MUTEX(migratecfg_mutex);
+>> +
+>> +/* CPU Multithreaded Batch Migrator */
+>> +struct migrator cpu_migrator = {
+>> +       .name = "CPU_MT_COPY\0",
+>> +       .migrate_offc = copy_page_lists_mt,
+>> +       .owner = THIS_MODULE,
+>> +};
+>> +
+>> +struct copy_item {
+>> +       char *to;
+>> +       char *from;
+>> +       unsigned long chunk_size;
+>> +};
+>> +
+>> +struct copy_page_info {
+>> +       struct work_struct copy_page_work;
+>> +       int ret;
+>> +       unsigned long num_items;
+>> +       struct copy_item item_list[];
+>> +};
+>> +
+>> +static unsigned long copy_page_routine(char *vto, char *vfrom,
+>> +       unsigned long chunk_size)
+>> +{
+>> +       return copy_mc_to_kernel(vto, vfrom, chunk_size);
+>> +}
+>> +
+>> +static void copy_page_work_queue_thread(struct work_struct *work)
+>> +{
+>> +       struct copy_page_info *my_work = (struct copy_page_info *)work;
+>> +       int i;
+>> +
+>> +       my_work->ret = 0;
+>> +       for (i = 0; i < my_work->num_items; ++i)
+>> +               my_work->ret |= !!copy_page_routine(my_work->item_list[i].to,
+>> +                                       my_work->item_list[i].from,
+>> +                                       my_work->item_list[i].chunk_size);
+>> +}
+>> +
+>> +static ssize_t mt_offloading_set(struct kobject *kobj, struct kobj_attribute *attr,
+>> +               const char *buf, size_t count)
+>> +{
+>> +       int ccode;
+>> +       int action;
+>> +
+>> +       ccode = kstrtoint(buf, 0, &action);
+>> +       if (ccode) {
+>> +               pr_debug("(%s:) error parsing input %s\n", __func__, buf);
+>> +               return ccode;
+>> +       }
+>> +
+>> +       /*
+>> +        * action is 0: User wants to disable MT offloading.
+>> +        * action is 1: User wants to enable MT offloading.
+>> +        */
+>> +       switch (action) {
+>> +       case 0:
+>> +               mutex_lock(&migratecfg_mutex);
+>> +               if (is_dispatching == 1) {
+>> +                       stop_offloading();
+>> +                       is_dispatching = 0;
+>> +               } else
+>> +                       pr_debug("MT migration offloading is already OFF\n");
+>> +               mutex_unlock(&migratecfg_mutex);
+>> +               break;
+>> +       case 1:
+>> +               mutex_lock(&migratecfg_mutex);
+>> +               if (is_dispatching == 0) {
+>> +                       start_offloading(&cpu_migrator);
+>> +                       is_dispatching = 1;
+>> +               } else
+>> +                       pr_debug("MT migration offloading is already ON\n");
+>> +               mutex_unlock(&migratecfg_mutex);
+>> +               break;
+>> +       default:
+>> +               pr_debug("input should be zero or one, parsed as %d\n", action);
+>> +       }
+>> +       return sizeof(action);
+>> +}
+>> +
+>> +static ssize_t mt_offloading_show(struct kobject *kobj,
+>> +               struct kobj_attribute *attr, char *buf)
+>> +{
+>> +       return sysfs_emit(buf, "%d\n", is_dispatching);
+>> +}
+>> +
+>> +static ssize_t mt_threads_set(struct kobject *kobj, struct kobj_attribute *attr,
+>> +               const char *buf, size_t count)
+>> +{
+>> +       int ccode;
+>> +       unsigned int threads;
+>> +
+>> +       ccode = kstrtouint(buf, 0, &threads);
+>> +       if (ccode) {
+>> +               pr_debug("(%s:) error parsing input %s\n", __func__, buf);
+>> +               return ccode;
+>> +       }
+>> +
+>> +       if (threads > 0 && threads <= MAX_NUM_COPY_THREADS) {
+>> +               mutex_lock(&migratecfg_mutex);
+>> +               limit_mt_num = threads;
+>> +               mutex_unlock(&migratecfg_mutex);
+>> +               pr_debug("MT threads set to %u\n", limit_mt_num);
+>> +       } else {
+>> +               pr_debug("Invalid thread count. Must be between 1 and %d\n", MAX_NUM_COPY_THREADS);
+>> +               return -EINVAL;
+>> +       }
+>> +
+>> +       return count;
+>> +}
+>> +
+>> +static ssize_t mt_threads_show(struct kobject *kobj,
+>> +               struct kobj_attribute *attr, char *buf)
+>> +{
+>> +       return sysfs_emit(buf, "%u\n", limit_mt_num);
+>> +}
+>> +
+>> +int copy_page_lists_mt(struct list_head *dst_folios,
+>> +               struct list_head *src_folios, unsigned int nr_items)
+>> +{
+>> +       struct copy_page_info *work_items[MAX_NUM_COPY_THREADS] = {0};
+>> +       unsigned int total_mt_num = limit_mt_num;
+>> +       struct folio *src, *src2, *dst, *dst2;
+>> +       int max_items_per_thread;
+>> +       int item_idx;
+>> +       int err = 0;
+>> +       int cpu;
+>> +       int i;
+>> +
+>> +       if (IS_ENABLED(CONFIG_HIGHMEM))
+>> +               return -EOPNOTSUPP;
+>> +
+>> +       /* Each threads get part of each page, if nr_items < totla_mt_num */
+>> +       if (nr_items < total_mt_num)
+>> +               max_items_per_thread = nr_items;
+>> +       else
+>> +               max_items_per_thread = (nr_items / total_mt_num) +
+>> +                               ((nr_items % total_mt_num) ? 1 : 0);
+>> +
+>> +
+>> +       for (cpu = 0; cpu < total_mt_num; ++cpu) {
+>> +               work_items[cpu] = kzalloc(sizeof(struct copy_page_info) +
+>> +                                               sizeof(struct copy_item) *
+>> +                                                       max_items_per_thread,
+>> +                                         GFP_NOWAIT);
+>> +               if (!work_items[cpu]) {
+>> +                       err = -ENOMEM;
+>> +                       goto free_work_items;
+>> +               }
+>> +       }
+>> +
+>> +       if (nr_items < total_mt_num) {
+>> +               for (cpu = 0; cpu < total_mt_num; ++cpu) {
+>> +                       INIT_WORK((struct work_struct *)work_items[cpu],
+>> +                                         copy_page_work_queue_thread);
+>> +                       work_items[cpu]->num_items = max_items_per_thread;
+>> +               }
+>> +
+>> +               item_idx = 0;
+>> +               dst = list_first_entry(dst_folios, struct folio, lru);
+>> +               dst2 = list_next_entry(dst, lru);
+>> +               list_for_each_entry_safe(src, src2, src_folios, lru) {
+>> +                       unsigned long chunk_size = PAGE_SIZE * folio_nr_pages(src) / total_mt_num;
+>> +                       char *vfrom = page_address(&src->page);
+>> +                       char *vto = page_address(&dst->page);
+>> +
+>> +                       VM_WARN_ON(PAGE_SIZE * folio_nr_pages(src) % total_mt_num);
+>> +                       VM_WARN_ON(folio_nr_pages(dst) != folio_nr_pages(src));
+>> +
+>> +                       for (cpu = 0; cpu < total_mt_num; ++cpu) {
+>> +                               work_items[cpu]->item_list[item_idx].to =
+>> +                                       vto + chunk_size * cpu;
+>> +                               work_items[cpu]->item_list[item_idx].from =
+>> +                                       vfrom + chunk_size * cpu;
+>> +                               work_items[cpu]->item_list[item_idx].chunk_size =
+>> +                                       chunk_size;
+>> +                       }
+>> +
+>> +                       item_idx++;
+>> +                       dst = dst2;
+>> +                       dst2 = list_next_entry(dst, lru);
+>> +               }
+>> +
+>> +               for (cpu = 0; cpu < total_mt_num; ++cpu)
+>> +                       queue_work(system_unbound_wq,
+>> +                                  (struct work_struct *)work_items[cpu]);
+>> +       } else {
+>> +               int num_xfer_per_thread = nr_items / total_mt_num;
+>> +               int per_cpu_item_idx;
+>> +
+>> +
+>> +               for (cpu = 0; cpu < total_mt_num; ++cpu) {
+>> +                       INIT_WORK((struct work_struct *)work_items[cpu],
+>> +                                         copy_page_work_queue_thread);
+>> +
+>> +                       work_items[cpu]->num_items = num_xfer_per_thread +
+>> +                                       (cpu < (nr_items % total_mt_num));
+>> +               }
+>> +
+>> +               cpu = 0;
+>> +               per_cpu_item_idx = 0;
+>> +               item_idx = 0;
+>> +               dst = list_first_entry(dst_folios, struct folio, lru);
+>> +               dst2 = list_next_entry(dst, lru);
+>> +               list_for_each_entry_safe(src, src2, src_folios, lru) {
+>> +                       work_items[cpu]->item_list[per_cpu_item_idx].to =
+>> +                               page_address(&dst->page);
+>> +                       work_items[cpu]->item_list[per_cpu_item_idx].from =
+>> +                               page_address(&src->page);
+>> +                       work_items[cpu]->item_list[per_cpu_item_idx].chunk_size =
+>> +                               PAGE_SIZE * folio_nr_pages(src);
+>> +
+>> +                       VM_WARN_ON(folio_nr_pages(dst) !=
+>> +                                  folio_nr_pages(src));
+>> +
+>> +                       per_cpu_item_idx++;
+>> +                       item_idx++;
+>> +                       dst = dst2;
+>> +                       dst2 = list_next_entry(dst, lru);
+>> +
+>> +                       if (per_cpu_item_idx == work_items[cpu]->num_items) {
+>> +                               queue_work(system_unbound_wq,
+>> +                                       (struct work_struct *)work_items[cpu]);
+> 
+> Thanks for the great work.
+> 
+> By the way, is it okay to use work queue?  When the system is idle, this
+> patch will improve the migration performance, but when there are a lot
+> of other runnable tasks in the system, it might be worse than the
+> current one.  That's gonna be even worse if there are some other tasks
+> that wait for the migration to end.  It's worth noting that
+> padata_do_multithreaded() also uses work queue internally.
+> 
+> I think, at worst, the performance should be same as is.  Or am I
+> missing something?
+> 
+> 	Byungchul
 
-Last time I saw this was due to memory corruption from other components:
-https://lore.kernel.org/linux-mm/CAMgjq7Dxv4JwebBtR18_9TpNX_7ej5HXEN1s1sitB=
-+H+4rCE-Q@mail.gmail.com/
+Hi Byungchul,
 
-Another time was due to an allocation of shadow node missing mapping_set_up=
-date:
-https://lore.kernel.org/linux-mm/20241222122936.67501-1-ryncsn@gmail.com/
+This was addressed by Zi in the mail:
+https://lore.kernel.org/linux-mm/61F6152C-A91E-453B-9521-34B7497AE532@nvidia.com
 
->
-> I think we need to wait for syzbot to generate a reproducer to debug
-> further.
+So, there are some specific use cases that can benefit significantly when CPU cores are idle
+while GPUs or accelerators handle most of the workload.
+In such scenarios, migrating pages to and from device memory (GPU or AI accelerator) quickly
+is critical and ensure hot data is always available for accelerators.
 
-Agree, this part has been very stable for a year, hard to tell if there is
-any other allocation missing the xas_set_lru callback or something
-else is wrong, worst thing could happen now is some minor memory
-accounting leak.
+Thanks,
+Shivank
 
-I'll have a look from the code side when I have time.
+> 
+>> +                               per_cpu_item_idx = 0;
+>> +                               cpu++;
+>> +                       }
+>> +               }
+>> +               if (item_idx != nr_items)
+>> +                       pr_warn("%s: only %d out of %d pages are transferred\n",
+>> +                               __func__, item_idx - 1, nr_items);
+>> +       }
+>> +
+>> +       /* Wait until it finishes  */
+>> +       for (i = 0; i < total_mt_num; ++i) {
+>> +               flush_work((struct work_struct *)work_items[i]);
+>> +               /* retry if any copy fails */
+>> +               if (work_items[i]->ret)
+>> +                       err = -EAGAIN;
+>> +       }
+>> +
+>> +free_work_items:
+>> +       for (cpu = 0; cpu < total_mt_num; ++cpu)
+>> +               kfree(work_items[cpu]);
+>> +
+>> +       return err;
+>> +}
+>> +
+>> +static struct kobject *mt_kobj_ref;
+>> +static struct kobj_attribute mt_offloading_attribute = __ATTR(offloading, 0664,
+>> +               mt_offloading_show, mt_offloading_set);
+>> +static struct kobj_attribute mt_threads_attribute = __ATTR(threads, 0664,
+>> +               mt_threads_show, mt_threads_set);
+>> +
+>> +static int __init cpu_mt_module_init(void)
+>> +{
+>> +       int ret = 0;
+>> +
+>> +       mt_kobj_ref = kobject_create_and_add("cpu_mt", kernel_kobj);
+>> +       if (!mt_kobj_ref)
+>> +               return -ENOMEM;
+>> +
+>> +       ret = sysfs_create_file(mt_kobj_ref, &mt_offloading_attribute.attr);
+>> +       if (ret)
+>> +               goto out_offloading;
+>> +
+>> +       ret = sysfs_create_file(mt_kobj_ref, &mt_threads_attribute.attr);
+>> +       if (ret)
+>> +               goto out_threads;
+>> +
+>> +       is_dispatching = 0;
+>> +
+>> +       return 0;
+>> +
+>> +out_threads:
+>> +       sysfs_remove_file(mt_kobj_ref, &mt_offloading_attribute.attr);
+>> +out_offloading:
+>> +       kobject_put(mt_kobj_ref);
+>> +       return ret;
+>> +}
+>> +
+>> +static void __exit cpu_mt_module_exit(void)
+>> +{
+>> +       /* Stop the MT offloading to unload the module */
+>> +       mutex_lock(&migratecfg_mutex);
+>> +       if (is_dispatching == 1) {
+>> +               stop_offloading();
+>> +               is_dispatching = 0;
+>> +       }
+>> +       mutex_unlock(&migratecfg_mutex);
+>> +
+>> +       sysfs_remove_file(mt_kobj_ref, &mt_threads_attribute.attr);
+>> +       sysfs_remove_file(mt_kobj_ref, &mt_offloading_attribute.attr);
+>> +       kobject_put(mt_kobj_ref);
+>> +}
+>> +
+>> +module_init(cpu_mt_module_init);
+>> +module_exit(cpu_mt_module_exit);
+>> +
+>> +MODULE_LICENSE("GPL");
+>> +MODULE_AUTHOR("Zi Yan");
+>> +MODULE_DESCRIPTION("CPU_MT_COPY"); /* CPU Multithreaded Batch Migrator */
+>> --
+>> 2.43.0
+
 
