@@ -4,80 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4F105CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:13:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 040C9CCFA03
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:17:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 968318E0003; Thu,  6 Nov 2025 09:13:16 -0500 (EST)
+	id 26C178E0003; Thu,  6 Nov 2025 09:17:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 93FBB8E0002; Thu,  6 Nov 2025 09:13:16 -0500 (EST)
+	id 243B28E0002; Thu,  6 Nov 2025 09:17:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 87D0C8E0003; Thu,  6 Nov 2025 09:13:16 -0500 (EST)
+	id 1599A8E0003; Thu,  6 Nov 2025 09:17:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 75D018E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:13:16 -0500 (EST)
-Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 2DBFB894F6
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:13:16 +0000 (UTC)
-X-FDA: 84080374392.01.B09D84D
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 520358000F
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:13:14 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	by kanga.kvack.org (Postfix) with ESMTP id 00DEF8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:17:07 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id B91085A8E1
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:17:07 +0000 (UTC)
+X-FDA: 84080384094.09.E0D92B4
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf06.hostedemail.com (Postfix) with ESMTP id EAF4E18001B
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:17:05 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nCbgfcJJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762438626; a=rsa-sha256;
+	cv=none;
+	b=63pgIV5QVsHqkJ76FqE9edqqkC+cNELhbMHspgsSRYcluvCk4i6DL/lDtxLWAflaHOvRF0
+	V5IspXBCexjTyNbY2fW+trj9Je5EzIZG9EvL23NlNzcFLvuzUh0997FgsH4d/Jc9N6TUnv
+	0z//ebD14ajXh5zA+anguTyMQdhzmhA=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nCbgfcJJ;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf06.hostedemail.com: domain of leon@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=leon@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762438394;
+	s=arc-20220608; t=1762438626;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8fAkQBIlD6f7n3hEnlHdfAp5lgAPWMsEoCGf9o50SZ4=;
-	b=QXP8HexwSRMvmOIOoj3XM1+P8dUTZKOxL3pFdgbC0Rv0963mKCFtDst14ZUrh9eYDD1Bwo
-	473pr19flKM6dHrGZ37bVz0Z7SvEW3rD7lAe7zFcQwT4usQ/6q3kaCZkXstYoIJzduVuPm
-	/nm8oEH48ALdk8DgyknjxwkGYw+rwY4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762438394; a=rsa-sha256;
-	cv=none;
-	b=grQPro+iUhDPQ7e1t9xmCJLp5IHchggDGDag6TtsJZ9mQlCpKPX7q5PLaEjjH0cG6/hRrd
-	B5tqtumXl0LESRl2A2sVQ5xGCM1gPYEHBrcQRN5ceZAkyMkUdcdR5NdfbslHGDcVGXsvnv
-	zEGzL2hht5TVaLoU5+xVGLe+si9R1qI=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=none;
-	spf=pass (imf02.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 10E97227AAE; Thu,  6 Nov 2025 15:13:07 +0100 (CET)
-Date: Thu, 6 Nov 2025 15:13:06 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-	Eric Biggers <ebiggers@kernel.org>,
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=3ys8HI98o7NXOrPXKrPfvUzLfF5Z9IWGLmu2W42u4+8=;
+	b=koEgcZVcHx87vfSl6bg5IbzlYYasX8RVSy8AAzJ7vBBgY/Jg+kWItQGLaKFRg5I9AxdYP8
+	9V9m+msJlCKe/idnUgB3figPkvVFllPSxmxcCIDoJyheXBnemky7ep8huhDr3Q2gISbg70
+	wCEFXQwGFZsIV+bWOFSaNTESYQuyZ7M=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C4148404CD;
+	Thu,  6 Nov 2025 14:17:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03904C116C6;
+	Thu,  6 Nov 2025 14:17:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762438624;
+	bh=ZavZy68UqW1iEHt3XxoVBWkpiyDI0Ett9ka52Qq65eI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=nCbgfcJJVAgp+47hn67gndUHr6jEkmDHYevSsgdB5u5pebS46j/IfiyAve50aSXBu
+	 aE2CpvHtBtgp9TYWeQB60v7v8aRp13S181ShG8FUfQm0nstDguR221Vb7BHMPQbpIs
+	 egK4YhZbKb2yklQGRma1CORzcRTPN2v4cpKPf/hy5ca1rFZywrLH5IPrUHSmWl4qQv
+	 +l2Zjq3BoFBbOZCfoc90fijvuepqQT7tFLnc1Nz76CuWE2FH8bdQraHWWHdp/0/bcB
+	 gRpfVwIYMmpMY+6eqM7EkWVLT6tUZ34cKVrMY7m/bLt3v6xx0uKDgyPb7fgUXscM6r
+	 5e5y+vSnehUtw==
+From: Leon Romanovsky <leon@kernel.org>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	Logan Gunthorpe <logang@deltatee.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
 	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 3/9] mempool: add mempool_{alloc,free}_bulk
-Message-ID: <20251106141306.GA12043@lst.de>
-References: <20251031093517.1603379-1-hch@lst.de> <20251031093517.1603379-4-hch@lst.de> <1fff522d-1987-4dcc-a6a2-4406a22d3ec2@suse.cz>
+	Jonathan Corbet <corbet@lwn.net>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	=?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+	Kees Cook <kees@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>,
+	Shameer Kolothum <skolothumtho@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>
+Cc: Krishnakant Jaju <kjaju@nvidia.com>,
+	Matt Ochs <mochs@nvidia.com>,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	iommu@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-doc@vger.kernel.org,
+	linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org,
+	linux-hardening@vger.kernel.org,
+	Alex Mastro <amastro@fb.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>
+Subject: [PATCH v7 00/11] vfio/pci: Allow MMIO regions to be exported through dma-buf
+Date: Thu,  6 Nov 2025 16:16:45 +0200
+Message-ID: <20251106-dmabuf-vfio-v7-0-2503bf390699@nvidia.com>
+X-Mailer: git-send-email 2.51.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1fff522d-1987-4dcc-a6a2-4406a22d3ec2@suse.cz>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 520358000F
-X-Stat-Signature: szumqgdzhd5wxsn1t6g3igh5ioue8de8
+Content-Type: text/plain; charset="utf-8"
+X-Change-ID: 20251016-dmabuf-vfio-6cef732adf5a
+X-Mailer: b4 0.15-dev-3ae27
+Content-Transfer-Encoding: quoted-printable
 X-Rspam-User: 
-X-HE-Tag: 1762438394-440477
-X-HE-Meta: U2FsdGVkX18nJiFin1qSCXaoNwgO5jZIVs8WqrR6Tke6HBHSLzUDgKk1NiEn7bxYLEX8Ot7sGu1DHRkqwRdQn9CJKO91llpmUk3EluGNVOZhC0t++zOd5WRh7OnrYd3dv4RJN84YdF67k2lNWzt3sZ52XuLA++L6crPenGxUnogugFkMc9n2q+d2BXLXdaIUmS9jDgB3x7djNonJtaEZbI8qDTW0X2WKF7192VkzEt9CTseLrWkDbid5qhQ+v7++cE+0b8pqs42X1XlwPh3eL4GWk3dOHbHqC65ScaxoqDqc2ABSTtLAwc3Pw0NFzAF3puvLLFiHIPFiIMv3x3WqOUFsLZW4W0BtubXoi8dWT2GL1wOGnYZULNCHhKqJR/jiK6VbcRfUKqiaz8+GNGae5na1RZ5uaqTCsgkbVb/0gBPIWhlicEny176X81EvREcBF/z73L6ppmx6uolQnQxOCoINHXe+MsXp7Jge0Z00bXcdvGAQmddpwN2l1K14wgOj3PxegOsGCAWv/vMV4U/64otBOSWZzEIZacue/EFV8muOM0xJeQkuCnly5vyAlMUV6/KNJTV3CtptW+e5KUp1IBvptCR8+dh2Hg2j8n2rChkvClcFbk7zfGOG2xleqQP/kh0iG4dsEHa/0p90LAUXuFfR87/B8dXLhMZaDkkDAyhE6PyLW61WqYC1bFt9CHW/tuLOiXwqsUPBKXo1caXX6ST5ENw+gSk+1WzIgx4gu055PrqdALMN9txE/BPKxU5c6Oj52O/8tubs8hZg3JgYZgbhsEpgFt9Uj1kZNVZFRztvELhg+z+NKie8NxEjA1v+AnD9Wn1GssWaxaLdj7fE1qviNLLu+EqDzbfW4VXUZJcGetInirHl8fsqhsqo4y+ptec70MdyYLlo7Wv9RqOqpH7n25SpxO5ueatCDAoCYovVl1HEQXedNb2RoyIDtrWI8QpfZtqK9ZL50Unkk3h
- J9de6ADx
- NlruGJd3C14PNxWlsdd0KMwM5XmwlZ8ShiR4k0rtLozsbjjmu78diDayZVGZ2WsgLcR7prbS74p9rWukoWxTnVMsYKcTgN+kIWYLBdbsiqZCTTW5MDhAcpUz4TI8+qXiIGkQJ3EO/I7K3jvA=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: EAF4E18001B
+X-Stat-Signature: k4drinaumsbchz14eqk8f8ftqoxhqa73
+X-HE-Tag: 1762438625-273959
+X-HE-Meta: U2FsdGVkX1+uDBIw35WBc4Sg9w5B5Eqj+kuNl7dobhI2uRpt93AWFuSSkIwLxvZTBEZSi3On9BjCQigc9i90Dg1ZFi7z+ztEYmh0PkOU9q/kd263q1C/0KcE5VPXEqztlNTVatL7bdYOhz73b7SG1aNKDbvpBmBGWUaPkHQ8btLOo3jCmHbrC7k9KlzDVbN7b0jxccS1WZD1Z+FkbQlkOQH5PL2r3kUkFuwVa1/rj9AdqLtfOJ7IMxasNHB9jOWpQi0ob2ZNgQ7kocCobYKQ6djJ11boVL/uFwaqal08mhcMZrb2YTvzrdMpOcpQR13rcqZzTk2LYBWn+ghDbwNNYr32pwce2yp6CIPTHl3deY1jgyJnM4bV1Dcj1jhPBWRgysPOhP5w9A7TBWh9GgSdHhdXBFqj77tie/4Ylz6PTdO7HlHATIRsocTiOMIFt1ML7aI5WdctMH+u9MHiRWk56V/H2yetAlxnPKJn6iyT+snrG6topuqxt5sqCqwwidonoT2I2CCTZoQcIf2CWfmdl3lR4v6g9n8rB4cDk4vDBS5KKvqe8eqi14DNY7IE9SNlYxj+3dR4kjzFFWmKDfXl1LaONNDGSQJ0OnmPHDXkhnC1EW1j9BReFOJeLIZwcSGPS3quchFUU3VIVO6G6k4IxrZ2K9IMQ5myXWV8wi7FTxlFdglBehdIuq50Oqugu924IdpafbFFkroSf4oVsx5Q6w+6vmNJ4qd2nj3RzWNWp6w2aqccrIeq/Hb8Aghyzl6+tEUAJT4CVvNzwnGtNPlYVZbsBiu1bfkT6IfFX5384v2VqrOPeomecV/Li62y+wmxDSuYZmZ+Xq3K+sznxfMmAdIeO1lYohBa+xeuxMXmwmoR4LiVc8ktGGMYbQiRMCTfbH8EvDnQm4EXhFEWj9vO8hilf95ejtzCfgFTtKKICGP4e037/XXeaLsp2m0WtZLmfg6G+nWWjpaBV6UVnyQ
+ 1dTt5g+C
+ lvwoY9Bv9bGo/LjgyNxMSfG0NUT8DYDrXnqTGkioHdey3HkROqzUfEcz9EmcgMqYZE/8l9my58dZ5/YYv/eoDx4BeplbxiIgRsyj1GdgDmTd5sDJIDVA1KMS1IaCLw27NGGOaav9SfBNMSn03BceaVeIuzJnI5wNgHsANMolmVIxTkor7VfanXwLr6LbYqBE2zmUqtDAaDXBzjQqKzgtY2S94Hamsvj9/X00sI6NaoJY+8Xb1WDGUsP3b49AcuMrClZ7SjQeWGMJTPSqq5whrVLK3uk2sx3ubngOTCtl6owskgspy1f86GZwggiSzGzsUXwcoC2TFTrrToCI=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -86,67 +125,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 05, 2025 at 04:04:53PM +0100, Vlastimil Babka wrote:
-> > +	for (; i < count; i++) {
-> > +		if (!elem[i]) {
-> > +			if (should_fail_ex(&fail_mempool_alloc, 1,
-> > +					FAULT_NOWARN)) {
-> > +				pr_info("forcing pool usage for pool %pS\n",
-> > +					(void *)caller_ip);
-> > +				goto use_pool;
-> > +			}
-> 
-> Would it be enough to do this failure injection attempt once and not in
-> every iteration?
-
-Well, that would only test failure handling for the first element. Or
-you mean don't call it again if called once?
-
-> >  	/*
-> > @@ -445,10 +463,12 @@ void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
-> >  	/* We must not sleep if !__GFP_DIRECT_RECLAIM */
-> >  	if (!(gfp_mask & __GFP_DIRECT_RECLAIM)) {
-> >  		spin_unlock_irqrestore(&pool->lock, flags);
-> > -		return NULL;
-> > +		if (i > 0)
-> > +			mempool_free_bulk(pool, elem + i, count - i);
-> 
-> I don't understand why we are trying to free from i to count and not from 0
-> to i? Seems buggy, there will likely be NULLs which might go through
-> add_element() which assumes they are not NULL.
-
-Yes, this looks like broken copy and paste.  The again I'm not even
-sure who calls into mempool without __GFP_DIRECT_RECLAIM reset, as
-that's kinda pointless.
-
-> Assuming this is fixed we might still have confusing API. We might be
-> freeing away elements that were already in the array when
-> mempool_alloc_bulk() was called. OTOH the pool might be missing less than i
-> elements and mempool_free_bulk() will not do anything with the rest.
-> Anything beyond i is untouched. The caller has no idea what's in the array
-> after getting this -ENOMEM. (alloc_pages_bulk() returns the number of pages
-> there).
-> Maybe it's acceptable (your usecase I think doesn't even add a caller that
-> can't block), but needs documenting clearly.
-
-I'm tempted to just disallow !__GFP_DIRECT_RECLAIM bulk allocations.
-That feature seems to being a lot of trouble for no real gain, as
-we can't use mempool as a guaranteed allocator there, so it's kinda
-pointless.
-
-> So in theory callers waiting for many objects might wait indefinitely to
-> find enough objects in the pool, while smaller callers succeed their
-> allocations and deplete the pool. Mempools never provided some fair ordering
-> of waiters, but this might make it worse deterministically instead of
-> randomly. Guess it's not such a problem if all callers are comparable in
-> number of objects.
-
-Yeah, which is the use case.
-
-> >   * This function only sleeps if the free_fn callback sleeps.
-> 
-> This part now only applies to mempool_free() ?
-
-Both mempool_free and mempool_free_bulk.
-
+Changelog:=0D
+v7:=0D
+ * Dropped restore_revoke flag and added vfio_pci_dma_buf_move=0D
+   to reverse loop.=0D
+ * Fixed spelling errors in documentation patch.=0D
+ * Rebased on top of v6.18-rc3.=0D
+ * Added include to stddef.h to vfio.h, to keep uapi header file independen=
+t.=0D
+v6: https://patch.msgid.link/20251102-dmabuf-vfio-v6-0-d773cff0db9f@nvidia.=
+com=0D
+ * Fixed wrong error check from pcim_p2pdma_init().=0D
+ * Documented pcim_p2pdma_provider() function.=0D
+ * Improved commit messages.=0D
+ * Added VFIO DMA-BUF selftest, not sent yet.=0D
+ * Added __counted_by(nr_ranges) annotation to struct vfio_device_feature_d=
+ma_buf.=0D
+ * Fixed error unwind when dma_buf_fd() fails.=0D
+ * Document latest changes to p2pmem.=0D
+ * Removed EXPORT_SYMBOL_GPL from pci_p2pdma_map_type.=0D
+ * Moved DMA mapping logic to DMA-BUF.=0D
+ * Removed types patch to avoid dependencies between subsystems.=0D
+ * Moved vfio_pci_dma_buf_move() in err_undo block.=0D
+ * Added nvgrace patch.=0D
+v5: https://lore.kernel.org/all/cover.1760368250.git.leon@kernel.org=0D
+ * Rebased on top of v6.18-rc1.=0D
+ * Added more validation logic to make sure that DMA-BUF length doesn't=0D
+   overflow in various scenarios.=0D
+ * Hide kernel config from the users.=0D
+ * Fixed type conversion issue. DMA ranges are exposed with u64 length,=0D
+   but DMA-BUF uses "unsigned int" as a length for SG entries.=0D
+ * Added check to prevent from VFIO drivers which reports BAR size=0D
+   different from PCI, do not use DMA-BUF functionality.=0D
+v4: https://lore.kernel.org/all/cover.1759070796.git.leon@kernel.org=0D
+ * Split pcim_p2pdma_provider() to two functions, one that initializes=0D
+   array of providers and another to return right provider pointer.=0D
+v3: https://lore.kernel.org/all/cover.1758804980.git.leon@kernel.org=0D
+ * Changed pcim_p2pdma_enable() to be pcim_p2pdma_provider().=0D
+ * Cache provider in vfio_pci_dma_buf struct instead of BAR index.=0D
+ * Removed misleading comment from pcim_p2pdma_provider().=0D
+ * Moved MMIO check to be in pcim_p2pdma_provider().=0D
+v2: https://lore.kernel.org/all/cover.1757589589.git.leon@kernel.org/=0D
+ * Added extra patch which adds new CONFIG, so next patches can reuse=0D
+ * it.=0D
+ * Squashed "PCI/P2PDMA: Remove redundant bus_offset from map state"=0D
+   into the other patch.=0D
+ * Fixed revoke calls to be aligned with true->false semantics.=0D
+ * Extended p2pdma_providers to be per-BAR and not global to whole=0D
+ * device.=0D
+ * Fixed possible race between dmabuf states and revoke.=0D
+ * Moved revoke to PCI BAR zap block.=0D
+v1: https://lore.kernel.org/all/cover.1754311439.git.leon@kernel.org=0D
+ * Changed commit messages.=0D
+ * Reused DMA_ATTR_MMIO attribute.=0D
+ * Returned support for multiple DMA ranges per-dMABUF.=0D
+v0: https://lore.kernel.org/all/cover.1753274085.git.leonro@nvidia.com=0D
+=0D
+---------------------------------------------------------------------------=
+=0D
+Based on "[PATCH v6 00/16] dma-mapping: migrate to physical address-based A=
+PI"=0D
+https://lore.kernel.org/all/cover.1757423202.git.leonro@nvidia.com/ series.=
+=0D
+---------------------------------------------------------------------------=
+=0D
+=0D
+This series extends the VFIO PCI subsystem to support exporting MMIO=0D
+regions from PCI device BARs as dma-buf objects, enabling safe sharing of=0D
+non-struct page memory with controlled lifetime management. This allows RDM=
+A=0D
+and other subsystems to import dma-buf FDs and build them into memory regio=
+ns=0D
+for PCI P2P operations.=0D
+=0D
+The series supports a use case for SPDK where a NVMe device will be=0D
+owned by SPDK through VFIO but interacting with a RDMA device. The RDMA=0D
+device may directly access the NVMe CMB or directly manipulate the NVMe=0D
+device's doorbell using PCI P2P.=0D
+=0D
+However, as a general mechanism, it can support many other scenarios with=0D
+VFIO. This dmabuf approach can be usable by iommufd as well for generic=0D
+and safe P2P mappings.=0D
+=0D
+In addition to the SPDK use-case mentioned above, the capability added=0D
+in this patch series can also be useful when a buffer (located in device=0D
+memory such as VRAM) needs to be shared between any two dGPU devices or=0D
+instances (assuming one of them is bound to VFIO PCI) as long as they=0D
+are P2P DMA compatible.=0D
+=0D
+The implementation provides a revocable attachment mechanism using dma-buf=
+=0D
+move operations. MMIO regions are normally pinned as BARs don't change=0D
+physical addresses, but access is revoked when the VFIO device is closed=0D
+or a PCI reset is issued. This ensures kernel self-defense against=0D
+potentially hostile userspace.=0D
+=0D
+The series includes significant refactoring of the PCI P2PDMA subsystem=0D
+to separate core P2P functionality from memory allocation features,=0D
+making it more modular and suitable for VFIO use cases that don't need=0D
+struct page support.=0D
+=0D
+-----------------------------------------------------------------------=0D
+The series is based originally on=0D
+https://lore.kernel.org/all/20250307052248.405803-1-vivek.kasireddy@intel.c=
+om/=0D
+but heavily rewritten to be based on DMA physical API.=0D
+-----------------------------------------------------------------------=0D
+The WIP branch can be found here:=0D
+https://git.kernel.org/pub/scm/linux/kernel/git/leon/linux-rdma.git/log/?h=
+=3Ddmabuf-vfio-v7=0D
+=0D
+Thanks=0D
+=0D
+---=0D
+Jason Gunthorpe (2):=0D
+      PCI/P2PDMA: Document DMABUF model=0D
+      vfio/nvgrace: Support get_dmabuf_phys=0D
+=0D
+Leon Romanovsky (7):=0D
+      PCI/P2PDMA: Separate the mmap() support from the core logic=0D
+      PCI/P2PDMA: Simplify bus address mapping API=0D
+      PCI/P2PDMA: Refactor to separate core P2P functionality from memory a=
+llocation=0D
+      PCI/P2PDMA: Provide an access to pci_p2pdma_map_type() function=0D
+      dma-buf: provide phys_vec to scatter-gather mapping routine=0D
+      vfio/pci: Enable peer-to-peer DMA transactions by default=0D
+      vfio/pci: Add dma-buf export support for MMIO regions=0D
+=0D
+Vivek Kasireddy (2):=0D
+      vfio: Export vfio device get and put registration helpers=0D
+      vfio/pci: Share the core device pointer while invoking feature functi=
+ons=0D
+=0D
+ Documentation/driver-api/pci/p2pdma.rst |  95 +++++++---=0D
+ block/blk-mq-dma.c                      |   2 +-=0D
+ drivers/dma-buf/dma-buf.c               | 235 ++++++++++++++++++++++++=0D
+ drivers/iommu/dma-iommu.c               |   4 +-=0D
+ drivers/pci/p2pdma.c                    | 182 +++++++++++++-----=0D
+ drivers/vfio/pci/Kconfig                |   3 +=0D
+ drivers/vfio/pci/Makefile               |   1 +=0D
+ drivers/vfio/pci/nvgrace-gpu/main.c     |  56 ++++++=0D
+ drivers/vfio/pci/vfio_pci.c             |   5 +=0D
+ drivers/vfio/pci/vfio_pci_config.c      |  22 ++-=0D
+ drivers/vfio/pci/vfio_pci_core.c        |  53 ++++--=0D
+ drivers/vfio/pci/vfio_pci_dmabuf.c      | 315 ++++++++++++++++++++++++++++=
+++++=0D
+ drivers/vfio/pci/vfio_pci_priv.h        |  23 +++=0D
+ drivers/vfio/vfio_main.c                |   2 +=0D
+ include/linux/dma-buf.h                 |  18 ++=0D
+ include/linux/pci-p2pdma.h              | 120 +++++++-----=0D
+ include/linux/vfio.h                    |   2 +=0D
+ include/linux/vfio_pci_core.h           |  42 +++++=0D
+ include/uapi/linux/vfio.h               |  28 +++=0D
+ kernel/dma/direct.c                     |   4 +-=0D
+ mm/hmm.c                                |   2 +-=0D
+ 21 files changed, 1074 insertions(+), 140 deletions(-)=0D
+---=0D
+base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa=0D
+change-id: 20251016-dmabuf-vfio-6cef732adf5a=0D
+=0D
+Best regards,=0D
+--  =0D
+Leon Romanovsky <leonro@nvidia.com>=0D
+=0D
 
