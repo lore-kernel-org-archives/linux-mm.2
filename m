@@ -4,144 +4,114 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5A262CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 21:56:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CB45CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 22:06:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B5F0E8E0005; Thu,  6 Nov 2025 16:56:33 -0500 (EST)
+	id 9534B8E0005; Thu,  6 Nov 2025 17:06:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id B36D28E0003; Thu,  6 Nov 2025 16:56:33 -0500 (EST)
+	id 92BE28E0003; Thu,  6 Nov 2025 17:06:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A4CBA8E0005; Thu,  6 Nov 2025 16:56:33 -0500 (EST)
+	id 840EA8E0005; Thu,  6 Nov 2025 17:06:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 955578E0003
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:56:33 -0500 (EST)
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E90E8E0003
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 17:06:43 -0500 (EST)
 Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 3B53B1DF4E7
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:56:33 +0000 (UTC)
-X-FDA: 84081541866.21.6320782
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 3C61B1A0005
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:56:31 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=REjd7ea4;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="T EBqBx0";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf19.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762466191; a=rsa-sha256;
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id DA3B386F94
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:06:42 +0000 (UTC)
+X-FDA: 84081567444.21.5D08E0B
+Received: from mail-yx1-f50.google.com (mail-yx1-f50.google.com [74.125.224.50])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 2618B14000A
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:06:40 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="A/tNvTdd";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762466801; a=rsa-sha256;
 	cv=none;
-	b=0EKziS+rnJo9teUKOcsIFQ0E4WjTNFxtYuD6GLWlU6jQ9PR9/BXRVRZ+YXnYJS0DfSuAhV
-	yT9m7dkRQhqaTQ8kLtt4vKxwpLOOiH38U6RglXf3e3AwJj93c9NUEUSn/JGYY/GCHUJlbg
-	CVXYaoFEFl7nGZwdcOcuThBT/yuxtvE=
+	b=mB/YNZOiTYKrfmOJDi7MgHlKg1iEH/g09gWAr1tpf6tGcn+XLikXq/BR6JhkTMYmRx6A2f
+	KkCqfuIEzdqvuRrhE3XzxE8iUqsHAJaeS2+11cFRJGsTEUPVWG0lQ20fljGV3Psl0YYBrd
+	XzwlYow4GijPpdQhGgao4LEh2kETL6M=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=shazbot.org header.s=fm2 header.b=REjd7ea4;
-	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="T EBqBx0";
-	dmarc=pass (policy=none) header.from=shazbot.org;
-	spf=pass (imf19.hostedemail.com: domain of alex@shazbot.org designates 202.12.124.156 as permitted sender) smtp.mailfrom=alex@shazbot.org
+	imf26.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b="A/tNvTdd";
+	dmarc=pass (policy=reject) header.from=soleen.com;
+	spf=pass (imf26.hostedemail.com: domain of pasha.tatashin@soleen.com designates 74.125.224.50 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762466191;
+	s=arc-20220608; t=1762466801;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qPfsiLN1n3oCXH0bYb9sc+hEU45g8Wrq4al92DnOXSw=;
-	b=IzoefCBes46VBqa/bvdLQwqgRLxwCX56FddeN9/QQwXq3ikumCtamRXx6vgg6QuvixOzzz
-	wacftmKX/wMElM6jMnMyckTPX8lqq7W8OCANqn8hzzySvUxL0MlD4lJa2ZKsAEuv2Cumty
-	LWlVuQEH9jS0I5oxAPjb16Eym4q9UFc=
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 33E637A009A;
-	Thu,  6 Nov 2025 16:56:29 -0500 (EST)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 06 Nov 2025 16:56:30 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1762466189;
-	 x=1762552589; bh=qPfsiLN1n3oCXH0bYb9sc+hEU45g8Wrq4al92DnOXSw=; b=
-	REjd7ea48BU9x1rmydQeYrwoKcgxNX8+mUmzTKMSvlEpUs8m9K9hlcK0GbU1LEeA
-	NVYPwD98/nmhIhUIkLFGqEMkZ0zcb0UQhKmGw+p9ULpJ6tfK3soxbmxm7mpK1sID
-	0KVYWCJWDNk6s3a4BLoCx0SUO8J1WUcG40XOMjtQAlKGZEmb3YXWXyZUcr1PFtHv
-	9lrTfMGzUTYcWiQFC9b1lvoBBt+S0AC9DYVLwU3vGQBdD5rpksjiEq8ERDMLzQh2
-	TCKP8oE1oMim/s7wzlN+v5BhFYNDZ88Y+Q85D3JXd4I889RtES83LnojVTX7vIhz
-	gcPNtHt1r9nbutpmtX3g/A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762466189; x=
-	1762552589; bh=qPfsiLN1n3oCXH0bYb9sc+hEU45g8Wrq4al92DnOXSw=; b=T
-	EBqBx0vGyrD+M7zHDdEiypWw2aHj44F4s+KKGiS6E7bbBqutRUYGGdUXJDCJOPAP
-	cH8T4NgtQFCrRZMfvh5JdrYimP+Atx9vaYclPTYIVED5Zl30HjeD0vqfv//7lsem
-	/80j4lM4I85ZsZf0Cexk0ZY5LuzcuBze1x76Fgl5QNEJd3cNydWw5o4PC+u4vOPl
-	DSgosf/FvJe/Rjs8EJdluO5i2unn6u8QIJUwn8NCw1dqdWDjpaXDTLxAdmRlbRc4
-	s33o+DwUb34GVfaw0ww0pKuJ0GAxUvtYopgP56lHjoNF1Y29qJLrQ39QmyWuzt9e
-	Cm0zXNNMk0OliQDNcZyzg==
-X-ME-Sender: <xms:ihkNaZyuoNPb30d6i4X9m4a5JDlaVzyKERQvPEE3jNzHt2CQQ3PhSA>
-    <xme:ihkNaRjbfos2rb-YOcRfsfkOJQcqWFRmF26uvJe4fv47K1yA6hxkEVdV0jWjhsjfB
-    RHMgljin4t4oRzgzZD1sERWcnEn2PiyrV8uRKsfUZE0tqtIN9JI>
-X-ME-Received: <xmr:ihkNaRI8Za-W-t78sM2q5XqiH2yb-clOLLraA92U79VBmkvuUWTNPmp8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeejledvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhggtgfgsehtjeertd
-    dttddvnecuhfhrohhmpeetlhgvgicuhghilhhlihgrmhhsohhnuceorghlvgigsehshhgr
-    iigsohhtrdhorhhgqeenucggtffrrghtthgvrhhnpeehvddtueevjeduffejfeduhfeufe
-    ejvdetgffftdeiieduhfejjefhhfefueevudenucffohhmrghinhepkhgvrhhnvghlrdho
-    rhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeefledpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheprghnkhhithgrsehnvhhiughirgdrtghomhdprhgtph
-    htthhopegrnhhikhgvthgrsehnvhhiughirgdrtghomhdprhgtphhtthhopehvshgvthhh
-    ihesnhhvihguihgrrdgtohhmpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpd
-    hrtghpthhtohepmhhotghhshesnhhvihguihgrrdgtohhmpdhrtghpthhtohepshhkohhl
-    ohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphhtthhopehlihhnmhhirghohh
-    gvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehnrghordhhohhrihhguhgthhhisehg
-    mhgrihhlrdgtohhmpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtih
-    honhdrohhrgh
-X-ME-Proxy: <xmx:ihkNaQcEhPMq-qSqBVkoefCb_0FrAK5mvbl7mJTt0zHmSaNo0LROJw>
-    <xmx:ixkNaVjv2QmUxlYiv9iqoyIZtqTYLtXDPfE3w3ztagX3NOq5dIUI3g>
-    <xmx:ixkNaVmiKwJPbNlzenf75TxYAt9k9HqaWn0xSxG0NfO9US_s1_J6uw>
-    <xmx:ixkNacVfSy0qbaJ67wFSS92CC5LBEmjQeDgZ49X0naGjhg6gxdpY9w>
-    <xmx:jRkNaWE7ZC2BhJZqjFONk0ddcg7naexkNkaf5fTZrI7LB8RMAz3li4ND>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 6 Nov 2025 16:56:24 -0500 (EST)
-Date: Thu, 6 Nov 2025 14:56:22 -0700
-From: Alex Williamson <alex@shazbot.org>
-To: <ankita@nvidia.com>
-Cc: <aniketa@nvidia.com>, <vsethi@nvidia.com>, <jgg@nvidia.com>,
- <mochs@nvidia.com>, <skolothumtho@nvidia.com>, <linmiaohe@huawei.com>,
- <nao.horiguchi@gmail.com>, <akpm@linux-foundation.org>, <david@redhat.com>,
- <lorenzo.stoakes@oracle.com>, <Liam.Howlett@oracle.com>, <vbabka@suse.cz>,
- <rppt@kernel.org>, <surenb@google.com>, <mhocko@suse.com>,
- <tony.luck@intel.com>, <bp@alien8.de>, <rafael@kernel.org>,
- <guohanjun@huawei.com>, <mchehab@kernel.org>, <lenb@kernel.org>,
- <kevin.tian@intel.com>, <cjia@nvidia.com>, <kwankhede@nvidia.com>,
- <targupta@nvidia.com>, <zhiw@nvidia.com>, <dnigam@nvidia.com>,
- <kjaju@nvidia.com>, <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>,
- <linux-edac@vger.kernel.org>, <Jonathan.Cameron@huawei.com>,
- <ira.weiny@intel.com>, <Smita.KoralahalliChannabasappa@amd.com>,
- <u.kleine-koenig@baylibre.com>, <peterz@infradead.org>,
- <linux-acpi@vger.kernel.org>, <kvm@vger.kernel.org>
-Subject: Re: [PATCH v5 3/3] vfio/nvgrace-gpu: register device memory for
- poison handling
-Message-ID: <20251106145622.1610d306.alex@shazbot.org>
-In-Reply-To: <20251102184434.2406-4-ankita@nvidia.com>
-References: <20251102184434.2406-1-ankita@nvidia.com>
-	<20251102184434.2406-4-ankita@nvidia.com>
+	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
+	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=Tx61RuKbwaGoy8WCkWWJa+EGKVyM66y7AQYoEIU/68k=;
+	b=1L2yPLVF5go6k+A0NX9YsCLjiqx3MK1LSOC/Y9vRDKSvM/IZ4mkGP5uDUTiCCBHCDyWO3q
+	NKO2ySnqGXwZMxqk2tktUdv8euxkSaYvXluVM5LhBTYLE0RuA1e1vD2pU5KN65Wi6LoK88
+	jYqHfBRSgWu8MkAjYWuJKXvA8swxnNw=
+Received: by mail-yx1-f50.google.com with SMTP id 956f58d0204a3-63e336b1ac4so194546d50.1
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 14:06:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1762466800; x=1763071600; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Tx61RuKbwaGoy8WCkWWJa+EGKVyM66y7AQYoEIU/68k=;
+        b=A/tNvTddHGNzjikbUn4SoM3f0fVtZuyQlT4nmOhFl3tTJ6NJCLCROU7D1/BjkJ7Q/D
+         jgV6p9nmkgQro0RRaSa2QnyuoAf66RHZLnWU8ut5KFoakH7rmo7DKwkYXn8yKfuYdlIs
+         KPdL1aLGR2Aw4P8f4Fj4JaTn0h4MjQIXk1Ui44wuT1DLf9MM1y5wDlC5kuA0n4WKyATg
+         S3Zt45vd5BKWODC3E+V8LXBATwJ3KAggRz1C6iLYKe4LAyb0aFJkfwVqcJkbNpN7EiPy
+         jx9YjGWoOzBAv+luCQicnw1WAZkZx8LrgkJPlaQEpNuyjmEDH/uNsaimsG2R8djGieGL
+         /wQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762466800; x=1763071600;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tx61RuKbwaGoy8WCkWWJa+EGKVyM66y7AQYoEIU/68k=;
+        b=AzAemZSMIPvbJiF7GCPYJet8BWo9dr/VAYDfh7dMa4RhsCAABgPmL/UUJBE/7ypSd0
+         kaMDz7Wzjo+JEmT4F3G3TTLw0aoKTZzVqXJ593oFtFP4yNO1OQHvlAthn9rHB4EQ54TC
+         m6MLEqRfDZ+Ez5M6QVlomYDy7bsJyxkEfQBpo8xInSSZzmwu882AzZCk+FGzupZGnFpd
+         TDrdmZcJSNiqV8kx6c9zz5f/rlspz62Pxl0b7efCHTMOCfDnUlvTkCkW5tNaDk57upRT
+         G3xAWl0dge7Bm0mTyFU8cp64LygYh9XZ+8aLl5wl3nkIG5D1bL4lrdtHbxUF9u4B98Xv
+         0SnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWwpmNr2jvggAxt5YzvpumRsSVpOoj2QOTjNd0gVcsJUjgKI55hNy48Vwsj4XDBBeJGbvBIaDejxA==@kvack.org
+X-Gm-Message-State: AOJu0YzI3gJfijiaJpIfuzDf+2iWWIeJLszZWVuMz7Tzc0XxhkHTRHIM
+	8UEjGwnI1F6D1bBc04F7Rw4jPiK64DGKTuf5BT9PHaArgULQNKBC4pqDBJtr31myhXU=
+X-Gm-Gg: ASbGncvEiFlkkHowDir5Tsu5krEhxc8OwFng6tZJQSQ9xCT1M8fTd34qH0xQ22swwsS
+	ZOxH12MOKuubRH/DOOglcEc44oD32Hijy5dEZYottbj0v1W0hujpAxMsf5xOkU8ZlJAsYZd1DbU
+	YiAeCfsBVbg85y6okjsPH0XwhB4ZwN9hHJ0MWIG8E64vvert/S1nZjSo0xROc4SG/sZdIx/Lyam
+	Rxn4j4aO5UZVwM3u0vWBbhETO/2JpyIUggPVT3rfbWBPFQY2/8V1vCPd0eWRWVqbw0HkeJwKYOM
+	ObFqPgF1U0WI4bKVjFaovnywYPU+gIM15O2nJ/c3O1X23+98CraQa/mz5/iwqAMRl5OxHZgNMwf
+	pbDnn4FB9at188rbkWbuR6tQG0S4/xlAwV8yfRERdf9tABqfqozzrDMpuZRjrISkWjsETYYfhyt
+	FMCnPuOKFbDR0m9jSy28XITHJUpWWmHkkct1UMt+soWevgVG1NyzblNAa/0F5StQ==
+X-Google-Smtp-Source: AGHT+IEbyZ3CyxYgGJMLSh8rMnJR+LBiZyLUDpUrBs2zL1yi+A/d0cUDNA5K5afagLqiMYLBA96mhg==
+X-Received: by 2002:a05:690e:1904:b0:63f:7c9d:d378 with SMTP id 956f58d0204a3-640b53db770mr3942118d50.5.1762466799959;
+        Thu, 06 Nov 2025 14:06:39 -0800 (PST)
+Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-787b1421493sm11743027b3.25.2025.11.06.14.06.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Nov 2025 14:06:39 -0800 (PST)
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: akpm@linux-foundation.org,
+	pasha.tatashin@soleen.com,
+	rppt@kernel.org,
+	graf@amazon.com,
+	linux-kernel@vger.kernel.org,
+	kexec@lists.infradead.org,
+	linux-mm@kvack.org,
+	pratyush@kernel.org
+Subject: [PATCH] lib/test_kho: Check if KHO is enabled
+Date: Thu,  6 Nov 2025 17:06:35 -0500
+Message-ID: <20251106220635.2608494-1-pasha.tatashin@soleen.com>
+X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 3C61B1A0005
-X-Stat-Signature: k1c1ibo6dagud5zcjqzjkejekfyq89tr
+X-Rspamd-Queue-Id: 2618B14000A
+X-Stat-Signature: fthapur4r14p8spa3cfz6cq4z5jycswf
 X-Rspam-User: 
-X-HE-Tag: 1762466191-493043
-X-HE-Meta: U2FsdGVkX1+qsirYxJ9WaBt9l/1fG4Ngf2gkun+IHJC36Rx0YOEkoaVx0VSa0dTUEncLpMY34X++RyuPR1E/+1chIo5lbHbM5+2Sjrew5s0d12zm5It9pQ1+V0cy6DfgCAN/AfzK1SN8bN555zz5pSKYqYTPiWOy8FUOBsZi6csG19HQ/9npzAtPOIO1r24KY9jAN/v+ugVH3AJ7dxIBMhC/NBJox9TewvrHBMMh9lxi+MyqsUiDVPs/BpspDE3VU8JbXrWwKAsYlO/T1noipxQHk6hkn1difF0cdisGAs5dZsJTe9MLFBL0DlNB7Y9Y3QiQ1Ytjn3Vmpcn6fe9cb6u3BbAsXn8ROe9AdfDIzkX8CWPRtCx5G044npMw+HfUGeJHw4g2eI4T2akLYEmRb4HTCvNvkE8jKqQUl29MRmXbnipXcbXr2eNNOk45g5K5biL1CwTCKSVN0XGQROyyLCOS6YJzx3HHiwPbRisKXo005muIeSWqgLn2Dxb2S4zMW1cMTHRDFa47efeZbd8CB76UrrxjMxJEJQCt038k+d3SZko44KT0YHnhqV+g52iSrRrbSN2/agyzJ09UQIGijMscBwD2/Dvlvimor7FKNAOjfDeOAvASpuwveK3twVGBbzyPeuJalVJ3PIbIGYVd06jZdtbzXKcc0AXm1ty6atb0UBPx0jsaTwB7KF0mR7xLYZYSNCSWSKDq+bu00fN338jkRe29EIcvqwxatr2K8wbkAalu5mCNYodJGwzxuzqPZrk+W7gOCaHC+4JAY4AZuoyPAhZQVq/Q3MNb/GPCFSg7tcnScFj451/o0CA/ltk8HEFs2AtoiiY3svk6w8bQ/kNEIDb4EgnnOq5ItZBnq61sUke6pqzR7KSJodeHxo6ycGegzqGju+ucrN1hcOhPFpIvO/jRO7HiZ5ibgHL+7UzLMC/EIWe245WKjiO6DzJiqFMAogJqyx1y2UaCYtf
- W0fhplx6
- 3lcrKfaoR/NHQj6D6D3ZWs3UDCMmd+Kx+a2jKx2Gme/i7YQBsUG2pc25qNHKwX0CTBNVbyJGmw+tAxdF9/NPFk2bi52XqF4KT5ZvNu2FK4h8VYdcutYJiRTquiN88iK0LMOKFLNxZ7qra06HoP0+UZFOSGmYfX2KEQFr6eNKESQj9oTTNGo3y+44iTiiccuJAmeQEfD9b6r+j8I6NO+yHEVgCkoyRhMtb7GxhboKzewcxZCgBV+L1BCxB6e945qtko0FHpIGqdIaNNRcoicrDAbvDF2BUjoUICNBzWv1kFN55uZN5qUFkuOoYQ7QUQr2Cv7N7285c0a7eZp8U+HR0lBmgObBt/6lK1L/p/ewiR9KroDGSPY0SJIoIPpUqk6gMAC+yHIaSG+00L0myLmRhLE7Ly/AAoQDEhgws+P4RLyxiP3XklhJZCIfM0+qSl57pZhyeq+X5/x5sCQsQtKj/jeK+xSQ3yQx6x3YvPxZlWvsIxxgopXCR7EDDsgBJ6dpoY4yPkfTg/SfriVuUv2wWTUZjZEZQAb28J4K9
+X-HE-Tag: 1762466800-809298
+X-HE-Meta: U2FsdGVkX1+9LmFgwIPZnCiFIwHCpelZqTAyPMK3tB3gSj8+Rd7b5VTzs73WchV9u+TelTmEeqBXKUbnzgzK82iMyiV2/eH+H6qK8s2UhI4BJ2O3shaV5O7BsOIFVHkJbz3VA3oQ6vDjwy36ejJym28pCPLR1UMNcUE3kvUlRUvPGo84Jze2Gp5556uSE0bKPX6o4bgkm6DJ57tJux3n7wqC4vdGhG22pzYX+C2CnVOo+Q5GnZhcSM/D947WwSJ0MCwi+5+kJqJ3JD00pmhPSMgGdw1SoioTd4u30KM5YwssSprH2rl2JDo7vLaig7RHKsbahL6lzqSr87vT9H/FR4pcXUIGJYj6L5U4PmiP0nQgMBx2worj6hizKJPtpqogCAB120/1z6OSSjiGihxHFq0lgEFsx8QPg/w7Bnk7/+MkXI07u2DVb0sDVLWpO85zIEsb2Si4frUq4eyre60mrrpQSMlcvCupGlQuDQLbvjeZiyYUFJWPD7SVw19MCx2Z+8wKPQTVBcokBzF+gRe2pdVShPN4koui/hGTzD1WHgu1GXQiMu/ycKXOGt4f7vD7fFxQg/uNfEVvvRNm4HLCEM63ILvGqvS2NlX5NDgLNBHrnTTO6Z68NwHxPwbXvTG0sWtP8g3zHEF7k9BZLgEFShC7J+e91v2UnNO6gYXezVita1BKGV5tVY3e0vSx15naNWpVVeo2DeoksWf/J1M2cW8u9eAwEZLXXIhSOOoEMPeTVKgy3QiBrxob3+lOBkrOb3Zl71ddgh9YZe1CWUC9rmvwChfkcwwAXb6FqIEXntPLZTF+zQltTGHmE6CJnNT255M882pkQQXWWFchFyeWssfyWtY03N3PdpWWQQtrm5JfRxDbUvyFI4hpjQmMV5P3AlcQCY48ZpKArQ+2zf/CEXDT/xjEJuF3hAjNpMnrC5KILY/aWxxYeUbf/2/xMeU40zWtnJnhR+BanI6xmQC
+ 0dc+lAxp
+ YZ/BooAqcggl/PGd/MvtG7OPcFVX0czU7TwxfM1i2CPFjxSIALq/Ym5inEHPITardyCyJbdt0iNbt9IoWghJ4aw2KdeNuO3sfvlnlv7Q854ekdg7T/I2F834DEqJk8jg2Kul/DD8PIUZpHYNXcQCcjX+wHpO7D1FStPmqXVeYLBCW7qGHbm22ZJfuTyh6GTYXsiGC2aBIQDDrM+7ZS2sKsN8aV7LI32slN/AgTkFqMMjcrWh9W0azJPNyUaf4+lQW/nIirFAfR4q9sTUC4U3LW+ks3P5xYeSuLUmZekoHtumTOv0uz6aGTLyQy2iHfBxvLV5By0+KGk1TQWdiRFv779WHARZVpuMkoYlmAeyUMR5iu/goa8viNlGxv2pdOCWOhC+6e/ndKuvprwhrqGjesnQ4QT+tOERGaZzl
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -150,119 +120,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, 2 Nov 2025 18:44:34 +0000
-<ankita@nvidia.com> wrote:
+We must check whether KHO is enabled prior to issuing KHO commands,
+otherwise KHO internal data structures are not initialized.
 
-> From: Ankit Agrawal <ankita@nvidia.com>
-> 
-> The nvgrace-gpu-vfio-pci module [1] maps the device memory to the user VA
-> (Qemu) using remap_pfn_range() without adding the memory to the kernel.
-> The device memory pages are not backed by struct page. The previous
-> patch implements the mechanism to handle ECC/poison on memory page without
-> struct page. This new mechanism is being used here.
-> 
-> The module registers its memory region and the address_space with the
-> kernel MM for ECC handling using the register_pfn_address_space()
-> registration API exposed by the kernel.
-> 
-> Link: https://lore.kernel.org/all/20240220115055.23546-1-ankita@nvidia.com/ [1]
-> 
-> Signed-off-by: Ankit Agrawal <ankita@nvidia.com>
-> ---
->  drivers/vfio/pci/nvgrace-gpu/main.c | 45 ++++++++++++++++++++++++++++-
->  1 file changed, 44 insertions(+), 1 deletion(-)
+Fixes: b753522bed0b ("kho: add test for kexec handover")
 
-LGTM.  I see Andrew has already picked this up in mm-new, if he
-refreshes, here's another ack.
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202511061629.e242724-lkp@intel.com
 
-Acked-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+---
+ lib/test_kho.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Thanks,
-Alex
-
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> index d95761dcdd58..80b3ed63c682 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> @@ -8,6 +8,10 @@
->  #include <linux/delay.h>
->  #include <linux/jiffies.h>
->  
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +#include <linux/memory-failure.h>
-> +#endif
-> +
->  /*
->   * The device memory usable to the workloads running in the VM is cached
->   * and showcased as a 64b device BAR (comprising of BAR4 and BAR5 region)
-> @@ -47,6 +51,9 @@ struct mem_region {
->  		void *memaddr;
->  		void __iomem *ioaddr;
->  	};                      /* Base virtual address of the region */
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +	struct pfn_address_space pfn_address_space;
-> +#endif
->  };
->  
->  struct nvgrace_gpu_pci_core_device {
-> @@ -60,6 +67,28 @@ struct nvgrace_gpu_pci_core_device {
->  	bool has_mig_hw_bug;
->  };
->  
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +
-> +static int
-> +nvgrace_gpu_vfio_pci_register_pfn_range(struct mem_region *region,
-> +					struct vm_area_struct *vma)
-> +{
-> +	unsigned long nr_pages;
-> +	int ret = 0;
-> +
-> +	nr_pages = region->memlength >> PAGE_SHIFT;
-> +
-> +	region->pfn_address_space.node.start = vma->vm_pgoff;
-> +	region->pfn_address_space.node.last = vma->vm_pgoff + nr_pages - 1;
-> +	region->pfn_address_space.mapping = vma->vm_file->f_mapping;
-> +
-> +	ret = register_pfn_address_space(&region->pfn_address_space);
-> +
-> +	return ret;
-> +}
-> +
-> +#endif
-> +
->  static void nvgrace_gpu_init_fake_bar_emu_regs(struct vfio_device *core_vdev)
->  {
->  	struct nvgrace_gpu_pci_core_device *nvdev =
-> @@ -127,6 +156,13 @@ static void nvgrace_gpu_close_device(struct vfio_device *core_vdev)
->  
->  	mutex_destroy(&nvdev->remap_lock);
->  
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +	if (nvdev->resmem.memlength)
-> +		unregister_pfn_address_space(&nvdev->resmem.pfn_address_space);
-> +
-> +	unregister_pfn_address_space(&nvdev->usemem.pfn_address_space);
-> +#endif
-> +
->  	vfio_pci_core_close_device(core_vdev);
->  }
->  
-> @@ -202,7 +238,14 @@ static int nvgrace_gpu_mmap(struct vfio_device *core_vdev,
->  
->  	vma->vm_pgoff = start_pfn;
->  
-> -	return 0;
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +	if (nvdev->resmem.memlength && index == VFIO_PCI_BAR2_REGION_INDEX)
-> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(&nvdev->resmem, vma);
-> +	else if (index == VFIO_PCI_BAR4_REGION_INDEX)
-> +		ret = nvgrace_gpu_vfio_pci_register_pfn_range(&nvdev->usemem, vma);
-> +#endif
-> +
-> +	return ret;
->  }
->  
->  static long
+diff --git a/lib/test_kho.c b/lib/test_kho.c
+index 025ea251a186..85b60d87a50a 100644
+--- a/lib/test_kho.c
++++ b/lib/test_kho.c
+@@ -315,6 +315,9 @@ static int __init kho_test_init(void)
+ 	phys_addr_t fdt_phys;
+ 	int err;
+ 
++	if (!kho_is_enabled())
++		return 0;
++
+ 	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
+ 	if (!err)
+ 		return kho_test_restore(fdt_phys);
+-- 
+2.51.2.1041.gc1ab5b90ca-goog
 
 
