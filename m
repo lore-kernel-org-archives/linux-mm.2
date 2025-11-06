@@ -4,101 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A928CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:33:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 827C0CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 10:39:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D6F208E000C; Thu,  6 Nov 2025 05:33:36 -0500 (EST)
+	id BF48E8E0009; Thu,  6 Nov 2025 05:39:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D452E8E0002; Thu,  6 Nov 2025 05:33:36 -0500 (EST)
+	id BCCDF8E0002; Thu,  6 Nov 2025 05:39:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C34538E000C; Thu,  6 Nov 2025 05:33:36 -0500 (EST)
+	id AE2148E0009; Thu,  6 Nov 2025 05:39:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id B235F8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:33:36 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 7D600BA87C
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:33:36 +0000 (UTC)
-X-FDA: 84079820832.12.1224302
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf20.hostedemail.com (Postfix) with ESMTP id B02A81C0005
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:33:34 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762425214; a=rsa-sha256;
-	cv=none;
-	b=W29y9FS5Ut/IHJfboXJhzBuXNYtAURIcyIsztCg78Y+olyBhJGPOxcZC5xA5psdsfkUmqQ
-	S0XNTeuqIT7W8ubb6Xeq4CquZsUKVACPcyO1DEqwCkGht4DG7x+ZQcmJSqbTQfSmK9frSl
-	av4VIJAnwIobqZcksra/BsDdCeBiIOU=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=arm.com;
-	spf=pass (imf20.hostedemail.com: domain of kevin.brodsky@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=kevin.brodsky@arm.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 98B9D8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 05:39:34 -0500 (EST)
+Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 422FD160614
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:39:34 +0000 (UTC)
+X-FDA: 84079835868.29.681B937
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf25.hostedemail.com (Postfix) with ESMTP id B4A41A0003
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:39:31 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fGUAu15u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yGWAfYfM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fGUAu15u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yGWAfYfM;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762425214;
+	s=arc-20220608; t=1762425572;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=LUC894EkN1Ri8Isz8oVgyo60pIndnmnfMDWBoq1SCQk=;
+	b=h9YQ6sL+qnsejPPArPYG+uRMH9Y1uZX96v53EUwIGpyUc7XlPlpg/1P0K80lJFkb4rZ0LP
+	B7JiMnQ+aEwj23NqCoAIuhf8xcI03aL1vMx9Nr02OfGM0o3osb7FxQxvlYLHIRx9WSNxt8
+	PhhrFFlY+RCeIJzcFOokZ+84zMUWmtI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762425572; a=rsa-sha256;
+	cv=none;
+	b=boouVMEexuKdPd8HX0WujcwISlIh4ChiR91vbMqRCQ6xmxfEKKDhbjHoClZ0HrTdEuZ73y
+	Od2mGdYYkST/2Exh1Ea5H0SPUS/U1/x7eQcaEWKhgpIpKtL9iByapfFWeIS5cj4XwwegQe
+	Po0dZzH/+JO80IUuYMq0D2R+ozn+KeU=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fGUAu15u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yGWAfYfM;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=fGUAu15u;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yGWAfYfM;
+	spf=pass (imf25.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
+	dmarc=none
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8A48A211D0;
+	Thu,  6 Nov 2025 10:39:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762425569; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=fkZnWIFMTgMlEtlbQgLD0HsGvOLtVXBjP58onLTqVkg=;
-	b=vWxGiXF2EJ96KvYkyrBj1yazh5gKeUbAu1YzTgo15L5Cn+ng3QpGHiUqLLPAfcNXmP8ScX
-	eBB5fXa5hEWO3zYY+mDTcF0jRnbd/xjHZG4OFNp7MIodSvJmXrgcN5LzcP9fUbY0OYYNDw
-	tD9zZvc4S1CJ60PGhbW492avZ7SUdLA=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 260141596;
-	Thu,  6 Nov 2025 02:33:26 -0800 (PST)
-Received: from [10.1.34.75] (unknown [10.1.34.75])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9451F3F66E;
-	Thu,  6 Nov 2025 02:33:26 -0800 (PST)
-Message-ID: <1ac5be9f-fc05-463f-9512-74922acf8980@arm.com>
-Date: Thu, 6 Nov 2025 10:33:24 +0000
+	bh=LUC894EkN1Ri8Isz8oVgyo60pIndnmnfMDWBoq1SCQk=;
+	b=fGUAu15uukdcYPvh1QKp+k56esnXoryL6xnIi5ODC6JToaAfcaF9vYJeuYfHn4kXuJI2nv
+	UHVoPzZhRgqu8T+IdbjbP3PGxvK+aLqiBQgrkAVnyR8sXrE2T9E6zPeA+zDRdyrmX1WWiv
+	ME3qg7zXFhXaN3ImX1c6orASo5qj15E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762425569;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUC894EkN1Ri8Isz8oVgyo60pIndnmnfMDWBoq1SCQk=;
+	b=yGWAfYfMI92bWPSsIXCYdU4IRWi5rLaW5zOC6GadK9cXmb1ZfnC+wuU2cNBPUDV/39oksx
+	BF4ohMLXDOywqvDw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1762425569; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUC894EkN1Ri8Isz8oVgyo60pIndnmnfMDWBoq1SCQk=;
+	b=fGUAu15uukdcYPvh1QKp+k56esnXoryL6xnIi5ODC6JToaAfcaF9vYJeuYfHn4kXuJI2nv
+	UHVoPzZhRgqu8T+IdbjbP3PGxvK+aLqiBQgrkAVnyR8sXrE2T9E6zPeA+zDRdyrmX1WWiv
+	ME3qg7zXFhXaN3ImX1c6orASo5qj15E=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1762425569;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LUC894EkN1Ri8Isz8oVgyo60pIndnmnfMDWBoq1SCQk=;
+	b=yGWAfYfMI92bWPSsIXCYdU4IRWi5rLaW5zOC6GadK9cXmb1ZfnC+wuU2cNBPUDV/39oksx
+	BF4ohMLXDOywqvDw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 6B3FF13A31;
+	Thu,  6 Nov 2025 10:39:29 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id WXyXGeF6DGmTXAAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 06 Nov 2025 10:39:29 +0000
+Message-ID: <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+Date: Thu, 6 Nov 2025 11:39:28 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 05/12] mm: introduce CONFIG_ARCH_HAS_LAZY_MMU_MODE
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
- <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- David Hildenbrand <david@redhat.com>, "David S. Miller"
- <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
- "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
- Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
- Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- Peter Zijlstra <peterz@infradead.org>, Ryan Roberts <ryan.roberts@arm.com>,
- Suren Baghdasaryan <surenb@google.com>, Thomas Gleixner
- <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
- Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org, x86@kernel.org
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-6-kevin.brodsky@arm.com>
- <87o6ph3xdq.ritesh.list@gmail.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <87o6ph3xdq.ritesh.list@gmail.com>
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+Content-Language: en-US
+To: Jakub Acs <acsjakub@amazon.de>, linux-mm@kvack.org,
+ Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, xu.xin16@zte.com.cn,
+ chengming.zhou@linux.dev, peterx@redhat.com, axelrasmussen@google.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20251001090353.57523-1-acsjakub@amazon.de>
+ <20251001090353.57523-2-acsjakub@amazon.de>
+From: Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20251001090353.57523-2-acsjakub@amazon.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: B02A81C0005
-X-Stat-Signature: sd3wheykrsnghneymfz8zupj5g3ezfk8
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762425214-68483
-X-HE-Meta: U2FsdGVkX19Fd1BuKo0Z+SRC+dOSC2buVDtPOfUqmHpKrEsxQr+pSu4zC3M9ehIXNlWtB/zWwrJG3gcKgztmxSnPehaOODSNrt9XJWukmJLPCHnfV7YqsL4bvonQWA6mKFQJKYK//GEbwEJaKkXNSVS0kjhQCbTl2pVJ+p53e+pUSjNEYY4nZDxZrk+RZsdmRzLbdppfsySA1emgqJfmhTJtMto6/Z6DkjpgOTB93AxRrODc2cmlPdco1sZX7IcXSy2/dQwfXBvCkzWvOg+2o+5EIcNrrSTc8uUtMa4SUPU3PxCyyuYV8Fue9bf3HRq7FtXcOaKUlZArWuc7llgRiafaafLaaYdkAT8HSq/SsEF2hGz82EM+5b+gLvgSbqT77B2egYvOuTK2g2FUwRBFp8f+ooXUEZSx1fHZmI/7ftINxzEv3Yuc+99uxE4yHgGBCTrSKs5uL55U8fXw58NPq7QsI3AY3hbo774PJuB25ATk7D+M02aOF9E3ljRLbkcslA6SfU/gnVNABLAwG0UbwBpqh8+grAw51fAuh2AMY1xmLF6KlYXRTUiKl/1Iq/jhx76BreiFbHp4hT/lPStndvpQpH98aoZtnI1LJXqraSWhPhok6LRenmX3R7m3h8ccj3BkYW9q/o2iy7ETDmMTbPzWhhjbLcutedljWLz+Bq9B1HnMJBYYPpP/59AUNnxpce6OhmoMLK+/1K3XcIPidK8oOc5B7MsbB6DP4kAdQaxUfxQYa31421LO+ocOb+gdkNQfyv0D33B52zDa/53P9GrKnuhMCtrmmeePp9YOdyJr7JMblnQeBnsABiflkO9CidmCuT8O+mZ9bDcLX+hx7L6OTcocM7Q+rvzJ0p4vrLenxFduTbHTyxcdYZVce80F74FOJf6EagbYt5KDvum4HmfNSVkOD9NKjjwLrJDZiOrtQR57jeLarQmjnj8vK+LaeZH1jTxoMisqzztSz8q
- OUlpxxP6
- VKqoMG3c8zGFbf3kyOTHLoMQZPG1nB5y5FwKaQLomW39u8y3lDIniSZLc5KeKYDpSFgfyl01rsVWLKgN20kx7kZNYI/Wo1aWQ8ca+1cGFQZH1x2bOIN/E/QFR8bFkHecUDxYBQYUaZ0rkG8uQJajvL1ZNwpZeMa6cXFuzfziG0jHJ7GP8GeJq4y7RSIl2+tPsrIg/Ne8sFVBL027/8J7RX5EMKtGQ2ZVlC6akSptSNw0/2qya9XQN3TvZH4nSxRnyjHIOKpn3u948FJ64pkpE131W4NCclzwtvN4ZRn2GAZ96/zV+2LgzYvL2FfManlKtV/Y0BmGu9o7P71ZOL9QysQinyQ==
+X-Rspamd-Queue-Id: B4A41A0003
+X-Stat-Signature: 7yo6jznrrrsu4ukj65osdxoqemuu7dct
+X-HE-Tag: 1762425571-732423
+X-HE-Meta: U2FsdGVkX1/pZhOQkJg5ratQrS1ZMKbn/Uno5oz/lr+CEZj7Gv+q8xIFgGrC/1iOOHRCZ+kt5P9BQT7tdv5Uk3tbXIWmLeibZOzGx2DKC4GOzbMQedOiHoFnQppl6aKP289edwWcQ+RPEYPwzN/oCBi6FhDV6W8/faOsDVr3VrpQKv86CQOmsTe69tEcEI5V8KA5++pSv+dIL9cJAFwSlE0/xe1rPO1DCaZewiIR9qB4CwkG+7I8fV9y6C/L7tWgbw3nobmnDlaZIxnQli5l7bNSl6oMA5ga7a+SaSQfjco5Qre/rJLA2q/0VeScSYEfn3PlxkARNC1QMBCCPHGB63OTJDp8d03rhcVzhDu1XD0eTSfHilXQSjKhoTPAIvSAbYZP63Q4OtqcUmuORDBoi8WkTfDB3n7Xf0Z5hJhs56D+lQGYSNM/QqnS7XvX18gEfa44f1Xi2cHbuDBcnyT4TbC1BZ3vnjz/wKepmwvbKKXVQRZCp3onSew4Ck+KSFbwjhhcOCnGnLMnqPcTZEd/hk0UU6Egj0HcJw2Yuh24qMeZP2+Lrho41o0eAkhlDDyytUNo1wh6VmamFPU/S2M3B3Da5Gh8Wrh2c4WYrTo9EEENcexlmXZuSnG9CEzm7jsvKbHPQ/otknh+w9NTHvThXvzIEOwxxFHXVbmB0fBtBG9MV8sGBMyh0ZntxBIVcILwXgbjEQGYF5bpVrmIUaSliBGuApmVd0y75PT2/6C/on4NFZnQ0q+CmVQoo2mr1KeeboTD8r9l+6WueabFRC0AinYx7Ah1068DE7Ng/8a67B8nXWqj/DDYLdL87S+re+sqvST7QwXLSL97DoJOcN+GC5SPunNPoRyfUuzfuCb1A5Ig2AsIqQ58NWqQJwqh8L/CC/x4q1BFCrEzKWhWkRkWv5D/dCV3uDACpmAFNl3hyMG7KS2IxL0T4j6FgJh+xofUQLiwu5eiVHN6D7pNfAB
+ 7mIqiDb6
+ zw0rqkNjAG9TwuGUeI9jKvRpGpVcUZUbI6WyASEIiGoqFfCs55C/kP624F/1oYJjKt32ZopRrk6DMOhEnldHntmdrBgX4z/sGcRHkJOmHNWx6N/E0ErTU78E8W8ERreOfPoW/F0gRRkL3tvoa/RrDmykKlAyhnKV70LoNrMdqZcJ3Th3JWyu4SS03t6Nz0UyaYR7XflUxJacRtIyPYDeI8lCJ89AwGoWllWc+JbKqzAQoykRpWC24+v/cARsDJ7OLEl1/EYlaU5bfKNNC41cyIOv1g6j6bUFKeg7Ez81qZShkaMKPQcXT9BNQ+h7NeJT9g1xMSTDfMrGty0uoW+owTl9eFiMoMIXrOd5cf1etKKClI/7Y9dmQlLuibHfJJtEuhRyDi50QjDgB2wBXcWRGFewNtyUfz4FNlzQFLkaVVINZrcwrmU27DaPs9akDy92FOsbAs42+u0mYo9umDt8i9NG99lpGA1RiHbjmyuMZV/VSFc3VqihtDiBxM2y6RF0EJXkVGXdeJxpY5nAQ2q9M8JXkwfFfs2yxEC1a24R/v9Ru1zH4hHfnyqLk58Ef3sJ1AxGPor908nyZ4FyRYST1o3byBdM5/B4a7/+F
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,75 +142,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 05/11/2025 04:40, Ritesh Harjani (IBM) wrote:
-> Kevin Brodsky <kevin.brodsky@arm.com> writes:
->
->> Architectures currently opt in for implementing lazy_mmu helpers by
->> defining __HAVE_ARCH_ENTER_LAZY_MMU_MODE.
->>
->> In preparation for introducing a generic lazy_mmu layer that will
->> require storage in task_struct, let's switch to a cleaner approach:
->> instead of defining a macro, select a CONFIG option.
->>
->> This patch introduces CONFIG_ARCH_HAS_LAZY_MMU_MODE and has each
->> arch select it when it implements lazy_mmu helpers.
->> __HAVE_ARCH_ENTER_LAZY_MMU_MODE is removed and <linux/pgtable.h>
->> relies on the new CONFIG instead.
->>
->> On x86, lazy_mmu helpers are only implemented if PARAVIRT_XXL is
->> selected. This creates some complications in arch/x86/boot/, because
->> a few files manually undefine PARAVIRT* options. As a result
->> <asm/paravirt.h> does not define the lazy_mmu helpers, but this
->> breaks the build as <linux/pgtable.h> only defines them if
->> !CONFIG_ARCH_HAS_LAZY_MMU_MODE. There does not seem to be a clean
->> way out of this - let's just undefine that new CONFIG too.
->>
->> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->> ---
->>  arch/arm64/Kconfig                                 | 1 +
->>  arch/arm64/include/asm/pgtable.h                   | 1 -
->>  arch/powerpc/include/asm/book3s/64/tlbflush-hash.h | 2 --
->>  arch/powerpc/platforms/Kconfig.cputype             | 1 +
->>  arch/sparc/Kconfig                                 | 1 +
->>  arch/sparc/include/asm/tlbflush_64.h               | 2 --
->>  arch/x86/Kconfig                                   | 1 +
->>  arch/x86/boot/compressed/misc.h                    | 1 +
->>  arch/x86/boot/startup/sme.c                        | 1 +
->>  arch/x86/include/asm/paravirt.h                    | 1 -
->>  include/linux/pgtable.h                            | 2 +-
->>  mm/Kconfig                                         | 3 +++
->>  12 files changed, 10 insertions(+), 7 deletions(-)
-> Maybe we can add this to ... ?
->
-> Documentation/features/vm/lazy_mmu/arch-support.txt
->
-> #
-> # Feature name:          lazy_mmu mode
-> #         Kconfig:       ARCH_HAS_LAZY_MMU_MODE
-> #         description:   arch supports arch_{enter|flush|leave}_lazy_mmu_mode()
-> #
->     -----------------------
->     |         arch |status|
->     -----------------------
->     |       arm64: |  ok  |
->     |     powerpc: |  ok  |
->     |       sparc: |  ok  |
->     |         x86: |  ok  |
->     -----------------------
+On 10/1/25 11:03, Jakub Acs wrote:
+> syzkaller discovered the following crash: (kernel BUG)
+> 
+> [   44.607039] ------------[ cut here ]------------
+> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+> 
+> <snip other registers, drop unreliable trace>
+> 
+> [   44.617726] Call Trace:
+> [   44.617926]  <TASK>
+> [   44.619284]  userfaultfd_release+0xef/0x1b0
+> [   44.620976]  __fput+0x3f9/0xb60
+> [   44.621240]  fput_close_sync+0x110/0x210
+> [   44.622222]  __x64_sys_close+0x8f/0x120
+> [   44.622530]  do_syscall_64+0x5b/0x2f0
+> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   44.623244] RIP: 0033:0x7f365bb3f227
+> 
+> Kernel panics because it detects UFFD inconsistency during
+> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+> 
+> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+> mode, it accidentally clears all flags stored in the upper 32 bits of
+> vma->vm_flags.
+> 
+> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+> and int are 32-bit wide. This setup causes the following mishap during
+> the &= ~VM_MERGEABLE assignment.
+> 
+> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+> promoted to unsigned long before the & operation. This promotion fills
+> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+> even for a signed conversion, this wouldn't help as the leading bit is
+> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+> the upper 32-bits of its value.
+> 
+> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+> BIT() macro.
+> 
+> Note: other VM_* flags are not affected:
+> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+> all constants of type int and after ~ operation, they end up with
+> leading 1 and are thus converted to unsigned long with leading 1s.
+> 
+> Note 2:
+> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+> no longer a kernel BUG, but a WARNING at the same place:
+> 
+> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+> 
+> but the root-cause (flag-drop) remains the same.
+> 
+> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
 
-That's an interesting idea but I'm not sure it really makes sense for
-lazy MMU? AFAIU these arch-support.txt files are meant to help identify
-which generic features an arch has support for. Lazy MMU isn't really a
-feature though, in the sense that what it does is entirely defined by
-the arch. This patch does introduce a generic layer, but ultimately it
-remains a collection of arch hooks.
+Late to the party, but it seems to me the correct Fixes: should be
+f8af4da3b4c1 ("ksm: the mm interface to ksm")
+which introduced the flag and the buggy clearing code, no?
 
-> As for this patch, the changes are mostly straight forward around the
-> configs part. This looks good to me. Please feel free to add: 
->
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Commit 7677f7fd8be76 is just one that notices it, right? But there are other
+flags in >32 bit area, including pkeys etc. Sounds rather dangerous if they
+can be cleared using a madvise.
 
-Thanks for the review!
+So we can't amend the Fixes: now but maybe could advise stable to backport
+for even older versions than based on 7677f7fd8be76 ?
 
-- Kevin
+> Signed-off-by: Jakub Acs <acsjakub@amazon.de>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Xu Xin <xu.xin16@zte.com.cn>
+> Cc: Chengming Zhou <chengming.zhou@linux.dev>
+> Cc: Peter Xu <peterx@redhat.com>
+> Cc: Axel Rasmussen <axelrasmussen@google.com>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: stable@vger.kernel.org
+> ---
+>  include/linux/mm.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 1ae97a0b8ec7..c6794d0e24eb 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -296,7 +296,7 @@ extern unsigned int kobjsize(const void *objp);
+>  #define VM_MIXEDMAP	0x10000000	/* Can contain "struct page" and pure PFN pages */
+>  #define VM_HUGEPAGE	0x20000000	/* MADV_HUGEPAGE marked this vma */
+>  #define VM_NOHUGEPAGE	0x40000000	/* MADV_NOHUGEPAGE marked this vma */
+> -#define VM_MERGEABLE	0x80000000	/* KSM may merge identical pages */
+> +#define VM_MERGEABLE	BIT(31)		/* KSM may merge identical pages */
+>  
+>  #ifdef CONFIG_ARCH_USES_HIGH_VMA_FLAGS
+>  #define VM_HIGH_ARCH_BIT_0	32	/* bit only usable on 64-bit architectures */
+
 
