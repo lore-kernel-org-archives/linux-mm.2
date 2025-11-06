@@ -4,100 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 469A3CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 11:08:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B54B0CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 11:08:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7C8828E000E; Thu,  6 Nov 2025 06:08:05 -0500 (EST)
+	id 1FD838E000F; Thu,  6 Nov 2025 06:08:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 77A2D8E0002; Thu,  6 Nov 2025 06:08:05 -0500 (EST)
+	id 1AECF8E0002; Thu,  6 Nov 2025 06:08:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 668948E000E; Thu,  6 Nov 2025 06:08:05 -0500 (EST)
+	id 09D9C8E000F; Thu,  6 Nov 2025 06:08:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 512F78E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:08:05 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 06AE3140682
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:08:05 +0000 (UTC)
-X-FDA: 84079907730.18.CFBD4B3
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 042E216000F
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:08:02 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=D329YOQY;
-	spf=pass (imf08.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E8B4A8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:08:42 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id A061A8932E
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:08:42 +0000 (UTC)
+X-FDA: 84079909284.25.6804461
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 0D7B2C000D
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:08:39 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDWpa02o;
+	spf=pass (imf10.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762427283;
+	s=arc-20220608; t=1762427320;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KemrrCvE16IUsPvIdPc7ZklZCJchRhA/4dXIse7pcqc=;
-	b=rqWI/uNcn2w0zyrCeFTR3ruosafDOJgec5vxlxNHjvdrsEi2VhNXa8NcCRn0JdKbRmn0J5
-	GtoiflgIwbj2UkKudmj6Us7X9nYiG0cXHEcHwHtZMGmdBtkhyByf7ZKVOVuUg6RQPgblIj
-	HYfFyUHMSO1fbvLpvlQZvSbjX5WOgBg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762427283; a=rsa-sha256;
-	cv=none;
-	b=cqZQQbk698YVf+GBJaK6c/tzYrl5giORCRZQS4l5OOA36xmLuZZPV+v3GqZN4rkTVxMYVL
-	L/3+ndCTZsUbfJndCnUY/pbiyjQ/nyhwko7Rb4Pl1XVGtPRlFKmRf4ENDqWUCSbGCLBq68
-	oq3xMhpyW4z7JkcEEgWJsso5tSjrRho=
+	bh=3smk6GeMQLyg2bWpqf+opFvd8OFCVzmfS4zTn2VVngo=;
+	b=e4z/nF//hH3qZH3eZ80dGKonFkV5AmhUZXMzgcGRuVXfREr1eHS8Hxr4u9aEKCukN7rBoT
+	7WomW0ot9+pLdhTa22QPk0dbsYMa6bCHvoe0DOyN+fdHKJFU9gxemI8VvyKlmNQ7CPfyVi
+	xh8r10z9tq34Xuf2GpK9KmkxPGqtUmA=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=D329YOQY;
-	spf=pass (imf08.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
+	imf10.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=JDWpa02o;
+	spf=pass (imf10.hostedemail.com: domain of asml.silence@gmail.com designates 209.85.128.50 as permitted sender) smtp.mailfrom=asml.silence@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-429c82bf86bso589441f8f.1
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 03:08:02 -0800 (PST)
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762427320; a=rsa-sha256;
+	cv=none;
+	b=Po7oefxCd6NDJuoiYObmdUHMPCJlUv9wKwHDKtkaZ9xQ1sUEWZCFfK49ZPpMsdmFinfIQ4
+	2iuCS3f4gdWAqVxy9siLCgSoeigZOEI1wh6csGyEsXWdgUofImFYzJ9jkw+CNXzG2QO74j
+	aB/eUlEX6Celtyx7qFoZjeEkWR6637E=
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-477563e28a3so6703485e9.1
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 03:08:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762427281; x=1763032081; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1762427318; x=1763032118; darn=kvack.org;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KemrrCvE16IUsPvIdPc7ZklZCJchRhA/4dXIse7pcqc=;
-        b=D329YOQYCSv0TcAFgPeiOvDLujGfr+ZTwmMHp46wQYcAy9r3L1e5HYH3zWhUFOP8vB
-         l8pVkSv7cSdejcHpptCJKcf6+pOU0qHcR6wmY3EjdSRDF3PCEGbHLc/GRYfh/wJzPyId
-         YQefCmyYHI6vj8XL/0nYOEXnPghSo2ICXsD84IdS19DikAwkrAW+5/DjzQrTGULCdqrm
-         VlgVHAS7q4upjaUMrYEP5EgVVXrxX5ArSFEe2o+KoQBXzMfIl/I+hQnd55GU9gfVeibI
-         zuUgdIx9pYxzqGWv1elHpbRxFnJ4YBHY8F60ysbqzSqAAIIguuomKZm1aJluLCgJ7/QA
-         azZg==
+        bh=3smk6GeMQLyg2bWpqf+opFvd8OFCVzmfS4zTn2VVngo=;
+        b=JDWpa02oAZk1pulH5EbkR9YG0TpBU6uUTeS6+r42JwVslcDIhIqQjSN/Wg0LKwqj/a
+         ZP8O9tpSyshIaK2YAtZq4seRAr/gs+gaeYV+STWqvwgz+c4VcUHD6ZrH1jeG4nkSJwll
+         U13BgbWvOBDEyPel3dc4WPEgtuC01Zv7R9mdQON+rdOCIGCULXsNv5Vf3iY8TnKCgjEi
+         dg0HKJnvwzG3NFdg0rq+CbZhGfnlzAaa78mJ3JBmmVZ8sRf6TnD0Dg7B7fHijv88f6W+
+         RyLcufT8sUAnlsk+/eM/tAphNzwMMldrP2nEGJjsCxEvHaKfwIHFr47Zk6fZThe0ZsHl
+         YqNw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762427281; x=1763032081;
+        d=1e100.net; s=20230601; t=1762427318; x=1763032118;
         h=content-transfer-encoding:in-reply-to:from:content-language
          :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KemrrCvE16IUsPvIdPc7ZklZCJchRhA/4dXIse7pcqc=;
-        b=u+ER1BZEshEHkFsypAqY3T3YnBGJQCYrnW1lsegxDay14cRfB1O/GpJShJK/XzYcfw
-         TsKvXLZpcGmCZLSPsXiBNaxIf2aUG8QHNsFQKs1k0KVzXb8Kxm+Qq6OpXIWpsoCbb3Ds
-         rIZMJ3sKYizO2zLYlqEGi4Ki4R22fYzTm4JuKt1l1LlCCmYJF1M/hKRdmT73T6ljfSWc
-         2nbTdSjNnWEe+dL9NwxSr88IcAv6dgmFsgFvEDEgYOmBDqzfXNzpOsSWmgmEe+sY3Bhr
-         HzwkNm6Lw8LrRitYOVeV7dO3eHUU2lepHCQD8BtD5UCP2lUaZrIShOtxaZ1+FTO4JrX3
-         R3nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVJ/Eoet3Pd0FSaS0IpLZUtbh1XJ4aAGTJsI5vd5SRzVfHwavvKLdKjUF9Fi1V/cMFvbq0+I2w1NA==@kvack.org
-X-Gm-Message-State: AOJu0YzfhHMLp8pFchwglGSE9nG+KdaRFA2apZ40homct0xq2KnovQ3V
-	Rnu3wtCoMnH+cEOiHbT0hMyrpnz7HLeLsE/kqjU77UeA5FysDih+tluv
-X-Gm-Gg: ASbGnctG8IGbMhGPfLABNs4TxPOOBYEgsDQEZGZzf/3J5EdGV0vzD1CZrfct97MYXQc
-	KbVxyXQMA9LY5RA2oUAAzZEsntwGK+gVR0bgFDhE9684nNe+9hQe+4kVtihdDJDT8KIFwUQi9q2
-	qakyS010sYCb11KEcwYa7ybZc6DjH1sg1FBLnb7RZNWOrbc+jW+r1CiB5lrbxMZa/DhReaRZjc1
-	sV4u6wXSWw7okx0DrqC8k1lIUlWRpFFHOAr9HmOJ5AJcrB3+w4wUjAOE4/D1CWg7A2AT2s1Ue7v
-	yn5+EDVNOtyj4z+Q2M3CvA8HtO98zHanW2FUdKrVU4l3AX9BmhOUO1VJav7CWu3J+Hs4wQH8+M1
-	9ASuFVN1agcymnYY0VKfUiNp05IxPnxvvTnQpbZeFMk7UF+eK6KEqruy83DFoG5xiId8PduVAOH
-	p8sGzTEqLIsNsl4qz2y5XSOEqt0n8VXE1jnxLeJvKzyzAvq+CjhFQ=
-X-Google-Smtp-Source: AGHT+IG/WPvgkkz5ima282cKyz2di1ByWQE6/QNBfZEdI+atynO653MZ5MMOXdVnpoH97C2BXp1trA==
-X-Received: by 2002:a05:6000:250a:b0:426:ee44:6d9 with SMTP id ffacd0b85a97d-429e32e3595mr5318368f8f.21.1762427280858;
-        Thu, 06 Nov 2025 03:08:00 -0800 (PST)
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3smk6GeMQLyg2bWpqf+opFvd8OFCVzmfS4zTn2VVngo=;
+        b=CZT1EnmlNqAihnK3aHGqrl6lUj0bWPmJjTRxzwpGuYgBl14A2r4hixwQ0HaNQg/CmH
+         pjyUkKxUa0nPGYE3Jhre3QegqaJJ59KXnHeUPbX1WPPczD5ufLCr3yoGeszhg5Pc58Lj
+         AfZmWccRyOUXJqaWxRJZFaJDf9DCZbuPr/tp8ehItrN3eeOFamNkODKipkQkyBk81NY+
+         Bw5GpwiPEKqAJNQaHOk5hI7rl4CR5BgdRfzeVoUQU9SXTBFBdHegVbCv/7rb7dszOUSe
+         c9ad7uZkopTMiLK8GmsVZJOjZw08KTy79/ONhsX7D5Zfyls/XvqVstcbLNJAGOsjOYm8
+         ZU4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWXAKbQaoWVRiD17p6ZzAN/8LEIqGURWDCToaBI/TowJcqR6kLVNcIDFKg5AhdX8k8ugVL6b9uIwA==@kvack.org
+X-Gm-Message-State: AOJu0YzoA3HeLaYBcWaIm3pad91uLh8EQjrxccuO/eNm6/WU97pWqutt
+	2AhdbHbtY7cKHtVkAY7Sq8oRztFFMK0kee6dlqJkzSK6ONi/oaKjvQg6
+X-Gm-Gg: ASbGnctOT4niTQe2nvzp5E8i97NrE49cMYHS5DQZzlMGl47tuAPVOa07ceeVNhHd6uy
+	z+J7wVZLgCg+yumT0+ftLSW1HTgC04/r08xgw7UGcNmf8E8Jmnstz9Di1KayefloMwrlnSyTTtK
+	slQPFmNY4ZX0VtiwBYKq8FkWaECdOideKWKoTEXi6Q6EgKY4A19/sRzJ1YthuLiXCgJauhzrCEP
+	gCeGiqPYT7jhpKzgwLerIPnx9ZqHb79bTQoJLp+bm0IBig42wZhFh5QREbPlTDka+uDHo8XSB7B
+	qXM14Kj+PuH15xdOf43XRoMpJd9tBeAB1LQ+D4Ridlt0M8Vqb9YSN++RYk6ojdVVUVm5TRThjSJ
+	41PExdxyafRljA1nYy4V7QFSvaiIdIahhsN+SYA27gHDpFqA4Uf3qq80VgzDOivX/S3Qdb2CihO
+	vMYXGTEOktct0JKFfamnKbX0fquywnRj3XFmPgaXGrJq6enIBUgFWD7yubhJTC+A==
+X-Google-Smtp-Source: AGHT+IFUsWMoUQp2LAQBvEqelZeh8+i2mx6qm6o3gPPvtfcki9Q9yd5em3sUzeuAg53ANmu2/8izdQ==
+X-Received: by 2002:a05:600c:4c27:b0:477:14ba:28da with SMTP id 5b1f17b1804b1-4776201cbb8mr15583175e9.5.1762427318220;
+        Thu, 06 Nov 2025 03:08:38 -0800 (PST)
 Received: from ?IPV6:2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c? ([2a01:4b00:bd21:4f00:7cc6:d3ca:494:116c])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-429eb403849sm4648357f8f.1.2025.11.06.03.07.59
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775ce2cde0sm102571845e9.15.2025.11.06.03.08.36
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Nov 2025 03:08:00 -0800 (PST)
-Message-ID: <785c9d27-23e7-4ecf-ad2e-202ba506f2e0@gmail.com>
-Date: Thu, 6 Nov 2025 11:07:58 +0000
+        Thu, 06 Nov 2025 03:08:37 -0800 (PST)
+Message-ID: <4ab9d277-97ef-414d-bb5d-910fd8964c2b@gmail.com>
+Date: Thu, 6 Nov 2025 11:08:35 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
- page pool for net_iov not page-backed
+Subject: Re: [RFC mm v5 2/2] mm: introduce a new page type for page pool in
+ page type
 To: Byungchul Park <byungchul@sk.com>, linux-mm@kvack.org,
  netdev@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
@@ -116,20 +117,20 @@ Cc: linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
  linux-rdma@vger.kernel.org, sfr@canb.auug.org.au, dw@davidwei.uk,
  ap420073@gmail.com, dtatulea@nvidia.com
 References: <20251103075108.26437-1-byungchul@sk.com>
- <20251103075108.26437-2-byungchul@sk.com>
+ <20251103075108.26437-3-byungchul@sk.com>
 Content-Language: en-US
 From: Pavel Begunkov <asml.silence@gmail.com>
-In-Reply-To: <20251103075108.26437-2-byungchul@sk.com>
+In-Reply-To: <20251103075108.26437-3-byungchul@sk.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 0D7B2C000D
+X-Stat-Signature: 78iyaxbj6h9wq7ntbjb3wbcktjsgitr1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 042E216000F
-X-Stat-Signature: xibpxerdws4oq8g9m1b9jxkn17pq4pzt
-X-HE-Tag: 1762427282-558465
-X-HE-Meta: U2FsdGVkX18HHsyJTHBhBxxH0zufglXI49mxjeqa1zjKcvMcCsjuASccXN41W9ZMTG8Fa/ITAgI+uxNoWqdSIEuisoXSX3qPK1awtW63QJDBEXPKuUyu0qU31dxmUPnIYIscrDRw4tVd50JXM1qX5yxq++OMWNZFa//W9H37YBTvOPXiwOYNH6L5lui1qH3sb3POnp0Xh9LvKC//M4MpffboH+2rfYHw74Gr2g7VI1o7SdnNlM8veNNproN9FTrTx761pumbVf/1W5PKBOLP491tzfT0wWDh/mdViUsb9TGnqxQxFhENhGsBN4ygAwnnjIHlp/ecMWyFMj1G1DOiePBH4iEvkwsMQN7ZBS2RxzZLwRD/Bj3b5zs7xlDqrZUY4BRawbq/RHsLv13Wr6E1J0Kvhfvy0Y2qrZOOLFP1DyrGtMiJ/F0w0RYLnLoc87TL4kKzOglDPufJ1c5ary+BbUlkgOB0d5FHRmXnGFxaq2fcdv1DSg0qZoLDuoGuIOS+9nYEEnuJNiLuCNXz2E+pG5Ep9hEgisQAKmcYrGA5K/ifB8vDzQQci4J/h4XW0G5up4v4NHhi2JeqOPVV5xoedu2JzMbHwWbzA8p6cnvr2z/1FjBmGx7GrfOhb7lj6U92GNX4CGE7z/l4Fh3R/5lcPp85BxYR4g3cbYkDBCv10q5B/sbUR8R13KN5rbUY+OIc/6BE1n/F1sFZe+3xk/i8hxQzDMU7tWom4jwAUzFOJ+zyyvqYQz1EKHM1+VZd5fy9BYtTcRdDasm2pk1JYgproltKrHdXj2CT67+SlV+pvOWvGHZBOfBO/acz/+2t6dhW+gYhP7PQ4nPcADq8l6QUWkc584KQjnhwbzfh1Y9nHD08iGsnvpK98xasma7xXPQLL1Ab+5Aod6yTp68j81YpjBKIFy65wIurhzWR2XUtuCNcgWxT69w+4JGOFcAcg7w6HINwFu2NAewUMOv3h3J
- LOKWS5Gj
- 8324VpGdz9UX0tqS1ce3M1DVROsD+DhBrxEGsVIotnquji3MzvuENyMqxI1Crf8ayb+iXUWkWWX5jXllLlU0nLWEgjPUKty9MayGU61iRVhXUArYxalxCm2BbdC0bD9yN4HpZPlEgVWvy1XS/Iyiu2KNzk4q6jbRLLO8eJyLdUpuV6j4f+AijhX4k9JLPpbuI0bA/x+3+KyBBRvWfkK/VEV6/kYT/ihOmeryijgQ6fdBtZw6O3N3wAvT66y1jvGDLnOiW/l+ZfN87a9KVZsSgzqcCxa4YlgfJhl2qd4P/f9JR8oc5E2yoUzWcpO2e9gbu7v1pEP2sqsbpG9VzJwZ7kzSZcKP4VAcVYclnbyER9E6CPHXZDcvZmAIRywkZFF13mXYWL2075BYeTCwjVb32IJMZ0TSXgkB3g8wvnX0eJvacjGJ/OKx3HlQIh6R/VMZESXjFB6qLGEMY+BPI5QbY4eDfmr8/KYoy26tYAxpSKvfn6fRO1PhkUq26T0zfeuD+Pr85bhxnh9AivQ7q3Sg1stVMeThMcAJSeYcv45JNlunh0I0bTRM1QC00nhI9NsYzV1ES8b2Hv7bbih2amGuI/Hpw/28obUz087TDJvO2stM13YYsm0G4RBjKiEuQGzEZvTXd8USIGVdGoBKF9Hmxa6wDxQ==
+X-HE-Tag: 1762427319-504560
+X-HE-Meta: U2FsdGVkX1/WCm5Dd3CM0rl0aH/lhVVy9YDtLN+MKZ4rp87gfiyAQajJdmOGhDJ43fWTq6zIcejqvRIYLUaxG1ZITXzamusDawnd2gyF/CtbCNkufE+784CAS4y6f1ohvezWxxetWthNehZGhMcegEQ24COb53BAc+Mh7Rp/FIy00qx1zr0SgCXWVWlyxilkYP4IEmOJTOs+hDCGfPTtMqITaJhvc7TvJzNfxJDT5bZNew2+LNHzZqQpeP3jhXzOYtiNl+b1PmQCgwdLMBOgZ9Xdwo4N7j7j7wlAVpjxG3qfZ3kuw/twIRWYSkMklDwJoNb5+F9FqsyqYmTJ4In9hsVWjU9IzZquVuTRzCUBgk+Jy7oFx8E+tcQ9zHpb2yqpNhmujO668rPPXaZyiMIQPbjDaAGD7Q0o4CZDiu7zquAk1oG29wK+hYj42FjH88Gdc4ogFintj1JOOtcpHyNQRcosdH6O9fPjf/Ja0Qk9QXPYxm+kkE9MdHYUxaYqYapOHyLCNFg/Ltxdai1UKO6GW+7BSO3uVGpmp17DBfsYYkZzmFMbXJvOTnozJeJG0Ro/D/+J6C1VymxJ30J4hPyWc3jSnD8wOlILnYbeKoyuMIpFPGRPx7znDEC8CXm3BWDrLd2TtkDmFbkOwFHJdockKc81CaG3pWkMl8kqZ4/2yhTBQafB9LOPsTo45ZqVO7mKw0s+cRg1k4nCzhR61PTFFapTCqIruHMZBtOxhCZzJ5td74O/1IFOvVrlQDTdm7M1CnUU+xr5DkDn8SB2DZmeKhkOwhMaDLECvWsBrPELCtNimgYr3HMhiaDU2V94teDKA/YgoPnWVgIFHCbUH52JW4/PjE7KNxZyRz0ucJmAbQNJ5fwJ+FMw3KDDFdSU5A5GxL957GhhyaYcO8gVxZWzBtLal3bpXFgD3K2SP+ItfuxlPeyZmNDzHV+xwtj4NpahK3DseCwfE+9N0Z9crKG
+ OY1BsYKn
+ EChkJ92Hn6sawqgidIcYMDA+g6uNFmeA4TYTXXU+Z6fnpBpf40CZrWeBhyzUHQ4lZrQ9j8zAU4/383Ar7MbXbdoJi2R7xMZVoS+RPYIfypn9/NNLf4h5TCCLtfI+ZsunlnMGu/qpfvcV5N4+pn5y+chDvMbc4q9bMyuZA43Cg6fS+/ZQsIrGk6Y1oEjunhkHEtoTcbCqgnfrP+xxSKI+vSCAM2SZ9DIG0tMzqRTO8AcpilsWVyQjwWunhN680uwecX0OXEON8IIfmXs+hhfLM3fBCTJVrzuoreTPJcN4kYx0Tj9yD/ZeIjOrts2048/iZQhL2DmZ9kzzBlx2/DBl6YIfPxswVssXK5lv9QOc05sO7305KVkQLpM/1mqQbuL4v538bKoIa0NFFrpOcihtAHj+1+oKe/mukGB/OmUT6Js7GVtmFl+Ni5I3ygBA3H9u1zCmho3baq3+hQIOHMgtXT4ieuC8kizneyjs6TqbGd7Ciozx5IxKremcALuUEzPqrEJ+0uab1yVVUbmEq54OR/ugbmu2i+7HmxDmb3pskEZ/A7OuXkI22N8dsIMO8HaZh6lXNydB+28PknjCqqD3Qacf27QtsrnM/NS6BCD7mqZjr9h3WpSQtQQQiJypUJ0GjVZ29
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,18 +142,21 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 On 11/3/25 07:51, Byungchul Park wrote:
 > Currently, the condition 'page->pp_magic == PP_SIGNATURE' is used to
 > determine if a page belongs to a page pool.  However, with the planned
-> removal of ->pp_magic, we will instead leverage the page_type in struct
-> page, such as PGTY_netpp, for this purpose.
+> removal of ->pp_magic, we should instead leverage the page_type in
+> struct page, such as PGTY_netpp, for this purpose.
 > 
-> That works for page-backed network memory.  However, for net_iov not
-> page-backed, the identification cannot be based on the page_type.
-> Instead, nmdesc->pp can be used to see if it belongs to a page pool, by
-> making sure nmdesc->pp is NULL otherwise.
+> Introduce and use the page type APIs e.g. PageNetpp(), __SetPageNetpp(),
+> and __ClearPageNetpp() instead, and remove the existing APIs accessing
+> ->pp_magic e.g. page_pool_page_is_pp(), netmem_or_pp_magic(), and
+> netmem_clear_pp_magic().
 > 
-> For net_iov not page-backed, initialize it using nmdesc->pp = NULL in
-> net_devmem_bind_dmabuf() and using kvmalloc_array(__GFP_ZERO) in
-> io_zcrx_create_area() so that netmem_is_pp() can check if nmdesc->pp is
-> !NULL to confirm its usage as page pool.
+> This work was inspired by the following link:
+> 
+> [1] https://lore.kernel.org/all/582f41c0-2742-4400-9c81-0d46bf4e8314@gmail.com/
+> 
+> While at it, move the sanity check for page pool to on free.
+
+Looks good to me
 
 Reviewed-by: Pavel Begunkov <asml.silence@gmail.com>
 
