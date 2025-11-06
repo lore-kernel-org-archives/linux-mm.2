@@ -4,95 +4,243 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885B6CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:54:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CB0F8CCFA19
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:55:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CD1B88E0005; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
+	id 35D838E000C; Thu,  6 Nov 2025 11:55:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CA8B68E0002; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
+	id 334808E0002; Thu,  6 Nov 2025 11:55:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BE6898E0005; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
+	id 1FC968E000C; Thu,  6 Nov 2025 11:55:29 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AED5F8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ED67B6D54
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:54:57 +0000 (UTC)
-X-FDA: 84080781834.03.ECDBAD6
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 80B13C0011
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:54:55 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762448095;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 0BD828E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:55:29 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id A8A1B12B546
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:55:28 +0000 (UTC)
+X-FDA: 84080783136.01.1AE60AB
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	by imf19.hostedemail.com (Postfix) with ESMTP id 24CEF1A0004
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:55:24 +0000 (UTC)
+Authentication-Results: imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cFTX8Zb5;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xZAENyU+;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762448125; a=rsa-sha256;
+	cv=pass;
+	b=hg4BEGUfcJcZ76EMcpreXxsx0nUOa+s+wes0/mHKt52pjkJ5egDblYJEZ8XxhCMv3IJdpO
+	qTdnt0tfM5K3xfU/Wcvk003of3VUa3bWaW7e8RV31f8d/CeHWI4Psf42fCpjNxPeKo6g9u
+	k36VxosZpbYT3gDTugRVz0+wxwyhwwQ=
+ARC-Authentication-Results: i=2;
+	imf19.hostedemail.com;
+	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=cFTX8Zb5;
+	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=xZAENyU+;
+	dmarc=pass (policy=reject) header.from=oracle.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf19.hostedemail.com: domain of liam.howlett@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=liam.howlett@oracle.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762448125;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xv6mPGh8OTRRAPa/vnnTLwXHmpQDOc+h8v1HfQuws/k=;
-	b=k2chZIjGXKedX7+cuLMrAA38MuBhs6qHWS0Kqn64ez/Y9lz9rHmFoL9PxPTX/Ob8d//GtB
-	qM2Sx/K3eFeUtgt9AYhasvITmztsM+gGTFXrOZi5bOApmCWn0YMZJMgHEfiiiKlb1s6Q0e
-	in7pv0skjTfM63teunFoVNwFNd71DLY=
-ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=none;
-	spf=pass (imf28.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762448095; a=rsa-sha256;
-	cv=none;
-	b=XBWi4/7WZ7u5cZAm7XfNIbjR2AQcvAdaO5c/xepAgZxUSDDw0Kjq+vq49x1ncp1juqab0I
-	5SvPYQ3+a8se+fmfIi5bJgjb/3OsS9M0IRn/WFdY/bo2Osdqpnba1FxmVmY8FXybNvBEzP
-	SBLnCsuXilSKPAHC5yBzLl1FRskTPhs=
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7FEB1596;
-	Thu,  6 Nov 2025 08:54:46 -0800 (PST)
-Received: from [10.1.30.195] (XHFQ2J9959.cambridge.arm.com [10.1.30.195])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7ED3F694;
-	Thu,  6 Nov 2025 08:54:51 -0800 (PST)
-Message-ID: <bd10dd8a-8cdc-404e-8259-4d65ca9a650d@arm.com>
-Date: Thu, 6 Nov 2025 16:54:49 +0000
+	 content-type:content-type:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=Mu8WVmyG0VE6PELAkerzN58OYLaSbLHumIUlbbwrySg=;
+	b=oHsXKPHsI1OCSX7GFMZe8Krb+SEajBNwkzyKZ+r+L/JhK17H2cxVsDvn41QVdWlgP5FfUC
+	bypwk1Mv3fTd9azeeJNGV1PTCqI1jsqZVN1GnucyJ0Q/gdK42ILnE1P1WwWoP/dvSJGWBM
+	tbGk8pISF0fQNP4QdKxO84sVK84ydAA=
+Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6CA4uD000476;
+	Thu, 6 Nov 2025 16:55:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=corp-2025-04-25; bh=Mu8WVmyG0VE6PELAke
+	rzN58OYLaSbLHumIUlbbwrySg=; b=cFTX8Zb5qDY2MHl87xuiETtC4ZQv/NXC/s
+	/8oWcLkt8q2PaHkAJ0fcHLTaM3XmVkCFpEGzdxF7NvLCnITXY0QSj5SXuXdch1V1
+	OHdF/3lNu1T6m6+NowwGC4C2ORQD81+cp+Cl2HLnFT1QqInrqVkTpalUjuctWGax
+	pcDGpU1pN5Tg+x6qk2uxSh5JgLhgpFcY3K4fgJlJjw2DyiWiIkcytE5p07cKW3sk
+	pvsWsu9KhBxrXdoElOZz9hsbzlugb2W73zL5CKWhRY0f14wrowO9AUyKL6JmYP8r
+	B+mPK/z3RTpmEt+cs1eXn0fNx8gzpmAKKZqiwdrclEuKWNdubjKg==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a8at92gq0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Nov 2025 16:55:15 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6Gj1gU035877;
+	Thu, 6 Nov 2025 16:55:13 GMT
+Received: from byapr05cu005.outbound.protection.outlook.com (mail-westusazon11010008.outbound.protection.outlook.com [52.101.85.8])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 4a58npfw8t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 06 Nov 2025 16:55:13 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uH6hpjtO1xuvZcgqiio/STLPne/fL3HdYRIRn3qyzn4ajAYzeCMH14Sk28CY2tkfdqKfR2usfNtZFKnxezLh1wyBisaGrd/ELTbTE7qtMTybfvmbTA4aq9quR6PhSMpcW6PDndKL5Qe8lVGUlbQqHMjZezmOpyaNAOaeWvyhvria3Ph7enII5tbExZJTdTK35t1uPB9m7NmEuDbq4+3ZCH11K2+qgqxpK1KXIzqVbMA8PAA4lX0+w4PI1OOB+ZPJlj3bz4TKk11FLo1lDkyYodK87VgXKQVO4akf81F3G1a+fHksDiYSycGn8zsc/B+0qSvriiTJR2X43JuKnpw09g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Mu8WVmyG0VE6PELAkerzN58OYLaSbLHumIUlbbwrySg=;
+ b=oeDFlzGiLDIMPzvnLD5cgkgESPvIGv2NECSd3996mIJKoOZaXt6bFsd8Cm+9CujUkbiR68GkVNJhyT3WSeR5g1etY+YyeyBwpYeeNtUi3ZGh5YSl6i35WWYna60ujjbh5cqtQc5WAJYtPueGbrHKYE/RmfdbiGTEM8maqWnEl6TUakyB01Pvwlf/OECUNzd5ky0eWmqG5xqBhKer1r3I+4r+sVTbtgshe8qjDpUC2ZomiXWMhjt+ESf1/cECiyq17Qkd983NksVJSrpmEwwPj5oq7hqrongHdlmI712Tn1YKIlT2ovKpo+4PKc5EWS/Q+5pcW0LxtbPIdl/el0wHSA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Mu8WVmyG0VE6PELAkerzN58OYLaSbLHumIUlbbwrySg=;
+ b=xZAENyU+lyCwR/UGERWvAMWJLr9rcXjN8MwYZhkF1dZInZG6rXhOhcmBsN+Xn56k57l+hWEBOllWwMY2pPx/8a1tFO1uQ+EBV09sNBCxNG+Hooeh671sEtpD/xlCLJVZDZ/AgEF/L0PoKuWWESjOLsOTlFKgekJ0KRdYYoVcU+Q=
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com (2603:10b6:510:128::16)
+ by SJ0PR10MB4621.namprd10.prod.outlook.com (2603:10b6:a03:2d1::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9275.13; Thu, 6 Nov
+ 2025 16:55:10 +0000
+Received: from PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c]) by PH0PR10MB5777.namprd10.prod.outlook.com
+ ([fe80::75a8:21cc:f343:f68c%7]) with mapi id 15.20.9298.010; Thu, 6 Nov 2025
+ 16:55:10 +0000
+Date: Thu, 6 Nov 2025 11:55:05 -0500
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: "Garg, Shivank" <shivankg@amd.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Hildenbrand <david@redhat.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
+        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>,
+        Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
+        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
+        zokeefe@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: madvise(MADV_COLLAPSE) fails with EINVAL on dirty file-backed
+ text pages
+Message-ID: <ozkb6mcxuymlz7tm4vcnqf266gd4ruiik2zal2koo5ffprgxfk@35godtyix2cf>
+Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, "Garg, Shivank" <shivankg@amd.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, David Hildenbrand <david@redhat.com>, 
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>, 
+	Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>, 
+	Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>, zokeefe@google.com, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+References: <4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com>
+ <8bc796e2-f652-4c12-a347-7b778ae7f899@arm.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8bc796e2-f652-4c12-a347-7b778ae7f899@arm.com>
+User-Agent: NeoMutt/20250905
+X-ClientProxiedBy: MW4PR02CA0011.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::28) To PH0PR10MB5777.namprd10.prod.outlook.com
+ (2603:10b6:510:128::16)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH -v4 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-Content-Language: en-GB
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
- Huang Ying <ying.huang@linux.alibaba.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: Barry Song <baohua@kernel.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Yang Shi <yang@os.amperecomputing.com>,
- "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
- Anshuman Khandual <anshuman.khandual@arm.com>,
- Kefeng Wang <wangkefeng.wang@huawei.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>,
- Yin Fengwei <fengwei_yin@linux.alibaba.com>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org
-References: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
- <20251104095516.7912-3-ying.huang@linux.alibaba.com>
- <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
-From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 80B13C0011
-X-Stat-Signature: 5hycojw4bcumoy9ij47uf1xotssjumop
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH0PR10MB5777:EE_|SJ0PR10MB4621:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23f62cb8-21cf-4cb3-3969-08de1d553ecf
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?K8QzeFSjmnuLqU8uATrMZIWfh/kLBfFiPbMrNfvmsGFaqH5iMFgYlDcYImk2?=
+ =?us-ascii?Q?39RPv5JVTwgVs+geMQmFXGszZVf/JXSNId1ZAhkoQ9ua0cIanI+lhWr9rsq/?=
+ =?us-ascii?Q?SsLU87nTSPbyIQje9Xg2ACXsTJ2NSrIxoNSRhubsfkTUD21fydLAQduqzOSs?=
+ =?us-ascii?Q?mvHQzAQsdCT6c1jsgOjrR1Gjz+Nvb0Fm+vQjct+KMR1UetKGss94UpgZdA7p?=
+ =?us-ascii?Q?0G1FwsTSVRdc3+fI0mVKMkT1n34g2y1fDnrj1ezosoc3olBGM9khgH8qS3kA?=
+ =?us-ascii?Q?FRU60nKGiSEMNm4+zU32xb0ukO+yC+2o95n16e2GVQ+RFyezV0r9VfbdDL29?=
+ =?us-ascii?Q?3EhOSAWZSZlUhxphuuev3g5pAnNlN+S+jew3+Ve9o6yqTUnwsPT0JCXdXjW7?=
+ =?us-ascii?Q?0eRYGphYpw0eKom89jEqbf/3vmbSDWmJphvrgR3m4wQ4ZDuZn6ZcOCq+8aVN?=
+ =?us-ascii?Q?kQZOtdMb5/LasNRMdBlgbGPyPayDQlVHl2cT8Dit9sYNquNaSdu8Ez8iJ8xO?=
+ =?us-ascii?Q?0m3M+jEltzxrN4OYWVzNN+vV/3uRZ4K+zZB9ytXVHivSPoEmLrZjztesGmJj?=
+ =?us-ascii?Q?LAwT0SqIG9AcoUooUOuGlYQAoNa7/c/ODuioNft9bDBAA9Lr5qbUAumcQspL?=
+ =?us-ascii?Q?5id+JPxgzw2BvtCqEdK+TIBMY8BUeNqdp/39SeLzJbSJu3om9MiZwROZwfbC?=
+ =?us-ascii?Q?Qg4MXKknzuRK52EwdStbnq0oUfoxKmTwEIWGK1pOffKYvHK8l5BUwEMqBeHP?=
+ =?us-ascii?Q?TyPSEK5uKm8z7ecgwtActHCcz6ZRGncmSkzW3Pl11LE2VoL5Sphr7Mi4QRYk?=
+ =?us-ascii?Q?h9qV+FPXB8jXYWjHRSpLV5VhK2aS0Viy0NGoHIytUZ3RbmDENRrwSqKWCKCW?=
+ =?us-ascii?Q?kSNVD7hmIwuCDU6KTE8ArlGG/1QhlXAj2if3SPpKi/ug2oTywmoaX7ikvH+p?=
+ =?us-ascii?Q?mMYyU/Av68SsC1CCNIydXNZStu5Kl6HIBh0+SM6jRRH5VGgEaL14RbFCwdUO?=
+ =?us-ascii?Q?WPJTApiP5L3xuYKqygqz4NtmpGZP9nWmXqawdG+EI/eU14E90kbP9UmtTU/2?=
+ =?us-ascii?Q?shIkLc7ssZ7b6Jg0nQhUOYrbIV8I4HNuWsB8BRaGzX47PAzfIpSIN/SHzN8x?=
+ =?us-ascii?Q?3cPvwmavqd+3Ns3fxpaVnF1pB7SYeqoS1owPQ/9qagFrUdmJ1BIg7IEymD2R?=
+ =?us-ascii?Q?cx/jMOt0QAU6oTDGQc488pL66QnTgdAr8ZJAB8cYqPsEmyAcqqXLHgvF8Hg5?=
+ =?us-ascii?Q?uEghvmuQSU0POu4ZNaKlbhSBPtFq38fUMApcd4zKwXcJpiy/quCZQuruUpgc?=
+ =?us-ascii?Q?I8ZD8eMdhBWU6YiDZp1wbnfHWHHLXVhKCwPmvBcPqyYT9+PHVOwCtVmF4XlR?=
+ =?us-ascii?Q?2eddv9G94kAYS56uNJ0Y7TwE15BJK8UPhSr/STBSAVgXMLxnGMVRBmry5BLc?=
+ =?us-ascii?Q?prJC0AJ3sMLxamvCPQPlKtfQe7j/mKLM?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB5777.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?bje9Zc4Bd2rDYMgdr9ZbZyC5xYZt7ZZC5Y/MyOPmZcEb65p4BcSXhtiJ73rz?=
+ =?us-ascii?Q?wCSmYqBMxEqM9D3i/FPtk+ZXbtDs6mHJXcyxwLUM7Sn7PWvKKduhwWTWMN1z?=
+ =?us-ascii?Q?pj57Vw0/LasfksPI+CRsm2gY5loFC0Rb1VIZv9JiLgSUk6V7kHtPxwr8Rj7u?=
+ =?us-ascii?Q?i6+FEn3O7Nnzgq/xLPX3fk6M8ZBQa11veHQMlFf7Suc8T7X46SkYlwGHUnTY?=
+ =?us-ascii?Q?PMuU/izupwVlQF+tY7JLRP8QusP+WRWYncMeuy/+UPdktKVGulRC47FgsqYv?=
+ =?us-ascii?Q?zwsLCkgaein/DiPsoE+Pq9wjIgcTDwkzQHPz/oL8bbH09Tbc9XgzRFfhYOcJ?=
+ =?us-ascii?Q?vCpDD0zs5gdx7yRN3+ehLmL9LictUv8gpm+LiMBNoKYfHufooOm9DdCz/l6X?=
+ =?us-ascii?Q?42Pnafil6apzOywwQlucKlVg45tIiZjaGa2OOnIL+7QWwFSeErhgH4aZiIF0?=
+ =?us-ascii?Q?2iZpSS35B83R5q7SMb9ceAwou8NOPixQWwtPm0Ggy2JM9LQgVuRjtcIBZb3x?=
+ =?us-ascii?Q?WKIfA1TEK+TaeM02T/eaXrcwchyIO5hug3oFkT7iaDgQvmfsOhG+EnqNDb+t?=
+ =?us-ascii?Q?qFlPSWMx8aUIg6f/f5RLjmGlPlgzc1NvRjizx6BiGV8mYTqqhmfzBAodBHmt?=
+ =?us-ascii?Q?skHFimF0tpyIcIByc1VvRU/g4/vKN+o5buRuzOt2HlcXL9rd+ydEEIjy78he?=
+ =?us-ascii?Q?FqPMWxKUDoaPmuJQ6I1+Rd+KT0ynmavO+islnBphk8gB49ABTGymEayci8mO?=
+ =?us-ascii?Q?thVab4Y4egRFAl8kXCdq65prfe72ePbJ+KHBm5xRBx0ppQYehTUq700/cAzL?=
+ =?us-ascii?Q?i5bqHq7IXiqYG8SHseoQeTl+vZQ5ZsvN1ASWOaWrT++Po92AoXU05LE8w+7Q?=
+ =?us-ascii?Q?M9jfkeeIqHRV03vgPbVIiY6kjOPd7VoCZEyvrP0/5mUp+kLnL9AToclSWw7p?=
+ =?us-ascii?Q?e8+LVj/grpL276uTzvZ1KKZrnPwlZWaJtsrpK2KIekpl4O1QbLAuLwp0c9Bc?=
+ =?us-ascii?Q?y+L9cr52D9FE6fKpkMxhKJua2BjB2p2sq+Hz0QoBuDZ8+MnyTET2mBiB+ebM?=
+ =?us-ascii?Q?nqcyQAgwCpMVZUvQ/s8Y75yt41lv0sqDRA1D+lTncOlU8WGnRP7HS74kT10K?=
+ =?us-ascii?Q?00/oZyVBdMd6SaOORDZyRZazgqmNNdflNeolaOBnCyWVQm52gqgEwZI/3/M9?=
+ =?us-ascii?Q?Bi++lboc6tYG99aOfrVdCqwTWTqODoe/OoUGGv49BxekjoIPmIhYJ/t8rB6Y?=
+ =?us-ascii?Q?RPfMpW2dFDG7o2OxvkBJa9Qyfok9sD/njIRtDNyY4OczHLDRSUYIss8HV5gs?=
+ =?us-ascii?Q?MOWaFRv2FyCR1TLG8y42XjX1HdColHx39k5eHRXES0UfCmzPX/vAwBH9J4AC?=
+ =?us-ascii?Q?HjY3tyOQnK2zltEwSxhI9pdtzLyYm7UyyO32mnIiPpdu5yfSwLvFTzSUdMei?=
+ =?us-ascii?Q?7MPE/IMzEryp6D6mY8KxbuQkrfER/Z6ektr95SG+YdbML+XM1x34GzUEfdcZ?=
+ =?us-ascii?Q?zk+i/K+a+teCZYxyAwQ0Tp+YXJgtHtfGhpv7CDsg+yzjKZ0Fu4UwpfkIDXXu?=
+ =?us-ascii?Q?0Hr+DpdltK0CyKjxwh/DTaFZT0QmDgT2D/YbksJF?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	PfvJ4/MdpmVuid5jyniaot/iIRa+ZHsJGEiItkN5b9uOtF+pXYr16Rp5A4MPsCfQ/HD2xc84YoLG+5U+er+VMjnnuOHaFzOYg1mLNbJxVnr+ddivTnG8mZcs2mE6AFqHLL5V20e/fZBAbLNY5tiBF5CRm5lUWgHy5SCdavARZcjBoeLLclz1zKZthjlOuZMHH3IlLZRqvx7NF1iEqyh9Cg80xoz6IuHcWIR3zvq+vK2FCsdDsHR3bJyu3hr7hS7yh1sYlgmQMm/gS2VnjmAQw4ofK7Fz2C4K78CVZ5Lwxa/6OzCn1MB9nRtcW4n/Cu3oV9NYuxr3dzgFPeVtMGbCMIuI4w2oJl236E4nyEFmsUtD1E2ykqOKfCq77TqZttKqJdKJSILOT/UVCHLhhC8cLsW2eOFIh5hYvT50Y9Nk/573vO7imyGtdY4Flh6G80pkNr+msH9pZ6EEaP1fObY1gfkYztPIKBzPBFd8JPzuaqDv1c2+fvhYsAJk+Kjy1r1PU5P8spAx1Hu1+t+BcrvmolzxDa40c02zqx2gpZWM+sSnIyvzZFRuLHFXjloo1F2hLiYGtKzeEM6VmwhYsU5f+D0OSkk7J5Du7dci1YSIc3o=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23f62cb8-21cf-4cb3-3969-08de1d553ecf
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB5777.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Nov 2025 16:55:09.9004
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: MQLP3pELcDSeuDRvq5L+m7SRx6Qaq1ghSU2x/N7HKLaBmL4nYIz9DXDjgZ9JUH52ihs5R4Hhggmi9mSD7rFh0Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB4621
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 bulkscore=0 spamscore=0
+ suspectscore=0 mlxscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
+ definitions=main-2511060135
+X-Authority-Analysis: v=2.4 cv=HPPO14tv c=1 sm=1 tr=0 ts=690cd2f3 b=1 cx=c_pps
+ a=qoll8+KPOyaMroiJ2sR5sw==:117 a=qoll8+KPOyaMroiJ2sR5sw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
+ a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7CQSdrXTAAAA:8 a=pT10WjuGWfTA5hqc9-cA:9 a=CjuIK1q_8ugA:10
+ a=a-qgeE7W1pNrGK8U0ZQC:22 cc=ntf awl=host:12101
+X-Proofpoint-GUID: KpbHjio0GAbsAy7ozptAJZFofRlqk6x5
+X-Proofpoint-ORIG-GUID: KpbHjio0GAbsAy7ozptAJZFofRlqk6x5
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA1MDEzNCBTYWx0ZWRfX4hmwS7rUt03/
+ c9cDYF5+tiLKcG3NwSt5SIBAJFSwpbKoqI99lEe94itIMQadCT/juXsKNhrLG0xFnO/OEhRwIbN
+ sqPt/I8ArN1ySsncgpXqbJJknTLfZkwrYWHKdZT8cn26IlLj3/3lrR4J2N0uwk2FCUFRiIRi0SX
+ w35EvKTAzlMZ5y8RRWDNbj1wt8wYGSzp3npxyM3DtQGc7wRirpEG3wHEcpB0KcOd2boUCwII19V
+ 72mgpV4taDWsle5C19p6tKN7KwA8HwhyUBZhUgBjH74bIcVXuilC2J1L3Gt/nqHKidU68Us97LB
+ RH+0qFZC2l63knYPL/mBNE/njK9mWtP3lo7/v1cJIudyy+vHnHHQQ9327LiMtZ5qo2F9xK3rhtw
+ Kn8VpabEytWwagg6wchg/Hs9HfjIPn9ihQx+ZFZMAwnHKZ7bmLc=
+X-Rspamd-Queue-Id: 24CEF1A0004
+X-Rspamd-Server: rspam07
+X-Stat-Signature: fftnjf4goztfepmxf3abrkcka1oinjxw
 X-Rspam-User: 
-X-HE-Tag: 1762448095-738723
-X-HE-Meta: U2FsdGVkX1+CyvO61rct8q75wYWyCvsvmOwM9gIlicl0T2BOoPzSCKkfKAjKIOZGq0Dc3rFbKViP/W0kLz4crPvw+cE7V4+N4Jln30KOMwV65TUpFJV+WR67JJsfK2KFIlLD86b1CmURv7yOwjj63+C67+uIRLRAczzD+0upCVS3q9jAuFz4yH9ki8R1LuSTFm0IWxltUl5SkPmVuil9gob/jW3v2sO+wI+ou4JYec+nkSvc1Ql3Tplsn0U5hQRC0ItT3Q2CNBblfahAC7H0HFcEd3h+FhNTxmHazXFfdzihuIBHLVkZ5xLGLHC/HZT7dyYb49n80nvA6QCtTKJtfJ11O82mgjjf0IQc9dOnbBIiRDBwMsVK/G549JbVRBOtoMi7/WfV0d09psSx+V/fJGegSx/VeSkiiKWx5suqXEm9WQ4gMfiZh9DfB3/dU6nJ2NgXFq5Q/T2DwOpyX/W+Qs3NhWCW/HszhxPHlKe4ShfdOKD1QK3AyFh0NV029OBrGsJJfBNlHMFxTy2BkAR4zf8fIHhUymy0cpzQVfpuUKfxISRo0NPl7hwB81daAQge+bo5s9Sl1zGme7W4RnRLs/EPHUIbTKq/IZtUfZ10Q1ZyFH5+ly8K0ITKcbhiXTM1jt3Mi72sBXG7EX10h5mMIvoVur1oI9BwxN/R6zhQP/W6DNnZnvBYL9+DjH7X3FQ6+lS8vk1INXZmw2fhmM+TGs9GGyQ62irjTbMFtU8H7Y9wPlzZaGDvP/HGSqMHG2YtdvFl/M69hRAcT09JJKiQE8LyjnttyLlrtc0NtxMaEEhZV1DGGaFKtDoIuXfHbFuAXwqQOwWuBsDRQ5xAH4Wg9/ZkIOgdxYz+YFWH2ts9O223frCSGRVhmUKYhUyjeOc6aADXv8gHjP3ACU+lLHg/s465xKd6e8pHUUOxTpk2uOM+KUta5lzeFM4FoHfNtij6MrBDV6SNPRRBbgalEKc
- zqmhRZff
- HwxKOP11Jb4JlP+AXPWze+6pRPRB1eDabuYkwkakZpzKrwNUj2KTuKQlN1ZLDefKbJviOvn75QN+OoArbo6m14rvdJuWP2ecLdUT9bBPAdVpuKj48r3mvhBBQhxMr5eO9CuP7khlP+ZAge+gFq3Ty0MAjWIMJM4oXeYlPMY4OKv9GptQZbapd4sdn1q6r4R1kCa1X
+X-HE-Tag: 1762448124-205723
+X-HE-Meta: U2FsdGVkX19PVsTjGZbIl8z/M2q/DWSAr2DyKsk6ebWwhA73q2RS/S/96bKE0bqIIEgJPPHYstOWGZGeFQz4ygNJMC27vknhbnIOHPAizzMOFQcAV0x0Yro5PRH/xoEn9djk+lh8jNLJgioTFwNJNG1rFwg4oDpbvYB4H+qheJmvqHzW2TDczogoFh/tMXurqKXxOmtmX874SMzz+xVRiD+0Oodpa0AoodQ8OBweNRMA0G9ydkKsdIYrWQYwjeg5W27IoFKYEH33eP5neobatDaBZgWCplKLK3a/MUkHP8CElTs+XhZ8pBbM84fGsU2DKxVOsmdqPyPQnzqcGswjhQ0uyOsW/T0Igfw+CquX/yv6TbRg0MXTD69iNIntljzOAqS5KUK/dN1KnM9+zavraact4DEwvlslOJsN6E6OoFzWOqvIcGPQjG0euIZXlxE3VB8h2BYVwKYMK0N+b2FZbw4hncJvr195oXeraFgMOO1pz54ysp/q9nOVVVQn/xWPUVRtTf26TJUxkaUx0GQ5OCSN4TJ5Asg7U2R4fT90ZgBSqopml8f64CCcpySQFF/6jZfV/C1NUZ0IZ2HC+pDdtinR3/dfqMNU1haVRpSa4xjPnf7sOQgCgVaCnhYcsvHN53J1mQs4HCDJvDTKyXZ6WAUyEkbeSv8K58gJr+reLZFf98ZjDv76wCEzSt7AVx23vwJqaMbfPwt+ZrZ/FWXqXjiQRUzayFNNnRvVy4sU4Iv133gwQzH83Wf3hoBgDEOjQRiFv9PlsO8xOftx6vFJgYIjIqNO4lafhS5sVggrnaEmy9wNJwaR1XITROqmnF8kc8UKiDHuMvJdaE35abg3IJj0QNO5J8tbfdbkdrsPwh2XoUShAWpvJbVCW2xfFkhS65mfe0QF/3SK6v4wX4jFPvGi+BIwXC2eg+jXdahBgVT7SVWGsYEecb6LKeiSr1oldAaqG/SGJWj9x4dTnvy
+ RYCfGOS8
+ uEkJXt8XKcj/4UeYr4AIezfsVTN0j47qhBYx1dtNJccFEFNYrMrfcLboLL0ZusEJQxiNbkKZ1IFA0FxRrqg+a/EpNgOldBBXrdpkrwxLEMWItxi6exYw+MMvt7HVXrUVO7DcefXLngnYFE3OaRSl7RMqTOHXFX4rD4AOrH6k61EQvr6BEDeKqddSTW5ZMMnLolcs10D8uN1dnm2riZ9LJRHMhmyRoYt8GuoFdtbpfEvXlrwjxP9QAbu2dKGYsfqb0zcDXaFmvuHBUCsN/UdBBs0p51ZU8TUkE2yi4OvXLWjnMPnIlyy9utMyvRNU3uAfT5bscGkIsvgljYtxt8EZvhqeUTpoaUlFvOFCZNg5akU3Tvh5BEq85g7lXYfPvdfahui2fP3WDxa4hGu1xi3/wiRmXKYLwk77P6DEhn+AK1c9z3uWmsf+uEfbFWTkJgcoRfSTALbRrmN+Ze4GgzSpxNIcwTe28tSHPjCESLTfrm6Awv4htONdvMecZK6W61JhGG6G5sRYawRL698MWd3HB3JlqwfekF+Vp2U6vKaAYrsL2bJvplTbLTeWWzN1e8ml8L9InbPwcCfy8bo7DFxqu+5ia1msYAEidZVn9u2P70B+vux8XEU4UGUBcbJEAKAPtx1Y02bFSd6/bIRIrxdTAHMOXHU8PbIU6aZ8GMO5hq4R01dYbXPeMKKx/HjkPHL2sLOW+0Du9nOsIKlUkbZniF8pbz5VexjMiyaP/bpDe/fPs+QE=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -101,148 +249,133 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 06/11/2025 09:47, David Hildenbrand (Red Hat) wrote:
-> On 04.11.25 10:55, Huang Ying wrote:
->> A multi-thread customer workload with large memory footprint uses
->> fork()/exec() to run some external programs every tens seconds.  When
->> running the workload on an arm64 server machine, it's observed that
->> quite some CPU cycles are spent in the TLB flushing functions.  While
->> running the workload on the x86_64 server machine, it's not.  This
->> causes the performance on arm64 to be much worse than that on x86_64.
->>
->> During the workload running, after fork()/exec() write-protects all
->> pages in the parent process, memory writing in the parent process
->> will cause a write protection fault.  Then the page fault handler
->> will make the PTE/PDE writable if the page can be reused, which is
->> almost always true in the workload.  On arm64, to avoid the write
->> protection fault on other CPUs, the page fault handler flushes the TLB
->> globally with TLBI broadcast after changing the PTE/PDE.  However, this
->> isn't always necessary.  Firstly, it's safe to leave some stale
->> read-only TLB entries as long as they will be flushed finally.
->> Secondly, it's quite possible that the original read-only PTE/PDEs
->> aren't cached in remote TLB at all if the memory footprint is large.
->> In fact, on x86_64, the page fault handler doesn't flush the remote
->> TLB in this situation, which benefits the performance a lot.
->>
->> To improve the performance on arm64, make the write protection fault
->> handler flush the TLB locally instead of globally via TLBI broadcast
->> after making the PTE/PDE writable.  If there are stale read-only TLB
->> entries in the remote CPUs, the page fault handler on these CPUs will
->> regard the page fault as spurious and flush the stale TLB entries.
->>
->> To test the patchset, make the usemem.c from
->> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-
->> scalability.git).
->> support calling fork()/exec() periodically.  To mimic the behavior of
->> the customer workload, run usemem with 4 threads, access 100GB memory,
->> and call fork()/exec() every 40 seconds.  Test results show that with
->> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
->> flush functions reduces from ~50.5% to ~0.3% in perf profile.
->>
+* Ryan Roberts <ryan.roberts@arm.com> [251106 11:33]:
+> On 06/11/2025 12:16, Garg, Shivank wrote:
+> > Hi All,
+> > 
+> > I've been investigating an issue with madvise(MADV_COLLAPSE) for TEXT pages
+> > when CONFIG_READ_ONLY_THP_FOR_FS=y is enabled, and would like to discuss the
+> > current behavior and improvements.
+> > 
+> > Problem:
+> > When attempting to collapse read-only file-backed TEXT sections into THPs
+> > using madvise(MADV_COLLAPSE), the operation fails with EINVAL if the pages
+> > are marked dirty.
+> > madvise(aligned_start, aligned_size, MADV_COLLAPSE) -> returns -1 and errno = -22
+> > 
+> > Subsequent calls to madvise(MADV_COLLAPSE) succeed because the first madvise 
+> > attempt triggers filemap_flush() which initiates async writeback of the dirty folios.
+> > 
+> > Root Cause:
+> > The failure occurs in mm/khugepaged.c:collapse_file():
+> > } else if (folio_test_dirty(folio)) {
+> >     /*
+> >      * khugepaged only works on read-only fd,
+> >      * so this page is dirty because it hasn't
+> >      * been flushed since first write. There
+> >      * won't be new dirty pages.
+> >      *
+> >      * Trigger async flush here and hope the
+> >      * writeback is done when khugepaged
+> >      * revisits this page.
+> >      */
+> >     xas_unlock_irq(&xas);
+> >     filemap_flush(mapping);
+> >     result = SCAN_FAIL;
+> >     goto xa_unlocked;
+> > }
+> > 
+> > Why the text pages are dirty?
 > 
-> All makes sense to me.
-> 
-> Some smaller comments below.
-> 
-> [...]
-> 
->> +
->> +static inline void local_flush_tlb_page_nonotify(
->> +    struct vm_area_struct *vma, unsigned long uaddr)
-> 
-> NIT: "struct vm_area_struct *vma" fits onto the previous line.
-> 
->> +{
->> +    __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +    dsb(nsh);
->> +}
->> +
->> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
->> +                    unsigned long uaddr)
->> +{
->> +    __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +    mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
->> +                        (uaddr & PAGE_MASK) + PAGE_SIZE);
->> +    dsb(nsh);
->> +}
->> +
->>   static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->>                          unsigned long uaddr)
->>   {
->> @@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct
->> vm_area_struct *vma,
->>       dsb(ish);
->>   }
->>   +static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
->> +                       unsigned long addr)
->> +{
->> +    unsigned long asid;
->> +
->> +    addr = round_down(addr, CONT_PTE_SIZE);
->> +
->> +    dsb(nshst);
->> +    asid = ASID(vma->vm_mm);
->> +    __flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
->> +                 3, true, lpa2_is_enabled());
->> +    mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
->> +                            addr + CONT_PTE_SIZE);
->> +    dsb(nsh);
->> +}
->> +
->>   static inline void flush_tlb_range(struct vm_area_struct *vma,
->>                      unsigned long start, unsigned long end)
->>   {
->> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->> index c0557945939c..589bcf878938 100644
->> --- a/arch/arm64/mm/contpte.c
->> +++ b/arch/arm64/mm/contpte.c
->> @@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->>               __ptep_set_access_flags(vma, addr, ptep, entry, 0);
->>             if (dirty)
->> -            __flush_tlb_range(vma, start_addr, addr,
->> -                            PAGE_SIZE, true, 3);
->> +            local_flush_tlb_contpte(vma, start_addr);
-> 
-> In this case, we now flush a bigger range than we used to, no?
+> This is the real question to to answer, I think...
 
-I don't believe so, no; we are still flushing the same contpte region (i.e. 64K
-for 4K base page config).
+Agree with Ryan here, let's stop things from being marked dirty if they
+are not.
 
 > 
-> Probably I am missing something (should this change be explained in more detail
-> in the cover letter), but I'm wondering why this contpte handling wasn't
-> required before on this level.
-
-The previous __flush_tlb_range() API was flushing the same region. But that API
-broadcasts. We decided not to just create a local version of that API because it
-is more complex than it needs to be for this use case.
-
-The whole (arm64-private) TLB flush interface is creeking and needs some
-refactoring, which I'm planning to do as a follow up to this.
-
-Thanks,
-Ryan
-
+> What architecture are you running on?
 > 
->>       } else {
->>           __contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
->>           __ptep_set_access_flags(vma, addr, ptep, entry, dirty);
->> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->> index d816ff44faff..22f54f5afe3f 100644
->> --- a/arch/arm64/mm/fault.c
->> +++ b/arch/arm64/mm/fault.c
->> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
->>         /* Invalidate a stale read-only entry */
 > 
-> I would expand this comment to also explain how remote TLBs are handled very
-> briefly -> flush_tlb_fix_spurious_fault().
+> > It initially seemed unusual for a read-only text section to be marked as dirty, but
+> > this was actually confirmed by /proc/pid/smaps.
+> > 
+> > 55bc90200000-55bc91200000 r-xp 00400000 07:00 133                        /mnt/xfs-mnt/large_binary_thp
+> > Size:              16384 kB
+> > KernelPageSize:        4 kB
+> > MMUPageSize:           4 kB
+> > Rss:                 256 kB
+> > Pss:                 256 kB
+> > Pss_Dirty:           256 kB
+> > Shared_Clean:          0 kB
+> > Shared_Dirty:          0 kB
+> > Private_Clean:         0 kB
+> > Private_Dirty:       256 kB
+> > 
+> > /proc/pid/smaps (before calling MADV_COLLAPSE) showing Private_Dirty pages in r-xp mappings.
+> > This may be due to dynamic linker and relocations that occurred during program loading.
 > 
->>       if (dirty)
->> -        flush_tlb_page(vma, address);
->> +        local_flush_tlb_page(vma, address);
->>       return 1;
->>   }
->>   
+> On arm64 at least, I wouldn't expect the text to be modified. Relocations should
+> be handled in data. But given you have private dirty pages here, they must have
+> been cow'ed and are therefore anonymous? In which case, where is writeback
+> actually going?
 > 
+> > 
+> > Reproduction using XFS/EXT4:
+> > 
+> > 1. Compile a test binary with madvise(MADV_COLLAPSE), ensuring the load TEXT segment is
+> >    2MB-aligned and sized to a multiple of 2MB. 
+> >   Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flg Align
+> > LOAD           0x400000 0x0000000000400000 0x0000000000400000 0x1000000 0x1000000 R E 0x200000
+> > 
+> > 2. Create and mount the XFS/EXT4 fs:
+> >    dd if=/dev/zero of=/tmp/xfs-test.img bs=1M count=1024
+> >    losetup -f --show /tmp/xfs-test.img  # output: /dev/loop0
+> >    mkfs.xfs -f /dev/loop0
+> >    mkdir -p /mnt/xfs-mnt
+> >    mount /dev/loop0 /mnt/xfs-mnt
+> > 3. Copy the binaries to /mnt/xfs-mnt and execute.
+> > 4. Returns -EINVAL on first run, then run successfully on subsequent run. (100% reproducible)
+> > 5. To reproduce again; reboot/kexec and repeat from step 2. 
+> > 
+> > Workaround:
+> > 1. Manually flush dirty pages before calling madvise(MADV_COLLAPSE):
+> > 	int fd = open("/proc/self/exe", O_RDONLY);
+> > 	if (fd >= 0) {
+> > 		fsync(fd);
+> > 		close(fd);
+> > 	}
+> > 	// Now madvise(MADV_COLLAPSE) succeeds
+> > 2. Alternatively, retrying madvise_collapse on EINVAL failure also work.
+> > 
+> > Problems with Current Behavior:
+> > 1. Confusing Error Code: The syscall returns EINVAL which typically indicates invalid arguments
+> >    rather than a transient condition that could succeed on retry.
 
+This is also an issue though.  Reading the documentation on my system,
+EINVAL with collapse has two meanings:
+        EINVAL addr is not page-aligned or length is negative.
+        EINVAL advice is not a valid.
+Neither are right here.
+
+EAGAIN seems to make sense, but the documentation would need to be
+changed too:
+        EAGAIN A kernel resource was temporarily unavailable.
+
+> > 
+> > 2. Non-Transparent Handling: Users are unaware they need to flush dirty pages manually. Current
+> >    madvise_collapse assumes the caller is khugepaged (as per code snippet comment) which will revisit
+> >    the page. However, when called via madvise(MADV_COLLAPSE), the userspace program typically don't
+> >    retry, making the async flush ineffective. Should we differentiate between madvise and khugepaged
+> >    behavior for MADV_COLLAPSE?
+
+The collapse documentation states that it works on the existing state of
+the system memory, so it is doing what it says but the EINVAL return on
+dirty pages is not documented, afaict?
+
+> > 
+> > Would appreciate thoughts on the best approach to address this issue.
+> > 
+> > Thanks,
+> > Shivank
+> 
 
