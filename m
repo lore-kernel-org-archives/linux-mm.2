@@ -4,130 +4,115 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5EAD0CCFA0D
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:30:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05E00CCFA0D
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:42:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9B7438E0007; Wed,  5 Nov 2025 22:30:57 -0500 (EST)
+	id 340E08E0003; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 967608E0002; Wed,  5 Nov 2025 22:30:57 -0500 (EST)
+	id 318B98E0002; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 82EAF8E0007; Wed,  5 Nov 2025 22:30:57 -0500 (EST)
+	id 22E198E0003; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 675F08E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:30:57 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id D1F4016054A
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:30:56 +0000 (UTC)
-X-FDA: 84078755712.29.B7AEF6D
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	by imf30.hostedemail.com (Postfix) with ESMTP id D529D8000B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:30:54 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=OAlpwMea;
-	spf=pass (imf30.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 1299B8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEB70160553
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:42:01 +0000 (UTC)
+X-FDA: 84078783642.25.4B061C1
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 1498AC0012
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:41:59 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmp+qLrl;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762399855;
+	s=arc-20220608; t=1762400520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=RNM1MgLcHWEpaTBbCLnta7C99WnzqNME1CrFjvq8FrU=;
-	b=21gXeq3N5b35Mx8E1JYz/fYt3qzG70upe6ax/1C7Yy/TJ98R13Du0/4PIT1z5syEWe0fGv
-	22sWgBDaBHroKeLUdBKCjyQ13Xx2vsdcVZVMxuET4yrYa/603GhmmvmrKQF36BlS6quhkA
-	aGM/uRetniU7lsgFRfN7xWgdfX2DrYU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762399855; a=rsa-sha256;
-	cv=none;
-	b=8AX2++kG4PjS86sB9tDYlsjeAk8sg+6zo88BT8vdJzi2W9UeOhywLHDh06lkTdxJQYfbm8
-	b3T65dSurZ8DN4owzoVwNnSbhz63wEQbr2oC6zX9f3oSOjwD41yjDVXtSaBHHTMWSHBKzN
-	aS/dHjOwWx8ytogl2NdfO3TcQJupgMs=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references:dkim-signature;
+	bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
+	b=J6sVB1Yqg6kOJK5WgLs3wI6kUtnLaWeCEDLrcCvjnOXASudv1McbVlVDhrK5rlHSkegXx3
+	5nopKDAZmLnuDrafp4t/9ctSwf4HruimkdbJDtwaxbwaB5x/hU9R+m96ZWypHv5z+pTYP9
+	N06PqwXm1OYugdLeE99cwH8Ej9behfA=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=shopee.com header.s=shopee.com header.b=OAlpwMea;
-	spf=pass (imf30.hostedemail.com: domain of leon.huangfu@shopee.com designates 209.85.216.50 as permitted sender) smtp.mailfrom=leon.huangfu@shopee.com;
-	dmarc=pass (policy=reject) header.from=shopee.com
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-34003f73a05so629219a91.1
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 19:30:54 -0800 (PST)
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmp+qLrl;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762400520; a=rsa-sha256;
+	cv=none;
+	b=1oBL6NZAJBwjKZ/jcKVdj6HNxtPzeRcDEsXJoZ98S4REHU2BZ1bR7P5QFG5r/bIFU0jB8O
+	Agpj1U/Bi+VwCMPG41J6XnVrGQ1+kGPAsdMbIJo+3rcqxbW8fux58wQWyo4L2djvr9DbRF
+	j3Yf8MeRLtp0xloayAK8iPwWzD1ouUI=
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7260435287so63762366b.3
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 19:41:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=shopee.com; s=shopee.com; t=1762399854; x=1763004654; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1762400518; x=1763005318; darn=kvack.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RNM1MgLcHWEpaTBbCLnta7C99WnzqNME1CrFjvq8FrU=;
-        b=OAlpwMeard/C7ik7/DCUULyQPt1izfq1ss8C6uaDQWQRuhykmVZes9iMUiF4IlfupN
-         0cOw26VMIf3qTWAmstN/vTx5hsoX+VeDaub98PaL5Z4xtOpi8QJ532P9Cd6C0piKxaAy
-         isZX6pIYi5o1J0hLrT901bH9eKI0JgMkJJYrE/VRGDG9DNQVFoHFP2q26l/4m6SKwBDB
-         XVQxha8HEV48L2vd76JdimDrnQU54UXFS19isPvar/oTxbJ6/2YSNYcdAegr/mAV5fs8
-         Vdst3XRBpbEURiy8yC/BCppQAd7zvbH3CKqCm/8fAZu8eSWLkmT2wJZjJ5tAEeIigb9F
-         0ThA==
+        bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
+        b=Dmp+qLrljK2heEqOIcI+cgu2JLO6VCZViiiRRGcKiQc6jxEMeB8I+Wq62iPqr2FXyz
+         0WoMtCyDdfsDwLNIF85sus1QFZpoV1MlJGWBiTnry82SVH8ZgY3FeaTcIdZ55jciOxSx
+         jIX+80UJe7XRq2Xaaj1QYF9bqQcUuznF2ADBUEQm5SteTpuFA8BXO5xtJSBXk9dacjqG
+         xeacJK9svbAbLDM7wlAXxUXH1SUyhUytGcv+crlWrJ0UNufTFvuxUL0aGqSfy0SshkdU
+         3mr5n01bGi8Jx9b3vLzqyFEL2EGrkjlSZV+w7v3vc22ds5KEYRL1KLUHmClX+Qi+ecUM
+         rFSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762399854; x=1763004654;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RNM1MgLcHWEpaTBbCLnta7C99WnzqNME1CrFjvq8FrU=;
-        b=M3lxDF75GNy7PdHKZXwlUBtnDlugEajENeo5yIIuU7iQvxv8kfMeu17jkW6RsvWcLI
-         GsInNu+ooGFhWqWWzLu3CKUsDXNmvsQG1kvrNTZbRxY8Y0SP1LuzyU4ieKbOgyJ12u+I
-         oO0i2KVH4vfNy2xvUxNDyTXX9FuyHKRjQNm6FKGTLBrPK6MBqRxKDePR0IyNBWy8W4HS
-         8Eh8ggCLusku/JXYHMCIM2FacSkdh5yJHwYlEZT7s8uczlH8QODA8RiAF/g2lQXFLqid
-         dy5eIhYoVFxN3Qmw/nP9UqtvRo4u9tgunOaI8d5nyemIgRHZMUA8c8yEVdJXKpR5ye1q
-         nugg==
-X-Forwarded-Encrypted: i=1; AJvYcCUF7D1qZA/P3+j5GYV9qN/qMrfvrSw7SedLtNyxe3SwUvxj6+eZtAif0TPOe9oPdFBi+Jc3QyAj4w==@kvack.org
-X-Gm-Message-State: AOJu0YxJ7SOD/H5tY5wvVTpEme/KawlAxapuSWCjI1jxXJ9/S2Sq5EJL
-	Ty0jhUoeqpcnkiJi5Qjf+b2y6Oqs15SxpGzPawLiHALUD5dgbThUMgv0ThIXIjnIp2o=
-X-Gm-Gg: ASbGnct8HHndDaEjxfUci2sCUsgfXojuIY3JPr58xNAPMFK39aMABB44adpMiTlseVL
-	vqdTZp6EJh1SnxPOnqFNiSwH/2GFM8Jmzp228JwdxcmY0a2t2fUD4IJiracAqpMu9WRoS/ae0wx
-	ENkaRAS8xGCfB1a2tlHojmvhn+uhKw6+dkC7pwaPVrVngsRAP0VWIxe/H3AgaXLAFPohXHbHGF2
-	r/Q0sxyaRc6J4hJw/2xgye7rKtI0COYohCwk/dW/zhTIuyafd+ZKXZ27KxV4wVrSBpX0OZa+xJ/
-	eBmbhj0clqyYYPqVAKk5sV3pOiIrK+PWxudtxghOdOMozNKsIS9jJoc9oqP4jdoEVQQsiLcxsr0
-	ib6i7emnar9HaF3Q9xcFwGs+lvpgfQnUxGz7ivfTocswa9TEsZkOxGZoTLWCwaTh0MTEcrHiTW/
-	fM33G7KQ4SoSNKpg==
-X-Google-Smtp-Source: AGHT+IGs3l7sTKPjK4BxzxoB8dGFRJGxiJ/b+4pm0w/YxL5LnyVyRhr4bJJbufT0LQgr9Sm10ohs0A==
-X-Received: by 2002:a17:90b:3d4c:b0:341:88c5:d58 with SMTP id 98e67ed59e1d1-341cd150316mr2074007a91.13.1762399853479;
-        Wed, 05 Nov 2025 19:30:53 -0800 (PST)
-Received: from .shopee.com ([122.11.166.8])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-341a69b698asm4663896a91.21.2025.11.05.19.30.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Nov 2025 19:30:52 -0800 (PST)
-From: Leon Huang Fu <leon.huangfu@shopee.com>
-To: shakeel.butt@linux.dev
-Cc: akpm@linux-foundation.org,
-	cgroups@vger.kernel.org,
-	corbet@lwn.net,
-	hannes@cmpxchg.org,
-	inwardvessel@gmail.com,
-	jack@suse.cz,
-	joel.granados@kernel.org,
-	kyle.meyer@hpe.com,
-	lance.yang@linux.dev,
-	laoar.shao@gmail.com,
-	leon.huangfu@shopee.com,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	mclapinski@google.com,
-	mhocko@kernel.org,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev,
-	yosry.ahmed@linux.dev
-Subject: Re: [PATCH mm-new v2] mm/memcontrol: Flush stats when write stat file
-Date: Thu,  6 Nov 2025 11:30:45 +0800
-Message-ID: <20251106033045.41607-1-leon.huangfu@shopee.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <6kh6hle2xp75hrtikasequ7qvfyginz7pyttltx6pkli26iir5@oqjmglatjg22>
-References: <6kh6hle2xp75hrtikasequ7qvfyginz7pyttltx6pkli26iir5@oqjmglatjg22>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: m9oysbk7bdkgoxb15qc6uefd4wg48qro
+        d=1e100.net; s=20230601; t=1762400518; x=1763005318;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
+        b=UmxVGFeJADPq+jr21IOgrXAVw6fUnA+/SN3IRo3Naq/U0v8LMocheqSitGbLcblmdH
+         O0x3LHpB51qDtRwa4qOlxgw8/x1zMi3ibyjyouWbalbgo7Eh3W15cExnXnkvBPjoltAG
+         UIR4x1QPIdI/9eRKIvFFQP1j1+b5MzYLwo0vynRkoEGuNxt2PoPlVRhu116qyXHUm6b7
+         tiCn4BdFSl0z19YcdNi3gVAIXHm1t6DY/yK7L79Vdy0otwKvl7fgqRIh509Nz4Rz1X1K
+         B7FSk/+CahpZU2BatGX3uk7hOW0TvcBpG2kgENoj40e6tlUpTXT7vnbptN64gmp9rY1a
+         ELlg==
+X-Gm-Message-State: AOJu0Yx7ODCo2Yspk3SlERYBKGL7QczM/oZqSvkvZc79bpWx4cgSU4D+
+	uhbyMI5jzsloiGXewbZqFQ3/R9Gh4jQ1MLC+uWLevPtbkhdeXF4+uZgD
+X-Gm-Gg: ASbGnct5CZGtbXo1Dp1ui7Ud5NC3FhA21iM41fH/eM/VIvHqupOZsqU50ZF+hffh65r
+	QXct/apYX55FA5tMfLMVoZLsnlq6o3cezReOnuYaOsCheYvwmWKVWmUCpcY71ns8dlum32Xft7l
+	+akLLUf5M94IKyGO2wtGGp3iBLSMX1Oo3kAg/P5/he2RbOk8bbicHv9S9Oi/MKC6WCoPrXTUYVO
+	DmNgTG3qaE9vPzhNamH6SNicp+TUE3NDUGvhu/OS3WPL2Bk0mCbFIMyzpHuA3kPWOaZRQOl/stK
+	53HEOYc766Be0drincy4r5P2vVbP4A+iitfraUP/RW2QuPRhtfasZtt79rmdSc0ZGnI+snFM57S
+	B7Q1bx3UXy1BgSBQ8AJKSFEcQWjJ9T+dGGtAGPLbA08L+96vVhVSrkRmg64rVxcuH2tpYzbHL1I
+	RdaM7cBuetzA==
+X-Google-Smtp-Source: AGHT+IFVFphpq0AfC+J/LvGQ3FiSSxuHUgCjs8O4dHT0Yrgrw96Opgxfj7Uqx5dei0d6uKUisfIp7w==
+X-Received: by 2002:a17:907:3daa:b0:b3f:33f6:fb57 with SMTP id a640c23a62f3a-b726519a2c8mr578907966b.9.1762400518175;
+        Wed, 05 Nov 2025 19:41:58 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7289333303sm113722566b.2.2025.11.05.19.41.57
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Wed, 05 Nov 2025 19:41:57 -0800 (PST)
+From: Wei Yang <richard.weiyang@gmail.com>
+To: akpm@linux-foundation.org,
+	david@kernel.org,
+	lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com,
+	npache@redhat.com,
+	ryan.roberts@arm.com,
+	dev.jain@arm.com,
+	baohua@kernel.org,
+	lance.yang@linux.dev
+Cc: linux-mm@kvack.org,
+	Wei Yang <richard.weiyang@gmail.com>
+Subject: [Patch v3 0/2] mm/huge_memory: Define split_type and consolidate split support checks
+Date: Thu,  6 Nov 2025 03:41:53 +0000
+Message-Id: <20251106034155.21398-1-richard.weiyang@gmail.com>
+X-Mailer: git-send-email 2.11.0
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1498AC0012
+X-Stat-Signature: 7cr8dqqxgbfhfhy8617o7z4fbjpheu9w
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D529D8000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762399854-7883
-X-HE-Meta: U2FsdGVkX18UjN422DNd3I/mFXHCV3G7JmjnKkcaCfHNdwvbgG0UunwVVvBMYYQ/8Y4jehBsgbHCsK5S85CetHu1jQ1yb5FHFigUu9HYKV0+dQL2dr6IMDGDAne8F5JIJQa7LYGyeq3sLODWsuPTHWA5L6aTjfD0wEnh90XNQ9Yqizt4HbnzMZ3RxGbz4EvIhSx/kZ6KXIFrlor8hIl59BZVxQ/Npwr/t35ke083uQ+ggaUow72QWRh7Y1nYwZKBGXZdCtLE4I3eBjbGOFlQ9hj2djhuuXLNzvEHJuaJGZ3fM4OYvdqQtj/09BcnwbMgc3hAZISCbrGuttlZ9fOitxOD5WMMIIpAYPu44jfAwNeop0msx5S7JIn68DrhWVZBkKhmVhdjEe82eS/y3nLuufbQvIq7KzaDjnNTfhtAFsRh5GqPjyuCPbFJvybkuxrIyHSzS0VHsTjLKKzMFDBI67rwT4S9TRVC29YIWRxnPUCmvYR5HGmf1xuqGVv7ji2Z2CVhq/ghJ+Rw0OsBJxel9ahGZgh5/5j57sMg31U2j0I1XmRUf4Fa43KLwqnpUenJIVPDOmbr8WEp/DhEg/NYOAXEHqpFO/seo5BF8X1HE3HYlCFu6LCllr6hcn0Qt61WIFNnTw9wpzFVy4PYGRK+SnTYWFw1m3Rk45A/u/wAUXkT+nF1WjZ6o/xww5sers+gGoSlWUjbLt6Gx8r3Iwk+LB9Vu+Bdh7drPVv9SEF+H/+rtw+fB/yhZsCNF2buvKL+n5Kf89pfXOOlCjLwSuSKRJsgD9bEKqAInbhTfirHqMFeKbzBf7x1B/JYw8FfwLQ646O59TipvRCgIttAD8LSfp1O2dw+tL+sE5MvJQsPrali2Knlkx3De1QD2F5Sv9KKwDuhoQD3QoT5+uSMe/B6ZoXnkmKTeSu5rvyhG3TMxY3ENjw2E9UDdqSTN9ToXt7YCwsR2mhs568hrBydDgg
- Hq2BxKaR
- tqgYNf2nKev6uhGn14cnF2SL3pyrVfOopNYvIN9y/WDFqa4MHtTZuGPhqO0q1DBGsN2g3Nm/0Pe00ISlVTwaMC/aGk4ccAAtOwFeuwPaic8j7n81wkEG63DUIof49abnQUBb6S+6HAxSCyAPsNLHuHmrrwzZWY+Xm/5E9js5ubooR069F3ynAEGFMXIhPVEOq/mIz5q7q17WN+0PoV6vr4qdgwfINK+bYEI69bO0I0BgftROjckvy8NSsa6wkhfzQhSwESR1FMyEpWbo6/te6rxYIh8q2ITHdmxCdriULwkku+qR66tgYnse4aM4ITt8k+ysF4KmwbG+mVxueQJl2UWNI93FjzhU+2dp6T9ZxGRQEQAHvqXr3BxswET77bicHoPja8rQs1ens8QFv80L/RFdC0RY9gAvOMwaqGpmu7ywMl7hX86SFMeAiOd1+a7dj6iKmeq5WPgZN/l1+H7QIzDRT3oRLEzarf/h/
+X-HE-Tag: 1762400519-210032
+X-HE-Meta: U2FsdGVkX18zByXrGmJepwHSGFQ8hugpYdXoP9BUY6cl3PLIn25CPZjf1fwvrokZHjgQaKohTuBKXfBndn/0FL5xDWUWJavg4cTGTzqvkZJhh9PBYigoVcMgg3lfZA/L0wpWY5gWoPccxT8xfGJ/jlk+BLWl7XkX0VzaS+Fdcs0EbLdvrReRNDo5LIoqtiVL4MvbbnQU5FO6n05pSAcaHMIpdwrcDHQsT1YoYfQqTxAG6SdU0uPoQfZJOjppdAZV40r5zsMYuSP6p8xgvbFZ1fNMHhq0jGYNbpU0BYA7ixUiywKxjqQikJdhKWw7QLqGbo1K+05mqj5hcRU3YIK+ZDRFy7jwWurare64AQlwIVnkp9+U/EZwrk4QtFA8lEy9rTeVSFGsvnNIOqDywTn8v1nfMcK/Oht5OXA4NsMkgVzE6eUZQOUzFmb3Ocy+DCO1dpTvMBdc9repgGv6rHK/ZUGuqT1VmoSizb2RnYi9ChUyT8wts5cd+qmcE+jNRIIR15bpWG0cu1T1OY/faOnfIoeqO+AQtMTYMVX/S/ZwzNbON2rFtdqiHruEzxrtdUIoOH4IE8FexV8jGLqb7zM8WIgrU9K+YPOHZqe8D/CYXMPMo9qwdpCBznl8UmTRPBUgPIXHBVtmHHinBKBAEekIUVoMZLFr/YP4diUvv/6tYOJ9TgRggNewWKDbm/n+ZnpogME1UZKt1FvfVuRkFVrO6JrQCdFWq8IXJE8ui1LbJwSDBmu57UfNP+KzWMLzsaLmx0gao+j+KdMHLookVQi6FJUTq/WsVaznFvjXmBG0jGX7Ir3MbM7CgsjUjWdagK+07wBxjkAcs+c7jNdLtFmyf5/MqdHHSw4K8Zv4gPcSOjO62UsmWWgJtoW0WRRhnO+HDXojN6UPi8q4sR0WhdQlTJwfo/0+sgTgkpAica5enCd7iXgIAu6K/ZsVP81TaylVhkI2EhWFWsNgdIX9UW3
+ nMMxhItt
+ bbdlKczLNnJJs8Xv4ZCv4pHNxG4+32KnTUAXYwv9RNxB39kMjwdLIKOsbSuza1be5UD4svuBSRqmtXfAM1hY3jVUaQwM2nGSBzPjC1hDiOk2zn3VYmdJnVu7hNlmtH0Ykl5G3/Z1QBA22+0uGA1HXBY0HRE8j0C/hCm9rkQMfCU6cWLRSMUDa0w/GIVQv/yoPBZzv8clpiKI0bitMpvo+L7RYnYtljIsAcVEAbtJ3c8i1ZJ5ZMDt1o9hf9aRIkZhJ+flh/KSDaH2RVROFXyKbPZNVO2BKSFolb+ENycuPQOPdOkXopx2DqMPOxPo90YPYy21WrAq4qNmFjsbIxgSyvZxGZfpmjDGRL4um1OU2MFQ1BL0U5GQzfssFAdUeO2CC4MBHCrFMB8kIIUNgFtfCt7TJlIA58FbHZO8kk/8sg+Gb8Nqf/f8lXI8l2OJng11d+NV9yjUDiHmc2qd5J/muUEsVu+bb+vX41bcPapGfV0R8X8FR+igsbzg6nNtxEjC/CP7H2+SjTGeD31QW1RwjiR65uRyEYybmdlTHokUCrNCphUVxEK4ibzdkZKWYCFdQmB03Eob4nZfWA0RHTh+km80IoDm/avjPXVcJ7v3RollT8ranaFpZe9M/PQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,439 +121,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 6, 2025 at 9:19 AM Shakeel Butt <shakeel.butt@linux.dev> wrote:
->
-> +Yosry, JP
->
-> On Wed, Nov 05, 2025 at 03:49:16PM +0800, Leon Huang Fu wrote:
-> > On high-core count systems, memory cgroup statistics can become stale
-> > due to per-CPU caching and deferred aggregation. Monitoring tools and
-> > management applications sometimes need guaranteed up-to-date statistics
-> > at specific points in time to make accurate decisions.
->
-> Can you explain a bit more on your environment where you are seeing
-> stale stats? More specifically, how often the management applications
-> are reading the memcg stats and if these applications are reading memcg
-> stats for each nodes of the cgroup tree.
->
-> We force flush all the memcg stats at root level every 2 seconds but it
-> seems like that is not enough for your case. I am fine with an explicit
-> way for users to flush the memcg stats. In that way only users who want
-> to has to pay for the flush cost.
->
+This two-patch series focuses on improving code clarity and removing
+redundancy in the huge memory handling logic related to folio splitting.
 
-Thanks for the feedback. I encountered this issue while running the LTP
-memcontrol02 test case [1] on a 256-core server with the 6.6.y kernel on XFS,
-where it consistently failed.
+The series is based on an original proposal to merge two significantly
+identical functions that check folio split support[1]. During this process, we
+found an opportunity to improve readability by explicitly defining the split
+types. 
 
-I was aware that Yosry had improved the memory statistics refresh mechanism
-in "mm: memcg: subtree stats flushing and thresholds" [2], so I attempted to
-backport that patchset to 6.6.y [3]. However, even on the 6.15.0-061500-generic
-kernel with those improvements, the test still fails intermittently on XFS.
+Patch 1: define split_type and use it
+Patch 2: merge uniform_split_supported() and non_uniform_split_supported()
 
-I've created a simplified reproducer that mirrors the LTP test behavior. The
-test allocates 50 MiB of page cache and then verifies that memory.current and
-memory.stat's "file" field are approximately equal (within 5% tolerance).
+V3:
+  * rebase on latest mm-new with Zi Yan fix [3]
+  * introduce split_type to identify uniform/non-uniform split
 
-The failure pattern looks like:
+V2: 
+  * adjust comment
+  * remove need_check
 
-  After alloc: memory.current=52690944, memory.stat.file=48496640, size=52428800
-  Checks: current>=size=OK, file>0=OK, current~=file(5%)=FAIL
+V1: [1]
 
-Here's the reproducer code and test script (attached below for reference).
+[1]: lkml.kernel.org/r/20251101021145.3676-1-richard.weiyang@gmail.com
+[2]: lkml.kernel.org/r/20251105072521.1505-1-richard.weiyang@gmail.com
+[3]: lkml.kernel.org/r/20251105162910.752266-1-ziy@nvidia.com
 
-To reproduce on XFS:
-  sudo ./run.sh --xfs
-  for i in {1..100}; do sudo ./run.sh --run; echo "==="; sleep 0.1; done
-  sudo ./run.sh --cleanup
+Wei Yang (2):
+  mm/huge_memory: introduce enum split_type for clarity
+  mm/huge_memory: merge uniform_split_supported() and
+    non_uniform_split_supported()
 
-The test fails sporadically, typically a few times out of 100 runs, confirming
-that the improved flush isn't sufficient for this workload pattern.
+ include/linux/huge_mm.h | 13 +++---
+ mm/huge_memory.c        | 97 ++++++++++++++++++-----------------------
+ 2 files changed, 51 insertions(+), 59 deletions(-)
 
-I agree that providing an explicit flush mechanism allows users who need
-guaranteed accuracy to pay the cost only when necessary, rather than imposing
-more aggressive global flushing on all users.
+-- 
+2.34.1
 
-Thanks,
-Leon
-
----
-
-Links:
-[1] https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/controllers/memcg/memcontrol02.c
-[2] https://lore.kernel.org/all/20231129032154.3710765-1-yosryahmed@google.com/
-[3] https://lore.kernel.org/linux-mm/20251103075135.20254-1-leon.huangfu@shopee.com/
-
----
-
-Reproducer code (pagecache_50m_demo.c):
-
-#define _GNU_SOURCE
-#include <errno.h>
-#include <fcntl.h>
-#include <limits.h>
-#include <stdbool.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <unistd.h>
-
-static int write_str(const char *path, const char *s) {
-    int fd = open(path, O_WRONLY | O_CLOEXEC);
-    if (fd < 0) { perror(path); return -1; }
-    ssize_t w = write(fd, s, strlen(s));
-    if (w != (ssize_t)strlen(s)) { perror("write"); close(fd); return -1; }
-    close(fd);
-    return 0;
-}
-
-static long read_long_file(const char *path) {
-    FILE *f = fopen(path, "re");
-    if (!f) { perror(path); return -1; }
-    long v = -1;
-    if (fscanf(f, "%ld", &v) != 1) v = -1;
-    fclose(f);
-    return v;
-}
-
-static long read_stat_field_bytes(const char *path, const char *key) {
-    FILE *f = fopen(path, "re");
-    if (!f) { perror(path); return -1; }
-    char *line = NULL; size_t n = 0; long val = -1;
-    while (getline(&line, &n, f) > 0) {
-        if (strncmp(line, key, strlen(key)) == 0) {
-            char *p = line + strlen(key);
-            while (*p == ' ' || *p == '\t') p++;
-            val = strtoll(p, NULL, 10);
-            break;
-        }
-    }
-    free(line);
-    fclose(f);
-    return val;
-}
-
-static int make_memcg_child(char *cg, size_t cg_sz) {
-    const char *root = "/sys/fs/cgroup";
-    int n = snprintf(cg, cg_sz, "%s/memcg_demo_%d", root, getpid());
-    if (n < 0 || n >= (int)cg_sz) {
-        fprintf(stderr, "cg path too long\n"); return -1;
-    }
-    if (mkdir(cg, 0755) && errno != EEXIST) { perror("mkdir cg"); return -1; }
-
-    // best-effort enable memory controller on parent
-    char parent[PATH_MAX];
-    strncpy(parent, cg, sizeof(parent));
-    parent[sizeof(parent)-1] = '\0';
-    char *s = strrchr(parent, '/');
-    if (s && s != parent) {
-        *s = '\0';
-        char stc[PATH_MAX];
-        n = snprintf(stc, sizeof(stc), "%s/cgroup.subtree_control", parent);
-        if (n >= 0 && n < (int)sizeof(stc)) (void)write_str(stc, "+memory");
-    }
-
-    char procs[PATH_MAX];
-    n = snprintf(procs, sizeof(procs), "%s/cgroup.procs", cg);
-    if (n < 0 || n >= (int)sizeof(procs)) { fprintf(stderr, "path too long\n"); return -1; }
-    char pidbuf[32]; snprintf(pidbuf, sizeof(pidbuf), "%d", getpid());
-    if (write_str(procs, pidbuf) < 0) return -1;
-    return 0;
-}
-
-/* Exact mirror of LTP alloc_pagecache() behavior */
-static inline void alloc_pagecache_exact(const int fd, size_t size)
-{
-    char buf[BUFSIZ];
-    size_t i;
-
-    if (lseek(fd, 0, SEEK_END) == (off_t)-1) {
-        perror("lseek"); exit(1);
-    }
-    for (i = 0; i < size; i += sizeof(buf)) {
-        ssize_t w = write(fd, buf, sizeof(buf));
-        if (w < 0) { perror("write"); exit(1); }
-        if ((size_t)w != sizeof(buf)) { fprintf(stderr, "short write\n"); exit(1); }
-    }
-}
-
-static bool approx_equal(long a, long b, double tol_frac) {
-    long diff = labs(a - b);
-    long lim = (long)((double)b * tol_frac);
-    return diff <= lim;
-}
-
-int main(int argc, char **argv) {
-    const char *mnt = (argc >= 2) ? argv[1] : ".";
-    char cg[PATH_MAX];
-    if (make_memcg_child(cg, sizeof(cg)) < 0) {
-        fprintf(stderr, "Failed to setup memcg (need root? cgroup v2?)\n");
-        return 1;
-    }
-    printf("Created cg %s\n", cg);
-
-    char p_current[PATH_MAX], p_stat[PATH_MAX];
-    int n = snprintf(p_current, sizeof(p_current), "%s/memory.current", cg);
-    if (n < 0 || n >= (int)sizeof(p_current)) { fprintf(stderr, "path too long\n"); return 1; }
-    n = snprintf(p_stat, sizeof(p_stat), "%s/memory.stat", cg);
-    if (n < 0 || n >= (int)sizeof(p_stat)) { fprintf(stderr, "path too long\n"); return 1; }
-
-    char filepath[PATH_MAX];
-    n = snprintf(filepath, sizeof(filepath), "%s/tmpfile", mnt);
-    if (n < 0 || n >= (int)sizeof(filepath)) { fprintf(stderr, "file path too long\n"); return 1; }
-
-    int fd = open(filepath, O_RDWR | O_CREAT | O_TRUNC, 0600);
-    if (fd < 0) { perror("open tmpfile"); return 1; }
-
-    long current = read_long_file(p_current);
-    printf("Created temp file: memory.current=%ld\n", current);
-
-    const size_t size = 50UL * 1024 * 1024; // 50 MiB
-    alloc_pagecache_exact(fd, size);
-
-    // No fsyncs; small wait to reduce XFS timing flakiness
-    //fsync(fd);
-    //usleep(2200000);
-
-    current = read_long_file(p_current);
-    long file_bytes = read_stat_field_bytes(p_stat, "file");
-    printf("After alloc: memory.current=%ld, memory.stat.file=%ld, size=%zu\n",
-           current, file_bytes, size);
-
-    bool ge_size = (current >= (long)size);
-    bool file_pos = (file_bytes > 0);
-
-    // Approximate LTP's values_close(..., file_to_all_error) with 5% tolerance
-    double tol = 0.05;
-    bool approx = approx_equal(current, file_bytes, tol);
-
-    printf("Checks: current>=size=%s, file>0=%s, current~=file(%.0f%%)=%s\n",
-           ge_size ? "OK" : "FAIL",
-           file_pos ? "OK" : "FAIL",
-           tol * 100,
-           approx ? "OK" : "FAIL");
-
-    close(fd);
-    return (ge_size && file_pos && approx) ? 0 : 2;
-}
-
-Build: gcc -O2 -Wall pagecache_50m_demo.c -o pagecache_50m_demo
-
-Test runner (run.sh):
-
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Config (overridable via env)
-SIZE_MB="${SIZE_MB:-500}"
-IMG="${IMG:-/var/tmp/pagecache_demo.img}"
-MNT="${MNT:-/mnt/pagecache_demo}"
-DEMO_BIN="${DEMO_BIN:-./pagecache_50m_demo}"
-STATE="${STATE:-/var/tmp/pagecache_demo.state}" # stores LOOP + FS type
-
-usage() {
-  echo "Usage:"
-  echo "  sudo $0 --ext4         Prepare ext4 loopback FS and mount it at \$MNT"
-  echo "  sudo $0 --xfs          Prepare xfs  loopback FS and mount it at \$MNT"
-  echo "  sudo $0 --btrfs        Prepare btrfs loopback FS and mount it at \$MNT"
-  echo "  sudo $0 --tmpfs        Prepare tmpfs mount at \$MNT (no image/loop)"
-  echo "  sudo $0 --run          Run demo on mounted \$MNT"
-  echo "  sudo $0 --cleanup      Unmount and remove loop/image/state"
-  echo
-  echo "Env overrides:"
-  echo "  SIZE_MB (default 256), IMG, MNT, DEMO_BIN, STATE"
-}
-
-need_root() {
-  if [[ ${EUID:-$(id -u)} -ne 0 ]]; then
-    echo "Please run as root (sudo)"
-    exit 1
-  fi
-}
-
-have_cmd() { command -v "$1" > /dev/null 2>&1; }
-
-save_state() {
-  local loop="${1:-}" fstype="$2"
-  printf 'LOOP=%q\nFSTYPE=%q\nIMG=%q\nMNT=%q\n' "$loop" "$fstype" "$IMG" "$MNT" > "$STATE"
-}
-
-load_state() {
-  if [[ ! -f "$STATE" ]]; then
-    echo "State not found: $STATE. Run --ext4/--xfs/--btrfs/--tmpfs first."
-    exit 1
-  fi
-  # shellcheck disable=SC1090
-  . "$STATE"
-  : "${FSTYPE:?}" "${IMG:?}" "${MNT:?}"
-  # LOOP may be empty for tmpfs
-}
-
-cleanup_mount() {
-  set +e
-  if mountpoint -q "$MNT"; then
-    umount "$MNT" || umount -l "$MNT"
-  fi
-  if [[ -n "${LOOP:-}" ]] && [[ -b "${LOOP:-}" ]]; then
-    losetup -d "$LOOP" 2> /dev/null || true
-  else
-    # Detach any loop using IMG as fallback
-    if [[ -f "$IMG" ]]; then
-      if losetup -j "$IMG" | grep -q .; then
-        losetup -j "$IMG" | awk -F: '{print $1}' | xargs -r -n1 losetup -d
-      fi
-    fi
-  fi
-  rmdir "$MNT" 2> /dev/null || true
-  set -e
-}
-
-cleanup_all() {
-  echo "[*] Cleaning up..."
-  if [[ -f "$STATE" ]]; then
-    load_state || true
-  fi
-  cleanup_mount
-  # For tmpfs there is no image; for others remove image
-  if [[ "${FSTYPE:-}" != "tmpfs" ]]; then
-    rm -f "$IMG"
-  fi
-  rm -f "$STATE"
-  rmdir /sys/fs/cgroup/memcg_demo_* || true
-  echo "[*] Done."
-}
-
-make_image() {
-  echo "[*] Creating sparse image: $IMG (${SIZE_MB} MiB)"
-  dd if=/dev/zero of="$IMG" bs=1M count=0 seek="$SIZE_MB" status=none
-}
-
-attach_loop() {
-  # stdout returns loop device path only
-  losetup -fP --show "$IMG"
-}
-
-ensure_loop_ready() {
-  local dev="$1"
-  if [[ -z "$dev" ]]; then
-    echo "Failed to get loop device for $IMG"
-    exit 1
-  fi
-  # udev settle
-  for _ in {1..10}; do
-    [[ -b "$dev" ]] && return 0
-    sleep 0.1
-  done
-  echo "Loop device is not a block device: $dev"
-  exit 1
-}
-
-mkfs_ext4() {
-  have_cmd mkfs.ext4 || {
-    echo "mkfs.ext4 not found"
-    exit 1
-  }
-  echo "[*] Making ext4 on $1"
-  mkfs.ext4 -F -q "$1"
-}
-
-mkfs_xfs() {
-  have_cmd mkfs.xfs || {
-    echo "mkfs.xfs not found (install xfsprogs)"
-    exit 1
-  }
-  echo "[*] Making xfs on $1"
-  mkfs.xfs -f -q "$1"
-}
-
-mkfs_btrfs() {
-  have_cmd mkfs.btrfs || {
-    echo "mkfs.btrfs not found (install btrfs-progs)"
-    exit 1
-  }
-  echo "[*] Making btrfs on $1"
-  mkfs.btrfs -f -q "$1"
-}
-
-mount_fs_dev() {
-  mkdir -p "$MNT"
-  echo "[*] Mounting $1 at $MNT"
-  mount "$1" "$MNT"
-  df -h "$MNT" || true
-}
-
-prepare_fs_loop() {
-  need_root
-  local fstype="$1" # ext4 | xfs | btrfs
-
-  rm -f "$STATE"
-  if mountpoint -q "$MNT" || losetup -j "$IMG" | grep -q . || [[ -f "$IMG" ]]; then
-    echo "[*] Previous environment detected, cleaning first..."
-    cleanup_all
-  fi
-
-  make_image
-  local loop
-  loop="$(attach_loop)"
-  ensure_loop_ready "$loop"
-
-  case "$fstype" in
-    ext4) mkfs_ext4 "$loop" ;;
-    xfs) mkfs_xfs "$loop" ;;
-    btrfs) mkfs_btrfs "$loop" ;;
-    *)
-      echo "Unknown fs: $fstype"
-      exit 1
-      ;;
-  esac
-
-  mount_fs_dev "$loop"
-  save_state "$loop" "$fstype"
-  echo "[*] Prepared $fstype at $MNT (loop=$loop)"
-}
-
-prepare_tmpfs() {
-  need_root
-  rm -f "$STATE"
-  if mountpoint -q "$MNT"; then
-    echo "[*] Unmounting previous $MNT..."
-    umount "$MNT" || umount -l "$MNT"
-  fi
-  mkdir -p "$MNT"
-  echo "[*] Mounting tmpfs at $MNT (size=${SIZE_MB}m)"
-  mount -t tmpfs -o "size=${SIZE_MB}m" tmpfs "$MNT"
-  df -h "$MNT" || true
-  save_state "" "tmpfs"
-  echo "[*] Prepared tmpfs at $MNT"
-}
-
-run_demo() {
-  need_root
-  load_state
-  if ! mountpoint -q "$MNT"; then
-    echo "Mount point not mounted: $MNT. Did you run --$FSTYPE first?"
-    exit 1
-  fi
-  if [[ ! -x "$DEMO_BIN" ]]; then
-    echo "Demo binary not found or not executable: $DEMO_BIN"
-    exit 1
-  fi
-  echo "[*] Running demo on $MNT: $DEMO_BIN $MNT"
-  "$DEMO_BIN" "$MNT"
-}
-
-case "${1:-}" in
-  --ext4) prepare_fs_loop ext4 ;;
-  --xfs) prepare_fs_loop xfs ;;
-  --btrfs) prepare_fs_loop btrfs ;;
-  --tmpfs) prepare_tmpfs ;;
-  --run) run_demo ;;
-  --cleanup) cleanup_all ;;
-  *)
-    usage
-    exit 1
-    ;;
-esac
 
