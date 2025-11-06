@@ -4,117 +4,127 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D6EBECCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 21:03:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0E254CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 21:05:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DEBD18E0005; Thu,  6 Nov 2025 16:03:14 -0500 (EST)
+	id 53F6D8E0006; Thu,  6 Nov 2025 16:05:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DC33C8E0002; Thu,  6 Nov 2025 16:03:14 -0500 (EST)
+	id 5169F8E0002; Thu,  6 Nov 2025 16:05:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CFF8F8E0005; Thu,  6 Nov 2025 16:03:14 -0500 (EST)
+	id 453A78E0006; Thu,  6 Nov 2025 16:05:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id C1C2D8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:03:14 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 446851A0296
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:03:14 +0000 (UTC)
-X-FDA: 84081407508.27.2B2893A
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
-	by imf05.hostedemail.com (Postfix) with ESMTP id 4CC34100017
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:03:12 +0000 (UTC)
-Authentication-Results: imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OHUnhMnv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762462992; a=rsa-sha256;
-	cv=none;
-	b=YD3EsmAa+IyCma+UYMkxUIYtGCo083m0AebuURSas8ThOskILbD4R/xwnLrCy6TmobM3ut
-	zWZ1mSYe60zVG9+QRT4P5vMNO4a0OHX29wAElk7+FiVu9vTvFTth/SkgW+zS+2CuMhY/6m
-	hLVJgX5NkpVcRqtfuRE4RwHIfnrY2dw=
-ARC-Authentication-Results: i=1;
-	imf05.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OHUnhMnv;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf05.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.222.171 as permitted sender) smtp.mailfrom=21cnbao@gmail.com
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 33BFA8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:05:50 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id D61F9B7848
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:05:49 +0000 (UTC)
+X-FDA: 84081414018.14.2B74BA2
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	by imf04.hostedemail.com (Postfix) with ESMTP id E784F4000D
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:05:47 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="GVD3p/Jv";
+	spf=pass (imf04.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762462992;
+	s=arc-20220608; t=1762463148;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wHypUXf5gm7cuOtbaXRtiwOqxniqg61cHX+ypA+ba/A=;
-	b=kP/gQsJ5jLhYV1vfh5hQFJnZGQXxVBxKSj+xRuyjoU33SLuUjIkv+eg+pMvnrG9uLcWi2A
-	OxeJU4aOeU/5zUxCoZdy53f2gMvqfRE/UK8gA4lBx24gihzZfZm2MhwQOlnCmN3jI9PynH
-	NjsaIZiu6sG8gOmRxLRFLb/zWMz2UUQ=
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8906eb94264so7826685a.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 13:03:12 -0800 (PST)
+	bh=q413bhrhJwOAVLfpt+EjMm9+VisP6PJcOIixFAEVSFA=;
+	b=W3zfHll/ZMUPoWz2CCrkG2ki4YZRHAMBQNUl6ZreU9CKy9q3yAa2lswl6fo4siyelD/6r/
+	QQIPAf024ZxAfeSm2rLDNMUwOeV2AW8v8VbHjm9OfUgCoNrlDDKqQeJr37oi7Oqlm2kSAr
+	xx9FhXT1eqh/n9OACBZqox+d44r5dyw=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762463148; a=rsa-sha256;
+	cv=none;
+	b=IMLq2XYBp9eakayx4qHKr+LcSYwCLALwkSVCrN3jngRduZ0vXPhBCy+jGsmVRQoEqVsFr7
+	3l7XouwVxtaHcCab0G1dF9JYsC5saP+jvWiFUldPGPEPOxm4R6Z6KJZZleUzJIBspwrmjo
+	v0ivVGkHkdToe/TaP/sn9lW9aI/6KT8=
+ARC-Authentication-Results: i=1;
+	imf04.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="GVD3p/Jv";
+	spf=pass (imf04.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.46 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3ee15b5435bso43800f8f.0
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 13:05:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762462991; x=1763067791; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wHypUXf5gm7cuOtbaXRtiwOqxniqg61cHX+ypA+ba/A=;
-        b=OHUnhMnvd7ZNulbzjvnpy+cOl/0dGAYEsGAEw+KW9/i0EQfGANpsup08SnavC8tM8p
-         SAKc0w1X4EirkapfQ89L8wuOdkt0rYFXGDBpHGxtY54Bsz3B5fmE6t1y+B85x9tvP9ZP
-         IRAXNfI3ht/RLEJ2wTMVgcX9/NozMF4CldkoH2iUk8Q5qkFgwHkg0FVdL0qtxZ7uxbnp
-         qNE3R2uGxcnmWsvUTIvCgl+C8X8ssHnD3PdIQ0JOKszebxYkeoDF7kHCS72+eaLddK1l
-         jmkAfuIRq1yW9rlSovWH8S4IK6nuOhXWpXvE5k97rhp2X3YjGUYNLfVzwDWi7usnHAcU
-         GUyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762462991; x=1763067791;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=gmail.com; s=20230601; t=1762463146; x=1763067946; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=wHypUXf5gm7cuOtbaXRtiwOqxniqg61cHX+ypA+ba/A=;
-        b=IQ1ZEIczpEipB3grnU2WYAdA62H2HMCnIuXP8GcE2brfjW8Frh09gdyphTFSfNAlwM
-         t/cz8Qw+KczNqpT0cTgUcVhVbYYukqI36V9eg7Ucj8+64/lgBPXozW2yI6UoIC44Vf02
-         Luz6UzvxiG2LKgfSZFvNc2CahotIr6nBQj6E2BJYSJZSM6xRpDSf/g0zUWTDMpfU9wzd
-         u4w+m6yd3b/QRh8X2E5wRFN0FlL4iV3wN9t1HrzqmMY/K2iUFw1IeSBPT9Xu2LzTLnzp
-         bF2uh3YsD/yGGKvrBNM3s6XFB+rCRVuFm05VpU9jRKRgox4MZhBduO5DZL6qpdplVdhk
-         eynA==
-X-Gm-Message-State: AOJu0YxsRq2Uy+mgiupecya0qxfqOAn5Kt1lv1XITy1qXIZ404cURHi6
-	o5L9RRXtVVdbEMDajwD/OEWPLy1r5YoOwm1G9IMJ5pWOllJkPDK1JP+Sl+OPT5/39BrcMtqqzWN
-	KCNhP227lDGDiYhLN/kqN6QC6wFFOYyI=
-X-Gm-Gg: ASbGncuLq981JZ3ko+f0EQJeo10QPaoHRj+sAULgmbl/B29wCbGhKQXGni4+cL7DB9y
-	pSp1zLJZXrQGknWjsHsoys6nSXMw1GYJAwdpTurPkbcXsjDdXieEehTJ+6o6xtWxf+pZ1u4IxvF
-	n1TwldHe5gNjtSq9UmPncOQjjC3qwB4Uk/AuqmeMeNOnoHAUUqLwCGoajM9P5XMF1TrdRfZwJl/
-	jdUfG93s+8XFjUYh/dTp62hC6Xwb8jBStQPQ4V+0CMAh4sBU+0zh4Wo8hfjbdwmtpetcQ8gDxUQ
-	uJ2tQ34BpUJuy9FR
-X-Google-Smtp-Source: AGHT+IEF6W6svjYvXsGYjS+AFcEKE7bp6remMWA7QdS0E7B02dPJ2qQaHz7h732U9sbkoWlRpx4v0Zot4buhHXWJ/o0=
-X-Received: by 2002:a05:620a:31a9:b0:890:ea32:2508 with SMTP id
- af79cd13be357-8b245358052mr131886885a.70.1762462991082; Thu, 06 Nov 2025
- 13:03:11 -0800 (PST)
+        bh=q413bhrhJwOAVLfpt+EjMm9+VisP6PJcOIixFAEVSFA=;
+        b=GVD3p/Jvd1nY1MM6MmabaI6muJNNsQI77wYiK4+esIKHtNrbZID3DrSFkMsSSuvXHW
+         qDqcGY8hNmZOpvO1eHO8lApXEZ4D6KGg+L1aRZg+KiuVqkrlPERxvdARxWSRwIRVMyOZ
+         QWR5WaOU8wU3pxmSVoqII8zf+wDvdiNilr33EovpaY0SHHlweGhPtJqzSV4/gAw2IvEy
+         nrdq8oRxD8qnU8VVhbON+cW4Ubw2IgFKhQ2XCmGykZ8yH5a9XvFLnxKmdtFtXE/0Zopi
+         B0ZRHvyVdThhL7n94tDUI7b47ujfVlvpMhDR/dcjE4IT9n6WMj9VxDwi3Ex9OFiX2NPu
+         yRvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762463146; x=1763067946;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q413bhrhJwOAVLfpt+EjMm9+VisP6PJcOIixFAEVSFA=;
+        b=D31G+L+9a9CiIfR7pae5ZSDVmBteitXoGtU/AKdbOzDkgCjopdObYKxuz0T6Y3SshE
+         ChR5vhdGFIJkJ4NGNTiC0SVH4MpuK5/0TEk8uhmazUSI/Xh+3VlbqmYaC1R04xaCHYCm
+         EvnOg7m7AkswTYR5buDCAHunr0Bif2yp3Qtk7DczzQE4KtzaB0WpP711oRKbjazEVfi5
+         3Ay3gGYGU+krM3MwjkwuYlhingNXgWg/XyLD9Qb+5JOQHM25m2sI2o0ZyhM1etmILWhn
+         W+N6e8jpgvjpuMmoH2K4uJ8xOMoJJF21wOxeQN0L5l2Xvn+chMgulysbuIn9ZEPf3iRV
+         us+Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVzKo7fJTqno4/5LJAhJK7XZXjuukL7EtJVChgEP7UTcgAlCmYrxjiMzNJ9RR5WpIzUdPmqvi1iMQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXH7L6gvRsn9EoZlhS2x0Y7g2pTgW6oK7bO17h6MH9xUhvpJX0
+	pnLpiF7B398OiDewtiv0FzylUKppYLBj0pFQNLejAc7sJFNgeR3vrpF8
+X-Gm-Gg: ASbGncvnsCHXvd41uKlxMeBElqVdav1t8Ah2X3PvrYQO/EjS5VyImOpNem4HSOaQ/PZ
+	D5xIGy0jXZykUmT2pAmksenbfgA/lnoe9MAEAC8IUm3YSus9NgGCHO7lzg1LiqAJRnpdaL7Dmx0
+	EZzLIbYaLjeWBamOeBhf5OyKjztSJ4uN6TNRFV6rHOrkJqk/3PWfT+9sJvzY2GPWc3SxuwT0Jvq
+	QEUaNketT10io4u4QaAn/TPC1l/yWjumQPCwq/qgGqhxHkR+dZx5m2Sz7orl7IADklxrqpceaMX
+	yim93y1rAq4RXwtxHL8H2RkMmTBiT26EHfvNYt5gaMLmJNHrxUNSU1Rj+MUFPqTGw6mc6OyfgtJ
+	rvZoItgLOxyTiamZyhggmjdbS5Prs4+X/Y7HaRggQkrPcRt6RDrnG2zZ8TeuJTofeaQeW5Fg8oQ
+	fOULYii3zE6Ix8kEz9IiWWhJ5mVJuU3LQsETuiukw=
+X-Google-Smtp-Source: AGHT+IEbAWZGXC2i989InvZLZeR310/TSzIZgHH8Ye/jSaLz4FLCazBpkgnlp2Vx7xAT+bFkyoZqJw==
+X-Received: by 2002:a05:6000:430d:b0:429:ca7f:8d73 with SMTP id ffacd0b85a97d-42adce35cbamr566921f8f.26.1762463145942;
+        Thu, 06 Nov 2025 13:05:45 -0800 (PST)
+Received: from [192.168.3.141] (p4ff1feb5.dip0.t-ipconnect.de. [79.241.254.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42abe62b1e3sm1217619f8f.4.2025.11.06.13.05.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 06 Nov 2025 13:05:45 -0800 (PST)
+Message-ID: <77a54f63-f5da-42a2-b24d-5c8a0f41d1e6@gmail.com>
+Date: Thu, 6 Nov 2025 22:05:41 +0100
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com> <20251029-swap-table-p2-v1-16-3d43f3b6ec32@tencent.com>
-In-Reply-To: <20251029-swap-table-p2-v1-16-3d43f3b6ec32@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 7 Nov 2025 05:02:59 +0800
-X-Gm-Features: AWmQ_bmLUPQCpCueKwY0y58_af-PX7oXEsnJr2BWnItkloq8GETycyLToqDjuVA
-Message-ID: <CAGsJ_4zW92dnCk6qUF9fKe+=b0dORLrBjuQC5mjq_nbTK4aT4g@mail.gmail.com>
-Subject: Re: [PATCH 16/19] mm, swap: check swap table directly for checking cache
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: madvise(MADV_COLLAPSE) fails with EINVAL on dirty file-backed
+ text pages
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>, "Garg, Shivank" <shivankg@amd.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, zokeefe@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com>
+ <8bc796e2-f652-4c12-a347-7b778ae7f899@arm.com>
+ <ozkb6mcxuymlz7tm4vcnqf266gd4ruiik2zal2koo5ffprgxfk@35godtyix2cf>
+ <43a8c8a6-388b-4c73-9a62-ee57dfb9ba5a@lucifer.local>
+From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
+Content-Language: en-US
+In-Reply-To: <43a8c8a6-388b-4c73-9a62-ee57dfb9ba5a@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: E784F4000D
+X-Stat-Signature: geqasc5t6rx4iz6sheixzo6tg4tetbso
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 4CC34100017
-X-Stat-Signature: nsknnuucuea7nhafhbnbdto5sxraa9o9
-X-HE-Tag: 1762462992-586220
-X-HE-Meta: U2FsdGVkX1+Us9/QkXVbZEI0BBgY2xbda+7oHP0WAC1f2+7mF1jf6CYZ8TnTXXzRffSug252If66A8kcXDIWRwlZEMy7x1a/qLOjKX3sBsefk09Cw5HY23xidEHfN9fsHz19rKuO7vsneBZhERD+q6u7FV8VRTpVwdBG1WVFMdrd4rUvLx2Qlh7F/UFfPiwi5KOkqg2Fu/eUv77o6X+S6sUF4+imM9OyYObtxSBqvcNanQwSDYRMreuP+403v+TMFxJA5joy6XKivrtXxMgXBYTfaJWHLVBC1qAeBwu7U8RCFC7xJ/p2RhrVBVetZX7vVPYGROWKU1QfekafpfnPhfZTDB4CFEWT8ts4yvxnqhVEBR7AgMaMV8rwPCuY0Xp2wL/kGOAlZ6oj2OLRGPXs5HS+bBWxOlUowH0mj4iYbxSfNRiX328GCMwuqd4gPVjWGjQW+qkkrkBh2fH99Nqc7Y98dA2L/+lD1ul7ZYOjwA8En7Cxtxhw5Cjr7MLJVz5jVvXK+ooIucUSBDCAtJMsJTjvhLOuyxXrZ9kPpK/0VdRMg5x/GYIXUViNLtNI02cVsumGyPmHejW6aWzGN1VUs+GHOE3UrmdqMSvR7F+tM5Ozf/yNzINVFJdXAZGex9/SUReGNmtW///iRC+YupY/DisCRmX6EbEXjWmz3TXR8MVhJgTx4jFdKQPxVFVUMHKX+a948q8IqW1fHnfsFITBWis9cYWyDX/AC+xBYU7ILw2re3p+o5UsklF5ckNKrShKAGvksqaVqKbrwK3+BTKhn15GKtsqCf8rIqr5Xg1iGg0jVzJ9+CaDd+CIbKWhp5umDalbOz0zmVO0B6jIGxD6CcChPYUNBqJSwvoxlb/JOgfDKDfbNxkzV5p+uVk7bDGqAnUTCcSXWamvuC1WI2+Ue4pSSL++xC/ytRgTqGLLRL2a89sWe/es8Bbo4b6pCAxh8L1DvyQLgnGGH7dzwHI
- b1t+hxYn
- 361T8gW6uXEB1ut9TLDDtEs90D/Lxq/3qyfXJA/O4BzieiZgBAJzUAJCx6DGEKaL9VqVKfJfuH/OWURSywEmbbQWH7jOUGQi2iR5Z2LA31+vjidqVWISrL3ujxUTepVisn35pyhH+mlQIkf5l/mhPzB/QZwOLsxXiXdDXIrOtv3Ab5JsOiPLm6VP2MehJO670FbiGfn27GqN7s6G1AiOOiDHJCwjS6QROsSyKDOlOVabOptpd37xt/dK6+aX90BLAntAinvRTPijr1lsd8OJMtg0wvQLBITXRb9FZRde1aWkO3ToJ0M75ixiZtybmyRCkkE01N3edtIL5fC5FZgmiIlphEJpmT5ws9lKPYp1OS0nV6s7uFv5glDAntSXShd4e3GAa26cqWRyflnKxBMnDoV2sXQ==
+X-HE-Tag: 1762463147-504519
+X-HE-Meta: U2FsdGVkX18lVh0UUgGUCbx63KzSKtneKjtlHX9q6iiD3gfOA1pQoKLkMrZXrVCy09+ZNl8nVwG4IuHApkeB+Ccxh9oVIHQZq7LIgfSxjlKlJV4pMsVeNXUj68mQyvd9JP8fk0pTSVQaN6FGwKnZwhxaWJhvkC+WRmmcYwAEW4J1bBJ32ukbjeBEs+slFHrdU8TwEL2uxNcvxFKqdY0pSIdq0ittIEXEP+yDFW4lUYH2cfRXB31/azJkwiTfdQRMBcy1rZohNYWcf7Wg1fWhLFFgswCw+lc9DJvqe0VyloIjEvKEGR/RMt5/7U8UoXLaVSYWM5LT6Du16qXlid0qCNRNjwhRxFsdkI0kXXVMkaiBk6elELlqwabhG0/SG/FAHm6cc1nohyXtZVASD2xR93ZRvLetwv3l8jFbtO0Y+U04UhL4RU86vyNzT/5hwjpodf49BdTaiKRR10jtyY7QK3Wo2rm1cNAAMNA6WQ0Dixk56fMuALl6lVoUq6EAU+5CCfEv4hOZv/nrOl0rYOAK2kRdkmySRFGvrlEcpzVtAZ/IdxpsAf1cvjGQPbaAbScUEKu8Z+4HVowYfH3NJEAqhfTtCrF+E9LrNvNcV9IhuxqWxDS1Qe51fSLTB+v0sJsMy/JpiiWDdhqvnPSYu1iFt6CQ+1BycSwq66qHZWFjfppMTCibB1RYiIZ3KfJsaI6cDswXoFXsPBhfOPNxBkXEIT9uymKUTelVHf+473GV64orrZU4B2QbWHjlcJSN0jLSLAWmICxj4lxG5/amykRFwKK22hVlN5v8Aah1N98/mUCIxf9nKLBNALfoVZYn94XgzTOOZWjyRjRbvrLvyh9biY2hYjFGUkQiihbUyYUxRlu6mSCqd7wmPfFjYxcmDo4nd3xLjgOWJtW03mPobc9GK3nVcClWAvarewqHaU15y6rcKUQRHF86y4+IF2OgtgdnQbjkzLG9oIznGUMAuH9
+ xRhRoty5
+ TDXjqXiROMXuRXxf+6xJuqKbcrOFoJ6h0Dn9QYODXDpYHFp2mTa9c3LsTmOx80BnIRLV6EI8zYuJEgh65L9IT1uyC2WsS+ZpxzZxzhiVePOD3ixw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,111 +133,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Oct 30, 2025 at 12:00=E2=80=AFAM Kairui Song <ryncsn@gmail.com> wro=
-te:
->
-> From: Kairui Song <kasong@tencent.com>
->
-> Instead of looking at the swap map, check swap table directly to tell
-> if a swap slot is cached. Prepares for the removal of SWAP_HAS_CACHE.
->
-> Signed-off-by: Kairui Song <kasong@tencent.com>
-> ---
->  mm/swap.h        | 11 ++++++++---
->  mm/swap_state.c  | 16 ++++++++++++++++
->  mm/swapfile.c    | 55 +++++++++++++++++++++++++++++---------------------=
------
->  mm/userfaultfd.c | 10 +++-------
->  4 files changed, 56 insertions(+), 36 deletions(-)
->
-> diff --git a/mm/swap.h b/mm/swap.h
-> index 03694ffa662f..73f07bcea5f0 100644
-> --- a/mm/swap.h
-> +++ b/mm/swap.h
-> @@ -275,6 +275,7 @@ void __swapcache_clear_cached(struct swap_info_struct=
- *si,
->   *   swap entries in the page table, similar to locking swap cache folio=
-.
->   * - See the comment of get_swap_device() for more complex usage.
->   */
-> +bool swap_cache_check_folio(swp_entry_t entry);
->  struct folio *swap_cache_get_folio(swp_entry_t entry);
->  void *swap_cache_get_shadow(swp_entry_t entry);
->  void swap_cache_del_folio(struct folio *folio);
-> @@ -335,8 +336,6 @@ static inline int swap_zeromap_batch(swp_entry_t entr=
-y, int max_nr,
->
->  static inline int non_swapcache_batch(swp_entry_t entry, int max_nr)
->  {
-> -       struct swap_info_struct *si =3D __swap_entry_to_info(entry);
-> -       pgoff_t offset =3D swp_offset(entry);
->         int i;
->
->         /*
-> @@ -345,8 +344,9 @@ static inline int non_swapcache_batch(swp_entry_t ent=
-ry, int max_nr)
->          * be in conflict with the folio in swap cache.
->          */
->         for (i =3D 0; i < max_nr; i++) {
-> -               if ((si->swap_map[offset + i] & SWAP_HAS_CACHE))
-> +               if (swap_cache_check_folio(entry))
->                         return i;
-> +               entry.val++;
->         }
->
->         return i;
-> @@ -449,6 +449,11 @@ static inline int swap_writeout(struct folio *folio,
->         return 0;
->  }
->
-> +static inline bool swap_cache_check_folio(swp_entry_t entry)
-> +{
-> +       return false;
-> +}
-> +
->  static inline struct folio *swap_cache_get_folio(swp_entry_t entry)
->  {
->         return NULL;
-> diff --git a/mm/swap_state.c b/mm/swap_state.c
-> index 85d9f99c384f..41d4fa056203 100644
-> --- a/mm/swap_state.c
-> +++ b/mm/swap_state.c
-> @@ -103,6 +103,22 @@ struct folio *swap_cache_get_folio(swp_entry_t entry=
-)
->         return NULL;
->  }
->
-> +/**
-> + * swap_cache_check_folio - Check if a swap slot has cache.
-> + * @entry: swap entry indicating the slot.
-> + *
-> + * Context: Caller must ensure @entry is valid and protect the swap
-> + * device with reference count or locks.
-> + */
-> +bool swap_cache_check_folio(swp_entry_t entry)
-> +{
-> +       unsigned long swp_tb;
-> +
-> +       swp_tb =3D swap_table_get(__swap_entry_to_cluster(entry),
-> +                               swp_cluster_offset(entry));
-> +       return swp_tb_is_folio(swp_tb);
-> +}
-> +
+On 06.11.25 18:17, Lorenzo Stoakes wrote:
+> On Thu, Nov 06, 2025 at 11:55:05AM -0500, Liam R. Howlett wrote:
+>> * Ryan Roberts <ryan.roberts@arm.com> [251106 11:33]:
+>>> On 06/11/2025 12:16, Garg, Shivank wrote:
+>>>> Hi All,
+>>>>
+>>>> I've been investigating an issue with madvise(MADV_COLLAPSE) for TEXT pages
+>>>> when CONFIG_READ_ONLY_THP_FOR_FS=y is enabled, and would like to discuss the
+>>>> current behavior and improvements.
+>>>>
+>>>> Problem:
+>>>> When attempting to collapse read-only file-backed TEXT sections into THPs
+>>>> using madvise(MADV_COLLAPSE), the operation fails with EINVAL if the pages
+>>>> are marked dirty.
+>>>> madvise(aligned_start, aligned_size, MADV_COLLAPSE) -> returns -1 and errno = -22
+>>>>
+>>>> Subsequent calls to madvise(MADV_COLLAPSE) succeed because the first madvise
+>>>> attempt triggers filemap_flush() which initiates async writeback of the dirty folios.
+>>>>
+>>>> Root Cause:
+>>>> The failure occurs in mm/khugepaged.c:collapse_file():
+>>>> } else if (folio_test_dirty(folio)) {
+>>>>      /*
+>>>>       * khugepaged only works on read-only fd,
+>>>>       * so this page is dirty because it hasn't
+>>>>       * been flushed since first write. There
+>>>>       * won't be new dirty pages.
+>>>>       *
+>>>>       * Trigger async flush here and hope the
+>>>>       * writeback is done when khugepaged
+>>>>       * revisits this page.
+>>>>       */
+>>>>      xas_unlock_irq(&xas);
+>>>>      filemap_flush(mapping);
+>>>>      result = SCAN_FAIL;
+>>>>      goto xa_unlocked;
+>>>> }
+>>>>
+>>>> Why the text pages are dirty?
+>>>
+>>> This is the real question to to answer, I think...
+>>
+>> Agree with Ryan here, let's stop things from being marked dirty if they
+>> are not.
+> 
+> Hmm I wonder if we have some broken assumptions in khugepaged for MAP_PRIVATE
+> mappings.
+> 
+> collapse_single_pmd()
+> -> collapse_scan_file() if not vma_is_anonymous() (it won't be)
+> -> collapse_file()
+> -> the snippet above.
+> 
+> But that could be running on an anon folio...
+> 
+> Yup given it's CONFIG_READY_ONLY_THP_FOR_FS that is strange. We are confounding
+> expectations here surely?
+> 
+> Presumably it's because these are MAP_PRIVATE mappings, so this is an anon folio
+> but then collapse_file() goes into the snippet above and gets very confused.
+> 
+> Do we need to add a folio_test_anon() here?
+> 
+> Unless I'm missing something... (very possible, am only glancing over the code
+> here)
 
-The name swap_cache_check_folio() sounds a bit odd to me =E2=80=94 what we=
-=E2=80=99re
-actually doing is checking whether the swapcache contains (or is)
-a folio, i.e., whether there=E2=80=99s a folio hit in the swapcache.
-The word "check" could misleadingly suggest verifying the folio=E2=80=99s h=
-ealth
-or validity instead.
+collapse_file() operates exclusively on the pagecache.
 
-what about swap_cache_has_folio() or simply:
+I think we only start working on the actual page tables when calling
+retract_page_tables().
 
-struct folio *__swap_cache_get_folio(swp_entry_t entry);
+In there, we have this code, when iterating over page tables belonging
+to the mapping:
 
-This would return the folio without taking the lock, or NULL if not found?
+		/*
+		 * The lock of new_folio is still held, we will be blocked in
+		 * the page fault path, which prevents the pte entries from
+		 * being set again. So even though the old empty PTE page may be
+		 * concurrently freed and a new PTE page is filled into the pmd
+		 * entry, it is still empty and can be removed.
+		 *
+		 * So here we only need to recheck if the state of pmd entry
+		 * still meets our requirements, rather than checking pmd_same()
+		 * like elsewhere.
+		 */
+		if (check_pmd_state(pmd) != SCAN_SUCCEED)
+			goto drop_pml;
+		ptl = pte_lockptr(mm, pmd);
+		if (ptl != pml)
+			spin_lock_nested(ptl, SINGLE_DEPTH_NESTING);
 
-Thanks
-Barry
+		/*
+		 * Huge page lock is still held, so normally the page table
+		 * must remain empty; and we have already skipped anon_vma
+		 * and userfaultfd_wp() vmas.  But since the mmap_lock is not
+		 * held, it is still possible for a racing userfaultfd_ioctl()
+		 * to have inserted ptes or markers.  Now that we hold ptlock,
+		 * repeating the anon_vma check protects from one category,
+		 * and repeating the userfaultfd_wp() check from another.
+		 */
+		if (likely(!vma->anon_vma && !userfaultfd_wp(vma))) {
+			pgt_pmd = pmdp_collapse_flush(vma, addr, pmd);
+			pmdp_get_lockless_sync();
+			success = true;
+		}
+
+Given !vma->anon_vma, we cannot have anon folios in there.
+
+Given !userfaultfd_wp(vma), we cannot have uffd-wp markers in there.
+
+Given that all folios in the range we are collapsing where unmapped, we cannot have
+them mapped there.
+
+So the conclusion is that the page table must be empty and can be removed.
+
+
+Could guard markers be in there?
 
