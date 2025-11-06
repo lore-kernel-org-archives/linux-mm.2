@@ -4,116 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3EEC6CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 02:39:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24723CCFA0D
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 02:44:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CDE48E000B; Wed,  5 Nov 2025 21:39:21 -0500 (EST)
+	id 668B58E000F; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 87EAD8E0002; Wed,  5 Nov 2025 21:39:21 -0500 (EST)
+	id 640978E0002; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 76DF28E000B; Wed,  5 Nov 2025 21:39:21 -0500 (EST)
+	id 5565F8E000F; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 631B78E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:39:21 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 08E6D88E0D
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:39:21 +0000 (UTC)
-X-FDA: 84078625722.04.0D5B0FD
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
-	by imf15.hostedemail.com (Postfix) with ESMTP id 09007A0012
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:39:18 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRq4aCoQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762396759; a=rsa-sha256;
-	cv=none;
-	b=jOqPKbYsuNeM8XAZzM+txPVx3WlsYh8egV9CkzMXFPPNbDJvMZzb0y6OFy8Rq/+K4hs2Tb
-	lancW7gg0P2okYYq5NZM7wXuzS3uJ+lfANPP7ZlROFbwoEREL4O2iQuMDK/wYMkwUo6mgP
-	o+Br2dgT+66rp0pjAo0FZKsY9rQa/wQ=
-ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YRq4aCoQ;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf15.hostedemail.com: domain of alexei.starovoitov@gmail.com designates 209.85.221.53 as permitted sender) smtp.mailfrom=alexei.starovoitov@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id 442528E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 21:44:22 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id E4E99B9E93
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:44:21 +0000 (UTC)
+X-FDA: 84078638322.28.691051D
+Received: from canpmsgout04.his.huawei.com (canpmsgout04.his.huawei.com [113.46.200.219])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 95FDF180006
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 02:44:18 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xgwHqogv;
+	spf=pass (imf16.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762396759;
+	s=arc-20220608; t=1762397060;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=ewoAJCSF8NH/dTxpovl4STEPgaBdVGC9xI+etM7pZH8=;
-	b=DHk+3SsU/izScnr+ZRnueIcE/HPNXUOI5eekn0AQQ3Q1B5ZupJT3RxwvTwaqeIi9iR8C4R
-	xmihHoPqGoWPutc+3//48F727H5uH9Gi+ocKnjQEk+ORwIsPoF7DC2fF6xNbKhdh9bJORj
-	RMn+mx6fgWGuT9Kv7Pb3h6QIEUZ3t6k=
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-3ecdf2b1751so295478f8f.0
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 18:39:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762396757; x=1763001557; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ewoAJCSF8NH/dTxpovl4STEPgaBdVGC9xI+etM7pZH8=;
-        b=YRq4aCoQknv9aLXLQnz+ijsDPFu9Q5hinod59siCv7dVwc1XsU4iUl6IV+NmV4abCk
-         ezMbpk128C1/yWlS0EIp2SdTcwL0EAR/AFPh+RWUM+qk9RaQaMlDlm+Gha9heWtMD6Nu
-         M/bnyTTN2NpmoSiKmPAeg6RY/GxPAOafciQlnduGwlQb+PY0TCzNnVh0vReCNBoIr9UY
-         VrQI66mfckhO/yTEBs65wWuL1FIrvy34usf5g574vL0mPSoMEhhejHz1nwZ1XUs/n6OF
-         v490+mRcfDiyWtrvjV/gmfWK6tKvzlXJO9P+3QECNnQu7Zu+NTo+QdMvIPjFBklw+0N+
-         pAEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762396757; x=1763001557;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ewoAJCSF8NH/dTxpovl4STEPgaBdVGC9xI+etM7pZH8=;
-        b=lKFEwL9Cf5p99Q/mjpb2IwdkuUyip5zpBzbhJtDqF5RYOR/uDlsjraZaNlDrrFgrP8
-         r6emCw9IAkJrgbU0Fip0V8attlViSciJPPmq9TPPzQ1Fppllk3KEk+SC5KrcgXwpMMQL
-         0VDN57r0RyjeRx+AtjU7Ikc6cFDnqfCTmcOohnOE+bhtY6VBKpRHFuWp1fO3Wt5bVXuS
-         15DuRWoI2cEiQn2YqvyZNtFVZWRQbe0nl1YYXqGkJQIWa8MVQcxkrKghVMylR4xKSLVb
-         XLKuUNUNKDVQmRss8EycHsnjLndoSkiLIda0cigZ7v26xtRMNj/q05PXwfxjZeZSlMHA
-         G03A==
-X-Forwarded-Encrypted: i=1; AJvYcCUDzOu9AMvxNKIenBPSuorMDXfTAHyh4oIo9qnW6meNWGchG/uU27+5IkckGUjLOffjj0VQufQFQw==@kvack.org
-X-Gm-Message-State: AOJu0YxMBQ/j1xor0MDFzfyl8BT5IZCSq79mV70ahqZnlLC8SyOoZdVh
-	oLK3Ytfu9p5sV5zs6KNAMi2KwcI03M0lac+VAHpJFTSNKhy8xq3hJOrI/XsKQT8x7PFfOXmgRQb
-	HcKYpyOOibVuYW5eY3Ewv9V4qgOgOD0U=
-X-Gm-Gg: ASbGnctbEPeHDLXFNECKdAD9gCxUk8COvGOfI2qwHue+9UTnjrLFnO2TjoHEsOS0FFv
-	NpM7TEwmR0sI+AScdFJTm00HQyZqMLaXoJ5yG3PYwfJLHsDDhphOVihGVkJMHuHhq4lEjYjvH8K
-	OArg68JOycEVnHceZXNDOss5+XfKwSYbee42vkXKg8ND2g9kNVAyc8gi4UeodVdK1l2c22uIsEg
-	1RPjkBSrRwcZ64AGUPI+AwcNw/aCiOkcxnlvUmWByfqXmDrLw860p49m4eSCdsy6c/wUWPt2pA8
-	RLSuzdkXBqNC33aiIV1CbYil18qV
-X-Google-Smtp-Source: AGHT+IEMYxYr58b+9gWCWiOxY19wV2YuCXhlo+gockn3ye5gvJ4AIE1Hket4divhHgZldaCGzsJU+k/vwey2D9OfBOE=
-X-Received: by 2002:a05:6000:2dca:b0:425:75c6:7125 with SMTP id
- ffacd0b85a97d-429e32e36eamr4631215f8f.16.1762396757374; Wed, 05 Nov 2025
- 18:39:17 -0800 (PST)
+	bh=SmiGeerJpItekeBrZ0vp8zm0YzZ1kocpU6u3YhL4BMc=;
+	b=iMgatINTJ1O3J0zwTrpdfm/FlbTdSC0mqSLYGiCvfIoz8vHr5Oz1M1oXR33ZI/bHTmWxf9
+	MSqhtJ0HtU8l34DszXs0/yfxGpmzhFtf884McUSq+C4te8926yOhCl28tYoWRZB+OaoEZc
+	3ypBSLRO7cCHlUAEnox4jrRqfoAf7NI=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=huawei.com header.s=dkim header.b=xgwHqogv;
+	spf=pass (imf16.hostedemail.com: domain of libaokun1@huawei.com designates 113.46.200.219 as permitted sender) smtp.mailfrom=libaokun1@huawei.com;
+	dmarc=pass (policy=quarantine) header.from=huawei.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762397060; a=rsa-sha256;
+	cv=none;
+	b=FLtY0/PZC9T9s8kPcR/BaLoCSRNO3euSxK5Mh+HvYL3cxi/5juylyvETzimij1PMgqeno0
+	O52YntQ/cIcINTKwTHW9ZGd93uweMnkGcN+A+4h6v9Ax0U1wTxvAGZ212QNT36EH3Z2l7p
+	I+DC3z672x9GqMI8vaDinjX+kE/W/rg=
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=SmiGeerJpItekeBrZ0vp8zm0YzZ1kocpU6u3YhL4BMc=;
+	b=xgwHqogvKdjdSjQOEiNXt3yMJngtWo0Y3iXn2mRqv7EpqxcVd312T/rdqLXC8B4Ld5dCDQJdA
+	X16AvLmzek4Fl5/+heqACTw+WUdIqjjuNZrTxJVMbinUXaT0bUyaJ/Ii3lrIm7lg+Ev+H+0MyZb
+	Uq/4Xu/yXujZiDi+0Wfnd1s=
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by canpmsgout04.his.huawei.com (SkyGuard) with ESMTPS id 4d261908K0z1prKm;
+	Thu,  6 Nov 2025 10:42:37 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4B608140276;
+	Thu,  6 Nov 2025 10:44:13 +0800 (CST)
+Received: from [127.0.0.1] (10.174.178.254) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 6 Nov
+ 2025 10:44:12 +0800
+Message-ID: <242f4438-d84d-46a6-86fe-8629c7e028cf@huawei.com>
+Date: Thu, 6 Nov 2025 10:44:11 +0800
 MIME-Version: 1.0
-References: <20251105-sheaves-cleanups-v1-0-b8218e1ac7ef@suse.cz> <20251105-sheaves-cleanups-v1-2-b8218e1ac7ef@suse.cz>
-In-Reply-To: <20251105-sheaves-cleanups-v1-2-b8218e1ac7ef@suse.cz>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Wed, 5 Nov 2025 18:39:06 -0800
-X-Gm-Features: AWmQ_bnDlj12yke_m0UY9rM9to7dPxs3SzBTZ6_PfSj5mhKDDRMWfaCanTzBLeU
-Message-ID: <CAADnVQJY_iZ5a1_GbZ7HUot7tMwpxFyABEdrRU3tcMWPnVyGjg@mail.gmail.com>
-Subject: Re: [PATCH 2/5] slab: move kfence_alloc() out of internal bulk alloc
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Christoph Lameter <cl@gentwo.org>, 
-	David Rientjes <rientjes@google.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Harry Yoo <harry.yoo@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Alexei Starovoitov <ast@kernel.org>, linux-mm <linux-mm@kvack.org>, 
-	LKML <linux-kernel@vger.kernel.org>, bpf <bpf@vger.kernel.org>, 
-	kasan-dev <kasan-dev@googlegroups.com>, Alexander Potapenko <glider@google.com>, 
-	Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 25/25] ext4: enable block size larger than page size
+Content-Language: en-GB
+To: Jan Kara <jack@suse.cz>
+CC: <linux-ext4@vger.kernel.org>, <tytso@mit.edu>, <adilger.kernel@dilger.ca>,
+	<linux-kernel@vger.kernel.org>, <kernel@pankajraghav.com>,
+	<mcgrof@kernel.org>, <linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <chengzhihao1@huawei.com>,
+	<libaokun1@huawei.com>, Baokun Li <libaokun@huaweicloud.com>
+References: <20251025032221.2905818-1-libaokun@huaweicloud.com>
+ <20251025032221.2905818-26-libaokun@huaweicloud.com>
+ <yp4gorgjhh6c3qeopjabmknimeifhnpbz63irrrtjpplatnk4k@ycofoucc4ry3>
+From: Baokun Li <libaokun1@huawei.com>
+In-Reply-To: <yp4gorgjhh6c3qeopjabmknimeifhnpbz63irrrtjpplatnk4k@ycofoucc4ry3>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.254]
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
+X-Rspamd-Queue-Id: 95FDF180006
+X-Stat-Signature: is3m96wnbobyne4th53zw1hkjzaos7yk
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 09007A0012
-X-Stat-Signature: q3taqafwdw7yu7pfmfp8dwubt1dmc9j9
-X-HE-Tag: 1762396758-100424
-X-HE-Meta: U2FsdGVkX1/WBYgdbIdDEKuFxpz7u6b3AJiH9XEzNc/s6WCZwxMQ3ySQWs8LezRzfJsBdtl9oIXK06g7TD5N7lO4AJSHb+XUo7iq+ZGdVGZfUBPxX9TQWz64mGPAX9jxMNKi4uQbj+PhgvDBRxPUP3sqaiqRKrPlTuT84R0m9ih5FsAAIMxs7ChTv+YoQgKhOerNq7avTJ+O2tmdrFuIgdCxFWr69QWnorSolOfYj14Vb2Fd9MkFj7bdLL7S4yinC/iuvykW97FqrqbRpXuDm7OLBktrPoTm/xMtYkL7TRAh8RHXOKetKrqDsPXWQjVGDzJoVInLNwqH3KQ2vo2xg9BPeNouuvPYpdd2amWgijw2+ze5CdOLtI8XKXKRAZej3dX6DYUYbUrDo9AMx51YV9u7EK5RvI9Jrmq71+wvQCoNa9rp4VM0IdTHQNOjMjGbzQ9FGhbi+0JaeyrKvNa8IVWyMvySm00ppNH/zmbsHy8kwRhT7zpJrwlja5fMXa0aafc5EMdaf1eYhPJnH83YLbZ5hm7kETO0AMZhAEE2sC4P8BMcAZpCySyHKCEsZYKnYwJfoY3OzgEq7OyxIH+McOEDINUACQFYbos+PJ4dltlll67EGaWYkqG5Q9pfM5fX8btLgCb4E5JbuYHTa3awiP5CLzqcNZ1POtLrvqHEpy/Mnl+2BEoulO1ryNXDCtMCd6UyF2R8RF2uwFf1cMHy2M45BBhhGWEgJKQFEGj9GqhU2gsYQSYfQDOL7z94UQ9ZGEso+xgxd+7mDhv7HTdVWUEu/0xpfW4nsGslMCUM9rxAekZ0p4fY4AbEq5c7Yj0nUsndsONckG79+X+AUmVByMbY4D6JzQTDnnkgKFxAeF+RQ62pEZ4fnRCZePU5oeZfZeLDQe9jtFmZX4vU8mz9ijxZpd0Oc4LWHnS2Up/XL8BuChCPDZq0qY4mDBOj5J13RHDhhkFtqGgMRAhuVsy
- 6cgjlhLm
- fAEeAYrcUOhBodLM0p+HCOcjEUtWq4z+jCwgOB7ZRNnYHyu2PA1jppTbWt8TJim6xyg0S0SDyKVdBcK3bjb6tmrL2NZCbRN/RcMLAjdusuKCSfhBjhtP1ll1iC67i43iuGs4J0YZn0GJAzFU0zA0oZjKM9vH8a9/8MD6pDsMo587lcycC/DdyRamWeI4+rnXUHdOVqXqLlRnfbh4twxZOl3cLEAk8H5pov8yrONn22TfN3Del1nGNsQGnDWoro1raPxPy+SIzjkj7DmXF5vppYNKmOlQ3Fl9znq0So9wtYiq1/N0a2YaR3pPtGmg+iHC8tEv6/vnKamtumwdIGdEuzpQ3/AqHYn/Jh6Zp/tKRjE8OJtbf6DabsV/hnkv6MWtZc2pZ569XCx3SJzUAnDXnuyH93chMFFH1VzqdCAd47HUVLesUcX7OllbcNTpdtuDBD3cVUHWdiy3tAuoiZAY9Gy5hmGkCLiUbDu0husW0d3211rQMvwmX2P9Uaw==
+X-HE-Tag: 1762397058-140660
+X-HE-Meta: U2FsdGVkX18ZdVXUXjUp9IljzqJV2fQYcXqUD0yzzWlFUGjUtU59I441FuBRHGfuG8fFtnSe48Kaidp8x+HqinFtFMRsNdsB3WZPqcOjuLpXZyd8sb1Yz2nST8gvXLLvwqgz7VOA+DDO4CF/od7u6JLzbYnx5ccH38R4GdUwaBbcda+uzZ40pdrdBPjDFBMIW9pQX1WXFYyL+4opavgQ04MuM7HViCPtdvT1+KZ7mLqCNYL3acHEHYT2qphza64rd1clATISg8U3wGNdRt+f6nHA3cgiCjnDAp6iGbFbXQQDqofuVMV9H0ndxUfrdZTBnuuxm5KQFRenlLluZgsakru+LbGdEHMmZ5hUahGrDMzeMCO3AH/uzIaJ723VVgBMKn33YGPPoVrKCmwX8BBnALMWMuyKXhUnX8fj9GCTNKmwyC2gjI/wdvrAD3K5L6ExVJ0X8LpkN9Zj7xoeCq699VX9fPCeUQyhmjSvfknvoHYI1i9W5hLrqq7PDcGfUT0LDZK23zmLsCm/YDhajvzqaO7oHARhhxKW3IMC/L2KOD7VYhFJn1FLTbTxSmmr73sycHLknQi97cwjpCTxCe28D0uwWYSjCzE4jsaHwLWUUrvnVOD0Oq8t1Sy8/IspS2dnc4O9E0vAy61kNmDNkXtMx+IAYgzIMHBJbRvyX0wmo28WnONWHIWSTY34xNh7tfvX0csXFVJGbBvm2ODJHhPO2GBBoj+bnQYhd5kp/qvnmaB5eddlH1FFj+8XCTxp3tAQrA04z3x/quzcWmB0aBYyxvCU+q5HS1l7VVCuLuDkeA9HvuUEeMYFQRViwvm0jUx87NxXR2F0Ca5QOflDRlJQT8EYrOEZMzYJo6NcvbHIJZ7SNhuvtJ+oGGIwfKxcNZ9zKr0IBm37iPhNeKNaxBMz3n2CkIKiQIP2gteAd2Yc9Ul+SE2P3ZGXxNRfg8tFgMKVvC3nj93eOYuZqaEm1G3
+ Hbbxw7zM
+ QDZ4e2cyGT6a/QTiTUoK+qzo69YFE9AQYsGWM0Hz0PPvSSfkV/rN0M+M30xmmytnbiN1j2x/YxOygRHjuUOhEQ5FeCsyi96RPc03H+Xn/q7HIE0ODzIbybanlW52RFSyymnzGr1nfkR4iYcd4wxERv0Z8c3WOB7Gz1xnkYnycvE0AlNUI0tU0xbhUoEj0L68giM0ZcVzpwreF7gUM/jbAhgpSEbcwgFcnAQpj5MqorPjL5xVbqFHmQqVVaYFz/ID2hVP5RRrBCD83oVa2vH0DyoBl5e0uAB93pw01iTjvJmwvZVTbUc1hurE7nrHzkQ3Dl2a9BfvVNuy3aC0xf09FCa/nI6OFkPEsYPSPKEWxXQbWzX1et+djI6D12IQcq0dwGSgh8JOgBzZiuayIRXDmM6WK+vT4ubEuYYKpqf/7DMOERiLUr7hYu1eR+Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,70 +104,97 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 5, 2025 at 1:05=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wro=
-te:
+On 2025-11-05 18:14, Jan Kara wrote:
+> On Sat 25-10-25 11:22:21, libaokun@huaweicloud.com wrote:
+>> From: Baokun Li <libaokun1@huawei.com>
+>>
+>> Since block device (See commit 3c20917120ce ("block/bdev: enable large
+>> folio support for large logical block sizes")) and page cache (See commit
+>> ab95d23bab220ef8 ("filemap: allocate mapping_min_order folios in the page
+>> cache")) has the ability to have a minimum order when allocating folio,
+>> and ext4 has supported large folio in commit 7ac67301e82f ("ext4: enable
+>> large folio for regular file"), now add support for block_size > PAGE_SIZE
+>> in ext4.
+>>
+>> set_blocksize() -> bdev_validate_blocksize() already validates the block
+>> size, so ext4_load_super() does not need to perform additional checks.
+>>
+>> Here we only need to enable large folio by default when s_min_folio_order
+>> is greater than 0 and add the FS_LBS bit to fs_flags.
+>>
+>> In addition, mark this feature as experimental.
+>>
+>> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+>> Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+> ...
 >
-> SLUB's internal bulk allocation __kmem_cache_alloc_bulk() can currently
-> allocate some objects from KFENCE, i.e. when refilling a sheaf. It works
-> but it's conceptually the wrong layer, as KFENCE allocations should only
-> happen when objects are actually handed out from slab to its users.
+>> diff --git a/fs/ext4/inode.c b/fs/ext4/inode.c
+>> index 04f9380d4211..ba6cf05860ae 100644
+>> --- a/fs/ext4/inode.c
+>> +++ b/fs/ext4/inode.c
+>> @@ -5146,6 +5146,9 @@ static bool ext4_should_enable_large_folio(struct inode *inode)
+>>  	if (!ext4_test_mount_flag(sb, EXT4_MF_LARGE_FOLIO))
+>>  		return false;
+>>  
+>> +	if (EXT4_SB(sb)->s_min_folio_order)
+>> +		return true;
+>> +
+> But now files with data journalling flag enabled will get large folios
+> possibly significantly greater that blocksize. I don't think there's a
+> fundamental reason why data journalling doesn't work with large folios, the
+> only thing that's likely going to break is that credit estimates will go
+> through the roof if there are too many blocks per folio. But that can be
+> handled by setting max folio order to be equal to min folio order when
+> journalling data for the inode.
 >
-> Currently for sheaf-enabled caches, slab_alloc_node() can return KFENCE
-> object via kfence_alloc(), but also via alloc_from_pcs() when a sheaf
-> was refilled with KFENCE objects. Continuing like this would also
-> complicate the upcoming sheaf refill changes.
+> It is a bit scary to be modifying max folio order in
+> ext4_change_inode_journal_flag() but I guess less scary than setting new
+> aops and if we prune the whole page cache before touching the order and
+> inode flag, we should be safe (famous last words ;).
 >
-> Thus remove KFENCE allocation from __kmem_cache_alloc_bulk() and move it
-> to the places that return slab objects to users. slab_alloc_node() is
-> already covered (see above). Add kfence_alloc() to
-> kmem_cache_alloc_from_sheaf() to handle KFENCE allocations from
-> prefilled sheafs, with a comment that the caller should not expect the
-> sheaf size to decrease after every allocation because of this
-> possibility.
->
-> For kmem_cache_alloc_bulk() implement a different strategy to handle
-> KFENCE upfront and rely on internal batched operations afterwards.
-> Assume there will be at most once KFENCE allocation per bulk allocation
-> and then assign its index in the array of objects randomly.
->
-> Cc: Alexander Potapenko <glider@google.com>
-> Cc: Marco Elver <elver@google.com>
-> Cc: Dmitry Vyukov <dvyukov@google.com>
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
->  mm/slub.c | 44 ++++++++++++++++++++++++++++++++++++--------
->  1 file changed, 36 insertions(+), 8 deletions(-)
->
-> diff --git a/mm/slub.c b/mm/slub.c
-> index 074abe8e79f8..0237a329d4e5 100644
-> --- a/mm/slub.c
-> +++ b/mm/slub.c
-> @@ -5540,6 +5540,9 @@ int kmem_cache_refill_sheaf(struct kmem_cache *s, g=
-fp_t gfp,
->   *
->   * The gfp parameter is meant only to specify __GFP_ZERO or __GFP_ACCOUN=
-T
->   * memcg charging is forced over limit if necessary, to avoid failure.
-> + *
-> + * It is possible that the allocation comes from kfence and then the she=
-af
-> + * size is not decreased.
->   */
->  void *
->  kmem_cache_alloc_from_sheaf_noprof(struct kmem_cache *s, gfp_t gfp,
-> @@ -5551,7 +5554,10 @@ kmem_cache_alloc_from_sheaf_noprof(struct kmem_cac=
-he *s, gfp_t gfp,
->         if (sheaf->size =3D=3D 0)
->                 goto out;
->
-> -       ret =3D sheaf->objects[--sheaf->size];
-> +       ret =3D kfence_alloc(s, s->object_size, gfp);
-> +
-> +       if (likely(!ret))
-> +               ret =3D sheaf->objects[--sheaf->size];
+Good point! This looks feasible.
 
-Judging by this direction you plan to add it to kmalloc/alloc_from_pcs too?
-If so it will break sheaves+kmalloc_nolock approach in
-your prior patch set, since kfence_alloc() is not trylock-ed.
-Or this will stay kmem_cache specific?
+We just need to adjust the folio order range based on the journal data,
+and in ext4_inode_journal_mode only ignore the inode’s journal data flag
+when max_order > min_order.
+
+I’ll make the adaptation and run some tests.
+Thank you for your review!
+
+
+Cheers,
+Baokun
+
+>
+>>  	if (!S_ISREG(inode->i_mode))
+>>  		return false;
+>>  	if (ext4_test_inode_flag(inode, EXT4_INODE_JOURNAL_DATA))
+>> diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+>> index fdc006a973aa..4c0bd79bdf68 100644
+>> --- a/fs/ext4/super.c
+>> +++ b/fs/ext4/super.c
+>> @@ -5053,6 +5053,9 @@ static int ext4_check_large_folio(struct super_block *sb)
+>>  		return -EINVAL;
+>>  	}
+>>  
+>> +	if (sb->s_blocksize > PAGE_SIZE)
+>> +		ext4_msg(sb, KERN_NOTICE, "EXPERIMENTAL bs(%lu) > ps(%lu) enabled.",
+>> +			 sb->s_blocksize, PAGE_SIZE);
+>>  	return 0;
+>>  }
+>>  
+>> @@ -7432,7 +7435,8 @@ static struct file_system_type ext4_fs_type = {
+>>  	.init_fs_context	= ext4_init_fs_context,
+>>  	.parameters		= ext4_param_specs,
+>>  	.kill_sb		= ext4_kill_sb,
+>> -	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME,
+>> +	.fs_flags		= FS_REQUIRES_DEV | FS_ALLOW_IDMAP | FS_MGTIME |
+>> +				  FS_LBS,
+>>  };
+>>  MODULE_ALIAS_FS("ext4");
+>>  
+>> -- 
+>> 2.46.1
+>>
+
 
