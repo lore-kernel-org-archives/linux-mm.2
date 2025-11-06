@@ -4,117 +4,212 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B4ACCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 17:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 96142CCFA13
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 18:01:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 48DEE8E0005; Thu,  6 Nov 2025 12:46:09 -0500 (EST)
+	id D3E0D8E000A; Thu,  6 Nov 2025 13:01:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 43EB78E0002; Thu,  6 Nov 2025 12:46:09 -0500 (EST)
+	id D15B58E0002; Thu,  6 Nov 2025 13:01:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 32D968E0005; Thu,  6 Nov 2025 12:46:09 -0500 (EST)
+	id C04A98E000A; Thu,  6 Nov 2025 13:01:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 210148E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 12:46:09 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B091C1401A9
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 17:46:08 +0000 (UTC)
-X-FDA: 84080910816.16.EAD9F44
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-	by imf15.hostedemail.com (Postfix) with ESMTP id DBCE1A001A
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 17:46:06 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mLV2Tt9Z;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id AF6BD8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 13:01:32 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3980B139D5D
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 18:01:32 +0000 (UTC)
+X-FDA: 84080949624.24.10E8685
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 51B3620020
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 18:01:30 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WB7yYBKU;
+	spf=pass (imf03.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762451167;
+	s=arc-20220608; t=1762452090;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=XuqL/Wl9e/NoH3ehwAFRAdXC+fJYyatKnRax3XLipPU=;
-	b=NSaoOGmsfVW6OjUrbH7bwGSz9rqg5R/fXjuop2yEp3Fd+okJSM6LnjaMKpXemq4Js2+UAJ
-	yGbnzEon3H7efE+bs8lapA6ZDBz7Ujt3JoLpbbm4ml3MJBES+WV57hI3tD9aYuyiMBj38u
-	kEw8d5yyOqbMyFpQpAEjRMs42+Fc5NI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762451167; a=rsa-sha256;
-	cv=none;
-	b=zGGDpnvj/TgE69oHJJA0mcCyQVwhvdOD8wF6Tj0tTagvZH71J9QiCHb7UJdt1ehaYLHL7+
-	BQ+evjGaoPtoD4VvFZaDkVK6Sel4ryeVke7wyBSIAa0DQj8HBnr+rDTzkb2s/1eZohDxMP
-	DRddIoPmY1fpbaCgYoS1562HNPQcOeE=
+	bh=j7/H12w2SuCZaWAEqKHKPf8HfmPzD2i63Bo72wwcPkY=;
+	b=uLK01P/r8NlX21gn79l9uQHk1PO9+onkyIISOApasJHB2TouwTlBSWPH2/sDFJQmhZvTNf
+	37sbmn3L9r6FeFjFoC66PhBNIDBPwr2IBIL9OnGudB0xb22KBYjhTI25aMQrWp8him3ajI
+	xaM5x78OP3YGBhpnesJlaDdIAI1JpFo=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=mLV2Tt9Z;
-	spf=pass (imf15.hostedemail.com: domain of nphamcs@gmail.com designates 209.85.128.52 as permitted sender) smtp.mailfrom=nphamcs@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4774f41628bso12205355e9.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 09:46:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762451165; x=1763055965; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XuqL/Wl9e/NoH3ehwAFRAdXC+fJYyatKnRax3XLipPU=;
-        b=mLV2Tt9ZvW3NHWMaspcmp5Spbyck3sogkTUco5aQy6VAbrbwuAkTRTI71ZXjQCLR0N
-         dd2PZaYFMqBgmRCfb0yDVzgvcLjdr8HVYJzmAfhrXjVURQgnVcmh1tELvqRlA5cK3PzO
-         yWB2F41TbSPuvl1uQ/Dj8+Fs+9QQLPfvewtnmApz+KV2ejXimsiksgir+RnI/hLIreVF
-         7LMin6rrLr+HPYLIOhJkFTci9q6uTtddHEgk/T3uJGshxGuSYWn7KzLrsNeIsPxWWgLq
-         ttC5TKnJImIMILHElT9rCcsVPi0jIVV0JaVsjQcU2u9j6/sYYALZQKYvLXM3AjreuLHP
-         sKww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762451165; x=1763055965;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=XuqL/Wl9e/NoH3ehwAFRAdXC+fJYyatKnRax3XLipPU=;
-        b=t0OJSDWlTMIN5n4rzkDzmLsCHDZvtuC5dTfV7bXJTJki/I12bstWH+aQ7tzb5+SQ7r
-         TZaSGgXyBETJM1k+8+NN4Nwl3em7Y8mE9xMSXc7r1wfopvRu+BUouC4kXlLOLPvvvjWJ
-         qJAEmUkcZ0DfmG7MqZcS/Fldg1La3SP9W3fY799vaYEXxiV2vizuBEJ+rIkIBFKT+YOL
-         C0XcuJMPBrGfryeZ1ZIM/4Koo3B1OeTKZYpPD3D+ZRR8R93OP351E7NHBhgkdYSdy6U8
-         O8WeLqfBhwcfiDqtXUUqd4sfjK8H7BQkcDjoOcBAYjpWXLYK5GYGFR941oaJN+wZkJI9
-         w9rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVIQ1++X/7nSJAjbV/5ckakGnXGmTwGajqHmAWmDiGBtdsJgqFI2o09ayaD+yYTa8xPs3sRqrDW2A==@kvack.org
-X-Gm-Message-State: AOJu0YxaQGwluBmDSlZIl4Gwk5FCMYkO2HLt1oGmMYHy8AqhOE9mdRLv
-	LSYQFUSBnbRaW1mD+hDtFIRGXH00v4PQ0LrwZ+W9mtMvxhoPa7wexfk/vfp7/hXwc5Op4v1dJ02
-	ZfrCQsR/F0I35h2qV9/hEXrmsOWMPtts=
-X-Gm-Gg: ASbGncsTWf0fkGOJHlnuIn89UYqiFWCFJ5wwltKfMjOqTfqj/mncQRnxwjNThkOY9nU
-	UP8TZBofFyzE2zLtXj2s82BvYOSq/jfrjVo8p0SlqaZa+vhVvTFRwPVO+ZYOctwbhM253T6isH7
-	hLKWYDVOyjQMEzZis4f/xE8hJAIjsSgA9L+GMD2TcWeUJX4b3NdyVe9eA9yQrCS/42MQCoPeAd5
-	4d6SkSd10sr4dfr8HpQvFP9QQ8W287KSfhOKmj1UjRl7yC6ymdt72OkhMOEnga2sRb9
-X-Google-Smtp-Source: AGHT+IEFawWwq0jLtchfAtfV2bMZzjg837OrBmfi2630hVEv12RxFBc5Mi569pTBPw+Jx0fhBVi+AQjxNrOpiTaxHPw=
-X-Received: by 2002:a05:6000:220f:b0:429:cff0:1929 with SMTP id
- ffacd0b85a97d-42a957abae9mr449584f8f.29.1762451165029; Thu, 06 Nov 2025
- 09:46:05 -0800 (PST)
-MIME-Version: 1.0
-References: <20251104091235.8793-1-kanchana.p.sridhar@intel.com> <20251104091235.8793-22-kanchana.p.sridhar@intel.com>
-In-Reply-To: <20251104091235.8793-22-kanchana.p.sridhar@intel.com>
-From: Nhat Pham <nphamcs@gmail.com>
-Date: Thu, 6 Nov 2025 09:45:54 -0800
-X-Gm-Features: AWmQ_bl-bUbfgh-tgbtwi7OIawVv9zFYP4CJyFLME2PrDUDmGRzTAKOojNiGcsM
-Message-ID: <CAKEwX=PmJcsQy5foaS6HecqLyF1gKBhbLvbw6kM9bZmJ7UMBFw@mail.gmail.com>
-Subject: Re: [PATCH v13 21/22] mm: zswap: zswap_store() will process a large
- folio in batches.
-To: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, hannes@cmpxchg.org, 
-	yosry.ahmed@linux.dev, chengming.zhou@linux.dev, usamaarif642@gmail.com, 
-	ryan.roberts@arm.com, 21cnbao@gmail.com, ying.huang@linux.alibaba.com, 
-	akpm@linux-foundation.org, senozhatsky@chromium.org, sj@kernel.org, 
-	kasong@tencent.com, linux-crypto@vger.kernel.org, herbert@gondor.apana.org.au, 
-	davem@davemloft.net, clabbe@baylibre.com, ardb@kernel.org, 
-	ebiggers@google.com, surenb@google.com, kristen.c.accardi@intel.com, 
-	vinicius.gomes@intel.com, wajdi.k.feghali@intel.com, vinodh.gopal@intel.com
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=WB7yYBKU;
+	spf=pass (imf03.hostedemail.com: domain of jlayton@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=jlayton@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762452090; a=rsa-sha256;
+	cv=none;
+	b=ssNe3/H9ER62Y8V/ptA62jnuUonwtBzY420DxAWI9NFOyRcxkyCWCAkiLHez2TweKP/EHl
+	Zw0zAOwgIFEW++8luY8iEgHyXxdKPYxDeUZ+PcBQMafkVxhD17+IP1EmfdUJZlxV178CMZ
+	UpOunkaqe2CrBG3x3AdcDEoFi2/E800=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id ED6BE4401C;
+	Thu,  6 Nov 2025 18:01:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBDCC116C6;
+	Thu,  6 Nov 2025 18:01:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762452088;
+	bh=dMhrb4k0NLQTzG9CdasHB8pF4LD/TSGmYxk7iyEfZqc=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=WB7yYBKUOX/lE4WZY3g8QG/RvBLCrGkug7SbS55SwPbAyl2h/5knvTDVX7fdQR0dn
+	 /r2h5zqyYYg4YpTcRl4bb17O2pbs9f8Ty0hcR98EO81Rf0vm6/jnoROJ67IgB19hqt
+	 I87SfjjtAKzWhX9MRD5MywBx0QTkPqPYiAJOBd6v77Lsv/0J7lP9WK3VTY8q4pv96C
+	 sc7RfxgdkgPYVq+mqEd1yKOjQfYhp6cb6cjLMpB5vtuslVF+sXEk2nxjPYIbxlTOp7
+	 xn4l6FSe3rrrS+hYzYdvxTjPCAUZ0rwMgS5itofFbs6IlBmNPX49Qy46dSE4Ot/9So
+	 ttgrYph6IXC0g==
+Message-ID: <f5927a9bb985b9ad241bc5f9fc32acfd35340222.camel@kernel.org>
+Subject: Re: [PATCH] vfs: remove the excl argument from the ->create()
+ inode_operation
+From: Jeff Layton <jlayton@kernel.org>
+To: NeilBrown <neil@brown.name>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>,  Dominique Martinet <asmadeus@codewreck.org>, Christian
+ Schoenebeck <linux_oss@crudebyte.com>, David Sterba	 <dsterba@suse.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne	
+ <marc.dionne@auristor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner	 <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Tigran
+ A. Aivazian"	 <aivazian.tigran@gmail.com>, Chris Mason <clm@fb.com>, Xiubo
+ Li	 <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes	
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>,
+ Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, Namjae Jeon
+ <linkinjeon@kernel.org>,  Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang
+ Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>,  Andreas Dilger
+ <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
+ <chao@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos
+ Szeredi <miklos@szeredi.hu>, Andreas Gruenbacher	 <agruenba@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, Richard
+ Weinberger <richard@nod.at>,  Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Mikulas Patocka	
+ <mikulas@artax.karlin.mff.cuni.cz>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,  Dave Kleikamp <shaggy@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>,  Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Bob Copeland <me@bobcopeland.com>, Mike Marshall <hubcap@omnibond.com>,
+ Martin Brandenburg	 <martin@omnibond.com>, Amir Goldstein
+ <amir73il@gmail.com>, Steve French	 <sfrench@samba.org>, Paulo Alcantara
+ <pc@manguebit.org>, Ronnie Sahlberg	 <ronniesahlberg@gmail.com>, Shyam
+ Prasad N <sprasad@microsoft.com>, Tom Talpey	 <tom@talpey.com>, Bharath SM
+ <bharathsm@microsoft.com>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Hans de
+ Goede <hansg@kernel.org>, Carlos Maiolino	 <cem@kernel.org>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Andrew
+ Morton <akpm@linux-foundation.org>,  Kees Cook <kees@kernel.org>, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, 	linux-kernel@vger.kernel.org,
+ v9fs@lists.linux.dev, 	linux-fsdevel@vger.kernel.org,
+ linux-afs@lists.infradead.org, 	linux-btrfs@vger.kernel.org,
+ ceph-devel@vger.kernel.org, 	codalist@coda.cs.cmu.edu,
+ ecryptfs@vger.kernel.org, linux-efi@vger.kernel.org, 
+	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net, 
+	gfs2@lists.linux.dev, linux-um@lists.infradead.org, linux-mm@kvack.org, 
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, 	ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, 	devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, 	linux-xfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org
+Date: Thu, 06 Nov 2025 13:01:20 -0500
+In-Reply-To: <6758176514cdd6e2ceacb3bd0e4d63fb8784b7c6.camel@kernel.org>
+References: <20251105-create-excl-v1-1-a4cce035cc55@kernel.org>
+		 <176237780417.634289.15818324160940255011@noble.neil.brown.name>
+	 <6758176514cdd6e2ceacb3bd0e4d63fb8784b7c6.camel@kernel.org>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: DBCE1A001A
-X-Stat-Signature: 53q18skfxbygiajozd1erwxsdbdskndw
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: 51B3620020
+X-Stat-Signature: ipbqyto7u34pt4z96s1nbgr7an37renn
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762451166-524656
-X-HE-Meta: U2FsdGVkX1/ti1l1op52Ze/mRJv+QFI/RFQCQ65XHDsJ5Dp1qCJOpv1XzdUgTSX8HsUyYnFx++Rk53VpoTvvcI3+pj2pnTObW12YF/YX8EZeCCl8tsBONJgFIH2GEAWwl8DoLzc7smYEm7FHVNQaTakYTk89MUduNSyXD7JOMxycnWuKWQo5JpmEsxGKAWhfvoNXZp2fqzFlOiIoO+7hOTi/8Jvo8yXcrxDLHCsfTmkFy5JMXY/EPyODF/2NUn8/SGCOJKoa58E8sjb1VzEOtl3MIaJ5amYpIPZE6DOs4hnC3Mlum+R9ThPovfdF3Lj7K/cvTSlrer/R1DUqzj4NmPJFviE5GWvEMjjiYkoDcurEaMY6YUMa2zmqu75+QcSYbaqTK95HC/cBPFchXy2OawjiMXLK+PEcnVqx0hhMD6SLhTuKNegaMa3oJD2zLbFUm2IXfBHk2YqzlBBR1GGxDBB9Bnqylqpz5FzfHKOxYcLduMyBqEV2EfHKKqueAnkWSB//IkdKYBZuoqFpvYon6+s/qqGDEf4YTasd8LpX7+/u1dn8LRiLTTwbMs8XeGOt5zHZ+546S7cOovsV6vCB2d8Pb/QdPUk9Lqi/iKP3KoKRo9X8iKoT697pU4oF0Dm3YDVeQX35uEYoO710psDmehL3qBDXItIdn+aQPklaPJ6mFX5Dh0SMpVhLtrz+zeNO/SqvzWrcPc8/TlGD1fNhSd6W9ZokI95dRUk7/7lZsvTWyi8Xe/DnPFzuiYJCDfj+DzIUfEzvilLHvqIVPJ+YVKVlYxSDl+aX/0Ein1NJUtCQJVzSdqeimgvkoun9IffDM8HAP58x39eYEBKBaWSRRIRGT6h5WTNQwITdCl67K0giO1HVMqed3Jrnc9yzNvXaay5NvoaLwSRUNmQtJ268fHykw84kT2aHIECdhoRKSdj3tnr77WGAJCHSNf3iYHPSntvlcmtNOn7HXIvC7yX
- Gohk+bur
- ZY1CJ3FNRZbAoxjTYexF/4EjkzZkTwUnoI+gm6FTpnDugm36gvRq75DOL4wbcXR4SpMe7
+X-HE-Tag: 1762452090-406100
+X-HE-Meta: U2FsdGVkX18zJ0ky7SDQXyNlHIFn5J1gcL0PL3FWqRstHhxDqf2NZ/64sPogh5jgNP4DzRKCFQK6mHzVZ67CMIaSckXZ9oc5BZuxcrslvZu/x5gCchNmvrGu4E57fBT/8M47O4wavEw/O/+THJHlS8QsmyYoGHkGTnIjMRGEYm2ldVNVaNL49TZ1X/Lkx2WkoW0BQiZsGHdgtgxrv23jA135mM8vTOIBYKWW5HfdDSBtAYVBKBeGX1+vHqrUBTsRkoO93CJ9xHJ8Y7/1H9YbM88JPIol3fPYes2dQAmciYzi3d7E1tGj0ya33GUr4nAC9OsgS4eROXQgciXkdAbuINkqPm6wRVd18XbW/A1YZHNlv47NDQ8iiQz/wJBqQN4l5w14CHgCROvsil7t5iUYsEomkszobAPRajyqiJJ1xZXjYu2YoycUFQNsHV2kf4nx6pUgsx0blc9MadwFGuF7ywNO9u4ZjRvdd1HnUND93mR9fQCCa9NI0mbpwmtpjC9xTUpbSueAfRCDV+CJK58i7ByNqP5pOVX4Mu+iSmZOboqaB05B+0IjEz7+SQGJNtnj/SAgC+9rwkycpzIOMD8upAM6VTCJb2S7UAZkyVv9anxrs0y4NDGsRW00NC+kbOul+rzYgsDpyXoxdL/2kE4GRa0Ur5NPmBX47Ot257eogKEAwz5Ub3KGJJRUMUlC5GAQJFuTL7i6AznCvhJXf/4eKr6xhGqB8Gmw1KtgqOZS5NayGESiin1iaPS8auz496okATMQPmRv/baWynZa08RcYGgsilE5dsFd+OavPgFLoFCdP02BPM/6mzxtwSNSwmwkxx0/sCzQAQRAK5ZAqeNCr7tidUxn5d8TE+CbJQY5UIQCeOl/SF8xtcCnhGfpEbLaxzSaIsG1PxHvgOJA2yeChEdL9difJy+zyAU8Jfj0D+TnQJBNCvWRaf4/2DuRI7AmyvWVrroRg4Q0vXpuU9e
+ UI4MjctD
+ efjR2IqsE87AbHJCn5cZSZOLz+LFgt77Ml4nz4yf+nl97rPLaolTqfbJSru4RTvEoegNBDtHhfC145ReGKeur/dcmLVVnzK0eoSfbEOxiA49mdWKJpPYBXXmYjj9GFqh/c5OeDVFncgvR2vJ9bq7RIUPHlZx7uLDYcm0Dh1rYQImopCVGARGCnhkoksFEQZPD9kzy5OeWto7qS/sj5Yzu3489iMvUH0GPO0QhXmbvl2WoiEObhHH4vm+zuc0Xk9qewsNEZutIWailelgVib3Teps5HQ9FTAmEeSL9FMy73FEwWrKXFOPoC8AqDtF5+XjkL2OJc6lZDpL2YzJKiiawC5amMie9Jeig72KXGYNIBDZa0sA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,173 +218,60 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Tue, Nov 4, 2025 at 1:12=E2=80=AFAM Kanchana P Sridhar
-<kanchana.p.sridhar@intel.com> wrote:
->
-> This patch makes two major changes:
->
-> First, we allocate pool batching resources if the compressor supports
-> batching:
->
->   This patch sets up zswap for allocating per-CPU resources optimally
->   for non-batching and batching compressors.
->
->   A new ZSWAP_MAX_BATCH_SIZE constant is defined as 8U, to set an upper
->   limit on the number of pages in large folios that will be batch
->   compressed.
->
->   It is up to the compressor to manage multiple requests, as needed, to
->   accomplish batch parallelism. zswap only needs to allocate the per-CPU
->   dst buffers according to the batch size supported by the compressor.
->
->   A "u8 compr_batch_size" member is added to "struct zswap_pool", as per
->   Yosry's suggestion. pool->compr_batch_size is set as the minimum of
->   the compressor's max batch-size and ZSWAP_MAX_BATCH_SIZE. Accordingly,
->   pool->compr_batch_size compression dst buffers are allocated in the
->   per-CPU acomp_ctx.
->
->   zswap does not use more than one dst buffer yet. Follow-up patches
->   will actually utilize the multiple acomp_ctx buffers for batch
->   compression/decompression of multiple pages.
->
->   Thus, ZSWAP_MAX_BATCH_SIZE limits the amount of extra memory used for
->   batching. There is a small extra memory overhead of allocating
->   the acomp_ctx->buffers array for compressors that do not support
->   batching: On x86_64, the overhead is 1 pointer per-CPU (i.e. 8 bytes).
->
-> Next, we store the folio in batches:
->
->   This patch modifies zswap_store() to store a batch of pages in large
->   folios at a time, instead of storing one page at a time. It does this b=
-y
->   calling a new procedure zswap_store_pages() with a range of indices in
->   the folio: for batching compressors, this range contains up to
->   pool->compr_batch_size pages. For non-batching compressors, we send up
->   to ZSWAP_MAX_BATCH_SIZE pages to be sequentially compressed and stored
->   in zswap_store_pages().
->
->   zswap_store_pages() implements all the computes done earlier in
->   zswap_store_page() for a single-page, for multiple pages in a folio,
->   namely the "batch":
->
->   1) It starts by allocating all zswap entries required to store the
->      batch. New procedures, zswap_entries_cache_alloc_batch() and
->      zswap_entries_cache_free_batch() call kmem_cache_[free]alloc_bulk()
->      to optimize the performance of this step.
->
->   2) The entry doesn't have to be allocated on the same node as the page
->      being stored in zswap: we let the slab allocator decide this in
->      kmem_cache_alloc_bulk(). However, to make sure the current zswap
->      LRU list/shrinker behavior is preserved, we store the folio's nid as
->      a new @nid member in the entry to enable adding it to the correct
->      LRU list (and deleting it from the right LRU list). This ensures
->      that when the folio's allocating NUMA node is under memory
->      pressure, the entries corresponding to its pages are written back.
->
->      The memory footprint of struct zswap_entry remains unchanged at
->      56 bytes with the addition of the "int nid" member by condensing
->      "length" and "referenced" into 4 bytes using bit fields and using
->      the 4 bytes available after "referenced" for the "int nid". Thanks
->      to Nhat and Yosry for these suggestions!
->
->   3) Next, the entries fields are written, computes that need to be happe=
-n
->      anyway, without modifying the zswap xarray/LRU publishing order. Thi=
-s
->      avoids bringing the entries into the cache for writing in different
->      code blocks within this procedure, hence improves latency.
->
->   4) Next, it calls zswap_compress() to sequentially compress each page i=
-n
->      the batch.
->
->   5) Finally, it adds the batch's zswap entries to the xarray and LRU,
->      charges zswap memory and increments zswap stats.
->
->   6) The error handling and cleanup required for all failure scenarios
->      that can occur while storing a batch in zswap are consolidated to a
->      single "store_pages_failed" label in zswap_store_pages(). Here again=
+On Thu, 2025-11-06 at 07:07 -0500, Jeff Layton wrote:
+> On Thu, 2025-11-06 at 08:23 +1100, NeilBrown wrote:
+> > On Thu, 06 Nov 2025, Jeff Layton wrote:
+> > > Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()")=
 ,
->      we optimize performance by calling kmem_cache_free_bulk().
->
-> This commit also makes a minor optimization in zswap_compress(), that
-> takes a "bool wb_enabled" argument; computed once in zswap_store()
-> rather than for each page in the folio.
->
-> Suggested-by: Nhat Pham <nphamcs@gmail.com>
-> Suggested-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> Signed-off-by: Kanchana P Sridhar <kanchana.p.sridhar@intel.com>
-> ---
->  mm/zswap.c | 336 ++++++++++++++++++++++++++++++++++++-----------------
->  1 file changed, 232 insertions(+), 104 deletions(-)
->
-> diff --git a/mm/zswap.c b/mm/zswap.c
-> index cb384eb7c815..257567edc587 100644
-> --- a/mm/zswap.c
-> +++ b/mm/zswap.c
-> @@ -82,6 +82,9 @@ static bool zswap_pool_reached_full;
->
->  #define ZSWAP_PARAM_UNSET ""
->
-> +/* Limit the batch size to limit per-CPU memory usage for dst buffers. *=
-/
-> +#define ZSWAP_MAX_BATCH_SIZE 8U
-> +
->  static int zswap_setup(void);
->
->  /* Enable/disable zswap */
-> @@ -139,7 +142,7 @@ struct crypto_acomp_ctx {
->         struct crypto_acomp *acomp;
->         struct acomp_req *req;
->         struct crypto_wait wait;
-> -       u8 *buffer;
-> +       u8 **buffers;
->         struct mutex mutex;
->         bool is_sleepable;
->  };
-> @@ -149,6 +152,9 @@ struct crypto_acomp_ctx {
->   * The only case where lru_lock is not acquired while holding tree.lock =
-is
->   * when a zswap_entry is taken off the lru for writeback, in that case i=
-t
->   * needs to be verified that it's still valid in the tree.
-> + *
-> + * @compr_batch_size: The max batch size of the compression algorithm,
-> + *                    bounded by ZSWAP_MAX_BATCH_SIZE.
->   */
->  struct zswap_pool {
->         struct zs_pool *zs_pool;
-> @@ -158,6 +164,7 @@ struct zswap_pool {
->         struct work_struct release_work;
->         struct hlist_node node;
->         char tfm_name[CRYPTO_MAX_ALG_NAME];
-> +       u8 compr_batch_size;
->  };
->
->  /* Global LRU lists shared by all zswap pools. */
-> @@ -182,6 +189,7 @@ static struct shrinker *zswap_shrinker;
->   *              writeback logic. The entry is only reclaimed by the writ=
-eback
->   *              logic if referenced is unset. See comments in the shrink=
-er
->   *              section for context.
-> + * nid - NUMA node id of the page for which this is the zswap entry.
->   * pool - the zswap_pool the entry's data is in
->   * handle - zsmalloc allocation handle that stores the compressed page d=
-ata
->   * objcg - the obj_cgroup that the compressed memory is charged to
-> @@ -189,8 +197,11 @@ static struct shrinker *zswap_shrinker;
->   */
->  struct zswap_entry {
->         swp_entry_t swpentry;
-> -       unsigned int length;
-> -       bool referenced;
-> +       struct {
-> +               unsigned int length:31;
-> +               bool referenced:1;
-> +       };
+> > > the "excl" argument to the ->create() inode_operation is always set t=
+o
+> > > true. Remove it, and fix up all of the create implementations.
+> >=20
+> > nonono
+> >=20
+> >=20
+> > > @@ -3802,7 +3802,7 @@ static struct dentry *lookup_open(struct nameid=
+ata *nd, struct file *file,
+> > >  		}
+> > > =20
+> > >  		error =3D dir_inode->i_op->create(idmap, dir_inode, dentry,
+> > > -						mode, open_flag & O_EXCL);
+> > > +						mode);
+> >=20
+> > "open_flag & O_EXCL" is not the same as "true".
+> >=20
+> > It is true that "all calls to vfs_create() pass true for 'excl'"
+> > The same is NOT true for inode_operations.create.
+> >=20
+>=20
+> I don't think this is a problem, actually:
+>=20
+> Almost all of the existing ->create() operations ignore the "excl"
+> bool. There are only two that I found that do not: NFS and GFS2. Both
+> of those have an ->atomic_open() operation though, so lookup_open()
+> will never call ->create() for those filesystems. This means that -
+> > create() _is_ always called with excl =3D=3D true.
 
-Maybe make these macro-defined constants?
+How about this for a revised changelog, which makes the above clear:
 
-Code mostly LGTM otherwise.
+    vfs: remove the excl argument from the ->create() inode_operation
+   =20
+    Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
+    the "excl" argument to the ->create() inode_operation is always set to
+    true in vfs_create().
+   =20
+    There is another call to ->create() in lookup_open() that can set it to
+    either true or false. All of the ->create() operations in the kernel
+    ignore the excl argument, except for NFS and GFS2. Both NFS and GFS2
+    have an ->atomic_open() operation, however so lookup_open() will never
+    call ->create() on those filesystems.
+   =20
+    Remove the "excl" argument from the ->create() operation, and fix up th=
+e
+    filesystems accordingly.
+
+Maybe we also need some comments or updates to Documentation/ to make
+it clear that ->create() always implies O_EXCL semantics?
+--=20
+Jeff Layton <jlayton@kernel.org>
 
