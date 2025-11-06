@@ -4,89 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05E00CCFA0D
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:42:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 34D7ECCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:42:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 340E08E0003; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
+	id DA0288E0008; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 318B98E0002; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
+	id D2A308E0002; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 22E198E0003; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
+	id BF1078E0008; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 1299B8E0002
+	by kanga.kvack.org (Postfix) with ESMTP id B05DF8E0002
 	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:42:02 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id BEB70160553
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:42:01 +0000 (UTC)
-X-FDA: 84078783642.25.4B061C1
-Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 1498AC0012
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:41:59 +0000 (UTC)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 640C912B9FF
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:42:02 +0000 (UTC)
+X-FDA: 84078783684.10.348908F
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 99056C000C
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:42:00 +0000 (UTC)
 Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmp+qLrl;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cMpTVqX0;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
 	s=arc-20220608; t=1762400520;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references:dkim-signature;
-	bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
-	b=J6sVB1Yqg6kOJK5WgLs3wI6kUtnLaWeCEDLrcCvjnOXASudv1McbVlVDhrK5rlHSkegXx3
-	5nopKDAZmLnuDrafp4t/9ctSwf4HruimkdbJDtwaxbwaB5x/hU9R+m96ZWypHv5z+pTYP9
-	N06PqwXm1OYugdLeE99cwH8Ej9behfA=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Dmp+qLrl;
-	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.51 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=2xo0Q0yezjPat4Uoc+uZK449naBLb4C/0XjyKxCdNbs=;
+	b=lHJ0zQKRki5/NJDVKmc4bhzjvZwMWBlzFz+NkFn5VP1aOXVrTvGNfRfQinCvA6LVzerd+J
+	ZB21KqP28/IwJgKL37v4hVo65tKldbd4BgS3LzioNkH1jX+Lt/r4gOuNyIWH0vEFwtvwAB
+	K5r6uc1mhy8GIyCtiM2hMA97B0Ayawc=
 ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762400520; a=rsa-sha256;
 	cv=none;
-	b=1oBL6NZAJBwjKZ/jcKVdj6HNxtPzeRcDEsXJoZ98S4REHU2BZ1bR7P5QFG5r/bIFU0jB8O
-	Agpj1U/Bi+VwCMPG41J6XnVrGQ1+kGPAsdMbIJo+3rcqxbW8fux58wQWyo4L2djvr9DbRF
-	j3Yf8MeRLtp0xloayAK8iPwWzD1ouUI=
-Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7260435287so63762366b.3
-        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 19:41:59 -0800 (PST)
+	b=d0xpuQYNwwZG535lsQyfZwUmX9NJceh5wCywZDRqKjt1G2nmoQDhVH7jhePxp0waN5k5Ba
+	KH6cHdc6zTyJxJO7vX4Qok5i3PArelaYKYMyrhoZrqZSjuWgZl9rhaxkjAbZGRQcqGT5jh
+	uDtXI8H1+mMz0dJCGT3R72+Myp59cWc=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=cMpTVqX0;
+	spf=pass (imf22.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.45 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-b5a8184144dso69034866b.1
+        for <linux-mm@kvack.org>; Wed, 05 Nov 2025 19:42:00 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762400518; x=1763005318; darn=kvack.org;
-        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
-        b=Dmp+qLrljK2heEqOIcI+cgu2JLO6VCZViiiRRGcKiQc6jxEMeB8I+Wq62iPqr2FXyz
-         0WoMtCyDdfsDwLNIF85sus1QFZpoV1MlJGWBiTnry82SVH8ZgY3FeaTcIdZ55jciOxSx
-         jIX+80UJe7XRq2Xaaj1QYF9bqQcUuznF2ADBUEQm5SteTpuFA8BXO5xtJSBXk9dacjqG
-         xeacJK9svbAbLDM7wlAXxUXH1SUyhUytGcv+crlWrJ0UNufTFvuxUL0aGqSfy0SshkdU
-         3mr5n01bGi8Jx9b3vLzqyFEL2EGrkjlSZV+w7v3vc22ds5KEYRL1KLUHmClX+Qi+ecUM
-         rFSA==
+        d=gmail.com; s=20230601; t=1762400519; x=1763005319; darn=kvack.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=2xo0Q0yezjPat4Uoc+uZK449naBLb4C/0XjyKxCdNbs=;
+        b=cMpTVqX0sZOi8UTKBBaqH/sbyIaOecOwijVEj5qg3V7MFUBlUTpOjvuMQW6WOrpZWS
+         CwAbeWXnauNdjhI1nMzcu1lfQIaHBbXwFgSg7yxBSM+zMJywD0e7mD2kvEdv3CePmncR
+         CFbVPd1yF7sX0VvMurzeNgu+qP99jK/vHBXsPNaYu0heL5Jwe3lv1ySG+A+sWERSxqK8
+         n3EYcRvKixw9cptQoSMYxBV7Jl3GbD3ZHB5g2lp5gTSWdBfd9DS6+phFcw+JEts25SIf
+         vc5kqvOYXP2LuyTisdKTjdQEWlUtF04hYbppyIXjjoSfEdnWJHprS8608RKnMWgcEPyz
+         Zg6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762400518; x=1763005318;
-        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=69VGn2emQKMNwciXwHJpHSNCMdWsKnTmrJEDYhLDAfc=;
-        b=UmxVGFeJADPq+jr21IOgrXAVw6fUnA+/SN3IRo3Naq/U0v8LMocheqSitGbLcblmdH
-         O0x3LHpB51qDtRwa4qOlxgw8/x1zMi3ibyjyouWbalbgo7Eh3W15cExnXnkvBPjoltAG
-         UIR4x1QPIdI/9eRKIvFFQP1j1+b5MzYLwo0vynRkoEGuNxt2PoPlVRhu116qyXHUm6b7
-         tiCn4BdFSl0z19YcdNi3gVAIXHm1t6DY/yK7L79Vdy0otwKvl7fgqRIh509Nz4Rz1X1K
-         B7FSk/+CahpZU2BatGX3uk7hOW0TvcBpG2kgENoj40e6tlUpTXT7vnbptN64gmp9rY1a
-         ELlg==
-X-Gm-Message-State: AOJu0Yx7ODCo2Yspk3SlERYBKGL7QczM/oZqSvkvZc79bpWx4cgSU4D+
-	uhbyMI5jzsloiGXewbZqFQ3/R9Gh4jQ1MLC+uWLevPtbkhdeXF4+uZgD
-X-Gm-Gg: ASbGnct5CZGtbXo1Dp1ui7Ud5NC3FhA21iM41fH/eM/VIvHqupOZsqU50ZF+hffh65r
-	QXct/apYX55FA5tMfLMVoZLsnlq6o3cezReOnuYaOsCheYvwmWKVWmUCpcY71ns8dlum32Xft7l
-	+akLLUf5M94IKyGO2wtGGp3iBLSMX1Oo3kAg/P5/he2RbOk8bbicHv9S9Oi/MKC6WCoPrXTUYVO
-	DmNgTG3qaE9vPzhNamH6SNicp+TUE3NDUGvhu/OS3WPL2Bk0mCbFIMyzpHuA3kPWOaZRQOl/stK
-	53HEOYc766Be0drincy4r5P2vVbP4A+iitfraUP/RW2QuPRhtfasZtt79rmdSc0ZGnI+snFM57S
-	B7Q1bx3UXy1BgSBQ8AJKSFEcQWjJ9T+dGGtAGPLbA08L+96vVhVSrkRmg64rVxcuH2tpYzbHL1I
-	RdaM7cBuetzA==
-X-Google-Smtp-Source: AGHT+IFVFphpq0AfC+J/LvGQ3FiSSxuHUgCjs8O4dHT0Yrgrw96Opgxfj7Uqx5dei0d6uKUisfIp7w==
-X-Received: by 2002:a17:907:3daa:b0:b3f:33f6:fb57 with SMTP id a640c23a62f3a-b726519a2c8mr578907966b.9.1762400518175;
+        d=1e100.net; s=20230601; t=1762400519; x=1763005319;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2xo0Q0yezjPat4Uoc+uZK449naBLb4C/0XjyKxCdNbs=;
+        b=Zz1xiHqV4njxIatLqhQOxGUbrty822/N/i0O42F19XHPqONZDkSrr74CIbHM0Ar8vk
+         J1JVWlc+Njd1eIyAmAZwz4Wqt+9mAFs3rzPy5dYhlK/+me6uA4oiI3Bghvx835oCLh11
+         3J2bTDxdyk4uTVgeApfhub3JONq3uKza2yVpcwoTwCU3IX4rGDLLM7czGrKXbraSdk4k
+         2G+S83GKUazjr6UMj0NwiY9bFlT1wOkd3XRbGhhVrvgkyppUF/odbH4MFCsJoKTNt7OU
+         ppRXCz3LeSr7aVloM6eyYkWuEOcHHD8eVT+XnSo/amB/W9jABtLA3AcktA3MAB5DLV6I
+         p8oQ==
+X-Gm-Message-State: AOJu0Yw1QdG8Jsl5TURU9ejdbpaWYYx4RJfY/Yknn342+jxX2V85rUWE
+	e+zWvwVJsWEP38X6jyVOdJ7KmdP79vma8nCkE4gR0i1ppbtcgsaTZC4V
+X-Gm-Gg: ASbGncvFOMu1IVY9yeRsef/Sb0XCsaqxtJyQ4koflfnwadopnX2GlRktg0y/XcH5qCl
+	2Rff3f7+b5Nb6Yt9RFa2XKagXbXvDKg80zKL8sOEw+KEUcR+fMvwdNIRQnU6Vq5SHkUI/gqyact
+	Hl7DySDy41hxREXh2agoYxOu+rxM3MwANMaWNyKrS1e1KaiYKr3FkdW6IylQHMQKt9qn84lJCYB
+	NXLwHpSAizV9u5VK2j0IhYRfu4FkQMkwSA7G5vDUE0aPLQmpLYWiPJfZA4dGbObW7TMx3xuuQIw
+	a/5Qm4tXKeNknIkPpKxa62EI5ty8T3ZarJLo0l7FKhBKnIldwTa/lAEzKv7ZwWqgs+bsEMI3pFp
+	Bjw6RKKadGyRe6ZJ6nNvfNZF8q43+Rb+DBI6Goh0jIaxauSQPmq9P9O3Kve0ytq+fE9g3PY4mel
+	E=
+X-Google-Smtp-Source: AGHT+IH2u2sTKyOQKIUfpU3dW4aZmA1fwsw7OzdpWyWFykYoOnMNxQAzZOD1IzdiA3/1IW1k8o9KMQ==
+X-Received: by 2002:a17:907:2da1:b0:b6d:5e64:c36b with SMTP id a640c23a62f3a-b72652c0099mr540073766b.29.1762400518951;
         Wed, 05 Nov 2025 19:41:58 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b7289333303sm113722566b.2.2025.11.05.19.41.57
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72896c8e29sm108630466b.74.2025.11.05.19.41.58
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Wed, 05 Nov 2025 19:41:57 -0800 (PST)
+        Wed, 05 Nov 2025 19:41:58 -0800 (PST)
 From: Wei Yang <richard.weiyang@gmail.com>
 To: akpm@linux-foundation.org,
 	david@kernel.org,
@@ -101,18 +102,20 @@ To: akpm@linux-foundation.org,
 	lance.yang@linux.dev
 Cc: linux-mm@kvack.org,
 	Wei Yang <richard.weiyang@gmail.com>
-Subject: [Patch v3 0/2] mm/huge_memory: Define split_type and consolidate split support checks
-Date: Thu,  6 Nov 2025 03:41:53 +0000
-Message-Id: <20251106034155.21398-1-richard.weiyang@gmail.com>
+Subject: [Patch v3 1/2] mm/huge_memory: introduce enum split_type for clarity
+Date: Thu,  6 Nov 2025 03:41:54 +0000
+Message-Id: <20251106034155.21398-2-richard.weiyang@gmail.com>
 X-Mailer: git-send-email 2.11.0
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1498AC0012
-X-Stat-Signature: 7cr8dqqxgbfhfhy8617o7z4fbjpheu9w
+In-Reply-To: <20251106034155.21398-1-richard.weiyang@gmail.com>
+References: <20251106034155.21398-1-richard.weiyang@gmail.com>
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762400519-210032
-X-HE-Meta: U2FsdGVkX18zByXrGmJepwHSGFQ8hugpYdXoP9BUY6cl3PLIn25CPZjf1fwvrokZHjgQaKohTuBKXfBndn/0FL5xDWUWJavg4cTGTzqvkZJhh9PBYigoVcMgg3lfZA/L0wpWY5gWoPccxT8xfGJ/jlk+BLWl7XkX0VzaS+Fdcs0EbLdvrReRNDo5LIoqtiVL4MvbbnQU5FO6n05pSAcaHMIpdwrcDHQsT1YoYfQqTxAG6SdU0uPoQfZJOjppdAZV40r5zsMYuSP6p8xgvbFZ1fNMHhq0jGYNbpU0BYA7ixUiywKxjqQikJdhKWw7QLqGbo1K+05mqj5hcRU3YIK+ZDRFy7jwWurare64AQlwIVnkp9+U/EZwrk4QtFA8lEy9rTeVSFGsvnNIOqDywTn8v1nfMcK/Oht5OXA4NsMkgVzE6eUZQOUzFmb3Ocy+DCO1dpTvMBdc9repgGv6rHK/ZUGuqT1VmoSizb2RnYi9ChUyT8wts5cd+qmcE+jNRIIR15bpWG0cu1T1OY/faOnfIoeqO+AQtMTYMVX/S/ZwzNbON2rFtdqiHruEzxrtdUIoOH4IE8FexV8jGLqb7zM8WIgrU9K+YPOHZqe8D/CYXMPMo9qwdpCBznl8UmTRPBUgPIXHBVtmHHinBKBAEekIUVoMZLFr/YP4diUvv/6tYOJ9TgRggNewWKDbm/n+ZnpogME1UZKt1FvfVuRkFVrO6JrQCdFWq8IXJE8ui1LbJwSDBmu57UfNP+KzWMLzsaLmx0gao+j+KdMHLookVQi6FJUTq/WsVaznFvjXmBG0jGX7Ir3MbM7CgsjUjWdagK+07wBxjkAcs+c7jNdLtFmyf5/MqdHHSw4K8Zv4gPcSOjO62UsmWWgJtoW0WRRhnO+HDXojN6UPi8q4sR0WhdQlTJwfo/0+sgTgkpAica5enCd7iXgIAu6K/ZsVP81TaylVhkI2EhWFWsNgdIX9UW3
- nMMxhItt
- bbdlKczLNnJJs8Xv4ZCv4pHNxG4+32KnTUAXYwv9RNxB39kMjwdLIKOsbSuza1be5UD4svuBSRqmtXfAM1hY3jVUaQwM2nGSBzPjC1hDiOk2zn3VYmdJnVu7hNlmtH0Ykl5G3/Z1QBA22+0uGA1HXBY0HRE8j0C/hCm9rkQMfCU6cWLRSMUDa0w/GIVQv/yoPBZzv8clpiKI0bitMpvo+L7RYnYtljIsAcVEAbtJ3c8i1ZJ5ZMDt1o9hf9aRIkZhJ+flh/KSDaH2RVROFXyKbPZNVO2BKSFolb+ENycuPQOPdOkXopx2DqMPOxPo90YPYy21WrAq4qNmFjsbIxgSyvZxGZfpmjDGRL4um1OU2MFQ1BL0U5GQzfssFAdUeO2CC4MBHCrFMB8kIIUNgFtfCt7TJlIA58FbHZO8kk/8sg+Gb8Nqf/f8lXI8l2OJng11d+NV9yjUDiHmc2qd5J/muUEsVu+bb+vX41bcPapGfV0R8X8FR+igsbzg6nNtxEjC/CP7H2+SjTGeD31QW1RwjiR65uRyEYybmdlTHokUCrNCphUVxEK4ibzdkZKWYCFdQmB03Eob4nZfWA0RHTh+km80IoDm/avjPXVcJ7v3RollT8ranaFpZe9M/PQ==
+X-Rspamd-Queue-Id: 99056C000C
+X-Stat-Signature: pi437z5unnuzbw68a9eg6xrtnnoswkiw
+X-HE-Tag: 1762400520-92888
+X-HE-Meta: U2FsdGVkX19kR+b20VxMGXR7/k7/HSx1trGm0Isg16SOPvhOug82AOsa0mdDi2IU0Oam0nJVu/QxO6O9jK5NKMxemxq9TArskbazaNFcIQLp44II0193qLyoZhiiU4ZpIbNrYcs2IHZazVa7gQhocmlYrM2w2jGDiZYIzG1bRlNE0gm89si/fLeuamk0k2jIniVBGGpWWJoii3XkCd/rUkZWGsbWSiwY6X3J9Fkx3mgrHhbpQj4uHqlRi79WC4mXc8tc3pI148uFTSv8iH9/2kst3xucDGuga+38A4sWAiaMPi318XGKpWb0A+VMEO6D/HmoB8rmxsFjW3PsqzLQtJcQQecKtiehiLEnGb8YLMJ+Xwq/2824jRMQ19mY+JL9ZAvalKB6MdhNgliAQ5TrsF4SbwHM3rnJfGOKGBopoTzpWxLiScdZGQrwlZVFm9rxgFAnkWnjAw+1qtL7B6wd7LHlGVBkSa5bT5yshvP22Arpciy5Qh62sO33zxoNiFvuZfHpxwKz+RCSDvb+vJSTJKBylKahPaA9jZKksXIPttOX+rLYllCFmWzlxK2HhMWQluHjSlseOf3O7PzN2fZgjGs40b66DLQqSEAmuUNR9cbX8h8VVmSc+3iAolCcVXTmIIYaZkw7csXx8fPUGHHMtaH7giU0v8IMs3w1gaowIWQQFxgIUfkiueAhWteJ8tMz6Y+opeWDz66LKy3qaSoA/S8VIvlGFiFdYNAN1ZY1/GzTQqbsT9gq9yGoFvbjvC0BvdzZTm4O2uRaqc9laoXAoZPsjvY4fdHkrzAAwRER+ZWvsPJmRpdtUjPBogsfIGLZmRfJ7PRZN2AwADZ3zttRGtAI9cfLokAL5CHgoa5NMdba50LbfrN92hqhNlcwNpiKPm15o6tWyihg574BiVdp5+CwGLJGa7qpTpGn72AAmvkKDCb25sTi7BRT7CNXKOruwo71VHMDhUYgX1vC1Xx
+ fumJ3oxG
+ BGJmi0ySQMRCEZ/oFBACWezG7IdKaojqIGiaUZYM38f+eIo/3+grFn9/sH82CV+w9M6Ba3vxMe6gmrK/BIhXzT4e+kkGkyJSmPkVEqVhZJYVuQ0Fv6Lppk7rM9ZUghuAx7QZzMEj699fHZ1HKZwxa+XR8kwwbTGgr0xsytD9sYIDnQU/X7Y6Pp1DaudCNLmqY3oOk1eWGJVSnDc5A9Eicp3mLoE3UW8bIlCtiI5ol2jdwIiG6/5Ob1PpdRkFJ/tcpXigliBGAHVU7FYd9uSDBKC/QU+M/pQM7L1KDHBbztoC07wZn/4N/h/RXoIbaLcBGGfu0xSIs1CjdyUQnQV+8TOPTtOiCJEGkbjis4R/wJjudmsyp4Te71m+nAPoegSin1hiO0r/1PiNUsjCV7f+ZrTSvmTXAm7kSGsvh7xWDqhXJkIyywalapX3NTyUO3T33qoJbvGj9j52tkmOMBbK3aO3WOEbG4rafz62hASTHPscOCpzf8LZp1RtNQc431KfHocVGaLXRUHYlWwF0E66HCN/N243xCnEI3bKCcIzKt2VIUpL8/CT6K1mN7bxG7TX8nHsFdb9yal+O+GWZZCWrxykhRGfj7Bhnq4I8J8vJkm0aw+nIoBxRhd1X3g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,40 +124,160 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This two-patch series focuses on improving code clarity and removing
-redundancy in the huge memory handling logic related to folio splitting.
+We currently handle two distinct types of large folio splitting:
+  * uniform split
+  * non-uniform split
 
-The series is based on an original proposal to merge two significantly
-identical functions that check folio split support[1]. During this process, we
-found an opportunity to improve readability by explicitly defining the split
-types. 
+Differentiating between these types using a simple boolean variable is
+not obvious and can harm code readability.
 
-Patch 1: define split_type and use it
-Patch 2: merge uniform_split_supported() and non_uniform_split_supported()
+This commit introduces enum split_type to explicitly define these two
+types. Replacing the existing boolean variable with this enumeration
+significantly improves code clarity and expressiveness when dealing with
+folio splitting logic.
 
-V3:
-  * rebase on latest mm-new with Zi Yan fix [3]
-  * introduce split_type to identify uniform/non-uniform split
+No functional change is expected.
 
-V2: 
-  * adjust comment
-  * remove need_check
+Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+---
+ include/linux/huge_mm.h |  5 +++++
+ mm/huge_memory.c        | 30 +++++++++++++++---------------
+ 2 files changed, 20 insertions(+), 15 deletions(-)
 
-V1: [1]
-
-[1]: lkml.kernel.org/r/20251101021145.3676-1-richard.weiyang@gmail.com
-[2]: lkml.kernel.org/r/20251105072521.1505-1-richard.weiyang@gmail.com
-[3]: lkml.kernel.org/r/20251105162910.752266-1-ziy@nvidia.com
-
-Wei Yang (2):
-  mm/huge_memory: introduce enum split_type for clarity
-  mm/huge_memory: merge uniform_split_supported() and
-    non_uniform_split_supported()
-
- include/linux/huge_mm.h | 13 +++---
- mm/huge_memory.c        | 97 ++++++++++++++++++-----------------------
- 2 files changed, 51 insertions(+), 59 deletions(-)
-
+diff --git a/include/linux/huge_mm.h b/include/linux/huge_mm.h
+index f381339842fa..9e96dbe2f246 100644
+--- a/include/linux/huge_mm.h
++++ b/include/linux/huge_mm.h
+@@ -364,6 +364,11 @@ unsigned long thp_get_unmapped_area_vmflags(struct file *filp, unsigned long add
+ 		unsigned long len, unsigned long pgoff, unsigned long flags,
+ 		vm_flags_t vm_flags);
+ 
++enum split_type {
++	SPLIT_TYPE_UNIFORM,
++	SPLIT_TYPE_NON_UNIFORM,
++};
++
+ bool can_split_folio(struct folio *folio, int caller_pins, int *pextra_pins);
+ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list,
+ 		unsigned int new_order, bool unmapped);
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index 5795c0b4c39c..659532199233 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -3598,16 +3598,16 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+  *            will be split until its order becomes @new_order.
+  * @xas: xa_state pointing to folio->mapping->i_pages and locked by caller
+  * @mapping: @folio->mapping
+- * @uniform_split: if the split is uniform or not (buddy allocator like split)
++ * @split_type: if the split is uniform or not (buddy allocator like split)
+  *
+  *
+  * 1. uniform split: the given @folio into multiple @new_order small folios,
+  *    where all small folios have the same order. This is done when
+- *    uniform_split is true.
++ *    split_type is SPLIT_TYPE_UNIFORM.
+  * 2. buddy allocator like (non-uniform) split: the given @folio is split into
+  *    half and one of the half (containing the given page) is split into half
+  *    until the given @folio's order becomes @new_order. This is done when
+- *    uniform_split is false.
++ *    split_type is SPLIT_TYPE_NON_UNIFORM.
+  *
+  * The high level flow for these two methods are:
+  * 1. uniform split: @xas is split with no expectation of failure and a single
+@@ -3629,11 +3629,11 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+  */
+ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 		struct page *split_at, struct xa_state *xas,
+-		struct address_space *mapping, bool uniform_split)
++		struct address_space *mapping, enum split_type split_type)
+ {
+ 	const bool is_anon = folio_test_anon(folio);
+ 	int old_order = folio_order(folio);
+-	int start_order = uniform_split ? new_order : old_order - 1;
++	int start_order = split_type == SPLIT_TYPE_UNIFORM ? new_order : old_order - 1;
+ 	int split_order;
+ 
+ 	/*
+@@ -3655,7 +3655,7 @@ static int __split_unmapped_folio(struct folio *folio, int new_order,
+ 			 * irq is disabled to allocate enough memory, whereas
+ 			 * non-uniform split can handle ENOMEM.
+ 			 */
+-			if (uniform_split)
++			if (split_type == SPLIT_TYPE_UNIFORM)
+ 				xas_split(xas, folio, old_order);
+ 			else {
+ 				xas_set_order(xas, folio->index, split_order);
+@@ -3752,7 +3752,7 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+  * @split_at: a page within the new folio
+  * @lock_at: a page within @folio to be left locked to caller
+  * @list: after-split folios will be put on it if non NULL
+- * @uniform_split: perform uniform split or not (non-uniform split)
++ * @split_type: perform uniform split or not (non-uniform split)
+  * @unmapped: The pages are already unmapped, they are migration entries.
+  *
+  * It calls __split_unmapped_folio() to perform uniform and non-uniform split.
+@@ -3769,7 +3769,7 @@ bool uniform_split_supported(struct folio *folio, unsigned int new_order,
+  */
+ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		struct page *split_at, struct page *lock_at,
+-		struct list_head *list, bool uniform_split, bool unmapped)
++		struct list_head *list, enum split_type split_type, bool unmapped)
+ {
+ 	struct deferred_split *ds_queue;
+ 	XA_STATE(xas, &folio->mapping->i_pages, folio->index);
+@@ -3794,10 +3794,10 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 	if (new_order >= old_order)
+ 		return -EINVAL;
+ 
+-	if (uniform_split && !uniform_split_supported(folio, new_order, true))
++	if (split_type == SPLIT_TYPE_UNIFORM && !uniform_split_supported(folio, new_order, true))
+ 		return -EINVAL;
+ 
+-	if (!uniform_split &&
++	if (split_type == SPLIT_TYPE_NON_UNIFORM &&
+ 	    !non_uniform_split_supported(folio, new_order, true))
+ 		return -EINVAL;
+ 
+@@ -3859,7 +3859,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 			goto out;
+ 		}
+ 
+-		if (uniform_split) {
++		if (split_type == SPLIT_TYPE_UNIFORM) {
+ 			xas_set_order(&xas, folio->index, new_order);
+ 			xas_split_alloc(&xas, folio, old_order, gfp);
+ 			if (xas_error(&xas)) {
+@@ -3973,7 +3973,7 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
+ 		lruvec = folio_lruvec_lock(folio);
+ 
+ 		ret = __split_unmapped_folio(folio, new_order, split_at, &xas,
+-					     mapping, uniform_split);
++					     mapping, split_type);
+ 
+ 		/*
+ 		 * Unfreeze after-split folios and put them back to the right
+@@ -4149,8 +4149,8 @@ int __split_huge_page_to_list_to_order(struct page *page, struct list_head *list
+ {
+ 	struct folio *folio = page_folio(page);
+ 
+-	return __folio_split(folio, new_order, &folio->page, page, list, true,
+-				unmapped);
++	return __folio_split(folio, new_order, &folio->page, page, list,
++				SPLIT_TYPE_UNIFORM, unmapped);
+ }
+ 
+ /**
+@@ -4181,7 +4181,7 @@ int folio_split(struct folio *folio, unsigned int new_order,
+ 		struct page *split_at, struct list_head *list)
+ {
+ 	return __folio_split(folio, new_order, split_at, &folio->page, list,
+-			false, false);
++				SPLIT_TYPE_NON_UNIFORM, false);
+ }
+ 
+ int min_order_for_split(struct folio *folio)
 -- 
 2.34.1
 
