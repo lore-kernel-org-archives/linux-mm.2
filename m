@@ -4,106 +4,164 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F216FCCFA03
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 15:29:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 35A6CCCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 15:34:12 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 1D7618E0006; Thu,  6 Nov 2025 10:29:36 -0500 (EST)
+	id 7FC0C8E0009; Thu,  6 Nov 2025 10:34:11 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1AF058E0002; Thu,  6 Nov 2025 10:29:36 -0500 (EST)
+	id 7D37B8E0002; Thu,  6 Nov 2025 10:34:11 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 077CA8E0006; Thu,  6 Nov 2025 10:29:36 -0500 (EST)
+	id 6C2468E0009; Thu,  6 Nov 2025 10:34:11 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E93A78E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:29:35 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 77765C0162
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 15:29:35 +0000 (UTC)
-X-FDA: 84080566710.30.1BEA191
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 89B661A000A
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 15:29:32 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kDMOYGXp;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 5933F8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 10:34:11 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id A91FB1DDE23
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 15:34:10 +0000 (UTC)
+X-FDA: 84080578260.22.1EF7971
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 2A4AF100012
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 15:34:07 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ud1ezlZu;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762442973;
+	s=arc-20220608; t=1762443248;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=hZB5qA4NvpnshTBQfqKkEi7vu8L2pmkh2xYQ3MMNTjo=;
-	b=C/gwoGaqAX+PkMYsHqMpFcY1fywvZOI1q8ZtGGNdGXONZNeh8uwpLuOPJoOlYGVnHkQHsm
-	vwSftY8nV80A5Mnl00k+7N/GA4gSDn7H7XwCSN3A6AK8J3be/L8wJMtSLpj8gctmsg79ZO
-	n/JOjXlOmDrmi1QtM62yK3Esy/umQTw=
+	bh=USDQ8ElKabVeXvYmFW0YLq1tEPCwDR9lnFGrXCv6r44=;
+	b=eHvBRAfY9aQkZAMe1ZCLsSZvLNJ4X4fmSRHuLVmsBg6a7tM0zwzI6Xcv7IPr1QerJlzb8J
+	UBLrHuex18zrWy2j8IN8xvHMdJkryxEdvFQqyLzqbY3NfPhmycj/MzbESVrGXZd9utxScS
+	xlYFx2JNQyfqaf4CUjRGzdl7FNntilc=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b=kDMOYGXp;
-	spf=pass (imf19.hostedemail.com: domain of lkp@intel.com designates 198.175.65.12 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762442973; a=rsa-sha256;
+	imf14.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Ud1ezlZu;
+	spf=pass (imf14.hostedemail.com: domain of agordeev@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=agordeev@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762443248; a=rsa-sha256;
 	cv=none;
-	b=0onPb/UEdmKcsWU1e2nGxDpFmgvaLbgrgwsOZFJ7vOGydcWXPhXziiATlbel/M1CDqiQ25
-	tFPQOeHzb1Y6cfa0ZTIBe9dC+o3LXas7ekC4uGhZ9elRhA19EYPOLqeJjvPBewFom41R0m
-	amWISLvzSbFZSdAwieSxyJQLYfZRV7c=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762442973; x=1793978973;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Fy5kb+xSEe8CuLReHJSiSgwCvjIGVD2dswSaWqR9TqU=;
-  b=kDMOYGXpPoLpNOyuYGOmPmdsNCQ4aA7dMfZakNlwKjY2iatlELSg7Edz
-   rKdHfofdqoE/IZ0pn/GFOYHADrkZtYXcvAtScVFiOAkxSQjv3dPn+W+0F
-   iFKEF17a1hIVqbrcrvPRUiOB3fExKLrJZFJKV+VDMrB7LnMIDmkzwPsfJ
-   Oyss3pPaOHyHVz/ANMq7FGhrvtFi7v7I5XbN3lUGpbAi0vYJM2vlz2y4M
-   HFW3la4qXgmLiD7hHXtzAAa1k4pcUJGPn0ZKzlXZosP9aEptemSm/QDsT
-   R/Ij+ZcM2HsBj7q3B1bRzoU/vidrQ4XVVkAOwyvi97N7KIIfyJ1smM17x
-   g==;
-X-CSE-ConnectionGUID: UDDtu0piSySrqz4P8z9fiQ==
-X-CSE-MsgGUID: xnYYDzC5RMyVc9s/OGGklQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="76031393"
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="76031393"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 07:29:31 -0800
-X-CSE-ConnectionGUID: sZfJMlAgRIG2UQxuqDCZKQ==
-X-CSE-MsgGUID: Sny0jVoXSGuME85WdEfqVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
-   d="scan'208";a="188502501"
-Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
-  by fmviesa010.fm.intel.com with ESMTP; 06 Nov 2025 07:29:28 -0800
-Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vH1vS-000U5A-0r;
-	Thu, 06 Nov 2025 15:29:26 +0000
-Date: Thu, 6 Nov 2025 23:29:25 +0800
-From: kernel test robot <lkp@intel.com>
-To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>
-Subject: Re: [PATCH 3/5] tracing: Have tracer option be instance specific
-Message-ID: <202511062257.TSJTBQ2c-lkp@intel.com>
-References: <20251105161935.545400234@kernel.org>
+	b=FyUXKYNWDWcD72OVfy3AV90AX+O3bN7BDvGXuBNwJ5Gl05pHxu7LvjA2uSeqW+aC86R6FZ
+	eLNR79qkuubpc9p+6wUDBTISXyGGWsZzy9Y7ofqmzhhT8A0XTaUWRjN6bVIIKoLJ5ZGEZ/
+	fP5CQuN88pPCiMjO4iZBCPuOY4iX+fk=
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A673rWV004542;
+	Thu, 6 Nov 2025 15:33:33 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=USDQ8ElKabVeXvYmFW0YLq1tEPCwDR
+	9lnFGrXCv6r44=; b=Ud1ezlZulJ19pMoMC9cV2Puhpc6xfvY5kH8l9lzJzReHWw
+	mKEvGrCq+8tKTYQ2MxDxhIU69JV0pOnXy39LBfKHxozegDXvBfvTmpds52s5U6cE
+	/B8hVE2W8NjEjWAswsJNBdI1NjgMAEZpxAZmQ2gRLaUTDivnAluHG4qYTu7XsDwF
+	Vsk72wk+IJjAz3KWLN/C9Bbd92H7vh+BDHU0ZjrBqUI/zYCcM9fmOWIHGJocsLRR
+	RFqfscnpogqSAjX1viBd8MZh0c3dOnzgnvPYX0MV5maeP1AFCCwYIoJhH103h2O4
+	ttiB6tX1e7rVFmgT6CXyJjvDJ+Kc6/eoN7Ra3efQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xc7x4v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:33 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A6FXWW0020778;
+	Thu, 6 Nov 2025 15:33:32 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59xc7x4m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:32 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6FSEis009863;
+	Thu, 6 Nov 2025 15:33:30 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5x1kp3cv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 15:33:30 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A6FXSer15008248
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Nov 2025 15:33:28 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8439B20043;
+	Thu,  6 Nov 2025 15:33:28 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 90CA520040;
+	Thu,  6 Nov 2025 15:33:27 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Nov 2025 15:33:27 +0000 (GMT)
+Date: Thu, 6 Nov 2025 16:33:26 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: Ritesh Harjani <ritesh.list@gmail.com>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, Andreas Larsson <andreas@gaisler.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+        Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>, Yeoreum Yun <yeoreum.yun@arm.com>,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
+        x86@kernel.org
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Message-ID: <d5435e75-036b-44a5-a989-722e13f94b3e-agordeev@linux.ibm.com>
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+ <87ms5050g0.ritesh.list@gmail.com>
+ <50d1b63a-88d7-4484-82c0-3bde96e3207d-agordeev@linux.ibm.com>
+ <48a4ecb5-3412-4d3f-9e43-535f8bee505f@arm.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251105161935.545400234@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 89B661A000A
-X-Stat-Signature: hxwkw9j16bgbfrh6ybusp3qx4jqwyned
+In-Reply-To: <48a4ecb5-3412-4d3f-9e43-535f8bee505f@arm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX/YZyxmYrnrJ9
+ xCd4ujIZq7y0lim+YrboYNwl5TsRqk1oOoSjjpPrN2bdS3Yj8+BGw0eDwtF58nU1AxMxpNChFIt
+ kjix63Qwyja0jEYGMpU1W2106lg0/CJxII5rA6IH8ca9YKwDy28POrrS/UliHt5WUxWiY4RvYvK
+ KvjB7Q8W206gTc1ADhSmWj/G5k8ScNY8TzY3EvQXr/BVbxmytuyeX5wifFN5ALnc+chrAMwW/6j
+ QnaXo4exfOcjHuuvP3Y/8qCuhkp//Cj/oqysiN8ehC/uU7vBozF7kWjRZh1pps/+U+PuMO1myX5
+ CRiCQpqgahhrliHsenckRMbSmwXbtqSltJhRXk0UqsG5hBu7Va14xA+ZT8E/Z1xVt8mLCpJRj/v
+ zoQNd/ElbUWMuQJeG/kbcYXCoAfCRQ==
+X-Proofpoint-GUID: TFOhjUGUwcHF-txd3JWs84wNA_RrcFJO
+X-Authority-Analysis: v=2.4 cv=OdCVzxTY c=1 sm=1 tr=0 ts=690cbfcd cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=VwQbUJbxAAAA:8 a=20KFwNOVAAAA:8 a=ENMs_uJo8d3F8rUHHo4A:9 a=CjuIK1q_8ugA:10
+ a=DXsff8QfwkrTrK3sU8N1:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22 a=bWyr8ysk75zN3GCy5bjg:22
+X-Proofpoint-ORIG-GUID: 0GlCJX74XkrUHHpzFp_J9wLdkqJNwiej
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 adultscore=0 spamscore=0 suspectscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 clxscore=1015 phishscore=0 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511010021
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 2A4AF100012
+X-Stat-Signature: o5xa7apyajph6ge3ifqn1k6dnepzpmta
 X-Rspam-User: 
-X-HE-Tag: 1762442972-356671
-X-HE-Meta: U2FsdGVkX1+WvtDFMPhJaVDSZ0/BDAXxWK351+nU++MyPf425WsN083JjbfyXQJr5xGUVLMpq313M3FSZO6GpXiky1KocUVg+PlEF1kFa4Ri6/EDjdWbzhjmnDU0XyKLLRx5e0vmXSezXtajp+QgoFkv2Q0/pDOLTkuU0eRj+6zIrenWeHbZnY37p6kqroIwu36Kr0/Xxp7QJC2nlCrgSLscVwn7aP+f0UWD6KAAyNDD3jR+thUl42LeBqFiV+IPu0mlIO9s4ICjE2Q6B7Z0Mu9Rm2gjXXNuPDnF4l3JxFxUR4lPgznc2oCDAh68qNrid2G+M2vHC/6EQSb1/LSe+ppQW4cehNHtNVQyjtSqPodg7dmgc2D3G6jAM37jfl8fPrs/zRo+Rx/hm9Ij0Oywq8+O6oBA3EPSRKIn20yT/ebYtcvVLKtCQ9ygK7Rvwp8avXJdN2xcgIG9UhsBcM+DMDtWK35UUB+tvtKx7Ne6QFPxVaqxVkr3X9EQ1TtVsk5ECcxrzyqC1y+uzW6m8rJFbPnkzvo6J008lASlEI4LmYq4jXbYJYuVzR6mmuUQz0l4AXKR3O3sA08O6ZVoS+d82k1FNy5rq9UjtOPZcz7W3yzXYiixNsZDn5jbtWdLCUDL9f/ecPHEvn9cACFLYE5YJEgTIPMwNa4ZeTIj+v+qinUE7M3n1gfvui/YU37RXzpIidFyjyHRIWsomVOsyyzXnQYs+U8FNcSMJxP8gpZlJFm43M8vvEleaJU67Ec5qrHQvb+Y560/GTw+/BG/xudne9QoRMuIA5r3qcng8NUrpL3zfArt6UD860y0PpdSiSOew6pETrrMpSyMvN5ruSIngX0BOefMq9Cz3kZoFBBB82XLVK50sUD42E9ZCz+/b4suXZKprJlONukkP5IwtH/DFbs+SDFjUJ3s0YSXm4Mr/f3C432GwuofCXz0dStFKiit0SnVSLg7rcbeJEEWyHI
- 2OtQ65hU
- pfEokBASPcKRI5uvFlkrcoCiMxyEPCDEmy1kMiRISN59i8Qawffi7PuMHGlkUNck/ZY9DsKYh3lOlpdHVNnX1rRvVfQBv/nt0d29+zqXlob41GNDXG/cRDefIOE7U9qPVyhSxz25N5e9z9Kt9URvJlf5V23OP8fUvRmS2tSjIseGV/QwgpkZwYCbL5NakaVXLAKMCri7hxtHETx0gmb+YSbRRcpzTgXJUdPgm0s9kGYkaLdAM3laGNsfUO+jf69rSAUa4xNtSQ3YlAocI7azsLc7aZlIXQrP0EgHkoPH2Pu9Vu113yqnqoCOAupW+J/GXouPZhz/IuoqsA6Y3p2MwBMVOhyz5Rkp6CFjN
+X-HE-Tag: 1762443247-567741
+X-HE-Meta: U2FsdGVkX18ICe1AIblZWcp3QEeqmo+rH6zfdpzNu8TDxG+uJb8PseH07Bv60ZPGac/ByUjT6W5VrE9FFHNFrkMVgnORI1152Kz4BU+iqV2zdnmQKWreHusegx4KwCbSsSkza2JNwwlQXVdkQSMV4ZlBlswnoTyajulti9+54ykM/L84DsKB1wuNLnvsAbdU5UigLQ1TPCByaEF4v91oHIv3HqCZ5L62deptZqYD97c4mpo3zdyf0WrcL/ugHAP0CAva4eeGcIUH8ljgTOZuXhigPjUzcpirGtJLDMEv4wZ8gxeFNcJ+B8QVVz1FM1XKY+QBzSmcbm1v42uJFaApZqI0kYJZFxqX9CWwUqD1MhKIBvs06aZ6cCVY5r7M65Kn7mGJfyNkfrpLUmQQOHZio+KHNvCFi1wQ8DLHM/rrQvycT0rxE6tYceS0BqC0yPshPdCalhnpJ9leqvrV4Cx1OSgQZ4DsHWwz8H7wsdhHoocrt5TZPwFnayNO8vQ39f0SL13EYkoFd9NP2dhRVPZt8Wjmth0AiH84gOG+bPwmq3uPh+9ZCSQjQpb/yJvdg4gxcIttCVqL/orYDJ/n7VwKe9zLuocxXa7V2LJghYcmpBniF2YMIozXibMLjOXe6o7LHr+G8O/eESDb8PVkenKzkKmJi6dD28ilnre44LB1aAIspynlJu3Yk9Jf6+RNcQvnn/w6JSDkpzzZOxJ2vNOAU+xJVJ9ats+TZzkjSv7hd+BQdIWxPCWn1MbeMJcyC1hmOK2M1MXWNE4xDXW1a6veabeYwahTGbt6+d0a4EJQx7yoHiQWPDQqKUQ6oLi34pKnAXax5MmuStN5QorcJScYk2Z9KrDjzoUGfZkL+zw4N6/ZUe8lTOPUzhCvdU2pjLla2FbPavoDPbx6tzjfnSDabh6i9Ivz0nzbHj7KO+8F341LlewHhNtHJxpyIfkapfE/TCllz0Veu3IAWlOyMgL
+ znvdO65/
+ svIkqv/tKDgPCCp09qfcww2BSuzDPClGhF0PAeVMBf0xa/YVtvSnQ/LJdfTGyI+UDeXsa6dkor54eLOEPibGfs5HJ+QTC0tSd0fimit34/AfgkJ2PLLmne4kd8M4ioufIMgM4MY1iGcudXPj7TjaQRhLQ6l21vfsRW8klJ3bVXzh7i+1pCOhGPqK4kQAe+I4Bdmbq/jy48Z5NlMZy9pBIsuyr7nBWDzr6iguI0Jkz4b1jT5+XGT5qG7BX2V+sFYmYBzytpc0gxToDdyjFj77cSDWdKKjWBoPHuXbNewEfVPqUzaffcw21WQc076SuZjodjOzSI/iVKU7NXtw8/KpEM2Dpiu/3m9q2CEAzej15t8La7OSkuW4rbfZrpIPmD4DWTZcBvaJIpWb1Sis=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -112,89 +170,120 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Steven,
+On Thu, Nov 06, 2025 at 10:51:43AM +0000, Kevin Brodsky wrote:
+> On 05/11/2025 16:12, Alexander Gordeev wrote:
+> > On Wed, Nov 05, 2025 at 02:19:03PM +0530, Ritesh Harjani wrote:
+> >>> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> >>> + * currently enabled.
+> >>>   */
+> >>>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> >>>  static inline void lazy_mmu_mode_enable(void)
+> >>>  {
+> >>> -	arch_enter_lazy_mmu_mode();
+> >>> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> >>> +
+> >>> +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> >>> +	/* enable() must not be called while paused */
+> >>> +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> >>> +
+> >>> +	if (state->nesting_level++ == 0) {
+> >>> +		state->active = true;
+> >>> +		arch_enter_lazy_mmu_mode();
+> >>> +	}
+> >>>  }
+> >> Some architectures disables preemption in their
+> >> arch_enter_lazy_mmu_mode(). So shouldn't the state->active = true should
+> >> happen after arch_enter_lazy_mmu_mode() has disabled preemption()? i.e.
+> > Do you have some scenario in mind that could cause an issue?
+> > IOW, what could go wrong if the process is scheduled to another
+> > CPU before preempt_disable() is called?
+> 
+> I'm not sure I understand the issue either.
+> 
+> >>   static inline void lazy_mmu_mode_enable(void)
+> >>   {
+> >>  -	arch_enter_lazy_mmu_mode();
+> >>  +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> >>  +
+> >>  +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> >>  +	/* enable() must not be called while paused */
+> >>  +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> >>  +
+> >>  +	if (state->nesting_level++ == 0) {
+> >>  +		arch_enter_lazy_mmu_mode();
+> >>  +		state->active = true;
+> >>  +	}
+> >>   }
+> >>
+> >> ... I think it make more sense to enable the state after the arch_**
+> >> call right.
+> > But then in_lazy_mmu_mode() would return false if called from
+> > arch_enter_lazy_mmu_mode(). Not big problem, but still..
+> 
+> The ordering of nesting_level/active was the way you expected in v3, but
+> the conclusion of the discussion with David H [1] is that it doesn't
+> really matter so I simplified the ordering in v4 - the arch hooks
+> shouldn't call in_lazy_mmu_mode() or inspect lazy_mmu_state.
+> arch_enter()/arch_leave() shouldn't need it anyway since they're called
+> once per outer section (not in nested sections). arch_flush() could
+> potentially do something different when nested, but that seems unlikely.
+> 
+> - Kevin
+> 
+> [1]
+> https://lore.kernel.org/all/af4414b6-617c-4dc8-bddc-3ea00d1f6f3b@redhat.com/
 
-kernel test robot noticed the following build errors:
+I might be misunderstand this conversation, but it looked to me as a discussion
+about lazy_mmu_state::nesting_level value, not lazy_mmu_state::active.
 
-[auto build test ERROR on trace/for-next]
-[cannot apply to linus/master v6.18-rc4 next-20251106]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+I do use in_lazy_mmu_mode() (lazy_mmu_state::active) check from the arch-
+callbacks. Here is the example (and likely the only case so far) where it hits:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Remove-dummy-options-and-flags/20251106-010511
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
-patch link:    https://lore.kernel.org/r/20251105161935.545400234%40kernel.org
-patch subject: [PATCH 3/5] tracing: Have tracer option be instance specific
-config: i386-buildonly-randconfig-004-20251106 (https://download.01.org/0day-ci/archive/20251106/202511062257.TSJTBQ2c-lkp@intel.com/config)
-compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511062257.TSJTBQ2c-lkp@intel.com/reproduce)
+static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
+				      void *_data)
+{
+	lazy_mmu_mode_pause();
+	...
+	if (likely(pte_none(ptep_get(ptep)))) {
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511062257.TSJTBQ2c-lkp@intel.com/
+		/* Here set_pte() checks whether we are in lazy_mmu mode */
+		set_pte_at(&init_mm, addr, ptep, pte);	<--- calls set_pte()
+		data->pages[index] = NULL;
+	}
+	...
+	lazy_mmu_mode_resume();
+	...
+}
 
-All errors (new ones prefixed by >>):
+So without in_lazy_mmu_mode() check above the arch-specific set_pte()
+implementation enters a wrong branch, which ends up in:
 
->> kernel/trace/trace.c:2174:23: error: redefinition of 'type' with a different type: 'struct trace_tracer *' vs 'struct tracer *'
-    2174 |         struct trace_tracer *type = tracers->trace;
-         |                              ^
-   kernel/trace/trace.c:2171:47: note: previous definition is here
-    2171 | static int run_tracer_selftest(struct tracer *type)
-         |                                               ^
->> kernel/trace/trace.c:2174:30: error: use of undeclared identifier 'tracers'
-    2174 |         struct trace_tracer *type = tracers->trace;
-         |                                     ^
-   kernel/trace/trace.c:5172:17: warning: variable 'trace' set but not used [-Wunused-but-set-variable]
-    5172 |         struct tracer *trace;
-         |                        ^
-   1 warning and 2 errors generated.
+[  394.503134] Call Trace:
+[  394.503137]  [<00007fffe01333f4>] dump_stack_lvl+0xbc/0xf0 
+[  394.503143]  [<00007fffe010298c>] vpanic+0x1cc/0x418 
+[  394.503149]  [<00007fffe0102c7a>] panic+0xa2/0xa8 
+[  394.503154]  [<00007fffe01e7a8a>] check_panic_on_warn+0x8a/0xb0 
+[  394.503160]  [<00007fffe082d122>] end_report+0x72/0x110 
+[  394.503166]  [<00007fffe082d3e6>] kasan_report+0xc6/0x100 
+[  394.503171]  [<00007fffe01b9556>] ipte_batch_ptep_get+0x146/0x150 
+[  394.503176]  [<00007fffe0830096>] kasan_populate_vmalloc_pte+0xe6/0x1e0 
+[  394.503183]  [<00007fffe0718050>] apply_to_pte_range+0x1a0/0x570 
+[  394.503189]  [<00007fffe07260fa>] __apply_to_page_range+0x3ca/0x8f0 
+[  394.503195]  [<00007fffe0726648>] apply_to_page_range+0x28/0x40 
+[  394.503201]  [<00007fffe082fe34>] __kasan_populate_vmalloc+0x324/0x340 
+[  394.503207]  [<00007fffe076954e>] alloc_vmap_area+0x31e/0xbf0 
+[  394.503213]  [<00007fffe0770106>] __get_vm_area_node+0x1a6/0x2d0 
+[  394.503218]  [<00007fffe07716fa>] __vmalloc_node_range_noprof+0xba/0x260 
+[  394.503224]  [<00007fffe0771970>] __vmalloc_node_noprof+0xd0/0x110 
+[  394.503229]  [<00007fffe0771a22>] vmalloc_noprof+0x32/0x40 
+[  394.503234]  [<00007fff604eaa42>] full_fit_alloc_test+0xb2/0x3e0 [test_vmalloc] 
+[  394.503241]  [<00007fff604eb478>] test_func+0x488/0x760 [test_vmalloc] 
+[  394.503247]  [<00007fffe025ad68>] kthread+0x368/0x630 
+[  394.503253]  [<00007fffe01391e0>] __ret_from_fork+0xd0/0x490 
+[  394.503259]  [<00007fffe24e468a>] ret_from_fork+0xa/0x30 
 
+I could have cached lazy_mmu_state::active as arch-specific data
+and check it, but then what is the point to have it generalized?
 
-vim +2174 kernel/trace/trace.c
-
-  2170	
-  2171	static int run_tracer_selftest(struct tracer *type)
-  2172	{
-  2173		struct trace_array *tr = &global_trace;
-> 2174		struct trace_tracer *type = tracers->trace;
-  2175		struct tracer_flags *saved_flags = tr->current_trace_flags;
-  2176		struct tracer_flags *flags;
-  2177		struct tracer *saved_tracer = tr->current_trace;
-  2178		int ret;
-  2179	
-  2180		if (!type->selftest || tracing_selftest_disabled)
-  2181			return 0;
-  2182	
-  2183		/*
-  2184		 * If a tracer registers early in boot up (before scheduling is
-  2185		 * initialized and such), then do not run its selftests yet.
-  2186		 * Instead, run it a little later in the boot process.
-  2187		 */
-  2188		if (!selftests_can_run)
-  2189			return save_selftest(type);
-  2190	
-  2191		if (!tracing_is_on()) {
-  2192			pr_warn("Selftest for tracer %s skipped due to tracing disabled\n",
-  2193				type->name);
-  2194			return 0;
-  2195		}
-  2196	
-  2197		/*
-  2198		 * Run a selftest on this tracer.
-  2199		 * Here we reset the trace buffer, and set the current
-  2200		 * tracer to be this tracer. The tracer can then run some
-  2201		 * internal tracing to verify that everything is in order.
-  2202		 * If we fail, we do not register this tracer.
-  2203		 */
-  2204		tracing_reset_online_cpus(&tr->array_buffer);
-  2205	
-  2206		tr->current_trace = type;
-  2207		tr->current_trace_flags = type->flags ? : type->default_flags;
-  2208	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Thanks!
 
