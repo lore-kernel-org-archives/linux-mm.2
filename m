@@ -4,60 +4,61 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 05F70CCFA0D
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:08:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 97558CCFA0D
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 03:08:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 05C8A8E0009; Wed,  5 Nov 2025 22:08:44 -0500 (EST)
+	id EDB448E000B; Wed,  5 Nov 2025 22:08:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 00D478E0002; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
+	id E8BA28E0002; Wed,  5 Nov 2025 22:08:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E8C0B8E0009; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
+	id D2C628E000B; Wed,  5 Nov 2025 22:08:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id D34CC8E0002
-	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:08:43 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 724ED88AE7
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:43 +0000 (UTC)
-X-FDA: 84078699726.15.2474F0D
-Received: from out-189.mta0.migadu.com (out-189.mta0.migadu.com [91.218.175.189])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 9961D1C0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:41 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DIL/yDdm";
-	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id C0E6B8E0002
+	for <linux-mm@kvack.org>; Wed,  5 Nov 2025 22:08:46 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 6B17CBA059
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:46 +0000 (UTC)
+X-FDA: 84078699852.05.B084533
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7A82E20005
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 03:08:44 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NQrHidSH;
+	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762398522;
+	s=arc-20220608; t=1762398524;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=PEgt8dqODFgqWZubV0P8rSJ5eXEFZvoVCzJWLxN7M9g=;
-	b=xZM/rs9vV3pkQwrAJAWQEEm5DFJxLGUoKdeCQvDkjjUsV5bl8xv4f52zcPnYIoPhkDcD6p
-	0VKCEqCuqmp9O04ZxxVOwGI+xWwXp3pAZ36cloBJTsWMixFz1LOYbvOgVH+I1tC/wvFBAl
-	OgVidPTQBt0j8t6VykK2yG+POMEZAYU=
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=hLzfQtTrPKcDttRCX8jBxhCcp4UZva2UEDjhJytbHqU=;
+	b=rcU9CuVEv6uaxEbSSk8nCNwociufbwvf+0I5Z4fMfGK+EsASmwtKJAYGUNCwZvoU4iuOAY
+	H5oUehH3aqJHii9kJW6CFAh/vFFNiMDZ4cLiTGuAyWaOz9oC98IotsHilE6k9SfuXmab9q
+	j9y1qKumw/KQTQ27Ku+qjvI11OvFo5k=
 ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b="DIL/yDdm";
-	spf=pass (imf18.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.189 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
+	imf13.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=NQrHidSH;
+	spf=pass (imf13.hostedemail.com: domain of hui.zhu@linux.dev designates 91.218.175.174 as permitted sender) smtp.mailfrom=hui.zhu@linux.dev;
 	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762398522; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762398524; a=rsa-sha256;
 	cv=none;
-	b=wjMECOuitLU1pM6zTseMYa2ilXWPnzzVM+tdh2fI850LqIRpIzAB6qkxecFOkevqOnNb4a
-	OURO74lGz2/DlW+Wsj60PrBRPEdIBF3vY4MzZeS6NPsSpywkqHY61nXB2s8rHvwhkLPvKc
-	3ekWSb/GUUdUDelO706dk0SKA0D+/VU=
+	b=CyzYQBf6rUxuuFV6AVV2v1cLxzz1Qm/DWy45tHZc7i6UWyo3VjvY7a0XGYtDhfjTsb/tpu
+	2TTseRUerHsnZ43HnJ6gyG62Tu0fJJyCzBRIPYmp13DM7014PAuPLvD2LQNrRpBBI5QLWQ
+	U1TvofjxtSFtIOAJrZ4uyErfZTUGnTA=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762398519;
+	t=1762398523;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PEgt8dqODFgqWZubV0P8rSJ5eXEFZvoVCzJWLxN7M9g=;
-	b=DIL/yDdmEpqocu9ESUZ8W9uH0Vh1M18a9ktyGr6YFz1Xeg33wl10vdqdtMnUxSz0n8Tz1v
-	J0oX93sKbVpg1ERQjL2zMnLSXwPGdaZatEpcBqBmULRgRYC6i0hvSU0olk/Q3El75yX0Bt
-	DVHZ5+MQ98DgLhm3nSEYY8NH/oDt9Oo=
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=hLzfQtTrPKcDttRCX8jBxhCcp4UZva2UEDjhJytbHqU=;
+	b=NQrHidSH50w8ND01JwhcjGMe2xozLELsHrmZ7RWhnjTWTVvPneEdqKsLEqUrUP75JTfADU
+	qCyEWp2GfcFW3Bi/Mbbz+8Z1tOoDUQevPF11xQH8TBtYP6RplZIbSlo1/ap79UKR6zYYZQ
+	DTJsX878eZz0nJdaqkpku5tVMTp7wh4=
 From: Hui Zhu <hui.zhu@linux.dev>
 To: Andrew Morton <akpm@linux-foundation.org>,
 	Muchun Song <muchun.song@linux.dev>,
@@ -66,21 +67,24 @@ To: Andrew Morton <akpm@linux-foundation.org>,
 	SeongJae Park <sj@kernel.org>,
 	linux-kernel@vger.kernel.org,
 	linux-mm@kvack.org
-Cc: Hui Zhu <zhuhui@kylinos.cn>
-Subject: [PATCH v5 0/2] mm/hugetlb: refactor sysfs/sysctl interfaces
-Date: Thu,  6 Nov 2025 11:08:21 +0800
-Message-ID: <cover.1762398359.git.zhuhui@kylinos.cn>
+Cc: Hui Zhu <zhuhui@kylinos.cn>,
+	Geliang Tang <geliang@kernel.org>
+Subject: [PATCH v5 1/2] mm/hugetlb: extract sysfs into hugetlb_sysfs.c
+Date: Thu,  6 Nov 2025 11:08:22 +0800
+Message-ID: <656a03dff7e2bb20e24e841ede81fdca01d21410.1762398359.git.zhuhui@kylinos.cn>
+In-Reply-To: <cover.1762398359.git.zhuhui@kylinos.cn>
+References: <cover.1762398359.git.zhuhui@kylinos.cn>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 9961D1C0002
-X-Stat-Signature: earnydhwuarzf1o4fpjb7c7nw87qj7hq
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 7A82E20005
+X-Stat-Signature: 79iyumkg3g9pq3tiz1nhy8pay6d69qq6
 X-Rspam-User: 
-X-HE-Tag: 1762398521-712405
-X-HE-Meta: U2FsdGVkX1/4ozBLPl89q9DMTz7VFWVsCqQFBGdjoLWOCCt46IJ4EuA92WHPQwuBu9NNMVeuj1npZPKWPNmD0sx+bvEDvcAmOpDbCpWHCWylA4NtJ+4CCBlpHGUagC9c7wVJzhq4r/2fQ6Gdz9GHeRqy4aaJk4pD6tV9i3YH0R26t5khYphM8JR7pjCnC2nu+mJl5glXkMNWTqki3mDsu0s5Ba8+SvS2IC2v/D7eAX2r6BqTCa5nPqxqUACMRfyLQtYC5rl7LIzUT7qRAA8S84kb/iqmuhe5vCjHjRfz4Jly61NmoobDOxzI4ZwDWXzb/bwmBXxJGJI946WMRhBpG12gmjqEqSBkxvozAiHrsx2oucTP6v2asHSzZZ58b4MRsWlKjyhFNfn4ftz8hPSnoOXkKzY47IZnh6g4Weu5D3krM6CfTAhN33yG189XZ04Bku3PuXkNBEsO7EmVC0X0z4BGWKwkMh9rJstgiNGVUu+wRtBVjhDOfOHd481McWk6GaYApruR+BmmFg0XASk151mpVmhlWSu66oMCTJXUKXkdd1chQnCQ4Z6RhvY0HM8GQr1G84qjX4+3s/z7RAS/sHUHqYxI0AbsYtR6l+edgl35ZcOgbprovOXa/cw73cSNz/vkYh1UUILoi0fSRx1hce2W6ppVMYvIZ3dH7sxYY9FV0fet1OXaT1eUIx0MDNG2DTgyBpsi0HsDBH7kwSzIO5dgfaBULQfpEmna1+LNjyoIi9OW8dZ9+Ar4OtX3POe5r2u2HMAfSsYRQGlHiXI8KoOAupzgYF/9JCiWDXwRxiuQW2n1rbjmUCmy6+AwPHPTqhcH0tWwsPU1ZeX2+3LEKiAqTljDsiOEaBnkxzIL1dvgRNLAsy8LSisK4V5HhyFlaS1RpHuWMVSPS/RfBqA0KQiCLRWvDa0oJx6vHOi354AP8aIm8FS4XQKK4ChUe9ZgEGJOlc3XRCXATGzA2p0
- XP29Lfy0
- EIKZZ/t1VF7IUrVO6RfSp0KdJO/E7Ao1/M5589KsMBPcSwaVwq1UtSsdlDJ1B1zgcjZZyjnw79SVKbgs/eBpAav2TCdAV8UHNxTZQXLpWlhdQM/JiAT+072kVlPLJbslfpNGISw7azJAr6VAgKh1glbdYNCJEYD5nUpYN
+X-HE-Tag: 1762398524-935631
+X-HE-Meta: U2FsdGVkX19RHCd0mTJjBawruqcl2+osbsb4FZX28Aa6mX1XHHjW+wIatyFjUYuVlljjmZFYNQSTyHrMoOkYYFIs257p8yxc7UcI1X9C99cWjbTUoX0l1e4nEHGy7FCSdFDgFAudHYrGHEQVevtOOBwhoiCLDlLNj1ywC4twg95qChcqJkvGnd+8QWrfeX7ukR6VA53Z4l6VFo+pHUJBJyFz/OBSz8iurcxlmg0QPnfPRTRB2OFYaRsC8v22iIHYBDbdm6t8g9DxjJwAbX32QIt0EHzSeAuE/HNEsgYr+3RpsUn4/G2zGtVecxVRGKOxJMUJC+OD0c0MA0ccw6DkzW9OdoNNbSbnTN1FrvWW7zTaoRbW7+T6sWrBpoQDCpbOnBk7cHloM9nfpMqTI/6dfCF84a7pl3Rf4Fb217WaAO9G66kh6aryDCIEIK//nIT5RLF1m9EfJJMoxJhQF2hHE+9FedkVu5tPjefcK3QJgxbBJ9Zr58sNLInKNNdX1cGSJLdLjZTruvUJoAzCWwapbv1ABF1qBgfhyJBLqvE1FNrbvA65N/6zMxDj5+uXgu5JoXwOQpuVNvsoYhSxfYjC30wB8Wvf/vfMfdA11YmI2a558yiI0KCJ3zChN/DZWh0gKUVV473T8NLTOnDtQ+g6uqpiu7eW8dMpcumQ5rNkineYihj2hoFtcJ5n3BJ6SyG2/s//KsF70eBIYqxQDo/GFyjOHDw8o75RVVZW3YhwYXpeSD1slti1tBEsTQEGd4simIg4lAs0OIqmlclnoRopgNPBuUo+smsTW5fHJTfu2hHZxuSN6/7XTlY9o7R25wIC8f7C2dOXUjHQah4KhIugD5DCRswxHjv+hdW92CQ64OlfB7OFH+ydxwGnCoCSEPiSQJpsOjeLrzmbb7XOzgDSQfmhHQtOxPRgyr3NyGDZkRkXPxTA8Hdv+GVRJxu2hG/p8tRhDUeTNAphx6GeJxE
+ ZFD8Bk+H
+ T3K4mW3f7VcSF9Rt3cnl6A21IevJgw7EeJKOKIcBarl8hYhF0n5OLMAMkIQ/Yw5p3VuYh6SAqUteQAv7lEJHLCQeoij7a8q9lxt9lohwjTTgLRsSq6sYO08dinupj8ciLItiDHtdICq4Twh0zFYC4g//7W9JdnkFtsDkVFCtKI00OU39Tmz6HnN506Ew5QMTwQt6m9C+VavURCabKaKuicWI8Xs9CzHNVBxEECDm5+U43Ju7m1b5x1Bkr/zXzX8xSFrUsm5C7v95P3R4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -91,53 +95,1384 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Hui Zhu <zhuhui@kylinos.cn>
 
-The hugetlb.c file has grown significantly and become difficult to
-maintain. This patch series extracts the sysfs and sysctl interface
-code into separate dedicated files to improve code organization.
+Currently, hugetlb.c contains both core management logic and sysfs
+interface implementations, making it difficult to maintain. This patch
+extracts the sysfs-related code into a dedicated file to improve code
+organization.
 
-The refactoring includes:
-- Patch 1: Extract sysfs interface into mm/hugetlb_sysfs.c
-- Patch 2: Extract sysctl interface into mm/hugetlb_sysctl.c
+The following components are moved to mm/hugetlb_sysfs.c:
+- sysfs attribute definitions and handlers
+- sysfs kobject management functions
+- NUMA per-node hstate attribute registration
 
-No functional changes are introduced in this series. The code is moved
-as-is, with only minor formatting adjustments for code style
-consistency. This should make future maintenance and enhancements to
-the hugetlb subsystem easier.
+Several inline helper functions and macros are moved to
+mm/hugetlb_internal.h:
+- hstate_is_gigantic_no_runtime()
+- next_node_allowed()
+- get_valid_node_allowed()
+- hstate_next_node_to_alloc()
+- hstate_next_node_to_free()
+- for_each_node_mask_to_alloc/to_free macros
 
-Testing: The patch series has been compile-tested and maintains the
-same functionality as the original code.
+To support code sharing, these functions are changed from static to
+exported symbols:
+- remove_hugetlb_folio()
+- add_hugetlb_folio()
+- init_new_hugetlb_folio()
+- prep_and_add_allocated_folios()
+- demote_pool_huge_page()
+- __nr_hugepages_store_common()
 
-Changelog:
-v5:
-According to the comments of David Hildenbrand and Oscar Salvador,
-move demote_free_hugetlb_folios and demote_pool_huge_page back to
-hugetlb.c.
-v4:
-According to the comments of David Hildenbrand, add copyright of
-hugetlb.c to hugetlb_internal.h, hugetlb_sysctl.c and hugetlb_sysfs.c.
-v3:
-According to the comments of SeongJae Park, updated MAINTAINERS to
-add new files.
-Removed the wrong copyright in hugetlb_internal.h.
-v2:
-According to the comments of David Hildenbrand, removed the wrong
-copyright in the file headers.
+The Makefile is updated to compile hugetlb_sysfs.o when
+CONFIG_HUGETLBFS is enabled. This maintains all existing functionality
+while improving maintainability by separating concerns.
 
-Hui Zhu (2):
-  mm/hugetlb: extract sysfs into hugetlb_sysfs.c
-  mm/hugetlb: extract sysctl into hugetlb_sysctl.c
+MAINTAINERS is updated to add new file hugetlb_sysfs.c.
 
- MAINTAINERS           |   2 +
+Signed-off-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Hui Zhu <zhuhui@kylinos.cn>
+---
+ MAINTAINERS           |   1 +
  mm/Makefile           |   2 +-
- mm/hugetlb.c          | 728 +-----------------------------------------
- mm/hugetlb_internal.h | 117 +++++++
- mm/hugetlb_sysctl.c   | 134 ++++++++
- mm/hugetlb_sysfs.c    | 502 +++++++++++++++++++++++++++++
- 6 files changed, 767 insertions(+), 718 deletions(-)
+ mm/hugetlb.c          | 596 +-----------------------------------------
+ mm/hugetlb_internal.h | 111 ++++++++
+ mm/hugetlb_sysfs.c    | 502 +++++++++++++++++++++++++++++++++++
+ 5 files changed, 626 insertions(+), 586 deletions(-)
  create mode 100644 mm/hugetlb_internal.h
- create mode 100644 mm/hugetlb_sysctl.c
  create mode 100644 mm/hugetlb_sysfs.c
 
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 5a666f4927a4..f318e9bec566 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -11539,6 +11539,7 @@ F:	mm/hugetlb.c
+ F:	mm/hugetlb_cgroup.c
+ F:	mm/hugetlb_cma.c
+ F:	mm/hugetlb_cma.h
++F:	mm/hugetlb_sysfs.c
+ F:	mm/hugetlb_vmemmap.c
+ F:	mm/hugetlb_vmemmap.h
+ F:	tools/testing/selftests/cgroup/test_hugetlb_memcg.c
+diff --git a/mm/Makefile b/mm/Makefile
+index 21abb3353550..b9edfce6c202 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -78,7 +78,7 @@ endif
+ obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
+ obj-$(CONFIG_ZSWAP)	+= zswap.o
+ obj-$(CONFIG_HAS_DMA)	+= dmapool.o
+-obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o
++obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o
+ ifdef CONFIG_CMA
+ obj-$(CONFIG_HUGETLBFS)	+= hugetlb_cma.o
+ endif
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index acb0c38c99a8..4d6242adbc17 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -19,7 +19,6 @@
+ #include <linux/mutex.h>
+ #include <linux/memblock.h>
+ #include <linux/minmax.h>
+-#include <linux/sysfs.h>
+ #include <linux/slab.h>
+ #include <linux/sched/mm.h>
+ #include <linux/mmdebug.h>
+@@ -46,13 +45,12 @@
+ #include <asm/setup.h>
+ 
+ #include <linux/io.h>
+-#include <linux/hugetlb.h>
+-#include <linux/hugetlb_cgroup.h>
+ #include <linux/node.h>
+ #include <linux/page_owner.h>
+ #include "internal.h"
+ #include "hugetlb_vmemmap.h"
+ #include "hugetlb_cma.h"
++#include "hugetlb_internal.h"
+ #include <linux/page-isolation.h>
+ 
+ int hugetlb_max_hstate __read_mostly;
+@@ -134,17 +132,6 @@ static void hugetlb_free_folio(struct folio *folio)
+ 	folio_put(folio);
+ }
+ 
+-/*
+- * Check if the hstate represents gigantic pages but gigantic page
+- * runtime support is not available. This is a common condition used to
+- * skip operations that cannot be performed on gigantic pages when runtime
+- * support is disabled.
+- */
+-static inline bool hstate_is_gigantic_no_runtime(struct hstate *h)
+-{
+-	return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
+-}
+-
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+ {
+ 	if (spool->count)
+@@ -1431,77 +1418,6 @@ static struct folio *dequeue_hugetlb_folio_vma(struct hstate *h,
+ 	return NULL;
+ }
+ 
+-/*
+- * common helper functions for hstate_next_node_to_{alloc|free}.
+- * We may have allocated or freed a huge page based on a different
+- * nodes_allowed previously, so h->next_node_to_{alloc|free} might
+- * be outside of *nodes_allowed.  Ensure that we use an allowed
+- * node for alloc or free.
+- */
+-static int next_node_allowed(int nid, nodemask_t *nodes_allowed)
+-{
+-	nid = next_node_in(nid, *nodes_allowed);
+-	VM_BUG_ON(nid >= MAX_NUMNODES);
+-
+-	return nid;
+-}
+-
+-static int get_valid_node_allowed(int nid, nodemask_t *nodes_allowed)
+-{
+-	if (!node_isset(nid, *nodes_allowed))
+-		nid = next_node_allowed(nid, nodes_allowed);
+-	return nid;
+-}
+-
+-/*
+- * returns the previously saved node ["this node"] from which to
+- * allocate a persistent huge page for the pool and advance the
+- * next node from which to allocate, handling wrap at end of node
+- * mask.
+- */
+-static int hstate_next_node_to_alloc(int *next_node,
+-					nodemask_t *nodes_allowed)
+-{
+-	int nid;
+-
+-	VM_BUG_ON(!nodes_allowed);
+-
+-	nid = get_valid_node_allowed(*next_node, nodes_allowed);
+-	*next_node = next_node_allowed(nid, nodes_allowed);
+-
+-	return nid;
+-}
+-
+-/*
+- * helper for remove_pool_hugetlb_folio() - return the previously saved
+- * node ["this node"] from which to free a huge page.  Advance the
+- * next node id whether or not we find a free huge page to free so
+- * that the next attempt to free addresses the next node.
+- */
+-static int hstate_next_node_to_free(struct hstate *h, nodemask_t *nodes_allowed)
+-{
+-	int nid;
+-
+-	VM_BUG_ON(!nodes_allowed);
+-
+-	nid = get_valid_node_allowed(h->next_nid_to_free, nodes_allowed);
+-	h->next_nid_to_free = next_node_allowed(nid, nodes_allowed);
+-
+-	return nid;
+-}
+-
+-#define for_each_node_mask_to_alloc(next_node, nr_nodes, node, mask)		\
+-	for (nr_nodes = nodes_weight(*mask);				\
+-		nr_nodes > 0 &&						\
+-		((node = hstate_next_node_to_alloc(next_node, mask)) || 1);	\
+-		nr_nodes--)
+-
+-#define for_each_node_mask_to_free(hs, nr_nodes, node, mask)		\
+-	for (nr_nodes = nodes_weight(*mask);				\
+-		nr_nodes > 0 &&						\
+-		((node = hstate_next_node_to_free(hs, mask)) || 1);	\
+-		nr_nodes--)
+-
+ #ifdef CONFIG_ARCH_HAS_GIGANTIC_PAGE
+ #ifdef CONFIG_CONTIG_ALLOC
+ static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask,
+@@ -1557,8 +1473,8 @@ static struct folio *alloc_gigantic_folio(int order, gfp_t gfp_mask, int nid,
+  *
+  * Must be called with hugetlb lock held.
+  */
+-static void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+-							bool adjust_surplus)
++void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
++			  bool adjust_surplus)
+ {
+ 	int nid = folio_nid(folio);
+ 
+@@ -1593,8 +1509,8 @@ static void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
+ 	h->nr_huge_pages_node[nid]--;
+ }
+ 
+-static void add_hugetlb_folio(struct hstate *h, struct folio *folio,
+-			     bool adjust_surplus)
++void add_hugetlb_folio(struct hstate *h, struct folio *folio,
++		       bool adjust_surplus)
+ {
+ 	int nid = folio_nid(folio);
+ 
+@@ -1925,7 +1841,7 @@ static void account_new_hugetlb_folio(struct hstate *h, struct folio *folio)
+ 	h->nr_huge_pages_node[folio_nid(folio)]++;
+ }
+ 
+-static void init_new_hugetlb_folio(struct folio *folio)
++void init_new_hugetlb_folio(struct folio *folio)
+ {
+ 	__folio_set_hugetlb(folio);
+ 	INIT_LIST_HEAD(&folio->lru);
+@@ -2037,8 +1953,8 @@ static struct folio *alloc_fresh_hugetlb_folio(struct hstate *h,
+ 	return folio;
+ }
+ 
+-static void prep_and_add_allocated_folios(struct hstate *h,
+-					struct list_head *folio_list)
++void prep_and_add_allocated_folios(struct hstate *h,
++				   struct list_head *folio_list)
+ {
+ 	unsigned long flags;
+ 	struct folio *folio, *tmp_f;
+@@ -4093,8 +4009,8 @@ static long demote_free_hugetlb_folios(struct hstate *src, struct hstate *dst,
+ 	return rc;
+ }
+ 
+-static long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+-				  unsigned long nr_to_demote)
++long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
++			   unsigned long nr_to_demote)
+ 	__must_hold(&hugetlb_lock)
+ {
+ 	int nr_nodes, node;
+@@ -4162,51 +4078,7 @@ static long demote_pool_huge_page(struct hstate *src, nodemask_t *nodes_allowed,
+ 	return -EBUSY;
+ }
+ 
+-#define HSTATE_ATTR_RO(_name) \
+-	static struct kobj_attribute _name##_attr = __ATTR_RO(_name)
+-
+-#define HSTATE_ATTR_WO(_name) \
+-	static struct kobj_attribute _name##_attr = __ATTR_WO(_name)
+-
+-#define HSTATE_ATTR(_name) \
+-	static struct kobj_attribute _name##_attr = __ATTR_RW(_name)
+-
+-static struct kobject *hugepages_kobj;
+-static struct kobject *hstate_kobjs[HUGE_MAX_HSTATE];
+-
+-static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp);
+-
+-static struct hstate *kobj_to_hstate(struct kobject *kobj, int *nidp)
+-{
+-	int i;
+-
+-	for (i = 0; i < HUGE_MAX_HSTATE; i++)
+-		if (hstate_kobjs[i] == kobj) {
+-			if (nidp)
+-				*nidp = NUMA_NO_NODE;
+-			return &hstates[i];
+-		}
+-
+-	return kobj_to_node_hstate(kobj, nidp);
+-}
+-
+-static ssize_t nr_hugepages_show_common(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h;
+-	unsigned long nr_huge_pages;
+-	int nid;
+-
+-	h = kobj_to_hstate(kobj, &nid);
+-	if (nid == NUMA_NO_NODE)
+-		nr_huge_pages = h->nr_huge_pages;
+-	else
+-		nr_huge_pages = h->nr_huge_pages_node[nid];
+-
+-	return sysfs_emit(buf, "%lu\n", nr_huge_pages);
+-}
+-
+-static ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
++ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
+ 					   struct hstate *h, int nid,
+ 					   unsigned long count, size_t len)
+ {
+@@ -4239,452 +4111,6 @@ static ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
+ 	return err ? err : len;
+ }
+ 
+-static ssize_t nr_hugepages_store_common(bool obey_mempolicy,
+-					 struct kobject *kobj, const char *buf,
+-					 size_t len)
+-{
+-	struct hstate *h;
+-	unsigned long count;
+-	int nid;
+-	int err;
+-
+-	err = kstrtoul(buf, 10, &count);
+-	if (err)
+-		return err;
+-
+-	h = kobj_to_hstate(kobj, &nid);
+-	return __nr_hugepages_store_common(obey_mempolicy, h, nid, count, len);
+-}
+-
+-static ssize_t nr_hugepages_show(struct kobject *kobj,
+-				       struct kobj_attribute *attr, char *buf)
+-{
+-	return nr_hugepages_show_common(kobj, attr, buf);
+-}
+-
+-static ssize_t nr_hugepages_store(struct kobject *kobj,
+-	       struct kobj_attribute *attr, const char *buf, size_t len)
+-{
+-	return nr_hugepages_store_common(false, kobj, buf, len);
+-}
+-HSTATE_ATTR(nr_hugepages);
+-
+-#ifdef CONFIG_NUMA
+-
+-/*
+- * hstate attribute for optionally mempolicy-based constraint on persistent
+- * huge page alloc/free.
+- */
+-static ssize_t nr_hugepages_mempolicy_show(struct kobject *kobj,
+-					   struct kobj_attribute *attr,
+-					   char *buf)
+-{
+-	return nr_hugepages_show_common(kobj, attr, buf);
+-}
+-
+-static ssize_t nr_hugepages_mempolicy_store(struct kobject *kobj,
+-	       struct kobj_attribute *attr, const char *buf, size_t len)
+-{
+-	return nr_hugepages_store_common(true, kobj, buf, len);
+-}
+-HSTATE_ATTR(nr_hugepages_mempolicy);
+-#endif
+-
+-
+-static ssize_t nr_overcommit_hugepages_show(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h = kobj_to_hstate(kobj, NULL);
+-	return sysfs_emit(buf, "%lu\n", h->nr_overcommit_huge_pages);
+-}
+-
+-static ssize_t nr_overcommit_hugepages_store(struct kobject *kobj,
+-		struct kobj_attribute *attr, const char *buf, size_t count)
+-{
+-	int err;
+-	unsigned long input;
+-	struct hstate *h = kobj_to_hstate(kobj, NULL);
+-
+-	if (hstate_is_gigantic_no_runtime(h))
+-		return -EINVAL;
+-
+-	err = kstrtoul(buf, 10, &input);
+-	if (err)
+-		return err;
+-
+-	spin_lock_irq(&hugetlb_lock);
+-	h->nr_overcommit_huge_pages = input;
+-	spin_unlock_irq(&hugetlb_lock);
+-
+-	return count;
+-}
+-HSTATE_ATTR(nr_overcommit_hugepages);
+-
+-static ssize_t free_hugepages_show(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h;
+-	unsigned long free_huge_pages;
+-	int nid;
+-
+-	h = kobj_to_hstate(kobj, &nid);
+-	if (nid == NUMA_NO_NODE)
+-		free_huge_pages = h->free_huge_pages;
+-	else
+-		free_huge_pages = h->free_huge_pages_node[nid];
+-
+-	return sysfs_emit(buf, "%lu\n", free_huge_pages);
+-}
+-HSTATE_ATTR_RO(free_hugepages);
+-
+-static ssize_t resv_hugepages_show(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h = kobj_to_hstate(kobj, NULL);
+-	return sysfs_emit(buf, "%lu\n", h->resv_huge_pages);
+-}
+-HSTATE_ATTR_RO(resv_hugepages);
+-
+-static ssize_t surplus_hugepages_show(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h;
+-	unsigned long surplus_huge_pages;
+-	int nid;
+-
+-	h = kobj_to_hstate(kobj, &nid);
+-	if (nid == NUMA_NO_NODE)
+-		surplus_huge_pages = h->surplus_huge_pages;
+-	else
+-		surplus_huge_pages = h->surplus_huge_pages_node[nid];
+-
+-	return sysfs_emit(buf, "%lu\n", surplus_huge_pages);
+-}
+-HSTATE_ATTR_RO(surplus_hugepages);
+-
+-static ssize_t demote_store(struct kobject *kobj,
+-	       struct kobj_attribute *attr, const char *buf, size_t len)
+-{
+-	unsigned long nr_demote;
+-	unsigned long nr_available;
+-	nodemask_t nodes_allowed, *n_mask;
+-	struct hstate *h;
+-	int err;
+-	int nid;
+-
+-	err = kstrtoul(buf, 10, &nr_demote);
+-	if (err)
+-		return err;
+-	h = kobj_to_hstate(kobj, &nid);
+-
+-	if (nid != NUMA_NO_NODE) {
+-		init_nodemask_of_node(&nodes_allowed, nid);
+-		n_mask = &nodes_allowed;
+-	} else {
+-		n_mask = &node_states[N_MEMORY];
+-	}
+-
+-	/* Synchronize with other sysfs operations modifying huge pages */
+-	mutex_lock(&h->resize_lock);
+-	spin_lock_irq(&hugetlb_lock);
+-
+-	while (nr_demote) {
+-		long rc;
+-
+-		/*
+-		 * Check for available pages to demote each time thorough the
+-		 * loop as demote_pool_huge_page will drop hugetlb_lock.
+-		 */
+-		if (nid != NUMA_NO_NODE)
+-			nr_available = h->free_huge_pages_node[nid];
+-		else
+-			nr_available = h->free_huge_pages;
+-		nr_available -= h->resv_huge_pages;
+-		if (!nr_available)
+-			break;
+-
+-		rc = demote_pool_huge_page(h, n_mask, nr_demote);
+-		if (rc < 0) {
+-			err = rc;
+-			break;
+-		}
+-
+-		nr_demote -= rc;
+-	}
+-
+-	spin_unlock_irq(&hugetlb_lock);
+-	mutex_unlock(&h->resize_lock);
+-
+-	if (err)
+-		return err;
+-	return len;
+-}
+-HSTATE_ATTR_WO(demote);
+-
+-static ssize_t demote_size_show(struct kobject *kobj,
+-					struct kobj_attribute *attr, char *buf)
+-{
+-	struct hstate *h = kobj_to_hstate(kobj, NULL);
+-	unsigned long demote_size = (PAGE_SIZE << h->demote_order) / SZ_1K;
+-
+-	return sysfs_emit(buf, "%lukB\n", demote_size);
+-}
+-
+-static ssize_t demote_size_store(struct kobject *kobj,
+-					struct kobj_attribute *attr,
+-					const char *buf, size_t count)
+-{
+-	struct hstate *h, *demote_hstate;
+-	unsigned long demote_size;
+-	unsigned int demote_order;
+-
+-	demote_size = (unsigned long)memparse(buf, NULL);
+-
+-	demote_hstate = size_to_hstate(demote_size);
+-	if (!demote_hstate)
+-		return -EINVAL;
+-	demote_order = demote_hstate->order;
+-	if (demote_order < HUGETLB_PAGE_ORDER)
+-		return -EINVAL;
+-
+-	/* demote order must be smaller than hstate order */
+-	h = kobj_to_hstate(kobj, NULL);
+-	if (demote_order >= h->order)
+-		return -EINVAL;
+-
+-	/* resize_lock synchronizes access to demote size and writes */
+-	mutex_lock(&h->resize_lock);
+-	h->demote_order = demote_order;
+-	mutex_unlock(&h->resize_lock);
+-
+-	return count;
+-}
+-HSTATE_ATTR(demote_size);
+-
+-static struct attribute *hstate_attrs[] = {
+-	&nr_hugepages_attr.attr,
+-	&nr_overcommit_hugepages_attr.attr,
+-	&free_hugepages_attr.attr,
+-	&resv_hugepages_attr.attr,
+-	&surplus_hugepages_attr.attr,
+-#ifdef CONFIG_NUMA
+-	&nr_hugepages_mempolicy_attr.attr,
+-#endif
+-	NULL,
+-};
+-
+-static const struct attribute_group hstate_attr_group = {
+-	.attrs = hstate_attrs,
+-};
+-
+-static struct attribute *hstate_demote_attrs[] = {
+-	&demote_size_attr.attr,
+-	&demote_attr.attr,
+-	NULL,
+-};
+-
+-static const struct attribute_group hstate_demote_attr_group = {
+-	.attrs = hstate_demote_attrs,
+-};
+-
+-static int hugetlb_sysfs_add_hstate(struct hstate *h, struct kobject *parent,
+-				    struct kobject **hstate_kobjs,
+-				    const struct attribute_group *hstate_attr_group)
+-{
+-	int retval;
+-	int hi = hstate_index(h);
+-
+-	hstate_kobjs[hi] = kobject_create_and_add(h->name, parent);
+-	if (!hstate_kobjs[hi])
+-		return -ENOMEM;
+-
+-	retval = sysfs_create_group(hstate_kobjs[hi], hstate_attr_group);
+-	if (retval) {
+-		kobject_put(hstate_kobjs[hi]);
+-		hstate_kobjs[hi] = NULL;
+-		return retval;
+-	}
+-
+-	if (h->demote_order) {
+-		retval = sysfs_create_group(hstate_kobjs[hi],
+-					    &hstate_demote_attr_group);
+-		if (retval) {
+-			pr_warn("HugeTLB unable to create demote interfaces for %s\n", h->name);
+-			sysfs_remove_group(hstate_kobjs[hi], hstate_attr_group);
+-			kobject_put(hstate_kobjs[hi]);
+-			hstate_kobjs[hi] = NULL;
+-			return retval;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-#ifdef CONFIG_NUMA
+-static bool hugetlb_sysfs_initialized __ro_after_init;
+-
+-/*
+- * node_hstate/s - associate per node hstate attributes, via their kobjects,
+- * with node devices in node_devices[] using a parallel array.  The array
+- * index of a node device or _hstate == node id.
+- * This is here to avoid any static dependency of the node device driver, in
+- * the base kernel, on the hugetlb module.
+- */
+-struct node_hstate {
+-	struct kobject		*hugepages_kobj;
+-	struct kobject		*hstate_kobjs[HUGE_MAX_HSTATE];
+-};
+-static struct node_hstate node_hstates[MAX_NUMNODES];
+-
+-/*
+- * A subset of global hstate attributes for node devices
+- */
+-static struct attribute *per_node_hstate_attrs[] = {
+-	&nr_hugepages_attr.attr,
+-	&free_hugepages_attr.attr,
+-	&surplus_hugepages_attr.attr,
+-	NULL,
+-};
+-
+-static const struct attribute_group per_node_hstate_attr_group = {
+-	.attrs = per_node_hstate_attrs,
+-};
+-
+-/*
+- * kobj_to_node_hstate - lookup global hstate for node device hstate attr kobj.
+- * Returns node id via non-NULL nidp.
+- */
+-static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp)
+-{
+-	int nid;
+-
+-	for (nid = 0; nid < nr_node_ids; nid++) {
+-		struct node_hstate *nhs = &node_hstates[nid];
+-		int i;
+-		for (i = 0; i < HUGE_MAX_HSTATE; i++)
+-			if (nhs->hstate_kobjs[i] == kobj) {
+-				if (nidp)
+-					*nidp = nid;
+-				return &hstates[i];
+-			}
+-	}
+-
+-	BUG();
+-	return NULL;
+-}
+-
+-/*
+- * Unregister hstate attributes from a single node device.
+- * No-op if no hstate attributes attached.
+- */
+-void hugetlb_unregister_node(struct node *node)
+-{
+-	struct hstate *h;
+-	struct node_hstate *nhs = &node_hstates[node->dev.id];
+-
+-	if (!nhs->hugepages_kobj)
+-		return;		/* no hstate attributes */
+-
+-	for_each_hstate(h) {
+-		int idx = hstate_index(h);
+-		struct kobject *hstate_kobj = nhs->hstate_kobjs[idx];
+-
+-		if (!hstate_kobj)
+-			continue;
+-		if (h->demote_order)
+-			sysfs_remove_group(hstate_kobj, &hstate_demote_attr_group);
+-		sysfs_remove_group(hstate_kobj, &per_node_hstate_attr_group);
+-		kobject_put(hstate_kobj);
+-		nhs->hstate_kobjs[idx] = NULL;
+-	}
+-
+-	kobject_put(nhs->hugepages_kobj);
+-	nhs->hugepages_kobj = NULL;
+-}
+-
+-
+-/*
+- * Register hstate attributes for a single node device.
+- * No-op if attributes already registered.
+- */
+-void hugetlb_register_node(struct node *node)
+-{
+-	struct hstate *h;
+-	struct node_hstate *nhs = &node_hstates[node->dev.id];
+-	int err;
+-
+-	if (!hugetlb_sysfs_initialized)
+-		return;
+-
+-	if (nhs->hugepages_kobj)
+-		return;		/* already allocated */
+-
+-	nhs->hugepages_kobj = kobject_create_and_add("hugepages",
+-							&node->dev.kobj);
+-	if (!nhs->hugepages_kobj)
+-		return;
+-
+-	for_each_hstate(h) {
+-		err = hugetlb_sysfs_add_hstate(h, nhs->hugepages_kobj,
+-						nhs->hstate_kobjs,
+-						&per_node_hstate_attr_group);
+-		if (err) {
+-			pr_err("HugeTLB: Unable to add hstate %s for node %d\n",
+-				h->name, node->dev.id);
+-			hugetlb_unregister_node(node);
+-			break;
+-		}
+-	}
+-}
+-
+-/*
+- * hugetlb init time:  register hstate attributes for all registered node
+- * devices of nodes that have memory.  All on-line nodes should have
+- * registered their associated device by this time.
+- */
+-static void __init hugetlb_register_all_nodes(void)
+-{
+-	int nid;
+-
+-	for_each_online_node(nid)
+-		hugetlb_register_node(node_devices[nid]);
+-}
+-#else	/* !CONFIG_NUMA */
+-
+-static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp)
+-{
+-	BUG();
+-	if (nidp)
+-		*nidp = -1;
+-	return NULL;
+-}
+-
+-static void hugetlb_register_all_nodes(void) { }
+-
+-#endif
+-
+-static void __init hugetlb_sysfs_init(void)
+-{
+-	struct hstate *h;
+-	int err;
+-
+-	hugepages_kobj = kobject_create_and_add("hugepages", mm_kobj);
+-	if (!hugepages_kobj)
+-		return;
+-
+-	for_each_hstate(h) {
+-		err = hugetlb_sysfs_add_hstate(h, hugepages_kobj,
+-					 hstate_kobjs, &hstate_attr_group);
+-		if (err)
+-			pr_err("HugeTLB: Unable to add hstate %s\n", h->name);
+-	}
+-
+-#ifdef CONFIG_NUMA
+-	hugetlb_sysfs_initialized = true;
+-#endif
+-	hugetlb_register_all_nodes();
+-}
+-
+ #ifdef CONFIG_SYSCTL
+ static void hugetlb_sysctl_init(void);
+ #else
+diff --git a/mm/hugetlb_internal.h b/mm/hugetlb_internal.h
+new file mode 100644
+index 000000000000..5ea372500de7
+--- /dev/null
++++ b/mm/hugetlb_internal.h
+@@ -0,0 +1,111 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Internal HugeTLB definitions.
++ * (C) Nadia Yvette Chambers, April 2004
++ */
++
++#ifndef _LINUX_HUGETLB_INTERNAL_H
++#define _LINUX_HUGETLB_INTERNAL_H
++
++#include <linux/hugetlb.h>
++#include <linux/hugetlb_cgroup.h>
++
++/*
++ * Check if the hstate represents gigantic pages but gigantic page
++ * runtime support is not available. This is a common condition used to
++ * skip operations that cannot be performed on gigantic pages when runtime
++ * support is disabled.
++ */
++static inline bool hstate_is_gigantic_no_runtime(struct hstate *h)
++{
++	return hstate_is_gigantic(h) && !gigantic_page_runtime_supported();
++}
++
++/*
++ * common helper functions for hstate_next_node_to_{alloc|free}.
++ * We may have allocated or freed a huge page based on a different
++ * nodes_allowed previously, so h->next_node_to_{alloc|free} might
++ * be outside of *nodes_allowed.  Ensure that we use an allowed
++ * node for alloc or free.
++ */
++static inline int next_node_allowed(int nid, nodemask_t *nodes_allowed)
++{
++	nid = next_node_in(nid, *nodes_allowed);
++	VM_BUG_ON(nid >= MAX_NUMNODES);
++
++	return nid;
++}
++
++static inline int get_valid_node_allowed(int nid, nodemask_t *nodes_allowed)
++{
++	if (!node_isset(nid, *nodes_allowed))
++		nid = next_node_allowed(nid, nodes_allowed);
++	return nid;
++}
++
++/*
++ * returns the previously saved node ["this node"] from which to
++ * allocate a persistent huge page for the pool and advance the
++ * next node from which to allocate, handling wrap at end of node
++ * mask.
++ */
++static inline int hstate_next_node_to_alloc(int *next_node,
++					    nodemask_t *nodes_allowed)
++{
++	int nid;
++
++	VM_BUG_ON(!nodes_allowed);
++
++	nid = get_valid_node_allowed(*next_node, nodes_allowed);
++	*next_node = next_node_allowed(nid, nodes_allowed);
++
++	return nid;
++}
++
++/*
++ * helper for remove_pool_hugetlb_folio() - return the previously saved
++ * node ["this node"] from which to free a huge page.  Advance the
++ * next node id whether or not we find a free huge page to free so
++ * that the next attempt to free addresses the next node.
++ */
++static inline int hstate_next_node_to_free(struct hstate *h, nodemask_t *nodes_allowed)
++{
++	int nid;
++
++	VM_BUG_ON(!nodes_allowed);
++
++	nid = get_valid_node_allowed(h->next_nid_to_free, nodes_allowed);
++	h->next_nid_to_free = next_node_allowed(nid, nodes_allowed);
++
++	return nid;
++}
++
++#define for_each_node_mask_to_alloc(next_node, nr_nodes, node, mask)		\
++	for (nr_nodes = nodes_weight(*mask);				\
++		nr_nodes > 0 &&						\
++		((node = hstate_next_node_to_alloc(next_node, mask)) || 1);	\
++		nr_nodes--)
++
++#define for_each_node_mask_to_free(hs, nr_nodes, node, mask)		\
++	for (nr_nodes = nodes_weight(*mask);				\
++		nr_nodes > 0 &&						\
++		((node = hstate_next_node_to_free(hs, mask)) || 1);	\
++		nr_nodes--)
++
++extern void remove_hugetlb_folio(struct hstate *h, struct folio *folio,
++				 bool adjust_surplus);
++extern void add_hugetlb_folio(struct hstate *h, struct folio *folio,
++			      bool adjust_surplus);
++extern void init_new_hugetlb_folio(struct folio *folio);
++extern void prep_and_add_allocated_folios(struct hstate *h,
++					  struct list_head *folio_list);
++extern long demote_pool_huge_page(struct hstate *src,
++				  nodemask_t *nodes_allowed,
++				  unsigned long nr_to_demote);
++extern ssize_t __nr_hugepages_store_common(bool obey_mempolicy,
++					   struct hstate *h, int nid,
++					   unsigned long count, size_t len);
++
++extern void hugetlb_sysfs_init(void) __init;
++
++#endif /* _LINUX_HUGETLB_INTERNAL_H */
+diff --git a/mm/hugetlb_sysfs.c b/mm/hugetlb_sysfs.c
+new file mode 100644
+index 000000000000..79ece91406bf
+--- /dev/null
++++ b/mm/hugetlb_sysfs.c
+@@ -0,0 +1,502 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * HugeTLB sysfs interfaces.
++ * (C) Nadia Yvette Chambers, April 2004
++ */
++
++#include <linux/swap.h>
++#include <linux/page_owner.h>
++#include <linux/page-isolation.h>
++
++#include "hugetlb_vmemmap.h"
++#include "hugetlb_internal.h"
++
++#define HSTATE_ATTR_RO(_name) \
++	static struct kobj_attribute _name##_attr = __ATTR_RO(_name)
++
++#define HSTATE_ATTR_WO(_name) \
++	static struct kobj_attribute _name##_attr = __ATTR_WO(_name)
++
++#define HSTATE_ATTR(_name) \
++	static struct kobj_attribute _name##_attr = __ATTR_RW(_name)
++
++static struct kobject *hugepages_kobj;
++static struct kobject *hstate_kobjs[HUGE_MAX_HSTATE];
++
++static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp);
++
++static struct hstate *kobj_to_hstate(struct kobject *kobj, int *nidp)
++{
++	int i;
++
++	for (i = 0; i < HUGE_MAX_HSTATE; i++)
++		if (hstate_kobjs[i] == kobj) {
++			if (nidp)
++				*nidp = NUMA_NO_NODE;
++			return &hstates[i];
++		}
++
++	return kobj_to_node_hstate(kobj, nidp);
++}
++
++static ssize_t nr_hugepages_show_common(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h;
++	unsigned long nr_huge_pages;
++	int nid;
++
++	h = kobj_to_hstate(kobj, &nid);
++	if (nid == NUMA_NO_NODE)
++		nr_huge_pages = h->nr_huge_pages;
++	else
++		nr_huge_pages = h->nr_huge_pages_node[nid];
++
++	return sysfs_emit(buf, "%lu\n", nr_huge_pages);
++}
++
++static ssize_t nr_hugepages_store_common(bool obey_mempolicy,
++					 struct kobject *kobj, const char *buf,
++					 size_t len)
++{
++	struct hstate *h;
++	unsigned long count;
++	int nid;
++	int err;
++
++	err = kstrtoul(buf, 10, &count);
++	if (err)
++		return err;
++
++	h = kobj_to_hstate(kobj, &nid);
++	return __nr_hugepages_store_common(obey_mempolicy, h, nid, count, len);
++}
++
++static ssize_t nr_hugepages_show(struct kobject *kobj,
++				       struct kobj_attribute *attr, char *buf)
++{
++	return nr_hugepages_show_common(kobj, attr, buf);
++}
++
++static ssize_t nr_hugepages_store(struct kobject *kobj,
++	       struct kobj_attribute *attr, const char *buf, size_t len)
++{
++	return nr_hugepages_store_common(false, kobj, buf, len);
++}
++HSTATE_ATTR(nr_hugepages);
++
++#ifdef CONFIG_NUMA
++
++/*
++ * hstate attribute for optionally mempolicy-based constraint on persistent
++ * huge page alloc/free.
++ */
++static ssize_t nr_hugepages_mempolicy_show(struct kobject *kobj,
++					   struct kobj_attribute *attr,
++					   char *buf)
++{
++	return nr_hugepages_show_common(kobj, attr, buf);
++}
++
++static ssize_t nr_hugepages_mempolicy_store(struct kobject *kobj,
++	       struct kobj_attribute *attr, const char *buf, size_t len)
++{
++	return nr_hugepages_store_common(true, kobj, buf, len);
++}
++HSTATE_ATTR(nr_hugepages_mempolicy);
++#endif
++
++
++static ssize_t nr_overcommit_hugepages_show(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h = kobj_to_hstate(kobj, NULL);
++	return sysfs_emit(buf, "%lu\n", h->nr_overcommit_huge_pages);
++}
++
++static ssize_t nr_overcommit_hugepages_store(struct kobject *kobj,
++		struct kobj_attribute *attr, const char *buf, size_t count)
++{
++	int err;
++	unsigned long input;
++	struct hstate *h = kobj_to_hstate(kobj, NULL);
++
++	if (hstate_is_gigantic_no_runtime(h))
++		return -EINVAL;
++
++	err = kstrtoul(buf, 10, &input);
++	if (err)
++		return err;
++
++	spin_lock_irq(&hugetlb_lock);
++	h->nr_overcommit_huge_pages = input;
++	spin_unlock_irq(&hugetlb_lock);
++
++	return count;
++}
++HSTATE_ATTR(nr_overcommit_hugepages);
++
++static ssize_t free_hugepages_show(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h;
++	unsigned long free_huge_pages;
++	int nid;
++
++	h = kobj_to_hstate(kobj, &nid);
++	if (nid == NUMA_NO_NODE)
++		free_huge_pages = h->free_huge_pages;
++	else
++		free_huge_pages = h->free_huge_pages_node[nid];
++
++	return sysfs_emit(buf, "%lu\n", free_huge_pages);
++}
++HSTATE_ATTR_RO(free_hugepages);
++
++static ssize_t resv_hugepages_show(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h = kobj_to_hstate(kobj, NULL);
++	return sysfs_emit(buf, "%lu\n", h->resv_huge_pages);
++}
++HSTATE_ATTR_RO(resv_hugepages);
++
++static ssize_t surplus_hugepages_show(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h;
++	unsigned long surplus_huge_pages;
++	int nid;
++
++	h = kobj_to_hstate(kobj, &nid);
++	if (nid == NUMA_NO_NODE)
++		surplus_huge_pages = h->surplus_huge_pages;
++	else
++		surplus_huge_pages = h->surplus_huge_pages_node[nid];
++
++	return sysfs_emit(buf, "%lu\n", surplus_huge_pages);
++}
++HSTATE_ATTR_RO(surplus_hugepages);
++
++static ssize_t demote_store(struct kobject *kobj,
++	       struct kobj_attribute *attr, const char *buf, size_t len)
++{
++	unsigned long nr_demote;
++	unsigned long nr_available;
++	nodemask_t nodes_allowed, *n_mask;
++	struct hstate *h;
++	int err;
++	int nid;
++
++	err = kstrtoul(buf, 10, &nr_demote);
++	if (err)
++		return err;
++	h = kobj_to_hstate(kobj, &nid);
++
++	if (nid != NUMA_NO_NODE) {
++		init_nodemask_of_node(&nodes_allowed, nid);
++		n_mask = &nodes_allowed;
++	} else {
++		n_mask = &node_states[N_MEMORY];
++	}
++
++	/* Synchronize with other sysfs operations modifying huge pages */
++	mutex_lock(&h->resize_lock);
++	spin_lock_irq(&hugetlb_lock);
++
++	while (nr_demote) {
++		long rc;
++
++		/*
++		 * Check for available pages to demote each time thorough the
++		 * loop as demote_pool_huge_page will drop hugetlb_lock.
++		 */
++		if (nid != NUMA_NO_NODE)
++			nr_available = h->free_huge_pages_node[nid];
++		else
++			nr_available = h->free_huge_pages;
++		nr_available -= h->resv_huge_pages;
++		if (!nr_available)
++			break;
++
++		rc = demote_pool_huge_page(h, n_mask, nr_demote);
++		if (rc < 0) {
++			err = rc;
++			break;
++		}
++
++		nr_demote -= rc;
++	}
++
++	spin_unlock_irq(&hugetlb_lock);
++	mutex_unlock(&h->resize_lock);
++
++	if (err)
++		return err;
++	return len;
++}
++HSTATE_ATTR_WO(demote);
++
++static ssize_t demote_size_show(struct kobject *kobj,
++					struct kobj_attribute *attr, char *buf)
++{
++	struct hstate *h = kobj_to_hstate(kobj, NULL);
++	unsigned long demote_size = (PAGE_SIZE << h->demote_order) / SZ_1K;
++
++	return sysfs_emit(buf, "%lukB\n", demote_size);
++}
++
++static ssize_t demote_size_store(struct kobject *kobj,
++					struct kobj_attribute *attr,
++					const char *buf, size_t count)
++{
++	struct hstate *h, *demote_hstate;
++	unsigned long demote_size;
++	unsigned int demote_order;
++
++	demote_size = (unsigned long)memparse(buf, NULL);
++
++	demote_hstate = size_to_hstate(demote_size);
++	if (!demote_hstate)
++		return -EINVAL;
++	demote_order = demote_hstate->order;
++	if (demote_order < HUGETLB_PAGE_ORDER)
++		return -EINVAL;
++
++	/* demote order must be smaller than hstate order */
++	h = kobj_to_hstate(kobj, NULL);
++	if (demote_order >= h->order)
++		return -EINVAL;
++
++	/* resize_lock synchronizes access to demote size and writes */
++	mutex_lock(&h->resize_lock);
++	h->demote_order = demote_order;
++	mutex_unlock(&h->resize_lock);
++
++	return count;
++}
++HSTATE_ATTR(demote_size);
++
++static struct attribute *hstate_attrs[] = {
++	&nr_hugepages_attr.attr,
++	&nr_overcommit_hugepages_attr.attr,
++	&free_hugepages_attr.attr,
++	&resv_hugepages_attr.attr,
++	&surplus_hugepages_attr.attr,
++#ifdef CONFIG_NUMA
++	&nr_hugepages_mempolicy_attr.attr,
++#endif
++	NULL,
++};
++
++static const struct attribute_group hstate_attr_group = {
++	.attrs = hstate_attrs,
++};
++
++static struct attribute *hstate_demote_attrs[] = {
++	&demote_size_attr.attr,
++	&demote_attr.attr,
++	NULL,
++};
++
++static const struct attribute_group hstate_demote_attr_group = {
++	.attrs = hstate_demote_attrs,
++};
++
++static int hugetlb_sysfs_add_hstate(struct hstate *h, struct kobject *parent,
++				    struct kobject **hstate_kobjs,
++				    const struct attribute_group *hstate_attr_group)
++{
++	int retval;
++	int hi = hstate_index(h);
++
++	hstate_kobjs[hi] = kobject_create_and_add(h->name, parent);
++	if (!hstate_kobjs[hi])
++		return -ENOMEM;
++
++	retval = sysfs_create_group(hstate_kobjs[hi], hstate_attr_group);
++	if (retval) {
++		kobject_put(hstate_kobjs[hi]);
++		hstate_kobjs[hi] = NULL;
++		return retval;
++	}
++
++	if (h->demote_order) {
++		retval = sysfs_create_group(hstate_kobjs[hi],
++					    &hstate_demote_attr_group);
++		if (retval) {
++			pr_warn("HugeTLB unable to create demote interfaces for %s\n", h->name);
++			sysfs_remove_group(hstate_kobjs[hi], hstate_attr_group);
++			kobject_put(hstate_kobjs[hi]);
++			hstate_kobjs[hi] = NULL;
++			return retval;
++		}
++	}
++
++	return 0;
++}
++
++#ifdef CONFIG_NUMA
++static bool hugetlb_sysfs_initialized __ro_after_init;
++
++/*
++ * node_hstate/s - associate per node hstate attributes, via their kobjects,
++ * with node devices in node_devices[] using a parallel array.  The array
++ * index of a node device or _hstate == node id.
++ * This is here to avoid any static dependency of the node device driver, in
++ * the base kernel, on the hugetlb module.
++ */
++struct node_hstate {
++	struct kobject		*hugepages_kobj;
++	struct kobject		*hstate_kobjs[HUGE_MAX_HSTATE];
++};
++static struct node_hstate node_hstates[MAX_NUMNODES];
++
++/*
++ * A subset of global hstate attributes for node devices
++ */
++static struct attribute *per_node_hstate_attrs[] = {
++	&nr_hugepages_attr.attr,
++	&free_hugepages_attr.attr,
++	&surplus_hugepages_attr.attr,
++	NULL,
++};
++
++static const struct attribute_group per_node_hstate_attr_group = {
++	.attrs = per_node_hstate_attrs,
++};
++
++/*
++ * kobj_to_node_hstate - lookup global hstate for node device hstate attr kobj.
++ * Returns node id via non-NULL nidp.
++ */
++static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp)
++{
++	int nid;
++
++	for (nid = 0; nid < nr_node_ids; nid++) {
++		struct node_hstate *nhs = &node_hstates[nid];
++		int i;
++		for (i = 0; i < HUGE_MAX_HSTATE; i++)
++			if (nhs->hstate_kobjs[i] == kobj) {
++				if (nidp)
++					*nidp = nid;
++				return &hstates[i];
++			}
++	}
++
++	BUG();
++	return NULL;
++}
++
++/*
++ * Unregister hstate attributes from a single node device.
++ * No-op if no hstate attributes attached.
++ */
++void hugetlb_unregister_node(struct node *node)
++{
++	struct hstate *h;
++	struct node_hstate *nhs = &node_hstates[node->dev.id];
++
++	if (!nhs->hugepages_kobj)
++		return;		/* no hstate attributes */
++
++	for_each_hstate(h) {
++		int idx = hstate_index(h);
++		struct kobject *hstate_kobj = nhs->hstate_kobjs[idx];
++
++		if (!hstate_kobj)
++			continue;
++		if (h->demote_order)
++			sysfs_remove_group(hstate_kobj, &hstate_demote_attr_group);
++		sysfs_remove_group(hstate_kobj, &per_node_hstate_attr_group);
++		kobject_put(hstate_kobj);
++		nhs->hstate_kobjs[idx] = NULL;
++	}
++
++	kobject_put(nhs->hugepages_kobj);
++	nhs->hugepages_kobj = NULL;
++}
++
++
++/*
++ * Register hstate attributes for a single node device.
++ * No-op if attributes already registered.
++ */
++void hugetlb_register_node(struct node *node)
++{
++	struct hstate *h;
++	struct node_hstate *nhs = &node_hstates[node->dev.id];
++	int err;
++
++	if (!hugetlb_sysfs_initialized)
++		return;
++
++	if (nhs->hugepages_kobj)
++		return;		/* already allocated */
++
++	nhs->hugepages_kobj = kobject_create_and_add("hugepages",
++							&node->dev.kobj);
++	if (!nhs->hugepages_kobj)
++		return;
++
++	for_each_hstate(h) {
++		err = hugetlb_sysfs_add_hstate(h, nhs->hugepages_kobj,
++						nhs->hstate_kobjs,
++						&per_node_hstate_attr_group);
++		if (err) {
++			pr_err("HugeTLB: Unable to add hstate %s for node %d\n",
++				h->name, node->dev.id);
++			hugetlb_unregister_node(node);
++			break;
++		}
++	}
++}
++
++/*
++ * hugetlb init time:  register hstate attributes for all registered node
++ * devices of nodes that have memory.  All on-line nodes should have
++ * registered their associated device by this time.
++ */
++static void __init hugetlb_register_all_nodes(void)
++{
++	int nid;
++
++	for_each_online_node(nid)
++		hugetlb_register_node(node_devices[nid]);
++}
++#else	/* !CONFIG_NUMA */
++
++static struct hstate *kobj_to_node_hstate(struct kobject *kobj, int *nidp)
++{
++	BUG();
++	if (nidp)
++		*nidp = -1;
++	return NULL;
++}
++
++static void hugetlb_register_all_nodes(void) { }
++
++#endif
++
++void __init hugetlb_sysfs_init(void)
++{
++	struct hstate *h;
++	int err;
++
++	hugepages_kobj = kobject_create_and_add("hugepages", mm_kobj);
++	if (!hugepages_kobj)
++		return;
++
++	for_each_hstate(h) {
++		err = hugetlb_sysfs_add_hstate(h, hugepages_kobj,
++					 hstate_kobjs, &hstate_attr_group);
++		if (err)
++			pr_err("HugeTLB: Unable to add hstate %s\n", h->name);
++	}
++
++#ifdef CONFIG_NUMA
++	hugetlb_sysfs_initialized = true;
++#endif
++	hugetlb_register_all_nodes();
++}
 -- 
 2.43.0
 
