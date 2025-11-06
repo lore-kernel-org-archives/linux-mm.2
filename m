@@ -4,94 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id DF4F5CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 11:13:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 42827CCFA05
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 11:16:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2CC538E000A; Thu,  6 Nov 2025 06:13:57 -0500 (EST)
+	id 9FFBB8E000C; Thu,  6 Nov 2025 06:16:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 27D908E0002; Thu,  6 Nov 2025 06:13:57 -0500 (EST)
+	id 9D73A8E0002; Thu,  6 Nov 2025 06:16:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1BA708E000A; Thu,  6 Nov 2025 06:13:57 -0500 (EST)
+	id 9142E8E000C; Thu,  6 Nov 2025 06:16:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 07F648E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:13:57 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id B3D4C140688
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:13:56 +0000 (UTC)
-X-FDA: 84079922472.15.55655CC
-Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.66.161])
-	by imf02.hostedemail.com (Postfix) with ESMTP id DCA488000D
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:13:54 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=aosc.io header.s=default header.b=YBjhiNdi;
-	spf=pass (imf02.hostedemail.com: domain of wangyuli@aosc.io designates 217.182.66.161 as permitted sender) smtp.mailfrom=wangyuli@aosc.io;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 7F1F18E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 06:16:45 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 38D24BAA54
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:16:45 +0000 (UTC)
+X-FDA: 84079929570.27.EF1E251
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 811F940006
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:16:43 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pNIBL3u3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762427803; a=rsa-sha256;
+	cv=none;
+	b=rgPwkV84GgfYzBarLxqkDMeoJ9b+lMrbkoulJU34WSoUWleJI4xOdWLRrMjD+wnG39zWJP
+	ozLQnGzT8/LBdav8AdX9QudCKVcnawxvkv2kY+d/HyOG+O90ypZ+RgZSiuOUKeCI0fxRF8
+	vKYuzGk1TZ+hngbyipGA2H+HCzlke2E=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pNIBL3u3;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf01.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762427635;
+	s=arc-20220608; t=1762427803;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xGnMUKs+a16xWoar+O1Exr6sx95PE8I4R712yC0kWhI=;
-	b=KGPdtCTpysDlX4DHNZa+OjWpUogi3Jkoa7hk3CDMcC5JRWVrqHUurRpJmTXaYAzS3ueSnM
-	VQNL0Uk1bzatqyaNAmMg4ALM6UWdFKOp/cnuqx1CAAXofYd4t9WoVida7ovshLcXgupZhN
-	rOZcws28y8K9nZaDBWwn26gQYy7D620=
-ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=aosc.io header.s=default header.b=YBjhiNdi;
-	spf=pass (imf02.hostedemail.com: domain of wangyuli@aosc.io designates 217.182.66.161 as permitted sender) smtp.mailfrom=wangyuli@aosc.io;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762427635; a=rsa-sha256;
-	cv=none;
-	b=DAjuT1tnVtUsZdqxBmwX37VmHNBOYsOp+HgnhethrFfm25gf0i7ApYCjO2vd0qiaT1t12W
-	dGSVkDecV/d6I6d5C6o5zLk3WWPIHfKIHf3w+ZknisekSM652dZz2lxQfteIIPQt66zECw
-	vibSpv6TOqmPbriyaIxhVV2vM0ykluI=
-Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
-	by relay3.mymailcheap.com (Postfix) with ESMTPS id 36D643E917;
-	Thu,  6 Nov 2025 11:13:53 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 531B140178;
-	Thu,  6 Nov 2025 11:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1762427631; bh=xGnMUKs+a16xWoar+O1Exr6sx95PE8I4R712yC0kWhI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBjhiNdiuVLW2CQXTAinJ1VIejMNqxROO8nnng8nb2eFTT7OvGtBqq2CPSMkt0kDC
-	 VrgTyCiWBgo1acsmGfAX+EaovZYHF2U2/rj2matPu0yUQRTeJVP5SAZHjTBVdkfB0o
-	 0IZdJWf+HGX2X0GFjy+iTW8JyLu7NyCWS1K7CBJQ=
-Received: from avenger-ThinkPad-T14-Gen-4 (unknown [114.247.186.99])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 64CED40594;
-	Thu,  6 Nov 2025 11:13:47 +0000 (UTC)
-From: WangYuli <wangyuli@aosc.io>
-To: guanwentao@uniontech.com
-Cc: Liam.Howlett@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	niecheng1@uniontech.com,
-	vbabka@suse.cz,
-	zhanjun@uniontech.com,
-	WangYuli <wangyuli@aosc.io>
-Subject: Re: [PATCH] mm: cleanup vma_iter_bulk_alloc
-Date: Thu,  6 Nov 2025 19:13:32 +0800
-Message-ID: <20251106111332.809322-1-wangyuli@aosc.io>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20251106063424.3381872-1-guanwentao@uniontech.com>
-References: <20251106063424.3381872-1-guanwentao@uniontech.com>
+	bh=zYL6bTy/ecPgaOTOs3i4z4cw8FCbLrme7ss1MGpsPFA=;
+	b=LymE6j9hLCTPPsFnfLsq0BSnILVBjyZDWyXPBXF5feNZNHLqF+q54tz3yibjPJljzQUfCx
+	TupYqU3YrO9x/cCp0iZ/NbcFpa0IZI8j9pmal8DXsTj7MDj9bRHHk52t9xUQfL/tCV8hMX
+	YM8aByMmf/dWDTanhlRu0nYl8VX8vq8=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id CB1B460232;
+	Thu,  6 Nov 2025 11:16:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B1CC16AAE;
+	Thu,  6 Nov 2025 11:16:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762427802;
+	bh=8cnDbTxQTbM8lcfQEMN460D5ylwQe2K609JbpAnX38A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=pNIBL3u3EEjtdJUOBEkKSw9pgKm1DKIuwuAhXAGF61uu+g4vxWTiopAz9au9bPyWZ
+	 LlR+oCdBEexup/EKygNsFNvjID3HblLXFXz78unMmeM1MgpW8/aUaThhNIPaKH+nGV
+	 pCShx9dzuS3c5sBJSN96D0tIqukdM1KSl0W5hPXxK3mmyTME5zyPkF4hCSm+Oo4Of0
+	 UTeOlr1FN6o1H1EHaKrocMZ6B43YU1Wp0RzrsqMmuc5CDNgSkcec6XFODO7gfTvKbY
+	 GV6YgI4/vUNODAb8KG3Fxn2iGlUve6/sR4awUWbOesU7y/xNrw/EyuUwBbo+Cj/0Bj
+	 SigsL9PrJwEHQ==
+Message-ID: <0bc6a1ba-4f4f-4b04-b66c-b5d217faefab@kernel.org>
+Date: Thu, 6 Nov 2025 12:16:36 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: DCA488000D
-X-Stat-Signature: ud6kmp97nzyzmrqdzqek5i9nzq7ecjpb
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/2] mm/ksm: fix flag-dropping behavior in ksm_madvise
+To: Vlastimil Babka <vbabka@suse.cz>, Jakub Acs <acsjakub@amazon.de>,
+ linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
+ Jann Horn <jannh@google.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: akpm@linux-foundation.org, xu.xin16@zte.com.cn, chengming.zhou@linux.dev,
+ peterx@redhat.com, axelrasmussen@google.com, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20251001090353.57523-1-acsjakub@amazon.de>
+ <20251001090353.57523-2-acsjakub@amazon.de>
+ <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <13c7242e-3a40-469b-9e99-8a65a21449bb@suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 811F940006
+X-Stat-Signature: mpi6nemnftsh36u97d1ogk63rtmeroa4
 X-Rspam-User: 
-X-HE-Tag: 1762427634-157548
-X-HE-Meta: U2FsdGVkX1/j8K0nBR9x+hj6O7HvF44MZwoIAk+SxbIjM04lAfAa5WAh3xt32eTsd516ll+q/jp5O+s0qAT8tobo4AYRJP8mbQ5kJOzb8qvhhYGFKbDihII3HgapOqiGJx690MBqcHckWk+3V4BUSVfh+kt7GKb66kvP8szQi+h3j25QQtVgVWMwLaztpB62j208am6MG9kQvs0ogVDTLBClgFMEeFpMhZUwmT5sghTcV4ThGpePSOTjKreh2M1SBB+S111KXfdtpHlG6aKndfOjjDuczJgXD6Sga4t+PGrRC+iQDGvVVxdCd2j4albN+mc1Tjr4jF7n4y7XTTcLiZRrTt1I65rrJ5t0PsmGg2oMlqPkuSXydCoSgB+T54B+vM+2ccH/4MBMTu22ZbKPIQqzDEyiq7xK6wlYe6Q2AuIvj7vNbM3996ka5L1CfcSJlsXu3fQVyw513gvoCqByRbDkns00HNlmdGt4gmnnBhnH1EFlhsE/53SLVcIE5/3X/nHKOS/kY+xdiOklOWJxXnDIzYSa1LeTFq9G8/VHgu1zOUHJkmwnB9LzvMm4pNEy99GXGXmcODYdA8dwc5th+9fk41yUnfaq1SjSA/ZIfZnNU5dSoJAe2YuVmoUiNdCZ3kmelY/7Gf3wPIH4pgyPRr4KtQWucJDr4HN0h6Hqbo0tZpJEXTBowFqSKUd9+JtyGi83I41gb3zRTtN8CfotFan/ic4BlF2fKs8RFlWC9iMSNtabyWnHUjcox6YiLCFMJwXeIeuH3WdXfO57dx1QrrtBG4JRDVBmrMWcCDkb6+HssqWaNbrll6/GwFlWO+7m+59IVRn6sEjNQ7fo/vg4gfP5XxVAfQqMRBFfyILM2VPfsZtKdbtyqt7gjtwtXrHIrfX2AGFZZmg822GoqiLwWVv+wNqvKoYrYaloD3BXEkU45eMDcD44Ja0kjA/VaV88ahbdyd2jo3xonPT2CAY
- L33JB+ni
- qlwjoPrgVEWSSgYyjuNfzRfHscFpJa7vFegHQ3Ze14b4tBdWaFoSCkPSyC0p5CvaJKjM072M4Vwkg4ONrnz5BCfCmT6ScbnMHBYGZGkXK0eMw4KrmTvkRNAygwsri7q2BCNJbFGw4s7L8IoExcmvnXA5OGeeg1qp3CquIizz5CSkgNP5D+hmTOzIke0e49MiOKMEu3aBORDKu6fbk+pOoLcBcrJTYlJ+EIAOvh+OQNm2XksOjaoFE6/fP+UFryyQ2SGISJ/LmsJtFUMHnURwlCtbvL8M6XIzCYR7Oyiw5NqlKIlVqHZUokoblP/fkwCB4kzydNOX5uintSGE=
+X-HE-Tag: 1762427803-923378
+X-HE-Meta: U2FsdGVkX19BJQpRW0HyYy7NU1wbN+VQo0mQIpA6lDXEeZm9MrUszYkB23p8lwYhiliUJ74VkrNT2R/23iFqiyI5JkRHhPfLR0re9/CGET5th6NwV0x2u9YPUXwglsqqsT+a9d/oA16i/22TSca7kQ8kFJegTSPUfGHUxZXyKNnh8RgXiExIJRl49VHpoJX+VraGLIF4ECFq+9LkU/PhSQRSDROFrriao8WLQfoKj87Y12t5dkaGM+JBP+V4lPfWcH6EmneA9kiTFIArln+CVE6CINOAB4CAIuX4oxcuSldN2Qg9z6ZmYf7fPVw5w/7JgRED7cWtr3Dui7+FpsQ9lvBbSyrPGdBl1uX07uO/NxhXNj/PQ9myCYc0ExLHOcV/8pnSSau9/9OHAYZNPuS4pYomE+RMtLs6KenKyQFvKi7RVFE04lJb0Dx6Do5Aa+p2hAFMRd5dO6BQPuz+rRZd/oQ1x4JDL9rBty2gNqK1vZmJe2xARv0+zEhcp0rk5OBkCt0CXis/C7eDXyOZeYEGLQ852odIATwi8P3Cli7gtVSLUHPzPRd/rnS1UVk8pwtqbTAmE7ZBwn6spUeVKmav8KiJmTOSvUJYSsuORtCXqkGInTx6LrwxONyr69ASNBDV/0+ps314b4zeG6OCd6+lgFiT0C/gkdtrM3bF8UVcsKYrmRbVBPxIF9vyrkO0QM9rfy6Mq80HFA2rPp9ZfuOdD/HazDenUA742coTsq+oBIOS5xUX/hJ6rpc889Fq7hCN67P/2gWRlOggKNDZkzjK7Dau4ocZt+wPDuXmdQqfHv7Ci4ZD+L857vmveoUEi160i+V9fmnB2qUuMshtEOlSM2SX6B1o5nG+DdlIdVmP04AX9ML7RYNklgYkhghs3Uph1EMgQKQkBd05GB7WWlKRSHnxNW8uMMXfWSls1rJ21pgGfQQOOohRXueuS18po6ryjLGbZVoe/KbEZHMtf1D
+ 1Nq4hAeq
+ AyZ4+0YU1HqvgAb+hg0vmq0JnE7l189TprNYR180s43hcgxy1R8e5F/luNg37GcZSnhYtyX0kMCQp1xhsngWBTdh1HhVCdIS5PGH5aumb/3sMH5rhl3FCY73SQchK2ZTzGqFk/Z07yN1ARQ9gP+/8BEPhl2HfP1lD5ljjIeK71pPexqAWOoPOlUMhOtJ2LheG78nRl2CHpEflrH1tDaBvYBvXV+UVwjEiIimDp1sSR2HepgoBcrbfWidqZi0MXq98ffMPEQ7+AmGzlCuonldc3yxW7jQHq96wbzceJm2MZ12/a4SUpRtFevWu7nbECyzVrR3toNvVrY1eTxxE7FEhadTJ8ZuT06naPEOf4YR2XQqfvDNcTpHNDplXdGDpyJD5Hqlskg8xSqVmSh2DtlqJGfeV1w==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,6 +99,84 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Reviewed-by: WangYuli <wangyuli@aosc.io>
+On 06.11.25 11:39, Vlastimil Babka wrote:
+> On 10/1/25 11:03, Jakub Acs wrote:
+>> syzkaller discovered the following crash: (kernel BUG)
+>>
+>> [   44.607039] ------------[ cut here ]------------
+>> [   44.607422] kernel BUG at mm/userfaultfd.c:2067!
+>> [   44.608148] Oops: invalid opcode: 0000 [#1] SMP DEBUG_PAGEALLOC KASAN NOPTI
+>> [   44.608814] CPU: 1 UID: 0 PID: 2475 Comm: reproducer Not tainted 6.16.0-rc6 #1 PREEMPT(none)
+>> [   44.609635] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
+>> [   44.610695] RIP: 0010:userfaultfd_release_all+0x3a8/0x460
+>>
+>> <snip other registers, drop unreliable trace>
+>>
+>> [   44.617726] Call Trace:
+>> [   44.617926]  <TASK>
+>> [   44.619284]  userfaultfd_release+0xef/0x1b0
+>> [   44.620976]  __fput+0x3f9/0xb60
+>> [   44.621240]  fput_close_sync+0x110/0x210
+>> [   44.622222]  __x64_sys_close+0x8f/0x120
+>> [   44.622530]  do_syscall_64+0x5b/0x2f0
+>> [   44.622840]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>> [   44.623244] RIP: 0033:0x7f365bb3f227
+>>
+>> Kernel panics because it detects UFFD inconsistency during
+>> userfaultfd_release_all(). Specifically, a VMA which has a valid pointer
+>> to vma->vm_userfaultfd_ctx, but no UFFD flags in vma->vm_flags.
+>>
+>> The inconsistency is caused in ksm_madvise(): when user calls madvise()
+>> with MADV_UNMEARGEABLE on a VMA that is registered for UFFD in MINOR
+>> mode, it accidentally clears all flags stored in the upper 32 bits of
+>> vma->vm_flags.
+>>
+>> Assuming x86_64 kernel build, unsigned long is 64-bit and unsigned int
+>> and int are 32-bit wide. This setup causes the following mishap during
+>> the &= ~VM_MERGEABLE assignment.
+>>
+>> VM_MERGEABLE is a 32-bit constant of type unsigned int, 0x8000'0000.
+>> After ~ is applied, it becomes 0x7fff'ffff unsigned int, which is then
+>> promoted to unsigned long before the & operation. This promotion fills
+>> upper 32 bits with leading 0s, as we're doing unsigned conversion (and
+>> even for a signed conversion, this wouldn't help as the leading bit is
+>> 0). & operation thus ends up AND-ing vm_flags with 0x0000'0000'7fff'ffff
+>> instead of intended 0xffff'ffff'7fff'ffff and hence accidentally clears
+>> the upper 32-bits of its value.
+>>
+>> Fix it by changing `VM_MERGEABLE` constant to unsigned long, using the
+>> BIT() macro.
+>>
+>> Note: other VM_* flags are not affected:
+>> This only happens to the VM_MERGEABLE flag, as the other VM_* flags are
+>> all constants of type int and after ~ operation, they end up with
+>> leading 1 and are thus converted to unsigned long with leading 1s.
+>>
+>> Note 2:
+>> After commit 31defc3b01d9 ("userfaultfd: remove (VM_)BUG_ON()s"), this is
+>> no longer a kernel BUG, but a WARNING at the same place:
+>>
+>> [   45.595973] WARNING: CPU: 1 PID: 2474 at mm/userfaultfd.c:2067
+>>
+>> but the root-cause (flag-drop) remains the same.
+>>
+>> Fixes: 7677f7fd8be76 ("userfaultfd: add minor fault registration mode")
+> 
+> Late to the party, but it seems to me the correct Fixes: should be
+> f8af4da3b4c1 ("ksm: the mm interface to ksm")
+> which introduced the flag and the buggy clearing code, no?
+> 
+> Commit 7677f7fd8be76 is just one that notices it, right? But there are other
+> flags in >32 bit area, including pkeys etc. Sounds rather dangerous if they
+> can be cleared using a madvise.
+> 
+> So we can't amend the Fixes: now but maybe could advise stable to backport
+> for even older versions than based on 7677f7fd8be76 ?
 
+Yes, I agree.
+
+-- 
+Cheers
+
+David
 
