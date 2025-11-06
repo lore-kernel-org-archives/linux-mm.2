@@ -4,112 +4,95 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16341CCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:40:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 885B6CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:54:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 954658E001A; Thu,  6 Nov 2025 11:40:16 -0500 (EST)
+	id CD1B88E0005; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 905AE8E0002; Thu,  6 Nov 2025 11:40:16 -0500 (EST)
+	id CA8B68E0002; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 757ED8E001A; Thu,  6 Nov 2025 11:40:16 -0500 (EST)
+	id BE6898E0005; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 639098E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:40:16 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E936C8631B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:40:15 +0000 (UTC)
-X-FDA: 84080744790.09.EE2F9B0
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
-	by imf03.hostedemail.com (Postfix) with ESMTP id 2615420009
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:40:13 +0000 (UTC)
-Authentication-Results: imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uHLZJ0e7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3bM8MaQgKCI09359Arwrx55x2v.t532z4BE-331Crt1.58x@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3bM8MaQgKCI09359Arwrx55x2v.t532z4BE-331Crt1.58x@flex--smostafa.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AED5F8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:54:57 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 4ED67B6D54
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:54:57 +0000 (UTC)
+X-FDA: 84080781834.03.ECDBAD6
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 80B13C0011
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:54:55 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762447214;
+	s=arc-20220608; t=1762448095;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NM/GZbyZiL8bh5z49/8PTeWfbgNSwSL55H6jI2E+lmQ=;
-	b=tVbafH7ZKay/8xmAtTgUeP+Us2YqLioIKxt4lHE1elHw9oOZrYRGXd9uqk91cabyVm4a4Z
-	KFsPjErMfJruupyYghl4YpM2cb04ASyLawolLryeZ+UacSNMUj91ZlFI2sboy4DsvDz6Op
-	KuboRw8jWxPOI9Knk1FwqBmOICcmDEE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762447214; a=rsa-sha256;
-	cv=none;
-	b=IMiM5SuYKYLOOH622RMf9delNjj4D9f6x2RNgkrTau8J5Ty7PM0v4WpuMhPkrMC3rNJdC/
-	bGaYY2HdxuUwsGChmhYFGy9R8aWGBk+MUpWvrl9DUM0m98Dx7ezTBPUClceH06NuydQM3o
-	vL3N8YhGDwF+NZ7DP5FX/1Ovpcf9SJU=
+	 in-reply-to:in-reply-to:references:references;
+	bh=xv6mPGh8OTRRAPa/vnnTLwXHmpQDOc+h8v1HfQuws/k=;
+	b=k2chZIjGXKedX7+cuLMrAA38MuBhs6qHWS0Kqn64ez/Y9lz9rHmFoL9PxPTX/Ob8d//GtB
+	qM2Sx/K3eFeUtgt9AYhasvITmztsM+gGTFXrOZi5bOApmCWn0YMZJMgHEfiiiKlb1s6Q0e
+	in7pv0skjTfM63teunFoVNwFNd71DLY=
 ARC-Authentication-Results: i=1;
-	imf03.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=uHLZJ0e7;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf03.hostedemail.com: domain of 3bM8MaQgKCI09359Arwrx55x2v.t532z4BE-331Crt1.58x@flex--smostafa.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3bM8MaQgKCI09359Arwrx55x2v.t532z4BE-331Crt1.58x@flex--smostafa.bounces.google.com
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-47769a0a13bso5159015e9.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 08:40:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762447212; x=1763052012; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NM/GZbyZiL8bh5z49/8PTeWfbgNSwSL55H6jI2E+lmQ=;
-        b=uHLZJ0e7+6XCg2nXIvFsbiLeJyRfhjm6/c/F1rOGFrtvdRg2wzwW2Jl/MBTpRY7zze
-         i7HzifxvB4+enT5dDbVMnNGk2SlVwz8BJVobGkEZeFNI1pU5PnViLmwTI+SzUNNn6+w3
-         syWVF42sYFZ5eZ3Y6pa0RFdzp1z52HTg+E1rEnosYt+lFtyNLwMNXf/FtmJcCS7IIHVO
-         HJf+e0Yy5zKyyUhXlCFuQtFUaROf6tCBLVyyIc4I0ScVYhtH/FBoUxRnPkfWDB1M8FVS
-         2Bm2coTJ6h07QgmLr0UxOH9F4H0bPjzU2VBq/AX/o5HSwncgO6KjFzZx4PNLzq8hsmG8
-         gG2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762447212; x=1763052012;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NM/GZbyZiL8bh5z49/8PTeWfbgNSwSL55H6jI2E+lmQ=;
-        b=qIAu8j5jg4yua6o4Dha2p57zZUlbHeH6RxFWLHlmWSXpVAvgPfy0ajxXSjMk01rFL6
-         Msm8vpwDazO+UcBQevmLLvKZuT0fQD00gPWTyqMwtFWf/VgccRX8K/QYarJAwjcLsgV+
-         jzilXAHQL7qlulVPZyMJRY44UpHC/RI1Wr+H0xwr7mpK9gW7bJyywSHwqkf/8msEVusy
-         iy6tctPG1J9stwwElzWOtSUgTcjlG0a9mHfYdy1kWUrYz4WiluPDdRMPOFD3elUF3iig
-         LgYcItyvBqEUbdtES1A1UPdttyJ5JeVlAakStzW3DwOvtrNGnkUoZ4MW1Q1Z2z9uUfRI
-         erfw==
-X-Gm-Message-State: AOJu0YxNvvURX0v4UH2PPNQ1Ep2gjC6u0NEalQXS1ssXLmbmDf/uWc2s
-	v4JbN97Mp55iRXy47iES+KI1TTDEyDivd0bpFsgpAg325AFEyznW/KADXFJMrCV381oWpy+bHOg
-	YZB87RS/6U4zjbDE0eqYL4JOWP4XhFO2excxw7gVN70CSxB6UFEgjhASoHhy6zso9VI6IuCsTQ8
-	xRLatdxMgPbgv/TMSxNTXv3Rw/z9hXWZCfeY+dqKXIiQ==
-X-Google-Smtp-Source: AGHT+IFXE6Qsd8iIgYNiQDlI0sqI8FtMmoIupsqXvZU2YQ+mpshBBiH57cinC3fDVEftkTGmawxtksFJp1JKIw==
-X-Received: from wrsy17.prod.google.com ([2002:a5d:4ad1:0:b0:429:dc18:dd64])
- (user=smostafa job=prod-delivery.src-stubby-dispatcher) by
- 2002:a5d:5f87:0:b0:429:b7cd:47ff with SMTP id ffacd0b85a97d-429e33083c8mr6867222f8f.40.1762447212631;
- Thu, 06 Nov 2025 08:40:12 -0800 (PST)
-Date: Thu,  6 Nov 2025 16:39:53 +0000
-In-Reply-To: <20251106163953.1971067-1-smostafa@google.com>
-Mime-Version: 1.0
-References: <20251106163953.1971067-1-smostafa@google.com>
-X-Mailer: git-send-email 2.51.2.1026.g39e6a42477-goog
-Message-ID: <20251106163953.1971067-5-smostafa@google.com>
-Subject: [PATCH v2 4/4] drivers/iommu-debug-pagealloc: Check mapped/unmapped
- kernel memory
-From: Mostafa Saleh <smostafa@google.com>
-To: linux-mm@kvack.org, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-Cc: corbet@lwn.net, joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, 
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com, mhocko@suse.com, 
-	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com, david@redhat.com, 
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, rppt@kernel.org, 
-	Mostafa Saleh <smostafa@google.com>, Qinxin Xia <xiaqinxin@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Stat-Signature: g9btpncgaxxainsbfdh47mhwaqfrauh7
+	imf28.hostedemail.com;
+	dkim=none;
+	spf=pass (imf28.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
+	dmarc=pass (policy=none) header.from=arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762448095; a=rsa-sha256;
+	cv=none;
+	b=XBWi4/7WZ7u5cZAm7XfNIbjR2AQcvAdaO5c/xepAgZxUSDDw0Kjq+vq49x1ncp1juqab0I
+	5SvPYQ3+a8se+fmfIi5bJgjb/3OsS9M0IRn/WFdY/bo2Osdqpnba1FxmVmY8FXybNvBEzP
+	SBLnCsuXilSKPAHC5yBzLl1FRskTPhs=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C7FEB1596;
+	Thu,  6 Nov 2025 08:54:46 -0800 (PST)
+Received: from [10.1.30.195] (XHFQ2J9959.cambridge.arm.com [10.1.30.195])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4E7ED3F694;
+	Thu,  6 Nov 2025 08:54:51 -0800 (PST)
+Message-ID: <bd10dd8a-8cdc-404e-8259-4d65ca9a650d@arm.com>
+Date: Thu, 6 Nov 2025 16:54:49 +0000
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH -v4 2/2] arm64, tlbflush: don't TLBI broadcast if page
+ reused in write fault
+Content-Language: en-GB
+To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
+ Huang Ying <ying.huang@linux.alibaba.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: Barry Song <baohua@kernel.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>,
+ Yang Shi <yang@os.amperecomputing.com>,
+ "Christoph Lameter (Ampere)" <cl@gentwo.org>, Dev Jain <dev.jain@arm.com>,
+ Anshuman Khandual <anshuman.khandual@arm.com>,
+ Kefeng Wang <wangkefeng.wang@huawei.com>,
+ Kevin Brodsky <kevin.brodsky@arm.com>,
+ Yin Fengwei <fengwei_yin@linux.alibaba.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
+ <20251104095516.7912-3-ying.huang@linux.alibaba.com>
+ <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 80B13C0011
+X-Stat-Signature: 5hycojw4bcumoy9ij47uf1xotssjumop
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2615420009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762447213-518428
-X-HE-Meta: U2FsdGVkX19oFuwXTdn1btJHUHGEPaivJxE5eRs89dy7CHc3VEc5pA2D4JtSD5qMuL5NQKMNDLgQemV/GCQS62guBgSyFE+szWJAotBrUODMzJt74ReBCz0XvWaWHiB2sjN8B0+5MfsUvQPAKnbJmMMIiWB8Iuz1L7v/4sdjncR0OOr0ix00gyc4KNrbIlqXHFLFri+5ZQMih9XI5su/AT/j+NWzaZUn01Ripl8B8+R00QzP+0DEwuSEHrgtbonBDygXQXJms/hb+4mcathGzBZTI7Er50vxM2tAxri6xZA3aY4bgzcMlnQOgDS9sPFW33VCziGBba1Q+7oYEvRgKtUDYWrOa/AAvsIf6arRZZSfHnFXW3JP0i50/VdgDIc3nfP1PGyEs6zf5g8qX63Bxcpm1mgRzk/xUI3uP90wrhRH7ubn2123cPXwquZh0RveM6wM9pNI7dDFdv+dK7vbsKE6ViLKiUZc5Ap2snZyCCbc+AaTa1qnDdZ+kbRcwXsLmaJBQecmKE7cyrxb8vYX3RYFnU0Eq1D3ZDqW7hLBEQh4jDmqHpH1epCCJ1QNqAufNosw6V38nrog03eLvStmi/q9fcubs6hZQfDoAWg4qcbFGtPGOSWi84kRzfE328mDd9nfRU7nm4tYyNtjuR4oVl4pgbkUWYLWozS/EDJ4JMYoIcW1/2zb8wZhacnziM5/gsfy2sz/t2bbPCH6+muSfb92CudfJfVvI17pp4dBXoddTAs61gUCEzKKtyWxiKeGHvnxyaoenh0nJGhsohQ+sqe8EXKieICOJrfpr+qVNc9Be/siUBEuL18la4nxJurIaCo0Tn4QXc4YCW/x+PMm/98XkjfwfUt/xm7DH4Kq/iRvAQ5J94Vf/XzbhDXn36vDV+qnX1gu9mnRmS/Zk8HFwjMGH2fvvG1tMRoikikWuUNKIjhAnjpByOV6Flu3YX2TG6H+p8jDhRBpucxmIR9
- nbbE5fQi
- s0qJNBtk6on0hG3V3DmbtbYAgL8UJ22q0tSVhPXMJhZ+cwqD1Rt52TEOZzqkwdxpJJJ+s3xSmml4CTS7x1xNyqG9fODa70lZmivXwYPoRUUvKUQug0tUwYaRp+cxT/4TYNVE01uI/b2N/+KpAf8QWh4VuCF66Z98yry54MyjiY4LPjvIONOgSDEj2jWxU0q+BklJqk9UrnjSDPhFCkHtu3yb6iqDJNudHTaRkHTBVk6pyj+3NvHfvNL1MYCl8FiscbogklIO2i5ZUb53yVndvky1yfyZr4OgiCCL932mRXJfxL3Hm0HRyE+ys5BNKRx2QQdVXRtObBxrBmB653XY+9j9o9A1YJIqZC0sXCA6KLdfdMvcWdOdZFsHYUxKILIrKwD0f5Z9imvgjnMRA04SXJ/iHCRCfBdoV3x7EO/nbOvfFVXaSlM0WVk0/Dbu1vFgbBnq8fclft4HLK6lkjaYlg6gOm4kwHgRrL4TtI+2nnjB9UbPh6flh4A3jELliL4/ocQkk75WYYSi22Z/sGB8EQcucXFEv/5l/eLAJ7kaOnGWLSkiQbVGeNWEPwh6rZx1cwrKXQEF31CwT3cS/Ls/wHkOOdpNb1RZTydzkNAxnpqbiwmLSaCjmJK0iecpBGDlpKvAtzUXvDHOdfcPkwlcPpjttp18Pq/Kk0UAnSMdKYf5TImk=
+X-HE-Tag: 1762448095-738723
+X-HE-Meta: U2FsdGVkX1+CyvO61rct8q75wYWyCvsvmOwM9gIlicl0T2BOoPzSCKkfKAjKIOZGq0Dc3rFbKViP/W0kLz4crPvw+cE7V4+N4Jln30KOMwV65TUpFJV+WR67JJsfK2KFIlLD86b1CmURv7yOwjj63+C67+uIRLRAczzD+0upCVS3q9jAuFz4yH9ki8R1LuSTFm0IWxltUl5SkPmVuil9gob/jW3v2sO+wI+ou4JYec+nkSvc1Ql3Tplsn0U5hQRC0ItT3Q2CNBblfahAC7H0HFcEd3h+FhNTxmHazXFfdzihuIBHLVkZ5xLGLHC/HZT7dyYb49n80nvA6QCtTKJtfJ11O82mgjjf0IQc9dOnbBIiRDBwMsVK/G549JbVRBOtoMi7/WfV0d09psSx+V/fJGegSx/VeSkiiKWx5suqXEm9WQ4gMfiZh9DfB3/dU6nJ2NgXFq5Q/T2DwOpyX/W+Qs3NhWCW/HszhxPHlKe4ShfdOKD1QK3AyFh0NV029OBrGsJJfBNlHMFxTy2BkAR4zf8fIHhUymy0cpzQVfpuUKfxISRo0NPl7hwB81daAQge+bo5s9Sl1zGme7W4RnRLs/EPHUIbTKq/IZtUfZ10Q1ZyFH5+ly8K0ITKcbhiXTM1jt3Mi72sBXG7EX10h5mMIvoVur1oI9BwxN/R6zhQP/W6DNnZnvBYL9+DjH7X3FQ6+lS8vk1INXZmw2fhmM+TGs9GGyQ62irjTbMFtU8H7Y9wPlzZaGDvP/HGSqMHG2YtdvFl/M69hRAcT09JJKiQE8LyjnttyLlrtc0NtxMaEEhZV1DGGaFKtDoIuXfHbFuAXwqQOwWuBsDRQ5xAH4Wg9/ZkIOgdxYz+YFWH2ts9O223frCSGRVhmUKYhUyjeOc6aADXv8gHjP3ACU+lLHg/s465xKd6e8pHUUOxTpk2uOM+KUta5lzeFM4FoHfNtij6MrBDV6SNPRRBbgalEKc
+ zqmhRZff
+ HwxKOP11Jb4JlP+AXPWze+6pRPRB1eDabuYkwkakZpzKrwNUj2KTuKQlN1ZLDefKbJviOvn75QN+OoArbo6m14rvdJuWP2ecLdUT9bBPAdVpuKj48r3mvhBBQhxMr5eO9CuP7khlP+ZAge+gFq3Ty0MAjWIMJM4oXeYlPMY4OKv9GptQZbapd4sdn1q6r4R1kCa1X
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,128 +101,148 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Now, as the page_ext holds count of IOMMU mappings, we can use it to
-assert that any page allocated/freed is indeed not in the IOMMU.
+On 06/11/2025 09:47, David Hildenbrand (Red Hat) wrote:
+> On 04.11.25 10:55, Huang Ying wrote:
+>> A multi-thread customer workload with large memory footprint uses
+>> fork()/exec() to run some external programs every tens seconds.  When
+>> running the workload on an arm64 server machine, it's observed that
+>> quite some CPU cycles are spent in the TLB flushing functions.  While
+>> running the workload on the x86_64 server machine, it's not.  This
+>> causes the performance on arm64 to be much worse than that on x86_64.
+>>
+>> During the workload running, after fork()/exec() write-protects all
+>> pages in the parent process, memory writing in the parent process
+>> will cause a write protection fault.  Then the page fault handler
+>> will make the PTE/PDE writable if the page can be reused, which is
+>> almost always true in the workload.  On arm64, to avoid the write
+>> protection fault on other CPUs, the page fault handler flushes the TLB
+>> globally with TLBI broadcast after changing the PTE/PDE.  However, this
+>> isn't always necessary.  Firstly, it's safe to leave some stale
+>> read-only TLB entries as long as they will be flushed finally.
+>> Secondly, it's quite possible that the original read-only PTE/PDEs
+>> aren't cached in remote TLB at all if the memory footprint is large.
+>> In fact, on x86_64, the page fault handler doesn't flush the remote
+>> TLB in this situation, which benefits the performance a lot.
+>>
+>> To improve the performance on arm64, make the write protection fault
+>> handler flush the TLB locally instead of globally via TLBI broadcast
+>> after making the PTE/PDE writable.  If there are stale read-only TLB
+>> entries in the remote CPUs, the page fault handler on these CPUs will
+>> regard the page fault as spurious and flush the stale TLB entries.
+>>
+>> To test the patchset, make the usemem.c from
+>> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-
+>> scalability.git).
+>> support calling fork()/exec() periodically.  To mimic the behavior of
+>> the customer workload, run usemem with 4 threads, access 100GB memory,
+>> and call fork()/exec() every 40 seconds.  Test results show that with
+>> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
+>> flush functions reduces from ~50.5% to ~0.3% in perf profile.
+>>
+> 
+> All makes sense to me.
+> 
+> Some smaller comments below.
+> 
+> [...]
+> 
+>> +
+>> +static inline void local_flush_tlb_page_nonotify(
+>> +    struct vm_area_struct *vma, unsigned long uaddr)
+> 
+> NIT: "struct vm_area_struct *vma" fits onto the previous line.
+> 
+>> +{
+>> +    __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+>> +    dsb(nsh);
+>> +}
+>> +
+>> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
+>> +                    unsigned long uaddr)
+>> +{
+>> +    __local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
+>> +    mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
+>> +                        (uaddr & PAGE_MASK) + PAGE_SIZE);
+>> +    dsb(nsh);
+>> +}
+>> +
+>>   static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
+>>                          unsigned long uaddr)
+>>   {
+>> @@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct
+>> vm_area_struct *vma,
+>>       dsb(ish);
+>>   }
+>>   +static inline void local_flush_tlb_contpte(struct vm_area_struct *vma,
+>> +                       unsigned long addr)
+>> +{
+>> +    unsigned long asid;
+>> +
+>> +    addr = round_down(addr, CONT_PTE_SIZE);
+>> +
+>> +    dsb(nshst);
+>> +    asid = ASID(vma->vm_mm);
+>> +    __flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
+>> +                 3, true, lpa2_is_enabled());
+>> +    mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
+>> +                            addr + CONT_PTE_SIZE);
+>> +    dsb(nsh);
+>> +}
+>> +
+>>   static inline void flush_tlb_range(struct vm_area_struct *vma,
+>>                      unsigned long start, unsigned long end)
+>>   {
+>> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
+>> index c0557945939c..589bcf878938 100644
+>> --- a/arch/arm64/mm/contpte.c
+>> +++ b/arch/arm64/mm/contpte.c
+>> @@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
+>>               __ptep_set_access_flags(vma, addr, ptep, entry, 0);
+>>             if (dirty)
+>> -            __flush_tlb_range(vma, start_addr, addr,
+>> -                            PAGE_SIZE, true, 3);
+>> +            local_flush_tlb_contpte(vma, start_addr);
+> 
+> In this case, we now flush a bigger range than we used to, no?
 
-The sanitizer doesn=E2=80=99t protect against mapping/unmapping during this
-period. However, that=E2=80=99s less harmful as the page is not used by the
-kernel.
+I don't believe so, no; we are still flushing the same contpte region (i.e. 64K
+for 4K base page config).
 
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Tested-by: Qinxin Xia <xiaqinxin@huawei.com>
----
- drivers/iommu/iommu-debug-pagealloc.c | 19 +++++++++++++++++++
- include/linux/iommu-debug-pagealloc.h | 12 ++++++++++++
- include/linux/mm.h                    |  5 +++++
- 3 files changed, 36 insertions(+)
+> 
+> Probably I am missing something (should this change be explained in more detail
+> in the cover letter), but I'm wondering why this contpte handling wasn't
+> required before on this level.
 
-diff --git a/drivers/iommu/iommu-debug-pagealloc.c b/drivers/iommu/iommu-de=
-bug-pagealloc.c
-index 0e14104b971c..5b26c84d3a0e 100644
---- a/drivers/iommu/iommu-debug-pagealloc.c
-+++ b/drivers/iommu/iommu-debug-pagealloc.c
-@@ -71,6 +71,25 @@ static size_t iommu_debug_page_size(struct iommu_domain =
-*domain)
- 	return 1UL << __ffs(domain->pgsize_bitmap);
- }
-=20
-+static unsigned int iommu_debug_page_count(unsigned long phys)
-+{
-+	unsigned int ref;
-+	struct page_ext *page_ext =3D get_iommu_page_ext(phys);
-+	struct iommu_debug_metadate *d =3D get_iommu_data(page_ext);
-+
-+	ref =3D atomic_read(&d->ref);
-+	page_ext_put(page_ext);
-+	return ref;
-+}
-+
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages)
-+{
-+	while (numpages--) {
-+		WARN_ON(iommu_debug_page_count(page_to_phys(page)));
-+		page++;
-+	}
-+}
-+
- void __iommu_debug_map(struct iommu_domain *domain, phys_addr_t phys, size=
-_t size)
- {
- 	size_t off;
-diff --git a/include/linux/iommu-debug-pagealloc.h b/include/linux/iommu-de=
-bug-pagealloc.h
-index 180446d6d86f..84110e4ecfaa 100644
---- a/include/linux/iommu-debug-pagealloc.h
-+++ b/include/linux/iommu-debug-pagealloc.h
-@@ -22,6 +22,7 @@ void __iommu_debug_unmap(struct iommu_domain *domain, uns=
-igned long iova,
- 			 size_t size);
- void __iommu_debug_remap(struct iommu_domain *domain, unsigned long iova,
- 			 size_t size);
-+void __iommu_debug_check_unmapped(const struct page *page, int numpages);
-=20
- static inline void iommu_debug_map(struct iommu_domain *domain,
- 				   phys_addr_t phys, size_t size)
-@@ -44,6 +45,12 @@ static inline void iommu_debug_remap(struct iommu_domain=
- *domain,
- 		__iommu_debug_remap(domain, iova, size);
- }
-=20
-+static inline void iommu_debug_check_unmapped(const struct page *page, int=
- numpages)
-+{
-+	if (static_branch_unlikely(&iommu_debug_initialized))
-+		__iommu_debug_check_unmapped(page, numpages);
-+}
-+
- void iommu_debug_init(void);
-=20
- #else
-@@ -66,6 +73,11 @@ static inline void iommu_debug_init(void)
- {
- }
-=20
-+static inline void iommu_debug_check_unmapped(const struct page *page,
-+					      int numpages)
-+{
-+}
-+
- #endif /* CONFIG_IOMMU_DEBUG_PAGEALLOC */
-=20
- #endif /* __LINUX_IOMMU_DEBUG_PAGEALLOC_H */
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32..895a60a49120 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -36,6 +36,7 @@
- #include <linux/rcuwait.h>
- #include <linux/bitmap.h>
- #include <linux/bitops.h>
-+#include <linux/iommu-debug-pagealloc.h>
-=20
- struct mempolicy;
- struct anon_vma;
-@@ -3811,12 +3812,16 @@ extern void __kernel_map_pages(struct page *page, i=
-nt numpages, int enable);
- #ifdef CONFIG_DEBUG_PAGEALLOC
- static inline void debug_pagealloc_map_pages(struct page *page, int numpag=
-es)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 1);
- }
-=20
- static inline void debug_pagealloc_unmap_pages(struct page *page, int nump=
-ages)
- {
-+	iommu_debug_check_unmapped(page, numpages);
-+
- 	if (debug_pagealloc_enabled_static())
- 		__kernel_map_pages(page, numpages, 0);
- }
---=20
-2.51.2.1026.g39e6a42477-goog
+The previous __flush_tlb_range() API was flushing the same region. But that API
+broadcasts. We decided not to just create a local version of that API because it
+is more complex than it needs to be for this use case.
+
+The whole (arm64-private) TLB flush interface is creeking and needs some
+refactoring, which I'm planning to do as a follow up to this.
+
+Thanks,
+Ryan
+
+> 
+>>       } else {
+>>           __contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
+>>           __ptep_set_access_flags(vma, addr, ptep, entry, dirty);
+>> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
+>> index d816ff44faff..22f54f5afe3f 100644
+>> --- a/arch/arm64/mm/fault.c
+>> +++ b/arch/arm64/mm/fault.c
+>> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
+>>         /* Invalidate a stale read-only entry */
+> 
+> I would expand this comment to also explain how remote TLBs are handled very
+> briefly -> flush_tlb_fix_spurious_fault().
+> 
+>>       if (dirty)
+>> -        flush_tlb_page(vma, address);
+>> +        local_flush_tlb_page(vma, address);
+>>       return 1;
+>>   }
+>>   
+> 
 
 
