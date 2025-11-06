@@ -4,182 +4,105 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 13F2ECCFA05
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:33:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 25415CCFA03
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 14:38:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 54EFB8E0012; Thu,  6 Nov 2025 09:33:41 -0500 (EST)
+	id 72E1F8E0003; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4FEC78E0002; Thu,  6 Nov 2025 09:33:41 -0500 (EST)
+	id 6DE018E0002; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C73C8E0012; Thu,  6 Nov 2025 09:33:41 -0500 (EST)
+	id 5F40B8E0003; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 26A4D8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:33:41 -0500 (EST)
-Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id C69D7AF64B
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:33:40 +0000 (UTC)
-X-FDA: 84080425800.20.1ADDDAE
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 523331C0012
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:33:38 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wU7eIE/a";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g92+yCEe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wU7eIE/a";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g92+yCEe;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 4AA7C8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 09:38:31 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 081271DC757
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:38:31 +0000 (UTC)
+X-FDA: 84080438022.08.562E43D
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+	by imf25.hostedemail.com (Postfix) with ESMTP id 45CF4A0014
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 14:38:28 +0000 (UTC)
+Authentication-Results: imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PqtkRJ2N;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762439909; a=rsa-sha256;
+	cv=none;
+	b=c+OGJnjhV967RlmZiia3r1cYXRGcXTctGzvjZEjRSkql4e5s1u1+n6imZ+DftqXoXD8QEb
+	trRxXhh0SFsDqHLVe1FAPCzXkJqTrHKrQ7l/YXJfT9UPpnuXlQj+Pv6/A6EMGvxQrfHpsV
+	0IqxSYn8AAb6D5439pIdpm2vKwMlCck=
+ARC-Authentication-Results: i=1;
+	imf25.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=PqtkRJ2N;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf25.hostedemail.com: domain of lkp@intel.com designates 192.198.163.12 as permitted sender) smtp.mailfrom=lkp@intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762439618;
+	s=arc-20220608; t=1762439909;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pCIJX8/iWnVUuvfe1rGXnP2363EkjNZoIa3wD0HTysg=;
-	b=nxGSILWLF/K5reVBUWT3o9atFm8FWCc6DxoBJFVmU5rGKKAG/vEZO1z4sTPZKY3I/uKBtT
-	xyJ5xpUkRvzA6rRRNg35abfCn7rvJbcFO1hDCU12NVDG4L16JjkVtKlmwRMQe0SLjTl2Xi
-	gAGM5csxaWDKVXUUe2Yv+WOz7dYF1rI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762439618; a=rsa-sha256;
-	cv=none;
-	b=oPURy8PTsQx1G2hkGsvlVSjnCgN1olJCZC9hD8qeI435w+QTDetOp4i76OUMeXm/ZN+GvU
-	BsIdhY2QYiPuTD8MOHKt/ayew8liOJphRYfa1y2LAFVJbNuNr+wnN9Q8qoBTSDua7ziyTA
-	Z1ie4Hz6y6g34VvwjiFOseDV9d9aByg=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wU7eIE/a";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g92+yCEe;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b="wU7eIE/a";
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=g92+yCEe;
-	dmarc=none;
-	spf=pass (imf18.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 95473211FA;
-	Thu,  6 Nov 2025 14:33:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762439616; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pCIJX8/iWnVUuvfe1rGXnP2363EkjNZoIa3wD0HTysg=;
-	b=wU7eIE/awNdBW9X0M+guihUvpSfwGtZp7sB+FdVnnc6rp86D7PwrERWDsdMq2nV0SfheuJ
-	vS9mKCpsNreHzq7FzmTwbH14vUAGfSDnBvcPCAX7tDFa0UUGNH1/VLnRzCEJm0PS+fzlpK
-	6OrczvGIPmpeAZtqXCDUTI8lMGChIyo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762439616;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pCIJX8/iWnVUuvfe1rGXnP2363EkjNZoIa3wD0HTysg=;
-	b=g92+yCEeQzeK7H/xtQ8RxX0mcYggPveuauVX45NrFsRXUHQWem3OBmr8NhE0PaChlFqnfi
-	DcxekCE+Z6GhaBDA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762439616; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pCIJX8/iWnVUuvfe1rGXnP2363EkjNZoIa3wD0HTysg=;
-	b=wU7eIE/awNdBW9X0M+guihUvpSfwGtZp7sB+FdVnnc6rp86D7PwrERWDsdMq2nV0SfheuJ
-	vS9mKCpsNreHzq7FzmTwbH14vUAGfSDnBvcPCAX7tDFa0UUGNH1/VLnRzCEJm0PS+fzlpK
-	6OrczvGIPmpeAZtqXCDUTI8lMGChIyo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762439616;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=pCIJX8/iWnVUuvfe1rGXnP2363EkjNZoIa3wD0HTysg=;
-	b=g92+yCEeQzeK7H/xtQ8RxX0mcYggPveuauVX45NrFsRXUHQWem3OBmr8NhE0PaChlFqnfi
-	DcxekCE+Z6GhaBDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 65FC913A31;
-	Thu,  6 Nov 2025 14:33:36 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id EcLNF8CxDGlwSgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Thu, 06 Nov 2025 14:33:36 +0000
-Message-ID: <3ba49b47-91a5-4a73-9dbd-b27f3956ae16@suse.cz>
-Date: Thu, 6 Nov 2025 15:33:36 +0100
+	bh=lCE+9CfoyKV8XD5hYJc6hb73qx5l55wY+Ra4OYv3HLI=;
+	b=zZJf8L5TOi1O5GONYcaPdEUYFSJ9X0hDE8LZXx91Il/T+fuApWXqo3BDKWWy1Mq78q4dam
+	f74ZQGRUgZ5ntXrpjO1jivWilSJXcDMlXKdfy3C5iY7wTOxWmCoF1JD5mGDQO4WOudL24W
+	3jT/kmDwwaL12suNeIiYyOb/WmVUGvc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762439908; x=1793975908;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=qjA9ze1XqObCgR5Te5hbEW9wde11R4+WtauacdBNGBU=;
+  b=PqtkRJ2N/cHUhQQizgwWyTARzg5buqBJhcUJVJEEhgXzsBuU0TjITIU7
+   NFsbNAUzkg91BEbNPfcHpLeln/yxEowvvkBtTNfZeA0SwKYq5eDcTGsBt
+   rd2MF0juIFotM/rYLy/W58BVu5W3L6RwQQDkicVlg3xXyuDK8uSgCrobS
+   GvCWCKyNvuEQuXmMonL6FMapTLQY4zSeC3JXpoYOVW+Y2tIS9allM3Lbq
+   b7Cr/0A2tMFHIBHQSm3SHcnyNspfvPk5V9jqBUDPiQ2W2qKXGviOJNL0X
+   D1yW1t8Q9XUVIw4dsZmsREWNc8bZssJrOuvkoOcWKhiZrhfr0uj50R3J6
+   w==;
+X-CSE-ConnectionGUID: pD/0rF9SSEuqdj4oAW8FCA==
+X-CSE-MsgGUID: 0Tsv0NDjS5m2eCAdcRbIXQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11604"; a="68436344"
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="68436344"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Nov 2025 06:38:27 -0800
+X-CSE-ConnectionGUID: QD+x6HneTv6Gu9i9eTzITQ==
+X-CSE-MsgGUID: JYgGY/w/QwKQkjtpz9L0SQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,284,1754982000"; 
+   d="scan'208";a="187716231"
+Received: from lkp-server02.sh.intel.com (HELO 66d7546c76b2) ([10.239.97.151])
+  by orviesa007.jf.intel.com with ESMTP; 06 Nov 2025 06:38:24 -0800
+Received: from kbuild by 66d7546c76b2 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vH182-000U1I-14;
+	Thu, 06 Nov 2025 14:38:22 +0000
+Date: Thu, 6 Nov 2025 22:38:04 +0800
+From: kernel test robot <lkp@intel.com>
+To: Steven Rostedt <rostedt@goodmis.org>, linux-kernel@vger.kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH 3/5] tracing: Have tracer option be instance specific
+Message-ID: <202511062223.ocoUvCBI-lkp@intel.com>
+References: <20251105161935.545400234@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 3/5] mm: implement sticky, copy on fork VMA flags
-Content-Language: en-US
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, David Hildenbrand <david@redhat.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Michal Hocko <mhocko@suse.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Jann Horn <jannh@google.com>, Pedro Falcato <pfalcato@suse.de>,
- linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org,
- linux-trace-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- Andrei Vagin <avagin@gmail.com>
-References: <cover.1762422915.git.lorenzo.stoakes@oracle.com>
- <9c9e9fb6b767556594b2cef023db01d45d8f8463.1762422915.git.lorenzo.stoakes@oracle.com>
- <3d423848-2b55-4797-bdab-a9b42a373a45@suse.cz>
- <402256c9-8cfe-4943-9b3f-40f21c17292e@lucifer.local>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <402256c9-8cfe-4943-9b3f-40f21c17292e@lucifer.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Stat-Signature: fbodj9gxkpnfe1ry69rsmo6yxb3z78kj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251105161935.545400234@kernel.org>
+X-Rspamd-Queue-Id: 45CF4A0014
+X-Rspamd-Server: rspam07
+X-Stat-Signature: n57fsgyjupfj4tkp8ch8jnxah5wtk4cb
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 523331C0012
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762439618-51025
-X-HE-Meta: U2FsdGVkX19az5pBxJQ+m30R+YSq5oR+t58bqnSpb2AD8DRgLFoA22yjXWyodvs2gXHQdvfja4Pi6anl/c77bpoEKvBNDsCmltVtqsNWemNhMFU/zCyFLJvvfIS1/MvZgpbPhCyeI0e0kwckheV50/vSqalaEmcYn6T4+WS4538CxJ3JuxLFVb2djjOjV9ja95XtXIWD+4BaC1WZBjV/9bq+F9+fg67WaW0qK3PcV2Fie5YhyuTp8rpyUiRp8N+IvEUWYa/Gpl/rFWLINsjXAZSIjK8JytvzIO20IEzqTxwpl/b8qUllTu1g3OhQyQMryeyuTfygzk2szABmdiz7UMjpXxXAHaZxbOSB0AGt9dPo8tQYIiCqs8xq0gNrB4kC1j4PBVmQ2witFwjzq8WM0s41ordZlyA5R24SY3evHS0VLA6d7z5vIMFO+P2G06Duhrn8Oh3UmPSr3V/S2p/C56I6+pK5O9aqTSvykdepGT2iW3QNeC5da332Tqu12mVWlLNKYEXEXrBdR7Z2EfC9Tdrbs9oU4V9Vt3dc0XaoiSbydQjmNVrb1+WbhQ838CHbY1VWlSk2QeunLf7uTBMNh5AlhVib0NoHbR097CGwh5Go8tpfwVQdHCsTAjXrTZGWJCm3MVRdw9STUhSuFCzk893/tiBcmiPRYyfCALm0YPq2hqwYnG6+S1/3AQ0Ups07CwhWXQhmSDN+zZyUUfSoNAMAXVdlPl0rzXBmakSDfqcy8YKLUnHng/YEAER3VdeJ8T1H2qE5JKGtonYU8r2iGPwBI9mX1LJMZmXJO0a6WfsVpprwNR2b4US/ltQIP9MlcpFD+fmp0cE3wi1nPZnkxhiu1q5EwBiigIWFPCYy/QoxIrPEVJg3K/1q7OFkS5J0TM1sz51aSlWwoN3mXAPusDukG8Q0ZBWIE125SzixLXyw3Cs1Qxx03w==
+X-HE-Tag: 1762439908-21409
+X-HE-Meta: U2FsdGVkX18JEmvIfGSQMmhfIr7FiaSkj8yrJnBpuXHxUAtovEpwj8Ie26YKI32zGi3mt8BPkjGXnPytNshBvTobHteJPESMzpA0iXqfxm6JmZH7p9f9eMuo/u9ivtmc60+sH2Jfv8Sz7O0NEj7ynOZHmgZcrbrA4WA8XwtVrAnImKsM1KBb9zCmAmAzjIHJeXlud9A8QLIJa/hrltkBczhrUuutYOtFiBCYCHXHpuHLI5fVHHQ46/tgnnDJaNQ4Qi7Odlu8Ur+iz3YG5dKrKaNw43Q/yR5zy+Fb9dN6PPc8iDJPEvVbO82CstmoSe+nB3TItXywNsQC1VpYlDilgBFofS6TsuhXMY+vEGXOaHASsXf1kSE7M2u3ndexew3VxrRyju43OCI2/Q3FUufOHVxp+KimM3BZ3ALwoq3DdHPujwg5ONFz84RSWI5BfGUk5vhSITDqwGcCpGjRx34PcgrX0+xf/dB/vUlBNRI9nciKAViPrFAADMhBazGS++fdzqmSZkSBivANMaxgInqXVjSui13POBQVm0m++bjACfrTJLvf2//wRIK/+LMtIIzVhQxwE914EuazDPqADQmNRLAYyku1v5zVbWDj0d1m4PQX2cGgKpz7J+dz2T39Y2Yv+iuA7fh1dMThp+ZlEglnQhXv04m6vRRXDKC/pcwg+LQ8kKLsdNfyM9I8LlI2uxD24twnMyB7ntxrAh8+MgOGRGF9Tf7ps1Wk3G3ZX6v9sggP9MItTac6sCbdTaKkD5MtO68yBk9Jf/y48uUAkZ13XmZ5QxKut0ZTnsJ7AjwRHFbMK0HNDkyYwYC/G55koMEYnHJHMPw9n6zx1pFMq1VIYGeUmGSQVm0FsEs/6YosANLqhrINw0A6QK/xjAAtfRgT1ADie8vPlkGmGOazuIhl6BmW1yDo1xckocNdeqwcKGYFt54z+jhMl6Fy5brOhbIdOmdRnu2ynMcE1l592xH
+ S1h+5yt5
+ Ve87H1jQJvJ/HMGNQkBU4G8XBK3pTLzVDwAbF8JsnmM27w8cyRtfvc0SRJ2Mgn5XO2fgkb2TPMzrRLPApWnMHbnkRIcpoNCIW3paotq+ShQKpe1dz4P7pMSXOJ22AWdVi8LFyxEsYRF1mqOPb9renY8o087cUCkvbJAPdAaMOhaLz0b5QTM5q+VLHPS23J5GLqvqE5d7r7SmdHNYlA9zjn8IhyWAisWsDnobM7uOoYjtjyC4nCwpx2iXwAB8HsjchnMY1v5CANM10zG1+C7EnEAbeH9dnSN89ztanJFRvbB+hyZpH6+mzbbVUOolU9/t3dmGIGXhYk0M8xNOx+wD8/z3joYkjH+iDZnWZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -188,99 +111,179 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/6/25 15:18, Lorenzo Stoakes wrote:
-> On Thu, Nov 06, 2025 at 02:46:38PM +0100, Vlastimil Babka wrote:
->> On 11/6/25 11:46, Lorenzo Stoakes wrote:
->> > diff --git a/include/linux/mm.h b/include/linux/mm.h
->> > index 2ea65c646212..4d80eaf4ef3b 100644
->> > --- a/include/linux/mm.h
->> > +++ b/include/linux/mm.h
->> > @@ -527,6 +527,38 @@ extern unsigned int kobjsize(const void *objp);
->> >  #endif
->> >  #define VM_FLAGS_CLEAR	(ARCH_VM_PKEY_FLAGS | VM_ARCH_CLEAR)
->> >
->> > +/* Flags which should result in page tables being copied on fork. */
->> > +#define VM_COPY_ON_FORK VM_MAYBE_GUARD
->> > +
->> > +/*
->> > + * Flags which should be 'sticky' on merge - that is, flags which, when one VMA
->> > + * possesses it but the other does not, the merged VMA should nonetheless have
->> > + * applied to it:
->> > + *
->> > + * VM_COPY_ON_FORK - These flags indicates that a VMA maps a range that contains
->> > + *                   metadata which should be unconditionally propagated upon
->> > + *                   fork. When merging two VMAs, we encapsulate this range in
->> > + *                   the merged VMA, so the flag should be 'sticky' as a result.
->> > + */
->> > +#define VM_STICKY VM_COPY_ON_FORK
->>
->> TBH I don't see why there should be always an implication that copying on
->> fork implies stickiness in merging. Yeah, VM_MAYBE_GUARD is both, but in
->> general, is there any underlying property that makes this a rule?
-> 
-> Why do you copy on fork? It's because the page tables contain data that won't be
-> reconstructed on fault.
-> 
-> If that is the case, that applies to any VMA which is merged, and also - since
-> you can't be sure precisely which page tables contain the data we need to
-> propagate - on split too.
-> 
-> This is why copy on fork implies sticky IMO.
+Hi Steven,
 
-Hmm I guess that makes some sense.
-> I can update the commit message to make this clear if this makes sense?
+kernel test robot noticed the following build errors:
 
-It would help, thanks. Let's see if future will surprise us with some flag
-where this won't be true :)
+[auto build test ERROR on trace/for-next]
+[cannot apply to linus/master v6.18-rc4 next-20251106]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
->>
->> > +/*
->> > + * VMA flags we ignore for the purposes of merge, i.e. one VMA possessing one
->> > + * of these flags and the other not does not preclude a merge.
->> > + *
->> > + * VM_SOFTDIRTY - Should not prevent from VMA merging, if we match the flags but
->> > + *                dirty bit -- the caller should mark merged VMA as dirty. If
->> > + *                dirty bit won't be excluded from comparison, we increase
->> > + *                pressure on the memory system forcing the kernel to generate
->> > + *                new VMAs when old one could be extended instead.
-> 
-> Note that I'm literally just moving the comment from is_mergeable_vma():
-> 
-> -	 * VM_SOFTDIRTY should not prevent from VMA merging, if we
-> -	 * match the flags but dirty bit -- the caller should mark
-> -	 * merged VMA as dirty. If dirty bit won't be excluded from
-> -	 * comparison, we increase pressure on the memory system forcing
-> -	 * the kernel to generate new VMAs when old one could be
-> -	 * extended instead.
-> 
-> (OK I see you realised that below :P)
-> 
->>
->> So I wonder if VM_SOFTDIRTY should be actually also sticky and not just
->> VM_IGNORE_MERGE. The way I understand the flag suggests it should.
->> Right now AFAICS its rather undefined if the result of vma merge has the
->> flag - depending on which of the two VMA's stays and which is removed by the
->> merge. "the caller should mark merged VMA as dirty" in the comment you're
->> moving here seems not really happening or I'm missing it. __mmap_complete()
-> 
-> No it's not happening, but I can't be blamed for existing incorrect comments :)
-> 
->> and do_brk_flags() do it, so any new areas are marked, but on pure merge of
->> two vma's due to e.g. mprotect() this is really nondetermintic? AFAICT the
->> sticky flag behavior would work perfectly for VM_SOFTDIRTY.
-> 
-> Maybe we inavertantly changed this somehow or maybe it was just wrong, but we're
-> not doing this on merge in general afaict.
+url:    https://github.com/intel-lab-lkp/linux/commits/Steven-Rostedt/tracing-Remove-dummy-options-and-flags/20251106-010511
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace for-next
+patch link:    https://lore.kernel.org/r/20251105161935.545400234%40kernel.org
+patch subject: [PATCH 3/5] tracing: Have tracer option be instance specific
+config: i386-buildonly-randconfig-003-20251106 (https://download.01.org/0day-ci/archive/20251106/202511062223.ocoUvCBI-lkp@intel.com/config)
+compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251106/202511062223.ocoUvCBI-lkp@intel.com/reproduce)
 
-Yeah wouldn't surprised me if we subtly changed it during some refactoring
-and it's not causing such obvious issues to be noticed easily.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511062223.ocoUvCBI-lkp@intel.com/
 
-> I think you're right that we should make this sticky, but I'd rather deal with
-> that in a follow-up series/patch as this is out of scope here.
-> 
-> Equally so I'd rather fix the comment in a follow up too for the same reason.
+All error/warnings (new ones prefixed by >>):
 
-Sure it's just something I noticed and seems like a good fit for the new
-concept.
+   kernel/trace/trace.c: In function 'run_tracer_selftest':
+>> kernel/trace/trace.c:2174:30: error: 'type' redeclared as different kind of symbol
+    2174 |         struct trace_tracer *type = tracers->trace;
+         |                              ^~~~
+   kernel/trace/trace.c:2171:47: note: previous definition of 'type' with type 'struct tracer *'
+    2171 | static int run_tracer_selftest(struct tracer *type)
+         |                                ~~~~~~~~~~~~~~~^~~~
+>> kernel/trace/trace.c:2174:37: error: 'tracers' undeclared (first use in this function)
+    2174 |         struct trace_tracer *type = tracers->trace;
+         |                                     ^~~~~~~
+   kernel/trace/trace.c:2174:37: note: each undeclared identifier is reported only once for each function it appears in
+>> kernel/trace/trace.c:2180:18: error: invalid use of undefined type 'struct trace_tracer'
+    2180 |         if (!type->selftest || tracing_selftest_disabled)
+         |                  ^~
+>> kernel/trace/trace.c:2189:38: error: passing argument 1 of 'save_selftest' from incompatible pointer type [-Wincompatible-pointer-types]
+    2189 |                 return save_selftest(type);
+         |                                      ^~~~
+         |                                      |
+         |                                      struct trace_tracer *
+   kernel/trace/trace.c:2158:41: note: expected 'struct tracer *' but argument is of type 'struct trace_tracer *'
+    2158 | static int save_selftest(struct tracer *type)
+         |                          ~~~~~~~~~~~~~~~^~~~
+   In file included from include/asm-generic/bug.h:22,
+                    from arch/x86/include/asm/bug.h:108,
+                    from include/linux/bug.h:5,
+                    from include/linux/mmdebug.h:5,
+                    from include/linux/mm.h:6,
+                    from include/linux/ring_buffer.h:5,
+                    from kernel/trace/trace.c:15:
+   kernel/trace/trace.c:2193:29: error: invalid use of undefined type 'struct trace_tracer'
+    2193 |                         type->name);
+         |                             ^~
+   include/linux/printk.h:484:33: note: in definition of macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                                 ^~~~~~~~~~~
+   include/linux/printk.h:565:9: note: in expansion of macro 'printk'
+     565 |         printk(KERN_WARNING pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   kernel/trace/trace.c:2192:17: note: in expansion of macro 'pr_warn'
+    2192 |                 pr_warn("Selftest for tracer %s skipped due to tracing disabled\n",
+         |                 ^~~~~~~
+>> kernel/trace/trace.c:2206:27: error: assignment to 'struct tracer *' from incompatible pointer type 'struct trace_tracer *' [-Wincompatible-pointer-types]
+    2206 |         tr->current_trace = type;
+         |                           ^
+   kernel/trace/trace.c:2207:39: error: invalid use of undefined type 'struct trace_tracer'
+    2207 |         tr->current_trace_flags = type->flags ? : type->default_flags;
+         |                                       ^~
+   kernel/trace/trace.c:2207:55: error: invalid use of undefined type 'struct trace_tracer'
+    2207 |         tr->current_trace_flags = type->flags ? : type->default_flags;
+         |                                                       ^~
+   kernel/trace/trace.c:2210:17: error: invalid use of undefined type 'struct trace_tracer'
+    2210 |         if (type->use_max_tr) {
+         |                 ^~
+   kernel/trace/trace.c:2220:44: error: invalid use of undefined type 'struct trace_tracer'
+    2220 |         pr_info("Testing tracer %s: ", type->name);
+         |                                            ^~
+   include/linux/printk.h:484:33: note: in definition of macro 'printk_index_wrap'
+     484 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+         |                                 ^~~~~~~~~~~
+   include/linux/printk.h:585:9: note: in expansion of macro 'printk'
+     585 |         printk(KERN_INFO pr_fmt(fmt), ##__VA_ARGS__)
+         |         ^~~~~~
+   kernel/trace/trace.c:2220:9: note: in expansion of macro 'pr_info'
+    2220 |         pr_info("Testing tracer %s: ", type->name);
+         |         ^~~~~~~
+   kernel/trace/trace.c:2221:19: error: invalid use of undefined type 'struct trace_tracer'
+    2221 |         ret = type->selftest(type, tr);
+         |                   ^~
+   kernel/trace/trace.c:2235:17: error: invalid use of undefined type 'struct trace_tracer'
+    2235 |         if (type->use_max_tr) {
+         |                 ^~
+>> kernel/trace/trace.c:2176:30: warning: unused variable 'flags' [-Wunused-variable]
+    2176 |         struct tracer_flags *flags;
+         |                              ^~~~~
+   kernel/trace/trace.c: In function 'tracing_trace_options_show':
+   kernel/trace/trace.c:5172:24: warning: variable 'trace' set but not used [-Wunused-but-set-variable]
+    5172 |         struct tracer *trace;
+         |                        ^~~~~
 
+
+vim +/type +2174 kernel/trace/trace.c
+
+  2170	
+> 2171	static int run_tracer_selftest(struct tracer *type)
+  2172	{
+  2173		struct trace_array *tr = &global_trace;
+> 2174		struct trace_tracer *type = tracers->trace;
+  2175		struct tracer_flags *saved_flags = tr->current_trace_flags;
+> 2176		struct tracer_flags *flags;
+  2177		struct tracer *saved_tracer = tr->current_trace;
+  2178		int ret;
+  2179	
+> 2180		if (!type->selftest || tracing_selftest_disabled)
+  2181			return 0;
+  2182	
+  2183		/*
+  2184		 * If a tracer registers early in boot up (before scheduling is
+  2185		 * initialized and such), then do not run its selftests yet.
+  2186		 * Instead, run it a little later in the boot process.
+  2187		 */
+  2188		if (!selftests_can_run)
+> 2189			return save_selftest(type);
+  2190	
+  2191		if (!tracing_is_on()) {
+> 2192			pr_warn("Selftest for tracer %s skipped due to tracing disabled\n",
+  2193				type->name);
+  2194			return 0;
+  2195		}
+  2196	
+  2197		/*
+  2198		 * Run a selftest on this tracer.
+  2199		 * Here we reset the trace buffer, and set the current
+  2200		 * tracer to be this tracer. The tracer can then run some
+  2201		 * internal tracing to verify that everything is in order.
+  2202		 * If we fail, we do not register this tracer.
+  2203		 */
+  2204		tracing_reset_online_cpus(&tr->array_buffer);
+  2205	
+> 2206		tr->current_trace = type;
+  2207		tr->current_trace_flags = type->flags ? : type->default_flags;
+  2208	
+  2209	#ifdef CONFIG_TRACER_MAX_TRACE
+  2210		if (type->use_max_tr) {
+  2211			/* If we expanded the buffers, make sure the max is expanded too */
+  2212			if (tr->ring_buffer_expanded)
+  2213				ring_buffer_resize(tr->max_buffer.buffer, trace_buf_size,
+  2214						   RING_BUFFER_ALL_CPUS);
+  2215			tr->allocated_snapshot = true;
+  2216		}
+  2217	#endif
+  2218	
+  2219		/* the test is responsible for initializing and enabling */
+> 2220		pr_info("Testing tracer %s: ", type->name);
+  2221		ret = type->selftest(type, tr);
+  2222		/* the test is responsible for resetting too */
+  2223		tr->current_trace = saved_tracer;
+  2224		tr->current_trace_flags = saved_flags;
+  2225		if (ret) {
+  2226			printk(KERN_CONT "FAILED!\n");
+  2227			/* Add the warning after printing 'FAILED' */
+  2228			WARN_ON(1);
+  2229			return -1;
+  2230		}
+  2231		/* Only reset on passing, to avoid touching corrupted buffers */
+  2232		tracing_reset_online_cpus(&tr->array_buffer);
+  2233	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
