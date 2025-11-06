@@ -4,115 +4,141 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D70C1CCF9F8
-	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:06:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5C819CCF9F8
+	for <linux-mm@archiver.kernel.org>; Thu,  6 Nov 2025 16:09:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2EA748E000A; Thu,  6 Nov 2025 11:06:40 -0500 (EST)
+	id B7C508E000B; Thu,  6 Nov 2025 11:09:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 29AC28E0002; Thu,  6 Nov 2025 11:06:40 -0500 (EST)
+	id B537C8E0002; Thu,  6 Nov 2025 11:09:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18A428E000A; Thu,  6 Nov 2025 11:06:40 -0500 (EST)
+	id A69298E000B; Thu,  6 Nov 2025 11:09:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 070AA8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:06:40 -0500 (EST)
-Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id C30451601C5
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:06:39 +0000 (UTC)
-X-FDA: 84080660118.30.3185E8B
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	by imf30.hostedemail.com (Postfix) with ESMTP id DA21780010
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:06:37 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FrjMUpPj;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 9579C8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 11:09:07 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3D8EB86BFB
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:09:07 +0000 (UTC)
+X-FDA: 84080666334.15.38F051A
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 06D81100017
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 16:09:04 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Age+i2ve;
+	spf=pass (imf05.hostedemail.com: domain of aleksei.nikiforov@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aleksei.nikiforov@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762445197;
+	s=arc-20220608; t=1762445345;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=Qlags31RcfCKvG92vgNW4kmUAWjqVO/1QLHXyW672fQ=;
-	b=y+plkMqEFm3j8vFDJ775YzANozGvaeGfSQXUurqEScXlKCRHhCltOnbJGYUHQpOnhUN9d4
-	tVY2LC8ayeJzxZBpqeN0XdyqfFUL2sBmJnNVuz/dWzM64j8nSl+vZxqMthL5Cq1bzdeq8X
-	+y7Q7DrJONTPwZkqmlgWz4Wd0PNoDBQ=
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:references:dkim-signature;
+	bh=kBkC7zrPOewXW/Pk0CVDrxMn8x8sMd++XtEVOn85zQ8=;
+	b=77majxuaLV1ubiE/n0imWBgnmCxdsEUdjMYFH2UWBnu7sigcNeOsS/M+VNgyb0h1nMN7GM
+	Ky0WUtoZGjaovODsBFzUWpQvHiylDb0YDhp8MAY6qTtSLL4jjPLKav4xFGI+BBGuptpzaa
+	5hXdHRkfIrwtIP2CWxTMM1CaC76voIc=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=FrjMUpPj;
-	spf=pass (imf30.hostedemail.com: domain of gourry@gourry.net designates 209.85.219.44 as permitted sender) smtp.mailfrom=gourry@gourry.net;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762445197; a=rsa-sha256;
+	imf05.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b=Age+i2ve;
+	spf=pass (imf05.hostedemail.com: domain of aleksei.nikiforov@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=aleksei.nikiforov@linux.ibm.com;
+	dmarc=pass (policy=none) header.from=ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762445345; a=rsa-sha256;
 	cv=none;
-	b=hhj3iWfHD4JxRUYY96/65PQIWhrg6cvZoLHEqN2YSwy5tIVBrgxVT67fkUlCIyDIhkdyBz
-	SC+y4yJTEN4z9lkmdAGqUV2qyWm9uDOj3aEW4FHH+mz5Wtuz9TEyBGQGcpPMH2g0eGZn77
-	wAAvjsULGdh0eU8K4LmS85G/0WSylZE=
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8801f4e308dso10734656d6.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 08:06:37 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762445197; x=1763049997; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qlags31RcfCKvG92vgNW4kmUAWjqVO/1QLHXyW672fQ=;
-        b=FrjMUpPj7+eQQ4PKN4waHAVKlg6QUampVAFxfUxp2MLqncjlIqiFaJd4baBg02Pr/K
-         GCjzeXDlouePKQukYeT53Ho0Jd5IsIidDx06vMX9OAXr8K8SjtnnjbP3b0zXJGozuJXO
-         nH8Jk6bwXLIFh5RaUCdE352Y6L/bTVnHF1xIQL8dsVLZz+S37FPzHKUkpMAwnJ07XTg1
-         SN7bvRUMyMAGBS3MFPcDr7rJPPiSr4AiTY2nwVL4V/dftalEBep96VJQs7B3tYx3520a
-         rnL+z5MRhdcxUmqF0tqgqCObZ09xgEvOBn5wSUtUHXkxH40PFPK1Ukt62O6/8sh1O5MU
-         q0Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762445197; x=1763049997;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qlags31RcfCKvG92vgNW4kmUAWjqVO/1QLHXyW672fQ=;
-        b=jQ3QMx8I4cgukWLQ8VHDju5r2k1XtaqLIicvTzaZz8YAPxZUiZcZh5glj0OPZv/sCR
-         OyYv/l7v5GKa+dHFjQTkwoNcbL/y7vxPZzNXyuUmRFtqKnL4Gb9HP2m53T3fsryycjzC
-         NwPYmcUg76Xe2eeUiswGMicWMpUVUIUCs7JNYDnjbb5JolueZTb6aMydQxT3WqRxS+4l
-         B/FHbynry+lGPlpl2OpbkIWchjKuWO+jEpsWd7bel5ttm1P7unDUJa3Kyx5if3HgXa7i
-         KcHPTEhHE1NgX/fouj9kxTYMYikcY0uEi25SrvfD5ac1xXHvQBip5Grrixqwy99d2iaK
-         yrEA==
-X-Gm-Message-State: AOJu0YzlOi+SPAfBWOTuc3yohP2UgSL45pGqStbfr2TE8j0UK9LBNOuF
-	GQtqP49UI9wAwpnKfJTYb71ZitUT9+cYB9s6nE/YsoQBS+s7NR5Xeg1wHz2X9gDnOLw=
-X-Gm-Gg: ASbGncuni0buPlXJtJfr10S98MwLAhcdiiTs3Q8fdiB2d9mEq1+xkZMyJRH8IIX4tSJ
-	ghJRKziee8q57n1B6lKDcRjh0/2c4JyW4t+8g6K/6pXZ7JE3h1Eq917+HB5TuHjGryssYcBlEE4
-	KTtOMG2n6D93vGFq8uPrssHVZVNnd/96wDLxYvJkBLUTpArPY628ThOJg/N4o4nJc2QPMVEzdw5
-	J+Ye1WHOnlZ/dax6q3JwIi2A66TrltE7Zq1AR+f7xLLnTOJmmUXUbaNzU5NgWMpVEhn32AAJoaR
-	8Ma44gDzyyl1ZX2K9bF76FSYCl5AXBb/lXVpLD/3XfwqLWUbzbjXq+XdvFdhbbTcCBI3FGpx4Xw
-	zdc0SoksrWJzexT6nrlbJ8h5B4UXBhTjRkQREiy+w8TGJxIG1Py8v+5Lx9YUASOxs0oFYJER7g/
-	B0HTlBnf90tyQen9pz8HAaogQ7au1/ldQZEhNEChwq78lu2QYUhHhDZ5yOSf0=
-X-Google-Smtp-Source: AGHT+IHsSxe5JOoiqI22nTLPJo6OLJlkjEqsT6Afcf91+ImeIdz/5SsDaK9sk7rEW7EEqspIerIC6g==
-X-Received: by 2002:a05:6214:2243:b0:87c:29c4:4bec with SMTP id 6a1803df08f44-88071188f19mr107210016d6.54.1762445196690;
-        Thu, 06 Nov 2025 08:06:36 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-88082a3aa91sm21241056d6.56.2025.11.06.08.06.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 08:06:36 -0800 (PST)
-Date: Thu, 6 Nov 2025 11:06:33 -0500
-From: Gregory Price <gourry@gourry.net>
-To: David Hildenbrand <david@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, kernel-team@meta.com,
-	akpm@linux-foundation.org, vbabka@suse.cz, surenb@google.com,
-	mhocko@suse.com, jackmanb@google.com, hannes@cmpxchg.org,
-	ziy@nvidia.com, Wei Yang <richard.weiyang@gmail.com>
-Subject: Re: [PATCH v3] page_alloc: allow migration of smaller hugepages
- during contig_alloc.
-Message-ID: <aQzHibKYKy0SQU1z@gourry-fedora-PF4VCD3F>
-References: <20251024192849.2765667-1-gourry@gourry.net>
- <2de17512-3df3-4ee4-9912-8a8f7ca5b648@redhat.com>
+	b=QkxVSeb309BMTjpgFn77At59+eBAZBDa07dU7nlmhzEHoPwaGHWW/qJDNThlQ3yn5Vz4s6
+	/f2l5e71mOU/tS0gbSQBiaUD9MC15O21CiNjrQAvuCZKxDNZsamlTxVc0glWeHYnxgv5xN
+	QU4bhgnLXJaFccy77QApbXdkM61aLrI=
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A68oc4A030782;
+	Thu, 6 Nov 2025 16:09:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=kBkC7zrPOewXW/Pk0CVDrxMn8x8sMd++XtEVOn85z
+	Q8=; b=Age+i2vePvB+LSLLLbPL22On/jr3dDndzvp0l0zg+j4ybFKYUSEqOOFT8
+	rFNvgnVaqDypYIqjbDZ+8PfzNUViKkd/3CeLqeanToAOHGQfblNpmpN+1GvqM2h2
+	1HmS/iHc0J37uOF4Yx5Yghw00W/QZFi9+QaCTRw8j9iPW2XyzIYgqc6klp4z8JpI
+	OfLNVzDMxGpAbcU95Y4lXoLWwu0kvVisI8v2b3roxqOAOVm+R+C7zBv8DFb4Vv5R
+	hyjiujyLjGbVSXGYU/uHmnvLbGwJslC/JYx/2zhCIflxUQ3gb2qEzmrtT/EpoI7n
+	uVHIQIwsSkjqf+D5WkUP0mwV9AQig==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vur6gn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 16:09:03 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.0.8) with ESMTP id 5A6G5juR007347;
+	Thu, 6 Nov 2025 16:09:02 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a59vur6gj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 16:09:02 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A6Eddvg027371;
+	Thu, 6 Nov 2025 16:09:01 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4a5vwypfgj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Nov 2025 16:09:01 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A6G8v4h32113122
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Nov 2025 16:08:57 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 59DE220043;
+	Thu,  6 Nov 2025 16:08:57 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65D9820040;
+	Thu,  6 Nov 2025 16:08:56 +0000 (GMT)
+Received: from li-26e6d1cc-3485-11b2-a85c-83dbc1845c5e.ibm.com.com (unknown [9.111.24.158])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Nov 2025 16:08:56 +0000 (GMT)
+From: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+To: Alexander Potapenko <glider@google.com>
+Cc: Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-s390@vger.kernel.org, Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>,
+        Juergen Christ <jchrist@linux.ibm.com>,
+        Ilya Leoshkevich <iii@linux.ibm.com>,
+        Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
+Subject: [PATCH 0/2] s390/fpu: Fix kmsan false-positive report
+Date: Thu,  6 Nov 2025 17:08:44 +0100
+Message-ID: <20251106160845.1334274-2-aleksei.nikiforov@linux.ibm.com>
+X-Mailer: git-send-email 2.43.7
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2de17512-3df3-4ee4-9912-8a8f7ca5b648@redhat.com>
-X-Rspamd-Queue-Id: DA21780010
-X-Stat-Signature: 7exr9ncs1tsj4f8sz1fkz4uxiw3ncycc
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: JOWFrIeWMqn245vgRdby_F5E58YycLMN
+X-Proofpoint-GUID: RJ6XjdSFawZ2LFKDN-n-5Vl7DDYv_MyV
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTAxMDAyMSBTYWx0ZWRfX1ELoPqIfaNGt
+ pAGzcEvZn/IFCkh4ow9Wt7zqiZLP3CvoGPoEwl7ACHl0M5ihGA8+jBbE1F9O5mP34x/ZxB59+Hv
+ wGII6SGUw1pp8AyxgFjzqUgev8DzvHk6HXlnRqqv/1hIJlCAvPxVUG7a18lAgtrV+FZkovdbu8z
+ +Zm9Ywgkn4KJ72fqd0/dT5ypV12/sFlm5OYRbqorr+KF9jh28OJbCRzujL7BanbQi02FAYYTRkT
+ 7qX/geCOAyFBHeYH581bkuHLB7Mq6avMqfhliGyeHLcoPMONQEXOOf/l4YHr6ooOMInFyaekoi6
+ U/Pt3mXlAN8xAmMZXjmIVfgzRE4U5gSD+hlVeXtlX26SOoYRpNclm8/fxTYnTrGyL9DiKdjb7id
+ +yBQJcQIc9/mAcdEnuQphbZQQ9z2sA==
+X-Authority-Analysis: v=2.4 cv=U6qfzOru c=1 sm=1 tr=0 ts=690cc81f cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VIxkIzLlmwRAJRPTlxkA:9
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-06_03,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 adultscore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1011 malwarescore=0 lowpriorityscore=0 suspectscore=0
+ priorityscore=1501 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2510240000
+ definitions=main-2511010021
+X-Rspamd-Queue-Id: 06D81100017
+X-Stat-Signature: 8yguwurx9jdj74ws13tt7w879mfenpi8
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762445197-44916
-X-HE-Meta: U2FsdGVkX18weDNHd1MWdKaA9T6XTwb5DQjnQXC7qSMNE4yYYN4J7wdiH8gHuPznbxYdMrX3snm8kYX1fbrVNhpMtY4H+JuERF2YNKaVrTvTBhT5aiZJbcx6+RBBQAw9ImUab5cVm/biod+qsCzxwOV1u4TUCXHf9egYFdMYIuyLz6WXa7GL/BdPVMtegyYs88hm6QL6l32O1PQ9X7FuiyxaFw1IBwoRxYAu5sMJBLKZfUvJFbZ/iEf17bRFmsTy1UyGXqqy8vyhKr9x+okBN6ryPhTYo1yaI3XGn2MbSpVAKtOIegpBivBwVWohbEP24ctQaai71XZVJTRfDro7eDsbXrPsEM59BxqV8dqL12oiZH+47IeQ5rvCcUJI+6GYO4TI1YZYAivzciflCLguQlQU3hg15jTA1ZbXsF/8Zo8RIes4Ip3uXk3oGC9nWa7KIeAU9MAxp5nzXLOO9gFdscHLg9SXtaLqRPqCgp8iGU7bURfl/TE+GRxJaLjaCVM5mI/z0vlSM2GZyzD4qaTLMBnkLCJycx2nmezhP3aKIVinBmoE/Ov+ZICGyoPcp1J0bgoZM6f1S/9pUt6JnnFIbKkDWp4IfqupHdUsfsB9pTCOLrgzWMmXBbgKgOTtgCEYcybFn8vWQtjD2AcCVzvWuPoFwNKiByxtID5y2qEl3L/e/ievHK1Lf2eIImRklmKTmip7T+Bdnj1IXt/tLD0gHlz2gXgtBTftm1nz5hAJR8vv7D0eE3tt1pFTeR+HtYJOKHx0kXqoB5xArLGyB5ZORZGxZZ1Y5KnSItAiXyYHoH4BnZPTFlVBGjpVbM4kX7h/LCzGpK/h4FTaBMXdgvqzwnWytHiJVN+jRR4DggCO7i8BMO8rWFLu/gbqGetrHEnrcuow6I8ZW6f7iIyEfoHdIRmn2ig+pF84Xetj3dzDxzA7e3RnbiufIs4NtG0yqhjnxH7ttwbtJ1WqzlcGU9X
- ezCJQFKn
- wNRAUg/ZR6XofNP0iCuDCwDHHoBb3/wLOndkNMUIURx5ueI9sRnZDqOCRh3hJifTEBQMH7u9nG7BbgIiQJIcSlC3ELEHPWT5RwAW0+yJMLi6t/57kkz/8KNYIDFiYiz/zM1olZVdaiATOHXlC1PQ561uO6NShmhG7TZvSIjJhYin5smlhFHLvrEg5oc6yX+0wghTHmRqLKMreZjz7HX3j5IUIsTeoAYQuqUKiTHprpelU+OJRLL3pGwYBw5i7xi1/oHKFq1hz1ynSf7wDw88hKt+gBNO+3GHdk3/nNNmzFAhSEbC3KohPrr6EYNTuQAkihLgBQOkWgTkdt1DSiW/zRJfslJwK6ngenrE8sRIqvJuv+LDVARrGkGkvsrD9YsvOdYwJXRGUMODQmA7ksmBJT3KbubThIMoc72XroDCJelmGsFVaIn+Pcw0THXn3tpUh16QKHGs+3jlPvAc5O+ZrZv8pWtKcdfKlhbGnjd7EMW0zoec0209aMaTLSShA5qWh/yxCPJ5BV5OK+bfEacuAwi9QprwGaqYvZYRC30XrXS4Al5k+/60LgsV92P9KeuvWTNvzshASyrpr4OXJlO/7S54aaw==
+X-HE-Tag: 1762445344-427787
+X-HE-Meta: U2FsdGVkX1/eO94uvC3v/XIC0M5v0fOzrHWgJdW8buuZh4pWeFXp1pKXFdmNjatyh3KsnShFG2CV7Y+VEXNDqbLj6YyQcshr6qQGlMjPUKFgXZY0Xvi108VuhgfTHrC6FC+mxHF6qSBfdezc9F7kShSXkBj5IlNqnzJcj+XZhHFSpE7hvfiEXPXoRPrPVn4XryLx6u8sQv0wi4b/QxitSV6PTnkCBVnnsmSQiBgTHzaXR92/Vhinrfehb5y52Hh6uzFPudQleCIm/UPS4nJDCSlJATsUMlKNdkRELY8tWhonjiibIQPClxqjbL9BdEaoYc+xW2trNwNNW9PJ6NsBTmhweSoOhg/7SNScveFJeQMAX5pU9Kv7dX6tqAnl6qv66BVUzxhVAExOcsFBffYBaKvnN71SQkBTWI8uyU1oPQYKjwl6CTMeHE3oUOXVXQ7I2H//mr7/JAj9kJspezjVrm2D+XxR9UGxmvoaGtu72CiuREknMDVlwTsSq5pRrNIEHXll30pSK/OuOOxWCepviMKansFT7w/C8TKm7ZpGglt18rWlG01Ao81XXi3RAgHa+94TpHPzHtGxS8ASjiBxy2r2J/hsoJ4/2jg2P7fqQcpwtIlYQTJJOqTP1dzLZu3WY0EuCDGU758QJPr/6rRXWayMVvrkscaAfx+9I3IVxeiz9D6jzDgvorrPvUaGit+pCMnKeUfpVnd07ZrsJoddxhJMQW9RR5moClr7d7I9h0sLBbVZTMdv4w0ncwCXT9vkb63aegaOYUQsnZZi7YwdLDTOj8YPgB1QijVrs+3sl6MQ0o+CChnvKrM5Sz4LvFM1j+tmknyMHa3i/5SfMIMTqr+UmLiEVwwn7Sc1+lHBX7IMhSYENe4Qeg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,37 +147,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Oct 27, 2025 at 04:43:25PM +0100, David Hildenbrand wrote:
-> On 24.10.25 21:28, Gregory Price wrote:
-> > We presently skip regions with hugepages entirely when trying to do
-> > contiguous page allocation.  Instead, if hugepage migration is enabled,
-> > consider regions with hugepages smaller than the target contiguous
-> > allocation request as valid targets for allocation.
-> > 
-> > isolate_migrate_pages_block() already expects requests with hugepages
-> > to originate from alloc_contig, and hugetlb code also does a migratable
-> > check when isolating in folio_isolate_hugetlb().
-> > 
-> > Suggested-by: David Hildenbrand <david@redhat.com>
-> > Signed-off-by: Gregory Price <gourry@gourry.net>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-> > ---
-> 
-> Nit: trailing "." in subject
-> 
-> Acked-by: David Hildenbrand <david@redhat.com>
->
+A false-positive kmsan report is detected when running ping command.
 
-Hi David,
+An inline assembly instruction 'vstl' can write varied amount of bytes
+depending on value of one of arguments. clang generates kmsan write helper
+call depending on inline assembly constraints. Constraints are evaluated
+compile-time, but value of argument is known only at runtime.
 
-Do you think i should just staple these commits together at this point?
+Due to this, clang cannot generate kmsan write helper call with correct
+size and a kmsan helper is implemented and called to correct this and
+remove false-positive report.
 
-https://lore.kernel.org/linux-mm/20251009161515.422292-1-gourry@gourry.net/
+Aleksei Nikiforov (2):
+  instrumented.h: Add function instrument_write_after
+  s390/fpu: Fix kmsan in fpu_vstl function
 
-If not i'll drop the '.' and just resubmit this with tags and just
-update the commit message on movable_gigantic_pages to reference this
-commit and your notes from there.
+ arch/s390/include/asm/fpu-insn.h |  2 ++
+ include/linux/instrumented.h     | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+)
 
-~Gregory
+-- 
+2.43.7
+
 
