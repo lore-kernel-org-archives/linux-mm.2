@@ -4,239 +4,103 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4C898CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 10:11:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57BFFCCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 10:16:25 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC3A48E000B; Fri,  7 Nov 2025 05:11:11 -0500 (EST)
+	id A58B38E000E; Fri,  7 Nov 2025 05:16:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A9ABA8E0002; Fri,  7 Nov 2025 05:11:11 -0500 (EST)
+	id A30988E0002; Fri,  7 Nov 2025 05:16:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9624B8E000B; Fri,  7 Nov 2025 05:11:11 -0500 (EST)
+	id 96DBE8E000E; Fri,  7 Nov 2025 05:16:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 84A088E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 05:11:11 -0500 (EST)
-Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 1939188AA1
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:11:11 +0000 (UTC)
-X-FDA: 84083393142.24.443C21B
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	by imf25.hostedemail.com (Postfix) with ESMTP id B6B83A000B
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:11:07 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V6WwEu5p;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Zl2tMz4G;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762510267;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 851AF8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 05:16:24 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26D7B1A0432
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:16:24 +0000 (UTC)
+X-FDA: 84083406288.21.300FB3B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 7C5521C000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:16:22 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=awbR0Oez;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762510582; a=rsa-sha256;
+	cv=none;
+	b=l3Ekzta5xp4cRefP3LQCihN3MaboL3f+KJgMGIvGTqRGWEMD8Awv5HGYnFC8xaI0TYGNIr
+	B/kxBxthX5pP/d2B3whrU2ONh2E1M1PlEkLdOhbDUklgiHb0oT+VSib4B7TCiWv2cnEz4J
+	I2DPiAG6dYFFSthONZe+DTjg5i4Jwlg=
+ARC-Authentication-Results: i=1;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=awbR0Oez;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762510582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=a7okJVBoTTmEJbkhGvI+L7mVNF2AIhh/Ht1KOaW3uX4=;
-	b=iDnHW68kMCFEkx9vwMhR7WugIq2PI3QYH2rBBXABLVcCPOTbd4mUoyQta+mKjUjgCeCOQZ
-	DrSfDgEGnOupp4Ixd3GFe/6Etg8qp48dRNJpQnm1nF+11eESb/CueWR9pMbfofx3jgXrp5
-	ltNJFfI55504+qiEK2rMyU5p3k4a4qs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762510267; a=rsa-sha256;
-	cv=pass;
-	b=i2TfvuZRnBJ3dGO7UMuptvxfa+XxaKEZapNhNjO0jkMtVXHu9AeSJJEAAB9nicNk6Tqc9N
-	ecf3Pbmn/3Ku53FJ24pdmLcW7HgG94h7iLt2y8cucU0cSs441FYC+efqenEnzQK1wVDQt7
-	2/qyvrMI1lnnv3fmRbgSMKWB9EnZvJ8=
-ARC-Authentication-Results: i=2;
-	imf25.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=V6WwEu5p;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Zl2tMz4G;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1");
-	spf=pass (imf25.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.177.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A78uVq3008408;
-	Fri, 7 Nov 2025 10:10:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=corp-2025-04-25; bh=a7okJVBoTTmEJbkhGv
-	I+L7mVNF2AIhh/Ht1KOaW3uX4=; b=V6WwEu5payInMsLHM+4MCwj+wiPKLjbyMa
-	47wKeXQC3oTQCXoxu5Zp+eusKIfqbws6wEcEMYgEPQ/OFTN3UqoDiCSwD8HLvyQ8
-	sotiN4847nI/4ixxSU8VWvE/roXrMobLRVpx/i3F3hsKMvjpcEY+7enRSEijRdgq
-	qDorLqNmUmOm6pu7faf1nrRT9J+3nHtp5mWP1xrHt3R0CEYjvGnLR+q7puaTZWuI
-	wVmHCN3oMGICoPJ0pCm0TaJTlPvqSvBoAIbeUZxflzfXbUUeMggEsJOcOqn65wZO
-	SKwHLrG6KH4mk0A4qulDIsco6ZFFv5vD1vkcvt0u3JgXaiSSSdOw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4a8yprhhw0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 07 Nov 2025 10:10:58 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5A77wLVp039448;
-	Fri, 7 Nov 2025 10:10:57 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011063.outbound.protection.outlook.com [52.101.52.63])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a58ndanq3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 07 Nov 2025 10:10:57 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AaI3SK0LTflC06MvTnneF48TnQhdBvEF5J7G30XAS5vw5kbHlOZHlHmI4f7Qiw+w9nIJH9pnRhUXisFOaP4GFHPpKv90OCWXzZcyKnKHC8UTiioTQbSTew/1Y2AaxTgJXnTwbQQmoMKah1SJU3DeBOYfNN+fbQspVv9v2wxfhWKjIbwXkPNQhBqJdukOFjJBknooF3bxpBLASzDV2iEoCJZP4p9aHMGtsjfOqqSfKAXw0UZZFH9b5JQa0OUUtAQARN4NT2cF02CYIh1SytgmbKk3qHQqm7Xn/Do8m9bpPFnVSpfK/JcbQ3ZgkABsfPqQij2xYfuy8qTqrv3wmpDBXg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=a7okJVBoTTmEJbkhGvI+L7mVNF2AIhh/Ht1KOaW3uX4=;
- b=eu/SmnD41YJRv7YtKQCxjhkipFRcEfTJhJoNGaY9ZD6jgekmnkdgplHTwhfyL186WEao8+f4r1q+GgffnzFiqkLPhjyQGl9v6o4kMmRLKl7lWaQ9HxC7rqxw8ZFIplnL+8YPMpl5Rzy4bNkAaUfLqpZkhETRDgNhRtGE0p2Ivk9Nl8AkFn4lEZTK3kRVpzNlGuOoky+qnta3poRnerY9uZJaU7mixnR2aVswvNDH67ZrfaZIiRneBTKm6HPRY7sTU5MqW7NybPnlBszj8WYb+xNarU81NCbbcy5yOXKx1BblhAOMMMAraLi4gXnwyqAcyJq775MGfeDrrwboe2kadQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=a7okJVBoTTmEJbkhGvI+L7mVNF2AIhh/Ht1KOaW3uX4=;
- b=Zl2tMz4G0vlTq2FiwLxrqyB4YhNQfdwyYTGRVhBrmPF89EXCPBsC3Iy8Tb68jtbwTI3xCUwKWZvklNCETNyFJxD2IOpFZzc+qfvX+a47tO8cgiLGCm0tr/VVBE8Y+xnbfiGpOubd92Ck5jRheCJYHrm90MmY6gdvkIKx7pbw4JY=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SA1PR10MB6296.namprd10.prod.outlook.com (2603:10b6:806:253::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.7; Fri, 7 Nov
- 2025 10:10:54 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
- 10:10:54 +0000
-Date: Fri, 7 Nov 2025 10:10:51 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Cc: "Garg, Shivank" <shivankg@amd.com>,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Nico Pache <npache@redhat.com>, Dev Jain <dev.jain@arm.com>,
-        Barry Song <baohua@kernel.org>, Lance Yang <lance.yang@linux.dev>,
-        Vlastimil Babka <vbabka@suse.cz>, Jann Horn <jannh@google.com>,
-        zokeefe@google.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: madvise(MADV_COLLAPSE) fails with EINVAL on dirty file-backed
- text pages
-Message-ID: <671d07a0-0041-4825-9e6e-978907cb4d29@lucifer.local>
-References: <4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com>
- <8bc796e2-f652-4c12-a347-7b778ae7f899@arm.com>
- <ozkb6mcxuymlz7tm4vcnqf266gd4ruiik2zal2koo5ffprgxfk@35godtyix2cf>
- <43a8c8a6-388b-4c73-9a62-ee57dfb9ba5a@lucifer.local>
- <77a54f63-f5da-42a2-b24d-5c8a0f41d1e6@gmail.com>
- <0b84865c-5b23-4be6-9902-af9d5e63c182@amd.com>
- <0e616478-96d4-41e9-b6c1-fa641c36fba3@gmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0e616478-96d4-41e9-b6c1-fa641c36fba3@gmail.com>
-X-ClientProxiedBy: LO4P123CA0212.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:1a5::19) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=AbyGOOp/aOkwmVqaiVboc5hvBKX6aWPHOeCGUl6BpQ4=;
+	b=VLcNfv7acqZGOmg8YKr3MpM4X3sa1AEdY8OLSmpheRi3X4Yw2JOXsDeheuIwFzmtReKBmf
+	u0wTNhMy6nQW+mmauAe7SfKmMEDf9p5cnoo1aqvcR2ildBZDzj2ipWw3AbhIBChXyo1gBj
+	QdtVb0YQLlFhQD2hht7dZe50zXV9jA0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 71C1A618FB;
+	Fri,  7 Nov 2025 10:16:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C642AC4AF09;
+	Fri,  7 Nov 2025 10:16:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762510581;
+	bh=tGg0Ew6wJCOFUYAwLzpnT5v9JKs4CE3fRgVoMFp1YAU=;
+	h=Date:Subject:To:References:From:In-Reply-To:From;
+	b=awbR0Oez26r8jCfmHn4FdEWH6w5alT6ZcidVw9+wKGgkjS/oXmq9H8WFVMcl5uWLq
+	 fpUgnbeYUkmsLMLnNQWkY24KLAGYy7VTJZiEUP5aZ8w6CTLtTlQvUsy0lrw9ZVKX25
+	 R+YU/kv7US9T8NZFJWKKqMctJFHaBngBtn/2q4OsSGlO82/TmGHS8Vxzlt6LLDOAsW
+	 95dKR4t7tSq3DAyzziGGMUbyVzinAqrIuOQ0mYWKJAd9y8ARhO6M1JAx6kNJkPDr1B
+	 rzeVSQ+fEmfatInpC5p6r9FJ4Iz+b/3GRT71TAz7Pa5qbMHIbt0UoOQCtjw/fC4e6E
+	 SjK1Lnju3RV5w==
+Message-ID: <29da6069-1d41-4b15-be95-5c1889a37aa0@kernel.org>
+Date: Fri, 7 Nov 2025 11:16:14 +0100
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SA1PR10MB6296:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94fa66c0-9109-4abe-b670-08de1de5efac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?eupGBJYcAZbS/niuEB/rvOhTXMKNKYUNpqRh0/nqe6yJaUpG6y8ou+qH+Eul?=
- =?us-ascii?Q?nyCp5FlfAp32MVeL5//rlwCXGjRGWAjrwmBWWRsxueGNvEgr6QCAkv9RAXtO?=
- =?us-ascii?Q?6SiW56pJmoEj4vN553BkZ5dE1wvqGbtR5LiZomw2m9TDvNfCG1BJKBnXuRYt?=
- =?us-ascii?Q?9rgpee8Injaye3GY40QNSwRKe84vq4uxsU04MxJUVHJBT8AadR8VpX/d14Tm?=
- =?us-ascii?Q?WEsqzcDER3Tn2VFC74EWbeG8Wg+R29UQyyxVfHERYIa9hxNXLS+ZlXXiH6b7?=
- =?us-ascii?Q?druIXhuvPGZt06ZhxeHLnkr9QTbR6m4D50NTTylL6nje5VKhyg4z0d8ctjtk?=
- =?us-ascii?Q?NdpnUZ4GPmgQPf2MQ8+AeAXNIPpiI587sd6VP8z/Ihl3JQQgLgMLoS8buakp?=
- =?us-ascii?Q?htEOU8UMwhG8vGPq8YJPGSd46KV0+sBkdm1wo3vf4sSMcMs5A+MMaKRkS1jf?=
- =?us-ascii?Q?03ukR4s185pa1G10T96V4Xp3MSrZXviSbYAUXDPrVKSh+YpXbSNybVDZBFt9?=
- =?us-ascii?Q?/KhPQW7qBlR/EzxPYy6MFkIj8aJcBQbBLtXVGAH4ZOmKFR5I2kyWEceaUAVg?=
- =?us-ascii?Q?+EK6irpDWG5oCPI9Zx/SZCvx4uLT2tT067FOlwcUdWwfv6v7zVxT2AR8RRoG?=
- =?us-ascii?Q?jqjvqwsIntQrA7GOW7/s+gSjuw0PQdtiMJF4X0LJIxCsnwbO9Q8ayQalL6yX?=
- =?us-ascii?Q?OYBUKmcQnVkwAP0B75hAXIJG3R6OevsTqG4xdxt76euYr3VawZQrJpvq8Tne?=
- =?us-ascii?Q?F7OuERURO8B6Hj5ytZHsAW7ePiVNrYRZ/PoK+COkNX2FvmML4DhrBZqMb0Ri?=
- =?us-ascii?Q?4+4O5K6n2DQqG9FgEFSOHy8HHQW6OLrmdvMssAAdGTMCaizLsrmwdPmNTjya?=
- =?us-ascii?Q?FgO1MZBsu5V5+HPTRHJ3hXsBkerJrH8G1SYcqqZFWaoNst9Sxi6C2CjeTk+2?=
- =?us-ascii?Q?pSUysNLKceEQOYkzZv5as6NdRf21M5X5kgjPpZUkjlR5duXEk1cYKzbm868/?=
- =?us-ascii?Q?KjiqGKD+N9gGM3XONT8vWdDCuATG+szU6y0gASQdYsus7pbSjBCxyS+XPCNO?=
- =?us-ascii?Q?7tGrVP/Z8BdlnOHYyd/lGYcxNGKE11sqQ468vFDY4NOx/HYDCABKXDbOzO8B?=
- =?us-ascii?Q?N7+LsUa7bZoyMBseRNNgOgSw1AuIe13GGAiEyUzYDkh39Ti5ho62v6tuN3lN?=
- =?us-ascii?Q?+1oKAA2ij0sQFNnbGgHZiLrynSsrS/xB/EebvFBO2dbl3+nWHiqMkYiLWvxB?=
- =?us-ascii?Q?ce11oax2nkOFoSuiEZ5xFJhURHbjRMg8jTpZThqvQDy+87xMJ+UIf3JMWyzF?=
- =?us-ascii?Q?mEH2Cq0IQrcBmxqQvIpSTUvzVyk7NY4nk+8Ls/ScAhufpm1urMqjhRdWymre?=
- =?us-ascii?Q?s6j/0f+30YosRMrsAAGUbjStfKlSHDPhbdee169ijdhJx9p/R4iAUnQYSyyf?=
- =?us-ascii?Q?iUahALMY+R/AtEWR6P1SizIt6++1vxC6?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?U83vji2pWUnZ/0TXTIIl3xti4+7mmHvdKnGn+aHMVR5bGXCMlD02z3AnqUmX?=
- =?us-ascii?Q?wDmNZFV+wWQ3X6TtcVDWXNOatT5wVfsJqsyk4Lv+UJqcbSeH0sliVpgKcXch?=
- =?us-ascii?Q?RjnF38sOT6NW4tMbQY1Z3pyDO7SxIiv8OQvxz7wvvIgmJxUwHfc05rWb9+t8?=
- =?us-ascii?Q?mCUyPXJn+z8GYW0cA4Vn9Zs1Nm9uiGJedanmhnrUf/UpjNckm95L3qhZRgd9?=
- =?us-ascii?Q?vdxNInFi7UHp26pmNXbsafCRPjZM22DQfwiID8OVB08TYmZ9FdoS5CFG3mO7?=
- =?us-ascii?Q?XDrhKvQ9pfLWecekLpx3H/4wW6MjU+njsY6ENW+B6EumvevFyhenDnHqMndo?=
- =?us-ascii?Q?MiNIwhkmxMrNs5FhIH0T7hMbD2d8eIhHsZU3zXXAffaSdeG7i/HOa6aZDov7?=
- =?us-ascii?Q?DkvK0K/6Opidomzp6JKwPFX+FVttmyQ3/SgNXMgsod+gpV3rud0vdiyw641u?=
- =?us-ascii?Q?uEMXKmduUCyQhWGKzehj/9j1BiDbPT9YOucEb9jRLuE8D97o40GuIyFxAsYk?=
- =?us-ascii?Q?718gYDDeIPeLKrjS2UhWKAE2vmfVHtKhswfYb2w76//lPV5IAHlnZKhesk0v?=
- =?us-ascii?Q?FD8IRlxyiMcfKdEpijOJ2IKdPpgvVgghMJRMpSoJzwkCN49si+eNNYOSam0m?=
- =?us-ascii?Q?t6ikTa+aTaCpIHCIIUXlOiK8td1BRd3/uHbyd0OoSDC6kmqfp4fVXMTrBcYh?=
- =?us-ascii?Q?53VAevGbLAd62fTpy0kSktgwPWXinse8wJhWbkwShY5h9P2R2TMzGmku5j2Q?=
- =?us-ascii?Q?tZflYEWFSymh/89VmUL1BOUhTmK40YQipzh7HuyZerW1pPA0yFwv856h9yJb?=
- =?us-ascii?Q?NBhrz11E+1c2ZFHwkTuqSxVDt8ISb/S8KHxYf4zZWB1Lq3dFLFYpPX1+e86F?=
- =?us-ascii?Q?QpiqH9eRByDoa4GwwHMPdMUVkbzGvuuzLLAKMwnmlNwtSOK9kdqu+Cp+eG4E?=
- =?us-ascii?Q?y61rQzaOVth1TWROYJByiihHsNSaZS1ifatpbU+QfyA6yuKhti5A5ouIhOTM?=
- =?us-ascii?Q?21hgdztBeUmQyP4BTXzwJCE/bu4X7TZNc6uN2oW3tUn0VvfooJpgCFwCm34X?=
- =?us-ascii?Q?odmsuGFw9T+g+AXFgUmZGO+YVzEa5VXF7xUkLiNeKurY0JtC0l2+EwPrauvw?=
- =?us-ascii?Q?1n/ixxOezUzDpNvHaYXn3qRZmQTNmrECr8e3/m7zhpE9OtlkzqgBIIokFdwA?=
- =?us-ascii?Q?3bkljA/V38wpwm5a4fWOyLIMS1XKFWLgHtueAFGNHmr6aOzUm5yEesaMXxoJ?=
- =?us-ascii?Q?Em5KFav/gAhObNPtIWWvjFLlkhC/R62z9NL+2T0enFmlo+aWOsivEy8IiNde?=
- =?us-ascii?Q?lZPrlNRJ5P3Yjg4MYr6xyK+IfS7WLxnvfnl17OYQHuhr9Iu2aukgLEruFjM9?=
- =?us-ascii?Q?X3fY4uDt+rl/8pNmFxDy0MUwdZqRRlDCMUGzaHhJtHfvnf4LeNId1Lkjv5a6?=
- =?us-ascii?Q?fNutly/kYWcPa8sRjvbuJ3+tMI4SFFncF7g9Nq4rZV5WRA1Zwk2Ggq1pTwLC?=
- =?us-ascii?Q?cptfIYfoPA3v29vES+wxqKgrLLCKudZE7qQjeehCLQ79H7cGUBVA+LJXwYD3?=
- =?us-ascii?Q?u+8QZLq53IlMHf3HpRvHkH2L55uwWLMQ4flnmj0Hb0mtC6NS/mlWbSP96VLr?=
- =?us-ascii?Q?3w=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	rmzdU7WkH+MSm0k8afpt+g+TFtLCA3L7DSp2BfUUpcHwmSP+AFF0lOO2gChJvpFvEjuu5nRZ1YSfQSuh28AFI0YCXkvGgVNsfLOmqfQBkhYm9h7UspbxlPolvWlCXV286Om/FmBcuzL+035cPS7AQ6eNWLLe8JL847jIeiXfTQtAYjgxXqkC8nmwHHR32KwSPAE7v1XGiqhOOsaVRUZ6YduPSPvPAD4O27n0lSuytSNCQLAq7ccGTsQ98M1FXwt1pdMhEP0MYuQH0zBFAGZdGVk8pJ8LzEO9FOqCipqAW/wqJdp9+EkLhCObCgbZStguhI+fCEUVXNQba3Rf8vQBiVoDkIk3IcOEJQnC51OWqmT9wFuSi+JYxVMnkJ8cjg5XYggOg+ig4c5HzqXD3YhqDt0EwIROwYy1Wior1AufOdyWECxrHGGE2l22BThXByyGrhoOauwFwwmC4LOajlzehqQS2cKbiv678okT62+vlhnHGQ7a/knrMOP0mk0siSOD9zdWrlKi3OakBcrCjD3zi0lQ2ra5F08pUtVOIC0aicVZfIKh5wOd6v1rA6r7YOsanstdhc/JxeF2Y8fPs61eJF2y8mlbLypPlTMXh4FgwDQ=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94fa66c0-9109-4abe-b670-08de1de5efac
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 10:10:53.9530
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WTS55fTka49/Xb5Cw7QUJLdtDejQXutWVb1SQWAMgpyALhg5cQO06oWGfkzP+Pm+R4R+qgsLE0AtlWauMXe1pIESUsln6brssRCbDPbkGUQ=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR10MB6296
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-07_02,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=740 malwarescore=0 spamscore=0 adultscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511070081
-X-Authority-Analysis: v=2.4 cv=fe+gCkQF c=1 sm=1 tr=0 ts=690dc5b2 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=kj9zAlcOel0A:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=20KFwNOVAAAA:8 a=DMEIo-l9ndPevZZYed0A:9 a=CjuIK1q_8ugA:10
- a=cPQSjfK2_nFv0Q5t_7PE:22
-X-Proofpoint-ORIG-GUID: DlXDqDDckZ4Q6qSVKgB4MCAbK3RliAfw
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA2MDEzNCBTYWx0ZWRfX8+zu9dpbxfTd
- kIbI91er99qzjeCWX42mNvYp+7tVOUN8TTKEU2NmmrZpKNL+zrQXE/hwDlJjvXmIh5/sIHoI95G
- t9oo12Bz27fSr7dG/9kcmd72AaZhm4DNvaqsH2gijraIUHqeDFwqPq6JHRZVXKy9ntYtxAPReLk
- x2IJmPB+84ljCp7R4H9acHhgG3ihXDp6e3D4xwowoFh3kcJAQyxDloxJ7AEM5O8+dFfo3NEl2Hb
- hz4m9jEvO6yaXbVBD+g0epex6sLD3J0SuvWemRXBRDtzmognGBWDZERFAHvGgeoQhSkOe1lheig
- xXXyOVpQUnMkSHvarvLBfDHh+gQ1Gmg2pxTUFh5JdTmqjT9UeuyXyRQQTrEd+W0BlWptj2AxOT/
- fePOtj27wy0rRA/lDHGsD6XPV5d6RQ==
-X-Proofpoint-GUID: DlXDqDDckZ4Q6qSVKgB4MCAbK3RliAfw
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/4] mm/userfaultfd: modulize memory types
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Peter Xu
+ <peterx@redhat.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+ Mike Rapoport <rppt@kernel.org>, Muchun Song <muchun.song@linux.dev>,
+ Nikita Kalyazin <kalyazin@amazon.com>, Vlastimil Babka <vbabka@suse.cz>,
+ Axel Rasmussen <axelrasmussen@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ James Houghton <jthoughton@google.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Hugh Dickins
+ <hughd@google.com>, Michal Hocko <mhocko@suse.com>,
+ Ujwal Kundur <ujwal.kundur@gmail.com>, Oscar Salvador <osalvador@suse.de>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Andrea Arcangeli <aarcange@redhat.com>
+References: <20251014231501.2301398-1-peterx@redhat.com>
+ <78424672-065c-47fc-ba76-c5a866dcdc98@redhat.com> <aPZDVuscFsYSlQjI@x1.local>
+ <dtepn7obw5syd47uhyxavytodp7ws2pzr2yuchda32wcwn4bj4@wazn24gijumu>
+ <aPe0oWR9-Oj58Asz@x1.local>
+ <nnxhd7zxjza6m4w4lr5qyev2krbkp4yfcgcwq6nkaqrqt6bzpb@iklep2xxp5gv>
+ <78de3d64-ecbf-4a3d-9610-791c6241497b@redhat.com>
+ <boylgf5thjyblsvjlumxrwg5qfl43e4revh5i7yyh2yiddhgah@gtht57bgkuzn>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <boylgf5thjyblsvjlumxrwg5qfl43e4revh5i7yyh2yiddhgah@gtht57bgkuzn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B6B83A000B
-X-Stat-Signature: qbqufbat93e5mkq34ms6e9tfot6c5h44
-X-HE-Tag: 1762510267-885249
-X-HE-Meta: U2FsdGVkX19DsTPbrFtbHArNu9vSs9wyZmm5vnIhoBaZwPx067AhQPnvoSNCn2FE3dWIaC3n2MW5qfigT5g/I2JB7C2Tl70bs2OfKt7HxwNWflj4vQfIkk+ezd3zlGEB0AfbTZYR7wF5UoxcLjiBvi95qPimirPMfWse54qyQ1baeFuzMY786AStEFPMT+GcvBl354rxepZxW1uZvolMm+2JzAm4xWWuy9ewCqne99IB0TnC9kahF7QL1ggDVUyi3WDT1nynuNywoJO9GCvIN3uUux0HxWXGtGdHIAzYnaP9YmTlEZg15cpzUjkjYLZi4sM3gCtjobaEPGRhgWnNOTsigYAfY5ok+OJ216/UzWPa4ZeApcT5+6OzAuKljjt8yUncoyKie3VWpP1qnnzAkjeSsiWrGMF3zT3UP+loRd2UZwmI8NqSTxZOc9tZ2YIPWYuKazjhpriHJCU9Lm+AVBJGs4KXuaBN1IfNecZVfPXPmIJhnBm8N21HaeTmNMQSISCA7yDKc+9zr9ue2XnNXwZcAC+AsS8YsplaEUi1KUY/Q3ncF+w2kyOT88tmKbpiTnz1raiMwh2VKeDvW5D86Q+TYisD4wtYAtRXHG5KTWVak8KDhGfrnHLdQbbwsa2i0SAbdatoKysjLaZio4qeFl5pJ7qUu33jhtx3YotCWUXvc97/PiQVDeup5Q7wdms7JXgx9TixsK+1KYEN0BXVauZzVVbhA5AzMFAGcH9n8fS1OeuN8rp+TGP2iDdmIdii8rWbZ4SSH1ELcVcsGS8P21rXsenv6WtBNgd7UDHofM5bCjAy97h/WdFKTwp+5Sfy8MtBJ4eOXXOjbjenryrX0M79wCdnGSL7kXrc+xF9zq7qaSbKSy9AfSsoOWC1TTpUIRGzBk5yJ4lach9z3rACxHG5WFYW81Gbr+AwQW0owBREpf2U8H1Jd0DVgV2TjBHbpl/wv7LgtbTbHPBm/HH
- iS4/HNW6
- k7zR4y4ew3XaKJtTkT8OvKJBfFZHGtFTWvxJ6gtKOWo62IpM9p6zNbR/MnkoHfzTcj7x+9R/tjcrWBrH7uk0BYkkazSCX2A4qEVTH63JpPxyLfcI5YMT3pI8bipKc77xyRdxMdKlqrZ73xxuLBXZUVEb65CV6RZjbnUbLzTQznFYAwAAdK0AY/jBz7PnkU47atNkPP+C1FFWFKMMvjiw9eODYS6WBBXxghopOAMAvJN4P2Uo7Iw4S88N9uFzdnjNyQ4urtqDNkx8xR8N92nD3vUw2k/m//b/l9Ke+OTZcKvCWArt005nNlm7aaXPPeXSdiIahas5uC0cbQ53TluAjqkh5kAFQFQlqIfYsOFXRpP6n11CzCjrRtSpL9lymPUns+EsgCHYfzCbH9LvjSwgsM2XK5xJ04h9SxjWImmjxX/FMB9K/ZpIeVclz0pegEPAlPA+zAyuuVVAz9iPtXAKIeYQQf7hJugrPbGcbDYDV22/sB7XuhvvT9pAcuEcyJHSVAatO5XETotAw4ODqpqz8PFIugAVEXPSFpRsRtTOL+i+6CokL1dvWjMNqObcnrdXFbE3Fl6ZGrk8IT4M9Yi7TRx++BtCWnOGRhcDib9HoHEfr2uyB27Y+cdBdHWbSymega4040oOsKPe7bnu7cqWCAMYwDkGp+nWyWAtH
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 7C5521C000A
+X-Stat-Signature: 74hjcy9nfqz81hs6of9gb4gurgxqc5ao
+X-HE-Tag: 1762510582-838275
+X-HE-Meta: U2FsdGVkX18TSGO6zHiBmVgVzRnrwoBmA2ZQ7tyZGkBVQU1ndvRBHbERZDb1KTm5XneNlarCIyozB9NduHcpgaB1ldpjNx3qRx1kt3Pkq9gQb2h91OWpb/rV59pQdoJ7iJ+QQYTRgU+qXqNs3HNW0qhSGxRarZPjy3Cv1IoDsXF+s940BEd6bADllJkTUURreF1i7pj9djwuzYbGTtk5iAI8WFt0ubP+osKzoxbZZsItCJhQEazfFaS/FBCUxuvHKdjpZlSLTnpa6mq6mQRPspS/DT6QefVgqy5YEgeqtI/epyQ4/C0/RfIuqraDtrXmEkStNaPdVykOw0GZZ6pS3ScRa9b6pSHecqRMVIKYgyMkVYRyFzt3Inb1QEjRtD/lXxK7tVwaM4qsGSoBaVNgCFrsTJpDo7ZCfIvsAlNT+UMIdo9LF45AfcKthrJAZpF5iohNXgdw84haTEilwPjSV8GNIgpxzJEq0YMtb+5/TzYxltuLNBHO2fMtUI74Pr8nbtOxC2DCGnaQyxmrCNzMTPZZXNlV2ScHHwD9bhCVlP/OnV2bWq3DhqCmm/ViJQTNAjJ0BcXb6dayK/yBSZ9INPdHfuKfdjkB1TmhgKl+S/8z9jh7VLXwew/owchVgRRKUWWOuWvkba93690XmVfDtuc8iZVWLmJOt2pYkMFOVfuxhitrQ/l4G+/cIIbleoH0bdUD5pKV8FdWWPUoWfEd4NrEbfZ1ScPRlj4fTBia0p2H3box8lQwhSFCXvRk+RsLa69uYNkM9lIux/TWhl+l7xg15fBEdg3MRXePUA6qjzNtNXOsHgaLgj5A87EHBezF0OmWR7GBLNOXwEmNdYAlREhxvUl0UMeXbM4NysLB9jsW97V4qIYs1AedZmXzl+gf6Nkvl7dUFoD1636EMNx8WchZdJCs+K6+79owS6CjiwrtgHXbNoYnTFueNJzqGRaHIsERnrKq8YRv1RUJJ+y
+ ctNLB0zr
+ cGuLCtmerCNu5ULOkyzzm2+c+QedTQ6btbx422orNWi13PE0lUY/thNSYxJ70pou+x1Hr+nnA6CH+uyVYbToRnwDgcCYvDH1EBfVN3z3JSOfU5XfjjZYQkdNxjafaYa5Bu483d8uSMik/pItBybWo6jrTQxQuaC4CvA8dPnwHEpP91WTHpKmIhCyK91yHVd6bMKzeYlN5LQSjuO6fs7TCw6MRKyXAjaHXRH75hy6bQmBL5X4UFKu7ctgh29ahAdw4nWUDXrA5U8gO2aeFEuW8614I+gp9UwMDlBwArhMExCz4lf5qopiRBOAJX/SM+8SmXAVj18BrsSn9U1Dvj/OWkIV4A7BUyT+J8KJ1
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -245,38 +109,265 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 10:12:02AM +0100, David Hildenbrand (Red Hat) wrote:
->
-> >
-> > 5. Yes, I'm calling madvise(MADV_COLLAPSE) on the text portion of the executable, using the address
-> >     range obtained from /proc/self/maps. IIUC, this should benefit applications by reducing ITLB pressure.
-> >
-> > I agree with the suggestions to either Return EAGAIN instead of EINVAL or At minimum, document the
-> > EINVAL return for dirty pages. I'm happy to work on a patch.
->
-> Of course, we could detect that we are in MADV_COLLAPSE and simply writeback ourselves. After all,
-> user space asked for a collapse, and it's not khugepaged that will simple revisit it later.
->
-> I did something similar in
->
-> commit ab73b29efd36f8916c6cc9954e912c4723c9a1b0
-> Author: David Hildenbrand <david@redhat.com>
-> Date:   Fri May 16 14:39:46 2025 +0200
->
->     s390/uv: Improve splitting of large folios that cannot be split while dirty
->     Currently, starting a PV VM on an iomap-based filesystem with large
->     folio support, such as XFS, will not work. We'll be stuck in
->     unpack_one()->gmap_make_secure(), because we can't seem to make progress
->     splitting the large folio.
->
-> Where I effectively use filemap_write_and_wait_range().
->
-> It could be used early to writeback the whole range to collapse once, possibly.
+[wondering how my mail client decides to use random mail aliases at this 
+point. The kernel.org change seems to confuse something :) ]
 
-I agree, let's just do a sync flush unconditionally and fix this that way.
+>>
+>>>
+>>> uffd_flag_t has been removed.  This was turning into a middleware and
+>>> it is not necessary.  Neither is supported_ioctls.
+>>
+>> I assume you mean the entries that were proposed in Peters series, not
+>> something that is upstream.
+> 
+> No.  This is upstream today. 
 
-This is simpler than I thought, the key bit of information is that we have
-freshly written the executable so it sits in the page cache but dirty.
+Ah, you mean *uffd_flags_t*. I was confused there for a second when 
+grepping the codebase.
 
-Thanks, Lorenzo
+Yeah, not sad to see that go ;)
+
+> uffd_flags_t is used for two purposes
+> today: 1. deciding which operation to call and 2. pass through if the
+> request includes wp.  In fact, some of the callers just create and send
+> the flag only within the mm/userfaultfd.c code because wp doesn't make
+> sense.  Once dispatched to the operation code, the flag is only ever
+> used to check for wp.
+> 
+> If the code was structured to use the call path to know what underlying
+> operation, then the flag can be reduced to a boolean - which is what I
+> ended up doing.
+> 
+
+[...]
+
+>>
+>> After calling err = info->op(info);
+>>
+>> Couldn't that callback just deal with the -ENOENT case?
+>>
+>> So in case of increment/failed_do_unlock, maybe we could find a way to just
+>> let the ->copy etc communicate/perform that directly.
+> 
+> The failure case is only detected after getting a folio, but will need
+> to 'retry' (copy is the only one that does a retry).  Retry gets the
+> destination vma, where the vm_ops comes from.  This is why you need to
+> return to the loop.  So it's not that simple to moving it into the
+> function.
+
+
+In mfill_copy_loop() we have
+
+		err = info->op(info);
+		cond_resched();
+		if (unlikely(err == -ENOENT)) {
+			err = info->uffd_ops->failed_do_unlock(info);
+			if (unlikely(err))
+				return err; /* Unlocked already */
+
+			return -ENOENT;
+		} else {
+			VM_WARN_ON_ONCE(info->foliop);
+		}
+
+		if (!err) {
+			uffd_info_inc(info);
+			if (fatal_signal_pending(current))
+				err = -EINTR;
+		}
+
+
+Just to be clear, I was thinking about moving the failed_do_unlock() 
+handling on -ENOENT into the info->op(). And the inc as well. 
+(different) Return values could indicate what we have or don't have to do.
+
+> 
+> In upstream today, the return -ENOENT can only happen for copy (in fact
+> others mask it out..), but every operation checks for -ENOENT since they
+> are all using the same code block.
+> 
+> All of this code is more complicated because we have to find the vma
+> before we know what variation of the operation we need.  Annoyingly,
+> this is decided per-mfill_size even though the vma doesn't change,
+> currently in  mfill_atomic_pte().
+> 
+> I think we could find a way to do what you are suggesting, and I think
+> it's easier and less risky if the logical operations are not being
+> dispatched based on uffd_flag_t.
+
+Yeah :)
+
+> 
+>>
+>>>           .page_shift             =       uffd_page_shift,
+>>
+>> Fortunately, this is not required. The only user in move_present_ptes()
+>> moves *real* PTEs, and nothing else (no hugetlb PTEs that are PMDs etc. in
+>> disguise).
+> 
+> The hugetlb code had a different value, so I did extract it when I
+> Iunited mfill_atomic() and mfill_atomic_hugetlb().  I am sure there are
+> other changes that could be removed as well, but to logically follow the
+> changes through each step it seemed easier to extract everything that
+> was different into its own function pointer.
+
+
+Let me elaborate to see if I am missing something.
+
+page_shift() is only invoked from move_present_ptes().
+
+move_present_ptes() works on individual PAGE_SIZE PTEs.
+
+hugetlb does not support UFFDIO_MOVE, see how validate_move_areas() 
+rejects VM_HUGETLB.
+
+Also, move_present_ptes() wouldn't ever do anything on large folios, see 
+move_present_ptes() where we have a
+
+if (folio_test_large(src_folio) ||
+     ...
+	err = -EBUSY;
+	goto out;
+}
+
+So I think the page_shift() callback can simply be dropped?
+
+> 
+>>
+>>>           .complete_register      =       uffd_complete_register,
+>>> };
+>>>
+>>
+>> So, the design is to callback into the memory-type handler, which will then
+>> use exported uffd functionality to get the job done.
+>>
+>> This nicely abstracts hugetlb handling, but could mean that any code
+>> implementing this interface has to built up on exported uffd functionality
+>> (not judging, just saying).
+>>
+>> As we're using the callbacks as an indication whether features are
+>> supported, we cannot easily leave them unset to fallback to the default
+>> handling.
+>>
+>> Of course, we could use some placeholder, magic UFFD_DEFAULT_HANDLER keyword
+>> to just use the uffd_* stuff without exporting them.
+>>
+>> So NULL would mean "not supported" and "UFFD_DEFAULT_HANDLER" would mean "no
+>> special handling needed".
+>>
+>> Not sure how often that would be the case, though. For shmem it would
+>> probably only be the poison callback, for others, I am not sure.
+> 
+> There are certainly a lot of this we would not want to export.  My
+> initial thought was to create two function pointers: one for operations
+> that can be replaced, and one for basic functions that always have a
+> default.  We could do this with two function pointers, either tiered or
+> at the same level.
+> 
+> Most of this is to do with hugetlb having its own code branch into its
+> own loop.  We could even create an op that is returned that only lives
+> in mm/userfaultfd.c and has two variants: hugetlb and not_hugetlb.  This
+> would indeed need the hugetlb.h again, but I'm pretty sure that removing
+> the header is 'too big of a change' anyways.
+
+Yes, I think leaving hugetlb be the only special thing around would be a 
+sensible thing to do. But I would expect shmem+anon etc. to be 
+completely modularizable (is that a word?).
+
+Having a high-level API draft of that could be very valuable.
+
+> 
+> 
+>>
+>>> Where guest-memfd needs to write the one function:
+>>> guest_memfd_pte_continue(), from what I understand.
+>>
+>> It would be interesting to see how that one would look like.
+>>
+>> I'd assume fairly similar to shmem_mfill_atomic_pte_continue()?
+>>
+>> Interesting question would be, how to avoid the code duplication there.
+> 
+> Yes, this is where I was going here.  I was going to try and finish this
+> off by creating that one function.  That, and reducing the vm_ops to a
+> more sensible size (as mentioned above).
+> 
+> shmem_mfill_atomic_pte_continue() could be cut up into function segments
+> to avoid the duplication.  Or we could make a wrapper that accepts a
+> function pointer.. there are certainly ways we can mitigate duplication.
+> 
+
+Seeing a prototype of that would be nice.
+
+> Really, what is happening here is that the code was written to try and
+> use common code.  Then hugetlb came in and duplicated everything
+> anyways, so we lost what we were gaining by creating a
+> dispatcher/middleware in the end.  Then handling errors complicated it
+> further.
+> 
+> The code has also bee __alway_inline'ed, so the assembly duplicates the
+> code anyways.  It's really an attempt to avoid updating multiple
+> functions when issues arise.  But now we have error checks that don't
+> need to happen and they are running in a loop... also hugetlb has its
+> own loop.  And returning -ENOENT has a special meaning so we have to be
+> careful of that too.
+> 
+> I don't think the compliers are smart enough to know that the retry
+> loop can be removed for 3/4 cases, so the assembly is probably
+> sub-optimal.
+> 
+>>
+>> (as a side note, I wonder if we would want to call most of these uffd helper
+>> uffd_*)
+> 
+> Yeah, sure.  Does it matter for static inlines?  Naming is hard and I
+> think shmem_mfill_atomic_pte_continue() is a dumb name as well.. it's
+> too short really :)
+
+I think it just makes it clearer that this is some common uffd 
+functionality we are using. Tells you immediately when reading the code 
+what's common and what's hand-crafted.
+
+Agreed that the names are ... suboptimal.
+
+> 
+>>
+>>
+>> I'll have to think about some of this some more. In particular, alternatives
+>> to at least get all the shmem logic cleanly out of there and maybe only have
+>> a handful callback into hugetlb.
+>>
+>> IOW, not completely make everything fit the "odd case" and rather focus on
+>> the "normal cases" when designing this vm_ops interface here.
+>>
+>> Not sure if that makes sense, just wanted to raise it.
+> 
+> Thanks for looking.  I think there is some use to having this example
+> and that's why I was asking what it might look like.  I certainly went
+> overboard in the last few commits to remove hugetlb all together, but at
+> that point it was so close..
+
+Right.
+
+> 
+> I think there might be value uniting both hugetlb and the normal code
+> path, even if the operations call signatures are aligned and we just use
+> a pointer to a struct within the "while (src_addr < src_start + len)"
+> loop that exists today.
+> 
+
+Right, what would be valuable is still leaving hugetlb be special, but 
+minimizing the degree to which mm/userfaultfd.c would have to care / 
+treat it specially.
+
+> The removal of the uffd_flags_t is also something that might be worth
+> exploring.
+
+Agreed.
+
+-- 
+Cheers
+
+David
+
 
