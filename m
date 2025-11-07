@@ -4,126 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3D548CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 00:57:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CAC59CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 01:02:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 9E47A8E000C; Thu,  6 Nov 2025 19:57:36 -0500 (EST)
+	id D24FB8E000D; Thu,  6 Nov 2025 20:02:06 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9BC2A8E0002; Thu,  6 Nov 2025 19:57:36 -0500 (EST)
+	id CFC628E0002; Thu,  6 Nov 2025 20:02:06 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8D22C8E000C; Thu,  6 Nov 2025 19:57:36 -0500 (EST)
+	id C12E08E000D; Thu,  6 Nov 2025 20:02:06 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7CFE48E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 19:57:36 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4B07C4B30D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:57:36 +0000 (UTC)
-X-FDA: 84081998112.07.EB18387
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 432D71C0007
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:57:34 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cc43KIme;
-	spf=pass (imf21.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AD0E28E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 20:02:06 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 52D9E88316
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 01:02:06 +0000 (UTC)
+X-FDA: 84082009452.23.8E73183
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 53D2020010
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 01:02:04 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJgJ+HD7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762477324; a=rsa-sha256;
+	cv=none;
+	b=DkMdW6YvC4U8NusLXSFL45kcj8J3I2qhzvbYDKT4PXQqOETR8UA5OsI7JW+eUiINqg2YJz
+	moPALZK7SpvqfixwZ20YIx27IOnQaUO2frRztJKDEhlvaDfiU8dlDD2xk9uv9lkKQe9ZcR
+	DWhzqf0yxFnB9Q4sK0x60nQb8DMFavE=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJgJ+HD7;
+	dmarc=pass (policy=none) header.from=gmail.com;
+	spf=pass (imf03.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762477054;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762477324;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=AmTmAuWcZZ8TrHlA0PNPFsEDtNa6QN4lB5lfJtGBXPQ=;
-	b=oEXSF7DwKHrLkAQx0pxn5eInIE4aALxVyEcW7SvaBSIcrrFsSWePqfEikyiGRogUo6TcV1
-	72xIvWk2w+YtEPLazs/Xd5jtRkHHZGMSbMZmNNjoX339YJnqAo15wMm58NEbXLRqG9mag2
-	6lXFadcQAoTeYTr51orncOzSRRCJb74=
-ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=Cc43KIme;
-	spf=pass (imf21.hostedemail.com: domain of yury.norov@gmail.com designates 209.85.222.182 as permitted sender) smtp.mailfrom=yury.norov@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762477054; a=rsa-sha256;
-	cv=none;
-	b=ScyX39lsxhiF5MuaKcAlsI3yevXcaVk6tqFxqmCi2NP1g50FyvH2Ve8fy+Y3atEMaloUaV
-	izsQIU1rQLSAZNL+w1Tnmitx+zTJcKaYPFF/5gZG+1ekv7i2OBHLALuZkUVODSxbtQLM33
-	vADsz7p05HTHvwDzjGnFZIwcCTSRju4=
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-88f8f346c2cso21967585a.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 16:57:34 -0800 (PST)
+	bh=SgkN+9qm87GBpxjn9Sog+0BYGI3rK0TYVNEeT4MOW9o=;
+	b=qnUbUwcseglTuGqdRYQ2oant7N37isLxLTaw0Xxi3Ojbkz+ETzYEXkKeTZoaDmSiH/Hn/r
+	ecs44SX8kVwsoOushKDXcspLYrbdX4CgAIJ6PKfZIAHUeTqqnYWTCLtXA2a3RI/gelEOie
+	5jEPsYtwzAb65QVsMXjsfemkmd7rPFo=
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-640aa1445c3so398977a12.1
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 17:02:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762477053; x=1763081853; darn=kvack.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AmTmAuWcZZ8TrHlA0PNPFsEDtNa6QN4lB5lfJtGBXPQ=;
-        b=Cc43KImeSNGCPpYxkiS7d7tjhCOsYeTxEnSHuHI196Tr5c1zXkoN02PNCJNM7huUEU
-         BnHWflfVC3aBZzbvWM4vOrICJFZBEXPu+QRWhMQoRn8V650zBp27g6qZ4ViU2MtMxdYb
-         +TJF76/FOORwd9yjBHUVPnaXTZuwlcpUTzYc0M6MZNYKiC7/B0zSoJCjGqW702bbnp1J
-         3EuNwGuGDgtHIJMrh8FxeVq3fI9Or9HocYgxlw2DCLTX6n8irS5i5Srv+5wz+Mzupvuj
-         t3swrMGxCpNSAZGhdw87CTkW1QQuwE11tFf6oLrzyiyXTj6SKt1sivduFg5FVuSHWghe
-         lDkA==
+        d=gmail.com; s=20230601; t=1762477322; x=1763082122; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SgkN+9qm87GBpxjn9Sog+0BYGI3rK0TYVNEeT4MOW9o=;
+        b=gJgJ+HD793AIysdRYIM4GIqZm+7MScJxSdgvgZ5H6p9//BmWpNC2IzRn5AS9HczebL
+         xcLOBDRBMhdzGPbXANo5z1g+WNpgSm1vJY9Udt6mN3t/a3LTvc22jU0Sm35GglC/pOae
+         4wp31GpbUVGiSxml3D/O6v92sNcXQyJsbn/446uqowK9ZPH3aRX1FO0rHZi1A4B5To3A
+         NiZX7UDzm6Ymhj78wybrEHyypVyZWsnX1F4xrtlyF+6sOGWcusCc/ZwHrR30XgG1taFJ
+         zAGgcZdSs6ZdEay1opOGcSS+MPSGilZONUUNspADiFMRhFx8e4xHmZuKtcyoDaJDJQAo
+         7TJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762477053; x=1763081853;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AmTmAuWcZZ8TrHlA0PNPFsEDtNa6QN4lB5lfJtGBXPQ=;
-        b=Il+3A/TdNoIZDNV/eW8Ere5UU9pooliPVRCZlv78uBmkcmlc7JL68TBGxyBoyhGjew
-         s394alhVePz/4dQ6vgngyE6wwFO+wXiUCEFhggUtLTaL6TZQtEocep+b0+M4z/tpfANb
-         b+anAC6TXn+mY3LXf7Z9WNmzr0xrlyk0XW03W8Ezjzd0E0VApXfFQv5eDLz5BXc4MOV/
-         awD0yFePsM8XFiY1ut+RMKDDJ1Ld7fR3diTzW96zjH4K/tOS3YudJW4vJa5u67DFDZ9d
-         z01/y5gEgHsc3pUO81GuCgV2GJWvHjDTiyhmtdw8KVorfCPas9NJYodlDTASvJIPmoQL
-         uMug==
-X-Forwarded-Encrypted: i=1; AJvYcCUTRUj2TvMFn8lWIUy6NjkSKmK+027Th+yokkawnAq3AHYfHlcqoyzU3oIKDDvbnnVV5F2SxcYTJw==@kvack.org
-X-Gm-Message-State: AOJu0Yw5SRS4m8mgL7zaiWdei2JKLW2qAudOFlGDHOjUsscYOjKpRS/K
-	rdCo4a8bTXbkiqccFYhVgivSN2Wh0uc5QUxxZnCGymfIs3y6klUf9FXi
-X-Gm-Gg: ASbGncuSjvDTW+hSu8wAD4z3Jmmish2vef9hVCP+D8N6M29w85VBcKFDAAq0N9iklOd
-	D4jsKHlTlJXiF3pBEjL9tmN1hS2B5OohXnivONtZJq2n8mRVPocNejNlc+8GaIMCcQUe78gmLII
-	dqMeLK6Bn4BDKACOCRAMNWo3m9Hyt8LDwXAmr2Agy/QPVSR2R5jYflgposhMmehRDm6oX0VEhPZ
-	Oy30GvmTPmTpzyGIX0Dm5VVfad6uh0vsx8CvndwlkL2wWjpl6oHmdNT58+dUOIu+YFstWP13g/Z
-	t54Isicpa6J/CEU1f6G3Ln3HzjDOVudi89AK3lDdckgWLd8U/aDxicuSSk422PdGleeo6N8mTqj
-	ne+tCLZ7UENM8gSARV0rCERh7wEs5Lw8fjIN9DNjvKky23xSBiWwxvw1g1KZapBUG08TzgMa/
-X-Google-Smtp-Source: AGHT+IGSPrynqp7inqEF4hBhUuDdjVXrb1BDsz7SS+ixO0ukO9wh+YU5CvVH5IrgWRaBImngE8S1zA==
-X-Received: by 2002:a05:620a:4541:b0:88b:72c0:aaec with SMTP id af79cd13be357-8b2453689fdmr201926585a.88.1762477053268;
-        Thu, 06 Nov 2025 16:57:33 -0800 (PST)
-Received: from localhost ([12.22.141.131])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8b2355e9a35sm300204985a.20.2025.11.06.16.57.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Nov 2025 16:57:32 -0800 (PST)
-Date: Thu, 6 Nov 2025 19:57:30 -0500
-From: Yury Norov <yury.norov@gmail.com>
-To: Mitchell Levy <levymitchell0@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Benno Lossin <lossin@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Tyler Hicks <code@tyhicks.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+        d=1e100.net; s=20230601; t=1762477322; x=1763082122;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SgkN+9qm87GBpxjn9Sog+0BYGI3rK0TYVNEeT4MOW9o=;
+        b=wCGSk+odk51lw8dlilYUh3x2fXNRajcQEEo16I3WcsE7rdbzq0HjlSfDGqZVVXRW87
+         N4hAUga3ewSSPIS+hKaIzFfirQ+tn7bGUojBjePvzGov82CkCLHIbMcmrk3BAdQoEl+I
+         sJV4zJD95BynBCV9TOqROFFNbae2UuzmPZPbvEGoMWocBw6/YyDdSZa3VwSngR5+Ri8S
+         8OsxJ1gnRoml2/68FZCpS8BLjgyhAI5xyw1G5geliyv6ED0qmg5nhXL7bmFyFIsNM1K+
+         AXGVoUb2V7tqsMezL1Cgf0eLDyk2pRO+ShEeOK9FXmzKmBa6XIq+TA0Vm5ORz89qgKGz
+         Y3uw==
+X-Forwarded-Encrypted: i=1; AJvYcCW3pJNckYU17dVKBIRmUxZIqD/QHcDA29Wu/gQm+Ya0sp4FBOTEqmzbfTl23KHQpgpGEjqn6+f0yQ==@kvack.org
+X-Gm-Message-State: AOJu0YxZzpKlh6AGkAzoNMebWn+d844MayASIW0csYQ5VBYujAFQ+GFV
+	ZbTEcUk/FIMZE6HvA2qs2f4eSmjJgN6y1KfDqUclybIBZHKWJKNxZuK6
+X-Gm-Gg: ASbGnct8TolZCz6WNBbe0MeL5cIWIlvgNRPCnmfZ3uyQjfzdVSSVwUDTimDUt63ZUVv
+	u9MWCBOO2l7W3Q9bDgrgO+KwHEmrPdVaQ/gOaH92wMjyZ2CN3fVs5RIljXBK4pGCStjrNrAkemb
+	Rp2yI4sY+m8X3pZuqprvc+A5eJlt52ziKH/lo4++XukmQyss9XdMyEzMOyfQxO7DgLXRAspA/J8
+	ZpHNoBNNHcwaqpyB2tZJf5P4hf3mEs1S0rM1QvaNPzgTeij0dYHKEQ9jSWrDCvxpd0LQXDEG0u+
+	VA9C3tjM8Z7sHVcfd8/E74wwcZb5pOp95PM6JzwmSQfWpbi4v8swj9vTqppgStA8rYhfYrnPsLN
+	NsqT71M0AdJP9eJK2PD39f7iF+yMHUMntKsCqe2IS0c2lKt87Z0hT0zz/oHYieVnQxgxT/FgVi6
+	pTva9LT+isyA==
+X-Google-Smtp-Source: AGHT+IF+5SqjqFL8oNALXBlTyBu+dI1yUcvROISW+Pd0IsN0p5f0TyAoCtrTnYe1iUVo6mW14bSOBQ==
+X-Received: by 2002:a17:907:3f85:b0:b6d:7db1:49aa with SMTP id a640c23a62f3a-b72c0dabaabmr120465866b.63.1762477322477;
+        Thu, 06 Nov 2025 17:02:02 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bfa11271sm89986066b.66.2025.11.06.17.02.01
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 06 Nov 2025 17:02:02 -0800 (PST)
+Date: Fri, 7 Nov 2025 01:02:01 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@redhat.com, lorenzo.stoakes@oracle.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	Liam.Howlett@oracle.com, npache@redhat.com, ryan.roberts@arm.com,
+	dev.jain@arm.com, baohua@kernel.org, lance.yang@linux.dev,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v4 3/9] rust: percpu: Add C bindings for per-CPU variable
- API
-Message-ID: <aQ1D-skdKLV6xmJo@yury>
-References: <20251105-rust-percpu-v4-0-984b1470adcb@gmail.com>
- <20251105-rust-percpu-v4-3-984b1470adcb@gmail.com>
+Subject: Re: [PATCH 0/2] mm/huge_memory: Modularize and simplify folio
+ splitting paths
+Message-ID: <20251107010201.vasfacufmvza6xzm@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251101002927.2610-1-richard.weiyang@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251105-rust-percpu-v4-3-984b1470adcb@gmail.com>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 432D71C0007
-X-Stat-Signature: eyt79nxj6di78q7e8zppfw9ax31h348s
+In-Reply-To: <20251101002927.2610-1-richard.weiyang@gmail.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 53D2020010
+X-Stat-Signature: 3ro99eydkptrbnfttnre69fwkcugg3zi
 X-Rspam-User: 
-X-HE-Tag: 1762477054-875520
-X-HE-Meta: U2FsdGVkX1+jw8CICaIcVbeB9cseF7pCgHwLINoRWqcd8jJjr/ij9GogWXe1Urj0mFR0+S/CgN8p5jyaedJgdtYJOjeGrwwh74SONaUmK2BL2yjcALZfkk5suc7+v+jJRe13lWjQO38OGe9avjM2opNPza0WXOx2YnS4qbHY8OlOA0m5lY2OvcQvNPLMHVDMjuTopsGyxZ5PUWzXDhqe9IgtcV7hIa07SOFySTW2NDWAgYrFR5QoseqgtycN5F6O3CdbseZT5/vI1E3KfZCgFjuRlz1SrAMxyD86yrgHIfSFt4vKZzB2azNHxRmL5xImTDw/flAm81RtW0fBw2xRXLbKdKUN0lof2pIR3aJF9oGxL9okH/grK00nNeU1ktmE0QsHaXxmI21hg/oBMxFHjIe2I2wQ6E3HrW9dtkqTg5kS3dQZyLaLc9GLOU8zmvd3rPwm6E5MtbW4mxCLDkhVtpnlHFd0QAsHP3E9LZyxA+2+4JjpRo6A4GavfMc5FP2J5koIew2Go9rpVwZuyYRgeJKu75zqH43on2egkPuJjCP/Um4UjvTW1rB6k8jmqdvsXuPc8bzTaUPiEak7l+j4cwBaw7q6oA874EHb5v7cmgReHycFI7G7q08pn/ni6wbakueXskMD0AziJYj6z8Ro2tEU9rcsr4MHzprsimmpcoFhm1wEjn3Y1ycJuJxC2yq0ZQ3ysD8UDgQgNI9WFLuWuFV7529q0STuUOLG6X6KAjiSgBrw0lGJ3cjcAC+NSssCRL004wNVo79VykgsEUbEfCIeXyZitLv8Frpnx/E1JfU9DWUtU2qte6FsVl749Nf/rsROdJHSX6gs6tBc3Thot5vb1Wm6EMvlXfR3u0tF67YTjztEnnYt5I/4gwsI5qK1aBD6n6uidj9dUviUpH4Ne2DSjo2S9Bpa7OZfSgxBXgHygvQTUqqqgDgDpk42LzZ762JhR0RD5FzHdZAqc0U
- fJRS8qQp
- E0SgSRvtPBY06P//s50tnUMWIX1vC7o6xt4JVM2uZbH3wVC/GpxkWvSm1ATmZMBFqeZZ4nrhQ2Vgf18q9xvsBjOaL7M3LebTNbzlFjcpCmhcqgd8T5kImtlC9yF4eVVu01DskCBdx+YerSBI5tAr+HZ0JEESKkFgAToanI0HNRSx3wsSjHxop+KKr3s0+jMpVGJy+zBVI8d1gh1TeS5kiK2gO2jPnE2QLspCliXNON/yHqXk64foBuhZOT9EfhYPWVr/dVBkrvINiC/dJYoOixsLvn6G2N1NkURecX6BaMX/CCLGjB9QBjNN5G+RluObDf+ENYng9XQPitx4YAowiILfRUXeTYg15phZOwzIaBzhUJC1wZkojSXvA8VZ8HIE1k+QVo324neo5/hs2Sfny/JTXcZI42HTCIynlfoz8iOYDeXvH9r+6AoCcq0qWaI3p7gYdsYp2gnL2g1ibjfdlUHhR2zoMldWrXNYgdS7uyRUZ58oa+jS524A5t3fuIzrgu64hSeS/YEASonP15S381wqHX26xvStXN74zx16mbWHrQyjtkT/6wo7z9jYGgdMi3Dmr3PR/b4iGZj6noQONTTHAKOtW/yRdH0rcKw9MhYCvlr+XEvvAO4qcBWu3O2vPUeZQcxwrtGbT4u8iBPERv7H3O47yMuzbXj7+V3LL2gT5Zls=
+X-HE-Tag: 1762477324-713418
+X-HE-Meta: U2FsdGVkX19kqEL/fzW9fUXKtEBUGyWss7N5gUC7dbNIvK1hJg3WFlW62HsCZcFgMiHASdWMuH2Lji7ZDyAEDArnQitPDHeY+41jNUMaPZgcb4ptDQppdxT/3MEPoXpw9u+ojw1MSz4VfC88wTPj76SwcJjIpQN6rpq26BVgbMlZaK5OT8RO0I8kfGlV+MLmSk/nFm893dRIV9vTBAD04FphNxVjgQvx8Zz3P4s8t4bdIaY1gR1XFelpvuZy9bxW7MWSGLYVeqqS+QD8Z04eNV9LnF6tsHMKnajFnrTInwuJRcFvNZciVYKi72Bop+oQZAg6cVyXbxEp597r+hDLayL+WiZNu60sgTSALe+7cCmoTUpNK3AOFiXKNIlleXP3jtmsM0hCaKNjYECAE+ZZW+pHQ+RD1n8br9LJRe0WY3vZ9BtBSql8ymP06k0ek6EXMLLh4P/EAyvC8yG17m4KDLmH71cgZK+L+BH1sDwXBr1GoZaQ5VQNWqZ/vazAgGC3WyMXSXpjmQ0cBaZbt1mzz0DmgoKLI5hR91DCKCKwgkTlv9V553VQh9462lnABZKeIZekUIHgVPMDv0/asPHhFEFamv5CCxvsosovFsRfK08PHeWLEgtMSkmljw32MtNnpwoZL/WMkURoXNQG4RDgno8YkGoK96h3eJC2YktQ69+6QHzG8Zb6DfuQ+NDDkUdj84tDfIQkAJDuVQagjsQP8DNaxdPQ/b07ut+uXl7HZGczFH3ZiwgR5Di6F73g8hHDyTGNOjmepM74KYTtVE42SmX4z/mk1i1aVTPYCypny5myGq0g7RZOy6VOiznXLecIbH1JWjYrTH7c54l/bs0wcp3ApHSvLs8Hzd7HTZh0mc3YfDz+R3GmpsXeOdPw0VQUPa58w7fXFepJvOoy1581LlNzeRzHOXLAXCXvQ8AeW/4va7EqlHUsem8NL5nksWB2KE39XrgtNQg2MXt84bx
+ K7yfdJPp
+ oxjf4TEYIbjlbaKDt2GCAmq6KnLRfrydeEzNtBgg06eaAMBVvUXji5+9YJ/YDxiq633ICcR6BSPS1UuNdfuq/BNb7ufNuVRW7Gty7ytS/5Cxc6Ivw66JXuD7GKvZk6LkqfWlTQIf2BvUK0VVYnsLoEy3ohit730gKk53hNsIO/dEFabwJTk5JW8PjdFBfzBR+CHNmLxxsWXoxSr2CDzQ8sPYzHTffgFbPL1/s63BARsZ9Y0BSq4MjvKzbgdbSfmE9B2bChajumbZhEX6eu6PzsE2xtM6rgomHGwqENFKFiZ0idjUDyQoBVYdpGA5OG3gkgvKqvt5BdoXAZsrR7xW0ZXbeV+zEgeDNuWHzX2p0VbAAcpnXMKh+duoVzk1LKxt7pgq1OowBVv0MEn6nxF5Ps8yWrq8HTipkpidEtkNgD/2/c0ph4m4ARt/WbK27u5g7XLiYa4D6DpdaCXsD+ehJH2CQo9AczHPSIt2NGG2DgP4zQsMiymBQKbTpW0tt99iNyTyU1quJcvCRcx4DTmxJQLaMJJUORT6h0HwYuQ1Il9PAo4TWqzIPV9bQo/1++91HPd2uojWdg87XbemAK6DQWWn6ZbgiKK9XwfRNzIPe4hZZoXHcshvC/CgWWsZMlzgxaWb01MT6tYYwGHRc/ZJ1BcYRX9Kzv+T0vIGFAkhf3rDk5hJDJfx0UQZ5pdAaKD7I2uqhAAvxOhtPFbNitZjcp1UukiPSvv42Ok2Ya5C6FOPFXH+bntFZq+svYFn7614LsLkcD3JhlHiBdsldeNiChcJUGw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,73 +125,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Nov 05, 2025 at 03:01:15PM -0800, Mitchell Levy wrote:
-> Add bindings necessary to implement a Rust per-CPU variable API,
-> specifically per-CPU variable allocation and management of CPU
-> preemption.
-> 
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+On Sat, Nov 01, 2025 at 12:29:25AM +0000, Wei Yang wrote:
+>This two-patch series focuses on refactoring the core logic of folio
+>splitting to improve code structure, clarity, and maintainability.
+>
+>The first patch introduces a new consolidated helper function that groups
+>all the required tasks involved in a folio split. The second patch then
+>leverages this new helper to clearly separate the different execution
+>paths for uniform and non-uniform splitting, which simplifies
+>__split_unmapped_folio().
+>
+>This series sets a better foundation for future optimizations and
+>maintenance in the huge memory handling code.
+>
+>Also selftests/split_huge_page_test pass.
 
-Acked-by: Yury Norov (NVIDIA) <yury.norov@gmail.com>
+Hi, Lorenzo , Zi
 
-> ---
->  rust/helpers/helpers.c |  2 ++
->  rust/helpers/percpu.c  |  9 +++++++++
->  rust/helpers/preempt.c | 14 ++++++++++++++
->  3 files changed, 25 insertions(+)
-> 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> index 7cf7fe95e41d..2fc8d26cfe66 100644
-> --- a/rust/helpers/helpers.c
-> +++ b/rust/helpers/helpers.c
-> @@ -31,9 +31,11 @@
->  #include "of.c"
->  #include "page.c"
->  #include "pci.c"
-> +#include "percpu.c"
->  #include "pid_namespace.c"
->  #include "platform.c"
->  #include "poll.c"
-> +#include "preempt.c"
->  #include "property.c"
->  #include "rbtree.c"
->  #include "rcu.c"
-> diff --git a/rust/helpers/percpu.c b/rust/helpers/percpu.c
-> new file mode 100644
-> index 000000000000..a091389f730f
-> --- /dev/null
-> +++ b/rust/helpers/percpu.c
-> @@ -0,0 +1,9 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/percpu.h>
-> +
-> +void __percpu *rust_helper_alloc_percpu(size_t sz, size_t align)
-> +{
-> +	return __alloc_percpu(sz, align);
-> +}
-> +
-> diff --git a/rust/helpers/preempt.c b/rust/helpers/preempt.c
-> new file mode 100644
-> index 000000000000..2c7529528ddd
-> --- /dev/null
-> +++ b/rust/helpers/preempt.c
-> @@ -0,0 +1,14 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +#include <linux/preempt.h>
-> +
-> +void rust_helper_preempt_disable(void)
-> +{
-> +	preempt_disable();
-> +}
-> +
-> +void rust_helper_preempt_enable(void)
-> +{
-> +	preempt_enable();
-> +}
-> +
-> 
-> -- 
-> 2.34.1
+This patch set is based on your suggestion from [1].
+
+Not sure you still like it?
+
+[1]: http://lkml.kernel.org/r/f1830e4e-1630-4242-be0d-1cf65f20b54b@lucifer.local
+
+>
+>Wei Yang (2):
+>  mm/huge_memory: introduce __split_folio_and_update_stats() to
+>    consolidate split task
+>  mm/huge_memory: separate uniform/non uniform split logic in
+>    __split_unmapped_folio()
+>
+> mm/huge_memory.c | 59 +++++++++++++++++++++++++++---------------------
+> 1 file changed, 33 insertions(+), 26 deletions(-)
+>
+>-- 
+>2.34.1
+
+-- 
+Wei Yang
+Help you, Help me
 
