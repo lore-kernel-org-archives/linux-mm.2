@@ -4,135 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 12CE2CCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 18:02:09 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0D346CCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 18:05:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0E85A8E0005; Fri,  7 Nov 2025 13:02:09 -0500 (EST)
+	id 50AF18E0006; Fri,  7 Nov 2025 13:05:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0C0108E0002; Fri,  7 Nov 2025 13:02:09 -0500 (EST)
+	id 4E3248E0002; Fri,  7 Nov 2025 13:05:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id F17888E0005; Fri,  7 Nov 2025 13:02:08 -0500 (EST)
+	id 3F94E8E0006; Fri,  7 Nov 2025 13:05:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id E05CC8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:02:08 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 31D0C597B9
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 18:02:08 +0000 (UTC)
-X-FDA: 84084579936.05.7C6DB13
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf30.hostedemail.com (Postfix) with ESMTP id 9417480004
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 18:02:05 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UCYoZ7bv;
-	spf=pass (imf30.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2BB028E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:05:01 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id C233D13B501
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 18:05:00 +0000 (UTC)
+X-FDA: 84084587160.06.D4E2E15
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
+	by imf10.hostedemail.com (Postfix) with ESMTP id E3029C0008
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 18:04:58 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iMSSFKHG;
+	spf=pass (imf10.hostedemail.com: domain of 3yTQOaQgKCLoofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3yTQOaQgKCLoofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762538525;
+	s=arc-20220608; t=1762538699;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=o03EPvkF1Ee4HFaXHVj6CmMYvciS5SYoQDAqRDI5EK0=;
-	b=NSHRqZEfuZ825SUq7T3n+WngnUD/Rn1gqhMFvMvcH/C72z5aoXc82s0tclho7NH8G5Pu9W
-	AsTCVpuFnayxY//gt0CSHzmFyFWQDWLAfv1v/TqJjH9IAwcKeuxojvvJsmCUHMp9qmag4M
-	M87Gu9VfpzB8KQ346HEB7Zm3I35HXIw=
-ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=UCYoZ7bv;
-	spf=pass (imf30.hostedemail.com: domain of npache@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=npache@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762538525; a=rsa-sha256;
+	bh=/AqAgTDxm6jquTqnEsjA3Waymb6wOkAp7ZeQjd8rqgw=;
+	b=1rY8Am5IEN1iJ2wYHIyI61Hyp4ddyHsNfEKbJVSsEU1Ap3M4nTbHvom70U/PXUXAkoe2HK
+	NjlsvPRvlp+iq3lh7piLZtlOT+cR/YrnBsYwnO8E81yyy8xJmi9QnzZxLawjZuukZTkhAS
+	JaKrRgcJw2/i3qui0sEM4ooq98Av58U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762538699; a=rsa-sha256;
 	cv=none;
-	b=Uw/fbaFmo+SlVupf8kONB/56buLHu66t9dqzQwWBWXlgRPrFZ85Lw02ewgmfR0/loLUp2/
-	6NsAMyWWqmGuAWbFWnFgYieazEyY8rHdEkREgRbYx/R054vZyN+BWfsXebmYxU+iLZhSt6
-	hNVZIqSjT6JuX8UlDU4lBGgK6sSOf94=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762538524;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=o03EPvkF1Ee4HFaXHVj6CmMYvciS5SYoQDAqRDI5EK0=;
-	b=UCYoZ7bvXG3l0NnK6oCdzRpz5MkC51SxaexdhD86CsQ+EUkCb30N8D/j8rm5ed71X2L0oJ
-	exNoGOfOPhIu4CXHcmPdNCMYOtKN+jFb7WfUdeABAp8UpvFde8Gk6TlVu3G89seX95muep
-	YV6DoiV0WLp1KtUS8EhuL4QOXw3bINY=
-Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
- [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-442-VZCyFR9aNvat3N2NEmQGvQ-1; Fri, 07 Nov 2025 13:01:55 -0500
-X-MC-Unique: VZCyFR9aNvat3N2NEmQGvQ-1
-X-Mimecast-MFC-AGG-ID: VZCyFR9aNvat3N2NEmQGvQ_1762538514
-Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-63e324b2fd0so1398828d50.2
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 10:01:54 -0800 (PST)
+	b=CidVhSs9Bk71Mkf6TtuZWpYkSKbnCtpdLbovwG3fNuX+BxER+AlfWW42coUDdXR2DeCQzr
+	4wa0XwI3e7DSOeunds+VAabIAerNoZTdzjOB3debT7mSlbdPEjfYEJAtoExE++nBg+yFK2
+	JJJLVnlQqChcK0QXfiRosquhrArrxlA=
+ARC-Authentication-Results: i=1;
+	imf10.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=iMSSFKHG;
+	spf=pass (imf10.hostedemail.com: domain of 3yTQOaQgKCLoofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com designates 209.85.221.73 as permitted sender) smtp.mailfrom=3yTQOaQgKCLoofhprfsglttlqj.htrqnsz2-rrp0fhp.twl@flex--jackmanb.bounces.google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-429cce847c4so619188f8f.2
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 10:04:58 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762538697; x=1763143497; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AqAgTDxm6jquTqnEsjA3Waymb6wOkAp7ZeQjd8rqgw=;
+        b=iMSSFKHGc28FxW+DoYEza8acRad9SWNxJSpqSWpGlUR6zoRND+v+gtMXFTW2Z0YBY8
+         3sgJbLlVnbQ4dvCH17D0Gps0Y4yL+9NyK7+GU1AZccHFdGAOp3gbRIIxdwKtjxt3oAU5
+         2BuDU9gIrLwh6Z7aXJrhQ3/A9uRvRb0MrDhHiWzufY2HlTnBaWqT7ZopHpjg/m+Iuaa/
+         /p+KURXiRV3vb/2Ki+aIMQyhcaHwFKsHsPD68PBtXh62rGQuk3SdVLkryCCkrtMgjUAn
+         j9Qz0V+xnBvBJdGp0JUTYoTnJWAIvqdXsChXdF/YosqhHjaiObQPaq4HYuU9p+c+9Zhs
+         dFZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762538513; x=1763143313;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=o03EPvkF1Ee4HFaXHVj6CmMYvciS5SYoQDAqRDI5EK0=;
-        b=YIa8W+WSBtDbG7SXzoY1/UxzTIMcuxSOh66AhLXhk7RO7nHPiXcm/zpff3LcmZkAmZ
-         FgYRXG8M3TnVXK//05dbcZih/5bl9QTzPFhTOFJifGj6hP724dlx/j8/8clR82p+jvnI
-         X1W+2xvvFWqeRkGw8i4O3SVUn7i1QuMSOCHnBIJ55U4UULF6qq4wSsI6fn7ThH8fk5vh
-         vCMbkpMhGEBMFfRzmed8fyxj1yNk5PgH0p9eRsCfqwto0cRBZ0vjA2r5rBNYQly/RngD
-         eD3sKcK/5mTKjqSUxGD3ETK1+6H18sERmV8OrdCLwGHILv5pokwnwpP/B8baMxB9FHGm
-         pnGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4jfAjXC5S1qpihiXdxSK+IlKt6nMW+rP2i2m6GEW/z3iweFQQ6FlrX77u6YMGpVy2S3i0uX4qrQ==@kvack.org
-X-Gm-Message-State: AOJu0YzMwyXHg5bBqOWzgoIA8lfB9YFqSli/uC8eFKQ7t8DOWC28pRvL
-	+9Dw8Ry7vA2Jrytr0PuzpLmqIGFSruEmMTCKXxI7hhsYM5jZPxLmgIiSDO3t5KpOpx4evCf72VF
-	CBvRjKbsg3fYOHASDefbnIQkeIMxknPpLRTBFHxPZLx3AVGfaqdgYxIlgPlM40g9AOI1kDc3Cda
-	Y2K8aS08VfVBF3vi8pWIZiPnseS6wnWdEwywAbww==
-X-Gm-Gg: ASbGncuO5iyb1gFSwfhRjkl+QWoUZcxuKCGYjlusvFWd/xP9oenGbmzwI3ixxZt1wwN
-	j/wzOOsmzltac8YNwAAxjQqWkATQx9jN/FLXbjAglsQfeibp4jWEBPU8+jpHgFyU533mRQ8eGLc
-	dOUVcr6md03tJ+jFP7xvtOwi8nHIQtN4aIN5xvi9og8Bk3Gc1b2haSgJhrirHLu2Gmr0uI0A==
-X-Received: by 2002:a05:690e:2417:b0:63f:b4d8:1f3c with SMTP id 956f58d0204a3-640c42dac2dmr2587410d50.35.1762538512741;
-        Fri, 07 Nov 2025 10:01:52 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGjLDv5pucIrLunFcmpT5DImh7xOQHAmSWOhb/WF5swQ3zC4ISlOHgSzClnhRgLhl4xOKSEVGJksfqOFQroVQk=
-X-Received: by 2002:a05:690e:2417:b0:63f:b4d8:1f3c with SMTP id
- 956f58d0204a3-640c42dac2dmr2587310d50.35.1762538511869; Fri, 07 Nov 2025
- 10:01:51 -0800 (PST)
-MIME-Version: 1.0
-References: <20251022183717.70829-1-npache@redhat.com> <20251022183717.70829-12-npache@redhat.com>
- <5b2dbd05-094f-452a-8067-d342b2819af9@lucifer.local>
-In-Reply-To: <5b2dbd05-094f-452a-8067-d342b2819af9@lucifer.local>
-From: Nico Pache <npache@redhat.com>
-Date: Fri, 7 Nov 2025 11:01:23 -0700
-X-Gm-Features: AWmQ_bnZCljbkWgTreWCIKIWGk5V1YSCEzkc_26ghNPznQVbhA9Vnvap7t_CMZI
-Message-ID: <CAA1CXcDG8=89uPcptkRv23JfmczAGp6_KQMQOFhQ6Uivo-33kw@mail.gmail.com>
-Subject: Re: [PATCH v12 mm-new 11/15] khugepaged: introduce
- collapse_allowable_orders helper function
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com, 
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, 
-	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net, rostedt@goodmis.org, 
-	mhiramat@kernel.org, mathieu.desnoyers@efficios.com, 
-	akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org, 
-	peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com, 
-	sunnanyong@huawei.com, vishal.moola@gmail.com, 
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com, kas@kernel.org, 
-	aarcange@redhat.com, raquini@redhat.com, anshuman.khandual@arm.com, 
-	catalin.marinas@arm.com, tiwai@suse.de, will@kernel.org, 
-	dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org, jglisse@google.com, 
-	surenb@google.com, zokeefe@google.com, hannes@cmpxchg.org, 
-	rientjes@google.com, mhocko@suse.com, rdunlap@infradead.org, hughd@google.com, 
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz, 
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Srav3XxNkkiwlwihvkHHJi1vPsR7FEmWn80vXBKCohQ_1762538514
-X-Mimecast-Originator: redhat.com
+        d=1e100.net; s=20230601; t=1762538697; x=1763143497;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/AqAgTDxm6jquTqnEsjA3Waymb6wOkAp7ZeQjd8rqgw=;
+        b=KX/iWMROldASjPr1reRsoF6wlZ68X3rWawK3VHLwVnwfU4QjvG4Wr9+wg8LCpyveTF
+         qJEhfKMrHBygx5QdfDtpfLmnx3sCUnisJmblCZfC8/Xgaos4zlA8k07RBJBggTuqDBKa
+         wjwsfR76jiI02lPbYcKPTxWHe0c6evMluUdLc/Oydk0qzytU0i6/pEA/KM3ti2lMQnQG
+         Ri+Yv3JJfzr00kot3bmMeQKqdnd+f9rXAr4uaVPRxb8pCb99R2j8qMfEfq9BeYRckunn
+         gVQ7qLfntWsEEDbGkEtfo5Qd7UD3ppBOVC1rbxVfcXfe2TTnN236EloiaaMjgQ9e3T9B
+         U32A==
+X-Forwarded-Encrypted: i=1; AJvYcCVgRLr8U6nl72bidwsgkpmzK0nYp8ByfxvDAmz1uTW/QvhTUt/GblTSyvbR0zjzQ3wnvWFhWQFZbQ==@kvack.org
+X-Gm-Message-State: AOJu0YzrHZfBCYk4+RbeyXMXRVeZYUtfcV+toso09hsDlZAhfBygnCpL
+	S8FekJBhPav/v0/sYD1np0pV81weVqEH1M7E34r2QH4hJZTuaU4kAMBF0OJz3nPclrRmb9bjN+u
+	SMekq1LnugtTmUg==
+X-Google-Smtp-Source: AGHT+IFOkVmSQK/jYvTSHAXnkCCnA0joruckYbu4Ldmd5HExfLsxuZZgznGEf8JFTpeS7lG61pD7MYDnH/6ugg==
+X-Received: from wrvs14.prod.google.com ([2002:a5d:4ece:0:b0:425:f04a:4d98])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6000:2408:b0:429:d3b8:7387 with SMTP id ffacd0b85a97d-42aefb4351dmr3543783f8f.42.1762538697024;
+ Fri, 07 Nov 2025 10:04:57 -0800 (PST)
+Date: Fri, 07 Nov 2025 18:04:56 +0000
+In-Reply-To: <add94932-290c-4037-b4e6-c3c760240819@amazon.com>
+Mime-Version: 1.0
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+ <DE2L1SAOC55E.E4JY62WJQ2A8@google.com> <add94932-290c-4037-b4e6-c3c760240819@amazon.com>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE2NTMZXQ1MT.2TH9VAKM6WP6I@google.com>
+Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+From: Brendan Jackman <jackmanb@google.com>
+To: <kalyazin@amazon.com>, Brendan Jackman <jackmanb@google.com>
+Cc: <pbonzini@redhat.com>, <corbet@lwn.net>, <maz@kernel.org>, 
+	<oliver.upton@linux.dev>, <joey.gouly@arm.com>, <suzuki.poulose@arm.com>, 
+	<yuzenghui@huawei.com>, <catalin.marinas@arm.com>, <will@kernel.org>, 
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>, 
+	<luto@kernel.org>, <peterz@infradead.org>, <willy@infradead.org>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <lorenzo.stoakes@oracle.com>, 
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
+	<surenb@google.com>, <mhocko@suse.com>, <song@kernel.org>, <jolsa@kernel.org>, 
+	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>, 
+	<martin.lau@linux.dev>, <eddyz87@gmail.com>, <yonghong.song@linux.dev>, 
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
+	<haoluo@google.com>, <jgg@ziepe.ca>, <jhubbard@nvidia.com>, 
+	<peterx@redhat.com>, <jannh@google.com>, <pfalcato@suse.de>, 
+	<shuah@kernel.org>, <seanjc@google.com>, <kvm@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, <bpf@vger.kernel.org>, 
+	<linux-kselftest@vger.kernel.org>, <xmarcalx@amazon.co.uk>, 
+	<kalyazin@amazon.co.uk>, <jackabt@amazon.co.uk>, <derekmn@amazon.co.uk>, 
+	<tabba@google.com>, <ackerleytng@google.com>, 
+	Patrick Roy <patrick.roy@campus.lmu.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 9417480004
-X-Stat-Signature: xdphiiucdjg4jd3fx1xtismijwtqae4f
-X-Rspamd-Server: rspam02
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762538525-157636
-X-HE-Meta: U2FsdGVkX19Xqgt+AKADF3Ysz4/rEnlxtQAjt79dfelzkAHm+lI6sKyc991cWIf8YAPCsqMQUWHNoZX0mHJmji4XRQejgWcX11lqzmEpqgRztuSm6cEI+O9QuivtKiw/S96JRcOE0En665C0ungdNZ+76QU1vRcbk32+V0DCzEQx1TxXwPf5pQAXfF5yd8GKHuztkSX+v6jYgPguwW2+gUPqWQnuHWstAz6Jw170hyiLBD2wR34H0e72jUFOnFmeKWiLhXg5LMe4LtZ1RQM7ccmIHw9eNpj2FaLuJXNunrz9VcU1cyV/28aHfA1GHTAJtU2AhCon2EdVN+p1Px/tu52daokDtnU5tYT+BGcyyt04O+N+iKaCXyKdcUBGzfhxGDnchobhhwj+g8Ygp++9caqKxQVc/5swgESwfRqTob5AMl0SYd0ACZsmKfXs/tU4gkyMNy1PX6eQbw3btKyLnoPtc2LqgvCmRtv/22Csc9M5LwDxiYRVSGcN6kbtjp8A5tE64ySjjgE14WvLDnGS1Ce8/+aL4Z3UCiJWIs6UJpBY5AXNIogwv2ocXo3MGLLpU4S05ZyegcVurdaLBsC8+0yGlTAuT6mefKYLH0VOiJtQ9p+Br95EahL1TNpVAPHvWeDDP4x/hvlSgobaQNhizxqTmiPBFWKwy/midmYQgbH+8lsoXppyp7qTHOQrhUTJbaDgoREM0z0+YwfElQ4chHIll8NpLOExMd91HIdXfcDCa4+f90uYDt4HctlrE27mCm3oQJfsVHesPTKB97gC58HLuWIaDOBCamRsY4gub8BbCpqrxZ8NNiEDxChHolkEYlppZ4y5WOp/fsyc4tQ+UwhUKrAdMSRvpXAvvb097HWMFSzdOhTRCJ1Zo8mWlx+UvHwB3LfLBhVc/TKkJPLqeDxDExMuGbzAXBJKeO21jcQ8wASbmvqleZqPu6fwZAtq5Gj/KBwK+zcN5F0hBXp
- M432ZznT
- +lhxqpCCb0GeLfuHMst0XLdHsu+RDH7YIWD4R5sCtGwxj8OPxWyvp/PHoVUcMiwpTHM+KVnu7v4v2saZZW0FmZJX7GXw3hFUpbWqhnmGemwzlWcVA6rv+5Rr0GxzD2tGpiEnAgrbAkfPvGYXnONVaeL/8BVZpl1O2b6dj080M4MYQPBR2hNqNmWXRvoAsBfGbnhiBtUriyEfzLAcjTZnKauB6WupJmlyozFF+hNnd9d24z9qKSG0A+s45bqM75zZAWKAUXjxIlXUGecKkPLd8SISul+X1VVYC5jRW1DnCs4cOy3MDk50HuYTot9XKlP2fFrgo7bCDVWEvtt3EwSDPu9LyzjITvx/GhIboQthk89KxzjZQLcfSHkgT6boeNQLYVh674DFvX4I6FcfilqYtkyRuMBZFe/XiLlAYxYZMBmGRtiFegsCUvbE+llRjaovh8ZCHGKvezSqAZIqrNjawyUMex1/xHGUeFx9msGIUyRO3Gbnmqly/vqqxUepJjOvGbfBBTsWQqPuJELHgsSddC6HQzw==
+X-Rspamd-Queue-Id: E3029C0008
+X-Stat-Signature: pz31gwii9ub46s77zwnr3c9mo94d4wie
+X-HE-Tag: 1762538698-901617
+X-HE-Meta: U2FsdGVkX1+rkOxPksMX5BsWPopHlA+fLuPttFp7zEvLwqn6Efc+cD2AHDZ+lDPQm44E+2QnKHgGjLkjJB77tWUBqqnuZj3VyxpDxNjyj4effC82R/PyA0lAzNmXwS9ieY+uuwinEInRbZTWeXhCIsJwWmXxW1gcaiL+mh0m8ymLtR9qyQRZsWQ0HGLrCBmtvv4HkcDdSFNJ3Ya5be0aw4Le5BiJIkaexmCOws7HIoKwL4GQ0cK3hbYAP56oHD4TCJpgPOQfqvpVDYcKCXeA8R3ge0HHupSAnSjIS2NuGQMipfhRuXzCu02JqRB7+dB7cbi3SUBxY0Oal4pqN+Z+7rDhrLPgKmspNNON/2D04Qe3geJ6w4bQScoODLjDLRpFgrAS5l8KbCUsEwUmunCuLfvlFIZRVZFPx+zY8uW9RxIdhHD/Sp4j3NqOr4Zc1okhcTeWNunqM6jOwJmnPEcS6soXzmu/7g8bcMrUCoXnUv31ZRJmuolcyTXHbG2/wx8DzJCOzHjoDabUOZqjucpj83EeX9OssGHZO/gwqCHjAk1mxuINIp/SvOR9AkIJAtV5pXNh7W9lB2pxW2W8SUkLC5xGfb+x0xzkb2+c5OEFj41XqpEAUvzBclqOdtHnopGOe7Mac298aRHUPBzWMufcvRc/eKJeV/No657wAgxaDlUQ4f3qHTNQUWjPO6GFNi5w/mQH6VrkACloxcuMVQpfJxOYySWLmCd+DgOIn54Z3kakxu86X3OzJPkvWZzYfUGr245KIClVdAgL5rca+z4TGXiwiW7qd8qastmuX0/JZxEhd4i4qpURHIyboEXYYudqXF/QOEH4ge8cb5VpA5L8na3wa7KeKHUxRX1+7s7+8hioSO+hK9I2dVGdYNSt4U8FEGK1ZrJtWSBIPEPMNf50+ipnk+87JPnZ2EJ63xIZ2ikVcl2wNnN/1oX7dXus1zZMB3/+f7EptLpdWGEWrr1
+ g+tmKuMo
+ yVxgUcDdnxouioB8VNZ/1U9y9qz5sVJBlvRmQFdVoP8am7Y0232KJWG6vI1WRyAHqFEgtK+fG+ThkL2KsdgmzqpIvtNifU7Ja4rsC0TwCDSDz5EBucreHD9CUaNSEflYzR4gLlaAQxlYYnCTotONYv7PT50/NRLGPu2immB/ZZ72URKKeMmn2jWcmy/dB2pw4UTCyNm3oa87q/1EZ2liDoNY1Qw+K9usYri/KQ+4QoatoZn/Xrf2Fli0WUB30IU4bWKpHVy800YwPfwB2M5JPmV2z8UGt5Nhs+jG8vvrm6XPK6y1mq/sW2ne42L5q8n5pMgGyf/xE+cui75idz8QoLhcmFjVL/mN7iw8vSNjaho4L1Z/fBrIoSLFNXUp7/s/+YPARugJFgnBVL+1y49AYk/vYRIlHg4ey4fB5ztQicK6UO21kF9Eq869iZUJPKiRTpSvJ1yC4MIqS7QL/1rYY6jKDlkJxXMlqbkRRCa/lH3C+xidafCceCcs9Eb5zdkKWUWnvF9mW8kI4V04yz8Y26CIsOAORbfuumGd7wsBKIAXtsrdZVvaXtuUMBhFBhpC5p1cqZvO5iQXRfMF1dCNIOLZ6nZ5gxTE6xs4n8cJ+9Sqd+gMeq8lA6eCPmHCs48+IThqty+PQW6dkOQoeXSOkvPydFLViZhIYPevZJBKgZBCAvDw4ZtPctyH2EFsOobrerO/99ygsw/zhVvyD/L9xU+UQdQWbd11DEtvniNoW1H2zwhHU2bMDrdYxm9FAq2mCR8nGlQUd2cvgEkJbPrnZCwdkzAtig9klMxN6KNkwg4six+aZlstL8hCmtzjkCj0JTwOFwKmezBNSAoAmwXEDHHMkwRQtjiyJHoOz8CVHXf8+EXPQcK3gxKiVzUnsdUTeO2T/N3Txm/JERWLu+AAzcqSNXjbhz4v0gS1y
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -141,116 +130,151 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 6, 2025 at 11:51=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
+On Fri Nov 7, 2025 at 5:23 PM UTC, Nikita Kalyazin wrote:
 >
-> On Wed, Oct 22, 2025 at 12:37:13PM -0600, Nico Pache wrote:
-> > Add collapse_allowable_orders() to generalize THP order eligibility. Th=
-e
-> > function determines which THP orders are permitted based on collapse
-> > context (khugepaged vs madv_collapse).
-> >
-> > This consolidates collapse configuration logic and provides a clean
-> > interface for future mTHP collapse support where the orders may be
-> > different.
-> >
-> > Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> > Signed-off-by: Nico Pache <npache@redhat.com>
 >
-> With nits below adddressed, LGTM so:
+> On 07/11/2025 15:54, Brendan Jackman wrote:
+>> On Wed Sep 24, 2025 at 3:10 PM UTC, Patrick Roy wrote:
+>>> From: Patrick Roy <roypat@amazon.co.uk>
+>>>
+>>> [ based on kvm/next ]
+>>>
+>>> Unmapping virtual machine guest memory from the host kernel's direct map is a
+>>> successful mitigation against Spectre-style transient execution issues: If the
+>>> kernel page tables do not contain entries pointing to guest memory, then any
+>>> attempted speculative read through the direct map will necessarily be blocked
+>>> by the MMU before any observable microarchitectural side-effects happen. This
+>>> means that Spectre-gadgets and similar cannot be used to target virtual machine
+>>> memory. Roughly 60% of speculative execution issues fall into this category [1,
+>>> Table 1].
+>>>
+>>> This patch series extends guest_memfd with the ability to remove its memory
+>>> from the host kernel's direct map, to be able to attain the above protection
+>>> for KVM guests running inside guest_memfd.
+>>>
+>>> Additionally, a Firecracker branch with support for these VMs can be found on
+>>> GitHub [2].
+>>>
+>>> For more details, please refer to the v5 cover letter [v5]. No
+>>> substantial changes in design have taken place since.
+>>>
+>>> === Changes Since v6 ===
+>>>
+>>> - Drop patch for passing struct address_space to ->free_folio(), due to
+>>>    possible races with freeing of the address_space. (Hugh)
+>>> - Stop using PG_uptodate / gmem preparedness tracking to keep track of
+>>>    direct map state.  Instead, use the lowest bit of folio->private. (Mike, David)
+>>> - Do direct map removal when establishing mapping of gmem folio instead
+>>>    of at allocation time, due to impossibility of handling direct map
+>>>    removal errors in kvm_gmem_populate(). (Patrick)
+>>> - Do TLB flushes after direct map removal, and provide a module
+>>>    parameter to opt out from them, and a new patch to export
+>>>    flush_tlb_kernel_range() to KVM. (Will)
+>>>
+>>> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+>>> [2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
+>> 
+>> I just got around to trying this out, I checked out this patchset using
+>> its base-commit and grabbed the Firecracker branch. Things seem OK until
+>> I set the secrets_free flag in the Firecracker config which IIUC makes
+>> it set GUEST_MEMFD_FLAG_NO_DIRECT_MAP.
+>> 
+>> If I set it, I find the guest doesn't show anything on the console.
+>> Running it in a VM and attaching GDB suggests that it's entering the
+>> guest repeatedly, it doesn't seem like the vCPU thread is stuck or
+>> anything. I'm a bit clueless about how to debug that (so far, whenever
+>> I've broken KVM, things always exploded very dramatically).
+>> 
+>> Anyway, if I then kill the firecracker process, the host sometimes
+>> crashes, I think this is the most suggestive splat I've seen:
+>> 
+>> [   99.673420][    T2] BUG: unable to handle page fault for address: ffff888012804000
+>> [   99.676216][    T2] #PF: supervisor write access in kernel mode
+>> [   99.678381][    T2] #PF: error_code(0x0002) - not-present page
+>> [   99.680499][    T2] PGD 2e01067 P4D 2e01067 PUD 2e02067 PMD 12801063 PTE 800fffffed7fb020
+>> [   99.683374][    T2] Oops: Oops: 0002 [#1] SMP
+>> [   99.685004][    T2] CPU: 0 UID: 0 PID: 2 Comm: kthreadd Not tainted 6.17.0-rc7-00366-g473c46a3cb2a #106 NONE
+>> [   99.688514][    T2] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.1 11/11/2019
+>> [   99.691547][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+>> [   99.693440][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+>> [   99.700188][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+>> [   99.702321][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+>> [   99.705100][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+>> [   99.707861][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+>> [   99.710648][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+>> [   99.713412][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+>> [   99.716191][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+>> [   99.719316][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   99.721648][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+>> [   99.724421][    T2] Call Trace:
+>> [   99.725608][    T2]  <TASK>
+>> [   99.726646][    T2]  get_page_from_freelist+0x6fe/0x14b0
+>> [   99.728583][    T2]  ? fs_reclaim_acquire+0x43/0xe0
+>> [   99.730325][    T2]  ? find_held_lock+0x2b/0x80
+>> [   99.731965][    T2]  __alloc_frozen_pages_noprof+0x147/0x2d0
+>> [   99.734003][    T2]  __alloc_pages_noprof+0x5/0x50
+>> [   99.735766][    T2]  copy_process+0x1b1/0x1b30
+>> [   99.737398][    T2]  ? lock_is_held_type+0x89/0x100
+>> [   99.739157][    T2]  ? kthreadd+0x25/0x190
+>> [   99.740664][    T2]  kernel_clone+0x59/0x390
+>> [   99.742213][    T2]  ? kthreadd+0x25/0x190
+>> [   99.743728][    T2]  kernel_thread+0x55/0x70
+>> [   99.745310][    T2]  ? kthread_complete_and_exit+0x20/0x20
+>> [   99.747265][    T2]  kthreadd+0x117/0x190
+>> [   99.748748][    T2]  ? kthread_is_per_cpu+0x30/0x30
+>> [   99.750509][    T2]  ret_from_fork+0x16b/0x1e0
+>> [   99.752193][    T2]  ? kthread_is_per_cpu+0x30/0x30
+>> [   99.753992][    T2]  ret_from_fork_asm+0x11/0x20
+>> [   99.755717][    T2]  </TASK>
+>> [   99.756861][    T2] CR2: ffff888012804000
+>> [   99.758353][    T2] ---[ end trace 0000000000000000 ]---
+>> [   99.760319][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+>> [   99.762209][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+>> [   99.769129][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+>> [   99.771297][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+>> [   99.774126][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+>> [   99.777013][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+>> [   99.779827][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+>> [   99.782641][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+>> [   99.785487][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+>> [   99.788671][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+>> [   99.791012][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+>> [   99.793863][    T2] Kernel panic - not syncing: Fatal exception
+>> [   99.796760][    T2] Kernel Offset: disabled
+>> [   99.798296][    T2] ---[ end Kernel panic - not syncing: Fatal exception ]---
+>> 
+>> This makes me suspect the kvm_gmem_folio_restore_direct_map() path isn't
+>> working or isn't getting called.
+>> 
+>> If anyone wants help trying to reproduce this let me know.
 >
-> Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> Hi Brendan,
+>
+> Thanks for trying to run it!
+>
+> Just as a sanity check, the way it is known for us to work is we apply 
+> all patches from [1].  For booted VMs (as opposed to restored from 
+> snapshot), apart from the v6 of the direct map removal series, the only 
+> additional patch is a fix for kvmclock on x86 [2].  Please let me know 
+> if you see the same issue with that patch applied too.
+>
+> Nikita
+>
+> [1] 
+> https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding/resources/hiding_ci/linux_patches
+> [2] 
+> https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding/resources/hiding_ci/linux_patches/11-kvm-clock
 
-Thank you!
+Ah, thanks! Seems I should have checked my inbox before sending my other
+mail. With the kvmclock fix applied to my host kernel, I start setting
+the other crash immediately when the VM boots. If I comment out the
+actual unmapping of memory, it boots (before, it wouldn't boot even with
+that commented out).
 
-> > ---
-> >  mm/khugepaged.c | 15 ++++++++++++---
-> >  1 file changed, 12 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-> > index 0dbbe04c31fe..89a105124790 100644
-> > --- a/mm/khugepaged.c
-> > +++ b/mm/khugepaged.c
-> > @@ -489,7 +489,16 @@ static unsigned int collapse_max_ptes_none(unsigne=
-d int order, bool full_scan)
-> >       max_ptes_none =3D min(khugepaged_max_ptes_none, HPAGE_PMD_NR/2 - =
-1);
-> >
-> >       return max_ptes_none >> (HPAGE_PMD_ORDER - order);
-> > +}
-> > +
-> > +/* Check what orders are allowed based on the vma and collapse type */
-> > +static unsigned long collapse_allowable_orders(struct vm_area_struct *=
-vma,
-> > +                     vm_flags_t vm_flags, bool is_khugepaged)
-> > +{
-> > +     enum tva_type tva_flags =3D is_khugepaged ? TVA_KHUGEPAGED : TVA_=
-FORCED_COLLAPSE;
-> > +     unsigned long orders =3D BIT(HPAGE_PMD_ORDER);
->
-> Nit, but can const-ify.
+For the other linux_patches, I couldn't apply them on top of this
+series, do you have a branch I can use as a reference?
 
-It becomes a function of is_khugepaged in a later patch.
-
->
-> >
-> > +     return thp_vma_allowable_orders(vma, vm_flags, tva_flags, orders)=
-;
-> >  }
-> >
-> >  void khugepaged_enter_vma(struct vm_area_struct *vma,
-> > @@ -497,7 +506,7 @@ void khugepaged_enter_vma(struct vm_area_struct *vm=
-a,
-> >  {
-> >       if (!mm_flags_test(MMF_VM_HUGEPAGE, vma->vm_mm) &&
-> >           hugepage_pmd_enabled()) {
-> > -             if (thp_vma_allowable_order(vma, vm_flags, TVA_KHUGEPAGED=
-, PMD_ORDER))
-> > +             if (collapse_allowable_orders(vma, vm_flags, true))
->
-> If we have a 'mystery meat' boolean parameter can we always use the conve=
-ntion of:
->
-> collapse_allowable_orders(vma, vm_flags, /*is_khugepaged=3D*/true)
->
-> Please? Same goes for other invocations obviously.
-
-Sounds good! I'll fix those up.
-
-Thanks,
--- Nico
-
->
->
-> >                       __khugepaged_enter(vma->vm_mm);
-> >       }
-> >  }
-> > @@ -2567,7 +2576,7 @@ static unsigned int collapse_scan_mm_slot(unsigne=
-d int pages, int *result,
-> >                       progress++;
-> >                       break;
-> >               }
-> > -             if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_KHUG=
-EPAGED, PMD_ORDER)) {
-> > +             if (!collapse_allowable_orders(vma, vma->vm_flags, true))=
- {
-> >  skip:
-> >                       progress++;
-> >                       continue;
-> > @@ -2873,7 +2882,7 @@ int madvise_collapse(struct vm_area_struct *vma, =
-unsigned long start,
-> >       BUG_ON(vma->vm_start > start);
-> >       BUG_ON(vma->vm_end < end);
-> >
-> > -     if (!thp_vma_allowable_order(vma, vma->vm_flags, TVA_FORCED_COLLA=
-PSE, PMD_ORDER))
-> > +     if (!collapse_allowable_orders(vma, vma->vm_flags, false))
-> >               return -EINVAL;
-> >
-> >       cc =3D kmalloc(sizeof(*cc), GFP_KERNEL);
-> > --
-> > 2.51.0
-> >
->
-
+Anyway, the solution I'm hoping to present for your problem gets rid of
+that explicit unmapping code (the allocator will do it for you), so in
+the meantime I have something I can work with.
 
