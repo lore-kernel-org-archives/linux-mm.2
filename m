@@ -4,123 +4,111 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 21B77CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 11:45:21 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2133ECCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 12:01:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3AA448E000F; Fri,  7 Nov 2025 06:45:20 -0500 (EST)
+	id 4E3AE8E000F; Fri,  7 Nov 2025 07:01:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35B2A8E0002; Fri,  7 Nov 2025 06:45:20 -0500 (EST)
+	id 494808E0002; Fri,  7 Nov 2025 07:01:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2496F8E000F; Fri,  7 Nov 2025 06:45:20 -0500 (EST)
+	id 3A9F98E000F; Fri,  7 Nov 2025 07:01:08 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 0F4D28E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:45:20 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id A09A3C0459
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:45:19 +0000 (UTC)
-X-FDA: 84083630358.12.1ED0D0B
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	by imf13.hostedemail.com (Postfix) with ESMTP id E796F2000F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:45:17 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZap4wm3;
-	spf=pass (imf13.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 2A6FE8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 07:01:08 -0500 (EST)
+Received: from smtpin24.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id C68FC4B91F
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:01:07 +0000 (UTC)
+X-FDA: 84083670174.24.028E37E
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
+	by imf16.hostedemail.com (Postfix) with ESMTP id A0739180002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:01:05 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EiDKATdJ;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762515918;
+	s=arc-20220608; t=1762516865;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=P3UolEFy3bRdP252sm4YQ2agYywAUHuWFJXJIEy7jek=;
-	b=lgYsNg8fpXg0OdjgMQo50TrIKbGGJzDs5CIx8P4z0UVIfldZi6+s7chi5Yjc92BPAqYJrs
-	Uy0cJzBp6V2igVxWyGoJiRaOptX+l/nRasKEvFqLjZCm7z3Hx7NDsqXbks5FbZtu7aWyK4
-	Kkz6MX+FqD6mU0iOw/jij/Axpm0MSro=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762515918; a=rsa-sha256;
-	cv=none;
-	b=N6m2a653ExgMs19w/5g9FhbxbFGYH7ZqBpMe8gZhcYjmsff2ic5dUn+MF2j6BwJcBlVRGo
-	xlNAnjslnnCdss1LunMLSawSScIlQ3fspNdGGpDmJ7Agtb7YpvBjrr7xJry23fMxF3htYe
-	dr7fLJPAhszHQJ8jdiqhwzIRZK3ZrM4=
+	bh=lUsVfRHnhaTc6L0mfrJ+S8eMrRvLqjKV9gyOwEzhVzo=;
+	b=URXgx0wZhzUNxw92S2zmRBdG3IgwTEkUJLrDSqLUE1Xpxa6jUMnXQ0J4Bcm1rncry12bLD
+	8l0D65nNGBtGZ3sjB+k1ntoViNLaMC3ExkXBxMboGgjfMjCCDXyReAXUqm1hzl3LgWNLYm
+	pSIclN8fzYj1e5QTCAzUmuMlaSDx2FQ=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=FZap4wm3;
-	spf=pass (imf13.hostedemail.com: domain of ioworker0@gmail.com designates 209.85.210.174 as permitted sender) smtp.mailfrom=ioworker0@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-7aa9be9f03aso606932b3a.2
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 03:45:17 -0800 (PST)
+	imf16.hostedemail.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=EiDKATdJ;
+	spf=pass (imf16.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.53 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dmarc=pass (policy=reject) header.from=soleen.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762516865; a=rsa-sha256;
+	cv=none;
+	b=x/yvIfoiRNzFJWsTQ/eXdRhyOf7wcvRtKCtzhxcgloONVS6VjC0IDR9Ik7gI5sY0DJx8Gl
+	Y3SBWFKXIBaJyPus3N3YVSS8iM9NJBhqbSOkEzOQqZgnKWV9GIrrCk3sdSZB3MABgnKfrm
+	DcFPF18Dzjc/8fFXDken3Z4RuwLOo5k=
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-640b4a52950so1028541a12.1
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 04:01:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762515917; x=1763120717; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=P3UolEFy3bRdP252sm4YQ2agYywAUHuWFJXJIEy7jek=;
-        b=FZap4wm3nfjYOBV7pYFsleSy13YIaoQzdXGmQdZ6iP4IOeKwBsXZJW9qrg78tvbZEV
-         42IfN38aMOO+VztbqQMrowd4BGdQQ6NafmDfUYGu8ekWoCbuJ9ANNpT2RKsHB5y25n6k
-         dDcA4hkHYeihQ7SQWi3JGzrn9zvErDssv1f6frsn4SyujKBkd1pvlzCC+9but7b0Myr6
-         eQcZkFe0jo8j9upOCQOApc4ACQF4aLezgFu89tT7nzJ23/Y6C9kA4iNEY99mJrclYA7f
-         chwdl4VbGGhl3qL6PngVtRlqdDImD8rINktlvXPU+hk7wAFvSVJxKqtTsb0ZL8iRhjm5
-         rltQ==
+        d=soleen.com; s=google; t=1762516864; x=1763121664; darn=kvack.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lUsVfRHnhaTc6L0mfrJ+S8eMrRvLqjKV9gyOwEzhVzo=;
+        b=EiDKATdJ6ISTdoRRnmtjPfU23WGyVmEl1zyo5rbKVGaCVhV6vTS/dtEBg5XDFizs8N
+         4a6VbAfO9A/Do2r4W0SCmG/5EWNeZYZCx6feaSrt4cZHuZ1AUzVkud2dz78i94hTjPcr
+         uhSdVDuuq8TZN1UJpywDlghcc08f0nuK7Vv2D1MVCGIidvKa2lxDFymXJoRMXQgMDaf9
+         RRtofC8OtDF9hBp0xLxwTb8TK9yj1dg80VgMJZQfCZK07QhnivUHpBBF5cBTMXFx2ISN
+         QqimTV1+RCsYDc9gk+EbKgHqlgHw+tN4BHaqpw5ZAiIFEN5Vw0jNUub8f956QpGOaJEj
+         JARg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762515917; x=1763120717;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=P3UolEFy3bRdP252sm4YQ2agYywAUHuWFJXJIEy7jek=;
-        b=Iq+wA9Ur4JCX7G4JnfWeJFSbTW6vdMpCMLBzMGBBNEPTWOkaxmqWDNTlrvKDi7/pCB
-         nczOUNror2YM29lqXMjBch3uOZTDuj0+xclZalDhX1h/ZQbIu5jD3Ipqd2fYttq4l2nC
-         QmiOZTy/cyYcX7i+0EzKCwfxheKC+CQBn0skcpez/1yJRChcNoyMSVYXS68bL0LujeNa
-         UOxzEp0xmG9IDxUFdQA0IBjZUL1J9GtAA4fSf/Og/RSTgqINeZM4Ng26Sm+dRXQ8eQ4v
-         vDCAX+9PItXpWwNzCbe1tzfrj/aQNVImBA1nMiCGSlHdSTSH89nHUUELkFPs+SspFLXr
-         fpOw==
-X-Forwarded-Encrypted: i=1; AJvYcCUoEE+o3baXiSlbbUERwryfXIFtGVg2n3tqVi3GbC2OeYfjJHlBreNzDQ3LeoSLPNFDu7CIxqEKUg==@kvack.org
-X-Gm-Message-State: AOJu0YyQC/X9qmXmDDK7iBQLqaHKEmuAq/NsdUGLzAl6kwFj/66jlmK8
-	NWcGdd9aZhiIKjGfeawhmEu/vv99sc6ODcKl0rAazTDNhuNqc9Lv0EIn
-X-Gm-Gg: ASbGncuuzFrXA7nbe3h8MXxE13MU4ADbc3u3rNxSP6zE5fo5kKVaW5nDHZNYvHxIE7r
-	wTP0+WkIpykdkBgObIb+TStyzy3+QlWuETEfJRU58YEeSU+ibbm+ej73apNVtyZFNqD4Cu9ZD73
-	qTpskrwb0FC8++H7icGctJpN2WAAHMsVUXw0YPCqR2TJpv3IbPhG5S0HF71fIkTvdBXugDiZqag
-	JVFkI0DZ3atjOimgHID58rdT8/1shYO+3SCOSKysA+hFESvYTnr/G9C+qNajDsblOyRRXmZv6WQ
-	Lp7QGS4SGztRTQAmBjrIPbqUVMbuWXM9PTOP8Mcs04CQ2iAM3qMDsqnfJmmC6PM97SPf4+i736v
-	iFDeulUrasbmyV26pVkWCmNiKXQUCZuVeriNwTi+QxeL0D9R4m5VpAJl5qYKMYENPPmadzaGsum
-	TjldVu
-X-Google-Smtp-Source: AGHT+IEgK3+y79M6QAxgxitqK9nN+XnGR2GDAi2/FrE6+S2IrZU3wlJefPhdXptP4GRU9s4WXBb9ew==
-X-Received: by 2002:a17:90b:35cf:b0:340:e8e9:cc76 with SMTP id 98e67ed59e1d1-3434c4eca56mr3374514a91.11.1762515916704;
-        Fri, 07 Nov 2025 03:45:16 -0800 (PST)
-Received: from EBJ9932692.tcent.cn ([43.129.202.66])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7b0ca1e718asm2717145b3a.30.2025.11.07.03.45.12
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 07 Nov 2025 03:45:16 -0800 (PST)
-From: Lance Yang <ioworker0@gmail.com>
-To: chenhuacai@loongson.cn
-Cc: akpm@linux-foundation.org,
-	arnd@arndb.de,
-	chenhuacai@kernel.org,
-	jack@suse.cz,
-	kevin.brodsky@arm.com,
-	linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	david@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	vishal.moola@gmail.com,
-	Lance Yang <lance.yang@linux.dev>
-Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*() about HIGHMEM
-Date: Fri,  7 Nov 2025 19:44:55 +0800
-Message-ID: <20251107114455.59111-1-ioworker0@gmail.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20251107095922.3106390-1-chenhuacai@loongson.cn>
-References: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+        d=1e100.net; s=20230601; t=1762516864; x=1763121664;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lUsVfRHnhaTc6L0mfrJ+S8eMrRvLqjKV9gyOwEzhVzo=;
+        b=AYjM+lSynuHoMoCGpUmTvjZ3mD3Hi/DVJ/mLLqD7FmsfH4WfEiKZKQOOJXHxZ2hxH0
+         IyLXx1rYc+ZFgAHLaYVMEQpXhwyHN5ev5iiqjKHze5oGN0f012BH6HrgXAg1uqKBFfnc
+         XyA/a+jpKu4tKQAoHUBy5u+CRHKYsw3M4lQr9VbOkgB9DFyRPwt+X6z7mNZ2wANzJ1E3
+         nLU20vhBslj1foSv70l1UpTy4Q8ojnckVg2BnIP016Nkza/Lx8LqWiOZc2h1PIb7BLLf
+         N0pzhu7Dg8ASDICpyajZLUfypgyqjze9v0s1Uy0dZ+jyjMk6ar+mB14i8PG7Cl1a/RL5
+         hkYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVASCJOIUKArxCF12R4/YQ1VVxp1oDJ0atkW+OZkynwzZXjkh9TNq57ZcqOJ3EZRHy6DRkHuuN7Lw==@kvack.org
+X-Gm-Message-State: AOJu0YxnuDua3CdsaeQeJ90qduBaLh6bDx6Jb1LZEgI8fPGXoedJfDs7
+	uNIygTzMXHG5bPIWLbbYUedaEkwaJ0xKWGNbiON/cGCXNMESRsDqzqHWnYwJm70g8+3D1y3CIFh
+	1AWbIiV9bWI5s80tui5q2bCxk2GM7SQYuAAiHbr1ivQ==
+X-Gm-Gg: ASbGncsGN+ht0haWDv33pDVd18lhoxr3oz2Dn3UYHE2YRg7ZC0pT7rR0yqpPFNzBgrP
+	x5PDrI5DKgdm13nqe+iWfhXsyARhPrYCar9M3qwCEsINORU3UsMH7BokidxYyDB9ZHaqw7oreVl
+	KUCFHiEMVfQniBWWot5P8GAZL/38JB64TxrSezSxxAdEuCl8OxMagi78Jpc4Sf8Zvjo76247iqH
+	qrmsm5pTSUxs0NKZ06YJ6UHeTvXGRQ18EGtlWcas2dxXuYVyYGQ8qYGMuvA5ANS6KWY
+X-Google-Smtp-Source: AGHT+IF9pn2F0a39L7q6vQA1QNL5mEmZPkN59pguhs34CMH4Kd6QJlTFZpAj3QhY1fmeJmLCWP6NNkx5xTN4CeVBEd4=
+X-Received: by 2002:a05:6402:518b:b0:640:9b62:a8bb with SMTP id
+ 4fb4d7f45d1cf-6413f063ab1mr2470983a12.22.1762516863928; Fri, 07 Nov 2025
+ 04:01:03 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: E796F2000F
-X-Stat-Signature: haxbiouucqbp8rkyr6ec5axzquq6c19p
+References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
+ <20251101142325.1326536-2-pasha.tatashin@soleen.com> <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
+In-Reply-To: <d7651272-f979-4972-ae41-bab2faa8473a@linux.dev>
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+Date: Fri, 7 Nov 2025 07:00:27 -0500
+X-Gm-Features: AWmQ_bkI8wIkZ7GC8hYGylBjaXrBxtU3ZeBWwhoHk2_ITShMsozqrZ6SHuSvZSc
+Message-ID: <CA+CK2bDSvtuwrrXGOC07Rj42yGFHWR4Sse7Q5z1z8f1ZFHWQ2Q@mail.gmail.com>
+Subject: Re: [PATCH v9 1/9] kho: make debugfs interface optional
+To: Zhu Yanjun <yanjun.zhu@linux.dev>
+Cc: akpm@linux-foundation.org, brauner@kernel.org, corbet@lwn.net, 
+	graf@amazon.com, jgg@ziepe.ca, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, masahiroy@kernel.org, 
+	ojeda@kernel.org, pratyush@kernel.org, rdunlap@infradead.org, rppt@kernel.org, 
+	tj@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: A0739180002
+X-Stat-Signature: 4zygzjc4mxwz9ih61zrny1jna5ammtyr
 X-Rspam-User: 
-X-HE-Tag: 1762515917-315580
-X-HE-Meta: U2FsdGVkX19o7ULD9P1KnQIi2CCVJ+3sMatyxuijufflddL6PQ24E/Tj04XlvPbd9phwvcIzfU/mefhR1g7s9dsZZpUsdQGYapDSfvBu4OMo1eZeiAI9SSMHXEVvwhA3pPzgbruUa6fvqv+0dAvIkIOIAJbN3OCZLlgLOGDASYzGiS+vkWYjBZb3dkCAbApJ208VoNDHPHKrMSm6Bnw5wUzmkFu0JNLY8gss6At0qRJfEE4GF5GzT2HjZyD/kDarPp0cUXNUOu8cstweTyWnn0+TeV0N2Scyy8ZiATicgRyF0VhqA1KFDteGFKySevNS0vkeBd4qPxCgWiEYEp/svMkf6A3xRUs6JN5b5Lc/o8xjFoWUU0VWBOQrr656rDPyYJd/SlKRV5cFn5mj8l2NMbdOlpQPhEslCRfeVC02Ync+b095WlWFSthsXunRuMygHz0juxYwZHngcY6SDAiaw9/EfOMNTc7umU8VvmqKN2zFXEG27Al7Ry014G2FWhj2mQen1/iV2pASbMbFSd1rvvJvzSGexAZdMRF6Mq7se2fs9AeFyRxlqM6r4OXa5WD4xKGcYMsMAaGLsrDXneiZ3TsmV2r5dhfU1sMijuDWrkXJz0VtCdxivwG/V6rR7DMboI1UvXnA3jbgClFDp1tNv+7+LWBUzEuF+AH3Q9lN8BL0kxLd6jzjVzUZvndz2htSeGX4TEYCr14fW3/OfYYqRT8V/n4snZWzABdjtY8kEG6ZkGyG0LAbZ0Ig9gB//FmEi7qouJwJNvkTaiq1336S15WQ26+O+8A7viyB1Q5v44NhGhNfzPRGTrtCLWLEzEV3vs7QXohMqcAXGIVUVDCGdCBFJ43odtpLwY5a0tJqJ4WX4BgEIws7mdAdEdiP7xaMqsgeSAwZhlhlJ6cCfgdLBh+mfXiKfwmWl/RswyxmFwYv+sriFCjkyo6zQPMJRSabgiXRsnAUbRaWPhkbq00
- 9Iut95PN
- +AYVYM0HEEL+VucEZskrrkXjH5e7oeUSL9i1HISUxZLYWsztDia1RP/RoaPvOd1tUw13OHzHl8iNlSgpNjaciuX6JFz5K2KJhoJbnB07LHSR6BLKEXwTB6TiHfhdBtIlEuvfZSYD5HxRiEPIpUb567/tPCnUDxDAydD+JSvA8aeFkh0N7Q7lBe2JESlMRmSHp70ZmK8kcCMQI4dt91baialu9jw==
+X-HE-Tag: 1762516865-682655
+X-HE-Meta: U2FsdGVkX1/z2oAqgcHUIexoba8zZmi8lmCvWrHWZhv8WEWSpFDFAmM7QDaRAJHK1THTST130nHrPn9NlOYBUcVD0hXyJH0aLEuj2y5/ImB+ciqLXo46gIdVqQt5S9v4hxnjh0QS1o0qo+wduMTGy/RImPRKy1rVyh1Be7MaiFUPOuEMVW3SKnhqpx6J/PqvAeKF3VeE7lD9Yau4FAiW24zWkzvkAjqbLh0GZcKroI3xFUtEzjHIr6r1nNRXXNfS8SKQ9AkNj0hc1Pbb5nQrUKTmOnu0/MgpSwcChqaY/Su7+RdgIEiHCfH6sDYLo9RhGtxa8Binch67ZQgCwdNnNEcYKLY78sgsbgEw/Fr3K76TrMj1u++8wo8xDH9q+PEt1DqkexAJC8haii7IxTMnaEu+kIaNj+uT2pHTi1bg7xSpYk8lxQeewBRZXzbDf+I/kQKF2s5n3HlciY7iwE8gTwZpoE24itEMr9wZ1Oy2if+XvOIqnE8qfgolsB8QYT0hSrhgVU8o3200yNqzNPXI1fG+aq77sb+V+XcP9bIG7ak5D9ER4GKTXqpOAPUqnNpMuo7YXp/1NO/6AUwlS5L2ZTFeFT72JCvY6U+3gAm9cCQDpwFl+x7PBZqQBHd/zxr3AlGyepQxSyT3vKAafejtZ/aZNwj3ltqChaDV7w5i2hLu2FAijDosKBXGK4jbt0MceancoLCuwuhTjxDJduXxx7cTuc4caGK2pfw2Ae/JTim4CMg5jnbOQyFycyUDvTEcDiHJbK9xy6+FRJzucDVEIAaoY9fW14uxka0yi8zgM4bGHMUMKBoQJyZxe6YqUvCNCKfFXKSooyaxphn5FRRKcVHjvyR4cb+r77l3OE+BEd8+FRcqHS9omTHbx/pUIwVh2hn+bKHDW/lJw3nutpg4dGbEa2gn2hSR1fUQ23b7sy8+v89wfNyniH5XnZZ4di7BR6QH3vAAWr7Z9/ulMDX
+ LMEYsy0P
+ k6TZxciy6g9kEryYv7p4zR02Z7JzHffTdhjUbszrn8x+pGeOQEYEMkNGwtoW4J6XIf7zHrdun1tOJgZbB2J/OP59wAvuuHu1zuXYXjqi9XP6sPxbIWBLFjtwCvwPxshKoJ4MbwpOCGh0yaMzR0EURAn6k8g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -129,81 +117,25 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-From: Lance Yang <lance.yang@linux.dev>
+> Hi, Pasha
+>
+> In our previous discussion, we talked about counting the number of times
+> the kernel is rebooted via kexec. At that time, you suggested adding a
+> variable in debugfs to keep track of this count.
+> However, since debugfs is now optional, where would be an appropriate
+> place to store this variable?
 
+It is an optional config and can still be enabled if the live update
+reboot number value needs to be accessed through debugfs. However,
+given that debugfs does not guarantee a stable interface, tooling
+should not be built to require these interfaces.
 
-On Fri,  7 Nov 2025 17:59:22 +0800, Huacai Chen wrote:
-> __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
-> flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
-> as follows:
-> 
->  #define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
->  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
-> 
-> There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
-> explicitly.
+In the WIP LUO [1] I have, I pr_info() the live update number during
+boot and also store it in the incoming LUO FDT tree, which can also be
+accessed through this optional debugfs interface.
 
-Nice cleanup!
+The pr_info message appears like this during boot:
+[    0.000000] luo: Retrieved live update data, liveupdate number: 17
 
-> 
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
-> Resend because the lines begin with # was eaten by git.
-> 
->  include/asm-generic/pgalloc.h | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-> index 3c8ec3bfea44..706e87b43b19 100644
-> --- a/include/asm-generic/pgalloc.h
-> +++ b/include/asm-generic/pgalloc.h
-> @@ -18,8 +18,7 @@
->   */
->  static inline pte_t *__pte_alloc_one_kernel_noprof(struct mm_struct *mm)
->  {
-> -	struct ptdesc *ptdesc = pagetable_alloc_noprof(GFP_PGTABLE_KERNEL &
-> -			~__GFP_HIGHMEM, 0);
-> +	struct ptdesc *ptdesc = pagetable_alloc_noprof(GFP_PGTABLE_KERNEL, 0);
-
-I looked into the history and it seems you are right. This defensive pattern
-was likely introduced by Vishal Moola in commit c787ae5[1].
-
-After this cleanup, would it make sense to add a BUILD_BUG_ON() somewhere
-to check that __GFP_HIGHMEM is not present in GFP_PGTABLE_KERNEL and
-GFP_PGTABLE_USER? This would prevent any future regression ;)
-
-Just a thought ...
-
-[1] https://github.com/torvalds/linux/commit/c787ae5b391496f4f63bc942c18eb9fdee05741f
-
-Cheers,
-Lance
-
->  
->  	if (!ptdesc)
->  		return NULL;
-> @@ -172,7 +171,6 @@ static inline pud_t *__pud_alloc_one_noprof(struct mm_struct *mm, unsigned long
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, 0);
->  	if (!ptdesc)
-> @@ -226,7 +224,6 @@ static inline p4d_t *__p4d_alloc_one_noprof(struct mm_struct *mm, unsigned long
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, 0);
->  	if (!ptdesc)
-> @@ -270,7 +267,6 @@ static inline pgd_t *__pgd_alloc_noprof(struct mm_struct *mm, unsigned int order
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, order);
->  	if (!ptdesc)
+Pasha
 
