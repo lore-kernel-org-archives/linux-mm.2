@@ -4,118 +4,98 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88B65CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 03:07:53 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D89EDCCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 03:09:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E636D8E000C; Thu,  6 Nov 2025 22:07:52 -0500 (EST)
+	id 31A988E000F; Thu,  6 Nov 2025 22:09:24 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E130A8E0002; Thu,  6 Nov 2025 22:07:52 -0500 (EST)
+	id 2F3268E0002; Thu,  6 Nov 2025 22:09:24 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D509C8E000C; Thu,  6 Nov 2025 22:07:52 -0500 (EST)
+	id 2301A8E000F; Thu,  6 Nov 2025 22:09:24 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id C21CD8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:07:52 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 57754C0297
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:07:52 +0000 (UTC)
-X-FDA: 84082326384.07.CD370E3
-Received: from mail-qv1-f46.google.com (mail-qv1-f46.google.com [209.85.219.46])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 8B7F740005
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:07:50 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B7IG78W9;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id 137238E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:09:24 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id BCEA11DDB0C
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:09:23 +0000 (UTC)
+X-FDA: 84082330206.12.DABBFDC
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 87DBB180015
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:09:21 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762484870;
+	s=arc-20220608; t=1762484962;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=mBCUg/9XCUiNk2sm5BPZW1kXc1XAzZmmErC9z5fdCQI=;
-	b=zqDJRT7+AOcNvSdC/3xN2IpLrPq7nWz/FEX91OfMoRwNzGbd+H17LiB2TlbWNnjnUI4wz2
-	5bwiqCqExlbZAJ49cF5QulJhIrnW34y12s7w79lLasxLA6aIQiIi3/LTDb7/PVQTtZHMrC
-	QLeqBjjgmODfgK7lhUBwlJDgVO/ZTQs=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=B7IG78W9;
-	spf=pass (imf27.hostedemail.com: domain of 21cnbao@gmail.com designates 209.85.219.46 as permitted sender) smtp.mailfrom=21cnbao@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762484870; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=csSSPXipotmOZd+1cL+1q+eeuXMMlYtQSviBWOitwSc=;
+	b=k5OL2YhVqXAlLaFMw1e3tZd9WU8alm62mcImavg6bnJz+Iky0005GqCQtByS9JZk8VDhyw
+	54q6+AdNe7PKTFjWmIkkIg7SZ2rSzFAj2W3I1gmZZYxWBMRcotlIeDM6nAmIVBEJ//fFAa
+	FnPTQucGgJKH0mXKPMvD4BaJTdxzUro=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762484962; a=rsa-sha256;
 	cv=none;
-	b=DzwB+SMIKuLmwFrrH4I/Ug59aYAbTr3pKexU+0HT/upnQ0W0pDTR3pIuSzN9Ong8bB7iW7
-	Y+oEWrWE/Y/D5J4XL1gllwjjDg/WlPbYS1zwtlf9SRs2FoF+UMnfqlE+P511LNiX1q95yr
-	d06G3UtXYYcloSvIjAoWWcTqbkOtEho=
-Received: by mail-qv1-f46.google.com with SMTP id 6a1803df08f44-795be3a3644so1930886d6.0
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 19:07:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762484869; x=1763089669; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mBCUg/9XCUiNk2sm5BPZW1kXc1XAzZmmErC9z5fdCQI=;
-        b=B7IG78W9HI4yXi9cDU5zguQEmhi0WyDwOIvMd7XxC1kayvd5f7GhGX3M8/gHHcx8Q3
-         Nl4UXiOGws09Y9VhxAFZvyOGpocHAVmfZltxHwSZEFgD1NqjBDTII4lGLUYThaxXNsbs
-         QTdXADjXNvW89PQwL17KQLjAGmZuSGQXS5OueLry2VuPtXyv6sVBL58BF2Mo+xif1MRg
-         R9AfZoBQ0iXszOEejqB2gPuNvfj6Mi42whmwP6NPDq60oqjlehiBLf4eHG9fDE5w00bX
-         +yfPEsDVtq62TUhL0GvUh6lGG7VuSuBF8iyaVFj7ocWbrcwHzUmD/FjmYM3xizepodFw
-         I6DQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762484869; x=1763089669;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mBCUg/9XCUiNk2sm5BPZW1kXc1XAzZmmErC9z5fdCQI=;
-        b=fvDvpYH9TXYzc6k6CA/SuTlUsQLHmqs2RdwUr4yZu/nhFDVcTXEBSedYZeJoEnUPLg
-         lfZWFkvnqzNCA3XDDg+XPIKbnLJ0gNjTRkl8RhHpnw9kF3GTY36fSZALK+HHvUSBoMF4
-         vrExRdSegLovsfHXwqVezFgTz5/dH353+llodUzGtJ3ytu4LdKc+nlq3MbMQzpv3li+7
-         46XLxJIzYWqcg+UZt/dhCCxE3DkTZaM6wto68ZGcfpLBOjbP0/qqSK3FEaq5iXljKhLj
-         GgKmm0kCAvIHK6gRudU0rJTEbh13Hxt7yxjeyPeTPZdj0lbn+qo3EoSEiNERMvcVYhP5
-         dApQ==
-X-Gm-Message-State: AOJu0Yz8/MX63iKEwR5eavE7et7t/OHj9G5UKjsabs0yi/yCQv3N0CCH
-	kBBUEjs4LEz24lrFEslIU8tKs1lowdXPAUbleYC/AmQBjZZ7Zbwik7kl7TyowTx39OU1yOTu3Dj
-	heY8qVPICIFxQvwHTCR2WL3djWU+5dEY=
-X-Gm-Gg: ASbGnctztZ4FaeYsN2hthvjNKNEh0xBSaOUjjEftv/gXuK1Da0Jwt4URMmUYH2WfqC5
-	XBc9MPZkbEifMBN5SK8VuU01mnZG55Yyn+J0MF2vDWKAe2O+uXQZzf+VnldJDKTBW0Ymu0sGkET
-	qtAOIA10H2ChGqB4HVQBevvacM7MgkISHqH1ito6tqGKswzR4j2OTsiJxV/6b5Z2r9cUhyO1prJ
-	+7k8W+jX00bQsS9FQqAsJ/rNI41RWlmHzk7sW5mCMLTloQD2d+eDAG7tCnVDULzJwtp0Pnvyv69
-	KyIdOPuoQnOyZPa4jZhOLZgX3VA=
-X-Google-Smtp-Source: AGHT+IGAVK/as/fsnQC6Rzqp5n8giqY9RSCAVH0zLL61+rGwA+Bbr+alJLMG/WG+f+kye53EtjwheHwxoumU1v/Fn0M=
-X-Received: by 2002:a05:6214:240b:b0:880:4c73:9e3b with SMTP id
- 6a1803df08f44-88167b08793mr23624806d6.15.1762484869338; Thu, 06 Nov 2025
- 19:07:49 -0800 (PST)
+	b=ej7CtK4um+CK0k2FXPoCC6DxS5de47djQdYjpk7XHW+Bh7Jc33ecZ8DV5rSG7NPrxKzl2t
+	ighvnKdnFx5grh+rDCsnf79WG/IWHZnjN80tSgdp6nu0pZuu80yKF6RV2pNtGoXRSvvpvg
+	g46eM5nmSKJGW+IeZFWdfYAQ7jSVrls=
+ARC-Authentication-Results: i=1;
+	imf24.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf24.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A435514BF;
+	Thu,  6 Nov 2025 19:09:12 -0800 (PST)
+Received: from [10.164.136.34] (unknown [10.164.136.34])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 316A13F63F;
+	Thu,  6 Nov 2025 19:09:05 -0800 (PST)
+Message-ID: <1c05c28a-a4f7-4562-8799-6f08a03bd3eb@arm.com>
+Date: Fri, 7 Nov 2025 08:39:03 +0530
 MIME-Version: 1.0
-References: <20251029-swap-table-p2-v1-0-3d43f3b6ec32@tencent.com> <20251029-swap-table-p2-v1-13-3d43f3b6ec32@tencent.com>
-In-Reply-To: <20251029-swap-table-p2-v1-13-3d43f3b6ec32@tencent.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Fri, 7 Nov 2025 11:07:38 +0800
-X-Gm-Features: AWmQ_bl9OdAJp-MTk2PhcU5P1TAkG1rr8LH-PKPTp8sGVlXRVHPN5AzCsOi4VdA
-Message-ID: <CAGsJ_4xquj2Kbc2qu0vtY6Q+-q3sg56BgKEdPs8eHtKxLBk0gQ@mail.gmail.com>
-Subject: Re: [PATCH 13/19] mm, swap: remove workaround for unsynchronized swap
- map cache state
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, Nhat Pham <nphamcs@gmail.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Yosry Ahmed <yosry.ahmed@linux.dev>, 
-	David Hildenbrand <david@redhat.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Hugh Dickins <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Huang, Ying" <ying.huang@linux.alibaba.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	Kairui Song <kasong@tencent.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 8B7F740005
-X-Stat-Signature: qxnaudq5gpqsq46zp45axg49nj9az9wd
-X-Rspamd-Server: rspam02
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v12 mm-new 07/15] khugepaged: generalize
+ collapse_huge_page for mTHP collapse
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+ linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
+ ziy@nvidia.com, baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+ ryan.roberts@arm.com, corbet@lwn.net, rostedt@goodmis.org,
+ mhiramat@kernel.org, mathieu.desnoyers@efficios.com,
+ akpm@linux-foundation.org, baohua@kernel.org, willy@infradead.org,
+ peterx@redhat.com, wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+ sunnanyong@huawei.com, vishal.moola@gmail.com,
+ thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+ kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+ anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+ will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz, cl@gentwo.org,
+ jglisse@google.com, surenb@google.com, zokeefe@google.com,
+ hannes@cmpxchg.org, rientjes@google.com, mhocko@suse.com,
+ rdunlap@infradead.org, hughd@google.com, richard.weiyang@gmail.com,
+ lance.yang@linux.dev, vbabka@suse.cz, rppt@kernel.org, jannh@google.com,
+ pfalcato@suse.de
+References: <20251022183717.70829-1-npache@redhat.com>
+ <20251022183717.70829-8-npache@redhat.com>
+ <7b6b5c6b-0298-47c1-ae48-17d603401bac@lucifer.local>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <7b6b5c6b-0298-47c1-ae48-17d603401bac@lucifer.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: mzofdp3jqgjpqftmi1tw4go1efqjuma3
 X-Rspam-User: 
-X-HE-Tag: 1762484870-656519
-X-HE-Meta: U2FsdGVkX19R+PqnRRaHzFZVNAnr2jg1boBy4Egw5TpU57PxvpMn/KkTc4F9jJKAGYm7LfbRI3RqWvf3eXpsWUgsztgIMX8I7M/BxpTTrUiKlQcCQvOkzWV3RlU4wolXmgQQWQPtyGkdYHMbrsat3haNFV/AIj8DlSUIbczCMnyXDOc3vqWGtdEd5uK4DoYr5HoYMKsJ0LEwaZIPvftF7dU/kBzGMPobt9UJf4fX0kCDM8RmXJvSt2jrKKUchdiD5g2NePfrNNTmDhdPfl9PM1fhztUz6hll6UWIkEx5p1uLGt7vtmtInV2dxgFnPQGfai2+/WdMGbpv/bTLmfyhyHOauP+33EKbaWUgwfXXJ4HnGO9sZOelFGn0eGjL2RbLm0WCtKmwpYkJNs0Cv7lC/YgR6V2dBywV+wbp2rvcH8pnCy2QsP/J6BCnN3ZrbBpJ8qGKrv/7gG0TRqtobzbhY/GH3OjOpCKrgA9ZYfNuZ/+4cqVJ92oaUJyb23rYRCDqjuM8kVgXxv/pWRnt8slzBO2UcgFUKWXSu1aDKdWib56+QQ91uIm4OW40wUbTLVPl+8c87+k3Nih0cfOD4WPteEeRg1DMyVALI/ZRY/5mBaLcbjm56k0dOlof+FrKNdJtPXWkiDURh2mphR3oYpU6b4SCPgaGkypnFi7+3z2ivYGPP5A2SN3bnWPzJ1kHoc8LKl2TF5f1/GYIaGZ7p08Q66LOeyZc9dwoVhMoTfbj8twhJDrjJPX9NzF8QzbhTRqhAzPCYmabyclkaTG3LehGJ9ag4qcWp1Y2o5q6Bu4Mli2W2Idlk0R6Ez7SF/JtXid8o3OgI3tA9KUYDgHfOkQBfayrGPdMnEjkgqdifKHLQnFuv/aHf9l3f24GRenlXJbRjf9+SoyJrCFJlsRL4PRxkU+MOilBdPOft9zLM0tPpRnE3v5WDoVVhXOP32l8iWK767z89k2AAH9uJ9eSrag
- g9/gGqKV
- zF11cxck1JloT0RemhNr+4HRQWsQUVaExqOWENTdpWTNNgM+sJ3h0mgItaf8bL6/a8NGwyh9O0R3L+eYp3CVe5sV5a+Dma/p+IRVM6gW9TqYSlUcsf0p+RIk7j2pUaCg/cIRjb8lsR1eVCFrvmeh4z8V1GDhEWNYVPyDfvVy5yEjIPX5w0VXXd5UZPeYlWfFfBt5Qoaxdtc1PuwfqGGmODGVUlV2DQnhNxtWmhbict0uHgNbYGDsNVs879RFhrHJWa2Uvn+IeUibwOcm9L4M+zXkxLFzkAhikxZYrDTBobaFLiX4G9hedgDxJRTXbjAK7X5aROmh8qWkQ6N2f53EzubZ2Hf1PVIpR3u8/JEK2HPHIWBc=
+X-Rspamd-Queue-Id: 87DBB180015
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762484961-278151
+X-HE-Meta: U2FsdGVkX18ImsYBHhgo4R1RucvIs1MZs6A4GpWERtOuy3VqsiXEvlnPHFVgqzl0dcZICMw8lvEfddXOgVHDWPy+aeluPPSMsYCRO8IG2R7egk1axjyDDkENMxEGNoOESDCJlAVP4xz3o61XXmk5r1iOtnlx2FYLSQ7iZ6DNsregM2DjXjv9MQFByNgbP3i/pPNMj+ZvpU3L8raXPlWoRrS9Rf9wkqmsY6fcLOrxzOXOZCU+A4ffWz4AgTmC1nbQh6zOuaC0y/RZX76DWX6/XZ4ausQVH6HzRbz7FgZnwT2emiJIxFm3sYRhmAmz53dzwO6gYJWUkOyfg+eFo3w6SHOfBIV3Tsl0rS8ORJBZ4gppsqx7k6Xo88psubtxZsnY3Pl4WQ+H+Fk9f9p4gVIfHMvbCn+rUKQKxyYEQZGFQUUb9bplIGyzAP0+Pmlhmqy/asU7bWnUAqwSxxqviB70IhQfTMPZzFkRQLxHdi17mN34EZmUOJJ+aRz4LeDnDUDiW4y5YszbVLmmazTFtLiXtNESilTuDMAIbVZnI8joW6YzvQ6ZEyRrdcfYo3G7feM39PdsRklf9x+mU38R1C8lv4ef1rv4x+zi5zRtM16+5bHP7+oIG2nmL+h1865XK3q0S1Y4VwireBuw+jbMO9KdlAOfLfTxktYX0naAO4g6sZ4bOb1FlvJpNBAaD1Quw6627eyi/ir7oMPyvVxRIBqamfJpvJvhWuht3MFiakqgngTSzHWw8WookJv4yBfoKO74uVjmXCgkuREKKb4pVzgu7qLmttK7XNlUNQgCE2U2F6kNfBToBl6wkXbqY66KrELNqZayyRftPq6bu5sT5jKj42BMjhmX8mGSwr85p4wuX5vvQK9ME7p8mlmYd8dTGvo0CjQdrnJNaYfp0efAlcIy8AIXuExdrpzGS0ytCc2cDMzs0gllkFa0JvmpjsPQLtFqrqLuIstR8XenAbJPEHe
+ ES5mWRdp
+ BDBsT2etIVDc6rtJpksBmwW14XJy+WxdKnB/71Ha6S3T78apQN6JUXoe7RPiN+WNkZOf0Zo8JpdWZEOokKaDd64LhOaLEQAbiOmgL2/To6bGfBgtA7PUpDlfAPoFqidupuT0xrDkhzpXXIFfXmOGnZPjeTisdnEBJw4JxBqrk6c2XcBUQBue6TFzb9TL2R2DYaG23oDvjgHv7elmeB03M92VH/yt8BPVXP05wbei2iVJW9NF3x8aAyq+o0iGwsc7m/MoTUUdXLuKWHsg=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -124,46 +104,30 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->  struct folio *swap_cache_alloc_folio(swp_entry_t entry, gfp_t gfp_mask,
->                                      struct mempolicy *mpol, pgoff_t ilx,
-> -                                    bool *new_page_allocated,
-> -                                    bool skip_if_exists)
-> +                                    bool *new_page_allocated)
->  {
->         struct swap_info_struct *si =3D __swap_entry_to_info(entry);
->         struct folio *folio;
-> @@ -548,8 +542,7 @@ struct folio *swap_cache_alloc_folio(swp_entry_t entr=
-y, gfp_t gfp_mask,
->         if (!folio)
->                 return NULL;
->         /* Try add the new folio, returns existing folio or NULL on failu=
-re. */
-> -       result =3D __swap_cache_prepare_and_add(entry, folio, gfp_mask,
-> -                                             false, skip_if_exists);
-> +       result =3D __swap_cache_prepare_and_add(entry, folio, gfp_mask, f=
-alse);
->         if (result =3D=3D folio)
->                 *new_page_allocated =3D true;
->         else
-> @@ -578,7 +571,7 @@ struct folio *swapin_folio(swp_entry_t entry, struct =
-folio *folio)
->         unsigned long nr_pages =3D folio_nr_pages(folio);
+> ----------[snip]------------
 >
->         entry =3D swp_entry(swp_type(entry), round_down(offset, nr_pages)=
-);
-> -       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0, true,=
- false);
-> +       swapcache =3D __swap_cache_prepare_and_add(entry, folio, 0, true)=
-;
->         if (swapcache =3D=3D folio)
->                 swap_read_folio(folio, NULL);
->         return swapcache;
+>> +
+>> +		spin_lock(pmd_ptl);
+> We're duplicating this in both branches, why not do outside if/else?
+>
+>> +		WARN_ON_ONCE(!pmd_none(*pmd));
+> Hmm so the PMD entry will still always be empty on mTHP collapse? Surely we
+> could be collapsing more than one mTHP into an existing PTE table no? I may
+> be missing something here/confused :)
 
-I wonder if we could also drop the "charged" =E2=80=94 it doesn=E2=80=99t s=
-eem
-difficult to move the charging step before
-__swap_cache_prepare_and_add(), even for swap_cache_alloc_folio()?
+After this code path isolates the PTE table, we don't want any other code path
+doing "Hey, I see an empty PMD, let's install a PTE table here". One of the
+reasons why all the heavy locking is required here.
 
-Thanks
-Barry
+Also, I want to ask a question about WARN vs BUG_ON: suppose that the
+race I described above occurs. After khugepaged isolates the PTE table, someone
+faults in a PTE table there, and eventually writes data in the underlying folios.
+Then the buggy khugepaged nukes out that table and installs a new one, installing
+an mTHP folio which had old data. How do we decide whether such a condition is
+worthy of a BUG_ON (leading to system crash) vs letting this pass with WARN?
+
+
+>
+> ------------[snip]----------
+>
 
