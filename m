@@ -4,115 +4,172 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 58A47CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 17:22:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AD103CCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 17:23:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 640998E000C; Fri,  7 Nov 2025 12:22:27 -0500 (EST)
+	id 1556C8E000E; Fri,  7 Nov 2025 12:23:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 54A738E0002; Fri,  7 Nov 2025 12:22:27 -0500 (EST)
+	id 12D5D8E0002; Fri,  7 Nov 2025 12:23:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3C3318E000C; Fri,  7 Nov 2025 12:22:27 -0500 (EST)
+	id 043358E000E; Fri,  7 Nov 2025 12:23:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1E6068E000E
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:22:27 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id BEC475961A
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:22:26 +0000 (UTC)
-X-FDA: 84084479892.18.C9B3A6D
-Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 6894620005
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:22:25 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="I/M1e6C0";
-	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762536145;
-	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=26XTliWJQALV0nAIFdTB4ISdGV5rnIP0dpWzQxw2eGI=;
-	b=XWaDmthfbnY8oRG9f27/waL4hVTb4N0izOWLGZ2znxR9+SDPcwsoPvQMBdon1Yx8Sa+uwd
-	bAXBx+7/Up66/l264+sQd0GlKGM1LdF9W8lLWzubd/ofcrkACJi0ffQix8ThqvpP1j0Zut
-	xdpB1DmLuXxsrC1BYK3fSU8HlgZATH4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762536145; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id E52F58E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:23:03 -0500 (EST)
+Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 8F0FE12CCEB
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:23:03 +0000 (UTC)
+X-FDA: 84084481446.26.5253C40
+Received: from fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com (fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com [18.199.210.3])
+	by imf09.hostedemail.com (Postfix) with ESMTP id 01789140011
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:23:00 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MERTiL8U;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=399a1bf2f=kalyazin@amazon.co.uk" designates 18.199.210.3 as permitted sender) smtp.mailfrom="prvs=399a1bf2f=kalyazin@amazon.co.uk"
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762536181; a=rsa-sha256;
 	cv=none;
-	b=yuVVCPz49TEqmg9SAyGGvTibryJ0YgAd5fLCj9H+LV135Pt0QVcIKRp4CF0fQVmQ6wtNZH
-	R1YizODe4hiS+bugM3s4ax13SqCD8WZLkB+O0PAAUzf+05Wf/Lidg9PpoF825pv0OqWg4U
-	zJkAq89JCahKJMdm/0PseweaIKmj9dE=
+	b=KDjJ7PlgClMPwvywhaa+9bs9bH+WDch3IuiFYtGca6zNjYI9GI5FhWQj/pWA18cDZq0PHw
+	EUpKHx0mryCJOZihSlVq2riAcHzmpk897Kic368tGtlToumtJrs6luVgL6DE0QC8B9Vuv4
+	SrpgatsGIPGIgJ3IsVwU2U11xta+pQY=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=smtpout1 header.b="I/M1e6C0";
-	spf=pass (imf13.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 158.69.130.18 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
-	s=smtpout1; t=1762536144;
-	bh=26XTliWJQALV0nAIFdTB4ISdGV5rnIP0dpWzQxw2eGI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/M1e6C0LmKENIfdQOD0lBMbNXArenQdfNXNHXduSMUa6KfP2S7PCmBlYmAFCWA8p
-	 Jr8M9IrGBWstMO0TIN960Z2I24Zw4L8XJ5QZDtJBBm5cy2l9vowaWYrCdC4LK6Drmd
-	 KVmbCjcG3TYRLvZXs14eB/dB423n26pkp7tz0G0owmcwQdPYuwSTv/VhXiraQe9rPJ
-	 r2HhXlYUJ75DrlCmz+fu5N3RlEHznn9qhjBiP9v2bcy2mGK05yg/uz7M7Xa6ByI8tZ
-	 QFofzq/U2I5XXDlfeofloZeAAEtVhLrMHQ4cST2X4fSHPNkzoY7SzZKEGdPjppewCj
-	 vDwE+adyreoTQ==
-Received: from thinkos.internal.efficios.com (unknown [IPv6:2606:6d00:100:4000:cacb:9855:de1f:ded2])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4d35Tr34nFzKQy;
-	Fri, 07 Nov 2025 12:22:24 -0500 (EST)
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Sweet Tea Dorminy <sweettea@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>
-Cc: linux-kernel@vger.kernel.org,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Dennis Zhou <dennis@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Martin Liu <liumartin@google.com>,
-	David Rientjes <rientjes@google.com>,
-	christian.koenig@amd.com,
-	SeongJae Park <sj@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R . Howlett" <liam.howlett@oracle.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	Yu Zhao <yuzhao@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Matthew Wilcox <willy@infradead.org>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: [RFC PATCH v8 2/2] mm: Fix OOM killer inaccuracy on large many-core systems
-Date: Fri,  7 Nov 2025 12:22:16 -0500
-Message-Id: <20251107172216.515754-3-mathieu.desnoyers@efficios.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251107172216.515754-1-mathieu.desnoyers@efficios.com>
-References: <20251107172216.515754-1-mathieu.desnoyers@efficios.com>
+	imf09.hostedemail.com;
+	dkim=pass header.d=amazon.com header.s=amazoncorp2 header.b=MERTiL8U;
+	dmarc=pass (policy=quarantine) header.from=amazon.com;
+	spf=pass (imf09.hostedemail.com: domain of "prvs=399a1bf2f=kalyazin@amazon.co.uk" designates 18.199.210.3 as permitted sender) smtp.mailfrom="prvs=399a1bf2f=kalyazin@amazon.co.uk"
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762536181;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=atCy8RpnuAqcRPzYjCIN1QpE+/di+36Scy1AE5iWgNk=;
+	b=XrP/rjis0tCpaU2JeR+nyAbRRJRTiCBjXOhP60FvKZKMaINURQ3y+z+cQBuSHBdRkTc1LY
+	ur3BxUCCdjiPKESqy44Econ5N6Cszqw+q2w6zXiSdzDE8HXWFditTSi6GzIMcwc3Ooa7Y2
+	05sQ2pbNKVKK6PlhxYZkmNXCJY255qc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
+  t=1762536181; x=1794072181;
+  h=message-id:date:mime-version:reply-to:subject:to:cc:
+   references:from:in-reply-to:content-transfer-encoding;
+  bh=atCy8RpnuAqcRPzYjCIN1QpE+/di+36Scy1AE5iWgNk=;
+  b=MERTiL8UY/ulosU53+RWANLOb543TurpZ0lckQQj71y4Wo4dq1qypfx1
+   rakiESApogq4J/D7FJfkXlJSV8Er8fCtJNHfCm94CjT6HJaR8Ydc8Fr0v
+   sfvVmJ2EpI1ixkYAbBGeIC2+oKYkGAOlSGYI926fiK4fHtHZI2ROOBruy
+   e5iRpnOiq+abZORhzXz3P0dY3kqX2hd9QIe+u6deIDNV1S/rtN9nBMTCr
+   IbfNxalUj6oFCrO3IhrCio1x0JlGWrlbjDTvWM9eM9aHzxjjoq7fyGYhk
+   W/IBaEKZN/knME1VUHS49FiatsjbKaJ3q9pITXU8oZnFwa9TE9hIGDpKD
+   g==;
+X-CSE-ConnectionGUID: fclArW/bR8qx9ljpWfI9Qg==
+X-CSE-MsgGUID: hWc3zM/WTWePNbtnbgcR6A==
+X-IronPort-AV: E=Sophos;i="6.19,287,1754956800"; 
+   d="scan'208";a="4736768"
+Received: from ip-10-6-6-97.eu-central-1.compute.internal (HELO smtpout.naws.eu-central-1.prod.farcaster.email.amazon.dev) ([10.6.6.97])
+  by internal-fra-out-014.esa.eu-central-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 17:22:38 +0000
+Received: from EX19MTAEUC002.ant.amazon.com [54.240.197.228:7912]
+ by smtpin.naws.eu-central-1.prod.farcaster.email.amazon.dev [10.0.25.163:2525] with esmtp (Farcaster)
+ id bd1226e1-fa2a-4cdf-b10a-b827fb60542a; Fri, 7 Nov 2025 17:22:38 +0000 (UTC)
+X-Farcaster-Flow-ID: bd1226e1-fa2a-4cdf-b10a-b827fb60542a
+Received: from EX19D022EUC002.ant.amazon.com (10.252.51.137) by
+ EX19MTAEUC002.ant.amazon.com (10.252.51.245) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29;
+ Fri, 7 Nov 2025 17:22:32 +0000
+Received: from [192.168.9.244] (10.106.83.15) by EX19D022EUC002.ant.amazon.com
+ (10.252.51.137) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.29; Fri, 7 Nov 2025
+ 17:22:29 +0000
+Message-ID: <d1b58114-9b88-4535-b28c-09d9cc1ff3be@amazon.com>
+Date: Fri, 7 Nov 2025 17:22:27 +0000
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam12
+User-Agent: Mozilla Thunderbird
+Reply-To: <kalyazin@amazon.com>
+Subject: Re: [PATCH v7 06/12] KVM: guest_memfd: add module param for disabling
+ TLB flushing
+To: Ackerley Tng <ackerleytng@google.com>, Patrick Roy
+	<patrick.roy@linux.dev>, David Hildenbrand <david@redhat.com>, Will Deacon
+	<will@kernel.org>
+CC: Dave Hansen <dave.hansen@intel.com>, "Roy, Patrick" <roypat@amazon.co.uk>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "corbet@lwn.net"
+	<corbet@lwn.net>, "maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev"
+	<oliver.upton@linux.dev>, "joey.gouly@arm.com" <joey.gouly@arm.com>,
+	"suzuki.poulose@arm.com" <suzuki.poulose@arm.com>, "yuzenghui@huawei.com"
+	<yuzenghui@huawei.com>, "catalin.marinas@arm.com" <catalin.marinas@arm.com>,
+	"tglx@linutronix.de" <tglx@linutronix.de>, "mingo@redhat.com"
+	<mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org"
+	<x86@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>, "luto@kernel.org"
+	<luto@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"willy@infradead.org" <willy@infradead.org>, "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>, "lorenzo.stoakes@oracle.com"
+	<lorenzo.stoakes@oracle.com>, "Liam.Howlett@oracle.com"
+	<Liam.Howlett@oracle.com>, "vbabka@suse.cz" <vbabka@suse.cz>,
+	"rppt@kernel.org" <rppt@kernel.org>, "surenb@google.com" <surenb@google.com>,
+	"mhocko@suse.com" <mhocko@suse.com>, "song@kernel.org" <song@kernel.org>,
+	"jolsa@kernel.org" <jolsa@kernel.org>, "ast@kernel.org" <ast@kernel.org>,
+	"daniel@iogearbox.net" <daniel@iogearbox.net>, "andrii@kernel.org"
+	<andrii@kernel.org>, "martin.lau@linux.dev" <martin.lau@linux.dev>,
+	"eddyz87@gmail.com" <eddyz87@gmail.com>, "yonghong.song@linux.dev"
+	<yonghong.song@linux.dev>, "john.fastabend@gmail.com"
+	<john.fastabend@gmail.com>, "kpsingh@kernel.org" <kpsingh@kernel.org>,
+	"sdf@fomichev.me" <sdf@fomichev.me>, "haoluo@google.com" <haoluo@google.com>,
+	"jgg@ziepe.ca" <jgg@ziepe.ca>, "jhubbard@nvidia.com" <jhubbard@nvidia.com>,
+	"peterx@redhat.com" <peterx@redhat.com>, "jannh@google.com"
+	<jannh@google.com>, "pfalcato@suse.de" <pfalcato@suse.de>, "shuah@kernel.org"
+	<shuah@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "linux-doc@vger.kernel.org"
+	<linux-doc@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>, "linux-fsdevel@vger.kernel.org"
+	<linux-fsdevel@vger.kernel.org>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+	"bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "Cali,
+ Marco" <xmarcalx@amazon.co.uk>, "Kalyazin, Nikita" <kalyazin@amazon.co.uk>,
+	"Thomson, Jack" <jackabt@amazon.co.uk>, "derekmn@amazon.co.uk"
+	<derekmn@amazon.co.uk>, "tabba@google.com" <tabba@google.com>
+References: <20250924151101.2225820-4-patrick.roy@campus.lmu.de>
+ <20250924152214.7292-1-roypat@amazon.co.uk>
+ <20250924152214.7292-3-roypat@amazon.co.uk>
+ <e25867b6-ffc0-4c7c-9635-9b3f47b186ca@intel.com>
+ <c1875a54-0c87-450f-9370-29e7ec4fea3d@redhat.com>
+ <82bff1c4-987f-46cb-833c-bd99eaa46e7a@intel.com>
+ <c79173d8-6f18-40fa-9621-e691990501e4@redhat.com>
+ <c88514c3-e15f-4853-8acf-15e7b4b979f4@linux.dev>
+ <aNZwmPFAxm_HRYpC@willie-the-truck>
+ <5d11b5f7-3208-4ea8-bbff-f535cf62d576@redhat.com>
+ <be89abc6-97ca-47d8-b8e7-95f58ab9cc67@linux.dev>
+ <f13e06f3-3c7b-4993-b33a-a6921c14231b@redhat.com>
+ <d25340e3-2017-4614-a472-c5c7244c7ce4@linux.dev>
+ <diqzqzu9dfog.fsf@google.com>
+Content-Language: en-US
+From: Nikita Kalyazin <kalyazin@amazon.com>
+Autocrypt: addr=kalyazin@amazon.com; keydata=
+ xjMEY+ZIvRYJKwYBBAHaRw8BAQdA9FwYskD/5BFmiiTgktstviS9svHeszG2JfIkUqjxf+/N
+ JU5pa2l0YSBLYWx5YXppbiA8a2FseWF6aW5AYW1hem9uLmNvbT7CjwQTFggANxYhBGhhGDEy
+ BjLQwD9FsK+SyiCpmmTzBQJnrNfABQkFps9DAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQr5LK
+ IKmaZPOpfgD/exazh4C2Z8fNEz54YLJ6tuFEgQrVQPX6nQ/PfQi2+dwBAMGTpZcj9Z9NvSe1
+ CmmKYnYjhzGxzjBs8itSUvWIcMsFzjgEY+ZIvRIKKwYBBAGXVQEFAQEHQCqd7/nb2tb36vZt
+ ubg1iBLCSDctMlKHsQTp7wCnEc4RAwEIB8J+BBgWCAAmFiEEaGEYMTIGMtDAP0Wwr5LKIKma
+ ZPMFAmes18AFCQWmz0MCGwwACgkQr5LKIKmaZPNTlQEA+q+rGFn7273rOAg+rxPty0M8lJbT
+ i2kGo8RmPPLu650A/1kWgz1AnenQUYzTAFnZrKSsXAw5WoHaDLBz9kiO5pAK
+In-Reply-To: <diqzqzu9dfog.fsf@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.106.83.15]
+X-ClientProxiedBy: EX19D003EUB004.ant.amazon.com (10.252.51.121) To
+ EX19D022EUC002.ant.amazon.com (10.252.51.137)
+X-Rspamd-Queue-Id: 01789140011
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 7oop84m75mus9a469595jtrm5r4je6ir
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6894620005
-X-Stat-Signature: q8c6h3kzp14pqfxzwcfayqrionfn7k5k
-X-HE-Tag: 1762536145-542527
-X-HE-Meta: U2FsdGVkX19Tt5QhKKHHmLgzMsFIp88BYpXz46MG4Mx44pSReMYErJVoWGzSZet8ZluO2SnyiK1vYaPO9yu0QbX7PBPBC39KAAHBc1yCHtfq6BF6P/mTcv5q7vQtDliV6VS/zGFU1k0c7GO3VACtoNfon2ghuBIe+U2M4135ddBGceIGi6DQXaZvo0dgSR9Sif2i0sj1zugprvetIB1Mrny0Z1k6PpV3awtrbWegrKcgMjJ/fggLdusRssmzUxenq1NuD+WaysVpcWHEHi6sx9Bew4YaQEfTMoGY71WjCzF180D1ITyXy3OyE9Penmbdo642th3ngztxVFhxZnK7+mQ+12iFtjoJVtQNdYKGtCVpLkUgQGQ14UDVpqac1E/6eZc+5TFfeYqinWws439/+lgJgX+CarDpLKKjcfVleTUzs6i/87zYPJJyyt77A0Qt7DYLw29L0sewcQzrqgT3kVHbFOHjU9tU+vCbFy8s6StLEzXQQNrLtWT63rUHbaecbjIJSqs16WNPRtqxRqna5G4qs1JSn5+ZwHbeSHMA6DF+TRsRzuBoihIqUw9j6xx6+q4ZDdeppqNm+3/f3M9MeZsBxO5GNrgGg4aqxBPDnpolU7xHbMTtldLZTY4BWjitJWGfWlphmjcl46Vq7mj4nkAlU6LrVtw7RLRXX4Fjf9wu/CDdb2Hqg3W/Vgdu7To2vl4Xyae6Wt3hjoLmCQ8mCrV/U56e6CmdQxjOJWnKOdGgDq1CyX37O0xMZKdiOra5JXAgIpDFWFg0kMjcLbsuFH7F6C3PT0Eux+sWuuEvYEyMmCHUzjcTWpn2L9qZVyPuIr3L94EUwBQXHKmUCV1y5qy4KGB/gTnrtT6x2KltoBbDM2TqWO+CDXz4rM+a38iRxTAWXWJEm23Au1LOftR8HBCuoUruoxW9yWFITpnnfIKtklhoLMv35UnUuxR9mBEnMn5PohiEN6sUi365i5B
- kdUzZWYh
- dLKpl72yQEvp9gu1cvMP6KX4fOVQoZRzlwe8g1xOkrDrY+W6NEq/nKCOwILyLgSOthg/mSR4nm19bqP5gQnkt+b0ppIrVLBiAEvIjoTqLBFHlo5I=
+X-HE-Tag: 1762536180-391756
+X-HE-Meta: U2FsdGVkX19UWbGGU6OfvGVDqLmQotz7XN1uvYM0UGXojqjgbt9ONDhChWLG4DYtrpzSxAd1FVtBXgnSw/P8BBF07t4+hAMLe9HPmP5u+C7FhnhS1q3f4pD5eCWSWDK6IV8126WLjkIbZR+xOd4neINLKW3Y+EepCa7yxKe1btXBA3bbuBbE5nEzaz2VgiuR4B+mo5F3THRhyIboCxuz+U0w5t69VBdHRU/E1dq3h0ok4lwV8cwMFXtNkIMyS5dp9st1pG/iHUrNQLkS72ooSAld9PzccoYjtYc2KV0Yr6x2+pLgm8y1IfYgeLZ48D6R+PPGnu3KTZlkfnOg+Xn2WEDM2sJ0l7lp3F15ZgCIPvNtdyuYLTgZGviUyr1Oft7KVj7Z82428PjT8HeZWa2HEVP40+SlNdoB1pEsu+GFOLJEO11jtCPsWQZ6uxTDvYp5qXk/8gZdh5keHGJIx59cwvAj/gnyjSjuHnZs6IuQtSsiXQrwHn0I7YzPHTD6GGmJKcHpLk7xs0yG1TXDNb7FURuVVtBTj+ykk5dLgzCSbq6kE8GWjO2I7/xNAzd01vTtPo0McR8zuRzccHhK6NMv+LZRun0sbWkidi4/D4ANoLp8AP9Yqww51MW08saNPBF70txbLiGcLS11+4e34N2wtCS4aDT+MvrQyVQvfIgz3BgXVQHOofjd7BVtkWT8U9l8PSaaNcYoUSMTlm4NSscLq6HaeSLs7pJoD7rsP+MlwGy/YmVwz1OdI3IPr6spIL7hIAqRsCBHAuogd7KrbTVOPDn6Dod9nFVf/3YiDglbr5AXRX/P7hdiQqwSh2DxHGAm6yLtJRcOSs6qZ1YUfVwy+O9OP+P8Z2umJ8LJPFYqxS9vO0NNOj+6nRO/ZcQ9CqmQDE4TmAB/FlFbbih3CFy10ePHzxitpRb+c3aQqpW3a9jUH35kZ/kOS1TQ9Z5XGpdE8Ib/V0H7JQYDtaqJ44j
+ MIsM6/u9
+ evYQjMg7ai7l1qo02+v8svfJU9BVmUW/iKabI39+0ClY0QB7YY6JdJSgESUfqh6oSH+b0PcLYO89POXcJHPEtJedw0Yk7VJg/JAzk+cjOMqMhLVF6wQNaOQciXzyT3EiPdHezwR1lCozv55ICCFRUi0GpPqDOueBq/pn5dQfk9yn4PfjUItV89gUZlVcEqwxocsgnT0bN0Q2RcslQnfFCc3tCt8PW5fNR4SxVQprCMBbkBSUJrBSuZZtFioU+WxKaWkPVJ0MpCABtAAXi12MhaiWft1rN8N3OVrjByVU8bSCw5PtQGMcf6PSjgEvAc1wxnbyJFH0uih6g0QuDuqL8JykYmhgB6BwyYrpNriQpitH+tlCuJGewI6giSxXk5tQb8rbiwG9bxpwAMfNZ0X3tFRTJuuJx/cZM9M7qQvWAfX+V/+pjCjBwvlNQupFhMjzpHxcWjuBoARd9Gqf+XInOjJ+mOxdgINIeGOs0ZQFe79tnH8frpccWMsaP5B+nLZvRW8DzO/WV1jp8OeBDknPvG0mkYWQJ1UQ+ozNYSK0v8xyZRuoB1x/oEQIIjOpUAKW8nNLr/zEkjwe00TZDm+UVzvKM/f3bj6yAQQOw1vDP1P9UfG0HFwINV8dk7Olz1GjC+tIgzuziIi1OvjVpOlPcOaxwO6fI4sseo3nmq6Onwgw7BvH86hKPVgC6O/HmDIv7c3NNxK9tJWsfqldFHTrO+NLxvt21PBorzUVjmB3ooYd+rvXj7Ps8PgO28PzoxXoIidoP/RMnp3fi6B44k1+BlB9B5Yh0+5tVTtA7FiIgUJaCnG36zjEXb/rnOoVFoLZ+NAoOsZh7T8bblkD8MOPrD/b2LfYQEr+Zq1l3xMLPhCKQAfKCQL33aaxC1AP6el/SFH7WC5YaGHabBlpvZAzerJO7Z24i3lWHssBNX3RbjO/kNypiamDLOmzb8cXwmOKJSuUCXBuBW7x9CBLuI3L4h9/CJ1fU
+ Ws7NymQz
+ Xz/hXXcz8RSEms7uTMojkDfijKqwFT9i0sUVLGV3HY3TMs/KJo1AjeuSdgsoWadk
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -121,284 +178,177 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Use hierarchical per-cpu counters for rss tracking to fix the per-mm RSS
-tracking which has become too inaccurate for OOM killer purposes on
-large many-core systems.
 
-The following rss tracking issues were noted by Sweet Tea Dorminy [1],
-which lead to picking wrong tasks as OOM kill target:
 
-  Recently, several internal services had an RSS usage regression as part of a
-  kernel upgrade. Previously, they were on a pre-6.2 kernel and were able to
-  read RSS statistics in a backup watchdog process to monitor and decide if
-  they'd overrun their memory budget. Now, however, a representative service
-  with five threads, expected to use about a hundred MB of memory, on a 250-cpu
-  machine had memory usage tens of megabytes different from the expected amount
-  -- this constituted a significant percentage of inaccuracy, causing the
-  watchdog to act.
+On 07/11/2025 15:29, Ackerley Tng wrote:
+> Patrick Roy <patrick.roy@linux.dev> writes:
+> 
+>> Hey all,
+>>
+>> sorry it took me a while to get back to this, turns out moving
+>> internationally is move time consuming than I expected.
+>>
+>> On Mon, 2025-09-29 at 12:20 +0200, David Hildenbrand wrote:
+>>> On 27.09.25 09:38, Patrick Roy wrote:
+>>>> On Fri, 2025-09-26 at 21:09 +0100, David Hildenbrand wrote:
+>>>>> On 26.09.25 12:53, Will Deacon wrote:
+>>>>>> On Fri, Sep 26, 2025 at 10:46:15AM +0100, Patrick Roy wrote:
+>>>>>>> On Thu, 2025-09-25 at 21:13 +0100, David Hildenbrand wrote:
+>>>>>>>> On 25.09.25 21:59, Dave Hansen wrote:
+>>>>>>>>> On 9/25/25 12:20, David Hildenbrand wrote:
+>>>>>>>>>> On 25.09.25 20:27, Dave Hansen wrote:
+>>>>>>>>>>> On 9/24/25 08:22, Roy, Patrick wrote:
+>>>>>>>>>>>> Add an option to not perform TLB flushes after direct map manipulations.
+>>>>>>>>>>>
+>>>>>>>>>>> I'd really prefer this be left out for now. It's a massive can of worms.
+>>>>>>>>>>> Let's agree on something that works and has well-defined behavior before
+>>>>>>>>>>> we go breaking it on purpose.
+>>>>>>>>>>
+>>>>>>>>>> May I ask what the big concern here is?
+>>>>>>>>>
+>>>>>>>>> It's not a _big_ concern.
+>>>>>>>>
+>>>>>>>> Oh, I read "can of worms" and thought there is something seriously problematic :)
+>>>>>>>>
+>>>>>>>>> I just think we want to start on something
+>>>>>>>>> like this as simple, secure, and deterministic as possible.
+>>>>>>>>
+>>>>>>>> Yes, I agree. And it should be the default. Less secure would have to be opt-in and documented thoroughly.
+>>>>>>>
+>>>>>>> Yes, I am definitely happy to have the 100% secure behavior be the
+>>>>>>> default, and the skipping of TLB flushes be an opt-in, with thorough
+>>>>>>> documentation!
+>>>>>>>
+>>>>>>> But I would like to include the "skip tlb flushes" option as part of
+>>>>>>> this patch series straight away, because as I was alluding to in the
+>>>>>>> commit message, with TLB flushes this is not usable for Firecracker for
+>>>>>>> performance reasons :(
+>>>>>>
+>>>>>> I really don't want that option for arm64. If we're going to bother
+>>>>>> unmapping from the linear map, we should invalidate the TLB.
+>>>>>
+>>>>> Reading "TLB flushes result in a up to 40x elongation of page faults in
+>>>>> guest_memfd (scaling with the number of CPU cores), or a 5x elongation
+>>>>> of memory population,", I can understand why one would want that optimization :)
+>>>>>
+>>>>> @Patrick, couldn't we use fallocate() to preallocate memory and batch the TLB flush within such an operation?
+>>>>>
+>>>>> That is, we wouldn't flush after each individual direct-map modification but after multiple ones part of a single operation like fallocate of a larger range.
+>>>>>
+>>>>> Likely wouldn't make all use cases happy.
+>>>>>
+>>>>
+>>>> For Firecracker, we rely a lot on not preallocating _all_ VM memory, and
+>>>> trying to ensure only the actual "working set" of a VM is faulted in (we
+>>>> pack a lot more VMs onto a physical host than there is actual physical
+>>>> memory available). For VMs that are restored from a snapshot, we know
+>>>> pretty well what memory needs to be faulted in (that's where @Nikita's
+>>>> write syscall comes in), so there we could try such an optimization. But
+>>>> for everything else we very much rely on the on-demand nature of guest
+>>>> memory allocation (and hence direct map removal). And even right now,
+>>>> the long pole performance-wise are these on-demand faults, so really, we
+>>>> don't want them to become even slower :(
+>>>
+>>> Makes sense. I guess even without support for large folios one could implement a kind of "fault" around: for example, on access to one addr, allocate+prepare all pages in the same 2 M chunk, flushing the tlb only once after adjusting all the direct map entries.
+>>>
+>>>>
+>>>> Also, can we really batch multiple TLB flushes as you suggest? Even if
+>>>> pages are at consecutive indices in guest_memfd, they're not guaranteed
+>>>> to be continguous physically, e.g. we couldn't just coalesce multiple
+>>>> TLB flushes into a single TLB flush of a larger range.
+>>>
+>>> Well, you there is the option on just flushing the complete tlb of course :) When trying to flush a range you would indeed run into the problem of flushing an ever growing range.
+>>
+>> In the last guest_memfd upstream call (over a week ago now), we've
+>> discussed the option of batching and deferring TLB flushes, while
+>> providing a sort of "deadline" at which a TLB flush will
+>> deterministically be done.  E.g. guest_memfd would keep a counter of how
+>> many pages got direct map zapped, and do a flush of a range that
+>> contains all zapped pages every 512 allocated pages (and to ensure the
+>> flushes even happen in a timely manner if no allocations happen for a
+>> long time, also every, say, 5 seconds or something like that). Would
+>> that work for everyone? I briefly tested the performance of
+>> batch-flushes with secretmem in QEMU, and its within of 30% of the "no
+>> TLB flushes at all" solution in a simple benchmark that just memsets
+>> 2GiB of memory.
+>>
+>> I think something like this, together with the batch-flushing at the end
+>> of fallocate() / write() as David suggested above should work for
+>> Firecracker.
+>>
+>>>> There's probably other things we can try. Backing guest_memfd with
+>>>> hugepages would reduce the number TLB flushes by 512x (although not all
+>>>> users of Firecracker at Amazon [can] use hugepages).
+>>>
+>>> Right.
+>>>
+>>>>
+>>>> And I do still wonder if it's possible to have "async TLB flushes" where
+>>>> we simply don't wait for the IPI (x86 terminology, not sure what the
+>>>> mechanism on arm64 is). Looking at
+>>>> smp_call_function_many_cond()/invlpgb_kernel_range_flush() on x86, it
+>>>> seems so? Although seems like on ARM it's actually just handled by a
+>>>> single instruction (TLBI) and not some interprocess communication
+>>>> thingy. Maybe there's a variant that's faster / better for this usecase?
+>>>
+>>> Right, some architectures (and IIRC also x86 with some extension) are able to flush remote TLBs without IPIs.
+>>>
+>>> Doing a quick search, there seems to be some research on async TLB flushing, e.g., [1].
+>>>
+>>> In the context here, I wonder whether an async TLB flush would be
+>>> significantly better than not doing an explicit TLB flush: in both
+>>> cases, it's not really deterministic when the relevant TLB entries
+>>> will vanish: with the async variant it might happen faster on average
+>>> I guess.
+>>
+>> I actually did end up playing around with this a while ago, and it made
+>> things slightly better performance wise, but it was still too bad to be
+>> useful :(
+>>
+> 
+> Does it help if we add a guest_memfd ioctl that allows userspace to zap
+> from the direct map to batch TLB flushes?
+> 
+> Could usage be something like:
+> 
+> 0. Create guest_memfd with GUEST_MEMFD_FLAG_NO_DIRECT_MAP.
+> 1. write() entire VM memory to guest_memfd.
 
-  This was a result of f1a7941243c1 ("mm: convert mm's rss stats into
-  percpu_counter") [1].  Previously, the memory error was bounded by
-  64*nr_threads pages, a very livable megabyte. Now, however, as a result of
-  scheduler decisions moving the threads around the CPUs, the memory error could
-  be as large as a gigabyte.
+Hi Ackerley,
 
-  This is a really tremendous inaccuracy for any few-threaded program on a
-  large machine and impedes monitoring significantly. These stat counters are
-  also used to make OOM killing decisions, so this additional inaccuracy could
-  make a big difference in OOM situations -- either resulting in the wrong
-  process being killed, or in less memory being returned from an OOM-kill than
-  expected.
+This doesn't fully cover our use case.  We are not always able to 
+populate the entire guest memory proactively with a write(). 
+Specifically, 1) the memory content may not be available on the host by 
+the time the vCPU accesses the page and 2) as we don't want to populate 
+zero pages in advance to save memory on the host, faults on those pages 
+will occur unpredictably and we will have to pay TLB flush cost on every 
+such fault.
 
-Here is a (possibly incomplete) list of the prior approaches that were
-used or proposed, along with their downside:
+> 2. ioctl(guest_memfd, KVM_GUEST_MEMFD_ZAP_DIRECT_MAP, { offset, len })
+> 3. vcpu_run()
+> 
+> This way, we could flush the tlb once for the entire range of { offset,
+> len } instead of zapping once per fault.
+> 
+> For not-yet-allocated folios, those will get zapped once per fault
+> though.
+> 
+> Maybe this won't help much if the intention is to allow on-demand
+> loading of memory, since the demands will come to guest_memfd on a
+> per-folio basis.
 
-1) Per-thread rss tracking: large error on many-thread processes.
+Yes, in our setup we rely on both write() + on-demand faulting working 
+concurrently and we can't always predict which of them will handle a 
+specific page.
 
-2) Per-CPU counters: up to 12% slower for short-lived processes and 9%
-   increased system time in make test workloads [1]. Moreover, the
-   inaccuracy increases with O(n^2) with the number of CPUs.
+Nikita
 
-3) Per-NUMA-node counters: requires atomics on fast-path (overhead),
-   error is high with systems that have lots of NUMA nodes (32 times
-   the number of NUMA nodes).
-
-The approach proposed here is to replace this by the hierarchical
-per-cpu counters, which bounds the inaccuracy based on the system
-topology with O(N*logN).
-
-commit 82241a83cd15 ("Baolin Wang <baolin.wang@linux.alibaba.com>")
-introduced get_mm_counter_sum() for precise /proc memory status queries.
-Implement it with percpu_counter_tree_precise_sum() since it is not a
-fast path and precision is preferred over speed.
-
-Link: https://lore.kernel.org/lkml/20250331223516.7810-2-sweettea-kernel@dorminy.me/ # [1]
-Link: https://lore.kernel.org/lkml/20250704150226.47980-1-mathieu.desnoyers@efficios.com/
-Signed-off-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Dennis Zhou <dennis@kernel.org>
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Martin Liu <liumartin@google.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: christian.koenig@amd.com
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Sweet Tea Dorminy <sweettea@google.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Wei Yang <richard.weiyang@gmail.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: linux-mm@kvack.org
-Cc: linux-trace-kernel@vger.kernel.org
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Mateusz Guzik <mjguzik@gmail.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
----
-Changes since v7:
-- Use precise sum positive API to handle a scenario where an unlucky
-  precise sum iteration would observe negative counter values due to
-  concurrent updates.
-
-Changes since v6:
-- Rebased on v6.18-rc3.
-- Implement get_mm_counter_sum as percpu_counter_tree_precise_sum for
-  /proc virtual files memory state queries.
-
-Changes since v5:
-- Use percpu_counter_tree_approximate_sum_positive.
-
-Change since v4:
-- get_mm_counter needs to return 0 or a positive value.
-
-get_mm_counter_sum -> precise sum positive
----
- include/linux/mm.h          | 10 +++++-----
- include/linux/mm_types.h    |  4 ++--
- include/trace/events/kmem.h |  2 +-
- kernel/fork.c               | 32 +++++++++++++++++++++-----------
- 4 files changed, 29 insertions(+), 19 deletions(-)
-
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d16b33bacc32..987069c0dccc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2679,33 +2679,33 @@ static inline bool get_user_page_fast_only(unsigned long addr,
-  */
- static inline unsigned long get_mm_counter(struct mm_struct *mm, int member)
- {
--	return percpu_counter_read_positive(&mm->rss_stat[member]);
-+	return percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member]);
- }
- 
- static inline unsigned long get_mm_counter_sum(struct mm_struct *mm, int member)
- {
--	return percpu_counter_sum_positive(&mm->rss_stat[member]);
-+	return percpu_counter_tree_precise_sum_positive(&mm->rss_stat[member]);
- }
- 
- void mm_trace_rss_stat(struct mm_struct *mm, int member);
- 
- static inline void add_mm_counter(struct mm_struct *mm, int member, long value)
- {
--	percpu_counter_add(&mm->rss_stat[member], value);
-+	percpu_counter_tree_add(&mm->rss_stat[member], value);
- 
- 	mm_trace_rss_stat(mm, member);
- }
- 
- static inline void inc_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_inc(&mm->rss_stat[member]);
-+	percpu_counter_tree_add(&mm->rss_stat[member], 1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
- 
- static inline void dec_mm_counter(struct mm_struct *mm, int member)
- {
--	percpu_counter_dec(&mm->rss_stat[member]);
-+	percpu_counter_tree_add(&mm->rss_stat[member], -1);
- 
- 	mm_trace_rss_stat(mm, member);
- }
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 90e5790c318f..adb2f227bac7 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -18,7 +18,7 @@
- #include <linux/page-flags-layout.h>
- #include <linux/workqueue.h>
- #include <linux/seqlock.h>
--#include <linux/percpu_counter.h>
-+#include <linux/percpu_counter_tree.h>
- #include <linux/types.h>
- #include <linux/bitmap.h>
- 
-@@ -1119,7 +1119,7 @@ struct mm_struct {
- 		unsigned long saved_e_flags;
- #endif
- 
--		struct percpu_counter rss_stat[NR_MM_COUNTERS];
-+		struct percpu_counter_tree rss_stat[NR_MM_COUNTERS];
- 
- 		struct linux_binfmt *binfmt;
- 
-diff --git a/include/trace/events/kmem.h b/include/trace/events/kmem.h
-index 7f93e754da5c..91c81c44f884 100644
---- a/include/trace/events/kmem.h
-+++ b/include/trace/events/kmem.h
-@@ -442,7 +442,7 @@ TRACE_EVENT(rss_stat,
- 		__entry->mm_id = mm_ptr_to_hash(mm);
- 		__entry->curr = !!(current->mm == mm);
- 		__entry->member = member;
--		__entry->size = (percpu_counter_sum_positive(&mm->rss_stat[member])
-+		__entry->size = (percpu_counter_tree_approximate_sum_positive(&mm->rss_stat[member])
- 							    << PAGE_SHIFT);
- 	),
- 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 3da0f08615a9..e3dd00809cf3 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -133,6 +133,11 @@
-  */
- #define MAX_THREADS FUTEX_TID_MASK
- 
-+/*
-+ * Batch size of rss stat approximation
-+ */
-+#define RSS_STAT_BATCH_SIZE	32
-+
- /*
-  * Protected counters by write_lock_irq(&tasklist_lock)
-  */
-@@ -583,14 +588,12 @@ static void check_mm(struct mm_struct *mm)
- 			 "Please make sure 'struct resident_page_types[]' is updated as well");
- 
- 	for (i = 0; i < NR_MM_COUNTERS; i++) {
--		long x = percpu_counter_sum(&mm->rss_stat[i]);
--
--		if (unlikely(x)) {
--			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%ld Comm:%s Pid:%d\n",
--				 mm, resident_page_types[i], x,
-+		if (unlikely(percpu_counter_tree_precise_compare_value(&mm->rss_stat[i], 0) != 0))
-+			pr_alert("BUG: Bad rss-counter state mm:%p type:%s val:%d Comm:%s Pid:%d\n",
-+				 mm, resident_page_types[i],
-+				 percpu_counter_tree_precise_sum(&mm->rss_stat[i]),
- 				 current->comm,
- 				 task_pid_nr(current));
--		}
- 	}
- 
- 	if (mm_pgtables_bytes(mm))
-@@ -673,6 +676,8 @@ static void cleanup_lazy_tlbs(struct mm_struct *mm)
-  */
- void __mmdrop(struct mm_struct *mm)
- {
-+	int i;
-+
- 	BUG_ON(mm == &init_mm);
- 	WARN_ON_ONCE(mm == current->mm);
- 
-@@ -688,8 +693,8 @@ void __mmdrop(struct mm_struct *mm)
- 	put_user_ns(mm->user_ns);
- 	mm_pasid_drop(mm);
- 	mm_destroy_cid(mm);
--	percpu_counter_destroy_many(mm->rss_stat, NR_MM_COUNTERS);
--
-+	for (i = 0; i < NR_MM_COUNTERS; i++)
-+		percpu_counter_tree_destroy(&mm->rss_stat[i]);
- 	free_mm(mm);
- }
- EXPORT_SYMBOL_GPL(__mmdrop);
-@@ -1030,6 +1035,8 @@ static void mmap_init_lock(struct mm_struct *mm)
- static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	struct user_namespace *user_ns)
- {
-+	int i;
-+
- 	mt_init_flags(&mm->mm_mt, MM_MT_FLAGS);
- 	mt_set_external_lock(&mm->mm_mt, &mm->mmap_lock);
- 	atomic_set(&mm->mm_users, 1);
-@@ -1083,15 +1090,18 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
- 	if (mm_alloc_cid(mm, p))
- 		goto fail_cid;
- 
--	if (percpu_counter_init_many(mm->rss_stat, 0, GFP_KERNEL_ACCOUNT,
--				     NR_MM_COUNTERS))
--		goto fail_pcpu;
-+	for (i = 0; i < NR_MM_COUNTERS; i++) {
-+		if (percpu_counter_tree_init(&mm->rss_stat[i], RSS_STAT_BATCH_SIZE, GFP_KERNEL_ACCOUNT))
-+			goto fail_pcpu;
-+	}
- 
- 	mm->user_ns = get_user_ns(user_ns);
- 	lru_gen_init_mm(mm);
- 	return mm;
- 
- fail_pcpu:
-+	for (i--; i >= 0; i--)
-+		percpu_counter_tree_destroy(&mm->rss_stat[i]);
- 	mm_destroy_cid(mm);
- fail_cid:
- 	destroy_context(mm);
--- 
-2.39.5
+> 
+>>>
+>>> [1] https://cs.yale.edu/homes/abhishek/kumar-taco20.pdf
+>>>
+>>
+>> Best,
+>> Patrick
 
 
