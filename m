@@ -4,97 +4,178 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A408DCCFA13
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 00:32:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 783B4CCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 00:44:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A8F838E0007; Thu,  6 Nov 2025 19:32:31 -0500 (EST)
+	id AFD788E0008; Thu,  6 Nov 2025 19:44:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A674A8E0002; Thu,  6 Nov 2025 19:32:31 -0500 (EST)
+	id AB2008E0002; Thu,  6 Nov 2025 19:44:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9A51F8E0007; Thu,  6 Nov 2025 19:32:31 -0500 (EST)
+	id 99B5B8E0008; Thu,  6 Nov 2025 19:44:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 88E1A8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 19:32:31 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 08FE758481
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:32:31 +0000 (UTC)
-X-FDA: 84081934902.07.C994E2F
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 191D54000A
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:32:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eNzBkg6K;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762475549;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 84AFB8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 19:44:27 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 3DFADB7FFC
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:44:27 +0000 (UTC)
+X-FDA: 84081964974.01.5E8642C
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011027.outbound.protection.outlook.com [40.107.208.27])
+	by imf30.hostedemail.com (Postfix) with ESMTP id 7317080009
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 00:44:24 +0000 (UTC)
+Authentication-Results: imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="UQHPCjI/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762476264; a=rsa-sha256;
+	cv=pass;
+	b=al3jcVRoXtc/BWmHAs3anEslW1K1af4LWVLjDwoPGki769CbLIQKaWnJ+NbPzJtZtLaLwE
+	4yOAN53zuiVXprMaZE9ZD4X+mnHifTtue/VT3PA6xF3LkMmTDe21xLf0yyQjFwU0xfpKuL
+	NAqxJppK9uBjXAPqelqcxrlL9cRGf68=
+ARC-Authentication-Results: i=2;
+	imf30.hostedemail.com;
+	dkim=pass header.d=Nvidia.com header.s=selector2 header.b="UQHPCjI/";
+	dmarc=pass (policy=reject) header.from=nvidia.com;
+	arc=pass ("microsoft.com:s=arcselector10001:i=1");
+	spf=pass (imf30.hostedemail.com: domain of ziy@nvidia.com designates 40.107.208.27 as permitted sender) smtp.mailfrom=ziy@nvidia.com
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762476264;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=yS+MdoGbxE+vBEvrR0CnerAzSJJp4Z3mqFdZ5Yqa+T8=;
-	b=4DsJrEpzqlprOVLdfYHZ+kS4h12Ha++ERg1c+fKRZ6gyUgz3vfOHpyz6jWyha6y/ev1Qz+
-	gLn6P4BAeflPTVykvfGMOC8G0RZ3vUqVQOfjEqYr8f5IjE48ockwSv8MRagLZ4FiWvOTm9
-	jmrb/SdNDTFrsWBge0m25jBBK+26FOU=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=eNzBkg6K;
-	spf=pass (imf17.hostedemail.com: domain of shakeel.butt@linux.dev designates 95.215.58.170 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762475549; a=rsa-sha256;
-	cv=none;
-	b=tkiLZukOvR+wt1bnxd2LTLZqHG0I6rQOrvs9zkd+bxnn7r0PN/EMk2yJ/aYMzFgyogsBsO
-	G2AK+2OM86LP3T1JQuyWYYqoAK9Yo+Eq4rmWK3dGwB1mtHkq0fLosnit5sAQBd+ds/+Aky
-	fJ42Odk/yBMVXHX879/5unyCPGmQpm8=
-Date: Thu, 6 Nov 2025 16:32:16 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762475546;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yS+MdoGbxE+vBEvrR0CnerAzSJJp4Z3mqFdZ5Yqa+T8=;
-	b=eNzBkg6Kp9rQ0bVoqyfWj29RngbJ3M1n/97CJR9Q36ISS02qWfS1JkYlK+aDrdOwTdJH2i
-	XjFHIdUCx4np7ciNjWCqoFw1MMs6lO4am2h3v3Wr+emlfOMM1TtBzEaqaNbgDUI2Ifzq5V
-	O0JzIJJGDKpHnupigi96k+Bnz64SUro=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	oe-lkp@lists.linux.dev, lkp@intel.com, Andrew Morton <akpm@linux-foundation.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>, 
-	David Rientjes <rientjes@google.com>, SeongJae Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea@google.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett" <liam.howlett@oracle.com>, 
-	Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>, 
-	Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>, Yu Zhao <yuzhao@google.com>, 
-	Roman Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, christian.koenig@amd.com
-Subject: Re: [RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large
- many-core systems
-Message-ID: <6hmgutxgdchs4qz6hprwsecwoygwszn5ywixxrvnereilegcsx@mxroaotaw2me>
-References: <20251031144232.15284-3-mathieu.desnoyers@efficios.com>
- <202511061432.4e534796-lkp@intel.com>
+	bh=Kb9ccyNGJpuUxQbmB9ZAGCMH94JU32frpJjRZP57jnc=;
+	b=ZAjdFhHsCRRAJ9sGlWe9v4rOA3Z9T0Xti63E6IRRh5lmtxjnUGg3r7U9epVAMekMq2Ovgr
+	gIxwrYxoXGWFlvmzv3dFcPY0j6SQM3mwRtesvVNDCehR56g9TJoi7jB/unbaSIZ68SdpjV
+	7tRoxPLPA+PdCI4qMEGJNMgUWfIlx5Y=
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Hul/7gJIvtpvraJZvsiRVig+d/j20ZBkhlzpq1Tw9hfjKsNDlSXUXc1v1dWky4m9+VGMaiRagTIfCDQqAPVMjD1fjQ0b40EcOeoNnEHwA8il3VCMpQ2VtBo9ttZ55TRvEAEHAkaWCFZGLl5C1mteMvDHoDM7spQuydHuJkpR844qpdHTEm/kZjf40oIcSc+KElmU9RB0KheCCHG8qkZIu0KXe4b9tbYeVdpLuG5Vd5UxGvwY0w6Br+jkfdMFD7t6LXBFnuCKb2jJvOT9YLbRJqEaM+PO6a5KCi5cL4Z7dkQ/LukO+N0kV4ctPkuNIHSOnmMIo6EjVo+w0MBx378HsA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Kb9ccyNGJpuUxQbmB9ZAGCMH94JU32frpJjRZP57jnc=;
+ b=DLLXk6r0cT3IYmHtcQmnbEbqDnh2NDNHZS2sHHlwvgGkD6NPEZj5q32zJTPNt5EXJrvR3bpyQdrN5ytmlDDJnWPePDccXk9E72nn6jY8GSV4lmia51StkBXzFTKuwvpYtw7kPdDSSIgC6kbY+pxoIXYweg4O0V51yC4qwbtl0fePAOyBMawj+olxqeNoMH5KElpF3hZrlZLWVcWHHzq9sZ3OsyVEg5r73+gFy2tBz00LxEpyAF1WS4Iicn5Vsn+EuHlYuSUAQrDinUIlhZtojl1Ic6rciBPEVACgUIDPvDy5QJTn3rdMBxdF8ex4p8DaAfCO8LUZoeMEZE7xmSqMdg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Kb9ccyNGJpuUxQbmB9ZAGCMH94JU32frpJjRZP57jnc=;
+ b=UQHPCjI/yog2UnNXdZknpVBZy8tmEegtcgMZ1IMmKJzLm0rfYvp/j7S/N+CHLZVlKIvX/VwE3N/cHbAOTecOwiLiAUkcPYO8WDLtDJOqZ3rH7p6QffyguwP+U+tFjLK6dP+TL5N3RQq5SluQfKAdsGAdYvgT4Uiz7NQNHfnAm+two4OTyYY0nUbBy/Jk97LG21zAZtFmsQdBP0jaRb6Z+Dt6iEqSNm08I/Xv0xXWeEH26Pfhy6qEriXz0YQhgkazA81a6erkFTxcZVDAsEQ5kxVyHXaOA0a8xnh/Q+6ojinsavjmWCo9waPhEwHOHra8NeIelNfPB6FC+/C/A0zkUw==
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com (2603:10b6:8:252::5) by
+ PH0PR12MB8774.namprd12.prod.outlook.com (2603:10b6:510:28e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.8; Fri, 7 Nov
+ 2025 00:44:20 +0000
+Received: from DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a]) by DS7PR12MB9473.namprd12.prod.outlook.com
+ ([fe80::5189:ecec:d84a:133a%5]) with mapi id 15.20.9298.010; Fri, 7 Nov 2025
+ 00:44:20 +0000
+From: Zi Yan <ziy@nvidia.com>
+To: Wei Yang <richard.weiyang@gmail.com>
+Cc: akpm@linux-foundation.org, david@kernel.org, lorenzo.stoakes@oracle.com,
+ baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
+ ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
+ lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [Patch v3 1/2] mm/huge_memory: introduce enum split_type for
+ clarity
+Date: Thu, 06 Nov 2025 19:44:17 -0500
+X-Mailer: MailMate (2.0r6283)
+Message-ID: <D0586354-E123-46EA-993F-7A4931390931@nvidia.com>
+In-Reply-To: <20251106034155.21398-2-richard.weiyang@gmail.com>
+References: <20251106034155.21398-1-richard.weiyang@gmail.com>
+ <20251106034155.21398-2-richard.weiyang@gmail.com>
+Content-Type: text/plain
+X-ClientProxiedBy: BL1PR13CA0072.namprd13.prod.outlook.com
+ (2603:10b6:208:2b8::17) To DS7PR12MB9473.namprd12.prod.outlook.com
+ (2603:10b6:8:252::5)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202511061432.4e534796-lkp@intel.com>
-X-Migadu-Flow: FLOW_OUT
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 191D54000A
-X-Stat-Signature: 8y15nycwsckozjxhwxw5gmmndswznyje
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB9473:EE_|PH0PR12MB8774:EE_
+X-MS-Office365-Filtering-Correlation-Id: 23745c54-ba6b-40c8-0da4-08de1d96c9ce
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|7416014|376014|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?P7qlMxqGyHGi4pKpUcnLvd5atsG86gEQ1BxWy3TiB8bGSVNAKV8qdWZHxtP0?=
+ =?us-ascii?Q?V8j/f2nKy2DiFY7xhuIMoJvrnZmczoSTlmg2VwxS6jLFs3Z6wps9eqjTHi0r?=
+ =?us-ascii?Q?Y8eiVlvbowSGthbu2S52TGvXSLYVkVxhyHu5tnlvAQ4dUpeGy4ZoGfRR4kor?=
+ =?us-ascii?Q?T9RDSXfGZtQ/4pIw2au3lXXpnRVFD3cGplsoqT5DvYSF/HfC+zQaBnbG1jLm?=
+ =?us-ascii?Q?RIHxxccsHAm9TcXOxVb9zjz6HJvSRtTt03XOMx2b0ECEMjN8jjxfR9cW3Tdv?=
+ =?us-ascii?Q?zmPOnzZPKx6+yFJdMEXcfbdEJQ8I2dZvxxIdCKUpJUFiwlQKHepj7rCwzZ3Q?=
+ =?us-ascii?Q?RMm6r0e/MlWYDp+yk0bY7b8/7nYBa4u/Cd6UZuFkWJLnH+QUlkIH4QeK7C+8?=
+ =?us-ascii?Q?27Pkn7YFiFmbzDs3FcYfmscB5/DZwQlwNgqC31aShV6240VHjukb8sc9+96w?=
+ =?us-ascii?Q?r4Id620TUoJUXvbkBU4tqLIxWDmofSpf+Y3YeUbFQ30fwFnoDbgWcI1wnpPE?=
+ =?us-ascii?Q?EiuYI2wrnb0aLAlehwgUy8Ga7HOm8fJRugWhYJFPR6DKesir0CWTjmX+k4Hp?=
+ =?us-ascii?Q?uca1pqxLMgT3exmVPWItYZTQijoguNUSm+pzKqJgoA5t/36EOR2TJAedi0Xi?=
+ =?us-ascii?Q?vzDJWEpluvkpEsHnK/WpJDK4ejNy2Pk39LK3h0Opl35ZWdd0OFMMi7EGLxZf?=
+ =?us-ascii?Q?832MT/hEmnpDKlQXwdP0EDpHsDtBbFevU/PnJb7cY9Usvwt4yTy3qySarhzY?=
+ =?us-ascii?Q?iNplIvUQRUqBisud7QUFHb3L2L+YCIXRDcQZHG+N6OKeu1ET5Rk6CEM2t2L/?=
+ =?us-ascii?Q?5GSqAhFXNghA1nFRA79r6F4SdtSo1NPaD5MWul14GuHHtzxbV0803g+NAWD2?=
+ =?us-ascii?Q?ZPzzfV2w5oUIY3CMyq7HBmX0nh+P7+iFnHv42qq3L/pjeNiWPji6ldUcYHkR?=
+ =?us-ascii?Q?wIy65mr+7iuNfOh3q8JxXuJ2nT1IG1Y5Sr3A6LQfuoosdzep24QT8zOPRsvW?=
+ =?us-ascii?Q?IZqOSz9Xv2wummsyc8M27C6Gn2nMFRE2bhw1X5kbP6EtI2yYmDW3vh2wIEmH?=
+ =?us-ascii?Q?zZWhUmCyTRqRXvbn6PPghJpHgUVGPrWG7xbOPjaZi6hXVI5XD2E+ZCbwsoC8?=
+ =?us-ascii?Q?t4+dJWagY6c5b1QK/AdNbyK4ZuKPvVgCKv6wVXw/o7gyV4Z6ORkTxCzKba5c?=
+ =?us-ascii?Q?1Q2JBQJsz5iJE4I4qFX+z1no6d2J/IS8qOG98kNsUhHi2kwVN3ZUzYd3VxnL?=
+ =?us-ascii?Q?TT8y/0azrmolx6TTXgAEcnDPuIerK59ILvPO2xtXYyko4o8nkx5wvTkvcawy?=
+ =?us-ascii?Q?ccxLbedLxZG0+iUWZ0iHKCSxKsfWkh2cFlbNdWX9HJA6AAQKeiCYOX5kzBdX?=
+ =?us-ascii?Q?NJAz1juMuqshtpX21D8NA8gdZiid1evno8ja5amIdKieyBEEVx70u7pgd4P8?=
+ =?us-ascii?Q?0MHC/mAlKFxqWV3bO8CCYrEB5YRqcvUt?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB9473.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?+IjhzR2JYEogOwoAh6/knyg9cPu5aeYf7brxUcVOeGDg2G9DX/g7aBvS2jJv?=
+ =?us-ascii?Q?KGxA/yCTiSCydEbHXhUGl2bRr3/AHofEsz9OwvniT29LpBJmTiBq35icBrOG?=
+ =?us-ascii?Q?WC8yo5UwzSjkS+HnA3D83m7YWe7T1YnuEU1A9C1ENztaSvgmAW0SUQfD4ZBu?=
+ =?us-ascii?Q?wdnDTATKp1pM4bjMG8F+q1UZK73FhhYHPvl/X97pYW81Hv//jsW4noD+67xU?=
+ =?us-ascii?Q?Nr/cfchPl1tkbYBOYwnBj+Ct+qSrTZ7bXu9FW5Mm4gm5grXpHwVUrp+EY1dS?=
+ =?us-ascii?Q?0WZjt4f7ViWqIP+CjVz1whHr+gVTOerF24zcERxSHKHmZuJsp5lsWaJzqUpl?=
+ =?us-ascii?Q?aavj666SI/OaXMQ/yhIATcjmmSO8nJPt74eBmP/ogUAmmv9/6jVSJKBlJRTX?=
+ =?us-ascii?Q?u0Wa6jQ8ZrftiftFSKtr+In9bHLy64KpoEwkM7iJdeN4N7TdaL5N4hv6z4Sj?=
+ =?us-ascii?Q?WygMgPIUnUwLu1ArqeNtOCJD0xptb/lMkGAxcx4FG3Came5BpsyvfGWfD2Ss?=
+ =?us-ascii?Q?hQY7fjEnmi/VRl5MPtJNWC83UYBMxB3lxl0+8ZaINXlqfvIpASHTkVufqSic?=
+ =?us-ascii?Q?WS2ItB5+T1sIfop4AHmShFif5qTJU97bKDNY1jaRdV0AKP1lhFgOAJ1u7YV2?=
+ =?us-ascii?Q?7NjeDEMU2ywoRcctiEo0NFfluGxe/utOoCJeAweJ/lmNRanB3zRtCdfP82MW?=
+ =?us-ascii?Q?GhglfCs0oEgCVX5vf31+WQ18tShZKtit1Xfd1ijhOoe+CA3w52Z76erA1Ew5?=
+ =?us-ascii?Q?vmTgtyKXy796DprTtzGoDeLPDQyLqkAPoHpEG/OlmKW5ReCln/ParapejNnG?=
+ =?us-ascii?Q?rANnz16Stfx171QwNqxCkIIgAHrhnoyZa17cnn46iltb45WbU0Fy6sSax/ka?=
+ =?us-ascii?Q?gL5rhM6TI1rlizOXdkSBS+8rTDHRvqSo3muaZ82Fo1AwfPOta/Qtn+gBJPB4?=
+ =?us-ascii?Q?z0LKe/iWbup+BgPSmPeHQgpIEcvlu02PULoA4M+tzJgs14ZKIXczPRu36Wrk?=
+ =?us-ascii?Q?nuTZX7KtqbrTxOk/0HYTCOHABprXgWHJAN1CXOD+ha25EC9408WI3X19vqSm?=
+ =?us-ascii?Q?BR7wmBTfjolke/cCHDLBpDvyByLN4fbS7RPFQYUo7rfFQvNpSLKYBCOe5gdT?=
+ =?us-ascii?Q?+V8g+cu8Y4gpbnQ+TCRbtt/JHm+CtRRwsvQLq3ODJ+NWmzj32Of9e3JNoebN?=
+ =?us-ascii?Q?yHLGUwTz8RH6HUpkRfLjvcK5lOQdyS8d6+hwgBgTlu0/dN6plLqUYBbIYyGF?=
+ =?us-ascii?Q?DQKxh1m547BZMgN70nfMr3X0fJGf209X4dlJorz2YDYepNTYinNEtqVWoC/B?=
+ =?us-ascii?Q?uHzAPFlxEHDDAfOYZh0gXvoDvq7dKPMtHfGq2icn5QHFKxB2XOMunx6/ski3?=
+ =?us-ascii?Q?NQZKpn6X4n/YFMcQaEyx8P72+oEf5Wh50Y3T2U4QuAIS2awu2yEou5gzxfcE?=
+ =?us-ascii?Q?nCbE1Y39aPYBgKeQLulWjL0evvrVh5Th9iTv+S16D5/rNTeKzwgpaFjcP4sq?=
+ =?us-ascii?Q?4Wclj2yiA15Apf9GNGAQx8oQXtMlGB0FYhT0u427iFBHOHM376ul3H3Tj32U?=
+ =?us-ascii?Q?ltn8mnPwsRn+UUa++TdZIta2KHfDgL/2pQQPLk1h?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 23745c54-ba6b-40c8-0da4-08de1d96c9ce
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB9473.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 00:44:20.2480
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tPqrKLpXd5hShpmutulu87YMsKemwCTP12CnmQK9pwevjQsPQxe5Ha5iKRsIRACj
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8774
+X-Rspamd-Queue-Id: 7317080009
+X-Rspamd-Server: rspam07
+X-Stat-Signature: j1be5r38kjzwpboq51uhbb7xo6dhquuy
 X-Rspam-User: 
-X-HE-Tag: 1762475548-313079
-X-HE-Meta: U2FsdGVkX1+qpbe06E0hDrXLXgfkW0rOBU7cPPlB5z10a0Qoobmu9nwvMRDRfCzO+LgEr332svAVKBkqfCJ7v1sKzQ9bnsOWC1GpEup7Obd05QsWDR+Rl/IQabD7O7gJWr1hhn4MYDH5U+CliwVqhfl6vRCWXnZ3RmqceHDXgBD1E+2B6qgNb4qlnZKdkKzgymOpr860lme1dxEoMsU87BVg0i3VClVAJ9K2OZyJAGcVlsGYMRxzCKQiNmNEI7RhXcNw0VqS42NzrYnMPe4GxPPodeVlw7aHtXwnwijhy1kp5FhlXcAKa4QjuW+liOwX2X0/WuBX9KoCdCw7DvZQUMxr6z2t5AiXkPeJQsnQapawHZpGjLUY+2ZCSDxL1BytpaUd+LfREOyyc3cmeBp0Z7474QykfFf3QYwOxmtNsquyfgByagJE0Pm2RcEwtp//bg6TtHVBwVC3gJBeXQ/CPH+z9iZOWWjtmO43z8AJarsBzz6iINZZiHEPqhA8HCLbCG6CbmhA1ENBtyjrZ84C/5scNJgJeB+5Tvdou01YDKt2xh+hdkT97NEpZlIg4nEdHdgQ6J/Zp5fb26BYQrfLdpE4C69Amb06tsFLI0/te2cTsi7nvWelH4P988LXD1kFakPgpOQisl9DlMMsVi3xIBVDFX4iZv/ceZIFaiG88AgBpDD2vzBBersSuN+kKatKQApMoywxlEvZO9iR5KPL0pEudz0Hzb5cLr1vumetNmZePQQgFX0/shDzwbN7pVAAyxlStBI+p9S8SBg+DZFip5kIdCCapY0wihUZ4n05E84yb3IwfIpxjyaH78H1q0sJ7o8TYwl3+scxpshyuVhwyrMdPDBEJou8XQy0/TvykCBq/UGP1Atg8Rm2u1lRa+2HLyg5tvs1XA+Kg/0z9b3Rlj3RTjmM3rUEnYQkslT5/F8eFx3fLyYEhqSOIwmhvGVz+sLNFHjqvJU4xSz3f+l
- py2WKqGg
- v0HjuSLAxQvwVnMW5VboYM61Y5rz0ihv8Lul7VglzLP9rwcPEdL+gTotJD1i5pGbX7Px1vqAu5Wug50GjLz390/B7En+LyWGUrXDTmSlaTYrwyDSMPGT1jZTmwvHs8MCr09kJoa96eltHUfa1muFm5+bXCiMTk6YP5cfkwA/2gGWrFFQYrbNgq3dgKYI6GCSoLcxX8mANSxooORZF8ZfYR57Zel7giOZ51yzghR3pf625h95tXdDrmZOxvb9/TkzHTJ5SboqwcRMFMpmuvd4N1HEC/NuiH5mTqkdY+wPj41Rr0HQ7Ac3nhDxawrkmNI9WnzwgNkp88/bATTYGiyAe6rat/b3D2b1OJiEC2QIqaFb74ccWjUlrLbj6l4yYVnnL4X78856VhGQ1gK8i5AGReIToZQ==
+X-HE-Tag: 1762476264-575372
+X-HE-Meta: U2FsdGVkX19T0vrzNvdUunugCq9ZGye2VuGFRj3bIdhjprdnSBimffn8rfuCSMjldRwprNJuG6f4yvs5FqISCmCC7JVCl591VMU7zAJj+voEg6liXq+TCaPDfZRiMXTfD+Am5LZlGnQ5R81fJJLhZRZg8ps4rxdUp+RxoMBIokADpr6oJ9fu2HA5XyOp+PljzR5esygWU3Pgtk0pMnA+SpLtCya2Q3cDALcDJVJlozSuNBHjVNjzu5iv42EkDYxSgom9vMj+YzmY3PSAGV66WucyBM43lK5UHBFYBDwwHL4Y/DbFWd+O9dHxgTcaGSu5OtVKNipA10whfXm5X8EbigtPl33nNwVWbsr12O6vmZJVH9FQl33FA3k6g1mgtnJfRbZ0Ryexig3jWfUMmGOkdFCjUu1UeER8zxAGPKjDH79D72RB7GiPazTsE5tPJR60s8obLiy/gR9qMDeoD5fXAw0kez8mcCUy90wjQIc+9w0FWpjwmJ8rEnNwnztkWyx9T9GTOr3zJU6RsnIbtXulDB7Z77+P0HOodVOHKF943nm//bunfI/j00Zp5W97uML6UECcTHK4K8hyHheLWvAaHtC6Y9BVCoNdBIXKx3NXRPTAHFEeWFeX45qUqTkLZ0W5sfi6p6jiVG1UD9k61VHJqnLqdXqa5QFAqMxk0IyqUHgvYn1DqGO0Bf4jIyKFr7MFlcdlJJkfd5FNDUn6FoXHCrmn5LqzjmJxXCMmY9C5BoTkTon7Mw9qr67xEWSuxpQpuaPZS+ZMprAm0SE+pgU1jbiEcQjy7xQ638+i8hk3bwKV3itexMYz9CxzJEEPOWxgs/kg4h/mEkJisYY8YushPyTYXcwdUK+FV+02CgodjcCu9SixWGo7V1F7eZyl18w5MaA+ac+dbZV29SV3fXrxV87+wy9C3Q/XRg2K96P5M/ZtDSKQRPWHWOR6t7QXeuAIDd6SMXJyb6QLRKeUwnj
+ XW3L0IuN
+ +FWV2pYf0d7+Km+BUwpwJ4cIOyfqODNAtZzso5xV2zeByr+U/VsWkecEHHJrtKH0Cjh+4mSAKqeXik3BbGh7rDLoogjB/ub1v09CEdTscMzu2wWA/lRaUbTQ3zlmrH6v5EcKVQbggXhBgNZ8e2SXR+AWNM4fRSXpfrSKtz4mi1eT1foNkvG1BLIbPk1faEozimyNeI76wTXM+xYbd3KlMTFN6W31fhrSSpXlOFv26hEt0lyRlRKKUYAxOhxIY4hLy5w6ehT5HjHmVUe5F7bFcb2wVtRm8Dx92lxMHRMPUjHNQVjvxk5tyL9glaV4TbG3YGavujNFH4KgOLZPiD3X4WScAOfRcKhVysEok/eAC9AwZRjTgV0NZARzn+nNZW1ODB0gFPALndhSqRX50haHBG2PjvTs52Y2imN43u8HnIGzlrmm+jLnwzq9n+VoDo8lFcaGj7lxa/nEBk3iw2rn1I/zOyIvLeAEtyl+9qL3QwECjyybiCj3GCYDcnPwD9T7TXsjt
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -103,54 +184,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 06, 2025 at 02:53:09PM +0800, kernel test robot wrote:
-> 
-> 
-> Hello,
-> 
-> kernel test robot noticed "BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val:#Comm:kworker##Pid" on:
-> 
-> commit: 25ae03e80acad812e536694c1a07a3f57784ae23 ("[RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large many-core systems")
-> url: https://github.com/intel-lab-lkp/linux/commits/Mathieu-Desnoyers/lib-Introduce-hierarchical-per-cpu-counters/20251031-224455
-> base: https://git.kernel.org/cgit/linux/kernel/git/akpm/mm.git mm-everything
-> patch link: https://lore.kernel.org/all/20251031144232.15284-3-mathieu.desnoyers@efficios.com/
-> patch subject: [RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large many-core systems
-> 
-> in testcase: boot
-> 
-> config: x86_64-randconfig-002-20251103
-> compiler: clang-20
-> test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
-> 
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
-> 
-> 
-> in fact, we observed various BUG:Bad_rss-counter_state_mm issues for this commit
-> but clean on parent, as below
-> 
-> +------------------------------------------------------------------------+------------+------------+
-> |                                                                        | 05880dc4af | 25ae03e80a |
-> +------------------------------------------------------------------------+------------+------------+
-> | BUG:Bad_rss-counter_state_mm:#type:MM_FILEPAGES_val:#Comm:kworker##Pid | 0          | 10         |
-> | BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val:#Comm:kworker##Pid | 0          | 17         |
-> | BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val:#Comm:swapper_Pid  | 0          | 2          |
-> | BUG:Bad_rss-counter_state_mm:#type:MM_ANONPAGES_val:#Comm:modprobe_Pid | 0          | 3          |
-> | BUG:Bad_rss-counter_state_mm:#type:MM_FILEPAGES_val:#Comm:modprobe_Pid | 0          | 1          |
-> +------------------------------------------------------------------------+------------+------------+
-> 
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202511061432.4e534796-lkp@intel.com
-> 
-> 
-> [   14.858862][   T67] BUG: Bad rss-counter state mm:ffff8881000655c0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:67
-> [   14.894890][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_FILEPAGES val:0 Comm:kworker/u9:0 Pid:69
-> [   14.896108][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:69
+On 5 Nov 2025, at 22:41, Wei Yang wrote:
 
-Hmm this shows that percpu_counter_tree_precise_sum() is returning 0 but
-percpu_counter_tree_approximate_sum() is off more than
-counter->inaccuracy. I have not dig deeper to find why but this needs to
-be resolved before considering this series for upstream.
+> We currently handle two distinct types of large folio splitting:
+>   * uniform split
+>   * non-uniform split
+>
+> Differentiating between these types using a simple boolean variable is
+> not obvious and can harm code readability.
+>
+> This commit introduces enum split_type to explicitly define these two
+> types. Replacing the existing boolean variable with this enumeration
+> significantly improves code clarity and expressiveness when dealing with
+> folio splitting logic.
+>
+> No functional change is expected.
+>
+> Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Zi Yan <ziy@nvidia.com>
+> Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>
+> ---
+>  include/linux/huge_mm.h |  5 +++++
+>  mm/huge_memory.c        | 30 +++++++++++++++---------------
+>  2 files changed, 20 insertions(+), 15 deletions(-)
+>
+LGTM. Thanks. Reviewed-by: Zi Yan <ziy@nvidia.com>
+
+Best Regards,
+Yan, Zi
 
