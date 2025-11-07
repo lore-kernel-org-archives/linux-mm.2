@@ -4,94 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5141BCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 08:59:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2DE97CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 09:12:10 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AE9988E000A; Fri,  7 Nov 2025 03:59:44 -0500 (EST)
+	id 870E38E0006; Fri,  7 Nov 2025 04:12:09 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AC15C8E0002; Fri,  7 Nov 2025 03:59:44 -0500 (EST)
+	id 8214C8E0002; Fri,  7 Nov 2025 04:12:09 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9FEAD8E000A; Fri,  7 Nov 2025 03:59:44 -0500 (EST)
+	id 710658E0006; Fri,  7 Nov 2025 04:12:09 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 90B9C8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:59:44 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 36D0FB8E4F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:59:44 +0000 (UTC)
-X-FDA: 84083213088.07.5A908EB
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 8627F4000A
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:59:42 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YWCKRYcH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762505982; a=rsa-sha256;
-	cv=none;
-	b=av2KdLQhvJysNFE7G9JbEWLbfkbXvEyQ4f8whE+Od+Bko0/P2rdn5f1A6fOK0l3VuPhjaV
-	BUC8kSa1IWtMGLVzxh1pQuIKxSgRAC8vsoOud6VA5Y7j0kOnAtbDWi2hYi/dfePo6Lo61o
-	FFgocPwX6PKd4RvWMaWvHZp9Pt0ZMJc=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=YWCKRYcH;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf17.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 590478E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:12:09 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 0BBAAB91AF
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:12:09 +0000 (UTC)
+X-FDA: 84083244378.20.1EA28AB
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 1220D4000E
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:12:06 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eyuGv3tO;
+	spf=pass (imf11.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762505982;
+	s=arc-20220608; t=1762506727;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vcQmnaYHQ5HYoPTVc1bAsUaRVYW31APmu4WDLHIO37A=;
-	b=M336FEKsSYVuo6p3OFRVCA+dx/UWTIpR/+66ni4rOtttDPf9PPuQOQqCVTU56VEQNcgZba
-	BXLUUwCjLwDZXfTTorELhviaN8fitSqq4xiVwvvFyWn8kQF3eUUznAwmWRPSXMIARSMcON
-	JYGUHbKExkfFCIc4gKyEQYYc5STOHE8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 133B46013B;
-	Fri,  7 Nov 2025 08:59:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709B4C4CEF5;
-	Fri,  7 Nov 2025 08:59:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762505981;
-	bh=1cEOC2jcm0VXC7GcvRmuZj9kiS1YKJGfs50Jfr0agNU=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YWCKRYcHldP2qaFfyuTLw7bLSDGTzaIYmWgsCX1WKZBbq4oynkcSk0qmrMgRe2dnM
-	 bOIf3Du/lRLpehU0JZUcoDnXOkgGNgjaPIjrGNkMTe/Jalnj5PkECR1tF58ytoZ7u+
-	 n8EQGZ0SHqONXVMb5kIPmX4xqoarJufqR2/D1TyeJTKey6o4tlFhug7gExBl/AyD82
-	 m+dyE5PLWi7SNJjQGIS2Dwja5MgypbZqQ21mjwJzS04R3lEZ/HhbcRYtVpEvJPopTb
-	 CzO5IcXOktCnKeRxabcda9ieIVN54RS3C+h7UJC52vML+lDPVdy6cJPr4dAjKbOqPS
-	 p97gG2jYnBdVA==
-Message-ID: <52f67ca1-24c6-4081-99e6-0a1d30da1bd6@kernel.org>
-Date: Fri, 7 Nov 2025 09:59:35 +0100
+	bh=vfu6hWVOdhakKToS/FAXRGWAJMpHX+j6Qi6pqG2zebo=;
+	b=EaQhqTI83an8yTzHlqexl4VUMeBvLBnacPv9LuxQqjbr+wu3Bf9ea7HTR+/mRpDduDhFZd
+	6mDxNow5CwdkRAWhsGeBUr9afXV7oLcH0J/6NlVhKHgwuDeC0mbbH3+IMIE0nTgpAntEAB
+	AQnETqvVD7zHS9tYuU+LsH5k/E9rb1g=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=eyuGv3tO;
+	spf=pass (imf11.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.221.48 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762506727; a=rsa-sha256;
+	cv=none;
+	b=04woG4inyAP9BglhcEDLVOHfxgFh1nSuHUMTDOd5zwDnTX0a4X5hwiKorvWdKovToCQUuQ
+	LyrRQgTCFXN221jqZk13vR9LQrjBIcTULRQmVrRT0srWrYom/r/32SDBnC8U71Cb8lB/4f
+	SUnltZVYXF5uU+gFMeGrnSCh73mOXQc=
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3ee130237a8so301017f8f.0
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 01:12:06 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762506725; x=1763111525; darn=kvack.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=vfu6hWVOdhakKToS/FAXRGWAJMpHX+j6Qi6pqG2zebo=;
+        b=eyuGv3tOx32qRdGYoFmTCeKqUcIHSp71F3UE6PKSnxll4e6J6F7C+9kUd18wLRvp7d
+         iT4n9u7alZ7GDOWzmIjEdrzyJmCVjxZ65dWpbiEIxE68xOQaIgD+fcAAHqbROhiZKHIv
+         eKdD40ehnqYnLjwhRH/c2UfDQslZWWTUjyvQc4qWvE6HcUW3b89R0TPYaGz1P6d0/laO
+         PVZtQnJEbMJ2HwwYyeEQd5cEp/GKwfHMtlS7jp9Mc/0Yl6rCmPQGWikSLlSyJUVgjCsg
+         dz5Mio3r4y/wf77v1HQOR9wzWndWLRD5axWZsq9xR+S/OiPXyCYASuf8RdgkNhGqaiji
+         DRGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762506725; x=1763111525;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vfu6hWVOdhakKToS/FAXRGWAJMpHX+j6Qi6pqG2zebo=;
+        b=UOoMdd+zCGAjMLBNrqe0Rdd92ujijFM9bl46gu+3zaeHmC+8swYydAF3ynJYuJ4Sey
+         G8RQ7OxP5KDzHOrN5VKJTaPE0Ei/lc1cfAeQ/49+FuqnTQo3IZlWBFNYU9hvRM4jj6Iu
+         kokr9EAT1+xHAXBES+VPk7WmryBdsF91rikIirGhLspRGA1J+l4tNmV/9qAUH65N47ZU
+         Nld1QvPeWa2qZcCRF/vh6BPmQuSPW/8dAwpvMp6Y0UHFG/QCDwObJTazk2XBLbPicPBk
+         uMhBESh5OsMHhFsKzpLhWVaYfAHExfVQc1WPU1zHhBj8Ynif6a+E+NZlKRf4RFgdOvrn
+         Sw3w==
+X-Forwarded-Encrypted: i=1; AJvYcCWZQyPHOzl8jfymRpsa6uyh6deKYqs2UeirHB3C/E1M9VA0bvf40gHRH68LFpQIoIN8M/xcAuPncw==@kvack.org
+X-Gm-Message-State: AOJu0YyOfLa5PbuVNIefvVME22+5X/D7/MM9BUUZ8jrfQ5XPQL4601W6
+	lH2nXfW/zqKDrCnQ7iPaiTmKzEj6rdTr+/cG8lon6l2evsWJOoMc0U8/
+X-Gm-Gg: ASbGncv04ekdGelCJ0s1JwMVq+ZPZwAvf/7ikGtR34k5PrC3ytHgV7dWnpnsqsbSDbF
+	s2glqZ0+thgWEXLXfYk0tWMnmM+vRU2jFIyRBmj7Zx8zbEa4Y1iboqLFEqCixIE1teeASyxCnso
+	l9ldigZzUD/V4PzLJposeuHdGeP5BoiHM9o2ySC4v9nLeM+afG9FNKxqma7BG4HOX3P1J/htZJp
+	KsFxQ88me/XvEBoxNTyFDOjEDPJVFoPULWg8Tgoueb5dV5BLg23FIeopwuRDPGcMuFKYnNThW7O
+	evibRLBCk70tpByPf2VzKzfHbTZdgkaXjNlGxAKCTlDrP+kBncT1SspESQFmVABc3xhydnzWHut
+	Txpt1s7JMr1d/EQ4xnb1wSJ7kB+N9D2de6DUrSCCsuqKStazUgLqiJFrPEYoITAKqLydqXmU3/k
+	OJs0ADE/vNLEYRYCfy3liHzIu44TOmFYM3rqwyUlafMGaL2xgr6g==
+X-Google-Smtp-Source: AGHT+IEEP0U5dTddGyGuUJGvkU9GrhTnDh8Aic0GqAcQP/ISEpYqab5xsiyolY/2271V8nj7hJgVHQ==
+X-Received: by 2002:a05:6000:26d0:b0:3e7:6418:247b with SMTP id ffacd0b85a97d-42ae58b2cc0mr1921056f8f.10.1762506724699;
+        Fri, 07 Nov 2025 01:12:04 -0800 (PST)
+Received: from [192.168.3.141] (p4ff1feb5.dip0.t-ipconnect.de. [79.241.254.181])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-42ac675c9fdsm4089150f8f.28.2025.11.07.01.12.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 07 Nov 2025 01:12:04 -0800 (PST)
+Message-ID: <0e616478-96d4-41e9-b6c1-fa641c36fba3@gmail.com>
+Date: Fri, 7 Nov 2025 10:12:02 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 0/7] mm: folio_zero_user: clear contiguous pages
-To: Ankur Arora <ankur.a.arora@oracle.com>,
- Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org,
- bp@alien8.de, dave.hansen@linux.intel.com, hpa@zytor.com, mingo@redhat.com,
- mjguzik@gmail.com, luto@kernel.org, peterz@infradead.org, acme@kernel.org,
- namhyung@kernel.org, tglx@linutronix.de, willy@infradead.org,
- raghavendra.kt@amd.com, boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
-References: <20251027202109.678022-1-ankur.a.arora@oracle.com>
- <20251027143309.4331a65f38f05ea95d9e46ad@linux-foundation.org>
- <87qzunq6v4.fsf@oracle.com> <87h5v676f4.fsf@oracle.com>
-From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Subject: Re: madvise(MADV_COLLAPSE) fails with EINVAL on dirty file-backed
+ text pages
+To: "Garg, Shivank" <shivankg@amd.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Ryan Roberts <ryan.roberts@arm.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Zi Yan <ziy@nvidia.com>,
+ Baolin Wang <baolin.wang@linux.alibaba.com>, Nico Pache <npache@redhat.com>,
+ Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+ Lance Yang <lance.yang@linux.dev>, Vlastimil Babka <vbabka@suse.cz>,
+ Jann Horn <jannh@google.com>, zokeefe@google.com, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <4e26fe5e-7374-467c-a333-9dd48f85d7cc@amd.com>
+ <8bc796e2-f652-4c12-a347-7b778ae7f899@arm.com>
+ <ozkb6mcxuymlz7tm4vcnqf266gd4ruiik2zal2koo5ffprgxfk@35godtyix2cf>
+ <43a8c8a6-388b-4c73-9a62-ee57dfb9ba5a@lucifer.local>
+ <77a54f63-f5da-42a2-b24d-5c8a0f41d1e6@gmail.com>
+ <0b84865c-5b23-4be6-9902-af9d5e63c182@amd.com>
+From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
 Content-Language: en-US
-In-Reply-To: <87h5v676f4.fsf@oracle.com>
+In-Reply-To: <0b84865c-5b23-4be6-9902-af9d5e63c182@amd.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 8627F4000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: dnysoeozehxgh85u6r14pn1o4cjenimh
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 1220D4000E
+X-Stat-Signature: kkqsr8z8aa8z9ceb1gqk434tezssrj4b
 X-Rspam-User: 
-X-HE-Tag: 1762505982-220439
-X-HE-Meta: U2FsdGVkX19tVHqfFKm9UeVuom6PZf49BhEux/ko9U5aBkFEo4ELSO3HrPpYF0/Pjk+g2w1mCVYOlw4Qf052HLaysAR0BiRRS6mLI0dFjbL3chikv9GyBYLtPtjjdLUpMdV6EhfULuooO7OR+eulVrw6vhfXKtmYUO8DJoCV+hd/LEK9moJuOH/oGtNDsxSAG1fuvEgJDZa/QJgMvywS9bNC0W//MMcRSsWtoiOgufQjDyJlnb6Z7RmvDha/9iXPWFcEyLf59sOPHy8gitlw//0Bimtsluwc6aNmnSyhsuv9WDRLWuXrsq/wRJNuLsE0cr0N4iTG+hBBraDIJvmJYMDXs7tk59tvM/DJsy1fho5TE3b+Aez0bpJYZXZSvgfiQJVhJZ4c9D+L6Hm8a/3ae5sXLCFFnu815vYSabsT6linMOdN/zLrUTwfVdGazbrXcuBuVsn54wTnliudc32dwEkOC0opQsUHc+80Ef1KfBV6vwe03kPGzK1v4zNBslFAnDFP0Yxz6XQYNvu1BG9l1b2PZ5FQ3AsVz3nRqRDyZnJ6EPKMwRQaDAe0K+icmpaTkCBIo6jYmYvJykSF10vtzJ6jkXGQJeb7PYfIkNIoPuSRMz6AzqIe1dLM6pnGQhkiOkuj1fz7hPx1OijBtGZv809UufHKS2Ds7O6NYJiPEmGOqzoqEJCbWbdsnt/NQhPUZFcqhVZnY3QKA74mKfzjmVmIvGCl+FDNdBROo56CQfNcXe0+/c2jUf/kZcCga0K4IhBWRoniYNjeLN//eGRlIpXDWlBk7r49tpdIhxBtSGuBvKnhRzo8t92XZ8RytUoxYW3ZAnUwhQiPdgpb6xcBXH/r7k0iXB5VNQ8+LGS00NqU21nRA2yYp7uwcba/UN8zueR4Z0Gdefvlutd6VtMdvlr5lgOpwpO82RlRK7oZfRo/epBf0eVHh93IrkayxZR/ebM2RP6QzNkh1zNx7sj
- YH0R8ilM
- AkSN04Xw4KJXFfFpjwxLluYQJszn0gH9b0zpshsxkFb9bz+T3xPNa7l6iKAZv0id9b4U+HLYz5YXRz5cU2iaU4vrLuTUTSo+Enba5eutk+eBDXvRRS8E4NGEdzEXWKH46umYDIiHSPh8COKEj2KqsahYx1e+zhC7DmtNMWeQLt6ibv8kYfd0sHPvZ/VlzLA5skZiZqYhxv5nrgwCBO2C5PLdq3RsshYDGD/ksHAMpYuojWQf2t9LydN6vompoF8BZ9ZDqc0IUhnkxsEaxIZpQY10dZfTARZhdAsAce+lG+AlmunRithLZfO0Za2G4erewmAzbOonADWz0CFFWZw3qwGuF+ODlVdyCPrAZPABV2OehFAW38a4khdx15eR1zEI9Yy33ujUNnRDoIAdWjPCBvDBBnbAyoH5DdL8f
+X-HE-Tag: 1762506726-17629
+X-HE-Meta: U2FsdGVkX185x7qRw27nJzGBjFhICavPTacVNnR06oVMq6YlGtvGvToI8r6KQzhbquYj3YgLBuW8hUw1ab7qZejUx8Mo4LCq+PN142yx8i/KdMpxStKcRwt5dMvW/iYfaLcMXQ32GgeHfzjY0x/iYdQV6NzkAznSyUP/0588a+S0ddxbT7jjm2wXzosPRjwGpdAIwzINn+QcuNetavhHlgYZ3UZs7wXiMRrI16qSOnDjXe33Lv9tzPvEOqT/CocVRDcDFqHwGBgcdUUU5otLrpMfpaSI542EKrnOjR4NhAshD4wrdO1GgCA6jFdxUclUPER3/a9A8i9mUk0+Is1qHNv8+XQB/Om+lxjroEAOfzAnH6wcvXlJwLlPUm2DaccJfwnVc7ij9K+qnf15JrcZoHWXZ4cGwO9bOBdRbNsWTyNuQZpcDUG0nqZlSs4/g3iN12fvL3gCaYoUHA14heNGNKmRs85zDn8H6vRq7rPwylrIS2GtadiGg9tI3aw8A6z4gfRPCIqYwbEdKWDznxHBl0St9kHZMqZs0xrSUQHB6duW8W5jL9tQFC4DAUo+YRH7kutneGCJVasLeoGDOUyfg9RadsIjI5HtWtji2GQgrdZMBj36Yh1ThEK5GmbuSKF9FL9TD9YKvg+J57RhhpEGY6fYPQ4bOP9xe5aTHZ6F6Tc6zin3P+y2zAuZ7D79tp+7gYiWKFEaTPG5qO8aW5olPb16WZEONfT3mNJkAy03NTYvVh8FWDKVbEWSM3H5qTytXdQDAj/wsVYzNj/X5tW51igyThXAPjfV4TS6a/dTetrzrWBEPxBCoPIX3gylUk711/1KVPDU1tbZhGDU7VtiSB3glESS+woMWWCBfVXszyYjc45W+3S+tId+sk44TUuBxVRRPSHEN34L3hWHWSII7BFy7T3XkkfzB5/5R1/YG/u6fz4L3Utva0yluLE2uExs8v62a1A70tyAM+YqbvK
+ jRTzUCgi
+ IosPHc1NUqttK6lNOJu/g/v1U/9DNuXJR927EY67Wrm4e59L82QYuy4/+6ROGczqeUtS9M3EOOrWqnf87X4spejZ0hMgguLWNr6BDOmhuoj0EmhFQXhktxoy+PBbsGBnljjqQPgDolGKB+sqcDN1v38OsQTq92KqY7PHshxfCTdZFjP0hqWYk6msOuB18AHf0OgemBofn8MhiBer9Ce4ONbwht105wQQoEIS5CK+X92XGE3SEiGfcaWpvz4sjbGF8u4XCZcQw1kPAQd3mESOW2zpq8Im8CSTh+eI3JMzQl6N+JfJfccRylUI9OuvubL7lgIM4fnjyqqHZIwaOd2S77x9N+O+Y1QpsQWdHMvrqIs+CQMdykqFfwJCIELWWu8oVSjjfVmInno0PA6VHiQZAt1vJVMLKxOT65itjkK9qNIaj8kH8IO7luLqoDQ/9R1eF5XYYxbEcFmz4twVOQF8p3hVKhwjceawWLEAluMgE8iimTlFbC0qomzlOQBU1UBQ5CyQI
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -100,129 +136,31 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07.11.25 06:33, Ankur Arora wrote:
-> 
-> Ankur Arora <ankur.a.arora@oracle.com> writes:
-> 
->> [ My earlier reply to this ate up some of the headers and broke out of
->> the thread. Resending. ]
->>
->> Andrew Morton <akpm@linux-foundation.org> writes:
->>
->>> On Mon, 27 Oct 2025 13:21:02 -0700 Ankur Arora <ankur.a.arora@oracle.com> wrote:
->>>
-> 
-> [ ... ]
-> 
->>
->>> It's possible that we're being excessively aggressive with those
->>> cond_resched()s.  Have you investigating tuning their frequency so we
->>> can use larger extent sizes with these preemption models?
->>
->>
->> folio_zero_user() does a small part of that: for 2MB pages the clearing
->> is split in three parts with an intervening cond_resched() for each.
->>
->> This is of course much simpler than the process_huge_page() approach where
->> we do a left right dance around the faulting page.
->>
->> I had implemented a version of process_huge_page() with larger extent
->> sizes that narrowed as we got closer to the faulting page in [a] (x86
->> performance was similar to the current series. See [b]).
->>
->> In hindsight however, that felt too elaborate and probably unnecessary
->> on most modern systems where you have reasonably large caches.
->> Where it might help, however, is on more cache constrained systems where
->> the spatial locality really does matter.
->>
->> So, my idea was to start with a simple version, get some testing and
->> then fill in the gaps instead of starting with something like [a].
->>
->>
->> [a] https://lore.kernel.org/lkml/20220606203725.1313715-1-ankur.a.arora@oracle.com/#r
->> [b] https://lore.kernel.org/lkml/20220606202109.1306034-1-ankur.a.arora@oracle.com/
->>
->>>> The anon-w-seq test in the vm-scalability benchmark, however, does show
->>>> worse performance with utime increasing by ~9%:
->>>>
->>>>                           stime                  utime
->>>>
->>>>    baseline         1654.63 ( +- 3.84% )     811.00 ( +- 3.84% )
->>>>    +series          1630.32 ( +- 2.73% )     886.37 ( +- 5.19% )
->>>>
->>>> In part this is because anon-w-seq runs with 384 processes zeroing
->>>> anonymously mapped memory which they then access sequentially. As
->>>> such this is a likely uncommon pattern where the memory bandwidth
->>>> is saturated while also being cache limited because we access the
->>>> entire region.
->>>>
->>>> Raghavendra also tested previous version of the series on AMD Genoa [1].
->>>
->>> I suggest you paste Raghavendra's results into this [0/N] - it's
->>> important material.
->>
->> Thanks. Will do.
->>
->>>>
->>>> ...
->>>>
->>>>   arch/alpha/include/asm/page.h      |  1 -
->>>>   arch/arc/include/asm/page.h        |  2 +
->>>>   arch/arm/include/asm/page-nommu.h  |  1 -
->>>>   arch/arm64/include/asm/page.h      |  1 -
->>>>   arch/csky/abiv1/inc/abi/page.h     |  1 +
->>>>   arch/csky/abiv2/inc/abi/page.h     |  7 ---
->>>>   arch/hexagon/include/asm/page.h    |  1 -
->>>>   arch/loongarch/include/asm/page.h  |  1 -
->>>>   arch/m68k/include/asm/page_mm.h    |  1 +
->>>>   arch/m68k/include/asm/page_no.h    |  1 -
->>>>   arch/microblaze/include/asm/page.h |  1 -
->>>>   arch/mips/include/asm/page.h       |  1 +
->>>>   arch/nios2/include/asm/page.h      |  1 +
->>>>   arch/openrisc/include/asm/page.h   |  1 -
->>>>   arch/parisc/include/asm/page.h     |  1 -
->>>>   arch/powerpc/include/asm/page.h    |  1 +
->>>>   arch/riscv/include/asm/page.h      |  1 -
->>>>   arch/s390/include/asm/page.h       |  1 -
->>>>   arch/sparc/include/asm/page_32.h   |  2 +
->>>>   arch/sparc/include/asm/page_64.h   |  1 +
->>>>   arch/um/include/asm/page.h         |  1 -
->>>>   arch/x86/include/asm/page.h        |  6 ---
->>>>   arch/x86/include/asm/page_32.h     |  6 +++
->>>>   arch/x86/include/asm/page_64.h     | 64 ++++++++++++++++++-----
->>>>   arch/x86/lib/clear_page_64.S       | 39 +++-----------
->>>>   arch/xtensa/include/asm/page.h     |  1 -
->>>>   include/linux/highmem.h            | 29 +++++++++++
->>>>   include/linux/mm.h                 | 69 +++++++++++++++++++++++++
->>>>   mm/memory.c                        | 82 ++++++++++++++++++++++--------
->>>>   mm/util.c                          | 13 +++++
->>>>   30 files changed, 247 insertions(+), 91 deletions(-)
->>>
->>> I guess this is an mm.git thing, with x86 acks (please).
->>
->> Ack that.
->>
->>> The documented review activity is rather thin at this time so I'll sit
->>> this out for a while.  Please ping me next week and we can reassess,
->>
->> Will do. And, thanks for the quick look!
-> 
-> Hi Andrew
-> 
-> So, the comments I have so far are mostly about clarity around the
-> connection with preempt model and some cleanups on the x86 patches.
-> 
-> Other than that, my major concern is wider testing (platforms and
-> workloads) than mine has been.
-> 
-> Could you take another look at the series and see what else you think
-> it needs.
 
-Sorry for the delay from my side, I took another look at patches and had 
-some smaller comments.
+> 
+> 5. Yes, I'm calling madvise(MADV_COLLAPSE) on the text portion of the executable, using the address
+>     range obtained from /proc/self/maps. IIUC, this should benefit applications by reducing ITLB pressure.
+> 
+> I agree with the suggestions to either Return EAGAIN instead of EINVAL or At minimum, document the
+> EINVAL return for dirty pages. I'm happy to work on a patch.
 
--- 
-Cheers
+Of course, we could detect that we are in MADV_COLLAPSE and simply writeback ourselves. After all,
+user space asked for a collapse, and it's not khugepaged that will simple revisit it later.
 
-David
+I did something similar in
+
+commit ab73b29efd36f8916c6cc9954e912c4723c9a1b0
+Author: David Hildenbrand <david@redhat.com>
+Date:   Fri May 16 14:39:46 2025 +0200
+
+     s390/uv: Improve splitting of large folios that cannot be split while dirty
+     
+     Currently, starting a PV VM on an iomap-based filesystem with large
+     folio support, such as XFS, will not work. We'll be stuck in
+     unpack_one()->gmap_make_secure(), because we can't seem to make progress
+     splitting the large folio.
+
+Where I effectively use filemap_write_and_wait_range().
+
+It could be used early to writeback the whole range to collapse once, possibly.
 
