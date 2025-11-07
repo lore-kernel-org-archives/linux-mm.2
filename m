@@ -4,86 +4,201 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 11732CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 22:23:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 513BBCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 22:30:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E999D8E0007; Fri,  7 Nov 2025 17:23:09 -0500 (EST)
+	id 77E898E0009; Fri,  7 Nov 2025 17:30:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E49928E0006; Fri,  7 Nov 2025 17:23:09 -0500 (EST)
+	id 755E08E0006; Fri,  7 Nov 2025 17:30:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5FBD8E0007; Fri,  7 Nov 2025 17:23:09 -0500 (EST)
+	id 645158E0009; Fri,  7 Nov 2025 17:30:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C08068E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:23:09 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ADFAE59E37
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:23:08 +0000 (UTC)
-X-FDA: 84085237656.18.68AA80B
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 19CAA2000F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:23:06 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dT6JdUUO;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 52F6B8E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:30:21 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D3195160611
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:30:20 +0000 (UTC)
+X-FDA: 84085255800.05.2EFFD81
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+	by imf21.hostedemail.com (Postfix) with ESMTP id DDE311C000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:30:18 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=RSl+2Ovm;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U uwaUA5";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf21.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762554187;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762554619;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=e0XeJQV7Sl5wCMdacmGIOIX4A3GBQVJm3/OUwM9EVj4=;
-	b=ZnFLsq+Pr5/DztAgJUE0ANYCeiRAS0IlCJLaQV4Q0mBMCAras0D7GKJuxua9l7JAyKjCOB
-	FCF5Bop85x75YoOUPfEKZS8tlTdv06ABH1n20BDehi3SH1xOvijY38n03weFNMOp2qsSid
-	fnR7fc/Wg7C0pPyR/uOUAjHK7yIqszs=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762554187; a=rsa-sha256;
+	bh=ZwkPbF9nsnt/dQhVAIT39vJvv4cO/9hCxNuUVfACV+4=;
+	b=6++4zD0e6vk7jDq0ocVYCiZ9hTH0wA8QR1OeKzVHhmGZJzNXz2aFLoBVsMS1hj/M6TTx78
+	RMpfST8FF5sbbpmWmq24eWDOAMhdzVOZD+YWmOTiA67ASYStsm1VXknpGGMzV2SEfWCFgH
+	6Qc88ccTzo4/W4rlhtz+IgoFyJ78zwc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762554619; a=rsa-sha256;
 	cv=none;
-	b=klU4BqfpPuA6enC6tM6S6uPOjWjP5iSHMI2sRX6ZKwm5Wpa4Om1ia5ijTtRseFxDtUjQTh
-	eSid56jUt7mAkEUbsO6I1ouSWYRdKqMYZm/IVeS9NA4t+ZOScBWYDeh6ly+4wHdOlD0wbg
-	tx6ekSxjVmEsQhTk8bubW+E7SUfpTtY=
+	b=5bgketYYGCLUXYgOmvT1/dTIGzty66eYQBtY1KTjI6AlIH6IZZlcDsclRcKnWftzLJ68+8
+	wBcTQqIuSNuZBq+rYWKPFf6NgilMRyr2ukpQlulJEj52VKSrORprwFRiWfvb+ZKC5LLmNK
+	mJ3if9BiHPJKQIbzbjY/CvZ8h+Qtg2Q=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=dT6JdUUO;
-	spf=pass (imf13.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id E988962BE6;
-	Fri,  7 Nov 2025 22:23:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 215AEC4CEF5;
-	Fri,  7 Nov 2025 22:23:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762554185;
-	bh=FmDzUf7SRYX26khc/FKuixQdWMPPvqBeIjyLbJIHFBs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dT6JdUUOd3RRXNCr+BF5z4qtDip1YMFAJDddH6o9kkPBlPjwM4PLsv26aW9NqWTbK
-	 2j51WG4IOwihfeKZOyhnK4035ea0hYTn+L4GHaVZnsxvlrzpXFNJ8yfoua/Xaqcvph
-	 6DNCvhV6w94ohERu6WaMgjwyjLaMUXAnjACmeAno=
-Date: Fri, 7 Nov 2025 14:23:04 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: brauner@kernel.org, corbet@lwn.net, graf@amazon.com, jgg@ziepe.ca,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-mm@kvack.org, masahiroy@kernel.org, ojeda@kernel.org,
- pratyush@kernel.org, rdunlap@infradead.org, rppt@kernel.org, tj@kernel.org,
- yanjun.zhu@linux.dev
-Subject: Re: [PATCH v9 7/9] liveupdate: kho: move to kernel/liveupdate
-Message-Id: <20251107142304.6d22289c96023fbb7e99464c@linux-foundation.org>
-In-Reply-To: <20251101142325.1326536-8-pasha.tatashin@soleen.com>
-References: <20251101142325.1326536-1-pasha.tatashin@soleen.com>
-	<20251101142325.1326536-8-pasha.tatashin@soleen.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+	imf21.hostedemail.com;
+	dkim=pass header.d=ownmail.net header.s=fm3 header.b=RSl+2Ovm;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="U uwaUA5";
+	dmarc=pass (policy=none) header.from=ownmail.net;
+	spf=pass (imf21.hostedemail.com: domain of neilb@ownmail.net designates 202.12.124.138 as permitted sender) smtp.mailfrom=neilb@ownmail.net
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailflow.stl.internal (Postfix) with ESMTP id 793A513004D8;
+	Fri,  7 Nov 2025 17:30:15 -0500 (EST)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Fri, 07 Nov 2025 17:30:17 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ownmail.net; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to; s=fm3; t=
+	1762554615; x=1762561815; bh=ZwkPbF9nsnt/dQhVAIT39vJvv4cO/9hCxNu
+	UVfACV+4=; b=RSl+2OvmuLLOe4+H9eKpqC9RuowrdRH1jGe8qwVoOfdZ4I27ekS
+	h347QoJGR7MbFLykEaO1W0OFpHRCXityFGk6z/rxp66MZo+KGt12LqqTInEw2CYx
+	3UVsJ0CnGd7WLdxCGmc3/jPkOyINCLxKnxNZklsUc3J3YikUBo2z3iRjiXQtMcY8
+	yq2lYeSEAVc2EWLQj1vGWye7x7mEIpjRksMMLReKQwYai89hN6GT0qLs9w2fXT/S
+	aMCWnv9MVDkZT/W5daTSkcLSwc8NcaRJOdNaOs10bJXlSp1ckOlZsLuPaoex29HZ
+	f8A5rEk01MsQM2q7vJ8gaDY5oWS9+X43upg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762554615; x=
+	1762561815; bh=ZwkPbF9nsnt/dQhVAIT39vJvv4cO/9hCxNuUVfACV+4=; b=U
+	uwaUA5HM3Mo8/6XH0sr3iEvIm8qkyq18WHGz5dmT4o3VuNPYFK0sT5/XwMakgpxt
+	Ddom64XoCKrACYy2h4ZcgV+Tb8PW+9ZOvOvsw3PhcaXohwqssibqLdWfGuvkRTof
+	t0u6Tm24jIfdJQPXMml4ZsBV3LhgKvo8idsWtpOv2NMgA6+6q/kF7vulaDiw1Wu8
+	QXM1pWPcrGZS5Ickwb89bPU2A6H7dDCOZcL68OGNiBqQPLXtlFiE4VEh4FSXHbCH
+	jVfBahE281hNyxR2h1puiT9DkuKNVkHHM+JFBCiTT4EucRcOcOrhAYY2UT2c/Eoo
+	JZasuDe2hIsiAlgrLmPZw==
+X-ME-Sender: <xms:8HIOaWcJ3fvBIlxYhSXg2q9kliHbCJheSrwA-afUtv0OZvqwXLDyaQ>
+    <xme:8HIOaUV0elXG3FvBZLynkKLK1KgrkL5csSh7j4QStWTKC78ohwNtKKCTXTTHgS-gp
+    tx6yHyJkUTuEkTZ5fK6ZZAuUD2GiIcU7CC_2eZ5UrNZYjQDQA>
+X-ME-Received: <xmr:8HIOaZisnAl3bLTOnvZKYyms_eoqV6GZneXYuZmTxpw76w3Ai29fkPeeLdpc1Or3ahBpEelhGgOyPonxIcN_mwWmfK2BHg0p1qv3ZiVRU6Jc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggdduledtkeejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurheptgfgggfhvfevufgjfhffkfhrsehtjeertddttdejnecuhfhrohhmpefpvghilheu
+    rhhofihnuceonhgvihhlsgesohifnhhmrghilhdrnhgvtheqnecuggftrfgrthhtvghrnh
+    epudetfefhudevhedvfeeufedvffekveekgfdtfefggfekheejgefhteeihffggfelnecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepnhgvihhlsg
+    esohifnhhmrghilhdrnhgvthdpnhgspghrtghpthhtohepleejpdhmohguvgepshhmthhp
+    ohhuthdprhgtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpd
+    hrtghpthhtohepfhhrrghnkhdrlhhisehvihhvohdrtghomhdprhgtphhtthhopehlihhn
+    uhigqdigfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugi
+    dquhhnihhonhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
+    uhigqdhnihhlfhhssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinh
+    hugidqnhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhig
+    qdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuh
+    igqdhhrghruggvnhhinhhgsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    lhhinhhugidqfhhsuggvvhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:8HIOaQRYcr2XZwYm0IZqPOguq_RH9vLLuCtHHjKz_7fIxkwW75Seeg>
+    <xmx:8HIOaYxjBK0ZJhgdNXL6-GZM5wqctaqKx4DPCA07b6HaSPRwb68vzg>
+    <xmx:8HIOaa-QnxtUrxuCdvh7t737bdTRYVtIsmaz5JhvP3JtprsULcfyDA>
+    <xmx:8HIOacn1Ltrl3NwobU3IDf3ppIfGvZcjgmhPN9__dNGKj77ZkqtQiQ>
+    <xmx:93IOadG3kN8Y0sl9-bllfvn04bE55YSNPrlPh3KgJLC15UMHH_zqyJDP>
+Feedback-ID: iab3e480c:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 7 Nov 2025 17:29:44 -0500 (EST)
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: 19CAA2000F
-X-Stat-Signature: 8nhmo6y11gykksywdr14xfk3yp9uq3ag
+MIME-Version: 1.0
+From: NeilBrown <neilb@ownmail.net>
+To: "Jeff Layton" <jlayton@kernel.org>
+Cc: "Eric Van Hensbergen" <ericvh@kernel.org>,
+ "Latchesar Ionkov" <lucho@ionkov.net>,
+ "Dominique Martinet" <asmadeus@codewreck.org>,
+ "Christian Schoenebeck" <linux_oss@crudebyte.com>,
+ "David Sterba" <dsterba@suse.com>, "David Howells" <dhowells@redhat.com>,
+ "Marc Dionne" <marc.dionne@auristor.com>,
+ "Alexander Viro" <viro@zeniv.linux.org.uk>,
+ "Christian Brauner" <brauner@kernel.org>, "Jan Kara" <jack@suse.cz>,
+ "Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
+ "Chris Mason" <clm@fb.com>, "Xiubo Li" <xiubli@redhat.com>,
+ "Ilya Dryomov" <idryomov@gmail.com>, "Jan Harkes" <jaharkes@cs.cmu.edu>,
+ coda@cs.cmu.edu, "Tyler Hicks" <code@tyhicks.com>,
+ "Jeremy Kerr" <jk@ozlabs.org>, "Ard Biesheuvel" <ardb@kernel.org>,
+ "Namjae Jeon" <linkinjeon@kernel.org>,
+ "Sungjong Seo" <sj1557.seo@samsung.com>,
+ "Yuezhang Mo" <yuezhang.mo@sony.com>, "Theodore Ts'o" <tytso@mit.edu>,
+ "Andreas Dilger" <adilger.kernel@dilger.ca>,
+ "Jaegeuk Kim" <jaegeuk@kernel.org>, "Chao Yu" <chao@kernel.org>,
+ "OGAWA Hirofumi" <hirofumi@mail.parknet.co.jp>,
+ "Miklos Szeredi" <miklos@szeredi.hu>,
+ "Andreas Gruenbacher" <agruenba@redhat.com>,
+ "Viacheslav Dubeyko" <slava@dubeyko.com>,
+ "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+ "Yangtao Li" <frank.li@vivo.com>, "Richard Weinberger" <richard@nod.at>,
+ "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
+ "Johannes Berg" <johannes@sipsolutions.net>,
+ "Mikulas Patocka" <mikulas@artax.karlin.mff.cuni.cz>,
+ "Muchun Song" <muchun.song@linux.dev>,
+ "Oscar Salvador" <osalvador@suse.de>,
+ "David Hildenbrand" <david@redhat.com>,
+ "David Woodhouse" <dwmw2@infradead.org>,
+ "Dave Kleikamp" <shaggy@kernel.org>,
+ "Trond Myklebust" <trondmy@kernel.org>,
+ "Anna Schumaker" <anna@kernel.org>,
+ "Ryusuke Konishi" <konishi.ryusuke@gmail.com>,
+ "Konstantin Komarov" <almaz.alexandrovich@paragon-software.com>,
+ "Mark Fasheh" <mark@fasheh.com>, "Joel Becker" <jlbec@evilplan.org>,
+ "Joseph Qi" <joseph.qi@linux.alibaba.com>,
+ "Bob Copeland" <me@bobcopeland.com>,
+ "Mike Marshall" <hubcap@omnibond.com>,
+ "Martin Brandenburg" <martin@omnibond.com>,
+ "Amir Goldstein" <amir73il@gmail.com>,
+ "Steve French" <sfrench@samba.org>, "Paulo Alcantara" <pc@manguebit.org>,
+ "Ronnie Sahlberg" <ronniesahlberg@gmail.com>,
+ "Shyam Prasad N" <sprasad@microsoft.com>, "Tom Talpey" <tom@talpey.com>,
+ "Bharath SM" <bharathsm@microsoft.com>,
+ "Zhihao Cheng" <chengzhihao1@huawei.com>,
+ "Hans de Goede" <hansg@kernel.org>, "Carlos Maiolino" <cem@kernel.org>,
+ "Hugh Dickins" <hughd@google.com>,
+ "Baolin Wang" <baolin.wang@linux.alibaba.com>,
+ "Andrew Morton" <akpm@linux-foundation.org>,
+ "Kees Cook" <kees@kernel.org>,
+ "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+ "Jonathan Corbet" <corbet@lwn.net>,
+ "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+ linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev,
+ linux-um@lists.infradead.org, linux-mm@kvack.org,
+ linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-xfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org,
+ "Jeff Layton" <jlayton@kernel.org>
+Subject: Re: [PATCH v2] vfs: remove the excl argument from the ->create()
+ inode_operation
+In-reply-to: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
+References: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
+Date: Sat, 08 Nov 2025 09:29:43 +1100
+Message-id: <176255458305.634289.5577159882824096330@noble.neil.brown.name>
+Reply-To: NeilBrown <neil@brown.name>
+X-Stat-Signature: cowoqx63953yrss1ozx4pk4m3ujj9azr
 X-Rspam-User: 
-X-HE-Tag: 1762554186-892605
-X-HE-Meta: U2FsdGVkX195fOcMwSLWoY02wZGzNSu0vvvv5MON3P2SXdLcTqihw0d7azgz26IUefp12x8Yp+y8Cuudp9WpflcktuFw7tqaW307Wpo1iMv13Qhk03DhuBBS3CA87GredPo8Pw8y34ytWCaRavgOp3SeSu+XkeL8ILaI3b+PITVilec2hefievFsSFGMpPQFugZVnVhxz9aylLg+Kd47kyTVHXGl0xgJb9fEgrQ1UUW6kAZIhU+ice9OXXGtmwYL2AtQu9+YpodL8FiBgsVlcFZhi1q7NdNNPUfC3V210vzrMhnaKZbM4Jbd9qG7AZBUaLOkfxBNeO+dsL46VTpBswjmvqEx0c8XBg65ipCIaKECPobZG0j/i4ZQQqITHAfi9rx29M2QW0hpyZkBS9tzldA+P5GIiHvngdRZpBW2AKhEhdn9HIS50OP5O4H9dyaw8ZrHxe1x0L2rpg1uvIby23DFsTdqpa6SIj7FPpoG8UkJcHIEcgvxUlTfj4k7hEWQa1YOYFCHyzLa9U0y7KwXl2ebq3UuRrN7M0cr3Pt1CkX74RqjCJJKNB7ZhsX/+rYYJdp2gZaEqHXvxVEQSVdQeDz041HlfuMiQcWaPbnQSdxv3Jx5c7pCJyuBaqqpXpJUVuJHMv8c1QWLRHBGFM/pPGYINsjapWFamO6Fvkg48bWDHUxU2uHuEmDQLa8UZIVrsyDgl6g5CxBmkdJwBNM8l6GZeNZIekS4YaCC/OApLmhfmsJCgHG9v/x0WrofTEMv0l63ZBGwZP8k/URzu/anrBxewvTNlIrKrdRjKqc3ftUbSiiHbjXk4kz5x0Qg7pAlsyX8/XdJdwYVUz/dD66bqWGwS4hBkVr/uBqKz71mZT8s982zo9d+yousInPWP02v4FmV9dr0Fcq2VQJE3Xp3nCv4f5ABaOJqfkuakPxx0jU=
+X-Rspamd-Queue-Id: DDE311C000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762554618-314491
+X-HE-Meta: U2FsdGVkX1/y7Su9SX0XwQAVhTJbkKK007D6M6rjX3CpAzVY04YBfnS8TT+Nb/GWh3uSM4aUBy2aeJLr9CmiZLbi6HseMZTuScfkonhAa4LcA8GykfCOoc/hnRAgt68ouL5eSanCvvyfYvHxvH2TP7BLLgP2nKJKeJr5+/nJNxLFz7hRzAJRhgdF9cTBoKajt0KRNHmwDPXxAysuEGUiNOCh7u8owuF5Y7NpspAogLOKZuwoI/d/iUqvDsDdT25hx0cwxRo9AExv2LGDlCitDTbTHMWNZwReChiPeqDSDAI/i/Ib+IlRUEmvkDhfIdIEndKoMa7TtNMgReL//AdpIex0rMFNf6V+O6cJt2bnY9J8P1hR6lE1jPcn4UhrKecPzKxduu4ZcNOtEwmQeOmaaVIR63sBbnmbHkI5rxwu0tSBsAdB+L/7T05k3w53au2niu3qBY63Q9OlvHVwq68HEReKu1oVlRUrXILyB/mluH0Ijj6fwwNGL5kSCGAe9Ff4bHMNzDCWdoTD7By3BmYGFzIG6JAtQWtypUPlaOAWwEqvoWHl/cFGuRsTjaL9epTiNhxRhg05Gd4iZgMmwBIIeE3Q0OAdfU2yRWrNY7XWUr8lZND2l599XH9LGmpT+X2Frrf/EZXfzpZIk2w92rWLIjB6DAHDcQZRBgPBxKqeCAkKkpFBzxdVZ2NZ3BMko8oCOTo10WtH3Ad2iWC22bOGmWjnPXvz4P/I5oDYDks6QOVJcJiZud/Gut6z92P2lYP011Wzg4Kwb6m5HTIsqUne4cpGxQvtSzYObujGjmY/XwMZ22cUJ3fVLpy+RNAG9Kn3Jn6NAEJDauY+DcCqVoiUJjLEPt4jAWYZ/0pxCYIuCN1pIodo3QLkI6TKV64OvqZkPVb19bjSOSrI3GL6Ayol66S7qrw9i2ztxFlFOB8uAuA+x46zyOtRzsv9QayiUcOsE6o2/f2W7uMiTyUgDzo
+ iMODJHQE
+ mtNortCiE5e63FEO+qqYFf1ykX3P6vXDwIhTlWm7g9uMkaA8qoY6cRZeGZd09/aJJeIpLVF1qw0s0v23EQXjDCJLSLn6+ZrnPO3Zk3LvxCbG3K8UNRMKYfzEUpHyxGUTluPf2bDIoe6+DPeT+RrVe2i5mVT3PTvAVqi3UPQ0a5SNSQc3/JD1lzF8QyKxMR8TNxHUwwRRu3QC3pNoqcY7FGcvi5rDwMdZ8fqiR4DNvtgbRQoZaaUv7RVKm0wIu/KfNcnOK0TKrHSaqCGPHBjP35+tYZlL7N7UhTrkpfHf3BdIC64gFYKJZZR+5SzzhAtARPIcZ
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,17 +207,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat,  1 Nov 2025 10:23:23 -0400 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+On Sat, 08 Nov 2025, Jeff Layton wrote:
+> With two exceptions, ->create() methods provided by filesystems ignore
+> the "excl" flag.  Those exception are NFS and GFS2 which both also
+> provide ->atomic_open.
+> 
+> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
+> the "excl" argument to the ->create() inode_operation is always set to
+> true in vfs_create(). The ->create() call in lookup_open() sets it
+> according to the O_EXCL open flag, but is never called if the filesystem
+> provides ->atomic_open().
+> 
+> The excl flag is therefore always either ignored or true.  Remove it,
+> and change NFS and GFS2 to act as if it were always true.
+> 
+> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> ---
+> Note that this is based on top of the dir delegation series [1]. LMK
+> if the Documentation/ updates are too wordy.
 
-> Move KHO to kernel/liveupdate/ in preparation of placing all Live Update
-> core kernel related files to the same place.
+Patch is very nice.  I don't think the documentation is too wordy.
+I think it is good that the two changes to the different files say
+essentially the same thing but use different words.  That helps.
 
-I notice that menuconfig is a bit weird after this.
+Reviewed-by: NeilBrown <neil@brown.name>
 
-The "General setup" menu offers the "Live Update and Kexec HandOver"
-menu but there's nothing in there.  If one sets
-DEFERRED_STRUCT_PAGE_INIT then things look normal.
+> 
+> Full disclosure: I did use Claude code to generate the first
+> approximation of this patch, but I had to fix a number of things that it
+> missed.  I probably could have given it better prompts. In any case, I'm
+> not sure how to properly attribute this (or if I even need to).
 
-Perhaps we shouldn't be offering "Live Update and Kexec HandOver" at
-all if !DEFERRED_STRUCT_PAGE_INIT.
+My understanding is that if you fully understand (and can defend) the
+code change with all its motivations and implications as well as if you
+had written it yourself, then you don't need to attribute whatever fancy
+text editor or IDE (e.g.  Claude) that you used to help produce the
+patch.
+
+Thanks,
+NeilBrown
 
