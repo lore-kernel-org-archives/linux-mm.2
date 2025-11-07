@@ -4,167 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2C707CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 08:53:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 20745CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 08:59:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 841B28E0008; Fri,  7 Nov 2025 03:53:36 -0500 (EST)
+	id 78CB58E0009; Fri,  7 Nov 2025 03:59:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 81AB98E0002; Fri,  7 Nov 2025 03:53:36 -0500 (EST)
+	id 765068E0002; Fri,  7 Nov 2025 03:59:13 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 72F118E0008; Fri,  7 Nov 2025 03:53:36 -0500 (EST)
+	id 6A0A58E0009; Fri,  7 Nov 2025 03:59:13 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 616F58E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:53:36 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 01188C03C3
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:53:35 +0000 (UTC)
-X-FDA: 84083197632.25.938E6DC
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 8FE304000E
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:53:33 +0000 (UTC)
-Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mttVLyU5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DOXnMeol;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mttVLyU5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DOXnMeol;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 58F518E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:59:13 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 014401A03D8
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:59:12 +0000 (UTC)
+X-FDA: 84083211786.14.5C89916
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 51F541C0008
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:59:11 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KZnpX6ml;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762505951; a=rsa-sha256;
+	cv=none;
+	b=0xBQ/wr4l16D/Xr5+2Ckja7JaTYd0vsyrRtqmole0/oW69XrYibM0/my48bfTi3aQhmslz
+	X8JA2NV24axrnnIXaIF9R82mUhoeDN3PAYcEezeksaczQy37cbZztjCtetBFh96zA4mKc9
+	rr5wRGi4U0uyaNXCTTOtYwro3Jjnv48=
+ARC-Authentication-Results: i=1;
+	imf18.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=KZnpX6ml;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf18.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762505614;
+	s=arc-20220608; t=1762505951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=OI+g9VEn/lEjydhs1xOusp0hhTH8pGOALrK0SGGXGuU=;
-	b=1uyOBzsG+NNMNu50H3hmSs6HY9ZOv/HRj5UxJc9o6yhqrTNDw2xfr1towV9dyJbQXwKesF
-	Tc006JomIxWtZ1yVVQbJ3Y7AlDA/BZ7owryYyWGG269/RFpcW14euH++6NNfDxIB/RGQKy
-	qX9NzrGk8pczwlGPA2PXqA1J7m7c3aQ=
-ARC-Authentication-Results: i=1;
-	imf11.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mttVLyU5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DOXnMeol;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mttVLyU5;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=DOXnMeol;
-	spf=pass (imf11.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762505614; a=rsa-sha256;
-	cv=none;
-	b=DQSri30S7AgVHjfgFIcm++AREmDeev2EiIX0M43jn0hNZWhTUygr/eU0Ipz24hiOaNl/6H
-	C9MDfgp2gx3IVJd3mVA5vxmOeMEyQHl8XJ+IzVAtypvJJ1x1dYgz+Od25bBpD7UOkq/woq
-	XlFMTMFgK7JE0qXWwtzy27obDtvxYts=
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 9102121196;
-	Fri,  7 Nov 2025 08:53:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762505611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=OI+g9VEn/lEjydhs1xOusp0hhTH8pGOALrK0SGGXGuU=;
-	b=mttVLyU5nYz4nSQEYswqriFYUtcaUfJsl8b0ZT/jxmoq2TX5lddeaYKIy/uWLJUi6yd+49
-	GiWZOGR/weElSSn7KtHArqHGMSb9KyCIuX6FH7WCwneDJO2A5n8ugjC9qM7RtqBQOPWq5M
-	VxTq9XFNzXCg2clV+rx6iiA3EsEWPqw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762505611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=OI+g9VEn/lEjydhs1xOusp0hhTH8pGOALrK0SGGXGuU=;
-	b=DOXnMeolrIqKTq6hovhbao+XArJpKFNPUn9z3I48ksOevHEh2WVtkOkwhnEN+U2/9Q/VkK
-	nAl0dgvwa6P961AA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762505611; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=OI+g9VEn/lEjydhs1xOusp0hhTH8pGOALrK0SGGXGuU=;
-	b=mttVLyU5nYz4nSQEYswqriFYUtcaUfJsl8b0ZT/jxmoq2TX5lddeaYKIy/uWLJUi6yd+49
-	GiWZOGR/weElSSn7KtHArqHGMSb9KyCIuX6FH7WCwneDJO2A5n8ugjC9qM7RtqBQOPWq5M
-	VxTq9XFNzXCg2clV+rx6iiA3EsEWPqw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762505611;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:autocrypt:autocrypt;
-	bh=OI+g9VEn/lEjydhs1xOusp0hhTH8pGOALrK0SGGXGuU=;
-	b=DOXnMeolrIqKTq6hovhbao+XArJpKFNPUn9z3I48ksOevHEh2WVtkOkwhnEN+U2/9Q/VkK
-	nAl0dgvwa6P961AA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7AF66132DD;
-	Fri,  7 Nov 2025 08:53:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id WaCxHYuzDWmQYAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 07 Nov 2025 08:53:31 +0000
-Message-ID: <2dfea88a-5ba1-4311-87d2-e1e66c2f885e@suse.cz>
-Date: Fri, 7 Nov 2025 09:53:31 +0100
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=xfIQNcmmjzVzF5pn+YEpsb4Wg0IgIl9gKH3sYHaJ64g=;
+	b=sD9Nr8aYbudsmgeywJclpCtRAQNlZGbzonlnhjqqGdtFGukHqHCPfT7rKVIy+tR0OKlqOM
+	yWIsTFmbCuc81+Pqt5hVO8K+eXdvzEboD3wo/SAjmv3BUHFfXXUZwNVUhHKR4hbikh+Kso
+	tsgVXEOeXR2b1MfopQnPmFm1trJJItY=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 985CF618FA;
+	Fri,  7 Nov 2025 08:59:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0809CC116B1;
+	Fri,  7 Nov 2025 08:59:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762505950;
+	bh=FGs9k1s29rarNJs9NqYrMfUHU4lrNN1E8lsc4dNVyTo=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=KZnpX6ml6uRRB2JFyzIFBDCgIXhESmUP/cxrsm49i/lOlJ+Dmr7s61hw/h6N29KPe
+	 lMw4g1mRCChOX+R7kmsd8VEpF7Xpuqmpiylml1zoJtrjPAMQJGAyt1/5lJ43p1+LrA
+	 x9lGupxQ25fO4M6xU6hEKchg2YzbKMbqlgMzcTsV6/QDYkAwH47Qx4+1A/kK2JPC5m
+	 43KPjUkR3sCN8c2sVaQ38P5t0sq42rzYDjo71UUeq4UtHeEenI/Xi/iXHK3fdaptMZ
+	 2s0eaGEtUmzmo96Lll4REI1O/zG0vAueoBa+Nxnop+c6QyGdcgc49z5zXKnEAv6Y0g
+	 3b2+qmUpdw5+A==
+Message-ID: <77b2ae9c-2700-4c7a-ae45-323af6beaff3@kernel.org>
+Date: Fri, 7 Nov 2025 09:59:03 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Vlastimil Babka <vbabka@suse.cz>
-Subject: [GIT PULL] slab fix for 6.18-rc5
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>,
- Christoph Lameter <cl@gentwo.org>, Roman Gushchin
- <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
- LKML <linux-kernel@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>
+Subject: Re: [PATCH v8 6/7] mm, folio_zero_user: support clearing page ranges
+To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, x86@kernel.org
+Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+ peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
+ tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+ boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+References: <20251027202109.678022-1-ankur.a.arora@oracle.com>
+ <20251027202109.678022-7-ankur.a.arora@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <20251027202109.678022-7-ankur.a.arora@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 8FE304000E
-X-Stat-Signature: mbay9i44ysjcyidoz3hyhy9b6qxz9t35
 X-Rspam-User: 
-X-HE-Tag: 1762505613-523230
-X-HE-Meta: U2FsdGVkX1/0Mcp+OiaJtkMUos/rJNK3i/c9l/TE4WqNqevL6HO/laIrab+xXO6q5y3Eu1Qy0kQryt7vCpZvqza7jRVBAp3odBLdJx68vahkfdGEK5tYn7WJQ9oExwlWFME7iqJYICZzNa0n7kQL99doEFAt9WaIOFy3Z0HUZtCYxqMRYN2GxL9/yrBtAnEHl5EqLapXi8JmOnoRYO4xmhCBOeGUnIVjmhV6WsaAkHIKdf5QOdxieHYfREKHCpxnAPP9ZSP4+RkVSz5pMLLNU4DMLkvcFHy8BKeeHI6XQ9Dd71oysWMKEYKOICD7+SFHPVxQmDMCCwyONSwNmTJr/BzygOwuokXCI5OYhn+C0GcvmqulIYi61iPEOA4h4/vv3UqT/dPNkWZ84qtGaukeOUlsQ0yn0BQ1WJH/ayY9VrcifAKltuDUu2VzAodvtYoMDUGGlKj15y/uIFH3tfYbemlYVh7ywJ92gh67OddONQbohW2Jb9Qx0Re6IDTUlFJwfBw/rz4jV4EAIFvZ4dUT1bIlj1DjPZL3eVn3KEXYmbRDw0yQIUvE70sYAH2wm3MHcoF+kBksUIoKng06QiClZJ4BztspVuKHubBWE8Y8r6ynhmDKtBNUkAj6/ZWFrc9g4wq71b8GJ9BTZJ+Xh4hVL9zxql1GGrTYIXieMQIGlHnF0GyC1GrjPFOTDiJXSWr36EHjXqQ7NZftqmqULi193SZHbw1VPoptwnGm5zp470zO3eP7D5nsUA/aSv0hQ91zLCQ4sWlRyTbSr/kJaSywRs37EOTMs7eCbEhTliedR0o4jGChrbxkXKS10ywOcQGGlS54vKkw7DQxfY5EyqktBCG2ELL0vT4UC/ttpyy1W1I5A/OLVDzzs/qrDnQaOqJpusWV4H3y++a+YVjV0rts6Fyz/ZpR5Tqqn6jzBLY/l4N44JmZHpdSzYpbztqJbggAQkY3+EqBk1U3yJ5d73n
- +DySfH1q
- RGS9wN9dTqWC9v/7YSeypi8zaJSJnF/Nz2Nvr/pQt38nZ+RNm6v3fItzull8loKOT9VrtZ2hygavWmB9FSx60hInaxM3PnVbbhDg5VgkxMWNlQfQ8CHanhJlrNglswld15jmZ1r/azIuMGwYc6SDeqrTLt2ZsVjCg8y8QDKgqULr/utbzzhK2fbKB0YZGISHsz/LjmtBbyuMHxpyCCGe/hPyjkavVdcP/GOV1gvbpSDjLXp+ptcOJdRNU1S0XG6bxvjOTpPlg7wC4MtNucDFGMQ/2I8GYg4cG2K7z51FzLNL70s7yiffH7vgyTfzND7+XDYUGQzweofTmlMeq1PSTafYfThhcf0bUIqEC
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 51F541C0008
+X-Stat-Signature: zm1n5sqt8h5s4rknnb474wf3dm4jb16g
+X-HE-Tag: 1762505951-695547
+X-HE-Meta: U2FsdGVkX19BwGkiePrTEvKsn7wQXYKwk02ty1t18G+tspoPpdxZSIKkr9u5ZnMMjVdFIQuIsQbtFEqXDhuoJ3DlJ624kuzNbFfd2LmTXe1XITwZi0qHZltl5fZpx3IMGVwR/KOK0FYEmyp+F8G+QGe56CDSzdNWOkkLK0ZZGKL1mWeMEasR0nf0KUynTFNOUvhTJKKtOTV1hdjY6JGRiGwqP6ub+PfAbb6SjVHOc16EGw/cB2djMHigrOKSRXke91Stic1Yxyx0ngWZPCN8Ni+WJ4RnTwvtqM1d2sTNN/du8Jgox3ucuucSIFupzADK2xS1YY60M/ASrNNotnjPZLb1MjymFZjZeFrihyVtBMrR89ceapFNRKqs12rsbqr4wqfRufdjaLna75sXT4ESO6O7vlv0EmR4r5DVRmKaGKv0PxooJMsiM0nvtsJMN403N+CxRbhJB5DUDeBrWx2WHPRAASoqx50RLNblKiY+H5fBcJO8vyIqzwI/MqbxuSLa/e3e/+UqLtVJ21z2NyABNIyMEj75/gj0m7mgLl6oBjaIgtEiA3espD3n7xh9fNhTIERFckFwC1K8I5Z7+ocars1is8jsARiquAMV7RuhR9B7s275H/PjYNdbCBWPji7FfiRazW3i1G8tUmOVi2ge4OjP9KX1+xl8aDSG66ekR4fr/Af5zPbruBqYWHV1N2ivU4b//nLJMZ/vzseU21Bhgg4Et5CCtgQn5LN9eY73tLfBWLvyb4rMli1nNefwkI5BpFFYZWhfUzwV9etGywMy6GWZD2QLglQbyqfwH54VFRsN5wrxJ3RS+SPboGpRzlBW9eP6PLzjRkaz0eNTOonJeMRXUTbajdcjezBiQWmQVE97HXO6AsS+DO69OvVDIJmyXbIxPFV8uS6K88tzxJavbTuPtS1KX1ISWHGhjnDy9V8BCXmn6qZL48QUdOjJuVsZDoQJPQ6Mu8ybkSkGFc/
+ hOxf59Jk
+ u0nH9WOOqzxs1uGS2J9S94qMJKQ5c1ZOWPtzn4zb/CtydA+gToXxoy80oe8+WvBoycK6s2xvrJgXbqR7KozveGbSebmHgiDRuyQ30/lLr5S2xHkGBFCB3XyUp4ONzj0pga1bop2Dy4N5LbJiEGuycsXaU2nEFY/dcI+Zbl2qMYDZ5UYG1wM4ulJgjWx/9vuncUexVuqRNtCC22eaxlyEKkx9YVo9Mx5QvOHAZnuBd8ld4T6AH0PTq1uxzOK9/5y1D+55t8Z2Aot/jV9KlAeyf9+5FjbCslSpkXS82WfisNDFUxJc5C2760X9uQYx/rxjjNgTtVKF9aVeVTR0misENfhG0qK/fbYmnjFvu1EMpXtTiSvis1h2dmw48Rw1nLa+jXc+P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -173,24 +99,167 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Linus,
+On 27.10.25 21:21, Ankur Arora wrote:
+> Clear contiguous page ranges in folio_zero_user() instead of clearing
+> a page-at-a-time. This enables CPU specific optimizations based on
+> the length of the region.
+> 
+> Operating on arbitrarily large regions can lead to high preemption
+> latency under cooperative preemption models. So, limit the worst
+> case preemption latency via architecture specified PAGE_CONTIG_NR
+> units.
+> 
+> The resultant performance depends on the kinds of optimizations
+> available to the CPU for the region being cleared. Two classes of
+> of optimizations:
+> 
+>    - clearing iteration costs can be amortized over a range larger
+>      than a single page.
+>    - cacheline allocation elision (seen on AMD Zen models).
+> 
+> Testing a demand fault workload shows an improved baseline from the
+> first optimization and a larger improvement when the region being
+> cleared is large enough for the second optimization.
+> 
+> AMD Milan (EPYC 7J13, boost=0, region=64GB on the local NUMA node):
+> 
+>   $ perf bench mem map -p $pg-sz -f demand -s 64GB -l 5
+> 
+>                      page-at-a-time     contiguous clearing      change
+> 
+>                    (GB/s  +- %stdev)     (GB/s  +- %stdev)
+> 
+>     pg-sz=2MB       12.92  +- 2.55%        17.03  +-  0.70%       + 31.8%	preempt=*
+> 
+>     pg-sz=1GB       17.14  +- 2.27%        18.04  +-  1.05% [#]   +  5.2%	preempt=none|voluntary
+>     pg-sz=1GB       17.26  +- 1.24%        42.17  +-  4.21%       +144.3%	preempt=full|lazy
+> 
+> [#] AMD Milan uses a threshold of LLC-size (~32MB) for eliding cacheline
+> allocation, which is larger than ARCH_PAGE_CONTIG_NR, so
+> preempt=none|voluntary see no improvement on the pg-sz=1GB.
+> 
+> Also as mentioned earlier, the baseline improvement is not specific to
+> AMD Zen platforms. Intel Icelakex (pg-sz=2MB|1GB) sees a similar
+> improvement as the Milan pg-sz=2MB workload above (~30%).
+> 
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
+> Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
+> ---
+>   include/linux/mm.h |  6 ++++++
+>   mm/memory.c        | 42 +++++++++++++++++++++---------------------
+>   2 files changed, 27 insertions(+), 21 deletions(-)
+> 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index ecbcb76df9de..02db84667f97 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3872,6 +3872,12 @@ static inline void clear_page_guard(struct zone *zone, struct page *page,
+>   				unsigned int order) {}
+>   #endif	/* CONFIG_DEBUG_PAGEALLOC */
+>   
+> +#ifndef ARCH_PAGE_CONTIG_NR
+> +#define PAGE_CONTIG_NR	1
+> +#else
+> +#define PAGE_CONTIG_NR	ARCH_PAGE_CONTIG_NR
+> +#endif
 
-please pull the latest slab fixes from:
+The name is a bit misleading. We need something that tells us that this 
+is for patch-processing (clearing? maybe alter copying?) contig pages. 
+Likely spelling out that this is for the non-preemptible case only.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc5
+I assume we can drop the "CONTIG", just like clear_pages() doesn't 
+contain it etc.
 
-Thanks,
-Vlastimil
+CLEAR_PAGES_NON_PREEMPT_BATCH
 
-======================================
+PROCESS_PAGES_NON_PREEMPT_BATCH
 
-* Fix for potential infinite loop in kmalloc_nolock() when debugging
-  is enabled for the cache (Vlastimil Babka)
+Can you remind me again why this is arch specific, and why the default 
+is 1 instead of, say 2,4,8 ... ?
 
-----------------------------------------------------------------
-Vlastimil Babka (1):
-      slab: prevent infinite loop in kmalloc_nolock() with debugging
+> +
+>   #ifndef __HAVE_ARCH_CLEAR_PAGES
+>   /**
+>    * clear_pages() - clear a page range for kernel-internal use.
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 74b45e258323..7781b2aa18a8 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -7144,40 +7144,40 @@ static inline int process_huge_page(
+>   	return 0;
+>   }
+>   
+> -static void clear_gigantic_page(struct folio *folio, unsigned long addr_hint,
+> -				unsigned int nr_pages)
+> +/*
+> + * Clear contiguous pages chunking them up when running under
+> + * non-preemptible models.
+> + */
+> +static void clear_contig_highpages(struct page *page, unsigned long addr,
+> +				   unsigned int npages)
+>   {
+> -	unsigned long addr = ALIGN_DOWN(addr_hint, folio_size(folio));
+> -	int i;
+> +	unsigned int i, count, unit;
+>   
+> -	might_sleep();
+> -	for (i = 0; i < nr_pages; i++) {
+> +	unit = preempt_model_preemptible() ? npages : PAGE_CONTIG_NR;
+> +
+> +	for (i = 0; i < npages; ) {
+> +		count = min(unit, npages - i);
+> +		clear_user_highpages(page + i,
+> +				     addr + i * PAGE_SIZE, count);
+> +		i += count;
 
- mm/slub.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+Why not
+
+for (i = 0; i < nr_pages; i += count) {
+
+Also, I would leave the cond_resched(); where it was (before the 
+invocation) to perform as little change as possible.
+
+>   		cond_resched();
+> -		clear_user_highpage(folio_page(folio, i), addr + i * PAGE_SIZE);
+>   	}
+>   }
+>   
+> -static int clear_subpage(unsigned long addr, int idx, void *arg)
+> -{
+> -	struct folio *folio = arg;
+> -
+> -	clear_user_highpage(folio_page(folio, idx), addr);
+> -	return 0;
+> -}
+> -
+>   /**
+>    * folio_zero_user - Zero a folio which will be mapped to userspace.
+>    * @folio: The folio to zero.
+> - * @addr_hint: The address will be accessed or the base address if uncelar.
+> + * @addr_hint: The address accessed by the user or the base address.
+> + *
+> + * Uses architectural support for clear_pages() to zero page extents
+> + * instead of clearing page-at-a-time.
+>    */
+>   void folio_zero_user(struct folio *folio, unsigned long addr_hint)
+>   {
+> -	unsigned int nr_pages = folio_nr_pages(folio);
+> +	unsigned long base_addr = ALIGN_DOWN(addr_hint, folio_size(folio));
+>   
+> -	if (unlikely(nr_pages > MAX_ORDER_NR_PAGES))
+> -		clear_gigantic_page(folio, addr_hint, nr_pages);
+> -	else
+> -		process_huge_page(addr_hint, nr_pages, clear_subpage, folio);
+> +	clear_contig_highpages(folio_page(folio, 0),
+> +				base_addr, folio_nr_pages(folio));
+>   }
+>   
+>   static int copy_user_gigantic_page(struct folio *dst, struct folio *src,
+
+
+-- 
+Cheers
+
+David
 
