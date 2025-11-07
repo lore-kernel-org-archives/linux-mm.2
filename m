@@ -4,107 +4,137 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1E450CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 22:33:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id AA4E6CCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 22:35:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 75EC78E000A; Fri,  7 Nov 2025 17:33:17 -0500 (EST)
+	id 0FB5F8E000F; Fri,  7 Nov 2025 17:35:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7366C8E0006; Fri,  7 Nov 2025 17:33:17 -0500 (EST)
+	id 0D3688E0006; Fri,  7 Nov 2025 17:35:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6745A8E000A; Fri,  7 Nov 2025 17:33:17 -0500 (EST)
+	id F2B5F8E000F; Fri,  7 Nov 2025 17:35:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 56F088E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:33:17 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id EA83E59CCB
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:33:16 +0000 (UTC)
-X-FDA: 84085263192.25.3C41D7B
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 36619C000B
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:33:15 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YX2Wftip;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id E20908E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:35:22 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 79F17BA6F9
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:35:22 +0000 (UTC)
+X-FDA: 84085268484.16.FC34BC9
+Received: from ms.lwn.net (ms.lwn.net [45.79.88.28])
+	by imf17.hostedemail.com (Postfix) with ESMTP id B55874000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:35:20 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=gwskUpuJ;
+	spf=pass (imf17.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762554795;
+	s=arc-20220608; t=1762554921;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VlY/pQ2DGyA9fVbJxQmYVoUk//J2XtsNsm2qG/TztrE=;
-	b=Le001GxH6f8f9qDRkuPRcggvQ12TTqi2s6VitqnHgsH2jJDCnwmSOFao9l+dU0ljEdreNL
-	lkv2VoWNuM5b+lBz1xiJZ6r14fmWySj9vCYqR84rsWCUydPhxlRtrRmzpdGnI0313QPHb5
-	/8aqKqHRF0Tv4dhw8+AGjyPn8+U/l2c=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762554795; a=rsa-sha256;
-	cv=none;
-	b=3y8JqFl8Ls9GQCeovg8eLkgYHOLnoYN6OKkGIq5pTzArRMCUIAjQ8DOVL126m4co0mmsb5
-	i6YinCT3DSV41jGgB2FtYvvuSZWi5hnGvXWB8k4ZLTKylrxA6OybR9yGQckby/JhyvAtAT
-	KW5WCgBvDLXNAAIj8v635+RPQoTyEWg=
+	bh=1SMRxhNRshB8vecJq42CGMcQSf+tMG9pcOEmrtJR/2o=;
+	b=CJkUhS7+i3ltJ06WjQYQg/lyuMU9yj3LGm66WBKuVKycsUTDaJ3POqRTNW/1PrOxxbuRTl
+	xuW+nJZGjIxfY3Bs1fUUpExjXuveNpAow5abxgpR7QDON61BGGi+ctOzEbe8UHhcGWceCZ
+	TNh8RWXVL8UTFYGQL73MLLeb/2HC8to=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=YX2Wftip;
-	dmarc=none;
-	spf=pass (imf28.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id D34BD42DB5;
-	Fri,  7 Nov 2025 22:33:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC1AC4CEF5;
-	Fri,  7 Nov 2025 22:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762554793;
-	bh=SlUrA7PHAByXuiTRoXiw9pd9DfkErd4nWd0LXTq5RY8=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=YX2WftipaPbxqcpTquNs45NU5AN1BWNQl9yUg/cF4YK9K3ROdJnvC/0MQyOO6g7/0
-	 3Y1CpERaFP/A7LCKnMyDJNsXV2m/f3z9lz5emsapoZUDF63qv5irOs+sj4/qtv9GjQ
-	 fRgHfAFTqDjTYq3YqmqDEID5JHJgx2b+Tx5S4yzg=
-Date: Fri, 7 Nov 2025 14:33:10 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com,
- rppt@kernel.org, dmatlack@google.com, rientjes@google.com, corbet@lwn.net,
- rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com,
- kanie@linux.alibaba.com, ojeda@kernel.org, aliceryhl@google.com,
- masahiroy@kernel.org, tj@kernel.org, yoann.congal@smile.fr,
- mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com,
- axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com,
- vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com,
- david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org,
- anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn,
- linux@weissschuh.net, linux-kernel@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-mm@kvack.org, gregkh@linuxfoundation.org,
- tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- rafael@kernel.org, dakr@kernel.org, bartosz.golaszewski@linaro.org,
- cw00.choi@samsung.com, myungjoo.ham@samsung.com, yesanishhere@gmail.com,
- Jonathan.Cameron@huawei.com, quic_zijuhu@quicinc.com,
- aleksander.lobakin@intel.com, ira.weiny@intel.com,
- andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de,
- bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com,
- stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net,
- brauner@kernel.org, linux-api@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, saeedm@nvidia.com, ajayachandra@nvidia.com,
- jgg@nvidia.com, parav@nvidia.com, leonro@nvidia.com, witu@nvidia.com,
- hughd@google.com, skhawaja@google.com, chrisl@kernel.org
-Subject: Re: [PATCH v5 00/22] Live Update Orchestrator
-Message-Id: <20251107143310.8b03e72c8f9998ff4c02a0d0@linux-foundation.org>
-In-Reply-To: <20251107210526.257742-1-pasha.tatashin@soleen.com>
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Stat-Signature: ayt6j3q5tj51k46s9mo1wbyhunfshw4y
+	imf17.hostedemail.com;
+	dkim=pass header.d=lwn.net header.s=20201203 header.b=gwskUpuJ;
+	spf=pass (imf17.hostedemail.com: domain of corbet@lwn.net designates 45.79.88.28 as permitted sender) smtp.mailfrom=corbet@lwn.net;
+	dmarc=pass (policy=none) header.from=lwn.net
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762554921; a=rsa-sha256;
+	cv=none;
+	b=rpMqXmp2/r6G737gMo8/DQ4qwsd7VcH/N9LIcBtEPkBuec1QRPguNaGu2/DGDu+uW3St0U
+	LtGjl2HRG4RiEaXaI5aqv4X0i4WPQnOJdwLgxCIv/QRx6f0sQAKSuQ0uu0R3uD5Vvn+KPV
+	JdHttBxxO72XKVcAlV2tasD/yvghHzg=
+DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 65A4040AED
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
+	t=1762554918; bh=1SMRxhNRshB8vecJq42CGMcQSf+tMG9pcOEmrtJR/2o=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=gwskUpuJ4a2g0JY5PiFttMjCeJQuS5S9UEPZocWG6S53nMlyt4gNfosYgLoQ6Jwhj
+	 dtsb6S+afpYrUIi0QfyDP5S6e0bDBizWxKwt/uIC0tV/2BUoFA5ZIOjasCC/wOB6C5
+	 IvBnQSvlGwdiy84Vv7DtwNnU0ThlI1+rpNmvLMNs2Mlba7j5UvudGA8dWS/wNWoEhb
+	 QQZECfmiJHj8aTYEDJFrkXseci/C7M7RQmHvvaOKNnK8EDDOg1KshyEqtA+pwvZFub
+	 CJuACGdj/HuNVrTYEYhxm/X8rI6+e/rYpIzGlIZWWTn5T4qJ87Gv51ZI5YPYmAqjvD
+	 ATLFFKQC18bmQ==
+Received: from localhost (unknown [IPv6:2601:280:4600:2da9::1fe])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by ms.lwn.net (Postfix) with ESMTPSA id 65A4040AED;
+	Fri,  7 Nov 2025 22:35:18 +0000 (UTC)
+From: Jonathan Corbet <corbet@lwn.net>
+To: NeilBrown <neil@brown.name>, Jeff Layton <jlayton@kernel.org>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>, Dominique Martinet <asmadeus@codewreck.org>, Christian
+ Schoenebeck <linux_oss@crudebyte.com>, David Sterba <dsterba@suse.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne
+ <marc.dionne@auristor.com>, Alexander Viro <viro@zeniv.linux.org.uk>,
+ Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Tigran
+ A. Aivazian" <aivazian.tigran@gmail.com>, Chris Mason <clm@fb.com>, Xiubo
+ Li <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>,
+ Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, Namjae Jeon
+ <linkinjeon@kernel.org>, Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang
+ Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>, Andreas Dilger
+ <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
+ <chao@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos
+ Szeredi <miklos@szeredi.hu>, Andreas Gruenbacher <agruenba@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, Richard
+ Weinberger <richard@nod.at>, Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Mikulas Patocka
+ <mikulas@artax.karlin.mff.cuni.cz>, Muchun Song <muchun.song@linux.dev>,
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>, Dave Kleikamp <shaggy@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>,
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>, Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>,
+ Bob Copeland <me@bobcopeland.com>, Mike Marshall <hubcap@omnibond.com>,
+ Martin Brandenburg <martin@omnibond.com>, Amir Goldstein
+ <amir73il@gmail.com>, Steve French <sfrench@samba.org>, Paulo Alcantara
+ <pc@manguebit.org>, Ronnie Sahlberg <ronniesahlberg@gmail.com>, Shyam
+ Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>, Bharath SM
+ <bharathsm@microsoft.com>, Zhihao Cheng <chengzhihao1@huawei.com>, Hans de
+ Goede <hansg@kernel.org>, Carlos Maiolino <cem@kernel.org>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, Andrew
+ Morton <akpm@linux-foundation.org>, Kees Cook <kees@kernel.org>, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, "Matthew Wilcox (Oracle)"
+ <willy@infradead.org>, linux-kernel@vger.kernel.org, v9fs@lists.linux.dev,
+ linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org,
+ linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org,
+ codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-efi@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, gfs2@lists.linux.dev,
+ linux-um@lists.infradead.org, linux-mm@kvack.org,
+ linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net,
+ linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, linux-xfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org, Jeff Layton
+ <jlayton@kernel.org>
+Subject: LLM disclosure (was: [PATCH v2] vfs: remove the excl argument from
+ the ->create() inode_operation)
+In-Reply-To: <176255458305.634289.5577159882824096330@noble.neil.brown.name>
+References: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
+ <176255458305.634289.5577159882824096330@noble.neil.brown.name>
+Date: Fri, 07 Nov 2025 15:35:17 -0700
+Message-ID: <87ikfl1nfe.fsf@trenco.lwn.net>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Rspamd-Queue-Id: B55874000A
+X-Stat-Signature: f8z1xrfq6kjrbfjkp449qf83yir9tmpd
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 36619C000B
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762554795-356788
-X-HE-Meta: U2FsdGVkX19gfkEQEjCWIE8K0HlsZ5BBEXhMHovcskJHzsN2t/z/POgeBT/7OYsrbmHuqI0T9fWjLjVdgCUW4jIn+QqmiYWJSmFQhh7Ya7WPeh+gDh9f7I9VxxlUY29tMSjWpukBJozmVpS9m4rFfyAPmWquJmLMk/eDVafHa966Rq+XDyb86Xbs76/KQUVz5RgRJ84ijRrekc/yeVyd23+jynJCM8q8aBSh1j71QomB93rog4l4s7/Nts7vpkJvXbKvkl3BYcgLjqFbeFwkS4hPodJt0sBXEVrvZO4Zr1NXDMkFaJ4h6Uj5u8Y4FAs6L4v2lUYYH+iVU2xORqRLZVvIm38DXSe1MVy7iNbBQS+HgiHRGvt7udV9/gWId4hxUSlUZhI2wAj+Hhxokn8nVXIeqpqGI/0vHF2LvbwdVVm5WyqZDA0uPhEBLIkCXi68CuR8ugKfD9DQlKkRFVS3Go6k2fecZQLs+VU1Q0c7/TW4eWcEMLrYgCT5QtE3IcElyKgw67Fl92CXR74dkxfAzhu64ehRFqF8M6YseD+O4iyNIvd1i0++ZC1usMrM7CLWE3sLbvICd6Y6BEoBgbfCXJGLyfCykVjgsGRi1nvr4FN581DkZxa03wvQ8pB90CLLNYjrPtRdGZru3on7RVe0IjJXbMzLMCEE349wqEw5pxs0BM6tpx+Nz5Fwy6Th6OO40VgikXIZ8sOAu48Kdqd97ipkzZtTh2uQbFwYRE5ym5okLkT3Miiy8of2jdxcTECkEXwZf92ljCVPKmndACSpAdYB2Q572whQlaSPK8A1JiQtmicWwkw0q5VVsc9o2lpCxF3f/YHWda08RYeakODEWWNTwkEvwwMqaIz8eOe2N87WCeoKPaP16jfbJy6fRW+beMcjMLXhHLo2pTf2dMcsnzTucotV02sEKGBa3aNCopP+s9HrLuN7bA8xWa3pHgYyRbfspasjEX8p/YyZyVN
- cu4/uE/4
- 8JnAuQR23rT4voYYAGuW4uqdsUdBCjcScPWIzrAveUJtYQB/Xtbw6q8+i81ZCwT/kxJVGHQbdc0Et3rAzzBR5ykyGIz+GERMdhX6B5sPMOnmW6eGIY5TNhJtupfGkStxGkDRi0hr0mtitoUHA3kKePt8c+imbLPALwUB94U4p4b+RFlD00SuG3jzYR8BkMn+Y611wjyqi0/fCnogrY1ZnZcElGd6A1tyTuo5yfQ3G9pTDgPHaDiI/5I7nsDGYSlK8hf+9aQ0gPJKmMkpfd2pykZoMwcP4l41woB3DlVkrC0NQoPdiCEOiYBa5t0/iADGOjtCkCUOcfXwPMsKSq11qOo/h/QFyqgBmU8kST4nV65aXqiv1kgX66r9LJLstCseZU5La
+X-HE-Tag: 1762554920-515368
+X-HE-Meta: U2FsdGVkX199iWXi6a3cDZ1veLgG9n74e+yv1n03YTOUJe+7jtwZ9+IkBy9Jc5sWboq3nGW6966veIXaxDH3UAbGA4K6JDbpdEZLYl6iOYKQM46eVK1KhRo5uQGI1dCahcIa3W5CXMCmZwqKnU6mseDRBhL6ajqmSzkCozpU9DUTSzPeX00nIW6CmR5QR09BCRcov5KutABnXSA8B68UE7UK/xm4plZ4M/IZnEGzaujYHxB3NCuOkGHfv4mUfujTl08IUHkwKbtJmC9KrDEsIFK4bJo7efzZD/Q6iEMhLm10ABu5S1noMDSsBATUIXTMYPHIaDzn1Q/4VHm2Nx5oBevCms4gx1GJCGxUrZQfeXdxPULEB0EdRw9EY816F6qHG6beuM52kD1a8qj3AsIe5aBrFF2yCi7M1WKLbUD3SkCsusE/CqP+Kn+7QZTDI5g179V1Zyf2gQEyNgiW7cYyCTwL/u9Cb3YjeSSNz1lBwa2kztQv57UojGNei9mI8N6/kvz8HJmXVIaFvW9gdNe3qsw6UF8dDdapppCS1hOK4D4kpYzpG9VsAmLtXG3JSOZ3PcykwzYt5HFG6nFzscdVS/Vu9UcoPQaTfUPJR3pNX2DRX2gSK/hdcv2Xle4DMwx7u4s12XHXsjYcjiIPMFIHlyTL4LvYsANWAlCg7j/J/N3yBiKPkylHM0Clqr1XUex4cLilDrdjaQTIJDRJsrnikI+Ur0dAKiS9lD3M59SgXj8ST/KY62H9EU6+ggfNZ4I6QTr7UsmfzJa8lVNuuFwfx+x77+Hfiu57KN0QMtYuLpRxOQ1UE9UdKkqhtQ7jvOgETI6zG4IEqqDEGwkqPmbJW+b/4oeDxT4i1/Ov1BwXR2oKkPZq+2wvIrJoCKH1Husv6uH5xxmETIl2GG6bpmzd3FQh2GLWbQVSYxxwnnKh2t/Wq2Fm1vnifA8lfvSpw2NnckBacdhbXtsTxXc2tzj
+ ysZp6f4T
+ mqsi1xutSy/OPT0zB0x6QNEU3cdLkxbr19qrPH5Aimuon2eMp1HeP2pK40eJnjKHFvD88RGLWY5JKWUVOcU3v5XLZ9MfLC5EZR/CvTBcRDmyD7dHPMcDFIV0QM7IwfAL25+pC
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -113,12 +143,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri,  7 Nov 2025 16:02:58 -0500 Pasha Tatashin <pasha.tatashin@soleen.com> wrote:
+NeilBrown <neilb@ownmail.net> writes:
 
-> This series introduces the Live Update Orchestrator, a kernel subsystem
-> designed to facilitate live kernel updates using a kexec-based reboot.
+> On Sat, 08 Nov 2025, Jeff Layton wrote:
 
-I added this to mm.git's mm-nonmm-stable branch for some linux-next
-exposure.  The usual Cc's were suppressed because there would have been
-so many of them.
+>> Full disclosure: I did use Claude code to generate the first
+>> approximation of this patch, but I had to fix a number of things that it
+>> missed.  I probably could have given it better prompts. In any case, I'm
+>> not sure how to properly attribute this (or if I even need to).
+>
+> My understanding is that if you fully understand (and can defend) the
+> code change with all its motivations and implications as well as if you
+> had written it yourself, then you don't need to attribute whatever fancy
+> text editor or IDE (e.g.  Claude) that you used to help produce the
+> patch.
+
+The proposed policy for such things is here, under review right now:
+
+  https://lore.kernel.org/all/20251105231514.3167738-1-dave.hansen@linux.intel.com/
+
+jon
 
