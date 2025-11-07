@@ -4,91 +4,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A25E1CCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 16:06:24 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4A368CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 16:07:24 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D97918E0011; Fri,  7 Nov 2025 11:06:23 -0500 (EST)
+	id 92C048E0012; Fri,  7 Nov 2025 11:07:23 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D47C68E0002; Fri,  7 Nov 2025 11:06:23 -0500 (EST)
+	id 8DC2B8E0002; Fri,  7 Nov 2025 11:07:23 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C5E538E0011; Fri,  7 Nov 2025 11:06:23 -0500 (EST)
+	id 7F28E8E0012; Fri,  7 Nov 2025 11:07:23 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id AE90A8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:06:23 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 4BE0D594CD
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:06:23 +0000 (UTC)
-X-FDA: 84084288246.07.6F76638
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 69BBB8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:07:23 -0500 (EST)
+Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id 10DF812CA3D
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:07:23 +0000 (UTC)
+X-FDA: 84084290766.13.117E642
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 7132F4000F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:06:21 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqpGROoV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762531581; a=rsa-sha256;
-	cv=none;
-	b=HzXrP9qosFRIK24ezeoES0u0Q1QJ9ip75q4d8ZINGWnWDJGNasKehKL/dD3B0qi1Fb8O5g
-	RxesL1ds/yVCJTGDJ0Vn74iTVd17qud8GnKTWY1I4BIuVxM+O+n3/y+ppMQk2WNhfPGn3p
-	uC08hPSlosGzqmivU+k8ufsbSCrsLHc=
-ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=UqpGROoV;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of pr-tracker-bot@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pr-tracker-bot@kernel.org
+	by imf03.hostedemail.com (Postfix) with ESMTP id 71C7120011
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:07:21 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fRZ7r4cT;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762531581;
+	s=arc-20220608; t=1762531641;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:in-reply-to:
-	 references:references:dkim-signature;
-	bh=KSZ+1KtPgEZzrb0kbu4xuMg8oqoSo7FVQ9q0bhzqUbs=;
-	b=lQYp/v6JQEuy15Dq0UGpM2hFAXRbvxm/gF655m2mGi+MmgwfxOlfX7g5BJPh7iVRilE05e
-	P6idx0BNc34nH2r5d9OeklpSXP4dNerKl06vPrAii8wQu4Ly0vqSiXKO1oedibm66ZJk5A
-	cUVww6qw6hw68fyfXo9wIEspEuX28vk=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=KmNg0IbiQSMgIBfWpyOISbt53znceGdIygj3J1+GoFo=;
+	b=xiKDtgN+MzFQObg8Y0lC7bwvAZwLEJu6bOiYSG1TEAOpCCxxHNMqYsAamsgrDCdHCdsPJu
+	NVGEbgDRx/ID/NthezyQhAiW0A8oPd5tnCCA8RfBkThxMo0Dg0TWHRh0EdEFVxJv2sLiD0
+	IsuEJac/5UdQb2qTt/pYT3pYqGsrzVk=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762531641; a=rsa-sha256;
+	cv=none;
+	b=bnY43jWmt4PvKG0u205sJUguaiJ1m9FVJ25k4iV8wqO8adFP1rNfV2isQy120taCf/mmRE
+	LWJ0hI0q74nWnZQJn0/BKrRUkKBlubBTthm46PwWJ2L4mcy7YgqVWsztPckj+ASQcc34SE
+	mAcApsjesR0Xpl1smych3FMmtAyf8Aw=
+ARC-Authentication-Results: i=1;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fRZ7r4cT;
+	spf=pass (imf03.hostedemail.com: domain of pratyush@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=pratyush@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C7A796191C;
-	Fri,  7 Nov 2025 16:06:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F80FC16AAE;
-	Fri,  7 Nov 2025 16:06:20 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id BE54461913;
+	Fri,  7 Nov 2025 16:07:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4214CC116B1;
+	Fri,  7 Nov 2025 16:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762531580;
-	bh=iwD/lIpL8OI5hfUM+FYdmY/1KSRk0/qZ6JwCV0ieico=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=UqpGROoVQwaezRxKKgR5nJKyKdtk+NWn2myynx05W7PIM5ncbNZ4t5E4wJjJADldr
-	 8Jj3JsdahcJPAZiZyDuajZgn8sPxfEnOPDPuOt3KBYrK/QBXHzaIxlSYx9Jv/bnyj/
-	 C415MXFsORPCUxF6YTnWvXg5Xrkdwa2fn3khce6k1ZLr/xIe5tKRa4ne0BJYe1isrS
-	 6iyWUcaA7CwicaxR1+3Wh4HSfPJBurswY1v7O3d2q9QtTPQEZpVdJtNFJ8xkBV4L48
-	 Evp/totEi5DT4/P+13pQOqkuQO35kXxe5Qi1O0d9bruB3zW5BXkPEEVuWGlYp6DJFs
-	 zo/E80gFT7gXA==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 33C0C39EFFCF;
-	Fri,  7 Nov 2025 16:05:54 +0000 (UTC)
-Subject: Re: [GIT PULL] slab fix for 6.18-rc5
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <2dfea88a-5ba1-4311-87d2-e1e66c2f885e@suse.cz>
-References: <2dfea88a-5ba1-4311-87d2-e1e66c2f885e@suse.cz>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <2dfea88a-5ba1-4311-87d2-e1e66c2f885e@suse.cz>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc5
-X-PR-Tracked-Commit-Id: c379b745e12a99f0a54bafaaf75fc710614511ce
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: a80abfbb1013ffec7aa7e574b5ba9bcf02bd5462
-Message-Id: <176253155283.1077315.9187782143764376643.pr-tracker-bot@kernel.org>
-Date: Fri, 07 Nov 2025 16:05:52 +0000
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Morton <akpm@linux-foundation.org>, Harry Yoo <harry.yoo@oracle.com>, David Rientjes <rientjes@google.com>, Christoph Lameter <cl@gentwo.org>, Roman Gushchin <roman.gushchin@linux.dev>, "linux-mm@kvack.org" <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>, Alexei Starovoitov <ast@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 7132F4000F
-X-Stat-Signature: 856177g5o67rb6xwa9x68tqp8uzkgeub
+	s=k20201202; t=1762531640;
+	bh=KmNg0IbiQSMgIBfWpyOISbt53znceGdIygj3J1+GoFo=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=fRZ7r4cTjf5cb+wQfQZKSi3nxrTbj66GE5KbiX42htXpJ44IXf3nBmo+xC4o+q7TA
+	 BRXzD67osZZSe5TEP3UnkDASXEMhdSAiGFcXkjedQ7CCSsHMJlwH57SJmRIb/XCc+V
+	 sa8Wvr4hF1Jw3bYrpn3i2K6GJEMueq3rSmlNZQiOu89kvKXq8kl+xoD56DiPOKor8h
+	 XPHuYlvf27NrmVcpFt+gtjOFbxd/4hbMJbfWr+jh5UFLH2X2tiLpibtfSo2h7LWloB
+	 eGQNAROrX3tSYtgs66K6dFgmfjbzrkO5Jm79bK1xZlxpbl2e+L4DUnV41N81eAfEqB
+	 gOE15k6fuoYGQ==
+From: Pratyush Yadav <pratyush@kernel.org>
+To: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Pratyush Yadav <pratyush@kernel.org>,  akpm@linux-foundation.org,
+  rppt@kernel.org,  graf@amazon.com,  linux-kernel@vger.kernel.org,
+  kexec@lists.infradead.org,  linux-mm@kvack.org
+Subject: Re: [PATCH] lib/test_kho: Check if KHO is enabled
+In-Reply-To: <CA+CK2bB+EpZg7MTKZhFtaGoYfLN5JNeaH9HDv_Avq9Qm+3e2ig@mail.gmail.com>
+	(Pasha Tatashin's message of "Fri, 7 Nov 2025 06:15:37 -0500")
+References: <20251106220635.2608494-1-pasha.tatashin@soleen.com>
+	<mafs0cy5ub0nc.fsf@kernel.org>
+	<CA+CK2bB+EpZg7MTKZhFtaGoYfLN5JNeaH9HDv_Avq9Qm+3e2ig@mail.gmail.com>
+Date: Fri, 07 Nov 2025 17:07:18 +0100
+Message-ID: <mafs08qghbzd5.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762531581-714195
-X-HE-Meta: U2FsdGVkX1+pVAqNXc3jZeQGwAR/6bJHUnq9+nMlLCzmzhTyQoXc3amsIUxx28iVsdLa1pRJsvWdS1Nx1ubhTRd8011Bqm0Ls2f121Q1HGHtyE0YDL8Ffv7PKXhUgsZAJD2+eYYyQ/bqi1PKjnQKhHGEOg5c6hzKUqSZrbQX987hVBc83PKQcqVQxwzb7Lw9INi6A99ZDx9biJ/kL2XFPdl0Mk157OTX5lgUIQJX3LQB+StjsT52YdmXClqE6e4y4CuLj0Zd5fSFR/9oNneICb7amtJHR/5ix+KIvFFhPFklYqt3CaxNwGwzLv5V3essn/EWT9YR6sP+wn98kYtIMVLH9+GAy+zBY8CLGoCB1tMB4Rn4X1hqeUIm3kKU8HsMb3XF49keRlwv2/RCk3aZu8b9H0l6lzegTaLwRED1GmunvbMOaUHAEMX4H6QSiFeoitMgdoKKtg1fTUZ9fceHFbSClIFZDv13AFJelnF1ZFiERKUR1vxlQNvN9E1v3UcCFi/mvzFkPh0YRCGtKvXRZ/Lu60PziBl3LNZtLWnXZE0xhoC1nTrKDf3E5TeExZZ4+LhrHqMCFo81nVR5ciAB5ufce5/tHBCPcPFqza3m5W6huvXvVHp84cnc05lPJM0Akx9Q7/OhkrKnoU9LNVW3iI9jxkgDSAlUW2ItgvnCRcpzUbCz7NDh+NVbIid7bMDI/KbLLF2RHkHg9zeqckNmPqaMwV5atOGRxypZtvk4Dr/Y2wxXAmDfWOJTmnkeJt4VisznaY0KaFSYr5Y7R441Eng7bdzYeS6fyKu4rDrzzr7qJHm4ylDT25II+0U0eTVwgwqlLUoJ19T5Rt7JSrBC4EAssBqAaEFjVrq7RhDD0syaO8+OyZPO5Zmx8Qyw8S5lDeMCthXGnoFP55l3sFDfFwUvtsz4Kn0sj7AfXcUu/bhzwXOP9EZn0vZiepYHyXNg4qFJFEC0p2NY/etbvgb
- GriwiCnW
- MqQt5Ze1ZiiWhbsgD8WP0BvuHNHhPn8VjSiGVflwDW5TKu6gngrKQlxHn2xZHZIxrTzEz5X4O6SDjRF92kPzXDa3z/waa6Ng4Sc7FVCFCAHlMEYohCscjeOWwppRL4YFCat7fO9jJTvtbHJAxZ71Wf0XZIUvXLC9eikyayPAq47SQhQAvfyBsx72h8f+i3LQAmztxx6V6ImmOmNZ9cIhqgXFNsX0VP3EF/bxUKKFWLI8VPsmLSi28y6DZX4x4PfNHB9wJXhy4RkEvtTDzxQ6WWR58/w+/CEw+wwJmABvqGp3wKh+xx6sw/PbqzczFz0Qcy9edDM/AN3eMZyBFbALSA7XPb0FTFazF9rglw+EKNiFu7Eo3SJUzvYH9KYk+LAhZbAW7z3GTuvky2dvOupJ6oNgnhd+5I0JLHECRdopH6J/8zpQACkN/jORxLg==
+X-Rspamd-Queue-Id: 71C7120011
+X-Stat-Signature: tede8p4j8is75d6cuzkg5kdkdzp6swsf
+X-HE-Tag: 1762531641-87347
+X-HE-Meta: U2FsdGVkX1+rUeaKvm3T2Ix+M3xvOP8KPhDdmCIV1Hrvh0FpQuWV7liP9fI2SkYh+1Di3ZQRS/lE5CX8BJ0Vngf1J6JlSn19kRONH3suHDsmQSDeo0xbNH7QbnWl4Srlaeydb0JBg6yeM5/1sZLilWEfZxpz4b63DiuPXnH8dYWBmd55oHMGJOKoA72CsvcSsuRFFmRbEr4Y3reoUJSg2mfH09+n2N3j9267x6aNIGA5twOFE0WOEZBa0ScXoMvPY9s8aSA3Y3d+fhszwZALysuTqij7AkD6RtplYc3L32MaobJdkY5dw5gsGb8WgCIrsNxSSBtZ9rXt8lIoJmUebI84Z9cqI6ftkrtHruoBKB0cwTAcC/Vf2XNpbVmRRCFH75FSAmVatND4XTRsMPnNjo29fHUtencBU1SSvg8BGN+CklAVT7u580sPwGdeW6hA7J6YeXdp2acZ/h/KcIjHoqYkuO4WDh9Ubp2zo04Z1WjZhW/SQu+WB8h7In+NI9gHEXdK4Ya1InC692bFII3XluPjKK3VaGJ1+NVGLDaSvYa8qL3WXWNF/FwJc9MXlQ6K0IKhNXvK17jcUEZwPF50WH89ObO6diqMV5l7OoAHZaZDffewqpdDF8xblzZHn0I2wbU6zQXjXQMB5JEKayg1x3vyTGqE3EMY8yAA2FZbdhyaFSLBn835Vijk77JcnE8o80iCf+QWdSkTVBba5EpOg2RztbvM+srJsy7ePSCkNU1I13s1R7+HBXZEgSO+PRIOZrSPOmGhgEyKd0uBJR7zLRqcgyqAaJG5eOLQTc+ZBNS91ZJMoARY77UGytJT5OOGBUNNnn15pVHbU3erf31WfGZTYPFG4C72cmAPtrfzcX/B8t/REI+zwb7uJQV8ECrLe2jSWJvpHqJfCIN9b0lAcVUikWzb5xNi1/3oIWTTzo9XOYLTeZcWhFckLKVWViGtw3eWEXCqTHXA90e9Rth
+ /9sAbQTZ
+ raKBkmMUycd8sTO0t4Z8PIxcYDhPww+uH2e62Cdi5L+GgT64Y940KOuCm1nX+NhfAZ+maRoqvx9M9z73dpAE6TLOW150pg+rkyD9Cex3cfSdT+HiGUvNuNqq1ee+31/lzOLTNIgNYen+abyvgvXJXBsLvieg0RmqYk3ZPYhubuFTo8bF7K/+vwZQiBT+sn1t5RRtp7wIXa2afH1zVqfPeCno+zUSjAKYQtZeGR6fBZl5AxoiqkelU5qaoltZFHeVxz1OhawghSdyS51wtWMeJOYIPc1krttBTKzQf
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,16 +97,35 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The pull request you sent on Fri, 7 Nov 2025 09:53:31 +0100:
+On Fri, Nov 07 2025, Pasha Tatashin wrote:
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git tags/slab-for-6.18-rc5
+> On Fri, Nov 7, 2025 at 5:24=E2=80=AFAM Pratyush Yadav <pratyush@kernel.or=
+g> wrote:
+>>
+>> On Thu, Nov 06 2025, Pasha Tatashin wrote:
+>>
+>> > We must check whether KHO is enabled prior to issuing KHO commands,
+>> > otherwise KHO internal data structures are not initialized.
+>>
+>> Should we have this check in the KHO APIs instead? This check is easy
+>> enough to miss.
+>
+> I considered adding a kho_is_enabled() check to every KHO API, but it
+> seems unnecessary.
+>
+> In-kernel users of KHO, like reserve_mem and the upcoming LUO, are
+> already expected to check if KHO is enabled before doing extra
+> preservation work. I anticipate any future in-kernel users will follow
+> the same pattern.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/a80abfbb1013ffec7aa7e574b5ba9bcf02bd5462
+Hmm, fair enough. I suppose we can always change this later if it causes
+more pain.
 
-Thank you!
+Reviewed-by: Pratyush Yadav <pratyush@kernel.org>
 
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+[...]
+
+--=20
+Regards,
+Pratyush Yadav
 
