@@ -4,218 +4,100 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 88CACCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 14:44:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 0129DCCFA18
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 15:00:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D03B58E000A; Fri,  7 Nov 2025 09:44:05 -0500 (EST)
+	id E8B938E0002; Fri,  7 Nov 2025 10:00:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id CDAEC8E0005; Fri,  7 Nov 2025 09:44:05 -0500 (EST)
+	id E3BEC8E0005; Fri,  7 Nov 2025 10:00:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BC98B8E000A; Fri,  7 Nov 2025 09:44:05 -0500 (EST)
+	id D03888E0002; Fri,  7 Nov 2025 10:00:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id AC4968E0005
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:44:05 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4A3F9C04E8
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 14:44:05 +0000 (UTC)
-X-FDA: 84084080850.19.3F6FCD5
-Received: from YT6PR01CU002.outbound.protection.outlook.com (mail-canadacentralazon11022078.outbound.protection.outlook.com [40.107.193.78])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 4E7DE40012
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 14:44:02 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=jcPW58BY;
-	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.78 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762526642;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id BAB078E0005
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:00:03 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 61E654BA5D
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:00:03 +0000 (UTC)
+X-FDA: 84084121086.08.D3092E8
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 35923140004
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:00:00 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762527601;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=xHujlZ3qnnh0z6+fjcmY90WIMb2ZxJa/Q+H52sH1cvc=;
-	b=atanyr8hT03P7XGYbay9utETlyGujaTTE/cHTUmxW7r9r8Do7tPAebqP87ahrrFUYpksa6
-	7KiPqgs5MC/TuaZZpOLN6xXhQ7aKwX8rTUJX2pONoJwGUueYCYyaNvIGP75evK3MVECNi3
-	SgT6d193cHkofDMognsu8KMe5K6+qIc=
-ARC-Authentication-Results: i=2;
-	imf27.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=jcPW58BY;
-	spf=pass (imf27.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 40.107.193.78 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762526642; a=rsa-sha256;
-	cv=pass;
-	b=v8CTBbaNY6qYQz/uHhf46rHU6YhcSUqqrc+nLPkmqsifC2hly6GLQV7oMG+BVkETnmaglv
-	m1LkK0jZRCYaOdrkp38eL7y0X1+8EReW65dGoXK2PI4h190mU1Ttxk6dnC82DJV6YTTuFD
-	j1BHVVXTZFr8TxsEKGbnt86pWQmV270=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rx4kcZHJas4CimdaU7CV+OKU0Q2TkIDynSYj9AHImrjQLgbJu+7dH1CMFoKtk5h55mGfR9g9gKFrcXHejT7pfRAjywbNjd7mMHqy6f4wWofoS6Jy29Ypu5yml8+8GOo4uM/yEd2G2JYtaoweftW6A6R/rWcXtgt9916eN39ENBoDhDGApmk8HvZlvRVH8vCFXSf2s7WSxRgdmZhSukX2JRgqO+gnrjw8b/opwbPjTC1QFPmGX8h40kugrSWXBMbKYW/M7iOehJmRFVJpItclEG/GDDw+oEQbkhFNkxQOurLi65ZaAfjF3rZM/nN6Ly3ZzArIms1FLKhx7RNH/NMiwA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xHujlZ3qnnh0z6+fjcmY90WIMb2ZxJa/Q+H52sH1cvc=;
- b=c3FkK/gMTahhsMNK9ji+H4RHUFyVDfOfsPUfXcqXb3BNPT+9AqyI5Kq3GdDaBqqQG9YM0OQkUS+b0e/ywxdEouvwfS6FYxxHS8fOyXOQIcotsXFMH5c1HjFBvmwzzC3hjBlhvl/db3BAhmM818MA+9NB9zJbd7TwRxf1lyOH8rzNGX8RWV7BrM8cZxSANKxoJGkCgU8NklBfuKFWZljOnCYdTTFNHbHDRIcKOIvCNv2wBKhNNBhPeMhkXbzknC4geJHnNrKq8GVlgn0Um/tLHSwcPlw1qb6qJyyABIh0PsKp8obcu99PLpUgB7yTtG8AfeV5lG1uNdX++P8Mg02FhA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xHujlZ3qnnh0z6+fjcmY90WIMb2ZxJa/Q+H52sH1cvc=;
- b=jcPW58BY1bY/yA48JYzzq2PKNYb+HmWU5wIEkk+yaBS4Gw2mRTTJ2MnRWmoKax2YSnNVe7k5y/1Y7+5/5/q/fMeXX4pC001rNgq73Nx+PLjzH818JM1TpxZoFZefHI3hbME5urO9tskwn7m6i8GkPibU5IRvyaV+TJMD1PZYQ3UB5CrazmdsXkFRjrbmMqXqK9wDd+tYKHJOtyTXFiHSmGOmrxsVeT7+cOLXWRJbgu83ktwg5tv/qHtxssJbHxf2rB2dEZANZE+UzXHSpd9o60WXghVzHSGqboQ8D8mZmCGrkRGIgBauvFfaz9eu5H5n6iGb1bvZLdJkLDGTXNmMQg==
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT3PR01MB5471.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:63::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.13; Fri, 7 Nov
- 2025 14:43:58 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9298.012; Fri, 7 Nov 2025
- 14:43:58 +0000
-Message-ID: <7732c2eb-e547-47a8-93b3-1d1b4d9c27e8@efficios.com>
-Date: Fri, 7 Nov 2025 09:43:56 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large
- many-core systems
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
- Andrew Morton <akpm@linux-foundation.org>,
- "Paul E. McKenney" <paulmck@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
- David Rientjes <rientjes@google.com>, SeongJae Park <sj@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- christian.koenig@amd.com
-References: <20251031144232.15284-3-mathieu.desnoyers@efficios.com>
- <202511061432.4e534796-lkp@intel.com>
- <6hmgutxgdchs4qz6hprwsecwoygwszn5ywixxrvnereilegcsx@mxroaotaw2me>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <6hmgutxgdchs4qz6hprwsecwoygwszn5ywixxrvnereilegcsx@mxroaotaw2me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQZPR01CA0102.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:83::24) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
+	 in-reply-to:in-reply-to:references:references;
+	bh=7xX67g8MPpCr3MM+KOG098SbJpojLff6/hxQ78gpCEQ=;
+	b=Q5jerFSUvnyZ0u652gG69JQ59jDzjWfkXhVEr+mVD3VOf62Z1fikKjMU+Uvd+y/7lbUSnH
+	12euKnQs0iNSElC24s1sEYKe+fX4Ve7jy61Hw6Eid/Vl6yLr9viYAZwVkjhxDU577UqIIJ
+	vUy1KmGugBjgmvxvICsgFjfriRruZM8=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf26.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762527601; a=rsa-sha256;
+	cv=none;
+	b=21UiNrx3JDTFvwuMDhX6qhF2AXQegryo6tLJ6D7isRhMH97GHxfEuCgIPFq9FGzVrQjkNv
+	0e5ZYlMDPmRz1baJA4uXm0LVroeUxknjUv3lVV2FedzUF3UgbG1mtD7imVhBIsoxAdJZ3K
+	adTjKrdQAYLiAFAos2pwCBCid8paSWQ=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35D311515;
+	Fri,  7 Nov 2025 06:59:52 -0800 (PST)
+Received: from [10.57.86.134] (unknown [10.57.86.134])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 611CD3F694;
+	Fri,  7 Nov 2025 06:59:55 -0800 (PST)
+Message-ID: <999feffa-5d1d-42e3-bd3a-d949f2a9de9d@arm.com>
+Date: Fri, 7 Nov 2025 14:59:53 +0000
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT3PR01MB5471:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0d178b8b-4ca4-46a9-51d4-08de1e0c159a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|376014|10070799003|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?d1BJSHI0U3F5aUVIUjg2Vzhlc2E2NnU5RGZJaldlTlk0bnRaYjAzbUZLbm1p?=
- =?utf-8?B?b3loUTlQU3B6VlRCeXFRbzdQMWVaZDkyTFlYZ3RlTHZLN3FCdzl1bTU4SEVG?=
- =?utf-8?B?MjhBODZjZEZneDNtYVNKREl4VE9YNmJyaTd3SUlQWEs4L0ZCRElrNG9RZktF?=
- =?utf-8?B?dkU2em83bjRyZlNFaytCOVllK2kvOXJQSzFQQVhlUnNFUFU0SE9laGVxWU9H?=
- =?utf-8?B?Q01zckVUbXFaOUE3SzB5diswUXE4NnBuVHFoRDI1dHdIUG83bk93Q0lOeUQ0?=
- =?utf-8?B?V2J5ZUY4V2FLc1ZJWlpNMGpxUlRFOEtEV1VoOXpiYVRTSVBBZ2pXVVpHMm9G?=
- =?utf-8?B?aXpEclQxc1ZXbEdGU2dLbFpNSUt0OHliNHlmekh5d2wyeXR1VW1Tb05BeUwx?=
- =?utf-8?B?L2xJUEhsT0lqM0o0aDFZQS82bDNMc2V2ZUcyc0pxZ1NyOFlSUFVKZlM0OXdI?=
- =?utf-8?B?TWUvUnlFRFJnYUlneWFTOTRhWjZyeWROMStkZ1FlQ1hWTVFxNXJSTFZVLzE4?=
- =?utf-8?B?KzFsWm5kekhkMUMwZTZCTldYQStnSHFIaWZpT0tuaXV6MGpoOVNUd1RIMzht?=
- =?utf-8?B?ZFdKd0lIYUJWb1phcHZrZEgzUmhLMDlLcHpZMU5FRG5MOCtuQXViY2V6a0Q1?=
- =?utf-8?B?MGNwV0lRdzZTbTduenNzS04wMmxNbmNJRHYvWnNCSEk4eWM4K01adzdMcDRl?=
- =?utf-8?B?dDRHMDd2Nks0S0ZzY1dYVmJvQ1Vwd1NDTmdlMUhjUlU3bDZJWXUzMTkveWFk?=
- =?utf-8?B?ZXFCMk1nUFl2ZDk5YVA4b2grQ0xia29SYmNyT1dGU01wU3ZVbDdEOGh3Y3Mz?=
- =?utf-8?B?WklqYW13cktOVDNLMXVHUXY3VmJZVTVMWEg1Qm9iUThVOUdrUFBSQUNtK29P?=
- =?utf-8?B?QlQwdUhpRHZCK1BVL2lySlc0WmNMSjliZXhZN21pQ3BuM09CNHpOQlhWVnFP?=
- =?utf-8?B?MXBCMVgyeG5GRlJoOFdSQndGMFI2eEprMWorOFpXeW9uWGdnUzBGdUpBSG9N?=
- =?utf-8?B?U2prMHpLVUVHdzZjOEFXcVNzMjNKa25LZ29aMmdiVFZCdnRuUzlVbFh5RFNr?=
- =?utf-8?B?aTV6UFhtYis0WjAzTXpRQmFQQm9ORGQzWm5LS08zSEk5cURNdFk0TE5EM2ZW?=
- =?utf-8?B?THdTVkpRYkxIeEplaXFPbFV4VnRrZytvVUVWd2lzd2VtS2liQW5SMXhWWnBB?=
- =?utf-8?B?QjFtWjBNajQ1UGxmYldtaHJaWXAxL2htcGlXMDMrOERxZlMvWmIzdDYwak5B?=
- =?utf-8?B?eS93dWVhQi9HcGUxTThRdWF1UWszU0JnTTN1ZU55SS9pRFVPdEdLcnR3YmpR?=
- =?utf-8?B?SlkzZElscTZDeFFEbEx5dzhWOXJ6REhzQ3lTbjZqeGNpeFVvOXNLWHFwNFlm?=
- =?utf-8?B?WnhiSXNLRE5VMHhteDg4NHhSdEMycHZ4RnlRN0g0N29VRmVla2Y5SjRpTDJC?=
- =?utf-8?B?Q1VCVCtSbGlxa0R3dmVzZlpScThlQzR1amlWN01HZEMxNWhkSnE0WUxSRm84?=
- =?utf-8?B?UCtpTFVValMrODRhaTd0UTJBbzBvd1lrZjFhNmwyeWlQZTZ2RzQ0enRMNUlM?=
- =?utf-8?B?Szd0eElrRkhoM2lVbFkva2IyekE5UENFM0dCU05rNmQ1bmNFU3FXdFhSa25y?=
- =?utf-8?B?Wi9SRGU2QUQwVjgxTGZYSTJJelovL1JROXBoNmZWWkplVHVoM1h3elREU2J4?=
- =?utf-8?B?T05SbFZWak1nUnZiOUIxMURpd0lRTE1jMGM5WkluZWZGZmhBbkZzZkpQQ0pI?=
- =?utf-8?B?MjFuS0dJeThseGlmak1IZjRBS1QwQTVsZHB6UHZ4akRLRGpURHdSNmZ1eFBC?=
- =?utf-8?B?L3grZ1gvaHQ4OW45U09QbU5ZWWxPVkZKallxUzFKUmxoTGw1K0ZOYVY1UlZB?=
- =?utf-8?B?dUlrL3NSbXZDTFZQTmxyUW5mY1pWbXgvQkZtVzNQOURkTFE9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(10070799003)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?QnJPdGR5S2ZLQ3JJelFJaWk2NGxpRDg1eEVZTG5PQUVYZXVLVWFCLzJNUFBP?=
- =?utf-8?B?MzE1S3dtVWYzMTl3RmN5NGx2ZWs5YVRESDRpNk81Myt1TS9rclJuZ3JjT08x?=
- =?utf-8?B?d1dBdFM2S0FaMUZYSC9ENmdHRWR6SDF4OEtCQSsvSVZBbm95UHF3QzhXUFlx?=
- =?utf-8?B?MTA3SzBEeHFQd05FM2ZiZmMrT0tOQmJSZVBqcU4zTXlHamlXSUJqRThTVHk0?=
- =?utf-8?B?SWJ1UVZ1cnZXL043OWUrMTdhbDEwN2pmbFZFb0lRL3gydm9oamhIc0JYQzJk?=
- =?utf-8?B?RVppRDU5Y1lRMy9LZnVKZmV4TFpTRy9CSWpmUlZ4Yldid1dSOFp2N3VwNXNh?=
- =?utf-8?B?R0wvUGVaOTNOOTlvamFsMUxEaCtnWUNxVjF0dVdheFQ5OW1pK2hINGZSYURx?=
- =?utf-8?B?WjdYM3FocmdRVDNYSWV6eElqRSthQnhWbFdoTis0L3BpTktiT1RScmxnMEc0?=
- =?utf-8?B?RHhKQ0xNVU4xZ2VuYXZGWG5id0dFNmdEclU0YnNHUW9pTFVDeTZCVVB2SnBY?=
- =?utf-8?B?aXhpd3RQMTdnRi9WdlZOZXNOMEo1dVZYcCtEYnBjWG0yc2xNTGxWY2UvSHl4?=
- =?utf-8?B?eGtyckVXa3AwdVJ1aW9UODJ1dmhEQ2pJeGtUVmVvVS9qUzlFQ1R2NlFGWk5N?=
- =?utf-8?B?SzNscWpGazhPUVR0QnJYcEM4WDA3aVJXa0Rpc1FYTnN5VzgvM0VvL2REWG51?=
- =?utf-8?B?VTJpVGtUMG9OSXhSREhEV0pKZ0x2cERqVk5XM0FLSnY4NXVRUllJZnRmQ2tr?=
- =?utf-8?B?U0NoekxCR2JUSFh3R29FTFVNa3NCTUwydTk4NkZPbDh0MHdQeGIwV0dwWVhU?=
- =?utf-8?B?ckFSd3hXbjZjaFBVUWk4LzY4cVFIYTk4cktZNnFVNENIZDNiekU5cWQxK1B5?=
- =?utf-8?B?aHZvUHBIYzR5RnZNaWQ1YkFlc1MrdGZwNHllWFRrTEVLNVRoTVhGY2lYOXEy?=
- =?utf-8?B?UStqUTZ6RHFRVGEvOWJPVHhiOFdHeFhaOWo1dWJ4UldaOG9KZUlHendWUDFn?=
- =?utf-8?B?T1luRi85cVJOS1MvL1FuR2JFTVlseGMweFg0NU5NRUJWSTBtbERQWkQ2VGtH?=
- =?utf-8?B?TUdMZ05IK2VIbVBEdHlpNnR4eTMrMXhQZXA1Z3d6bWRHaEVOTFIwdm9LWjlQ?=
- =?utf-8?B?UGZlWGJXUGlSUXN1RklwbVFzQ1Z2enRPZGhWblRNRmNrQ2o3ck9KQVlEY0F5?=
- =?utf-8?B?UnlHdmRqeFgyazhtM0IxVmdLYTMyYlVUK3h2MmdGTlZXNWZSaVBKQ3dRMFZC?=
- =?utf-8?B?V2xVQmVSbDF6S29nSytramxXN1A5T2t1Z0Z0Z0FrT0FwcHBaZ01uNmo1OXRo?=
- =?utf-8?B?MmQ2d0J6ZmsvUGZnTVIrRlJwS1d3T2lxYUpJN2orT3NGSzRBTU1tSjhyTzRY?=
- =?utf-8?B?QStoSkRSZHNtSWR4cWRLSlNqZSs5N0Z0ZUpaS0t4R3NCMm9oOG5SdWVWL2ZM?=
- =?utf-8?B?V0U4RitHdm1wNmQrRzRHQVFaazVaZUFnRkZ0VElTZSttYXZHOHFHTEowelhE?=
- =?utf-8?B?UVRLckdvQWV6NmlqZkNnYnZGeTlWYzZxSy9ValVsU1hVeTd6S2NXRFBMSUFi?=
- =?utf-8?B?YmVwOGJVNHdrY1NIc2FWaXRnUlIzeFo4dWlQaTFOMHMxYlZybE9jL1Nvc0Uz?=
- =?utf-8?B?emRCY2hPN0pyN2FONkNxNDJrNy9DL0dCOHJmeDYzMXV6bC92NWN4czErbVVk?=
- =?utf-8?B?RHNsc29aV1I4ak45WVhoOUV4QjdidFE1L2ZNY3lrUmVoZ1BmeFo1cVFjZnlw?=
- =?utf-8?B?dU5UdDV2clVPY2ZZcHM2RHJvRDBHbzFOb1hyZU81eVR5ZjNiNW9pYzZSSW44?=
- =?utf-8?B?QnliVDJDZmMyWXBIdEpGdHM5cjdsUnBGUTdyS3FzclZ0Smk3MmEyaGZFMkdP?=
- =?utf-8?B?MXF1QUM2WGw3anByNFd3N0VYRUNZanRnZGhlMWJ5STZmSzJTNks2QkhuVVBq?=
- =?utf-8?B?aFYrMUZwckcra2FFb3B0YzR4b2kxSzI1bTIwZTFTWkxQc2NkcVIzeDFiTDRG?=
- =?utf-8?B?L0lUa3Q4OXgrdTRxYXRVZUUwL2pHMzZiWlluT1ZUSGtFeTRQWE5pMndGQzVW?=
- =?utf-8?B?RGVWUTluUDRXdVdvUEkrVFVlWEhzZmFOVGd6M0xXQzgwVnZmR294VDhCcEsy?=
- =?utf-8?B?MmVrWGlaV1c1d2dUcmlTS0ZZSnBaK0pnMFlVQzZKL3NFS0dnRWVRbmU5U0VO?=
- =?utf-8?B?bWxoMEZzdm5RNy9HQW8vOEJJcXJUYXFJNzZ3cnNoSFlVaHVkL1JKSTk1MDBw?=
- =?utf-8?Q?CRO8WhEwrLAHjP4/oU12O/dFDksB58xWbM6nwIxCWY=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0d178b8b-4ca4-46a9-51d4-08de1e0c159a
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 14:43:58.5696
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: grXDZnyqJoGw2SACbJeHO6sn58ybImqkoNgUAuZ2VywxwOyCAvLjr2TopZOxJ59orYmH6EoN6fkzwdI8iWDRAtNYhWuJO9RwXh14Bc+wPTU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB5471
-X-Rspamd-Queue-Id: 4E7DE40012
-X-Stat-Signature: cuortskopq449dt4n5iechk95pieezm3
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/12] mm: enable lazy_mmu sections to nest
+Content-Language: en-GB
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
+ Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov
+ <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
+ Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
+ Peter Zijlstra <peterz@infradead.org>, Suren Baghdasaryan
+ <surenb@google.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>,
+ Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+ xen-devel@lists.xenproject.org, x86@kernel.org
+References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
+ <20251029100909.3381140-8-kevin.brodsky@arm.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20251029100909.3381140-8-kevin.brodsky@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 35923140004
+X-Stat-Signature: i1ft99z1g9jyfdsgfuxbmc3z769jy5bs
 X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762526642-400230
-X-HE-Meta: U2FsdGVkX19kJBrsBN+ZzZTmI45fNAUo9GPoyINQrWSs9EfTMbJq/RV1ECFW2Yv4eJvAJPs7ecebfU2P4aQOsavNB8JwLQQCNuJchfTslBnSmYcbZOkgebxnH1gEulAFhSy0+vb2Bbqi2wA/TQp0fPronXprs7TkfsKBzIEgVwM1Yo7FCccPVTTPeMr485VAAxj2HJHEC5JQ2UWrC4tirCpEpxK1dr7hbXeRLCnpGC3D8ltlnE5gqJIDAgD0wnQyQxcnZs8rVc1JBD7UFn2aBgfhw8P97wS5AxJDj2JEnqkYyv3XpSt5+VAwzgD///APMesIV5kP2b1t46w/4rgCaYy0kE03CWECWQTQiftfmUbgtW/d4cH4Jxu1f5ktBrrnJs7xHC0Y/7oNVqnKsPkmYkbQ2T375P+3pq4ZaO+TNM/5H70ilqkq6+09pRd7VMw344UiG7l4OF0SOh8t93C4GVagOQYr4l0G7nu1XyrGUlFU+UePxwLRxsIm0R5tOnXDOCKGLhKeP9JXC74gbGvZFj95K3HmJmQ0egm+x1MW3B51590SKmCEPRuY1amdqEfWWtN+f81uYrc49K7UzH5RigBs5QCRANouyi/oC0Mk+EkxN9IwG2OJwXoQ6vZFKz2XPRH9aWern7GvYAIH+iHbfsBWsYbjksr1wYtwqKDhv9f5p8oAVIWVxihTPihTbF2d1TsL8e7AtCLqLxXtPteUhiqfTgObJ/+A2pvPMlDisGELNh4BFlSURRVtNd7l6re8NBERoABiJTU0GR10QNDKD2qoBDC72gyHxFmBh45G225YYqdC3mWT0FN89MrHwm33A16b6HNyBangIE7yHp3TuavLhaQw4emNdlhAJIax5WcyaxKwvInygyQZiW550KN+Ksetj81V+hZSyyxZfKoipr8PjB3v5BDMq3iEuw5dRo2D5bOOpJoZU9Ht3gDdjCcUiYed2rmL/6TkPVHd98R
- oFoOBbcC
- bk49kcNmWEQK1Lr8dDnoOe3/Xu121DQ29VLQvdPfD87F1JyfOJU/3Tk+BnGJjkX2wd00sQPkM0mMCPQyA/lW1Yeidsympq+tuxKsYMwPT7vkWRC0/sJih3EfYhLNS9B+wfpsvwl1SxrQVdLYt/Bvva8CrlaVokd1TWt0JSJLO/7IFAmI7sIgs87N1Fd9bBnKPJzDDUkEFF8igpycAmjQux/8yu44AEUWRNW3Z66HKlxeww4OJBgs4Z3f7vg556EK4hq0wcT20u++odid4W6HLBnBS5SYF5+VAOZ2cJmEMJPx/8SxnrMaqSY008Pw+FSegmxfywnhRvzCljureCgI+rmQwX8vuvVB5b8ldbWvT/XUIItlDofZBbeszufjZv7+l9iF673kHhG/uZ3uyZSssTLHJ3mCxh7bZf0UROI7wmkO6aUGOJZb3inoby46CkwrKGHSb0ZzOZwmmpBwhUc/YU27ROo2bGUHWw0ADlbHNV5hdQP8I71FKRojfUBut/9TGD7FdjYWHja3LTPilweZm9G0llpBjTKt0BRCnSkT0aKB4QsY=
+X-HE-Tag: 1762527600-785695
+X-HE-Meta: U2FsdGVkX193oQFc8uGfU5U2LQaqWCQTIrQdEzb/Fpaej3rfeznND+4ackPYmYmQdBzeftMTnVnyI2o92LC7qT3newyq4br4gmrzUjyOztlBhV/rrG3/NuEDc4OhfA0NMknX0D0SMnQ5HG5lS4UaArKgsFpcpUuZuudGKLfhwlvQ4ldnSkxYkQT3W36Z0yV2yDCiz0gqi12UiRz+1oyo3BwT0GaJCvd0qJ5yHsssmFr1BP6aceemtjs2JM//PGSfptF5f/4BsxHgG0KaRJk7VPwiBwy6ycZvftq4r/4OCNSjLUPEE34aVenA3zyP0SaawCx9Jl61WK1xoaLERnjEgArkOf34+H7sgPYUATXNEB9oa/BG/7PVxEeHQqnuKziNw5jVaW31sx42d+gyXX570rYp4k9TnKJor3Fis6ZuQ/XF6YGHvcHnu0PmLgZLLh/kb1H6DNc2QOGqLV5FMI+socgCdFRdXUN3DkA2qb41F2hRD4Rw9ds9OxW6lP//tKbWZ3T3OiTDy69woj2Ma5glxHF7PWjHRYv2HukpRoba8yKSkJxpkCkQTmZ7OKS3O1o79i/LPznqZkQe9rA9iGHGxBVNN6Z2eIjlK1D1vsBOYhGxK72PacXFzhVi2BuQPptOrVl97VPuxnFjJs7RQj3Sfey9vEyh5hvU33hUkRsxuz7ZIs0ccC62H+f1/ulsE5RUWxSVpnD/PMqpc0SNwoXeWAnYsCGww+aSPyFe7U4N/Z/8zQjyQSjCW/tQu05atKa0RJ4lBFP+lNg9Fhdr1DGebR2lwVdr/3GKW8Stl5RpV1JoshYyKc9mJmBtYfFt62IqzE8MAe2c1dC4kItZU1QM1f7fdIsW/SNvpU0kdfqxyA6Odf2PFExr52Qo/yPGSWu5bTBkhf7HFkk/9674XjEH0a1KZlZvPQBDcnRfkcpE/MNgbvm01kJ6n3L5YCg348wNCJfuoEB96wu2JD6vEFq
+ jE54zRmL
+ 4krGJ8NYQwjuAw97cI3kLwvpQv64s0XyLFrtTqODt5Qraf24/lknX2dMTgyye3D+NKLYdX2l6qhGPwarLswGQLzKkLvFemMhn3ci1BM3ppMRsTo0006JGqY6b6fG7D+7fM+/4U2wha/qfud1VdDS8ttA+4QGxnRPzavgI7pEKqzKrAKuoG2/B3THIj1VtLS+hAyyf+yg+kMMBBocox+EgaNSJ/JYdSkQj5TtpDQqsNYL4H50LQplOdtCcQ8YbG/mGk53XqtVLDMWyJm1S5Upw5UVJ4DGwOkqvtNgKBMqN01Hd3bqCec+YV7LIwA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -224,75 +106,276 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-06 19:32, Shakeel Butt wrote:
-
-[...]
-
->> [   14.858862][   T67] BUG: Bad rss-counter state mm:ffff8881000655c0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:67
->> [   14.894890][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_FILEPAGES val:0 Comm:kworker/u9:0 Pid:69
->> [   14.896108][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:69
+On 29/10/2025 10:09, Kevin Brodsky wrote:
+> Despite recent efforts to prevent lazy_mmu sections from nesting, it
+> remains difficult to ensure that it never occurs - and in fact it
+> does occur on arm64 in certain situations (CONFIG_DEBUG_PAGEALLOC).
+> Commit 1ef3095b1405 ("arm64/mm: Permit lazy_mmu_mode to be nested")
+> made nesting tolerable on arm64, but without truly supporting it:
+> the inner call to leave() disables the batching optimisation before
+> the outer section ends.
 > 
-> Hmm this shows that percpu_counter_tree_precise_sum() is returning 0 but
-> percpu_counter_tree_approximate_sum() is off more than
-> counter->inaccuracy. I have not dig deeper to find why but this needs to
-> be resolved before considering this series for upstream.
+> This patch actually enables lazy_mmu sections to nest by tracking
+> the nesting level in task_struct, in a similar fashion to e.g.
+> pagefault_{enable,disable}(). This is fully handled by the generic
+> lazy_mmu helpers that were recently introduced.
+> 
+> lazy_mmu sections were not initially intended to nest, so we need to
+> clarify the semantics w.r.t. the arch_*_lazy_mmu_mode() callbacks.
+> This patch takes the following approach:
+> 
+> * The outermost calls to lazy_mmu_mode_{enable,disable}() trigger
+>   calls to arch_{enter,leave}_lazy_mmu_mode() - this is unchanged.
+> 
+> * Nested calls to lazy_mmu_mode_{enable,disable}() are not forwarded
+>   to the arch via arch_{enter,leave} - lazy MMU remains enabled so
+>   the assumption is that these callbacks are not relevant. However,
+>   existing code may rely on a call to disable() to flush any batched
+>   state, regardless of nesting. arch_flush_lazy_mmu_mode() is
+>   therefore called in that situation.
+> 
+> A separate interface was recently introduced to temporarily pause
+> the lazy MMU mode: lazy_mmu_mode_{pause,resume}(). pause() fully
+> exits the mode *regardless of the nesting level*, and resume()
+> restores the mode at the same nesting level.
+> 
+> Whether the mode is actually enabled or not at any point is tracked
+> by a separate "active" field in task_struct; this makes it possible
+> to check invariants in the generic API, and to expose a new
+> in_lazy_mmu_mode() helper to replace the various ways arch's
+> currently track whether the mode is enabled (this will be done in
+> later patches).
+> 
+> In summary (nesting/active represent the values *after* the call):
+> 
+> lazy_mmu_mode_enable()		-> arch_enter()	    nesting=1 active=1
+>     lazy_mmu_mode_enable()	-> ø		    nesting=2 active=1
+> 	lazy_mmu_mode_pause()	-> arch_leave()     nesting=2 active=0
+> 	lazy_mmu_mode_resume()	-> arch_enter()     nesting=2 active=1
+>     lazy_mmu_mode_disable()	-> arch_flush()     nesting=1 active=1
+> lazy_mmu_mode_disable()		-> arch_leave()     nesting=0 active=0
+> 
+> Note: in_lazy_mmu_mode() is added to <linux/sched.h> to allow arch
+> headers included by <linux/pgtable.h> to use it.
+> 
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h | 12 ------
+>  include/linux/mm_types_task.h    |  5 +++
+>  include/linux/pgtable.h          | 67 ++++++++++++++++++++++++++++++--
+>  include/linux/sched.h            | 16 ++++++++
+>  4 files changed, 84 insertions(+), 16 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 54f8d6bb6f22..535435248923 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -82,18 +82,6 @@ static inline void queue_pte_barriers(void)
+>  
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+> -	/*
+> -	 * lazy_mmu_mode is not supposed to permit nesting. But in practice this
+> -	 * does happen with CONFIG_DEBUG_PAGEALLOC, where a page allocation
+> -	 * inside a lazy_mmu_mode section (such as zap_pte_range()) will change
+> -	 * permissions on the linear map with apply_to_page_range(), which
+> -	 * re-enters lazy_mmu_mode. So we tolerate nesting in our
+> -	 * implementation. The first call to arch_leave_lazy_mmu_mode() will
+> -	 * flush and clear the flag such that the remainder of the work in the
+> -	 * outer nest behaves as if outside of lazy mmu mode. This is safe and
+> -	 * keeps tracking simple.
+> -	 */
+> -
+>  	if (in_interrupt())
+>  		return;
+>  
+> diff --git a/include/linux/mm_types_task.h b/include/linux/mm_types_task.h
+> index a82aa80c0ba4..632d404f8191 100644
+> --- a/include/linux/mm_types_task.h
+> +++ b/include/linux/mm_types_task.h
+> @@ -88,4 +88,9 @@ struct tlbflush_unmap_batch {
+>  #endif
+>  };
+>  
+> +struct lazy_mmu_state {
+> +	u8 nesting_level;
+> +	bool active;
+> +};
+> +
+>  #endif /* _LINUX_MM_TYPES_TASK_H */
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index b5fdf32c437f..e6064e00b22d 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -228,27 +228,86 @@ static inline int pmd_dirty(pmd_t pmd)
+>   * of the lazy mode. So the implementation must assume preemption may be enabled
+>   * and cpu migration is possible; it must take steps to be robust against this.
+>   * (In practice, for user PTE updates, the appropriate page table lock(s) are
+> - * held, but for kernel PTE updates, no lock is held). Nesting is not permitted
+> - * and the mode cannot be used in interrupt context.
+> + * held, but for kernel PTE updates, no lock is held). The mode cannot be used
+> + * in interrupt context.
 
-I notice that those BUG show up while loading modules at boot in kworker context, e.g.:
+"The mode cannot be used in interrupt context"; except it is for arm64. KFENCE
+and/or DEBUG_PAGEALLOC will request the arch to change linear map permissions,
+which will enter lazy mmu (now using the new generic API). This can happen in
+softirq context.
 
-[   14.858862][   T67] BUG: Bad rss-counter state mm:ffff8881000655c0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:67
-[   14.894890][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_FILEPAGES val:0 Comm:kworker/u9:0 Pid:69
-[   14.896108][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:69
-[   14.918858][   T71] module: module-autoload: duplicate request for module crypto-aes
-[   14.919479][   T71] module: module-autoload: duplicate request for module crypto-aes-all
-[   14.920801][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc plain<block
-[   14.921844][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc plain==block
-[   14.922852][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc plain>block
-[   14.923843][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc no plain
-[   14.939591][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc plain<block
-[   14.940614][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc plain==block
-[   14.941586][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc plain>block
-[   14.942547][    T1] krb5: Running camellia128-cts-cmac enc no plain
-[   15.018568][   T85] BUG: Bad rss-counter state mm:ffff888160f81340 type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:85b
 
-I used "module_init" similarly to lib/percpu_counter.c, but I think it
-happens too late in the boot sequence:
+> + *
+> + * The lazy MMU mode is enabled for a given block of code using:
+> + *
+> + *   lazy_mmu_mode_enable();
+> + *   <code>
+> + *   lazy_mmu_mode_disable();
+> + *
+> + * Nesting is permitted: <code> may itself use an enable()/disable() pair.
+> + * A nested call to enable() has no functional effect; however disable() causes
+> + * any batched architectural state to be flushed regardless of nesting. After a
+> + * call to disable(), the caller can therefore rely on all previous page table
+> + * modifications to have taken effect, but the lazy MMU mode may still be
+> + * enabled.
+> + *
+> + * In certain cases, it may be desirable to temporarily pause the lazy MMU mode.
+> + * This can be done using:
+> + *
+> + *   lazy_mmu_mode_pause();
+> + *   <code>
+> + *   lazy_mmu_mode_resume();
+> + *
+> + * This sequence must only be used if the lazy MMU mode is already enabled.
+> + * pause() ensures that the mode is exited regardless of the nesting level;
+> + * resume() re-enters the mode at the same nesting level. <code> must not modify
+> + * the lazy MMU state (i.e. it must not call any of the lazy_mmu_mode_*
+> + * helpers).
+> + *
+> + * in_lazy_mmu_mode() can be used to check whether the lazy MMU mode is
+> + * currently enabled.
+>   */
 
-   module_init(percpu_counter_startup);
+Nice documentation!
 
-module_init maps to __initcall within a built-in compile unit, which
-maps to device_initcall(), which happens quite late within the sequence
-called from do_initcalls(), called from do_basic_setup().
+>  #ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+>  static inline void lazy_mmu_mode_enable(void)
+>  {
+> -	arch_enter_lazy_mmu_mode();
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON_ONCE(state->nesting_level == U8_MAX);
+> +	/* enable() must not be called while paused */
+> +	VM_WARN_ON(state->nesting_level > 0 && !state->active);
+> +
+> +	if (state->nesting_level++ == 0) {
 
-And even do_basic_setup is documented as:
+Hmm... for the arm64 case of calling this in an interrupt, Is it safe?
 
-  * Ok, the machine is now initialized. None of the devices
-  * have been touched yet, but the CPU subsystem is up and
-  * running, and memory and process management works.
+If a task is calling this function and gets interrupted here, nesting_level==1
+but active==false. The interrupt then calls this function and increments from 1
+to 2 but arch_enter_lazy_mmu_mode() hasn't been called.
 
-which clearly requires that the mm subsystem is expected to
-be ready at that point.
+More dangerously (I think), when the interrupt handler calls
+lazy_mmu_mode_disable(), it will end up calling arch_flush_lazy_mmu_mode() which
+could be an issue because as far as the arch is concerned, it's not in lazy mode.
 
-It probably was not an issue for the non-hierarchical percpu
-counters because all it was initializing is handling of CPU hotplug,
-but the new hierarchical counters initialize the pre-calculated
-inaccuracy value which is used to figure out whether the approximate
-sum is sufficient to compare values or if the precise sum is needed.
+The current arm64 implementation works because setting and clearing the thread
+flags is atomic.
 
-I think this is why we are hitting this BUG.
+Perhaps you need to disable preemption around the if block?
 
-Now I wonder where I should move this initialization. It requires
-"nr_cpu_ids" to be initialized, and pretty much need to be done
-before mms are created. I'm starting to suspect that the module init
-code can spawn kworkers that have a mm before the init process runs.
+> +		state->active = true;
+> +		arch_enter_lazy_mmu_mode();
+> +	}
+>  }
+>  
+>  static inline void lazy_mmu_mode_disable(void)
+>  {
+> -	arch_leave_lazy_mmu_mode();
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON_ONCE(state->nesting_level == 0);
+> +	VM_WARN_ON(!state->active);
+> +
+> +	if (--state->nesting_level == 0) {
+> +		state->active = false;
+> +		arch_leave_lazy_mmu_mode();
+> +	} else {
+> +		/* Exiting a nested section */
+> +		arch_flush_lazy_mmu_mode();
+> +	}
+>  }
+>  
+>  static inline void lazy_mmu_mode_pause(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON(state->nesting_level == 0 || !state->active);
 
-Thoughts ?
+nit: do you need the first condition? I think when nesting_level==0, we expect
+to be !active?
+
+> +
+> +	state->active = false;
+>  	arch_leave_lazy_mmu_mode();
+>  }
+>  
+>  static inline void lazy_mmu_mode_resume(void)
+>  {
+> +	struct lazy_mmu_state *state = &current->lazy_mmu_state;
+> +
+> +	VM_WARN_ON(state->nesting_level == 0 || state->active);
+
+Similar argument?
+
+> +
+> +	state->active = true;
+>  	arch_enter_lazy_mmu_mode();
+>  }
+>  #else
+> diff --git a/include/linux/sched.h b/include/linux/sched.h
+> index cbb7340c5866..11566d973f42 100644
+> --- a/include/linux/sched.h
+> +++ b/include/linux/sched.h
+> @@ -1441,6 +1441,10 @@ struct task_struct {
+>  
+>  	struct page_frag		task_frag;
+>  
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +	struct lazy_mmu_state		lazy_mmu_state;
+> +#endif
+> +
+>  #ifdef CONFIG_TASK_DELAY_ACCT
+>  	struct task_delay_info		*delays;
+>  #endif
+> @@ -1724,6 +1728,18 @@ static inline char task_state_to_char(struct task_struct *tsk)
+>  	return task_index_to_char(task_state_index(tsk));
+>  }
+>  
+> +#ifdef CONFIG_ARCH_HAS_LAZY_MMU_MODE
+> +static inline bool in_lazy_mmu_mode(void)
+> +{
+> +	return current->lazy_mmu_state.active;
+> +}
+> +#else
+> +static inline bool in_lazy_mmu_mode(void)
+> +{
+> +	return false;
+
+Just pointing out that this isn't really a correct implementation:
+
+lazy_mmu_mode_enable()
+ASSERT(in_lazy_mmu_mode()) << triggers for arches without lazy mmu
+lazy_mmu_mode_disable()
+
+Although it probably doesn't matter in practice?
 
 Thanks,
+Ryan
 
-Mathieu
+> +}
+> +#endif
+> +
+>  extern struct pid *cad_pid;
+>  
+>  /*
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
 
