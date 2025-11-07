@@ -4,101 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 57D44CCFA19
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 06:15:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94DD7CCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 06:41:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 385628E0007; Fri,  7 Nov 2025 01:15:26 -0500 (EST)
+	id CA1518E0003; Fri,  7 Nov 2025 01:41:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 35E148E0002; Fri,  7 Nov 2025 01:15:26 -0500 (EST)
+	id C2B0E8E0002; Fri,  7 Nov 2025 01:41:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 29A0F8E0007; Fri,  7 Nov 2025 01:15:26 -0500 (EST)
+	id B411C8E0003; Fri,  7 Nov 2025 01:41:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 183DB8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 01:15:26 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id A488712C72F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:15:25 +0000 (UTC)
-X-FDA: 84082799010.04.201597F
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
-	by imf08.hostedemail.com (Postfix) with ESMTP id D12EE160004
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:15:22 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wvMjfD9U;
-	spf=none (imf08.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id A3C4C8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 01:41:35 -0500 (EST)
+Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 36A3F588EA
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:41:35 +0000 (UTC)
+X-FDA: 84082864950.25.9589CFC
+Received: from out-189.mta1.migadu.com (out-189.mta1.migadu.com [95.215.58.189])
+	by imf10.hostedemail.com (Postfix) with ESMTP id AB007C0005
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:41:31 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RxGX48Cm;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762496124;
+	s=arc-20220608; t=1762497693;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0pvYkku9B0Yn9Tva4Hva9YRPLFO4fPY61E/RWmTzPOE=;
-	b=BKbZH6SdDFxQkw5DwKr3psdVb8OWUpfH3XpE1IB4t6c4ZMi/oDMuYXZ3oy1lsU+WDdWMzw
-	IN65UF1qHvk8pfV8JGJt3i7YIM33oKZjH66tkUVJ6XRBWByXSWvUih2hU2De+zySBB7FoL
-	7mXHzeyfkNNI+Uz34gME/jEusTAXjGU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762496124; a=rsa-sha256;
-	cv=none;
-	b=XCsB7Nt8iAbB++QTJjYq1A3B1OmC1Xq/R43LQyvsPFGXJixa3oXX1NUXZuiorbcBAjLJFT
-	TyxMimAcqHAfaNjF2xqZa2N9JyAOqSTA/Qiy6ANXj2RHCIbY/xpETGkVj0wmnyT7wXww1m
-	acW8p+jBixkPOABORB4zgoPQ/bZG0Rs=
+	bh=xRWYTILqG8LMnvyFfHYVWRrcjOpnBFKXzOGTUrz8/2Y=;
+	b=sbeniZeq6BTpa1P6TJVQdJej+9xCpR1SbCRe2tN/BJCpJjteh5mT+MPJswZad02vS25Wci
+	YaFS3SKc00mIUINnoYVBB58pHq4kryThgCQBcprwpeHU+CpxaABwla2xV+cHKgd1rBNf9y
+	Qap9uMWbtUqyaZM8QeabJz0ZgNbQ+1Q=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=infradead.org header.s=bombadil.20210309 header.b=wvMjfD9U;
-	spf=none (imf08.hostedemail.com: domain of rdunlap@infradead.org has no SPF policy when checking 198.137.202.133) smtp.mailfrom=rdunlap@infradead.org;
-	dmarc=pass (policy=none) header.from=infradead.org
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Sender:Reply-To:Content-ID:Content-Description;
-	bh=0pvYkku9B0Yn9Tva4Hva9YRPLFO4fPY61E/RWmTzPOE=; b=wvMjfD9UaT3srkTJPow+61yh3N
-	OkqKLwST4F525xsesZaRDbQI9izo2FfdhHtCjqZ3ddTVdax7Lbdgnf3nwx9GqRsSsOg9py4xU5yxh
-	bPCADIElPjneqxaGddELsdxhLXoiqP4M/8r7MreKn0SZbf+EhyjNv7u7QgJqPc2ZScsbeGgSGitqe
-	Kp+se6E94iE6eytcZ6nxR+//81zWQ00AfcMbb5fV4pm5JvbLV6094pdLiv6j8n2ddM00wptAT43yq
-	DfNQo+F2OVUd3YbNTBAvqviVZrXwl/dKKcX3sKfwlN3RPj1b1LBIVRhqzil1G0Ezlc9ba4An/rhpu
-	5dyhj6jQ==;
-Received: from [50.53.43.113] (helo=[192.168.254.34])
-	by bombadil.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1vHFka-0000000Givm-3DWD;
-	Fri, 07 Nov 2025 06:15:08 +0000
-Message-ID: <135df7eb-9291-428b-9c86-d58c2e19e052@infradead.org>
-Date: Thu, 6 Nov 2025 22:15:07 -0800
+	imf10.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=RxGX48Cm;
+	spf=pass (imf10.hostedemail.com: domain of qi.zheng@linux.dev designates 95.215.58.189 as permitted sender) smtp.mailfrom=qi.zheng@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762497693; a=rsa-sha256;
+	cv=none;
+	b=F/FM5doKXkQV/UQ0FBK68zkNot2p2TSiJ3onYcZRHOHhC8IwJKvTEelveIuPwzuLORjw8D
+	6/Np495SONHuUOgvR1YwTn2PTlrofHnTGz7K8YB5ze8lYuoHuRpVdoQ1kA+cVp/abUVmM3
+	KKHa/2bDdJDLWF3Kvgy2yTlBKSZ1+4M=
+Message-ID: <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762497687;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xRWYTILqG8LMnvyFfHYVWRrcjOpnBFKXzOGTUrz8/2Y=;
+	b=RxGX48Cmlw64YK5Ash4JRiXe2KJcl8QsfvG5d0NVo2Whq/SC69I/M24gsIFV+OyovHivHT
+	fTnAopzzhAy5DrElU2jfYVcKVMstboD4H8pUwQmskXdksEHwaodJwlSKF0dLe8EisvS2Ee
+	ZMiH38qPA510qUuKZEL+BJcBoOGrICI=
+Date: Fri, 7 Nov 2025 14:41:13 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 05/11] PCI/P2PDMA: Document DMABUF model
-To: Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
- Logan Gunthorpe <logang@deltatee.com>, Jens Axboe <axboe@kernel.dk>,
- Robin Murphy <robin.murphy@arm.com>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Marek Szyprowski <m.szyprowski@samsung.com>,
- Jason Gunthorpe <jgg@ziepe.ca>, Andrew Morton <akpm@linux-foundation.org>,
- Jonathan Corbet <corbet@lwn.net>, Sumit Semwal <sumit.semwal@linaro.org>,
- =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- Kees Cook <kees@kernel.org>, "Gustavo A. R. Silva" <gustavoars@kernel.org>,
- Ankit Agrawal <ankita@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian
- <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>
-Cc: Krishnakant Jaju <kjaju@nvidia.com>, Matt Ochs <mochs@nvidia.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org, iommu@lists.linux.dev, linux-mm@kvack.org,
- linux-doc@vger.kernel.org, linux-media@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
- kvm@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20251106-dmabuf-vfio-v7-0-2503bf390699@nvidia.com>
- <20251106-dmabuf-vfio-v7-5-2503bf390699@nvidia.com>
-Content-Language: en-US
-From: Randy Dunlap <rdunlap@infradead.org>
-In-Reply-To: <20251106-dmabuf-vfio-v7-5-2503bf390699@nvidia.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: hannes@cmpxchg.org, hughd@google.com, mhocko@suse.com,
+ roman.gushchin@linux.dev, shakeel.butt@linux.dev, muchun.song@linux.dev,
+ david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+ imran.f.khan@oracle.com, kamalesh.babulal@oracle.com,
+ axelrasmussen@google.com, yuanchu@google.com, weixugc@google.com,
+ akpm@linux-foundation.org, linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ cgroups@vger.kernel.org, Muchun Song <songmuchun@bytedance.com>,
+ Qi Zheng <zhengqi.arch@bytedance.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ linux-rt-devel@lists.linux.dev
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <97ea4728568459f501ddcab6c378c29064630bb9.1761658310.git.zhengqi.arch@bytedance.com>
+ <aQ1_f_6KPRZknUGS@harry>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Qi Zheng <qi.zheng@linux.dev>
+In-Reply-To: <aQ1_f_6KPRZknUGS@harry>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: AB007C0005
+X-Stat-Signature: in7hqofah66p6nw8c7gocoecjai5kso6
 X-Rspam-User: 
-X-Rspamd-Queue-Id: D12EE160004
-X-Stat-Signature: 1odrzj3ymoeqxps3zcwjfie1qgy4affc
-X-HE-Tag: 1762496122-672625
-X-HE-Meta: U2FsdGVkX18ioKfmmWqoGlRwOxV28NZ2kMWazROpmiE9BBnT5TqGt/rx5TJj9O+YFXnqu0ig2PH7cdNoSAg3Em9UHscaRJnf5J12aua0QpRiOFQjBI+dbFKLMIE8NXxp4Vl0KRvGk2UBW73aT7D/Zkgg+8QoK7Apoi/yYS3ThpnN746gXdpKYANmPu+X+bqnvI62Q3xZ68LpQvAvdD5xhkgPYfgRF9Uyy1oiGL6GgIXX0eKEjc6zMo8Nw+9CjS1OWHU7emiPCZBl5FYuNkt+RA6DHaXATwYiILRmooNGVCu237eflDjPvu105M9R+WKKi0eokMbV2spDIvWpOSNEOJaLu2mYT7KAw7K0fpI8j3ZbiZ9HHB+Qyaq0vrtSU3jc2JYH4fUXuYEohqy2qP1XHVcEFsycZJ0J/Iqr/6A/vkmnplIXHC7igTTYd+HTrdDyowusaHMpTm/wpFCqaKTP8jwpoDYbvN6Dg2Ocm+o9fadq+OgC2La3pctW72VM36El9zBW6g99cUFTHsFrndDEJUF+rtWSNqja+UrMtfuYvu0/TyAiF2P8OeVr6pJnPUeudf5IFz1jA0NaBz4GwBIFw/VNrSHJEjlC1Bqie34eajpDha2a/qklRq6NOwvEFRlOTs7WcbSjUHH1tfGiGvQ1DHJs8pPiTVDNWRokpnc5JGh2iTLBrfV3SfdgNw6xDkUH4ETU6M2kyWEcWRYF1L5ZLVUU0pDU/97SYj5pxjeAg0aWQRXfi12QQ7df9oGtYDjcdtlZr2LKXjy73zZAxvCgBBziKm0yp3/sDQZ05eudcit74Ugb2LUr2txH1ekaMwQpurapyTEEutvXPM5Z4luGOsyWsh58kiD1JWhbuMM1zXTCJZH0VMZOQfKm+Y5C1XMNqQYXBFXgFVpgNjfuskCYwMXG04UJ15dXcPh/VLCiO+YWDW43iPS/Pjlfj1tGv6UuVk4lvIHfVsDenVN+QpO
- cVQ==
+X-HE-Tag: 1762497691-792852
+X-HE-Meta: U2FsdGVkX1+5Szp7wp2oHcH4u7rIHc1ArPY1mBeQk3eKglNsCcYsUnpxjBX9pWfmX9VwxcwNHWBfHdbYo7GnIfr0DXHoWlq1p7Uwa0/VYRg0csxbvj0B1fF+NoxFpvAzXS2RulCE3LAU+TmNrjDwT3b1qWooGfrO3udrfmG8Y2egTr8jUafx/4749+V446OatMAYS+4ZbmtXPbzH2zTFTFEiVV0GCQqCmzOZ6I3JE6BOfhF8VUNXbrg6OwsB5B5zAQrMZsm0GqmL8DTCEuip9SOm6/MuY4JP8t9U3Nlu9LprsfgxaUpzodefu0C7ma2lEWSENu0en64ZN7loLf2+Yop+leJ4OZ1YzXIr3yyix5lvgKnymdiHrksa22Hb4OQyZRofMEHClh7/wlU093SXM3xqp2FF5IikcJtE2VFZ465yWsv4pzK3jtw4MyOqho5/NS/Lu8ezWxc41WzLTDycUBKpYzVlzNV7jjykBZXEofNe/3pJ8nuOsUoxmUf091snY3au9Vf5GHUPfgZUhabvRuCPxtVJhXB8s/pKz08Q/v/IpEFqT3ShnqDVTtvkw+e3J9DedUmlISUleYr5lnrCTdNiG09vJ8EZqFH27z0diidxfrLxPNhtF8d4fs+D+vvBIn8IswOB6xGBgvPzqUMcOi4xxTgOOq3LOxTYwodAqfq1eHEfh4Y3tlXNeoi3e2mjqVDJKb5PkHBBSMzjPthbzp75kKGnGx3062sblTMAj5XeHK4rzieLuguO8KBbOs4pvzy1bKy+nJ1vKr02ZSqBv8QtYrLcXMxU4xs/uDoyvsveIj5PW6O+JqajTdwZW/Tx2JVd8JUkfy9z1UEGA6gB6dqmiL6H8lY6071irQJuENIgQ2iyREDLymHows+dqHmoxlC8DCnoyHWknyC2lXJioRB7MFeZrYstgTmXIajpcxIbBdihnfgMoB3SGicUzE8tI1fTnwLVkHmAsPmtNF6
+ xx81RuRz
+ yAFf99oNo14Xv8VJllsdLtnz1iBaTKiN11rKZGhDl+TLTDpHX+cqfSNkPq/CDl60ZEYkmML3TKl98uLl3PaGgqG6Abcf0rNoWrLFoJJQbYaezRgfebWbr4cg/o6Q8oex8kYnL1pE3UguMRcjQjvluak6j2fU3iCYc82M1dsRgtugpQ100KjniIGUUtlyqNNmGnfCITw2nx1vsf2HJ4CrkfsfpQSul0uEjMlaEOEENMae5SRrpZQAz90stMHh6mmXMJaOpH68y5yS20NOKDclVKyuOMr4Q/WKgKgbLq49wOxhYqr0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -107,158 +100,134 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+Hi Harry,
 
-
-On 11/6/25 6:16 AM, Leon Romanovsky wrote:
-> From: Jason Gunthorpe <jgg@nvidia.com>
+On 11/7/25 1:11 PM, Harry Yoo wrote:
+> On Tue, Oct 28, 2025 at 09:58:17PM +0800, Qi Zheng wrote:
+>> From: Muchun Song <songmuchun@bytedance.com>
+>>
+>> In a subsequent patch, we'll reparent the LRU folios. The folios that are
+>> moved to the appropriate LRU list can undergo reparenting during the
+>> move_folios_to_lru() process. Hence, it's incorrect for the caller to hold
+>> a lruvec lock. Instead, we should utilize the more general interface of
+>> folio_lruvec_relock_irq() to obtain the correct lruvec lock.
+>>
+>> This patch involves only code refactoring and doesn't introduce any
+>> functional changes.
+>>
+>> Signed-off-by: Muchun Song <songmuchun@bytedance.com>
+>> Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> ---
+>>   mm/vmscan.c | 46 +++++++++++++++++++++++-----------------------
+>>   1 file changed, 23 insertions(+), 23 deletions(-)
+>>
+>> diff --git a/mm/vmscan.c b/mm/vmscan.c
+>> index 3a1044ce30f1e..660cd40cfddd4 100644
+>> --- a/mm/vmscan.c
+>> +++ b/mm/vmscan.c
+>> @@ -2016,9 +2016,9 @@ static unsigned long shrink_inactive_list(unsigned long nr_to_scan,
+>>   	nr_reclaimed = shrink_folio_list(&folio_list, pgdat, sc, &stat, false,
+>>   					 lruvec_memcg(lruvec));
+>>   
+>> -	spin_lock_irq(&lruvec->lru_lock);
+>> -	move_folios_to_lru(lruvec, &folio_list);
+>> +	move_folios_to_lru(&folio_list);
+>>   
+>> +	spin_lock_irq(&lruvec->lru_lock);
+>>   	__mod_lruvec_state(lruvec, PGDEMOTE_KSWAPD + reclaimer_offset(sc),
+>>   					stat.nr_demoted);
 > 
-> Reflect latest changes in p2p implementation to support DMABUF lifecycle.
+> Maybe I'm missing something or just confused for now, but let me ask...
 > 
-> Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  Documentation/driver-api/pci/p2pdma.rst | 95 +++++++++++++++++++++++++--------
->  1 file changed, 72 insertions(+), 23 deletions(-)
+> How do we make sure the lruvec (and the mem_cgroup containing the
+> lruvec) did not disappear (due to offlining) after move_folios_to_lru()?
+
+We obtained lruvec through the following method:
+
+memcg = mem_cgroup_iter(target_memcg, NULL, partial);
+do {
+     struct lruvec *lruvec = mem_cgroup_lruvec(memcg, pgdat);
+
+     shrink_lruvec(lruvec, sc);
+     --> shrink_inactive_list
+} while ((memcg = mem_cgroup_iter(target_memcg, memcg, partial)));
+
+The mem_cgroup_iter() will hold the refcount of this memcg, so IIUC,
+the memcg will not disappear at this time.
+
 > 
-> diff --git a/Documentation/driver-api/pci/p2pdma.rst b/Documentation/driver-api/pci/p2pdma.rst
-> index d0b241628cf1..69adea45f73e 100644
-> --- a/Documentation/driver-api/pci/p2pdma.rst
-> +++ b/Documentation/driver-api/pci/p2pdma.rst
-> @@ -9,22 +9,47 @@ between two devices on the bus. This type of transaction is henceforth
->  called Peer-to-Peer (or P2P). However, there are a number of issues that
->  make P2P transactions tricky to do in a perfectly safe way.
->  
-> -One of the biggest issues is that PCI doesn't require forwarding
-> -transactions between hierarchy domains, and in PCIe, each Root Port
-> -defines a separate hierarchy domain. To make things worse, there is no
-> -simple way to determine if a given Root Complex supports this or not.
-> -(See PCIe r4.0, sec 1.3.1). Therefore, as of this writing, the kernel
-> -only supports doing P2P when the endpoints involved are all behind the
-> -same PCI bridge, as such devices are all in the same PCI hierarchy
-> -domain, and the spec guarantees that all transactions within the
-> -hierarchy will be routable, but it does not require routing
-> -between hierarchies.
-> -
-> -The second issue is that to make use of existing interfaces in Linux,
-> -memory that is used for P2P transactions needs to be backed by struct
-> -pages. However, PCI BARs are not typically cache coherent so there are
-> -a few corner case gotchas with these pages so developers need to
-> -be careful about what they do with them.
-> +For PCIe the routing of TLPs is well defined up until they reach a host bridge
-
-Define what TLP means?
-                                   well-defined
-
-> +or root port. If the path includes PCIe switches then based on the ACS settings
-> +the transaction can route entirely within the PCIe hierarchy and never reach the
-> +root port. The kernel will evaluate the PCIe topology and always permit P2P
-> +in these well defined cases.
-
-            well-defined
-
-> +
-> +However, if the P2P transaction reaches the host bridge then it might have to
-> +hairpin back out the same root port, be routed inside the CPU SOC to another
-> +PCIe root port, or routed internally to the SOC.
-> +
-> +As this is not well defined or well supported in real HW the kernel defaults to
-
-                  well-defined or well-supported
-
-> +blocking such routing. There is an allow list to allow detecting known-good HW,
-> +in which case P2P between any two PCIe devices will be permitted.
-> +
-> +Since P2P inherently is doing transactions between two devices it requires two
-> +drivers to be co-operating inside the kernel. The providing driver has to convey
-> +its MMIO to the consuming driver. To meet the driver model lifecycle rules the
-> +MMIO must have all DMA mapping removed, all CPU accesses prevented, all page
-> +table mappings undone before the providing driver completes remove().
-> +
-> +This requires the providing and consuming driver to actively work together to
-> +guarantee that the consuming driver has stopped using the MMIO during a removal
-> +cycle. This is done by either a synchronous invalidation shutdown or waiting
-> +for all usage refcounts to reach zero.
-> +
-> +At the lowest level the P2P subsystem offers a naked struct p2p_provider that
-> +delegates lifecycle management to the providing driver. It is expected that
-> +drivers using this option will wrap their MMIO memory in DMABUF and use DMABUF
-> +to provide an invalidation shutdown. These MMIO pages have no struct page, and
-> +if used with mmap() must create special PTEs. As such there are very few
-> +kernel uAPIs that can accept pointers to them, in particular they cannot be used
-
-                                            them;
-
-> +with read()/write(), including O_DIRECT.
-> +
-> +Building on this, the subsystem offers a layer to wrap the MMIO in a ZONE_DEVICE
-> +pgmap of MEMORY_DEVICE_PCI_P2PDMA to create struct pages. The lifecycle of
-> +pgmap ensures that when the pgmap is destroyed all other drivers have stopped
-> +using the MMIO. This option works with O_DIRECT flows, in some cases, if the
-> +underlying subsystem supports handling MEMORY_DEVICE_PCI_P2PDMA through
-> +FOLL_PCI_P2PDMA. The use of FOLL_LONGTERM is prevented. As this relies on pgmap
-> +it also relies on architecture support along with alignment and minimum size
-> +limitations.
->  
->  
->  Driver Writer's Guide
-> @@ -114,14 +139,38 @@ allocating scatter-gather lists with P2P memory.
->  Struct Page Caveats
->  -------------------
->  
-> -Driver writers should be very careful about not passing these special
-> -struct pages to code that isn't prepared for it. At this time, the kernel
-> -interfaces do not have any checks for ensuring this. This obviously
-> -precludes passing these pages to userspace.
-> +While the MEMORY_DEVICE_PCI_P2PDMA pages can be installed in VMAs,
-> +pin_user_pages() and related will not return them unless FOLL_PCI_P2PDMA is set.
->  
-> -P2P memory is also technically IO memory but should never have any side
-> -effects behind it. Thus, the order of loads and stores should not be important
-> -and ioreadX(), iowriteX() and friends should not be necessary.
-> +The MEMORY_DEVICE_PCI_P2PDMA pages require care to support in the kernel. The
-> +KVA is still MMIO and must still be accessed through the normal
-> +readX()/writeX()/etc helpers. Direct CPU access (e.g. memcpy) is forbidden, just
-> +like any other MMIO mapping. While this will actually work on some
-> +architectures, others will experience corruption or just crash in the kernel.
-> +Supporting FOLL_PCI_P2PDMA in a subsystem requires scrubbing it to ensure no CPU
-> +access happens.
-> +
-> +
-> +Usage With DMABUF
-> +=================
-> +
-> +DMABUF provides an alternative to the above struct page based
-
-                                                      page-based
-
-> +client/provider/orchestrator system. In this mode the exporting driver will wrap
-> +some of its MMIO in a DMABUF and give the DMABUF FD to userspace.
-> +
-> +Userspace can then pass the FD to an importing driver which will ask the
-> +exporting driver to map it.
-> +
-> +In this case the initiator and target pci_devices are known and the P2P subsystem
-> +is used to determine the mapping type. The phys_addr_t based DMA API is used to
-
-                                              phys_addr_t-based
-
-> +establish the dma_addr_t.
-> +
-> +Lifecycle is controlled by DMABUF move_notify(), when the exporting driver wants
-
-                                     move_notify(). When
-
-> +to remove() it must deliver an invalidation shutdown to all DMABUF importing
-> +drivers through move_notify() and synchronously DMA unmap all the MMIO.
-> +
-> +No importing driver can continue to have a DMA map to the MMIO after the
-> +exporting driver has destroyed its p2p_provider.
->  
->  
->  P2P DMA Support Library
+>>   	__mod_node_page_state(pgdat, NR_ISOLATED_ANON + file, -nr_taken);
+>> @@ -2166,11 +2166,10 @@ static void shrink_active_list(unsigned long nr_to_scan,
+>>   	/*
+>>   	 * Move folios back to the lru list.
+>>   	 */
+>> -	spin_lock_irq(&lruvec->lru_lock);
+>> -
+>> -	nr_activate = move_folios_to_lru(lruvec, &l_active);
+>> -	nr_deactivate = move_folios_to_lru(lruvec, &l_inactive);
+>> +	nr_activate = move_folios_to_lru(&l_active);
+>> +	nr_deactivate = move_folios_to_lru(&l_inactive);
+>>   
+>> +	spin_lock_irq(&lruvec->lru_lock);
+>>   	__count_vm_events(PGDEACTIVATE, nr_deactivate);
+>>   	count_memcg_events(lruvec_memcg(lruvec), PGDEACTIVATE, nr_deactivate);
+>>   
+>> @@ -4735,14 +4734,15 @@ static int evict_folios(unsigned long nr_to_scan, struct lruvec *lruvec,
+>>   			set_mask_bits(&folio->flags.f, LRU_REFS_FLAGS, BIT(PG_active));
+>>   	}
+>>   
+>> -	spin_lock_irq(&lruvec->lru_lock);
+>> -
+>> -	move_folios_to_lru(lruvec, &list);
+>> +	move_folios_to_lru(&list);
+>>   
+>> +	local_irq_disable();
+>>   	walk = current->reclaim_state->mm_walk;
+>>   	if (walk && walk->batched) {
+>>   		walk->lruvec = lruvec;
+>> +		spin_lock(&lruvec->lru_lock);
+>>   		reset_batch_size(walk);
+>> +		spin_unlock(&lruvec->lru_lock);
+>>   	}
 > 
+> Cc'ing RT folks as they may not want to disable IRQ on PREEMPT_RT.
+> 
+> IIRC there has been some effort in MM to reduce the scope of
+> IRQ-disabled section in MM when PREEMPT_RT config was added to the
+> mainline. spin_lock_irq() doesn't disable IRQ on PREEMPT_RT.
 
--- 
-~Randy
+Thanks for this information.
+
+> 
+> Also, this will break RT according to Documentation/locking/locktypes.rst:
+>> The changes in spinlock_t and rwlock_t semantics on PREEMPT_RT kernels
+>> have a few implications. For example, on a non-PREEMPT_RT kernel
+>> the following code sequence works as expected:
+>>
+>> local_irq_disable();
+>> spin_lock(&lock);
+>>
+>> and is fully equivalent to:
+>>
+>> spin_lock_irq(&lock);
+>> Same applies to rwlock_t and the _irqsave() suffix variants.
+>>
+>> On PREEMPT_RT kernel this code sequence breaks because RT-mutex requires
+>> a fully preemptible context. Instead, use spin_lock_irq() or
+>> spin_lock_irqsave() and their unlock counterparts.
+>>
+>> In cases where the interrupt disabling and locking must remain separate,
+>> PREEMPT_RT offers a local_lock mechanism. Acquiring the local_lock pins
+>> the task to a CPU, allowing things like per-CPU interrupt disabled locks
+>> to be acquired. However, this approach should be used only where absolutely
+>> necessary.
+
+But how do we determine if it's necessary?
+
+Thanks,
+Qi
+
+> 
 
 
