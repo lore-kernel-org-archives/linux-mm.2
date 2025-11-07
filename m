@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2F534CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 03:30:45 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7A796CCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 03:53:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 547DF8E0012; Thu,  6 Nov 2025 22:30:44 -0500 (EST)
+	id 8B6DC8E0009; Thu,  6 Nov 2025 22:53:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 51FBB8E0002; Thu,  6 Nov 2025 22:30:44 -0500 (EST)
+	id 88DF98E0002; Thu,  6 Nov 2025 22:53:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 436288E0012; Thu,  6 Nov 2025 22:30:44 -0500 (EST)
+	id 7CB318E0009; Thu,  6 Nov 2025 22:53:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 3138C8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:30:44 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id CD3854AA6D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:30:43 +0000 (UTC)
-X-FDA: 84082383966.04.131D7C5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 379B3C000D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:30:42 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dmx93Mm8;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 6D4F88E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 22:53:51 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id DAC55B83C6
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:53:50 +0000 (UTC)
+X-FDA: 84082442220.22.03B34AC
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf03.hostedemail.com (Postfix) with ESMTP id 2FD6E20005
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:53:49 +0000 (UTC)
+Authentication-Results: imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aj6wZOA4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762486242; a=rsa-sha256;
+	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762487629; a=rsa-sha256;
 	cv=none;
-	b=AbRzKYK4DB3G49BwvZ8QCu0TIjBYaLZRQ41EESDsjFklkzuy3cYuOSM8UfK9Ku21s7ujYs
-	y3kGfNe3MkwYUtVn/y27ufrv3wMzVk9rE5+lv10reDTO9WcMpLDjF5HEmA05jQUKNIy7TD
-	GNMtdZo3OvvYsNraVm/eRbGJMvCW5BQ=
+	b=8nesTceDpj/jm9nwe1xujrzzciyaEaBpptIRyEVdKRPTYFSoD2ZiutbW76cBoK0XI7oNU4
+	+h/XA00xU9GmL4wLOSFw4BHec/BzG64Rt3VnbCGvkHwFwe6T6VY0i3xEb3FpIu35+CMWMj
+	73twIF5FpcYqcoLLPIA96l8NGV26T5w=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=dmx93Mm8;
+	imf03.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aj6wZOA4;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+	spf=pass (imf03.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762486242;
+	s=arc-20220608; t=1762487629;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=0nXNMn/2HwuSsaQdDRLZ63wMahNVoxSZ+qM/8WePp4Q=;
-	b=G3JpWDfi3hlmrQppaNCo+CQ3bhw6mh7TKsGREHT24MkzPLKi0n/ymTEt1c+pksOgUB5fv9
-	C4cVDdd2VnRyNe3FK1IZMeBRG69zvO8P2NLduxGq3uzFmL34bnoWL4Xo3VjKe+raCQfnqE
-	/sAh++avPyyE4UBs9yHCzsZVoAP/0fY=
+	bh=ffjtxdTM20U0KiJJQ8gQyBUn1aPzkMcMUfLD7ssoW2U=;
+	b=m42gIL6nwDkwQf9fcnalvsvdX3Lfew5i2PWpmz9F6/lJuRdTB5XT/1nTm5fGrBd/h/2BS1
+	/xP53IOsJ3abzBflWJUCuxdPXKjTKS/KSw6gGmxjsJHRmhHz64MYd0CLtwVCM0Xmid8pC5
+	iBILtN8yBXWxgpMqL7z6TStW8cKtkak=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9A225601A7;
-	Fri,  7 Nov 2025 03:30:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D09E9C4CEF7;
-	Fri,  7 Nov 2025 03:30:40 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id E60C940B18;
+	Fri,  7 Nov 2025 03:53:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E4A8C4CEF8;
+	Fri,  7 Nov 2025 03:53:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762486241;
-	bh=zK6jf9HHfZm7vm9mP8L9SdDIGPKOC1ipjKdiWKVH24U=;
+	s=k20201202; t=1762487627;
+	bh=qPQrDC4pqEccrd+WZeXGR0TqGt+hmB5tkru+7RCZNlo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dmx93Mm8sPB2G+whQZKs6CQHv8uOVVzQjnxcJ3abtl+hKc1VTMCuczlTNSgu3cAlq
-	 IllRT54BTxToeD/15INBQxbSMEIhFN276EbRqTtb0RAjvPsxLllAVPOHnAGO2mJwGj
-	 qJ4cP8XslbcUN/IkiiLS8TEGKhkO0C4T1JwLKPlNDFNzmuWCyMKF6Q6kj5VsnB+yVW
-	 UA9Kg0ePw+ctcbpnodSL+xh/lN5cQ+c3wrQET58OKHwfe03rAsYS15uaYtGz/WeQvq
-	 xgqQl8+VWLRjmo5ELv4p7nE81hd28CHkpOnVswAYSFicMxMrrx2PA+62nBferFcKnK
-	 TIyioAuJNizEQ==
-Date: Thu, 6 Nov 2025 19:29:00 -0800
+	b=aj6wZOA40pHVyNtDVKnc1AXjXHCwrNFRyy0fGlzNo3pt+uEjZAP1Djash7uN7F9eE
+	 syY+ICi/KDynnnot29wlzSi5c3/DcfGLJXeOBr1LKQArXCiQZL9MU8cOBFC5NGIuez
+	 YFXxASWmwSeEFQyC9ysQRgXA8FvNc+F55M2CiaGvWzSMFxbvfLB3zz7CJq92biO6+d
+	 1urVPv9rOkPXujGLFMRDv6nA5Q4xPgvO0BnHPt4qjKshqXBbZtoqOgbQsIR/DbRKH+
+	 iZgHRKJHTRzvbjFLf51ARgCFv6GJQifI/k61WYCED+/r6wV09nPR/+Rh738s5DzJD3
+	 3LP5RkUDv4w8A==
+Date: Thu, 6 Nov 2025 19:52:07 -0800
 From: Eric Biggers <ebiggers@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
@@ -74,22 +74,22 @@ Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
 	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 2/9] mempool: add error injection support
-Message-ID: <20251107032900.GB16450@sol>
+Subject: Re: [PATCH 3/9] mempool: add mempool_{alloc,free}_bulk
+Message-ID: <20251107035207.GA47797@sol>
 References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-3-hch@lst.de>
+ <20251031093517.1603379-4-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031093517.1603379-3-hch@lst.de>
+In-Reply-To: <20251031093517.1603379-4-hch@lst.de>
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2FD6E20005
+X-Stat-Signature: dkkd8krb65iso668t9jxbrp4ccx6smim
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 379B3C000D
-X-Stat-Signature: 71359ciqoechd4ca8ossk87gz4h4sxmy
-X-HE-Tag: 1762486242-766862
-X-HE-Meta: U2FsdGVkX1+kT6YIuxOyeiA7MiqmKikWZ8jA+yVu2edftcykNyhMsy+g/nJ8ukXDW5jc8ZgDr5Su5+nNjOiu3DWjnCyvI+PsnA6dwkOCnLLnoqxvfjYmlZSSo8BpgdbYJhNg8pOep9NalqrND1X48PTBmSkZHMXEFCXIl07kObKeWEoysn8VIR4/h/QagoJV0hxlgVnsUkfB7g8H5uG83wfmUyD8otUsz+Z0h1HMR4qkmHYnakgaku5DqOomQ/NhfbeUwa1FbQfXgv4omfngti0TsDZl8NM/xgZ4nbnuMecf9oLrlAIODWkq39blwUzua6ezpUruMEa4shUcWl7IOiiHpOPjrYu2KInXbOACu0w7AhQdzQZmbuhji+2vsKQvh8C3eWNrEjy01QMvc/BnudsvGvjyv/ZSIqOs0Y1Rjzm6dvuG0zcXuT4GUtCfhuKvS7mUzt1ps/vWiR6F52M2v5isLNTH6qtfYa0nMaW2UqiqPBBlDfikM+M7nYAg5WEA4BMSyKZERom2bNvde+YFEcuLZ0oy9PUAJqSgx3amNHsXHtY5HTY1XMc1c0ro4vAkSr/TwiazGY0w/9lCwk8rgJe25tdCz8xh2oB3h83W9i/XI0PwCg7nSQN0fZbVRDYLeNtiQIiyFcR5iHPBi/vyrF7pBP6+1bgPDfvwh9cLSdMqMw30C8IM78s35+bAhbxSVSsh5LM2kbtcnEEQFK9Xl3xrYmYh9k45vpoH/V51iTQuF56fE2pRZav6e2NpSpyEwtu4xx6LDLfdkgfxe55hUkt+pPiXgrKp6rdSAvdyjsMs4qExCFgypXxxo1QM185Yym9DkewXi7z8f2lJDu4i8f2FpYmHrfFrUPaLbURFtd2HfjwB4Av4q4fnshzU4kzcPwAN7/+bx6+ahsdgtUmvtSjuHw7qMntiUjII2DzXy5j0Ke4vpRTeprB/Vpbezu8Z9YxV+pqghMOuf106dsF
- 56yQ+M9J
- hipB1RoXKzT4REohMA/27lhS+IcWmPFktCkAC0etmF6pDXMoxj8iHULY4Jim4l6N0OoWVjniXrmUmePBBrViBiI/MvgoxZyHgaq85JXV7E+9oEwZ0VtxT7pA+ivW27s24NA/HQoK3WCTiYZUWOL53wvrw+orXw/PTtU7jBpDKAgfGYFtGsfOPKB0rE8ppLeLKytTfqJAQL8lcHWJhO49pb4YsoKjiXsvURzXS61KQxlZupHCs/dJtChOKGQwP9+Ff68cD
+X-HE-Tag: 1762487629-188485
+X-HE-Meta: U2FsdGVkX1/cVXQvYU7oCFSNTHP3rGyaarA4ioEnIAS3vrWWDFjr+t5upP09MaboNJ3JLt3QS3Zq4bm7/I7fBqlBr73Dg/9y5oKddx3gT4nBAjDX0xkGq4qSrrgE1Q/RcN9p89DqR/3bFjqjJZY189v1wUw8zIxSkKpR5uUxtJpIi6PeFPZZUXKogWRcUNhtC1APopjsKRF6tVW82+uWDqUIMBiLMtaEj/gulp4KgOAaYApjllnyT9+j1QfpfWTuBrXe3QNIHgQqfE+3Cu5kzKvEe1yax1Woj7iKRCvuWfCo0QEOJK5HgULC34n+zGPPnc0DxIIgs2sRYowox8rqSFLk5us9d3qwKPmbQqCdrJZcRWtNKXDY+WdlLQYXlgisc4vJ9R/1MlOMNj551KtgY/USFCeV97AqSlqI92AmrhSko3OzjVNmCoIOD5SltUfeTE2YoJ7EbXLp0IdbsfgaBOm9etlKSxDQs/icn48T2n+4uDys6/kXyfBWtbJ0PVchg2DdBXNa/RcVlIyyn5Vlo3JPZypKhlC23aJVNg2VhobYKqmE+5zNte2eHZjEZIepLnD5eOyKRXDic0+4qfoHUuSSSSSHxYQe2U4JPjy3CYVa63bSoGiHlbPCpsm6KTSGi6c3Wmfd+GSlSYmqSzw6RwV4pr/DnpvpVwJAV1a7IJLm0jvn9V3i1MSJvKoj+TXOpND8CjiMNeUqOYieNLumzoTkhZv/tp/N+HohApG3tNq1X9Qml65s8KtXA7tn2HzbikqwsWLh75OqIyKzOykbjtRqHdu8sNvZskl6f5LOL7z/yJDciFgYB1X64IxVpP33mOIpU9IfcUEgxnWk4f9dC28zMcf6oq9WwsLWZ8MVAFe0ioQReMxIbHCm0VYLLFHZiUQyjhaWaXFC2RVU6ECQI1I/s1IWoW0Ok2oNnKoJJ0pnUsrmjgw5Q/mQkHQMqb57E//YKU/cqwCQf2ylOx6
+ uNUVPh3f
+ ladO+w/2XeddrjHktr4SUIc5UfNhZZfbtWV8uqFdR8S1Ggs8AK7gfXugzljMUtAY44qB92N2ngxAXZU4QXrw9+OVeVFFrXlmL6ZwmYk6zZC3fwOimIN5XUshspB3Ja06MGR5nQDzjHdZT0xwxC449u7RlSV6TjKGA3PnDO+8/0k6yv9vCzs7bVEXgpmRI5TOgsOJadQ+qVlhfn5q+c9X0Xxez+xQYI3uk8UYZMues1HTkjELboHkaxTdMTNhUJWUq5YxNt6HgEsQtgaeF+DGHNsbtnI/xwa0vlUnSGbgSqwJFub0=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,51 +98,109 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 10:34:32AM +0100, Christoph Hellwig wrote:
-> Add a call to should_fail_ex that forces mempool to actually allocate
-> from the pool to stress the mempool implementation when enabled through
-> debugfs.  By default should_fail{,_ex} prints a very verbose stack trace
-> that clutters the kernel log, slows down execution and triggers the
-> kernel bug detection in xfstests.  Pass FAULT_NOWARN and print a
-> single-line message notating the caller instead so that full tests
-> can be run with fault injection.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  mm/mempool.c | 24 +++++++++++++++++++-----
->  1 file changed, 19 insertions(+), 5 deletions(-)
-> 
-> diff --git a/mm/mempool.c b/mm/mempool.c
-> index d7c55a98c2be..15581179c8b9 100644
-> --- a/mm/mempool.c
-> +++ b/mm/mempool.c
-> @@ -9,7 +9,7 @@
->   *  started by Ingo Molnar, Copyright (C) 2001
->   *  debugging by David Rientjes, Copyright (C) 2015
+On Fri, Oct 31, 2025 at 10:34:33AM +0100, Christoph Hellwig wrote:
+>  /**
+> - * mempool_alloc - allocate an element from a memory pool
+> + * mempool_alloc_bulk - allocate multiple elements from a memory pool
+>   * @pool:	pointer to the memory pool
+> + * @elem:	partially or fully populated elements array
+> + * @count:	size (in entries) of @elem
+>   * @gfp_mask:	GFP_* flags.
+>   *
+> + * Allocate elements for each slot in @elem that is non-%NULL.
+
+elem => elems (and likewise for mempool_free_bulk())
+
+>   * Note: This function only sleeps if the alloc_fn callback sleeps or returns
+>   * %NULL.  Using __GFP_ZERO is not supported.
+>   *
+> - * Return: pointer to the allocated element or %NULL on error. This function
+> - * never returns %NULL when @gfp_mask allows sleeping.
+> + * Return: 0 if successful, else -ENOMEM.  This function never returns -ENOMEM
+> + * when @gfp_mask allows sleeping.
 >   */
-> -
-> +#include <linux/fault-inject.h>
->  #include <linux/mm.h>
->  #include <linux/slab.h>
->  #include <linux/highmem.h>
-> @@ -20,6 +20,15 @@
->  #include <linux/writeback.h>
->  #include "slab.h"
->  
-> +static DECLARE_FAULT_ATTR(fail_mempool_alloc);
-> +
-> +static int __init mempool_faul_inject_init(void)
+> -void *mempool_alloc_noprof(mempool_t *pool, gfp_t gfp_mask)
+> +int mempool_alloc_bulk_noprof(struct mempool *pool, void **elem,
+> +		unsigned int count, gfp_t gfp_mask, unsigned long caller_ip)
+
+What exactly is the behavior on partial failures?  Is the return value 0
+or is it -ENOMEM, and is the array restored to its original state or
+might some elements have been allocated?
+
+> +/**
+> + * mempool_alloc - allocate an element from a memory pool
+> + * @pool:	pointer to the memory pool
+> + * @gfp_mask:	GFP_* flags.
+> + *
+> + * Note: This function only sleeps if the alloc_fn callback sleeps or returns
+> + * %NULL.  Using __GFP_ZERO is not supported.
+> + *
+> + * Return: pointer to the allocated element or %NULL on error. This function
+> + * never returns %NULL when @gfp_mask allows sleeping.
+> + */
+> +void *mempool_alloc_noprof(struct mempool *pool, gfp_t gfp_mask)
 > +{
-> +	return PTR_ERR_OR_ZERO(fault_create_debugfs_attr("fail_mempool_alloc",
-> +			NULL, &fail_mempool_alloc));
+> +	void *elem[1] = { };
+> +
+> +	if (mempool_alloc_bulk_noprof(pool, elem, 1, gfp_mask, _RET_IP_) < 0)
+> +		return NULL;
+> +	return elem[0];
 > +}
-> +late_initcall(mempool_faul_inject_init);
+>  EXPORT_SYMBOL(mempool_alloc_noprof);
 
-Initcalls usually go at the bottom of the file.
+How much overhead does this add to mempool_alloc(), which will continue
+to be the common case?  I wonder if it would be worthwhile to
+force-inline the bulk allocation function into it, so that it will get
+generate about the same code as before.
 
-> +	if (should_fail_ex(&fail_mempool_alloc, 1, FAULT_NOWARN)) {
+>  	if (unlikely(READ_ONCE(pool->curr_nr) < pool->min_nr)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+> -		if (likely(pool->curr_nr < pool->min_nr)) {
+> -			add_element(pool, element);
+> -			spin_unlock_irqrestore(&pool->lock, flags);
+> -			if (wq_has_sleeper(&pool->wait))
+> -				wake_up(&pool->wait);
+> -			return;
+> +		while (pool->curr_nr < pool->min_nr && freed < count) {
+> +			add_element(pool, elem[freed++]);
+> +			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+> -	}
+>  
+>  	/*
+>  	 * Handle the min_nr = 0 edge case:
+> @@ -572,20 +614,41 @@ void mempool_free(void *element, mempool_t *pool)
+>  	 * allocation of element when both min_nr and curr_nr are 0, and
+>  	 * any active waiters are properly awakened.
+>  	 */
 
-This doesn't build when CONFIG_FAULT_INJECTION=n.
+The above comment has a weird position now.  Maybe move it into the
+'else if' block below.
+
+> -	if (unlikely(pool->min_nr == 0 &&
+> +	} else if (unlikely(pool->min_nr == 0 &&
+>  		     READ_ONCE(pool->curr_nr) == 0)) {
+>  		spin_lock_irqsave(&pool->lock, flags);
+>  		if (likely(pool->curr_nr == 0)) {
+> -			add_element(pool, element);
+> -			spin_unlock_irqrestore(&pool->lock, flags);
+> -			if (wq_has_sleeper(&pool->wait))
+> -				wake_up(&pool->wait);
+> -			return;
+> +			add_element(pool, elem[freed++]);
+> +			added = true;
+>  		}
+>  		spin_unlock_irqrestore(&pool->lock, flags);
+>  	}
+>  
+> -	pool->free(element, pool->pool_data);
+> +	if (unlikely(added) && wq_has_sleeper(&pool->wait))
+> +		wake_up(&pool->wait);
+> +
+> +	return freed;
+> +}
+> +EXPORT_SYMBOL_GPL(mempool_free_bulk);
 
 - Eric
 
