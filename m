@@ -4,104 +4,123 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E16C9CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 02:08:17 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9245BCCFA13
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 02:15:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 4DB698E000E; Thu,  6 Nov 2025 21:08:17 -0500 (EST)
+	id C40BC8E0003; Thu,  6 Nov 2025 21:15:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4B3648E0002; Thu,  6 Nov 2025 21:08:17 -0500 (EST)
+	id C191E8E0002; Thu,  6 Nov 2025 21:15:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3EFE08E000E; Thu,  6 Nov 2025 21:08:17 -0500 (EST)
+	id B2E1A8E0003; Thu,  6 Nov 2025 21:15:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 2D51E8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:08:17 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id ED4D058615
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 02:08:16 +0000 (UTC)
-X-FDA: 84082176192.03.B521024
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf07.hostedemail.com (Postfix) with ESMTP id 4CA494000C
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 02:08:15 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NCm/SkLf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762481295; a=rsa-sha256;
-	cv=none;
-	b=NftgB+0iVDQ1UtIkkCslJDf3uUrsRGDDK2KBadBH7aV8VnthaQN5K9Aw76qX9bIbgP0Ca9
-	+v0R66goBEXkh+C2ENDQSZd+7em9KZW91hG65TqlJigsHfgAT3qK8AVocNkVKaG2KRuLvX
-	TsI7lVFAwKNx3n0UnM7W567wGo/cLik=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b="NCm/SkLf";
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf07.hostedemail.com: domain of kuba@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=kuba@kernel.org
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id A145D8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 21:15:41 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id 48036884DF
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 02:15:41 +0000 (UTC)
+X-FDA: 84082194882.08.F0AB438
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 3EC24180004
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 02:15:38 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="BUJd/Tg3";
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762481295;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762481739;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=zAmsOjDrEdY1VcyfMzdxRSNuQZ2DYMUpTfTd1dza55M=;
-	b=BBYGXjMZ0ydugdj2qm0gGhZBEJj10ergi3k5GIKFJMzsat1Oe3LXHvlc3xV3Z7xazolo+7
-	JrsV9nf8hXuhZ/xNjBurMYmkbh5a0g8tAjHiKUi3y7MXBa3icXvP/2cXw5DTIUMKEbeGOK
-	fR03NYatFgIsHVuODOYU8Ara4LZ1RP8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 34906406FE;
-	Fri,  7 Nov 2025 02:08:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1FB7C4CEFB;
-	Fri,  7 Nov 2025 02:08:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762481294;
-	bh=krN2HbEAPJ9LZ7iRNlMAlG+UbT7YoouhmyVRCR+YH4U=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=NCm/SkLf0sDAsmYdC0ji01eys0nbyjJVvHg3S7lgfslaEnD9BVkC/1GHvsGoJdtcD
-	 6aFFfWl+eRdUa2P1IoiFv7Dm4LKqOdxkMEjcj0D7G9kE/QdBQjWl01CAqqMZlLk9gU
-	 OEKganv0Zc9V1YeZc8eewaAHC8E6S3BmHqVXJEkNXfY4ZohJUOvegj8GstXxpWV+dS
-	 bH8w8zRnLdd3MBCHEQhkcLSEgwh0QK8DGVApLdJqeFVKnO8+KZWlbOHbJo4Z8UCy0l
-	 q3fLPgBC9KjsOaNAodtNomC/uutUVR/IkxCfXaDgb5L4m5cwdnNmIfHePUsmOlTYTk
-	 t9ibqp7zouV1Q==
-Date: Thu, 6 Nov 2025 18:08:10 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Byungchul Park <byungchul@sk.com>
-Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
- harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
- sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org, tariqt@nvidia.com,
- mbloch@nvidia.com, andrew+netdev@lunn.ch, edumazet@google.com,
- pabeni@redhat.com, akpm@linux-foundation.org, david@redhat.com,
- lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com, vbabka@suse.cz,
- rppt@kernel.org, surenb@google.com, mhocko@suse.com, horms@kernel.org,
- jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
- ilias.apalodimas@linaro.org, willy@infradead.org, brauner@kernel.org,
- kas@kernel.org, yuzhao@google.com, usamaarif642@gmail.com,
- baolin.wang@linux.alibaba.com, almasrymina@google.com, toke@redhat.com,
- asml.silence@gmail.com, bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
- sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
- dtatulea@nvidia.com
-Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
- page pool for net_iov not page-backed
-Message-ID: <20251106180810.6b06f71a@kernel.org>
-In-Reply-To: <20251107015902.GA3021@system.software.com>
-References: <20251103075108.26437-1-byungchul@sk.com>
-	<20251103075108.26437-2-byungchul@sk.com>
-	<20251106173320.2f8e683a@kernel.org>
-	<20251107015902.GA3021@system.software.com>
+	bh=xVK751XGNfAVIopDso73Iu+BIYsWXXgOr03CtpdbB/4=;
+	b=3bNzKw/g5Z3Z/2vPKBggR09+Jm/87pLcdmfgznSHMm2/9o8ySKbjf3nhgBmN5mW6DszGBo
+	0Ar6LJkdHWz7X4n/eDrCM5qkhBRWU7FTrGOPqy0Nzmm8KRJAYyqvKjFBx2Kn7EjBIiCEZr
+	oQP0Zo9vTecbg++gWCroqrVLYjDBirk=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b="BUJd/Tg3";
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762481739; a=rsa-sha256;
+	cv=none;
+	b=ZJiuFQCbZTHWA5GQpw8bYtDoFfRCyjMFUBDu5ECNov8rbq4PbEcS16dJwYZfLhLEJVtncw
+	JuiftWrqGC2IyeDcisBPEd5ppfQnJdhfe6xXGB+Y3ajh3HZEIwrTo5afYo68X79QEPv8z6
+	2C9g/+HX5d+iA2m1SQNI0NpUXIoYbpE=
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-640bd9039fbso509710a12.2
+        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 18:15:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762481737; x=1763086537; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xVK751XGNfAVIopDso73Iu+BIYsWXXgOr03CtpdbB/4=;
+        b=BUJd/Tg3xjpohMR5l194Se0uTRPxJ0u/JWoDwzxV2DrYi2SPG0YRGd9DB4P8rORTfW
+         tR0gqTSAcebyF4yYtA6VnRx9UnjmUPahy7Wnh/aqBc+ndwQVQwvI8DwKNRVM8c8SOgvm
+         g4Vy+Znw8x7ls9KzaY5JD2qJVem2IjA0vC0DWiA8/O9xT1zSblCDooQkBgbuDpzaBwSU
+         n7a6abAQtLiRHxneKxNNd7MxwouQmCMmjQRz6aqNpuMydeTelLNxd0DnLfNe4HlqpCOI
+         DClX8ODH8Fwf1ce/cwbS+DYi/px3ofFsadNzjSODMmZdWbpqycTQ9zW/2r7gMY/2Mu34
+         P6dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762481737; x=1763086537;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xVK751XGNfAVIopDso73Iu+BIYsWXXgOr03CtpdbB/4=;
+        b=NcEa5cwwvP/mBN2zGBRfCW3+PzrFFKsUR/yTy6rSCpA6gKMrj43mjGZGEr4r0dr/Du
+         73NuVgGSWnZFxbtDVJ/VCXS8mI7g3LS3I7Qk50fUbLsMno5lbEy1xNxUA7bQTLw/mVZx
+         anou0ezoVdAYrF7jlbjhrD01IaV3Tqd0ERjlAoPZdo2eR3Kku0+OMHP2zO6HuW5QMzna
+         i83Zj+B8Xnjp1bNDpQNUhyaTJqL7xPCUgsdHjFQ0RUajizXarf8PnIlBMu88jVxRWIZt
+         B+j/P/ZqRHA33jLm9zBuoEV4QM/5m+gdmUWTyIWmZS4UZJNMDurwTGUzg8JBW3QYUknV
+         aXzg==
+X-Forwarded-Encrypted: i=1; AJvYcCWHKrvC+lnM3WqlSj4H5M9ZLf2T/yrUDeF5Wb+uhoJvd5UoRD+v+PCZs08XfZ3GAGBsuEMUmcCKZQ==@kvack.org
+X-Gm-Message-State: AOJu0YxF7FVHRWgWPknKpQYBh4UuHYDQMEn9BdyXyXauF87F9a6a/OiI
+	AOicFueJze3VvO5lz7Sgt4n/a1o9ZFFRO3psLgVUOPPKCCr+NVvA1BNy
+X-Gm-Gg: ASbGnctclcOj2MsImiEPCQBe7EyAIQebJGtPdIBh60ah815Do2SDHf3GEax678lLSf+
+	jQBJZ26gHmRrJFeqXug5MkdJlPlRvElDua69fequn29mL4nPoLmtoioael1I5zOd7fEsIT38LNW
+	oeIM1KEhmy6p6lUSbRzdEaE8gY9b0t2usBgSdGy22i6wwdDDjrBF0SNOp1OjKyqMqpbCtzaPIN8
+	N2CgU0lauyGLiPOwWps3g4LbkZqC2mxb7ECz3aB+sjGjkpdZuyGKbA2oe2o5t4nTfrHINEX+AhK
+	Ck9u5eWP/JQFzX7Hp10XB46kXCygPEcn5xs0j9zNlhjCmjKXUdtFv0NLKufvr9qThecWnpZ4RO3
+	E2a7dmCDTKNSqdGwumOHX9vILFPtviDQh4sTBMl3yRDCfSHsmalALw2KqUQ2kkDq9dx04m3kjtB
+	UDYg5NwBV+EjF5v5sJt+g4
+X-Google-Smtp-Source: AGHT+IHGLbP8PaO+mVCuoaK+DUwD1SXlvUFyS8du3A0VYiyjcS9fnkZcI4Km7JDuworbp4twuJtXOQ==
+X-Received: by 2002:a17:907:9608:b0:b45:b078:c52d with SMTP id a640c23a62f3a-b72c0a6ee74mr132792066b.35.1762481737455;
+        Thu, 06 Nov 2025 18:15:37 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf97d3c0sm105496166b.36.2025.11.06.18.15.36
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Thu, 06 Nov 2025 18:15:36 -0800 (PST)
+Date: Fri, 7 Nov 2025 02:15:36 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>, akpm@linux-foundation.org,
+	lorenzo.stoakes@oracle.com, ziy@nvidia.com,
+	baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com,
+	npache@redhat.com, ryan.roberts@arm.com, dev.jain@arm.com,
+	baohua@kernel.org, lance.yang@linux.dev, linux-mm@kvack.org
+Subject: Re: [PATCH 1/2] mm/huge_memory: introduce
+ __split_folio_and_update_stats() to consolidate split task
+Message-ID: <20251107021536.x572tum37szc2llk@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251101002927.2610-1-richard.weiyang@gmail.com>
+ <20251101002927.2610-2-richard.weiyang@gmail.com>
+ <b2a1ef9a-9822-49c8-85e6-43b19bc8bdd7@kernel.org>
+ <3b098e0f-7632-40b7-9201-41a1b5b0ae42@kernel.org>
+ <7870dde4-801e-4bcc-bb92-7b75a6a4a4a9@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 4CA494000C
-X-Rspamd-Server: rspam07
-X-Stat-Signature: u5hxd8jw9xcsup1r9rsu1fe5t3hsnwob
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7870dde4-801e-4bcc-bb92-7b75a6a4a4a9@kernel.org>
+User-Agent: NeoMutt/20170113 (1.7.2)
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 3EC24180004
+X-Stat-Signature: kyoeju8ph3coskttjygm5c8zhregpxxe
 X-Rspam-User: 
-X-HE-Tag: 1762481295-693311
-X-HE-Meta: U2FsdGVkX1/BevOzOk8WRkoQ255YsW7JyzzOS0Y1zSuslcpVWNTEIZX4Y7faI87KvgEO+nb6M2CTqlyS+lMQZqcsUWcwlMOgJ0E7E8DcL1sPqPEc24cMhtEvpJ0UNu/q6ypUFbKkyb0Z8hTEWLU3pKAH2y/vsQw4oS+ToCcKSk7da7n9Y/y/KhOkiuyFaWCXy4DcDvh6YmpWmX93kexNsl8jeR4/MFsfMuSLfaC4b5ELBmbFpSMpVAMwPNwn4zLCYo6fW2RfmgNRY8dSld31mJ2nCb/rpSRrQiLqFV4NhjE2mXjhSQ+nejDrGTUDYWGhsY8c23nm2o4C+1tM+7TZPSsjGejxJkzTTmz76OG2cA0fr04UxI4rtF69xSoI/Ityr12yKRbTjRUO32wRvotJQwm/EDhtyMPcu8tnHEfCiZFC/xvc4EbqNTfpsQxmNg1pIEJpkwMfHiyFAegg37s/nQx1Yv2FC3X3qenMeQ7Ny1Jf9eGjgH3UYvgszbKMYDWmaBFun1dkCvSNE4mht4e6Yn9uTm+IVNDzUM+N3YSSvPcUujMamJSmPy3lT+t4prty6eNDB45d0IukMuSXmxhN9KnmDx9eYi0Bqvg9KUT3/VJuUmzwiQ1L9OJ+cB0Zq8gzQb7XtLWean1T7QLg9zzdirtsxe9KD9kTI6YkVzrs/uImxcQd2n7KC7Y1E4707I4mhZ4zVx5wp54pnCUQVaxhjg8RfAjq7GNBQ2qKZU1EBPDSO66j0kKqBATzmdsz/T2qsjJa7jUN+50d0GtxpMffrD7i7Jys8e4qYq/hmsXDReo4BUPsgpgme3BcaRmB+iRwFnvEhoJUckOcGvYjSDJJOH41PSHheK6+t2jpX8kFyjo5yuPuDYGLUBv/0MfoOKmf4QUXN1ECl87x8PFuLaSysNP4IZO6mW9SGtCaEI++nUm2H0WMA9JG66yAr3UrEoP3jFw68D8kJ7aP2TKAHsj
- 6Aem7IEE
- 797VExKAu/P8oujzk/ABEQHxyk5mGLQK8sdHDFisxpcPeph4wGhKI0yM1kiUH3C8NuKlSwtmx/Y1VNKgo/pjjQBnl5kEpNOj0HnpM6TFvPvTLJAMqZ/ZFlK7Ll3TDB9+9Gp3gAhZtNgjFEw8gleaA45ePW8CRKCiSek+B4Hp8HFJDcHZruzksYvXEVJMgcGEphcE4h4bGID9KSswVmWfCZ0/0COXcXsUlcRd65XEjS9C3DfOmVgsi7SqMMAGf0LXMmHR/3yTm3babTvLuCFEcxLDUAX49niXqv99VBh3s2imekH8BHG9ki+5nDBrdNdBdMIJ1zXtWcB0+682sAWQr+96FmRp5AoKTFfBv2f99loccDqqT2OrmWn3HtIcnGagORgDA
+X-HE-Tag: 1762481738-648778
+X-HE-Meta: U2FsdGVkX19uc/UNGrlZ7KxnYxvomqgolHuOsfgo15Uxl0HGcUxvZ91LNKiCoz24nPh8VXXIXtov4cEbdDpD1XSRJFjncdO0mz05yiL8BlyEYBv2HxiNCIpDFdeNjQihfPA4wykE+0+gz5Q5vH3gVZwIiPSzAP2i5Eh1Tl742hfl8HRNU4JS59Q4U0rLetG2Zr2LlyeBkWMA4VfTKRYKUdDiZaSyZeiaGgoltQKajYj74FG0WpN63NvjNJOj62kfd6jgOdyXO23JZhwnzIXyJKusNvhG+iLvgr+Sp4DcRn3yxuKW+KH0dY/P/M/HnOtXwhUDkGq7Nk3VDqEG/h7XmRmICMjSQU8OmCCpj1IbljnW5KWf093SaOySKysvDCZaZ0iZdma2a2EikGBYDWbCEhqCIo1d0e9hnwUERovNYR07jrP8qTQd35SDKlF4WLGRg0lu9y4bE3kASqnWca5nxS1xeprSnWoHdj1j2nN07PcqUh1xnAgpFcJHXh9pHRh7mEt26AyTggw2a2sRxlxlp82j8YSTuHRtHbbRVDbZw+TOBu9n1O5aobfVRzsE/aaWszbiG4AJZshMh9QEfAP+hv21dcTRrWeVneuf20K8B1XOtaEWFSTpJkJoOXgGEcBG/PMBqvDS1v3xPv11wcA7TjORaqJfg+AgQFJQ6eLkyn1ns349K4zVsB7p3jzFo9u2GICSs3jUqQO5s6QCO55lbpKZIEPazy2QMu1qka7QaaphjPWB0SaPGtinqntt7fkO5kt+BfX/3vJ78Yy4B3mN+qMYhJCdp5fMarRyUmS1WI+TFfG7Pd8xyu3x3aebMX3O+IpjVXd+walTcfu6v0mn5gg7DGUJq3/6UDTvy9DfBiQIhnT3tfqiEACDr1dt9GQUocNvdq2+oxcm0UvsnyjntI/Rf6MhTp2xWwASYd+7dpnFXwHUmAEVPz8T6xMHpjLWFR8XKB5DAKLI/gZaw4F
+ JdDG4K0t
+ fwz23rVl8gvCJms1P3jr+lQ0x0+6WyheE9RWAdSVno39RtOtuOKHHxG5GDqY2qMKJWwBJOqdhnzOjrhzbza8EEb0KoNTgDKzgoBdl49R5bbirzmpxRoHruPpoZQJBFZCvZ5DQfpWL9aF/+v8jSmf471OIym+YQ69mLmqjcmWsV+IJjOVp8a9NKWiAZAhEXpmbILPiKObB1ZCSGPDpw123oN1wJQ39MbxKyXg7TfzLMHuUIc6VcXPJzVhia8fXy8JcFuosOWzIIkOAIDvd8gzgFhNP9/eyoQZgvC+mGb/p/iwW3MimsgLwpIc+g5mfXwMDopKuUDHGwM2rIrsU5gMfz593fBXVwUYhBEiRBbnq2xTqWk5MEfjD7pUXNv8wgNgHPzVga7pOsAb8NlajIno3QZoXFDjHvmfH3c8Shd6OEPOj/NYoTd1CMjyY3wmGf3LtjJLfGlFbB+r5Ucq0/I8DqrXejP2vue/HmYfKhgnK4oNXUOGJdpjSoTu0n+pBArNMRJcEV/+pE02yqm2GHxcy8ztcsmjlMKbZMGmO4KpCcQ4mquhmeymbT0jKZ9ZlfU540MOVypcFB+BUOSwgYt0CRNkV/DZsFmDosZAC4k11OSxWX+PXhBW2AMAGVujhub/kPQUI4ATrCKzWQrbR+0iUJlmbTxn2rgw16luxEMQJdkoH3bMs/TZCVvAE+4faL3rgCN6isAkqN+xL9wlYoZalfV1d//9LlpoHL3865nQIm5XodmApgXefe+LnbYKuB1qRL7KCza9Z67DqW4s1274ThLHKJp1echYZ1JdIQEgAaPuyeNRKqYZ6cBFHEq4zQ+o2mMBO
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,34 +129,68 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 7 Nov 2025 10:59:02 +0900 Byungchul Park wrote:
-> > > page-backed, the identification cannot be based on the page_type.
-> > > Instead, nmdesc->pp can be used to see if it belongs to a page pool, by
-> > > making sure nmdesc->pp is NULL otherwise.  
-> > 
-> > Please explain why. Isn't the type just a value in a field?
-> > Which net_iov could also set accordingly.. ?  
-> 
-> page_type field is in 'struct page', so 'struct page' can check the type.
-> 
-> However, the field is not in 'struct net_iov', so 'struct net_iov' that
-> is not backed by page, cannot use the type checking to see if it's page
-> pool'ed instance.
-> 
-> I'm afraid I didn't get your questions.  I will try to explain again
-> properly if you give me more detail and example about your questions or
-> requirement.
+On Mon, Nov 03, 2025 at 05:22:10PM +0100, David Hildenbrand (Red Hat) wrote:
+>On 03.11.25 17:21, David Hildenbrand (Red Hat) wrote:
+>> On 03.11.25 17:20, David Hildenbrand (Red Hat) wrote:
+>> > On 01.11.25 01:29, Wei Yang wrote:
+>> > > The folio splitting process involves several related tasks that are
+>> > > executed together:
+>> > > 
+>> > >        Adjusting memcg (memory control group) accounting.
+>> > >        Updating page owner tracking.
+>> > >        Splitting the folio to the target size (new_order).
+>> > >        Updating necessary folio statistics.
+>> > > 
+>> > > This commit introduces the new helper function,
+>> > > __split_folio_and_update_stats(), to gather all these tasks. This
+>> > > consolidation improves modularity and is a necessary preparation step
+>> > > for further cleanup and simplification of the surrounding folio
+>> > > splitting logic.
+>> > > 
+>> > > Signed-off-by: Wei Yang <richard.weiyang@gmail.com>
+>> > > Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>> > > Cc: Zi Yan <ziy@nvidia.com>
+>> > > ---
+>> > >     mm/huge_memory.c | 28 +++++++++++++++++-----------
+>> > >     1 file changed, 17 insertions(+), 11 deletions(-)
+>> > > 
+>> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+>> > > index c37fe6ad0c96..abde0f1aa8ff 100644
+>> > > --- a/mm/huge_memory.c
+>> > > +++ b/mm/huge_memory.c
+>> > > @@ -3567,6 +3567,22 @@ static void __split_folio_to_order(struct folio *folio, int old_order,
+>> > >     		ClearPageCompound(&folio->page);
+>> > >     }
+>> > > +static void __split_folio_and_update_stats(struct folio *folio, int old_order,
+>> > > +		int new_order, bool is_anon)
+>> > 
+>> > Is there any good reason we want to pass things like "is_anon" instead
+>> > of just querying it in that helper?
+>> > 
+>> > 
+>> > > +{
+>> > > +	int nr_new_folios = 1UL << (old_order - new_order);
+>> > 
+>> > Could be const.
+>> > 
+>> > 
+>> 
+>> Looking at it again, and that we are not reusing this function on patch
+>> #2, I am not sure factoring this out is really helpful at this point?
+>
+>Ignore that, I was briefly confused by patch #2 :)
+>
 
-net_iov has members in the same place as page. page_type is just 
-a field right now.
+Hi, David
 
-static __always_inline int Page##uname(const struct page *page)		\
-{									\
-	return data_race(page->page_type >> 24) == PGTY_##lname;	\
-}									\
+Would you mind be more specific on which part confuse you?
 
-The whole thing works right now by overlaying one struct on top of
-another, and shared members being in the same places.
+>-- 
+>Cheers
+>
+>David
 
-Is this clear enough?
+-- 
+Wei Yang
+Help you, Help me
 
