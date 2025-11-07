@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D841CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 04:08:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 94968CCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 04:20:44 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B98FA8E0010; Thu,  6 Nov 2025 23:08:03 -0500 (EST)
+	id A52AA8E0008; Thu,  6 Nov 2025 23:20:43 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AFB598E0002; Thu,  6 Nov 2025 23:08:03 -0500 (EST)
+	id A29DF8E0002; Thu,  6 Nov 2025 23:20:43 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id A379A8E0010; Thu,  6 Nov 2025 23:08:03 -0500 (EST)
+	id 966AB8E0008; Thu,  6 Nov 2025 23:20:43 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 933898E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 23:08:03 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 3E9E0884B6
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:08:03 +0000 (UTC)
-X-FDA: 84082478046.16.E9CF29A
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 82E2E8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 23:20:43 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 26F291A0343
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:20:43 +0000 (UTC)
+X-FDA: 84082509966.23.4F0E731
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf13.hostedemail.com (Postfix) with ESMTP id BCB0720007
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:08:01 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HpYpUgEt;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	by imf14.hostedemail.com (Postfix) with ESMTP id 662A910000F
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:20:41 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eh147owS;
+	spf=pass (imf14.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762488481;
+	s=arc-20220608; t=1762489241;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CinPNCSYG48W4ErHgl/AxhRtph+5RNe27Gm8quQqoPk=;
-	b=04gn/BjfJAc10GZk+YrkldsrH5zoXHpID5CsEjK2Rrhmp1Pf32mUWHMygG3dbOS7l/uION
-	iDfk6PPDV4znqzxg0wdhwmLwuLZJbkmxHZulKd9CybPO+ebSa1S3bc6LX8Bi+Vd726IW/a
-	JKnGsD2VVljcsHx7r66lT3gG0kr4oLc=
-ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=HpYpUgEt;
-	spf=pass (imf13.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762488481; a=rsa-sha256;
+	bh=YzONbdifdKN6Ryn/Bw2gPyVvJr8UpT/by5KOCRw+vn0=;
+	b=YtSEoyDI3rru/AloTUVkUwryqmiLLhyooStuGR/cXT2664+CtgdC/DOY6C7/rrw1f55Obo
+	C2l0O89IXeOy0BwZOuHNzvEt8pDfB09WJu4xmJGZiSyqSWKh0EdXMrAg3NzbW6oddVJ/iJ
+	o5sfsl60KzqqWHbjz8Hf+qsjDRAHC4Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762489241; a=rsa-sha256;
 	cv=none;
-	b=DWnvpLMORf71yjs6tXhd5k50r9DSzRJz+s9i2u1vKW9KM4WFrByeH3wD6Sk0IaLnsq5CZc
-	9x79xFGZh/skp/Gs98V+Xxzt5IixPclxnyr5NsLZk6fdxrQsGJbStmEaZEVqvMxGxUKdqV
-	OuKBpfYd6gWoVGfHDHk6dgtqHNf0bdc=
+	b=t97mVJq6dzLyS0EWk11MIxuuIJH6rlfQQdaT3zXqoecxEl+bccagl1zccODvVmx9anrb7H
+	+/NcRqe6MLHswFyxc0Kvsb+aXS5eQiXBvZU+GG6HLQ8H3pSrxkr4Vv1wANg6O2qCoXbcGY
+	e8BJsiQRCecyET8MyGK8jthlGApHB1g=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=Eh147owS;
+	spf=pass (imf14.hostedemail.com: domain of ebiggers@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=ebiggers@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93D0942E28;
-	Fri,  7 Nov 2025 04:08:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CA7C116C6;
-	Fri,  7 Nov 2025 04:07:59 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 766F842B85;
+	Fri,  7 Nov 2025 04:20:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB7DEC116C6;
+	Fri,  7 Nov 2025 04:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762488480;
-	bh=7R612qBUPvSWvCwpdWHa4cwpfUnAwNhOskr7iKaQgSs=;
+	s=k20201202; t=1762489240;
+	bh=ClMjTuO8m+qGYTF99gai8zRYpEMz8d+n7I8+JWoo4OU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HpYpUgEtsszxOvLdFNToRe2bHvEuDrJFWRXKOTWQGtEjhVgxH85oRQ2qbpBV+AK85
-	 Cim/1w4+e3AfDCVYhUWQii6U7F6+Tm69/EkXTjnG+YpS3BU2o5CHAdeDU3MhzqcrqA
-	 cHuKAO91oUjZ/DaFFFnNhDOy/sdYwKUsL/CG5Bbn9lf+VlcVWFj2D0ZdhNujjnmp+S
-	 e8rsgfO3ETObBv9oO/PRtKTMoYIoYTyTYfYg9tBbD6TTFJNW+FLfSBLPzxQS0WXmyg
-	 7O3XiVyup0QcPwElB0a2whqgj4KPcExfyp+9Y2pSn9y90ylVN2O5/8Yv6merKBLglS
-	 ZOSLRD5E52c+w==
-Date: Thu, 6 Nov 2025 20:06:19 -0800
+	b=Eh147owSGuUYobLskWyhN6dPCJwsy93T7T3CqmwDglhaVzkdcBqwjvABAUi4GWT34
+	 LCsdr2EwD4Hz7OGm5BhzvIzkY/Ztu8iGDgg1GBjXz7cmJ7IaRjYapmNF+XFYcHAjzg
+	 fq3MQUhxWiCS36Grsaib78l/HmEuJ7TY/M/7/2s64RNQgaSE2FeTViriZjbhu/u2qv
+	 vM/I3gY4UOisNIK1o41lVSOlaiYt7Fq8+C55qohB/n1mpm5ph5JNly2Hoain/OimHo
+	 2Q82NczM3L5K1Uk2ENnChEfObr+zfOg3S7ib/MQmZOWyUInaPo2tp1Ocw6B1LDGvWh
+	 OG+QBocATan6Q==
+Date: Thu, 6 Nov 2025 20:18:59 -0800
 From: Eric Biggers <ebiggers@kernel.org>
 To: Christoph Hellwig <hch@lst.de>
 Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
@@ -74,23 +74,23 @@ Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
 	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH 5/9] fscrypt: keep multiple bios in flight in
- fscrypt_zeroout_range_inline_crypt
-Message-ID: <20251107040619.GC47797@sol>
+Subject: Re: [PATCH 8/9] blk-crypto: use on-stack skciphers for fallback
+ en/decryption
+Message-ID: <20251107041859.GD47797@sol>
 References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-6-hch@lst.de>
+ <20251031093517.1603379-9-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031093517.1603379-6-hch@lst.de>
-X-Rspamd-Queue-Id: BCB0720007
-X-Stat-Signature: uhmzzy8uw1ayuoosmxrjx3ai3idt3xip
-X-Rspamd-Server: rspam02
+In-Reply-To: <20251031093517.1603379-9-hch@lst.de>
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 662A910000F
+X-Stat-Signature: cagorb49qg53m13e76rgczdse1nceyb1
 X-Rspam-User: 
-X-HE-Tag: 1762488481-699596
-X-HE-Meta: U2FsdGVkX18bpP7UUPy6cHRaazgmDkdIEyH8RON2xjtK6MblVF/LV1pwQLhPAjEoAqro24PLt9BjsVbNgnaxBEiOs3ZeFIOgr8IbobH2zoEkQf9w3Vz3xhxIXggWInpsT5MOGPDI1/Jt7eseIopborcvVzXcwcJoQdkrGyJvNglozIHe3d9eKBHB+QFCp5QNFJ0Is8GWx/MgqN7T9E1NxgagBchlE40TxFKwSUHVa2vlrvdNRtQR+zNM4Ch8jFb1qRL59EEBCyT1HHageV01dp/sJhHMsySBlQnQ6HYHg5oopi7YjgqI5sc8zGQ5JldoTFawmMgAkqV150vEleYUDXRZrA1W3Xq1lFvNlNLEsmrFTQ0ERkyFWuFYDU2sBScs8BULIbGXvlFOHYfx0RPaowzX8crOdn6XiWHwgQUJtff8DVvZZRB6ZumBQepxYPFPYduUpz99GzcXYsnQk0kM6llLA1rT3t171MOxKQWO+8PzTci3YfERSg2OoLGTz9nGiZx5nzuSvji4lVqM4bPAVL5+SQXr74qw/AEWLPD25Ti55a7spCBBLxnwO4lnZ4FnZVbXyotGU6fDSZ/Ii+1SE2jPQywe/any2eAYtGyNeVVjCNvvI9S4pQ2u+Myk/RG02pypoF5276YnYnkmo0rKvZdlCSVXIFJlsd5MDqw1KLnE86IrqoWPzFCTz4t0Atsw9aFRZAXSD9a0bAxtTk0nAJdS+DdQCUa7q0Z83RMiDh/o8u6zm0blxuWwCSiPWNIHJB9B9mY5jWbJioPilgRANd8T/9Mwyfesmc5W1ko1ZqIMUOlKguAYbqclOHEJINMQJG8t5uJWswhEpt9BfxA0re9PfRc/jLswinp7f6lwJuz7QKFtAEa7clSrQMiDiGx1MrnQhLseeCi7EGuaPMnxx7Uwdi01HdZmxrEEtyKwd81fM+nC8z/168O7HGmJYHFd0TLvFN+3o+pQUWGNLuT
- PfG2atRk
- lK9ei
+X-HE-Tag: 1762489241-329386
+X-HE-Meta: U2FsdGVkX1+iogdB0H63f0fcui3aAasYDjbadNWNjI0h20w7zyslfhvQ/HTpkJcPjS3WLwghKRKmz7ilgJI7KaqRIL0/Q52UNzYCDRyp0FHe5RZQVyomM7eVjJmhEbLPs7lUFbheRoFuihm4Zmx+tFevLhOAH3FuwJwqink+lR4qPbC2QUxBPMgpkdQo1+r5bkxZQ75QsYU8MdUOJRtKhYB1u8jP1Gb8dBhRND8M0DYewfrTszCEUWYCNQwODatRFfsTOgqoig77zu4M7HuDmz8bndGlhl/MaNvOmUkFcsWDJh+4992WEyH5nGRqwUgnbrZIMndFvryDiMAYfHQmKIPjPXc8i0URBqSbpXXpc2mDeukqjNIEMcQymUEM1jMuxm21CpZnHhzq2QwtH7COQtO0TwEKqjOMBKkStCAZ7spJzsk0+YJjnXTW+g2AqBQY3pR0OqK0Y4OYQ09ArNzG6hy8NQRkb2A5p0ZhU1ZOCFkCrCTBSZ1YcZGUJ7eASzYH2wf2cjaFl7ietv2UhvpFijoESyuudhW9Q9CTsFXgvjcAL1JHxx7lH48hbGyBCyM+udSnq2esyP4hb0vcO4bzOrdCiyxHZuCaaWLxU1KaFY/ihWwyyeKkB4woFo5FRFXu6UN3ZEIDCatygaPxxscMDFblmxIFsYiRlv1qQ8p21B6+KZQeFXzoPw9j6RDTP9RWvbLuW9y6sLpWQ+hxYXxE30fpQAm3jKQ9uDDaN0k0ypYt28LiRahV5sU2ms+dIpfxV4emuJXjbJxRZG4IVGE6GipagehsmJxtU0Frqj4/zZ2QRhuBe7oOYxyGdr2yRS+2o2qlooxVyHRRHKm0byuoVI7FlT8/IIzYx+i06lrroPP8QikwCVKKj8BwcuWbu6rf8s/9vwXH+nQNotoZUxQjuEk5y6+jlCLKK0FvRRIIGVpQjirZkXTtO7+OBXJ1diwG1Xc+NinrXfCPe1m/O9U
+ 4pFDJ/va
+ mFmbQh8PospDK8j3g9f6WiKLzXzJvGRPzXU8X1ZlJ7+h9MKhzYLRfqx7tfz3AiaBNQDeNmm+8TJD8m6VRIa+V3e88E5H0z6XQAQKORtOy7uovDXrZUrTLqDdfAm2e7fa25xRJkCCLF/lCqj4YTLmQ31s+gnpetE6qpupcnLRT7yrItEm5/Jw66xakKUoznY07HKTBgHP9SzDMflkMU3+EMtNpbg1JwykTknQ6Swt8u4P0OykrWAls3BR33atHjQa8NI/P
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,73 +99,61 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 10:34:35AM +0100, Christoph Hellwig wrote:
-> This should slightly improve performance for large zeroing operations,
-> but more importantly prepares for blk-crypto refactoring that requires
-> all fscrypt users to call submit_bio directly.
+On Fri, Oct 31, 2025 at 10:34:38AM +0100, Christoph Hellwig wrote:
+> Allocating a skcipher dynamically can deadlock or cause unexpected
+> I/O failures when called from writeback context.  Sidestep the
+> allocation by using on-stack skciphers, similar to what the non
+> blk-crypto fscrypt already does.
 > 
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  fs/crypto/bio.c | 84 +++++++++++++++++++++++++++++++------------------
->  1 file changed, 53 insertions(+), 31 deletions(-)
-> 
-> diff --git a/fs/crypto/bio.c b/fs/crypto/bio.c
-> index 68b0424d879a..e59d342b4240 100644
-> --- a/fs/crypto/bio.c
-> +++ b/fs/crypto/bio.c
-> @@ -47,49 +47,71 @@ bool fscrypt_decrypt_bio(struct bio *bio)
->  }
->  EXPORT_SYMBOL(fscrypt_decrypt_bio);
->  
-> +struct fscrypt_zero_done {
-> +	atomic_t		pending;
-> +	blk_status_t		status;
-> +	struct completion	done;
-> +};
-> +
-> +static void fscrypt_zeroout_range_done(struct fscrypt_zero_done *done)
+
+It might be worth leaving a note in the commit message that this also
+drops the incomplete support for asynchronous algorithms.  ("Incomplete"
+in the sense that they could be used, but only synchronously.)
+
+Also note that with asynchronous algorithms no being longer supported,
+the code can actually be simplified further because the
+DECLARE_CRYPTO_WAIT(wait) objects are no longer necessary.  The sequence
+of crypto_sync_skcipher calls that is used should be similar to what
+fscrypt_crypt_data_unit() does.
+
+That could be done in a separate patch if you want, though.
+
+> +void blk_crypto_fallback_encrypt_bio(struct bio *src_bio)
 > +{
-> +	if (atomic_dec_and_test(&done->pending))
-> +		complete(&done->done);
-> +}
+> +	struct bio_crypt_ctx *bc = src_bio->bi_crypt_context;
+> +	struct blk_crypto_keyslot *slot;
+> +	blk_status_t status;
 > +
-> +static void fscrypt_zeroout_range_end_io(struct bio *bio)
-> +{
-> +	struct fscrypt_zero_done *done = bio->bi_private;
+> +	if (!blk_crypto_fallback_bio_valid(src_bio))
+> +		return;
 > +
-> +	if (bio->bi_status)
-> +		cmpxchg(&done->status, 0, bio->bi_status);
-> +	fscrypt_zeroout_range_done(done);
-> +	bio_put(bio);
-> +}
-> +
->  static int fscrypt_zeroout_range_inline_crypt(const struct inode *inode,
->  					      pgoff_t lblk, sector_t sector,
->  					      unsigned int len)
->  {
->  	const unsigned int blockbits = inode->i_blkbits;
->  	const unsigned int blocks_per_page = 1 << (PAGE_SHIFT - blockbits);
-> -	struct bio *bio;
-> -	int ret, err = 0;
-> -	int num_pages = 0;
-> +	struct fscrypt_zero_done done = {};
->  
-> -	/* This always succeeds since __GFP_DIRECT_RECLAIM is set. */
-> -	bio = bio_alloc(inode->i_sb->s_bdev, BIO_MAX_VECS, REQ_OP_WRITE,
-> -			GFP_NOFS);
-> +	atomic_set(&done.pending, 1);
-> +	init_completion(&done.done);
+> +	status = blk_crypto_get_keyslot(blk_crypto_fallback_profile,
+> +					bc->bc_key, &slot);
+> +	if (status == BLK_STS_OK) {
+> +		status = __blk_crypto_fallback_encrypt_bio(src_bio,
+> +			blk_crypto_fallback_tfm(slot));
+> +		blk_crypto_put_keyslot(slot);
+> +	}
+> +	if (status != BLK_STS_OK) {
+> +		src_bio->bi_status = status;
+> +		bio_endio(src_bio);
+> +		return;
+> +	}
 
-This could use:
+Unnecessary return statement above.
 
-	struct fscrypt_zero_done done = {
-		.pending = ATOMIC_INIT(1),
-		.done = COMPLETION_INITIALIZER_ONSTACK(done.done),
-	};
+>  /*
+>   * The crypto API fallback's main decryption routine.
+>   * Decrypts input bio in place, and calls bio_endio on the bio.
+>   */
+> -static void blk_crypto_fallback_decrypt_bio(struct work_struct *work)
+> +static blk_status_t __blk_crypto_fallback_decrypt_bio(struct bio *bio,
+> +		struct bio_crypt_ctx *bc, struct bvec_iter iter,
+> +		struct crypto_sync_skcipher *tfm)
 
-Either way:
-
-Reviewed-by: Eric Biggers <ebiggers@kernel.org>
+Comment above needs to be updated, since this function no longer calls
+bio_endio().
 
 - Eric
 
