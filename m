@@ -4,117 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 188D2CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 09:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1FE6FCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 09:27:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 694F18E0007; Fri,  7 Nov 2025 04:25:17 -0500 (EST)
+	id 5D7148E000D; Fri,  7 Nov 2025 04:27:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 66C8A8E0002; Fri,  7 Nov 2025 04:25:17 -0500 (EST)
+	id 5AF1B8E0002; Fri,  7 Nov 2025 04:27:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5A90E8E0007; Fri,  7 Nov 2025 04:25:17 -0500 (EST)
+	id 4EBA98E000D; Fri,  7 Nov 2025 04:27:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 49C698E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:25:17 -0500 (EST)
-Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id F2E311A03F9
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:25:16 +0000 (UTC)
-X-FDA: 84083277432.22.B0148D2
-Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
-	by imf25.hostedemail.com (Postfix) with ESMTP id 92430A000F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:25:13 +0000 (UTC)
-Authentication-Results: imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WkyizHyt;
-	spf=pass (imf25.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
+	by kanga.kvack.org (Postfix) with ESMTP id 403568E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:27:35 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 0B0031603D3
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:27:35 +0000 (UTC)
+X-FDA: 84083283270.06.EACA5F9
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 56C824000B
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:27:33 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L+KqY78U;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762507514;
+	s=arc-20220608; t=1762507653;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=u8uZZ4eKtfeKdhCl1Q4zHBINNzxY5n31tzDb1+D2ZUs=;
-	b=KZ2OHl246ZcU4ZfOATOVEeAfaP2EhTkKksmNkCTGZhUwX8q+bRzxey3Aoun+1QzZDJAbxS
-	H0FjBjwIM7jSJqncOPlXIwemmLH+EDR83gOuvoVHLdG8njcSer1r2Px/uAvUd16cXFmpPd
-	3Lt92vEMRoZMxNmxigb2VY+VsAzNtAA=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762507514; a=rsa-sha256;
-	cv=none;
-	b=G9SbL/HcL8VBXshrihHBgcUj4MJzwMs7Y29rG+qxlPOPpVRpUAinr0s6i5I/KahfhxNDor
-	Wi4//VNQsr5VH2bgHh+VMgkoXGRKsL1lQAVBHXGbi4PKOY+MLOH1+7/p3K4co/c2EivI+n
-	i5GlLoLpJ37ln61TEN7eRo1ho5w+tbU=
+	bh=prXotkjtMDp69DmOdwmX2oX6jOSVOhNWdQ+KOvPQzZI=;
+	b=UFGXWsurCs6ZbYJxSf5jLs4l0pD2+i9VeWky6LNTZ0yNOkfguyVMrosGKAi57oJMB1T5WJ
+	h0QYdRSKz0Rsa69tQ0NXUj/QyL2iThZLzS4ntsb4g/vzCTp3i983rsauO49mgpBQBtUtQn
+	pgxuJbcG/HFFm7NjWDrcj346H7W81xs=
 ARC-Authentication-Results: i=1;
-	imf25.hostedemail.com;
-	dkim=pass header.d=samsung.com header.s=mail20170921 header.b=WkyizHyt;
-	spf=pass (imf25.hostedemail.com: domain of kundan.kumar@samsung.com designates 203.254.224.33 as permitted sender) smtp.mailfrom=kundan.kumar@samsung.com;
-	dmarc=pass (policy=none) header.from=samsung.com
-Received: from epcas5p1.samsung.com (unknown [182.195.41.39])
-	by mailout3.samsung.com (KnoxPortal) with ESMTP id 20251107092509epoutp0394362ad87b5c71e28408228f24f293ff~1rz37TAqw0980009800epoutp033
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 09:25:09 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20251107092509epoutp0394362ad87b5c71e28408228f24f293ff~1rz37TAqw0980009800epoutp033
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1762507509;
-	bh=u8uZZ4eKtfeKdhCl1Q4zHBINNzxY5n31tzDb1+D2ZUs=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=WkyizHyta13iamjwW4vEYhV7pbJ4ccsfU1gtc8g9iF06s6v1ewoPf1tWE0RmZzDBq
-	 8IrTKwbRW3EJJNRRAcc0YbZXEBZjOKLmedL0iyJ7xAD8IfLfx3GSl9U22Vc8lKAaqp
-	 1zvpQRJd3/jzSbhjnhqRNNnd7ETs5cD4oO4MrhSI=
-Received: from epsnrtp02.localdomain (unknown [182.195.42.154]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPS id
-	20251107092509epcas5p39521b5623906275347b3ec7177eac680~1rz3UXgnn2572925729epcas5p39;
-	Fri,  7 Nov 2025 09:25:09 +0000 (GMT)
-Received: from epcas5p3.samsung.com (unknown [182.195.38.91]) by
-	epsnrtp02.localdomain (Postfix) with ESMTP id 4d2tv81KkDz2SSKY; Fri,  7 Nov
-	2025 09:25:08 +0000 (GMT)
-Received: from epsmtip2.samsung.com (unknown [182.195.34.31]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20251107092507epcas5p3041edfe682f64c59ac3fe0fab4b9384b~1rz1O74AD2299222992epcas5p3F;
-	Fri,  7 Nov 2025 09:25:07 +0000 (GMT)
-Received: from [107.111.86.57] (unknown [107.111.86.57]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20251107092447epsmtip2e07f9528cf570ebdd336a8a4571fc676~1rzi_2xUI0827208272epsmtip2i;
-	Fri,  7 Nov 2025 09:24:46 +0000 (GMT)
-Message-ID: <91367b76-e48b-46b4-b10b-43dfdd8472fa@samsung.com>
-Date: Fri, 7 Nov 2025 14:54:42 +0530
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=L+KqY78U;
+	spf=pass (imf12.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762507653; a=rsa-sha256;
+	cv=none;
+	b=dGMnNaT6+BXv4LUZ+iypgQlgfd9Q65CDqJTaHoWs3xD7EQXB4sMBZDGzsG6JaR9uSo1DFt
+	CnItmqLEw7nHnwIQf79hN+f/Zfwn+CK/36KqK4zXsnjU+ZyspDf3dSn/afOWFSBIC4dEFj
+	YO/2vZ7KS8BIbEtF+n9Udd9jBWPQQX4=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 9C56E618FB;
+	Fri,  7 Nov 2025 09:27:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65B39C19423;
+	Fri,  7 Nov 2025 09:27:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762507652;
+	bh=XYsZOHDCQvqBnfIJG8n72IsqXz8wRu5FCAMH1Fh68L8=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=L+KqY78U5Aw8o2oFDAC9jsuAfpaoekJrMt9UmrwJZZ0IuMSJpB5oih+tmojGWpYmF
+	 CSW4agR0Ki5dfjyQqPpDDNMck6Po/SHEklb3UdtbBVN/tlwVIJutMAvTQk+T9sJ8Bk
+	 5DmZXrEgpsQDNnlglx7teswqt1Lrh6fNpjMuRgfR2xrezYr4BnWuaJAiQXwWXvPAwz
+	 0bdfriP8Lv8haXp3SVfdAw5w22/5H6c3cxo26kCeLzRYopHrypfnK9mE7QBYyPgX+j
+	 I1wCfHzqQtDOcp+OFq09FHUFlOTk5+Kv5O/fuOryyYSxAdLqfqID3B45ME/ih4CU5z
+	 bfcESEkKYBDQQ==
+Message-ID: <6e07949b-d86f-46d8-a68c-9717cfb26084@kernel.org>
+Date: Fri, 7 Nov 2025 10:27:27 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
+Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
+To: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka
+ <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
+ <fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org> <aQyOZ6eYng-IjxS_@fedora>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
 Content-Language: en-US
-To: Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>
-Cc: Dave Chinner <david@fromorbit.com>, jaegeuk@kernel.org, chao@kernel.org,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	miklos@szeredi.hu, agruenba@redhat.com, trondmy@kernel.org, anna@kernel.org,
-	akpm@linux-foundation.org, willy@infradead.org, mcgrof@kernel.org,
-	clm@meta.com, amir73il@gmail.com, axboe@kernel.dk, ritesh.list@gmail.com,
-	dave@stgolabs.net, wangyufei@vivo.com,
-	linux-f2fs-devel@lists.sourceforge.net, linux-fsdevel@vger.kernel.org,
-	gfs2@lists.linux.dev, linux-nfs@vger.kernel.org, linux-mm@kvack.org,
-	gost.dev@samsung.com, anuj20.g@samsung.com, vishak.g@samsung.com,
-	joshi.k@samsung.com
-From: Kundan Kumar <kundan.kumar@samsung.com>
-In-Reply-To: <20251029085526.GA32407@lst.de>
+In-Reply-To: <aQyOZ6eYng-IjxS_@fedora>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-CMS-MailID: 20251107092507epcas5p3041edfe682f64c59ac3fe0fab4b9384b
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 105P
-cpgsPolicy: CPGSC10-542,Y
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com>
-	<20251014120845.2361-1-kundan.kumar@samsung.com>
-	<aPa7xozr7YbZX0W4@dread.disaster.area> <20251022043930.GC2371@lst.de>
-	<e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com>
-	<20251029060932.GS4015566@frogsfrogsfrogs> <20251029085526.GA32407@lst.de>
-X-Rspamd-Server: rspam12
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 56C824000B
+X-Stat-Signature: da5etngyzkjzad4jb7p3u31kscewndrk
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 92430A000F
-X-Stat-Signature: aj1imredit3e3kyz6zpuqw4he446kwn7
-X-HE-Tag: 1762507513-811884
-X-HE-Meta: U2FsdGVkX19RJl8DBs8vhjoPBNo63iDIJ7Fk9CX6VZtYxeJyXm5Y8v4XkSNbw8jGFKTN7PrsfaOOkMq0GbBpWfWRie3xlufaGodjo/HbsMJ0N5QUMMti+wYRWgYpy25TUldHe6g/WvWV+mONowagSrQY3DDkfHeym4cNiTjYFpOYTYYaQxx/IR/UX89ZDu0LeEYDNY4Isnikbl/OLqDE8aT9Co/T2kaknqc2DFnTLqcsUIvPfylZ464AD869IsYo7x8RW8gq1qF80Ser+A8bpBF96GOJOrIqOL+9Yk29YKCqsvGEWLVQ0XSvFkuMJAeWwlZQVKAFvTgj/P7PNAGiiIVMt83arB1dHIH29nLQFuD6ABt9OQcpE8eEYXs2D17lNMELoTqPX5mmNTSGNgGZzobXESe4m361brRfTO226jhdZ5VGeJNlqZUxp9n2W/rhLQRzt+i7te2maPQzYdDOS60Uy2sKC3PeqFZZ06BRhJXpvJBR9n/gOkvHOjzub0vYDBETGZlkE/nPTIm3zEhFl5ewDm3OUSX/ITEfmxgtw7DD6GzyCI/5rdByPFMK7zljFu7Xo6Q+EFUiK7YSmV0RwTXeaUfGETzvuYhFGfJ8v0JODt9zJu+2EW3mjcpmbIcxGVvJIo5Y/nKesGhOkrHKGZ0iuB9F+iSS8ZrnD+9ssGxmHR2Hl3QBsDdZfNszQttujNtceARzj5swZ7Vk/7jPW5KI5hUyfoXHWhSI9yowo5l0rh5JFDLSegPPDxjyF5knYbwr9wABgaKOIYa0yzFgNX+Q3wGgWjkw8aste/cd0we3t6XbMGritQQpfE4xjSnKV7j1rWbI13z/wpGL8kAdZpD1imaHGLCFgiCEXc7GPnYvWEja6oxDAwjQh7j/mP18YHZtgO/rQ7KZwwfSvRI+bfC02g7aqTSykuFzQm9gNe/mq8hWqvx1zaG4d7gtnSIuSIU+/gZF2BxBTBtdtKT
- cFLDqQQk
- o5SIVowOIKWmYsss/9kNFrGXOTHQ1H4Fch2bXQdF+9AlI9NmWjzAETNXnASni9bviWJIXCq97zvHS5e2w6EgM2uZpLKW6cVYCvyA7TnlpSG9ntrhCeaMA+WPMfaYtLlNdCLJImi4Wuzz8L24x+VVK+uDGUGHY2Zq5C5os4yETxDSf9EGeXJk11zfpmZ9+aenIA1Zh6wLhgfxVAQc=
+X-HE-Tag: 1762507653-30258
+X-HE-Meta: U2FsdGVkX1+RduMJDCfMqfy4iM5Q3yCc4hn/8RTeO+tn5qCbrMYujXPCKgTV3DKCDadcN2hqtLEhKDwMwSlq1E6HwiDrTgnCqn4D2h5hLnEHnMJfCf/yhodk0MpbxinFUUB+HO4v/iLkrpPMrSIJ3+mzcq2/5sgMHA4sPXeo6MP7FcseszKnGiWrtmGo/uh9Wkwp/4F5HurCvdN+x4DA3j30uf2Zt/uGQyFfThSoLoDWhuXN5Bfa+bm87BpVgOlXgeZitdrz2IyMa2YGg7kxhaSrDNgEFUolzX0foCRbIdaOxWDcqdhWjLbfJlmXZB7X63d3TdE3OgeyTds4KEsMy2UvUY+HwaShBxUi+doqV7GZDzkRjCvydbYDz8gL4KiIccV4p/oyqGwmddaUr0rRe9iZW9SpgjcTcmeVdgRbTbMbCkZvpa6v4mu7wlmgQzyj7yeuvSM5LzpWJDQVDJZD5jcLLh8/OxbGZeBeuKFwib4xMQ2t9WZLJXGPSlXub1tKmMqKVeCHhc/37vzdriDGydeOxzvdB+VM/Tt54oaC0p2Dg2Gqm9VEFffpdLoMYCL32w7geFIYrF/9CIJFVRFLxN7wFFFbrSeeuVLri3BVJQih2a5iKGyECfn5hmTvN/+20oiPWOSEJ7+j+OsTSQuf1asr3bM4lnuNMt5iWXNX0ZZzc2JsAkB3Jzreh2v2E3eJNxdZDBJHStIdnqcgwSwnpKvlloITf0ChWL9q7wKOzQD5ORRGumehORpeaeE8dIfOMBMGeywkxaYdDcyh69KjBQF9CjlmKImAlHH49ORhDw8vKfTDoRsk/gOyVI0j3XnL6wxP5Ppn5UJ+xiRMIb/8UMPqsryjepvacgXXc6N7XxYTiGKdoQzv2PoBMAt5HZB75Cl4yg3jyhZ6OHPs8/pHDSY5zJo5hFx+AWdDqDBhBtivD9gF4GyEGKrvhEGHAEgcw53FKl8TlwC/w7cS8Bi
+ mXEJc3Yb
+ IVcJ58sr+lHZ7bbkpVhPtO3/PHAExAzVFHdafgX13gVn1vvFhbhZVGSOXAwvUcaP7X5ukerb+1/Pvceww7CcCHKQoQC0OzR5iLqpTece9vUh2LQHd+65k+zNHtm1gyYgVsV9N0d+aEt47ijWz+d+kruUpX6oxGoAOXcf6DfrlwNJUi59ZdF1nz5k7ejAxMOd6VQFokv1B+l9oQOutkxGYyPBAuj0ExewQEb6ELKUZzIYbouRfruMtI58dKqUrvfXRBtTf9WOQK6sIWxCFKum8JUCNqproszHYzOLp1kApZ7mRIfX7rFI253lZ25StVNKV/Ly1zr+BkqzfU0ecaV0QKSqFOyk4JQX3hFlLnbqPWHjKmKJByHXddqGibYo3BUcbTwlka91R6a4OX5e3LI1ZaWqYLg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,52 +100,34 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10/29/2025 2:25 PM, Christoph Hellwig wrote:
-> On Tue, Oct 28, 2025 at 11:09:32PM -0700, Darrick J. Wong wrote:
->> Was that with or without rtgroups?  metadir/rtgroups aren't enabled by
->> default yet so you'd have to select that manually with mkfs.xfs -m
->> metadir=1.
+On 06.11.25 13:02, Ankit Khushwaha wrote:
+> On Thu, Nov 06, 2025 at 12:18:57PM +0100, David Hildenbrand (Red Hat) wrote:
+>> On 06.11.25 11:49, Ankit Khushwaha wrote:
+>>> Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
+>>> triggers following warning:
+>>>
+>>> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
+>>> false [-Wtautological-compare]
+>>>    1035 |                 if (addr + c.dest_alignment < addr) {
+>>>         |                                             ^
+>>>
+>>> typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
 >>
->> (and you might still not see much change because of what hch said)
+>> With which compiler are you seeing this?
 > 
-> The real problem here is that even the inode number to AG association
-> is just a hint, and will often go wrong on an aged file system.
+> Hi David,
 > 
-> Now for the zoned RT device we could probably do a thread per open
-> zone, as that is a very logical association.  The problem with that
-> right now is that we only pick the zone to write to once doing
-> writeback, but there might be ways to lift it up.  Then again
-> zoned writeback is so little code that I can't see how it would
-> saturate a single thread.
+> clang version 20.1.8 (Fedora 20.1.8-4.fc42) raised this warning.
 > 
+> To reproduce:
+> 	make -C tools/testing/selftests/mm CC=clang
 
-Predicting the Allocation Group (AG) for aged filesystems and passing
-this information to per-AG writeback threads appears to be a complex
-task.
+Thanks, and thanks to Lorenzo for the details.
 
-For write operations without pre-allocated data blocks (fallocate=none,
-resulting in DELALLOC), the next available AG is selected, and the
-XFS hook can be used to predict the AG that will be allocated.
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-In contrast, when writing to a previously allocated data block
-(fallocate default, resulting in UNWRITTEN), the AG containing the data
-block is chosen. Large files that span multiple AGs can lead to a mix
-of random I/O operations (DELALLOC, UNWRITTEN, MAPPED) being directed
-to different AGs, while still being cached in the same page cache.
+-- 
+Cheers
 
-To segregate these I/O requests by AG, it is necessary to associate
-AG-specific information with the pages/folios in the page cache. Two
-possible approaches are:
-(1) storing AG information in the folio->private field, or
-(2) introducing new markers in the xarray to track AG-specific data.
-
-The AG-affined writeback thread processes specific pages from the page 
-cache marked for its AG. Is this a viable approach, or are there 
-alternative solutions that could be more effective?
-
->>
->> --D
-> ---end quoted text---
-> 
-
+David
 
