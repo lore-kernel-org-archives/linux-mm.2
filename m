@@ -4,178 +4,213 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A470FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 22:50:34 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A7732CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 23:19:36 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 0D3088E002B; Fri,  7 Nov 2025 17:50:34 -0500 (EST)
+	id E38BD8E0009; Fri,  7 Nov 2025 18:19:35 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 0837B8E0006; Fri,  7 Nov 2025 17:50:33 -0500 (EST)
+	id DE95B8E0006; Fri,  7 Nov 2025 18:19:35 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E18FE8E002B; Fri,  7 Nov 2025 17:50:33 -0500 (EST)
+	id CB0E58E0009; Fri,  7 Nov 2025 18:19:35 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id D1A9F8E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:50:33 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id 98D90C062D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:50:33 +0000 (UTC)
-X-FDA: 84085306746.23.92C6B58
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
-	by imf29.hostedemail.com (Postfix) with ESMTP id C774A12000F
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 22:50:31 +0000 (UTC)
-Authentication-Results: imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Vu30t8k6;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762555831; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id B72AD8E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 18:19:35 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 62BD813AEEC
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 23:19:35 +0000 (UTC)
+X-FDA: 84085379910.11.0BE0154
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf15.hostedemail.com (Postfix) with ESMTP id B7ADFA0009
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 23:19:33 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jEL6ZK4F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762557573; a=rsa-sha256;
 	cv=none;
-	b=o2D76Owm1NAOmHnICeegL8sDI03pEZkHHVdcLjoRfU3JvYIuVYMcGE247uVxxhUwaGMGJv
-	/IxZ7HDB+X5U3xTJr3Fruzfc5XP7zXFa8tWR1gQ1RPA45eZ2eLAaL8YF6pMKdLx/s2+Uxk
-	Sn7DUGlsKzB31+xMweHXQ4eYZkPQJmQ=
+	b=QqsIFVZDIQKP6nrFQY0aPlJnn/9vKZNKj3Gt+CaJ2E7I45ku9qgECKI3/aDAccp+kNUJvN
+	rDASQHHzYzeihevsjNCZLSC28nLIMFkEXp/b4GroJxXIU8qlE+cWUAhvem7iw5aGMHh0aM
+	nMdAtMPclaX9rxOZgrzbl0M5w4G3EDQ=
 ARC-Authentication-Results: i=1;
-	imf29.hostedemail.com;
-	dkim=pass header.d=gourry.net header.s=google header.b=Vu30t8k6;
-	dmarc=none;
-	spf=pass (imf29.hostedemail.com: domain of gourry@gourry.net designates 209.85.160.180 as permitted sender) smtp.mailfrom=gourry@gourry.net
+	imf15.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=jEL6ZK4F;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf15.hostedemail.com: domain of jlayton@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=jlayton@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762555831;
+	s=arc-20220608; t=1762557573;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=t9lQPmHHEcXtG9PcD1wB7xt838yvOXXROIsvBhfuZzo=;
-	b=qC9mWcWnyKmpMUgnSLzTM6qKApbcxPV1bDGFPTUy0+vF5JcOOs6gy7Ou/dad8AY/EN0N9x
-	y4hMC9nRhKRKCxE5n3oozzmlS8Pn870o4zibjDLKrFB47gw3u8L5s4UUPi8U5YFXGyjdhU
-	HKhZDJmHC/5oukQRcZkZR9fcW3KmkXk=
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4ed79ad2846so12302371cf.3
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 14:50:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gourry.net; s=google; t=1762555830; x=1763160630; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t9lQPmHHEcXtG9PcD1wB7xt838yvOXXROIsvBhfuZzo=;
-        b=Vu30t8k6o3RP6vkvFRfwWeNiTAPEgdS7tzA5PBoMwpC2VmvyYaL1QgtanVqcr0R7zD
-         NQHgKx+qc5hplqTMJWZTzjj18bMEiZTUEkEXup4xA7P+lSbMLE24nZtKXqGXZ3wFpNwk
-         qqckXAMLwWftSoTs0erPpc5xwfjlma1zeJrf8hP6jBZaJtRAaTrjqbAW06r+rMhG5+wk
-         TQt/v+Bsa9sq6YVFj29XsD2R5wSiiutkKENo/ygCAD/SsQUBranX9lUtrTCyurAZ6zhU
-         2DSBkUPI+ga+AlObQRrPNQN+ezEN1ytzV485rlc+Xys5+Ky1Xu5XsGmkwc5NHIenTSOz
-         abYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762555830; x=1763160630;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=t9lQPmHHEcXtG9PcD1wB7xt838yvOXXROIsvBhfuZzo=;
-        b=nIDH0QwkhkyFaK0R/yoOXLIZgoMy5who7w62oVTaByaJn3qdFpHYRvkAJEe9PCcTG+
-         Fv+kAr5B7e4X3/xj8N1nwfI8o4j0N7xtfER+1qPzW+VrbX08UVRLDnbFSezsz73b3K1R
-         NQBYnIyuc4qcspNGxJF63l0j119FHQ1vnHzNGX8/fSWS4tA98EdVJudcpr6OMZlunG2q
-         +2HxpoKJVwXKCLei0gcvOD9TPGNUEFOBCBFpJK3pcOMI/Dp6luETl6roHzmJH+EzYZt4
-         AZ0lxHSFio1Qg57ez1IkVYC2NQ9ycTfFGZbZ12Vov+zKyJPfNX8cOJPXGrim245L0kq+
-         zhKA==
-X-Gm-Message-State: AOJu0Yz/HdbHYd+/xk4o9fOIDMTIbjhTyCZ8BjQXN4WPG3II6aw5OwXP
-	1eU7jflq6lLFUAtUeyVeiRLwEH0QGGIfpYLMoG0n5b0xrAGXsqZO/tGsVC9xcUFTB3BHyb/Q6z2
-	86MUu
-X-Gm-Gg: ASbGnctl0hUzwK0XGQSK2Ybxo5nboJ7OkkmnvNpDH9naHWPDDECs/+3718yv7IJ91DN
-	eEsSUi1bx2kr69G5sX08YytRMfgMiFrBF9ocZVmHA+49Kg/mz9k7qQRV4k2lwToXle5BnSEBixg
-	vFi5i/OgDRihRpTS5Vm9OB7mN+GqV3qtNUXtFZifxOrAWRTdEIcpYzkgmUXtjlCUTitKP8dZnr3
-	fXQDdVH1KJOYJbQtg3C4drgfT3CTHIU/EbZGgDBLIffaQYmVDxrGND40r+/SfW59hTokBI25Fvj
-	oJ5BMaseQcxwD7n3PnAIo5W2HxqxRi8PDahh3foTQMGkK2/IGbSwHj5XIm9oyEJcViPY6AwvJMx
-	ZSyPe7vch9A902bGWDE7hKo4A4Vd4ZKsPx+U3f8WBh+ab7Dn3X79oXsMVuRoYAfBUTMDBEe94gr
-	7IaiTKMDp0E7I2OHcA5+FjiiF+mTAfxPUr1vC6+C248MCDMBDGK8VwRvXK72WZqsT2ZiEAchGlG
-	25fBOydRKXVPQ==
-X-Google-Smtp-Source: AGHT+IGiz0rmAqkF080s48owgkrlhIDOgmhn7Uh2wWe1SA/ZeGElIvqZ5FF6lfn2BTWxOTuvNIrg9w==
-X-Received: by 2002:ac8:5e47:0:b0:4e8:9683:3a35 with SMTP id d75a77b69052e-4eda4d392e9mr11493571cf.0.1762555830443;
-        Fri, 07 Nov 2025 14:50:30 -0800 (PST)
-Received: from gourry-fedora-PF4VCD3F.lan (pool-96-255-20-138.washdc.ftas.verizon.net. [96.255.20.138])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4eda57ad8e6sm3293421cf.27.2025.11.07.14.50.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 14:50:29 -0800 (PST)
-From: Gregory Price <gourry@gourry.net>
-To: linux-mm@kvack.org
-Cc: linux-cxl@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	nvdimm@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	cgroups@vger.kernel.org,
-	dave@stgolabs.net,
-	jonathan.cameron@huawei.com,
-	dave.jiang@intel.com,
-	alison.schofield@intel.com,
-	vishal.l.verma@intel.com,
-	ira.weiny@intel.com,
-	dan.j.williams@intel.com,
-	longman@redhat.com,
-	akpm@linux-foundation.org,
-	david@redhat.com,
-	lorenzo.stoakes@oracle.com,
-	Liam.Howlett@oracle.com,
-	vbabka@suse.cz,
-	rppt@kernel.org,
-	surenb@google.com,
-	mhocko@suse.com,
-	osalvador@suse.de,
-	ziy@nvidia.com,
-	matthew.brost@intel.com,
-	joshua.hahnjy@gmail.com,
-	rakie.kim@sk.com,
-	byungchul@sk.com,
-	gourry@gourry.net,
-	ying.huang@linux.alibaba.com,
-	apopple@nvidia.com,
-	mingo@redhat.com,
-	peterz@infradead.org,
-	juri.lelli@redhat.com,
-	vincent.guittot@linaro.org,
-	dietmar.eggemann@arm.com,
-	rostedt@goodmis.org,
-	bsegall@google.com,
-	mgorman@suse.de,
-	vschneid@redhat.com,
-	tj@kernel.org,
-	hannes@cmpxchg.org,
-	mkoutny@suse.com,
-	kees@kernel.org,
-	muchun.song@linux.dev,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	rientjes@google.com,
-	jackmanb@google.com,
-	cl@gentwo.org,
-	harry.yoo@oracle.com,
-	axelrasmussen@google.com,
-	yuanchu@google.com,
-	weixugc@google.com,
-	zhengqi.arch@bytedance.com,
-	yosry.ahmed@linux.dev,
-	nphamcs@gmail.com,
-	chengming.zhou@linux.dev,
-	fabio.m.de.francesco@linux.intel.com,
-	rrichter@amd.com,
-	ming.li@zohomail.com,
-	usamaarif642@gmail.com,
-	brauner@kernel.org,
-	oleg@redhat.com,
-	namcao@linutronix.de,
-	escape@linux.alibaba.com,
-	dongjoo.seo1@samsung.com
-Subject: [RFC PATCH 9/9] [HACK] mm/zswap: compressed ram integration example
-Date: Fri,  7 Nov 2025 17:49:54 -0500
-Message-ID: <20251107224956.477056-10-gourry@gourry.net>
-X-Mailer: git-send-email 2.51.1
-In-Reply-To: <20251107224956.477056-1-gourry@gourry.net>
-References: <20251107224956.477056-1-gourry@gourry.net>
+	bh=HHCJMd3JWGDe764KaoJH8hxUrnZDlhIuYIyDqqw9WEk=;
+	b=vheXaTwVaHLHlJ+4wqX7eIhiSsZgHYP1KHlO2fOY7qwAhi066SjTraZoG87E4NhxoisVzU
+	/ZvGRrxEQ6F8JPvkAREMkgzR2ZIQC5Z8I4dPOmkPMEQdMjC0n7ImX0IrPQS/oQGNRQn17T
+	MGDEVS9nI6QmYnFaWVRxDD+NSI4QUL0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id A8B2262BE7;
+	Fri,  7 Nov 2025 23:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB17C4CEF8;
+	Fri,  7 Nov 2025 23:19:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762557572;
+	bh=DrQoxBbAjEoZ9c9PwKBqN7vGjRvTrPovpS2VYuNMzWQ=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=jEL6ZK4FEYKewZIjPCjU1fUIUgOhpcqPkRbod0hN0iFdJ1gcyVbUg8T5YUSXLwYxM
+	 vqGWcehT0Yvhkpbkkc9SbNvMqcb3hoQnMNYJTwjCUFHajvxhsDsKcY5PnqYEHWTlsG
+	 X3RCndZU4zfd6cgfRR5a3PcHa3HNFAvzgcp6/kKMmmWepbJo2eF145kiWNC49/Ampx
+	 j2obqsZev9HvzlHf8TzqDa+fnKNZ/FpPiqVMZFImq45r3yes0i7jtuyOPdekppA77e
+	 CfLoifsBjOuKU8wbYYy/MhEie0tuDuH8EEy8MtpJ7KzZWVOWlEPnC2tbYPyMyXq6j1
+	 ohDs0iEetXo1Q==
+Message-ID: <f5a2c41e4f272fef9f1525e17b494dd4b4bcb529.camel@kernel.org>
+Subject: Re: LLM disclosure (was: [PATCH v2] vfs: remove the excl argument
+ from the ->create() inode_operation)
+From: Jeff Layton <jlayton@kernel.org>
+To: Jonathan Corbet <corbet@lwn.net>, NeilBrown <neil@brown.name>
+Cc: Eric Van Hensbergen <ericvh@kernel.org>, Latchesar Ionkov
+ <lucho@ionkov.net>,  Dominique Martinet <asmadeus@codewreck.org>, Christian
+ Schoenebeck <linux_oss@crudebyte.com>, David Sterba	 <dsterba@suse.com>,
+ David Howells <dhowells@redhat.com>, Marc Dionne	
+ <marc.dionne@auristor.com>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+ Christian Brauner	 <brauner@kernel.org>, Jan Kara <jack@suse.cz>, "Tigran
+ A. Aivazian"	 <aivazian.tigran@gmail.com>, Chris Mason <clm@fb.com>, Xiubo
+ Li	 <xiubli@redhat.com>, Ilya Dryomov <idryomov@gmail.com>, Jan Harkes	
+ <jaharkes@cs.cmu.edu>, coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>,
+ Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>, Namjae Jeon
+ <linkinjeon@kernel.org>,  Sungjong Seo <sj1557.seo@samsung.com>, Yuezhang
+ Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>,  Andreas Dilger
+ <adilger.kernel@dilger.ca>, Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu
+ <chao@kernel.org>, OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>, Miklos
+ Szeredi <miklos@szeredi.hu>, Andreas Gruenbacher	 <agruenba@redhat.com>,
+ Viacheslav Dubeyko <slava@dubeyko.com>, John Paul Adrian Glaubitz
+ <glaubitz@physik.fu-berlin.de>, Yangtao Li <frank.li@vivo.com>, Richard
+ Weinberger <richard@nod.at>,  Anton Ivanov
+ <anton.ivanov@cambridgegreys.com>, Johannes Berg
+ <johannes@sipsolutions.net>, Mikulas Patocka	
+ <mikulas@artax.karlin.mff.cuni.cz>, Muchun Song <muchun.song@linux.dev>, 
+ Oscar Salvador <osalvador@suse.de>, David Hildenbrand <david@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>,  Dave Kleikamp <shaggy@kernel.org>,
+ Trond Myklebust <trondmy@kernel.org>, Anna Schumaker <anna@kernel.org>, 
+ Ryusuke Konishi <konishi.ryusuke@gmail.com>, Konstantin Komarov
+ <almaz.alexandrovich@paragon-software.com>,  Mark Fasheh <mark@fasheh.com>,
+ Joel Becker <jlbec@evilplan.org>, Joseph Qi <joseph.qi@linux.alibaba.com>, 
+ Bob Copeland <me@bobcopeland.com>, Mike Marshall <hubcap@omnibond.com>,
+ Martin Brandenburg	 <martin@omnibond.com>, Amir Goldstein
+ <amir73il@gmail.com>, Steve French	 <sfrench@samba.org>, Paulo Alcantara
+ <pc@manguebit.org>, Ronnie Sahlberg	 <ronniesahlberg@gmail.com>, Shyam
+ Prasad N <sprasad@microsoft.com>, Tom Talpey	 <tom@talpey.com>, Bharath SM
+ <bharathsm@microsoft.com>, Zhihao Cheng	 <chengzhihao1@huawei.com>, Hans de
+ Goede <hansg@kernel.org>, Carlos Maiolino	 <cem@kernel.org>, Hugh Dickins
+ <hughd@google.com>, Baolin Wang	 <baolin.wang@linux.alibaba.com>, Andrew
+ Morton <akpm@linux-foundation.org>,  Kees Cook <kees@kernel.org>, "Gustavo
+ A. R. Silva" <gustavoars@kernel.org>, "Matthew Wilcox (Oracle)"	
+ <willy@infradead.org>, linux-kernel@vger.kernel.org, v9fs@lists.linux.dev, 
+	linux-fsdevel@vger.kernel.org, linux-afs@lists.infradead.org, 
+	linux-btrfs@vger.kernel.org, ceph-devel@vger.kernel.org, 
+	codalist@coda.cs.cmu.edu, ecryptfs@vger.kernel.org,
+ linux-efi@vger.kernel.org, 	linux-ext4@vger.kernel.org,
+ linux-f2fs-devel@lists.sourceforge.net, 	gfs2@lists.linux.dev,
+ linux-um@lists.infradead.org, linux-mm@kvack.org, 
+	linux-mtd@lists.infradead.org, jfs-discussion@lists.sourceforge.net, 
+	linux-nfs@vger.kernel.org, linux-nilfs@vger.kernel.org,
+ ntfs3@lists.linux.dev, 	ocfs2-devel@lists.linux.dev,
+ linux-karma-devel@lists.sourceforge.net, 	devel@lists.orangefs.org,
+ linux-unionfs@vger.kernel.org, 	linux-cifs@vger.kernel.org,
+ samba-technical@lists.samba.org, 	linux-xfs@vger.kernel.org,
+ linux-hardening@vger.kernel.org, 	linux-doc@vger.kernel.org
+Date: Fri, 07 Nov 2025 18:19:24 -0500
+In-Reply-To: <87ikfl1nfe.fsf@trenco.lwn.net>
+References: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
+	 <176255458305.634289.5577159882824096330@noble.neil.brown.name>
+	 <87ikfl1nfe.fsf@trenco.lwn.net>
+Autocrypt: addr=jlayton@kernel.org; prefer-encrypt=mutual;
+ keydata=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
+ QZIQXVeAA+smfTT0tDrisj1U5x6ZB9b3nBg65kc=
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.1 (3.58.1-1.fc43) 
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: C774A12000F
-X-Stat-Signature: 5n4nynia5nrxtmjt61q9pp3ncauc3iic
-X-HE-Tag: 1762555831-458868
-X-HE-Meta: U2FsdGVkX185eEJtJPsoGzRWsn7QcnyKoxrRME588ncgTC21GS6YMv1ian7thcmnfW58z0Ht2CsARg7ALI7Ldb3Z67v293Rt6TsSBNUuA0p0tNGHz5d6OaHYFEM+xqLQwlyo7jQBHWqT5wpA+FG+WwJrnNaUX+FYHxOiTXTOFUgB2d4lSuWZL2lvzKkhnIjt1XaAiJxsxlIXPq8ZCzKYrne6DrRCk1cMkZ1z9+z1Wj4nFMhiJ8/J5AQgBoPqalpPz3yTmflWeA98P0TAmDm/x9CpayEVUOLMZH8hDV9y2YTHbndRVIfIJXNy8SHNc7LKtl1AEHyLmuE2EkXiO4JHpNPpPyIfXIuQzX7SMaFLC07y2a1/KvToSAkIULdtI08gerrsYJ3aI97NkXuUhWh87mnwoZYypGDnqkzTrelT+jpaWy2DX3ksa4TNRcVadxzJTSOLcGQc/UDLTKqeOTC6soCZHHhP5jm0i+KVIU9A5bXE9IJA7IkJYFCX5VsV4hkuNHOBSzBQC4+2g5O+luAfAzirYkwNLpbuiQOSpmn0pkCQvXMSzjeXkUnnwdMNoPd5u/czxu8avKD8ehhoieyFDzRyFhH6T63daomIwPjoGDd6Glwz8ijkb12ebUFJGjRO8EEUHHOi3HUkMTvA+kqKvto5Z+rYmfF+KQrhSvvmUSbX/S7WwiVqPe5tPG5HC8/tsT2CGRDSYMV3Ig+0a14i4WCzYOU7vKPpVYwUtZnstKuqcdL+HwPdHgj5xyAJzrGRNxkeMBZbyVBl/bfDa/32eXCxI2kJamKY7ws5g2m1lUNBJWqMGLB6BIi/HLZPt+IwYcR6Bv96wyNXMudK3LvKWmLoWhlfpjinpjTAMRr+u+n4DFXlCGJ3JxKYmWB9ne7obO3VEocLsSO9u7iTx8ejv11/hEuLE62eYsf9/XarQkdw8odr5tGC4DhoBwx/lu8dSwa4bd6yLPkPWpyJQSn
- 0UqBCku/
- 0OyKSPjRoScAG+kUSDiM9A6Bi+1DZAwCPMwoohe8/ULuNH98W697eCyspjnssPmOa945/wzD14gOiC8N75oo2rTHHV00m+V3z0QzEQp8TJJjTT7ff5j53HPUu4eH9BSPw1SXMejewVbUSrZlhP+YOU7OpwRMU5PoXwe8m9OAepXWZUF9+HrQT8ukRKqfplW4ZePUOIkRZz+tSCwA8YzwLf3hFFtKTU3e/6VcmSUB5afObATHaToTehL6xuxB7KLZZ4+HmoLu6V8FdOmhBfNlUuR7WDvq3cfEIq00RXK3NGVXxgcz53v5OeQbt86+ljI3gfel7n8QpeCja9FzcRi7K04isBg==
+X-Rspamd-Queue-Id: B7ADFA0009
+X-Stat-Signature: nfsg93g34ngscgfe7i9p3bsp1n18y9f6
+X-HE-Tag: 1762557573-625067
+X-HE-Meta: U2FsdGVkX1+1DvUXFwq4aF/vJmjjMbi5JTAEM23gekbWRbOc8rvj/FS6ZqIuuiqo4u8uEG/o1KlqyaWS5EkHidqC31Vj3zOwdondHEn6fpq9/xvc1QpolZi521YfxZqPqOSvRb9KqSj+fCZ9xcWEAZRa/4bDHiAaJfcL75IfLd/cPyGvBqUbiqHN1J3jYlw7fdWhqfSayr3NC6zQyWGWg1XJ4CrkZpIm8jXlTSIZ+W+4W1CNpHiZJ8MvBVej88l+9Z3t8BGs/XcliIM9yhGMqXoHNepr7eVsVzl14x2iLLucWmUvAdd5xY1qiP6pwwFb1kA6pdA7Xd3HuKAxWisGpBt5yH32T7BvDyS/63onmUeBuHTCmc6H7aOGTXDLPZOtMb3hy2z7E2QFQs46lwv86h1/zXHeTBZQ6uwmMKA/runznafuHic6hec7IXP4gOpAGeql2RB7fA5xHyQCK4eJA2qR8R+cTL6tmPXhhiS1nZuqchUstdkOgbQ+gtxDDn/vQ/GrsX+HqofkyPTsat1Ja/73+QcDaNObZf0B56O6VJ0XhJtNsCgRAxjfkp7g0zE9LYu+IPRRZnFcyVEcHrwjQkqOuuTrrgww8kwpYymRcj8l3vxPnxXo8BFUj36IrdDw5yQ3X/bfVF6pEK/AnZcqloCo5FjuRR6JjceRXjwX7/I+dOra8gCOVGZmVw+dSe5h21Y0CSJAWV0Wzz1s4V3H3IHYDogi1le0v1LDi0ibgesvVv3fZnHng0IHa1z2RrPIjXjXA+eq8kJk3emWG+PVoHRtxhjLN6OiWoHDIh+WUobmzL0OFPGvrfAqN6F9+M50QBSxjIx0PD9oYxxqba5LW4bqDwtLIhJNafOF1c11FPlQkmaHyh737u5IP6j0npvQ1NSm2C0rbfU+kWtP5KE6ey7CZp1QU10miAfqtUW+z1tpzzkkFFtdXUghni9zFLZSeEpnEUjvYX2EELEbHyq
+ RdlpP9Dv
+ YVJPVFhHLKt+i0o3Ilf4OAj6rOLBdwcvRs1B2xsXLT02i19NlAzD+GlVHBxZj5UiutiW7MBPzHTrIXnoT1zGaqRPjQjPDM30W8jQDO6MiXZPGaZ4C0E7NqHFAxk/6jzbISQgprSIpKC+OeUXjvhqyMCCaONnnHDSYqe8vog4akq2mRshG8qsFfnfBXmgewF6bYDHrlaDYjffVLczKFMcvLatgU4ULOoE4hpadtS6uxWK4YI8xHx8zdZjmS/J7HW9qRkMpY4sVDHB+rQos8oGadJmxVjL1rM9PFkj7zhlGbD/VEgvxVQNwwBWfjJFzoBuVDcWZBYJS1ZIov69SNuGarpcz07IR3xJe1zVy1bexp6dL3sCD5ck61plR6VOmkteL9pCaTUao0qQw69uNV8tjsNinF3AKH1FKzEX3nsd6auK4TrrDusOujcUhwC0dceJza7IL
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -184,202 +219,41 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Here is an example of how you might use a protected memory node.
+On Fri, 2025-11-07 at 15:35 -0700, Jonathan Corbet wrote:
+> NeilBrown <neilb@ownmail.net> writes:
+>=20
+> > On Sat, 08 Nov 2025, Jeff Layton wrote:
+>=20
+> > > Full disclosure: I did use Claude code to generate the first
+> > > approximation of this patch, but I had to fix a number of things that=
+ it
+> > > missed.  I probably could have given it better prompts. In any case, =
+I'm
+> > > not sure how to properly attribute this (or if I even need to).
+> >=20
+> > My understanding is that if you fully understand (and can defend) the
+> > code change with all its motivations and implications as well as if you
+> > had written it yourself, then you don't need to attribute whatever fanc=
+y
+> > text editor or IDE (e.g.  Claude) that you used to help produce the
+> > patch.
+>=20
+> The proposed policy for such things is here, under review right now:
+>=20
+>   https://lore.kernel.org/all/20251105231514.3167738-1-dave.hansen@linux.=
+intel.com/
+>=20
+> jon
 
-We hack in an mt_compressed_nodelist to memory-tiers.c as a standin
-for a proper compressed-ram component, and use that nodelist to
-determine if compressed ram is available in the zswap_compress
-function.
+Thanks Jon.
 
-If there is compressed ram available, we skip the entire software
-compression process and shunt memcpy directly to a compressed memory
-folio, and store the newly allocated compressed memory page as the
-zswap entry->handle.
+I'm guessing that this would fall under the "menial task"
+classification, and therefore doesn't need attribution. This seems
+applicable:
 
-On decompress we do the opposite: copy directly from the stored
-compressed page to the new destination, and free the compressed
-memory page.
++ - Purely mechanical transformations like variable renaming
 
-Note: We do not integrate any compressed memory device checks at
-this point because this is a stand-in to demonstrate how the protected
-node allocation mechanism works.  See the "TODO" comment in
-`zswap_compress_direct()` for more details on how that would work.
-
-In reality, we would want to make this mechanism out of zswap into
-its own component (cram.c?), and enable a more direct migrate_page()
-call that actually re-maps the page read-only into any mappings, and
-then provides a write-fault handler which promotes the page on write.
-
-This prevents any run-away compression ratio failures, since the
-compression ratio would be checked on allocation, rather than allowed
-to silently decrease on writes until the device becomes unstable.
-
-Signed-off-by: Gregory Price <gourry@gourry.net>
----
- include/linux/memory-tiers.h |  1 +
- mm/memory-tiers.c            |  3 ++
- mm/memory_hotplug.c          |  2 ++
- mm/zswap.c                   | 65 +++++++++++++++++++++++++++++++++++-
- 4 files changed, 70 insertions(+), 1 deletion(-)
-
-diff --git a/include/linux/memory-tiers.h b/include/linux/memory-tiers.h
-index 3d3f3687d134..ff2ab7990e8f 100644
---- a/include/linux/memory-tiers.h
-+++ b/include/linux/memory-tiers.h
-@@ -42,6 +42,7 @@ extern nodemask_t default_dram_nodes;
- extern nodemask_t default_sysram_nodelist;
- #define default_sysram_nodes (nodes_empty(default_sysram_nodelist) ? NULL : \
- 			      &default_sysram_nodelist)
-+extern nodemask_t mt_compressed_nodelist;
- struct memory_dev_type *alloc_memory_type(int adistance);
- void put_memory_type(struct memory_dev_type *memtype);
- void init_node_memory_type(int node, struct memory_dev_type *default_type);
-diff --git a/mm/memory-tiers.c b/mm/memory-tiers.c
-index b2ee4f73ad54..907635611f17 100644
---- a/mm/memory-tiers.c
-+++ b/mm/memory-tiers.c
-@@ -51,6 +51,9 @@ nodemask_t default_dram_nodes = NODE_MASK_NONE;
- /* default_sysram_nodelist is the list of nodes with RAM at __init time */
- nodemask_t default_sysram_nodelist = NODE_MASK_NONE;
- 
-+/* compressed memory nodes */
-+nodemask_t mt_compressed_nodelist = NODE_MASK_NONE;
-+
- static const struct bus_type memory_tier_subsys = {
- 	.name = "memory_tiering",
- 	.dev_name = "memory_tier",
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index ceab56b7231d..8fcd894de93c 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1592,6 +1592,8 @@ int add_memory_resource(int nid, struct resource *res, mhp_t mhp_flags)
- 	/* At this point if not protected, we can add node to sysram nodes */
- 	if (!(mhp_flags & MHP_PROTECTED_MEMORY))
- 		node_set(nid, *default_sysram_nodes);
-+	else /* HACK: We would create a proper interface for something like this */
-+		node_set(nid, mt_compressed_nodelist);
- 
- 	/* create new memmap entry */
- 	if (!strcmp(res->name, "System RAM"))
-diff --git a/mm/zswap.c b/mm/zswap.c
-index c1af782e54ec..09010ba2440c 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -25,6 +25,7 @@
- #include <linux/scatterlist.h>
- #include <linux/mempolicy.h>
- #include <linux/mempool.h>
-+#include <linux/memory-tiers.h>
- #include <crypto/acompress.h>
- #include <linux/zswap.h>
- #include <linux/mm_types.h>
-@@ -191,6 +192,7 @@ struct zswap_entry {
- 	swp_entry_t swpentry;
- 	unsigned int length;
- 	bool referenced;
-+	bool direct;
- 	struct zswap_pool *pool;
- 	unsigned long handle;
- 	struct obj_cgroup *objcg;
-@@ -717,7 +719,8 @@ static void zswap_entry_cache_free(struct zswap_entry *entry)
- static void zswap_entry_free(struct zswap_entry *entry)
- {
- 	zswap_lru_del(&zswap_list_lru, entry);
--	zs_free(entry->pool->zs_pool, entry->handle);
-+	if (!entry->direct)
-+		zs_free(entry->pool->zs_pool, entry->handle);
- 	zswap_pool_put(entry->pool);
- 	if (entry->objcg) {
- 		obj_cgroup_uncharge_zswap(entry->objcg, entry->length);
-@@ -851,6 +854,43 @@ static void acomp_ctx_put_unlock(struct crypto_acomp_ctx *acomp_ctx)
- 	mutex_unlock(&acomp_ctx->mutex);
- }
- 
-+static struct page *zswap_compress_direct(struct page *src,
-+					  struct zswap_entry *entry)
-+{
-+	int nid = first_node(mt_compressed_nodelist);
-+	struct page *dst;
-+	gfp_t gfp;
-+
-+	if (nid == NUMA_NO_NODE)
-+		return NULL;
-+
-+	gfp = GFP_NOWAIT | __GFP_NORETRY | __GFP_HIGHMEM | __GFP_MOVABLE |
-+	      __GFP_PROTECTED;
-+	dst = __alloc_pages(gfp, 0, nid, &mt_compressed_nodelist);
-+	if (!dst)
-+		return NULL;
-+
-+	/*
-+	 * TODO: check that the page is safe to use
-+	 *
-+	 * In a real implementation, we would not be using ZSWAP to demonstrate this
-+	 * and instead would implement a new component (compressed_ram, cram.c?)
-+	 *
-+	 * At this point we would check via some callback that the device's memory
-+	 * is actually safe to use - and if not, free the page (without writing to
-+	 * it), and kick off kswapd for that node to make room.
-+	 *
-+	 * Alternatively, if the compressed memory device(s) report a watermark
-+	 * crossing via interrupt, a flag can be set that is checked here rather
-+	 * that calling back into a device driver.
-+	 *
-+	 * In this case, we're testing with normal memory, so the memory is always
-+	 * safe to use (i.e. no compression ratio to worry about).
-+	 */
-+	copy_mc_highpage(dst, src);
-+	return dst;
-+}
-+
- static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 			   struct zswap_pool *pool)
- {
-@@ -862,6 +902,19 @@ static bool zswap_compress(struct page *page, struct zswap_entry *entry,
- 	gfp_t gfp;
- 	u8 *dst;
- 	bool mapped = false;
-+	struct page *zpage;
-+
-+	/* Try to shunt directly to compressed ram */
-+	if (!nodes_empty(mt_compressed_nodelist)) {
-+		zpage = zswap_compress_direct(page, entry);
-+		if (zpage) {
-+			entry->handle = (unsigned long)zpage;
-+			entry->length = PAGE_SIZE;
-+			entry->direct = true;
-+			return true;
-+		}
-+		/* otherwise fallback to normal zswap */
-+	}
- 
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	dst = acomp_ctx->buffer;
-@@ -939,6 +992,15 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	int decomp_ret = 0, dlen = PAGE_SIZE;
- 	u8 *src, *obj;
- 
-+	/* compressed ram page */
-+	if (entry->direct) {
-+		struct page *src = (struct page*)entry->handle;
-+		struct folio *zfolio = page_folio(src);
-+		memcpy_folio(folio, 0, zfolio, 0, PAGE_SIZE);
-+		__free_page(src);
-+		goto direct_done;
-+	}
-+
- 	acomp_ctx = acomp_ctx_get_cpu_lock(pool);
- 	obj = zs_obj_read_begin(pool->zs_pool, entry->handle, acomp_ctx->buffer);
- 
-@@ -972,6 +1034,7 @@ static bool zswap_decompress(struct zswap_entry *entry, struct folio *folio)
- 	zs_obj_read_end(pool->zs_pool, entry->handle, obj);
- 	acomp_ctx_put_unlock(acomp_ctx);
- 
-+direct_done:
- 	if (!decomp_ret && dlen == PAGE_SIZE)
- 		return true;
- 
--- 
-2.51.1
-
+This is a little different, but it's a similar rote task.
+--=20
+Jeff Layton <jlayton@kernel.org>
 
