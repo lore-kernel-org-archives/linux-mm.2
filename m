@@ -4,128 +4,118 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A594CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 13:22:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 40E56CCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 13:32:47 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id AC8448E0008; Fri,  7 Nov 2025 08:22:19 -0500 (EST)
+	id 90DE18E0007; Fri,  7 Nov 2025 08:32:46 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AA01F8E0002; Fri,  7 Nov 2025 08:22:19 -0500 (EST)
+	id 8E5C88E0002; Fri,  7 Nov 2025 08:32:46 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9DD638E0008; Fri,  7 Nov 2025 08:22:19 -0500 (EST)
+	id 7FBA88E0007; Fri,  7 Nov 2025 08:32:46 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 8B6A88E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:22:19 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 2C2DE140489
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:22:19 +0000 (UTC)
-X-FDA: 84083874798.17.90D82FB
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	by imf08.hostedemail.com (Postfix) with ESMTP id 257B9160008
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:22:16 +0000 (UTC)
-Authentication-Results: imf08.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fbp2B3oO;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762521737; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 6B8C48E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:32:46 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 161A913AC11
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:32:46 +0000 (UTC)
+X-FDA: 84083901132.27.EE2472E
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 38EF31C000B
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:32:44 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=O6sIz2QJ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of glider@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=glider@google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762522364; a=rsa-sha256;
 	cv=none;
-	b=CLHz9JRICpWSdd7pMh7G+JSw7KlkOfTibOzROhX0hEV/b/3dX2P+PUjMV23uQnvV+qoc9f
-	KpPujywBIFFoBuV4C+U0IHf1cL3Vq8e0MtKPjXtum7n1vzDMsmfjijYCNI/XfN8t3I0Irc
-	Z5D3Vto6NS/e4i9D4V6YVWsovm1xTQs=
+	b=goILhGNk2gUDjLKnzpimoBvL7wFy7y58EfAdbgeO8fxK4XK09JCHMmICdiwgITQW5wMlKk
+	9DlUv2CfYFu+2serWxQXP5LS0nHzOncUQhrv4k+oCETb58w84r28a5XvLGqLueWAlWSIEi
+	5ghg9TF8MiT5wjB0iHAjcq+eDIQbnMY=
 ARC-Authentication-Results: i=1;
-	imf08.hostedemail.com;
-	dkim=pass header.d=suse.com header.s=google header.b=fbp2B3oO;
-	dmarc=pass (policy=quarantine) header.from=suse.com;
-	spf=pass (imf08.hostedemail.com: domain of mhocko@suse.com designates 209.85.218.46 as permitted sender) smtp.mailfrom=mhocko@suse.com
+	imf20.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=O6sIz2QJ;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf20.hostedemail.com: domain of glider@google.com designates 209.85.219.52 as permitted sender) smtp.mailfrom=glider@google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762521737;
+	s=arc-20220608; t=1762522364;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=BW73tny/rNjGjbXRK/CCOTxvH5raxzJjwlFOSIFvCv4=;
-	b=rSKoOFn6c1SZfZUrUI/3Jrm/uzDS82zxxKdQgDvvZI7sC5WWYcRcKh98mnPTHBtLfLl1ai
-	F1VZTywUIoL1335lKvieh1DIbwy/FEZsvfloHQTWz6U97QwT98Tg82NZQ6gmKkDcyfux87
-	QNLzJh9RxPKwAn3bfCsen+UjrQWyd0k=
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b72dad1b713so11549366b.2
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 05:22:16 -0800 (PST)
+	bh=DYGsUdW8QJxBbEDi2Itt5Jzut6orTX2cfcUNRJS1Mww=;
+	b=FCr76ufZgZvg6Yw0qR9Cry/bNJA/SxVDugApZAJalvRLOf1E6M+4shw/aPnraOJVIOJ3Fc
+	YWZ7CpGeB+SbjpnbyYvkacjfpgRFnIv34N4XJNPzFrh3Nt6pmhndaonW6YX5v3C6K/2Lj4
+	PlV7X88pIrsZcTxXLWqY5QhhAUUYZbo=
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-8804d05dfcaso9559976d6.0
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 05:32:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1762521735; x=1763126535; darn=kvack.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=BW73tny/rNjGjbXRK/CCOTxvH5raxzJjwlFOSIFvCv4=;
-        b=fbp2B3oOXXUUR18/uZuqQx5F0hJcmN6a41R8lTt4bPraULjwDDYI7o3DuCPwAvZRkq
-         QtnDWTjEV3s86w4HHQQ9gKHAlN8dHTkuPzU4ALY4XPI/baGNikdBqqD4qweE+DcTubb5
-         j2U7CtiF7EVOwIhCZWGJuRjiay6DGCKHFZmrdHGZNS6D/J/hiDHs/3T07QQ5k4Is+EFg
-         A2yQAdwAntphhL/IHfivHdaPEwmFaZ0pa8ODDX4gKF9x/KPvWNgdvRAhTvdvY92wf2Kv
-         uclA4WQSVrw+oZXLZhfF9QvSuN5oPs3WdlLOy3MRV8UuY/wiHiUOzX/4pWHC33cLoiyH
-         rS2Q==
+        d=google.com; s=20230601; t=1762522363; x=1763127163; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DYGsUdW8QJxBbEDi2Itt5Jzut6orTX2cfcUNRJS1Mww=;
+        b=O6sIz2QJLLofHf9RYqom674Kz7A1X4sr6gWm4juBYaM5tf28+7ZQeXDQl6Igu2px61
+         PCK+baf4hOKsuCaH/9BW5sUYXrG5Z7N1OqelFLufL1hELwsYzyMT1F8J7egEjbZax56c
+         o2zzns91/tczPdEbdAnX92inb6o4vDICCJZD62fsiOlmqyfd0noqHrw3YAVnmQ162tZ/
+         19IaNZ3mYZRux4vzjAGWU+4HZ8gr13xbXhluaqbiCx95YoIydYFzwMVYDoq0F/ocMc+/
+         gLsD098uKrxOunl/JRpzqTVgADhTr2Td3UnvPy0wJDaBtynwTx1S9C8wDh4dTzeUtYrL
+         W9VQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762521735; x=1763126535;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BW73tny/rNjGjbXRK/CCOTxvH5raxzJjwlFOSIFvCv4=;
-        b=m5feOzfsz/NuevNb4Vw5WCDMt6y4jI+ON97jBSeXOcYmOXXZiqBDQHUlEX/WzSSNzY
-         AeXp0oVj118eC+Jiiyuj5MxyOI4HdoXbcdpJW20bTB2kJtPekBzSWJAs202KoSG9imRo
-         hewIvpsCoNIGiIAn4KnfnDUtBRXwmUm12RIFfu/iXf/cvRTMazNy+SFVuMITOdDwpGAP
-         ktfQ22frIz2/uxaExkoQtnfekPwdwlATwuZYzeZtedWJ2o2H9933f8Qiq4r3xiJB7Vaa
-         zVu4W+/gTbRi1s4PXG39vuXjP4WCP1TNMDQfSY/v5fDkYoQCaNJTX7VDXW17+TOh+gu6
-         4hiQ==
-X-Gm-Message-State: AOJu0YzK1nUQjWppyGq9rrd91Z7CzTV9w1+RkMLncMmVoqsXRTIRsxpV
-	FX9vMlCKyNTDHmFm5B92kHsvK5J2NY1ZUQVxH/fJaWVMHJaWZag98rHz4D7YZqj7MZ4=
-X-Gm-Gg: ASbGncsC/fgvsmiDIRdBhamEAolIP899j16xi3pfVWOEC0HFLZI9mP7oEQCVLVXd9Cg
-	5LZ4embKy5a/Q02jwQDuGuIRCb59rB41h2/6xX6Rw4zcphJZMDPhGW0OL2ZF0ld10jvjRCFClvS
-	dd0oAivzy+7JubiqcinPd5BfbC3ud0DOr8mq4cBC+jOgOCDr1NTbOJ72Hgin9v+p6ffIIseZYLi
-	BRYXHByWuYrumFqyI3lc8Zuwr2aGj3YdeRvRr9Pw5fWUfNpCQ03KgHrl4ZpxcP9BC3iC8xMj2Ai
-	fr4rpoFZMBvIQt14kF0tJELgPuZiOPAcvUY86gI0oMvuWxPCetv93knLJAJ5VyNMo99n0CRNjeH
-	IDGE/PCvtjW5EsefguPC2fBqNdSJkgsx0vis8D/ezeVFziQE+GcKxaXq5SvSMy2wBiTN6z7CKQQ
-	WqVEmDOpp7cO5cUg7oF/SvvD9Y
-X-Google-Smtp-Source: AGHT+IH+ShbDcZE+qh4SZkqFEhzUdrx2v7L/xU+R5lqvkQSu+xhB2RSlNKbrKOFBDGQaTsFsa5ikmw==
-X-Received: by 2002:a17:907:971b:b0:b4a:ed12:ce51 with SMTP id a640c23a62f3a-b72c096d5b2mr296847766b.23.1762521735393;
-        Fri, 07 Nov 2025 05:22:15 -0800 (PST)
-Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf312271sm239966466b.19.2025.11.07.05.22.14
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 05:22:15 -0800 (PST)
-Date: Fri, 7 Nov 2025 14:22:14 +0100
-From: Michal Hocko <mhocko@suse.com>
-To: Jiayuan Chen <jiayuan.chen@linux.dev>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	David Hildenbrand <david@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v1] mm/vmscan: Add retry logic for cgroups with
- memory.low in kswapd
-Message-ID: <aQ3yhmsT2NHeNwLi@tiehlicka>
-References: <20251014081850.65379-1-jiayuan.chen@linux.dev>
- <aO4Y35l12Cav-xr4@tiehlicka>
- <a6cd4eb712f3b9f8898e9a2e511b397e8dc397fc@linux.dev>
- <aPEGDwiA_LhuLZmX@tiehlicka>
- <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
- <aPE84XfToVH4eAbs@tiehlicka>
- <db4d9e73e6a70033da561ed88aef32c1ebe411dd@linux.dev>
+        d=1e100.net; s=20230601; t=1762522363; x=1763127163;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DYGsUdW8QJxBbEDi2Itt5Jzut6orTX2cfcUNRJS1Mww=;
+        b=rBX4SlxvxFmY5v+oksh42UMMNz3bF+0Cnepk0eTyyRXDVI9oatHcgJj3vyrcfbv4oR
+         8DNf/wFhszZsz2dWAG3qpQowNFhXgcvBR7ejezjnHETIMNhrfIbauUbBlkJtZBoUKaVU
+         tH9BoCS+Y6rm2qNyRjiFG7ywnyIj5iv54MQ5EOgvvZ9FdtN9k5iT28XGMiY8tHRMbIIW
+         SAADXs5f3B10yJQVLfLpSzVCnpNGVzb9LoaL4pmaLgP4cmEsrPCAiF68YePpVOWpVG4i
+         ivYzH7H0rBxOEe68FQNn0apQJ5vWixcLSh+rLl5s2oyax3h7s6OGwLKimyy/dULkhE7H
+         qPcw==
+X-Forwarded-Encrypted: i=1; AJvYcCWasmq5n8/tzRXWYFDegQ5NR+4BInIouIb5wPp9hOr68Xfm6c+OisWLWWFgvOrFXESqw6oFTmR1GQ==@kvack.org
+X-Gm-Message-State: AOJu0YwGiB8UXtUqfMyJnI3+vnJSbwMelTKNTwjUnV6+PYk40kk53Z48
+	FIc0JlzvmZW5hkXQQDg2Ct2zY/HzSl4kM4Exau2ZTjqujD5G67w2vGGJr1TRu0krLq4TRaZz7RS
+	7AScR94QuQe7IkIeozvX8bioC1GrYtXLeB906qYVv
+X-Gm-Gg: ASbGncsKij8eBexQ3k/d6kbiNMy7QFhJL1IiYcBtylAgBTRIJrKRiw3t4u/zdy70Uxi
+	bPgNPUa8lvna4JRTWxuo+8NQu7idFJYzMtC8SI/r5ys+Z/eNqp3ZHZcWZrXiUm7YMhJPjL4MLGp
+	/pO2sjQuS1t7A8ijJRNAR8D8mMMwsWsdj3F1uMhjzYgFKp7jte8Jkz3LEKTIkW2whIRdKGPW5Np
+	XIa0g5I1s7gALR7AbzJHJ+ikWxtc5rgs5jEJuYpkKBnDt+IdwzrXW67jBInVX8W/KT18RDM8+RQ
+	PN0+62ZydnsyRwY=
+X-Google-Smtp-Source: AGHT+IGMcx4JTyoiLXSjiI5ZnYiFYQ0QhaKKSOD4lt9orRKK4hn4fiBcmRwDE/b5ad2H8h/ilMH/9HIGo1JwDkoM2ac=
+X-Received: by 2002:a05:6214:dc1:b0:87f:fecf:17b2 with SMTP id
+ 6a1803df08f44-8817678f534mr37024656d6.64.1762522362918; Fri, 07 Nov 2025
+ 05:32:42 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db4d9e73e6a70033da561ed88aef32c1ebe411dd@linux.dev>
-X-Rspamd-Queue-Id: 257B9160008
+References: <20251106160845.1334274-2-aleksei.nikiforov@linux.ibm.com>
+ <20251106160845.1334274-6-aleksei.nikiforov@linux.ibm.com>
+ <CAG_fn=WufanV2DAVusDvGviWqc6woNja-H6WAL5LNgAzeo_uKg@mail.gmail.com> <20251107104926.17578C07-hca@linux.ibm.com>
+In-Reply-To: <20251107104926.17578C07-hca@linux.ibm.com>
+From: Alexander Potapenko <glider@google.com>
+Date: Fri, 7 Nov 2025 14:32:06 +0100
+X-Gm-Features: AWmQ_blqrF6qkYIlKEriMvS8QB3DM2vAveh3NdlyDLE92dPFiq1osVICbBllaDE
+Message-ID: <CAG_fn=W5TxaPswQzRYO=bJzv6oGNt=_9WVf2nSstsPGd5a5mNw@mail.gmail.com>
+Subject: Re: [PATCH 2/2] s390/fpu: Fix kmsan in fpu_vstl function
+To: Heiko Carstens <hca@linux.ibm.com>
+Cc: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-s390@vger.kernel.org, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
+	Juergen Christ <jchrist@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Queue-Id: 38EF31C000B
 X-Rspamd-Server: rspam07
-X-Stat-Signature: ps8p7o6dgxttay8js8u4rreoawu69m7f
+X-Stat-Signature: ejcmd6e5oam449aoc5ymxqbci3h8owmi
 X-Rspam-User: 
-X-HE-Tag: 1762521736-377194
-X-HE-Meta: U2FsdGVkX18pUR5hZ3HltJ8pUImI1b9PSM1sIcEa5UEAr6/wKlu/6VPVk6M62sxFSFB6wNC8bTF0qzrMk209u9wOeYZa37CAf5MHi/MLC8dRfuvRqFX6nxaTWR6U+bpzbG8jHi3vVTYpIX3n4iXXHOUlTE98o9JfyLAaLN4t5YLnJMjoUdMEDJ1N1pDoLfTX3aVhSoumGpTsvhu8rja7BeO8MXHlFSjmT8vY35Z+6zv02UG7zj+Q+BqC5M1i/PlNFWyzY1fO2HmDIq44j85gBwMcQFmX03rQLYgcw2JxXFVdfJaR8esnZZgwh46xaaLHZNfsCcyyHoYV8X4RkWstBneI11k2neSu5sOPrNgtvHDtV1TiksswttGtYhGNAP9o8YYj39lFf3z5qxpCXS4VH3Aao4pUa34fSElg38MjLEjRZXeWINlwaBaxOiGElQrhXbtbNHuWROSG8LSssJWW1iTa7+SxFbfCGtsMrAV/jnXIEjl1WiTABxkAB4lTyR9an6b6cLGakjd7mQfC5S5mPgAofpNYqj0eTAbEY1/L3lmFnV0BUcvqbGdFFp7aorj/+YVlq6ren7vq1mPk2rKKi45PYbGhAu3LD40ZxUjoklGXC4QxwaNQhzkcgfikKQLxiyfXzeaGc4PksYT6ssYMCN0uGmcaTGTPDQn/ahV7mVRj9cETvDb/x9VL5+Okflf/oS99kzi59QKm29BA+36MiENFrwKS4dStZ+ia5fzmzL9nKKPmR97UgUtLj5JW5tbdyoj6lSqA9WCjIAQ7t72TGDgWboT7zLsvuTpaPGZGkUj/N46JOLA1YJtA/yHobwMhMx3vlMufOlrBxh/NNsBBCVX98bS3v8dVxyb+BuqlBhj51rcKQ+G5kleDwZ5VI5qeycZ6t09JPaLxPsQGTh8kNESb4ZaUBIaQJCYmZCfWGL+xwhqVuFSLLfiUycsrVPfFUE04hropWzktk7ruTqK
- cfP4yzgH
- eSdGodEO5PPIaoP722AsLQnszbLw93OyW15KGFaFaGJX/j4rzVOn2Cph2ShvAmRg8AETvo8IicYPNx8FCX2y2nmTU43Ekkw+KVyOGbMaD96Ue7ZPR8WwUTYJlaxZKAg/BoBP2/stOh0zoqajrhPEPo5+iNSN4tV/MZeiTTTQ+bnH3fUAifWHTj3WysNe8uELOF0VsZQzpwz0idF7684Z33HbfiakReJnKialh4DeM0qHMCGfeKx0VYJ/69Xwn/HLOotER950mHdKaoINd57F0lP8wPJR+jESpS0wC9BqvCQD/4lZsz34e4s/UFTqyLuA9k+ZC9pmXyHJWyKKMotOzkhO1WJEXR4VKBSt4b+RanDnry8TFZFxImY7ADQYyhE2apTErDj2Dmo2VFZfYrnFdvXQ1z2UIdkq3vqZeaiTjzFa515tANoQiPHVYPuQNNX/9U1v1gF7Vqn8RazpmUsQGKEGfWA==
+X-HE-Tag: 1762522364-701413
+X-HE-Meta: U2FsdGVkX19PFdLzHML10af/pyNekMV4eH1GLt7sOrLUk9UphGgiiEaNcLejaB/SIoDeFDdeIVW3bJ8/383nKJTbscWAnK2tf5RKudikdVM2Kn6LiWrYyCL7kz8FXVxX+kydhTcdFmrhLSNQ0RHSEDvHx+YYiWvsn/EkfCAvXX/AUr15BaV9OlCg3lnw9loq4vtfJ+vD1/23/3b2BvKKgmOQvq8yC3ekphHIHr1rTvdtHO9hMZV9RsFm7RZ6zRcFdKsE7R2ay7O+9zwzr74IvTNdXW09IuYEVmJCncFbCShHUOa8Xy+slL1dNMxYNHXxi0Yl/SCzv2n6lnsYsdGWPvyc81g4HlTDzETILjnLF0nihKXGzSp85hJ/GSxIJ4wHz2HgjM0C40abE6GVyldajWaUk47HwJTAAaMuLLC9UITkFgsqLOU8+hQ5pejL9kb6mh/xPbL3yTkHf+vg09EuqlV7RfJygpI+ku9IacC4Vz7If/WJwqXlDbxr2mWAHCh+gWHB3uE9mlpV4PPVWu+zpSCXr30J8LyU/InqcV+oMuCjBwJeONa4xQGFkRb3OSUxUuWfwc/iQyMuPkKBZCbtFHsxyCHcyxCkTNkaNnr26uW4RCrZQj/udfk+8Z9zanQ2DnH4dZf75b8Ge8xk8gvX2vCMhDEZIvsU+tQ1sdhsdB0hrHE9xF8ukZtgnBAUTsf9pFjTvvOGBFS9/itVsJ3jc/Yz/vBJnZtBB9ef+WdBOyfOTbSRTINTEndHDVuZwnPJa2Ce2Rw3+uNgj1yL+K6cBWq9ezEog7YP6ubus71L19AgI0eCjIbGqpdSLWr5dLpDqI4hx4gshiOgCLjyQ9wiE6Qi/8C99GAi6AVNItY8vdEej/hv6uWxH6ZSQ9ouXlNRBEm08cTcysxFs725Bngs1Xs9A1/NBWLXRCJSjn6MbDGWCY9q8thwmUi2e63eeizDwyg5tzZ1YuLZE+evjhc
+ D2eFHERY
+ w1o5U+nLu6QncgjXb9GY8AZQ+s4lMi44UC2W9Ys2bW4oKWeEl9mGJjSIsVxbtFlbpNGwLN+PIGkJ+MJKwQDrBjDqhYlIa6VOCXeO5tozkAaEPMTSYFF2orPEoIc5A8JKqLhXu8DkSoTwiYfhkOfQ16GfaCZW3ykyKin97sm8Rwk1r9KEb26HrDCW/T6dbDrQW7GI+PYzkpKOSbWYCcx6JDV4XrDBLcnVUD7qXFZWHAztpN1beVQ+EVQ1IKl2o3ffyhxfx2+OGWP0svNw=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -134,43 +124,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Sorry for late reply.
+On Fri, Nov 7, 2025 at 11:49=E2=80=AFAM Heiko Carstens <hca@linux.ibm.com> =
+wrote:
+>
+> On Fri, Nov 07, 2025 at 11:26:50AM +0100, Alexander Potapenko wrote:
+> > On Thu, Nov 6, 2025 at 5:09=E2=80=AFPM Aleksei Nikiforov
+> > <aleksei.nikiforov@linux.ibm.com> wrote:
+> > > @@ -409,6 +410,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 i=
+ndex, const void *vxr)
+> > >                 : [vxr] "=3DR" (*(u8 *)vxr)
+> > >                 : [index] "d" (index), [v1] "I" (v1)
+> > >                 : "memory", "1");
+> > > +       instrument_write_after(vxr, size);
+> > >  }
+> >
+> > Wouldn't it be easier to just call kmsan_unpoison_memory() here directl=
+y?
+>
+> I guess that's your call. Looks like we have already a couple of
+> kmsan_unpoison_memory() behind inline assemblies.
+>
+> So I guess we should either continue using kmsan_unpoison_memory()
+> directly, or convert all of them to such a new helper. Both works of
+> course. What do you prefer?
 
-On Mon 20-10-25 10:11:23, Jiayuan Chen wrote:
-[...]
-> To provide more context about our specific setup:
-> 
-> 1. The memory.low values set on host pods are actually quite large,
->    some pods are set to 10GB, others to 20GB, etc.
-> 2. Since most pods have memory limits configured, each time kswapd
->    is woken up, if a pod's memory usage hasn't exceeded its own
->    memory.low, its memory won't be reclaimed.
-> 3. When applications start up, rapidly consume memory, or experience
->    network traffic bursts, the kernel reaches steal_suitable_fallback(),
->    which sets watermark_boost and subsequently wakes kswapd.
-> 4. In the core logic of kswapd thread (balance_pgdat()), when reclaim is
->    triggered by watermark_boost, the maximum priority is 10. Higher priority
->    values mean less aggressive LRU scanning, which can result in no pages
->    being reclaimed during a single scan cycle:
-> 
-> if (nr_boost_reclaim && sc.priority == DEF_PRIORITY - 2)
->     raise_priority = false;
-> 
-> 5. This eventually causes pgdat->kswapd_failures to continuously accumulate,
->    exceeding MAX_RECLAIM_RETRIES, and consequently kswapd stops working.
->    At this point, the system's available memory is still significantly above
->    the high watermark—it's inappropriate for kswapd to stop under these
->    conditions.
-> 
-> The final observable issue is that a brief period of rapid memory allocation
-> causes kswapd to stop running, ultimately triggering direct reclaim and
-> making the applications unresponsive.
+Upon reflection, I think adding instrument_write_after() is not the best id=
+ea.
+For tools like KASAN and KCSAN, every write has the same semantics,
+and the instrumentation just notifies the tool that the write
+occurred.
+For KMSAN, however, writes may affect metadata differently, requiring
+us to either poison or unpoison the destination.
+In certain special cases, like instrument_get_user() or
+instrument_copy_from_user() the semantics are always fixed, but this
+is not true for arbitrary writes.
 
-This to me sounds like something to be addressed in the watermark
-boosting code. I do not think we should be breaching low limit for that
-(opportunistic) reclaim.
+We could make the new annotation's name more verbose, but it will just
+become a synonym of kmsan_unpoison_memory().
+So I suggest sticking with kmsan_unpoison_memory() for now.
 
--- 
-Michal Hocko
-SUSE Labs
+
+--=20
+Alexander Potapenko
+Software Engineer
+
+Google Germany GmbH
+Erika-Mann-Stra=C3=9Fe, 33
+80636 M=C3=BCnchen
+
+Gesch=C3=A4ftsf=C3=BChrer: Paul Manicle, Liana Sebastian
+Registergericht und -nummer: Hamburg, HRB 86891
+Sitz der Gesellschaft: Hamburg
 
