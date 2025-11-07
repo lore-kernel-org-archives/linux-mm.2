@@ -4,91 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6D526CCF9E3
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 07:31:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 63C1ACCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 08:48:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CBBE78E0007; Fri,  7 Nov 2025 02:31:30 -0500 (EST)
+	id 268FD8E0005; Fri,  7 Nov 2025 03:48:03 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C6BF48E0002; Fri,  7 Nov 2025 02:31:30 -0500 (EST)
+	id 21A418E0002; Fri,  7 Nov 2025 03:48:03 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BA8258E0007; Fri,  7 Nov 2025 02:31:30 -0500 (EST)
+	id 12FCD8E0005; Fri,  7 Nov 2025 03:48:03 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id AB98C8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 02:31:30 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 693E21A02B0
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 07:31:30 +0000 (UTC)
-X-FDA: 84082990740.25.7D12BB3
-Received: from mail-il1-f205.google.com (mail-il1-f205.google.com [209.85.166.205])
-	by imf17.hostedemail.com (Postfix) with ESMTP id C20244000C
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 07:31:28 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3T6ANaQkbABYEKL6w770DwBB4z.2AA270GE0DyA9F09F.yA8@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3T6ANaQkbABYEKL6w770DwBB4z.2AA270GE0DyA9F09F.yA8@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762500688; a=rsa-sha256;
-	cv=none;
-	b=N4lTHlWWRVlAlMs3T8KqfqjmoeIXB2d00mqxu/u7cGtuh+NR46AJ7GhiBYT7fLLPgkn2oy
-	4GJSwIjIWGaJSYIfTldWvd7wX9++rTW393475jvkdhg6JQSvC6j/SmX+V18gnrxnhfyHsa
-	TD/J7hV+U3C2Op//aP/A2DXtTtHN4E0=
-ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=none;
-	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none);
-	spf=pass (imf17.hostedemail.com: domain of 3T6ANaQkbABYEKL6w770DwBB4z.2AA270GE0DyA9F09F.yA8@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.205 as permitted sender) smtp.mailfrom=3T6ANaQkbABYEKL6w770DwBB4z.2AA270GE0DyA9F09F.yA8@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 018E68E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 03:48:02 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id A584A1A03B8
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:48:02 +0000 (UTC)
+X-FDA: 84083183604.14.F9EC040
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id 0FB42100006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:48:00 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M7FeyFDt;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762500688;
+	s=arc-20220608; t=1762505281;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references; bh=aHi0GSDWw+DFPzwz+Hy0dteO68RU8wWgdmOIcy+/qFc=;
-	b=dqGOk+WvmS4jCSp1rwIItqaSPIz7E1kzaiMWB2Ps1pa3qErakUykMvOORac5bCJNv83CzJ
-	HddhZmWQ2D/aw+5Zy5y7zM334hfTtqSksndZLc+QxlCNVMwnG6yGmr37pzNp6sDSwVXiii
-	+c6yhrcLLciNAlhDdeMY6y/bxOIcI7Q=
-Received: by mail-il1-f205.google.com with SMTP id e9e14a558f8ab-4332ad3179bso4615645ab.1
-        for <linux-mm@kvack.org>; Thu, 06 Nov 2025 23:31:28 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762500688; x=1763105488;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=aHi0GSDWw+DFPzwz+Hy0dteO68RU8wWgdmOIcy+/qFc=;
-        b=Sz/xzkaA/mD2XIX8MeBobE2cjLAi9jOAuOV6FAffIk9H2aiOuQNVqCj8r3oPo/x5Rz
-         //ZRQaiivWWMkerWODXA4ExNsZExCNDC4r22GmU2WFHFsX5BxfW7EePdbLw+VhiQuk0s
-         OppH3xMRe/xrVUkEbcF8peiPyqa+okygt1XZo6aqsKa6pDutSlB44BVxqSn7bmdwFerM
-         OuPpIU23GLex/uHixwWftDfC7RNMhSYXgyiYeKOE0JEnFpPnA3gBqA3f88nJ7Yyfc3V3
-         IZ2pIcYElc+bFqgUyCf0/vdcM9m2H/bVio82XCgZE0q049Gv0jKAWrw/9Y5qzfQS5V79
-         wRgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBUleusu6I2H1y+zguGOvlI9zF3lNAHWTQTmNAIpHmxhNKdSvYhqQEVlb4LYcNsYqSoy1aRhd5xA==@kvack.org
-X-Gm-Message-State: AOJu0YxE5ymRVCi1xnkrdVXBIeas+68SqyDQAePahRXk4B3oeHSENel/
-	ERHu+NmZyVB3sbFOHvQZ3g+uPoirFdo6CRSlnwLHCS/NMHnSMemaKf5Lw4AcSwjyoEsvwn9ngEC
-	5kCzEZstXEcd2ZI3f6IKUn6IM93DB1X26ZE2HuiIzxXR9GqDFLVbYz0EW324=
-X-Google-Smtp-Source: AGHT+IE8e6TZwBMJKL7y90nEbznBhuBiS/GtlVHJKR1ml/b1KG3VAoMOrpAzwKfMju3KxqSIT3PgxZH9QyyiaDLlAFUqlAPy4kZp
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=/c4h3ES3w9kbEqEUIy3YPwulsoIPMocMG0kM07Y5MCI=;
+	b=mCh2A6ZuLo7KAO/MwfBF/7S9m/KXQa/5E7exBQ1sheFmL0aNJrEs9naVlKKfAXBNzw5SDq
+	nawdxfQRngU/lOo8OWkUQj2TeUy3RhtZ3I6gvSkS1ev8yGejxNlgX/Y8cbPd8cGPbFkG1g
+	oTOVjf2WixQy7rtQ9C09vGJplN573gQ=
+ARC-Authentication-Results: i=1;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=M7FeyFDt;
+	spf=pass (imf05.hostedemail.com: domain of david@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762505281; a=rsa-sha256;
+	cv=none;
+	b=UE9ohj6w6/GPDByCtmMt1TVF8HIO1RQxvB24ABzPJ29yPlw1tf/DYzzkwLva0Um6jCG5Xh
+	eGCLI6+nSAiSesiQ+mitzpAcwfAoB5DVWA1DNvPb5/W9yGFEnf6QVYASX4HeUEdDf9LSPb
+	KBAwLx/JceVHszqmaulARKvtSCHvQmU=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 49B996013B;
+	Fri,  7 Nov 2025 08:48:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18698C19422;
+	Fri,  7 Nov 2025 08:47:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762505280;
+	bh=r5HfqcJlbIcSqDVbrM4DbrQWFQDT9pFIOpMky7mOVII=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=M7FeyFDtOYIKxkl3DFN8eMztM7r6/7ToOwzInZaWT6sjSOxLE6B9YWMpy9twj/P30
+	 JrB79AsLVo1z52Xf/PKrfZuIFChuXSA1Lops5gNQg/mc4nMC70/htUOHfElaawAlsr
+	 vMM0FX/l21ZJC65nhws7EJrWz8Mxph/4Five8Q15l+kqD0MoXOTmh6FRy51G6B/lJP
+	 pmpKYaUHC3u6YNW6jbgZ9MTCJ8xnIZTN4iSzHGm6FnW3ke2oH3McgqhFge6pjEnuFU
+	 Q9uPo7mrCh47AfX4xFZ+whyNrsuQP8TmS7NCqkXyH5vg+0KopWFi6DLCOpwdcgnwUl
+	 y3bG78yWb4Mwg==
+Message-ID: <d5806728-1f40-4e6d-b832-0076de3ae699@kernel.org>
+Date: Fri, 7 Nov 2025 09:47:52 +0100
 MIME-Version: 1.0
-X-Received: by 2002:a05:6e02:3486:b0:433:3315:e9ee with SMTP id
- e9e14a558f8ab-4335f41dccamr34232925ab.10.1762500687896; Thu, 06 Nov 2025
- 23:31:27 -0800 (PST)
-Date: Thu, 06 Nov 2025 23:31:27 -0800
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <690da04f.a70a0220.22f260.0028.GAE@google.com>
-Subject: [syzbot] [net?] [mm?] INFO: rcu detected stall in rescuer_thread (2)
-From: syzbot <syzbot+d5f7a5097c24c7c2dbbb@syzkaller.appspotmail.com>
-To: davem@davemloft.net, edumazet@google.com, horms@kernel.org, 
-	kuba@kernel.org, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	netdev@vger.kernel.org, pabeni@redhat.com, syzkaller-bugs@googlegroups.com
-Content-Type: text/plain; charset="UTF-8"
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: C20244000C
-X-Stat-Signature: 45fqokkf9t6fkkrut1ypz3q1hqokxosn
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 2/7] mm: introduce clear_pages() and clear_user_pages()
+To: Ankur Arora <ankur.a.arora@oracle.com>, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org, x86@kernel.org
+Cc: akpm@linux-foundation.org, bp@alien8.de, dave.hansen@linux.intel.com,
+ hpa@zytor.com, mingo@redhat.com, mjguzik@gmail.com, luto@kernel.org,
+ peterz@infradead.org, acme@kernel.org, namhyung@kernel.org,
+ tglx@linutronix.de, willy@infradead.org, raghavendra.kt@amd.com,
+ boris.ostrovsky@oracle.com, konrad.wilk@oracle.com
+References: <20251027202109.678022-1-ankur.a.arora@oracle.com>
+ <20251027202109.678022-3-ankur.a.arora@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <20251027202109.678022-3-ankur.a.arora@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 0FB42100006
+X-Stat-Signature: rbdwybmym3rj5636g76thu83thpfej17
 X-Rspam-User: 
-X-HE-Tag: 1762500688-655271
-X-HE-Meta: U2FsdGVkX18KIvbbWnM4EMpeJnPz2/b1F2fL4L9TcXYVhaPIvdzzfqmeFFtuMITDQar1Un5/CouDVyV05dev64+liJa59/l0xFMzKhWRxnWtH4AUcfHG5wm4g7kCwE1YbzZL5EBvAOq04JBTwmNTot3bEFPfHAdRlPtWCu1uErRC1Xb/tfUXrb1OpdNpp4s/QASA4QgZzRv59IIbehcLp5g2Ge02gwNGiPsHS5e8pBYwPC0fcF55NRuOqj+Q9acFJZIQrOUE8pYKmb075xLHFbWZACpoTaj9ceUoXN8GSSIKEJLpDKesC5II1Znbi/lfSHMSmD9rzlKCXbIRUSiaZf6kiEC1sY9o20ZTaL9hXPv6c051eiKzvaqm9KWX9TF+SvhSw91blIaAGm40P6VoxOpc4m//tONjq847qMTLWaKUD4RXxnUdxyzJItAKAdiyseMtyvebsq2EtjrBcYQ3hJyqylaqBz9PMVAK7nzirKBpErjJtypOPxjW+gN3ZMlW69w2XW1pWq163IYsUnW7/Wc8VA+3IF2Iqf26SefPw/A4BJwpu0AvfT8WCkdgOQg//MMe0wWLfFr2L0WsgZsdyo6OFMkJTftOGkcJhsdMv6vOAuAqTn7q48RjXFkorKWV98Q8Eud8+gUToIhoRqDGkqH/lSNZ6IUnQbw6UOC1DMB6BXCDaJe4NHenEZYn1Ohy6TnjnT1/xFdZEntfu92LbzWwsKVKud+Am+hnXfxoistl52X+PrXhbdAM6srTMLw0FnLC6QgZQ5FH3ufYvTecLUTHK09JDW5UyyZTvFDP7sAEz9v8R9PVAglUYFomknPrYFofGC0Ma6qTJ/4p/S89l+O2wNBhr5y8EWRLVo8KE6p2xzbURtKERjxlERP5g07zlZZ/Wxe4Zm2TjWt+GI6Ew5rRkxxG+GE3wFBi6RStEXPGsRr139s8/E+c1jPu4h71Sxtf8puo50QMOvT1/oD
- pRWF8L8i
- nCBNhcwTb7hqstbny1J4OqXBeGKsmwmqnEZOJkAv93xZGK2e5RIkq0BefESbRIpqLtcjv9SOv/ulWSX9qZHT9RUD5zRz0hoLz/bBWyedbW14YK+hRCFc1NIsKsjuHQvJ15WWhy3StMqvQB+AW3Tw071Vyxm++xs8uIPaRniGDPljJESey7AY5reHSuVG0yf1Gfw1mHPKLYTRDKQqDkUUGsSkv1PDB6jbcmZFkzSVduQFlNrY2A9QCHPOKLb/oC8MaXKRhFsz+sZTHMGLh92V+v1ujtue/ZpM0/q9GIYYelXFmY06boQm9qfbNxr/Rw2+/cYoog367AVloDRA9Mp1+Bo1SjjwZtSwwPeVixaY7LemZ3796AkGm0j1Lxd8ykZV5sU4mik5ungMka2odOHjgblAoNjTj9its6hS9DGprUDzEA53nax+3+81YHkN0CiBkY3CpJcJDRBn8ozIY1gRN8cTanJfJ+XMv1TgTxmBrupL9ON3f0C1F6RQNIUMG5fltitkahI6doWjD14IvjCqOpA1+VOjTFoG57HRH9jcR5YLsgtKBZ7p1yDTE3yIfKnNrwHn/zsAbJyLpx/ve0FUcQ297+bZSYgmRma2Y4SNs7+iBIgmqvGAINwyyQhZnyP8tiM1uzb7XXREzQHtaQHHeeJhfAGraE6OMU5qvBupRvzv/VUavXcKEHCgwWLSVq2owM2ew6pa4ntlp+T7a6uJyaDh7mK1tUAKvfWaGX1KV8k5nzAovtfgqPuAuGzKp7A/NYvjfiaIWRsaPp1FSa0lnQdMt+c5cUBmsqDp/tLIgpBBp3ODIlJnK5FYBN7ZrDrJmONEpE7zsmH1/fDnis4Ea4nHCTe8+bExbtYnWLbge2xJK0PefECuP6bg/GtxgLT0bKSrvBhdCBEXIue+nmcM7HgHwkM+2JC1Egf6PBG2iQs6AIVnd+INnOLbm6Ne/MRXsy+MzL4aizSKKVT87JhrcCdNNg3hc
- yKhSwdPc
- Uux0z50j1M1DiH3vMbEmKP+g4jXWRo1m7eSteNKKEeLqsrwTSdnBx4KZevLntG4hISc0ryAUH5T8jz4jPCulXgJu1ls0dpKwJSxilzHVkaVBDRstBX2SXWBtbwUerB64pEOp/tlAX4Cf7Aqre5EZkIbnHRmVRZoZZBilw49svpNLZyMbRJDV/VtW83vLZeuEOIx1lPKCHJSQVWYT0Vxnfi493F1ftxacFUlIY7n/3y5FDPJNm7HgVourNUQaGSkqq6RC6rQuTvc4maw9v/eiUiQEWbL0CRR/Wfyostrl/UWCrFNytNe3PIPxzOWaqpokd3kHWVGjI5MGopE2RAXa5P0j31KV4OlcFBirR3x7QbVzzJWm/ckbEAvozL5iD+dDmB1K0pD1+VBVYDUZ/Pg7oPLETdmibiJUFWhI+84cS+/I1xx4csi4OOVPItgQy3CdQ6jtfI31TUpvC1b6+BvXMNPV0Bz92p9Mgd4auZ9jzQSYpd3e/UQknDkJnxxA6aZw
+X-HE-Tag: 1762505280-228744
+X-HE-Meta: U2FsdGVkX196/HyI/3aX4rTPdqhZshuiNQGhLCZ+VXsa5fwk0IFDvhtZQGcoM6XXB0tjDapV04aZWjgO9vE29thZJ4tJrbHqqK61YR1W6FBs3UpQtXEzBtFiOQgFevckbex4WpefG+vgPx4v438BN3H14PAC2wtorVFxYMMqzgigsJ0VH3UM4/ARq5M2D3EXcxZx8YA4oXe5qp3uTQJOES2lOl8y3eXTHD0L73QmQrvT7T1CE2elOZ4k3AV2KcRRe8AXnVaI1rjr0hTqTuZ0hzR2qDXynDV+b7yfO8oL65pxHPF8GQgo6ib9m3UEH/B2n7Yd65MBW16Q7aI4YzGatlskVh/ybQKnO+9UoaeUYXXCg0t3p5PXfk86mqmmJ0+hr5tJnh2MXCl+qJomaJ7MMGYrQ+jEBssAEaSZ5XXtaQpTkE5s6m+/uKKe6tj2CrD237IH5D4GjEAG+eWQc7ImEhERx1pS9UzfooCC4oxd1qKtzVs9NxHV3tbQghqwbmZFk5M5+KdkwnjwB1MIv+8CJcXPRdcx33z1ZBSlZo8nJtCoeLH04S5j0ogpOflsn6l3albkGpQU5qsCGBzSx74ppNTmgmoRcMX5uMKtoAsSnY6Fah9JQkbGjOM8b9DIFWv2D1l6dgeRn80JCyq/i8kVXVvu9Db/oJc+ocuTUGa0+/BrSTTWi50p5yomI3+qpM0xaTfyITxLjC2YpJyFufj/SwOth1mUJpaVRwFOVsZ1TPLrNthyGzGxUtLQJMWIXOhyyb10yc+Ts7ij/YZvMIv2GbVw0QC1dDy5PQkq53UPHJDfq7+6LlUqr4Ng8Xg4vTBg32H4fOcRVK9wLbcCr9LxQXLo7CeuPcYyrO18ZsHek/pm7d2v/y4a3UnQsw2oAjS/PW2ZazrAI2UMiv+49YdCShv/DFiozO31ufA2/trl1poreMkieNRvgtaocOAACvW5Yof0ZBQb8CEO7l6dzvH
+ VwFapwgx
+ ZjbtVcdR89g3ABkHQ/ADPPKM4CiFK7wssf03RoiL408nohzjE2WX9CnndN7XjU5c2i9PoLehE+Q34X9qd7RLunkTfWtHsZCekCafOROq0aN0KCiMQsKUZLhPSdMfs8jKxBsuHjetN7wgfw03/vyNtwP7vq7xxX7BHCMu+GrccHxr3bXsjA1dO82PPR34YuDF97hho6j57LxDchuisOt2iyg38dIFzNn0zZR8btCwCRZuxHqMOf+BkpRD0ulHITghkSK/HTnDzEvBbsJK73/ocXPEt6ido2gKuitjsshKge//xKgCAj/Ge1hnmNXzi7wFDylzPd4OExkKWN2RWHmHMhTAsuDLdtVieAJtX
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,129 +99,24 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hello,
+On 27.10.25 21:21, Ankur Arora wrote:
+> Introduce clear_pages(), to be overridden by architectures that
+> support more efficient clearing of consecutive pages.
+> 
+> Also introduce clear_user_pages(), however, we will not expect
+> this function to be overridden anytime soon.
+> 
+> We have to place the clear_user_pages() variant that uses
+> clear_user_page() into mm/util.c for now to work around
+> macro magic on sparc and m68k.
+> 
+> Signed-off-by: Ankur Arora <ankur.a.arora@oracle.com>
+> ---
 
-syzbot found the following issue on:
+Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
 
-HEAD commit:    b1d9154878ce Merge branch 'net-mlx5e-shampo-fixes-for-64kb..
-git tree:       net
-console output: https://syzkaller.appspot.com/x/log.txt?x=15cc5bcd980000
-kernel config:  https://syzkaller.appspot.com/x/.config?x=e46b8a1c645465a9
-dashboard link: https://syzkaller.appspot.com/bug?extid=d5f7a5097c24c7c2dbbb
-compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
-syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=134820b4580000
+-- 
+Cheers
 
-Downloadable assets:
-disk image: https://storage.googleapis.com/syzbot-assets/bef31d61ceb8/disk-b1d91548.raw.xz
-vmlinux: https://storage.googleapis.com/syzbot-assets/67c31be6c377/vmlinux-b1d91548.xz
-kernel image: https://storage.googleapis.com/syzbot-assets/7b9f62743e14/bzImage-b1d91548.xz
-
-IMPORTANT: if you fix the issue, please add the following tag to the commit:
-Reported-by: syzbot+d5f7a5097c24c7c2dbbb@syzkaller.appspotmail.com
-
-rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
-rcu: 	(detected by 0, t=12991 jiffies, g=11121, q=1246 ncpus=2)
-rcu: All QSes seen, last rcu_preempt kthread activity 3112 (4294972946-4294969834), jiffies_till_next_fqs=1, root ->qsmask 0x0
-rcu: rcu_preempt kthread starved for 3112 jiffies! g11121 f0x2 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=1
-rcu: 	Unless rcu_preempt kthread gets sufficient CPU time, OOM is now expected behavior.
-rcu: RCU grace-period kthread stack dump:
-task:rcu_preempt     state:R  running task     stack:27288 pid:16    tgid:16    ppid:2      task_flags:0x208040 flags:0x00080000
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5325 [inline]
- __schedule+0x1798/0x4cc0 kernel/sched/core.c:6929
- __schedule_loop kernel/sched/core.c:7011 [inline]
- schedule+0x165/0x360 kernel/sched/core.c:7026
- schedule_timeout+0x12b/0x270 kernel/time/sleep_timeout.c:99
- rcu_gp_fqs_loop+0x301/0x1540 kernel/rcu/tree.c:2083
- rcu_gp_kthread+0x99/0x390 kernel/rcu/tree.c:2285
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-rcu: Stack dump where RCU GP kthread last ran:
-Sending NMI from CPU 0 to CPUs 1:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 6005 Comm: kworker/R-wg-cr Not tainted syzkaller #0 PREEMPT(full) 
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-Workqueue: wg-crypt-wg2 wg_packet_tx_worker
-RIP: 0010:rb_erase+0xb/0xe60 lib/rbtree.c:441
-Code: ca 66 66 66 66 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 f3 0f 1e fa 55 41 57 41 56 41 55 <41> 54 53 48 83 ec 28 48 89 f3 49 89 fd 48 b9 00 00 00 00 00 fc ff
-RSP: 0018:ffffc90000a08ce0 EFLAGS: 00000046
-RAX: 0000000000000000 RBX: ffff8880b8927c90 RCX: ffff88801f7a5ac0
-RDX: 0000000000010000 RSI: ffff8880b8927c90 RDI: ffff88807de66340
-RBP: 1ffff1100fbccc68 R08: ffffffff8f7cdc77 R09: 1ffffffff1ef9b8e
-R10: dffffc0000000000 R11: fffffbfff1ef9b8f R12: ffff8880b8927c98
-R13: dffffc0000000000 R14: ffff88807de66340 R15: 1ffff11017124f93
-FS:  0000000000000000(0000) GS:ffff88812623c000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000056323a462a38 CR3: 000000002891e000 CR4: 00000000003526f0
-Call Trace:
- <IRQ>
- rb_erase_cached include/linux/rbtree.h:126 [inline]
- timerqueue_del+0xae/0x100 lib/timerqueue.c:57
- __remove_hrtimer kernel/time/hrtimer.c:1114 [inline]
- __run_hrtimer kernel/time/hrtimer.c:1757 [inline]
- __hrtimer_run_queues+0x364/0xc60 kernel/time/hrtimer.c:1841
- hrtimer_interrupt+0x45b/0xaa0 kernel/time/hrtimer.c:1903
- local_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1041 [inline]
- __sysvec_apic_timer_interrupt+0x10b/0x410 arch/x86/kernel/apic/apic.c:1058
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1052 [inline]
- sysvec_apic_timer_interrupt+0xa1/0xc0 arch/x86/kernel/apic/apic.c:1052
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 arch/x86/include/asm/idtentry.h:697
-RIP: 0010:queued_write_lock_slowpath+0x125/0x260 kernel/locking/qrwlock.c:85
-Code: 00 01 00 00 43 0f b6 04 27 84 c0 74 35 89 d9 80 e1 07 80 c1 03 38 c1 7c 29 48 89 df e8 e4 b8 dc f6 eb 1f f3 90 43 0f b6 04 27 <84> c0 74 14 89 d9 80 e1 07 80 c1 03 38 c1 7c 08 48 89 df e8 c3 b8
-RSP: 0018:ffffc90003337300 EFLAGS: 00000206
-RAX: 0000000000000000 RBX: ffffffff8f3dd900 RCX: ffffffff8b490058
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: ffffffff8f3dd900
-RBP: ffffc900033373b0 R08: ffffffff8f3dd903 R09: 1ffffffff1e7bb20
-R10: dffffc0000000000 R11: fffffbfff1e7bb21 R12: dffffc0000000000
-R13: 1ffff92000666e64 R14: ffffc90003337350 R15: 1ffffffff1e7bb20
- queued_write_lock include/asm-generic/qrwlock.h:101 [inline]
- do_raw_write_lock+0x1f2/0x260 kernel/locking/spinlock_debug.c:211
- ___neigh_create+0xe81/0x2260 net/core/neighbour.c:690
- ip6_finish_output2+0x1175/0x1480 net/ipv6/ip6_output.c:128
- NF_HOOK_COND include/linux/netfilter.h:307 [inline]
- ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
- ip6tunnel_xmit include/net/ip6_tunnel.h:162 [inline]
- udp_tunnel6_xmit_skb+0x68d/0xb30 net/ipv6/ip6_udp_tunnel.c:112
- send6+0x5ac/0x8d0 drivers/net/wireguard/socket.c:152
- wg_socket_send_skb_to_peer+0x111/0x1d0 drivers/net/wireguard/socket.c:178
- wg_packet_create_data_done drivers/net/wireguard/send.c:251 [inline]
- wg_packet_tx_worker+0x1c8/0x7c0 drivers/net/wireguard/send.c:276
- process_one_work kernel/workqueue.c:3263 [inline]
- process_scheduled_works+0xae1/0x17b0 kernel/workqueue.c:3346
- rescuer_thread+0x53c/0xdd0 kernel/workqueue.c:3523
- kthread+0x711/0x8a0 kernel/kthread.c:463
- ret_from_fork+0x4bc/0x870 arch/x86/kernel/process.c:158
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
- </TASK>
-
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-syzbot will keep track of this issue. See:
-https://goo.gl/tpsmEJ#status for how to communicate with syzbot.
-
-If the report is already addressed, let syzbot know by replying with:
-#syz fix: exact-commit-title
-
-If you want syzbot to run the reproducer, reply with:
-#syz test: git://repo/address.git branch-or-commit-hash
-If you attach or paste a git patch, syzbot will apply it before testing.
-
-If you want to overwrite report's subsystems, reply with:
-#syz set subsystems: new-subsystem
-(See the list of subsystem names on the web dashboard)
-
-If the report is a duplicate of another one, reply with:
-#syz dup: exact-subject-of-another-report
-
-If you want to undo deduplication, reply with:
-#syz undup
+David
 
