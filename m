@@ -4,110 +4,136 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2400ECCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 11:16:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id D5C1BCCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 11:22:04 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 6CD2B8E0008; Fri,  7 Nov 2025 06:16:18 -0500 (EST)
+	id 28F348E000A; Fri,  7 Nov 2025 06:22:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 656188E0002; Fri,  7 Nov 2025 06:16:18 -0500 (EST)
+	id 266B68E0002; Fri,  7 Nov 2025 06:22:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4F7CE8E0008; Fri,  7 Nov 2025 06:16:18 -0500 (EST)
+	id 17CCE8E000A; Fri,  7 Nov 2025 06:22:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 384AB8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:16:18 -0500 (EST)
-Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E5E738883D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:16:17 +0000 (UTC)
-X-FDA: 84083557194.28.644803D
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf22.hostedemail.com (Postfix) with ESMTP id F1F83C000C
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:16:15 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=flczYDEI;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762514176; a=rsa-sha256;
-	cv=none;
-	b=UOCh7bKz91h9ODPiN4n9LrZPbLnTAU447wmrSIqgvll/ziu1qzovtnAa5107AhJODneEtO
-	yjJ5TnN6HcgJNtusbzdwlwOBemu+t1z9bE8YwDUhCy09S2BvjtHKt9pRC39DuXNaaiHcW8
-	O6gqev1TClwmQ9HjwMlmm3sSpYmjZX8=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=flczYDEI;
-	dmarc=pass (policy=reject) header.from=soleen.com;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 03F008E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 06:22:04 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id A2FABB6A42
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:22:03 +0000 (UTC)
+X-FDA: 84083571726.08.7A7CC01
+Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+	by imf01.hostedemail.com (Postfix) with ESMTP id 8ED7D4000C
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 11:22:01 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=YSACZscg;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="M 78qrt2";
+	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.157 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762514176;
+	s=arc-20220608; t=1762514521;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vSUGkowFk1WKX5H+ZdfFcGFCiZM/bHFtpcGhU9ZSod0=;
-	b=szlip5nuIft591OhJ/WQlorvFb7CRZHRK1z3vRraFkimH+SmWLJ5y9h1qkJhlluppUMTBG
-	AsWIQyyBdSK7kXFwBmlHIAf1HGfQ1WOp1IeM0p7aL6tTWKytWa/0+Fc6Ru4VAniBJeqU+N
-	vzjPAEDKPRbHwmpBfk6t1BjKm9KlJBI=
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6407e617ad4so547025a12.0
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 03:16:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762514174; x=1763118974; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vSUGkowFk1WKX5H+ZdfFcGFCiZM/bHFtpcGhU9ZSod0=;
-        b=flczYDEIjDZUvFqMNtngtzfn1UyFO3FKXMa+i4y8j4DiO05nbdkDybEMlbjB7X8YlY
-         J/+lDV+3xVtqdfZaaWHPfTQW6IkwrExsdCww8Uk/G+25uaZzWEbCwklA+bhNVPD7sojJ
-         0FNIYP6kZMQiDBK0IVuGe5VZly/erfMpz4wZoh8/IMcWTKE/rF47fPPVK7QuIxDhQtku
-         EGYHh0MMcymigAET+LlEtUWKLHjkOGIltSDrlqPcAm23R9pumfX05JOWHtEXDGJ2PLb6
-         56Oxk7qNNnR4PrU2uoc8jRPHn9QXOvqXs4QnpFwqsnd1D16OxjirwOT0RCinUGAaT/Zv
-         s0Xg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762514174; x=1763118974;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=vSUGkowFk1WKX5H+ZdfFcGFCiZM/bHFtpcGhU9ZSod0=;
-        b=lA2i1GUzKIbJQq/VvWCZo/HnqFhz486zilb0Oes/Jhsk2NCXVrnkjTtrH5Q2mjTz82
-         ejIB7eNQdfbFqIKxzmcztqNiPsfQXeobMMURjeATN4MAPZEo2TuEBubnSjw3Z9FlXTGk
-         BVMlf5+O32HZ38K0mBnZmWPEylMYkyikD80u7iX1wmnySh4ikduNHEbGMNuhUNcrL+fj
-         GTG/bf76G5TpxOEqBZffh0s9Hw2Mk10D/enSQpZzeXmIhHeii5ShqY4yof/o0Sw+PvDj
-         KiOIjYNmrRT/WW3+VqmIFYiGKpOVSTY4gm+4D3PLPwcEc82/My7/pmP2olnXzt7DdzZ5
-         +y7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVnpFcl/GinNqPlbU39+LUZGysD9ReQ7A44BPb+auhGrKQBFMfgozTHknbuf3jxwjJjZxiaX0V5Fg==@kvack.org
-X-Gm-Message-State: AOJu0YyhkB2EaYnQbEl3oZ1uz1UYDieGE5cra7v/p11UCinaSQAgJlkb
-	eg4DxdYoUziycrsN8f/Cl3/oiYB1TTP2Zo48LeFZtuEC4STzj6TyYfxxW2zOx3j4kNy33e/mlpq
-	l2PvXCWDRtfRPRdRVqyK79k97090bgY/P0gHXqd/COQ==
-X-Gm-Gg: ASbGncsDwngZ4ie7DAW2+KfZgGanzv0OnYVnWRaYDLy22W7MyvnaHJLaWLaz7YuQdA0
-	HP5nVMP6a4b2UcN/JhfwMem3OJfPNlLpHPksG6HSYbO6gMEzkr0W/S+8ogZQU7Gwn+Bvu1mn6Bb
-	OPjS4saKH7XCuCA/pY2XPl4ag7M2Yh8iTKttKaNkIQchFn5fXCI6AjK4yOzN0FL1M5HWmoJ36GI
-	MTsH7oBlkl+bHZBqY5vhP0s3CVTj6M3BkwGLzxOTJZ6u0Ab/ASLYxO/jA==
-X-Google-Smtp-Source: AGHT+IFs9fzvpDPTsAFkSsf2g/axFVw0DqyasrrSTQmpvxxJwCZ/vRFmpg1oJNrPGFoNM0eCGfjdIow3KjiQqmHQR+M=
-X-Received: by 2002:a05:6402:84d:b0:63c:3f02:60e7 with SMTP id
- 4fb4d7f45d1cf-641470a5b83mr1085673a12.17.1762514173924; Fri, 07 Nov 2025
- 03:16:13 -0800 (PST)
+	bh=eRKQkj5K280R3b/RrHon4pbe8I4h4CIdOkXCqLolvYs=;
+	b=3EFSM5mm1aQYtSIFd5HPTGgTKoyXBV/VxHzBtSaL1vIYUVtpDPQYRvbW0xmJ7X+Xr6BTk/
+	S5uMlbKu+9x8FZlTlfiylPcJXBdZuV4iY0am8yN00i4tKUGwNtm6UJqJ87KxBIqs/ooBH7
+	d6OJHH9PCueLnBOsJa9iTxiAXj6+C3Q=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762514521; a=rsa-sha256;
+	cv=none;
+	b=vSrTejxDRX6LW1MN8a2U5wZ9vpAncgzdnJ+c0Nz3SBOMN0Vy3PBJOUwqnvH41HUFeKTC2j
+	zhXECU/34uFJf3aTTr3g6p5SZKGAmeL/tEhG/+0v4EkMrmT4ZNwxGW7PqmrNtTrL3BmVZT
+	z5MWRqq3WwNic8yzQMjq7ETwE3LAaSg=
+ARC-Authentication-Results: i=1;
+	imf01.hostedemail.com;
+	dkim=pass header.d=arndb.de header.s=fm2 header.b=YSACZscg;
+	dkim=pass header.d=messagingengine.com header.s=fm3 header.b="M 78qrt2";
+	spf=pass (imf01.hostedemail.com: domain of arnd@arndb.de designates 202.12.124.157 as permitted sender) smtp.mailfrom=arnd@arndb.de;
+	dmarc=pass (policy=none) header.from=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 7B7AD7A015E;
+	Fri,  7 Nov 2025 06:22:00 -0500 (EST)
+Received: from phl-imap-02 ([10.202.2.81])
+  by phl-compute-04.internal (MEProxy); Fri, 07 Nov 2025 06:22:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1762514520;
+	 x=1762600920; bh=eRKQkj5K280R3b/RrHon4pbe8I4h4CIdOkXCqLolvYs=; b=
+	YSACZscgaAE6zaTDRz48k1SSNuohLiC/LIJS5vCBdwVEksiOAW9hXZRF9YX6UmW5
+	e1SCmj1oD92HAJJsyUIv3JkIoM92HHeFXaBp+24wQZQNYRLuXzAaHfixwUKErGbw
+	FIfagbU5Kw1TMnrK6Q7CAtijwz26zrD2rfNtuYzoNGG0Y4HsSaMJJt/iZGdeZkH4
+	MJkK9l6OZKPZAizsgxO1byy0HCCKjowFCEWbYJPqhCFjnxZeCRl7qnzjr/jNm/+9
+	Rzr4BbS0ZObMiZdn8VxnhFN0tl1GCeWZDeopmwP9abqn70Q9hGqlmv/Lt38qzW9Q
+	TkhR5QsqiHjIv/xvIgDUvQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1762514520; x=
+	1762600920; bh=eRKQkj5K280R3b/RrHon4pbe8I4h4CIdOkXCqLolvYs=; b=M
+	78qrt2shsLedihBiftY2LhN7qRl3wauqxpz6V1CkKr57MzP6U24Mu1DI272vwvSk
+	CNTOZLp4iF/ZayE5PmwqM9VJXRzpZlS8SmLvewp5tv8EHRGubiEVp6OCj0ff0CSz
+	oB0r6FpY44INpIvbH7E+tK+0tHIUFl8dEaa38O6VAXjkCtxtyOmC2D67PB641O9m
+	NUpkh17fFzY2fjD/6lgZMFd2vIhIGwPRs2wKzIjHOeYpnNeVzx8k5kIPpGCVZhjl
+	YRa8TW8W8OgQ69+AwIDkcbxQq+DnM3S8GXATiWjk53HAeHlUlrCiGpjQ376uH6Yg
+	wV+bUEV20AvgAYljOWmnw==
+X-ME-Sender: <xms:V9YNaSK_IhghXN8L53jQ00QmzximYoN-NILgwl2B1FfeEXKzbE3v1Q>
+    <xme:V9YNaU_BagkvJMrbkO8ExKZE6V8-kFozxPFI42YU-Sgi84cSRHnHVdADxRb89UMle
+    h_HAFRcXvY84z4uQWG5sAnOWzqyWKprZtJcbXhq4G3Gwf8XM9TvWqQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtdeggddukeelheefucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddtnecuhfhrohhmpedftehrnhgu
+    uceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrthhtvg
+    hrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefggfevudegudevledvkefhvdei
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnh
+    gusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepledpmhhouggvpehsmhhtphhouhht
+    pdhrtghpthhtohepkhgvvhhinhdrsghrohgushhkhiesrghrmhdrtghomhdprhgtphhtth
+    hopehvihhshhgrlhdrmhhoohhlrgesghhmrghilhdrtghomhdprhgtphhtthhopegthhgv
+    nhhhuhgrtggriheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhmse
+    hkvhgrtghkrdhorhhgpdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurght
+    ihhonhdrohhrghdprhgtphhtthhopegthhgvnhhhuhgrtggriheslhhoohhnghhsohhnrd
+    gtnhdprhgtphhtthhopehjrggtkhesshhushgvrdgtiidprhgtphhtthhopehlihhnuhig
+    qdgrrhgthhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
+    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:V9YNaRYqUYbviFtiweRkZtz2Jet6HeK2Pg0GbaBrbRsG_Ey09fAAnA>
+    <xmx:V9YNaY1lSA4xcLi1JpSVQ11yzMt7p-rLc7fXkSjzve4S1rkDKKG3lg>
+    <xmx:V9YNaUrnEs1k8ksUNkA3ulWIEYfix-yWovCRmJvhyq7RCrVvTbKe7Q>
+    <xmx:V9YNaXPd3CiHNXZlRjiZFuUJmWIPORoJpMgZ9tAEE3GQP6ao3JLX4A>
+    <xmx:WNYNabx21bZOZhiGnjTHPd7M0uPDhPXMxH0KxkFquw05Yb-X4GzEwMqX>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 3322B700054; Fri,  7 Nov 2025 06:21:59 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 MIME-Version: 1.0
-References: <20251106220635.2608494-1-pasha.tatashin@soleen.com> <mafs0cy5ub0nc.fsf@kernel.org>
-In-Reply-To: <mafs0cy5ub0nc.fsf@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Fri, 7 Nov 2025 06:15:37 -0500
-X-Gm-Features: AWmQ_bl_5IdSL2Kur2Xuap5Ta8FwDqfYQlgqfAVhcx3fkqLwvwkzYlLkk7DO3Lw
-Message-ID: <CA+CK2bB+EpZg7MTKZhFtaGoYfLN5JNeaH9HDv_Avq9Qm+3e2ig@mail.gmail.com>
-Subject: Re: [PATCH] lib/test_kho: Check if KHO is enabled
-To: Pratyush Yadav <pratyush@kernel.org>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, graf@amazon.com, 
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: F1F83C000C
-X-Stat-Signature: 5wiuibpb8zwaj3pjfmeipx7kudqfpe67
+X-ThreadId: AvUhhSuyoH3V
+Date: Fri, 07 Nov 2025 12:21:38 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Huacai Chen" <chenhuacai@loongson.cn>,
+ "Huacai Chen" <chenhuacai@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: "Vishal Moola" <vishal.moola@gmail.com>,
+ "Kevin Brodsky" <kevin.brodsky@arm.com>, "Jan Kara" <jack@suse.cz>,
+ linux-mm@kvack.org, Linux-Arch <linux-arch@vger.kernel.org>,
+ linux-kernel@vger.kernel.org
+Message-Id: <0fbcde0d-4fed-4aa6-b0bf-c4400b9b1cf5@app.fastmail.com>
+In-Reply-To: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+References: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*() about
+ HIGHMEM
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Stat-Signature: 9yu9n4474wp9yeqxrjejyu9hzxoieoau
 X-Rspam-User: 
-X-HE-Tag: 1762514175-879228
-X-HE-Meta: U2FsdGVkX1/KZHiA0NbiHrZAUvZ7GHQ9ZN1Vm0EJnoBnulLH7NNjF+HfzRyYWXApGcfmmuOV3i3gDvG9i4RzGac5QOn7zvb1pvKicKq2erCE28iYopPQUAxVyETcPRaKavonmuHFOh/k6l0Iv8HtYsHjE9MdRpGcS9lYXodI7pvFc7L+UeUpBG4LIcJUPTsTwPgR5keHNlZRnu0aoTQYXQZxRWLsJBfv4vOstdFgbDl7AOzjQ0VrLPAf4NVPCQ+37L5xnd6T9dlO0NrgQUyUKVkvg/IctguKEXaWEeCI1+9L9INJn4wFbZacQp7C7kX1/hsXk98IzkczWYCGM01XBUhpZ7u7o2Nie22pWCVyrTfhzqn9ZPs2QwZLlTFgbnNkp6Zd3cLwMXtFpib7422f/ixCaWX6F4uTIN4gmVTtu0its8GnFUHvp/dph6C3XTlJXp4tD6y7DNG9tj7E0RhnjT2LA7w61UIVfntbFDWoRxffl1oFy76LoxzesfWQLr3mLmFlXh5Mj0bZCKvclCIZhUxoO9uIag6WL4lwom+ACcu+yt5UKpD2B0WDBrnR9qGCcnJcsm+qN4XnmMOF/2IBNChRAxaLc1Tq5w2JMB8oduIlBWa9eSJ1xYWuJNGU3vHzDVlinQJKI38g8qHu2iJAb8KldbaEi9wNTjbKMXc0rP6YHJETnguqqSLZXLPtkSLwX5jowuZ8ZAvh+PBNChfVLQDq9v/hWH6mfiZJ2hY4eBLpgTP3uiwhreMYXh9XqSBmCA5bSpv/Ri9viQnvTKwoQXMEefx8LzVNw/1cEsNgIErGq5p83XzSeuVZyxquFknXT6lnepB2p5RP8IyNQ6dSuJB9QeiMI0BR1I1T1eSnK7ufozAUSNN1AnkdEbyr3JGa3oHnRdA5Z776EUL9UgOW50RDOaPMn3BOX2qjgDMQBZol6R0Kkjw6LLJ4X9ohYwe63TBWNzB9ai3S9qwECTq
- 1bf+iVUr
- 0ZHuS37lNiZVO90r0GG89SpSoj3tQGppL64FPN8ctsKzGNyeeHNhTkhBtYu78KeOxqsjbP5AYTlyYHvNx2U0Np0tEFQnGyP5MKYePJ8nTMJsQteDF+X4IBHDv0Ot76M7Hn8bwNeEnniTpUSNCMsG6tvF4iNyG6fpaUQmVXlzhtdHn7S69GMOnKqTxLit60U+eev30qQeJImUpwrR+Lw/NOXHO/nn/9VM+Qjyqils/Gj7gGqDE+3ltfNHS9R3fiTS1mpsWA1mVZd3DHSylEdtN9D2h25KT+6Qe/xzkLPbqMDSroCl0QRMCyiW3gV0PlaB/zue8gG/pOX5aM05F2igXXmCJIw==
+X-Rspamd-Queue-Id: 8ED7D4000C
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762514521-174063
+X-HE-Meta: U2FsdGVkX1+jK1G/5i7RH718Qcbe+Oo+Rd9f6Rp2x3dRdAxCbr/h3ezVPD15kjSA3CBUCaRIg86c1H246QoBq5e74pqmn4JkVYOruDATAYb0D2WfeuHjnNJcok2zSzrtiqAP3V797MfjaRbqZedWPFvMBs8Kz5Mu44YnMquoygAxrJcbzLmSRIT2g4/MXlusp0iKvQ61iPPmV1/mOqYHSYafq6S5cvcA1JFxGuQMgN1wVmKToXk15ENQys8a4JMvbvGLhQojqZvU8DZUAVmCsK83RcJPW7hdXckgC48tU5xBxEeXfiIzBlntbyjW71H8F5H6St/BWAGAaxPDLuw4chnu1weZJkTG3KPSEes0ohLc82NUamILQmJHKP/JJ+WvFB26IqW3zlrA+qRz0lcom6uo4eLGSG419gO087e3TMd1/so1jk3Kd1K2ejlMUgDoH6OppNVZ2+n47ieMrG2d7D+udPowJs9nvzi7veOKoFPdTa+Cmbl81+0TE8igWCvDr5MnnoSIENLIefVlg1opNksgaqxg29658R+rYFgLllbUuAQMAe6Hs7m1pg30HYoG06+ezwit5t9+XF7M4eMx6fLTvGE4JFjnFSz4BdNhXXssxUMZ7oAbac7LJK7DTq7hG75+5KoYK723+CBpgBraV5VhEK1IekanETvZL+MtNrD3Rna8kl/PYp9kQVHxd4TymfAH/cJj2Gu3y9UThBnRjoemKECnnWpTKIodKSYBaXLvMfc+/J9wku43GuxGihhGOAQfqOPenouezQmq+pKv+l3gsDz/eDMPowbgDOYFC8DSezG1Hs7+A1yUdzC7yTwE9DxPyhWyz04gIpFAQKnjCOeiVF0HqsH7e8UOfU7GTemDVg8Dg1HcT6AUL/p1YqmFI54ZJKhfj/2e1ncnMUhghhmTcUePtf5SyAA6qf8PH4riBKTX9VXO0T9UvWTtBfKYW2ipmtslka0cQtzqQ6X
+ 393+T9V1
+ 3p57UNyX1nXC5HJPI4krQXZq0dwMteM/jddrWIjI+yymtQecxkyhhhGg3oaP+W7I2s/XNIuxUG/MuYkwUX0mwpNsUZpvM3wIIQfzPD2mGBDtRKsQphnclM3w0terf44PME7ZtlqS9RDRvSPtul8CZXADeDAtBnE5QF5020b0bTlGUW5lJQ0pI1UmZ6OC/O56irvpm13RZ+aSETp6jeYzoAGtYJDQje+CfRA9+nIhL3vQU7f2JAL6+7OlHkO3gFrh1wKsjwRW3ksdqLuRni2/zYzf2Pgfr9Vc52KOiLKqQILsJjFT89jrVRC1wCXztHHVvfEQQidTjXNDQXNoUBarqufVZUA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,68 +142,36 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 7, 2025 at 5:24=E2=80=AFAM Pratyush Yadav <pratyush@kernel.org>=
- wrote:
+On Fri, Nov 7, 2025, at 10:59, Huacai Chen wrote:
+> __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
+> flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
+> as follows:
 >
-> On Thu, Nov 06 2025, Pasha Tatashin wrote:
+>  #define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
+>  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
 >
-> > We must check whether KHO is enabled prior to issuing KHO commands,
-> > otherwise KHO internal data structures are not initialized.
+> There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
+> explicitly.
 >
-> Should we have this check in the KHO APIs instead? This check is easy
-> enough to miss.
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+> Resend because the lines begin with # was eaten by git.
 
-I considered adding a kho_is_enabled() check to every KHO API, but it
-seems unnecessary.
+Thanks for your patch, this is an area I've also started
+looking at, with the intention to reduce the references
+to __GFO_HIGHMEM to the minimum we need for supporting the
+remaining platforms that need to use highmem somewhere.
 
-In-kernel users of KHO, like reserve_mem and the upcoming LUO, are
-already expected to check if KHO is enabled before doing extra
-preservation work. I anticipate any future in-kernel users will follow
-the same pattern.
+I'm not sure what the reason is for your patch, I assume
+this is meant purely as a cleanup, correct? Are you looking
+at a wider set of related cleanups, or did you just notice
+this one instance?
 
-We could add a WARN_ON(!kho_is_enabled()) to the internal API calls,
-but I don't think it's needed. We already catch this condition with
-other WARN_ONs, as shown by this report.
+Note that for the moment, the 32-bit arm __pte_alloc_one() function
+still passes __GFP_HIGHMEM when CONFIG_HIGHPTE is set, though
+I would like to remove that code path. Unless we remove
+that at the same time, this should probably be explained in your
+patch description.
 
->
-> >
-> > Fixes: b753522bed0b ("kho: add test for kexec handover")
-> >
->
-> Nit: these blank lines would probably mess up trailer parsing for
-> tooling.
-
-Hm, if so,  the blank line should be removed.
-
-Thank you,
-Pasha
-
->
-> > Reported-by: kernel test robot <oliver.sang@intel.com>
-> > Closes: https://lore.kernel.org/oe-lkp/202511061629.e242724-lkp@intel.c=
-om
-> >
-> > Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-> > ---
-> >  lib/test_kho.c | 3 +++
-> >  1 file changed, 3 insertions(+)
-> >
-> > diff --git a/lib/test_kho.c b/lib/test_kho.c
-> > index 025ea251a186..85b60d87a50a 100644
-> > --- a/lib/test_kho.c
-> > +++ b/lib/test_kho.c
-> > @@ -315,6 +315,9 @@ static int __init kho_test_init(void)
-> >       phys_addr_t fdt_phys;
-> >       int err;
-> >
-> > +     if (!kho_is_enabled())
-> > +             return 0;
-> > +
-> >       err =3D kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
-> >       if (!err)
-> >               return kho_test_restore(fdt_phys);
->
-> --
-> Regards,
-> Pratyush Yadav
+      Arnd
 
