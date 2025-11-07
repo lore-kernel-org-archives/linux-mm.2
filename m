@@ -4,83 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9CFBDCCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 13:37:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B78CFCCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 13:51:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C010B8E0009; Fri,  7 Nov 2025 08:37:50 -0500 (EST)
+	id 0B2128E000A; Fri,  7 Nov 2025 08:51:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BD84D8E0002; Fri,  7 Nov 2025 08:37:50 -0500 (EST)
+	id 062728E0009; Fri,  7 Nov 2025 08:51:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B15908E0009; Fri,  7 Nov 2025 08:37:50 -0500 (EST)
+	id E23E98E000A; Fri,  7 Nov 2025 08:51:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 9FF198E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:37:50 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 6C4944B9BE
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:37:50 +0000 (UTC)
-X-FDA: 84083913900.26.A3AFD91
-Received: from verein.lst.de (verein.lst.de [213.95.11.211])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 90A52180010
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:37:48 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id D0D448E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 08:51:50 -0500 (EST)
+Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 68F4D1A04CF
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:51:50 +0000 (UTC)
+X-FDA: 84083949180.18.9BED69C
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 2AA7940012
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 13:51:47 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762523508; a=rsa-sha256;
+	cv=none;
+	b=PdcBCffNTz93lg/pXcHa0FUkpwEOXiP3mfx8/Xor7riWfxpTuBvaubCyNZZb7fGLyk6xGN
+	ZjWZnuk0PkIsV0E4UpuVulNRHunTRdhzdc+YmB3KS9ruoF21QPZ7EbdlKVko3EnlKAuLyW
+	EA+O+KSozEORhwvYhFQWrZyQmft9eV0=
+ARC-Authentication-Results: i=1;
+	imf17.hostedemail.com;
 	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
+	dmarc=none;
+	spf=pass (imf17.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762522668;
+	s=arc-20220608; t=1762523508;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=4fW4ByonwXrt8CCQV5evrDbXfC526l8bUSvhPi4LoTk=;
-	b=NNdXeWnoR9kPBPSAA/ZCdsl5bxsnTQhkOwoUYzrvgWFEO4NgwGtb01OHiOyvgK/I0EGirU
-	h4OhrRxKKponzgr0P8+vPagVML1WTWol/mhBXt9FjvYblCrXmS4kljzTlbD7KTxQ/Uwr6F
-	1RSkbgabeAAtJgIXbB6XULWJLuBMmzQ=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=none;
-	spf=pass (imf16.hostedemail.com: domain of hch@lst.de designates 213.95.11.211 as permitted sender) smtp.mailfrom=hch@lst.de;
-	dmarc=pass (policy=none) header.from=lst.de
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762522668; a=rsa-sha256;
-	cv=none;
-	b=higOLwgXG6AnUNMy3Hl0bw0Wqez6M+uD5AgcKZpIoJk9dfC74MRiDi0sbZ4CqIFjQTVXeJ
-	8B/2xCNcX+pe/BiwHoJiFb1JHgR54+Zo6DlEo6kjwiEq4sdEt36qc8RduRxG4ChYULyaYq
-	+lRLQQOeXA4Ej8BLzBZPXf2/pAIXVQs=
-Received: by verein.lst.de (Postfix, from userid 2407)
-	id 6E374227AAE; Fri,  7 Nov 2025 14:37:42 +0100 (CET)
-Date: Fri, 7 Nov 2025 14:37:42 +0100
-From: Christoph Hellwig <hch@lst.de>
-To: Kundan Kumar <kundan.kumar@samsung.com>
-Cc: Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <david@fromorbit.com>, jaegeuk@kernel.org,
-	chao@kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org,
-	jack@suse.cz, miklos@szeredi.hu, agruenba@redhat.com,
-	trondmy@kernel.org, anna@kernel.org, akpm@linux-foundation.org,
-	willy@infradead.org, mcgrof@kernel.org, clm@meta.com,
-	amir73il@gmail.com, axboe@kernel.dk, ritesh.list@gmail.com,
-	dave@stgolabs.net, wangyufei@vivo.com,
-	linux-f2fs-devel@lists.sourceforge.net,
-	linux-fsdevel@vger.kernel.org, gfs2@lists.linux.dev,
-	linux-nfs@vger.kernel.org, linux-mm@kvack.org, gost.dev@samsung.com,
-	anuj20.g@samsung.com, vishak.g@samsung.com, joshi.k@samsung.com
-Subject: Re: [PATCH v2 00/16] Parallelizing filesystem writeback
-Message-ID: <20251107133742.GA5596@lst.de>
-References: <CGME20251014120958epcas5p267c3c9f9dbe6ffc53c25755327de89f9@epcas5p2.samsung.com> <20251014120845.2361-1-kundan.kumar@samsung.com> <aPa7xozr7YbZX0W4@dread.disaster.area> <20251022043930.GC2371@lst.de> <e51e4fb9-01f7-4273-a363-fc1c2c61954b@samsung.com> <20251029060932.GS4015566@frogsfrogsfrogs> <20251029085526.GA32407@lst.de> <91367b76-e48b-46b4-b10b-43dfdd8472fa@samsung.com>
+	bh=zqIoRc5stajNENqR8NCk+Ip3BWZNgGLDhFHC7y1USAQ=;
+	b=fXSUCA86UXS1f86z09b6ee/UDQv/B7RpBP+olbiqi8N+feee2zYbrl68JJmzSb01lioGpA
+	4GqWOLFIW9b+mVoJ8SUa06+Nl1ef0QfrC5N0C/d7qkYZQ2bdAkJ0wvWymm5EhCrqZgp7cm
+	J7byL21pdCHMkKl1Hi1q27N0JIL55E0=
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id B2AC9211D6;
+	Fri,  7 Nov 2025 13:51:46 +0000 (UTC)
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9D1CB13A88;
+	Fri,  7 Nov 2025 13:51:46 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id IH4OJnL5DWlFCwAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 07 Nov 2025 13:51:46 +0000
+From: Vlastimil Babka <vbabka@suse.cz>
+Date: Fri, 07 Nov 2025 14:51:25 +0100
+Subject: [PATCH 3/4] slab: use struct freelist_counters for local variables
+ instead of struct slab
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <91367b76-e48b-46b4-b10b-43dfdd8472fa@samsung.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 90A52180010
-X-Stat-Signature: 8zj5sz4hpxnxe1omxa811g1ooh7mipdn
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20251107-slab-fms-cleanup-v1-3-650b1491ac9e@suse.cz>
+References: <20251107-slab-fms-cleanup-v1-0-650b1491ac9e@suse.cz>
+In-Reply-To: <20251107-slab-fms-cleanup-v1-0-650b1491ac9e@suse.cz>
+To: linux-mm@kvack.org
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>, 
+ Roman Gushchin <roman.gushchin@linux.dev>, Harry Yoo <harry.yoo@oracle.com>, 
+ linux-kernel@vger.kernel.org, Vlastimil Babka <vbabka@suse.cz>
+X-Mailer: b4 0.14.3
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 2AA7940012
+X-Stat-Signature: s5max54ah8d1pc8nezbhdq9ztkh9fa31
 X-Rspam-User: 
-X-HE-Tag: 1762522668-416296
-X-HE-Meta: U2FsdGVkX1/Ty+eoE46xHjlrIk33Zrrg1YOWavYOOeG2Md8/ZRB/D26mKNjDUlvxYXww2DLsS0s/n0Bbt3jbxqxIOXQFyJoMI8pBI3odgejY+yPeBc2R621dvNpLOPQNOgT5srEAhl/IyGrIZv2JMo1ELrHoiOsqeR8KLH2aAt5UtA73I1xpnUXiNykSjVVo4zmXiN01ND4A1DAzYT2xgAy30rj+D3PKdav/HlDKb/XG9+DuBGjN0nmbxvXaSDCB0EA4U30DCW5avwuCt4Wpz8+MbUniDvhR/NiUqCGaIXTh0Hf/sMlqn2CSs3NNFwzW+3ba9Iirr4k8f3pwcjLn5OkmuxldyvezMhATJU+UQbKcq6Mjbbf+V1Gh5po8O2qWQgVTk4xswqdPORQFkrTIP1AkI32f75cqErGdftVZkXrcYDNOY1F17MBg2db86Lwamd24bLBbkrfEUJa+ukmxetc7NpErpa+pYfmOypPmVQ02kGpiNzpiP+KvUjDqPk3o9MM9jQzM/ghfqtOSN/TU22D2xiBDROmMM/WnT1KOW2uOMCXEl40h5Hnsoaz5tMTOi6u7ZnW5ZrS1BVcR0pkUxxgljsJmePnx8nrZ6xFwo3p/27/a+H4EJJfLtL4wFepGjQes35W7rJILZXjoHH0Pq0q96ue6fMLOUIwsSdD25lKEqY/NdMCx7lXDsHLX/vnjjCvYzSKqZ1HXv8emTX254DI1Dc9qN+5u+f1L2lsI9kUq0g6HhM2q2lClZWgmhEAKPU8kWdyRa9VlNl+3fnHW99AwgziStEVH1kXU6lchZpCSR+wc3JBCkcDpIjqa/YLoDj0+tIJOdHT2C34jZF170gKIMIuez45GDmaVKT4BnQ17E54EaiL7UfbjPtE7iz7Yf1eFTu1p3uvMLeSMlNyS73PbCAG5aZNtV4yy5Dyt7dzOE1cl0AZgMxDpsVQ3TM/XUF43o6h7xkDGhbPOewd
- SDv37hCv
- 6GMuc/csK9/3c5V/nnbCE4HUr57eF+F56tLrl7uOIji6pHFvzDnTKAhu9ijdL7Uj81oP+BjMyY94CCi+0u/91OmiLELDwnn8InQNT4gOz/f8oUJ5GqKSLf2SA8NDC0YxU2RswCPxm3TEREqwPnCHi5RLssPU+Xwl+V3D0vRvyatogVl4=
+X-HE-Tag: 1762523507-919396
+X-HE-Meta: U2FsdGVkX18dWuXWfwpbiN6STdzfo59X/XsYQ3Mc7pa0sojGpuspO1D5QatRF+S62ZzZP8BjVfMXVp8ust0Zf8xPHASr4whfaQAkCaeKuEkbblc/1uCopCrhDaNtPyqkf62ofgg8hxDJERR5gzR32/l0YLWmzGVvC5drc3rZgHE3PC1DoJlLYNdNIgVg2HdEnrWyqHNvkcdOBYW2HyRZZRMCyHOtzwRNM4FyHt9WLEehgjZKOstS7iQSkWAcTi7keLK7W0jwiFvXoWv9cn8uLRbTPvlcEDj7A9/0OIxPy2K+2gprx/DTxLeV66cac0bE5Var1UA0XnLOm7urqn0AMKo3Vvo3uKUsPnisrud3S4gCJsopBqAjh+UxFGqN6pHeONZdovORLSI2j54kKZQwwu0kd6yWMqyySoO6IqnVYCiEffVLRkeHhyU5OwLg1PxIOEhl7cu5ekIfC1WAi6wbdkihKiSZZC0d5Glr1BIKabHA10DxH2iVQeam/dNrPcpi3nFW3NjWnrRVFMqKgGfqoPhGP1FGktkSY+3LzuPTxRVK7QvrCyiXdM0jYicPTcqtvEZ0DYXSup4Y3roA4M/vGzKuiSEY9qxm8vNsciWFQlUywAMuLWzJb6A0G4RFJRhPThZiZsPJNB3Bv6ALbERBoo0pbM0MNTKW47cKSo9SlKL9j8IRNBkW7qLN+JFvjzicdwkkhYdneDfIokOd+ZiT7MnLYOM4Q9Qf+ou2NMHGoFfw+gA6OdINy9on6SGnOuCm03lRyAF1znQmE5K7KeD5ETKD1/adBPCynzL3EWQr9dW6TXCZ2H5BrYlMC60CtYYqqIAUR+Kb2cmOYy75hvSZfbeBd2hSe8C3GcUXd9cJkLfG6Je4JX5YHPkg2+qrQBPLCl2O/r8tWzN7km6XOOkfPtnoSqEh7tkwca/SUXuLLZ0lRoebpyMXYitajgCvVnT4qV2m6Jcs6v0bil929Q+
+ EMIDmV++
+ dVdn0zh4YAWCkfUgTow62eVn1zhJgrhG17rrkkAb1InfIq+PZg9qTYr+fYVYb7F6U4ONiq3L0GNWXtyyo8mh3BKcXzdfYrW6ASZkq
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -89,28 +102,62 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 02:54:42PM +0530, Kundan Kumar wrote:
-> Predicting the Allocation Group (AG) for aged filesystems and passing
-> this information to per-AG writeback threads appears to be a complex
-> task.
+In several functions we declare local struct slab variables so we can
+work with the freelist and counters fields (including the sub-counters
+that are in the union) comfortably.
 
-Yes.  But in the end aged file systems are what will see most usage.
-Fresh file systems look nice in benchmarks, but they aren't what
-users will mostly deal with.
+With struct freelist_counters containing the full counters definition,
+we can now reduce the local variables to that type as we don't need the
+other fields in struct slab.
 
-> To segregate these I/O requests by AG, it is necessary to associate
-> AG-specific information with the pages/folios in the page cache. Two
-> possible approaches are:
-> (1) storing AG information in the folio->private field, or
-> (2) introducing new markers in the xarray to track AG-specific data.
-> 
-> The AG-affined writeback thread processes specific pages from the page 
-> cache marked for its AG. Is this a viable approach, or are there 
-> alternative solutions that could be more effective?
+Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+---
+ mm/slub.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Or maybe the per-AG scheme isn't that great after all and we just
-need some other simple sharding scheme?  Of course lock contention
-will be nicer on a per-AG basis, but as you found out actually
-mapping high-level writeback to AGs is pretty hard.
+diff --git a/mm/slub.c b/mm/slub.c
+index 8330e4f8b3b2..a55e0af26ec7 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -3725,8 +3725,7 @@ static void deactivate_slab(struct kmem_cache *s, struct slab *slab,
+ 	void *nextfree, *freelist_iter, *freelist_tail;
+ 	int tail = DEACTIVATE_TO_HEAD;
+ 	unsigned long flags = 0;
+-	struct slab new;
+-	struct slab old;
++	struct freelist_counters old, new;
+ 
+ 	if (READ_ONCE(slab->freelist)) {
+ 		stat(s, DEACTIVATE_REMOTE_FREES);
+@@ -4390,7 +4389,7 @@ __update_cpu_freelist_fast(struct kmem_cache *s,
+  */
+ static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
+ {
+-	struct slab new;
++	struct freelist_counters new;
+ 	unsigned long counters;
+ 	void *freelist;
+ 
+@@ -4418,7 +4417,7 @@ static inline void *get_freelist(struct kmem_cache *s, struct slab *slab)
+  */
+ static inline void *freeze_slab(struct kmem_cache *s, struct slab *slab)
+ {
+-	struct slab new;
++	struct freelist_counters new;
+ 	unsigned long counters;
+ 	void *freelist;
+ 
+@@ -5867,7 +5866,7 @@ static void __slab_free(struct kmem_cache *s, struct slab *slab,
+ {
+ 	void *old_head;
+ 	bool was_frozen, was_full;
+-	struct slab new;
++	struct freelist_counters new;
+ 	unsigned long counters;
+ 	struct kmem_cache_node *n = NULL;
+ 	unsigned long flags;
+
+-- 
+2.51.1
 
 
