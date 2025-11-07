@@ -4,92 +4,121 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7E855CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 04:43:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 55008CCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 04:47:23 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8F7618E0006; Thu,  6 Nov 2025 23:43:57 -0500 (EST)
+	id AD3548E0009; Thu,  6 Nov 2025 23:47:22 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CF418E0002; Thu,  6 Nov 2025 23:43:57 -0500 (EST)
+	id A84938E0002; Thu,  6 Nov 2025 23:47:22 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 80BE48E0006; Thu,  6 Nov 2025 23:43:57 -0500 (EST)
+	id 973728E0009; Thu,  6 Nov 2025 23:47:22 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 6DD9B8E0002
-	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 23:43:57 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id F13D088475
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:43:56 +0000 (UTC)
-X-FDA: 84082568472.13.0F7862D
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf27.hostedemail.com (Postfix) with ESMTP id 73C6A40005
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:43:55 +0000 (UTC)
-Authentication-Results: imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fiIRMAXA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 86D8D8E0002
+	for <linux-mm@kvack.org>; Thu,  6 Nov 2025 23:47:22 -0500 (EST)
+Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 38BFF160330
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:47:22 +0000 (UTC)
+X-FDA: 84082577124.11.AE368C8
+Received: from invmail4.hynix.com (exvmail4.skhynix.com [166.125.252.92])
+	by imf10.hostedemail.com (Postfix) with ESMTP id 747D2C000D
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 04:47:18 +0000 (UTC)
+Authentication-Results: imf10.hostedemail.com;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762490635;
+	s=arc-20220608; t=1762490840;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=bk/XkyWuPutaISN8KsDCkvvTmoPOfzs4yGZqbVvQFNI=;
-	b=o6GwvgsMYwzXWRC41YpkCyrMzKss0sI6mN4aqa/m2uQKIY4tB5hSd6AGneJ5tsWXk/iXQ+
-	cXiriKqrVVUKUtiR/lvDZ5mmcgljEgHq/H0GN13IWDU4ocOmcwL/h9mnZL5TJZ3u5jQsdq
-	sV9X8IsfQXq2SNkyC5OTXljOsFIGE0I=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762490635; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references:references;
+	bh=Begbf3K+X9hPky68+ErAxIad0OPKncDssS4lkJZaW5s=;
+	b=RL9WZ+zsytUQg6cPfIc97QMbeOewtvBKgW5Z2xq5djDA1MVTrvFNJ2hswrw9edX5UUHafY
+	RUXREcVvGUgFTh2Gn+sP01yq+0+mYcyq+Hes+V7KFcPcQaH8zsnikQyOmt/go9DY/SrGNB
+	2+6hbJ5GVKOAxOkLbxsfAocnOl1ekMg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762490840; a=rsa-sha256;
 	cv=none;
-	b=dS8AILgm1NLqBL2CE2ALez4jSjoZUWhMd/Spl0o/tVdiIEFv35wZ9q1eE8lApwXWIIzSsE
-	SloOeLKB2ou/u4VIXlarSD6KM8UIzPAB1GTV2MS/Ks1p7bpL4jHdCOI483o6ZySmwUQdXb
-	ZsqaNMQY+bkLxCbdl7xMqms65NPiLYY=
+	b=IfSQtkvbCDmEkvpySTALtZHx20pnWjaFVpgqSXq31Qq+PtERaQ063dx18L9LNj3E7KavsJ
+	872y/Vk+zT2BOcee8QLmcDZ4xgmRZQAG2rodBMiAYd3aLEy0bwbjs4ZTKOIUJ3ITp0JQa2
+	SlcF9dkkeqLkCM+jTEx6QXOuS8Dt55E=
 ARC-Authentication-Results: i=1;
-	imf27.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=fiIRMAXA;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf27.hostedemail.com: domain of ebiggers@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=ebiggers@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id B319660229;
-	Fri,  7 Nov 2025 04:43:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F145C4CEF5;
-	Fri,  7 Nov 2025 04:43:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762490634;
-	bh=48FJJQWCuZyY3WICX2hMykSPN/WEL8zhwGPI/xLv9B4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fiIRMAXAvqw6pJKQ2vhbLQ4u1cx2Pn2MW+mXefXZoqHYT60ATo9zx1lwht6WzqWey
-	 a6ElQq4pQmDSvrK8l7DHBcSmgGuUbsvhBaOM8TYqXnXhmuGg3oiPIzFBW9YQ2MnMMK
-	 1KMoXNSjjJEoiHo92g2ZjFejMm/2E4GLOJnC5106DNdIpjjZgB9+p0HNs3gLdIPNCV
-	 /Ry6f6QtwCbsyYCA9p97Z6DMtBR3qlzplgyFZa9NOV40yRtbEWCk/2AmvHLMhWPXfW
-	 ciLTSJtvevAq8S0gqy2Z+HUWfFIveOemVYTUr08UNMCucCtt2y0rn735qRb+z9mm1E
-	 y6VE0ioo4c3rw==
-Date: Thu, 6 Nov 2025 20:42:13 -0800
-From: Eric Biggers <ebiggers@kernel.org>
-To: Christoph Hellwig <hch@lst.de>
-Cc: Jens Axboe <axboe@kernel.dk>, Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Christoph Lameter <cl@gentwo.org>,
-	David Rientjes <rientjes@google.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-fscrypt@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH 7/9] blk-crypto: handle the fallback above the block layer
-Message-ID: <20251107044213.GE47797@sol>
-References: <20251031093517.1603379-1-hch@lst.de>
- <20251031093517.1603379-8-hch@lst.de>
+	imf10.hostedemail.com;
+	dkim=none;
+	spf=pass (imf10.hostedemail.com: domain of byungchul@sk.com designates 166.125.252.92 as permitted sender) smtp.mailfrom=byungchul@sk.com;
+	dmarc=none
+X-AuditID: a67dfc5b-c45ff70000001609-0a-690d79d21061
+Date: Fri, 7 Nov 2025 13:47:08 +0900
+From: Byungchul Park <byungchul@sk.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: linux-mm@kvack.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kernel_team@skhynix.com,
+	harry.yoo@oracle.com, ast@kernel.org, daniel@iogearbox.net,
+	davem@davemloft.net, hawk@kernel.org, john.fastabend@gmail.com,
+	sdf@fomichev.me, saeedm@nvidia.com, leon@kernel.org,
+	tariqt@nvidia.com, mbloch@nvidia.com, andrew+netdev@lunn.ch,
+	edumazet@google.com, pabeni@redhat.com, akpm@linux-foundation.org,
+	david@redhat.com, lorenzo.stoakes@oracle.com,
+	Liam.Howlett@oracle.com, vbabka@suse.cz, rppt@kernel.org,
+	surenb@google.com, mhocko@suse.com, horms@kernel.org,
+	jackmanb@google.com, hannes@cmpxchg.org, ziy@nvidia.com,
+	ilias.apalodimas@linaro.org, willy@infradead.org,
+	brauner@kernel.org, kas@kernel.org, yuzhao@google.com,
+	usamaarif642@gmail.com, baolin.wang@linux.alibaba.com,
+	almasrymina@google.com, toke@redhat.com, asml.silence@gmail.com,
+	bpf@vger.kernel.org, linux-rdma@vger.kernel.org,
+	sfr@canb.auug.org.au, dw@davidwei.uk, ap420073@gmail.com,
+	dtatulea@nvidia.com
+Subject: Re: [RFC mm v5 1/2] page_pool: check nmdesc->pp to see its usage as
+ page pool for net_iov not page-backed
+Message-ID: <20251107044708.GA54407@system.software.com>
+References: <20251103075108.26437-1-byungchul@sk.com>
+ <20251103075108.26437-2-byungchul@sk.com>
+ <20251106173320.2f8e683a@kernel.org>
+ <20251107015902.GA3021@system.software.com>
+ <20251106180810.6b06f71a@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251031093517.1603379-8-hch@lst.de>
-X-Stat-Signature: mc8fp6gtxpfzbzezkonsc3ha5gmkfwyj
+In-Reply-To: <20251106180810.6b06f71a@kernel.org>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Sa0hTYRzGe885e8/ZcHVat7dEi3URhOxCwT+o6Et0IKKiD0UFdciDDnXG
+	vKTRZZZgSdrVnNNqEdVSYzjzMnGr5l2JxCiPlK5WuUpTcbU0pdqsqG8/nufh938/vByt6VAs
+	4HT6VMmgFxO1WMWoPofdXN6Vqdat7OjWQImtHEPZWAbcfV2rgPFyHwUlpdUIvoy/ZOGnsxmB
+	v7EFw0DDKIJbNwM0lDzNZuCr7TsNjjofgk+m+xjeN3tZKLNvA8+dfgbqc2po8J5vxZCXPUGD
+	c3yIhVO11qC40shCZ3W+Aq58v01DjfE1C8/qSjD0lf9UQL87j4E28z0GRgoaafDkb4Jmy1wI
+	dAwiaLTVUBA4dw3D86I6Cqqcz1m43GXB8Dbbg6CrwctAweQZDMVZ+QgmxoLKoQtfFFDc1Mdu
+	ihGyZBkLDYPDtPDgXg8lvDBdZATZ1U4JDnMvK1jsaUKlNVrIlbtowV56Fgv20Uus8OpFPRZa
+	TROM4HizTnDU+ikh7/QQ3jFnr2p9rJSoS5cMKzYeVMX3D6gPv5yX8fFyIWNEuTNzkZIj/BrS
+	5rxK/eWehxVMiBl+CWnvLqJDjPkoIsvjUzw7mGdXFgU3Ko7mR1hikvsUoWIWn0pGho1TIzUP
+	5LqlkA6NNHwvIib/efy7mEnait5NXaD5aCL/+Bi8zAU5nNz9wYViJb+KWF1NU845/GLyqLqF
+	CnkIP8iRG9eMf146nzy2yswFxJv/05r/05r/aS2ILkUanT49SdQlromJz9TrMmIOJSfZUfCL
+	3Tk+ua8WjXbuciOeQ9ow9ZgrTKdRiOkpmUluRDhaO1u9Vh+M1LFi5lHJkHzAkJYopbhROMdo
+	56lXB47Eavg4MVVKkKTDkuFvS3HKBUbEiMXmyA23FAVHF3nTjrk7E7SWnoRIl7g10u+pcuyP
+	ODu4sPXch5Nvc6aTirhhr8fRNIuLudS5R2XzIay/7XqVvNu/eWfOk27biWWRvoj1vsKWJQcM
+	08pm1E8eG4j6NtkevvaEckuE0bk0C/eWKRvrt6+8aC3VLo8bC1TEgtGmZVLixVXRtCFF/AWh
+	HQ69XgMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA02SW0hTcRzH+Z9zds5xeOJ4KQ/W04qCkZpU9utCWBD9CYp6inqxUx5ypFM2
+	E9fFZo4ukmZZuK0Zi6jMnOY03aSpODMvD8XKmpaXrIzSlqiZU7M2I+rtw/f2e/mxZHiFLJpV
+	qTMljVpMVdBySr5nc16MR8ep1tg2gKWqgoYH09lwb9AhA3/FJwIs5XUIJv1vGPjlakMw0fqU
+	hhH3OILbt6ZIsDwzUPC9aoYEZ8MnBF+MNho+tg0x8MC+GwbuDlPw+Hw9CUOX22koMMyS4PL7
+	GDjrKAsM1+gZcJd2yOB5XaEMrs3cIaFeP8jAiwYLDf0Vv2Qw3FJAQYf5PgVj11tJGChMhDbr
+	EpjqGkXQWlVPwNSlUhq6TQ0EPHJ1M1DssdLw3jCAwOMeouD63AUabuQWIpidDkz6iiZlcONJ
+	P5MYh3O9Xhq7R7+RuPZ+D4FfGa9Q2NvYSWCnuY/BVvtxXFOmxPleD4nt5RdpbB+/yuC3rx7T
+	uN04S2Hnu43Y6ZggcEGej9675KB8S7KUqsqSNHFbD8lThke4jDdR2Z+LSyg9yg/LRyGswK8T
+	epqqqSBT/Aqh87WJDDLNrxK8Xv8CRwZ0Q40pkJGzJD/GCEZvvyxoRPCZwtg3/UKI40G4aS0h
+	g6Fwvg8JxonL9B8jTOgwfVi4QPJKwTv/mchHbICXCvfm2aAcwscLZY1PFjYX88uF5rqnRBHi
+	zP+1zf+1zf/aVkSWo0iVOitNVKWuj9UeS9GpVdmxR9LT7CjwQ3dPz11xoMkXO1sQzyJFKDfd
+	GKoKl4lZWl1aCxJYUhHJrVcHJC5Z1J2QNOlJmuOpkrYFLWUpRRS3a790KJw/KmZKxyQpQ9L8
+	dQk2JFqPNuiKlkX3FCe6T0bGxOWs3H42t2vbNs+ZRQlrdcrakpIcZ+0m7Do82rzHsCbeUDnz
+	tbpL6LI1p4eNvPRx9nbT7I9dlYsP+iLW7Ssd/MmGnVY6bEmrhvy3qeaUS5acn2L5w8SEuaRT
+	ved6Vy9aFn8yxHegf2VGk+jqGNvh7rZ0NtkUlDZFjFeSGq34G6w0CIU/AwAA
+X-CFilter-Loop: Reflected
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 747D2C000D
+X-Stat-Signature: 8xn7ksxpqjutoj4nfms7ucrx6pdxc1t4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 73C6A40005
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762490635-870738
-X-HE-Meta: U2FsdGVkX1/GJBAFt4WgIvbZtTQewKbN/zJnUdtlLvJ2hHFjOXE71MNmntY8jmTyqorPteGp122REqrzQAouKhXhNVhmjyHkazushC+QGnGUUKjoBMhtb4VJp23tNp3lKxXxaJYnjL7O+mYud4ZGcG1qZMPyJwxsuwDkp4hwR+CQwoqk9MnXd78eVjICK+J12G8eiNid7Boi9X7wqesJp2+cyXtZgFH6A+RoD1RZfOGYjf98GIlYgq78MDk+rHYqpN/8gP3tBgpLW5Cb6Z7MaLlQp5Fpbq92YHUUEj8sBKedC6vf6Uqfz4DaeG3j7FBCNjX5nWR1b2rIRNyriOM59HRb4THnf2azZ5bEUddJWu6ARyVJuwrbVey6F/D7gfosmWqI9F5ClrkM3lJDlJv8hXt2FYDhavi2mbu7khbfAQyQdyDGEil+lBEuQwWmMMQ2FqQDHS0GJRihCerMytyFscvW8oicYdp0wQqTnmv0tSVxHsuWXPMCv8hdsorQq3flz40NNiMPrQRbKY3IGLZiCMU4+4ypx5Z79dpfJef4b6DCqBhLzI4/UiPlXBuvOASx3569DQfMldwHhHN5RY25XiDWZilANrmVWKtqtQIN7+lfcro1QjNzmDgwNpyhXBSOl/0Kxl4kFmFF0WYo4Et0T/k8OHow7iFO0F2mtMU+cYOueyomCZDikMJMIcWBg/hLXXpmhzHzPr12rUW4e0LZezzBFWO67++rfRcRTR0tOLGAQD6P5wLz4nKj6jm12SLIbSGsx/jRusmgze9kBo97/suHpUf71xJHcMwJI7H003qNt8q/ygO2/Fsx9qRV3xTd0t1pzIwHOZlCN1NlqA+EkhBF4/IhepIUKOS/oHFrk+8oPN8dI5PMnQfMaBsDkZ2SYvSoDRMJlo3dWC7rCFgN3Ou9b2jR/wYFPECMJg8PANM2h0yH/46c0mT3XIPYKgtq+4IfKSv+wl86FnydG3/
- naalJKw1
- UWWKm/EhZgChhpJymG55zuy7urNrWlmBGozYgkF7wmNVwL7LsdF0ycpjsxd3r/5r1/aiVym71lcDd3ZFsFhvUuhNw0ET40Jna+7Asdw1YdQyBNJaVHTKKm1wx2FbTsJ3jQGkuiP5OZR1hUOGjPLYxVG28rHDR0hXDb8L6bm+/K5tciOmlOKKIlLtAb+HGQcT37xOsFhOcI0WeDci71A5OJtHAckUPtZoFIA5w3HOf6JpA6Mgg7LnzOoRHn0OOlWG6gtHc
+X-HE-Tag: 1762490838-391101
+X-HE-Meta: U2FsdGVkX19CnuVadqyjvQVJ/5kDfRkEr29KBk4+O2y8ddAmSWBO8gAa52qZyUZ3cFi4BLznLKaxjGskV84C6jtI8hv6BKPxc0ERFLknnv2k4Of3vndHWBpXB03kfifU4EbvesEPpQ+t/qTsSKe52Z4+MNRd7VkPFHxNkvyJ9I77+U8VwxXyzJO1pr9pjoyyJXjMjQgsuw5NIELv74HDXqNv5O8befe0fimUaYS4+0+2amYgZjhw1HthQMc6dzrAV7ikUI/htVkGjqGttldiFgGkzN3Tupl/86tR6Hn0f2h7nbgp7wfZ+wAZDDReYV9T7ovz2Nnt+dxAkmRqodH4ax+hOSKY9Gk4tZOC/Ea4TwcrKpK9kav8cjnY1cOOPwkzvo1BYSZPFe6lX+s8s6WmHrOBL7xRehg69iwxeemYhtviIumyxCHeqojgU/L1FTqeVCB1wo5yh8Minx0L4Jh9OPrbXcLBWt1581VS+kBU47PPqjTJcXb0AKNd69Onfn8pjl2Slu9bQ/4iewniSjY4TfCJaEhrpFYi97kp9rmeGsJ4A93izULW1Xwx/L3yhBJJWlvcZzU8RGuEiala0dMFNAMEihlFtnIapNsfhtP2lldhruEaAx3BsGZGXgEJEL7q31EEVGLPnwLobkCgkxJbV4Bcc4Ki6u8EnO8JBN6aXTUS5+I48o2lWbyF31S5LGKzawVkAC8KZLKBBNh1CemKFRsBpJAS8p3DrUqhF9ViJbwaGIAnqiXrh5U11DbDkDJv5ylEfQGD45I=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -98,55 +127,105 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Oct 31, 2025 at 10:34:37AM +0100, Christoph Hellwig wrote:
-> diff --git a/include/linux/blk-crypto.h b/include/linux/blk-crypto.h
-> index 58b0c5254a67..ffe815c09696 100644
-> --- a/include/linux/blk-crypto.h
-> +++ b/include/linux/blk-crypto.h
-> @@ -171,6 +171,22 @@ static inline bool bio_has_crypt_ctx(struct bio *bio)
->  
->  #endif /* CONFIG_BLK_INLINE_ENCRYPTION */
->  
-> +bool __blk_crypto_submit_bio(struct bio *bio);
-> +
-> +/**
-> + * blk_crypto_submit_bio - Submit a bio using inline encryption
-> + * @bio: bio to submit
-> + *
-> + * If the bio crypt context attached to @bio is supported by the underlying
-> + * device's inline encryption hardware, just submit @bio.  Otherwise, try to
-> + * perform en/decryption for this bio by falling back to the kernel crypto API.
-> + */
-> +static inline void blk_crypto_submit_bio(struct bio *bio)
-> +{
-> +	if (!bio_has_crypt_ctx(bio) || __blk_crypto_submit_bio(bio))
-> +		submit_bio(bio);
-> +}
+On Thu, Nov 06, 2025 at 06:08:10PM -0800, Jakub Kicinski wrote:
+> On Fri, 7 Nov 2025 10:59:02 +0900 Byungchul Park wrote:
+> > > > page-backed, the identification cannot be based on the page_type.
+> > > > Instead, nmdesc->pp can be used to see if it belongs to a page pool, by
+> > > > making sure nmdesc->pp is NULL otherwise.
+> > >
+> > > Please explain why. Isn't the type just a value in a field?
+> > > Which net_iov could also set accordingly.. ?
+> >
+> > page_type field is in 'struct page', so 'struct page' can check the type.
+> >
+> > However, the field is not in 'struct net_iov', so 'struct net_iov' that
+> > is not backed by page, cannot use the type checking to see if it's page
+> > pool'ed instance.
+> >
+> > I'm afraid I didn't get your questions.  I will try to explain again
+> > properly if you give me more detail and example about your questions or
+> > requirement.
+> 
+> net_iov has members in the same place as page. page_type is just
+> a field right now.
 
-So, the new model is that if you have a bio that might have a
-bio_crypt_ctx, you always have to use blk_crypto_submit_bio() instead of
-submit_bio()?
+The current layout is:
 
-It looks like usually yes, but not always, because submit_bio() still
-works with hardware inline encryption.  However, it also skips the
-bio_crypt_check_alignment() check that was done before; now it happens
-only in __blk_crypto_submit_bio().  So that creates an ambiguity about
-whether that usage is allowed (if, hypothetically, a caller doesn't need
-blk-crypto-fallback support).
+  struct page {
+	memdesc_flags_t flags;
+	union {
+		...
+		struct {
+			unsigned long pp_magic;
+			struct page_pool *pp;
+			unsigned long _pp_mapping_pad;
+			unsigned long dma_addr;
+			atomic_long_t pp_ref_count;
+		};
+		...
+	};
+	unsigned int page_type;
+	...
+  };
 
-Maybe the alignment check should be done both in submit_bio_noacct()
-after verifying blk_crypto_config_supported_natively(), and in
-__blk_crypto_submit_bio() after deciding to use the fallback?  Those
-cases are exclusive, so the check would still happen just once per bio.
+  struct net_iov {
+	union {
+		struct netmem_desc desc;
+		struct
+		{
+			unsigned long _flags;
+			unsigned long pp_magic;
+			struct page_pool *pp;
+			unsigned long _pp_mapping_pad;
+			unsigned long dma_addr;
+			atomic_long_t pp_ref_count;
+		};
+	};
+	struct net_iov_area *owner; // the same offet of page_type
+	enum net_iov_type type;
+  };
 
-Either way, the kerneldoc needs to be improved to accurately document
-what blk_crypto_submit_bio() does, when it should be called, and how it
-differs from submit_bio().  This also deserves a mention in the "API
-presented to users of the block layer" section of
-Documentation/block/inline-encryption.rst.
+The offset of page_type in struct page cannot be used in struct net_iov
+for the same purpose, since the offset in struct net_iov is for storing
+(struct net_iov_area *)owner.
 
-(I'll take a closer look at this patch later.  It will take a bit more
-time to go through the blk-crypto-fallback implementation.)
+Yeah, you can tell 'why don't we add the field, page_type, to struct
+net_iov (or struct netmem_desc)' so as to be like:
 
-- Eric
+  struct net_iov {
+	union {
+		struct netmem_desc desc;
+		struct
+		{
+			unsigned long _flags;
+			unsigned long pp_magic;
+			struct page_pool *pp;
+			unsigned long _pp_mapping_pad;
+			unsigned long dma_addr;
+			atomic_long_t pp_ref_count;
++			unsigned int page_type; // add this field newly
+		};
+	};
+	struct net_iov_area *owner; // the same offet of page_type
+	enum net_iov_type type;
+  };
+
+I think we can make it anyway but it makes less sense to add page_type
+to struct net_iov, only for PGTY_netpp.
+
+It'd be better to use netmem_desc->pp for that purpose, IMO.
+
+Thoughts?
+
+	Byungchul
+
+> static __always_inline int Page##uname(const struct page *page)         \
+> {                                                                       \
+>         return data_race(page->page_type >> 24) == PGTY_##lname;        \
+> }                                                                       \
+> 
+> The whole thing works right now by overlaying one struct on top of
+> another, and shared members being in the same places.
+> 
+> Is this clear enough?
 
