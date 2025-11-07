@@ -4,65 +4,65 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9B865CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 15:23:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7EC6CCCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 15:29:03 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C2BF68E0005; Fri,  7 Nov 2025 10:23:03 -0500 (EST)
+	id B50078E0008; Fri,  7 Nov 2025 10:29:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BDC848E0002; Fri,  7 Nov 2025 10:23:03 -0500 (EST)
+	id B27688E0002; Fri,  7 Nov 2025 10:29:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id ACB2C8E0005; Fri,  7 Nov 2025 10:23:03 -0500 (EST)
+	id A642B8E0008; Fri,  7 Nov 2025 10:29:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 9AA838E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:23:03 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 4F7DA1A02C0
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:23:03 +0000 (UTC)
-X-FDA: 84084179046.04.33BCDA9
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 9311F8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:29:02 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 20C44C03F6
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:29:02 +0000 (UTC)
+X-FDA: 84084194124.14.6AD8C9F
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by imf21.hostedemail.com (Postfix) with ESMTP id 78A061C0014
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:23:01 +0000 (UTC)
-Authentication-Results: imf21.hostedemail.com;
+	by imf01.hostedemail.com (Postfix) with ESMTP id 32E224000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:28:59 +0000 (UTC)
+Authentication-Results: imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762528981;
+	s=arc-20220608; t=1762529340;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=201pH6E+MecV9mtWTOJQYihUJg/+5cjD8vrLDVAbi6g=;
-	b=mES5hU3AKNKy6Wxn0HqUWH+VMr5LvL8vwXTqeoONc9FLlmrcLGZKej0ebA2nt0b8bbZ1a4
-	ai/qRPSJt0u0mlbSgmgFYkCtCfPgNfVlcPMNof55G4z8fiJd6+yy5GlVArVm/lhnynDFmS
-	L3kE/MlcGBom9iE6nN0FOPJQTvn5R+o=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762528981; a=rsa-sha256;
-	cv=none;
-	b=SMsEzQUOsema+VZlZosoaE34dqA3A07TJ81zEOwEXSHnK8UZZWTKe9eg7lSEHePAoLiDF8
-	+9P2boxTjs4+jr/cZCCxsu/p49GV77HmH2s2Mk4MUYNLmZQY04M/VMSMVKXbEpGWs+5MnK
-	MdhR0i1SnXR+pYCLWLyd0KNbdlDC94M=
+	bh=CbzUp7HLI49Fg8paD04i5ybzsDse9dFElebqMJiK6fk=;
+	b=3hFLnIVIkJlqPZTTnFpP7mmChc0uXn3EeMcYQhg3ZB934O/hIbrQA9SYsq+c9JKTtozXMs
+	cUeh7PCK/n4mOVc673L5LBo8cX+qXUGSSfUrIRly+4Qd1VZ/byALdONgU8XKhS0PgNVFv7
+	1FswLyfqokNukdBbefzYf8uUdpP6JGw=
 ARC-Authentication-Results: i=1;
-	imf21.hostedemail.com;
+	imf01.hostedemail.com;
 	dkim=none;
-	spf=pass (imf21.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com;
-	dmarc=pass (policy=none) header.from=arm.com
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf01.hostedemail.com: domain of ryan.roberts@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=ryan.roberts@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762529340; a=rsa-sha256;
+	cv=none;
+	b=MQb8y24RotdFwiOe+WMegt3coYtnh5TrbySDAZzjLmF4swyZ3PY6a2wElMvvRkjqW2wOJi
+	H1wb3yOa40SNDgeHz0882Sgh4mu+bZ3PLmkIp8IPu2ZDt9oAHjq/DoinP2y4AJ7Q8hWP0o
+	ItWF6rCg1XeODGN0e5gQA7U2GkQQcLw=
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9C58F1515;
-	Fri,  7 Nov 2025 07:22:52 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55F981515;
+	Fri,  7 Nov 2025 07:28:51 -0800 (PST)
 Received: from [10.57.86.134] (unknown [10.57.86.134])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0C093F694;
-	Fri,  7 Nov 2025 07:22:55 -0800 (PST)
-Message-ID: <645178fd-df4e-42fe-b55e-97d9506499be@arm.com>
-Date: Fri, 7 Nov 2025 15:22:54 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7C13D3F694;
+	Fri,  7 Nov 2025 07:28:54 -0800 (PST)
+Message-ID: <06026ad7-fb85-4a78-ba70-7fa1f5bca0cd@arm.com>
+Date: Fri, 7 Nov 2025 15:28:53 +0000
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/12] mm: introduce generic lazy_mmu helpers
+Subject: Re: [PATCH v4 08/12] arm64: mm: replace TIF_LAZY_MMU with
+ in_lazy_mmu_mode()
 Content-Language: en-GB
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>,
- Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
+To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  Andreas Larsson <andreas@gaisler.com>,
  Andrew Morton <akpm@linux-foundation.org>,
@@ -70,11 +70,12 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  <bp@alien8.de>, Catalin Marinas <catalin.marinas@arm.com>,
  Christophe Leroy <christophe.leroy@csgroup.eu>,
  Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- David Woodhouse <dwmw2@infradead.org>, "H. Peter Anvin" <hpa@zytor.com>,
- Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>,
- Juergen Gross <jgross@suse.com>, "Liam R. Howlett"
- <Liam.Howlett@oracle.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ David Hildenbrand <david@redhat.com>, "David S. Miller"
+ <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>,
+ "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+ Jann Horn <jannh@google.com>, Juergen Gross <jgross@suse.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
  Madhavan Srinivasan <maddy@linux.ibm.com>,
  Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>,
  Mike Rapoport <rppt@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
@@ -85,21 +86,19 @@ Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>,
  linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
  xen-devel@lists.xenproject.org, x86@kernel.org
 References: <20251029100909.3381140-1-kevin.brodsky@arm.com>
- <20251029100909.3381140-7-kevin.brodsky@arm.com>
- <71418b31-aedb-4600-9558-842515dd6c44@arm.com>
- <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
+ <20251029100909.3381140-9-kevin.brodsky@arm.com>
 From: Ryan Roberts <ryan.roberts@arm.com>
-In-Reply-To: <c764489e-0626-4a50-87b5-39e15d9db733@gmail.com>
+In-Reply-To: <20251029100909.3381140-9-kevin.brodsky@arm.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 49e1i8idrxzwdfkw5i4ha3zhi9eqhcpa
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 32E224000A
+X-Stat-Signature: cns7mnahf3ey4fc7rse8h5u9ptopjfch
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 78A061C0014
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762528981-895595
-X-HE-Meta: U2FsdGVkX18oPhxbE70zvBA08Nwhvi/9Y3jMTSmRSOKgdugrF5I0iXYP/DPFIvhB9C2tHs/s0io9xteSnT72F3SKO8gX8b4FH0f9AAWoEguDDBGLDIEAnDG936FOV0lrmAI4lJli/mztOGKLkYTFuOOjvaej9aXJ30yw55eVaxzhij9KiZOEUkja3cMOVEQ9Mz15Hjd6FkHVjuIyvBLhlzZCS9Kx1sH1VTUhWJ5BbDRRPk6UQAh1uKxQUeSFsZoq8y9QrsNzK+HN61kxpKpVCHaqJqLLHn+9qa42JNBMBijp/IlYyDq4DKZ6oG4TaYxkEofTTWwx6VlNUhd0LHl6md9QyqBNiCCSGMA5znElx2pn9Jh7HilpQoLQuvwmp8F0f7AIfyFNeJWiojjxfgWDsr8DyOhCpKuRlHf1j6yGPDparQSIint7ozxzGNK+PNW5ZDKYzS9YiRhlPWxaX46xGo/WhfWEiz1ZSa5f9eihdxTriJgvzO9bbODjURnxu/GkiaYwP5UjWA0ZSbSlRrQZr3VeU1C9+ilLZ1BJoirUqXAKVR40N/9zQMmv3KB5H19OsGeN9kq7Ubuwf3V76zyJjrFg3HHNDzh1pHNfSUOa/nFvu4LofvfwLhmnsDBAGv0Dys1XBc37ASdVnfozV5pcL+QD8Ozi+qFEGxzLS61ac/zue28mlq8Cl9ohA8C2egZZ/8pCcZUiPJ2c48VcC+KoYZhMp0Ds7EfuQrtEZcQdXwlgUOoVYEVnx4WdD6HOSUidBnLVGzVD0pJrwTeKo3PUvkQc0KPF6IGJGhOxEn0kenyYRdpHWwVNQcrmU+hGeKD5JAafel5FJaeXV1zhYzI+/jxO92/KyhwQXULj/PoCeRJkxqR/JJAxcWc+g4dnotkbO/HZLhCacLStxrYN/07MRcRBI8CSAn2VnaxuHTnBbfHxYdtnSmu3I2lF+6ZtVL0oqksW7wap7NLesqtzbrj
- ct705oMU
- 0YOD/wkajOQn6M3kTWn/CTvrO6GCVdjdcCK35CyAu2N4g2DqFGvacq0SWFz1dMsKCxrbmoGEMUPO9ooHzHjfGAgWtIBN8rV3tCnCzy64+wXeZx0HY4GC4pjsYpgw+qg9spryr4IIdtih6o36wzzr2bHDUimcmuisuHuTK6q3cSHkkVhEQWxgYtl/LrMmCI38hF5/69uGAGljg9s6MUL87qxa1Qw==
+X-HE-Tag: 1762529339-843112
+X-HE-Meta: U2FsdGVkX19HhlIfBtuEvqX7AT7jmnAKFRgdv8LgffMmNjJUDnWYvpKuwJ4pYE5I1qsbMKFYj/saxsBu2t3XWdoX1bokE4XiTUFgECIdcMkgmp5u1Bwfb9b0PR78LRjVAdeOXAwonMCVgddVcM2E2MRBiKdrPz4CevIAsqojikBFpllCWh/D62owwrcttY9UT+1PKknI9iJ6wQtRPNDW2RQ5sOEgfmpkwq76bJjHbyYij2QviQqhedPiq31/LuLf3eySe0VGDJVbqtVbkbwORjNBkKYgzB2HFJbvr2p8eFGVEp0wPgz/sni0Q2c3tCvcbfyX9or+jrVpgp2AbIvaYI5jX1sXqGOcVhENnKUKTJ2okSYFtp0714rn+DE0BFxTtBwsmgtwJnu/WxoEmqHn3WiNnXFZe0Rn3+x2vvoe4WEnDPuFSgDXtmRRHt4h5US8bFfi1HsFva1Q86IPZqBGRNhneunNRJwJoZfggYb46LEjIf739U/6MhNmDcTfwUHy0UXBfD/jcKJpCmUtYUywmEsZpiYNY+16puC3HahF5tT8qH3zbxoQHrO57gHVcmBnADj7sz5z2yO4/P2i6lu1Ym6hsg4BNYNNdUadC7cROdrFQ8m4dkLTvONYalJ0vETRglVxddzusg42Xg2jNf/+h9ZtF0vW3JBIf8XWdY1SxQik2XbAFMhEiqM5aBxSr15gwR//02Mm3sUDpB2jaMthLfbpQbiroKDf/g9y2sg3/0a5lP8vvZriHOoccqDFz5sMfeu/ONVr5NZ/CRNAifqytSQu9mdisivU8n6NCTpIPfSx9aajRXZZGgtDelgC6MbkBsWU+fpF4Ibwc61uGnnIGDqGJ87Z0/TpX7CMTLcQ5iig/6Zj6dqYXoPLIMPp8CUKkT3raFSvUuXjMuEYlERlErftZZZPh1kYV8I09KGVkFZzpLndjuMRdLZFxpEqzcOCRLoKJyu7aLlYNKKk7e8
+ ELm73eDZ
+ dj/2YFrNWPo42QNZ++JKnJWGJxRJEKG0Sfhxg0e3XTDvs0kgKzteeOyZZHq5rOojz44ZWUH8c3avFQKBUl/0MR04FH67FAfLtJoSnyZOxYCHAKoj0dB9GGxynk4FP7jByXISQEtWoadbxzUGbmq/lZGwE+yQGsX+D4D6zFkw2yJcp7i/YDO+z9Cj5uY3W+nUp+jwVrYsGJTVH2yoJQghrjN4oBu/AiEynDbgsg93eRC5YQtaW1/KnTnabAw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -108,73 +107,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 07/11/2025 14:34, David Hildenbrand (Red Hat) wrote:
->>>   #ifndef pte_batch_hint
->>> diff --git a/mm/kasan/shadow.c b/mm/kasan/shadow.c
->>> index 5d2a876035d6..c49b029d3593 100644
->>> --- a/mm/kasan/shadow.c
->>> +++ b/mm/kasan/shadow.c
->>> @@ -305,7 +305,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep,
->>> unsigned long addr,
->>>       pte_t pte;
->>>       int index;
->>>   -    arch_leave_lazy_mmu_mode();
->>> +    lazy_mmu_mode_pause();
->>
->> I wonder if there really are use cases that *require* pause/resume? I think
->> these kasan cases could be correctly implemented using a new nest level instead?
->> Are there cases where the effects really need to be immediate or do the effects
->> just need to be visible when you get to where the resume is?
->>
->> If the latter, that could just be turned into a nested disable (e.g. a flush).
->> In this case, there is only 1 PTE write so no benefit, but I wonder if other
->> cases may have more PTE writes that could then still be batched. It would be
->> nice to simplify the API by removing pause/resume if we can?
+On 29/10/2025 10:09, Kevin Brodsky wrote:
+> The generic lazy_mmu layer now tracks whether a task is in lazy MMU
+> mode. As a result we no longer need a TIF flag for that purpose -
+> let's use the new in_lazy_mmu_mode() helper instead.
 > 
-> It has clear semantics, clearer than some nest-disable IMHO.
+> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> ---
+>  arch/arm64/include/asm/pgtable.h     | 16 +++-------------
+>  arch/arm64/include/asm/thread_info.h |  3 +--
+>  2 files changed, 4 insertions(+), 15 deletions(-)
 > 
-> Maybe you can elaborate how you would change ("simplify") the API in that
-> regard? What would the API look like?
+> diff --git a/arch/arm64/include/asm/pgtable.h b/arch/arm64/include/asm/pgtable.h
+> index 535435248923..61ca88f94551 100644
+> --- a/arch/arm64/include/asm/pgtable.h
+> +++ b/arch/arm64/include/asm/pgtable.h
+> @@ -62,30 +62,21 @@ static inline void emit_pte_barriers(void)
+>  
+>  static inline void queue_pte_barriers(void)
+>  {
+> -	unsigned long flags;
+> -
+>  	if (in_interrupt()) {
+>  		emit_pte_barriers();
+>  		return;
+>  	}
+>  
+> -	flags = read_thread_flags();
+> -
+> -	if (flags & BIT(TIF_LAZY_MMU)) {
+> -		/* Avoid the atomic op if already set. */
+> -		if (!(flags & BIT(TIF_LAZY_MMU_PENDING)))
+> -			set_thread_flag(TIF_LAZY_MMU_PENDING);
+> -	} else {
+> +	if (in_lazy_mmu_mode())
+> +		test_and_set_thread_flag(TIF_LAZY_MMU_PENDING);
 
-By simplify, I just meant can we remove lazy_mmu_mode_pause() and
-lazy_mmu_mode_resume() ?
+This removes the optimization to only do the atomic set operation if the bit is
+not already set. I think that should remain.
 
+> +	else
+>  		emit_pte_barriers();
+> -	}
+>  }
+>  
+>  static inline void arch_enter_lazy_mmu_mode(void)
+>  {
+>  	if (in_interrupt())
+>  		return;
 
-We currently have:
+Why are you keeping this test? Surely it can go?
 
-apply_to_page_range
-  lazy_mmu_mode_enable()
-    kasan_populate_vmalloc_pte()
-      lazy_mmu_mode_pause()
-      <code>
-      lazy_mmu_mode_resume()
-  lazy_mmu_mode_disable()
-
-Where <code> is setting ptes. But if <code> doesn't need the effects to be
-visible until lazy_mmu_mode_resume(), then you could replace the block with:
-
-apply_to_page_range
-  lazy_mmu_mode_enable()
-    kasan_populate_vmalloc_pte()
-      lazy_mmu_mode_enable()
-      <code>
-      lazy_mmu_mode_disable()
-  lazy_mmu_mode_disable()
-
-However, looking at this more closely, I'm not really clear on why we need *any*
-special attention to lazy mmu inside of kasan_populate_vmalloc_pte() and
-kasan_depopulate_vmalloc_pte().
-
-I *think* that the original concern was that we were doing ptep_get(ptep) inside
-of a lazy_mmu block? So we need to flush so that the getter returns the most
-recent value? But given we have never written to that particular ptep while in
-the lazy mmu block, there is surely no hazard in the first place?
-
-apply_to_existing_page_range() will only call kasan_depopulate_vmalloc_pte()
-once per pte, right? So given we read the ptep before writing it, there should
-be no hazard? If so we can remove pause/resume.
-
-Thanks,
-Ryan
+> -
+> -	set_thread_flag(TIF_LAZY_MMU);
+>  }
+>  
+>  static inline void arch_flush_lazy_mmu_mode(void)
+> @@ -103,7 +94,6 @@ static inline void arch_leave_lazy_mmu_mode(void)
+>  		return;
+>  
+>  	arch_flush_lazy_mmu_mode();
+> -	clear_thread_flag(TIF_LAZY_MMU);
+>  }
+>  
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+> diff --git a/arch/arm64/include/asm/thread_info.h b/arch/arm64/include/asm/thread_info.h
+> index f241b8601ebd..4ff8da0767d9 100644
+> --- a/arch/arm64/include/asm/thread_info.h
+> +++ b/arch/arm64/include/asm/thread_info.h
+> @@ -84,8 +84,7 @@ void arch_setup_new_exec(void);
+>  #define TIF_SME_VL_INHERIT	28	/* Inherit SME vl_onexec across exec */
+>  #define TIF_KERNEL_FPSTATE	29	/* Task is in a kernel mode FPSIMD section */
+>  #define TIF_TSC_SIGSEGV		30	/* SIGSEGV on counter-timer access */
+> -#define TIF_LAZY_MMU		31	/* Task in lazy mmu mode */
+> -#define TIF_LAZY_MMU_PENDING	32	/* Ops pending for lazy mmu mode exit */
+> +#define TIF_LAZY_MMU_PENDING	31	/* Ops pending for lazy mmu mode exit */
+>  
+>  #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
+>  #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
 
 
