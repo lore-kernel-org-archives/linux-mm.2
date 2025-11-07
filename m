@@ -4,86 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23568CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 17:48:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1D281CCFA05
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 17:48:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 670E08E0006; Fri,  7 Nov 2025 12:48:14 -0500 (EST)
+	id 7345E8E000D; Fri,  7 Nov 2025 12:48:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 621CA8E0002; Fri,  7 Nov 2025 12:48:14 -0500 (EST)
+	id 6E5268E0002; Fri,  7 Nov 2025 12:48:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 55EF08E0006; Fri,  7 Nov 2025 12:48:14 -0500 (EST)
+	id 5D5478E000D; Fri,  7 Nov 2025 12:48:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 4510D8E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:48:14 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay10.hostedemail.com (Postfix) with ESMTP id E3D43C058B
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:48:13 +0000 (UTC)
-X-FDA: 84084544866.04.1AB3714
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 12BDC4000D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:48:11 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p3CJ35JE;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762537692; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 481B88E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 12:48:17 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 0487C4BB95
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:48:16 +0000 (UTC)
+X-FDA: 84084545034.09.76091B6
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf07.hostedemail.com (Postfix) with ESMTP id F3E964000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 17:48:14 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JChn/KmQ";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762537695; a=rsa-sha256;
 	cv=none;
-	b=OatyUu1F31hqbIaWVlBfDr7PWg2O++YTGqTqp8+dsSWFrNxludOEyAjBAVz+rNnzcBcgTJ
-	qOCAVdZuCV/Z4liCeaTZcBQAeEspFq8zF2JOmlugByko7vh0pvP80FutfPRlqPKrtWoJQy
-	P6bUtHPz826d291IHeBc+X4yx923LoQ=
+	b=OBmXlCl+BF/qg7BtqPTliVnmWb4VS0cAxo0KgVW+uz5C+1NeaxXQYmPmfzRUDhiHKtg9kB
+	UwDmXyRXCdu7Aa4Y+N1nDgost5Yecq7ycglE4dRwD662+9aJe4mwllz1p3+BTRa+i5Aw9E
+	oKk+XZRwIyfezVuxfubJlwnOkCXYHAo=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=p3CJ35JE;
-	dmarc=none;
-	spf=pass (imf17.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org
+	imf07.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b="JChn/KmQ";
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf07.hostedemail.com: domain of mpatocka@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=mpatocka@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762537692;
+	s=arc-20220608; t=1762537695;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=sjz/Q1cZYNmD6e2RyRuEqDtDrAKvbXkLN31BRy1SyhY=;
-	b=JSE/tWkoRNFAQ68t96CUcP+n+c6yzeLDj6M+RvkiOYUw1nwuueqmOrLoBp/miV6ytjoxL0
-	NDsIZ8qCP4T5k1Q5bKa9sqafnLVA1CSsJINRdhFPQeE0vne0l3Gpx/s3MG3gyzY+bjICRS
-	GGbAvanjtAqlIBCzU4lOq0dSvDvkiOs=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id B806C40AF3;
-	Fri,  7 Nov 2025 17:48:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AC6DC4CEF8;
-	Fri,  7 Nov 2025 17:48:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762537690;
-	bh=dYP9bc3sKgdv9puyG2o7f5re4b2/aaF1Sb6wYlRgjOs=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=p3CJ35JEAkXsBD3qBOe826Lnn/azzuCotlVC5xmJO5N9yE2B5tI5psuND06evDlSe
-	 wC4IXHDDCFMxiRMqtkJ5/szTGGYVmYUenCR/kDRwakzr17s1gjYT9srgSLnpi4yaaY
-	 7pg+f9sBEFRBWOeMf9ANsjH+IdcZqm+J4FYx1vBU=
-Date: Fri, 7 Nov 2025 09:48:09 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: tytanick@gmail.com
-Cc: bugzilla-daemon@kernel.org, Liam Howlett <liam.howlett@oracle.com>,
- maple-tree@lists.infradead.org, Matthew Wilcox <willy@infradead.org>,
- linux-mm@kvack.org
-Subject: Re: [Bug 220765] New: Memory leak in maple_node (Maple Tree) on
- Linux 6.18-rc4
-Message-Id: <20251107094809.12e9d705b7bf4815783eb184@linux-foundation.org>
-In-Reply-To: <bug-220765-27@https.bugzilla.kernel.org/>
-References: <bug-220765-27@https.bugzilla.kernel.org/>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=OtB+sZpQawht6Y2wkMhn/jRh99U8DiHTZvyeB15mQow=;
+	b=1I9IDl6XpbXZ7YhRiJ5aCnzcyF8wkBjtwbKdLNGBB9Zch5EQiwr/bYln2Q34kGwsscVpkg
+	diy2DOx5tUbPXEZQgAfUVpz7ZVrtLAmIjx7QJ1ASk7NHh0nyLtt3uWAjAmieJUfufIngZH
+	QhQ9y6Oyu9u2JnXeHk3dz4f1G9cnm5I=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1762537694;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=OtB+sZpQawht6Y2wkMhn/jRh99U8DiHTZvyeB15mQow=;
+	b=JChn/KmQoPXvc9upZrr035/hg2QLczAm+I5z5tBkAnnPzHpgAY93KFBuFbw+1I2P5tXK55
+	wKywTQDtqBhXpYwjJfss6glMKQtbW6VRWGE5hhyAjb8PqhkdlMq3wG0ECYhozpcQ5aIhDz
+	e7IQ+BJXUuhrBYMPhGNuPc47naKdpn4=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-527-pyVrMrA2OsmnKgqooUZhkg-1; Fri,
+ 07 Nov 2025 12:48:10 -0500
+X-MC-Unique: pyVrMrA2OsmnKgqooUZhkg-1
+X-Mimecast-MFC-AGG-ID: pyVrMrA2OsmnKgqooUZhkg_1762537689
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6AB36195605B;
+	Fri,  7 Nov 2025 17:48:09 +0000 (UTC)
+Received: from [10.45.225.163] (unknown [10.45.225.163])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C0671196B8FC;
+	Fri,  7 Nov 2025 17:48:06 +0000 (UTC)
+Date: Fri, 7 Nov 2025 18:48:01 +0100 (CET)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Alex Deucher <alexander.deucher@amd.com>, 
+    =?ISO-8859-15?Q?Christian_K=F6nig?= <christian.koenig@amd.com>, 
+    Andrew Morton <akpm@linux-foundation.org>, 
+    David Hildenbrand <david@redhat.com>
+cc: amd-gfx@lists.freedesktop.org, linux-mm@kvack.org
+Subject: [PATCH v2] fix AMDGPU failure with periodic signal
+Message-ID: <6f16b618-26fc-3031-abe8-65c2090262e7@redhat.com>
+MIME-Version: 1.0
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ZLk1rCM2jCUIltL4JnFasHNFvDVBbFIML3Cz9KhtOwc_1762537689
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 12BDC4000D
-X-Rspamd-Server: rspam07
-X-Stat-Signature: tue5tqdgd6ykqfcz6dfixiw4djz8dnt1
 X-Rspam-User: 
-X-HE-Tag: 1762537691-876771
-X-HE-Meta: U2FsdGVkX1+uYbPAXfHEMdeQs+VThp6u7/C5k6QMYh6KSeJ6ksP6A/8lzw6InGzEh9BEp8Zdi7z+gTUzCXmr7Q8sBdDowEpFEUfouzMAjsJf1dauX9EK6YtSF1UrlqK+LuYMRQna6K6ytBrj7uTk8zmDbKC+KcAggSJdUhmSUP8vCtl1+vvCDfEQjbKI9z4dPWQtkRxVsIudnf8l+HK12wh+407eqPYcJjoEF1zyPVJlHVdYwhBScuRckTdJjiIp9ZK3WbueZvKSYrEKrBVid8/RsFAMp9I5AfqpGrIg4tXZvGleQ/daX+gGXv1kilUvn6yO2AocDpFANvJsDnAL2vbtad6AvTKXkGBUjN0RWk9SpgQ/RL+MnuVi1aHfKt0dz20V2tVxSs6tNZGkXvwIspDJVfucwWj7CxNL1GymrynUseeF3Rh4xrdjKgAOOi/oa9PmNhm/zCk0JduXp0wMy8H+KTGNTEy0u3kfH0nNyxx17/yNzzGOZ8CrSS2Vo3xQIccSANpPrcFp8HXmPVSyXql6i0kt3W+dXT3hcysU3iw0SvIeVF/B5xjSIULnakzwaAZk+v7t9CjtfaTIFNcGfcRTtMi3rDIeoras6a5Fs0fMqiPS0MC9XYDdrRWDhE8qH9TsvvhUJDKnmSLu7mEzcFjQ0T9eQBg+PRZ/eHls61qtQ8MujtnodoSsEvKz5ubo2hqO1QT8f8BOBrUSTK7WufzCfj9Tzi0mvra8FWhHg2ZV8CRRDaZ1k4tdsGm/JHCuzNuzZAKSuKPnnK3zh2Femgc0yK0lFkSh4us/t1FcFr9EKpCAen8apQY1Sq6ZfmXr2jVSbRLCaaiKl6ZWgLtl/LkIbRk16xJEZY++z1P21YWBzpROXjl+21uoalnFxk0ktR17SG+iwbRvE4YPtrZm0E8QTn1SHXv0Z+i2g5liCiPOzy43wObbubz1g/XvkLJOmPgLnpwtcJ8cVshNX6q
- ALctRrbf
- oqjF1LRXcJpeNr4HJLaXEd3+vz7y7EYHgrQS2dMHNe+eUVUHHuvwhKJAnMvr/XgNvUo1RxeVN79zRMj4i/Bip9IPIU+MhFxpaYIWqh1+z8yyVvL3PFUzUYQRoXPtNM5kZcpuZoYMIPPS8oMrllOfgP3HUthCmOm5sT8H56z/kUvvi85gvX6UIdELGZe4rluPDPubEwViwbdvEVCztatmguqsRt1dsH5uSomldTQFEjp+yQMo1wojRM8yiGYUHxXy64WgdmlJJAlTW8giRGexvLfMfKIOa7VyAoIdhZexeki2D8HNZMat2Ebw+M+kKuP/1ZwN+zz8cq9nv9E65s8Of7jCDN9MyhAsnarZnTkScvsAoaH3nTKV7LW4gyXyb0oDa1/jLpiUvTsfR0Iric61IRqn4NNG3AGv174Lxz3u3eMEouSsmSK3Sf8ELCw==
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: F3E964000A
+X-Stat-Signature: 1qkofiob1hrjnaudke9wizy4im5zou3w
+X-HE-Tag: 1762537694-675368
+X-HE-Meta: U2FsdGVkX1/Y8N3PA+Vm48YQEXmLECG6tHQMr1kI2sxNPIcD/MrrEDpae1p0AsNRVeD6Mu+KAIc051jzniq/AU/V9nURxyw6gSIGGM0bZfqiekW0UfLyMPxx1XwDK3+nse5ottUhT6Rar+HIixjhPavP7RcV9hiWG8JTqUuWbeHybTxsRpJroHcKm3yKeTmAoPnVRi/KuaMETYHjkzsReCF2kf9LI0LzZkQnq/iYVEvtDALqn4vnC7qh8qa1VGCsix2K3PAS3MU7/WhYUZ5ZgJFhFhB3x2vUBMG86BAOUjZiSXfAKDmaeE+b7vz7PzniD8UnqOb7kQQi6ubeiurHqigiHZp+S7eDQ0lNM6QacfeiONJXxoZnpIvQOo8GaTbxGW0vM4w+zJE36YzWcBehhIbxFFp674FmxOehlyqYKigf+coL72Avqer567KoP59ts/tZeOPLSSoRtiym3xJJeLW87ucEF+rREzsUe8Fr+mXu2/bHtCSG010g45zu146TtfvP8u/bx7Rlzcmj+HrjH6Xmwd8JwrB/iZoeYcqbk1g+IXkf5ay2Io0eUXS07PPjQfuPAf1JiJo0gs7VmiAEGgmEOy+vohM4sr3/UAC7i9KyfioLQ5wyajZQjoTr3gonrjnEAxJljTEycitlw3UIe+URvvy4RdL1aC9/bdfD7xSdKRUlNNQMWhYguc32SWbY7sEqR6peVqh0Tee1DgOePOrCvyDmgq0VGaoEkzKN3b8zTR/cBshYxPyvgdRlPkW/gXDrtjBu/xrFh+c5zbpwCK2L1mWGzsdLLR+VoEbgD1r14jE643rocqaIoGci4cq5nQTjCNXUSjyjjoDUm8YBe6iNToldZwaZPQFvwU/+YfyC+XQj+iF/cQIn99s1MkENdlHG4SYNBcbKc2j99/NfR43yMreiwj9yEErnqpCWxNBf5vIoY1RAnzWeX6MYyRGKrf9OuDBQnpBBxEH9SBB
+ 224bp6aB
+ HqpBrmXNCK/F+qQfovQl5IjhFICK6gAfup3olSEE8vIgce8ynfI5z9J9s3th8lj83qAi2/OD5A4BYlWDJRJNlaULe0BQmgo2KGDTfUoflLIwsKyKyjfaVt6uP3L84KPcioKqA00x2HwSBY5Sq2hvFkLjvmS0DoZ13/t/qcBsr7+ijXD1f2y9r430BbECTJHd9nlNiph9UNcIIm7vrClNJf2VKDgnrzdxqkjQvQoAKNnQ3fJ71EeZWrsAbuCyRpGgKiqkUq4c3HJx4rrXIqn1spdKHlyeJG2k1ACpBfGa8TatjunqNDGrR0wtSqilK21QfkgJ9U7RLeJGUhev/iLjIgWUVbstHcF1/U+Pk44bYXZ3Cj1mnaQuLDeXgNKi68bd2i6syOaG6eNhQ8VrzkpE2qv92kVE/1LxOP4threnzmiH+XaO456kFwglLokpSRnh0V9jgdBpo5tgECpu/Cbm/vWLkHg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,71 +102,108 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+If a process sets up a timer that periodically sends a signal in short
+intervals and if it uses OpenCL on AMDGPU at the same time, we get random
+errors. Sometimes, probing the OpenCL device fails (strace shows that
+open("/dev/kfd") failed with -EINTR). Sometimes we get the message
+"amdgpu: init_user_pages: Failed to register MMU notifier: -4" in the
+syslog.
 
-(switched to email.  Please respond via emailed reply-to-all, not via the
-bugzilla web interface).
+The bug can be reproduced with this program:
+http://www.jikos.cz/~mikulas/testcases/opencl/opencl-bug-small.c
 
-On Fri, 07 Nov 2025 15:41:52 +0000 bugzilla-daemon@kernel.org wrote:
+The root cause for these failures is in the function mm_take_all_locks.
+This function fails with -EINTR if there is pending signal. The -EINTR is
+propagated up the call stack to userspace and userspace fails if it gets
+this error.
 
-> https://bugzilla.kernel.org/show_bug.cgi?id=220765
-> 
->             Bug ID: 220765
->            Summary: Memory leak in maple_node (Maple Tree) on Linux
->                     6.18-rc4
->            Product: Memory Management
->            Version: 2.5
->           Hardware: AMD
->                 OS: Linux
->             Status: NEW
->           Severity: high
->           Priority: P3
->          Component: Slab Allocator
->           Assignee: akpm@linux-foundation.org
->           Reporter: tytanick@gmail.com
->         Regression: No
-> 
-> Created attachment 308920
->   --> https://bugzilla.kernel.org/attachment.cgi?id=308920&action=edit
-> htop
-> 
-> Been using 6.18 kernel and i have noticed that there is some memory leak.
-> Currently mapple_node takes 86GB when server does not do much.
-> I do not see that issue on 6.17 kernel
+There is the following call chain: kfd_open -> kfd_create_process ->
+create_process -> mmu_notifier_get -> mmu_notifier_get_locked ->
+__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
 
-Thanks.   Cc's added.
+If the failure happens in init_user_pages, there is the following call
+chain: init_user_pages -> amdgpu_hmm_register ->
+mmu_interval_notifier_insert -> mmu_notifier_register ->
+__mmu_notifier_register -> mm_take_all_locks -> "return -EINTR"
 
-In the future, please report kernel issues via email - we don't use
-bugzilla.
+In order to fix these failures, this commit changes
+signal_pending(current) to fatal_signal_pending(current) in
+mm_take_all_locks, so that it is interrupted only if the signal is
+actually killing the process.
 
-Running
+Also, this commit skips pr_err in init_user_pages if the process is being
+killed - in this situation, there was no error and so we don't want to
+report it in the syslog.
 
-	scripts/get_maintainer.pl lib/maple_tree.c
+I'm submitting this patch for the stable kernels, because this bug may
+cause random failures in any OpenCL code.
 
-is the way to find out who to email.
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 
-> Total 1000 GB memory
-> ASRockRack GENOA2D24G-2L
-> 2x AMD EPYC 9654 96-Core Processor
-> Running Proxmox 9
-> 
-> 
->  Active / Total Objects (% used)    : 472110239 / 472257124 (100.0%)
->  Active / Total Slabs (% used)      : 7385489 / 7385489 (100.0%)
->  Active / Total Caches (% used)     : 164 / 231 (71.0%)
->  Active / Total Size (% used)       : 95486861.00K / 95528053.72K (100.0%)
->  Minimum / Average / Maximum Object : 0.01K / 0.20K / 8.06K
-> 
->   OBJS ACTIVE  USE OBJ SIZE  SLABS OBJ/SLAB CACHE SIZE NAME
-> 345907216 345897683  99%    0.25K 5404801       64  86476816K maple_node
-> 120873408 120841337  99%    0.06K 1888647       64   7554588K dmaengine-unmap-2
-> 224256 223324  99%    0.01K    438      512      1752K kmalloc-8
-> 224040 224040 100%    0.13K   3734       60     29872K kernfs_node_cache
-> 196608 196608 100%    0.01K    384      512      1536K kmalloc-cg-8
-> 196160 166455  84%    0.50K   3065       64     98080K kmalloc-512
-> 
-> -- 
-> You may reply to this email to add a comment.
-> 
-> You are receiving this mail because:
-> You are the assignee for the bug.
+---
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c |    9 +++++++--
+ mm/vma.c                                         |    8 ++++----
+ 2 files changed, 11 insertions(+), 6 deletions(-)
+
+Index: linux-6.17.7/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+===================================================================
+--- linux-6.17.7.orig/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ linux-6.17.7/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -1069,8 +1069,13 @@ static int init_user_pages(struct kgd_me
+ 
+ 	ret = amdgpu_hmm_register(bo, user_addr);
+ 	if (ret) {
+-		pr_err("%s: Failed to register MMU notifier: %d\n",
+-		       __func__, ret);
++		/*
++		 * If we got EINTR because the process was killed, don't report
++		 * it, because no error happened.
++		 */
++		if (!(fatal_signal_pending(current) && ret == -EINTR))
++			pr_err("%s: Failed to register MMU notifier: %d\n",
++			       __func__, ret);
+ 		goto out;
+ 	}
+ 
+Index: linux-6.17.7/mm/vma.c
+===================================================================
+--- linux-6.17.7.orig/mm/vma.c
++++ linux-6.17.7/mm/vma.c
+@@ -2175,14 +2175,14 @@ int mm_take_all_locks(struct mm_struct *
+ 	 * is reached.
+ 	 */
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		vma_start_write(vma);
+ 	}
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->vm_file && vma->vm_file->f_mapping &&
+ 				is_vm_hugetlb_page(vma))
+@@ -2191,7 +2191,7 @@ int mm_take_all_locks(struct mm_struct *
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->vm_file && vma->vm_file->f_mapping &&
+ 				!is_vm_hugetlb_page(vma))
+@@ -2200,7 +2200,7 @@ int mm_take_all_locks(struct mm_struct *
+ 
+ 	vma_iter_init(&vmi, mm, 0);
+ 	for_each_vma(vmi, vma) {
+-		if (signal_pending(current))
++		if (fatal_signal_pending(current))
+ 			goto out_unlock;
+ 		if (vma->anon_vma)
+ 			list_for_each_entry(avc, &vma->anon_vma_chain, same_vma)
+
 
