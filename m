@@ -4,219 +4,122 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 901F1CCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 15:53:43 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8163FCCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 15:54:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D4FD08E0005; Fri,  7 Nov 2025 10:53:42 -0500 (EST)
+	id DEE308E000D; Fri,  7 Nov 2025 10:54:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D276A8E0002; Fri,  7 Nov 2025 10:53:42 -0500 (EST)
+	id DC5818E0002; Fri,  7 Nov 2025 10:54:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id BF00D8E0005; Fri,  7 Nov 2025 10:53:42 -0500 (EST)
+	id CDBB78E000D; Fri,  7 Nov 2025 10:54:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id A79018E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:53:42 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id 36A5D88E7C
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:53:42 +0000 (UTC)
-X-FDA: 84084256284.25.2A169A2
-Received: from YT3PR01CU008.outbound.protection.outlook.com (mail-canadacentralazon11020129.outbound.protection.outlook.com [52.101.189.129])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 4D5B3C0013
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:53:39 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=uyS6dEx5;
-	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.129 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762530819;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id B9DF88E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:54:36 -0500 (EST)
+Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 773C616050F
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:54:36 +0000 (UTC)
+X-FDA: 84084258552.03.B8631E8
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	by imf07.hostedemail.com (Postfix) with ESMTP id BA0AA4000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 15:54:34 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NafYPapz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of 3OBYOaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OBYOaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762530874; a=rsa-sha256;
+	cv=none;
+	b=ZT2amJiU8l94B839x4tRKzGUD234m8rv18GacVrhRvCbPdGHNvKtJlt0X7z3SLcObmXB5Q
+	/lmmlOSHZqzSeIBq7GSF1tGG2AcT/W+y+RIWHOlV3PfdjZ2Meiqgspj0FvP7ocfcgFWUZI
+	EBcYf+EUMFKzyKxEnxD116AFvvwAgpY=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=NafYPapz;
+	dmarc=pass (policy=reject) header.from=google.com;
+	spf=pass (imf07.hostedemail.com: domain of 3OBYOaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com designates 209.85.128.74 as permitted sender) smtp.mailfrom=3OBYOaQgKCOsWNPXZNaOTbbTYR.PbZYVahk-ZZXiNPX.beT@flex--jackmanb.bounces.google.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762530874;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SqsXwDfFxylF3avGzTXd8Ynrg+KWkFKB3T+mY4YOZDM=;
-	b=5Vvn4hpsd/4zz1hFU9Iv+B6O31rSDqlStsPtDvnFgDomRZIq2weTnjYYThexH6tqnvZcL+
-	BoaQAbWlFaDHR+wgCKVMW51qgUo5K7zUA5BU3EV72DZNbz5dzkL+JgTsEeghTcUdfRp+fl
-	EWkxJE32lbULU1i+WE24K4rgDm+mWFo=
-ARC-Authentication-Results: i=2;
-	imf28.hostedemail.com;
-	dkim=pass header.d=efficios.com header.s=selector1 header.b=uyS6dEx5;
-	spf=pass (imf28.hostedemail.com: domain of mathieu.desnoyers@efficios.com designates 52.101.189.129 as permitted sender) smtp.mailfrom=mathieu.desnoyers@efficios.com;
-	dmarc=pass (policy=none) header.from=efficios.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762530819; a=rsa-sha256;
-	cv=pass;
-	b=DECShUyT0DzRw3a9wGA3kciTfHHbpEOsG1wgabnwt03DT0jZ5MsT8klCAdjxrjXM/lgmxF
-	LlpLuAz/Dheg2VUG7l9MnLJSzlvv4FF/qGkiQE21zhdo+mX0ak8NcjH9dMO5sMnr5ARhYD
-	zJ36vUJzyNeT0EsCd+zjwIf4wB+wWdI=
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=UtSx4UiYUgms0vtNCyWlblgJGkG6tvKroNBLJmILF7cuLszQhADcRpXXSdN0Khw8r6nOAPTrzYgju/VyLaR9LLO1/w0rEYDH6PvbnJHHhBULrePY5gd/uZeIIdaCyHnjqIK3Mvm35qzq6D6+tDFjECvhh9+ABP2eKMOHlAz5XXbjTRTa6eSvWZd/6jc5oa5RyZKy3Q9FCRTidf084iMG4H2Rm7QDzP3c++MkYQH11mHRrLeBQqhWiXxmw1gRrY5EdYQBuEyeACNo0kM2WDP3/PmY4Mla69zs7gWfOpvCcwqV0cEA70ETKdsIoMFtn35tEjrEBfs18kROlVMz4fZ1Ew==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=SqsXwDfFxylF3avGzTXd8Ynrg+KWkFKB3T+mY4YOZDM=;
- b=ggep9qpc5o8UGi5z7TSBaLU+uzzVQjCHcnp6yT7EE9fW/HUiJG18dqz0DUCzi5yW2nNwFGuMYfENyjG56qsSFbEvSbmnGRtoy7KhByEtfEMtnJ+/fNj+rDJM3juYRAgdaSsV6oIctzCNceyOYYMqh2isRY1Ly4CJUZRVJN69xB6sI3GrixZkffMMrMP4kbPt6nhgFb+WXmHcHQeYqqRVb67zYh0DhQ4PCtycfeeN2MqPiBYFVZcvqtjgjGaBoLrviH8+A85cj0nzemUVL92rx91Hylt24HvvNEz/si2397tR8TCz5xQW9wNEumcTuC/WAu5JUAu+4uY+jFSz3fBrkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=SqsXwDfFxylF3avGzTXd8Ynrg+KWkFKB3T+mY4YOZDM=;
- b=uyS6dEx5lJOJpzh+tafqimTLoqLdAXxqzZNdVVpjtyvbfeR7r6LAI4nvFg26pehjh0h0BzwCKWCHFmHm0XGh2CKRXl9sGenaAdlS9aqADxL8oTROwgZhynRPNAaPqji/ExXpkoClFkUUYIgd/H6+tZK7hYhcw3x0n6NEsqy31NXlNLT39rh55Kep6WxsgyuPpvpE6I+6zxU4/u1rZI0HfyvREF2Wof87GYs3VaFItpNzqojBLDJdbyK+LtQN/Xl0xRAWFjV7DBPO1GDF9frpQqVrxR84/k1/lNaPjPt3J0o/lmfA7CbsoQsLNv7/lUaBZCV+mxnoXBt96ZF9v9EruA==
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:be::5)
- by YT2PR01MB11469.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:163::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.13; Fri, 7 Nov
- 2025 15:53:36 +0000
-Received: from YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4]) by YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::50f1:2e3f:a5dd:5b4%2]) with mapi id 15.20.9298.012; Fri, 7 Nov 2025
- 15:53:36 +0000
-Message-ID: <7b76f0e4-6148-4290-a295-7ceeb1ef2feb@efficios.com>
-Date: Fri, 7 Nov 2025 10:53:34 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v7 2/2] mm: Fix OOM killer inaccuracy on large
- many-core systems
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-To: Shakeel Butt <shakeel.butt@linux.dev>,
- kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com,
- Andrew Morton <akpm@linux-foundation.org>,
- "Paul E. McKenney" <paulmck@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>,
- Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
- Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
- David Rientjes <rientjes@google.com>, SeongJae Park <sj@kernel.org>,
- Michal Hocko <mhocko@suse.com>, Johannes Weiner <hannes@cmpxchg.org>,
- Sweet Tea Dorminy <sweettea@google.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R . Howlett" <liam.howlett@oracle.com>, Mike Rapoport
- <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>,
- Vlastimil Babka <vbabka@suse.cz>, Christian Brauner <brauner@kernel.org>,
- Wei Yang <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>,
- Miaohe Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
- Yu Zhao <yuzhao@google.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Mateusz Guzik <mjguzik@gmail.com>, Matthew Wilcox <willy@infradead.org>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- Aboorva Devarajan <aboorvad@linux.ibm.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- christian.koenig@amd.com
-References: <20251031144232.15284-3-mathieu.desnoyers@efficios.com>
- <202511061432.4e534796-lkp@intel.com>
- <6hmgutxgdchs4qz6hprwsecwoygwszn5ywixxrvnereilegcsx@mxroaotaw2me>
- <7732c2eb-e547-47a8-93b3-1d1b4d9c27e8@efficios.com>
-Content-Language: en-US
-In-Reply-To: <7732c2eb-e547-47a8-93b3-1d1b4d9c27e8@efficios.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YT4PR01CA0322.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10a::11) To YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:be::5)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YT2PR01MB9175:EE_|YT2PR01MB11469:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0119735c-0cc5-4cb2-db8c-08de1e15cfb0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|10070799003|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TGplSjlocld6ZG5CN1JpSmM4RkVTeCtJV0JGMlpZRUp6WEF1aUFZeW1Wa3ps?=
- =?utf-8?B?THlScnRVbmpKL3ZMdzY0ZVovVURXUlkxVmhKTnBqMm4xWTFWNFQxR2p6b3R4?=
- =?utf-8?B?bHA1ZGFxQlpXUnk1bjdXOS9oSjRZQk55cXk1V0pmTjFubmRDLzhycW5DKy84?=
- =?utf-8?B?NTgxQlN4OEg4bEJZOU9hTXJRWkgxR0dTenRIdzVBNGE2eGNZVVlxQVlIZzFC?=
- =?utf-8?B?a1R5OUw2cXlKdDBHbERBb1JubEx2NXVrOVhUWHhuU214TjB3ZWxtVkwxTmlq?=
- =?utf-8?B?U0Q3QjF5a0wxUGxOdERIZmxwUm16UmU4em51QVdMYzhLa052Ymg4M0RkcUV5?=
- =?utf-8?B?OVI0bVNUZW8wY2NoMkpwcGxHelJ3cGlVQUFEUzZ3ZmtPYW5pWE45UjFpMjMx?=
- =?utf-8?B?L3Q4S2o0SlN0U25HRzR5dDI2UzV4d0tmUWRiL0EzMnRTcWtRSXRlUDRGYU9D?=
- =?utf-8?B?aElTL2lNS09vYzFwcFhTOGFqSzJVbDNpcTlCVkpBTlIxTDFLSjMwUHZXMnYv?=
- =?utf-8?B?MzZqRTZneW83MVFJbTdqOGhwcmJYSHIySzVtZ1BiRHFkei9Lb1QrYWs5bE5N?=
- =?utf-8?B?cE5uN2IxY0JhMnRaSVNYcnFsZHdaVlJJK2tQdnFPZUlLazFjZDZOVk1vVjg1?=
- =?utf-8?B?dGVNOGhsNERtYWsvT1NQelFhMm1ieSt5aVBhNlA0ZDBMaklHZlBSQy8zSFNJ?=
- =?utf-8?B?TEZoajczOXRVVVdpbmFLTDQ5RWNsS2xjWWxKdldodHdtNGlOeXR1N0hjQndy?=
- =?utf-8?B?MlA3cDNsVVp2d1YzcUJsZ2tRRW1ucC96QlhjbnlXb1BCT2M2ZnA3K0lxeFBy?=
- =?utf-8?B?cGM5ZER1NWplT0RNenUwSnNyWmdKdUE1WlZFZ0J4ZFNKS0tINFQ5WUV5TkVm?=
- =?utf-8?B?NEhwT2Z1c3M2NmxOZzZCN21MZjlDOUlBb0lPS24wYjBjUjB2RmNZL1hSTHRN?=
- =?utf-8?B?dVVpc3IzalZSVmxTTXJpNkZtSXpCeDl4YXRaUXo2K09TMDdINXFxNEdoNXI1?=
- =?utf-8?B?ZDR2NnhOdHFPQnZ6bGVyRTA0UzhXS29yQjJ3UGZnc3AyS3hoSnR4VXE5SE5I?=
- =?utf-8?B?aDAvSFJwM0ZXYUVDR3BLc3hNa1FKclZ6QThiNEFRVXhpQ2lPUml3Q0syS0pt?=
- =?utf-8?B?cUlkaDRNVUpraWpKWEd6QzRBRldvdmVXZ2dJRU40anZ6eUluenBHMHgyR1d6?=
- =?utf-8?B?RFpOcnJuek5ZYm9pcnpJQjJ4NjEzS2JzeE91eTR1WVlINTZibE5VRWpVc1Zu?=
- =?utf-8?B?ZjhsMElxVkJHQWtPRVd3VGhVWlRsUHZYTk04YVBQTFp5UzFUK21DLzJGUUdO?=
- =?utf-8?B?WDZFSXhXWHpjcWtwSGk3eExCK2lUYWNjS3ZBTVRjaUlnUy9XdGhpMzE5YWlJ?=
- =?utf-8?B?anlKdS9aSHRYQTlnZlVTYW9hVlljY2FOZklWZDVSMmcwN1FxTFh6dU5GNHpW?=
- =?utf-8?B?ZEhCYVc5SjJ4MFBIVWRsLzc3UFBaZVdWaHBaVyt1MlUvSGZQZEcvTVhhK1Bk?=
- =?utf-8?B?aFp6NDhQR1U2aEdvVXd4V0kxOHFRaHdaYlA0Z085Z0ZNUHVXVnE0RjhRVEls?=
- =?utf-8?B?UFBDaGtkWWRGVllvVnhBeFV5NG1xOEJhVWlhT2V3bWdoUEszVUpMMFNwQUs0?=
- =?utf-8?B?bVJuNmZhczhabGJQT0xNZ1lFU3dYVjVSeTBPZ1BhVHlVMnltUEsxMHhvcWxC?=
- =?utf-8?B?MDNTclAvOXMyckpwTEkrRngyWlp1RjVycU9wdndKWmpPaEZPYTlRdXpCSXhM?=
- =?utf-8?B?Z0tOb1ArL0ZNMHFDN0huSWsyWFYvRmVSbE1CV044SXB1ck5yNlpmbTEzQktQ?=
- =?utf-8?B?Ny9qZEJweGRYWUFOSDdxYXplTDNvVk9ZY2x3azlaMnNHQk81YW1YaGNnYURm?=
- =?utf-8?B?MHhyZWRaL0U3bGg1Zm52d0htTzJRT1BJcjFzUm1ZQm4xL0E9PQ==?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(10070799003)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?eFM4UitFclVVdlcxamczYTJmVHJoWHRMZFhyQ3RucjhscUZlRmdHbCsxZThC?=
- =?utf-8?B?YzhGY3ZlamI3azAwc2djMnEzWWQwamdKMjZpUTU0UjlxTlVIYk5NWUFSK1pN?=
- =?utf-8?B?UXpWc202anBpVkhkSTRuZmZIU1NKVWxaV2Voa3c4aWJFS2hPSldSSHRWZFFn?=
- =?utf-8?B?V3hSZU9CYkdENk5IbUNNT2MrTkJiNWcvL1hVNWV5SUhGZUpJdkFKK3ArcVBl?=
- =?utf-8?B?cm5NUCtYMnpNZHc4RzRYQ3BaM2hpeG9PV24wSW9Makhkc0szWThHeEMzSG9w?=
- =?utf-8?B?cXRmYmw5c3FDYUtaR2o0cWN3SlAvT0hseWdCY2QxNXdCN0IzTEI2SkhZUzRw?=
- =?utf-8?B?ajZEM1lSWkxsbG93dzZMSm1aOXZRWDRvL3ZBVGJNSDF0cTR3cENyZThndm53?=
- =?utf-8?B?SGJYenpia2pFOUdXcWdLL2g1Q2s2L01scml0VU1qMUVSRTdNYVVnVkVHdk9j?=
- =?utf-8?B?SWRpVG5tVXE3ei9jclJ3bGVnR3R0UzNtbWsweTUyUFFqdVIyTEhRK09JcjZK?=
- =?utf-8?B?cVVIMjdqM0JHcXVUK0o4M3dIYzJwRkxESFlXaXUrVGR0K3BndmhscVQzOERQ?=
- =?utf-8?B?T0d3VjNWQjJ4Z0Y2REhHaVJIMGgyMjl1b29xNi9NMTNlY1krSDIwSnI2VjhB?=
- =?utf-8?B?OGpnSllmSmU3S0dnYjVIRFFaUnM0clE1ZTZhTzRPdFV4dmRVeTRsVXJOMUND?=
- =?utf-8?B?RC9aU09EdUJPbWhtWG9weGRmL0xoQnJiNWQySlQyUDE0Qk9vTWZ1dGRxb2tx?=
- =?utf-8?B?VzFVclZtTlY1TDFnWHhTQnRPcG5WU2JpVFZ2aHVPdmVzL2lITXMrNUw0RmpD?=
- =?utf-8?B?UC9mY1kvelJvL1phRkhEQkpOZk5zNFpKWlkzTFFXK3hrRDBDWWhLUk5Ub3Nz?=
- =?utf-8?B?bVVHY3llTkduc3I4bTdlUExzcDJCb2VTMHpUc2tBV0ZzQWY4NW9GaXd1Z1Ix?=
- =?utf-8?B?TGphd2N5bldVYk1RVGFRN3FvQzdPcVI3T0xWQ0U4UjhucWtTdXQxdmF2a05R?=
- =?utf-8?B?QWJHeWNxT01KZkV5RHhTUHhHNGEzY0lOWHBEYmxyUnJVZDJEKzRFejdNeDZV?=
- =?utf-8?B?TDFXQUs1TmZhYmFhTHBYc3lGR3BFMStGN3JrSHFlL0h0MXFHa0xEcCtnSlYz?=
- =?utf-8?B?di9PMTk0NHNoWVdQSG5HUUlNRDVWRFdyb2JySk5hR3g3MWUxZWR6QnlLRnR4?=
- =?utf-8?B?WmQzVmRRdmpOZmQ1Z0pMUjdGcS8zTVJuL045ZEVJTU9iUzJBYzFCRm53SVlU?=
- =?utf-8?B?RzNlczhkY09yMkhSOFRMVVppWEYzbTNkK0pkODBUU00va0hVRFZ2djlGT0N3?=
- =?utf-8?B?RTFjTlU3RENHWmdlYVN5bGp0czlrTy9yeVZ1UGUrMXlCdjRneWdhTVZqc0JM?=
- =?utf-8?B?OVBkeTNYMnY3NldnTE16ZmxBWXVNQml4VmxWaGJoUUJSTVlEcG9uaDlGNUI5?=
- =?utf-8?B?cGtNYmQzQXJHTWE5UVNuY0orQms4NlhtNjJrT0lJMHRSNjhQWWRuVmxJK054?=
- =?utf-8?B?ak1zdVgzS2FJWFZ3aWhsN1ZKSmR0cGNQTTl0amNwTzhEcHA4VWV1WU9sT3FJ?=
- =?utf-8?B?dTQwN0ZHcE5mbmZFc3N5aktvc2ZCOWNDUXRqS2lHekE1ZVpSdUM4NkJnNThp?=
- =?utf-8?B?Sy9xdlFCRFNhcWRqd0t0ZFJEZkNRZ0pLUXlYazQ5T0dZUVdibHVyVC83THpW?=
- =?utf-8?B?NVY1MVJrMjNJZklkbVFrZE5CUnp3a0ZiSngyY0loVVR0VVlsQU1JM090NFQ4?=
- =?utf-8?B?dWdQTFZqc0VhQi84STkrMVFSbit2RW5venZvRFpHY3hiQ0FtUnNWdFZyQk02?=
- =?utf-8?B?bG5IYWR4clYyc21xY2RvY3JaNUVEVGR6dmJ4RmlyVHprSHBsWDJlMU42N2Vv?=
- =?utf-8?B?OG50QTA0ZnJORGlmL3o3L3pFZjlIQVdsaWFvUkNiMEpEM0tSU1YvU0xOanhz?=
- =?utf-8?B?dEwxTDRPUzNUb0pObU91NjYrSTdpbWJMVnBBRFRVZTlHMWVyMjdLdVpVaHN2?=
- =?utf-8?B?b3RoSmQ1V1REYitNclRjWmlyeGRiWVdNY0Y0aVQ3M3RvSUdHWVVVTWJsNWl6?=
- =?utf-8?B?a0ZzTnlYdjVhRXJhckFoU1FpdHpjT2M3MjJxektZWW5TOUFwYzlQWFdONnpz?=
- =?utf-8?B?QXRmWlRHWW1FYjRLTVJXZWZWak9pVDc2eHEzQmlmQjExZEo2d3diMEp5STUw?=
- =?utf-8?B?RnB6VDNrZUk2NmRkbTN4WHRuK09SbGs1QVovdWlhdDNUUkE0M0FpUDVlWkhH?=
- =?utf-8?Q?gcx4XccAjgHoY1bkigANKqNFYPLVY8NV2giL99PDvU=3D?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0119735c-0cc5-4cb2-db8c-08de1e15cfb0
-X-MS-Exchange-CrossTenant-AuthSource: YT2PR01MB9175.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Nov 2025 15:53:36.2554
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: DK5p+Mz6O2ewRsdMTV1LgE9iVlvHAqW3V5kBv55+ywysmTowMFdtkzz1zwsHSZu8/EKUileKf4MJw8Fo0TeQEHXnXL0cSo7u9jbJWoKHabU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT2PR01MB11469
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 4D5B3C0013
-X-Stat-Signature: rw4w47mbnw5pqeso8d5q9zo14cwat7rk
+	bh=k6QqLCiZ3bKYilApTrBVoLgHK6pPaQj/ENLeWCSsRM0=;
+	b=KLMXR1x8JHw4uX5euk8E1JSHxsEgwlQDy2By//yvUdWRa2BYWMJ/0unN9wFms9sFg1lyrt
+	7479wKxiSIfrxQa6K99U8bKS6cVFpDr9IZJUnvoCMP3YBv3VZYgmIzMODIM8kyzNgakZF2
+	jsvnRGO3RkAWGSHF2AF7XEKtz7hIgbo=
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-477171bbf51so7270335e9.3
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 07:54:34 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762530873; x=1763135673; darn=kvack.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=k6QqLCiZ3bKYilApTrBVoLgHK6pPaQj/ENLeWCSsRM0=;
+        b=NafYPapzCxrNu+YJzNQhY87Q5jpUIaMJBeQMq7w5b7cVWVpaTtZ9tqYN+kWigGDeBa
+         unpsezGPC94dHyL5YYqkp/+PMAsUJYCcm92QRhH32ket73JvqgrJgfSCKZNZBfW0NRXe
+         fvDvqW1+mG/iiypClHI4NxP5GaMQu88V0cPxbYsiTpF07gqwhh6DI4vvV22b8XPO+HVG
+         9vbofS03ibdSv74WEDD4IGd3c+4a540PTWcXNonEbFyY664E/9u9ytUzd6q1V7IhX+Gv
+         r+JKOxOhRHNwX7i64mxgZLm5K1p/aJKMD0Of/OcIJUCepAv7ajKfNOTJ0unWOHNkPcal
+         RBwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762530873; x=1763135673;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=k6QqLCiZ3bKYilApTrBVoLgHK6pPaQj/ENLeWCSsRM0=;
+        b=hpY1SLQj0ntkkY4ohHFzziKrpg/F7tQxhymIERkTiRyYYM7PkSmM5P2/orn/DXW3DZ
+         xXLMnj6HwIox+rRBzn44WGYSmDn/kgXYn7a90VsPebU7UWdwB2ot3Zk2DExu+tegPs3Z
+         HlFW5cFdPOxysvJXPW8L0SGIBkafGBuktCZjt2Alh9RBQ6dk8n0jOj/f4LHFqwasbcax
+         4zyTZgR8sxDubxdWLbtSgDXM4KQI5KoKFsKxhJtFcoslM1BgFtVD66KFqxV6TJp3/b0R
+         1k6kHRzArFb07kOvkazXtZJ/mYNawTpF6UHK24/AG3R/COkEuWlp9wIK04VQ80/SP7eU
+         Q5pA==
+X-Forwarded-Encrypted: i=1; AJvYcCXGSGHG5lIDtw/zSiZ9eC275o9yIpNsgA7q8vyHpj/WBRHyQ/gduUvAWNJSsfyE47IPMoWx9RZWBg==@kvack.org
+X-Gm-Message-State: AOJu0YxE522Npq6DAqVIe3auqRzO+oJQZrNiGK72hOpsDH2sxncoA+Go
+	WpPTegUVAfiDLSSZts0+fycDPOoCKLsi5c3C4zmv0Yjmlx2kf8sAGhTUES0dtCeKngDANmK7KDj
+	RehPqs6RwXw4mpA==
+X-Google-Smtp-Source: AGHT+IF10pfYz/aX86VOtk1/4ToFDHxeKDSFR7QzVJHGBwU7n9WXznaipUt0c+mOTXVDyymnjKnmVDeDshscaw==
+X-Received: from wmbjd18.prod.google.com ([2002:a05:600c:68d2:b0:477:554c:6842])
+ (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:600c:4e88:b0:471:14af:c715 with SMTP id 5b1f17b1804b1-4776bc9f963mr29299435e9.3.1762530872213;
+ Fri, 07 Nov 2025 07:54:32 -0800 (PST)
+Date: Fri, 07 Nov 2025 15:54:31 +0000
+In-Reply-To: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+Mime-Version: 1.0
+References: <20250924151101.2225820-1-patrick.roy@campus.lmu.de>
+X-Mailer: aerc 0.21.0
+Message-ID: <DE2L1SAOC55E.E4JY62WJQ2A8@google.com>
+Subject: Re: [PATCH v7 00/12] Direct Map Removal Support for guest_memfd
+From: Brendan Jackman <jackmanb@google.com>
+To: Patrick Roy <patrick.roy@campus.lmu.de>
+Cc: Patrick Roy <roypat@amazon.co.uk>, <pbonzini@redhat.com>, <corbet@lwn.net>, 
+	<maz@kernel.org>, <oliver.upton@linux.dev>, <joey.gouly@arm.com>, 
+	<suzuki.poulose@arm.com>, <yuzenghui@huawei.com>, <catalin.marinas@arm.com>, 
+	<will@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>, 
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>, 
+	<luto@kernel.org>, <peterz@infradead.org>, <willy@infradead.org>, 
+	<akpm@linux-foundation.org>, <david@redhat.com>, <lorenzo.stoakes@oracle.com>, 
+	<Liam.Howlett@oracle.com>, <vbabka@suse.cz>, <rppt@kernel.org>, 
+	<surenb@google.com>, <mhocko@suse.com>, <song@kernel.org>, <jolsa@kernel.org>, 
+	<ast@kernel.org>, <daniel@iogearbox.net>, <andrii@kernel.org>, 
+	<martin.lau@linux.dev>, <eddyz87@gmail.com>, <yonghong.song@linux.dev>, 
+	<john.fastabend@gmail.com>, <kpsingh@kernel.org>, <sdf@fomichev.me>, 
+	<haoluo@google.com>, <jgg@ziepe.ca>, <jhubbard@nvidia.com>, 
+	<peterx@redhat.com>, <jannh@google.com>, <pfalcato@suse.de>, 
+	<shuah@kernel.org>, <seanjc@google.com>, <kvm@vger.kernel.org>, 
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>, 
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>, 
+	<linux-fsdevel@vger.kernel.org>, <linux-mm@kvack.org>, <bpf@vger.kernel.org>, 
+	<linux-kselftest@vger.kernel.org>, <xmarcalx@amazon.co.uk>, 
+	<kalyazin@amazon.co.uk>, <jackabt@amazon.co.uk>, <derekmn@amazon.co.uk>, 
+	<tabba@google.com>, <ackerleytng@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Rspam-User: 
-X-HE-Tag: 1762530819-338210
-X-HE-Meta: U2FsdGVkX1++drSwiyasXG3KBV9bh/mQUfObKQbMmVrjz+NTI5kmDV0K0DdZa1830LfDLN+rK4JCqWxhxl2KM5MoqYlThvDd7QBYhmt8CcvofSH+E75nWcgvZKdcJAs7cRWW76Gn1vC8UWX0WnJQ6tlffZex53m9MvuXUsOTaYuyzw1Y93HREwssn0C0RgqfgirmHsISOzmPins45xdtR+x+dEPvnS1yKHq+MwaoEtDuyXRUFMK0YoP4Bbhi1yrsvaHm5/Ec/li+XxD7LOwhxM+4pRTZCLnwy2tB5Uw8G7HgUGe91IkyMbW4yaCegFGSkjouPoysU6dglBaGpv8l+NstwHxNzIOdXfPGcll5eq+rgQWK/uDT0UVcvhrgE+BDZO/GyytvKlepRgVnilu7+2j6JlYmTJrNKE08wapXgUKpvmdhBaK349GQ9O1r4owUokgp57zPPrMvtHtDj6FdDabuvxUH01lpxI+3dK2REdbPhWG4Ns+k+yZIXmquaYO2XFO7SqHtr03X4+XIAVqNUskbpwhFAQmR7r9JuwHjVJ39RVJeJkKsnIvO+L67yQk3eLQk1/+llvVa3qgkDaOMa9MOx7QeTTrv5iHw9XYXn6wimEAn7tdnmvMANjYmgr+4g+mJXfGAZRbV7I6mqocpCVjUJMSfI4cAKMUAZ324RxRuDqBEIVoQfY8Knj+xcq2Jkbv9uvxM/F0N5EvZGrnvkIEgQAPv3T+5UjNqEimegWr92K1nqnW5g5aDwx4DtdoyndW2z6NbAidwGuwtlwF4yZVZAYrM9D26hfSlaHSOTpy7b8bqY7aUZS+1TTlGQcNtf21Fw4K5uNSq+jrWiLINlPWwdqPk5Uf6oBwC5S4mJeGUWYb2E9mX3iS9ugDmhT/991MOynuvFbml/ZX6EcbEzMXA8Df8AC07DI2g007BQbwyXGAKaKmH4pHpfgbGBTe98B0ACfeX2i6S+SIoqOU
- jF2kGVwW
- lA0S0qhmFXP0svZwDhHhvNxSjieGRWloUxKeIlFqg+b//LP/phi0+2NWnp0nuWjpG0Jkmm9F792sino9bZUqfRpLwJmC6uFlYIOGbuMmrnKigx1C9FBPlijLR7tYqQJ+PeaoBDToRJXqAlFlXCEhBsOoSm3SVJbDOn3gfDCiooZbi9Cv/9lWE6ua5DSCvxupkI+6pl1xUON86Ino9xiV6M4Lvt2NhFAqjgXiCt8Mour/5X7W2Vkaqdrrg+KDqEndiTME6uw3NpWMVWYA0UCvDLH9xeHYpxdaeKgXebvuNHT8lcGUDZORIRPvGL0G08Gji94uzYRu1Rr8JFzKPZ4fW6aruTPOnKXT79/QN5c3buynn65wC6TYNI3gE1IS4c5v6+7nqfKjD9/UAzn4i8Tey0ftV8TN4AiKjfnvErv9eouNafIWXXPB153fDBJkCZ2Bfx6tfiCRsf94m26ZdFVbUC9sKgCq991nPTgc08YptBs6mo2k5fR/rcC+uoHqdTE9FixibSYQ77ceLdFXIvGNy+e985aGv4iCOPFkfCQaBo1RXFsWh67eNMFmsaJKR4/SUVdyW
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: BA0AA4000A
+X-Stat-Signature: 19ocf1a1oxdek73uicrtnzngcd9kzqwp
+X-HE-Tag: 1762530874-63759
+X-HE-Meta: U2FsdGVkX19y6FPRm4W5L5imGxzhb/h+u71/6+2ENiwlQB+UHrPaDwSl88EF52RnA5jaQBpSzDLk3QaoCi2wC0QBOuwa4xSqRxxE4p3gHxqPhBEBqX5wFRvR5pGbwCGkpstdxL9CSHDV4pd3qrFLwE4P8Aar2qUBf0Dlxs6Xk+faLHaIDRj7zN+bixLkNVz45e8Qw7TQ3GMlq5hrqwRpNWjBlFHozRTjsr9TC9mC1jFbOeckk2vRC4ZfjWBdlBacIS/8+qHM444dzHPEv9sF4Qr3JZYYU3daBV7Y6ZYamDDAK1klNnzZLlhbJXmyZ/eVBv6pFgyMUuxjmcKGQv+22M8RSyL/4sOsNOf5P/F2rtKjZDWJrOKswh0DxINbuVelnrUgy9RD+/M9yDSsNhgJ3kLRPVE8Is2wcv1kmuke/g3iKe4j7q1p9TbW1ohPQspKjrCTCjzvisZyVuMO+UQstjdn5giVoxizAqKtgFaZ95XFfoCwEtoMcnRUnmF+m+ogogv+pUJPNB3XBrZ0STciBUmHFbmBuT/zlFEL4MYy8k5/kfbYGTEZp6o7Be1igIp3mpljBQb/tfNc0zmYvOAu8S1y+O0xzW375d8kI7B2qutYFATo3yU3xFBloJ9etOgVwMYuqhYPhvcvFiUhF6jm4bJDTAeLfqimCTJzijSIaWkXz9zadBbe4BarSQ4hcTnnkKnmnebdfztLj5BAsZdw2vmn8vIlMg+Bn9YjDtiJvSzRug4CUjDxXtEYlZ2YePA+ZJ/ao9ZYbZLwcQK3yPDKDwwPz54a2dxJ6J85bmq+QDor9w/CaaBPlQkiN0gWNYzz21zMAm+JeUmLBSFbJEtVCiOllmh1l5OOWHR9urWIYS3VtA0HrEtMFdh7EHSNGeXlo3pCSbH8S+mQakvEiYH7veIeNoHt+Jv+57NqJ7fUCal3MXYA0BN/GfVs2NnTaFAObJYqL2mUG2bYA2i4FAM
+ UN7Ao9sp
+ TELvN6Q/Iu7+82tJoonZbdr9V255lK83SbCP0iQS6v4DKbpPV4EHCSDhmGxDmPbqeGvPH+ZI4LAAfEJQ+h7Rri6z6n0Z4MJDlbWL4IEIUXu7HNAInXc0bnQsiwa2p8/t8Z9AwxVLkneoHJhZvFx9C7LvbMq/wu5FT+wDRWtIeM+MKqkQ5cxCmKX+pRqvMh6m84d2csyXsIPf0NyHdb2exrPxtJP2KqZ7Gvq38XmHaj0EGZWjDvKINcsULq2TPNHcwFc65CBDu67jgUkgceEJsk+GmRmmijY8iMOFom5XGh2vM2IpTuuR1xrbiz2bOaUOkxd314hUl3N5zAkJIUczWqkuA4EaBwfOKfbTQ6xmDat5NR4tpZJR6Yqztyr7rlssPPJGgvrZTwlMTXPNboOor/8txNNXADNiDECD5tVxZzkxzb0as9abomkNaOUVt2uocizE/aW8NEs9PNuGav5ien7ydGOknSFMh6dp22LNRwIT9czvb8kcGWZvNUrNVkCjoKMxb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -225,106 +128,117 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 2025-11-07 09:43, Mathieu Desnoyers wrote:
-> On 2025-11-06 19:32, Shakeel Butt wrote:
-> 
-> [...]
-> 
->>> [   14.858862][   T67] BUG: Bad rss-counter state mm:ffff8881000655c0 
->>> type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:67
->>> [   14.894890][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 
->>> type:MM_FILEPAGES val:0 Comm:kworker/u9:0 Pid:69
->>> [   14.896108][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 
->>> type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:69
->>
->> Hmm this shows that percpu_counter_tree_precise_sum() is returning 0 but
->> percpu_counter_tree_approximate_sum() is off more than
->> counter->inaccuracy. I have not dig deeper to find why but this needs to
->> be resolved before considering this series for upstream.
-> 
-> I notice that those BUG show up while loading modules at boot in kworker 
-> context, e.g.:
-> 
-> [   14.858862][   T67] BUG: Bad rss-counter state mm:ffff8881000655c0 
-> type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:67
-> [   14.894890][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 
-> type:MM_FILEPAGES val:0 Comm:kworker/u9:0 Pid:69
-> [   14.896108][   T69] BUG: Bad rss-counter state mm:ffff888100061cc0 
-> type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:69
-> [   14.918858][   T71] module: module-autoload: duplicate request for 
-> module crypto-aes
-> [   14.919479][   T71] module: module-autoload: duplicate request for 
-> module crypto-aes-all
-> [   14.920801][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc 
-> plain<block
-> [   14.921844][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc 
-> plain==block
-> [   14.922852][    T1] krb5: Running aes128-cts-hmac-sha256-128 enc 
-> plain>block
-> [   14.923843][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc no 
-> plain
-> [   14.939591][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc 
-> plain<block
-> [   14.940614][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc 
-> plain==block
-> [   14.941586][    T1] krb5: Running aes256-cts-hmac-sha384-192 enc 
-> plain>block
-> [   14.942547][    T1] krb5: Running camellia128-cts-cmac enc no plain
-> [   15.018568][   T85] BUG: Bad rss-counter state mm:ffff888160f81340 
-> type:MM_ANONPAGES val:0 Comm:kworker/u9:0 Pid:85b
-> 
-> I used "module_init" similarly to lib/percpu_counter.c, but I think it
-> happens too late in the boot sequence:
-> 
->    module_init(percpu_counter_startup);
-> 
-> module_init maps to __initcall within a built-in compile unit, which
-> maps to device_initcall(), which happens quite late within the sequence
-> called from do_initcalls(), called from do_basic_setup().
-> 
-> And even do_basic_setup is documented as:
-> 
->   * Ok, the machine is now initialized. None of the devices
->   * have been touched yet, but the CPU subsystem is up and
->   * running, and memory and process management works.
-> 
-> which clearly requires that the mm subsystem is expected to
-> be ready at that point.
-> 
-> It probably was not an issue for the non-hierarchical percpu
-> counters because all it was initializing is handling of CPU hotplug,
-> but the new hierarchical counters initialize the pre-calculated
-> inaccuracy value which is used to figure out whether the approximate
-> sum is sufficient to compare values or if the precise sum is needed.
-> 
-> I think this is why we are hitting this BUG.
-> 
-> Now I wonder where I should move this initialization. It requires
-> "nr_cpu_ids" to be initialized, and pretty much need to be done
-> before mms are created. I'm starting to suspect that the module init
-> code can spawn kworkers that have a mm before the init process runs.
+On Wed Sep 24, 2025 at 3:10 PM UTC, Patrick Roy wrote:
+> From: Patrick Roy <roypat@amazon.co.uk>
+>
+> [ based on kvm/next ]
+>
+> Unmapping virtual machine guest memory from the host kernel's direct map is a
+> successful mitigation against Spectre-style transient execution issues: If the
+> kernel page tables do not contain entries pointing to guest memory, then any
+> attempted speculative read through the direct map will necessarily be blocked
+> by the MMU before any observable microarchitectural side-effects happen. This
+> means that Spectre-gadgets and similar cannot be used to target virtual machine
+> memory. Roughly 60% of speculative execution issues fall into this category [1,
+> Table 1].
+>
+> This patch series extends guest_memfd with the ability to remove its memory
+> from the host kernel's direct map, to be able to attain the above protection
+> for KVM guests running inside guest_memfd.
+>
+> Additionally, a Firecracker branch with support for these VMs can be found on
+> GitHub [2].
+>
+> For more details, please refer to the v5 cover letter [v5]. No
+> substantial changes in design have taken place since.
+>
+> === Changes Since v6 ===
+>
+> - Drop patch for passing struct address_space to ->free_folio(), due to
+>   possible races with freeing of the address_space. (Hugh)
+> - Stop using PG_uptodate / gmem preparedness tracking to keep track of
+>   direct map state.  Instead, use the lowest bit of folio->private. (Mike, David)
+> - Do direct map removal when establishing mapping of gmem folio instead
+>   of at allocation time, due to impossibility of handling direct map
+>   removal errors in kvm_gmem_populate(). (Patrick)
+> - Do TLB flushes after direct map removal, and provide a module
+>   parameter to opt out from them, and a new patch to export
+>   flush_tlb_kernel_range() to KVM. (Will)
+>
+> [1]: https://download.vusec.net/papers/quarantine_raid23.pdf
+> [2]: https://github.com/firecracker-microvm/firecracker/tree/feature/secret-hiding
 
-At least on x86, nr_cpu_ids appears to be set by set_nr_cpu_ids()
-through early_param("possible_cpus", setup_possible_cpus), which is
-AFAIU called from parse_early_param(), which happens very early in the
-boot sequence.
+I just got around to trying this out, I checked out this patchset using
+its base-commit and grabbed the Firecracker branch. Things seem OK until
+I set the secrets_free flag in the Firecracker config which IIUC makes
+it set GUEST_MEMFD_FLAG_NO_DIRECT_MAP.
 
-It would make sense to call an explicit percpu counter tree init
-function from start_kernel() between the call to mm_core_init() and the
-call to maple_tree_init(). This way it would be initialized right after
-mm, but given that the hierarchical counter tree is a lib that can be
-used for other purposes than mm accounting, I think it makes sense
-to call its init explicitly from start_kernel() rather than bury
-it within mm_core_init().
+If I set it, I find the guest doesn't show anything on the console.
+Running it in a VM and attaching GDB suggests that it's entering the
+guest repeatedly, it doesn't seem like the vCPU thread is stuck or
+anything. I'm a bit clueless about how to debug that (so far, whenever
+I've broken KVM, things always exploded very dramatically).
+ 
+Anyway, if I then kill the firecracker process, the host sometimes
+crashes, I think this is the most suggestive splat I've seen:
 
-Thoughts ?
+[   99.673420][    T2] BUG: unable to handle page fault for address: ffff888012804000
+[   99.676216][    T2] #PF: supervisor write access in kernel mode
+[   99.678381][    T2] #PF: error_code(0x0002) - not-present page
+[   99.680499][    T2] PGD 2e01067 P4D 2e01067 PUD 2e02067 PMD 12801063 PTE 800fffffed7fb020
+[   99.683374][    T2] Oops: Oops: 0002 [#1] SMP
+[   99.685004][    T2] CPU: 0 UID: 0 PID: 2 Comm: kthreadd Not tainted 6.17.0-rc7-00366-g473c46a3cb2a #106 NONE 
+[   99.688514][    T2] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 0.1 11/11/2019
+[   99.691547][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+[   99.693440][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+[   99.700188][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+[   99.702321][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+[   99.705100][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+[   99.707861][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+[   99.710648][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+[   99.713412][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+[   99.716191][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+[   99.719316][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   99.721648][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+[   99.724421][    T2] Call Trace:
+[   99.725608][    T2]  <TASK>
+[   99.726646][    T2]  get_page_from_freelist+0x6fe/0x14b0
+[   99.728583][    T2]  ? fs_reclaim_acquire+0x43/0xe0
+[   99.730325][    T2]  ? find_held_lock+0x2b/0x80
+[   99.731965][    T2]  __alloc_frozen_pages_noprof+0x147/0x2d0
+[   99.734003][    T2]  __alloc_pages_noprof+0x5/0x50
+[   99.735766][    T2]  copy_process+0x1b1/0x1b30
+[   99.737398][    T2]  ? lock_is_held_type+0x89/0x100
+[   99.739157][    T2]  ? kthreadd+0x25/0x190
+[   99.740664][    T2]  kernel_clone+0x59/0x390
+[   99.742213][    T2]  ? kthreadd+0x25/0x190
+[   99.743728][    T2]  kernel_thread+0x55/0x70
+[   99.745310][    T2]  ? kthread_complete_and_exit+0x20/0x20
+[   99.747265][    T2]  kthreadd+0x117/0x190
+[   99.748748][    T2]  ? kthread_is_per_cpu+0x30/0x30
+[   99.750509][    T2]  ret_from_fork+0x16b/0x1e0
+[   99.752193][    T2]  ? kthread_is_per_cpu+0x30/0x30
+[   99.753992][    T2]  ret_from_fork_asm+0x11/0x20
+[   99.755717][    T2]  </TASK>
+[   99.756861][    T2] CR2: ffff888012804000
+[   99.758353][    T2] ---[ end trace 0000000000000000 ]---
+[   99.760319][    T2] RIP: 0010:clear_page_erms+0x7/0x10
+[   99.762209][    T2] Code: 48 89 47 18 48 89 47 20 48 89 47 28 48 89 47 30 48 89 47 38 48 8d 7f 40 75 d9 90 c3 0f 1f 80 00 00 00 00 b9 00 10 00 00 31 c0 <f3> aa c3 66 0f 1f 44 00 00 48 83 f9 40 73 2a 83 f9 08 73 0f 85 c9
+[   99.769129][    T2] RSP: 0018:ffff88800318fc10 EFLAGS: 00010246
+[   99.771297][    T2] RAX: 0000000000000000 RBX: 0000000000400dc0 RCX: 0000000000001000
+[   99.774126][    T2] RDX: ffffea00004a0100 RSI: ffffea00004a0200 RDI: ffff888012804000
+[   99.777013][    T2] RBP: 0000000000000801 R08: 0000000000000000 R09: 0000000000000000
+[   99.779827][    T2] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
+[   99.782641][    T2] R13: 0000000000000801 R14: ffffea00004a0100 R15: ffffffff81f4df80
+[   99.785487][    T2] FS:  0000000000000000(0000) GS:ffff8880bbf28000(0000) knlGS:0000000000000000
+[   99.788671][    T2] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   99.791012][    T2] CR2: ffff888012804000 CR3: 0000000007583001 CR4: 0000000000372eb0
+[   99.793863][    T2] Kernel panic - not syncing: Fatal exception
+[   99.796760][    T2] Kernel Offset: disabled
+[   99.798296][    T2] ---[ end Kernel panic - not syncing: Fatal exception ]---
 
-Thanks,
+This makes me suspect the kvm_gmem_folio_restore_direct_map() path isn't
+working or isn't getting called.
 
-Mathieu
-
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+If anyone wants help trying to reproduce this let me know.
 
