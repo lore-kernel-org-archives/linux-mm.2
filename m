@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 4782BCCF9F8
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 21:06:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8F9BECCF9E3
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 21:06:14 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8019B8E000D; Fri,  7 Nov 2025 16:06:02 -0500 (EST)
+	id 6535E8E001B; Fri,  7 Nov 2025 16:06:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 78B308E001A; Fri,  7 Nov 2025 16:06:02 -0500 (EST)
+	id 5DD828E001A; Fri,  7 Nov 2025 16:06:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6027D8E000D; Fri,  7 Nov 2025 16:06:02 -0500 (EST)
+	id 430178E001B; Fri,  7 Nov 2025 16:06:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4A2D28E000D
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:06:02 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 0CC0613B6CB
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:06:02 +0000 (UTC)
-X-FDA: 84085043364.12.7CF865F
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
-	by imf23.hostedemail.com (Postfix) with ESMTP id 3AD2614000B
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:06:00 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 2B8DA8E001A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 16:06:04 -0500 (EST)
+Received: from smtpin10.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id EF59912CE1B
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:06:03 +0000 (UTC)
+X-FDA: 84085043406.10.1803AED
+Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
+	by imf23.hostedemail.com (Postfix) with ESMTP id 22D8114000B
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:06:01 +0000 (UTC)
 Authentication-Results: imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="EW6FLm/O";
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bY6cY+nt;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762549560;
+	s=arc-20220608; t=1762549562;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:mime-version:mime-version:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pBi03kAb5JgjRparbbJCSt/bY+/4eC+JKPe6vY7ZjAQ=;
-	b=XcVsC0WPtM+9LIeNnSxHj35nAImueKZrVRLM1Au+H5uqg4y+N8dz0Be+TraU16gKmFyH8s
-	Q4MQUg+Kjsx2sMOYj4CK2niCOftYrWKgsE2IEDfFPiK6UM8fslf60tGpuCTqUlfhn+hoMQ
-	EKvdMdqXHJonOIvLg295QTeDhlYXbvs=
+	bh=7B04/0h/Qcfyqc4t6CaWgs850ouGgVZlycEHNrf/bt4=;
+	b=xhu3/YinGe4dZNeujWnD+dBRLIYlSKQlibD/00/qfFQYQ3KWknEQfoOXPhPTJgNlaes/QS
+	YZXxPKVJIQb2jjUDvaEBUOcPZl76URcvxgcpd3guoRybq0HlmOzRFlOGrsnDmfqtdq4GAW
+	QoWXzXsn//4VXpier13+6PTTejYBKsI=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762549562; a=rsa-sha256;
+	cv=none;
+	b=yNCDy60lMTztATBjdaCjf+x05vCxkGvpgJe8PMNpdKbW6IbYkg7khOOg1rbrMOO1TJXkuB
+	q/dFF/nhNSwOofBDjM5RHoWMPXYd6cs/Q0VQLRo5py2wCnDd1ClhaLfa9v8F81LjVWACf4
+	xXaJXwgcNiY2EpPAz+smruK/OFabBP8=
 ARC-Authentication-Results: i=1;
 	imf23.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b="EW6FLm/O";
-	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.178 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
+	dkim=pass header.d=soleen.com header.s=google header.b=bY6cY+nt;
+	spf=pass (imf23.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.128.176 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
 	dmarc=pass (policy=reject) header.from=soleen.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762549560; a=rsa-sha256;
-	cv=none;
-	b=qhO4O2TdrvQohpOYK3LEyo5ExCbPA1HJTUIEe0U3arKuYXyWBUALk6QGnE+doHK8szqsKq
-	apRzqqFYLiqHa4hVBkulcIwPsLrEY3f416gq37yVsrgXoO4TToyqL6TDvnfg8ysAYdhCtH
-	o1WigQ/Q477lZp8lOIM19WIJSJ4wzQM=
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-787be077127so14126077b3.2
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 13:06:00 -0800 (PST)
+Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-7866aca9ff4so14646127b3.3
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 13:06:01 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762549559; x=1763154359; darn=kvack.org;
+        d=soleen.com; s=google; t=1762549561; x=1763154361; darn=kvack.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=pBi03kAb5JgjRparbbJCSt/bY+/4eC+JKPe6vY7ZjAQ=;
-        b=EW6FLm/O+KytBEHYnqFkN1g2LwAQi5Azq79tnrZvm4b/DoU4MzR20ONcIEbqI17VnN
-         Q6IXSpCt7suE0WW7aX15Jl88bptdef5UNWaHYHEih9GrkAmVCJnF+qURZwFwWDWeWcUr
-         kdCYMs1/xJOsQttt3Goda82uIhzM8jt8xLXL/Dd9uC7AVtYpoL5SWVMsR2+Mlwnq7Bcs
-         ih4D2fx9A2TafpHaVw7ncQpnVtgNibmTIcs1mUvuttdyrvnXPwVCdAA+3qNaokRrCklQ
-         8FAXwE3PmAcCBlotVUuzm4T2HCc45Y8YBCUFgfuj5nDTdAlLo64zLaMf4bZctKBG+lGV
-         z2QQ==
+        bh=7B04/0h/Qcfyqc4t6CaWgs850ouGgVZlycEHNrf/bt4=;
+        b=bY6cY+ntQEs8DQaEeil8T5sSlSkWErKDuoFuG8tr0vKKmTtdCArVXHW01dLUkluSqg
+         Pb5kMpE0A16mFjh06KNlJSrV7ssR9rUl4n6VVJXLhilmGQrFZ7NxZ6ecGeVmRU9HDUDj
+         8A7Jzk5f//lPSUy70om3x1WTJNADvDtK6kvm0KgDOmN7Au21hyeNCZ9Ron+8kRm5Sqz6
+         Cx0pIF64YZ7WHe8v1SLOLS108g3cj693NbvgoMhQrVUl98bBaw/zS5NiLJ4GcGp50CJO
+         r15UNOsGhaepcIZBcOP94+1rGmUq+GF6Z250TO5ocxADzslwkSJJ738BZMcMQNz48hfe
+         vEMA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762549559; x=1763154359;
+        d=1e100.net; s=20230601; t=1762549561; x=1763154361;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:to:from:x-gm-gg:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=pBi03kAb5JgjRparbbJCSt/bY+/4eC+JKPe6vY7ZjAQ=;
-        b=qgsDoeTXlY4sSMiClqhu7cokl6P/rfIavz1gdla24TKbf0LMsCI3e8PH5kiK44Yg0r
-         +pSqav1oWnV9xd1BEeE5EMC7FO3MTY/VNi8iE5txEw4KYJ9nemfAxxqy7HCl5aqxNvvC
-         9d75DgNqhhKrOD0qHVf79eL9f4y5sZDuKSxe0nkodI5ZXeUp4JzYg4IAb4Gx2/NUynUm
-         n4y2ao/AUn2hjTJxFB9hVUUcY02lm1/ofysSF+4PK6zruV2UDpFoeyPoopOwVvy+PwG1
-         dRNoLYUCtYR1w38W21WhtpNu+S0MGAX2lafBUERsJ7RTDVzTd/C98efDVpINLp311nRA
-         SqgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWk0xNEXGZoBgaFuPoL54ueb+x6s6YiltXTYsxo5yzMOaR7OXnqTYPKqnJVUXZ16sWCHcPpST+t9w==@kvack.org
-X-Gm-Message-State: AOJu0YzVC45rwGQ3SjQLycsmzPHImRahRu4mWQu0qu0+EEkvQymqx5Xs
-	uf2nfW2H52L35eIk2BbiMDDSeWWOtNPvr4JfHg1sPScvkT0/eGWR7wJyYLOXfzm/S3o=
-X-Gm-Gg: ASbGncsvYP57lFmVxZOeVY+j2m1mTTpbN9ozHcvkhfFkUVQxtMsfYNo0SzsjIwv0le2
-	a7jpIOZiILKoo4CVRoLxPApO+22KZmec2Zj7w/Pf442O0Jw2E/agHGirDMFy4RQ5IOgvBZN0f5T
-	VJVOCMhFsfYqIAU37BOWfqWKWzA+kd0vi1zKOq1sgQz3e6DI1bhrQaWnutlHAad17JIDAeQozCL
-	Zun94YA483sigbyQ7etCSTfICeSQTXBcKDgPsC5T7Eh/rp4O/Wrs5Fq9ZHKmAtNXYp5mSOKqIB9
-	5DzGxsK9QFWfovAvCSVrmH0sX4aOpxiJilFl7SqKMo+XPAJ6moaWLCW57TrZMM0APoGAB7ObPLu
-	eXXQZy9pXqXWH62zq2GIpMCQMNT3WMadnsJS9iKUrxuYwZ+DC/1LWHJNFbALgLQnj6o8YDtAT1x
-	5rxUz6PfsRl7P5yT1cDgIQ0jJ58/4gz1RahXBHqI8dzK9rnfT162DAxgEq7wvqr3GYdY8KylVvB
-	g==
-X-Google-Smtp-Source: AGHT+IF+XOrK+gByf7DQ1+IWSR7ui8MkgfcgK6h+y28DPkokKVkVXPGBOJn/sPaYBxN5KAaR0pxqSw==
-X-Received: by 2002:a05:690c:760a:b0:787:cde8:b3d5 with SMTP id 00721157ae682-787d543da03mr6084207b3.52.1762549559282;
-        Fri, 07 Nov 2025 13:05:59 -0800 (PST)
+        bh=7B04/0h/Qcfyqc4t6CaWgs850ouGgVZlycEHNrf/bt4=;
+        b=Jeo88mO3CxSQv0v1RZT5tBY8eMFE/Mtrw/HoaneZ/6QooWswTTcxeX5eF3uPdZiobD
+         f+jCw9KiUmH8PqaqJk98jLeBwOQ772VyKk04WDD5P9Ad0zPTOk44MCVlUgqrcvBVzsFo
+         EiBxPvp5P/53xbXDHCs5ew3/QcNv6vjtQcSoUfuJymmQGle2BjggwEIOjFG2Y5jYOcXD
+         wuIvGYlcIVM/sTvZLna4POudgyIIEIkviX1VbfkKNnKe9aTsjK1kv3u42ObJl7gS+1Lb
+         pyaM5JRsP8gQjSh6icRIFnjHYAsTcUx0jc2eOuktMnMTnH3lQi9K7Jwuqft8SHjgtv4X
+         MHog==
+X-Forwarded-Encrypted: i=1; AJvYcCVjt7quyiryAlWUOV7SYric/GeEwBWFnB4gMiYQdzhSF109wil45bFlmNuOsoZwlDwgIBKs+fnunA==@kvack.org
+X-Gm-Message-State: AOJu0Yy5h4em9ICD0jFlzfGuzFKms24N9+Nh8OLGAEShEVJHkSXOyf1J
+	kCKS1h0kUWriH+PeuMZYH2GpVtzGqeaJruPc6hLm3Skiz2PrrrRNN6dsIbxu342VG/U=
+X-Gm-Gg: ASbGncuocKexAC0nW8+UIStMPLF2RUPJ7ZV7X4ikdLgoyL2J8/mFQ7viHXoiY8S1zDR
+	4UmmeyY9E8PH+O8PPWIYGuTZTNKfThWJBazv4a/q9fka7Dqw/IjlmDdn4mo3U+Sn5Pho3jEVQ8s
+	nlifak7zRDM/LUb1gDZsE/ogG3609L1MRBH10ahypIUknESc38dngVAKP14qyuiu3ClfD6Bg+It
+	rcvS+j0xEy4TXiwxDCL7yjGpCLjGpaJDjwPBishR6G1RQvuYwT9LzCceKrEZioDnRHdC1Fw3Ji1
+	55Hj4tPbIy8VXeapiCS/WejVSMDkSEP8Cs27e9UXfNG6JnJN58TQTUy8dUfJFqrHRqQimRHt6jD
+	1nqvoa8D77DthF/2KKFg1YEC3yKxtdEorjyXC7KdZtno/r+RiC7JgFSFFwc5eSmnSMxVhn8IFA7
+	3C3BwI25ptyyXZEGfaLWnHfhAWXROwj1QGiC+fxTP4Ak2z/wgklrXs8a7qywkQcQLFik988d3DZ
+	djYrjOGUpfg
+X-Google-Smtp-Source: AGHT+IGF4+/4J86N/nzQZyRsPJ7pMtknxLR4bnE8JC68ZkTL3I3E4I5rinqYLEhJi2wbGwCzdCJ5TQ==
+X-Received: by 2002:a05:690c:55c5:b0:784:8153:c604 with SMTP id 00721157ae682-787d53ba2bemr6446727b3.31.1762549561166;
+        Fri, 07 Nov 2025 13:06:01 -0800 (PST)
 Received: from soleen.c.googlers.com.com (53.47.86.34.bc.googleusercontent.com. [34.86.47.53])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d68754d3sm990817b3.26.2025.11.07.13.05.57
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d68754d3sm990817b3.26.2025.11.07.13.05.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 13:05:58 -0800 (PST)
+        Fri, 07 Nov 2025 13:06:00 -0800 (PST)
 From: Pasha Tatashin <pasha.tatashin@soleen.com>
 To: pratyush@kernel.org,
 	jasonmiu@google.com,
@@ -167,22 +167,22 @@ To: pratyush@kernel.org,
 	hughd@google.com,
 	skhawaja@google.com,
 	chrisl@kernel.org
-Subject: [PATCH v5 14/22] mm: shmem: allow freezing inode mapping
-Date: Fri,  7 Nov 2025 16:03:12 -0500
-Message-ID: <20251107210526.257742-15-pasha.tatashin@soleen.com>
+Subject: [PATCH v5 15/22] mm: shmem: export some functions to internal.h
+Date: Fri,  7 Nov 2025 16:03:13 -0500
+Message-ID: <20251107210526.257742-16-pasha.tatashin@soleen.com>
 X-Mailer: git-send-email 2.51.2.1041.gc1ab5b90ca-goog
 In-Reply-To: <20251107210526.257742-1-pasha.tatashin@soleen.com>
 References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 3AD2614000B
-X-Stat-Signature: jumntswadhgtknmg59potfkjjq66idao
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 22D8114000B
+X-Stat-Signature: oj8eyf7ztibwagzyj8auitnoa79x5uyh
 X-Rspam-User: 
-X-HE-Tag: 1762549560-397155
-X-HE-Meta: U2FsdGVkX1/0vwSLK2azxKPEzQgb2lLlpIpNJXh7ZpkSu7r5Upcysxxen37KT5qtD77XM9d8TVTjHSyjCgl4eOXFYex2Y9Bt9WBCuv9weYU3XsZPHg2YaOGVcogP5szmCzO81WNw0S+H6mPZeTpnL1lpuH14NxocdLE32ZWEQNIMHYQrjxlCOtiMrT5Ii/AUauw8lsR14HNb6cvpoOmEMYjhwbOva3HpilQnRsQx2N0+NqjhOe5hgD1G83WWpswPYqpVakmDVSSl1ZwifaXL1l3sxyG1vO5WM8qMaPN2euS4E2Ce/4BkvJIaysK32fP9vdN9uE8SJmp5iWE1FJ87d9w/aGmh9zSzPox4l32Mf0jzeiJCj5NcHF2wp4GLV4v/haRjSgc+d9avinciEvU3ZJfWWoqtX4znHvzAKVyN9TLoE5DJzrjUivYAGVgUv55yx9TlL9vWdMUT+O5NH8eo8mZjBkD+5MEEKjPKCFIenQ3Tldb0nr3ZxuR7Iq5u6GyNdAzKh+aQ3zwB2D4OcM8nATiLAbuPICFcNURgxp3imhkStImAXOWdK6qzHEqkwHa1MiQ/V7U122Suas1Lw7/W9Jxqlpqf8sbmEjsW76KG/emU54JHrMwvF7SO1uescSUuE89kB8497MHbrlDbqnyg/QCv+fEJu3x4dMfoOq/MX3GP7dnswqjbkbfsMIdXZfP9azpaOJh6w1tkCMUxvSkuhb5VPE6/4U0XcB5RLDZbBcKqjDP9c+DRvT2t2IVAQ6u63vuWnwdMypAB5GAx4GWzfk1YjJDpmxNb9Jiy+eeh7GtbzjZXWrvq9LZoOYQS7w2eQ+zHFxoL0/O2gLtTcTelDV3SuQH97jfNqKlqz20okUZdtQWcxcV573FXm4TY8TbW0e4K/2o+kzPfeDaW34oD8wrsMCN0AqRAInl9Ce/WsNOM9QtWlZADZy6ijjtS3ExvEzbgN93qnzvdN4I18N+
- ytxg2NI6
- YyUfqIL4wZYiTmrumH0F3WmwHNB1NtPNxIiXVetq1Yw3FAuEFD2lg0McvNVx3fs+3Ju9kq0hoZ7k9JP+ee558myVjCp3uy1g0UDV/3SI9oRyaEHd2xsXztrkao8PNJJMiFM1uysOLxs2xqqT5VyXdBswzyogM1OI87k6wpBUK8Fd4YA1TJuNRVyAsdPAwJRnXm9GtVMQdYhia54C3u+jte1e4DY5rwh/jOuG5eQqSu+2kd2mt86mzgkBGmmLMPYt/lyxfTw2yfGrWGK/QYfSgDJBH7fOdaxVc96i2QDjDzcCZT++u6HlufhLrYtr/V0+MyWwA2bOQkmiHnJrmmEezI/uiAskgH7ri/Jm2NBHct8kgegMvujQYHSvzIJuiHlvFquSK8tVAXSLXxU8=
+X-HE-Tag: 1762549561-832146
+X-HE-Meta: U2FsdGVkX1/XIEukVAPxaYpfNIrKORzUrwoVeagwESgXi/560l6mSxGnjWQGQRhGRrc9odPcCyKJ+T91TSH9jaXfvlX85eOUJ1jJ0yv7IYdahDT9V9jfZPEbjJ0ImNglO1Bzr3LOIPrn9KxWEHDrjwdUFysI8iTWN7LvStGeOrAT3uscOoKJghV+s9Bp7/7OOmBplmMzwO0UfZWbEl3izYja4sXgEwsr6Q5b+L0KRzpPkfWyzyCOP//Ivxtavy0XdE5+mvUjFwo5BcUYVxpj3PpoSqq2pPMBfhnZNlT7UbzJSfAj/2UkYdGhOG8cLtWhUqMiuQn7jNW6snrkvo3bbcivqb07fwTT9zKJ1iCa7PfnNDG57uaUWSHvwZiZIajGqTFkKWbW0LVa7uSidyZhpqeu1xnG9FFbyi6ZZ5D2vuW9JcC/WHsGxDj6K+kSXrCAuLa8p+BCYEbB2YTxLVmYoA1MVrgsTkAtuZDuK8CHjn20QomB39izvnGxCqhIHOB9MOp5wStf0o8hs53FBrnB7RI7HkSfA0nFT/D7jhij1t+5VsAJAK7RCaEgaDQRa1cLl6zZAOFTFvfteC6SLHUnO+Fanu1nX3NC+Gfh46W6OhvoNBVAqVjs5SdK7LsApPwEJ3zGXuqLRScDGy6LZ93NeIlSAZtrB9SIHGcowy64mKtMBEQbP7FvG0VsHhgJ6dzl4UgopgGkYpL9Nww2oFvWrv/xbTL7DxsXHyy2yHJwT1OI5PBoPzF3vVCOFqr+uuDOJhgZObzbQwF7Hu9ToDIPPmeape95jm92/aX3WaARHDUhsqUFhCOLwcssViipeDjg9CPSBrRUYyXwBviA31g0mMa878DPvQUTNgBAlRz9EiytEMwiTnakTfJgKcjftd2rF5iVZg/oTMq0eA78TEMrW7a4pFbjn2E8inZM3KGmJlVSVxik14BehsE31Z+2eCinFyijeUo3pDM4rFPWtF7
+ WwvErx61
+ QSErt04fauNLCaprXzKWEsuGbuHDgW6RPK2OFmSio4PiK/Liz7JembHVhHmYdzE2jRRiAoLeVRkhdVQqYzOMqTBZBcZJ6MAuRakhstmr5c4MqBaz9sZlQLnkwkF/xMMBbAmwM7UUScUU75mzktVRnivjOpSsG6hte5bysWGg85Yo/hZW6iuzPv9x7RbmBJq3lILfOx+/z+066dBACj4uvussN04voygSa/w0foNNECicQAm/nWxRaUUvSTmFI0cNKithz0ZD/R2cAFj71VsVIF9DKNOXK/mcBc8lMBSXWcYcfXzolpYp/HMHJkat8B7n4BSw1ahDugqRAuS6HLT8wxIaMSRiYnkTq7teZ+TxWCCSnqw3HKmN0n7FfLNcQmjOpQ3L3w7bgle7+oa7PVxSu8Pg5m2oEdlEKvfTo8DziBpWtscLZXMeCTeYnZQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -193,104 +193,70 @@ List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 From: Pratyush Yadav <ptyadav@amazon.de>
 
-To prepare a shmem inode for live update via the Live Update
-Orchestrator (LUO), its index -> folio mappings must be serialized. Once
-the mappings are serialized, they cannot change since it would cause the
-serialized data to become inconsistent. This can be done by pinning the
-folios to avoid migration, and by making sure no folios can be added to
-or removed from the inode.
-
-While mechanisms to pin folios already exist, the only way to stop
-folios being added or removed are the grow and shrink file seals. But
-file seals come with their own semantics, one of which is that they
-can't be removed. This doesn't work with liveupdate since it can be
-cancelled or error out, which would need the seals to be removed and the
-file's normal functionality to be restored.
-
-Introduce SHMEM_F_MAPPING_FROZEN to indicate this instead. It is
-internal to shmem and is not directly exposed to userspace. It functions
-similar to F_SEAL_GROW | F_SEAL_SHRINK, but additionally disallows hole
-punching, and can be removed.
+shmem_inode_acct_blocks(), shmem_recalc_inode(), and
+shmem_add_to_page_cache() are used by shmem_alloc_and_add_folio(). This
+functionality will also be used in the future by Live Update
+Orchestrator (LUO) to recreate memfd files after a live update.
 
 Signed-off-by: Pratyush Yadav <ptyadav@amazon.de>
-Signed-off-by: Pasha Tatashin <pahsa.tatashin@soleen.com>
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 ---
- include/linux/shmem_fs.h | 17 +++++++++++++++++
- mm/shmem.c               | 12 +++++++++++-
- 2 files changed, 28 insertions(+), 1 deletion(-)
+ mm/internal.h |  6 ++++++
+ mm/shmem.c    | 10 +++++-----
+ 2 files changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/shmem_fs.h b/include/linux/shmem_fs.h
-index 710b1dd681bf..08f497673b06 100644
---- a/include/linux/shmem_fs.h
-+++ b/include/linux/shmem_fs.h
-@@ -24,6 +24,14 @@ struct swap_iocb;
- #define SHMEM_F_NORESERVE	BIT(0)
- /* Disallow swapping. */
- #define SHMEM_F_LOCKED		BIT(1)
-+/*
-+ * Disallow growing, shrinking, or hole punching in the inode. Combined with
-+ * folio pinning, makes sure the inode's mapping stays fixed.
-+ *
-+ * In some ways similar to F_SEAL_GROW | F_SEAL_SHRINK, but can be removed and
-+ * isn't directly visible to userspace.
-+ */
-+#define SHMEM_F_MAPPING_FROZEN	BIT(2)
+diff --git a/mm/internal.h b/mm/internal.h
+index 0af87f6c2889..3f957e86f43f 100644
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@ -1585,6 +1585,12 @@ void __meminit __init_page_from_nid(unsigned long pfn, int nid);
+ unsigned long shrink_slab(gfp_t gfp_mask, int nid, struct mem_cgroup *memcg,
+ 			  int priority);
  
- struct shmem_inode_info {
- 	spinlock_t		lock;
-@@ -187,6 +195,15 @@ static inline bool shmem_file(struct file *file)
- 	return shmem_mapping(file->f_mapping);
- }
- 
-+/* Must be called with inode lock taken exclusive. */
-+static inline void shmem_i_mapping_freeze(struct inode *inode, bool freeze)
-+{
-+	if (freeze)
-+		SHMEM_I(inode)->flags |= SHMEM_F_MAPPING_FROZEN;
-+	else
-+		SHMEM_I(inode)->flags &= ~SHMEM_F_MAPPING_FROZEN;
-+}
++int shmem_add_to_page_cache(struct folio *folio,
++			    struct address_space *mapping,
++			    pgoff_t index, void *expected, gfp_t gfp);
++int shmem_inode_acct_blocks(struct inode *inode, long pages);
++bool shmem_recalc_inode(struct inode *inode, long alloced, long swapped);
 +
- /*
-  * If fallocate(FALLOC_FL_KEEP_SIZE) has been used, there may be pages
-  * beyond i_size's notion of EOF, which fallocate has committed to reserving:
+ #ifdef CONFIG_SHRINKER_DEBUG
+ static inline __printf(2, 0) int shrinker_debugfs_name_alloc(
+ 			struct shrinker *shrinker, const char *fmt, va_list ap)
 diff --git a/mm/shmem.c b/mm/shmem.c
-index 19be8c575647..2e3cb0424a1f 100644
+index 2e3cb0424a1f..c3ed2dcd17f8 100644
 --- a/mm/shmem.c
 +++ b/mm/shmem.c
-@@ -1321,7 +1321,8 @@ static int shmem_setattr(struct mnt_idmap *idmap,
- 		loff_t newsize = attr->ia_size;
+@@ -219,7 +219,7 @@ static inline void shmem_unacct_blocks(unsigned long flags, long pages)
+ 		vm_unacct_memory(pages * VM_ACCT(PAGE_SIZE));
+ }
  
- 		/* protected by i_rwsem */
--		if ((newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
-+		if ((info->flags & SHMEM_F_MAPPING_FROZEN) ||
-+		    (newsize < oldsize && (info->seals & F_SEAL_SHRINK)) ||
- 		    (newsize > oldsize && (info->seals & F_SEAL_GROW)))
- 			return -EPERM;
- 
-@@ -3319,6 +3320,10 @@ shmem_write_begin(const struct kiocb *iocb, struct address_space *mapping,
- 			return -EPERM;
- 	}
- 
-+	if (unlikely((info->flags & SHMEM_F_MAPPING_FROZEN) &&
-+		     pos + len > inode->i_size))
-+		return -EPERM;
-+
- 	ret = shmem_get_folio(inode, index, pos + len, &folio, SGP_WRITE);
- 	if (ret)
- 		return ret;
-@@ -3692,6 +3697,11 @@ static long shmem_fallocate(struct file *file, int mode, loff_t offset,
- 
- 	inode_lock(inode);
- 
-+	if (info->flags & SHMEM_F_MAPPING_FROZEN) {
-+		error = -EPERM;
-+		goto out;
-+	}
-+
- 	if (mode & FALLOC_FL_PUNCH_HOLE) {
- 		struct address_space *mapping = file->f_mapping;
- 		loff_t unmap_start = round_up(offset, PAGE_SIZE);
+-static int shmem_inode_acct_blocks(struct inode *inode, long pages)
++int shmem_inode_acct_blocks(struct inode *inode, long pages)
+ {
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	struct shmem_sb_info *sbinfo = SHMEM_SB(inode->i_sb);
+@@ -435,7 +435,7 @@ static void shmem_free_inode(struct super_block *sb, size_t freed_ispace)
+  *
+  * Return: true if swapped was incremented from 0, for shmem_writeout().
+  */
+-static bool shmem_recalc_inode(struct inode *inode, long alloced, long swapped)
++bool shmem_recalc_inode(struct inode *inode, long alloced, long swapped)
+ {
+ 	struct shmem_inode_info *info = SHMEM_I(inode);
+ 	bool first_swapped = false;
+@@ -890,9 +890,9 @@ static void shmem_update_stats(struct folio *folio, int nr_pages)
+ /*
+  * Somewhat like filemap_add_folio, but error if expected item has gone.
+  */
+-static int shmem_add_to_page_cache(struct folio *folio,
+-				   struct address_space *mapping,
+-				   pgoff_t index, void *expected, gfp_t gfp)
++int shmem_add_to_page_cache(struct folio *folio,
++			    struct address_space *mapping,
++			    pgoff_t index, void *expected, gfp_t gfp)
+ {
+ 	XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(folio));
+ 	unsigned long nr = folio_nr_pages(folio);
 -- 
 2.51.2.1041.gc1ab5b90ca-goog
 
