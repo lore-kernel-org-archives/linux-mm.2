@@ -4,116 +4,110 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id F32DBCCFA05
-	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 10:27:30 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 7DA12CCF9F8
+	for <linux-mm@archiver.kernel.org>; Fri,  7 Nov 2025 10:30:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5E1D98E000B; Fri,  7 Nov 2025 05:27:30 -0500 (EST)
+	id B404B8E000E; Fri,  7 Nov 2025 05:30:01 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 592A48E0002; Fri,  7 Nov 2025 05:27:30 -0500 (EST)
+	id AEF9C8E0002; Fri,  7 Nov 2025 05:30:01 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 4A8A38E000B; Fri,  7 Nov 2025 05:27:30 -0500 (EST)
+	id 9938C8E000E; Fri,  7 Nov 2025 05:30:01 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 329888E0002
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 05:27:30 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id F07091603D1
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:27:29 +0000 (UTC)
-X-FDA: 84083434218.14.52AA1DC
-Received: from mail-qv1-f50.google.com (mail-qv1-f50.google.com [209.85.219.50])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 19F861A0004
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:27:27 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="0/Ahdojn";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of glider@google.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=glider@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762511248; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 81A2A8E0002
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 05:30:01 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 3672113AD02
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:30:01 +0000 (UTC)
+X-FDA: 84083440602.27.272DD79
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	by imf17.hostedemail.com (Postfix) with ESMTP id 44EE24000A
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 10:29:58 +0000 (UTC)
+Authentication-Results: imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iP0B+cKZ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of aubrey.li@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762511399; a=rsa-sha256;
 	cv=none;
-	b=apkG/CLPxAWE0lgXAAzwFiFB5aRJlYU7EU7r6tI2nj7JcCuvTDhx5FXSUOEtyLvkOwTncc
-	J/gI8+OlIh6734fWWm4Nowg2tHtxRpCvVLtdTpz4ZscooB4+Ztu/X06R4Y0cy3BYGgFckp
-	4IosMUQxekAoA1kGpezfc3d2IXrmyf0=
+	b=pWPlyJyUrbM9FXVSib3DLlDwVtJImTEtaAcNRAQiI7/RJaEgw+ptJOygh4HbxKCBfx1J1U
+	YsOtQU9v3QKLLiuXwI923Sm0l8Yl/m0Ngqx8YN/6BgtIJxrw81U++GLce1aRqY97i/klt8
+	mjqCsittWKUBzMQHDiOsBej/TrhkqNk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b="0/Ahdojn";
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf19.hostedemail.com: domain of glider@google.com designates 209.85.219.50 as permitted sender) smtp.mailfrom=glider@google.com
+	imf17.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=iP0B+cKZ;
+	dmarc=pass (policy=none) header.from=intel.com;
+	spf=pass (imf17.hostedemail.com: domain of aubrey.li@linux.intel.com designates 192.198.163.16 as permitted sender) smtp.mailfrom=aubrey.li@linux.intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762511248;
+	s=arc-20220608; t=1762511399;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=pLhtIptgftMWRvfp8mRlQOiL9wA5G5qSa8Z4beNB3RU=;
-	b=bmybFZjt4bLzxdVZjXtgLq7t1kzGLi+DMgW9bTasx86VKkIaPiDQC6ADaeIm5moPD02GWA
-	B8Nw9T4xlziQ5/X1F7iT7NFaUTVQz/nQLcBpeerKCdPjdmVIcLICS1spmW+lMu9byyxs30
-	IgXyoCGwPrgVOsJtI/4+EMZl2scAcus=
-Received: by mail-qv1-f50.google.com with SMTP id 6a1803df08f44-8801f4e308dso5897226d6.0
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 02:27:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762511247; x=1763116047; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pLhtIptgftMWRvfp8mRlQOiL9wA5G5qSa8Z4beNB3RU=;
-        b=0/AhdojnFyiBMZzCPpntJobJGOeFXUvzbapdadJSEsCKLXZ2KwbvZ2GRHfoOmup8tV
-         Ct6gmKr5WE1XT3kdkRE7DQ3FO7VIBU7pR0ua4pQIbkHLSExEALfDOSnrGMRj+HlDOx7D
-         /roEKJNM4yocivAUfXKxSZwhBEs/DqNQXGXUhyaf/f5GTvN+3D5M1+msy0tj5C8u4tsb
-         hLg0PCFBJyp/AB1lAw6V/SUvnY0QkOC5V+GPTNJSDEkhnIqPuvzn2EMhnvD5vURBW6KE
-         2nIfbYh8DED/H0wKMTxXc7Ug8jhJvIKQryvXfJw7qO2v+nMdL16QyH8yf0YvHr3HLXWK
-         WhIw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762511247; x=1763116047;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pLhtIptgftMWRvfp8mRlQOiL9wA5G5qSa8Z4beNB3RU=;
-        b=wBSSHFmiisQ8CF2qwEBwz/OacSPb61UKHWzy3XYqk5655HGHlzIJOksfo8gESWrX4E
-         j9fHMaoBEyvp7TKWATlWNOjL/gqapSXkY/ah47haRmet2+rfO/eeKJFGJUcI9IOLQdG7
-         pPi3iKGIMV1JYHxJKdFyEcukb7ZNISI1tHncc7NZrbguVwgjPW9Qi/o/huQzg163VX/9
-         67sEz5KLJ+AwhrmiHfbH3U7tvyzHAI6Y7uuB/z8YcHcp2ubCQQQjNRTihUm0oAcKZGVr
-         XwLBQDe9fhp4jwGSBO1cxWkcnSGAMQTPJa1PMdec6J75VLFRKfse0hfWaE/uwyCdASCe
-         TJkQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4hzVRn4hHSS2IKxMK/utKmpZp30EYDx+GJZXdaRuCkoL5RYGmxRu9YWQ6pbL4qWqATq/0yYvXVA==@kvack.org
-X-Gm-Message-State: AOJu0YxQPF4F8MpQ1ZJb0IiGM2nt8JLE29EYNk/tu56OwpuIXEricwJf
-	E1foszVUggi5Ftb6axg2OqAKaYg1Lo1/d7a+lGzUbGc0Q1TuCBxfp9qWEsUlnRrE983OKRMJGKq
-	yLg3hQKFMpi61Eu230sRnwmFqSU0UnerhmVjXf24w
-X-Gm-Gg: ASbGncvw3LmlXHyPB1ZtDZWmH2yffKPENxUvjBacvyDxHph+VXu5slC/vBg3PrVGot9
-	hqQJPr2T0wrHTzNizGGx2ZZOPZvm5Yif7TqXvjpcb2q5Y5bv8l/nC66V1Bt4FOZcR8rlhMZFNsO
-	p1yA3kCkMSpXBAuXIUM1tS5Nr6OT2roNOzz/BUNaq9dqMBY2XGXKOnPGolWz8AU1Gd7EH3zKaSt
-	gNyFWQ9LIR1fWqBUTBzPTyaWnUEPlmaSLczRxYNrz/VF3yuSaPS6rKwUfF0I4AwREB5v+QKq6nj
-	U/0AbumoW/sQQB8sskzwfHeYYQ==
-X-Google-Smtp-Source: AGHT+IHGzRF/1cbs/MsDVPOx8UJ49URwz8VUyR081sUbxE8+sqheDOB1N7EBEDuZ+mpR05WsdF19S4wEHS/n0A2MIu0=
-X-Received: by 2002:ad4:5e8c:0:b0:87c:fbf:108a with SMTP id
- 6a1803df08f44-88167afbb01mr33443336d6.10.1762511246798; Fri, 07 Nov 2025
- 02:27:26 -0800 (PST)
+	bh=g/xccy2Alv8ocil8cLLAZU/N7x9XtqpmQ9MhWpy8zuM=;
+	b=lhILE9jKIjNXUp+UnrBJ7kn9S1xY9wsSMSYKNP7y2nzEoJEIfTuDom0hv62s+I+bQU6EBM
+	TJsETjIh0ikQ1EuniMmAVGrL3DsmNcnuNbS2Ub3GFHx162nr4sH7ktHW+giFHddXYGMJ7g
+	Xaq+Ql4Jk165uJXw+ErvW5glHJ1fPZg=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762511398; x=1794047398;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=txXIGE/eQ4897oeFLXT+Tc1XOy8dh4lQrnt09P4gSbQ=;
+  b=iP0B+cKZASnQIuq28JAe7ZUG3/o4qeI/2/s5abvM9QwBkbTzYUsh7Kk4
+   j7hWapFaXE+nlcqcpqL78eP11zyBPAeBgW7efdYpTd1O+hTmtly3K1Qxg
+   leMyyoaQtfdDQNwEu7KEHWPuylGPxhr9ho1irH3jdPCckVNG4sw6UMPrk
+   ITs/CbG89EdCWC9oLymGHLKvh3SRAkBJ0kQPCuDGCbajkky5citxikteq
+   fPplKHPCf8xobgBTFBKu4UKBCvvLnrZBiQIcCagbQjfUwqYbZcghXylJU
+   mvH85NIETztj6UCGTOXB1GUPlBmEInUrulbMaLvoEjwywBxyklKIGv51w
+   Q==;
+X-CSE-ConnectionGUID: 1t9LA2WuRMqZQ0joQv7Buw==
+X-CSE-MsgGUID: PVLsD8ihRXinbrRT/MKOpw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11605"; a="52226110"
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="scan'208";a="52226110"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 02:29:50 -0800
+X-CSE-ConnectionGUID: UneBQM/oSbub14+VgnqhBg==
+X-CSE-MsgGUID: yP1jfGzpScKYNEFY2wOVfA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,286,1754982000"; 
+   d="scan'208";a="192268182"
+Received: from alc-gnrsp.sh.intel.com (HELO [10.239.53.13]) ([10.239.53.13])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Nov 2025 02:29:46 -0800
+Message-ID: <48341947-dd12-4a89-870d-fb73f5121888@linux.intel.com>
+Date: Fri, 7 Nov 2025 18:28:00 +0800
 MIME-Version: 1.0
-References: <20251106160845.1334274-2-aleksei.nikiforov@linux.ibm.com> <20251106160845.1334274-6-aleksei.nikiforov@linux.ibm.com>
-In-Reply-To: <20251106160845.1334274-6-aleksei.nikiforov@linux.ibm.com>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 7 Nov 2025 11:26:50 +0100
-X-Gm-Features: AWmQ_bnF17f6A18RySh-hO3pa-QL803fyOZqBKR4ZjbBOIO0pB_5mi0dYohMDnE
-Message-ID: <CAG_fn=WufanV2DAVusDvGviWqc6woNja-H6WAL5LNgAzeo_uKg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] s390/fpu: Fix kmsan in fpu_vstl function
-To: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-Cc: Marco Elver <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Thomas Huth <thuth@redhat.com>, 
-	Juergen Christ <jchrist@linux.ibm.com>, Ilya Leoshkevich <iii@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 19F861A0004
-X-Stat-Signature: 83bdjkah7yfz1hip7uec76bgso4sonwf
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/readahead: Skip fully overlapped range
+To: Jan Kara <jack@suse.cz>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>, Nanhai Zou <nanhai.zou@intel.com>,
+ Gang Deng <gang.deng@intel.com>, Tianyou Li <tianyou.li@intel.com>,
+ Vinicius Gomes <vinicius.gomes@intel.com>,
+ Tim Chen <tim.c.chen@linux.intel.com>, Chen Yu <yu.c.chen@intel.com>,
+ linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, Roman Gushchin <roman.gushchin@linux.dev>
+References: <20250923035946.2560876-1-aubrey.li@linux.intel.com>
+ <20250922204921.898740570c9a595c75814753@linux-foundation.org>
+ <93f7e2ad-563b-4db5-bab6-4ce2e994dbae@linux.intel.com>
+ <cghebadvzchca3lo2cakcihwyoexx7fdqtibfywfm4xjo7eyp2@vbccezepgtoe>
+ <6bcf9dfe-c231-43aa-8b1c-f699330e143c@linux.intel.com>
+ <20251011152042.d0061f174dd934711bc1418b@linux-foundation.org>
+ <mze6nnqy2xwwqaz5xpwkthx3x4n6yd5vgbnyateyjlyjefiwde@qclv7inpacqe>
+Content-Language: en-US
+From: Aubrey Li <aubrey.li@linux.intel.com>
+In-Reply-To: <mze6nnqy2xwwqaz5xpwkthx3x4n6yd5vgbnyateyjlyjefiwde@qclv7inpacqe>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Rspam-User: 
-X-HE-Tag: 1762511247-977886
-X-HE-Meta: U2FsdGVkX190of2lq+K9KWBoUqx5wULHA4NfEKVrHkaqWwhXy6eRk1IQcDC4u0zl4l9YEehSXvNPLdOonC9YGzn3TIs81fUnE+okKshxasLm6Jw8KYwpggaULuK8pw11OJ8ua4Rp4pfiQm1PNP476ciUgjv1Mk2dyy0zOwhBcF5hZZ/Su/s2mCLeoQwEqKThVamgNOgF3oRLN/rF2LfCHd7ENQWwAGyIXtrhRXv0uJ7duodYLUo2c4pzuKBmg+a1bAHjeH+iFQBdfyhE7nRi32ouWfTBkQkt4tGSga3Cai8FvvlEdQPzVRZSkdahE4dKgyurD9VNmCo3gZcjrocEikkKADEfQ6IFFtVZGA+GmlCJhp7gHjphlBtTLeG+PRyoCUam2zPCQN+CLkZBygBMm8I2U/+de7AbXJnqIFu11zncdPV0VdsalRwFK8eXAL/fpJSdPvcTzmnSJPYNzGTEexg9NfwpsZshACMI1lDefptt0Yo6fL3rplBhyUh+HtmcNjAvchAGAFbbHWo4zlbxoZ1u38uRabvf2wreQyt/eGuyCzejBGi3B+J+K+8jxAdhoUhiDeAWKMGnDR1bmkEXXi7HLGR0PPisplExghIyWSugCUGvy5GiZNRkfvVH7MpWhXkDoKOiKKmZ1gtwfRbuFs7qknW7jBH8dC8EyIU4L0N2YNwGAJ1TN1DIX2Xrjt4UgrzbF2TriFnCe5R87Bu63bqLhG2extxJ88uaz7S5pzMR64OV8GbVHtQnLL/IhHGaTkAdXQeULAds5UdaiGDjYOFOPfqTpSHwg62TCG7dxwOu3OLvaBFLCqam/h14GQahI/7ywyzhCKnGfbx4NROUK3eg78AtaAJnywvJz19ONMR+wiZkjPDAzyDgqgA5pf9BqSuPcu4p3BFW2K3BBR/dEO94wI8QxN+Viq2qdCMAanWcFStyS36r/ZJb86DRUDohSurukoNHW90nhh5xhUm
- c0gpggxY
- Dkb+VlsoNlcGcFgtf8xtkR2bLwH9+lJI62kFWUUUUfo/v3N7VGfFOSFrC5LByb3wYwRd725JRxkiF7tz+cNhmxDfw5km0Tw8FXz2HVaTiW1XZzgndPgEcuYoBykmNneDrsmVV4SVP4fUA+qaMbhGmNR10Bh2vyfK5OvW88kdwS+sm2clUwsYlA3ckVg6RwkyoTuW8jFkWiRqSUIl6LJCxniuQbjfJ7Glgt8XQejz0ajFLyc4MuLmeX7WAexbwmbTA0/qbw+sJtBovFbc=
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 44EE24000A
+X-Stat-Signature: s63yo9xagotqprai5jtw1c9diawcfbir
+X-HE-Tag: 1762511398-907697
+X-HE-Meta: U2FsdGVkX1+zBzY2QIpt5EmJRkjRlkr65rSA4vXvxHc8yFSW3n7tOhK472zblTIEN3vVyCw2mPH3XD05Vj1Gfo3c/k+y9IimgFOurRcRM9OOET/GLpQkCXs01DAvEppPYF0ByJaaV/nB6BkuTA65H6keGTBS1T8me5toqhXyE8cha+PWyCz17vRDd8jHUPvhdhQX5LmHutfNzRtiXSIA1F1zp3n3Y/+sCUqXcUNtr68KxETNurzhg0ewMdTsZdoua3GqZieHEYj+EeB3Wl7VUDZM+xKbeG5dEcsfXPh9rwDnSu9/z78lSXH6N/6Yl2kYLLL5cMTDC7XaM7npO+tQKSu8p65Ae+fMyYntH/7HgBVMJoVdovfa+ZuHJkVMPQmcpesUz742TTTLJHAoyqhPLZfMqL61q80hLEa/mgCCpw3zXqhRDR9C2KL0nKelzCWb001yBohTVAMPRr0hUcd49aoAZHTm6UoGzRI9SVFfwJ9txw2PHF0mSKRjzBlhhKdA2sTOhW3FIVxRiTBEXx6Aj+D563bOwWvU+4C/v1UoYvGOptVehqrBsiwkHH/zR4kn3KzGDm6cEScoukdwlzMnMv/LEWwsm52xhxnXRRnOH5CYuSljhZcIzoLogziPJc6qCV7TXIEnbrb/lbiHtgyTSQ72c5RGv6pOetPdyHzqgmtGHHPf6zD9fBwXNp5h6imHA03+VexU+Vgf3r5RQno2Q/zmlcFpVXYzIeGncv4Ngt2hGN7ai18+ZNYqAXL8dO3ybNaD9iiydgsUQGZeNgs083AYYbnbenxK/w/dU3qi9FtU4CjktyPms8KHEMhF7wgZaxFRLlmvhHf34xtqKfGmHuzXlgfUgqZ69Sc47KVawZ5YhIdysNztNwS/g51HLySxxhct8zfHWqAP9Yh1jqEXSnWeq6ZfuXT+8NsJ0KYW7cusgZ89RTscd1zKUl6fuRAeqxtY4s8MIEQAGU2JgNo
+ 7GEiOjIp
+ wwEUVrpsZyiB8n3H0CbaTqZiF/KrV0cZvftT4VOZqir9h+T2Jq2F+raIerhiAvkxDVssnstB/2W/dLWd6yni4zAVXBow0h99x4KTTXwRRK0JHCR1VlNUY3oGue548ZWqWhzhr5gI/cYF49FhEC1BXksIK3lJoSRXGlI4T36XmANuD615pfUv4LWmSwZLNeSvo5jAHVz37bCCEAEoHqTNOd4dx1B4kb4GDKAQg
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,152 +116,80 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 6, 2025 at 5:09=E2=80=AFPM Aleksei Nikiforov
-<aleksei.nikiforov@linux.ibm.com> wrote:
->
-> clang generates call to __msan_instrument_asm_store with 1 byte as size.
-> Manually call kmsan helper to indicate correct amount of bytes written.
->
-> If function fpu_vstl is called with argument 'index' > 0,
-> it writes at least 2 bytes, but kmsan only marks first byte as written.
->
-> This change fixes following kmsan reports:
->
-> [   36.563119] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   36.563594] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-> [   36.563852]  virtqueue_add+0x35c6/0x7c70
-> [   36.564016]  virtqueue_add_outbuf+0xa0/0xb0
-> [   36.564266]  start_xmit+0x288c/0x4a20
-> [   36.564460]  dev_hard_start_xmit+0x302/0x900
-> [   36.564649]  sch_direct_xmit+0x340/0xea0
-> [   36.564894]  __dev_queue_xmit+0x2e94/0x59b0
-> [   36.565058]  neigh_resolve_output+0x936/0xb40
-> [   36.565278]  __neigh_update+0x2f66/0x3a60
-> [   36.565499]  neigh_update+0x52/0x60
-> [   36.565683]  arp_process+0x1588/0x2de0
-> [   36.565916]  NF_HOOK+0x1da/0x240
-> [   36.566087]  arp_rcv+0x3e4/0x6e0
-> [   36.566306]  __netif_receive_skb_list_core+0x1374/0x15a0
-> [   36.566527]  netif_receive_skb_list_internal+0x1116/0x17d0
-> [   36.566710]  napi_complete_done+0x376/0x740
-> [   36.566918]  virtnet_poll+0x1bae/0x2910
-> [   36.567130]  __napi_poll+0xf4/0x830
-> [   36.567294]  net_rx_action+0x97c/0x1ed0
-> [   36.567556]  handle_softirqs+0x306/0xe10
-> [   36.567731]  irq_exit_rcu+0x14c/0x2e0
-> [   36.567910]  do_io_irq+0xd4/0x120
-> [   36.568139]  io_int_handler+0xc2/0xe8
-> [   36.568299]  arch_cpu_idle+0xb0/0xc0
-> [   36.568540]  arch_cpu_idle+0x76/0xc0
-> [   36.568726]  default_idle_call+0x40/0x70
-> [   36.568953]  do_idle+0x1d6/0x390
-> [   36.569486]  cpu_startup_entry+0x9a/0xb0
-> [   36.569745]  rest_init+0x1ea/0x290
-> [   36.570029]  start_kernel+0x95e/0xb90
-> [   36.570348]  startup_continue+0x2e/0x40
-> [   36.570703]
-> [   36.570798] Uninit was created at:
-> [   36.571002]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-> [   36.571261]  kmalloc_reserve+0x12a/0x470
-> [   36.571553]  __alloc_skb+0x310/0x860
-> [   36.571844]  __ip_append_data+0x483e/0x6a30
-> [   36.572170]  ip_append_data+0x11c/0x1e0
-> [   36.572477]  raw_sendmsg+0x1c8c/0x2180
-> [   36.572818]  inet_sendmsg+0xe6/0x190
-> [   36.573142]  __sys_sendto+0x55e/0x8e0
-> [   36.573392]  __s390x_sys_socketcall+0x19ae/0x2ba0
-> [   36.573571]  __do_syscall+0x12e/0x240
-> [   36.573823]  system_call+0x6e/0x90
-> [   36.573976]
-> [   36.574017] Byte 35 of 98 is uninitialized
-> [   36.574082] Memory access of size 98 starts at 0000000007aa0012
-> [   36.574218]
-> [   36.574325] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Tainted: G    B      =
-      N  6.17.0-dirty #16 NONE
-> [   36.574541] Tainted: [B]=3DBAD_PAGE, [N]=3DTEST
-> [   36.574617] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-> [   36.574755] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> [   63.532541] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> [   63.533639] BUG: KMSAN: uninit-value in virtqueue_add+0x35c6/0x7c70
-> [   63.533989]  virtqueue_add+0x35c6/0x7c70
-> [   63.534940]  virtqueue_add_outbuf+0xa0/0xb0
-> [   63.535861]  start_xmit+0x288c/0x4a20
-> [   63.536708]  dev_hard_start_xmit+0x302/0x900
-> [   63.537020]  sch_direct_xmit+0x340/0xea0
-> [   63.537997]  __dev_queue_xmit+0x2e94/0x59b0
-> [   63.538819]  neigh_resolve_output+0x936/0xb40
-> [   63.539793]  ip_finish_output2+0x1ee2/0x2200
-> [   63.540784]  __ip_finish_output+0x272/0x7a0
-> [   63.541765]  ip_finish_output+0x4e/0x5e0
-> [   63.542791]  ip_output+0x166/0x410
-> [   63.543771]  ip_push_pending_frames+0x1a2/0x470
-> [   63.544753]  raw_sendmsg+0x1f06/0x2180
-> [   63.545033]  inet_sendmsg+0xe6/0x190
-> [   63.546006]  __sys_sendto+0x55e/0x8e0
-> [   63.546859]  __s390x_sys_socketcall+0x19ae/0x2ba0
-> [   63.547730]  __do_syscall+0x12e/0x240
-> [   63.548019]  system_call+0x6e/0x90
-> [   63.548989]
-> [   63.549779] Uninit was created at:
-> [   63.550691]  kmem_cache_alloc_node_noprof+0x9e8/0x10e0
-> [   63.550975]  kmalloc_reserve+0x12a/0x470
-> [   63.551969]  __alloc_skb+0x310/0x860
-> [   63.552949]  __ip_append_data+0x483e/0x6a30
-> [   63.553902]  ip_append_data+0x11c/0x1e0
-> [   63.554912]  raw_sendmsg+0x1c8c/0x2180
-> [   63.556719]  inet_sendmsg+0xe6/0x190
-> [   63.557534]  __sys_sendto+0x55e/0x8e0
-> [   63.557875]  __s390x_sys_socketcall+0x19ae/0x2ba0
-> [   63.558869]  __do_syscall+0x12e/0x240
-> [   63.559832]  system_call+0x6e/0x90
-> [   63.560780]
-> [   63.560972] Byte 35 of 98 is uninitialized
-> [   63.561741] Memory access of size 98 starts at 0000000005704312
-> [   63.561950]
-> [   63.562824] CPU: 3 UID: 0 PID: 192 Comm: ping Tainted: G    B         =
-   N  6.17.0-dirty #16 NONE
-> [   63.563868] Tainted: [B]=3DBAD_PAGE, [N]=3DTEST
-> [   63.564751] Hardware name: IBM 3931 A01 703 (KVM/Linux)
-> [   63.564986] =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> Fixes: dcd3e1de9d17 ("s390/checksum: provide csum_partial_copy_nocheck()"=
-)
-> Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-> Signed-off-by: Aleksei Nikiforov <aleksei.nikiforov@linux.ibm.com>
-> ---
->  arch/s390/include/asm/fpu-insn.h | 2 ++
->  1 file changed, 2 insertions(+)
->
-> diff --git a/arch/s390/include/asm/fpu-insn.h b/arch/s390/include/asm/fpu=
--insn.h
-> index 135bb89c0a89..151b17e22923 100644
-> --- a/arch/s390/include/asm/fpu-insn.h
-> +++ b/arch/s390/include/asm/fpu-insn.h
-> @@ -393,6 +393,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index=
-, const void *vxr)
->                      : [vxr] "=3DQ" (*(u8 *)vxr)
->                      : [index] "d" (index), [v1] "I" (v1)
->                      : "memory");
-> +       instrument_write_after(vxr, size);
->  }
->
->  #else /* CONFIG_CC_HAS_ASM_AOR_FORMAT_FLAGS */
-> @@ -409,6 +410,7 @@ static __always_inline void fpu_vstl(u8 v1, u32 index=
-, const void *vxr)
->                 : [vxr] "=3DR" (*(u8 *)vxr)
->                 : [index] "d" (index), [v1] "I" (v1)
->                 : "memory", "1");
-> +       instrument_write_after(vxr, size);
->  }
+Really sorry for the late, too. Thunderbird collapsed this thread, but didn't
+highlight it as unread, I thought no one response, :(
 
-Wouldn't it be easier to just call kmsan_unpoison_memory() here directly?
+On 10/17/25 12:21 AM, Jan Kara wrote:
+> Sorry for not replying earlier. I wanted make up my mind about this and
+> other stuff was keeping preempting me...
+> 
+> On Sat 11-10-25 15:20:42, Andrew Morton wrote:
+>> On Tue, 30 Sep 2025 13:35:43 +0800 Aubrey Li <aubrey.li@linux.intel.com> wrote:
+>>
+>>> file_ra_state is considered a performance hint, not a critical correctness
+>>> field. The race conditions on file's readahead state don't affect the
+>>> correctness of file I/O because later the page cache mechanisms ensure data
+>>> consistency, it won't cause wrong data to be read. I think that's why we do
+>>> not lock file_ra_state today, to avoid performance penalties on this hot path.
+>>>
+>>> That said, this patch didn't make things worse, and it does take a risk but
+>>> brings the rewards of RocksDB's readseq benchmark.
+>>
+>> So if I may summarize:
+>>
+>> - you've identifed and addressed an issue with concurrent readahead
+>>   against an fd
+> 
+> Right but let me also note that the patch modifies only
+> force_page_cache_ra() which is a pretty peculiar function. It's used at two
+> places:
+> 1) When page_cache_sync_ra() decides it isn't worth to do a proper
+> readahead and just wants to read that one one.
+> 
+> 2) From POSIX_FADV_WILLNEED - I suppose this is Aubrey's case.
+> 
+> As such it seems to be fixing mostly a "don't do it when it hurts" kind of
+> load from the benchmark than a widely used practical case since I'm not
+> sure many programs call POSIX_FADV_WILLNEED from many threads in parallel
+> for the same range.
+> 
+>> - Jan points out that we don't properly handle concurrent access to a
+>>   file's ra_state.  This is somewhat offtopic, but we should address
+>>   this sometime anyway.  Then we can address the RocksDB issue later.
+>>
+>> Another practicality: improving a benchmark is nice, but do we have any
+>> reasons to believe that this change will improve any real-world
+>> workload?  If so, which and by how much?
+
+I only have RocksDB on my side, but this isn't a lab case but a real case.
+It's an issue reported by a customer. They use this case to stress test the
+system under high-concurrency data workloads, it could have business impact.
+
+> 
+> The problem I had with the patch is that it adds more racy updates & checks
+> for the shared ra state so it's kind of difficult to say whether some
+> workload will not now more often clobber the ra state resulting in poor
+> readahead behavior. Also as I looked into the patch now another objection I
+> have is that force_page_cache_ra() previously didn't touch the ra state at
+> all, it just read the requested pages. After the patch
+> force_page_cache_ra() will destroy the readahead state completely. This is
+> definitely something we don't want to do.
+
+This is also something I worried about, so I added two trace points at the
+entry and exit of force_page_cache_ra(), and I got all ZEROs.
+
+test-9858    [018] .....   554.352691: force_page_cache_ra: force_page_cache_ra entry: ra->start = 0, ra->size = 0
+test-9858    [018] .....   554.352695: force_page_cache_ra: force_page_cache_ra exit: ra->start = 0, ra->size = 0
+test-9855    [009] .....   554.352701: force_page_cache_ra: force_page_cache_ra entry: ra->start = 0, ra->size = 0
+test-9855    [009] .....   554.352705: force_page_cache_ra: force_page_cache_ra exit: ra->start = 0, ra->size = 0
+
+I think for this code path, my patch doesn't break anything. Do we have any
+other code paths I can check?
+
+Anyway, thanks Andrew and Jan for the detailed feedback and discussion. if
+we later plan to make file_ra_state concurrency-safe first, I'd be happy to
+help test or rebase this optimization on top of that work.
+
+Thanks,
+-Aubrey
 
