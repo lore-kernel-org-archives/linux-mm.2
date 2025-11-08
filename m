@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BEECCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 01:44:32 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A8D5FCCF9F8
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 01:55:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id DCF728E0018; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
+	id 0E5BC8E0010; Fri,  7 Nov 2025 20:55:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id D7FA08E0006; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
+	id 096F58E0006; Fri,  7 Nov 2025 20:55:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id C476B8E0018; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
+	id EC7A78E0010; Fri,  7 Nov 2025 20:54:59 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id AB2B68E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5793416061F
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:44:31 +0000 (UTC)
-X-FDA: 84085745142.12.A784D95
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 4733E180019
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:44:29 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1nM47f+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762566269; a=rsa-sha256;
-	cv=none;
-	b=ZWS31IwqhECenuksPJ1Wytaugy0/lWLclz1Yri+uVwUJARNwboM657ZSGAwawPZMDksOaf
-	qJmWD1mYIqGNp8jJD1cxqbKgvlh7vmTfsfnG0LAQ08yZDEY0lPjhBi59pJ1nHFNFaiwKo+
-	7vRhJ3qxvVoRpHqPt5fTerx38GQw1HU=
-ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1nM47f+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id D20BA8E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 20:54:59 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 9D05414064A
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:54:59 +0000 (UTC)
+X-FDA: 84085771518.09.B6B8215
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	by imf16.hostedemail.com (Postfix) with ESMTP id C4C74180010
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:54:57 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jVpGfIeY;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762566269;
+	s=arc-20220608; t=1762566897;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
-	b=eNg0Gy+BYTndqC6hKzrXxrNmVFR9mC427J30X88aKlzpqk2IqCjgl2gd/lzMRqsVV6xSQB
-	wHvibKz/t5HiYSXfKVKMqOqLbmuztkFnPFDo95o/555DBohMJbQe/wHKsZlOqQGq9Wbi2d
-	I+DRH0Ked8eem84r5Z6RWIzGSjT7DMQ=
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so2220243a12.2
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 17:44:28 -0800 (PST)
+	bh=G0ZmaZCDwiHMLTx2bSrUVe6Saq+o65+OA8UrkrTQnt4=;
+	b=jaWI3oAnhFg38A9vtO+RnIEJ2PWtI/V+42XS9cPwXJxIbgkBXblH6lBNvq21jo/1yJhUys
+	fT0d/AVMBGgAls5XeQwLLHHF2HR87tJuJ2SeXrqwwa4OKm+8VGoFmY1aFWgvrbDHRvAsdf
+	p5WPyKU0t7sTkNIhOeadYZava9dX1oA=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762566897; a=rsa-sha256;
+	cv=none;
+	b=XO1T5m33qBbZubewfUKEFMZvKy29J7+EjIUvZRu9N5kZIWU9P7y1dRqgkhcDiMY/8GQrwq
+	bm5NupNKc+2hi88lkiJYmsBeVj11iep71/5QJLUXda9B2144P3fL70S5dQ3Mqc0mxhiKxs
+	v0/8AvY7708UhUxz5Lh28DN+krfylys=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=jVpGfIeY;
+	spf=pass (imf16.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.41 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-63c489f1e6cso1632821a12.1
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 17:54:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762566268; x=1763171068; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1762566896; x=1763171696; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
-        b=V1nM47f+mLSO4/HbQkt6JABG6LGZ1ZcxAgHu47ia+L82JFYNO6lAeU6kJNPWDzfajG
-         X/zrM91DD1d7bRbkMcuxB4zztiVZj6/K+Z4MF19h1ufigJBKC7POUwWhJKWkyVXORqER
-         g8sK+87wbaWxQOajSrOU29jWaDHiVbsHbME5eJEZZAG9fkP4/1ygQIlJNG1ik/YdqL57
-         SEm9FR38NxNGXmWieo8yiZrMvUIhgZtxmI3SU+9Zbv1RzQZEKMioavn3f5FJR4SsD1wh
-         +v3iIw2b/E5V1CRm/BKRiWd9eGVOzhH92XFKzadTDL8NH70IWwct6cXap3a2uhuu6Q6Z
-         PntA==
+        bh=G0ZmaZCDwiHMLTx2bSrUVe6Saq+o65+OA8UrkrTQnt4=;
+        b=jVpGfIeYBC9szhFxgqX9gS8qECNfFLl+jJJYhmbaoHHvyklFsM+MT4AWtkJm/YuKy3
+         M3jWyCbZp9SBuftM8+MJcqR0WsFOFSK1K1AXjG5Sp3xalg5J9YHTxNhJ7J2sDn38ZvTX
+         YpPiqclLe3K6VDqYgbSDtEDT455hZhv9lvMpDqwn3QrEw4D+8cDNazacsTz8g/4BSoLm
+         +pVBzXDnPFm618EVMaeM6u4Kpcn7DDOyuIHHpWePl2NwoyKtwGLlDr0mBU+NmYpWt5Of
+         x2uJG0HbMIViT51jSlXx20IKKNvWRscCKkkZMLggMVn097Tjo3kUf62t31ARVnAKnGMz
+         HzFg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762566268; x=1763171068;
+        d=1e100.net; s=20230601; t=1762566896; x=1763171696;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
-        b=hgK/K3ugeAbumH3soSsGfaShpi/KF+pyf8gBy7yuFXSqPgCE6w0hDaLkcFbb2owlIs
-         BFegmzN2dkh68aJvGhb4LI0iZvJaKVw3is8jbUpSUWWKxA3wNlYcJlyVMvNeihFDkbI8
-         NdtNYspxuF5AJP/lqoWOa+xIG01MCbzLCcVvu1bODXge4MWq8+GNwLQxuKeeNYqJunsI
-         i9voND+M8qCmwNoHVDlyvHXIQZnEBg2LslnmhHg+5ODRgCSQ+3VXH07aICulAXcWIr8R
-         /P9NhykcXFpjk594133ZFi0JbvQIgDDNenPNCzjK2J7k2AuvJI+qnCmMZA2gssnw9ZlZ
-         4Kzw==
-X-Forwarded-Encrypted: i=1; AJvYcCUeFdMimghRDbYY3YrGKDbSsvpnqTruYTOWvlB72gjOhqxntK5zqpJBgFqEo1ArytFGMzeTi1sMQw==@kvack.org
-X-Gm-Message-State: AOJu0YxS9Gh87lgMFWJLBjSfBmQCj2VpKagVCQZEOXZcxeSXocBm6sWO
-	mEKY++tAPtu5iA4AA6x2VbgrmW0Ur0tlaWIbo9g972tLZEoVGIisN7BpC/uelser
-X-Gm-Gg: ASbGncvYXBX1z86ER4YkN4YqK141RGhsfYbIE26x/xfa2Wu9Chnw/crK8CCHl/jimu1
-	ziyaNXiJNvOPI4JnNNxCUyEE1u6LXK9CtNMHr56sjHKPVfcbzLvJFZdiK8vvMMazHji0VqNBYiY
-	331UBAPcLXx0i+jU1oQ/OSwihcZ5wa1LhGM9av9IJaYFJjco9WUs+EGUdj72apRLEMZKWkNTK2V
-	VaV8xa5CSwjaqDijAWJYo9c4eZXdtvJ87ncN+UlEWpqlgcU6C8QYB5frrcXzWqcEOXG3v6y0EOp
-	VCDZsimTPTZX0s4PfbTeDzwWJQ5481AF00KmjOLimxY/6TbUMyEHtKI2i3XNUCDkkvKNywfMGER
-	OAN5TN5g05Ez5dNEj2jSHHxgNNIp1/OIca1YrfYX9L0bBKLjcwflK/GQi0BwvRGvW6DG3K5Yz1H
-	sijuc2pT/lbw==
-X-Google-Smtp-Source: AGHT+IHhwXLk7xWiTIAmHwBxke3RFdw4hY5rd+dV3nC2lXtWeKTLFKd/7oouP3Wzzn4re7c2VoD8dQ==
-X-Received: by 2002:a05:6402:524f:b0:640:c454:e9 with SMTP id 4fb4d7f45d1cf-6415e5cccfbmr868352a12.4.1762566267419;
-        Fri, 07 Nov 2025 17:44:27 -0800 (PST)
+        bh=G0ZmaZCDwiHMLTx2bSrUVe6Saq+o65+OA8UrkrTQnt4=;
+        b=BdtDSn+jtGwkxtW0Z631WRyyqFsNV8151gy0y9RE9ju6LIBz/oK7UO785n5MiP79Ap
+         hLOnM/1h9qOMXl/hJ9a4hJDZDhjKp5+wI7mDyhffJrkxwqPpUX+By13kvScEjco5jFpA
+         7KkztOqc9sCHsxDcXVEqXv1o1xrkct5Qt1rAt/VRBf3JqoIUfzAICd7tmNXujIQ/p2nX
+         2qEAMnJSRI/A2lYV+2nUPrHVvLj19cRrB3FumiCmrQB+C8mJyit/AWN3W1jNTjgh3A9w
+         U4ZX6wDcfNUOLAK6OC65CvD6llldJT9v1iwPBi70vsvXv0/WecuQS14vE8IPzutka1R6
+         JTpw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNLgFvDEoVBj/VySFRW8ooRmR7Tw0AsBpCLjCjkHxA+ZvOGPIoOmE/bHWyVIU1eVGQ8ff7S9xOhA==@kvack.org
+X-Gm-Message-State: AOJu0YwtdDW7Qrg8/VH7nAuf5lLldhl3jxQPunN3RUW6/7coiDgp3ihK
+	MilApERGMtoiPHed74TQWU2yKL5QxRVuvbJhaD30+iZuLXXjy9rm9RCk
+X-Gm-Gg: ASbGncudriD85k8yiz6AqmX6PHWUobEhT6WJV5BbDiSWSgUXqxdiMnASzyoPLCL1+fz
+	kUItk5qDiPFL6bLGuoomadE10zM/Fi+feHTW6wlo5rKQhEg10b4TP8oIeyuOGAL2Ec2H9SIf8MS
+	oLovwbOoPdhYAnMlZlLQ2eEeZr+fcOp/fBWAbTEHZhWqoz/wLq3rw2G/4wSNhlDde3ZFPkq2rmf
+	06opeMihiK/oXyy24pJu2Nb//ekKVlfylS2f6fyGfg9PfXVixQrvCZ2cmZbtwa/StVyW4VV+8RA
+	apZWF+lgAPwNXLK4+QhuvmzpDQmOTLbyY9hWemQXH+ZuDOqfXbqGxvuprpobCy4E/bh6ON/w6hw
+	talpMK+ltp9HRnxjGi7rGv0SQ95fcL4X/NwoB9+2GO0Ce5OSnjHNWXXVaRHOu+XIyTB58kZJ2IZ
+	bDnFyBekYfyc7smaCd2ziR
+X-Google-Smtp-Source: AGHT+IETDq1IeCw5XplonpY1pcN21ELAuNqusNEyhCeZTqp1tHeSu1woXZrdQ1IgGv97Z7tZaS+umg==
+X-Received: by 2002:a05:6402:46dc:b0:640:37df:e798 with SMTP id 4fb4d7f45d1cf-64146c0cbe0mr3504024a12.1.1762566896182;
+        Fri, 07 Nov 2025 17:54:56 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f813eb6sm5471242a12.14.2025.11.07.17.44.26
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f813eb6sm5496824a12.14.2025.11.07.17.54.55
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 07 Nov 2025 17:44:27 -0800 (PST)
-Date: Sat, 8 Nov 2025 01:44:26 +0000
+        Fri, 07 Nov 2025 17:54:55 -0800 (PST)
+Date: Sat, 8 Nov 2025 01:54:55 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Nico Pache <npache@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
@@ -113,25 +113,25 @@ Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
 	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
 	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz,
 	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-Subject: Re: [PATCH v12 mm-new 02/15] introduce collapse_single_pmd to unify
- khugepaged and madvise_collapse
-Message-ID: <20251108014426.5lwchfsvgkoo72fc@master>
+Subject: Re: [PATCH v12 mm-new 03/15] khugepaged: generalize
+ hugepage_vma_revalidate for mTHP support
+Message-ID: <20251108015455.qc244lvt2pep4t5f@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-3-npache@redhat.com>
+ <20251022183717.70829-4-npache@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022183717.70829-3-npache@redhat.com>
+In-Reply-To: <20251022183717.70829-4-npache@redhat.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 4733E180019
-X-Stat-Signature: dj15y6ajjt3fusk3ase6mgboe86w54yn
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: C4C74180010
+X-Stat-Signature: hjwjieomfjc54ueoajqagb6te39b7uxd
 X-Rspam-User: 
-X-HE-Tag: 1762566269-566895
-X-HE-Meta: U2FsdGVkX19Wgjr9mDh2txlUjz/LdeuWEoucv9KmfiVS0I7lgKbhnuZldwSUQ3c7WQaGr70IoiLQRwWYMvQZCgOCzxxaXq19jOGiTQC9G9PqwOCQxf0ND3IiTlFVQYhR4BiqU3iwfIkwziuUdPf9dm2OO8W7vZmzsZTjtoSFdMHDsadwTwEWvGEiIp5Zrj8bsStL9wPFppoyE8fvLvVMuhZErSnZN+ksg9FbSfWE2J/5whZH7CK8XXon2wSFaNGnP8ClVTRMEaNwZ45fikn2CMN/GI9Q+Jh/WeytAuNgwgFkORl9NpGma33LIFacODt/hinaAkxI2I7l2DjC8DLJ7LP3sxA5XH4LIgCN4foAInBDqE+T5ud2njZkOapT4RoTtHdtnHe743PWIk3s0tPQGV3wdnA4jHL4ARXyrdGtunkJMiV+m5nAsWECuGwYCGbjeiS+ABl+mrfx+77T3CNXP23FR5NddXKCM9uK+Kxgwiq8mBqZfyFkR1oX5U5aRGl6xZKW7thfYYj0X/olUaKvubV162zlaDu5bArGSmlCk1bAI+o3iY86i+GmOluwozRb7NQmsJbTmI7QJXtufb4elHQwXwvNQNXh9SfQRX4GhcBSpxCS/6BtIgo30wBHqQt9Parup7Pxi/Di5e6ht8//EWk+yq/vRHmtyaNtofVafPKBOpyeWKxjS2wU6onMSOLbuO16vaUi3GlE5tXvRWNgMNenTnpZPDAp1OeduBO9WT2TsRUaQWzDmYyq3LpnH2Q6HY94alKWfqdynttw3Jb6CJB9eU+vSJQoSriUBCw5dZT8rLXuTCl2a5CO3dytaRFK+dxj0sJwxJ0EEKdlqa9QDo3pyScuO/vh/cdclClbu9x2CMwj1C4RCyNTdWFUFc/UO78peS5OJ3mPVIc9MtZRqth2OlGFtm3X/nrVrVl84CH4TCagJKnaN1ARcA29xM9FBrf/Iez2qlVirE6RldH
- aE0ILYKr
- aVZfkR/m3duLnZFY+DtpNsiOS56OZ8mfGGdP7nd8OlRmEI+Ah8uwhemsTkvrRVjaLGLepfWPO41qXPNdWEhRIvBq0ALwEVpyNmf2OvlBFVhjth8KeG2PclU2x6jcf0XKZx5LmRClRFsRSDGDcOPeQ6CDnd6kJC31EIcXONk3Yz45YX/N8r3Sg1ig68vdHRvNSppwNHCfLBY+LfTyYI5N0o22UKRyuyJOIkDXwFIA3akw3DAn6iBvM7NrQqtHqJLAcqpUqNSM7QG4cUkxwLK7uVdT3obu8Ub27csuo9CtZnot+xtyyeMCPpfidCzdecLmmgElhH3YHsJAtznQrLEeKDvRWoNlYnXe1QX0t9w65EZPQX6JfHX5OVZVas1uz+bWZ2fR6k3uOpVo9rMg0ZqlaGUhfi2MSS6dnvzj4IKwSo21jOdeOE2+/oWw4Dje94BH+XiKxV5sXO19d5SlugxViMaT2EqmKgKX7g/lAWi8nwjkUgXG14jTM43iSMZPfvQLVwcrQDjADYUfhV0Knq0VTaKqeHr0uZzFz1Qj+WwlpH9LzZzNeoib1lwODQQOmPYD4qh5Yhq4zEi4yVtGOiP4/CgWC+7mOIOWzR/GYsaOPdxAPk7TAmIMmPJOkNdGOYCt6qFZv09/2us5KTnWALf7OEja9MG0TXIGnkbWa0xPxISrda9GolFZ7SMsjSy5IuBZvY3ZoT7tirxSNnduvu9xEDr3qFvVXCB48/3XsmcXELyzlr8C9dfFSfgIbYp/vvWKGZZ89OE6xW62p+pKWyB6v1nT+gEiCE3J3KfwMpz0ohYRvc91y22n40V+iuFzcIsdZfKnj
+X-HE-Tag: 1762566897-739735
+X-HE-Meta: U2FsdGVkX18N88pElk2pVQLpIkYKe/kCB7kO1WUz9G6iCaBQGm1s3FUC/y1YzoKdZ71pF1jHl0yuILKACXLRfUoC/w/cuRqciNPrnWDb0ankO5CSGOFulqSbsdROcd6mRxR2sfWC7sb1Yw+nrpv5BJYT71/Ot/pi01oyiP5bU2WdHH6yQTi9TsHi/KXywhRUBxrQ4lHPfMBRqSyAXkQlhEibr1HMFocWpVuvnh6MwyYk7QzLYtT4Lbw/iWE5bKehDncEb1JeSc6yL/WhWusVMI/8/EjymcyFDzpbb3gPvmoS21MYQkN6nlH82rM0UcIZYCI8tGkrIL+RvsxqxY1rQh3Lr65oz2960bV0IPzbLeCJ4pXeopHact4uAUNqgjMXPw0Qarqq6V0FrhegpRcyBMzKaLtaZJvKGCawFZmWiGowYD98fKPyTZrQ1CHN5iyV4eQ2mgcloaBT554KEGnSxn9q4cUFS/Yk6KSuXczjcWFZHMx/u8gSmwEYlieagZSxs9JHDR4WXzUn+K6P2btdfxDMezsAqCHDRs3p49xVntDB+mti9MP4z8KoJFoHeiN10bdB5bwbU5GAjvcutLxMpsJdfl3Ia0gDNtDLWcn9+wg6h81kXqkFRS7dbiLzz4ahSqV7G8XlO3utZuN22RXvFvUPWb8dPm8RM8V+IXbnaK9lJ5EwMOeD4m6WZrz6bGIbg3kQ8JKkrkiB6NW9xivQ3wBxtj9orheGUz5XsHqqfko3Sz42N5op9Jipsb1W7m3cDWYTTQxweUz8F3pOSteMHrP8maNoTOFjnWZXJtU7SQcYMXRu68hobG1J7Nu5fEUQYVl+wH5pbR00whL/AF1ew38VajthdylWFnJvIfsXLvbHiSNpMJopw9b1w143oOY76iz8jjz6C6/UpK+3jmnvG43uJy7uGCFQDrOfaCDMO4tlT4vicwmsdakeurHSBX7WP+TymRaGbOWWfMnxsy9
+ opsfX3KV
+ OSDy5PFJW7v+OV6rdpK68i5IeoJXNZq6FmPb17yWVq6YwqgF97w0yywLb00G50JC3qjouIpD7287pA2gTGSSL4SzTSr65So+mLH07VQHBWDjQZBMrrHnlKOeU/v8/bKRYJwo3X+jhMvg4yYYs1XtKh3LZm/MDm0BCQjC4vwdbJuqGCXJPXL7KD5YfF4rKbuA3GRsgx9l4uCqbkMjGsLIwyClSQv99Q+Z6Oq6zLxSXcWPQ8D6Nik6P9wKj5uCZkoT/ioAY5vRJurkKoNO8OtftNDh0SdI37jRydDQLvzwpLp0Jv90ZWwTNxxJmihfmLpSfZfB5
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,89 +140,22 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 12:37:04PM -0600, Nico Pache wrote:
->The khugepaged daemon and madvise_collapse have two different
->implementations that do almost the same thing.
+On Wed, Oct 22, 2025 at 12:37:05PM -0600, Nico Pache wrote:
+>For khugepaged to support different mTHP orders, we must generalize this
+>to check if the PMD is not shared by another VMA and that the order is
+>enabled.
 >
->Create collapse_single_pmd to increase code reuse and create an entry
->point to these two users.
->
->Refactor madvise_collapse and collapse_scan_mm_slot to use the new
->collapse_single_pmd function. This introduces a minor behavioral change
->that is most likely an undiscovered bug. The current implementation of
->khugepaged tests collapse_test_exit_or_disable before calling
->collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
->case. By unifying these two callers madvise_collapse now also performs
->this check. We also modify the return value to be SCAN_ANY_PROCESS which
->properly indicates that this process is no longer valid to operate on.
->
->We also guard the khugepaged_pages_collapsed variable to ensure its only
->incremented for khugepaged.
+>No functional change in this patch. Also correct a comment about the
+>functionality of the revalidation.
 >
 >Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 >Acked-by: David Hildenbrand <david@redhat.com>
+>Co-developed-by: Dev Jain <dev.jain@arm.com>
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
 >Signed-off-by: Nico Pache <npache@redhat.com>
 
 Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-
-One nit below.
-
->---
-> mm/khugepaged.c | 97 ++++++++++++++++++++++++++-----------------------
-> 1 file changed, 52 insertions(+), 45 deletions(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index 6c4abc7f45cf..36e31d99e507 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -2370,6 +2370,53 @@ static int collapse_scan_file(struct mm_struct *mm, unsigned long addr,
-> 	return result;
-> }
-> 
->+/*
->+ * Try to collapse a single PMD starting at a PMD aligned addr, and return
->+ * the results.
->+ */
->+static int collapse_single_pmd(unsigned long addr,
->+		struct vm_area_struct *vma, bool *mmap_locked,
->+		struct collapse_control *cc)
->+{
->+	struct mm_struct *mm = vma->vm_mm;
->+	int result;
->+	struct file *file;
->+	pgoff_t pgoff;
->+
->+	if (vma_is_anonymous(vma)) {
->+		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
->+		goto end;
->+	}
->+
->+	file = get_file(vma->vm_file);
->+	pgoff = linear_page_index(vma, addr);
->+
->+	mmap_read_unlock(mm);
->+	*mmap_locked = false;
->+	result = collapse_scan_file(mm, addr, file, pgoff, cc);
->+	fput(file);
->+	if (result != SCAN_PTE_MAPPED_HUGEPAGE)
->+		goto end;
->+
->+	mmap_read_lock(mm);
->+	*mmap_locked = true;
->+	if (collapse_test_exit_or_disable(mm)) {
->+		mmap_read_unlock(mm);
->+		*mmap_locked = false;
->+		return SCAN_ANY_PROCESS;
->+	}
->+	result = collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
->+	if (result == SCAN_PMD_MAPPED)
->+		result = SCAN_SUCCEED;
->+	mmap_read_unlock(mm);
->+	*mmap_locked = false;
-
-For all cases, we would set mmap_locked to false. Not sure it bother to adjust
-it.
-
 
 -- 
 Wei Yang
