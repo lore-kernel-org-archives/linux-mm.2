@@ -4,103 +4,106 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5D0B0CCFA18
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 20:03:05 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1B587CCFA18
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 20:18:46 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 772668E000A; Sat,  8 Nov 2025 15:03:04 -0500 (EST)
+	id 689938E000A; Sat,  8 Nov 2025 15:18:45 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 74A528E0003; Sat,  8 Nov 2025 15:03:04 -0500 (EST)
+	id 639408E0003; Sat,  8 Nov 2025 15:18:45 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6874F8E000A; Sat,  8 Nov 2025 15:03:04 -0500 (EST)
+	id 5011F8E000A; Sat,  8 Nov 2025 15:18:45 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 4D63A8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 15:03:04 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id D4EB2BB89C
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 20:03:03 +0000 (UTC)
-X-FDA: 84088513446.11.4D237BC
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf17.hostedemail.com (Postfix) with ESMTP id 2265040008
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 20:03:01 +0000 (UTC)
-Authentication-Results: imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNKbxfnK;
-	spf=pass (imf17.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 38EEC8E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 15:18:45 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id CB4E04C0E6
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 20:18:44 +0000 (UTC)
+X-FDA: 84088552968.06.7A69D3F
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	by imf27.hostedemail.com (Postfix) with ESMTP id 2772940002
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 20:18:42 +0000 (UTC)
+Authentication-Results: imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C+pyQQfK;
+	spf=pass (imf27.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762632182;
+	s=arc-20220608; t=1762633123;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=z1mUJqgslv16M+tfXM8XyUEotZBdEAoMyYYZaLsYGsc=;
-	b=LahDGgL1VaPqiaRAZGOLc9vAGN18WMTVyDQuj8EavDKLvoG7b4pMpGkfedw955Dpt0xATQ
-	0cxTZ2U+LzQCWZ8clEYq/SysjxzYNDwotxObZIMg0r3QL/3UXnAvqCXmyn9Zi4X8sU6thZ
-	Lg4HJuyAcmu4wGm2/HiOPyjyWVqKfRw=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762632182; a=rsa-sha256;
-	cv=none;
-	b=Gjs90vnILLR+D0RA2rAEa+VLISusDRSu3O5SIXn538+Nt0tlGc4ePoiyRZCPfyCmcIDNvj
-	BB8ZrqcXjpRXxJto04g1bmLY4Uc1hnjE2Uns21uYg9D8mCbqP3rDv2BNPoiZ57Dsd+mYEE
-	mjzSm+gOsOaoWersvl5YfIVQCZfV6L8=
+	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:in-reply-to:
+	 references:references:dkim-signature;
+	bh=eptMmi/rSmOF7zh3lnbB0jvPX8L9rhMmLXfTARMvAA4=;
+	b=38drfC0PJLlYvkE6VWnSa4P5Inanskf55lkfmiadJWbdXQPBHeRnnApaPNoSPA/gQuY0je
+	0Ib+/qLcIJ6EUGn8AjdnzHlZjjPrLWwfYDGh0L6xnwuN+1wVDbCOX87summvaNHYBSvPyo
+	D64RV0vjjs2dp2IitoFtDKqpxC8rphI=
 ARC-Authentication-Results: i=1;
-	imf17.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lNKbxfnK;
-	spf=pass (imf17.hostedemail.com: domain of conor@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=conor@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 7F52543C09;
-	Sat,  8 Nov 2025 20:03:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DD7C19422;
-	Sat,  8 Nov 2025 20:02:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762632180;
-	bh=mZx3reTRacDiFfpeRs79kIi23F+uPMRdn0mb7yCb4lA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=lNKbxfnKqppFyjDbgVviqAKjzuqyrl142Vll5JtXbXhMZx9ScsfOQGWSjhVrVnTF/
-	 W46Amq2iHTbMWiCV73eSF5dNnu4nOzVILXSQ0LwZNmPAfs5De8lf7RP8n0+ocYLUNm
-	 Y0VB9/W4SBQYKN1XLrr7dsoUZ4XsZynyKqAhxqqge6RicKHf/c+V+JYIipWSV0NVV8
-	 Lheh82/DHzO8neWxDIm+NArCVP+u2Y2PHaLtEcwgjDMqVCKMgomUWZB9H7QUMJRnik
-	 NCFaIIMPr9Rrq/TqyVfDXSRrfIjwbI19FqZ5vVSIzcx/P5X6qOHcwJMWBACW0al3Fw
-	 9iOlOfua0KiDQ==
-Date: Sat, 8 Nov 2025 20:02:52 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>, arnd@arndb.de
-Cc: Catalin Marinas <catalin.marinas@arm.com>, linux-cxl@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-mm@kvack.org, Dan Williams <dan.j.williams@intel.com>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, Drew Fustini <fustini@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>, james.morse@arm.com,
-	Will Deacon <will@kernel.org>, Davidlohr Bueso <dave@stgolabs.net>,
-	linuxarm@huawei.com, Yushan Wang <wangyushan12@huawei.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org, Andy Lutomirski <luto@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: Re: [PATCH v5 0/6]  Cache coherency management subsystem
-Message-ID: <20251108-spearmint-contend-aa3dd8a0220e@spud>
-References: <20251031111709.1783347-1-Jonathan.Cameron@huawei.com>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="BnXojPaReIke2Qi9"
-Content-Disposition: inline
-In-Reply-To: <20251031111709.1783347-1-Jonathan.Cameron@huawei.com>
-X-Stat-Signature: q3q9gc9qw9usckocqk31zxtr4wtejbmi
+	imf27.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=C+pyQQfK;
+	spf=pass (imf27.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.214.182 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762633123; a=rsa-sha256;
+	cv=none;
+	b=UH9eZaR6VPuHGdclQLB2KlCjGGi9exMaWRfL42shUPgvBq6pFyx53wF2N1EbFo6JquB76t
+	38D4KoF7D62B82gdJ0gq1vQa+f93sdsYVI3VVfnJd0SuDKS1jZ/ilYuMKNkE+kcB4x07KM
+	LX+aPEmcdU/wROFbALha8snMlu6aqnI=
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2958db8ae4fso14852075ad.2
+        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 12:18:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762633121; x=1763237921; darn=kvack.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=eptMmi/rSmOF7zh3lnbB0jvPX8L9rhMmLXfTARMvAA4=;
+        b=C+pyQQfKssAYE8SxFc6gr4pDMavEhN7575X5/IEjjHJ3IPt5kmokrAth8bDAHbadn7
+         lHQMmNNEWDkOuYmZC/L3f2wLy65BiXn1vIwPkg60bT+tDVeU0biNx/8uJUX7doQ8rKjP
+         xdZSi/jCdsLsWZKUMlTcWj78xquygIU05+AEkNW9cIlPwuGtUnsXdur/at67BgDMu1e1
+         G1bS575euq6Wn4u6eZLjwyOlH66ED5GuMT6opxlizPbGE7um+xgDchVWMlfHiYGJtnyI
+         merLjL9zevgIVsaBQleNbnGiwKx/ykWxErbCdhuUTXNhgeMue3OdxJaqDXmDriVXbVx7
+         MsCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762633121; x=1763237921;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=eptMmi/rSmOF7zh3lnbB0jvPX8L9rhMmLXfTARMvAA4=;
+        b=P2Lct8XI3Db3I/dHH3qS5YlwBy0xlYC+6dhL3L6SurrfgpDdK9Nkjyh6nvkgfzvQaP
+         DvZVDwA/JJwAXYsuS81iWtXycW7VTLcuRzsQVVd+3YhsG/9IHbX4Q01C/0caMOI6QI4b
+         sR5MDvLKewerLV7xD5DB0k3j+WMPXIKYpDsKon9ZncBb8wG435FynwcYDw7WDK2K8SWJ
+         X+BdwRZY4AHK0DFvD+PyvTnPzyDKRRVmptYisyR6WMoauQVOwZspnxTkOAqFOfBv8egL
+         43aURha71g7kuhA/cDnH2o242iPUPc6KE0ec+AAtB/pQDoVSLQKLmW8ECndAf0oxkVXJ
+         N7Ag==
+X-Forwarded-Encrypted: i=1; AJvYcCVn0AOICtAAMWR59pzisMMnMEuVMsjtJh+ThhXQw1sHQKo4A//NOEjrKSM+WDoOcmEaomGsCq2dxQ==@kvack.org
+X-Gm-Message-State: AOJu0YxFiC+6PDh8BR7KHr67UaZYZVyV5WwxO+QuOv6x6Skapo1bXiRG
+	uoPPi8jkSE0jrVhSh2YNvrjNLihBG1MPAZ+Eti4SKuYjIIiV2SbORRpuHZRDiIGVUWU=
+X-Gm-Gg: ASbGnctilpaf+5sss6mP+8X0AxsplrWnyHRs+PiFw6Gew3U0dILAM5E4AgZFr0FADYn
+	ruhqsu9cZHX8bqJm9MQYDq/GZIZBZPUO5NBnA5wNmxi82jex84igK6eCx1zhGmhZmbaGG6VKrmJ
+	N2iwKlNFbtrI5OXGKnfnli39Ar/a59ljDKhrwSZwxHYLNLMWT0y100o6KW/OMLkzoy6KRpO5Tjt
+	8QxozZQ9Uwzp0w17TLwyxL+rWN+VxOFbsliGTKJLwSunkpBNkgvRk94X40mHp4z80E4dR3Y8p9J
+	JsGEMwAt/+TgWF+F/PYPNLJ/0dBYWZmmYK37xyWJvYRyMC1+r3lmdiTMY1+KUdHMAUAPF/85QcP
+	7U2lqeTmC3xqqAjhacUE6nQoSww89gGzu54YvOc+8A53CETtUpEVY9L6hdS9YjEBJLojFaQ==
+X-Google-Smtp-Source: AGHT+IFb5ZIMhb48UQ+0j2VRNphIuxham09NgnX5MSt7QH3z4h9Q5UU4rBsGOgTmioZaQIMKF6pn6w==
+X-Received: by 2002:a17:903:f83:b0:295:5613:c19f with SMTP id d9443c01a7336-297e56f6b9amr42076845ad.42.1762633121076;
+        Sat, 08 Nov 2025 12:18:41 -0800 (PST)
+Received: from dw-tp ([171.76.85.117])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-297d766efe6sm44719285ad.49.2025.11.08.12.18.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Nov 2025 12:18:40 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Dave Vasilevsky via B4 Relay <devnull+dave.vasilevsky.ca@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nadav Amit <nadav.amit@gmail.com>, "Peter Zijlstra (Intel)" <peterz@infradead.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org, Dave Vasilevsky <dave@vasilevsky.ca>, linux-mm@kvack.org
+Subject: Re: [PATCH] powerpc: Fix mprotect on book3s32
+In-Reply-To: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
+Date: Sun, 09 Nov 2025 00:46:04 +0530
+Message-ID: <878qgg49or.ritesh.list@gmail.com>
+References: <20251027-vasi-mprotect-g3-v1-1-3c5187085f9a@vasilevsky.ca>
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 2772940002
+X-Stat-Signature: x3os8znzzw1u9sgzuzrthapu5foqdjb7
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 2265040008
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762632181-150597
-X-HE-Meta: U2FsdGVkX1/wy4JqVCBf9dBOnrhRNkFv1GqOugxxA2O9X0Cv8KIDKO+74q19vmu5zzd2tfMsqEsCQtWKNtLQNHP1YJ1bYZuwKzqnCrnsZLK/NPCpYw+DXnMaVB95UStHB1ex3CkE72V+YlVAGqOxtOZk0B+IOzHE5sJivtPvHnVbYYLlOcpBWj+bCz+tqDwkpEEIaKYLnRDyQV+NMt/kkFRuc2jScuTXfAx1f1XVnHueeZuyfCodZFeyY+7WDmB0ekCf9ikAduj4Q/816Wm8UN1DNh6bIr84HkKOMmMHNTLyYoJMOxRZNJieU8Jerd+pRIQdqNuQct2aYD9cC0iDDWYHhRLilV04gVhzB+NF6OtJkP1RuaEzSiDZ/qeXWU+qW93/x+KuiiFe6/unenU7rHElIUaL1H9okBZNVLTqbdl4wAgZ31LYsIM8EFPONfA3xjxYVFCpZxOLIeq9XXqc5YX4nJCbzwULDoZWrVtbQ9hgRh+xLSsoICChwjDxYGqtR8hJZUCVeLmxHMdygb97RA0U/aLR20qJl8ct6iPRY8xlDHRKOrnTNRaTIaLSC93FcKKopGNYV6Z2x+KvojJwlK2LVW3r2t+/ZlHR+rL9b3fcV9578tux9ygooAMjV+Yh5A6xNvZcsNPulUtVxW3TnEzlXewehGuCLWDZVcV8j0Oskg5L4E4jtWYUCDArW4Gn2YkQo/JVfSK1ngr8XUM7XWsLLvbvmUwfR2BoD1sxnbaGrQfrG7KOqemO6Kc1Pey/ONSuqxs7K22H5T1WVrwHAAFVZYdV1kkqalmxTQk+KWngI+aDCx3yc0ED2P4KV3YCLIJwCwCjhVDaz0n2fTh/4Jvdm96gLQykOGwkAFp9wjMQpoC+vr+sODzTuUynrPcl4oByYzy5V8lURwWxff13xdSOf/TeR+ir3+BcyJHHvM5gXstDVEPOAiwJf/AsDOoER+xMuKRVV8uoMIRSeqT
- DCTZ7FGL
- hxEZfh9rM9MBNc3WXHL5f4tMxJNd0jXppm3YNa/UcPeHyda4v2hAwtdaPdGrhEYDvSk2V1zrAqCaJN0im/AtBmVv6NM6kg/+TLxefLXnxYoxFDu6okCr7R1g3rnbV7cJNXarqXpEpZFcTZ7jwsssu1m1CoiDw7Jhi9Hrc+y5Hv5np4wL9PdW290bGFc8bJtTGTaFQo4vr4BtnWu7WcG8It5/+ceBagFheNhwihnNI6q3kuvRwDHnoinzdxfHRntca2ZmEuyduiP4ZMFGdnJmTto+tQPW1Gnasb4JMKeEudMZywtxmdVikLel6iIcvI7K67IpKKHSIvzxZtDn6anm77PZgl+4fqfNzvORE849fVJ7Tx5T11TyUNdTiXNWsh0JDIpH0DFZRuadRs2SHab/id6KY89/9/y+EicsEjFUbgnJeZplXq4cJNq8QiCDapcLRkwXZ
+X-HE-Tag: 1762633122-998947
+X-HE-Meta: U2FsdGVkX1+Flsdia7/d5ujuIWA8f3UzqzSMHt+LBchzRgHIXMW0LlSjk4vqQUpK4dNJxXYIOuTgCLKkdz+xI1LF2KWBXmfWaXO2SylXM2xbjld2Fzjo+e+kscpYkpjCDeA7ueB7NBBjcwslIqB01GvAt9l6JlOi1iSfoOBXRzKiCuqB/NuEGPsJqJlqU38gMPBO/chxAfCwzPId2fadi++RyDHtDKo3ckPmE71Zk+dcywfa/H7BTW5JxOkFThSe9Awvrehk82hVB0FfsHCajMuqYSts9lnWpEsa3rOr3jawSIqjaw0OpAJROBVcLZYjE/p8B2SRtmVvHL+PevAzEwdMCtyHp1lqk+C9js1yT5kvJm1GtoWttMswcSRfy1tljCPo62Z70nrykIfKnMbdYUWtNReiQqqigkXrhdChLWoyNrCto3Nvbb0vRssHd6bMvh2cn98AiOUUUzYlY/fHIPy4VBcsSwJUh1SNKqcMZDzuE5ek6OcnXZLZZR6AlhgANOnnE4BulnTjv1x6TRg8sNQgoWuUSM9Ggg4GSPnVe0nuB8ZmpzfRf+UZpm9z3pX6Ota0sDVYmMUZ2zI17b42WqEAl4PjXGvbH0Ac4l7xNtlN30OpRK7gnW4LJlfKUrLfix1G6NMLnIAJQCNWyoRHBMiimWdM1ej5HCYrlqwgp5ojpPkSiew2EBRPlJ10NB4tajlPSu0ryMQWatGiURT+aK+5fmEjPheTHh0vo0xFqq2vyhhik+flJTiSKj9AUKWSQYqWXKi0gzrpo/NAbhb2Bu82KLhtTKwaXDwEBpJlVSrj0cg/MQ0MlTq3vDPftKo3+bOW/lVPwqT3TOnsYO2S/uv4QIOCCZKTXoNnAQcFPh+dvFRPZEf0e9lCu+06D54Wb+O7tnaduO/0FMQ08ksdQNVXLH5qLVsyzZ0ALq61vDFxtgDVfsdnf/MHI1NubDh3Gpdt5esyjuk4PTe44xx
+ yeeLSkpN
+ Ri1q40Q/6ZvRy4aIPWqcbPbChBVnhY3Kimy5tqcHjFfELDWi9SF/WsJGFaVBQPwrnX4u9gI3yvpBeRilvYeo03PLClqnyPQua0lR85OUsoEsT2yKkeafIzua+xs6WV8TSn1EHa0b1W9hrnywl+TmtWY/Fs+eZGGyXQqfBErNxqc0hWCKx7uw2vV4to1U8UZuDzt71j0SmtXfOQ2RCtaL6HBSq6PQCQdf+Po+NxG7dOJBRZphBVzi+FEDw/Seb8rYlRqJkXJIQ43PyHAtnTXF1g9/ubT21o4fLAVyjnovx7FEcwPOXWRVKQIQ74vwEHejb6vMEYNNbTihNLjXIyyyWh45wOOjW2X6PGyuPn1I1z/lN1RFKp24/Pz+CF8NvfVUDqqpy4suy1eRbFBR813bElUWelu/duaDg+FxVObq6mm4ste1zlYr1uYNt7Md5FonF6uth57gKg9Fo8lY8IpPREp78WAFpPNks8VyLy5GVixrGJ98vb2aH5OB5xMJfwbPa8kVSvjDtRi/Vop6yle//hWMZ6O855sApRQn0i/hjGfVSz4aCSQwI1pCujH9YmniR8S0BiUdd0LyfqwGHLFGesXmYiQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -110,55 +113,112 @@ List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
 
---BnXojPaReIke2Qi9
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+++linux-mm to get some pointers on how to test such mmu_gather changes
 
-Arnd,
+Dave Vasilevsky via B4 Relay <devnull+dave.vasilevsky.ca@kernel.org>
+writes:
 
-On Fri, Oct 31, 2025 at 11:17:03AM +0000, Jonathan Cameron wrote:
-> Support system level interfaces for cache maintenance as found on some
-> ARM64 systems. It is expected that systems using other CPU architectures
-> (such as RiscV) that support CXL memory and allow for native OS flows
-> will also use this. This is needed for correct functionality during
-> various forms of memory hotplug (e.g. CXL). Typical hardware has MMIO
-> interface found via ACPI DSDT. A system will often contain multiple
-> hardware instances.
->=20
-> Includes parameter changes to cpu_cache_invalidate_memregion() but no
-> functional changes for architectures that already support this call.
->=20
-> How to merge?
-> - Current suggestion would be via Conor's drivers/cache tree which routes
->   through the SoC tree.
+> From: Dave Vasilevsky <dave@vasilevsky.ca>
+>
+> On 32-bit book3s with hash-MMUs, tlb_flush() was a no-op. This was
+> unnoticed because all uses until recently were for unmaps, and thus
+> handled by __tlb_remove_tlb_entry().
+>
+> After commit 4a18419f71cd ("mm/mprotect: use mmu_gather") in kernel 5.19,
+> tlb_gather_mmu() started being used for mprotect as well. This caused
+> mprotect to simply not work on these machines:
+>
+>   int *ptr = mmap(NULL, 4096, PROT_READ|PROT_WRITE,
+>                   MAP_PRIVATE|MAP_ANONYMOUS, -1, 0);
+>   *ptr = 1; // force HPTE to be created
+>   mprotect(ptr, 4096, PROT_READ);
+>   *ptr = 2; // should segfault, but succeeds
 
-I was gonna put this in linux-next, but I'm not really sure that Arnd
-was satisfied with the discussion on the previous version about
-suitability of the directory: https://lore.kernel.org/all/20251028114348.00=
-0006ed@huawei.com/
+I am surprised how come this was not caught? Don't we have any straight
+forward selftest for this?
 
-Arnd, did that response satisfy you, or nah?
+Not just mprotect then right.. Many other MM paths must also be using
+mmu_gather right?
 
-Cheers,
-Conor.
+>
+> Fixed by making tlb_flush() actually flush TLB pages. This finally
+> agrees with the behaviour of boot3s64's tlb_flush().
+>
+> Fixes: 4a18419f71cd ("mm/mprotect: use mmu_gather")
+> Signed-off-by: Dave Vasilevsky <dave@vasilevsky.ca>
+> ---
+>  arch/powerpc/include/asm/book3s/32/tlbflush.h | 8 ++++++--
+>  arch/powerpc/mm/book3s32/tlb.c                | 6 ++++++
+>  2 files changed, 12 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/32/tlbflush.h b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> index e43534da5207aa3b0cb3c07b78e29b833c141f3f..b8c587ad2ea954f179246a57d6e86e45e91dcfdc 100644
+> --- a/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> +++ b/arch/powerpc/include/asm/book3s/32/tlbflush.h
+> @@ -11,6 +11,7 @@
+>  void hash__flush_tlb_mm(struct mm_struct *mm);
+>  void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr);
+>  void hash__flush_range(struct mm_struct *mm, unsigned long start, unsigned long end);
+> +void hash__flush_gather(struct mmu_gather *tlb);
+>  
+>  #ifdef CONFIG_SMP
+>  void _tlbie(unsigned long address);
+> @@ -28,9 +29,12 @@ void _tlbia(void);
+>   */
+>  static inline void tlb_flush(struct mmu_gather *tlb)
+>  {
+> -	/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
+> -	if (!mmu_has_feature(MMU_FTR_HPTE_TABLE))
+> +	if (mmu_has_feature(MMU_FTR_HPTE_TABLE)) {
+> +		hash__flush_gather(tlb);
+> +	} else {
+> +		/* 603 needs to flush the whole TLB here since it doesn't use a hash table. */
+>  		_tlbia();
+> +	}
+>  }
+>  
+>  static inline void flush_range(struct mm_struct *mm, unsigned long start, unsigned long end)
+> diff --git a/arch/powerpc/mm/book3s32/tlb.c b/arch/powerpc/mm/book3s32/tlb.c
+> index 9ad6b56bfec96e989b96f027d075ad5812500854..3da95ecfbbb296303082e378425e92a5fbdbfac8 100644
+> --- a/arch/powerpc/mm/book3s32/tlb.c
+> +++ b/arch/powerpc/mm/book3s32/tlb.c
+> @@ -105,3 +105,9 @@ void hash__flush_tlb_page(struct vm_area_struct *vma, unsigned long vmaddr)
+>  		flush_hash_pages(mm->context.id, vmaddr, pmd_val(*pmd), 1);
+>  }
+>  EXPORT_SYMBOL(hash__flush_tlb_page);
+> +
+> +void hash__flush_gather(struct mmu_gather *tlb)
+> +{
+> +	hash__flush_range(tlb->mm, tlb->start, tlb->end);
+> +}
+> +EXPORT_SYMBOL(hash__flush_gather);
 
->   *  Andrew Morton has expressed he is fine with the MM related changes
->      going via another appropriate tree.
->   *  CXL maintainers expressed that they don't consider it appropriate
->      to go through theit tree.
->   *  The tiny touching of Arm specific code has an ack from Catalin.
+Shouldn't we flush all if we get tlb_flush request for full mm? e.g.
+Something like this maybe? 
 
---BnXojPaReIke2Qi9
-Content-Type: application/pgp-signature; name="signature.asc"
++void hash__tlb_flush(struct mmu_gather *tlb)
++{
++       if (tlb->fullmm || tlb->need_flush_all)
++               hash__flush_tlb_mm(tlb->mm);
++       else
++               hash__flush_range(tlb->mm, tlb->start, tlb->end);
++}
 
------BEGIN PGP SIGNATURE-----
+It will be quicker if someone already has a set of tests which we can
+run to validate. If not, I will take a look and see what tests one can
+run to validate mmu_gather feature. 
 
-iHUEABYKAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCaQ+h7AAKCRB4tDGHoIJi
-0mbmAPoDNoN5c++N+FdbOde62VPsuE/nQLuJqXMbpVYRgssj5gD9HgGSIr/5NCGC
-GU4C//DABkFlJ0fo45ADpizmnDu8JQ8=
-=3UFm
------END PGP SIGNATURE-----
+>
+> ---
+> base-commit: dcb6fa37fd7bc9c3d2b066329b0d27dedf8becaa
+> change-id: 20251027-vasi-mprotect-g3-f8f5278d4140
+>
+> Best regards,
+> -- 
+> Dave Vasilevsky <dave@vasilevsky.ca>
 
---BnXojPaReIke2Qi9--
+Thanks again for pointing this out. How did you find this though?
+What hardware do you use?
+
+-ritesh
 
