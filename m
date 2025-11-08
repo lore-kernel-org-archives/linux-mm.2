@@ -4,91 +4,124 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 59D9FCCFA1A
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 07:20:33 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 03E44CCFA1E
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 08:06:00 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 41EC18E0007; Sat,  8 Nov 2025 02:20:32 -0500 (EST)
+	id 34CB68E0006; Sat,  8 Nov 2025 03:06:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3D0008E0003; Sat,  8 Nov 2025 02:20:32 -0500 (EST)
+	id 2FD748E0003; Sat,  8 Nov 2025 03:06:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 2E58D8E0007; Sat,  8 Nov 2025 02:20:32 -0500 (EST)
+	id 1C5B08E0006; Sat,  8 Nov 2025 03:06:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 1965C8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 02:20:32 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id 8AFFE1A06CB
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 07:20:31 +0000 (UTC)
-X-FDA: 84086591862.15.C0EA3B7
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	by imf11.hostedemail.com (Postfix) with ESMTP id 6F0CD40003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 07:20:28 +0000 (UTC)
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id F30C08E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 03:05:59 -0500 (EST)
+Received: from smtpin22.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 9376D1606CA
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:05:59 +0000 (UTC)
+X-FDA: 84086706438.22.8536A83
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf11.hostedemail.com (Postfix) with ESMTP id 9C2A240010
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:05:57 +0000 (UTC)
 Authentication-Results: imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Bb8ftdHI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=M8XbMmUn;
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762586430;
+	s=arc-20220608; t=1762589157;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=w5hRbEmCZAr8rZpKUXLSHNatmnQ6+I1kl4hbNoJwVz4=;
-	b=s9O94pDeg1+5LLSmo0qYsRKmzccCrZLOhzNfLUZ/2Q2mSgl104rnTOBDc2dR3iA3ZS52Yr
-	JJg5UOfgq/OZz3XkB+g/ElPdY0IkXJQABwiA8fKutITPHq3tD0tzbicyk07kiSxlCsKEKh
-	rSjeSrMLx7xWDgaI/AJNO3E5BhJ4uqk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762586430; a=rsa-sha256;
-	cv=none;
-	b=eYJhSbC+wIpK2vojrvOtzlTiSnCepCnmLq3DYZA8JNko/oR5v6/Oy5CXqZgOCmLMqMHKia
-	gMdqALkrFqeikxgxmiAKz0TrxRCQlvPymhgZ7DAmSgoXF2QuARNEAMVWT2uXDppe8oakry
-	mi/ny5QXquI3nrqCApi+KK9ytJAMFPc=
+	bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+	b=tShu8sqV06Ct3hcWs7Vnp3HN8/tXpFc9NE/t9duYzpAFUBzWT9ny3EmzJnQ+ryNe84qB5u
+	Rwq4e9+O2jJBu/DxTfBhI3N6jIikSWAZ34XUBZfLWCkd7kCVuYyBjEr3tYmswUSEFlGy3l
+	2QJTGSN/0i3GRpZyEbn/Qy9HZB8977o=
 ARC-Authentication-Results: i=1;
 	imf11.hostedemail.com;
-	dkim=pass header.d=linux.alibaba.com header.s=default header.b=Bb8ftdHI;
-	dmarc=pass (policy=none) header.from=linux.alibaba.com;
-	spf=pass (imf11.hostedemail.com: domain of ying.huang@linux.alibaba.com designates 115.124.30.101 as permitted sender) smtp.mailfrom=ying.huang@linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1762586424; h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type;
-	bh=w5hRbEmCZAr8rZpKUXLSHNatmnQ6+I1kl4hbNoJwVz4=;
-	b=Bb8ftdHIj55L105b9x2Elp40YNoGVWwFtvsnzfebs5yUaP+Aa+nz//gWXWdD98UoEqHrHOT2EnzKrw81cd/mQiCX8fbyQ+X1ghcl8koHiyQvBnJUz4iJNbB/JVGCC0coxYvdDPHU4SSmr75ate5YZG6yrZXxK0e2BCzlCgKq2iU=
-Received: from DESKTOP-5N7EMDA(mailfrom:ying.huang@linux.alibaba.com fp:SMTPD_---0Wrv9onH_1762586422 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Sat, 08 Nov 2025 15:20:23 +0800
-From: "Huang, Ying" <ying.huang@linux.alibaba.com>
-To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,  Will Deacon
- <will@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>,  Ryan
- Roberts <ryan.roberts@arm.com>,  Barry Song <baohua@kernel.org>,  Lorenzo
- Stoakes <lorenzo.stoakes@oracle.com>,  Vlastimil Babka <vbabka@suse.cz>,
-  Zi Yan <ziy@nvidia.com>,  Baolin Wang <baolin.wang@linux.alibaba.com>,
-  Yang Shi <yang@os.amperecomputing.com>,  "Christoph Lameter (Ampere)"
- <cl@gentwo.org>,  Dev Jain <dev.jain@arm.com>,  Anshuman Khandual
- <anshuman.khandual@arm.com>,  Kefeng Wang <wangkefeng.wang@huawei.com>,
-  Kevin Brodsky <kevin.brodsky@arm.com>,  Yin Fengwei
- <fengwei_yin@linux.alibaba.com>,  linux-arm-kernel@lists.infradead.org,
-  linux-kernel@vger.kernel.org,  linux-mm@kvack.org
-Subject: Re: [PATCH -v4 2/2] arm64, tlbflush: don't TLBI broadcast if page
- reused in write fault
-In-Reply-To: <2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com> (David
-	Hildenbrand's message of "Thu, 6 Nov 2025 10:47:10 +0100")
-References: <20251104095516.7912-1-ying.huang@linux.alibaba.com>
-	<20251104095516.7912-3-ying.huang@linux.alibaba.com>
-	<2b9fa85b-54ff-415c-9163-461e28b6d660@gmail.com>
-Date: Sat, 08 Nov 2025 15:20:21 +0800
-Message-ID: <87qzu97zyi.fsf@DESKTOP-5N7EMDA>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=M8XbMmUn;
+	spf=pass (imf11.hostedemail.com: domain of thehajime@gmail.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=thehajime@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762589157; a=rsa-sha256;
+	cv=none;
+	b=nzz2AC8QatVH0lqgTi4n9sIAltd1Vmb/8N6++cr0VjGaC8DbybtZMCjYLNrp9GLo/rk72I
+	zDmX4kWNA1PuFR0ER5c2+ZJcyjG3TEhmhIl/8blbgtfvtEKEmj6lIr9VR1BazuwNxoqt4k
+	dH/xgLAFd+r9qV2A0V0Vln2I/JVj/hY=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-297dd95ffe4so7793865ad.3
+        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 00:05:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762589156; x=1763193956; darn=kvack.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+        b=M8XbMmUnsmpaDVeyMIVBXgojM4BoFtEq38cBfUgQ3ZhH+F8qJt7Xc10ZYAnaOhWOli
+         PVDYKuRACo1goKm5aPDTtKZc2dAq28MmjKyPyNV6k6HIOiyZrkAfZTZi6BhI35gErQL+
+         /WxxfdEWWTkFplz5OgdPfnFqmEr+e0ULD/jhr+qcbSZPNNZmnFw08tZZ/b+xEZS4Bjmh
+         ShmT6GTq61UZiiPrVfb9BdyEJLpCtSFjP0qpHqFBoDxwRYxy5Po+SWw7wPxEjxx1CoU5
+         Q6WMDZj4AHHbUjQUaesdna98PG/OYVhoE6hlbTKkPrbZ/vMFFTijFXDAVj2v+/5RUwE0
+         jYMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762589156; x=1763193956;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hjmnnaJ+dU4QzslBxUrlmdhSXDXCpeTGjd28jp/dBEQ=;
+        b=gDQpI3OcIorExeklWFlFPS6G0I9Y6B9hj8bngDWQKdvOcAQY2fr7GDuI5eSvXNjhQZ
+         tUqogr9zbcolKeWecDyZi0XI9KIsalETm7/etmufnzN87JxGpl1mh0xkwl/WGmjJ5Ap2
+         1y2MgfVWaPnlbQkFiQ6wp/gZ4Ybmz8lq4soRUSJbqoonUb5nZkKaSwP5DyGyjwAiLsFO
+         wbIA5GutF7okhNPfNJrpaj6RUDhqeHVmIykVsGB05dCiDXeZ09C5yOO00TYfsQzTgSPE
+         4zR5KGdG9Xz420ytR8O57lpbS9a8QhWj6oIJbC9fw9fPaXTdW4jYlUpbmf8U7sMlr4hg
+         LpRg==
+X-Forwarded-Encrypted: i=1; AJvYcCULpxmRMcgvXfTksmB6zxrQNgkehfzBge+WOmSsnuo5tFnREjt7LsEyJtgi9YypK5uuoXTxq+aOHg==@kvack.org
+X-Gm-Message-State: AOJu0YzuvaSp05AyVl2EZLrl4RyhsoFNkHLI+kRuoCIdtWMUr/Z8YdGZ
+	hvOKM1BQ7wyzjhkaRJjeCwxm6GTLhMHSDsbkEP9vsLGdmk3tuy5x7o2N
+X-Gm-Gg: ASbGncvjqw/3d1EfGwK+GUy2toTiDZv79E03T0inUDvCCPp0F6HXy8sJ1pCP2W3jnpa
+	pljBa0RVEnMkFKeicd1ji36dt70KnbiVGHszZCCAaJtEs3RgiLRj5+kxj9HPOc7OgZMV136zKAr
+	QNTWvuP8BFN9hYDePjhkBUzxYxjZp5DoFOfptWME+MN6xuNcaVL8fP06Bmfpmq7gcz9qYjQUSqw
+	BjjcvAMqHQvLeMgiu71u3ZFy0v9W4EXS7pO3dK1b36OMhgbq5KspgFzC0GbtpcqObJnCI1k8L04
+	uNJ3TjVWFe30BXsp9GFARX6HIA6TlLzLUJGpBhkQVEsePGOXP5kMNCuQxYeSgG318ArOe9SwMXO
+	Pu7GbCsv+IhvMa2rzmlUa3YIA3EpX37MKtv7xH34MrfSX3Y+UBbFNkgiDhd/MKJTPuLO0tQoyU9
+	dMdk2n8FI4bg3Z6fSOt0hc/DaK2YCn5h2AYtF0bmuVu7cVndePo0IUFG6k7H1y7HiB7/Y=
+X-Google-Smtp-Source: AGHT+IFNIgTTAZ2Vl2vkAxBvJV+q8EYjnppJ5K0pIHpzL9Ue02aCEVYgWqO6SIqSBUirhrY7QzbLaw==
+X-Received: by 2002:a17:903:ac6:b0:295:269d:87cf with SMTP id d9443c01a7336-297e5619d74mr21459175ad.5.1762589156346;
+        Sat, 08 Nov 2025 00:05:56 -0800 (PST)
+Received: from ikb-h07-29-noble.in.iijlab.net ([202.214.97.5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2965096b801sm83340945ad.7.2025.11.08.00.05.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Nov 2025 00:05:55 -0800 (PST)
+Received: by ikb-h07-29-noble.in.iijlab.net (Postfix, from userid 1010)
+	id 0019311388C7; Sat,  8 Nov 2025 17:05:53 +0900 (JST)
+From: Hajime Tazaki <thehajime@gmail.com>
+To: linux-um@lists.infradead.org
+Cc: thehajime@gmail.com,
+	ricarkol@google.com,
+	Liam.Howlett@oracle.com,
+	linux-kernel@vger.kernel.org,
+	Eric Biederman <ebiederm@xmission.com>,
+	Kees Cook <kees@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH v13 01/13] x86/um: nommu: elf loader for fdpic
+Date: Sat,  8 Nov 2025 17:05:36 +0900
+Message-ID: <59210140957e95ab0df73125bfdb035913a468b1.1762588860.git.thehajime@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <cover.1762588860.git.thehajime@gmail.com>
+References: <cover.1762588860.git.thehajime@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ascii
-X-Stat-Signature: y3b8ke59ciwmriycfw9d77n7h3c3pd9n
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam05
+X-Rspamd-Queue-Id: 9C2A240010
+X-Stat-Signature: onzmjjgbjsyi9es476ykxm5w37q9en49
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 6F0CD40003
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762586428-928949
-X-HE-Meta: U2FsdGVkX19qZZTSsrp5fVHz3FnJDNR7R3Tr1Zl+L2smJGwyA9zBCQyP1oersedBRL+7fP6ilvSMKWOgrltXMiTNUmRz1Vi4gwvYX4Mvb3jqIvRrgI5sHhKu+6op9T6jWcunpwUGqRTy8W8zhpjMBJRgtii6sYKvcFhlfAcRNHfn+clEdXFrM/OvW+bAhnaFvpE3UPe4BdMtRF4MpsQDOHxoWupJEfwPh9S8o7WaFN4HVM9mtFIRq6WP7DnqOcwJb2HuKJZ+vzUPmTAMjnMtUpQxPxsFBWWBrqxT147mhYcXRe0kQtf+bXXiX8yO4ulnHOPYZ65Jz+lYZ57IJKMuMHbNe4+4K2LSp/Ikzr/iMkdfQTNtJ37WSk25jz8Dg1UUxd2fyzgpBwmM/SSTmc9zOGvohtKOreZE4R3xnGwI5PdqkqSVZlwJ3+PbMzA19AWPauZ/c8dOfVP8pWM3a4jJ6It4mb+kfLLEFpjgpiy+682bV2U9Cts+g+/V5akgkYQ3M7mb+gGNtZ9Men9piPCg+ECkBJEiSYju53G7n7sGcP/ljBd9E458u7CDv+kWVCVVvpYNGgTtDQD1z6faChdL1mUr9RS8U8t9dija6csHftS8zpU/bRpO7AXI0xdgt/UVmdbceDznLeR8k272mgnksEv+ii8MDYQA0FmqPP6vSGDFfF20AkP4zB1OR7uRWbUA/tBaIlO2PmueJeJaVcHbtAecWhQo48yXnK6EQ876tFy1eq1WDkJilxVZR6sGeHvO/xUpYDO+jYMzI9M2duDcmdoIFt/y4C1Z7iinLd0x42kXmuSABLtEPGQBcneYDjgRZ32nZmESHzwMipixclWQwVcnTUjzMZLXFCu/Mf72FLSf5BfwoMrt/cU61zHEkJEhcDa8tS6UdXi+Um+JDuO9/St+Ibab4djOx/skOJdS3mXNGdMwfd3BK6OSH2KK5erU27ihSVnYwjw1YNzbTJy
- /jHSYXTh
- fKuajztWZ7gHj+fOtjhMlPYh6KePCIilLhPt/NBEJiyLWzFUTyDqoVrD+80ui4Q0tRSHfaYNonWven3nZ9VYJ7CEIQCAKFXQcWcRDlORJuL8xGR08lhb/tc0cZE2BF5dg719ZlStKX+IsZb2rYvHIFcZTynJikZ6pW6UkoHYwLwow4AQEH2V8lLq0szV71o8vUxdYx8N5XKssvoRmm+/oh1GVPPpM1B+0nPR8uIMloppxDf1YSm6lCPzhYBbD431z7Y2jbbJPKVYkiTo+xOIosxqRJigE3fJe6A1lyZRUQSroTBNdNMOtZOpSuYvz43qym1Y5
+X-HE-Tag: 1762589157-86698
+X-HE-Meta: U2FsdGVkX1/KxOutsyXTPKtdQxycnzGrZkAzLBSeOJPmWZfemkoGfFeGCwloGXIQHf5Jt4+b7fa6rkM3FYCtGa6ttTtzlxAQgZCUPLRXawg1SnujA5tDiKf2A4PHYn3Ae9wfz2ICyEt864B/0rOISzS1iwF1zXJZiz9ustZ/phHXNQ4e0bSVbjZxtj+RN7jgSk6ghpyj63MXInYrh6dIMzSTDqlnAhTeJpIMyS+VRANL9jh03RFTHESOTMz18EmQ6UiU8TpODudRB3g2f75jgUKuxKDSWYGxzwr7eVnuXFMd87mXLwuvzpjY6/807h1+FgnOVRBQ/BbIkYkiy2le8kRLTV78AyrOeS4TLICZCk/hviyJGj9dK41dRU+iaA5VAN8Q6D0XTXA+8P7xmOI3XDickmS1L0VamIjov/4h9iPbDvI0OLU86XFFpXy/gszJ6imcIHVeO0I2e3Z75e6M4sHSaL+Q5wP553sCUYKKSPy8zVSfGonbDAshNni+YCwIAOH6OOOPhcR1f0XK6hwgPjztSEKzI43tE0YKCPqvoyvYb5WGphPGVPJSLjYf2fmg3eUzVkE/RuQv4Uwhri/WaQ0wmM/TMTRQGpyo1YZf84DKxbOQhDzBYEiYSX/AZzdqv8ipJcU+Mg2MHZE5lRWsHWx/wg3rrbuuD9mdOH4KKtOdQy2vdNvP4Dncsbro8PQDEO0mhSSJ6qv7+B01FABn4W2bVsnyQ/MA8pWH8ioB49Leqnjd843RR0DxBHtdyY+54R0WjcY3JDe8nVfhEoNLilq0C4/kNA2k+rtsE0mvr5Z367r5KHUvjGx9JJ5UWdDklgaPgUm2LR9Es5ut+SKV0+Urkfdzn0C3kCbAxfWBEaj7SZdeWN7AmGCzmS2jiEPG81ofKZPbptJ7my8qJmi58PtrbkHwcjWuC5HLYlLAXthsOd3k5Wcv6C2LfaYb+OPJpRpSmM2VdnjlOfM1epP
+ +JtwUBzJ
+ Ty9PsmbRo9GpuXQZgHe26Zp+dlLtdRoUsve9veChn+nCWUqCy8XR8ElBCPYU7DrpoMyTeZao9q9gF+T2p8NfoXTtisuEPRIaX10dNH6jVfYDl44A7yQ0EV50n6lau235bS3fyiyxAd17Ory38DY7phv6D+7lu62CTyD5eXTFjiEaYDGe3BGTlIMXhdybJOsjiSJSyr+xv7bNA0WsopBAwhCeV6SvKNHtGCSdyjoKd1RUn0dJzZ01PiYF0A/vVLZSesbnqHzOCgkPlf0zMpH+xUWvzxm4seABE4adEY9qPeA701qJzKMMIKQ26P4OaUlKlX7kjFrelRLOpWc742uGGIi4zyxXYd2VFheNzfSt77UXOXMb8q6kBOJSAIDmQe0dfzq0d8C0aDHvvEJUi7Ek9gKPdbM0Ehk28jUGShtww2rbw2XIhofHqpwc9v28qHYJ4i8mVKMg+tZRwLxJYvKSO+0Sakf5gAc2VzWklMjPQqvx/eWB2I7ghi0bJo6dBHuQCNwd+ctuCGmeqzZ4+1Hukd6nLbLUtRsQF9kvCQ08WwJvzYcLwk+sSi4gVn8F0JSOg0u/FyzAINxHvy728Ikd9IZYKi+pny0aAc41jb2xPnrzaS5lquQ/JihS+82iJ6tIkVi621gfMPsyzAKU=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,143 +130,101 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, David,
+As UML supports CONFIG_MMU=n case, it has to use an alternate ELF
+loader, FDPIC ELF loader.  In this commit, we added necessary
+definitions in the arch, as UML has not been used so far.  It also
+updates Kconfig file to use BINFMT_ELF_FDPIC under !MMU environment.
 
-"David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com> writes:
-
-> On 04.11.25 10:55, Huang Ying wrote:
->> A multi-thread customer workload with large memory footprint uses
->> fork()/exec() to run some external programs every tens seconds.  When
->> running the workload on an arm64 server machine, it's observed that
->> quite some CPU cycles are spent in the TLB flushing functions.  While
->> running the workload on the x86_64 server machine, it's not.  This
->> causes the performance on arm64 to be much worse than that on x86_64.
->> During the workload running, after fork()/exec() write-protects all
->> pages in the parent process, memory writing in the parent process
->> will cause a write protection fault.  Then the page fault handler
->> will make the PTE/PDE writable if the page can be reused, which is
->> almost always true in the workload.  On arm64, to avoid the write
->> protection fault on other CPUs, the page fault handler flushes the TLB
->> globally with TLBI broadcast after changing the PTE/PDE.  However, this
->> isn't always necessary.  Firstly, it's safe to leave some stale
->> read-only TLB entries as long as they will be flushed finally.
->> Secondly, it's quite possible that the original read-only PTE/PDEs
->> aren't cached in remote TLB at all if the memory footprint is large.
->> In fact, on x86_64, the page fault handler doesn't flush the remote
->> TLB in this situation, which benefits the performance a lot.
->> To improve the performance on arm64, make the write protection fault
->> handler flush the TLB locally instead of globally via TLBI broadcast
->> after making the PTE/PDE writable.  If there are stale read-only TLB
->> entries in the remote CPUs, the page fault handler on these CPUs will
->> regard the page fault as spurious and flush the stale TLB entries.
->> To test the patchset, make the usemem.c from
->> vm-scalability (https://git.kernel.org/pub/scm/linux/kernel/git/wfg/vm-scalability.git).
->> support calling fork()/exec() periodically.  To mimic the behavior of
->> the customer workload, run usemem with 4 threads, access 100GB memory,
->> and call fork()/exec() every 40 seconds.  Test results show that with
->> the patchset the score of usemem improves ~40.6%.  The cycles% of TLB
->> flush functions reduces from ~50.5% to ~0.3% in perf profile.
->> 
->
-> All makes sense to me.
->
-> Some smaller comments below.
-
-Thanks!
-
-> [...]
->
->> +
->> +static inline void local_flush_tlb_page_nonotify(
->> +	struct vm_area_struct *vma, unsigned long uaddr)
->
-> NIT: "struct vm_area_struct *vma" fits onto the previous line.
-
-Sure.
-
->> +{
->> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +	dsb(nsh);
->> +}
->> +
->> +static inline void local_flush_tlb_page(struct vm_area_struct *vma,
->> +					unsigned long uaddr)
->> +{
->> +	__local_flush_tlb_page_nonotify_nosync(vma->vm_mm, uaddr);
->> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, uaddr & PAGE_MASK,
->> +						(uaddr & PAGE_MASK) + PAGE_SIZE);
->> +	dsb(nsh);
->> +}
->> +
->>   static inline void __flush_tlb_page_nosync(struct mm_struct *mm,
->>   					   unsigned long uaddr)
->>   {
->> @@ -472,6 +512,22 @@ static inline void __flush_tlb_range(struct vm_area_struct *vma,
->>   	dsb(ish);
->>   }
->>   +static inline void local_flush_tlb_contpte(struct vm_area_struct
->> *vma,
->> +					   unsigned long addr)
->> +{
->> +	unsigned long asid;
->> +
->> +	addr = round_down(addr, CONT_PTE_SIZE);
->> +
->> +	dsb(nshst);
->> +	asid = ASID(vma->vm_mm);
->> +	__flush_tlb_range_op(vale1, addr, CONT_PTES, PAGE_SIZE, asid,
->> +			     3, true, lpa2_is_enabled());
->> +	mmu_notifier_arch_invalidate_secondary_tlbs(vma->vm_mm, addr,
->> +						    addr + CONT_PTE_SIZE);
->> +	dsb(nsh);
->> +}
->> +
->>   static inline void flush_tlb_range(struct vm_area_struct *vma,
->>   				   unsigned long start, unsigned long end)
->>   {
->> diff --git a/arch/arm64/mm/contpte.c b/arch/arm64/mm/contpte.c
->> index c0557945939c..589bcf878938 100644
->> --- a/arch/arm64/mm/contpte.c
->> +++ b/arch/arm64/mm/contpte.c
->> @@ -622,8 +622,7 @@ int contpte_ptep_set_access_flags(struct vm_area_struct *vma,
->>   			__ptep_set_access_flags(vma, addr, ptep, entry, 0);
->>     		if (dirty)
->> -			__flush_tlb_range(vma, start_addr, addr,
->> -							PAGE_SIZE, true, 3);
->> +			local_flush_tlb_contpte(vma, start_addr);
->
-> In this case, we now flush a bigger range than we used to, no?
->
-> Probably I am missing something (should this change be explained in
-> more detail in the cover letter), but I'm wondering why this contpte
-> handling wasn't required before on this level.
-
-As Ryan explained in his replay email.  The flush range doesn't change
-here.  We just replace global TLB flush with local TLB flush.
-
->>   	} else {
->>   		__contpte_try_unfold(vma->vm_mm, addr, ptep, orig_pte);
->>   		__ptep_set_access_flags(vma, addr, ptep, entry, dirty);
->> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
->> index d816ff44faff..22f54f5afe3f 100644
->> --- a/arch/arm64/mm/fault.c
->> +++ b/arch/arm64/mm/fault.c
->> @@ -235,7 +235,7 @@ int __ptep_set_access_flags(struct vm_area_struct *vma,
->>     	/* Invalidate a stale read-only entry */
->
-> I would expand this comment to also explain how remote TLBs are
-> handled very briefly -> flush_tlb_fix_spurious_fault().
-
-Sure.
-
->>   	if (dirty)
->> -		flush_tlb_page(vma, address);
->> +		local_flush_tlb_page(vma, address);
->>   	return 1;
->>   }
->>   
-
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Jan Kara <jack@suse.cz>
+Cc: linux-mm@kvack.org
+Cc: linux-fsdevel@vger.kernel.org
+Acked-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Hajime Tazaki <thehajime@gmail.com>
+Signed-off-by: Ricardo Koller <ricarkol@google.com>
 ---
-Best Regards,
-Huang, Ying
+ arch/um/include/asm/mmu.h            | 5 +++++
+ arch/um/include/asm/ptrace-generic.h | 6 ++++++
+ arch/x86/um/asm/elf.h                | 8 ++++++--
+ fs/Kconfig.binfmt                    | 2 +-
+ 4 files changed, 18 insertions(+), 3 deletions(-)
+
+diff --git a/arch/um/include/asm/mmu.h b/arch/um/include/asm/mmu.h
+index 07d48738b402..82a919132aff 100644
+--- a/arch/um/include/asm/mmu.h
++++ b/arch/um/include/asm/mmu.h
+@@ -21,6 +21,11 @@ typedef struct mm_context {
+ 	spinlock_t sync_tlb_lock;
+ 	unsigned long sync_tlb_range_from;
+ 	unsigned long sync_tlb_range_to;
++
++#ifdef CONFIG_BINFMT_ELF_FDPIC
++	unsigned long   exec_fdpic_loadmap;
++	unsigned long   interp_fdpic_loadmap;
++#endif
+ } mm_context_t;
+ 
+ #define INIT_MM_CONTEXT(mm)						\
+diff --git a/arch/um/include/asm/ptrace-generic.h b/arch/um/include/asm/ptrace-generic.h
+index 86d74f9d33cf..62e9916078ec 100644
+--- a/arch/um/include/asm/ptrace-generic.h
++++ b/arch/um/include/asm/ptrace-generic.h
+@@ -29,6 +29,12 @@ struct pt_regs {
+ 
+ #define PTRACE_OLDSETOPTIONS 21
+ 
++#ifdef CONFIG_BINFMT_ELF_FDPIC
++#define PTRACE_GETFDPIC		31
++#define PTRACE_GETFDPIC_EXEC	0
++#define PTRACE_GETFDPIC_INTERP	1
++#endif
++
+ struct task_struct;
+ 
+ extern long subarch_ptrace(struct task_struct *child, long request,
+diff --git a/arch/x86/um/asm/elf.h b/arch/x86/um/asm/elf.h
+index 22d0111b543b..388fe669886c 100644
+--- a/arch/x86/um/asm/elf.h
++++ b/arch/x86/um/asm/elf.h
+@@ -9,6 +9,7 @@
+ #include <skas.h>
+ 
+ #define CORE_DUMP_USE_REGSET
++#define ELF_FDPIC_CORE_EFLAGS  0
+ 
+ #ifdef CONFIG_X86_32
+ 
+@@ -158,8 +159,11 @@ extern int arch_setup_additional_pages(struct linux_binprm *bprm,
+ 
+ extern unsigned long um_vdso_addr;
+ #define AT_SYSINFO_EHDR 33
+-#define ARCH_DLINFO	NEW_AUX_ENT(AT_SYSINFO_EHDR, um_vdso_addr)
+-
++#define ARCH_DLINFO						\
++do {								\
++	NEW_AUX_ENT(AT_SYSINFO_EHDR, um_vdso_addr);		\
++	NEW_AUX_ENT(AT_MINSIGSTKSZ, 0);			\
++} while (0)
+ #endif
+ 
+ typedef unsigned long elf_greg_t;
+diff --git a/fs/Kconfig.binfmt b/fs/Kconfig.binfmt
+index 1949e25c7741..0a92bebd5f75 100644
+--- a/fs/Kconfig.binfmt
++++ b/fs/Kconfig.binfmt
+@@ -58,7 +58,7 @@ config ARCH_USE_GNU_PROPERTY
+ config BINFMT_ELF_FDPIC
+ 	bool "Kernel support for FDPIC ELF binaries"
+ 	default y if !BINFMT_ELF
+-	depends on ARM || ((M68K || RISCV || SUPERH || XTENSA) && !MMU)
++	depends on ARM || ((M68K || RISCV || SUPERH || UML || XTENSA) && !MMU)
+ 	select ELFCORE
+ 	help
+ 	  ELF FDPIC binaries are based on ELF, but allow the individual load
+-- 
+2.43.0
+
 
