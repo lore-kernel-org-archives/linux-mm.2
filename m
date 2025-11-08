@@ -4,86 +4,89 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2252CCFA18
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 16:43:13 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA284CCFA13
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 16:47:29 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E33248E000A; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
+	id 0F8B08E000C; Sat,  8 Nov 2025 11:47:29 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DE4458E0003; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
+	id 0D0078E0003; Sat,  8 Nov 2025 11:47:29 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CF9B18E000A; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
+	id 0395A8E000C; Sat,  8 Nov 2025 11:47:28 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id BBE9D8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
-Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A7AB5B49F
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:43:12 +0000 (UTC)
-X-FDA: 84088009824.08.1088E25
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E74E48E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:47:28 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 98F2F1A07BD
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:47:28 +0000 (UTC)
+X-FDA: 84088020576.16.05FCF85
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 90CA0C000B
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:43:10 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=drWTCoHz;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	by imf16.hostedemail.com (Postfix) with ESMTP id E3E3B180010
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:47:26 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gxvyVDo1;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
 	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762620190;
+	s=arc-20220608; t=1762620447;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=q/SYIBvYsiWdLUmQ7gHQUgUlR2Dtru8IbvZizyK/sjU=;
-	b=2wwvbu4GpmjN+HKFHeLmSKcVHnoFq7ocfQW3HbZvFjrITkMbCmO6B/1xqSkYFQAs+AChga
-	5QEKU4K9ymkcPJDm5h2dSzh+Fqr8+tBcJUjxUA8iIvtZ5HhPVlfx/SRK19kkRW9p1tbY+H
-	SP0mPfb6RQcOyD2Wb+UOzDRP4inAxUQ=
-ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=drWTCoHz;
-	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762620190; a=rsa-sha256;
+	bh=sepav7DQLeeSPIHiDKWYoMmXRnTQK7/Jb1JaZBPiu2g=;
+	b=nGKRKo4jSqneo1WQ2Ta8SkspPwY2t2WML/iaJEziCyTByQE9KRXb8ROYGPyiOuprEteBdK
+	vsA/8uP/FnqPFjLaGdhANIfvIuwS9cuogjWeOXIUeu6r3TKLPU//qqwzRmM4yyBrQw3t1g
+	e8ljB1f0RUZtxuw5HOkP2pAzc547VW4=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762620447; a=rsa-sha256;
 	cv=none;
-	b=3eS8XeMeudO9mgIlccK3/K76c/IIKL7d2Ce4hiBTXeGeNtuVpmQ2oJzn+Ncv2P6kPWghFO
-	U404hAYd5rRKMCc35rFWQU2t9t1Q8kb6ILJ18t04wwAGNBivwK4vJ09Vpp/lRBFqFDHrS0
-	a7GDhbMYu66BquFfH9MsAXl3AqvJB0k=
+	b=phjF8A9TADs1d8ENemJKNEBA1NGYXKQiofdwQZoVRWDO66zZtLBIysNZKKgpBHWCiv4C6b
+	5vtv3P0H7htUz6GaKi2Xg7bClvE6Fn+xQOVG6/lP5mwy86PReB+gORKW7KGUApatN1A2tj
+	kU7y2TGhaXLXyleXc31TKu8LdF/wTgo=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=gxvyVDo1;
+	spf=pass (imf16.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 518A644595;
-	Sat,  8 Nov 2025 16:43:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3BAC113D0;
-	Sat,  8 Nov 2025 16:43:09 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id EFBFD40482;
+	Sat,  8 Nov 2025 16:47:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA43C4CEFB;
+	Sat,  8 Nov 2025 16:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762620189;
-	bh=XUVkFx72QpXYBR1BpK+jTHmcdZIEAoxO4YDddfxFpMY=;
+	s=korg; t=1762620445;
+	bh=U9xaDAQiKEtdqRiUxXf+jkJqFleNQgrXm3B00EJk9jY=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=drWTCoHzvWrk72zxaF48gJSVEjnyYzFUvrTo1GaG3Q6NN7yaqI4C78yjSoPXOQBg9
-	 kWhefy+AmNTp62/XiR037JnE/y85bO6+7oh6GO1mfy1w33ZiuknwaVCl46qpzjBRZC
-	 aZz0/iNBNGOjvzF+QBmd3na67bMzcfGJgDL6vbek=
-Date: Sat, 8 Nov 2025 08:43:08 -0800
+	b=gxvyVDo1dmbhZXPx7hxq+/HrVPkk7Kc5qQrB7x5mYVjMdlCaBOhfDZX1m+3xeKOui
+	 VzOyGeRM63eKiCjGHPv1/m5t7RFtp8kmoSUAUcH7s7WqHPDaUhswdYh84gc/3XbLXW
+	 IOva6olKK51Jq+1xZ8A5E/zabqEax8ie1v879nQk=
+Date: Sat, 8 Nov 2025 08:47:24 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: kernel test robot <lkp@intel.com>
-Cc: Pratyush Yadav <ptyadav@amazon.de>, oe-kbuild-all@lists.linux.dev, Linux
- Memory Management List <linux-mm@kvack.org>, Pasha Tatashin
- <pasha.tatashin@soleen.com>
-Subject: Re: [akpm-mm:mm-nonmm-unstable 129/139] mm/shmem.c:5811:23:
- warning: unused variable 'flags'
-Message-Id: <20251108084308.8640699dc4f737c520841391@linux-foundation.org>
-In-Reply-To: <202511081101.9sXNBrzT-lkp@intel.com>
-References: <202511081101.9sXNBrzT-lkp@intel.com>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>, Huacai Chen
+ <chenhuacai@loongson.cn>, Arnd Bergmann <arnd@arndb.de>, Kevin Brodsky
+ <kevin.brodsky@arm.com>, Jan Kara <jack@suse.cz>, linux-mm@kvack.org,
+ linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*()
+ about HIGHMEM
+Message-Id: <20251108084724.3e389b6597294900347b0476@linux-foundation.org>
+In-Reply-To: <CAAhV-H5C_Af72a5QcJs25qUMsJqO26=8oNvvLrJ7z+xHZh8oKQ@mail.gmail.com>
+References: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+	<aQ4lU02gPNCO9eXB@fedora>
+	<CAAhV-H5C_Af72a5QcJs25qUMsJqO26=8oNvvLrJ7z+xHZh8oKQ@mail.gmail.com>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 90CA0C000B
-X-Stat-Signature: ogaxt31nqrcetizbspj5eamyfotdatjr
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762620190-704284
-X-HE-Meta: U2FsdGVkX1+/X6HVO41EB3k1Yvsyuk7Zgg7nBpXqDsT6OhMj/M745a/oCVIdcvzy7VHbv0Uz/OhinQ4qZTEp9o1Yqg0dMm2CkFHKwQC2xb3V4Hwy0hkrmMD+1sN/REWkVclsd4r5SRxalRp7k6840RQ/rFxwX66VshKAXWZpBK2ziWYt3LEt2UI85dIaNWqB290w6/8CI+Vi7EiT9F1OjUnaz8eKurQKSUyd2VMwdrOPFVLj+oO7ekCIABIdfijaSjLFFACdZXqhu7rlTX8BcA+wDI74QNeBC0rFexjJW1GNZ8qkOi0uXWm2B+9rvFAtJSTcTjXnIBg7qRshsXK0FmLS90zf1ryvSoTHhtJ52yrzCk0/WpRNoFWiaFnRqM2MgIxG6wea6S9z3RMhcacJ1Fk727AjDP5K6rMljzclYdZcUgM9GPgZUn3T7yVRK3EnHy2BWBpYdMo49vUKPOYZo7L27lduRVrE7cHHo0bROxauovURZ6HD0OkGj8MAQ/ujDHi/jOXsVEz/OYvn/n0tVQDP42iYVQ9RGcnSmf/onKQHcdnI/2UleyUtZ7ytz3RRMlJMkZlKizOiewbSivzJ8etH4uKuDKcq+2rh/0+a1ETKWQQL9g/JzMzEG7oaS6Ku33jQjk0LS1Y/9Ae7yMOq/ygjjhXew3dcgsTcz++beO1yb+7xuAMCuo+qsXze3R/4KI+/KAE7iG/iZprJjgDl77DCnRCJ9MHaoNViS9awlqyNvZuVv8IAEj+jRFdjTtB7jyUPT8cbwy1FbFw1mfEnYOznZXpHiqkrNvOvFrbNqOHi89GOOxO8EDyeq/glu+DI+v1UOxqKdpoFb234XfGaNoAA57fv1l+xokCFoZHjBNTHEeu3S2aayFGi45XlPSnuQrmxxYo/H6RDZ1zA/Mi3zGRib/ws0DTbscPSpBDS3qYqJKla5QAJ7b1AyNsq3xFcvH07lx+rxtWhN6kdRta
- YHu8jZ4Q
- AvZmdC75NqsiGRHbEGmrfqbfzkMsQx8c1gXwH5HDbqE2Jr4mhzUknKw2kThDMXDBet/F0iKFh55ozge8lq2UbCFptTePcz3eTTouHB6VyjscolZbDqcPX5EeGJODakQxBwjisHQJgRdwPF5n2QQcqBAzv27EfOm1Jx4PFcLgR0V8IcJs+z0uEOmkkP+KOjN24a92mHrXLvhwMTieWzAJzJzEXGLR5OBBbazrDUCp3xldClcFbCWv1RFDXEPDx+kX9ptD/24OzSnWKldbG0OMydXBShbyBm23eeMfUx/YOrKBlgCioBYuI0rtKu0p7AlTKkJ5Mo13muEKObDI9PW7Z4D1KDstnsOBwegetI9xtUzizzibw+ALxJc8rPBmasNJi5+RsOHc6m0WpNJA=
+X-Rspamd-Queue-Id: E3E3B180010
+X-Stat-Signature: hranp4s6b4iprp1dynxrxs69kn5fobps
+X-HE-Tag: 1762620446-585358
+X-HE-Meta: U2FsdGVkX1/YiPldNnJj4s6ig9nlJD4s+NoIbbg3o0olQudJT2knh7uKQ0hpnxWoU9b3OKbTmuGRW3uBnzESEOZ14LPAt94HMFxYrpnoMUo94T5DJexMUu2ihmNUryqkpsctf6WP/qQobpj88gKUBFsx2CjGCrMtmUnZsdU+nGmlGn2hYEtHceW4TAjA/I/u76TW6f9wnAJYFwEfazJFJtTHA2/At50hkSfPCbSUmutKU5qXXPYvaNPikBdgJdEq3ufQ9uIV5T4OE0rFeMGrbswhZ7SGMoenGqNzb6xEWuBv7IF+gqOKYSyT71wZRoTLInvLuPoi2qMvlWRoa74zZQQKQTLXmoJPot14B4G4mHjC/2T4ZqElUx7qPJYVBrbRnw/KWgMeh0QIZH3aphBVJOIW3t0gCA82gnwa0deQwSo+lCrmVbcG43vFr6RFCyPNJBbu/biixGsuu1XZmFuIlNICxGLmYyn0nWwR04fjmvXVLb4ZTBpCH5KsryB3KzVwT00Rsu5Mm//LMAVbGYO4dWMnQEGiHZyCYEei7CktIoiM1xJSsLl12igWxacNyzvhi/0/YFDwZSR0QZ7fdWOnZjekZ/d4kZjrNQHQnbkj0zO/myV/OTXJiUbwR2MjG67hV/UpS2Geg0AyvwnBBFtVvrEL8Z1I/gRmOKCgxLhaFpf2HSsTBbDE0qxnmok/fsB0fMTucLPcomgZRso6+AgcsoTsgszdz46Mp/rFoBG31OpHhQndDrj/Ek5/En6CXjgvBo4J1Fh522ZZQvIHyNg/NbmJ96Ky4/KgyA+WpKbMrIsQXCJOGHXEve/8cQ2u9w0KLjwgdkucJVp3Tp1451D6cfYdbYF+i/Z4pd61sy+L8Nul0E9fObF/FZszsSZD4xqPhUH+TtnmQCkjYh0RunTEdhp/tZoCTfvJPb9U07hLbVhIeT+/fhsgQMl2GUgn1ayDax3SKAElRp9oKLOQ5vD
+ KbuKnW7V
+ 1KUA+8IHG8TyqEhyH4eMoF7aNDwHFR/s2E8A/P+aZbrMxhwxAgdzHL+uTBxwqTtfuc78zRov4fiSomJqrhakWoQo2vMakude7+b/OgTLnfB4ZBxJG+oSShCCQB2jQPrhGLrUSwx93o6PVVK3psZ1hPKpCBIXb6BX48bsxdtPUBL2jXyf2EReAM4lx3xDjcOSLDkw1vV1CKf7tMVsQuNGSI7jOqdvK5TTlPULXBTWQ+6jhuFJWB4QqmJuVkOOsSgEHUZQ+JRhGCArXvQJerms+2yKuaEftZyyNYfeTUvwqP9EQ/juG/vX8Q785BHngT6my8bNQtOCXK8N7N27JMixS2MZA5SjvWN2CoGv4gbQl/F+Mid0T3k+RrmH4W7RDBplqkuDF3jJUuOHkz0OLIygQTcerW+vwuFeo1XJXJKUFjs+HwfLWfkh908dC1Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,51 +95,32 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, 8 Nov 2025 11:51:06 +0800 kernel test robot <lkp@intel.com> wrote:
+On Sat, 8 Nov 2025 16:34:20 +0800 Huacai Chen <chenhuacai@kernel.org> wrote:
 
-> FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+> Hi, Vishal,
 > 
-> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
-> head:   2fa523fd0829356881811ce9553b707102f55bd3
-> commit: 730fb8720d1ba209cd74692ece9766101e1fdb56 [129/139] mm: shmem: use SHMEM_F_* flags instead of VM_* flags
-> config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251108/202511081101.9sXNBrzT-lkp@intel.com/config)
-> compiler: m68k-linux-gcc (GCC) 15.1.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251108/202511081101.9sXNBrzT-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202511081101.9sXNBrzT-lkp@intel.com/
-> 
-> All warnings (new ones prefixed by >>):
-> 
->    mm/shmem.c: In function '__shmem_file_setup':
-> >> mm/shmem.c:5811:23: warning: unused variable 'flags' [-Wunused-variable]
->     5811 |         unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
->          |                       ^~~~~
+> On Sat, Nov 8, 2025 at 12:59 AM Vishal Moola (Oracle)
+> <vishal.moola@gmail.com> wrote:
+> >
+> > On Fri, Nov 07, 2025 at 05:59:22PM +0800, Huacai Chen wrote:
+> > > __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
+> > > flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
+> > > as follows:
+> > >
+> > >  #define GFP_PGTABLE_KERNEL   (GFP_KERNEL | __GFP_ZERO)
+> > >  #define GFP_PGTABLE_USER     (GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
+> > >
+> > > There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
+> > > explicitly.
+> > >
+> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > ---
+> >
+> > I'm not really sure what "Refine ... about HIGHMEM" is supposed to mean.
+> > Might it be clearer to title this something like "Remove unnecessary
+> > highmem in ..."?
+> Yes, that is better, but Andrew has picked this patch, should I resend
+> a new version?
 
-Yeah, thanks, that's reason #47 for using C instead of CPP.
-
---- a/mm/shmem.c~mm-shmem-use-shmem_f_-flags-instead-of-vm_-flags-fix
-+++ a/mm/shmem.c
-@@ -5818,8 +5818,15 @@ EXPORT_SYMBOL_GPL(shmem_truncate_range);
- #define shmem_vm_ops				generic_file_vm_ops
- #define shmem_anon_vm_ops			generic_file_vm_ops
- #define shmem_file_operations			ramfs_file_operations
--#define shmem_acct_size(flags, size)		0
--#define shmem_unacct_size(flags, size)		do {} while (0)
-+
-+static inline int shmem_acct_size(unsigned long flags, loff_t size)
-+{
-+	return 0;
-+}
-+
-+static inline void shmem_unacct_size(unsigned long flags, loff_t size)
-+{
-+}
- 
- static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
- 				struct super_block *sb, struct inode *dir,
-_
-
+Please just send along a v2 in the usual fashion.
 
