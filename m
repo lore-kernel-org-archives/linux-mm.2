@@ -4,120 +4,86 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id EB187CCFA18
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 16:18:48 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E2252CCFA18
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 16:43:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 3F65C8E0009; Sat,  8 Nov 2025 11:18:48 -0500 (EST)
+	id E33248E000A; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3CDC48E0003; Sat,  8 Nov 2025 11:18:48 -0500 (EST)
+	id DE4458E0003; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 30A8B8E0009; Sat,  8 Nov 2025 11:18:48 -0500 (EST)
+	id CF9B18E000A; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 1D69E8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:18:48 -0500 (EST)
-Received: from smtpin03.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id C34188976E
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:18:47 +0000 (UTC)
-X-FDA: 84087948294.03.0F27309
-Received: from mail-pj1-f65.google.com (mail-pj1-f65.google.com [209.85.216.65])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 0B40340015
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:18:45 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KCJvkijS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762618726; a=rsa-sha256;
-	cv=none;
-	b=Z4G1SlKUwFvV6QgTZhTOYdfQYvfX5Y1dwljAFKRhMCq+F1MAhgezSWVRzWTL8J6aQkdorO
-	ijoE7ASxpjy4YSWlDSR2YjE6ZRrf2OFxyHPUM95CQc67BXRkX3f4xO2anIdXCXEaSpQ1Ic
-	nv8F5VPUv0jA6+7E3XovUFIEznGltMA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=KCJvkijS;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf12.hostedemail.com: domain of ankitkhushwaha.linux@gmail.com designates 209.85.216.65 as permitted sender) smtp.mailfrom=ankitkhushwaha.linux@gmail.com
+	by kanga.kvack.org (Postfix) with ESMTP id BBE9D8E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:43:12 -0500 (EST)
+Received: from smtpin08.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 5A7AB5B49F
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:43:12 +0000 (UTC)
+X-FDA: 84088009824.08.1088E25
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf22.hostedemail.com (Postfix) with ESMTP id 90CA0C000B
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 16:43:10 +0000 (UTC)
+Authentication-Results: imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=drWTCoHz;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762618726;
+	s=arc-20220608; t=1762620190;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:references:dkim-signature;
-	bh=9vBksDJnztjGyjVxw8Yb9adtDqx05xzbEcYJxzPS4MU=;
-	b=0ZDCj3thhLp9NwZnCUdc6J82KmCbZUtZ+s3MhCt8NvKe9hXBlN9YX/o4qJ4YDRkzzdPXZI
-	vwv+Hk7idjRiIoMRqBdUfg2Edb55GVjnPHDoZtXE5c8lylN/+HDrwnqar92qg91UUJX4HQ
-	ODsOGyyucotOIO31TbMmjDvPS+0/+CI=
-Received: by mail-pj1-f65.google.com with SMTP id 98e67ed59e1d1-340bcc92c7dso1653998a91.0
-        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 08:18:45 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762618725; x=1763223525; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9vBksDJnztjGyjVxw8Yb9adtDqx05xzbEcYJxzPS4MU=;
-        b=KCJvkijSsQWzaeJhwheSCsAkaPIHd8xSlT6LbXiQmfIooQZPcIgO2cLXuR/25GZb4f
-         hj819jLhSALZ6lkMI/1u4pPi4gscKpLgHYbf7m2G7PzTYKMyY/1XiPgmY1sdCPRBEeyb
-         2xpdefsd7zJt7RZie2BOBaGBYc6E9mdK1rG3vZswo9XCidhdllRftFhBCOO+2sPlchkR
-         j6K8Q/hmRDBdcKDQJTn7kFDkqfs4N7SESVTn28iEp7pTJv9JZCUA+vUZrFqLlcVWxIrz
-         1LHqOut+67eIPRcwmhlZ0JoY48t2e+7E5SBOD00QFtrGkpZkd1VWQULaL3BM8N44pOHA
-         eACw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762618725; x=1763223525;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9vBksDJnztjGyjVxw8Yb9adtDqx05xzbEcYJxzPS4MU=;
-        b=UxzFG47fsioT2rLH6n0zOI4BUku5G+1WFm6Q3V1vC9XtTMUYUpJVeG11hefNowZBmb
-         4UrlNOnuF0LAJct8LzhZ9lus5+d8PZl/Mw27IxwW1Hbg5A4QfBy8sxtOjUBPi7606y6b
-         5DPzTi0jy+S/6dupZzmTtVRUlh7UjDq/Cs9OeZsXhn/BtgSO57B8qzuz3enQglCSwa9e
-         OmliT++zDkSAY5g5k7SMd/KcuJuuAa6gWN5fmgO3rQ6T/AuiMolQn2lJRXoxSk9PdPbB
-         LyC0VATwCBW/ziVwa3unLCh5b7xAbkLEviZi8BLAAxgJSjl4Alu2m7W5V+MEU6oO/E+Y
-         WXYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUFOr8RVrHe+X01QSZkugAnhElnq5ufebTOZm3G8JKV0UnkB6mUhWoRAxklmwsiGpMHjtsslGt+xQ==@kvack.org
-X-Gm-Message-State: AOJu0YxZ6/JayrFpAAjsrVE4XIoNJWTtvIfGEZYo0YRxYlVfcOP0Sibi
-	Es5xSs6azKku3ZTHFVrXIgnLflhIjfhoJ3LNlsQSZrdjMCdHfGV5RyE5
-X-Gm-Gg: ASbGnctvrhiP+zTlloh4R7+z2TUe9I+M2NHLht0hbB/smGKJJRXoM4zVPd++P0uR3L5
-	rG39MtJhrLLQS8AxyKm+y2w2uJqhJC+QmzXR/B68k6Vh++VM3Fu3OPNjm+8j63LiqwLmEh7nvKK
-	CaYQh34VLz50a6x9+QjyQcx7H7UQclABwg6Pgjsa+D5St4oLNySV2eVj40lBkmy7RMpNWHGufGg
-	2dWdSj5T5v2KjqgMf1yMnNIbcA1Pgjcs60jfqzAwdkSWYiRHDr9EnxlXgMCwCfawgGLATp0Z73t
-	T2lhLOEdU4KtKZTv9Jv/Ir08vsiuYoXwYxn9CTE3O1Xa9lzQBEz/mpAgGTUITWMgLPVGONYfHYZ
-	SR0H4iWVlH6nPBqJDvBwe3nRRs8xHYDOUWT1QaEGFqDhFORBxHigIy9EOLO7TkwC7jRRyAPEHWs
-	rCPcnFPwgN6B/jjV0JG2bgrif35nglIzXzXXHaFpMj
-X-Google-Smtp-Source: AGHT+IGLxQf5Mvke/vM2EkF6/583Zl67fDA8/F7qScezPJe1ESf4y4dMVf2DpQ3IkfNkW8uyBNV79g==
-X-Received: by 2002:a17:90b:2f50:b0:340:b501:7b83 with SMTP id 98e67ed59e1d1-3436aca72a6mr3619510a91.10.1762618724753;
-        Sat, 08 Nov 2025 08:18:44 -0800 (PST)
-Received: from fedora ([103.120.31.122])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3435e25e508sm4310773a91.13.2025.11.08.08.18.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Nov 2025 08:18:44 -0800 (PST)
-From: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-To: Andrew Morton <akpm@linux-foundation.org>,
-	David Hildenbrand <david@kernel.org>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Mike Rapoport <rppt@kernel.org>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Shuah Khan <shuah@kernel.org>,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
-Subject: [PATCH v2] selftest/mm: fix pointer comparison in mremap_test
-Date: Sat,  8 Nov 2025 21:48:29 +0530
-Message-ID: <20251108161829.25105-1-ankitkhushwaha.linux@gmail.com>
-X-Mailer: git-send-email 2.51.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 0B40340015
-X-Rspamd-Server: rspam07
-X-Stat-Signature: ta5sp4whe8y68kgp1oodo75bjk8usdz9
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=q/SYIBvYsiWdLUmQ7gHQUgUlR2Dtru8IbvZizyK/sjU=;
+	b=2wwvbu4GpmjN+HKFHeLmSKcVHnoFq7ocfQW3HbZvFjrITkMbCmO6B/1xqSkYFQAs+AChga
+	5QEKU4K9ymkcPJDm5h2dSzh+Fqr8+tBcJUjxUA8iIvtZ5HhPVlfx/SRK19kkRW9p1tbY+H
+	SP0mPfb6RQcOyD2Wb+UOzDRP4inAxUQ=
+ARC-Authentication-Results: i=1;
+	imf22.hostedemail.com;
+	dkim=pass header.d=linux-foundation.org header.s=korg header.b=drWTCoHz;
+	spf=pass (imf22.hostedemail.com: domain of akpm@linux-foundation.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
+	dmarc=none
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762620190; a=rsa-sha256;
+	cv=none;
+	b=3eS8XeMeudO9mgIlccK3/K76c/IIKL7d2Ce4hiBTXeGeNtuVpmQ2oJzn+Ncv2P6kPWghFO
+	U404hAYd5rRKMCc35rFWQU2t9t1Q8kb6ILJ18t04wwAGNBivwK4vJ09Vpp/lRBFqFDHrS0
+	a7GDhbMYu66BquFfH9MsAXl3AqvJB0k=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 518A644595;
+	Sat,  8 Nov 2025 16:43:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3BAC113D0;
+	Sat,  8 Nov 2025 16:43:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1762620189;
+	bh=XUVkFx72QpXYBR1BpK+jTHmcdZIEAoxO4YDddfxFpMY=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=drWTCoHzvWrk72zxaF48gJSVEjnyYzFUvrTo1GaG3Q6NN7yaqI4C78yjSoPXOQBg9
+	 kWhefy+AmNTp62/XiR037JnE/y85bO6+7oh6GO1mfy1w33ZiuknwaVCl46qpzjBRZC
+	 aZz0/iNBNGOjvzF+QBmd3na67bMzcfGJgDL6vbek=
+Date: Sat, 8 Nov 2025 08:43:08 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: kernel test robot <lkp@intel.com>
+Cc: Pratyush Yadav <ptyadav@amazon.de>, oe-kbuild-all@lists.linux.dev, Linux
+ Memory Management List <linux-mm@kvack.org>, Pasha Tatashin
+ <pasha.tatashin@soleen.com>
+Subject: Re: [akpm-mm:mm-nonmm-unstable 129/139] mm/shmem.c:5811:23:
+ warning: unused variable 'flags'
+Message-Id: <20251108084308.8640699dc4f737c520841391@linux-foundation.org>
+In-Reply-To: <202511081101.9sXNBrzT-lkp@intel.com>
+References: <202511081101.9sXNBrzT-lkp@intel.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 90CA0C000B
+X-Stat-Signature: ogaxt31nqrcetizbspj5eamyfotdatjr
 X-Rspam-User: 
-X-HE-Tag: 1762618725-315745
-X-HE-Meta: U2FsdGVkX1/272ThqVCXnQaennARW539D2NI6VtOqk4fq7XpsrUQUYECkEuMAYZctZq+A3qCove3geTR7z6Rtmiu1+VcNGUgbLpwB3mP/iuSEcwhs/VvuXs0vCYDY3TkWE+dyi5vwU0N4Ms9l8tYaHZByZaLwsLCxt5ynhtlLRSpXRe27fikAuUucDDsS3AmwY00XXgiSU32dnuZCyCDwK83MzAjhPVuojQWozJOHVXk/zJVRiwDhRbYA8B2Ipt5+xu+6BhfNj6QTQNOELVjMjk3JjnBV2eMzulQwr4AA0NW/S61RAHV7xouUHlBZV2h3XhvZEb9EnoEAKZJDq2h51PGg0oNZMoJwStdSHbag01RH3p0kPoAJwZyfrCOcputxt+t+PJ7vY3VuclgSGgQteORaewBAMAdDyhrbQZrmr6e0YAmXhH/uneVtnlEJzv3EONvucWVtX47L2GC98NY95Hpkss+lG04TLtbxsxiawROLrMyEroSuflGQ0C+dFr7gf3wBssSHSMDOotLr+H5Etwi3IyyrK5FdFmLegRWOLcklUK9IzLzJx0EJ9mcUzbDciu5PxD0BAYv4Yqzu6ULYkyPxA+gmiTpepTu81ZHHEc+5BxajudXR8cBdGFMv9oQGzyjQWkDM2VLDHqMOLV3ewX5ycEXvEU9fQN0AvShWIubVi2ElzJgTIJS6tgLryRFTioV28qxn5Qv0ce1DGOoqAxJi+Wnnsnr0fIF6wKdPCRJg++EbWactNbWHfju8BJoURW8YZta3jM93xMWFKmg44jB8yRXPHxGq5CO5sKsgfTwvscPFqP80Rf7COkCPzPdRLzRMwKspq/WQOvFJkSTzAEVY3cSr2yyTlOlw3W97MhLIm3N9PF8Ag/M1G2oiZJdyPj03QsTHxKB1Y/oDMWEQJEpaattIJJXRag3IUMIAfZCj0VoWFJQ3MhUkVqyYr/L2Dswvm9fYIyITU5aHxH
- d/L33jGn
- jpR6akh8mzJbhFUjF93qQ+T/LAEJ0jF4pbrHHXaJnYb7qFL0H4u65bSZ5MEIXtzVJdO+KdDyI2KkH57eJTTyPCMe90gOFBWvK93x6+IDR/WdxWtuEWD0Q0wFRjquXYhVr4MxC+mOC9LxK9k+gAd6AKoYSzUeZnCdx4WWfxsSLqoEJ5RsGTt2hJQqgc/MQ58MGOzKd9Jneor3ZY1uYRzMIy4thNewqoaaQhxyM09y8klfh3nD6CnE4fpgE1l13e2MjcRwX8ml/u1hBkCC6XQZrJ1MHNlAcQldSOCvP39BaLvmrC7MyNQrI0hWm21iMoXOPQFgpuz+TiqNWSnvuUprQ+kwdilkZXt7MGFiUAYHc9qzH1ezzump7MqGbmkWAbvTggGR0dM7935KjPUaG/34PADhQp5kHV1kfTI2dqRq94HrGg5QWSGvYUe0E+Yvny0/0AJXKwfyxxWZjotJcxKeIwhg7zCBX2Sq3u6MpS5rq9CzasbZOngJEWcUZnQZZ1Lo+LrnUZh6MZwpHdyXoUjkqYjsd9eqyKEhJm2AE/IEQTIE7xy91Dq6h4mi1jnjrYjlndqzyncF18ukpEF4yE99FyY77fhrJdFIJSNQz6aBABUWkq4isfts5kwbn5TNmWdbL/5aZ+rqWV2hDfcM/98WLBj/q8KM/jnw/w8zW/zRptNwk3In0l+QLC9/NM1dAb1xDD53dKwoFN3SvT4o=
+X-HE-Tag: 1762620190-704284
+X-HE-Meta: U2FsdGVkX1+/X6HVO41EB3k1Yvsyuk7Zgg7nBpXqDsT6OhMj/M745a/oCVIdcvzy7VHbv0Uz/OhinQ4qZTEp9o1Yqg0dMm2CkFHKwQC2xb3V4Hwy0hkrmMD+1sN/REWkVclsd4r5SRxalRp7k6840RQ/rFxwX66VshKAXWZpBK2ziWYt3LEt2UI85dIaNWqB290w6/8CI+Vi7EiT9F1OjUnaz8eKurQKSUyd2VMwdrOPFVLj+oO7ekCIABIdfijaSjLFFACdZXqhu7rlTX8BcA+wDI74QNeBC0rFexjJW1GNZ8qkOi0uXWm2B+9rvFAtJSTcTjXnIBg7qRshsXK0FmLS90zf1ryvSoTHhtJ52yrzCk0/WpRNoFWiaFnRqM2MgIxG6wea6S9z3RMhcacJ1Fk727AjDP5K6rMljzclYdZcUgM9GPgZUn3T7yVRK3EnHy2BWBpYdMo49vUKPOYZo7L27lduRVrE7cHHo0bROxauovURZ6HD0OkGj8MAQ/ujDHi/jOXsVEz/OYvn/n0tVQDP42iYVQ9RGcnSmf/onKQHcdnI/2UleyUtZ7ytz3RRMlJMkZlKizOiewbSivzJ8etH4uKuDKcq+2rh/0+a1ETKWQQL9g/JzMzEG7oaS6Ku33jQjk0LS1Y/9Ae7yMOq/ygjjhXew3dcgsTcz++beO1yb+7xuAMCuo+qsXze3R/4KI+/KAE7iG/iZprJjgDl77DCnRCJ9MHaoNViS9awlqyNvZuVv8IAEj+jRFdjTtB7jyUPT8cbwy1FbFw1mfEnYOznZXpHiqkrNvOvFrbNqOHi89GOOxO8EDyeq/glu+DI+v1UOxqKdpoFb234XfGaNoAA57fv1l+xokCFoZHjBNTHEeu3S2aayFGi45XlPSnuQrmxxYo/H6RDZ1zA/Mi3zGRib/ws0DTbscPSpBDS3qYqJKla5QAJ7b1AyNsq3xFcvH07lx+rxtWhN6kdRta
+ YHu8jZ4Q
+ AvZmdC75NqsiGRHbEGmrfqbfzkMsQx8c1gXwH5HDbqE2Jr4mhzUknKw2kThDMXDBet/F0iKFh55ozge8lq2UbCFptTePcz3eTTouHB6VyjscolZbDqcPX5EeGJODakQxBwjisHQJgRdwPF5n2QQcqBAzv27EfOm1Jx4PFcLgR0V8IcJs+z0uEOmkkP+KOjN24a92mHrXLvhwMTieWzAJzJzEXGLR5OBBbazrDUCp3xldClcFbCWv1RFDXEPDx+kX9ptD/24OzSnWKldbG0OMydXBShbyBm23eeMfUx/YOrKBlgCioBYuI0rtKu0p7AlTKkJ5Mo13muEKObDI9PW7Z4D1KDstnsOBwegetI9xtUzizzibw+ALxJc8rPBmasNJi5+RsOHc6m0WpNJA=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -126,54 +92,51 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Pointer arthemitic with 'void * addr' and 'ulong dest_alignment'
-triggers following warning:
+On Sat, 8 Nov 2025 11:51:06 +0800 kernel test robot <lkp@intel.com> wrote:
 
-mremap_test.c:1035:31: warning: pointer comparison always evaluates to
-false [-Wtautological-compare]
- 1035 |                 if (addr + c.dest_alignment < addr) {
-      |                                             ^
+> FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-nonmm-unstable
+> head:   2fa523fd0829356881811ce9553b707102f55bd3
+> commit: 730fb8720d1ba209cd74692ece9766101e1fdb56 [129/139] mm: shmem: use SHMEM_F_* flags instead of VM_* flags
+> config: m68k-allnoconfig (https://download.01.org/0day-ci/archive/20251108/202511081101.9sXNBrzT-lkp@intel.com/config)
+> compiler: m68k-linux-gcc (GCC) 15.1.0
+> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251108/202511081101.9sXNBrzT-lkp@intel.com/reproduce)
+> 
+> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+> the same patch/commit), kindly add following tags
+> | Reported-by: kernel test robot <lkp@intel.com>
+> | Closes: https://lore.kernel.org/oe-kbuild-all/202511081101.9sXNBrzT-lkp@intel.com/
+> 
+> All warnings (new ones prefixed by >>):
+> 
+>    mm/shmem.c: In function '__shmem_file_setup':
+> >> mm/shmem.c:5811:23: warning: unused variable 'flags' [-Wunused-variable]
+>     5811 |         unsigned long flags = (vm_flags & VM_NORESERVE) ? SHMEM_F_NORESERVE : 0;
+>          |                       ^~~~~
 
-this warning is raised from clang version 20.1.8 (Fedora 20.1.8-4.fc42).
+Yeah, thanks, that's reason #47 for using C instead of CPP.
 
-use 'void *tmp_addr' to do the pointer arthemitic.
-
-Signed-off-by: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>
----
-Changelog:
-v2:
-- use 'void *tmp_addr' for pointer arthemitic instead of typecasting
-'addr' to 'unsigned long long' as suggested by Andrew.
-
-v1: https://lore.kernel.org/linux-kselftest/20251106104917.39890-1-ankitkhushwaha.linux@gmail.com/
----
- tools/testing/selftests/mm/mremap_test.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/tools/testing/selftests/mm/mremap_test.c b/tools/testing/selftests/mm/mremap_test.c
-index a95c0663a011..308576437228 100644
---- a/tools/testing/selftests/mm/mremap_test.c
-+++ b/tools/testing/selftests/mm/mremap_test.c
-@@ -994,7 +994,7 @@ static void mremap_move_multi_invalid_vmas(FILE *maps_fp, unsigned long page_siz
- static long long remap_region(struct config c, unsigned int threshold_mb,
- 			      char *rand_addr)
- {
--	void *addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
-+	void *addr, *tmp_addr, *src_addr, *dest_addr, *dest_preamble_addr = NULL;
- 	unsigned long long t, d;
- 	struct timespec t_start = {0, 0}, t_end = {0, 0};
- 	long long  start_ns, end_ns, align_mask, ret, offset;
-@@ -1032,7 +1032,8 @@ static long long remap_region(struct config c, unsigned int threshold_mb,
- 	/* Don't destroy existing mappings unless expected to overlap */
- 	while (!is_remap_region_valid(addr, c.region_size) && !c.overlapping) {
- 		/* Check for unsigned overflow */
--		if (addr + c.dest_alignment < addr) {
-+		tmp_addr = addr + c.dest_alignment;
-+		if (tmp_addr < addr) {
- 			ksft_print_msg("Couldn't find a valid region to remap to\n");
- 			ret = -1;
- 			goto clean_up_src;
---
-2.51.1
+--- a/mm/shmem.c~mm-shmem-use-shmem_f_-flags-instead-of-vm_-flags-fix
++++ a/mm/shmem.c
+@@ -5818,8 +5818,15 @@ EXPORT_SYMBOL_GPL(shmem_truncate_range);
+ #define shmem_vm_ops				generic_file_vm_ops
+ #define shmem_anon_vm_ops			generic_file_vm_ops
+ #define shmem_file_operations			ramfs_file_operations
+-#define shmem_acct_size(flags, size)		0
+-#define shmem_unacct_size(flags, size)		do {} while (0)
++
++static inline int shmem_acct_size(unsigned long flags, loff_t size)
++{
++	return 0;
++}
++
++static inline void shmem_unacct_size(unsigned long flags, loff_t size)
++{
++}
+ 
+ static inline struct inode *shmem_get_inode(struct mnt_idmap *idmap,
+ 				struct super_block *sb, struct inode *dir,
+_
 
 
