@@ -4,100 +4,119 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 24C90CCFA18
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 08:34:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0687CCFA1A
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 09:05:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 429FC8E0009; Sat,  8 Nov 2025 03:34:27 -0500 (EST)
+	id C10648E000A; Sat,  8 Nov 2025 04:05:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 401978E0003; Sat,  8 Nov 2025 03:34:27 -0500 (EST)
+	id BE83C8E0003; Sat,  8 Nov 2025 04:05:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 33E0B8E0009; Sat,  8 Nov 2025 03:34:27 -0500 (EST)
+	id AFE488E000A; Sat,  8 Nov 2025 04:05:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 1DF2B8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 03:34:27 -0500 (EST)
-Received: from smtpin18.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 75E3B5905E
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:34:26 +0000 (UTC)
-X-FDA: 84086778132.18.643D57A
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 844231C0002
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:34:24 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tGf86zAJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762590864; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 960D78E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 04:05:27 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2878C4BE44
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 09:05:27 +0000 (UTC)
+X-FDA: 84086856294.28.6A61705
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	by imf09.hostedemail.com (Postfix) with ESMTP id F0138140012
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 09:05:16 +0000 (UTC)
+Authentication-Results: imf09.hostedemail.com;
+	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762592725; a=rsa-sha256;
 	cv=none;
-	b=RCXTcBjYTIDfs1lLZoMPSKyTCin9sexcjA5HiW1rQqIzyKUTCPtwwBRULkgsDPM0vJChn/
-	+Hl/Ggf5IFQm+5/UyrimMdg2Y5uvCRUOjruf87QrokSNdO0lo1yUfaNzxTJTQ485CV5Dv8
-	+e5fGkLEnWa9Ya11WwziTH0+SuObAU8=
+	b=L883c5yNW1tTHnq9OMit5uj/5g0eks+wTqd3osgrW8sJaodYVHZXj/jqlepi2b4j2pOBZb
+	+8YdBI34plEf8dQsypwiAoe4YDPVbofApQX5QPra+Ih2ZIDL+emqsk+ecTAxqT5zFFLx9+
+	W6LgM0yHIoKcr13vjWWMM/wRJbWIfz0=
 ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=tGf86zAJ;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf20.hostedemail.com: domain of chenhuacai@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=chenhuacai@kernel.org
+	imf09.hostedemail.com;
+	dkim=none;
+	dmarc=none;
+	spf=pass (imf09.hostedemail.com: domain of chenridong@huaweicloud.com designates 45.249.212.51 as permitted sender) smtp.mailfrom=chenridong@huaweicloud.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762590864;
+	s=arc-20220608; t=1762592725;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=YY4ynXlywRAxLSCE0o9XbTuT7/c0CWG6jGHKSnp6GmM=;
-	b=Wt47PIxaw0RIdPqEIzfdBjak/RPWTTEyWw4ASeANlybiUa8XaiC25UP7whY/OOVi1Ndh1B
-	IIhE7GfCjxSam/YaptEafFmhUEG2ghyKiBBjJrvWHR1F8mmhgOSYVdqyc9PIYPnWZLGArR
-	wYeSZM12rgOvvmQSuqwK06jOE/gyc50=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 398D34432B
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:34:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 154DAC19423
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 08:34:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762590863;
-	bh=tlZEONXv4tiRT3AMc0su51y1oD5Ls6tTrIpaqE0ngs0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=tGf86zAJ94DACKdaNqRgK8YNQB+EsYJB5rMwJWLYHhHSch6AzOd2IGU6E0Sc0K8oj
-	 ok1/8TVSSAio+awRWFtGI7CRLOrSiIvlKjCAPJecee+p3SACLV89TYr6W2syiRBjc6
-	 nYx8RSNYK5pYUDRNdX10ZILswkx/MuMDVrUChmxwCCQrEMryaa41oYtzS6hnXglBZ/
-	 kGE0vMaTop1wWoElr/GDKMOd8r0Pdwe4koNP111CuyN1VaH0vP+VqM1yESVMLgxVSi
-	 aUhElU7GMlnwUNstJaauNka7d2Csdclt2aPojzjzVShrxvzRwJ+cTiwmQqRO+H6kej
-	 8iunQfiZTtluw==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6406f3dcc66so2568927a12.3
-        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 00:34:23 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVLXB2Q0Jy/oPieRLo9CSJMa0yACUAOGbN5TIIDdU6GD1ajPZdCGi7MDByk3NT7gz1YUGWJ16o+Ow==@kvack.org
-X-Gm-Message-State: AOJu0Yz5bwsD4q0d2RFGaZwuJ0F2T2HceSfqFKGq3pJaRKHkBzJ3eKQD
-	Lb4dW115UGe0dPLxoblKyhigBRVGG0Lw6t2Bg47000Gjni1yvTePQVSZ2pWM+XMoyxCUp7XT9YL
-	m/wTKO3a/UcQbUvBSuBAwlTFLLp0DUfc=
-X-Google-Smtp-Source: AGHT+IGlb245/wlR/RrXg6CuqlcByT1uGzI60JlcScJKo+CxETFOnGjHVUbz2TrCf3DggZ37u6QhKQeLBIoK3JY1V2c=
-X-Received: by 2002:a17:907:3d92:b0:b70:b3e8:a353 with SMTP id
- a640c23a62f3a-b72e05e5a26mr184062066b.50.1762590861638; Sat, 08 Nov 2025
- 00:34:21 -0800 (PST)
+	 in-reply-to:in-reply-to:references:references;
+	bh=BRq2F/Fx5L2pqw/kvbroKu2B4rLSIR/GciQ6lz1GC2Y=;
+	b=Jc2ic2rc4nDjlhqFBoXhdHDBAGnEX0iqE1ATW911PWGS8moNaDguGMQHpltCynB2yd/xdE
+	AyI+bY1RtexM73uCW14ze4tgazyCck+oJrm1B+/X7sQ9fXEpGR4IYn+XHBv9CrZkO6ETiq
+	0wrEGjzczoxs86rvuMBkAQN4D9HBKGQ=
+Received: from mail.maildlp.com (unknown [172.19.163.216])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4d3VPG20MjzYQtsR
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:04:50 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id B7B111A18E0
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:05:11 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgAnUF3GBw9pgLIYAA--.42082S2;
+	Sat, 08 Nov 2025 17:05:11 +0800 (CST)
+Message-ID: <e0c0f8b7-112f-40d7-b211-89065e9003b2@huaweicloud.com>
+Date: Sat, 8 Nov 2025 17:05:10 +0800
 MIME-Version: 1.0
-References: <20251107095922.3106390-1-chenhuacai@loongson.cn> <aQ4lU02gPNCO9eXB@fedora>
-In-Reply-To: <aQ4lU02gPNCO9eXB@fedora>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sat, 8 Nov 2025 16:34:20 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5C_Af72a5QcJs25qUMsJqO26=8oNvvLrJ7z+xHZh8oKQ@mail.gmail.com>
-X-Gm-Features: AWmQ_bkuuT3NN8uTRvAGhFr6le3bzLzpE1q1tOb9RXNULYvf4D4AG-sFaEbbJVM
-Message-ID: <CAAhV-H5C_Af72a5QcJs25qUMsJqO26=8oNvvLrJ7z+xHZh8oKQ@mail.gmail.com>
-Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*()
- about HIGHMEM
-To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Kevin Brodsky <kevin.brodsky@arm.com>, Jan Kara <jack@suse.cz>, 
-	linux-mm@kvack.org, linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 13/31] cpuset: Update HK_TYPE_DOMAIN cpumask from cpuset
+To: Frederic Weisbecker <frederic@kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>
+Cc: =?UTF-8?Q?Michal_Koutn=C3=BD?= <mkoutny@suse.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Catalin Marinas <catalin.marinas@arm.com>, Danilo Krummrich
+ <dakr@kernel.org>, "David S . Miller" <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Gabriele Monaco <gmonaco@redhat.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ingo Molnar <mingo@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Jens Axboe <axboe@kernel.dk>, Johannes Weiner <hannes@cmpxchg.org>,
+ Lai Jiangshan <jiangshanlai@gmail.com>,
+ Marco Crivellari <marco.crivellari@suse.com>, Michal Hocko
+ <mhocko@suse.com>, Muchun Song <muchun.song@linux.dev>,
+ Paolo Abeni <pabeni@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Phil Auld <pauld@redhat.com>, "Rafael J . Wysocki" <rafael@kernel.org>,
+ Roman Gushchin <roman.gushchin@linux.dev>,
+ Shakeel Butt <shakeel.butt@linux.dev>, Simon Horman <horms@kernel.org>,
+ Tejun Heo <tj@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Vlastimil Babka <vbabka@suse.cz>, Waiman Long <longman@redhat.com>,
+ Will Deacon <will@kernel.org>, cgroups@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
+ linux-mm@kvack.org, linux-pci@vger.kernel.org, netdev@vger.kernel.org
+References: <20251105210348.35256-1-frederic@kernel.org>
+ <20251105210348.35256-14-frederic@kernel.org>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <20251105210348.35256-14-frederic@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAnUF3GBw9pgLIYAA--.42082S2
+X-Coremail-Antispam: 1UD129KBjvdXoW7JrWUCF4fXF43Gr1UAF4kCrg_yoWDuFc_Wr
+	15WF4Uuw15JFyqgw1Yy34qga1fJa17t39aqa48try5W3Z5JF43Jrs3A345Ca13Xa4xJF1a
+	934kK393ZrnFqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbxkYFVCjjxCrM7AC8VAFwI0_Wr0E3s1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
+	wI0_Wrv_ZF1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
+	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26rWY6r4U
+	JwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x
+	0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_
+	Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7IU0
+	EksDUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 X-Rspam-User: 
 X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 844231C0002
-X-Stat-Signature: mwkws5o8eteuwjpjaezmibaaijaxx3wq
-X-HE-Tag: 1762590864-355891
-X-HE-Meta: U2FsdGVkX1+lNHMSbPSxnFDr7kfaPuj6YXb0O8CUGEKQ3j9IvSus95YQmsXYid2jC9qgYNiEKGWoIOs/+S7IZP9ulbdQGpI6y9bgKpeMsShaF2s9qR+Dutezs9N8UV5KUR76U+ljm7FhYZd94l0XVFKliKds5HjF0CKkc2w2KgJpVVKy07JNdscnDIUluDRKc70mv+WFXmjHCxvMvSVSReijpflXZzJ21+7VOzH84bsbZR4ZSWLip3cjgx5sRgv5lS+bJTJ08rCGMwqcvULY+2QAFTlMxlUqjKv1CexY/Pt9zwvKphb5q2//5Vvk5SHcz8gDPu2VXxEzYC900VjVDHvHCmOJXooYyA6Eo7w0/m9KdbqRv8Og2zBcBUEhznYl+qHSs5aCcD1NnguIj4sjbM1HjU8Ut2KDPPSJXNk2SpeIk4nxo2F+UXADBrCzlAC9ETZ/bJWNLSrh08+Q25jY3J/2pr4wEeP/ECgEDqFmmfcC1RGGvOLcRR2mQkk4ny8e1ciEOEXJ3ubrWIxeLmtaa/1T1mz96NJEwg9FFxOAaQ7xPFlSsMgxkxi6L7iF9hEycr4uKprBYfQwVy4XKxuyj9C6lZ5/h1YD8pefrFUS6zayNJyrWdFq3Z7KzxJB/A17y1Gc0/6ATboCTpYsDEmhmAVsLV83dcUwIqfdTX64joiTEHAIp1gizckJVb34kYOw8xSLMlBVta32bis7oxMGFvfDyQ5sddGRZ0w0/MPLwifI9zB8ZBwRtWEDdTAtxhaHgdrRQiQVladXAAb5vHm1g+x6Zeqj+72JGVdgJ5ic/XoUlIJ7grLT4aWS4ta7ZnmXw5vsFqz/I+GHXEr/p/vZlEw3SqhGvKGoPqb2DJAT1B4A5kdOjPglHoFHkib4Je7TelQPYUmGySQKK4spU3jjclgSl0NFid5PuRYahxAi++1ewhpULXZjiEnm8yQ1iz6eJ6WXdSXv8Ood7qke0YH
- vQlcFZXq
- b/Dfb+qdtZ/KP+42rdqPvymXqrA4OTVe2Paoe5Ftc1h3DuFhcLUv2giPq44P6DBf8ZjBo00um+00IxUklmYUeB6cPpRe/4Icuzu2CNRRzv+0U7lyf+op3s2tBZzrs6ZvYj6QDzL1VCWsl45L7jZcY7zB/ecerdxAnm/02D0qjPckhNU8hY6yLXCtkwyh5lqW6YJF0RqvatWGTMsSzPUxMgpXMXUao8Sha36Al+zUE3XY56Rf0bf4gy0hts0URcuipG8f2v35bBweqRqkd/3WomurutIEQxrj3+I7FsIs3hKar1l8a366TRGmlCEBEABQ8Ft6/sbOi80pV0uYLHznguDu6y5ZUCfkylwmjSwuTCppQXnliMnnFpBXRUVxZFo0t5+dSKLI5ONiZ1GNEFtyVYzqAKEJoH0cXYU5ZbYHVfjxZ4ZQ=
+X-Rspamd-Queue-Id: F0138140012
+X-Stat-Signature: 84ysprzfzdujzcfe9nod35s61ofcgkfn
+X-HE-Tag: 1762592716-459718
+X-HE-Meta: U2FsdGVkX1/sqOyt5LzwGo3x28B45ECba3euqz4NQycaMZ1SbWk0y8cB9PJfZNSowLBC8L3H0eOX2pW+em/gjr+9+Qs6f2iAwcfVEa9vcE8Iu+3+pte/hCA/9DggZjm7rNdpTjTvWVS1Y2+Lc2XM0ViP81gITuTGecam9Es74yrieqmVZ3TChJmfxH5Td+A19qUoO9T0r44154Nkbc871/dKBYPY6GKU2tdOIcgu+i6TUubG3a96M7C6fpB/SZDtiOjFWkFvrCfoOttwhVoumPzoEqUqtKE0awn3q8XV9yjjsooDE4u32KJ5B0xLEK3SO8oB0K8RUmWyaPy66Rutc1LLzd47COKotGc876ePMf3EwEuieXchxtAz3g05y3kGHaXbbSGz3rUl72jexCt2Cvy2sk2FAszYpTwExKn3c0NnpY0LxD9M8pzE0MvrD6Fu+j2kQF5hJTa4g1kEkVesyi/CrMCqipXdVBP688h9YpdtRnt4IOnCzOigxcC9bKS51mtkJCRrmfjNv+Ks5nDH8Oz3lKmKgX32ggG9KkTiPPiuDFZGjGRhvEA+UtZG0yFQaoJHt0uxB06j+S0+mPlltuu12OMMQNcCBKs4wnR2oy+ysZnPHGY7vT4pMP510hfC3q72hIWVNpiye17frx0BzwARgLYMCm0rLv+Whc2eb/oWbST+nbXRqC9Fij868746ITEPkj+2zcR2qUqXvGlHRlHx9f5P74IAzSYO+lmvFmqXP7Z5D9FJTW0siJSuaCPptd3COExKZOFouzH8Qun78mGB5cjbJ0ApeYi2Xvjm/s99cFCqu3swnyLtgIAjpp/0NVB/MIdZNFGoLHmZ0KtuRYF4kuBZrvkr5kshKFekqLuK6DUf66FdHDq0otxMJO6YscocaRAyrOGCQ+kc4iVAEcbrnYbcSc7+1JbjNnRWTc2mA+jl1wovmITZajtB/rLzjpFqH5zXGAEgglHUCDT
+ zesz6R5E
+ QLr8NJnA13lOsNSo1ZyT/BBZDf7+agktWdf6qZ7sR1uf9h3RuNZg6VDVDdKlGsvHRr9LCML35NgR7ch5Lbj/eshJRy0ZK6OQOaAXEF1A27OIyC0UOI3f9p4KBY67Ftg0QHIhLyjFxqqp4q1YvEqiFboOhi0x1EuxhjvX0CRipCeEPvDs=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -106,30 +125,50 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi, Vishal,
 
-On Sat, Nov 8, 2025 at 12:59=E2=80=AFAM Vishal Moola (Oracle)
-<vishal.moola@gmail.com> wrote:
->
-> On Fri, Nov 07, 2025 at 05:59:22PM +0800, Huacai Chen wrote:
-> > __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
-> > flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
-> > as follows:
-> >
-> >  #define GFP_PGTABLE_KERNEL   (GFP_KERNEL | __GFP_ZERO)
-> >  #define GFP_PGTABLE_USER     (GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
-> >
-> > There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
-> > explicitly.
-> >
-> > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> > ---
->
-> I'm not really sure what "Refine ... about HIGHMEM" is supposed to mean.
-> Might it be clearer to title this something like "Remove unnecessary
-> highmem in ..."?
-Yes, that is better, but Andrew has picked this patch, should I resend
-a new version?
 
-Huacai
+
+> +int housekeeping_update(struct cpumask *mask, enum hk_type type)
+> +{
+> +	struct cpumask *trial, *old = NULL;
+> +
+> +	if (type != HK_TYPE_DOMAIN)
+> +		return -ENOTSUPP;
+> +
+> +	trial = kmalloc(cpumask_size(), GFP_KERNEL);
+> +	if (!trial)
+> +		return -ENOMEM;
+> +
+> +	cpumask_andnot(trial, housekeeping_cpumask(HK_TYPE_DOMAIN_BOOT), mask);
+
+Since there's no comment for the 'mask' parameter, would it be better to name it 'isol_mask'? This
+would make it clearer that this is the isolation mask input and what is doing here.
+
+> +	if (!cpumask_intersects(trial, cpu_online_mask)) {
+> +		kfree(trial);
+> +		return -EINVAL;
+> +	}
+> +
+> +	if (!housekeeping.flags)
+> +		static_branch_enable(&housekeeping_overridden);
+> +
+> +	if (housekeeping.flags & BIT(type))
+> +		old = housekeeping_cpumask_dereference(type);
+> +	else
+> +		WRITE_ONCE(housekeeping.flags, housekeeping.flags | BIT(type));
+> +	rcu_assign_pointer(housekeeping.cpumasks[type], trial);
+> +
+> +	synchronize_rcu();
+> +
+> +	kfree(old);
+> +
+> +	return 0;
+> +}
+> +
+
+
+-- 
+Best regards,
+Ridong
+
 
