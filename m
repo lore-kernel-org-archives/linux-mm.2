@@ -4,157 +4,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BCA75CCFA1A
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 06:13:02 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 917D0CCFA18
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 06:33:05 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EA9958E0006; Sat,  8 Nov 2025 01:13:01 -0500 (EST)
+	id 5D7208E0009; Sat,  8 Nov 2025 01:33:04 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E59EA8E0003; Sat,  8 Nov 2025 01:13:01 -0500 (EST)
+	id 5AE668E0003; Sat,  8 Nov 2025 01:33:04 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id CD3D38E0006; Sat,  8 Nov 2025 01:13:01 -0500 (EST)
+	id 4EC358E0009; Sat,  8 Nov 2025 01:33:04 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id B16A08E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:13:01 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 264AF13B97A
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 06:13:01 +0000 (UTC)
-X-FDA: 84086421762.09.7A54097
-Received: from submarine.notk.org (submarine.notk.org [62.210.214.84])
-	by imf20.hostedemail.com (Postfix) with ESMTP id 92D721C0007
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 06:12:57 +0000 (UTC)
-Authentication-Results: imf20.hostedemail.com;
-	dkim=pass header.d=codewreck.org header.s=2 header.b=B+D3byKt;
-	spf=pass (imf20.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
-	dmarc=pass (policy=none) header.from=codewreck.org
+	by kanga.kvack.org (Postfix) with ESMTP id 3AEC18E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:33:04 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id EE2141406C2
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 06:33:03 +0000 (UTC)
+X-FDA: 84086472246.02.D2D8465
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
+	by imf14.hostedemail.com (Postfix) with ESMTP id 478B1100003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 06:33:02 +0000 (UTC)
+Authentication-Results: imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uzq6smUi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762583582; a=rsa-sha256;
+	cv=none;
+	b=gp/8tLd9pm40HYXdjvrepIfbIgFb+r4fBuJ22OpyeN1yTrOQXn+FoGzo444KhWzBBfiKwt
+	JnAJk6EFBPQU7Lsf2mRZIjBwqHzhimlAqNLuVT36v82SxHObVIDlnOStKrlzF4o0cdOjZI
+	zOUUw9nBR06TPkYh82NFsBRttMa9EoA=
+ARC-Authentication-Results: i=1;
+	imf14.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=uzq6smUi;
+	dmarc=pass (policy=none) header.from=linux.dev;
+	spf=pass (imf14.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.188 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762582379;
+	s=arc-20220608; t=1762583582;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=LTM5LkyL3mfB0IbHJeS1oRharyj4iNDNdaZ7y5irjmg=;
-	b=kNMD5RLT2KI6xpNen5vTwPBbdMVI021Ul9koAhfFvBjYo45NGOPb0FCveF53IheYGPiD8b
-	CwQg0zEVRNdyXGEthMzlBDNk967RDE+rKIqUPoEHy4Cr49rYkEoGi/D3e2OdVqqzQdWoYt
-	BfrgK6dvH6yNU4GokO/DiKH5X70wppM=
-ARC-Authentication-Results: i=1;
-	imf20.hostedemail.com;
-	dkim=pass header.d=codewreck.org header.s=2 header.b=B+D3byKt;
-	spf=pass (imf20.hostedemail.com: domain of asmadeus@codewreck.org designates 62.210.214.84 as permitted sender) smtp.mailfrom=asmadeus@codewreck.org;
-	dmarc=pass (policy=none) header.from=codewreck.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762582379; a=rsa-sha256;
-	cv=none;
-	b=PL/7fmvoWCrnQibWVQzf23EaKQifIYiUkGxpJfq+H5w89p0coXOLW6xSF6AV7SHbkSq7wb
-	XJk8XWR4ha3PNGd7KsW1xqK/AA5t4zM5PCrmiV/ePoCXtfD/SWUKkHmZuYibWh70H2pbf2
-	RLnq9Hls9sIvhyzX2gNoz9AHbzOo/Cw=
-Received: from gaia.codewreck.org (localhost [127.0.0.1])
-	by submarine.notk.org (Postfix) with ESMTPS id A419014C2D3;
-	Sat,  8 Nov 2025 07:12:27 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=codewreck.org;
-	s=2; t=1762582373;
+	bh=J/7T3JLvqIy8G97oSkwZiUgQ/us13qwXbaI51bbYH88=;
+	b=ytYdWeKRXDtt45c5UXuoyhe9haLyyFx6UJXlv/c/yyoM5g4JwmCmHhP0gcS6muwmuwgHIY
+	YjVPCI2ekDW3TJfWlazhHyJv+PrYhDJB6XlDGDXOS6bIbByKlctCkuKrQNHCzzxl9IJnEB
+	9KS+XTUbJENSUFh+E0P+BU2kYXS+Mic=
+Date: Fri, 7 Nov 2025 22:32:52 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762583579;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LTM5LkyL3mfB0IbHJeS1oRharyj4iNDNdaZ7y5irjmg=;
-	b=B+D3byKtJ5aLyRiu2rooP0B2TJlyh9NnWKaBHKY3oGl5WrI9R/ZTOokRqfrmQkRjA4d6PF
-	hVA+2jtaIxDHKJVm19YOlIu00RJFzbMjiJ2IJMY5v8SjTtfCjEZWBxEPfRtzuPasj++KiY
-	8Sahe5eVbfmwmhQeo5uzL3Rp7AKK7Nzr7m3ipU5qmaiTEStLej1x9iBcfVqKnY9WidAi8X
-	rwVB6qqUGBZMEcUSkoPWBbqf240gmgWcLbAb7B4RNHuho0O1rPy72OuweBfiXGGrgaJqO1
-	amO1aDXHVrMyRWIApKs7c+o9NFvUODZZvMkcXugNCGdZ2S65dzPgh2BACKmoHA==
-Received: from localhost (gaia.codewreck.org [local])
-	by gaia.codewreck.org (OpenSMTPD) with ESMTPA id 26a2c8b4;
-	Sat, 8 Nov 2025 06:12:25 +0000 (UTC)
-Date: Sat, 8 Nov 2025 15:12:10 +0900
-From: Dominique Martinet <asmadeus@codewreck.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: Eric Van Hensbergen <ericvh@kernel.org>,
-	Latchesar Ionkov <lucho@ionkov.net>,
-	Christian Schoenebeck <linux_oss@crudebyte.com>,
-	David Sterba <dsterba@suse.com>,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	"Tigran A. Aivazian" <aivazian.tigran@gmail.com>,
-	Chris Mason <clm@fb.com>, Xiubo Li <xiubli@redhat.com>,
-	Ilya Dryomov <idryomov@gmail.com>, Jan Harkes <jaharkes@cs.cmu.edu>,
-	coda@cs.cmu.edu, Tyler Hicks <code@tyhicks.com>,
-	Jeremy Kerr <jk@ozlabs.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Sungjong Seo <sj1557.seo@samsung.com>,
-	Yuezhang Mo <yuezhang.mo@sony.com>, Theodore Ts'o <tytso@mit.edu>,
-	Andreas Dilger <adilger.kernel@dilger.ca>,
-	Jaegeuk Kim <jaegeuk@kernel.org>, Chao Yu <chao@kernel.org>,
-	OGAWA Hirofumi <hirofumi@mail.parknet.co.jp>,
-	Miklos Szeredi <miklos@szeredi.hu>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>, Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Mikulas Patocka <mikulas@artax.karlin.mff.cuni.cz>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	David Hildenbrand <david@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Dave Kleikamp <shaggy@kernel.org>,
-	Trond Myklebust <trondmy@kernel.org>,
-	Anna Schumaker <anna@kernel.org>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
-	Mark Fasheh <mark@fasheh.com>, Joel Becker <jlbec@evilplan.org>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Bob Copeland <me@bobcopeland.com>,
-	Mike Marshall <hubcap@omnibond.com>,
-	Martin Brandenburg <martin@omnibond.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.org>,
-	Ronnie Sahlberg <ronniesahlberg@gmail.com>,
-	Shyam Prasad N <sprasad@microsoft.com>, Tom Talpey <tom@talpey.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Hans de Goede <hansg@kernel.org>, Carlos Maiolino <cem@kernel.org>,
-	Hugh Dickins <hughd@google.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <kees@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	NeilBrown <neilb@ownmail.net>, linux-kernel@vger.kernel.org,
-	v9fs@lists.linux.dev, linux-fsdevel@vger.kernel.org,
-	linux-afs@lists.infradead.org, linux-btrfs@vger.kernel.org,
-	ceph-devel@vger.kernel.org, codalist@coda.cs.cmu.edu,
-	ecryptfs@vger.kernel.org, linux-efi@vger.kernel.org,
-	linux-ext4@vger.kernel.org, linux-f2fs-devel@lists.sourceforge.net,
-	gfs2@lists.linux.dev, linux-um@lists.infradead.org,
-	linux-mm@kvack.org, linux-mtd@lists.infradead.org,
-	jfs-discussion@lists.sourceforge.net, linux-nfs@vger.kernel.org,
-	linux-nilfs@vger.kernel.org, ntfs3@lists.linux.dev,
-	ocfs2-devel@lists.linux.dev,
-	linux-karma-devel@lists.sourceforge.net, devel@lists.orangefs.org,
-	linux-unionfs@vger.kernel.org, linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org, linux-xfs@vger.kernel.org,
-	linux-hardening@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2] vfs: remove the excl argument from the ->create()
- inode_operation
-Message-ID: <aQ7fOmknHIxcxuha@codewreck.org>
-References: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
+	bh=J/7T3JLvqIy8G97oSkwZiUgQ/us13qwXbaI51bbYH88=;
+	b=uzq6smUiUaadIABNL4WAH3kQ9/NWi6rV98ylBfMFIppw4E+N8btmKbgAwhGrszMoJj9rnz
+	CB2k+MOmm4mSUBVKeFZssHPocjdfCursoyR/iyfIffk6nTiCSrZTDcFQJPhgzISSZpcb6J
+	ZQS4G8+TUhTtakAd1HkSQXaXtPTzs0Y=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Qi Zheng <qi.zheng@linux.dev>, hannes@cmpxchg.org, hughd@google.com, 
+	mhocko@suse.com, roman.gushchin@linux.dev, muchun.song@linux.dev, 
+	david@redhat.com, lorenzo.stoakes@oracle.com, ziy@nvidia.com, 
+	imran.f.khan@oracle.com, kamalesh.babulal@oracle.com, axelrasmussen@google.com, 
+	yuanchu@google.com, weixugc@google.com, akpm@linux-foundation.org, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, 
+	Muchun Song <songmuchun@bytedance.com>, Qi Zheng <zhengqi.arch@bytedance.com>, 
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>, 
+	Steven Rostedt <rostedt@goodmis.org>, linux-rt-devel@lists.linux.dev
+Subject: Re: [PATCH v1 04/26] mm: vmscan: refactor move_folios_to_lru()
+Message-ID: <hfutmuh4g5jtmrgeemq2aqr2tvxz6mnqaxo5l5vddqnjasyagi@gcscu5khrjxm>
+References: <cover.1761658310.git.zhengqi.arch@bytedance.com>
+ <97ea4728568459f501ddcab6c378c29064630bb9.1761658310.git.zhengqi.arch@bytedance.com>
+ <aQ1_f_6KPRZknUGS@harry>
+ <366385a3-ed0e-440b-a08b-9cf14165ee8f@linux.dev>
+ <aQ3yLER4C4jY70BH@harry>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251107-create-excl-v2-1-f678165d7f3f@kernel.org>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 92D721C0007
-X-Stat-Signature: hdouddhbpd5b3gghas8erzadrtajh5t9
+In-Reply-To: <aQ3yLER4C4jY70BH@harry>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 478B1100003
+X-Stat-Signature: ftpri1wgqq1tq1tzcew1o8aknz9et94k
 X-Rspam-User: 
-X-HE-Tag: 1762582377-890090
-X-HE-Meta: U2FsdGVkX18i+jVGEZD9vdt6bnoS0PmaBgB7qUtZkdA3kPD2vONq5hgM1sP7MhDrhhZ+mo+x7cjo1XpdC0mwIIWLfptr/wMGUYiUpxz1SERV97tncvKrUwQLa3iGu+71vf8plt4wqITOCK37xgWnfqTZAfNxPrXMw1/b8jtN4w0KabzQNAmi34TsbS2XBUTlmLi3v5K98tcIEEzukVpeU9P9NOxeBTNECEjwtOBIPWPsWLOglIRHg4xTjhBmt8vqgB5miaVoWFi3YqnOaK6RdV4tVHkXideylocfa+T2/76DgvrHWnbishJFRbdwc/7637THnDCPgHJhq4+nQcPZx0+M+WQkC7eCLMAPfsSbBZPCbs4L8VYnRFlGjF3CEB5lijsS1GkkN2Z0TsCGt1ahz95lmacaHyxz8pCxpYvj7JRxpaCDAN6MgO57yjh0Un8G4Utn44NODHFb2Tk9R0793OEi/CGJqCYKB8T5f4IErMvskw4Ya1hVZhLhS9p1ZRdIq2Om+q0/ZGnicwb0aJ4KTQT4odrFtg69bQzg+DSptc9yA07Q5Y4UyyjSzK00/+u2y8urammm2lb3ZH76at4fXA6MUrQGeE4EMzzg/OOjgONnY8zTvdw0HRt7ALJpN3DlyCfNMhrmG9H7yaORhYzh0OSG5ni21Bo9TZs2DZJXg2hdGHgEdkDlR1/EFQSlxHfVfextJISk1HQeBj1z+1VXtRqEovTNGxw9G7PK8AqvLdLCAeMhHgQEFfJyI4IWUulmdWqVkkWwyTJgoJyzVeGtGxQL0J5NkYkZS7hDyWZI/tJnBS/gkLf//5icgIVfgHRvfituA4s3x4Ww3d+ChMshl/z7mqgqfvIPmO0XvSSAe7qKhX4ndf291BYzkyCn9mqSmZYw+s7nbfmY8MhTGH/cCSiqhZrQHNEz4mv9dvundIKHFGF5+3z+l2mhq+29CqQRi62+VAybP1NEf7XnZ2y
- dHPIuAB9
- Qag9+YtEh3RmzlYkHjWdnCXJl8zm1pkLcZ6GaRGnxcBzcUzTkVpncNqS97Mh8ZWTsbJcOlrb60WnC3oKRxApJ+niRhT2zshDVOIfaEfKocxsDsIs9J66PIvz1wIjLL4zRAMCXS8d1Fqb1swfo8nlA7S/hlsSmUvGc2Wbb8mHZcrRju/lHBrYtlXUTN2INVx9B6GR6KwXPjNJVeSTba2gRSysQmOGb+OQV3iPx/y1e1LSIE6w6oia/cJ3+BZgJdY4fhJf7zbQcvfFLwIBaXKT/GEcj1TIipNZ8vHpo/e5Lowzkgthg5vMIFqE2KveRqBYsRGx9kpABUHHP9jxI9jSOlmXJX93G1mjR8oKiSs9rEnjoKkcJuC/5jgvRsLts9b4cnOTpQ/9ekUR4f7AHYpatoDlgw7qW8QW3FFTHvekTknggItWyVO4PnPzTSvoqgt0wIQBLGOLyoBxNLbL7NIiFuPoL8Gb2oFkrvazY
+X-HE-Tag: 1762583582-23064
+X-HE-Meta: U2FsdGVkX18j1yD8w7tjdpujKsTrgouGE8g49rsFNiQ35d7x2Yx9FWlUDA0Dis/Yx3RA/5r0bIE8vnzKvYbWQRtVt8qcRyHphLohjgnFqaVPaGdAAqYpt9fHVdNJWaEXzo/EhkjJ3GBJ377Q4Rx14YkmTajj8oaZsNPuJubdGPqy3kmRMOuw+nTXOyb6OO0Zd1ODySgvtHZuj9qC7ry3t/tADAmU51yNDRaSgisbysn0+fyoas+SD/42ZdhSgbqDqVzqYhnrTdJIuqMbgJn4jdqyJPCbSczjV/wFgOhaTI6xCIHilXHYRIxGdU9ulKj6QpDN2CHg0nyPC7qpFEcMKYa7ZNy/jgbbuzV8UcYcjJFQZMgrF28HgEoZMcpDnOx7L+fTiKiKVM9yEUR1C5ciRLjvQWL8I+wFRvDuHvD2+yuVZ2wQCNSwSL4R/c0qKjOkpgWt39Kej/aDqti7/ni7uFHt1fygZVFXdG9unKSO2QaCIUuP6z7BzQFJj5Gj8S6dLxtgBLflFv6PGpYlADeXj5TTNF1AlbBysEsfZLZ/2q1QuJdmu3Gk0vM//fmaAl0x5tBeQyCbveNo4rrazNkSPWzZorqx462i25LBpiGG4iYbJ/qNQhtKubj7d9LDh72j/q+tPJdhEXhB/J7JJ1j5oVutBzkaW5gNGt6lHd+ALmrjXZSvRc8VIOyWKz2UUqjxbxPZLDBwfuospVT6SexxJBaKGGIOYF2xTwUM/w5R6FfqvwNEUKWRzL1QxwMTjE9uOUu1AvLYMRaMTJnNW4tCtHEAGuaL5k3yKRO5z0hiSP4wkKNnXaiFSC+ifCrRs4xN9q9lqi9GBu0UbbANo8nhfFtr3l+SFeUvFEi28ou503yE93ZTpKau0z7mcNpZkuIF50sy5bUwK7Um88HSOgMEFWpMXrEdIAA0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -163,45 +96,29 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Jeff Layton wrote on Fri, Nov 07, 2025 at 10:05:03AM -0500:
-> With two exceptions, ->create() methods provided by filesystems ignore
-> the "excl" flag.  Those exception are NFS and GFS2 which both also
-> provide ->atomic_open.
+On Fri, Nov 07, 2025 at 10:20:57PM +0900, Harry Yoo wrote:
 > 
-> Since ce8644fcadc5 ("lookup_open(): expand the call of vfs_create()"),
-> the "excl" argument to the ->create() inode_operation is always set to
-> true in vfs_create(). The ->create() call in lookup_open() sets it
-> according to the O_EXCL open flag, but is never called if the filesystem
-> provides ->atomic_open().
+> Although it's mentioned in the locking documentation, I'm afraid that
+> local_lock is not the right interface to use here. Preemption will be
+> disabled anyway (on both PREEMPT_RT and !PREEMPT_RT) when the stats are
+> updated (in __mod_node_page_state()).
 > 
-> The excl flag is therefore always either ignored or true.  Remove it,
-> and change NFS and GFS2 to act as if it were always true.
-> 
-> Signed-off-by: Jeff Layton <jlayton@kernel.org>
+> Here we just want to disable IRQ only on !PREEMPT_RT (to update
+> the stats safely).
 
-Good cleanup, just one whitespace nitpick below but:
-Reviewed-by: Dominique Martinet <asmadeus@codewreck.org>
+I don't think there is a need to disable IRQs. There are three stats
+update functions called in that hunk.
 
+1) __mod_lruvec_state
+2) __count_vm_events
+3) count_memcg_events
 
-> diff --git a/Documentation/filesystems/vfs.rst b/Documentation/filesystems/vfs.rst
-> index 4f13b01e42eb5e2ad9d60cbbce7e47d09ad831e6..7a55e491e0c87a0d18909bd181754d6d68318059 100644
-> --- a/Documentation/filesystems/vfs.rst
-> +++ b/Documentation/filesystems/vfs.rst
-> @@ -505,7 +505,10 @@ otherwise noted.
->  	if you want to support regular files.  The dentry you get should
->  	not have an inode (i.e. it should be a negative dentry).  Here
->  	you will probably call d_instantiate() with the dentry and the
-> -	newly created inode
-> +        newly created inode. This operation should always provide O_EXCL
+count_memcg_events() can be called with IRQs. __count_vm_events can be
+replaced with count_vm_events. For __mod_lruvec_state, the
+__mod_node_page_state() inside needs preemption disabled.
 
-This and the block below change halfway from tab (old text) to spaces
-(your patch)
-
-Looks like the file has a few space-indented sections though so it won't
-be the first if that goes in as is, the html-rendering doesn't seem to
-care :)
-
-Cheers,
--- 
-Dominique Martinet | Asmadeus
+Easy way would be to just disable/enable preemption instead of IRQs.
+Otherwise go a bit more fine-grained approach i.e. replace
+__count_vm_events with count_vm_events and just disable preemption
+across __mod_node_page_state().
 
