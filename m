@@ -4,91 +4,168 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 365BACCFA13
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 11:54:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C9C8CCCFA18
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 14:30:43 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E26A68E0006; Sat,  8 Nov 2025 06:54:06 -0500 (EST)
+	id AEA608E0006; Sat,  8 Nov 2025 09:30:42 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id DFE618E0003; Sat,  8 Nov 2025 06:54:06 -0500 (EST)
+	id AC21D8E0003; Sat,  8 Nov 2025 09:30:42 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D3B2D8E0006; Sat,  8 Nov 2025 06:54:06 -0500 (EST)
+	id 9D7D98E0006; Sat,  8 Nov 2025 09:30:42 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C05858E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 06:54:06 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 69317140738
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:54:06 +0000 (UTC)
-X-FDA: 84087281292.12.569C50C
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 347D8C0009
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 11:54:02 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	spf=pass (imf10.hostedemail.com: domain of make24@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=make24@iscas.ac.cn
+	by kanga.kvack.org (Postfix) with ESMTP id 873B68E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 09:30:42 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37585BB397
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 14:30:42 +0000 (UTC)
+X-FDA: 84087675924.05.1134DD6
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+	by imf20.hostedemail.com (Postfix) with ESMTP id 121471C0005
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 14:30:39 +0000 (UTC)
+Authentication-Results: imf20.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=L1AYuXN5;
+	spf=pass (imf20.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762602844;
+	s=arc-20220608; t=1762612240;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=y/8z7UpVmFAEnS9Sp+7GFbGIz9e6UeUzP19OGDsbKaY=;
-	b=0ERCENKU9nMbjcCq6rJN9ctMSaZXPKYgvrMZMb7SYbobc+QQ2Q1t511FFMgAkFSF528Way
-	33AYhs/Db/mr2Q8LkFszu3vGttyiKeUN40aG8y9lQG91QOMd8/DuJzkQCddCjS4kikVZDF
-	GURL9/nSbeqIcFOzer3T/BvTIJJB5TE=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762602844; a=rsa-sha256;
-	cv=none;
-	b=uWABcheAPI1nwNL4fB2lx1T7VdX8N/I9GqqRTj5dAhzCsqrr4uCxPNN6JsnuO++R8Awfeq
-	st2UbwurhPrNGWG/cfE+4aN6J8gcHBnbgGX9YwXZefMeCWvFwiZU5RrDAk3vAtb3IhZtg4
-	ZoBpeWTZNanlKaifd2YZvno5CzckcEg=
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=6IPtUJbJzE8XpnfYFuMq59jzeHUiSCdVZaEmuNd5LUQ=;
+	b=2UQ1JTvmQ4OrjHuuivtpwp8G7OaEKOk1yNiysSHwa04Jsh66XJ1RnnCPUFacacdA/ChqZy
+	zWkoCYf5dtw7FUJdkymxxDnYCw33DZIo83w1VLvLPeQVFg5ilxEnFUFz32Q17SHKowlPfm
+	wGkR2nuHjhA4vCycw1ShSfuvbejmfEA=
 ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=none;
-	spf=pass (imf10.hostedemail.com: domain of make24@iscas.ac.cn designates 159.226.251.84 as permitted sender) smtp.mailfrom=make24@iscas.ac.cn;
-	dmarc=none
-Received: from localhost.localdomain (unknown [202.112.113.212])
-	by APP-05 (Coremail) with SMTP id zQCowAD3YvFLLw9pipgGAg--.40529S2;
-	Sat, 08 Nov 2025 19:53:53 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: akpm@linux-foundation.org,
-	jgg@ziepe.ca,
-	leon@kernel.org,
-	jhubbard@nvidia.com,
-	mpenttil@redhat.com
-Cc: linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] mm/hmm/test: Fix error handling in dmirror_device_init
-Date: Sat,  8 Nov 2025 19:53:46 +0800
-Message-Id: <20251108115346.6368-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.17.1
-X-CM-TRANSID:zQCowAD3YvFLLw9pipgGAg--.40529S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF17Jr1ktw4rXryfJFW5Jrb_yoW8Xw1fpF
-	1UJas0kryUGrn3Gr18Zr48Ww1UKr9Yywn5Aw1UG34IgrW3XryYqry8Gw4Fqw1FkrWkJF15
-	XFWaq3Z5AF1UAFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9m14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE14v_Gw4l42xK82IYc2Ij64vIr41l4I
-	8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-	xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-	AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-	cIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r
-	1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JU6GQhUUUUU=
-X-Originating-IP: [202.112.113.212]
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
-X-Stat-Signature: tbk1f94sromjc3w8twjsyw5d8hhcxsyx
+	imf20.hostedemail.com;
+	dkim=pass header.d=web.de header.s=s29768273 header.b=L1AYuXN5;
+	spf=pass (imf20.hostedemail.com: domain of Markus.Elfring@web.de designates 212.227.15.3 as permitted sender) smtp.mailfrom=Markus.Elfring@web.de;
+	dmarc=pass (policy=quarantine) header.from=web.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762612240; a=rsa-sha256;
+	cv=none;
+	b=cyUF3LEe2KreFGIvGobA3TaIiBP0K91EmVipriHunGejfxv8gSQN/7ir8bQTdmiMFvsbe2
+	I7r2lVYPwtsKJgSLRB30ZV0DFY6vpMKIgZYvCCf+At71wlto2IeG1LrAS3z6sHNI/ricYq
+	eHoEPmNve0IRIjps6UvlSxUzpvCpK4Q=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1762612238; x=1763217038; i=markus.elfring@web.de;
+	bh=6IPtUJbJzE8XpnfYFuMq59jzeHUiSCdVZaEmuNd5LUQ=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=L1AYuXN5ce51+Wz4mZqZNHbJYroDA6wauSmjN9GBxRvRwGvIhIoqV2KsRGebvqF8
+	 yzDrl1z3TG9uib7jDG5btUPCgd43PfB1gdrc1FSkvNYt1mccpenpECST9f9+TiwI4
+	 Oy0YLcwUmT8pk2Y9fbUpzPyEplqbdxVututpJZsnOZPzm9dl2mh4CIkJ7LCNfbU4D
+	 onj0pKE8OguOiLH02xBh3ETY1Od0wsMnhcfEAuAiwXP6puE/n2CpqHmwJr0eIRJbc
+	 fcTwS2yyXa3D0eJy5RzLwmks/iurwQC/NT21vEdEsTMkRwjJVaRq0uBM3YR3GuWXP
+	 Kf1V2LbWabYKC4vPsA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.92.239]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MQ8Wa-1vdeZC1GTI-00W2wX; Sat, 08
+ Nov 2025 15:30:38 +0100
+Message-ID: <630f7b97-323e-47a7-b4af-50978d4f1a71@web.de>
+Date: Sat, 8 Nov 2025 15:30:33 +0100
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+To: make24@iscas.ac.cn, linux-mm@kvack.org
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+ John Hubbard <jhubbard@nvidia.com>, Leon Romanovsky <leon@kernel.org>,
+ =?UTF-8?Q?Mika_Penttil=C3=A4?= <mpenttil@redhat.com>
+References: <20251108115346.6368-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH] mm/hmm/test: Fix error handling in dmirror_device_init
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20251108115346.6368-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:44v14SBETpli/qm8/ELghyCqY1BCMYr2ao9UnqZP2YiLmNtQi5c
+ DOD3rpUedMBIrBvSDIGU107XXiZbUoV1+VD3HYAYTHMMQkWn2FYvFZyNJExowwjx/LxjSnQ
+ v1ZntpVIMNf2u+vGfCSFz4gadnJMyPAkHwCgsSnfJ1w/8JAi2JUQHmIVuMz3+s7kPJLDdfm
+ o7jX7xmOMnFuGH5JdAN7A==
+UI-OutboundReport: notjunk:1;M01:P0:G7udir24tHk=;kI/+8dh1hYDJAuejmxm0c+zsN8D
+ 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
+ eRl3A==
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 121471C0005
+X-Stat-Signature: 46awczbnf5cm1xtndy7uchu6ddxartw1
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 347D8C0009
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762602842-849254
-X-HE-Meta: U2FsdGVkX18EMSmV9ABZ4MQkzcfxSFppcwPLEN03mfJO2jsPpSHyxFgU4dRsDMQQyQokfNbE41fJCQrjuQydNe31SY0LD9A0RPFcMNroxA5BHDtZIBzoqVC2wuLPjjD1z4i4gpXcRWnro4QMCm37dtpX3fIhNNcruaIz2ZkMAYvHccwSGScdzqd8kHSmD+uE4BcWtRFQCA441PY+JxUzM3IJJIAX0dO/u9YkcYz83peRiayMoapfdy2quIwCBLgh6udJ+G9m0Li9aibMymC/Ybxre62VR2SL+20BjIvl2zuOtgY6apQk+C/UJn2f1F53/kd5yFm2QgejPruwFmq5AxJx0lQgi1w9+bV6gdBagOpD7iWKiAAIu4OpkFvwiLp37mFVjyUEAuSVQdjCUHpFBNZi/RYj/39P6ZruaLLRPzuKUEPJzF8C/UWB+INMseaEJuBA7eqKIQXAH4WiiUZ0QFtQu33ZNeZQr5Dst3h0Fw5Aqi/tVKD7AiuefkdqQj+g/x3gHn17qYnXgJs96d+vWlvx1hpihIfsJuEsvLquIvp/5I3z+wvVZPbL2z51xy5YvExlAPEnkgZc3WyFT3XA9kHim4Obe9OvFAMEriaLa7BZjE74wL+koy9H9wC/g2dBlbGgbPsuSUFedOVDVICdb/lbBCmw4GScVJM+MU1XcAQ8fi8wFv2uBQSuP9FeTUOsRzQdfnfvCQcJKC6e9PRravls1NRCBJ9F+UpEX6e5V25ePphEgj2To6V7wtTAp24Bc2zGAsoJKqCnQT+zfHvKQMOQgzOcx1ONsY0Yr4be0yb+d+vpb9Al+IZ/I4fB8RkP99FQOVcHt7G1C4A5P/d/2s+lZhs/WkIrA7GclWa/M7kY/Q4k+kE/KNnQZ1TGXNjG8+sDyQ5PiNENmgGOAgCDEHGdmTIoH8vWo5ig3KIjRB9A1ZSDAgDV/dbHp/tj75k8uRYD11piNi8flXp1ZPc
- QIVaXN+1
- 3wRtZivMpyetAjcyiFR+m+wY8UA3HgD1OISKReTwXrm7jN0DunJh8mp2auYiN6KJU65G49KOe+0307rEVg68vP5q1DrBamXpTYsdiUXUpvVw9PPNsVT4K7H6C55rjRDJii+aqW5MYv7NCdv+Wc0zr7Kv7W6EsZ9zbtLJIH7OXfnNs05pgf8/CByB1VxNdGsVPNIrN
+X-HE-Tag: 1762612239-113682
+X-HE-Meta: U2FsdGVkX19Ya9X3IFQE2mRgLJJ6I3Lam9yhB5Z4CBEB2soxOieEVKRJgCaSwOVB6AZIM6EWokf6FXT8unWB/YrWkunp6lwIIUpP0JH7UoCJ7fJU3E6IvjUd0MPZyAfGenR9uI4zKCiGEOeYZmM3OO5mSsw3Ya68OcFvFp3/qzH/R33DlP5xQEo8Sc1rJZQaox5c/1Q7gBHzK1dWkhTSzcCxHjUEwxL3gL6a4Ahv6VulyzLtSg8c9pnWg0DsD5YVd1QO4V7stwrAuU++5TTwwdmFaZbhScLCddfbbS14Lm3JuWJGcSHz5UcC5syP1bUT8tCXcgPj7qaMotJbrVgNAk3vaXxaA1aVhO46Z4jOIompQb94eqZIGKWDJafbGtB33jNfnyTJrOhCEyV6cQXy7Q2CXDiZ7OdbdLXMi8jhEg0zw0SxqvggoAy4TL2tztDaX4dHdg3qLKS1348VyfoWXKlQZebYcfw7F54XmI97XYHTyr1G60FYADNkkWeZ/pxHT3QKeXyai9PyaI4bLfPAKPRgFbYxI6m0tPb/ZbqRff/fTqxVpMqj6NbqgXHyLs8+8EDxtab2ZE9yDeirAPtUsPqHgf2n9H6cqflWJWq2/uG+AFbJ6kzLP4D3PApLlcmE1mWXiSO2ixnRiPZQWpukGRhAWIf4QKBsU9RsrxwZFmNU/KPLWJVOCvraQoFbnsG9rxxhdirjQNPj4WnQve1IH3NhlvjDfMPQAqN7ugylahsyt5/a5foElJjwgrv7idyL6yZWrW17R1Lu0nhMg++yF09Ztgu1gYUbe1B+dhZGPYSVhlZaVtyNo/wl/8s3wz9p52jLII9V3iotb5Bib2hEBSGgB5BMwX5+SPv3iCClmhyhm+tQY33qn0p2yV/sQboq0zQNQNTXFYnwqIjn2punyG8KIFUFvygI5i2+uRV+Ci2Rmy+cbLLvv8u6SFmUckSDSPmk6bi98HAs+kjePFx
+ C3+peL0s
+ ltVI3798b4Z+wfr+0dBfojSFPQFCGJMXJ1SfJj4o3fCk11NP0iuKGQf5dJ3Mcn1jQcZRlAvXIRYyPUm6EXMAZuJOuIEGLHuyLoxLy74XoxuqdSYv+aXQCJSiGn8zUwnt69mevM6bAvPX9TI1EBAI68effv+HCPw8onVgjivIBdHGuKi+skX5mDqxk7HLd/8ynqyzD/5vwc79rPijXtMEYH5+84a4D7MfZAZgaX2Q73nHfygeEWYoGV+zuUUoWQXmKpjq8QwBmyMXy22HbPuenSPxLegaI1Gq+9yVylMf86KZhDaCo9oPj00QkRgxYWNZFFN6C+mKG3r0KddsgJsKXtSDbVEXKdFEfYQaN8CTT+ZB9IClelQUVMuUGmRVSJgkr9EdDeKjGczT09jEJfo6z8fwUph5dqNXHgCHIpzqUbakcib4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,55 +174,15 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-dmirror_device_init() calls device_initialize() which sets the device
-reference count to 1, but fails to call put_device() when error occurs
-after dev_set_name() or cdev_device_add() failures. This results in
-memory leaks of struct device objects. Additionally,
-dmirror_device_remove() lacks the final put_device() call to properly
-release the device reference.
+=E2=80=A6
+> dmirror_device_remove() lacks the final put_device() call to properly
+> release the device reference.
+=E2=80=A6
 
-Found by code review.
+See also once more:
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
+cumentation/process/submitting-patches.rst?h=3Dv6.18-rc4#n94
 
-Cc: stable@vger.kernel.org
-Fixes: 6a760f58c792 ("mm/hmm/test: use char dev with struct device to get device node")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- lib/test_hmm.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
-
-diff --git a/lib/test_hmm.c b/lib/test_hmm.c
-index 83e3d8208a54..5159fc36eea6 100644
---- a/lib/test_hmm.c
-+++ b/lib/test_hmm.c
-@@ -1458,20 +1458,25 @@ static int dmirror_device_init(struct dmirror_device *mdevice, int id)
- 
- 	ret = dev_set_name(&mdevice->device, "hmm_dmirror%u", id);
- 	if (ret)
--		return ret;
-+		goto put_device;
- 
- 	ret = cdev_device_add(&mdevice->cdevice, &mdevice->device);
- 	if (ret)
--		return ret;
-+		goto put_device;
- 
- 	/* Build a list of free ZONE_DEVICE struct pages */
- 	return dmirror_allocate_chunk(mdevice, NULL);
-+
-+put_device:
-+	put_device(&mdevice->device);
-+	return ret;
- }
- 
- static void dmirror_device_remove(struct dmirror_device *mdevice)
- {
- 	dmirror_device_remove_chunks(mdevice);
- 	cdev_device_del(&mdevice->cdevice, &mdevice->device);
-+	put_device(&mdevice->device);
- }
- 
- static int __init hmm_dmirror_init(void)
--- 
-2.17.1
-
+Regards,
+Markus
 
