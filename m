@@ -4,91 +4,96 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 52258CCF9F8
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 00:09:00 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 87D3DCCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 00:09:42 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 91E638E001A; Fri,  7 Nov 2025 19:08:59 -0500 (EST)
+	id EA0608E002A; Fri,  7 Nov 2025 19:09:41 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8CE3D8E0006; Fri,  7 Nov 2025 19:08:59 -0500 (EST)
+	id E50048E0006; Fri,  7 Nov 2025 19:09:41 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BEB18E001A; Fri,  7 Nov 2025 19:08:59 -0500 (EST)
+	id D66748E002A; Fri,  7 Nov 2025 19:09:41 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 698958E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 19:08:59 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 0971059F2C
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 00:08:59 +0000 (UTC)
-X-FDA: 84085504398.02.EDAD357
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 58E0F1A0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 00:08:57 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rDOela9v;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id C285E8E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 19:09:41 -0500 (EST)
+Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 83EC813B877
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 00:09:41 +0000 (UTC)
+X-FDA: 84085506162.04.2D924BB
+Received: from out-171.mta0.migadu.com (out-171.mta0.migadu.com [91.218.175.171])
+	by imf08.hostedemail.com (Postfix) with ESMTP id 87823160010
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 00:09:39 +0000 (UTC)
+Authentication-Results: imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rKOWtDUy;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762560537;
+	s=arc-20220608; t=1762560579;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=55EfdJXUuqqpSMDTiQXXuT9iEayOo2wsAzGbIW3ohjM=;
-	b=qUrbiRXTxr+57iIR8Cq6HvH2K/JTGpMSGq8HtQUvBVbXdZgQOZjlrtbQJDOBh2cghVcCGy
-	MS22PMVeYszyZVdctoXhzvl2txd9+SeqL1+tUT+cjEXrCxav2o6MMb2tqJvEd48lh0qfy1
-	GR/CtUROZkj1h5DeTGpR/w3Rj8thawI=
-ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=linux-foundation.org header.s=korg header.b=rDOela9v;
-	spf=pass (imf19.hostedemail.com: domain of akpm@linux-foundation.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=akpm@linux-foundation.org;
-	dmarc=none
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762560537; a=rsa-sha256;
+	bh=zBJT4/z1hj67jfdfBO/RFvyIJnHDFcqSunY1R03npJU=;
+	b=Z+vLmDDp1G/8+O7BSurSDlTS+on87Khrfk8Cc58tbbwG/w5N4dsFty6gQ4TN3IZxByi3sd
+	sRqtHDNniJ2JTjyOxr/v8ENjHp4tEbVC1OIMM+uSwIhRz0joUosWPb5HRVAXQJfdiG++y3
+	KEvx5EO8kR0B3tb5NU70wASWXdFQS4U=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762560579; a=rsa-sha256;
 	cv=none;
-	b=b4N0qcSEmRlLyfHuKV2o5AZ019kQOauU7IgbDTYfrTm/5hGM3Xm/pfEa6xY3xUyNKvGcnj
-	+bgmoO18g0JJiDIX9QailKPgFcN5XKsQvvNn7dATlzQGN1uMyN1rhzdQ6fIZipb1bg9hFE
-	AI0FumooJRk+pbHhlZyyGX8Rr2pJStw=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 9EBFA61934;
-	Sat,  8 Nov 2025 00:08:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C2DC4CEF7;
-	Sat,  8 Nov 2025 00:08:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1762560536;
-	bh=OTeLr/gdmWTJmpiKPkfQJJfAv0QmvVtcPkNjwhc99NY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=rDOela9v4Nmo0EdfH0Cec9HO/dHEdeyP+DvdMtXYxA1H49algjk0eMiXxRk2DVLBT
-	 gziferQ9JXx+Etq25IJmPttTOmFRuKw+TkiQAiMggVUmkEoZEdFqe7ITxZV4GwSA9k
-	 WxbC4PN+8vIuDPtaclrn5UsM6Ub1oa61r0e3rcGs=
-Date: Fri, 7 Nov 2025 16:08:55 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: "David Hildenbrand (Red Hat)" <david@kernel.org>
-Cc: Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>, Lorenzo Stoakes
- <lorenzo.stoakes@oracle.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, Shuah
- Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
-Message-Id: <20251107160855.58891ac6df6854a3b608185f@linux-foundation.org>
-In-Reply-To: <6e07949b-d86f-46d8-a68c-9717cfb26084@kernel.org>
-References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
-	<fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org>
-	<aQyOZ6eYng-IjxS_@fedora>
-	<6e07949b-d86f-46d8-a68c-9717cfb26084@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 58E0F1A0003
-X-Stat-Signature: u56bywjbw4r5m8obniidirthwpranhdd
+	b=MeNlISrZ6fX8sESxJaQbwUJbeVtgqhRRpx3bDnsuPlm+aOQP+ZGBZ9MqRMtbu5ojtbB8T3
+	eCAFWTRVhTgghjgGYcjgF2No8Jogv03wN7y0udceoDiX9/CjAgQr/O9FhdFIaO5eMZEREr
+	6BlPn8LlFZ1LVOjoAMYW+iIOCeFUGeE=
+ARC-Authentication-Results: i=1;
+	imf08.hostedemail.com;
+	dkim=pass header.d=linux.dev header.s=key1 header.b=rKOWtDUy;
+	spf=pass (imf08.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.171 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
+	dmarc=pass (policy=none) header.from=linux.dev
+Date: Fri, 7 Nov 2025 16:09:32 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1762560577;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zBJT4/z1hj67jfdfBO/RFvyIJnHDFcqSunY1R03npJU=;
+	b=rKOWtDUyluopFvaWjD5VtJGiw3uuJLeS1AQdApXn0Ysp7Luz9ois3pFwBBZdFco5dngJvf
+	2b5L53OquL+RROkxnHgq05LTzGedjVJbLWtXE3+/olsb/3vEJ3D56ZOUxWWMc7K07iiga7
+	pCCV5h2HAIeHEIH1g53CpQ/NGpNZXHA=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Shakeel Butt <shakeel.butt@linux.dev>
+To: Michal Hocko <mhocko@suse.com>
+Cc: Jiayuan Chen <jiayuan.chen@linux.dev>, linux-mm@kvack.org, 
+	Andrew Morton <akpm@linux-foundation.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, David Hildenbrand <david@redhat.com>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] mm/vmscan: Add retry logic for cgroups with
+ memory.low in kswapd
+Message-ID: <v56ql5ptxyx4x2j7nffznhs3osjghkoj3dlkfbpohotuof3yiv@gf74er4pf34v>
+References: <20251014081850.65379-1-jiayuan.chen@linux.dev>
+ <aO4Y35l12Cav-xr4@tiehlicka>
+ <a6cd4eb712f3b9f8898e9a2e511b397e8dc397fc@linux.dev>
+ <aPEGDwiA_LhuLZmX@tiehlicka>
+ <46df65477e0580d350e6e14fea5e68aee6a2832b@linux.dev>
+ <aPE84XfToVH4eAbs@tiehlicka>
+ <db4d9e73e6a70033da561ed88aef32c1ebe411dd@linux.dev>
+ <aQ3yhmsT2NHeNwLi@tiehlicka>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <aQ3yhmsT2NHeNwLi@tiehlicka>
+X-Migadu-Flow: FLOW_OUT
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-HE-Tag: 1762560537-511530
-X-HE-Meta: U2FsdGVkX1/rWGV2CHbXSUpKa/or8b082kV4Pc4YH/jSHoSTAw5cqBxot6mIfj2ybWooKVB3kRTsha9BXCl5JQfqk9uuBpdV69/f7MQH7DiFa/rXBg0krPrRdLN5K2xPneXEMmrVsxciO0j4i17236MLRHfnAcYdjdhx7KSUY76zVY0hpInswWCKjSZYvYnJgK5SGN0hSDpXwCgBJjCZ6tp6DsAbjsvSnzqEad0Zv+jaHRHl05furTL0ocQTRW4BRHReS/pTrtuSYztidXmqcFbKfqlRTVUXvTm7+2v3QwOJ7Ec4YMmz7kV2w2iO4a64XxbzQd4Ib9WuzXdsWsUD/sgXaxMRA8/iaHVCO4fVX5SIjetIU+k8hjkj2nzjHZxlh3g9d5vG+6q2PkPpx48yTGhHNjUZ7ASpcI0HIAsNoy5iVr5pP0jULzBkKwB3TYiusp6NG7sw76kmh5t2pJS/ornOOVpui9bQZmMQUM7o3bp8QwGmSqzFGI1Uu7Vvf5XyiXiuGz9XvE3hH+Fok9r0ze1styIZ7j20hndqOuN9kAzVIrd/jwwk7cTP1mVV/SwtJ8pBUDrOb41hj8SnFkbdNHRFbroo3X8gSyOKxWmEZPJJOaxEm9NKMm8q/99kMegIdwM5Tkhx6PsqJir89R6CEeUDnlYOYvq5syGrtIF7K9rFWUQZk5gXk8IJX8HFGm6z00+tqh4T/EeWYZoHsUorBl4JLEvUVMXzvs8kQbK6hTrHQjbQcoGgvje4ptZalzogWkK3Q2+NXsYqjlZ6MjSipF9lRc+5SUdxiEiWsnI8cjMgvL9vm0p2RONNOlKOw2QBzEUwZyXI5+LDXOh+D2Uo+YmSIft2HfDiMt0dEkEumG6/k3NfFwMpzQjHLiNN4Vxe8holu7ZMGwnFodXQ1gmNsAg2XXfyW1gdL4LaBlceRwIYCqXOgWFD23N9TEVDr5omVQanfWouQOUhalodbZv
- jJRQEVhh
- 56IlGz8r4SOA4HHpDAUZPSR86fCUixj6gf7s1/NP9e61Tb6RcCOMyhXIY13Ic5+Gd03Zluy5CXUNIIwIZdmdP75ZCVVwXrOx/Osw+ySdnLeOBndCZHfLqIF5KSwq420STmgau1lqklhgvr/Vm/4QdNHgphB6NlQ70f9yZ+S8uKE8WrOzvNPDRvi72X2xQLl8IJP4zsHcx4IGJCUV30/E3wxZd3pkGdvMc2ZQ30NgbT4jVZSZy9BBsUnI+cPRvkTUrkz90S6tSamK3LMs1sJBzFk2xummycVxU+3HrZcV2/Ilnhqa10iR2+W/y46pUT34W2pvV0P9z93RACxTC3tDuJ0/AqIPo/IJonS5L3pgQdQVzyuoFDxB8SXKgAiZ+TonKWoY3WBlXbQySqOw=
+X-Rspamd-Queue-Id: 87823160010
+X-Stat-Signature: gp93f8xisccs6gxuhg9wxkqgdaoqcxnc
+X-HE-Tag: 1762560579-295847
+X-HE-Meta: U2FsdGVkX197e5lhh1GJFjC9CtODhIhTA153/NUyUv1Z9931OwhEFyBwIJdhNUpo/+HjRK+Z7zab2D6Hka5v9QKOLCMWddPwne6thTrpCUFBFTKKYCUCW2ma03ITGbYfGk5AX7VCkGnoaNir4JSr9gay/D4dFZBNB+PAp4VdWpe4Ahg7T2oCr+RQL2V4XR0aHfgMcDd81l9jBqPopigcVh1Wc3sPAF0zVZDQLLdk97VJId4+K/My3wErcKiAHzVkQ4rSllAMW8FQ7aKaZhGZuCO+uf1nNWTNZ/4mDPDMlM/hETyM/oVhrickrz8Y6KlvoeUS/+jBs/EyT8nTU7thJuBmdaMWUbqhPHRlGWSaWkzEU6aBg76rkTdRIj3eKlQ/Sw1XZ18rYMmwHzWsDjkmK39hl6FyyjuhOcpXxgR+M7TPVhuxRipfshWjR9pqkjEQSuRB3ZegTHchTW7i6N/BrxfwPZDlOu8CsQXBw1Bj0qYZ3LQeAndLgsuoWAUsoSA7rj7csim0Ikrzktqr+U+Lz78fUpuGBTi+laV8zxWsAfylyx86m0C4zJMQV+S32g2xGKcXMtG3qzKADKn4Qlkfobv6B93wJ6JX2EWVYDBTAjjiuBk/tZvMUnGtv+Y+6G4yim9GCx3183ugtsfRUHRIEPr6qHQ9TxiHy0mdy6r+DhujTCeDYao6grQ3BZ/gIJ8AFnLQ87kkDxb01aFHbFHflyt3T/r1h3GJC6clCeziA84/3vNppx1aEdAYOuv8nc3EMPWFuEKjC3toqBPN3EFPpej5h6SBgaTQ3IdStKAIqufjhqDWS1CXhntBIjxY6IsbSLeQJ7uhz+Scw48Iffjzise/BKQ/OC99fmeINsNOdgxSKrRAefPzWKnzxgKhL6rZC1ajAXVf7y4O7/ZmlyKtrLw2zeSJWMPCBe6uUCA5XdEMhetKV+TNLDFiJyXlPBilEm1vnKG/AEA8lPy0gMf
+ xB5Eh8B3
+ IjDKzznOqVjXXXkqwT72goekNzl2jaCYzIO2HmG8LGWUCSNs0pnxXZd/Z/hryVCKZshPSJwPIac9fU7ZfJs1pU7PUlVz8+ls8O38X8jwfSFwq4Rw79kgfsJyMOhjoS9BdF/JNeBu+rJh6BUM4kghZXFh5j5E2SohTL7yJmOeeChPWIQKByr7lC4oxoElF1rrlrond7rJez/A6lj1b5ycqO1d+Qwx0emwnzl5REAf3MYgappKZyd+VAtBgswHEhZ93gPDo
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,46 +102,45 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, 7 Nov 2025 10:27:27 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
-
-> On 06.11.25 13:02, Ankit Khushwaha wrote:
-> > On Thu, Nov 06, 2025 at 12:18:57PM +0100, David Hildenbrand (Red Hat) wrote:
-> >> On 06.11.25 11:49, Ankit Khushwaha wrote:
-> >>> Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
-> >>> triggers following warning:
-> >>>
-> >>> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
-> >>> false [-Wtautological-compare]
-> >>>    1035 |                 if (addr + c.dest_alignment < addr) {
-> >>>         |                                             ^
-> >>>
-> >>> typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
-> >>
-> >> With which compiler are you seeing this?
-> > 
-> > Hi David,
-> > 
-> > clang version 20.1.8 (Fedora 20.1.8-4.fc42) raised this warning.
-> > 
-> > To reproduce:
-> > 	make -C tools/testing/selftests/mm CC=clang
+On Fri, Nov 07, 2025 at 02:22:14PM +0100, Michal Hocko wrote:
+> Sorry for late reply.
 > 
-> Thanks, and thanks to Lorenzo for the details.
+> On Mon 20-10-25 10:11:23, Jiayuan Chen wrote:
+> [...]
+> > To provide more context about our specific setup:
+> > 
+> > 1. The memory.low values set on host pods are actually quite large,
+> >    some pods are set to 10GB, others to 20GB, etc.
+> > 2. Since most pods have memory limits configured, each time kswapd
+> >    is woken up, if a pod's memory usage hasn't exceeded its own
+> >    memory.low, its memory won't be reclaimed.
+> > 3. When applications start up, rapidly consume memory, or experience
+> >    network traffic bursts, the kernel reaches steal_suitable_fallback(),
+> >    which sets watermark_boost and subsequently wakes kswapd.
+> > 4. In the core logic of kswapd thread (balance_pgdat()), when reclaim is
+> >    triggered by watermark_boost, the maximum priority is 10. Higher priority
+> >    values mean less aggressive LRU scanning, which can result in no pages
+> >    being reclaimed during a single scan cycle:
+> > 
+> > if (nr_boost_reclaim && sc.priority == DEF_PRIORITY - 2)
+> >     raise_priority = false;
+> > 
+> > 5. This eventually causes pgdat->kswapd_failures to continuously accumulate,
+> >    exceeding MAX_RECLAIM_RETRIES, and consequently kswapd stops working.
+> >    At this point, the system's available memory is still significantly above
+> >    the high watermark—it's inappropriate for kswapd to stop under these
+> >    conditions.
+> > 
+> > The final observable issue is that a brief period of rapid memory allocation
+> > causes kswapd to stop running, ultimately triggering direct reclaim and
+> > making the applications unresponsive.
 > 
-> Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+> This to me sounds like something to be addressed in the watermark
+> boosting code. I do not think we should be breaching low limit for that
+> (opportunistic) reclaim.
 
-I must say, applying this would be an unhappy life event.
+Jiayuan already posted v2 with different approach. We can move the
+discussion there.
 
-	if (void* + ulong < void*)
-
-makes perfect sense in a world which permits void* arithmetic (ie,
-ours).  So what the heck is clang doing??
-
-If we do
-
-	void *addr2 = addr + c.dest_alignment;
-	if (addr2 < addr)
-		...
-
-then which statement warns, and why?
+http://lore.kernel.org/20251024022711.382238-1-jiayuan.chen@linux.dev
 
