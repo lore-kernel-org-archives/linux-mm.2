@@ -4,268 +4,147 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2B2B0CCFA18
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 17:15:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 06B10CCFA13
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 17:18:22 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8420F8E002D; Sat,  8 Nov 2025 12:15:05 -0500 (EST)
+	id 600AD8E002E; Sat,  8 Nov 2025 12:18:21 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7CBDA8E0003; Sat,  8 Nov 2025 12:15:05 -0500 (EST)
+	id 5B40C8E0003; Sat,  8 Nov 2025 12:18:21 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5F7138E002D; Sat,  8 Nov 2025 12:15:05 -0500 (EST)
+	id 477F78E002E; Sat,  8 Nov 2025 12:18:21 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 3F9B28E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 12:15:05 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id DA27D5B5A6
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:15:04 +0000 (UTC)
-X-FDA: 84088090128.14.865AF94
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 43AF8C0006
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:15:01 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ltaDTdCN;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Sn+nWGYp;
-	spf=pass (imf22.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762622101;
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 2DAD68E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 12:18:21 -0500 (EST)
+Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay06.hostedemail.com (Postfix) with ESMTP id C79B012CF98
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:18:20 +0000 (UTC)
+X-FDA: 84088098360.21.FC08393
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 36DFA4000D
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 17:18:19 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pXLXLja8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762622299;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=FrZyx+G0nFRqqG3Ukf0WKDJ2lnH9WlkIF2fwTUy9qzA=;
-	b=XIRRe+x3kEX9Nb7wqiiolmsRcIXss5iPmvfDyladE5NW+aEUllWRy4T1aCnhZxtuPnPQ6F
-	qJbuiMq2OZxsEmGD7gMTZRBbiqbdBkE6GUF4tIoD/Qfn+VhptobX7RbK52yK0y2qUIA3wC
-	6cCUuO28moJPpOddlObYG3jt4MTajGs=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762622101; a=rsa-sha256;
-	cv=pass;
-	b=2Zi9/EMzQaikrPLs/fW8KtOWTpp5zLG5hOzFALfmNRY1JHlpuR6/blulJcQTVWzo4bivTL
-	dFQr71yO50r4vrtL+YWfW8Yg+ddWGg2TTGGkKeBZH1LO5dCA6vnjERyx1p8TCoPUCxeEsl
-	gXq2CAXxImwY0vrGXeCdknc7okOwdw4=
-ARC-Authentication-Results: i=2;
-	imf22.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ltaDTdCN;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=Sn+nWGYp;
-	spf=pass (imf22.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A8FpXSu008953;
-	Sat, 8 Nov 2025 17:09:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=FrZyx+G0nFRqqG3Ukf0WKDJ2lnH9WlkIF2fwTUy9qzA=; b=
-	ltaDTdCNB0SOBwpDtGmVIwAyDSPFxLYSI7I/0+PHMGh+MxT2ysbUZfgYqHnv/MYJ
-	n8u0R1xHrG5PZxUW/5pyYY9OzVESZ6HhP0j3vKFU2kmr/u7TfkcOqtahvD7hrZ4b
-	hgp+70rW8YngtLBC3Me3veI5WyZTQpsxGkbn/OxvQKkQ6Gv2rq/DNUSRDB3Ja8HN
-	QIcVax0Pf5zBL7i+o5MY9mospjwOvUKqxurvKUvs2PeA2I4Q3kCW8vERFtJNgBno
-	V6J7ycVaXhIfbmHYggqBPMb9ZWSeJkIqPigwPFmuKmysXChilHKc1g75lABnzOuM
-	hUybIgNB4QdOAvgvSMzxBg==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4aa6vh84sx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Nov 2025 17:09:40 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5A8BijdP007604;
-	Sat, 8 Nov 2025 17:09:40 GMT
-Received: from bl2pr02cu003.outbound.protection.outlook.com (mail-eastusazon11011002.outbound.protection.outlook.com [52.101.52.2])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va76n3y-5
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 08 Nov 2025 17:09:39 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=W7Icn/7ZMDwUYC0tzdkywBrUfmnsjao1Cmc80PWs7bH8XqKu/0C5SMgPE/G1tfnw/oo0F6rrwF2IaTKDgJ6bsacjGsyW3wTzEXpJXDfKc3qWAN60/gcBc7JvC3/6CEFqIUJYK7fLZ2R0qjnqMQHhKyRTzK2rSU+zHiHxwsDTtRX9YvjeqqLMlaOExQHqo4RcoEIvHlnCxMyDBmV7nsKv0zhEaYQkyaJCBpFrgBfqbwTVUk0gImQkFJWkSZUfPXbVV4j4mLFetU7F10sPbRAg/TDO3120kqFhqz20/C0WMn07sUUetOt1xxMRKFa6lW/RgjnN/gtgHd2b9yR0WbGI7g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FrZyx+G0nFRqqG3Ukf0WKDJ2lnH9WlkIF2fwTUy9qzA=;
- b=XNgeIMAJ6EDwDj43whEruOIlOKYDZLGwdYcx5sfsWVNpACJOOMuI3xugNaDbR6WJjAotgx1gpZnlE0alJtOH+tP1MCmtgoNVTJAYMkD19NqQuBLEx/6ArQ2ifvfGvwXcUc0n3KBUkcMbNEG/3y8GjhXcCKOV8fr6MP/LqvV2XyNGWDJZFL3tIQSTMyoEYurGNgravYRYz4yEZ1pkOnGkcVh3yP8WT7nm4II8LwyY68g7VDith4MQaukUJrC5SIP5YNLAjRzOIRl60F+hptnb+vkDAl+RrX5FaYh0jphU5UG2G3sGXFoqmeIHWtXtJPzCI9SsCNydYaLdfkopE2vS9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FrZyx+G0nFRqqG3Ukf0WKDJ2lnH9WlkIF2fwTUy9qzA=;
- b=Sn+nWGYp7FEl8gbAdpFsSsmUixi7VLF6QhyUzpbGwXzt1MgKSRopw9p869jcUO2ZPLpkzaomE9a+OCUSbJYDMihSzplh5lLcl/NjpU7GHW7KsUxwWIIta9z780WK3Uv3iEZvAoEWC7IrLggSonS2bEPwuLu1D8vzGNgTwhJmf4s=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by SJ5PPF04D2D7FA7.namprd10.prod.outlook.com (2603:10b6:a0f:fc02::785) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.15; Sat, 8 Nov
- 2025 17:09:36 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9298.010; Sat, 8 Nov 2025
- 17:09:36 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-        SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Pedro Falcato <pfalcato@suse.de>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-        Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: [PATCH v2 16/16] mm: replace remaining pte_to_swp_entry() with softleaf_from_pte()
-Date: Sat,  8 Nov 2025 17:08:30 +0000
-Message-ID: <d2f848c77530c073116b51092c5425d3619f7ecc.1762621568.git.lorenzo.stoakes@oracle.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO6P123CA0022.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:313::15) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+	bh=m1ox1tcE76ocNBNQ+mqc5W1J16kccLa0tGni3/pfhvE=;
+	b=Nf/shY/dESLgnIzxgSMdE5eYjgzjioUnT71nfPyYyS1KAyDmXaXafniUzvDHGNT0XLIOp3
+	6Ny5m03dMESAKPagb4gTco1SJooPDoSiF2pO3OTk0uQaenQYOUcRqs16eTkubmqQS1zyUR
+	1SXj83aZc95959C2C4pciVgMs+w+XLQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762622299; a=rsa-sha256;
+	cv=none;
+	b=yYwRMbIKcQSk9VXRLQUx1TIqft2aB4R7puAe67M8GDpi27q+OTo5Dz7dr3L91N16EIPcvK
+	VwhJTT/zApxIKHjDXBJqnLHaCsL//QjLfSf3YYZg/wkCRO9018qlW+hz/LeIeh5isFVMF7
+	UwZA6lsjS8/37fJ8N/hhUt/nzzI8QEg=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=pXLXLja8;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf07.hostedemail.com: domain of sj@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=sj@kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id DE8EA40463;
+	Sat,  8 Nov 2025 17:18:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D797C4CEF5;
+	Sat,  8 Nov 2025 17:18:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762622297;
+	bh=pESYDLXfcVD/iJn0c7wNfoZTyYhd+yM9sA3cQbI6Gww=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=pXLXLja8D++3i+AfHiCU6NWWnKCTqEseSjb6R01Wd2qFTmLAUkW07+K3qAkLAB/iO
+	 58twgr3qbPV7bJw2Xlx8je9ohYkBOStMy56jhmQ9FOSppxGZWilCo/StGKN5tm0P61
+	 b1KRhblheTCEPQheRpoPPNKS+0o7Bp0uMRP+JxSsg6XvaByUie79tO9Vq/JnxBAmGN
+	 bRE3xmzZzdcNNdy2RVe2gI/se+/RKNc4bbk9TorBN9r5WaJCOkqffGrFhlZRQNVbLe
+	 KQYfPymH7R+7yeKssxlH529Od2FBgCcEzgK73afUL4OeUfCq0h8ZUMuFtRudOFqqWU
+	 nQWLuajG/ch7w==
+From: SeongJae Park <sj@kernel.org>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: SeongJae Park <sj@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Joshua Hahn <joshua.hahnjy@gmail.com>,
+	Rakie Kim <rakie.kim@sk.com>,
+	Byungchul Park <byungchul@sk.com>,
+	Gregory Price <gourry@gourry.net>,
+	Ying Huang <ying.huang@linux.alibaba.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Wei Xu <weixugc@google.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Kairui Song <kasong@tencent.com>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Baoquan He <bhe@redhat.com>,
+	Chris Li <chrisl@kernel.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Leon Romanovsky <leon@kernel.org>,
+	Xu Xin <xu.xin16@zte.com.cn>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Jann Horn <jannh@google.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Naoya Horiguchi <nao.horiguchi@gmail.com>,
+	Pedro Falcato <pfalcato@suse.de>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Rik van Riel <riel@surriel.com>,
+	Harry Yoo <harry.yoo@oracle.com>,
+	Hugh Dickins <hughd@google.com>,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-mm@kvack.org,
+	linux-arch@vger.kernel.org,
+	damon@lists.linux.dev
+Subject: Re: [PATCH v2 10/16] mm: replace pmd_to_swp_entry() with softleaf_from_pmd()
+Date: Sat,  8 Nov 2025 09:18:08 -0800
+Message-ID: <20251108171808.77373-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <093e438c240272d081548222900a5c3b205e9a5d.1762621568.git.lorenzo.stoakes@oracle.com>
+References: 
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|SJ5PPF04D2D7FA7:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3390fe3f-cd74-4368-a37c-08de1ee9983e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?bXMYWIH8W09RyWA5UlMUCEzqPEVW7AOcAvEttErrJzqoWmkMbp23cMnItpc2?=
- =?us-ascii?Q?tElmyFSt/6zVpUqBpBEW3XQTiyHXZg9tHN4RLJGn9yp+xrRcvmwo8qHg4neN?=
- =?us-ascii?Q?aILbA3EoATTTCYovE3lsdTc3GKQhFYjAXDggq1I5Vc8SBjiUgPPWyLMFPcPa?=
- =?us-ascii?Q?8huS6WEzf/y7lH1ubQUCOMCkMlMCNc0lksC2DKJ5H0+duJIW70Y7kWM7BJAn?=
- =?us-ascii?Q?0eSNvm06LkdmZknilE5Zs7JWAb5QSTQHIVcR1t34eH7kAduA33tfCS0VDRvT?=
- =?us-ascii?Q?1WFD3TvmJeAyOI0aA7rtsEPReDtdhVGGHQFE0fFaYomGaeCH70/muFNFyxt+?=
- =?us-ascii?Q?7Jc2CgNk1EiKFRjGRULCx40qfMUSSsVLKa6BIdqEHenTRBXHdHMxHCQgx00v?=
- =?us-ascii?Q?ePndOVJvB/Qc6kqi+An69QQRnTh6k2Zaui+i4y78CoJhMxtwb/uPTATPtWBi?=
- =?us-ascii?Q?wR4Cw9d8lSaccaXg+BqmHRIo1up14G8j/9bSgDEE7/C1xhuWYm0l1fhyKMVA?=
- =?us-ascii?Q?l9dg0SUhtQYVFvZKs1idD7ARZdRAOD/xcUiiFRzD7HJ42Cu/0NB0hZMrGLpM?=
- =?us-ascii?Q?jgw3Se3dg9ju+a75q2wXd4WF96KRFmpUzeCnZGdUOq5sGbfvg6o8iyep7hyg?=
- =?us-ascii?Q?q3+w4fC73caqA4HYCwWTLyhnNPY8YuAvFMRQXnOYVzQztzwpfvdA6+dwkvNW?=
- =?us-ascii?Q?+GchHirfR1y6dDQ7LFdXv6uT2Kiybw2gVsW6UBcNWkrRIvoqX7E+caUqP0Ol?=
- =?us-ascii?Q?zboZM0RwtGXlB77/x6wZdpfQ6AXzTVyhpqBACxGxYMKZrlzsaMOmmy8UFcbK?=
- =?us-ascii?Q?PVedDBNgh6e9pJAf4Kb2qFU4XFoanFXU6qggE9ZCCC9Uj4CXjGifltW/Lz8W?=
- =?us-ascii?Q?UzzMEd1FktCWgmBTDSuE+F5nz1cnkj3UO79KERLgVEXHelukXXz5LOswbVJv?=
- =?us-ascii?Q?QyJHECpa82IuNg8/8VkI7mfkgF47i+aDrBSY/58njAmJo86Co5EGtwGdg8Iu?=
- =?us-ascii?Q?bXTloI2AXawKZP/VzHhfC7y/8lMT9TaHf9UI9jtS6TrkdO2SipEFsSueVx//?=
- =?us-ascii?Q?rMaIIFQQb0RrDdEbauCMUdTl5oguiAaJPti0QInU0Pv6EaRfxkbwi0VCpZ3Y?=
- =?us-ascii?Q?y0jmSgaaYu3Q4xHhb59gKAArbOnu00z5JKZnzn350PD405SUzoghsTMIidJI?=
- =?us-ascii?Q?BsXYCiq25AVWFlcJTemYpFrcgdrKfYlz5+vPW18nBTyGQK5u4QZYgiGgVELv?=
- =?us-ascii?Q?pFbDJLC42a5ZDaeMNyHvWTtI416F87c2tRmvGTFoHkGtsiSYxJClUycZnR0a?=
- =?us-ascii?Q?4JckgaIqhTeO3Z6fGkPRHR1Ah6KecbtE/5Ddlp11J7Nqp9GTgvA+G8hEqau2?=
- =?us-ascii?Q?IVFNny5JApAtl4CsoU15/03WM8kwgs9Xx/l85wCxAoEiYqL2kUj3u+9gAOHe?=
- =?us-ascii?Q?uRpxEw0ZPqvmw0Yi245SFfwe7qjrWVmt?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0cB5fGeAudFamLkH+3asl93S+AWPK6FGMtdR04gh5wzZF8SCTT4M6waFZ9AS?=
- =?us-ascii?Q?ZQ5F5mg1q8qqUlGjgzOlzRvX2q9OqRNsYhaJejetLMLloLqAHwhNOBzJBq7H?=
- =?us-ascii?Q?iAMGo/dBPck1Xb0RNriaklQnS3UDstS2TZmy9mJANlPre1whicpcMm+AgSV8?=
- =?us-ascii?Q?yU4e+16EwcIfFwBFNbWk019VIDmvplT86ArlhCoCoJkkGciJsM14jYiq6NgL?=
- =?us-ascii?Q?AwLazdz+vhFwbLt7bborlzyArV//bNfwZenBzxFQBLHc3S69t8QWlCPrIM9Y?=
- =?us-ascii?Q?x9lH2THLzArhcx+ZNFjxJ05wm5/01tCG0DABaboezxD2Etjhr94yBhoEqAX3?=
- =?us-ascii?Q?2H/sv8I784xqTvsbgLMR2o0m9TTIT+4PUqfKtO9q/QtIZ4cQyxrkIfroG2zI?=
- =?us-ascii?Q?4TOKOiWKZN/6mOKhXXiGawqyPD38ast1Ct0b4gR1CJgjpXTudhyrM4VRz4/u?=
- =?us-ascii?Q?8aDc28D22/PW3cEBGHskocRxSaBAaijlspUKKanCyHkT8J6/3H5EdCGYPh7e?=
- =?us-ascii?Q?ThIB2z1Vf5lfRXq8+EPjeh0nDTcwpy/WKcs4SR+LcWQFA05EHtgmBft8awM1?=
- =?us-ascii?Q?47Pm9Nd0lzoEi5UNAuVI/IsRRh9tlYze7GzhGaOfH+zzy8o5QBE95jVuxI0f?=
- =?us-ascii?Q?xWa7BveTArXp+SYk8hKl6sqIU4VulBrK4rNoOp/JWXAnx26YKIia0D8gAi5e?=
- =?us-ascii?Q?+FXpGZEnb7Wi8aynbS3pXjxEgMykU5vdqaTXtMUDDJHOv3gAe+CzeyQdplOx?=
- =?us-ascii?Q?K1xjmqCaG6vUEdgaFCj3+T/ykUOzfa/W9H9qRgMDSAxQZwecZ37WpELRNHXu?=
- =?us-ascii?Q?kIbYFo3S+AfhAY/7uFSse+FlHCeoeEBB2G2QNdy8He8T9TR7UhAhQvVyDh82?=
- =?us-ascii?Q?FtmovccWAWqB6SkNQAzO5F4BiqaNXD/lCo1oQA3UGJk7jSbndR3++4CYKwbn?=
- =?us-ascii?Q?l7OXWGqUWlyHBtjPaiTw4u4ZRzw9RYflbV5oEj6xunwTDeeT9Gh2DCfSmDc2?=
- =?us-ascii?Q?AoRt/9SGYCWcHwqqnDTT5kQF6yZhy4VRaFUPh1UopPn0hjPYwHfI730oKBBl?=
- =?us-ascii?Q?61oYI+Y0YteghfiqmRtGDdUhCHSoEMmNJyD4JqihYlevaKJv5W91R6NJPoLZ?=
- =?us-ascii?Q?XcKnVfh2WWWr6ZkbT/5Ew73J79hrKfA25ImQOEGdxrlfMKvYwBNp6GqDZrSy?=
- =?us-ascii?Q?L8j+IEfTZDvkJIP9KKr90GM01fTDyQ817ehkrN6QeXtubCbYF+52u1lY+oUa?=
- =?us-ascii?Q?BvFDMxMSGp910w20cjOw2gcpckQqPRw8DT/jZcGqHZK7EliPxjdqAcxw72Id?=
- =?us-ascii?Q?U1y75mR7pUm3J7fe8oUmqPvM+KVCq+V9tuoDvu7WpyUsTdAU45nmPKRm8DfU?=
- =?us-ascii?Q?BO3qyQ9QTxCiF1wTT7luC2noeF8WA3M2dX+MSsDCgZKeZICEdLFp4j1COJ89?=
- =?us-ascii?Q?67+7mq50CntC3uBTNF5mg8/1r8vlPvdxMyVUZcJIHPRntx/qcTidGfMgcMwC?=
- =?us-ascii?Q?jNpwx9CuhB6zBImucQenWbXtyyJRPTe24ijrQMjL9y1lYfTZoh060A2hViIW?=
- =?us-ascii?Q?iKvcVSTg/vpky7n9Nc/U77V8shl/FKcUW1GhKipjxYNeoULxEk7f/y64QKxj?=
- =?us-ascii?Q?eA=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	gARDCpDLL0W3OEX5MTcIs82YZw+BooQ3qtbgpF0oQHALY+LyiAqS4aO4lyiPB/z5X4PD0Xd6g2e191+gBhkWl3AMPaiOfzE0Y6OUdamQRO0MQ+7eDWMMym4QzkfSAw0F5tZWpRrVPDyS+zU2IpBB/7sQC8yg1LKmUOffk9BzGPIZcpkqCUDLMRJGqDKq8FAa9upYzAvOdrwyd6QFDCph8vGRWkCwfcXJQE6j1fWMy5WV9cD6+Pehbz9GmdPx0gCmwmCNiwaJvJ0IYTEbJkDD4fkMhnVAWtmsvYlo7MGAPam4lPoAiE+OAPr4TP2cgnVM1xjFYoDqh908AWqitGgDWZ1RqmiAGpjJm7lgl6H/51hC0Vz+Du4ZbNtN18d5t7voEwdAQncWDgDRiSsdV0QhZzwpnWESYaM1AtMhyMUHdDAvFCzhehnZx6WLWpUdCT4Zg3EJkX0cyBV7MVE89E0WZogHssr+/8yDPtqmI4c+R3B/clq8b3YgWikkNWHcbkswbiQq50KmBZP8iQXTWtY03NOvAwK9sAzW7aHneu8GvMPUFT1sYxIl5LXCuNRSqzZAfNX8abqlI1Nf/iT3pO6L/ysTWZo6fEiE8VfQurPgE3s=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3390fe3f-cd74-4368-a37c-08de1ee9983e
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Nov 2025 17:09:36.4345
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: uPZ7oowgd6wCzvPHYX9m1zBW7tjeaipr4m+HQOQvnB6Sx8LYsaCE23KzFNsFcmM+BCTFng3U4gPINc435NkysH7j1H9Hym+zHS+VaS1d3oc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ5PPF04D2D7FA7
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-08_04,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 malwarescore=0 spamscore=0
- mlxscore=0 bulkscore=0 suspectscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2510240000
- definitions=main-2511080138
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDEwOSBTYWx0ZWRfXz+p3vkxt8l3v
- /eSGjeNr9D7wiMnuR2Pm2unoed0sy9JVcgS5LbdBKzVVqpk6LQsLVQvtHGkY6G0574DxtE1Vtej
- Wq6RvIjuRzwKHNJIm6e+yhUlwsCorO/7qtFx4J4riOU/tQWM3VVN5Kx2EZaIA7YxGcqkCDETmyQ
- auQVu06mUB7vcx5h4EnVD1zwAshLE1cWHYSCUQHB2SoFiEuj1xO4YYOSB2i16iGg3Z1HcFbjrOr
- cI5o1c4w/ELPdzio52L8KwSFZ4nMAgdp1mBnzJ0hmRVNJmPg3lR6quZ2QUgZWkmr4B9HF4eHfIU
- AKrVpnChaxtguHtdHBSxcJZypEtceqlzfpij6rTxM7EYJlYWjQFLNdcH2WDCj9Uv/sry1pF5lBk
- IOBYuki7qeXjnzd3aeh2up7COX/k2Q==
-X-Authority-Analysis: v=2.4 cv=IKEPywvG c=1 sm=1 tr=0 ts=690f7954 cx=c_pps
- a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=6UeiqGixMTsA:10
- a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22 a=yPCof4ZbAAAA:8
- a=ZBIxWEUt1cXBTM7wFXgA:9 a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
- a=QOGEsqRv6VhmHaoFNykA:22
-X-Proofpoint-ORIG-GUID: dKqGnB-33fAtF3jkKw6ilcXfKxOljOCj
-X-Proofpoint-GUID: dKqGnB-33fAtF3jkKw6ilcXfKxOljOCj
-X-Stat-Signature: qpi54dmu5je4xu7wnyeen5qfndkbh4yi
+Content-Transfer-Encoding: 8bit
+X-Stat-Signature: 7f8y9539czsp34zwt7dgw7tjggaaoynh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 43AF8C0006
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762622101-621303
-X-HE-Meta: U2FsdGVkX1/zuiYpzgGcLrKigKJwwcOtfOZMBbNW+z+V05Jp7aadtdFKWaEllH74aDhRntALs6oarlbvQJEDpHqxIwrt77CQbcL1se3gL1yWPX/pdYgK7GLdYMq7i74L7iwAIlQ7f7Ygt/+IUBAP5c3iYEdGv634KUeuwHM7bgXJE2xvuLwLQ4N9sqd5BwVVfM2c+s5uwJVory+ZVAFVGmuYlcU1JRASe9j6MWuc8NGgoOunlxzK352nKsDkVy7tFixHzoV16eoPK8gn0GrtnAtZXXjhhBq2KNqSdjIIyZLC6hgG6yS65EZ02oY+K2sGc7OlRByTAApOswXdESTf7UZSqhInHBr6m6epzh1lUZgLFqap815aXwGwRID6SvfPrdXRCy7UjM8i2sbjDk9fSR+on2wiaGb/bC3pJmP8ZrLwGB7W+aNbQD0f9Dv95QDQd8c2eTEBljkbRQxrFQW6iTRP4RUXJGXV8shamBfwBQawYjXUggE9BRpLVC4F1ic378hgjHPS/vZSKGbwh/nXXxC6OG4UEonhe5GStxWQnu5BtmBEpEQQNnLYwSFRN6F/BsiNON6iK8tV6uMYGpgN4cYPHN5IZl+HG4bFSiuRP6mZ/VXoZQ/fqfsIiksbAjFCdR8u7BDenFTxMtsERI21ujs+kZ5ecsCVHlqSx/+V+owmf3Ue91qSgOg8r/pwplaKUbmoxnNdGgDksuPhpIIXa0D7ld1UId8yO00QypFfjuWhIF6zXWUdl6S4DYTe7BUK95r/yMvxEoVp2Y/Z6gSKc5CIfsL/q22DKUrP+hklNMf/UQndpBfw1BCo/h0/ac5A9PvhR45m5apPT/kVLICFlO3IWg/w1Rrl7Qwf5r2b4JB4d314BF6ZULkTbXJZ2M5JG44Mf81vSSeWBDUSzdi6I6eS/rEQQb2tgDSxqVJCgMCvjA/h1M9vfZVjlo6kpYklWmVpOM16T7dHm+k9+sx
- THkXtFJ2
- g8EZf0eWmj72/+NV8Hmf2nCOegNjV15uKRxyZViVUchvEvzV+uPxO5OtakbqsKtbXQQhB6oRDVllnmBSxzrq7z9nCy0/W8IycikKW5rXKJt6mL0o/ID+6lYtoLn+kucq3IM1ZKmgG3ONnJFw6TGQ0nb/1m5g5Eh6sT+MCMDmhZvnxMdte4XRLwIWyo985tFCJIYKn0k/GI/xJV1sIozE9+xw1r5JeVfS5y2yljcdvk4EkhPQQaFVc7cBKiAeITE1a465xJIIuTdTK6srgbDvKeiZ4jtHh1KTsRrISS4F9dvP6aCI4jgeOabUEToTrdMJm+u+8gPzCumXeG2w8Dond5k+V54fiVj+8tokvp657cx47imWa12HB2AuASBCxDX3lNrLRD/rkBoS+ku1vDDEGqAD8lHcfJg521N/FJqZYP5LPhxVak4lPyZxJg6NSdpwjTSeNLuMDRLmIlskBZiFH2AN2FYh6E3o3nCz0nTX28AMnQ9/8eTrC2s11YvOgz4v2+rk0AKld4U1g0h25gWtUMmYCRWly2YLE+43o+jTajyZtJpCAFwZB4rpBTwV8Pj02iJb5d2hEHr49x6U58XSOKg2HgNkg+hKsQGIvt9/BiYngdERG4OD7BniShOIaDaj1AMyAlQnvF8WhYcN5xv0jHRw1Z9EOvpZXi+OqPOi5WFbmgiUyuEM6CyiirZfxz3oyQVzLxFwXGEjvc34iQTdD/b9ipj38qPYkhF7IaO3bEoTilaewyu1heFSTA1deuPdX+htp
+X-Rspamd-Queue-Id: 36DFA4000D
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762622298-400498
+X-HE-Meta: U2FsdGVkX1/DGfpd84vJJB5hRFCq/gdJB9JwJHGxQwyrrho240J4Eh52VxbY8ez5XUwvA4bzfT1rgFKtGS79vjXUq6gXA/hSHmb9v8aaBS2qfcRgzfjymv9b5djoI09ouc+yJQ0EzRbm7SOtn66vDdVlJlhLVYrGzGTMYuQju7oqmPygtcyQHRlYuZXIXbvbb394NLyxUFK85Rp4dxZxslDP0Swwnw1aIup3eNP+GBga5Xv2wyffR8c7Oo/rZs03snXGuKjsaI8X89Xt/k+/9xyLeX3evqBbocVMeAzAyZvuqfmbT0T946XxsHi9OnRVVm27x6ju2aPol+HSQtEUn2q9NlK1+VQKRL1kFVcm3uGF4pudEyzphReG6vHlEH4qvR133atS0wn5WPyjR2+3BS1ZzcZANm0K96FPRXfaKyAi562QguyrDPkR5VBl2ww8EZtFxreIpzGDtgWZkfsKoKM16fBul5wwI+x+0gIZTzGDPGIEk2VK5IL75xcwoxqzYIBHJltMEueetGoSvr5DSS8Dg8z2ULIe0LCABswSOKPpKt3zDX03iNWR789F4HxydYCVeDpyPbKh+iFwaNuISwxyofGoCM9yF9TYDArnCMeRIwhpJyEs9VLZ1g32faTijrts3AmOLtOAjzQ2UuYY9I6TQqLXDWQoyk0RJ4nuefOMN02c/ZT4KqiXsO+aG2FqVqFrj7kY7NIY/kl1zzmcwV6haq5HRnsVvzPO6shN6iI7juHSSfbq20xMVvonkDQZsxkV+zxseUOYFx2psAUv6pkU4UgX6s+MIqoDBKDgR1RGpFcmGuZ7jLSiC5BsgHgg1+38OCh0y8aJkYdYO21od/F/29nFglNrcLEr2HS4BYpMf2vxiSNVMmv9Pox9eTYOq5PTXlQLEqNFKmhZvS55Usy5ayCLPse36GWe95UFR9lGrstvC6YLDKZcfSV3nz0pdKAaqMANWtbb4Gtql7/
+ lIWJT/IW
+ TyGmC0iSkCoCZmCCbh+umdmYx1+UvoPXGe2ohfxRCQ7bBH+sB+gbJdLr4M8vqkgKXFcpzr1JkJXXU0YqIJDso+rtlsB6qXgFaR0YPimIIGoiBWf8=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -274,273 +153,83 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-There are straggler invocations of pte_to_swp_entry() lying around, replace
-all of these with the software leaf entry equivalent - softleaf_from_pte().
+On Sat,  8 Nov 2025 17:08:24 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
 
-With those removed, eliminate pte_to_swp_entry() altogether.
+> Introduce softleaf_from_pmd() to do the equivalent operation for PMDs that
+> softleaf_from_pte() fulfils, and cascade changes through code base
+> accordingly, introducing helpers as necessary.
+> 
+> We are then able to eliminate pmd_to_swp_entry(), is_pmd_migration_entry(),
+> is_pmd_device_private_entry() and is_pmd_non_present_folio_entry().
+> 
+> This further establishes the use of leaf operations throughout the code
+> base and further establishes the foundations for eliminating is_swap_pmd().
+> 
+> No functional change intended.
+> 
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  fs/proc/task_mmu.c      |  27 +++--
+>  include/linux/leafops.h | 220 ++++++++++++++++++++++++++++++++++++++++
+>  include/linux/migrate.h |   2 +-
+>  include/linux/swapops.h | 100 ------------------
+>  mm/damon/ops-common.c   |   6 +-
+>  mm/filemap.c            |   6 +-
+>  mm/hmm.c                |  16 +--
+>  mm/huge_memory.c        |  98 +++++++++---------
+>  mm/khugepaged.c         |   4 +-
+>  mm/madvise.c            |   2 +-
+>  mm/memory.c             |   4 +-
+>  mm/mempolicy.c          |   4 +-
+>  mm/migrate.c            |  20 ++--
+>  mm/migrate_device.c     |  14 +--
+>  mm/page_table_check.c   |  16 +--
+>  mm/page_vma_mapped.c    |  15 +--
+>  mm/pagewalk.c           |   8 +-
+>  mm/rmap.c               |   4 +-
+>  18 files changed, 343 insertions(+), 223 deletions(-)
+[...]
 
-No functional change intended.
+> diff --git a/mm/damon/ops-common.c b/mm/damon/ops-common.c
+> index 971df8a16ba4..a218d9922234 100644
+> --- a/mm/damon/ops-common.c
+> +++ b/mm/damon/ops-common.c
+> @@ -11,7 +11,7 @@
+>  #include <linux/pagemap.h>
+>  #include <linux/rmap.h>
+>  #include <linux/swap.h>
+> -#include <linux/swapops.h>
+> +#include <linux/leafops.h>
+>  
+>  #include "../internal.h"
+>  #include "ops-common.h"
+> @@ -51,7 +51,7 @@ void damon_ptep_mkold(pte_t *pte, struct vm_area_struct *vma, unsigned long addr
+>  	if (likely(pte_present(pteval)))
+>  		pfn = pte_pfn(pteval);
+>  	else
+> -		pfn = swp_offset_pfn(pte_to_swp_entry(pteval));
+> +		pfn = softleaf_to_pfn(softleaf_from_pte(pteval));
+>  
+>  	folio = damon_get_folio(pfn);
+>  	if (!folio)
+> @@ -83,7 +83,7 @@ void damon_pmdp_mkold(pmd_t *pmd, struct vm_area_struct *vma, unsigned long addr
+>  	if (likely(pmd_present(pmdval)))
+>  		pfn = pmd_pfn(pmdval);
+>  	else
+> -		pfn = swp_offset_pfn(pmd_to_swp_entry(pmdval));
+> +		pfn = softleaf_to_pfn(softleaf_from_pmd(pmdval));
+>  
+>  	folio = damon_get_folio(pfn);
+>  	if (!folio)
 
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
----
- include/linux/leafops.h |  7 ++++++-
- include/linux/swapops.h | 13 -------------
- mm/debug_vm_pgtable.c   |  2 +-
- mm/internal.h           |  7 +++++--
- mm/memory-failure.c     |  2 +-
- mm/memory.c             | 16 ++++++++--------
- mm/migrate.c            |  2 +-
- mm/mincore.c            |  4 +++-
- mm/rmap.c               |  8 ++++++--
- mm/swapfile.c           |  5 +++--
- 10 files changed, 34 insertions(+), 32 deletions(-)
+I'll try to take a time to review the whole series.  But, for now, for this
+DAMON part change,
 
-diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-index d593093ba70c..a464a7e08c76 100644
---- a/include/linux/leafops.h
-+++ b/include/linux/leafops.h
-@@ -54,11 +54,16 @@ static inline softleaf_t softleaf_mk_none(void)
-  */
- static inline softleaf_t softleaf_from_pte(pte_t pte)
- {
-+	softleaf_t arch_entry;
-+
- 	if (pte_present(pte))
- 		return softleaf_mk_none();
- 
-+	pte = pte_swp_clear_flags(pte);
-+	arch_entry = __pte_to_swp_entry(pte);
-+
- 	/* Temporary until swp_entry_t eliminated. */
--	return pte_to_swp_entry(pte);
-+	return swp_entry(__swp_type(arch_entry), __swp_offset(arch_entry));
- }
- 
- /**
-diff --git a/include/linux/swapops.h b/include/linux/swapops.h
-index 3d02b288c15e..8cfc966eae48 100644
---- a/include/linux/swapops.h
-+++ b/include/linux/swapops.h
-@@ -107,19 +107,6 @@ static inline pgoff_t swp_offset(swp_entry_t entry)
- 	return entry.val & SWP_OFFSET_MASK;
- }
- 
--/*
-- * Convert the arch-dependent pte representation of a swp_entry_t into an
-- * arch-independent swp_entry_t.
-- */
--static inline swp_entry_t pte_to_swp_entry(pte_t pte)
--{
--	swp_entry_t arch_entry;
--
--	pte = pte_swp_clear_flags(pte);
--	arch_entry = __pte_to_swp_entry(pte);
--	return swp_entry(__swp_type(arch_entry), __swp_offset(arch_entry));
--}
--
- /*
-  * Convert the arch-independent representation of a swp_entry_t into the
-  * arch-dependent pte representation.
-diff --git a/mm/debug_vm_pgtable.c b/mm/debug_vm_pgtable.c
-index 64db85a80558..1eae87dbef73 100644
---- a/mm/debug_vm_pgtable.c
-+++ b/mm/debug_vm_pgtable.c
-@@ -1229,7 +1229,7 @@ static int __init init_args(struct pgtable_debug_args *args)
- 	init_fixed_pfns(args);
- 
- 	/* See generic_max_swapfile_size(): probe the maximum offset */
--	max_swap_offset = swp_offset(pte_to_swp_entry(swp_entry_to_pte(swp_entry(0, ~0UL))));
-+	max_swap_offset = swp_offset(softleaf_from_pte(softleaf_to_pte(swp_entry(0, ~0UL))));
- 	/* Create a swp entry with all possible bits set while still being swap. */
- 	args->swp_entry = swp_entry(MAX_SWAPFILES - 1, max_swap_offset);
- 	/* Create a non-present migration entry. */
-diff --git a/mm/internal.h b/mm/internal.h
-index f0c7461bb02c..985605ba3364 100644
---- a/mm/internal.h
-+++ b/mm/internal.h
-@@ -334,7 +334,7 @@ unsigned int folio_pte_batch(struct folio *folio, pte_t *ptep, pte_t pte,
-  */
- static inline pte_t pte_move_swp_offset(pte_t pte, long delta)
- {
--	swp_entry_t entry = pte_to_swp_entry(pte);
-+	const softleaf_t entry = softleaf_from_pte(pte);
- 	pte_t new = __swp_entry_to_pte(__swp_entry(swp_type(entry),
- 						   (swp_offset(entry) + delta)));
- 
-@@ -389,11 +389,14 @@ static inline int swap_pte_batch(pte_t *start_ptep, int max_nr, pte_t pte)
- 
- 	cgroup_id = lookup_swap_cgroup_id(entry);
- 	while (ptep < end_ptep) {
-+		softleaf_t entry;
-+
- 		pte = ptep_get(ptep);
- 
- 		if (!pte_same(pte, expected_pte))
- 			break;
--		if (lookup_swap_cgroup_id(pte_to_swp_entry(pte)) != cgroup_id)
-+		entry = softleaf_from_pte(pte);
-+		if (lookup_swap_cgroup_id(entry) != cgroup_id)
- 			break;
- 		expected_pte = pte_next_swp_offset(expected_pte);
- 		ptep++;
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 6e79da3de221..ca2204c4647e 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -50,7 +50,7 @@
- #include <linux/backing-dev.h>
- #include <linux/migrate.h>
- #include <linux/slab.h>
--#include <linux/swapops.h>
-+#include <linux/leafops.h>
- #include <linux/hugetlb.h>
- #include <linux/memory_hotplug.h>
- #include <linux/mm_inline.h>
-diff --git a/mm/memory.c b/mm/memory.c
-index accd275cd651..f9a2c608aff9 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -1218,7 +1218,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 	spinlock_t *src_ptl, *dst_ptl;
- 	int progress, max_nr, ret = 0;
- 	int rss[NR_MM_COUNTERS];
--	swp_entry_t entry = (swp_entry_t){0};
-+	softleaf_t entry = softleaf_mk_none();
- 	struct folio *prealloc = NULL;
- 	int nr;
- 
-@@ -1282,7 +1282,7 @@ copy_pte_range(struct vm_area_struct *dst_vma, struct vm_area_struct *src_vma,
- 						  dst_vma, src_vma,
- 						  addr, rss);
- 			if (ret == -EIO) {
--				entry = pte_to_swp_entry(ptep_get(src_pte));
-+				entry = softleaf_from_pte(ptep_get(src_pte));
- 				break;
- 			} else if (ret == -EBUSY) {
- 				break;
-@@ -4456,13 +4456,13 @@ static struct folio *__alloc_swap_folio(struct vm_fault *vmf)
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct folio *folio;
--	swp_entry_t entry;
-+	softleaf_t entry;
- 
- 	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE, 0, vma, vmf->address);
- 	if (!folio)
- 		return NULL;
- 
--	entry = pte_to_swp_entry(vmf->orig_pte);
-+	entry = softleaf_from_pte(vmf->orig_pte);
- 	if (mem_cgroup_swapin_charge_folio(folio, vma->vm_mm,
- 					   GFP_KERNEL, entry)) {
- 		folio_put(folio);
-@@ -4480,7 +4480,7 @@ static struct folio *__alloc_swap_folio(struct vm_fault *vmf)
- static bool can_swapin_thp(struct vm_fault *vmf, pte_t *ptep, int nr_pages)
- {
- 	unsigned long addr;
--	swp_entry_t entry;
-+	softleaf_t entry;
- 	int idx;
- 	pte_t pte;
- 
-@@ -4490,7 +4490,7 @@ static bool can_swapin_thp(struct vm_fault *vmf, pte_t *ptep, int nr_pages)
- 
- 	if (!pte_same(pte, pte_move_swp_offset(vmf->orig_pte, -idx)))
- 		return false;
--	entry = pte_to_swp_entry(pte);
-+	entry = softleaf_from_pte(pte);
- 	if (swap_pte_batch(ptep, nr_pages, pte) != nr_pages)
- 		return false;
- 
-@@ -4536,7 +4536,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
- 	unsigned long orders;
- 	struct folio *folio;
- 	unsigned long addr;
--	swp_entry_t entry;
-+	softleaf_t entry;
- 	spinlock_t *ptl;
- 	pte_t *pte;
- 	gfp_t gfp;
-@@ -4557,7 +4557,7 @@ static struct folio *alloc_swap_folio(struct vm_fault *vmf)
- 	if (!zswap_never_enabled())
- 		goto fallback;
- 
--	entry = pte_to_swp_entry(vmf->orig_pte);
-+	entry = softleaf_from_pte(vmf->orig_pte);
- 	/*
- 	 * Get a list of all the (large) orders below PMD_ORDER that are enabled
- 	 * and suitable for swapping THP.
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 182a5b7b2ead..c01bc0ddf819 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -534,7 +534,7 @@ void migration_entry_wait_huge(struct vm_area_struct *vma, unsigned long addr, p
- 		 * lock release in migration_entry_wait_on_locked().
- 		 */
- 		hugetlb_vma_unlock_read(vma);
--		migration_entry_wait_on_locked(pte_to_swp_entry(pte), ptl);
-+		migration_entry_wait_on_locked(entry, ptl);
- 		return;
- 	}
- 
-diff --git a/mm/mincore.c b/mm/mincore.c
-index e1d50f198c42..62c9603a5414 100644
---- a/mm/mincore.c
-+++ b/mm/mincore.c
-@@ -202,7 +202,9 @@ static int mincore_pte_range(pmd_t *pmd, unsigned long addr, unsigned long end,
- 			for (i = 0; i < step; i++)
- 				vec[i] = 1;
- 		} else { /* pte is a swap entry */
--			*vec = mincore_swap(pte_to_swp_entry(pte), false);
-+			const softleaf_t entry = softleaf_from_pte(pte);
-+
-+			*vec = mincore_swap(entry, false);
- 		}
- 		vec += step;
- 	}
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 345466ad396b..d871f2eb821c 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1969,7 +1969,9 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
--			pfn = softleaf_to_pfn(pte_to_swp_entry(pteval));
-+			const softleaf_t entry = softleaf_from_pte(pteval);
-+
-+			pfn = softleaf_to_pfn(entry);
- 			VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
- 		}
- 
-@@ -2368,7 +2370,9 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
- 		if (likely(pte_present(pteval))) {
- 			pfn = pte_pfn(pteval);
- 		} else {
--			pfn = softleaf_to_pfn(pte_to_swp_entry(pteval));
-+			const softleaf_t entry = softleaf_from_pte(pteval);
-+
-+			pfn = softleaf_to_pfn(entry);
- 			VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
- 		}
- 
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 684f78cd7dd1..1204fb0726d5 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -3201,8 +3201,9 @@ static int claim_swapfile(struct swap_info_struct *si, struct inode *inode)
-  */
- unsigned long generic_max_swapfile_size(void)
- {
--	return swp_offset(pte_to_swp_entry(
--			swp_entry_to_pte(swp_entry(0, ~0UL)))) + 1;
-+	const softleaf_t entry = swp_entry(0, ~0UL);
-+
-+	return swp_offset(softleaf_from_pte(softleaf_to_pte(entry))) + 1;
- }
- 
- /* Can be overridden by an architecture for additional checks. */
--- 
-2.51.0
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
+
+Thanks,
+SJ
+
+[...]
 
