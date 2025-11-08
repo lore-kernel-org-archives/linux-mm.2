@@ -4,94 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5CD9CCCF9F8
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 01:42:28 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A0BEECCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 01:44:32 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 762958E0010; Fri,  7 Nov 2025 20:42:27 -0500 (EST)
+	id DCF728E0018; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 713508E0006; Fri,  7 Nov 2025 20:42:27 -0500 (EST)
+	id D7FA08E0006; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 629438E0010; Fri,  7 Nov 2025 20:42:27 -0500 (EST)
+	id C476B8E0018; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CD328E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 20:42:27 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id E234C12CC22
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:42:26 +0000 (UTC)
-X-FDA: 84085739892.27.2BA9B91
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	by imf30.hostedemail.com (Postfix) with ESMTP id E9E1580004
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:42:24 +0000 (UTC)
-Authentication-Results: imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OK75WIjy;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id AB2B68E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 20:44:31 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 5793416061F
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:44:31 +0000 (UTC)
+X-FDA: 84085745142.12.A784D95
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	by imf24.hostedemail.com (Postfix) with ESMTP id 4733E180019
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 01:44:29 +0000 (UTC)
+Authentication-Results: imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1nM47f+;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762566145; a=rsa-sha256;
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762566269; a=rsa-sha256;
 	cv=none;
-	b=O/RuzFTa2y9ynB9WGabrKznhxdl/Iqbp+vh3khzXAEGH/vT8VErA82sax65xf6+nPIHAeC
-	2syxgXoc/SkbYJZtQB+dUiRWyza/Rmn7MmR4HgQcr04xRZ8HYfulH5vqPv+blAN6gy3Kz4
-	JROKEXQzu6gj1/cgxsIAKqznGyolKwM=
+	b=ZWS31IwqhECenuksPJ1Wytaugy0/lWLclz1Yri+uVwUJARNwboM657ZSGAwawPZMDksOaf
+	qJmWD1mYIqGNp8jJD1cxqbKgvlh7vmTfsfnG0LAQ08yZDEY0lPjhBi59pJ1nHFNFaiwKo+
+	7vRhJ3qxvVoRpHqPt5fTerx38GQw1HU=
 ARC-Authentication-Results: i=1;
-	imf30.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=OK75WIjy;
+	imf24.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V1nM47f+;
 	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf30.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.53 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
+	spf=pass (imf24.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.208.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762566145;
+	s=arc-20220608; t=1762566269;
 	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=txzBDkuu6HQXRdAmWeqGcCpUJ0ARUbkkBrAd0TRurdY=;
-	b=K4fZz61M5OheyqKH2qy9C+4MoB3+rZ2ksIeu8zun1CUVVvA6Pb5kN/rhv9CihbgoqecB9e
-	YB9JP6hBA41o32MfJWcO/GYSsN8++6cuYBHfMoNW2A1yS7Ky0FbEoxNS9JByksgz3DQq/H
-	UuHPe0JibtyajxiHKa+YVXSZxlvEmbE=
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-b626a4cd9d6so210896366b.3
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 17:42:24 -0800 (PST)
+	bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
+	b=eNg0Gy+BYTndqC6hKzrXxrNmVFR9mC427J30X88aKlzpqk2IqCjgl2gd/lzMRqsVV6xSQB
+	wHvibKz/t5HiYSXfKVKMqOqLbmuztkFnPFDo95o/555DBohMJbQe/wHKsZlOqQGq9Wbi2d
+	I+DRH0Ked8eem84r5Z6RWIzGSjT7DMQ=
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64080ccf749so2220243a12.2
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 17:44:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762566143; x=1763170943; darn=kvack.org;
+        d=gmail.com; s=20230601; t=1762566268; x=1763171068; darn=kvack.org;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=txzBDkuu6HQXRdAmWeqGcCpUJ0ARUbkkBrAd0TRurdY=;
-        b=OK75WIjyMexM8CB90XvxAEs9+3uG/d4TH7GS711casyQpJhFUA5eVi7/5pB2c7zNSH
-         sENsxogD/vrNQlpppBNfMVtKeTLWCOxtJCzg1yHTIEm76qDft7Zp4aL6DIB19a9PCNbq
-         tUaIKhY2Z9qV3nBkcp4fbuxHW0cIImL7l6jKNFHT5D+AyVLlfinvmk9bCDoBdNxqY89H
-         sjJvNJgQapvKNBN0TWk+v3MKaGkk5znMqb9/gr0eBHxfiyKWgqwLz6A0PLJSf5Q5SFu3
-         xg/0+ZAsxoim8U7CQwDTium1N6/dfQ15QVgIZCVY5Ww7tykJ+kBXK6qMgCW0ZJsY8TXr
-         8QDw==
+        bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
+        b=V1nM47f+mLSO4/HbQkt6JABG6LGZ1ZcxAgHu47ia+L82JFYNO6lAeU6kJNPWDzfajG
+         X/zrM91DD1d7bRbkMcuxB4zztiVZj6/K+Z4MF19h1ufigJBKC7POUwWhJKWkyVXORqER
+         g8sK+87wbaWxQOajSrOU29jWaDHiVbsHbME5eJEZZAG9fkP4/1ygQIlJNG1ik/YdqL57
+         SEm9FR38NxNGXmWieo8yiZrMvUIhgZtxmI3SU+9Zbv1RzQZEKMioavn3f5FJR4SsD1wh
+         +v3iIw2b/E5V1CRm/BKRiWd9eGVOzhH92XFKzadTDL8NH70IWwct6cXap3a2uhuu6Q6Z
+         PntA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762566143; x=1763170943;
+        d=1e100.net; s=20230601; t=1762566268; x=1763171068;
         h=user-agent:in-reply-to:content-disposition:mime-version:references
          :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=txzBDkuu6HQXRdAmWeqGcCpUJ0ARUbkkBrAd0TRurdY=;
-        b=GRx38599PPxnmOYFR6YknnXm5b3C/V3COHU2D86XakhkKRrlSuhYPEUGqsN00HeVJf
-         z/VYGW9+IWVJD+TRlXNAZf1iWHST6s0gPwHkhDJx+53GykTTtsWkJpMUQa7DdHi00GX/
-         kDqNsb7HMpC7V1DoFq1M8LZxEUJTr6oCJWG7iJStpFSs2TmSJaC0p2tUeY3Xq6bjJ6oE
-         WdT/7W1Ht2TcR1YCuJtDfeDuGAK7zh2D3NlMQbbuXdXkLAROZypcP/UcOvX/B3Cd4THl
-         sKqeDMVQZtdh3Auf+9qIpTDasxoqo5A5OtMn69LSmLyYYa9P4d3XekyylGbK45pTsPTS
-         jwKw==
-X-Forwarded-Encrypted: i=1; AJvYcCUiLarCDUKEFEaU5vDHv2UTO8cso22lm8xKMr3ZgqhuUbYGxBT9wALThAxTU75tW2O9uJmbw+uF4Q==@kvack.org
-X-Gm-Message-State: AOJu0YzuqWDhipCvDNRg8/t3Ty/G6DzF46X5dFRrXderVrHdavd2suXP
-	FiSqMIW35qREglrKmpl31zYlSCkWn2VZztmy8t+WaLfwIQRXgLGhApUD
-X-Gm-Gg: ASbGncuY5tMLUULl5iW2iBfrMI9GtAux9Pnyxx9aILLFzIEwmRHG9c5sb9wWwsUZYG3
-	WK1ZrkHW4qpJLBN2GPlVGt3z9oAKnQ++CDW7ycsXj8NNFky8IITl4k9Wbdlbj1o/Mk4xdaOTcpY
-	/165pkp0G6onprYbd6BLFDDEXsJNpHrs9UG8xIaz/BdhrmKfuiaWL9q3cof6TITFNasXNegX84X
-	pWqZmDZFyNm1NEC7Nh5o2FxJLh0smNUDQUZnorBoy6ONMOR5MwbXl5MO5GG29PKM4MmGbILZ9lF
-	ALHaFKUJ10Rg8MCi4DNGFY0c2InRSHW/4pZBx63ZM3m+8Msi6aecQnBJb1uH6ZfkCeeEk8+4p1U
-	mBwcYiwWgx6VFx32WbpBrhDq4Xs8c5dmRNmMahjD5tAyjSbBG6147+kgNkrNn73nBRyfXSPc5xv
-	pkRP54L+PzDg==
-X-Google-Smtp-Source: AGHT+IE6lrXy8Q8tj4IT56byqhqDOcFo2Ljy91kXlQBEAHGBuKzDKR+fUlhhjwifft9Xb8qZcgHL3A==
-X-Received: by 2002:a17:906:6a19:b0:b72:9d56:ab52 with SMTP id a640c23a62f3a-b72e02d20c7mr117552366b.8.1762566143114;
-        Fri, 07 Nov 2025 17:42:23 -0800 (PST)
+        bh=uHGSN17jZMfxWvKzapCEmQ8MEhEu5sMdAfX0dihLnKo=;
+        b=hgK/K3ugeAbumH3soSsGfaShpi/KF+pyf8gBy7yuFXSqPgCE6w0hDaLkcFbb2owlIs
+         BFegmzN2dkh68aJvGhb4LI0iZvJaKVw3is8jbUpSUWWKxA3wNlYcJlyVMvNeihFDkbI8
+         NdtNYspxuF5AJP/lqoWOa+xIG01MCbzLCcVvu1bODXge4MWq8+GNwLQxuKeeNYqJunsI
+         i9voND+M8qCmwNoHVDlyvHXIQZnEBg2LslnmhHg+5ODRgCSQ+3VXH07aICulAXcWIr8R
+         /P9NhykcXFpjk594133ZFi0JbvQIgDDNenPNCzjK2J7k2AuvJI+qnCmMZA2gssnw9ZlZ
+         4Kzw==
+X-Forwarded-Encrypted: i=1; AJvYcCUeFdMimghRDbYY3YrGKDbSsvpnqTruYTOWvlB72gjOhqxntK5zqpJBgFqEo1ArytFGMzeTi1sMQw==@kvack.org
+X-Gm-Message-State: AOJu0YxS9Gh87lgMFWJLBjSfBmQCj2VpKagVCQZEOXZcxeSXocBm6sWO
+	mEKY++tAPtu5iA4AA6x2VbgrmW0Ur0tlaWIbo9g972tLZEoVGIisN7BpC/uelser
+X-Gm-Gg: ASbGncvYXBX1z86ER4YkN4YqK141RGhsfYbIE26x/xfa2Wu9Chnw/crK8CCHl/jimu1
+	ziyaNXiJNvOPI4JnNNxCUyEE1u6LXK9CtNMHr56sjHKPVfcbzLvJFZdiK8vvMMazHji0VqNBYiY
+	331UBAPcLXx0i+jU1oQ/OSwihcZ5wa1LhGM9av9IJaYFJjco9WUs+EGUdj72apRLEMZKWkNTK2V
+	VaV8xa5CSwjaqDijAWJYo9c4eZXdtvJ87ncN+UlEWpqlgcU6C8QYB5frrcXzWqcEOXG3v6y0EOp
+	VCDZsimTPTZX0s4PfbTeDzwWJQ5481AF00KmjOLimxY/6TbUMyEHtKI2i3XNUCDkkvKNywfMGER
+	OAN5TN5g05Ez5dNEj2jSHHxgNNIp1/OIca1YrfYX9L0bBKLjcwflK/GQi0BwvRGvW6DG3K5Yz1H
+	sijuc2pT/lbw==
+X-Google-Smtp-Source: AGHT+IHhwXLk7xWiTIAmHwBxke3RFdw4hY5rd+dV3nC2lXtWeKTLFKd/7oouP3Wzzn4re7c2VoD8dQ==
+X-Received: by 2002:a05:6402:524f:b0:640:c454:e9 with SMTP id 4fb4d7f45d1cf-6415e5cccfbmr868352a12.4.1762566267419;
+        Fri, 07 Nov 2025 17:44:27 -0800 (PST)
 Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf97d0ffsm406996266b.46.2025.11.07.17.42.21
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6411f813eb6sm5471242a12.14.2025.11.07.17.44.26
         (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 07 Nov 2025 17:42:21 -0800 (PST)
-Date: Sat, 8 Nov 2025 01:42:20 +0000
+        Fri, 07 Nov 2025 17:44:27 -0800 (PST)
+Date: Sat, 8 Nov 2025 01:44:26 +0000
 From: Wei Yang <richard.weiyang@gmail.com>
 To: Nico Pache <npache@redhat.com>
 Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
@@ -113,25 +113,25 @@ Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
 	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
 	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz,
 	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-Subject: Re: [PATCH v12 mm-new 01/15] khugepaged: rename hpage_collapse_* to
- collapse_*
-Message-ID: <20251108014220.wpstoj3kqxxnes26@master>
+Subject: Re: [PATCH v12 mm-new 02/15] introduce collapse_single_pmd to unify
+ khugepaged and madvise_collapse
+Message-ID: <20251108014426.5lwchfsvgkoo72fc@master>
 Reply-To: Wei Yang <richard.weiyang@gmail.com>
 References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-2-npache@redhat.com>
+ <20251022183717.70829-3-npache@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251022183717.70829-2-npache@redhat.com>
+In-Reply-To: <20251022183717.70829-3-npache@redhat.com>
 User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Queue-Id: E9E1580004
-X-Rspamd-Server: rspam07
-X-Stat-Signature: 37374crdscu9ro4xkmnzg9pktp1i81bt
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 4733E180019
+X-Stat-Signature: dj15y6ajjt3fusk3ase6mgboe86w54yn
 X-Rspam-User: 
-X-HE-Tag: 1762566144-741067
-X-HE-Meta: U2FsdGVkX19pnyHgTa/btrPY0gDU2LlHkRyvtwavSPcaa/oScPx2ZSAOwaSd8AJfGeyJVDE0iw2OTa+Pdro7vE1zXyNWbiMLmFODSvl0kXs+6OOUQz1pSD88bxnqgqF84c31/WF8++ZnPAfSLPMXuhKqEVYZrlPgjf49USJuYDQ8M1BQQpdx3zI2TjmYdxI2MhrXTvvByLXR5+4GxyGbBihStj8CbDu+i51iuUb4uX6K9u+b/Wq05dMN1qMj8UeITQsjNyRPXKeiEkXK8HwbwRmh5AN6d/+ZRz9TgbQInf4O1LwleWhhn4pS8drgrVP41wB9HLAEe4S3k62h/fT5GVBwMovVonyeZOorsqWy5VdtR39Uixyo5P/cA936/m3O5q9ozJ97hbbiT9v7HTT3UBLAU6cJ5h39a4R3jWJXIzIglLNd6Cp1dcdYBAlgFSs4TeP0V7uxdTV9dElXPcZCymaItWW+Hhkin5WLjeSR/5AOBLABrVJ3m+7nOKSA9adLH1ILFHuFUA0+RU8DUvzc78qtoxVDiu1A2/oO76gQHdH7kTX/QPlCF3EWn+Xj724PZlrx0+PMzcawoyPuA/aQeV6RSDPhExikvxgtIerlQ1BGMXLxCNAZibbWQWB5umNVZTq5OfDmz6a45WFMIUWnEduP8MImChvKzgCO5hXl1XRKQ/YBxdWJBpEDZkWNDeHDF/Pg2fT0uPiVUECf/InDOflsgGadtx7Hz8mbZIxTtK+/tgaw5tUEtooQQn3MByiyzLSDMzuNWMbPSh+1PQJAHHohp/uJEZXO/j/Cztf6rbe2wBzJXbKck1RWiNeXTVYzpWGvHkq/r5TNPnHXtR8ZVzX9YjRA628KuXcso2sFPfo640fOV0dAPDuZiFuHcuJYUURUCa1W3vwmtEBOfu5dgaT+sPOtD2VULwjMlKB6DAGCTXwQneAdsVhfhkEsVTpp2252jUWy3yX+U4cSI3u
- SAUS0b7u
- KghshiP3pQoTrsKdGqObUcDEgNTdApngyNsvzqtlgXug/nSefurQhfN2QTO9Ynb1qXkm+ZqaluExAqjZRQR4IInHe3GIbjgrv/yWzkk7M+tU+lXBt3f248WCaxCQpkyJxA5MX3wR4GE2kdVr2qxbAEYAPfWh9gny0816zb2pZMVOmfXuVnldULYE1f/UlpSVanWbZ/vlfgJuDwZ2OMgxRGibQoSQu7GFrnIXsMa3czahMDjlPQfy0/z0ywQZsOvlYHJnxjhX/RWeuDwZASLQRirzw9JZg83A6bRxCaBpceDhLrj1Dpm41Yks2ehUVVk5BHgbjFBoLAewovtpTUvuZckDba3B93QDOkrYksLS3XK4ejeB75h9a9lVgXGOIR1ylELhwiQoasY9jgQ1LP8SXudLzohwaXDJKYBVKGSC5jqVcfoNTsC2IU3sgRz3qtQV0fChn5nc4o78uoBl912tetY7TOXpky9/MBAV9HWIWcxWizmN+QnB0AhKZOEw0H502lz4RvCBwwS57zrsfnCkcWuvq4o0l8hanpR4r9H2VX0zeNTy1K83aXay9Ro6PlrcofzuR8eOea6ZQeBYJiV+OC6hKrQ8LBQoLwKiLdYhpwqpY2EpNXGnhWRq0tNl7wTVztfZwHrnKa/rHuVBGupYzcc8puRjoCIb6mQXepYTb+d8emzQebDoS4KyUbd/mX94KhUMT6h3TbvLzxTIuh24dzfthylIeYMvOKIrYSkxB5Zx/Elk4xsSRKh3tMcLydo/i/CCBCjJHMmrlMJcSQmmPyCsnZ6fFTGtgjeqnjjhM0ZZMb+wygUUEs+k4+nRw9fAgOc3t77FL0CxzNN+hUN7AnkX+ntN2Z75pJ90kGIr0Si2ZYbE=
+X-HE-Tag: 1762566269-566895
+X-HE-Meta: U2FsdGVkX19Wgjr9mDh2txlUjz/LdeuWEoucv9KmfiVS0I7lgKbhnuZldwSUQ3c7WQaGr70IoiLQRwWYMvQZCgOCzxxaXq19jOGiTQC9G9PqwOCQxf0ND3IiTlFVQYhR4BiqU3iwfIkwziuUdPf9dm2OO8W7vZmzsZTjtoSFdMHDsadwTwEWvGEiIp5Zrj8bsStL9wPFppoyE8fvLvVMuhZErSnZN+ksg9FbSfWE2J/5whZH7CK8XXon2wSFaNGnP8ClVTRMEaNwZ45fikn2CMN/GI9Q+Jh/WeytAuNgwgFkORl9NpGma33LIFacODt/hinaAkxI2I7l2DjC8DLJ7LP3sxA5XH4LIgCN4foAInBDqE+T5ud2njZkOapT4RoTtHdtnHe743PWIk3s0tPQGV3wdnA4jHL4ARXyrdGtunkJMiV+m5nAsWECuGwYCGbjeiS+ABl+mrfx+77T3CNXP23FR5NddXKCM9uK+Kxgwiq8mBqZfyFkR1oX5U5aRGl6xZKW7thfYYj0X/olUaKvubV162zlaDu5bArGSmlCk1bAI+o3iY86i+GmOluwozRb7NQmsJbTmI7QJXtufb4elHQwXwvNQNXh9SfQRX4GhcBSpxCS/6BtIgo30wBHqQt9Parup7Pxi/Di5e6ht8//EWk+yq/vRHmtyaNtofVafPKBOpyeWKxjS2wU6onMSOLbuO16vaUi3GlE5tXvRWNgMNenTnpZPDAp1OeduBO9WT2TsRUaQWzDmYyq3LpnH2Q6HY94alKWfqdynttw3Jb6CJB9eU+vSJQoSriUBCw5dZT8rLXuTCl2a5CO3dytaRFK+dxj0sJwxJ0EEKdlqa9QDo3pyScuO/vh/cdclClbu9x2CMwj1C4RCyNTdWFUFc/UO78peS5OJ3mPVIc9MtZRqth2OlGFtm3X/nrVrVl84CH4TCagJKnaN1ARcA29xM9FBrf/Iez2qlVirE6RldH
+ aE0ILYKr
+ aVZfkR/m3duLnZFY+DtpNsiOS56OZ8mfGGdP7nd8OlRmEI+Ah8uwhemsTkvrRVjaLGLepfWPO41qXPNdWEhRIvBq0ALwEVpyNmf2OvlBFVhjth8KeG2PclU2x6jcf0XKZx5LmRClRFsRSDGDcOPeQ6CDnd6kJC31EIcXONk3Yz45YX/N8r3Sg1ig68vdHRvNSppwNHCfLBY+LfTyYI5N0o22UKRyuyJOIkDXwFIA3akw3DAn6iBvM7NrQqtHqJLAcqpUqNSM7QG4cUkxwLK7uVdT3obu8Ub27csuo9CtZnot+xtyyeMCPpfidCzdecLmmgElhH3YHsJAtznQrLEeKDvRWoNlYnXe1QX0t9w65EZPQX6JfHX5OVZVas1uz+bWZ2fR6k3uOpVo9rMg0ZqlaGUhfi2MSS6dnvzj4IKwSo21jOdeOE2+/oWw4Dje94BH+XiKxV5sXO19d5SlugxViMaT2EqmKgKX7g/lAWi8nwjkUgXG14jTM43iSMZPfvQLVwcrQDjADYUfhV0Knq0VTaKqeHr0uZzFz1Qj+WwlpH9LzZzNeoib1lwODQQOmPYD4qh5Yhq4zEi4yVtGOiP4/CgWC+7mOIOWzR/GYsaOPdxAPk7TAmIMmPJOkNdGOYCt6qFZv09/2us5KTnWALf7OEja9MG0TXIGnkbWa0xPxISrda9GolFZ7SMsjSy5IuBZvY3ZoT7tirxSNnduvu9xEDr3qFvVXCB48/3XsmcXELyzlr8C9dfFSfgIbYp/vvWKGZZ89OE6xW62p+pKWyB6v1nT+gEiCE3J3KfwMpz0ohYRvc91y22n40V+iuFzcIsdZfKnj
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,20 +140,89 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 12:37:03PM -0600, Nico Pache wrote:
->The hpage_collapse functions describe functions used by madvise_collapse
->and khugepaged. remove the unnecessary hpage prefix to shorten the
->function name.
+On Wed, Oct 22, 2025 at 12:37:04PM -0600, Nico Pache wrote:
+>The khugepaged daemon and madvise_collapse have two different
+>implementations that do almost the same thing.
 >
->Reviewed-by: Lance Yang <lance.yang@linux.dev>
->Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
->Reviewed-by: Zi Yan <ziy@nvidia.com>
+>Create collapse_single_pmd to increase code reuse and create an entry
+>point to these two users.
+>
+>Refactor madvise_collapse and collapse_scan_mm_slot to use the new
+>collapse_single_pmd function. This introduces a minor behavioral change
+>that is most likely an undiscovered bug. The current implementation of
+>khugepaged tests collapse_test_exit_or_disable before calling
+>collapse_pte_mapped_thp, but we weren't doing it in the madvise_collapse
+>case. By unifying these two callers madvise_collapse now also performs
+>this check. We also modify the return value to be SCAN_ANY_PROCESS which
+>properly indicates that this process is no longer valid to operate on.
+>
+>We also guard the khugepaged_pages_collapsed variable to ensure its only
+>incremented for khugepaged.
+>
 >Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 >Acked-by: David Hildenbrand <david@redhat.com>
 >Signed-off-by: Nico Pache <npache@redhat.com>
 
 Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
+
+One nit below.
+
+>---
+> mm/khugepaged.c | 97 ++++++++++++++++++++++++++-----------------------
+> 1 file changed, 52 insertions(+), 45 deletions(-)
+>
+>diff --git a/mm/khugepaged.c b/mm/khugepaged.c
+>index 6c4abc7f45cf..36e31d99e507 100644
+>--- a/mm/khugepaged.c
+>+++ b/mm/khugepaged.c
+>@@ -2370,6 +2370,53 @@ static int collapse_scan_file(struct mm_struct *mm, unsigned long addr,
+> 	return result;
+> }
+> 
+>+/*
+>+ * Try to collapse a single PMD starting at a PMD aligned addr, and return
+>+ * the results.
+>+ */
+>+static int collapse_single_pmd(unsigned long addr,
+>+		struct vm_area_struct *vma, bool *mmap_locked,
+>+		struct collapse_control *cc)
+>+{
+>+	struct mm_struct *mm = vma->vm_mm;
+>+	int result;
+>+	struct file *file;
+>+	pgoff_t pgoff;
+>+
+>+	if (vma_is_anonymous(vma)) {
+>+		result = collapse_scan_pmd(mm, vma, addr, mmap_locked, cc);
+>+		goto end;
+>+	}
+>+
+>+	file = get_file(vma->vm_file);
+>+	pgoff = linear_page_index(vma, addr);
+>+
+>+	mmap_read_unlock(mm);
+>+	*mmap_locked = false;
+>+	result = collapse_scan_file(mm, addr, file, pgoff, cc);
+>+	fput(file);
+>+	if (result != SCAN_PTE_MAPPED_HUGEPAGE)
+>+		goto end;
+>+
+>+	mmap_read_lock(mm);
+>+	*mmap_locked = true;
+>+	if (collapse_test_exit_or_disable(mm)) {
+>+		mmap_read_unlock(mm);
+>+		*mmap_locked = false;
+>+		return SCAN_ANY_PROCESS;
+>+	}
+>+	result = collapse_pte_mapped_thp(mm, addr, !cc->is_khugepaged);
+>+	if (result == SCAN_PMD_MAPPED)
+>+		result = SCAN_SUCCEED;
+>+	mmap_read_unlock(mm);
+>+	*mmap_locked = false;
+
+For all cases, we would set mmap_locked to false. Not sure it bother to adjust
+it.
+
 
 -- 
 Wei Yang
