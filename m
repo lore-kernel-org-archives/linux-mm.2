@@ -4,126 +4,134 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A2770CCF9E3
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 02:33:42 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id A515BCCF9E3
+	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 02:34:39 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 07F7B8E0009; Fri,  7 Nov 2025 21:33:42 -0500 (EST)
+	id 11DBA8E000A; Fri,  7 Nov 2025 21:34:39 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 02F6F8E0006; Fri,  7 Nov 2025 21:33:41 -0500 (EST)
+	id 0CEAE8E0006; Fri,  7 Nov 2025 21:34:39 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id E39C38E0009; Fri,  7 Nov 2025 21:33:41 -0500 (EST)
+	id F26E48E000A; Fri,  7 Nov 2025 21:34:38 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id C8A1F8E0006
-	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:33:41 -0500 (EST)
-Received: from smtpin04.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 6BFC314068D
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 02:33:41 +0000 (UTC)
-X-FDA: 84085869042.04.90D7723
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 974571A0007
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 02:33:39 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YYqKK71R;
-	spf=pass (imf19.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id DFC3B8E0006
+	for <linux-mm@kvack.org>; Fri,  7 Nov 2025 21:34:38 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 78E12160671
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 02:34:38 +0000 (UTC)
+X-FDA: 84085871436.05.9296DF4
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 7205F40004
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 02:34:36 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NJMpB2Ss;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762569219;
-	h=from:from:sender:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762569276;
+	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=8bKq5Kbap+TGIzkU08hwTVasn8Atv2TAiFfbpOuCLu4=;
-	b=EVokZq8Lo8tkJkN1yafCsPufwxo1J8k5Em1JutlUWVPLsVuwGNKNcDYgDuD9ZQ3GL1zvz1
-	0PYN4JtrAGmzFQK4jEWJb4wZoFr34WSuQaLTbipycBWltoTUwaLJOLNBwGvXMqFc53VgIO
-	2FMQ+vo/mslcB5hrvQHMy4rlifjrsiQ=
+	bh=o5potOoY7oJuZDgAPEu8n/B2FvMnFZR/4eU+wIwynFI=;
+	b=UYQHIFT+HuU6aV3jss0hLP23P3ZHXoGaLVKN43XDatWrEc47lmwk7TrpN3kQiLu7lnHMeB
+	9WTfaYYxSNb2G+j6xPWPZabckgz3sbcXokskf8bxRgfV4bvGubXD6sBb3jPN/EClyJwnY9
+	+9bXnR6+YOQFkBHZ3VwBMEyom7zcUrk=
 ARC-Authentication-Results: i=1;
-	imf19.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=YYqKK71R;
-	spf=pass (imf19.hostedemail.com: domain of ritesh.list@gmail.com designates 209.85.210.181 as permitted sender) smtp.mailfrom=ritesh.list@gmail.com;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=NJMpB2Ss;
+	spf=pass (imf07.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.47 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
 	dmarc=pass (policy=none) header.from=gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762569219; a=rsa-sha256;
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762569276; a=rsa-sha256;
 	cv=none;
-	b=f8F0HU0wgxwovmQA90nvb9E0G0nVYzu3gstW/np1ZzAhlNd7nmrt4gt+i3zB/Rdl2yxLx9
-	std09Mk2u4BWh8DNh9sg9r10lbV4O0MKlJ0ABdajnAAhsMIRzLEWHghpqzKcloZB23Elhc
-	OwQ2P6tqyV6ZScO4jintSotssHKTNNA=
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-7ae4656d6e4so1648550b3a.1
-        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 18:33:39 -0800 (PST)
+	b=afcRnDS+iPaLtzCgsmXQOWyrt3OP+wUx1dcEhOXNThqa3aP1F0FDSuYp+82URT846y6r1C
+	4BVuWsOeTcPa1MkzrJVAtCgWQb995A322AgtkNW/FXe+Q1LmTllGFCKtxlNuXT3Mx9Uj5f
+	jtRk8vDb/PHFHw6TrdrmaHS3voInOLg=
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-b71397df721so153354966b.1
+        for <linux-mm@kvack.org>; Fri, 07 Nov 2025 18:34:35 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762569218; x=1763174018; darn=kvack.org;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=8bKq5Kbap+TGIzkU08hwTVasn8Atv2TAiFfbpOuCLu4=;
-        b=YYqKK71RgoV1zgXuNwacIRh42PAp5gmIcCYiWWDfeDfqL6SiQukmDeY5ey8QukIDM7
-         xwf81LFhh8Jc8FZSky7k0t8eLBreGDMmgWWNWO9hP1QMMxJjUF/uGrnd/balgxcVYSxh
-         cTiDERlDEAicB1KyuCiIbpnlxbjKgNJtG36Ah/1M0vhp9JCx1DnzYEq2cr1J2Lj4ujhv
-         la8i1/JVN1XXwblYYxntd6oAjR3+YmSKvGJT/HqX+gnH+1l4BJO20P2LZG7GkYNJ3TpX
-         U3/t7MKEaej1vmK3y9SDo/YAWOhJ6RXo4E1RfKstHPrkn4IWWg0XyesQVPZhvjLIiQdr
-         r1AQ==
+        d=gmail.com; s=20230601; t=1762569275; x=1763174075; darn=kvack.org;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o5potOoY7oJuZDgAPEu8n/B2FvMnFZR/4eU+wIwynFI=;
+        b=NJMpB2SsjTW2zyTKaN/jubJMh151zTnbxzEvtSjV5RtIRkzaNOp6wPgpvmCOC8nqpa
+         cCb9h+7g8c9TAQMm2H5D2XirRSGF8gWKLKBLIU30OOEKRVQAqfluuo8Fc12leoUu7bs9
+         Zv/lEQjGFud0lqO1SX9h+z1wYXG2MrTg8fjMW2bZQ3ScC99hfcXmy72WpmhXt660X2Eu
+         gW1jBaAYIxmEtDEzf29nPwULjaExQEsyi6LR3uyqHKGAC+V8ay6vfUXCQTiSNWnh2x4k
+         bBj8wtFGYC/n7xJYsniNZqoZi3zEDDwCJ00IOaLETf9mRvY7Ov8/YeRAenEuZjvmqGwI
+         yv/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762569218; x=1763174018;
-        h=mime-version:references:message-id:date:in-reply-to:subject:cc:to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8bKq5Kbap+TGIzkU08hwTVasn8Atv2TAiFfbpOuCLu4=;
-        b=hRheldJzd6X48DlyryvdRgrwbcpYKDE+lVferoOqfJhslK+eHtzxqlpdkKETXuvN6W
-         NpjXlGoifJvCuDMewe5fo1gvPBaGn0Ui0h2fQJefg4HeJ6WNdJ06oFSml+BdXMTtWUQa
-         QriXzdhXicCO47S0OhaFyKxF9EwcZXJiNvNq+PInS4Y/Ypjhj4VrlemJ6e31wgDj2g71
-         VTNtvkIgFI+6rKJyAqscAO79rQdMdW4CJy6pLkUWVpuJiwhSd0FenvVX0FdEWPL0Ys2r
-         uypCd0phG+Gzv/W9GIhu2N+I5gCEuYdhesDFBfds5Q6AK+E5WWXQ+/C+W3wTyAxyDNrZ
-         xKWw==
-X-Forwarded-Encrypted: i=1; AJvYcCW+4lKGF/b60bcKlIsXGJDbi5qF4sXHG5ua88XZBo+znRbgvuhaJeIGV4YfgItBJs6De+eMKX1UDQ==@kvack.org
-X-Gm-Message-State: AOJu0Ywt3jqhx2Vz/L7mli1HpIgyKUfLXj3RyZx2TEtt993fy1pXzO6+
-	aSLN+Isdn5cWe4IyLSQAWJp46szL5hAA3TEcSgoEa19EdFFdH0GXg9Xz
-X-Gm-Gg: ASbGncvovxgbrxhPCuFZfvmRz0CWkOyLHULOREqUVjO5O1MWi3O1ycgnSFh/hv32+Gj
-	4asZplr0yPcNse1TxauCpvpJdN2KIMvMavMl2yOhMu/k/BUuCRGvr/0dSnpX4pn/WNBeDn5gaas
-	OoF6lXd+nRx5Oj5/VIy6EGSgxEzlu/Gbpma2UZzxiAYXdYcuxKEO86Tf81wvf2uXAF75nvsNXx3
-	XbD/bX08Lqby0DLCPcvT2DF6DoQnoTd9eMpOhmqRmmPBZ4Q5fjNCNIFi6bwz/uJX5w8Xu7YKGJo
-	mJQqC5IyESrcPoe9kF7sNJZxCJPJZWd8X5N3hwVbd9ND5B4LZtn3wLUW/8S7pMWt2QdiWRZ9dSR
-	4RkxgEDMuWMV2DNchPs+Xd6B1jUXp/J+C6nXm0KQ/4/ui0A8FosnaYqfrm/f5qD8I6fwL9PAml+
-	SZSzxB
-X-Google-Smtp-Source: AGHT+IH/Pe7wf3Ci181tpT0LHXQVq+Kf1iV5vunI2sKT5fx4KiiLBfIeJu3hgL/jAYkDOG6ZWRYxGw==
-X-Received: by 2002:a05:6a20:12c5:b0:33f:9581:5d2f with SMTP id adf61e73a8af0-3539f99e63emr1740681637.3.1762569218334;
-        Fri, 07 Nov 2025 18:33:38 -0800 (PST)
-Received: from dw-tp ([171.76.85.117])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ba8f8d7eedcsm6587378a12.2.2025.11.07.18.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Nov 2025 18:33:37 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Andreas Larsson <andreas@gaisler.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Borislav Petkov <bp@alien8.de>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, David Hildenbrand <david@redhat.com>, 
-	"David S. Miller" <davem@davemloft.net>, David Woodhouse <dwmw2@infradead.org>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>, Jann Horn <jannh@google.com>, 
-	Juergen Gross <jgross@suse.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Michal Hocko <mhocko@suse.com>, Mike Rapoport <rppt@kernel.org>, 
-	Nicholas Piggin <npiggin@gmail.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vlastimil Babka <vbabka@suse.cz>, Will Deacon <will@kernel.org>, 
-	Yeoreum Yun <yeoreum.yun@arm.com>, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, x86@kernel.org, 
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [PATCH v4 01/12] powerpc/64s: Do not re-activate batched TLB flush
-In-Reply-To: <b3e4a92f-5b51-4eee-bfb8-c454add0f0d2@arm.com>
-Date: Sat, 08 Nov 2025 06:05:17 +0530
-Message-ID: <87cy5t4b0a.ritesh.list@gmail.com>
-References: <20251029100909.3381140-1-kevin.brodsky@arm.com> <20251029100909.3381140-2-kevin.brodsky@arm.com> <87qzud42n1.ritesh.list@gmail.com> <b3e4a92f-5b51-4eee-bfb8-c454add0f0d2@arm.com>
+        d=1e100.net; s=20230601; t=1762569275; x=1763174075;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o5potOoY7oJuZDgAPEu8n/B2FvMnFZR/4eU+wIwynFI=;
+        b=Wzm1kOnmYWaMtscWlHdtP/wXOAo7FtFYnjNwF3/NDjQQ4ceWtZcZ+9T7GFDEohm2BE
+         X1m5Muz36295FfeAcE4fwUufosgwqsVmYipmvG0jXjTGZlqTJTeL5j+Zww3TfV8goHKw
+         mUBvGlIEbQo5RFUdjXnQtyBMnaLLn/TI5YpsP+S0ayVVvppsr//oQhEUv0Nrch/EQKzy
+         nFWT8cG8O6PwuSYisHnhi5bxEkBBwo9ssyOrCqRz63/RZemByTomKYgyRA1Oozs8scOA
+         73165a14V3MTiNTlFEJwfOkDqlTxKJBHIk6pVHH6TwppmqvVQzUwEJYyj+/ZwYmDTqrx
+         dcyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUGLH5JSenpT3D5DjVJeC90r0GFmzaPcwcIFXTq2DjHcLPKCfTyTd3CDAeRU1rHYisbStEk/RKwZA==@kvack.org
+X-Gm-Message-State: AOJu0YwQo2C5oKI3Raqj2kS1oUxt8aCvyVWXCi+RVupbYATrd/P1LAwq
+	ndncTeHzJLOIq0swcTNKCqQl12AVgU/n65zi+ekgeCBBS3NEdo7QMt8Qih+O69aI
+X-Gm-Gg: ASbGnctjRQvclBit6Q/Cl4Jifk6AThfJt0jo1Ppg3d2kqHjfgfsdw0TWFc4WiMaYzyj
+	0OVxACOuWc9QVTHBGqYpXesEReEMdBNOwxH5U8YpotGz9Z3tosetuBorSiGkFx0mxnPYQ4mj05B
+	0i04neHJazpyyy8LnpTXqAWF57+mOvrcwCsHMkuLVT4EhEOcJyDsvGmlCfETzelPn0nopZHxf0f
+	oEeG17fLDyc2SV3DL8qk2JlEXQEdFQdbJz5gSqJlmceaMFSjyK4atBODTSFyR7I6AkggYYyFhhT
+	ApPiCcXtKaV/xDfOjBhEKwhWYSzWoER1NnU2oh5yH0bpylfDlbHelYoy8NjqFk9GhJO6ivq1O2g
+	pS+mJxZDE0GbM0sIc8OjyTDu/IsF+fvfcclWe+W2b1w6LINszgCZFvArRn+RHMsT+ItfH0rseMH
+	VVweh1NVUJBg==
+X-Google-Smtp-Source: AGHT+IF8sH5AJD5BmsEI+wfEUF+AscOx+lX9t+VpBog4E5GD0fnsTzO8XVh1qgisOXry5AIp9gqKVg==
+X-Received: by 2002:a17:906:ee87:b0:b6d:4fe5:ead0 with SMTP id a640c23a62f3a-b72e028a487mr148451766b.10.1762569274625;
+        Fri, 07 Nov 2025 18:34:34 -0800 (PST)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bdbd1ecfsm391337166b.10.2025.11.07.18.34.32
+        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
+        Fri, 07 Nov 2025 18:34:33 -0800 (PST)
+Date: Sat, 8 Nov 2025 02:34:32 +0000
+From: Wei Yang <richard.weiyang@gmail.com>
+To: Nico Pache <npache@redhat.com>
+Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
+	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
+	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
+	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net,
+	rostedt@goodmis.org, mhiramat@kernel.org,
+	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
+	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
+	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
+	sunnanyong@huawei.com, vishal.moola@gmail.com,
+	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
+	kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
+	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
+	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
+	cl@gentwo.org, jglisse@google.com, surenb@google.com,
+	zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
+	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
+	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz,
+	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
+Subject: Re: [PATCH v12 mm-new 04/15] khugepaged: generalize
+ alloc_charge_folio()
+Message-ID: <20251108023432.yqw7u7wnh5x3xvgh@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20251022183717.70829-1-npache@redhat.com>
+ <20251022183717.70829-5-npache@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251022183717.70829-5-npache@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 974571A0007
-X-Stat-Signature: 3qr8646u3mwyx58k4s597nihym418u3t
+X-Rspamd-Queue-Id: 7205F40004
+X-Stat-Signature: 99ho86anh1hn81z1ghcnmrqoixgt1t7x
 X-Rspam-User: 
-X-HE-Tag: 1762569219-840995
-X-HE-Meta: U2FsdGVkX1/fOBVNIj1+zd4HBOpXtJaYubZKQRMaZKjjxt9ZqfYk2F22g+3XHGItTRaJKH+qBMuHScmnZaDViDotz+xJumttXPIXBwmXBiCB/mDTChWoIus8sUhduD6RCj4bAIGHBzI0sXQgKMxVuQj4RmMCn1+/r6GFEDzamoq4eiF4CcpTkuhDLD7fserDvEkTcJxfqD23G4niL4UJxCzn5Hz+V9QOjTfZq3Mx+afCURO/nCUBbosFKT9KLlyalqJ8dideb8FUMpj5hi9PZxq7aAuNDMDBIo6B3n04QKrKZP9Zzeb9DCHI7AhIXyGbaAtO9J9XgaSioBV5cOglSrVPeZtG4YQtx2KPKnm3bth3IUyqvK90BFQ18tgqZ/22DcWLBt6tmN1L97j4StqqpyYkhX3VscA3xOgD24Eqp2oQfFwpREF/4H9y3T/yCysjpSFIpZh0HVHKScqW7VJg2XHtxklxaQkBZKEuwNGHjoiOzCaAD3yDH8xBemrr/zzMFnzP1RZM9ic3lIsm/R2/dsmT0WOf2567Fi7zLkc0BGjG4bOS0LN7zMihvcJD5MYIVEGd1/Xo/DUb6YkjFcdDlksrLaMMwCkM6g+lOUnG3eVNyYagaH/LFgN0p9uG3Q5tqTJiLR6Jz7nOlP3pud92EZivdPeQI41ERPpVKAwrMF2g+CTWWLJU7/iLlHagAbuy/yGEpVSXwO+yCbHc3je5CkeBsrwYIIu3+YyxZfIpq7UVuoj3H0a4ZD1/zGhpMREINn+PxhClSnmNV7PgUcgaK5KklD7V9Fyv9DRAP0x+9WUJwwizw3jnMLy83d3EyuDwfgaoV5amb0NnwYaEA4TezeMUOohZHRaVTgJF2dzrD/nzw0Ry2uTxS19xD+Uwb9g1OZqjj6IwQAIfsH3cJ27jzFgAZq/ayUWwZbzYFcU/YImaSTsRlDifSgWeFCNKsODrrzKPoLHl7+X1vSSxHan
- aGAZlimM
- ZKJw7lCXV80m5lIjc3F3sIMFg1yYliXGWIkJ7K6bxDXF0OLo5uuKC87Rk06KtsCP3IIF4RRqxXpQtPoZgrohAm+qTLSEhX0i4UkUjMDKfQwj4Bn++HA2UahDVN6BVnFwkff5dcbXRksy0OBxRl/FPGr6q5GG6QaQqjLj+aph6DxQUrOk+tHPmB5W2RvNDglsMGX+5PudS+SP99qn6ERC8gQOzQT0lfS/cM8phPOjdsUVqeKrurwmTOyfJzVpjsJIHT5UE+fwti7uo+BSRmCHEjj/FpzD5cujRADVtL8cVOOwJlnEYuNNPFDT610U/sbvRupk5Jog2nxewYt1OaY4nVuEjndIXqAQrv7V1wCKuYL1Mprua9CDsJvdPXwLj/1X69M/cdE4bs0T8eNG45mCwBgB6RPHL6XqVDl3zuBCqwPc0EHdOKx9ZNQYaX9dulmWuh6Ce7QmxZF2ItNQM0Z+awuRqamG/0PKvEL+j167iF5aVJuY01Sj52fGmAxztXQ4ekpXeSpffZy/Q4EM=
+X-HE-Tag: 1762569276-744305
+X-HE-Meta: U2FsdGVkX18WpnwFFe7fdH+JeuH/GD/F1klSN9EQSYJLT05BwB4yCizmJ81bp1WDsmA7lobsjNVwbhWuhbZOkD+3UaGsbrW3lS7UZym9hv+6DVVf9ZqLy4U+zyjuWbLTv/sP6QDGmbIHUBPLE670Yb74Cfe3BcpXICOGX+JbqCShryXJiBq+ar8P9LG+67YJxmbUcUUyBdqgQbDqSzR25/koUjaTjsAlykTbryIfWR9BmF4gWG/tR/Z65ezwGju1O7oywEgA/RTHB0rnToHPW+8Y6Dr33KAiMHBSLAT3/I0Rx0uVrLHW+9w6yCUU9J/H8jFPKNBAKeDKXF7ZaU07X8xyyMhEryVzckm12B6Jv6PL5q8928UaQvIsiZ7bnORcbYSqqksd8eCxm0ickhc7i0fdknx/kJBWGszGh+XF+P0smITARtx7N/0+s5nNvBepknckz6oq8OYdWT/j48Lm7F7pvBUh6wNBsOrI5ntnDXeyiKkbakeskijMJU1oolEr89QLeehL83woF2CiXEAhyNSu+Q+Q8+GKh2baFxV6YIzO3Xphl/Y78xcOM3uJQTlROAwpmhCaW5C4rV90Vw8ZnghrZGJQsnlHkL8wyocRRyf7EYA6AzUpEYkcgFpaB6pSONftKeT7vqLMXHlHr5QymYOTRmQ745SxqJkdibqD9poEqpISNCCl60OZstiDGst65iWtFM3pDwpnKiuWyXArtkgZlF7pevVRK3d81tHhjQ+oaVjXHbtrxCp+t3NFkS8rWlZfGdZYxZgbs7ITXA62L2ygIaSRwZrvfKPARmodwAJGuRf6BZoS1mUW4Fr3rnd0v81CIAgiowu/CxsdFxwIRqiVzXA6R6qah0RWDYCiCT61i5iplt1sCBdmy9EYaMyURZT0bODJ48FOFZ97H9ldSHVYqqxVvNJnJTYW+AsXZ0O31ocn1CXps+mr+yl6faYtfIL7OOBrwir9ZaeDb2I
+ wPDsfK1e
+ W8CnN1SDODDSyafw31/C2+cSxtf0SETYJgF8ym421vK5GP73Z3JB1kXu8ifCjzInlBVrwWBhTYQFhpxfVNA5OfB7oj8RUFuxpHI8ajHyaGAgc7PWcB/+seHKWrl9qg4CrgmCYsk/0wFRIORjqcA7M+Ws39o/k5pj9FcdGmC6hQXHAPAgLg+WzRwjcDM4/0P/pLgKZLNA198JGlhzDKZ5ZSXkYk5Bhlht/HDvmxwG0wwwhTz/QHyPrbSgLQ0Pd+hoxaYxtXHxgXuMW5EKWaJBvNqg0V9rQXy+50E+tMSVNEWf6IPQl6ohjBFGSFRoD5JJfRKEHlCGxEYg2YQDwUyw++6agOMsAAFsip8pTGjGZZe5tED1pJgju8quI3Mzvakuw9PBd477ETLZ13CmA43gNrxOgpllDJVoFfVsSaNY8cSyX0QpjwtKGQ+IyiErJTIhzIgyKI3q//xSpf/PedmBtKX2NCkgJdGLC0msa7n8CX6fp1n7b5wCnVZ+cMN0rvzrye4kgVFOTvFdTlSx5cmaHgkdTOFGMXM5vLOmRqCjDFbDNFeSNoLLvJCg091441ook2yo8cb79sx0cccKapY+dT6t5HClXO3IB4JS9F8PuGAERqCzMfEwmZUpUEvYcw8PNSGYHbcLQ1dRLqFsoplEVkaZJqUHCTH1wXQ6HCDu2efLpRAT7LSaSkMjx4HsccUoYY3t8AtD2A3IzM8dwtSh7qUB4OJTYqtQav+AWeHV88yejvGPWbDbAecXrfoXUGqCiuKKHTmeMZh6PfoIXxfBm8i/pl9zaGXmV2qbBfNnop2XOAHB9tEOFSniqYYK+guEdPDbiJruUdaS6mvbAOv94fAlAy4uUp0h48AvmgT44Gr+3Nb+axQLPfu04B7lvHkFRDdW5AbxkeLt9U96UgrDQHFB8tw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -132,68 +140,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Kevin Brodsky <kevin.brodsky@arm.com> writes:
-
-> On 05/11/2025 02:46, Ritesh Harjani (IBM) wrote:
->> Kevin Brodsky <kevin.brodsky@arm.com> writes:
->>
->>> From: Alexander Gordeev <agordeev@linux.ibm.com>
->>>
->>> Since commit b9ef323ea168 ("powerpc/64s: Disable preemption in hash
->>> lazy mmu mode") a task can not be preempted while in lazy MMU mode.
->>> Therefore, the batch re-activation code is never called, so remove it.
->>>
->>> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
->>> Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
->>> ---
->>>  arch/powerpc/include/asm/thread_info.h |  2 --
->>>  arch/powerpc/kernel/process.c          | 25 -------------------------
->>>  2 files changed, 27 deletions(-)
->>>
->> Since the commit referenced in above disables the preemption in
->> arch_enter_lazy_mmu(), so the expectation is that we will never be
->> context switched while in lazy_mmu, hence the code changes in
->> switch_to() around __flush_tlb_pending() should ideally never be called.
+On Wed, Oct 22, 2025 at 12:37:06PM -0600, Nico Pache wrote:
+>From: Dev Jain <dev.jain@arm.com>
 >
-> Correct, that's the idea.
+>Pass order to alloc_charge_folio() and update mTHP statistics.
 >
->> With this analysis - the patch looks good to me. I will give this entire
->> patch series a try on Power HW with Hash mmu too (which uses lazy mmu and
->> let you know the results of that)!
->
-> That'd be very appreciated, thanks a lot!
->
+>Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>Acked-by: David Hildenbrand <david@redhat.com>
+>Co-developed-by: Nico Pache <npache@redhat.com>
+>Signed-off-by: Nico Pache <npache@redhat.com>
+>Signed-off-by: Dev Jain <dev.jain@arm.com>
 
-I did give this patch series a run on Power10 with Hash MMU. I ran the
-following stress-ng tests and didn't observe any issues (kernel warnings) so far.
+Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
 
-stress-ng --all 0 -t 60s --perf -v --verify \
---tlb-shootdown 0 \
---fault 0 \
---userfaultfd 0 \
---fork 0 \
---exec 0 \
---memfd 0 \
---numa 0 \
---pkey 0 \
---remap 0 \
---vm 0 \
---rmap 0 \
--x swap,pagemove
-(Note not all options shown here will work with --verify)
-
-Let me know what else I can run for validation?
-Do you know of any specific tests for validation of lazy mmu feature?
-
->> For this patch please feel free to add:
->> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>
->>
->> CC: Venkat who also runs CI on linux Power HW for upstream testing :)
->
-> Ack, will Cc you both in the next version.
-
-Sure. Thanks!
-
--ritesh
+-- 
+Wei Yang
+Help you, Help me
 
