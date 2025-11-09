@@ -4,180 +4,93 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 518B9CD1297
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:11:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6345BCCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:18:51 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 8CDF88E0003; Sun,  9 Nov 2025 14:11:14 -0500 (EST)
+	id A683F8E0005; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 8A5A78E0002; Sun,  9 Nov 2025 14:11:14 -0500 (EST)
+	id A18C38E0002; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7BB798E0003; Sun,  9 Nov 2025 14:11:14 -0500 (EST)
+	id 92E868E0005; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 688548E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:11:14 -0500 (EST)
-Received: from smtpin26.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1EA1812D5FC
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:11:14 +0000 (UTC)
-X-FDA: 84092011668.26.8BCEE5E
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	by imf24.hostedemail.com (Postfix) with ESMTP id 885B218001A
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:11:11 +0000 (UTC)
-Authentication-Results: imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Sjj8Tmj8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AIf/Vc1e";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Sjj8Tmj8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AIf/Vc1e";
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
+	by kanga.kvack.org (Postfix) with ESMTP id 7C8558E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
+Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29CAE160A34
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:18:50 +0000 (UTC)
+X-FDA: 84092030820.19.1C8F72F
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf12.hostedemail.com (Postfix) with ESMTP id 6FEFF40002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:18:48 +0000 (UTC)
+Authentication-Results: imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J45COeLS;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762715472;
+	s=arc-20220608; t=1762715928;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=qX9lJAeqWuZ+tZhf9D+6OWeGPK1zBp473L1ubEGFTno=;
-	b=lQm8zpcOVwUgEGc81y0PEBt/jsFuPrzNLF90pzkqoY9u2Hx/I7X2nx7fTwyqpfIpBI248F
-	OG/v+UUIzDrIcPmpRtpL7SgydVlpsOCrAmPygAnTNO9+sKeZ97bSdg6tKus5QVE7TNQv2g
-	2LZGUHS+hngjYyvraDC3PhNnP4OtWoI=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762715472; a=rsa-sha256;
-	cv=none;
-	b=KuQP41tIjFeBhXfdIesZL0jatYYoljYejQh63FZmP9d9N3n+mKfA8scCPMW2GkpMOgdmKN
-	k/kXbElBpk5KYRFa51iy1wbuis3YjwcOuEBxnOJm0z9i/WMlLuJey4IWNDS3pZqQ9XlMGX
-	YEfiShk24GRJrE5ZE3noC3sDF8AFe3I=
+	bh=6k1wxnNPVq6vKcrImObaKCvUAiOssPA0aelIExbpVaE=;
+	b=w0HFS7uOabLYCfyGN/vFv46N6xB2Ct3u+FWiVwatqSWGbZnJ/t/zSJIOhV+jNdWzmrVWyH
+	anGhv4eqWhHMVzO/qR9GtXRhChcbmCUJ2zwnqKC3Jagt1uzk8tKHUyZEBVBDE0KTo966Ke
+	X2q1ISzN67wm9iwBf0rRcMYUS1zGbIA=
 ARC-Authentication-Results: i=1;
-	imf24.hostedemail.com;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Sjj8Tmj8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AIf/Vc1e";
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Sjj8Tmj8;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="AIf/Vc1e";
-	spf=pass (imf24.hostedemail.com: domain of vbabka@suse.cz designates 195.135.223.130 as permitted sender) smtp.mailfrom=vbabka@suse.cz;
-	dmarc=none
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id C304622B75;
-	Sun,  9 Nov 2025 19:11:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762715469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qX9lJAeqWuZ+tZhf9D+6OWeGPK1zBp473L1ubEGFTno=;
-	b=Sjj8Tmj8te78EcciPx4vbEFIaaUYrlCsTNtCM7lpeMmq/UkH9LUMD2IRGUDK5ViIZx/qrw
-	OhU6yjzIi49h2Mzz8VvDLXRxNDdz6PGRzytxL5Oek0QzdHqPtVJqcfNuRG1V4+ALGrJ4NU
-	tBjY+5hv1ruMaxKOiNSTkoSvfbIjZdY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762715469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qX9lJAeqWuZ+tZhf9D+6OWeGPK1zBp473L1ubEGFTno=;
-	b=AIf/Vc1eF+LE48PBOj4Ivn9c86r5GC6pqubLqgzOfWXwF20vYgoBaETOO08B/RcdT9CkXl
-	wI1aG0oFTDdHS0CQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1762715469; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qX9lJAeqWuZ+tZhf9D+6OWeGPK1zBp473L1ubEGFTno=;
-	b=Sjj8Tmj8te78EcciPx4vbEFIaaUYrlCsTNtCM7lpeMmq/UkH9LUMD2IRGUDK5ViIZx/qrw
-	OhU6yjzIi49h2Mzz8VvDLXRxNDdz6PGRzytxL5Oek0QzdHqPtVJqcfNuRG1V4+ALGrJ4NU
-	tBjY+5hv1ruMaxKOiNSTkoSvfbIjZdY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1762715469;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qX9lJAeqWuZ+tZhf9D+6OWeGPK1zBp473L1ubEGFTno=;
-	b=AIf/Vc1eF+LE48PBOj4Ivn9c86r5GC6pqubLqgzOfWXwF20vYgoBaETOO08B/RcdT9CkXl
-	wI1aG0oFTDdHS0CQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9F9D7140AC;
-	Sun,  9 Nov 2025 19:11:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RoarJU3nEGlMWAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Sun, 09 Nov 2025 19:11:09 +0000
-Message-ID: <a7034e0c-a2ab-425a-8472-ef0a87a17681@suse.cz>
-Date: Sun, 9 Nov 2025 20:11:09 +0100
+	imf12.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J45COeLS;
+	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762715928; a=rsa-sha256;
+	cv=none;
+	b=5sVI6BJfNoS8mCYLbk8voZ7sLtIrk1KiaqXu2rMFAtXlf8eqDXAx1Ho6+EV38LdlDgcVyD
+	ovZ6YzF8e3GD0pvNZIkTWtJCVgN7j9XGzcBQD3dozpVmUCEoy3bpCJCnPfLxbuUEQokoyV
+	pClTcx6xC5EcZ+i55ev6VpmVUbZlTj0=
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 394EE407A6;
+	Sun,  9 Nov 2025 19:18:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC68C4AF09;
+	Sun,  9 Nov 2025 19:18:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762715927;
+	bh=mGFvQbV410JR8d38Ezb4gyjc5nTCZrcnscZyJrRogmw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=J45COeLS4iiRx2lGH1UmcAlTVXtMps6JMUVjoumd0oykEBxIGguvdKu886OnkWZpj
+	 IfL8axmWB3ZPtmdF2LXn2HJLlAstacUjMSujpNlHBuFUtfR7SU55W1i0UYKEi/Yi8+
+	 qYOEUZDTrVKHwOf64cXcCDNcEOdcv6kFzQZfZBo8ggDjyo9M72bSJFBkTgLYC/CYyO
+	 XeuHhkK861vtA6Ll4jA3H42vuXzVB66Yx5joPMQ9eBAyG+yNEq6GagFHhIWbjTZWDS
+	 brgNwp1jqifaHGmotw/4+GpFI7okxfqph31kBH2dtBGZx8bduPYUbvEsVwlJrGFXr2
+	 KvLt00G2ojF2w==
+Date: Sun, 9 Nov 2025 20:18:41 +0100
+From: Alejandro Colomar <alx@kernel.org>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Kees Cook <kees@kernel.org>, Christopher Bazley <chris.bazley.wg14@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 1/4] array_size.h: Add ARRAY_END()
+Message-ID: <amjs73mcxeq2zcni5rkbbugm7jgboejrtk6qxfov76hr2fca6m@zjdljyhkkaqs>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1762711279.git.alx@kernel.org>
+ <2cb4ddff93b3d3037ef8d094de94227982117f87.1762711279.git.alx@kernel.org>
+ <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] selftest/mm: fix pointer comparison in mremap_test
-To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Nathan Chancellor <nathan@kernel.org>
-Cc: "David Hildenbrand (Red Hat)" <david@kernel.org>,
- Ankit Khushwaha <ankitkhushwaha.linux@gmail.com>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
- Shuah Khan <shuah@kernel.org>, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20251106104917.39890-1-ankitkhushwaha.linux@gmail.com>
- <fc051006-5cb2-49e1-bb27-7839837439cd@kernel.org> <aQyOZ6eYng-IjxS_@fedora>
- <6e07949b-d86f-46d8-a68c-9717cfb26084@kernel.org>
- <20251107160855.58891ac6df6854a3b608185f@linux-foundation.org>
- <aRA6lEQmmrvmj2DX@kernel.org>
-Content-Language: en-US
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
- KxRWDHX0R2tgpFDXHnzZcQywawu8eSq0LxzxFNYMvtB7sV1pxYwej2qx9B75qW2plBs+7+YB
- 87tMFA+u+L4Z5xAzIimfLD5EKC56kJ1CsXlM8S/LHcmdD9Ctkn3trYDNnat0eoAcfPIP2OZ+
- 9oe9IF/R28zmh0ifLXyJQQz5ofdj4bPf8ecEW0rhcqHfTD8k4yK0xxt3xW+6Exqp9n9bydiy
- tcSAw/TahjW6yrA+6JhSBv1v2tIm+itQc073zjSX8OFL51qQVzRFr7H2UQG33lw2QrvHRXqD
- Ot7ViKam7v0Ho9wEWiQOOZlHItOOXFphWb2yq3nzrKe45oWoSgkxKb97MVsQ+q2SYjJRBBH4
- 8qKhphADYxkIP6yut/eaj9ImvRUZZRi0DTc8xfnvHGTjKbJzC2xpFcY0DQbZzuwsIZ8OPJCc
- LM4S7mT25NE5kUTG/TKQCk922vRdGVMoLA7dIQrgXnRXtyT61sg8PG4wcfOnuWf8577aXP1x
- 6mzw3/jh3F+oSBHb/GcLC7mvWreJifUL2gEdssGfXhGWBo6zLS3qhgtwjay0Jl+kza1lo+Cv
- BB2T79D4WGdDuVa4eOrQ02TxqGN7G0Biz5ZLRSFzQSQwLn8fbwARAQABzSBWbGFzdGltaWwg
- QmFia2EgPHZiYWJrYUBzdXNlLmN6PsLBlAQTAQoAPgIbAwULCQgHAwUVCgkICwUWAgMBAAIe
- AQIXgBYhBKlA1DSZLC6OmRA9UCJPp+fMgqZkBQJnyBr8BQka0IFQAAoJECJPp+fMgqZkqmMQ
- AIbGN95ptUMUvo6aAdhxaOCHXp1DfIBuIOK/zpx8ylY4pOwu3GRe4dQ8u4XS9gaZ96Gj4bC+
- jwWcSmn+TjtKW3rH1dRKopvC07tSJIGGVyw7ieV/5cbFffA8NL0ILowzVg8w1ipnz1VTkWDr
- 2zcfslxJsJ6vhXw5/npcY0ldeC1E8f6UUoa4eyoskd70vO0wOAoGd02ZkJoox3F5ODM0kjHu
- Y97VLOa3GG66lh+ZEelVZEujHfKceCw9G3PMvEzyLFbXvSOigZQMdKzQ8D/OChwqig8wFBmV
- QCPS4yDdmZP3oeDHRjJ9jvMUKoYODiNKsl2F+xXwyRM2qoKRqFlhCn4usVd1+wmv9iLV8nPs
- 2Db1ZIa49fJet3Sk3PN4bV1rAPuWvtbuTBN39Q/6MgkLTYHb84HyFKw14Rqe5YorrBLbF3rl
- M51Dpf6Egu1yTJDHCTEwePWug4XI11FT8lK0LNnHNpbhTCYRjX73iWOnFraJNcURld1jL1nV
- r/LRD+/e2gNtSTPK0Qkon6HcOBZnxRoqtazTU6YQRmGlT0v+rukj/cn5sToYibWLn+RoV1CE
- Qj6tApOiHBkpEsCzHGu+iDQ1WT0Idtdynst738f/uCeCMkdRu4WMZjteQaqvARFwCy3P/jpK
- uvzMtves5HvZw33ZwOtMCgbpce00DaET4y/UzsBNBFsZNTUBCACfQfpSsWJZyi+SHoRdVyX5
- J6rI7okc4+b571a7RXD5UhS9dlVRVVAtrU9ANSLqPTQKGVxHrqD39XSw8hxK61pw8p90pg4G
- /N3iuWEvyt+t0SxDDkClnGsDyRhlUyEWYFEoBrrCizbmahOUwqkJbNMfzj5Y7n7OIJOxNRkB
- IBOjPdF26dMP69BwePQao1M8Acrrex9sAHYjQGyVmReRjVEtv9iG4DoTsnIR3amKVk6si4Ea
- X/mrapJqSCcBUVYUFH8M7bsm4CSxier5ofy8jTEa/CfvkqpKThTMCQPNZKY7hke5qEq1CBk2
- wxhX48ZrJEFf1v3NuV3OimgsF2odzieNABEBAAHCwXwEGAEKACYCGwwWIQSpQNQ0mSwujpkQ
- PVAiT6fnzIKmZAUCZ8gcVAUJFhTonwAKCRAiT6fnzIKmZLY8D/9uo3Ut9yi2YCuASWxr7QQZ
- lJCViArjymbxYB5NdOeC50/0gnhK4pgdHlE2MdwF6o34x7TPFGpjNFvycZqccSQPJ/gibwNA
- zx3q9vJT4Vw+YbiyS53iSBLXMweeVV1Jd9IjAoL+EqB0cbxoFXvnjkvP1foiiF5r73jCd4PR
- rD+GoX5BZ7AZmFYmuJYBm28STM2NA6LhT0X+2su16f/HtummENKcMwom0hNu3MBNPUOrujtW
- khQrWcJNAAsy4yMoJ2Lw51T/5X5Hc7jQ9da9fyqu+phqlVtn70qpPvgWy4HRhr25fCAEXZDp
- xG4RNmTm+pqorHOqhBkI7wA7P/nyPo7ZEc3L+ZkQ37u0nlOyrjbNUniPGxPxv1imVq8IyycG
- AN5FaFxtiELK22gvudghLJaDiRBhn8/AhXc642/Z/yIpizE2xG4KU4AXzb6C+o7LX/WmmsWP
- Ly6jamSg6tvrdo4/e87lUedEqCtrp2o1xpn5zongf6cQkaLZKQcBQnPmgHO5OG8+50u88D9I
- rywqgzTUhHFKKF6/9L/lYtrNcHU8Z6Y4Ju/MLUiNYkmtrGIMnkjKCiRqlRrZE/v5YFHbayRD
- dJKXobXTtCBYpLJM4ZYRpGZXne/FAtWNe4KbNJJqxMvrTOrnIatPj8NhBVI0RSJRsbilh6TE
- m6M14QORSWTLRg==
-In-Reply-To: <aRA6lEQmmrvmj2DX@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspam12
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2mnclewibysqbpeg"
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 6FEFF40002
+X-Stat-Signature: uhchg7yrctejgzckjsyg74keiskmajw4
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 885B218001A
-X-Stat-Signature: okttx3nf6ex8mmo1tqh5o7hr9nh4kgmy
-X-HE-Tag: 1762715471-217201
-X-HE-Meta: U2FsdGVkX18YH4en6/lxKHccLm43FwfrZ/90IdjJuCgsdQ9ttO+X5gryHzWIG+2nXrk9ZNjAPKwgUwOZgwHKuo5dMnbJhNfzK56Xz12hhCxA5FtThOFRMU8Lg50Fe3OBwUbSG2/EjSXUbDcsgf8q4BSyZ55Hy1F92gj92EBg+F7hph3vOyAWuoDT3fbUk6Q+6wbgdMHPdkwNsz26e6qIGC2FkjaXIM0ch3nvYrwzroPJC4in2YB0tjE1mJCuR0EoObgU1iFfViLdsUtsgWAbkOW6Zx2bik4FgTr/KB67sGSO4edPfCZj/ozau+Dc/r/4DqNsqLk58q/484AmOh6gPJ1njRFtwcCxervXFssWesk8s2Hc1lu9vmCrE70dpptWSPHwjP4c/6Z0BSB3OBwZvh2iu/10fcsh22OwAKuoIJDxri6F9sUERzC6KJT8h2BOAs8Qot9Oxc3KFjyhkcfIyuK3wF1juJl+OHREnyWLdHdt0TxdJXchRG+qj7R8ZXeu2/fpr3do8qncSqp0s2MTwr21SD5FY7kkMQ1Ib8HTE0MUPC0cs21gIlDEREBXbJ5lKM9j4a2Czrvi8hXmuFk6J2p2mOxPRVMqOgCxOw4kA9oZvlg0fV8JRVOOrIe0lg3eQoyNfxtUTXZ4w+y/gQDr0zmmQOCDSUAg0oS31hk6ygEejH+lwQesVkVJOIlYr7PmD//adH4+3rrf7DqxjcaWJ6wdsrYtm8Bvfd1VrOr/+l85KKTcuRfnOp93TRmq81HJikUGplQn+J4proSrDnUbrfJam80eiZPU+Q5SD4lZ5zzJDcTiBxLxOn4nVmkooodpT00S1tRGns6OK5wENS5wmZ9901dIHIDQ3jp1s9ARjwbyASSRLT4qmg8TxIgTJnXqlR6JJyrcHOVI8fMvv/z8gczNHJX74yJ9RkTz9A9GV6ed6AJWcuFB+m/YTaUIB5QXX0QWLqMN+YG0IFa1AMm
- 4JZc8/Ln
- 8ToVrLsMudfRmfVdFW+5XnH1he+0otSgoN6aWQ5lsJFi1MdKvbIOgktCWc49MC7EeF8cJ8o9gO1DNmViOsPuKHHn9HHnDnI74t7MzarXrJ5EAdqNQ1NLn3Z/8OM/g3UqScCfDC+sefdhX3YjG0/UxUSGjfQRASnUExlN4sJjNKJfVDSXA3ds23gQlUUGrKHnXKNazniRukMOC23P+SIUzvCLnAeiJKCpx13okFE7RLJ53hbj3gX/s9ct6n1FvUvqASrfEYq94LM3xn7Iaw04yb0kiMMo4ETujJLIIXpTg2Ut7hZd8+cRewXDYBzl2FU4F/X75VOy3E3A54dHq1VRZgBZURnYEkTWD43x+iNsxWMB6A9ziGETqNKYWfWxI1ddv3GilY5vBtZD30QSerUTxX3tEBvKWd++srC6yCVFc8n7CMvI=
+X-HE-Tag: 1762715928-514236
+X-HE-Meta: U2FsdGVkX18ZzinX9N6rV5YwA9xePgJ2c3qrPB/D+5WjrgQMkG77LUouImKlaHxneZrO025WIGc/tDIKvWJO/56BVs7I0x/5QJEemCMeGV0ceFrANXgYpPtqT4gNALe4PX+TLjgzz98/qXDTmMfkfv8s8c6OXGcwjFzcDI8gsZbHn9+WtOlbd9nGwlfn+k0JVySzkNxRhC3hkR5TFX17nTiy+iXjFmVxebNHfNhQxRjk1dH/6jVW02nEYdPdalXoK1CNHJFk9DhB+ZH3cPjjX9TNOckjmN5i3a1gNGDBWEiAg2ZpCDCZ8U3UIYZnDtIVLwpbKGTRnCwoJGbeoJvtQQYG9T8RlfZ1JcUjgxFBaQiY33osAXxR7feCJR8Wx/6RHUMUShQSQMBTi+AQaK8471eLiU4y8elFvpyeYxw/eOJSoK17tubqzatGSRbi7P0lSwnQS8A3JLAghKy4B9sb7iMhGlFsqoqT+eUodVNgzTxVVUDVP+V9d+Cu9XYnzOqHDrCUn2cjFXnc+VSLgs2UVMLfPk9H3v6zZf6MXJQgZFGY96vuuM1c7lIGyE3bE+/oemhEKvoF/T3MhifcpcRD7WrjYL8U0jHdBSKV7/M+1R4/urucdPs7yP+d3j0DU3a/sgziF6309AKhskgFvpUUGnDm0MJdbURe6F9O0RqSZ9vGLLFhf3vs5nEYh24chrlK0EVC7SJDc2AGqOi+zR+GZEHqgQhPyzChwGnto3JA7y8FIZBVREZCwsPItUhazlHdm72Ry2Frpsi8BELILm1JgtnGa0tcLEgXAIkjntm6eDIsVZgY8zWJOGov/ckTNnwkrzdYzaJdcgJHm3r8x5yjtMvJqL+vfbjofIaagnBu7cshEq84AL5hmQq+SPzYw89R6srb/uWzEv80itysS9c/YKj2NbB4fiyr/i9UPMff+Tl1Vhr7FeZNc6xs7yWC/bwgJPPgX0iCInIgiiOzgZu
+ ma9XBiE8
+ /jz5GqfXNsKqs4+5puMMCw8GC3j7m4y4vLfv1iREfjh/p25xP0lTRMDkBhhsxGF5l4p2zOMOyuu7Jahf8K1oxclEyu1CJelUHmt2ouDqOa10mJ/MkkxlIJjGyMNz4fVNQXjAG12UDvyiHFyEcVkszmbQSy138a4+MFIyGKyaTxkipGaUH3H5QskdnEfWvhcJeMInxkUZOVSODbm9F0t96Nu6HsPwqFFjL+p0BrYvX6ENAn5+MjF9Qru7c0F1vhvTf9zR0fDH2Br0goNzJVeHFOqqDHIRuyDPQDskhU32gGs5bPhjwgwEHUjhLU171nqTIhVb+LrUE4EIvuIG/jukH9KLfDtWxhlCyMbUJunGGdJqHFk9/y0ukMYKEe0tzoQm1+EYOXERC13np2u0Z+i3oY4XRhwO5DsdXMxrRLBDKiopEhn+PfVjaWrob8eqoEiP4o73gnpPohr1jdVnRrHpj/Dbakg6LALwwEglBPSg1PX2rxMkFORI+ndUTtKv6nwuLdpgIjL1lMjQBPwH7WxNAPupetw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -186,64 +99,87 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 11/9/25 07:54, Mike Rapoport wrote:
-> (added Nathan for clang advice)
-> 
-> On Fri, Nov 07, 2025 at 04:08:55PM -0800, Andrew Morton wrote:
->> On Fri, 7 Nov 2025 10:27:27 +0100 "David Hildenbrand (Red Hat)" <david@kernel.org> wrote:
->> 
->> > On 06.11.25 13:02, Ankit Khushwaha wrote:
->> > > On Thu, Nov 06, 2025 at 12:18:57PM +0100, David Hildenbrand (Red Hat) wrote:
->> > >> On 06.11.25 11:49, Ankit Khushwaha wrote:
->> > >>> Pointer arthemitic with 'void * addr' and 'unsigned long long dest_alignment'
->> > >>> triggers following warning:
->> > >>>
->> > >>> mremap_test.c:1035:31: warning: pointer comparison always evaluates to
->> > >>> false [-Wtautological-compare]
->> > >>>    1035 |                 if (addr + c.dest_alignment < addr) {
->> > >>>         |                                             ^
->> > >>>
->> > >>> typecasting 'addr' to 'unsigned long long' to fix pointer comparison.
->> > >>
->> > >> With which compiler are you seeing this?
->> > > 
->> > > Hi David,
->> > > 
->> > > clang version 20.1.8 (Fedora 20.1.8-4.fc42) raised this warning.
->> > > 
->> > > To reproduce:
->> > > 	make -C tools/testing/selftests/mm CC=clang
->> > 
->> > Thanks, and thanks to Lorenzo for the details.
->> > 
->> > Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
->> 
->> I must say, applying this would be an unhappy life event.
->> 
->> 	if (void* + ulong < void*)
->> 
->> makes perfect sense in a world which permits void* arithmetic (ie,
->> ours).  So what the heck is clang doing??
 
-My (not very informed) guess would be something about undefined behavior
-because pointer arithmetic is strictly speaking only valid within an array,
-so void* + ulong is also still in the same array, and thus can't become
-smaller by an overflow, because overflow can't happen if we're still within
-the same valid array...
+--2mnclewibysqbpeg
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+From: Alejandro Colomar <alx@kernel.org>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	Kees Cook <kees@kernel.org>, Christopher Bazley <chris.bazley.wg14@gmail.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
+	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH v3 1/4] array_size.h: Add ARRAY_END()
+Message-ID: <amjs73mcxeq2zcni5rkbbugm7jgboejrtk6qxfov76hr2fca6m@zjdljyhkkaqs>
+References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1762711279.git.alx@kernel.org>
+ <2cb4ddff93b3d3037ef8d094de94227982117f87.1762711279.git.alx@kernel.org>
+ <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
+MIME-Version: 1.0
+In-Reply-To: <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
 
-But I don't know if this strictness is only applied to the warning itself or
-to the actual compilation too (does it eliminate everything as dead code then?)
+Hi Maciej,
 
->> If we do
->> 
->> 	void *addr2 = addr + c.dest_alignment;
->> 	if (addr2 < addr)
->> 		...
->> 
->> then which statement warns, and why?
+On Sun, Nov 09, 2025 at 07:05:40PM +0000, Maciej W. Rozycki wrote:
+> On Sun, 9 Nov 2025, Alejandro Colomar wrote:
+>=20
+> > diff --git a/include/linux/array_size.h b/include/linux/array_size.h
+> > index 06d7d83196ca..b5775b8f13de 100644
+> > --- a/include/linux/array_size.h
+> > +++ b/include/linux/array_size.h
+> > @@ -10,4 +10,10 @@
+> >   */
+> >  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_ar=
+ray(arr))
+> > =20
+> > +/**
+> > + * ARRAY_END - get a pointer to one past the last element in array @a
+> > + * @a: array
+> > + */
+> > +#define ARRAY_END(a)  (&(a)[ARRAY_SIZE(a)])
+>=20
+>  Why `a' rather than `arr' as with the other macro?
 
-As the answer was that nothing warns, I'd think it just isn't able to warn
-if it's no longer part of the same statement. Whether it also means it's not
-eliminated as dead code anymore, dunno.
+It's simpler, and equally informative.  I wish ARRAY_SIZE() would have
+also used 'a'.  On the other hand, consistency is important.  I'll make
+it 'arr'.
 
+Thanks!
+
+
+Have a lovely night!
+Alex
+
+
+>=20
+>   Maciej
+
+--=20
+<https://www.alejandro-colomar.es>
+Use port 80 (that is, <...:80/>).
+
+--2mnclewibysqbpeg
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmkQ6REACgkQ64mZXMKQ
+wqlxpg/8DCZ43s63Y4S4kHX7NRY5OVoa64fFe+SDhiM+Aq3FGWYWusa8kZIHgo86
+/lLSLyZwQciCGXCENn4yiKkCYv76FEiCZY29kelAF4sEf4perL4IbX4MrChkWSLO
+LcFvRC6qs52Qzp3Rd3c3sImkcz2Cbogeku+w3W1n2G5K7DL8O8qrcLtFYAZTMn1u
+lQMCyBfh/izbE0ymjYnlFk20VansUxSWb7V534tSK6cezHfHCvmoimAB5pe1psPC
+e1H4uSP9wiXoG9Td/WylTu2JGp7WF/c/3vwEfYYYD24QvgW9nvBiP/WsSqBx8I/E
+tihbCcT3oiL7rhcXcebnJ25Yea+tPMbaYIvq6UT+8exXWRwf37j+763w4lfrxIiz
+1ux+b11LsQ1gMKidaGMdfz6IMJvVX+f2mkuTQxARS9f7tqIiHSKU4TDKntReDsiV
+gjh4yjNrX2kDnj4Ss7hkPbRNzyh048TKgk4fnH2MUDRTyR0rI2yGqZ9HbqsAMo31
++y+07K/VjAQLSNeE/P8a73QjZFm7SR0kU5crpuTjonCNGjQZkw+EcZsCvZcTFV4R
+hvzJC4S/v5rkfPOguAGOM1CvJXGrYiKH91JnVavvy8toezhEmO16Pyge8aOralaH
+YlX1X+n1yY4VKuxDfZxd+cwzMzIvns8du+xNCOrJvUy49YkQPMo=
+=e0eB
+-----END PGP SIGNATURE-----
+
+--2mnclewibysqbpeg--
 
