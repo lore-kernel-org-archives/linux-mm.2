@@ -4,91 +4,101 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BDEB2CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 07:44:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 496C0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 08:24:07 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 021958E0013; Sun,  9 Nov 2025 02:44:51 -0500 (EST)
+	id DA2858E0010; Sun,  9 Nov 2025 03:24:05 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id F14B08E0003; Sun,  9 Nov 2025 02:44:50 -0500 (EST)
+	id D7A3B8E0003; Sun,  9 Nov 2025 03:24:05 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id DDB888E0013; Sun,  9 Nov 2025 02:44:50 -0500 (EST)
+	id CB74A8E0010; Sun,  9 Nov 2025 03:24:05 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id CA1958E0003
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:44:50 -0500 (EST)
-Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 93D514C203
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:44:50 +0000 (UTC)
-X-FDA: 84090281940.02.A5682F6
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id EAE2840005
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:44:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nEaGkOX+;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id B73808E0003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 03:24:05 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 2E2121608DE
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:24:05 +0000 (UTC)
+X-FDA: 84090380850.07.96B7B96
+Received: from mail-il1-f198.google.com (mail-il1-f198.google.com [209.85.166.198])
+	by imf13.hostedemail.com (Postfix) with ESMTP id 7AE3120002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:24:03 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of 3ok8QaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3ok8QaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762674289;
+	s=arc-20220608; t=1762676643;
 	h=from:from:sender:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 message-id:message-id:to:to:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=udvzOrraQgowhCoArG7WHsaCJlrFQxUUjzXVeqvlkaE=;
-	b=wHuJJRofHn6f95GD68dO5wwus9n8oamLtD7moPhUqvGVb9Njl34QGb91t/8qgQKvaHZbRZ
-	P7Jm2NnaGJvIH500MYjd7NxGiAAsm17s5xt7NJsfRJhxcZFhPtIktRUef2QrKOuiCn14c7
-	IcPx4ikFWKkms1B1eYTuLU819K5gIBY=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=nEaGkOX+;
-	spf=pass (imf12.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762674289; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references;
+	bh=mL3FxTXejtzhr5abhLD58XcrwrPM61KGMnvXhlFjr4E=;
+	b=ZuYLQseMyjcyulw08d2hMZo6WLRiYrhKuc7/Vnzy3vFQFlg+e+zKUCb61DlfeKV9OgsgT+
+	4lpVxNu0urem6HpgbUSt8nGSYdMDo3SKraSb+GGMC2s0/j4UCwliKfIGrHuqssRHQIZJfg
+	I0iZoIDSgtznfxSaCZTBSz0RCbz6aA8=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762676643; a=rsa-sha256;
 	cv=none;
-	b=EyD2bM76T9hZLAVsHiVkYnC2LLkCMeHGLlibPIQjZnjqdP3NRInxQiFRjzM8M6RSsuTrLR
-	osCvugG+oBREsNLP8gPBKKpWfbax0VieMLskvgPvUx7vakQKdwEBdbhP+wokMlnwEnammK
-	YKKvWnlfpu0Lz/Cy05TDcXW+QHgXih8=
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id BFC41438A0;
-	Sun,  9 Nov 2025 07:44:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34AA7C4CEF7;
-	Sun,  9 Nov 2025 07:44:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762674287;
-	bh=SXM1RJK4Y1aQhRPlTIZtM6v4fO/FHLamLP4CHn5W4Z0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nEaGkOX+750ge1zsRExJBdxcZCWiyCN2X9rbocTZpOwQ/utvZ7cEBIhPmySBA22IK
-	 jq+1DNA9z7vEPGCw6sQV+usYTJ7BaRuYpGVcKtz6D6b/ivwhSPSUuHrNDxLkrv0E6w
-	 u7Uh8KG+K568UPZVpF5pwihAMcy3558XoDn9BWZuWQclBN9BJlo0w/TT/4xZPC4jbA
-	 NXwBrsta1LFyzniQty1sMyWCVuKCprOolZhqNpOUR1YagOFumcwq4hq67NJYzkzAcs
-	 QSt5xqbAnZgjImnfftJvLkdpNeJizJCtNVCmTpQlEevZf2WjQIbVZd/BDn2yyU01w1
-	 Fy4UefJ9vd0Og==
-Date: Sun, 9 Nov 2025 09:44:40 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Vishal Moola <vishal.moola@gmail.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>, Jan Kara <jack@suse.cz>,
-	linux-mm@kvack.org, linux-arch@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*()
- about HIGHMEM
-Message-ID: <aRBGaAd_AvSvtzU6@kernel.org>
-References: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+	b=ZJ/NuSvDznybgXkBfXDmtYWUf5GC5kO5Imf1zmSztQe8KfegeNXaa3bpCL2RPLGNoVL47q
+	o/hAMjynDseMu74+Dk3U1ouIV9hBdf2kMwNlzDiRCD1LptJjfaZRVgi6j3GFRMZppKYdRY
+	SdaDXVXmL/RQzHsrwJs6PwM3QZ3N6pU=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	spf=pass (imf13.hostedemail.com: domain of 3ok8QaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.198 as permitted sender) smtp.mailfrom=3ok8QaQkbANEFLM7x881ExCC50.3BB381HF1EzBAG1AG.zB9@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-il1-f198.google.com with SMTP id e9e14a558f8ab-4337b5c3388so10568265ab.2
+        for <linux-mm@kvack.org>; Sun, 09 Nov 2025 00:24:03 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762676642; x=1763281442;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mL3FxTXejtzhr5abhLD58XcrwrPM61KGMnvXhlFjr4E=;
+        b=H/GwYhQeylL+C6LRJvAU3GNAKP2Crs67yW6w+500safM2y91skyOetdfayZOd4rcLl
+         gE12Ih4GujUd6iCjGyCvXlA1hdrFYN0Df8suL0KCt/aFL7wlDTpzsPbKQqfwGQBsv607
+         wTb9lDcv5rFySBZEoObifuIuu983c+5luQHSG5/sHWxyYyvNSoSKO1MR1WYg3i52TmyY
+         iwLUIK30s1xAK1n13ObfGQenh+QyaZbzNBPkvE693nogdznO2nK73Yt8C/y+Rb4Mu7Ql
+         wxPkV+dCSwpy1ckkZhc/QT+0h6NeA4Armimk9LblwObaWoazNCu+GmvnFQ879w+oAJVz
+         nZnw==
+X-Forwarded-Encrypted: i=1; AJvYcCV1FCdzeVrHT+yLFW0vo2FWbEmoNzUoQYm/kmZXlVMSK382VV6pM7r+0e4iDvgE7/79HNJGkk5stg==@kvack.org
+X-Gm-Message-State: AOJu0YybvlocCGiRfxJea6OEY9j8o4gP3eKXaP+7SIMXGIFUuY3GFsea
+	FWxS97RFNYId5QKMG9uMTCVtjXTA/5ypAS+OS6meRrlq9blKiwXhp/2EMXc4qeWxNJ3T2lb7rM4
+	WArRLVG8OFUEvJMm9FV4OJIV/p2jCEHA/GUcBs158AWNPb75qlKJUqywikpY=
+X-Google-Smtp-Source: AGHT+IHOqUl2FIWzqMdoU47l5Gxi7c0kUdVzP4da94Ci7TzBLeLq0JKA4Ol0t1W4WTRGmKRyGXfPx3vt9pTfOQ1/fi74ObEhuKjW
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251107095922.3106390-1-chenhuacai@loongson.cn>
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: EAE2840005
-X-Stat-Signature: wuzhrihebdtckhetp9xszd1dhu4uyt58
+X-Received: by 2002:a05:6e02:2388:b0:433:7728:b17e with SMTP id
+ e9e14a558f8ab-4337728b3damr42151785ab.17.1762676642611; Sun, 09 Nov 2025
+ 00:24:02 -0800 (PST)
+Date: Sun, 09 Nov 2025 00:24:02 -0800
+In-Reply-To: <690bfb9e.050a0220.2e3c35.0013.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69104fa2.a70a0220.22f260.00a5.GAE@google.com>
+Subject: Re: [syzbot] [fs?] WARNING in nsproxy_ns_active_put
+From: syzbot <syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com>
+To: Liam.Howlett@Oracle.com, Liam.Howlett@oracle.com, 
+	akpm@linux-foundation.org, bpf@vger.kernel.org, brauner@kernel.org, 
+	bsegall@google.com, david@redhat.com, dietmar.eggemann@arm.com, jack@suse.cz, 
+	jsavitz@redhat.com, juri.lelli@redhat.com, kartikey406@gmail.com, 
+	kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, 
+	mingo@redhat.com, mjguzik@gmail.com, oleg@redhat.com, paul@paul-moore.com, 
+	peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, vbabka@suse.cz, 
+	vincent.guittot@linaro.org, viro@zeniv.linux.org.uk, vschneid@redhat.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7AE3120002
+X-Stat-Signature: bcxdo9ddcds16cj5qqpn6wfnyfk5g6qk
 X-Rspam-User: 
-X-HE-Tag: 1762674288-50877
-X-HE-Meta: U2FsdGVkX1/w4Iu9/NE1cnapSKk/Sz5ldJ0on9HxWv7dzV5i9e47uWiYlGJi8OVVA92MND4jSqlcUUdOIqD6tznnNzVdJdjGFUJeU4gCU39N1iJJ35unWTXkq9VQvYmSgPGKXUg+yIBwiWyq7tlHIsi+BMwMbYuHqSw1/Z+Ll2KNBbVql1upBP0LBwZCmxmy4DNZJKtSd+KUGnDCqnytq5PRxBTpf/7P2gh2IELq3MTXZLmy7XvXFODxJnseFmvKUd+QxveoICMIYB7SY90GqKgRa5BZ4RT/zKeOHUoOaaNj4q2mrzlOXVjnpPzFIpwW3S+0i7CwimATQr4Ru1ZDoUC66krnjXLNBaDPFLrFQxoVAvsq3P0bd6JaLaxRrYWid8nP3jG+6Y/og8oNyDkJlmZkLd7chhXURV4tfzZ4bm9u8RgjRPmRGBpFdoyA+x4MwE0ZwWcm3npD8jGIqAesX3sVr4djBRoja44/zhMroDKxmjF+irYsHoH84naAwnZ39ieItO1thvM1MX8sGkbvOhk/vNdOQJyvtjM4y1uprg/YuJllqkk20ifydYFvpGilF4lU6KbDxNjDySQi8im4zqINckkqpplP52EtVTOJb/OBtKc1KCocAX9ayYL7KSC7jT/v/rMTG8xxE3b7o/BntRHPalpw/vk1NFjbTCj6cxi4ct0D6OXYcvrc5OR4b7A1udXioA47rzvQ3Hv6bjvKWgVDr2zx60KMf6/ZAagSi3WDGzGxRBLofgiO0y2jUN1aEzUwF34G4sn3jxc1BG4Zqj8RNqisrXyIsMlpNcMwFQADW7gE4envZnr+aC6Or8tM2fM4RlV70DTO3lAzc9EmnvAMllzyXogKJTf4/lSwslbnOzsP5rrr750A0jMyPX9klrmUjsb9PqUMC/I+iSew8nUIvu5llGttfFWtM9i8NIXO09P4jfnDMXd5TL3suJPv93+u55apzabbonGVMVS
- wf4GlM9n
- nbic+eLmSyrrjjwP8+LJJgGi9wnKYnZNoBzxrLorv6qgrcOXHdKvyO956A5Wt4vC2qdDRDUuvMVjvZdpo2phf3mN/oC2zRdIqCr/rrqxgoxxlEH6yV/nEQkOJcICP0MgULYJG1tzVhbws7E7/GpwZjVpB4OwOJ0y1+aWY6s4v5X7pR+poG8mcWCMAJk56BZW/1eGEgAYi9f3gbrEdL9XkWVaBSgWaeZNxhgW3YSLqu058BFXgxVR88y0BygqUgVe0UdA/CyxC7da0b7BXJNSLwDki3aUhHGw8D4iHN4CaNo2XR/QzpcF3FeyV7EnDtL89hu/zCzsallWr3xP19ltutQuY3aS9u89PHSkVFFUo3iSWa3WMdJTy8wxo6jP0nvXepEccKj6/3kyNhkc+iTVavoOTsCtcrC0efBTXaIY4ES7hSZc=
+X-HE-Tag: 1762676643-937383
+X-HE-Meta: U2FsdGVkX1/vOwAH05AD7m/Kp3iRsx8J8hPSChEWQyvfsYtuU0+rJDL9N+0iJIQ1tuPL7IroRDM9PQgpk6O+u8nxoiUEQUwPfUk38E8gCcWvORopQhc+FzvN0L1nv0nHYYN9hGYCEUz0DKq+WIsi2K+Ie66Pdz2BIqV/Dy6gtaww7TIOVEmmYuOAB6YzD9NWBokegO90YcwjfAP9bJGaRH2D13Zx4s7OSZVjWFES3ocplaADP4x6olGMeIAYioICTV/VbO1bLJCcnllUiG3P4slm/4+HLyaVqVSCxmXeFX/WLOLGmtPMZzSoiwJpipAFwZRmXpcJ4il8lqdI1I6HLIiqoKpwig80VSU75UJGYs4X5AuqViNwjA/7XOoYCFJLNjnwl/ad1PTaC/X9MZRkUv8u60lPsEwQJCpg68Za7CEGR23VnrLm1FUN2pBwxPSeiiCklieFyfExy0zfLb+sSJzFeyi/yejGCXWPIUVA+xC27EOaoRntfooHR3KdpUzSxeKURLItCsj7Kzxzu1KAUB1WQtRNs2YhSj+vvQZVWHvJoZ89bdzaSUyjKhubb6rjmZW5ZDl7/bKaRS4FTDA/6T1oknQKQ6z0M4RdS41NFLRvgbTHwJd1HKvFAZNZyHm6CUPZlgShQjpCIqbQ6bridLK4B/Wkj4OfaUB5NCxKnNh1yoOoYK/uzEiKeXBiwY0ifahdCELXKdrMiK2N1raw6uDwZZswun5rUXBZUH/x/RK+jGQmCVef6QdASLzo1kDztdbBf41JTh+ZJneQD6Pk1DBhwQCnKBjXV6qbzwB1P7ouwC25DcwuxG8ihIyVsMXohE0I2ZiKF4fkZgG7kITIgHtT+5borNT/pu1xfTzksWieecqmG21Bcg2s+Wx/Grdpmg/twACJrF5hth4iXkBZC9i/p4vzxHCkYgRz6zUzPCowKtLH5Yaz4Y3gOfPBy6VKSkFx29DW2IsPbRVtzyk
+ xLKJFl9m
+ XUC/gAxkgHVVzVjms9k7l80lZ546QI/L+5jcIILWOs/Afkti/LBLTe1XkTit3mz7+Xebg35mwQ+M3YpC6wjcdFj/16MROAnARehmBxS/105beHMHC90qJ7yQULTKHTc/VWeI/lm8LLkgMpjAgjXN8gwWjKewc2RjKaLzmDZFYhU5RzMiclcuwYXouhcTc/CE7JoB3Yf6hKFirj0rQ31Yxenw7wdzZIP/TTd4ksPa5AAmECtiIrjiz81kj+U024QSobFstjr3uGL3Tp64kfY/WVTjbq7+IFQXKIkMaqKBQ4PTuKB/iRtOzjQjm6o2dVjGAhb0j7RmNcnPBAUo8blBtIcj0T92Djc78aSxndgbkZMkth9flGt9HzzgnvXgp9T4bKarPFwqDCSNPl0QwRrGB5/gwUaDOskWQXva7aLOlpkpZfy1pBZ+ZAV1PFgr6zTQ1ybZ9qapvp/83bgw+J/v6M5tRYLbO2rUugyR7JDxG0we1tG8aFdbwqA/bZMvqE4/6v3pogvw/skREbvYNJn3wzt/Sxz/UxVOVU9imWxvrWn+qKnz/2cs5/7eDWddOZTSU6jwI0tnU15gMrNQ2DtXPgYT/AywGMwx6KFyQAmVqSCzSqJGM/BzL5CVZEnz4lqq1NTyA7s95ayY5LBCvcc7vH3WvIF0JNRNsj3sDRGxU3+DwUGwAJasjVGj/e32HO6Gmj2HlXW6t/VmDhgMFRDVpo7WcACsfUNWT8bGnqFHjIgAxxmbd4K9dIUfAMsDjFXdsPpeq8BsKFdY+zfr5JnWLciBYiqZ5oNTLcb1KC6SBWws+FEYzJaTVcOLgU0Ntfuv0n84vgDz8i10x8+Ub7qIVy7v9655FwJ/rpAefcbAE7bTs0cOykOMmVkopVTe2KJAXgAyxfwb/PB1+KM5vwNQYHHyAjQ1U9R2DbhC5RE6xRSAtq5NMAnhm0lJFqJPFknUYOXmskshiQl5a5anGBWvwCoCE4Wey
+ IVRbzIFm
+ mi42Q0pHvakSj/+39LUdg5tJqviW+8g/l7S0EuveMaoe1XBUKX52/UbPfRTvESOaVWPjuvC2auAQcwt430DnyW9Y+96wCzh9HKKRPhQqhLE1yOaiOerwk1lFrW8L/blVMKMkppB7BFbRlmpU/pOOjlvZ0tf+EcIjLbSClyHx5s5SYpLJRTfRIiaU3YPu0PAa
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,70 +107,26 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Fri, Nov 07, 2025 at 05:59:22PM +0800, Huacai Chen wrote:
-> __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
-> flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
-> as follows:
-> 
->  #define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
->  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
-> 
-> There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
-> explicitly.
-> 
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+syzbot has bisected this issue to:
 
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+commit 3a18f809184bc5a1cfad7cde5b8b026e2ff61587
+Author: Christian Brauner <brauner@kernel.org>
+Date:   Wed Oct 29 12:20:24 2025 +0000
 
-> ---
-> Resend because the lines begin with # was eaten by git.
-> 
->  include/asm-generic/pgalloc.h | 6 +-----
->  1 file changed, 1 insertion(+), 5 deletions(-)
-> 
-> diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-> index 3c8ec3bfea44..706e87b43b19 100644
-> --- a/include/asm-generic/pgalloc.h
-> +++ b/include/asm-generic/pgalloc.h
-> @@ -18,8 +18,7 @@
->   */
->  static inline pte_t *__pte_alloc_one_kernel_noprof(struct mm_struct *mm)
->  {
-> -	struct ptdesc *ptdesc = pagetable_alloc_noprof(GFP_PGTABLE_KERNEL &
-> -			~__GFP_HIGHMEM, 0);
-> +	struct ptdesc *ptdesc = pagetable_alloc_noprof(GFP_PGTABLE_KERNEL, 0);
->  
->  	if (!ptdesc)
->  		return NULL;
-> @@ -172,7 +171,6 @@ static inline pud_t *__pud_alloc_one_noprof(struct mm_struct *mm, unsigned long
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, 0);
->  	if (!ptdesc)
-> @@ -226,7 +224,6 @@ static inline p4d_t *__p4d_alloc_one_noprof(struct mm_struct *mm, unsigned long
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, 0);
->  	if (!ptdesc)
-> @@ -270,7 +267,6 @@ static inline pgd_t *__pgd_alloc_noprof(struct mm_struct *mm, unsigned int order
->  
->  	if (mm == &init_mm)
->  		gfp = GFP_PGTABLE_KERNEL;
-> -	gfp &= ~__GFP_HIGHMEM;
->  
->  	ptdesc = pagetable_alloc_noprof(gfp, order);
->  	if (!ptdesc)
-> -- 
-> 2.47.3
-> 
+    ns: add active reference count
 
--- 
-Sincerely yours,
-Mike.
+bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=11a350b4580000
+start commit:   9c0826a5d9aa Add linux-next specific files for 20251107
+git tree:       linux-next
+final oops:     https://syzkaller.appspot.com/x/report.txt?x=13a350b4580000
+console output: https://syzkaller.appspot.com/x/log.txt?x=15a350b4580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=f2ebeee52bf052b8
+dashboard link: https://syzkaller.appspot.com/bug?extid=0b2e79f91ff6579bfa5b
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1639d084580000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=1625aa92580000
+
+Reported-by: syzbot+0b2e79f91ff6579bfa5b@syzkaller.appspotmail.com
+Fixes: 3a18f809184b ("ns: add active reference count")
+
+For information about bisection process see: https://goo.gl/tpsmEJ#bisection
 
