@@ -4,112 +4,97 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B6C21CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 13:38:58 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 83E02CCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 13:39:33 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id CEA618E0013; Sun,  9 Nov 2025 08:38:57 -0500 (EST)
+	id DFDCC8E0018; Sun,  9 Nov 2025 08:39:32 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C9A558E0002; Sun,  9 Nov 2025 08:38:57 -0500 (EST)
+	id DAE2F8E0002; Sun,  9 Nov 2025 08:39:32 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id B89CE8E0013; Sun,  9 Nov 2025 08:38:57 -0500 (EST)
+	id C9C528E0018; Sun,  9 Nov 2025 08:39:32 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id A2F6D8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:38:57 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay06.hostedemail.com (Postfix) with ESMTP id 1D7CE12D05A
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:38:57 +0000 (UTC)
-X-FDA: 84091174314.25.467BA00
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
-	by imf10.hostedemail.com (Postfix) with ESMTP id 66EC8C0006
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:38:54 +0000 (UTC)
-Authentication-Results: imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="WwwPCu/8";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id AECF48E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:39:32 -0500 (EST)
+Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 57A185BDA9
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:39:32 +0000 (UTC)
+X-FDA: 84091175784.16.FB414B7
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id C6AAC80011
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:39:30 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCDTG7yW;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762695535;
+	s=arc-20220608; t=1762695570;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=cr2114I01ec/abmyNG7RpEXZ1LzjDm/1lTsSiym6iAk=;
-	b=AVu13HKd3zO9WAk+DtHrj5JmqkrriRKjYPGgTqfgH/NJ07L4v5P42PNb7JdyLLr8O44COV
-	qCa2CCKLugN+aKe5k61C9lVBHhjIUG7uaaO64q9tFCPfVB+qktSOW7NFYVudQaM0H4s3fl
-	BiHbKGbGaTDJdmykwk22e+IxToULNF8=
-ARC-Authentication-Results: i=1;
-	imf10.hostedemail.com;
-	dkim=pass header.d=intel.com header.s=Intel header.b="WwwPCu/8";
-	spf=pass (imf10.hostedemail.com: domain of lkp@intel.com designates 198.175.65.19 as permitted sender) smtp.mailfrom=lkp@intel.com;
-	dmarc=pass (policy=none) header.from=intel.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762695535; a=rsa-sha256;
+	bh=ilDuKMsUzA4ReOjIyBNkskTq0lsErvMCbOUpEiB2v9o=;
+	b=FASxRb69E6AV0PqrdKlg/EzasEGinMey2Z5uDLCVAevboFyarRVA0i+pEsceM+lnct9H2c
+	DO2BN5NtznbdH8yx/iVUyFj6qrTgp+cyDY/myOtpKH1TTecqGYi7tZqwloS4qQBJQX6qTC
+	rUIdsj/WY0JfHjX1nv8actpYYRpR3ug=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762695570; a=rsa-sha256;
 	cv=none;
-	b=o/mzfERCND1EXkQLSp1lexAVCdeAXoCyljm3N+PU6XxOLZXeS5jminOQJyotpe3o9NbFHj
-	5YmlXx31iNkAYJf4yEnnafQlLkYuuIQdo66Z+BH456Mz4AQUFffnh44qZFf+kL9jVEckBm
-	qgN7nW5SloQ75WmV+q5xtWv0QLpbOIE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1762695534; x=1794231534;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=1x+Mo9nWh2WXI6lONcFe9DSrRcVoSKddorvdA0ovrps=;
-  b=WwwPCu/83nIJiBPfq1dM7gy3mowBM2btFEiW5PA98rkNZfx1cLEFYIHx
-   uDLvs4rBHkZZKPo5+ay7c3vfpNGSY+e5Lx+lLsUTy9JowmAlL766G61Mw
-   wNJglQ/aHdqUJotbe2YMB58/yeGlnQXK3fJZwSMgp9hu6vc4b7hrbnosw
-   5qQbpVxmEYseaXU4NuZYUWKouBkBrzhr9NQQXyWQO3rr71hGIefTSLa1H
-   XMQLwZQKjI2haJrwgaDkX2KjCiaGKASW309BY6gUsSBTT1L9Qfj5FiVdi
-   qdpXonbB5sCyuXaAY3eiaiR881Nz7gnuAKxmG/EObQat7Ph5/eYJJ2xX/
-   g==;
-X-CSE-ConnectionGUID: Js0CSgSqRyaz4/KDcUyO3g==
-X-CSE-MsgGUID: ePCNeSgIRACurU5fXS2V8g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11607"; a="64651518"
-X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
-   d="scan'208";a="64651518"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 05:38:52 -0800
-X-CSE-ConnectionGUID: ifjZIU4pSdODEVFMem63lw==
-X-CSE-MsgGUID: JRKtoAiyTRuSZxiMKKrPuQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
-   d="scan'208";a="192570350"
-Received: from lkp-server01.sh.intel.com (HELO 6ef82f2de774) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 09 Nov 2025 05:38:49 -0800
-Received: from kbuild by 6ef82f2de774 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1vI5d0-00022F-1d;
-	Sun, 09 Nov 2025 13:38:46 +0000
-Date: Sun, 9 Nov 2025 21:38:19 +0800
-From: kernel test robot <lkp@intel.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Aditya Gupta <adityag@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linux Memory Management List <linux-mm@kvack.org>,
-	Baoquan he <bhe@redhat.com>, Dave Young <dyoung@redhat.com>,
-	Hari Bathini <hbathini@linux.ibm.com>, Jiri Bohac <jbohac@suse.cz>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Pingfan Liu <piliu@redhat.com>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Shivang Upadhyay <shivangu@linux.ibm.com>,
-	Vivek Goyal <vgoyal@redhat.com>, linuxppc-dev@lists.ozlabs.org,
-	kexec@lists.infradead.org
-Subject: Re: [PATCH v2 2/5] kexec: move sysfs entries to /sys/kernel/kexec
-Message-ID: <202511092102.Qi35GqrR-lkp@intel.com>
-References: <20251106045107.17813-3-sourabhjain@linux.ibm.com>
+	b=hjCxCvU6Rd8EpiC6lGTRKAbP7CPC1qBPn+jr3V6B87odWnRc8BDVeZEZUuZaxBU4KtkFMQ
+	za4XOHP7WCynn98e9ogYU5bXLri6chPuFh8DD8cCC8GdIqP0WiisQFDoyY1nWu9zJuK36g
+	AkZDTYza7RmP5kP3ooohMzIKpIihVBQ=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JCDTG7yW;
+	spf=pass (imf02.hostedemail.com: domain of brauner@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=brauner@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id D1C9B601E5;
+	Sun,  9 Nov 2025 13:39:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E154C4AF0C;
+	Sun,  9 Nov 2025 13:39:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762695569;
+	bh=FV6nIOrd9444B+mlGQsh9CSaoRsJM/FxBjLlQCcf7Ig=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JCDTG7yWV3lfOfydcImpyi17b3P3GZLuSATHpoliBde4zFx8fh61QvaCh34B/HHii
+	 pJ27gbrypWJWTH4Ulv+LOs72Quk/MUQ6LEtzHk02x8ZrpVtg5X87QGI4Nl3RU6aGOd
+	 lbBJpjgNUXe1JyH6/xkSaHKgUVe/JH/zCh1uPdHSwDpYxG/tMvoJ6iGev/uMqQHTV4
+	 SjvlJSoXJyzeQtNvM3gIcK9CnH290NCNuDjzDbc4fDFlbBYmlnB7RJzXJxV3foHm6E
+	 9exKHGGww7iriJrIByK4WlNzn/KZiugBpkenja+mrf9Vg9KpQqyMj1qWw4b0Ao2ATp
+	 aQQdmL5ydsFsg==
+Date: Sun, 9 Nov 2025 14:39:18 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: syzbot <syzbot+1957b26299cf3ff7890c@syzkaller.appspotmail.com>
+Cc: Liam.Howlett@oracle.com, akpm@linux-foundation.org, 
+	anna-maria@linutronix.de, bpf@vger.kernel.org, bsegall@google.com, cgroups@vger.kernel.org, 
+	david@redhat.com, dietmar.eggemann@arm.com, frederic@kernel.org, 
+	hannes@cmpxchg.org, jack@suse.cz, jsavitz@redhat.com, juri.lelli@redhat.com, 
+	kees@kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-mm@kvack.org, linux-security-module@vger.kernel.org, 
+	lorenzo.stoakes@oracle.com, mgorman@suse.de, mhocko@suse.com, mingo@redhat.com, 
+	mjguzik@gmail.com, mkoutny@suse.com, oleg@redhat.com, paul@paul-moore.com, 
+	peterz@infradead.org, rostedt@goodmis.org, rppt@kernel.org, sergeh@kernel.org, 
+	surenb@google.com, syzkaller-bugs@googlegroups.com, tglx@linutronix.de, 
+	tj@kernel.org, vbabka@suse.cz, vincent.guittot@linaro.org, 
+	viro@zeniv.linux.org.uk, vschneid@redhat.com
+Subject: Re: [syzbot] [fs?] WARNING in destroy_super_work
+Message-ID: <20251109-lesung-erkaufen-476f6fb00b1b@brauner>
+References: <690da04f.a70a0220.22f260.0027.GAE@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20251106045107.17813-3-sourabhjain@linux.ibm.com>
-X-Rspamd-Queue-Id: 66EC8C0006
-X-Stat-Signature: ogd8po6s9qygi1fumswrhnqkrdd1bdf4
-X-Rspamd-Server: rspam02
+In-Reply-To: <690da04f.a70a0220.22f260.0027.GAE@google.com>
+X-Stat-Signature: 5u4aei73i5qsir1tznrhehu9h3g9tazz
 X-Rspam-User: 
-X-HE-Tag: 1762695534-365047
-X-HE-Meta: U2FsdGVkX1/w2K2U1g4WB/H3+ga53841N/FY7J5tXtzddat1NvCCUDseFlGP69IymERsH316HcWneu8YsRRFGQt3PwnU7MOLqqp/Sj5boeIaJ081AouzUViVv0T79BAWCOEJVMVQ5ajJG2NLIfl1bJfcrsuIdwcrbugkFC9+Pqnw0QviWMp/1YQ48i3UGG6WegchSEM7e8enCNBXekJ1AQIcMkfcLMr86orNG39yHkKZh8bjUS+dKkeTvybc2bW8CIn4bWxeATT2FCXJAQ2Q0ggpoYihiTfWeyg0kPMTPlzg8cebtlc7w1gMod7WnBN8eJ4pmQ86XzR1CVmIJdQHRG82BjCK9Qlmb3+CUsLHZp/eyD1XcvIyIx1fAsw73DN1aKI3X8dJf7MJOuomvnLl5cPKEAXf/N4CAvZI6Ykb7syxucy8po8SKnW1SF+yd+xtm91GldPrhrca8dWxh/Bl3n3G9g7UGiOd/4tGzUKHusjnwLIqJNi8BojZjn6XWhO3c5yPSKiE98Mp+5hoq7ag59ULVob+l5H4XajRdX7Gx40FUjk7l6wTr0nVvNY91M9pLNHreTmxtJBEVB5VZP97Nij4eExCrPrnaEZit2l+/o1OFeMZX9uezWzYunFbsas6jEzHN6jDi5ssi806YezHNhVV2cLHFweFNkrutVilp2cnL1MAAV8P6n+ErvkpyuhcMI4yZ0zc8fKG5YAnQmCiIEStnNs+1vsCb133cl55gWgEuZ50BhTqH/2esSYW0vVJqgP6vUXb9MjSwu7e/QJB1QTPgp/tvk9x/+KPtFCOxgWfgdbalt1auVDSx4za7qvblekpa1QUnpKOzSB2tJi575DCWjPUjTKzPELaQhGK4P1NbzMqPFZfzUr5r6CfJ8Qc6rer8qRs42N2X8aZR3A+NyBHUwkce2OC03NSttDmUc8Y8QXOnxsdc12KgTxPcM91mIyxGSjIiHwrpQEVpR1
- 2wTggrkg
- aahfNxb2gxju3assgnFl1pveFtOrdj7DHvQLW3WdEL5xGp6ZyfQB2mHaDgglpOamMY36hSlKla2D8K927Wt0e3epc6wOe1R2XvCQ/LQqZRB4x/2JqpYzPoFLtdAU8XhmfXkP48NzDbA+eQKThvLc9l77qNGw15aFcyW3gByoLoKC8fqhtA8Chod5kQfyqGTHSBipyuhJNgQsHQJgWUOr5AyKJ2Op2m6ywgGE+RuezOrI8tZrK4K55q9g5jtMjJgnxrGJzzoTkbMXCnyLS10wNE0UA7NGkf4bKVxuB/0E0366kOghrV+uKgVRHWtLeNW3Gmj972FvPwiYJngPiB8XbFelquv0Op2CTrD9YeKzipSqbE26kOtQ1IFVx0lyFoefwPVcE59mRosduZC0bTzFl0qs52sdKoZH+Ae7T
+X-Rspamd-Queue-Id: C6AAC80011
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762695570-684145
+X-HE-Meta: U2FsdGVkX19XEyML4mENb0M/UELv2p8PqlMqTEDgP9D/WJTZEFAkc6TwJpOWywRoCq2hlgTBk/gvRTBx8n9o5ei7KKd6dIN6AxAwrIyRT+8MLdMwbUBChz8X2C/u0zWg51AguqxcjzHv7HgQIO/yegqUHSab94suasddsd07+DTSSJmdHsY3InEB+9L76HHN2y4kITLsSlCAgW5N6GqmGFfBn4NENffu1CxrnLTOawpbSrQUZt50KRTaSsHPEBmWs6MAMt1yR8c0PhUY8Kej4zLrbfKm5P3sfkd9BWKvMhmcdRmSLgjxrovdex0MCZLjyh6EStjjEiJDElv4AYptdmIadn6Rel3RhTcc3usHiVRf/B9RAUutogbeX2A2pgByV/1jVTvnvYAijXs7kUpl2U9IkDBH9YmBC5FQN3OaNdjcgx2GA6eEHBR80Ekr83k/7g+a+AHAVLxiHiadRplZJa9HlAnavhIpDxJmAr1f3YXIk+Ea9Je8VK48VS+AFXDt2cYNZ4g58/a2QnG6wljej6n3rl7WAcyuXKYJx60+WsPj9cOqprVIJCxCyNWKmuOsRnfroU2fiiztWktOoGbJJPyVgNWnzt2Fivg5jxjY1dPuGbfqSj3cTg1afRHleA41stfrL3JlCjNee0nrbUCJ4qsxOtbdhK15BV93ipmAgomi6oJKqHIHhJc7ov1F3lEVDaj1zQW+fQlvRFLK6YROvtJdOM/iZOHOgzIez7sVoFsSwbAxddllZSZCrhWMAp/rZz2Jg3xJlGyJQ/10SonfLVjDZbU4dmVmCtGoiEN7Zz32kFR6igPsf/55z/+dA5XOzlF4I1Q/cDXi449v0kZQGAacBph2QcOxIBTVAs7yeXJwX+kF0J9NxwZ87P7PAl93sJJ1CecmGG1Q7e3mgSGzJPM9+W2lnUYcrdD4cjK3tqHRwGUL49vcwaHjFm51YKUYPcDBU8GQ4Nc8gGan0cf
+ GtXC4EI4
+ FEufCwGNuiJTzpMj7CytKoXyTqyMs/emx1JxoA57FVOpsFXNbkPwoccP0JS9+KvfPMZiBK7BEJU/eVfve/eghtkrKUlzQmYBcvOPv/MSanLzuyQG4wHRYFX+8S1rHzMU0fRafk8uo4oJg5rPkMiLwCzkxENk5+/Xcs3Zj0nCpYpuSIcrFd67YT2qtMZrYOtQnMLHua79Wewm7eDnZeM6cnYPK3ENlXZZYIq/czI0c8oZ0fcksb5ujJyks4lujl7RvY0NlkDjw1GK6edYufe0UcyhGXZ27LCEC3IA8UwMbO+VK4V6c5jIBia/U0wxyHqq0hnmZhVXjN93NmhIwwUBTasPS4jVPw3hsJphNgc2fiJu2cnuVzdr3sSk3fmWjl2G3zzlLSsRMmo7iHHHypjkpynnJvxZyZXo+GhqQktLQwhDT7C79EvC4DtufDqZiPJ9fpu4Gz3A5sV2O+LQQqqGHXZFNRJ12/l0LClMYkc52bSBmPsxDuzfoUJw2DQc6B6quvKyWBPX/ZEb7DZp9333ty+c8FcioNFTH6KdnHQZzO5ka1J1mh44kmbDu7jWaMMSTb/zRAduYr5I7SuoiUxaChyrscBbkMfHIknXLHqCyQp1UFpWLRGuEgiXD86CO9mYmYp+vXUbG+NKzLr5++JtXnn6zduSZkDOpAIAuY8K4DTV3fWD5pomw1J9+teePg7tEKppfZAUYGUzLqDkXigc5FRyzQT70gmqzsHUSQOFK1DyhKYWlqAo7Fzrjb94EK03A4taNgmH6gSBr4PJQkzj4KM/MoVh4DtZk5ixAGH7zf1X9x5ttJX2FRnqUVUxJRQKUc3LjB0tSgPVXBG+M+55xxB/BAqmlEQFQw9+ZQxheLb38S/pVTpkWTo6Qx6hpJ2BOVfFW+1TAXorrJJh49GHY0scDWuNb/QZuVJwmH2k22DZx3B40YDcb/hy85cGjAWhkmXm4iOFXM8eYr+TOHwz/Ok2nSudN
+ FQvBXAim
+ f6trNoSHCjVTEX7sqxS0jujfCylz8HxCmKnnDE2CtRwiB0bsraPVbTLs0QP3V/by
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -118,40 +103,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Sourabh,
+On Thu, Nov 06, 2025 at 11:31:27PM -0800, syzbot wrote:
+> Hello,
+> 
+> syzbot found the following issue on:
+> 
+> HEAD commit:    982312090977 Add linux-next specific files for 20251103
+> git tree:       linux-next
+> console output: https://syzkaller.appspot.com/x/log.txt?x=17b2932f980000
+> kernel config:  https://syzkaller.appspot.com/x/.config?x=43cc0e31558cb527
+> dashboard link: https://syzkaller.appspot.com/bug?extid=1957b26299cf3ff7890c
+> compiler:       Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=1347817c580000
+> 
+> Downloadable assets:
+> disk image: https://storage.googleapis.com/syzbot-assets/40058f8a830c/disk-98231209.raw.xz
+> vmlinux: https://storage.googleapis.com/syzbot-assets/1d7f42e8639f/vmlinux-98231209.xz
+> kernel image: https://storage.googleapis.com/syzbot-assets/d8bb0284f393/bzImage-98231209.xz
+> 
+> The issue was bisected to:
+> 
+> commit 3c9820d5c64aeaadea7ffe3a6bb99d019a5ff46a
+> Author: Christian Brauner <brauner@kernel.org>
+> Date:   Wed Oct 29 12:20:24 2025 +0000
+> 
+>     ns: add active reference count
+> 
+> bisection log:  https://syzkaller.appspot.com/x/bisect.txt?x=101e9bcd980000
+> final oops:     https://syzkaller.appspot.com/x/report.txt?x=121e9bcd980000
+> console output: https://syzkaller.appspot.com/x/log.txt?x=141e9bcd980000
+> 
+> IMPORTANT: if you fix the issue, please add the following tag to the commit:
+> Reported-by: syzbot+1957b26299cf3ff7890c@syzkaller.appspotmail.com
+> Fixes: 3c9820d5c64a ("ns: add active reference count")
 
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on akpm-mm/mm-everything]
-[also build test WARNING on linus/master v6.18-rc4 next-20251107]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Sourabh-Jain/Documentation-ABI-add-kexec-and-kdump-sysfs-interface/20251106-125243
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm.git mm-everything
-patch link:    https://lore.kernel.org/r/20251106045107.17813-3-sourabhjain%40linux.ibm.com
-patch subject: [PATCH v2 2/5] kexec: move sysfs entries to /sys/kernel/kexec
-config: s390-randconfig-r131-20251109 (https://download.01.org/0day-ci/archive/20251109/202511092102.Qi35GqrR-lkp@intel.com/config)
-compiler: clang version 16.0.6 (https://github.com/llvm/llvm-project 7cbf1a2591520c2491aa35339f227775f4d3adf6)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251109/202511092102.Qi35GqrR-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202511092102.Qi35GqrR-lkp@intel.com/
-
-sparse warnings: (new ones prefixed by >>)
->> kernel/kexec_core.c:1315:16: sparse: sparse: symbol 'kexec_kobj' was not declared. Should it be static?
-
-vim +/kexec_kobj +1315 kernel/kexec_core.c
-
-  1314	
-> 1315	struct kobject *kexec_kobj;
-  1316	ATTRIBUTE_GROUPS(kexec);
-  1317	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+#syz test: https://github.com/brauner/linux.git namespace-6.19.fixes
 
