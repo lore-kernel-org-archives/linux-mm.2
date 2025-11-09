@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E49CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:16:08 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 5BDBFCD13D3
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:16:58 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 15DBC8E000C; Sun,  9 Nov 2025 12:16:08 -0500 (EST)
+	id BC1048E0010; Sun,  9 Nov 2025 12:16:57 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 135F98E0002; Sun,  9 Nov 2025 12:16:08 -0500 (EST)
+	id B97CE8E0002; Sun,  9 Nov 2025 12:16:57 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 0243C8E000C; Sun,  9 Nov 2025 12:16:07 -0500 (EST)
+	id AAD2A8E0010; Sun,  9 Nov 2025 12:16:57 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id E38488E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:16:07 -0500 (EST)
-Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2E5B54C466
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:07 +0000 (UTC)
-X-FDA: 84091721574.07.D47861B
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 999518E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:16:57 -0500 (EST)
+Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 3DFCCC0A36
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:57 +0000 (UTC)
+X-FDA: 84091723674.17.3A767B8
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id 28EB21C0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:04 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOi6bzAG;
-	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+	by imf06.hostedemail.com (Postfix) with ESMTP id 63D1E18000C
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:55 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DvboeJFE;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708615; a=rsa-sha256;
+	cv=none;
+	b=yrzq6K3OVjk3kRndX4kBQs1zDZEDVSL8pLBXYfg/VZ/Cu+Otm5gni/YTJipjdFQLNlZndG
+	hSSYdsmuF0oItxRTRVTk1F7jW8MTbIBHJ85OF2B4tbogUULLIaDPbd3vONpnJZdSuhijDc
+	JUx7/zjxdHq94htt/uUCxs/34VVS55s=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=DvboeJFE;
+	dmarc=pass (policy=quarantine) header.from=redhat.com;
+	spf=pass (imf06.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762708565;
+	s=arc-20220608; t=1762708615;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=eJT6y1GDlaasTCIPvbrA0Yxc9LFx5w+afKdTXNnGcpk=;
-	b=QtCvc5vSACBQIHoU6OX5a+oo/4HV1Hjb15Zl4QMATB8yM3bGCLsTntOzog8Uy4/FLsN05G
-	6Ks5EkTcH6ZLpEdeqSrKyvIPri3w0uA7KeBuMaaUJCqKZByMvOQg3toeab1xdshDbJRTBj
-	A+nBww0LIjq3yDIsJqveJkcTN+n9gr0=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOi6bzAG;
-	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708565; a=rsa-sha256;
-	cv=none;
-	b=xcfSuVC5JVEGr3r7l2cHXwMcB+Lf912xaJbAL12qsBFyeyE9TwmmxvRYqkiJMclATV34r+
-	97syQh3ieBSC+AzukiLm/rP3cfMB5qAFbNSr4Wud96Yy2etV9oBi21wR4aNtZeT4zIE+Cw
-	5BhXURrlFSs/yq5WoZZ7ilY89xJoFT0=
+	bh=De3qwJZddIJhWbGGVbrDOYNQpF2Q/objdb0xufnPYfw=;
+	b=XL6Hi7cPK2ZG09zENvKL+SanYD3D+cCjGs4FcyI+N4FCY00bdQN/93LiMmy9WskjvMPriz
+	sA2PQjGDi/LJI22Fqe7HeaFCgxkLIjgSbV/8t3wbjfR8WHMPA2SPwyct1AQwgbrDT/DT0l
+	7+pd6vc+BDNp5dJc+EaWpcwPnZPyyWY=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762708564;
+	s=mimecast20190719; t=1762708614;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eJT6y1GDlaasTCIPvbrA0Yxc9LFx5w+afKdTXNnGcpk=;
-	b=YOi6bzAGjPIQ+3SZ47QSmFUbGeCNGG724XpKFsm+t2I+JanZwCkPnqd07DzYhtqKjfAODf
-	TD1vD2g8cewg5kmNh4xcTa2oEYHSXm/bN0w8bhMGoJ8kXVaJILhIb321LsDMLLl/SbWBHq
-	YGyMfAoYk3MIkeVJjZwmfycU3qRpqes=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	bh=De3qwJZddIJhWbGGVbrDOYNQpF2Q/objdb0xufnPYfw=;
+	b=DvboeJFEgHjvBK6Lp0xPh1eOARZ3W7KGXX1lEjiTEJZp3uzEjjiaPhFXYcQMWD208d0RD4
+	y0vcxYtHuI/KfCErQcEoeZjtu0P7MoKYHQalOqJ7udiVmj/iE3Bo2hZnS1e562zQIq8xL4
+	m0qQSnJfMp2ycvPEKGFj5+TaHmk295E=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-ftEFn_sbMku-0ty6xr4nTQ-1; Sun,
- 09 Nov 2025 12:16:01 -0500
-X-MC-Unique: ftEFn_sbMku-0ty6xr4nTQ-1
-X-Mimecast-MFC-AGG-ID: ftEFn_sbMku-0ty6xr4nTQ_1762708556
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-503-sgxsSvgzNTOqDj75cxvXMA-1; Sun,
+ 09 Nov 2025 12:16:50 -0500
+X-MC-Unique: sgxsSvgzNTOqDj75cxvXMA-1
+X-Mimecast-MFC-AGG-ID: sgxsSvgzNTOqDj75cxvXMA_1762708604
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EFD419560A2;
-	Sun,  9 Nov 2025 17:15:55 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0C53D19560B2;
+	Sun,  9 Nov 2025 17:16:44 +0000 (UTC)
 Received: from fedora (unknown [10.44.32.53])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 60B861800361;
-	Sun,  9 Nov 2025 17:15:35 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 3C7C919560A7;
+	Sun,  9 Nov 2025 17:16:19 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun,  9 Nov 2025 18:15:55 +0100 (CET)
-Date: Sun, 9 Nov 2025 18:15:33 +0100
+	oleg@redhat.com; Sun,  9 Nov 2025 18:16:42 +0100 (CET)
+Date: Sun, 9 Nov 2025 18:16:17 +0100
 From: Oleg Nesterov <oleg@redhat.com>
 To: Bernd Edlinger <bernd.edlinger@hotmail.de>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -123,9 +123,9 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Cyrill Gorcunov <gorcunov@gmail.com>,
 	Eric Dumazet <edumazet@google.com>
-Subject: [RFC PATCH 2/3] exec: don't wait for zombie threads with
- cred_guard_mutex held
-Message-ID: <aRDMNWx-69fL_gf-@redhat.com>
+Subject: [RFC PATCH 3/3] ptrace: ensure PTRACE_EVENT_EXIT won't stop if the
+ tracee is killed by exec
+Message-ID: <aRDMYSuEV82irPmA@redhat.com>
 References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
@@ -139,15 +139,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <aRDL3HOB21pMVMWC@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 28EB21C0002
-X-Stat-Signature: y5kmhuogmmmxass4g4p5iyrq46jw7ieo
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 X-Rspam-User: 
-X-HE-Tag: 1762708564-639341
-X-HE-Meta: U2FsdGVkX1+Iz84KJxQGdWOGfrVpFiCFvJclplAp5M42oSvUfKnxHkgcDTpxpEmvULuxI40GwL0vEiU4lFexHP43flDb4XCFlA1KeGmlolBs4ijhkrGjbgfizZ8gbxWhSLWsoYytSKJgm11LRkyFvW8FhKuAB0odZPFmbzjFh1rjyFbAAom4Wp7zUOetk9dklAu0vcTU66rS/uYqi4KcwXuRRMJeFddlHzs5WZjPO45Ou174U4n/KnjLM6CbNB83q4Ku9d92CUwtxDOqDCURp7LZG9M9LQQGbBwDlCMkG9rmOEitANMKLziOtJNQHXkmaEYm0i9ybJXuEeJNOBjyP8E5a5aQE6YIQU28fPo8NVLJugqy/kOM8ZfCsuUZbTBgf06mPyoHc3qOOXZB/hYv0yBpkzZ1VcskPvNlU5WFFw1ndAKC/5IyzqhUnt8qCbKGCah2LqxsZNr4nBo+byr+FiUlqU+2BgFeB07p0DIQpbQzwOBdLOuGHYFKxCQy7PODdKgi6qHyUEV6mCcL0DVjNzGDvdsemiGmM6QwjM+50YCrdnJwtM2HJUVIpnFsXn+940hLeuYdHmcitSkdwNMihWGLiLB5txYQM8PjEATEooqFZ8PgKZRg/db6fDGQj10nhW6Bvct9kmUuDep27UVkzuglKMBVYj6k568loMtMLeQSMv0NTfPAigcRXOrCxBFRChkYYZ9Gh84Fyv86NFdokHPCRs23U5n1ghKBhLetPiLg2nuDfI05MnhdwEuDANvVnD2KLmKbG8VxJvjwnOZp9cH8kzCUyUDE9felyARzMi9j8sTu4Kc5tNzAJoAHOHiwoWnXUAgFzyhe63lp2kIgkb9PjeR97bUkGENlOwNABnZO4x1GaoUfzJNmXZcYbelzzWzEkM5Say3Vk123ojcPrB434qRr3Ijn70yDX7mai05fa8i2zdhgJgSyBcwShz3DvlnlDy/nzuJFmOiyTJq
- bwy6K6vC
- WCHCtkWcGwOK+XZxcBxtV8+qBV/BQ0WdfNBmRJZhj+BAIvktomXMnJzn65c8/UTgk/1YyWBskCRCJ4iffXz5LENWBnMvnj+IfMxwrnuZwZgm58dZ/yTlSpI2TRWpo4DRkO9tzc2mlrT9haPCchfeBc0Lxv3uoLJ1QuKLiJB0gquKnX4+KBIBMAn8eqLAaLPs+hpZM8+tuueMrZOr5xS3tiocNnrw25GKa3XQ1Qrje5NTTsjaEbZ202Z28MqICZmqmT6WeIiNREu974PpGV9Ylr1LC9Bqrk6Bz2RpeEKrj/funOmgVXs9e0+DN2bWxbCicdVWD9gjkg4pX/XSOzgBH3bJyN3iWLun735KDbpRBjTB8mD0SmVmOC8CAGdxwHwwG1+CK2x9CZ8xRfPjdjtnu7FpGWeuP3vW5GDNiTXrKY1More2NSIRYGbANCjOmB3NBFhxcBs6B0Ta3kzXaJS3wZcZZpROGB8moO+V4FqT3cXFfdOFLxJ9WDan9ZiJYCpRhaE8FZ/uPAM7G4FdYsr8/TGJpMQ==
+X-Rspamd-Server: rspam08
+X-Rspamd-Queue-Id: 63D1E18000C
+X-Stat-Signature: wt5pd9kfyt4h8erdz9yppz3akx4yydwc
+X-HE-Tag: 1762708615-797772
+X-HE-Meta: U2FsdGVkX18ONnuDkyCXfSDTJ7auPucTTVPC+ZABFF0HJaND4ARezx23I0FZ0RNaVNYfgeuOo/NTts3NRkqkekTVtpSj2T/pVHesqNKwBIyry4Z8XkDpvmGaKOGNkl3+x95fuqwc1xtF11ioTPo7Pfmsjdg4vgWsCHg5T6z+UlomNFeM/U20wDUvW0UAJHwujWcjH0TW5j/EBNnNLtUIli+q917bcUvlO329eCX3YcSMtqKvLxRB1N9KR5bGezly0jejItEjirwh2fzQgNQKF2UhA8PIWtR5OyqY81UYiZ3UWwZhog/ATyuBuSu01DeKQ650j7L8kurALTkx1P59nEXZjzsKnzSU2tlMTyn2FE4CX/fk6VfUFRD/XGpjPLIWtcUCkUvcfRpdJ9R3cgLjv55ouUAWGBQogFggmyohSUb25P2h7t/k4s0iShDEGVgWKJaJW7FCSJV+m+729tI4v1i9FbpmNHhcZl6mME2uf/avaqSdP7y8wmGPaEbpOMnDgpWiNpOyl7bd9hw7Pu1cGRaKLQehDyFaVS6fnXLmQjrurWlfZjMPI0veEL6zGb2LBjZGr8liQi8OaZpP2YdKZUbS4Fy60LRNlQBEx15t0fMNrkakpdie6tweKXICbVJsgvuSdvNR4tWBM//BVNgAyrntf9gfhpO4aLMTEcuuJLn/mFuxdoZiiyzY8OlldeTurNxlcfS/a94QCwKi8POGB+Tf7Up5MvHuo0oDYNQwyQikw45ChVv5QMYVIpMplzSm/mJza3o3f3teWqMC1B+FZMXbXViWMxAcpngwovmMNFXB75Z4q5GoAyeHD6FBoOGyACjHxH0A3XF7/8pu57tAwILA3IsrkPdLQ5ME+ldgt15zUYVxEHnjbg0f/pS7iK09DNIIPh1XnaLN6EVACk1ejMqWWx0Z+Rke5R9iPkfU8eqmKhVmVrVQxTIBVkKJ5SyqPPUBNzqfOKZ3ekjExNL
+ 2Rn7gkmY
+ Cs8eIm8PZjrdjyqH4c9FlvxY8rRExqHbLvUqww3rZpR5O2oNHg8Uzvg6hfaFATr4V4H9O9sV/SvODtNCCZgWMK+WZPA1RDsmudImAbZPny9f4gwiygTcDtxrOiniV6urKMKVFIgtAJkd7xd2peZQ8AY8a3XREj6BzvO9jixcp7yzS+M58WwAoNJZ4uPDH7YVkk0yLxA8U4DqQbURyphztBMER995fgdud5QCyzQLAe9W57I06XyTmPTlP4EOTFfr+AD+9biMKURepODaQkGRavpKK0jjwqCeFAV/ae5dnth0qMVgQSLAsi9hw0kzlUvzvuzqqZ3aoDrC5NCurIaBdQ7i0T/+flvjMN6RAmsV0A0Rar+LvytSOsr/LOTtiyDfifeTSqu3KKJs3X4elgIwbvUGitqlSSQ6md8r9a5UqaQA0RXtn24na/RwaCWObQl8P0QQ31WtCAAUloxnK3s7VUOCZnvEnwNKmWI7QCZJ6m0CmIsdKNpdsPe6EvZ0MFHwaxzfgWAYtwumww4PKADM4dWSkFtcKV1fLOy+bKRcDBwSGcG2gP5QLE9uEIw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -156,330 +156,40 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-This simple program
+The previous patch fixed the deadlock when mt-exec waits for debugger
+which should reap a zombie thread, but we can hit the same problem if
+the killed sub-thread stops in ptrace_event(PTRACE_EVENT_EXIT). Change
+ptrace_stop() to check signal->group_exit_task.
 
-    #include <unistd.h>
-    #include <signal.h>
-    #include <sys/ptrace.h>
-    #include <pthread.h>
+This is a user-visible change. But hopefully it can't break anything.
+Note that the semantics of PTRACE_EVENT_EXIT was never really defined,
+it depends on /dev/random. Just for example, currently a sub-thread
+killed by exec will stop, but if it exits on its own and races with
+exec it will not stop, so nobody can rely on PTRACE_EVENT_EXIT anyway.
 
-    void *thread(void *arg)
-    {
-	    ptrace(PTRACE_TRACEME, 0,0,0);
-	    return NULL;
-    }
-
-    int main(void)
-    {
-	    int pid = fork();
-
-	    if (!pid) {
-		    pthread_t pt;
-		    pthread_create(&pt, NULL, thread, NULL);
-		    pthread_join(pt, NULL);
-		    execlp("echo", "echo", "passed", NULL);
-	    }
-
-	    sleep(1);
-	    ptrace(PTRACE_ATTACH, pid, 0,0);
-	    kill(pid, SIGCONT);
-
-	    return 0;
-    }
-
-hangs because de_thread() waits for debugger which should release the killed
-thread with cred_guard_mutex held, while the debugger sleeps waiting for the
-same mutex. Not really that bad, the tracer can be killed, but still this is
-a bug and people hit it in practice.
-
-With this patch:
-
-	- de_thread() waits until all the sub-threads pass exit_notify() and
-	  become zombies.
-
-	- setup_new_exec() waits until all the sub-threads are reaped without
-	  cred_guard_mutex held.
-
-	- unshare_sighand() and flush_signal_handlers() are moved from
-	  begin_new_exec() to setup_new_exec(), we can't call them until all
-	  sub-threads go away.
+We really need to finally define what PTRACE_EVENT_EXIT should actually
+do, but this needs other changes.
 
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 ---
- fs/exec.c       | 140 +++++++++++++++++++++++-------------------------
- kernel/exit.c   |   9 ++--
- kernel/signal.c |   2 +-
- 3 files changed, 71 insertions(+), 80 deletions(-)
+ kernel/signal.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/exec.c b/fs/exec.c
-index 136a7ab5d91c..2bac7deb9a98 100644
---- a/fs/exec.c
-+++ b/fs/exec.c
-@@ -905,42 +905,56 @@ static int exec_mmap(struct mm_struct *mm)
- 	return 0;
- }
- 
--static int de_thread(struct task_struct *tsk)
-+static int kill_sub_threads(struct task_struct *tsk)
- {
- 	struct signal_struct *sig = tsk->signal;
--	struct sighand_struct *oldsighand = tsk->sighand;
--	spinlock_t *lock = &oldsighand->siglock;
--
--	if (thread_group_empty(tsk))
--		goto no_thread_group;
-+	int err = -EINTR;
- 
--	/*
--	 * Kill all other threads in the thread group.
--	 */
--	spin_lock_irq(lock);
--	if ((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task) {
--		/*
--		 * Another group action in progress, just
--		 * return so that the signal is processed.
--		 */
--		spin_unlock_irq(lock);
--		return -EAGAIN;
-+	read_lock(&tasklist_lock);
-+	spin_lock_irq(&tsk->sighand->siglock);
-+	if (!((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task)) {
-+		sig->group_exec_task = tsk;
-+		sig->notify_count = -zap_other_threads(tsk);
-+		err = 0;
- 	}
-+	spin_unlock_irq(&tsk->sighand->siglock);
-+	read_unlock(&tasklist_lock);
- 
--	sig->group_exec_task = tsk;
--	sig->notify_count = zap_other_threads(tsk);
--	if (!thread_group_leader(tsk))
--		sig->notify_count--;
-+	return err;
-+}
- 
--	while (sig->notify_count) {
--		__set_current_state(TASK_KILLABLE);
--		spin_unlock_irq(lock);
--		schedule();
-+static int wait_for_notify_count(struct task_struct *tsk)
-+{
-+	for (;;) {
- 		if (__fatal_signal_pending(tsk))
--			goto killed;
--		spin_lock_irq(lock);
-+			return -EINTR;
-+		set_current_state(TASK_KILLABLE);
-+		if (!tsk->signal->notify_count)
-+			break;
-+		schedule();
- 	}
--	spin_unlock_irq(lock);
-+	__set_current_state(TASK_RUNNING);
-+	return 0;
-+}
-+
-+static void clear_group_exec_task(struct task_struct *tsk)
-+{
-+	struct signal_struct *sig = tsk->signal;
-+
-+	/* protects against exit_notify() and __exit_signal() */
-+	read_lock(&tasklist_lock);
-+	sig->group_exec_task = NULL;
-+	sig->notify_count = 0;
-+	read_unlock(&tasklist_lock);
-+}
-+
-+static int de_thread(struct task_struct *tsk)
-+{
-+	if (thread_group_empty(tsk))
-+		goto no_thread_group;
-+
-+	if (kill_sub_threads(tsk) || wait_for_notify_count(tsk))
-+		return -EINTR;
- 
- 	/*
- 	 * At this point all other threads have exited, all we have to
-@@ -948,26 +962,10 @@ static int de_thread(struct task_struct *tsk)
- 	 * and to assume its PID:
- 	 */
- 	if (!thread_group_leader(tsk)) {
--		struct task_struct *leader = tsk->group_leader;
--
--		for (;;) {
--			cgroup_threadgroup_change_begin(tsk);
--			write_lock_irq(&tasklist_lock);
--			/*
--			 * Do this under tasklist_lock to ensure that
--			 * exit_notify() can't miss ->group_exec_task
--			 */
--			sig->notify_count = -1;
--			if (likely(leader->exit_state))
--				break;
--			__set_current_state(TASK_KILLABLE);
--			write_unlock_irq(&tasklist_lock);
--			cgroup_threadgroup_change_end(tsk);
--			schedule();
--			if (__fatal_signal_pending(tsk))
--				goto killed;
--		}
-+		struct task_struct *leader = tsk->group_leader, *t;
- 
-+		cgroup_threadgroup_change_begin(tsk);
-+		write_lock_irq(&tasklist_lock);
- 		/*
- 		 * The only record we have of the real-time age of a
- 		 * process, regardless of execs it's done, is start_time.
-@@ -1000,8 +998,8 @@ static int de_thread(struct task_struct *tsk)
- 		list_replace_rcu(&leader->tasks, &tsk->tasks);
- 		list_replace_init(&leader->sibling, &tsk->sibling);
- 
--		tsk->group_leader = tsk;
--		leader->group_leader = tsk;
-+		for_each_thread(tsk, t)
-+			t->group_leader = tsk;
- 
- 		tsk->exit_signal = SIGCHLD;
- 		leader->exit_signal = -1;
-@@ -1021,23 +1019,11 @@ static int de_thread(struct task_struct *tsk)
- 		release_task(leader);
- 	}
- 
--	sig->group_exec_task = NULL;
--	sig->notify_count = 0;
--
- no_thread_group:
- 	/* we have changed execution domain */
- 	tsk->exit_signal = SIGCHLD;
--
- 	BUG_ON(!thread_group_leader(tsk));
- 	return 0;
--
--killed:
--	/* protects against exit_notify() and __exit_signal() */
--	read_lock(&tasklist_lock);
--	sig->group_exec_task = NULL;
--	sig->notify_count = 0;
--	read_unlock(&tasklist_lock);
--	return -EAGAIN;
- }
- 
- 
-@@ -1171,13 +1157,6 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	flush_itimer_signals();
- #endif
- 
--	/*
--	 * Make the signal table private.
--	 */
--	retval = unshare_sighand(me);
--	if (retval)
--		goto out_unlock;
--
- 	me->flags &= ~(PF_RANDOMIZE | PF_FORKNOEXEC |
- 					PF_NOFREEZE | PF_NO_SETAFFINITY);
- 	flush_thread();
-@@ -1249,7 +1228,6 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	/* An exec changes our domain. We are no longer part of the thread
- 	   group */
- 	WRITE_ONCE(me->self_exec_id, me->self_exec_id + 1);
--	flush_signal_handlers(me, 0);
- 
- 	retval = set_cred_ucounts(bprm->cred);
- 	if (retval < 0)
-@@ -1293,8 +1271,9 @@ int begin_new_exec(struct linux_binprm * bprm)
- 	up_write(&me->signal->exec_update_lock);
- 	if (!bprm->cred)
- 		mutex_unlock(&me->signal->cred_guard_mutex);
--
- out:
-+	if (me->signal->group_exec_task == me)
-+		clear_group_exec_task(me);
- 	return retval;
- }
- EXPORT_SYMBOL(begin_new_exec);
-@@ -1325,6 +1304,8 @@ int setup_new_exec(struct linux_binprm * bprm)
- {
- 	/* Setup things that can depend upon the personality */
- 	struct task_struct *me = current;
-+	struct signal_struct *sig = me->signal;
-+	int err = 0;
- 
- 	arch_pick_mmap_layout(me->mm, &bprm->rlim_stack);
- 
-@@ -1335,10 +1316,23 @@ int setup_new_exec(struct linux_binprm * bprm)
- 	 * some architectures like powerpc
- 	 */
- 	me->mm->task_size = TASK_SIZE;
--	up_write(&me->signal->exec_update_lock);
--	mutex_unlock(&me->signal->cred_guard_mutex);
-+	up_write(&sig->exec_update_lock);
-+	mutex_unlock(&sig->cred_guard_mutex);
- 
--	return 0;
-+	if (sig->group_exec_task) {
-+		spin_lock_irq(&me->sighand->siglock);
-+		sig->notify_count = sig->nr_threads - 1;
-+		spin_unlock_irq(&me->sighand->siglock);
-+
-+		err = wait_for_notify_count(me);
-+		clear_group_exec_task(me);
-+	}
-+
-+	if (!err)
-+		err = unshare_sighand(me);
-+	if (!err)
-+		flush_signal_handlers(me, 0);
-+	return err;
- }
- EXPORT_SYMBOL(setup_new_exec);
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index f041f0c05ebb..bcde78c97253 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -178,10 +178,7 @@ static void __exit_signal(struct release_task_post *post, struct task_struct *ts
- 		tty = sig->tty;
- 		sig->tty = NULL;
- 	} else {
--		/*
--		 * If there is any task waiting for the group exit
--		 * then notify it:
--		 */
-+		/* mt-exec, setup_new_exec() -> wait_for_notify_count() */
- 		if (sig->notify_count > 0 && !--sig->notify_count)
- 			wake_up_process(sig->group_exec_task);
- 
-@@ -766,8 +763,8 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
- 		list_add(&tsk->ptrace_entry, &dead);
- 	}
- 
--	/* mt-exec, de_thread() is waiting for group leader */
--	if (unlikely(tsk->signal->notify_count < 0))
-+	/* mt-exec, de_thread() -> wait_for_notify_count() */
-+	if (tsk->signal->notify_count < 0 && !++tsk->signal->notify_count)
- 		wake_up_process(tsk->signal->group_exec_task);
- 	write_unlock_irq(&tasklist_lock);
- 
 diff --git a/kernel/signal.c b/kernel/signal.c
-index fe9190d84f28..334212044940 100644
+index 334212044940..59f61e07905b 100644
 --- a/kernel/signal.c
 +++ b/kernel/signal.c
-@@ -1343,13 +1343,13 @@ int zap_other_threads(struct task_struct *p)
+@@ -2376,6 +2376,10 @@ static int ptrace_stop(int exit_code, int why, unsigned long message,
+ 	if (!current->ptrace || __fatal_signal_pending(current))
+ 		return exit_code;
  
- 	for_other_threads(p, t) {
- 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
--		count++;
++	/* de_thread() -> wait_for_notify_count() waits for us */
++	if (current->signal->group_exec_task)
++		return exit_code;
++
+ 	set_special_state(TASK_TRACED);
+ 	current->jobctl |= JOBCTL_TRACED;
  
- 		/* Don't bother with already dead threads */
- 		if (t->exit_state)
- 			continue;
- 		sigaddset(&t->pending.signal, SIGKILL);
- 		signal_wake_up(t, 1);
-+		count++;
- 	}
- 
- 	return count;
 -- 
 2.25.1.362.g51ebf55
 
