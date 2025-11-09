@@ -4,138 +4,109 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16557CCFA1A
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 13:11:01 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F0388CCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 13:15:55 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 417378E0006; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
+	id 55C1A8E0010; Sun,  9 Nov 2025 08:15:55 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3C8E48E0002; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
+	id 533B38E0002; Sun,  9 Nov 2025 08:15:55 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 28F888E0006; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
+	id 449438E0010; Sun,  9 Nov 2025 08:15:55 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 0DAFF8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 82CD25BE09
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:10:59 +0000 (UTC)
-X-FDA: 84091103838.27.9B2E869
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
-	by imf07.hostedemail.com (Postfix) with ESMTP id B55774000A
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:10:57 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6tbYCRo;
-	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id 30FF88E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:15:55 -0500 (EST)
+Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id CC7F31409B7
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:15:54 +0000 (UTC)
+X-FDA: 84091116228.23.6ECCF12
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	by imf26.hostedemail.com (Postfix) with ESMTP id 59AE2140003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:15:51 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SJwZNoig;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762693857;
+	s=arc-20220608; t=1762694152;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
-	b=okOJX0ABWRHfbhrIDQUbzm9JXbIohSWgY9LwdOQQz5lIjU7T7QGJUV/Uf15iHbsj+yKkk3
-	Pr5AzrGcPD8t9adayF19bPqWxUt0eikyDU+gZU2wrgbQu7SIliFAMZoPUbLqBey1YjMoxA
-	yn6ZaqsoAlXNMO4xr4U/gGJBn2I4cfU=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762693857; a=rsa-sha256;
-	cv=none;
-	b=djO68zzJ1w17BmUV69zhnW/Hoq2w27IfLis0xAkJCwP2l5x4NnNDOEyulrbHCOgVRqm1Sm
-	VKe6xXYWLKy5oKV/E9zzAB+zAvhn1YjGKrqrP2E0bigZfxsoM71aIm3GRbZAhnOpFATzrK
-	Ii4bwSJc58UWjYRPyWlMMLn1GRzhF/8=
+	bh=NaNfRsFFQql0axZY7YeFX5M0NS/3t1UFCPcfwoMuQiE=;
+	b=EDdtGV+FuT0YtLn5hPsTqFTzajj2w58braZirypD8ESVSHevMtRH5/N6CQRUEilr3GfOZu
+	0BYtoLOA+MbWA1rBC8z2J1m/Amo3RXeHKOdoFqx4E88gxlSWPkp3laApF1Vx/BPpJR+wqI
+	BgTCvDb0EDoI/qeSyJhthCjwyPjNChU=
 ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6tbYCRo;
-	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso3732234a12.3
-        for <linux-mm@kvack.org>; Sun, 09 Nov 2025 05:10:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762693856; x=1763298656; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
-        b=V6tbYCRooIb2kpNvCektzL7Y/o4HTolUhEMi2wAlHMWdbq2V8jGPZ8L5yA0KeYGfQX
-         1NdmgHLiqBbx0CVtU3dsoxPBgDBzHExuIQsaXC773+Uu2PWo9i8lLZl97qA9nz/pxFWB
-         uuvw8n791pZSOPEUZfBxlrxbsA4t3IsfgOfwDc9tvkKGzekDav7n7kgAR1J/RGR1529Y
-         xe1A0VIgKNC5l9mSQhyes0W08lsF31jQLcCpss5KDmCgWWbN6RDDKA8BNVnWxd0rt+DD
-         MPxR2KsfUHV3F4cIXrc43uQG1OqGbE3miNlIc91PFwnpZRJCzS4ngE8RMP3YsLTBPxL3
-         27Aw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762693856; x=1763298656;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
-        b=HSEEHWhnrO6+XztQTSKQjxcH9yEKkxxHItdP+nrzwr7weMlwruJsCjnjq636elC9VD
-         Cx1EHdcG/Dz2kHqBlZohM9M957SyK/QmDcsaRmv8M7/pFMOTnTkgovYamBcKJOtgSjw6
-         esxq0V0ju53dMNYrhiCG52se8YKYd/fQsoge83e8H6IzKnsUWh3oRM17aghFlrDck23/
-         yqkRUTUIGpRJTC75WvRfMyOkTuozLu1nle3CijUhTgFmfTNOGuo9PLYnFvQAEgVGV0k6
-         Kul3BeYe7aSXbFecQ++xYNh8QN9E2p5xYYnVO6wJYB3IpwcM73+Xek8DaKORKshVCvLo
-         FaXw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5XHbATrsALHKzkDLnTpdGOrhWJyTRNom/TVhFcZDwZ6zxMT+LXBsw/daMXKQOMjjcUY7jf4g/xQ==@kvack.org
-X-Gm-Message-State: AOJu0YzXiFXDJIJNBq/hMLZexVPNwmhedE3rh026RrsjETrpIpYSPSU+
-	hSaHfqj2OZt8IogJOQTRipe2FvwYlp9631GBmhMHcsG3gXLL/Kn5GbzYmcD6QG0s7KSpGv4R7iL
-	rkfNC2Gz6QL9KH0QaWHxiRqhleqviW0E=
-X-Gm-Gg: ASbGncv3ZJBxFztciPmfwaurSArn6VSwEwl9QN8ucnJbN7/WRxKM0ZUU8IzJVX0nAJ1
-	nMq7dja0utIpYnokEUZFzscl1VwxOjglPrSudlPGKvQp6YCFdzkJGrNaNSiL42U6KAljC8meiom
-	ml7jbcuCw7dWmnSZYJ32oOYvDi/7s12cTckRLP7a924atmGVc4JXRRzH43qG3JnOMl+BGv/07Ne
-	zc81EdjbjIeWySufoOXeyKqNm0Qt+ofXthN/T2VhaWmb7rxVpWusHQrP0hZs1FcWHwhUuk=
-X-Google-Smtp-Source: AGHT+IEl9MW22IQb8cz6gkNnRNDIsMMkyhNIsn4ivK8T6yzVCykEJxEU+foa+7QckGYATPbFT8xxfS3qce8kjw2WQNA=
-X-Received: by 2002:a05:6402:2707:b0:640:c2df:f00a with SMTP id
- 4fb4d7f45d1cf-6415dc128edmr3509625a12.9.1762693855567; Sun, 09 Nov 2025
- 05:10:55 -0800 (PST)
+	imf26.hostedemail.com;
+	dkim=pass header.d=intel.com header.s=Intel header.b=SJwZNoig;
+	spf=pass (imf26.hostedemail.com: domain of lkp@intel.com designates 192.198.163.14 as permitted sender) smtp.mailfrom=lkp@intel.com;
+	dmarc=pass (policy=none) header.from=intel.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762694152; a=rsa-sha256;
+	cv=none;
+	b=WRsPcROSMJL7iYc4U6SzVs9yIqmKRvYIQvGPUyGSQRW0FhDgseM1GL55RL6p5LuYs6dDaP
+	Em8UtvVDkgbRAzpwsjTLBrei0UL0M4rVSzc8zdR8hGs34NL5m4UzS3oGVz1JJRFEiB+A9N
+	kq+/cuUWnd8DJGgQk4C+nv4aV0jyUWI=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1762694152; x=1794230152;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/v/wzx6TVHA6w4gVVmVw44uU7KClaZZTDL0IVwpYqbY=;
+  b=SJwZNoig7fx7zaOK6bByJ0YS+Rv6BTfqcdLgytZ+S3xhalDyYBgXyxi/
+   +GAHj7c4GZkWbDQ85VzCWH4YV3761eV5LqF3g8dnlSPRaxXvqvupM5+Q0
+   RsRrpoDpu6UObZLcSziyzKhXaoLWtJnH2JCrWh7QdQnzZyYfIGZmDoWpP
+   PWCwqHym0oFxOTB1yDVJThqLrfZEJ0j0Y8rHOlsVH/EvANtfDqo20ZuMU
+   DL4EVhXn2pmawIppHro6q+lB5WOCppGrTOKnQ/XgzaC5gnWTupy2e9Khk
+   g1AWY3vHZb/K21MnVnOZFY/5uErfsAaokY+m8mQhOmp9f5oMVTg6sfSh0
+   w==;
+X-CSE-ConnectionGUID: PDt6Bks0S72OQ3JX/LqjrA==
+X-CSE-MsgGUID: cpYC7F7ySRC2da2CWd9fUg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11607"; a="64805781"
+X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
+   d="scan'208";a="64805781"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Nov 2025 05:15:49 -0800
+X-CSE-ConnectionGUID: 9Q7luGKBQKmQSeKqcR7S9w==
+X-CSE-MsgGUID: ZBoNrpD3Q6aOPPg9WvDM8w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.19,291,1754982000"; 
+   d="scan'208";a="188195706"
+Received: from lkp-server01.sh.intel.com (HELO 6ef82f2de774) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 09 Nov 2025 05:15:47 -0800
+Received: from kbuild by 6ef82f2de774 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1vI5Gi-00020p-0m;
+	Sun, 09 Nov 2025 13:15:44 +0000
+Date: Sun, 9 Nov 2025 21:14:59 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alejandro Colomar <alx@kernel.org>, linux-kernel@vger.kernel.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
+	Christopher Bazley <chris.bazley.wg14@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Linux Memory Management List <linux-mm@kvack.org>
+Subject: Re: [PATCH v2 1/4] array_size.h: Add ARRAY_END()
+Message-ID: <202511092053.40sHnHlA-lkp@intel.com>
+References: <35255c1ceb54518779a45351dcd79a3c1910818a.1762637046.git.alx@kernel.org>
 MIME-Version: 1.0
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com> <cd103d9bdc8c0dbb63a0361599b02081520191b4.1762621568.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <cd103d9bdc8c0dbb63a0361599b02081520191b4.1762621568.git.lorenzo.stoakes@oracle.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Sun, 9 Nov 2025 21:10:18 +0800
-X-Gm-Features: AWmQ_bmfH3ksRfR0A2K2gyRnNJuT_yTKuVqefgY6nG1gVo5-Pc4ryZAWbXuQhCE
-Message-ID: <CAMgjq7B1AzqGk7nSxwY_paTxeJt8-=+T+2Wc6dBT_6XfGFhGvA@mail.gmail.com>
-Subject: Re: [PATCH v2 02/16] mm: introduce leaf entry type and use to
- simplify leaf entry logic
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
-	Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
-	Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
-	Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
-	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
-	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, 
-	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
-	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
-	Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
-	damon@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <35255c1ceb54518779a45351dcd79a3c1910818a.1762637046.git.alx@kernel.org>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 59AE2140003
+X-Stat-Signature: s51mhkbor53md6ekdjek71wnncp6yrxm
 X-Rspam-User: 
-X-Rspamd-Queue-Id: B55774000A
-X-Stat-Signature: kok5u8g5cpzwjeoqr44tofyhymgxc738
-X-HE-Tag: 1762693857-383408
-X-HE-Meta: U2FsdGVkX1+sa1xgumvsJUi2f+K71Y099nv78/ZG8nKepXlseZ32sv5NEQ1bSVjAtdsc6Ajmd26N1tMAakJ2RK+0KfcxAHCmGBmox1OIuuvwoBXEvuNnVl6moW3J4yOOMgy+dHv0+NLfpwaaqK+w/lS6UdOrJ2xgpSCGcQULYOfgjLZx2STkPMHxrHfo9lZh7qaSRmzN/A1fwJdywu5FuHjqk1GG6O7Wz//7lUaeBLfPTPGk4vYOXxfJv43FYLw4BPI7MpY9QYAE+OxiIguybVte5xAEBdF9xBzrNrApimhYHQz9B5jjMzl44hzGmiGDkpkP1CT39EkDnhCRm9TTygIO8/5WiDGqBNFl5rp+p5g5BdNEv1Vp84kplJavdr0Q5aiJ531Ec0peniXmL0mrrSy0C3aO9kXo4vB+GYR9KZ8SkrmhPIRdHX9xJUaniOz2Fe3UAOeTAdo4uHQGUSmRAv8LS4qn5+VKxJsKH695Sq0icprvxSUjBvu0bKd99dRY5Qe9lRUeHodhzyAMzTtb8wwOcSfC1alm483Gx3cEOwN4vnydwD4cLqElgteHQpaV7ORSCoeyY2iUu8eT2AYRAbuH8czcSpvIAob6PgS/nmOEQxRaSKQ823+iAYasHp90qI2lXlkc6wHDL/f57Qjh5vRJiEWDfZtW34TOvSQEH6qCgSuNE69hR+JZG4kotD61JQ5DM/sBdIfL75upLxOaC4WF4YrxTwAguJ9gS+bl0E8oad4u41ZLKz6lMQpOJm0ampm/dHyn8ARTi9I7ex7LK2nN89JTPPydZT429kF3NTDRm9SCP8iM41my44GmDzF80cAXy3C2nQCDHmdvfKqVNltgn8wx5+Ehky1btHoKSaXi/hqGQx0dih6KqhvBS35AR9nb3rCG0wzFi9fcbB5wZ3qPeLajodM0y3gYo3hozdHjhoy4Qfjfw1CIFnp2cgp4c63QaT442mw5/1x7ses
- vFce+L1C
- vjBhnSPDdQKGoYiOCCepz/eSDwnYPAx0GsyDJXZPpiQQedtLfMD5dXCe1KmvOCAlfjPYmYV63j1DAR6dDc4O74OyVYkvzD+FfNeJgP+fBst96uqriZXPewd0Itw==
+X-HE-Tag: 1762694151-629396
+X-HE-Meta: U2FsdGVkX1+MO16YI8Gra7UQJkt3rlJwbwtzCSgnA2DSw8UjW5CwhFF64OJWbvekVNBrWe5clMFjXS9VBg/B0H6pBpR6WoDYNQsHWOdI8s3/sC3xr6t0nGK3EvyMFEoOif1bdFd4pMNAwxn89EG1kexD58pNgq7PfihfikEY/Mu1mn7iU6XCejNFKVjmLdo+YgnRNDD1E6+KQHBM0gHBc3nf7lZnRv6jO5gA4+oUCrjbcC4u1RC7ZjPeuSUpFxoPa6VF9HJraRziezECXXF2hHnzu/NEg6/MFJ2ZNyAqrThsQOMyNiBkucrtUlaqA5GGs0E8IyzohUtKEGUGIM88sjZXaOjXYbV5NeAyTpGUgeY332eIcTEVRUlA1lboNAlDFb92jZOITXpnmiLZwp/RUf1W9ngxSOCZ2kS5wNGvOlwLjQCdaShYsPdQRX2Czl2traNvAZdd2w5/0tmojAbWMKvQTruBS0mH0q8PtuJaxoaQCrcNnWrtRjJsCP23zzftsrOCpfYKP3DZiTHW932NEUNae1AXsXpEbz+LfrJ4A3Ywujc6MM30qqbpt2vWs6boxdMx/xQl5OdfU+vXcYYl9o5wdhr6Yu5pCLcgsbY/HL82vxwV/SjR39YnsLneAa38wcPNYCvDesUw6Pu3P5SDzNR1FzWVVC+tCN+5Ed74iBDS/JKE8oCxVUDM/IdeEVB1RjaFmMmhAj9ymQYQ2A0hfOx1u1FVu/Y5F/ERPdQrAmtoSQYaA7CLVgOEnprmfk/BMztRc9f+v4FjPzS/hoBvUTmg4YiGIUDq/f7CuljjW63zAh+JGegD2uEmfYyiLooRceltwwp9vtbaR5qsOnKx+iaxvWDhUMIt7F7bMl9w3w550kCQqlfbDbwvA7A0v2LQeHgxudoeV5RShsh+GP7nQu9pVkrMXdTT18z27reM2mzhKqGVe/fyZ+GCFMROgO9+GvlJ16Ncdnw75W1hVKo
+ ugVMyXM9
+ dPwTsoGVqIaWZHZ91Qcllcqi2pWrJkWJ5fnXfxmdpNike9Kq8k3ojPAyRS3dRMYHc3xOipYhB1qHrXc8gbMhtGdekZlH14FGtY8QblaNHLCuHCvZuev0I+uvB6d6rzvgnfT/Vt1r8OSKESG6sif4tN9vmf229EJJBwEzNv0xXPwZGPEDgyJFKjPDBvIorm2lD/38G2GilxPuPHTEHZykPHspNsuZmlCEv+TtGW+VbJVXUwsL6X7gLo540xBrOBX3s1agbDmTJ1gtP/hmPBss6oE4QRV/Sf1hXzG/962fa8wNmXa6X99Y7X/grXwNvfenlOe4xe3tPof79pYbwmUO2iM9lkQZD7FWmzV9IZPP+Frr94J4+03WfyWDgV+pU4MDsQli8sLprCoOpA5F1ikiMnFyoDDCKaA8/dmtXbIvHL6zOckbVtz9n64lKZuiPd8PVVSxb
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -144,387 +115,43 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sun, Nov 9, 2025 at 1:41=E2=80=AFAM Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> The kernel maintains leaf page table entries which contain either:
->
-> - Nothing ('none' entries)
-> - Present entries (that is stuff the hardware can navigate without fault)
-> - Everything else that will cause a fault which the kernel handles
->
-> In the 'everything else' group we include swap entries, but we also inclu=
-de
-> a number of other things such as migration entries, device private entrie=
-s
-> and marker entries.
->
-> Unfortunately this 'everything else' group expresses everything through
-> a swp_entry_t type, and these entries are referred to swap entries even
-> though they may well not contain a... swap entry.
->
-> This is compounded by the rather mind-boggling concept of a non-swap swap
-> entry (checked via non_swap_entry()) and the means by which we twist and
-> turn to satisfy this.
->
-> This patch lays the foundation for reducing this confusion.
->
-> We refer to 'everything else' as a 'software-define leaf entry' or
-> 'softleaf'. for short And in fact we scoop up the 'none' entries into thi=
-s
-> concept also so we are left with:
->
-> - Present entries.
-> - Softleaf entries (which may be empty).
->
-> This allows for radical simplification across the board - one can simply
-> convert any leaf page table entry to a leaf entry via softleaf_from_pte()=
-.
->
-> If the entry is present, we return an empty leaf entry, so it is assumed
-> the caller is aware that they must differentiate between the two categori=
-es
-> of page table entries, checking for the former via pte_present().
->
-> As a result, we can eliminate a number of places where we would otherwise
-> need to use predicates to see if we can proceed with leaf page table entr=
-y
-> conversion and instead just go ahead and do it unconditionally.
->
-> We do so where we can, adjusting surrounding logic as necessary to
-> integrate the new softleaf_t logic as far as seems reasonable at this
-> stage.
->
-> We typedef swp_entry_t to softleaf_t for the time being until the
-> conversion can be complete, meaning everything remains compatible
-> regardless of which type is used. We will eventually remove swp_entry_t
-> when the conversion is complete.
->
-> We introduce a new header file to keep things clear - leafops.h - this
-> imports swapops.h so can direct replace swapops imports without issue, an=
-d
-> we do so in all the files that require it.
->
-> Additionally, add new leafops.h file to core mm maintainers entry.
->
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  MAINTAINERS                   |   1 +
->  fs/proc/task_mmu.c            |  26 +--
->  fs/userfaultfd.c              |   6 +-
->  include/linux/leafops.h       | 382 ++++++++++++++++++++++++++++++++++
->  include/linux/mm_inline.h     |   6 +-
->  include/linux/mm_types.h      |  25 +++
->  include/linux/swapops.h       |  28 ---
->  include/linux/userfaultfd_k.h |  51 +----
->  mm/hmm.c                      |   2 +-
->  mm/hugetlb.c                  |  37 ++--
->  mm/madvise.c                  |  16 +-
->  mm/memory.c                   |  41 ++--
->  mm/mincore.c                  |   6 +-
->  mm/mprotect.c                 |   6 +-
->  mm/mremap.c                   |   4 +-
->  mm/page_vma_mapped.c          |  11 +-
->  mm/shmem.c                    |   7 +-
->  mm/userfaultfd.c              |   6 +-
->  18 files changed, 497 insertions(+), 164 deletions(-)
->  create mode 100644 include/linux/leafops.h
+Hi Alejandro,
 
-Hi Lorenzo,
+kernel test robot noticed the following build warnings:
 
-Thanks, overloading swap entry types for things like migration always
-looked confusing to me.
+[auto build test WARNING on 6146a0f1dfae5d37442a9ddcba012add260bceb0]
 
-There is a problem with this patch as I mentioned here:
-https://lore.kernel.org/linux-mm/CAMgjq7AP383YfU3L5ZxJ9U3x-vRPnEkEUtmnPdXD2=
-9HiNC8OrA@mail.gmail.com/
+url:    https://github.com/intel-lab-lkp/linux/commits/Alejandro-Colomar/array_size-h-Add-ARRAY_END/20251109-062234
+base:   6146a0f1dfae5d37442a9ddcba012add260bceb0
+patch link:    https://lore.kernel.org/r/35255c1ceb54518779a45351dcd79a3c1910818a.1762637046.git.alx%40kernel.org
+patch subject: [PATCH v2 1/4] array_size.h: Add ARRAY_END()
+config: x86_64-randconfig-001-20251109 (https://download.01.org/0day-ci/archive/20251109/202511092053.40sHnHlA-lkp@intel.com/config)
+compiler: clang version 20.1.8 (https://github.com/llvm/llvm-project 87f0227cb60147a26a1eeb4fb06e3b505e9c7261)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20251109/202511092053.40sHnHlA-lkp@intel.com/reproduce)
 
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 2628431dcdfe..314910a70bbf 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -16257,6 +16257,7 @@ T:      git git://git.kernel.org/pub/scm/linux/ke=
-rnel/git/akpm/mm
->  F:     include/linux/gfp.h
->  F:     include/linux/gfp_types.h
->  F:     include/linux/highmem.h
-> +F:     include/linux/leafops.h
->  F:     include/linux/memory.h
->  F:     include/linux/mm.h
->  F:     include/linux/mm_*.h
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index fc35a0543f01..24d26b49d870 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-> @@ -14,7 +14,7 @@
->  #include <linux/rmap.h>
->  #include <linux/swap.h>
->  #include <linux/sched/mm.h>
-> -#include <linux/swapops.h>
-> +#include <linux/leafops.h>
->  #include <linux/mmu_notifier.h>
->  #include <linux/page_idle.h>
->  #include <linux/shmem_fs.h>
-> @@ -1230,11 +1230,11 @@ static int smaps_hugetlb_range(pte_t *pte, unsign=
-ed long hmask,
->         if (pte_present(ptent)) {
->                 folio =3D page_folio(pte_page(ptent));
->                 present =3D true;
-> -       } else if (is_swap_pte(ptent)) {
-> -               swp_entry_t swpent =3D pte_to_swp_entry(ptent);
-> +       } else {
-> +               const softleaf_t entry =3D softleaf_from_pte(ptent);
->
-> -               if (is_pfn_swap_entry(swpent))
-> -                       folio =3D pfn_swap_entry_folio(swpent);
-> +               if (softleaf_has_pfn(entry))
-> +                       folio =3D softleaf_to_folio(entry);
->         }
->
->         if (folio) {
-> @@ -1955,9 +1955,9 @@ static pagemap_entry_t pte_to_pagemap_entry(struct =
-pagemapread *pm,
->                 flags |=3D PM_SWAP;
->                 if (is_pfn_swap_entry(entry))
->                         page =3D pfn_swap_entry_to_page(entry);
-> -               if (pte_marker_entry_uffd_wp(entry))
-> +               if (softleaf_is_uffd_wp_marker(entry))
->                         flags |=3D PM_UFFD_WP;
-> -               if (is_guard_swp_entry(entry))
-> +               if (softleaf_is_guard_marker(entry))
->                         flags |=3D  PM_GUARD_REGION;
->         }
->
-> @@ -2330,18 +2330,18 @@ static unsigned long pagemap_page_category(struct=
- pagemap_scan_private *p,
->                 if (pte_soft_dirty(pte))
->                         categories |=3D PAGE_IS_SOFT_DIRTY;
->         } else if (is_swap_pte(pte)) {
-> -               swp_entry_t swp;
-> +               softleaf_t entry;
->
->                 categories |=3D PAGE_IS_SWAPPED;
->                 if (!pte_swp_uffd_wp_any(pte))
->                         categories |=3D PAGE_IS_WRITTEN;
->
-> -               swp =3D pte_to_swp_entry(pte);
-> -               if (is_guard_swp_entry(swp))
-> +               entry =3D softleaf_from_pte(pte);
-> +               if (softleaf_is_guard_marker(entry))
->                         categories |=3D PAGE_IS_GUARD;
->                 else if ((p->masks_of_interest & PAGE_IS_FILE) &&
-> -                        is_pfn_swap_entry(swp) &&
-> -                        !folio_test_anon(pfn_swap_entry_folio(swp)))
-> +                        softleaf_has_pfn(entry) &&
-> +                        !folio_test_anon(softleaf_to_folio(entry)))
->                         categories |=3D PAGE_IS_FILE;
->
->                 if (pte_swp_soft_dirty(pte))
-> @@ -2466,7 +2466,7 @@ static void make_uffd_wp_huge_pte(struct vm_area_st=
-ruct *vma,
->  {
->         unsigned long psize;
->
-> -       if (is_hugetlb_entry_hwpoisoned(ptent) || is_pte_marker(ptent))
-> +       if (is_hugetlb_entry_hwpoisoned(ptent) || pte_is_marker(ptent))
->                 return;
->
->         psize =3D huge_page_size(hstate_vma(vma));
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index 04c66b5001d5..e33e7df36927 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -29,7 +29,7 @@
->  #include <linux/ioctl.h>
->  #include <linux/security.h>
->  #include <linux/hugetlb.h>
-> -#include <linux/swapops.h>
-> +#include <linux/leafops.h>
->  #include <linux/miscdevice.h>
->  #include <linux/uio.h>
->
-> @@ -251,7 +251,7 @@ static inline bool userfaultfd_huge_must_wait(struct =
-userfaultfd_ctx *ctx,
->         if (huge_pte_none(pte))
->                 return true;
->         /* UFFD PTE markers require handling. */
-> -       if (is_uffd_pte_marker(pte))
-> +       if (pte_is_uffd_marker(pte))
->                 return true;
->         /* If VMA has UFFD WP faults enabled and WP fault, wait for handl=
-er. */
->         if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
-> @@ -330,7 +330,7 @@ static inline bool userfaultfd_must_wait(struct userf=
-aultfd_ctx *ctx,
->         if (pte_none(ptent))
->                 goto out;
->         /* UFFD PTE markers require handling. */
-> -       if (is_uffd_pte_marker(ptent))
-> +       if (pte_is_uffd_marker(ptent))
->                 goto out;
->         /* If VMA has UFFD WP faults enabled and WP fault, wait for handl=
-er. */
->         if (!pte_write(ptent) && (reason & VM_UFFD_WP))
-> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
-> new file mode 100644
-> index 000000000000..1376589d94b0
-> --- /dev/null
-> +++ b/include/linux/leafops.h
-> @@ -0,0 +1,382 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +/*
-> + * Describes operations that can be performed on software-defined page t=
-able
-> + * leaf entries. These are abstracted from the hardware page table entri=
-es
-> + * themselves by the softleaf_t type, see mm_types.h.
-> + */
-> +#ifndef _LINUX_LEAFOPS_H
-> +#define _LINUX_LEAFOPS_H
-> +
-> +#include <linux/mm_types.h>
-> +#include <linux/swapops.h>
-> +#include <linux/swap.h>
-> +
-> +#ifdef CONFIG_MMU
-> +
-> +/* Temporary until swp_entry_t eliminated. */
-> +#define LEAF_TYPE_SHIFT SWP_TYPE_SHIFT
-> +
-> +enum softleaf_type {
-> +       /* Fundamental types. */
-> +       SOFTLEAF_NONE,
-> +       SOFTLEAF_SWAP,
-> +       /* Migration types. */
-> +       SOFTLEAF_MIGRATION_READ,
-> +       SOFTLEAF_MIGRATION_READ_EXCLUSIVE,
-> +       SOFTLEAF_MIGRATION_WRITE,
-> +       /* Device types. */
-> +       SOFTLEAF_DEVICE_PRIVATE_READ,
-> +       SOFTLEAF_DEVICE_PRIVATE_WRITE,
-> +       SOFTLEAF_DEVICE_EXCLUSIVE,
-> +       /* H/W posion types. */
-> +       SOFTLEAF_HWPOISON,
-> +       /* Marker types. */
-> +       SOFTLEAF_MARKER,
-> +};
-> +
-> +/**
-> + * softleaf_mk_none() - Create an empty ('none') leaf entry.
-> + * Returns: empty leaf entry.
-> + */
-> +static inline softleaf_t softleaf_mk_none(void)
-> +{
-> +       return ((softleaf_t) { 0 });
-> +}
-> +
-> +/**
-> + * softleaf_from_pte() - Obtain a leaf entry from a PTE entry.
-> + * @pte: PTE entry.
-> + *
-> + * If @pte is present (therefore not a leaf entry) the function returns =
-an empty
-> + * leaf entry. Otherwise, it returns a leaf entry.
-> + *
-> + * Returns: Leaf entry.
-> + */
-> +static inline softleaf_t softleaf_from_pte(pte_t pte)
-> +{
-> +       if (pte_present(pte))
-> +               return softleaf_mk_none();
-> +
-> +       /* Temporary until swp_entry_t eliminated. */
-> +       return pte_to_swp_entry(pte);
-> +}
-> +
-> +/**
-> + * softleaf_is_none() - Is the leaf entry empty?
-> + * @entry: Leaf entry.
-> + *
-> + * Empty entries are typically the result of a 'none' page table leaf en=
-try
-> + * being converted to a leaf entry.
-> + *
-> + * Returns: true if the entry is empty, false otherwise.
-> + */
-> +static inline bool softleaf_is_none(softleaf_t entry)
-> +{
-> +       return entry.val =3D=3D 0;
-> +}
-> +
-> +/**
-> + * softleaf_type() - Identify the type of leaf entry.
-> + * @enntry: Leaf entry.
-> + *
-> + * Returns: the leaf entry type associated with @entry.
-> + */
-> +static inline enum softleaf_type softleaf_type(softleaf_t entry)
-> +{
-> +       unsigned int type_num;
-> +
-> +       if (softleaf_is_none(entry))
-> +               return SOFTLEAF_NONE;
-> +
-> +       type_num =3D entry.val >> LEAF_TYPE_SHIFT;
-> +
-> +       if (type_num < MAX_SWAPFILES)
-> +               return SOFTLEAF_SWAP;
-> +
-> +       switch (type_num) {
-> +#ifdef CONFIG_MIGRATION
-> +       case SWP_MIGRATION_READ:
-> +               return SOFTLEAF_MIGRATION_READ;
-> +       case SWP_MIGRATION_READ_EXCLUSIVE:
-> +               return SOFTLEAF_MIGRATION_READ_EXCLUSIVE;
-> +       case SWP_MIGRATION_WRITE:
-> +               return SOFTLEAF_MIGRATION_WRITE;
-> +#endif
-> +#ifdef CONFIG_DEVICE_PRIVATE
-> +       case SWP_DEVICE_WRITE:
-> +               return SOFTLEAF_DEVICE_PRIVATE_WRITE;
-> +       case SWP_DEVICE_READ:
-> +               return SOFTLEAF_DEVICE_PRIVATE_READ;
-> +       case SWP_DEVICE_EXCLUSIVE:
-> +               return SOFTLEAF_DEVICE_EXCLUSIVE;
-> +#endif
-> +#ifdef CONFIG_MEMORY_FAILURE
-> +       case SWP_HWPOISON:
-> +               return SOFTLEAF_HWPOISON;
-> +#endif
-> +       case SWP_PTE_MARKER:
-> +               return SOFTLEAF_MARKER;
-> +       }
-> +
-> +       /* Unknown entry type. */
-> +       VM_WARN_ON_ONCE(1);
-> +       return SOFTLEAF_NONE;
-> +}
-> +
-> +/**
-> + * softleaf_is_swap() - Is this leaf entry a swap entry?
-> + * @entry: Leaf entry.
-> + *
-> + * Returns: true if the leaf entry is a swap entry, otherwise false.
-> + */
-> +static inline bool softleaf_is_swap(softleaf_t entry)
-> +{
-> +       return softleaf_type(entry) =3D=3D SOFTLEAF_SWAP;
-> +}
-> +
-> +/**
-> + * softleaf_is_swap() - Is this leaf entry a migration entry?
-> + * @entry: Leaf entry.
-> + *
-> + * Returns: true if the leaf entry is a migration entry, otherwise false=
-.
-> + */
-> +static inline bool softleaf_is_migration(softleaf_t entry)
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202511092053.40sHnHlA-lkp@intel.com/
 
-And a nitpick here, the kerneldoc above doesn't match the function name her=
-e.
+All warnings (new ones prefixed by >>):
 
-And now swap functions (swap_cache_*) that expects a swp_entry_t is
-getting a softleaf_t instead, they are the same thing right now, so
-that's fine. Will we need something like a softleaf_to_swap?
+>> drivers/block/floppy.c:4805:9: warning: 'ARRAY_END' macro redefined [-Wmacro-redefined]
+    4805 | #define ARRAY_END(X) (&((X)[ARRAY_SIZE(X)]))
+         |         ^
+   include/linux/array_size.h:17:9: note: previous definition is here
+      17 | #define ARRAY_END(a)  (a + ARRAY_SIZE(a))
+         |         ^
+   1 warning generated.
+
+
+vim +/ARRAY_END +4805 drivers/block/floppy.c
+
+5a74db06cc8d36 Philippe De Muyter 2009-02-18  4804  
+5a74db06cc8d36 Philippe De Muyter 2009-02-18 @4805  #define ARRAY_END(X) (&((X)[ARRAY_SIZE(X)]))
+5a74db06cc8d36 Philippe De Muyter 2009-02-18  4806  
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
