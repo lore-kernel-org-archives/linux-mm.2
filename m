@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id BF31ECCFA1A
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 18:07:12 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id CA02CCCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 18:07:17 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 2A0B38E0018; Sun,  9 Nov 2025 13:07:12 -0500 (EST)
+	id 363EC8E001A; Sun,  9 Nov 2025 13:07:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 277CD8E0002; Sun,  9 Nov 2025 13:07:12 -0500 (EST)
+	id 315308E0002; Sun,  9 Nov 2025 13:07:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 18E948E0018; Sun,  9 Nov 2025 13:07:12 -0500 (EST)
+	id 252328E001A; Sun,  9 Nov 2025 13:07:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 06D408E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:07:12 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id B756D13C005
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:11 +0000 (UTC)
-X-FDA: 84091850262.11.BBD71D4
+Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
+	by kanga.kvack.org (Postfix) with ESMTP id 1227B8E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:07:17 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id CCB838993A
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:16 +0000 (UTC)
+X-FDA: 84091850472.01.2FBF4A3
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf28.hostedemail.com (Postfix) with ESMTP id 16F05C000A
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:09 +0000 (UTC)
-Authentication-Results: imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m75WjUhq;
+	by imf04.hostedemail.com (Postfix) with ESMTP id 291E44000A
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:14 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lfFWJIcM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762711630; a=rsa-sha256;
+	spf=pass (imf04.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762711635; a=rsa-sha256;
 	cv=none;
-	b=eLPDPaeUACt/S79d1czMmBHP+6uPInBzoYynjVrH4HN2gF5/GpXe36x7Xokq+XGNre6M/k
-	dJzQwlkiAi5RgSwnUYRsM+9Ov19NU7ONhUPpSnTS2wZ3P30/NTMB9ti/wg/TPO3LP9MQ7l
-	E0/Pz/+sw+2nHdfFX1lrNsGneR56my4=
+	b=S1ol13DY45nqFEfnMvCJD1C0lpmaCkluCAerBO3epJJz4SqV3rVYHgEtPovBx8712REOe2
+	S1kf0LMW9kmrA4Wpoo2hnWKGtw8gB9dgjCMRrtO/dWzoQJW1OY6IztpwJ0e7m3xNZUjIQf
+	ud2ei441RRd9QKQQg3mpGJNE7sYQNHQ=
 ARC-Authentication-Results: i=1;
-	imf28.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=m75WjUhq;
+	imf04.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=lfFWJIcM;
 	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf28.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+	spf=pass (imf04.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762711630;
+	s=arc-20220608; t=1762711635;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=SyD7wRt/mfijbblI79CRl9e76BRavXQyqr+l5ZBChP8=;
-	b=7KaV/3sWGVuS6lmujgj9jCz2ux29RRNBkhfgCSVE/F6Ner+8bRcIS62/u3dWTivUHwBQzI
-	Ce71ARw/FMUXG5tncvdxQahRPvMtfeDMoIiGvCoUNBKGy3zfZdcAc7iW2uAQOFuV5doTA/
-	Fja67E0m/h6Q4buxaTCp1DYzRYvbvqE=
+	bh=jX8msigRXIApZg9OK2U1b7wFE91+OTEGS3ZaY6JDHQU=;
+	b=lYNHuDaZ/3rzRp/Mb+lSZY6GHyZ0I1M/geOh7y+6Fk9w9ItNoYtGdXOv/hjdu9+3/1NN90
+	JfHRcbJkaQ5TUnqUiyadO4/0ZCVh2tVKjTanLPyZbMuy6RFJGcJ2AcwHo45GzR1gtuF4H0
+	Vv5an37bkri2/1xVprjbQf0hvZE6nwo=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 3555344500;
-	Sun,  9 Nov 2025 18:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4887CC4CEF8;
-	Sun,  9 Nov 2025 18:07:06 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 58EB24435E;
+	Sun,  9 Nov 2025 18:07:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B83C4CEF8;
+	Sun,  9 Nov 2025 18:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762711629;
-	bh=59w6p5OIO0ukVj/H6iWXGVoWsjSUgZ8nYZ9Xx2PeP8w=;
+	s=k20201202; t=1762711634;
+	bh=kaO5/IVrebOzmYLwKVSEsBGlfzzeuU+iOQME8bN/Vgw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m75WjUhql6v/TjVEVnpOWQ1J/FB300lERpRYAirZ1FL9l76CpCRBfww1t2a35snQD
-	 tJHog/nimE0l2EWB/xf3G7qrVi9oDltBkClxF+5wivdARDiJS82n+dVL+gBKvKd8BR
-	 v/8JUuiy6YMgm4mnDcTl44gppUgZ/Wyo5IFO+cH2sa9UGBl+NBzQtaPOFGfayVhBD+
-	 867kDhk1O0Gc6+aNChoD4zHmiq4wxs2CHEGKY/HJnXV/ww0wv+WJhTpq7pcJlFswDD
-	 AecDB2oiiUD1yMcLmdGjs44qVENg+pvI5a2EtLzvTW+1c+3RwlEOqTma9hq9YQhjBj
-	 MpMRGrTMqp8EQ==
-Date: Sun, 9 Nov 2025 19:07:04 +0100
+	b=lfFWJIcMlKISISBM1E6H9raA2HPW4eVb8izpDAHamiPCRjD9yz+rZZO+Q2fJ3fIXx
+	 l1CrIWkSYtNrr/srw+vokFdC8aiM6GL5aGBKc6F8r4V5qMYs0AxX9bTPuHWRPhh6n2
+	 y0NWPsbo9B6lxCCQd8dhvtmkirgpH0ZDyIFEMIxcynaGsxqLqL5fsUYr6cfgTCtjvw
+	 Zx3Q+0RBAImo8DEEGO2wRWn+jYk8COlkpo7xghPZVTF2XugmThkdlwkZZM2bYJrJDa
+	 VtbMFW7txrWkaU9GSXR6/PG4XJG+RJx3GkyPJ7c9xO8tp1noYhZAKeu4H1Q3GQ2+W+
+	 13LM5qdxHEEhw==
+Date: Sun, 9 Nov 2025 19:07:09 +0100
 From: Alejandro Colomar <alx@kernel.org>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -72,8 +72,8 @@ Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 3/4] kernel: Fix off-by-one benign bugs
-Message-ID: <d8128f0c8b9fcf5be9684eeee650c24ede242b8e.1762711279.git.alx@kernel.org>
+Subject: [PATCH v3 4/4] mm: Use ARRAY_END() instead of open-coding it
+Message-ID: <9646a1d194a5d2f310d4272f9c240453e68c2147.1762711279.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
 References: <cover.1758806023.git.alx@kernel.org>
  <cover.1762711279.git.alx@kernel.org>
@@ -81,14 +81,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 In-Reply-To: <cover.1762711279.git.alx@kernel.org>
-X-Rspamd-Server: rspam06
-X-Rspamd-Queue-Id: 16F05C000A
-X-Stat-Signature: cski4hssmspryei5yfg93s371yjo5rsb
 X-Rspam-User: 
-X-HE-Tag: 1762711629-423137
-X-HE-Meta: U2FsdGVkX18Pcm1lsqgBXm7j3Achor5nij18UT9v5HMGXyL6bUZ4OLd3Vq8rkJmIuc8HA3gjmKk5WSt8YcWyYeakx2UT158FBAgaH7M5lJOPQHjul517u0KOf9vodd8iV5xMlllRO8UWEDiBSwimRabdl4tgJHqzWb8ZLaH4VfMF+ReR+DUEZMmdpFc7LtKvZ2Hbv6wBLh1WPxPYsZKBxPmZ/O5HPkvSdx3lm4BO/f4sulEzTPvn+BhV/Y+iNEcpIk9bq3JfSN4xk1jMpxrGk9VuC81BSiUccCrKdxT3l15bzk1Rd7aVwFxohJtOBb6npy5SBZn68fFQJgeWFSDKViaw4xehjsn7UpjJDmHFCF7x8ArTVgwZnea53TLagMHoGErnYyADsHd5cWNjL7I3IW9wDHi0djlurF+f9MDKV1y1AY47EK94j/ciaWjLMY24s/1FoSm9+HQdQ+QZYG/NOxkpH5uuJ7ykr9kLM1vkPUDJkhgpWKQ/IFnaLhqhOWDw7e6Dua3/5iC4+a/dPwhij+3bDR2Xo9xsmyfehAzFp+ysZY8KKThOVg9BhNE+v3Z/uSvIPZ6rd079Pbdk4p1eaE8TFlMxzrch10kOf8o6kq82kh8jHRzVlvUxXZXER1dh9SkWROSWqXXbuNnu4EySCaLqy+d+iS8TA3YLIFNX82l/YyW7d5RRvr/0biW1EY4kDXbm2eJ/CI3xTHbJdT2g1yUBwSo2WzCFjXlyJlzPj+snnXz55aKUQEILWemfLc6O3kZhtTFGwsuToj9E7MMjjqYEVNLMYtKl2c339goaACLanqbpOnTZmU+dNPOfQAgMArLGu1kO6gJgrzLw0sJLoavrxZTEcLYl93aUEuIQcHZadSvlnu7HAGXgEevo55BPxTdJqR6GNNf0fTjllYZmY/EpDLM9xQrr2qTinkbx++N/hFhQTUqHa+zrwK6XoHGXDTM1ylA6pQUyCms+oS8
- QTe4XRTk
- joDm3j70wiElZcsn+b2uhZkhzETKDiShgAZVmjTprMuT33yw5R+BjuHoTDvea35HUt/54yIC9FikFm/FSexSl4HkPxVucwpQFCfo6mcWiwWUwVbUexWaX8ga2J1s3OVIwxpXegD8nNQrmXJyX/cjUwpM1ynS0A+haUAmw28vkT0hrlBPkhXunnAj1kwTA4NFVWhq1La6T3V1O6qS9Doo+YGNL3mVHHeuTDMBT1XQZds1g2x0SXb15PXV5ZQM1fY6tXzpL55/7Lg2gZZQHLmyogXF5atc5EklIGwt9UxRq21SKoF7JThmS/8bejjaZ03F9NzwYCLUQ6GK/doAIxzddD2SnlwO4bcm6CzUomsym9Mh6GMTOQVNSvXPrXWhSN6PcLtyd+dzhGdR5H/YiJXnBfoJmhyxw6rni53Shwu6AZxq1shbFXHNxiTQNx1i3gNuY7M2ckTZVsjaPv6E0BF+5GnxEkUwYK0SQ5cy9xn4/+UVp+Vxh32lqoRRfHlmXDzz63uSESLslJ1YQRIu62bTaH2VYm8VlPc6hpSzc
+X-Rspamd-Server: rspam11
+X-Rspamd-Queue-Id: 291E44000A
+X-Stat-Signature: bub5uoiy5y3ha561fuewnr3ywyajcr66
+X-HE-Tag: 1762711634-379551
+X-HE-Meta: U2FsdGVkX1+SSU/5/Y+3wP8xCU0NXlhgSirTCDBvAACHeYy8qdovud5Q+KUHe7/isz5LpBKmdclBmDJo3lc+v+5MZgGCA3vs21dtv0778LnnrVHr/ZfsH9akbLBmZ/Wkxs2ZQgIHmxSxzZyySbZd0K9T9A2jCTeEKr2ChiJPO3GkpuiQVqPbspTR1fKAZquhO/gnORqYt2JcNI+DBwqTFon5H3DUxZXeowbJLXbWgaV9OHH7L0JL7m7RHJpzpVzD7NJH44Rc1IEvDXpeJgSHUKUq/G11wn42SoNt4BB8B4Hxx8mYnxwpVPVuZ7FkdbdQEa7WfOeJDJm2Uq1zXlpZb0Exu9uGAe+V7R/PCYEzuCepwSCbCNZoXkpx9n+aN6q6OmcUn36Os9IHoJtWygDCjf9Kitcw9A4Z8M52Byo9ixCvqH/XpnZahahKepu3ypWJFtwVaeAFbAihtB0iJtkVaLfoCrGA44HKcD/JeIZ11u1gKwFkVcY8Kx8IJVPEmaZaH3Z8VDv8x9SoU/7Up18Qllenrlk57OkfNNMNkrx2woBl4fi7DD2dUVWpTITKqOcKb02cOZk38rd2rR54x/KApLy4US+84Z1ox0V5GZe6P2BtS7FxuVJJ9xebozCEKL+MvjCSCVA2wYBFesybUmXhPSp68DgmxZ+j6WutV8k554OvZI3ybTUrmwml5EAIT9Cz+e50KJ1CTNOmv/Zjq9sSY6o0jhgkDMiNxT7PYgh93UBRpQ+nG/9W1OuebY65SHe0RYJ/U1b/D1h+s+TtNk12mMssxFPUx3Ot8D1w3lFJtDkkGv/5djefSSZp7/AncryFLbKRwklD3FKEMjyNprxHRHF+qP/gZ/ERRAK+LZzGj33wAOJCczTJcVo3iokxOMpSMMfDgoOUE49eiCz2cu6hnrz51Wa/H074JTJQ/j6axOMI1DSnm9wo2pBdfSwbr2+De/FwLlVoM/mOhey8Ef1
+ c1PfZAYW
+ kL8v52t4h6AU7LFd0W1954iYLnxFAC+gczf7J1ZnLgu+eBVovZuos16G66JEWCS05XKt7bHr2mlJnmB16hR8AUc1b2fMgHPqEpn/hgwRJNqRATzXZJXMI7/gJCAkrvdf85zKtJaeIsDR/T0bLF1lE6+6zaajOV6OZtze6ZSI711bswldw+wb2hb23nWBYIZOqxLPeXAUS7LfTHrdVjZ8vGpQCn2StKiELCjd25d9/UX4a1lO6yLtfsEOq2X87dU81r+/IioB13Xnpo0tsivYQFQzp+Lize88iwq2K6UezrscouSkugORDhHALzQ2uYHDlS5bTMyOf5cimUri3nSCaA3nm+RvpZwTKLGVnGnB1pUa7/KzaOUIEx/gRyMOHba9qnbgt1kudx4kgrecHyEse2jYxplIOS//R/ss1YUazojhlm4o=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -97,53 +97,49 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-We were wasting a byte due to an off-by-one bug.  s[c]nprintf()
-doesn't write more than $2 bytes including the null byte, so trying to
-pass 'size-1' there is wasting one byte.
-
-This is essentially the same as the previous commit, in a different
-file.
-
-Cc: Marco Elver <elver@google.com>
 Cc: Kees Cook <kees@kernel.org>
-Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Alexander Potapenko <glider@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
 Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Marco Elver <elver@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Alejandro Colomar <alx@kernel.org>
 ---
- kernel/kcsan/kcsan_test.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/kmemleak.c      | 2 +-
+ mm/memcontrol-v1.c | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
-index 219d22857c98..8ef8167be745 100644
---- a/kernel/kcsan/kcsan_test.c
-+++ b/kernel/kcsan/kcsan_test.c
-@@ -176,7 +176,7 @@ static bool __report_matches(const struct expect_report *r)
+diff --git a/mm/kmemleak.c b/mm/kmemleak.c
+index 1ac56ceb29b6..fe33f2edfe07 100644
+--- a/mm/kmemleak.c
++++ b/mm/kmemleak.c
+@@ -510,7 +510,7 @@ static void mem_pool_free(struct kmemleak_object *object)
+ {
+ 	unsigned long flags;
  
- 	/* Title */
- 	cur = expect[0];
--	end = &expect[0][sizeof(expect[0]) - 1];
-+	end = ARRAY_END(expect[0]);
- 	cur += scnprintf(cur, end - cur, "BUG: KCSAN: %s in ",
- 			 is_assert ? "assert: race" : "data-race");
- 	if (r->access[1].fn) {
-@@ -200,7 +200,7 @@ static bool __report_matches(const struct expect_report *r)
+-	if (object < mem_pool || object >= mem_pool + ARRAY_SIZE(mem_pool)) {
++	if (object < mem_pool || object >= ARRAY_END(mem_pool)) {
+ 		kmem_cache_free(object_cache, object);
+ 		return;
+ 	}
+diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+index 6eed14bff742..b2f37bd939fa 100644
+--- a/mm/memcontrol-v1.c
++++ b/mm/memcontrol-v1.c
+@@ -1794,7 +1794,7 @@ static int memcg_numa_stat_show(struct seq_file *m, void *v)
  
- 	/* Access 1 */
- 	cur = expect[1];
--	end = &expect[1][sizeof(expect[1]) - 1];
-+	end = ARRAY_END(expect[1]);
- 	if (!r->access[1].fn)
- 		cur += scnprintf(cur, end - cur, "race at unknown origin, with ");
+ 	mem_cgroup_flush_stats(memcg);
  
+-	for (stat = stats; stat < stats + ARRAY_SIZE(stats); stat++) {
++	for (stat = stats; stat < ARRAY_END(stats); stat++) {
+ 		seq_printf(m, "%s=%lu", stat->name,
+ 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
+ 						   false));
+@@ -1805,7 +1805,7 @@ static int memcg_numa_stat_show(struct seq_file *m, void *v)
+ 		seq_putc(m, '\n');
+ 	}
+ 
+-	for (stat = stats; stat < stats + ARRAY_SIZE(stats); stat++) {
++	for (stat = stats; stat < ARRAY_END(stats); stat++) {
+ 
+ 		seq_printf(m, "hierarchical_%s=%lu", stat->name,
+ 			   mem_cgroup_nr_lru_pages(memcg, stat->lru_mask,
 -- 
 2.51.0
 
