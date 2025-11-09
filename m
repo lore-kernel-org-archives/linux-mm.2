@@ -4,134 +4,112 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D4187CCFA18
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 02:40:19 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B77B3CCFA18
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 02:51:13 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 306328E000C; Sat,  8 Nov 2025 21:40:19 -0500 (EST)
+	id 009808E0010; Sat,  8 Nov 2025 21:51:13 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 2DD5F8E0003; Sat,  8 Nov 2025 21:40:19 -0500 (EST)
+	id EFCE18E0003; Sat,  8 Nov 2025 21:51:12 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 1F2DA8E000C; Sat,  8 Nov 2025 21:40:19 -0500 (EST)
+	id E12A18E0010; Sat,  8 Nov 2025 21:51:12 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 0AB038E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 21:40:19 -0500 (EST)
-Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id A16F21408AC
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:40:18 +0000 (UTC)
-X-FDA: 84089514516.27.9BDE11F
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 9AD4540006
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:40:16 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m56MBNOk;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CE1758E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 21:51:12 -0500 (EST)
+Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 653F75B8BE
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:51:12 +0000 (UTC)
+X-FDA: 84089541984.05.9FC3363
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	by imf23.hostedemail.com (Postfix) with ESMTP id A9910140005
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:51:10 +0000 (UTC)
+Authentication-Results: imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vSoO2vvB;
+	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762656016;
-	h=from:from:sender:reply-to:reply-to:subject:subject:date:date:
+	s=arc-20220608; t=1762656670;
+	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=VDJSjfjd98R9zyaioAZ2ttihCqA9hQAGiasYcBqo+LQ=;
-	b=i9IaVNbI6SogC+SS8m/xBveZMGZK3UqkEhcmPxsVABdKcsoXixQWApmwGfVzWAiXVCLBsc
-	xx60OtlZ/af2qi2tXyacuOh+vB/s317dTUCWk+mefPYvVym02P4SDXHR3iJJhabGoXEX09
-	FjCstQ1Zw9duO6IZnvITspPmb5PLdNQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762656016; a=rsa-sha256;
-	cv=none;
-	b=ku6Yt6DkaUGzOSP+rQHPFsiGqT5MyETD6IDKmkUKZy94j5eYZ3TS7PupyLgc/Jodlen6S2
-	0cDIuGzq46WjdamWIp6UwweEV+5lbHRzO6qZdezoh8QHkF5bx65tHz+s13k32tbcT8VoNv
-	Nk0ZYMi9vLf3UTCoJeDjaMKJ9RStesM=
+	 content-type:content-type:content-transfer-encoding:in-reply-to:
+	 references:dkim-signature; bh=rH/cjvJUOWnP5hvJ4MNMjClZa3FAqzia1bjsOfdPp/A=;
+	b=e21F4vqMJpIDh2Ev9wUij6clrb3Ynk4ka3L9sq0Ke2ANsZR7cPXez9ohyO0BvRsKLojyXg
+	w3iGxzV8t8V9DdBCrb0YgwZQnGCSmIJWsEToVyDY+3/SXlPYO9BAMx6YyBV2ciV1HuuSrP
+	cOEfcZpujjdkR2VkX0axrSTV9t0/BiA=
 ARC-Authentication-Results: i=1;
-	imf01.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=m56MBNOk;
-	spf=pass (imf01.hostedemail.com: domain of richard.weiyang@gmail.com designates 209.85.218.44 as permitted sender) smtp.mailfrom=richard.weiyang@gmail.com;
-	dmarc=pass (policy=none) header.from=gmail.com
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-b3c2db014easo361091266b.0
-        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 18:40:16 -0800 (PST)
+	imf23.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b=vSoO2vvB;
+	spf=pass (imf23.hostedemail.com: domain of rientjes@google.com designates 209.85.214.173 as permitted sender) smtp.mailfrom=rientjes@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762656670; a=rsa-sha256;
+	cv=none;
+	b=yaVa242encQ14nKmHRUStqHWhyPvyS60Sb8VMhXssGRcM+oL5TDaOUczZUAoPP+Jmf6Y8n
+	tV66Zl0jy5Wj37VEgJmsRuX1lLXo0aNmibjJQXY3FnzS72g8E8Xk6smXCOlr4Ur9yrYQGd
+	Mk5oVQoX6trb9A0sl9HwbKkgQEUXWzA=
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2959197b68eso147285ad.1
+        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 18:51:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762656015; x=1763260815; darn=kvack.org;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VDJSjfjd98R9zyaioAZ2ttihCqA9hQAGiasYcBqo+LQ=;
-        b=m56MBNOkklEuqPNtJbRDPEzDSH5DlH8M0YSsR8wwkJs8FijJWgR9VnKeyBK2Dym5ya
-         WlNxBsFRXoh0aAATjxXmpOxwzIKkyvBEeW9Rspy/resJIB+oUc01Y/4KkOcHuW+Z3MHx
-         K6jiqqn/JrnICOSRL+JoCnPqPQYug4FTJPQV9aoQQT3DyS4lBvUOKNTABcaR46bQ41JN
-         fDsz+WWIDInl+CMEdRqkCM9uH+fPWefKiCTNOLf6bMjRQkQMwZa9Ks+r5EPuU1LuVcW+
-         m/B0JhLDm+kWtmllgDQhGXo5/BqbWh8ApiaoHJcIA3bKMq3ACoNcdvjnWh/Pl1XX8nku
-         5/fQ==
+        d=google.com; s=20230601; t=1762656669; x=1763261469; darn=kvack.org;
+        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=rH/cjvJUOWnP5hvJ4MNMjClZa3FAqzia1bjsOfdPp/A=;
+        b=vSoO2vvB0ZntxOllp5gNAYe7aSLjF2QEt+0oqgkwKXMiDa4wN4lnXGqgsD9PtYPWL8
+         qej3JTdnzBlcZaV2meIlg500ABMFDSgVgViANlWNT1VqyqvrK0yLOHM7MZb4k8F7aLlp
+         syX+XlRK0yReCMHheDIqmYZH3VkvGiQV7NDzCHw6N8wZa7TLBgtiSOnLiwpfV5qLJWk/
+         Xkj+i2R79Vw6wh464cb5GnmF85XBk27jeZOh78SWsjnonOx0ZJZVu7EV9mNGSndsv05e
+         njP+c98qiohfHOq1tx/dhBZz26khProJn7Eea6JM61SRW9xFSJzibHgXWU+RbJXJ27Au
+         5doA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762656015; x=1763260815;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :reply-to:message-id:subject:cc:to:from:date:x-gm-gg
+        d=1e100.net; s=20230601; t=1762656669; x=1763261469;
+        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VDJSjfjd98R9zyaioAZ2ttihCqA9hQAGiasYcBqo+LQ=;
-        b=KB5zCPwABhlT0+fXMgTtOj4FLpUfVYTf5srg/DtXYzJqBmja2qPBRHoYU+Bk5y21Hh
-         y98J7u2tALJWRIu6G0+NFvfrh7a66o0Dq25b2kkujrxfQ7jiLStwFKeZ8RCE5EgPlrLG
-         cdUDqDmC7I+oZK9J4g4imNGESTtgKCGScUn+Q+MQRDFcq3LQUUtQS3YzUalsVp46R4U3
-         rvY9oMCuZut238r242fZMwPl6rOowwsJwE6D/NE8oOATHXOoqn/EPGQGwF4SQXeoNvxP
-         oWARUrIT+kuH0vQzqVnBJNbr2ywwDa/P30NM1SK1q89YbnoQYFE3w0+n1FDllTN74/Va
-         xLoA==
-X-Forwarded-Encrypted: i=1; AJvYcCXG+kuL2OLNUj9KKqi7G1FQCNOojZZSUJ69tjq7xLVQn9bhDqVwGxzl4A6pFtxehFkbfZoM8L7HCw==@kvack.org
-X-Gm-Message-State: AOJu0YxZjl0EAlTF8jEuXmKbKjyyDeXSxTMlqzMXmXZSPKO+Vvuz/WqL
-	0dLMwzQpFSFzFgBYh+awylYt+LGoLs2Ad5ZPX0ZCxKPeG8Mk8kV8vURtGUNjP5R3
-X-Gm-Gg: ASbGncs9qrNu8GDELssPLVrZSXs54bKqnxAhXs5wnPT6P/fwJuKucRIOTquLbdGDoGW
-	2T5cXsXT9OUEfif1hzdjDokfXsDgoKwlOykuUDTUCj/i2ugYQ6KCrdTfV8vEEOnhN06/hDpIKV5
-	ZoviRmhFR7IJ+3rdq7b5ZqkBsErw/dq0DiE6tElWtlZHyANoeRlx2cjpTh4p/lwD1gm7rpW1nOq
-	5S7YQ74usdp4CWZpJzxi8mw1B8ur12dsYxtP7X8Z270cCWs4IR1ffRTvX4tbj9cC/VFIC4tX4Tj
-	gkEwPZvkehJYCYEvE3NRqSBJwDQRWTWyiUpkyJ0fuSb4yRlGyr6zl97CC9SwQ+JquZ/mWGZvwQ2
-	HBd9OZv8cBnjCPsPaH+aL53dd/aB+FH8NtC9ZaorO1Q7dmf7AJ3XGCDaT4qOx0hAQyF/WCsM/QS
-	c=
-X-Google-Smtp-Source: AGHT+IE2Wq8Y+ygBID6i/t3iykn6/9+oUOxVHVcNRiQ6+GmbFnEIqdu/5sD0+e0Gaz1ul5lCkjm1dQ==
-X-Received: by 2002:a17:907:1c03:b0:b72:9c81:48ab with SMTP id a640c23a62f3a-b72e050415bmr364444366b.59.1762656014957;
-        Sat, 08 Nov 2025 18:40:14 -0800 (PST)
-Received: from localhost ([185.92.221.13])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bdbcadb5sm713642666b.9.2025.11.08.18.40.13
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Sat, 08 Nov 2025 18:40:13 -0800 (PST)
-Date: Sun, 9 Nov 2025 02:40:13 +0000
-From: Wei Yang <richard.weiyang@gmail.com>
-To: Nico Pache <npache@redhat.com>
-Cc: linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-	linux-mm@kvack.org, linux-doc@vger.kernel.org, david@redhat.com,
-	ziy@nvidia.com, baolin.wang@linux.alibaba.com,
-	lorenzo.stoakes@oracle.com, Liam.Howlett@oracle.com,
-	ryan.roberts@arm.com, dev.jain@arm.com, corbet@lwn.net,
-	rostedt@goodmis.org, mhiramat@kernel.org,
-	mathieu.desnoyers@efficios.com, akpm@linux-foundation.org,
-	baohua@kernel.org, willy@infradead.org, peterx@redhat.com,
-	wangkefeng.wang@huawei.com, usamaarif642@gmail.com,
-	sunnanyong@huawei.com, vishal.moola@gmail.com,
-	thomas.hellstrom@linux.intel.com, yang@os.amperecomputing.com,
-	kas@kernel.org, aarcange@redhat.com, raquini@redhat.com,
-	anshuman.khandual@arm.com, catalin.marinas@arm.com, tiwai@suse.de,
-	will@kernel.org, dave.hansen@linux.intel.com, jack@suse.cz,
-	cl@gentwo.org, jglisse@google.com, surenb@google.com,
-	zokeefe@google.com, hannes@cmpxchg.org, rientjes@google.com,
-	mhocko@suse.com, rdunlap@infradead.org, hughd@google.com,
-	richard.weiyang@gmail.com, lance.yang@linux.dev, vbabka@suse.cz,
-	rppt@kernel.org, jannh@google.com, pfalcato@suse.de
-Subject: Re: [PATCH v12 mm-new 13/15] khugepaged: avoid unnecessary mTHP
- collapse attempts
-Message-ID: <20251109024013.fzt7xxpmxwi75xgr@master>
-Reply-To: Wei Yang <richard.weiyang@gmail.com>
-References: <20251022183717.70829-1-npache@redhat.com>
- <20251022183717.70829-14-npache@redhat.com>
+        bh=rH/cjvJUOWnP5hvJ4MNMjClZa3FAqzia1bjsOfdPp/A=;
+        b=XPHCzoS44VZuFbaKvF6J0FUJWP1h/Rzdj/FVoYeuHdnFHPIL7bsCOm2tacZaiOjgyX
+         D01J9YjruPebJrQKnCcfoH1m2x+ZObyD0ySZAimBBw00QXJJ0uqsxjLnXjnpuey0mr7E
+         C2yfSM9DIu7oWZXKW7XDYLDnucJHEU8f/+AGoxCysd9xNBLKkMqIXLUqbmOvjKlyiexG
+         QcQRIyyTmO0eTMEGKPXz/ZX6TvIwUwYVrDi10qIxvGLnf2R5gVBLUvGTUORq56sBiNyl
+         D7Wii8E2z4JldjGcm7duiwvlkh527FsZfK8hsBFB1M3JTj8m67clBwtobaKhvgTJ9MB2
+         PkyA==
+X-Gm-Message-State: AOJu0YxXxtsZzh9TXppixYR5yVgsMVL3Qhj1fwL1vNFNulmZabUrJKlX
+	BDEXZVmSWI0+WWJkdCCeeDNqqJEGz8Ti3Sb10FMPTT7pFDLfnwKrsnMUHNJ+LYUGJQ==
+X-Gm-Gg: ASbGncvVVxsUejWsUl1qK5NP5iQu+4fvtS+lavxN20V9jSTQSLhEIJ7NQ1DfvBOWHe6
+	9sgwUroQd2uiIpWI6WH7su9h19ie2nH0HDBELH1QR4isq7QtyBPpha1rMqE05HKr+WBg8lVsw/X
+	Q0kX53KOD5wpb6VEL/5ajFPrl4EVdo2gPQtzX3EK66zCThK9cqoLMCAMZJE5rBheVudrVIkhie9
+	YaSIr2rRElx7ZRa9pgZooFaWanERCg985KApjerGfzemPzE9tPxtHZxYcFkKUhq6gk2j98xMFW2
+	6dSXaVB52VUy1eYSiJ2ik/w33GSyjRM0DSklFeNUVckSED/175qW8yS3sem7/J/x+JuBuPztxw0
+	vbJ5hlS7TBQS4La1oKImczQWbB3Vga0MldizpEUU5z++pLuZKpvxtrh65Zj7CgPjfZ+0Fblm/Nm
+	PjjHUeRrUODKO+giDxSjvtaeQKu5nc//oh7p+wqZpGypZPqfTE8q9Sc/scfIuewXLd1c1Kd9qV/
+	YKA/MmqA2PhO5ab4VZpxXBdQz4nLjU=
+X-Google-Smtp-Source: AGHT+IGjyZDo1w7W8dZnNlylzYmxKkzD7FuEhfJv9ofgZMnOkj2R8OxsP35EkFCvmWueWKg/epDd9A==
+X-Received: by 2002:a17:902:c410:b0:290:8ecf:e9f9 with SMTP id d9443c01a7336-297e7bd0859mr2940385ad.7.1762656668975;
+        Sat, 08 Nov 2025 18:51:08 -0800 (PST)
+Received: from [2a00:79e0:2eb0:8:5a08:8aca:3cfb:79ca] ([2a00:79e0:2eb0:8:5a08:8aca:3cfb:79ca])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2965096b889sm101465825ad.14.2025.11.08.18.51.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 08 Nov 2025 18:51:08 -0800 (PST)
+Date: Sat, 8 Nov 2025 18:51:07 -0800 (PST)
+From: David Rientjes <rientjes@google.com>
+To: Davidlohr Bueso <dave@stgolabs.net>, Fan Ni <nifan.cxl@gmail.com>, 
+    Gregory Price <gourry@gourry.net>, 
+    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+    Joshua Hahn <joshua.hahnjy@gmail.com>, Raghavendra K T <rkodsara@amd.com>, 
+    "Rao, Bharata Bhasker" <bharata@amd.com>, SeongJae Park <sj@kernel.org>, 
+    Wei Xu <weixugc@google.com>, Xuezheng Chu <xuezhengchu@huawei.com>, 
+    Yiannis Nikolakopoulos <yiannis@zptcorp.com>, Zi Yan <ziy@nvidia.com>
+cc: linux-mm@kvack.org
+Subject: [Linux Memory Hotness and Promotion] Notes from November 6, 2025
+Message-ID: <8ff2fd10-c9ac-4912-cf56-7ecd4afd2770@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20251022183717.70829-14-npache@redhat.com>
-User-Agent: NeoMutt/20170113 (1.7.2)
-X-Rspamd-Server: rspam12
+Content-Type: text/plain; charset=US-ASCII
+X-Rspamd-Queue-Id: A9910140005
+X-Stat-Signature: f36roxxys5fiyyf5965n8qi957qjocsb
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 9AD4540006
-X-Stat-Signature: 4mxah1ym8me6arj4us9yd3r8s5dxqybp
-X-HE-Tag: 1762656016-551337
-X-HE-Meta: U2FsdGVkX19eSs8QArErT8ZCJJafkUy/zzeZsyWxQfpDCSzWbVwgoVUD34BNOAHs8/hoyZY0Yo3AVpbgISWJmU50maE+es6UQVmo8KxkDs3Ftqm9a1nk+8LkDa4Xa70yIlrmW/j2i0h5PODFYhhTYs5VCeAoNxr0IEVpXgh1wMlUKTt3CFLttwieDF3i3EKC93WCH5isKqOC6MlupN0kDhFuPMHbt6YebkeKsK2fUlp//7hC4dZDC9InhLUHslakVH2ULoa+TyZpJlWQ7z05sAKZWnmqJ9Guk3PCauisOpI+Psq7GRc2suaszNSAodZK7UGWiZ4WoTkDfvDsTG7uOWsC0DVdmZAQS+88BLsXC9NoOvNvpi3exYo9R+dhA8Cv2yS0x8FOroWEZkPGZ3ki9EXGY0Jpcn4nAkfYpYBBP7bywPRzmvmjeQuT1zsR116w4DZRfHpS8MmLy1sFWFuXIdg1cKWEtOgBoEz+j+ACwfQ5d+4fdZM/BPTmz+JUKhcL4TfR0HHwrpLFjZXA2lFciliqR7zgH/axGEDwsflktEfryrMs9XK4XI0/kCId/5uaVQf2K3f0dOxDdLSJl+uRSYCcRzvc9LjReW9GxD2V677XbrTcPG0jPtnYR/udcP0SMNKJBfzLQJOQxSy7q1r1iWvV//Ps7UYvN3H/57Q7r0MYsLwaqa/sqDt/sdRBt74BQx9k4g/5g7nZ/AnVKHyrWNKWtx1CkXseAnOuK0rRyEm1yNKLeWPbeqjgDRWMS8Ma59ca/GRxL5cA/06IYbtv5yfLVMdczjp9+wtYdpZRTq1Hl9luRAZ2wavtHKCoQK3Hm+xFZtrsc9zQSWZ8QoyaqU+k1Dv27rxHriQa2z6grRmg+GOKlEIQAm8YO5/nrRDxKYkYDZQKod0VIVZX1TY4DL1t2s4/sqJLK0zPQ+tbAhJcW/QcBiqZj4iokZOtlzzskO+Lz7ORrZuh0xXWOkY
- PPgpzxMe
- Z1we0I6UKVWEGOWfUvf6kIOvXdSIROjqcSprivupSb0jquoHJTr1a+ULNKVU5oTWmXVqjJi2gJBXjdhzO9fL1Dtn9PVDuK5VpM3QkjDw5YM+MelqPW9TeWcziJHp6iL5h9/jPJ319LdPlAGT7/64KwbmZ5Kop+B94uqRES/DQaMGG5doqQSQpCbHlhVsLLpdG0tfgqZnRFq6kIrhpGad36DkbYQ4woClNTnviJQsVQIPCIMgz9yw33uUwUGRa2ShfOpY0zP6nitmsJhi8j1DZMjUxFW+vl8yhmSz2di6exQwL/gel1eRv+tzvKm/dZcfGfE8PLYaBxE9CR8tsBb0tlbc0GYGGYTU2D+lbKtvx/I0JUXD2IvMgT8TrPAT3gf9Dxs9bN3TONDea5IePPQMb2XgA2JrznUOLAUjYRke/MrHrGt5nqKYNaFaUWESAPSnKGP/0EzUw1qybWxQsynm6z64O9qyXGtCmz0yuVOnpEaQSuXX24qS8Qs2pzMlERDp1PR7JclN1Ui4azPYs4ARDH4Yw40qvNxmVOLkXk4SWcXjYeESc5+w/48LU9O7fxyIxJLl5yJIF9oEz63OQvVZDQLFRpHpLr+M2Y/lgnjQAT/X6vs+6vW6jKnGqcfXE6R4gmmPrk1PUhMsoLm8VsXxiciSCLmwFanXwCaIUEaF6L59UKhgrpZG1MImjrdppSp/Yj2yfIoYx7Vv8EqW5LjOpjOoAXisP0L0q5r1c
+X-HE-Tag: 1762656670-667503
+X-HE-Meta: U2FsdGVkX1++oa3j6/QvHLwf85xVhY0vRIk8tIZK8HntHK6lM9bbNmc/H2s9R6XUEVZEVAavlnEKrN3TIiPN1Y4eJBiblHWMVznMqRxbSmG2975sTLZKVOzjGjmsFWfYdnWTHuOIApImV1y8ESUANc9pZE6kwbECvAzS/kd8AJoTuKN0ahLA1fkmewYF73AwJYcYeWfsHmk1tbZH+SYlCZtokh7TlBRa3TATLyjyC+nwHyOl5Ge0n41z7V8skzU5uLzaIPcw1es8WDoQHc0x2rdoIIEgGSuUS17L4zTuQbDhav4jlw2bE7TgoF4oc0a960lkpbdpvam9b/GH0REwAXrPpQYMZekNB7hmfkWu+JdUIPdicZjDgGlIfVA7ffwiD9wi8gYg02g4/d9oiFXBiO3udjFvyYnyNexQ9wp93YEVdVcpz3nBUERcLqwxGAHt6cMGvo5qfSHyIuPQO9TXsw41K7ijskSPKTcOiKlm/e5MjGdMbwWjOdpEreLUbevOreugDi3FlUO1Ov28Dlnj8C/LcdJBj46Rd9CuMNOpduKswm+B+vXEiHd17k/QTLtnp1LeA7qs4cmC1jPmobN8IXI4ZS6EV2B04NhRQjaLC3fMtk+MkYhlziZO31XTploFFCjBH1yitKoFY72F7nmztodBwt3u+ZsKe0of7z6M3Y4r6CKIJaydk9lKBTSjblCxBCotxyB+vBPzd5Y+tCoTem16m1UTnEXm+2L2qaZ7sWHWrrQIoK3jCJtTFPf6wIrVQVGSWIZVMrwPxRv8aDU6ypK12mIBs5n0tAcb460K3YFUWe0q00DAqcb8N/786fdI5q2VESsgKXVQ/3LSr7lh8QO99rO1wSFeciqcdhoZnwuuvZV/zJQUU5c4qUuJ6BtZ6b+n7GI++QzngGXQrNdwDCXzjJOWyaeXhrwfr8em7uIzu9B0sNsiUJDPClPiWKerR4XfR/ipGPbwaQzv2IK
+ xa4iEkD/
+ Q60oZ/hPtn6LpGWLd8SBkmZkaAlrgGVs6PLvtPkVPBlPJV8pVZ4ATwzphsVBL8HdpKoL/ojVyqD+tpmuQVk3uB64viLEyPA0vght3Iv4FWzbC7Hurn/fPtWlY7cR6UVgBFQHcGD7j1Z4P8+rjLPkfU+kSMH3czeTGhHMoKfQqP9Q/kixaoQB15aWYAJmGGdkztsKBqOgiU9aRzZlSXOLkEkzwamMvmuWwDuE0+Oq3fMnEyvqSFSAML5ZaJiyIz/6r1okpK4YT1k32FPTB3kVYvi1JvHcuNqhxfmil79OS6Ui4+tbHv2aAQ6/LUQGmrM6SSJhPQF1XgZnuVWCizLZXungrK9q4nfQ8fxUjQMiaXHYzzixYry+bKPWO9zb8k7mvWAWI8g8dFLaiysuyyqLeC0Bh6bgt9lVg7VKfmvgG2YN8yjQ=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -140,81 +118,121 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Wed, Oct 22, 2025 at 12:37:15PM -0600, Nico Pache wrote:
->There are cases where, if an attempted collapse fails, all subsequent
->orders are guaranteed to also fail. Avoid these collapse attempts by
->bailing out early.
->
->Signed-off-by: Nico Pache <npache@redhat.com>
->---
-> mm/khugepaged.c | 31 ++++++++++++++++++++++++++++++-
-> 1 file changed, 30 insertions(+), 1 deletion(-)
->
->diff --git a/mm/khugepaged.c b/mm/khugepaged.c
->index e2319bfd0065..54f5c7888e46 100644
->--- a/mm/khugepaged.c
->+++ b/mm/khugepaged.c
->@@ -1431,10 +1431,39 @@ static int collapse_scan_bitmap(struct mm_struct *mm, unsigned long address,
-> 			ret = collapse_huge_page(mm, address, referenced,
-> 						 unmapped, cc, mmap_locked,
-> 						 order, offset);
->-			if (ret == SCAN_SUCCEED) {
->+
->+			/*
->+			 * Analyze failure reason to determine next action:
->+			 * - goto next_order: try smaller orders in same region
->+			 * - continue: try other regions at same order
->+			 * - break: stop all attempts (system-wide failure)
->+			 */
->+			switch (ret) {
->+			/* Cases were we should continue to the next region */
->+			case SCAN_SUCCEED:
-> 				collapsed += 1UL << order;
->+				fallthrough;
->+			case SCAN_PTE_MAPPED_HUGEPAGE:
-> 				continue;
->+			/* Cases were lower orders might still succeed */
->+			case SCAN_LACK_REFERENCED_PAGE:
->+			case SCAN_EXCEED_NONE_PTE:
->+			case SCAN_EXCEED_SWAP_PTE:
->+			case SCAN_EXCEED_SHARED_PTE:
->+			case SCAN_PAGE_LOCK:
->+			case SCAN_PAGE_COUNT:
->+			case SCAN_PAGE_LRU:
->+			case SCAN_PAGE_NULL:
->+			case SCAN_DEL_PAGE_LRU:
->+			case SCAN_PTE_NON_PRESENT:
->+			case SCAN_PTE_UFFD_WP:
->+			case SCAN_ALLOC_HUGE_PAGE_FAIL:
->+				goto next_order;
->+			/* All other cases should stop collapse attempts */
->+			default:
->+				break;
-> 			}
->+			break;
+Hi everybody,
 
-One question here:
+Here are the notes from the last Linux Memory Hotness and Promotion call
+that happened on Thursday, November 6.  Thanks to everybody who was 
+involved!
 
-Suppose we have iterated several orders and not collapse successfully yet. So
-the mthp_bitmap_stack[] would look like this:
+These notes are intended to bring people up to speed who could not attend 
+the call as well as keep the conversation going in between meetings.
 
-[8 7 6 6]
-       ^
-       |
+----->o-----
+I read off updates from both Bharata and Raghu on the latest series of 
+their work.
 
-Now we found this one pass the threshold check, but it fails with other
-result.
+Bharata is in the progress of getting ready to send the next revision of 
+his series and he's collecting microbenchmarks to share.  The next series 
+is intended to go out over the weekend or Monday at the latest.
 
-Current code looks it would give up at all, but we may still have a chance to
-collapse the above 3 range?
+Raghu updated that he could root cause a performance issue for kscand 
+based on feedback received from Jonathan.  He has not yet pushed that 
+series upstream yet.  He's also made some early progress on LRU based 
+scanning and will have some updates for the next meeting.
 
-> 		}
-> 
-> next_order:
->-- 
->2.51.0
+----->o-----
+Shivank presented slides that were added to the shared drive.
 
--- 
-Wei Yang
-Help you, Help me
+He walked through his methodology for microbenchmark testing: the kernel 
+promotes hot pages to the local NUMA node and the benchmark completes 
+faster when more hot pages are migrated early.  He intended to answer the 
+question of whether kpromoted with DMA offload will shorten the benchmark 
+completion time.
+
+To emulate this environment, he created a memoryless NUMA node to act as 
+slow-tier memory and then tested kpromoted from Node 2 -> 1 (remote vs 
+local NUMA latency).  This environment was close to real-world CXL systems 
+in terms of memory access latency.
+
+Gregory noted that with this set up using the cross socket link that we 
+need to account for whatever the bandwidth limitations are; the latency 
+graph as it goes up as bandwidth is pressured will not look the same.
+
+Results for microbenchmark completion time with and without DMA offload, 
+in microseconds:
+
+	Mean (in us)	Offload		Offload		Improvement (%)
+	abench Access	Disabled	Enabled (DMA
+	Pattern				8 channel)
+	random		39114520.00	35313111.00	(9.72)
+	random repeat	11089918.20	9045263.60	(18.44)
+	Sequential	27677787.00	24576768.40	(11.20)
+
+Overall conclusion was that DMA offloading reduces abench completion time 
+by 9-18% (lower is better).
+
+Gregory asked how there could be any improvement here if there will be 
+promotions from Node 2 -> 1, but also demotions from Node 1 -> 2.  Shivank 
+noted there was no memory pressure on Node 1, which may not be realistic 
+(there will always be demotions).
+
+Yiannis noted it would be better to include numbers on promotions and 
+demotions.  Gregory asked for memory usage before and after on each node.
+
+Wei Xu noted that you may not want to saturate the bandwidth with 
+promotions but rather leave the majority of bandwidth for organic memory 
+accesses.  He also noted that since we are uisng thps here, on an access 
+we may need to migrate all 512 4KB memory that may not be ideal.  Shivank 
+noted that this doesn't necessarily require thp, there were observed 
+improvement even by batch migration of 100 or 200 4KB pages.
+
+----->o-----
+For DMA offloading for migrate_pages(), Shivank opined that SDXI may be 
+better but he lacked the hardware needed for the evaluation.  He also 
+noted an upstream series that provided a multi-threaded offload using idle 
+cpu cores being worked on by Nvidia.
+
+Using the new batched design for migrate_folios_batch_move(), the batch 
+copy of folio data includes a migrator that is configurable at runtime via 
+sysfs.  For example, static_call(_folios_copy) allows for pluggable 
+migrators (Default, MT CPU copy, DMA Offload, etc).
+
+I suggested that this would be useful even beyond CXL use cases, for 
+example, if you can offload most of your memory compaction then this would 
+be generally useful.  Shivank said the patch series is currently in v3 and 
+is receiving feedback from Jonathan.  There is discussion on the right 
+interface for configuring the migrator and its parameters.
+
+Shivank is currently using move_pages(2) for benchmarking directly which 
+will use all of this under the hood.  He is getting the most benefit out 
+of batched migration.  Gregory noted that reclaim will do batched 
+migration and it is generally useful.
+
+----->o-----
+Next meeting will be on Thursday, November 20 at 8:30am PST (UTC-8),
+everybody is welcome: https://meet.google.com/jak-ytdx-hnm
+
+Topics for the next meeting:
+
+ - updates on Bharata's series sent out between meetings with
+   microbenchmarks
+ - updates on Raghu's series for kscand and integration of LRU based
+   scanning
+ - discuss generalized subsystem for providing bandwidth information
+   independent of the underlying platform, ideally through resctrl,
+   otherwise utilizing bandwidth information will be challenging
+   + preferably this bandwidth monitoring is not per NUMA node but rather
+     slow and fast
+ - similarly, discuss generalized subsystem for providing memory hotness
+   information
+ - determine minimal viable upstream opportunity to optimize for tiering
+   that is extensible for future use cases and optimizations
+ - update on non-temporal stores enlightenment for memory tiering
+ - enlightening migrate_pages() for hardware assists and how this work
+   will be charged to userspace, including for memory compaction
+ - discuss overall testing and benchmarking methodology for various
+   approaches as we go along
+
+Please let me know if you'd like to propose additional topics for
+discussion, thank you!
 
