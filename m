@@ -4,131 +4,131 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 29E3FCCF9F8
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:48:37 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B5AC0CCF9F8
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:48:52 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 726AB8E0006; Sun,  9 Nov 2025 14:48:36 -0500 (EST)
+	id F16488E0008; Sun,  9 Nov 2025 14:48:51 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6FE608E0002; Sun,  9 Nov 2025 14:48:36 -0500 (EST)
+	id EEC828E0002; Sun,  9 Nov 2025 14:48:51 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 5C4F68E0006; Sun,  9 Nov 2025 14:48:36 -0500 (EST)
+	id DDD028E0008; Sun,  9 Nov 2025 14:48:51 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 47EDA8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:48:36 -0500 (EST)
-Received: from smtpin29.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id E93C9899EC
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:35 +0000 (UTC)
-X-FDA: 84092105790.29.758D9B5
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf01.hostedemail.com (Postfix) with ESMTP id 5C08E40007
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:33 +0000 (UTC)
-Authentication-Results: imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eb1I7HCC;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzHcwtHD;
-	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}");
-	spf=pass (imf01.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id C80E08E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:48:51 -0500 (EST)
+Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 95BA9593E1
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:51 +0000 (UTC)
+X-FDA: 84092106462.09.437B172
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 0017A1C000A
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:48 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuyLJvOX;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JQbX0SYa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}")
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762717729; a=rsa-sha256;
+	cv=fail;
+	b=b32MDPTRLdAwVOQ2wEUKfPKq3t97KGwjEfHTt1kpXR5g0f9eJ8DFqErK+A+KiTK4+BIZkM
+	aZQ4Z1ut0ETk/KL3PxU9UehtczRcJOiUtVkeBgaVTXV3c4TeN+EG/lu3xP1jMpRHdtmDDF
+	dWZP+1SWO9B4R2VGin9Vc0lin0/4IG0=
+ARC-Authentication-Results: i=2;
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cuyLJvOX;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JQbX0SYa;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf21.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}")
 ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762717713;
+	s=arc-20220608; t=1762717729;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:resent-to:
 	 resent-from:resent-message-id:in-reply-to:in-reply-to:
 	 references:references:dkim-signature;
-	bh=DXKtenz6DaLMGUShcrB400tfbTGBqWhLKx1FA2IPRio=;
-	b=c61rFjYQRn7MllC17/uMmW3g/5SziV5klEH5OcWhWoxJ3gcVzzqPG7M0gkOtdVSlkM3m82
-	MwVFZBzJf70cUcByNjcpqTsFflzJHSnBdklongb50xvkMict73CoIStYsSljKv47+NaJ+I
-	fqyTH+YfO7kV1RsYSVzu8/MM4fLcPsI=
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762717713; a=rsa-sha256;
-	cv=fail;
-	b=5YJbvLEORk4yZixLV0BIHDNzvtK7MGE0ZnOtOIDx0p7Wuz/zCzaGSdGAp/LbvC8Rzt0w/u
-	n4sLGEE8kavbs97H6Gsvbhfoa2cU1CuOWhK3sEXIniKhSROAbxY26c5hkRC0cySRzcX1vv
-	16y1EiqhOlrbdbntMM8RFMHUSIcYb+4=
-ARC-Authentication-Results: i=2;
-	imf01.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=eb1I7HCC;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzHcwtHD;
-	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}");
-	spf=pass (imf01.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+	bh=SyD7wRt/mfijbblI79CRl9e76BRavXQyqr+l5ZBChP8=;
+	b=oeIDDp+1TLQFqClS5eXiFxgdrDid9ILNXHa4jd1IxUn2ta+bEu714spiFKOF4xLGzVX3T6
+	juEGsJcX0Gz02Tap62FEFou2PFfRuqsyNuolp9cdywEz/pAbTLPRZkhfGI0B1xI7pJyKLD
+	yUTz5Cgb8ZX4Gb9wUJdlrnJ+w67+f8c=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id C031160052
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8802C4CEFB;
-	Sun,  9 Nov 2025 19:48:31 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 25A204459D
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:48:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 559BAC4CEF7;
+	Sun,  9 Nov 2025 19:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762717712;
-	bh=Rsfmd7zbC+kSZ3iat7Z+yufKodHJKLHaalHhwgTU+L8=;
+	s=k20201202; t=1762717728;
+	bh=59w6p5OIO0ukVj/H6iWXGVoWsjSUgZ8nYZ9Xx2PeP8w=;
 	h=Resent-From:Resent-Date:Resent-To:Date:From:To:Cc:Subject:
 	 References:In-Reply-To:From;
-	b=eb1I7HCCZeEl6TCepnay1U+s2KFjSh1MyvtgkYfyFuJ3HSVrTWcljHA1plfYUGj0c
-	 maL7IP8wIIgBgbjDuQPKpOKNyOLra1FK6aQqTv6MRu7bmlemlXFcuEQEMYueHo/gTe
-	 zHzjiUxQJaReJDZEw3oM/LAJ6NxdLBJwx+jbJz2hrlD/PiXzRIZvNvUzYvH9hoqRAG
-	 2zlVOwmXqr26At0w5y4mAehBzSp8PwE+Q0OeCe34WMSeczy8Kbnvcdkr29cGOsFXdK
-	 rmVrGBGemYg8g95YKZGLybpTo7DN31YaDtrukpKE27OMMUdP7jdP0+sYaoU57EPCf8
-	 v3DCjrSyOHqcQ==
+	b=cuyLJvOXPlS8IVsLWtcUaESKUNmOD+xHgATI5z3cxeb7tF2HI2eXwKjS2oc+w+7bb
+	 mwSqLY6u9hsV0jvux9TTkwq3faU4TtbDQmQrP2QEvHZdyIh2zmvpXOHU9tnuKYyfa6
+	 /9BqgBJ/gtRsL+ms3URRwBrKmLaLCuiDzm4jbwMhH/CeRfH5t3Q48b1xelgjiNoGlk
+	 ymGyYcG7VeBi1wQVX4+Rl/bUdS8NHSctTip7sk8PBP0f21Mw93XVaecEaUZ17EAMMk
+	 MNGJILuvlitZaN24ELnqCHgwuF2weUPi70bX0wZgPh7ROoQHmsT9/OdM06EV7zWcqC
+	 ZlDDrLtOuCSkg==
 Received: from mp2.migadu.com ([2001:41d0:403:4876::])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	by ms17.migadu.com with LMTPS
-	id 4BY9NVHvEGlGGQAAe85BDQ:P1
+	id mMZRO1fvEGn8pwAAe85BDQ:P1
 	(envelope-from <alx@kernel.org>)
-	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:22 +0100
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:28 +0100
 Received: from aspmx1.migadu.com ([2001:41d0:403:4876::])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
 	by mp2.migadu.com with LMTPS
-	id 4BY9NVHvEGlGGQAAe85BDQ
+	id mMZRO1fvEGn8pwAAe85BDQ
 	(envelope-from <alx@kernel.org>)
-	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:22 +0100
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:28 +0100
 X-Envelope-To: foss@alejandro-colomar.es
-ARC-Seal: i=1; s=key1; d=alejandro-colomar.es; t=1762717521; a=rsa-sha256;
+ARC-Seal: i=1; s=key1; d=alejandro-colomar.es; t=1762717525; a=rsa-sha256;
 	cv=none;
-	b=BP8FKr6DRiFBBzpqL+zzwK54NQu64z4zhtZVdD9wmJhcczVXMlfDedQyZHfvIlYm6Ic2jg
-	dO+41hRCp/uYscq7IJvCyXS4zYvcsi1hvAxI2LNepMpmrsh0JlGw1u2v8gngCFi58uDOmW
-	cHZyt8SgArOvBwhWygbcjS/WnUFvKm4m7sriEH9gtovtc20JuIAlRQWkgsN/MvCaRRZCRi
-	DiUoQ1YUR9McwnHnUbB03o1DmlHsSau0N7C1YInCUnw52REb0z75Lct5cDmhmHqHmCprFF
-	FWcXk4YUyI1OLVLaMH/dWu/wRSrEO+qv6KPTFNHqzaVHldZm8F95fX4h5zD/MQ==
+	b=t3K8+LOKIGi3fqNButK0FYaKIcyPQ3Ay4gUosmY6Ie9IhTe+n1hYuGcbj2pwX+xT0sVGW+
+	EYI69jTvWfbSCt3RU3ByMT/fDlXHG/mAFRe0Mocc82s/7Zpw1/n4e0ouw9SyV9woMmuTYK
+	vv+Fhg7w26l2A3ov78MpMq9mzZ0gj4ja1+ZNF6C0j/qJNvCF01Qq0KkM4LJL1nNll5iSrH
+	4Bc9gg6TazobR7UbdFAvZZ21CTzwyvQiTV3lW81QCt+afmFtNyzMd5ZR8pgVBtlYkbo6kn
+	AoGSOjRgisFJ/iKgKpRQ4sTyTvEoL0/j4UeBwfNQISNAb877VuLJ+WiKBxCYrQ==
 ARC-Authentication-Results: i=1;
 	aspmx1.migadu.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=LzHcwtHD;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=JQbX0SYa;
 	spf=pass (aspmx1.migadu.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=alejandro-colomar.es; s=key1; t=1762717521;
+	d=alejandro-colomar.es; s=key1; t=1762717525;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
 	 cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=DXKtenz6DaLMGUShcrB400tfbTGBqWhLKx1FA2IPRio=;
-	b=mm4jNvLfEK/8RhG/MG/mSrpZ88IsYmzSM2Tz5PWdCvCOgAO9h0M5bUoTXAq0rICFRq/XgE
-	sa8vGwtASLrmaZxWR8lCW7rUVIhfiqqVopG2UTiXg4qQeYpMAFO1xOCV2NKMCb68xeLVVl
-	S2NSska/YDo6wrxmBR+Rkqx1yboW1PgOEywo3XNk9gDcl7PLmcGQGGczGQH9IRsFG5dhf5
-	brLFoT910GEh24AZh1pIlHkVgM2XI48jdAkXP8hOwsK48Vq5CL+UrhbZGx5lyBZu94z0T+
-	uOw4fZWyBALhFHYDE6v56cRSuB8QAjkri0QP55kFjlrDdPfh30qTYkBZks8IEA==
+	bh=SyD7wRt/mfijbblI79CRl9e76BRavXQyqr+l5ZBChP8=;
+	b=Av+oC8EcVZOzEpfirMqTfjPMzjkK3do4ouaqes9SLia3y+QIMIiUnnHjm1gnMSl0JQ7+y6
+	rl1Ae9CDbw72ztXFPacDZulJsQqVzgwXhw6bSImIihDDvIqotoDFEuTtgkcDiW/rTCrH6+
+	W66uNroJKCF5SDzF1zQQXItNDYRzv4yPsq3m3Tbmq0B/DTiEncyr+257JrsEYVvVohCnoM
+	YvLuI7DHUTQogZsRKMJKWpPULai0oaJwY1GKJM94CFjxSFNijHIJ3ZjzZQ6hO2mSIGPd4U
+	KC/rPcta5l/XkjvPCz4NBNHDA7BlceoBeIpD/9/m3jkpBmcBuF79z4amtukZ2w==
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by aspmx1.migadu.com (Postfix) with ESMTPS id 0F58FD7D2D
-	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:21 +0100 (CET)
+	by aspmx1.migadu.com (Postfix) with ESMTPS id 702BAD7A60
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:25 +0100 (CET)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 864A560008
-	for <foss@alejandro-colomar.es>; Sun,  9 Nov 2025 19:45:19 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 90F6060007
+	for <foss@alejandro-colomar.es>; Sun,  9 Nov 2025 19:45:24 +0000 (UTC)
 Received: by smtp.kernel.org (Postfix)
-	id 49AE3C4CEF8; Sun,  9 Nov 2025 19:45:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A87C19425;
-	Sun,  9 Nov 2025 19:45:16 +0000 (UTC)
+	id 509C9C19423; Sun,  9 Nov 2025 19:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A8DCC4CEF7;
+	Sun,  9 Nov 2025 19:45:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762717519;
-	bh=Rsfmd7zbC+kSZ3iat7Z+yufKodHJKLHaalHhwgTU+L8=;
+	s=k20201202; t=1762717524;
+	bh=59w6p5OIO0ukVj/H6iWXGVoWsjSUgZ8nYZ9Xx2PeP8w=;
 	h=Date:From:Cc:Subject:References:In-Reply-To:From;
-	b=LzHcwtHDsuLU7WJ43kChp8Y+U1WEmrxpjOY+pOb0QZbgixTyvkxjiOmTAz/8B7wB3
-	 TWRbDRfB+aNdheUwVW1cfS8JWxcQiLKvrtkH02tsYcG0Z2bz3lCEcvOgNqgwsPjZyg
-	 7v0kIE1uGa5DM4QMsOns7CWZi+U26E1EzKbssrZTLidqQcLb9//0yDLLp2a54Svq62
-	 H2U9GnqsJzOoqYfhWKxnp+GhqcXm6A0hw8t+Sh8WOKHhvrbfdn6lMtpXx1R5jotnX/
-	 4ALKg7RUgbX/WgieaY7soOYa+PMEMhjaxSHeNMIBynget4wtlxnX1cjqzuNZVJij0M
-	 xtOabPQWJ8XTQ==
-Date: Sun, 9 Nov 2025 20:45:14 +0100
+	b=JQbX0SYaltov8l0e0BerHUgvsTz54JcE1WPi6+4IiR+p1BvijSeI6ervSU80qRB+o
+	 FllD2PIOOkkHC1jHSIgDYpBWYqel4+midyGZUl4R+xxrygeMdm6HSkxBJgh6rf/NEs
+	 JVfor2abuR3KKFGj6Iy1HM0rPYkx5G2R1V/ojEXpRLLEyykJGBaQVFVi6eWXDR65+c
+	 06zNA3/i+qvGWdyu/4nUFlEJk+/jlCC33rWbmEYSTZLTCpcsXFBJbwZfNqdUFNoX5j
+	 ycmH0B9510YwmOK0QK0jb10tG6mFU0ZlmeJ6qjczeBMPAjtOGBEx1SpNHhYbpYDzip
+	 gzn+IOntLahvw==
+Date: Sun, 9 Nov 2025 20:45:19 +0100
 From: Alejandro Colomar <alx@kernel.org>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -137,8 +137,8 @@ Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
-Subject: [PATCH v4 2/4] mm: Fix benign off-by-one bugs
-Message-ID: <ac55d92551e43bdb7494911babc4fef939baf12f.1762717358.git.alx@kernel.org>
+Subject: [PATCH v4 3/4] kernel: Fix off-by-one benign bugs
+Message-ID: <ca8dec7f5bc9e5b49693681d770231448f99df79.1762717358.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
 References: <cover.1762717358.git.alx@kernel.org>
 MIME-Version: 1.0
@@ -148,17 +148,17 @@ In-Reply-To: <cover.1758806023.git.alx@kernel.org>
 X-Migadu-Flow: FLOW_IN
 X-Migadu-Country: SG
 X-Migadu-Spam-Score: -1.11
-X-Migadu-Queue-Id: 0F58FD7D2D
+X-Migadu-Queue-Id: 702BAD7A60
 X-Migadu-Scanner: mx10.migadu.com
-X-TUID: hEYmiNksznMd
-X-Rspamd-Server: rspam12
+X-TUID: yG/nyHhor1Yn
+X-Rspamd-Server: rspam06
+X-Rspamd-Queue-Id: 0017A1C000A
+X-Stat-Signature: h63etynjkt3ywzg5k3d8ptos6ny9ueq8
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5C08E40007
-X-Stat-Signature: 8373g515rr8eqzf8dk4utkumz9zcaxi3
-X-HE-Tag: 1762717713-324638
-X-HE-Meta: U2FsdGVkX18mIzntf+XxaA8/fqyVIktNWzPtX4fiD7jKWBMHxScFFbhqHpezhQo/acERfmxIthehCB/jDiUfDDq5nn5UWhwCB8DeZHr+KkK51u4aOefX3hCnmbILO6Hz5pe+tJF0l1AseLvH+MWCK6SikNgvQ4bh/ZrEeAJP6QSjEebsuZ5F/D5wqCFwyRRQm/1XCbwf+kTs7+rXU8/J5ljo1cn7hgYgIOGZfnNbB4HM+rQtJIpf0dw243WsSBbGHCYUz52Rc2iHzf3IkFL8XSQzUohEKQhlqkLjstftCF+tBBb4KtWLByUW4Ine7+S1mrE0eCHJk0xag8gi8M6k7RANZHq5TbOqURtcH3GSbv+vVozT43UP+XkO1bn3VN5XcAbvRcbNtHZskvS5vdOViTUb1d08+71gxfNYqYN74xq/E3u6eKclk9kBLsa+3UzKIN1gFyiQ/acLidmg5OJ97y6gdClpgD+ub8Lzgtwmp7caBupaNGDD1/eqFldofx7atMworsL/U6Y4XJtMY0SP17BaeH29T0ZPhK6XkHgz5GPc0dCNNVaeD1zkMqnpjFh5KZfSPZJJgDVTL1y4DldMga223kwvNh8SlpEEKzQSJCCI2PCzX8e8j4AzZdgC/Vk9Dp+maTC7QLt1JhnxlR30Drw6WuM36DeGgmYFnnBHu3zRwY2u2WM2NqCwkH2xnCJ7Sk3+eWadv2IhF0CUqACsEgDTJxKfUA7ZK65p5zeRTfnlrs+PCRGjE3hvPYC0P2csOS9iV5uu8wZcwtran62sRDk5anKOSV4hkTLfzRVgtg8fgHEM4afcBSirI/SxG2P38kTF77SBvA0DG5lQgMH7ZM35AAA4HHArNWTL5JOcSHQSTjo4zTIIMjFLW7QM+EQeyG3j6c029Z44md6WCgBtMd/vSkC7Sw0LPNwi3E33tmGlFhDy4fPVlIB3N8Rebq/G5cb4V6x0qQaaZUwAzLH
- 0k4KmnVR
- 2KTAdv2cU7kVt/dYWbkPP2c5UugQjNUutBEYEs7jlMSG9sZwkYivRkoagvutttLahjnCHNlJbTGyxoIBEuJ5UJugP5tOxr/q5WnibHaMq3lmxy9wfga01ZRfe7d+B35PiUp6hM+8CVQXBgXRYBTFtWLw0xsEc2t2XcfRmKVTqk8wjfKW0d+90/4wzRoc08NVLY5mCcuoTD+PvAcgoO63bkiFXrJ89dLror5iwm+l+8R6vy2mGQ/cN8aXSehZ59IMteFFTKngtDZFqUCVQSsjuzYMD/hloCyYh+h+PfMk5fpv9BBGb1ED7khZusF7zwShZKlYzQNFUcuFB+CljkEN/SEWcX5eO6JyuKGGFPXbifF1CP2ErM2WjWR1+ojXXdqERGKkz5orC0h0r4xdR1AgR9tf6STQhqjZH3tndv0RHxq9FYHksmX5J3fueDbmTYkgDiACh6QNhf7Dt71f5p73qYhfaHDs99l34wV6fVxAbwKDhlZ+UhDfc27Dexp9A9HwfbLF+cgT6KQYl//+R6WzCw8MH5hGvfaphEUK6orpC1wSZIp38hgFrSTDjJ2bo6csCd+vVb9tay/br/xBp4waWoLG7u3gJW/QzvdQmEJCH+VMDG0N65iixGawS0UmsaSV6vIdwRlner1oZM4ZKWqASDjcCl/Ue7MBDxi0o3NB7XADSHLdtnOEYAlyyCEH+BO+HGDFg8beTyZ97aphNmX/JVFYWT4FUmZacqmvt
+X-HE-Tag: 1762717728-796879
+X-HE-Meta: U2FsdGVkX191UNvsk7sjLHm5YUkpBSSQbfQlLnwlgQuKyiwm05gCOXx5d2ETrVmPrzaxbeHXFizC+LqDoO+GZO4CNPK1pZDLjmziFTgc/Lnlx6K3D6MF03e3jKpPfDPez3rZ5jK/OTVnYZhbpB0pRNIuFSmB4q3ShjZfJ+flc65srssOxvNUv3fb0tQV3rek25efMF+iA3ulG5EbwBkIFwQX1U1cHIi6GdPvxK0m8DqZlrgtDICNC2fiuwcvI4UG+QbO/L3Z0LyQ41ghoXTnxTWiaYiYkyg6L0GHuYOAhooqm4w93KrLs/hl/E7uiQyIXOM1Kpb5Ygqtlc1gz9WWKU5RT92jAYyj7j6TxluebqcJ3UV2DcKUjBmio/yVTrYFeIbzgIC7Y9kaFQVT7jcl1/YMaJpAA9fGRfgaT/E2pc6lDMv2flT+UN2f5Dl+1H5Vnzth66vLxX0AwrPDKt1WtPqqPyoG5iZDh+oQIOyhaQquY6Z7iJc4oPuvPabtWHdLwZ7B/5wpczlLzhffJnyIg1cLcfCxGCioYLCLDUL19J23qHj9BQw1XZFnonMbGH3+Ma9HcOjg3nWMh5ubGL+9lBE8g5IoE6nwz1kYXEHv0gHn4yPFytSmy83qZU+WmqUY5skUrQLaIT9dVQIGWY9xfrNTVL9T0CciLCKI9MZBaArwjryEx2e29+Gin59PQ9kT+MjXyyLGFenDkShBdlhDk2gJghd9dc7Dd9l4EXRdlBLkV44E9i/Il7NtEoo6MYuVUer6jHCTdCWknoMe4wRwvMDF+mPHo9VGqPUpOBVd3nMOK98EjIyB9BgDVR4SOfk+ZkUi3pnz4/rrlZcCC54Jjh0ZQdMn5IYI1hD6DRazkWbsoQBzcxS8RdUvNbEqUk4cUavE4qWspkjgetcS0YFeV1H2LNksUsnAxsCpNW34LS/CRl0kdsiWqsh+LRdcft/Dd2vEdnp7h80Btht2A7r
+ poapSy+U
+ q8UnU/ymSoKLihSJTWZtsBaU3Bopd4DSYPm0873c/05qoqKSxWma9bGTXcrvffkJf0hjBEsEqfRZQ28CYSWOQWb6j0E1NitmG+NOp1G2CqP4YhO70JfIS5PrVv/j+Y32mHevBh6LxgKF05BOyCpcEcCl/oq0jHX7wNasu
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -171,7 +171,10 @@ We were wasting a byte due to an off-by-one bug.  s[c]nprintf()
 doesn't write more than $2 bytes including the null byte, so trying to
 pass 'size-1' there is wasting one byte.
 
-Acked-by: Marco Elver <elver@google.com>
+This is essentially the same as the previous commit, in a different
+file.
+
+Cc: Marco Elver <elver@google.com>
 Cc: Kees Cook <kees@kernel.org>
 Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
 Cc: Alexander Potapenko <glider@google.com>
@@ -185,46 +188,31 @@ Cc: Marco Elver <elver@google.com>
 Cc: Michal Hocko <mhocko@suse.com>
 Cc: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Alejandro Colomar <alx@kernel.org>
-Message-ID: <515445ae064d4b8599899bf0d8b480dadd2ff843.1752182685.git.alx@kernel.org>
 ---
- mm/kfence/kfence_test.c | 4 ++--
- mm/kmsan/kmsan_test.c   | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ kernel/kcsan/kcsan_test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/mm/kfence/kfence_test.c b/mm/kfence/kfence_test.c
-index 00034e37bc9f..5725a367246d 100644
---- a/mm/kfence/kfence_test.c
-+++ b/mm/kfence/kfence_test.c
-@@ -110,7 +110,7 @@ static bool report_matches(const struct expect_report *r)
+diff --git a/kernel/kcsan/kcsan_test.c b/kernel/kcsan/kcsan_test.c
+index 219d22857c98..8ef8167be745 100644
+--- a/kernel/kcsan/kcsan_test.c
++++ b/kernel/kcsan/kcsan_test.c
+@@ -176,7 +176,7 @@ static bool __report_matches(const struct expect_report *r)
  
  	/* Title */
  	cur = expect[0];
 -	end = &expect[0][sizeof(expect[0]) - 1];
 +	end = ARRAY_END(expect[0]);
- 	switch (r->type) {
- 	case KFENCE_ERROR_OOB:
- 		cur += scnprintf(cur, end - cur, "BUG: KFENCE: out-of-bounds %s",
-@@ -140,7 +140,7 @@ static bool report_matches(const struct expect_report *r)
+ 	cur += scnprintf(cur, end - cur, "BUG: KCSAN: %s in ",
+ 			 is_assert ? "assert: race" : "data-race");
+ 	if (r->access[1].fn) {
+@@ -200,7 +200,7 @@ static bool __report_matches(const struct expect_report *r)
  
- 	/* Access information */
+ 	/* Access 1 */
  	cur = expect[1];
 -	end = &expect[1][sizeof(expect[1]) - 1];
 +	end = ARRAY_END(expect[1]);
- 
- 	switch (r->type) {
- 	case KFENCE_ERROR_OOB:
-diff --git a/mm/kmsan/kmsan_test.c b/mm/kmsan/kmsan_test.c
-index 902ec48b1e3e..b5ad5dfb2c00 100644
---- a/mm/kmsan/kmsan_test.c
-+++ b/mm/kmsan/kmsan_test.c
-@@ -105,7 +105,7 @@ static bool report_matches(const struct expect_report *r)
- 
- 	/* Title */
- 	cur = expected_header;
--	end = &expected_header[sizeof(expected_header) - 1];
-+	end = ARRAY_END(expected_header);
- 
- 	cur += scnprintf(cur, end - cur, "BUG: KMSAN: %s", r->error_type);
+ 	if (!r->access[1].fn)
+ 		cur += scnprintf(cur, end - cur, "race at unknown origin, with ");
  
 -- 
 2.51.0
