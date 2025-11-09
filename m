@@ -4,86 +4,92 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 197FFCCF9F8
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 07:31:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84B10CCFA13
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 07:43:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 50C248E000C; Sun,  9 Nov 2025 02:31:44 -0500 (EST)
+	id CEF1A8E0010; Sun,  9 Nov 2025 02:43:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4BB148E0003; Sun,  9 Nov 2025 02:31:44 -0500 (EST)
+	id CC6478E0003; Sun,  9 Nov 2025 02:43:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 3CFD18E000C; Sun,  9 Nov 2025 02:31:44 -0500 (EST)
+	id C02CB8E0010; Sun,  9 Nov 2025 02:43:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id 26FCB8E0003
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:31:44 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id B048D16089B
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:31:43 +0000 (UTC)
-X-FDA: 84090248886.05.89F1353
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf16.hostedemail.com (Postfix) with ESMTP id 0A595180004
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:31:41 +0000 (UTC)
-Authentication-Results: imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cZontPJP;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id AFE2A8E0003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 02:43:27 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id 60EBE16089E
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:43:27 +0000 (UTC)
+X-FDA: 84090278454.06.D49BAB4
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf26.hostedemail.com (Postfix) with ESMTP id D7C9F140003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:43:25 +0000 (UTC)
+Authentication-Results: imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r6OYt0ud;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762674205; a=rsa-sha256;
+	cv=none;
+	b=H5IsfKf3hYfvaQHgJAAlSWMD+q9abn4NQ/a7F4/pGhAFOFR9B0RCAfcw0gYL4l2fC8+oDa
+	pxKZGoHZITO8Op3gSv0MxfjIh337bi60hHT+Bf3J3g7X1cWPxYLl33AnBLZ9n7XJz73+F7
+	uxuCdCXkIUy42qLnaHDId8APmJ9gbIs=
+ARC-Authentication-Results: i=1;
+	imf26.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=r6OYt0ud;
+	dmarc=pass (policy=quarantine) header.from=kernel.org;
+	spf=pass (imf26.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762673502;
+	s=arc-20220608; t=1762674205;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=NZHZFA3ZUXg5pX0IdCS+JtthjhsvRZNVO/U2SsvdjJg=;
-	b=anHBMym62Q0q14dyG8B5mhjzpCRTv05E/lpoUsYLHSlz48ZLhmwG1zXNfhBfEY+vUvRJjU
-	lsSn99yULtKfwM0bdllTPLJIzMvTdndKM76KF0/QvbjrVzUTieiVNZEcR8eupO9+OjvK24
-	JmXEcBHZH7J2C9fPWCNZ6ShW7dEiUD0=
-ARC-Authentication-Results: i=1;
-	imf16.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=cZontPJP;
-	spf=pass (imf16.hostedemail.com: domain of rppt@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=rppt@kernel.org;
-	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762673502; a=rsa-sha256;
-	cv=none;
-	b=CWflqZ82fkRfb85X1e94I0U0wd/MUr1yEzV+7rj5i//rsv1bFkuu+3cp9O7pza9Pvv30d8
-	VAGgu+VRultwZsSjB9MLbuPELMAftPS538fNJrix9Gy/ezlySa8vg2VVaGsyccPJnWZtcU
-	Mdp7YGF5aHJg6HiSoLzyDQRLDfizoWg=
+	bh=o/BVp1/MAQ+SPXbhxJkd7GDhLzHSdL2c0IkoNf5OD1U=;
+	b=XmzKyj8GecJNycNbBZw2j/CNxTrLyE/64SDF4xYYG2Kwz0dIrZFUvlbCKYY9TR0hzRjl8r
+	7EViyE4PmslOGTGvgDFsKOUMXf8jI5xwk1FDXHSjqBvsZqmJCzi0NM33rXNkODA7RNcJx5
+	Qqamhhc7EQ/Bzp2QKrC5KeD+gD8hqk8=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id CFA3140805;
-	Sun,  9 Nov 2025 07:31:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EEAC4CEF7;
-	Sun,  9 Nov 2025 07:31:37 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 2755B601AC;
+	Sun,  9 Nov 2025 07:43:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B228C16AAE;
+	Sun,  9 Nov 2025 07:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762673500;
-	bh=7DqEHCeqS1xGa8GegeWUZP4LFVgKnIB0Dv0EsIJO1Vc=;
+	s=k20201202; t=1762674204;
+	bh=MGV48XVq5NOkKwG2fIonqI+u6a72bE/vAAzrSsW3Z8I=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cZontPJPkPYCIdi+5VQmQhqNqY1ysdg3DrEwbQZUca9ddTzNzaHPKEibsgVNYWgEC
-	 4jeHIEeHWqS/GCn/FweRN1R5+rvD7uiD29Vk0HT3oOzLaUNOR2bsAOgoLzHJow78Zo
-	 LtSHj3lqLqfL0q9sr9dffxv+BCHr1XcK4xBeKUnIzoSwlIBdc1eF/7xJzbSP4GQ7KU
-	 MYLEzCi6PioXg5D8uDGBLLdWVow2lZJJDuDMUlLFMZO51WK/hCS94TpcuctSZQgo6X
-	 r+Fa90kkklaBYAkVmH63SE9w3V1O97V8XqjRcGg9Cybzg1RrdHsWfDFOvThpfSKdiS
-	 KN1uypl9Xgo0Q==
-Date: Sun, 9 Nov 2025 09:31:34 +0200
+	b=r6OYt0udCgq1im/weT5DxRld96EIWzlmImgUXLdANb5RuA9UvSmQ2haq6oO9mJbua
+	 QoPASXj052Zw81+MCFX1gLo3qeF6BOVBMG0GwgLp/YUCM0No14l4L4ML1ofvnJ4pX6
+	 e/qqDWOoqT7Tty5HSYNlGWG13mLcrJYheIAP43FqcfdI6wCUycAiB7OMn2a6hYP+MT
+	 PI1XWlmkMUnf3d0eJg8eBbu8uZ1hD+lXUxsHdX8KQJ0kpjp+/Av+JQG7BPN0XqiZN1
+	 1CiJbkzN7kGdnZWTTktylpGisbu7zCJ//ZdcYWhIJYH+/kvVJwsrCbl8Gmr6gMAo1v
+	 Ccg3TDczcIGgg==
+Date: Sun, 9 Nov 2025 09:43:17 +0200
 From: Mike Rapoport <rppt@kernel.org>
-To: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: akpm@linux-foundation.org, graf@amazon.com,
-	linux-kernel@vger.kernel.org, kexec@lists.infradead.org,
-	linux-mm@kvack.org, pratyush@kernel.org
-Subject: Re: [PATCH] lib/test_kho: Check if KHO is enabled
-Message-ID: <aRBDVkQbEDR4KILs@kernel.org>
-References: <20251106220635.2608494-1-pasha.tatashin@soleen.com>
+To: "Vishal Moola (Oracle)" <vishal.moola@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>, Huacai Chen <chenhuacai@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kevin Brodsky <kevin.brodsky@arm.com>, Jan Kara <jack@suse.cz>,
+	linux-mm@kvack.org, Linux-Arch <linux-arch@vger.kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH Resend] mm: Refine __{pgd,p4d,pud,pmd,pte}_alloc_one_*()
+ about HIGHMEM
+Message-ID: <aRBGFZW09oFxM4k5@kernel.org>
+References: <20251107095922.3106390-1-chenhuacai@loongson.cn>
+ <0fbcde0d-4fed-4aa6-b0bf-c4400b9b1cf5@app.fastmail.com>
+ <aQ4jmguL-dwKea-N@fedora>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20251106220635.2608494-1-pasha.tatashin@soleen.com>
-X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 0A595180004
-X-Stat-Signature: mfipf17xyyzoaoodomgis4aasougkueg
+In-Reply-To: <aQ4jmguL-dwKea-N@fedora>
+X-Rspamd-Queue-Id: D7C9F140003
+X-Rspamd-Server: rspam07
+X-Stat-Signature: zh9gbob7ayurxfi9grxwts7r7h7rauzp
 X-Rspam-User: 
-X-HE-Tag: 1762673501-254057
-X-HE-Meta: U2FsdGVkX19J5XGQYEQhAKZiKEs87pKzIOmVx8LfDV74JRhlMP5Up0WwW3/36/r35H5kN036wC7YpGZdCniHHLQy1ZfJMBEqm/W9kxHUVMMhGQA3EEErF8M5/rbqK94AgDIqp+Kg8JbU+LHrD23jqpC56/WBItiOC9ToZczCVrK35aJATV3cTudDH7ZVvBMG3PdhCmXZvETpz2dh3ioN2puEEv67Scdj5fjhIkmLycpKXPO829NxL1wOUQB7gbOGFcXKs/7Bkf4MwMqazTBwy5TQeBZxVZSpUJkn9oLo755P71F/nJtQV8eNRnHCRDF9gAKUmO0eFwQ8Iv/ZnvkmPwK/Otlc179ia0nILLS5kORoeO4eWkF+OBC8X4BZM7U6Uip5/ZEP7N6gCNPoJoCp5rkhaWF2PWSbeIu2lOfT4NQnGcY/gE1PSgt/+z4L5aErLLm3mtV/HcwDSj95LWn0COZPcIFNtDhYncTAUEVjijwrxOYYWMEJ1nGh9NlBL8K1SGRhloFqBEMH09iepNzZ77NSjB5epta5DZ1XS5DEV+HF+gNP71p9I4EnsHsLQr8OKT6uLHmCgZvSSuhuyPmocCfGKU+q4jQ4lst5a/Td3RUpzM7X04guvR2Lpz45Qpp+irGoDQVWn0uzMo7YwfD9BBz2Zfwpwyukdfb/9NZYs5YEzKQ959EalNLoGiAp3wr8Jvs3wnfUMBWInzj6XddYl9RzaAT8su3QPXyg6I5aiGJBe3BT0wAu/Qs9eJ3MEKdTgDIjZQdc0PKyLjpJuAC8GSL3/FT2ncPsEHegh30++qx1LJpdMaqv6y1OJYZcParfYNHb1gQpuhUT5BwNQBiLVz0WHoliIUWUJvwtJ1vJZ/tRIyvBDN/RoiM6hXwgA3CLoT9XIlhfsFD6q94nTwBEQd/WHMhQAx8EOBRFmCrWJJRTIJxfy99n0PTXBzjSooTCvSbeE+zF//h0ohQVqxE
- NwQRs4bg
- gzrfCOCHs+wcXvWBiBH5qXr1+RhEPmKf6/w1nbx9pqaktr2OCMtyERtO7Lz760pN2FQwpln3i0kJbvMPCcdpopKigFcvoNfngP+7nBlwpNxqAcqD3SFo9l2/OmTvXXSnKAAOT4XZKoXNdYBNuzCEfm5/fDs9MsdVaEYaQhoLN714Rg61R/UzTLwoYAJUvBOvLZ14nDQ3BAxybZ9OafKRtAlDBLFNaIU2JHX4P/kGEXqsrHu3zJ+TdW053zRywlvmZOCpfTxRTnHhIq6s25UKgQJuQPgfiNH0mHIue4fbXxs31IZH/hk4JpzZqjNsaSjbh/igQbHRP/LTpD/VTIqD967+E8V0nFqBdLUQQomBgP+5SJIP4sJUajTHLkOM6SqfkuB22Yuk/7tD8sT15fqfAIWnBVQ==
+X-HE-Tag: 1762674205-789881
+X-HE-Meta: U2FsdGVkX1/l5ecqAfzBbUuPJ8rCdI6gWRQjbu/YIzh+oPJDhNBr7vi+02+ayZSEvkXzWmOmFZbvI2hJSGcQGH/hR6fXJUevkCQyYnutfuKTbUy14H4Mk/k5Xg+WltK6/kKD6hdzv0pV5LKtGrZiPNf3HOCWxeligbbBzt9cSZg7Hrno3Rnkq+blVe3wKzBtt9gVYQ5VlNFpAXhyiYhrKGImV+sRze7acfszPYrork30gJ43ceS3rjz5JXs/ixp+umXIbVENM6cBp+2XNsvy46blaNRfAQkOXVdm1h599HaOUl7qZ9XtoeRxxvqmyCEzAYIxSITuFTMYb9jjvRb8FpKev2fnjWA3pTCnYUO7E2XZshze85lWIzTh8JDArP5h2KNyW1sBnnUFSghEqIz3EIKJ6k6Hhd0qBSm2Txt2W+NYpmVTtqCc4VsU2rn7UEOv+pU7NiHiuUD8Rji3bOcIIPwkJwebFeu8lL7uGTRLk6mGXQoaQFTXIsk9y8j8FO6EU+YFog91GpX+osRgCZdTKVqMTHd17x0CHruFhUy19pAwN0M1cuYcv/nCMWjsFL5n56pj8lBB2gevxUranGiaesvEiAIhZbIj7gMUvqtYPMoELD3EqTCvhYqWUvy4GoalxinHMZpA+LtbDRmAWRGRuhCCt7jBOiaCnf27RlY5q/jHpCAw+uMzCEikIPtvb/vYqs+iLjis0LfeLGyrW7TAgDHKaQlIe4QmhfdIj77xcEjKHMn6v6V4PnbFqo4X5PPkqPKQhm6eF4KcB8rtSQIJwfwvMK4B/aIAZXE2F6ES716DPrvb7yygLc0h7CQTVGZMM37Q4X1itDad/fREQTc2QwuRJ10KDw+/h66sYqDAei7JDkSmMFkuVLwyJ0ndK0bXFs70Jvu0QBHvyGJfEnia0/0QgjseZBVRN8QI6u1VtAMoAPe1G6Nvx3yrgTdvXkFCcS2C+2+piRk1T1yFxoz
+ AuFQF4ma
+ L7ke/hsr9dYm9O1P9p755qlUgNhDnnq4+J2o93AT6/Muh7p7i6f+TCoC1tdwsPAb1U4lpKLZ/6V9725zmq3aLq6VGnRM6xr84CF9BadrrMRv02QIxQUekUddmbMThFFmnWoF5xyZXI/ACQ2FqLcPQhJmvixBvJi76bF5O7itn5lCWZm+3ueEHJlQnVwk+mcZQc7hIXPxmtqufBSVVR9rozd5lNalrEJpwj43PaO+tw1yZ4ZINqiSoDlVJ5UMJBiu1FrFyn1CRMj+Ns867P6jLKCjttqk7t2/6oAq6qRJhQCxLTx4gtBxJAXo9WhgDBuVmm/iCKo6t7tULjPMyPMjrvSjvC0kDqpdY9l9YeQbGEzYtxEW6CND/wRzh6Q==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -92,39 +98,54 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Thu, Nov 06, 2025 at 05:06:35PM -0500, Pasha Tatashin wrote:
-> We must check whether KHO is enabled prior to issuing KHO commands,
-> otherwise KHO internal data structures are not initialized.
+On Fri, Nov 07, 2025 at 08:51:38AM -0800, Vishal Moola (Oracle) wrote:
+> +Cc: Mike
 > 
-> Fixes: b753522bed0b ("kho: add test for kexec handover")
+> On Fri, Nov 07, 2025 at 12:21:38PM +0100, Arnd Bergmann wrote:
+> > On Fri, Nov 7, 2025, at 10:59, Huacai Chen wrote:
+> > > __{pgd,p4d,pud,pmd,pte}_alloc_one_*() always allocate pages with GFP
+> > > flag GFP_PGTABLE_KERNEL/GFP_PGTABLE_USER. These two macros are defined
+> > > as follows:
+> > >
+> > >  #define GFP_PGTABLE_KERNEL	(GFP_KERNEL | __GFP_ZERO)
+> > >  #define GFP_PGTABLE_USER	(GFP_PGTABLE_KERNEL | __GFP_ACCOUNT)
+> > >
+> > > There is no __GFP_HIGHMEM in them, so we needn't to clear __GFP_HIGHMEM
+> > > explicitly.
+> > >
+> > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > ---
+> > > Resend because the lines begin with # was eaten by git.
+> > 
+> > Thanks for your patch, this is an area I've also started
+> > looking at, with the intention to reduce the references
+> > to __GFO_HIGHMEM to the minimum we need for supporting the
+> > remaining platforms that need to use highmem somewhere.
 > 
-> Reported-by: kernel test robot <oliver.sang@intel.com>
-> Closes: https://lore.kernel.org/oe-lkp/202511061629.e242724-lkp@intel.com
+> Yay! Thanks for doing that, I like less highmem :)
 > 
-> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+> > I'm not sure what the reason is for your patch, I assume
+> > this is meant purely as a cleanup, correct? Are you looking
+> > at a wider set of related cleanups, or did you just notice
+> > this one instance?
+> > 
+> > Note that for the moment, the 32-bit arm __pte_alloc_one() function
+> > still passes __GFP_HIGHMEM when CONFIG_HIGHPTE is set, though
+> > I would like to remove that code path. Unless we remove
+> > that at the same time, this should probably be explained in your
+> > patch description.
+> 
+> Skimming the functions, __pte_alloc_one_kernel() doesn't get passed in
+> a gfp, while __pte_alloc_one() does. IOW I __pte_alloc_one_kernel()
+> cares about architecture gfp, while the latter does care - so they are
+> 2 very different cases.
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> ---
->  lib/test_kho.c | 3 +++
->  1 file changed, 3 insertions(+)
+__pte_alloc_one() has gfp parameter to accommodate CONFIG_HIGHPTE that x86
+used to have until quite recently and arm still has.
+ 
+> Might be helpful to explain, although I don't think it matters much.
 > 
-> diff --git a/lib/test_kho.c b/lib/test_kho.c
-> index 025ea251a186..85b60d87a50a 100644
-> --- a/lib/test_kho.c
-> +++ b/lib/test_kho.c
-> @@ -315,6 +315,9 @@ static int __init kho_test_init(void)
->  	phys_addr_t fdt_phys;
->  	int err;
->  
-> +	if (!kho_is_enabled())
-> +		return 0;
-> +
->  	err = kho_retrieve_subtree(KHO_TEST_FDT, &fdt_phys);
->  	if (!err)
->  		return kho_test_restore(fdt_phys);
-> -- 
-> 2.51.2.1041.gc1ab5b90ca-goog
+> I've cc-ed Mike, he might have more useful opinions these functions.
 > 
 
 -- 
