@@ -4,117 +4,80 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 3742ACCF9F8
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 08:45:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 22D4DCCF9F8
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 09:28:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7FD228E0010; Sun,  9 Nov 2025 03:45:03 -0500 (EST)
+	id B749F8E0010; Sun,  9 Nov 2025 04:28:07 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 7D4918E0003; Sun,  9 Nov 2025 03:45:03 -0500 (EST)
+	id B24438E0003; Sun,  9 Nov 2025 04:28:07 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6E9FC8E0010; Sun,  9 Nov 2025 03:45:03 -0500 (EST)
+	id A5FFD8E0010; Sun,  9 Nov 2025 04:28:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 57B398E0003
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 03:45:03 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id A54C7BBE46
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:45:02 +0000 (UTC)
-X-FDA: 84090433644.14.1801D20
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	by imf26.hostedemail.com (Postfix) with ESMTP id AFF35140009
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:45:00 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="NYoly/bV";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id 7BAD88E0003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 04:28:07 -0500 (EST)
+Received: from smtpin28.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay03.hostedemail.com (Postfix) with ESMTP id BD66EBAEE6
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 09:28:06 +0000 (UTC)
+X-FDA: 84090542172.28.B056DB5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by imf13.hostedemail.com (Postfix) with ESMTP id A52A62000C
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 09:28:04 +0000 (UTC)
+Authentication-Results: imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762680485; a=rsa-sha256;
+	cv=none;
+	b=L39Z3uig9QIqawlkp9bwWanh2yYCZxRldd1Jixm+BMZKLwykPgsJfWegQTuaHyXyf3YEGV
+	duAWn1NxG6q8ycl4WnrbNM52KUhRArPv7sIICiUlxqFmfQFdom2n1PYk1U5/UkiGp7PQKt
+	paf0TC1Jxtw8aRAlVvwrowLSkJtbmX4=
+ARC-Authentication-Results: i=1;
+	imf13.hostedemail.com;
+	dkim=none;
+	dmarc=pass (policy=none) header.from=arm.com;
+	spf=pass (imf13.hostedemail.com: domain of dev.jain@arm.com designates 217.140.110.172 as permitted sender) smtp.mailfrom=dev.jain@arm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762677900;
+	s=arc-20220608; t=1762680485;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=HXrwwoVC//E0UvQ+RFUnyKxTxBHKV/pNmqkF20wMo5o=;
-	b=RCpD0oIZ3QD5u9gPW5Qi2oqN2456EQ7HpuEH8mTgP274z+iWMM78emKGxIjaO7QG9kH5WG
-	DOmp90b5osIHwKFoL4wD25OUisB+/xg3SPWXZGZhRxVuMINQPZ8mLGJNpyREgJniHQGBaG
-	xRXiRsjp2Rsn+O2yrQKtQnllgd/xAF4=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762677900; a=rsa-sha256;
-	cv=none;
-	b=49GHS3iOhcLGJY74H1dkdR0nxAuT50K8RAjmv/Q/Zlh6cjb3pybuWRYmKupUlAxVTP8snb
-	hmnpT89ybcNR8RkLFtfFomujfz4S721hJ8zrmjHVp3Zrly0QSA/uGb8f4cSk22/qiOYsQ5
-	WIVECD5nY0KY06jxQ5opdXHL//lPmtU=
-ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b="NYoly/bV";
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf26.hostedemail.com: domain of swarajgaikwad1925@gmail.com designates 209.85.210.169 as permitted sender) smtp.mailfrom=swarajgaikwad1925@gmail.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-7aace33b75bso2188283b3a.1
-        for <linux-mm@kvack.org>; Sun, 09 Nov 2025 00:45:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762677899; x=1763282699; darn=kvack.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HXrwwoVC//E0UvQ+RFUnyKxTxBHKV/pNmqkF20wMo5o=;
-        b=NYoly/bVe7pAfjaUWFm4T5fMVYw1sJCQKHTTWDQlMvUOCaiz6WlvuKtSGUUAkPc4RI
-         zOBJ3B5zpnIhymBqgXswnysGxt6IOR4K6tR2zY09qwjVn5/1kKXQmhtnrolMq+HKekIv
-         xlkeHQHHYafmK82EtoYm6HY9QV6Z+LCrLONoW0sLn0qysDNGBPLuiNox+5qXmNRcYJWq
-         s7Yu6yeBjWSlOI7lyGnmX39Vf3TMQv7NFp/xFyd9VyYU6n6Ati0f5Gs/bIpMr4jloqXl
-         4t/0kGAAh/pBFD2e1ypChEuF8Ow0Z1+kW2zxNsTxo0j0shXdWBY7ESTPwu471r4IiHPp
-         M+TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762677899; x=1763282699;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=HXrwwoVC//E0UvQ+RFUnyKxTxBHKV/pNmqkF20wMo5o=;
-        b=NjxZZxRNUw6Tie8EDNbDJ2agXZoM+ir3DukU2MZJUoq5/tmOddih3QQaQ/lVX+le6a
-         gnAIqO+xoRnrqDwNTyNG2IgSKnLBZ8crOAi2cfageToBw6q3JJsD6imCueFG4HIvd1eJ
-         FVyfakqgnZ0eBkr7TVhO5WphR9FjjW5XRwJOpUfr/FIw3mmrgbPdGbWDVK+D7Cbzjgtk
-         3ABN3ul4Z+gK5fL58RumIVlNjON5jZVlPPmRoBFX2uO0N8gI7dE7o93syQeX2Vgu8sk+
-         L2L9N14mc1EUyQBHHH+0Ir8yWV3va7ZwVKJ6ckgnBRU36aWI+2BA0Z64zyZ9EqXa+MTt
-         GM/g==
-X-Forwarded-Encrypted: i=1; AJvYcCWtEeNN8rQb80GVMce9BK6ZnFKqgoD8uWslmL0AIRr+nwHd0h4WkhhDc6Q7UqqvOh/IKAgDb21hYA==@kvack.org
-X-Gm-Message-State: AOJu0Yz7p45aXvseMOGApNkl5ZQsa7MI1sB5gl5hnG7Oo1vt4T0dvBZM
-	g6kjXAUyEyuGSIR+7cVYnEgjoyPodFdL4Ldr5xIWzrxrLKO99tsXqk+5
-X-Gm-Gg: ASbGncs+GShkGeKc/gmpZkIg15jYhL8Dx72CwGtImFNYstCDa4t4P/Bioy1vk3Uq/rU
-	ke8/++cNOIVKTjnmZYY/Wv4ne+QYRuR9X2HIYc88TPX/A4N+vx98bRG64jj7mnAsQMqE6ypAwRq
-	SIOrFunOlnqiDwlkrrycr+ZYCPg2L72j5Hp5R/zzb8DqyAPzXQa04G6kgA+Vtt38ZeQY2Jhv2Ik
-	Fd4/J8HTCiMg3FtXH+MQK9A0/U36EnP27ZQGMC4gTTzH7ZJml76nvh3qvfVoIw1hDe4cQ50UDOC
-	AFJzfKrgCEvYoRGHqn9VuHS2YKAShnf5myz3TCaa4nkL0eME+NsocQyIfsVm+3jqKJQkyY7V+BW
-	ciDEqUx0X/ODqffmSlmEtqD6HPAV5Ih/45cg8YQjtQwSPVlOU4HLAwhKqvXpTsOQhLHFKN+0Wy7
-	FHkxKSHguaRbQzNFZJo6c=
-X-Google-Smtp-Source: AGHT+IGnp7pQv0Zxk4SgmB3b2rk34RXmsJWJfqb7o4EKPC0JwCRCGTVvM5tpZ3lAu6qeBHhvuniQMQ==
-X-Received: by 2002:a05:6a00:138b:b0:7ab:a41:2874 with SMTP id d2e1a72fcca58-7b225b6e947mr5446010b3a.10.1762677899397;
-        Sun, 09 Nov 2025 00:44:59 -0800 (PST)
-Received: from LilGuy ([2409:40c2:1042:913d:b798:80c3:5bd2:24ee])
-        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-7b0cc863a09sm7917183b3a.53.2025.11.09.00.44.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Nov 2025 00:44:58 -0800 (PST)
-From: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
-To: dev.jain@arm.com
-Cc: akpm@linux-foundation.org,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	swarajgaikwad1925@gmail.com
-Subject: Re: Guidance on contributing to MM subsystem
-Date: Sun,  9 Nov 2025 14:14:50 +0000
-Message-ID: <20251109141452.7097-1-swarajgaikwad1925@gmail.com>
-X-Mailer: git-send-email 2.51.2
-In-Reply-To: <cb17f29e-b45a-4275-ab2b-1443d909d944@arm.com>
-References: <cb17f29e-b45a-4275-ab2b-1443d909d944@arm.com>
+	 in-reply-to:in-reply-to:references:references;
+	bh=A5v3l/GD3DEOP2m1ic7gUKIMwmkjectHNhp87e6tSRQ=;
+	b=o9QA2UxC0wTOrqf1EMh2yBSjUgPu2FniqXK/S2m7BLZ5xEPoE7IKMi4w88r9bCznoT40ls
+	Ij9/mNVgSpzy156tf1d3FXrtKfnUiqzvoWMdrYtIxfOThRVds4cf7GhXYPkONguW3dP/SE
+	E/zXDKlfDGxutPjUZW3/S0usZpDuW+I=
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AB7332F;
+	Sun,  9 Nov 2025 01:27:55 -0800 (PST)
+Received: from [10.164.11.1] (MacBook-Pro.blr.arm.com [10.164.11.1])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 032313F63F;
+	Sun,  9 Nov 2025 01:28:01 -0800 (PST)
+Message-ID: <9ab2c883-9707-4c30-9922-c2ff83d35677@arm.com>
+Date: Sun, 9 Nov 2025 14:57:58 +0530
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla Thunderbird
+Subject: Re: Guidance on contributing to MM subsystem
+To: Swaraj Gaikwad <swarajgaikwad1925@gmail.com>
+Cc: akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
+ linux-mm@kvack.org
+References: <cb17f29e-b45a-4275-ab2b-1443d909d944@arm.com>
+ <20251109141452.7097-1-swarajgaikwad1925@gmail.com>
+Content-Language: en-US
+From: Dev Jain <dev.jain@arm.com>
+In-Reply-To: <20251109141452.7097-1-swarajgaikwad1925@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Stat-Signature: 1g6u9z6furcdk8r3oja5t8d7ga11arxj
+X-Rspamd-Queue-Id: A52A62000C
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 43mg4icwgxcwtidp683bdhgaa4xacked
 X-Rspam-User: 
-X-Rspamd-Queue-Id: AFF35140009
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762677900-716565
-X-HE-Meta: U2FsdGVkX1+/O3m4PNJmnqlFOj20cCPYS4RC8z7kaadvvAUZWvhOtnedqv3CorlZ/dCI4ZABAVHpcmzqZqu75Rf2afcrZEMP8xBlWIgVbwXesaHB9+XOOQLjjD6pWIp3XZSUEz0R221GZh6LN9vQlh5j5Me5l3EgklXZdua3ZxzGQ2BdF3d/pivfgKGqWClyKsBME4KMsUqnpFacWr9C+ii4yFpaoOj/StC4mkM5j8BqZujA966EevZGX2kI3hLh1hzvz27W6JrchsR7LdyxeUmTE0JwtDBkS1eSHbTV6mmFBC0iu1/aC1qoKVP2ttKcPl0vZAKxZuM76phTem0YILlFQHC4Y8dillmtdhYi2k3ofUuGfr8AUXG5tDkguVpyQnrFxwYcTlVYLHaFndHTxo4TeAdiGnCclJu3WKqtVw8EG/ljW++OVgw2uRjeGMqiApFq62WF8p2W0Y+G+trCXwU4OVbqU7c0yEyw8y1+vX4iwg4tc1UcQ9nSm4uhZ6Ux0fCV0u1Oc4JNgwHde4uKLUgWRmfvBcFPzn3YMk+4hS3lGNJGWLhg4n3cuF9P3VspJNrPy2Rmv4uTebfu1aOwJ5PQNR74t49DqaaeyHkysGq2iE6Krpa5u3gwsQVN9WqoLfMAFjNXHwhhwNMx3fP8WUpYswPQy2duEadQdFtx+hpCvUtQPFc9fekBhOJjK7snRaZnpp3jBSVYRXRowcHoBz+uasqrFgtPhiDlqCnGd998UpuHsgiNgbN8WdgT8By/AGVlG7e0FRtmkcV9HvYQJe0sM937y3FDD1JbwF+siox2Tu0ycwx9vzMluBv2qUXB6mjyHQ2hZVjqy2n/nUkjXb84GCnj++JULtNI+/ItXeQVIwnnN98hy34pJehH8XXEEwCk380GecIRGrNxZxGLzeglBrgKDd6HuOUCkwrJ/XPvgXGI/d5PdPYqcDZUy0HZa0j7aD3oIh5HNyCC96Q
- D1PKgeax
- MWimx6XjOpy3gDOZneB9s4MGZNkSC5Z9tuRJSELfazmS1caXLxZBkYKSJFhPydniVCFMAI8/vgnbF/Edv9UJ9M6a3g50ab3jtFnRp4zcAM+cwr1ZB9C52eWCrEcc7nsI9xwytVryCchiLeBfKRZ1ZCZOItC3h98xhvrZ2qavipj4HAENAujm/e86t7pSKy/mpwY/6Ku+yaQtUk0V1Z2S/Rf2RVk1FEy8BJ3DKQgrbS+ySMnoZhoeqguUVDJlVPMaoP5f98RVHcVLZPRszSChpxGomsAtQxfdzuBRbCfLy5WZTVLi9P7hT/ct+/vfrBsFZQqkJRLi1lTWXJGx/01YnbETMGaGkLdVEQcU5aX6FjGR9TBt48iOQ29NSyvlkKYbS5LNlww/X9b6Z75QxWl0B/EdItmn5u0QuHtatDPpWgt9e/7Ks9IAFwrFFpVopiE+LVWNE
+X-HE-Tag: 1762680484-656141
+X-HE-Meta: U2FsdGVkX181hc9yMM08mfslpUrcZ8YS2biZCaCQB/ivv3ELNz6DqD+97ZYuNaMhmhh346WvnFswXxRIiXUI92WeKoPttjpmAsVSszy8Q+GDl5MtTeH8cbyLBNJWWNEF1aqUi1b/dI07oqpsiQ/3XQRljWvY4txFSUEbNE2oX0ndEJslCfKbhGsZQoOkQ6F6JDGNHbQJfc42BSML/DBViceyNQyN6IWdq3KhsViJ65pHUrtra41r2Dplw00DTJbLhavsAh7zPEiYYPwo1rZBJVsszLogbrMuu+zi/9p/NZ4RzVgKJ6kCkTTVQO5EoqOKLxPzVDiKpl5x6aTTuPBrYPzs1XKIQOYv6LsLNZcx+8iK3koxVFR22fLzz7dFpwJpKkhhR04hG7o8xBUBYdwiHiSlNofkhuGMkoKZcPhw/QJ5U/YHK45VhT7uTsA3LOlEbnGeiyKxdfiGsQujvXnMwIKW45vBawt2vhpmVZGXLg+mh8GuNSQu2LPEEbM9/DxEG5puKX2chFa0vuTNAX3e58iE2Ngx5ydfLWkQPM1g2VQnXiAKzSLAx8KDQv2imtXOqW5J0xbC3bGPr2DivW6TnOfSqfA3U22cS7dxSaNzzZdVeENzK7X0wYuMTqpCuWPuxXrWkzQ3NG+Cb7h2jUu+2dTK1o4mABh209lD9XK3UZ8YFaOzF6B3HBaZtMUqY3qszBmN75T0+LmtHXPE3+J6vUqYTZ+WP/tiv/tsMLSe9axtmuzc/qD1++hLV7J4HLwVAJHUQ8z6IoWU5j8T4ukbz1Bx5AkvkGwi34qSN6XSgyquEGUd194bKy9szeCgzAFAM2jMaEv35WnbVlUNqi+YMz0ktk6F1TXtGxVo0Vn3fw4jOa5bY2gU9E3oyv5Js4+/26wKJQgpcN1sQhVQ6bE6w8VoqdxKvKV80GfNamJISz3uG/A6/XJL+bMI4IHpR1DlWd//ahtOJxhMfsrco5T
+ Jrm0GugG
+ ANIF4o18Rvafl47NQrL6JgBT8Bon0gsR0LIzq6ymIeltFz3KaMj8G097k7NM2Pq+gJdSRpwGU1dfBmyrAXr3QUulJYrITq6y4SvcbSERhSXJSEs7zfFlYxveKG+bcjSIPf3l4ewxr2zwojddxoOxI2qZDlnfxzPWe1JVS41L7evcsUXPzlvyuPOqPvXZOCQtk7sMt8ZVNH86I6s6MLR9ggXdivEDa8tx17OILUWVnjZIO/UIn+jS/bibzGHuTWDVKx8sjlBEaSwSrZq4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,30 +86,86 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Dev,
-Thank you so much for your reply and for sharing your experience.
-I do have some basic understanding of how parts of the MM subsystem work,
-but I’m still struggling with how to find meaningful issues or tasks to work
-on. For example, I’ve been trying to explore various parts of the code and
-read through documentation to get a better grasp of how things fit together.
 
-In other open-source projects, like on GitHub, there’s usually an “Issues”
-section where contributors can easily find bugs or tasks to work on. In the
-kernel, should I mainly focus on exploring TODOs, adding selftests, or
-improving documentation (especially for new or less-documented parts)? I
-also believe branches like mm-unstable and mm-new might have ongoing issues
-or regressions, but how do developers usually find or detect them? Would
-simply building these branches expose such problems through compiler errors,
-or should I try building with different configurations (for example, using
-defconfig and other configs) to uncover potential issues?
+On 09/11/25 7:44 pm, Swaraj Gaikwad wrote:
+> Hi Dev,
+> Thank you so much for your reply and for sharing your experience.
+> I do have some basic understanding of how parts of the MM subsystem work,
+> but I’m still struggling with how to find meaningful issues or tasks to work
+> on. For example, I’ve been trying to explore various parts of the code and
+> read through documentation to get a better grasp of how things fit together.
+>
+> In other open-source projects, like on GitHub, there’s usually an “Issues”
+> section where contributors can easily find bugs or tasks to work on. In the
+> kernel, should I mainly focus on exploring TODOs, adding selftests, or
+> improving documentation (especially for new or less-documented parts)? I
+> also believe branches like mm-unstable and mm-new might have ongoing issues
+> or regressions, but how do developers usually find or detect them? Would
+> simply building these branches expose such problems through compiler errors,
+> or should I try building with different configurations (for example, using
+> defconfig and other configs) to uncover potential issues?
 
-Even though I’m beginning to understand how different parts of the subsystem
-interact, I’m not sure how developers usually identify new bugs or feature
-ideas to work on. Once I understand the code flow better, how can I
-effectively find such issues or areas where help is actually needed?
+Yes this may be an option, to pick up mm-new and build it with
+various configurations which are not extensively tested, and stress testing
+with mm-selftests/mm-tests by Mel Gorman, etc. I had my first bug report
+by just randomly testing CONFIG_LPA2 on arm64:
 
-Thanks again for your time and guidance!
+https://lore.kernel.org/all/20240415094003.1812018-1-anshuman.khandual@arm.com/
 
-Best regards,
-Swaraj Gaikwad
+>
+> Even though I’m beginning to understand how different parts of the subsystem
+> interact, I’m not sure how developers usually identify new bugs or feature
+> ideas to work on. Once I understand the code flow better, how can I
+> effectively find such issues or areas where help is actually needed?
+
+I would say to not pressurize yourself to find tasks, but focussing on
+learning the code. Try to review patches - that will increase your
+understanding of the code, and it will make you sit in the shoes
+of the poster and think "what made them think of this work?". Leaving
+aside very big functionality changes, most of the patches, in my experience,
+are found by extreme understanding of the code and while reading it,
+having an aha moment of "this looks stupid", "this is a bug" or
+"surely there is a better way of doing this".
+
+I'll give some examples.
+
+https://lore.kernel.org/all/20251017160251.96717-1-dev.jain@arm.com/
+
+I figured this out when reading mprotect code and observed that we are
+doing an unconditional TLB flush (via mmu gather) for arm64 - pte_needs_flush()
+was not implemented there. It is obvious (if you know about pte protections)
+that we don't need to do that for a transition from PROT_NONE to any other.
+
+https://lore.kernel.org/all/20250610035043.75448-1-dev.jain@arm.com/
+https://lore.kernel.org/all/20250718090244.21092-1-dev.jain@arm.com/
+
+On arm64, ptep_get() becomes costly due to collection of a/d bits for cont mappings;
+I literally went around the codebase and checked whether we can batch process ptes
+to avoid this cost.
+
+https://lore.kernel.org/all/20250908075028.38431-1-dev.jain@arm.com/
+
+I observed that khugepaged is operating only on writable regions. This didn't make
+any sense to me - I scanned the history and couldn't prove that this is of any
+use, hence posted on the list, and the community agreed (and the performance numbers
+agreed too, as described in the cover letter).
+
+One more interesting example -
+https://lore.kernel.org/all/13945f06-f862-4f80-904a-f2a4ccff3e4b@redhat.com/
+
+While reviewing an unrelated patch, David Hildenbrand reads the code and spots a problem
+with the existing code, which was brought in by my patch, and I had to fix it in this:
+https://lore.kernel.org/all/20251028063952.90313-1-dev.jain@arm.com/
+
+
+As you can see, we "observed" all these things. The probability of making an observation
+is directly proportional to the knowledge of the codebase (as is true with any other
+skill). Which leads me to the conclusion - focussing on finding a task may be counter-productive.
+Reviewing patches will force you to read the code and find potential problems with it.
+
+>
+> Thanks again for your time and guidance!
+>
+> Best regards,
+> Swaraj Gaikwad
 
