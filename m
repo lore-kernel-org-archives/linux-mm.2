@@ -4,116 +4,130 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id ADA66CCFA13
-	for <linux-mm@archiver.kernel.org>; Sat,  8 Nov 2025 23:48:39 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 84269CCFA13
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 00:36:28 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 7044D8E000A; Sat,  8 Nov 2025 18:48:38 -0500 (EST)
+	id 6A46E8E000A; Sat,  8 Nov 2025 19:36:27 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 6DBD38E0003; Sat,  8 Nov 2025 18:48:38 -0500 (EST)
+	id 67BF68E0003; Sat,  8 Nov 2025 19:36:27 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 6187D8E000A; Sat,  8 Nov 2025 18:48:38 -0500 (EST)
+	id 591E18E000A; Sat,  8 Nov 2025 19:36:27 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
-	by kanga.kvack.org (Postfix) with ESMTP id 4CFAC8E0003
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 18:48:38 -0500 (EST)
-Received: from smtpin21.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id CA1391A0840
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 23:48:37 +0000 (UTC)
-X-FDA: 84089081874.21.4130E7A
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	by imf26.hostedemail.com (Postfix) with ESMTP id 20289140004
-	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 23:48:35 +0000 (UTC)
-Authentication-Results: imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RNLE5PWP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762645716; a=rsa-sha256;
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 44AE68E0003
+	for <linux-mm@kvack.org>; Sat,  8 Nov 2025 19:36:27 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 778AF13BD75
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 00:36:26 +0000 (UTC)
+X-FDA: 84089202372.02.800C7A5
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	by imf07.hostedemail.com (Postfix) with ESMTP id 182AD40008
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 00:36:23 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="MTnMu/8A";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf07.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762648584; a=rsa-sha256;
 	cv=none;
-	b=rTS86EiVwu1VtJ0x8QGtxKkY7Ae+WDiCJ3a8eDhPxGBwZvBbWBAW3Kk5j/PMKKwIQejxd3
-	L5cWwt7YDtNIEA+oh/eazzvtgcMfc58PvjOhGUU+hICsWb4CB9OnmpbRW0vd8BxVIhbDO/
-	VUiZ/6N0t6VIrzbiCty1vLFUYqWh7uw=
+	b=GpkHU7v9jwIj0yweOE71PlzkuOjPQJIuZ25duxyL+JZRmifUIzVsamr3q5eLiIwkAaTHHr
+	FOhU9tcXdgO6wI4TYvjMdcVpXtC0BKK/dKh6glPdPvZRESycTR/pRxozsLohaQQUD5EJM3
+	YREmWG4aGcZpz7zn9DqoCsoM2ZWtSag=
 ARC-Authentication-Results: i=1;
-	imf26.hostedemail.com;
-	dkim=pass header.d=google.com header.s=20230601 header.b=RNLE5PWP;
-	dmarc=pass (policy=reject) header.from=google.com;
-	spf=pass (imf26.hostedemail.com: domain of rientjes@google.com designates 209.85.214.169 as permitted sender) smtp.mailfrom=rientjes@google.com
+	imf07.hostedemail.com;
+	dkim=pass header.d=ibm.com header.s=pp1 header.b="MTnMu/8A";
+	dmarc=pass (policy=none) header.from=ibm.com;
+	spf=pass (imf07.hostedemail.com: domain of japo@linux.ibm.com designates 148.163.156.1 as permitted sender) smtp.mailfrom=japo@linux.ibm.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762645716;
+	s=arc-20220608; t=1762648584;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:in-reply-to:
-	 references:dkim-signature; bh=qwrxSi6UEHqswkqxklVcNAH4yAiA2ZEOPwBLU1p/RJ4=;
-	b=tVRU8xDZhFD1EsoOBxtXM6EAsxwKHjroGsl6S1cKoAHF9gYJ4rFgNg1/tWyqJ+sQCsmhjV
-	5/tNG8P9XbFERZWusqplpULJpvJ0HepaZQ59cDCHqNeNRsl3vsOQW4cIZH6dyRQH8dWkDL
-	MZWeq1UQfmBKco7dmsTZbmhaL0W6MMA=
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-295c64cb951so174005ad.0
-        for <linux-mm@kvack.org>; Sat, 08 Nov 2025 15:48:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1762645715; x=1763250515; darn=kvack.org;
-        h=mime-version:message-id:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=qwrxSi6UEHqswkqxklVcNAH4yAiA2ZEOPwBLU1p/RJ4=;
-        b=RNLE5PWP2pStAeijUN5qyiPV44BfgvbAyPVdXh4/EwScTlDSixmaHcH539TboNxSlY
-         4u6JFwOwdoOwAs1s2Ej5RdVkz28JAyXq3FKLmejAV+0m1SoL1tTHEPFyV6ePUWD2FvUh
-         XQYCOcHPxfxM8oVl2osTJblR0yAPVzWMqKRLWVGkKDbBpaEMEEC8dLAwBHKiQfA/z7U4
-         mLys4s7hTp9ZrbI7HTK82Dqw65yqPxuNH/H2YExA/IGVL2Vx6oO7VtB7+Plz3LJUJv9Y
-         g3BMAPFMNuZAfwPDQVi0tQqKyY36bNVSqACJgT1pXbbTMIUMw4A3TFNlKJ0Kob3LNyqd
-         fTdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762645715; x=1763250515;
-        h=mime-version:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qwrxSi6UEHqswkqxklVcNAH4yAiA2ZEOPwBLU1p/RJ4=;
-        b=EHA/jwQ5VqPi10hLUXKyqi31djI+IFfs79jjRSHt0rfqP8l2B80mlIW+nTI20Pqjdw
-         Cn21eX77vfYfys9HzHQTnirLtKWzZGLW/GiMDMhPmkt41vI6KMyxL7jCMDAOnToXF9Jt
-         RJBQOJtMiPHfoUD16dYjIBaCHKkfe38bOWaQR0muX6ueYIY8Zz4+NJQ0/m/CHqsTYqrK
-         DKHDMwB6PwtmyJDR0//WlrsKrMsSP5HDPG8bG6feQLyRyGouEKaLnrOh21eOgJx37T4V
-         g8Ek3eD++IKk9a7dBWFGExGrj0aIq1pSYKZwR6HsJIpUmDS8NC+KwokVjqccWbpaIq/T
-         bZxA==
-X-Gm-Message-State: AOJu0YyNK3mGG1rl+FVuUNPNEM4eJuXy9JOOlPoxlGLggbUDxiIvpD1V
-	mH00hHS0HEyrAn+xrM/9+b17buaHe28FZ4L2ljtfT3lIBFdRMVJW5MfRagWccYr3Cw==
-X-Gm-Gg: ASbGnct6C9XGRTwb6hiORfpDO8aT5IhFKH7MPkBoUaOEcWio/i27SeqgTZtqu+FV9rr
-	ya4JO2dGY371guzsyQpzBkuEdn0S3BYJ2blkwpQg8Ftj8TebiRYof5nyxduDRSejDNRinkqe8Sc
-	s8vrRjEU4ex8dg7DuPVMVce4XwixNCGp4mIZp7o6CCXbHFJwYcVA4it7IN1bE+9g4gq4auUWXfc
-	rl2Dc7J/risoGwLQZO7vx5VaAAwVlbYpG0Z8KJ8+mWCoH3NScFkm03P1aHKPaSJhsSKPBKVPcX4
-	kyixl8KzotkUE80oUU0VoxXRS2HrnEK2E/vhx3wBdhblTBovX5GlSDRnMyIq1ksPjaFsW977Co6
-	5HT1zJSIHDQgBO04sslUk7Ww/S8tx6qiMRF1UtwscOFum4tPnC93oUpyuhgu5co2+sKCjIXg4AI
-	JZl/wJ+bTpZub2D4N16iq10uF50nWGW2CdgAp7QVlM0KG5nVQWfJDztOGFzEW5PPcJjqvkf5SPL
-	FGopU5ueZmViUh7j8Jq/GR5YY91hDDdO8WDjJE=
-X-Google-Smtp-Source: AGHT+IHnRXXlbxI6BuGqHQ+Qtc6VE3S+F4KHSKReZWqHs/e+LWVIZk8w0dmbYu68ZQcpwXrQfqtj7g==
-X-Received: by 2002:a17:903:1a70:b0:294:e585:1f39 with SMTP id d9443c01a7336-297e569ea05mr2974675ad.14.1762645714529;
-        Sat, 08 Nov 2025 15:48:34 -0800 (PST)
-Received: from [2a00:79e0:2eb0:8:1130:5154:e55c:701] ([2a00:79e0:2eb0:8:1130:5154:e55c:701])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-29651c6f20dsm98249625ad.65.2025.11.08.15.48.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 08 Nov 2025 15:48:33 -0800 (PST)
-Date: Sat, 8 Nov 2025 15:48:32 -0800 (PST)
-From: David Rientjes <rientjes@google.com>
-To: Alexander Graf <graf@amazon.com>, 
-    Anthony Yznaga <anthony.yznaga@oracle.com>, 
-    David Hildenbrand <david@redhat.com>, David Matlack <dmatlack@google.com>, 
-    Frank van der Linden <fvdl@google.com>, James Gowans <jgowans@amazon.com>, 
-    Jason Gunthorpe <jgg@nvidia.com>, Junaid Shahid <junaids@google.com>, 
-    Mike Rapoport <rppt@kernel.org>, 
-    Pankaj Gupta <pankaj.gupta.linux@gmail.com>, 
-    Pasha Tatashin <tatashin@google.com>, Pratyush Yadav <pratyush@kernel.org>, 
-    Praveen Kumar <kpraveen.lkml@gmail.com>, Vipin Sharma <vipinsh@google.com>, 
-    Vishal Annapurve <vannapurve@google.com>, 
-    "Woodhouse, David" <dwmw@amazon.co.uk>
-cc: linux-mm@kvack.org, kexec@lists.infradead.org
-Subject: [Hypervisor Live Update] Notes from November 3, 2025
-Message-ID: <7742456c-b248-04cc-0e1a-9da7d0546f1a@google.com>
+	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=C9g28iKd9GEEBKsPMgyqPsMIFKJGryqMtKFGw9hYR8o=;
+	b=ccdgCoyPyh2MsBg3drxkFYeWPOu3HIfd4NpzJAKbbFue+kAcTn9ObSrX4gxivqBGmSg9xP
+	SMVJ0jkyPK4pAqhmIcOPnc7EUCVuV2iumcEDCoKasAplhC6+CYbIe24l6nlG8IHW4ZQzHg
+	7Q8CVHTniP/vsyn29yeu4Ka6fc89tws=
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5A90NKMP032066;
+	Sun, 9 Nov 2025 00:36:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=C9g28iKd9GEEBKsPM
+	gyqPsMIFKJGryqMtKFGw9hYR8o=; b=MTnMu/8ABAXg/m2/jlvr6e4NtbQfOtIgl
+	xsZXD7uz5EFcl9m8ULFODxbC9eWTc5+3iPG+P/uQ8Z34rGDb1886yi1Ls+d8ISGM
+	CsbUmQocRpG9ra8xmkEm/0Mhb2a5YRhAKAXlxJ6EvaXtcNDrIfKbYur+ZvQ8Awoh
+	gqHnQiRQNxtY/KJG5z6hVZrkSYwcxOvIDK4Y3xvs3ZIgm5WvlZMJjtcjXCnOOXZ1
+	Isfg96aCFghgIKl4rSHu9IvIDV9uIkbcpfvk7ANuYWnHHn25gdqjTmNiTogtF8U6
+	jQtRBdnCyRt9wiGUkayMjQUTDk91yrBA6whl/7bYnqNZk8gtfgdzg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4a9wc6tyfh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Nov 2025 00:36:17 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5A8J0MGG012891;
+	Sun, 9 Nov 2025 00:36:16 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4a5y82gnv5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Nov 2025 00:36:16 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5A90aEDK51183938
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 9 Nov 2025 00:36:14 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA15720043;
+	Sun,  9 Nov 2025 00:36:14 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6FAE20040;
+	Sun,  9 Nov 2025 00:36:14 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  9 Nov 2025 00:36:14 +0000 (GMT)
+From: Jan Polensky <japo@linux.ibm.com>
+To: catalin.marinas@arm.com
+Cc: akpm@linux-foundation.org, david@redhat.com,
+        linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+        will@kernel.org
+Subject: [PATCH] mm/huge_memory: restrict __GFP_ZEROTAGS to HW tagging architectures
+Date: Sun,  9 Nov 2025 01:36:13 +0100
+Message-ID: <20251109003613.1461433-1-japo@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20251031170133.280742-1-catalin.marinas@arm.com>
+References: <20251031170133.280742-1-catalin.marinas@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTA4MDAxOCBTYWx0ZWRfX4HQTAfYveTrz
+ 1GSXPLohTujNaxU6vabzpGMtuLy257+bS3xVUvxiFfUfDZbotVOwGVAPoiojhEPwzadJXVneGpL
+ c4QWlNCEyPy4IUY6PXlMVi4nkRjjSw+PIS2gCXB1/IG8fAkxkH6D/8aHLR/4aYx7JjFsz9hHNHB
+ d/RW+cn4nYCG+BJbH4E5Wj1yu4a9r+dpPCMNulF8ZUVgD8meTCbX+JbdG6Qafrg6URtPuKr72vC
+ LYpr/L3nOYj01hODmr24m+7Inf+UjX7x9htx/+Sdf/5jyffYbfecGZIy8cF0vok5RnYO1dUZ+OD
+ sf8JDMlrrqcs7+4OcWKEZnzGLgfL1LpsF/pJhzsCSBMRTHH9zMRVywtlbEyrgZg/El9atEqFxge
+ dQ7WLMH4k6iZofdU1PRt82efdoSYDg==
+X-Authority-Analysis: v=2.4 cv=GcEaXAXL c=1 sm=1 tr=0 ts=690fe201 cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=6UeiqGixMTsA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=7CQSdrXTAAAA:8
+ a=VnNF1IyMAAAA:8 a=u5nbTVsyuFLneL7zQ6YA:9 a=a-qgeE7W1pNrGK8U0ZQC:22
+ a=cPQSjfK2_nFv0Q5t_7PE:22
+X-Proofpoint-GUID: 5yCytclTpiR2Si3mIT-NROSF3tV4cD0w
+X-Proofpoint-ORIG-GUID: 5yCytclTpiR2Si3mIT-NROSF3tV4cD0w
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2025-11-08_07,2025-11-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 malwarescore=0 bulkscore=0 adultscore=0 impostorscore=0
+ lowpriorityscore=0 clxscore=1015 spamscore=0 priorityscore=1501 phishscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2510240000 definitions=main-2511080018
+X-Rspamd-Queue-Id: 182AD40008
+X-Rspamd-Server: rspam07
+X-Stat-Signature: 3yp8w577knsedmjikmis75ka75ngpnyp
 X-Rspam-User: 
-X-Rspamd-Server: rspam11
-X-Rspamd-Queue-Id: 20289140004
-X-Stat-Signature: w87jo7c1jjnzxiho8c658eguybxdafro
-X-HE-Tag: 1762645715-825993
-X-HE-Meta: U2FsdGVkX1+jthCBdZHVOeCOTMgb5nwo2UQJrFGvmem6Nyq0bFDCD7y+jbVCEFjnT73rueUSZ4KFkP8DzE0U2wJGk1gNreTs4LnujvTygapHbW4zLUpL97zY5lvP4ofQc97DUEcoohvo0We0d1oJsRhol5pKHGBw/GB363C+p0CBbn38+4eg1S4dixf0vRs3Kj9H8UGKtmjaG1G5jgKwKbQnSiTByiofEc85gQLjW6z4PmO8/5jz7LfIBy6twHURlNql2CkUObdbwMAWCd6hPMPsZmP2w5vrVcHz4Tczsy0n5mnQE4j5SiMd26y0gRgCoKuy3mKYFzFQasI/zruJnHHe7IiDy9/BMXGelypeMONuUdyKu9OO2Gt9I7DDgOhVeikrfqJxLKUrHIQ5lW1rKrFNQmrUj439Nawa/BJ4S/fkRdBGkEdFNcwLFR7RRJi8AyzA4CDdsWH5wT4UijRSnnEteSHVwlpdWvJUbRZZGHNQlUEpCguHcNxqhgFL1iftLXWXmEh/mDiqtOOWDaaeciI9n+rgokEZ3zpXuxn46uW6BFE7JNaIx0Ktwz9X2kid/qv+o9ZR/Bpe5PtP5roTIpGUwgZkWDdWA5iA/ZszPoKruJvP46QzQ5oSnRK+wZDLbROi10fFWBlQ1erh8uYT3H0IjgKfgG95V+RTwCaHq/IPnCchPB3lmyP1XK8GEBvBBLy+STypifKslODVdvUd+BYOsiZC7OXPk6U2ip9B9c8sQypq6agDU6HwO/yGX6+mwypDtFrN++RTD1dgmw+jA43SZHNIR93WG+KQEqrVtyg2kVwObfn3iFOWikOB5ZL2Ypb9VTQP+jwY45uAHZ6lbkPgrc6nYCCWdzM6vdIdg6gyF0oHsjGhMBN+MSQZ9apG6DNz1Q8DSJaQNbIktE5hfRFE1JZIxy6oDWM7D0SAJWaHTsVQO2t8l73DpTxwptmEU7uQA55Czbrpt45p5GU
- OohUZff4
- W78fT3/tPHRGBOBomSYJLGZwr7vA8MpVnS4jcXLWS15G8llpa54PzuqNKHhQHD45Ewx/iFGBmzvqCQVGbwyBLPNXog8z8hT0N/sSf7gMGaLvqp3/yU/TeyR8WR4XMNzvs36KM4FP/wMX+MrNa4hterQzt+DKwXyrJ50G3jdJlkgg/iGS3sO+uQZkHBfqiuhVDULNeniActh5Dl81wRb7fVR/JAy4xt55DCJZYLcjdkCwHShIr/9KB1OXYkrV68bQeiOefOXugfPMX9tiRJoNi1vfPVhaxLm1phBjCtVv3SLpyU5m0XHhbJETirl3zG8AUqv1PiZZ3CrTPjSOkAVvUGjZyDsuijEI9Z9xe62ePjuXSXq8cVN9Gad2/TOi6O1iDnUNBEwSbqG6WvOkKt2SSLwjN8nBSE9Zru9baGsiGmClnlOkSpQjLn1yCm7Y/aFKd+Eg7qPyMITCdvUtkgk0ZKOY+Q8KZiTycUdDvtn4mYViz2nORnSWNqBs9vwUxtGnW18VRymdbuP4kUfg=
+X-HE-Tag: 1762648583-743701
+X-HE-Meta: U2FsdGVkX1+Y/S5EKHKRX8MyvXMyax++XfDYMkGJK6xW3WBA3MGbLedtJjJ4kqubxBRGLZMukP5qnzxMDxPhqq645PwMFRjlrfEikOrcoc+Nx8Bd9zZjPsVHPDSuhMYNckqwQW5gZ3a62zZAMqtO9TxCu2blP/OReu5zIQX0/RuAs4sgYHQUuW4uq0FwvvvJQ8/zN3lSmF42zBNuEEj+3WaaFt5PGLMd7ODwHC2HfoGPMi66GcVSN4KTEqyEReBsUsOaLxvTlT6TMRZYWdz3Yt4r045KE1jQ4eNt+UBAJaQpLAieeQiTqcbIAwQnNBCQuHgE7Kr0bMuBXc3lUGSTTzGDDHgynrQyGQC4NnLRiP4M0ssK+vOmm82w1qvZwp4sM8eJ1/rS1cH9u1Dy8fHv9WhgL3MckJvxr38sVUzLKpq/MpDc1vub+wjnKJ7FZ7QshrgPuSTqAK20id6U5c24DNekUvv3uImeIABrHc+jqM4VlZxAwS7dA0EVWgC2Vu4PzBJ8ulkIE4Lp5dBAAVwdp/Dh7n0wTjG91LwpSsEDDiRJaTu7S7bnFOO/Wi6KH/MTy0XjJpndaNIK8rzBkxjDEGbTPQg98r3BMhg3F4MS0E/VehPvQ2ingvN2UknpHWzs9YH58wh+XaPLDzdYge0TzYWdFZumuYq26e1dIQXafs/6ieg1aPc7I2qS7DbjSuT8TnVt2e1zuU8LIeL9fN5gY6ezpfvupxEVjItbSIyrX/j8h7tu1BBSTC2763vkJRSc2SysYj7y95LPdpglNoBgjXUVS19UELF806DsbHTjvT3al1PWLXA5pcgCfzKHUsWV+JM0S3BgN4wbyn3zMN1Sfi2SOEaBIUB5Aag6RD7wmVNIz9SsDKMP8Vgrnm2el/hqoyjgE7XPh5g3GW7HjF2gwuUEJSXX+bvfdpV8iVjz8tjgsjKg61b1L2Z1GQTbItSSrMy80Bvq3GAenarmHMy
+ wjr7juMR
+ LuFONZm83mKrN+0QBKwWbkkqnUeKOgKt/lhd1q39Ys+4/lVz9hPN6p2SuTzlEH6wYZvVwiCUAyo/L1N11qO+vof4Xyqotyfc07iUU8Oo8o2vIQE2tWJu91Hbmtlrh1CdxFB6RsBqsu6BcDD8rf2Wk+NlYMpTq9pWOBRIx0XcrpnEX5LVGoewjpcO2mOu9ArwQbpsKe3DSmMt8OkbXBbbHiGmlsTy0GNu3S+TB42j9G3+bXbVs2rrqGybkN6lji/cauw/xNhy+2m7J7EjkbtytlyABzjg3JUliDaDWIGLPybZjxXIJhNaE5EylZQh6+/hSajPZ/7s+PIE4yFl4IS/RPvjm22ua2mGFkNJVmu/uqC9PpVA0TV5YYBhOfX40g965UmS8d05K47ReUpx8lLT7CDXWpaR8/3nZyl6otCQconx9CSGvgxrlQiZuNDnb4/qNieWGbN2QqwKWYCc=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -122,121 +136,47 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi everybody,
+The previous change added __GFP_ZEROTAGS when allocating the huge zero
+folio to ensure tag initialization for arm64 with MTE enabled. However,
+on s390 this flag is unnecessary and triggers a regression
+(observed as a crash during repeated 'dnf makecache').
 
-Here are the notes from the last Hypervisor Live Update call that happened 
-on Monday, November 3.  Thanks to everybody who was involved!
+Restrict the use of __GFP_ZEROTAGS to architectures that support
+hardware memory tagging (currently arm64 with MTE or KASAN HW tags).
+This avoids unintended side effects on other platforms.
 
-These notes are intended to bring people up to speed who could not attend 
-the call as well as keep the conversation going in between meetings.
+Fixes: 1579227fe0f0 ("mm/huge_memory: initialise the tags of the huge zero folio")
+Link: https://lore.kernel.org/r/20251031170133.280742-1-catalin.marinas@arm.com
+Signed-off-by: Jan Polensky <japo@linux.ibm.com>
+---
+ mm/huge_memory.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
------>o-----
-We chatted briefly about the status of the stateless KHO RFC patch series 
-intended to simply LUO support.
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index aae283b00857..0c1794656d7a 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -209,14 +209,15 @@ unsigned long __thp_vma_allowable_orders(struct vm_area_struct *vma,
 
-Pasha started us off by updating that Jason Miu will be updating his patch 
-series and is expected to send those patches to the mailing list after 
-some more internal code review.  That would be expected to be posted 
-either this week or next week.
+ static bool get_huge_zero_folio(void)
+ {
++	gfp_t gfp = (GFP_TRANSHUGE | __GFP_ZERO) & ~__GFP_MOVABLE;
+ 	struct folio *zero_folio;
+ retry:
+ 	if (likely(atomic_inc_not_zero(&huge_zero_refcount)))
+ 		return true;
+-
+-	zero_folio = folio_alloc((GFP_TRANSHUGE | __GFP_ZERO | __GFP_ZEROTAGS) &
+-				 ~__GFP_MOVABLE,
+-			HPAGE_PMD_ORDER);
++#if IS_ENABLED(CONFIG_KASAN_HW_TAGS) || IS_ENABLED(CONFIG_ARM64_MTE)
++	gfp |= __GFP_ZEROTAGS;
++#endif
++	zero_folio = folio_alloc(gfp, HPAGE_PMD_ORDER);
+ 	if (!zero_folio) {
+ 		count_vm_event(THP_ZERO_PAGE_ALLOC_FAILED);
+ 		return false;
+--
+2.48.1
 
-Pasha also updated that is plan is to remove subsystems to simply the 
-state machine and the UAPI; this would be replaced by the file lifecycle 
-bound global data created and destroyed automatically based on reserved 
-file state.  He was also simplifying the state machine to keep the minimum 
-needed support in the initial version, but with extensibility for the 
-future.  No exact timeline although it is currently ~90% ready.
-
------>o-----
-Pratyush discussed the global file based state and how it may circumvent 
-the LUO state machine; it's an implicit preserve of the subsystem 
-completely independent of global state.  Pasha said the state is now bound 
-to the state of the preserved files only based on sessions.  We're getting 
-rid of global state for now.
-
-Pratyush suggested to tie subsystems with the file handler but this would 
-not be possible if subsystems are going away.  Pasha said the new global 
-state is flexible and can share multiple file handlers; one global state 
-can be bound to multiple file handlers.
-
------>o-----
-Jork Loeser as if there is a design/API link for the memfd and whether 
-this is something a driver could use to persistently holding data.  He was 
-asking if a driver could associate arbitrary pages with a preserved memfd.
-
-Pratyush said the memfd preservation was part of the LUO patch series at 
-the end.  A driver can pass a memfd to LUO after creating an fd.  Pratyush 
-suggested using KHO to preserve data; the data may moved at runtime but 
-would need to be unmovable during preservation across kexec.
-
-Jason Gunthorpe suggested using APIs to get a page from a memfd at a 
-specific offset.
-
------>o-----
-Vipin Sharma had posted a recent patch series for VFIO[1], David Matlack 
-will be working on v2 of this will Vipin is on leave.  Feedback was 
-received about not moving the PCI save state and making them public, so 
-that's work in progress.  More feedback said there was missing bits and we 
-need more PCI core changes that would be updated in v2 to be more complete 
-(but also include more PCI changes).  No specific timeline yet on v2, but 
-it will be based on LUO v5.
-
-David said the VFIO patches are using an anonymous inode to recreate the 
-file after live update and asked if we care about associating recreated 
-fds for userspace after live update with a particular inode.  Jason said 
-that VFIO would care because it uses the inode to get an address space 
-which it uses with an unmapped mapping range and this must work correctly.
-
------>o-----
-Sami summarized the discussion on IOMMU persistence.  He was working on 
-updating the patch series to v2 based on the feedback from v1.  He talked 
-about restoration of the HWPTs on the restore side.  Jason thought that we 
-wouldn't have an IOAS for the restored domains and suggested it could be 
-null instead.  Sami thought this may be slightly invasive including where 
-we are taking locks; Jason suggested against a dummy IOAS.
-
------>o-----
-We discussed briefly about deferred struct page initialization support 
-with KHO.  Pasha said KHO isn't compatible with deferred struct pages 
-although when using KHO we definitely want fast reboot performance.  We 
-decided to discuss this more later after LPC where there will be some 
-discussion about reboot performance.
-
------>o-----
-Pratyush noted that he is working on the 1GB preservation but will take 
-some more time to clean up and have it working properly.  He said 
-guest_memfd would use hugetlb for 1GB pages so he's working on hugetlb 
-preservation.  Pratyush was focusing on generic hugetlb support that could 
-be ported for use with guest_memfd when it supports hugetlb.  He's aiming 
-for an RFC to be ready by the time of LPC.
-
-Ackerley updated that the hugetlb support for guest_memfd is currently in 
-RFC patches posted upstream.
-
------>o-----
-Next meeting will be on Monday, November 17 at 8am PST (UTC-8), everybody
-is welcome: https://meet.google.com/rjn-dmzu-hgq
-
-Topics for the next meeting:
-
- - update on the status of stateless KHO RFC patches that should simplify
-   LUO support
- - update on the status of LUO v5 overall
- - follow up on the status of iommu persistence and its v2 patches based
-   on v1 feedback
- - update on the v2 of the VFIO patch series based on LUO v5 and expected
-   timelines
- - discuss status of hugetlb preservation, specifically 1GB support, with
-   regular memfd, aiming for an RFC by the time of LPC
- - update on status of guest_memfd support for 1GB hugetlb pages
- - discuss any use cases for Confidential Computing where folios may need
-   to be split after being marked as preserved during brown out
- - later: testing methodology to allow downstream consumers to qualify
-   that live update works from one version to another
- - later: reducing blackout window during live update, including deferred
-   struct page initialization
-
-Please let me know if you'd like to propose additional topics for
-discussion, thank you!
-
-[1] https://marc.info/?l=linux-kernel&m=176074589311102&w=2 
 
