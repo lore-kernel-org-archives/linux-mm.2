@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id C7EA0CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:14:41 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45D7CCFA13
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:15:26 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id C08FE8E0005; Sun,  9 Nov 2025 12:14:40 -0500 (EST)
+	id 21FF38E0006; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id BE0DA8E0002; Sun,  9 Nov 2025 12:14:40 -0500 (EST)
+	id 1F7028E0002; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id AF67F8E0005; Sun,  9 Nov 2025 12:14:40 -0500 (EST)
+	id 10CEE8E0006; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id 99DE18E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:14:40 -0500 (EST)
-Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 37375BC6D1
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:14:40 +0000 (UTC)
-X-FDA: 84091717920.15.F6FED74
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id EF82F8E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:15:25 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 878A6140A39
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:15:25 +0000 (UTC)
+X-FDA: 84091719810.12.01E10BB
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf13.hostedemail.com (Postfix) with ESMTP id 22F5D2000E
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:14:37 +0000 (UTC)
-Authentication-Results: imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mpb9ndl+;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	by imf15.hostedemail.com (Postfix) with ESMTP id BD048A000C
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:15:23 +0000 (UTC)
+Authentication-Results: imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pgmrysgp;
+	spf=pass (imf15.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762708478;
+	s=arc-20220608; t=1762708523;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=F5HpPOlX4A+IDC0iS/hUD8BvRwzAlkYdd4UARWjCrtI=;
-	b=yhRkjl9W4aJZx6vxzKPVexHGD2eGnjAHtHpUaCBK3/VaEgYLID8XfFR6jPkplQXnrYNSca
-	G4naeDMvIMtAvPZxo901lEvWmbI2I7wGf6gMz1rgK/Szd27RAEz47v2ftL550u6oQ8iRdX
-	xaCB5YlIV3RtJDf89cZMktwH1AVAG7E=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708478; a=rsa-sha256;
+	bh=CH23Ki9EOjG++XfGf0hWyR5UKo/5fVuG3elhs2g375Y=;
+	b=0PY8oJqeXK6d0sOoCJ3Dltw2/jcT+vkCt5gPzq2KUB2wRrPOaExGGKO3yvFGxEAfxMBdCf
+	Yp7u6kceNtbSsIGdqUHHvl8OlYOCnZpovE83t0hnAg9phAKhJ0ERDiwyS5kV2plDhLl6io
+	iKSjzOktNG/0jkglCTGvsi+lztrtlkg=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708523; a=rsa-sha256;
 	cv=none;
-	b=yTTU6PDb3dOHXqAlhwRUR90WLJtbMBk5WFz+IvXJUTA0Kkxvn/qQZC2TXOkU6sFcDC3bSV
-	ZykpuMAmhC61bOxnL3BXxxCidUwTPj5W6UgSByTt/juY8it1EhOekfg6zDRhDTHtRFT9Cb
-	cW/tWYle0v9/E03I9PiJHsVgGV+8ZAE=
+	b=J5SlC4zwNkqiLtoM/M81n7Ef1tsdVsxYy0/GpptllmHDLnQPKuC3jv6EuOp3KfkJ2b6HgS
+	jRZqhLm2fT7COJKNhE46F+qmGHBI2GScKZ3vddMXMA9XyJN4EDdwlyHLG362HMjpOBQZ+r
+	VgnNsappzQ+7Yi+XRO97fNyMywrjkeg=
 ARC-Authentication-Results: i=1;
-	imf13.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Mpb9ndl+;
-	spf=pass (imf13.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	imf15.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pgmrysgp;
+	spf=pass (imf15.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762708477;
+	s=mimecast20190719; t=1762708523;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=F5HpPOlX4A+IDC0iS/hUD8BvRwzAlkYdd4UARWjCrtI=;
-	b=Mpb9ndl+TiDNpBmQsz6kbSW8q46zCfijH5GTTrERTfTmdSQKLKheoxGiWsL6dbYLRsSYtq
-	9H4G0JvZ0HGKkKQV7UHX6R5U1uPwJBsdiZweyOPZccYAKEs+0HkBN9iy7JEE0D6RpTYYYB
-	eDltsOybay6mfzpxWsBqNQWckhwP/uY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=CH23Ki9EOjG++XfGf0hWyR5UKo/5fVuG3elhs2g375Y=;
+	b=PgmrysgpS/nM6fmM6cgvEQM+wfMQZwOHA/wr+1NlUe/ZdirVEyL9pjyCdorcXkUHNRvhMx
+	Hp5CMgpW68/q+nFSOMXiwPl5duVO9K3Z7DTdBNO+f4UZLSifPcK1Y6puN03TzIjf1kTdsC
+	LNyRLvSMqHNF2UINfKrLZr3FgbhU5hM=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-P45cLDM0P8SsWBX1eHJ3Qw-1; Sun,
- 09 Nov 2025 12:14:33 -0500
-X-MC-Unique: P45cLDM0P8SsWBX1eHJ3Qw-1
-X-Mimecast-MFC-AGG-ID: P45cLDM0P8SsWBX1eHJ3Qw_1762708468
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-hba6nzFHMM2ZSUG6656qEw-1; Sun,
+ 09 Nov 2025 12:15:21 -0500
+X-MC-Unique: hba6nzFHMM2ZSUG6656qEw-1
+X-Mimecast-MFC-AGG-ID: hba6nzFHMM2ZSUG6656qEw_1762708516
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EA1F195608D;
-	Sun,  9 Nov 2025 17:14:27 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CA8E180048E;
+	Sun,  9 Nov 2025 17:15:15 +0000 (UTC)
 Received: from fedora (unknown [10.44.32.53])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 6443730001B9;
-	Sun,  9 Nov 2025 17:14:06 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C8655180087B;
+	Sun,  9 Nov 2025 17:14:53 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun,  9 Nov 2025 18:14:26 +0100 (CET)
-Date: Sun, 9 Nov 2025 18:14:04 +0100
+	oleg@redhat.com; Sun,  9 Nov 2025 18:15:14 +0100 (CET)
+Date: Sun, 9 Nov 2025 18:14:52 +0100
 From: Oleg Nesterov <oleg@redhat.com>
 To: Bernd Edlinger <bernd.edlinger@hotmail.de>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -123,8 +123,8 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Cyrill Gorcunov <gorcunov@gmail.com>,
 	Eric Dumazet <edumazet@google.com>
-Subject: [RFC PATCH 0/3] mt-exec: fix deadlock with ptrace_attach()
-Message-ID: <aRDL3HOB21pMVMWC@redhat.com>
+Subject: [RFC PATCH 1/3] exec: make setup_new_exec() return int
+Message-ID: <aRDMDLgLdYq9g1Tr@redhat.com>
 References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
@@ -133,19 +133,20 @@ References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.
  <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
  <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
  <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
+ <aRDL3HOB21pMVMWC@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Stat-Signature: o6o681t51jdio59tceqw9resznz6r338
+In-Reply-To: <aRDL3HOB21pMVMWC@redhat.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: BD048A000C
+X-Stat-Signature: oc1x8zooncu83sfmngae6fhnaf6mr4yx
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 22F5D2000E
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762708477-116740
-X-HE-Meta: U2FsdGVkX1/XC6U+EZmc0MV7fEitKv8Ye7MMVbNwDUk2N2mBhKho6/xDYT5SkQPcV+cE46fkrsT7+F1GS61z3omZ4PmoK1qnsz4qcou4PGkBLkqKcwxZwrvu+IQfnn/NsrPpymaPIjQtjZM9AV8VLhyHTavCDYUFFryp7sHRaX4iUI5TJhisS7l9MFnI1L9v8Oa6ME8QFY/+/UtSO2GvyEjq2Tlss2awq5w5wpmyALs2ZNLWBt/FRpM+daQrCTFB6t13Qb3ZF9Wenld/V1+5AmFxk/OpO/IDpNTsHpr4NnY87H76d6SZ3iyubCzLsUqOBq2AGlHBVjzeJabDd5nwaDdtWywOclITH63m3stPgRCh/iKO+MQRdVuFcHrB57vEx6giLqB3iwA8QmgobRcbBfCCRAnUuR7eB0czKIrLrQynlWYBE/f8FqDyK88Bnw/SUsK+Yf0w5o+lzNGUXQoYmvGDdFLab9BdyN1ELt4a7GdLl6NltjbVNjiBv774qUvaPXUClmDidoW6vR5BnETuG/jeJ2w741Q8JN4xYS8OJ2qfr5jxDmSLUb7LxdxL6D6wZ/+CBe5CcfXqBxe7MmEH/csVoq5g5pgiR0XEdHkH7WVMDRMI1XVLlEhDKGIcpTyAQ4/9jGhWXUN1D6J3E6FFIEk+x9Vf+qJRvmUV284Dk3OLX0MBHCOQIwUjIpHNqXMXUiOzkJcx7H46PvNLYNd9/cpje2k8VHN1rmzC2xKvqfdt+Konx9xetjlkPNedY0/xaOngVsD7obBOksm2hfXMRjotFWI1wWieMPLoH7Kx85jqxj7MmJqNWwbrG5IvOhXDeGL2gjElQz/maTMFXKI+y/Glv/+obvFL409KHcX72dme35n95MJVpW5QXsYnqpJLve3vAYDpqA9WsDRDCmJERqkc1oZIQkDMXCWFJuMdi0nVSb+b0Hae8KNECgPjHL+sGOBs5gI3/rZ9KzA1IWN
- xTs73SFS
- z4Fa44fM9a3JugrtapjPVKsEBNhkj1v5XgZMyPdGUSXsiqXv9gI4tF1tLaYfnh86ZwajOlgSLCzxgE5+zfGVhRe1XZRzbsMzr890rOatX8sCy0g+vilA248eQoGdiomIwyG2U3vH2MjbxyluEdTh2odAeqGGy/2wOgjA8AsdDt7cAIm/G/+7bTPY+jFA5roOMoAPGotoNiIfHS+t99S20qR2susbWfsFYBGJqlBV/eW7VO97O8ntru5JxorBN4/i7fPsDNe92QZ53kuyEQSkyQxPWjLIguNTnRhbRoP1mYRgwroZ0Bq7PkBOuiCCM3N7melKE2dAjLSx5LaHsFO/eOZ+sluGON4hS5afS/HW1zm6ScT8gZFW04FIlKOdLmqO07QHf16lUuemWP7WJdHVJxCAihuAu08r4a6YDgAxUtuH3+SfMYHgBN5j3wz0z6CTwUNLQPtSlXS6crFZuvpht6ckJ6T7lA/2A1N0ipbWGCDzXrEzLGKYd2UZNftekSPrLGh6Z
+X-HE-Tag: 1762708523-270355
+X-HE-Meta: U2FsdGVkX1/5nvJEunuXJ1OUyGVsaoysIH7RQLrzCF3yWt97eVyXJjEMHa8XOpiRKcxYRu/xhXFCzI6HTaSRel4cMXSG2ukWN/qnzDRGlrhLqL6F5QhrYLJDkqGdJWKfjHmWpzH+pzsWb2iiaS8Gruka/ArvaRtzP7CuOV8JAaGOrSC0VJABYrxcJiIs0jW6UUdf9FfvqwP5z6y2scD9eaLcMEobuxNV3zfRvb/ehYWpZTvSR+7HvaQyMFsPM3RpoR8eKVMx77aVAm6TXfuTKpKOPlC4HS/U16kpNAhn3sf9baQbVa0qx5FjIMEekArSFwPoKLg4cXRIYurTCZy6odEPrdoiexKFJDCc3ctY1bRtgFjnrmRiNMB/c8RX/z5vKbC9+YCz3ZhehOeX+VtuEeL+rCXHQHTVJ/XMW0yWNbNse+Gw1h9WiHKQxK6shFfLm2cuK5kEsxYdroQcWPBILc+zeaUHO+NmulJ3lMOtGWdE2varXFFkRwW+4XdUVIa5k2SBft4y7mh4l/Ro1kcFU7OSAgpralG6CxwoLAv2tj6dLG6xzhQSnPfk2rczySbTo+FcYDevDWOQ8Bpa3E62EcjT5jQ7kibRTx0YFUwwLwLYrf1jXoU806rwg+SvMKi27iVhfqCWvcfUbtFu/Vm/J7qYBB/JdT7IYtJlyZy8WQ8ebHl6wbzwVTnF/AY3axmd1G2JPga2Mr1t2VmE6/igq9EYrz2HAHCUl93ZZx/rUkh82iTSTIKJCG/H4GJRRJ6DPNoCKxo9GV0hSK6llXWT69pw1T4rRHUWTErCuMt/tcxIdJAcqAlKHPEJ3tAT5oL4SGD39sx3urzr0nEaSE8w2kZ7OK7tJxe5gXxs81+Q836fY+X/XtwOcv8FCEkKLSLn+sFDcW/C8fbJa7BjvCeftNtI441dsFrc+RnKu6geA7pWA/z1wXLiMO/NwVhxJhnO8j+CkDcymxhsVswBIsT
+ DgsBoQNs
+ PpFpQ9TmA7BvpJM4PyEnJr+x54pn6kw5EGrD8umuYZFibFlfazMulYPUbxYHUIE0ChvhcgT0rRSCTFsWdOQT709Z1MRM2V/vCqCoJjt0aDP2ESgeNHyO9aRTZqw0SHwo3g9THHjm8IBMXYoDwjoCdGQIyR2moVJz6+I5cFh9+hSgp4Rv0XVtG4p8/MG8tq6xfEPvsYawtMRhH987qDNbi//Sy+m+pQfvu9Zbkq6fOj6Jwjl682DnS1qgDdknl9+4Y0eJz+HL6zA/5yv67W0i1R1BTbdNeKRTv0ekaJaLJbaP/9Kt5IIhNn9R1gjwpGTT7wy3bjOrwasS9Upo10vnyn69Ao9LyNww9u7a0OnNbuE1JN0ochitUn5kCUX6VKDdTU9H9gNMrqJdasG0upxV65uEF7TjYoV4vqekvOljyJkRPp9ErWHrrrHJaTtrPDdm+eb9Rfp3aI+ydG2VAUlZCjLdstY7jxLA1VKI/CBHpTgHqkRy+48+6+ki/iE9dtyEFjrhRxnBAQwEuPyeSxvKN4htykg==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -154,24 +155,99 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Not for inclusion yet. 2/2 is untested, incomplete, possibly buggy.
+Preparation. After the next change setup_new_exec() can fail.
 
-But could you review at least the intent? Do you see any problem with
-this approach?
-
-This problem is very, very old. It seems that nobody can suggest a
-simple/clean fix...
-
-Oleg.
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 ---
+ fs/binfmt_elf.c         | 4 +++-
+ fs/binfmt_elf_fdpic.c   | 4 +++-
+ fs/binfmt_flat.c        | 4 +++-
+ fs/exec.c               | 4 +++-
+ include/linux/binfmts.h | 2 +-
+ 5 files changed, 13 insertions(+), 5 deletions(-)
 
- fs/binfmt_elf.c         |   4 +-
- fs/binfmt_elf_fdpic.c   |   4 +-
- fs/binfmt_flat.c        |   4 +-
- fs/exec.c               | 142 +++++++++++++++++++++++-------------------------
- include/linux/binfmts.h |   2 +-
- kernel/exit.c           |   9 +--
- kernel/signal.c         |   6 +-
- 7 files changed, 87 insertions(+), 84 deletions(-)
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index e4653bb99946..8a38689ae4b0 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1021,7 +1021,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
+ 		current->flags |= PF_RANDOMIZE;
+ 
+-	setup_new_exec(bprm);
++	retval = setup_new_exec(bprm);
++	if (retval)
++		goto out_free_dentry;
+ 
+ 	/* Do this so that we can load the interpreter, if need be.  We will
+ 	   change some of these later */
+diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
+index 48fd2de3bca0..7ad98b8132fc 100644
+--- a/fs/binfmt_elf_fdpic.c
++++ b/fs/binfmt_elf_fdpic.c
+@@ -351,7 +351,9 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
+ 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
+ 
+-	setup_new_exec(bprm);
++	retval = setup_new_exec(bprm);
++	if (retval)
++		goto error;
+ 
+ 	set_binfmt(&elf_fdpic_format);
+ 
+diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
+index b5b5ca1a44f7..78e9ca128ea7 100644
+--- a/fs/binfmt_flat.c
++++ b/fs/binfmt_flat.c
+@@ -512,7 +512,9 @@ static int load_flat_file(struct linux_binprm *bprm,
+ 
+ 	/* OK, This is the point of no return */
+ 	set_personality(PER_LINUX_32BIT);
+-	setup_new_exec(bprm);
++	ret = setup_new_exec(bprm);
++	if (ret)
++		goto err;
+ 
+ 	/*
+ 	 * calculate the extra space we need to map in
+diff --git a/fs/exec.c b/fs/exec.c
+index 6b70c6726d31..136a7ab5d91c 100644
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1321,7 +1321,7 @@ void would_dump(struct linux_binprm *bprm, struct file *file)
+ }
+ EXPORT_SYMBOL(would_dump);
+ 
+-void setup_new_exec(struct linux_binprm * bprm)
++int setup_new_exec(struct linux_binprm * bprm)
+ {
+ 	/* Setup things that can depend upon the personality */
+ 	struct task_struct *me = current;
+@@ -1337,6 +1337,8 @@ void setup_new_exec(struct linux_binprm * bprm)
+ 	me->mm->task_size = TASK_SIZE;
+ 	up_write(&me->signal->exec_update_lock);
+ 	mutex_unlock(&me->signal->cred_guard_mutex);
++
++	return 0;
+ }
+ EXPORT_SYMBOL(setup_new_exec);
+ 
+diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
+index 65abd5ab8836..678b7525ac5a 100644
+--- a/include/linux/binfmts.h
++++ b/include/linux/binfmts.h
+@@ -123,7 +123,7 @@ extern void unregister_binfmt(struct linux_binfmt *);
+ 
+ extern int __must_check remove_arg_zero(struct linux_binprm *);
+ extern int begin_new_exec(struct linux_binprm * bprm);
+-extern void setup_new_exec(struct linux_binprm * bprm);
++extern int setup_new_exec(struct linux_binprm * bprm);
+ extern void finalize_exec(struct linux_binprm *bprm);
+ extern void would_dump(struct linux_binprm *, struct file *);
+ 
+-- 
+2.25.1.362.g51ebf55
+
 
 
