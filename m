@@ -4,66 +4,66 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id E8BA4CCF9F8
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 18:06:57 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id E9C7ECCF9F8
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 18:07:02 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 5386A8E000C; Sun,  9 Nov 2025 13:06:57 -0500 (EST)
+	id 55FF78E0012; Sun,  9 Nov 2025 13:07:02 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 50FC98E0002; Sun,  9 Nov 2025 13:06:57 -0500 (EST)
+	id 537488E0002; Sun,  9 Nov 2025 13:07:02 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 44CD08E000C; Sun,  9 Nov 2025 13:06:57 -0500 (EST)
+	id 474958E0012; Sun,  9 Nov 2025 13:07:02 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 2DE0A8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:06:57 -0500 (EST)
-Received: from smtpin13.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id CBE00899F1
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:06:56 +0000 (UTC)
-X-FDA: 84091849632.13.681172E
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf14.hostedemail.com (Postfix) with ESMTP id 12CF3100017
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:06:54 +0000 (UTC)
-Authentication-Results: imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0GBkoTL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762711615; a=rsa-sha256;
-	cv=none;
-	b=jBnONpfOAW6lB+4kwq/QmZHshRaEvHUb3Xdf3KJaCLqm2r+k55uRfF5b4t8N7cObj2WARD
-	4V2qih/Qceq6cBI2vWJVxhBIw8yoExHTDw/LWwZlw0tTGrosh5nEC+gqGzLR+DGTz6LTsJ
-	Fz+i+QaaAfHjcWZHoA04PxrFp5LX8qs=
-ARC-Authentication-Results: i=1;
-	imf14.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=a0GBkoTL;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf14.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35F658E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:07:02 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay09.hostedemail.com (Postfix) with ESMTP id D23858820B
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:01 +0000 (UTC)
+X-FDA: 84091849842.12.FADA11B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf02.hostedemail.com (Postfix) with ESMTP id 489378000B
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 18:07:00 +0000 (UTC)
+Authentication-Results: imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aDkCAdDT;
+	spf=pass (imf02.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762711615;
+	s=arc-20220608; t=1762711620;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=vGOxm6IC95Y3Q6Gnvx0OjSMZumaLJKCVTHUwhCeVDoI=;
-	b=P82JuFWuHFK8/WDOJlnAcz/lWVaNW0CW1LCmSNrMZEuUv8tH08oa9fuWo99lXP20Fpbsk6
-	PF4dN4Ao6FZfYeVTynDsdsQdVb1rwFNPTwekmfGSJNkARo4zG+YGlqa0LVC2mh352n+Usg
-	d1Xu+JzbiBBUu3eDTFicQRUTECYlt+U=
+	bh=RvJPb1oWiSEFrItg9k6KHW7Ej6FEWzRZAf+cqndt6+s=;
+	b=3AjrsHrvMjGXQ5M2CYsQJ+NZxVvaLB0MEjZY6beJubTOMOlwl7Af+m1mj5t7AXjOUZvV9P
+	thcaqvIYDZy+rHL95cdIVDt48+CmuhsrVm0NwFIiOkdTIR46sH4qJ+FrUke/vKBD3m8Zmx
+	CFvx595AYO8GYkxGw6XCuxcI3LBXRvs=
+ARC-Authentication-Results: i=1;
+	imf02.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=aDkCAdDT;
+	spf=pass (imf02.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762711620; a=rsa-sha256;
+	cv=none;
+	b=gIIa8Hq/6A4AVd+o9+bD6ubLSH1QaSMAT2sPhVX1ai4MkGHBMgWRU92OnAZH35+FW8W1cy
+	mFbcPWjw1FMj5vJAk0aJfvHhdd24S8hq3BWHa2Dg2kkvcYHm+P33v0ZTzKl9ZWZ+yb1YH8
+	+DjwnxBcbAMDpvOezT2I52FKSeWkKoY=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 39F5B41980;
-	Sun,  9 Nov 2025 18:06:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5552CC116B1;
-	Sun,  9 Nov 2025 18:06:51 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id 8341A60007;
+	Sun,  9 Nov 2025 18:06:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 423E4C4CEFB;
+	Sun,  9 Nov 2025 18:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762711614;
-	bh=Jyr7Advpmrp/1CXXyDKOLNg7W6MBf8xRQAccFc4INxk=;
+	s=k20201202; t=1762711619;
+	bh=NCUBtJbYbJUSM0PsF/hMhn60Ld0of4iArhANi0uVhgc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=a0GBkoTLiucisSat+h25ppOAFgAegqvUxdUtTs5Nk0rTPhy15MOS68GznbscGK5rT
-	 mi+aEJadB1f7qTq2pjsoXaVgesLIKFdlr2NIExfvOYDCKvc6NJoEqWsLGSCX2Lmjh+
-	 2NGQdojgnMGUR2BwCwr41SVkshdRCei2h2KnBeCeRxOHaiz6Vwc0gYJf0KVSkfTXAb
-	 2kB7ylipQrRAkYtOFFB+btd7ShBG04R1Reyfh0LAYf1spO2NzfJGh0mrgWSLAB23bs
-	 Nffz7yGvfL0urnkkTwWVO4tF0BOf+ZQ6frVykZAY3iWTzxzawWAXnogLuQSdq3qWPd
-	 WVwVE6jVwwHtA==
-Date: Sun, 9 Nov 2025 19:06:49 +0100
+	b=aDkCAdDTBKcWRXGOcI+UXsgw84QaqZW8IzPm/a5rL26dy7qe0gMOs2b6A+v9DgZj2
+	 +DIGa0IqVmPRS/VbYmO4TJJYdIUvsj6jXaQrQ5yBqUR+cIN15YTt73BjpaPdLFmRgc
+	 vCkxN7ZDOIWaOzuTDOqZDjpFyoH7hQBXCTHATd8m+SIsmvc0x6wH3gc2CAC2NYPxwf
+	 SabU9UBOkBkGKWrKgWjHub/Rdr7mMOcbR4e8SQ1306D4JrbsjjG6JKhkTsnrDhrs8P
+	 HGTtJ+zmeAlXnotgcVFov1Ztmv6+6SauSlmGzOAKT2Gt4meJIs6ftUeg0as/tFPkNy
+	 SCdW6cr5zTyAQ==
+Date: Sun, 9 Nov 2025 19:06:54 +0100
 From: Alejandro Colomar <alx@kernel.org>
 To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
 Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
@@ -72,22 +72,23 @@ Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>,
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH v3 0/4] Add ARRAY_END(), and use it to fix off-by-one bugs
-Message-ID: <cover.1762711279.git.alx@kernel.org>
+Subject: [PATCH v3 1/4] array_size.h: Add ARRAY_END()
+Message-ID: <2cb4ddff93b3d3037ef8d094de94227982117f87.1762711279.git.alx@kernel.org>
 X-Mailer: git-send-email 2.51.0
 References: <cover.1758806023.git.alx@kernel.org>
+ <cover.1762711279.git.alx@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <cover.1758806023.git.alx@kernel.org>
-X-Rspamd-Queue-Id: 12CF3100017
-X-Rspamd-Server: rspam07
-X-Stat-Signature: i49dmkewbcj6ncd5qhdtok7kbcreghos
+In-Reply-To: <cover.1762711279.git.alx@kernel.org>
+X-Rspamd-Queue-Id: 489378000B
+X-Stat-Signature: 3m75ymsuegdibhjkuht3ihyz8mxys751
+X-Rspamd-Server: rspam02
 X-Rspam-User: 
-X-HE-Tag: 1762711614-568724
-X-HE-Meta: U2FsdGVkX18wo3LDIXsdR/p2EteN6rSpf+iYjGdv7/x6qYFzF3kbG3Q7USHVU2rJm9C4A7QNY7IHtSTG+YkfS5Jt2qO/Zi288WXDjY1p8KA7YG7Zpzl9wyfLNUHUu9gvp3v+wKlnj6MLyhxKQa9/yfG63ByP/AwaQ5JbT/2EscOaaE0WkJVQ6c4sl4souD9txIHZyiZ3lvpiVZgPsdCJfeM86wW1AFXX4TN3UycKDt6f8KOgsgxmCaEQbyWnJ7E4uk1dikIDpVl1Am6ISmHlpy4X4ZBMFU9uTIviSN6rmo5ETh1FD/5x3mR2sHvrI7GU21qKxxjinVDJZbXta7D8EdOGadHir0E0i7RfZ7yWOaZeqtS/u/BBU2xK5F/dW6q8B/KObafX5IiZfrrVt8tdAvuPHhBBIp1P7fzjvkXmLlNv09sc/bWhGB/FteAmYK4hZiip2D+s04sv9SezgHDxzK6b0x/P2Fbx4CLA5vEh6AYcppC7EhAuGAUUYewiMcOEOgclE2f32bsN/T6OsskdkskJORxahCNpt34n/DkFYX5j6Mluef4jf17cyF6S9HujXSpdf99xw9PQZZtPrrAU1zux9G9tKLEQUsJbz0jsYp2qdPuB1p1RdMkmckFoGJILWdmG81gV7ygJkXXeb3555hyuYT+Zp8+f1wVJyOEYqMh5NVrlKGVc9JJBl133voMgY9RuFpnyFGuqliDjjHokDIdIBcso0OPfb0LUhQBJ9s5fHXWC20WJRjOw6FdsaNmw/vCPJagBLh39S52ypW91xCt0m0UjcTGEpK4N2MkA29QiLoTwhD5dRpC8xqH90j/kvXipOxM97ZmxQhXV+uOPdNzHkXNyBwnKoOlVt2WQMpqh/9Z5UghuDzqDXP57e5xFkdOidiErfnO207HayNl3UB376rustip7pygzuACTg3Nuu0984vTX1kowbQlnMo/QQBjlBah3QyDWLJtEzdY
- LY9qnmfm
- eG7TdfXi2FusbXThnIKeBOlziIluz8gW/KWV2s+2+XwAMn0kAmWH9DcJShRTgFu+E9V126O7jWxGLiDO6fQEXc/F57J+3MsOTxagCadzcf49Wm1Czk3MpJgzWsPftUJx859Zfwn3be/bPu7IUnUJymuVG0zpZYONx/HDchSXxid1PdzNZnd+QxzdpYc7V+1wGFT7xWboD6wZzEQiRO/vNv2xgTQgvCwyRMT7n/QkxiVLHYuQlqfsPkRBDlG31tzsT/HDiXQrLedWWHtlOsEgo4mkLpM5pqAA6ufYHmGPTwJ0BQsdGIObvCAFL+rStCuiVQH9yurtzB/d39Vb5qeFhZzWycw==
+X-HE-Tag: 1762711620-738521
+X-HE-Meta: U2FsdGVkX19m0tsZN8yo2A9pKQrlX33LPt9BSswKc19wfKJco9RUri5lYfrlJalF2gOkXNpRiv90S425+9iqy3YEdKf1QVYlLDixGaj2eh3bXZ/96zHOmZJZa+bzdTrCP60GcRn7aI/ME9DiqqEuKwQYRYAxRK6NQ34LcTRso7XTM4P8f9QCWsuDXtncSKKqHd27T8Qm3afi0t5a3sdf7D4zNXzjs3MIYSo6bQWIcReD60kR4cZAopV3aUtqmAMsAMMwmn/HkIosROJ4fz25VeCwiBqKG3xck36B/1e9BNkWzJWWqVJH3iQ+9PmTHC6WA6T5W8dbjHu0ivxqzJnwQky7v+lSU1yMQQ2HuZZP+MYACL0ZFWrqesO/Iw7e1eycODm2Kuct3tqDOrlUmPlSq+rSB+s+oGn0kz4QPrk/YgKMDSxDVKA/8gDfTzPhJc/t4ogicwzP0VGRCBtblwGVc0zcIYrRWV5+IpVmPEY6rNYkHqr79FadDBe6HEwmVOb/o+wfkqHW7bL/1QWTA9oyeSeVWjDmEjkoKbjp5PgNlzFBlPZlQDPfLg/5aS9lshZVG8bB97Wc9LysJ2QoD5QQMuvw3UXYdIZ0i2iKb1Io+EJZWv6h2GJ22PGjXLKpQ3TbS3lDNTdDOdKtLqZPJ8UFOXTF6x8oCkkIGoVFgJwoehE8V6cIejSZ7IOBjqhebGZ2lxy0QWyn2vLuSRPTgy5jIv9aXwBhhNrC46PVRluI7QfjWtz7BidgkBd25FhT9J3WfkX1v5MWgyXXCB+D48S1HQmBo3hYgEUqvGXg5qLfiHOveo85ZWHTgfREeGQWDSe+M9UpZYbx9QQ8eMEhHvR+FiO+N1PUGfj5i+sSkn5gQoZOVtONBSxMa0S/dr/9IJhN4BFdx0t/sxJn3wbmZ78TNjRJYUSTZTJyahSNjH4hu/zN6GIbrpMxN4JKx8G34QgLQz5M/eoU3oi8rxQiXZs
+ cKG5Bxsh
+ hiPbUA/c4Tzv3vE81Q3UxxCg7hoPCmV3+TSNOs6G1/nAr4qv/MYh9T9vYeygPQ1L4AhaHv3YPh7u1iSoQufswkuy3BDEX6motEbldHGW+BzuRBlNRK9riHr5Blk8yMSibXSb6SCByelF410K399mhJ71IEM6C22dJTjCB7IDNIxjs0vzi+WFqMKdjuUIEc1LEp1EZOxpA7wkrv2eGZFQt+dBOAYgne7w1yDj8NdSYtgbUbw3P53FKw7wPGISL8kFVqq+KJZT7Qhgj29QX8dhFEbmxOEgBGLwL2LxDkG/dCJrc1ZwGJQRDNk5AOmCKCNlvvHgkG7FLvTw2/nNUFDPvQ6O6GHgM7N8LHEQm+2Uh8LUoFMaBBcNiao3nVV5g5GIs6r6sPvKlMlBvuG8epLXrANt5liACahOfR+rEFzEyN+paOBre0M69Z092vHDAU7mn6NJkq8VMBpUN/QC8bN9eUYirutGqFc3UNmpBQGlg2mgmLCDz0MeSlmbomTe+Z85Jr32hqDlCMvJIb5sooBin0cIC0Jd1EgIbPliU7Xy0++DpiIBO/wZ4ux2HNkuEdt9hGnon4B1pPinIbw4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,124 +97,55 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-ARRAY_END() is a macro to calculate a pointer to one past the last
-element of an array argument.  This is a very common pointer, which is
-used to iterate over all elements of an array:
+ARRAY_END() returns a pointer one past the end of the last element in
+the array argument.  This pointer is useful for iterating over the
+elements of an array:
 
-        for (T *p = a; p < ARRAY_END(a); p++)
-                ...
-
-Of course, this pointer should never be dereferenced.  A pointer one
-past the last element of an array should not be dereferenced; it's
-perfectly fine to hold such a pointer --and a good thing to do--, but
-the only thing it should be used for is comparing it with other pointers
-derived from the same array.
-
-Due to how special these pointers are, it would be good to use
-consistent naming.  It's common to name such a pointer 'end' --in fact,
-we have many such cases in the kernel--.  C++ even standardized this
-name with std::end().  Let's try naming such pointers 'end', and try
-also avoid using 'end' for pointers that are not the result of
-ARRAY_END().
-
-It has been incorrectly suggested that these pointers are dangerous, and
-that they should never be used, suggesting to use something like
-
-	#define ARRAY_LAST(a)  ((a) + ARRAY_SIZE(a) - 1)
-
-	for (T *p = a; p <= ARRAY_LAST(a); p++)
+	for (T *p = a, p < ARRAY_END(a); p++)
 		...
 
-This is bogus, as it doesn't scale down to arrays of 0 elements.  In the
-case of an array of 0 elements, ARRAY_LAST() would underflow the
-pointer, which not only it can't be dereferenced, it can't even be held.
-That would be a footgun.  Such arrays don't exist per the C standard;
-however, GCC supports them as an extension (with partial support,
-though; GCC has a few bugs which need to be fixed).
-
-This patch set fixes a few places where it was intended to use the array
-end (that is, one past the last element), but accidentally a pointer to
-the last element was used instead, thus wasting one byte.
-
-It also replaces other places where the array end was correctly
-calculated with ARRAY_SIZE(), by using the simpler ARRAY_END().
-
-Also, there was one drivers/ file that already defined this macro.  We
-remove that definition, to not conflict with this one.
-
+Cc: Kees Cook <kees@kernel.org>
+Cc: Christopher Bazley <chris.bazley.wg14@gmail.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Cc: Marco Elver <elver@google.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Alejandro Colomar <alx@kernel.org>
+Message-ID: <37b1088dbd01a21d2f9d460aa510726119b3bcb0.1752193588.git.alx@kernel.org>
 ---
-
-Hi!
-
-Changes in v3:
-
--  Fix commit message.
--  Remove old definition from "drivers/block/floppy.c".
-   [Reported-by: kernel test robot <lkp@intel.com>]
--  Use definition of ARRAY_END() with array notation.  There's work in
-   the C committee to make array notation slightly safer than pointer
-   arithmetic.
-
-
-Have a lovely night!
-Alex
-
-
-Alejandro Colomar (4):
-  array_size.h: Add ARRAY_END()
-  mm: Fix benign off-by-one bugs
-  kernel: Fix off-by-one benign bugs
-  mm: Use ARRAY_END() instead of open-coding it
-
  drivers/block/floppy.c     | 2 --
  include/linux/array_size.h | 6 ++++++
- kernel/kcsan/kcsan_test.c  | 4 ++--
- mm/kfence/kfence_test.c    | 4 ++--
- mm/kmemleak.c              | 2 +-
- mm/kmsan/kmsan_test.c      | 2 +-
- mm/memcontrol-v1.c         | 4 ++--
- 7 files changed, 14 insertions(+), 10 deletions(-)
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-Range-diff against v2:
-1:  35255c1ceb54 ! 1:  2cb4ddff93b3 array_size.h: Add ARRAY_END()
-    @@ Commit message
-         the array argument.  This pointer is useful for iterating over the
-         elements of an array:
-     
-    -            for (T *p = a, p < ENDOF(a); p++)
-    +            for (T *p = a, p < ARRAY_END(a); p++)
-                         ...
-     
-         Cc: Kees Cook <kees@kernel.org>
-    @@ Commit message
-         Signed-off-by: Alejandro Colomar <alx@kernel.org>
-         Message-ID: <37b1088dbd01a21d2f9d460aa510726119b3bcb0.1752193588.git.alx@kernel.org>
-     
-    + ## drivers/block/floppy.c ##
-    +@@ drivers/block/floppy.c: static void floppy_release_allocated_regions(int fdc, const struct io_region *p)
-    + 	}
-    + }
-    + 
-    +-#define ARRAY_END(X) (&((X)[ARRAY_SIZE(X)]))
-    +-
-    + static int floppy_request_regions(int fdc)
-    + {
-    + 	const struct io_region *p;
-    +
-      ## include/linux/array_size.h ##
-     @@
-       */
-    @@ include/linux/array_size.h
-     + * ARRAY_END - get a pointer to one past the last element in array @a
-     + * @a: array
-     + */
-    -+#define ARRAY_END(a)  (a + ARRAY_SIZE(a))
-    ++#define ARRAY_END(a)  (&(a)[ARRAY_SIZE(a)])
-     +
-      #endif  /* _LINUX_ARRAY_SIZE_H */
-2:  acd8bcbb05d3 = 2:  831155f02bec mm: Fix benign off-by-one bugs
-3:  781cce547eb2 = 3:  d8128f0c8b9f kernel: Fix off-by-one benign bugs
-4:  094878542457 = 4:  9646a1d194a5 mm: Use ARRAY_END() instead of open-coding it
+diff --git a/drivers/block/floppy.c b/drivers/block/floppy.c
+index 5336c3c5ca36..69661840397e 100644
+--- a/drivers/block/floppy.c
++++ b/drivers/block/floppy.c
+@@ -4802,8 +4802,6 @@ static void floppy_release_allocated_regions(int fdc, const struct io_region *p)
+ 	}
+ }
+ 
+-#define ARRAY_END(X) (&((X)[ARRAY_SIZE(X)]))
+-
+ static int floppy_request_regions(int fdc)
+ {
+ 	const struct io_region *p;
+diff --git a/include/linux/array_size.h b/include/linux/array_size.h
+index 06d7d83196ca..b5775b8f13de 100644
+--- a/include/linux/array_size.h
++++ b/include/linux/array_size.h
+@@ -10,4 +10,10 @@
+  */
+ #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+ 
++/**
++ * ARRAY_END - get a pointer to one past the last element in array @a
++ * @a: array
++ */
++#define ARRAY_END(a)  (&(a)[ARRAY_SIZE(a)])
++
+ #endif  /* _LINUX_ARRAY_SIZE_H */
 -- 
 2.51.0
 
