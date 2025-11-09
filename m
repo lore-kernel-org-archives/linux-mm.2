@@ -4,78 +4,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B45D7CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:15:26 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id C5E49CCFA13
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 17:16:08 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 21FF38E0006; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
+	id 15DBC8E000C; Sun,  9 Nov 2025 12:16:08 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 1F7028E0002; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
+	id 135F98E0002; Sun,  9 Nov 2025 12:16:08 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 10CEE8E0006; Sun,  9 Nov 2025 12:15:26 -0500 (EST)
+	id 0243C8E000C; Sun,  9 Nov 2025 12:16:07 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id EF82F8E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:15:25 -0500 (EST)
-Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay08.hostedemail.com (Postfix) with ESMTP id 878A6140A39
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:15:25 +0000 (UTC)
-X-FDA: 84091719810.12.01E10BB
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	by imf15.hostedemail.com (Postfix) with ESMTP id BD048A000C
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:15:23 +0000 (UTC)
-Authentication-Results: imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pgmrysgp;
-	spf=pass (imf15.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id E38488E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:16:07 -0500 (EST)
+Received: from smtpin07.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2E5B54C466
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:07 +0000 (UTC)
+X-FDA: 84091721574.07.D47861B
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	by imf18.hostedemail.com (Postfix) with ESMTP id 28EB21C0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 17:16:04 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOi6bzAG;
+	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762708523;
+	s=arc-20220608; t=1762708565;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=CH23Ki9EOjG++XfGf0hWyR5UKo/5fVuG3elhs2g375Y=;
-	b=0PY8oJqeXK6d0sOoCJ3Dltw2/jcT+vkCt5gPzq2KUB2wRrPOaExGGKO3yvFGxEAfxMBdCf
-	Yp7u6kceNtbSsIGdqUHHvl8OlYOCnZpovE83t0hnAg9phAKhJ0ERDiwyS5kV2plDhLl6io
-	iKSjzOktNG/0jkglCTGvsi+lztrtlkg=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708523; a=rsa-sha256;
-	cv=none;
-	b=J5SlC4zwNkqiLtoM/M81n7Ef1tsdVsxYy0/GpptllmHDLnQPKuC3jv6EuOp3KfkJ2b6HgS
-	jRZqhLm2fT7COJKNhE46F+qmGHBI2GScKZ3vddMXMA9XyJN4EDdwlyHLG362HMjpOBQZ+r
-	VgnNsappzQ+7Yi+XRO97fNyMywrjkeg=
+	bh=eJT6y1GDlaasTCIPvbrA0Yxc9LFx5w+afKdTXNnGcpk=;
+	b=QtCvc5vSACBQIHoU6OX5a+oo/4HV1Hjb15Zl4QMATB8yM3bGCLsTntOzog8Uy4/FLsN05G
+	6Ks5EkTcH6ZLpEdeqSrKyvIPri3w0uA7KeBuMaaUJCqKZByMvOQg3toeab1xdshDbJRTBj
+	A+nBww0LIjq3yDIsJqveJkcTN+n9gr0=
 ARC-Authentication-Results: i=1;
-	imf15.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=Pgmrysgp;
-	spf=pass (imf15.hostedemail.com: domain of oleg@redhat.com designates 170.10.133.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
+	imf18.hostedemail.com;
+	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=YOi6bzAG;
+	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
 	dmarc=pass (policy=quarantine) header.from=redhat.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762708565; a=rsa-sha256;
+	cv=none;
+	b=xcfSuVC5JVEGr3r7l2cHXwMcB+Lf912xaJbAL12qsBFyeyE9TwmmxvRYqkiJMclATV34r+
+	97syQh3ieBSC+AzukiLm/rP3cfMB5qAFbNSr4Wud96Yy2etV9oBi21wR4aNtZeT4zIE+Cw
+	5BhXURrlFSs/yq5WoZZ7ilY89xJoFT0=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762708523;
+	s=mimecast20190719; t=1762708564;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CH23Ki9EOjG++XfGf0hWyR5UKo/5fVuG3elhs2g375Y=;
-	b=PgmrysgpS/nM6fmM6cgvEQM+wfMQZwOHA/wr+1NlUe/ZdirVEyL9pjyCdorcXkUHNRvhMx
-	Hp5CMgpW68/q+nFSOMXiwPl5duVO9K3Z7DTdBNO+f4UZLSifPcK1Y6puN03TzIjf1kTdsC
-	LNyRLvSMqHNF2UINfKrLZr3FgbhU5hM=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=eJT6y1GDlaasTCIPvbrA0Yxc9LFx5w+afKdTXNnGcpk=;
+	b=YOi6bzAGjPIQ+3SZ47QSmFUbGeCNGG724XpKFsm+t2I+JanZwCkPnqd07DzYhtqKjfAODf
+	TD1vD2g8cewg5kmNh4xcTa2oEYHSXm/bN0w8bhMGoJ8kXVaJILhIb321LsDMLLl/SbWBHq
+	YGyMfAoYk3MIkeVJjZwmfycU3qRpqes=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-648-hba6nzFHMM2ZSUG6656qEw-1; Sun,
- 09 Nov 2025 12:15:21 -0500
-X-MC-Unique: hba6nzFHMM2ZSUG6656qEw-1
-X-Mimecast-MFC-AGG-ID: hba6nzFHMM2ZSUG6656qEw_1762708516
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-ftEFn_sbMku-0ty6xr4nTQ-1; Sun,
+ 09 Nov 2025 12:16:01 -0500
+X-MC-Unique: ftEFn_sbMku-0ty6xr4nTQ-1
+X-Mimecast-MFC-AGG-ID: ftEFn_sbMku-0ty6xr4nTQ_1762708556
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0CA8E180048E;
-	Sun,  9 Nov 2025 17:15:15 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9EFD419560A2;
+	Sun,  9 Nov 2025 17:15:55 +0000 (UTC)
 Received: from fedora (unknown [10.44.32.53])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id C8655180087B;
-	Sun,  9 Nov 2025 17:14:53 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 60B861800361;
+	Sun,  9 Nov 2025 17:15:35 +0000 (UTC)
 Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Sun,  9 Nov 2025 18:15:14 +0100 (CET)
-Date: Sun, 9 Nov 2025 18:14:52 +0100
+	oleg@redhat.com; Sun,  9 Nov 2025 18:15:55 +0100 (CET)
+Date: Sun, 9 Nov 2025 18:15:33 +0100
 From: Oleg Nesterov <oleg@redhat.com>
 To: Bernd Edlinger <bernd.edlinger@hotmail.de>,
 	Linus Torvalds <torvalds@linux-foundation.org>,
@@ -123,8 +123,9 @@ Cc: Alexander Viro <viro@zeniv.linux.org.uk>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Cyrill Gorcunov <gorcunov@gmail.com>,
 	Eric Dumazet <edumazet@google.com>
-Subject: [RFC PATCH 1/3] exec: make setup_new_exec() return int
-Message-ID: <aRDMDLgLdYq9g1Tr@redhat.com>
+Subject: [RFC PATCH 2/3] exec: don't wait for zombie threads with
+ cred_guard_mutex held
+Message-ID: <aRDMNWx-69fL_gf-@redhat.com>
 References: <AM8PR10MB470801D01A0CF24BC32C25E7E40E9@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
  <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
@@ -138,15 +139,15 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <aRDL3HOB21pMVMWC@redhat.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
-X-Rspamd-Server: rspam04
-X-Rspamd-Queue-Id: BD048A000C
-X-Stat-Signature: oc1x8zooncu83sfmngae6fhnaf6mr4yx
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Rspamd-Server: rspam09
+X-Rspamd-Queue-Id: 28EB21C0002
+X-Stat-Signature: y5kmhuogmmmxass4g4p5iyrq46jw7ieo
 X-Rspam-User: 
-X-HE-Tag: 1762708523-270355
-X-HE-Meta: U2FsdGVkX1/5nvJEunuXJ1OUyGVsaoysIH7RQLrzCF3yWt97eVyXJjEMHa8XOpiRKcxYRu/xhXFCzI6HTaSRel4cMXSG2ukWN/qnzDRGlrhLqL6F5QhrYLJDkqGdJWKfjHmWpzH+pzsWb2iiaS8Gruka/ArvaRtzP7CuOV8JAaGOrSC0VJABYrxcJiIs0jW6UUdf9FfvqwP5z6y2scD9eaLcMEobuxNV3zfRvb/ehYWpZTvSR+7HvaQyMFsPM3RpoR8eKVMx77aVAm6TXfuTKpKOPlC4HS/U16kpNAhn3sf9baQbVa0qx5FjIMEekArSFwPoKLg4cXRIYurTCZy6odEPrdoiexKFJDCc3ctY1bRtgFjnrmRiNMB/c8RX/z5vKbC9+YCz3ZhehOeX+VtuEeL+rCXHQHTVJ/XMW0yWNbNse+Gw1h9WiHKQxK6shFfLm2cuK5kEsxYdroQcWPBILc+zeaUHO+NmulJ3lMOtGWdE2varXFFkRwW+4XdUVIa5k2SBft4y7mh4l/Ro1kcFU7OSAgpralG6CxwoLAv2tj6dLG6xzhQSnPfk2rczySbTo+FcYDevDWOQ8Bpa3E62EcjT5jQ7kibRTx0YFUwwLwLYrf1jXoU806rwg+SvMKi27iVhfqCWvcfUbtFu/Vm/J7qYBB/JdT7IYtJlyZy8WQ8ebHl6wbzwVTnF/AY3axmd1G2JPga2Mr1t2VmE6/igq9EYrz2HAHCUl93ZZx/rUkh82iTSTIKJCG/H4GJRRJ6DPNoCKxo9GV0hSK6llXWT69pw1T4rRHUWTErCuMt/tcxIdJAcqAlKHPEJ3tAT5oL4SGD39sx3urzr0nEaSE8w2kZ7OK7tJxe5gXxs81+Q836fY+X/XtwOcv8FCEkKLSLn+sFDcW/C8fbJa7BjvCeftNtI441dsFrc+RnKu6geA7pWA/z1wXLiMO/NwVhxJhnO8j+CkDcymxhsVswBIsT
- DgsBoQNs
- PpFpQ9TmA7BvpJM4PyEnJr+x54pn6kw5EGrD8umuYZFibFlfazMulYPUbxYHUIE0ChvhcgT0rRSCTFsWdOQT709Z1MRM2V/vCqCoJjt0aDP2ESgeNHyO9aRTZqw0SHwo3g9THHjm8IBMXYoDwjoCdGQIyR2moVJz6+I5cFh9+hSgp4Rv0XVtG4p8/MG8tq6xfEPvsYawtMRhH987qDNbi//Sy+m+pQfvu9Zbkq6fOj6Jwjl682DnS1qgDdknl9+4Y0eJz+HL6zA/5yv67W0i1R1BTbdNeKRTv0ekaJaLJbaP/9Kt5IIhNn9R1gjwpGTT7wy3bjOrwasS9Upo10vnyn69Ao9LyNww9u7a0OnNbuE1JN0ochitUn5kCUX6VKDdTU9H9gNMrqJdasG0upxV65uEF7TjYoV4vqekvOljyJkRPp9ErWHrrrHJaTtrPDdm+eb9Rfp3aI+ydG2VAUlZCjLdstY7jxLA1VKI/CBHpTgHqkRy+48+6+ki/iE9dtyEFjrhRxnBAQwEuPyeSxvKN4htykg==
+X-HE-Tag: 1762708564-639341
+X-HE-Meta: U2FsdGVkX1+Iz84KJxQGdWOGfrVpFiCFvJclplAp5M42oSvUfKnxHkgcDTpxpEmvULuxI40GwL0vEiU4lFexHP43flDb4XCFlA1KeGmlolBs4ijhkrGjbgfizZ8gbxWhSLWsoYytSKJgm11LRkyFvW8FhKuAB0odZPFmbzjFh1rjyFbAAom4Wp7zUOetk9dklAu0vcTU66rS/uYqi4KcwXuRRMJeFddlHzs5WZjPO45Ou174U4n/KnjLM6CbNB83q4Ku9d92CUwtxDOqDCURp7LZG9M9LQQGbBwDlCMkG9rmOEitANMKLziOtJNQHXkmaEYm0i9ybJXuEeJNOBjyP8E5a5aQE6YIQU28fPo8NVLJugqy/kOM8ZfCsuUZbTBgf06mPyoHc3qOOXZB/hYv0yBpkzZ1VcskPvNlU5WFFw1ndAKC/5IyzqhUnt8qCbKGCah2LqxsZNr4nBo+byr+FiUlqU+2BgFeB07p0DIQpbQzwOBdLOuGHYFKxCQy7PODdKgi6qHyUEV6mCcL0DVjNzGDvdsemiGmM6QwjM+50YCrdnJwtM2HJUVIpnFsXn+940hLeuYdHmcitSkdwNMihWGLiLB5txYQM8PjEATEooqFZ8PgKZRg/db6fDGQj10nhW6Bvct9kmUuDep27UVkzuglKMBVYj6k568loMtMLeQSMv0NTfPAigcRXOrCxBFRChkYYZ9Gh84Fyv86NFdokHPCRs23U5n1ghKBhLetPiLg2nuDfI05MnhdwEuDANvVnD2KLmKbG8VxJvjwnOZp9cH8kzCUyUDE9felyARzMi9j8sTu4Kc5tNzAJoAHOHiwoWnXUAgFzyhe63lp2kIgkb9PjeR97bUkGENlOwNABnZO4x1GaoUfzJNmXZcYbelzzWzEkM5Say3Vk123ojcPrB434qRr3Ijn70yDX7mai05fa8i2zdhgJgSyBcwShz3DvlnlDy/nzuJFmOiyTJq
+ bwy6K6vC
+ WCHCtkWcGwOK+XZxcBxtV8+qBV/BQ0WdfNBmRJZhj+BAIvktomXMnJzn65c8/UTgk/1YyWBskCRCJ4iffXz5LENWBnMvnj+IfMxwrnuZwZgm58dZ/yTlSpI2TRWpo4DRkO9tzc2mlrT9haPCchfeBc0Lxv3uoLJ1QuKLiJB0gquKnX4+KBIBMAn8eqLAaLPs+hpZM8+tuueMrZOr5xS3tiocNnrw25GKa3XQ1Qrje5NTTsjaEbZ202Z28MqICZmqmT6WeIiNREu974PpGV9Ylr1LC9Bqrk6Bz2RpeEKrj/funOmgVXs9e0+DN2bWxbCicdVWD9gjkg4pX/XSOzgBH3bJyN3iWLun735KDbpRBjTB8mD0SmVmOC8CAGdxwHwwG1+CK2x9CZ8xRfPjdjtnu7FpGWeuP3vW5GDNiTXrKY1More2NSIRYGbANCjOmB3NBFhxcBs6B0Ta3kzXaJS3wZcZZpROGB8moO+V4FqT3cXFfdOFLxJ9WDan9ZiJYCpRhaE8FZ/uPAM7G4FdYsr8/TGJpMQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -155,97 +156,330 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Preparation. After the next change setup_new_exec() can fail.
+This simple program
+
+    #include <unistd.h>
+    #include <signal.h>
+    #include <sys/ptrace.h>
+    #include <pthread.h>
+
+    void *thread(void *arg)
+    {
+	    ptrace(PTRACE_TRACEME, 0,0,0);
+	    return NULL;
+    }
+
+    int main(void)
+    {
+	    int pid = fork();
+
+	    if (!pid) {
+		    pthread_t pt;
+		    pthread_create(&pt, NULL, thread, NULL);
+		    pthread_join(pt, NULL);
+		    execlp("echo", "echo", "passed", NULL);
+	    }
+
+	    sleep(1);
+	    ptrace(PTRACE_ATTACH, pid, 0,0);
+	    kill(pid, SIGCONT);
+
+	    return 0;
+    }
+
+hangs because de_thread() waits for debugger which should release the killed
+thread with cred_guard_mutex held, while the debugger sleeps waiting for the
+same mutex. Not really that bad, the tracer can be killed, but still this is
+a bug and people hit it in practice.
+
+With this patch:
+
+	- de_thread() waits until all the sub-threads pass exit_notify() and
+	  become zombies.
+
+	- setup_new_exec() waits until all the sub-threads are reaped without
+	  cred_guard_mutex held.
+
+	- unshare_sighand() and flush_signal_handlers() are moved from
+	  begin_new_exec() to setup_new_exec(), we can't call them until all
+	  sub-threads go away.
 
 Signed-off-by: Oleg Nesterov <oleg@redhat.com>
 ---
- fs/binfmt_elf.c         | 4 +++-
- fs/binfmt_elf_fdpic.c   | 4 +++-
- fs/binfmt_flat.c        | 4 +++-
- fs/exec.c               | 4 +++-
- include/linux/binfmts.h | 2 +-
- 5 files changed, 13 insertions(+), 5 deletions(-)
+ fs/exec.c       | 140 +++++++++++++++++++++++-------------------------
+ kernel/exit.c   |   9 ++--
+ kernel/signal.c |   2 +-
+ 3 files changed, 71 insertions(+), 80 deletions(-)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index e4653bb99946..8a38689ae4b0 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1021,7 +1021,9 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
- 		current->flags |= PF_RANDOMIZE;
- 
--	setup_new_exec(bprm);
-+	retval = setup_new_exec(bprm);
-+	if (retval)
-+		goto out_free_dentry;
- 
- 	/* Do this so that we can load the interpreter, if need be.  We will
- 	   change some of these later */
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 48fd2de3bca0..7ad98b8132fc 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -351,7 +351,9 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	if (elf_read_implies_exec(&exec_params.hdr, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
- 
--	setup_new_exec(bprm);
-+	retval = setup_new_exec(bprm);
-+	if (retval)
-+		goto error;
- 
- 	set_binfmt(&elf_fdpic_format);
- 
-diff --git a/fs/binfmt_flat.c b/fs/binfmt_flat.c
-index b5b5ca1a44f7..78e9ca128ea7 100644
---- a/fs/binfmt_flat.c
-+++ b/fs/binfmt_flat.c
-@@ -512,7 +512,9 @@ static int load_flat_file(struct linux_binprm *bprm,
- 
- 	/* OK, This is the point of no return */
- 	set_personality(PER_LINUX_32BIT);
--	setup_new_exec(bprm);
-+	ret = setup_new_exec(bprm);
-+	if (ret)
-+		goto err;
- 
- 	/*
- 	 * calculate the extra space we need to map in
 diff --git a/fs/exec.c b/fs/exec.c
-index 6b70c6726d31..136a7ab5d91c 100644
+index 136a7ab5d91c..2bac7deb9a98 100644
 --- a/fs/exec.c
 +++ b/fs/exec.c
-@@ -1321,7 +1321,7 @@ void would_dump(struct linux_binprm *bprm, struct file *file)
+@@ -905,42 +905,56 @@ static int exec_mmap(struct mm_struct *mm)
+ 	return 0;
  }
- EXPORT_SYMBOL(would_dump);
  
--void setup_new_exec(struct linux_binprm * bprm)
-+int setup_new_exec(struct linux_binprm * bprm)
+-static int de_thread(struct task_struct *tsk)
++static int kill_sub_threads(struct task_struct *tsk)
+ {
+ 	struct signal_struct *sig = tsk->signal;
+-	struct sighand_struct *oldsighand = tsk->sighand;
+-	spinlock_t *lock = &oldsighand->siglock;
+-
+-	if (thread_group_empty(tsk))
+-		goto no_thread_group;
++	int err = -EINTR;
+ 
+-	/*
+-	 * Kill all other threads in the thread group.
+-	 */
+-	spin_lock_irq(lock);
+-	if ((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task) {
+-		/*
+-		 * Another group action in progress, just
+-		 * return so that the signal is processed.
+-		 */
+-		spin_unlock_irq(lock);
+-		return -EAGAIN;
++	read_lock(&tasklist_lock);
++	spin_lock_irq(&tsk->sighand->siglock);
++	if (!((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task)) {
++		sig->group_exec_task = tsk;
++		sig->notify_count = -zap_other_threads(tsk);
++		err = 0;
+ 	}
++	spin_unlock_irq(&tsk->sighand->siglock);
++	read_unlock(&tasklist_lock);
+ 
+-	sig->group_exec_task = tsk;
+-	sig->notify_count = zap_other_threads(tsk);
+-	if (!thread_group_leader(tsk))
+-		sig->notify_count--;
++	return err;
++}
+ 
+-	while (sig->notify_count) {
+-		__set_current_state(TASK_KILLABLE);
+-		spin_unlock_irq(lock);
+-		schedule();
++static int wait_for_notify_count(struct task_struct *tsk)
++{
++	for (;;) {
+ 		if (__fatal_signal_pending(tsk))
+-			goto killed;
+-		spin_lock_irq(lock);
++			return -EINTR;
++		set_current_state(TASK_KILLABLE);
++		if (!tsk->signal->notify_count)
++			break;
++		schedule();
+ 	}
+-	spin_unlock_irq(lock);
++	__set_current_state(TASK_RUNNING);
++	return 0;
++}
++
++static void clear_group_exec_task(struct task_struct *tsk)
++{
++	struct signal_struct *sig = tsk->signal;
++
++	/* protects against exit_notify() and __exit_signal() */
++	read_lock(&tasklist_lock);
++	sig->group_exec_task = NULL;
++	sig->notify_count = 0;
++	read_unlock(&tasklist_lock);
++}
++
++static int de_thread(struct task_struct *tsk)
++{
++	if (thread_group_empty(tsk))
++		goto no_thread_group;
++
++	if (kill_sub_threads(tsk) || wait_for_notify_count(tsk))
++		return -EINTR;
+ 
+ 	/*
+ 	 * At this point all other threads have exited, all we have to
+@@ -948,26 +962,10 @@ static int de_thread(struct task_struct *tsk)
+ 	 * and to assume its PID:
+ 	 */
+ 	if (!thread_group_leader(tsk)) {
+-		struct task_struct *leader = tsk->group_leader;
+-
+-		for (;;) {
+-			cgroup_threadgroup_change_begin(tsk);
+-			write_lock_irq(&tasklist_lock);
+-			/*
+-			 * Do this under tasklist_lock to ensure that
+-			 * exit_notify() can't miss ->group_exec_task
+-			 */
+-			sig->notify_count = -1;
+-			if (likely(leader->exit_state))
+-				break;
+-			__set_current_state(TASK_KILLABLE);
+-			write_unlock_irq(&tasklist_lock);
+-			cgroup_threadgroup_change_end(tsk);
+-			schedule();
+-			if (__fatal_signal_pending(tsk))
+-				goto killed;
+-		}
++		struct task_struct *leader = tsk->group_leader, *t;
+ 
++		cgroup_threadgroup_change_begin(tsk);
++		write_lock_irq(&tasklist_lock);
+ 		/*
+ 		 * The only record we have of the real-time age of a
+ 		 * process, regardless of execs it's done, is start_time.
+@@ -1000,8 +998,8 @@ static int de_thread(struct task_struct *tsk)
+ 		list_replace_rcu(&leader->tasks, &tsk->tasks);
+ 		list_replace_init(&leader->sibling, &tsk->sibling);
+ 
+-		tsk->group_leader = tsk;
+-		leader->group_leader = tsk;
++		for_each_thread(tsk, t)
++			t->group_leader = tsk;
+ 
+ 		tsk->exit_signal = SIGCHLD;
+ 		leader->exit_signal = -1;
+@@ -1021,23 +1019,11 @@ static int de_thread(struct task_struct *tsk)
+ 		release_task(leader);
+ 	}
+ 
+-	sig->group_exec_task = NULL;
+-	sig->notify_count = 0;
+-
+ no_thread_group:
+ 	/* we have changed execution domain */
+ 	tsk->exit_signal = SIGCHLD;
+-
+ 	BUG_ON(!thread_group_leader(tsk));
+ 	return 0;
+-
+-killed:
+-	/* protects against exit_notify() and __exit_signal() */
+-	read_lock(&tasklist_lock);
+-	sig->group_exec_task = NULL;
+-	sig->notify_count = 0;
+-	read_unlock(&tasklist_lock);
+-	return -EAGAIN;
+ }
+ 
+ 
+@@ -1171,13 +1157,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	flush_itimer_signals();
+ #endif
+ 
+-	/*
+-	 * Make the signal table private.
+-	 */
+-	retval = unshare_sighand(me);
+-	if (retval)
+-		goto out_unlock;
+-
+ 	me->flags &= ~(PF_RANDOMIZE | PF_FORKNOEXEC |
+ 					PF_NOFREEZE | PF_NO_SETAFFINITY);
+ 	flush_thread();
+@@ -1249,7 +1228,6 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	/* An exec changes our domain. We are no longer part of the thread
+ 	   group */
+ 	WRITE_ONCE(me->self_exec_id, me->self_exec_id + 1);
+-	flush_signal_handlers(me, 0);
+ 
+ 	retval = set_cred_ucounts(bprm->cred);
+ 	if (retval < 0)
+@@ -1293,8 +1271,9 @@ int begin_new_exec(struct linux_binprm * bprm)
+ 	up_write(&me->signal->exec_update_lock);
+ 	if (!bprm->cred)
+ 		mutex_unlock(&me->signal->cred_guard_mutex);
+-
+ out:
++	if (me->signal->group_exec_task == me)
++		clear_group_exec_task(me);
+ 	return retval;
+ }
+ EXPORT_SYMBOL(begin_new_exec);
+@@ -1325,6 +1304,8 @@ int setup_new_exec(struct linux_binprm * bprm)
  {
  	/* Setup things that can depend upon the personality */
  	struct task_struct *me = current;
-@@ -1337,6 +1337,8 @@ void setup_new_exec(struct linux_binprm * bprm)
++	struct signal_struct *sig = me->signal;
++	int err = 0;
+ 
+ 	arch_pick_mmap_layout(me->mm, &bprm->rlim_stack);
+ 
+@@ -1335,10 +1316,23 @@ int setup_new_exec(struct linux_binprm * bprm)
+ 	 * some architectures like powerpc
+ 	 */
  	me->mm->task_size = TASK_SIZE;
- 	up_write(&me->signal->exec_update_lock);
- 	mutex_unlock(&me->signal->cred_guard_mutex);
+-	up_write(&me->signal->exec_update_lock);
+-	mutex_unlock(&me->signal->cred_guard_mutex);
++	up_write(&sig->exec_update_lock);
++	mutex_unlock(&sig->cred_guard_mutex);
+ 
+-	return 0;
++	if (sig->group_exec_task) {
++		spin_lock_irq(&me->sighand->siglock);
++		sig->notify_count = sig->nr_threads - 1;
++		spin_unlock_irq(&me->sighand->siglock);
 +
-+	return 0;
++		err = wait_for_notify_count(me);
++		clear_group_exec_task(me);
++	}
++
++	if (!err)
++		err = unshare_sighand(me);
++	if (!err)
++		flush_signal_handlers(me, 0);
++	return err;
  }
  EXPORT_SYMBOL(setup_new_exec);
  
-diff --git a/include/linux/binfmts.h b/include/linux/binfmts.h
-index 65abd5ab8836..678b7525ac5a 100644
---- a/include/linux/binfmts.h
-+++ b/include/linux/binfmts.h
-@@ -123,7 +123,7 @@ extern void unregister_binfmt(struct linux_binfmt *);
+diff --git a/kernel/exit.c b/kernel/exit.c
+index f041f0c05ebb..bcde78c97253 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -178,10 +178,7 @@ static void __exit_signal(struct release_task_post *post, struct task_struct *ts
+ 		tty = sig->tty;
+ 		sig->tty = NULL;
+ 	} else {
+-		/*
+-		 * If there is any task waiting for the group exit
+-		 * then notify it:
+-		 */
++		/* mt-exec, setup_new_exec() -> wait_for_notify_count() */
+ 		if (sig->notify_count > 0 && !--sig->notify_count)
+ 			wake_up_process(sig->group_exec_task);
  
- extern int __must_check remove_arg_zero(struct linux_binprm *);
- extern int begin_new_exec(struct linux_binprm * bprm);
--extern void setup_new_exec(struct linux_binprm * bprm);
-+extern int setup_new_exec(struct linux_binprm * bprm);
- extern void finalize_exec(struct linux_binprm *bprm);
- extern void would_dump(struct linux_binprm *, struct file *);
+@@ -766,8 +763,8 @@ static void exit_notify(struct task_struct *tsk, int group_dead)
+ 		list_add(&tsk->ptrace_entry, &dead);
+ 	}
  
+-	/* mt-exec, de_thread() is waiting for group leader */
+-	if (unlikely(tsk->signal->notify_count < 0))
++	/* mt-exec, de_thread() -> wait_for_notify_count() */
++	if (tsk->signal->notify_count < 0 && !++tsk->signal->notify_count)
+ 		wake_up_process(tsk->signal->group_exec_task);
+ 	write_unlock_irq(&tasklist_lock);
+ 
+diff --git a/kernel/signal.c b/kernel/signal.c
+index fe9190d84f28..334212044940 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1343,13 +1343,13 @@ int zap_other_threads(struct task_struct *p)
+ 
+ 	for_other_threads(p, t) {
+ 		task_clear_jobctl_pending(t, JOBCTL_PENDING_MASK);
+-		count++;
+ 
+ 		/* Don't bother with already dead threads */
+ 		if (t->exit_state)
+ 			continue;
+ 		sigaddset(&t->pending.signal, SIGKILL);
+ 		signal_wake_up(t, 1);
++		count++;
+ 	}
+ 
+ 	return count;
 -- 
 2.25.1.362.g51ebf55
 
