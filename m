@@ -4,89 +4,138 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8BB45CCFA13
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 12:50:06 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 16557CCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 13:11:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id D61458E0013; Sun,  9 Nov 2025 07:49:59 -0500 (EST)
+	id 417378E0006; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id C270C8E001C; Sun,  9 Nov 2025 07:49:59 -0500 (EST)
+	id 3C8E48E0002; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8A6C08E0013; Sun,  9 Nov 2025 07:49:59 -0500 (EST)
+	id 28F888E0006; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
-	by kanga.kvack.org (Postfix) with ESMTP id 574E98E0018
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 07:49:59 -0500 (EST)
-Received: from smtpin16.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 15A75160931
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:49:59 +0000 (UTC)
-X-FDA: 84091050918.16.007B1E7
-Received: from lgeamrelo07.lge.com (lgeamrelo07.lge.com [156.147.51.103])
-	by imf09.hostedemail.com (Postfix) with ESMTP id 7E88B140004
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 12:49:56 +0000 (UTC)
-Authentication-Results: imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762692597; a=rsa-sha256;
-	cv=none;
-	b=7FGGl/jqWrUhgsIr4rebHZyV324sL3mnQ+ML1GUAqlgAYn10VAeELVDdgrIncWHGpZ1ff0
-	C/RnE9YQqNwRfLo1envo2TwUZ0h3YL/LJwu+BuYiWfmjhQRgUuTLgyJN22JvJivoSCDzPL
-	wMhMhosOy9JK/NfMWHgBE0rTchQHXW8=
-ARC-Authentication-Results: i=1;
-	imf09.hostedemail.com;
-	dkim=none;
-	dmarc=pass (policy=none) header.from=lge.com;
-	spf=pass (imf09.hostedemail.com: domain of youngjun.park@lge.com designates 156.147.51.103 as permitted sender) smtp.mailfrom=youngjun.park@lge.com
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 0DAFF8E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 08:11:00 -0500 (EST)
+Received: from smtpin27.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 82CD25BE09
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:10:59 +0000 (UTC)
+X-FDA: 84091103838.27.9B2E869
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	by imf07.hostedemail.com (Postfix) with ESMTP id B55774000A
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 13:10:57 +0000 (UTC)
+Authentication-Results: imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6tbYCRo;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762692597;
+	s=arc-20220608; t=1762693857;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RU3w4lGNMukc+O5c3mKwe6sfiRmLOYighZvvOXJZ9Kk=;
-	b=neAjxxkdAFYRHFK3LYD6KROuB+AwqbcgNvlW5ALad8EDq3ArxcBlSpMRQ3Q0ksjBYstCt4
-	00GedoPeCAelSdM5F7kDwY3he6JjhkwVPNQxBKIKWg9kmhLZopJ+C73qLwSpNW6LdJNHCA
-	nFmcymuhhg4V9sjpNcTbOJmJ4Thd7OA=
-Received: from unknown (HELO yjaykim-PowerEdge-T330.lge.net) (10.177.112.156)
-	by 156.147.51.103 with ESMTP; 9 Nov 2025 21:49:53 +0900
-X-Original-SENDERIP: 10.177.112.156
-X-Original-MAILFROM: youngjun.park@lge.com
-From: Youngjun Park <youngjun.park@lge.com>
-To: akpm@linux-foundation.org,
-	linux-mm@kvack.org
-Cc: cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chrisl@kernel.org,
-	kasong@tencent.com,
-	hannes@cmpxchg.org,
-	mhocko@kernel.org,
-	roman.gushchin@linux.dev,
-	shakeel.butt@linux.dev,
-	muchun.song@linux.dev,
-	shikemeng@huaweicloud.com,
-	nphamcs@gmail.com,
-	bhe@redhat.com,
-	baohua@kernel.org,
-	youngjun.park@lge.com,
-	gunho.lee@lge.com,
-	taejoon.song@lge.com
-Subject: [PATCH 2/3] mm: swap: introduce swap tier infrastructure
-Date: Sun,  9 Nov 2025 21:49:46 +0900
-Message-Id: <20251109124947.1101520-3-youngjun.park@lge.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20251109124947.1101520-1-youngjun.park@lge.com>
-References: <20251109124947.1101520-1-youngjun.park@lge.com>
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:dkim-signature;
+	bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
+	b=okOJX0ABWRHfbhrIDQUbzm9JXbIohSWgY9LwdOQQz5lIjU7T7QGJUV/Uf15iHbsj+yKkk3
+	Pr5AzrGcPD8t9adayF19bPqWxUt0eikyDU+gZU2wrgbQu7SIliFAMZoPUbLqBey1YjMoxA
+	yn6ZaqsoAlXNMO4xr4U/gGJBn2I4cfU=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762693857; a=rsa-sha256;
+	cv=none;
+	b=djO68zzJ1w17BmUV69zhnW/Hoq2w27IfLis0xAkJCwP2l5x4NnNDOEyulrbHCOgVRqm1Sm
+	VKe6xXYWLKy5oKV/E9zzAB+zAvhn1YjGKrqrP2E0bigZfxsoM71aIm3GRbZAhnOpFATzrK
+	Ii4bwSJc58UWjYRPyWlMMLn1GRzhF/8=
+ARC-Authentication-Results: i=1;
+	imf07.hostedemail.com;
+	dkim=pass header.d=gmail.com header.s=20230601 header.b=V6tbYCRo;
+	spf=pass (imf07.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.208.51 as permitted sender) smtp.mailfrom=ryncsn@gmail.com;
+	dmarc=pass (policy=none) header.from=gmail.com
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-6408f9cb1dcso3732234a12.3
+        for <linux-mm@kvack.org>; Sun, 09 Nov 2025 05:10:57 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1762693856; x=1763298656; darn=kvack.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
+        b=V6tbYCRooIb2kpNvCektzL7Y/o4HTolUhEMi2wAlHMWdbq2V8jGPZ8L5yA0KeYGfQX
+         1NdmgHLiqBbx0CVtU3dsoxPBgDBzHExuIQsaXC773+Uu2PWo9i8lLZl97qA9nz/pxFWB
+         uuvw8n791pZSOPEUZfBxlrxbsA4t3IsfgOfwDc9tvkKGzekDav7n7kgAR1J/RGR1529Y
+         xe1A0VIgKNC5l9mSQhyes0W08lsF31jQLcCpss5KDmCgWWbN6RDDKA8BNVnWxd0rt+DD
+         MPxR2KsfUHV3F4cIXrc43uQG1OqGbE3miNlIc91PFwnpZRJCzS4ngE8RMP3YsLTBPxL3
+         27Aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762693856; x=1763298656;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=JKARBXSwr1aXmZWX6tJUZ+Zm/9hq/LiOLLKvc+8uGy4=;
+        b=HSEEHWhnrO6+XztQTSKQjxcH9yEKkxxHItdP+nrzwr7weMlwruJsCjnjq636elC9VD
+         Cx1EHdcG/Dz2kHqBlZohM9M957SyK/QmDcsaRmv8M7/pFMOTnTkgovYamBcKJOtgSjw6
+         esxq0V0ju53dMNYrhiCG52se8YKYd/fQsoge83e8H6IzKnsUWh3oRM17aghFlrDck23/
+         yqkRUTUIGpRJTC75WvRfMyOkTuozLu1nle3CijUhTgFmfTNOGuo9PLYnFvQAEgVGV0k6
+         Kul3BeYe7aSXbFecQ++xYNh8QN9E2p5xYYnVO6wJYB3IpwcM73+Xek8DaKORKshVCvLo
+         FaXw==
+X-Forwarded-Encrypted: i=1; AJvYcCX5XHbATrsALHKzkDLnTpdGOrhWJyTRNom/TVhFcZDwZ6zxMT+LXBsw/daMXKQOMjjcUY7jf4g/xQ==@kvack.org
+X-Gm-Message-State: AOJu0YzXiFXDJIJNBq/hMLZexVPNwmhedE3rh026RrsjETrpIpYSPSU+
+	hSaHfqj2OZt8IogJOQTRipe2FvwYlp9631GBmhMHcsG3gXLL/Kn5GbzYmcD6QG0s7KSpGv4R7iL
+	rkfNC2Gz6QL9KH0QaWHxiRqhleqviW0E=
+X-Gm-Gg: ASbGncv3ZJBxFztciPmfwaurSArn6VSwEwl9QN8ucnJbN7/WRxKM0ZUU8IzJVX0nAJ1
+	nMq7dja0utIpYnokEUZFzscl1VwxOjglPrSudlPGKvQp6YCFdzkJGrNaNSiL42U6KAljC8meiom
+	ml7jbcuCw7dWmnSZYJ32oOYvDi/7s12cTckRLP7a924atmGVc4JXRRzH43qG3JnOMl+BGv/07Ne
+	zc81EdjbjIeWySufoOXeyKqNm0Qt+ofXthN/T2VhaWmb7rxVpWusHQrP0hZs1FcWHwhUuk=
+X-Google-Smtp-Source: AGHT+IEl9MW22IQb8cz6gkNnRNDIsMMkyhNIsn4ivK8T6yzVCykEJxEU+foa+7QckGYATPbFT8xxfS3qce8kjw2WQNA=
+X-Received: by 2002:a05:6402:2707:b0:640:c2df:f00a with SMTP id
+ 4fb4d7f45d1cf-6415dc128edmr3509625a12.9.1762693855567; Sun, 09 Nov 2025
+ 05:10:55 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <cover.1762621567.git.lorenzo.stoakes@oracle.com> <cd103d9bdc8c0dbb63a0361599b02081520191b4.1762621568.git.lorenzo.stoakes@oracle.com>
+In-Reply-To: <cd103d9bdc8c0dbb63a0361599b02081520191b4.1762621568.git.lorenzo.stoakes@oracle.com>
+From: Kairui Song <ryncsn@gmail.com>
+Date: Sun, 9 Nov 2025 21:10:18 +0800
+X-Gm-Features: AWmQ_bmfH3ksRfR0A2K2gyRnNJuT_yTKuVqefgY6nG1gVo5-Pc4ryZAWbXuQhCE
+Message-ID: <CAMgjq7B1AzqGk7nSxwY_paTxeJt8-=+T+2Wc6dBT_6XfGFhGvA@mail.gmail.com>
+Subject: Re: [PATCH v2 02/16] mm: introduce leaf entry type and use to
+ simplify leaf entry logic
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@redhat.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache <npache@redhat.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+	Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+	Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>, 
+	Matthew Brost <matthew.brost@intel.com>, Joshua Hahn <joshua.hahnjy@gmail.com>, 
+	Rakie Kim <rakie.kim@sk.com>, Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+	Ying Huang <ying.huang@linux.alibaba.com>, Alistair Popple <apopple@nvidia.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>, 
+	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>, 
+	Chengming Zhou <chengming.zhou@linux.dev>, Jann Horn <jannh@google.com>, 
+	Miaohe Lin <linmiaohe@huawei.com>, Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+	Pedro Falcato <pfalcato@suse.de>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, linux-arch@vger.kernel.org, 
+	damon@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: 7E88B140004
-X-Stat-Signature: s8tmfzxjtc4348wu6fx5f3wo6188rxeu
-X-HE-Tag: 1762692596-560944
-X-HE-Meta: U2FsdGVkX1/nm0KiHxOIqbLJuzeNI/C1IaOa/dDbrTtB9C+Qh1QYRT34vKP1wsdgaJoAY3+gqF3clGszLM0j0sMVfheWb7227+RfGeYLiYVWIdVIecSBMQmoLASd+uZvq2OkuJdyxkKZW2FteIi/dEIcFuc4d6kxHNXK6eWK0yafeCILVX5eqNPSrCIS1TXiBwNxLtkWYw1cN020/g8VXlbVzvOYgkUPNigva9U3aOPUjfoAEUJyUztMaC0I3qm76rvLAaLodPTmV6sfd9iRqmrfotfxirj7BWeSI4Ex7PwwAozp+atw78zeB+u5OGoliKI0JsUh3O1vfdOP6kxzg3pqFKDfbLlpoAcT2oj99BbkC7WMyCx3+HlXMgIwuguZQFuEwb0gM6+sy/y6u+WoVAabhsXqwmPMEORZpHAHIn3VntD1yE5qyryN0jZcBZFvSccza1LW09+gUFyoi+cfDtmPXqIfMbjxibfAFYh2fBSRjFixkqMvlGGkmCED1VtdH+C4dOQHtnaFXoDuaKcgu8MhTjdUV9IwBg6HmM9DLXmC8tmyvmPADU/JbOYVUD6fUIaA+JTdTjTTWyBq9FhCmCzT9AnIZgo5EqpsH2po+qxNGmyMEPWZajiVL1qYELZO1MqSLA/fkVFK6n/ka4qlu30H3vMvpUFZddz9miQvE5Hp4/LoIgCBi7Z0cgPqHU32r1rGbU901OzSdSkwkTtss/ODsQxCm5aEcKDKUCAoMX4hehKOwBvpDWleY10LYd5e7akLUkD2+/xbz+9MPcv4JSwT6RT+pu8cUczyBuxBlUITpMG6b9FraquBYdN3pt5f2/aT8dOQxBykmCD7tBVIoXYm5x5sbQqvaZ6KEKVHpvl3GJw0FRt3v1XN+bxvRAcDjPgINDmgxh507W2HSZkNNbujRjSYYDZlxr/+RNarxjkt4JdqKJ8ziIq1sGfbJ0JqBOBsqcLMOUDzzcCdbRK
- RxmKkEc8
- UOPnJuqbg8vzCYvArqLlifhLoetzySW5QRK30O4yiEePdGlMCl2oJngOFSuj1h9b7Aj5iNDeVQFDRA3knqc4lJTynNKujnOo747+w15BgipHcsJ6pYJdLRQcW5JsGvuP9H6C0GusJBfkVUypZ+7QiPTLnhEui1kOkgEp9ixrtm7sWGZfj++OTnYGe/A==
+X-Rspamd-Queue-Id: B55774000A
+X-Stat-Signature: kok5u8g5cpzwjeoqr44tofyhymgxc738
+X-HE-Tag: 1762693857-383408
+X-HE-Meta: U2FsdGVkX1+sa1xgumvsJUi2f+K71Y099nv78/ZG8nKepXlseZ32sv5NEQ1bSVjAtdsc6Ajmd26N1tMAakJ2RK+0KfcxAHCmGBmox1OIuuvwoBXEvuNnVl6moW3J4yOOMgy+dHv0+NLfpwaaqK+w/lS6UdOrJ2xgpSCGcQULYOfgjLZx2STkPMHxrHfo9lZh7qaSRmzN/A1fwJdywu5FuHjqk1GG6O7Wz//7lUaeBLfPTPGk4vYOXxfJv43FYLw4BPI7MpY9QYAE+OxiIguybVte5xAEBdF9xBzrNrApimhYHQz9B5jjMzl44hzGmiGDkpkP1CT39EkDnhCRm9TTygIO8/5WiDGqBNFl5rp+p5g5BdNEv1Vp84kplJavdr0Q5aiJ531Ec0peniXmL0mrrSy0C3aO9kXo4vB+GYR9KZ8SkrmhPIRdHX9xJUaniOz2Fe3UAOeTAdo4uHQGUSmRAv8LS4qn5+VKxJsKH695Sq0icprvxSUjBvu0bKd99dRY5Qe9lRUeHodhzyAMzTtb8wwOcSfC1alm483Gx3cEOwN4vnydwD4cLqElgteHQpaV7ORSCoeyY2iUu8eT2AYRAbuH8czcSpvIAob6PgS/nmOEQxRaSKQ823+iAYasHp90qI2lXlkc6wHDL/f57Qjh5vRJiEWDfZtW34TOvSQEH6qCgSuNE69hR+JZG4kotD61JQ5DM/sBdIfL75upLxOaC4WF4YrxTwAguJ9gS+bl0E8oad4u41ZLKz6lMQpOJm0ampm/dHyn8ARTi9I7ex7LK2nN89JTPPydZT429kF3NTDRm9SCP8iM41my44GmDzF80cAXy3C2nQCDHmdvfKqVNltgn8wx5+Ehky1btHoKSaXi/hqGQx0dih6KqhvBS35AR9nb3rCG0wzFi9fcbB5wZ3qPeLajodM0y3gYo3hozdHjhoy4Qfjfw1CIFnp2cgp4c63QaT442mw5/1x7ses
+ vFce+L1C
+ vjBhnSPDdQKGoYiOCCepz/eSDwnYPAx0GsyDJXZPpiQQedtLfMD5dXCe1KmvOCAlfjPYmYV63j1DAR6dDc4O74OyVYkvzD+FfNeJgP+fBst96uqriZXPewd0Itw==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -95,912 +144,387 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Swap tier groups swap devices by priority ranges.
-This allows different memory groups to use different swap devices.
+On Sun, Nov 9, 2025 at 1:41=E2=80=AFAM Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+>
+> The kernel maintains leaf page table entries which contain either:
+>
+> - Nothing ('none' entries)
+> - Present entries (that is stuff the hardware can navigate without fault)
+> - Everything else that will cause a fault which the kernel handles
+>
+> In the 'everything else' group we include swap entries, but we also inclu=
+de
+> a number of other things such as migration entries, device private entrie=
+s
+> and marker entries.
+>
+> Unfortunately this 'everything else' group expresses everything through
+> a swp_entry_t type, and these entries are referred to swap entries even
+> though they may well not contain a... swap entry.
+>
+> This is compounded by the rather mind-boggling concept of a non-swap swap
+> entry (checked via non_swap_entry()) and the means by which we twist and
+> turn to satisfy this.
+>
+> This patch lays the foundation for reducing this confusion.
+>
+> We refer to 'everything else' as a 'software-define leaf entry' or
+> 'softleaf'. for short And in fact we scoop up the 'none' entries into thi=
+s
+> concept also so we are left with:
+>
+> - Present entries.
+> - Softleaf entries (which may be empty).
+>
+> This allows for radical simplification across the board - one can simply
+> convert any leaf page table entry to a leaf entry via softleaf_from_pte()=
+.
+>
+> If the entry is present, we return an empty leaf entry, so it is assumed
+> the caller is aware that they must differentiate between the two categori=
+es
+> of page table entries, checking for the former via pte_present().
+>
+> As a result, we can eliminate a number of places where we would otherwise
+> need to use predicates to see if we can proceed with leaf page table entr=
+y
+> conversion and instead just go ahead and do it unconditionally.
+>
+> We do so where we can, adjusting surrounding logic as necessary to
+> integrate the new softleaf_t logic as far as seems reasonable at this
+> stage.
+>
+> We typedef swp_entry_t to softleaf_t for the time being until the
+> conversion can be complete, meaning everything remains compatible
+> regardless of which type is used. We will eventually remove swp_entry_t
+> when the conversion is complete.
+>
+> We introduce a new header file to keep things clear - leafops.h - this
+> imports swapops.h so can direct replace swapops imports without issue, an=
+d
+> we do so in all the files that require it.
+>
+> Additionally, add new leafops.h file to core mm maintainers entry.
+>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
+>  MAINTAINERS                   |   1 +
+>  fs/proc/task_mmu.c            |  26 +--
+>  fs/userfaultfd.c              |   6 +-
+>  include/linux/leafops.h       | 382 ++++++++++++++++++++++++++++++++++
+>  include/linux/mm_inline.h     |   6 +-
+>  include/linux/mm_types.h      |  25 +++
+>  include/linux/swapops.h       |  28 ---
+>  include/linux/userfaultfd_k.h |  51 +----
+>  mm/hmm.c                      |   2 +-
+>  mm/hugetlb.c                  |  37 ++--
+>  mm/madvise.c                  |  16 +-
+>  mm/memory.c                   |  41 ++--
+>  mm/mincore.c                  |   6 +-
+>  mm/mprotect.c                 |   6 +-
+>  mm/mremap.c                   |   4 +-
+>  mm/page_vma_mapped.c          |  11 +-
+>  mm/shmem.c                    |   7 +-
+>  mm/userfaultfd.c              |   6 +-
+>  18 files changed, 497 insertions(+), 164 deletions(-)
+>  create mode 100644 include/linux/leafops.h
 
-Swap tiers are identified by names and configured with priority ranges.
-Two special tiers are built-in: default (no name) tier and "zswap" tier.
+Hi Lorenzo,
 
-Interface:
-* /sys/kernel/mm/swap/tiers
-- Write:
-- Add format: "+ tierName:prio,tierName2:prio..."
-- Example: echo "+ SSD:100,HDD:-1" > /sys/kernel/mm/swap/tiers
-- Remove format: "- tierName,tierName2..."
-- Example: echo "- SSD,HDD" > /sys/kernel/mm/swap/tiers
-- Priority ranges merge when no cgroup references exist
-- Minimum priority becomes -1 when tiers are configured above -1
-- Read:
-- Format: "Name             Idx   PrioStart   PrioEnd"
-- Shows configured tiers with their priority ranges
+Thanks, overloading swap entry types for things like migration always
+looked confusing to me.
 
-* /sys/fs/cgroup/*/memory.swap.tiers
-- Read: Shows written operations and final merged result
-- Write: Format "(+/-)tierName (+/-)tierName2..."
-- Example: echo "+ +SSD -HDD" > memory.swap.tier
-- Override semantics (echo "" clears all settings)
-- + enables tier, - disables tier
-- No prefix inherits parent settings
-- +/- alone affects all tiers (+ enables all, - disables all)
-- Root cgroup defaults to "+" (all swap devices enabled)
+There is a problem with this patch as I mentioned here:
+https://lore.kernel.org/linux-mm/CAMgjq7AP383YfU3L5ZxJ9U3x-vRPnEkEUtmnPdXD2=
+9HiNC8OrA@mail.gmail.com/
 
-Special tiers:
-- "" (default): for inheritance
-- "zswap": for zswap integration
+>
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 2628431dcdfe..314910a70bbf 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -16257,6 +16257,7 @@ T:      git git://git.kernel.org/pub/scm/linux/ke=
+rnel/git/akpm/mm
+>  F:     include/linux/gfp.h
+>  F:     include/linux/gfp_types.h
+>  F:     include/linux/highmem.h
+> +F:     include/linux/leafops.h
+>  F:     include/linux/memory.h
+>  F:     include/linux/mm.h
+>  F:     include/linux/mm_*.h
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> index fc35a0543f01..24d26b49d870 100644
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+> @@ -14,7 +14,7 @@
+>  #include <linux/rmap.h>
+>  #include <linux/swap.h>
+>  #include <linux/sched/mm.h>
+> -#include <linux/swapops.h>
+> +#include <linux/leafops.h>
+>  #include <linux/mmu_notifier.h>
+>  #include <linux/page_idle.h>
+>  #include <linux/shmem_fs.h>
+> @@ -1230,11 +1230,11 @@ static int smaps_hugetlb_range(pte_t *pte, unsign=
+ed long hmask,
+>         if (pte_present(ptent)) {
+>                 folio =3D page_folio(pte_page(ptent));
+>                 present =3D true;
+> -       } else if (is_swap_pte(ptent)) {
+> -               swp_entry_t swpent =3D pte_to_swp_entry(ptent);
+> +       } else {
+> +               const softleaf_t entry =3D softleaf_from_pte(ptent);
+>
+> -               if (is_pfn_swap_entry(swpent))
+> -                       folio =3D pfn_swap_entry_folio(swpent);
+> +               if (softleaf_has_pfn(entry))
+> +                       folio =3D softleaf_to_folio(entry);
+>         }
+>
+>         if (folio) {
+> @@ -1955,9 +1955,9 @@ static pagemap_entry_t pte_to_pagemap_entry(struct =
+pagemapread *pm,
+>                 flags |=3D PM_SWAP;
+>                 if (is_pfn_swap_entry(entry))
+>                         page =3D pfn_swap_entry_to_page(entry);
+> -               if (pte_marker_entry_uffd_wp(entry))
+> +               if (softleaf_is_uffd_wp_marker(entry))
+>                         flags |=3D PM_UFFD_WP;
+> -               if (is_guard_swp_entry(entry))
+> +               if (softleaf_is_guard_marker(entry))
+>                         flags |=3D  PM_GUARD_REGION;
+>         }
+>
+> @@ -2330,18 +2330,18 @@ static unsigned long pagemap_page_category(struct=
+ pagemap_scan_private *p,
+>                 if (pte_soft_dirty(pte))
+>                         categories |=3D PAGE_IS_SOFT_DIRTY;
+>         } else if (is_swap_pte(pte)) {
+> -               swp_entry_t swp;
+> +               softleaf_t entry;
+>
+>                 categories |=3D PAGE_IS_SWAPPED;
+>                 if (!pte_swp_uffd_wp_any(pte))
+>                         categories |=3D PAGE_IS_WRITTEN;
+>
+> -               swp =3D pte_to_swp_entry(pte);
+> -               if (is_guard_swp_entry(swp))
+> +               entry =3D softleaf_from_pte(pte);
+> +               if (softleaf_is_guard_marker(entry))
+>                         categories |=3D PAGE_IS_GUARD;
+>                 else if ((p->masks_of_interest & PAGE_IS_FILE) &&
+> -                        is_pfn_swap_entry(swp) &&
+> -                        !folio_test_anon(pfn_swap_entry_folio(swp)))
+> +                        softleaf_has_pfn(entry) &&
+> +                        !folio_test_anon(softleaf_to_folio(entry)))
+>                         categories |=3D PAGE_IS_FILE;
+>
+>                 if (pte_swp_soft_dirty(pte))
+> @@ -2466,7 +2466,7 @@ static void make_uffd_wp_huge_pte(struct vm_area_st=
+ruct *vma,
+>  {
+>         unsigned long psize;
+>
+> -       if (is_hugetlb_entry_hwpoisoned(ptent) || is_pte_marker(ptent))
+> +       if (is_hugetlb_entry_hwpoisoned(ptent) || pte_is_marker(ptent))
+>                 return;
+>
+>         psize =3D huge_page_size(hstate_vma(vma));
+> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
+> index 04c66b5001d5..e33e7df36927 100644
+> --- a/fs/userfaultfd.c
+> +++ b/fs/userfaultfd.c
+> @@ -29,7 +29,7 @@
+>  #include <linux/ioctl.h>
+>  #include <linux/security.h>
+>  #include <linux/hugetlb.h>
+> -#include <linux/swapops.h>
+> +#include <linux/leafops.h>
+>  #include <linux/miscdevice.h>
+>  #include <linux/uio.h>
+>
+> @@ -251,7 +251,7 @@ static inline bool userfaultfd_huge_must_wait(struct =
+userfaultfd_ctx *ctx,
+>         if (huge_pte_none(pte))
+>                 return true;
+>         /* UFFD PTE markers require handling. */
+> -       if (is_uffd_pte_marker(pte))
+> +       if (pte_is_uffd_marker(pte))
+>                 return true;
+>         /* If VMA has UFFD WP faults enabled and WP fault, wait for handl=
+er. */
+>         if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
+> @@ -330,7 +330,7 @@ static inline bool userfaultfd_must_wait(struct userf=
+aultfd_ctx *ctx,
+>         if (pte_none(ptent))
+>                 goto out;
+>         /* UFFD PTE markers require handling. */
+> -       if (is_uffd_pte_marker(ptent))
+> +       if (pte_is_uffd_marker(ptent))
+>                 goto out;
+>         /* If VMA has UFFD WP faults enabled and WP fault, wait for handl=
+er. */
+>         if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+> diff --git a/include/linux/leafops.h b/include/linux/leafops.h
+> new file mode 100644
+> index 000000000000..1376589d94b0
+> --- /dev/null
+> +++ b/include/linux/leafops.h
+> @@ -0,0 +1,382 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Describes operations that can be performed on software-defined page t=
+able
+> + * leaf entries. These are abstracted from the hardware page table entri=
+es
+> + * themselves by the softleaf_t type, see mm_types.h.
+> + */
+> +#ifndef _LINUX_LEAFOPS_H
+> +#define _LINUX_LEAFOPS_H
+> +
+> +#include <linux/mm_types.h>
+> +#include <linux/swapops.h>
+> +#include <linux/swap.h>
+> +
+> +#ifdef CONFIG_MMU
+> +
+> +/* Temporary until swp_entry_t eliminated. */
+> +#define LEAF_TYPE_SHIFT SWP_TYPE_SHIFT
+> +
+> +enum softleaf_type {
+> +       /* Fundamental types. */
+> +       SOFTLEAF_NONE,
+> +       SOFTLEAF_SWAP,
+> +       /* Migration types. */
+> +       SOFTLEAF_MIGRATION_READ,
+> +       SOFTLEAF_MIGRATION_READ_EXCLUSIVE,
+> +       SOFTLEAF_MIGRATION_WRITE,
+> +       /* Device types. */
+> +       SOFTLEAF_DEVICE_PRIVATE_READ,
+> +       SOFTLEAF_DEVICE_PRIVATE_WRITE,
+> +       SOFTLEAF_DEVICE_EXCLUSIVE,
+> +       /* H/W posion types. */
+> +       SOFTLEAF_HWPOISON,
+> +       /* Marker types. */
+> +       SOFTLEAF_MARKER,
+> +};
+> +
+> +/**
+> + * softleaf_mk_none() - Create an empty ('none') leaf entry.
+> + * Returns: empty leaf entry.
+> + */
+> +static inline softleaf_t softleaf_mk_none(void)
+> +{
+> +       return ((softleaf_t) { 0 });
+> +}
+> +
+> +/**
+> + * softleaf_from_pte() - Obtain a leaf entry from a PTE entry.
+> + * @pte: PTE entry.
+> + *
+> + * If @pte is present (therefore not a leaf entry) the function returns =
+an empty
+> + * leaf entry. Otherwise, it returns a leaf entry.
+> + *
+> + * Returns: Leaf entry.
+> + */
+> +static inline softleaf_t softleaf_from_pte(pte_t pte)
+> +{
+> +       if (pte_present(pte))
+> +               return softleaf_mk_none();
+> +
+> +       /* Temporary until swp_entry_t eliminated. */
+> +       return pte_to_swp_entry(pte);
+> +}
+> +
+> +/**
+> + * softleaf_is_none() - Is the leaf entry empty?
+> + * @entry: Leaf entry.
+> + *
+> + * Empty entries are typically the result of a 'none' page table leaf en=
+try
+> + * being converted to a leaf entry.
+> + *
+> + * Returns: true if the entry is empty, false otherwise.
+> + */
+> +static inline bool softleaf_is_none(softleaf_t entry)
+> +{
+> +       return entry.val =3D=3D 0;
+> +}
+> +
+> +/**
+> + * softleaf_type() - Identify the type of leaf entry.
+> + * @enntry: Leaf entry.
+> + *
+> + * Returns: the leaf entry type associated with @entry.
+> + */
+> +static inline enum softleaf_type softleaf_type(softleaf_t entry)
+> +{
+> +       unsigned int type_num;
+> +
+> +       if (softleaf_is_none(entry))
+> +               return SOFTLEAF_NONE;
+> +
+> +       type_num =3D entry.val >> LEAF_TYPE_SHIFT;
+> +
+> +       if (type_num < MAX_SWAPFILES)
+> +               return SOFTLEAF_SWAP;
+> +
+> +       switch (type_num) {
+> +#ifdef CONFIG_MIGRATION
+> +       case SWP_MIGRATION_READ:
+> +               return SOFTLEAF_MIGRATION_READ;
+> +       case SWP_MIGRATION_READ_EXCLUSIVE:
+> +               return SOFTLEAF_MIGRATION_READ_EXCLUSIVE;
+> +       case SWP_MIGRATION_WRITE:
+> +               return SOFTLEAF_MIGRATION_WRITE;
+> +#endif
+> +#ifdef CONFIG_DEVICE_PRIVATE
+> +       case SWP_DEVICE_WRITE:
+> +               return SOFTLEAF_DEVICE_PRIVATE_WRITE;
+> +       case SWP_DEVICE_READ:
+> +               return SOFTLEAF_DEVICE_PRIVATE_READ;
+> +       case SWP_DEVICE_EXCLUSIVE:
+> +               return SOFTLEAF_DEVICE_EXCLUSIVE;
+> +#endif
+> +#ifdef CONFIG_MEMORY_FAILURE
+> +       case SWP_HWPOISON:
+> +               return SOFTLEAF_HWPOISON;
+> +#endif
+> +       case SWP_PTE_MARKER:
+> +               return SOFTLEAF_MARKER;
+> +       }
+> +
+> +       /* Unknown entry type. */
+> +       VM_WARN_ON_ONCE(1);
+> +       return SOFTLEAF_NONE;
+> +}
+> +
+> +/**
+> + * softleaf_is_swap() - Is this leaf entry a swap entry?
+> + * @entry: Leaf entry.
+> + *
+> + * Returns: true if the leaf entry is a swap entry, otherwise false.
+> + */
+> +static inline bool softleaf_is_swap(softleaf_t entry)
+> +{
+> +       return softleaf_type(entry) =3D=3D SOFTLEAF_SWAP;
+> +}
+> +
+> +/**
+> + * softleaf_is_swap() - Is this leaf entry a migration entry?
+> + * @entry: Leaf entry.
+> + *
+> + * Returns: true if the leaf entry is a migration entry, otherwise false=
+.
+> + */
+> +static inline bool softleaf_is_migration(softleaf_t entry)
 
-Suggested-by: Chris Li <chrisl@kernel.org>
-Signed-off-by: Youngjun Park <youngjun.park@lge.com>
----
- Documentation/admin-guide/cgroup-v2.rst |  32 ++
- MAINTAINERS                             |   2 +
- include/linux/memcontrol.h              |   4 +
- include/linux/swap.h                    |   3 +
- mm/Kconfig                              |  13 +
- mm/Makefile                             |   1 +
- mm/swap.h                               |   4 +
- mm/swap_tier.c                          | 602 ++++++++++++++++++++++++
- mm/swap_tier.h                          |  75 +++
- mm/swapfile.c                           |   5 +-
- 10 files changed, 738 insertions(+), 3 deletions(-)
- create mode 100644 mm/swap_tier.c
- create mode 100644 mm/swap_tier.h
+And a nitpick here, the kerneldoc above doesn't match the function name her=
+e.
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index 3345961c30ac..ed8ef33b4d6a 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1850,6 +1850,38 @@ The following nested keys are defined.
- 	Swap usage hard limit.  If a cgroup's swap usage reaches this
- 	limit, anonymous memory of the cgroup will not be swapped out.
- 
-+  memory.swap.tiers
-+        A read-write nested-keyed file which exists on non-root
-+        cgroups. The default is empty (inherits from parent).
-+
-+        This interface allows selecting which swap tiers a cgroup can
-+        use for swapping out memory.
-+
-+        When read, the file shows two lines:
-+          - The first line shows the operation string that was
-+            written to this file.
-+          - The second line shows the effective operation after
-+            merging with parent settings.
-+
-+        When writing, the format is:
-+          (+/-)(TIER_NAME) (+/-)(TIER_NAME) ...
-+
-+        Valid tier names are those configured in
-+        /sys/kernel/mm/swap/tiers.
-+
-+        Each tier can be prefixed with:
-+          +    Enable this tier (always on)
-+          -     Disable this tier (always off)
-+          none  Inherit from parent (incremental merge)
-+
-+        Special default tier operations (+ or - without tier name):
-+          +    Ignore parent settings, enable all swap tiers, then
-+                apply subsequent operations
-+          -     Ignore parent settings, disable all swap tiers, then
-+                apply subsequent operations
-+          none  Inherit all tier settings from parent, then apply
-+                subsequent operations incrementally
-+
-   memory.swap.events
- 	A read-only flat-keyed file which exists on non-root cgroups.
- 	The following entries are defined.  Unless specified
-diff --git a/MAINTAINERS b/MAINTAINERS
-index fa519cbc4b88..3416d466d011 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -16517,6 +16517,8 @@ F:	mm/swap.c
- F:	mm/swap.h
- F:	mm/swap_table.h
- F:	mm/swap_state.c
-+F:	mm/swap_tier.c
-+F	mm/swap_tier.h
- F:	mm/swapfile.c
- 
- MEMORY MANAGEMENT - THP (TRANSPARENT HUGE PAGE)
-diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
-index 966f7c1a0128..1224029620ed 100644
---- a/include/linux/memcontrol.h
-+++ b/include/linux/memcontrol.h
-@@ -283,6 +283,10 @@ struct mem_cgroup {
- 	/* per-memcg mm_struct list */
- 	struct lru_gen_mm_list mm_list;
- #endif
-+#ifdef CONFIG_SWAP_TIER
-+	int tiers_onoff;
-+	int tiers_mask;
-+#endif
- 
- #ifdef CONFIG_MEMCG_V1
- 	/* Legacy consumer-oriented counters */
-diff --git a/include/linux/swap.h b/include/linux/swap.h
-index 90fa27bb7796..8911eff9d37a 100644
---- a/include/linux/swap.h
-+++ b/include/linux/swap.h
-@@ -271,6 +271,9 @@ struct swap_info_struct {
- 	struct percpu_ref users;	/* indicate and keep swap device valid. */
- 	unsigned long	flags;		/* SWP_USED etc: see above */
- 	signed short	prio;		/* swap priority of this type */
-+#ifdef CONFIG_SWAP_TIER
-+	int tier_idx;
-+#endif
- 	struct plist_node list;		/* entry in swap_active_head */
- 	signed char	type;		/* strange name for an index */
- 	unsigned int	max;		/* extent of the swap_map */
-diff --git a/mm/Kconfig b/mm/Kconfig
-index e1fb11f36ede..78173ffe65d6 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -163,6 +163,19 @@ endmenu
- 
- endif
- 
-+config SWAP_TIER
-+	default n
-+	bool "Swap tier"
-+	depends on SWAP && MEMCG && SYSFS
-+	help
-+          Swap tier is a concept proposed to group swap devices by
-+          priority ranges, allowing cgroups to select and use a desired
-+          swap_tier. This enables more flexible control over swap usage
-+          across different workloads.
-+          It is possible to assign a name for identifying a swap tier,
-+          and to configure the priority range used for selecting swap
-+          devices within that tier.
-+
- menu "Slab allocator options"
- 
- config SLUB
-diff --git a/mm/Makefile b/mm/Makefile
-index 00ceb2418b64..9e98799f2edf 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -76,6 +76,7 @@ ifdef CONFIG_MMU
- endif
- 
- obj-$(CONFIG_SWAP)	+= page_io.o swap_state.o swapfile.o
-+obj-$(CONFIG_SWAP_TIER)	+= swap_tier.o
- obj-$(CONFIG_ZSWAP)	+= zswap.o
- obj-$(CONFIG_HAS_DMA)	+= dmapool.o
- obj-$(CONFIG_HUGETLBFS)	+= hugetlb.o hugetlb_sysfs.o hugetlb_sysctl.o
-diff --git a/mm/swap.h b/mm/swap.h
-index d034c13d8dd2..b116282690c8 100644
---- a/mm/swap.h
-+++ b/mm/swap.h
-@@ -16,6 +16,10 @@ extern int page_cluster;
- #define swap_entry_order(order)	0
- #endif
- 
-+#define DEF_SWAP_PRIO  -1
-+
-+extern spinlock_t swap_lock;
-+extern struct plist_head swap_active_head;
- extern struct swap_info_struct *swap_info[];
- 
- /*
-diff --git a/mm/swap_tier.c b/mm/swap_tier.c
-new file mode 100644
-index 000000000000..4301e3c766b9
---- /dev/null
-+++ b/mm/swap_tier.c
-@@ -0,0 +1,602 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <linux/swap.h>
-+#include <linux/rcupdate.h>
-+#include <linux/memcontrol.h>
-+#include <linux/plist.h>
-+#include <linux/sysfs.h>
-+#include <linux/sort.h>
-+
-+#include "swap_tier.h"
-+
-+/*
-+ * struct swap_tier - Structure representing a swap tier.
-+ *
-+ * @name:		Name of the swap_tier.
-+ * @prio_st:		Starting value of priority.
-+ * @prio_end:		Ending value of priority.
-+ * @list:		Linked list of active tiers.
-+ * @inactive_list:	Linked list of inactive tiers.
-+ * @kref:		Reference count (held by swap device and memory cgroup).
-+ */
-+static struct swap_tier {
-+	char name[MAX_TIERNAME];
-+	short prio_st;
-+	short prio_end;
-+	union {
-+		struct plist_node list;
-+		struct list_head inactive_list;
-+	};
-+	struct kref ref;
-+} swap_tiers[MAX_SWAPTIER];
-+
-+static DEFINE_SPINLOCK(swap_tier_lock);
-+
-+/* Active swap priority list, reserved tier first, sorted in descending order */
-+static PLIST_HEAD(swap_tier_active_list);
-+/* Unused swap_tier object */
-+static LIST_HEAD(swap_tier_inactive_list);
-+
-+#define TIER_IDX(tier)	((tier) - swap_tiers)
-+
-+#define for_each_active_tier(tier) \
-+	plist_for_each_entry(tier, &swap_tier_active_list, list)
-+
-+#define for_each_tier(tier, idx) \
-+	for (idx = 0, tier = &swap_tiers[0]; idx < MAX_SWAPTIER; \
-+		idx++, tier = &swap_tiers[idx])
-+
-+static int nr_swaptiers = SWAP_TIER_RESERVED_CNT;
-+
-+#define SKIP_REPLACE_IDX	-1
-+#define NULL_TIER               -1
-+
-+/*
-+ * Naming Convention:
-+ *   swap_tiers_*() - Public/exported functions
-+ *   swap_tier_*()  - Private/internal functions
-+ */
-+
-+static bool swap_tier_replace_marked(int idx)
-+{
-+	return idx != SKIP_REPLACE_IDX;
-+}
-+
-+static bool swap_tier_is_active(void)
-+{
-+	return nr_swaptiers > SWAP_TIER_RESERVED_CNT;
-+}
-+
-+static bool swap_tier_prio_in_range(struct swap_tier *tier, short prio)
-+{
-+	if (tier->prio_st <= prio && tier->prio_end >= prio)
-+		return true;
-+
-+	return false;
-+}
-+
-+/* swap_tiers initialization */
-+void swap_tiers_init(void)
-+{
-+	struct swap_tier *tier;
-+	int idx;
-+
-+	BUILD_BUG_ON(BITS_PER_TYPE(int) < MAX_SWAPTIER * 2);
-+
-+	for_each_tier(tier, idx) {
-+		if (idx < SWAP_TIER_RESERVED_CNT) {
-+			/* for display fisrt */
-+			plist_node_init(&tier->list, -SHRT_MAX);
-+			plist_add(&tier->list, &swap_tier_active_list);
-+			kref_init(&tier->ref);
-+		} else {
-+			INIT_LIST_HEAD(&tier->inactive_list);
-+			list_add_tail(&tier->inactive_list, &swap_tier_inactive_list);
-+		}
-+	}
-+
-+	strscpy(swap_tiers[SWAP_TIER_DEFAULT].name, DEFAULT_TIER_NAME);
-+#ifdef CONFIG_ZSWAP
-+	strscpy(swap_tiers[SWAP_TIER_ZSWAP].name, ZSWAP_TIER_NAME);
-+#endif
-+}
-+
-+static bool swap_tier_alive(struct swap_tier *tier)
-+{
-+	lockdep_assert_held(&swap_tier_lock);
-+	return (kref_read(&tier->ref) > 1) ? true : false;
-+}
-+
-+static void swap_tier_get(struct swap_tier *tier)
-+{
-+	lockdep_assert_held(&swap_tier_lock);
-+	kref_get(&tier->ref);
-+}
-+
-+static void swap_tier_remove(struct swap_tier *tier);
-+static void swap_tier_release(struct kref *ref)
-+{
-+	struct swap_tier *tier = container_of(ref, struct swap_tier, ref);
-+
-+	swap_tier_remove(tier);
-+}
-+
-+static void swap_tier_put(struct swap_tier *tier)
-+{
-+	lockdep_assert_held(&swap_tier_lock);
-+	kref_put(&tier->ref, swap_tier_release);
-+}
-+
-+static int swap_tier_cmp(const void *p, const void *p2)
-+{
-+	const struct tiers_desc *tp = p;
-+	const struct tiers_desc *tp2 = p2;
-+
-+	return tp2->prio_st - tp->prio_st;
-+}
-+
-+static void swap_tier_get_mask(int mask)
-+{
-+	struct swap_tier *tier;
-+
-+	lockdep_assert_held(&swap_tier_lock);
-+
-+	for_each_active_tier(tier) {
-+		int tier_mask = TIER_MASK(TIER_IDX(tier), TIER_FULL_MASK);
-+
-+		if (mask & tier_mask)
-+			swap_tier_get(tier);
-+	}
-+}
-+
-+static void swap_tier_put_mask(int mask)
-+{
-+	struct swap_tier *tier;
-+
-+	lockdep_assert_held(&swap_tier_lock);
-+
-+	for_each_active_tier(tier) {
-+		int tier_mask = TIER_MASK(TIER_IDX(tier), TIER_FULL_MASK);
-+
-+		if (mask & tier_mask)
-+			swap_tier_put(tier);
-+	}
-+}
-+
-+static bool swap_tier_is_default(struct swap_tier *tier)
-+{
-+	int idx = TIER_IDX(tier);
-+
-+	return idx < SWAP_TIER_RESERVED_CNT ? true : false;
-+}
-+
-+/*
-+ * Check if tier priority range can be split. If input falls within a
-+ * referenced range, splitting is not allowed and an error is returned.
-+ * If priority start is the same but tier has no reference, mark
-+ * SKIP_REPLACE_IDX to allow replacement at apply time.
-+ */
-+static int swap_tier_can_split_range(struct tiers_desc *desc)
-+{
-+	struct swap_tier *tier;
-+	int ret = 0;
-+
-+	lockdep_assert_held(&swap_tier_lock);
-+	desc->tier_idx = SKIP_REPLACE_IDX;
-+
-+	for_each_active_tier(tier) {
-+		if (swap_tier_is_default(tier))
-+			continue;
-+
-+		if (tier->prio_st > desc->prio_st)
-+			continue;
-+
-+		/* If start priorities match, replace tier name */
-+		if (tier->prio_st == desc->prio_st)
-+			desc->tier_idx = TIER_IDX(tier);
-+
-+		if (swap_tier_alive(tier))
-+			ret = -EBUSY;
-+
-+		break;
-+	}
-+
-+	return ret;
-+}
-+
-+static void swap_tier_prepare(struct tiers_desc *desc)
-+{
-+	struct swap_tier *tier;
-+
-+	lockdep_assert_held(&swap_tier_lock);
-+
-+	if (WARN_ON(list_empty(&swap_tier_inactive_list)))
-+		return;
-+
-+	if (swap_tier_replace_marked(desc->tier_idx))
-+		return;
-+
-+	tier = list_first_entry(&swap_tier_inactive_list,
-+		struct swap_tier, inactive_list);
-+
-+	list_del(&tier->inactive_list);
-+	strscpy(tier->name, desc->name, MAX_TIERNAME);
-+	tier->prio_st = desc->prio_st;
-+	plist_node_init(&tier->list, -tier->prio_st);
-+	kref_init(&tier->ref);
-+
-+	plist_add(&tier->list, &swap_tier_active_list);
-+	nr_swaptiers++;
-+}
-+
-+static void swap_tier_apply(struct tiers_desc *desc, int nr)
-+{
-+	struct plist_node *pnode;
-+	struct swap_info_struct *p = NULL;
-+	struct swap_tier *tier;
-+	int prio_end = SHRT_MAX;
-+
-+	lockdep_assert_held(&swap_lock);
-+	lockdep_assert_held(&swap_tier_lock);
-+
-+	for (int i = 0; i < nr; i++) {
-+		int idx = desc[i].tier_idx;
-+
-+		if (swap_tier_replace_marked(idx))
-+			strscpy(swap_tiers[idx].name, desc[i].name, MAX_TIERNAME);
-+	}
-+
-+	for_each_active_tier(tier) {
-+		if (swap_tier_is_default(tier))
-+			continue;
-+
-+		tier->prio_end = prio_end;
-+		prio_end = tier->prio_st - 1;
-+	}
-+
-+	/* TODO: use swapfiles ?*/
-+	if (plist_head_empty(&swap_active_head))
-+		return;
-+
-+	for_each_active_tier(tier) {
-+		plist_for_each_continue(pnode, &swap_active_head) {
-+			p = container_of(pnode, struct swap_info_struct, list);
-+			if (p->tier_idx != NULL_TIER)
-+				continue;
-+			if (!swap_tier_prio_in_range(tier, p->prio))
-+				break;
-+			swap_tier_get(tier);
-+		}
-+	}
-+}
-+
-+int swap_tiers_add(struct tiers_desc desc[], int nr)
-+{
-+	struct swap_tier *tier;
-+	int ret = 0;
-+
-+	if (nr <= 0)
-+		return -EINVAL;
-+
-+	sort(desc, nr, sizeof(desc[0]), swap_tier_cmp, NULL);
-+
-+	for (int i = 0; i < nr; i++) {
-+		if (i > 0 && desc[i].prio_st == desc[i-1].prio_st)
-+			return -EINVAL;
-+
-+		for (int j = i+1; j < nr; j++) {
-+			if (!strcmp(desc[i].name, desc[j].name))
-+				return -EINVAL;
-+		}
-+
-+		for_each_active_tier(tier) {
-+			if (!strcmp(desc[i].name, tier->name))
-+				return -EALREADY;
-+		}
-+	}
-+
-+	spin_lock(&swap_lock);
-+	spin_lock(&swap_tier_lock);
-+
-+	/* Tier set must cover all priorities */
-+	if (!swap_tier_is_active() && desc[nr-1].prio_st != DEF_SWAP_PRIO)
-+		desc[nr-1].prio_st = DEF_SWAP_PRIO;
-+
-+	if (nr + nr_swaptiers > MAX_SWAPTIER) {
-+		ret = -ERANGE;
-+		goto out;
-+	}
-+
-+	for (int i = 0; i < nr; i++) {
-+		ret = swap_tier_can_split_range(&desc[i]);
-+		if (ret)
-+			goto out;
-+	}
-+
-+	for (int i = 0; i < nr; i++)
-+		swap_tier_prepare(&desc[i]);
-+
-+	swap_tier_apply(desc, nr);
-+out:
-+	spin_unlock(&swap_tier_lock);
-+	spin_unlock(&swap_lock);
-+
-+	return ret;
-+}
-+
-+static void swap_tier_remove(struct swap_tier *tier)
-+{
-+	bool least_prio_merge = false;
-+	struct plist_node *next;
-+	struct swap_tier *merge_tier;
-+
-+	lockdep_assert_held(&swap_tier_lock);
-+
-+	if (tier->prio_st == DEF_SWAP_PRIO) {
-+		least_prio_merge = true;
-+		next = plist_prev(&tier->list);
-+	} else
-+		next = plist_next(&tier->list);
-+
-+	plist_del(&tier->list, &swap_tier_active_list);
-+	INIT_LIST_HEAD(&tier->inactive_list);
-+	list_add_tail(&tier->inactive_list, &swap_tier_inactive_list);
-+	nr_swaptiers--;
-+
-+	if (nr_swaptiers == SWAP_TIER_RESERVED_CNT)
-+		return;
-+
-+	merge_tier = container_of(next, struct swap_tier, list);
-+	/*
-+	 * When the first tier is removed, the rule that all priorities
-+	 * must be covered should be maintained. The next tier inherits the
-+	 * start value of the removed first tier.
-+	 */
-+	if (least_prio_merge)
-+		merge_tier->prio_st = DEF_SWAP_PRIO;
-+	else
-+		merge_tier->prio_end = tier->prio_end;
-+}
-+
-+int swap_tiers_remove(struct tiers_desc desc[], int nr)
-+{
-+	int cnt = 0;
-+	int ret = 0;
-+	struct swap_tier *tier;
-+
-+	for (int i = 0; i < nr; i++) {
-+		for (int j = i+1; j < nr; j++) {
-+			if (!strcmp(desc[i].name, desc[j].name))
-+				return -EINVAL;
-+		}
-+	}
-+
-+	spin_lock(&swap_tier_lock);
-+	if (nr <= 0 || nr > nr_swaptiers) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	for (int i = 0; i < nr; i++) {
-+		for_each_active_tier(tier) {
-+			if (swap_tier_is_default(tier))
-+				continue;
-+
-+			if (!strcmp(desc[i].name, tier->name)) {
-+				if (swap_tier_alive(tier)) {
-+					ret = -EBUSY;
-+					goto out;
-+				}
-+				desc[i].tier_idx = TIER_IDX(tier);
-+				cnt++;
-+			}
-+		}
-+	}
-+
-+	if (cnt != nr) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	for (int i = 0; i < nr; i++)
-+		swap_tier_put(&swap_tiers[desc[i].tier_idx]);
-+
-+out:
-+	spin_unlock(&swap_tier_lock);
-+	return ret;
-+}
-+
-+ssize_t swap_tiers_show_sysfs(char *buf)
-+{
-+	struct swap_tier *tier;
-+	ssize_t len = 0;
-+
-+	spin_lock(&swap_tier_lock);
-+	len += sysfs_emit_at(buf, len, "%-16s %-5s %-11s %-11s\n",
-+			 "Name", "Idx", "PrioStart", "PrioEnd");
-+	for_each_active_tier(tier) {
-+		if (swap_tier_is_default(tier))
-+			len += sysfs_emit_at(buf, len, "%-16s %-5ld\n",
-+					     tier->name,
-+					     TIER_IDX(tier));
-+		else {
-+			len += sysfs_emit_at(buf, len, "%-16s %-5ld %-11d %-11d\n",
-+					     tier->name,
-+					     TIER_IDX(tier),
-+					     tier->prio_st,
-+					     tier->prio_end);
-+		}
-+		if (len >= PAGE_SIZE)
-+			break;
-+	}
-+	spin_unlock(&swap_tier_lock);
-+
-+	return len;
-+}
-+
-+static void swap_tier_show_mask(struct seq_file *m, int memcg_mask)
-+{
-+	struct swap_tier *tier;
-+	int idx;
-+
-+	for_each_active_tier(tier) {
-+		idx = TIER_IDX(tier);
-+		int tier_on_mask = TIER_MASK(idx, TIER_ON_MASK);
-+		int tier_off_mask = TIER_MASK(idx, TIER_OFF_MASK);
-+
-+		if (memcg_mask & tier_on_mask)
-+			seq_printf(m, "+%s ", tier->name);
-+		else if (memcg_mask & tier_off_mask)
-+			seq_printf(m, "-%s ", tier->name);
-+	}
-+	seq_puts(m, "\n");
-+}
-+
-+static bool swap_tier_has_default(int mask)
-+{
-+	return mask & DEFAULT_FULL_MASK;
-+}
-+
-+/*
-+ * TODO: Simplify tier mask collection design if possible.
-+ *
-+ * Current approach uses two separate fields per cgroup:
-+ *   - tiers_onoff: 2-bit per tier to indicate on/off state
-+ *   - tiers_mask:  2-bit per tier to indicate if the tier is configured
-+ *
-+ * Trade-off to consider:
-+ *   - Pre-compute at cgroup setup time (faster runtime, complex invalidation)
-+ *   - Keep runtime calculation (simpler, but repeated parent walks)
-+ */
-+static int swap_tier_collect_mask(struct mem_cgroup *memcg)
-+{
-+	struct mem_cgroup *p;
-+	int onoff, mask, merge, new;
-+
-+	if (!memcg)
-+		return DEFAULT_ON_MASK;
-+
-+	onoff = memcg->tiers_onoff;
-+	mask = memcg->tiers_mask;
-+
-+	rcu_read_lock();
-+	for (p = parent_mem_cgroup(memcg); p && !swap_tier_has_default(onoff);
-+		p = parent_mem_cgroup(p)) {
-+		merge = mask | p->tiers_mask;
-+		new = merge ^ mask;
-+		onoff |= p->tiers_onoff & new;
-+		mask = merge;
-+	}
-+	rcu_read_unlock();
-+
-+	return onoff;
-+}
-+
-+int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg)
-+{
-+	int onoff;
-+
-+	onoff = swap_tier_collect_mask(memcg);
-+
-+	/* Make common case fast */
-+	if (onoff & DEFAULT_ON_MASK)
-+		return onoff;
-+	/*
-+	 * Root memcg has DEFAULT_ON_MASK; defaults are covered.
-+	 * Checking DEFAULT_OFF_MASK suffices; only each tier's ON bit is checked.
-+	 * ON flag is inverted and compared with each swap device's OFF mask.
-+	 */
-+	return ~(onoff << 1);
-+}
-+
-+void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg)
-+{
-+	spin_lock(&swap_tier_lock);
-+	if (memcg->tiers_onoff)
-+		swap_tier_show_mask(m, memcg->tiers_onoff);
-+	else
-+		seq_puts(m, "\n");
-+	swap_tier_show_mask(m, swap_tier_collect_mask(memcg));
-+	spin_unlock(&swap_tier_lock);
-+}
-+
-+void swap_tiers_assign(struct swap_info_struct *swp)
-+{
-+	struct swap_tier *tier;
-+
-+	spin_lock(&swap_tier_lock);
-+	swp->tier_idx = NULL_TIER;
-+
-+	for_each_active_tier(tier) {
-+		if (swap_tier_is_default(tier))
-+			continue;
-+		if (swap_tier_prio_in_range(tier, swp->prio)) {
-+			swp->tier_idx = TIER_IDX(tier);
-+			swap_tier_get(tier);
-+			break;
-+		}
-+	}
-+	spin_unlock(&swap_tier_lock);
-+}
-+
-+void swap_tiers_release(struct swap_info_struct *swp)
-+{
-+	spin_lock(&swap_tier_lock);
-+	if (swp->tier_idx != NULL_TIER)
-+		swap_tier_put(&swap_tiers[swp->tier_idx]);
-+	spin_unlock(&swap_tier_lock);
-+}
-+
-+/* not incremental, but reset. */
-+int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg)
-+{
-+	struct swap_tier *tier;
-+	int ret = 0;
-+	int tiers_mask = 0;
-+	int tiers_onoff = 0;
-+	int cnt = 0;
-+
-+	for (int i = 0; i < nr; i++) {
-+		for (int j = i+1; j < nr; j++) {
-+			if (!strcmp(desc[i].name, desc[j].name))
-+				return -EINVAL;
-+		}
-+	}
-+
-+	spin_lock(&swap_tier_lock);
-+	/* nr 0 is allowed for deletion */
-+	if (nr < 0 || nr > nr_swaptiers) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	for (int i = 0; i < nr; i++) {
-+		for_each_active_tier(tier) {
-+			if (!strcmp(desc[i].name, tier->name)) {
-+				tiers_mask |= TIER_MASK(TIER_IDX(tier), TIER_FULL_MASK);
-+				tiers_onoff |= TIER_MASK(TIER_IDX(tier), desc[i].ops);
-+				cnt++;
-+				break;
-+			}
-+		}
-+	}
-+
-+	if (cnt != nr) {
-+		ret = -EINVAL;
-+		goto out;
-+	}
-+
-+	swap_tier_put_mask(memcg->tiers_mask);
-+	swap_tier_get_mask(tiers_mask);
-+	memcg->tiers_mask = tiers_mask;
-+	memcg->tiers_onoff = tiers_onoff;
-+out:
-+	spin_unlock(&swap_tier_lock);
-+	return ret;
-+}
-+
-+void swap_tiers_put_mask(struct mem_cgroup *memcg)
-+{
-+	spin_lock(&swap_tier_lock);
-+	swap_tier_put_mask(memcg->tiers_mask);
-+	spin_unlock(&swap_tier_lock);
-+}
-diff --git a/mm/swap_tier.h b/mm/swap_tier.h
-new file mode 100644
-index 000000000000..f4b4e385638a
---- /dev/null
-+++ b/mm/swap_tier.h
-@@ -0,0 +1,75 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef _SWAP_TIER_H
-+#define _SWAP_TIER_H
-+
-+#include "swap.h"
-+#include <linux/memcontrol.h>
-+
-+#ifdef CONFIG_SWAP_TIER
-+
-+enum swap_tiers_index {
-+	SWAP_TIER_DEFAULT,
-+#ifdef CONFIG_ZSWAP
-+	SWAP_TIER_ZSWAP,
-+#endif
-+	SWAP_TIER_RESERVED_CNT,
-+};
-+
-+#define MAX_TIERNAME			16
-+#define MAX_SWAPTIER			12
-+
-+#define TIER_MASK(idx, mask)		((mask) << (idx) * 2)
-+#define TIER_ON_MASK			(1 << 0)
-+#define TIER_OFF_MASK			(1 << 1)
-+#define TIER_FULL_MASK			(TIER_ON_MASK | TIER_OFF_MASK)
-+
-+#define DEFAULT_ON_MASK			TIER_MASK(SWAP_TIER_DEFAULT, TIER_ON_MASK)
-+#define DEFAULT_OFF_MASK		TIER_MASK(SWAP_TIER_DEFAULT, TIER_OFF_MASK)
-+#define DEFAULT_FULL_MASK		(DEFAULT_ON_MASK | DEFAULT_OFF_MASK)
-+
-+#define DEFAULT_TIER_NAME		""
-+#define ZSWAP_TIER_NAME			"ZSWAP"
-+
-+struct tiers_desc {
-+	char name[MAX_TIERNAME];
-+	union {
-+		signed short prio_st;
-+		signed short ops;
-+	};
-+	int tier_idx;
-+};
-+
-+void swap_tiers_init(void);
-+int swap_tiers_add(struct tiers_desc desc[], int nr);
-+int swap_tiers_remove(struct tiers_desc desc[], int nr);
-+ssize_t swap_tiers_show_sysfs(char *buf);
-+void swap_tiers_show_memcg(struct seq_file *m, struct mem_cgroup *memcg);
-+void swap_tiers_assign(struct swap_info_struct *swp);
-+void swap_tiers_release(struct swap_info_struct *swp);
-+int swap_tiers_get_mask(struct tiers_desc *desc, int nr, struct mem_cgroup *memcg);
-+void swap_tiers_put_mask(struct mem_cgroup *memcg);
-+static inline bool swap_tiers_test_off(int tier_idx, int mask)
-+{
-+	return TIER_MASK(tier_idx, TIER_OFF_MASK) & mask;
-+}
-+int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-+#else
-+static inline void swap_tiers_init(void)
-+{
-+}
-+static inline void swap_tiers_assign(struct swap_info_struct *swp)
-+{
-+}
-+static inline void swap_tiers_release(struct swap_info_struct *swp)
-+{
-+}
-+static inline bool swap_tiers_test_off(int tier_off_mask, int mask)
-+{
-+	return false;
-+}
-+static inline int swap_tiers_collect_compare_mask(struct mem_cgroup *memcg);
-+{
-+	return 0;
-+}
-+#endif
-+#endif
-diff --git a/mm/swapfile.c b/mm/swapfile.c
-index 3bb77c9a4879..a5c90e419ff3 100644
---- a/mm/swapfile.c
-+++ b/mm/swapfile.c
-@@ -63,7 +63,7 @@ static void move_cluster(struct swap_info_struct *si,
- 			 struct swap_cluster_info *ci, struct list_head *list,
- 			 enum swap_cluster_flags new_flags);
- 
--static DEFINE_SPINLOCK(swap_lock);
-+DEFINE_SPINLOCK(swap_lock);
- static unsigned int nr_swapfiles;
- atomic_long_t nr_swap_pages;
- /*
-@@ -74,7 +74,6 @@ atomic_long_t nr_swap_pages;
- EXPORT_SYMBOL_GPL(nr_swap_pages);
- /* protected with swap_lock. reading in vm_swap_full() doesn't need lock */
- long total_swap_pages;
--#define DEF_SWAP_PRIO  -1
- unsigned long swapfile_maximum_size;
- #ifdef CONFIG_MIGRATION
- bool swap_migration_ad_supported;
-@@ -89,7 +88,7 @@ static const char Unused_offset[] = "Unused swap offset entry ";
-  * all active swap_info_structs
-  * protected with swap_lock, and ordered by priority.
-  */
--static PLIST_HEAD(swap_active_head);
-+PLIST_HEAD(swap_active_head);
- 
- /*
-  * all available (active, not full) swap_info_structs
--- 
-2.34.1
-
+And now swap functions (swap_cache_*) that expects a swp_entry_t is
+getting a softleaf_t instead, they are the same thing right now, so
+that's fine. Will we need something like a softleaf_to_swap?
 
