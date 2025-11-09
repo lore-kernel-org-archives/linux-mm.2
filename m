@@ -4,93 +4,159 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6345BCCFA1A
-	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:18:51 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2A8BFCCFA1A
+	for <linux-mm@archiver.kernel.org>; Sun,  9 Nov 2025 19:48:01 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A683F8E0005; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
+	id 290D28E0003; Sun,  9 Nov 2025 14:48:00 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id A18C38E0002; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
+	id 241B18E0002; Sun,  9 Nov 2025 14:48:00 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 92E868E0005; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
+	id 1095B8E0003; Sun,  9 Nov 2025 14:48:00 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
-	by kanga.kvack.org (Postfix) with ESMTP id 7C8558E0002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:18:50 -0500 (EST)
-Received: from smtpin19.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id 29CAE160A34
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:18:50 +0000 (UTC)
-X-FDA: 84092030820.19.1C8F72F
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
-	by imf12.hostedemail.com (Postfix) with ESMTP id 6FEFF40002
-	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:18:48 +0000 (UTC)
-Authentication-Results: imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J45COeLS;
-	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	by kanga.kvack.org (Postfix) with ESMTP id EBB988E0002
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 14:47:59 -0500 (EST)
+Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay04.hostedemail.com (Postfix) with ESMTP id 83DD31A0A33
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:47:59 +0000 (UTC)
+X-FDA: 84092104278.14.386CD2B
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	by imf05.hostedemail.com (Postfix) with ESMTP id C9A89100003
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:47:56 +0000 (UTC)
+Authentication-Results: imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F9P37uEu;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VVBrgteN;
+	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}");
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762715928;
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762717677;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=6k1wxnNPVq6vKcrImObaKCvUAiOssPA0aelIExbpVaE=;
-	b=w0HFS7uOabLYCfyGN/vFv46N6xB2Ct3u+FWiVwatqSWGbZnJ/t/zSJIOhV+jNdWzmrVWyH
-	anGhv4eqWhHMVzO/qR9GtXRhChcbmCUJ2zwnqKC3Jagt1uzk8tKHUyZEBVBDE0KTo966Ke
-	X2q1ISzN67wm9iwBf0rRcMYUS1zGbIA=
-ARC-Authentication-Results: i=1;
-	imf12.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=J45COeLS;
-	spf=pass (imf12.hostedemail.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	 content-type:content-type:content-transfer-encoding:resent-to:
+	resent-from:resent-message-id:in-reply-to:in-reply-to:references:dkim-signature;
+	bh=bMsmvVMronYxCi7B9Ixi7fI8nblWlGeIuqbkTyh86sk=;
+	b=JSYHh/ApBFsK5X9n9IdjFJ/1ZbgllLks3qQ/jfMY/UQGHFFWpbvVXYrOonhAfLnMZRZkNF
+	6HG5o/MlNmiNkCFaCrqdjr2optWR53el928DWQHluFQiviOJazx9HBqR/PYIpUiAHWchcM
+	QZ68f0As87V+xleLHNmPXGK/5+1gXV8=
+ARC-Authentication-Results: i=2;
+	imf05.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F9P37uEu;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VVBrgteN;
+	arc=reject ("signature check failed: fail, {[1] = sig:alejandro-colomar.es:reject}");
+	spf=pass (imf05.hostedemail.com: domain of alx@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=alx@kernel.org;
 	dmarc=pass (policy=quarantine) header.from=kernel.org
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762715928; a=rsa-sha256;
-	cv=none;
-	b=5sVI6BJfNoS8mCYLbk8voZ7sLtIrk1KiaqXu2rMFAtXlf8eqDXAx1Ho6+EV38LdlDgcVyD
-	ovZ6YzF8e3GD0pvNZIkTWtJCVgN7j9XGzcBQD3dozpVmUCEoy3bpCJCnPfLxbuUEQokoyV
-	pClTcx6xC5EcZ+i55ev6VpmVUbZlTj0=
+ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762717677; a=rsa-sha256;
+	cv=fail;
+	b=F/FO9Ck0S/0x2RRNhnKWmPehoa3Qj7ZTd5wpCjDArHI+hU8jfmyuFn57bkOGPQgqSCNX02
+	snpFq0IysrKjQm6lbjcwL6NNWTxVnszIIbo+fxEwkQYKYk+5iGrysvhnnzqPr60Of3jb23
+	lp3ql0utPZ10sxAnHdG4DRl4FpKyP9Q=
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 394EE407A6;
-	Sun,  9 Nov 2025 19:18:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC68C4AF09;
-	Sun,  9 Nov 2025 19:18:43 +0000 (UTC)
+	by tor.source.kernel.org (Postfix) with ESMTP id F20E660051
+	for <linux-mm@kvack.org>; Sun,  9 Nov 2025 19:47:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E685AC116B1;
+	Sun,  9 Nov 2025 19:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762715927;
-	bh=mGFvQbV410JR8d38Ezb4gyjc5nTCZrcnscZyJrRogmw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J45COeLS4iiRx2lGH1UmcAlTVXtMps6JMUVjoumd0oykEBxIGguvdKu886OnkWZpj
-	 IfL8axmWB3ZPtmdF2LXn2HJLlAstacUjMSujpNlHBuFUtfR7SU55W1i0UYKEi/Yi8+
-	 qYOEUZDTrVKHwOf64cXcCDNcEOdcv6kFzQZfZBo8ggDjyo9M72bSJFBkTgLYC/CYyO
-	 XeuHhkK861vtA6Ll4jA3H42vuXzVB66Yx5joPMQ9eBAyG+yNEq6GagFHhIWbjTZWDS
-	 brgNwp1jqifaHGmotw/4+GpFI7okxfqph31kBH2dtBGZx8bduPYUbvEsVwlJrGFXr2
-	 KvLt00G2ojF2w==
-Date: Sun, 9 Nov 2025 20:18:41 +0100
+	s=k20201202; t=1762717675;
+	bh=cS76VJ/JI6iNK/srPXBxGrqz6oloKdZiWqh68DHoirI=;
+	h=Resent-From:Resent-Date:Resent-To:Date:From:To:Cc:Subject:
+	 In-Reply-To:From;
+	b=F9P37uEutt3feu0lGpBR70dx+fOI+AUTy6HiKCmtX9Ukw3JHMFfsIGM/erQXnfKXi
+	 aSwwAmAnC3aDbQuUkt8MtNmUFgh6RmKUTtlpi7uyu8YTI9Fehyjrx6xHszdsuujOLM
+	 myAQb91HKwA5/oqQ2ie9MjprLXiGS3OigFQgIuxajhPRvIKcRHEczB0jtuEocA1p/4
+	 S5v1brXHQbzZpNm6WO0vaA/n3QPC7lIk1GqyebtEvXPerHZ8PgwBtrOehq4UAjJWvq
+	 Gtd4UV0bpRrRwoUOu9eYx3ukb0HFM74S0Z1CjjHN0/iJSzVPfvVxuW/QYTnxliMX+M
+	 qI7o2c3nujFVQ==
+Received: from mp2.migadu.com ([2001:41d0:303:e224::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by ms17.migadu.com with LMTPS
+	id AB38LEjvEGmF1QAAe85BDQ:P1
+	(envelope-from <alx@kernel.org>)
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:12 +0100
+Received: from aspmx1.migadu.com ([2001:41d0:303:e224::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits))
+	by mp2.migadu.com with LMTPS
+	id AB38LEjvEGmF1QAAe85BDQ
+	(envelope-from <alx@kernel.org>)
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:12 +0100
+X-Envelope-To: foss@alejandro-colomar.es
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=alejandro-colomar.es; s=key1; t=1762717512;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:dkim-signature;
+	bh=bMsmvVMronYxCi7B9Ixi7fI8nblWlGeIuqbkTyh86sk=;
+	b=f9sq7nPex3BufykDb/kx5VYOeKI1vrxtE49bCro1HTtjc8lll4+EUgbRX7zgQgeYrvvWR8
+	59aD1Hev9Ten4UIywVxRlDAUxVWORiycN6PRBvYOn5gY3g5sYC78C8ddPRi/OSpL4cMZms
+	HNBECeWlnL5y77wd8cUYhw8czLtllcjUUFUK3acOjdc+ERwCCX0IVAoc2EKT8xOt2Rq0iC
+	QUM8eiy6i9iv83YzHocU0VjKR2C9I+tuEWPNkagvIDsOrazHAR+QIxoKQdg7rtrR0StuLV
+	mt1lv8WbJd43oLtrKbrGDU6G82QVPLOq3que3PRGdr32VR4mveCOHj+8S08LuQ==
+ARC-Authentication-Results: i=1;
+	aspmx1.migadu.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=VVBrgteN;
+	spf=pass (aspmx1.migadu.com: domain of alx@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=alx@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+ARC-Seal: i=1; s=key1; d=alejandro-colomar.es; t=1762717512; a=rsa-sha256;
+	cv=none;
+	b=hGhJ5cejjihtXF7EYNF5YkkTI3sEVv9VKjf3STdEYDBSTi3dbRANVx2bHpi0GgI3Zjpi1s
+	B1a90YEaf5eqXev4KCmcBiZ3h+b408ur1dsT0bfmSnDIwL31oJLwHCOgk8RH9kOiq+GUtz
+	jcDWO1blEUVghhJrfMaGNFo+IQqmCnsPHSgF4YslY7oPAwECV2472KX9ZIYDXiobvjOw7r
+	w1navkeba9gXJYiqIU1nsL6ZLniovT2UWB6QLQfSXQRSc3J1mCSyIyrR1m6rESHXyUM/9P
+	bMDLLQuSHy+TSFmImsiQe8lR0msfvPPr36D8zChnvEHiNhOTFDisxKBr+Iem3w==
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by aspmx1.migadu.com (Postfix) with ESMTPS id 0C190CF1F7
+	for <foss@alejandro-colomar.es>; Sun, 09 Nov 2025 20:45:12 +0100 (CET)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 8752B4340C
+	for <foss@alejandro-colomar.es>; Sun,  9 Nov 2025 19:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix)
+	id 76092C19424; Sun,  9 Nov 2025 19:45:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB701C19421;
+	Sun,  9 Nov 2025 19:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762717509;
+	bh=cS76VJ/JI6iNK/srPXBxGrqz6oloKdZiWqh68DHoirI=;
+	h=Date:From:Cc:Subject:In-Reply-To:From;
+	b=VVBrgteNJ4dz+ixSe0Lpc009Zi06ZUsQKPZMcj35VGs6WiRif68EuEUNrLLm/L91Q
+	 DZ8343KVkIhhdp6FVJAIeAjLQZqtrnix8X+C0PjSvqGrXe0Ure7zbvVlcOcfWN6PHS
+	 wkQjHN3CTp4bR3KLNpWe2ukVE++KEiMwzCqIPfvdCnjYP+HjfxzN197D3LWLZn5QOL
+	 7aJzE7clxLdo3Rzy26QO0T335Iy4MB0LHJlv3uwCa+G2K6nzO2ceAVifho0BHaCb3f
+	 MSrl2fU6Z7/awfewKxk18+92MndJwQhpEIb65vJpUR9uUWS6Z7/+3dMVQGHAIK9pm7
+	 71U2/mi39oBMw==
+Date: Sun, 9 Nov 2025 20:45:04 +0100
 From: Alejandro Colomar <alx@kernel.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Kees Cook <kees@kernel.org>, Christopher Bazley <chris.bazley.wg14@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
+To: linux-kernel@vger.kernel.org, linux-mm@kvack.org
+Cc: Alejandro Colomar <alx@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Christopher Bazley <chris.bazley.wg14@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
 	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
 	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 1/4] array_size.h: Add ARRAY_END()
-Message-ID: <amjs73mcxeq2zcni5rkbbugm7jgboejrtk6qxfov76hr2fca6m@zjdljyhkkaqs>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1762711279.git.alx@kernel.org>
- <2cb4ddff93b3d3037ef8d094de94227982117f87.1762711279.git.alx@kernel.org>
- <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
+	Andrew Morton <akpm@linux-foundation.org>, "Maciej W. Rozycki" <macro@orcam.me.uk>
+Subject: [PATCH v4 0/4] Add ARRAY_END(), and use it to fix off-by-one bugs
+Message-ID: <cover.1762717358.git.alx@kernel.org>
+X-Mailer: git-send-email 2.51.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2mnclewibysqbpeg"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
+In-Reply-To: <cover.1758806023.git.alx@kernel.org>
+X-Migadu-Flow: FLOW_IN
+X-Migadu-Country: SG
+X-Migadu-Scanner: mx12.migadu.com
+X-Migadu-Spam-Score: -3.14
+X-Migadu-Queue-Id: 0C190CF1F7
+X-TUID: Tz0USIahhUn9
 X-Rspamd-Server: rspam09
-X-Rspamd-Queue-Id: 6FEFF40002
-X-Stat-Signature: uhchg7yrctejgzckjsyg74keiskmajw4
+X-Rspamd-Queue-Id: C9A89100003
+X-Stat-Signature: z9m7ju3ib3s7t87m3n7981etexserewm
 X-Rspam-User: 
-X-HE-Tag: 1762715928-514236
-X-HE-Meta: U2FsdGVkX18ZzinX9N6rV5YwA9xePgJ2c3qrPB/D+5WjrgQMkG77LUouImKlaHxneZrO025WIGc/tDIKvWJO/56BVs7I0x/5QJEemCMeGV0ceFrANXgYpPtqT4gNALe4PX+TLjgzz98/qXDTmMfkfv8s8c6OXGcwjFzcDI8gsZbHn9+WtOlbd9nGwlfn+k0JVySzkNxRhC3hkR5TFX17nTiy+iXjFmVxebNHfNhQxRjk1dH/6jVW02nEYdPdalXoK1CNHJFk9DhB+ZH3cPjjX9TNOckjmN5i3a1gNGDBWEiAg2ZpCDCZ8U3UIYZnDtIVLwpbKGTRnCwoJGbeoJvtQQYG9T8RlfZ1JcUjgxFBaQiY33osAXxR7feCJR8Wx/6RHUMUShQSQMBTi+AQaK8471eLiU4y8elFvpyeYxw/eOJSoK17tubqzatGSRbi7P0lSwnQS8A3JLAghKy4B9sb7iMhGlFsqoqT+eUodVNgzTxVVUDVP+V9d+Cu9XYnzOqHDrCUn2cjFXnc+VSLgs2UVMLfPk9H3v6zZf6MXJQgZFGY96vuuM1c7lIGyE3bE+/oemhEKvoF/T3MhifcpcRD7WrjYL8U0jHdBSKV7/M+1R4/urucdPs7yP+d3j0DU3a/sgziF6309AKhskgFvpUUGnDm0MJdbURe6F9O0RqSZ9vGLLFhf3vs5nEYh24chrlK0EVC7SJDc2AGqOi+zR+GZEHqgQhPyzChwGnto3JA7y8FIZBVREZCwsPItUhazlHdm72Ry2Frpsi8BELILm1JgtnGa0tcLEgXAIkjntm6eDIsVZgY8zWJOGov/ckTNnwkrzdYzaJdcgJHm3r8x5yjtMvJqL+vfbjofIaagnBu7cshEq84AL5hmQq+SPzYw89R6srb/uWzEv80itysS9c/YKj2NbB4fiyr/i9UPMff+Tl1Vhr7FeZNc6xs7yWC/bwgJPPgX0iCInIgiiOzgZu
- ma9XBiE8
- /jz5GqfXNsKqs4+5puMMCw8GC3j7m4y4vLfv1iREfjh/p25xP0lTRMDkBhhsxGF5l4p2zOMOyuu7Jahf8K1oxclEyu1CJelUHmt2ouDqOa10mJ/MkkxlIJjGyMNz4fVNQXjAG12UDvyiHFyEcVkszmbQSy138a4+MFIyGKyaTxkipGaUH3H5QskdnEfWvhcJeMInxkUZOVSODbm9F0t96Nu6HsPwqFFjL+p0BrYvX6ENAn5+MjF9Qru7c0F1vhvTf9zR0fDH2Br0goNzJVeHFOqqDHIRuyDPQDskhU32gGs5bPhjwgwEHUjhLU171nqTIhVb+LrUE4EIvuIG/jukH9KLfDtWxhlCyMbUJunGGdJqHFk9/y0ukMYKEe0tzoQm1+EYOXERC13np2u0Z+i3oY4XRhwO5DsdXMxrRLBDKiopEhn+PfVjaWrob8eqoEiP4o73gnpPohr1jdVnRrHpj/Dbakg6LALwwEglBPSg1PX2rxMkFORI+ndUTtKv6nwuLdpgIjL1lMjQBPwH7WxNAPupetw==
+X-HE-Tag: 1762717676-572456
+X-HE-Meta: U2FsdGVkX19O1q81+4e4s13Y9PnQumci5+uXNojshihD3HU4ZH7Wl2jbf54eyVhIsxFcJR/2VHfW9pyBvFeE0dhl/6VWNotm0h8dS6EtCXC8Cofrq6Yi0xJaPfV1hhVTbmVjIZH4OVIPSUXYb1b1aYTQe5MACC0iN9ppbyh32Fm/kGKmFz26XHv430qIoyyQx8UmR2Leh+SiySOCqAsnCpQ0aUC4b6qD17QVgV8bqxyusfBsHDf2HbhM8qyBT8S3r2hbBSGzcUGX36RQ1kpB4Enp4iXPT5RAvkWxRc5xqEBTrBRx1+afp+/fNrvACoewTLamcob9rYChg2pBPXLCe2yGr2sYYBQ5ZydZZRrxmCIlJ6gH7Dde01YOFowhl01Ioq2ByZ/BRc0aJkknSEQjAz+qja4LMKEy8e0SW88MElizMfCjEjsO3E32Vv9Ma+C9kvOlYI8/NtG+gFhxF14tB8jwkwjstsZA38L6vedm72vZQ/KXqW4yqixI0shJwCPMHZtsfM8Pfvm5t4021N9yMCl8JDhsOUm+XybELXnS2/NcsKoVfcKNpvkU7XxSWx9GbhPrDWp3qiamM4hORGNFCRs9u5cnUZNY36C6NF94i+Ze2loPFURejeBUSTZDmbOijVPC4+CryXbLyWeHKBuBRmQs2MKTxb8kqq5ePL4M9DFrvn7XHTlznscCE//5qEnvChitUeB7lHjNaSIdRTfvQOI0uJVxixoYcaFMtE9mBZF/Bdg7bPVPNZBNfZhealW+t3sjBZ0YoOFwGvJPUDDEphywiYMDaW5W82zPC0v3Jg/f3tAF1aygGsC+r+Pb9qyOQCR0UJMyJ4TxXcsF+Hx2pIIOFw4sfcatmL6719TiB+dKcIyJM22PG0fkZ2bb4PHwHHS5r9rDSZnl7xsKygZcZ4ty9fcI/JZPndTeg3B6kU67ZaBbdPb2m4jpzU5Pytmo9i+2Kr/Tuq2mvVJFlIq
+ uEfgNTNd
+ JefbYDkCB4pIbEHvhOyxqwiQF0mqbM2DERcMZ2HLKbP25QCaLgqlC2XbV5p+MVtHZIiYlVnhoyuVl9j8anBsiIgQyV7tOyGfpMFRqxC+Q2yS1d1miLpWom946oIVQiIqc+J6gCMcFNYaMytcA67GWaUCM0/SluHKNdj6cZY3JtR/niq2IAlsxYX5tzNHGKVbVJD4GP/W7D9c/haAkr1+fy1il5D9WykCDwf5h2++M6Y9HmlPctYQEYqtRRX3oxMdtM6EwkKIFOeVfhopXeSeAH4TU+fnC/NIs4gvtErG9aLpWvN1KKjq4pIvGk/ZAZ4oc5QI25XE9L2orxiFSayjx4rsl/ouGI3hJokI0xCWd4LyE8Jvf6iPggGjuZTCQzgxjGixGvjGLIXufdaDdvGt1EaRaduTDXXf8d0pE6+p1c93gtBUciFeQZ0utPNJ8Crjd26MQ5BJchWjW/ufchNhW6sZPoryUT1NTBRGMxoI+peAJLHNtpuKhcP2BWj6/Q5Zos8Qm/YZ+eSvIhlDBynvw6of/rnGEr2/O+NpJVSn2MYC/8fk9arZmj3O0CrDh83rjYLvUN+qDUMM0rdG+yBDK/XLyvctw7NKG6XhHU06EMwNafZ2RwYmQON+sIl0tDLOjB5onIJPUodoGwwq/zZFZNwSrHRCqAPKAj+HHh7+SKjosIlRY8R+IKbMJJBgBLtLwUTpBQX6C+MNhX/bvr276ZtHIKER1xeQQ9U7jQ60KoG6ecF0YaAX9yrVTqdIWjcR8ROJbGcIRNQJKQNCj8X4yM2hZdQ==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -99,87 +165,110 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
+ARRAY_END() is a macro to calculate a pointer to one past the last
+element of an array argument.  This is a very common pointer, which is
+used to iterate over all elements of an array:
 
---2mnclewibysqbpeg
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-From: Alejandro Colomar <alx@kernel.org>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	Kees Cook <kees@kernel.org>, Christopher Bazley <chris.bazley.wg14@gmail.com>, 
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Marco Elver <elver@google.com>, Michal Hocko <mhocko@suse.com>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, Al Viro <viro@zeniv.linux.org.uk>, 
-	Alexander Potapenko <glider@google.com>, Dmitry Vyukov <dvyukov@google.com>, Jann Horn <jannh@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v3 1/4] array_size.h: Add ARRAY_END()
-Message-ID: <amjs73mcxeq2zcni5rkbbugm7jgboejrtk6qxfov76hr2fca6m@zjdljyhkkaqs>
-References: <cover.1758806023.git.alx@kernel.org>
- <cover.1762711279.git.alx@kernel.org>
- <2cb4ddff93b3d3037ef8d094de94227982117f87.1762711279.git.alx@kernel.org>
- <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
-MIME-Version: 1.0
-In-Reply-To: <alpine.DEB.2.21.2511091903580.25436@angie.orcam.me.uk>
+        for (T *p = a; p < ARRAY_END(a); p++)
+                ...
 
-Hi Maciej,
+Of course, this pointer should never be dereferenced.  A pointer one
+past the last element of an array should not be dereferenced; it's
+perfectly fine to hold such a pointer --and a good thing to do--, but
+the only thing it should be used for is comparing it with other pointers
+derived from the same array.
 
-On Sun, Nov 09, 2025 at 07:05:40PM +0000, Maciej W. Rozycki wrote:
-> On Sun, 9 Nov 2025, Alejandro Colomar wrote:
->=20
-> > diff --git a/include/linux/array_size.h b/include/linux/array_size.h
-> > index 06d7d83196ca..b5775b8f13de 100644
-> > --- a/include/linux/array_size.h
-> > +++ b/include/linux/array_size.h
-> > @@ -10,4 +10,10 @@
-> >   */
-> >  #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_ar=
-ray(arr))
-> > =20
-> > +/**
-> > + * ARRAY_END - get a pointer to one past the last element in array @a
-> > + * @a: array
-> > + */
-> > +#define ARRAY_END(a)  (&(a)[ARRAY_SIZE(a)])
->=20
->  Why `a' rather than `arr' as with the other macro?
+Due to how special these pointers are, it would be good to use
+consistent naming.  It's common to name such a pointer 'end' --in fact,
+we have many such cases in the kernel--.  C++ even standardized this
+name with std::end().  Let's try naming such pointers 'end', and try
+also avoid using 'end' for pointers that are not the result of
+ARRAY_END().
 
-It's simpler, and equally informative.  I wish ARRAY_SIZE() would have
-also used 'a'.  On the other hand, consistency is important.  I'll make
-it 'arr'.
+It has been incorrectly suggested that these pointers are dangerous, and
+that they should never be used, suggesting to use something like
 
-Thanks!
+	#define ARRAY_LAST(a)  ((a) + ARRAY_SIZE(a) - 1)
+
+	for (T *p = a; p <= ARRAY_LAST(a); p++)
+		...
+
+This is bogus, as it doesn't scale down to arrays of 0 elements.  In the
+case of an array of 0 elements, ARRAY_LAST() would underflow the
+pointer, which not only it can't be dereferenced, it can't even be held
+(it produces Undefined Behavior).  That would be a footgun.  Such arrays
+don't exist per the ISO C standard; however, GCC supports them as an
+extension (with partial support, though; GCC has a few bugs which need
+to be fixed).
+
+This patch set fixes a few places where it was intended to use the array
+end (that is, one past the last element), but accidentally a pointer to
+the last element was used instead, thus wasting one byte.
+
+It also replaces other places where the array end was correctly
+calculated with ARRAY_SIZE(), by using the simpler ARRAY_END().
+
+Also, there was one drivers/ file that already defined this macro.  We
+remove that definition, to not conflict with this one.
+
+---
+
+Hi,
+
+v4:
+
+-  Use 'arr' as the macro parameter, for consistency with ARRAY_SIZE().
+   [Reported-by: "Maciej W. Rozycki" <macro@orcam.me.uk>]
 
 
 Have a lovely night!
 Alex
 
 
->=20
->   Maciej
+Alejandro Colomar (4):
+  array_size.h: Add ARRAY_END()
+  mm: Fix benign off-by-one bugs
+  kernel: Fix off-by-one benign bugs
+  mm: Use ARRAY_END() instead of open-coding it
 
---=20
-<https://www.alejandro-colomar.es>
-Use port 80 (that is, <...:80/>).
+ drivers/block/floppy.c     | 2 --
+ include/linux/array_size.h | 6 ++++++
+ kernel/kcsan/kcsan_test.c  | 4 ++--
+ mm/kfence/kfence_test.c    | 4 ++--
+ mm/kmemleak.c              | 2 +-
+ mm/kmsan/kmsan_test.c      | 2 +-
+ mm/memcontrol-v1.c         | 4 ++--
+ 7 files changed, 14 insertions(+), 10 deletions(-)
 
---2mnclewibysqbpeg
-Content-Type: application/pgp-signature; name="signature.asc"
+Range-diff against v3:
+1:  2cb4ddff93b3 ! 1:  9f87d6208a6c array_size.h: Add ARRAY_END()
+    @@ Commit message
+         Cc: Michal Hocko <mhocko@suse.com>
+         Cc: Linus Torvalds <torvalds@linux-foundation.org>
+         Cc: Al Viro <viro@zeniv.linux.org.uk>
+    +    Cc: "Maciej W. Rozycki" <macro@orcam.me.uk>
+         Signed-off-by: Alejandro Colomar <alx@kernel.org>
+         Message-ID: <37b1088dbd01a21d2f9d460aa510726119b3bcb0.1752193588.git.alx@kernel.org>
+     
+    @@ include/linux/array_size.h
+      #define ARRAY_SIZE(arr) (sizeof(arr) / sizeof((arr)[0]) + __must_be_array(arr))
+      
+     +/**
+    -+ * ARRAY_END - get a pointer to one past the last element in array @a
+    -+ * @a: array
+    ++ * ARRAY_END - get a pointer to one past the last element in array @arr
+    ++ * @arr: array
+     + */
+    -+#define ARRAY_END(a)  (&(a)[ARRAY_SIZE(a)])
+    ++#define ARRAY_END(arr)  (&(arr)[ARRAY_SIZE(arr)])
+     +
+      #endif  /* _LINUX_ARRAY_SIZE_H */
+2:  831155f02bec = 2:  ac55d92551e4 mm: Fix benign off-by-one bugs
+3:  d8128f0c8b9f = 3:  ca8dec7f5bc9 kernel: Fix off-by-one benign bugs
+4:  9646a1d194a5 = 4:  980c8fe8a6de mm: Use ARRAY_END() instead of open-coding it
 
------BEGIN PGP SIGNATURE-----
+base-commit: 6146a0f1dfae5d37442a9ddcba012add260bceb0
+-- 
+2.51.0
 
-iQIzBAABCgAdFiEES7Jt9u9GbmlWADAi64mZXMKQwqkFAmkQ6REACgkQ64mZXMKQ
-wqlxpg/8DCZ43s63Y4S4kHX7NRY5OVoa64fFe+SDhiM+Aq3FGWYWusa8kZIHgo86
-/lLSLyZwQciCGXCENn4yiKkCYv76FEiCZY29kelAF4sEf4perL4IbX4MrChkWSLO
-LcFvRC6qs52Qzp3Rd3c3sImkcz2Cbogeku+w3W1n2G5K7DL8O8qrcLtFYAZTMn1u
-lQMCyBfh/izbE0ymjYnlFk20VansUxSWb7V534tSK6cezHfHCvmoimAB5pe1psPC
-e1H4uSP9wiXoG9Td/WylTu2JGp7WF/c/3vwEfYYYD24QvgW9nvBiP/WsSqBx8I/E
-tihbCcT3oiL7rhcXcebnJ25Yea+tPMbaYIvq6UT+8exXWRwf37j+763w4lfrxIiz
-1ux+b11LsQ1gMKidaGMdfz6IMJvVX+f2mkuTQxARS9f7tqIiHSKU4TDKntReDsiV
-gjh4yjNrX2kDnj4Ss7hkPbRNzyh048TKgk4fnH2MUDRTyR0rI2yGqZ9HbqsAMo31
-+y+07K/VjAQLSNeE/P8a73QjZFm7SR0kU5crpuTjonCNGjQZkw+EcZsCvZcTFV4R
-hvzJC4S/v5rkfPOguAGOM1CvJXGrYiKH91JnVavvy8toezhEmO16Pyge8aOralaH
-YlX1X+n1yY4VKuxDfZxd+cwzMzIvns8du+xNCOrJvUy49YkQPMo=
-=e0eB
------END PGP SIGNATURE-----
-
---2mnclewibysqbpeg--
 
