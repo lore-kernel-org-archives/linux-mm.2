@@ -4,90 +4,152 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id D55C9CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:21:27 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 74C2ACCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 23:39:15 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 449A88E000E; Mon, 10 Nov 2025 18:21:27 -0500 (EST)
+	id 6242C8E000C; Mon, 10 Nov 2025 18:39:14 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 3F9E98E0003; Mon, 10 Nov 2025 18:21:27 -0500 (EST)
+	id 5D48B8E0003; Mon, 10 Nov 2025 18:39:14 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 337558E000E; Mon, 10 Nov 2025 18:21:27 -0500 (EST)
+	id 49C8B8E000C; Mon, 10 Nov 2025 18:39:14 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 242838E0003
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:21:27 -0500 (EST)
-Received: from smtpin09.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay07.hostedemail.com (Postfix) with ESMTP id CFB2A1602D9
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:26 +0000 (UTC)
-X-FDA: 84096270972.09.7DB71BE
-Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
-	by imf02.hostedemail.com (Postfix) with ESMTP id 1EA308000B
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:21:24 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R4NU6Q8J;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
+Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+	by kanga.kvack.org (Postfix) with ESMTP id 35A598E0003
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 18:39:14 -0500 (EST)
+Received: from smtpin02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 98B941DF325
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:39:13 +0000 (UTC)
+X-FDA: 84096315786.02.11120BF
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
+	by imf04.hostedemail.com (Postfix) with ESMTP id CA2D94000D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 23:39:11 +0000 (UTC)
+Authentication-Results: imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mT/klMDg";
+	spf=pass (imf04.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762816885;
+	s=arc-20220608; t=1762817951;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KeXZlzM9S/cAH2YiJk+aaehPaWC6sAatt90g+33TR9M=;
-	b=TLNhfVmQXNp3d/ZOtawPkeLbsAjrXqtIM9RD103ZAp7PJy1KK5tlgU0qAqJftFS1cQ+NNf
-	Ik12OW3Xmrfqz5j3OC8KJOqyrmj82aVlmfAqQ5CVop+E3bz9ll6tEqBQsDLtqJLq8RpsSQ
-	FiE6czV0BA/Rxv+3W8cLWeXw4Fpjl6g=
+	bh=auOCGMGZsgkQSYvZ+oudFtHe19C6Wc96WcK7gMZx0zg=;
+	b=ZUTCWGX39xUgM3p3YyJjHWAryKbbVypZQ9LgB2xoK5I14FxAnnL+1+ZL8rQnRdlQNGZnrC
+	3Q8u9Qwe9m7eKo8HTg7FfXj/lT7BwM2mQ+AJx6dJKtHmqf6sqWfQ8QGb3T0h8loSGVs0tB
+	10gZrX10XqEvC2GnVwFL5Ut/e+vwnyo=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=linux.dev header.s=key1 header.b=R4NU6Q8J;
-	spf=pass (imf02.hostedemail.com: domain of shakeel.butt@linux.dev designates 91.218.175.182 as permitted sender) smtp.mailfrom=shakeel.butt@linux.dev;
-	dmarc=pass (policy=none) header.from=linux.dev
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762816885; a=rsa-sha256;
+	imf04.hostedemail.com;
+	dkim=pass header.d=google.com header.s=20230601 header.b="mT/klMDg";
+	spf=pass (imf04.hostedemail.com: domain of hughd@google.com designates 209.85.128.170 as permitted sender) smtp.mailfrom=hughd@google.com;
+	dmarc=pass (policy=reject) header.from=google.com
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762817951; a=rsa-sha256;
 	cv=none;
-	b=vqS3L8VlIli5Kzq2zrkC+bXb0o8GmNDrNokf9ZIjzIvITD3cC1QrUy+QPYCofVjeu8SVI5
-	heIzPoOKEKTU3NM7LxpumdccRf3aFvAw0DtyGgQVrw1xzRhpqyHA9KmDVqH/tgYIxkRTr/
-	y5cYI821qRpiDSV/j45D5QUZaySrXxE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1762816883;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KeXZlzM9S/cAH2YiJk+aaehPaWC6sAatt90g+33TR9M=;
-	b=R4NU6Q8JCz+vv5o5XmD4mFPnZiEkcZEeGblXosVFQw+RFf9leuRmhR0urgV21dHwZQIuL9
-	T3w0t0fzyPiOGdBbxvlt0vGbaBSsux7ELLDLlXmNEd0BBaDNtaUNWI0NmH6bvA0RUStsI0
-	ANDzkbGwvlFROHEOOQpmnoW1jnNzIAk=
-From: Shakeel Butt <shakeel.butt@linux.dev>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Qi Zheng <qi.zheng@linux.dev>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	linux-mm@kvack.org,
-	cgroups@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Meta kernel team <kernel-team@meta.com>
-Subject: [PATCH 4/4] memcg: remove __lruvec_stat_mod_folio
-Date: Mon, 10 Nov 2025 15:20:08 -0800
-Message-ID: <20251110232008.1352063-5-shakeel.butt@linux.dev>
-In-Reply-To: <20251110232008.1352063-1-shakeel.butt@linux.dev>
-References: <20251110232008.1352063-1-shakeel.butt@linux.dev>
+	b=zfpiGaG0oOAvqONuuVHrlC17N7VkYG4fVRgx7jwLpUZkuWOUcjyr0Fe7QQnW6LkA7pH5FT
+	dWcpWSATWIUmP2TQAE0+SirX2WdzSLeE3zcvFv2uPIncYtC2VTZfeNn8FPykUwTJjrnRBX
+	PTl5mSZ2k+VeZKpmdnd1f6iTTLlee2A=
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-78682bab930so4341857b3.1
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:39:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1762817951; x=1763422751; darn=kvack.org;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=auOCGMGZsgkQSYvZ+oudFtHe19C6Wc96WcK7gMZx0zg=;
+        b=mT/klMDg207pA5UyaU0gz3+Drx28u1G2zlmxCOs2EoHDS0Vz5XeXahS5AbgGyxi6W9
+         Qx7Y0+cQtWp32ifWZEIIfUWuxebkgcS56e0yoe/TbA3//cTSu/D8MhF/0e4QVwsz7vrR
+         awjm90YIudeJoqtkMR33Snrn7gFgPnjqnmcTaIwlM2GZio1PmwZpbcUcizrljA8Gohko
+         VnE3cHw3TC35EpysALYWcPJQ2C7Bnzbc7z+UYuEthmbnfW/rOVKAwnazd5QOTWVCor42
+         Wq5/UrZJVLBvV9wdfQCFDCC8CsCCgNtFgbbhtL3vpbitQArnVWovmKAcyCymnwyjfJTZ
+         Lj3Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762817951; x=1763422751;
+        h=mime-version:references:message-id:in-reply-to:subject:cc:to:from
+         :date:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=auOCGMGZsgkQSYvZ+oudFtHe19C6Wc96WcK7gMZx0zg=;
+        b=Rcnn7OHS1p+ErVvvLWSUcCNKcqvRSYlcmYTe3WTlZ+GesqcOSaUMBeGG1hkMxP+2iu
+         chTRrC/CmtxZgKLsXnQAUqtxkEQUVyb4sjkWrbe2Eu2WZ+MZWyY76xJoiNlqSY4m0imM
+         hYknct//ovH+4Oaq+hGG16aNA4ZPHsAj9KJsjoltMVcJx7hFb7XsmB5n8oT1Pyk9WAiJ
+         2kIhXQ3PT6r6rgFioHy/LzYtedFIOB2edushOcw6zZmykx/UQg0rJmralkNwaP0QNZ2Y
+         C/FK9H8aFw7UX4M6nzht01WCyQJikQWcT4zvkIGyHYJrmf18hqyimDVcjh5qRkY8ZuE4
+         IzkQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVC2lzgCPJqVUhKVyuT0Xn4YdOsh2aMZ8QogJH+M97KqynyiA7JmG0TaDsmLGE5cUJZZCX6coJgwg==@kvack.org
+X-Gm-Message-State: AOJu0YxRoiHLX7PNkMWCedrKpmFNXqhYMq9dI5Gdh+QYjU6DzQbhHo6C
+	rjqSVLg7wzew1j1yXyS3sJntQQS/Toa7fh1Iu1kR1QkC+CGOCjHc2f1SLjkrzTXlgQ==
+X-Gm-Gg: ASbGncvSOHNe3B4gOcss4iDa8LN4HggoB3BIj48P5PVL0wDkzZvKilSDZxUZ1pOkR8A
+	XeAhM2ieJV/xUI973IZAk0XZb/F1PADjsD6keSkQ78gkMc4jffMJMojbPU+XFpIW1tqfz7LRbmf
+	+GZtMi3UsNzAUWw0TUWksD9VUelUU/JyfUI8TBcffX7PR+5nwNQEDiYpnlaflNpcVRFjrfsyjlu
+	vUgz3IFjPySAj8y76ZdLumLRVTC365lKnhzAsUX7NBPWFzpWVn6GGdmEzULmzHtDWE5nJfwZwGv
+	oXvnBaqUbw28J4b7IASz34kZlrZpr1KvpuUAYdP1H80cInW20WMDEPf5poohdmB9IlBH8+J2Y0K
+	Li9IRD05chJBsue/D09bh2GnRYfuwE6fCi50i0VGHM8tKaWdGuBVItFDvt7kkQ9Wqdkzj4EGXA5
+	mQV6wQ0lZlt+NA8cMaZgA8xgbG8LyudqNWREYH3CCUYY9zX6H29NXRp5LT/OHMkHUm33ZKESh3a
+	kSAXmp+gA==
+X-Google-Smtp-Source: AGHT+IGhKzpHrBaCl8nie6rdibzD1wCPS/Sl7zTN9XwZ4g855DlbGN22SspoKQKrIKKHgp9q/nU6ag==
+X-Received: by 2002:a81:8a07:0:b0:787:d107:ca88 with SMTP id 00721157ae682-7880355f82bmr9116177b3.10.1762817950151;
+        Mon, 10 Nov 2025 15:39:10 -0800 (PST)
+Received: from darker.attlocal.net (172-10-233-147.lightspeed.sntcca.sbcglobal.net. [172.10.233.147])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-787d6a2947asm27792067b3.55.2025.11.10.15.39.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 15:39:09 -0800 (PST)
+Date: Mon, 10 Nov 2025 15:38:55 -0800 (PST)
+From: Hugh Dickins <hughd@google.com>
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+cc: Chris Li <chrisl@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+    Christian Borntraeger <borntraeger@linux.ibm.com>, 
+    Janosch Frank <frankja@linux.ibm.com>, 
+    Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+    David Hildenbrand <david@redhat.com>, 
+    Alexander Gordeev <agordeev@linux.ibm.com>, 
+    Gerald Schaefer <gerald.schaefer@linux.ibm.com>, 
+    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+    Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>, 
+    Alexander Viro <viro@zeniv.linux.org.uk>, 
+    Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+    Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>, 
+    Baolin Wang <baolin.wang@linux.alibaba.com>, 
+    "Liam R . Howlett" <Liam.Howlett@oracle.com>, 
+    Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>, 
+    Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>, 
+    Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>, 
+    Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>, 
+    Mike Rapoport <rppt@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+    Michal Hocko <mhocko@suse.com>, Matthew Brost <matthew.brost@intel.com>, 
+    Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>, 
+    Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>, 
+    Ying Huang <ying.huang@linux.alibaba.com>, 
+    Alistair Popple <apopple@nvidia.com>, 
+    Axel Rasmussen <axelrasmussen@google.com>, 
+    Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+    Kemeng Shi <shikemeng@huaweicloud.com>, Kairui Song <kasong@tencent.com>, 
+    Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+    SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+    Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, 
+    Xu Xin <xu.xin16@zte.com.cn>, Chengming Zhou <chengming.zhou@linux.dev>, 
+    Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>, 
+    Naoya Horiguchi <nao.horiguchi@gmail.com>, 
+    Pedro Falcato <pfalcato@suse.de>, 
+    Pasha Tatashin <pasha.tatashin@soleen.com>, 
+    Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>, 
+    Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org, 
+    kvm@vger.kernel.org, linux-s390@vger.kernel.org, 
+    linux-fsdevel@vger.kernel.org, linux-mm@kvack.org, 
+    linux-arch@vger.kernel.org, damon@lists.linux.dev
+Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
+ entries, introduce leaf entries
+In-Reply-To: <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
+Message-ID: <c9e3ad0e-02ef-077c-c12c-f72057eb7817@google.com>
+References: <cover.1762621567.git.lorenzo.stoakes@oracle.com> <CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com> <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local> <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
+ <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=US-ASCII
 X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: 1EA308000B
-X-Stat-Signature: jfcogigzzw58k58x89hsfkcw377ghinh
+X-Rspamd-Queue-Id: CA2D94000D
+X-Stat-Signature: o9cg4tw791qhqhmbeyn737xghyephiky
 X-Rspam-User: 
-X-HE-Tag: 1762816884-731339
-X-HE-Meta: U2FsdGVkX19zMunvRLWL8jV7BQekeFfCkqoD3LkODHm3KyOxvMPTgwfeqzfIDLqIYMOpP8nt1A5J7N2OK8WYDIfjDbLHLnrzw/m0lJUNjCIiQ0X9Z/MpYYVTCU4OwatST1vZhYotX9Hke4caqkC5LqLIPqBEaK+Fr2hMoiDTPe3dhBF6fjuvVbZ+4gDtrirQFGBsTKvq22rNHupMbc+/zl7Rt49bGVAJR5egwJ2Yq0XJsQTCksNrAnmYBJNFCvbc//mrecR11vdWRIIKEZAcITa7bh6JT2SQtmIIfHW10gmsX1Hw0fmDjEIzmZkjk2MuTzZyTPr9dtxDBpdqzWz7Gg9wGfrZKRYC1J1B+dQQEoFf9iLubTMSz5A9+/lQHSSaM1qQTCUmKdYl5bHfebB7SbCvWdFLknoeoi840Crr2ZzKgAlzkLWsMdOh1S1pddnUbujlRkCeiBhqHzGG+2ONmH3PuNyB3W1/+BVB5aXgblVwk2WpmI1LQ+PBUUOKw4bA+36w7QPHezxOaH7llpxAigS2LD4+hFcZKhnl7PJe7vTGGDVgXLSU/Tvm39mh1BZWXz6kEr2eihnyC8vH4CBaP2QTCv1xb2Lw8AxFclMLc0K+mLd7DCtMX4nEjicCm+S/UqQbSZ7XxE6v3xqQvkCenrTW4Qdrc4qkhdQDI+dkBIfK3d6VMtHWJ5XAqWt1a/mIqaGAMD3bMO0FlOKNx1KClq+ecaWvv+IHqCglr+rb1F+C+rvcVOQH7QURWLPNKjW2NkbvYORRXl/SeuMcuO7a/pw9vyRwbDljWoMsglS6vYlZsQv/A+0fqWA3dmkjxHmmdKlM5xLBvyPVuagG4bSTW8tCtOcJUHvEuBCFeJ8mDiMj2UpJaRdRJx8dXi9u1EVZa3K0/Aa0F4R5mR2kly2HKvg9W+AU7AbREAGWYTBzuaAnIq8rKH2lGytPZ4RDF/REbfi2IpcJGnI/PO02OzP
- 8DKB4vEd
- CRaejsR/ehoKDPZUrDhlZJvWglx685WuUhVQlkkMW82jvy/MUwQKtW+HREEOUw2weNoiHK1ZFgs3OXu4mOAVAa+hNxHX1nEECk9Fs0xbqNOdPoHXCTOF6/5kG0fxr6uagvfpH2ikjXYbMmnd2jhsVAxL8izCf/2weyzKyq1e1q0DwKWmGPhltV+QhlYNHJwU671loiQQ3dmoFnolzUtWbUBV0cileobDWNwLwX/0VC7drHmBgEFrQElZ2OoP16wGNYSVS1eRr7NXT7BfUVsSEfENsfQ==
+X-HE-Tag: 1762817951-454212
+X-HE-Meta: U2FsdGVkX1+LpmyY0V6pJ02FqThrqSS8AFCSYo0P+eaJPbu0PmxEjPw3XQfeXAP3Iq6B+rX7+u5a0zdK2d80lqhIilFJ+3eZTDvgerF9UWJjvxE32I93LL9zOZNelqAETzDCu2d0z9MmapD3gZvQ2IB34xAp1/EcKqJ5j4dEOrS0LyEU4FppbA+Y1x+vqjTlgYGbEfcS+dXCJq5O7NtC+nQ9jfCyR5msFTbq0crp+VEGQGBecX2UFO3TLnTpNqiR27X5iFDBustqfwvXJXc21h0CIwSc51vs41vFfAIgUbw4xgbPFSKa8J2gVQMDPP7SEx7a2y5hj1k0mt0D3WK7Oj2cxZj4jIQzP9KnU+4EDoTOWP7ZOTetq1zxOQhlvZgT93+2Su9G+WYGxf2tIOE8dJBm9v5CBcEh5rdO8+8wMFBmzgexywvgc5srWPDUJmvnyJGSLlW/t6RAVjcIHY3Pif2mnhsE2UdC0o/6kwWuo/zZ9t2SYrW7MadGLDz+fOId0XkYMVrmwRCgnOy33a/oJ8GuCHwSZBqsaDH1G23ddV0pAG1WrbIwbAvahoTZ/zhFUMwmc7gLubFELYxt8i4OlHaSEUCcJJ7wBbSprsZS8iqju9D5CgUEcYXRGCtDCEcsbIbTtKLinmloBA+Zi0kdb1hO9kuFpVc1lDVdRnewovMPh36mDSghKgJFECwJIMflwQVmz03tx0jTUtsx6jrwQztdFJGPwHzGQb7mW3DiAh5CZzjZHhfS3/Ive/sABHh5HTw59NpqXdBuuyUI2cp6ZMVQ1Pya6mmHzfO3ZfpDDpXRi/phl5MsgMAV92TCzILCFT9tVgQCjnI5xfz2ustDlFbz15NEnmtR0hoBQIJXRG3rMzSk87zGlutGdjQk4Ewx+bftZQjh4TR72u8rnS0Fo5wU/wzQEu9CKMGeKAS5XkewR6iW9EIv8CLh212imAJzkOwQ7jhVx0orhIgAGz4
+ BO6KmLI5
+ QoTqKgea3pQv+tzVhGNTJzr6SJb0Guw9CyZ5b159w8cdIbFyK1nIIsdaa+KITJSTnfyh+BsV4V/11/iSS/x7APSBkFr9MExH9JYkK6TzrjyzH/go3HrlWNMnBiXcCLdM0+6bV1dOeQsttkThZdVsDCaExZgpIVOY2DRHjIzsiPDpMMMSDqP2hNyUTlc6YI3jOzxNeUnL5UlXMKlK7MUn8dJ8sQ9124/IaT6q8dCMWow+j2P29k6JHNqLYaWgVSiWF4Jv8VCdNJ2siH32WoViCoo+ZfjIZ5iPY0/EDPKZVKIZho9L3JPAHI/FVXz0UdebSs5jHs94lv83xpLZ2Nf1gG7mxc0/ZqCYAjyWKByJSOKWOr9umYfoWmz6n01i3gU4qRblt6csQiGNsTp245UiDgp3H5VgqqJKeVcmecvV0X5m2DJ6bgDMhb6nji8q9fhpNYgGmulTNd8lDDtdaonJj1DReuY2FOs/VUKd0
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -96,244 +158,39 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-The __lruvec_stat_mod_folio is already safe against irqs, so there is no
-need to have a separate interface (i.e. lruvec_stat_mod_folio) which
-wraps calls to it with irq disabling and reenabling. Let's rename
-__lruvec_stat_mod_folio to lruvec_stat_mod_folio.
+On Mon, 10 Nov 2025, Lorenzo Stoakes wrote:
+> On Mon, Nov 10, 2025 at 03:04:48AM -0800, Chris Li wrote:
+> >
+> > That is actually the reason to give the swap table change more
+> > priority. Just saying.
+> 
+> I'm sorry but this is not a reasonable request. I am being as empathetic and
+> kind as I can be here, but this series is proceeding without arbitrary delay.
+> 
+> I will do everything I can to accommodate any concerns or issues you may have
+> here _within reason_ :)
 
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
----
- include/linux/vmstat.h | 30 +-----------------------------
- mm/filemap.c           | 20 ++++++++++----------
- mm/huge_memory.c       |  4 ++--
- mm/khugepaged.c        |  8 ++++----
- mm/memcontrol.c        |  4 ++--
- mm/page-writeback.c    |  2 +-
- mm/rmap.c              |  4 ++--
- mm/shmem.c             |  6 +++---
- 8 files changed, 25 insertions(+), 53 deletions(-)
+But Lorenzo, have you even tested your series properly yet, with
+swapping and folio migration and huge pages and tmpfs under load?
+Please do.
 
-diff --git a/include/linux/vmstat.h b/include/linux/vmstat.h
-index 4eb7753e6e5c..3398a345bda8 100644
---- a/include/linux/vmstat.h
-+++ b/include/linux/vmstat.h
-@@ -523,19 +523,9 @@ static inline const char *vm_event_name(enum vm_event_item item)
- void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
- 			int val);
- 
--void __lruvec_stat_mod_folio(struct folio *folio,
-+void lruvec_stat_mod_folio(struct folio *folio,
- 			     enum node_stat_item idx, int val);
- 
--static inline void lruvec_stat_mod_folio(struct folio *folio,
--					 enum node_stat_item idx, int val)
--{
--	unsigned long flags;
--
--	local_irq_save(flags);
--	__lruvec_stat_mod_folio(folio, idx, val);
--	local_irq_restore(flags);
--}
--
- static inline void mod_lruvec_page_state(struct page *page,
- 					 enum node_stat_item idx, int val)
- {
-@@ -550,12 +540,6 @@ static inline void mod_lruvec_state(struct lruvec *lruvec,
- 	mod_node_page_state(lruvec_pgdat(lruvec), idx, val);
- }
- 
--static inline void __lruvec_stat_mod_folio(struct folio *folio,
--					 enum node_stat_item idx, int val)
--{
--	mod_node_page_state(folio_pgdat(folio), idx, val);
--}
--
- static inline void lruvec_stat_mod_folio(struct folio *folio,
- 					 enum node_stat_item idx, int val)
- {
-@@ -570,18 +554,6 @@ static inline void mod_lruvec_page_state(struct page *page,
- 
- #endif /* CONFIG_MEMCG */
- 
--static inline void __lruvec_stat_add_folio(struct folio *folio,
--					   enum node_stat_item idx)
--{
--	__lruvec_stat_mod_folio(folio, idx, folio_nr_pages(folio));
--}
--
--static inline void __lruvec_stat_sub_folio(struct folio *folio,
--					   enum node_stat_item idx)
--{
--	__lruvec_stat_mod_folio(folio, idx, -folio_nr_pages(folio));
--}
--
- static inline void lruvec_stat_add_folio(struct folio *folio,
- 					 enum node_stat_item idx)
- {
-diff --git a/mm/filemap.c b/mm/filemap.c
-index 63eb163af99c..9a52fb3ba093 100644
---- a/mm/filemap.c
-+++ b/mm/filemap.c
-@@ -182,13 +182,13 @@ static void filemap_unaccount_folio(struct address_space *mapping,
- 
- 	nr = folio_nr_pages(folio);
- 
--	__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, -nr);
-+	lruvec_stat_mod_folio(folio, NR_FILE_PAGES, -nr);
- 	if (folio_test_swapbacked(folio)) {
--		__lruvec_stat_mod_folio(folio, NR_SHMEM, -nr);
-+		lruvec_stat_mod_folio(folio, NR_SHMEM, -nr);
- 		if (folio_test_pmd_mappable(folio))
--			__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -nr);
-+			lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, -nr);
- 	} else if (folio_test_pmd_mappable(folio)) {
--		__lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
-+		lruvec_stat_mod_folio(folio, NR_FILE_THPS, -nr);
- 		filemap_nr_thps_dec(mapping);
- 	}
- 	if (test_bit(AS_KERNEL_FILE, &folio->mapping->flags))
-@@ -831,13 +831,13 @@ void replace_page_cache_folio(struct folio *old, struct folio *new)
- 	old->mapping = NULL;
- 	/* hugetlb pages do not participate in page cache accounting. */
- 	if (!folio_test_hugetlb(old))
--		__lruvec_stat_sub_folio(old, NR_FILE_PAGES);
-+		lruvec_stat_sub_folio(old, NR_FILE_PAGES);
- 	if (!folio_test_hugetlb(new))
--		__lruvec_stat_add_folio(new, NR_FILE_PAGES);
-+		lruvec_stat_add_folio(new, NR_FILE_PAGES);
- 	if (folio_test_swapbacked(old))
--		__lruvec_stat_sub_folio(old, NR_SHMEM);
-+		lruvec_stat_sub_folio(old, NR_SHMEM);
- 	if (folio_test_swapbacked(new))
--		__lruvec_stat_add_folio(new, NR_SHMEM);
-+		lruvec_stat_add_folio(new, NR_SHMEM);
- 	xas_unlock_irq(&xas);
- 	if (free_folio)
- 		free_folio(old);
-@@ -920,9 +920,9 @@ noinline int __filemap_add_folio(struct address_space *mapping,
- 
- 		/* hugetlb pages do not participate in page cache accounting */
- 		if (!huge) {
--			__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
-+			lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr);
- 			if (folio_test_pmd_mappable(folio))
--				__lruvec_stat_mod_folio(folio,
-+				lruvec_stat_mod_folio(folio,
- 						NR_FILE_THPS, nr);
- 		}
- 
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 949250932bb4..943099eae8d5 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -3866,10 +3866,10 @@ static int __folio_split(struct folio *folio, unsigned int new_order,
- 			if (folio_test_pmd_mappable(folio) &&
- 			    new_order < HPAGE_PMD_ORDER) {
- 				if (folio_test_swapbacked(folio)) {
--					__lruvec_stat_mod_folio(folio,
-+					lruvec_stat_mod_folio(folio,
- 							NR_SHMEM_THPS, -nr);
- 				} else {
--					__lruvec_stat_mod_folio(folio,
-+					lruvec_stat_mod_folio(folio,
- 							NR_FILE_THPS, -nr);
- 					filemap_nr_thps_dec(mapping);
- 				}
-diff --git a/mm/khugepaged.c b/mm/khugepaged.c
-index 1a08673b0d8b..2a460664a67d 100644
---- a/mm/khugepaged.c
-+++ b/mm/khugepaged.c
-@@ -2174,14 +2174,14 @@ static int collapse_file(struct mm_struct *mm, unsigned long addr,
- 	}
- 
- 	if (is_shmem)
--		__lruvec_stat_mod_folio(new_folio, NR_SHMEM_THPS, HPAGE_PMD_NR);
-+		lruvec_stat_mod_folio(new_folio, NR_SHMEM_THPS, HPAGE_PMD_NR);
- 	else
--		__lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
-+		lruvec_stat_mod_folio(new_folio, NR_FILE_THPS, HPAGE_PMD_NR);
- 
- 	if (nr_none) {
--		__lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
-+		lruvec_stat_mod_folio(new_folio, NR_FILE_PAGES, nr_none);
- 		/* nr_none is always 0 for non-shmem. */
--		__lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
-+		lruvec_stat_mod_folio(new_folio, NR_SHMEM, nr_none);
- 	}
- 
- 	/*
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index c31074e5852b..7f074d72dabc 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -777,7 +777,7 @@ void mod_lruvec_state(struct lruvec *lruvec, enum node_stat_item idx,
- 		mod_memcg_lruvec_state(lruvec, idx, val);
- }
- 
--void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
-+void lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
- 			     int val)
- {
- 	struct mem_cgroup *memcg;
-@@ -797,7 +797,7 @@ void __lruvec_stat_mod_folio(struct folio *folio, enum node_stat_item idx,
- 	mod_lruvec_state(lruvec, idx, val);
- 	rcu_read_unlock();
- }
--EXPORT_SYMBOL(__lruvec_stat_mod_folio);
-+EXPORT_SYMBOL(lruvec_stat_mod_folio);
- 
- void mod_lruvec_kmem_state(void *p, enum node_stat_item idx, int val)
- {
-diff --git a/mm/page-writeback.c b/mm/page-writeback.c
-index a124ab6a205d..ccdeb0e84d39 100644
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -2652,7 +2652,7 @@ static void folio_account_dirtied(struct folio *folio,
- 		inode_attach_wb(inode, folio);
- 		wb = inode_to_wb(inode);
- 
--		__lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
-+		lruvec_stat_mod_folio(folio, NR_FILE_DIRTY, nr);
- 		__zone_stat_mod_folio(folio, NR_ZONE_WRITE_PENDING, nr);
- 		__node_stat_mod_folio(folio, NR_DIRTIED, nr);
- 		wb_stat_mod(wb, WB_RECLAIMABLE, nr);
-diff --git a/mm/rmap.c b/mm/rmap.c
-index 60c3cd70b6ea..1b3a3c7b0aeb 100644
---- a/mm/rmap.c
-+++ b/mm/rmap.c
-@@ -1212,12 +1212,12 @@ static void __folio_mod_stat(struct folio *folio, int nr, int nr_pmdmapped)
- 
- 	if (nr) {
- 		idx = folio_test_anon(folio) ? NR_ANON_MAPPED : NR_FILE_MAPPED;
--		__lruvec_stat_mod_folio(folio, idx, nr);
-+		lruvec_stat_mod_folio(folio, idx, nr);
- 	}
- 	if (nr_pmdmapped) {
- 		if (folio_test_anon(folio)) {
- 			idx = NR_ANON_THPS;
--			__lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
-+			lruvec_stat_mod_folio(folio, idx, nr_pmdmapped);
- 		} else {
- 			/* NR_*_PMDMAPPED are not maintained per-memcg */
- 			idx = folio_test_swapbacked(folio) ?
-diff --git a/mm/shmem.c b/mm/shmem.c
-index c3ed2dcd17f8..4fba8a597256 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -882,9 +882,9 @@ static unsigned int shmem_huge_global_enabled(struct inode *inode, pgoff_t index
- static void shmem_update_stats(struct folio *folio, int nr_pages)
- {
- 	if (folio_test_pmd_mappable(folio))
--		__lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, nr_pages);
--	__lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
--	__lruvec_stat_mod_folio(folio, NR_SHMEM, nr_pages);
-+		lruvec_stat_mod_folio(folio, NR_SHMEM_THPS, nr_pages);
-+	lruvec_stat_mod_folio(folio, NR_FILE_PAGES, nr_pages);
-+	lruvec_stat_mod_folio(folio, NR_SHMEM, nr_pages);
- }
- 
- /*
--- 
-2.47.3
+I haven't had time to bisect yet, maybe there's nothing more needed
+than a one-liner fix somewhere; but from my experience it is not yet
+ready for inclusion in mm and next - it stops testing other folks' work.
 
+I haven't tried today's v3, but from the cover letter of differences,
+it didn't look like much of importance is fixed since v2: which
+(after a profusion of "Bad swap offet entry 3ffffffffffff" messages,
+not seen with v1, and probably not really serious) soon hits an Oops
+or a BUG or something (as v1 did) - I don't have any logs or notes
+to give yet, just forewarning before pursuing later in the day.
+
+If you think v3 has fixed real crashes under load, please say so:
+otherwise, I doubt it's worth Andrew hurrying to replace v2 by v3.
+
+(Or have I got something bad in my build, and will have to apologize?
+Or am I blaming your series - seems most likely - when it's actually
+something else which came into mm in the last week?)
+
+Hugh
 
