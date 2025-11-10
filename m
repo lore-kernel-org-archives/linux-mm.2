@@ -4,110 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id B609ACCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:09:22 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 790ADCCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:19:21 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id EEBA98E0025; Mon, 10 Nov 2025 10:09:21 -0500 (EST)
+	id 987058E0027; Mon, 10 Nov 2025 10:19:20 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E9BE08E000B; Mon, 10 Nov 2025 10:09:21 -0500 (EST)
+	id 9364E8E000B; Mon, 10 Nov 2025 10:19:20 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D8A928E0025; Mon, 10 Nov 2025 10:09:21 -0500 (EST)
+	id 825258E0027; Mon, 10 Nov 2025 10:19:20 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-	by kanga.kvack.org (Postfix) with ESMTP id C12E48E000B
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:09:21 -0500 (EST)
-Received: from smtpin11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id D8D7E85561
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:09:20 +0000 (UTC)
-X-FDA: 84095030880.11.D9652B7
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	by imf18.hostedemail.com (Postfix) with ESMTP id B6F9D1C0015
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:09:18 +0000 (UTC)
-Authentication-Results: imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S75mZqiq;
-	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
+Received: from relay.hostedemail.com (smtprelay0012.hostedemail.com [216.40.44.12])
+	by kanga.kvack.org (Postfix) with ESMTP id 6E3748E000B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:19:20 -0500 (EST)
+Received: from smtpin01.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay08.hostedemail.com (Postfix) with ESMTP id 22ABD14016F
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:19:20 +0000 (UTC)
+X-FDA: 84095056080.01.60750BE
+Received: from mail-il1-f200.google.com (mail-il1-f200.google.com [209.85.166.200])
+	by imf06.hostedemail.com (Postfix) with ESMTP id 7388E180017
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:19:18 +0000 (UTC)
+Authentication-Results: imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3dQISaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3dQISaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762787359;
+	s=arc-20220608; t=1762787958;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=wGjo2w5ITfWj64+3hzmyM5KO59pK1AXWwf9AfiwSZdk=;
-	b=VBcrvA8pTjmKGmqgQMholTVUaVJKRXNYzOox3AXv+2XazpapiAu024JkaHfrNAEmyZDlO7
-	W7HMn0KmtoOZwT/lmdm/kGxujPNdcQhvRphUe7cfYnfc63aFKcWfB5ql8Wh/OiGPj8Hmhj
-	ZjXKeCC04icdaY9GLq82saLFyGuSt5g=
-ARC-Authentication-Results: i=1;
-	imf18.hostedemail.com;
-	dkim=pass header.d=redhat.com header.s=mimecast20190719 header.b=S75mZqiq;
-	spf=pass (imf18.hostedemail.com: domain of oleg@redhat.com designates 170.10.129.124 as permitted sender) smtp.mailfrom=oleg@redhat.com;
-	dmarc=pass (policy=quarantine) header.from=redhat.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762787359; a=rsa-sha256;
+	 in-reply-to:in-reply-to:references;
+	bh=fZ2NWlZ546cks4M6j4DNqCc2vYjUuH0vrlSlhM9Y2K8=;
+	b=TCqWDn0vnFqbwPyxMjVhb+POSbEmtGSMgNa+sGz6l78fwKkWeOV7kRCGGVFhB8etgheA/Z
+	+TrVUAH2gumbzh546VWCjYRIjVYj/EMCZ9vJ8LglsP+hKqbaDFoyK3gFAozoc/IgOtcVX8
+	5IXDHcEHAygC6xz6g+M+HLAA3H1888c=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762787958; a=rsa-sha256;
 	cv=none;
-	b=wlytS6zHv8o9YukMi1Xd0Gh95T5ruYl9B2ZSaBUOzzsdUSneRaSae6efSzYOKhGF8IeW0f
-	2/eyr1hsfiECAIjf0YdSMKAOov55B/tLOuiwCaXZej7GVcuJhRbmM4IsEp1sHN2oNY/fYS
-	JoWGyHA+zarMl8xEDolh/nmILW3NMHw=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1762787358;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=wGjo2w5ITfWj64+3hzmyM5KO59pK1AXWwf9AfiwSZdk=;
-	b=S75mZqiqInSHGw3OUEl7Ox1/OEbBgwOXivf2wFJzft7sJ1r0Shkaa0f/H4MdemlGmdYQjU
-	C8WVIH15nzDtg+W1eLjwXLWnT+mBOceRda4Cywt6+IlHFJrG4nSe7zQEJXETaFns3BBdyI
-	aJLhc5/aSpfzQr88LrD567y8BRHWjWY=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-649-qUFs8U_0NA-Z5BLaeSXOpA-1; Mon,
- 10 Nov 2025 10:09:13 -0500
-X-MC-Unique: qUFs8U_0NA-Z5BLaeSXOpA-1
-X-Mimecast-MFC-AGG-ID: qUFs8U_0NA-Z5BLaeSXOpA_1762787352
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0959E180067A;
-	Mon, 10 Nov 2025 15:09:10 +0000 (UTC)
-Received: from fedora (unknown [10.44.33.158])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 96D4E30044E1;
-	Mon, 10 Nov 2025 15:09:07 +0000 (UTC)
-Received: by fedora (nbSMTP-1.00) for uid 1000
-	oleg@redhat.com; Mon, 10 Nov 2025 16:09:09 +0100 (CET)
-Date: Mon, 10 Nov 2025 16:09:05 +0100
-From: Oleg Nesterov <oleg@redhat.com>
-To: Cyrill Gorcunov <gorcunov@gmail.com>
-Cc: "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org,
-	linux-security-module@vger.kernel.org
-Subject: Re: [RFC PATCH 2/3] exec: don't wait for zombie threads with
- cred_guard_mutex held
-Message-ID: <aRIAEYH2iLLN-Fjg@redhat.com>
-References: <AM8PR10MB470875B22B4C08BEAEC3F77FE4169@AM8PR10MB4708.EURPRD10.PROD.OUTLOOK.COM>
- <AS8P193MB1285DF698D7524EDE22ABFA1E4A1A@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB12851AC1F862B97FCE9B3F4FE4AAA@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285FF445694F149B70B21D0E46C2@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <AS8P193MB1285937F9831CECAF2A9EEE2E4752@AS8P193MB1285.EURP193.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEEEDE0B9742310DE91E9A7E431A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <GV2PPF74270EBEE9EF78827D73D3D7212F7E432A@GV2PPF74270EBEE.EURP195.PROD.OUTLOOK.COM>
- <aRDL3HOB21pMVMWC@redhat.com>
- <aRDMNWx-69fL_gf-@redhat.com>
- <aRHFSrTxYSOkFic7@grain>
+	b=Hp2Thmdxw7bYRGaxTMyC/y6xOKkXuJw0LLWEilDVQ5Nz3j4Fj6xJwnLwDRSMZy8N3ofiYN
+	ZOVxtCRSztaCwYRCM5DHJug5uo/qPRERQmZ/TK0t5OCNJZG60OOhPPGZwJVeM118vlvEuB
+	tjFEwYDIybnwmAgZZ8LpOfLyYv0VWi8=
+ARC-Authentication-Results: i=1;
+	imf06.hostedemail.com;
+	dkim=none;
+	spf=pass (imf06.hostedemail.com: domain of 3dQISaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com designates 209.85.166.200 as permitted sender) smtp.mailfrom=3dQISaQkbABIAGH2s33w9s770v.y66y3wCAw9u65Bw5B.u64@M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com;
+	dmarc=fail reason="SPF not aligned (relaxed), No valid DKIM" header.from=appspotmail.com (policy=none)
+Received: by mail-il1-f200.google.com with SMTP id e9e14a558f8ab-432fb58f876so111589855ab.1
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:19:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762787957; x=1763392757;
+        h=cc:to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fZ2NWlZ546cks4M6j4DNqCc2vYjUuH0vrlSlhM9Y2K8=;
+        b=kf2E2VxjE0tRR6eADHO2yqj8vLilbfR0X0ogjv2ohSNGkcdvul4aI0KGGTqM67/P84
+         orP8hyGfkguRU4Ufg5x+7fouTDbjE/giXD86MxDWRzhggH/isCBmcihynP3pE5hVizWY
+         SzzegwJr9DzQ0G189KSMXWbq3jUtjL81hPduV8ImV5zWa9vCMm/RYgi4yfa+1h+0F1lW
+         SkFvoBPPSLRFQDT8EFYKOoBCQ893Dxghq3QwWL8mYDOYzSiFyW+ZILlJXDurIcFXdiFX
+         0kiUuzKQnrUdOQJ4SJT/D3HK/9SJD+EQt0wLbYS9sxI7elB6zqNSYRWkx06ASTPhc67Z
+         yLPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWGzdts3FLkssns00l9MURy49/oPt2iHU8tPQTrZPMO4ET7h0tKKn2zgwlNrpYcN3SKZj+o49G0gA==@kvack.org
+X-Gm-Message-State: AOJu0YwKAgnQcqD2mJZFbG2wNBtcY2oHeudpqz83gTyeVT0sR0kMBWsX
+	53qAi6Q7fJw1CNCzsdiKtP8QUB3hd+jzUQs6pyWRumxVuodxPiTKwi7twkfxQeLYz4jNz96IPm9
+	k5yZ29ZryZ7a1+MFgWl5kTCv+qdjhTx66tuoHJ+aOUdgN0J+MakDLaRLjvbs=
+X-Google-Smtp-Source: AGHT+IFT43QlM8pcln8U+Eww+O0zzAExm6XXgPQBWfT6KRG7VIkvfXjO0jztElePth8ZM3wp+BZTjgkncLB2kVRNvkTts8Hag2iy
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aRHFSrTxYSOkFic7@grain>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
-X-Rspamd-Server: rspam03
-X-Rspamd-Queue-Id: B6F9D1C0015
-X-Stat-Signature: kz8dgmc33dirf8deynj9awqie1w8p3xm
+X-Received: by 2002:a92:cccd:0:b0:433:7310:f5bf with SMTP id
+ e9e14a558f8ab-4337310f94amr69754165ab.22.1762787957532; Mon, 10 Nov 2025
+ 07:19:17 -0800 (PST)
+Date: Mon, 10 Nov 2025 07:19:17 -0800
+In-Reply-To: <20251110111553.88384-1-lance.yang@linux.dev>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69120275.a70a0220.22f260.00f7.GAE@google.com>
+Subject: [syzbot ci] Re: mm/hugetlb: fix possible deadlocks in hugetlb VMA
+ unmap paths
+From: syzbot ci <syzbot+ci4b465da2e9479793@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, david@redhat.com, lance.yang@linux.dev, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, muchun.song@linux.dev, 
+	osalvador@suse.de, syzbot@lists.linux.dev, syzbot@syzkaller.appspotmail.com, 
+	syzkaller-bugs@googlegroups.com
+Cc: syzbot@lists.linux.dev, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
+X-Rspamd-Server: rspam04
+X-Rspamd-Queue-Id: 7388E180017
+X-Stat-Signature: c8xdiaxay3n4uexg3qfn1ou4dkroeiqw
 X-Rspam-User: 
-X-HE-Tag: 1762787358-664946
-X-HE-Meta: U2FsdGVkX1+zy/Cs7nmhiRs8rEQhQLn0rb7QPpn+XHeOzSb0ZPYaEwdvJltgT6VDXH1OCKNeZmjpYCLcEdj1/17Ssv8sD2YqatO4ofYXw/bgMr2hPbhYjx0rF8/YX0HZBa8x4crS+nQiGnHmjuj54mbhM/tOejaqTAC6zz7EfzvmV1+K+C9ghXqELwz9EqZAclRw5yFZjLhQaCi/BZkmn0+c+ynLEdSfTK/3Qw2+arSeTiQtqtDoEQGiu5A5BIiEOLDmBp2HExcfVZrZnuTikxIAlCknaQE+cVP0zEbLQyDM7otZpSclipZE0SPlPZTd7/PSXMAqwO7dYmXLHki2L8F2VubCoBkokFfHARSm2uXfU+7x/c50lIY0ha0wRjo1JQITJ+43eAITlxhPKzmwP19DVx61UJRKHYLJ0BxvNdXqerCIKmIFhyHbPATz2xgf1n5l3HyZQ0HloZk7mwnD2S5sTY/8mol3Rx3SiYwtpGnP7xQCIImDBwtY05ZyTwtm1ayY7831/6byoZEQYuDvu1aggRcfDIQat48RJaUr4TQQvIoDNi9Etbd4S3iMTG57m8zGTZdFh7d0X1mYxEiRFCTMuuQKMR1pYKS6YZftNj8XG4imvRTk9DQKaCNr8i3m3kpgP+kUikzkTHuyGGBYGiOA0/rIS2V52uyvRDnNca4aAP9CIq+yQXiF+Tw13HmanyxTn0K/VzRfdt/Jv1xMnhttNRYeOpL3I5W7s1+Xb5xSmyZ98KjwrKDmBH4Oe4rB46RaVpVNiChH9RP+lYqgWVDC0dbadxBHeFNJ3vVHe+AOZg+PJEIsWic6hxrXeO8dJRZd2qMVTf3i5QvAHbrJlBpfztXLmwqfJywOfr571AMDW1QlKyNQ4mlRkQ48WIV7MvhQL1lt6zWkxvI0AzhnNqdC5gauITjyKXHgdtSR7JRdJWwfDEp1cDoyX5FaW0ezsDi+0kZthWWcKojLFtk
- +1yvgtbm
- Yi7rHTLnr96X7GcAEt20dbA+vqUCIyKrtvAXmLgCbzYdGUAcin/F1dIhsu0vIy2mHuyqwel32LDMaA9g73OkTrdwUi2byS72FpledlHT/rOnUpQW9UJMB1P6MhPPnO8WTxkBLS6MfnKEkXxcm4Ju5ZewtaoCS9IwoLJzk47YtcpJjqyEYgtkpSK24WJPMeUi0xJlhxfdhRV4+du0jnXsmXDDluz0dhe+ohW5kZbh0pYiJG2E1BpFzPX3Zg17IXrYlTjRFGh6YZ5NKqb3S2jFY44C+20MTVk02R9gU+7kgqEeKNZvspovd9wAy30Hzbbz4Sx40w2uJaDM89dRZ3De8X5TGRHDodhfUCfyx5vbOjH+i8MPmRaKSiKaGYameABQgQU5R/StX7hZibclHsnVBBFE9sRJqALiaA6GWUW83EifPKvT6Yw2O5+kq7A==
+X-HE-Tag: 1762787958-675701
+X-HE-Meta: U2FsdGVkX19FWrkwj4JAXfGA/QzUaEh15H9V+Xo+JLw5z1rDYddc/F1NR5fz0vGIjR1Y8GQll3qI04TZrZwGHKIudUf9OKp8YZejEDjrfymRu68GEtbgIX/jwBiNif65epme4oqo2wZzc9jhTRtF5VBAMS4qAzjPaXAjKKTv2866mcEGCEIwCYozdHKNWWfiFCzN9G04OZq8TDe60ASZNeVBkxoN56Pi4O0EW8fa/cJbKM6/anqNohs6s8wsNfuB0Y/F5EPbSDE03tC7LX+tXdSZx05mZ4cID5I/hEp4xTDH7Ots5s1/+FAO9Oz4zgu0GNW2es57f7dBooclqbC0jvlqIXBet3p9hi2QRTUHiD2Sw0JWyqcsyEPGLm/VlVt8jKEZnAb9xVqxlSeAVoNleB2ZtRd3FRPW2Txji/1K0A6FN+6vjDEkyC1swZzAfh/ZMd3UJKSoqUFTxMMKZAC4YqqFYM92388pnKSrdwWYxreV48w3iTHf3q5uy7fr3viZxTEnUzfduxzsS0/JzRKN/O4wV+WVlfsPQfFeWGGIaJDO7Dfr/FWi05uYtzs5c5m8jKib9dzI1WUSB8PjH68sG2CsECPza4AZh585R7xpNeLYGAuc953aX+Cr1RpCca06vC/MEXWCb/w8nSSEyfLatf8vUco3QmA73F2lpHtOwZAMUn+Jk891N76PGDZbgwjd3ZaB5Iqh8SOyDLSTyiFKtjHN32CgCRW28AQl/tPepKU9CJEXljVciTqLaCJlu121b37WRRlDxmpV0Tl4wEtCkcUz2cJoJjfUOmnSnXbo8fEaHcjOrYtViSyUJqv9umos2stHe3Q6e7nzFtEFdha/DoocHqsbI4Ugfr6Fhay1WZNrTENcmFFSB5j0aYFwk/Qk2U8yeSWrcUYuvc94LWh1UpmEXhB4r3BcccWBykfBc6WcbmN8vT4bkL0anfjxUjlRbcHHO9+b+gRBTXnN3ER
+ B7/O95aq
+ oqymqQIZJxrGv2pK0vfFkOICNrqdLwlBIghqR3FXAIVYgePKzh3MumRbnzxCfEFBQRug8NNlGOahxT2syl5yX0YUFUTehkT+N/pCI0aByq6bXZyj+G42HjkTnHqREVDXzha9L1qy4hf+K0vwSW3RdTehgWr+RNBiNkcKGFyV/AuhljJmcqtJn6p9tcpNERXJWW0sYwgcJKzavYe2ljI62T/tH6ApOMHsbr2x4OIrBgPjtWdaAHNLxm8nyalGgCT5OBj4OAx/WPguGR8BaTEM61IIuj1M2TZ4Kz9FA9ylWP9CeuASL91RpAHXppFINU7W1pEekUIWF2+Aq5wLuLBU5FtUSQY1C8XRC+hFzzG101E9DX+dzdrD73pyVH3fvEXeQpNHm1iTdFU3IfbrjaFMYtLAMAyTOJVhnQDz9ApJGvuSqqdNT81JUwrXvdDf92M9+gQMGbRXtd7p2jCeY4s0x40jnvPRLO714M+HDuYeg7sl1JxgSKz7vII8zpA==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -116,49 +100,150 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-Hi Cyrill,
+syzbot ci has tested the following series
 
-On 11/10, Cyrill Gorcunov wrote:
->
-> On Sun, Nov 09, 2025 at 06:15:33PM +0100, Oleg Nesterov wrote:
-> ..
-> > static int kill_sub_threads(struct task_struct *tsk)
-> > {
-> >  	struct signal_struct *sig = tsk->signal;
-> > 	int err = -EINTR;
-> >
-> > 	read_lock(&tasklist_lock);
-> > 	spin_lock_irq(&tsk->sighand->siglock);
-> > 	if (!((sig->flags & SIGNAL_GROUP_EXIT) || sig->group_exec_task)) {
-> > 		sig->group_exec_task = tsk;
-> > 		sig->notify_count = -zap_other_threads(tsk);
->
-> Hi Oleg! I somehow manage to miss a moment -- why negative result here?
+[v2] mm/hugetlb: fix possible deadlocks in hugetlb VMA unmap paths
+https://lore.kernel.org/all/20251110111553.88384-1-lance.yang@linux.dev
+* [PATCH v2 1/1] mm/hugetlb: fix possible deadlocks in hugetlb VMA unmap paths
 
-You know, initially I wrote
+and found the following issue:
+possible deadlock in unmap_vmas
 
-		sig->notify_count = 0 - zap_other_threads(tsk);
+Full report is available here:
+https://ci.syzbot.org/series/3106300b-af9f-40dc-985b-33cb937712aa
 
-to make it clear that this is not a typo ;)
+***
+
+possible deadlock in unmap_vmas
+
+tree:      mm-new
+URL:       https://kernel.googlesource.com/pub/scm/linux/kernel/git/akpm/mm.git
+base:      02dafa01ec9a00c3758c1c6478d82fe601f5f1ba
+arch:      amd64
+compiler:  Debian clang version 20.1.8 (++20250708063551+0c9f909b7976-1~exp1~20250708183702.136), Debian LLD 20.1.8
+config:    https://ci.syzbot.org/builds/089d8dad-bc85-4724-8a79-2ad934becf17/config
+C repro:   https://ci.syzbot.org/findings/3dded3f6-aef2-4f4c-9dba-b23214df5e12/c_repro
+syz repro: https://ci.syzbot.org/findings/3dded3f6-aef2-4f4c-9dba-b23214df5e12/syz_repro
+
+======================================================
+WARNING: possible circular locking dependency detected
+syzkaller #0 Not tainted
+------------------------------------------------------
+syz.0.17/5963 is trying to acquire lock:
+ffff88816cbda8e8 (&resv_map->rw_sema){+.+.}-{4:4}, at: hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
+ffff88816cbda8e8 (&resv_map->rw_sema){+.+.}-{4:4}, at: unmap_vmas+0x23d/0x580 mm/memory.c:2098
+
+but task is already holding lock:
+ffff888172c80418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
+ffff888172c80418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: __hugetlb_zap_begin+0x2aa/0x3a0 mm/hugetlb.c:5331
+
+which lock already depends on the new lock.
 
 
-This is for exit_notify() which does
+the existing dependency chain (in reverse order) is:
 
-	/* mt-exec, de_thread() -> wait_for_notify_count() */
-	if (tsk->signal->notify_count < 0 && !++tsk->signal->notify_count)
-		wake_up_process(tsk->signal->group_exec_task);
+-> #1 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}:
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
+       i_mmap_lock_write include/linux/fs.h:548 [inline]
+       hugetlb_change_protection+0x56a/0x18c0 mm/hugetlb.c:6439
+       change_protection+0x386/0x38c0 mm/mprotect.c:655
+       mprotect_fixup+0x6fe/0x9c0 mm/mprotect.c:774
+       do_mprotect_pkey+0x8c5/0xcd0 mm/mprotect.c:930
+       __do_sys_mprotect mm/mprotect.c:951 [inline]
+       __se_sys_mprotect mm/mprotect.c:948 [inline]
+       __x64_sys_mprotect+0x80/0x90 mm/mprotect.c:948
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Then setup_new_exec() sets notify_count > 0 for __exit_signal() which does
+-> #0 (&resv_map->rw_sema){+.+.}-{4:4}:
+       check_prev_add kernel/locking/lockdep.c:3165 [inline]
+       check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+       validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+       __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+       lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+       down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
+       hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
+       unmap_vmas+0x23d/0x580 mm/memory.c:2098
+       exit_mmap+0x23e/0xb30 mm/mmap.c:1277
+       __mmput+0x118/0x430 kernel/fork.c:1133
+       exit_mm+0x1da/0x2c0 kernel/exit.c:582
+       do_exit+0x648/0x2300 kernel/exit.c:954
+       do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+       __do_sys_exit_group kernel/exit.c:1118 [inline]
+       __se_sys_exit_group kernel/exit.c:1116 [inline]
+       __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
+       x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+       do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+       do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+       entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-	/* mt-exec, setup_new_exec() -> wait_for_notify_count() */
-	if (sig->notify_count > 0 && !--sig->notify_count)
-		wake_up_process(sig->group_exec_task);
+other info that might help us debug this:
 
-Yes this needs more comments and (with or without this patch) cleanups.
-Note that exit_notify() and __exit_signal() already (before this patch)
-use ->notify_count almost the same way, just exit_notify() assumes that
-notify_count < 0 means the !thread_group_leader() case in de_thread().
+ Possible unsafe locking scenario:
 
-Oleg.
+       CPU0                    CPU1
+       ----                    ----
+  lock(&hugetlbfs_i_mmap_rwsem_key);
+                               lock(&resv_map->rw_sema);
+                               lock(&hugetlbfs_i_mmap_rwsem_key);
+  lock(&resv_map->rw_sema);
 
+ *** DEADLOCK ***
+
+2 locks held by syz.0.17/5963:
+ #0: ffff88810e0f8ca0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_lock include/linux/mmap_lock.h:365 [inline]
+ #0: ffff88810e0f8ca0 (&mm->mmap_lock){++++}-{4:4}, at: exit_mmap+0x126/0xb30 mm/mmap.c:1262
+ #1: ffff888172c80418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: i_mmap_lock_write include/linux/fs.h:548 [inline]
+ #1: ffff888172c80418 (&hugetlbfs_i_mmap_rwsem_key){+.+.}-{4:4}, at: __hugetlb_zap_begin+0x2aa/0x3a0 mm/hugetlb.c:5331
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 5963 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full) 
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-debian-1.16.2-1 04/01/2014
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ print_circular_bug+0x2ee/0x310 kernel/locking/lockdep.c:2043
+ check_noncircular+0x134/0x160 kernel/locking/lockdep.c:2175
+ check_prev_add kernel/locking/lockdep.c:3165 [inline]
+ check_prevs_add kernel/locking/lockdep.c:3284 [inline]
+ validate_chain+0xb9b/0x2140 kernel/locking/lockdep.c:3908
+ __lock_acquire+0xab9/0xd20 kernel/locking/lockdep.c:5237
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
+ hugetlb_zap_begin include/linux/hugetlb.h:257 [inline]
+ unmap_vmas+0x23d/0x580 mm/memory.c:2098
+ exit_mmap+0x23e/0xb30 mm/mmap.c:1277
+ __mmput+0x118/0x430 kernel/fork.c:1133
+ exit_mm+0x1da/0x2c0 kernel/exit.c:582
+ do_exit+0x648/0x2300 kernel/exit.c:954
+ do_group_exit+0x21c/0x2d0 kernel/exit.c:1107
+ __do_sys_exit_group kernel/exit.c:1118 [inline]
+ __se_sys_exit_group kernel/exit.c:1116 [inline]
+ __x64_sys_exit_group+0x3f/0x40 kernel/exit.c:1116
+ x64_sys_call+0x21f7/0x2200 arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f6bb058efc9
+Code: Unable to access opcode bytes at 0x7f6bb058ef9f.
+RSP: 002b:00007ffedbb6b2f8 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f6bb058efc9
+RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 0000000000000003 R08: 00000002dbb6b3ef R09: 00007f6bb07b1280
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007f6bb07b1280 R14: 0000000000000003 R15: 00007ffedbb6b3b0
+ </TASK>
+
+
+***
+
+If these findings have caused you to resend the series or submit a
+separate fix, please add the following tag to your commit message:
+  Tested-by: syzbot@syzkaller.appspotmail.com
+
+---
+This report is generated by a bot. It may contain errors.
+syzbot ci engineers can be reached at syzkaller@googlegroups.com.
 
