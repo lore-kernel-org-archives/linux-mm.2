@@ -4,131 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 73181CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:18:04 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id F4164CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:27:35 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id B36488E0014; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
+	id E53EC8E000E; Mon, 10 Nov 2025 06:27:34 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id AE6ED8E0002; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
+	id E2BF08E0002; Mon, 10 Nov 2025 06:27:34 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 9AEF78E0014; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
+	id D689E8E000E; Mon, 10 Nov 2025 06:27:34 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
 Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 878058E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:18:03 -0500 (EST)
-Received: from smtpin17.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay03.hostedemail.com (Postfix) with ESMTP id 46D7EBE035
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:18:03 +0000 (UTC)
-X-FDA: 84094448046.17.5D89799
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	by imf02.hostedemail.com (Postfix) with ESMTP id A92BD80013
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:18:01 +0000 (UTC)
-Authentication-Results: imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suAfZZSb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
+	by kanga.kvack.org (Postfix) with ESMTP id C09968E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:27:34 -0500 (EST)
+Received: from smtpin06.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay05.hostedemail.com (Postfix) with ESMTP id 829615D488
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:27:34 +0000 (UTC)
+X-FDA: 84094472028.06.AB65B9F
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf18.hostedemail.com (Postfix) with ESMTP id DD5EA1C000B
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:27:31 +0000 (UTC)
+Authentication-Results: imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="bLhs95W/";
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762773481;
+	s=arc-20220608; t=1762774052;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
 	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=QZ/wnETuHj4pngw4rNh6VnRsQQ0NKC9V7rmNNQJYmbM=;
-	b=TUdLlarlKRZZOiYMWK1R3jt0b2h/edJVL1DVbeDYWb1nYo3WBxg8FAtsS6uDiqurQjvPG0
-	sA8yf/xuU74JIrogDrPzBYS3hkfS8t4KJ/U+pDDDLTsvVrzuw2A5ytIqN7i6gbPARg0VS/
-	0GbzXKpE3U8PuvneV6eP8nF1+FAUAbQ=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762773481; a=rsa-sha256;
+	bh=QWgMfXoYBXjSYZ66KLBQMvY/lapHUz2YPyS91z8NS00=;
+	b=lVs/lkZ76mne0zva4EBbaMR+ZS4eWIzHzv6ekOxU14VNvKgLrW49kBzsRTMY0mTcDlc0rk
+	kNNp9p6F3xVtX0jRPx3BwIWMCo3tRau0E3oMTYlzyFHaka3WN/C+/x2119FX0643Fpo0XK
+	/UTHAcAvXkmWPIUyet+SymoBtWLuSkQ=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774052; a=rsa-sha256;
 	cv=none;
-	b=mjF9ddpYqE0FU2iBF88v/ymhpO5vqmtuQZQUpYMMqyVtHmsrBzy8o4SXDPHAIhTUzA1GID
-	x1nS5dSJahDCuKPtg9bi39vIDO1XerVHF5fRz3p6BpnKsbSn/Hd71eEqnEGGd6ETM0lijN
-	dLb3KNHtj4ilk/YAInCHewco2CBkDlU=
+	b=mFSxGv5K8YmGI7dmjPgn+gJCoAw07ags8Btl59g4c+KVdgro+CoMlvvLbDyGpVTkkpW4gn
+	H+ifSxGA9NcMP5GYUMJ5VNn0xCDBRGTNDUZnFJVaA3c7FhnJzy4jVUGP3ISlh9Vji+JjNI
+	jF0kEnxejYw69QQqkw8NcfWXFEOqEJQ=
 ARC-Authentication-Results: i=1;
-	imf02.hostedemail.com;
-	dkim=pass header.d=kernel.org header.s=k20201202 header.b=suAfZZSb;
-	dmarc=pass (policy=quarantine) header.from=kernel.org;
-	spf=pass (imf02.hostedemail.com: domain of rppt@kernel.org designates 172.105.4.254 as permitted sender) smtp.mailfrom=rppt@kernel.org
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id A9CFC60146;
-	Mon, 10 Nov 2025 11:18:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4C43C116B1;
-	Mon, 10 Nov 2025 11:17:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1762773480;
-	bh=Kl3noGEumLrebFoTSEUpT8n+WyWcc5CDX7vO2T8znyo=;
+	imf18.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b="bLhs95W/";
+	spf=pass (imf18.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id AF27A40E01FA;
+	Mon, 10 Nov 2025 11:27:27 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id NAiTqxELW6D6; Mon, 10 Nov 2025 11:27:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762774035; bh=QWgMfXoYBXjSYZ66KLBQMvY/lapHUz2YPyS91z8NS00=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=suAfZZSbiazW8sFc3Ab8Dx4NBPVEAhiluxobak9p2W7fV7tGaO7etyuexr+Wd3vCj
-	 PqHxUnnNW7q++eT7YBuJNwAJ3rvKAo7XoOn6lFdrMFjUD3WX+vxmv61jmLfPOYOs4S
-	 kgsdkCyDsNIp911BsonJsPQag0KfEYtcFcMSuVKaDEiv4/3VDw0E9C2G+b/HLgSKiW
-	 SvzHr4R5cUfu3krfZf0NcIhD1aEvXuOLOydf18+trvSrzMjKoRzc936vRumSNGLv/7
-	 zHFW012E2kZECXgXkvGjDJltpN+//CUP2yGc+d3k9TyonAEyXSC/gzEyX+zosgPkV/
-	 y+Taz5qHRrJ5A==
-Date: Mon, 10 Nov 2025 13:17:37 +0200
-From: Mike Rapoport <rppt@kernel.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
-	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-	Lance Yang <lance.yang@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
+	b=bLhs95W/Y38hWFhNzrEO1KSToo747GdOwqzY6ycP3L0iJL40i3cGSgg3DRgK/LCFH
+	 v/WIVVfuFPv9M9VpZRxT40A201WTeh0Am8AQ8kBifbAWiQQGX5oNAeyc2Yrnvog57H
+	 MAa8wxhua2eN4DyeWLFiyk/wv9d0fR7HKJ+b2kCfRB14u3Ft9qvfEiHWK1W6vUEGl/
+	 cDUchQp9ht8XccWmAHqji3kS+/hZg8gjBEhjBDHl/h151xxdWHQUPiZra/vBUTaEMT
+	 PDxOODs8M1fDRHpE/HmYhKyl0zReEtJml/4Ye3eMgYvJ6Jfme1ZBrAKbxvxFg8Cu9/
+	 xtyHvgLgMWjWdfpjlvMUzirjf/QsXXHeyqdMAJ2aCHbdcFM9i0MbpIG1+BWyVDQCyB
+	 RVseuZj0IAO2RxcPkHpVBV2FkoDRu5vOW8qd3zOalzvfzVW7h+6djWaXbFlskU4HAK
+	 UjZe6uo1KgsY0m0Eu3EYcT3UbYmCmHO2j6RViIf2qYhYGHWyO1pzTPyeV3yXu6EppO
+	 HvONVpu4713wvF0bgjFriAMjtpGCNC1q291LO+eI+iHVWCtWe/jPVAtn12OIe2P5Ot
+	 J4Hpju/asE5Perz/RCj7loiqu1aEQ8PqgIycmAK3Wf559DTX+3qVvSaLlt4t5N6T0k
+	 d1g6myE5dYUbESrhkvCg4Tns=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 3AB2D40E01FD;
+	Mon, 10 Nov 2025 11:26:48 +0000 (UTC)
+Date: Mon, 10 Nov 2025 12:26:40 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
 	Suren Baghdasaryan <surenb@google.com>,
 	Michal Hocko <mhocko@suse.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Gregory Price <gourry@gourry.net>,
-	Ying Huang <ying.huang@linux.alibaba.com>,
-	Alistair Popple <apopple@nvidia.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
 	Axel Rasmussen <axelrasmussen@google.com>,
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-	Baoquan He <bhe@redhat.com>, Chris Li <chrisl@kernel.org>,
-	SeongJae Park <sj@kernel.org>, Matthew Wilcox <willy@infradead.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Xu Xin <xu.xin16@zte.com.cn>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Pedro Falcato <pfalcato@suse.de>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-	Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-	linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v2 01/16] mm: correctly handle UFFD PTE markers
-Message-ID: <aRHJ0RDu9fJGEBF8@kernel.org>
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
- <0b50fd4b1d3241d0965e6b969fb49bcc14704d9b.1762621568.git.lorenzo.stoakes@oracle.com>
+	Yuanchu Xie <yuanchu@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
+	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
+	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
+	junaids@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
+	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>
+Subject: Re: [PATCH 02/21] x86/mm/asi: add X86_FEATURE_ASI and asi=
+Message-ID: <20251110112640.GVaRHL8GME4ODowica@fat_crate.local>
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-2-2d861768041f@google.com>
+ <20251025100642.GVaPyhMp4CEmsYW3xy@fat_crate.local>
+ <DDSLTWM2FL58.3MIDS5WUOEEZW@google.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <0b50fd4b1d3241d0965e6b969fb49bcc14704d9b.1762621568.git.lorenzo.stoakes@oracle.com>
-X-Stat-Signature: ms5ipjfcbg57e5g1bi17em9b6fpkdtwu
+In-Reply-To: <DDSLTWM2FL58.3MIDS5WUOEEZW@google.com>
+X-Stat-Signature: cudtdo1xtejmfhpuphj1dsrfmos9j9yh
 X-Rspam-User: 
-X-Rspamd-Queue-Id: A92BD80013
-X-Rspamd-Server: rspam10
-X-HE-Tag: 1762773481-659540
-X-HE-Meta: U2FsdGVkX19AOPsDB3AiSVLWVVgVMQzsdTEp/sgT7oji8jcvH5vMWUST9fd4qpXsh3+0/co1c+rmEUU0+0u3aa+HGE+IHaH7HiqlSnYQNKQLYkbAO2uCm7UWGRPRbnTPPpkMYb340agro/Z9zYFZn+7KLWxMgZWPK82JiZ64C0K3LrdmwXu5EKLIpjpWv6z3aPCu9YjUaOOOFP4Il0bYmkR+E42QVVWRJhREvNPe0H2GFTTPG0aPK+DpBEBjxv5kAmOj9x2GIuBnEIbs0w87O/z94/3k2ZFMCpi3LkwUWaudnmal1Mwqc8urdlb+5YH4UKyLHXXVALuNcFdD4G2C/2pIY/8R30vRUTBEYpBqU+If0f+P7zf25mHJRtokWyMnvd6Y2tgNeN1kJ/6kRaHMGbbHI/r9FxStbn6NzBywX17Nc86xU98fI0Hdd0TW4pvvUCJXlNRRk/s7vG4o0FIW77D1FbAOHkCXFa7emE1mpW6WRgRpEnFZjXtK7dmJVVdzIvN0RwCkNOnUcaBuszBTwbbQYcqi74jh1ObevJXp6TwSQcWAfgPnWLSW/U4Zt1fn8q6uNTDlSb3GF8yv/mGj13AWL2E9O8QLXnqbvUZlQlBUlYRxqjp2QlonCrP71QVdsQS8GV0SXYJa3tEA/zVbx7fHyPWtrjWMgZ/Pl6kmxxEEH22xRxZ7ZLvDIt1L1yQmkshJ5vSNxexfdol8NdQnmI1xonpXirNDy88JiBDPGUS5M4KvjnkfqjBVxACwRT47U3qOkQj2SSzzVqPL89WRw++eLctKB7+8RC7AHFBwf4GprpEp7KY1kUZID122WJ5T8gj/nb8bLaV1HLNQR4MoFqCcYoI3qOSh+HoC8GY1XgwootKqGrJQ9ikXzyhmiqqHVS9EuV6cGhsaWdgtdPVQgWkvYz0JaeYHWsfEHqvKbTcnB1a55L+VKHrlj2dLyfe3IYVZFgoRjYWmDNBneFt
- JavN6aGz
- r6wHrLwr4nNXQABaVLRrUGaZ3MnrjSn3ZtQyF6xM62xsLKrFgyni9qpratz2kGXKRvCiSs1zpzH4vpUvTwUsG9dnQ0T/BnKs4jsLA4Eh3Digqiy2/gF1CD6qkHp5jXrjYI5rKuKRaH6BUos0SW/dT2Q+l1uGprxyfvWnjFlEZu1xKgbvuCwBrwUkQoVJ7yW7zvcdj+BOVONkiw1yqLq4wGy01vwNZFlUXe/e2+92XR+rnp78oeX8fDj/VzXeygLkhXiB2pxaePHJDZ3WHwpupU0oqWlhCo4xvVGFFgyKQupxBDv18/SEWon0ec9PXjEibF795TDLdbBicvgbscSIFZN8P2ijpYi+05Tut
+X-Rspamd-Queue-Id: DD5EA1C000B
+X-Rspamd-Server: rspam01
+X-HE-Tag: 1762774051-858925
+X-HE-Meta: U2FsdGVkX19+ctrSZl6ANnJ7sac49OQg5bm4u7yrciCP8+/KOl1JnE9KstTHxs3Pw11CU80Ae0yIjV6aYygShHm+7u8ATSkH8nlVwfzmR8+9kSO1x+XoGLW35uhqGuSJOTwNqWWrCvL/y/nCOOVxmDxcTZC0YFVZQgHUyCuYEZY6XsgQ1N83zM1l/ZB9D1nurpVXU2cMB55qUxoLEhbppmeCElhKykAXFQCQ8PC8v+Gc0JyvK2YpUVRtnl2kfnCaozhjHeZIalIw7jYQ3+rLFLwOcE9ln8Rd2NFBQsfl4ZUdTPmo+Vv+9zFws0cjWnEf+H6zJxG2KdCLEBNcGnQLi4LhjwB516dkXkJkS68tpJhGhMXR7pVPpLQ9DU2hv8z9Hmz6XNqytSgS7Pjj9cQjvvqE9L8ecPeYGyeDCcTCjNVci4S8OTLNB9LCIimFZ7H5Tj2ZvPHGrPXWsDq/OBSHX2Wn+hsk3eXAogCKqdCnwbG8Rj/RlubUfBsX0rpCO6/IuJHmlCjhqOoaaXAcR8ZRwdpmLifAncPBHIGSIiXNH+JEF8q0uG2gBZhHT7lG6CQQ30DEc/wh//YoHfGWuNsTr2Sv1zOw41fMBhI6F9ELeaB95gyGqtfNZwIYvEwIe9rsas7GYHZKsa84ZauPQNGD+DBKdOUQS9+DgtuZMblqFXG8ZXKLNOVwXN0XS0veGuZnLdBUmgS/xrwncaLSAcOvMhmI8aD1ufS+GyAXDdNHxP5BESlMjfyLR2cJMIw8cXxXCAOWcNK1xeSP3MB+X4KKIMjRY4xsxvzJzONj/7H9wC1yA1Uh2NvUJFFeshxorDAcuZ8WKpLXoeoAgbw/K+4UttxO3khu6ujcU0wopu0NX17NP0+ktK7hLbej6iiqJrfmOLwYfqYZl/0BOyTcwW2qrCctv6aKK0NWP2hl0XCIFY/2hQNYwyZu0RH4uhtcsZWkG3eSDPiooBKcwFJFc1B
+ 4H05VmEd
+ YdTSPO3XWVjQoDb3gBmPAlsiVPH7hA8wg/BB/Al8E+IdILXApZLKynR0CjRQsLy0xhWP7CKYn7+LLVV4OWyG+4ePDzNeuD+btWeVm4ZpTizy0LxNVwuMAqaUripo+g65UGmKBcCzYwU0vKPM/kikpeoe+dtEu1/pvR/N+IbOMSFfYP/6DeLIncYPdGkuCu+C2vSFPZIUJfQSeJi3te9JOUTUp/uoXC/YtUCmbzZ16PERl5TEW2/f1zrz7iEvmZUpQCc5qiX45jU0BaQ5YGJTo7hQYVlu1qvv2zkiOCYIL9J9nu3E=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -137,198 +119,59 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Sat, Nov 08, 2025 at 05:08:15PM +0000, Lorenzo Stoakes wrote:
-> PTE markers were previously only concerned with UFFD-specific logic - that
-> is, PTE entries with the UFFD WP marker set or those marked via
-> UFFDIO_POISON.
+On Sun, Oct 26, 2025 at 10:24:35PM +0000, Brendan Jackman wrote:
+> Hm yeah, I actually also thought I had some direct feedback from one of
+> the x86 maintainers saying not to expose it here. I can no longer find
+> that feedback on Lore so I think I must be misremembering, the flag
+> was already hidden back in [0].
 > 
-> However since the introduction of guard markers in commit
->  7c53dfbdb024 ("mm: add PTE_MARKER_GUARD PTE marker"), this has no longer
->  been the case.
+> [0] https://lore.kernel.org/linux-mm/20240712-asi-rfc-24-v1-5-144b319a40d8@google.com/
 > 
-> Issues have been avoided as guard regions are not permitted in conjunction
-> with UFFD, but it still leaves very confusing logic in place, most notably
-> the misleading and poorly named pte_none_mostly() and
-> huge_pte_none_mostly().
+> If that feedback indeed doesn't exist
+
+Just ignore everything whoever might've told you or not - we override all
+previous statements! :-P
+
+From Documentation/arch/x86/cpuinfo.rst
+
+"So, the current use of /proc/cpuinfo is to show features which the
+kernel has *enabled* and *supports*. As in: the CPUID feature flag is
+there, there's an additional setup which the kernel has done while
+booting and the functionality is ready to use. A perfect example for
+that is "user_shstk" where additional code enablement is present in the
+kernel to support shadow stack for user programs."
+
+So it is all written down now and is the law! :-P
+
+> then personally I'd lean towards exposing it right away, I don't see that
+> much downside in terms of ABI, since ASI kinda "doesn't do anything", from
+> a SW point of view it's just a very weird and complicated NOP. It's hard for
+> me to see how userspace could grow a functional dependency on this flag.
+> Whereas for general monitoring it's handy.
+
+The point is: once all the ASI code lands, we should show it in cpuinfo. As
+in: "this kernel supports ASI" and not "there's asi in cpuinfo but well,
+that's not the whole deal."
+
+Makes sense?
+
+> > Not an early_param() ?
 > 
-> This predicate returns true for PTE entries that ought to be treated as
-> none, but only in certain circumstances, and on the assumption we are
-> dealing with H/W poison markers or UFFD WP markers.
-> 
-> This patch removes these functions and makes each invocation of these
-> functions instead explicitly check what it needs to check.
-> 
-> As part of this effort it introduces is_uffd_pte_marker() to explicitly
-> determine if a marker in fact is used as part of UFFD or not.
-> 
-> In the HMM logic we note that the only time we would need to check for a
-> fault is in the case of a UFFD WP marker, otherwise we simply encounter a
-> fault error (VM_FAULT_HWPOISON for H/W poisoned marker, VM_FAULT_SIGSEGV
-> for a guard marker), so only check for the UFFD WP case.
-> 
-> While we're here we also refactor code to make it easier to understand.
-> 
-> Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-> ---
->  fs/userfaultfd.c              | 83 +++++++++++++++++++----------------
->  include/asm-generic/hugetlb.h |  8 ----
->  include/linux/swapops.h       | 18 --------
->  include/linux/userfaultfd_k.h | 21 +++++++++
->  mm/hmm.c                      |  2 +-
->  mm/hugetlb.c                  | 47 ++++++++++----------
->  mm/mincore.c                  | 17 +++++--
->  mm/userfaultfd.c              | 27 +++++++-----
->  8 files changed, 123 insertions(+), 100 deletions(-)
-> 
-> diff --git a/fs/userfaultfd.c b/fs/userfaultfd.c
-> index 54c6cc7fe9c6..04c66b5001d5 100644
-> --- a/fs/userfaultfd.c
-> +++ b/fs/userfaultfd.c
-> @@ -233,40 +233,46 @@ static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
->  {
->  	struct vm_area_struct *vma = vmf->vma;
->  	pte_t *ptep, pte;
-> -	bool ret = true;
->  
->  	assert_fault_locked(vmf);
->  
->  	ptep = hugetlb_walk(vma, vmf->address, vma_mmu_pagesize(vma));
->  	if (!ptep)
-> -		goto out;
-> +		return true;
->  
-> -	ret = false;
->  	pte = huge_ptep_get(vma->vm_mm, vmf->address, ptep);
->  
->  	/*
->  	 * Lockless access: we're in a wait_event so it's ok if it
-> -	 * changes under us.  PTE markers should be handled the same as none
-> -	 * ptes here.
-> +	 * changes under us.
->  	 */
-> -	if (huge_pte_none_mostly(pte))
-> -		ret = true;
-> +
-> +	/* If missing entry, wait for handler. */
+> Oh this is just for consistency with pti_check_boottime_disable(). But,
+> I think that function actually exists because of init ordering issues
+> that aren't relevant here, so early_param() seems fine to me (or, if I
+> find some reason why it doesn't, work, I'll add a comment in v2 to
+> explain why we don't use it).
 
-It's actually #PF handler that waits ;-)
+Ack.
 
-When userfaultfd_(huge_)must_wait() return true, it means that process that
-caused a fault should wait until userspace resolves the fault and return
-false means that it's ok to retry the #PF.
+> Thanks for taking a look :)
 
-So the comment here should probably read as
-
-	/* entry is still missing, wait for userspace to resolve the fault */
-
-and the rest of the comments here and in userfaultfd_must_wait() need
-similar update.
-
-> +	if (huge_pte_none(pte))
-> +		return true;
-> +	/* UFFD PTE markers require handling. */
-> +	if (is_uffd_pte_marker(pte))
-> +		return true;
-> +	/* If VMA has UFFD WP faults enabled and WP fault, wait for handler. */
->  	if (!huge_pte_write(pte) && (reason & VM_UFFD_WP))
-> -		ret = true;
-> -out:
-> -	return ret;
-> +		return true;
-> +
-> +	/* Otherwise, if entry isn't present, let fault handler deal with it. */
-
-Entry is actually present here, e.g because there is a thread that called
-UFFDIO_COPY in parallel with the fault, so no need to stuck the faulting
-process.
-
-> +	return false;
->  }
->  #else
->  static inline bool userfaultfd_huge_must_wait(struct userfaultfd_ctx *ctx,
->  					      struct vm_fault *vmf,
->  					      unsigned long reason)
->  {
-> -	return false;	/* should never get here */
-> +	/* Should never get here. */
-> +	VM_WARN_ON_ONCE(1);
-> +	return false;
->  }
->  #endif /* CONFIG_HUGETLB_PAGE */
->  
->  /*
-> - * Verify the pagetables are still not ok after having reigstered into
-> + * Verify the pagetables are still not ok after having registered into
->   * the fault_pending_wqh to avoid userland having to UFFDIO_WAKE any
->   * userfault that has already been resolved, if userfaultfd_read_iter and
->   * UFFDIO_COPY|ZEROPAGE are being run simultaneously on two different
-> @@ -284,53 +290,55 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
->  	pmd_t *pmd, _pmd;
->  	pte_t *pte;
->  	pte_t ptent;
-> -	bool ret = true;
-> +	bool ret;
->  
->  	assert_fault_locked(vmf);
->  
->  	pgd = pgd_offset(mm, address);
->  	if (!pgd_present(*pgd))
-> -		goto out;
-> +		return true;
->  	p4d = p4d_offset(pgd, address);
->  	if (!p4d_present(*p4d))
-> -		goto out;
-> +		return true;
->  	pud = pud_offset(p4d, address);
->  	if (!pud_present(*pud))
-> -		goto out;
-> +		return true;
->  	pmd = pmd_offset(pud, address);
->  again:
->  	_pmd = pmdp_get_lockless(pmd);
->  	if (pmd_none(_pmd))
-> -		goto out;
-> +		return true;
->  
-> -	ret = false;
->  	if (!pmd_present(_pmd))
-> -		goto out;
-> +		return false;
-
-This one is actually tricky, maybe it's worth adding a gist of commit log
-from a365ac09d334 ("mm, userfaultfd, THP: avoid waiting when PMD under THP migration")
-as a comment.
-
->  
-> -	if (pmd_trans_huge(_pmd)) {
-> -		if (!pmd_write(_pmd) && (reason & VM_UFFD_WP))
-> -			ret = true;
-> -		goto out;
-> -	}
-> +	if (pmd_trans_huge(_pmd))
-> +		return !pmd_write(_pmd) && (reason & VM_UFFD_WP);
-
-...
-
-> diff --git a/mm/hmm.c b/mm/hmm.c
-> index a56081d67ad6..43d4a91035ff 100644
-> --- a/mm/hmm.c
-> +++ b/mm/hmm.c
-> @@ -244,7 +244,7 @@ static int hmm_vma_handle_pte(struct mm_walk *walk, unsigned long addr,
->  	uint64_t pfn_req_flags = *hmm_pfn;
->  	uint64_t new_pfn_flags = 0;
->  
-> -	if (pte_none_mostly(pte)) {
-> +	if (pte_none(pte) || pte_marker_uffd_wp(pte)) {
-
-Would be nice to add the note from the changelog as a comment here.
-
->  		required_fault =
->  			hmm_pte_need_fault(hmm_vma_walk, pfn_req_flags, 0);
->  		if (required_fault)
+Sure, np.
 
 -- 
-Sincerely yours,
-Mike.
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
