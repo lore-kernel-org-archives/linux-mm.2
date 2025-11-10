@@ -4,117 +4,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 48587CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:37:44 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 9D67FCCF9E3
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:39:18 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id A21A48E001C; Mon, 10 Nov 2025 06:37:43 -0500 (EST)
+	id F2D7F8E001D; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 9D20D8E0002; Mon, 10 Nov 2025 06:37:43 -0500 (EST)
+	id F05058E0002; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 8C0C38E001C; Mon, 10 Nov 2025 06:37:43 -0500 (EST)
+	id E1BC38E001D; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
-	by kanga.kvack.org (Postfix) with ESMTP id 7405D8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:37:43 -0500 (EST)
-Received: from smtpin23.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay05.hostedemail.com (Postfix) with ESMTP id 21A375D493
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:37:43 +0000 (UTC)
-X-FDA: 84094497606.23.1484BB2
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	by imf06.hostedemail.com (Postfix) with ESMTP id 4175118000A
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:37:41 +0000 (UTC)
-Authentication-Results: imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZDr6WkNb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774661; a=rsa-sha256;
-	cv=none;
-	b=FpUlUOa1PuP9s6/+ugxZU2zxs59Wv3xBmY/wYzfsubIwZRV/jl+FsQbe14zRVGiSpt5F2K
-	Qs4DIyS7ypB791HunyTzXyivY27DVYGfzoT3vhFj75gr1drsjqY3XMplvn6nLvqh1o1CCR
-	f+m6YaqBITtskhuov0z/C7erT0JcGXI=
-ARC-Authentication-Results: i=1;
-	imf06.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=ZDr6WkNb;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf06.hostedemail.com: domain of ryncsn@gmail.com designates 209.85.216.52 as permitted sender) smtp.mailfrom=ryncsn@gmail.com
+Received: from relay.hostedemail.com (smtprelay0014.hostedemail.com [216.40.44.14])
+	by kanga.kvack.org (Postfix) with ESMTP id CCE2F8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:39:17 -0500 (EST)
+Received: from smtpin12.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay02.hostedemail.com (Postfix) with ESMTP id 7D93713C31D
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:39:17 +0000 (UTC)
+X-FDA: 84094501554.12.3428B9D
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	by imf16.hostedemail.com (Postfix) with ESMTP id 954DE180004
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:39:14 +0000 (UTC)
+Authentication-Results: imf16.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=OnKYx94E;
+	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762774661;
+	s=arc-20220608; t=1762774754;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=lLlD7ajwlaj6jb6Z6UcGg3eD8sukiXTCecz3SZYTV1c=;
-	b=XgFxNk2SRkNXpMyRtBC+Xf5O8aHZkpz2nluAKk84jOQkCwNx21o6NowpGKONTGDV1RsTVu
-	um6sCw1OKSzpL+UYMfkUF7Rw6ElCb9N/9/7qRrva7r1JiYaYVKszpL7hmnXGtZdwbDPccz
-	2O05GTLZP0zPc+KCla/aMLwujq+Q7CM=
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-343514c7854so2630618a91.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:37:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762774660; x=1763379460; darn=kvack.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lLlD7ajwlaj6jb6Z6UcGg3eD8sukiXTCecz3SZYTV1c=;
-        b=ZDr6WkNb5LLfde/4z9PudVv2R1+rlbhTd0rLGp27aBWteQwlMn8HG90k3EYLdg/ust
-         Lo5TOKNQRLVgZV3IsZGp1c3FpwhHY7iN+hB98Gknouvn7+qQPbmxT7Tx37775kQU+een
-         Q9S4gdd6psMBVZBSa3poslAEoU52ZP+urVS8w3kkf3ThrD6QWQ2XVpj2ghoTwb2STacY
-         DA3QIezFFkeBI9/8Ev5tIdyu2cp3TEiudL53yvxEZvvkpcff3aaSUGzzTdc35P4f2uf3
-         6quQ/EncfJbaZr3np4jqwRV0m2UtNUHFKcfvWSLCYeH0p17QPGkQcwjP56Vz9DXjXT3r
-         v8VA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762774660; x=1763379460;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=lLlD7ajwlaj6jb6Z6UcGg3eD8sukiXTCecz3SZYTV1c=;
-        b=fdUH/qmd8s6CaueLGgWj2b3qs5l+N9gf8xSzcV+ddndqVUmUxB1zv8LAn0ufG0aamx
-         +5myoS1We9RkGqZo/c+rPtF61g1rsXq/zl3XWonGaFBWSleDfR3j/tI9BhnFwnlIOoDB
-         4Goh/oCn9cM/drKb3BYESfqaW1Thk5PpPBXbZljjiVm1MZhMvyzPiOzWewdwJu+dm6N9
-         FbbfdRDmUtfEeLudbetNf2+0o+KN3749lDL6WEzMNDyDNtQdPTWuhlUrrP5GaabBaMaM
-         ibBv9WWooVYLC+uF6/o3EEUIPjO2Ya8JTgu6dk7CD2AqQ8msf5niQOve4XQ6flKRW2mf
-         4VHA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuTc4076HPuu02M3mOjMyE4fDnmWqKLzQ5g43ZpObH5JG59D0wBOuQfMvs23yOXkxLKd/4M5x2HQ==@kvack.org
-X-Gm-Message-State: AOJu0YxhdX4T4Q7Zqut741LYAvK9vi/Y1J7BdUszDxbod/TtryaebeTJ
-	LNrLSLppcUgcGcizOOtK+8A2mcAlGC53r5JLPOwuLkcQwiWSQxcKiLsmgyODZzeobmexcFri1CJ
-	ZzCsYdu6HS3slJTbmKJQ/U7jw3KY4Cks=
-X-Gm-Gg: ASbGncsAvVwW99f+kmxMmN9vono0Gw/jSFdFqoUq43KPeLeneGV+PRR5z59RlLcS5vQ
-	/LD9uK3JJ1xyH74rkzq/BIKMzjrNFbHi7iQT+OiFIYG1TfGNoAmnP89PoaYH5xPT2ma/RK8I4cT
-	bbvqDBFhuX4dAi7k6U0gXKOrQ1WuInH2F1CHadsF2+nqE4mnj3NM5Kjqca88hxbmtah9p6PlZKu
-	liIK2dauLle6h73s6eicIvuHpIQkNbol3c0vyks7z7F4TSrU2TywCzhGBaHRPDrRinZcw==
-X-Google-Smtp-Source: AGHT+IHTguIiHquwsDWY+79OedOt9HQKo0mp/t8Ev2XHHW+BWzgfIoUuwYbZRUwbIMYycRiIsrTWcS+UGzxVQ2WRxLk=
-X-Received: by 2002:a17:90b:4f4c:b0:343:a298:90ac with SMTP id
- 98e67ed59e1d1-343a29893d3mr3232942a91.0.1762774660033; Mon, 10 Nov 2025
- 03:37:40 -0800 (PST)
+	bh=4AGg5z7WB7yGesyFSg8uTe5UjZWoCr/Y1LVg0PE2ceo=;
+	b=eYXhGrpiAR2hEk+5kzafecDdL5V5Myle6BLpALb/aktkHPBhq9DFuGSInhZ4dZ+ETVLCJn
+	sO5ipqH8MU/qyROA4nf5dUfA4oYVRrIiVJ3ui7pENf2pMkH6DJFZEk5zO34WNddmGXzQsP
+	Yiii+Q/knaVRHxQN7lCAp/6ofgP4t00=
+ARC-Authentication-Results: i=1;
+	imf16.hostedemail.com;
+	dkim=pass header.d=alien8.de header.s=alien8 header.b=OnKYx94E;
+	spf=pass (imf16.hostedemail.com: domain of bp@alien8.de designates 65.109.113.108 as permitted sender) smtp.mailfrom=bp@alien8.de;
+	dmarc=pass (policy=none) header.from=alien8.de
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774754; a=rsa-sha256;
+	cv=none;
+	b=TZvhjxgb+CBRTSun3XFBa4gVBmDhXUZq6GA8Z5uXX5JyBkgGJEqIDGOmwd7XmZ5/0Wstu4
+	wSkoFJ74eMkOWMmXwHPQztjdc67WXDwUDECFon7+OyIGHclmYVd7+pFUn+wYwz2MSSE19M
+	mZjRSEpZ/dtgCYor//uOc1n4uUdq/fo=
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 65E2D40E01CD;
+	Mon, 10 Nov 2025 11:39:11 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id Pa7YrT3kZa47; Mon, 10 Nov 2025 11:39:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1762774747; bh=4AGg5z7WB7yGesyFSg8uTe5UjZWoCr/Y1LVg0PE2ceo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OnKYx94EZoFO51ta5Dmjmjm9Z1BzOqlpQpurxAu2RH2jxL/klCqkKRPXfJ7bZoXx1
+	 OykubkkOd+ElmoatXs9ULH2vnFxBxZohjAu60D7FgSNa147RWigXSOpcfa4MmN9HSm
+	 l1DilJRbrV/Pt9IT9BoBZ/FN0uwOChO52wGInrFIAjMPwd9V/4VVKzwWCvRe9mrFqo
+	 I8xOcmoFnKPeYsFAnKjZXfHb3muAZFOEBXlVDlGlvpikRJ7Hkgugf9/beU9Hmb61pl
+	 hBaFsZppnk1A6oXvrtAZqaNRbbqmkrCAD7pxYuTTVd3OIPk+HrIeAKuk3qqMtcLbVd
+	 MyF9dWkGKGansiGSc9XGE4yxgn2w+U8my5i6a40oxP/u0llQoL4jFZVTC35BMF7HI4
+	 gbj3tpvfgsFE3Djw0Cqhpz/EiqluSy7o45TxdZPquITE0f2fDSHzKgE4XwcXOmjSY3
+	 enzG/IelEdOWvy28swqsTG6KYyAqHP5HVLljO8k+Yo+I9Am01ey5P3CV6dIxJMe408
+	 tMx/nrVEL7j2TyvtMT3RkGBflvvBYhfsrrhFPyPCBBtjBSR1V5gm+H32TwsvBCZrMF
+	 8LUsKN4ASRk1ZjqInQA6EqBp1vVQu+jRH03KNjeHlqsI9safg7a2QTjM2GiuX/7/MD
+	 s72XT/NweEXDx8CdQNYeuvFo=
+Received: from zn.tnic (pd9530da1.dip0.t-ipconnect.de [217.83.13.161])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 42BCB40E016E;
+	Mon, 10 Nov 2025 11:38:40 +0000 (UTC)
+Date: Mon, 10 Nov 2025 12:38:34 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Andy Lutomirski <luto@kernel.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>, Zi Yan <ziy@nvidia.com>,
+	Axel Rasmussen <axelrasmussen@google.com>,
+	Yuanchu Xie <yuanchu@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>, peterz@infradead.org,
+	dave.hansen@linux.intel.com, mingo@redhat.com, tglx@linutronix.de,
+	akpm@linux-foundation.org, david@redhat.com, derkling@google.com,
+	junaids@google.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, reijiw@google.com, rientjes@google.com,
+	rppt@kernel.org, vbabka@suse.cz, x86@kernel.org,
+	yosry.ahmed@linux.dev
+Subject: Re: [PATCH 03/21] x86/mm: factor out phys_pgd_init()
+Message-ID: <20251110113834.GWaRHOuqnXgNa0UiFn@fat_crate.local>
+References: <20250924-b4-asi-page-alloc-v1-0-2d861768041f@google.com>
+ <20250924-b4-asi-page-alloc-v1-3-2d861768041f@google.com>
+ <20251025114801.GWaPy48dhlZ_EVoqKi@fat_crate.local>
+ <DDSLXKU87HTE.G0XUZ5BG5M8K@google.com>
 MIME-Version: 1.0
-References: <20251110-revert-78524b05f1a3-v1-1-88313f2b9b20@tencent.com>
- <875xbiodl2.fsf@DESKTOP-5N7EMDA> <CAMgjq7CTdtjMUUk2YvanL_PMZxS_7+pQhHDP-DjkhDaUhDRjDw@mail.gmail.com>
- <877bvymaau.fsf@DESKTOP-5N7EMDA>
-In-Reply-To: <877bvymaau.fsf@DESKTOP-5N7EMDA>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 10 Nov 2025 19:37:01 +0800
-X-Gm-Features: AWmQ_bkjqdnK8Cy3B0Xx0uCR5RCBhqT3UBp_P6dSxB7W8VE0ScC_scO1hHX9q-4
-Message-ID: <CAMgjq7BsnGFDCVGRQoa+evBdOposnAKM3yKpf5gGykefUvq-mg@mail.gmail.com>
-Subject: Re: [PATCH] Revert "mm, swap: avoid redundant swap device pinning"
-To: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org>, linux-mm@kvack.org, 
-	Andrew Morton <akpm@linux-foundation.org>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Chris Li <chrisl@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>, 
-	Yosry Ahmed <yosry.ahmed@linux.dev>, Chengming Zhou <chengming.zhou@linux.dev>, 
-	Youngjun Park <youngjun.park@lge.com>, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Rspamd-Queue-Id: 4175118000A
-X-Rspamd-Server: rspam07
-X-Stat-Signature: jkpesg7cpmiepqx7rtfiy1tt38gyqbx1
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <DDSLXKU87HTE.G0XUZ5BG5M8K@google.com>
+X-Rspamd-Server: rspam03
+X-Rspamd-Queue-Id: 954DE180004
+X-Stat-Signature: dhx33cprabpj6opb687pyb59qkfa9nir
 X-Rspam-User: 
-X-HE-Tag: 1762774661-395178
-X-HE-Meta: U2FsdGVkX1+3ns65HGPNUuK/8dDkR7deolKHx1pRI6A10r835kTCB3FIvipP9/hIRNKByOOJ/OrC6RZ/3iz/z0xEq2h8DHYyiLmPKtZuikhC6ULPYtyaUXmO6qW5GtDcdgET9fNvO/nasXy9RAdkOh+7xzM5A7eHJSByUPV3ueCCBNSQuv6aWyC2WqH0K/iCTS232hGsTCjCyh1jilJqv6uMQBdJIGylTQHsHG58ZMzDdeZRRkgjQiYgE/nIEh49apKBO3xN1bfSOPK0VZeQIuaP/CbOgv6cQKSALRa4/V9niv7SRlVWXQHO3OjYw+hzs7EaRrOPCELLfpTZUFNKH+3SA26we2VfpdSwIPoubnYf5DpuF7eGQ8BBqSb3YadEJDHAwvX2Y0P6NguhEcQGjB2ty7RODUVxEnXVU4Lw/SgrcicZ4+YPGsNFv0pxluv1UobSfTTqcqH8QdoP0yqRF+QabAzk28vB86VKa9boP2Ovep2AeE5y17ng+kxOPWTCxzFE/M0V1Ogxc6zltuP60hEFZ82bl/HKN/xZZiD6I+eNUb6TSCXcbkqK4B1w/eRG1lOITdgJJ88XDQ/nQzJzYOZrwq99FrecjL2OhUcOZ4YPI1sZVP6yAkvVg2IPKNw9LqjBSjQBDK7qdFhVwAJaPbHaSR/nAwz0hsRimYu/ZAQaEn5Zgpq05cF/AYxP97d0ks6aXNe6/z2J3Yw9ByoRABETGDsuZOps/f1cMB42tyIhVkz9w0y2RN19qH5pASdlwm+Mw6B+EY/XfR34SIo3/RhWzs03U9pH2YiRFoo4ArK89SozL+0leXa+DzquUEzuEFruTDgjzVudRrXH89C+SPi9Ia/P++Wfpe4CoKSNm+wHbubsZq1wgFX5H6E06PLlvGU69yUVc75B+Df8F4QF0vh8v5+CQBZlZejLpUAUrf5+OuyCfScJm0pTrFG91LM59CLDf0B8tzgBoJ8ddBR
- Pi7az5WX
- I9ObuNRLNZNYoqZRxSw8PLqBeM4alicOKm7ImGxRWIwjoFmOKtiYLxvjt9EJITAqWXsJE8HhxONq+3gJ4eN+yF38WhWQMYBvrcjUJopTJP4UMh+QjvGmcn8Bom8rNg+05gYHcYrghVPCFds2cWV5VnlWbjdyHhWKfF9qTdzS75NCDEOW9DaA25+OZxpKuYYVJB0gYyXG09WOTQR4pdCePYexaWQPyp4JTYDzWwLOS5RFNW1IYLzI9OBYUe98W9wbuVEjZi4CmB4HaNNB3v6YYbRZPD6G5U2Zo+b8SBgGl6Lee+Syop6MCUPDmRULb9ZNuhMFwtSBbEMrX6ANJ1PbKDs3joXFhiv8nmLKoaaOc2fY+s/lNK9OtjxAk+t3RjSibipEPHveJ92fo2FkxLDpEouewNrHOgXUbG7AS+2iq78Ud97LZi8Y3qt+aNjASGd/7X48MomG9j0fhq+djSAtICyS6vCO9eLzhsqnEjX5xWE0PC3EwXaWFaHNghwiqKh4b0WQreuAkx/L4opI4/81c2tZXDGf2faqvLqF5
+X-HE-Tag: 1762774754-968239
+X-HE-Meta: U2FsdGVkX18vyq3B/3VzXh+FHjUlBAcpHL8VIcZHNM+2LAV0ttX1NwIjOGyb5DH2i34hVIs4P3c+VLReIYazbDid3oyFABRjvk32vo8czW3U++6InGOXN0lVQJjLhbKNJAYHZCgFPPNHqyRqaTdI/EKNPSCYj5dE9UDbfj59/sw35wOz4Guu1/YLOT0tkKh6guroWQkvxyKLT5vXxR1Fit5RztdhYe85XkmjcsRi8kJg9RqOi8GIrKZ6sRiR+pauu4RFK7vSt0DSmDmABlibHvkF68wALqaROexJkDjV8w6nbNYMyyO0Ffsx3LtKtCdhB0tHSkj3Rzyl1s+Sw24k1DOdPme0EC6z/FE4Or+X6ueA8bBh1MjG5gR2xrBPR0/faivbjZP24IBc4TivwrnLS8QCkI7ki1+/MlBclpzKETMh4UlBY0jChGAN+76RFACDmrkieWeDk5N5JYhVde5uOjS9kvnlHFHfBQU0Ng2KRmKffhDeuUbAEupPHM4VGDvJUXn/omUJ6QTENLzYya3wnRVp4dXTlrRwL5SP1hW58/Rg6+M6wtBouSkyB78DaA5Lpf9VAnY7T6xL/jYqWtc9DhawRl+P8cEjf0zP87V5mVAtrd8UcWYdZlCKQ59ZMLq5CDdhnxK3ScGSKOmrVxhr9WLUohCJtNG+N1i1Km3DM7WuGaQaIGJjYxeNAfd1xl/fX9Vuopgk2j/6G61XEZMI7qtiGMGqSK6Wd31ObcUnPRixFkmvfTbuVlf16KFNUomd/gwkUpUQydLHYzNRNMGz5QoPbZMvIr6iowD6UDbxTfLUVYtiWoHQbRsJ7fzKcwl0IGauon+/HXszwFMp4zXo4954faVwtpgp2TJ0ikxaIVVDx6AmXjDcoSxWZEsBDHrbLQCv3vaW9xE3urxQZdo3wntEHooBr/OBk/aRC0dYxx1DpNqo2ZStyRf7i2gqmRJa15YDxDs+k2e6YgJ+Eel
+ WL+x5BdM
+ eh7NVhQ8T5MfyWazPFhD7LtdX9wnXlXvYyYE41yZ2uIZs8t2oKMMCHcPcZGE7NjwpqHEFnOC1e6c5YiJxBvvz2xksmKK/CG3Zaho3Pm2ekWWekaMi4t83t5oxqeA4qPPOmcVNCEX4YlwwJcwp/xQ9tBs9eRpWsXC/AfJtCkQ16NgK8Of2JJO3dlSp6TaoOhowauvinprWr+9VNR1BTiHLnkJX31pQnhmqmiv90kAjqOouCSM=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -123,128 +119,21 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 6:50=E2=80=AFPM Huang, Ying
-<ying.huang@linux.alibaba.com> wrote:
->
-> Kairui Song <ryncsn@gmail.com> writes:
->
-> > On Mon, Nov 10, 2025 at 9:56=E2=80=AFAM Huang, Ying
-> > <ying.huang@linux.alibaba.com> wrote:
-> >>
-> >> Hi, Kairui,
-> >>
-> >> Kairui Song via B4 Relay <devnull+kasong.tencent.com@kernel.org> write=
-s:
-> >>
-> >> > From: Kairui Song <kasong@tencent.com>
-> >> >
-> >> > This reverts commit 78524b05f1a3e16a5d00cc9c6259c41a9d6003ce.
-> >> >
-> >> > While reviewing recent leaf entry changes, I noticed that commit
-> >> > 78524b05f1a3 ("mm, swap: avoid redundant swap device pinning") isn't
-> >> > correct. It's true that most all callers of __read_swap_cache_async =
-are
-> >> > already holding a swap entry reference, so the repeated swap device
-> >> > pinning isn't needed on the same swap device, but it is possible tha=
-t
-> >> > VMA readahead (swap_vma_readahead()) may encounter swap entries from=
- a
-> >> > different swap device when there are multiple swap devices, and call
-> >> > __read_swap_cache_async without holding a reference to that swap dev=
-ice.
-> >> >
-> >> > So it is possible to cause a UAF if swapoff of device A raced with
-> >> > swapin on device B, and VMA readahead tries to read swap entries fro=
-m
-> >> > device A. It's not easy to trigger but in theory possible to cause r=
-eal
-> >> > issues. And besides, that commit made swap more vulnerable to issues
-> >> > like corrupted page tables.
-> >> >
-> >> > Just revert it. __read_swap_cache_async isn't that sensitive to
-> >> > performance after all, as it's mostly used for SSD/HDD swap devices =
-with
-> >> > readahead. SYNCHRONOUS_IO devices may fallback onto it for swap coun=
-t >
-> >> > 1 entries, but very soon we will have a new helper and routine for
-> >> > such devices, so they will never touch this helper or have redundant
-> >> > swap device reference overhead.
-> >>
-> >> Is it better to add get_swap_device() in swap_vma_readahead()?  Whenev=
-er
-> >> we get a swap entry, the first thing we need to do is call
-> >> get_swap_device() to check the validity of the swap entry and prevent
-> >> the backing swap device from going under us.  This helps us to avoid
-> >> checking the validity of the swap entry in every swap function.  Does
-> >> this sound reasonable?
-> >
-> > Hi Ying, thanks for the suggestion!
-> >
-> > Yes, that's also a feasible approach.
-> >
-> > What I was thinking is that, currently except the readahead path, all
-> > swapin entry goes through the get_swap_device() helper, that helper
-> > also helps to mitigate swap entry corruption that may causes OOB or
-> > NULL deref. Although I think it's really not that helpful at all to
-> > mitigate page table corruption from the kernel side, but seems not a
-> > really bad idea to have.
-> >
-> > And the code is simpler this way, and seems more suitable for a stable
-> > & mainline fix. If we want  to add get_swap_device() in
-> > swap_vma_readahead(), we need to do that for every entry that doesn't
-> > match the target entry's swap device. The reference overhead is
-> > trivial compared to readhead and bio layer, and only non
-> > SYNCHRONOUS_IO devices use this helper (madvise is a special case, we
-> > may optimize that later). ZRAM may fallback to the readahead path but
-> > this fallback will be eliminated very soon in swap table p2.
->
-> We have 2 choices in general.
->
-> 1. Add get/put_swap_device() in every swap function.
->
-> 2. Add get/put_swap_device() in every caller of the swap functions.
->
-> Personally, I prefer 2.  It works better in situations like calling
-> multiple swap functions.  It can reduce duplicated references.  It helps
-> improve code reasoning and readability.
+On Sun, Oct 26, 2025 at 10:29:23PM +0000, Brendan Jackman wrote:
+> Per Dave's feedback I am still slightly hopeful I can find a way to
+> come in and refactor this code so that it's gets cleaner for you guys
+> and then ASI becomes a natural addition. So far I don't come up with
+> anything in init_64.c but I'm still planning to stare at set_memory.c a
+> while longer and see if anything comes to mind. So maybe we'll be able
+> to reduce the yuck factor a bit.
 
-Totally agree, that's exactly what the recently added kerneldoc is
-suggesting, caller of the swap function will need to use refcount or
-lock to protect the swap device.
+Cleanups like that are always more than welcome!
 
-I'm not suggesting to add get/put in every function, just thinking
-that maybe reverting it can have some nice side effects.
+:-)
 
-But anyway, this fix should also be good:
+-- 
+Regards/Gruss,
+    Boris.
 
-diff --git a/mm/swap_state.c b/mm/swap_state.c
-index 3f85a1c4cfd9..4cca4865627f 100644
---- a/mm/swap_state.c
-+++ b/mm/swap_state.c
-@@ -747,6 +747,7 @@ static struct folio
-*swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
-
-        blk_start_plug(&plug);
-        for (addr =3D start; addr < end; ilx++, addr +=3D PAGE_SIZE) {
-+               struct swap_info_struct *si =3D NULL;
-                leaf_entry_t entry;
-
-                if (!pte++) {
-@@ -761,8 +762,12 @@ static struct folio
-*swap_vma_readahead(swp_entry_t targ_entry, gfp_t gfp_mask,
-                        continue;
-                pte_unmap(pte);
-                pte =3D NULL;
-+               if (swp_type(entry) !=3D swp_type(targ_entry))
-+                       si =3D get_swap_device(entry);
-                folio =3D __read_swap_cache_async(entry, gfp_mask, mpol, il=
-x,
-                                                &page_allocated, false);
-+               if (si)
-+                       put_swap_device(si);
-                if (!folio)
-                        continue;
-                if (page_allocated) {
-
-I'll post a patch if it looks ok.
+https://people.kernel.org/tglx/notes-about-netiquette
 
