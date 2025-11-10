@@ -4,130 +4,94 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id A31C3CCFA13
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:44:25 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 6A185CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 15:44:54 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id E715B8E0025; Mon, 10 Nov 2025 10:44:24 -0500 (EST)
+	id B16598E0028; Mon, 10 Nov 2025 10:44:53 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id E488C8E0006; Mon, 10 Nov 2025 10:44:24 -0500 (EST)
+	id AEE4D8E0006; Mon, 10 Nov 2025 10:44:53 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id D5E448E0025; Mon, 10 Nov 2025 10:44:24 -0500 (EST)
+	id A03D98E0028; Mon, 10 Nov 2025 10:44:53 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
-	by kanga.kvack.org (Postfix) with ESMTP id C45098E0006
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:44:24 -0500 (EST)
-Received: from smtpin05.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay01.hostedemail.com (Postfix) with ESMTP id 4A3F81DF2FF
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:44:24 +0000 (UTC)
-X-FDA: 84095119248.05.85D477B
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	by imf22.hostedemail.com (Postfix) with ESMTP id 5CCEFC000B
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:44:22 +0000 (UTC)
-Authentication-Results: imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ikgprMaU;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
+Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
+	by kanga.kvack.org (Postfix) with ESMTP id 8F4D08E0006
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 10:44:53 -0500 (EST)
+Received: from smtpin30.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay01.hostedemail.com (Postfix) with ESMTP id 2BE681DEF55
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:44:53 +0000 (UTC)
+X-FDA: 84095120466.30.EB157DF
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	by imf21.hostedemail.com (Postfix) with ESMTP id 55E471C0010
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 15:44:51 +0000 (UTC)
+Authentication-Results: imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F47izqIv;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762789462;
+	s=arc-20220608; t=1762789491;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:content-transfer-encoding:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=KQAadWs2BEV1pVXExDFNf/QXLwU7Gs3Db0cLPnWAqzw=;
-	b=sukXTxewhhGQ6XwMikvFSZnhItgWnzgSQf1TKZdwaE+9z7wa9sv7xBSD9Fnv2i7m6hnUY1
-	3BfxtUSkaJzXoAKA/MF4we6YtbR5JVijTOoD8smf9nEhMaQfwnrEnKQCMG4ufV/KEMZp8h
-	PXNaRu3GVz4YkUfjnWW0k4pYTS6APYk=
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762789462; a=rsa-sha256;
+	bh=U3YLWVGxztyOvSR8l7bkzJwKtO4g+QIxERj3wYyh3L8=;
+	b=Ld3U744d92fU093NNOnNz05ZT+xrA0h6MMkEcd7j9NPlTsKVTjT7rse6m+hKRXMnSKhCfm
+	QreeDBlsfXEvdDqa4Olh/1aVWQof9hufgAOyXx85++bydqSQbM36inimTDyREyuybQ9wO3
+	J3vl5LSMbUEWjQx1iycn9+epbaJ6R1I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762789491; a=rsa-sha256;
 	cv=none;
-	b=0j6cJjCvNVfJfGRWai8y66+WXblTZ1puxzjrCq47dg7MRv89AV7ammP+23BH8UFd+u1cCt
-	U+mf3UAK/pyOmTZpOCQ0YIWwNYziEUoQm0jC7k+xY8QlZIBcpSGpqeNEo/MMUnW+uNpKoL
-	dxLqCnvLyli/1ZZChyOAu8JE44jxCYQ=
+	b=DqZSpUtWZNkTlSiB5sGtuKdc0UJU99mFMZ8+JvCGXOAkD81hvy+vHxE1GD2pdklqhs0sex
+	3xuIwkQzpik1jpSQOHIF3oQRH96Ud3FhT9xN4W7gd5PmQ+yiE96oXeQ04la4BIW29trg/Z
+	efsi/PF8WpF05ct4Dz4tZMoccFsKQHE=
 ARC-Authentication-Results: i=1;
-	imf22.hostedemail.com;
-	dkim=pass header.d=soleen.com header.s=google header.b=ikgprMaU;
-	spf=pass (imf22.hostedemail.com: domain of pasha.tatashin@soleen.com designates 209.85.208.49 as permitted sender) smtp.mailfrom=pasha.tatashin@soleen.com;
-	dmarc=pass (policy=reject) header.from=soleen.com
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-6418b55f86dso1627163a12.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 07:44:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=soleen.com; s=google; t=1762789461; x=1763394261; darn=kvack.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KQAadWs2BEV1pVXExDFNf/QXLwU7Gs3Db0cLPnWAqzw=;
-        b=ikgprMaUpMELW9Nah9h+zGPpAIVckCl8qCAeH2BEqBQd0H+Z3908TDkA3+NkN8fLYV
-         M4jLBU9IWlbEYMOzk8G2GzMAftk2S+Ez7IlYASuf83EoL9dyjDI98ZSuUW05fSIUFALi
-         rTswI1MDing2ySUetkznxPqBbTPEPZUC5yCRWuHCe9p8pYpZH8v6qmilpNoxX/1n/A0X
-         rqcjdz+221srCh3Q2ekQYL24tVZQuuz+TkGcnmD8TpcJQtlzkbkTU/lPne0u1uIxlc7T
-         DVsmcc/F5g6zNR/+K2897kZ2PmrfP+hs8lF+SS881n7Y9ccQe19iR2RRByVeKXilx8Fx
-         JQWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762789461; x=1763394261;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KQAadWs2BEV1pVXExDFNf/QXLwU7Gs3Db0cLPnWAqzw=;
-        b=NhLYbjoAZyIsGmB3/3cGbcH3t83cQN70eNTODIRDKc0I7pAWQf3VxgasLwbfBZdCbj
-         gCSJp9AKMFhYxrgNGCevm+ybAV9k1Yx6/s1Or1zeEZ0eqhdYJd31o8yC+2+pOx1wOxMO
-         jsjTnnSO/sjTHR3dJY3SPr7S2u4IerWKv800yvWQ9MhkaHlUj3y6pjBpFT/6CTHx5uBK
-         KVfwERGJaSFkxhAHsoWtXkHT/u7P0RrGI3IpY4K01W6vOsnyaD5V0A21Tsq5UoK+ZPKT
-         etIH8M8ffs11e4u3lxy8Byt9IjPh1+ZicXWJ9SL3DpNzrQvBhlRP1c/F/hIclJhPyPfk
-         rXMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV5JzoVMyusRY4AOhAdcpHAs5wZqeEgoF6OL3psn9bIrQgTVAaRCusP25xa9q+L/uiRyv7g+CHNYQ==@kvack.org
-X-Gm-Message-State: AOJu0YzOTbkEmDdYRcGI4+r1YkQE+/Ni4aYdjmnyp6QLWtsTBh0d/2Kv
-	bAfgi+oNHwL7SaN0yI01WrM6qgUuwdmeu6zRoYU5gBvLFwQZF35tBNtPNGfbn5/IjzuTg8WHPJA
-	jTqLZSLrhcobRo7bV9RxA9DZ5e/ahxhQiV6s9dpAhsg==
-X-Gm-Gg: ASbGncvFFF3XtPUDg5o0nu4QXJRhZCsBq7xcK7sK3eZXrKn0V5gtPc2lV45jcM5XrEq
-	u0by7Mx2Px3NdSyeySQKfbNjVTEuxXAtCY4bCIxAbfq5I3A+/DP4Wb3pdyB8awqcJcoYbFru1QP
-	RRJL1XPdbHz+3I2E3mEhPVKl8H9QMCQLExul0RtF6N4xV5qVverjzowUrbGsEsEjwa290tazjTo
-	iPLw8C4pRvH+3RS4KRxdxqYPH04j/rii5yNM053xpyZsymp1msbt9sPKA==
-X-Google-Smtp-Source: AGHT+IHgzYBqOch+pmqIr6aFKeN8KU2lBlaA5VrUfecgkUX1bwRao0L5zlIWi8QFdGiWaxEVfTfghHwHllS6y/yRZSI=
-X-Received: by 2002:a05:6402:5245:b0:641:270:2c5b with SMTP id
- 4fb4d7f45d1cf-6415dc082f2mr6735966a12.4.1762789460667; Mon, 10 Nov 2025
- 07:44:20 -0800 (PST)
+	imf21.hostedemail.com;
+	dkim=pass header.d=kernel.org header.s=k20201202 header.b=F47izqIv;
+	spf=pass (imf21.hostedemail.com: domain of david@kernel.org designates 172.234.252.31 as permitted sender) smtp.mailfrom=david@kernel.org;
+	dmarc=pass (policy=quarantine) header.from=kernel.org
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 23D0743DAD;
+	Mon, 10 Nov 2025 15:44:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB80C4CEF5;
+	Mon, 10 Nov 2025 15:44:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1762789490;
+	bh=7ECB/Epw4N8G0fPSAf9HzVlYqXXeRmVNo6f6Ug/7m+A=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=F47izqIvDYv7w+GY/eGCtiRSRXvcX9+lbgTTRYtjo7OHpHNCi5gNSTxeJ1ehecWxs
+	 QhEjvAJZWHBeO2YXuPRtZh8595tI11T+oBLryABPoc+HvAuxDmEAnmgVHs1ZLHGN7q
+	 ex65oUEqxy2tO9KiKVp9fBleF62FCWu9uvgjA/DPOgj4cpQpDBIIhEO3mcXL90WeXt
+	 +94jklpOLg1RAAhmMZmuQoFzI8wttAWhsrirxzhEIXUWk3jWHehXEehpGRUkHbYzv7
+	 QvyniMWauBnYre+wYVHQPrHW2JQ4wQn+PaLRNcIAu1u5/2/ucyVvf3dbkDjEWNLI50
+	 6Ykabp5DrdXTg==
+Message-ID: <a65dcd48-d3aa-4372-9c58-2278fc161b68@kernel.org>
+Date: Mon, 10 Nov 2025 16:44:45 +0100
 MIME-Version: 1.0
-References: <20251107210526.257742-1-pasha.tatashin@soleen.com>
- <20251107210526.257742-3-pasha.tatashin@soleen.com> <aRHiCxoJnEGmj17q@kernel.org>
-In-Reply-To: <aRHiCxoJnEGmj17q@kernel.org>
-From: Pasha Tatashin <pasha.tatashin@soleen.com>
-Date: Mon, 10 Nov 2025 10:43:43 -0500
-X-Gm-Features: AWmQ_bn3hTY0dfz8jKC-NQyPogDeCUM0IUVj5R8f5Xi9W9zl_j-5I3l31CcFnck
-Message-ID: <CA+CK2bCHhbBtSJCx38gxjfR6DM1PjcfsOTD-Pqzqyez1_hXJ7Q@mail.gmail.com>
-Subject: Re: [PATCH v5 02/22] liveupdate: luo_core: integrate with KHO
-To: Mike Rapoport <rppt@kernel.org>
-Cc: pratyush@kernel.org, jasonmiu@google.com, graf@amazon.com, 
-	dmatlack@google.com, rientjes@google.com, corbet@lwn.net, 
-	rdunlap@infradead.org, ilpo.jarvinen@linux.intel.com, kanie@linux.alibaba.com, 
-	ojeda@kernel.org, aliceryhl@google.com, masahiroy@kernel.org, 
-	akpm@linux-foundation.org, tj@kernel.org, yoann.congal@smile.fr, 
-	mmaurer@google.com, roman.gushchin@linux.dev, chenridong@huawei.com, 
-	axboe@kernel.dk, mark.rutland@arm.com, jannh@google.com, 
-	vincent.guittot@linaro.org, hannes@cmpxchg.org, dan.j.williams@intel.com, 
-	david@redhat.com, joel.granados@kernel.org, rostedt@goodmis.org, 
-	anna.schumaker@oracle.com, song@kernel.org, zhangguopeng@kylinos.cn, 
-	linux@weissschuh.net, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-mm@kvack.org, gregkh@linuxfoundation.org, tglx@linutronix.de, 
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, 
-	hpa@zytor.com, rafael@kernel.org, dakr@kernel.org, 
-	bartosz.golaszewski@linaro.org, cw00.choi@samsung.com, 
-	myungjoo.ham@samsung.com, yesanishhere@gmail.com, Jonathan.Cameron@huawei.com, 
-	quic_zijuhu@quicinc.com, aleksander.lobakin@intel.com, ira.weiny@intel.com, 
-	andriy.shevchenko@linux.intel.com, leon@kernel.org, lukas@wunner.de, 
-	bhelgaas@google.com, wagi@kernel.org, djeffery@redhat.com, 
-	stuart.w.hayes@gmail.com, ptyadav@amazon.de, lennart@poettering.net, 
-	brauner@kernel.org, linux-api@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	saeedm@nvidia.com, ajayachandra@nvidia.com, jgg@nvidia.com, parav@nvidia.com, 
-	leonro@nvidia.com, witu@nvidia.com, hughd@google.com, skhawaja@google.com, 
-	chrisl@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Stat-Signature: aioibi664aeh8pijtt5maxfe1zjxi6pe
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] mm/madvise: allow guard page install/remove under VMA
+ lock
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+ Andrew Morton <akpm@linux-foundation.org>
+Cc: "Liam R . Howlett" <Liam.Howlett@oracle.com>,
+ Vlastimil Babka <vbabka@suse.cz>, Mike Rapoport <rppt@kernel.org>,
+ Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
+ Jann Horn <jannh@google.com>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org
+References: <cover.1762686301.git.lorenzo.stoakes@oracle.com>
+ <d246c206e2df45cf15ccfeb33124809dafbe1eba.1762686301.git.lorenzo.stoakes@oracle.com>
+From: "David Hildenbrand (Red Hat)" <david@kernel.org>
+Content-Language: en-US
+In-Reply-To: <d246c206e2df45cf15ccfeb33124809dafbe1eba.1762686301.git.lorenzo.stoakes@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspam12
 X-Rspam-User: 
-X-Rspamd-Queue-Id: 5CCEFC000B
-X-Rspamd-Server: rspam01
-X-HE-Tag: 1762789462-810381
-X-HE-Meta: U2FsdGVkX19g/454A0JTfcsotjeo0kiokzIjxt3vbuGYGt19CBLOMwmFKHiGqFiaGW02piV6mjhRyeESGyH/566Gik7BITNEXoHP2Jvz4WwSX9uaCfBKTyhtD/1OssxbQlA+uUiCayyhf/NULY7iPlY0Y27BR1ZR/lPs1KXgABkBZ0NMn6tS/sDg9+SdU8hTJeD0j40rJJdkPf7MYyKsfI3a8KR/jMzpraqYV/JKEB/QiYfTr3RjfHHn0dnxEiehJZYiHZz3OXVlbAZ9JbXVayOAoY9zsA3kljqpIGeU2ZHMkwFDoH04E5AI9Nqf8L6wLSxg+DHwTbTbWAs9IuQ1begSdNQE7Y1RitVOFvrn4o+BsB+vB8Qd4Lh7nML5nK7BrDynRaJeMv4tEJ9fggJtSWrd7Np+av6hC5RTdE57EbTgncME26fqBQduKkKiSG7lTHN0VaT4td1a0EP/X4Jn1mCa2S9TSjNqJyH4iB02iTWov7LMxiCuFGnkWobZ3YD5zvBSOurRE8gKYWmNDLwxnnj/UTHJUzQQp632utISf5J/zAbfHrKKgnOaZTIIo1lB3wXb0S8Fmk/ijU+MR1WtJMxa7acmUaS6J2gF5lSMgMl2klOMxt0yVbqhZBGTxtaXoA6GTOeXbP0FWN902mvG0J1fNjlmA12gVODWtLQPhowJ8WQPtQSh6/rcatB5q/ZEzjWNI+9i/O4TcOr1knhouWacp+uFGtBKKAq6AN/3Yt2wM3wed2jQSJLqcNRPF78A+L+b9Y65s49JEh3bntLtOUo+dTRTsorNON/+xPnDEZ/Ps3IfCN9a7gtZaiO6Ujd0OZ8eQTdV539iFgNFQ5xg90omP2nwDO/CT7Nr1ORIdeS9Wh33B/7rhKrpSuLTC4RDVWvplFXGb4Wx4or4b574KuuisGu+F7EnIVf4tf20Fb7kVmEHnrEeUw3YYlTbwwjDFFfUs6m9EAY5fPJKNOc
- o4yyysQs
- uuXQlP9ohKbzSBFC7LUfrgBSMdMsoVs3wV4ZPEU/zVhPBtlqWLauPhuOMtjQuNkkm9+1EFX6ZYVB6Gvxu+N1QZYplpmo8adEUcKZIuNIxAVrCwgiIQCcsaeUVZtsBhPaCc5eV9AgCDA9eUejRlUnZPiD5BNpxhfoHN0B+IqFtXP0fOKdwlift4+3ialdWqW35BB9dO8u4cKcBUUnEdLeXoVeWXxO53BdPTWzbUvqzqDcyvyLf0RcX0NRl6OeSs3HManOzMSsjgCtdw/aCQMXTY1twB1yWXRcRWjeDRW78pEc0HymANDpZZF9k9g==
+X-Rspamd-Queue-Id: 55E471C0010
+X-Stat-Signature: 9j5ekktqobqobc43cwz5k7pcrx5gdwzh
+X-HE-Tag: 1762789491-211131
+X-HE-Meta: U2FsdGVkX1+3D3QQWle5AlwFdvmPq1aS62bj7mBfeFchk+M8RR8SR8GdPy0c0lbJCjDsAyyUyj0kUg3epXm+m9tJYew2NLLeChgwNs/NXbC8YK+0OKDMnV2g34MuXKT0Zo04fszq0/7l400iCY71pFPOYiJTKyR/lO+LFtPgsPTyI198s5Xd7dxDhjjBtFhVfsArkKOWZfenoNmqd3Qk2zjvAkeKB+JxvTwcMXwoicQfr+riTAE3EmmhIpnGqcvX9iHWWF9+GD5F5E8nkaJ0S0rCwsqp7cL1r2unPys07YTA9CcCl+IOLHZrV5WByTrZc8OWQYtwsal+eFxu2RGDGxOo2sVi/1guZ7fT8ANe4OFJvcGf9u8TjGe8CNawAhpCF62sA0rFPsVxxXdr0p0E2dXwM2KFsi7C5xHyFKrlVCmfJuL0YRGP5cp/ylxvLoAU2uDD4cwlIP56KoNDhBHUBhLLFuWB5KgqYpWT/7o1/Xpd+cuE/TBeKC8J1CBQluYNvX1/yTqN5t9+Dyak+K877IDotwmVLMwpstK95MsxAEY71yIl3xLHWN7QfO0tMj0FOaPEF3SLIg9lUzVNjb9AB1HsmiHyrMI1Y0EG36rhFFUyA8/3MS9Ehp+JTz7zqYA0sOWHOIpZhhfcXYDxrcr/ns5RP99CgH+Zq7MN3OQv1A1OTa74LCge8HGgx+LW2joRaowjdT+DMvBwj3XjnrNup5/nlWcgphW0maNUjd0uxG26kzILvYAFsM8lpA8zNscSBbCxeYaT3zAuoILrcwWNuga+itkZQ6emFK+pA/HEZm6t7Oa2cCZz8lYnv34tOF2wR/H3qjnbueTutTe2zxFC6EtiWSwYkcy+N1puc8q5A84Ysq8CjyBG59vXJSouxL8HWXyaj6R1mtMBBZElKzktg/kO18mZWQggvFhMxwoKxVoj/bRJ0ntqJB3W6mACqNCtyRVq3D2pmES/gVog7mR
+ cQ6ySw+H
+ DPI0ks1Q757LTDp+2ezwex/tbbl3RVPgcdX8wujEOPOH21YgOwsEmhGMlln8UVP/4ObKmFfFW0szW4L4oipclT2ZAwenIy9bQ6KFOUwa25F14blobqXMplLsAN7eQJuDt1NRVs+jbNMV9zXDFjS/ChuNBRj8vcuo/ml8TX0xlA3pB4I44msPeCKCmPuLssBdgswP24s/V2xChHZQ+ykTqu0/EuZcm3QpOts27c7tgxUWVN+QL+5WOV5ITWz5PzvdKPbDmgrfe38R0j9oDloxUQULO/g==
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,46 +100,66 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
->
-> kho_finalize() should be really called from kernel_kexec().
->
-> We avoided it because of the concern that memory allocations that late in
-> reboot could be an issue. But I looked at hibernate() and it does
-> allocations on reboot->hibernate path, so adding kho_finalize() as the
-> first step of kernel_kexec() seems fine.
+On 09.11.25 12:16, Lorenzo Stoakes wrote:
+> We only need to keep the page table stable so we can perform this operation
+> under the VMA lock. PTE installation is stabilised via the PTE lock.
+> 
+> One caveat is that, if we prepare vma->anon_vma we must hold the mmap read
+> lock. We can account for this by adapting the VMA locking logic to
+> explicitly check for this case and prevent a VMA lock from being acquired
+> should it be the case.
+> 
+> This check is safe, as while we might be raced on anon_vma installation,
+> this would simply make the check conservative, there's no way for us to see
+> an anon_vma and then for it to be cleared, as doing so requires the
+> mmap/VMA write lock.
+> 
+> We abstract the VMA lock validity logic to is_vma_lock_valid() for this
+> purpose, and add prepares_anon_vma() to abstract the anon_vma logic.
+> 
+> In order to do this we need to have a way of installing page tables
+> explicitly for an identified VMA, so we export walk_page_range_vma() in an
+> unsafe variant - walk_page_range_vma_unsafe() and use this should the VMA
+> read lock be taken.
+> 
+> We additionally update the comments in madvise_guard_install() to more
+> accurately reflect the cases in which the logic may be reattempted,
+> specifically THP huge pages being present.
+> 
+> Suggested-by: Vlastimil Babka <vbabka@suse.cz>
+> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+> ---
 
-This isn't a regular reboot; it's a live update. The
-liveupdate_reboot() is designed to be reversible and allows us to
-return an error, undoing the freeze() operations via unfreeze() in
-case of failure.
+[...]
 
-This is why this call is placed first in reboot(), before any
-irreversible reboot notifiers or shutdown callbacks are performed. If
-an allocation problem occurs in KHO, the error is simply reported back
-to userspace, and the live update update is safely aborted.
+> 
+> +/* Does this operation invoke anon_vma_prepare()? */
+> +static bool prepares_anon_vma(int behavior)
+> +{
+> +	switch (behavior) {
+> +	case MADV_GUARD_INSTALL:
+> +		return true;
+> +	default:
+> +		return false;
+> +	}
+> +}
+> +
+> +/*
+> + * We have acquired a VMA read lock, is the VMA valid to be madvise'd under VMA
+> + * read lock only now we have a VMA to examine?
+> + */
+> +static bool is_vma_lock_valid(struct vm_area_struct *vma,
+> +		struct madvise_behavior *madv_behavior)
 
-> And if we prioritize stateless memory tracking in KHO, it won't be a
-> concern at all.
 
-We are prioritizing stateless KHO work ;-) +Jason Miu
-Once KHO is stateless, the kho_finalize() is going to be removed.
+Not sure about the "valid" terminology here.
 
->
-> > +     if (err) {
-> > +             pr_err("kho_finalize failed %d\n", err);
-> > +             /*
-> > +              * kho_finalize() may return libfdt errors, to aboid passing to
-> > +              * userspace unknown errors, change this to EAGAIN.
-> > +              */
-> > +             err = -EAGAIN;
-> > +     }
-> > +
-> > +     return err;
-> >  }
-> >
-> >  /**
->
-> --
-> Sincerely yours,
-> Mike.
+Would "is_vma_lock_sufficient" be a better name, that would imply when 
+"false" that another lock is required, because the VMA lock is insufficient?
+
+
+-- 
+Cheers
+
+David
 
