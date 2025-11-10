@@ -4,290 +4,117 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 1A471CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:28:15 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 23D06CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 11:28:37 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 506FB8E0018; Mon, 10 Nov 2025 06:28:15 -0500 (EST)
+	id 57C7A8E001A; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 4DEAD8E0002; Mon, 10 Nov 2025 06:28:15 -0500 (EST)
+	id 52D308E0002; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 37F288E0018; Mon, 10 Nov 2025 06:28:15 -0500 (EST)
+	id 4430F8E001A; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0010.hostedemail.com [216.40.44.10])
-	by kanga.kvack.org (Postfix) with ESMTP id 225828E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:28:15 -0500 (EST)
-Received: from smtpin25.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay09.hostedemail.com (Postfix) with ESMTP id B2A2489BF8
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:14 +0000 (UTC)
-X-FDA: 84094473708.25.746DC41
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	by imf19.hostedemail.com (Postfix) with ESMTP id 2FCD61A0005
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:11 +0000 (UTC)
-Authentication-Results: imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ocahkxWc;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wSD0TC2F;
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762774091;
+Received: from relay.hostedemail.com (smtprelay0015.hostedemail.com [216.40.44.15])
+	by kanga.kvack.org (Postfix) with ESMTP id 349278E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:28:36 -0500 (EST)
+Received: from smtpin15.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id D775D160D1C
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:35 +0000 (UTC)
+X-FDA: 84094474590.15.3E8FFEA
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	by imf11.hostedemail.com (Postfix) with ESMTP id AF3FB4000A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 11:28:33 +0000 (UTC)
+Authentication-Results: imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=W3rfcjHh;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
+	s=arc-20220608; t=1762774114;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=766NDH5E3A9mxIDVN5S34mk6lEdByI9VlX2Gadf/BRM=;
-	b=09uK57cT8L4JBHu8sMlXcNq977wMA7HRnSNW2z94XxtolS+fDLTSrpKWg1oaAmDDOccqUZ
-	ZnS8HWpVGM3f0gPRiyp1nrwIImrFW4KRNW0FLuU1+36khRPOwL44vqOF6xA7SiulGkgKlM
-	LTGN4EMHJeyoFxuXlXuGukeTlhm9wZ8=
-ARC-Authentication-Results: i=2;
-	imf19.hostedemail.com;
-	dkim=pass header.d=oracle.com header.s=corp-2025-04-25 header.b=ocahkxWc;
-	dkim=pass header.d=oracle.onmicrosoft.com header.s=selector2-oracle-onmicrosoft-com header.b=wSD0TC2F;
-	spf=pass (imf19.hostedemail.com: domain of lorenzo.stoakes@oracle.com designates 205.220.165.32 as permitted sender) smtp.mailfrom=lorenzo.stoakes@oracle.com;
-	dmarc=pass (policy=reject) header.from=oracle.com;
-	arc=pass ("microsoft.com:s=arcselector10001:i=1")
-ARC-Seal: i=2; s=arc-20220608; d=hostedemail.com; t=1762774091; a=rsa-sha256;
-	cv=pass;
-	b=gt/mT+sV1JoF6iSu2UeTyiZ5R9Ci/YpWysBXCF6HPa5Kotfozt2iUHimPWrj91WG1xDiaK
-	wK2OTQ7Tn0d/AiuDdkCeRbsut77GIT92NgVGNhbyhQWBGhtE+kBfszQ1WeXhKTM3Mi6uKc
-	2Tqa+khRHDJQJeuNek5R8UgwRzeHCNk=
-Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5AABMGRB026238;
-	Mon, 10 Nov 2025 11:27:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=766NDH5E3A9mxIDVN5S34mk6lEdByI9VlX2Gadf/BRM=; b=
-	ocahkxWc+DfFHs21hSdifJRbRY1iiZz6AOj0KLo1RvcgYAkMdpUxJlG7Qgn1aXyt
-	sMMLBYqx+lkUB8gyXV6JpfQwn4/s7ohSAB9Jqdll78pS3In3yIijK0lbOzLSf6Bq
-	RvYTSrael0GB4AX7YXRntD4RDdU10XjHrFqSvAr23/xkccybEIos9KOw7t5A8Vkq
-	MxLGkOh5R8u8jnhrYoP3y3IVB+MVYslrloQMmBRmsqUz1+B4rakQusOdlbQBAZAu
-	rOw7VHhawv4VGkPy59bCQYOWS53swpd0iuxF3bVLz72rtzlcl3ufofXW7C93X4e4
-	DLZNjwGQbVJdnBv4gYNVwA==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4abepk028p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 11:27:43 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 5AAAR7YN020909;
-	Mon, 10 Nov 2025 11:27:41 GMT
-Received: from sn4pr0501cu005.outbound.protection.outlook.com (mail-southcentralusazon11011043.outbound.protection.outlook.com [40.93.194.43])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4a9va80tpy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Nov 2025 11:27:41 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KC/kTjUswtlNaHtGSxIXA1TL0/GPjkjluIskZ7Y4Bnah15DSFfp2F2P/E9JJZflymfFmmBFUWdrgWhBfLs8Gvji3MZeFWvaY/yn2EeaevFzU91/Nj6EANEoFDnhvpwoasoaNK3aHl/ubMwB/E7RT8WmVEVRyQJb6rRLQWorIChw5fzuMfnkQ1nNxdqWUyCb1feBUWPBVPSbSznJIXs8TCgiWDVd2RZwHOJa/gNDmznmo/Bn9YPOKBRila5OIHwOArhLXNdBju4oNSpuAFG9IHUzA6JqmkjOuE9ADxoJksZ3CDp8I9fSbNAjhcAcPqHpZQlvIqYq4zMoUp3ZzKKYtzQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=766NDH5E3A9mxIDVN5S34mk6lEdByI9VlX2Gadf/BRM=;
- b=jkT0kv5qFqgOBi2OzpiWAyYenQmiz3Wn39c9EY0Tbve3Qqb6pciq8NigDGRfzkMp+i4pXihsDSDpbLkZ3rilYnf0OI4mYufi6rbcNjhjYSUra1q6KyeRWyDpGljPTumPqrarUljC4QQj7hyjez6CCMsZCHUV7Q7A8Inq7njJDy40c5TfTNz0SDJRSnfN19p4AUdIesssSvxYAgMMdo9+fbBp/Kh3eG7g8zDiyYplDcBrWba1Nz1O+ZNMrfNiCXxKhnJZRUOnVocWPktoR8+LPHQDMF3JXQkgCD1VjesmnsxSVOmNxe9mL6HK6/PjRGFcfyHT59BevZzFF+u78Oh5Ug==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
+	b=TJnZWPVrMveQwevGndPvBICJSsl1/Pm0ClIJWO3T+0yn5kZvuYORn7TNCnESwEceYcu5I+
+	WB40S2FNrcgizFAi9GQQDd3OHY2NCSdEwOqzcDFkFghGKsxRmQoq2LqkVw8tmWwalZ+CmC
+	3s1AsSOYQ06+95RdGlsIzNDmsjh1V8I=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762774114; a=rsa-sha256;
+	cv=none;
+	b=46FQTGA8dMvis5Xc3489xaF2cR1kgRsB8uPqS6sagng6LD8MJdsMdeMt6GouSMvLTX9MN+
+	Ap923j2us+CqkXhC3SYdQazuvVY8pkUhliIFJI1LEfTiyxzTKPvVzcz6+sBWN8Ou63gFAc
+	KIetCkmvJQzhL4dyBaCpNo8yZXHZ0xk=
+ARC-Authentication-Results: i=1;
+	imf11.hostedemail.com;
+	dkim=pass header.d=suse.com header.s=google header.b=W3rfcjHh;
+	dmarc=pass (policy=quarantine) header.from=suse.com;
+	spf=pass (imf11.hostedemail.com: domain of mhocko@suse.com designates 209.85.208.54 as permitted sender) smtp.mailfrom=mhocko@suse.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-64074f01a6eso5293888a12.2
+        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 03:28:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=766NDH5E3A9mxIDVN5S34mk6lEdByI9VlX2Gadf/BRM=;
- b=wSD0TC2FOaj3jHfIxSry0eH+a/qtYOoLHZSbohJIE10G9/nyTB2b6vndh9ACr7IRDXskdJfJIFwaySE8InP2gEtGTz9rjboExWLUjaoswJxdpYP1Hz4ocHFmTXAWpGBMxgybMqSTuau/f2O4zk5agC/ajCMcTTiFEpvusjrPtYw=
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com (2603:10b6:8:1cc::16)
- by PH7PR10MB6108.namprd10.prod.outlook.com (2603:10b6:510:1f8::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9298.16; Mon, 10 Nov
- 2025 11:27:36 +0000
-Received: from DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2]) by DM4PR10MB8218.namprd10.prod.outlook.com
- ([fe80::2650:55cf:2816:5f2%7]) with mapi id 15.20.9298.010; Mon, 10 Nov 2025
- 11:27:36 +0000
-Date: Mon, 10 Nov 2025 11:27:34 +0000
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-To: Chris Li <chrisl@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>, Peter Xu <peterx@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-        Arnd Bergmann <arnd@arndb.de>, Zi Yan <ziy@nvidia.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        "Liam R . Howlett" <Liam.Howlett@oracle.com>,
-        Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
-        Lance Yang <lance.yang@linux.dev>, Muchun Song <muchun.song@linux.dev>,
-        Oscar Salvador <osalvador@suse.de>, Vlastimil Babka <vbabka@suse.cz>,
-        Mike Rapoport <rppt@kernel.org>,
-        Suren Baghdasaryan <surenb@google.com>, Michal Hocko <mhocko@suse.com>,
-        Matthew Brost <matthew.brost@intel.com>,
-        Joshua Hahn <joshua.hahnjy@gmail.com>, Rakie Kim <rakie.kim@sk.com>,
-        Byungchul Park <byungchul@sk.com>, Gregory Price <gourry@gourry.net>,
-        Ying Huang <ying.huang@linux.alibaba.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Axel Rasmussen <axelrasmussen@google.com>,
-        Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>,
-        Kemeng Shi <shikemeng@huaweicloud.com>,
-        Kairui Song <kasong@tencent.com>, Nhat Pham <nphamcs@gmail.com>,
-        Baoquan He <bhe@redhat.com>, SeongJae Park <sj@kernel.org>,
-        Matthew Wilcox <willy@infradead.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, Xu Xin <xu.xin16@zte.com.cn>,
-        Chengming Zhou <chengming.zhou@linux.dev>,
-        Jann Horn <jannh@google.com>, Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <nao.horiguchi@gmail.com>,
-        Pedro Falcato <pfalcato@suse.de>,
-        Pasha Tatashin <pasha.tatashin@soleen.com>,
-        Rik van Riel <riel@surriel.com>, Harry Yoo <harry.yoo@oracle.com>,
-        Hugh Dickins <hughd@google.com>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arch@vger.kernel.org, damon@lists.linux.dev
-Subject: Re: [PATCH v2 00/16] mm: remove is_swap_[pte, pmd]() + non-swap
- entries, introduce leaf entries
-Message-ID: <3c0e9dd0-70ac-4588-813b-ffb24d40f067@lucifer.local>
-References: <cover.1762621567.git.lorenzo.stoakes@oracle.com>
- <CACePvbVq3kFtrue2smXRSZ86+EuNVf6q+awQnU-n7=Q4x7U9Lw@mail.gmail.com>
- <5b60f6e8-7eab-4518-808a-b34331662da5@lucifer.local>
- <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACePvbUvQu+So7OoUbJTMLODz8YDAOgWaM8A-RXFj2U_Qc-dng@mail.gmail.com>
-X-ClientProxiedBy: LO4P302CA0018.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c1::14) To DM4PR10MB8218.namprd10.prod.outlook.com
- (2603:10b6:8:1cc::16)
+        d=suse.com; s=google; t=1762774112; x=1763378912; darn=kvack.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
+        b=W3rfcjHhg8a3wzWhiiozrkGtF/ZH6h58KcStlILZiSZpcfgv0aE/6u6lsalDWZQ8KC
+         cVXouSEZcMUmI+mUwSiKYJmr3UN6tiGjzDHPFGdC/SGEou1t0LUqMnjoWnadUlzZIHde
+         y8W3eEyaiosCKHoGtcyXNVlnpcGAggV0/CKyWZ79n7Z7sPKDMPSmcC5/TPGeAu7ASXR0
+         TIZKADNNkZ5ERrWIjC5uMN4uykYaEfiEzUMAxKoUvLBcCKt+nhEtJoc6bo94RqHaLoZ9
+         CJfA0M1odcMgAFrjpIDpzGfMX7Wmos+zXG3bZydoqAFeFTiT9028f8r9o1ZQ6C573thn
+         ZPug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1762774112; x=1763378912;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=csQWI5jqus0ZWRL/iU5hav/pk5IdN2xcgvPAVhT7DnE=;
+        b=LojVFh7zaEVeH7bKHhdH93J0KUcmNpjZNmJHdSeoXKPeKKCxtcl4wQW2D7bxoufgQa
+         DewHpb8/ndWBdQvIft5k1A3DG5vEG63pxC77l3wTtJoRrybfcoJ6JNJMZ7kAyYdk5u5d
+         wUAgZ/NCuhgFgWXm/SPJRIyhIbmhm4wD/wb7E/Ci9fjEJ8t/u6br2uOuSkNyH8xHNe3G
+         xFDjriSQKoe0a5FpUnNxHJasrf/cVp5MeMQ18RyJ08sj3bf8tFXW0b1XqGEBNDQMe7jV
+         AZ/SbvqUU6RWvtQZI5iUjqwnCt8HP4N3BFP0eplfQKwFSYgypey1/kn4UMTkQ4eWBCP1
+         N5Gg==
+X-Gm-Message-State: AOJu0YxPWLfWQ0KGTBa4qEcesiGn3pAVSZxEQmpr2jlCLrhrdFLPBY7l
+	DaN/Y93vx5RhKfawfxIGH3IQeDO3So40SCbvSm2RhW4fPsvgPX4Ha0UNUQLPONFrbeQ=
+X-Gm-Gg: ASbGncvAFvPiory+gNnJI7bSf0vpa0JZmnPMYQhF4n1wk+l4fctt0JqQDWbQLU7zwIw
+	VOOpGfJodhATxsRWfs21tnOAYOj1HTmxX3iZsH4/lD6mdKS4H/V8eUzI+2PsTJZCA1KjpzBBwyI
+	W0B9EqQfvJmf/9MC7ZD0eV/f18bkmAOSEn9XUfneTcmAZHp/FMeLuFmMv9YPt015ugHGjYG2o6P
+	V729MFAgXKrQIwDLXUxjhWw4BrVLR7lWYIBGQHDViUUATqyX8BwtWtf7ENVP449mDE3w6UAzsq/
+	mVLpYue3jEsZRxYfrTuV/xqLas4+DXXGazG3rQdD+Wys9fVUrCSSacwxPMsH+u8qEiZmqhzBIVG
+	GePj7XMzJP0uyml+cDRvRJumNImy2FyOxMiJxVD/9IZgG85K+E8f0Hh0Td+I5Crx2OJeXIVbVay
+	jz/hlXiKnPEh+1fcf8YAZpBpi5
+X-Google-Smtp-Source: AGHT+IGAJqQ0Kq7UeRNfTo+kG/hya+4ozhhHWlZnaOOqZGzl+HnP2llew3IXX1GgpwGtU4vmKHgoXw==
+X-Received: by 2002:a17:907:2d8d:b0:b40:b54d:e687 with SMTP id a640c23a62f3a-b72e055e508mr784475766b.47.1762774111807;
+        Mon, 10 Nov 2025 03:28:31 -0800 (PST)
+Received: from localhost (109-81-31-109.rct.o2.cz. [109.81.31.109])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-b72bf40768fsm1062473966b.23.2025.11.10.03.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Nov 2025 03:28:31 -0800 (PST)
+Date: Mon, 10 Nov 2025 12:28:25 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Leon Huang Fu <leon.huangfu@shopee.com>
+Cc: linux-mm@kvack.org, tj@kernel.org, mkoutny@suse.com, hannes@cmpxchg.org,
+	roman.gushchin@linux.dev, shakeel.butt@linux.dev,
+	muchun.song@linux.dev, akpm@linux-foundation.org,
+	joel.granados@kernel.org, jack@suse.cz, laoar.shao@gmail.com,
+	mclapinski@google.com, kyle.meyer@hpe.com, corbet@lwn.net,
+	lance.yang@linux.dev, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org
+Subject: Re: [PATCH mm-new v3] mm/memcontrol: Add memory.stat_refresh for
+ on-demand stats flushing
+Message-ID: <aRHMWewcW41Vdzed@tiehlicka>
+References: <20251110101948.19277-1-leon.huangfu@shopee.com>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR10MB8218:EE_|PH7PR10MB6108:EE_
-X-MS-Office365-Filtering-Correlation-Id: 433e5722-5f8b-48d4-8529-08de204c264f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NmkyQktCWkxTMWRPWUUwVVJvSFR5elRUYUp4VnhNM2hWaitHQUdUd01mK3ZX?=
- =?utf-8?B?SkZNYklES1NIaDNwczhscnFVeVJhODVkYklGWEVuMEZUcklVcGI2aWszMGJP?=
- =?utf-8?B?MDFvRzd0Wld3bVE4VHUrL2dXTFpkT2dkNjB4dnE2SWJMUWh4RHdXSTF2M1FR?=
- =?utf-8?B?eTI3UWQvYUs4b2FrencydVZ4b1VvbmMvb1p6YUVCMTIwQVJpNHhXbkV2enFJ?=
- =?utf-8?B?aTJqODh5VG00Nmswc3VwYy9TR3JiQjA0anRUYXZYMjFrS0ZDeVZrSXBBTGN2?=
- =?utf-8?B?OXZTZWpRK1R2YUlKTVVwQXdzY3didVpuM2NkYkd2ZUZyc1l2OG9XVzdIZG9Z?=
- =?utf-8?B?KzFSVC9uMDl3dEM2V0VZOW5hT1Z1RnlNLytpbkNlczQ2amVpejY3N0hlQ1ZM?=
- =?utf-8?B?NmdrZnpmbHM2WkRzUURiajBnMEJCaFlveFMzRzhxNktBMUNCMTZVcWxJcDZL?=
- =?utf-8?B?QWh3R2xTcWNoZTFONmVMejE1VXhMYUs3a1E0dlZlOHhVS3VCVGJXK0NQdzBp?=
- =?utf-8?B?dHdZL2RqemtyRmZ1T3NNei9uWGNhbm1veXArTTlpRkkrQ1VkSkR0ZlNjb0lN?=
- =?utf-8?B?VGpiRGd6MENSbC9rdzFuaFpqQkhnMVpnV0s5Zk9LTmp0UktlZG1vMG1yYy9V?=
- =?utf-8?B?WVkva05PRFYvV1F2UmhPdFdhRVY2LzJqTUQ2dVJBQmY1NTFET082R1Q5RWdE?=
- =?utf-8?B?ZDF3R21RQks5c29BOThScXpIcG13L2dDNlVSNEJGdHhjd2trTWMweFFKVlBV?=
- =?utf-8?B?cDN4aXJyNHo5SEN4UEE4WjFIOHlwYlE4dU9kYlpNR25kTkwrOTNUdDIwbU9X?=
- =?utf-8?B?SzEzM1RlOGVsSUp6dkpYaTNHbUZ4V21jSmNjUXdQOG15UXVkaUpBTG13R21j?=
- =?utf-8?B?c3A4RTBmZ0hnL0UyTUNKTVEydUZodnZYVWxqemx4SS9vdmJVT01HQWNPZUhn?=
- =?utf-8?B?ZUY0QTBrUC9TNklsRFBKREhhUWxxdW94SnI3Q0pweks0UExFaWFnQTZpMTFh?=
- =?utf-8?B?eGc2VE9aL0dlWWJnK0NlZndTTytIRXZWNmxaNGw1RTRtWUVVZnVJcFZMYXBz?=
- =?utf-8?B?TWJrQ3lRZ0owZU83dUIzWGlwMnEwUUkrVWlWNUcwcnVreEhtS2xhNkZrNHZB?=
- =?utf-8?B?M2pFSml3M2FSU1pVcThsYUt4OVN4NUlKT2xaa09CblVhc3ByQUdEaXAwR0xS?=
- =?utf-8?B?NzNWQnVmS0FzR3lmSENCR2JpWVphcTllWDNsektuRFdnZzZrUW9WQkhpSFZI?=
- =?utf-8?B?S0JRL0txSmlnSXBaNkZTUFVKM081NUNkMXo3NEVhUkNtMzVpMW10TnV5RlFn?=
- =?utf-8?B?T3dMNWEyTXNWdVA1aDJ6K2RXYm9yclN1bXJIeEE4andIUWRUbjlZdERDanBn?=
- =?utf-8?B?TDdSeXFBcWk5b3NnSXVDbWJjRU1oOUxrbzdlKzNWR3A4S1ptb1RYUURRZnhE?=
- =?utf-8?B?MnJEUE02VldoNFZmTXVIQjRjLzZ3ZDBORUhqQmRBRjl4bzBZOGErcHA3ZmY0?=
- =?utf-8?B?UXh2UlBBeXBwRW9GZkM5dEtNSkFyZGVJRmpaZDAvREJobStJekZCMlUwZUR1?=
- =?utf-8?B?RnVxVWM2UDl4S01OMTRqSERzY1poZ3BKcjZFODQ1K1FZYThDQjBXVHM1WGhQ?=
- =?utf-8?B?MGZlb3VCMTBTT0pjdzgrVFJwMVdLQnNBdEdBNlMvWFA5YTFqSDRTSnRMZU9m?=
- =?utf-8?B?MkVjNHkxcTZLYjQ0djVGakFudW1MMWlmMnJQTG5lcjNEZk5rd3FNYWNPZkVu?=
- =?utf-8?B?d0dZbjNkVUlVVG8wN3U1ZVpwWXc4SGU1TEpFaFMvRU1kZTY3dUVFQmJybjU0?=
- =?utf-8?B?d3RIRkIrWDlRb2tXYmwxdFNJSDYyY3NWTjczS3cwZ2ZWMCthdFRjVHF2SCt1?=
- =?utf-8?B?VHoxVi9Mam1RWk9wcnB3a1VtNENHNytDcUZUc25kZEtPUXNXZU9aeTJvb3lH?=
- =?utf-8?Q?nMBdkAbjYyfMBdedu1tRZEsDpRIlo4H3?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR10MB8218.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?NzhnVmJnTFV4NWN3VWhKdEF5UlVENXhFdDZ3WnFGSTkwckxUQ0I5bGZuTDdI?=
- =?utf-8?B?UDNkTXRGTTczWDdUZXNERnhxRFM0dHI4NFhVRkpkaDFFVDN2VEg4SThvY3d3?=
- =?utf-8?B?ZWpNM1RTbmVZTzd6SFRPVnFWUlAybHZ0dGxQQytQREdlL3N3ekZMb2Fta1FH?=
- =?utf-8?B?cDkxaFkyaU9ta01aVFpyR29XV1pLam4xRlJUUGI5Sk55L2RrM3pLNXVNeG1k?=
- =?utf-8?B?aytVd1VwSWw4ZUR0UDUyVkY1Tk9TUExKUlNjMFFtU2ZzK0ZVMFFTcVRlUmFJ?=
- =?utf-8?B?M0cvMXg5TUNGdDBWWDdWM1E1bFBjZG5PL0JzM2tiQzdDR3NETnN4SUlKbDZT?=
- =?utf-8?B?a2piSTNhVUZPT2RIeGNmRGFoNVNrR21IUjBzSXNhY0JMT1htZHhaNlBQMTk3?=
- =?utf-8?B?ZG85T1UzaDZrVEZ2d3dQNFQxZTdMUHhSWENtQXFQeW1hQzhqaE01NXhBVzFF?=
- =?utf-8?B?ckFuTk9kZkFzdTB0dFdFbWNRSWgzOXFHTUd1NGVMT0R3WTdxeWY4NXVBNkdj?=
- =?utf-8?B?cGVoUEY3UUVFdkZRT21CcHF2aTNVaEI0cGRWVmNmcDJpT1VDVVVvRzNxblNK?=
- =?utf-8?B?SUxncFpCYlRHWHZiNzVCVWVGanZaOHZaazlpdFRIRGsyT0U5WjA2OFdQMGpN?=
- =?utf-8?B?ajk1Qy8rZklIZkZrSFEvMmJvSjBiOWNSK05iM0ZPT3dZaEpsWkVEa3RKL3pL?=
- =?utf-8?B?QXFxczN5UW5mZGsvQzdSK1l5aDNIVkMrZHR5T0pTZThtV3IvZVVUdEZPOU04?=
- =?utf-8?B?OSt3TTU1dWpvMThsdkJROGZNQTVpRzhrbkpVZ24rc3RZb2FWUDIybmtBKzA1?=
- =?utf-8?B?N1FueUJwd21oWkRTcHRhQnZCQTAvK2xFWVBmOVIzSmFFeXRqbGtZY3pZdmJv?=
- =?utf-8?B?NndHT3ZCZ2d5eDRjQlJIa0d4Q0VpRXM3am9TMTd2eWpDaGxFKzN2MW01eE5M?=
- =?utf-8?B?ZnFwdkFCdi9tZVFPQlg4ejhDYW96NS9HS1FudmsyYnl6QjdBZm5tNzdpd2dV?=
- =?utf-8?B?S0FXOFovNDIxSWVXYVNZY3ZMQXUyVnlkaTNNL1RjODhoSmE0WVdTV2xZUHlE?=
- =?utf-8?B?SzA0RWUrUmxsb2htR2orTmhSUHljWjY1SWFJKzh5YktuUkhVVWNja3NxM0Vq?=
- =?utf-8?B?TDZLRVVMRk9MR0s2RkwxaENzZG5xN0srL1RUWTMyOWFNNEl0MkVjUUdpRllP?=
- =?utf-8?B?d0REOXlXdXAxUEVrSWZoMVNZdEtjL0FxUDM1aTBiVEI5U25La0tCbGtiN1lh?=
- =?utf-8?B?TkZ3THo3dDBTNlNJR2VzN0JhMGdSc0ErQjVMSjNTbkdpZTdMTDlrV2MwL0Jr?=
- =?utf-8?B?ZXlIZ29sNmNBVUZJY0NtdnlpdFhTWlZMNEo5Y1pxR1ZOaXhjbHgrMnRsY2xm?=
- =?utf-8?B?NVhzQTA5T3BoSXZ3ZXp0OVpWUU5FWmR6NUx4dmJsQm1QSzFJajlrRW5PVUZL?=
- =?utf-8?B?Mjhsc3pBRkNJOUVVLzRjY1dZdkhESWtyU1JoRG53QlFYQ0F1SnlRWkdXb09O?=
- =?utf-8?B?c05ieE5xUGRkaTdlWmpmdUZVTE5uOWt5UHloKzB4U0N1ZHBoS21mc3Bpblgr?=
- =?utf-8?B?THBUQ0pZSGdwZ0R5b2VkUXdZMitXQ3JyVW10WS95dkt2SDViTUxrQ3k2Vm04?=
- =?utf-8?B?Q214Vy9YYm00c1p4QnlwcVdWQmJUL0JEc3pCY0FrZUxpd0lhdmg2S2FDL2tK?=
- =?utf-8?B?a2MzRkJxYmJFZ2NNVWhuWGFtWEpSVVRleVJxVy9OYnRhY3A4b0J1WnFtNldJ?=
- =?utf-8?B?aFZic0FBTTF5U2hmNW5ETm5zcVovbWx3aEs4Z2crZyt2eGVvUDgrSGk0RCsr?=
- =?utf-8?B?SitpT2VJK2UrZmhEaHNyamVxcVVhZGd0QXNtRWtaK0pOSTJoNzBXeGhjZmlw?=
- =?utf-8?B?TnFDaFVyNkpXMUlGK253VkxneEExaWJ5alJCS1ovNTRHRDdCZjBIVzY2NStw?=
- =?utf-8?B?Y0ZQMFNQS0p3c25HNzFjRDhScEcxWVVpTlo0WDJ1dVhIZW5PM0Q2a1lUR3o0?=
- =?utf-8?B?RjA1N0pEVUlZRHJXc0ptRTBnVUc3NHhwUFpVbC8vbWx1eVFXbDJQMTBZeE1F?=
- =?utf-8?B?ZFNqWUtsbUxGbGNXYVM1c3dNQzJRWEY5NGxwTHU5TzNBNGRZMnFoUWtFQUh0?=
- =?utf-8?B?VXdWOWF3Y1BXK2tSNktKTHpuZ3dqTDhZc1A3R3BDbWtjWXNoOFZVMjNVZzd1?=
- =?utf-8?B?alE9PQ==?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	KoSzAQHi58QEM+CfssoJRU6sk2DKJW7XkSc7AytTYkpzgfJ965bi4zMtXTxXH9XMvJErCLT2mryHBnb30pllh7SVrIqwjRx402kghRTsNWv8uFn24bPGS45HeolDHXaUvTmrbZOf6QlsTIMjHyo4hzORwuVVwdPNc6PVfuTbkMzlvkvqaUrFSODbVe8SfeUAFCYwSb2kWqatnNNfapqWH/U/v7nzwbb9gzGrX9JIVpB3a0+c2YiGrxo7mHriBcbdWlIsBJBo34a0/0Om2gjzwz8NoYwkg1zsmowKdVC9O6GpoDBlpwa6jGHGZBn2zx2qklzco/tLJOQ756sgJh0Kk1Uj0l5xySNpW1RSg7WeGkYeVahFnrtrUuieOqGpXCLhdDks3KL026xv+Ddt9EOrzGeeyWlTqFYi339xMNAr9dAiy7dHHlY1lUbZsmVz2YxG2ueb1ogBIE8yCM7ur+//u9lpO6Sod/oDKp6obWFWTCsW16l39LRtRDkiAqxukcqs+6GiPPnb0lgB5vls7VMx+rFAGMszabMu03VhYxwMiHkQf/w2u1P9fLemgn8OPEVzbfmmNlBizwzysYgYdwA181iiHCxvyuNxfo95A0BekXs=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 433e5722-5f8b-48d4-8529-08de204c264f
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR10MB8218.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Nov 2025 11:27:36.6257
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: A/EfxKsbBD0EfpT+PmzPZr0CCyvneiMYPL8sBMP48uN4K1IL860TsXYUTAzZdeH+1h9sNvyh7QOqfk0ZIc07XTNrAqLePd3VoYTvVpel6nM=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR10MB6108
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2025-11-10_04,2025-11-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999 malwarescore=0
- adultscore=0 bulkscore=0 suspectscore=0 spamscore=0 mlxscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2510240000 definitions=main-2511100099
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUxMTEwMDA5NSBTYWx0ZWRfX3GMxI7Xtdyqb
- BwaNyDEDVZLnhE2etjL6QIrWnwyqLWPvHtlOxdNIZNGpn/kYOQNf4dzxKrR1L9mcWZvld6lA4jI
- HqCl8ZTRK5nRqzbk7S7lB5AdNJJ5nJKqYsfTjS+vJXpnlG5G70Ut3sQbvJur7cgdKB6j8HkCexb
- Qe/DhnRINPYHDHwVbCUX6o0iBUHH8vyD6QrADvVUx+fPPwZkUqlBsmRecIyc97iQ/trDkxtcOMJ
- +JPIeIxqjVn09FNlxCdjL2vq4VmXlOiqPDsxWWs2J1siimIPxzapK2oNT9hSidG68t4CZQPXK3O
- hIcVEy6B124JxAYyefDVyr2RfjHdAn9bw31LqEbIlev6xhU3MgmOp+I9FgVoHkfc+lZmbF7P2D1
- EuqU+ve0NPTGwGY2aAwPtUJHHmlUIA==
-X-Authority-Analysis: v=2.4 cv=R+cO2NRX c=1 sm=1 tr=0 ts=6911cc2f cx=c_pps
- a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=6UeiqGixMTsA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=yPCof4ZbAAAA:8 a=JbhfmLy_ouI4b4Zs1lgA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
- a=zY0JdQc1-4EAyPf5TuXT:22 a=UhEZJTgQB8St2RibIkdl:22 a=Z5ABNNGmrOfJ6cZ5bIyy:22
- a=QOGEsqRv6VhmHaoFNykA:22
-X-Proofpoint-ORIG-GUID: vqeCPBxCad4VtA1XLMmhU7ZzktqR8hLi
-X-Proofpoint-GUID: vqeCPBxCad4VtA1XLMmhU7ZzktqR8hLi
-X-Rspamd-Server: rspam05
-X-Rspamd-Queue-Id: 2FCD61A0005
-X-Stat-Signature: 47u9odetfwbx4743oxmdnukpqtyehzpb
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251110101948.19277-1-leon.huangfu@shopee.com>
+X-Stat-Signature: 7wbmmtqxf799w8khz8snzdu7s7owsrrh
 X-Rspam-User: 
-X-HE-Tag: 1762774091-95090
-X-HE-Meta: U2FsdGVkX18A+1asjdMr3cVntV+Nb6k8SJaA4c8+jt9ByqVsuBdQdrnvBLkbF/VatcgBBLO8U2T+WLPwk/uUi0WLai+KcblaWQrdBdcZBXM7ykQBB+0zFOsOD+Gl2mfTVhxvJxderuO077UloTou+mrCYMth8NxMTITynQsitPbJ9+SvNgZK34aKeqNwqsepy67Zvm+eMRfZ8edQ1S9kXGAPKGzMVh/gG3/eejzCoI3VZpCKj7yKLHpgYAMw15CwAH91GFr3qAkuNqJtTWOKaWyDjVlRbV6LeLUiaxS6A2e8gXcMgjspqveTGs5aDOes5owWqaFyqjNYRLo63hZA6mJubod7h2+EzAWMWR0LpHSMpiXgYjuuZRxf3CRJuFz95aTW09XYuXEYkAZb8R+c7aGUXLas7ts4GFHMt/2xzwqDpw3ocmfERr7ketVnNZgqwkM7PH+3wLhSjiKtxBMTwpSu2WyDOCkbDlZStomqCeo0EIQs1PPftaR7sdsUxMD/TjOKxluyqXqLvDsKBOKrd9CJpZxUIPpoSg6ID1pO2rGfSgADC+dm9iSLvVeKjM/O5kx38RlYQhyvR1LbWnhujncUi0Xh918edCu2uahKUOQ8XBYM5o10psFExcc8+LCNhia6powsZbiAHEmWS21mWBMK/2nCSs1T+HzorpWqyDxwd4rkzi1a4pMyvjm1QlvCmyu2rs4YrJKDwbTzjoXHduvDPpIav9EZE1vi/GKR1OBwRTYAviWkLFFemr5fogYRTyqNOK+pZmimfqF9cPeEHeP9qdhDG3zbXlUj13mMp/FffrX66Q4Y+isqBPYBWVZZruI1Duf3fTNiwZXUHVEQR+RBu3najruxqwQT81WtQQBmxaufMXGgCNavVXoorc0fc/UZfqgE8S3Ba1Jgb6VL4sUU820y0ZHbZwDJ5FLSwSVgs30KGpJBxSqdfNnByCKWjTe8xuqsnpfu6nQTO2d
- 2ZRfhBPi
- v2rlpX7suZDkqeE3KEtZkfMduCJ26HFAKvbyLNlUm2Hip/3PpTdiVAK/9HbrRinsMp66fGgMTWx19kCu/2fUv3Y1UsOOxiq2t+jETXRr+f+T5YvmAtOsj1kr3xgAQHGLgCFRKFZGrXAVyCXXIFjum7gYUfpFzQmueOTrZaMVVRjB5pbq3+Y5k4beOrl3EtzbSxfv+lnOYDFxulNYRxXT7eAg0rNxviCwPja8A1kRXHbykuX3qEmt816ftPSheQd3kpVg82oYU2FT0qEHjdDU9NHIed5+xsFVFfNoI7byoAfRvxgWCep8o76RvhHWgBcIUBn2e9bZrUVyoKlU50Ueipwicpp0pnbvI9QytubTzoEEErBzJoIOt9/Y2dsaRpK5vtboCJ2AXlVaArgP2sLvQIH3D5fm/H6vCmu7RZQ1jB352L3r9j7GGnyb7aKOhF4I1lst7MEPx3VMkyNmJnKNvMus6LdIaHTmRLCjZN+dnc3pE52jnNtQqZwhc/SKm6O6T5zfS7uwW7P1wtk8/SJOhrTGN+tpXY9/4L9y04i/vr6krlZd0WWMf1NuWv+/Xhfxg4wFSrbJuK5FqFE6C7cNFhVmyLI55qp2JOSSbvC29hTV01RtMM2W6/JFixely5jiwzL4E16slOAkK5VhQ+hvu7TKP0ALXUvPBiuaGIHl9XXTRj5bj65mR0OxsdcIAOhnHVl4iOpymB0vkj91O/1zKuaPuZfpyD2LTviKCwExvJltQ/NAJ0SDdDrB4ySUIe8NyjHo7JsBxeID2oighJ1JV5n1QOPjdxT9o3nDl
+X-Rspamd-Queue-Id: AF3FB4000A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762774113-724724
+X-HE-Meta: U2FsdGVkX19OySbFnbUsvInCqusivFRxMjp7yA5Jlo41qio3wOyG+4XN+mLFx9QAQciQ0NVY7ZbObvyN/Jo+9oV+ny+c3biwLeMApiBKdwb+4D8DnclozZnvcTuaAs2U9JkWUXff/eUqm+ODkn+IZlSB1GntE2W8Ulb2CxjHEAeBWCz7ntZ8W+XkupakY97N/5fLr98HD1CZcyxUYY6rZ1WsqmoUjAU+7STUVg4hhuyZmOcDHY4JpAiX+26JbgHcjUMXYKMpjz2QpgdZHu3/KX7BEWDuL1lEFdD4d+uLt1dgkSKUulQbrf4rPFZFE4U9GWdr4OGBYmUhyMcAAPQoCtjMSAc+OGvLiIkBzv7ZPYEFfondJH1J+f+bNtlTR5tmw0gBLVp/c7s4rWJVIVi7t/ZKVmXnE9Zb0Omq4haxMPATUaFZ/H1neTasUrs79EO3gWq2lsMwOQpgayrpiWVvQu3KL67dyI72u7LONSBFmKh8Bhyw95pkueAFteyBefV3Tgrc1M3H/COEtAR39FKpTSCWCWn/mz4ArVnsGInJWlmKGGeL1X2H9JQM92ERTij5Vyz/nkE/IwUTmQ+Lp5DJ4rfrZcII90MKh5AoKAbZ31HjBdJ7ez3Oa/a4MMzt505+ySDSBrEq5csMvn9u+FFPd/Heg304OA4LVDr/2CD3bEzP3dA5zdU0s8AMfRgk9Pa8QedAClS+33JWvc93sSvIVW7Rv2TL4d1Ex/B2y4V+yo7iLAFzhxgFPGuEXVirMHtHnvVjucAhQnJv/IMjeEBQH/fb0iSyHx2EkIRcDFO5sVzT7S+0tvFpWDZYQiQjBKO6RgqaRUWkTVSrY3IWf9TCY8CImSKR/B2sbu6ACbUqVh0mwbLMpec7J0DhSq7zbBZtI3GaUq7Czs7e1td9I7cPc4TTNzjKIztI6fXjDBbFGol/Z3BVkCZexBeytR+doKCSPrYkxit5l34+flWdns2
+ nMjb55JG
+ oQXJZWRQoOgkTuPl9fJ/A7cfDIgBFti5RX2PapwjaUvRBouGn20nxR62XjOL42z/8Brp3HFJ9RluGEVQbeiDeos+NsG/mqd77Cf9AD1C/2g4z+OfrpLldjovaIAzdDinKkv8OgGc/nYZetthXOtDMTSSErYk4FSolbZktUo+WkohYJUsaKlZRkMbHOh9l9lF+ikNrt7AO/g09xXY1/A7FwV5mp8AEWL8Wro9qsp5whl0bRPj7fuObRfKSoI80NN3C0egaG6HahT0jxGVOLS5R1lzq96q5bmX82ppYQLGXtlEWrJmc4QA7320ej5zHOWNGAxzU1snEhVF98kWck0VLpuNAvj1NDnC2d7SKjSB/Z4FR7bbupTfzAkcqKH1yirtmQBPfc/mLvxyV2Kl0OjcWTdI+F1SsyUHjd9WcSNw1czs13MkRyjIQfQlUrSXqA5gCM/SX1T+lYyTm/gVlhTI+FJbF+lMq//vTHWc6qSS7lwq3YRyGc5390Jucv0DAWtPOksmiISA4Qw9PbyFQG2Xwl6S/rXZmQ5D2QktptmaUZk4Ncq3UgpqmWn/kqXCoydfwjOvXyt/Px4nkhVUpB14NfKh9scHL4s+9YvLOkXr2tbQSSTY=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -296,175 +123,193 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On Mon, Nov 10, 2025 at 03:04:48AM -0800, Chris Li wrote:
-> On Mon, Nov 10, 2025 at 2:18 AM Lorenzo Stoakes
-> <lorenzo.stoakes@oracle.com> wrote:
-> >
-> > On Sun, Nov 09, 2025 at 11:32:09PM -0800, Chris Li wrote:
-> > > Hi Lorenzo,
-> > >
-> > > Sorry I was late to the party. Can you clarify that you intend to
-> > > remove swp_entry_t completely to softleaf_t?
-> > > I think for the traditional usage of the swp_entry_t, which is made up
-> > > of swap device type and swap device offset. Can we please keep the
-> > > swp_entry_t for the traditional swap system usage? The mix type can
-> > > stay in softleaf_t in the pte level.
-> >
-> > Ultimately it doesn't really matter - if we do entirely eliminate
-> > swp_entry_t, the type that we are left with for genuine swap entries will
-> > be _identical_ to swp_entry_t. As in bit-by-bit identical.
->
-> In that case you might just as well leave it as swp_entry_t for the
-> _actual_ swap code.
->
-> >
-> > But I did think perhaps we could maintain this type explicitly for the
-> > _actual_ swap code.
->
-> Exactly. Please do consider impact the actual swap
->
-> > > I kind of wish the swap system could still use swp_entry_t. At least I
-> > > don't see any complete reason to massively rename all the swap system
-> > > code if we already know the entry is the limited meaning of swap entry
-> > > (device + offset).
-> >
-> > Well the reason would be because we are trying to keep things consistent
-> > and viewing a swap entry as merely being one of the modes of a softleaf.
->
-> Your reason applies to the multi-personality non-present pte entries.
-> I am fine with those as softleaf. However the reasoning does not apply
-> to the swap entry where we already know it is for actual swap. The
-> multi-personality does not apply there. I see no conflict with the
-> swp_entry type there. I argue that it is even cleaner that the swap
-> codes only refer to those as swp_entry rather than softleaf because
-> there is no possibility that the swap entry has multi-personality.
+On Mon 10-11-25 18:19:48, Leon Huang Fu wrote:
+> Memory cgroup statistics are updated asynchronously with periodic
+> flushing to reduce overhead. The current implementation uses a flush
+> threshold calculated as MEMCG_CHARGE_BATCH * num_online_cpus() for
+> determining when to aggregate per-CPU memory cgroup statistics. On
+> systems with high core counts, this threshold can become very large
+> (e.g., 64 * 256 = 16,384 on a 256-core system), leading to stale
+> statistics when userspace reads memory.stat files.
+> 
+> This is particularly problematic for monitoring and management tools
+> that rely on reasonably fresh statistics, as they may observe data
+> that is thousands of updates out of date.
+> 
+> Introduce a new write-only file, memory.stat_refresh, that allows
+> userspace to explicitly trigger an immediate flush of memory statistics.
+> Writing any value to this file forces a synchronous flush via
+> __mem_cgroup_flush_stats(memcg, true) for the cgroup and all its
+> descendants, ensuring that subsequent reads of memory.stat and
+> memory.numa_stat reflect current data.
+> 
+> This approach follows the pattern established by /proc/sys/vm/stat_refresh
+> and memory.peak, where the written value is ignored, keeping the
+> interface simple and consistent with existing kernel APIs.
+> 
+> Usage example:
+>   echo 1 > /sys/fs/cgroup/mygroup/memory.stat_refresh
+>   cat /sys/fs/cgroup/mygroup/memory.stat
+> 
+> The feature is available in both cgroup v1 and v2 for consistency.
+> 
+> Signed-off-by: Leon Huang Fu <leon.huangfu@shopee.com>
 
-Swap is one of the 'personalities', very explicitly. Having it this way hugely
-cleans up the code.
+Acked-by: Michal Hocko <mhocko@suse.com>
+Thanks!
 
-I'm not sure I really understand your objection given the type will be
-bit-by-bit compatible.
+> ---
+> v2 -> v3:
+>   - Flush stats by memory.stat_refresh (per Michal)
+>   - https://lore.kernel.org/linux-mm/20251105074917.94531-1-leon.huangfu@shopee.com/
+> 
+> v1 -> v2:
+>   - Flush stats when write the file (per Michal).
+>   - https://lore.kernel.org/linux-mm/20251104031908.77313-1-leon.huangfu@shopee.com/
+> 
+>  Documentation/admin-guide/cgroup-v2.rst | 21 +++++++++++++++++--
+>  mm/memcontrol-v1.c                      |  4 ++++
+>  mm/memcontrol-v1.h                      |  2 ++
+>  mm/memcontrol.c                         | 27 ++++++++++++++++++-------
+>  4 files changed, 45 insertions(+), 9 deletions(-)
+> 
+> diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
+> index 3345961c30ac..ca079932f957 100644
+> --- a/Documentation/admin-guide/cgroup-v2.rst
+> +++ b/Documentation/admin-guide/cgroup-v2.rst
+> @@ -1337,7 +1337,7 @@ PAGE_SIZE multiple when read back.
+>  	cgroup is within its effective low boundary, the cgroup's
+>  	memory won't be reclaimed unless there is no reclaimable
+>  	memory available in unprotected cgroups.
+> -	Above the effective low	boundary (or
+> +	Above the effective low	boundary (or
+>  	effective min boundary if it is higher), pages are reclaimed
+>  	proportionally to the overage, reducing reclaim pressure for
+>  	smaller overages.
+> @@ -1785,6 +1785,23 @@ The following nested keys are defined.
+>  		up if hugetlb usage is accounted for in memory.current (i.e.
+>  		cgroup is mounted with the memory_hugetlb_accounting option).
+> 
+> +  memory.stat_refresh
+> +	A write-only file which exists on non-root cgroups.
+> +
+> +	Writing any value to this file forces an immediate flush of
+> +	memory statistics for this cgroup and its descendants. This
+> +	ensures subsequent reads of memory.stat and memory.numa_stat
+> +	reflect the most current data.
+> +
+> +	This is useful on high-core count systems where per-CPU caching
+> +	can lead to stale statistics, or when precise memory usage
+> +	information is needed for monitoring or debugging purposes.
+> +
+> +	Example::
+> +
+> +	  echo 1 > memory.stat_refresh
+> +	  cat memory.stat
+> +
+>    memory.numa_stat
+>  	A read-only nested-keyed file which exists on non-root cgroups.
+> 
+> @@ -2173,7 +2190,7 @@ of the two is enforced.
+> 
+>  cgroup writeback requires explicit support from the underlying
+>  filesystem.  Currently, cgroup writeback is implemented on ext2, ext4,
+> -btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
+> +btrfs, f2fs, and xfs.  On other filesystems, all writeback IOs are
+>  attributed to the root cgroup.
+> 
+>  There are inherent differences in memory and writeback management
+> diff --git a/mm/memcontrol-v1.c b/mm/memcontrol-v1.c
+> index 6eed14bff742..c3eac9b1f1be 100644
+> --- a/mm/memcontrol-v1.c
+> +++ b/mm/memcontrol-v1.c
+> @@ -2041,6 +2041,10 @@ struct cftype mem_cgroup_legacy_files[] = {
+>  		.name = "stat",
+>  		.seq_show = memory_stat_show,
+>  	},
+> +	{
+> +		.name = "stat_refresh",
+> +		.write = memory_stat_refresh_write,
+> +	},
+>  	{
+>  		.name = "force_empty",
+>  		.write = mem_cgroup_force_empty_write,
+> diff --git a/mm/memcontrol-v1.h b/mm/memcontrol-v1.h
+> index 6358464bb416..a14d4d74c9aa 100644
+> --- a/mm/memcontrol-v1.h
+> +++ b/mm/memcontrol-v1.h
+> @@ -29,6 +29,8 @@ void drain_all_stock(struct mem_cgroup *root_memcg);
+>  unsigned long memcg_events(struct mem_cgroup *memcg, int event);
+>  unsigned long memcg_page_state_output(struct mem_cgroup *memcg, int item);
+>  int memory_stat_show(struct seq_file *m, void *v);
+> +ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf,
+> +				  size_t nbytes, loff_t off);
+> 
+>  void mem_cgroup_id_get_many(struct mem_cgroup *memcg, unsigned int n);
+>  struct mem_cgroup *mem_cgroup_id_get_online(struct mem_cgroup *memcg);
+> diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+> index bfc986da3289..19ef4b971d8d 100644
+> --- a/mm/memcontrol.c
+> +++ b/mm/memcontrol.c
+> @@ -610,6 +610,15 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+>  	css_rstat_flush(&memcg->css);
+>  }
+> 
+> +static void memcg_flush_stats(struct mem_cgroup *memcg, bool force)
+> +{
+> +	if (mem_cgroup_disabled())
+> +		return;
+> +
+> +	memcg = memcg ?: root_mem_cgroup;
+> +	__mem_cgroup_flush_stats(memcg, force);
+> +}
+> +
+>  /*
+>   * mem_cgroup_flush_stats - flush the stats of a memory cgroup subtree
+>   * @memcg: root of the subtree to flush
+> @@ -621,13 +630,7 @@ static void __mem_cgroup_flush_stats(struct mem_cgroup *memcg, bool force)
+>   */
+>  void mem_cgroup_flush_stats(struct mem_cgroup *memcg)
+>  {
+> -	if (mem_cgroup_disabled())
+> -		return;
+> -
+> -	if (!memcg)
+> -		memcg = root_mem_cgroup;
+> -
+> -	__mem_cgroup_flush_stats(memcg, false);
+> +	memcg_flush_stats(memcg, false);
+>  }
+> 
+>  void mem_cgroup_flush_stats_ratelimited(struct mem_cgroup *memcg)
+> @@ -4530,6 +4533,12 @@ int memory_stat_show(struct seq_file *m, void *v)
+>  	return 0;
+>  }
+> 
+> +ssize_t memory_stat_refresh_write(struct kernfs_open_file *of, char *buf, size_t nbytes, loff_t off)
+> +{
+> +	memcg_flush_stats(mem_cgroup_from_css(of_css(of)), true);
+> +	return nbytes;
+> +}
+> +
+>  #ifdef CONFIG_NUMA
+>  static inline unsigned long lruvec_page_state_output(struct lruvec *lruvec,
+>  						     int item)
+> @@ -4666,6 +4675,10 @@ static struct cftype memory_files[] = {
+>  		.name = "stat",
+>  		.seq_show = memory_stat_show,
+>  	},
+> +	{
+> +		.name = "stat_refresh",
+> +		.write = memory_stat_refresh_write,
+> +	},
+>  #ifdef CONFIG_NUMA
+>  	{
+>  		.name = "numa_stat",
+> --
+> 2.51.2
 
-I'll deal with this when I come to this follow-up series.
-
-As I said before I'm empathetic to conflicts, but also - this is something we
-all have to live with. I have had to deal with numerous conflict fixups. They're
-really not all that bad to fix up.
-
-And again I'm happy to do it for you if it's too egregious.
-
-BUT I'm pretty sure we can just keep using swp_entry_t. In fact unless there's
-an absolutely compelling reason not to - this is exactly what I"ll do :)
-
->
-> > However I am empathetic to not wanting to create _entirely_ unnecessary
-> > churn here.
-> >
-> > I will actively keep you in the loop on follow up series and obviously will
-> > absolutely take your opinion seriously on this.
->
-> Thank you for your consideration.
-
-Of course.
-
->
-> >
-> > I think this series overall hugely improves clarity and additionally avoids
-> > a bunch of unnecessary, duplicative logic that previously was required, so
-> > is well worth the slightly-annoying-churn cost here.
-> >
-> > But when it comes to the swap code itself I will try to avoid any
-> > unnecessary noise.
->
-> Ack.
->
-> > One thing we were considering (discussions on previous iteration of series)
-> > was to have a union of different softleaf types - one of which could simply
-> > be swp_entry_t, meaning we get the best of both worlds, or at least
-> > absolutely minimal changes.
->
-> If you have a patch I would take a look and comment on it.
-
-This will be in a follow-up series, will make sure you're cc'd on these. There
-is more work to do :)
-
->
-> > > Timing is not great either. We have the swap table phase II on review
-> > > now. There is also phase III and phase IV on the backlog pipeline. All
-> > > this renaming can create unnecessary conflicts. I am pleading please
-> > > reduce the renaming in the swap system code for now until we can
-> > > figure out what is the impact to the rest of the swap table series,
-> > > which is the heavy lifting for swap right now. I want to draw a line
-> > > in the sand that, on the PTE entry side, having multiple meanings, we
-> > > can call it softleaft_t whatever. If we know it is the traditional
-> > > swap entry meaning. Keep it swp_entry_t for now until we figure out
-> > > the real impact.
-> >
-> > I really do empathise, having dealt with multiple conflicts and races in
-> > series, however I don't think it's really sensible to delay one series
-> > based on unmerged follow ups.
->
-> If you leave the actual swap entry (single personality) alone, I think
-> we can deal with the merge conflicts.
-
-I'm not going to be changing this series other than for review feedback so you
-don't need to worry.
-
->
-> > So this series will proceed as it is.
->
-> Please clarify the "proceed as it is" regarding the actual swap code.
-> I hope you mean you are continuing your series, maybe with
-> modifications also consider my feedback. After all, you just say " But
-> I did think perhaps we could maintain this type explicitly for the
-> _actual_ swap code."
-
-I mean keeping this series as-is, of course modulo changes in response to review
-feedback.
-
-To be clear - I have no plans whatsoever to change the actual swap code _in this
-series_ beyond what is already here.
-
-And in the follow-up that will do more on this - I will most likely keep the
-swp_entry_t as-is in core swap code or at least absolutely minimal changes
-there.
-
-And that series you will be cc'd on and welcome of course to push back on
-anything you have an issue with :)
-
->
-> > However I'm more than happy to help resolve conflicts - if you want to send
-> > me any of these series off list etc. I can rebase to mm-new myself if
-> > that'd be helpful?
->
-> As I said above, leaving the actual swap code alone is more helpful
-> and I consider it cleaner as well. We can also look into incremental
-> change on your V2 to crave out the swap code.
-
-Well I welcome review feedback.
-
-I don't think I really touched anything particularly swap-specific that is
-problematic, but obviously feel free to review and will absolutely try to
-accommodate any reasonable requests!
-
->
-> >
-> > >
-> > > Does this renaming have any behavior change in the produced machine code?
-> >
-> > It shouldn't result in any meaningful change no.
->
-> That is actually the reason to give the swap table change more
-> priority. Just saying.
-
-I'm sorry but this is not a reasonable request. I am being as empathetic and
-kind as I can be here, but this series is proceeding without arbitrary delay.
-
-I will do everything I can to accommodate any concerns or issues you may have
-here _within reason_ :)
-
->
-> Chris
-
-Cheers, Lorenzo
+-- 
+Michal Hocko
+SUSE Labs
 
