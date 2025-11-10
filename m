@@ -4,130 +4,99 @@ X-Spam-Checker-Version: SpamAssassin 3.4.0 (2014-02-07) on
 Received: from kanga.kvack.org (kanga.kvack.org [205.233.56.17])
 	(using TLSv1 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.lore.kernel.org (Postfix) with ESMTPS id 2D1C2CCF9E3
-	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:00:40 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTPS id 8A992CCFA13
+	for <linux-mm@archiver.kernel.org>; Mon, 10 Nov 2025 14:03:59 +0000 (UTC)
 Received: by kanga.kvack.org (Postfix)
-	id 887878E000B; Mon, 10 Nov 2025 09:00:39 -0500 (EST)
+	id C86708E0008; Mon, 10 Nov 2025 09:03:58 -0500 (EST)
 Received: by kanga.kvack.org (Postfix, from userid 40)
-	id 85F188E0002; Mon, 10 Nov 2025 09:00:39 -0500 (EST)
+	id C5E578E0002; Mon, 10 Nov 2025 09:03:58 -0500 (EST)
 X-Delivered-To: int-list-linux-mm@kvack.org
 Received: by kanga.kvack.org (Postfix, from userid 63042)
-	id 7744F8E000B; Mon, 10 Nov 2025 09:00:39 -0500 (EST)
+	id B9B2F8E0008; Mon, 10 Nov 2025 09:03:58 -0500 (EST)
 X-Delivered-To: linux-mm@kvack.org
-Received: from relay.hostedemail.com (smtprelay0011.hostedemail.com [216.40.44.11])
-	by kanga.kvack.org (Postfix) with ESMTP id 6412A8E0002
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:00:39 -0500 (EST)
-Received: from smtpin14.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay02.hostedemail.com (Postfix) with ESMTP id 06D7013C368
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:00:39 +0000 (UTC)
-X-FDA: 84094857798.14.A3DE5D7
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	by imf07.hostedemail.com (Postfix) with ESMTP id D46694001B
-	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:00:36 +0000 (UTC)
-Authentication-Results: imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJ1ovIM+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
-ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762783236; a=rsa-sha256;
-	cv=none;
-	b=vnSWblcBV2SXWOx4UP8t+XTSTBqBJHZmoduA7EpJQg50gIo50HYj3LNuAlXLK+TThDptiR
-	iaWkQ74SajxCE7Eu2WQckP6R4yPiIa//huFqPs/+tT1wazuSX5TduulwWVERfNjWJS3VFp
-	Ng3YYIABxpABIfhi4r+mZd5+s8Ln/eQ=
-ARC-Authentication-Results: i=1;
-	imf07.hostedemail.com;
-	dkim=pass header.d=gmail.com header.s=20230601 header.b=gJ1ovIM+;
-	dmarc=pass (policy=none) header.from=gmail.com;
-	spf=pass (imf07.hostedemail.com: domain of davidhildenbrandkernel@gmail.com designates 209.85.128.49 as permitted sender) smtp.mailfrom=davidhildenbrandkernel@gmail.com
+Received: from relay.hostedemail.com (smtprelay0016.hostedemail.com [216.40.44.16])
+	by kanga.kvack.org (Postfix) with ESMTP id A8D1F8E0002
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 09:03:58 -0500 (EST)
+Received: from smtpin20.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay10.hostedemail.com (Postfix) with ESMTP id 4BD6BC0DCC
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:03:58 +0000 (UTC)
+X-FDA: 84094866156.20.C9B5571
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	by imf28.hostedemail.com (Postfix) with ESMTP id 4905FC001A
+	for <linux-mm@kvack.org>; Mon, 10 Nov 2025 14:03:56 +0000 (UTC)
+Authentication-Results: imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=APBOPyKN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=hostedemail.com;
-	s=arc-20220608; t=1762783236;
+	s=arc-20220608; t=1762783436;
 	h=from:from:sender:reply-to:subject:subject:date:date:
 	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
+	 content-type:content-type:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:dkim-signature;
-	bh=4l3M70pV0c14d1SIvE9JX7nk/ZPCIDubtc+GHmzBoAE=;
-	b=dNZrC98zEyoh8kSyTyFArhH7WHygZWyl1P9NlMt+hP9RFJ8HnPWpKm1qB9lQKa+2bT20qY
-	vQKHoz7IDStFP9D+/5JcMYqso/ocG3HT5mGsfEQLUCtc4SHcXODssYnEDCjzgVMSoVZbo+
-	wvDBIvqJ9H64VD7z+PNlq5v/uLMzdkI=
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-477632d9326so23517255e9.1
-        for <linux-mm@kvack.org>; Mon, 10 Nov 2025 06:00:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1762783235; x=1763388035; darn=kvack.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4l3M70pV0c14d1SIvE9JX7nk/ZPCIDubtc+GHmzBoAE=;
-        b=gJ1ovIM+zOjlpChufO4g/clBPGJJPnHNAroGFPt6Uq1FEZ6+md4EYGC9FX5oPaKIbx
-         +QeakivxhbcTng7Lcb7BNb+teQHwjbBXSBS2reKxtodnI3Z5MfCJ0VnHeGQrBXsyZbq8
-         0h3/HUGv/wTMLY1To0/IGYj5QrQPuTxYtzZ9cbrUpk7y7NOIG/jcyVoqbBoWeC+ZSkO6
-         waXNNOiFd7ycIjQnARfVOdHkDMhRxwlII3HteJa/EC94efsnaFfprUQm64tcY1Ne76PX
-         TlGrvnejAzXgFhtTJg/EUOLwcZK/Ufjx3okGyy70PqOncYkUfbJZuJBbeazR9NPKV+b0
-         Dntw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1762783235; x=1763388035;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=4l3M70pV0c14d1SIvE9JX7nk/ZPCIDubtc+GHmzBoAE=;
-        b=c4Og7626jQ5VYOqylRqaDoYddGvxzI9oW6XkhxAdUogsQMtFHyk3MISJLA2lKzaIWS
-         yRcyKldoMeBlVOI12yuzZId6jkPEPKM+ISopS/pjIY6tqkvdWDcR/7C0r0yUE325DWQn
-         enJcaFuYXsUINtkVW6ADhm5oKv5V2OmRk0YTjZnyQkbiceGIBxfVLQkD8hSO9glfYW3u
-         /SAZF3x4iOCpPgNOI0OLJAUhB04sD7X+CEvQ6vPPIE4TBIqRXR2x19kpOZbq9tOcsrXI
-         pl5lNYHjqxIdqdnl4iNlYVM8HULjMQwVQf60oM7MG2XdIEeHH28ThD5jv28BRJD7kzK7
-         LIVw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTh9Pu9iaRgzWqZ5AWO/ytQsZLy9KjZFKrU2dRe3dJWFR+cFuZ4mVupPHDuL9v8kvPaFUvZSgwLA==@kvack.org
-X-Gm-Message-State: AOJu0YzsWqf/NZlQI7CqDmYFMoUXmTdymamKQ0yzbFUPRg0ixmLNF7AH
-	4rXDLn1fpkqN1TJjDHVf1vSMXp2/ppeHokAwLNiPQEEmydK/wy0ipx3R
-X-Gm-Gg: ASbGncvFe0qfftC1ERnyo7zJhCaM6wld+i/YCbC6w8XAV5BOi9tbxpUVISuS7KLoRZD
-	5lQYqnM4ue3KPV2FbvoKu1b/X4RqmXzLmBSjSznvvyNbLJF/rVQVmX2frADEWDZeHozrmEZelCL
-	nqBeKPgQKay0F2s7YqDWFM3VMlb+ememCtKK4zbGc9X2/F/BQPJDp1fKvJtpH2KwxE8KB8WFtlT
-	eEBelUuFrTsQmb4Gf55v9UkBcKelcwzNxCiBezXced6/Vhaz9eLgn8Cpv4g7Z4We4+y4j8nxDAi
-	IPxjcpQNvXXmUJQMHS9cc8Et0tqFPvma2SdbZJ+Qq1gUayFMR+/7dppMd2x3xXc+fDx4Ht1YDC/
-	JTjIPpedII0pyG89YyJARVgZBb2glDGxJIBZUKMnCHzDHLPb1DxVcRlfW5inJN09G9erklhZnmh
-	N7/SJosZSVlvV2l3eFFEIYsIKZSRn63IdfkwhZSvLzBllZci5YItf2KvebaMBJKJQA5irjTico8
-	nhP7Z1pifcsKCqnJQiRyFnwWIcLWI4YVBZxSlxeeXPnITCj4RiUhaSrtF5z
-X-Google-Smtp-Source: AGHT+IF4UYzYuQ5gtNvkLSNSf73n/ZiCTwtuvYmTJtVCw6+PSGNCr+TyxhYSZT5k12Csb6f4YHcj2Q==
-X-Received: by 2002:a05:600c:a6a6:b0:477:79cf:89d4 with SMTP id 5b1f17b1804b1-47779cf8b43mr33422025e9.31.1762783234986;
-        Mon, 10 Nov 2025 06:00:34 -0800 (PST)
-Received: from ?IPV6:2003:d8:2f30:b00:cea9:dee:d607:41d? (p200300d82f300b00cea90deed607041d.dip0.t-ipconnect.de. [2003:d8:2f30:b00:cea9:dee:d607:41d])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4775cdc33c8sm318303885e9.2.2025.11.10.06.00.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Nov 2025 06:00:34 -0800 (PST)
-Message-ID: <9b622374-778a-4459-aca9-4eb406a58516@gmail.com>
-Date: Mon, 10 Nov 2025 15:00:32 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	bh=wTntukXdaVFjnftz5WTTeF+x0iVhUlIwTUQPH67TnYI=;
+	b=p/QLwmvJace2cpDO+6MDbCKOuIvlVBHTPnNsxAXAkXJxIeYLTo/a7Yv+26e98Ms2fRwSxP
+	7CnAg4HKWIK9u8pl8ilcuzyhqooXx7W11tyStk2b0cUUzdXV6aY3uWd1m7BNSZC/b43ltI
+	DUX3dJD/VZ/Tyihgpdjp53bGAPyBjXc=
+ARC-Seal: i=1; s=arc-20220608; d=hostedemail.com; t=1762783436; a=rsa-sha256;
+	cv=none;
+	b=6kagJCty9RmlCp7ZXMehaejs6jwQHqHflnY3Pdgx0XuI2PsjkPLxpLGPk46FeUW2UdZZF7
+	rraFmKGerKs/ClN5FJrONcbhMW3TIEeOz0znYIUg76tICXPqtWnkO+E/l6SNHh3Hwp5tEa
+	hrHGJZdVwARTgvjByGYvGIFJh6pD4hQ=
+ARC-Authentication-Results: i=1;
+	imf28.hostedemail.com;
+	dkim=pass header.d=infradead.org header.s=casper.20170209 header.b=APBOPyKN;
+	dmarc=pass (policy=none) header.from=infradead.org;
+	spf=none (imf28.hostedemail.com: domain of willy@infradead.org has no SPF policy when checking 90.155.50.34) smtp.mailfrom=willy@infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=wTntukXdaVFjnftz5WTTeF+x0iVhUlIwTUQPH67TnYI=; b=APBOPyKNe6JNBjwvNL5ANy0RHS
+	6FNALoWP8USB0oxkWef8vyXGcUJ8QSiW6uIkCWiB/EIfRyqrImuDNRpbA9wWzVBdmn68foHJ1kDIh
+	JLGqmtmQNQJEA9SXC9s2V5O14WEQyyPZaE19sGkWZYxsTx1WR5ZLU07/9gMwST/Zlo87g67UQMqQA
+	HpbrFRnKHlhUxREbF+vv5DVk/ZNxmOF4QMCzG7IYGXk7CX/SZRGXr9miHifFgv2Gxkdf/JW7juAZk
+	/reX6S9bZHznt9sJo3+2btv63m8oA7k86Bqwlg0JYGbVworWUEN3A3Nd0KlZLMiFOmTG5Wl+yIZoy
+	tUGoVX8w==;
+Received: from willy by casper.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1vISUh-0000000GkmP-35kQ;
+	Mon, 10 Nov 2025 14:03:43 +0000
+Date: Mon, 10 Nov 2025 14:03:43 +0000
+From: Matthew Wilcox <willy@infradead.org>
+To: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
+Cc: Shivank Garg <shivankg@amd.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Zi Yan <ziy@nvidia.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	"Liam R . Howlett" <Liam.Howlett@oracle.com>,
+	Nico Pache <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
+	Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
+	Lance Yang <lance.yang@linux.dev>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Branden Moore <Branden.Moore@amd.com>
 Subject: Re: [PATCH 1/2] mm/khugepaged: do synchronous writeback for
  MADV_COLLAPSE
-To: Matthew Wilcox <willy@infradead.org>, Shivank Garg <shivankg@amd.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, Zi Yan <ziy@nvidia.com>,
- Baolin Wang <baolin.wang@linux.alibaba.com>,
- "Liam R . Howlett" <Liam.Howlett@oracle.com>, Nico Pache
- <npache@redhat.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Dev Jain <dev.jain@arm.com>, Barry Song <baohua@kernel.org>,
- Lance Yang <lance.yang@linux.dev>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>,
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Zach O'Keefe <zokeefe@google.com>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
- Branden Moore <Branden.Moore@amd.com>
+Message-ID: <aRHwv3XzI4XHcLPP@casper.infradead.org>
 References: <20251110113254.77822-1-shivankg@amd.com>
  <aRHs3pA2kOr_uD3k@casper.infradead.org>
-From: "David Hildenbrand (Red Hat)" <davidhildenbrandkernel@gmail.com>
-Content-Language: en-US
-In-Reply-To: <aRHs3pA2kOr_uD3k@casper.infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+ <9b622374-778a-4459-aca9-4eb406a58516@gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9b622374-778a-4459-aca9-4eb406a58516@gmail.com>
+X-Stat-Signature: skni6xmz6o8zoipgup3yyr6s11t4xebi
 X-Rspam-User: 
-X-Rspamd-Server: rspam08
-X-Rspamd-Queue-Id: D46694001B
-X-Stat-Signature: cyco1ko5ntfdguo6w1bt64sf53qyb1x8
-X-HE-Tag: 1762783236-492478
-X-HE-Meta: U2FsdGVkX1+lWQM/5dLHfwyfPR2HHrL8Iui2k53u1zNl2q8pcJaZWABi/h8LjB12OEX9mecqjrRqAGR6hhGvwyL1w+TDNldB566agigD/deTDOYQ3MCBSaZioKZkuQi2avwmDWRrMHutTrKBZrsdyb9UecXhVJ8s519WpjQ0Fa91/G/U2+Fg64+vXESc9bOOnh945H8dBYYbNdiQOwm8rCwaeS2zgG+rL7ZDxL2m0i27WQu3EM8UlrEm4pew6LXPZbjrG4GITGRrfYGEN5i+d/cyIs2W4iwh8/8gG1naOqkGW3aBVj6hewi2c0bN0DsKxd95vajOECCszyWlknQGz2JaBAiMc+HmZ5xvM48E81uFDI2t/F12aH02HsCJF71it73t1Gn9JuLqsK51zbGCaF9MXdX9Xek1mGqevyoTxFh2xRs7d/WtIY55F9aYyT325POaTXJzwDiwckwQ8EMjaiQwuKFGQd53tF5Dla76IEVTj8K1LF7vPyNZs7hxVWu5kU8Jz+7C6zCQX872Nt7Q2w3dLUxBd/1iruHSv8qjgTzyDyNOux9s5WYFOfHLgbcUJ6XLvqX728y8sZj2Y35XOUMNsYxEAJWC/suQKj81JVLQXVifHgsi3OoOdO4QLdQkWn7CAOizUNjX+A6nDOTzV1F7Tps+AcUEO2nKrt6R0Ye8qo/BSQt1QPOiGdaXFQixYJ/ATdqvOAVxeZZAj1TXp9cFdkzpeAaCpY7lDinDEo0EYSs5OZFb9yo+gVbq1ZnJqDRYQ5v94mJLWJw9xEmwjQoacSgqgOBg+shegTnT4Pi5BRzEuGi7QvF+xwSZEXOZc9ynLYFUta1OdFM54bmCqHUtQ+czueMTUAigjd85S43tzd7T05xej0bvG+L0UOo+mh9FPVZwezR9zEY6MX9GvE0G4lhI0dWBwvHsZuXlg3x3BAzCwe5czCGoaQzGgphlj1+J+RCipOgiDLnnn/Y
- fxxIm21b
- 6FuBSfjdqmnYchs/UkEm+m3/XoAoizAWW5d7IH+YItLmRkHIZDMQswb8fOXED/XFhcanSLwjKfj6lwdd+Nfvrs5AAPS2r5z0WLGdWCfTwdtGrjDU=
+X-Rspamd-Queue-Id: 4905FC001A
+X-Rspamd-Server: rspam10
+X-HE-Tag: 1762783436-863031
+X-HE-Meta: U2FsdGVkX19xyABvVzpTgezR6uRQYg2xmcud54VtShux8J0ZDTOThdryUafnGmLvzLzNy9ZHgHc8AYvtg7JFlunoDAbXhL3ft7P7iaJeAwKf8L1oENFOaL1OEJReyFD4RPksB0FWGJTs+x5CnH4UuBwSkhd/tHJkMOR3svhjJ9RkTD4uz5NEEzTCdQezEIevw+1mqBJVuXqC+b7FCfRtMMlrnj8aHiMzLkNQgjgtdpg5iblzTvbBY0GTSr2HKb6hjmZYsTIT475WthrqotUrXhY7LAhGmD0f7yelXI8ltzoq+z4qLXcOdXa9zbXnakbjzoqdkQBFtbS/nyp8Ah9sQ7Jf1BCO5M3auDtMW2IqLrpSdz4FE0QihCciTozOAti0oWOxFEnMvE+/sjK/xcb51gfAG1+2vr/FRSNSRwz9Qnqma62Siq8Zdmmf/ldRATpcanEMu+hq+XJHC0gppzqYWU1uY2Jfz+ns/W0bqhjfv23o7xUT9OM8ESJdd9+Sx0aJKFjOMVTxSp49bY6ghpeg/Ao+w9JY8+q6YJHJQOaH64hVZKyPm69Iyk/QWiEFofvtuVJt1jWE6NXhgFPAiwySaSxbx6vBbFAdnR6cW0W2rYCkZnA/4jwWzbYFiK1Pa/knyE5923A/mGnlSMxakMHKAixN/yghvfJysFbyrErHWEv1pou/+ZI3UtoOazLb8VR8twg88+lmhsGlrNjQ2vqNSLotv1jz9j8XVvUAknbJgFPhTwSFkduog/TmUwmkEzynFqMIlTUensOrGWoPUlvxAiiwRC/SUqZRseyYQomzKu2xHBIIZHJ1Ioafata+Uu3R8x+pNcLXDCvfbCt8IPSc3aG8UdXhrMocXeTCqnYSvloPHj188Fl8hPC+jJMr2siGEiXLqzrpLAHvXh7QfPmWB9ydjuv4OrfsyOXlXXFQjLIDl5MrJjSKzCh9lfz8IXUyIj0yJ9Jhmlo4n83SH+D
+ 023yD+kz
+ pcu0jPYV7miOFLSNMx2BwRmuYfo9JMGaX6+0dSF6O/oBPkmyUTd0u9Olt6rcguEO1NWd4nMkXANw5Cm7IWXRVnn7HE63+EPJZH40CXzDQAf9gRKTk2siLz8LAp8JI3RN3qtSKq0nByEjOcewHgnt0/vCUfkrWG6uqObwboo6IY7Bs/+Wqg4PIYfYenxwQZ9Fxq7N+DJEbXnOqa+uS00ss+I7rfthfHzHtzk6qfjR7m28zhKIFWTYjYTPH9orOyE2cSpQ0++n7fK3q9IU2oOORhgoxetaSQC0VUiADR7h92xGjXQ4=
 X-Bogosity: Ham, tests=bogofilter, spamicity=0.000000, version=1.2.4
 Sender: owner-linux-mm@kvack.org
 Precedence: bulk
@@ -136,13 +105,19 @@ List-ID: <linux-mm.kvack.org>
 List-Subscribe: <mailto:majordomo@kvack.org>
 List-Unsubscribe: <mailto:majordomo@kvack.org>
 
-On 10.11.25 14:47, Matthew Wilcox wrote:
-> On Mon, Nov 10, 2025 at 11:32:53AM +0000, Shivank Garg wrote:
->> When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
->> text sections), the pages may still be dirty from recent writes. The
+On Mon, Nov 10, 2025 at 03:00:32PM +0100, David Hildenbrand (Red Hat) wrote:
+> On 10.11.25 14:47, Matthew Wilcox wrote:
+> > On Mon, Nov 10, 2025 at 11:32:53AM +0000, Shivank Garg wrote:
+> > > When MADV_COLLAPSE is called on file-backed mappings (e.g., executable
+> > > text sections), the pages may still be dirty from recent writes. The
+> > 
+> > That explanation derails my brain entirely.  Text isn't writable!  How
+> > can the pages be dirty and file-backed text?
 > 
-> That explanation derails my brain entirely.  Text isn't writable!  How
-> can the pages be dirty and file-backed text?
+> Files are writable :)
 
-Files are writable :)
+Well, if you're root ...
+
+-rwxr-xr-x 1 root root 158632 Jun  4 11:14 /bin/ls
+
 
